@@ -1,0 +1,9 @@
+<?php
+/*
+	JP、GM共通ファイル
+*/
+
+  define('MODULE_METASEO_PRODUCT_INFO_TEXT_TITLE', '商品情報');
+  define('MODULE_METASEO_PRODUCT_INFO_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_PRODUCT_INFO_TEXT_DESCRIPTION', '商品情報ページのSEO');
+?>

@@ -1,0 +1,33 @@
+<?php
+/*
+  $Id: affiliate_invoice.php,v 2.00 2003/10/12
+
+  OSC-Affiliate
+
+  Contribution based on:
+
+  osCommerce, Open Source E-Commerce Solutions
+  http://www.oscommerce.com
+
+  Copyright (c) 2002 - 2003 osCommerce
+
+  Released under the GNU General Public License
+*/
+
+define('HEADING_TITLE', '-»ÙÊ§ÌÀºÙ½ñ-');
+
+define ('TEXT_AFFILIATE','²ñ°÷Ì¾');
+define ('TEXT_AFFILIATE_PAYMENT','¤ª»ÙÊ§¤¤¶â³Û');
+define ('TEXT_AFFILIATE_BILLED','»ÙÊ§Æü');
+define('TABLE_HEADING_ORDER_ID', 'ÃíÊ¸ÈÖ¹æ');
+define('TABLE_HEADING_ORDER_DATE', 'ÆüÉÕ');
+define('TABLE_HEADING_ORDER_VALUE', 'ÃíÊ¸¶â³Û');
+define('TABLE_HEADING_COMMISSION_RATE', '´Ô¸µÎ¨');
+define('TABLE_HEADING_COMMISSION_VALUE', '´Ô¸µ¶â³Û');
+define('TABLE_HEADING_TOTAL', '¹ç·×');
+
+define('TEXT_SUB_TOTAL', '¾®·×');
+define('TEXT_TAX', '¾ÃÈñÀÇ');
+define('TEXT_TOTAL', '¹ç·×');
+define('ENTRY_PERCENT', '%');
+?>

@@ -1,0 +1,9 @@
+<?php
+/*
+	JP、GM共通ファイル
+*/
+
+  define('MODULE_METASEO_POPUP_SEARCH_HELP_TEXT_TITLE', '詳細検索の使い方');
+  define('MODULE_METASEO_POPUP_SEARCH_HELP_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_POPUP_SEARCH_HELP_TEXT_DESCRIPTION', '詳細検索の使い方ページのSEO');
+?>

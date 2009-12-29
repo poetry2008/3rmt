@@ -1,0 +1,9 @@
+<?php
+/*
+	JP、GM共通ファイル
+*/
+
+  define('MODULE_METASEO_SHOPPING_CART_TEXT_TITLE', 'ショッピングカート');
+  define('MODULE_METASEO_SHOPPING_CART_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_SHOPPING_CART_TEXT_DESCRIPTION', 'ショッピングカートページのSEO');
+?>

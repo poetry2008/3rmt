@@ -1,0 +1,75 @@
+#AuthType Basic
+#AuthName "sharedÅ@files"
+#AuthUserFile "/home/maker/passwd"
+#Require valid-user
+
+DirectoryIndex index.php index.html index.htm index.cgi
+Options FollowSymLinks ExecCGI
+AddType application/x-httpd-cgi .cgi
+
+php_flag register_globals On
+<Limit GET POST>
+allow from all
+</Limit>
+<Files ~ "^.ht">
+    Order allow,deny
+    Deny from all
+    Satisfy All
+</Files>
+
+RedirectPermanent /index.html http://www.iimy.co.jp/index.php
+
+<IfModule mod_setenvif.c>
+  <IfDefine SSL>
+    SetEnvIf User-Agent ".*MSIE.*" \
+             nokeepalive ssl-unclean-shutdown \
+             downgrade-1.0 force-response-1.0
+  </IfDefine>
+#</IfModule>
+
+<Files 403.shtml>
+order allow,deny
+allow from all
+</Files>
+
+<FilesMatch "\.php$">
+SetHandler application/x-httpd-php
+AcceptPathInfo On
+</FilesMatch>
+
+#Add Ultimate_SEO_URLS
+Options +FollowSymLinks
+RewriteEngine On 
+RewriteBase /
+
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteRule ^(.*)p-(.*).html$ product_info.php?products_id=$2&%{QUERY_STRING}
+
+RewriteRule ^(.*)c-(.*).html$ index.php?cPath=$2&%{QUERY_STRING}
+RewriteRule ^(.*)m-(.*).html$ index.php?manufacturers_id=$2&%{QUERY_STRING}
+RewriteRule ^(.*)t-(.*).html$ index.php?tags_id=$2&%{QUERY_STRING}
+RewriteRule ^(.*)pi-(.*).html$ popup_image.php?pID=$2&%{QUERY_STRING}
+RewriteRule ^(.*)co-(.*).html$ index.php?colors=$2&%{QUERY_STRING}
+
+RewriteRule ^(.*)info-(.*).html$ page.php?pID=$2&%{QUERY_STRING}
+
+RewriteCond %{REQUEST_FILENAME} !-f 
+RedirectMatch  301 ^(.*)info$ /info/ 
+
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteRule ^(.*)info/index.html$ /info/ [R,L] 
+
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteRule ^(.*)info/$ page.php
+
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteRule ^(.*)info/(.*).html$ page.php?pID=$2&%{QUERY_STRING}
+
+RewriteRule ^(.*)pr-(.*).html$ product_reviews.php?products_id=$2&%{QUERY_STRING}
+RewriteRule ^(.*)pri-(.*).html$ product_reviews_info.php?products_id=$2&%{QUERY_STRING}
+
+# maker
+RewriteRule ^(.*)pl-(.*).html$ product_listing.php?cPath=$2&%{QUERY_STRING}
+RewriteRule ^(.*)select.html$ index.php?action=select&%{QUERY_STRING}
+RewriteRule ^(.*)sitemap.xml$ ggsitemap.php
+</IfModule>

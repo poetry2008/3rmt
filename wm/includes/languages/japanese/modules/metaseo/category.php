@@ -1,0 +1,9 @@
+<?php
+/*
+	JP、GM共通ファイル
+*/
+
+  define('MODULE_METASEO_CATEGORY_TEXT_TITLE', 'カテゴリ情報');
+  define('MODULE_METASEO_CATEGORY_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_CATEGORY_TEXT_DESCRIPTION', 'カテゴリ情報ページのSEO');
+?>

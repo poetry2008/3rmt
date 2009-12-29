@@ -1,0 +1,9 @@
+<?php
+/*
+	JP、GM共通ファイル
+*/
+
+  define('MODULE_METASEO_REORDER2_TEXT_TITLE', '再配達フォーム2');
+  define('MODULE_METASEO_REORDER2_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_REORDER2_TEXT_DESCRIPTION', '再配達フォーム2ページのSEO');
+?>

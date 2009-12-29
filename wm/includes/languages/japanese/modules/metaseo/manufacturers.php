@@ -1,0 +1,9 @@
+<?php
+/*
+	JP、GM共通ファイル
+*/
+
+  define('MODULE_METASEO_MANUFACTURERS_TEXT_TITLE', 'ゲームメーカー一覧');
+  define('MODULE_METASEO_MANUFACTURERS_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_MANUFACTURERS_TEXT_DESCRIPTION', 'ゲームメーカー一覧ページのSEO');
+?>

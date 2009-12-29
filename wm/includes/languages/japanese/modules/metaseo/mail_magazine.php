@@ -1,0 +1,9 @@
+<?php
+/*
+	JP、GM共通ファイル
+*/
+
+  define('MODULE_METASEO_MAIL_MAGAZINE_TEXT_TITLE', 'メールマガジン');
+  define('MODULE_METASEO_MAIL_MAGAZINE_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_MAIL_MAGAZINE_TEXT_DESCRIPTION', 'メールマガジンページのSEO');
+?>

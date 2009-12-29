@@ -1,0 +1,9 @@
+<?php
+/*
+	JP、GM共通ファイル
+*/
+
+  define('MODULE_METASEO_CONTACT_US_TEXT_TITLE', 'お問い合わせ');
+  define('MODULE_METASEO_CONTACT_US_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_CONTACT_US_TEXT_DESCRIPTION', 'お問い合わせページのSEO');
+?>

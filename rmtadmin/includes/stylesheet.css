@@ -1,0 +1,447 @@
+/*
+	JP、GM共通ファイル
+*/
+
+/* links */
+/* ---------------------------
+A：リンク（通常）
+--------------------------- */
+a:link {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+color: #000000;                                 /* フォントサイズ */
+font-weight: normal;                            /* フォント太さ */
+text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：リンク（訪問済み）
+--------------------------- */
+a:visited {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+color: #000000;                                 /* フォントカラー */
+font-weight: normal;                            /* フォント太さ */
+text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：リンク（選択している）
+--------------------------- */
+a:active {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+color: #000000;                                 /* フォントカラー */
+font-weight: normal;                            /* フォント太さ */
+text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：リンク（カーソルが上に乗ったとき）
+--------------------------- */
+a:hover {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+color: #000000;                                 /* フォントカラー */
+font-weight: normal;                            /* フォント太さ */
+text-decoration: underline;                     /* テキストの装飾 */
+}
+
+/* ---------------------------
+A：ヘッダリンク（通常）
+--------------------------- */
+a.headerLink:link {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+color: #ffffff;                                 /* フォントカラー */
+font-weight: bold;                              /* フォント太さ */
+text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：ヘッダリンク（訪問済み）
+--------------------------- */
+a.headerLink:visited {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */ 
+font-size: 11px;                                /* フォントサイズ */
+color: #ffffff;                                 /* フォントカラー */
+font-weight: bold;                              /* フォント太さ */
+text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：ヘッダリンク（選択している）
+--------------------------- */
+a.headerLink:active {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+color: #ffffff;                                 /* フォントカラー */
+font-weight: bold;                              /* フォント太さ */
+text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：ヘッダリンク（カーソルが上に乗ったとき）
+--------------------------- */
+a.headerLink:hover {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+color: #ffffff;                                 /* フォントカラー */
+font-weight: bold;                              /* フォント太さ */
+text-decoration: underline;                     /* テキストの装飾 */
+}
+
+/* ---------------------------
+A：メニューボックスヘッダリンク（通常）
+--------------------------- */
+a.menuBoxHeadingLink:link {
+font-size: 11px;                                /* フォントサイズ */
+color: #616060;                                 /* フォントカラー */
+font-weight: bold;                              /* フォント太さ */
+text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：メニューボックスヘッダリンク（訪問済み）
+--------------------------- */
+a.menuBoxHeadingLink:visited {
+font-size: 11px;                                /* フォントサイズ */
+color: #616060;                                 /* フォントカラー */
+font-weight: bold;                              /* フォント太さ */
+text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：メニューボックスヘッダリンク（選択している）
+--------------------------- */
+a.menuBoxHeadingLink:active {
+font-size: 11px;                                /* フォントサイズ */
+color: #616060;                                 /* フォントカラー */
+font-weight: bold;                              /* フォント太さ */
+text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：メニューボックスヘッダリンク（カーソルが上に乗ったとき）
+--------------------------- */
+a.menuBoxHeadingLink:hover {
+font-size: 11px;                                /* フォントサイズ */
+color: #616060;                                 /* フォントカラー */
+font-weight: bold;                              /* フォント太さ */
+text-decoration: none;                          /* テキストの装飾 */
+}
+
+/* ---------------------------
+A：メニューボックスコンテンツリンク（通常）
+--------------------------- */
+a.menuBoxContentLink:link {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+color: #616060;                                 /* フォントカラー */
+font-weight: normal;                            /* フォント太さ */
+text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：メニューボックスコンテンツリンク（訪問済み）
+--------------------------- */
+a.menuBoxContentLink:visited {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+color: #616060;                                 /* フォントカラー */
+font-weight: normal;                            /* フォント太さ */
+text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：メニューボックスコンテンツリンク（選択している）
+--------------------------- */
+a.menuBoxContentLink:active {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+color: #616060;                                 /* フォントカラー */
+font-weight: normal;                            /* フォント太さ */
+text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：メニューボックスコンテンツリンク（カーソルが上に乗ったとき）
+--------------------------- */
+a.menuBoxContentLink:hover {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+color: #616060;                                 /* フォントカラー */
+font-weight: normal;                            /* フォント太さ */
+text-decoration: underline;                     /* テキストの装飾 */
+}
+
+/* ---------------------------
+A：ページリンク（通常）
+--------------------------- */
+a.splitPageLink:link {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+color: #0000FF;                                 /* フォントカラー */
+font-weight: normal;                            /* フォント太さ */
+text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：ページリンク（訪問済み）
+--------------------------- */
+a.splitPageLink:visited {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+color: #0000FF;                                 /* フォントカラー */
+font-weight: normal;                            /* フォント太さ */
+text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：ページリンク（選択している）
+--------------------------- */
+a.splitPageLink:active {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+color: #0000FF;                                 /* フォントカラー */
+font-weight: normal;                            /* フォント太さ */
+text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：ページリンク（カーソルが上に乗ったとき）
+--------------------------- */
+a.splitPageLink:hover {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+color: #0000FF;                                 /* フォントカラー */
+font-weight: normal;                            /* フォント太さ */
+text-decoration: underline;                     /* テキストの装飾 */
+background-color: #FFFF33;                      /* 背景色 */
+}
+
+/* menu box */
+/* ---------------------------
+.[TD]：メニューボックスコンテンツ
+--------------------------- */
+.menuBoxHeading {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+color: #616060;                                 /* フォントカラー */
+background-color: #ffffff;                      /* 背景色 */
+}
+/* ---------------------------
+.[TD]：メニューボックスコンテンツ
+--------------------------- */
+.menuBoxContent {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+color: #616060;                                 /* フォントカラー */
+}
+
+/* page */
+/* ---------------------------
+BODY：ボディ
+--------------------------- */
+body {
+background-color: #ffffff;                      /* 背景色 */
+color: #000000;                                 /* フォントカラー */
+margin: 0px;                                    /* マージン */
+}
+/* ---------------------------
+.[TR]：ヘッダ（ナビゲーション）
+--------------------------- */
+.headerBar {
+background-color: #000000;                      /* 背景色 */
+}
+/* ---------------------------
+.[TD]：ヘッダ（ナビゲーション）
+--------------------------- */
+.headerBarContent {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+color: #ffffff;                                 /* フォントカラー */
+font-weight: bold;                              /* フォント太さ */
+padding: 2px;                                   /* 境界線と内容との間の空間 */
+}
+/* ---------------------------
+.[TABLE]：メニューボックスを統括するテーブル
+--------------------------- */
+.columnLeft {
+background-color: #F0F1F1;                      /* 背景色 */
+border-color: #999999;                          /* 境界線の色 */
+border-width: 1px;                              /* 境界線の幅 */
+border-style: solid;                            /* 境界線のスタイル */
+padding: 2px;                                   /* 境界線と内容との間の空間 */
+}
+/* ---------------------------
+.[TD]：ページヘッダ
+--------------------------- */
+.pageHeading {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 18px;                                /* フォントサイズ */
+color: #727272;                                 /* フォントカラー */
+font-weight: bold;                              /* フォント太さ */
+}
+
+/* data table */
+/* ---------------------------
+.[TR]：一覧表の項目名（背景色）
+--------------------------- */
+.dataTableHeadingRow {
+background-color: #808080;                      /* 背景色 */
+}
+/* ---------------------------
+.[TD]：一覧表の項目名（コンテンツ）
+--------------------------- */
+.dataTableHeadingContent {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+color: #ffffff;                                 /* フォントカラー */
+font-weight: bold;                              /* フォント太さ */
+}
+/* ---------------------------
+.[TR]：一覧表データ（通常行）
+--------------------------- */
+.dataTableRow {
+background-color: #F0F1F1;                      /* 背景色 */
+}
+/* ---------------------------
+.[TR]：一覧表データ（色違行）
+--------------------------- */
+.dataTableSecondRow {
+background-color: #E0E0E0;                      /* 背景色 */
+}
+/* ---------------------------
+.[TR]：一覧表データ（選択行）
+--------------------------- */
+.dataTableRowSelected {
+background-color: #FFD700;                      /* 背景色 */
+}
+/* ---------------------------
+.[TR]：一覧表データ（カーソルが乗っている行）
+--------------------------- */
+.dataTableRowOver {
+background-color: #FFCC99;                      /* 背景色 */
+}
+/* ---------------------------
+.[TD]：一覧表データ（コンテンツ）
+--------------------------- */
+.dataTableContent {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+color: #000000;                                 /* フォントカラー */
+}
+
+/* info box */
+/* ---------------------------
+.[TR]：情報ボックス（タイトル） - 右側に表示される、一覧から選んだ項目の情報
+--------------------------- */
+.infoBoxHeading {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+color: #000000;                                 /* フォントカラー */
+background-color: #FFD700;                      /* 背景色 */
+}
+/* ---------------------------
+.[TD]：情報ボックス（コンテンツ） - 右側に表示される、一覧から選んだ項目の情報
+--------------------------- */
+.infoBoxContent {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+color: #000000;                                 /* フォントカラー */
+background-color: #FFD700;                      /* 背景色 */
+}
+
+/* message box */
+/* ---------------------------
+.[TR]：メッセージボックス
+--------------------------- */
+.messageBox {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+}
+/* ---------------------------
+.[TR,TD]：エラー、警告メッセージ
+--------------------------- */
+.messageStackError, .messageStackWarning {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+background-color: #ffb3b5;                      /* 背景色 */
+}
+/* ---------------------------
+.[TR,TD]：成功メッセージ
+--------------------------- */
+.messageStackSuccess {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+background-color: #99ff00;                      /* 背景色 */
+}
+
+/* forms */
+/* ---------------------------
+CHECKBOX, INPUT, RADIO, SELECT, TEXTAREA, FILE：FORMの入力・選択項目
+--------------------------- */
+CHECKBOX, INPUT, RADIO, SELECT, TEXTAREA, FILE {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+}
+
+/* account */
+/* ---------------------------
+.[TABLE]：フォームエリア（境界線）
+--------------------------- */
+.formArea {
+background-color: #f1f9fe;                      /* 背景色 */
+border-color: #7b9ebd;                          /* 境界線の色 */
+border-style: solid;                            /* 境界線のスタイル */
+border-width: 1px;                              /* 境界線の幅 */
+}
+/* ---------------------------
+.[TD]：フォームエリア（タイトル）
+--------------------------- */
+.formAreaTitle {
+font-family: Osaka, Tahoma, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 12px;                                /* フォントサイズ */
+font-weight: bold;                              /* フォント太さ */
+}
+
+/* attributes */
+/* ---------------------------
+TR：奇数行
+--------------------------- */
+.attributes-odd {
+background-color: #f4f7fd;                      /* 背景色 */
+}
+/* ---------------------------
+TR：偶数行
+--------------------------- */
+.attributes-even {
+background-color: #ffffff;                      /* 背景色 */
+}
+
+/* miscellaneous */
+/* ---------------------------
+.[SPAN]：特価商品価格
+--------------------------- */
+.specialPrice {
+color: #ff0000;                                 /* フォントカラー */
+}
+/* ---------------------------
+.[SPAN]：旧商品価格
+--------------------------- */
+.oldPrice {
+text-decoration: line-through;                  /* テキストの装飾 */
+}
+/* ---------------------------
+.[SPAN]：「*必須」文字列
+--------------------------- */
+.fieldRequired {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 11px;                                /* フォントサイズ */
+color: #ff0000;                                 /* フォントカラー */
+}
+/* ---------------------------
+.[TD]：小さい文字（メッセージ）
+--------------------------- */
+.smallText {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 10px;                                /* フォントサイズ */
+}
+/* ---------------------------
+.[TD]：メイン
+--------------------------- */
+.main {
+font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-size: 12px;                                /* フォントサイズ */
+}
+legend {
+	font-size: 12px;
+	font-weight: bold;
+	color: #000000;
+}

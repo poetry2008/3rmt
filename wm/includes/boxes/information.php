@@ -1,0 +1,41 @@
+<?php
+/*
+  $Id: information.php,v 1.1.1.1 2003/02/20 01:03:53 ptosh Exp $
+  osCommerce, Open Source E-Commerce Solutions
+  http://www.oscommerce.com
+  Copyright (c) 2003 osCommerce
+  Released under the GNU General Public License
+*/
+?>
+<!-- information //-->
+<div id="information">
+	<?php //echo tep_image(DIR_WS_IMAGES.'design/box/information.gif',BOX_HEADING_INFORMATION,172,39) . "\n"; ?>
+	<img width="172" height="39" alt="RMT情報" src="images/design/box/information.gif">
+	<ul class="l_m_category_ul">
+<?php
+	$contents_page = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where status = 1 order by sort_id ");
+	while ($result = tep_db_fetch_array($contents_page)){
+		echo '		<li class="l_m_category_li">' . "\n";
+		echo '			<a href="' .  info_tep_href_link($result['romaji']) . '">' . $result['heading_title'] . '</a>' . "\n";
+		echo '		</li>' . "\n";
+	} 
+// Extra Pages ADDED END
+
+	if (AFFILIATE_VALUE == 'true') {
+?>
+		<li class="l_m_category_li">
+			<?php echo '<a href="' . tep_href_link(FILENAME_AFFILIATE_INFO, '', 'NONSSL'). '">' . BOX_HEADING_AFFILIATE . '</a>' . "\n"; ?>
+		</li>
+<?php
+	}
+?>
+		<li class="l_m_category_li">
+			<?php echo '<a href="' . tep_href_link(FILENAME_CONTACT_US) . '">' . BOX_INFORMATION_CONTACT . '</a>' . "\n"; ?>
+		</li>
+		<li class="l_m_category_li">
+			<?php echo '<a href="' . tep_href_link('reorder.php') . '">' . '再配達フォーム' . '</a>' . "\n"; ?>
+		</li>
+	</ul>
+	<img src="images/design/box/box_bottom_bg_01.gif" width="172" height="14" alt="" >
+</div>
+<!-- information_eof //-->

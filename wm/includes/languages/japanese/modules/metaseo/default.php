@@ -1,0 +1,9 @@
+<?php
+/*
+	JP、GM共通ファイル
+*/
+
+  define('MODULE_METASEO_DEFAULT_TEXT_TITLE', 'ホームページ');
+  define('MODULE_METASEO_DEFAULT_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_DEFAULT_TEXT_DESCRIPTION', 'ホームページページのSEO');
+?>

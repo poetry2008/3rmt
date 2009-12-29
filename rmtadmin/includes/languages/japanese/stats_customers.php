@@ -1,0 +1,18 @@
+<?php
+/*
+  $Id: stats_customers.php,v 1.2 2003/02/21 03:40:38 hawk Exp $
+
+  osCommerce, Open Source E-Commerce Solutions
+  http://www.oscommerce.com
+
+  Copyright (c) 2002 osCommerce
+
+  Released under the GNU General Public License
+*/
+
+define('HEADING_TITLE', '¸ÜµÒÊÌ¤ÎÇä¾å½ç°Ì');
+
+define('TABLE_HEADING_NUMBER', 'No.');
+define('TABLE_HEADING_CUSTOMERS', '¸ÜµÒÌ¾');
+define('TABLE_HEADING_TOTAL_PURCHASED', 'Áí¹ØÆþ³Û');
+?>

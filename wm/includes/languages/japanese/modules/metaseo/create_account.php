@@ -1,0 +1,9 @@
+<?php
+/*
+	JP、GM共通ファイル
+*/
+
+  define('MODULE_METASEO_CREATE_ACCOUNT_TEXT_TITLE', 'アカウントの作成');
+  define('MODULE_METASEO_CREATE_ACCOUNT_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_CREATE_ACCOUNT_TEXT_DESCRIPTION', 'アカウントの作成ページのSEO');
+?>

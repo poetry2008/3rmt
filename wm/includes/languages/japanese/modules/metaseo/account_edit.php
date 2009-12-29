@@ -1,0 +1,9 @@
+<?php
+/*
+	JP、GM共通ファイル
+*/
+
+  define('MODULE_METASEO_ACCOUNT_EDIT_TEXT_TITLE', 'アカウント編集');
+  define('MODULE_METASEO_ACCOUNT_EDIT_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_ACCOUNT_EDIT_TEXT_DESCRIPTION', 'アカウント編集ページのSEO');
+?>

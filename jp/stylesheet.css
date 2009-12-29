@@ -1,0 +1,581 @@
+@import url("design.css");
+/* ---------------------------
+左右のボックス：通常
+--------------------------- */
+.boxText {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 11px;
+}
+/* ---------------------------
+左右のボックス：エラー
+--------------------------- */
+.errorBox {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size : 10px;
+	background: #ffb3b5;
+	font-weight: bold;
+}
+/* ---------------------------
+「カートには何が入っている?」ページでカタログの在庫が無い時に表示するメッセージ
+--------------------------- */
+.stockWarning {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size : 12px;
+	color: #cc0033;
+}
+/* ---------------------------
+調査中
+--------------------------- */
+.productsNotifications {
+	background: #f2fff7;
+}
+/* ---------------------------
+「ご注文の最終確認」ページ「変更」文字
+--------------------------- */
+.orderEdit {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size : 11px;
+	color: #70d250;
+	text-decoration: underline;
+}
+/* ---------------------------
+BODY：ボディ
+--------------------------- */
+BODY {
+	background-color: #FFFFFF;
+	margin: 0px;
+	padding: 0px;
+	color: #656565;
+}
+/* ---------------------------
+A：リンク（通常）
+--------------------------- */
+A {
+	color: #2864B4;
+	text-decoration: none;
+}
+/* ---------------------------
+A：リンク（カーソルが上に乗ったとき）
+--------------------------- */
+A:hover {
+  color: #2864B4;
+  text-decoration: underline;
+}
+/* ---------------------------
+FORM：フォーム
+--------------------------- */
+FORM {
+	display: inline;
+}
+/* ---------------------------
+IMG: 画像
+--------------------------- */
+IMG {
+	border-style: none;
+	vertical-align: bottom;
+}
+/* ---------------------------
+TR：ヘッダー（product_info）
+--------------------------- */
+TR.header2 {
+	background: #ffffff;
+}
+/* ---------------------------
+TR：ヘッダー（ナビゲーション）
+--------------------------- */
+TR.headerNavigation {
+	background: #bbc3d3;
+}
+/* ---------------------------
+TD：ヘッダー（ナビゲーション）
+--------------------------- */
+TD.headerNavigation {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 10px;
+	background: #FFFFFF;
+	color: #029DBB;
+}
+/* ---------------------------
+A：ヘッダー（ナビゲーションのリンク）
+--------------------------- */
+A.headerNavigation { 
+	color: #2864B4;
+}
+/* ---------------------------
+A：ヘッダー（ナビゲーション・カーソルが上に乗ったとき）
+--------------------------- */
+A.headerNavigation:hover {
+	color: #2864B4;
+}
+/* ---------------------------
+TR：ヘッダー（エラー）
+--------------------------- */
+TR.headerError {
+	background: #ff0000;
+}
+/* ---------------------------
+TD：ヘッダー（エラー）
+--------------------------- */
+TD.headerError {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 12px;
+	background: #ff0000;
+	color: #ffffff;
+	font-weight : bold;
+	text-align : center;
+}
+/* ---------------------------
+TR：ヘッダー（メッセージ）
+--------------------------- */
+TR.headerInfo {
+	background: #00ff00;
+}
+/* ---------------------------
+TD：ヘッダー（メッセージ）
+--------------------------- */
+TD.headerInfo {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 12px;
+	background: #00ff00;
+	color: #ffffff;
+	font-weight: bold;
+	text-align: center;
+}
+/* ---------------------------
+TABLE：情報ボックス
+--------------------------- */
+.infoBox {
+	background: #b6b7cb;
+}
+/* ---------------------------
+TABLE：情報ボックス（コンテンツ）
+--------------------------- */
+.infoBoxContents {
+	background: #FFFFFF;
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 11px;
+}
+/* ---------------------------
+調査中
+--------------------------- */
+.infoBoxNotice {
+	background: #FF8E90;
+}
+/* ---------------------------
+調査中
+--------------------------- */
+.infoBoxNoticeContents {
+	background: #FFE6E6;
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 10px;
+}
+/* ---------------------------
+TD：情報ボックス（タイトル）
+--------------------------- */
+TD.infoBoxHeading {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	background: #bbc3d3;
+	color: #ffffff;
+}
+/* ---------------------------
+TD,SPAN：情報ボックス（情報・メッセージ）
+--------------------------- */
+TD.infoBox, SPAN.infoBox {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 11px;
+}
+/* ---------------------------
+TR：奇数行
+--------------------------- */
+TR.accountHistory-odd, TR.addressBook-odd, TR.alsoPurchased-odd, TR.payment-odd, TR.productListing-odd, TR.productReviews-odd, TR.upcomingProducts-odd, TR.shippingOptions-odd {
+	background: #f4f7fd;
+}
+/* ---------------------------
+TR：偶数行
+--------------------------- */
+TR.accountHistory-even, TR.addressBook-even, TR.alsoPurchased-even, TR.payment-even, TR.productListing-even, TR.productReviews-even, TR.upcomingProducts-even, TR.shippingOptions-even {
+	background: #ffffff;
+}
+/* ---------------------------
+TR：カタログ一覧（タイトル）
+--------------------------- */
+TR.productListing-heading {
+	background: #d2e9fb;
+}
+/* ---------------------------
+TD：カタログ一覧（タイトル）
+--------------------------- */
+TD.productListing-heading {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 11px;
+	background: #d2e9fb;
+	color: #656565;
+	font-weight: bold;
+	font-variant: small-caps;
+}
+/* ---------------------------
+TD：カタログ一覧（データ）
+--------------------------- */
+TD.productListing-data {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 11px;
+}
+/* ---------------------------
+A：ページリンク（通常）
+--------------------------- */
+A.pageResults { 
+	color: #2864B4;
+}
+/* ---------------------------
+A：ページリンク（カーソルが上に乗ったとき）
+--------------------------- */
+A.pageResults:hover { 
+	color: #2864B4;
+}
+/* ---------------------------
+TR：サブバー（未使用）
+--------------------------- */
+TR.subBar {
+	background: #f4f7fd;
+}
+/* ---------------------------
+TD：サブバー（未使用）
+--------------------------- */
+TD.subBar {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 10px;
+	color: #000000;
+}
+/* ---------------------------
+TD：メイン
+--------------------------- */
+TD.main, P.main {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 11px;
+	line-height: 1.5;
+}
+/* ---------------------------
+TD,SPAN：小さい文字（メッセージ）
+--------------------------- */
+TD.smallText, SPAN.smallText, P.smallText {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 10px;
+	line-height: 1.5;
+}
+/* ---------------------------
+TD：アカウントカテゴリー
+--------------------------- */
+TD.accountCategory {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 13px;
+	color: #aabbdd;
+}
+/* ---------------------------
+TD：フィールド（キー）
+--------------------------- */
+TD.fieldKey {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+}
+/* ---------------------------
+TD：フィールド（値）
+--------------------------- */
+TD.fieldValue {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 12px;
+}
+/* ---------------------------
+TD：一覧表の項目名
+--------------------------- */
+TD.tableHeading {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+}
+/* ---------------------------
+SPAN：情報ボックス（新しくカートに入れたカタログ）
+--------------------------- */
+SPAN.newItemInCart {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 11px;
+	color: #ff0000;
+}
+/* ---------------------------
+CHECKBOX, INPUT, RADIO, SELECT：FORMの入力・選択項目
+--------------------------- */
+CHECKBOX, INPUT, RADIO, SELECT {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 11px;
+}
+
+/* ---------------------------
+TEXTAREA：FORMの入力項目
+--------------------------- */
+TEXTAREA {
+	width: 100%;
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 11px;
+}
+/* ---------------------------
+SPAN：トップページのメッセージ（こんにちは、○○さん～）
+--------------------------- */
+SPAN.greetUser {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 12px;
+	color: #0000a0;
+	font-weight: bold;
+}
+/* ---------------------------
+TABLE：フォームエリア（境界線）
+--------------------------- */
+TABLE.formArea {
+	background: #FFFFFF;
+	border-color: #E8E8E8;
+	border-style: solid;
+	border-width: 1px;
+}
+/* ---------------------------
+TD：フォームエリア（タイトル）
+--------------------------- */
+TD.formAreaTitle {
+
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+}
+/* ---------------------------
+SPAN：マーク（在庫切れ）
+--------------------------- */
+SPAN.markProductOutOfStock {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 12px;
+	color: #c76170;
+	font-weight: bold;
+}
+/* ---------------------------
+SPAN：特価カタログ価格
+--------------------------- */
+SPAN.productSpecialPrice {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	color: #ff0000;
+}
+/* ---------------------------
+SPAN：エラー
+--------------------------- */
+SPAN.errorText {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	color: #ff0000;
+}
+/* ---------------------------
+レジチェックボックス・マウスオフ
+--------------------------- */
+.moduleRow {
+}
+/* ---------------------------
+レジチェックボックス・マウスオーバー
+--------------------------- */
+.moduleRowOver {
+	background-color: #D7E9F7;
+	cursor: hand;
+}
+/* ---------------------------
+レジチェックボックス選択行
+--------------------------- */
+.moduleRowSelected {
+	background-color: #E9F4FC;
+}
+/* ---------------------------
+チェックアウト手順
+--------------------------- */
+.checkoutBarFrom, .checkoutBarTo {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 11px;
+	color: #8c8c8c;
+}
+/* ---------------------------
+チェックアウト手順（現在の手順）
+--------------------------- */
+.checkoutBarCurrent {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 11px;
+	color: #000000;
+}
+.menu_bg {
+	background-image: url(images/design/menu_bg.jpg);
+	background-repeat: no-repeat;
+	width: 115px;
+	text-align: center;
+}
+.c_menu {
+	background-image: url(images/design/menu_arrow.jpg);
+	width: 135px;
+	background-repeat: no-repeat;
+	padding-left: 15px;
+	color: #656565;
+}
+.bestseller_image_border {
+	border: 2px solid #FFFFFF;
+}
+.pageHeading_line {
+	background-image: url(images/design/page_heading.gif);
+	background-repeat: no-repeat;
+	height: 8px;
+	margin-top: 5px;
+	margin-bottom: 10px;
+	margin-left: 20px;
+}
+
+.image_border {
+	padding: 1px;
+	border: 1px solid #E8E8E8;
+}
+.listing_image {
+	float: left;
+	margin-right: 25px;
+	margin-top: 25px;
+}
+.listing_image_return {
+	margin-top: 25px;
+	float: none;
+}
+address {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-style: normal;
+	font-size: 10px;
+}
+#menu a{
+   color:#656565;
+}   
+.body_shadow {
+		/*float: left;*/
+}
+#body_text {
+	background-color: #FFFFFF;
+}
+.search_box{
+	color: #9DB391;
+	background-color: #F1F2EE;
+	border: 1px solid #9DB391;
+}
+/*
+strong {
+	color: #95A078;
+}
+*/
+.underline{
+	border-top: 1px solid #E0E0E7;
+	margin-top: 15px;
+	/*width:689;*/
+}
+P.description{
+	margin-top:5px;
+	text-align : left;
+	width : 95%;
+	height : 63px;
+	scrollbar : yes;
+	overflow:auto;
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 10px;
+	color: #666666;
+	padding-left: 10px;
+}
+
+.formAreaTitle {
+	font-size: 11px;
+	font-weight: bold;
+	color: #4A6175;
+}
+
+.smallText {
+	font-size: 10px;
+}
+
+#tabtable {
+	background-image: url(./images/design/top_tab/tab-bg.jpg);background-repeat: repeat-y;
+}
+
+/*************************/
+.comment .information_table{
+width:100%;
+*+width:96%;
+font-size:12px;
+border:#ccc solid 1px;
+}
+.comment .information_table input{
+vertical-align:middle;
+}
+.news_list02{
+/*display:block;*/
+font-family:Osaka,Verdana,Arial,sans-serif;
+font-size:11px;
+margin:0;
+padding:5px 0;
+/*border-bottom:#999999 dotted 1px;*/
+background: url(images/design/box/dot.gif) repeat-x bottom;
+/*background:url(./images/news_list_ico.gif) no-repeat left 10px;*/	
+}
+.news_list02 .div01{
+display:inline;
+font-size:10px;
+margin-right:10px;
+}
+/*.news_list02 .div01{
+display:block;
+float:left;
+width:82px;
+}
+.news_list02 .link01{
+display:block;
+float:left;
+width:390px;
+}*/
+.table_ie{
+*width:99.9%;
+}
+.news_list02 .link01{
+font-size:10px;
+}
+.send_mail {
+  font-size: 12px;
+}
+.send_mail b {
+  font-size: 12px;
+}
+.top_and_bottom a{
+width:15px;
+height:13px;
+}
+.top_and_bottom a img{
+width:15px;
+height:13px;
+}
+/*botton*/
+.button_delete02{
+display:block;
+overflow:hidden;
+text-indent:-2000px;
+width:53px;
+height:25px;
+background-image: url(./includes/languages/japanese/images/buttons/button_delete02.gif);
+}
+.shopping_cart_continue{
+display:block;
+cursor:pointer;
+width:81px;
+height:24px;
+padding:0;
+border:0;
+background-image: url(./includes/languages/japanese/images/buttons/button_continue_shopping.gif);
+}
+.shopping_cart_checkout{
+display:block;
+cursor:pointer;
+width:87px;
+height:24px;
+padding:0;
+border:0;
+background-image: url(./includes/languages/japanese/images/buttons/button_checkout02.gif);
+}

@@ -1,0 +1,9 @@
+<?php
+/*
+	JP、GM共通ファイル
+*/
+
+  define('MODULE_METASEO_CHECKOUT_SUCCESS_TEXT_TITLE', 'ご注文の手続きが完了しました');
+  define('MODULE_METASEO_CHECKOUT_SUCCESS_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_CHECKOUT_SUCCESS_TEXT_DESCRIPTION', 'ご注文の手続きが完了しましたページのSEO');
+?>

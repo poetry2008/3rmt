@@ -1,0 +1,9 @@
+<?php
+/*
+	JP、GM共通ファイル
+*/
+
+  define('MODULE_METASEO_PREORDER_TEXT_TITLE', '予約');
+  define('MODULE_METASEO_PREORDER_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_PREORDER_TEXT_DESCRIPTION', '予約ページのSEO');
+?>

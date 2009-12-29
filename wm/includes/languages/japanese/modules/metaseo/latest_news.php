@@ -1,0 +1,9 @@
+<?php
+/*
+	JP、GM共通ファイル
+*/
+
+  define('MODULE_METASEO_LATEST_NEWS_TEXT_TITLE', 'お知らせ');
+  define('MODULE_METASEO_LATEST_NEWS_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_LATEST_NEWS_TEXT_DESCRIPTION', 'お知らせページのSEO');
+?>

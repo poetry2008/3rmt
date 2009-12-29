@@ -1,0 +1,9 @@
+<?php
+/*
+	JP、GM共通ファイル
+*/
+
+  define('MODULE_METASEO_PRODUCTS_NEW_TEXT_TITLE', '新着商品');
+  define('MODULE_METASEO_PRODUCTS_NEW_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_PRODUCTS_NEW_TEXT_DESCRIPTION', '新着商品ページのSEO');
+?>

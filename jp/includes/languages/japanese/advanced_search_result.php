@@ -1,0 +1,28 @@
+<?php
+/*
+  $Id: advanced_search_result.php,v 1.4 2003/03/25 14:42:45 hawk Exp $
+
+  osCommerce, Open Source E-Commerce Solutions
+  http://www.oscommerce.com
+
+  Copyright (c) 2002 osCommerce
+
+  Released under the GNU General Public License
+*/
+
+define('NAVBAR_TITLE1', '¸¡º÷');
+define('NAVBAR_TITLE2', '¸¡º÷·ë²Ì');
+define('HEADING_TITLE', '¸¡º÷¾ò·ï¤Ë°ìÃ×¤¹¤ë¾¦ÉÊ');
+define('TABLE_HEADING_IMAGE', '');
+define('TABLE_HEADING_MODEL', '·¿ÈÖ');
+define('TABLE_HEADING_PRODUCTS', '¾¦ÉÊÌ¾');
+define('TABLE_HEADING_MANUFACTURER', '¥á¡¼¥«¡¼');
+define('TABLE_HEADING_QUANTITY', '¿ôÎÌ');
+define('TABLE_HEADING_PRICE', '²Á³Ê');
+define('TABLE_HEADING_WEIGHT', '½ÅÎÌ');
+define('TABLE_HEADING_BUY_NOW', 'º£¤¹¤°¹ØÆþ');
+define('TEXT_NO_PRODUCTS', '¸¡º÷¾ò·ï¤Ë°ìÃ×¤¹¤ë¾¦ÉÊ¤Ï¤¢¤ê¤Þ¤»¤ó...');
+define('TEXT_NO_PRODUCTS2', '¸¡º÷¾ò·ï¤Ë°ìÃ×¤¹¤ë¾¦ÉÊ¤Ï¤¢¤ê¤Þ¤»¤ó...');
+define('TEXT_BUY', 'º£¤¹¤° ');
+define('TEXT_NOW', ' ¤ò¹ØÆþ¤¹¤ë');
+?>

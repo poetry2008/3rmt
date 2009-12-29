@@ -1,0 +1,49 @@
+DirectoryIndex index.php index.html index.htm index.cgi
+Options FollowSymLinks ExecCGI
+Options -Indexes
+AddType application/x-httpd-cgi .cgi
+php_flag register_globals On
+
+<Limit GET POST>
+allow from all
+</Limit>
+<Files ~ "^.ht">
+    Order allow,deny
+    Deny from all
+    Satisfy All
+</Files>
+
+
+<IfModule mod_setenvif.c>
+  <IfDefine SSL>
+    SetEnvIf User-Agent ".*MSIE.*" \
+             nokeepalive ssl-unclean-shutdown \
+             downgrade-1.0 force-response-1.0
+  </IfDefine>
+</IfModule>
+
+
+<Files 403.shtml>
+order allow,deny
+allow from all
+</Files>
+
+<FilesMatch "\.php$">
+SetHandler application/x-httpd-php
+AcceptPathInfo Off
+</FilesMatch>
+
+#Add Ultimate_SEO_URLS
+Options +FollowSymLinks
+RewriteEngine On 
+RewriteBase /
+
+RewriteRule ^(.*)p-(.*).html$ product_info.php?products_id=$2&%{QUERY_STRING}
+RewriteRule ^(.*)c-(.*).html$ index.php?cPath=$2&%{QUERY_STRING}
+RewriteRule ^(.*)m-(.*).html$ index.php?manufacturers_id=$2&%{QUERY_STRING}
+RewriteRule ^(.*)pi-(.*).html$ popup_image.php?pID=$2&%{QUERY_STRING}
+RewriteRule ^(.*)co-(.*).html$ index.php?colors=$2&%{QUERY_STRING}
+RewriteRule ^(.*)info-(.*).html$ page.php?pID=$2&%{QUERY_STRING}
+RewriteRule ^(.*)pr-(.*).html$ product_reviews.php?products_id=$2&%{QUERY_STRING}
+RewriteRule ^(.*)pri-(.*).html$ product_reviews_info.php?products_id=$2&%{QUERY_STRING}
+RewriteRule ^faq(.*)$ faq.php?faq_id=$1&%{QUERY_STRING}
