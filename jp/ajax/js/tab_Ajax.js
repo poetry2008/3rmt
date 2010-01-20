@@ -15,7 +15,7 @@ function sendData(geturi,execution_f,did) {
 	}
   }
   
-  //execution_f¤òÄÉ²Ã¤·¤¿¤é°Ê²¼¤Î½èÍı¤òÄÉ²Ã¤¹¤ë
+  //execution_fã‚’è¿½åŠ ã—ãŸã‚‰ä»¥ä¸‹ã®å‡¦ç†ã‚’è¿½åŠ ã™ã‚‹
   if(xmlHttpObject){
 	if(execution_f == 'tabmenu2'){
 	  xmlHttpObject.onreadystatechange = tabmenu2;
@@ -24,9 +24,9 @@ function sendData(geturi,execution_f,did) {
   
   
 //----------------------------------------------------------------------------------------------------
-//¤³¤³¤«¤é²¼¤ÏÄÉ²ÃFunction
+//ã“ã“ã‹ã‚‰ä¸‹ã¯è¿½åŠ Function
 
-  //É½¼¨ÊÑ¹¹¡Êtab_menu2¡Ë
+  //è¡¨ç¤ºå¤‰æ›´ï¼ˆtab_menu2ï¼‰
   function tabmenu2() {
     if((xmlHttpObject.readyState == 4) && (xmlHttpObject.status == 200)){  
       document.getElementById(did).innerHTML = xmlHttpObject.responseText;
@@ -35,7 +35,7 @@ function sendData(geturi,execution_f,did) {
     }
   }
 
-//¤³¤³¤Ş¤Ç¤¬ÄÉ²ÃFunction
+//ã“ã“ã¾ã§ãŒè¿½åŠ Function
 //----------------------------------------------------------------------------------------------------  
   
   if(xmlHttpObject){

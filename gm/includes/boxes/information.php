@@ -27,6 +27,6 @@
   }
 ?>
 <li><?php echo '<a href="' . tep_href_link(FILENAME_CONTACT_US) . '">' . BOX_INFORMATION_CONTACT . '</a>';?></li> 
-<li><?php echo '<a href="' . tep_href_link('reorder.php') . '">' . 'ºÆÇÛÃ£¥Õ¥©¡¼¥à' . '</a>'; ?></li> 
+<li><?php echo '<a href="' . tep_href_link('reorder.php') . '">' . 'å†é…é”ãƒ•ã‚©ãƒ¼ãƒ ' . '</a>'; ?></li> 
 </ul>
 <!-- information_eof //-->

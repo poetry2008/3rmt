@@ -10,19 +10,19 @@
   Released under the GNU General Public License
 */
 
-$game_name = '¥ì¥Ã¥É¥¹¥È¡¼¥ó';
+$game_name = 'ãƒ¬ãƒƒãƒ‰ã‚¹ãƒˆãƒ¼ãƒ³';
 
 // IF USER HAS CLICKED ON A QUESTION
 if($q_id == "" || $q_id == "index") {
 	// IF USER IS LOOKING AT THE MAIN PAGE
-	$faq_meta_d = '¥ì¥Ã¥É¥¹¥È¡¼¥ó RMT¤Î¤è¤¯¤¢¤ë¼ÁÌä°ìÍ÷¥Ú¡¼¥¸¤Ç¤¹¡£REDSTONE¤Î¥´¡¼¥ë¥ÉÈÎÇä¡¦GoldÇã¼è¤Ë¤Ä¤¤¤Æ';
-	$faq_meta_k = '¥ì¥Ã¥É¥¹¥È¡¼¥ó,REDSTONE,¥´¡¼¥ë¥É,¼ÁÌä,°ìÍ÷,RMT,FAQ,Gold,ÈÎÇä,Çã¼è';
-	$faq_title = $gc_name . '¤Î¤è¤¯¤¢¤ë¼ÁÌä°ìÍ÷/' . TITLE;
-	$faq_mes = '<h2 align="right">' . $game_name . '¤ÎFAQ°ìÍ÷</h2>' . "\n";
+	$faq_meta_d = 'ãƒ¬ãƒƒãƒ‰ã‚¹ãƒˆãƒ¼ãƒ³ RMTã®ã‚ˆãã‚ã‚‹è³ªå•ä¸€è¦§ãƒšãƒ¼ã‚¸ã§ã™ã€‚REDSTONEã®ã‚´ãƒ¼ãƒ«ãƒ‰è²©å£²ãƒ»Goldè²·å–ã«ã¤ã„ã¦';
+	$faq_meta_k = 'ãƒ¬ãƒƒãƒ‰ã‚¹ãƒˆãƒ¼ãƒ³,REDSTONE,ã‚´ãƒ¼ãƒ«ãƒ‰,è³ªå•,ä¸€è¦§,RMT,FAQ,Gold,è²©å£²,è²·å–';
+	$faq_title = $gc_name . 'ã®ã‚ˆãã‚ã‚‹è³ªå•ä¸€è¦§/' . TITLE;
+	$faq_mes = '<h2 align="right">' . $game_name . 'ã®FAQä¸€è¦§</h2>' . "\n";
 	
-	$faq_mes .= '<p>¤³¤Î¥Ú¡¼¥¸¤Ç¤Ï¡¢¤ªµÒÍÍ¤«¤é´ó¤»¤é¤ì¤ë<strong>' . $game_name . '</strong>¤Î';
-	$faq_mes .= '¤è¤¯¤¢¤ë¼ÁÌä¤Ë¤ªÅú¤¨¤·¤Æ¤¤¤Ş¤¹¡£' . $game_name . '°Ê³°¤ÎFAQ¤ò±ÜÍ÷¤¹¤ë¾ì¹ç¤Ï<a href="' . tep_href_link('info-7.html') . '">¥³¥Á¥é</a>¤ò¥¯¥ê¥Ã¥¯¤·¤Æ¤¯¤À¤µ¤¤¡£';
-	$faq_mes .= 'µ­ºÜ¤Î¤Ê¤¤¤´¼ÁÌä¤Ï¡¢¤ª¼ê¿ô¤Ç¤Ï¤´¤¶¤¤¤Ş¤¹¤¬¥µ¥İ¡¼¥È¥»¥ó¥¿¡¼¤Ø¤ªÌä¤¤¹ç¤ï¤»¤¯¤À¤µ¤¤¡£</p>' . "\n" . '<br>' . "\n";
+	$faq_mes .= '<p>ã“ã®ãƒšãƒ¼ã‚¸ã§ã¯ã€ãŠå®¢æ§˜ã‹ã‚‰å¯„ã›ã‚‰ã‚Œã‚‹<strong>' . $game_name . '</strong>ã®';
+	$faq_mes .= 'ã‚ˆãã‚ã‚‹è³ªå•ã«ãŠç­”ãˆã—ã¦ã„ã¾ã™ã€‚' . $game_name . 'ä»¥å¤–ã®FAQã‚’é–²è¦§ã™ã‚‹å ´åˆã¯<a href="' . tep_href_link('info-7.html') . '">ã‚³ãƒãƒ©</a>ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚';
+	$faq_mes .= 'è¨˜è¼‰ã®ãªã„ã”è³ªå•ã¯ã€ãŠæ‰‹æ•°ã§ã¯ã”ã–ã„ã¾ã™ãŒã‚µãƒãƒ¼ãƒˆã‚»ãƒ³ã‚¿ãƒ¼ã¸ãŠå•ã„åˆã‚ã›ãã ã•ã„ã€‚</p>' . "\n" . '<br>' . "\n";
 	
 	$faq_questions = tep_db_query("SELECT * FROM gm_faq".(int)$g_id."_questions");
 	$faqcat = tep_db_query("SELECT * FROM gm_faq".(int)$g_id."_categories ORDER BY c_order");
@@ -32,7 +32,7 @@ if($q_id == "" || $q_id == "index") {
 		
 		// SHOW CATEGORY NAME, IF IT CONTAINS QUESTIONS AND CATEGORY NAMES ARE TURNED ON
 		if(mysql_num_rows($questions) > 0) {
-			$faq_mes .= '<h3>' . $faqcat_info['category'] . '¡§' . $gc_name . '</h3><br>' . "\n";
+			$faq_mes .= '<h3>' . $faqcat_info['category'] . 'ï¼š' . $gc_name . '</h3><br>' . "\n";
 		}
 		
 		// SHOW QUESTIONS
@@ -46,41 +46,41 @@ if($q_id == "" || $q_id == "index") {
 		}
 		
 		$faq_mes .= '</ul>' . "\n";
-		$faq_mes .= '<p class="page_top"><a href="' . tep_href_link('faq' . (int)$g_id . '/#top') . '">¢¥¤³¤Î¥Ú¡¼¥¸¤Î¥È¥Ã¥×¤Ø</a></p>' . "\n";
+		$faq_mes .= '<p class="page_top"><a href="' . tep_href_link('faq' . (int)$g_id . '/#top') . '">â–²ã“ã®ãƒšãƒ¼ã‚¸ã®ãƒˆãƒƒãƒ—ã¸</a></p>' . "\n";
 	}
 
 } else {
-	// FAQÆÉ¤ß¹ş¤ß
+	// FAQèª­ã¿è¾¼ã¿
 	$question_query = tep_db_query("SELECT * FROM gm_faq".(int)$g_id."_questions WHERE q_id = '".$q_id."'");
 	$question = tep_db_fetch_array($question_query);
-	// ¥«¥Æ¥´¥êÆÉ¤ß¹ş¤ß
+	// ã‚«ãƒ†ã‚´ãƒªèª­ã¿è¾¼ã¿
 	$q_category_query = tep_db_query("SELECT category FROM gm_faq".(int)$g_id."_categories WHERE c_id = '".$question[c_id]."'");
 	$q_category = tep_db_fetch_array($q_category_query);
-	// ¥µ¥Ö¥«¥Æ¥´¥êÆÉ¤ß¹ş¤ß
+	// ã‚µãƒ–ã‚«ãƒ†ã‚´ãƒªèª­ã¿è¾¼ã¿
 	$g_sub_categories_query = tep_db_query("select c.categories_id, cd.categories_name, c.parent_id from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where c.parent_id = '" . (int)$g_id . "' and c.categories_id = cd.categories_id and cd.language_id='" . $languages_id ."' order by sort_order, cd.categories_name");
-	// ¤½¤ÎÂ¾¤Î¼ÁÌäÆÉ¤ß¹ş¤ß
+	// ãã®ä»–ã®è³ªå•èª­ã¿è¾¼ã¿
 	$other_questions_query = tep_db_query("SELECT q_id, c_id, question FROM gm_faq".(int)$g_id."_questions WHERE c_id='".$question[c_id]."' ORDER BY q_order");
-	// ¥¿¥¤¥È¥ëÁŞÆş
-	$faq_meta_d = $game_name . '¤Î¼ÁÌä¡§' . $question['question'];
-	$faq_meta_k = '¥ì¥Ã¥É¥¹¥È¡¼¥ó,REDSTONE,¥´¡¼¥ë¥É,¼ÁÌä,²óÅú,RMT,FAQ,Gold,ÈÎÇä,Çã¼è';
-	$faq_title = $game_name . '¤Î¼ÁÌä¡§' . $question['question'] . '-' . TITLE;
+	// ã‚¿ã‚¤ãƒˆãƒ«æŒ¿å…¥
+	$faq_meta_d = $game_name . 'ã®è³ªå•ï¼š' . $question['question'];
+	$faq_meta_k = 'ãƒ¬ãƒƒãƒ‰ã‚¹ãƒˆãƒ¼ãƒ³,REDSTONE,ã‚´ãƒ¼ãƒ«ãƒ‰,è³ªå•,å›ç­”,RMT,FAQ,Gold,è²©å£²,è²·å–';
+	$faq_title = $game_name . 'ã®è³ªå•ï¼š' . $question['question'] . '-' . TITLE;
 
 	if (!tep_db_num_rows($question_query)) { // not found in database
-		$faq_mes .= "<h3>¤³¤Î¥Õ¥¡¥¤¥ë¤ÏÂ¸ºß¤·¤Ş¤»¤ó</h3><p>ºï½ü¤µ¤ì¤¿¤«URL¤¬´Ö°ã¤Ã¤Æ¤ª¤ê¤Ş¤¹¡£</p>";
+		$faq_mes .= "<h3>ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã¯å­˜åœ¨ã—ã¾ã›ã‚“</h3><p>å‰Šé™¤ã•ã‚ŒãŸã‹URLãŒé–“é•ã£ã¦ãŠã‚Šã¾ã™ã€‚</p>";
 	} else {
-		$faq_mes .= '<h2 align="right">' . $gc_name . '¤Î' . $q_category['category'] . '</h2>' . "\n";
+		$faq_mes .= '<h2 align="right">' . $gc_name . 'ã®' . $q_category['category'] . '</h2>' . "\n";
 		$faq_mes .= '<h3 class="redtext"><img src="./images/q.gif" alt="" width="23" height="15">' . $question['question'] . '</h3>' . "\n";
-		$faq_mes .= '<p><img src="./images/a.gif" alt="" width="23" height="15">' . $question['answer'] . '<br><br><br><a href="' . tep_href_link('faq' . $g_id . '/') . '">' . $game_name . '¤Î¤è¤¯¤¢¤ë¼ÁÌä°ìÍ÷¤ØÌá¤ë</a></p>' . "\n";
+		$faq_mes .= '<p><img src="./images/a.gif" alt="" width="23" height="15">' . $question['answer'] . '<br><br><br><a href="' . tep_href_link('faq' . $g_id . '/') . '">' . $game_name . 'ã®ã‚ˆãã‚ã‚‹è³ªå•ä¸€è¦§ã¸æˆ»ã‚‹</a></p>' . "\n";
 
-		$faq_mes .= '<p>¤³¤Î¥Ú¡¼¥¸¤Ï';
+		$faq_mes .= '<p>ã“ã®ãƒšãƒ¼ã‚¸ã¯';
 		while($g_sub_categories = tep_db_fetch_array($g_sub_categories_query)) {
-			$faq_mes .= '¡Ö<a href="' . tep_href_link(FILENAME_DEFAULT, 'cPath=' . (int)$g_id . '_' . $g_sub_categories['categories_id']) . '"><em class="bold">' . $g_sub_categories['categories_name'] . '</em></a>¡×';
+			$faq_mes .= 'ã€Œ<a href="' . tep_href_link(FILENAME_DEFAULT, 'cPath=' . (int)$g_id . '_' . $g_sub_categories['categories_id']) . '"><em class="bold">' . $g_sub_categories['categories_name'] . '</em></a>ã€';
 		}
-		$faq_mes .= '¤Ë´Ø¤¹¤ë<strong>' . $game_name . '</strong>¤Î¤è¤¯¤¢¤ë¼ÁÌä¤È¤½¤Î²óÅú¤Ç¤¹¡£¤³¤Á¤é¤Î²óÅú¤ò¤ªÆÉ¤ß¤¤¤¿¤À¤¤¤Æ¤âÌäÂê¤¬²ò·è¤·¤Ê¤«¤Ã¤¿¾ì¹ç¤Ï¡¢
-¤ª¼ê¿ô¤Ç¤Ï¤´¤¶¤¤¤Ş¤¹¤¬¡¢¥µ¥İ¡¼¥È¥»¥ó¥¿¡¼¤Ø¤ªÌä¤¤¹ç¤ï¤»¤¯¤À¤µ¤¤¡£</p>' . "\n";
+		$faq_mes .= 'ã«é–¢ã™ã‚‹<strong>' . $game_name . '</strong>ã®ã‚ˆãã‚ã‚‹è³ªå•ã¨ãã®å›ç­”ã§ã™ã€‚ã“ã¡ã‚‰ã®å›ç­”ã‚’ãŠèª­ã¿ã„ãŸã ã„ã¦ã‚‚å•é¡ŒãŒè§£æ±ºã—ãªã‹ã£ãŸå ´åˆã¯ã€
+ãŠæ‰‹æ•°ã§ã¯ã”ã–ã„ã¾ã™ãŒã€ã‚µãƒãƒ¼ãƒˆã‚»ãƒ³ã‚¿ãƒ¼ã¸ãŠå•ã„åˆã‚ã›ãã ã•ã„ã€‚</p>' . "\n";
 
-		// ¤½¤ÎÂ¾¤Î¼ÁÌäÉ½¼¨
-		$faq_mes .= '<h3>' . $game_name . '¡§' . $q_category['category'] . '¤ÎFAQ</h3>' . "\n";
+		// ãã®ä»–ã®è³ªå•è¡¨ç¤º
+		$faq_mes .= '<h3>' . $game_name . 'ï¼š' . $q_category['category'] . 'ã®FAQ</h3>' . "\n";
 		$faq_mes .= '<ul>' . "\n";
 		
 		while($other_question = tep_db_fetch_array($other_questions_query)) {
@@ -90,5 +90,5 @@ if($q_id == "" || $q_id == "index") {
 		$faq_mes .= '</ul>' . "\n";
 	}
 }
-$faq_mes .= '<br><p class="smalltext"><span class="redtext">¢¨</span>&nbsp;¥µ¡¼¥Ó¥¹ÆâÍÆ¤ª¤è¤ÓÄó¶¡¾ò·ï¤Ï¡¢²şÁ±Åù¤Î¤¿¤áÍ½¹ğ¤Ê¤¯ÊÑ¹¹¤¹¤ë¾ì¹ç¤¬¤¢¤ê¤Ş¤¹¡£</p><br><br>' . "\n";
+$faq_mes .= '<br><p class="smalltext"><span class="redtext">â€»</span>&nbsp;ã‚µãƒ¼ãƒ“ã‚¹å†…å®¹ãŠã‚ˆã³æä¾›æ¡ä»¶ã¯ã€æ”¹å–„ç­‰ã®ãŸã‚äºˆå‘Šãªãå¤‰æ›´ã™ã‚‹å ´åˆãŒã‚ã‚Šã¾ã™ã€‚</p><br><br>' . "\n";
 ?>

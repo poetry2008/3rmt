@@ -1,9 +1,9 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://jade.hangame.co.jp/" class="blank" rel='nofollow'><span>CREST OF JADE ╕°╝░е╡еде╚</span></a></li>
-<li><a href="http://www.mmo-station.com/mmo/dark/" class="blank" rel='nofollow'><span>епеье╣е╚еке╓е╕езеде╔бб┴э╣ч╣╢╬ме╡еде╚</span></a></li>
-<li><a href="http://wikiwiki.jp/jadeonline/" class="blank" rel='nofollow'><span>епеье╣е╚еке╓е╕езеде╔ ╛Ё╩єWiki</span></a></li>
-<li><a href="http://crestcrest.blog22.fc2.com/" class="blank" rel='nofollow'><span>епеье╣е╚еке╓е╕езеде╔╣╢╬м</span></a></li>
-<li><a href="http://www.play-mmorpg.com/mmorpg/foa.html" class="blank" rel='nofollow'><span>епеье╣е╚еке╓е╕езеде╔ббеье╙ехб╝</span></a></li>
-<li><a href="http://www.internal.co.jp/support/ghostreplay3/crestofjade.phtml" class="blank" rel='nofollow'><span>епеье╣е╚еке╓е╕езеде╔ббе▐епеэ└▀─ъ</span></a></li>
+<li><a href="http://jade.hangame.co.jp/" class="blank" rel='nofollow'><span>CREST OF JADE хЕмх╝ПуВ╡уВдуГИ</span></a></li>
+<li><a href="http://www.mmo-station.com/mmo/dark/" class="blank" rel='nofollow'><span>уВпуГмуВ╣уГИуВкуГЦуВ╕уВзуВдуГЙуААч╖ПхРИцФ╗чХеуВ╡уВдуГИ</span></a></li>
+<li><a href="http://wikiwiki.jp/jadeonline/" class="blank" rel='nofollow'><span>уВпуГмуВ╣уГИуВкуГЦуВ╕уВзуВдуГЙ цГЕха▒Wiki</span></a></li>
+<li><a href="http://crestcrest.blog22.fc2.com/" class="blank" rel='nofollow'><span>уВпуГмуВ╣уГИуВкуГЦуВ╕уВзуВдуГЙцФ╗чХе</span></a></li>
+<li><a href="http://www.play-mmorpg.com/mmorpg/foa.html" class="blank" rel='nofollow'><span>уВпуГмуВ╣уГИуВкуГЦуВ╕уВзуВдуГЙуААуГмуГУуГеуГ╝</span></a></li>
+<li><a href="http://www.internal.co.jp/support/ghostreplay3/crestofjade.phtml" class="blank" rel='nofollow'><span>уВпуГмуВ╣уГИуВкуГЦуВ╕уВзуВдуГЙуААуГЮуВпуГншинхоЪ</span></a></li>
 </ul>

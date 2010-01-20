@@ -13,7 +13,7 @@
 	 
     $seo_category_query = tep_db_query("select categories_name,categories_image3,categories_meta_text, categories_id from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '".$current_category_id."' and language_id='" . $languages_id . "'");
 	$seo_category = tep_db_fetch_array($seo_category_query);
-    
+   if (!isset($HTTP_GET_VARS['manufacturers_id'])) $HTTP_GET_VARS['manufacturers_id'] = ''; 
 	$seo_manufacturers_query = tep_db_query("select manufacturers_id, manufacturers_name from " . TABLE_MANUFACTURERS . " where manufacturers_id = '".$HTTP_GET_VARS['manufacturers_id']."'");
     $seo_manufacturers = tep_db_fetch_array($seo_manufacturers_query);
    
@@ -42,13 +42,13 @@
 	$categories_path_array = explode("_", $categories_path);
 	
 	if($return == 1) {
-	  //Âç¥«¥Æ¥´¥ê¤Î²èÁü¤òÊÖ¤¹
+	  //å¤§ã‚«ãƒ†ã‚´ãƒªã®ç”»åƒã‚’è¿”ã™
 	  $categories_query = tep_db_query("select categories_name from categories_description where categories_id = '".$categories_path_array[0]."'");
 	  $categories = tep_db_fetch_array($categories_query);
 	  
 	  $creturn = $categories['categories_name'];
 	} elseif($return == 2) {
-	  //Ãæ¥«¥Æ¥´¥êÌ¾¤òÊÖ¤¹
+	  //ä¸­ã‚«ãƒ†ã‚´ãƒªåã‚’è¿”ã™
 	  $categories_query = tep_db_query("select categories_name from categories_description where categories_id = '".$categories_path_array[1]."' and language_id = '".$languages_id."'");
 	  $categories = tep_db_fetch_array($categories_query);
 	  
@@ -70,7 +70,7 @@
 	  $price = $result['products_price'];
 	}
 	
-	//¥İ¥¤¥ó¥È·×»»
+	//ãƒã‚¤ãƒ³ãƒˆè¨ˆç®—
 	$point_value = (int)($price * MODULE_ORDER_TOTAL_POINT_FEE);
 	
 	return $point_value;
@@ -90,7 +90,7 @@
   }
 
 ////
-// Çã¤¤¼è¤ê¾¦ÉÊ¤¬Â¸ºß¤¹¤ë¤«¡©
+// è²·ã„å–ã‚Šå•†å“ãŒå­˜åœ¨ã™ã‚‹ã‹ï¼Ÿ
   function ds_count_bflag() {
     global $cart;
     $products = $cart->get_products();
@@ -104,18 +104,18 @@
   }
   
 ////
-// ºß¸ËÄ´ºº  
+// åœ¨åº«èª¿æŸ»  
   function ds_replace_plist($pID, $qty, $string) {
     $query = tep_db_query("select * from products where products_id = '".(int)tep_get_prid($pID)."'");
 	$result = mysql_fetch_array($query);
 	
 	if($qty < 1) {
 	  if($result['products_bflag'] == '1') {
-	    # Çã¤¤¼è¤ê¾¦ÉÊ
-		return '<span class="markProductOutOfStock">°ì»şÄä»ß</span>';
+	    # è²·ã„å–ã‚Šå•†å“
+		return '<span class="markProductOutOfStock">ä¸€æ™‚åœæ­¢</span>';
 	  } else {
-	    # ÄÌ¾ï¾¦ÉÊ
-	    return '<span class="markProductOutOfStock">ºß¸ËÀÚ¤ì</span>';
+	    # é€šå¸¸å•†å“
+	    return '<span class="markProductOutOfStock">åœ¨åº«åˆ‡ã‚Œ</span>';
 	  }
 	} else {
 	  return $string;
@@ -123,6 +123,7 @@
   }
   
 // SESSION REGISTER
+if (!isset($HTTP_GET_VARS['ajax'])) $HTTP_GET_VARS['ajax'] = '';
 switch($HTTP_GET_VARS['ajax']){
   case 'on' :
     $ajax = 'on' ;
@@ -134,7 +135,7 @@ switch($HTTP_GET_VARS['ajax']){
 
 tep_session_register('ajax');
 
-# ÃíÊ¸¾å¸Â¶â³ÛÀßÄê
+# æ³¨æ–‡ä¸Šé™é‡‘é¡è¨­å®š
   if(substr(basename($PHP_SELF),0,9) == 'checkout_') {
     if(DS_LIMIT_PRICE < $cart->show_total()) {
       tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, 'limit_error=true'));

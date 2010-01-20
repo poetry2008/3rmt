@@ -58,6 +58,7 @@
       }
 
       if ($set == 'true') {
+if (!isset($HTTP_SERVER_VARS['HTTPS'])) $HTTP_SERVER_VARS['HTTPS']= NULL;
         $this->path[] = array('page' => basename($PHP_SELF),
                               'mode' => (($HTTP_SERVER_VARS['HTTPS'] == 'on') ? 'SSL' : 'NONSSL'),
                               'get' => $HTTP_GET_VARS,

@@ -51,7 +51,7 @@
       //echo '    <td align="center" height="25"  style=" background:#dbfdff">' . tep_draw_checkbox_field('cart_delete[]', $products[$i]['id']) . '</td>' . "\n";
     }
 
-    $_product_info_query = tep_db_query("select p.products_id, pd.products_name, pd.products_attention_1,pd.products_attention_2,pd.products_attention_3,pd.products_attention_4,pd.products_attention_5,pd.products_description_".ABBR_SITENAME.", p.products_model, p.products_quantity, p.products_image,p.products_image2,p.products_image3, pd.products_url, p.products_price, p.products_tax_class_id, p.products_date_added, p.products_date_available, p.manufacturers_id, p.products_bflag, p.products_cflag, p.products_small_sum from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" . $products[$i]['id'] . "' and pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "'");
+    $_product_info_query = tep_db_query("select p.products_id, pd.products_name, pd.products_attention_1,pd.products_attention_2,pd.products_attention_3,pd.products_attention_4,pd.products_attention_5,pd.products_description, p.products_model, p.products_quantity, p.products_image,p.products_image2,p.products_image3, pd.products_url, p.products_price, p.products_tax_class_id, p.products_date_added, p.products_date_available, p.manufacturers_id, p.products_bflag, p.products_cflag, p.products_small_sum from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" . $products[$i]['id'] . "' and pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "'");
     tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_viewed = products_viewed+1 where products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and language_id = '" . $languages_id . "'");
     $product_info = tep_db_fetch_array($_product_info_query);
     $data1 = explode("//", $product_info['products_attention_1']);
@@ -83,13 +83,13 @@
       </a> 
       <?php
       echo '</td>';
-	  echo '<td><font style="font-size:10px">¸Ä</font></td>';
+	  echo '<td><font style="font-size:10px">å€‹</font></td>';
       echo '</tr>'; 
       echo '</table>'; 
       echo (!empty($data1[0]) && strlen($data1[1])<=50 && tep_get_full_count_in_order($products[$i]['quantity'], $data1[1]) ? '<span style="font-size:10px">'. tep_get_full_count_in_order($products[$i]['quantity'], $data1[1]) .'</span>': '') . '</td>' . "\n";
     } else {
       //echo '    <td align="center" class ="main" style=" background:#dbfdff">' . $products[$i]['quantity'] . (!empty($data1[0]) && strlen($data1[1])<=30 ? '<span style="font-size:10px">x'. $data1[1] .'</span>' : '') . '</td>' . "\n";
-      echo '    <td align="center" class ="main" style=" background:#dbfdff;padding-left:10px;padding-right:20px;">' . $products[$i]['quantity'] . '¸Ä' . (!empty($data1[0]) && strlen($data1[1])<=50 && tep_get_full_count_in_order($products[$i]['quantity'], $data1[1]) ? '<span style="font-size:10px">'. $data1[1] .'</span>' : '') . '</td>' . "\n";
+      echo '    <td align="center" class ="main" style=" background:#dbfdff;padding-left:10px;padding-right:20px;">' . $products[$i]['quantity'] . 'å€‹' . (!empty($data1[0]) && strlen($data1[1])<=50 && tep_get_full_count_in_order($products[$i]['quantity'], $data1[1]) ? '<span style="font-size:10px">'. $data1[1] .'</span>' : '') . '</td>' . "\n";
     }
     //add products image 
     echo '<td align="center" class="main" style=" background:#dbfdff;padding-left:10px;padding-right:20px;">';

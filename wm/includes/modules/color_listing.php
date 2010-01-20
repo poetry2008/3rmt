@@ -40,10 +40,7 @@
 	   //$color_link = '&color_id='.$HTTP_GET_VARS['colors'];
 	   $color_link = '';
 	   
-	   // edit 2009.5.14 maker
-	   //$description_array = explode("|-#-|", $listing['products_description_'.ABBR_SITENAME]);
-	   //$description = strip_tags(mb_substr ($description_array[0],0,60));
-	   $description = strip_tags(mb_substr ($listing['products_description_'.ABBR_SITENAME],0,60));
+	   $description = strip_tags(mb_substr ($listing['products_description'],0,60));
 
        $row++;
 	   $col++;
@@ -58,7 +55,7 @@
 				  <span class="smallText">'.$description.'...</span></p></td> 
 			</tr> 
 			<tr> 
-			  <td colspan="2" style="padding-top:5px; " align="right"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $listing['products_id'] . $color_link) . '"><img src="images/design/button/button_description.jpg" border="0" alt="¾ÜºÙ¤Ï¤³¤Á¤é" title=" ¾ÜºÙ¤Ï¤³¤Á¤é "></a></td> 
+			  <td colspan="2" style="padding-top:5px; " align="right"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $listing['products_id'] . $color_link) . '"><img src="images/design/button/button_description.jpg" border="0" alt="è©³ç´°ã¯ã“ã¡ã‚‰" title=" è©³ç´°ã¯ã“ã¡ã‚‰ "></a></td> 
 			</tr> 
 		  </table> 
 		  <br> 

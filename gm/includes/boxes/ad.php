@@ -1,9 +1,9 @@
 <!-- bestlinks //-->
 <script src="js/blank.js" type="text/javascript"></script>
 <div class="boxText ad">
-	<img src="images/design/box/bestlinks.gif" alt="¸ø¼° ¹¶Î¬ Áê¾ì Wiki¤Ê¤É¥ê¥ó¥¯½¸" width="171" height="42">
+	<img src="images/design/box/bestlinks.gif" alt="å…¬å¼ æ”»ç•¥ ç›¸å ´ Wikiãªã©ãƒªãƒ³ã‚¯é›†" width="171" height="42">
 <?php
-	//echo tep_image(DIR_WS_IMAGES.'design/box/bestlinks.gif','¸ø¼° ¹¶Î¬ Áê¾ì Wiki¤Ê¤É¥ê¥ó¥¯½¸',171,42) . "\n";
+	//echo tep_image(DIR_WS_IMAGES.'design/box/bestlinks.gif','å…¬å¼ æ”»ç•¥ ç›¸å ´ Wikiãªã©ãƒªãƒ³ã‚¯é›†',171,42) . "\n";
 	if (isset($current_category_id) && ($current_category_id > 0)) {
 		$g_id = $current_category_id;
 		//if ($g_id == "168" || $g_id == "169" || $g_id == "170" || $g_id == "171" || $g_id == "177" || $g_id == "178" || $g_id == "179" || $g_id == "190" || $g_id == "195" || $g_id == "200" || $g_id == "203" || $g_id == "206" || $g_id == "209" || $g_id == "212") {

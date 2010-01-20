@@ -2,13 +2,13 @@
 //<meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
 ?>
 <ul class="r_c_links_ul">
-<li><a href="http://members3.jcom.home.ne.jp/tw-plus/" rel='nofollow' class="blank">е╞едеые║ежегб╝е╨б╝╣╢╬м</a></li>
-<li><a href="http://jbbs.livedoor.jp/game/34281/" rel='nofollow' class="blank">TW ╣╢╬м╖╟╝и╚─</a></li>
-<li><a href="http://talewiki.com/" rel='nofollow' class="blank">е╞едеые║ежегб╝е╨б╝ Wiki</a></li>
-<li><a href="http://www.hotgame.co.jp/" rel='nofollow' class="blank">екеєещедеєе▓б╝ер╛Ё╩є</a></li>
-<li><a href="http://www.kurumi.sakura.ne.jp/~kumicyou/tales/index.html" rel='nofollow' class="blank">е╞едеые║ежегб╝е╨б╝д╬е╟б╝е┐</a></li>
-<li><a href="http://letstw.cafe.coocan.jp/" rel='nofollow' class="blank">е╞едеые║ежегб╝е╨б╝╛Ё╩є</a></li>
-<li><a href="http://www.mmonavi.com/modules/game/249.html" rel='nofollow' class="blank">е╞едеые║ежегб╝е╨б╝д╦д─ддд╞</a></li>
-<li><a href="http://www.i-east.net/tales/" rel='nofollow' class="blank">е╞едеые║ежегб╝е╨б╝░щ└о</a></li>
-<li><a href="http://tws.s56.xrea.com/" rel='nofollow' class="blank">Tales Weaver е╖ехе▀еьб╝е┐б╝</a></li>
+<li><a href="http://members3.jcom.home.ne.jp/tw-plus/" rel='nofollow' class="blank">уГЖуВдуГлуВ║уВжуВгуГ╝уГРуГ╝цФ╗чХе</a></li>
+<li><a href="http://jbbs.livedoor.jp/game/34281/" rel='nofollow' class="blank">TW цФ╗чХецО▓чд║цЭ┐</a></li>
+<li><a href="http://talewiki.com/" rel='nofollow' class="blank">уГЖуВдуГлуВ║уВжуВгуГ╝уГРуГ╝ Wiki</a></li>
+<li><a href="http://www.hotgame.co.jp/" rel='nofollow' class="blank">уВкуГ│уГйуВдуГ│уВ▓уГ╝уГацГЕха▒</a></li>
+<li><a href="http://www.kurumi.sakura.ne.jp/~kumicyou/tales/index.html" rel='nofollow' class="blank">уГЖуВдуГлуВ║уВжуВгуГ╝уГРуГ╝уБоуГЗуГ╝уВ┐</a></li>
+<li><a href="http://letstw.cafe.coocan.jp/" rel='nofollow' class="blank">уГЖуВдуГлуВ║уВжуВгуГ╝уГРуГ╝цГЕха▒</a></li>
+<li><a href="http://www.mmonavi.com/modules/game/249.html" rel='nofollow' class="blank">уГЖуВдуГлуВ║уВжуВгуГ╝уГРуГ╝уБлуБдуБДуБж</a></li>
+<li><a href="http://www.i-east.net/tales/" rel='nofollow' class="blank">уГЖуВдуГлуВ║уВжуВгуГ╝уГРуГ╝шВ▓цИР</a></li>
+<li><a href="http://tws.s56.xrea.com/" rel='nofollow' class="blank">Tales Weaver уВ╖уГеуГЯуГмуГ╝уВ┐уГ╝</a></li>
 </ul>

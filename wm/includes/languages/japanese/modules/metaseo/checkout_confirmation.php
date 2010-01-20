@@ -1,9 +1,9 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
-  define('MODULE_METASEO_CHECKOUT_CONFIRMATION_TEXT_TITLE', 'ºÇ½ª³ÎÇ§');
+  define('MODULE_METASEO_CHECKOUT_CONFIRMATION_TEXT_TITLE', 'æœ€çµ‚ç¢ºèª');
   define('MODULE_METASEO_CHECKOUT_CONFIRMATION_TEXT_EXPLAIN', 'EXPLAIN');
-  define('MODULE_METASEO_CHECKOUT_CONFIRMATION_TEXT_DESCRIPTION', 'ºÇ½ª³ÎÇ§¥Ú¡¼¥¸¤ÎSEO');
+  define('MODULE_METASEO_CHECKOUT_CONFIRMATION_TEXT_DESCRIPTION', 'æœ€çµ‚ç¢ºèªãƒšãƒ¼ã‚¸ã®SEO');
 ?>

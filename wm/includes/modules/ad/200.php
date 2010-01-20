@@ -1,12 +1,12 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://www.cabal.jp/index.aspx" class="blank" rel='nofollow'><span>еле╨еыекеєещедеє ╕°╝░е╡еде╚</span></a></li>
-<li><a href="http://cabalonline.seesaa.net/" class="blank" rel='nofollow'><span>еле╨еыекеєещедеє ╣╢╬ме╟б╝е┐е┘б╝е╣</span></a></li>
-<li><a href="http://www.mmo-station.com/mmo/cabal/" class="blank" rel='nofollow'><span>CABAL[еле╨еы]┴э╣ч╛Ё╩єбж╣╢╬ме╡еде╚</span></a></li>
-<li><a href="http://cabalfan.wikiwiki.jp/" class="blank" rel='nofollow'><span>еле╨еыекеєещедеє ╛Ё╩єWiki</span></a></li>
+<li><a href="http://www.cabal.jp/index.aspx" class="blank" rel='nofollow'><span>уВлуГРуГлуВкуГ│уГйуВдуГ│ хЕмх╝ПуВ╡уВдуГИ</span></a></li>
+<li><a href="http://cabalonline.seesaa.net/" class="blank" rel='nofollow'><span>уВлуГРуГлуВкуГ│уГйуВдуГ│ цФ╗чХеуГЗуГ╝уВ┐уГЩуГ╝уВ╣</span></a></li>
+<li><a href="http://www.mmo-station.com/mmo/cabal/" class="blank" rel='nofollow'><span>CABAL[уВлуГРуГл]ч╖ПхРИцГЕха▒уГ╗цФ╗чХеуВ╡уВдуГИ</span></a></li>
+<li><a href="http://cabalfan.wikiwiki.jp/" class="blank" rel='nofollow'><span>уВлуГРуГлуВкуГ│уГйуВдуГ│ цГЕха▒Wiki</span></a></li>
 <li><a href="http://wikiwiki.jp/cabal/" class="blank" rel='nofollow'><span>CABAL WIKI</span></a></li>
 <li><a href="http://www11.atwiki.jp/cabal/" class="blank" rel='nofollow'><span>cabal @Wiki</span></a></li>
-<li><a href="http://abyssinian.web.fc2.com/cabal/status.html" class="blank" rel='nofollow'><span>CABAL ONLINE е╣е╞б╝е┐е╣е╖е▀ехеьб╝е┐</span></a></li>
-<li><a href="http://www.mmonavi.com/modules/game/237.html" class="blank"><span>Cabal Online е▓б╝ер╛Ё╩є</span></a></li>
-<li><a href="http://www.hotgame.co.jp/" class="blank"><span>еле╨еы еоеые╔└ь═╤╖╟╝и╚─</span></a></li>
+<li><a href="http://abyssinian.web.fc2.com/cabal/status.html" class="blank" rel='nofollow'><span>CABAL ONLINE уВ╣уГЖуГ╝уВ┐уВ╣уВ╖уГЯуГеуГмуГ╝уВ┐</span></a></li>
+<li><a href="http://www.mmonavi.com/modules/game/237.html" class="blank"><span>Cabal Online уВ▓уГ╝уГацГЕха▒</span></a></li>
+<li><a href="http://www.hotgame.co.jp/" class="blank"><span>уВлуГРуГл уВоуГлуГЙх░ВчФицО▓чд║цЭ┐</span></a></li>
 </ul>

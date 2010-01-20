@@ -1,9 +1,9 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://perfect-w.jp/" class="blank" rel='nofollow'><span>е╤б╝е╒езепе╚еяб╝еые╔ ╕°╝░е╡еде╚</span></a></li>
-<li><a href="http://kanbisekai.wikiwiki.jp/" class="blank" rel='nofollow'><span>Perfectworld-┤░╚■└д│ж- Wiki</span></a></li>
-<li><a href="http://www.mmo-station.com/mmo/perfectworld/" class="blank" rel='nofollow'><span>┤░╚■└д│ж ┴э╣ч╛Ё╩єбж╣╢╬ме╡еде╚</span></a></li>
-<li><a href="http://wikiwiki.jp/pwf/" class="blank" rel='nofollow'><span>е╤б╝е╒езепе╚еяб╝еые╔ е╒ебе├е╖ечеє└ў┐зWIKI</span></a></li>
-<li><a href="http://www.mmonavi.com/modules/game/74.html" class="blank"><span>е╤б╝е╒езепе╚еяб╝еые╔ еье╙ехб╝</span></a></li>
-<li><a href="http://www.hotgame.co.jp/" class="blank"><span>┤░╚■ е│е▀ехе╦е╞егб╝</span></a></li>
+<li><a href="http://perfect-w.jp/" class="blank" rel='nofollow'><span>уГСуГ╝уГХуВзуВпуГИуГпуГ╝уГлуГЙ хЕмх╝ПуВ╡уВдуГИ</span></a></li>
+<li><a href="http://kanbisekai.wikiwiki.jp/" class="blank" rel='nofollow'><span>Perfectworld-хоМч╛Оф╕ЦчХМ- Wiki</span></a></li>
+<li><a href="http://www.mmo-station.com/mmo/perfectworld/" class="blank" rel='nofollow'><span>хоМч╛Оф╕ЦчХМ ч╖ПхРИцГЕха▒уГ╗цФ╗чХеуВ╡уВдуГИ</span></a></li>
+<li><a href="http://wikiwiki.jp/pwf/" class="blank" rel='nofollow'><span>уГСуГ╝уГХуВзуВпуГИуГпуГ╝уГлуГЙ уГХуВбуГГуВ╖уГзуГ│цЯУшЙ▓WIKI</span></a></li>
+<li><a href="http://www.mmonavi.com/modules/game/74.html" class="blank"><span>уГСуГ╝уГХуВзуВпуГИуГпуГ╝уГлуГЙ уГмуГУуГеуГ╝</span></a></li>
+<li><a href="http://www.hotgame.co.jp/" class="blank"><span>хоМч╛О уВ│уГЯуГеуГЛуГЖуВгуГ╝</span></a></li>
 </ul>

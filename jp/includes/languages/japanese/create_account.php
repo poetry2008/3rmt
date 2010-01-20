@@ -10,7 +10,7 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE', 'евележеєе╚д╬║ю└о');
-define('HEADING_TITLE', 'дк╡╥══╛Ё╩є');
-define('TEXT_ORIGIN_LOGIN', '<font color="#FF0000"><small><b>д┤├э░╒:</b></font></small> ░╩┴░д╦евележеєе╚дЄ║ю└од╡дьд╞ддды╩¤д╧бв<a href="%s"><u>еэе░едеєе┌б╝е╕</u></a>длдщеэе░едеєд╖д╞дпд└д╡ддбг');
+define('NAVBAR_TITLE', 'уВвуВлуВжуГ│уГИуБоф╜ЬцИР');
+define('HEADING_TITLE', 'уБКховцзШцГЕха▒');
+define('TEXT_ORIGIN_LOGIN', '<font color="#FF0000"><small><b>уБФц│ицДП:</b></font></small> ф╗ехЙНуБлуВвуВлуВжуГ│уГИуВТф╜ЬцИРуБХуВМуБжуБДуВЛцЦ╣уБпуАБ<a href="%s"><u>уГнуВ░уВдуГ│уГЪуГ╝уВ╕</u></a>уБЛуВЙуГнуВ░уВдуГ│уБЧуБжуБПуБауБХуБДуАВ');
 ?>

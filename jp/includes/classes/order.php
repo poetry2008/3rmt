@@ -156,6 +156,11 @@
       $tax_address_query = tep_db_query("select ab.entry_country_id, ab.entry_zone_id from " . TABLE_ADDRESS_BOOK . " ab left join " . TABLE_ZONES . " z on (ab.entry_zone_id = z.zone_id) where ab.customers_id = '" . $customer_id . "' and ab.address_book_id = '" . ($this->content_type == 'virtual' ? $billto : $sendto) . "'");
       $tax_address = tep_db_fetch_array($tax_address_query);
 
+      if (!isset($GLOBALS['cc_type'])) $GLOBALS['cc_type']=NULL;
+      if (!isset($GLOBALS['cc_owner'])) $GLOBALS['cc_owner']=NULL;
+      if (!isset($GLOBALS['cc_number'])) $GLOBALS['cc_number']=NULL;
+      if (!isset($GLOBALS['cc_expires'])) $GLOBALS['cc_expires']=NULL;
+      if (!isset($GLOBALS['comments'])) $GLOBALS['comments']=NULL;
       $this->info = array('order_status' => DEFAULT_ORDERS_STATUS_ID,
                           'currency' => $currency,
                           'currency_value' => $currencies->currencies[$currency]['value'],
@@ -264,10 +269,13 @@
         }
 
         $shown_price = tep_add_tax($this->products[$index]['final_price'], $this->products[$index]['tax']) * $this->products[$index]['qty'];
+      if (!isset($this->info['subtotal'])) $this->info['subtotal']=NULL;
         $this->info['subtotal'] += $shown_price;
 
         $products_tax = $this->products[$index]['tax'];
         $products_tax_description = $this->products[$index]['tax_description'];
+      if (!isset($this->info['tax'])) $this->info['tax']=NULL;
+      if (!isset($this->info['tax_groups']["$products_tax_description"])) $this->info['tax_groups']["$products_tax_description"]=NULL;
         if (DISPLAY_PRICE_WITH_TAX == 'true') {
           $this->info['tax'] += $shown_price - ($shown_price / (($products_tax < 10) ? "1.0" . str_replace('.', '', $products_tax) : "1." . str_replace('.', '', $products_tax)));
           $this->info['tax_groups']["$products_tax_description"] += $shown_price - ($shown_price / (($products_tax < 10) ? "1.0" . str_replace('.', '', $products_tax) : "1." . str_replace('.', '', $products_tax)));
@@ -282,7 +290,7 @@
       if (DISPLAY_PRICE_WITH_TAX == 'true') {
         $this->info['total'] = $this->info['subtotal'] + $this->info['shipping_cost'];
       } else {
-        // ÀÇ³Û¤ÎÃ¼¿ô½èÍý(ÀÇ¼ïÊÌ¤´¤È)
+        // ç¨Žé¡ã®ç«¯æ•°å‡¦ç†(ç¨Žç¨®åˆ¥ã”ã¨)
         $total_tax = 0;
         reset($this->info['tax_groups']);
         while (list($key, $value) = each($this->info['tax_groups'])) {
@@ -292,7 +300,7 @@
             $total_tax += $value;
           }
         }
-        // ÀÇ³Û¤ÎÃ¼¿ô½èÍý(ÀÇ¶â¤ÎÁí³Û)
+        // ç¨Žé¡ã®ç«¯æ•°å‡¦ç†(ç¨Žé‡‘ã®ç·é¡)
         $this->info['tax'] = $total_tax;
 
         $this->info['total'] = $this->info['subtotal'] + $this->info['tax'] + $this->info['shipping_cost'];

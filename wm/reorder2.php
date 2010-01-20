@@ -4,10 +4,10 @@
 require('includes/application_top.php');
 //require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_MANUFAXTURERS);
 
-define('HEADING_TITLE', 'ºÆÇÛÃ£°ÍÍê');
+define('HEADING_TITLE', 'å†é…é”ä¾é ¼');
 define('MINUTES', 30);
 
-$breadcrumb->add('ºÆÇÛÃ£¥Õ¥©¡¼¥à', tep_href_link('reorder2.php'));
+$breadcrumb->add('å†é…é”ãƒ•ã‚©ãƒ¼ãƒ ', tep_href_link('reorder2.php'));
 ?>
 <?php page_head();?>
 <script type="text/javascript" src='./js/order.js'></script>
@@ -41,49 +41,49 @@ $breadcrumb->add('ºÆÇÛÃ£¥Õ¥©¡¼¥à', tep_href_link('reorder2.php'));
 					$time     = strtotime($datetime);
 					if ($date && $hour && $minute && ($time < (time() - MINUTES * 60) or $time > (time() + (7*86400)))) {
 						// time error
-						echo '<div class="comment">¼è°ú»ş´Ö¤ÏÁ°¤â¤Ã¤Æ°ì»ş´Ö°Ê¾å¤ËÀßÄê¤·¤Æ¤¯¤À¤µ¤¤ <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="70" height="25" alt=""></a></div></div>';
+						echo '<div class="comment">å–å¼•æ™‚é–“ã¯å‰ã‚‚ã£ã¦ä¸€æ™‚é–“ä»¥ä¸Šã«è¨­å®šã—ã¦ãã ã•ã„ <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="70" height="25" alt=""></a></div></div>';
 					} else {
-						echo '<div class="comment">ÃíÊ¸ÆâÍÆ¤ÎÊÑ¹¹¤ò¾µ¤ê¤Ş¤·¤¿¡£ÅÅ»Ò¥á¡¼¥ë¤ò¤´³ÎÇ§¤¯¤À¤µ¤¤¡£ <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" width="70" height="25" alt="TOP¤ËÌá¤ë" title="TOP¤ËÌá¤ë"></a></div></div>';
+						echo '<div class="comment">æ³¨æ–‡å†…å®¹ã®å¤‰æ›´ã‚’æ‰¿ã‚Šã¾ã—ãŸã€‚é›»å­ãƒ¡ãƒ¼ãƒ«ã‚’ã”ç¢ºèªãã ã•ã„ã€‚ <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" width="70" height="25" alt="TOPã«æˆ»ã‚‹" title="TOPã«æˆ»ã‚‹"></a></div></div>';
 						// sent mail to customer
 						//$mail    = tep_db_fetch_array(tep_db_query("select * from iimy_orders_mail where orders_status_id=16"));
 						//$mail_title   = $mail['orders_status_title'];
 						//$mail_content = $mail['orders_status_mail'];
 
 						$email_order = '';
-						$email_order .= $name . "ÍÍ\n";
+						$email_order .= $name . "æ§˜\n";
 						$email_order .= "\n";
-						$email_order .= "¤³¤ÎÅÙ¤Ï¡¢¤´Ï¢Íí¤¤¤¿¤À¤­À¿¤Ë¤¢¤ê¤¬¤È¤¦¤´¤¶¤¤¤Ş¤¹¡£\n";
-						$email_order .= "¤ªµÒÍÍ¤«¤é¡¢²¼µ­¤ÎÃíÊ¸ÆâÍÆ¤Ë¤ÆºÆÇÛÃ£¤ò¾µ¤ê¤Ş¤·¤¿¡£\n";
+						$email_order .= "ã“ã®åº¦ã¯ã€ã”é€£çµ¡ã„ãŸã ãèª ã«ã‚ã‚ŠãŒã¨ã†ã”ã–ã„ã¾ã™ã€‚\n";
+						$email_order .= "ãŠå®¢æ§˜ã‹ã‚‰ã€ä¸‹è¨˜ã®æ³¨æ–‡å†…å®¹ã«ã¦å†é…é”ã‚’æ‰¿ã‚Šã¾ã—ãŸã€‚\n";
 						$email_order .= "\n";
 						$email_order .= "=====================================\n";
 						$email_order .= "\n";
-						$email_order .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
-						$email_order .= '¢§¤ªÌ¾Á° : ' . $name . "\n";
-						$email_order .= '¢§¥á¡¼¥ë¥¢¥É¥ì¥¹ : ' . $email . "\n";
-						$email_order .= '¢§¥²¡¼¥à¥¿¥¤¥È¥ë : ' . $product . "\n";
-						$email_order .= '¢§¥­¥ã¥é¥¯¥¿¡¼Ì¾ : ' . $character . "\n";
-						$email_order .= '¢§ÊÑ¹¹´õË¾¤ÎÆü»ş : ' . $datetime . "\n";
-						$email_order .= "¢§È÷¹Í : \n";
+						$email_order .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
+						$email_order .= 'â–¼ãŠåå‰ : ' . $name . "\n";
+						$email_order .= 'â–¼ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ : ' . $email . "\n";
+						$email_order .= 'â–¼ã‚²ãƒ¼ãƒ ã‚¿ã‚¤ãƒˆãƒ« : ' . $product . "\n";
+						$email_order .= 'â–¼ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼å : ' . $character . "\n";
+						$email_order .= 'â–¼å¤‰æ›´å¸Œæœ›ã®æ—¥æ™‚ : ' . $datetime . "\n";
+						$email_order .= "â–¼å‚™è€ƒ : \n";
 						$email_order .= $comment . "\n";
-						$email_order .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
+						$email_order .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
 						$email_order .= "\n";
 						$email_order .= "=====================================\n\n\n\n";
 						
-						$email_order .= "¤´ÉÔÌÀ¤ÊÅÀ¤¬¤´¤¶¤¤¤Ş¤·¤¿¤é¡¢ÃíÊ¸ÈÖ¹æ¤ò¤´³ÎÇ§¤Î¾å¡¢\n";
-						$email_order .= "¤ªÌä¤¤¹ç¤ï¤»¤¯¤À¤µ¤¤¡£\n\n";
+						$email_order .= "ã”ä¸æ˜ãªç‚¹ãŒã”ã–ã„ã¾ã—ãŸã‚‰ã€æ³¨æ–‡ç•ªå·ã‚’ã”ç¢ºèªã®ä¸Šã€\n";
+						$email_order .= "ãŠå•ã„åˆã‚ã›ãã ã•ã„ã€‚\n\n";
 
-						$email_order .= "[¤´Ï¢Íí¡¦¤ªÌä¤¤¹ç¤ï¤»Àè]¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬\n";
-						$email_order .= "³ô¼°²ñ¼Ò iimy\n";
+						$email_order .= "[ã”é€£çµ¡ãƒ»ãŠå•ã„åˆã‚ã›å…ˆ]â”â”â”â”â”â”â”â”â”â”â”â”\n";
+						$email_order .= "æ ªå¼ä¼šç¤¾ iimy\n";
 						$email_order .= SUPPORT_EMAIL_ADDRESS . "\n";
 						$email_order .= HTTP_SERVER . "\n";
-						//$email_order .= "¢©761-0445 ¹áÀî¸©¹â¾¾»ÔÀ¾¿¢ÅÄÄ®2925ÈÖÃÏ\n";
-						//$email_order .= "ÅÅÏÃÈÖ¹æ¡§ 087-862-1173\n";
-						$email_order .= "¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬\n";
+						//$email_order .= "ã€’761-0445 é¦™å·çœŒé«˜æ¾å¸‚è¥¿æ¤ç”°ç”º2925ç•ªåœ°\n";
+						//$email_order .= "é›»è©±ç•ªå·ï¼š 087-862-1173\n";
+						$email_order .= "â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”\n";
 						
 						//echo nl2br($email_order);
 						
 						//$email_title = str_replace(array(), array(), $email_title);
-						$mail_title = "ºÆÇÛÃ£³ÎÇ§¥á¡¼¥ë¡Ú" . STORE_NAME . "¡Û";
+						$mail_title = "å†é…é”ç¢ºèªãƒ¡ãƒ¼ãƒ«ã€" . STORE_NAME . "ã€‘";
 						//$email_order = str_replace(array('${NAME}', '${TIME}', '${CONTENT}'), array($name, date('Y-m-d H:i:s'), $email_order), $mail_content);
 						
 						tep_mail($name, $email, $mail_title, nl2br($email_order), STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
@@ -95,26 +95,26 @@ $breadcrumb->add('ºÆÇÛÃ£¥Õ¥©¡¼¥à', tep_href_link('reorder2.php'));
 				 }else{?>
 <div class="comment">
 <form action="reorder2.php" method="post" name="order">
-<input type="hidden" name="dummy" value="¤¢¤¤¤¦¤¨¤ªÈıÉı">
+<input type="hidden" name="dummy" value="ã‚ã„ã†ãˆãŠçœ‰å¹…">
 <table class="information_table">
  <tr>
-  <td bgcolor="#eeeeee" width='120'>¤ªÌ¾Á°</td>
+  <td bgcolor="#eeeeee" width='120'>ãŠåå‰</td>
   <td><input type='text'  name='name' value='' id='new_name' class="input_text" ><span id='name_error'></span></td>
  </tr>
  <tr>
-  <td bgcolor="#eeeeee">¥á¡¼¥ë¥¢¥É¥ì¥¹</td>
+  <td bgcolor="#eeeeee">ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹</td>
   <td><input type='text'  name='email' value='' id='new_email' class="input_text" ><span id='email_error'></span></td>
  </tr>
  <tr>
-  <td bgcolor="#eeeeee">¥²¡¼¥à¥¿¥¤¥È¥ë</td>
+  <td bgcolor="#eeeeee">ã‚²ãƒ¼ãƒ ã‚¿ã‚¤ãƒˆãƒ«</td>
   <td><input type='text'  name='product' value='' id='new_product' class="input_text" ><span id='product_error'></span></td>
  </tr>
  <tr>
-  <td bgcolor="#eeeeee">¥­¥ã¥é¥¯¥¿¡¼Ì¾</td>
+  <td bgcolor="#eeeeee">ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼å</td>
   <td><input type='text'  name='character' value='' id='new_character' class="input_text" ><span id='character_error'></span></td>
  </tr>
  <tr>
-  <td bgcolor="#eeeeee">¼è°úÆü»ş</td>
+  <td bgcolor="#eeeeee">å–å¼•æ—¥æ™‚</td>
   <td>
    <select name='date' id='new_date' onChange="selectDate('<?php echo date('H');?>', '<?php echo date('i');?>')">
     <option value=''>--</option>
@@ -130,18 +130,18 @@ $breadcrumb->add('ºÆÇÛÃ£¥Õ¥©¡¼¥à', tep_href_link('reorder2.php'));
    </select>
    <span id='date_error'></span>
    <br >
-   <font color="red">¤´´õË¾¤Î¤ª»ş´Ö¤ËÅº¤¨¤Ê¤¤¾ì¹ç¤Ï¡¢ÊÀ¼Ò¤è¤ê¡Ö¼è°ú»ş´Ö¡×¤ò¤´Ï¢Íí¤µ¤»¤Æ¤¤¤¿¤À¤­¤Ş¤¹¡£</font>
+   <font color="red">ã”å¸Œæœ›ã®ãŠæ™‚é–“ã«æ·»ãˆãªã„å ´åˆã¯ã€å¼Šç¤¾ã‚ˆã‚Šã€Œå–å¼•æ™‚é–“ã€ã‚’ã”é€£çµ¡ã•ã›ã¦ã„ãŸã ãã¾ã™ã€‚</font>
   </td>
  </tr>
 <tr>
-<td bgcolor="#eeeeee">È÷¹Í</td>
+<td bgcolor="#eeeeee">å‚™è€ƒ</td>
 <td><textarea name='comment' id='comment' cols="3" rows="3"></textarea></td>
 </tr>
 </table>
 <br>
 <p align="center">
-	<input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="³ÎÄê¤¹¤ë" title="³ÎÄê¤¹¤ë" onClick='return check()' >
-	<input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="¥¯¥ê¥¢" title="¥¯¥ê¥¢" onClick='javascript:document.order.reset();return false;' >
+	<input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="ç¢ºå®šã™ã‚‹" title="ç¢ºå®šã™ã‚‹" onClick='return check()' >
+	<input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="ã‚¯ãƒªã‚¢" title="ã‚¯ãƒªã‚¢" onClick='javascript:document.order.reset();return false;' >
 </p>
 </form>
 <?php }?></div>
@@ -157,32 +157,32 @@ function check(){
 	document.getElementById('character_error').innerHTML = '';
 	
 	if((document.getElementById('new_date').selectedIndex != 0 || document.getElementById('new_hour').selectedIndex != 0 || document.getElementById('new_minute').selectedIndex != 0) && !(document.getElementById('new_date').selectedIndex != 0 && document.getElementById('new_hour').selectedIndex != 0 && document.getElementById('new_minute').selectedIndex != 0)){
-		document.getElementById('date_error').innerHTML = "<br><font color='red'>¡Ú¼è°úÆü»ş¡Û¤òÁªÂò¤·¤Æ¤¯¤À¤µ¤¤¡£<"+"/font>";
+		document.getElementById('date_error').innerHTML = "<br><font color='red'>ã€å–å¼•æ—¥æ™‚ã€‘ã‚’é¸æŠã—ã¦ãã ã•ã„ã€‚<"+"/font>";
 		commit = false;
 	}
 	if(document.getElementById('new_date').selectedIndex == 0 && document.getElementById('new_hour').selectedIndex == 0 && document.getElementById('new_minute').selectedIndex == 0){
-		document.getElementById('date_error').innerHTML = "<font color='red'>É¬¿Ü¹àÌÜ<"+"/font>";
+		document.getElementById('date_error').innerHTML = "<font color='red'>å¿…é ˆé …ç›®<"+"/font>";
 		commit = false;
 	}
 	if(document.getElementById('new_name').value == ''){
-		document.getElementById('name_error').innerHTML = "<font color='red'>É¬¿Ü¹àÌÜ<"+"/font>";
+		document.getElementById('name_error').innerHTML = "<font color='red'>å¿…é ˆé …ç›®<"+"/font>";
 		commit = false;
 	}
 	if(document.getElementById('new_email').value == ''){
-		document.getElementById('email_error').innerHTML = "<font color='red'>É¬¿Ü¹àÌÜ<"+"/font>";
+		document.getElementById('email_error').innerHTML = "<font color='red'>å¿…é ˆé …ç›®<"+"/font>";
 		commit = false;
 	}else{
 		if(!/(\S)+[@]{1}(\S)+[.]{1}(\w)+/.test(document.getElementById('new_email').value)){
-			document.getElementById('email_error').innerHTML = "<br><font color='red'>¥á¡¼¥ë¥¢¥É¥ì¥¹¤òÀµ¤·¤¯¤´ÆşÎÏ¤¯¤À¤µ¤¤<"+"/font>";
+			document.getElementById('email_error').innerHTML = "<br><font color='red'>ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’æ­£ã—ãã”å…¥åŠ›ãã ã•ã„<"+"/font>";
 			commit = false;
 		}
 	}
 	if(document.getElementById('new_product').value == ''){
-		document.getElementById('product_error').innerHTML = "<font color='red'>É¬¿Ü¹àÌÜ<"+"/font>";
+		document.getElementById('product_error').innerHTML = "<font color='red'>å¿…é ˆé …ç›®<"+"/font>";
 		commit = false;
 	}
 	if(document.getElementById('new_character').value == ''){
-		document.getElementById('character_error').innerHTML = "<font color='red'>É¬¿Ü¹àÌÜ<"+"/font>";
+		document.getElementById('character_error').innerHTML = "<font color='red'>å¿…é ˆé …ç›®<"+"/font>";
 		commit = false;
 	}
 	if (commit){

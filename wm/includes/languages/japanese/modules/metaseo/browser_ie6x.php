@@ -1,9 +1,9 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
-  define('MODULE_METASEO_BROWSER_IE6X_TEXT_TITLE', '¥Ö¥é¥¦¥¶¤ÎÀßÄê');
+  define('MODULE_METASEO_BROWSER_IE6X_TEXT_TITLE', 'ãƒ–ãƒ©ã‚¦ã‚¶ã®è¨­å®š');
   define('MODULE_METASEO_BROWSER_IE6X_TEXT_EXPLAIN', 'EXPLAIN');
-  define('MODULE_METASEO_BROWSER_IE6X_TEXT_DESCRIPTION', '¥Ö¥é¥¦¥¶¤ÎÀßÄê¥Ú¡¼¥¸¤ÎSEO');
+  define('MODULE_METASEO_BROWSER_IE6X_TEXT_DESCRIPTION', 'ãƒ–ãƒ©ã‚¦ã‚¶ã®è¨­å®šãƒšãƒ¼ã‚¸ã®SEO');
 ?>

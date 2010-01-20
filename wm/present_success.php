@@ -59,9 +59,9 @@
                       </table></td>
                   </tr>
                   <tr>
-                    <td align="center" width="33%" class="checkoutBarFrom">±þÊç¼Ô¾ðÊó</td>
-                    <td align="center" width="33%" class="checkoutBarFrom">³ÎÇ§²èÌÌ</td>
-                    <td align="center" width="33%" class="checkoutBarCurrent">±þÊç´°Î»</td>
+                    <td align="center" width="33%" class="checkoutBarFrom">å¿œå‹Ÿè€…æƒ…å ±</td>
+                    <td align="center" width="33%" class="checkoutBarFrom">ç¢ºèªç”»é¢</td>
+                    <td align="center" width="33%" class="checkoutBarCurrent">å¿œå‹Ÿå®Œäº†</td>
                   </tr>
                 </table></td>
             </tr>
@@ -108,7 +108,7 @@
 </body>
 </html>
 <?php 
-//¥»¥Ã¥·¥ç¥ó³«Êü
+//ã‚»ãƒƒã‚·ãƒ§ãƒ³é–‹æ”¾
 tep_session_unregister('pc_id');
 tep_session_unregister('firstname');
 tep_session_unregister('lastname');

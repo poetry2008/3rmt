@@ -1,6 +1,6 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
   class postalmoneyorder {
@@ -92,11 +92,11 @@
     }
 
     function install() {
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('¤æ¤¦¤Á¤ç¶ä¹Ô¡ÊÍ¹ÊØ¶É¡Ë¤òÍ­¸ú¤Ë¤¹¤ë', 'MODULE_PAYMENT_POSTALMONEYORDER_STATUS', 'True', '¤æ¤¦¤Á¤ç¶ä¹Ô¡ÊÍ¹ÊØ¶É¡Ë¤Ë¤è¤ë»ÙÊ§¤¤¤ò¼õ¤±ÉÕ¤±¤Þ¤¹¤«?', '6', '1', 'tep_cfg_select_option(array(\'True\', \'False\'), ', now());");
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('¤ª¿¶¹þÀè:', 'MODULE_PAYMENT_POSTALMONEYORDER_PAYTO', '', '¤ª¿¶¹þÀèÌ¾µÁ¤òÀßÄê¤·¤Æ¤¯¤À¤µ¤¤.', '6', '1', now());");
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('É½¼¨¤ÎÀ°Îó½ç', 'MODULE_PAYMENT_POSTALMONEYORDER_SORT_ORDER', '0', 'É½¼¨¤ÎÀ°Îó½ç¤òÀßÄê¤Ç¤­¤Þ¤¹¡£¿ô»ú¤¬¾®¤µ¤¤¤Û¤É¾å°Ì¤ËÉ½¼¨¤µ¤ì¤Þ¤¹.', '6', '0', now())");
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('Å¬ÍÑÃÏ°è', 'MODULE_PAYMENT_POSTALMONEYORDER_ZONE', '0', 'Å¬ÍÑÃÏ°è¤òÁªÂò¤¹¤ë¤È¡¢ÁªÂò¤·¤¿ÃÏ°è¤Î¤ß¤ÇÍøÍÑ²ÄÇ½¤È¤Ê¤ê¤Þ¤¹.', '6', '2', 'tep_get_zone_class_title', 'tep_cfg_pull_down_zone_classes(', now())");
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, use_function, date_added) values ('½é´üÃíÊ¸¥¹¥Æ¡¼¥¿¥¹', 'MODULE_PAYMENT_POSTALMONEYORDER_ORDER_STATUS_ID', '0', 'ÀßÄê¤·¤¿¥¹¥Æ¡¼¥¿¥¹¤¬¼õÃí»þ¤ËÅ¬ÍÑ¤µ¤ì¤Þ¤¹.', '6', '0', 'tep_cfg_pull_down_order_statuses(', 'tep_get_order_status_name', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('ã‚†ã†ã¡ã‚‡éŠ€è¡Œï¼ˆéƒµä¾¿å±€ï¼‰ã‚’æœ‰åŠ¹ã«ã™ã‚‹', 'MODULE_PAYMENT_POSTALMONEYORDER_STATUS', 'True', 'ã‚†ã†ã¡ã‚‡éŠ€è¡Œï¼ˆéƒµä¾¿å±€ï¼‰ã«ã‚ˆã‚‹æ”¯æ‰•ã„ã‚’å—ã‘ä»˜ã‘ã¾ã™ã‹?', '6', '1', 'tep_cfg_select_option(array(\'True\', \'False\'), ', now());");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('ãŠæŒ¯è¾¼å…ˆ:', 'MODULE_PAYMENT_POSTALMONEYORDER_PAYTO', '', 'ãŠæŒ¯è¾¼å…ˆåç¾©ã‚’è¨­å®šã—ã¦ãã ã•ã„.', '6', '1', now());");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('è¡¨ç¤ºã®æ•´åˆ—é †', 'MODULE_PAYMENT_POSTALMONEYORDER_SORT_ORDER', '0', 'è¡¨ç¤ºã®æ•´åˆ—é †ã‚’è¨­å®šã§ãã¾ã™ã€‚æ•°å­—ãŒå°ã•ã„ã»ã©ä¸Šä½ã«è¡¨ç¤ºã•ã‚Œã¾ã™.', '6', '0', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('é©ç”¨åœ°åŸŸ', 'MODULE_PAYMENT_POSTALMONEYORDER_ZONE', '0', 'é©ç”¨åœ°åŸŸã‚’é¸æŠžã™ã‚‹ã¨ã€é¸æŠžã—ãŸåœ°åŸŸã®ã¿ã§åˆ©ç”¨å¯èƒ½ã¨ãªã‚Šã¾ã™.', '6', '2', 'tep_get_zone_class_title', 'tep_cfg_pull_down_zone_classes(', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, use_function, date_added) values ('åˆæœŸæ³¨æ–‡ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹', 'MODULE_PAYMENT_POSTALMONEYORDER_ORDER_STATUS_ID', '0', 'è¨­å®šã—ãŸã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãŒå—æ³¨æ™‚ã«é©ç”¨ã•ã‚Œã¾ã™.', '6', '0', 'tep_cfg_pull_down_order_statuses(', 'tep_get_order_status_name', now())");
     }
 
     function remove() {

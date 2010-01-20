@@ -10,17 +10,17 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE', '¥ì¥Ó¥å¡¼');
-define('HEADING_TITLE', '¥ì¥Ó¥å¡¼¤ò½ñ¤¯');
-define('SUB_TITLE_PRODUCT', '¾¦ÉÊÌ¾:');
-define('SUB_TITLE_FROM', 'Åê¹Æ¼Ô:');
-define('SUB_TITLE_REVIEW', '¥ì¥Ó¥å¡¼:');
-define('SUB_TITLE_RATING', 'ºÎÅÀ:');
-define('TEXT_NO_HTML', '<small><font color="#ff0000"><b>¤´Ãí°Õ:</b></font></small>&nbsp;HTML ¤Ï»ÈÍÑ¤Ç¤­¤Ş¤»¤ó!');
-define('TEXT_BAD', '<small><font color="#ff0000"><b>°­¤¤</b></font></small>');
-define('TEXT_GOOD', '<small><font color="#ff0000"><b>ÎÉ¤¤</b></font></small>');
-define('ERROR_INVALID_PRODUCT', '¾¦ÉÊ¤¬¸«¤Ä¤«¤ê¤Ş¤»¤ó...');
+define('NAVBAR_TITLE', 'ãƒ¬ãƒ“ãƒ¥ãƒ¼');
+define('HEADING_TITLE', 'ãƒ¬ãƒ“ãƒ¥ãƒ¼ã‚’æ›¸ã');
+define('SUB_TITLE_PRODUCT', 'å•†å“å:');
+define('SUB_TITLE_FROM', 'æŠ•ç¨¿è€…:');
+define('SUB_TITLE_REVIEW', 'ãƒ¬ãƒ“ãƒ¥ãƒ¼:');
+define('SUB_TITLE_RATING', 'æ¡ç‚¹:');
+define('TEXT_NO_HTML', '<small><font color="#ff0000"><b>ã”æ³¨æ„:</b></font></small>&nbsp;HTML ã¯ä½¿ç”¨ã§ãã¾ã›ã‚“!');
+define('TEXT_BAD', '<small><font color="#ff0000"><b>æ‚ªã„</b></font></small>');
+define('TEXT_GOOD', '<small><font color="#ff0000"><b>è‰¯ã„</b></font></small>');
+define('ERROR_INVALID_PRODUCT', 'å•†å“ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“...');
 
 //addname
-define('REVIEWS_NO_NAMES', 'Æ¿Ì¾');
+define('REVIEWS_NO_NAMES', 'åŒ¿å');
 ?>

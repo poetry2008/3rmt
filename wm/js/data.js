@@ -1,28 +1,28 @@
 /******************************************************************************/
-/*                            »ş´Ö¥»¥ì¥¯¥È¥Ü¥Ã¥¯¥¹                             /
+/*                            æ™‚é–“ã‚»ãƒ¬ã‚¯ãƒˆãƒœãƒƒã‚¯ã‚¹                             /
 /******************************************************************************/
 function selectDate(myHour, myMin){
 
 
-	var num    = document.order.date.selectedIndex; //'ÁªÂò¥»¥ì¥¯¥È¥Ü¥Ã¥¯¥¹ÈÖ¹æ
-	var myD    = new Date();                        //'ÆüÉÕ¥ª¥Ö¥¸¥§¥¯¥È
-//	var myHour = myD.getHours();                    //'»ş´Ö
-//	var myMin  = myD.getMinutes();                  //'Ê¬
-		myMin  = Math.ceil(myMin/10) * 10;          //'ÀÚ¤ê¾å¤²½èÍıºÑ¡ÖÊ¬¡×
-	var plus   = 20;                                //'ÄÉ²ÃÊ¬½é´üÃÍ
+	var num    = document.order.date.selectedIndex; //'é¸æŠã‚»ãƒ¬ã‚¯ãƒˆãƒœãƒƒã‚¯ã‚¹ç•ªå·
+	var myD    = new Date();                        //'æ—¥ä»˜ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+//	var myHour = myD.getHours();                    //'æ™‚é–“
+//	var myMin  = myD.getMinutes();                  //'åˆ†
+		myMin  = Math.ceil(myMin/10) * 10;          //'åˆ‡ã‚Šä¸Šã’å‡¦ç†æ¸ˆã€Œåˆ†ã€
+	var plus   = 20;                                //'è¿½åŠ åˆ†åˆæœŸå€¤
 
 
-	//'À°¿ô²½
+	//'æ•´æ•°åŒ–
 	myHour = parseInt(myHour);
 	myMin  = parseInt(myMin);
 
 
-	//'¥»¥ì¥¯¥È¥Ü¥Ã¥¯¥¹ÃÍ¥¯¥ê¥¢
+	//'ã‚»ãƒ¬ã‚¯ãƒˆãƒœãƒƒã‚¯ã‚¹å€¤ã‚¯ãƒªã‚¢
 	document.order.min.options.length  = 1;
 	document.order.hour.options.length = 1;
 
 
-	//'¥»¥ì¥¯¥È¥Ü¥Ã¥¯¥¹É½¼¨»ş´ÖÈÏ°ÏÃÍ¼èÆÀ
+	//'ã‚»ãƒ¬ã‚¯ãƒˆãƒœãƒƒã‚¯ã‚¹è¡¨ç¤ºæ™‚é–“ç¯„å›²å€¤å–å¾—
 	//'
 	//'
 	if (num == 0) {
@@ -43,7 +43,7 @@ function selectDate(myHour, myMin){
 	hour = (hour < 10)? 10 : hour;
 
 
-	//'¥»¥ì¥¯¥È¥Ü¥Ã¥¯¥¹ÃÍºîÀ®
+	//'ã‚»ãƒ¬ã‚¯ãƒˆãƒœãƒƒã‚¯ã‚¹å€¤ä½œæˆ
 	for (i=hour; i<24; i++) {
 		document.order.hour.options[document.order.hour.options.length]=new Option(i, i);
 		if(document.layers){
@@ -57,30 +57,30 @@ function selectDate(myHour, myMin){
 
 
 /******************************************************************************/
-/*                            Ê¬¥»¥ì¥¯¥È¥Ü¥Ã¥¯¥¹                               /
+/*                            åˆ†ã‚»ãƒ¬ã‚¯ãƒˆãƒœãƒƒã‚¯ã‚¹                               /
 /******************************************************************************/
 function selectHour(myHour, myMin){
-	var num  = document.order.hour.selectedIndex;  //'ÁªÂò¥»¥ì¥¯¥È¥Ü¥Ã¥¯¥¹ÈÖ¹æ
-	var num2 = document.order.date.selectedIndex;  //'ÁªÂò¥»¥ì¥¯¥È¥Ü¥Ã¥¯¥¹ÈÖ¹æ
+	var num  = document.order.hour.selectedIndex;  //'é¸æŠã‚»ãƒ¬ã‚¯ãƒˆãƒœãƒƒã‚¯ã‚¹ç•ªå·
+	var num2 = document.order.date.selectedIndex;  //'é¸æŠã‚»ãƒ¬ã‚¯ãƒˆãƒœãƒƒã‚¯ã‚¹ç•ªå·
 
-	var myD    = new Date();                       //'ÆüÉÕ¥ª¥Ö¥¸¥§¥¯¥È
-//	var myHour = myD.getHours();                   //'»ş´Ö
-//	var myMin  = myD.getMinutes();                 //'Ê¬
-		myMin  = Math.ceil(myMin/10) * 10;         //'ÀÚ¤ê¾å¤²½èÍıºÑ¡ÖÊ¬¡×
-	var min    = 0;                                //'Ê¬½é´üÃÍ
-	var plus   = 20;                               //'ÄÉ²ÃÊ¬½é´üÃÍ
+	var myD    = new Date();                       //'æ—¥ä»˜ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+//	var myHour = myD.getHours();                   //'æ™‚é–“
+//	var myMin  = myD.getMinutes();                 //'åˆ†
+		myMin  = Math.ceil(myMin/10) * 10;         //'åˆ‡ã‚Šä¸Šã’å‡¦ç†æ¸ˆã€Œåˆ†ã€
+	var min    = 0;                                //'åˆ†åˆæœŸå€¤
+	var plus   = 20;                               //'è¿½åŠ åˆ†åˆæœŸå€¤
 
 
-	//'À°¿ô²½
+	//'æ•´æ•°åŒ–
 	myHour = parseInt(myHour);
 	myMin  = parseInt(myMin);
 
 
-	//'¥»¥ì¥¯¥È¥Ü¥Ã¥¯¥¹ÃÍ¥¯¥ê¥¢
+	//'ã‚»ãƒ¬ã‚¯ãƒˆãƒœãƒƒã‚¯ã‚¹å€¤ã‚¯ãƒªã‚¢
 	document.order.min.options.length = 1;
 
 
-	//'¥»¥ì¥¯¥È¥Ü¥Ã¥¯¥¹É½¼¨Ê¬ÈÏ°ÏÃÍ¼èÆÀ
+	//'ã‚»ãƒ¬ã‚¯ãƒˆãƒœãƒƒã‚¯ã‚¹è¡¨ç¤ºåˆ†ç¯„å›²å€¤å–å¾—
 	//'
 	//'
 	if (num2 == 1) {
@@ -111,7 +111,7 @@ function selectHour(myHour, myMin){
 	}
 
 
-	//'¥»¥ì¥¯¥È¥Ü¥Ã¥¯¥¹ÃÍºîÀ®
+	//'ã‚»ãƒ¬ã‚¯ãƒˆãƒœãƒƒã‚¯ã‚¹å€¤ä½œæˆ
 	for (i=min; i<60; i=i+10) {
 		if (i == 0) {
 			document.order.min.options[document.order.min.options.length]=new Option("00", "00");

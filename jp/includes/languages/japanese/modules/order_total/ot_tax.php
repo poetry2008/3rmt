@@ -10,6 +10,6 @@
   Released under the GNU General Public License
 */
 
-  define('MODULE_ORDER_TOTAL_TAX_TITLE', '¾ÃÈñÀÇ');	
-  define('MODULE_ORDER_TOTAL_TAX_DESCRIPTION', 'ÃíÊ¸¤Î¾ÃÈñÀÇÀßÄê');
+  define('MODULE_ORDER_TOTAL_TAX_TITLE', 'æ¶ˆè²»ç¨Ž');	
+  define('MODULE_ORDER_TOTAL_TAX_DESCRIPTION', 'æ³¨æ–‡ã®æ¶ˆè²»ç¨Žè¨­å®š');
 ?>

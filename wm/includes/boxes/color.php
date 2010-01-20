@@ -5,7 +5,7 @@ if(tep_db_num_rows($colors_query)) {
 <!-- by color// -->
  <table width="100%"  border="0" cellspacing="0" cellpadding="0"> 
   <tr> 
-     <td height="25" align="center" background="images/design/box/box_title_bg.jpg"><?php echo tep_image(DIR_WS_IMAGES.'design/box/color.gif','¥«¥é¡¼¤«¤éÁªÂò');?></td> 
+     <td height="25" align="center" background="images/design/box/box_title_bg.jpg"><?php echo tep_image(DIR_WS_IMAGES.'design/box/color.gif','ã‚«ãƒ©ãƒ¼ã‹ã‚‰é¸æŠž');?></td> 
    </tr> 
 </table> 
 <table width="100%"  border="0" cellspacing="1" cellpadding="0"> 

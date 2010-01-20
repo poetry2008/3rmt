@@ -1,9 +1,9 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
-  define('MODULE_METASEO_CHECKOUT_SHIPPING_TEXT_TITLE', '¼è°úÆü»þ¤Î»ØÄê');
+  define('MODULE_METASEO_CHECKOUT_SHIPPING_TEXT_TITLE', 'å–å¼•æ—¥æ™‚ã®æŒ‡å®š');
   define('MODULE_METASEO_CHECKOUT_SHIPPING_TEXT_EXPLAIN', 'EXPLAIN');
-  define('MODULE_METASEO_CHECKOUT_SHIPPING_TEXT_DESCRIPTION', '¼è°úÆü»þ¤Î»ØÄê¥Ú¡¼¥¸¤ÎSEO');
+  define('MODULE_METASEO_CHECKOUT_SHIPPING_TEXT_DESCRIPTION', 'å–å¼•æ—¥æ™‚ã®æŒ‡å®šãƒšãƒ¼ã‚¸ã®SEO');
 ?>

@@ -1,7 +1,7 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://www.lotro-japan.com/" class="blank" rel='nofollow'><span>еэб╝е╔еке╓е╢еъеєе░е╣екеєещедеє ╕°╝░е╡еде╚</span></a></li>
-<li><a href="http://wikiwiki.jp/lotro/" class="blank" rel='nofollow'><span>еэб╝е╔бжеке╓бже╢бжеъеєе░е╣ббекеєещедеє Wiki</span></a></li>
-<li><a href="http://lotro.gamedb.info/wiki/" class="blank" rel='nofollow'><span>LOTRO ╛Ё╩єWiki</span></a></li>
-<li><a href="http://freegamesite.blog27.fc2.com/blog-entry-295.html" class="blank" rel='nofollow'><span>еэб╝е╔еке╓е╢еъеєе░е╣екеєещедеє еье╙ехб╝</span></a></li>
+<li><a href="http://www.lotro-japan.com/" class="blank" rel='nofollow'><span>уГнуГ╝уГЙуВкуГЦуВ╢уГкуГ│уВ░уВ╣уВкуГ│уГйуВдуГ│ хЕмх╝ПуВ╡уВдуГИ</span></a></li>
+<li><a href="http://wikiwiki.jp/lotro/" class="blank" rel='nofollow'><span>уГнуГ╝уГЙуГ╗уВкуГЦуГ╗уВ╢уГ╗уГкуГ│уВ░уВ╣уААуВкуГ│уГйуВдуГ│ Wiki</span></a></li>
+<li><a href="http://lotro.gamedb.info/wiki/" class="blank" rel='nofollow'><span>LOTRO цГЕха▒Wiki</span></a></li>
+<li><a href="http://freegamesite.blog27.fc2.com/blog-entry-295.html" class="blank" rel='nofollow'><span>уГнуГ╝уГЙуВкуГЦуВ╢уГкуГ│уВ░уВ╣уВкуГ│уГйуВдуГ│ уГмуГУуГеуГ╝</span></a></li>
 </ul>

@@ -195,7 +195,7 @@
     $data1 = explode("//", $product_info['products_attention_1']);
     
     echo '          <tr>' . "\n" .
-         '            <td class="main" align="center" valign="top" width="150">' . $order->products[$i]['qty'] . '&nbsp;¸Ä' . (!empty($data1[0]) && strlen($data1[1])<=30 && tep_get_full_count_in_order($order->products[$i]['qty'], $data1[1]) ? '<br><span style="font-size:10px">'. tep_get_full_count_in_order($order->products[$i]['qty'], $data1[1]) .'</span>': '') . '</td>' . "\n" .
+         '            <td class="main" align="center" valign="top" width="150">' . $order->products[$i]['qty'] . '&nbsp;å€‹' . (!empty($data1[0]) && strlen($data1[1])<=30 && tep_get_full_count_in_order($order->products[$i]['qty'], $data1[1]) ? '<br><span style="font-size:10px">'. tep_get_full_count_in_order($order->products[$i]['qty'], $data1[1]) .'</span>': '') . '</td>' . "\n" .
          '            <td class="main" valign="top">' . $order->products[$i]['name'];
 
     if (STOCK_CHECK == 'true') {
@@ -235,7 +235,7 @@
   function str_string($string='') {
     if(ereg("-", $string)) {
 	  $string_array = explode("-", $string);
-	  return $string_array[0] . '&nbsp;Ç¯&nbsp;' . $string_array[1] . '&nbsp;·î&nbsp;' . $string_array[2] . '&nbsp;Æü';
+	  return $string_array[0] . '&nbsp;å¹´&nbsp;' . $string_array[1] . '&nbsp;æœˆ&nbsp;' . $string_array[2] . '&nbsp;æ—¥';
 	}
   }
 ?>				  
@@ -258,9 +258,9 @@
 	<td class="main"><?php echo TEXT_TORIHIKIKIBOUJIKAN; ?></td>
     <td class="main">
 	<?php echo $hour; ?>
-	&nbsp;»þ&nbsp;
+	&nbsp;æ™‚&nbsp;
 	<?php echo $min; ?>
-	&nbsp;Ê¬&nbsp;
+	&nbsp;åˆ†&nbsp;
 	</td>
   </tr>
 </table>
@@ -356,10 +356,10 @@
     echo $order_total_modules->output();
   }
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
-	// ¤³¤³¤«¤é¥«¥¹¥¿¥Þ¡¼¥ì¥Ù¥ë¤Ë±þ¤¸¤¿¥Ý¥¤¥ó¥È´Ô¸µÎ¨»»½Ð============================================================
+	// ã“ã“ã‹ã‚‰ã‚«ã‚¹ã‚¿ãƒžãƒ¼ãƒ¬ãƒ™ãƒ«ã«å¿œã˜ãŸãƒã‚¤ãƒ³ãƒˆé‚„å…ƒçŽ‡ç®—å‡º============================================================
 	// 2005.11.17 K.Kaneko
 	if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
-	  //ÀßÄê¤·¤¿´ü´ÖÆâ¤ÎÃíÊ¸¹ç·×¶â³Û¤ò»»½Ð------------
+	  //è¨­å®šã—ãŸæœŸé–“å†…ã®æ³¨æ–‡åˆè¨ˆé‡‘é¡ã‚’ç®—å‡º------------
 	  $ptoday = date("Y-m-d H:i:s", time());
 	  $pstday_array = getdate();
 	  $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
@@ -379,7 +379,7 @@
 	  }
 	  //----------------------------------------------
 	  
-	  //´Ô¸µÎ¨¤ò·×»»----------------------------------
+	  //é‚„å…ƒçŽ‡ã‚’è¨ˆç®—----------------------------------
 	  if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
 	    $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
 		$back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
@@ -402,7 +402,7 @@
 	} else {
 	  $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
 	}
-	// ¤³¤³¤Þ¤Ç¥«¥¹¥¿¥Þ¡¼¥ì¥Ù¥ë¤Ë±þ¤¸¤¿¥Ý¥¤¥ó¥È´Ô¸µÎ¨»»½Ð============================================================
+	// ã“ã“ã¾ã§ã‚«ã‚¹ã‚¿ãƒžãƒ¼ãƒ¬ãƒ™ãƒ«ã«å¿œã˜ãŸãƒã‚¤ãƒ³ãƒˆé‚„å…ƒçŽ‡ç®—å‡º============================================================
 	//$get_point = ($order->info['subtotal'] - (int)$point) * MODULE_ORDER_TOTAL_POINT_FEE;
 	$get_point = ($order->info['subtotal'] - (int)$point) * $point_rate;
 	
@@ -438,6 +438,7 @@
                       <td class="main" colspan="4"><?php echo $confirmation['title']; ?></td> 
                     </tr> 
                     <?php
+                    if (!isset($confirmation['fields'])) $confirmation['fields']=NULL;// del notice
       for ($i=0, $n=sizeof($confirmation['fields']); $i<$n; $i++) {
 ?> 
                     <tr> 

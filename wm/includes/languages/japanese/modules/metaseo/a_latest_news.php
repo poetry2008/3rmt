@@ -1,4 +1,4 @@
 <?php
-  define('MODULE_METASEO_A_LATEST_NEWS_TEXT_TITLE', '¤ªÃÎ¤é¤»ÆâÍÆ');
-  define('MODULE_METASEO_A_LATEST_NEWS_TEXT_EXPLAIN', 'ÀâÌÀ');
-  define('MODULE_METASEO_A_LATEST_NEWS_TEXT_DESCRIPTION', '¤ªÃÎ¤é¤»¥ê¥¹¥È');
+  define('MODULE_METASEO_A_LATEST_NEWS_TEXT_TITLE', 'ãŠçŸ¥ã‚‰ã›å†…å®¹');
+  define('MODULE_METASEO_A_LATEST_NEWS_TEXT_EXPLAIN', 'èª¬æ˜Ž');
+  define('MODULE_METASEO_A_LATEST_NEWS_TEXT_DESCRIPTION', 'ãŠçŸ¥ã‚‰ã›ãƒªã‚¹ãƒˆ');

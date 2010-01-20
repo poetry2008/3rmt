@@ -1,9 +1,9 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://lunatia.mgame.jp/" class="blank" rel='nofollow'><span>еые╩е╞егев ╕°╝░е╡еде╚</span></a></li>
-<li><a href="http://lunatia.wikiwiki.jp/" class="blank" rel='nofollow'><span>еые╩е╞егев Wiki</span></a></li>
-<li><a href="http://lunatia.nikowiki.com/" class="blank" rel='nofollow'><span>еые╩е╞егев ╣╢╬м╛Ё╩єWiki</span></a></li>
-<li><a href="http://lunatia.game-para.net/" class="blank" rel='nofollow'><span>еые╩е╞егев ╣╢╬ме╡еде╚</span></a></li>
-<li><a href="http://www.mmo-station.com/mmo/pfo/" class="blank" rel='nofollow'><span>еые╩е╞егев ┴э╣ч╛Ё╩єбж╣╢╬ме╡еде╚</span></a></li>
-<li><a href="http://jbbs.livedoor.jp/netgame/1804/" class="blank" rel='nofollow'><span>еые╩е╞егев ╖╟╝и╚─</span></a></li>
+<li><a href="http://lunatia.mgame.jp/" class="blank" rel='nofollow'><span>уГлуГКуГЖуВгуВв хЕмх╝ПуВ╡уВдуГИ</span></a></li>
+<li><a href="http://lunatia.wikiwiki.jp/" class="blank" rel='nofollow'><span>уГлуГКуГЖуВгуВв Wiki</span></a></li>
+<li><a href="http://lunatia.nikowiki.com/" class="blank" rel='nofollow'><span>уГлуГКуГЖуВгуВв цФ╗чХецГЕха▒Wiki</span></a></li>
+<li><a href="http://lunatia.game-para.net/" class="blank" rel='nofollow'><span>уГлуГКуГЖуВгуВв цФ╗чХеуВ╡уВдуГИ</span></a></li>
+<li><a href="http://www.mmo-station.com/mmo/pfo/" class="blank" rel='nofollow'><span>уГлуГКуГЖуВгуВв ч╖ПхРИцГЕха▒уГ╗цФ╗чХеуВ╡уВдуГИ</span></a></li>
+<li><a href="http://jbbs.livedoor.jp/netgame/1804/" class="blank" rel='nofollow'><span>уГлуГКуГЖуВгуВв цО▓чд║цЭ┐</span></a></li>
 </ul>

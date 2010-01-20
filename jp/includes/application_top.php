@@ -9,24 +9,23 @@
 
   Released under the GNU General Public License
 */
-//Japan location
-// edit by bobhero start 
-//session_start();
-//echo '<pre>';
-//print_r($_COOKIE);
-//echo '</pre>';
-$GLOBALS['HTTP_GET_VARS']=$_GET;
-$GLOBALS['HTTP_POST_VARS']=$_POST;
-$GLOBALS['HTTP_SERVER_VARS']=$_SERVER;
+  $GLOBALS['HTTP_GET_VARS']    = $_GET;
+
+  $GLOBALS['HTTP_POST_VARS']   = $_POST;
+
+  $GLOBALS['HTTP_SERVER_VARS'] = $_SERVER;
+
 //$HTTP_SERVER_VARS= $_SERVER;
-// edit by bobhero end
+
+//Japan location
   setlocale (LC_ALL, 'ja_JP.eucJP');
 
 // start the timer for the page parse time log
   define('PAGE_PARSE_START_TIME', microtime());
 
 // set the level of error reporting
-  error_reporting(E_ALL & ~E_NOTICE);
+  //error_reporting(E_ALL & ~E_NOTICE);
+  ini_set("display_errors", "On");
 
 // check if register_globals is enabled.
 // since this is a temporary measure this message is hardcoded. The requirement will be removed before 2.2 is finalized.
@@ -50,6 +49,7 @@ $GLOBALS['HTTP_SERVER_VARS']=$_SERVER;
 // set the type of request (secure or not)
   $request_type = (getenv('HTTPS') == 'on') ? 'SSL' : 'NONSSL';
 
+// define the filenames used in the project
 // define the filenames used in the project
   define('FILENAME_TAGS', 'tags.php');
   define('FILENAME_SEND_MAIL', 'send_mail.php');
@@ -111,7 +111,6 @@ $GLOBALS['HTTP_SERVER_VARS']=$_SERVER;
   define('FILENAME_PRESENT_SUCCESS','present_success.php');
   define('FILENAME_PDF_DATASHEET', 'pdf_datasheet.php');
   define('FILENAME_PAGE', 'page.php');//Add Filename
-
   define('FILENAME_REORDER', 'reorder.php');
   define('FILENAME_REORDER2', 'reorder2.php');
   define('FILENAME_PREORDER', 'preorder.php');
@@ -124,39 +123,39 @@ $GLOBALS['HTTP_SERVER_VARS']=$_SERVER;
   define('FILENAME_SPECIALS', 'specials.php');
   define('FILENAME_TELL_A_FRIEND', 'tell_a_friend.php');
   define('FILENAME_UPCOMING_PRODUCTS', 'upcoming_products.php'); // This is the bottom of default.php (found in modules)
-  define('FILENAME_SEND_MAIL', 'send_mail.php');
   define('FILENAME_EMAIL_TROUBLE', 'email_trouble.php');
 
 // define the database table names used in the project
+// define the database table names used in the contribution
   define('TABLE_TAGS', 'tags');
   define('TABLE_PRODUCTS_TO_TAGS', 'products_to_tags');
 
-  define('TABLE_ADDRESS_BOOK', 'iimy_address_book');
-  define('TABLE_ADDRESS_FORMAT', 'iimy_address_format');
-  define('TABLE_BANNERS', 'iimy_banners');
-  define('TABLE_BANNERS_HISTORY', 'iimy_banners_history');
+  define('TABLE_ADDRESS_BOOK', 'address_book');
+  define('TABLE_ADDRESS_FORMAT', 'address_format');
+  define('TABLE_BANNERS', 'banners');
+  define('TABLE_BANNERS_HISTORY', 'banners_history');
   define('TABLE_CATEGORIES', 'categories');
   define('TABLE_CATEGORIES_DESCRIPTION', 'categories_description');
-  define('TABLE_CONFIGURATION', 'iimy_configuration');
-  define('TABLE_CONFIGURATION_GROUP', 'iimy_configuration_group');
-  define('TABLE_COUNTER', 'iimy_counter');
-  define('TABLE_COUNTER_HISTORY', 'iimy_counter_history');
-  define('TABLE_COUNTRIES', 'iimy_countries');
-  define('TABLE_CURRENCIES', 'iimy_currencies');
-  define('TABLE_CUSTOMERS', 'iimy_customers');
-  define('TABLE_CUSTOMERS_BASKET', 'iimy_customers_basket');
-  define('TABLE_CUSTOMERS_BASKET_ATTRIBUTES', 'iimy_customers_basket_attributes');
-  define('TABLE_CUSTOMERS_INFO', 'iimy_customers_info');
-  define('TABLE_LANGUAGES', 'iimy_languages');
+  define('TABLE_CONFIGURATION', 'configuration');
+  define('TABLE_CONFIGURATION_GROUP', 'configuration_group');
+  define('TABLE_COUNTER', 'counter');
+  define('TABLE_COUNTER_HISTORY', 'counter_history');
+  define('TABLE_COUNTRIES', 'countries');
+  define('TABLE_CURRENCIES', 'currencies');
+  define('TABLE_CUSTOMERS', 'customers');
+  define('TABLE_CUSTOMERS_BASKET', 'customers_basket');
+  define('TABLE_CUSTOMERS_BASKET_ATTRIBUTES', 'customers_basket_attributes');
+  define('TABLE_CUSTOMERS_INFO', 'customers_info');
+  define('TABLE_LANGUAGES', 'languages');
   define('TABLE_MANUFACTURERS', 'manufacturers');
   define('TABLE_MANUFACTURERS_INFO', 'manufacturers_info');
-  define('TABLE_ORDERS', 'iimy_orders');
-  define('TABLE_ORDERS_PRODUCTS', 'iimy_orders_products');
-  define('TABLE_ORDERS_PRODUCTS_ATTRIBUTES', 'iimy_orders_products_attributes');
-  define('TABLE_ORDERS_PRODUCTS_DOWNLOAD', 'iimy_orders_products_download');
-  define('TABLE_ORDERS_STATUS', 'iimy_orders_status');
-  define('TABLE_ORDERS_STATUS_HISTORY', 'iimy_orders_status_history');
-  define('TABLE_ORDERS_TOTAL', 'iimy_orders_total');
+  define('TABLE_ORDERS', 'orders');
+  define('TABLE_ORDERS_PRODUCTS', 'orders_products');
+  define('TABLE_ORDERS_PRODUCTS_ATTRIBUTES', 'orders_products_attributes');
+  define('TABLE_ORDERS_PRODUCTS_DOWNLOAD', 'orders_products_download');
+  define('TABLE_ORDERS_STATUS', 'orders_status');
+  define('TABLE_ORDERS_STATUS_HISTORY', 'orders_status_history');
+  define('TABLE_ORDERS_TOTAL', 'orders_total');
   define('TABLE_PRODUCTS', 'products');
   define('TABLE_PRODUCTS_ATTRIBUTES', 'products_attributes');
   define('TABLE_PRODUCTS_ATTRIBUTES_DOWNLOAD', 'products_attributes_download');
@@ -166,29 +165,25 @@ $GLOBALS['HTTP_SERVER_VARS']=$_SERVER;
   define('TABLE_PRODUCTS_OPTIONS_VALUES', 'products_options_values');
   define('TABLE_PRODUCTS_OPTIONS_VALUES_TO_PRODUCTS_OPTIONS', 'products_options_values_to_products_options');
   define('TABLE_PRODUCTS_TO_CATEGORIES', 'products_to_categories');
-  define('TABLE_REVIEWS', 'iimy_reviews');
-  define('TABLE_REVIEWS_DESCRIPTION', 'iimy_reviews_description');
-  define('TABLE_SESSIONS', 'iimy_sessions');
+  define('TABLE_REVIEWS', 'reviews');
+  define('TABLE_REVIEWS_DESCRIPTION', 'reviews_description');
+  define('TABLE_SESSIONS', 'sessions');
   define('TABLE_SPECIALS', 'specials');
-  define('TABLE_TAX_CLASS', 'iimy_tax_class');
-  define('TABLE_TAX_RATES', 'iimy_tax_rates');
-  define('TABLE_GEO_ZONES', 'iimy_geo_zones');
-  define('TABLE_ZONES_TO_GEO_ZONES', 'iimy_zones_to_geo_zones');
-  define('TABLE_WHOS_ONLINE', 'iimy_whos_online');
-  define('TABLE_ZONES', 'iimy_zones');
-  define('TABLE_CL', 'iimy_calendar'); //add calendar
-
-  define('TABLE_CONFIGURATION_DS', 'iimy_configuration_ds');
-  define('TABLE_CONFIGURATION_GROUP_DS', 'iimy_configuration_group_ds');
-  define('TABLE_PRESENT_GOODS', 'iimy_present_goods');
-  define('TABLE_PRESENT_APPLICANT', 'iimy_present_applicant');
-  define('TABLE_PRESENT_APPLICANT', 'iimy_present_applicant');
-  define('TABLE_MAIL_MAGAZINE', 'iimy_mail_magazine');
-  define('TABLE_ORDERS_MAIL', 'iimy_orders_mail');
-  define('TABLE_INFORMATION_PAGE', 'iimy_information_page');//Information box
-  define('TABLE_LATEST_NEWS', 'iimy_latest_news'); //latest_news
-  define('TABLE_COLOR', 'iimy_color');//Color setting
-  define('TABLE_COLOR_TO_PRODUCTS', 'iimy_color_to_products');//products_id <-> color_id
+  define('TABLE_TAX_CLASS', 'tax_class');
+  define('TABLE_TAX_RATES', 'tax_rates');
+  define('TABLE_GEO_ZONES', 'geo_zones');
+  define('TABLE_ZONES_TO_GEO_ZONES', 'zones_to_geo_zones');
+  define('TABLE_WHOS_ONLINE', 'whos_online');
+  define('TABLE_ZONES', 'zones');
+  define('TABLE_CL', 'calendar'); //add calendar
+  define('TABLE_PRESENT_GOODS', 'present_goods');
+  define('TABLE_PRESENT_APPLICANT', 'present_applicant');
+  define('TABLE_MAIL_MAGAZINE', 'mail_magazine');
+  define('TABLE_ORDERS_MAIL', 'orders_mail');
+  define('TABLE_INFORMATION_PAGE', 'information_page');//Information box
+  define('TABLE_LATEST_NEWS', 'latest_news'); //latest_news
+  define('TABLE_COLOR', 'color');//Color setting
+  define('TABLE_COLOR_TO_PRODUCTS', 'color_to_products');//products_id <-> color_id
 
 // customization for the design layout
   define('BOX_WIDTH', 171); // how wide the boxes should be in pixels (default: 125)
@@ -196,7 +191,7 @@ $GLOBALS['HTTP_SERVER_VARS']=$_SERVER;
 // check if sessions are supported, otherwise use the php3 compatible session class
   if (!function_exists('session_start')) {
     define('PHP_SESSION_NAME', 'sID');
-    define('PHP_SESSION_SAVE_PATH', '/tmp');
+    define('PHP_SESSION_SAVE_PATH', '/tmp/');
 
     include(DIR_WS_CLASSES . 'sessions.php');
   }
@@ -212,17 +207,11 @@ $GLOBALS['HTTP_SERVER_VARS']=$_SERVER;
   tep_db_connect() or die('Unable to connect to database server!');
 
 // set the application parameters (can be modified through the administration tool)
-  $configuration_query = tep_db_query('select configuration_key as cfgKey, configuration_value as cfgValue from ' . TABLE_CONFIGURATION . '');
-  while ($configuration = tep_db_fetch_array($configuration_query)) {
+  $configuration_query = mysql_query('select configuration_key as cfgKey, configuration_value as cfgValue from ' . TABLE_CONFIGURATION . ' where site_id = ' . SITE_ID);
+  while ($configuration = mysql_fetch_array($configuration_query)) {
     define($configuration['cfgKey'], $configuration['cfgValue']);
   }
   
-// set the application parameters (can be modified through the administration tool)
-  $configuration_query = tep_db_query('select configuration_key as cfgKey, configuration_value as cfgValue from ' . TABLE_CONFIGURATION_DS);
-  while ($configuration = tep_db_fetch_array($configuration_query)) {
-    define($configuration['cfgKey'], $configuration['cfgValue']);
-  }
-
 // if gzip_compression is enabled, start to buffer the output
   if ( (GZIP_COMPRESSION == 'true') && ($ext_zlib_loaded = extension_loaded('zlib')) && (PHP_VERSION >= '4') ) {
     if (($ini_zlib_output_compression = (int)ini_get('zlib.output_compression')) < 1) {
@@ -397,7 +386,7 @@ $GLOBALS['HTTP_SERVER_VARS']=$_SERVER;
                                   } else {
                                     $attributes = ($HTTP_POST_VARS['id'][$HTTP_POST_VARS['products_id'][$i]]) ? $HTTP_POST_VARS['id'][$HTTP_POST_VARS['products_id'][$i]] : '';
                                   }
-                                  // tamura 2002/12/30 ¡ÖÁ´³Ñ¡×±Ñ¿ô»ú¤ò¡ÖÈ¾³Ñ¡×¤ËÊÑ´¹
+                                  // tamura 2002/12/30 ã€Œå…¨è§’ã€è‹±æ•°å­—ã‚’ã€ŒåŠè§’ã€ã«å¤‰æ›
                                   $HTTP_POST_VARS['cart_quantity'][$i] = tep_an_zen_to_han($HTTP_POST_VARS['cart_quantity'][$i]);                 
                                   $cart->add_cart($HTTP_POST_VARS['products_id'][$i], $HTTP_POST_VARS['cart_quantity'][$i], $attributes, false);
                                 }
@@ -493,7 +482,7 @@ $GLOBALS['HTTP_SERVER_VARS']=$_SERVER;
 // auto activate and expire banners
   require(DIR_WS_FUNCTIONS . 'banner.php');
   tep_activate_banners();
-  tep_expire_banners();
+  //tep_expire_banners();
 
 // auto expire special products
   require(DIR_WS_FUNCTIONS . 'specials.php');
@@ -539,7 +528,7 @@ $GLOBALS['HTTP_SERVER_VARS']=$_SERVER;
     $manufacturers = tep_db_fetch_array($manufacturers_query);
     $breadcrumb->add($manufacturers['manufacturers_name'], tep_href_link(FILENAME_DEFAULT, 'manufacturers_id=' . $HTTP_GET_VARS['manufacturers_id']));
   } elseif (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'select') {
-    $breadcrumb->add('¥Þ¥¤¥²¡¼¥à', tep_href_link(FILENAME_DEFAULT, 'action=select'));
+    $breadcrumb->add('ãƒžã‚¤ã‚²ãƒ¼ãƒ ', tep_href_link(FILENAME_DEFAULT, 'action=select'));
   }
 
 // add the products model to the breadcrumb trail
@@ -562,7 +551,7 @@ $GLOBALS['HTTP_SERVER_VARS']=$_SERVER;
   define('WARN_DOWNLOAD_DIRECTORY_NOT_READABLE', 'true');
 
 // Include OSC-AFFILIATE
-  require(DIR_WS_INCLUDES . 'affiliate_application_top.php');
+  //require(DIR_WS_INCLUDES . 'affiliate_application_topphp');
   
 // Include edit application_top.php
   require(DIR_WS_INCLUDES . 'add_apprication_top.php');

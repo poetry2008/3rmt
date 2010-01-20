@@ -46,12 +46,14 @@
 ?>
 <div id="title">
 <?php
+if (!isset($HTTP_GET_VARS['cPath'])) $HTTP_GET_VARS['cPath'] = NULL;
+if (!isset($HTTP_GET_VARS['products_id'])) $HTTP_GET_VARS['products_id'] = NULL;
 	if ($HTTP_GET_VARS['cPath']) {
-		echo $seo_category['seo_name'] . ' RMT •∏•„•√•Ø•›•√•»§œ∞¬¡¥§«∞¬ø¥°¶øÆÕÍ§«§≠§ÎºË§Í∞˙§≠§ÚÃ‹ªÿ§∑§∆§§§≠§ﬁ§π°£' . "\n";
+		echo $seo_category['seo_name'] . ' RMT „Ç∏„É£„ÉÉ„ÇØ„Éù„ÉÉ„Éà„ÅØÂÆâÂÖ®„ÅßÂÆâÂøÉ„Éª‰ø°È†º„Åß„Åç„ÇãÂèñ„ÇäÂºï„Åç„ÇíÁõÆÊåá„Åó„Å¶„ÅÑ„Åç„Åæ„Åô„ÄÇ' . "\n";
 	} elseif ($HTTP_GET_VARS['products_id']) {
-		echo ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1) . ' •∏•„•√•Ø•›•√•»§œ∞¬¡¥§«∞¬ø¥°¶øÆÕÍ§«§≠§ÎºË§Í∞˙§≠§ÚÃ‹ªÿ§∑§∆§§§≠§ﬁ§π°£' . "\n";
+		echo ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1) . ' „Ç∏„É£„ÉÉ„ÇØ„Éù„ÉÉ„Éà„ÅØÂÆâÂÖ®„ÅßÂÆâÂøÉ„Éª‰ø°È†º„Åß„Åç„ÇãÂèñ„ÇäÂºï„Åç„ÇíÁõÆÊåá„Åó„Å¶„ÅÑ„Åç„Åæ„Åô„ÄÇ' . "\n";
 	} else {
-		echo 'RMT¿ÏÃÁ≈π°™ RMT•∏•„•√•Ø•›•√•»§œ∞¬¡¥§«∞¬ø¥°¶øÆÕÍ§«§≠§ÎºË§Í∞˙§≠§ÚÃ‹ªÿ§∑§∆§§§≠§ﬁ§π°£' . "\n";
+		echo 'RMTÂ∞ÇÈñÄÂ∫óÔºÅ RMT„Ç∏„É£„ÉÉ„ÇØ„Éù„ÉÉ„Éà„ÅØÂÆâÂÖ®„ÅßÂÆâÂøÉ„Éª‰ø°È†º„Åß„Åç„ÇãÂèñ„ÇäÂºï„Åç„ÇíÁõÆÊåá„Åó„Å¶„ÅÑ„Åç„Åæ„Åô„ÄÇ' . "\n";
 	}	
 ?>
 </div>
@@ -68,7 +70,7 @@
 					<?php echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, '', 'NONSSL', false), 'get')."\n"; ?>
 					<table>
 						<tr>
-							<td><img class="middle" src="images/design/button/search_text.jpg" width="53" height="12" alt="RMT∏°∫˜"></td>
+							<td><img class="middle" src="images/design/button/search_text.jpg" width="53" height="12" alt="RMTÊ§úÁ¥¢"></td>
 							<td>
 <?php
 // --- get categoris list ( parent_id = 0 ) --- //
@@ -79,14 +81,18 @@
 		$cat_products = tep_get_product_path($HTTP_GET_VARS['products_id']);
 		$cat0 = explode('_', $cat_products);
 	}
+if (!isset($cat0[0])) $cat0[0] = NULL;
 	$cat1 = $cat0[0];
-	$categories_parent0_query = tep_db_query("select c.categories_id, c.categories_status, cd.categories_name from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where c.parent_id = '0' and c.categories_status = '0' and c.categories_id = cd.categories_id and cd.language_id = '" . (int)$languages_id . "' order by sort_order, cd.categories_name");
+	$categories_parent0_query = tep_db_query("select c.categories_id, c.categories_status, cd.categories_name 
+      from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
+      where cd.site_id = '" . SITE_ID . "' and c.parent_id = '0' and c.categories_status = '0' and c.categories_id = cd.categories_id and cd.language_id = '" . (int)$languages_id . "' 
+      order by sort_order, cd.categories_name");
 	$categories_array = '<select name="categories_id" class="header_search_select">'."\n";
 	$categories_array .= '<option value=""';
 	if($cat1 == '') {
 		$categories_array .= ' selected';
 	}
-	$categories_array .= '>¡¥§∆§Œ•≤°º•‡</option>'."\n";
+	$categories_array .= '>ÂÖ®„Å¶„ÅÆ„Ç≤„Éº„É†</option>'."\n";
 	while($categories_parent0 = tep_db_fetch_array($categories_parent0_query)) {
 		$categories_array .= '<option value="'.$categories_parent0['categories_id'].'"';
 		if($cat1 == $categories_parent0['categories_id']) {
@@ -100,7 +106,7 @@
 ?>
 							</td>
 							<td><?php echo tep_draw_input_field('keywords', 'RMT', 'size="20" maxlength="40"'); ?></td>
-							<td><input name="imageField" type="image" src="images/design/button/search.jpg" alt="∏°∫˜"></td>
+							<td><input name="imageField" type="image" src="images/design/button/search.jpg" alt="Ê§úÁ¥¢"></td>
 						</tr>
 					</table>
 <?php 
@@ -114,8 +120,8 @@
 					<table>
 						<tr>
 							<td><a href="<?php echo tep_href_link('rss.php') ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/rss.jpg','RSS') ; ?></a></td>
-							<td><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'',NONSSL) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/shopping_cart.jpg',HEADER_TITLE_CART_CONTENTS);?></a></td>
-							<td><a href="<?php echo tep_href_link(FILENAME_CHECKOUT_PRODUCTS,'',SSL) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/checkout.jpg',HEADER_TITLE_CHECKOUT);?></a></td>
+							<td><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'','NONSSL') ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/shopping_cart.jpg',HEADER_TITLE_CART_CONTENTS);?></a></td>
+							<td><a href="<?php echo tep_href_link(FILENAME_CHECKOUT_PRODUCTS,'','SSL') ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/checkout.jpg',HEADER_TITLE_CHECKOUT);?></a></td>
 							<td width="117"  background="images/design/button/subtotal.jpg" align="right"><span id="jk-shoppingcart" style="font-size:12px"><?php echo $currencies->format($cart->show_total());?>&nbsp;&nbsp;&nbsp;</span></td>
 						</tr>
 					</table>
@@ -124,7 +130,7 @@
 		</table>
 	</div>
 	<div class="header_Navigation">
-		<p class="header_Navigation_p"><a href="<?php echo tep_href_link(FILENAME_SITEMAP,'',NONSSL);?>"><?php echo HEADER_TITLE_SITEMAP ; ?></a>&nbsp;&nbsp;<?php echo $breadcrumb->trail(' &raquo; '); ?></p>
+		<p class="header_Navigation_p"><a href="<?php echo tep_href_link(FILENAME_SITEMAP,'','NONSSL');?>"><?php echo HEADER_TITLE_SITEMAP ; ?></a>&nbsp;&nbsp;<?php echo $breadcrumb->trail(' &raquo; '); ?></p>
 	</div>
 </div>
 <?php

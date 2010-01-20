@@ -3,7 +3,7 @@ $colors_query = tep_db_query("select * from ".TABLE_COLOR." order by sort_id, co
 if(tep_db_num_rows($colors_query)) {
 ?>
 <!-- by color// -->
-<div class="box_title">¥«¥é¡¼¸¡º÷</div>
+<div class="box_title">ã‚«ãƒ©ãƒ¼æ¤œç´¢</div>
 <ul id="box">
 
   <?php

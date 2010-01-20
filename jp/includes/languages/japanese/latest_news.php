@@ -10,7 +10,7 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE', '���Τ餻');
-define('HEADING_TITLE', '���Τ餻');
+define('NAVBAR_TITLE', 'お知らせ');
+define('HEADING_TITLE', 'お知らせ');
 
 ?>

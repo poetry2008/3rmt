@@ -1,9 +1,9 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
-  define('MODULE_METASEO_PRODUCT_REVIEWS_INFO_TEXT_TITLE', '¥ì¥Ó¥å¡¼');
+  define('MODULE_METASEO_PRODUCT_REVIEWS_INFO_TEXT_TITLE', 'ãƒ¬ãƒ“ãƒ¥ãƒ¼');
   define('MODULE_METASEO_PRODUCT_REVIEWS_INFO_TEXT_EXPLAIN', 'EXPLAIN');
-  define('MODULE_METASEO_PRODUCT_REVIEWS_INFO_TEXT_DESCRIPTION', '¥ì¥Ó¥å¡¼¥Ú¡¼¥¸¤ÎSEO');
+  define('MODULE_METASEO_PRODUCT_REVIEWS_INFO_TEXT_DESCRIPTION', 'ãƒ¬ãƒ“ãƒ¥ãƒ¼ãƒšãƒ¼ã‚¸ã®SEO');
 ?>

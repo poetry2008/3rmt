@@ -243,6 +243,7 @@ function rowOutEffect(object) {
     <td class="main"><?php echo tep_get_torihiki_select_by_products($product_ids);//tep_draw_pull_down_menu('torihikihouhou', $torihiki_list, $torihikihouhou); ?></td>
   </tr>
 <?php
+if (!isset($torihikihouhou_error)) $torihikihouhou_error=NULL;
   if($torihikihouhou_error != '') {
 ?>
   <tr>
@@ -259,24 +260,25 @@ function rowOutEffect(object) {
     <td class="main" width="70%">
 <?php
 	  $today = getdate();
-      $m_num = $today[mon];
-      $d_num = $today[mday];
-      $year = $today[year];
+      $m_num = $today['mon'];
+      $d_num = $today['mday'];
+      $year = $today['year'];
 	  
 	  $hours = date('H');
 	  $mimutes = date('i');
 ?>
 	<select name="date" onChange="selectDate('<?php echo $hours; ?>', '<?php echo $mimutes; ?>')">
-	  <option value="">��˾�������򤷤Ƥ�������</option>
+	  <option value="">希望日を選択してください</option>
 	  <?php
 	  for($i=0; $i<7; $i++) {
-	    echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)).'">'.strftime("%Yǯ%m��%d����%a��", mktime(0,0,0,$m_num,$d_num+$i,$year)).'</option>' . "\n";
+	    echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)).'">'.strftime("%Y年%m月%d日（%a）", mktime(0,0,0,$m_num,$d_num+$i,$year)).'</option>' . "\n";
 	  }
 	  ?>
 	</select>
 	</td>
   </tr>
 <?php
+if (!isset($date_error)) $date_error=NULL;
   if($date_error != '') {
 ?>
   <tr>
@@ -294,15 +296,16 @@ function rowOutEffect(object) {
 	<select name="hour" onChange="selectHour('<?php echo $hours; ?>', '<?php echo $mimutes; ?>')">
 	  <option value="">--</option>
 	</select>
-	&nbsp;��&nbsp;
+	&nbsp;時&nbsp;
 	<select name="min">
 	  <option value="">--</option>
 	</select>
-	&nbsp;ʬ&nbsp;
+	&nbsp;分&nbsp;
 	<?php echo TEXT_CHECK_24JI; ?>
 	</td>
   </tr>
 <?php
+if (!isset($jikan_error)) $jikan_error=NULL;
   if($jikan_error != '') {
 ?>
   <tr>
@@ -321,9 +324,9 @@ function rowOutEffect(object) {
           <tr> 
             <td class="main">
 				<br>
-					�ֻ��ꤷ�����֤���᤯�Ǥ���ʤ��᤯��Ƥۤ����פ򤴻��ꤤ�������ޤ��������ͤ�<br>
-					�������ǧ�塢��û�ˤ���Ū�Ϥؤ��Ϥ��ˤޤ���ޤ���<br>
-					�����ͤ�����ä����ʤ����ϡ������ꤤ�������ޤ����������ѹ������Ƥ��������ޤ���<br>
+					「指定した時間より早くできるなら早く来てほしい」をご指定いただきましたお客様へ<br>
+					ご入金確認後、最短にて目的地へお届けにまいります。<br>
+					お客様がいらっしゃらない場合は、ご指定いただきました日時へ変更させていただきます。<br>
 				<br>
 			</td> 
           </tr> 

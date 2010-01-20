@@ -84,7 +84,7 @@
     tep_redirect(tep_href_link(FILENAME_ADVANCED_SEARCH, 'errorno=' . $errorno . '&' . tep_get_all_get_params(array('x', 'y'))));
   } else {
     $breadcrumb->add(NAVBAR_TITLE1, tep_href_link(FILENAME_ADVANCED_SEARCH));
-    $breadcrumb->add(NAVBAR_TITLE2, tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 'keywords=' . $HTTP_GET_VARS['keywords'] . '&search_in_description=' . $HTTP_GET_VARS['search_in_description'] . '&categories_id=' . $HTTP_GET_VARS['categories_id'] . '&inc_subcat=' . $HTTP_GET_VARS['inc_subcat'] . '&manufacturers_id=' . $HTTP_GET_VARS['manufacturers_id'] . '&pfrom=' . $HTTP_GET_VARS['pfrom'] . '&pto=' . $HTTP_GET_VARS['pto'] . '&dfrom=' . $HTTP_GET_VARS['dfrom'] . '&dto=' . $HTTP_GET_VARS['dto']));
+    $breadcrumb->add(NAVBAR_TITLE2, tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 'keywords=' . $HTTP_GET_VARS['keywords'] . '&search_in_description=' .  isset($HTTP_GET_VARS['search_in_description'])?  $HTTP_GET_VARS['search_in_description']:''. '&categories_id=' .  $HTTP_GET_VARS['categories_id'] . '&inc_subcat=' .  isset($HTTP_GET_VARS['inc_subcat'])?$HTTP_GET_VARS['inc_subcat']:'' . '&manufacturers_id=' . $HTTP_GET_VARS['manufacturers_id'] . '&pfrom=' . $HTTP_GET_VARS['pfrom'] . '&pto=' . $HTTP_GET_VARS['pto'] . '&dfrom=' . $HTTP_GET_VARS['dfrom'] . '&dto=' . $HTTP_GET_VARS['dto']));
 ?>
 <?php page_head();?>
 <?php
@@ -145,7 +145,7 @@
 
     switch ($column_list[$col]) {
       case 'PRODUCT_LIST_MODEL':
-        $select_column_list .= 'p.products_model,pd.products_description_'.ABBR_SITENAME;
+        $select_column_list .= 'p.products_model,pd.products_description';
         break;
       case 'PRODUCT_LIST_MANUFACTURER':
         $select_column_list .= 'm.manufacturers_name';
@@ -224,7 +224,7 @@
             break;
           default:
             $where_str .= "(pd.products_name like '%" . addslashes($search_keywords[$i]) . "%' or p.products_model like '%" . addslashes($search_keywords[$i]) . "%' or m.manufacturers_name like '%" . addslashes($search_keywords[$i]) . "%'";
-            if (isset($HTTP_GET_VARS['search_in_description']) && ($HTTP_GET_VARS['search_in_description'] == '1')) $where_str .= " or pd.products_description_".ABBR_SITENAME." like '%" . addslashes($search_keywords[$i]) . "%'";
+            if (isset($HTTP_GET_VARS['search_in_description']) && ($HTTP_GET_VARS['search_in_description'] == '1')) $where_str .= " or pd.products_description like '%" . addslashes($search_keywords[$i]) . "%'";
               $where_str .= ')';
             break;
         }
@@ -295,7 +295,7 @@
         break;
     }
   }
-
+  $where_str .= " and pd.site_id = '".SITE_ID."'";
   // maker
   $listing_sql = $select_str . ' from ' . $from_str . $where_str . $order_str;
 

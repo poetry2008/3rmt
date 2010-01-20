@@ -3,17 +3,17 @@
 ?>
 <ul class="r_c_links_ul">
 <li><a href="http://www.playonline.com/ff11/index.shtml" rel='nofollow' class="blank" title="FF11">FF11</a></li>
-<li><a href="http://www.lineage2.jp/" rel='nofollow' class="blank" title="еъе═б╝е╕ех2">еъе═б╝е╕ех2</a></li>
-<li><a href="http://www.lineage.jp/" rel='nofollow' class="blank" title="еъе═б╝е╕ех">еъе═б╝е╕ех</a></li>
-<li><a href="http://www.ragnarokonline.jp/" rel='nofollow' class="blank" title="еще░е╩еэепекеєещедеє">еще░е╩еэепекеєещедеє</a></li>
-<li><a href="http://www.ro2.jp/" rel='nofollow' class="blank" title="еще░е╩еэепекеєещедеє2">еще░е╩еэепекеєещедеє2</a></li>
-<li><a href="http://www.redsonline.jp/" rel='nofollow' class="blank" title="еье├е╔е╣е╚б╝еє">еье├е╔е╣е╚б╝еє</a></li>
-<li><a href="http://www.talesweaver.jp/" rel='nofollow' class="blank" title="е╞едеые║ежегб╝е╨б╝">е╞едеые║ежегб╝е╨б╝</a></li>
-<li><a href="http://www.cabal.jp/index.aspx" rel='nofollow' class="blank" title="еле╨еы екеєещедеє">еле╨еы екеєещедеє</a></li>
-<li><a href="http://www.gamecity.ne.jp/nol/" rel='nofollow' class="blank" title="┐о─╣д╬╠ю╦╛екеєещедеє">┐о─╣д╬╠ю╦╛екеєещедеє</a></li>
-<li><a href="http://www.mabinogi.jp/" rel='nofollow' class="blank" title="е▐е╙е╬ео">е▐е╙е╬ео</a></li>
+<li><a href="http://www.lineage2.jp/" rel='nofollow' class="blank" title="уГкуГНуГ╝уВ╕уГе2">уГкуГНуГ╝уВ╕уГе2</a></li>
+<li><a href="http://www.lineage.jp/" rel='nofollow' class="blank" title="уГкуГНуГ╝уВ╕уГе">уГкуГНуГ╝уВ╕уГе</a></li>
+<li><a href="http://www.ragnarokonline.jp/" rel='nofollow' class="blank" title="уГйуВ░уГКуГнуВпуВкуГ│уГйуВдуГ│">уГйуВ░уГКуГнуВпуВкуГ│уГйуВдуГ│</a></li>
+<li><a href="http://www.ro2.jp/" rel='nofollow' class="blank" title="уГйуВ░уГКуГнуВпуВкуГ│уГйуВдуГ│2">уГйуВ░уГКуГнуВпуВкуГ│уГйуВдуГ│2</a></li>
+<li><a href="http://www.redsonline.jp/" rel='nofollow' class="blank" title="уГмуГГуГЙуВ╣уГИуГ╝уГ│">уГмуГГуГЙуВ╣уГИуГ╝уГ│</a></li>
+<li><a href="http://www.talesweaver.jp/" rel='nofollow' class="blank" title="уГЖуВдуГлуВ║уВжуВгуГ╝уГРуГ╝">уГЖуВдуГлуВ║уВжуВгуГ╝уГРуГ╝</a></li>
+<li><a href="http://www.cabal.jp/index.aspx" rel='nofollow' class="blank" title="уВлуГРуГл уВкуГ│уГйуВдуГ│">уВлуГРуГл уВкуГ│уГйуВдуГ│</a></li>
+<li><a href="http://www.gamecity.ne.jp/nol/" rel='nofollow' class="blank" title="ф┐бщХ╖уБощЗОцЬЫуВкуГ│уГйуВдуГ│">ф┐бщХ╖уБощЗОцЬЫуВкуГ│уГйуВдуГ│</a></li>
+<li><a href="http://www.mabinogi.jp/" rel='nofollow' class="blank" title="уГЮуГУуГОуВо">уГЮуГУуГОуВо</a></li>
 <li><a href="http://phantasystaruniverse.jp/home/" rel='nofollow' class="blank" title="PSU">PSU</a></li>
-<li><a href="http://archlord.hangame.co.jp/" rel='nofollow' class="blank" title="евб╝епеэб╝е╔">евб╝епеэб╝е╔</a></li>
-<li><a href="http://maplestory.nexon.co.jp/" rel='nofollow' class="blank" title="еседе╫еые╣е╚б╝еъб╝">еседе╫еые╣е╚б╝еъб╝</a></li>
-<li><a href="http://perfect-w.jp/" rel='nofollow' class="blank" title="е╤б╝е╒езепе╚еяб╝еые╔">е╤б╝е╒езепе╚еяб╝еые╔</a></li>
+<li><a href="http://archlord.hangame.co.jp/" rel='nofollow' class="blank" title="уВвуГ╝уВпуГнуГ╝уГЙ">уВвуГ╝уВпуГнуГ╝уГЙ</a></li>
+<li><a href="http://maplestory.nexon.co.jp/" rel='nofollow' class="blank" title="уГбуВдуГЧуГлуВ╣уГИуГ╝уГкуГ╝">уГбуВдуГЧуГлуВ╣уГИуГ╝уГкуГ╝</a></li>
+<li><a href="http://perfect-w.jp/" rel='nofollow' class="blank" title="уГСуГ╝уГХуВзуВпуГИуГпуГ╝уГлуГЙ">уГСуГ╝уГХуВзуВпуГИуГпуГ╝уГлуГЙ</a></li>
 </ul>

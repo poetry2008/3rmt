@@ -26,7 +26,9 @@
     $error = 1;
   }
 
+if (!isset($HTTP_GET_VARS['dfrom'])) $HTTP_GET_VARS['dfrom'] = NULL;
   $dfrom_to_check = (($HTTP_GET_VARS['dfrom'] == DOB_FORMAT_STRING) ? '' : $HTTP_GET_VARS['dfrom']);
+if (!isset($HTTP_GET_VARS['dto'])) $HTTP_GET_VARS['dto'] = NULL;
   $dto_to_check = (($HTTP_GET_VARS['dto'] == DOB_FORMAT_STRING) ? '' : $HTTP_GET_VARS['dto']);
 
   if (strlen($dfrom_to_check) > 0) {
@@ -50,6 +52,7 @@
     }
   }
 
+if (!isset($HTTP_GET_VARS['pfrom'])) $HTTP_GET_VARS['pfrom'] = NULL;
   if (strlen($HTTP_GET_VARS['pfrom']) > 0) {
     $pfrom_to_check = $HTTP_GET_VARS['pfrom'];
     if (!settype($pfrom_to_check, "double")) {
@@ -58,6 +61,7 @@
     }
   }
 
+if (!isset($HTTP_GET_VARS['pto'])) $HTTP_GET_VARS['pto'] = NULL;
   if (strlen($HTTP_GET_VARS['pto']) > 0) {
     $pto_to_check = $HTTP_GET_VARS['pto'];
     if (!settype($pto_to_check, "double")) {

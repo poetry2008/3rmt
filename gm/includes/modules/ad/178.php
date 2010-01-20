@@ -1,10 +1,10 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://www.gamecity.ne.jp/nol/" class="blank" rel='nofollow'><span>┐о─╣д╬╠ю╦╛ Online ╕°╝░е╡еде╚</span></a></li>
-<li><a href="http://ohmynobu.net/" class="blank" rel='nofollow'><span>┐о─╣д╬╠ю╦╛екеєещедеє ┤є╣ч╜ъ</span></a></li>
-<li><a href="http://kamurai.itspy.com/nobunaga/" class="blank" rel='nofollow'><span>┐о─╣д╬╠ю╦╛екеєещедеє └я╣ё░╞╞т╜ъ</span></a></li>
-<li><a href="http://nolsolo.s76.xrea.com/" class="blank" rel='nofollow'><span>┐о─╣д╬╠ю╦╛Online е╜еэ╛Ё╩єе┌б╝е╕</span></a></li>
-<li><a href="http://www.geocities.co.jp/Playtown/6755/nobon_status.html" class="blank" rel='nofollow'><span>┐о─╣д╬╠ю╦╛екеєещедеє ╟╜╬╧├═╖╫╗╗╡б</span></a></li>
-<li><a href="http://www.mmonavi.com/modules/game/97.html" class="blank"><span>┐о─╣д╬╠ю╦╛ONLINE еье╙ехб╝</span></a></li>
-<li><a href="http://www.hotgame.co.jp/" class="blank"><span>┐оекеє ╖╟╝и╚─</span></a></li>
+<li><a href="http://www.gamecity.ne.jp/nol/" class="blank" rel='nofollow'><span>ф┐бщХ╖уБощЗОцЬЫ Online хЕмх╝ПуВ╡уВдуГИ</span></a></li>
+<li><a href="http://ohmynobu.net/" class="blank" rel='nofollow'><span>ф┐бщХ╖уБощЗОцЬЫуВкуГ│уГйуВдуГ│ хпДхРИцЙА</span></a></li>
+<li><a href="http://kamurai.itspy.com/nobunaga/" class="blank" rel='nofollow'><span>ф┐бщХ╖уБощЗОцЬЫуВкуГ│уГйуВдуГ│ цИжхЫ╜цбИхЖЕцЙА</span></a></li>
+<li><a href="http://nolsolo.s76.xrea.com/" class="blank" rel='nofollow'><span>ф┐бщХ╖уБощЗОцЬЫOnline уВ╜уГнцГЕха▒уГЪуГ╝уВ╕</span></a></li>
+<li><a href="http://www.geocities.co.jp/Playtown/6755/nobon_status.html" class="blank" rel='nofollow'><span>ф┐бщХ╖уБощЗОцЬЫуВкуГ│уГйуВдуГ│ шГ╜хКЫхАдшиИчоЧцйЯ</span></a></li>
+<li><a href="http://www.mmonavi.com/modules/game/97.html" class="blank"><span>ф┐бщХ╖уБощЗОцЬЫONLINE уГмуГУуГеуГ╝</span></a></li>
+<li><a href="http://www.hotgame.co.jp/" class="blank"><span>ф┐буВкуГ│ цО▓чд║цЭ┐</span></a></li>
 </ul>

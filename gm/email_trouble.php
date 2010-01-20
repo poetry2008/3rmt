@@ -1,6 +1,6 @@
 <?php
   require('includes/application_top.php');
-  $breadcrumb->add('�ե꡼�᡼��ǥ᡼�뤬�������ʤ�����', tep_href_link('email_trouble.php'));
+  $breadcrumb->add('フリーメールでメールが受け取れない方へ', tep_href_link('email_trouble.php'));
 ?>
 <?php page_head();?>
 </head>
@@ -18,56 +18,56 @@
 <!-- body_text //-->
 <div id="content">
 <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo '�ե꡼�᡼��ǥ᡼�뤬�������ʤ�����'; ?></h1>
+<h1 class="pageHeading"><?php echo 'フリーメールでメールが受け取れない方へ'; ?></h1>
 <div class="box">
 <div class="content_email01">
   <div id="bgn_content">
     <div id="wrapper_kiyaku">
       <p>
-        <span class="txt_blue">*****@yahoo.co.jp��*****@hotmail.com��*****@msn.com��AOL�ʤɤΥե꡼�᡼������Ѥˤʤ��Ƥ����硢</span><br>
-        �嵭�Υɥᥤ��Ǥ���Ͽ���줿���ǡ����Ҥ���Υ᡼�뤬�Ϥ��ʤ��Ȥ���������ĺ���Ƥ���ޤ��� </p>
+        <span class="txt_blue">*****@yahoo.co.jp、*****@hotmail.com、*****@msn.com、AOLなどのフリーメールを御使用になられている場合、</span><br>
+        上記のドメインでご登録された方で、当社からのメールが届かないというご報告を頂いております。 </p>
       <p>
         <br>
-        ����ϡ�Yahoo!�᡼�롢hotmail��msn�᡼�롢AOL�μ�����³���ǡ����ǥ᡼��פȤ��ƽ����򤵤�Ƥ����ǽ�����������ޤ���<br>
-        ���ν����ϳƥե꡼�᡼�뤬���ĵ�ǽ�ǡ�������¿���Υ����Ȥ���Υ᡼�������ǥ᡼��פȤ����ӽ�������Ŭ�˥᡼�����Ѥ��뤿��Τ�ΤǤ���<br>
-        �嵭�Τ褦�ʥɥᥤ��򤴻��Ѥξ��ˤϡ�<span class="txt_blue">���Ҥ���Υ᡼�����̾�᡼��פȤ��Ƽ������Ĥ򤤤�����ɬ�פ��������ޤ���</span><br>
+        これは、Yahoo!メール、hotmail、msnメール、AOLの受信手続きで「迷惑メール」として処理をされている可能性がございます。<br>
+        この処理は各フリーメールが持つ機能で、不特定多数のサイトからのメールを「迷惑メール」として排除し、快適にメールを使用するためのものです。<br>
+        上記のようなドメインをご使用の場合には、<span class="txt_blue">当社からのメールを「通常メール」として受信許可をいただく必要がございます。</span><br>
       </p>
       <p>
         <br>
-        �ʲ��˳ƥե꡼�᡼�����˼������Ĥ�������򵭤��ޤ��� </p>
+        以下に各フリーメールの毎に受信許可の設定手順を記します。 </p>
       <br>
       <br>
-      <h3><span class="txt_bold">Yahoo!�᡼�롢Yahoo!BB�᡼��&nbsp;&nbsp;�������Ĥ�������</span></h3>
+      <h3><span class="txt_bold">Yahoo!メール、Yahoo!BBメール&nbsp;&nbsp;受信許可の設定手順</span></h3>
       <p>
       <ol>
-        <li>Yahoo!�᡼��˥������󤷤�[�᡼�륪�ץ����]�򥯥�å�</li>
-        <li>[�ե��륿���ȼ�����������] �� [��������]���˥���å�</li>
-        <li>�����ʲ��Τ褦���ѹ����ޤ���<br>
-          ��From�����ʤ�ޤ�ˡ�<span class="txt_blue"><?php echo STORE_DOMAIN;?></span>�ˡ�&nbsp;&nbsp;��ư��ե�����ּ���Ȣ�� </li>
+        <li>Yahoo!メールにログインして[メールオプション]をクリック</li>
+        <li>[フィルターと受信通知設定] → [新規作成]を順にクリック</li>
+        <li>設定を以下のように変更します。<br>
+          「Fromが次（を含む）（<span class="txt_blue"><?php echo STORE_DOMAIN;?></span>）」&nbsp;&nbsp;移動先フォルダ「受信箱」 </li>
       </ol>
       </p>
       <br>
-      <h3><span class="txt_bold">hotmail��msnmail&nbsp;&nbsp;�������Ĥ�������</span></h3>
+      <h3><span class="txt_bold">hotmail、msnmail&nbsp;&nbsp;受信許可の設定手順</span></h3>
       <p>
       <ol>
-        <li>hotmail �˥����󥤥󤷤�[���ץ����] �򥯥�å�</li>
-        <li>���ǥ᡼�������[�����եꥹ��]�򥯥�å�</li>
-        <li><?php echo STORE_NAME;?>��������Ҥ����Ѥ���ɥᥤ���<span class="txt_blue"><?php echo STORE_DOMAIN;?></span>�פ��ɲä��ޤ�</li>
-        <li>�Ǹ�ˡ�OK�פ򥯥�å����ƽ�λ���ޤ�</li>
+        <li>hotmail にサインインして[オプション] をクリック</li>
+        <li>迷惑メール処理の[セーフリスト]をクリック</li>
+        <li><?php echo STORE_NAME;?>および当社の利用するドメイン「<span class="txt_blue"><?php echo STORE_DOMAIN;?></span>」を追加します</li>
+        <li>最後に「OK」をクリックして終了します</li>
       </ol>
       </p>
       <br>
-      <h3><span class="txt_bold">AOL&nbsp;&nbsp;�������Ĥ�������</span></h3>
-      <p> �����ѴĶ��ˤ��AOL��³���եȡ�AOL Communicator�פ����꤬ɬ�פǤ���
+      <h3><span class="txt_bold">AOL&nbsp;&nbsp;受信許可の設定手順</span></h3>
+      <p> ご利用環境によりAOL接続ソフト「AOL Communicator」の設定が必要です。
       <ol>
-        <li>�����å������ɤΥ᡼�륳��ȥ�����򻲾Ȥ��ޤ�</li>
-        <li>[���ǥ᡼��ե��륿]�ǡ�<span class="txt_blue"><?php echo STORE_DOMAIN;?></span>�פμ�������Ĥ�������ˤ��Ʋ�����</li>
+        <li>クイックガイドのメールコントロールを参照します</li>
+        <li>[迷惑メールフィルタ]で「<span class="txt_blue"><?php echo STORE_DOMAIN;?></span>」の受信を許可する設定にして下さい</li>
       </ol>
       </p>
       <br>
-      <h3><span class="txt_bold">�嵭�ʳ��Υ᡼�륢�ɥ쥹�����Ѥξ��</span></h3>
-      <p> �嵭�ʳ��Υ᡼�륢�ɥ쥹�����Ѥ����ǡ�Ʊ�ͤ�<?php echo STORE_NAME;?>��������Ҥ���Υ᡼�뤬�Ϥ��ʤ��Ȥ������⡢Ʊ�ͤθ��������ǥ᡼�������ǽ�ˤ��ͤ����ޤ���<br>
-        ������Ǥ�����������Υޥ˥奢���������ξ塢<?php echo STORE_NAME;?>��������Ҥ����Ѥ���ɥᥤ���<span class="txt_blue"><?php echo STORE_DOMAIN;?></span>�פ������������᡼��μ������Ĥ����ꤷ�Ʋ�������<br>
+      <h3><span class="txt_bold">上記以外のメールアドレスをご利用の場合</span></h3>
+      <p> 上記以外のメールアドレスをご利用の方で、同様に<?php echo STORE_NAME;?>および当社からのメールが届かないという場合も、同様の原因（迷惑メール処理機能）が考えられます。<br>
+        お手数ですがご利用先のマニュアル等をご覧の上、<?php echo STORE_NAME;?>および当社の利用するドメイン「<span class="txt_blue"><?php echo STORE_DOMAIN;?></span>」から送信されるメールの受信許可を設定して下さい。<br>
       </p>
       <br>
       <br>

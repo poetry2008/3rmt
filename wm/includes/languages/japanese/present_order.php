@@ -10,20 +10,20 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE1', '�ץ쥼���');
-define('NAVBAR_TITLE2', '�ץ쥼��Ⱦ���');
-define('NAVBAR_TITLE3', '�ץ쥼��ȱ���');
+define('NAVBAR_TITLE1', 'プレゼント');
+define('NAVBAR_TITLE2', 'プレゼント商品');
+define('NAVBAR_TITLE3', 'プレゼント応募');
 
-define('HEADING_TITLE', '�ץ쥼��ȱ����ǧ����');
-define('TEXT1', STORE_NAME.'�Ǥϡ������Ͽ�򤵤�Ƥ��ʤ��Ƥ�ץ쥼��Ȥ˱���Ǥ��ޤ��� ���Υե�����ˤ����ͤΥ᡼�륢�ɥ쥹����̾���������ꡢ�����ֹ�����Ϥ��Ƥ���������<br><font color="red">����ˤϥץ쥻��Ȥ�������������������ν�������Ϥ��Ƥ���������</font>');
-define('TEXT_PRESENT_ERROR_NOT_SELECTED','�ץ쥼��Ⱦ��ʤ����򤵤�Ƥ��ޤ���');
-define('HEADING_RETURNING_CUSTOMER', '��������Ȥ򤪻����Τ�����');
-define('TEXT_RETURNING_CUSTOMER', '�᡼�륢�ɥ쥹�ȥѥ���ɤ����Ϥ��ơ��������󤷤Ƥ���������');
-define('ENTRY_EMAIL_ADDRESS', '�᡼�륢�ɥ쥹:');
-define('ENTRY_PASSWORD', '�ѥ����:');
+define('HEADING_TITLE', 'プレゼント応募確認画面');
+define('TEXT1', STORE_NAME.'では、会員登録をされていなくてもプレゼントに応募できます。 下のフォームにお客様のメールアドレス、お名前、ご住所、電話番号を入力してください。<br><font color="red">住所にはプレセントが当選した場合の配送先の住所を入力してください。</font>');
+define('TEXT_PRESENT_ERROR_NOT_SELECTED','プレゼント商品が選択されていません');
+define('HEADING_RETURNING_CUSTOMER', 'アカウントをお持ちのお客様');
+define('TEXT_RETURNING_CUSTOMER', 'メールアドレスとパスワードを入力して、ログインしてください。');
+//define('ENTRY_EMAIL_ADDRESS', 'メールアドレス:');
+//define('ENTRY_PASSWORD', 'パスワード:');
 
-define('TEXT_PASSWORD_FORGOTTEN', '�ѥ���ɤ�˺��ξ��ϥ���å�!');
+define('TEXT_PASSWORD_FORGOTTEN', 'パスワードをお忘れの場合はクリック!');
 
-define('TEXT_LOGIN_ERROR', '<font color="#ff0000"><b>���顼:</b></font> &quot;�᡼�륢�ɥ쥹&quot; �ޤ��� &quot;�ѥ����&quot; �����פ��ޤ���Ǥ�����');
-define('TEXT_VISITORS_CART', '<font color="#ff0000"><b>������:</b></font> �������󤹤�ȡ�[����åԥ󥰥�����] �ξ��ʤ� [���С���������åԥ󥰥�����] �ؼ�ưŪ�˰�ư���ޤ��� <a href="javascript:session_win();"> [�ܺپ���]</a>');
+define('TEXT_LOGIN_ERROR', '<font color="#ff0000"><b>エラー:</b></font> &quot;メールアドレス&quot; または &quot;パスワード&quot; が一致しませんでした。');
+define('TEXT_VISITORS_CART', '<font color="#ff0000"><b>ご注意:</b></font> ログインすると、[ショッピングカート] の商品は [メンバーズ・ショッピングカート] へ自動的に移動します。 <a href="javascript:session_win();"> [詳細情報]</a>');
 ?>

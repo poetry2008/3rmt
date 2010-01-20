@@ -10,10 +10,10 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE', '¥×¥ì¥¼¥ó¥È');
-define('HEADING_TITLE', '¥×¥ì¥¼¥ó¥È');
-define('TEXT_PRESENT_ERROR_NOT_SELECTED','¥×¥ì¥¼¥ó¥È¾¦ÉÊ¤¬ÁªÂò¤µ¤ì¤Æ¤¤¤Þ¤»¤ó');
+define('NAVBAR_TITLE', 'ãƒ—ãƒ¬ã‚¼ãƒ³ãƒˆ');
+define('HEADING_TITLE', 'ãƒ—ãƒ¬ã‚¼ãƒ³ãƒˆ');
+define('TEXT_PRESENT_ERROR_NOT_SELECTED','ãƒ—ãƒ¬ã‚¼ãƒ³ãƒˆå•†å“ãŒé¸æŠžã•ã‚Œã¦ã„ã¾ã›ã‚“');
 
 define('TEXT_INFORMATION', '
-¤³¤³¤Ë¡¢¥×¥é¥¤¥Ð¥·¡¼¤Ë´Ø¤¹¤ëµ¬Ìó¤òµ­Æþ¤·¤Æ¤¯¤À¤µ¤¤¡£[catalog/includes/languages/japanese/privacy.php¤ò½ñ¤­´¹¤¨¤Æ¤¯¤À¤µ¤¤]');
+ã“ã“ã«ã€ãƒ—ãƒ©ã‚¤ãƒã‚·ãƒ¼ã«é–¢ã™ã‚‹è¦ç´„ã‚’è¨˜å…¥ã—ã¦ãã ã•ã„ã€‚[catalog/includes/languages/japanese/privacy.phpã‚’æ›¸ãæ›ãˆã¦ãã ã•ã„]');
 ?>

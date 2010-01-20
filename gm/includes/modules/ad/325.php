@@ -1,9 +1,9 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://www.latale.jp/entrance/index.html" class="blank" rel='nofollow'><span>еще╞б╝еы ╕°╝░е╡еде╚</span></a></li>
-<li><a href="http://latale.wikiwiki.jp/" class="blank" rel='nofollow'><span>еще╞б╝еы Wiki</span></a></li>
-<li><a href="http://www.mmo-station.com/mmo/Latale/" class="blank" rel='nofollow'><span>Latale ┴э╣ч╛Ё╩єбж╣╢╬ме╡еде╚</span></a></li>
-<li><a href="http://funilate.sakura.ne.jp/top.php" class="blank" rel='nofollow'><span>еще╞б╝еы ╛Ё╩єе╡еде╚</span></a></li>
-<li><a href="http://topo.hustle.ne.jp/latale/" class="blank" rel='nofollow'><span>еще╞б╝еы ┴ъ╛ь╕ж╡це╖еуе└б╝</span></a></li>
-<li><a href="http://www.mmonavi.com/modules/game/226.htmlLatale" class="blank"><span>е▓б╝ер╛Ё╩є</span></a></li>
+<li><a href="http://www.latale.jp/entrance/index.html" class="blank" rel='nofollow'><span>уГйуГЖуГ╝уГл хЕмх╝ПуВ╡уВдуГИ</span></a></li>
+<li><a href="http://latale.wikiwiki.jp/" class="blank" rel='nofollow'><span>уГйуГЖуГ╝уГл Wiki</span></a></li>
+<li><a href="http://www.mmo-station.com/mmo/Latale/" class="blank" rel='nofollow'><span>Latale ч╖ПхРИцГЕха▒уГ╗цФ╗чХеуВ╡уВдуГИ</span></a></li>
+<li><a href="http://funilate.sakura.ne.jp/top.php" class="blank" rel='nofollow'><span>уГйуГЖуГ╝уГл цГЕха▒уВ╡уВдуГИ</span></a></li>
+<li><a href="http://topo.hustle.ne.jp/latale/" class="blank" rel='nofollow'><span>уГйуГЖуГ╝уГл чЫ╕ха┤чаФчй╢уВ╖уГгуГАуГ╝</span></a></li>
+<li><a href="http://www.mmonavi.com/modules/game/226.htmlLatale" class="blank"><span>уВ▓уГ╝уГацГЕха▒</span></a></li>
 </ul>

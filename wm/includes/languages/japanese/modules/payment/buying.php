@@ -10,7 +10,7 @@
   Released under the GNU General Public License
 */
 
-  define('MODULE_PAYMENT_BUYING_TEXT_TITLE', '∂‰π‘ø∂π˛(«„§§ºË§Í)');
+  define('MODULE_PAYMENT_BUYING_TEXT_TITLE', 'ÈäÄË°åÊåØËæº(Ë≤∑„ÅÑÂèñ„Çä)');
   define('MODULE_PAYMENT_BUYING_TEXT_EXPLAIN', '');
   define('MODULE_PAYMENT_BUYING_TEXT_DESCRIPTION', '');
   define('MODULE_PAYMENT_BUYING_TEXT_EMAIL_FOOTER', '');

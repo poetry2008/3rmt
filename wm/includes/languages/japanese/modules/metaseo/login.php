@@ -1,9 +1,9 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
-  define('MODULE_METASEO_LOGIN_TEXT_TITLE', '¥í¥°¥¤¥ó');
+  define('MODULE_METASEO_LOGIN_TEXT_TITLE', 'ãƒ­ã‚°ã‚¤ãƒ³');
   define('MODULE_METASEO_LOGIN_TEXT_EXPLAIN', 'EXPLAIN');
-  define('MODULE_METASEO_LOGIN_TEXT_DESCRIPTION', '¥í¥°¥¤¥ó¥Ú¡¼¥¸¤ÎSEO');
+  define('MODULE_METASEO_LOGIN_TEXT_DESCRIPTION', 'ãƒ­ã‚°ã‚¤ãƒ³ãƒšãƒ¼ã‚¸ã®SEO');
 ?>

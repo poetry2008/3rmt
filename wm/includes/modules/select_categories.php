@@ -37,7 +37,7 @@ $categories_tab_query1 = tep_db_query("select c.categories_id, c.categories_stat
 ?>
 		</tr>
 	</table>
-   <div style="text-align:center;"><input type='image' value='·èÄê' src="includes/languages/japanese/images/buttons/button_ok.gif" ></div>
+   <div style="text-align:center;"><input type='image' value='æ±ºå®š' src="includes/languages/japanese/images/buttons/button_ok.gif" ></div>
 </form>
 </div>
 <p class="pageBottom"></p>

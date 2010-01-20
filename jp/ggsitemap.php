@@ -26,7 +26,7 @@
   while ($category = tep_db_fetch_array($categories_query))  {
     $categories[$category['categories_id']] = $category;
   }
-  $contents_page = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where status = 1 order by sort_id ");
+  $contents_page = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where status = 1 and site_id = '" . SITE_ID . "' order by sort_id ");
   while ($result = tep_db_fetch_array($contents_page)){
     $pages[] = info_tep_href_link($result['romaji']);
   } 

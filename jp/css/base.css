@@ -1,6 +1,6 @@
 @charset "Shift_JIS";
 
-/* ‘S‘Ì\‘¢
+/* å…¨ä½“æ§‹é€ 
 ---------------------------------------------------- */
 body {
   margin: 0px;
@@ -8,7 +8,7 @@ body {
   color: #000000;
   background: #ffffff;
 	text-align:center;
-  font-family:"‚l‚r ‚oƒSƒVƒbƒN", Osaka, "ƒqƒ‰ƒMƒmŠpƒS Pro W3";
+  font-family:"ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯", Osaka, "ãƒ’ãƒ©ã‚®ãƒè§’ã‚´ Pro W3";
   font-size: 100%;
 }
 
@@ -23,7 +23,7 @@ a:hover{
 a{
 	border: none;
 	background: transparent;
-  text-decoration: none;		/* ü‚ª•\¦‚³‚ê‚È‚¢‚æ‚¤‚É‚·‚é */
+  text-decoration: none;		/* ç·šãŒè¡¨ç¤ºã•ã‚Œãªã„ã‚ˆã†ã«ã™ã‚‹ */
 }
 
 h3 {
@@ -139,14 +139,14 @@ html*div.top_h2_box h2 {
 }
 
 strong{
-  font-family:"‚l‚r ‚oƒSƒVƒbƒN", Osaka, "ƒqƒ‰ƒMƒmŠpƒS Pro W3";
+  font-family:"ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯", Osaka, "ãƒ’ãƒ©ã‚®ãƒè§’ã‚´ Pro W3";
   font-size:100%;
   font-style:normal;
   font-weight:normal;
 }
 
 em{
-  font-family:"‚l‚r ‚oƒSƒVƒbƒN", Osaka, "ƒqƒ‰ƒMƒmŠpƒS Pro W3";
+  font-family:"ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯", Osaka, "ãƒ’ãƒ©ã‚®ãƒè§’ã‚´ Pro W3";
   font-size:100%;
   font-style:normal;
 }
@@ -185,7 +185,7 @@ html*ul.nul li.nli{
 	font-size:small
 }
 
-/* ƒwƒbƒ_
+/* ãƒ˜ãƒƒãƒ€
 ---------------------------------------------------- */
 #header {
   color: #333333;
@@ -275,7 +275,7 @@ html*div#header ul{
 	font-weight:bold;
 }
 
-/* ƒRƒ“ƒeƒ“ƒc
+/* ã‚³ãƒ³ãƒ†ãƒ³ãƒ„
 ---------------------------------------------------- */
 #content {
 	text-align:center;
@@ -313,7 +313,7 @@ html*div#content {
 	top:-10px;
 	left:-6px;
 }
-/* ƒTƒCƒhƒƒjƒ…[
+/* ã‚µã‚¤ãƒ‰ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 ---------------------------------------------------- */
 #navi-side {
 	text-align:center;
@@ -389,7 +389,7 @@ root: #navi-side {
 	font-weight:bold;
 }
 
-/* ƒTƒCƒhƒƒjƒ…[ Šî–{ */
+/* ã‚µã‚¤ãƒ‰ãƒ¡ãƒ‹ãƒ¥ãƒ¼ åŸºæœ¬ */
 div#navi-side div.waku-area{
   margin-top: 0px;
   margin-bottom: 0px;
@@ -438,7 +438,7 @@ div#navi-side div.waku-area div.waku-bottom{
 	top:0px;
 }
 
-/* ƒTƒCƒhƒƒjƒ…[ ie6 */
+/* ã‚µã‚¤ãƒ‰ãƒ¡ãƒ‹ãƒ¥ãƒ¼ ie6 */
 html*div#navi-side div.waku-area{
   margin-top: 0px;
   margin-bottom: 0px;
@@ -498,7 +498,7 @@ div#navi-side div.waku-area hr.sideber{
   border-left: 0px solid #000000;
 	margin-bottom:10px;
 }
-/* ƒTƒCƒhƒƒjƒ…[ firefox ns7 */
+/* ã‚µã‚¤ãƒ‰ãƒ¡ãƒ‹ãƒ¥ãƒ¼ firefox ns7 */
 :root div#navi-side div.waku-area{
   margin-top: 0px;
   margin-bottom: 0px;
@@ -561,7 +561,7 @@ p.sidetext{
 	top:-5px;
 	left:0px;
 }
-/* ƒtƒbƒ^[
+/* ãƒ•ãƒƒã‚¿ãƒ¼
 ---------------------------------------------------- */
 #footer{
 	clear:both;
@@ -594,7 +594,7 @@ html*div#footer{
 	top:0px;
 	left:-6px;
 }
-/* ƒƒCƒ“‹¤’Ê
+/* ãƒ¡ã‚¤ãƒ³å…±é€š
 ---------------------------------------------------- */
 #main{
   width:620px;
@@ -745,7 +745,7 @@ div#main div.waku-bottom{
   border-bottom: 0px solid #000000;
   border-left: 0px solid #000000;
 }
-/* ƒƒCƒ“ƒgƒbƒv
+/* ãƒ¡ã‚¤ãƒ³ãƒˆãƒƒãƒ—
 ---------------------------------------------------- */
 .waku-up{
 	position:relative;
@@ -936,7 +936,7 @@ html*span.info-text01{
 	left:0px
 }
 
-/* ƒƒCƒ“ƒ{ƒbƒNƒX */
+/* ãƒ¡ã‚¤ãƒ³ãƒœãƒƒã‚¯ã‚¹ */
 .box-info-wrap{
 	width:580px;
 	position:relative;
@@ -1147,7 +1147,7 @@ html*div.box02{
 	left:0px;
 }
 
-/* ƒTƒCƒgƒ}ƒbƒv
+/* ã‚µã‚¤ãƒˆãƒãƒƒãƒ—
 ---------------------------------------------------- */
 .waku-sitemap{
 	position:relative;
@@ -1242,7 +1242,7 @@ html*div.box-sitemap hr{
 	width:200px;
 }
 
-/* ‹K–ñ
+/* è¦ç´„
 ---------------------------------------------------- */
 .box-rules{
 	text-align:left;
@@ -1295,7 +1295,7 @@ html*div.box-rules{
 
 
 
-/* ‰^‰c
+/* é‹å–¶
 ---------------------------------------------------- */
 .box-companyprofile{
 	font-size: small;
@@ -1364,7 +1364,7 @@ table.t-unei th{
 	width:450px;
 	height:2px;
 }
-/* ‚¨–â‚¢‡‚í‚¹
+/* ãŠå•ã„åˆã‚ã›
 ---------------------------------------------------- */
 .waku-contact{
 	position:relative;
@@ -1595,7 +1595,7 @@ html*div.box-contact03{
 	left:0px;
 }
 
-/* ƒMƒ‹w“ü
+/* ã‚®ãƒ«è³¼å…¥
 ---------------------------------------------------- */
 .waku-buygil{
 	position:relative;
@@ -1638,7 +1638,7 @@ table.t-buygil th{
 	text-align:center;
 	font-size:90%;
 }	
-/* ”ƒæ
+/* è²·å–
 ---------------------------------------------------- */
 .box-sell{
 	text-align:left;
@@ -1705,7 +1705,7 @@ html*div.sellgill-box03{
 	font-weight: bold;
 }
 
-/* ƒKƒCƒh
+/* ã‚¬ã‚¤ãƒ‰
 ---------------------------------------------------- */
 .box-guide{
 	text-align:left;
@@ -1995,7 +1995,7 @@ ul.news-list{
 	top:-5px;
 	left:5px
 }
-/* ‚Í‚¶‚ß‚É
+/* ã¯ã˜ã‚ã«
 ---------------------------------------------------- */
 .main-begin.box03{
 	margin-bottom:25px;
@@ -2058,7 +2058,7 @@ table.t-begin th{
 	font-size: 80%;
 	color: #FF0000;
 }
-/* ƒ‚ƒoƒCƒ‹
+/* ãƒ¢ãƒã‚¤ãƒ«
 ---------------------------------------------------- */
 div.box-mobile div.box07{
 	text-align:left;
@@ -2096,7 +2096,7 @@ html*div.box-mobile div.box07{
   width:620px;
   height:39px
 }
-/* w“üƒKƒCƒh
+/* è³¼å…¥ã‚¬ã‚¤ãƒ‰
 ---------------------------------------------------- */
 .box-guidebuy{
 	text-align:center;
@@ -2143,7 +2143,7 @@ div.box-guidebuy div.box07{
 	font-size:small;
 }
 
-/* ”ƒæƒKƒCƒh
+/* è²·å–ã‚¬ã‚¤ãƒ‰
 ---------------------------------------------------- */
 .box-guidesell{
 	text-align:center;
@@ -2172,7 +2172,7 @@ div.box-guidebuy div.box07{
   border-bottom: 0px solid #000000;
   border-left: 0px solid #000000;
 }
-/* ‹âsƒKƒCƒh
+/* éŠ€è¡Œã‚¬ã‚¤ãƒ‰
 ---------------------------------------------------- */
 .box-bank{
 	text-align:left;
@@ -2296,7 +2296,7 @@ html*div.bank-guide-custom-box03{
 	margin-top: 6px;
 }
 
-/* ƒNƒŒƒWƒbƒgƒKƒCƒh
+/* ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚¬ã‚¤ãƒ‰
 ---------------------------------------------------- */
 /* firefox */
 div.box-credit div.box07{
@@ -2381,7 +2381,7 @@ html*div.credit-box03{
 	font-size: small;
 }
 
-/* Œg‘ÑƒKƒCƒh
+/* æºå¸¯ã‚¬ã‚¤ãƒ‰
 ---------------------------------------------------- */
 .under-arrow{
 	margin-left:10px;
@@ -2476,7 +2476,7 @@ html*div.credit-box03{
 .under{
 	text-decoration:underline;
 }
-/* ƒGƒ“ƒhƒNƒŠƒA
+/* ã‚¨ãƒ³ãƒ‰ã‚¯ãƒªã‚¢
 ---------------------------------------------------- */
 .end{
 	clear:both;
@@ -2486,10 +2486,10 @@ html*div.credit-box03{
 	padding:0px;
 }
 
-/* ‚±‚±‚©‚ç‚e‚`‚pê—p
+/* ã“ã“ã‹ã‚‰ï¼¦ï¼¡ï¼±å°‚ç”¨
 ---------------------------------------------------- */
 .toriaezu{
-@position:relative;
+ã€€position:relative;
 	top:0px;
 	left:23px;
 }

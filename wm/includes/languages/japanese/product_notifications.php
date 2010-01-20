@@ -10,25 +10,25 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE_1', '���������');
-define('NAVBAR_TITLE_2', '����åפ���Τ��Τ餻');
-define('HEADING_TITLE', '����åפ���Τ��Τ餻');
+define('NAVBAR_TITLE_1', 'アカウント');
+define('NAVBAR_TITLE_2', 'ショップからのお知らせ');
+define('HEADING_TITLE', 'ショップからのお知らせ');
 
 define('TEXT_PRODUCT_NOTIFICATIONS_INTRODUCTION',
-'���ʤ�����������ʤκǿ�������Żҥ᡼��Ǥ��Ϥ����륵���ӥ��Ǥ���<br>
-�ò����ʤʤɤΤ����ʾ���⤪�Τ餻���Ƥ��ޤ��Τǡ��������Ѥ���������');
+'あなたが選んだ商品の最新情報を電子メールでお届けするサービスです。<br>
+特価商品などのお得な情報もお知らせしていますので、是非ご利用ください。');
 
-define('HEADING_GLOBAL_PRODUCT_NOTIFICATIONS', '�������ʤΤ��Τ餻�� �ˤĤ���');
-define('HEADING_PRODUCT_NOTIFICATIONS', '�ؾ��ʤ��ȤΤ��Τ餻�� �ˤĤ���');
+define('HEADING_GLOBAL_PRODUCT_NOTIFICATIONS', '『全商品のお知らせ』 について');
+define('HEADING_PRODUCT_NOTIFICATIONS', '『商品ごとのお知らせ』 について');
 
-define('TEXT_GLOBAL_PRODUCT_NOTIFICATIONS_DISABLED', '�������ʤΤ��Τ餻�٤ϡ����� <b>[���Τ餻���ʤ�]</b> ����ˤʤäƤ��ޤ���');
-define('TEXT_GLOBAL_PRODUCT_NOTIFICATIONS_ENABLED', '�������ʤΤ��Τ餻�٤ϡ����� <b>[���Τ餻����]</b> ����ˤʤäƤ��ޤ���');
+define('TEXT_GLOBAL_PRODUCT_NOTIFICATIONS_DISABLED', '『全商品のお知らせ』は、現在 <b>[お知らせしない]</b> 設定になっています。');
+define('TEXT_GLOBAL_PRODUCT_NOTIFICATIONS_ENABLED', '『全商品のお知らせ』は、現在 <b>[お知らせする]</b> 設定になっています。');
 
-define('TEXT_GLOBAL_PRODUCT_NOTIFICATIONS_DESCRIPTION_DISABLED', '�����ʤˤĤ��ƤΤ��Τ餻���˾��������ϡ����Υ��ץ���������å����� <b>[��������]</b> �򲡤��Ƥ���������');
-define('TEXT_GLOBAL_PRODUCT_NOTIFICATIONS_DESCRIPTION_ENABLED', '�����ʤˤĤ��ƤΤ��Τ餻���˾����ʤ����ϡ����Υ��ץ����Υ����å���Ϥ����� <b>[��������]</b> �򲡤��Ƥ���������');
+define('TEXT_GLOBAL_PRODUCT_NOTIFICATIONS_DESCRIPTION_DISABLED', '全商品についてのお知らせを希望される方は、下のオプションをチェックして <b>[更新する]</b> を押してください。');
+define('TEXT_GLOBAL_PRODUCT_NOTIFICATIONS_DESCRIPTION_ENABLED', '全商品についてのお知らせを希望されない方は、下のオプションのチェックをはずして <b>[更新する]</b> を押してください。');
 
-define('TEXT_PRODUCT_NOTIFICATIONS_LIST', '���ʤ������Τ餻���˾�������ʤ�������ɽ������ޤ���<br>
-���Τ餻���˾���ʤ����ʤˤĤ��Ƥϡ����ʤ�����å����� <b>[���Τ餻���ä�]</b> �򲡤��Ƥ���������');
+define('TEXT_PRODUCT_NOTIFICATIONS_LIST', 'あなたがお知らせを希望した商品が、下に表示されます。<br>
+お知らせを希望しない商品については、商品をチェックして <b>[お知らせを取消す]</b> を押してください。');
 
-define('TEXT_ENABLE_GLOBAL_NOTIFICATIONS', '���٤Ƥξ��ʤΤ��Τ餻�����ä��ߤ�����');
+define('TEXT_ENABLE_GLOBAL_NOTIFICATIONS', 'すべての商品のお知らせを送って欲しい。');
 ?>

@@ -1,14 +1,14 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://ultimaonline.jp/" class="blank" rel='nofollow'><span>Ultima Onlinne ╕°╝░е╡еде╚</span></a></li>
-<li><a href="http://www.japan.ea.com/hajiuo/index.phtml" class="blank" rel='nofollow'><span>д╧д╕дсд╞д╬ежеые╞еге▐екеєещедеє</span></a></li>
-<li><a href="http://dog-arufa.hiho.jp/uo/" class="blank" rel='nofollow'><span>ежеые╞еге▐екеєещедеє ╛Ё╩є</span></a></li>
-<li><a href="http://uoindex.com/" class="blank" rel='nofollow'><span>UO е╡б╝е┴еиеєе╕еє</span></a></li>
-<li><a href="http://www5a.biglobe.ne.jp/~parari/uo/" class="blank" rel='nofollow'><span>ежеые╞еге▐екеєещедеє е╤ещеъе╖еуеє</span></a></li>
-<li><a href="http://www31.atwiki.jp/uo99/" class="blank" rel='nofollow'><span>ежеые╞еге▐екеєещедеє ┐ж╢╚░╞╞т╜ъ</span></a></li>
-<li><a href="http://dog-arufa.hiho.jp/uo-net/" class="blank" rel='nofollow'><span>ежеые╞еге▐екеєещедеє ╝ш░·╖╟╝и╚─</span></a></li>
-<li><a href="http://dog-arufa.hiho.jp/Flash/skill/skill.html" class="blank" rel='nofollow'><span>UO е╣енеые╖е▀ехеьб╝е┐б╝</span></a></li>
-<li><a href="http://www.rainylain.jp/sosaria/bbs/young/wforum.cgi" class="blank" rel='nofollow'><span>ежеые╞еге▐екеєещедеє ╜щ┐┤╝╘BBS</span></a></li>
-<li><a href="http://www.mmonavi.com/modules/game/239.html" class="blank"><span>Ultima Online ╛Ё╩єе╡еде╚</span></a></li>
-<li><a href="http://www.hotgame.co.jp/" class="blank"><span>UO ╖╟╝и╚─</span></a></li>
+<li><a href="http://ultimaonline.jp/" class="blank" rel='nofollow'><span>Ultima Onlinne хЕмх╝ПуВ╡уВдуГИ</span></a></li>
+<li><a href="http://www.japan.ea.com/hajiuo/index.phtml" class="blank" rel='nofollow'><span>уБпуБШуВБуБжуБоуВжуГлуГЖуВгуГЮуВкуГ│уГйуВдуГ│</span></a></li>
+<li><a href="http://dog-arufa.hiho.jp/uo/" class="blank" rel='nofollow'><span>уВжуГлуГЖуВгуГЮуВкуГ│уГйуВдуГ│ цГЕха▒</span></a></li>
+<li><a href="http://uoindex.com/" class="blank" rel='nofollow'><span>UO уВ╡уГ╝уГБуВиуГ│уВ╕уГ│</span></a></li>
+<li><a href="http://www5a.biglobe.ne.jp/~parari/uo/" class="blank" rel='nofollow'><span>уВжуГлуГЖуВгуГЮуВкуГ│уГйуВдуГ│ уГСуГйуГкуВ╖уГгуГ│</span></a></li>
+<li><a href="http://www31.atwiki.jp/uo99/" class="blank" rel='nofollow'><span>уВжуГлуГЖуВгуГЮуВкуГ│уГйуВдуГ│ шБ╖ценцбИхЖЕцЙА</span></a></li>
+<li><a href="http://dog-arufa.hiho.jp/uo-net/" class="blank" rel='nofollow'><span>уВжуГлуГЖуВгуГЮуВкуГ│уГйуВдуГ│ хПЦх╝ХцО▓чд║цЭ┐</span></a></li>
+<li><a href="http://dog-arufa.hiho.jp/Flash/skill/skill.html" class="blank" rel='nofollow'><span>UO уВ╣уВнуГлуВ╖уГЯуГеуГмуГ╝уВ┐уГ╝</span></a></li>
+<li><a href="http://www.rainylain.jp/sosaria/bbs/young/wforum.cgi" class="blank" rel='nofollow'><span>уВжуГлуГЖуВгуГЮуВкуГ│уГйуВдуГ│ хИЭх┐ГшАЕBBS</span></a></li>
+<li><a href="http://www.mmonavi.com/modules/game/239.html" class="blank"><span>Ultima Online цГЕха▒уВ╡уВдуГИ</span></a></li>
+<li><a href="http://www.hotgame.co.jp/" class="blank"><span>UO цО▓чд║цЭ┐</span></a></li>
 </ul>

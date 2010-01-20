@@ -1,9 +1,9 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
-  define('MODULE_METASEO_POPUP_SEARCH_HELP_TEXT_TITLE', '¾ÜºÙ¸¡º÷¤Î»È¤¤Êý');
+  define('MODULE_METASEO_POPUP_SEARCH_HELP_TEXT_TITLE', 'è©³ç´°æ¤œç´¢ã®ä½¿ã„æ–¹');
   define('MODULE_METASEO_POPUP_SEARCH_HELP_TEXT_EXPLAIN', 'EXPLAIN');
-  define('MODULE_METASEO_POPUP_SEARCH_HELP_TEXT_DESCRIPTION', '¾ÜºÙ¸¡º÷¤Î»È¤¤Êý¥Ú¡¼¥¸¤ÎSEO');
+  define('MODULE_METASEO_POPUP_SEARCH_HELP_TEXT_DESCRIPTION', 'è©³ç´°æ¤œç´¢ã®ä½¿ã„æ–¹ãƒšãƒ¼ã‚¸ã®SEO');
 ?>

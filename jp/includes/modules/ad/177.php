@@ -3,11 +3,11 @@
 ?>
 <ul class="r_c_links_ul">
 <li><a href="http://psu.fei-yen.jp/wiki/html/" rel='nofollow' class="blank">PSU Wiki</a></li>
-<li><a href="http://psu.riroa.com/" rel='nofollow' class="blank">PSU ╣╢╬мдсдтдсдте╟б╝е┐</a></li>
-<li><a href="http://www.hotgame.co.jp/" rel='nofollow' class="blank">екеєещедеєе▓б╝ер╛Ё╩є</a></li>
-<li><a href="http://psu.x0.com/" rel='nofollow' class="blank">PSUд╬╣╢╬м╛Ё╩є</a></li>
-<li><a href="http://www.mmonavi.com/modules/game/255.html" rel='nofollow' class="blank">PSUд╦д─ддд╞</a></li>
-<li><a href="http://gamekouryaku.com/psu/" rel='nofollow' class="blank">е╒ебеєе┐е╖б╝е╣е┐б╝еце╦е╨б╝е╣╣╢╬мемеде╔</a></li>
-<li><a href="http://www.item-mart.com/item/psu/" rel='nofollow' class="blank">PSUд╬еведе╞ер┴ъ╛ь</a></li>
-<li><a href="http://www.kingscourt.jp/psuroadmap/" rel='nofollow' class="blank">е╒ебеєе┐е╖б╝е╣е┐б╝еце╦е╨б╝е╣д╬е▐е├е╫</a></li>
+<li><a href="http://psu.riroa.com/" rel='nofollow' class="blank">PSU цФ╗чХеуВБуВВуВБуВВуГЗуГ╝уВ┐</a></li>
+<li><a href="http://www.hotgame.co.jp/" rel='nofollow' class="blank">уВкуГ│уГйуВдуГ│уВ▓уГ╝уГацГЕха▒</a></li>
+<li><a href="http://psu.x0.com/" rel='nofollow' class="blank">PSUуБоцФ╗чХецГЕха▒</a></li>
+<li><a href="http://www.mmonavi.com/modules/game/255.html" rel='nofollow' class="blank">PSUуБлуБдуБДуБж</a></li>
+<li><a href="http://gamekouryaku.com/psu/" rel='nofollow' class="blank">уГХуВбуГ│уВ┐уВ╖уГ╝уВ╣уВ┐уГ╝уГжуГЛуГРуГ╝уВ╣цФ╗чХеуВмуВдуГЙ</a></li>
+<li><a href="http://www.item-mart.com/item/psu/" rel='nofollow' class="blank">PSUуБоуВвуВдуГЖуГачЫ╕ха┤</a></li>
+<li><a href="http://www.kingscourt.jp/psuroadmap/" rel='nofollow' class="blank">уГХуВбуГ│уВ┐уВ╖уГ╝уВ╣уВ┐уГ╝уГжуГЛуГРуГ╝уВ╣уБоуГЮуГГуГЧ</a></li>
 </ul>

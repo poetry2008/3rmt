@@ -39,13 +39,14 @@
   }
    //------ SEO TUNING  -----//
 
-  $seo_category_query = tep_db_query("select categories_name,seo_name,seo_description_".ABBR_SITENAME.",categories_image3,categories_meta_text,categories_header_text_" . ABBR_SITENAME . ",categories_footer_text_" . ABBR_SITENAME . ",text_information_" . ABBR_SITENAME . ",meta_keywords_" . ABBR_SITENAME . ",meta_description_" . ABBR_SITENAME . ", categories_id from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '".$current_category_id."' and language_id='" . $languages_id . "'");
+  $seo_category_query = tep_db_query("select categories_name,seo_name,seo_description,categories_image3,categories_meta_text,categories_header_text,categories_footer_text,text_information,meta_keywords,meta_description, categories_id from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '".$current_category_id."' and language_id='" . $languages_id . "'");
   $seo_category = tep_db_fetch_array($seo_category_query);
   
   $seo_manufacturers_query = tep_db_query("select manufacturers_id, manufacturers_name from " . TABLE_MANUFACTURERS . " where manufacturers_id = '".$HTTP_GET_VARS['manufacturers_id']."'");
   $seo_manufacturers = tep_db_fetch_array($seo_manufacturers_query);
   
 
+   if (!isset($HTTP_GET_VARS['tags_id'])) $HTTP_GET_VARS['tags_id'] = NULL;// del notice 
   $seo_tags_query = tep_db_query("select * from ". TABLE_TAGS . " where tags_id = '".$HTTP_GET_VARS['tags_id']."'");
   $seo_tags = tep_db_fetch_array($seo_tags_query);  
   //------ SEO TUNING  -----//
@@ -69,6 +70,7 @@
 			</td>
 			<!-- body_text //-->
 <?php
+if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;//del notice
   if ($category_depth == 'nested') {
     $category_query = tep_db_query("select cd.categories_name, c.categories_image from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where c.categories_id = '" . $current_category_id . "' and cd.categories_id = '" . $current_category_id . "' and cd.language_id = '" . $languages_id . "'");
     $category = tep_db_fetch_array($category_query);
@@ -82,7 +84,7 @@
        echo '<h1 class="pageHeading">'.$seo_manufacturers['manufacturers_name'].'</h1>';
       }
 ?> 
-			<p class="comment"><?php echo $seo_category['categories_header_text_' . ABBR_SITENAME]; //seo•’•Ï°º•∫ ?></p>
+			<p class="comment"><?php echo $seo_category['categories_header_text']; //seo„Éï„É¨„Éº„Ç∫ ?></p>
             <div class="comment">
 				<table border="0" width="100%" cellspacing="3" cellpadding="3" summary=""> 
 					<tr align="center">
@@ -119,23 +121,21 @@
 					</tr>
 				</table>
             </div>
-			<p class="comment"><?php echo $seo_category['categories_footer_text_' . ABBR_SITENAME]; //seo•’•Ï°º•∫ ?></p>
+			<p class="comment"><?php echo $seo_category['categories_footer_text']; //seo„Éï„É¨„Éº„Ç∫ ?></p>
             <p class="pageBottom"></p>
 			<?php $new_products_category_id = $current_category_id; include(DIR_WS_MODULES .'new_products2.php'); ?>
 <?php  
 	if (isset($cPath_array)) {
-		if ($seo_category['seo_description_' . ABBR_SITENAME]) {
-			echo '<h3 class="pageHeading">' . $seo_category['seo_name'] . '§À§ƒ§§§∆</h3>' . "\n";
-			echo '<p class="comment">' . $seo_category['seo_description_'.ABBR_SITENAME] . '</p>' . "\n"; //seo•’•Ï°º•∫
+		if ($seo_category['seo_description']) {
+			echo '<h3 class="pageHeading">' . $seo_category['seo_name'] . '„Å´„Å§„ÅÑ„Å¶</h3>' . "\n";
+			echo '<p class="comment">' . $seo_category['seo_description'] . '</p>' . "\n"; //seo„Éï„É¨„Éº„Ç∫
 ?>
         <p class="pageBottom"></p>
 <?php
 		}
 ?>
-<?php  if (!empty($seo_category['text_information_'.ABBR_SITENAME])) {
-		//echo '<h1 class="pageHeading">' . $seo_category['seo_name'] . '</h1>';
-		//echo '<p class="comment">' . $seo_category['text_information_'.ABBR_SITENAME] . "</p>\n"; //seo•’•Ï°º•∫
-		echo $seo_category['text_information_'.ABBR_SITENAME];
+<?php  if (!empty($seo_category['text_information'])) {
+		echo $seo_category['text_information'];
 ?>
         <p class="pageBottom"></p>
 <?php 
@@ -190,6 +190,7 @@
 
      $listing_sql = $products_query;
 
+     if (!isset($HTTP_GET_VARS['sort'])) $HTTP_GET_VARS['sort'] = NULL;//del notice
   if ( (!$HTTP_GET_VARS['sort']) || (!preg_match('/[1-9][ad]/', $HTTP_GET_VARS['sort'])) || (substr($HTTP_GET_VARS['sort'],0,1) > sizeof($column_list)) ) {
     for ($col=0, $n=sizeof($column_list); $col<$n; $col++) {
       if ($column_list[$col] == 'PRODUCT_LIST_NAME') {
@@ -281,7 +282,7 @@
           $select_column_list .= 'p.products_model';
           break;
         case 'PRODUCT_LIST_NAME':
-          $select_column_list .= 'pd.products_name,pd.products_description_'.ABBR_SITENAME;
+          $select_column_list .= 'pd.products_name,pd.products_description';
           break;
         case 'PRODUCT_LIST_MANUFACTURER':
           $select_column_list .= 'm.manufacturers_name';
@@ -339,6 +340,7 @@
       $filterlist_sql= "select distinct m.manufacturers_id as id, m.manufacturers_name as name from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " . TABLE_MANUFACTURERS . " m where p.products_status = '1' and p.manufacturers_id = m.manufacturers_id and p.products_id = p2c.products_id and p2c.categories_id = '" . $current_category_id . "' order by m.manufacturers_name";
     }
 
+    if (!isset($HTTP_GET_VARS['sort'])) $HTTP_GET_VARS['sort'] = NULL;
     if ( (!$HTTP_GET_VARS['sort']) || (!ereg('[1-9][ad]', $HTTP_GET_VARS['sort'])) || (substr($HTTP_GET_VARS['sort'],0,1) > sizeof($column_list)) ) {
       for ($col=0, $n=sizeof($column_list); $col<$n; $col++) {
         if ($column_list[$col] == 'PRODUCT_LIST_NAME') {
@@ -389,17 +391,17 @@
 		echo HEADING_TITLE;
 	}
 ?></h1>
-		<div class="comment_long"><?php echo $seo_category['categories_header_text_' . ABBR_SITENAME]; //seo•’•Ï°º•∫ ?>
+		<div class="comment_long"><?php echo $seo_category['categories_header_text']; //seo„Éï„É¨„Éº„Ç∫ ?>
 		<h2 class="line"><?php
 	if($HTTP_GET_VARS['cPath']) {
 		$categories_path = explode('_', $HTTP_GET_VARS['cPath']);
 
-		//¬Á•´•∆•¥•Í§Œ≤Ë¡¸§Ú ÷§π
+		//Â§ß„Ç´„ÉÜ„Ç¥„É™„ÅÆÁîªÂÉè„ÇíËøî„Åô
 		$_categories_query = tep_db_query("select categories_name from categories_description where categories_id = '".$categories_path[0]."' and language_id = '".$languages_id."'");
 		$_categories = tep_db_fetch_array($_categories_query);
 		echo $_categories['categories_name'];
 	} else {
-		echo 'RMT°ß•≤°º•‡ƒÃ≤ﬂ°¶•¢•§•∆•‡°¶•¢•´•¶•Û•»';
+		echo 'RMTÔºö„Ç≤„Éº„É†ÈÄöË≤®„Éª„Ç¢„Ç§„ÉÜ„É†„Éª„Ç¢„Ç´„Ç¶„É≥„Éà';
 	}
  
 ?></h2>
@@ -413,7 +415,7 @@
 	$colors_title_query = tep_db_query("select color_name from ".TABLE_COLOR." where color_id = '".(int)$HTTP_GET_VARS['colors']."'");
 	$colors_title = tep_db_fetch_array($colors_title_query);
 	
-	$listing_sql = "select pd.products_name, p.products_image, cp.color_id, cp.color_image, p.products_id, p.manufacturers_id, p.products_price, p.products_tax_class_id, IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, IF(s.status, s.specials_new_products_price, p.products_price) as final_price, p.products_quantity, pd.products_description_".ABBR_SITENAME." from " . TABLE_PRODUCTS_DESCRIPTION . " pd, ".TABLE_COLOR_TO_PRODUCTS." cp, " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id where p.products_status = '1' and p.products_id = p2c.products_id and pd.products_id = p2c.products_id and pd.language_id = '" . $languages_id . "' and cp.products_id = p.products_id and cp.color_id = '".(int)$HTTP_GET_VARS['colors']."'";
+	$listing_sql = "select pd.products_name, p.products_image, cp.color_id, cp.color_image, p.products_id, p.manufacturers_id, p.products_price, p.products_tax_class_id, IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, IF(s.status, s.specials_new_products_price, p.products_price) as final_price, p.products_quantity, pd.products_description from " . TABLE_PRODUCTS_DESCRIPTION . " pd, ".TABLE_COLOR_TO_PRODUCTS." cp, " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id where p.products_status = '1' and p.products_id = p2c.products_id and pd.products_id = p2c.products_id and pd.language_id = '" . $languages_id . "' and cp.products_id = p.products_id and cp.color_id = '".(int)$HTTP_GET_VARS['colors']."'";
 	$listing_sql .= " order by pd.products_name";
 	
 	//View

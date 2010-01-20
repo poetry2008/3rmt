@@ -1,11 +1,11 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://www.arad.jp/" class="blank" rel='nofollow'><span>евеще╔└я╡н ╕°╝░е╡еде╚</span></a></li>
-<li><a href="http://dnf.wikiwiki.jp/" class="blank" rel='nofollow'><span>евеще╔└я╡н Wiki</span></a></li>
-<li><a href="http://arad.gameexc.net/" class="blank" rel='nofollow'><span>евеще╔└я╡н ╣╢╬м╛Ё╩єWiki</span></a></li>
-<li><a href="http://jbbs.livedoor.jp/game/31585/" class="blank" rel='nofollow'><span>евеще╔└я╡н д╖д┐дщд╨╖╟╝и╚─</span></a></li>
-<li><a href="http://aradsenki001.web.fc2.com/" class="blank" rel='nofollow'><span>евеще╔└я╡н ╣╢╬мббб┴е╣енеы┐╢дъе╡еде╚б┴бб</span></a></li>
-<li><a href="http://www.mmo-station.com/mmo/arad/" class="blank" rel='nofollow'><span>евеще╔└я╡н ┴э╣ч╛Ё╩єбж╣╢╬ме╡еде╚</span></a></li>
-<li><a href="http://topo.hustle.ne.jp/" class="blank" rel='nofollow'><span>евеще╔└я╡н ┴ъ╛ь╕ж╡це╡еде╚</span></a></li>
-<li><a href="http://www.mmonavi.com/modules/game/114.html" class="blank"><span>евеще╔└я╡н ┴э╣ч╛Ё╩є</span></a></li>
+<li><a href="http://www.arad.jp/" class="blank" rel='nofollow'><span>уВвуГйуГЙцИжшиШ хЕмх╝ПуВ╡уВдуГИ</span></a></li>
+<li><a href="http://dnf.wikiwiki.jp/" class="blank" rel='nofollow'><span>уВвуГйуГЙцИжшиШ Wiki</span></a></li>
+<li><a href="http://arad.gameexc.net/" class="blank" rel='nofollow'><span>уВвуГйуГЙцИжшиШ цФ╗чХецГЕха▒Wiki</span></a></li>
+<li><a href="http://jbbs.livedoor.jp/game/31585/" class="blank" rel='nofollow'><span>уВвуГйуГЙцИжшиШ уБЧуБЯуВЙуБ░цО▓чд║цЭ┐</span></a></li>
+<li><a href="http://aradsenki001.web.fc2.com/" class="blank" rel='nofollow'><span>уВвуГйуГЙцИжшиШ цФ╗чХеуААуАЬуВ╣уВнуГлцМпуВКуВ╡уВдуГИуАЬуАА</span></a></li>
+<li><a href="http://www.mmo-station.com/mmo/arad/" class="blank" rel='nofollow'><span>уВвуГйуГЙцИжшиШ ч╖ПхРИцГЕха▒уГ╗цФ╗чХеуВ╡уВдуГИ</span></a></li>
+<li><a href="http://topo.hustle.ne.jp/" class="blank" rel='nofollow'><span>уВвуГйуГЙцИжшиШ чЫ╕ха┤чаФчй╢уВ╡уВдуГИ</span></a></li>
+<li><a href="http://www.mmonavi.com/modules/game/114.html" class="blank"><span>уВвуГйуГЙцИжшиШ ч╖ПхРИцГЕха▒</span></a></li>
 </ul>

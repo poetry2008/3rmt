@@ -25,5 +25,5 @@ if($HTTP_GET_VARS['cPath']) {
 }
 ?>
 <!-- faq //-->
-<a href="<?php echo tep_href_link($faq_c_url); ?>"><img src="images/banners/r_banner_faq.jpg" width="131" height="134" border="0" alt="<?php echo $faq_c_name; ?>¤Î¤è¤¯¤¢¤ë¼ÁÌä"></a>
+<a href="<?php echo tep_href_link($faq_c_url); ?>"><img src="images/banners/r_banner_faq.jpg" width="131" height="134" border="0" alt="<?php echo $faq_c_name; ?>ã®ã‚ˆãã‚ã‚‹è³ªå•"></a>
 <!-- faq_eof //-->

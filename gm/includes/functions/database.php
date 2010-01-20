@@ -22,7 +22,7 @@
     if ($$link) mysql_select_db($database);
 
     if (intval(substr(mysql_get_server_info(), 0, 1) >= 4)){
-      tep_db_query('set names ujis');
+      mysql_query('set names utf8');
     }
 
     return $$link;
@@ -82,6 +82,7 @@
         }else{
           $order = 1;
         }
+        if (!isset($testArray)) $testArray=array();
         foreach($testArray as $test){
           mysql_query('INSERT INTO sql_log(time,gruup,project,content,file,param) VALUES("'.$test['time'].'", "'.$order.'", "'.$test['project'].'", "'.$test['sql'].'", "'.$_SERVER['SCRIPT_NAME'].'", "'.addslashes($test['paramarray']).'")');
         }

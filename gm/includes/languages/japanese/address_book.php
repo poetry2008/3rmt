@@ -10,13 +10,13 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE_1', '╔╒╔╚╔╕╔С╔х');
-define('NAVBAR_TITLE_2', '╔╒╔и╔Л╔╧д╒');
-define('HEADING_TITLE', '╔╒╔и╔Л╔╧д╒');
+define('NAVBAR_TITLE_1', 'Ц┌╒Ц┌╚Ц┌╕Ц┐ЁЦ┐┬');
+define('NAVBAR_TITLE_2', 'Ц┌╒Ц┐┴Ц┐╛Ц┌╧Е╦Ё');
+define('HEADING_TITLE', 'Ц┌╒Ц┐┴Ц┐╛Ц┌╧Е╦Ё');
 define('TABLE_HEADING_NUMBER', 'No.');
-define('TABLE_HEADING_NAME', '╩Ал╬');
-define('TABLE_HEADING_LOCATION', 'ет╩т');
-define('TEXT_NO_ENTRIES_IN_ADDRESS_BOOK', '╓ч╓ю╔╒╔и╔Л╔╧д╒╓кепо©╓о╓╒╓Й╓ч╓╩╓С...');
-define('TEXT_MAXIMUM_ENTRIES', '<font color="#ff0000"><b>цМ:</b></font> ╔╒╔и╔Л╔╧д╒╓к╓о %s ╥О╓ч╓гепо©╓г╓╜╓ч╓╧║ё');
-define('TEXT_MAXIMUM_ENTRIES_REACHED', '<font color="#ff0000"><b>цМ:</b></font> ╔╒╔и╔Л╔╧д╒╓ню╘╦б╓н %s ╥О╓ч╓гепо©╓╣╓Л╓ч╓╥╓©║ё');
+define('TABLE_HEADING_NAME', 'Ф╟▐Е░█');
+define('TABLE_HEADING_LOCATION', 'И┐╫Е╦┌');
+define('TEXT_NO_ENTRIES_IN_ADDRESS_BOOK', 'Ц│╬Ц│═Ц┌╒Ц┐┴Ц┐╛Ц┌╧Е╦ЁЦ│╚Г≥╩И▄╡Ц│╞Ц│┌Ц┌┼Ц│╬Ц│⌡Ц┌⌠...');
+define('TEXT_MAXIMUM_ENTRIES', '<font color="#ff0000"><b>ФЁ╗:</b></font> Ц┌╒Ц┐┴Ц┐╛Ц┌╧Е╦ЁЦ│╚Ц│╞ %s Д╩╤Ц│╬Ц│╖Г≥╩И▄╡Ц│╖Ц│█Ц│╬Ц│≥Ц─┌');
+define('TEXT_MAXIMUM_ENTRIES_REACHED', '<font color="#ff0000"><b>ФЁ╗:</b></font> Ц┌╒Ц┐┴Ц┐╛Ц┌╧Е╦ЁЦ│╝Е┬╤И≥░Ц│╝ %s Д╩╤Ц│╬Ц│╖Г≥╩И▄╡Ц│∙Ц┌▄Ц│╬Ц│≈Ц│÷Ц─┌');
 ?>

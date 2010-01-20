@@ -211,6 +211,7 @@
 
       reset($this->contents);
       while (list($products_id, ) = each($this->contents)) {
+        if (!isset($this->contents[$products_id]['qty'])) $this->contents[$products_id]['qty'] = NULL;//del notice
         $qty = $this->contents[$products_id]['qty'];
 
 // products price
@@ -227,7 +228,7 @@
             $products_price = $specials['specials_new_products_price'];
           }
 		  
-		  # ÄÉ²Ã¥¹¥¿¡¼¥È ---------------------------------------
+		  # è¿½åŠ ã‚¹ã‚¿ãƒ¼ãƒˆ ---------------------------------------
 		  $wari_array = array();
 		  if(tep_not_null($product['products_small_sum'])) {
 		    $parray = explode(",", $product['products_small_sum']);
@@ -248,7 +249,7 @@
 			
 			$mae = $key;
 		  }
-		  # ÄÉ²Ã¥¨¥ó¥É -------------------------------------------
+		  # è¿½åŠ ã‚¨ãƒ³ãƒ‰ -------------------------------------------
 
           $this->total += tep_add_tax($products_price, $products_tax) * $qty;
           $this->weight += ($qty * $products_weight);
@@ -276,6 +277,7 @@
         while (list($option, $value) = each($this->contents[$products_id]['attributes'])) {
           $attribute_price_query = tep_db_query("select options_values_price, price_prefix from " . TABLE_PRODUCTS_ATTRIBUTES . " where products_id = '" . $products_id . "' and options_id = '" . $option . "' and options_values_id = '" . $value . "'");
           $attribute_price = tep_db_fetch_array($attribute_price_query);
+          if (!isset($attributes_price)) $attributes_price = NULL;//delnotice
           if ($attribute_price['price_prefix'] == '+') {
             $attributes_price += $attribute_price['options_values_price'];
           } else {
@@ -284,6 +286,7 @@
         }
       }
 
+      if (!isset($attributes_price)) $attributes_price = NULL;
       return $attributes_price;
     }
 
@@ -306,7 +309,7 @@
             $products_price = $specials['specials_new_products_price'];
           }
 		  
-		  # ÄÉ²Ã¥¹¥¿¡¼¥È ---------------------------------------
+		  # è¿½åŠ ã‚¹ã‚¿ãƒ¼ãƒˆ ---------------------------------------
 		  $wari_array = array();
 		  if(tep_not_null($products['products_small_sum'])) {
 		    $parray = explode(",", $products['products_small_sum']);
@@ -327,8 +330,9 @@
 			
 			$mae = $key;
 		  }
-		  # ÄÉ²Ã¥¨¥ó¥É -------------------------------------------
+		  # è¿½åŠ ã‚¨ãƒ³ãƒ‰ -------------------------------------------
 
+      if (!isset($this->contents[$products_id]['attributes'])) $this->contents[$products_id]['attributes']= NULL;//del notice
           $products_array[] = array('id' => $products_id,
                                     'name' => $products['products_name'],
                                     'model' => $products['products_model'],

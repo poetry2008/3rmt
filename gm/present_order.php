@@ -19,14 +19,14 @@
     tep_redirect(tep_href_link(FILENAME_PRESENT, 'error_message='.urlencode(TEXT_PRESENT_ERROR_NOT_SELECTED), 'SSL'));	
   }
 
-  //¥í¥°¥¤¥óºÑ¤ß¤Î¾ì¹ç¤Ï³ÎÇ§²èÌÌ¤Ø¥ê¥À¥¤¥ì¥¯¥È
+  //ãƒ­ã‚°ã‚¤ãƒ³æ¸ˆã¿ã®å ´åˆã¯ç¢ºèªç”»é¢ã¸ãƒªãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆ
   if(tep_session_is_registered('customer_id')) {
     $pc_id = $customer_id;
     tep_session_register('pc_id');
 	tep_redirect(tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.(int)$HTTP_GET_VARS['goods_id'], 'SSL'));
   }
   
-  //¥»¥Ã¥·¥ç¥óÆâ¤Ë¡Öpc_id¡×¤¬Æş¤Ã¤Æ¤¤¤¿¾ì¹ç¤Ï³ÎÇ§²èÌÌ¤Ø¥ê¥À¥¤¥ì¥¯¥È
+  //ã‚»ãƒƒã‚·ãƒ§ãƒ³å†…ã«ã€Œpc_idã€ãŒå…¥ã£ã¦ã„ãŸå ´åˆã¯ç¢ºèªç”»é¢ã¸ãƒªãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆ
   if(tep_session_is_registered('pc_id')) {
 	tep_redirect(tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.(int)$HTTP_GET_VARS['goods_id'], 'SSL'));
   }
@@ -34,7 +34,7 @@
  
   
   switch($HTTP_GET_VARS['action']) {
-    //´û²ñ°÷¥í¥°¥¤¥ó
+    //æ—¢ä¼šå“¡ãƒ­ã‚°ã‚¤ãƒ³
 	case 'login':
       $HTTP_POST_VARS['email_address'] = tep_an_zen_to_han($HTTP_POST_VARS['email_address']);
 
@@ -68,7 +68,7 @@
 		  $city = $address_result['entry_city'];
 		  $zone_id = $address_result['entry_zone_id'];
 
-	      //¥»¥Ã¥·¥ç¥óÆâ¤Ë¾ğÊó¤ò°ì»şÅª¤ËÁŞÆş
+	      //ã‚»ãƒƒã‚·ãƒ§ãƒ³å†…ã«æƒ…å ±ã‚’ä¸€æ™‚çš„ã«æŒ¿å…¥
 		  tep_session_register('firstname');
 		  tep_session_register('lastname');
 		  tep_session_register('email_address');
@@ -92,7 +92,7 @@
 	  
 	  break;
   
-    //¥²¥¹¥È¤Ş¤¿¤Ï¿·µ¬²ñ°÷
+    //ã‚²ã‚¹ãƒˆã¾ãŸã¯æ–°è¦ä¼šå“¡
 	case 'process':
 	  $gender = tep_db_prepare_input($HTTP_POST_VARS['gender']);
 	  $firstname = tep_db_prepare_input($HTTP_POST_VARS['firstname']);
@@ -258,9 +258,9 @@
 	  //-----------------------------------
 	  // end check
 	  if($error == false) {
-	    //²ñ°÷ÅĞÏ¿´õË¾¡Ê¥Ñ¥¹¥ï¡¼¥É¤¬ÆşÎÏ¤µ¤ì¤Æ¤¤¤¿¾ì¹ç¡Ë
+	    //ä¼šå“¡ç™»éŒ²å¸Œæœ›ï¼ˆãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãŒå…¥åŠ›ã•ã‚Œã¦ã„ãŸå ´åˆï¼‰
 	    if(!empty($password)) {
-	      //²ñ°÷ÅĞÏ¿½èÍı
+	      //ä¼šå“¡ç™»éŒ²å‡¦ç†
 		  $sql_data_array = array('customers_firstname' => $firstname,
 								  'customers_lastname' => $lastname,
 								  'customers_email_address' => $email_address,
@@ -313,7 +313,7 @@
 		  $pc_id = $customer_id;
 		  tep_session_register('pc_id');
 		  
-	      //¥»¥Ã¥·¥ç¥óÆâ¤Ë¾ğÊó¤ò°ì»şÅª¤ËÁŞÆş
+	      //ã‚»ãƒƒã‚·ãƒ§ãƒ³å†…ã«æƒ…å ±ã‚’ä¸€æ™‚çš„ã«æŒ¿å…¥
 		  tep_session_register('firstname');
 		  tep_session_register('lastname');
 		  tep_session_register('email_address');
@@ -326,12 +326,12 @@
 		  
 		  tep_redirect(tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.$goods_id, 'SSL'));
 	    } 
-	    //¥²¥¹¥È¡Ê³ºÅö¤¹¤ë²ó¤Î±şÊç¤Î¤ß¡Ë
+	    //ã‚²ã‚¹ãƒˆï¼ˆè©²å½“ã™ã‚‹å›ã®å¿œå‹Ÿã®ã¿ï¼‰
 	    else {
 	      $pc_id = 0;
 		  tep_session_register('pc_id');
 		  
-		  //¥»¥Ã¥·¥ç¥óÆâ¤Ë¾ğÊó¤ò°ì»şÅª¤ËÁŞÆş
+		  //ã‚»ãƒƒã‚·ãƒ§ãƒ³å†…ã«æƒ…å ±ã‚’ä¸€æ™‚çš„ã«æŒ¿å…¥
 		  tep_session_register('firstname');
 		  tep_session_register('lastname');
 		  tep_session_register('email_address');
@@ -398,9 +398,9 @@ function popupWindow(url) {
             </table></td>
           </tr>
           <tr class="box_des">
-            <td align="center" width="33%" class="checkoutBarCurrent">±şÊç¼Ô¾ğÊó</td>
-            <td align="center" width="33%" class="checkoutBarFrom">³ÎÇ§²èÌÌ</td>
-            <td align="center" width="33%" class="checkoutBarFrom">±şÊç´°Î»</td>
+            <td align="center" width="33%" class="checkoutBarCurrent">å¿œå‹Ÿè€…æƒ…å ±</td>
+            <td align="center" width="33%" class="checkoutBarFrom">ç¢ºèªç”»é¢</td>
+            <td align="center" width="33%" class="checkoutBarFrom">å¿œå‹Ÿå®Œäº†</td>
           </tr>
         </table></td>
       </tr>
@@ -426,7 +426,7 @@ function popupWindow(url) {
                             </noscript>
                             <?php //echo '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],NONSSL).'">' . tep_image(DIR_WS_IMAGES.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT) . '</a>'; ?>
                 </td>
-                <td class="main"><b><?php echo $present['title'] ; ?></b> &nbsp;&nbsp; ±şÊç´ü´Ö:<?php echo tep_date_long($present['start_date']) .'¡Á'. tep_date_long($present['limit_date']); ?> </td>
+                <td class="main"><b><?php echo $present['title'] ; ?></b> &nbsp;&nbsp; å¿œå‹ŸæœŸé–“:<?php echo tep_date_long($present['start_date']) .'ã€œ'. tep_date_long($present['limit_date']); ?> </td>
               </tr>
             </table></td>
           </tr>

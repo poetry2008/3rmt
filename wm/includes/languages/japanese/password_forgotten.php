@@ -10,20 +10,20 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE_1', '��������');
-define('NAVBAR_TITLE_2', '�ѥ���ɺ�ȯ��');
-define('HEADING_TITLE', '�ѥ���ɺ�ȯ�Լ�³��');
-define('ENTRY_FORGOTTEN_EMAIL_ADDRESS', '����Ͽ�Υ᡼�륢�ɥ쥹:'); // 2003.03.06 nagata Edit Japanese osCommerce
-define('TEXT_NO_EMAIL_ADDRESS_FOUND', '<font color="#ff0000"><b>������:</b></font> �����Ϥ��줿�᡼�륢�ɥ쥹�ϸ��Ĥ���ޤ���Ǥ������⤦�������Ϥ��Ƥ���������');
-define('EMAIL_PASSWORD_REMINDER_SUBJECT', STORE_NAME . '�ο������ѥ����');
+define('NAVBAR_TITLE_1', 'ログイン');
+define('NAVBAR_TITLE_2', 'パスワード再発行');
+define('HEADING_TITLE', 'パスワード再発行手続き');
+define('ENTRY_FORGOTTEN_EMAIL_ADDRESS', 'ご登録のメールアドレス:'); // 2003.03.06 nagata Edit Japanese osCommerce
+define('TEXT_NO_EMAIL_ADDRESS_FOUND', '<font color="#ff0000"><b>ご注意:</b></font> ご入力されたメールアドレスは見つかりませんでした。もう一度入力してください。');
+define('EMAIL_PASSWORD_REMINDER_SUBJECT', STORE_NAME . 'の新しいパスワード');
 define('EMAIL_PASSWORD_REMINDER_BODY',
-'�������ѥ���ɤ�ȯ�԰��꤬ ' . $REMOTE_ADDR . ' ���餢��ޤ�����' . "\n\n"
-. '���ʤ��� \'' . STORE_NAME . '\' �ؤο������ѥ���ɤ�' . "\n"
+'新しいパスワードの発行依頼が ' . $REMOTE_ADDR . ' からありました。' . "\n\n"
+. 'あなたの \'' . STORE_NAME . '\' への新しいパスワードは' . "\n"
 . '---------------------------------------------------------------------------' . "\n"
 . '   %s' . "\n"
 . '---------------------------------------------------------------------------' . "\n"
-. '�Ȥʤ�ޤ���' . "\n\n"
-. '���Υ᡼��˴ؤ��Ƥ����Ф����ʤ����ϡ�������ҤޤǤ�Ϣ������������' . "\n\n"
+. 'となります。' . "\n\n"
+. 'このメールに関してお心覚えがない場合は、至急当社までご連絡ください。' . "\n\n"
 . EMAIL_SIGNATURE);
-define('TEXT_PASSWORD_SENT', '�������ѥ���ɤ���Ͽ�Υ᡼�륢�ɥ쥹���������ޤ�����');
+define('TEXT_PASSWORD_SENT', '新しいパスワードをご登録のメールアドレスに送信しました。');
 ?>

@@ -1,13 +1,13 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://www.ragnarokonline.jp/" class="blank" rel='nofollow'><span>Ragnarok Online ╕°╝░е┌б╝е╕</span></a></li>
-<li><a href="http://seraphic-wish.net/ro-ragtime/" class="blank" rel='nofollow'><span>еще░е╩еэеп ╣╢╬ме╡еде╚ RAGtime</span></a></li>
-<li><a href="http://gemma.mmobbs.com/ragnarok/" class="blank" rel='nofollow'><span>Ragnarok Online╚─бўMMOBBS </span></a></li>
-<li><a href="http://www5.big.or.jp/~haya/rmc/" class="blank" rel='nofollow'><span>RO ╝ш░·╖╟╝и╚─ RMC</span></a></li>
-<li><a href="http://www.mmonavi.com/modules/game/86.html" class="blank"><span>еще░е╩еэепекеєещедеє ╜щ┐┤╝╘╣╢╬м╛Ё╩є</span></a></li>
-<li><a href="http://future.sgv417.jp/" class="blank" rel='nofollow'><span>RagnarokOnline ╠д╝┬┴їWiki</span></a></li>
-<li><a href="http://quest.rowiki.jp/" class="blank" rel='nofollow'><span>RO епеие╣е╚░╞╞т╜ъ</span></a></li>
-<li><a href="http://fanavi.net/ro/" class="blank" rel='nofollow'><span>еще░е╩еэепекеєещедеє ┴э╣ч╛Ё╩єе╡еде╚</span></a></li>
-<li><a href="http://at-x.net/" class="blank" rel='nofollow'><span>RO ▓┴│╩╛Ё╩єдэбг</span></a></li>
-<li><a href="http://www.hotgame.co.jp/" class="blank"><span>еще░е╩еэеп е╒ебеєе╡еде╚</span></a></li>
+<li><a href="http://www.ragnarokonline.jp/" class="blank" rel='nofollow'><span>Ragnarok Online хЕмх╝ПуГЪуГ╝уВ╕</span></a></li>
+<li><a href="http://seraphic-wish.net/ro-ragtime/" class="blank" rel='nofollow'><span>уГйуВ░уГКуГнуВп цФ╗чХеуВ╡уВдуГИ RAGtime</span></a></li>
+<li><a href="http://gemma.mmobbs.com/ragnarok/" class="blank" rel='nofollow'><span>Ragnarok OnlineцЭ┐я╝аMMOBBS </span></a></li>
+<li><a href="http://www5.big.or.jp/~haya/rmc/" class="blank" rel='nofollow'><span>RO хПЦх╝ХцО▓чд║цЭ┐ RMC</span></a></li>
+<li><a href="http://www.mmonavi.com/modules/game/86.html" class="blank"><span>уГйуВ░уГКуГнуВпуВкуГ│уГйуВдуГ│ хИЭх┐ГшАЕцФ╗чХецГЕха▒</span></a></li>
+<li><a href="http://future.sgv417.jp/" class="blank" rel='nofollow'><span>RagnarokOnline цЬкхоЯшгЕWiki</span></a></li>
+<li><a href="http://quest.rowiki.jp/" class="blank" rel='nofollow'><span>RO уВпуВиуВ╣уГИцбИхЖЕцЙА</span></a></li>
+<li><a href="http://fanavi.net/ro/" class="blank" rel='nofollow'><span>уГйуВ░уГКуГнуВпуВкуГ│уГйуВдуГ│ ч╖ПхРИцГЕха▒уВ╡уВдуГИ</span></a></li>
+<li><a href="http://at-x.net/" class="blank" rel='nofollow'><span>RO ф╛бца╝цГЕха▒уВНуАВ</span></a></li>
+<li><a href="http://www.hotgame.co.jp/" class="blank"><span>уГйуВ░уГКуГнуВп уГХуВбуГ│уВ╡уВдуГИ</span></a></li>
 </ul>

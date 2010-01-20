@@ -1,6 +1,6 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
   include('includes/application_top.php');
@@ -69,14 +69,14 @@
   if ($_SESSION['payment'] == 'convenience_store') {
     $convenience_sid = str_replace('-', "", $insert_id);
 	
-    $pay_comments = '¼è°ú¥³¡¼¥É' . $convenience_sid ."\n";
-	$pay_comments .= 'Í¹ÊØÈÖ¹æ:' . $HTTP_POST_VARS['convenience_store_zip_code'] ."\n";
-	$pay_comments .= '½»½ê1:' . $HTTP_POST_VARS['convenience_store_address1'] ."\n";
-	$pay_comments .= '½»½ê2:' . $HTTP_POST_VARS['convenience_store_address2'] ."\n";
-	$pay_comments .= '»á:' . $HTTP_POST_VARS['convenience_store_l_name'] ."\n";
-	$pay_comments .= 'Ì¾:' . $HTTP_POST_VARS['convenience_store_f_name'] ."\n";
-	$pay_comments .= 'ÅÅÏÃÈÖ¹æ:' . $HTTP_POST_VARS['convenience_store_tel'] ."\n";
-	$pay_comments .= 'ÀÜÂ³URL:' . tep_href_link('convenience_store_chk.php', 'sid=' . $convenience_sid, 'SSL');
+    $pay_comments = 'å–å¼•ã‚³ãƒ¼ãƒ‰' . $convenience_sid ."\n";
+	$pay_comments .= 'éƒµä¾¿ç•ªå·:' . $HTTP_POST_VARS['convenience_store_zip_code'] ."\n";
+	$pay_comments .= 'ä½æ‰€1:' . $HTTP_POST_VARS['convenience_store_address1'] ."\n";
+	$pay_comments .= 'ä½æ‰€2:' . $HTTP_POST_VARS['convenience_store_address2'] ."\n";
+	$pay_comments .= 'æ°:' . $HTTP_POST_VARS['convenience_store_l_name'] ."\n";
+	$pay_comments .= 'å:' . $HTTP_POST_VARS['convenience_store_f_name'] ."\n";
+	$pay_comments .= 'é›»è©±ç•ªå·:' . $HTTP_POST_VARS['convenience_store_tel'] ."\n";
+	$pay_comments .= 'æ¥ç¶šURL:' . tep_href_link('convenience_store_chk.php', 'sid=' . $convenience_sid, 'SSL');
 	$comments = $pay_comments ."\n".$comments;
   }
   
@@ -185,13 +185,13 @@
                           'comments' => $order->info['comments']);
   tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
   
-  # ÄÉ²ÃÊ¬¡ÊÇã¼è¾ğÊó¡Ë
+  # è¿½åŠ åˆ†ï¼ˆè²·å–æƒ…å ±ï¼‰
   if(tep_session_is_registered('bank_name')) {
-    $bbbank = TEXT_BANK_NAME . '¡§' . $bank_name . "\n";
-    $bbbank .= TEXT_BANK_SHITEN . '¡§' . $bank_shiten . "\n";
-    $bbbank .= TEXT_BANK_KAMOKU . '¡§' . $bank_kamoku . "\n";
-    $bbbank .= TEXT_BANK_KOUZA_NUM . '¡§' . $bank_kouza_num . "\n";
-    $bbbank .= TEXT_BANK_KOUZA_NAME . '¡§' . $bank_kouza_name;
+    $bbbank = TEXT_BANK_NAME . 'ï¼š' . $bank_name . "\n";
+    $bbbank .= TEXT_BANK_SHITEN . 'ï¼š' . $bank_shiten . "\n";
+    $bbbank .= TEXT_BANK_KAMOKU . 'ï¼š' . $bank_kamoku . "\n";
+    $bbbank .= TEXT_BANK_KOUZA_NUM . 'ï¼š' . $bank_kouza_num . "\n";
+    $bbbank .= TEXT_BANK_KOUZA_NAME . 'ï¼š' . $bank_kouza_name;
 
 	$sql_data_array = array('orders_id' => $insert_id, 
                             'orders_status_id' => $order->info['order_status'], 
@@ -237,11 +237,11 @@
         }
         tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = '" . $stock_left . "' where products_id = '" . tep_get_prid($order->products[$i]['id']) . "'");
         if ($stock_left < 1) {
-		  // ºß¸ËÀÚ¤ì¤Ç¤â¾¦ÉÊ¤ÏÉ½¼¨
+		  // åœ¨åº«åˆ‡ã‚Œã§ã‚‚å•†å“ã¯è¡¨ç¤º
 		  //tep_db_query("update " . TABLE_PRODUCTS . " set products_status = '0' where products_id = '" . tep_get_prid($order->products[$i]['id']) . "'");
-		    ########## ºß¸ËÀÚ¤ì¤Î¥á¡¼¥ëÄÌÃÎ¡¡##############
+		    ########## åœ¨åº«åˆ‡ã‚Œã®ãƒ¡ãƒ¼ãƒ«é€šçŸ¥ã€€##############
 		    if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
-                $zaiko_alart = '¾¦ÉÊÌ¾¡¡¡¡-¡¡¡¡¡¡·¿ÈÖ'."\n";
+                $zaiko_alart = 'å•†å“åã€€ã€€-ã€€ã€€ã€€å‹ç•ª'."\n";
 				$zaiko_alart .= tep_get_products_name(tep_get_prid($order->products[$i]['id'])).'('.$order->products[$i]['model'].')'."\n";
 				$zaiko_alart .= HTTPS_SERVER.'/admin/categories.php?search='.urlencode(tep_get_products_name(tep_get_prid($order->products[$i]['id'])))."\n\n";
 				//tep_mail('', SEND_EXTRA_ORDER_EMAILS_TO, STORE_OWNER_EMAIL_ADDRESS, ZAIKO_ALART_TITLE, ZAIKO_ARART_BODY.$zaiko_alart, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
@@ -309,13 +309,13 @@
         $attributes_values = tep_db_fetch_array($attributes);
 		
 		//---------------------------------------
-		// ¥ª¥×¥·¥ç¥ó¤Îºß¸Ë¿ô¸º½èÍı - 2005.09.20
+		// ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®åœ¨åº«æ•°æ¸›å‡¦ç† - 2005.09.20
 		//---------------------------------------
 		if (STOCK_LIMITED == 'true') {
 		  $zaiko = $attributes_values['products_at_quantity']-$order->products[$i]['qty'];
 		  tep_db_query("update ".TABLE_PRODUCTS_ATTRIBUTES." set products_at_quantity = '". $zaiko ."' where products_id = '" . tep_get_prid($order->products[$i]['id']) . "' and options_id = '" . $order->products[$i]['attributes'][$j]['option_id'] . "' and options_values_id = '" . $order->products[$i]['attributes'][$j]['value_id'] . "'");
 
-          //Á´¤Æ¤Î¥ª¥×¥·¥ç¥óÃÍ¤¬¡Ö0¡×Ã´¤Ã¤¿»şÅÀ¤Ç¾¦ÉÊ¤Î¥¹¥Æ¡¼¥¿¥¹¤ò¡Êfalse¤Ë¡Ë¹¹¿·
+          //å…¨ã¦ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³å€¤ãŒã€Œ0ã€æ‹…ã£ãŸæ™‚ç‚¹ã§å•†å“ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’ï¼ˆfalseã«ï¼‰æ›´æ–°
 		  $attributes_stock_check_query = tep_db_query("select * from ".TABLE_PRODUCTS_ATTRIBUTES." where products_id = '" . tep_get_prid($order->products[$i]['id']) . "'");
 		  $stock_cnt = 0;
 		  while($attributes_stock_check = tep_db_fetch_array($attributes_stock_check_query)) {
@@ -352,8 +352,8 @@
         }
         $products_ordered_attributes .= "\n" 
         . $attributes_values['products_options_name'] 
-        . str_repeat('¡¡',intval((18-strlen($attributes_values['products_options_name']))/2))
-        . '¡§' . $attributes_values['products_options_values_name'];
+        . str_repeat('ã€€',intval((18-strlen($attributes_values['products_options_name']))/2))
+        . 'ï¼š' . $attributes_values['products_options_values_name'];
       }
     }
 //------insert customer choosen option eof ----
@@ -361,130 +361,60 @@
     $total_tax += tep_calculate_tax($total_products_price, $products_tax) * $order->products[$i]['qty'];
     $total_cost += $total_products_price;
 
-    $products_ordered .= 'ÃíÊ¸¾¦ÉÊ¡¡¡¡¡¡¡¡¡¡¡§' . $order->products[$i]['name'];
+    $products_ordered .= 'æ³¨æ–‡å•†å“ã€€ã€€ã€€ã€€ã€€ï¼š' . $order->products[$i]['name'];
 	if(tep_not_null($order->products[$i]['model'])) {
 	  $products_ordered .= ' (' . $order->products[$i]['model'] . ')';
 	}
 	
-    $_product_info_query = tep_db_query("select p.products_id, pd.products_name, pd.products_attention_1,pd.products_attention_2,pd.products_attention_3,pd.products_attention_4,pd.products_attention_5,pd.products_description_".ABBR_SITENAME.", p.products_model, p.products_quantity, p.products_image,p.products_image2,p.products_image3, pd.products_url, p.products_price, p.products_tax_class_id, p.products_date_added, p.products_date_available, p.manufacturers_id, p.products_bflag, p.products_cflag, p.products_small_sum from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" . $order->products[$i]['id'] . "' and pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "'");
+    $_product_info_query = tep_db_query("select p.products_id, pd.products_name, pd.products_attention_1,pd.products_attention_2,pd.products_attention_3,pd.products_attention_4,pd.products_attention_5,pd.products_description, p.products_model, p.products_quantity, p.products_image,p.products_image2,p.products_image3, pd.products_url, p.products_price, p.products_tax_class_id, p.products_date_added, p.products_date_available, p.manufacturers_id, p.products_bflag, p.products_cflag, p.products_small_sum from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" . $order->products[$i]['id'] . "' and pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "'");
     tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_viewed = products_viewed+1 where products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and language_id = '" . $languages_id . "'");
     $product_info = tep_db_fetch_array($_product_info_query);
     $data1 = explode("//", $product_info['products_attention_1']);
 	
 	$products_ordered .= $products_ordered_attributes . "\n";
-	//$products_ordered .= '¸Ä¿ô          :' . $order->products[$i]['qty'] . (!empty($data1[0]) ? ' x '. $data1[1] : '') . "\n";
-	$products_ordered .= '¸Ä¿ô¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡§' . $order->products[$i]['qty'] . '¸Ä' . tep_get_full_count($order->products[$i]['qty'], $data1[1]) . "\n";
-	$products_ordered .= 'Ã±²Á¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡§' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
-	$products_ordered .= '¾®·×¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡§' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
+	//$products_ordered .= 'å€‹æ•°          :' . $order->products[$i]['qty'] . (!empty($data1[0]) ? ' x '. $data1[1] : '') . "\n";
+	$products_ordered .= 'å€‹æ•°ã€€ã€€ã€€ã€€ã€€ã€€ã€€ï¼š' . $order->products[$i]['qty'] . 'å€‹' . tep_get_full_count($order->products[$i]['qty'], $data1[1]) . "\n";
+	$products_ordered .= 'å˜ä¾¡ã€€ã€€ã€€ã€€ã€€ã€€ã€€ï¼š' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
+	$products_ordered .= 'å°è¨ˆã€€ã€€ã€€ã€€ã€€ã€€ã€€ï¼š' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
 	if(tep_not_null($chara)) {
-	  $products_ordered .= '¥­¥ã¥é¥¯¥¿¡¼Ì¾¡¡¡¡¡§' . $chara . "\n";
+	  $products_ordered .= 'ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åã€€ã€€ï¼š' . $chara . "\n";
 	}
 	$products_ordered .= "------------------------------------------\n";
 	if (tep_get_cflag_by_product_id($order->products[$i]['id'])) {
     	if (tep_get_bflag_by_product_id($order->products[$i]['id'])) {
-    		$products_ordered .= "¢¨ Åö¼Ò¥­¥ã¥é¥¯¥¿¡¼Ì¾¤Ï¡¢¤ª¼è°ú10Ê¬Á°¤Ş¤Ç¤ËÅÅ»Ò¥á¡¼¥ë¤Ë¤Æ¤ªÃÎ¤é¤»¤¤¤¿¤·¤Ş¤¹¡£\n\n";
+    		$products_ordered .= "â€» å½“ç¤¾ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åã¯ã€ãŠå–å¼•10åˆ†å‰ã¾ã§ã«é›»å­ãƒ¡ãƒ¼ãƒ«ã«ã¦ãŠçŸ¥ã‚‰ã›ã„ãŸã—ã¾ã™ã€‚\n\n";
     	} else {
-    		$products_ordered .= "¢¨ Åö¼Ò¥­¥ã¥é¥¯¥¿¡¼Ì¾¤Ï¡¢¤ª»ÙÊ§¤¤³ÎÇ§¸å¤ËÅÅ»Ò¥á¡¼¥ë¤Ë¤Æ¤ªÃÎ¤é¤»¤¤¤¿¤·¤Ş¤¹¡£\n\n";
+    		$products_ordered .= "â€» å½“ç¤¾ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åã¯ã€ãŠæ”¯æ‰•ã„ç¢ºèªå¾Œã«é›»å­ãƒ¡ãƒ¼ãƒ«ã«ã¦ãŠçŸ¥ã‚‰ã›ã„ãŸã—ã¾ã™ã€‚\n\n";
     	}
     }
-	
-	//$add_products_query = tep_db_query("select products_description_".ABBR_SITENAME." from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$order->products[$i]['id']."' and language_id = '" . $languages_id . "'");
-	//if(tep_db_num_rows($add_products_query)) {
-	//  $add_products = tep_db_fetch_array($add_products_query);
-	  // edit 2009.5.14 maker
-	  //$description = explode("|-#-|", $add_products['products_description_'.ABBR_SITENAME]);//maker
-	//  $description = $add_products['products_description_'.ABBR_SITENAME];
-	//  if(tep_not_null($description[6])) {
-	    //$products_ordered .= "\t" . '¥³¥á¥ó¥È' . "\n"; 
-	//    $products_ordered .= str_replace("\n", "\n", strip_tags($description[6])) . "\n"; 
-	//  }
-	//}
-		
-	//$products_ordered .= '------------------------------------------' . "\n";
-	//$products_ordered .= $order->products[$i]['qty'] . ' x ' . $order->products[$i]['name'] . ' (' . $order->products[$i]['model'] . ') = ' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . $products_ordered_attributes . "\n";
   }
 
-/*
-// lets start with the email confirmation
-// 2003.03.08 Edit Japanese osCommerce
-  //$email_order = (($language == 'japanese') ? STORE_NAME . EMAIL_TEXT_STORE_CONFIRMATION : STORE_NAME) . "\n" . 
-  $email_order = C_ORDER . "\n" . 
-				 EMAIL_SEPARATOR . "\n" . 
-                 EMAIL_TEXT_ORDER_NUMBER . ' ' . $insert_id . "\n" .
-                 EMAIL_TEXT_INVOICE_URL . ' ' . tep_href_link(FILENAME_ACCOUNT_HISTORY_INFO, 'order_id=' . $insert_id, 'SSL', false) . "\n" .
-                 EMAIL_TEXT_DATE_ORDERED . ' ' . strftime(DATE_FORMAT_LONG) . "\n\n";
-  if ($order->info['comments']) {
-    $email_order .= tep_db_output($order->info['comments']) . "\n\n";
-  }
-  $email_order .= EMAIL_TEXT_PRODUCTS . "\n" . 
-                  EMAIL_SEPARATOR . "\n" . 
-                  $products_ordered . 
-                  EMAIL_SEPARATOR . "\n";
-
-  for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
-    $email_order .= strip_tags($order_totals[$i]['title']) . ' ' . strip_tags($order_totals[$i]['text']) . "\n";
-  }
-  //Add point
-  if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && MODULE_ORDER_TOTAL_POINT_ADD_STATUS == '0') {
-    $email_order .= "\n" . TEXT_POINT_NOW . ' ' . (int)$get_point . ' P' . "\n";
-  }
-
-
-  if ($order->content_type != 'virtual') {
-    $email_order .= "\n" . EMAIL_TEXT_DELIVERY_ADDRESS . "\n" . 
-                    EMAIL_SEPARATOR . "\n" .
-                    tep_address_label($customer_id, $sendto, 0, '', "\n") . "\n";
-  }
-
-  $email_order .= "\n" . EMAIL_TEXT_BILLING_ADDRESS . "\n" .
-                  EMAIL_SEPARATOR . "\n" .
-                  tep_address_label($customer_id, $billto, 0, '', "\n") . "\n\n";
-  if (is_object($$payment)) {
-    $email_order .= EMAIL_TEXT_PAYMENT_METHOD . "\n" . 
-                    EMAIL_SEPARATOR . "\n";
-    $payment_class = $$payment;
-    $email_order .= $payment_class->title . "\n\n";
-    if ($payment_class->email_footer) { 
-      $email_order .= $payment_class->email_footer . "\n\n";
-    }
-  }
-*/
-
-  # ¥á¡¼¥ëËÜÊ¸À°·Á --------------------------------------
+  # ãƒ¡ãƒ¼ãƒ«æœ¬æ–‡æ•´å½¢ --------------------------------------
   $email_order = '';
-  /*if(tep_not_null(C_ORDER)) {
-    $email_order .= C_ORDER . "\n\n";
-  }*/
-  
-  /*
-  $otp = tep_db_query("select * from ".TABLE_ORDERS_TOTAL." where class = 'ot_point' and orders_id = '".$insert_id."'");
-  $discount = tep_db_fetch_array($otp);
-  $email_order .= '¢§¥İ¥¤¥ó¥È³ä°ú¡¡¡¡¡§' . strip_tags($discount['text']) . "\n";
-  */
   
   $otq = tep_db_query("select * from ".TABLE_ORDERS_TOTAL." where class = 'ot_total' and orders_id = '".$insert_id."'");
   $ot = tep_db_fetch_array($otq);
   
-  $email_order .= tep_get_fullname($order->customer['firstname'],$order->customer['lastname']) . 'ÍÍ' . "\n\n";
-  $email_order .= '¤³¤ÎÅÙ¤Ï¡¢' . STORE_NAME . '¤ò¤´ÍøÍÑ¤¤¤¿¤À¤­¡¢À¿¤Ë¤¢¤ê' . "\n";
-  $email_order .= '¤¬¤È¤¦¤´¤¶¤¤¤Ş¤¹¡£' . "\n";
-  $email_order .= '²¼µ­¤ÎÆâÍÆ¤Ë¤Æ¤´ÃíÊ¸¤ò¾µ¤ê¤Ş¤·¤¿¤Î¤Ç¡¢¤´³ÎÇ§¤¯¤À¤µ¤¤¡£' . "\n";
-  $email_order .= '¤´ÉÔÌÀ¤ÊÅÀ¤¬¤´¤¶¤¤¤Ş¤·¤¿¤é¡¢ÃíÊ¸ÈÖ¹æ¤ò¤´³ÎÇ§¤Î¾å¡¢' . "\n";
-  $email_order .= '¡Ö' . STORE_NAME . '¡×¤Ş¤Ç¤ªÌä¤¤¹ç¤ï¤»¤¯¤À¤µ¤¤¡£' . "\n\n";
-  $email_order .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
-  //$email_order .= '¢§¤ª»ÙÊ§¶â³Û¡¡¡¡¡¡¡§' . strip_tags($ot['text']) . "\n\n";
-  $email_order .= '¢§ÃíÊ¸ÈÖ¹æ¡¡¡¡¡¡¡¡¡§' . $insert_id . "\n";
-  $email_order .= '¢§ÃíÊ¸Æü¡¡¡¡¡¡¡¡¡¡¡§' . strftime(DATE_FORMAT_LONG) . "\n";
-  $email_order .= '¢§¤ªÌ¾Á°¡¡¡¡¡¡¡¡¡¡¡§' . tep_get_fullname($order->customer['firstname'],$order->customer['lastname']) . "\n";
-  $email_order .= '¢§¥á¡¼¥ë¥¢¥É¥ì¥¹¡¡¡§' . $order->customer['email_address'] . "\n";
-  $email_order .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
+  $email_order .= tep_get_fullname($order->customer['firstname'],$order->customer['lastname']) . 'æ§˜' . "\n\n";
+  $email_order .= 'ã“ã®åº¦ã¯ã€' . STORE_NAME . 'ã‚’ã”åˆ©ç”¨ã„ãŸã ãã€èª ã«ã‚ã‚Š' . "\n";
+  $email_order .= 'ãŒã¨ã†ã”ã–ã„ã¾ã™ã€‚' . "\n";
+  $email_order .= 'ä¸‹è¨˜ã®å†…å®¹ã«ã¦ã”æ³¨æ–‡ã‚’æ‰¿ã‚Šã¾ã—ãŸã®ã§ã€ã”ç¢ºèªãã ã•ã„ã€‚' . "\n";
+  $email_order .= 'ã”ä¸æ˜ãªç‚¹ãŒã”ã–ã„ã¾ã—ãŸã‚‰ã€æ³¨æ–‡ç•ªå·ã‚’ã”ç¢ºèªã®ä¸Šã€' . "\n";
+  $email_order .= 'ã€Œ' . STORE_NAME . 'ã€ã¾ã§ãŠå•ã„åˆã‚ã›ãã ã•ã„ã€‚' . "\n\n";
+  $email_order .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
+  //$email_order .= 'â–¼ãŠæ”¯æ‰•é‡‘é¡ã€€ã€€ã€€ï¼š' . strip_tags($ot['text']) . "\n\n";
+  $email_order .= 'â–¼æ³¨æ–‡ç•ªå·ã€€ã€€ã€€ã€€ï¼š' . $insert_id . "\n";
+  $email_order .= 'â–¼æ³¨æ–‡æ—¥ã€€ã€€ã€€ã€€ã€€ï¼š' . strftime(DATE_FORMAT_LONG) . "\n";
+  $email_order .= 'â–¼ãŠåå‰ã€€ã€€ã€€ã€€ã€€ï¼š' . tep_get_fullname($order->customer['firstname'],$order->customer['lastname']) . "\n";
+  $email_order .= 'â–¼ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã€€ï¼š' . $order->customer['email_address'] . "\n";
+  $email_order .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
   if ($point > 0) {
-  $email_order .= '¢§¥İ¥¤¥ó¥È³ä°ú¡¡¡¡¡§' . $point . '±ß' . "\n";
+  $email_order .= 'â–¼ãƒã‚¤ãƒ³ãƒˆå‰²å¼•ã€€ã€€ï¼š' . $point . 'å††' . "\n";
   }
-  $email_order .= '¢§¤ª»ÙÊ§¶â³Û¡¡¡¡¡¡¡§' . strip_tags($ot['text']) . "\n";
+  $email_order .= 'â–¼ãŠæ”¯æ‰•é‡‘é¡ã€€ã€€ã€€ï¼š' . strip_tags($ot['text']) . "\n";
   if (is_object($$payment)) {
     $payment_class = $$payment;
-	$email_order .= '¢§¤ª»ÙÊ§ÊıË¡¡¡¡¡¡¡¡§' . $payment_class->title . "\n";
+	$email_order .= 'â–¼ãŠæ”¯æ‰•æ–¹æ³•ã€€ã€€ã€€ï¼š' . $payment_class->title . "\n";
   }
   
   if ($payment_class->email_footer) { 
@@ -492,60 +422,60 @@
   }
   
   if(tep_not_null($bbbank)) {
-    $email_order .= '¢§¤ª»ÙÊ§Àè¶âÍ»µ¡´Ø' . "\n";
+    $email_order .= 'â–¼ãŠæ”¯æ‰•å…ˆé‡‘èæ©Ÿé–¢' . "\n";
 	$email_order .= $bbbank . "\n";
-	$email_order .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n\n";
-	//$email_order .= '¡¦ËÜ¥á¡¼¥ë¤Ëµ­ºÜ¤µ¤ì¤¿Åö¼Ò¥­¥ã¥é¥¯¥¿¡¼°¸¤Ë¾¦ÉÊ¤ò¥È¥ì¡¼¥É¤·¤Æ¤¯¤À¤µ¤¤¡£' . "\n";
-	$email_order .= '¡¦Åö¼Ò¤Ë¤Æ¾¦ÉÊ¤Î¼õÎÎ³ÎÇ§¤¬¤È¤ì¤Ş¤·¤¿¤éÂå¶â¤ª»ÙÊ§¤¤¼êÂ³¤­¤ËÆş¤ê¤Ş¤¹¡£' . "\n";
-	$email_order .= '¡¦ËÜ¥á¡¼¥ëÁ÷¿®¸å7Æü°ÊÆâ¤Ë¼è°ú¤¬´°Î»¤Ç¤­¤Ê¤¤¾ì¹ç¡¢' . "\n";
-	$email_order .= '¡¡Åö¼Ò¤Ï¡¢¤ªµÒÍÍ¤¬¤´ÃíÊ¸¤ò¼è¤ê¾Ã¤µ¤ì¤¿¤â¤Î¤È¤·¤Æ¼è¤ê°·¤¤¤Ş¤¹¡£' . "\n\n";
+	$email_order .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n\n";
+	//$email_order .= 'ãƒ»æœ¬ãƒ¡ãƒ¼ãƒ«ã«è¨˜è¼‰ã•ã‚ŒãŸå½“ç¤¾ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼å®›ã«å•†å“ã‚’ãƒˆãƒ¬ãƒ¼ãƒ‰ã—ã¦ãã ã•ã„ã€‚' . "\n";
+	$email_order .= 'ãƒ»å½“ç¤¾ã«ã¦å•†å“ã®å—é ˜ç¢ºèªãŒã¨ã‚Œã¾ã—ãŸã‚‰ä»£é‡‘ãŠæ”¯æ‰•ã„æ‰‹ç¶šãã«å…¥ã‚Šã¾ã™ã€‚' . "\n";
+	$email_order .= 'ãƒ»æœ¬ãƒ¡ãƒ¼ãƒ«é€ä¿¡å¾Œ7æ—¥ä»¥å†…ã«å–å¼•ãŒå®Œäº†ã§ããªã„å ´åˆã€' . "\n";
+	$email_order .= 'ã€€å½“ç¤¾ã¯ã€ãŠå®¢æ§˜ãŒã”æ³¨æ–‡ã‚’å–ã‚Šæ¶ˆã•ã‚ŒãŸã‚‚ã®ã¨ã—ã¦å–ã‚Šæ‰±ã„ã¾ã™ã€‚' . "\n\n";
   }
   
   //$email_order .= '------------------------------------------' . "\n";
-  $email_order .= '¢§ÃíÊ¸¾¦ÉÊ' . "\n";
+  $email_order .= 'â–¼æ³¨æ–‡å•†å“' . "\n";
   $email_order .= '------------------------------------------' . "\n";
   $email_order .= $products_ordered;
 /*
   if(tep_not_null($bbbank)) { //Sell
-	$email_order .= '¢¨ ÊÀ¼Ò¥­¥ã¥é¥¯¥¿¡¼Ì¾¤Ï¡¢¸å¤Û¤ÉÅÅ»Ò¥á¡¼¥ë¤Ë¤Æ¤ªÃÎ¤é¤»¤¤¤¿¤·¤Ş¤¹¡£' . "\n\n";
+	$email_order .= 'â€» å¼Šç¤¾ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åã¯ã€å¾Œã»ã©é›»å­ãƒ¡ãƒ¼ãƒ«ã«ã¦ãŠçŸ¥ã‚‰ã›ã„ãŸã—ã¾ã™ã€‚' . "\n\n";
   } else { //Buy
-	$email_order .= '¢¨ ÊÀ¼Ò¥­¥ã¥é¥¯¥¿¡¼Ì¾¤Ï¡¢¤ª»ÙÊ§¤¤³ÎÇ§¸å¤ËÅÅ»Ò¥á¡¼¥ë¤Ë¤Æ¤ªÃÎ¤é¤»¤¤¤¿¤·¤Ş¤¹¡£' . "\n\n";
+	$email_order .= 'â€» å¼Šç¤¾ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åã¯ã€ãŠæ”¯æ‰•ã„ç¢ºèªå¾Œã«é›»å­ãƒ¡ãƒ¼ãƒ«ã«ã¦ãŠçŸ¥ã‚‰ã›ã„ãŸã—ã¾ã™ã€‚' . "\n\n";
   }
 */
-  //$email_order .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
+  //$email_order .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
   function str_string($string='') {
     if(ereg("-", $string)) {
 	  $string_array = explode("-", $string);
-	  return $string_array[0] . 'Ç¯' . $string_array[1] . '·î' . $string_array[2] . 'Æü';
+	  return $string_array[0] . 'å¹´' . $string_array[1] . 'æœˆ' . $string_array[2] . 'æ—¥';
 	}
   }
-  $email_order .= '¢§¼è°úÆü»ş¡¡¡¡¡¡¡¡¡§' . str_string($date) . $hour . '»ş' . $min . 'Ê¬¡¡¡Ê24»ş´ÖÉ½µ­¡Ë' . "\n";
-  $email_order .= '¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡§' . $torihikihouhou . "\n";
-  //$email_order .= '¢¨ ¼è°ú¤Îº®»¨¤Ë¤è¤ê5Ê¬ÄøÅÙ¤ªÂÔ¤Á¤¤¤¿¤À¤¯¾ì¹ç¤¬¤´¤¶¤¤¤Ş¤¹¡£Í½¤á¤´Î»¾µ¤¯¤À¤µ¤¤¡£' . "\n\n";
+  $email_order .= 'â–¼å–å¼•æ—¥æ™‚ã€€ã€€ã€€ã€€ï¼š' . str_string($date) . $hour . 'æ™‚' . $min . 'åˆ†ã€€ï¼ˆ24æ™‚é–“è¡¨è¨˜ï¼‰' . "\n";
+  $email_order .= 'ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ï¼š' . $torihikihouhou . "\n";
+  //$email_order .= 'â€» å–å¼•ã®æ··é›‘ã«ã‚ˆã‚Š5åˆ†ç¨‹åº¦ãŠå¾…ã¡ã„ãŸã ãå ´åˆãŒã”ã–ã„ã¾ã™ã€‚äºˆã‚ã”äº†æ‰¿ãã ã•ã„ã€‚' . "\n\n";
   
-  $email_order .= '¢§È÷¹Í¡¡¡¡¡¡¡¡¡¡¡¡¡§' . "\n";
+  $email_order .= 'â–¼å‚™è€ƒã€€ã€€ã€€ã€€ã€€ã€€ï¼š' . "\n";
   if ($order->info['comments']) {
     $email_order .= tep_db_output($order->info['comments']) . "\n";
   }
-  //$email_order .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
+  //$email_order .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
   
   
   if ($_SESSION['payment'] == 'convenience_store') {
-    $email_order .= '¢£¥³¥ó¥Ó¥Ë·èºÑ¾ğÊó' . "\n";
-	$email_order .= 'Í¹ÊØÈÖ¹æ:' . $HTTP_POST_VARS['convenience_store_zip_code'] ."\n";
-	$email_order .= '½»½ê    :' . $HTTP_POST_VARS['convenience_store_address1'] . " " . $HTTP_POST_VARS['convenience_store_address2'] ."\n";
-	$email_order .= '¤ªÌ¾Á°  :' . $HTTP_POST_VARS['convenience_store_l_name'] . " " . $HTTP_POST_VARS['convenience_store_f_name'] ."\n";
-	$email_order .= 'ÅÅÏÃÈÖ¹æ:' . $HTTP_POST_VARS['convenience_store_tel'] . "\n\n";
+    $email_order .= 'â– ã‚³ãƒ³ãƒ“ãƒ‹æ±ºæ¸ˆæƒ…å ±' . "\n";
+	$email_order .= 'éƒµä¾¿ç•ªå·:' . $HTTP_POST_VARS['convenience_store_zip_code'] ."\n";
+	$email_order .= 'ä½æ‰€    :' . $HTTP_POST_VARS['convenience_store_address1'] . " " . $HTTP_POST_VARS['convenience_store_address2'] ."\n";
+	$email_order .= 'ãŠåå‰  :' . $HTTP_POST_VARS['convenience_store_l_name'] . " " . $HTTP_POST_VARS['convenience_store_f_name'] ."\n";
+	$email_order .= 'é›»è©±ç•ªå·:' . $HTTP_POST_VARS['convenience_store_tel'] . "\n\n";
   }
   
   $email_order .= "\n\n\n";
-  $email_order .= '[¤´Ï¢Íí¡¦¤ªÌä¤¤¹ç¤ï¤»Àè]¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
-  $email_order .= '³ô¼°²ñ¼Ò iimy' . "\n";
+  $email_order .= '[ã”é€£çµ¡ãƒ»ãŠå•ã„åˆã‚ã›å…ˆ]â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
+  $email_order .= 'æ ªå¼ä¼šç¤¾ iimy' . "\n";
   $email_order .= SUPPORT_EMAIL_ADDRESS . "\n";
   $email_order .= HTTP_SERVER . "\n";
-  $email_order .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
+  $email_order .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
   
-  # ¥á¡¼¥ëËÜÊ¸À°·Á --------------------------------------
+  # ãƒ¡ãƒ¼ãƒ«æœ¬æ–‡æ•´å½¢ --------------------------------------
   
   // 2003.03.08 Edit Japanese osCommerce
   tep_mail(tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], EMAIL_TEXT_SUBJECT, nl2br($email_order), STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
@@ -554,151 +484,151 @@
     tep_mail('', SEND_EXTRA_ORDER_EMAILS_TO, EMAIL_TEXT_SUBJECT2, nl2br($email_order), tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
   }
   
-  # °õºşÍÑ¥á¡¼¥ëËÜÊ¸ ----------------------------
+  # å°åˆ·ç”¨ãƒ¡ãƒ¼ãƒ«æœ¬æ–‡ ----------------------------
   $email_printing_order = '';
-  $email_printing_order .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
-  $email_printing_order .= '¥µ¥¤¥ÈÌ¾¡¡¡¡¡¡¡¡¡§' . STORE_NAME . "\n";
-  $email_printing_order .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
-  $email_printing_order .= '¼è°úÆü»ş¡¡¡¡¡¡¡¡¡§' . str_string($date) . $hour . '»ş' . $min . 'Ê¬¡¡¡Ê24»ş´ÖÉ½µ­¡Ë' . "\n";
-  $email_printing_order .= '¥ª¥×¥·¥ç¥ó¡¡¡¡¡¡¡§' . $torihikihouhou . "\n";
+  $email_printing_order .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
+  $email_printing_order .= 'ã‚µã‚¤ãƒˆåã€€ã€€ã€€ã€€ï¼š' . STORE_NAME . "\n";
+  $email_printing_order .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
+  $email_printing_order .= 'å–å¼•æ—¥æ™‚ã€€ã€€ã€€ã€€ï¼š' . str_string($date) . $hour . 'æ™‚' . $min . 'åˆ†ã€€ï¼ˆ24æ™‚é–“è¡¨è¨˜ï¼‰' . "\n";
+  $email_printing_order .= 'ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã€€ã€€ã€€ï¼š' . $torihikihouhou . "\n";
   $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= 'Æü»şÊÑ¹¹¡¡¡¡¡¡¡¡¡§200 Ç¯  ·î  Æü  »ş  Ê¬' . "\n";
-  $email_printing_order .= 'Æü»şÊÑ¹¹¡¡¡¡¡¡¡¡¡§200 Ç¯  ·î  Æü  »ş  Ê¬' . "\n";
-  $email_printing_order .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
-  $email_printing_order .= 'ÃíÊ¸¼ÔÌ¾¡¡¡¡¡¡¡¡¡§' . tep_get_fullname($order->customer['firstname'],$order->customer['lastname']) . 'ÍÍ' . "\n";
-  $email_printing_order .= 'ÃíÊ¸ÈÖ¹æ¡¡¡¡¡¡¡¡¡§' . $insert_id . "\n";
-  $email_printing_order .= 'ÃíÊ¸Æü¡¡¡¡¡¡¡¡¡¡¡§' . strftime(DATE_FORMAT_LONG) . "\n";
-  $email_printing_order .= '¥á¡¼¥ë¥¢¥É¥ì¥¹¡¡¡§' . $order->customer['email_address'] . "\n";
-  $email_printing_order .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
+  $email_printing_order .= 'æ—¥æ™‚å¤‰æ›´ã€€ã€€ã€€ã€€ï¼š200 å¹´  æœˆ  æ—¥  æ™‚  åˆ†' . "\n";
+  $email_printing_order .= 'æ—¥æ™‚å¤‰æ›´ã€€ã€€ã€€ã€€ï¼š200 å¹´  æœˆ  æ—¥  æ™‚  åˆ†' . "\n";
+  $email_printing_order .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
+  $email_printing_order .= 'æ³¨æ–‡è€…åã€€ã€€ã€€ã€€ï¼š' . tep_get_fullname($order->customer['firstname'],$order->customer['lastname']) . 'æ§˜' . "\n";
+  $email_printing_order .= 'æ³¨æ–‡ç•ªå·ã€€ã€€ã€€ã€€ï¼š' . $insert_id . "\n";
+  $email_printing_order .= 'æ³¨æ–‡æ—¥ã€€ã€€ã€€ã€€ã€€ï¼š' . strftime(DATE_FORMAT_LONG) . "\n";
+  $email_printing_order .= 'ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã€€ï¼š' . $order->customer['email_address'] . "\n";
+  $email_printing_order .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
   if ($point > 0) {
-  $email_printing_order .= '¢¢¥İ¥¤¥ó¥È³ä°ú¡¡¡¡¡§' . $point . '±ß' . "\n";
+  $email_printing_order .= 'â–¡ãƒã‚¤ãƒ³ãƒˆå‰²å¼•ã€€ã€€ï¼š' . $point . 'å††' . "\n";
   }
-  $email_printing_order .= '¤ª»ÙÊ§¶â³Û¡¡¡¡¡¡¡§' . strip_tags($ot['text']) . "\n";
+  $email_printing_order .= 'ãŠæ”¯æ‰•é‡‘é¡ã€€ã€€ã€€ï¼š' . strip_tags($ot['text']) . "\n";
   if (is_object($$payment)) {
     $payment_class = $$payment;
-	$email_printing_order .= '¤ª»ÙÊ§ÊıË¡¡¡¡¡¡¡¡§' . $payment_class->title . "\n";
+	$email_printing_order .= 'ãŠæ”¯æ‰•æ–¹æ³•ã€€ã€€ã€€ï¼š' . $payment_class->title . "\n";
   }
   
   if(tep_not_null($bbbank)) {
-    $email_printing_order .= '¤ª»ÙÊ§Àè¶âÍ»µ¡´Ø' . "\n";
+    $email_printing_order .= 'ãŠæ”¯æ‰•å…ˆé‡‘èæ©Ÿé–¢' . "\n";
 	$email_printing_order .= $bbbank . "\n";
   }
   
-  $email_printing_order .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
+  $email_printing_order .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
   $email_printing_order .= $products_ordered;
 
-  $email_printing_order .= 'È÷¹Í¡¡¡¡¡¡¡¡¡¡¡¡¡§' . "\n";
+  $email_printing_order .= 'å‚™è€ƒã€€ã€€ã€€ã€€ã€€ã€€ï¼š' . "\n";
   if ($order->info['comments']) {
     $email_printing_order .= tep_db_output($order->info['comments']) . "\n";
   }
 
   if ($_SESSION['payment'] == 'convenience_store') {
-    $email_printing_order .= '¢£¥³¥ó¥Ó¥Ë·èºÑ¾ğÊó' . "\n";
-	$email_printing_order .= 'Í¹ÊØÈÖ¹æ:' . $HTTP_POST_VARS['convenience_store_zip_code'] ."\n";
-	$email_printing_order .= '½»½ê    :' . $HTTP_POST_VARS['convenience_store_address1'] . " " . $HTTP_POST_VARS['convenience_store_address2'] ."\n";
-	$email_printing_order .= '¤ªÌ¾Á°  :' . $HTTP_POST_VARS['convenience_store_l_name'] . " " . $HTTP_POST_VARS['convenience_store_f_name'] ."\n";
-	$email_printing_order .= 'ÅÅÏÃÈÖ¹æ:' . $HTTP_POST_VARS['convenience_store_tel'] . "\n";
+    $email_printing_order .= 'â– ã‚³ãƒ³ãƒ“ãƒ‹æ±ºæ¸ˆæƒ…å ±' . "\n";
+	$email_printing_order .= 'éƒµä¾¿ç•ªå·:' . $HTTP_POST_VARS['convenience_store_zip_code'] ."\n";
+	$email_printing_order .= 'ä½æ‰€    :' . $HTTP_POST_VARS['convenience_store_address1'] . " " . $HTTP_POST_VARS['convenience_store_address2'] ."\n";
+	$email_printing_order .= 'ãŠåå‰  :' . $HTTP_POST_VARS['convenience_store_l_name'] . " " . $HTTP_POST_VARS['convenience_store_f_name'] ."\n";
+	$email_printing_order .= 'é›»è©±ç•ªå·:' . $HTTP_POST_VARS['convenience_store_tel'] . "\n";
   }
 
-  $email_printing_order .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
-  $email_printing_order .= 'IP¥¢¥É¥ì¥¹¡¡¡¡¡¡¡¡¡¡¡¡¡§' . $_SERVER["REMOTE_ADDR"] . "\n";
-  $email_printing_order .= '¥Û¥¹¥ÈÌ¾¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡§' . @gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";
-  $email_printing_order .= '¥æ¡¼¥¶¡¼¥¨¡¼¥¸¥§¥ó¥È¡¡¡§' . $_SERVER["HTTP_USER_AGENT"] . "\n";
-  $email_printing_order .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
-  $email_printing_order .= '¿®ÍÑÄ´ºº' . "\n";
+  $email_printing_order .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
+  $email_printing_order .= 'IPã‚¢ãƒ‰ãƒ¬ã‚¹ã€€ã€€ã€€ã€€ã€€ã€€ï¼š' . $_SERVER["REMOTE_ADDR"] . "\n";
+  $email_printing_order .= 'ãƒ›ã‚¹ãƒˆåã€€ã€€ã€€ã€€ã€€ã€€ã€€ï¼š' . @gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";
+  $email_printing_order .= 'ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã€€ï¼š' . $_SERVER["HTTP_USER_AGENT"] . "\n";
+  $email_printing_order .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
+  $email_printing_order .= 'ä¿¡ç”¨èª¿æŸ»' . "\n";
   
 	$credit_inquiry_query = tep_db_query("select customers_fax, customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
     $credit_inquiry = tep_db_fetch_array($credit_inquiry_query);
 	
   $email_printing_order .= $credit_inquiry['customers_fax'] . "\n";
-  $email_printing_order .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
-  $email_printing_order .= 'ÃíÊ¸ÍúÎò¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡§';
+  $email_printing_order .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
+  $email_printing_order .= 'æ³¨æ–‡å±¥æ­´ã€€ã€€ã€€ã€€ã€€ã€€ã€€ï¼š';
   
-  if ($credit_inquiry['customers_guest_chk'] == '1') { $email_printing_order .= '¥²¥¹¥È'; } else { $email_printing_order .= '²ñ°÷'; }
+  if ($credit_inquiry['customers_guest_chk'] == '1') { $email_printing_order .= 'ã‚²ã‚¹ãƒˆ'; } else { $email_printing_order .= 'ä¼šå“¡'; }
   
   $email_printing_order .= "\n";
   
   $order_history_query_raw = "select o.orders_id, o.customers_name, o.customers_id, o.date_purchased, s.orders_status_name, ot.text as order_total from " . TABLE_ORDERS . " o left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s where o.customers_id = '" . tep_db_input($customer_id) . "' and o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "' and ot.class = 'ot_total' order by o.date_purchased DESC limit 0,5";  
   $order_history_query = tep_db_query($order_history_query_raw);
   while ($order_history = tep_db_fetch_array($order_history_query)) {
-	$email_printing_order .= $order_history['date_purchased'] . '¡¡¡¡' . tep_output_string_protected($order_history['customers_name']) . '¡¡¡¡' . strip_tags($order_history['order_total']) . '¡¡¡¡' . $order_history['orders_status_name'] . "\n";
+	$email_printing_order .= $order_history['date_purchased'] . 'ã€€ã€€' . tep_output_string_protected($order_history['customers_name']) . 'ã€€ã€€' . strip_tags($order_history['order_total']) . 'ã€€ã€€' . $order_history['orders_status_name'] . "\n";
   }
   
-  $email_printing_order .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n\n\n";
+  $email_printing_order .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n\n\n";
   
   
 
-  if ($payment_class->title === '¶ä¹Ô¿¶¹ş(Çã¤¤¼è¤ê)') {
-		$email_printing_order .= '¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¤³¤ÎÃíÊ¸¤Ï¡ÚÇã¼è¡Û¤Ç¤¹¡£¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú' . "\n";
+  if ($payment_class->title === 'éŠ€è¡ŒæŒ¯è¾¼(è²·ã„å–ã‚Š)') {
+		$email_printing_order .= 'â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…ã“ã®æ³¨æ–‡ã¯ã€è²·å–ã€‘ã§ã™ã€‚â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…' . "\n";
 		$email_printing_order .= '------------------------------------------------------------------------' . "\n";
-		$email_printing_order .= 'È÷¹Í¤ÎÍ­Ìµ¡¡¡¡¡¡¡¡¡¡¡§¢¢ Ìµ¡¡¡¡¡Ã¡¡¡¡¢¢ Í­¡¡¢ª¡¡¢¢ ÊÖÅúºÑ' . "\n";
+		$email_printing_order .= 'å‚™è€ƒã®æœ‰ç„¡ã€€ã€€ã€€ã€€ã€€ï¼šâ–¡ ç„¡ã€€ã€€ï½œã€€ã€€â–¡ æœ‰ã€€â†’ã€€â–¡ è¿”ç­”æ¸ˆ' . "\n";
 		$email_printing_order .= '------------------------------------------------------------------------' . "\n";
-		$email_printing_order .= '¥­¥ã¥é¥¯¥¿¡¼¤ÎÍ­Ìµ¡¡¡§¢¢ Í­¡¡¡¡¡Ã¡¡¡¡¢¢ Ìµ¡¡¢ª¡¡¿·µ¬ºîÀ®¤·¤Æ¤ªµÒÍÍ¤ØÏ¢Íí' . "\n";
+		$email_printing_order .= 'ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®æœ‰ç„¡ã€€ï¼šâ–¡ æœ‰ã€€ã€€ï½œã€€ã€€â–¡ ç„¡ã€€â†’ã€€æ–°è¦ä½œæˆã—ã¦ãŠå®¢æ§˜ã¸é€£çµ¡' . "\n";
 		$email_printing_order .= '------------------------------------------------------------------------' . "\n";
-		$email_printing_order .= '¼õÎÎ¡¡¢¨Ãí°Õ¢¨¡¡¡¡¡ü¡§¡²¡²·î¡²¡²Æü' . "\n";
+		$email_printing_order .= 'å—é ˜ã€€â€»æ³¨æ„â€»ã€€ã€€â—ï¼šï¼¿ï¼¿æœˆï¼¿ï¼¿æ—¥' . "\n";
 		$email_printing_order .= '------------------------------------------------------------------------' . "\n";
-		$email_printing_order .= '»ÄÎÌÆşÎÏ¢ª¸íº¹Í­Ìµ¡¡¡§¢¢ Ìµ¡¡¡¡¡Ã¡¡¡¡¢¢ Í­¡¡¢ª¡¡¢¢ Êó¹ğ' . "\n";
+		$email_printing_order .= 'æ®‹é‡å…¥åŠ›â†’èª¤å·®æœ‰ç„¡ã€€ï¼šâ–¡ ç„¡ã€€ã€€ï½œã€€ã€€â–¡ æœ‰ã€€â†’ã€€â–¡ å ±å‘Š' . "\n";
 		$email_printing_order .= '------------------------------------------------------------------------' . "\n";
-		$email_printing_order .= '¼õÎÎ¥á¡¼¥ëÁ÷¿®¡¡¡¡¡¡¡§¢¢ ºÑ' . "\n";
+		$email_printing_order .= 'å—é ˜ãƒ¡ãƒ¼ãƒ«é€ä¿¡ã€€ã€€ã€€ï¼šâ–¡ æ¸ˆ' . "\n";
 		$email_printing_order .= '------------------------------------------------------------------------' . "\n";
-		$email_printing_order .= '»ÙÊ§¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡§¡²¡²·î¡²¡²Æü¡¡¢¨Áí³Û5,000±ßÌ¤Ëş¤Ï168±ß°ú¤¯¢¨' . "\n";
-		$email_printing_order .= '¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¢¢ JNB¡¡¡¡¢¢ eBank¡¡¡¡¢¢ ¤æ¤¦¤Á¤ç' . "\n";
-		$email_printing_order .= '¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡Æş¶âÍ½ÄêÆü¡²¡²·î¡²¡²Æü¡¡¼õÉÕÈÖ¹æ¡²¡²¡²¡²¡²¡²¡²¡²¡²' . "\n";
+		$email_printing_order .= 'æ”¯æ‰•ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ï¼šï¼¿ï¼¿æœˆï¼¿ï¼¿æ—¥ã€€â€»ç·é¡5,000å††æœªæº€ã¯168å††å¼•ãâ€»' . "\n";
+		$email_printing_order .= 'ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€â–¡ JNBã€€ã€€â–¡ eBankã€€ã€€â–¡ ã‚†ã†ã¡ã‚‡' . "\n";
+		$email_printing_order .= 'ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€å…¥é‡‘äºˆå®šæ—¥ï¼¿ï¼¿æœˆï¼¿ï¼¿æ—¥ã€€å—ä»˜ç•ªå·ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿' . "\n";
 		$email_printing_order .= '------------------------------------------------------------------------' . "\n";
-		$email_printing_order .= '»ÙÊ§´°Î»¥á¡¼¥ëÁ÷¿®¡¡¡§¢¢ ºÑ¡¡¡¡¡¡¢¨ÄÉ²ÃÊ¸¾Ï¤¬¤Ê¤¤¤«³ÎÇ§¤·¤Ş¤·¤¿¤«¡©¢¨' . "\n";
-  } elseif ($payment_class->title === '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ') {
-		$email_printing_order .= '¤³¤ÎÃíÊ¸¤Ï¡ÚÈÎÇä¡Û¤Ç¤¹¡£' . "\n";
+		$email_printing_order .= 'æ”¯æ‰•å®Œäº†ãƒ¡ãƒ¼ãƒ«é€ä¿¡ã€€ï¼šâ–¡ æ¸ˆã€€ã€€ã€€â€»è¿½åŠ æ–‡ç« ãŒãªã„ã‹ç¢ºèªã—ã¾ã—ãŸã‹ï¼Ÿâ€»' . "\n";
+  } elseif ($payment_class->title === 'ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰æ±ºæ¸ˆ') {
+		$email_printing_order .= 'ã“ã®æ³¨æ–‡ã¯ã€è²©å£²ã€‘ã§ã™ã€‚' . "\n";
 		$email_printing_order .= '------------------------------------------------------------------------' . "\n";
-		$email_printing_order .= 'È÷¹Í¤ÎÍ­Ìµ¡¡¡¡¡¡¡¡¡¡¡§¢¢ Ìµ¡¡¡¡¡Ã¡¡¡¡¢¢ Í­¡¡¢ª¡¡¢¢ ÊÖÅúºÑ' . "\n";
+		$email_printing_order .= 'å‚™è€ƒã®æœ‰ç„¡ã€€ã€€ã€€ã€€ã€€ï¼šâ–¡ ç„¡ã€€ã€€ï½œã€€ã€€â–¡ æœ‰ã€€â†’ã€€â–¡ è¿”ç­”æ¸ˆ' . "\n";
 		$email_printing_order .= '------------------------------------------------------------------------' . "\n";
-		$email_printing_order .= '·èºÑ³ÎÇ§¡¡¡¡¡¡¡¡¡¡¡ü¡§¡²¡²·î¡²¡²Æü' . "\n";
+		$email_printing_order .= 'æ±ºæ¸ˆç¢ºèªã€€ã€€ã€€ã€€ã€€â—ï¼šï¼¿ï¼¿æœˆï¼¿ï¼¿æ—¥' . "\n";
 		$email_printing_order .= '------------------------------------------------------------------------' . "\n";
-		$email_printing_order .= 'ºß¸Ë³ÎÇ§¡¡¡¡¡¡¡¡¡¡¡¡¡§¢¢ Í­¡¡¡¡¡Ã¡¡¡¡¢¢ Ìµ¡¡¢ª¡¡»ÅÆşº¤Æñ¤Ê¤é¤ªµÒÍÍ¤ØÅÅÏÃ' . "\n";
+		$email_printing_order .= 'åœ¨åº«ç¢ºèªã€€ã€€ã€€ã€€ã€€ã€€ï¼šâ–¡ æœ‰ã€€ã€€ï½œã€€ã€€â–¡ ç„¡ã€€â†’ã€€ä»•å…¥å›°é›£ãªã‚‰ãŠå®¢æ§˜ã¸é›»è©±' . "\n";
 		$email_printing_order .= '------------------------------------------------------------------------' . "\n";
-		$email_printing_order .= '¿®ÍÑÄ´ºº¡¡¡¡¡¡¡¡¡¡¡¡¡§¢¢ 2²óÌÜ°Ê¹ß¡¡¢ª¡¡¢¢ ¾ïÏ¢¡Ê°Ê²¼¤Î¥Á¥§¥Ã¥¯É¬Í×Ìµ¡Ë' . "\n";
-		$email_printing_order .= '¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¢¢ 1. ²áµî¤ËËÜ¿Í³ÎÇ§¤ò¤·¤Æ¤¤¤ë' . "\n";
-		$email_printing_order .= '¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¢¢ 2. ·èºÑÆâÍÆ¤ËÊÑ¹¹¤¬¤Ê¤¤' . "\n";
-		$email_printing_order .= '¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¢¢ 3. Ã»´ü´Ö¤Ë¹â³Û·èºÑ¤¬¤Ê¤¤' . "\n";
-		$email_printing_order .= '¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡----------------------------------------------------' . "\n";
-		$email_printing_order .= '¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¢¢ ½é²ó¡¡¢ª¡¡¢¢ IP¡¦¥Û¥¹¥È¤Î¥Á¥§¥Ã¥¯' . "\n";
-		$email_printing_order .= '¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ ¡¡ ÅÅÏÃ³ÎÇ§¤ò¤¹¤ë' . "\n";
-		$email_printing_order .= '¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ ¡¡ ¥«¡¼¥ÉÌ¾µÁ¡Ê¥«¥¿¥«¥Ê¡Ë¡²¡²¡²¡²¡²¡²' . "\n";
-		$email_printing_order .= '¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ ¡¡ ÅÅÏÃÈÖ¹æ¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²' . "\n";
-		$email_printing_order .= '¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ ¡¡ ¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²' . "\n";
-		$email_printing_order .= '¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ ¡¡ ¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²' . "\n";
-		$email_printing_order .= '¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ ¡¡ ¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²¡²' . "\n";
-		$email_printing_order .= '¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ ¢¢ ¥«¡¼¥ÉÌ¾µÁ¡¦¾¦ÉÊÌ¾¡¦¥­¥ã¥éÌ¾°ìÃ×' . "\n";
-		$email_printing_order .= '¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ ¡¡ ËÜ¿Í³ÎÇ§Æü¡§¡²¡²·î¡²¡²Æü' . "\n";
-		$email_printing_order .= '¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ ¢¢ ¿®ÍÑÄ´ººÆşÎÏ' . "\n";
-		$email_printing_order .= '¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡----------------------------------------------------' . "\n";
-		$email_printing_order .= '¢¨ µ¿¤ï¤·¤¤ÅÀ¤¬¤¢¤ì¤ĞÃ´Åö¼Ô¤ØÊó¹ğ¤ò¤¹¤ë¡¡¢ª¡¡Ã´Åö¼Ô¡²¡²¡²¡²¤Î¾µÂú¤òÆÀ¤¿' . "\n";
+		$email_printing_order .= 'ä¿¡ç”¨èª¿æŸ»ã€€ã€€ã€€ã€€ã€€ã€€ï¼šâ–¡ 2å›ç›®ä»¥é™ã€€â†’ã€€â–¡ å¸¸é€£ï¼ˆä»¥ä¸‹ã®ãƒã‚§ãƒƒã‚¯å¿…è¦ç„¡ï¼‰' . "\n";
+		$email_printing_order .= 'ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€â–¡ 1. éå»ã«æœ¬äººç¢ºèªã‚’ã—ã¦ã„ã‚‹' . "\n";
+		$email_printing_order .= 'ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€â–¡ 2. æ±ºæ¸ˆå†…å®¹ã«å¤‰æ›´ãŒãªã„' . "\n";
+		$email_printing_order .= 'ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€â–¡ 3. çŸ­æœŸé–“ã«é«˜é¡æ±ºæ¸ˆãŒãªã„' . "\n";
+		$email_printing_order .= 'ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€----------------------------------------------------' . "\n";
+		$email_printing_order .= 'ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€â–¡ åˆå›ã€€â†’ã€€â–¡ IPãƒ»ãƒ›ã‚¹ãƒˆã®ãƒã‚§ãƒƒã‚¯' . "\n";
+		$email_printing_order .= 'ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ ã€€ é›»è©±ç¢ºèªã‚’ã™ã‚‹' . "\n";
+		$email_printing_order .= 'ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ ã€€ ã‚«ãƒ¼ãƒ‰åç¾©ï¼ˆã‚«ã‚¿ã‚«ãƒŠï¼‰ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿' . "\n";
+		$email_printing_order .= 'ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ ã€€ é›»è©±ç•ªå·ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿' . "\n";
+		$email_printing_order .= 'ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ ã€€ ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿' . "\n";
+		$email_printing_order .= 'ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ ã€€ ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿' . "\n";
+		$email_printing_order .= 'ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ ã€€ ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿' . "\n";
+		$email_printing_order .= 'ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ â–¡ ã‚«ãƒ¼ãƒ‰åç¾©ãƒ»å•†å“åãƒ»ã‚­ãƒ£ãƒ©åä¸€è‡´' . "\n";
+		$email_printing_order .= 'ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ ã€€ æœ¬äººç¢ºèªæ—¥ï¼šï¼¿ï¼¿æœˆï¼¿ï¼¿æ—¥' . "\n";
+		$email_printing_order .= 'ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ â–¡ ä¿¡ç”¨èª¿æŸ»å…¥åŠ›' . "\n";
+		$email_printing_order .= 'ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€----------------------------------------------------' . "\n";
+		$email_printing_order .= 'â€» ç–‘ã‚ã—ã„ç‚¹ãŒã‚ã‚Œã°æ‹…å½“è€…ã¸å ±å‘Šã‚’ã™ã‚‹ã€€â†’ã€€æ‹…å½“è€…ï¼¿ï¼¿ï¼¿ï¼¿ã®æ‰¿è«¾ã‚’å¾—ãŸ' . "\n";
 		$email_printing_order .= '------------------------------------------------------------------------' . "\n";
-		$email_printing_order .= 'È¯Á÷¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡§¡²¡²·î¡²¡²Æü' . "\n";
+		$email_printing_order .= 'ç™ºé€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ï¼šï¼¿ï¼¿æœˆï¼¿ï¼¿æ—¥' . "\n";
 		$email_printing_order .= '------------------------------------------------------------------------' . "\n";
-		$email_printing_order .= '»ÄÎÌÆşÎÏ¢ª¸íº¹Í­Ìµ¡¡¡§¢¢ Ìµ¡¡¡¡¡Ã¡¡¡¡¢¢ Í­¡¡¢ª¡¡Êó¹ğ¡¡¢¢' . "\n";
+		$email_printing_order .= 'æ®‹é‡å…¥åŠ›â†’èª¤å·®æœ‰ç„¡ã€€ï¼šâ–¡ ç„¡ã€€ã€€ï½œã€€ã€€â–¡ æœ‰ã€€â†’ã€€å ±å‘Šã€€â–¡' . "\n";
 		$email_printing_order .= '------------------------------------------------------------------------' . "\n";
-		$email_printing_order .= 'È¯Á÷´°Î»¥á¡¼¥ëÁ÷¿®¡¡¡§¢¢ ºÑ' . "\n";
+		$email_printing_order .= 'ç™ºé€å®Œäº†ãƒ¡ãƒ¼ãƒ«é€ä¿¡ã€€ï¼šâ–¡ æ¸ˆ' . "\n";
   } else {
-		$email_printing_order .= '¤³¤ÎÃíÊ¸¤Ï¡ÚÈÎÇä¡Û¤Ç¤¹¡£' . "\n";
+		$email_printing_order .= 'ã“ã®æ³¨æ–‡ã¯ã€è²©å£²ã€‘ã§ã™ã€‚' . "\n";
 		$email_printing_order .= '------------------------------------------------------------------------' . "\n";
-		$email_printing_order .= 'È÷¹Í¤ÎÍ­Ìµ¡¡¡¡¡¡¡¡¡¡¡§¢¢ Ìµ¡¡¡¡¡Ã¡¡¡¡¢¢ Í­¡¡¢ª¡¡¢¢ ÊÖÅúºÑ' . "\n";
+		$email_printing_order .= 'å‚™è€ƒã®æœ‰ç„¡ã€€ã€€ã€€ã€€ã€€ï¼šâ–¡ ç„¡ã€€ã€€ï½œã€€ã€€â–¡ æœ‰ã€€â†’ã€€â–¡ è¿”ç­”æ¸ˆ' . "\n";
 		$email_printing_order .= '------------------------------------------------------------------------' . "\n";
-		$email_printing_order .= 'ºß¸Ë³ÎÇ§¡¡¡¡¡¡¡¡¡¡¡¡¡§¢¢ Í­¡¡¡¡¡Ã¡¡¡¡¢¢ Ìµ¡¡¢ª¡¡Æş¶â³ÎÇ§¸å»ÅÆş' . "\n";
+		$email_printing_order .= 'åœ¨åº«ç¢ºèªã€€ã€€ã€€ã€€ã€€ã€€ï¼šâ–¡ æœ‰ã€€ã€€ï½œã€€ã€€â–¡ ç„¡ã€€â†’ã€€å…¥é‡‘ç¢ºèªå¾Œä»•å…¥' . "\n";
 		$email_printing_order .= '------------------------------------------------------------------------' . "\n";
-		$email_printing_order .= 'Æş¶â³ÎÇ§¡¡¡¡¡¡¡¡¡¡¡ü¡§¡²¡²·î¡²¡²Æü¡¡¢ª¡¡¶â³Û¤Ï' . strip_tags($ot['text']) . '¤Ç¤¹¤«¡©¡¡¢¢ ¤Ï¤¤' . "\n";
+		$email_printing_order .= 'å…¥é‡‘ç¢ºèªã€€ã€€ã€€ã€€ã€€â—ï¼šï¼¿ï¼¿æœˆï¼¿ï¼¿æ—¥ã€€â†’ã€€é‡‘é¡ã¯' . strip_tags($ot['text']) . 'ã§ã™ã‹ï¼Ÿã€€â–¡ ã¯ã„' . "\n";
 		$email_printing_order .= '------------------------------------------------------------------------' . "\n";
-		$email_printing_order .= 'Æş¶â³ÎÇ§¥á¡¼¥ëÁ÷¿®¡¡¡§¢¢ ºÑ' . "\n";
+		$email_printing_order .= 'å…¥é‡‘ç¢ºèªãƒ¡ãƒ¼ãƒ«é€ä¿¡ã€€ï¼šâ–¡ æ¸ˆ' . "\n";
 		$email_printing_order .= '------------------------------------------------------------------------' . "\n";
-		$email_printing_order .= 'È¯Á÷¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡§¡²¡²·î¡²¡²Æü' . "\n";
+		$email_printing_order .= 'ç™ºé€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ï¼šï¼¿ï¼¿æœˆï¼¿ï¼¿æ—¥' . "\n";
 		$email_printing_order .= '------------------------------------------------------------------------' . "\n";
-		$email_printing_order .= '»ÄÎÌÆşÎÏ¢ª¸íº¹Í­Ìµ¡¡¡§¢¢ Ìµ¡¡¡¡¡Ã¡¡¡¡¢¢ Í­¡¡¢ª¡¡Êó¹ğ¡¡¢¢' . "\n";
+		$email_printing_order .= 'æ®‹é‡å…¥åŠ›â†’èª¤å·®æœ‰ç„¡ã€€ï¼šâ–¡ ç„¡ã€€ã€€ï½œã€€ã€€â–¡ æœ‰ã€€â†’ã€€å ±å‘Šã€€â–¡' . "\n";
 		$email_printing_order .= '------------------------------------------------------------------------' . "\n";
-		$email_printing_order .= 'È¯Á÷´°Î»¥á¡¼¥ëÁ÷¿®¡¡¡§¢¢ ºÑ' . "\n";		
+		$email_printing_order .= 'ç™ºé€å®Œäº†ãƒ¡ãƒ¼ãƒ«é€ä¿¡ã€€ï¼šâ–¡ æ¸ˆ' . "\n";		
   }
   
   $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= 'ºÇ½ª³ÎÇ§¡¡¡¡¡¡¡¡¡¡¡¡¡§³ÎÇ§¼ÔÌ¾¡²¡²¡²¡²' . "\n";
-  $email_printing_order .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
+  $email_printing_order .= 'æœ€çµ‚ç¢ºèªã€€ã€€ã€€ã€€ã€€ã€€ï¼šç¢ºèªè€…åï¼¿ï¼¿ï¼¿ï¼¿' . "\n";
+  $email_printing_order .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
   # ------------------------------------------
 // send emails to other people
 
@@ -730,7 +660,7 @@
   }
   
   
-// ¥²¥¹¥È¹ØÆş¤Î¾ì¹ç¤Ï¥İ¥¤¥ó¥È¥ê¥»¥Ã¥È
+// ã‚²ã‚¹ãƒˆè³¼å…¥ã®å ´åˆã¯ãƒã‚¤ãƒ³ãƒˆãƒªã‚»ãƒƒãƒˆ
   if($guestchk == '1') {
     tep_db_query("update ".TABLE_CUSTOMERS." set point = '0' where customers_id = '".$customer_id."'");
   }  

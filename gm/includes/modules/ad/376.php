@@ -1,11 +1,11 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://concgate.hangame.co.jp/" class="blank" rel='nofollow'><span>¥³¥ó¥Á¥§¥ë¥È¥²¡¼¥È ¸ø¼°¥µ¥¤¥È</span></a></li>
-<li><a href="http://cgate.wikiwiki.jp/" class="blank" rel='nofollow'><span>¥³¥ó¥Á¥§¥ë¥È¥²¡¼¥È¥Õ¥©¥ë¥Æ Wiki</span></a></li>
-<li><a href="http://www.mmo-station.com/mmo/ConcertoGate/" class="blank" rel='nofollow'><span>¥³¥ó¥Á¥§¥ë¥È¥²¡¼¥È Áí¹ç¾ðÊó¡¦¹¶Î¬¥µ¥¤¥È</span></a></li>
-<li><a href="http://cgu.deca.jp/cgup/trade/" class="blank" rel='nofollow'><span>¥³¥ó¥Á¥§¥ë¥È¥²¡¼¥È ¼è°ú·Ç¼¨ÈÄ</span></a></li>
-<li><a href="http://cgu.deca.jp/cgup/up/" class="blank" rel='nofollow'><span>¥³¥ó¥Á¥§¥ë¥È¥²¡¼¥È ÀìÍÑ¥¢¥Ã¥×¥í¡¼¥À¡¼</span></a></li>
-<li><a href="http://concertogate.ninpou.jp/index.html" class="blank" rel='nofollow'><span>½é¿´¼Ô¤Î°Ù¤Î¥³¥ó¥Á¥§¥ë¥È¥²¡¼¥È¹¶Î¬</span></a></li>
-<li><a href="http://cg.i-love.cc/" class="blank" rel='nofollow'><span>¥³¥ó¥Á¥§¥ë¥È¥²¡¼¥È ¥·¥ß¥å¥ì¡¼¥¿</span></a></li>
-<li><a href="http://concgate.g-wiki.com/" class="blank" rel='nofollow'><span>¥³¥ó¥Á¥§¥ë¥È¥²¡¼¥È ¹¶Î¬¾ðÊóWIKI</span></a></li>
+<li><a href="http://concgate.hangame.co.jp/" class="blank" rel='nofollow'><span>ã‚³ãƒ³ãƒã‚§ãƒ«ãƒˆã‚²ãƒ¼ãƒˆ å…¬å¼ã‚µã‚¤ãƒˆ</span></a></li>
+<li><a href="http://cgate.wikiwiki.jp/" class="blank" rel='nofollow'><span>ã‚³ãƒ³ãƒã‚§ãƒ«ãƒˆã‚²ãƒ¼ãƒˆãƒ•ã‚©ãƒ«ãƒ† Wiki</span></a></li>
+<li><a href="http://www.mmo-station.com/mmo/ConcertoGate/" class="blank" rel='nofollow'><span>ã‚³ãƒ³ãƒã‚§ãƒ«ãƒˆã‚²ãƒ¼ãƒˆ ç·åˆæƒ…å ±ãƒ»æ”»ç•¥ã‚µã‚¤ãƒˆ</span></a></li>
+<li><a href="http://cgu.deca.jp/cgup/trade/" class="blank" rel='nofollow'><span>ã‚³ãƒ³ãƒã‚§ãƒ«ãƒˆã‚²ãƒ¼ãƒˆ å–å¼•æŽ²ç¤ºæ¿</span></a></li>
+<li><a href="http://cgu.deca.jp/cgup/up/" class="blank" rel='nofollow'><span>ã‚³ãƒ³ãƒã‚§ãƒ«ãƒˆã‚²ãƒ¼ãƒˆ å°‚ç”¨ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ€ãƒ¼</span></a></li>
+<li><a href="http://concertogate.ninpou.jp/index.html" class="blank" rel='nofollow'><span>åˆå¿ƒè€…ã®ç‚ºã®ã‚³ãƒ³ãƒã‚§ãƒ«ãƒˆã‚²ãƒ¼ãƒˆæ”»ç•¥</span></a></li>
+<li><a href="http://cg.i-love.cc/" class="blank" rel='nofollow'><span>ã‚³ãƒ³ãƒã‚§ãƒ«ãƒˆã‚²ãƒ¼ãƒˆ ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚¿</span></a></li>
+<li><a href="http://concgate.g-wiki.com/" class="blank" rel='nofollow'><span>ã‚³ãƒ³ãƒã‚§ãƒ«ãƒˆã‚²ãƒ¼ãƒˆ æ”»ç•¥æƒ…å ±WIKI</span></a></li>
 </ul>

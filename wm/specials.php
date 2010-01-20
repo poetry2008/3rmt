@@ -29,7 +29,7 @@
 			</td>
 			<!-- body_text //-->
 			<td valign="top" id="contents">
-				<h1 class="pageHeading"><?php echo HEADING_TITLE ; ?>RMT¥ï¡¼¥ë¥É¥Ş¥Í¡¼¤ÎÆÃ²Á¾¦ÉÊ</h1>
+				<h1 class="pageHeading"><?php echo HEADING_TITLE ; ?>RMTãƒ¯ãƒ¼ãƒ«ãƒ‰ãƒãƒãƒ¼ã®ç‰¹ä¾¡å•†å“</h1>
 				<div class="comment">
                 <table border="0" width="100%" cellspacing="0" cellpadding="0">
 <?php
@@ -63,7 +63,7 @@
 		$row++;
 		echo '<td align="center" width="33%" class="smallText" style="vertical-align:top;"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $specials['products_id']) . '">' . tep_image(DIR_WS_IMAGES . $specials['products_image'], $specials['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"') . '<br>' . $specials['products_name'] . '<br>';
 		
-		echo '<img src="images/design/button/button_order.gif" width="82" height="25" alt="ÃíÊ¸¤¹¤ë"></a><br>';
+		echo '<img src="images/design/button/button_order.gif" width="82" height="25" alt="æ³¨æ–‡ã™ã‚‹"></a><br>';
 		
 		echo '<s>' . $currencies->display_price($specials['products_price'], tep_get_tax_rate($specials['products_tax_class_id'])) . '</s><br><span class="productSpecialPrice">' . $currencies->display_price($specials['specials_new_products_price'], tep_get_tax_rate($specials['products_tax_class_id'])) . '</span></td>' . "\n";
 		if ((($row / 3) == floor($row / 3))) {

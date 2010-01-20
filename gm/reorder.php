@@ -1,10 +1,10 @@
 <?php
 require('includes/application_top.php');
 
-define('HEADING_TITLE', 'ºÆÇÛÃ£°ÍÍê');
+define('HEADING_TITLE', 'å†é…é”ä¾é ¼');
 define('MINUTES', 20);
 
-$breadcrumb->add('ºÆÇÛÃ£¥Õ¥©¡¼¥à', tep_href_link('reorder.php'));
+$breadcrumb->add('å†é…é”ãƒ•ã‚©ãƒ¼ãƒ ', tep_href_link('reorder.php'));
 ?>
 <?php page_head();?>
 </head>
@@ -49,10 +49,10 @@ $breadcrumb->add('ºÆÇÛÃ£¥Õ¥©¡¼¥à', tep_href_link('reorder.php'));
 
       if (in_array($order['orders_status'], array(2,5,6,7,8))) {
         // status can not change
-        echo '<div class="comment">¤´ÆşÎÏ¤¤¤¿¤À¤­¤Ş¤·¤¿ÅĞÏ¿¾ğÊó¤Ï¡¢´û¤ËÈ¯Á÷¤¬´°Î»¤·¤Æ¤¤¤ë¡¢¤Ş¤¿¤Ï¡¢¤´ÃíÊ¸¤¬¥­¥ã¥ó¥»¥ë¤È¤Ê¤Ã¤Æ¤ª¤ê¤Ş¤¹¡£ <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="74" height="25" alt="Á°¤ËÌá¤ë" title="Á°¤ËÌá¤ë"></a></div></div>';
+        echo '<div class="comment">ã”å…¥åŠ›ã„ãŸã ãã¾ã—ãŸç™»éŒ²æƒ…å ±ã¯ã€æ—¢ã«ç™ºé€ãŒå®Œäº†ã—ã¦ã„ã‚‹ã€ã¾ãŸã¯ã€ã”æ³¨æ–‡ãŒã‚­ãƒ£ãƒ³ã‚»ãƒ«ã¨ãªã£ã¦ãŠã‚Šã¾ã™ã€‚ <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="74" height="25" alt="å‰ã«æˆ»ã‚‹" title="å‰ã«æˆ»ã‚‹"></a></div></div>';
       } else if ($date && $hour && $minute && ($time < (time() - MINUTES * 60) or $time > (time() + (7*86400)))) {
         // time error
-        echo '<div class="comment">¼è°ú»ş´Ö¤ÏÁ°¤â¤Ã¤Æ°ì»ş´Ö°Ê¾å¤ËÀßÄê¤·¤Æ¤¯¤À¤µ¤¤ <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" alt="TOP¤ËÌá¤ë" title="TOP¤ËÌá¤ë"></a></div></div><div>';
+        echo '<div class="comment">å–å¼•æ™‚é–“ã¯å‰ã‚‚ã£ã¦ä¸€æ™‚é–“ä»¥ä¸Šã«è¨­å®šã—ã¦ãã ã•ã„ <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" alt="TOPã«æˆ»ã‚‹" title="TOPã«æˆ»ã‚‹"></a></div></div><div>';
       } else {
         // update time
         if ($date && $hour && $minute) {
@@ -91,10 +91,10 @@ $breadcrumb->add('ºÆÇÛÃ£¥Õ¥©¡¼¥à', tep_href_link('reorder.php'));
             }
           }
         }
-        echo '<div class="comment">ÃíÊ¸ÆâÍÆ¤ÎÊÑ¹¹¤ò¾µ¤ê¤Ş¤·¤¿¡£ÅÅ»Ò¥á¡¼¥ë¤ò¤´³ÎÇ§¤¯¤À¤µ¤¤¡£ <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" alt="TOP¤ËÌá¤ë" title="TOP¤ËÌá¤ë"></a></div></div><div>';
+        echo '<div class="comment">æ³¨æ–‡å†…å®¹ã®å¤‰æ›´ã‚’æ‰¿ã‚Šã¾ã—ãŸã€‚é›»å­ãƒ¡ãƒ¼ãƒ«ã‚’ã”ç¢ºèªãã ã•ã„ã€‚ <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" alt="TOPã«æˆ»ã‚‹" title="TOPã«æˆ»ã‚‹"></a></div></div><div>';
         // sent mail to customer
         $mail    = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS_MAIL." where orders_status_id=17"));
-        // $mail_title = "ÃíÊ¸ÆâÍÆ¤ÎÊÑ¹¹¤ò¾µ¤ê¤Ş¤·¤¿";
+        // $mail_title = "æ³¨æ–‡å†…å®¹ã®å¤‰æ›´ã‚’æ‰¿ã‚Šã¾ã—ãŸ";
         $mail_title   = $mail['orders_status_title'];
         $mail_content = $mail['orders_status_mail'];
 
@@ -115,14 +115,14 @@ $breadcrumb->add('ºÆÇÛÃ£¥Õ¥©¡¼¥à', tep_href_link('reorder.php'));
   /*if ($_SESSION['payment'] == 'convenience_store') {
     $convenience_sid = str_replace('-', "", $insert_id);
 	
-    $pay_comments = '¼è°ú¥³¡¼¥É' . $convenience_sid ."\n";
-	$pay_comments .= 'Í¹ÊØÈÖ¹æ:' . $HTTP_POST_VARS['convenience_store_zip_code'] ."\n";
-	$pay_comments .= '½»½ê1:' . $HTTP_POST_VARS['convenience_store_address1'] ."\n";
-	$pay_comments .= '½»½ê2:' . $HTTP_POST_VARS['convenience_store_address2'] ."\n";
-	$pay_comments .= '»á:' . $HTTP_POST_VARS['convenience_store_l_name'] ."\n";
-	$pay_comments .= 'Ì¾:' . $HTTP_POST_VARS['convenience_store_f_name'] ."\n";
-	$pay_comments .= 'ÅÅÏÃÈÖ¹æ:' . $HTTP_POST_VARS['convenience_store_tel'] ."\n";
-	$pay_comments .= 'ÀÜÂ³URL:' . tep_href_link('convenience_store_chk.php', 'sid=' . $convenience_sid, 'SSL');
+    $pay_comments = 'å–å¼•ã‚³ãƒ¼ãƒ‰' . $convenience_sid ."\n";
+	$pay_comments .= 'éƒµä¾¿ç•ªå·:' . $HTTP_POST_VARS['convenience_store_zip_code'] ."\n";
+	$pay_comments .= 'ä½æ‰€1:' . $HTTP_POST_VARS['convenience_store_address1'] ."\n";
+	$pay_comments .= 'ä½æ‰€2:' . $HTTP_POST_VARS['convenience_store_address2'] ."\n";
+	$pay_comments .= 'æ°:' . $HTTP_POST_VARS['convenience_store_l_name'] ."\n";
+	$pay_comments .= 'å:' . $HTTP_POST_VARS['convenience_store_f_name'] ."\n";
+	$pay_comments .= 'é›»è©±ç•ªå·:' . $HTTP_POST_VARS['convenience_store_tel'] ."\n";
+	$pay_comments .= 'æ¥ç¶šURL:' . tep_href_link('convenience_store_chk.php', 'sid=' . $convenience_sid, 'SSL');
 	
 	$comments = $pay_comments ."\n".$comments;
   }
@@ -180,8 +180,8 @@ $breadcrumb->add('ºÆÇÛÃ£¥Õ¥©¡¼¥à', tep_href_link('reorder.php'));
         }
         $attributes_values = tep_db_fetch_array($attributes);
         $products_ordered_attributes .= "\n" . $attributes_values['products_options_name'] 
-        . str_repeat('¡¡',intval((18-strlen($attributes_values['products_options_name']))/2))
-        . '¡§' . $attributes_values['products_options_values_name'];
+        . str_repeat('ã€€',intval((18-strlen($attributes_values['products_options_name']))/2))
+        . 'ï¼š' . $attributes_values['products_options_values_name'];
       }
     }
 //------insert customer choosen option eof ----
@@ -189,23 +189,23 @@ $breadcrumb->add('ºÆÇÛÃ£¥Õ¥©¡¼¥à', tep_href_link('reorder.php'));
     $total_tax += tep_calculate_tax($total_products_price, $products_tax) * $o->products[$i]['qty'];
     $total_cost += $total_products_price;
 
-    $products_ordered .= 'ÃíÊ¸¾¦ÉÊ¡¡¡¡¡¡¡¡¡¡¡§' . $o->products[$i]['name'];
+    $products_ordered .= 'æ³¨æ–‡å•†å“ã€€ã€€ã€€ã€€ã€€ï¼š' . $o->products[$i]['name'];
 	if(tep_not_null($o->products[$i]['model'])) {
 	  $products_ordered .= ' (' . $o->products[$i]['model'] . ')';
 	}
 	
-    $_product_info_query = tep_db_query("select p.products_id, pd.products_name, pd.products_attention_1,pd.products_attention_2,pd.products_attention_3,pd.products_attention_4,pd.products_attention_5,pd.products_description_".ABBR_SITENAME.", p.products_model, p.products_quantity, p.products_image,p.products_image2,p.products_image3, pd.products_url, p.products_price, p.products_tax_class_id, p.products_date_added, p.products_date_available, p.manufacturers_id, p.products_bflag, p.products_cflag, p.products_small_sum from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" . $o->products[$i]['id'] . "' and pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "'");
+    $_product_info_query = tep_db_query("select p.products_id, pd.products_name, pd.products_attention_1,pd.products_attention_2,pd.products_attention_3,pd.products_attention_4,pd.products_attention_5,pd.products_description, p.products_model, p.products_quantity, p.products_image,p.products_image2,p.products_image3, pd.products_url, p.products_price, p.products_tax_class_id, p.products_date_added, p.products_date_available, p.manufacturers_id, p.products_bflag, p.products_cflag, p.products_small_sum from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" . $o->products[$i]['id'] . "' and pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "'");
     tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_viewed = products_viewed+1 where products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and language_id = '" . $languages_id . "'");
     $product_info = tep_db_fetch_array($_product_info_query);
     $data1 = explode("//", $product_info['products_attention_1']);
 	
 	$products_ordered .= $products_ordered_attributes . "\n";
-	//$products_ordered .= '¸Ä¿ô          :' . $o->products[$i]['qty'] . "\n";
-	$products_ordered .= '¸Ä¿ô¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡§' . $o->products[$i]['qty'] . '¸Ä' . tep_get_full_count($o->products[$i]['qty'], $data1[1]) . "\n";
-	//$products_ordered .= 'Ã±²Á          :' . $currencies->display_price($o->products[$i]['final_price'], $o->products[$i]['tax']) . "\n";
-	//$products_ordered .= '¾®·×          :' . $currencies->display_price($o->products[$i]['final_price'], $o->products[$i]['tax'], $o->products[$i]['qty']) . "\n";
+	//$products_ordered .= 'å€‹æ•°          :' . $o->products[$i]['qty'] . "\n";
+	$products_ordered .= 'å€‹æ•°ã€€ã€€ã€€ã€€ã€€ã€€ã€€ï¼š' . $o->products[$i]['qty'] . 'å€‹' . tep_get_full_count($o->products[$i]['qty'], $data1[1]) . "\n";
+	//$products_ordered .= 'å˜ä¾¡          :' . $currencies->display_price($o->products[$i]['final_price'], $o->products[$i]['tax']) . "\n";
+	//$products_ordered .= 'å°è¨ˆ          :' . $currencies->display_price($o->products[$i]['final_price'], $o->products[$i]['tax'], $o->products[$i]['qty']) . "\n";
 	if(tep_not_null($o->products[$i]['character'])) {
-	  $products_ordered .= '¥­¥ã¥é¥¯¥¿¡¼Ì¾¡¡¡¡¡§' . $o->products[$i]['character'] . "\n";
+	  $products_ordered .= 'ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åã€€ã€€ï¼š' . $o->products[$i]['character'] . "\n";
 	}
 	
 	/*$add_products_query = tep_db_query("select products_description from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$o->products[$i]['id']."' and language_id = '" . $languages_id . "'");
@@ -220,7 +220,7 @@ $breadcrumb->add('ºÆÇÛÃ£¥Õ¥©¡¼¥à', tep_href_link('reorder.php'));
 	$products_ordered .= '------------------------------------------' . "\n";
   }
   
-  # ¥á¡¼¥ëËÜÊ¸À°·Á --------------------------------------
+  # ãƒ¡ãƒ¼ãƒ«æœ¬æ–‡æ•´å½¢ --------------------------------------
   $email_order = '';
 
   $otq = tep_db_query("select * from ".TABLE_ORDERS_TOTAL." where class = 'ot_total' and orders_id = '".$insert_id."'");
@@ -228,59 +228,59 @@ $breadcrumb->add('ºÆÇÛÃ£¥Õ¥©¡¼¥à', tep_href_link('reorder.php'));
   //$otq = tep_db_query("select * from ".TABLE_ORDERS_TOTAL." where class = 'ot_point' and orders_id = '".$insert_id."'");
   //$op = tep_db_fetch_array($otq);
 
-  //$email_order .= $o->customer['name'] . 'ÍÍ' . "\n\n";
-  //$email_order .= '¤³¤ÎÅÙ¤Ï¡¢' . STORE_NAME . '¤ò¤´ÍøÍÑ¤¤¤¿¤À¤­¡¢À¿¤Ë¤¢¤ê' . "\n";
-  //$email_order .= '¤¬¤È¤¦¤´¤¶¤¤¤Ş¤¹¡£' . "\n";
-  //$email_order .= '²¼µ­¤ÎÆâÍÆ¤Ë¤Æ¤´ÃíÊ¸¤ò¾µ¤ê¤Ş¤·¤¿¤Î¤Ç¡¢¤´³ÎÇ§¤¯¤À¤µ¤¤¡£' . "\n";
-  //$email_order .= '¤´ÉÔÌÀ¤ÊÅÀ¤¬¤´¤¶¤¤¤Ş¤·¤¿¤é¡¢ÃíÊ¸ÈÖ¹æ¤ò¤´³ÎÇ§¤Î¾å¡¢' . "\n";
-  //$email_order .= '¡Ö' . STORE_NAME . '¡×¤Ş¤Ç¤ªÌä¤¤¹ç¤ï¤»¤¯¤À¤µ¤¤¡£' . "\n\n";
+  //$email_order .= $o->customer['name'] . 'æ§˜' . "\n\n";
+  //$email_order .= 'ã“ã®åº¦ã¯ã€' . STORE_NAME . 'ã‚’ã”åˆ©ç”¨ã„ãŸã ãã€èª ã«ã‚ã‚Š' . "\n";
+  //$email_order .= 'ãŒã¨ã†ã”ã–ã„ã¾ã™ã€‚' . "\n";
+  //$email_order .= 'ä¸‹è¨˜ã®å†…å®¹ã«ã¦ã”æ³¨æ–‡ã‚’æ‰¿ã‚Šã¾ã—ãŸã®ã§ã€ã”ç¢ºèªãã ã•ã„ã€‚' . "\n";
+  //$email_order .= 'ã”ä¸æ˜ãªç‚¹ãŒã”ã–ã„ã¾ã—ãŸã‚‰ã€æ³¨æ–‡ç•ªå·ã‚’ã”ç¢ºèªã®ä¸Šã€' . "\n";
+  //$email_order .= 'ã€Œ' . STORE_NAME . 'ã€ã¾ã§ãŠå•ã„åˆã‚ã›ãã ã•ã„ã€‚' . "\n\n";
 
-  $email_order .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
-  $email_order .= '¢§ÃíÊ¸ÈÖ¹æ¡¡¡¡¡¡¡¡¡§' . $insert_id . "\n";
-  $email_order .= '¢§ÃíÊ¸Æü¡¡¡¡¡¡¡¡¡¡¡§' . strftime(DATE_FORMAT_LONG) . "\n";
-  $email_order .= '¢§¤ªÌ¾Á°¡¡¡¡¡¡¡¡¡¡¡§' . $o->customer['name'] . "\n";
-  $email_order .= '¢§¥á¡¼¥ë¥¢¥É¥ì¥¹¡¡¡§' . $o->customer['email_address'] . "\n";
-  $email_order .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n\n";
+  $email_order .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
+  $email_order .= 'â–¼æ³¨æ–‡ç•ªå·ã€€ã€€ã€€ã€€ï¼š' . $insert_id . "\n";
+  $email_order .= 'â–¼æ³¨æ–‡æ—¥ã€€ã€€ã€€ã€€ã€€ï¼š' . strftime(DATE_FORMAT_LONG) . "\n";
+  $email_order .= 'â–¼ãŠåå‰ã€€ã€€ã€€ã€€ã€€ï¼š' . $o->customer['name'] . "\n";
+  $email_order .= 'â–¼ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã€€ï¼š' . $o->customer['email_address'] . "\n";
+  $email_order .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n\n";
 /*
   if ($op['value'] > 0) {
-    $email_order .= '¢§¥İ¥¤¥ó¥È³ä°ú¡¡¡¡¡§' . $op['text'] . "\n";
+    $email_order .= 'â–¼ãƒã‚¤ãƒ³ãƒˆå‰²å¼•ã€€ã€€ï¼š' . $op['text'] . "\n";
   }
-  $email_order .= '¢§¤ª»ÙÊ§¶â³Û¡¡¡¡¡¡¡§' . strip_tags($ot['text']) . "\n";
-  $email_order .= '¢§¤ª»ÙÊ§ÊıË¡¡¡¡¡¡¡¡§' . $o->info['payment_method'] . "\n\n";
+  $email_order .= 'â–¼ãŠæ”¯æ‰•é‡‘é¡ã€€ã€€ã€€ï¼š' . strip_tags($ot['text']) . "\n";
+  $email_order .= 'â–¼ãŠæ”¯æ‰•æ–¹æ³•ã€€ã€€ã€€ï¼š' . $o->info['payment_method'] . "\n\n";
 */
-  $email_order .= '¢§ÃíÊ¸¾¦ÉÊ' . "\n";
+  $email_order .= 'â–¼æ³¨æ–‡å•†å“' . "\n";
   $email_order .= '------------------------------------------' . "\n";
   $email_order .= $products_ordered . "\n";
 
-  //$email_order .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
+  //$email_order .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
   function str_string($string='') {
     if(ereg("-", $string)) {
 	  $string_array = explode("-", $string);
-	  return $string_array[0] . 'Ç¯' . $string_array[1] . '·î' . $string_array[2] . 'Æü';
+	  return $string_array[0] . 'å¹´' . $string_array[1] . 'æœˆ' . $string_array[2] . 'æ—¥';
 	}
   }
-  $email_order .= '¢§¼è°úÆü»ş¡¡¡¡¡¡¡¡¡§' . str_string($date) . $hour . '»ş' . $minute . 'Ê¬¡¡¡Ê24»ş´ÖÉ½µ­¡Ë' . "\n";
-  //$email_order .= '¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡§' . $torihikihouhou . "\n";
+  $email_order .= 'â–¼å–å¼•æ—¥æ™‚ã€€ã€€ã€€ã€€ï¼š' . str_string($date) . $hour . 'æ™‚' . $minute . 'åˆ†ã€€ï¼ˆ24æ™‚é–“è¡¨è¨˜ï¼‰' . "\n";
+  //$email_order .= 'ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ï¼š' . $torihikihouhou . "\n";
   
 
   if ($comment) {
-    $email_order .= '¢§È÷¹Í¡¡¡¡¡¡¡¡¡¡¡¡¡§' . "\n";
+    $email_order .= 'â–¼å‚™è€ƒã€€ã€€ã€€ã€€ã€€ã€€ï¼š' . "\n";
     //$email_order .= tep_db_output($comment) . "\n";
     $email_order .= htmlspecialchars($comment) . "\n";
   }
   
   
   //$email_order .= "\n\n\n";
-  //$email_order .= '[¤´Ï¢Íí¡¦¤ªÌä¤¤¹ç¤ï¤»Àè]¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
-  //$email_order .= '³ô¼°²ñ¼Ò iimy' . "\n";
+  //$email_order .= '[ã”é€£çµ¡ãƒ»ãŠå•ã„åˆã‚ã›å…ˆ]â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
+  //$email_order .= 'æ ªå¼ä¼šç¤¾ iimy' . "\n";
   //$email_order .= SUPPORT_EMAIL_ADDRESS . "\n";
   //$email_order .= HTTP_SERVER . "\n";
-  //$email_order .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
+  //$email_order .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
 
-  $mail_title = "[" . $order['orders_id'] . "]ºÆÇÛÃ£³ÎÇ§¥á¡¼¥ë¡Ú" . STORE_NAME . "¡Û";
+  $mail_title = "[" . $order['orders_id'] . "]å†é…é”ç¢ºèªãƒ¡ãƒ¼ãƒ«ã€" . STORE_NAME . "ã€‘";
   $email_order = str_replace(array('${NAME}', '${TIME}', '${CONTENT}'), array($o->customer['name'], date('Y-m-d H:i:s'), $email_order), $mail_content);
 
-  # ¥á¡¼¥ëËÜÊ¸À°·Á --------------------------------------
+  # ãƒ¡ãƒ¼ãƒ«æœ¬æ–‡æ•´å½¢ --------------------------------------
   // 2003.03.08 Edit Japanese osCommerce
   tep_mail($o->customer['name'], $o->customer['email_address'], $mail_title, nl2br($email_order), STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   //echo nl2br($email_order);
@@ -290,38 +290,38 @@ $breadcrumb->add('ºÆÇÛÃ£¥Õ¥©¡¼¥à', tep_href_link('reorder.php'));
       }
     } else if (in_array($order['orders_status'], array(2,5,6,7,8))) {
         // status can not change
-        echo '<div class="comment">¤´»ØÄê¤ÎÃíÊ¸ÈÖ¹æ¤Ï¼õÉÕ¤Ç¤­¤Ş¤»¤ó¡£ <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="74" height="25" alt="Á°¤ËÌá¤ë" title="Á°¤ËÌá¤ë"></a></div></div><div>';
+        echo '<div class="comment">ã”æŒ‡å®šã®æ³¨æ–‡ç•ªå·ã¯å—ä»˜ã§ãã¾ã›ã‚“ã€‚ <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="74" height="25" alt="å‰ã«æˆ»ã‚‹" title="å‰ã«æˆ»ã‚‹"></a></div></div><div>';
     } else {
         // edit order
 ?>
   <div class="comment">
     <div id='form'>
       <form action="reorder.php" method="post" name="order">
-        <input type="hidden" name="dummy" value="¤¢¤¤¤¦¤¨¤ªÈıÉı">
+        <input type="hidden" name="dummy" value="ã‚ã„ã†ãˆãŠçœ‰å¹…">
         <input type='hidden' name='order_id' value='<?php echo $order['orders_id']?>' >
         <input type='hidden' name='email' value='<?php echo $order['customers_email_address']?>' >
         <div id="form_error" style="display:none">
         </div>
         <table class="information_table" summary="table">
           <tr>
-            <td width="130">ÃíÊ¸ÈÖ¹æ</td>
+            <td width="130">æ³¨æ–‡ç•ªå·</td>
             <td><?php echo $order['orders_id']?></td>
           </tr>
           <tr>
-            <td>¤ªÌ¾Á°</td>
+            <td>ãŠåå‰</td>
             <td><?php echo $order['customers_name']?></td>
           </tr>
           <tr>
-            <td>¥á¡¼¥ë¥¢¥É¥ì¥¹</td>
+            <td>ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹</td>
             <td><?php echo $order['customers_email_address']?></td>
           </tr>
           <tr>
-            <td>¼è°úÆü»ş¡ÊÊÑ¹¹Á°¡Ë</td>
+            <td>å–å¼•æ—¥æ™‚ï¼ˆå¤‰æ›´å‰ï¼‰</td>
             <td id='old_time'><?php echo strftime(DATE_FORMAT_LONG, strtotime($order['torihiki_date']))?>
               <?php echo date('H:i', strtotime($order['torihiki_date']));?></td>
           </tr>
           <tr>
-            <td>¼è°úÆü»ş¡ÊÊÑ¹¹¸å¡Ë</td>
+            <td>å–å¼•æ—¥æ™‚ï¼ˆå¤‰æ›´å¾Œï¼‰</td>
             <td>
               <select name='date' id='new_date' onChange="selectDate('<?php echo date('H');?>', '<?php echo date('i');?>')">
                 <option value=''>--</option>
@@ -338,7 +338,7 @@ $breadcrumb->add('ºÆÇÛÃ£¥Õ¥©¡¼¥à', tep_href_link('reorder.php'));
               </select>
               <span id="date_error"></span>
               <br >
-              <font color="red">¤´´õË¾¤Î¤ª»ş´Ö¤ËÅº¤¨¤Ê¤¤¾ì¹ç¤Ï¡¢ÊÀ¼Ò¤è¤ê¡Ö¼è°ú»ş´Ö¡×¤ò¤´Ï¢Íí¤µ¤»¤Æ¤¤¤¿¤À¤­¤Ş¤¹¡£</font>
+              <font color="red">ã”å¸Œæœ›ã®ãŠæ™‚é–“ã«æ·»ãˆãªã„å ´åˆã¯ã€å¼Šç¤¾ã‚ˆã‚Šã€Œå–å¼•æ™‚é–“ã€ã‚’ã”é€£çµ¡ã•ã›ã¦ã„ãŸã ãã¾ã™ã€‚</font>
             </td>
           </tr>
         </table>
@@ -348,12 +348,12 @@ $breadcrumb->add('ºÆÇÛÃ£¥Õ¥©¡¼¥à', tep_href_link('reorder.php'));
         <br>
         <table class="information_table" id='product_<?php echo $value['id'];?>' summary="table">
           <tr>
-            <td width="130">¾¦ÉÊÌ¾</td>
+            <td width="130">å•†å“å</td>
             <td name='products_names'><?php echo $value['name'];?></td>
           </tr>
           <?php if($value['character']) {?>
           <tr>
-            <td>¥­¥ã¥é¥¯¥¿¡¼Ì¾</td>
+            <td>ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼å</td>
             <td>
               <input type='text' id='character_<?php echo $value['id'];?>' name='character[<?php echo $value['id'];?>]' value='<?php echo $value['character']?>' class="input_text" >
             </td>
@@ -361,12 +361,12 @@ $breadcrumb->add('ºÆÇÛÃ£¥Õ¥©¡¼¥à', tep_href_link('reorder.php'));
           <?php }?>
           <?php if($value['attributes'])foreach ($value['attributes'] as $att) {?>
           <tr>
-            <td><?php echo $att['option'];?>(ÊÑ¹¹Á°)</td>
+            <td><?php echo $att['option'];?>(å¤‰æ›´å‰)</td>
             <td><?php echo $att['value'];?></td>
           </tr>
           <?php }?>
           <?php
- // Êä³öÉÌÆ·ÊôĞÔÏÂÀ­¿ò
+ // è£œç«ƒæ–Œç³å¥‰ä¾†å’Œæ€§å´‡
         $products_attributes_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_ATTRIBUTES . " patrib where patrib.products_id='" . $value['id'] . "' and patrib.options_id = popt.products_options_id and popt.language_id = '" . $languages_id . "'");
         $products_attributes = tep_db_fetch_array($products_attributes_query);
         if ($products_attributes['total'] > 0) {
@@ -375,7 +375,7 @@ $breadcrumb->add('ºÆÇÛÃ£¥Õ¥©¡¼¥à', tep_href_link('reorder.php'));
           while ($products_options_name = tep_db_fetch_array($products_options_name_query)) {
             $selected = 0;
             $products_options_array = array();
-            echo '<tr><td>' . $products_options_name['products_options_name'] . '(ÊÑ¹¹¸å)</td><td>' . "\n";
+            echo '<tr><td>' . $products_options_name['products_options_name'] . '(å¤‰æ›´å¾Œ)</td><td>' . "\n";
             $products_options_query = tep_db_query("select pov.products_options_values_id, pov.products_options_values_name, pa.options_values_price, pa.price_prefix, pa.products_at_quantity, pa.products_at_quantity from " . TABLE_PRODUCTS_ATTRIBUTES . " pa, " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov where pa.products_id = '" . $value['id'] . "' and pa.options_id = '" . $products_options_name['products_options_id'] . "' and pa.options_values_id = pov.products_options_values_id and pov.language_id = '" . $languages_id . "' order by pa.products_attributes_id");
             while ($products_options = tep_db_fetch_array($products_options_query)) {
               //add products_at_quantity - ds-style
@@ -398,7 +398,7 @@ $breadcrumb->add('ºÆÇÛÃ£¥Õ¥©¡¼¥à', tep_href_link('reorder.php'));
         <br>
         <table class="information_table" summary="table">
           <tr>
-            <td width="130">È÷¹Í</td>
+            <td width="130">å‚™è€ƒ</td>
             <td>
               <textarea name='comment' id='comment'></textarea>
             </td>
@@ -406,16 +406,16 @@ $breadcrumb->add('ºÆÇÛÃ£¥Õ¥©¡¼¥à', tep_href_link('reorder.php'));
         </table>
         <br>
         <p align="center">
-          <input type='image' src="includes/languages/japanese/images/buttons/button_submit.gif" alt="³ÎÇ§¤¹¤ë" title="³ÎÇ§¤¹¤ë" onClick="return orderConfirmPage();" >
-          <input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="¥¯¥ê¥¢" title="¥¯¥ê¥¢" onClick="javascript:document.order.reset();return false;" >
+          <input type='image' src="includes/languages/japanese/images/buttons/button_submit.gif" alt="ç¢ºèªã™ã‚‹" title="ç¢ºèªã™ã‚‹" onClick="return orderConfirmPage();" >
+          <input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="ã‚¯ãƒªã‚¢" title="ã‚¯ãƒªã‚¢" onClick="javascript:document.order.reset();return false;" >
         </p>
       </form>
     </div>
     <div id='confirm' style='display:none; text-align:center;'>
       <div id='confirm_content' style='text-align:left;'>
       </div>
-      <input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="³ÎÄê¤¹¤ë" title="³ÎÄê¤¹¤ë" onClick="document.order.submit()" >
-      <input type='image' src="includes/languages/japanese/images/buttons/button_back.gif" alt="Á°¤ËÌá¤ë" title="Á°¤ËÌá¤ë" onClick="document.getElementById('confirm').style.display='none';document.getElementById('form').style.display='block'" >
+      <input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="ç¢ºå®šã™ã‚‹" title="ç¢ºå®šã™ã‚‹" onClick="document.order.submit()" >
+      <input type='image' src="includes/languages/japanese/images/buttons/button_back.gif" alt="å‰ã«æˆ»ã‚‹" title="å‰ã«æˆ»ã‚‹" onClick="document.getElementById('confirm').style.display='none';document.getElementById('form').style.display='block'" >
     </div>
     <script type="text/javascript" src='./js/order.js'></script>
     <script type="text/javascript">
@@ -447,7 +447,7 @@ function orderConfirmPage(){
 <?php }?>
 	text += "<table class='information_table' summary='table'>\n";
 	text += "<tr><td width='130'>\n";
-	text += "¼è°úÆü»ş¡ÊÊÑ¹¹Á°¡Ë";
+	text += "å–å¼•æ—¥æ™‚ï¼ˆå¤‰æ›´å‰ï¼‰";
 	text += "</td><td>\n";
 	text += oldTime + "\n";
 	text += "</td></tr><tr><td>\n";
@@ -458,10 +458,10 @@ function orderConfirmPage(){
 	
 	orderChanged = orderChanged || dateChanged;
 
-	text += "¼è°úÆü»ş¡ÊÊÑ¹¹¸å¡Ë</td><td>";
+	text += "å–å¼•æ—¥æ™‚ï¼ˆå¤‰æ›´å¾Œï¼‰</td><td>";
 	
 	if((document.getElementById('new_date').selectedIndex != 0 || document.getElementById('new_hour').selectedIndex != 0 || document.getElementById('new_minute').selectedIndex != 0) && !(document.getElementById('new_date').selectedIndex != 0 && document.getElementById('new_hour').selectedIndex != 0 && document.getElementById('new_minute').selectedIndex != 0)){
-			document.getElementById('date_error').innerHTML = "<br> <font color='red'>¡Ú¼è°úÆü»ş¡ÊÊÑ¹¹¸å¡Ë¡Û¤òÁªÂò¤·¤Æ¤¯¤À¤µ¤¤¡£</font>";
+			document.getElementById('date_error').innerHTML = "<br> <font color='red'>ã€å–å¼•æ—¥æ™‚ï¼ˆå¤‰æ›´å¾Œï¼‰ã€‘ã‚’é¸æŠã—ã¦ãã ã•ã„ã€‚</font>";
 			document.getElementById('date_error').style.display = 'inline';
 			return false;
 	}
@@ -476,7 +476,7 @@ function orderConfirmPage(){
 			&& ((document.getElementById('new_hour').options[document.getElementById('new_hour').selectedIndex].value * 60) + parseInt(document.getElementById('new_minute').options[document.getElementById('new_minute').selectedIndex].value)) < (nowMinutes + <?php echo MINUTES;?>)) 
 		{
 			// time error
-			document.getElementById('date_error').innerHTML = "<br><font color='red'>¼è°ú»ş´Ö¤Ï¸½ºß»ş¹ï¤è¤ê20Ê¬¸å°Ê¹ß¤òÁªÂò¤·¤Æ¤¯¤À¤µ¤¤¡£</font>";
+			document.getElementById('date_error').innerHTML = "<br><font color='red'>å–å¼•æ™‚é–“ã¯ç¾åœ¨æ™‚åˆ»ã‚ˆã‚Š20åˆ†å¾Œä»¥é™ã‚’é¸æŠã—ã¦ãã ã•ã„ã€‚</font>";
 			document.getElementById('date_error').style.display = 'inline';
 			return false;
 		}
@@ -487,18 +487,18 @@ function orderConfirmPage(){
 	
 	for(i in productName){
 		text += "<table class='information_table' summary='table'>\n";
-		text += "<tr><td width='130'>¾¦ÉÊÌ¾</td><td>\n";
+		text += "<tr><td width='130'>å•†å“å</td><td>\n";
 		text += productName[i] + "\n";
 		text += "</td></tr>";
 
 		if(oldCharacter[i] != ''){
 			text += "<tr><td width='130'>\n";
-			text += "¥­¥ã¥é¥¯¥¿¡¼Ì¾(ÊÑ¹¹Á°)";
+			text += "ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼å(å¤‰æ›´å‰)";
 			text += "</td><td>\n";
 			text += oldCharacter[i] + "\n";
 			text += "</td></tr>";
 			text += "<tr><td>\n";
-			text += "¥­¥ã¥é¥¯¥¿¡¼Ì¾(ÊÑ¹¹¸å)";
+			text += "ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼å(å¤‰æ›´å¾Œ)";
 			text += "</td><td>\n";
 			text += document.getElementById('character_'+i).value + "\n";
 			text += "</td></tr>";
@@ -510,12 +510,12 @@ function orderConfirmPage(){
 
 		for(j in oldAttribute[i]){
 			text += "<tr><td>\n";
-			text += oldAttribute[i][j][0] + "(ÊÑ¹¹Á°)\n"
+			text += oldAttribute[i][j][0] + "(å¤‰æ›´å‰)\n"
 			text += "</td><td>\n";
 			text += oldAttribute[i][j][1] + "\n";
 			text += "</td></tr><tr><td>\n";
 			text += oldAttribute[i][j][0];
-			text += "(ÊÑ¹¹¸å)</td><td>\n";
+			text += "(å¤‰æ›´å¾Œ)</td><td>\n";
 			if (document.getElementById('id[' + i + '][' + j + ']').selectedIndex != 0) {
 				text += document.getElementById('id[' + i + '][' + j + ']').options[document.getElementById('id[' + i + '][' + j + ']').selectedIndex].innerHTML + "\n";
 			} else {
@@ -529,7 +529,7 @@ function orderConfirmPage(){
 
 	text += "<table class='information_table' summary='table'>\n"
 	text += "<tr><td width='130' align='left' style='wdith:130px; text-align:left;'>";
-	text += "È÷¹Í";
+	text += "å‚™è€ƒ";
 	text += "</td><td align='left' style='wdith:130px; text-align:left;'>\n";
 	text += document.getElementById('comment').value;
 	text += "</td></tr>\n";
@@ -540,7 +540,7 @@ function orderConfirmPage(){
 	// if order unchanged , does not commit
 	if(!orderChanged){
 		//alert('no change');
-		document.getElementById('form_error').innerHTML = "<font color='red'>ÊÑ¹¹²Õ½ê¤¬¤´¤¶¤¤¤Ş¤»¤ó¡£</font>";
+		document.getElementById('form_error').innerHTML = "<font color='red'>å¤‰æ›´ç®‡æ‰€ãŒã”ã–ã„ã¾ã›ã‚“ã€‚</font>";
 		document.getElementById('form_error').style.display = 'block';
 		return false;	
 	}
@@ -555,7 +555,7 @@ function orderConfirmPage(){
     }
   } else {
     // has no order or info error
-    echo '<div class="comment">"ÃíÊ¸ÈÖ¹æ" ¤Ş¤¿¤Ï"¥á¡¼¥ë¥¢¥É¥ì¥¹" ¤¬°ìÃ×¤·¤Ş¤»¤ó¤Ç¤·¤¿¡£<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="74" height="25" alt="Á°¤ËÌá¤ë" title="Á°¤ËÌá¤ë"></a></div></div><div>';
+    echo '<div class="comment">"æ³¨æ–‡ç•ªå·" ã¾ãŸã¯"ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹" ãŒä¸€è‡´ã—ã¾ã›ã‚“ã§ã—ãŸã€‚<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="74" height="25" alt="å‰ã«æˆ»ã‚‹" title="å‰ã«æˆ»ã‚‹"></a></div></div><div>';
   }
 ?>
     <?php } else {
@@ -563,24 +563,24 @@ function orderConfirmPage(){
   ?>
     <div class="comment">
       <form action="reorder.php" method="post" name='order'>
-        <input type="hidden" name="dummy" value="¤¢¤¤¤¦¤¨¤ªÈıÉı">
+        <input type="hidden" name="dummy" value="ã‚ã„ã†ãˆãŠçœ‰å¹…">
         <table class="information_table" summary="table">
           <tr>
-            <td align="left">ÃíÊ¸ÈÖ¹æ</td>
+            <td align="left">æ³¨æ–‡ç•ªå·</td>
           </tr>
           <tr>
             <td>
               <input type='text' name='order_id_1' class="input_text" maxlength='8' style='width:80px' >
               -
               <input type='text' name='order_id_2' class="input_text" maxlength='8' style='width:80px' >
-              <a href="/reorder2.php">ÃíÊ¸ÈÖ¹æËº¤ì¤¿?</a>
+              <a href="/reorder2.php">æ³¨æ–‡ç•ªå·å¿˜ã‚ŒãŸ?</a>
               <br >
-              <font color='red' style='font-size:12px'>Îã¡§20******-********<br >
-              ÃíÊ¸½ñ¤Ëµ­ºÜ¤µ¤ì¤¿20¤«¤é»Ï¤Ş¤ë8·å¤Î¿ô»ú-8·å¤Î¿ô»ú¤ò¤´ÆşÎÏ¤¯¤À¤µ¤¤¡£</font>
+              <font color='red' style='font-size:12px'>ä¾‹ï¼š20******-********<br >
+              æ³¨æ–‡æ›¸ã«è¨˜è¼‰ã•ã‚ŒãŸ20ã‹ã‚‰å§‹ã¾ã‚‹8æ¡ã®æ•°å­—-8æ¡ã®æ•°å­—ã‚’ã”å…¥åŠ›ãã ã•ã„ã€‚</font>
             </td>
           </tr>
           <tr>
-            <td align="left">¥á¡¼¥ë¥¢¥É¥ì¥¹</td>
+            <td align="left">ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹</td>
           </tr>
           <tr>
             <td>
@@ -589,8 +589,8 @@ function orderConfirmPage(){
           </tr>
           <tr>
             <td colspan='2' align="center" style="text-align:center;">
-              <input type='image' src="includes/languages/japanese/images/buttons/button_continue.gif" alt="¼¡¤Ø¿Ê¤à" title="¼¡¤Ø¿Ê¤à" >
-              <input type='image' src="includes/languages/japanese/images/buttons/button_reset_01.gif" alt="¥¯¥ê¥¢" title="¥¯¥ê¥¢" onClick="javascript:document.order.reset();return false;" >
+              <input type='image' src="includes/languages/japanese/images/buttons/button_continue.gif" alt="æ¬¡ã¸é€²ã‚€" title="æ¬¡ã¸é€²ã‚€" >
+              <input type='image' src="includes/languages/japanese/images/buttons/button_reset_01.gif" alt="ã‚¯ãƒªã‚¢" title="ã‚¯ãƒªã‚¢" onClick="javascript:document.order.reset();return false;" >
             </td>
           </tr>
         </table>

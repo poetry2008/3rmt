@@ -48,12 +48,14 @@
 
 <div id="title">
   <?php
+  if (!isset($HTTP_GET_VARS['cPath'])) $HTTP_GET_VARS['cPath'] = NULL; //del notice
+  if (!isset($HTTP_GET_VARS['products_id'])) $HTTP_GET_VARS['products_id'] = NULL; //del notice
   if ($HTTP_GET_VARS['cPath']) {
-    echo $seo_category['seo_name'] . ' RMT <a href="javascript:void(0);" onkeypress="SomeJavaScriptCode" style="cursor:hand" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMTÁí¹ç¥µ¥¤¥È ¥ï¡¼¥ë¥É¥Ş¥Í¡¼¤ò¤ªµ¤¤ËÆş¤ê¤ËÄÉ²Ã¤·¤Æ²¼¤µ¤¤¡ª</a>' . "\n";
+    echo $seo_category['seo_name'] . ' RMT <a href="javascript:void(0);" onkeypress="SomeJavaScriptCode" style="cursor:hand" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMTç·åˆã‚µã‚¤ãƒˆ ãƒ¯ãƒ¼ãƒ«ãƒ‰ãƒãƒãƒ¼ã‚’ãŠæ°—ã«å…¥ã‚Šã«è¿½åŠ ã—ã¦ä¸‹ã•ã„ï¼</a>' . "\n";
   } elseif ($HTTP_GET_VARS['products_id']) {
-    echo ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1) . 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">Áí¹ç¥µ¥¤¥È ¥ï¡¼¥ë¥É¥Ş¥Í¡¼¤ò¤ªµ¤¤ËÆş¤ê¤ËÄÉ²Ã¤·¤Æ²¼¤µ¤¤¡ª</a>' . "\n";
+    echo ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1) . 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">ç·åˆã‚µã‚¤ãƒˆ ãƒ¯ãƒ¼ãƒ«ãƒ‰ãƒãƒãƒ¼ã‚’ãŠæ°—ã«å…¥ã‚Šã«è¿½åŠ ã—ã¦ä¸‹ã•ã„ï¼</a>' . "\n";
   } else {
-    echo 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMTÁí¹ç¥µ¥¤¥È ¥ï¡¼¥ë¥É¥Ş¥Í¡¼¤ò¤ªµ¤¤ËÆş¤ê¤ËÄÉ²Ã¤·¤Æ²¼¤µ¤¤¡ª</a>' . "\n";
+    echo 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMTç·åˆã‚µã‚¤ãƒˆ ãƒ¯ãƒ¼ãƒ«ãƒ‰ãƒãƒãƒ¼ã‚’ãŠæ°—ã«å…¥ã‚Šã«è¿½åŠ ã—ã¦ä¸‹ã•ã„ï¼</a>' . "\n";
   }  
 ?>
 </div>
@@ -101,7 +103,7 @@
                 <?php echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, '', 'NONSSL', false), 'get')."\n"; ?>
                 <table style="margin-top: 3px;" cellpadding="2" cellspacing="2" summary="search">
                   <tr>
-                    <td><img class="middle" src="images/design/button/search_text.gif" width="76" height="25" alt="RMT¸¡º÷"></td>
+                    <td><img class="middle" src="images/design/button/search_text.gif" width="76" height="25" alt="RMTæ¤œç´¢"></td>
                     <td>
                       <?php
 // --- get categoris list ( parent_id = 0 ) --- //
@@ -112,14 +114,18 @@
     $cat_products = tep_get_product_path($HTTP_GET_VARS['products_id']);
     $cat0 = explode('_', $cat_products);
   }
+  if (!isset($cat0[0])) $cat0[0] = NULL; //del notice
   $cat1 = $cat0[0];
-  $categories_parent0_query = tep_db_query("select c.categories_id, c.categories_status, cd.categories_name from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where c.parent_id = '0' and c.categories_status = '0' and c.categories_id = cd.categories_id and cd.language_id = '" . (int)$languages_id . "' order by sort_order, cd.categories_name");
+  $categories_parent0_query = tep_db_query("select c.categories_id, c.categories_status, cd.categories_name 
+      from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
+      where cd.site_id = '" . SITE_ID . "' and c.parent_id = '0' and c.categories_status = '0' and c.categories_id = cd.categories_id and cd.language_id = '" . (int)$languages_id . "' 
+      order by sort_order, cd.categories_name");
   $categories_array = '<select name="categories_id" class="header_search_select">'."\n";
   $categories_array .= '<option value=""';
   if($cat1 == '') {
     $categories_array .= ' selected';
   }
-  $categories_array .= '>Á´¤Æ¤Î¥²¡¼¥à</option>'."\n";
+  $categories_array .= '>å…¨ã¦ã®ã‚²ãƒ¼ãƒ </option>'."\n";
   while($categories_parent0 = tep_db_fetch_array($categories_parent0_query)) {
     $categories_array .= '<option value="'.$categories_parent0['categories_id'].'"';
     if($cat1 == $categories_parent0['categories_id']) {
@@ -134,7 +140,7 @@
                     </td>
                     <td><?php echo tep_draw_input_field('keywords', 'RMT', 'class="header_search_input"'); ?></td>
                     <td>
-                      <input name="imageField" type="submit" class="header_search_submit" value="" alt="¸¡º÷">
+                      <input name="imageField" type="submit" class="header_search_submit" value="" alt="æ¤œç´¢">
                     </td>
                   </tr>
                 </table>
@@ -154,10 +160,10 @@
                       <a href="<?php echo tep_href_link('rss.php') ; ?>" class="header_menu_1">
                       <?php //echo tep_image(DIR_WS_IMAGES.'design/button/rss.gif','RSS') ; ?>
                       </a>
-                      <a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'',NONSSL) ; ?>" class="header_menu_2">
+                      <a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'','NONSSL') ; ?>" class="header_menu_2">
                       <?php //echo tep_image(DIR_WS_IMAGES.'design/button/shopping_cart.gif',HEADER_TITLE_CART_CONTENTS);?>
                       </a>
-                      <a href="<?php echo tep_href_link(FILENAME_CHECKOUT_PRODUCTS,'',SSL) ; ?>" class="header_menu_3">
+                      <a href="<?php echo tep_href_link(FILENAME_CHECKOUT_PRODUCTS,'','SSL') ; ?>" class="header_menu_3">
                       <?php //echo tep_image(DIR_WS_IMAGES.'design/button/checkout.gif',HEADER_TITLE_CHECKOUT);?>
                       </a>
                     </td>
@@ -177,7 +183,7 @@
       <li class="header_navigation_left"></li>
       <li class="header_navigation_content">
         <p class="header_Navigation_p">
-          <a href="<?php echo tep_href_link(FILENAME_SITEMAP,'',NONSSL);?>"><?php echo HEADER_TITLE_SITEMAP ; ?></a>
+          <a href="<?php echo tep_href_link(FILENAME_SITEMAP,'','NONSSL');?>"><?php echo HEADER_TITLE_SITEMAP ; ?></a>
           &nbsp;&nbsp;<?php echo $breadcrumb->trail(' &raquo; '); ?></p>
       </li>
       <li class="header_navigation_right"></li>

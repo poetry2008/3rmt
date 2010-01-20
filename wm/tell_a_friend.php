@@ -28,6 +28,7 @@
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_TELL_A_FRIEND);
 
+  if (!isset($HTTP_GET_VARS['send_to'])) $HTTP_GET_VARS['send_to'] = NULL;
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_TELL_A_FRIEND, 'send_to=' . $HTTP_GET_VARS['send_to'] . '&products_id=' . $HTTP_GET_VARS['products_id']));
 ?>
 <?php page_head();?>
@@ -156,7 +157,10 @@
               <td class="main"><table border="0" cellspacing="0" summary="table" cellpadding="2"> 
                 <tr> 
                   <td class="main"><?php echo FORM_FIELD_FRIEND_NAME; ?></td> 
-                  <td class="main"><?php echo tep_draw_input_field('friendname', (($friendname_error == true) ? $HTTP_POST_VARS['friendname'] : $HTTP_GET_VARS['friendname']),'class="input_text"'); if ($friendname_error == true) echo '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';?></td> 
+                  <td class="main">
+                  <?php if (!isset($HTTP_GET_VARS['friendname'])) $HTTP_GET_VARS['friendname'] = NULL;//del notice?>
+                  <?php if (!isset($HTTP_POST_VARS['friendname'])) $HTTP_POST_VARS['friendname'] = NULL;//del notice?>
+                  <?php echo tep_draw_input_field('friendname', (($friendname_error == true) ? $HTTP_POST_VARS['friendname'] : $HTTP_GET_VARS['friendname']),'class="input_text"'); if ($friendname_error == true) echo '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';?></td> 
                 </tr> 
                 <tr> 
                   <td class="main"><?php echo FORM_FIELD_FRIEND_EMAIL; ?></td> 

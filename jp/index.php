@@ -9,7 +9,6 @@
 
   Released under the GNU General Public License
 */
-
   require('includes/application_top.php');
 
 // the following cPath references come from application_top.php
@@ -39,59 +38,24 @@
   }
      //------ SEO TUNING  -----//
 	 
-    $seo_category_query = tep_db_query("select categories_name,seo_name,seo_description,categories_image3,categories_meta_text,categories_header_text_" . ABBR_SITENAME . ",categories_footer_text_" . ABBR_SITENAME . ",text_information,meta_keywords_" . ABBR_SITENAME . ",meta_description_" . ABBR_SITENAME . ", categories_id from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '".$current_category_id."' and language_id='" . $languages_id . "'");
+    $seo_category_query = tep_db_query("select categories_name,seo_name,seo_description,categories_image3,categories_meta_text,categories_header_text,categories_footer_text,text_information,meta_keywords,meta_description, categories_id from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '".$current_category_id."' and language_id='" . $languages_id . "' and site_id='" . SITE_ID . "'");
 	$seo_category = tep_db_fetch_array($seo_category_query);
     
 	$seo_manufacturers_query = tep_db_query("select manufacturers_id, manufacturers_name from " . TABLE_MANUFACTURERS . " where manufacturers_id = '".$HTTP_GET_VARS['manufacturers_id']."'");
     $seo_manufacturers = tep_db_fetch_array($seo_manufacturers_query);
 
+    if (!isset($HTTP_GET_VARS['tags_id'])) $HTTP_GET_VARS['tags_id']='';
   $seo_tags_query = tep_db_query("select * from " . TABLE_TAGS. " where tags_id = '".$HTTP_GET_VARS['tags_id']."'");
   $seo_tags = tep_db_fetch_array($seo_tags_query);
    
- /*
- if (isset($cPath_array)) {
-       $header_title =  $seo_category['categories_name'] ;
-	   $header_title.= tep_not_null($seo_category['categories_meta_text']) ? '-' . $seo_category['categories_meta_text'] . '¿ÏÃÁ§ŒRMT•∏•„•√•Ø•›•√•»' : C_TITLE ;
-	   $header_text = $seo_category['categories_name'] . '&nbsp;&nbsp;&nbsp;' .strip_tags($seo_category['categories_meta_text']);
-
-   } elseif ($HTTP_GET_VARS['manufacturers_id']) {
-       $header_title = $seo_manufacturers['manufacturers_name'].'-' .C_TITLE;
-       $header_text = $seo_manufacturers['manufacturers_name'] ;
-   } else {
-       $header_title =  C_TITLE ;
-       $header_text = C_DESCRIPTION ;
- }
- */
    //------ SEO TUNING  -----//
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_DEFAULT);
 ?>
 <?php page_head();?>
 <?php
-/*
-if(empty($cPath) && empty($HTTP_GET_VARS['manufacturers_id'])) {
-  echo META_TAGS . "\n";
- }else{ 
-   // Begin Dynamic Meta Tag Code
-    if (file_exists(DIR_WS_INCLUDES . 'meta_tags.php')){
-       require(DIR_WS_INCLUDES . 'meta_tags.php');
-    }
-    // End Dynamic Meta Tag Code
-}
-*/
-?>
-<?php
   //if ($category_depth != 'nested' && $category_depth != 'products') {
   if ($category_depth == 'top') {
-  /*
-    echo '<style type="text/css">'."\n";
-	echo '#n_border {padding: 5px;height: 136px;width: 453px;border: 1px solid #E1E1E1;margin-left: 20px;}'."\n";
-    echo '#n_border TD.main {background-color: #E6E6E6;width: 300px;}'."\n";
-    echo '#n_border TD.smallText {background-color: #000000;border-left-width: 5px;border-left-style: solid;border-left-color: #666666;color: #FFFFFF;height: 18px;width:60px;padding-top: 2px;padding-left: 5px;}'."\n";
-    echo '#n_border h2 {font-size: 12px;color: #C92710;}'."\n";
-	echo '</style>'."\n";
-	$body_option = ' onLoad="btchange(\'t2\'); return false;"';
-  */
   }
   /*
   if($ajax == 'on') {
@@ -116,6 +80,7 @@ if(empty($cPath) && empty($HTTP_GET_VARS['manufacturers_id'])) {
 			</td>
 			<!-- body_text //-->
 <?php
+if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;
   if ($category_depth == 'nested') {
     $category_query = tep_db_query("select cd.categories_name, c.categories_image from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where c.categories_id = '" . $current_category_id . "' and cd.categories_id = '" . $current_category_id . "' and cd.language_id = '" . $languages_id . "'");
     $category = tep_db_fetch_array($category_query);
@@ -124,17 +89,13 @@ if(empty($cPath) && empty($HTTP_GET_VARS['manufacturers_id'])) {
 			<!-- heading title --> 
 <?php  
 	if (isset($cPath_array)) {
-       // if(tep_not_null($seo_category['categories_image3'])) {
-		//    echo '<h1 class="pageHeading">'.tep_image(DIR_WS_IMAGES.$seo_category['categories_image3'],$seo_category['categories_name']).'</h1>'; 
-       //  }else{
-		    echo '<h1 class="pageHeading">'.$seo_category['categories_name'].'</h1>'; 
-       //  }
-	  } elseif ($HTTP_GET_VARS['manufacturers_id']) {
+		   echo '<h1 class="pageHeading">'.$seo_category['categories_name'].'</h1>'; 
+	} elseif ($HTTP_GET_VARS['manufacturers_id']) {
        echo '<h1 class="pageHeading">'.$seo_manufacturers['manufacturers_name'].'</h1>';
-      }
+  }
 ?> 
 			<!-- heading title eof//-->
-			<p class="comment"><?php echo $seo_category['categories_header_text_' . ABBR_SITENAME]; //seo•’•Ï°º•∫ ?></p>
+			<p class="comment"><?php echo $seo_category['categories_header_text']; //seo„Éï„É¨„Éº„Ç∫ ?></p>
 			<table border="0" width="100%" cellspacing="3" cellpadding="3"> 
 				<tr align="center">
 <?php
@@ -170,21 +131,19 @@ if(empty($cPath) && empty($HTTP_GET_VARS['manufacturers_id'])) {
 				</tr>
 			</table>
 			<br>
-			<p class="comment"><?php echo $seo_category['categories_footer_text_' . ABBR_SITENAME]; //seo•’•Ï°º•∫ ?></p>
+			<p class="comment"><?php echo $seo_category['categories_footer_text']; //seo„Éï„É¨„Éº„Ç∫ ?></p>
 			<?php $new_products_category_id = $current_category_id; include(DIR_WS_MODULES .'new_products2.php'); ?>
 <?php  
 	if (isset($cPath_array)) {
 		if ($seo_category['seo_description']) {
-			echo '<h3 class="pageHeading">' . $seo_category['seo_name'] . '§À§ƒ§§§∆</h3>' . "\n";
-			echo '<p class="comment">' . $seo_category['seo_description'] . '</p>' . "\n"; //seo•’•Ï°º•∫
+			echo '<h3 class="pageHeading">' . $seo_category['seo_name'] . '„Å´„Å§„ÅÑ„Å¶</h3>' . "\n";
+			echo '<p class="comment">' . $seo_category['seo_description'] . '</p>' . "\n"; //seo„Éï„É¨„Éº„Ç∫
 ?>
         <p class="pageBottom"></p>
 <?php
 		}
 ?>
 <?php  if (!empty($seo_category['text_information'])) {
-		//echo '<h1 class="pageHeading">' . $seo_category['seo_name'] . '</h1>';
-		//echo '<p class="comment">' . $seo_category['text_information'] . "</p>\n"; //seo•’•Ï°º•∫
 		echo $seo_category['text_information'];
 		
 ?>
@@ -242,6 +201,7 @@ if(empty($cPath) && empty($HTTP_GET_VARS['manufacturers_id'])) {
 
      $listing_sql = $products_query;
 
+     if (!isset($HTTP_GET_VARS['sort'])) $HTTP_GET_VARS['sort'] = NULL;
   if ( (!$HTTP_GET_VARS['sort']) || (!preg_match('/[1-9][ad]/', $HTTP_GET_VARS['sort'])) || (substr($HTTP_GET_VARS['sort'],0,1) > sizeof($column_list)) ) {
     for ($col=0, $n=sizeof($column_list); $col<$n; $col++) {
       if ($column_list[$col] == 'PRODUCT_LIST_NAME') {
@@ -284,7 +244,7 @@ if(empty($cPath) && empty($HTTP_GET_VARS['manufacturers_id'])) {
 ?>
 			<td valign="top" id="contents">
        <h1 class="pageHeading_long"><?php echo $seo_tags['tags_name'];?></h1>
-       <h2 class="line">RMT°ß•≤°º•‡ƒÃ≤ﬂ°¶•¢•§•∆•‡°¶•¢•´•¶•Û•» </h2>
+       <h2 class="line">RMTÔºö„Ç≤„Éº„É†ÈÄöË≤®„Éª„Ç¢„Ç§„ÉÜ„É†„Éª„Ç¢„Ç´„Ç¶„É≥„Éà </h2>
 <?php include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); ?>
 </td>
 <td>
@@ -354,17 +314,10 @@ if(empty($cPath) && empty($HTTP_GET_VARS['manufacturers_id'])) {
     if (isset($HTTP_GET_VARS['manufacturers_id'])) {
       if (isset($HTTP_GET_VARS['filter_id'])) {
 // We are asked to show only a specific category
-	/* edit by bobhero start  */
-        /* add '(' after final_price before '"' */
-	/* add ')' after p2c before left join */
         $listing_sql = "select " . $select_column_list . " p.products_id, p.manufacturers_id, p.products_price, p.products_tax_class_id, IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, IF(s.status, s.specials_new_products_price, p.products_price) as final_price from (" . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_MANUFACTURERS . " m, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c) left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id where p.products_status = '1' and p.manufacturers_id = m.manufacturers_id and m.manufacturers_id = '" . $HTTP_GET_VARS['manufacturers_id'] . "' and p.products_id = p2c.products_id and pd.products_id = p2c.products_id and pd.language_id = '" . $languages_id . "' and p2c.categories_id = '" . $HTTP_GET_VARS['filter_id'] . "'";
-	/* edit by bobhero end  */
       } else {
 // We show them all
-	/* edit by bobhero start  */
-	/* do as above */
         $listing_sql = "select " . $select_column_list . " p.products_id, p.manufacturers_id, p.products_price, p.products_tax_class_id, IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, IF(s.status, s.specials_new_products_price, p.products_price) as final_price from (" . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_MANUFACTURERS . " m ) left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id where p.products_status = '1' and pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "' and p.manufacturers_id = m.manufacturers_id and m.manufacturers_id = '" . $HTTP_GET_VARS['manufacturers_id'] . "'";
-	/* bobhero edit end */
       }
 // We build the categories-dropdown
       $filterlist_sql = "select distinct c.categories_id as id, cd.categories_name as name from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where p.products_status = '1' and p.products_id = p2c.products_id and p2c.categories_id = c.categories_id and p2c.categories_id = cd.categories_id and cd.language_id = '" . $languages_id . "' and p.manufacturers_id = '" . $HTTP_GET_VARS['manufacturers_id'] . "' order by cd.categories_name";
@@ -372,10 +325,7 @@ if(empty($cPath) && empty($HTTP_GET_VARS['manufacturers_id'])) {
 // show the products in a given categorie
       if (isset($HTTP_GET_VARS['filter_id'])) {
 // We are asked to show only specific catgeory
-	/* edit by bobhero start */
-	/* as above */
         $listing_sql = "select " . $select_column_list . " p.products_id, p.manufacturers_id, p.products_price, p.products_tax_class_id, IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, IF(s.status, s.specials_new_products_price, p.products_price) as final_price from ( " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_MANUFACTURERS . " m, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c  ) left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id where p.products_status = '1' and p.manufacturers_id = m.manufacturers_id and m.manufacturers_id = '" . $HTTP_GET_VARS['filter_id'] . "' and p.products_id = p2c.products_id and pd.products_id = p2c.products_id and pd.language_id = '" . $languages_id . "' and p2c.categories_id = '" . $current_category_id . "'";
-	/* edit by bobhero end  */
       } else {
 // We show them all
         $listing_sql = "select " . $select_column_list . " p.products_id, p.manufacturers_id, p.products_price, p.products_bflag, p.products_cflag, p.products_tax_class_id, IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, IF(s.status, s.specials_new_products_price, p.products_price) as final_price from ((" . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS . " p )left join " . TABLE_MANUFACTURERS . " m on p.manufacturers_id = m.manufacturers_id, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c ) left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id where p.products_status = '1' and p.products_id = p2c.products_id and pd.products_id = p2c.products_id and pd.language_id = '" . $languages_id . "' and p2c.categories_id = '" . $current_category_id . "'";
@@ -384,6 +334,7 @@ if(empty($cPath) && empty($HTTP_GET_VARS['manufacturers_id'])) {
       $filterlist_sql= "select distinct m.manufacturers_id as id, m.manufacturers_name as name from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " . TABLE_MANUFACTURERS . " m where p.products_status = '1' and p.manufacturers_id = m.manufacturers_id and p.products_id = p2c.products_id and p2c.categories_id = '" . $current_category_id . "' order by m.manufacturers_name";
     }
 
+    if (!isset($HTTP_GET_VARS['sort'])) $HTTP_GET_VARS['sort']=NULL;
     if ( (!$HTTP_GET_VARS['sort']) || (!ereg('[1-9][ad]', $HTTP_GET_VARS['sort'])) || (substr($HTTP_GET_VARS['sort'],0,1) > sizeof($column_list)) ) {
       for ($col=0, $n=sizeof($column_list); $col<$n; $col++) {
         if ($column_list[$col] == 'PRODUCT_LIST_NAME') {
@@ -434,16 +385,16 @@ if(empty($cPath) && empty($HTTP_GET_VARS['manufacturers_id'])) {
 		echo HEADING_TITLE;
 	}
 ?></h1>
-		<p class="comment"><?php echo $seo_category['categories_header_text_' . ABBR_SITENAME]; //seo•’•Ï°º•∫ ?></p>
+		<p class="comment"><?php echo $seo_category['categories_header_text']; //seo„Éï„É¨„Éº„Ç∫ ?></p>
 		<h2 class="line"><?php
 	if($HTTP_GET_VARS['cPath']) {
 		$categories_path = explode('_', $HTTP_GET_VARS['cPath']);
-		//¬Á•´•∆•¥•Í§Œ≤Ë¡¸§Ú ÷§π
+		//Â§ß„Ç´„ÉÜ„Ç¥„É™„ÅÆÁîªÂÉè„ÇíËøî„Åô
 		$_categories_query = tep_db_query("select categories_name from categories_description where categories_id = '".$categories_path[0]."' and language_id = '".$languages_id."'");
 		$_categories = tep_db_fetch_array($_categories_query);
 		echo $_categories['categories_name'];
 	} else {
-		echo 'RMT°ß•≤°º•‡ƒÃ≤ﬂ°¶•¢•§•∆•‡°¶•¢•´•¶•Û•»';
+		echo 'RMTÔºö„Ç≤„Éº„É†ÈÄöË≤®„Éª„Ç¢„Ç§„ÉÜ„É†„Éª„Ç¢„Ç´„Ç¶„É≥„Éà';
 	}
 ?></h2>
       <?php include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); ?> </td> 

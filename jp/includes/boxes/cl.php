@@ -18,22 +18,22 @@
       </table><table width="100%"  border="0" cellspacing="0" cellpadding="0"> <tr><td class="boxText"><br>
 			<?php
 
-//º£Æü
+//ä»Šæ—¥
 $today = getdate();
 
 $m_num = $today[mon];
 $d_num = $today[mday];
 $year = $today[year];
-// 1ÆüÌÜ¤ÎÍËÆü
+// 1æ—¥ç›®ã®æ›œæ—¥
 $f_today = getdate(mktime(0,0,0,$m_num,1,$year));
 $wday = $f_today[wday];
-// ·îÉ½¼¨
+// æœˆè¡¨ç¤º
 $m_name = "$year ".substr($today[month],0,3);
 
-//Ç¯·î¼èÆÀ
+//å¹´æœˆå–å¾—
 $ymd = date("Ym", time());
 
-  echo '<strong>'.$year.'Ç¯'.$m_num.'·î'.BOX_HEADING_CL.'</strong>';
+  echo '<strong>'.$year.'å¹´'.$m_num.'æœˆ'.BOX_HEADING_CL.'</strong>';
 
   //new infoBoxHeading($info_box_contents, false, false);
 
@@ -48,13 +48,13 @@ $cl_string = '
   <table border="0" cellspacing="1" cellpadding="2" width="162" class="tableTop" align="center" bgcolor="#CBCBCB">
  
 	<tr bgcolor=ffffff>
-      <td align=middle height=20 class="smallText" bgcolor="#A43734"><font color="#FFFFFF">Æü</font></td>
-      <td align=middle height=20 class="smallText" bgcolor="#E5E5E5">·î</td>
-      <td align=middle height=20 class="smallText" bgcolor="#E5E5E5">²Ğ</td>
-      <td align=middle height=20 class="smallText" bgcolor="#E5E5E5">¿å</td>
-      <td align=middle height=20 class="smallText" bgcolor="#E5E5E5">ÌÚ</td>
-      <td align=middle height=20 class="smallText" bgcolor="#E5E5E5">¶â</td>
-      <td align=middle height=20 class="smallText" bgcolor="#3A70AC"><font color="#FFFFFF">ÅÚ</font></td>
+      <td align=middle height=20 class="smallText" bgcolor="#A43734"><font color="#FFFFFF">æ—¥</font></td>
+      <td align=middle height=20 class="smallText" bgcolor="#E5E5E5">æœˆ</td>
+      <td align=middle height=20 class="smallText" bgcolor="#E5E5E5">ç«</td>
+      <td align=middle height=20 class="smallText" bgcolor="#E5E5E5">æ°´</td>
+      <td align=middle height=20 class="smallText" bgcolor="#E5E5E5">æœ¨</td>
+      <td align=middle height=20 class="smallText" bgcolor="#E5E5E5">é‡‘</td>
+      <td align=middle height=20 class="smallText" bgcolor="#3A70AC"><font color="#FFFFFF">åœŸ</font></td>
     </tr>
     <tr bgcolor=#ffffff>
 ';
@@ -76,11 +76,11 @@ while(checkdate($m_num,$day,$year)){
 	}
   }
   elseif($array[$day] == '1'){
-    //¤ªÅ¹¤ÎµÙ¶ÈÆü
+    //ãŠåº—ã®ä¼‘æ¥­æ—¥
 	$cl_string .= "<td align=center bgcolor=".CL_COLOR_01." class=\"smallText\"><font color=\"#FFFFFF\">$day</font></td>\n";
   }
   elseif($array[$day] == '2'){
-    //¥á¡¼¥ëÊÖ¿®µÙ¶ÈÆü
+    //ãƒ¡ãƒ¼ãƒ«è¿”ä¿¡ä¼‘æ¥­æ—¥
 	$cl_string .= "<td align=center bgcolor=".CL_COLOR_02." class=\"smallText\">$day</td>\n";  
   }  
   elseif($wday == 0){ 
@@ -95,7 +95,7 @@ while(checkdate($m_num,$day,$year)){
     // Weekday
     $cl_string .= "<td align=center class=\"smallText\">$day</td>\n";
   }
-  // ²ş¹Ô
+  // æ”¹è¡Œ
   if($wday == 6) $cl_string .= "</tr><tr bgcolor=#ffffff>";
   $day++;
   $wday++;
@@ -125,36 +125,36 @@ echo $cl_string ;
 		$m_num2 = $today2[mon];
 		$d_num2 = $today2[mday];
 		$year2 = $today2[year];
-		// 1ÆüÌÜ¤ÎÍËÆü
+		// 1æ—¥ç›®ã®æ›œæ—¥
 		$f_today2 = getdate(mktime(0,0,0,$m_num2,1,$year2));
 		$wday2 = $f_today2[wday];
-		// ·îÉ½¼¨
+		// æœˆè¡¨ç¤º
 		$m_name2 = "$year ".substr($today2[month],0,3);
 		
-		//·î¤Î¥Ç¡¼¥¿¼èÆÀ
+		//æœˆã®ãƒ‡ãƒ¼ã‚¿å–å¾—
 		$ymd2 = date("Ym", mktime(0,0,0,$m_num2,1,$year2));
 		$calen_query2 = tep_db_query("select cl_value from ".TABLE_CL." where cl_ym = '".$ymd2."'");
 		$calen2 = tep_db_fetch_array($calen_query2);
 		
 		$array2 = array("101"=>substr($calen2['cl_value'], 0, 1), "102"=>substr($calen2['cl_value'], 1, 1), "103"=>substr($calen2['cl_value'], 2, 1), "104"=>substr($calen2['cl_value'], 3, 1), "105"=>substr($calen2['cl_value'], 4, 1), "106"=>substr($calen2['cl_value'], 5, 1), "107"=>substr($calen2['cl_value'], 6, 1), "108"=>substr($calen2['cl_value'], 7, 1), "109"=>substr($calen2['cl_value'], 8, 1), "110"=>substr($calen2['cl_value'], 9, 1), "111"=>substr($calen2['cl_value'], 10, 1), "112"=>substr($calen2['cl_value'], 11, 1), "113"=>substr($calen2['cl_value'], 12, 1), "114"=>substr($calen2['cl_value'], 13, 1), "115"=>substr($calen2['cl_value'], 14, 1), "116"=>substr($calen2['cl_value'], 15, 1), "117"=>substr($calen2['cl_value'], 16, 1), "118"=>substr($calen2['cl_value'], 17, 1), "119"=>substr($calen2['cl_value'], 18, 1), "120"=>substr($calen2['cl_value'], 19, 1), "121"=>substr($calen2['cl_value'], 20, 1), "122"=>substr($calen2['cl_value'], 21, 1), "123"=>substr($calen2['cl_value'], 22, 1), "124"=>substr($calen2['cl_value'], 23, 1), "125"=>substr($calen2['cl_value'], 24, 1), "126"=>substr($calen2['cl_value'], 25, 1), "127"=>substr($calen2['cl_value'], 26, 1), "128"=>substr($calen2['cl_value'], 27, 1), "129"=>substr($calen2['cl_value'], 28, 1), "130"=>substr($calen2['cl_value'], 29, 1), "131"=>substr($calen2['cl_value'], 30, 1));
 		
-		echo '<br><strong>'.$year2.'Ç¯'.$m_num2.'·î'.BOX_HEADING_CL.'</strong> 
+		echo '<br><strong>'.$year2.'å¹´'.$m_num2.'æœˆ'.BOX_HEADING_CL.'</strong> 
   <table border="0" cellspacing="1" cellpadding="2" width="162" class="tableTop" align="center" bgcolor="#CBCBCB">
  
 	<tr bgcolor=ffffff>
-      <td align=middle height=20 class="smallText" bgcolor="#A43734"><font color="#FFFFFF">Æü</font></td>
-      <td align=middle height=20 class="smallText" bgcolor="#E5E5E5">·î</td>
-      <td align=middle height=20 class="smallText" bgcolor="#E5E5E5">²Ğ</td>
-      <td align=middle height=20 class="smallText" bgcolor="#E5E5E5">¿å</td>
-      <td align=middle height=20 class="smallText" bgcolor="#E5E5E5">ÌÚ</td>
-      <td align=middle height=20 class="smallText" bgcolor="#E5E5E5">¶â</td>
-      <td align=middle height=20 class="smallText" bgcolor="#3A70AC"><font color="#FFFFFF">ÅÚ</font></td>
+      <td align=middle height=20 class="smallText" bgcolor="#A43734"><font color="#FFFFFF">æ—¥</font></td>
+      <td align=middle height=20 class="smallText" bgcolor="#E5E5E5">æœˆ</td>
+      <td align=middle height=20 class="smallText" bgcolor="#E5E5E5">ç«</td>
+      <td align=middle height=20 class="smallText" bgcolor="#E5E5E5">æ°´</td>
+      <td align=middle height=20 class="smallText" bgcolor="#E5E5E5">æœ¨</td>
+      <td align=middle height=20 class="smallText" bgcolor="#E5E5E5">é‡‘</td>
+      <td align=middle height=20 class="smallText" bgcolor="#3A70AC"><font color="#FFFFFF">åœŸ</font></td>
     </tr>
     <tr bgcolor=#ffffff>
 		';
 		
 		for ($i=0; $i<$wday2; $i++) { // Blank
-		  echo "<td align=center>¡¡</td>\n"; 
+		  echo "<td align=center>ã€€</td>\n"; 
 		}
 		
 		$day2 = 1;
@@ -182,11 +182,11 @@ echo $cl_string ;
 		  
 		  
 		  if($array2['1'.str_pad($day2, 2, 0, STR_PAD_LEFT)] == '1'){
-			//¤ªÅ¹¤ÎµÙ¶ÈÆü
+			//ãŠåº—ã®ä¼‘æ¥­æ—¥
 			echo "<td align=center bgcolor=".CL_COLOR_01." class=\"smallText\"><font color=\"#FFFFFF\">$day2</font></td>\n";
 		  }
 		  elseif($array2['1'.str_pad($day2, 2, 0, STR_PAD_LEFT)] == '2'){
-			//¥á¡¼¥ëÊÖ¿®µÙ¶ÈÆü
+			//ãƒ¡ãƒ¼ãƒ«è¿”ä¿¡ä¼‘æ¥­æ—¥
 			echo "<td align=center bgcolor=".CL_COLOR_02." class=\"smallText\">$day2</td>\n";  
 		  }  
 		  elseif($wday2 == 0){ 
@@ -201,7 +201,7 @@ echo $cl_string ;
 			// Weekday
 			echo "<td align=\"center\" class=\"smallText\">$day2</td>\n";
 		  }
-		  // ²ş¹Ô
+		  // æ”¹è¡Œ
 		  if($wday2 == 6) echo "</tr><tr bgcolor=#ffffff>";
 		  $day2++;
 		  $wday2++;
@@ -209,7 +209,7 @@ echo $cl_string ;
 		}
 		if($wday2 > 0){
 		  while($wday2 < 7) { // Blank
-			echo "<td align=center>¡¡</td>\n";
+			echo "<td align=center>ã€€</td>\n";
 			$wday2++;
 		  }
 		} else {
@@ -217,8 +217,8 @@ echo $cl_string ;
 		}
 		echo '</tr></table>' . "\n";
 
-echo '<p class="smallText" align="left" style="margin:10px;"><font color="'.CL_COLOR_01.'">¢£</font>¤ÎÉôÊ¬¤Ï¤ªµÙ¤ß¤Ç¤¹¡£
-<font color="'.CL_COLOR_02.'">¢£</font>¤Ï½Ğ²Ù¡¦¥á¡¼¥ë¤Ç¤Î¤´ÊÖ¿®¤Ï¤ªµÙ¤ß¤È¤µ¤»¤Æ¤¤¤¿¤À¤­¤Ş¤¹¡£</p>';
+echo '<p class="smallText" align="left" style="margin:10px;"><font color="'.CL_COLOR_01.'">â– </font>ã®éƒ¨åˆ†ã¯ãŠä¼‘ã¿ã§ã™ã€‚
+<font color="'.CL_COLOR_02.'">â– </font>ã¯å‡ºè·ãƒ»ãƒ¡ãƒ¼ãƒ«ã§ã®ã”è¿”ä¿¡ã¯ãŠä¼‘ã¿ã¨ã•ã›ã¦ã„ãŸã ãã¾ã™ã€‚</p>';
 ?>
 </td></tr></table>
 <!-- clender_eof //-->

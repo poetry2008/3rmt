@@ -1,11 +1,11 @@
 function msg(){
 	if(document.login.email_address.value == ""){
-		alert("¥á¡¼¥ë¥¢¥É¥ì¥¹¤òÆşÎÏ¤·¤Æ¤¯¤À¤µ¤¤");
+		alert("ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„");
 		document.login.email_address.focus();
 		return false;
 	}
 	if(document.login.password.value == ""){
-		alert("¥Ñ¥¹¥ï¡¼¥É¤òÆşÎÏ¤·¤Æ¤¯¤À¤µ¤¤");
+		alert("ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„");
 		document.login.password.focus();
 		return false;
 	}

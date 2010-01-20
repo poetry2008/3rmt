@@ -1,9 +1,9 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
-  define('MODULE_METASEO_PREORDER_TEXT_TITLE', 'Í½Ìó');
+  define('MODULE_METASEO_PREORDER_TEXT_TITLE', 'äºˆç´„');
   define('MODULE_METASEO_PREORDER_TEXT_EXPLAIN', 'EXPLAIN');
-  define('MODULE_METASEO_PREORDER_TEXT_DESCRIPTION', 'Í½Ìó¥Ú¡¼¥¸¤ÎSEO');
+  define('MODULE_METASEO_PREORDER_TEXT_DESCRIPTION', 'äºˆç´„ãƒšãƒ¼ã‚¸ã®SEO');
 ?>

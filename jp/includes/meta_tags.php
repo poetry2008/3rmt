@@ -20,8 +20,8 @@ $metaQuery .= "AND ".TABLE_LANGUAGES.".code = ".TABLE_CONFIGURATION.".configurat
 
 //Are we looking within a category?
 if (isset($cPath) && tep_not_null($cPath)) {
-	$metaKeywords = $seo_category['meta_keywords_' . ABBR_SITENAME];
-	$metaDescription = $seo_category['meta_description_' . ABBR_SITENAME];
+	$metaKeywords = $seo_category['meta_keywords'];
+	$metaDescription = $seo_category['meta_description'];
 	
 } else {
 	
@@ -88,7 +88,7 @@ if (isset($cPath) && tep_not_null($cPath)) {
 	
 	
 	//Step 6. Construct the description
-	$metaDescription = "RMT¡ÌπÁ•µ•§•» RMT•∏•„•√•Ø•›•√•»§ÿ§Ë§¶§≥§Ω°£";
+	$metaDescription = "RMTÁ∑èÂêà„Çµ„Ç§„Éà RMT„Ç∏„É£„ÉÉ„ÇØ„Éù„ÉÉ„Éà„Å∏„Çà„ÅÜ„Åì„Åù„ÄÇ";
 	$i = 0;
 	foreach($metaManufacturersNames as $metaManufacturersName)
 	{

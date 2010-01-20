@@ -16,7 +16,7 @@
    if (!tep_session_is_registered('customer_id')) {
 ?>
 <?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process', 'SSL'), 'post', 'onSubmit="return msg();"')."\n"; ?>
-<div class="box_des">еэе░едеє</div> 
+<div class="box_des">уГнуВ░уВдуГ│</div> 
 <table  border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
     <td width="25" height="25">Email:</td>
@@ -29,7 +29,7 @@
 </table>
 <table  border="0" align="center" cellpadding="0" cellspacing="3">
   <tr>
-    <td class="smallText"><a href="<?php echo tep_href_link(FILENAME_PASSWORD_FORGOTTEN,'',SSL);?>">PW╦║дьд┐?</a></td>
+    <td class="smallText"><a href="<?php echo tep_href_link(FILENAME_PASSWORD_FORGOTTEN,'','SSL');?>">PWх┐ШуВМуБЯ?</a></td>
     <td align="right" style="padding-right:5px; "><input name="image" type="image" alt="img" title="<?php echo HEADER_TITLE_LOGIN ; ?>" src="images/design/button/login.gif"></td>
   </tr>
 </table>
@@ -38,13 +38,13 @@
 <?php	
 	} else {
 ?>
-<div class="box_titleR">евележеєе╚</div> 
+<div class="box_titleR">уВвуВлуВжуГ│уГИ</div> 
 <ul>
     <li><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . HEADER_TITLE_MY_ACCOUNT . '</a>'; ?></li>
     <li><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL') . '">' . MYACCOUNT_EDIT . '</a>'; ?></li>
     <li><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_HISTORY, '', 'SSL') . '">' . MYACCOUNT_HISTORY . '</a>'; ?></li>
     <li><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, '', 'SSL') . '">' . MYACCOUNT_NOTIFICATION . '</a>'; ?></li>
-	<li><?php echo '<a href="' . tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL') . '">' . 'е╖ече├е╘еєе░елб╝е╚' . '</a>'; ?></li>
+	<li><?php echo '<a href="' . tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL') . '">' . 'уВ╖уГзуГГуГФуГ│уВ░уВлуГ╝уГИ' . '</a>'; ?></li>
     <li><?php echo '<a href="' . tep_href_link(FILENAME_LOGOFF, '', 'SSL') . '">' . HEADER_TITLE_LOGOFF . '</a>'; ?></li>
 </ul>
 <?php 

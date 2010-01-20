@@ -1,9 +1,9 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
-  define('MODULE_METASEO_PRODUCT_NOTIFICATIONS_TEXT_TITLE', '¾¦ÉÊ¤Î¤ªÃÎ¤é¤»');
+  define('MODULE_METASEO_PRODUCT_NOTIFICATIONS_TEXT_TITLE', 'å•†å“ã®ãŠçŸ¥ã‚‰ã›');
   define('MODULE_METASEO_PRODUCT_NOTIFICATIONS_TEXT_EXPLAIN', 'EXPLAIN');
-  define('MODULE_METASEO_PRODUCT_NOTIFICATIONS_TEXT_DESCRIPTION', '¾¦ÉÊ¤Î¤ªÃÎ¤é¤»¥Ú¡¼¥¸¤ÎSEO');
+  define('MODULE_METASEO_PRODUCT_NOTIFICATIONS_TEXT_DESCRIPTION', 'å•†å“ã®ãŠçŸ¥ã‚‰ã›ãƒšãƒ¼ã‚¸ã®SEO');
 ?>

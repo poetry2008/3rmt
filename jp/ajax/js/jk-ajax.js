@@ -1,9 +1,9 @@
 //----------------------------------------
 //Content            :Communication
 //
-//geturi             :Á÷¿®ÀèURL
-//execution_f        :xmlHttpObject¤ÎÀ¸À®¸å¡¢¾õÂÖ¤¬ÊÑ¤ï¤Ã¤¿¤é¼Â¹Ô¤¹¤ëFunction(¶õ¤Î¾ì¹ç¤Ï¡¢¥Ğ¥Ã¥¯¥¨¥ó¥É¤Ç¤Î½èÍı)
-//did                :Ê¸»úÊÑ¹¹ID
+//geturi             :é€ä¿¡å…ˆURL
+//execution_f        :xmlHttpObjectã®ç”Ÿæˆå¾Œã€çŠ¶æ…‹ãŒå¤‰ã‚ã£ãŸã‚‰å®Ÿè¡Œã™ã‚‹Function(ç©ºã®å ´åˆã¯ã€ãƒãƒƒã‚¯ã‚¨ãƒ³ãƒ‰ã§ã®å‡¦ç†)
+//did                :æ–‡å­—å¤‰æ›´ID
 //----------------------------------------
 function sendData(geturi,execution_f,did) {
   xmlHttpObject = null;
@@ -21,7 +21,7 @@ function sendData(geturi,execution_f,did) {
 	}
   }
   
-  //execution_f¤òÄÉ²Ã¤·¤¿¤é°Ê²¼¤Î½èÍı¤òÄÉ²Ã¤¹¤ë
+  //execution_fã‚’è¿½åŠ ã—ãŸã‚‰ä»¥ä¸‹ã®å‡¦ç†ã‚’è¿½åŠ ã™ã‚‹
   if(xmlHttpObject){
 	if(execution_f == 'displaychange'){
 	  xmlHttpObject.onreadystatechange = displaychange;
@@ -31,29 +31,29 @@ function sendData(geturi,execution_f,did) {
   }
   
 //----------------------------------------------------------------------------------------------------
-//¤³¤³¤«¤é²¼¤ÏÄÉ²ÃFunction
+//ã“ã“ã‹ã‚‰ä¸‹ã¯è¿½åŠ Function
 
-  //É½¼¨ÊÑ¹¹¡Ê¥«¡¼¥È¤ËÄÉ²Ã¡Ë
+  //è¡¨ç¤ºå¤‰æ›´ï¼ˆã‚«ãƒ¼ãƒˆã«è¿½åŠ ï¼‰
   function displaychange() {  
     if((xmlHttpObject.readyState == 4) && (xmlHttpObject.status == 200)){
-      document.getElementById(did).innerHTML = "¥«¡¼¥È¤ËÄÉ²Ã¤·¤Ş¤·¤¿";
+      document.getElementById(did).innerHTML = "ã‚«ãƒ¼ãƒˆã«è¿½åŠ ã—ã¾ã—ãŸ";
 	  sendData('ajax.php?id=jk-shoppingcart','moneydisplay','jk-shoppingcart');
     } else {
       document.getElementById(did).innerHTML = "<b>NowLoading........</b>";
     }
   }
   
-  //É½¼¨ÊÑ¹¹¡Ê¶â³Û¡Ë
+  //è¡¨ç¤ºå¤‰æ›´ï¼ˆé‡‘é¡ï¼‰
   function moneydisplay() {
     if((xmlHttpObject.readyState == 4) && (xmlHttpObject.status == 200)){  
-      document.getElementById(did).innerHTML = xmlHttpObject.responseText+'±ß';
+      document.getElementById(did).innerHTML = xmlHttpObject.responseText+'å††';
 	  cart_view('ajax.php?id=jk-list','in_cart','dis_clist');
     } else {
       document.getElementById(did).innerHTML = "------";
     }
   }
 
-//¤³¤³¤Ş¤Ç¤¬ÄÉ²ÃFunction
+//ã“ã“ã¾ã§ãŒè¿½åŠ Function
 //----------------------------------------------------------------------------------------------------  
   
   if(xmlHttpObject){

@@ -803,7 +803,7 @@ class SEO_URL{
 					} # end switch
 					break;
 				//===========================================
-				// ÄÉ²Ã
+				// è¿½åŠ 
 				case 'colors':
 				  $url = $this->make_url($page, REWRITE_PRODUCTS, $p2[0], $p2[1], '.html', $separator);
 				  break;
@@ -1656,8 +1656,9 @@ class SEO_URL{
 					else $container[$cache_name] = $cache_data; // not global				
 				} else { // cache is expired
 					if ($global) $container['GLOBAL'][$cache_name] = false; 
-					else $container[$cache_name] = false; 
+					else $container[$cache_name] = false;
 				}# end if ( $cache['cache_expires'] > date("Y-m-d H:i:s") )			
+        if (!isset($this->keep_in_memory)) $this->keep_in_memory=NULL;
 				if ( $this->keep_in_memory || $local_memory ) {
 					if ($global) $this->data['GLOBAL'][$cache_name] = $container['GLOBAL'][$cache_name]; 
 					else $this->data[$cache_name] = $container[$cache_name]; 
@@ -1822,7 +1823,7 @@ class SEO_URL{
  * @version 1.0
  */	
 	function check_seo_page(){
-		!defined( SEO_URLS ) 
+		!defined('SEO_URLS') 
 			?	$this->is_seopage = false 
 			:	$this->attributes['SEO_ENABLED'] == 'false'
 				?	$this->is_seopage = false

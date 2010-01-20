@@ -1,7 +1,7 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://homage.gameleon.jp/" class="blank" rel='nofollow'><span>еке▐б╝е╕ех ╕°╝░е╡еде╚</span></a></li>
-<li><a href="http://www.mmo-station.com/mmo/tenjouhigaiden/" class="blank" rel='nofollow'><span>homage ┴э╣ч╛Ё╩єбж╣╢╬ме╡еде╚</span></a></li>
-<li><a href="http://www31.atwiki.jp/homage/" class="blank" rel='nofollow'><span>homage ╛Ё╩є Wiki</span></a></li>
-<li><a href="http://ms-onlinegame.com/mmorpg/homage.html  " class="blank" rel='nofollow'><span>еке▐б╝е╕ех ┴э╣ч░╞╞те╡еде╚</span></a></li>
+<li><a href="http://homage.gameleon.jp/" class="blank" rel='nofollow'><span>уВкуГЮуГ╝уВ╕уГе хЕмх╝ПуВ╡уВдуГИ</span></a></li>
+<li><a href="http://www.mmo-station.com/mmo/tenjouhigaiden/" class="blank" rel='nofollow'><span>homage ч╖ПхРИцГЕха▒уГ╗цФ╗чХеуВ╡уВдуГИ</span></a></li>
+<li><a href="http://www31.atwiki.jp/homage/" class="blank" rel='nofollow'><span>homage цГЕха▒ Wiki</span></a></li>
+<li><a href="http://ms-onlinegame.com/mmorpg/homage.html  " class="blank" rel='nofollow'><span>уВкуГЮуГ╝уВ╕уГе ч╖ПхРИцбИхЖЕуВ╡уВдуГИ</span></a></li>
 </ul>

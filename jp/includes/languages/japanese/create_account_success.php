@@ -10,8 +10,8 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE_1', '��������Ȥκ���');
-define('NAVBAR_TITLE_2', '��λ');
-define('HEADING_TITLE', '���ʤ��Υ�������Ȥ���������ޤ���!');
-define('TEXT_ACCOUNT_CREATED', '����줵�ޤǤ���������Ǥ��ʤ��Υ�������Ⱥ����ϴ�λ�Ǥ���<br>���줫�� <b>' . STORE_NAME . '</b> �ǤΥ���饤�󥷥�åԥ󥰤򡢻פ�¸ʬ���ڤ��ߤ����������⤷ <b>' . STORE_NAME . '</b> ������¾�Ǥ������������������ޤ����顢<a href="' . tep_href_link(FILENAME_CONTACT_US) . '"><small><b>���䤤��碌�ڡ���</b></small></a>��ꤪ���ڤˤ��䤤��碌����������<br><br>�ޤ�������Ͽ���������ޤ����᡼�륢�ɥ쥹�ˡ���Ͽ����ǧ�᡼������ꤤ�����ޤ������⤷10ʬ������Ϥ��ʤ��褦�Ǥ����顢<a href="' . tep_href_link(FILENAME_CONTACT_US) . '"><small><b>������Υڡ���</b></small></a>��ꤪ�䤤��碌����������');
+define('NAVBAR_TITLE_1', 'アカウントの作成');
+define('NAVBAR_TITLE_2', '完了');
+define('HEADING_TITLE', 'あなたのアカウントが作成されました!');
+define('TEXT_ACCOUNT_CREATED', 'お疲れさまでした。これであなたのアカウント作成は完了です！<br>これから <b>' . STORE_NAME . '</b> でのオンラインショッピングを、思う存分お楽しみください。もし <b>' . STORE_NAME . '</b> 内の操作他でご不明な点がございましたら、<a href="' . tep_href_link(FILENAME_CONTACT_US) . '"><small><b>お問い合わせページ</b></small></a>よりお気軽にお問い合わせください。<br><br>また、ご登録いただきましたメールアドレスに、登録ご確認メールをお送りいたしました。もし10分以内に届かないようでしたら、<a href="' . tep_href_link(FILENAME_CONTACT_US) . '"><small><b>こちらのページ</b></small></a>よりお問い合わせください。');
 ?>

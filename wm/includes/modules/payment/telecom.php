@@ -78,7 +78,7 @@
       global $order, $currencies, $currency;   
       global $point,$cart,$languages_id;
 
-      // ÄÉ²Ã - 2007.01.05 ----------------------------------------------
+      // è¿½åŠ  - 2007.01.05 ----------------------------------------------
       $total = $order->info['total'];
       if ((MODULE_ORDER_TOTAL_CODT_STATUS == 'true')
           && ($payment == 'cod_table')
@@ -96,23 +96,23 @@
 	  if(MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'convenience_store')) {
         $total += intval($HTTP_POST_VARS['codt_fee']);
 	  }
-      // ÄÉ²Ã - 2007.01.05 ----------------------------------------------
+      // è¿½åŠ  - 2007.01.05 ----------------------------------------------
 	  
-	  #mailÁ÷¿®
-	  $mail_body = '²¾¥¯¥ì¥¸¥Ã¥È¥«¡¼¥ÉÃíÊ¸¤Ç¤¹¡£'."\n\n";
+	  #mailé€ä¿¡
+	  $mail_body = 'ä»®ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰æ³¨æ–‡ã§ã™ã€‚'."\n\n";
 	  
-	  # ¥æ¡¼¥¶¡¼¾ğÊó----------------------------
-	  $mail_body .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬'."\n";
-	  $mail_body .= '¢§ÃíÊ¸ÈÖ¹æ¡¡¡¡¡¡¡¡¡§2007****-********'."\n";
-	  $mail_body .= '¢§ÃíÊ¸Æü¡¡¡¡¡¡¡¡¡¡¡§' . strftime(DATE_FORMAT_LONG)."\n";
-	  $mail_body .= '¢§¤ªÌ¾Á°¡¡¡¡¡¡¡¡¡¡¡§' . $order->customer["lastname"] . ' ' . $order->customer["firstname"]."\n";
-	  $mail_body .= '¢§¥á¡¼¥ë¥¢¥É¥ì¥¹¡¡¡§' . $order->customer["email_address"]."\n";
-	  $mail_body .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬'."\n";
-	  $mail_body .= '¢§¤ª»ÙÊ§¶â³Û¡¡¡¡¡¡¡§' . $total . '±ß'."\n";
-	  $mail_body .= '¢§¤ª»ÙÊ§ÊıË¡¡¡¡¡¡¡¡§¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ'."\n";
+	  # ãƒ¦ãƒ¼ã‚¶ãƒ¼æƒ…å ±----------------------------
+	  $mail_body .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”'."\n";
+	  $mail_body .= 'â–¼æ³¨æ–‡ç•ªå·ã€€ã€€ã€€ã€€ï¼š2007****-********'."\n";
+	  $mail_body .= 'â–¼æ³¨æ–‡æ—¥ã€€ã€€ã€€ã€€ã€€ï¼š' . strftime(DATE_FORMAT_LONG)."\n";
+	  $mail_body .= 'â–¼ãŠåå‰ã€€ã€€ã€€ã€€ã€€ï¼š' . $order->customer["lastname"] . ' ' . $order->customer["firstname"]."\n";
+	  $mail_body .= 'â–¼ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã€€ï¼š' . $order->customer["email_address"]."\n";
+	  $mail_body .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”'."\n";
+	  $mail_body .= 'â–¼ãŠæ”¯æ‰•é‡‘é¡ã€€ã€€ã€€ï¼š' . $total . 'å††'."\n";
+	  $mail_body .= 'â–¼ãŠæ”¯æ‰•æ–¹æ³•ã€€ã€€ã€€ï¼šã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰æ±ºæ¸ˆ'."\n";
 	  
-	  # ¾¦ÉÊÆâÍÆ----------------------------
-	  $mail_body .= '¢§ÃíÊ¸¾¦ÉÊ'."\n";
+	  # å•†å“å†…å®¹----------------------------
+	  $mail_body .= 'â–¼æ³¨æ–‡å•†å“'."\n";
 	  $mail_body .= "\t" . '------------------------------------------'."\n";
 
       $products = $cart->get_products();
@@ -143,13 +143,13 @@
 	  
 	  for ($i=0, $n=sizeof($products); $i<$n; $i++) {
 	    $char_id = $products[$i]['id'];
-		$mail_body .= '¡¦' . $products[$i]['name'] . '¡ß' . $products[$i]['quantity'] . '(¥­¥ã¥é¥¯¥¿¡¼Ì¾:' . $_SESSION["character"][$char_id] . ')' . "\n";
+		$mail_body .= 'ãƒ»' . $products[$i]['name'] . 'Ã—' . $products[$i]['quantity'] . '(ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼å:' . $_SESSION["character"][$char_id] . ')' . "\n";
 	    $attributes_exist = ((isset($products[$i]['attributes'])) ? 1 : 0);
 
         if ($attributes_exist == 1) {
           reset($products[$i]['attributes']);
           while (list($option, $value) = each($products[$i]['attributes'])) {
-            $mail_body .= '¨¦' . $products[$i][$option]['products_options_name'] . ' ' . $products[$i][$option]['products_options_values_name'] . "\n";
+            $mail_body .= 'â””' . $products[$i][$option]['products_options_name'] . ' ' . $products[$i][$option]['products_options_values_name'] . "\n";
           }
         }
 	  }
@@ -157,23 +157,23 @@
 /*	  
 	  foreach($order->products as $key => $val){
 	    $char_id = $val["id"];
-		$mail_body .= "\t" . $val["name"] . '¡ß' . $val["qty"] . '¸Ä¡Ê¥­¥ã¥é¥¯¥¿¡¼Ì¾¡§' . $_SESSION["character"][$char_id] . '¡Ë' . "\n";
-		$mail_body .= "\t" . '¥ª¥×¥·¥ç¥ó¡§ÉÔÌÀ¡¦¡¦¡¦' . "\n";
+		$mail_body .= "\t" . $val["name"] . 'Ã—' . $val["qty"] . 'å€‹ï¼ˆã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åï¼š' . $_SESSION["character"][$char_id] . 'ï¼‰' . "\n";
+		$mail_body .= "\t" . 'ã‚ªãƒ—ã‚·ãƒ§ãƒ³ï¼šä¸æ˜ãƒ»ãƒ»ãƒ»' . "\n";
 	  }
 */	  
 	  $mail_body .= "\t" . '------------------------------------------'."\n";
 	  
-	  # ¼è°úÆü»ş----------------------------
-	  $mail_body .= '¢§¼è°úÆü»ş¡¡¡¡¡¡¡¡¡§' . $_SESSION["insert_torihiki_date"] . "\n";
-	  $mail_body .= '¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡§' . $_SESSION["torihikihouhou"] . "\n";
+	  # å–å¼•æ—¥æ™‚----------------------------
+	  $mail_body .= 'â–¼å–å¼•æ—¥æ™‚ã€€ã€€ã€€ã€€ï¼š' . $_SESSION["insert_torihiki_date"] . "\n";
+	  $mail_body .= 'ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ï¼š' . $_SESSION["torihikihouhou"] . "\n";
 	  
-	  # ¥æ¡¼¥¶¡¼¥¨¡¼¥¸¥§¥ó¥È¤Ê¤É----------------------------
+	  # ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆãªã©----------------------------
 	  $mail_body .= "\n\n";
-	  $mail_body .= '¢£IP¥¢¥É¥ì¥¹¡¡¡¡¡¡¡¡¡¡¡¡¡§' . $_SERVER["REMOTE_ADDR"] . "\n";
-	  $mail_body .= '¢£¥Û¥¹¥ÈÌ¾¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡§' . @gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";
-	  $mail_body .= '¢£¥æ¡¼¥¶¡¼¥¨¡¼¥¸¥§¥ó¥È¡¡¡§' . $_SERVER["HTTP_USER_AGENT"] . "\n";
+	  $mail_body .= 'â– IPã‚¢ãƒ‰ãƒ¬ã‚¹ã€€ã€€ã€€ã€€ã€€ã€€ï¼š' . $_SERVER["REMOTE_ADDR"] . "\n";
+	  $mail_body .= 'â– ãƒ›ã‚¹ãƒˆåã€€ã€€ã€€ã€€ã€€ã€€ã€€ï¼š' . @gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";
+	  $mail_body .= 'â– ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã€€ï¼š' . $_SERVER["HTTP_USER_AGENT"] . "\n";
 	  
-	  tep_mail('´ÉÍı¼Ô', SEND_EXTRA_ORDER_EMAILS_TO, '²¾¥¯¥ì¥«ÃíÊ¸', $mail_body, '', '');
+	  tep_mail('ç®¡ç†è€…', SEND_EXTRA_ORDER_EMAILS_TO, 'ä»®ã‚¯ãƒ¬ã‚«æ³¨æ–‡', $mail_body, '', '');
 	  
 	  $today = date("YmdHis");
 	     
@@ -207,13 +207,13 @@
     }
 
     function install() {
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('TELECOM »ÙÊ§¤¤¤òÍ­¸ú¤Ë¤¹¤ë', 'MODULE_PAYMENT_TELECOM_STATUS', 'True', 'TELECOM ¤Ç¤Î»ÙÊ§¤¤¤ò¼õ¤±ÉÕ¤±¤Ş¤¹¤«?', '6', '3', 'tep_cfg_select_option(array(\'True\', \'False\'), ', now())");
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('É½¼¨¤ÎÀ°Îó½ç', 'MODULE_PAYMENT_TELECOM_SORT_ORDER', '0', 'É½¼¨¤ÎÀ°Îó½ç¤òÀßÄê¤Ç¤­¤Ş¤¹¡£¿ô»ú¤¬¾®¤µ¤¤¤Û¤É¾å°Ì¤ËÉ½¼¨¤µ¤ì¤Ş¤¹.', '6', '0', now())");
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, use_function, date_added) values ('½é´üÃíÊ¸¥¹¥Æ¡¼¥¿¥¹', 'MODULE_PAYMENT_TELECOM_ORDER_STATUS_ID', '0', 'ÀßÄê¤·¤¿¥¹¥Æ¡¼¥¿¥¹¤¬¼õÃí»ş¤ËÅ¬ÍÑ¤µ¤ì¤Ş¤¹.', '6', '0', 'tep_cfg_pull_down_order_statuses(', 'tep_get_order_status_name', now())");
-	  tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('ÀÜÂ³ÀèURL', 'MODULE_PAYMENT_TELECOM_CONNECTION_URL', '', '¥Æ¥ì¥³¥à¥¯¥ì¥¸¥Ã¥È¿½¹ş¼õÉÕ²èÌÌURL¤ÎÀßÄê¤ò¤·¤Ş¤¹¡£', '6', '0', now())");
-	  tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('ÈÖÁÈ¥³¡¼¥É', 'MODULE_PAYMENT_TELECOM_KID', '', 'ÈÖÁÈ¥³¡¼¥É¤ÎÀßÄê¤ò¤·¤Ş¤¹¡£', '6', '0', now())");
-	  tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Ìá¤êÀèURL(Àµ¾ï»ş)', 'MODULE_PAYMENT_OK_URL', 'checkout_process.php', 'Ìá¤êÀèURL(Àµ¾ï»ş)¤ÎÀßÄê¤ò¤·¤Ş¤¹¡£', '6', '0', now())");
-	  tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Ìá¤êÀèURL(¥­¥ã¥ó¥»¥ë»ş)', 'MODULE_PAYMENT_NO_URL', 'checkout_payment.php', 'Ìá¤êÀèURL(¥­¥ã¥ó¥»¥ë»ş)¤ÎÀßÄê¤ò¤·¤Ş¤¹¡£', '6', '0', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('TELECOM æ”¯æ‰•ã„ã‚’æœ‰åŠ¹ã«ã™ã‚‹', 'MODULE_PAYMENT_TELECOM_STATUS', 'True', 'TELECOM ã§ã®æ”¯æ‰•ã„ã‚’å—ã‘ä»˜ã‘ã¾ã™ã‹?', '6', '3', 'tep_cfg_select_option(array(\'True\', \'False\'), ', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('è¡¨ç¤ºã®æ•´åˆ—é †', 'MODULE_PAYMENT_TELECOM_SORT_ORDER', '0', 'è¡¨ç¤ºã®æ•´åˆ—é †ã‚’è¨­å®šã§ãã¾ã™ã€‚æ•°å­—ãŒå°ã•ã„ã»ã©ä¸Šä½ã«è¡¨ç¤ºã•ã‚Œã¾ã™.', '6', '0', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, use_function, date_added) values ('åˆæœŸæ³¨æ–‡ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹', 'MODULE_PAYMENT_TELECOM_ORDER_STATUS_ID', '0', 'è¨­å®šã—ãŸã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãŒå—æ³¨æ™‚ã«é©ç”¨ã•ã‚Œã¾ã™.', '6', '0', 'tep_cfg_pull_down_order_statuses(', 'tep_get_order_status_name', now())");
+	  tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('æ¥ç¶šå…ˆURL', 'MODULE_PAYMENT_TELECOM_CONNECTION_URL', '', 'ãƒ†ãƒ¬ã‚³ãƒ ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆç”³è¾¼å—ä»˜ç”»é¢URLã®è¨­å®šã‚’ã—ã¾ã™ã€‚', '6', '0', now())");
+	  tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('ç•ªçµ„ã‚³ãƒ¼ãƒ‰', 'MODULE_PAYMENT_TELECOM_KID', '', 'ç•ªçµ„ã‚³ãƒ¼ãƒ‰ã®è¨­å®šã‚’ã—ã¾ã™ã€‚', '6', '0', now())");
+	  tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('æˆ»ã‚Šå…ˆURL(æ­£å¸¸æ™‚)', 'MODULE_PAYMENT_OK_URL', 'checkout_process.php', 'æˆ»ã‚Šå…ˆURL(æ­£å¸¸æ™‚)ã®è¨­å®šã‚’ã—ã¾ã™ã€‚', '6', '0', now())");
+	  tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('æˆ»ã‚Šå…ˆURL(ã‚­ãƒ£ãƒ³ã‚»ãƒ«æ™‚)', 'MODULE_PAYMENT_NO_URL', 'checkout_payment.php', 'æˆ»ã‚Šå…ˆURL(ã‚­ãƒ£ãƒ³ã‚»ãƒ«æ™‚)ã®è¨­å®šã‚’ã—ã¾ã™ã€‚', '6', '0', now())");
 	}
 
     function remove() {
@@ -224,7 +224,7 @@
 	  return array('MODULE_PAYMENT_TELECOM_STATUS', 'MODULE_PAYMENT_TELECOM_ORDER_STATUS_ID', 'MODULE_PAYMENT_TELECOM_SORT_ORDER', 'MODULE_PAYMENT_TELECOM_CONNECTION_URL', 'MODULE_PAYMENT_TELECOM_KID', 'MODULE_PAYMENT_OK_URL', 'MODULE_PAYMENT_NO_URL');
     }
 	
-	//¥¨¥é¡¼
+	//ã‚¨ãƒ©ãƒ¼
 	function get_error() {
       global $HTTP_GET_VARS;
 	  

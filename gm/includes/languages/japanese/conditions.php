@@ -10,8 +10,8 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE', '¤´ÍøÍÑµ¬Ìó');
-define('HEADING_TITLE', '¤´ÍøÍÑµ¬Ìó');
+define('NAVBAR_TITLE', 'ã”åˆ©ç”¨è¦ç´„');
+define('HEADING_TITLE', 'ã”åˆ©ç”¨è¦ç´„');
 
-define('TEXT_INFORMATION', '¤³¤³¤Ë¡¢ÍøÍÑµ¬Ìó¤òµ­Æþ¤·¤Æ¤¯¤À¤µ¤¤¡£[catalog/includes/languages/japanese/conditions.php¤ò½ñ¤­´¹¤¨¤Æ¤¯¤À¤µ¤¤]');
+define('TEXT_INFORMATION', 'ã“ã“ã«ã€åˆ©ç”¨è¦ç´„ã‚’è¨˜å…¥ã—ã¦ãã ã•ã„ã€‚[catalog/includes/languages/japanese/conditions.phpã‚’æ›¸ãæ›ãˆã¦ãã ã•ã„]');
 ?>

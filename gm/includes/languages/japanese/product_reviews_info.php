@@ -10,13 +10,13 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE', '¥ì¥Ó¥å¡¼');
-define('HEADING_TITLE', ' %s ¤Î¥ì¥Ó¥å¡¼');
-define('SUB_TITLE_PRODUCT', '¾¦ÉÊÌ¾:');
-define('SUB_TITLE_FROM', 'Åê¹Æ¼Ô:');
-define('SUB_TITLE_DATE', 'Åê¹ÆÆüÉÕ:');
-define('SUB_TITLE_REVIEW', '¥ì¥Ó¥å¡¼:');
-define('SUB_TITLE_RATING', 'ºÎÅÀ:');
-define('TEXT_OF_5_STARS', '5ÅÀÃæ¤Î %sÅÀ!');
-define('TEXT_CLICK_TO_ENLARGE', '¡Ú¥¤¥á¡¼¥¸¤ò³ÈÂç¡Û');
+define('NAVBAR_TITLE', 'ãƒ¬ãƒ“ãƒ¥ãƒ¼');
+define('HEADING_TITLE', ' %s ã®ãƒ¬ãƒ“ãƒ¥ãƒ¼');
+define('SUB_TITLE_PRODUCT', 'å•†å“å:');
+define('SUB_TITLE_FROM', 'æŠ•ç¨¿è€…:');
+define('SUB_TITLE_DATE', 'æŠ•ç¨¿æ—¥ä»˜:');
+define('SUB_TITLE_REVIEW', 'ãƒ¬ãƒ“ãƒ¥ãƒ¼:');
+define('SUB_TITLE_RATING', 'æŽ¡ç‚¹:');
+define('TEXT_OF_5_STARS', '5ç‚¹ä¸­ã® %sç‚¹!');
+define('TEXT_CLICK_TO_ENLARGE', 'ã€ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’æ‹¡å¤§ã€‘');
 ?>

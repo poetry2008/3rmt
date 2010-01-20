@@ -10,35 +10,35 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE_1', '¥ì¥¸');
-define('NAVBAR_TITLE_2', '»ÙÊ§ÊýË¡');
+define('NAVBAR_TITLE_1', 'ãƒ¬ã‚¸');
+define('NAVBAR_TITLE_2', 'æ”¯æ‰•æ–¹æ³•');
 
-define('HEADING_TITLE', '¤ª»ÙÊ§¤¤ÊýË¡¤òÁª¤ó¤Ç¤¯¤À¤µ¤¤');
+define('HEADING_TITLE', 'ãŠæ”¯æ‰•ã„æ–¹æ³•ã‚’é¸ã‚“ã§ãã ã•ã„');
 
-define('TABLE_HEADING_BILLING_ADDRESS', '¤´ÀÁµáÀè');
-define('TEXT_SELECTED_BILLING_DESTINATION', '¤´ÀÁµáÀè¤Î¤´½»½ê¤ò¤´³ÎÇ§¤¯¤À¤µ¤¤¡£<br>¡Ê²¼¤Î¥Ü¥¿¥ó¤ò¥¯¥ê¥Ã¥¯¤·¤Æ¡¢¤´ÀÁµáÀè¤òÊÑ¹¹¤¹¤ë¤³¤È¤â¤Ç¤­¤Þ¤¹¡£¡Ë');
-define('TITLE_BILLING_ADDRESS', '¤´ÀÁµáÀè:');
+define('TABLE_HEADING_BILLING_ADDRESS', 'ã”è«‹æ±‚å…ˆ');
+define('TEXT_SELECTED_BILLING_DESTINATION', 'ã”è«‹æ±‚å…ˆã®ã”ä½æ‰€ã‚’ã”ç¢ºèªãã ã•ã„ã€‚<br>ï¼ˆä¸‹ã®ãƒœã‚¿ãƒ³ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ã€ã”è«‹æ±‚å…ˆã‚’å¤‰æ›´ã™ã‚‹ã“ã¨ã‚‚ã§ãã¾ã™ã€‚ï¼‰');
+define('TITLE_BILLING_ADDRESS', 'ã”è«‹æ±‚å…ˆ:');
 
-define('TABLE_HEADING_PAYMENT_METHOD', '¤ª»ÙÊ§¤¤ÊýË¡');
-define('TEXT_SELECT_PAYMENT_METHOD', '¤´´õË¾¤Î¤ª»ÙÊ§¤¤ÊýË¡¤òÁª¤ó¤Ç¤¯¤À¤µ¤¤¡£');
-define('TITLE_PLEASE_SELECT', 'Áª¤ó¤Ç¤¯¤À¤µ¤¤');
-define('TEXT_ENTER_PAYMENT_INFORMATION', '²¼µ­¤ÎÊýË¡¤Ç¾¦ÉÊÂå¶â¤ò¤ª»ÙÊ§¤¤¤¯¤À¤µ¤¤¡£');
+define('TABLE_HEADING_PAYMENT_METHOD', 'ãŠæ”¯æ‰•ã„æ–¹æ³•');
+define('TEXT_SELECT_PAYMENT_METHOD', 'ã”å¸Œæœ›ã®ãŠæ”¯æ‰•ã„æ–¹æ³•ã‚’é¸ã‚“ã§ãã ã•ã„ã€‚');
+define('TITLE_PLEASE_SELECT', 'é¸ã‚“ã§ãã ã•ã„');
+define('TEXT_ENTER_PAYMENT_INFORMATION', 'ä¸‹è¨˜ã®æ–¹æ³•ã§å•†å“ä»£é‡‘ã‚’ãŠæ”¯æ‰•ã„ãã ã•ã„ã€‚');
 
-define('TABLE_HEADING_COMMENTS', '¤´ÃíÊ¸¤Ë¤Ä¤¤¤Æ¤Î¥³¥á¥ó¥È');
+define('TABLE_HEADING_COMMENTS', 'ã”æ³¨æ–‡ã«ã¤ã„ã¦ã®ã‚³ãƒ¡ãƒ³ãƒˆ');
 
-define('TITLE_CONTINUE_CHECKOUT_PROCEDURE', '¤´¹ØÆþ¤Î¼êÂ³¤­¤ò¿Ê¤á¤Æ¤¯¤À¤µ¤¤¡£');
-define('TEXT_CONTINUE_CHECKOUT_PROCEDURE', '¤´ÃíÊ¸ÆâÍÆ¤ÎºÇ½ª³ÎÇ§¤Ø');
+define('TITLE_CONTINUE_CHECKOUT_PROCEDURE', 'ã”è³¼å…¥ã®æ‰‹ç¶šãã‚’é€²ã‚ã¦ãã ã•ã„ã€‚');
+define('TEXT_CONTINUE_CHECKOUT_PROCEDURE', 'ã”æ³¨æ–‡å†…å®¹ã®æœ€çµ‚ç¢ºèªã¸');
 
 //Add Point System
-define('TEXT_POINT', '¥Ý¥¤¥ó¥È');
+define('TEXT_POINT', 'ãƒã‚¤ãƒ³ãƒˆ');
 
-define('TABLE_HEADING_BANK', '¿¶¹þÀè¸ýºÂ¾ðÊó');
-define('TEXT_BANK_NAME', '¶âÍ»µ¡´ØÌ¾:');
-define('TEXT_BANK_SHITEN', '»ÙÅ¹Ì¾:');
-define('TEXT_BANK_KAMOKU', '¸ýºÂ¼ïÊÌ:');
-define('TEXT_BANK_KOUZA_NUM', '¸ýºÂÈÖ¹æ:');
-define('TEXT_BANK_KOUZA_NAME', '¸ýºÂÌ¾µÁ<b>¡Ê¥«¥¿¥«¥Ê¡Ë</b>:');
+define('TABLE_HEADING_BANK', 'æŒ¯è¾¼å…ˆå£åº§æƒ…å ±');
+define('TEXT_BANK_NAME', 'é‡‘èžæ©Ÿé–¢å:');
+define('TEXT_BANK_SHITEN', 'æ”¯åº—å:');
+define('TEXT_BANK_KAMOKU', 'å£åº§ç¨®åˆ¥:');
+define('TEXT_BANK_KOUZA_NUM', 'å£åº§ç•ªå·:');
+define('TEXT_BANK_KOUZA_NAME', 'å£åº§åç¾©<b>ï¼ˆã‚«ã‚¿ã‚«ãƒŠï¼‰</b>:');
 
-define('TEXT_BANK_SELECT_KAMOKU_F', 'ÉáÄÌ');
-define('TEXT_BANK_SELECT_KAMOKU_T', 'ÅöºÂ');
+define('TEXT_BANK_SELECT_KAMOKU_F', 'æ™®é€š');
+define('TEXT_BANK_SELECT_KAMOKU_T', 'å½“åº§');
 ?>

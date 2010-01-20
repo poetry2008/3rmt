@@ -2,13 +2,13 @@
 //<meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
 ?>
 <ul class="r_c_links_ul">
-<li><a href="http://ohmynobu.net/" rel='nofollow' class="blank">┐о─╣д╬╠ю╦╛екеєещедеє┤є╣ч╜ъ</a></li>
-<li><a href="http://kamurai.itspy.com/nobunaga/" rel='nofollow' class="blank">┐о─╣д╬╠ю╦╛Online╣╢╬м</a></li>
-<li><a href="http://b5me.com/" rel='nofollow' class="blank">┐о─╣д╬╠ю╦╛д╬├╬╣╘╖╫╗╗╡б</a></li>
-<li><a href="http://www.hotgame.co.jp/" rel='nofollow' class="blank">екеєещедеєе▓б╝ер╛Ё╩є</a></li>
-<li><a href="http://nobunaga.mywiki.jp/" rel='nofollow' class="blank">┐о─╣д╬╠ю╦╛екеєещедеє Wiki</a></li>
-<li><a href="http://www.mmonavi.com/modules/game/97.html" rel='nofollow' class="blank">┐о─╣д╬╠ю╦╛екеєещедеєд╦д─ддд╞</a></li>
-<li><a href="http://members.at.infoseek.co.jp/ez_style/nol/" rel='nofollow' class="blank">┐о─╣д╬╠ю╦╛д╬┴ъ╛ь░ь═ўбж╕╢▓┴╖╫╗╗</a></li>
-<li><a href="http://www.geocities.jp/ayahira1979/NOL-MAP.htm" rel='nofollow' class="blank">┐о─╣д╬╠ю╦╛екеєещедеєбже▐е├е╫емеде╔</a></li>
-<li><a href="http://nobline.hp.infoseek.co.jp/" rel='nofollow' class="blank">┐о─╣д╬╠ю╦╛Online╛Ё╩є┤█</a></li>
+<li><a href="http://ohmynobu.net/" rel='nofollow' class="blank">ф┐бщХ╖уБощЗОцЬЫуВкуГ│уГйуВдуГ│хпДхРИцЙА</a></li>
+<li><a href="http://kamurai.itspy.com/nobunaga/" rel='nofollow' class="blank">ф┐бщХ╖уБощЗОцЬЫOnlineцФ╗чХе</a></li>
+<li><a href="http://b5me.com/" rel='nofollow' class="blank">ф┐бщХ╖уБощЗОцЬЫуБочЯешбМшиИчоЧцйЯ</a></li>
+<li><a href="http://www.hotgame.co.jp/" rel='nofollow' class="blank">уВкуГ│уГйуВдуГ│уВ▓уГ╝уГацГЕха▒</a></li>
+<li><a href="http://nobunaga.mywiki.jp/" rel='nofollow' class="blank">ф┐бщХ╖уБощЗОцЬЫуВкуГ│уГйуВдуГ│ Wiki</a></li>
+<li><a href="http://www.mmonavi.com/modules/game/97.html" rel='nofollow' class="blank">ф┐бщХ╖уБощЗОцЬЫуВкуГ│уГйуВдуГ│уБлуБдуБДуБж</a></li>
+<li><a href="http://members.at.infoseek.co.jp/ez_style/nol/" rel='nofollow' class="blank">ф┐бщХ╖уБощЗОцЬЫуБочЫ╕ха┤ф╕АшжзуГ╗хОЯф╛бшиИчоЧ</a></li>
+<li><a href="http://www.geocities.jp/ayahira1979/NOL-MAP.htm" rel='nofollow' class="blank">ф┐бщХ╖уБощЗОцЬЫуВкуГ│уГйуВдуГ│уГ╗уГЮуГГуГЧуВмуВдуГЙ</a></li>
+<li><a href="http://nobline.hp.infoseek.co.jp/" rel='nofollow' class="blank">ф┐бщХ╖уБощЗОцЬЫOnlineцГЕха▒щди</a></li>
 </ul>

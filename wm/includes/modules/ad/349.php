@@ -1,9 +1,9 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://hero.mgame.jp/" class="blank" rel='nofollow'><span>▒╤═║екеєещедеє ╕°╝░е╡еде╚</span></a></li>
-<li><a href="http://wikiwiki.jp/heroonrain/" class="blank" rel='nofollow'><span>▒╤═║екеєещедеє Wiki</span></a></li>
-<li><a href="http://hero.gamedb.info/wiki/" class="blank" rel='nofollow'><span>▒╤═║екеєещедеє ╛Ё╩єWIKI</span></a></li>
-<li><a href="http://www.mmo-station.com/mmo/hero/" class="blank" rel='nofollow'><span>▒╤═║екеєещедеє ┴э╣ч╛Ё╩єбж╣╢╬ме╡еде╚</span></a></li>
-<li><a href="http://www.gaming-city.com/games/34" class="blank" rel='nofollow'><span>▒╤═║екеєещедеє еье╙ехб╝</span></a></li>
-<li><a href="http://www.mmonavi.com/modules/game/95.html" class="blank"><span>▒╤═║екеєещедеє е▓б╝ер╛Ё╩є</span></a></li>
+<li><a href="http://hero.mgame.jp/" class="blank" rel='nofollow'><span>шЛ▒щЫДуВкуГ│уГйуВдуГ│ хЕмх╝ПуВ╡уВдуГИ</span></a></li>
+<li><a href="http://wikiwiki.jp/heroonrain/" class="blank" rel='nofollow'><span>шЛ▒щЫДуВкуГ│уГйуВдуГ│ Wiki</span></a></li>
+<li><a href="http://hero.gamedb.info/wiki/" class="blank" rel='nofollow'><span>шЛ▒щЫДуВкуГ│уГйуВдуГ│ цГЕха▒WIKI</span></a></li>
+<li><a href="http://www.mmo-station.com/mmo/hero/" class="blank" rel='nofollow'><span>шЛ▒щЫДуВкуГ│уГйуВдуГ│ ч╖ПхРИцГЕха▒уГ╗цФ╗чХеуВ╡уВдуГИ</span></a></li>
+<li><a href="http://www.gaming-city.com/games/34" class="blank" rel='nofollow'><span>шЛ▒щЫДуВкуГ│уГйуВдуГ│ уГмуГУуГеуГ╝</span></a></li>
+<li><a href="http://www.mmonavi.com/modules/game/95.html" class="blank"><span>шЛ▒щЫДуВкуГ│уГйуВдуГ│ уВ▓уГ╝уГацГЕха▒</span></a></li>
 </ul>

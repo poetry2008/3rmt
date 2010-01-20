@@ -1,5 +1,5 @@
 <?php
-define('TAGS_TEXT_MORE', '¤³¤Î¥¿¥°¤Î¾¦ÉÊ°ìÍ÷¤Ø');
-define('TAGS_NAVBAR_TITLE', '¥¿¥°°ìÍ÷');
-define('TAGS_HEADING_TITLE', '¥¿¥°°ìÍ÷');
-define('TEXT_NO_PRODUCTS', '¸½ºß¾¦ÉÊ¤ÏÅÐÏ¿¤µ¤ì¤Æ¤¤¤Þ¤»¤ó...');
+define('TAGS_TEXT_MORE', 'ã“ã®ã‚¿ã‚°ã®å•†å“ä¸€è¦§ã¸');
+define('TAGS_NAVBAR_TITLE', 'ã‚¿ã‚°ä¸€è¦§');
+define('TAGS_HEADING_TITLE', 'ã‚¿ã‚°ä¸€è¦§');
+//define('TEXT_NO_PRODUCTS', 'ç¾åœ¨å•†å“ã¯ç™»éŒ²ã•ã‚Œã¦ã„ã¾ã›ã‚“...');

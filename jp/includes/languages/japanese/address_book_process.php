@@ -10,10 +10,10 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE_1', '¥¢¥«¥¦¥ó¥È');
-define('NAVBAR_TITLE_2', '¥¢¥É¥ì¥¹Ä¢');
-define('NAVBAR_TITLE_ADD_ENTRY', '¥¢¥É¥ì¥¹¤òÄÉ²Ã');
-define('NAVBAR_TITLE_MODIFY_ENTRY', '¥¢¥É¥ì¥¹¤òÊÑ¹¹');
-define('HEADING_TITLE_ADD_ENTRY', '¿·¤·¤¤¥¢¥É¥ì¥¹¤òÄÉ²Ã¤·¤Æ¤¯¤À¤µ¤¤');
-define('HEADING_TITLE_MODIFY_ENTRY', '¥¢¥É¥ì¥¹¤òÊÑ¹¹¤·¤Æ¤¯¤À¤µ¤¤');
+define('NAVBAR_TITLE_1', 'ã‚¢ã‚«ã‚¦ãƒ³ãƒˆ');
+define('NAVBAR_TITLE_2', 'ã‚¢ãƒ‰ãƒ¬ã‚¹å¸³');
+define('NAVBAR_TITLE_ADD_ENTRY', 'ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¿½åŠ ');
+define('NAVBAR_TITLE_MODIFY_ENTRY', 'ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å¤‰æ›´');
+define('HEADING_TITLE_ADD_ENTRY', 'æ–°ã—ã„ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¿½åŠ ã—ã¦ãã ã•ã„');
+define('HEADING_TITLE_MODIFY_ENTRY', 'ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å¤‰æ›´ã—ã¦ãã ã•ã„');
 ?>

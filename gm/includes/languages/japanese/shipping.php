@@ -10,8 +10,8 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE', 'ÇÛÁ÷¤ÈÊÖÉÊ¤Ë¤Ä¤¤¤Æ');
-define('HEADING_TITLE', 'ÇÛÁ÷¤ÈÊÖÉÊ¤Ë¤Ä¤¤¤Æ');
+define('NAVBAR_TITLE', 'é…é€ã¨è¿”å“ã«ã¤ã„ã¦');
+define('HEADING_TITLE', 'é…é€ã¨è¿”å“ã«ã¤ã„ã¦');
 
-define('TEXT_INFORMATION', '¤³¤³¤Ë¡¢ÇÛÁ÷¤ÈÊÖÉÊ¤Ë¤Ä¤¤¤Æµ­Æþ¤·¤Æ¤¯¤À¤µ¤¤¡£[catalog/includes/languages/japanese/shipping.php¤ò½ñ¤­´¹¤¨¤Æ¤¯¤À¤µ¤¤]');
+define('TEXT_INFORMATION', 'ã“ã“ã«ã€é…é€ã¨è¿”å“ã«ã¤ã„ã¦è¨˜å…¥ã—ã¦ãã ã•ã„ã€‚[catalog/includes/languages/japanese/shipping.phpã‚’æ›¸ãæ›ãˆã¦ãã ã•ã„]');
 ?>

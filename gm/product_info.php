@@ -15,11 +15,11 @@
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRODUCT_INFO);
   
 //begin dynamic meta tags query -->
-$the_product_info_query = tep_db_query("select pd.language_id, p.products_id, pd.products_name, pd.products_attention_1, pd.products_attention_2, pd.products_attention_3, pd.products_attention_4, pd.products_attention_5, pd.products_description_".ABBR_SITENAME.", p.products_model, p.products_quantity, p.products_image, pd.products_url, p.products_price, p.products_tax_class_id, 
+$the_product_info_query = tep_db_query("select pd.language_id, p.products_id, pd.products_name, pd.products_attention_1, pd.products_attention_2, pd.products_attention_3, pd.products_attention_4, pd.products_attention_5, pd.products_description, p.products_model, p.products_quantity, p.products_image, pd.products_url, p.products_price, p.products_tax_class_id, 
 p.products_date_added, p.products_date_available, p.manufacturers_id from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and pd.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "'" . " and pd.language_id ='" .  (int)$languages_id . "'"); 
 $the_product_info = tep_db_fetch_array($the_product_info_query);
 $the_product_name = strip_tags ($the_product_info['products_name'], "");
-$the_product_description = mb_substr (strip_tags ($the_product_info['products_description_'.ABBR_SITENAME], ""),0,65);
+$the_product_description = mb_substr (strip_tags ($the_product_info['products_description'], ""),0,65);
 $the_product_model = strip_tags ($the_product_info['products_model'], "");
 
 $the_manufacturer_query = tep_db_query("select m.manufacturers_id, m.manufacturers_name from " . TABLE_MANUFACTURERS . " m left join " . TABLE_MANUFACTURERS_INFO . " mi on (m.manufacturers_id = mi.manufacturers_id and mi.languages_id = '" . (int)$languages_id . "'), " . TABLE_PRODUCTS . " p  where p.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and p.manufacturers_id = m.manufacturers_id"); 
@@ -101,7 +101,7 @@ function change_num(ob, targ, quan,a_quan)
     <div id="body_text">
       <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_PRODUCT_INFO, tep_get_all_get_params(array('action')) . 'action=add_product')); ?>
       <?php
-  $product_info_query = tep_db_query("select p.products_id, pd.products_name, pd.products_attention_1,pd.products_attention_2,pd.products_attention_3,pd.products_attention_4,pd.products_attention_5,pd.products_description_".ABBR_SITENAME.", p.products_model, p.products_quantity, p.products_image,p.products_image2,p.products_image3, pd.products_url, p.products_price, p.products_tax_class_id, p.products_date_added, p.products_date_available, p.manufacturers_id, p.products_bflag, p.products_cflag, p.products_small_sum from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "'");
+  $product_info_query = tep_db_query("select p.products_id, pd.products_name, pd.products_attention_1,pd.products_attention_2,pd.products_attention_3,pd.products_attention_4,pd.products_attention_5,pd.products_description, p.products_model, p.products_quantity, p.products_image,p.products_image2,p.products_image3, pd.products_url, p.products_price, p.products_tax_class_id, p.products_date_added, p.products_date_available, p.manufacturers_id, p.products_bflag, p.products_cflag, p.products_small_sum from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "'");
   if (!tep_db_num_rows($product_info_query)) { // product not found in database
 ?>
       <P><?php echo TEXT_PRODUCT_NOT_FOUND; ?></P>
@@ -121,10 +121,7 @@ function change_num(ob, targ, quan,a_quan)
       $products_price = $currencies->display_price($product_info['products_price'], tep_get_tax_rate($product_info['products_tax_class_id']));
     }
     
-    //Add ds-style - 2005.11.29
-    // edit 2009.5.14 maker
-    //$description = explode("|-#-|", $product_info['products_description_'.ABBR_SITENAME]);
-    $description = $product_info['products_description_'.ABBR_SITENAME];
+    $description = $product_info['products_description'];
     //data1
     $data1 = explode("//", $product_info['products_attention_1']);
     //data1
@@ -205,7 +202,7 @@ function change_num(ob, targ, quan,a_quan)
                 <td>
                   <table class="infoBox" width="100%" border="0" cellpadding="3" cellspacing="1">
                     <tr class="infoBoxContents">
-                      <td class="main"><font color="#0070AF">¾¦ÉÊ¥³¡¼¥É</font></td>
+                      <td class="main"><font color="#0070AF">å•†å“ã‚³ãƒ¼ãƒ‰</font></td>
                       <td class="main">
                         <?php if (PRODUCT_LIST_MODEL > 0){ echo $product_info['products_model'] ; }else{ echo '-' ; } ?>
                       </td>
@@ -227,20 +224,20 @@ function change_num(ob, targ, quan,a_quan)
                     </tr>
                     <?php } ?>
                     <tr class="infoBoxContents">
-                      <td class="main"><font color="#0070AF">¥á¡¼¥«¡¼Ì¾</font></td>
+                      <td class="main"><font color="#0070AF">ãƒ¡ãƒ¼ã‚«ãƒ¼å</font></td>
                       <td class="main">
                         <?php include(DIR_WS_BOXES.'manufacturer_info.php') ; ?>
                       </td>
                     </tr>
                     <tr class="infoBoxContents">
-                      <td class="main"><font color="#0070AF">²Á³Ê</font></td>
+                      <td class="main"><font color="#0070AF">ä¾¡æ ¼</font></td>
                       <td class="main">
                         <?php
-                                  # ÄÉ²Ã¥¹¥¿¡¼¥È ---------------------------------------
-                                  # -- ÃíÊ¸¿ôÎÌ¤ÈÃ±²Á¤Î¥ê¥¹¥È --------------------------
+                                  # è¿½åŠ ã‚¹ã‚¿ãƒ¼ãƒˆ ---------------------------------------
+                                  # -- æ³¨æ–‡æ•°é‡ã¨å˜ä¾¡ã®ãƒªã‚¹ãƒˆ --------------------------
                                   if(tep_not_null($product_info['products_small_sum'])) {
                                     $wari_array = array();
-                                    echo '<span class="smallText">Ã±°Ì¤Ï1¸Ä¤¢¤¿¤ê¤Î²Á³Ê¤È¤Ê¤ê¤Ş¤¹</span><table border="0" cellpadding="0" cellspacing="0" class="infoBox">';
+                                    echo '<span class="smallText">å˜ä½ã¯1å€‹ã‚ãŸã‚Šã®ä¾¡æ ¼ã¨ãªã‚Šã¾ã™</span><table border="0" cellpadding="0" cellspacing="0" class="infoBox">';
                                     $parray = explode(",", $product_info['products_small_sum']);
                                     for($i=0; $i<sizeof($parray); $i++) {
                                       $tt = explode(':', $parray[$i]);
@@ -251,7 +248,7 @@ function change_num(ob, targ, quan,a_quan)
                                   
                                     foreach($wari_array as $key => $val) {
                                       echo '<tr class="infoBoxContents">';
-                                      echo '<td class="main" align="right">'.$key.'¸Ä°Ê¾å&nbsp;ÃíÊ¸¤¹¤ë¤È&nbsp;</td>';
+                                      echo '<td class="main" align="right">'.$key.'å€‹ä»¥ä¸Š&nbsp;æ³¨æ–‡ã™ã‚‹ã¨&nbsp;</td>';
                                       echo '<td class="main"><b>'.$currencies->display_price(round($pricedef + $val),0).'</b></td>';
                                       echo '</tr>'."\n";
                                     }
@@ -260,15 +257,15 @@ function change_num(ob, targ, quan,a_quan)
                                     echo '<strong>'.$products_price.'</strong>';
                                   }
                                   
-                                  # -- ÃíÊ¸¿ôÎÌ¤ÈÃ±²Á¤Î¥ê¥¹¥È --------------------------
-                                  # ÄÉ²Ã¥¨¥ó¥É -------------------------------------------
+                                  # -- æ³¨æ–‡æ•°é‡ã¨å˜ä¾¡ã®ãƒªã‚¹ãƒˆ --------------------------
+                                  # è¿½åŠ ã‚¨ãƒ³ãƒ‰ -------------------------------------------
                                 
                                 ?>
                       </td>
                     </tr>
                     <tr class="infoBoxContents">
-                      <td class="main"><font color="#0070AF">ÃíÊ¸²ÄÇ½¿ô</font></td>
-                      <td class="main">»Ä¤ê<b>&nbsp;<?php echo $product_info['products_quantity']; ?></b>&nbsp;¸Ä</td>
+                      <td class="main"><font color="#0070AF">æ³¨æ–‡å¯èƒ½æ•°</font></td>
+                      <td class="main">æ®‹ã‚Š<b>&nbsp;<?php echo $product_info['products_quantity']; ?></b>&nbsp;å€‹</td>
                     </tr>
                     <?php 
                       if(!empty($data3[0])){
@@ -288,8 +285,8 @@ function change_num(ob, targ, quan,a_quan)
                     <?php } ?>
                     <?php if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { ?>
                     <tr class="infoBoxContents">
-                      <td class="main"><font color="#0070AF">¥İ¥¤¥ó¥È</font></td>
-                      <td class="main"><?php echo ds_tep_get_point_value($HTTP_GET_VARS['products_id']) ; ?>&nbsp;¥İ¥¤¥ó¥È</td>
+                      <td class="main"><font color="#0070AF">ãƒã‚¤ãƒ³ãƒˆ</font></td>
+                      <td class="main"><?php echo ds_tep_get_point_value($HTTP_GET_VARS['products_id']) ; ?>&nbsp;ãƒã‚¤ãƒ³ãƒˆ</td>
                     </tr>
                     <?php } ?>
                     <?php
@@ -298,7 +295,7 @@ function change_num(ob, targ, quan,a_quan)
                     if (tep_db_num_rows($tag_query)) { 
                     ?>
                     <tr class="infoBoxContents"> 
-                      <td class="main"><font color="#0070AF">¥¿¥°</font></td> 
+                      <td class="main"><font color="#0070AF">ã‚¿ã‚°</font></td> 
                       <td class="main">
                       <ul class="show_tags01"> 
                       <?php
@@ -336,13 +333,13 @@ function change_num(ob, targ, quan,a_quan)
                   <?php
       if($product_info['products_quantity'] < 1) {
         if($product_info['products_bflag'] == '1') {
-          # Çã¤¤¼è¤ê¾¦ÉÊ
-          echo '<br><span class="markProductOutOfStock">°ì»şÄä»ß</span>';
+          # è²·ã„å–ã‚Šå•†å“
+          echo '<br><span class="markProductOutOfStock">ä¸€æ™‚åœæ­¢</span>';
         } elseif ($product_info['products_cflag'] == '0') {
-          echo '<br><span class="markProductOutOfStock">Çä¤êÀÚ¤ì</span>';
+          echo '<br><span class="markProductOutOfStock">å£²ã‚Šåˆ‡ã‚Œ</span>';
         } else {
-          # ÄÌ¾ï¾¦ÉÊ
-          echo '<br><span class="markProductOutOfStock">ºß¸ËÀÚ¤ì<br><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="absmiddle" alt=""><a href=' . tep_href_link(FILENAME_PREORDER, 'products_id=' . $HTTP_GET_VARS['products_id']) . '>' . $product_info['products_name'] . '¤òÍ½Ìó¤¹¤ë</a></span>';
+          # é€šå¸¸å•†å“
+          echo '<br><span class="markProductOutOfStock">åœ¨åº«åˆ‡ã‚Œ<br><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="absmiddle" alt=""><a href=' . tep_href_link(FILENAME_PREORDER, 'products_id=' . $HTTP_GET_VARS['products_id']) . '>' . $product_info['products_name'] . 'ã‚’äºˆç´„ã™ã‚‹</a></span>';
         }
       }else{    
     
@@ -350,7 +347,7 @@ function change_num(ob, targ, quan,a_quan)
         $products_attributes_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_ATTRIBUTES . " patrib where patrib.products_id='" . (int)$HTTP_GET_VARS['products_id'] . "' and patrib.options_id = popt.products_options_id and popt.language_id = '" . $languages_id . "'");
         $products_attributes = tep_db_fetch_array($products_attributes_query);
         if ($products_attributes['total'] > 0) {
-          echo '<!-- ¾¦ÉÊ¥ª¥×¥·¥ç¥ó -->' ;
+          echo '<!-- å•†å“ã‚ªãƒ—ã‚·ãƒ§ãƒ³ -->' ;
           echo '<br>'."\n".'<b>' . TEXT_PRODUCT_OPTIONS . '</b><br>' .
                '<table class="box_des_01">';
           $products_options_name_query = tep_db_query("select distinct popt.products_options_id, popt.products_options_name from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_ATTRIBUTES . " patrib where patrib.products_id='" . (int)$HTTP_GET_VARS['products_id'] . "' and patrib.options_id = popt.products_options_id and popt.language_id = '" . $languages_id . "'");
@@ -367,10 +364,11 @@ function change_num(ob, targ, quan,a_quan)
                   $products_options_array[sizeof($products_options_array)-1]['text'] .= ' (' . $products_options['price_prefix'] . $currencies->display_price($products_options['options_values_price'], tep_get_tax_rate($product_info['products_tax_class_id'])) .') ';
                 }
                 //options stock
-    //            $products_options_array[sizeof($products_options_array)-1]['text'] .= ' (ºß¸Ë:' . $products_options['products_at_quantity'] .') ';
+    //            $products_options_array[sizeof($products_options_array)-1]['text'] .= ' (åœ¨åº«:' . $products_options['products_at_quantity'] .') ';
                 
               }
             }
+            if (!isset($cart->contents[$HTTP_GET_VARS['products_id']]['attributes'][$products_options_name['products_options_id']])) $cart->contents[$HTTP_GET_VARS['products_id']]['attributes'][$products_options_name['products_options_id']]=NULL;
             echo tep_draw_pull_down_menu('id[' . $products_options_name['products_options_id'] . ']', $products_options_array, $cart->contents[$HTTP_GET_VARS['products_id']]['attributes'][$products_options_name['products_options_id']]);
             echo '</td></tr>';
           }
@@ -379,7 +377,7 @@ function change_num(ob, targ, quan,a_quan)
     ?>
                   <table class="box_des_01">
                     <tr>
-                      <td width="120">¿ôÎÌ:</td>
+                      <td width="120">æ•°é‡:</td>
                       <td width="40">
                         <input name="quantity" type="text" id="quantity" value="1" size="4" maxlength="4">
                         </td>
@@ -390,7 +388,7 @@ function change_num(ob, targ, quan,a_quan)
                   <a style="display:block;" href="javascript:void(0)" onClick="change_num('quantity','down', 1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/ndown.gif" alt="-"></a>
                 </div>
               </td>
-                        <td align="left">¸Ä</td>
+                        <td align="left">å€‹</td>
                       <td align="right"><?php echo tep_draw_hidden_field('products_id', $product_info['products_id']) . tep_image_submit('button_in_cart.jpg', IMAGE_BUTTON_IN_CART); ?></td>
                     </tr>
                   </table>
@@ -416,7 +414,7 @@ function change_num(ob, targ, quan,a_quan)
         </tr>
       </table>
       <?php
-                    //¥µ¥Ö²èÁü
+                    //ã‚µãƒ–ç”»åƒ
                     $sub_colors_query = tep_db_query("select color_image, color_id, color_to_products_name from ".TABLE_COLOR_TO_PRODUCTS." where products_id = '".(int)$HTTP_GET_VARS['products_id']."'");
                     $cnt=0;
                    if(tep_db_num_rows($sub_colors_query) >= 1) {
@@ -426,7 +424,7 @@ function change_num(ob, targ, quan,a_quan)
         <tr>
           <?php
                     while($sub_colors = tep_db_fetch_array($sub_colors_query)) {
-                      //¿§Ì¾¤ò¼èÆÀ
+                      //è‰²åã‚’å–å¾—
                       $colors_name_query = tep_db_query("select color_name from ".TABLE_COLOR." where color_id = '".$sub_colors['color_id']."'");
                       $colors_name_result = tep_db_fetch_array($colors_name_query);
                       
@@ -462,9 +460,9 @@ function change_num(ob, targ, quan,a_quan)
       <div class="sep">
         &nbsp;
       </div>
-      <h3><?php echo $product_info['products_name']; ?>¤Ë¤Ä¤¤¤Æ</h3>
+      <h3><?php echo $product_info['products_name']; ?>ã«ã¤ã„ã¦</h3>
       <br>
-      <!-- ÀâÌÀÊ¸¡¡-->
+      <!-- èª¬æ˜æ–‡ã€€-->
       <div class="box_des">
         <?php 
             //Edit ds-style 2005.11.29
@@ -518,13 +516,13 @@ function change_num(ob, targ, quan,a_quan)
       <?php
       if (tep_session_is_registered('affiliate_id')) {
 ?>
-      <h1 class="pageHeading_long"><?php echo '¥¢¥Õ¥£¥ê¥¨¥¤¥È¹­¹ğÍÑ¥¿¥°' ; ?>
+      <h1 class="pageHeading_long"><?php echo 'ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆåºƒå‘Šç”¨ã‚¿ã‚°' ; ?>
       </h1>
-      <p class="box_des"><b>¤³¤Î¾¦ÉÊ¤Î¹­¹ğ¤òÅĞÏ¿¤¹¤ë¤³¤È¤¬¤Ç¤­¤Ş¤¹¡ª¡ª</b><br>
-        ¤¢¤Ê¤¿¤Î¥Û¡¼¥à¥Ú¡¼¥¸¤Ë¤³¤Î¾¦ÉÊ¤òÉ½¼¨¤µ¤»¤ë¤Ë¤Ï°Ê²¼¤Î¥½¡¼¥¹¥³¡¼¥É¤ò¥³¥Ô¡¼¤·¤Æ¥Û¡¼¥à¥Ú¡¼¥¸¤Ë¥Ú¡¼¥¹¤È¤·¤Æ¤¯¤À¤µ¤¤¡£¤³¤Î¾¦ÉÊ¤Î²èÁü¤¬É½¼¨¤µ¤ì¤Ş¤¹¡£</p>
+      <p class="box_des"><b>ã“ã®å•†å“ã®åºƒå‘Šã‚’ç™»éŒ²ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ï¼ï¼</b><br>
+        ã‚ãªãŸã®ãƒ›ãƒ¼ãƒ ãƒšãƒ¼ã‚¸ã«ã“ã®å•†å“ã‚’è¡¨ç¤ºã•ã›ã‚‹ã«ã¯ä»¥ä¸‹ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã‚’ã‚³ãƒ”ãƒ¼ã—ã¦ãƒ›ãƒ¼ãƒ ãƒšãƒ¼ã‚¸ã«ãƒšãƒ¼ã‚¹ã¨ã—ã¦ãã ã•ã„ã€‚ã“ã®å•†å“ã®ç”»åƒãŒè¡¨ç¤ºã•ã‚Œã¾ã™ã€‚</p>
       <textarea class="boxText" style="width:95%; height:90px; "><a href="<?php echo HTTP_SERVER.DIR_WS_CATALOG.FILENAME_PRODUCT_INFO.'?products_id='.(int)$HTTP_GET_VARS['products_id'].'&ref='.$affiliate_id ; ?>" class="blank"><?php echo tep_image(DIR_WS_IMAGES . $product_info['products_image'], $product_info['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"');?><br><?php echo $product_info['products_name'] ; ?> </a>
 </textarea>
-      <p align="center" class="box_des">¼Âºİ¤ËÉ½¼¨¤µ¤ì¤ë¥¤¥á¡¼¥¸<br>
+      <p align="center" class="box_des">å®Ÿéš›ã«è¡¨ç¤ºã•ã‚Œã‚‹ã‚¤ãƒ¡ãƒ¼ã‚¸<br>
         <a href="<?php echo HTTP_SERVER.DIR_WS_CATALOG.FILENAME_PRODUCT_INFO.'?products_id='.(int)$HTTP_GET_VARS['products_id'].'&ref='.$affiliate_id ; ?>" class="blank"><?php echo tep_image(DIR_WS_IMAGES . $product_info['products_image'], $product_info['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"'); ?><br>
         <?php echo $product_info['products_name'] ; ?>
         </a>

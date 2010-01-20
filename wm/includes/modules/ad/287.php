@@ -1,10 +1,10 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://www.cronous.jp/beginner/" class="blank" rel='nofollow'><span>╠▓дщд╩дд┬ч╬жепеэе╬е╣ ╕°╝░е█б╝ере┌б╝е╕</span></a></li>
-<li><a href="http://wikiwiki.jp/cronousjp/" class="blank" rel='nofollow'><span>епеэе╬е╣ wiki</span></a></li>
-<li><a href="http://www.cronoustrade.com/" class="blank" rel='nofollow'><span>Cronous Trade епеэе╬е╣╝ш░·е╡еде╚</span></a></li>
-<li><a href="http://wiki.livedoor.jp/unitysilver/" class="blank" rel='nofollow'><span>епеэе╬е╣╛ы ╕°╬й┐▐╜ё┤█</span></a></li>
-<li><a href="http://www.geocities.jp/kawamiyu1013/" class="blank" rel='nofollow'><span>епеэе╬е╣ PT╣╢╬ме╡еде╚</span></a></li>
-<li><a href="http://www.hotgame.co.jp/" class="blank"><span>епеэе╬е╣ ╖╟╝и╚─</span></a></li>
-<li><a href="http://www.mmonavi.com/modules/game/108.html" class="blank"><span>епеэе╬е╣ е▓б╝ер╛Ё╩є</span></a></li>
+<li><a href="http://www.cronous.jp/beginner/" class="blank" rel='nofollow'><span>чЬауВЙуБкуБДхдзщЩ╕уВпуГнуГОуВ╣ хЕмх╝ПуГЫуГ╝уГауГЪуГ╝уВ╕</span></a></li>
+<li><a href="http://wikiwiki.jp/cronousjp/" class="blank" rel='nofollow'><span>уВпуГнуГОуВ╣ wiki</span></a></li>
+<li><a href="http://www.cronoustrade.com/" class="blank" rel='nofollow'><span>Cronous Trade уВпуГнуГОуВ╣хПЦх╝ХуВ╡уВдуГИ</span></a></li>
+<li><a href="http://wiki.livedoor.jp/unitysilver/" class="blank" rel='nofollow'><span>уВпуГнуГОуВ╣хЯО хЕмчлЛхЫ│цЫ╕щди</span></a></li>
+<li><a href="http://www.geocities.jp/kawamiyu1013/" class="blank" rel='nofollow'><span>уВпуГнуГОуВ╣ PTцФ╗чХеуВ╡уВдуГИ</span></a></li>
+<li><a href="http://www.hotgame.co.jp/" class="blank"><span>уВпуГнуГОуВ╣ цО▓чд║цЭ┐</span></a></li>
+<li><a href="http://www.mmonavi.com/modules/game/108.html" class="blank"><span>уВпуГнуГОуВ╣ уВ▓уГ╝уГацГЕха▒</span></a></li>
 </ul>

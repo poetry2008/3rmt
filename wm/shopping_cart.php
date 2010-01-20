@@ -153,7 +153,7 @@ function change_num(ob,targ, quan,a_quan)
       <td valign="top" id="contents">
         <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>
         <div class="comment">
-          <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_SHOPPING_CART, 'action=update_product'), 'post', 'id="cart_quantity"'); ?>
+  <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_SHOPPING_CART, 'action=update_product')); ?> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="rmt">
             <?php
   if ($cart->count_contents() > 0) {

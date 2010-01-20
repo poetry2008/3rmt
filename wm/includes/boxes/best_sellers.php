@@ -11,9 +11,9 @@
 */
 
   if (isset($current_category_id) && ($current_category_id > 0)) {
-    $best_sellers_query = tep_db_query("select distinct p.products_id,p.products_image,pd.products_name,pd.products_description_".ABBR_SITENAME." from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " . TABLE_CATEGORIES . " c where p.products_status = '1' and p.products_ordered > 0 and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and p.products_id = p2c.products_id and p2c.categories_id = c.categories_id and '" . $current_category_id . "' in (c.categories_id, c.parent_id) order by p.products_ordered desc, pd.products_name limit " . MAX_DISPLAY_BESTSELLERS);
+    $best_sellers_query = tep_db_query("select distinct p.products_id,p.products_image,pd.products_name,pd.products_description from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " . TABLE_CATEGORIES . " c where p.products_status = '1' and p.products_ordered > 0 and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and p.products_id = p2c.products_id and p2c.categories_id = c.categories_id and '" . $current_category_id . "' in (c.categories_id, c.parent_id) order by p.products_ordered desc, pd.products_name limit " . MAX_DISPLAY_BESTSELLERS);
   } else {
-    $best_sellers_query = tep_db_query("select distinct p.products_id,p.products_image,pd.products_name,pd.products_description_".ABBR_SITENAME." from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_ordered > 0 and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and p.products_id not in".tep_not_in_disabled_products()." order by p.products_ordered desc, pd.products_name limit " . MAX_DISPLAY_BESTSELLERS);
+    $best_sellers_query = tep_db_query("select distinct p.products_id,p.products_image,pd.products_name,pd.products_description from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_ordered > 0 and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and p.products_id not in".tep_not_in_disabled_products()." order by p.products_ordered desc, pd.products_name limit " . MAX_DISPLAY_BESTSELLERS);
   }
 
   if (tep_db_num_rows($best_sellers_query) >= MIN_DISPLAY_BESTSELLERS) {
@@ -21,7 +21,7 @@
 <!-- best_sellers //-->
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background: url(images/design/box/ranking_content_bg.gif) repeat-y; margin-bottom: 10px;" summary="best sellers box">
   <tr>
-      <td height="39"><img width="171" height="39" alt="RMT¥é¥ó¥­¥ó¥°" src="images/design/box/ranking.gif"><?php //echo tep_image(DIR_WS_IMAGES.'design/box/ranking.gif',BOX_HEADING_BESTSELLERS,'171','39'); ?></td>
+      <td height="39"><img width="171" height="39" alt="RMTãƒ©ãƒ³ã‚­ãƒ³ã‚°" src="images/design/box/ranking.gif"><?php //echo tep_image(DIR_WS_IMAGES.'design/box/ranking.gif',BOX_HEADING_BESTSELLERS,'171','39'); ?></td>
     </tr>
 <?php
   $info_box_contents = array();
@@ -41,7 +41,7 @@
             <table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" summary="ranking">
                 <tr>
                     <td width="21" class="bestseller_img">
-                        <img src="images/design/box/ranking_<?php echo $rows; ?>.gif" width="21" height="16" alt="<?php echo '¥é¥ó¥­¥ó¥°' . $rows . '°Ì'; ?>">
+                        <img src="images/design/box/ranking_<?php echo $rows; ?>.gif" width="21" height="16" alt="<?php echo 'ãƒ©ãƒ³ã‚­ãƒ³ã‚°' . $rows . 'ä½'; ?>">
                     </td>
                     <td class="bestseller_text">
                         <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']); ?>"><?php echo $best_sellers['products_name']; ?></a>
@@ -53,7 +53,7 @@
                    <td width="50" align="center" valign="middle"><a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']); ?>" class="ranking_money_ico"><?php echo tep_image2(DIR_WS_IMAGES.$best_sellers['products_image'],$best_sellers['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT); ?></a></td>
           <td valign="top" class="bestseller_description">
             <p>
-              <?php echo mb_substr(strip_tags($best_sellers['products_description_'.ABBR_SITENAME]),0,30); ?>...
+              <?php echo mb_substr(strip_tags($best_sellers['products_description']),0,30); ?>...
                       </p>
                     </td>
                 </tr>

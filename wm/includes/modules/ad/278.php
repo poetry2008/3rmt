@@ -1,9 +1,9 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://atlantica.nexon.co.jp/main.asp" class="blank" rel='nofollow'><span>еве╚ещеєе╞егел ╕°╝░е╡еде╚</span></a></li>
-<li><a href="http://www.mmo-station.com/mmo/atlantica/" class="blank" rel='nofollow'><span>еве╚ещеєе╞егел ╛Ё╩єбж╣╢╬ме╡еде╚</span></a></li>
-<li><a href="http://online24.jp/mmo/atlantica/" class="blank" rel='nofollow'><span>Atlantica ╣╢╬мWiki</span></a></li>
-<li><a href="http://atlantica.wikiwiki.jp/" class="blank" rel='nofollow'><span>еве╚ещеєе╞егел Wiki</span></a></li>
-<li><a href="http://jbbs.livedoor.jp/netgame/1666/" class="blank"><span>еве╚ещеєе╞егел д╖д┐дщд╨╖╟╝и╚─</span></a></li>
-<li><a href="http://a.hatena.ne.jp/atlantica/" class="blank"><span>ATLANTICA е╓еэе░евеєе╞е╩</span></a></li>
+<li><a href="http://atlantica.nexon.co.jp/main.asp" class="blank" rel='nofollow'><span>уВвуГИуГйуГ│уГЖуВгуВл хЕмх╝ПуВ╡уВдуГИ</span></a></li>
+<li><a href="http://www.mmo-station.com/mmo/atlantica/" class="blank" rel='nofollow'><span>уВвуГИуГйуГ│уГЖуВгуВл цГЕха▒уГ╗цФ╗чХеуВ╡уВдуГИ</span></a></li>
+<li><a href="http://online24.jp/mmo/atlantica/" class="blank" rel='nofollow'><span>Atlantica цФ╗чХеWiki</span></a></li>
+<li><a href="http://atlantica.wikiwiki.jp/" class="blank" rel='nofollow'><span>уВвуГИуГйуГ│уГЖуВгуВл Wiki</span></a></li>
+<li><a href="http://jbbs.livedoor.jp/netgame/1666/" class="blank"><span>уВвуГИуГйуГ│уГЖуВгуВл уБЧуБЯуВЙуБ░цО▓чд║цЭ┐</span></a></li>
+<li><a href="http://a.hatena.ne.jp/atlantica/" class="blank"><span>ATLANTICA уГЦуГнуВ░уВвуГ│уГЖуГК</span></a></li>
 </ul>

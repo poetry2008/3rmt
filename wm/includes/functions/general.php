@@ -60,7 +60,7 @@
   function tep_sanitize_string($string) {
     $string = ereg_replace(' +', ' ', trim($string));
 
-	return str_replace(array('<', '>'), array('°„', '°‰'), $string);
+	return str_replace(array('<', '>'), array('Ôºú', 'Ôºû'), $string);
     //return preg_replace("/[<>]/", '_', $string);
   }
 
@@ -286,6 +286,7 @@
   function tep_get_country_name($country_id) {
     $country_array = tep_get_countries($country_id);
 
+    if (!isset($country_array['countries_name'])) $country_array['countries_name'] = NULL; // del notice
     return $country_array['countries_name'];
   }
 
@@ -450,17 +451,23 @@
     $address_format = tep_db_fetch_array($address_format_query);
 
     $company = tep_output_string_protected($address['company']);
+    if (!isset($address['firstname'])) $address['firstname'] = NULL; // del notice
     $firstname = tep_output_string_protected($address['firstname']);
+    if (!isset($address['lastname'])) $address['lastname'] = NULL; // del notice
     $lastname = tep_output_string_protected($address['lastname']);
 	
 	//add
+    if (!isset($address['lastname_f'])) $address['lastname_f'] = NULL; // del notice
+    if (!isset($address['firstname_f'])) $address['firstname_f'] = NULL; // del notice
 	$name_f = tep_output_string_protected($address['lastname_f']) . tep_output_string_protected($address['firstname_f']);
 	
     $street = tep_output_string_protected($address['street_address']);
     $suburb = tep_output_string_protected($address['suburb']);
     $city = tep_output_string_protected($address['city']);
     $state = tep_output_string_protected($address['state']);
+    if (!isset($address['country_id'])) $address['country_id'] = NULL; // del notice
     $country_id = $address['country_id'];
+    if (!isset($address['zone_id'])) $address['zone_id'] = NULL; // del notice
     $zone_id = $address['zone_id'];
     $postcode = tep_output_string_protected($address['postcode']);
     $zip = $postcode;
@@ -1078,6 +1085,7 @@
     for ($i=0, $n=sizeof($modules_array); $i<$n; $i++) {
       $class = substr($modules_array[$i], 0, strrpos($modules_array[$i], '.'));
 
+      if (!isset($GLOBALS[$class])) $GLOBALS[$class] = NULL;//del notice
       if (is_object($GLOBALS[$class])) {
         if ($GLOBALS[$class]->enabled) {
           $count++;
@@ -1264,7 +1272,7 @@
   }
 
 ////
-// æ¶… ID§´§È•·°º•´°ºÃæ§Ú∏∆§”Ω–§π
+// ÂïÜÂìÅID„Åã„Çâ„É°„Éº„Ç´„ÉºÂêç„ÇíÂëº„Å≥Âá∫„Åô
   function ds_tep_get_count_manufactures($manufacturers_id) {
 	  $manufactures_query = tep_db_query("select count(*) as total from ".TABLE_PRODUCTS." where manufacturers_id = '".$manufacturers_id."'");
 	  $manufactures = tep_db_fetch_array($manufactures_query);
@@ -1273,28 +1281,26 @@
   }
    
 ////
-// æ¶… ID§´§È¿‚Ã¿ ∏§Ú∏∆§”Ω–§π
+// ÂïÜÂìÅID„Åã„ÇâË™¨ÊòéÊñá„ÇíÂëº„Å≥Âá∫„Åô
   function ds_tep_get_description($products_id) {
 	  global $languages_id;
-	  $description_query = tep_db_query("select products_description_".ABBR_SITENAME." from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$products_id."' and language_id = '".$languages_id."'");
+	  $description_query = tep_db_query("select products_description from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$products_id."' and language_id = '".$languages_id."'");
 	  $description = tep_db_fetch_array($description_query);
-	  // edit 2009.5.14 maker
-	  //$description_array = explode('|-#-|',$description['products_description']);
-	return strip_tags($description['products_description_'.ABBR_SITENAME]) ;
+	return strip_tags($description['products_description']) ;
   }
 
 ////
-// æ¶… ID§´§È•·°º•´°ºÃæ§Ú∏∆§”Ω–§π
+// ÂïÜÂìÅID„Åã„Çâ„É°„Éº„Ç´„ÉºÂêç„ÇíÂëº„Å≥Âá∫„Åô
   function ds_tep_get_manufactures($manufacturers_id, $return) {
 	
 	if($return == 1) {
-	  //•·°º•´°ºÃæ§Ú ÷§π
+	  //„É°„Éº„Ç´„ÉºÂêç„ÇíËøî„Åô
 	  $manufactures_query = tep_db_query("select manufacturers_name from ".TABLE_MANUFACTURERS." where manufacturers_id = '".$manufacturers_id."'");
 	  $manufactures = tep_db_fetch_array($manufactures_query);
 	  
 	  $mreturn = $manufactures['manufacturers_name'];
 	} elseif($return == 2) {
-	  //•·°º•´°º≤Ë¡¸
+	  //„É°„Éº„Ç´„ÉºÁîªÂÉè
 	  $manufactures_query = tep_db_query("select manufacturers_image from ".TABLE_MANUFACTURERS." where manufacturers_id = '".$manufacturers_id."'");
 	  $manufactures = tep_db_fetch_array($manufactures_query);
 	  
@@ -1306,7 +1312,7 @@
   
 ////
 ////
-// AjaxÕ— ∏ª˙•≥°º•… —¥π
+// AjaxÁî®ÊñáÂ≠ó„Ç≥„Éº„ÉâÂ§âÊèõ
   function ds_convert_Ajax($string) {
     return mb_convert_encoding($string,'UTF-8','EUC-JP');
   }
@@ -1315,18 +1321,18 @@
     if (strlen($rate) > 50 or strlen(trim($rate)) < 2) {
       return '';
     }
-    if (trim($rate) == '≈∑∂ı§Œ±©Ã”5∏ƒ°¶•§•Û•Ø•Í•π•Ø•Ì°º•Î5∏ƒ§Œ•ª•√•»'){
-    	return '(≈∑∂ı§Œ±©Ã”'.number_format(strval(5*$cnt)).'∏ƒ°¶•§•Û•Ø•Í•π•Ø•Ì°º•Î'.number_format(strval(5*$cnt)).'∏ƒ§Œ•ª•√•»)';
+    if (trim($rate) == 'Â§©Á©∫„ÅÆÁæΩÊØõ5ÂÄã„Éª„Ç§„É≥„ÇØ„É™„Çπ„ÇØ„É≠„Éº„É´5ÂÄã„ÅÆ„Çª„ÉÉ„Éà'){
+    	return '(Â§©Á©∫„ÅÆÁæΩÊØõ'.number_format(strval(5*$cnt)).'ÂÄã„Éª„Ç§„É≥„ÇØ„É™„Çπ„ÇØ„É≠„Éº„É´'.number_format(strval(5*$cnt)).'ÂÄã„ÅÆ„Çª„ÉÉ„Éà)';
     }
-    if (trim($rate) == '•Õ•√•»•´•’•ß1DAY•¡•±•√•»5ÀÁ•ª•√•»'){
-    	return '(•Õ•√•»•´•’•ß1DAY•¡•±•√•»'.number_format(strval(5*$cnt)).'ÀÁ•ª•√•»)';
+    if (trim($rate) == '„Éç„ÉÉ„Éà„Ç´„Éï„Çß1DAY„ÉÅ„Ç±„ÉÉ„Éà5Êûö„Çª„ÉÉ„Éà'){
+    	return '(„Éç„ÉÉ„Éà„Ç´„Éï„Çß1DAY„ÉÅ„Ç±„ÉÉ„Éà'.number_format(strval(5*$cnt)).'Êûö„Çª„ÉÉ„Éà)';
     }
     $rate = str_replace(array(','), array(''), $rate);
-    if (preg_match('/^(.*)≤Ø(.*)À¸(.*)$/', $rate, $out)) {
+    if (preg_match('/^(.*)ÂÑÑ(.*)‰∏á(.*)$/', $rate, $out)) {
       $rate = (($out[1] * 100000000) + ($out[2] * 10000)) . $out[3];
     }
-    $rate = str_replace(array('À¸','≤Ø'), array('0000','00000000'), $rate);
-    if (preg_match('/^(\d+)(.*)° \d+.*°À$/', $rate, $out)) {
+    $rate = str_replace(array('‰∏á','ÂÑÑ'), array('0000','00000000'), $rate);
+    if (preg_match('/^(\d+)(.*)Ôºà\d+.*Ôºâ$/', $rate, $out)) {
       //print_r($out);
       return '(' . number_format($out[1] * $cnt) . $out[2] . ')';
     }
@@ -1347,18 +1353,18 @@
     if (strlen($rate) > 50 or strlen(trim($rate)) < 2) {
       return '';
     }
-    if (trim($rate) == '≈∑∂ı§Œ±©Ã”5∏ƒ°¶•§•Û•Ø•Í•π•Ø•Ì°º•Î5∏ƒ§Œ•ª•√•»'){
-    	return '≈∑∂ı§Œ±©Ã”'.number_format(strval(5*$cnt)).'∏ƒ°¶•§•Û•Ø•Í•π•Ø•Ì°º•Î'.number_format(strval(5*$cnt)).'∏ƒ§Œ•ª•√•»';
+    if (trim($rate) == 'Â§©Á©∫„ÅÆÁæΩÊØõ5ÂÄã„Éª„Ç§„É≥„ÇØ„É™„Çπ„ÇØ„É≠„Éº„É´5ÂÄã„ÅÆ„Çª„ÉÉ„Éà'){
+    	return 'Â§©Á©∫„ÅÆÁæΩÊØõ'.number_format(strval(5*$cnt)).'ÂÄã„Éª„Ç§„É≥„ÇØ„É™„Çπ„ÇØ„É≠„Éº„É´'.number_format(strval(5*$cnt)).'ÂÄã„ÅÆ„Çª„ÉÉ„Éà';
     }
-    if (trim($rate) == '•Õ•√•»•´•’•ß1DAY•¡•±•√•»5ÀÁ•ª•√•»'){
-    	return '•Õ•√•»•´•’•ß1DAY•¡•±•√•»'.number_format(strval(5*$cnt)).'ÀÁ•ª•√•»';
+    if (trim($rate) == '„Éç„ÉÉ„Éà„Ç´„Éï„Çß1DAY„ÉÅ„Ç±„ÉÉ„Éà5Êûö„Çª„ÉÉ„Éà'){
+    	return '„Éç„ÉÉ„Éà„Ç´„Éï„Çß1DAY„ÉÅ„Ç±„ÉÉ„Éà'.number_format(strval(5*$cnt)).'Êûö„Çª„ÉÉ„Éà';
     }
     $rate = str_replace(array(','), array(''), $rate);
-    if (preg_match('/^(.*)≤Ø(.*)À¸(.*)$/', $rate, $out)) {
+    if (preg_match('/^(.*)ÂÑÑ(.*)‰∏á(.*)$/', $rate, $out)) {
       $rate = (($out[1] * 100000000) + ($out[2] * 10000)) . $out[3];
     }
-    $rate = str_replace(array('À¸','≤Ø'), array('0000','00000000'), $rate);
-    if (preg_match('/^(\d+)(.*)° \d+.*°À$/', $rate, $out)) {
+    $rate = str_replace(array('‰∏á','ÂÑÑ'), array('0000','00000000'), $rate);
+    if (preg_match('/^(\d+)(.*)Ôºà\d+.*Ôºâ$/', $rate, $out)) {
       //print_r($out);
       return number_format($out[1] * $cnt) . $out[2];
     }
@@ -1383,6 +1389,7 @@
         'text' => $torihiki
       );
     }
+    if (!isset($torihikihouhou)) $torihikihouhou = NULL;//del notice
     return tep_draw_pull_down_menu('torihikihouhou', $torihiki_list, $torihikihouhou);
   }
   
@@ -1465,8 +1472,7 @@
 	    $categories[] = $category;
 	  }
 	}
-	//print_r($categories);
-	while(1){
+	if($categories){
 	  foreach($categories as $key => $category){
 	  	$j = 0;
 	    if(in_array($category['parent_id'], $categories_ids)){
@@ -1557,16 +1563,16 @@
          global $cPath_array, $cPath, $seo_category, $seo_manufacturers;
          if (isset($cPath_array)) {
             if (isset($cPath) && tep_not_null($cPath)) {
-              $title       = $seo_category['categories_name'] . '§»∏¿§®§–RMT•Ô°º•Î•…•ﬁ•Õ°º°√' . (tep_not_null($seo_category['categories_meta_text']) ? $seo_category['categories_meta_text'] : C_TITLE); 
-              $keywords    = $seo_category['meta_keywords_' . ABBR_SITENAME];
-              $description = $seo_category['meta_description_' . ABBR_SITENAME];
+              $title       = $seo_category['categories_name'] . '„Å®Ë®Ä„Åà„Å∞RMT„ÉØ„Éº„É´„Éâ„Éû„Éç„ÉºÔΩú' . (tep_not_null($seo_category['categories_meta_text']) ? $seo_category['categories_meta_text'] : C_TITLE); 
+              $keywords    = $seo_category['meta_keywords'];
+              $description = $seo_category['meta_description'];
             }
          } elseif ($HTTP_GET_VARS['manufacturers_id']) {
             $title = $seo_manufacturers['manufacturers_name'] . '-' . C_TITLE;
             // meta_tags
             $metas       = tep_get_metas_by_manufacturers_id(intval($HTTP_GET_VARS['manufacturers_id']));
             $keywords    = "RMT, " . $metas['keywords'];
-            $description = "RMT¡ÌπÁ•µ•§•» RMT•Ô°º•Î•…•ﬁ•Õ°º§ÿ§Ë§¶§≥§Ω°£" . $metas['description'];
+            $description = "RMTÁ∑èÂêà„Çµ„Ç§„Éà RMT„ÉØ„Éº„É´„Éâ„Éû„Éç„Éº„Å∏„Çà„ÅÜ„Åì„Åù„ÄÇ" . $metas['description'];
          } else {
            // no change
          }
@@ -1588,15 +1594,15 @@
           $description = mb_substr(strip_tags($present['text']),0,65);
         break;
       case FILENAME_SPECIALS:
-        $title       = HEADING_TITLE . ' •Ô°º•Î•…•ﬁ•Õ°º';
-        $keywords    = "RMT,∑„∞¬,∞¬§§,∆√≤¡,»Œ«‰,«„ºË,MMORPG,•¢•§•∆•‡,•¢•´•¶•Û•»,•≤°º•‡ƒÃ≤ﬂ";
-        $description = "∫£∆¸§Œ§™«„§§∆¿•≤°º•‡∞ÏÕ˜°£RMT§Œ§≥§»§ §ÈRMT•Ô°º•Î•…•ﬁ•Õ°º§ÿ";
+        $title       = HEADING_TITLE . ' „ÉØ„Éº„É´„Éâ„Éû„Éç„Éº';
+        $keywords    = "RMT,ÊøÄÂÆâ,ÂÆâ„ÅÑ,Áâπ‰æ°,Ë≤©Â£≤,Ë≤∑Âèñ,MMORPG,„Ç¢„Ç§„ÉÜ„É†,„Ç¢„Ç´„Ç¶„É≥„Éà,„Ç≤„Éº„É†ÈÄöË≤®";
+        $description = "‰ªäÊó•„ÅÆ„ÅäË≤∑„ÅÑÂæó„Ç≤„Éº„É†‰∏ÄË¶ß„ÄÇRMT„ÅÆ„Åì„Å®„Å™„ÇâRMT„ÉØ„Éº„É´„Éâ„Éû„Éç„Éº„Å∏";
         break;
       case FILENAME_PREORDER:
         global $po_game_c, $product_info;
-        $title       = $po_game_c . '¿ÏÃÁ§Œ' . TITLE . ' - ' . $product_info['products_name'] . '§ÚÕΩÃÛ§π§Î';
-        $keywords    = $po_game_c . ',' . $product_info['products_name'] . ", RMT,ÕΩÃÛ,∆√≤¡,»Œ«‰";
-        $description = $po_game_c . '¿ÏÃÁ§Œ' . TITLE . '°£' . $product_info['products_name'] . '§ÚÕΩÃÛ§π§Î•⁄°º•∏§«§π°£';
+        $title       = $po_game_c . 'Â∞ÇÈñÄ„ÅÆ' . TITLE . ' - ' . $product_info['products_name'] . '„Çí‰∫àÁ¥Ñ„Åô„Çã';
+        $keywords    = $po_game_c . ',' . $product_info['products_name'] . ", RMT,‰∫àÁ¥Ñ,Áâπ‰æ°,Ë≤©Â£≤";
+        $description = $po_game_c . 'Â∞ÇÈñÄ„ÅÆ' . TITLE . '„ÄÇ' . $product_info['products_name'] . '„Çí‰∫àÁ¥Ñ„Åô„Çã„Éö„Éº„Ç∏„Åß„Åô„ÄÇ';
         break;
       case FILENAME_A_LATEST_NEWS:
       case FILENAME_LATEST_NEWS:
@@ -1611,15 +1617,15 @@
       case FILENAME_MANUFACTURERS:
         global $breadcrumb;
         $title        = $breadcrumb->trail_title(' &raquo; ');
-        $keywords     = "RMT,•π•Ø•¶•ß•¢°¶•®•À•√•Ø•π,NCJ,•¨•Û•€°º,NEXON,•≤°º•‡•™•Û,•≥°º•®°º,•ª•¨,»Œ«‰,«„ºË,•¢•§•∆•‡,•¢•´•¶•Û•»";
-        $description  = "•≤°º•‡•·°º•´°º§Œ∞ÏÕ˜§«§π°£•π•Ø•¶•ß•¢°¶•®•À•√•Ø•π°¢NCJ°¢•¨•Û•€°º§ §…°£RMT§Œ§≥§»§ §ÈRMT•Ô°º•Î•…•ﬁ•Õ°º§ÿ";
+        $keywords     = "RMT,„Çπ„ÇØ„Ç¶„Çß„Ç¢„Éª„Ç®„Éã„ÉÉ„ÇØ„Çπ,NCJ,„Ç¨„É≥„Éõ„Éº,NEXON,„Ç≤„Éº„É†„Ç™„É≥,„Ç≥„Éº„Ç®„Éº,„Çª„Ç¨,Ë≤©Â£≤,Ë≤∑Âèñ,„Ç¢„Ç§„ÉÜ„É†,„Ç¢„Ç´„Ç¶„É≥„Éà";
+        $description  = "„Ç≤„Éº„É†„É°„Éº„Ç´„Éº„ÅÆ‰∏ÄË¶ß„Åß„Åô„ÄÇ„Çπ„ÇØ„Ç¶„Çß„Ç¢„Éª„Ç®„Éã„ÉÉ„ÇØ„Çπ„ÄÅNCJ„ÄÅ„Ç¨„É≥„Éõ„Éº„Å™„Å©„ÄÇRMT„ÅÆ„Åì„Å®„Å™„ÇâRMT„ÉØ„Éº„É´„Éâ„Éû„Éç„Éº„Å∏";
         break;
       case FILENAME_REORDER:
       case FILENAME_REORDER2:
         global $breadcrumb;
-        $title       = "RMT &raquo; ∫∆«€√£•’•©°º•‡°√" . TITLE;
-        $keywords    = "RMT,∫∆«€√£," . TITLE;
-        $description = "∫∆«€√£∞ÕÕÍ°£ºË∞˙∆¸ª˛§‰§™∆œ§±¿Ë§Ú —ππ§π§Î•⁄°º•∏§«§π°£";
+        $title       = "RMT &raquo; ÂÜçÈÖçÈÅî„Éï„Ç©„Éº„É†ÔΩú" . TITLE;
+        $keywords    = "RMT,ÂÜçÈÖçÈÅî," . TITLE;
+        $description = "ÂÜçÈÖçÈÅî‰æùÈ†º„ÄÇÂèñÂºïÊó•ÊôÇ„ÇÑ„ÅäÂ±ä„ÅëÂÖà„ÇíÂ§âÊõ¥„Åô„Çã„Éö„Éº„Ç∏„Åß„Åô„ÄÇ";
         break;
       case FILENAME_PRESENT_SUCCESS:
       case FILENAME_SHOPPING_CART:
@@ -1638,58 +1644,9 @@
       case FILENAME_PRODUCT_REVIEWS_WRITE:
       case FILENAME_BROWSER_IE6X:
       case FILENAME_CONTACT_US:
-      case FILENAME_AFFILIATE:
-      case FILENAME_AFFILIATE_ACCOUNT:
-      case FILENAME_AFFILIATE_API:
-      case FILENAME_AFFILIATE_BANNERS:
-      case FILENAME_AFFILIATE_BANNERS_BANNERS:
-      case FILENAME_AFFILIATE_BANNERS_BUILD:
-      case FILENAME_AFFILIATE_BANNERS_PRODUCT:
-      case FILENAME_AFFILIATE_BANNERS_TEXT:
-      case FILENAME_AFFILIATE_CONTACT:
-      case FILENAME_AFFILIATE_CLICKS:
-      case FILENAME_AFFILIATE_DETAILS:
-      case FILENAME_AFFILIATE_DETAILS_OK:
-      case FILENAME_AFFILIATE_FAQ:
-      case FILENAME_AFFILIATE_HELP_1:
-      case FILENAME_AFFILIATE_HELP_2:
-      case FILENAME_AFFILIATE_HELP_3:
-      case FILENAME_AFFILIATE_HELP_4:
-      case FILENAME_AFFILIATE_HELP_5:
-      case FILENAME_AFFILIATE_HELP_6:
-      case FILENAME_AFFILIATE_HELP_7:
-      case FILENAME_AFFILIATE_HELP_8:
-      case FILENAME_AFFILIATE_HELP_9:
-      case FILENAME_AFFILIATE_HELP_10:
-      case FILENAME_AFFILIATE_HELP_11:
-      case FILENAME_AFFILIATE_HELP_12:
-      case FILENAME_AFFILIATE_HELP_13:
-      case FILENAME_AFFILIATE_HELP_14:
-      case FILENAME_AFFILIATE_HELP_15:
-      case FILENAME_AFFILIATE_HELP_16:
-      case FILENAME_AFFILIATE_HELP_17:
-      case FILENAME_AFFILIATE_HELP_18:
-      case FILENAME_AFFILIATE_HELP_19:
-      case FILENAME_AFFILIATE_HELP_20:
-      case FILENAME_AFFILIATE_HELP_21:
-      case FILENAME_AFFILIATE_HELP_22:
-      case FILENAME_AFFILIATE_INFO:
-      case FILENAME_AFFILIATE_LOGOUT:
-      case FILENAME_AFFILIATE_NEWS:
-      case FILENAME_AFFILIATE_NEWSLETTER:
-      case FILENAME_AFFILIATE_PAYMENT:
-      case FILENAME_AFFILIATE_PASSWORD:
-      case FILENAME_AFFILIATE_PASSWORD_FORGOTTEN:
-      case FILENAME_AFFILIATE_REPORTS:
-      case FILENAME_AFFILIATE_SALES:
-      case FILENAME_AFFILIATE_SIGNUP:
-      case FILENAME_AFFILIATE_SIGNUP_OK:
-      case FILENAME_AFFILIATE_SUMMARY:
-      case FILENAME_AFFILIATE_SHOW_BANNER:
-      case FILENAME_AFFILIATE_TEMPLATE:
-      case FILENAME_AFFILIATE_TERMS:
-      case FILENAME_AFFILIATE_TERMS_POPUP:
-      case FILENAME_AFFILIATE_VALIDPRODUCTS:
+      case FILENAME_SEND_MAIL:
+      case FILENAME_EMAIL_TROUBLE:
+      case FILENAME_TAGS:
         global $breadcrumb;
         $title = $breadcrumb->trail_title(' &raquo; ');
         break;
@@ -1742,7 +1699,7 @@
     if (defined($copyright_const_name) && strlen(tep_get_value_by_const_name($copyright_const_name))) {
       $copyright = tep_get_value_by_const_name($copyright_const_name);
     }
-
+    //echo $_SERVER['SCRIPT_NAME'];
     switch (str_replace('/', '', $_SERVER['SCRIPT_NAME'])) {
       case FILENAME_CATEGORY:
       case FILENAME_MANUFACTURER:
@@ -1766,9 +1723,9 @@
              // MAX_DISPLAY_SEARCH_RESULTS
              //$page    = isset($HTTP_GET_VARS['page']) && intval($HTTP_GET_VARS['page']) ? intval($HTTP_GET_VARS['page']) : 1 ;
              //$search  = array_merge($search,  array('#SEO_PAGE#'));
-             //$replace = array_merge($replace, array($page . '•⁄°º•∏Ã‹'));
+             //$replace = array_merge($replace, array($page . '„Éö„Éº„Ç∏ÁõÆ'));
              $search  = array_merge($search, array('#CATEGORIES_NAME#','#SEO_NAME#','#SEO_DESCRIPTION#','#CATEGORIES_META_TEXT#','#CATEGORIES_HEADER_TEXT#','#CATEGORIES_FOOTER_TEXT#','#TEXT_INFORMATION#','#META_KEYWORDS#','#META_DESCRIPTION#','#CATEGORIES_ID#',));
-             $replace = array_merge($replace, array($seo_category['categories_name'],$seo_category['seo_name'],$seo_category['seo_description_' . ABBR_SITENAME],$seo_category['categories_meta_text'],$seo_category['categories_header_text_' . ABBR_SITENAME],$seo_category['categories_footer_text_' . ABBR_SITENAME],$seo_category['text_information_' . ABBR_SITENAME],$seo_category['meta_keywords_' . ABBR_SITENAME],$seo_category['meta_description_' . ABBR_SITENAME],$seo_category['categories_id'],));
+             $replace = array_merge($replace, array($seo_category['categories_name'],$seo_category['seo_name'],$seo_category['seo_description'],$seo_category['categories_meta_text'],$seo_category['categories_header_text'],$seo_category['categories_footer_text'],$seo_category['text_information'],$seo_category['meta_keywords'],$seo_category['meta_description'],$seo_category['categories_id'],));
            }
         } elseif ($HTTP_GET_VARS['manufacturers_id']) {
           if (defined('MODULE_METASEO_MANUFACTURER_TITLE') && strlen(MODULE_METASEO_MANUFACTURER_TITLE)) {
@@ -1789,7 +1746,26 @@
           $page    = isset($HTTP_GET_VARS['page']) && intval($HTTP_GET_VARS['page']) ? intval($HTTP_GET_VARS['page']) : 1 ;
           
           $search  = array_merge($search, array('#SEO_PAGE#', '#KEYWORDS#', '#DESCRIPTION#',));
-          $replace = array_merge($replace, array($page . '•⁄°º•∏Ã‹', $metas['keywords'], $metas['description'],));
+          $replace = array_merge($replace, array($page . '„Éö„Éº„Ç∏ÁõÆ', $metas['keywords'], $metas['description'],));
+        } else if ((int)$HTTP_GET_VARS['tags_id']) {
+          if (defined('MODULE_METASEO_A_TAG_TITLE') && strlen(tep_get_value_by_const_name('MODULE_METASEO_A_TAG_TITLE'))) {
+            $title       = tep_get_value_by_const_name('MODULE_METASEO_A_TAG_TITLE');
+          }
+          if (defined('MODULE_METASEO_A_TAG_KEYWORDS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_A_TAG_KEYWORDS'))) {
+            $keywords    = tep_get_value_by_const_name('MODULE_METASEO_A_TAG_KEYWORDS');
+          }
+          if (defined('MODULE_METASEO_A_TAG_DESCRIPTION') && strlen(tep_get_value_by_const_name('MODULE_METASEO_A_TAG_DESCRIPTION'))) {
+            $description = tep_get_value_by_const_name('MODULE_METASEO_A_TAG_DESCRIPTION');
+          }
+          if (defined('MODULE_METASEO_A_TAG_ROBOTS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_A_TAG_ROBOTS'))) {
+            $robots      = tep_get_value_by_const_name('MODULE_METASEO_A_TAG_ROBOTS');
+          }
+          if (defined('MODULE_METASEO_A_TAG_COPYRIGHT') && strlen(tep_get_value_by_const_name('MODULE_METASEO_A_TAG_COPYRIGHT'))) {
+            $copyright   = tep_get_value_by_const_name('MODULE_METASEO_A_TAG_COPYRIGHT');
+          }
+          $search  = array_merge($search, array('#TITLE#'));
+          if (!isset($latest_news['headline'])) $latest_news['headline'] = NULL; //del notice
+          $replace = array_merge($replace, array($latest_news['headline']));
         }
         break;
       case FILENAME_PRODUCT_INFO:
@@ -1838,44 +1814,66 @@
           }
           $page    = isset($HTTP_GET_VARS['page']) && intval($HTTP_GET_VARS['page']) ? intval($HTTP_GET_VARS['page']) : 1 ;
           $search  = array_merge($search,  array('#SEO_PAGE#'));
-          $replace = array_merge($replace, array($page . '•⁄°º•∏Ã‹'));
+          $replace = array_merge($replace, array($page . '„Éö„Éº„Ç∏ÁõÆ'));
         }
+        break;
+      case FILENAME_TAGS:
+          /*
+          if (defined('MODULE_METASEO_TAGS_TITLE') && strlen(tep_get_value_by_const_name('MODULE_METASEO_TAGS_TITLE'))) {
+            $title       = tep_get_value_by_const_name('MODULE_METASEO_TAGS_TITLE');
+          }
+          if (defined('MODULE_METASEO_TAGS_KEYWORDS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_TAGS_KEYWORDS'))) {
+            $keywords    = tep_get_value_by_const_name('MODULE_METASEO_TAGS_KEYWORDS');
+          }
+          if (defined('MODULE_METASEO_TAGS_DESCRIPTION') && strlen(tep_get_value_by_const_name('MODULE_METASEO_TAGS_DESCRIPTION'))) {
+            $description = tep_get_value_by_const_name('MODULE_METASEO_TAGS_DESCRIPTION');
+          }
+          if (defined('MODULE_METASEO_TAGS_ROBOTS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_TAGS_ROBOTS'))) {
+            $robots      = tep_get_value_by_const_name('MODULE_METASEO_TAGS_ROBOTS');
+          }
+          if (defined('MODULE_METASEO_TAGS_COPYRIGHT') && strlen(tep_get_value_by_const_name('MODULE_METASEO_TAGS_COPYRIGHT'))) {
+            $copyright   = tep_get_value_by_const_name('MODULE_METASEO_TAGS_COPYRIGHT');
+          }*/
+          $page    = isset($HTTP_GET_VARS['page']) && intval($HTTP_GET_VARS['page']) ? intval($HTTP_GET_VARS['page']) : 1 ;
+          $search  = array_merge($search,  array('#SEO_PAGE#'));
+          $replace = array_merge($replace, array($page . '„Éö„Éº„Ç∏ÁõÆ'));
+        
         break;
       case FILENAME_MANUFACTURERS:
         // MAX_DISPLAY_SEARCH_RESULTS
         $page    = isset($HTTP_GET_VARS['page']) && intval($HTTP_GET_VARS['page']) ? intval($HTTP_GET_VARS['page']) : 1 ;
         $search  = array_merge($search,  array('#SEO_PAGE#'));
-        $replace = array_merge($replace, array($page . '•⁄°º•∏Ã‹'));
+        $replace = array_merge($replace, array($page . '„Éö„Éº„Ç∏ÁõÆ'));
         break;
       case FILENAME_PRESENT:
         // MAX_DISPLAY_SEARCH_RESULTS
         $page    = isset($HTTP_GET_VARS['page']) && intval($HTTP_GET_VARS['page']) ? intval($HTTP_GET_VARS['page']) : 1 ;
         $search  = array_merge($search,  array('#SEO_PAGE#'));
-        $replace = array_merge($replace, array($page . '•⁄°º•∏Ã‹'));
+        $replace = array_merge($replace, array($page . '„Éö„Éº„Ç∏ÁõÆ'));
         break;
       case FILENAME_PRODUCT_NEW:
         // MAX_DISPLAY_PRODUCTS_NEW
         $page    = isset($HTTP_GET_VARS['page']) && intval($HTTP_GET_VARS['page']) ? intval($HTTP_GET_VARS['page']) : 1 ;
         $search  = array_merge($search,  array('#SEO_PAGE#'));
-        $replace = array_merge($replace, array($page . '•⁄°º•∏Ã‹'));
+        $replace = array_merge($replace, array($page . '„Éö„Éº„Ç∏ÁõÆ'));
         break;
       case FILENAME_SPECIALS:
         // MAX_DISPLAY_SPECIAL_PRODUCTS
         $page    = isset($HTTP_GET_VARS['page']) && intval($HTTP_GET_VARS['page']) ? intval($HTTP_GET_VARS['page']) : 1 ;
         $search  = array_merge($search,  array('#SEO_PAGE#'));
-        $replace = array_merge($replace, array($page . '•⁄°º•∏Ã‹'));
+        $replace = array_merge($replace, array($page . '„Éö„Éº„Ç∏ÁõÆ'));
         break;
       case FILENAME_ADVANCED_SEARCH_RESULT:
         // MAX_DISPLAY_SEARCH_RESULTS
         $page    = isset($HTTP_GET_VARS['page']) && intval($HTTP_GET_VARS['page']) ? intval($HTTP_GET_VARS['page']) : 1 ;
         $search  = array_merge($search,  array('#SEO_PAGE#'));
-        $replace = array_merge($replace, array($page . '•⁄°º•∏Ã‹'));
+        $replace = array_merge($replace, array($page . '„Éö„Éº„Ç∏ÁõÆ'));
         break;
       case FILENAME_REVIEWS:
         // MAX_DISPLAY_NEW_REVIEWS
         $page    = isset($HTTP_GET_VARS['page']) && intval($HTTP_GET_VARS['page']) ? intval($HTTP_GET_VARS['page']) : 1 ;
         $search  = array_merge($search,  array('#SEO_PAGE#'));
-        $replace = array_merge($replace, array($page . '•⁄°º•∏Ã‹'));
+        $replace = array_merge($replace, array($page . '„Éö„Éº„Ç∏ÁõÆ'));
         break;
     }
     
@@ -1981,7 +1979,7 @@
         $metaKeywords = mb_substr($metaKeywords, 0, 90);
         
         //Step 6. Construct the description
-        //$metaDescription = "RMT¡ÌπÁ•µ•§•» RMT•Ô°º•Î•…•ﬁ•Õ°º§ÿ§Ë§¶§≥§Ω°£";
+        //$metaDescription = "RMTÁ∑èÂêà„Çµ„Ç§„Éà RMT„ÉØ„Éº„É´„Éâ„Éû„Éç„Éº„Å∏„Çà„ÅÜ„Åì„Åù„ÄÇ";
         $metaDescription = "";
         $i = 0;
         foreach($metaManufacturersNames as $metaManufacturersName)

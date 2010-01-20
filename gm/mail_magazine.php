@@ -19,7 +19,7 @@
   //-----------------
   switch($HTTP_GET_VARS['action']) {
 	case 'regist':
-	  //¿·µ¬ÅĞÏ¿
+	  //æ–°è¦ç™»éŒ²
 	  $mag_mail = tep_db_prepare_input(tep_an_zen_to_han($HTTP_POST_VARS['email']));
 	  $mag_name = tep_db_prepare_input($HTTP_POST_VARS['name']);
 	  
@@ -38,14 +38,14 @@
 	  $regist_query = tep_db_query("select count(*) as cnt from " . TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."'");
 	  $regist_result = tep_db_fetch_array($regist_query);
 	  if($regist_result['cnt'] == '0') {
-	    //¿·µ¬ÅĞÏ¿
+	    //æ–°è¦ç™»éŒ²
 		tep_db_query("insert into " . TABLE_MAIL_MAGAZINE . "(mag_id, mag_email, mag_name) values ('', '".$mag_mail."', '".$mag_name."')");
 		
 		tep_session_unregister('mag_mail');
 		tep_session_unregister('mag_name');
 	    tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'info_message='.urlencode(TEXT_MAGAZINE_SUCCESS), 'SSL'));
 	  } else {
-	    //ÅĞÏ¿ºÑ¤ß
+	    //ç™»éŒ²æ¸ˆã¿
 		
 		tep_session_unregister('mag_mail');
 		tep_session_unregister('mag_name');
@@ -54,7 +54,7 @@
 	  break;
 	  
     case 'stop':
-	  //ÅĞÏ¿ºï½ü¡ÊÂà²ñ¡Ë
+	  //ç™»éŒ²å‰Šé™¤ï¼ˆé€€ä¼šï¼‰
 	  $mag_mail = tep_db_prepare_input(tep_an_zen_to_han($HTTP_POST_VARS['email']));
 	  if (!tep_validate_email($mag_mail)) {
 		tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_EMAIL_ERROR), 'SSL'));
@@ -63,13 +63,13 @@
 	  $regist_query = tep_db_query("select count(*) as cnt from " . TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."'");
 	  $regist_result = tep_db_fetch_array($regist_query);
 	  if($regist_result['cnt'] == '0') {
-	    //ÅĞÏ¿¾ğÊó¤Ê¤·¡§¥¨¥é¡¼
+	    //ç™»éŒ²æƒ…å ±ãªã—ï¼šã‚¨ãƒ©ãƒ¼
 		
 		tep_session_unregister('mag_mail');
 		tep_session_unregister('mag_name');
 	    tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_STOP_ERROR), 'SSL'));
 	  } else {
-	    //ºï½ü¡ÊÂà²ñ¡Ë½èÍı
+	    //å‰Šé™¤ï¼ˆé€€ä¼šï¼‰å‡¦ç†
 		TEP_DB_QUery("delete from " . TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."'");
 		
 		tep_session_unregister('mag_mail');

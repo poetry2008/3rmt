@@ -193,13 +193,13 @@
   }
   /**************/
   for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
-    $_product_info_query = tep_db_query("select p.products_id, pd.products_name, pd.products_attention_1,pd.products_attention_2,pd.products_attention_3,pd.products_attention_4,pd.products_attention_5,pd.products_description_".ABBR_SITENAME.", p.products_model, p.products_quantity, p.products_image,p.products_image2,p.products_image3, pd.products_url, p.products_price, p.products_tax_class_id, p.products_date_added, p.products_date_available, p.manufacturers_id, p.products_bflag, p.products_cflag, p.products_small_sum from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" . $order->products[$i]['id'] . "' and pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "'");
+    $_product_info_query = tep_db_query("select p.products_id, pd.products_name, pd.products_attention_1,pd.products_attention_2,pd.products_attention_3,pd.products_attention_4,pd.products_attention_5,pd.products_description, p.products_model, p.products_quantity, p.products_image,p.products_image2,p.products_image3, pd.products_url, p.products_price, p.products_tax_class_id, p.products_date_added, p.products_date_available, p.manufacturers_id, p.products_bflag, p.products_cflag, p.products_small_sum from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" . $order->products[$i]['id'] . "' and pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "'");
     tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_viewed = products_viewed+1 where products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and language_id = '" . $languages_id . "'");
     $product_info = tep_db_fetch_array($_product_info_query);
     $data1 = explode("//", $product_info['products_attention_1']);
     
     echo '          <tr>' . "\n" .
-         '            <td class="main" align="center" valign="top" width="150">' . $order->products[$i]['qty'] . '&nbsp;¸Ä' . (!empty($data1[0]) && strlen($data1[1])<=30 && tep_get_full_count_in_order($order->products[$i]['qty'], $data1[1]) ? '<br><span style="font-size:10px">'. tep_get_full_count_in_order($order->products[$i]['qty'], $data1[1]) .'</span>': '') . '</td>' . "\n" .
+         '            <td class="main" align="center" valign="top" width="150">' . $order->products[$i]['qty'] . '&nbsp;å€‹' . (!empty($data1[0]) && strlen($data1[1])<=30 && tep_get_full_count_in_order($order->products[$i]['qty'], $data1[1]) ? '<br><span style="font-size:10px">'. tep_get_full_count_in_order($order->products[$i]['qty'], $data1[1]) .'</span>': '') . '</td>' . "\n" .
          '            <td class="main" valign="top">' . $order->products[$i]['name'];
 
     if (STOCK_CHECK == 'true') {
@@ -239,7 +239,7 @@
   function str_string($string='') {
     if(ereg("-", $string)) {
 	  $string_array = explode("-", $string);
-	  return $string_array[0] . '&nbsp;Ç¯&nbsp;' . $string_array[1] . '&nbsp;·î&nbsp;' . $string_array[2] . '&nbsp;Æü';
+	  return $string_array[0] . '&nbsp;å¹´&nbsp;' . $string_array[1] . '&nbsp;æœˆ&nbsp;' . $string_array[2] . '&nbsp;æ—¥';
 	}
   }
 ?>				  
@@ -265,9 +265,9 @@
 			<td class="main"><?php echo TEXT_TORIHIKIKIBOUJIKAN; ?></td>
 		    <td class="main">
 			<?php echo $hour; ?>
-			&nbsp;»þ&nbsp;
+			&nbsp;æ™‚&nbsp;
 			<?php echo $min; ?>
-			&nbsp;Ê¬&nbsp;
+			&nbsp;åˆ†&nbsp;
 			</td>
 		  </tr>
   		</table>
@@ -369,10 +369,10 @@
     echo $order_total_modules->output();
   }
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
-	// ¤³¤³¤«¤é¥«¥¹¥¿¥Þ¡¼¥ì¥Ù¥ë¤Ë±þ¤¸¤¿¥Ý¥¤¥ó¥È´Ô¸µÎ¨»»½Ð============================================================
+	// ã“ã“ã‹ã‚‰ã‚«ã‚¹ã‚¿ãƒžãƒ¼ãƒ¬ãƒ™ãƒ«ã«å¿œã˜ãŸãƒã‚¤ãƒ³ãƒˆé‚„å…ƒçŽ‡ç®—å‡º============================================================
 	// 2005.11.17 K.Kaneko
 	if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
-	  //ÀßÄê¤·¤¿´ü´ÖÆâ¤ÎÃíÊ¸¹ç·×¶â³Û¤ò»»½Ð------------
+	  //è¨­å®šã—ãŸæœŸé–“å†…ã®æ³¨æ–‡åˆè¨ˆé‡‘é¡ã‚’ç®—å‡º------------
 	  $ptoday = date("Y-m-d H:i:s", time());
 	  $pstday_array = getdate();
 	  $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
@@ -392,7 +392,7 @@
 	  }
 	  //----------------------------------------------
 	  
-	  //´Ô¸µÎ¨¤ò·×»»----------------------------------
+	  //é‚„å…ƒçŽ‡ã‚’è¨ˆç®—----------------------------------
 	  if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
 	    $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
 		$back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
@@ -415,7 +415,7 @@
 	} else {
 	  $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
 	}
-	// ¤³¤³¤Þ¤Ç¥«¥¹¥¿¥Þ¡¼¥ì¥Ù¥ë¤Ë±þ¤¸¤¿¥Ý¥¤¥ó¥È´Ô¸µÎ¨»»½Ð============================================================
+	// ã“ã“ã¾ã§ã‚«ã‚¹ã‚¿ãƒžãƒ¼ãƒ¬ãƒ™ãƒ«ã«å¿œã˜ãŸãƒã‚¤ãƒ³ãƒˆé‚„å…ƒçŽ‡ç®—å‡º============================================================
 	//$get_point = ($order->info['subtotal'] - (int)$point) * MODULE_ORDER_TOTAL_POINT_FEE;
 	$get_point = ($order->info['subtotal'] - (int)$point) * $point_rate;
 	
@@ -453,6 +453,7 @@
                       <td class="main" colspan="4"><?php echo $confirmation['title']; ?></td> 
                     </tr> 
                     <?php
+                    if (!isset($confirmation['fields'])) $confirmation['fields'] = NULL;
       for ($i=0, $n=sizeof($confirmation['fields']); $i<$n; $i++) {
 ?> 
                     <tr> 

@@ -1,10 +1,10 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://www.gamecity.ne.jp/sol/" class="blank" rel='nofollow'><span>╗░╘в╗╓ Online ╕°╝░е╡еде╚</span></a></li>
-<li><a href="http://www.spherelinks.com/kiwami/" class="blank" rel='nofollow'><span>╗░╣ё╗╓екеєещедеє ╣╢╬ме╟б╝е┐е┘б╝е╣</span></a></li>
-<li><a href="http://sankokusi.wikiwiki.jp/" class="blank" rel='nofollow'><span>╗░╣ё╗╓екеєещедеє Wiki</span></a></li>
-<li><a href="http://www.mmo-station.com/mmo/Sangokushi/" class="blank" rel='nofollow'><span>╗░╣ё╗╓екеєещедеє ┴э╣ч╛Ё╩єбж╣╢╬ме╡еде╚</span></a></li>
-<li><a href="http://sangokusiol.uunyan.com/" class="blank" rel='nofollow'><span>╗░╣ё╗╓екеєещедеє╣╢╬м</span></a></li>
-<li><a href="http://www.mmonavi.com/modules/game/223.html" class="blank"><span>╗░╣ё╗╓екеєещедеє е▓б╝ер╛Ё╩є</span></a></li>
-<li><a href="http://www.hotgame.co.jp/" class="blank"><span>╗░╣ё╗╓ енеуещепе┐б╝</span></a></li>
+<li><a href="http://www.gamecity.ne.jp/sol/" class="blank" rel='nofollow'><span>ф╕ЙхЬЛх┐Ч Online хЕмх╝ПуВ╡уВдуГИ</span></a></li>
+<li><a href="http://www.spherelinks.com/kiwami/" class="blank" rel='nofollow'><span>ф╕ЙхЫ╜х┐ЧуВкуГ│уГйуВдуГ│ цФ╗чХеуГЗуГ╝уВ┐уГЩуГ╝уВ╣</span></a></li>
+<li><a href="http://sankokusi.wikiwiki.jp/" class="blank" rel='nofollow'><span>ф╕ЙхЫ╜х┐ЧуВкуГ│уГйуВдуГ│ Wiki</span></a></li>
+<li><a href="http://www.mmo-station.com/mmo/Sangokushi/" class="blank" rel='nofollow'><span>ф╕ЙхЫ╜х┐ЧуВкуГ│уГйуВдуГ│ ч╖ПхРИцГЕха▒уГ╗цФ╗чХеуВ╡уВдуГИ</span></a></li>
+<li><a href="http://sangokusiol.uunyan.com/" class="blank" rel='nofollow'><span>ф╕ЙхЫ╜х┐ЧуВкуГ│уГйуВдуГ│цФ╗чХе</span></a></li>
+<li><a href="http://www.mmonavi.com/modules/game/223.html" class="blank"><span>ф╕ЙхЫ╜х┐ЧуВкуГ│уГйуВдуГ│ уВ▓уГ╝уГацГЕха▒</span></a></li>
+<li><a href="http://www.hotgame.co.jp/" class="blank"><span>ф╕ЙхЫ╜х┐Ч уВнуГгуГйуВпуВ┐уГ╝</span></a></li>
 </ul>

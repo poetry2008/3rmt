@@ -29,10 +29,12 @@
 			</td>
 			<!-- body_text //-->
 			<td valign="top" id="contents">
-				<h1 class="pageHeading"><?php echo HEADING_TITLE ; ?>RMT•∏•„•√•Ø•›•√•»§Œ∆√≤¡æ¶… </h1>
+				<h1 class="pageHeading"><?php echo HEADING_TITLE ; ?>RMT„Ç∏„É£„ÉÉ„ÇØ„Éù„ÉÉ„Éà„ÅÆÁâπ‰æ°ÂïÜÂìÅ</h1>
 				<table border="0" width="100%" cellspacing="0" cellpadding="0">
 <?php
-	$specials_query_raw = "select p.products_id, pd.products_name, p.products_price, p.products_tax_class_id, p.products_image, s.specials_new_products_price from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_SPECIALS . " s where p.products_id not in".tep_not_in_disabled_products()." and p.products_status = '1' and s.products_id = p.products_id and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and s.status = '1' order by s.specials_date_added DESC";
+	$specials_query_raw = "select p.products_id, pd.products_name, p.products_price, p.products_tax_class_id, p.products_image, s.specials_new_products_price 
+    from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_SPECIALS . " s 
+    where pd.site_id = '" . SITE_ID . "' and p.products_id not in".tep_not_in_disabled_products()." and p.products_status = '1' and s.products_id = p.products_id and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and s.status = '1' order by s.specials_date_added DESC";
 	$specials_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SPECIAL_PRODUCTS, $specials_query_raw, $specials_numrows);
 	$specials_query = tep_db_query($specials_query_raw);
 	
@@ -62,7 +64,7 @@
 		$row++;
 		echo '<td align="center" width="33%" class="smallText"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $specials['products_id']) . '">' . tep_image(DIR_WS_IMAGES . $specials['products_image'], $specials['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"') . '<br>' . $specials['products_name'] . '<br>';
 		
-		echo '<img src="images/design/button/button_order.gif" width="81" height="24" alt="√Ì ∏§π§Î"></a><br>';
+		echo '<img src="images/design/button/button_order.gif" width="81" height="24" alt="Ê≥®Êñá„Åô„Çã"></a><br>';
 		
 		echo '<s>' . $currencies->display_price($specials['products_price'], tep_get_tax_rate($specials['products_tax_class_id'])) . '</s><br><span class="productSpecialPrice">' . $currencies->display_price($specials['specials_new_products_price'], tep_get_tax_rate($specials['products_tax_class_id'])) . '</span></td>' . "\n";
 		if ((($row / 3) == floor($row / 3))) {

@@ -9,24 +9,24 @@
 */
 
 	// Product_listing.php Add
-	define('LISTING_DISPLAY_OPTION','É½¼¨·Á¼°:');
-	define('LISTING_SORT_BY','ÊÂ¤ÓÂØ¤¨:');
-	define('LISTING_PRICE_LOW','²Á³Ê¤¬°Â¤¤');
-	define('LISTING_PRICE_HIGHT','²Á³Ê¤¬¹â¤¤');
-	define('LISTING_TITLE_A_TO_Z','¥¿¥¤¥È¥ë A - Z');
-	define('LISTING_TITLE_Z_TO_A','¥¿¥¤¥È¥ë Z - A');
+	define('LISTING_DISPLAY_OPTION','è¡¨ç¤ºå½¢å¼:');
+	define('LISTING_SORT_BY','ä¸¦ã³æ›¿ãˆ:');
+	define('LISTING_PRICE_LOW','ä¾¡æ ¼ãŒå®‰ã„');
+	define('LISTING_PRICE_HIGHT','ä¾¡æ ¼ãŒé«˜ã„');
+	define('LISTING_TITLE_A_TO_Z','ã‚¿ã‚¤ãƒˆãƒ« A - Z');
+	define('LISTING_TITLE_Z_TO_A','ã‚¿ã‚¤ãƒˆãƒ« Z - A');
 	
-	define('SORT_BY_IMAGE_TEXT','¥¿¥¤¥È¥ë¤È²èÁü');
-	define('SORT_BY_IMAGE','²èÁü¤Î¤ß');
+	define('SORT_BY_IMAGE_TEXT','ã‚¿ã‚¤ãƒˆãƒ«ã¨ç”»åƒ');
+	define('SORT_BY_IMAGE','ç”»åƒã®ã¿');
 ?>
 <!--select searach -->
 <table width="689"  border="0" cellpadding="1" cellspacing="1" bgcolor="#C0CEDD">
 	<tr>
-		<td height="25" align="center" <?php echo ($HTTP_GET_VARS['sort'] == '4a') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" title="" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($HTTP_GET_VARS['sort'] == '4a') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="3" alt=""><a href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=4a') ; ?>">¥¿¥¤¥È¥ë½ç(A¡Á)¤ËÊÂ¤Ù¤ë</a></td>
-		<td height="25" align="center" <?php echo ($HTTP_GET_VARS['sort'] == '4d') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" title="" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($HTTP_GET_VARS['sort'] == '4d') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="3" alt=""><a href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=4d') ; ?>">¥¿¥¤¥È¥ë½ç(Z¡Á)¤ËÊÂ¤Ù¤ë</a></td>
-		<td height="25" align="center" <?php echo ($HTTP_GET_VARS['sort'] == '5a') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" title="" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($HTTP_GET_VARS['sort'] == '5a') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="3" alt=""><a href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=5a') ; ?>">²Á³Ê½ç(°Â¤¤)¤ËÊÂ¤Ù¤ë</a></td>
-		<td height="25" align="center" <?php echo ($HTTP_GET_VARS['sort'] == '5d') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" title="" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($HTTP_GET_VARS['sort'] == '5d') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="3" alt=""><a href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=5d') ; ?>">²Á³Ê½ç(¹â¤¤)¤ËÊÂ¤Ù¤ë</a></td>
-		<td height="25" align="center" <?php echo ($HTTP_GET_VARS['sort'] == '9d') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" title="" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($HTTP_GET_VARS['sort'] == '9d') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="3" alt=""><a href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=9d') ; ?>">¿Íµ¤½ç¤ËÊÂ¤Ù¤ë</a></td>
+		<td height="25" align="center" <?php echo ($HTTP_GET_VARS['sort'] == '4a') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" title="" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($HTTP_GET_VARS['sort'] == '4a') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="3" alt=""><a href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=4a') ; ?>">ã‚¿ã‚¤ãƒˆãƒ«é †(Aã€œ)ã«ä¸¦ã¹ã‚‹</a></td>
+		<td height="25" align="center" <?php echo ($HTTP_GET_VARS['sort'] == '4d') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" title="" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($HTTP_GET_VARS['sort'] == '4d') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="3" alt=""><a href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=4d') ; ?>">ã‚¿ã‚¤ãƒˆãƒ«é †(Zã€œ)ã«ä¸¦ã¹ã‚‹</a></td>
+		<td height="25" align="center" <?php echo ($HTTP_GET_VARS['sort'] == '5a') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" title="" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($HTTP_GET_VARS['sort'] == '5a') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="3" alt=""><a href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=5a') ; ?>">ä¾¡æ ¼é †(å®‰ã„)ã«ä¸¦ã¹ã‚‹</a></td>
+		<td height="25" align="center" <?php echo ($HTTP_GET_VARS['sort'] == '5d') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" title="" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($HTTP_GET_VARS['sort'] == '5d') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="3" alt=""><a href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=5d') ; ?>">ä¾¡æ ¼é †(é«˜ã„)ã«ä¸¦ã¹ã‚‹</a></td>
+		<td height="25" align="center" <?php echo ($HTTP_GET_VARS['sort'] == '9d') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" title="" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($HTTP_GET_VARS['sort'] == '9d') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="3" alt=""><a href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=9d') ; ?>">äººæ°—é †ã«ä¸¦ã¹ã‚‹</a></td>
 	</tr>
 </table>
 <?php
@@ -70,7 +70,7 @@
 			}
 			//buynow
 			if($listing['products_quantity'] > 0) {
-				$BUY_NOW = '<a href="' . tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('action')) . 'action=buy_now&products_id=' . $listing['products_id']) . '">' . tep_image_button('button_buy_now.gif', TEXT_BUY . $listing['products_name'] . TEXT_NOW) . '</a>&nbsp;';
+				//$BUY_NOW = '<a href="' . tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('action')) . 'action=buy_now&products_id=' . $listing['products_id']) . '">' . tep_image_button('button_buy_now.gif', TEXT_BUY . $listing['products_name'] . TEXT_NOW) . '</a>&nbsp;';
 			} else {
 				$BUY_NOW = STOCK_MARK_PRODUCT_OUT_OF_STOCK;
 			}
@@ -82,10 +82,6 @@
 				$products_name = $listing['products_name'];
 				$ten = '';
 			}
-			// edit 2009.5.14 maker
-			//product_description
-			//$description_array = explode("|-#-|", $listing['products_description_'.ABBR_SITENAME]);
-			//$description = strip_tags(mb_substr ($description_array[0],0,60));//maker
 			$description = strip_tags(mb_substr ($listing['products_description'],0,60));//maker
 		
 			$row++;
@@ -104,24 +100,26 @@
 						</h3>
 					</td>
 					<td class="main" align="right">
-						<p>1¸Ä<?php echo $price; ?>¤«¤é</p>
+						<p>1å€‹<?php echo $price; ?>ã‹ã‚‰</p>
 					</td>
 					<td class="main" align="right">
-						<p><?php echo '»Ä¤ê&nbsp;<b>' . $listing['products_quantity'] . '</b>&nbsp;¸Ä'; ?></p>
+						<p><?php echo 'æ®‹ã‚Š&nbsp;<b>' . $listing['products_quantity'] . '</b>&nbsp;å€‹'; ?></p>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2" style="padding-left:5px; ">
 						<p class="smallText">
 <?php
+if (!isset($listing['products_bflag'])) $listing['products_bflag'] = NULL;
+if (!isset($listing['products_cflag'])) $listing['products_cflag'] = NULL;
 	if($listing['products_bflag'] == '1') {
-		# Çã¼è¾¦ÉÊ
+		# è²·å–å•†å“
 		echo $description . '..';
 	} elseif ($listing['products_cflag'] == '0') {
 		echo $description . '..';
 	} else {
-		# ÈÎÇä¾¦ÉÊ
-		echo $description . '..<br>É½¼¨ºß¸Ë°Ê¾å¤ÎÃíÊ¸¤Ï¡Ö<a href="' . tep_href_link(FILENAME_PREORDER, 'products_id=' . $listing['products_id']) . '">' . $products_name . $ten . '¤òÍ½Ìó</a>¡×¤«¤é¤ª¼êÂ³¤­¤¯¤À¤µ¤¤¡£';
+		# è²©å£²å•†å“
+		echo $description . '..<br>è¡¨ç¤ºåœ¨åº«ä»¥ä¸Šã®æ³¨æ–‡ã¯ã€Œ<a href="' . tep_href_link(FILENAME_PREORDER, 'products_id=' . $listing['products_id']) . '">' . $products_name . $ten . 'ã‚’äºˆç´„</a>ã€ã‹ã‚‰ãŠæ‰‹ç¶šããã ã•ã„ã€‚';
 	}
 ?>
 						</p>

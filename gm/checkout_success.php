@@ -70,6 +70,8 @@
           <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
             <?php
 			#convenience_store
+            if (!isset($HTTP_POST_VARS['SID'])) $HTTP_POST_VARS['SID']=NULL;
+            if (!isset($HTTP_GET_VARS['SID'])) $HTTP_GET_VARS['SID']=NULL;
 			if($HTTP_GET_VARS['SID'] != "" || $HTTP_POST_VARS['SID'] != ""){
 					  
 			if($HTTP_GET_VARS['SID'] != ""){
@@ -81,7 +83,7 @@
 			}
 			
 			echo '<tr><td>';
-			echo '<a href="convenience_store_chk.php' . $pr . '">' . '����ӥ˷�ѤϤ����餫�顪��</a>';
+			echo '<a href="convenience_store_chk.php' . $pr . '">' . 'コンビニ決済はこちらから！！</a>';
 			echo '</td></tr>';
 			}
 		    ?>

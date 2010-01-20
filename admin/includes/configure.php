@@ -39,13 +39,12 @@
   define('DB_SERVER', 'localhost'); // eg, localhost - should not be empty for productive servers
   define('DB_SERVER_USERNAME', 'root');
   define('DB_SERVER_PASSWORD', '123456');
-  define('DB_DATABASE', 'maker_rmt');
+  define('DB_DATABASE', 'maker_3rmt');
   define('USE_PCONNECT', 'false'); // use persisstent connections?
   define('STORE_SESSIONS', ''); // leave empty '' for default handler or set to 'mysql'
 
-  define('ABBR_SITENAME', 'wm');
   //control sql_log
-  define('SQL_LOG', 'false');
+  define('SQL_LOG', false);
   //add image document
   define('DIR_WS_IMAGE_DOCUMENTS', 'imageDocuments/');
   define('DIR_FS_CATALOG_IMAGE_DOCUMENTS', DIR_FS_CATALOG.'imageDocuments/');

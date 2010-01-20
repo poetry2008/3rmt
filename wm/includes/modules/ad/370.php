@@ -1,9 +1,9 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://r2.hangame.co.jp/" class="blank" rel='nofollow'><span>Reign of Revolution ╕°╝░е╡еде╚</span></a></li>
-<li><a href="http://r2.hangame.co.jp/community/fansitelink.nhn?m=list" class="blank" rel='nofollow'><span>R2 е╒ебеєе╡еде╚еъеєеп╜╕</span></a></li>
-<li><a href="http://wikiwiki.jp/r2ror/" class="blank" rel='nofollow'><span>R2 ╛Ё╩єWiki</span></a></li>
-<li><a href="http://www.mmo-station.com/mmo/r2/" class="blank" rel='nofollow'><span>Reign of Revolution ┴э╣ч╛Ё╩єбж╣╢╬ме╡еде╚</span></a></li>
-<li><a href="http://wiki.livedoor.jp/r2online/" class="blank" rel='nofollow'><span>Reign of Revolution ╣╢╬мWiki</span></a></li>
-<li><a href="http://mmo-souba.com/r2/" class="blank" rel='nofollow'><span>R2 еведе╞ер┴ъ╛ь╛Ё╩є</span></a></li>
+<li><a href="http://r2.hangame.co.jp/" class="blank" rel='nofollow'><span>Reign of Revolution хЕмх╝ПуВ╡уВдуГИ</span></a></li>
+<li><a href="http://r2.hangame.co.jp/community/fansitelink.nhn?m=list" class="blank" rel='nofollow'><span>R2 уГХуВбуГ│уВ╡уВдуГИуГкуГ│уВпщЫЖ</span></a></li>
+<li><a href="http://wikiwiki.jp/r2ror/" class="blank" rel='nofollow'><span>R2 цГЕха▒Wiki</span></a></li>
+<li><a href="http://www.mmo-station.com/mmo/r2/" class="blank" rel='nofollow'><span>Reign of Revolution ч╖ПхРИцГЕха▒уГ╗цФ╗чХеуВ╡уВдуГИ</span></a></li>
+<li><a href="http://wiki.livedoor.jp/r2online/" class="blank" rel='nofollow'><span>Reign of Revolution цФ╗чХеWiki</span></a></li>
+<li><a href="http://mmo-souba.com/r2/" class="blank" rel='nofollow'><span>R2 уВвуВдуГЖуГачЫ╕ха┤цГЕха▒</span></a></li>
 </ul>

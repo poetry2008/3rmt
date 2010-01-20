@@ -32,6 +32,7 @@
         if (isset($contents[$i]['params']) && tep_not_null($contents[$i]['params'])) $tableBox_string .= ' ' . $contents[$i]['params'];
         $tableBox_string .= '>' . "\n";
 
+        if (!isset($contents[$i][0])) $contents[$i][0]=NULl; // del notice
         if (is_array($contents[$i][0])) {
           for ($x=0, $n2=sizeof($contents[$i]); $x<$n2; $x++) {
             if (isset($contents[$i][$x]['text']) && tep_not_null($contents[$i][$x]['text'])) {
@@ -87,6 +88,8 @@
       $info_box_contents = array();
       $info_box_contents[] = array(array('text' => tep_draw_separator('pixel_trans.gif', '100%', '1')));
       for ($i=0, $n=sizeof($contents); $i<$n; $i++) {
+        if (!isset($contents[$i]['align'])) $contents[$i]['align'] = NULL; //del notice
+        if (!isset($contents[$i]['form'])) $contents[$i]['form'] = NULL; //del notice
         $info_box_contents[] = array(array('align' => $contents[$i]['align'],
                                            'form' => $contents[$i]['form'],
                                            'params' => 'class="boxText"',

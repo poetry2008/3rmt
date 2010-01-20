@@ -10,6 +10,6 @@
   Released under the GNU General Public License
 */
 
-  define('MODULE_ORDER_TOTAL_POINT_TITLE', '¥Ý¥¤¥ó¥È³ä°ú');
-  define('MODULE_ORDER_TOTAL_POINT_DESCRIPTION', '¥Ý¥¤¥ó¥È³ä°ú³Û');
+  define('MODULE_ORDER_TOTAL_POINT_TITLE', 'ãƒã‚¤ãƒ³ãƒˆå‰²å¼•');
+  define('MODULE_ORDER_TOTAL_POINT_DESCRIPTION', 'ãƒã‚¤ãƒ³ãƒˆå‰²å¼•é¡');
 ?>

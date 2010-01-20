@@ -1,9 +1,9 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
-  define('MODULE_METASEO_SHOPPING_CART_TEXT_TITLE', '¥·¥ç¥Ã¥Ô¥ó¥°¥«¡¼¥È');
+  define('MODULE_METASEO_SHOPPING_CART_TEXT_TITLE', 'ã‚·ãƒ§ãƒƒãƒ”ãƒ³ã‚°ã‚«ãƒ¼ãƒˆ');
   define('MODULE_METASEO_SHOPPING_CART_TEXT_EXPLAIN', 'EXPLAIN');
-  define('MODULE_METASEO_SHOPPING_CART_TEXT_DESCRIPTION', '¥·¥ç¥Ã¥Ô¥ó¥°¥«¡¼¥È¥Ú¡¼¥¸¤ÎSEO');
+  define('MODULE_METASEO_SHOPPING_CART_TEXT_DESCRIPTION', 'ã‚·ãƒ§ãƒƒãƒ”ãƒ³ã‚°ã‚«ãƒ¼ãƒˆãƒšãƒ¼ã‚¸ã®SEO');
 ?>

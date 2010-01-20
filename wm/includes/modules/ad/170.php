@@ -1,8 +1,8 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://lineage.plaync.jp/" class="blank" rel='nofollow'><span>¥ê¥Í¡¼¥¸¥å ¸ø¼°¥µ¥¤¥È</span></a></li>
-<li><a href="http://www.lineinfo.jp/" class="blank" rel='nofollow'><span>¥ê¥Í¡¼¥¸¥å ¹¶Î¬ÄÌ¿®</span></a></li>
-<li><a href="http://www.freaks.ne.jp/bbs/lineage.cgi" class="blank" rel='nofollow'><span>¥ê¥Í¡¼¥¸¥å ¹¶Î¬·Ç¼¨ÈÄ</span></a></li>
-<li><a href="http://jbbs.livedoor.jp/game/17458/" class="blank" rel='nofollow'><span>¤·¤¿¤é¤Ð¥ê¥Í¡¼¥¸¥åBBS</span></a></li>
-<li><a href="http://www.hotgame.co.jp/" class="blank"><span>¥ê¥Í¡¼¥¸¥å ·Ç¼¨ÈÄ</span></a></li>
+<li><a href="http://lineage.plaync.jp/" class="blank" rel='nofollow'><span>ãƒªãƒãƒ¼ã‚¸ãƒ¥ å…¬å¼ã‚µã‚¤ãƒˆ</span></a></li>
+<li><a href="http://www.lineinfo.jp/" class="blank" rel='nofollow'><span>ãƒªãƒãƒ¼ã‚¸ãƒ¥ æ”»ç•¥é€šä¿¡</span></a></li>
+<li><a href="http://www.freaks.ne.jp/bbs/lineage.cgi" class="blank" rel='nofollow'><span>ãƒªãƒãƒ¼ã‚¸ãƒ¥ æ”»ç•¥æŽ²ç¤ºæ¿</span></a></li>
+<li><a href="http://jbbs.livedoor.jp/game/17458/" class="blank" rel='nofollow'><span>ã—ãŸã‚‰ã°ãƒªãƒãƒ¼ã‚¸ãƒ¥BBS</span></a></li>
+<li><a href="http://www.hotgame.co.jp/" class="blank"><span>ãƒªãƒãƒ¼ã‚¸ãƒ¥ æŽ²ç¤ºæ¿</span></a></li>
 </ul>

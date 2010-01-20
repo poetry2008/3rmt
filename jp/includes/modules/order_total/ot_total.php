@@ -65,8 +65,8 @@
     }
 
     function install() {
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('¹ç·×³Û¤ÎÉ½¼¨', 'MODULE_ORDER_TOTAL_TOTAL_STATUS', 'true', '¹ç·×³Û¤ÎÉ½¼¨¤ò¤·¤Ş¤¹¤«?', '6', '1','tep_cfg_select_option(array(\'true\', \'false\'), ', now())");
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('É½¼¨¤ÎÀ°Îó½ç', 'MODULE_ORDER_TOTAL_TOTAL_SORT_ORDER', '6', 'É½¼¨¤ÎÀ°Îó½ç¤òÀßÄê¤Ç¤­¤Ş¤¹. ¿ô»ú¤¬¾®¤µ¤¤¤Û¤É¾å°Ì¤ËÉ½¼¨¤µ¤ì¤Ş¤¹.', '6', '2', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('åˆè¨ˆé¡ã®è¡¨ç¤º', 'MODULE_ORDER_TOTAL_TOTAL_STATUS', 'true', 'åˆè¨ˆé¡ã®è¡¨ç¤ºã‚’ã—ã¾ã™ã‹?', '6', '1','tep_cfg_select_option(array(\'true\', \'false\'), ', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('è¡¨ç¤ºã®æ•´åˆ—é †', 'MODULE_ORDER_TOTAL_TOTAL_SORT_ORDER', '6', 'è¡¨ç¤ºã®æ•´åˆ—é †ã‚’è¨­å®šã§ãã¾ã™. æ•°å­—ãŒå°ã•ã„ã»ã©ä¸Šä½ã«è¡¨ç¤ºã•ã‚Œã¾ã™.', '6', '2', now())");
     }
 
     function remove() {

@@ -28,7 +28,7 @@
         <td class="footer_5">
         	<address class="footer_contacts">
 			  <?php echo FOOTER_TEXT_BODY . "\n"; ?><br>
-              Copyright&nbsp;&copy;&nbsp;2009&nbsp;&nbsp;<a class="bold" href="http://rmt.worldmoney.jp/"><strong>RMT</strong>���ɥޥ͡�</a>
+              Copyright&nbsp;&copy;&nbsp;2009&nbsp;&nbsp;<a class="bold" href="http://rmt.worldmoney.jp/"><strong>RMT</strong>ワールドマネー</a>
             </address>
         </td>
         <td class="footer_6"></td>

@@ -160,6 +160,7 @@
 
     function get_quantity($products_id) {
       if (isset($this->contents[$products_id])) {
+        if (!isset($this->contents[$products_id]['qty'])) $this->contents[$products_id]['qty'] = NULL; //del notice
         return $this->contents[$products_id]['qty'];
       } else {
         return 0;
@@ -227,7 +228,7 @@
             $products_price = $specials['specials_new_products_price'];
           }
 		  
-		  # ÄÉ²Ã¥¹¥¿¡¼¥È ---------------------------------------
+		  # è¿½åŠ ã‚¹ã‚¿ãƒ¼ãƒˆ ---------------------------------------
 		  $wari_array = array();
 		  if(tep_not_null($product['products_small_sum'])) {
 		    $parray = explode(",", $product['products_small_sum']);
@@ -248,7 +249,7 @@
 			
 			$mae = $key;
 		  }
-		  # ÄÉ²Ã¥¨¥ó¥É -------------------------------------------
+		  # è¿½åŠ ã‚¨ãƒ³ãƒ‰ -------------------------------------------
 
           $this->total += tep_add_tax($products_price, $products_tax) * $qty;
           $this->weight += ($qty * $products_weight);
@@ -271,6 +272,7 @@
     }
 
     function attributes_price($products_id) {
+if (!isset($attributes_price)) $attributes_price= NULL;
       if (isset($this->contents[$products_id]['attributes'])) {
         reset($this->contents[$products_id]['attributes']);
         while (list($option, $value) = each($this->contents[$products_id]['attributes'])) {
@@ -306,7 +308,7 @@
             $products_price = $specials['specials_new_products_price'];
           }
 		  
-		  # ÄÉ²Ã¥¹¥¿¡¼¥È ---------------------------------------
+		  # è¿½åŠ ã‚¹ã‚¿ãƒ¼ãƒˆ ---------------------------------------
 		  $wari_array = array();
 		  if(tep_not_null($products['products_small_sum'])) {
 		    $parray = explode(",", $products['products_small_sum']);
@@ -327,8 +329,9 @@
 			
 			$mae = $key;
 		  }
-		  # ÄÉ²Ã¥¨¥ó¥É -------------------------------------------
+		  # è¿½åŠ ã‚¨ãƒ³ãƒ‰ -------------------------------------------
 
+if (!isset($this->contents[$products_id]['attributes'])) $this->contents[$products_id]['attributes']= NULL;
           $products_array[] = array('id' => $products_id,
                                     'name' => $products['products_name'],
                                     'model' => $products['products_model'],

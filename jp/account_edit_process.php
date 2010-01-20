@@ -26,18 +26,22 @@
     tep_redirect(tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'));
   }
 
-  // tamura 2002/12/30 ¡ÖÁ´³Ñ¡×±Ñ¿ô»ú¤ò¡ÖÈ¾³Ñ¡×¤ËÊÑ´¹
+  // tamura 2002/12/30 ã€Œå…¨è§’ã€è‹±æ•°å­—ã‚’ã€ŒåŠè§’ã€ã«å¤‰æ›
   $an_cols = array('password','confirmation','email_address','postcode','telephone','fax');
   if (ACCOUNT_DOB) $an_cols[] = 'dob';
   foreach ($an_cols as $col) {
+    if (!isset($HTTP_POST_VARS[$col])) $HTTP_POST_VARS[$col] =NULL;
     $HTTP_POST_VARS[$col] = tep_an_zen_to_han($HTTP_POST_VARS[$col]);
   }
 
+  if (!isset($HTTP_POST_VARS['gender'])) $HTTP_POST_VARS['gender'] =NULL;
   $gender = tep_db_prepare_input($HTTP_POST_VARS['gender']);
   $firstname = tep_db_prepare_input($HTTP_POST_VARS['firstname']);
   $lastname = tep_db_prepare_input($HTTP_POST_VARS['lastname']);
   //add
+  if (!isset($HTTP_POST_VARS['firstname_f'])) $HTTP_POST_VARS['firstname_f'] =NULL;
   $firstname_f = tep_db_prepare_input($HTTP_POST_VARS['firstname_f']);
+  if (!isset($HTTP_POST_VARS['lastname_f'])) $HTTP_POST_VARS['lastname_f'] =NULL;
   $lastname_f = tep_db_prepare_input($HTTP_POST_VARS['lastname_f']);
   $dob = tep_db_prepare_input($HTTP_POST_VARS['dob']);
   $email_address = tep_db_prepare_input($HTTP_POST_VARS['email_address']);
@@ -46,12 +50,18 @@
   $newsletter = tep_db_prepare_input($HTTP_POST_VARS['newsletter']);
   $password = tep_db_prepare_input($HTTP_POST_VARS['password']);
   $confirmation = tep_db_prepare_input($HTTP_POST_VARS['confirmation']);
+  if (!isset($HTTP_POST_VARS['street_address'])) $HTTP_POST_VARS['street_address'] =NULL;
   $street_address = tep_db_prepare_input($HTTP_POST_VARS['street_address']);
+  if (!isset($HTTP_POST_VARS['company'])) $HTTP_POST_VARS['company'] =NULL;
   $company = tep_db_prepare_input($HTTP_POST_VARS['company']);
+  if (!isset($HTTP_POST_VARS['suburb'])) $HTTP_POST_VARS['suburb'] =NULL;
   $suburb = tep_db_prepare_input($HTTP_POST_VARS['suburb']);
   $postcode = tep_db_prepare_input($HTTP_POST_VARS['postcode']);
+  if (!isset($HTTP_POST_VARS['city'])) $HTTP_POST_VARS['city'] =NULL;
   $city = tep_db_prepare_input($HTTP_POST_VARS['city']);
+  if (!isset($HTTP_POST_VARS['zone_id'])) $HTTP_POST_VARS['zone_id'] =NULL;
   $zone_id = tep_db_prepare_input($HTTP_POST_VARS['zone_id']);
+  if (!isset($HTTP_POST_VARS['state'])) $HTTP_POST_VARS['state'] =NULL;
   $state = tep_db_prepare_input($HTTP_POST_VARS['state']);
   $country = tep_db_prepare_input($HTTP_POST_VARS['country']);
 
@@ -260,7 +270,7 @@
                             'customers_lastname_f' => $lastname_f,
                             'customers_email_address' => $email_address,
                             'customers_telephone' => $telephone,
-                            'customers_fax' => $fax,
+                            //'customers_fax' => $fax,
                             'customers_newsletter' => $newsletter,
                             'customers_password' => tep_encrypt_password($password));
 

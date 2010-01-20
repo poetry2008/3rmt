@@ -33,6 +33,7 @@
 // $HTTP_xxx_VARS are always set on php4
   if (!is_array($HTTP_GET_VARS)) $HTTP_GET_VARS = array();
   if (!is_array($HTTP_POST_VARS)) $HTTP_POST_VARS = array();
+  if (!isset($HTTP_COOKIE_VARS)) $HTTP_COOKIE_VARS = array();
   if (!is_array($HTTP_COOKIE_VARS)) $HTTP_COOKIE_VARS = array();
 
 // handle magic_quotes_gpc turned off.

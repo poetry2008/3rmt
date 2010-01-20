@@ -11,7 +11,7 @@
 */
 ?>
 <!-- latest_news //-->
-<p class="pageHeading">RMT���ɥޥ͡�����Τ��Τ餻</p>
+<p class="pageHeading">RMTワールドマネーからのお知らせ</p>
 <div class="comment">
     <div id="news">
         <ul class="news_ul">

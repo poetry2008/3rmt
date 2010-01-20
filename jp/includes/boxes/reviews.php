@@ -13,7 +13,7 @@
 	if(basename($PHP_SELF) == FILENAME_PRODUCT_INFO){
 		$reviews_query = tep_db_query("select rd.reviews_text, r.reviews_rating, r.reviews_id, r.products_id, r.customers_name, r.date_added, r.last_modified, r.reviews_read from " . TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd where  r.reviews_id = rd.reviews_id and r.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and r.reviews_status = '1' and  r.products_id not in".tep_not_in_disabled_products()." limit " . MAX_RANDOM_SELECT_REVIEWS );
 		if(tep_db_num_rows($reviews_query)) {
-			echo  '<div class="underline">&nbsp;</div><div class="pageHeading_long">§≥§Œæ¶… §Œ•Ï•”•Â°º</div>'."\n" . '<div id="contents">'."\n" ;
+			echo  '<div class="underline">&nbsp;</div><div class="pageHeading_long">„Åì„ÅÆÂïÜÂìÅ„ÅÆ„É¨„Éì„É•„Éº</div>'."\n" . '<div id="contents">'."\n" ;
 			while ($reviews = tep_db_fetch_array($reviews_query)) {
 				echo '<p class="main">
 <b>' . sprintf(TEXT_REVIEW_BY, tep_output_string_protected($reviews['customers_name'])) . '</b>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'stars_' . $reviews['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $reviews['reviews_rating'])) . '[' . sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $reviews['reviews_rating']) . ']
@@ -21,7 +21,7 @@
 <div align="right"><i>' . sprintf(TEXT_REVIEW_DATE_ADDED, tep_date_long($reviews['date_added'])) . '</i></div>' . "\n";
 			}
 			//if(MAX_RANDOM_SELECT_REVIEWS > tep_db_num_rows($reviews_query)){
-			//  echo '<div align="right"><a href="'tep_href_link(FILENAME_PRODUCT_REVIEWS,'products_id='.(int)$HTTP_GET_VARS['products_id']).'">•Ï•”•Â°º∞ÏÕ˜§ÿ</a></div>' ;
+			//  echo '<div align="right"><a href="'tep_href_link(FILENAME_PRODUCT_REVIEWS,'products_id='.(int)$HTTP_GET_VARS['products_id']).'">„É¨„Éì„É•„Éº‰∏ÄË¶ß„Å∏</a></div>' ;
 			//}  
 			echo '</div>' . "\n";
 		} 

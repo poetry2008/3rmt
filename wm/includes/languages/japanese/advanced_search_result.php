@@ -10,19 +10,19 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE1', '¸¡º÷');
-define('NAVBAR_TITLE2', '¸¡º÷·ë²Ì');
-define('HEADING_TITLE', '¸¡º÷¾ò·ï¤Ë°ìÃ×¤¹¤ë¾¦ÉÊ');
+define('NAVBAR_TITLE1', 'æ¤œç´¢');
+define('NAVBAR_TITLE2', 'æ¤œç´¢çµæžœ');
+define('HEADING_TITLE', 'æ¤œç´¢æ¡ä»¶ã«ä¸€è‡´ã™ã‚‹å•†å“');
 define('TABLE_HEADING_IMAGE', '');
-define('TABLE_HEADING_MODEL', '·¿ÈÖ');
-define('TABLE_HEADING_PRODUCTS', '¾¦ÉÊÌ¾');
-define('TABLE_HEADING_MANUFACTURER', '¥á¡¼¥«¡¼');
-define('TABLE_HEADING_QUANTITY', '¿ôÎÌ');
-define('TABLE_HEADING_PRICE', '²Á³Ê');
-define('TABLE_HEADING_WEIGHT', '½ÅÎÌ');
-define('TABLE_HEADING_BUY_NOW', 'º£¤¹¤°¹ØÆþ');
-define('TEXT_NO_PRODUCTS', '¸¡º÷¾ò·ï¤Ë°ìÃ×¤¹¤ë¾¦ÉÊ¤Ï¤¢¤ê¤Þ¤»¤ó...');
-define('TEXT_NO_PRODUCTS2', '¸¡º÷¾ò·ï¤Ë°ìÃ×¤¹¤ë¾¦ÉÊ¤Ï¤¢¤ê¤Þ¤»¤ó...');
-define('TEXT_BUY', 'º£¤¹¤° ');
-define('TEXT_NOW', ' ¤ò¹ØÆþ¤¹¤ë');
+define('TABLE_HEADING_MODEL', 'åž‹ç•ª');
+define('TABLE_HEADING_PRODUCTS', 'å•†å“å');
+define('TABLE_HEADING_MANUFACTURER', 'ãƒ¡ãƒ¼ã‚«ãƒ¼');
+define('TABLE_HEADING_QUANTITY', 'æ•°é‡');
+define('TABLE_HEADING_PRICE', 'ä¾¡æ ¼');
+define('TABLE_HEADING_WEIGHT', 'é‡é‡');
+define('TABLE_HEADING_BUY_NOW', 'ä»Šã™ãè³¼å…¥');
+define('TEXT_NO_PRODUCTS', 'æ¤œç´¢æ¡ä»¶ã«ä¸€è‡´ã™ã‚‹å•†å“ã¯ã‚ã‚Šã¾ã›ã‚“...');
+define('TEXT_NO_PRODUCTS2', 'æ¤œç´¢æ¡ä»¶ã«ä¸€è‡´ã™ã‚‹å•†å“ã¯ã‚ã‚Šã¾ã›ã‚“...');
+define('TEXT_BUY', 'ä»Šã™ã ');
+define('TEXT_NOW', ' ã‚’è³¼å…¥ã™ã‚‹');
 ?>

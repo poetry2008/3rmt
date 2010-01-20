@@ -1,7 +1,7 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://www.musou-online.jp/" class="blank" rel='nofollow'><span>¿¿¡¦»°Ô¢ÌµÁÐOnline ¸ø¼°¥µ¥¤¥È</span></a></li>
-<li><a href="http://musou-bb.wikiwiki.jp/" class="blank" rel='nofollow'><span>¿¿¡¦»°Ô¢ÌµÁÐ¥ª¥ó¥é¥¤¥ó ¾ðÊó¹¶Î¬Wiki</span></a></li>
-<li><a href="http://jbbs.livedoor.jp/netgame/985/" class="blank" rel='nofollow'><span>¿¿¡¦»°¹ñÌµÁÐOnline ¤·¤¿¤é¤Ð¥ª¡¼¥¯¥·¥ç¥óÈÄ</span></a></li>
-<li><a href="http://capri.sosite.jp/" class="blank" rel='nofollow'><span>¿¿¡¦»°Ô¢ÌµÁÐ Online ¥Õ¥¡¥ó¥µ¥¤¥È</span></a></li>
+<li><a href="http://www.musou-online.jp/" class="blank" rel='nofollow'><span>çœŸãƒ»ä¸‰åœ‹ç„¡åŒOnline å…¬å¼ã‚µã‚¤ãƒˆ</span></a></li>
+<li><a href="http://musou-bb.wikiwiki.jp/" class="blank" rel='nofollow'><span>çœŸãƒ»ä¸‰åœ‹ç„¡åŒã‚ªãƒ³ãƒ©ã‚¤ãƒ³ æƒ…å ±æ”»ç•¥Wiki</span></a></li>
+<li><a href="http://jbbs.livedoor.jp/netgame/985/" class="blank" rel='nofollow'><span>çœŸãƒ»ä¸‰å›½ç„¡åŒOnline ã—ãŸã‚‰ã°ã‚ªãƒ¼ã‚¯ã‚·ãƒ§ãƒ³æ¿</span></a></li>
+<li><a href="http://capri.sosite.jp/" class="blank" rel='nofollow'><span>çœŸãƒ»ä¸‰åœ‹ç„¡åŒ Online ãƒ•ã‚¡ãƒ³ã‚µã‚¤ãƒˆ</span></a></li>
 </ul>

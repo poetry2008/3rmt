@@ -3,10 +3,10 @@
   TELECOM module
 */
 
-  define('MODULE_PAYMENT_TELECOM_TEXT_TITLE', '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ');
-  define('MODULE_PAYMENT_TELECOM_TEXT_DESCRIPTION', 'TELECOM¤ÎÀßÄê¤ò¹Ô¤¤¤Þ¤¹¡£');
-  define('MODULE_PAYMENT_TELECOM_TEXT_EXPLAIN','¥«¡¼¥É¾ðÊó¤ÎÆþÎÏ²èÌÌ¤Ç¤Ï¥Õ¥ê¡¼¥á¡¼¥ë¥¢¥É¥ì¥¹¤Î¤´ÆþÎÏ¤ò¤´±óÎ¸¤¯¤À¤µ¤¤¡£');
-  define('MODULE_PAYMENT_TELECOM_TEXT_ERROR', '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É¥¨¥é¡¼');
-  define('MODULE_PAYMENT_TELECOM_TEXT_ERROR_MESSAGE', '¥¨¥é¡¼¤¬È¯À¸¤·¤Þ¤·¤¿. ¤â¤¦°ìÅÙ»î¤·¤Æ¤¯¤À¤µ¤¤¡£');
+  define('MODULE_PAYMENT_TELECOM_TEXT_TITLE', 'ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰æ±ºæ¸ˆ');
+  define('MODULE_PAYMENT_TELECOM_TEXT_DESCRIPTION', 'TELECOMã®è¨­å®šã‚’è¡Œã„ã¾ã™ã€‚');
+  define('MODULE_PAYMENT_TELECOM_TEXT_EXPLAIN','ã‚«ãƒ¼ãƒ‰æƒ…å ±ã®å…¥åŠ›ç”»é¢ã§ã¯ãƒ•ãƒªãƒ¼ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã®ã”å…¥åŠ›ã‚’ã”é æ…®ãã ã•ã„ã€‚');
+  define('MODULE_PAYMENT_TELECOM_TEXT_ERROR', 'ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰ã‚¨ãƒ©ãƒ¼');
+  define('MODULE_PAYMENT_TELECOM_TEXT_ERROR_MESSAGE', 'ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸ. ã‚‚ã†ä¸€åº¦è©¦ã—ã¦ãã ã•ã„ã€‚');
   define('MODULE_PAYMENT_TELECOM_TEXT_EMAIL_FOOTER', C_CC."\n\n".EMAIL_SIGNATURE);
 ?>

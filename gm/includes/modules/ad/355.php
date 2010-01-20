@@ -1,8 +1,8 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://www.last-chaos.jp/" class="blank" rel='nofollow'><span>Last Chaos ╕°╝░е╡еде╚</span></a></li>
+<li><a href="http://www.last-chaos.jp/" class="blank" rel='nofollow'><span>Last Chaos хЕмх╝ПуВ╡уВдуГИ</span></a></li>
 <li><a href="http://wikiwiki.jp/lastchaos/" class="blank" rel='nofollow'><span>Last Chaos Wiki</span></a></li>
-<li><a href="http://wikiwiki.jp/lastchaos_jp/" class="blank" rel='nofollow'><span>LastChaos ╣╢╬м╛Ё╩єWIKI</span></a></li>
-<li><a href="http://jbbs.livedoor.jp/game/28328/" class="blank" rel='nofollow'><span>еще╣е╚елеке╣ д╖д┐дщд╨╖╟╝и╚─</span></a></li>
-<li><a href="http://www.mmonavi.com/modules/game/263.html" class="blank"><span>еще╣е╚елеке╣ е▓б╝ер╛Ё╩є</span></a></li>
+<li><a href="http://wikiwiki.jp/lastchaos_jp/" class="blank" rel='nofollow'><span>LastChaos цФ╗чХецГЕха▒WIKI</span></a></li>
+<li><a href="http://jbbs.livedoor.jp/game/28328/" class="blank" rel='nofollow'><span>уГйуВ╣уГИуВлуВкуВ╣ уБЧуБЯуВЙуБ░цО▓чд║цЭ┐</span></a></li>
+<li><a href="http://www.mmonavi.com/modules/game/263.html" class="blank"><span>уГйуВ╣уГИуВлуВкуВ╣ уВ▓уГ╝уГацГЕха▒</span></a></li>
 </ul>

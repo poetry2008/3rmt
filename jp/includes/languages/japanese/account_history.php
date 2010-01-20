@@ -10,18 +10,18 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE_1', '¤ªµÒÍÍ¾ðÊó');
-define('NAVBAR_TITLE_2', 'ÃíÊ¸ÍúÎò');
+define('NAVBAR_TITLE_1', 'ãŠå®¢æ§˜æƒ…å ±');
+define('NAVBAR_TITLE_2', 'æ³¨æ–‡å±¥æ­´');
 
-define('HEADING_TITLE', 'ÃíÊ¸ÍúÎò');
+define('HEADING_TITLE', 'æ³¨æ–‡å±¥æ­´');
 
-define('TEXT_ORDER_NUMBER', 'ÃíÊ¸ÈÖ¹æ:');
-define('TEXT_ORDER_STATUS', 'ÃíÊ¸¾õ¶·:');
-define('TEXT_ORDER_DATE', 'ÃíÊ¸Æü:');
-define('TEXT_ORDER_SHIPPED_TO', 'ÇÛÁ÷Àè:');
-define('TEXT_ORDER_PRODUCTS', '¾¦ÉÊ¿ô:');
-define('TEXT_ORDER_COST', 'ÃíÊ¸¶â³Û:');
-define('TEXT_VIEW_ORDER', '¾ÜºÙ¤òÉ½¼¨');
+define('TEXT_ORDER_NUMBER', 'æ³¨æ–‡ç•ªå·:');
+define('TEXT_ORDER_STATUS', 'æ³¨æ–‡çŠ¶æ³:');
+define('TEXT_ORDER_DATE', 'æ³¨æ–‡æ—¥:');
+define('TEXT_ORDER_SHIPPED_TO', 'é…é€å…ˆ:');
+define('TEXT_ORDER_PRODUCTS', 'å•†å“æ•°:');
+define('TEXT_ORDER_COST', 'æ³¨æ–‡é‡‘é¡:');
+define('TEXT_VIEW_ORDER', 'è©³ç´°ã‚’è¡¨ç¤º');
 
-define('TEXT_NO_PURCHASES', 'ÃíÊ¸ÍúÎò¤Ï¤¢¤ê¤Þ¤»¤ó...');
+define('TEXT_NO_PURCHASES', 'æ³¨æ–‡å±¥æ­´ã¯ã‚ã‚Šã¾ã›ã‚“...');
 ?>

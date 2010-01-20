@@ -12,6 +12,7 @@
 
   require('includes/application_top.php');
   
+  if (!isset($HTTP_GET_VARS['goods_id'])) $HTTP_GET_VARS['goods_id'] = NULL;//del notice
   if($HTTP_GET_VARS['goods_id']) {
     $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$HTTP_GET_VARS['goods_id']."'") ;
 	$present = tep_db_fetch_array($present_query) ;
@@ -47,17 +48,17 @@ function popupWindow(url) {
         <tr>
           <td><?php
 		  ######################
-		  ##    ¾ÜºÙ¥Ú¡¼¥¸    ##
+		  ##    è©³ç´°ãƒšãƒ¼ã‚¸    ##
 		  ######################
 		  if($HTTP_GET_VARS['goods_id'] && !empty($HTTP_GET_VARS['goods_id'])) {
 		  $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$HTTP_GET_VARS['goods_id']."'") ;
 		  $present = tep_db_fetch_array($present_query) ;
 		  ?>
-          <p align="right" class="main">±þÊç´ü´Ö <?php echo tep_date_long($present['start_date']) . '&nbsp;&nbsp;&nbsp;¡Á&nbsp;&nbsp;&nbsp;' . tep_date_long($present['limit_date']) ; ?></p>
+          <p align="right" class="main">å¿œå‹ŸæœŸé–“ <?php echo tep_date_long($present['start_date']) . '&nbsp;&nbsp;&nbsp;ã€œ&nbsp;&nbsp;&nbsp;' . tep_date_long($present['limit_date']) ; ?></p>
           <table border="0" cellspacing="0" cellpadding="2" align="right" summary="table">
             <tr>
               <td align="center" class="smallText"><script type="text/javascript" language="javascript"><!--
-			document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link('present_popup_image.php', 'pID=' . (int)$HTTP_GET_VARS['goods_id']) . '\\\')">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '<br>¥¤¥á¡¼¥¸¤ò³ÈÂç</a>'; ?>');
+			document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link('present_popup_image.php', 'pID=' . (int)$HTTP_GET_VARS['goods_id']) . '\\\')">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '<br>ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’æ‹¡å¤§</a>'; ?>');
 			//--></script>
               <noscript>
               <?php echo tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right"'); ?>
@@ -78,12 +79,12 @@ function popupWindow(url) {
           <table width="100%" border="0" cellpadding="2" cellspacing="0" summary="table">
             <tr>
               <td><a href="javascript:history.back()"><?php echo tep_image_button('button_back.gif', IMAGE_BUTTON_BACK); ?></a> </td>
-              <td align="right"><a href="<?php echo tep_href_link(FILENAME_PRESENT_ORDER,'goods_id='.$HTTP_GET_VARS['goods_id'],SSL); ?>"><?php echo tep_image_button('button_present.gif', IMAGE_BUTTON_PRESENT); ?></a></td>
+              <td align="right"><a href="<?php echo tep_href_link(FILENAME_PRESENT_ORDER,'goods_id='.$HTTP_GET_VARS['goods_id'],'SSL'); ?>"><?php echo tep_image_button('button_present.gif', IMAGE_BUTTON_PRESENT); ?></a></td>
             </tr>
           </table>
           <?php
 		  ######################
-		  ##    °ìÍ÷¥Ú¡¼¥¸    ##
+		  ##    ä¸€è¦§ãƒšãƒ¼ã‚¸    ##
 		  ######################
 		  } else {
 		  ?>
@@ -104,6 +105,7 @@ function popupWindow(url) {
           <table border="0" width="100%" cellspacing="1" cellpadding="2" summary="table">
             <?php 
 			  while($present = tep_db_fetch_array($present_query)){
+          if (!isset($row)) $row =NULL; //delnotice
 			    $row ++ ;
 			  /*  if (($row/2) == floor($row/2)) {
 				  $_class = "productListing-even";
@@ -113,9 +115,9 @@ function popupWindow(url) {
 			  */	
 			  ?>
             <tr class="<?php //echo $_class ; ?>">
-              <td class="main" width="<?php echo SMALL_IMAGE_WIDTH ; ?>"><?php echo '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],NONSSL).'">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"') . '</a>'; ?></td>
-              <td class="main"><b><?php echo '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],NONSSL).'">'. $present['title'].'</a>' ; ?></b> <br>
-              ±þÊç´ü´Ö:<?php echo tep_date_long($present['start_date']) .'¡Á'. tep_date_long($present['limit_date']); ?>
+              <td class="main" width="<?php echo SMALL_IMAGE_WIDTH ; ?>"><?php echo '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],'NONSSL').'">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"') . '</a>'; ?></td>
+              <td class="main"><b><?php echo '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],'NONSSL').'">'. $present['title'].'</a>' ; ?></b> <br>
+              å¿œå‹ŸæœŸé–“:<?php echo tep_date_long($present['start_date']) .'ã€œ'. tep_date_long($present['limit_date']); ?>
               <p class="smallText"><?php echo substr(strip_tags($present['text']),0,100) ; ?>..</p></td>
             </tr>
             <?php

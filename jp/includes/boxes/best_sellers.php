@@ -35,7 +35,7 @@
 		<table width="100%" border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<td width="24" class="bestseller_img">
-					<img src="images/design/box/ranking_<?php echo $rows; ?>.gif" width="24" height="24" alt="<?php echo '¥é¥ó¥­¥ó¥°' . $rows . '°Ì'; ?>">
+					<img src="images/design/box/ranking_<?php echo $rows; ?>.gif" width="24" height="24" alt="<?php echo 'ãƒ©ãƒ³ã‚­ãƒ³ã‚°' . $rows . 'ä½'; ?>">
 				</td>
 				<td class="bestseller_text">
 					<a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']); ?>"><?php echo $best_sellers['products_name']; ?></a>

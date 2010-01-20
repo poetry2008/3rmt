@@ -14,10 +14,10 @@
 
   //require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_MANUFAXTURERS);
 
-define('NAVBAR_TITLE', '¥á¡¼¥«¡¼°ìÍ÷');
-define('HEADING_TITLE', '¥á¡¼¥«¡¼°ìÍ÷');
+define('NAVBAR_TITLE', 'ãƒ¡ãƒ¼ã‚«ãƒ¼ä¸€è¦§');
+define('HEADING_TITLE', 'ãƒ¡ãƒ¼ã‚«ãƒ¼ä¸€è¦§');
 
-define('TEXT_MORE', '¤³¤Î¥á¡¼¥«¡¼°ìÍ÷¤Î¾¦ÉÊ°ìÍ÷¤Ø');
+define('TEXT_MORE', 'ã“ã®ãƒ¡ãƒ¼ã‚«ãƒ¼ä¸€è¦§ã®å•†å“ä¸€è¦§ã¸');
 
 
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link('manufacturers.php'));

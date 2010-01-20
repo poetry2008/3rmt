@@ -17,7 +17,7 @@ if(isset($HTTP_POST_VARS['login_type']) && $HTTP_POST_VARS['login_type'] == 'new
 }else{ 
 
   if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'process')) {
-    // tamura 2002/12/30 ¡ÖÁ´³Ñ¡×±Ñ¿ô»ú¤ò¡ÖÈ¾³Ñ¡×¤ËÊÑ´¹
+    // tamura 2002/12/30 ã€Œå…¨è§’ã€è‹±æ•°å­—ã‚’ã€ŒåŠè§’ã€ã«å¤‰æ›
     $HTTP_POST_VARS['email_address'] = tep_an_zen_to_han($HTTP_POST_VARS['email_address']);
 
     $email_address = tep_db_prepare_input($HTTP_POST_VARS['email_address']);
@@ -59,7 +59,7 @@ if(isset($HTTP_POST_VARS['login_type']) && $HTTP_POST_VARS['login_type'] == 'new
         $date_now = date('Ymd');
         tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_of_last_logon = now(), customers_info_number_of_logons = customers_info_number_of_logons+1 where customers_info_id = '" . $customer_id . "'");
 		
-		//POINT_LIMIT CHECK ¥İ¥¤¥ó¥È¤ÎÍ­¸ú´ü¸Â¥Á¥§¥Ã¥¯ ds-style
+		//POINT_LIMIT CHECK ãƒã‚¤ãƒ³ãƒˆã®æœ‰åŠ¹æœŸé™ãƒã‚§ãƒƒã‚¯ ds-style
 		if(MODULE_ORDER_TOTAL_POINT_LIMIT != '0') {
 		  $plimit_count_query = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS." where  customers_id = '".$customer_id."'");
 		  $plimit_count = tep_db_fetch_array($plimit_count_query);
@@ -185,7 +185,7 @@ function session_win() {
                       <tr><td align="right"><?php echo '<a href="' . tep_href_link(FILENAME_CREATE_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td></tr>
                    <tr>
                       <td align="right">
-                      <a href="<?php echo tep_href_link('send_mail.php', '', 'SSL');?>">¥á¡¼¥ë¼õ¿®¥Æ¥¹¥È¤ò¤¹¤ë</a> 
+                      <a href="<?php echo tep_href_link('send_mail.php', '', 'SSL');?>">ãƒ¡ãƒ¼ãƒ«å—ä¿¡ãƒ†ã‚¹ãƒˆã‚’ã™ã‚‹</a> 
                       </td>
                    </tr>
                     </table>
@@ -213,15 +213,15 @@ function session_win() {
         </tr>
       </table>
 <p>
-<i><strong>SSLÇ§¾Ú</strong></i><br>
-Åö¥µ¥¤¥È¤Ç¤Ï¡¢¼ÂºßÀ­¤Î¾ÚÌÀ¤È¥×¥é¥¤¥Ğ¥·¡¼Êİ¸î¤Î¤¿¤á¡¢¥°¥í¡¼¥Ğ¥ë¥µ¥¤¥ó¤ÎSSL¥µ¡¼¥Ğ¾ÚÌÀ½ñ¤ò»ÈÍÑ¤·¡¢SSL°Å¹æ²½ÄÌ¿®¤ò¼Â¸½¤·¤Æ¤¤¤Ş¤¹¡£
-¥Ö¥é¥¦¥¶¤ÎURL¤¬¡Ö<?=HTTPS_SERVER;?>¡Á¡×¤Ç»Ï¤Ş¤ëURL¤Ç¤¢¤ë¤³¤È¤ò³ÎÇ§¤¯¤À¤µ¤¤¡£
-°Ê²¼¤Ë·ÇºÜ¤¹¤ë¥°¥í¡¼¥Ğ¥ë¥µ¥¤¥óÈ¯¹ÔºÑ¤ß ¥µ¥¤¥È¥·¡¼¥ë¤Î¥¯¥ê¥Ã¥¯¤Ë¤è¤ê¡¢¥µ¡¼¥Ğ¾ÚÌÀ½ñ¤Î¸¡¾Ú·ë²Ì¤ò¤´³ÎÇ§¤¯¤À¤µ¤¤¡£		
+<i><strong>SSLèªè¨¼</strong></i><br>
+å½“ã‚µã‚¤ãƒˆã§ã¯ã€å®Ÿåœ¨æ€§ã®è¨¼æ˜ã¨ãƒ—ãƒ©ã‚¤ãƒã‚·ãƒ¼ä¿è­·ã®ãŸã‚ã€ã‚°ãƒ­ãƒ¼ãƒãƒ«ã‚µã‚¤ãƒ³ã®SSLã‚µãƒ¼ãƒè¨¼æ˜æ›¸ã‚’ä½¿ç”¨ã—ã€SSLæš—å·åŒ–é€šä¿¡ã‚’å®Ÿç¾ã—ã¦ã„ã¾ã™ã€‚
+ãƒ–ãƒ©ã‚¦ã‚¶ã®URLãŒã€Œ<?=HTTPS_SERVER;?>ã€œã€ã§å§‹ã¾ã‚‹URLã§ã‚ã‚‹ã“ã¨ã‚’ç¢ºèªãã ã•ã„ã€‚
+ä»¥ä¸‹ã«æ²è¼‰ã™ã‚‹ã‚°ãƒ­ãƒ¼ãƒãƒ«ã‚µã‚¤ãƒ³ç™ºè¡Œæ¸ˆã¿ ã‚µã‚¤ãƒˆã‚·ãƒ¼ãƒ«ã®ã‚¯ãƒªãƒƒã‚¯ã«ã‚ˆã‚Šã€ã‚µãƒ¼ãƒè¨¼æ˜æ›¸ã®æ¤œè¨¼çµæœã‚’ã”ç¢ºèªãã ã•ã„ã€‚		
 </p>
          <p align="center"> 
 <!-- GlobalSign SiteSeal tag. Do not edit. -->
 <span id="___sitess__alt_img_wrapper">
-<a href="http://jp.globalsign.com/" class="blank"><img alt="SSL¡¡¥°¥í¡¼¥Ğ¥ë¥µ¥¤¥ó¤Î¥µ¥¤¥È¥·¡¼¥ë" border=0 id="___sitess__alt_img"
+<a href="http://jp.globalsign.com/" class="blank"><img alt="SSLã€€ã‚°ãƒ­ãƒ¼ãƒãƒ«ã‚µã‚¤ãƒ³ã®ã‚µã‚¤ãƒˆã‚·ãƒ¼ãƒ«" border=0 id="___sitess__alt_img"
 src="http://seal.globalsign.com/SiteSeal/images/seal_noscript_jp.gif"></a>
 </span>
 <script type="text/javascript" src="http://seal.globalsign.com/SiteSeal/siteSeal.js" defer></script>

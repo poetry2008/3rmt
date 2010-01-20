@@ -10,65 +10,65 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE', '���ʤ�ͽ�󤹤�');
-define('HEADING_TITLE', '\'%s\' ��ͽ�󤹤�');
-define('HEADING_TITLE_ERROR', '���ʤ�ͽ�󤹤�');
-define('ERROR_INVALID_PRODUCT', '���ʤ����Ĥ���ޤ���...');
+define('NAVBAR_TITLE', '商品を予約する');
+define('HEADING_TITLE', '\'%s\' を予約する');
+define('HEADING_TITLE_ERROR', '商品を予約する');
+define('ERROR_INVALID_PRODUCT', '商品が見つかりません...');
 
-define('FORM_TITLE_CUSTOMER_DETAILS', '�����ͤˤĤ���');
-define('FORM_TITLE_FRIEND_DETAILS', 'ͽ���ʤˤĤ���');
-define('FORM_TITLE_FRIEND_MESSAGE', '����˾');
+define('FORM_TITLE_CUSTOMER_DETAILS', 'お客様について');
+define('FORM_TITLE_FRIEND_DETAILS', '予約商品について');
+define('FORM_TITLE_FRIEND_MESSAGE', 'ご要望');
 
-define('FORM_FIELD_CUSTOMER_NAME', '��̾��:');
-define('FORM_FIELD_CUSTOMER_EMAIL', '�᡼�륢�ɥ쥹:');
-define('FORM_FIELD_FRIEND_NAME', '����˾�Ŀ�:');
-define('FORM_FIELD_FRIEND_EMAIL', '����:');
+define('FORM_FIELD_CUSTOMER_NAME', 'お名前:');
+define('FORM_FIELD_CUSTOMER_EMAIL', 'メールアドレス:');
+define('FORM_FIELD_FRIEND_NAME', 'ご希望個数:');
+define('FORM_FIELD_FRIEND_EMAIL', '期限:');
 
-define('TEXT_EMAIL_SUCCESSFUL_SENT', '<p><b>��ͽ���ǧ�᡼��פ�&nbsp;<span class="redtext">%s</span>&nbsp;�������������ޤ�����</b><br>
-Ǽ���ˤĤ��ޤ��Ƥ�24���ְ���ˤ������������ޤ���<br>
+define('TEXT_EMAIL_SUCCESSFUL_SENT', '<p><b>「予約確認メール」を&nbsp;<span class="redtext">%s</span>&nbsp;へ送信いたしました。</b><br>
+納期につきましては24時間以内にご回答いたします。<br>
 <br>
-�������Żҥ᡼��򤴳�ǧ������������ͽ���ǧ�᡼��פ��Ϥ��Ƥ��ʤ����ϡ����դ���λ���Ƥ���ޤ���
-�᡼�륢�ɥ쥹�򤴳�ǧ�ξ塢���٤��������ߤ򤪴ꤤ�������ޤ���<br></p>
-<h3>����</h3>
+今すぐ電子メールをご確認ください。「予約確認メール」が届いていない場合は、受付が完了しておりません。
+メールアドレスをご確認の上、再度お申し込みをお願いいたします。<br></p>
+<h3>注意</h3>
 <div class="sub_menu">
-<p>�᡼�뤬�Ϥ��ʤ��Ȥ��ϡ��ʲ��Τ��Ȥ�ɬ������ǧ����������<br>
-<b>�����ǥ᡼��ե�����γ�ǧ��</b><br>
-���ҤΥ᡼�뤬 �����ǥ᡼��ե�����פ�֥���Ȣ�פ˿���ʬ�����츫��Ȥ��Ƥ��ޤ��󤫡�<br>
-<b>��᡼��ɥᥤ��μ������¤����ꤷ�Ƥ����</b><br>
-gamemoney.cc�Υ᡼��ɥᥤ����������褦������򤪴ꤤ�������ޤ���<br>
-<b>�㤽��Ǥ��Ϥ��ʤ��Ȥ��ϡ��᡼�륢�ɥ쥹�ѹ���</b><br>
-�᡼�륢�ɥ쥹�򤴳�ǧ�ξ塢���٤��������ߤ򤪴ꤤ�������ޤ���<br></p>
+<p>メールが届かないときは、以下のことを必ずご確認ください。<br>
+<b>＜迷惑メールフォルダの確認＞</b><br>
+弊社のメールが 「迷惑メールフォルダ」や「ゴミ箱」に振り分けされ見落としていませんか？<br>
+<b>＜メールドメインの受信制限を設定している＞</b><br>
+gamemoney.ccのメールドメインを受信するように設定をお願いいたします。<br>
+<b>＜それでも届かないときは、メールアドレス変更＞</b><br>
+メールアドレスをご確認の上、再度お申し込みをお願いいたします。<br></p>
 </div>
-<h3>ͽ������</h3>
+<h3>予約内容</h3>
 <div class="sub_menu">
 <table>
-<tr><td>����̾</td><td>��</td><td><b>%s</b></td></tr>
-<tr><td>��˾�Ŀ�</td><td>��</td><td><b>%s��</b></td></tr>
-<tr><td>����</td><td>��</td><td><b>%s</b></td></tr>
+<tr><td>商品名</td><td>：</td><td><b>%s</b></td></tr>
+<tr><td>希望個数</td><td>：</td><td><b>%s個</b></td></tr>
+<tr><td>期限</td><td>：</td><td><b>%s</b></td></tr>
 </table>
 </div>
 ');
 
-define('TEXT_EMAIL_SUBJECT', '%s��ͽ��򾵤�ޤ�����%s��');
-define('TEXT_EMAIL_INTRO', '%s ��' . "\n\n"
-. '�����٤ϡ�%s�����Ѥ������������ˤ��꤬�Ȥ��������ޤ���' . "\n\n"
-. '���������ƤˤƤ�ͽ��򾵤�ޤ���������ǧ����������' . "\n"
-. '����Ǽ���ˤĤ��ޤ��Ƥ�24���ְ���ˤ������������ޤ���' . "\n\n"
-. '������������������������������������������' . "\n"
-. '����̾��������������%s' . "\n"
-. '���᡼�륢�ɥ쥹����%s' . "\n"
-. '������������������������������������������' . "\n\n"
-. '��ͽ������' . "\n"
+define('TEXT_EMAIL_SUBJECT', '%sの予約を承りました【%s】');
+define('TEXT_EMAIL_INTRO', '%s 様' . "\n\n"
+. 'この度は、%sをご利用いただき、誠にありがとうございます。' . "\n\n"
+. '下記の内容にてご予約を承りました。ご確認ください。' . "\n"
+. '尚、納期につきましては24時間以内にご回答いたします。' . "\n\n"
+. '━━━━━━━━━━━━━━━━━━━━━' . "\n"
+. '▼お名前　　　　　：%s' . "\n"
+. '▼メールアドレス　：%s' . "\n"
+. '━━━━━━━━━━━━━━━━━━━━━' . "\n\n"
+. '▼予約内容' . "\n"
 . '	------------------------------------------' . "\n"
-. '	ͽ����      ��%s' . "\n"
-. '	��˾�Ŀ���������%s��' . "\n"
-. '	���¡�����������%s' . "\n"
+. '	予約商品      ：%s' . "\n"
+. '	希望個数　　　：%s個' . "\n"
+. '	期限　　　　　：%s' . "\n"
 . '	------------------------------------------');
-define('TEXT_EMAIL_LINK', '���ξ��ʤξܺ٤ϡ������Υ�󥯤򥯥�å����뤫����󥯤�֥饦����' . "\n"
-. '���ԡ����ڡ����Ȥ��Ƥ���������' . "\n\n" . '%s' . "\n\n");
-define('TEXT_EMAIL_SIGNATURE', '[��Ϣ�������䤤��碌��]������������������������' . "\n"
-. '������� iimy' . "\n"
+define('TEXT_EMAIL_LINK', 'この商品の詳細は、下記のリンクをクリックするか、リンクをブラウザに' . "\n"
+. 'コピー＆ペーストしてください。' . "\n\n" . '%s' . "\n\n");
+define('TEXT_EMAIL_SIGNATURE', '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n"
+. '株式会社 iimy' . "\n"
 . 'support@gamemoney.cc' . "\n"
 . 'http://www.gamemoney.cc/' . "\n"
-. '����������������������������������������������');
+. '━━━━━━━━━━━━━━━━━━━━━━━');
 ?>

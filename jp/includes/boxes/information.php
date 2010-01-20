@@ -37,7 +37,7 @@
 		</li>
 		<li class="l_m_category_li">
 			<img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="3" alt="">
-			<?php echo '<a href="' . tep_href_link('reorder.php') . '">' . 'ºÆÇÛÃ£¥Õ¥©¡¼¥à' . '</a>' . "\n"; ?>
+			<?php echo '<a href="' . tep_href_link('reorder.php') . '">' . 'å†é…é”ãƒ•ã‚©ãƒ¼ãƒ ' . '</a>' . "\n"; ?>
 		</li>
 	</ul>
 </div>

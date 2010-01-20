@@ -1,11 +1,11 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://biglobe.corum.jp/" class="blank" rel='nofollow'><span>е│еыерекеєещедеєбб╕°╝░е╡еде╚</span></a></li>
+<li><a href="http://biglobe.corum.jp/" class="blank" rel='nofollow'><span>уВ│уГлуГауВкуГ│уГйуВдуГ│уААхЕмх╝ПуВ╡уВдуГИ</span></a></li>
 <li><a href="http://walker.xrie.com/" class="blank" rel='nofollow'><span>CORUM WALKER</span></a></li>
-<li><a href="http://www17.ocn.ne.jp/~handk/" class="blank" rel='nofollow'><span>е│еыерекеєещедеє ╜щ┐┤╝╘╗╪╞ю</span></a></li>
+<li><a href="http://www17.ocn.ne.jp/~handk/" class="blank" rel='nofollow'><span>уВ│уГлуГауВкуГ│уГйуВдуГ│ хИЭх┐ГшАЕцМЗхНЧ</span></a></li>
 <li><a href="http://www23.atwiki.jp/corum-wiki/" class="blank" rel='nofollow'><span>corum Wiki</span></a></li>
-<li><a href="http://fweb.midi.co.jp/~sugoroku/kakaku.html" class="blank" rel='nofollow'><span>CORUM ▓┴│╩┼ъ╣╞╖╟╝и╚─</span></a></li>
-<li><a href="http://www.geocities.co.jp/corum_icewall/" class="blank" rel='nofollow'><span>е│еыерекеєещедеє ещеєенеєе░е╟б╝е┐</span></a></li>
-<li><a href="http://corumsimulator.web.fc2.com/" class="blank" rel='nofollow'><span>е│еыер е╣енеые╖е▀ехеьб╝е┐</span></a></li>
-<li><a href="http://www.mmonavi.com/modules/game/54.html" class="blank"><span>CORUMONLINE е▓б╝ер╛Ё╩є</span></a></li>
+<li><a href="http://fweb.midi.co.jp/~sugoroku/kakaku.html" class="blank" rel='nofollow'><span>CORUM ф╛бца╝цКХчи┐цО▓чд║цЭ┐</span></a></li>
+<li><a href="http://www.geocities.co.jp/corum_icewall/" class="blank" rel='nofollow'><span>уВ│уГлуГауВкуГ│уГйуВдуГ│ уГйуГ│уВнуГ│уВ░уГЗуГ╝уВ┐</span></a></li>
+<li><a href="http://corumsimulator.web.fc2.com/" class="blank" rel='nofollow'><span>уВ│уГлуГа уВ╣уВнуГлуВ╖уГЯуГеуГмуГ╝уВ┐</span></a></li>
+<li><a href="http://www.mmonavi.com/modules/game/54.html" class="blank"><span>CORUMONLINE уВ▓уГ╝уГацГЕха▒</span></a></li>
 </ul>

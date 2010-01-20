@@ -60,7 +60,7 @@
   function tep_sanitize_string($string) {
     $string = ereg_replace(' +', ' ', trim($string));
 
-	return str_replace(array('<', '>'), array('¡ã', '¡ä'), $string);
+	return str_replace(array('<', '>'), array('ï¼œ', 'ï¼'), $string);
     //return preg_replace("/[<>]/", '_', $string);
   }
 
@@ -286,6 +286,7 @@
   function tep_get_country_name($country_id) {
     $country_array = tep_get_countries($country_id);
 
+    if (!isset($country_array['countries_name'])) $country_array['countries_name'] = NULL;
     return $country_array['countries_name'];
   }
 
@@ -450,17 +451,23 @@
     $address_format = tep_db_fetch_array($address_format_query);
 
     $company = tep_output_string_protected($address['company']);
+    if (!isset($address['firstname'])) $address['firstname'] = NULL;
     $firstname = tep_output_string_protected($address['firstname']);
+    if (!isset($address['lastname'])) $address['lastname'] = NULL;
     $lastname = tep_output_string_protected($address['lastname']);
 	
 	//add
+    if (!isset($address['lastname_f'])) $address['lastname_f'] = NULL;
+    if (!isset($address['firstname_f'])) $address['firstname_f'] = NULL;
 	$name_f = tep_output_string_protected($address['lastname_f']) . tep_output_string_protected($address['firstname_f']);
 	
     $street = tep_output_string_protected($address['street_address']);
     $suburb = tep_output_string_protected($address['suburb']);
     $city = tep_output_string_protected($address['city']);
     $state = tep_output_string_protected($address['state']);
+    if (!isset($address['country_id'])) $address['country_id'] = NULL;
     $country_id = $address['country_id'];
+    if (!isset($address['zone_id'])) $address['zone_id'] = NULL;
     $zone_id = $address['zone_id'];
     $postcode = tep_output_string_protected($address['postcode']);
     $zip = $postcode;
@@ -1078,6 +1085,7 @@
     for ($i=0, $n=sizeof($modules_array); $i<$n; $i++) {
       $class = substr($modules_array[$i], 0, strrpos($modules_array[$i], '.'));
 
+      if (!isset($GLOBALS[$class])) $GLOBALS[$class]=NULL;
       if (is_object($GLOBALS[$class])) {
         if ($GLOBALS[$class]->enabled) {
           $count++;
@@ -1264,7 +1272,7 @@
   }
 
 ////
-// ¾¦ÉÊID¤«¤é¥á¡¼¥«¡¼Ì¾¤ò¸Æ¤Ó½Ğ¤¹
+// å•†å“IDã‹ã‚‰ãƒ¡ãƒ¼ã‚«ãƒ¼åã‚’å‘¼ã³å‡ºã™
   function ds_tep_get_count_manufactures($manufacturers_id) {
 	  $manufactures_query = tep_db_query("select count(*) as total from ".TABLE_PRODUCTS." where manufacturers_id = '".$manufacturers_id."'");
 	  $manufactures = tep_db_fetch_array($manufactures_query);
@@ -1273,7 +1281,7 @@
   }
    
 ////
-// ¾¦ÉÊID¤«¤éÀâÌÀÊ¸¤ò¸Æ¤Ó½Ğ¤¹
+// å•†å“IDã‹ã‚‰èª¬æ˜æ–‡ã‚’å‘¼ã³å‡ºã™
   function ds_tep_get_description($products_id) {
 	  global $languages_id;
 	  $description_query = tep_db_query("select products_description from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$products_id."' and language_id = '".$languages_id."'");
@@ -1284,17 +1292,17 @@
   }
 
 ////
-// ¾¦ÉÊID¤«¤é¥á¡¼¥«¡¼Ì¾¤ò¸Æ¤Ó½Ğ¤¹
+// å•†å“IDã‹ã‚‰ãƒ¡ãƒ¼ã‚«ãƒ¼åã‚’å‘¼ã³å‡ºã™
   function ds_tep_get_manufactures($manufacturers_id, $return) {
 	
 	if($return == 1) {
-	  //¥á¡¼¥«¡¼Ì¾¤òÊÖ¤¹
+	  //ãƒ¡ãƒ¼ã‚«ãƒ¼åã‚’è¿”ã™
 	  $manufactures_query = tep_db_query("select manufacturers_name from ".TABLE_MANUFACTURERS." where manufacturers_id = '".$manufacturers_id."'");
 	  $manufactures = tep_db_fetch_array($manufactures_query);
 	  
 	  $mreturn = $manufactures['manufacturers_name'];
 	} elseif($return == 2) {
-	  //¥á¡¼¥«¡¼²èÁü
+	  //ãƒ¡ãƒ¼ã‚«ãƒ¼ç”»åƒ
 	  $manufactures_query = tep_db_query("select manufacturers_image from ".TABLE_MANUFACTURERS." where manufacturers_id = '".$manufacturers_id."'");
 	  $manufactures = tep_db_fetch_array($manufactures_query);
 	  
@@ -1306,7 +1314,7 @@
   
 ////
 ////
-// AjaxÍÑÊ¸»ú¥³¡¼¥ÉÊÑ´¹
+// Ajaxç”¨æ–‡å­—ã‚³ãƒ¼ãƒ‰å¤‰æ›
   function ds_convert_Ajax($string) {
     return mb_convert_encoding($string,'UTF-8','EUC-JP');
   }
@@ -1315,18 +1323,18 @@
     if (strlen($rate) > 50 or strlen(trim($rate)) < 2) {
       return '';
     }
-    if (trim($rate) == 'Å·¶õ¤Î±©ÌÓ5¸Ä¡¦¥¤¥ó¥¯¥ê¥¹¥¯¥í¡¼¥ë5¸Ä¤Î¥»¥Ã¥È'){
-    	return '(Å·¶õ¤Î±©ÌÓ'.number_format(strval(5*$cnt)).'¸Ä¡¦¥¤¥ó¥¯¥ê¥¹¥¯¥í¡¼¥ë'.number_format(strval(5*$cnt)).'¸Ä¤Î¥»¥Ã¥È)';
+    if (trim($rate) == 'å¤©ç©ºã®ç¾½æ¯›5å€‹ãƒ»ã‚¤ãƒ³ã‚¯ãƒªã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«5å€‹ã®ã‚»ãƒƒãƒˆ'){
+    	return '(å¤©ç©ºã®ç¾½æ¯›'.number_format(strval(5*$cnt)).'å€‹ãƒ»ã‚¤ãƒ³ã‚¯ãƒªã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«'.number_format(strval(5*$cnt)).'å€‹ã®ã‚»ãƒƒãƒˆ)';
     }
-    if (trim($rate) == '¥Í¥Ã¥È¥«¥Õ¥§1DAY¥Á¥±¥Ã¥È5Ëç¥»¥Ã¥È'){
-    	return '(¥Í¥Ã¥È¥«¥Õ¥§1DAY¥Á¥±¥Ã¥È'.number_format(strval(5*$cnt)).'Ëç¥»¥Ã¥È)';
+    if (trim($rate) == 'ãƒãƒƒãƒˆã‚«ãƒ•ã‚§1DAYãƒã‚±ãƒƒãƒˆ5æšã‚»ãƒƒãƒˆ'){
+    	return '(ãƒãƒƒãƒˆã‚«ãƒ•ã‚§1DAYãƒã‚±ãƒƒãƒˆ'.number_format(strval(5*$cnt)).'æšã‚»ãƒƒãƒˆ)';
     }
     $rate = str_replace(array(','), array(''), $rate);
-    if (preg_match('/^(.*)²¯(.*)Ëü(.*)$/', $rate, $out)) {
+    if (preg_match('/^(.*)å„„(.*)ä¸‡(.*)$/', $rate, $out)) {
       $rate = (($out[1] * 100000000) + ($out[2] * 10000)) . $out[3];
     }
-    $rate = str_replace(array('Ëü','²¯'), array('0000','00000000'), $rate);
-    if (preg_match('/^(\d+)(.*)¡Ê\d+.*¡Ë$/', $rate, $out)) {
+    $rate = str_replace(array('ä¸‡','å„„'), array('0000','00000000'), $rate);
+    if (preg_match('/^(\d+)(.*)ï¼ˆ\d+.*ï¼‰$/', $rate, $out)) {
       //print_r($out);
       return '(' . number_format($out[1] * $cnt) . $out[2] . ')';
     }
@@ -1347,19 +1355,19 @@
     if (strlen($rate) > 50 or strlen(trim($rate)) < 2) {
       return '';
     }
-    if (trim($rate) == 'Å·¶õ¤Î±©ÌÓ5¸Ä¡¦¥¤¥ó¥¯¥ê¥¹¥¯¥í¡¼¥ë5¸Ä¤Î¥»¥Ã¥È'){
-    	return 'Å·¶õ¤Î±©ÌÓ'.number_format(strval(5*$cnt)).'¸Ä¡¦¥¤¥ó¥¯¥ê¥¹¥¯¥í¡¼¥ë'.number_format(strval(5*$cnt)).'¸Ä¤Î¥»¥Ã¥È';
+    if (trim($rate) == 'å¤©ç©ºã®ç¾½æ¯›5å€‹ãƒ»ã‚¤ãƒ³ã‚¯ãƒªã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«5å€‹ã®ã‚»ãƒƒãƒˆ'){
+    	return 'å¤©ç©ºã®ç¾½æ¯›'.number_format(strval(5*$cnt)).'å€‹ãƒ»ã‚¤ãƒ³ã‚¯ãƒªã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«'.number_format(strval(5*$cnt)).'å€‹ã®ã‚»ãƒƒãƒˆ';
     }
-    if (trim($rate) == '¥Í¥Ã¥È¥«¥Õ¥§1DAY¥Á¥±¥Ã¥È5Ëç¥»¥Ã¥È'){
-    	return '¥Í¥Ã¥È¥«¥Õ¥§1DAY¥Á¥±¥Ã¥È'.number_format(strval(5*$cnt)).'Ëç¥»¥Ã¥È';
+    if (trim($rate) == 'ãƒãƒƒãƒˆã‚«ãƒ•ã‚§1DAYãƒã‚±ãƒƒãƒˆ5æšã‚»ãƒƒãƒˆ'){
+    	return 'ãƒãƒƒãƒˆã‚«ãƒ•ã‚§1DAYãƒã‚±ãƒƒãƒˆ'.number_format(strval(5*$cnt)).'æšã‚»ãƒƒãƒˆ';
     }
     
     $rate = str_replace(array(','), array(''), $rate);
-    if (preg_match('/^(.*)²¯(.*)Ëü(.*)$/', $rate, $out)) {
+    if (preg_match('/^(.*)å„„(.*)ä¸‡(.*)$/', $rate, $out)) {
       $rate = (($out[1] * 100000000) + ($out[2] * 10000)) . $out[3];
     }
-    $rate = str_replace(array('Ëü','²¯'), array('0000','00000000'), $rate);
-    if (preg_match('/^(\d+)(.*)¡Ê\d+.*¡Ë$/', $rate, $out)) {
+    $rate = str_replace(array('ä¸‡','å„„'), array('0000','00000000'), $rate);
+    if (preg_match('/^(\d+)(.*)ï¼ˆ\d+.*ï¼‰$/', $rate, $out)) {
       //print_r($out);
       return number_format($out[1] * $cnt) . $out[2];
     }
@@ -1384,6 +1392,7 @@
         'text' => $torihiki
       );
     }
+    if (!isset($torihikihouhou)) $torihikihouhou=NULL;
     return tep_draw_pull_down_menu('torihikihouhou', $torihiki_list, $torihikihouhou);
   }
   
@@ -1466,8 +1475,8 @@
 	    $categories[] = $category;
 	  }
 	}
-	//print_r($categories);
-	while(1){
+
+	if($categories){
 	  foreach($categories as $key => $category){
 	  	$j = 0;
 	    if(in_array($category['parent_id'], $categories_ids)){
@@ -1554,22 +1563,23 @@
          global $cPath_array, $cPath, $seo_tags, $seo_category, $seo_manufacturers;
          if (isset($cPath_array)) {
             if (isset($cPath) && tep_not_null($cPath)) {
-              $title       = $seo_category['categories_name'] . (tep_not_null($seo_category['categories_meta_text']) ? '-' . $seo_category['categories_meta_text'] . 'ÀìÌç¤ÎRMT¥¸¥ã¥Ã¥¯¥İ¥Ã¥È' : C_TITLE);
-              $keywords    = $seo_category['meta_keywords_' . ABBR_SITENAME];
-              $description = $seo_category['meta_description_' . ABBR_SITENAME];
+              $title       = $seo_category['categories_name'] . (tep_not_null($seo_category['categories_meta_text']) ? '-' . $seo_category['categories_meta_text'] . 'å°‚é–€ã®RMTã‚¸ãƒ£ãƒƒã‚¯ãƒãƒƒãƒˆ' : C_TITLE);
+              $keywords    = $seo_category['meta_keywords'];
+              $description = $seo_category['meta_description'];
             }
          } elseif ($HTTP_GET_VARS['manufacturers_id']) {
             $title = $seo_manufacturers['manufacturers_name'] . '-' . C_TITLE;
             // meta_tags
             $metas       = tep_get_metas_by_manufacturers_id(intval($HTTP_GET_VARS['manufacturers_id']));
             $keywords    = "RMT, " . $metas['keywords'];
-            $description = "RMTÁí¹ç¥µ¥¤¥È RMT¥¸¥ã¥Ã¥¯¥İ¥Ã¥È¤Ø¤è¤¦¤³¤½¡£" . $metas['description'];
+            $description = "RMTç·åˆã‚µã‚¤ãƒˆ RMTã‚¸ãƒ£ãƒƒã‚¯ãƒãƒƒãƒˆã¸ã‚ˆã†ã“ãã€‚" . $metas['description'];
          } else if ($HTTP_GET_VARS['tags_id']) {
            global $breadcrumb;
            $breadcrumb->add($seo_tags['tags_name'], tep_href_link(FILENAME_TAGS, 'tags_id=' . $seo_tags['tags_id']));
            $title = $seo_tags['tags_name'] . '-' . C_TITLE;
-           $keywords    = $seo_tags['tags_name' . ABBR_SITENAME];
-           $description = $seo_tags['tags_name' . ABBR_SITENAME];
+           if (!isset($seo_tags['tags_name'])) $seo_tags['tags_name'] = NULL;
+           $keywords    = $seo_tags['tags_name'];
+           $description = $seo_tags['tags_name'];
          }
          else {
            // no change
@@ -1594,14 +1604,14 @@
         break;
       case FILENAME_SPECIALS:
         $title       = HEADING_TITLE . ' ' . TITLE;
-        $keywords    = "RMT,·ã°Â,°Â¤¤,ÆÃ²Á,ÈÎÇä,Çã¼è,MMORPG,¥¢¥¤¥Æ¥à,¥¢¥«¥¦¥ó¥È,¥²¡¼¥àÄÌ²ß";
-        $description = "º£Æü¤Î¤ªÇã¤¤ÆÀ¥²¡¼¥à°ìÍ÷¡£RMT¤Î¤³¤È¤Ê¤éRMT¥¸¥ã¥Ã¥¯¥İ¥Ã¥È¤Ø";
+        $keywords    = "RMT,æ¿€å®‰,å®‰ã„,ç‰¹ä¾¡,è²©å£²,è²·å–,MMORPG,ã‚¢ã‚¤ãƒ†ãƒ ,ã‚¢ã‚«ã‚¦ãƒ³ãƒˆ,ã‚²ãƒ¼ãƒ é€šè²¨";
+        $description = "ä»Šæ—¥ã®ãŠè²·ã„å¾—ã‚²ãƒ¼ãƒ ä¸€è¦§ã€‚RMTã®ã“ã¨ãªã‚‰RMTã‚¸ãƒ£ãƒƒã‚¯ãƒãƒƒãƒˆã¸";
         break;
       case FILENAME_PREORDER:
         global $po_game_c, $product_info;
-        $title       = $po_game_c . 'ÀìÌç¤Î' . TITLE . ' - ' . $product_info['products_name'] . '¤òÍ½Ìó¤¹¤ë';
-        $keywords    = $po_game_c . ',' . $product_info['products_name'] . ", RMT,Í½Ìó,ÆÃ²Á,ÈÎÇä";
-        $description = $po_game_c . 'ÀìÌç¤Î' . TITLE . '¡£' . $product_info['products_name'] . '¤òÍ½Ìó¤¹¤ë¥Ú¡¼¥¸¤Ç¤¹¡£';
+        $title       = $po_game_c . 'å°‚é–€ã®' . TITLE . ' - ' . $product_info['products_name'] . 'ã‚’äºˆç´„ã™ã‚‹';
+        $keywords    = $po_game_c . ',' . $product_info['products_name'] . ", RMT,äºˆç´„,ç‰¹ä¾¡,è²©å£²";
+        $description = $po_game_c . 'å°‚é–€ã®' . TITLE . 'ã€‚' . $product_info['products_name'] . 'ã‚’äºˆç´„ã™ã‚‹ãƒšãƒ¼ã‚¸ã§ã™ã€‚';
         break;
       case FILENAME_LATEST_NEWS:
         global $breadcrumb, $latest_news;
@@ -1610,15 +1620,15 @@
       case FILENAME_MANUFACTURERS:
         global $breadcrumb;
         $title        = $breadcrumb->trail_title(' &raquo; ');
-        $keywords     = "RMT,¥¹¥¯¥¦¥§¥¢¡¦¥¨¥Ë¥Ã¥¯¥¹,NCJ,¥¬¥ó¥Û¡¼,NEXON,¥²¡¼¥à¥ª¥ó,¥³¡¼¥¨¡¼,¥»¥¬,ÈÎÇä,Çã¼è,¥¢¥¤¥Æ¥à,¥¢¥«¥¦¥ó¥È";
-        $description  = "¥²¡¼¥à¥á¡¼¥«¡¼¤Î°ìÍ÷¤Ç¤¹¡£¥¹¥¯¥¦¥§¥¢¡¦¥¨¥Ë¥Ã¥¯¥¹¡¢NCJ¡¢¥¬¥ó¥Û¡¼¤Ê¤É¡£RMT¤Î¤³¤È¤Ê¤éRMT¥¸¥ã¥Ã¥¯¥İ¥Ã¥È¤Ø";
+        $keywords     = "RMT,ã‚¹ã‚¯ã‚¦ã‚§ã‚¢ãƒ»ã‚¨ãƒ‹ãƒƒã‚¯ã‚¹,NCJ,ã‚¬ãƒ³ãƒ›ãƒ¼,NEXON,ã‚²ãƒ¼ãƒ ã‚ªãƒ³,ã‚³ãƒ¼ã‚¨ãƒ¼,ã‚»ã‚¬,è²©å£²,è²·å–,ã‚¢ã‚¤ãƒ†ãƒ ,ã‚¢ã‚«ã‚¦ãƒ³ãƒˆ";
+        $description  = "ã‚²ãƒ¼ãƒ ãƒ¡ãƒ¼ã‚«ãƒ¼ã®ä¸€è¦§ã§ã™ã€‚ã‚¹ã‚¯ã‚¦ã‚§ã‚¢ãƒ»ã‚¨ãƒ‹ãƒƒã‚¯ã‚¹ã€NCJã€ã‚¬ãƒ³ãƒ›ãƒ¼ãªã©ã€‚RMTã®ã“ã¨ãªã‚‰RMTã‚¸ãƒ£ãƒƒã‚¯ãƒãƒƒãƒˆã¸";
         break;
       case FILENAME_REORDER:
       case FILENAME_REORDER2:
         global $breadcrumb;
-        $title       = "RMT &raquo; ºÆÇÛÃ£¥Õ¥©¡¼¥à¡Ã" . TITLE;
-        $keywords    = "RMT,ºÆÇÛÃ£," . TITLE;
-        $description = "ºÆÇÛÃ£°ÍÍê¡£¼è°úÆü»ş¤ä¤ªÆÏ¤±Àè¤òÊÑ¹¹¤¹¤ë¥Ú¡¼¥¸¤Ç¤¹¡£";
+        $title       = "RMT &raquo; å†é…é”ãƒ•ã‚©ãƒ¼ãƒ ï½œ" . TITLE;
+        $keywords    = "RMT,å†é…é”," . TITLE;
+        $description = "å†é…é”ä¾é ¼ã€‚å–å¼•æ—¥æ™‚ã‚„ãŠå±Šã‘å…ˆã‚’å¤‰æ›´ã™ã‚‹ãƒšãƒ¼ã‚¸ã§ã™ã€‚";
         break;
       case FILENAME_SITEMAP:
       case FILENAME_PRESENT_SUCCESS:
@@ -1637,58 +1647,6 @@
       case FILENAME_PRODUCT_REVIEWS_WRITE:
       case FILENAME_BROWSER_IE6X:
       case FILENAME_CONTACT_US:
-      case FILENAME_AFFILIATE:
-      case FILENAME_AFFILIATE_ACCOUNT:
-      case FILENAME_AFFILIATE_API:
-      case FILENAME_AFFILIATE_BANNERS:
-      case FILENAME_AFFILIATE_BANNERS_BANNERS:
-      case FILENAME_AFFILIATE_BANNERS_BUILD:
-      case FILENAME_AFFILIATE_BANNERS_PRODUCT:
-      case FILENAME_AFFILIATE_BANNERS_TEXT:
-      case FILENAME_AFFILIATE_CONTACT:
-      case FILENAME_AFFILIATE_CLICKS:
-      case FILENAME_AFFILIATE_DETAILS:
-      case FILENAME_AFFILIATE_DETAILS_OK:
-      case FILENAME_AFFILIATE_FAQ:
-      case FILENAME_AFFILIATE_HELP_1:
-      case FILENAME_AFFILIATE_HELP_2:
-      case FILENAME_AFFILIATE_HELP_3:
-      case FILENAME_AFFILIATE_HELP_4:
-      case FILENAME_AFFILIATE_HELP_5:
-      case FILENAME_AFFILIATE_HELP_6:
-      case FILENAME_AFFILIATE_HELP_7:
-      case FILENAME_AFFILIATE_HELP_8:
-      case FILENAME_AFFILIATE_HELP_9:
-      case FILENAME_AFFILIATE_HELP_10:
-      case FILENAME_AFFILIATE_HELP_11:
-      case FILENAME_AFFILIATE_HELP_12:
-      case FILENAME_AFFILIATE_HELP_13:
-      case FILENAME_AFFILIATE_HELP_14:
-      case FILENAME_AFFILIATE_HELP_15:
-      case FILENAME_AFFILIATE_HELP_16:
-      case FILENAME_AFFILIATE_HELP_17:
-      case FILENAME_AFFILIATE_HELP_18:
-      case FILENAME_AFFILIATE_HELP_19:
-      case FILENAME_AFFILIATE_HELP_20:
-      case FILENAME_AFFILIATE_HELP_21:
-      case FILENAME_AFFILIATE_HELP_22:
-      case FILENAME_AFFILIATE_INFO:
-      case FILENAME_AFFILIATE_LOGOUT:
-      case FILENAME_AFFILIATE_NEWS:
-      case FILENAME_AFFILIATE_NEWSLETTER:
-      case FILENAME_AFFILIATE_PAYMENT:
-      case FILENAME_AFFILIATE_PASSWORD:
-      case FILENAME_AFFILIATE_PASSWORD_FORGOTTEN:
-      case FILENAME_AFFILIATE_REPORTS:
-      case FILENAME_AFFILIATE_SALES:
-      case FILENAME_AFFILIATE_SIGNUP:
-      case FILENAME_AFFILIATE_SIGNUP_OK:
-      case FILENAME_AFFILIATE_SUMMARY:
-      case FILENAME_AFFILIATE_SHOW_BANNER:
-      case FILENAME_AFFILIATE_TEMPLATE:
-      case FILENAME_AFFILIATE_TERMS:
-      case FILENAME_AFFILIATE_TERMS_POPUP:
-      case FILENAME_AFFILIATE_VALIDPRODUCTS:
         global $breadcrumb;
         $title = $breadcrumb->trail_title(' &raquo; ');
         break;

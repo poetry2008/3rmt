@@ -1,9 +1,9 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
-  define('MODULE_METASEO_PRESENT_CONFIRMATION_TEXT_TITLE', '¥×¥ì¥¼¥ó¥È±þÊç');
+  define('MODULE_METASEO_PRESENT_CONFIRMATION_TEXT_TITLE', 'ãƒ—ãƒ¬ã‚¼ãƒ³ãƒˆå¿œå‹Ÿ');
   define('MODULE_METASEO_PRESENT_CONFIRMATION_TEXT_EXPLAIN', 'EXPLAIN');
-  define('MODULE_METASEO_PRESENT_CONFIRMATION_TEXT_DESCRIPTION', '¥×¥ì¥¼¥ó¥È±þÊç¥Ú¡¼¥¸¤ÎSEO');
+  define('MODULE_METASEO_PRESENT_CONFIRMATION_TEXT_DESCRIPTION', 'ãƒ—ãƒ¬ã‚¼ãƒ³ãƒˆå¿œå‹Ÿãƒšãƒ¼ã‚¸ã®SEO');
 ?>

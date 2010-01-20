@@ -24,7 +24,7 @@
 	require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PREORDER);
 	
 	$product_info = tep_db_fetch_array($product_info_query);
-	$breadcrumb->add($product_info['products_name'] . '��ͽ�󤹤�', tep_href_link(FILENAME_PREORDER, 'products_id=' . $HTTP_GET_VARS['products_id']));
+	$breadcrumb->add($product_info['products_name'] . 'を予約する', tep_href_link(FILENAME_PREORDER, 'products_id=' . $HTTP_GET_VARS['products_id']));
 	$po_game_c = ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1);
 ?>
 <?php page_head();?>
@@ -53,10 +53,10 @@
 	} else {
 		//$product_info = tep_db_fetch_array($product_info_query);
 ?>
-			<h1 class="pageHeading"><?php echo $po_game_c . '&nbsp;' . $product_info['products_name']; ?>��ͽ�󤹤�</h1>
+			<h1 class="pageHeading"><?php echo $po_game_c . '&nbsp;' . $product_info['products_name']; ?>を予約する</h1>
 			<p>
-				RMT����å��ݥåȤǤϡ�<?php echo $po_game_c; ?>��ͽ�󥵡��ӥ���ԤäƤ���ޤ���<br>
-				����˾������̤����Һ߸ˤˤ�����ϡ�<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $HTTP_GET_VARS['products_id']) . '" target="_blank">' . $product_info['products_name']; ?></a>�פ򥯥�å����Ƥ���³������������
+				RMTジャックポットでは、<?php echo $po_game_c; ?>の予約サービスを行っております。<br>
+				ご希望する数量が弊社在庫にある場合は「<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $HTTP_GET_VARS['products_id']) . '" target="_blank">' . $product_info['products_name']; ?></a>」をクリックしてお手続きください。
 			</p>
 <?php
 		$error = false;
@@ -97,7 +97,7 @@
 			$email_body = sprintf(TEXT_EMAIL_INTRO, $from_name, STORE_NAME, $from_name, $from_email_address, $HTTP_POST_VARS['products_name'], $HTTP_POST_VARS['quantity'], $HTTP_POST_VARS['timelimit'], STORE_NAME) . "\n\n";
 		
 			if (tep_not_null($HTTP_POST_VARS['yourmessage'])) {
-				$email_body .= '������˾' . "\n" . $HTTP_POST_VARS['yourmessage'] . "\n\n";
+				$email_body .= '▼ご要望' . "\n" . $HTTP_POST_VARS['yourmessage'] . "\n\n";
 			}
 		
 			$email_body .= sprintf(TEXT_EMAIL_LINK, tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $HTTP_GET_VARS['products_id'])) . "\n\n" .
@@ -118,20 +118,20 @@
 			} else {
 				$your_name_prompt = tep_draw_input_field('yourname', (($fromname_error == true) ? $HTTP_POST_VARS['yourname'] : $HTTP_GET_VARS['yourname']));
 				if ($fromname_error == true) $your_name_prompt .= '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
-				$your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $HTTP_POST_VARS['from'] : $HTTP_GET_VARS['from']) , 'size="30"') . '&nbsp;&nbsp;�������å᡼�륢�ɥ쥹�侩';
+				$your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $HTTP_POST_VARS['from'] : $HTTP_GET_VARS['from']) , 'size="30"') . '&nbsp;&nbsp;携帯電話メールアドレス推奨';
 				if ($fromemail_error == true) $your_email_address_prompt .= ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
 			}
 ?>
 			<?php echo tep_draw_form('email_friend', tep_href_link(FILENAME_PREORDER, 'action=process&products_id=' . $HTTP_GET_VARS['products_id'])) . tep_draw_hidden_field('products_name', $product_info['products_name']); ?>
 
 			<p>
-				���Һ߸ˤˤ����ͤ�����˾������̤��ʤ����ϡ�������ɬ�׻�������Ϥξ太�������ߤ���������<br>
-				ͽ���³������λ�������ޤ��ȡ����ټ��衢�����ͤ�ͥ��Ū�ˤ����⤤�����ޤ���
+				弊社在庫にお客様がご希望する数量がない場合は、下記の必要事項をご入力の上お申し込みください。<br>
+				予約手続きが完了いたしますと、入荷次第、お客様へ優先的にご案内いたします。
 			</p>
-			<p class="red"><b>��ͽ�󡦤����Ѥ��̵���Ǥ��Τǡ������ڤˤ��䤤��碌����������</b></p>
+			<p class="red"><b>ご予約・お見積りは無料ですので、お気軽にお問い合わせください。</b></p>
 <?php
 			if($error == true) {
-				echo '<span class="errorText"><b>���Ϥ������Ƥ˸��꤬�������ޤ������������Ϥ��Ƥ���������</b></span><br><br>';
+				echo '<span class="errorText"><b>入力した内容に誤りがございます。正しく入力してください。</b></span><br><br>';
 			}
 ?>
 			<h3 class="formAreaTitle"><?php echo FORM_TITLE_CUSTOMER_DETAILS; ?></h3>
@@ -145,21 +145,22 @@
 					<td class="main"><?php echo $your_email_address_prompt; ?></td>
 				</tr>
 				<tr> 
-					<td colspan="2" class="main">������֤����¤��������ޤ������Ĥ���Ѥ��Ƥ���᡼�륢�ɥ쥹�����Ϥ���������</td>
+					<td colspan="2" class="main">お取り置き期限がございます。いつも使用しているメールアドレスをご入力ください。</td>
 				</tr>
 			</table><br>
 			<h3 class="formAreaTitle"><?php echo FORM_TITLE_FRIEND_DETAILS; ?></h3>
 			<table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
 				<tr>
-					<td class="main" valign="top">����̾:</td>
+					<td class="main" valign="top">商品名:</td>
 					<td class="main"><strong><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $HTTP_GET_VARS['products_id']) . '" target="_blank">' . $po_game_c . '&nbsp;/&nbsp;' . $product_info['products_name']; ?></a></strong></td>
 				</tr>
 				<tr>
 					<td class="main"><?php echo FORM_FIELD_FRIEND_NAME; ?></td>
 					<td class="main">
 <?php
+if (!isset($HTTP_GET_VARS['quantity'])) $HTTP_GET_VARS['quantity']=NULL;
 						echo tep_draw_input_field('quantity', (($quantity_error == true) ? $HTTP_POST_VARS['quantity'] : $HTTP_GET_VARS['quantity']) , 'size="7" maxlength="15"');
-						echo '&nbsp;&nbsp;��';
+						echo '&nbsp;&nbsp;個';
 			if ($quantity_error == true) echo '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
 ?>
 					</td>
@@ -168,14 +169,16 @@
 					<td class="main"><?php echo FORM_FIELD_FRIEND_EMAIL; ?></td>
 					<td class="main">
 <?php
+if (!isset($timelimit_error)) $timelimit_error=NULL;
+if (!isset($HTTP_GET_VARS['send_to'])) $HTTP_GET_VARS['send_to']=NULL;
 						echo tep_draw_input_field('timelimit', (($timelimit_error == true) ? $HTTP_POST_VARS['timelimit'] : $HTTP_GET_VARS['send_to']) , 'size="30" maxlength="50"');
-						echo '&nbsp;&nbsp;(��.&nbsp;20���ޤǤ��Ϥ����ߤ�����)';
+						echo '&nbsp;&nbsp;(例.&nbsp;20日までに届けて欲しい。)';
 ?>
 					</td>
 				</tr>
 			</table>
 			<br>
-			<h3 class="formAreaTitle"><?php echo $po_game_c; ?>�ˤĤ��ƤΤ���˾</h3>
+			<h3 class="formAreaTitle"><?php echo $po_game_c; ?>についてのご要望</h3>
 			<table width="100%" cellpadding="2" cellspacing="0" border="0" class="formArea">
 				<tr><td class="main"><?php echo tep_draw_textarea_field('yourmessage', 'soft', 40, 8);?></td></tr>
 			</table>

@@ -10,25 +10,25 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE_1', '¥ì¥¸');
-define('NAVBAR_TITLE_2', 'ÇÛÁ÷Àè¤ÎÊÑ¹¹');
+define('NAVBAR_TITLE_1', 'ãƒ¬ã‚¸');
+define('NAVBAR_TITLE_2', 'é…é€å…ˆã®å¤‰æ›´');
 
-define('HEADING_TITLE', '¤ªÆÏ¤±Àè¤òÁª¤ó¤Ç¤¯¤À¤µ¤¤');
+define('HEADING_TITLE', 'ãŠå±Šã‘å…ˆã‚’é¸ã‚“ã§ãã ã•ã„');
 
-define('TABLE_HEADING_SHIPPING_ADDRESS', '¤ªÆÏ¤±Àè');
-define('TEXT_SELECTED_SHIPPING_DESTINATION', '»ØÄê¤µ¤ì¤Æ¤¤¤ë¤ªÆÏ¤±Àè¤Ï¼¡¤ÎÄÌ¤ê¤Ç¤¹¡£');
-define('TITLE_SHIPPING_ADDRESS', '¤ªÆÏ¤±Àè:');
+define('TABLE_HEADING_SHIPPING_ADDRESS', 'ãŠå±Šã‘å…ˆ');
+define('TEXT_SELECTED_SHIPPING_DESTINATION', 'æŒ‡å®šã•ã‚Œã¦ã„ã‚‹ãŠå±Šã‘å…ˆã¯æ¬¡ã®é€šã‚Šã§ã™ã€‚');
+define('TITLE_SHIPPING_ADDRESS', 'ãŠå±Šã‘å…ˆ:');
 
-define('TABLE_HEADING_ADDRESS_BOOK_ENTRIES', '¥¢¥É¥ì¥¹Ä¢ÅÐÏ¿°ìÍ÷');
-define('TEXT_SELECT_OTHER_SHIPPING_DESTINATION', '¾¦ÉÊ¤Î¤ªÆÏ¤±Àè¤òÁª¤ó¤Ç¤¯¤À¤µ¤¤¡£');
-define('TITLE_PLEASE_SELECT', 'Áª¤ó¤Ç¤¯¤À¤µ¤¤');
+define('TABLE_HEADING_ADDRESS_BOOK_ENTRIES', 'ã‚¢ãƒ‰ãƒ¬ã‚¹å¸³ç™»éŒ²ä¸€è¦§');
+define('TEXT_SELECT_OTHER_SHIPPING_DESTINATION', 'å•†å“ã®ãŠå±Šã‘å…ˆã‚’é¸ã‚“ã§ãã ã•ã„ã€‚');
+define('TITLE_PLEASE_SELECT', 'é¸ã‚“ã§ãã ã•ã„');
 
-define('TABLE_HEADING_NEW_SHIPPING_ADDRESS', '¿·¤·¤¤¤ªÆÏ¤±Àè¤ÎºîÀ®');
-define('TEXT_CREATE_NEW_SHIPPING_ADDRESS', '²¼µ­¤Ë¿·¤·¤¤¤ªÆÏ¤±Àè¾ðÊó¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£');
+define('TABLE_HEADING_NEW_SHIPPING_ADDRESS', 'æ–°ã—ã„ãŠå±Šã‘å…ˆã®ä½œæˆ');
+define('TEXT_CREATE_NEW_SHIPPING_ADDRESS', 'ä¸‹è¨˜ã«æ–°ã—ã„ãŠå±Šã‘å…ˆæƒ…å ±ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚');
 
-define('TABLE_HEADING_NEW_SHIPPING_ADDRESS_PROBLEM', '¿·¤·¤¤¤ªÆÏ¤±Àè¤Ë¤ÏÌäÂê¤¬¤¢¤ê¤Þ¤¹');
-define('TEXT_NEW_SHIPPING_ADDRESS_PROBLEM', '¿·¤·¤¤¤ªÆÏ¤±Àè¤Ë¤ÏÌäÂê¤¬¤¢¤ê¤Þ¤¹¡£ÆâÍÆ¤ò³ÎÇ§¤·¤Æ¤¯¤À¤µ¤¤¡£');
+define('TABLE_HEADING_NEW_SHIPPING_ADDRESS_PROBLEM', 'æ–°ã—ã„ãŠå±Šã‘å…ˆã«ã¯å•é¡ŒãŒã‚ã‚Šã¾ã™');
+define('TEXT_NEW_SHIPPING_ADDRESS_PROBLEM', 'æ–°ã—ã„ãŠå±Šã‘å…ˆã«ã¯å•é¡ŒãŒã‚ã‚Šã¾ã™ã€‚å†…å®¹ã‚’ç¢ºèªã—ã¦ãã ã•ã„ã€‚');
 
-define('TITLE_CONTINUE_CHECKOUT_PROCEDURE', '¥ì¥¸¼êÂ³¤­¤òÂ³¤±¤ë¾ì¹ç¤Ï¼¡¤Ø¿Ê¤ó¤Ç¤¯¤À¤µ¤¤');
-define('TEXT_CONTINUE_CHECKOUT_PROCEDURE', 'ÇÛÁ÷ÊýË¡¤ÎÁªÂò¤Ø');
+define('TITLE_CONTINUE_CHECKOUT_PROCEDURE', 'ãƒ¬ã‚¸æ‰‹ç¶šãã‚’ç¶šã‘ã‚‹å ´åˆã¯æ¬¡ã¸é€²ã‚“ã§ãã ã•ã„');
+define('TEXT_CONTINUE_CHECKOUT_PROCEDURE', 'é…é€æ–¹æ³•ã®é¸æŠžã¸');
 ?>

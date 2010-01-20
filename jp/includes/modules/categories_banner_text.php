@@ -6,7 +6,7 @@
   Copyright (c) 2003 osCommerce
   Released under the GNU General Public License
 */
-$categories_tab_query1 = tep_db_query("select c.categories_id, c.parent_id, c.categories_status, c.categories_image, cd.categories_name, cd.categories_meta_text, cd.categories_image2 from categories c, categories_description cd where c.categories_id = cd.categories_id and c.parent_id = '0' and c.categories_status='0' and  cd.language_id='" . (int)$languages_id ."' order by sort_order");
+$categories_tab_query1 = tep_db_query("select c.categories_id, c.parent_id, c.categories_status, c.categories_image, cd.categories_name, cd.categories_meta_text, cd.categories_image2 from categories c, categories_description cd where c.categories_id = cd.categories_id and cd.site_id = '" . SITE_ID . "' and c.parent_id = '0' and c.categories_status='0' and  cd.language_id='" . (int)$languages_id ."' order by sort_order");
 ?>
 <!-- categories_banner_text //-->
 <h2 class="pageHeading">RMT GAME LIST</h2>
@@ -32,7 +32,6 @@ $categories_tab_query1 = tep_db_query("select c.categories_id, c.parent_id, c.ca
 			echo '</tr>' . "\n" . '<tr align="center">' . "\n";
 		} else {
 			echo '';
-			// echo '<td>'.tep_draw_separator('pixel_trans.gif', '18', '1').'</td>'."\n";
 		}  
 	} 
 ?>

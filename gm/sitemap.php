@@ -59,7 +59,7 @@
                 </li>
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_SHOPPING_CART) . '">' . PAGE_SHOPPING_CART . '</a>'; ?></li>
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL') . '">' . PAGE_CHECKOUT_SHIPPING . '</a>'; ?></li>
-                  <li><?php echo '<a href="' . tep_href_link('reorder.php') . '">∫∆«€√£•’•©°º•‡</a>'; ?></li>
+                  <li><?php echo '<a href="' . tep_href_link('reorder.php') . '">ÂÜçÈÖçÈÅî„Éï„Ç©„Éº„É†</a>'; ?></li>
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_ADVANCED_SEARCH) . '">' . PAGE_ADVANCED_SEARCH . '</a>'; ?></li>
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_NEW) . '">' . PAGE_PRODUCTS_NEW . '</a>'; ?></li>
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_SPECIALS) . '">' . PAGE_SPECIALS . '</a>'; ?></li>
@@ -74,7 +74,7 @@
 				<li class="subcategory_tree">
                 <ul>
 <?php
-  $contents_page = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where status = 1 order by sort_id ");
+  $contents_page = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where status = 1 and site_id = ".SITE_ID." order by sort_id ");
    while($result = tep_db_fetch_array($contents_page)){
              //echo '<li><a href="'.tep_href_link(FILENAME_PAGE,'pID='.$result['pID'],NONSSL).'">'.$result['heading_title'].'</a></li>'."\n" ;
      // add info romaji          

@@ -1,7 +1,7 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://moepic.com/beginners.html" class="blank" rel='nofollow'><span>Master of Epic ¸ø¼°¥µ¥¤¥È</span></a></li>
+<li><a href="http://moepic.com/beginners.html" class="blank" rel='nofollow'><span>Master of Epic å…¬å¼ã‚µã‚¤ãƒˆ</span></a></li>
 <li><a href="http://moewiki.usamimi.info/" class="blank" rel='nofollow'><span>MoE Wiki</span></a></li>
-<li><a href="http://www.geocities.jp/ya_8_05/pro-data.html" class="blank" rel='nofollow'><span>¥Þ¥¹¥¿¡¼¥ª¥Ö¥¨¥Ô¥Ã¥¯ À¸»º»ñÎÁ </span></a></li>
-<li><a href="http://www.mmonavi.com/modules/game/262.html" class="blank"><span>¥Þ¥¹¥¿¡¼¥ª¥Ö¥¨¥Ô¥Ã¥¯ Æ°ºî´Ä¶­</span></a></li>
+<li><a href="http://www.geocities.jp/ya_8_05/pro-data.html" class="blank" rel='nofollow'><span>ãƒžã‚¹ã‚¿ãƒ¼ã‚ªãƒ–ã‚¨ãƒ”ãƒƒã‚¯ ç”Ÿç”£è³‡æ–™ </span></a></li>
+<li><a href="http://www.mmonavi.com/modules/game/262.html" class="blank"><span>ãƒžã‚¹ã‚¿ãƒ¼ã‚ªãƒ–ã‚¨ãƒ”ãƒƒã‚¯ å‹•ä½œç’°å¢ƒ</span></a></li>
 </ul>

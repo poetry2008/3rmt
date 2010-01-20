@@ -42,23 +42,14 @@
     $col = 0;
     echo '<table width="100%"  border="0" cellspacing="0" cellpadding="0">';
     while ($new_products = tep_db_fetch_array($new_products_query)) {
-      $product_query = tep_db_query("select products_name, products_description_".ABBR_SITENAME." from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . $new_products['products_id'] . "' and language_id = '" . $languages_id . "'");
+      $product_query = tep_db_query("select products_name, products_description from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . $new_products['products_id'] . "' and language_id = '" . $languages_id . "'");
       $product_details = tep_db_fetch_array($product_query);
   
   
       $new_products['products_name'] = $product_details['products_name'];
-      // edit 2009.5.14 maker
-      //$description_array = explode("|-#-|", $product_details['products_description_'.ABBR_SITENAME]); //maker
-      //$description_view = strip_tags(mb_substr($description_array[0],0,110));
-      $description_view = strip_tags(mb_substr($product_details['products_description_'.ABBR_SITENAME],0,110));
-  
-      //$new_products['products_description'] = strip_tags(mb_substr ($product_details['products_description'],0,125));
-  
+      $description_view = strip_tags(mb_substr($product_details['products_description'],0,110));
+
       $row ++;
-      // if (($row/2) == floor($row/2)) { $margin = 'style="margin-right:20px;"'; }
-//      $info_box_contents[$row][$col] = array('align' => 'center',
-//                                             'params' => 'class="smallText" width="33%" valign="top"',
-//                                             'text' => '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES . $new_products['products_image'], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"') . '</a><br><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">' . $new_products['products_name'] . '</a><br>' . $currencies->display_price($new_products['products_price'], tep_get_tax_rate($new_products['products_tax_class_id'])));
 ?>
   <tr>
     <td>
@@ -79,17 +70,8 @@
             <div class="dot">&nbsp;</div></td>
           </tr>      
 <?php      
-  /*   if (($row/2) == floor($row/2)) {
-    echo '</tr>'."\n".'<tr>' ;
-    } else {
-    echo '<td>'.tep_draw_separator('pixel_trans.gif', '10', '1').'</td>'."\n";
-    }  
-    */
   }
-
-    //new contentBox($info_box_contents);
   echo '</table>' ;
-  
   }
 ?>
 <!-- new_products_eof //-->

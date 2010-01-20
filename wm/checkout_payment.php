@@ -138,7 +138,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
         <div class="comment"> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
 <?php
-  //ÈÎÇä³«»Ï
+  //è²©å£²é–‹å§‹
   $hanbai_sale = $cart->get_products();
   $cnt=0;
   for ($i=0, $n=sizeof($hanbai_sale); $i<$n; $i++) {
@@ -287,9 +287,9 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
             </tr> 
 			
 <?php
-  }//ÈÎÇä½ªÎ»
+  }//è²©å£²çµ‚äº†
   else {
-    # ¶¯À©Åª¤ËÇã¤¤¼è¤ê¥â¥¸¥å¡¼¥ë¤òÁªÂòºÑ¤ß¤Ë¤¹¤ë
+    # å¼·åˆ¶çš„ã«è²·ã„å–ã‚Šãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã‚’é¸æŠžæ¸ˆã¿ã«ã™ã‚‹
 	echo '<input type="hidden" name="payment" value="buying">';
   }
 
@@ -312,6 +312,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
                           <td>
 
 <?php
+if (!isset($bank_kamoku)) $bank_kamoku = NULL; //del notice
   switch($bank_kamoku) {
     case TEXT_BANK_SELECT_KAMOKU_F:
 	default:
@@ -393,7 +394,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
             </tr> 
 <?php
   } else {
-    # Çã¤¤¼è¤ê¾¦ÉÊ¤¬Ìµ¤«¤Ã¤¿¾ì¹ç
+    # è²·ã„å–ã‚Šå•†å“ãŒç„¡ã‹ã£ãŸå ´åˆ
 	tep_session_unregister('bank_name');
 	tep_session_unregister('bank_shiten');
 	tep_session_unregister('bank_kamoku');

@@ -1,6 +1,6 @@
 @charset "Shift_JIS";
 
-/* ‘S‘Ì\‘¢
+/* å…¨ä½“æ§‹é€ 
 ---------------------------------------------------- */
 body {
     font-family:Arial,sans-serif;
@@ -118,7 +118,7 @@ dd {
 	padding:0px;
 }
 
-/* ƒwƒbƒ_
+/* ãƒ˜ãƒƒãƒ€
 ---------------------------------------------------- */
 #header {
 	width:790px;
@@ -133,7 +133,7 @@ dd {
 text-indent:-10000!important;
 }
 
-/* ƒwƒbƒ_ƒƒjƒ…[
+/* ãƒ˜ãƒƒãƒ€ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 ---------------------------------------------------- */
 #h_menubar {
 	width:790px;
@@ -155,7 +155,7 @@ text-indent:-10000!important;
 	float:right;
 }
 
-/* ƒƒCƒ“
+/* ãƒ¡ã‚¤ãƒ³
 ---------------------------------------------------- */
 #main {
 	width:790px;
@@ -167,7 +167,7 @@ text-indent:-10000!important;
 
 }
 
-/* ¶ƒƒjƒ…[
+/* å·¦ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 ---------------------------------------------------- */
 #l_menu {
 	font-size:10px;
@@ -223,7 +223,7 @@ text-indent:-10000!important;
 	background-image:url("../img/l_menu_redeliver_r.jpg");
 }
 
-/* ‰Eƒƒjƒ…[
+/* å³ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 ---------------------------------------------------- */
 #r_menu {
 	font-size:10px;
@@ -275,7 +275,7 @@ text-indent:-10000!important;
 	color:#ff6633;
 }
 
-/* ƒRƒ“ƒeƒ“ƒc
+/* ã‚³ãƒ³ãƒ†ãƒ³ãƒ„
 ---------------------------------------------------- */
 #content {
 	font-size:14px;
@@ -335,7 +335,7 @@ text-indent:-10000!important;
 	text-align:right;
 }
 
-/* ƒtƒbƒ^[
+/* ãƒ•ãƒƒã‚¿ãƒ¼
 ---------------------------------------------------- */
 #footer {
 	clear:both;
@@ -360,7 +360,7 @@ text-indent:-10000!important;
 	padding-left:0px; padding-right:0px; padding-top:45px; padding-bottom:0px
 }
 
-/* ‰æ‘œ
+/* ç”»åƒ
 ---------------------------------------------------- */
 .left_10 {
 	margin-left:10px;
@@ -445,7 +445,7 @@ table.table_simple th {
 	text-align:center;
 }
 
-/* ƒTƒCƒgƒ}ƒbƒv
+/* ã‚µã‚¤ãƒˆãƒãƒƒãƒ—
 ---------------------------------------------------- */
 .second_list {
 	list-style-type:none;
@@ -459,7 +459,7 @@ table.table_simple th {
 	list-style-image:url("../img/q.gif");
 }
 
-/* ƒ[ƒ‹ƒ}ƒKƒWƒ“
+/* ãƒ¡ãƒ¼ãƒ«ãƒã‚¬ã‚¸ãƒ³
 ---------------------------------------------------- */
 .magazine {
     font-family:monospace;

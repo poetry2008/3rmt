@@ -2,26 +2,26 @@
   <tr>
     <td>
 	  <a href="" onClick="btchange('t1'); return false;">
-	    <img src="images/design/top_tab/on/tab-1.jpg" alt="¿·Ãå¾ðÊó" name="t_oimg1" width="129" height="35" border="0" id="t_oimg1" style="display:none">
+	    <img src="images/design/top_tab/on/tab-1.jpg" alt="æ–°ç€æƒ…å ±" name="t_oimg1" width="129" height="35" border="0" id="t_oimg1" style="display:none">
 	    <img id="t_img1" src="images/design/top_tab/tab-1.jpg" width="129" height="35" border="0" style="display:block">
 	  </a>
 	</td>
     <td>
 	  <a href="" onClick="btchange('t2'); return false;">
 	    <img id="t_oimg2" src="images/design/top_tab/on/tab-2.jpg" width="120" height="35" border="0" style="display:block">
-		<img src="images/design/top_tab/tab-2.jpg" alt="¿·Ãå¾¦ÉÊ" width="120" height="35" border="0" id="t_img2" style="display:none">
+		<img src="images/design/top_tab/tab-2.jpg" alt="æ–°ç€å•†å“" width="120" height="35" border="0" id="t_img2" style="display:none">
 	  </a>
 	</td>
     <td>
 	  <a href="" onClick="btchange('t3'); return false;">
 	    <img id="t_oimg3" src="images/design/top_tab/on/tab-3.jpg" width="122" height="35" border="0" style="display:none">
-	    <img src="images/design/top_tab/tab-3.jpg" alt="¾¦ÉÊ¥ì¥Ó¥å¡¼" width="122" height="35" border="0" id="t_img3" style="display:block">
+	    <img src="images/design/top_tab/tab-3.jpg" alt="å•†å“ãƒ¬ãƒ“ãƒ¥ãƒ¼" width="122" height="35" border="0" id="t_img3" style="display:block">
 	  </a>
 	</td>
     <td>
 	  <a href="" onClick="btchange('t4'); return false;">
 	    <img id="t_oimg4" src="images/design/top_tab/on/tab-4.jpg" width="129" height="35" border="0" style="display:none">
-	    <img src="images/design/top_tab/tab-4.jpg" alt="¥ª¥¹¥¹¥á¾¦ÉÊ" width="129" height="35" border="0" id="t_img4" style="display:block">
+	    <img src="images/design/top_tab/tab-4.jpg" alt="ã‚ªã‚¹ã‚¹ãƒ¡å•†å“" width="129" height="35" border="0" id="t_img4" style="display:block">
 	  </a>
 	</td>
   </tr>

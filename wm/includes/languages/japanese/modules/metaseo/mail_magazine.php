@@ -1,9 +1,9 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
-  define('MODULE_METASEO_MAIL_MAGAZINE_TEXT_TITLE', '¥á¡¼¥ë¥Þ¥¬¥¸¥ó');
+  define('MODULE_METASEO_MAIL_MAGAZINE_TEXT_TITLE', 'ãƒ¡ãƒ¼ãƒ«ãƒžã‚¬ã‚¸ãƒ³');
   define('MODULE_METASEO_MAIL_MAGAZINE_TEXT_EXPLAIN', 'EXPLAIN');
-  define('MODULE_METASEO_MAIL_MAGAZINE_TEXT_DESCRIPTION', '¥á¡¼¥ë¥Þ¥¬¥¸¥ó¥Ú¡¼¥¸¤ÎSEO');
+  define('MODULE_METASEO_MAIL_MAGAZINE_TEXT_DESCRIPTION', 'ãƒ¡ãƒ¼ãƒ«ãƒžã‚¬ã‚¸ãƒ³ãƒšãƒ¼ã‚¸ã®SEO');
 ?>

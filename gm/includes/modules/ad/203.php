@@ -1,11 +1,11 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://www.ro2.jp/" class="blank" rel='nofollow'><span>RO2 ╕°╝░е╡еде╚</span></a></li>
-<li><a href="http://ro2.ikaduchi.com/" class="blank" rel='nofollow'><span>еще░е╩еэепекеєещедеє2 ╣╢╬м╛Ё╩є</span></a></li>
-<li><a href="http://www.mmo-station.com/mmo/ro2/" class="blank" rel='nofollow'><span>еще░е╩еэепекеєещедеє2 ┴э╣ч╛Ё╩єбж╣╢╬ме╡еде╚</span></a></li>
-<li><a href="http://enif.mmobbs.com/ragnarok2/" class="blank" rel='nofollow'><span>Ragnarok2╚─бўMMOBBS </span></a></li>
-<li><a href="http://ro2data.tank.jp/web/" class="blank" rel='nofollow'><span>Ro2 Dataе╡еде╚</span></a></li>
-<li><a href="http://www28.atwiki.jp/ro2bot/" class="blank" rel='nofollow'><span>еще░е╩еэепекеєещедеє2 ╣╢╬мwiki</span></a></li>
-<li><a href="http://ro2enjoy.com/wiki2/" class="blank" rel='nofollow'><span>еще░е╩еэепекеєещедеє2 ╛Ё╩є╢ж═не╒ебеєе╡еде╚</span></a></li>
-<li><a href="http://www.hotgame.co.jp/" class="blank"><span>RO2 еоеые╔╖╟╝и╚─</span></a></li>
+<li><a href="http://www.ro2.jp/" class="blank" rel='nofollow'><span>RO2 хЕмх╝ПуВ╡уВдуГИ</span></a></li>
+<li><a href="http://ro2.ikaduchi.com/" class="blank" rel='nofollow'><span>уГйуВ░уГКуГнуВпуВкуГ│уГйуВдуГ│2 цФ╗чХецГЕха▒</span></a></li>
+<li><a href="http://www.mmo-station.com/mmo/ro2/" class="blank" rel='nofollow'><span>уГйуВ░уГКуГнуВпуВкуГ│уГйуВдуГ│2 ч╖ПхРИцГЕха▒уГ╗цФ╗чХеуВ╡уВдуГИ</span></a></li>
+<li><a href="http://enif.mmobbs.com/ragnarok2/" class="blank" rel='nofollow'><span>Ragnarok2цЭ┐я╝аMMOBBS </span></a></li>
+<li><a href="http://ro2data.tank.jp/web/" class="blank" rel='nofollow'><span>Ro2 DataуВ╡уВдуГИ</span></a></li>
+<li><a href="http://www28.atwiki.jp/ro2bot/" class="blank" rel='nofollow'><span>уГйуВ░уГКуГнуВпуВкуГ│уГйуВдуГ│2 цФ╗чХеwiki</span></a></li>
+<li><a href="http://ro2enjoy.com/wiki2/" class="blank" rel='nofollow'><span>уГйуВ░уГКуГнуВпуВкуГ│уГйуВдуГ│2 цГЕха▒хЕ▒цЬЙуГХуВбуГ│уВ╡уВдуГИ</span></a></li>
+<li><a href="http://www.hotgame.co.jp/" class="blank"><span>RO2 уВоуГлуГЙцО▓чд║цЭ┐</span></a></li>
 </ul>

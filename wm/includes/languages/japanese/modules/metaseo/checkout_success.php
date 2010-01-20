@@ -1,9 +1,9 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
-  define('MODULE_METASEO_CHECKOUT_SUCCESS_TEXT_TITLE', '¤´ÃíÊ¸¤Î¼êÂ³¤­¤¬´°Î»¤·¤Þ¤·¤¿');
+  define('MODULE_METASEO_CHECKOUT_SUCCESS_TEXT_TITLE', 'ã”æ³¨æ–‡ã®æ‰‹ç¶šããŒå®Œäº†ã—ã¾ã—ãŸ');
   define('MODULE_METASEO_CHECKOUT_SUCCESS_TEXT_EXPLAIN', 'EXPLAIN');
-  define('MODULE_METASEO_CHECKOUT_SUCCESS_TEXT_DESCRIPTION', '¤´ÃíÊ¸¤Î¼êÂ³¤­¤¬´°Î»¤·¤Þ¤·¤¿¥Ú¡¼¥¸¤ÎSEO');
+  define('MODULE_METASEO_CHECKOUT_SUCCESS_TEXT_DESCRIPTION', 'ã”æ³¨æ–‡ã®æ‰‹ç¶šããŒå®Œäº†ã—ã¾ã—ãŸãƒšãƒ¼ã‚¸ã®SEO');
 ?>

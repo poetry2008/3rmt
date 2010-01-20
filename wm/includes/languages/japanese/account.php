@@ -10,10 +10,10 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE', '¤ªµÒÍÍ¾ðÊó');//***¥¿¥¤¥È¥ë1
-define('HEADING_TITLE', '¤ªµÒÍÍ¾ðÊó');//¥¿¥¤¥È¥ë2
+define('NAVBAR_TITLE', 'ãŠå®¢æ§˜æƒ…å ±');//***ã‚¿ã‚¤ãƒˆãƒ«1
+define('HEADING_TITLE', 'ãŠå®¢æ§˜æƒ…å ±');//ã‚¿ã‚¤ãƒˆãƒ«2
 
 //Add Point System
-define('TEXT_POINT_NOW', '¥Ý¥¤¥ó¥È');
-define('TEXT_POINT_ADD', '¸½ºß¤Î³ÍÆÀ¥Ý¥¤¥ó¥È:');
+define('TEXT_POINT_NOW', 'ãƒã‚¤ãƒ³ãƒˆ');
+define('TEXT_POINT_ADD', 'ç¾åœ¨ã®ç²å¾—ãƒã‚¤ãƒ³ãƒˆ:');
 ?>

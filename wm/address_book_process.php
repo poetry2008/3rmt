@@ -41,7 +41,7 @@
     $process = true;
     $error = false;
 
-    // tamura 2002/12/30 ¡ÖÁ´³Ñ¡×±Ñ¿ô»ú¤ò¡ÖÈ¾³Ñ¡×¤ËÊÑ´¹
+    // tamura 2002/12/30 ã€Œå…¨è§’ã€è‹±æ•°å­—ã‚’ã€ŒåŠè§’ã€ã«å¤‰æ›
     $HTTP_POST_VARS['postcode'] = tep_an_zen_to_han($HTTP_POST_VARS['postcode']);
 
     $gender = tep_db_prepare_input($HTTP_POST_VARS['gender']);

@@ -13,23 +13,23 @@
 	
 	$mail_text = '';
 	
-	//product_id¤ò¼èÆÀ¤·¤¿¾ì¹ç¾¦ÉÊÌ¾¤ò¸Æ¤Ó½Ğ¤¹
+	//product_idã‚’å–å¾—ã—ãŸå ´åˆå•†å“åã‚’å‘¼ã³å‡ºã™
 	if (isset($HTTP_GET_VARS['products_id'])) {
 		$product_info_query = tep_db_query("select pd.products_name from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "'");
 		$product_info = tep_db_fetch_array($product_info_query);
 	}
 	
-	//¡Ö¾¦ÉÊÌ¾¡×¤Ë¤Ä¤¤¤Æ¤Î¤ªÌä¤¤¹ç¤ï¤»
-	define('HEADING_TITLE_CONTACT', '¤Ë¤Ä¤¤¤Æ¤Î¤ªÌä¤¤¹ç¤ï¤»');
-	define('TITLE_CONTACT_END', '¤Ë¤Ä¤¤¤Æ');
+	//ã€Œå•†å“åã€ã«ã¤ã„ã¦ã®ãŠå•ã„åˆã‚ã›
+	define('HEADING_TITLE_CONTACT', 'ã«ã¤ã„ã¦ã®ãŠå•ã„åˆã‚ã›');
+	define('TITLE_CONTACT_END', 'ã«ã¤ã„ã¦');
 	define('EMAIL_SEPARATOR', '---------------------------------------------------------------------------' . "\n\n");
 	
 	
 	$error = false;
 	if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'send')) {
 		if (tep_validate_email(trim($HTTP_POST_VARS['email']))) {
-			$mail_text .= $HTTP_POST_VARS['name'] . ' ÍÍ¤«¤é¤ªÌä¤¤¹ç¤ï¤»¤ò¾µ¤ê¤Ş¤·¤¿¡£' . "\n";
-			$mail_text .= '¥á¡¼¥ë¥¢¥É¥ì¥¹¡§' . $HTTP_POST_VARS['email'] . "\n\n";
+			$mail_text .= $HTTP_POST_VARS['name'] . ' æ§˜ã‹ã‚‰ãŠå•ã„åˆã‚ã›ã‚’æ‰¿ã‚Šã¾ã—ãŸã€‚' . "\n";
+			$mail_text .= 'ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ï¼š' . $HTTP_POST_VARS['email'] . "\n\n";
 			$mail_text .= $HTTP_POST_VARS['enquiry'];
 			tep_mail(STORE_OWNER, SUPPORT_EMAIL_ADDRESS, EMAIL_SUBJECT, nl2br($mail_text), $HTTP_POST_VARS['name'], $HTTP_POST_VARS['email']);
 			tep_redirect(tep_href_link(FILENAME_CONTACT_US, 'action=success'));
@@ -38,11 +38,11 @@
 		}
 	}
 	
-	//prouct_id¤ò¼èÆÀ¤·¤¿¾ì¹ç¤Î½èÍı¡ÊÂêÌ¾¤ò¾¦ÉÊÌ¾¤Ë¤Ä¤¤¤Æ¤Î¤ªÌä¤¤¹ç¤ï¤»¤ËÊÑ¹¹¡Ë
+	//prouct_idã‚’å–å¾—ã—ãŸå ´åˆã®å‡¦ç†ï¼ˆé¡Œåã‚’å•†å“åã«ã¤ã„ã¦ã®ãŠå•ã„åˆã‚ã›ã«å¤‰æ›´ï¼‰
 	if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'send_p')) {
 		if (tep_validate_email(trim($HTTP_POST_VARS['email']))) {
-			$mail_text .= $HTTP_POST_VARS['name'] . ' ÍÍ¤«¤é¤ªÌä¤¤¹ç¤ï¤»¤ò¾µ¤ê¤Ş¤·¤¿¡£' . "\n";
-			$mail_text .= '¥á¡¼¥ë¥¢¥É¥ì¥¹¡§' . $HTTP_POST_VARS['email'] . "\n\n";
+			$mail_text .= $HTTP_POST_VARS['name'] . ' æ§˜ã‹ã‚‰ãŠå•ã„åˆã‚ã›ã‚’æ‰¿ã‚Šã¾ã—ãŸã€‚' . "\n";
+			$mail_text .= 'ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ï¼š' . $HTTP_POST_VARS['email'] . "\n\n";
 			$mail_text .= $HTTP_POST_VARS['enquiry'];
 			tep_mail(STORE_OWNER, SUPPORT_EMAIL_ADDRESS, $HTTP_POST_VARS['email_title'] . HEADING_TITLE_CONTACT, nl2br($mail_text), $HTTP_POST_VARS['name'], $HTTP_POST_VARS['email']);
 			tep_redirect(tep_href_link(FILENAME_CONTACT_US, 'action=success'));
@@ -89,7 +89,7 @@
 									</tr> 
 									<tr> 
 										<td align="right"><br> 
-										<a href="<?php echo tep_href_link(FILENAME_DEFAULT); ?>"><?php echo tep_image_button('button_send_mail_ok.gif', '´°Î»'); ?></a></td> 
+										<a href="<?php echo tep_href_link(FILENAME_DEFAULT); ?>"><?php echo tep_image_button('button_send_mail_ok.gif', 'å®Œäº†'); ?></a></td> 
 									</tr> 
 								</table>
 							</td> 
@@ -101,35 +101,42 @@
 							<td>
 <?php 
 	if (isset($HTTP_GET_VARS['products_id'])) {
-		//product_id¤ò¼èÆÀ¤·¤¿¾ì¹ç¤Î¥Õ¥©¡¼¥à¤Î¥¢¥¯¥·¥ç¥óÀè
+		//product_idã‚’å–å¾—ã—ãŸå ´åˆã®ãƒ•ã‚©ãƒ¼ãƒ ã®ã‚¢ã‚¯ã‚·ãƒ§ãƒ³å…ˆ
 		echo tep_draw_form('contact_us', tep_href_link(FILENAME_CONTACT_US, 'action=send_p'));
 	} else {
-		//ÄÌ¾ï
+		//é€šå¸¸
 		echo tep_draw_form('contact_us', tep_href_link(FILENAME_CONTACT_US, 'action=send'));
 	}
 ?> 
 								<table border="0" width="100%" cellspacing="0" cellpadding="2"> 
 									<tr> 
-										<td class="main"><strong><?php echo ENTRY_NAME; ?></strong><br><?php echo tep_draw_input_field('name', ($error ? $HTTP_POST_VARS['name'] : (($language == 'japanese') ? ($last_name . ' ' . $first_name) : ($first_name . ' ' . $last_name))), 'class="input_text"'); // 2003.03.10 Edit Japanese osCommerce ?></td> 
+										<td class="main"><strong><?php echo ENTRY_NAME; ?></strong><br><?php 
+                    if (!isset($first_name)) $first_name = NULL;
+                    if (!isset($last_name)) $last_name = NULL;
+                    echo tep_draw_input_field('name', ($error ? $HTTP_POST_VARS['name'] : (($language == 'japanese') ? ($last_name . ' ' . $first_name) : ($first_name . ' ' . $last_name))), 'class="input_text"'); // 2003.03.10 Edit Japanese osCommerce ?></td> 
 									</tr> 
 									<tr> 
-										<td class="main"><strong><?php echo ENTRY_EMAIL; ?></strong><br><?php echo tep_draw_input_field('email', ($error ? $HTTP_POST_VARS['email'] : $email_address), 'class="input_text"'); if ($error) echo ENTRY_EMAIL_ADDRESS_CHECK_ERROR; ?></td> 
+										<td class="main"><strong><?php echo ENTRY_EMAIL; ?></strong><br><?php
+                    if (!isset($email_address)) $email_address = NULL;
+                    echo tep_draw_input_field('email', ($error ? $HTTP_POST_VARS['email'] : $email_address), 'class="input_text"'); if ($error) echo ENTRY_EMAIL_ADDRESS_CHECK_ERROR; ?></td> 
 									</tr> 
 									<tr> 
 										<td class="main"><strong><?php echo ENTRY_ENQUIRY; ?></strong><?php 
 	if (isset($HTTP_GET_VARS['products_id'])) {
-		$product_name = $product_info['products_name']; //ÊÑ¿ô¤Ë¾¦ÉÊÌ¾¤ò³ÊÇ¼
-		//product_id¤ò¼èÆÀ¤·¤¿¾ì¹ç
+		$product_name = $product_info['products_name']; //å¤‰æ•°ã«å•†å“åã‚’æ ¼ç´
+		//product_idã‚’å–å¾—ã—ãŸå ´åˆ
 		echo tep_draw_hidden_field('email_title', $product_name); 
 	} 
 ?> </td> 
 									</tr> 
 
 									<tr> 
-										<td><?php echo tep_draw_textarea_field('enquiry', 'soft', 50, 15, '¢£¡¡' . $product_name . TITLE_CONTACT_END . "\n" . EMAIL_SEPARATOR); ?></td> 
+										<td><?php 
+                    if (!isset($product_name)) $product_name= NULL;
+                    echo tep_draw_textarea_field('enquiry', 'soft', 50, 15, 'â– ã€€' . $product_name . TITLE_CONTACT_END . "\n" . EMAIL_SEPARATOR); ?></td> 
 									</tr> 
 									<tr> 
-										<td class="main" align="right"><br><?php echo tep_image_submit('button_send_mail.gif', 'Á÷¿®'); ?></td> 
+										<td class="main" align="right"><br><?php echo tep_image_submit('button_send_mail.gif', 'é€ä¿¡'); ?></td> 
 									</tr> 
 								</table> 
 								</form>

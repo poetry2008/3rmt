@@ -1,7 +1,7 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://ec.gamania.co.jp/entrance/default.aspx" class="blank" rel='nofollow'><span>еие┐б╝е╩еыелеке╣NEO ╕°╝░HP</span></a></li>
-<li><a href="http://prin2.hp.infoseek.co.jp/" class="blank" rel='nofollow'><span>еие┐б╝е╩еыелеке╣ ╟ю╩к┤█</span></a></li>
-<li><a href="http://ecforum.jpn.org/" class="blank" rel='nofollow'><span>EternalChaosNEO е│е▀ехе╦е╞ег</span></a></li>
-<li><a href="http://www.mmonavi.com/modules/game/240.html" class="blank"><span>еие┐б╝е╩еыелеке╣ е▓б╝ер╛Ё╩є</span></a></li>
+<li><a href="http://ec.gamania.co.jp/entrance/default.aspx" class="blank" rel='nofollow'><span>уВиуВ┐уГ╝уГКуГлуВлуВкуВ╣NEO хЕмх╝ПHP</span></a></li>
+<li><a href="http://prin2.hp.infoseek.co.jp/" class="blank" rel='nofollow'><span>уВиуВ┐уГ╝уГКуГлуВлуВкуВ╣ хНЪчЙйщди</span></a></li>
+<li><a href="http://ecforum.jpn.org/" class="blank" rel='nofollow'><span>EternalChaosNEO уВ│уГЯуГеуГЛуГЖуВг</span></a></li>
+<li><a href="http://www.mmonavi.com/modules/game/240.html" class="blank"><span>уВиуВ┐уГ╝уГКуГлуВлуВкуВ╣ уВ▓уГ╝уГацГЕха▒</span></a></li>
 </ul>

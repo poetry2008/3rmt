@@ -1,9 +1,9 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
-  define('MODULE_METASEO_LOGOFF_TEXT_TITLE', '¥í¥°¥¢¥¦¥È');
+  define('MODULE_METASEO_LOGOFF_TEXT_TITLE', 'ãƒ­ã‚°ã‚¢ã‚¦ãƒˆ');
   define('MODULE_METASEO_LOGOFF_TEXT_EXPLAIN', 'EXPLAIN');
-  define('MODULE_METASEO_LOGOFF_TEXT_DESCRIPTION', '¥í¥°¥¢¥¦¥È¥Ú¡¼¥¸¤ÎSEO');
+  define('MODULE_METASEO_LOGOFF_TEXT_DESCRIPTION', 'ãƒ­ã‚°ã‚¢ã‚¦ãƒˆãƒšãƒ¼ã‚¸ã®SEO');
 ?>

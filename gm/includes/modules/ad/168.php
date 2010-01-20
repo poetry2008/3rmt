@@ -1,16 +1,16 @@
 <?php //edit 2009.5.15 maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://www.playonline.com/ff11/index.shtml" class="blank" rel='nofollow'><span>е╒ебеде╩еые╒ебеєе┐е╕б╝XI ╕°╝░е╡еде╚</span></a></li>
+<li><a href="http://www.playonline.com/ff11/index.shtml" class="blank" rel='nofollow'><span>уГХуВбуВдуГКуГлуГХуВбуГ│уВ┐уВ╕уГ╝XI хЕмх╝ПуВ╡уВдуГИ</span></a></li>
 <li><a href="http://jp.ffxiah.com/" class="blank" rel='nofollow'><span>FF11 AH</span></a></li>
-<li><a href="http://wiki.ffo.jp/" class="blank" rel='nofollow'><span>FF11 ═╤╕ь╝н┼╡</span></a></li>
+<li><a href="http://wiki.ffo.jp/" class="blank" rel='nofollow'><span>FF11 чФишкЮш╛ЮхЕ╕</span></a></li>
 <li><a href="http://ff11wiki.rdy.jp/-1450975598.html" class="blank" rel='nofollow'><span>FINAL FANTASY XI Wiki</span></a></li>
-<li><a href="http://ffdic.wikiwiki.jp/" class="blank" rel='nofollow'><span>е╒ебеде╩еые╒ебеєе┐е╕б╝═╤╕ь╝н┼╡Wiki</span></a></li>
-<li><a href="http://www.otete.net/ffxi/" class="blank" rel='nofollow'><span>Final Fantasy XIе╟б╝е┐е┘б╝е╣</span></a></li>
+<li><a href="http://ffdic.wikiwiki.jp/" class="blank" rel='nofollow'><span>уГХуВбуВдуГКуГлуГХуВбуГ│уВ┐уВ╕уГ╝чФишкЮш╛ЮхЕ╕Wiki</span></a></li>
+<li><a href="http://www.otete.net/ffxi/" class="blank" rel='nofollow'><span>Final Fantasy XIуГЗуГ╝уВ┐уГЩуГ╝уВ╣</span></a></li>
 <li><a href="http://artisan-gardens.com/" class="blank" rel='nofollow'><span>FF11 SYNTHESIS DATEBASE</span></a></li>
-<li><a href="http://www.hotgame.co.jp/" class="blank"><span>FF11 ╗┘▒че│е▀ехе╦е╞егб╝</span></a></li>
-<li><a href="http://data.incoming.jp/" class="blank" rel='nofollow'><span>FFXI е╟б╝е┐ещеєе╔</span></a></li>
-<li><a href="http://www.geocities.jp/lalanyunyu/" class="blank" rel='nofollow'><span>FINAL FANTASY XI ╗╪─ъ╟╝╔╩епеие╣е╚ есет├╓дн╛ь</span></a></li>
-<li><a href="http://vanadian.com/" class="blank" rel='nofollow'><span>FFXI еведе╞ере╡б╝е┴</span></a></li>
-<li><a href="http://ff11flashlink.fc2web.com/" class="blank"><span>FF11 ╞░▓ш</span></a></li>
-<li><a href="http://www.mmonavi.com/modules/game/33.html" class="blank"><span>FFXI ╞░║ю┤─╢н</span></a></li>
+<li><a href="http://www.hotgame.co.jp/" class="blank"><span>FF11 цФпцП┤уВ│уГЯуГеуГЛуГЖуВгуГ╝</span></a></li>
+<li><a href="http://data.incoming.jp/" class="blank" rel='nofollow'><span>FFXI уГЗуГ╝уВ┐уГйуГ│уГЙ</span></a></li>
+<li><a href="http://www.geocities.jp/lalanyunyu/" class="blank" rel='nofollow'><span>FINAL FANTASY XI цМЗхоЪч┤НхУБуВпуВиуВ╣уГИ уГбуГвч╜оуБНха┤</span></a></li>
+<li><a href="http://vanadian.com/" class="blank" rel='nofollow'><span>FFXI уВвуВдуГЖуГауВ╡уГ╝уГБ</span></a></li>
+<li><a href="http://ff11flashlink.fc2web.com/" class="blank"><span>FF11 хЛХчФ╗</span></a></li>
+<li><a href="http://www.mmonavi.com/modules/game/33.html" class="blank"><span>FFXI хЛХф╜ЬчТ░хвГ</span></a></li>
 </ul>

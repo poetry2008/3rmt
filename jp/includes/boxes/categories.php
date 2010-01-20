@@ -8,7 +8,10 @@
 */
 
 $categories = array();
-$categories_query = tep_db_query("select c.categories_id, cd.categories_name, c.categories_status, c.parent_id from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where c.categories_status = '0' and c.parent_id = '0' and c.categories_id = cd.categories_id and cd.language_id='" . $languages_id ."' order by sort_order, cd.categories_name");
+$categories_query = tep_db_query("select c.categories_id, cd.categories_name, c.categories_status, c.parent_id 
+    from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
+    where site_id = '" . SITE_ID . "' and c.categories_status = '0' and c.parent_id = '0' and c.categories_id = cd.categories_id and cd.language_id='" . $languages_id ."' 
+    order by sort_order, cd.categories_name");
 while ($category = tep_db_fetch_array($categories_query))  {
   $categories[] = $category;
 }
@@ -18,7 +21,7 @@ if($cPath){
 ?>
 
 <div id='categories'>
-  <img width="171" height="25" alt="¥«¥Æ¥´¥ê¡¼" title="¥«¥Æ¥´¥ê¡¼" src="images/design/box/menu.gif">
+  <img width="171" height="25" alt="ã‚«ãƒ†ã‚´ãƒªãƒ¼" title="ã‚«ãƒ†ã‚´ãƒªãƒ¼" src="images/design/box/menu.gif">
   <ul class='l_m_category_ul'>
     <?php foreach($categories as $key => $category) {?>
       <?php if($cPath && in_array($category['categories_id'], $id)) {?>
@@ -27,7 +30,6 @@ if($cPath){
             <?php if (in_array($category['categories_id'], $id)) {?>
               <strong>
             <?php }?>
-            <?php //echo str_replace(' RMT', '', $category['categories_name']);?>
             <?php echo $category['categories_name'];?>
             <?php if (in_array($category['categories_id'], $id)) {?>
               </strong>
@@ -35,7 +37,10 @@ if($cPath){
           </a>
         <?php
           $subcategories = array();
-          $subcategories_query = tep_db_query("select c.categories_id, c.categories_status, cd.categories_name, c.parent_id from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where c.categories_status = '0' and c.parent_id = '".$category['categories_id']."' and c.categories_id = cd.categories_id and cd.language_id='" . $languages_id ."' order by sort_order, cd.categories_name");
+          $subcategories_query = tep_db_query("select c.categories_id, c.categories_status, cd.categories_name, c.parent_id 
+              from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
+              where cd.site_id = '" . SITE_ID . "' and c.categories_status = '0' and c.parent_id = '".$category['categories_id']."' and c.categories_id = cd.categories_id and cd.language_id='" . $languages_id ."' 
+              order by sort_order, cd.categories_name");
           while ($subcategory = tep_db_fetch_array($subcategories_query))  {
             $subcategories[] = $subcategory;
           }
@@ -59,11 +64,12 @@ if($cPath){
                   </strong>
                 <?php }?>
 
-
-
         <?php
             $_subcategories = array();
-            $_subcategories_query = tep_db_query("select c.categories_id, c.categories_status, cd.categories_name, c.parent_id from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where c.categories_status = '0' and c.parent_id = '".$subcategory['categories_id']."' and c.categories_id = cd.categories_id and cd.language_id='" . $languages_id ."' order by sort_order, cd.categories_name");
+            $_subcategories_query = tep_db_query("select c.categories_id, c.categories_status, cd.categories_name, c.parent_id 
+                from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
+                where cd.site_id = '" . SITE_ID . "' and c.categories_status = '0' and c.parent_id = '".$subcategory['categories_id']."' and c.categories_id = cd.categories_id and cd.language_id='" . $languages_id ."' 
+                order by sort_order, cd.categories_name");
             while ($_subcategory = tep_db_fetch_array($_subcategories_query))  {
               $_subcategories[] = $_subcategory;
             }
@@ -109,12 +115,6 @@ if($cPath){
       <?php }?>
     <?php }?>
 
-
-
-
-
-
-
 		<li class="l_m_category_li">
 			<img width="5" hspace="3" height="5" alt="" src="images/design/box/arrow_2.gif" class="middle" >
 			<a href="<?php echo tep_href_link('manufacturers.php'); ?>"><?php echo MENU_MU; ?></a>
@@ -134,17 +134,12 @@ if($cPath){
 	}
 ?>
 
-
-
-
-
 <li class="l_m_category_li">
 <img width="5" hspace="3" height="5" alt="" src="images/design/box/arrow_2.gif" class="middle" >
 <a href="<?php echo tep_href_link(FILENAME_TAGS);?>">
 <?php echo TEXT_TAGS;?>
 </a>
 </li>
-
 
   </ul>
 </div>

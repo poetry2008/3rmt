@@ -29,7 +29,7 @@
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PREORDER);
 
   $product_info = tep_db_fetch_array($product_info_query);
-  $breadcrumb->add($product_info['products_name'] . '��ͽ�󤹤�', tep_href_link(FILENAME_PREORDER, 'products_id=' . $HTTP_GET_VARS['products_id']));
+  $breadcrumb->add($product_info['products_name'] . 'を予約する', tep_href_link(FILENAME_PREORDER, 'products_id=' . $HTTP_GET_VARS['products_id']));
   $po_game_c = ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1);
 ?>
 <?php page_head();?>
@@ -60,8 +60,8 @@
       <?php echo $breadcrumb->trail(' &raquo; '); ?>
     </div>
     <h1 class="pageHeading"><?php echo sprintf(HEADING_TITLE, $product_info['products_name']); ?></h1>
-    <p>ɽ���߸˰ʾ�Τ���ʸ�ϡ����Υڡ������餴���꤯��������<br>
-      <span class="redtext"><b>��ͽ�󡦤����Ѥ��̵���Ǥ��Τǡ������ڤˤ��䤤��碌����������</b></span></p>
+    <p>表示在庫以上のご注文は、このページからご依頼ください。<br>
+      <span class="redtext"><b>ご予約・お見積りは無料ですので、お気軽にお問い合わせください。</b></span></p>
     <?php
     $error = false;
 
@@ -101,7 +101,7 @@
       $email_body = sprintf(TEXT_EMAIL_INTRO, $from_name, STORE_NAME, $from_name, $from_email_address, $HTTP_POST_VARS['products_name'], $HTTP_POST_VARS['quantity'], $HTTP_POST_VARS['timelimit'], STORE_NAME) . "\n\n";
 
       if (tep_not_null($HTTP_POST_VARS['yourmessage'])) {
-        $email_body .= '������˾' . "\n" . $HTTP_POST_VARS['yourmessage'] . "\n\n";
+        $email_body .= '▼ご要望' . "\n" . $HTTP_POST_VARS['yourmessage'] . "\n\n";
       }
 
       $email_body .= sprintf(TEXT_EMAIL_LINK, tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $HTTP_GET_VARS['products_id'])) . "\n\n" .
@@ -124,15 +124,15 @@
       } else {
         $your_name_prompt = tep_draw_input_field('yourname', (($fromname_error == true) ? $HTTP_POST_VARS['yourname'] : $HTTP_GET_VARS['yourname']));
         if ($fromname_error == true) $your_name_prompt .= '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
-        $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $HTTP_POST_VARS['from'] : $HTTP_GET_VARS['from']) , 'size="30"') . '&nbsp;&nbsp;�������å᡼�륢�ɥ쥹�侩';
+        $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $HTTP_POST_VARS['from'] : $HTTP_GET_VARS['from']) , 'size="30"') . '&nbsp;&nbsp;携帯電話メールアドレス推奨';
         if ($fromemail_error == true) $your_email_address_prompt .='<br>'. ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
       }
 ?>
     <?php echo tep_draw_form('email_friend', tep_href_link(FILENAME_PREORDER, 'action=process&products_id=' . $HTTP_GET_VARS['products_id'])) . tep_draw_hidden_field('products_name', $product_info['products_name']); ?>
-    <p><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $HTTP_GET_VARS['products_id']) . '" target="_blank">' . $product_info['products_name']; ?>�ˤĤ��Ƥξܺ٥ڡ����Ϥ�����</a></p>
+    <p><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $HTTP_GET_VARS['products_id']) . '" target="_blank">' . $product_info['products_name']; ?>についての詳細ページはこちら</a></p>
     <?php
 	if($error == true) {
-		echo '<span class="errorText">���Ϥ������Ƥ˸��꤬�������ޤ������������Ϥ��Ƥ���������</span>';
+		echo '<span class="errorText">入力した内容に誤りがございます。正しく入力してください。</span>';
 	}
 ?>
     <table class="box_des" width="95%" cellpadding="2" cellspacing="2" border="0">
@@ -152,7 +152,7 @@
         <td class="main"><?php echo $your_email_address_prompt; ?></td>
       </tr>
       <tr>
-        <td colspan="2" class="main">������֤����¤��������ޤ������Ĥ���Ѥ��Ƥ���᡼�륢�ɥ쥹�����Ϥ���������</td>
+        <td colspan="2" class="main">お取り置き期限がございます。いつも使用しているメールアドレスをご入力ください。</td>
       </tr>
       <tr>
         <td colspan="2" class="formAreaTitle">
@@ -162,15 +162,17 @@
           <?php echo FORM_TITLE_FRIEND_DETAILS; ?></td>
       </tr>
       <tr>
-        <td class="main" valign="top">����̾:</td>
+        <td class="main" valign="top">商品名:</td>
         <td class="main"><strong><?php echo ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1) . '<br>' . $product_info['products_name']; ?></strong></td>
       </tr>
       <tr>
         <td class="main"><?php echo FORM_FIELD_FRIEND_NAME; ?></td>
         <td class="main">
           <?php
+          if (!isset($HTTP_POST_VARS['quantity'])) $HTTP_POST_VARS['quantity'] = NULL; //del notice
+          if (!isset($HTTP_GET_VARS['quantity'])) $HTTP_GET_VARS['quantity'] = NULL; //del notice
 	echo tep_draw_input_field('quantity', (($quantity_error == true) ? $HTTP_POST_VARS['quantity'] : $HTTP_GET_VARS['quantity']) , 'size="7" maxlength="15"');
-	echo '&nbsp;&nbsp;��';
+	echo '&nbsp;&nbsp;個';
 	if ($quantity_error == true) echo '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
 ?>
         </td>
@@ -179,8 +181,10 @@
         <td class="main"><?php echo FORM_FIELD_FRIEND_EMAIL; ?></td>
         <td class="main">
           <?php
+          if (!isset($timelimit_error)) $timelimit_error = NULL;//del notice
+          if (!isset($HTTP_GET_VARS['send_to'])) $HTTP_GET_VARS['send_to'] = NULL; //del notice
 	echo tep_draw_input_field('timelimit', (($timelimit_error == true) ? $HTTP_POST_VARS['timelimit'] : $HTTP_GET_VARS['send_to']) , 'size="30" maxlength="50"');
-	echo '&nbsp;&nbsp;(��.&nbsp;15���ޤǤ��Ϥ����ߤ�����)';
+	echo '&nbsp;&nbsp;(例.&nbsp;15日までに届けて欲しい。)';
 ?>
         </td>
       </tr>
@@ -192,7 +196,8 @@
           <?php echo FORM_TITLE_FRIEND_MESSAGE; ?></td>
       </tr>
       <tr>
-        <td colspan="2"><?php echo tep_draw_textarea_field('yourmessage', 'soft', 40, 8);?></td>
+        <td colspan="2">
+        <?php echo tep_draw_textarea_field('yourmessage', 'soft', 50, 8,'', 'style="width:400px"');?></td>
       </tr>
       <tr>
         <td colspan="2">

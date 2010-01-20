@@ -28,8 +28,8 @@
   
   //process
   switch($HTTP_GET_VARS['action']) {
-    case 'process'://¿½¤·¹ş¤ß¥×¥í¥»¥¹
-	  //¸½ºß¤ÎÆü»ş
+    case 'process'://ç”³ã—è¾¼ã¿ãƒ—ãƒ­ã‚»ã‚¹
+	  //ç¾åœ¨ã®æ—¥æ™‚
 	  $now = date("Y/m/d H:i:s", time());
 	  
 	  //insert present_aplicant
@@ -79,7 +79,7 @@
 	  tep_redirect(tep_href_link(FILENAME_PRESENT_SUCCESS,'goods_id='.$HTTP_GET_VARS['goods_id']));
 	  break;
 	
-	case 'update'://¿½¹ş¼Ô¾ğÊóÊÑ¹¹
+	case 'update'://ç”³è¾¼è€…æƒ…å ±å¤‰æ›´
 	  $firstname = tep_db_prepare_input($HTTP_POST_VARS['firstname']);
 	  $lastname = tep_db_prepare_input($HTTP_POST_VARS['lastname']);
 	  $email_address = tep_db_prepare_input($HTTP_POST_VARS['email_address']);
@@ -133,7 +133,7 @@
 	  }
 	  
 	  if($error == false) {
-	    //¥»¥Ã¥·¥ç¥ó¤ò°ì»şÅª¤Ë³«Êü
+	    //ã‚»ãƒƒã‚·ãƒ§ãƒ³ã‚’ä¸€æ™‚çš„ã«é–‹æ”¾
 	    tep_session_unregister('firstname');
 	    tep_session_unregister('lastname');
 	    tep_session_unregister('email_address');
@@ -144,7 +144,7 @@
 	    tep_session_unregister('city');
 	    tep_session_unregister('zone_id');
 	  
-	    //¥»¥Ã¥·¥ç¥ó¹¹¿·
+	    //ã‚»ãƒƒã‚·ãƒ§ãƒ³æ›´æ–°
 	    tep_session_register('firstname');
 	    tep_session_register('lastname');
 	    tep_session_register('email_address');
@@ -238,9 +238,9 @@
                     </table></td> 
                 </tr> 
                 <tr class="box_des"> 
-                  <td align="center" width="33%" class="checkoutBarFrom">±şÊç¼Ô¾ğÊó</td> 
-                  <td align="center" width="33%" class="checkoutBarCurrent">³ÎÇ§²èÌÌ</td> 
-                  <td align="center" width="33%" class="checkoutBarFrom">±şÊç´°Î»</td> 
+                  <td align="center" width="33%" class="checkoutBarFrom">å¿œå‹Ÿè€…æƒ…å ±</td> 
+                  <td align="center" width="33%" class="checkoutBarCurrent">ç¢ºèªç”»é¢</td> 
+                  <td align="center" width="33%" class="checkoutBarFrom">å¿œå‹Ÿå®Œäº†</td> 
                 </tr> 
               </table></td> 
           </tr> 
@@ -276,7 +276,7 @@
                       <tr class="<?php echo $_class ; ?>"> 
                         <td class="main" width="<?php echo SMALL_IMAGE_WIDTH ; ?>"><?php echo '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],NONSSL).'">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT) . '</a>'; ?></td> 
                         <td class="main"><b><?php echo $present['title'] ; ?></b><br> 
-                          ±şÊç´ü´Ö:<?php echo tep_date_long($present['start_date']) .'¡Á'. tep_date_long($present['limit_date']); ?> </td> 
+                          å¿œå‹ŸæœŸé–“:<?php echo tep_date_long($present['start_date']) .'ã€œ'. tep_date_long($present['limit_date']); ?> </td> 
                       </tr> 
                     </table></td> 
                 </tr> 
@@ -291,7 +291,7 @@
           <tr> 
             <td class="main"><table class="box_des" width="100%"  border="0" cellspacing="0" cellpadding="2"> 
                 <tr> 
-                  <td class="main"><b>±şÊç¼Ô¾ğÊó¤Î³ÎÇ§</b> 
+                  <td class="main"><b>å¿œå‹Ÿè€…æƒ…å ±ã®ç¢ºèª</b> 
                     <table border="0" width="100%" height="100%" cellspacing="0" cellpadding="1" class="formArea"> 
                       <tr> 
                         <td><table border="0" width="100%" height="100%" cellspacing="0" cellpadding="2" class="box_des"> 
@@ -299,33 +299,33 @@
                               <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main">¤ªÌ¾Á°</td> 
+                              <td class="main">ãŠåå‰</td> 
                               <td class="main"><?php echo $name; ?></td> 
                             </tr> 
                             <tr> 
-                              <td>¥á¡¼¥ë¥¢¥É¥ì¥¹</td> 
+                              <td>ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹</td> 
                               <td><?php echo $email; ?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main">Í¹ÊØÈÖ¹æ</td> 
+                              <td class="main">éƒµä¾¿ç•ªå·</td> 
                               <td class="main"><?php echo $postcode; ?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main">ÅÔÆ»ÉÜ¸©</td> 
+                              <td class="main">éƒ½é“åºœçœŒ</td> 
                               <td class="main"><?php echo tep_get_zone_name('107',$state, $zone); ?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main">½»½ê£±</td> 
+                              <td class="main">ä½æ‰€ï¼‘</td> 
                               <td class="main"><?php echo $address1; ?></td> 
                             </tr> 
                             <?php if(!empty($address2)) { ?> 
                             <tr> 
-                              <td class="main">½»½ê2</td> 
+                              <td class="main">ä½æ‰€2</td> 
                               <td class="main"><?php echo $address2; ?></td> 
                             </tr> 
                             <?php } ?> 
                             <tr> 
-                              <td class="main">ÅÅÏÃÈÖ¹æ</td> 
+                              <td class="main">é›»è©±ç•ªå·</td> 
                               <td class="main"><?php echo $tel; ?></td> 
                             </tr> 
                             <tr> 
@@ -351,8 +351,8 @@
           <tr> 
             <td class="main"><table class="box_des" width="100%"  border="0" cellspacing="0" cellpadding="2"> 
                 <tr> 
-                  <td class="main"><b>±şÊç¼Ô¾ğÊó¤ÎÊÔ½¸</b><br> 
-                    ÅĞÏ¿¾ğÊó¤ÎÊÑ¹¹¤ò¹Ô¤¦¾ì¹ç¤Ï²¼µ­¥Õ¥©¡¼¥à¤è¤êÊÑ¹¹¤ò¹Ô¤Ã¤Æ¤¯¤À¤µ¤¤
+                  <td class="main"><b>å¿œå‹Ÿè€…æƒ…å ±ã®ç·¨é›†</b><br> 
+                    ç™»éŒ²æƒ…å ±ã®å¤‰æ›´ã‚’è¡Œã†å ´åˆã¯ä¸‹è¨˜ãƒ•ã‚©ãƒ¼ãƒ ã‚ˆã‚Šå¤‰æ›´ã‚’è¡Œã£ã¦ãã ã•ã„
                     <table border="0" width="100%" height="100%" cellspacing="0" cellpadding="1" class="formArea"> 
                       <tr> 
                         <td><table border="0" width="100%" height="100%" cellspacing="0" cellpadding="2" class="box_des"> 
@@ -360,39 +360,39 @@
                               <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main">À«</td> 
+                              <td class="main">å§“</td> 
                               <td class="main"><?php echo tep_draw_input_field('lastname', $lastname); ?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main">Ì¾</td> 
+                              <td class="main">å</td> 
                               <td class="main"><?php echo tep_draw_input_field('firstname', $firstname); ?></td> 
                             </tr> 
                             <tr> 
-                              <td>¥á¡¼¥ë¥¢¥É¥ì¥¹</td> 
+                              <td>ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹</td> 
                               <td><?php echo tep_draw_input_field('email_address', $email_address); ?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main">Í¹ÊØÈÖ¹æ</td> 
+                              <td class="main">éƒµä¾¿ç•ªå·</td> 
                               <td class="main"><?php echo tep_draw_input_field('postcode', $postcode); ?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main">ÅÔÆ»ÉÜ¸©</td> 
+                              <td class="main">éƒ½é“åºœçœŒ</td> 
                               <td class="main"><?php echo tep_get_zone_list2('zone_id', $zone_id); ?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main">»Ô¶èÄ®Â¼</td> 
+                              <td class="main">å¸‚åŒºç”ºæ‘</td> 
                               <td class="main"><?php echo tep_draw_input_field('city', $city); ?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main">½»½ê1</td> 
+                              <td class="main">ä½æ‰€1</td> 
                               <td class="main"><?php echo tep_draw_input_field('street_address', $street_address); ?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main">½»½ê2</td> 
+                              <td class="main">ä½æ‰€2</td> 
                               <td class="main"><?php echo tep_draw_input_field('suburb', $suburb); ?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main">ÅÅÏÃÈÖ¹æ</td> 
+                              <td class="main">é›»è©±ç•ªå·</td> 
                               <td class="main"><?php echo tep_draw_input_field('telephone', $telephone); ?></td> 
                             </tr> 
                             <tr> 

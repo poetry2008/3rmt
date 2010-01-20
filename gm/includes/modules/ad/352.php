@@ -1,8 +1,8 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://nine.gameleon.jp/index.asp" class="blank" rel='nofollow'><span>¶åÎ¶ÁèÇÆ ¸ø¼°¥µ¥¤¥È</span></a></li>
-<li><a href="http://wikiwiki.jp/nine/" class="blank" rel='nofollow'><span>¶åÎ¶ÁèÇÆ Wiki</span></a></li>
-<li><a href="http://www.mmo-station.com/mmo/NineDragons/" class="blank" rel='nofollow'><span>¶åÎ¶ÁèÇÆ Áí¹ç¾ðÊó¡¦¹¶Î¬¥µ¥¤¥È</span></a></li>
-<li><a href="http://www.play-mmorpg.com/mmorpg/9ron.html" class="blank" rel='nofollow'><span>¶åÎ¶ÁèÇÆ ¥ì¥Ó¥å¡¼</span></a></li>
-<li><a href="http://www.mmonavi.com/modules/game/516.html" class="blank"><span>¶åÎ¶ÁèÇÆ ¥²¡¼¥à¾ðÊó</span></a></li>
+<li><a href="http://nine.gameleon.jp/index.asp" class="blank" rel='nofollow'><span>ä¹é¾äº‰è¦‡ å…¬å¼ã‚µã‚¤ãƒˆ</span></a></li>
+<li><a href="http://wikiwiki.jp/nine/" class="blank" rel='nofollow'><span>ä¹é¾äº‰è¦‡ Wiki</span></a></li>
+<li><a href="http://www.mmo-station.com/mmo/NineDragons/" class="blank" rel='nofollow'><span>ä¹é¾äº‰è¦‡ ç·åˆæƒ…å ±ãƒ»æ”»ç•¥ã‚µã‚¤ãƒˆ</span></a></li>
+<li><a href="http://www.play-mmorpg.com/mmorpg/9ron.html" class="blank" rel='nofollow'><span>ä¹é¾äº‰è¦‡ ãƒ¬ãƒ“ãƒ¥ãƒ¼</span></a></li>
+<li><a href="http://www.mmonavi.com/modules/game/516.html" class="blank"><span>ä¹é¾äº‰è¦‡ ã‚²ãƒ¼ãƒ æƒ…å ±</span></a></li>
 </ul>

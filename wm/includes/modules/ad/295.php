@@ -1,9 +1,9 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://shaiya.jp/index.action" class="blank" rel='nofollow'><span>е╖еуедеф ╕°╝░е╡еде╚</span></a></li>
-<li><a href="http://www.mmo-station.com/mmo/shaiya/" class="blank" rel='nofollow'><span>е╖еуедеф ┴э╣ч╛Ё╩єбж╣╢╬ме╡еде╚</span></a></li>
-<li><a href="http://shaiya.wikiwiki.jp/" class="blank" rel='nofollow'><span>е╖еуедеф ╛Ё╩єWiki</span></a></li>
-<li><a href="http://www.play-mmorpg.com/mmorpg/sha.html" class="blank" rel='nofollow'><span>е╖еуедеф ╛Ё╩є</span></a></li>
-<li><a href="http://yume_shaiya.wikiwiki.jp/" class="blank" rel='nofollow'><span>е╖еуедеф ╛Ё╩є╝¤╜╕═╤Wiki</span></a></li>
-<li><a href="http://www.mmonavi.com/modules/game/550.html" class="blank"><span>Shaiya е╣е┐б╝е╚емеде╔</span></a></li>
+<li><a href="http://shaiya.jp/index.action" class="blank" rel='nofollow'><span>уВ╖уГгуВдуГд хЕмх╝ПуВ╡уВдуГИ</span></a></li>
+<li><a href="http://www.mmo-station.com/mmo/shaiya/" class="blank" rel='nofollow'><span>уВ╖уГгуВдуГд ч╖ПхРИцГЕха▒уГ╗цФ╗чХеуВ╡уВдуГИ</span></a></li>
+<li><a href="http://shaiya.wikiwiki.jp/" class="blank" rel='nofollow'><span>уВ╖уГгуВдуГд цГЕха▒Wiki</span></a></li>
+<li><a href="http://www.play-mmorpg.com/mmorpg/sha.html" class="blank" rel='nofollow'><span>уВ╖уГгуВдуГд цГЕха▒</span></a></li>
+<li><a href="http://yume_shaiya.wikiwiki.jp/" class="blank" rel='nofollow'><span>уВ╖уГгуВдуГд цГЕха▒хПОщЫЖчФиWiki</span></a></li>
+<li><a href="http://www.mmonavi.com/modules/game/550.html" class="blank"><span>Shaiya уВ╣уВ┐уГ╝уГИуВмуВдуГЙ</span></a></li>
 </ul>

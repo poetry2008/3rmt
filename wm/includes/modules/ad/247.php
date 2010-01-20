@@ -1,6 +1,6 @@
 <?php // edit 2009.5.21 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://www.webmoney.jp/" class="blank" title="WebMoney ╕°╝░" rel='nofollow'><span>WebMoney ╕°╝░</span></a></li>
-<li><a href="https://service.webmoney.jp/wallet/spd.jsp?tmpl=walletLogin" class="blank" title="ежезе╓е▐е═б╝ ежейеье├е╚" rel='nofollow'><span>ежезе╓е▐е═б╝ ежейеье├е╚</span></a></li>
-<li><a href="http://www.webmoney.jp/guide/buy.html" class="blank" title="WM ╞■╝ъ╩¤╦б" rel='nofollow'><span>WM ╞■╝ъ╩¤╦б</span></a></li>
+<li><a href="http://www.webmoney.jp/" class="blank" title="WebMoney хЕмх╝П" rel='nofollow'><span>WebMoney хЕмх╝П</span></a></li>
+<li><a href="https://service.webmoney.jp/wallet/spd.jsp?tmpl=walletLogin" class="blank" title="уВжуВзуГЦуГЮуГНуГ╝ уВжуВйуГмуГГуГИ" rel='nofollow'><span>уВжуВзуГЦуГЮуГНуГ╝ уВжуВйуГмуГГуГИ</span></a></li>
+<li><a href="http://www.webmoney.jp/guide/buy.html" class="blank" title="WM хЕецЙЛцЦ╣ц│Х" rel='nofollow'><span>WM хЕецЙЛцЦ╣ц│Х</span></a></li>
 </ul>

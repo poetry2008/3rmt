@@ -19,20 +19,20 @@
 <?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process', 'SSL'), 'post', 'onSubmit="return msg();"') . "\n"; ?>
 	<table border="0" align="center" cellpadding="0" cellspacing="0" style="margin-top:5px; ">
 		<tr>
-			<td width="25" height="25"><?php echo tep_image(DIR_WS_IMAGES.'design/box/id.gif','�᡼�륢�ɥ쥹','10','8','class="middle"');?></td>
+			<td width="25" height="25"><?php echo tep_image(DIR_WS_IMAGES.'design/box/id.gif','メールアドレス','10','8','class="middle"');?></td>
 			<td><input type="text" name="email_address" size="20"></td>
 		</tr>
 		<tr>
-			<td height="25"><?php echo tep_image(DIR_WS_IMAGES.'design/box/pw.gif','�ѥ����','17','8','class="middle"');?></td>
+			<td height="25"><?php echo tep_image(DIR_WS_IMAGES.'design/box/pw.gif','パスワード','17','8','class="middle"');?></td>
 			<td><input type="password" name="password" size="20"></td>
 		</tr>
 	</table>
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
 		<tr>
 			<td height="35" class="smallText" style="padding-left:5px; ">
-				<a href="<?php echo tep_href_link(FILENAME_PASSWORD_FORGOTTEN,'',SSL);?>">
+				<a href="<?php echo tep_href_link(FILENAME_PASSWORD_FORGOTTEN,'','SSL');?>">
 					<img class="middle" src="images/design/box/arrow_1.gif" width="5" height="5" hspace="2" alt="">
-					PW˺�줿?
+					PW忘れた?
 				</a>
 			</td>
 			<td align="right" style="padding-right:5px; "><input type="image" name="image" src="images/design/button/login.gif" alt="Login" title="Login"></td>
@@ -44,7 +44,7 @@
 </form>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 	<tr>
-		<td height="100" align="center"><a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT,'',SSL); ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/box/signup.gif',HEADER_TITLE_CREATE_ACCOUNT,'158','90'); ?></a></td>
+		<td height="100" align="center"><a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT,'','SSL'); ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/box/signup.gif',HEADER_TITLE_CREATE_ACCOUNT,'158','90'); ?></a></td>
 	</tr>
 </table>
 <?php 
@@ -54,11 +54,11 @@
 <?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process', 'SSL'), 'post', 'onSubmit="return msg();"') . "\n"; ?>
 	<table border="0" align="center" cellpadding="0" cellspacing="0" style="margin-top:5px; ">
 		<tr>
-			<td width="25" height="25"><?php echo tep_image(DIR_WS_IMAGES.'design/box/id.gif','�᡼�륢�ɥ쥹','10','8');?></td>
+			<td width="25" height="25"><?php echo tep_image(DIR_WS_IMAGES.'design/box/id.gif','メールアドレス','10','8');?></td>
 			<td><input type="text" name="email_address" size="20"></td>
 		</tr>
 		<tr>
-			<td height="25"><?php echo tep_image(DIR_WS_IMAGES.'design/box/pw.gif','�ѥ����','17','8');?></td>
+			<td height="25"><?php echo tep_image(DIR_WS_IMAGES.'design/box/pw.gif','パスワード','17','8');?></td>
 			<td><input type="password" name="password" size="20"></td>
 		</tr>
 	</table>
@@ -67,7 +67,7 @@
 			<td height="35" class="smallText" style="padding-left:5px; ">
 				<a href="<?php echo tep_href_link(FILENAME_PASSWORD_FORGOTTEN,'',SSL);?>">
 					<img class="middle" src="images/design/box/arrow_1.gif" width="5" height="5" hspace="2" alt="img">
-					PW˺�줿?
+					PW忘れた?
 				</a>
 			</td>
 			<td align="right" style="padding-right:5px; "><input type="image" name="image" alt="<?php echo HEADER_TITLE_LOGIN ; ?>" src="images/design/button/login.gif"></td>

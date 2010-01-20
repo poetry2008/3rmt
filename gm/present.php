@@ -47,17 +47,17 @@ function popupWindow(url) {
         <tr>
           <td><?php
 		  ######################
-		  ##    ¾ÜºÙ¥Ú¡¼¥¸    ##
+		  ##    è©³ç´°ãƒšãƒ¼ã‚¸    ##
 		  ######################
 		  if($HTTP_GET_VARS['goods_id'] && !empty($HTTP_GET_VARS['goods_id'])) {
 		  $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$HTTP_GET_VARS['goods_id']."'") ;
 		  $present = tep_db_fetch_array($present_query) ;
 		  ?>
-          <p align="right" class="box_des">±þÊç´ü´Ö <?php echo tep_date_long($present['start_date']) . '&nbsp;&nbsp;&nbsp;¡Á&nbsp;&nbsp;&nbsp;' . tep_date_long($present['limit_date']) ; ?></p>
+          <p align="right" class="box_des">å¿œå‹ŸæœŸé–“ <?php echo tep_date_long($present['start_date']) . '&nbsp;&nbsp;&nbsp;ã€œ&nbsp;&nbsp;&nbsp;' . tep_date_long($present['limit_date']) ; ?></p>
           <table class="box_des" border="0" cellspacing="0" cellpadding="2" align="right">
             <tr>
               <td align="center" class="smallText"><script type="text/javascript"><!--
-			document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link('present_popup_image.php', 'pID=' . (int)$HTTP_GET_VARS['goods_id']) . '\\\')">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '<br>¥¤¥á¡¼¥¸¤ò³ÈÂç</a>'; ?>');
+			document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link('present_popup_image.php', 'pID=' . (int)$HTTP_GET_VARS['goods_id']) . '\\\')">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '<br>ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’æ‹¡å¤§</a>'; ?>');
 			//--></script>
               <noscript>
               <?php echo tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right"'); ?>
@@ -83,7 +83,7 @@ function popupWindow(url) {
           </table>
           <?php
 		  ######################
-		  ##    °ìÍ÷¥Ú¡¼¥¸    ##
+		  ##    ä¸€è¦§ãƒšãƒ¼ã‚¸    ##
 		  ######################
 		  } else {
 		  ?>
@@ -116,7 +116,7 @@ function popupWindow(url) {
             <tr class="<?php //echo $_class ; ?>">
               <td class="main" width="<?php echo SMALL_IMAGE_WIDTH ; ?>"><?php echo '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],NONSSL).'">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"') . '</a>'; ?></td>
               <td class="main"><b><?php echo '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],NONSSL).'">'. $present['title'].'</a>' ; ?></b> <br>
-              ±þÊç´ü´Ö:<?php echo tep_date_long($present['start_date']) .'¡Á'. tep_date_long($present['limit_date']); ?>
+              å¿œå‹ŸæœŸé–“:<?php echo tep_date_long($present['start_date']) .'ã€œ'. tep_date_long($present['limit_date']); ?>
               <p class="smallText"><?php echo substr(strip_tags($present['text']),0,100) ; ?>..</p></td>
             </tr>
             <?php

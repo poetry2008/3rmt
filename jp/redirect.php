@@ -13,11 +13,10 @@
   require('includes/application_top.php');
 
   switch ($HTTP_GET_VARS['action']) {
-    case 'banner': $banner_query = tep_db_query("select banners_url from " . TABLE_BANNERS . " where banners_id = '" . $HTTP_GET_VARS['goto'] . "'");
+    case 'banner': $banner_query = tep_db_query("select banners_url from " . TABLE_BANNERS . " where banners_id = '" . intval($HTTP_GET_VARS['goto']) . "' and site_id = '" . SITE_ID . "'");
                    if (tep_db_num_rows($banner_query)) {
                      $banner = tep_db_fetch_array($banner_query);
                      tep_update_banner_click_count($HTTP_GET_VARS['goto']);
-
                      tep_redirect($banner['banners_url']);
                    } else {
                      tep_redirect(tep_href_link(FILENAME_DEFAULT));

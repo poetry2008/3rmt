@@ -41,6 +41,7 @@
   $address_form->setFormLine('gender',ENTRY_GENDER,$a_value);
 */
   // firstname
+  if (!isset($error)) $error=NULL;//del notice
   if ($is_read_only == true) {
       $a_value = tep_output_string($account['customers_firstname'],false,true);
   } elseif ($error == true) {
@@ -104,7 +105,7 @@
   } elseif ($error == true) {
       if ($entry_date_of_birth_error == true) {
           $a_value = tep_draw_input_field('dob') . '&nbsp;' . ENTRY_DATE_OF_BIRTH_ERROR;
-      //18ºĞÌ¤ËşÅĞÏ¿¶Ø»ß½èÍı
+      //18æ­³æœªæº€ç™»éŒ²ç¦æ­¢å‡¦ç†
 	  } elseif($entry_date_of_birth_error2 == true) {
           $a_value = tep_draw_input_field('dob') . '&nbsp;' . ENTRY_DATE_OF_BIRTH_ERROR2;
 	  } else {
@@ -421,7 +422,7 @@
               </tr>
               <tr>
                 <td>&nbsp;</td>
-                <td><small><span class="redtext">¢¨</span>&nbsp;²ñ°÷ÅĞÏ¿¤ò¤·¤Ê¤¤¤Ç¹ØÆş¤¹¤ë¤³¤È¤â¤Ç¤­¤Ş¤¹¡£</small></td>
+                <td><small><span class="redtext">â€»</span>&nbsp;ä¼šå“¡ç™»éŒ²ã‚’ã—ãªã„ã§è³¼å…¥ã™ã‚‹ã“ã¨ã‚‚ã§ãã¾ã™ã€‚</small></td>
               </tr>
               <?php
     } else {

@@ -1,9 +1,9 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
-  define('MODULE_METASEO_LATEST_NEWS_TEXT_TITLE', '¤ªÃÎ¤é¤»');
+  define('MODULE_METASEO_LATEST_NEWS_TEXT_TITLE', 'ãŠçŸ¥ã‚‰ã›');
   define('MODULE_METASEO_LATEST_NEWS_TEXT_EXPLAIN', 'EXPLAIN');
-  define('MODULE_METASEO_LATEST_NEWS_TEXT_DESCRIPTION', '¤ªÃÎ¤é¤»¥Ú¡¼¥¸¤ÎSEO');
+  define('MODULE_METASEO_LATEST_NEWS_TEXT_DESCRIPTION', 'ãŠçŸ¥ã‚‰ã›ãƒšãƒ¼ã‚¸ã®SEO');
 ?>

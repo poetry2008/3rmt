@@ -1,9 +1,9 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
-  define('MODULE_METASEO_CHECKOUT_PAYMENT_TEXT_TITLE', '»ÙÊ§ÊýË¡');
+  define('MODULE_METASEO_CHECKOUT_PAYMENT_TEXT_TITLE', 'æ”¯æ‰•æ–¹æ³•');
   define('MODULE_METASEO_CHECKOUT_PAYMENT_TEXT_EXPLAIN', 'EXPLAIN');
-  define('MODULE_METASEO_CHECKOUT_PAYMENT_TEXT_DESCRIPTION', '»ÙÊ§ÊýË¡¥Ú¡¼¥¸¤ÎSEO');
+  define('MODULE_METASEO_CHECKOUT_PAYMENT_TEXT_DESCRIPTION', 'æ”¯æ‰•æ–¹æ³•ãƒšãƒ¼ã‚¸ã®SEO');
 ?>

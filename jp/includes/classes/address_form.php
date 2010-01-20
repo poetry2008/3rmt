@@ -76,6 +76,8 @@
     // private
     function printTableLine($orders){
         foreach ($orders as $name) {
+          if (!isset($this->formlines[$name])) $this->formlines[$name]=NULL;
+          if (!isset($this->formlines[$name]['title'])) $this->formlines[$name]['title']=NULL;
             $title = $this->formlines[$name]['title'];
             if ($title) {
                 if ($this->boldtitle) {

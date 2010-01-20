@@ -1,8 +1,8 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://www.tantraonline.jp/" class="blank" rel='nofollow'><span>TANTRA ¸ø¼°¥µ¥¤¥È</span></a></li>
-<li><a href="http://www.mmonavi.com/modules/game/44.html" class="blank"><span>TANTRA ¥×¥ì¥Ó¥å¡¼</span></a></li>
+<li><a href="http://www.tantraonline.jp/" class="blank" rel='nofollow'><span>TANTRA å…¬å¼ã‚µã‚¤ãƒˆ</span></a></li>
+<li><a href="http://www.mmonavi.com/modules/game/44.html" class="blank"><span>TANTRA ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼</span></a></li>
 <li><a href="http://www.wikihouse.com/tantra/" class="blank" rel='nofollow'><span>TANTRA Wiki</span></a></li>
-<li><a href="http://jbbs.livedoor.jp/game/23839/" class="blank" rel='nofollow'><span>TANTRA ¤·¤¿¤é¤ÐBBS</span></a></li>
-<li><a href="http://members.at.infoseek.co.jp/shacho_soft/tantra/index.html" class="blank" rel='nofollow'><span>¥¿¥ó¥È¥é Áí¹ç¾ðÊó¥µ¥¤¥È</span></a></li>
+<li><a href="http://jbbs.livedoor.jp/game/23839/" class="blank" rel='nofollow'><span>TANTRA ã—ãŸã‚‰ã°BBS</span></a></li>
+<li><a href="http://members.at.infoseek.co.jp/shacho_soft/tantra/index.html" class="blank" rel='nofollow'><span>ã‚¿ãƒ³ãƒˆãƒ© ç·åˆæƒ…å ±ã‚µã‚¤ãƒˆ</span></a></li>
 </ul>

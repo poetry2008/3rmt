@@ -1,9 +1,9 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
-  define('MODULE_METASEO_PASSWORD_FORGOTTEN_TEXT_TITLE', '¥Ñ¥¹¥ï¡¼¥ÉºÆÈ¯¹Ô');
+  define('MODULE_METASEO_PASSWORD_FORGOTTEN_TEXT_TITLE', 'ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰å†ç™ºè¡Œ');
   define('MODULE_METASEO_PASSWORD_FORGOTTEN_TEXT_EXPLAIN', 'EXPLAIN');
-  define('MODULE_METASEO_PASSWORD_FORGOTTEN_TEXT_DESCRIPTION', '¥Ñ¥¹¥ï¡¼¥ÉºÆÈ¯¹Ô¥Ú¡¼¥¸¤ÎSEO');
+  define('MODULE_METASEO_PASSWORD_FORGOTTEN_TEXT_DESCRIPTION', 'ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰å†ç™ºè¡Œãƒšãƒ¼ã‚¸ã®SEO');
 ?>

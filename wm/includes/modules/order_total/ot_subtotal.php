@@ -25,7 +25,6 @@
 
     function process() {
       global $order, $currencies;
-
       $this->output[] = array('title' => $this->title . ':',
                               'text' => $currencies->format($order->info['subtotal'], true, $order->info['currency'], $order->info['currency_value']),
                               'value' => $order->info['subtotal']);
@@ -45,8 +44,8 @@
     }
 
     function install() {
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('¾®·×¤ÎÉ½¼¨', 'MODULE_ORDER_TOTAL_SUBTOTAL_STATUS', 'true', '¾®·×¤ÎÉ½¼¨¤ò¤·¤Ş¤¹¤«?', '6', '1','tep_cfg_select_option(array(\'true\', \'false\'), ', now())");
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('É½¼¨¤ÎÀ°Îó½ç', 'MODULE_ORDER_TOTAL_SUBTOTAL_SORT_ORDER', '1', 'É½¼¨¤ÎÀ°Îó½ç¤òÀßÄê¤Ç¤­¤Ş¤¹. ¿ô»ú¤¬¾®¤µ¤¤¤Û¤É¾å°Ì¤ËÉ½¼¨¤µ¤ì¤Ş¤¹.', '6', '2', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('å°è¨ˆã®è¡¨ç¤º', 'MODULE_ORDER_TOTAL_SUBTOTAL_STATUS', 'true', 'å°è¨ˆã®è¡¨ç¤ºã‚’ã—ã¾ã™ã‹?', '6', '1','tep_cfg_select_option(array(\'true\', \'false\'), ', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('è¡¨ç¤ºã®æ•´åˆ—é †', 'MODULE_ORDER_TOTAL_SUBTOTAL_SORT_ORDER', '1', 'è¡¨ç¤ºã®æ•´åˆ—é †ã‚’è¨­å®šã§ãã¾ã™. æ•°å­—ãŒå°ã•ã„ã»ã©ä¸Šä½ã«è¡¨ç¤ºã•ã‚Œã¾ã™.', '6', '2', now())");
     }
 
     function remove() {

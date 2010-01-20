@@ -1,12 +1,12 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://maplestory.nexon.co.jp/" class="blank" rel='nofollow'><span>еседе╫еые╣е╚б╝еъб╝ ╕°╝░WEBе╡еде╚</span></a></li>
+<li><a href="http://maplestory.nexon.co.jp/" class="blank" rel='nofollow'><span>уГбуВдуГЧуГлуВ╣уГИуГ╝уГкуГ╝ хЕмх╝ПWEBуВ╡уВдуГИ</span></a></li>
 <li><a href="http://www15.atwiki.jp/maple/" class="blank" rel='nofollow'><span>Maple Story @Wiki</span></a></li>
 <li><a href="http://maplematome.wikiwiki.jp/" class="blank" rel='nofollow'><span>MapleStory Wiki</span></a></li>
-<li><a href="http://wikiwiki.jp/itcg/" class="blank" rel='nofollow'><span>дсддд▌ Wiki</span></a></li>
-<li><a href="http://maple.ragnarokonline.biz/" class="blank" rel='nofollow'><span>еседе╫еы ╣╢╬м┼╖╣ё</span></a></li>
-<li><a href="http://gyutan.s256.xrea.com/tools/simulation/" class="blank" rel='nofollow'><span>еседе╫еые╣е╚б╝еъб╝ е╖е▀ехеьб╝е┐б╝</span></a></li>
-<li><a href="http://8920.teacup.com/akatuki/bbs" class="blank" rel='nofollow'><span>еседе╫еые╣е╚б╝еъб╝ ╖╟╝и╚─</span></a></li>
-<li><a href="http://www.mmonavi.com/modules/game/271.html" class="blank"><span>еседе╫еые╣е╚б╝еъб╝ епеие╣е╚╣╢╬м</span></a></li>
-<li><a href="http://www.hotgame.co.jp/" class="blank"><span>дсддд▌ е╒ебеєе╡еде╚░ь═ў</span></a></li>
+<li><a href="http://wikiwiki.jp/itcg/" class="blank" rel='nofollow'><span>уВБуБДуБ╜ Wiki</span></a></li>
+<li><a href="http://maple.ragnarokonline.biz/" class="blank" rel='nofollow'><span>уГбуВдуГЧуГл цФ╗чХехдйхЫ╜</span></a></li>
+<li><a href="http://gyutan.s256.xrea.com/tools/simulation/" class="blank" rel='nofollow'><span>уГбуВдуГЧуГлуВ╣уГИуГ╝уГкуГ╝ уВ╖уГЯуГеуГмуГ╝уВ┐уГ╝</span></a></li>
+<li><a href="http://8920.teacup.com/akatuki/bbs" class="blank" rel='nofollow'><span>уГбуВдуГЧуГлуВ╣уГИуГ╝уГкуГ╝ цО▓чд║цЭ┐</span></a></li>
+<li><a href="http://www.mmonavi.com/modules/game/271.html" class="blank"><span>уГбуВдуГЧуГлуВ╣уГИуГ╝уГкуГ╝ уВпуВиуВ╣уГИцФ╗чХе</span></a></li>
+<li><a href="http://www.hotgame.co.jp/" class="blank"><span>уВБуБДуБ╜ уГХуВбуГ│уВ╡уВдуГИф╕Ашжз</span></a></li>
 </ul>

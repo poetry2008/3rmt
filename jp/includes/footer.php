@@ -13,7 +13,7 @@
 <div id="footer">
 	<?php echo FOOTER_TEXT_BODY . "\n"; ?>
 	<address>
-		Copyright&nbsp;&copy;&nbsp;2004-2009&nbsp;Jackpot&nbsp;<a class="bold" href="http://www.iimy.co.jp/"><strong>RMT</strong>•∏•„•√•Ø•›•√•»</a>
+		Copyright&nbsp;&copy;&nbsp;2004-2009&nbsp;Jackpot&nbsp;<a class="bold" href="http://www.iimy.co.jp/"><strong>RMT</strong>„Ç∏„É£„ÉÉ„ÇØ„Éù„ÉÉ„Éà</a>
 	</address>
 	<?php if ($banner = tep_banner_exists('dynamic', 'footer')) { echo  '<br><div align="center">' . "\n" . tep_display_banner('static', $banner) . '</div>'; }?>
 </div>

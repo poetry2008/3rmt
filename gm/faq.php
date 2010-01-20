@@ -14,7 +14,7 @@ $faq_meta_k = '';
 $faq_meta_d = '';
 $h1_mes = '';
 $faq_mes = '';
-$breadcrumb->add('�褯�������', tep_href_link('info-7.html'));
+$breadcrumb->add('よくある質問', tep_href_link('info-7.html'));
 
 if(isset($_GET['faq_id'])) {
 	$faq_no = explode("/", $faq_id, 2);
@@ -29,13 +29,13 @@ if(isset($_GET['faq_id'])) {
 		
 		require('iimy_faq/' . (int)$g_id . '/faq.php');
 		
-		$breadcrumb->add($gc_name . '�Τ褯�������', tep_href_link('faq' . (int)$g_id . '/'));
-		$h1_mes = $gc_name . '�Τ褯��������FAQ)';
+		$breadcrumb->add($gc_name . 'のよくある質問', tep_href_link('faq' . (int)$g_id . '/'));
+		$h1_mes = $gc_name . 'のよくある質問（FAQ)';
 	} else {
-		$faq_title = '�ե����뤬���Ĥ���ޤ���';
-		$breadcrumb->add('���顼');
-		$h1_mes = '���顼';
-		$faq_mes = '<h3>�ե����뤬���Ĥ���ޤ���</h3><p>������줿��URL���ְ�äƤ���ޤ���</p>';
+		$faq_title = 'ファイルが見つかりません';
+		$breadcrumb->add('エラー');
+		$h1_mes = 'エラー';
+		$faq_mes = '<h3>ファイルが見つかりません</h3><p>削除されたかURLが間違っております。</p>';
 	}
 }
 ?>

@@ -15,7 +15,7 @@ $connection = mysql_connect(DB_SERVER, DB_SERVER_USERNAME, DB_SERVER_PASSWORD)  
 // select database
 $db = mysql_select_db(DB_DATABASE, $connection) or die(mysql_error());
 
-// Si la langue n'est pas spñÄifiñÆ
+if (!isset($HTTP_GET_VARS['language'])) $HTTP_GET_VARS['language'] = NULL;
 if ($HTTP_GET_VARS['language'] == "") {
   $lang_query = tep_db_query("select languages_id, code from " . TABLE_LANGUAGES . " where directory = '" . $language . "'");
 } else {
@@ -23,7 +23,6 @@ if ($HTTP_GET_VARS['language'] == "") {
   $lang_query = tep_db_query("select languages_id, code from " . TABLE_LANGUAGES . " where code = '" . $cur_language . "'");
 }
 
-// RñÄupïÓe le code (fr, en, etc.) et l'id (1, 2, etc.) de la langue courante
 if (tep_db_num_rows($lang_query)) {
   $lang_a = tep_db_fetch_array($lang_query);
     $lang_code = $lang_a['code'];
@@ -33,20 +32,20 @@ if (tep_db_num_rows($lang_query)) {
 // If the default of your catalog is not what you want in your RSS feed, then
 // please change this three constants:
 // Enter an appropriate title for your website
-define(RSS_TITLE, STORE_NAME);
+define('RSS_TITLE', STORE_NAME);
 // Enter your main shopping cart link
-define(WEBLINK, HTTP_SERVER.DIR_WS_CATALOG);
+define('WEBLINK', HTTP_SERVER.DIR_WS_CATALOG);
 // Enter a description of your shopping cart
-define(DESCRIPTION, TITLE);
+define('DESCRIPTION', TITLE);
 /////////////////////////////////////////////////////////////
 //That's it.  No More Editing (Unless you renamed DB tables or need to switch
 //to SEO links (Apache Rewrite URL)
 /////////////////////////////////////////////////////////////
 
 Header("Content-Type: text/xml");
-echo '<?xml version="1.0" encoding="EUC-JP" ?>';
-echo '<?xml-stylesheet href="http://www.w3.org/2000/08/w3c-synd/style.css" type="text/css" encoding="EUC-JP"?>' . "\n";
-echo "<!-- RSS for " . STORE_NAME . ", generated on " . date(r) . " -->\n";
+echo '<?xml version="1.0" encoding="UTF-8" ?>';
+echo '<?xml-stylesheet href="http://www.w3.org/2000/08/w3c-synd/style.css" type="text/css" encoding="UTF-8"?>' . "\n";
+echo "<!-- RSS for " . STORE_NAME . ", generated on " . date('r') . " -->\n";
 ?>
 <rss version="0.92">
 <channel>
@@ -92,11 +91,6 @@ while ($row = mysql_fetch_array($sql_result)) {
   $row2 = mysql_fetch_array($sql2_result);
   
   $name = $row2["products_name"];
-  //$desc = $row2["products_description"];
-  
-  //Edit ds-style 2005.11.30
-  // edit 2009.5.14 maker
-  //$description_array = explode("|-#-|", $row2['products_description']); // maker
   $desc = $row2['products_description'];
 
 // add extra data here
@@ -114,22 +108,22 @@ while ($row = mysql_fetch_array($sql_result)) {
 // dumb method , but it works
   $name = str_replace ('&amp;','&',$name);
   $desc = str_replace ('&amp;','&',$desc);
-  $name = str_replace ('&eacute;','¡¦',$name);
-  $desc = str_replace ('&eacute;','¡¦',$desc);
-  $name = str_replace ('&agrave;','¡¦',$name);
-  $desc = str_replace ('&agrave;','¡¦',$desc);
-  $name = str_replace ('&egrave;','¡¦',$name);
-  $desc = str_replace ('&egrave;','¡¦',$desc);
-  $name = str_replace ('&acirc;','¡¦',$name);
-  $desc = str_replace ('&acirc;','¡¦',$desc);
-  $name = str_replace ('&ccedil;','¡¦',$name);
-  $desc = str_replace ('&ccedil;','¡¦',$desc);
-  $name = str_replace ('&ecirc;','¡¦',$name);
-  $desc = str_replace ('&ecirc;','¡¦',$desc);
-  $name = str_replace ('&icirc;','¡¦',$name);
-  $desc = str_replace ('&icirc;','¡¦',$desc);
-  $name = str_replace ('&ocirc;','¡¦',$name);
-  $desc = str_replace ('&ocirc;','¡¦',$desc);
+  $name = str_replace ('&eacute;','ãƒ»',$name);
+  $desc = str_replace ('&eacute;','ãƒ»',$desc);
+  $name = str_replace ('&agrave;','ãƒ»',$name);
+  $desc = str_replace ('&agrave;','ãƒ»',$desc);
+  $name = str_replace ('&egrave;','ãƒ»',$name);
+  $desc = str_replace ('&egrave;','ãƒ»',$desc);
+  $name = str_replace ('&acirc;','ãƒ»',$name);
+  $desc = str_replace ('&acirc;','ãƒ»',$desc);
+  $name = str_replace ('&ccedil;','ãƒ»',$name);
+  $desc = str_replace ('&ccedil;','ãƒ»',$desc);
+  $name = str_replace ('&ecirc;','ãƒ»',$name);
+  $desc = str_replace ('&ecirc;','ãƒ»',$desc);
+  $name = str_replace ('&icirc;','ãƒ»',$name);
+  $desc = str_replace ('&icirc;','ãƒ»',$desc);
+  $name = str_replace ('&ocirc;','ãƒ»',$name);
+  $desc = str_replace ('&ocirc;','ãƒ»',$desc);
   $name = str_replace ('&nbsp;',' ',$name);
   $desc = str_replace ('&nbsp;',' ',$desc);
   

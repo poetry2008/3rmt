@@ -1,9 +1,9 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://www.rfonline.jp/" class="blank" rel='nofollow'><span>RF online Z ¸ø¼°¥Û¡¼¥à¥Ú¡¼¥¸</span></a></li>
-<li><a href="http://www.mmo-station.com/mmo/rf/" class="blank" rel='nofollow'><span>RF ONLINE Áí¹ç¾ðÊó¡¦¹¶Î¬¥µ¥¤¥È</span></a></li>
+<li><a href="http://www.rfonline.jp/" class="blank" rel='nofollow'><span>RF online Z å…¬å¼ãƒ›ãƒ¼ãƒ ãƒšãƒ¼ã‚¸</span></a></li>
+<li><a href="http://www.mmo-station.com/mmo/rf/" class="blank" rel='nofollow'><span>RF ONLINE ç·åˆæƒ…å ±ãƒ»æ”»ç•¥ã‚µã‚¤ãƒˆ</span></a></li>
 <li><a href="http://wikiwiki.jp/viprfonline/" class="blank" rel='nofollow'><span>RF Online Wiki</span></a></li>
 <li><a href="http://ja.rfonline.wikia.com/wiki/RF_Online_Database" class="blank" rel='nofollow'><span>RF Online Database</span></a></li>
-<li><a href="http://www.play-mmorpg.com/mmorpg/rf.html" class="blank" rel='nofollow'><span>RF ONLINE Z ¥ì¥Ó¥å¡¼</span></a></li>
-<li><a href="http://www.mmonavi.com/modules/game/42.html" class="blank"><span>RF¡¡¥²¡¼¥à¾ðÊó </span></a></li>
+<li><a href="http://www.play-mmorpg.com/mmorpg/rf.html" class="blank" rel='nofollow'><span>RF ONLINE Z ãƒ¬ãƒ“ãƒ¥ãƒ¼</span></a></li>
+<li><a href="http://www.mmonavi.com/modules/game/42.html" class="blank"><span>RFã€€ã‚²ãƒ¼ãƒ æƒ…å ± </span></a></li>
 </ul>

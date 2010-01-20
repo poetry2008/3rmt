@@ -10,7 +10,7 @@
   Released under the GNU General Public License
 */
 
-// Âå¶â°ú´¹Ê§¤¤(¼ê¿ôÎÁ¤¬¹ØÆş¶â³Û¤ËÏ¢Æ°)
+// ä»£é‡‘å¼•æ›æ‰•ã„(æ‰‹æ•°æ–™ãŒè³¼å…¥é‡‘é¡ã«é€£å‹•)
   class convenience_store {
     var $code, $title, $description, $enabled;
     var $n_fee, $s_error;
@@ -58,7 +58,7 @@
       }
     }
 
-// Âå°ú¼ê¿ôÎÁ¤ò·×»»¤¹¤ë
+// ä»£å¼•æ‰‹æ•°æ–™ã‚’è¨ˆç®—ã™ã‚‹
     function calc_fee($total_cost) {
       $table_fee = split("[:,]" , MODULE_PAYMENT_CONVENIENCE_STORE_COST);
       $f_find = false;
@@ -86,8 +86,8 @@
       global $currencies;
       global $order;
 
-      $total_cost = $order->info['total'];      // ÀÇ¶â¤â´Ş¤á¤¿Âå¶â¤ÎÁí³Û
-      $f_result = $this->calc_fee($total_cost); // ¼ê¿ôÎÁ
+      $total_cost = $order->info['total'];      // ç¨é‡‘ã‚‚å«ã‚ãŸä»£é‡‘ã®ç·é¡
+      $f_result = $this->calc_fee($total_cost); // æ‰‹æ•°æ–™
 
       $added_hidden = $f_result
           ? tep_draw_hidden_field('codt_fee', $this->n_fee).tep_draw_hidden_field('cod_total_cost', $total_cost)
@@ -105,15 +105,15 @@
 							array('title' => MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ZIP_CODE,
                                   'field' => tep_draw_input_field('convenience_store_zip_code')),
 							array('title' => MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ADDRESS,
-                                  'field' => tep_draw_input_field('convenience_store_address1','','maxlength="25"') . ' 25Ê¸»ú¤Ş¤Ç'),
+                                  'field' => tep_draw_input_field('convenience_store_address1','','maxlength="25"') . ' 25æ–‡å­—ã¾ã§'),
 							array('title' => '',
-                                  'field' => tep_draw_input_field('convenience_store_address2','','maxlength="25"') . ' 25Ê¸»ú¤Ş¤Ç'),
+                                  'field' => tep_draw_input_field('convenience_store_address2','','maxlength="25"') . ' 25æ–‡å­—ã¾ã§'),
 							array('title' => MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_L_NAME,
                                   'field' => tep_draw_input_field('convenience_store_l_name')),
 							array('title' => MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_F_NAME,
                                   'field' => tep_draw_input_field('convenience_store_f_name')),
 							array('title' => MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_TEL,
-                                  'field' => tep_draw_input_field('convenience_store_tel') . '¥Ï¥¤¥Õ¥ó¤Ê¤·'),
+                                  'field' => tep_draw_input_field('convenience_store_tel') . 'ãƒã‚¤ãƒ•ãƒ³ãªã—'),
                             array('title' => $s_message,
                                   'field' => $added_hidden))
       );
@@ -168,7 +168,7 @@
       global $HTTP_POST_VARS;
       global $order, $point;
 
-      // ÄÉ²Ã - 2007.01.05 ----------------------------------------------
+      // è¿½åŠ  - 2007.01.05 ----------------------------------------------
       $total = $order->info['total'];
       if ((MODULE_ORDER_TOTAL_CODT_STATUS == 'true')
           && ($payment == 'cod_table')
@@ -186,9 +186,9 @@
 	  if(MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'convenience_store')) {
         $total += intval($HTTP_POST_VARS['codt_fee']);
 	  }
-      // ÄÉ²Ã - 2007.01.05 ----------------------------------------------
+      // è¿½åŠ  - 2007.01.05 ----------------------------------------------
 	  
-      // email_footer ¤Ë»ÈÍÑ¤¹¤ëÊ¸»úÎó
+      // email_footer ã«ä½¿ç”¨ã™ã‚‹æ–‡å­—åˆ—
       $s_message = $HTTP_POST_VARS['codt_fee_error']
         ? $HTTP_POST_VARS['codt_fee_error']
         : sprintf(MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_MAILFOOTER,
@@ -221,7 +221,7 @@
       if (isset($HTTP_GET_VARS['payment_error']) && (strlen($HTTP_GET_VARS['payment_error']) > 0)) {
         $error_message = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE;
         
-		return array('title' => '¥³¥ó¥Ó¥Ë·èºÑ ¥¨¥é¡¼!',
+		return array('title' => 'ã‚³ãƒ³ãƒ“ãƒ‹æ±ºæ¸ˆ ã‚¨ãƒ©ãƒ¼!',
                      'error' => $error_message);
 		
 	  }else{
@@ -238,13 +238,13 @@
     }
 
     function install() {
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('¥³¥ó¥Ó¥Ë·èºÑ¤òÍ­¸ú¤Ë¤¹¤ë', 'MODULE_PAYMENT_CONVENIENCE_STORE_STATUS', 'True', '¥³¥ó¥Ó¥Ë·èºÑ¤Ë¤è¤ë»ÙÊ§¤¤¤ò¼õ¤±ÉÕ¤±¤Ş¤¹¤«?', '6', '1', 'tep_cfg_select_option(array(\'True\', \'False\'), ',now());");
-	  tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('²ÃÌÁÅ¹¥³¡¼¥É', 'MODULE_PAYMENT_CONVENIENCE_STORE_IP', '', '²ÃÌÁÅ¹¥³¡¼¥É¤ÎÀßÄê¤ò¤·¤Ş¤¹¡£', '6', '2', now())");
-	  tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('ÀÜÂ³URL', 'MODULE_PAYMENT_CONVENIENCE_STORE_URL', '', 'ÀÜÂ³URL¤ÎÀßÄê¤ò¤·¤Ş¤¹¡£', '6', '6', now())");
-	  tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('·èºÑ¼ê¿ôÎÁ', 'MODULE_PAYMENT_CONVENIENCE_STORE_COST', '999999:200', '·èºÑ¼ê¿ôÎÁ. Îã: 9999:315,29999:420,99999:630,299999:1050 ... 9999±ß¤Ş¤Ç315±ß, 29999±ß¤Ş¤Ç420±ß, ...', '6', '3', now())");
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('É½¼¨¤ÎÀ°Îó½ç', 'MODULE_PAYMENT_CONVENIENCE_STORE_SORT_ORDER', '0', 'É½¼¨¤ÎÀ°Îó½ç¤òÀßÄê¤Ç¤­¤Ş¤¹¡£¿ô»ú¤¬¾®¤µ¤¤¤Û¤É¾å°Ì¤ËÉ½¼¨¤µ¤ì¤Ş¤¹.', '6', '0' , now())");
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('Å¬ÍÑÃÏ°è', 'MODULE_PAYMENT_CONVENIENCE_STORE_ZONE', '0', 'Å¬ÍÑÃÏ°è¤òÁªÂò¤¹¤ë¤È¡¢ÁªÂò¤·¤¿ÃÏ°è¤Î¤ß¤ÇÍøÍÑ²ÄÇ½¤È¤Ê¤ê¤Ş¤¹.', '6', '4', 'tep_get_zone_class_title', 'tep_cfg_pull_down_zone_classes(', now())");
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, use_function, date_added) values ('½é´üÃíÊ¸¥¹¥Æ¡¼¥¿¥¹', 'MODULE_PAYMENT_CONVENIENCE_STORE_ORDER_STATUS_ID', '0', 'ÀßÄê¤·¤¿¥¹¥Æ¡¼¥¿¥¹¤¬¼õÃí»ş¤ËÅ¬ÍÑ¤µ¤ì¤Ş¤¹.', '6', '5', 'tep_cfg_pull_down_order_statuses(', 'tep_get_order_status_name', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('ã‚³ãƒ³ãƒ“ãƒ‹æ±ºæ¸ˆã‚’æœ‰åŠ¹ã«ã™ã‚‹', 'MODULE_PAYMENT_CONVENIENCE_STORE_STATUS', 'True', 'ã‚³ãƒ³ãƒ“ãƒ‹æ±ºæ¸ˆã«ã‚ˆã‚‹æ”¯æ‰•ã„ã‚’å—ã‘ä»˜ã‘ã¾ã™ã‹?', '6', '1', 'tep_cfg_select_option(array(\'True\', \'False\'), ',now());");
+	  tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('åŠ ç›Ÿåº—ã‚³ãƒ¼ãƒ‰', 'MODULE_PAYMENT_CONVENIENCE_STORE_IP', '', 'åŠ ç›Ÿåº—ã‚³ãƒ¼ãƒ‰ã®è¨­å®šã‚’ã—ã¾ã™ã€‚', '6', '2', now())");
+	  tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('æ¥ç¶šURL', 'MODULE_PAYMENT_CONVENIENCE_STORE_URL', '', 'æ¥ç¶šURLã®è¨­å®šã‚’ã—ã¾ã™ã€‚', '6', '6', now())");
+	  tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('æ±ºæ¸ˆæ‰‹æ•°æ–™', 'MODULE_PAYMENT_CONVENIENCE_STORE_COST', '999999:200', 'æ±ºæ¸ˆæ‰‹æ•°æ–™. ä¾‹: 9999:315,29999:420,99999:630,299999:1050 ... 9999å††ã¾ã§315å††, 29999å††ã¾ã§420å††, ...', '6', '3', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('è¡¨ç¤ºã®æ•´åˆ—é †', 'MODULE_PAYMENT_CONVENIENCE_STORE_SORT_ORDER', '0', 'è¡¨ç¤ºã®æ•´åˆ—é †ã‚’è¨­å®šã§ãã¾ã™ã€‚æ•°å­—ãŒå°ã•ã„ã»ã©ä¸Šä½ã«è¡¨ç¤ºã•ã‚Œã¾ã™.', '6', '0' , now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('é©ç”¨åœ°åŸŸ', 'MODULE_PAYMENT_CONVENIENCE_STORE_ZONE', '0', 'é©ç”¨åœ°åŸŸã‚’é¸æŠã™ã‚‹ã¨ã€é¸æŠã—ãŸåœ°åŸŸã®ã¿ã§åˆ©ç”¨å¯èƒ½ã¨ãªã‚Šã¾ã™.', '6', '4', 'tep_get_zone_class_title', 'tep_cfg_pull_down_zone_classes(', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, use_function, date_added) values ('åˆæœŸæ³¨æ–‡ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹', 'MODULE_PAYMENT_CONVENIENCE_STORE_ORDER_STATUS_ID', '0', 'è¨­å®šã—ãŸã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãŒå—æ³¨æ™‚ã«é©ç”¨ã•ã‚Œã¾ã™.', '6', '5', 'tep_cfg_pull_down_order_statuses(', 'tep_get_order_status_name', now())");
     }
 
     function remove() {

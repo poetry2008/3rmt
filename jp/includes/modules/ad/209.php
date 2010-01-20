@@ -2,12 +2,12 @@
 //<meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
 ?>
 <ul class="r_c_links_ul">
-<li><a href="http://home.c02.itscom.net/hoko/" rel='nofollow' class="blank">еседе╫еые╣е╚б╝еъ╠┬╧йепеие╣е╚╣╢╬м</a></li>
-<li><a href="http://www5.pf-x.net/~meipo/index/" rel='nofollow' class="blank">еседе╫еые╣е╚б╝еъб╝ ╜щ┐┤╝╘░щ└обж╣╢╬м</a></li>
-<li><a href="http://www.maplestory.netgamers.jp/" rel='nofollow' class="blank">еседе╫еые╣е╚б╝еъб╝ ┴э╣ч╛Ё╩є</a></li>
-<li><a href="http://www1.ocn.ne.jp/~nakahir/" rel='nofollow' class="blank">еседе╫еые╣е╚б╝еъб╝ ╩╪═°е─б╝еы</a></li>
-<li><a href="http://www.hotgame.co.jp/" rel='nofollow' class="blank">дсддд▌╛Ё╩є╚─</a></li>
-<li><a href="http://maple.go5.jp/" rel='nofollow' class="blank">еседе╫еы епеие╣е╚╛Ё╩є</a></li>
-<li><a href="http://www.mmonavi.com/modules/game/271.html" rel='nofollow' class="blank">MapleStoryд╚д╧</a></li>
-<li><a href="http://www15.atwiki.jp/maple/" rel='nofollow' class="blank">еседе╫еые╣е╚б╝еъб╝ 2д┴дудєд═дыд▐д╚дсWiki</a></li>
+<li><a href="http://home.c02.itscom.net/hoko/" rel='nofollow' class="blank">уГбуВдуГЧуГлуВ╣уГИуГ╝уГкш┐╖ш╖пуВпуВиуВ╣уГИцФ╗чХе</a></li>
+<li><a href="http://www5.pf-x.net/~meipo/index/" rel='nofollow' class="blank">уГбуВдуГЧуГлуВ╣уГИуГ╝уГкуГ╝ хИЭх┐ГшАЕшВ▓цИРуГ╗цФ╗чХе</a></li>
+<li><a href="http://www.maplestory.netgamers.jp/" rel='nofollow' class="blank">уГбуВдуГЧуГлуВ╣уГИуГ╝уГкуГ╝ ч╖ПхРИцГЕха▒</a></li>
+<li><a href="http://www1.ocn.ne.jp/~nakahir/" rel='nofollow' class="blank">уГбуВдуГЧуГлуВ╣уГИуГ╝уГкуГ╝ ф╛┐хИйуГДуГ╝уГл</a></li>
+<li><a href="http://www.hotgame.co.jp/" rel='nofollow' class="blank">уВБуБДуБ╜цГЕха▒цЭ┐</a></li>
+<li><a href="http://maple.go5.jp/" rel='nofollow' class="blank">уГбуВдуГЧуГл уВпуВиуВ╣уГИцГЕха▒</a></li>
+<li><a href="http://www.mmonavi.com/modules/game/271.html" rel='nofollow' class="blank">MapleStoryуБиуБп</a></li>
+<li><a href="http://www15.atwiki.jp/maple/" rel='nofollow' class="blank">уГбуВдуГЧуГлуВ╣уГИуГ╝уГкуГ╝ 2уБбуВГуВУуБнуВЛуБ╛уБиуВБWiki</a></li>
 </ul>

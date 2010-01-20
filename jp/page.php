@@ -18,7 +18,7 @@
   if(!$pID || $pID == '0' || $pID == '') {
     $error = true;
   } else {
-    $page_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where romaji = '".$romaji."' and status = '1'");
+    $page_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where romaji = '".$romaji."' and status = '1' and site_id = '".SITE_ID."'");
     if (!tep_db_num_rows($page_query)) {
       $error = true;
     }

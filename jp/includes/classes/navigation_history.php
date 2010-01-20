@@ -59,7 +59,7 @@
 
       if ($set == 'true') {
         $this->path[] = array('page' => basename($PHP_SELF),
-                              'mode' => (($HTTP_SERVER_VARS['HTTPS'] == 'on') ? 'SSL' : 'NONSSL'),
+                              'mode' => (isset($HTTP_SERVER_VARS['HTTPS'])?(($HTTP_SERVER_VARS['HTTPS'] == 'on') ? 'SSL' : 'NONSSL'):'NONSSL'),
                               'get' => $HTTP_GET_VARS,
                               'post' => $HTTP_POST_VARS);
       }

@@ -2,14 +2,14 @@
 //<meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
 ?>
 <ul class="r_c_links_ul">
-<li><a href="http://www.lineage2.jp/bbs/list.aspx?bid=3" rel='nofollow' class="blank">¥ê¥Í2 ¥á¥ó¥Æ¥Ê¥ó¥¹¾ðÊó</a></li>
-<li><a href="http://hrb.finito.fc2.com/" rel='nofollow' class="blank">¥ê¥Í¡¼¥¸¥åII ¤¤¤â¤Å¤ë¡ÁLINEAGE2 Links¡Á</a></li>
-<li><a href="http://l2quest.web2.jp/" rel='nofollow' class="blank">LINEAGE2 ¥¯¥¨¥¹¥È¹¶Î¬</a></li>
-<li><a href="http://www.geocities.jp/flttsr_q3p2u/" rel='nofollow' class="blank">¥ê¥Í¡¼¥¸¥å2 ¹¶Î¬ÄÌ¿®</a></li>
-<li><a href="http://l2mpt.net/" rel='nofollow' class="blank">Áê¾ì¾ðÊó Lineage2 MarketPriceTurbo</a></li>
-<li><a href="http://ammonite.pya.jp/totsugeki/" rel='nofollow' class="blank">LINEAGE2·ìÌÁ¾ðÊó¶É</a></li>
-<li><a href="http://www.mmonavi.com/modules/game/92.html" rel='nofollow' class="blank">¥ê¥Í¡¼¥¸¥å2¤Ë¤Ä¤¤¤Æ</a></li>
-<li><a href="http://jbbs.livedoor.jp/game/7135/" rel='nofollow' class="blank">¥ê¥Í2 ¤·¤¿¤é¤Ð</a></li>
-<li><a href="http://l2.shaft-e.com/" rel='nofollow' class="blank">¥ê¥Í¡¼¥¸¥å£²¹¶Î¬</a></li>
-<li><a href="http://line2soubi.jog.buttobi.net/" rel='nofollow' class="blank">¥ê¥Í¡¼¥¸¥å­¶ ÁõÈ÷²èÁü¥µ¥¤¥È</a></li>
+<li><a href="http://www.lineage2.jp/bbs/list.aspx?bid=3" rel='nofollow' class="blank">ãƒªãƒ2 ãƒ¡ãƒ³ãƒ†ãƒŠãƒ³ã‚¹æƒ…å ±</a></li>
+<li><a href="http://hrb.finito.fc2.com/" rel='nofollow' class="blank">ãƒªãƒãƒ¼ã‚¸ãƒ¥II ã„ã‚‚ã¥ã‚‹ï½žLINEAGE2 Linksï½ž</a></li>
+<li><a href="http://l2quest.web2.jp/" rel='nofollow' class="blank">LINEAGE2 ã‚¯ã‚¨ã‚¹ãƒˆæ”»ç•¥</a></li>
+<li><a href="http://www.geocities.jp/flttsr_q3p2u/" rel='nofollow' class="blank">ãƒªãƒãƒ¼ã‚¸ãƒ¥2 æ”»ç•¥é€šä¿¡</a></li>
+<li><a href="http://l2mpt.net/" rel='nofollow' class="blank">ç›¸å ´æƒ…å ± Lineage2 MarketPriceTurbo</a></li>
+<li><a href="http://ammonite.pya.jp/totsugeki/" rel='nofollow' class="blank">LINEAGE2è¡€ç›Ÿæƒ…å ±å±€</a></li>
+<li><a href="http://www.mmonavi.com/modules/game/92.html" rel='nofollow' class="blank">ãƒªãƒãƒ¼ã‚¸ãƒ¥2ã«ã¤ã„ã¦</a></li>
+<li><a href="http://jbbs.livedoor.jp/game/7135/" rel='nofollow' class="blank">ãƒªãƒ2 ã—ãŸã‚‰ã°</a></li>
+<li><a href="http://l2.shaft-e.com/" rel='nofollow' class="blank">ãƒªãƒãƒ¼ã‚¸ãƒ¥ï¼’æ”»ç•¥</a></li>
+<li><a href="http://line2soubi.jog.buttobi.net/" rel='nofollow' class="blank">ãƒªãƒãƒ¼ã‚¸ãƒ¥â…¡ è£…å‚™ç”»åƒã‚µã‚¤ãƒˆ</a></li>
 </ul>

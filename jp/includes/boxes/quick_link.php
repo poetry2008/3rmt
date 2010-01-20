@@ -15,7 +15,7 @@
               ?>
             <?php }?>
 <div id='quick_link'>
-              <a href='<?php echo tep_href_link(FILENAME_DEFAULT, 'action=select');?>' title='¥Þ¥¤¥²¡¼¥à'><img src="images/design/box/my_game.gif" width="172" height="107" alt="¥Þ¥¤¥²¡¼¥à" ></a>
+              <a href='<?php echo tep_href_link(FILENAME_DEFAULT, 'action=select');?>' title='ãƒžã‚¤ã‚²ãƒ¼ãƒ '><img src="images/design/box/my_game.gif" width="172" height="107" alt="ãƒžã‚¤ã‚²ãƒ¼ãƒ " ></a>
             <?php if (isset($quick_category) && $quick_category && !$quick_category['categories_status']){?>
                 <a href='<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath=' . $quick_category['categories_id']);?>' title="<?php echo $quick_category['categories_name'];?>"><img src='/images/<?php echo $quick_category['categories_image2'];?>' width="<?php echo CATEGORY_IMAGE_WIDTH;?>" height="<?php echo CATEGORY_IMAGE_HEIGHT;?>" alt="<?php echo $quick_category['categories_name'];?>" ></a>
             <?php } ?>

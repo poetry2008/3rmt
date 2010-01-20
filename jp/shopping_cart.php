@@ -32,8 +32,6 @@ function money_update(objid)
   var obj = document.getElementById(objid);
   var product_id = obj.id.substr(9);
   var unit_price = document.getElementById("unit_price_" + product_id);
-  //var attr_prices = document.getElementsByName("attr_" + product_id);
-  //var attr_prices_option = document.getElementsByName("attr_option_" + product_id);
   var sub_total = document.getElementById('sub_total_hidden');
 
   var new_unit_price_total = Number(unit_price.value) * Number(obj.value);
@@ -42,17 +40,6 @@ function money_update(objid)
   var old_price_total  = document.getElementById("pri_" + product_id);
   var monetary_unit_pri = old_price_total.innerHTML.slice(-1);
   old_price_total.innerHTML = new_unit_price_total.toString() + monetary_unit_pri;
-
-  //for (var i = 0; i < attr_prices.length; i++)
-  //{
-    //var new_attr_price = Number(attr_prices[i].value) * Number(obj.value);
-    //var old_price_attr = document.getElementById("attr_" + product_id + "_attr_" + attr_prices_option[i].value);
-    //var prefix_attr = old_price_attr.innerHTML.slice(0,1);
-    //var monetary_unit_attr = old_price_attr.innerHTML.slice(-1);
-    //old_price_attr.innerHTML = prefix_attr + new_attr_price.toString() + monetary_unit_attr;
-
-  //}
-
 
   set_sub_total();
 }
@@ -132,7 +119,7 @@ function change_num(ob,targ, quan,a_quan)
       <!-- body_text //-->
       <td valign="top" id="contents">
         <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>
-        <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_CHECKOUT_PRODUCTS, 'action=update_product', 'SSL'), 'post', 'id="cart_quantity"'); ?>
+  <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_SHOPPING_CART, 'action=update_product')); ?> 
         <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <?php
   if ($cart->count_contents() > 0) {
@@ -228,13 +215,13 @@ function change_num(ob,targ, quan,a_quan)
 ?>
                   <td width="17%" align="left" class="main">
   <input type="hidden" name="goto" value="<?php echo tep_href_link($navigation->path[$back]['page'], tep_array_to_string($navigation->path[$back]['get'], array('action')), $navigation->path[$back]['mode']);?>">
-  <input type="subfmit" name="continue" value="" class="shopping_cart_continue">
+  <input type="submit" name="continue" value="" class="shopping_cart_continue">
     </td>
                   <?php
     }
 ?>
                   <td align="left" class="main">
-  <input type="submit" name="checkout" value="" class="shopping_cart_checkout">`
+  <input type="submit" name="checkout" value="" class="shopping_cart_checkout">
                   </td>
                 </tr>
                 <tr>

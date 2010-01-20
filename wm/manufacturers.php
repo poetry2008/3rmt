@@ -6,14 +6,14 @@
   Copyright (c) 2003 osCommerce
   Released under the GNU General Public License
   <meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
-  ¼¡¤Ø¥Ü¥¿¥ó¤¬É½¼¨¤µ¤ì¤Ê¤¤¼êÆþÎÏ¤Ç8¥¿¥¤¥È¥ëÉ½¼¨¤µ¤»¤Æ¤¤¤ë
+  æ¬¡ã¸ãƒœã‚¿ãƒ³ãŒè¡¨ç¤ºã•ã‚Œãªã„æ‰‹å…¥åŠ›ã§8ã‚¿ã‚¤ãƒˆãƒ«è¡¨ç¤ºã•ã›ã¦ã„ã‚‹
 */
 	require('includes/application_top.php');
 //require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_MANUFAXTURERS);
 
-define('NAVBAR_TITLE', '¥²¡¼¥à¥á¡¼¥«¡¼°ìÍ÷');
-define('HEADING_TITLE', '¥²¡¼¥à¥á¡¼¥«¡¼°ìÍ÷');
-define('TEXT_MORE', '¤³¤Î¥á¡¼¥«¡¼°ìÍ÷¤Î¾¦ÉÊ°ìÍ÷¤Ø');
+define('NAVBAR_TITLE', 'ã‚²ãƒ¼ãƒ ãƒ¡ãƒ¼ã‚«ãƒ¼ä¸€è¦§');
+define('HEADING_TITLE', 'ã‚²ãƒ¼ãƒ ãƒ¡ãƒ¼ã‚«ãƒ¼ä¸€è¦§');
+define('TEXT_MORE', 'ã“ã®ãƒ¡ãƒ¼ã‚«ãƒ¼ä¸€è¦§ã®å•†å“ä¸€è¦§ã¸');
 
 $breadcrumb->add(NAVBAR_TITLE, tep_href_link('manufacturers.php'));
 ?>
@@ -76,8 +76,8 @@ while ($manufacturer = tep_db_fetch_array($manufacturer_query)){
 		echo '				<tr>' . "\n";
 		while($products = tep_db_fetch_array($products_query)) {
 			$products['products_name'] = tep_get_products_name($products['products_id']);
-			$products['products_description_'.ABBR_SITENAME] = tep_get_products_description($products['products_id']);
-			echo '<td align="center" valign="top" class="smallText" width="20%"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products['products_id']) . '">'.tep_image2(DIR_WS_IMAGES.$products['products_image'],$products['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"').'<br>' .$products['products_name'] . '</a><br>'.$currencies->display_price($products['products_price'], tep_get_tax_rate($products['products_tax_class_id'])).'<!-- '.strip_tags(substr($products['products_description_'.ABBR_SITENAME],0,50)).' --></td>'."\n";
+			$products['products_description'] = tep_get_products_description($products['products_id']);
+			echo '<td align="center" valign="top" class="smallText" width="20%"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products['products_id']) . '">'.tep_image2(DIR_WS_IMAGES.$products['products_image'],$products['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"').'<br>' .$products['products_name'] . '</a><br>'.$currencies->display_price($products['products_price'], tep_get_tax_rate($products['products_tax_class_id'])).'<!-- '.strip_tags(substr($products['products_description'],0,50)).' --></td>'."\n";
 		}
 		echo '				</tr>' . "\n";
 		echo '			</table>' . "\n";

@@ -12,7 +12,7 @@
 
   require('includes/application_top.php');
   if (!isset($HTTP_GET_VARS['pID'])) {
-    $page_info_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where status = 1 order by sort_id"); 
+    $page_info_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where status = 1 and site_id = '".SITE_ID."'order by sort_id"); 
     define('PAGE_NAVBAR_TITLE', PAGE_NEW_TITLE); 
   } else {
   $error = false;
@@ -22,9 +22,9 @@
     $error = true;
   } else {
     if (preg_match("/^\d+$/",$pID)) {
-      $page_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where pID = '".$pID."' and status = '1'");
+      $page_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where pID = '".$pID."' and status = '1' and site_id = '".SITE_ID."'");
     } else {
-      $page_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where romaji = '".$pID."' and status = '1'");
+      $page_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where romaji = '".$pID."' and status = '1' and site_id = '".SITE_ID."'");
     }
     if (!tep_db_num_rows($page_query)) {
       $error = true;

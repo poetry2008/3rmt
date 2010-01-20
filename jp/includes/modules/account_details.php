@@ -41,6 +41,8 @@
   $address_form->setFormLine('gender',ENTRY_GENDER,$a_value);
 */
   // firstname
+
+  if (!isset($error)) $error=NULL;
   if ($is_read_only == true) {
       $a_value = tep_output_string($account['customers_firstname'],false,true);
   } elseif ($error == true) {
@@ -50,6 +52,7 @@
           $a_value = $firstname . tep_draw_hidden_field('firstname');
       }
   } else {
+  if (!isset($account['customers_firstname'])) $account['customers_firstname']=NULL;
       $a_value = tep_draw_input_field('firstname', $account['customers_firstname']) . '&nbsp;' . ENTRY_FIRST_NAME_TEXT;
   }
   $address_form->setFormLine('firstname',ENTRY_FIRST_NAME,$a_value);
@@ -64,6 +67,7 @@
           $a_value = $lastname . tep_draw_hidden_field('lastname');
       }
   } else {
+  if (!isset($account['customers_lastname'])) $account['customers_lastname']=NULL;
       $a_value = tep_draw_input_field('lastname', $account['customers_lastname']) . '&nbsp;' . ENTRY_LAST_NAME_TEXT;
   }
   $address_form->setFormLine('lastname',ENTRY_LAST_NAME,$a_value);
@@ -104,7 +108,7 @@
   } elseif ($error == true) {
       if ($entry_date_of_birth_error == true) {
           $a_value = tep_draw_input_field('dob') . '&nbsp;' . ENTRY_DATE_OF_BIRTH_ERROR;
-      //18╨пл╓кЧепо©╤ь╩ъ╫ХмЩ
+      //18Ф╜ЁФ°╙Ф╨─Г≥╩И▄╡Г╕│Ф╜╒Е┤╕Г░├
 	  } elseif($entry_date_of_birth_error2 == true) {
           $a_value = tep_draw_input_field('dob') . '&nbsp;' . ENTRY_DATE_OF_BIRTH_ERROR2;
 	  } else {
@@ -130,6 +134,7 @@
           $a_value = $email_address . tep_draw_hidden_field('email_address');
       }
   } else {
+  if (!isset($account['customers_email_address'])) $account['customers_email_address']=NULL;
       $a_value = tep_draw_input_field('email_address', $account['customers_email_address']) . '&nbsp;' . ENTRY_EMAIL_ADDRESS_TEXT;
   }
   $address_form->setFormLine('email_address',ENTRY_EMAIL_ADDRESS,$a_value);
@@ -391,6 +396,7 @@
     }
     echo tep_draw_hidden_field('newsletter');  
   } else {
+  if (!isset($account['customers_newsletter'])) $account['customers_newsletter']=NULL;
     echo tep_draw_pull_down_menu('newsletter', $newsletter_array, $account['customers_newsletter']) . '&nbsp;' . ENTRY_NEWSLETTER_TEXT;
   }
 ?></td>
@@ -408,7 +414,8 @@
 ?>		  
 		  <tr>
 		    <td class="main">&nbsp;<?php echo ENTRY_GUEST; ?></td>
-		    <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?>&nbsp;&nbsp;<small><span class="red">╒╗</span>&nbsp;╡Я╟Вепо©╓Р╓╥╓й╓╓╓г╧ьфЧ╓╧╓К╓Ё╓х╓Б╓г╓╜╓ч╓╧║ё</small></td>
+<?php if (!isset($guestchk)) $guestchk = NULL;?>
+		    <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?>&nbsp;&nbsp;<small><span class="red">Б─╩</span>&nbsp;Д╪ Е⌠║Г≥╩И▄╡Ц┌▓Ц│≈Ц│╙Ц│└Ц│╖ХЁ╪Е┘╔Ц│≥Ц┌▀Ц│⌠Ц│╗Ц┌┌Ц│╖Ц│█Ц│╬Ц│≥Ц─┌</small></td>
 		  </tr>
 <?php
     } else {
@@ -426,6 +433,7 @@
 </tr>
 
 <?php
+if (!isset($guestchk)) $guestchk = NULL;
   if($guestchk == '1') {
     $newpass = tep_create_random_value(ENTRY_PASSWORD_MIN_LENGTH);
 	$password = $newpass;

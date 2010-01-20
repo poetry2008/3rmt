@@ -39,6 +39,7 @@
   
   $error = 'F';
   
+  if (!isset($HTTP_POST_VARS['act'])) $HTTP_POST_VARS['act'] = NULL;//del notcie
   if($HTTP_POST_VARS['act'] == 'chk'){
 	foreach($HTTP_POST_VARS as $value){
 	  if($value == ""){
@@ -73,7 +74,7 @@ foreach($cart as $key => $val){
 	    $cid = 'cname_' . $key2;
 		
 		echo 'if(document.getElementById(\'' . $cid . '\').value == ""){'."\n";
-		echo 'alert("����饯����̾�����Ϥ��Ʋ�������");'."\n";
+		echo 'alert("キャラクター名を入力して下さい。");'."\n";
 		echo "document.getElementById('$cid').focus();"."\n";
 		echo 'return false;'."\n";
 		echo '}'."\n";
@@ -104,14 +105,14 @@ foreach($cart as $key => $val){
 			  if($error == 'T'){
 			?>
 			<tr>
-			  <td class="main" align="center" style="color:#FF0000">����ϳ�줬����ޤ�������饯����̾�ϡ��������Ϥ��Ʋ�������</td>
+			  <td class="main" align="center" style="color:#FF0000">入力漏れがあります。キャラクター名は、全て入力して下さい。</td>
 			</tr>
 			<?php
 			  }
 			?>
 			<tr>
               <td><form action="<?php echo tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL'); ?>" method="post" onSubmit="return chara_mess();">
-			    <input type="hidden" name="dummy" value="��������������">
+			    <input type="hidden" name="dummy" value="あいうえお眉幅">
 				<table border="0" width="100%" cellspacing="0" cellpadding="2" summary="table">
 				<?php
 				  foreach($cart as $key => $val){
@@ -143,22 +144,22 @@ foreach($cart as $key => $val){
 				</table>
 			    
 				<div class="contents">
-					<p class="red">�����Ϥ���ޤ�������饯����̾�ˤ��ְ㤨�Ϥ������ޤ��󤫡�</p>
-					<span>�褯����ְ㤤</span>
+					<p class="red">ご入力されましたキャラクター名にお間違えはございませんか？</p>
+					<span>よくある間違い</span>
 					<ul>
 						<li>
-							���ڥ�ְ㤤������������̵ͭ��
+							スペル間違い。記号や数字の有無。
 						</li>
 						<li>
-							-���ʥϥ��ե�ˤȡ�_���ʥ�������С��ˤ����ϴְ㤤��
+							-　（ハイフン）と　_　（アンダーバー）の入力間違い。
 	
 						</li>
 						<li>
-							�����������ˤȡ�.���ʥɥåȡˤ����ϴְ㤤��
+							・　（中点）と　.　（ドット）の入力間違い。
 						</li>
 					</ul>
 					<p>
-						<span class="red">��</span>&nbsp;����饯����̾���������פʾ��ʤ������������ޤ��������ϥե�����פ�ɽ������ʤ����ϡּ��ؿʤ�פ򥯥�å����Ƥ���������
+						<span class="red">※</span>&nbsp;キャラクター名の入力不要な商品が一部ございます。「入力フォーム」が表示されない場合は「次へ進む」をクリックしてください。
 					</p>
 				</div>
 				
@@ -166,7 +167,7 @@ foreach($cart as $key => $val){
                   <tr class="infoBoxContents"> 
                     <td><table border="0" width="100%" cellspacing="0" cellpadding="2" summary="table">  
                       <tr> 
-                        <td class="main">&nbsp;&nbsp;�ְ㤤���ʤ���Сּ��ؿʤ�פ򥯥�å����Ƥ���������</td> 
+                        <td class="main">&nbsp;&nbsp;間違いがなければ「次へ進む」をクリックしてください。</td> 
                         <td class="main" align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
                         <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                       </tr> 

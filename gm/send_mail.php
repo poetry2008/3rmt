@@ -6,17 +6,17 @@
   
   $error_single = false; 
   $success_single = false; 
-  $subject = 'RMT������ޥ͡�';
+  $subject = 'RMTゲームマネー';
   $body_text = '';
-  $body_text = 'RMT������ޥ͡����������Ͽ������ͽ��Υ᡼�륢�ɥ쥹�ء�'."\n".' 
-  ������ǧ�Τ���ˤ����ꤷ�Ƥ��ޤ���'."\n".
-  '���Υ᡼���̵���˼����ܥå����ǳ�ǧ�Ǥ��ޤ����顢'."\n".
-  '������Υ᡼�륢�ɥ쥹��RMT������ޥ͡�������ʤ������Ѥ��������ޤ���'."\n".
-  '�ʲ���URL�˥����������Ʋ����Ͽ��ԤäƤ���������'."\n".
+  $body_text = 'RMTゲームマネーが、会員登録をご利用予定のメールアドレスへ、'."\n".' 
+  受信確認のためにお送りしています。'."\n".
+  'このメールを、無事に受信ボックスで確認できましたら、'."\n".
+  'こちらのメールアドレスはRMTゲームマネーで問題なくご利用いただけます。'."\n".
+  '以下のURLにアクセスして会員登録を行ってください。'."\n".
   HTTP_SERVER.'/create_account.php' ."\n".
-  '����������������ޤ����顢RMT������ޥ͡��ޤǤ��䤤��碌����������'."\n".
-  '��Ϣ�������䤤��碌�訬������������������'."\n".
-  'RMT������ޥ͡�'."\n".
+  'ご不明な点がありましたら、RMTゲームマネーまでお問い合わせください。'."\n".
+  'ご連絡・お問い合わせ先━━━━━━━━━━'."\n".
+  'RMTゲームマネー'."\n".
   STORE_NAME_ADDRESS."\n".	  	  
   HTTP_SERVER."\n".  
   STORE_OWNER_EMAIL_ADDRESS;

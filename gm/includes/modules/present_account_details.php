@@ -74,7 +74,7 @@
   } elseif ($error == true) {
       if ($entry_date_of_birth_error == true) {
           $a_value = tep_draw_input_field('dob') . '&nbsp;' . ENTRY_DATE_OF_BIRTH_ERROR;
-      //18ºĞÌ¤ËşÅĞÏ¿¶Ø»ß½èÍı
+      //18æ­³æœªæº€ç™»éŒ²ç¦æ­¢å‡¦ç†
 	  } elseif($entry_date_of_birth_error2 == true) {
           $a_value = tep_draw_input_field('dob') . '&nbsp;' . ENTRY_DATE_OF_BIRTH_ERROR2;
 	  } else {
@@ -314,7 +314,7 @@
     <td class="formAreaTitle"><br><?php echo CATEGORY_PASSWORD; ?></td>
   </tr>
   <tr>
-    <td class="main">¢¨¤³¤Î¤Ş¤Ş²ñ°÷ÅĞÏ¿¤ò¤´´õË¾¤Î¾ì¹ç¤Ï¥Ñ¥¹¥ï¡¼¥É¤òÆşÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£</td>
+    <td class="main">â€»ã“ã®ã¾ã¾ä¼šå“¡ç™»éŒ²ã‚’ã”å¸Œæœ›ã®å ´åˆã¯ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚</td>
   </tr>
   <tr>
     <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">

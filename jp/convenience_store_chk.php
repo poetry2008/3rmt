@@ -13,12 +13,12 @@
   include('includes/application_top.php');
   
   if($HTTP_GET_VARS['sid'] != ""){
-    #Šî–{î•ñ
+    #åŸºæœ¬æƒ…å ±
 	$ip = MODULE_PAYMENT_CONVENIENCE_STORE_IP;
 	$sid = $HTTP_GET_VARS['sid'];
 	$oid = substr($HTTP_GET_VARS['sid'],0,8) . '-' . substr($HTTP_GET_VARS['sid'],8,8);
 	
-	#DBŽæ“¾î•ñ
+	#DBå–å¾—æƒ…å ±
 	$orders_status_history_query = tep_db_query("select comments from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . $oid . "'");
 	$orders_status_history_result = tep_db_fetch_array($orders_status_history_query);
 	
@@ -26,28 +26,28 @@
 	  $osh_text = explode("\n",mb_convert_encoding($orders_status_history_result['comments'], 'SJIS', 'EUC-JP'));
 	  foreach($osh_text as $val){    
 		
-		if(ereg('—X•Ö”Ô†:',$val)){
-		  $yubin1 = str_replace('—X•Ö”Ô†:',"",$val);
+		if(ereg('éƒµä¾¿ç•ªå·:',$val)){
+		  $yubin1 = str_replace('éƒµä¾¿ç•ªå·:',"",$val);
 		}
 		
-		if(ereg('ZŠ1:',$val)){
-		  $adr1 = str_replace('ZŠ1:',"",$val);
+		if(ereg('ä½æ‰€1:',$val)){
+		  $adr1 = str_replace('ä½æ‰€1:',"",$val);
 		}
 		
-		if(ereg('ZŠ2:',$val)){
-		  $adr2 = str_replace('ZŠ2:',"",$val);
+		if(ereg('ä½æ‰€2:',$val)){
+		  $adr2 = str_replace('ä½æ‰€2:',"",$val);
 		}
 		
-		if(ereg('Ž:',$val)){
-		  $name1 = str_replace('Ž:',"",$val);
+		if(ereg('æ°:',$val)){
+		  $name1 = str_replace('æ°:',"",$val);
 		}
 		
-		if(ereg('–¼:',$val)){
-		  $name2 = str_replace('–¼:',"",$val);
+		if(ereg('å:',$val)){
+		  $name2 = str_replace('å:',"",$val);
 		}
 		
-		if(ereg('“d˜b”Ô†:',$val)){
-		  $tel = str_replace('“d˜b”Ô†:',"",$val);
+		if(ereg('é›»è©±ç•ªå·:',$val)){
+		  $tel = str_replace('é›»è©±ç•ªå·:',"",$val);
 		}  
 	  }
 	}
@@ -83,7 +83,7 @@
 	  $order_total_query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where orders_id = '" . $oid . "' and class = 'ot_subtotal'");
 	  $order_total_result = tep_db_fetch_array($order_total_query);
 	  
-	  $n .= '&N1=' . STORE_NAME . '&N2=' . 'ƒRƒ“ƒrƒjŒˆÏŽè”—¿';
+	  $n .= '&N1=' . STORE_NAME . '&N2=' . 'ã‚³ãƒ³ãƒ“ãƒ‹æ±ºæ¸ˆæ‰‹æ•°æ–™';
 	  $k .= '&K1=' . (int)$order_total_result['value'] . '&K2=200';
 	  
 	}
@@ -104,8 +104,8 @@
 	header("location:" . MODULE_PAYMENT_CONVENIENCE_STORE_URL . $pr);
   
   }else{
-    echo 'ƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½B'."\n";
-	echo 'ƒRƒ“ƒrƒjŒˆÏ‚ªs‚í‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B'."\n";
+    echo 'ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚'."\n";
+	echo 'ã‚³ãƒ³ãƒ“ãƒ‹æ±ºæ¸ˆãŒè¡Œã‚ã‚Œã¾ã›ã‚“ã§ã—ãŸã€‚'."\n";
   }
   
 ?>

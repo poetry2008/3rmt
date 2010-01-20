@@ -10,6 +10,6 @@
   Released under the GNU General Public License
 */
 
-  define('MODULE_ORDER_TOTAL_CONV_TITLE', '¥³¥ó¥Ó¥Ë¼ê¿ôÎÁ');
-  define('MODULE_ORDER_TOTAL_CONV_DESCRIPTION', '¥³¥ó¥Ó¥ËÊ§¤¤¼ê¿ôÎÁ');
+  define('MODULE_ORDER_TOTAL_CONV_TITLE', 'ã‚³ãƒ³ãƒ“ãƒ‹æ‰‹æ•°æ–™');
+  define('MODULE_ORDER_TOTAL_CONV_DESCRIPTION', 'ã‚³ãƒ³ãƒ“ãƒ‹æ‰•ã„æ‰‹æ•°æ–™');
 ?>

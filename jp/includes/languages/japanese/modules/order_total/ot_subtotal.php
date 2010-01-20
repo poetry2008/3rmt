@@ -10,6 +10,6 @@
   Released under the GNU General Public License
 */
 
-  define('MODULE_ORDER_TOTAL_SUBTOTAL_TITLE', '¾®·×');
-  define('MODULE_ORDER_TOTAL_SUBTOTAL_DESCRIPTION', 'ÃíÊ¸¤Î¾®·×ÀßÄê');
+  define('MODULE_ORDER_TOTAL_SUBTOTAL_TITLE', 'å°è¨ˆ');
+  define('MODULE_ORDER_TOTAL_SUBTOTAL_DESCRIPTION', 'æ³¨æ–‡ã®å°è¨ˆè¨­å®š');
 ?>

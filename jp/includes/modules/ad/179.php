@@ -2,13 +2,13 @@
 //<meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
 ?>
 <ul class="r_c_links_ul">
-<li><a href="http://alchemist.on.arena.ne.jp/top.htm" rel='nofollow' class="blank">е▐е╙е╬ео╛Ё╩є еиеъеєд╬д╜дш╔ў</a></li>
-<li><a href="http://www.mabinogion.net/" rel='nofollow' class="blank">е▐е╙е╬еод╬╛Ё╩є</a></li>
-<li><a href="http://mabinogi.wikiwiki.jp/" rel='nofollow' class="blank">е▐е╙е╬ео Wiki</a></li>
-<li><a href="http://www.hotgame.co.jp/" rel='nofollow' class="blank">екеєещедеєе▓б╝ер╛Ё╩є</a></li>
-<li><a href="http://www.geocities.jp/tanakaradaihuku/newpage29.html" rel='nofollow' class="blank">е▐е╙е╬еод╬╣╢╬ме╡еде╚</a></li>
-<li><a href="http://parara-kagekidan.180r.com/mml/mml.htm" rel='nofollow' class="blank">е▐е╙е╬ео MML</a></li>
-<li><a href="http://www.mmonavi.com/modules/game/83.html" rel='nofollow' class="blank">е▐е╙е╬еод╦д─ддд╞</a></li>
-<li><a href="http://www.goodsmile.info/products/gsc/2005/gsc0512-02.html" rel='nofollow' class="blank">Mabinogi е╩ек</a></li>
-<li><a href="http://www.h2o-feeling.com/mabi-search/index.html" rel='nofollow' class="blank">е▐е╙е╬ео╕б║ўеиеєе╕еє</a></li>
+<li><a href="http://alchemist.on.arena.ne.jp/top.htm" rel='nofollow' class="blank">уГЮуГУуГОуВоцГЕха▒ уВиуГкуГ│уБоуБЭуВИщви</a></li>
+<li><a href="http://www.mabinogion.net/" rel='nofollow' class="blank">уГЮуГУуГОуВоуБоцГЕха▒</a></li>
+<li><a href="http://mabinogi.wikiwiki.jp/" rel='nofollow' class="blank">уГЮуГУуГОуВо Wiki</a></li>
+<li><a href="http://www.hotgame.co.jp/" rel='nofollow' class="blank">уВкуГ│уГйуВдуГ│уВ▓уГ╝уГацГЕха▒</a></li>
+<li><a href="http://www.geocities.jp/tanakaradaihuku/newpage29.html" rel='nofollow' class="blank">уГЮуГУуГОуВоуБоцФ╗чХеуВ╡уВдуГИ</a></li>
+<li><a href="http://parara-kagekidan.180r.com/mml/mml.htm" rel='nofollow' class="blank">уГЮуГУуГОуВо MML</a></li>
+<li><a href="http://www.mmonavi.com/modules/game/83.html" rel='nofollow' class="blank">уГЮуГУуГОуВоуБлуБдуБДуБж</a></li>
+<li><a href="http://www.goodsmile.info/products/gsc/2005/gsc0512-02.html" rel='nofollow' class="blank">Mabinogi уГКуВк</a></li>
+<li><a href="http://www.h2o-feeling.com/mabi-search/index.html" rel='nofollow' class="blank">уГЮуГУуГОуВоцдЬч┤вуВиуГ│уВ╕уГ│</a></li>
 </ul>

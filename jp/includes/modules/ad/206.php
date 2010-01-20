@@ -2,9 +2,9 @@
 //<meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
 ?>
 <ul class="r_c_links_ul">
-<li><a href="http://www.mmo-station.com/mmo/archlord/" rel='nofollow' class="blank">¥¢¡¼¥¯¥í¡¼¥É¹¶Î¬MMO-Station</a></li>
-<li><a href="http://www34.atwiki.jp/archlord/" rel='nofollow' class="blank">¥¢¡¼¥¯¥í¡¼¥É Wiki¡Ú¾ðÊó¡¦¹¶Î¬¡Û</a></li>
-<li><a href="http://archlord.hangame.co.jp/noticebbs.nhn?gameid=ARCHLORD_NOTICE" rel='nofollow' class="blank">ARCHLORD¸ø¼°¤Î¾ðÊó</a></li>
-<li><a href="http://www.hotgame.co.jp/" rel='nofollow' class="blank">¥¢¡¼¥¯¥í¡¼¥É·Ç¼¨ÈÄ</a></li>
-<li><a href="http://www.mmonavi.com/modules/game/532.html" rel='nofollow' class="blank">¥¢¡¼¥¯¥í¡¼¥ÉÆ°ºî´Ä¶­</a></li>
+<li><a href="http://www.mmo-station.com/mmo/archlord/" rel='nofollow' class="blank">ã‚¢ãƒ¼ã‚¯ãƒ­ãƒ¼ãƒ‰æ”»ç•¥MMO-Station</a></li>
+<li><a href="http://www34.atwiki.jp/archlord/" rel='nofollow' class="blank">ã‚¢ãƒ¼ã‚¯ãƒ­ãƒ¼ãƒ‰ Wikiã€æƒ…å ±ãƒ»æ”»ç•¥ã€‘</a></li>
+<li><a href="http://archlord.hangame.co.jp/noticebbs.nhn?gameid=ARCHLORD_NOTICE" rel='nofollow' class="blank">ARCHLORDå…¬å¼ã®æƒ…å ±</a></li>
+<li><a href="http://www.hotgame.co.jp/" rel='nofollow' class="blank">ã‚¢ãƒ¼ã‚¯ãƒ­ãƒ¼ãƒ‰æŽ²ç¤ºæ¿</a></li>
+<li><a href="http://www.mmonavi.com/modules/game/532.html" rel='nofollow' class="blank">ã‚¢ãƒ¼ã‚¯ãƒ­ãƒ¼ãƒ‰å‹•ä½œç’°å¢ƒ</a></li>
 </ul>

@@ -6,14 +6,14 @@
   Copyright (c) 2003 osCommerce
   Released under the GNU General Public License
   <meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
-  ¼¡¤Ø¥Ü¥¿¥ó¤¬É½¼¨¤µ¤ì¤Ê¤¤¼êÆþÎÏ¤Ç8¥¿¥¤¥È¥ëÉ½¼¨¤µ¤»¤Æ¤¤¤ë
+  æ¬¡ã¸ãƒœã‚¿ãƒ³ãŒè¡¨ç¤ºã•ã‚Œãªã„æ‰‹å…¥åŠ›ã§8ã‚¿ã‚¤ãƒˆãƒ«è¡¨ç¤ºã•ã›ã¦ã„ã‚‹
 */
 	require('includes/application_top.php');
 //require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_MANUFAXTURERS);
 
-define('NAVBAR_TITLE', '¥²¡¼¥à¥á¡¼¥«¡¼°ìÍ÷');
-define('HEADING_TITLE', '¥²¡¼¥à¥á¡¼¥«¡¼°ìÍ÷');
-define('TEXT_MORE', '¤³¤Î¥á¡¼¥«¡¼°ìÍ÷¤Î¾¦ÉÊ°ìÍ÷¤Ø');
+define('NAVBAR_TITLE', 'ã‚²ãƒ¼ãƒ ãƒ¡ãƒ¼ã‚«ãƒ¼ä¸€è¦§');
+define('HEADING_TITLE', 'ã‚²ãƒ¼ãƒ ãƒ¡ãƒ¼ã‚«ãƒ¼ä¸€è¦§');
+define('TEXT_MORE', 'ã“ã®ãƒ¡ãƒ¼ã‚«ãƒ¼ä¸€è¦§ã®å•†å“ä¸€è¦§ã¸');
 
 $breadcrumb->add(NAVBAR_TITLE, tep_href_link('manufacturers.php'));
 ?>

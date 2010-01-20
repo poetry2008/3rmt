@@ -10,32 +10,32 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE_1', '¤ªµÒÍÍ¾ðÊó');
-define('NAVBAR_TITLE_2', 'ÍúÎò');
-define('NAVBAR_TITLE_3', 'ÃíÊ¸¾ðÊó');
+define('NAVBAR_TITLE_1', 'ãŠå®¢æ§˜æƒ…å ±');
+define('NAVBAR_TITLE_2', 'å±¥æ­´');
+define('NAVBAR_TITLE_3', 'æ³¨æ–‡æƒ…å ±');
 
-define('HEADING_TITLE', 'ÃíÊ¸¾ðÊó');
+define('HEADING_TITLE', 'æ³¨æ–‡æƒ…å ±');
 
-define('HEADING_ORDER_NUMBER', '¤´ÃíÊ¸ÈÖ¹æ #%s');
-define('HEADING_ORDER_DATE', 'ÃíÊ¸Æü:');
-define('HEADING_ORDER_TOTAL', 'ÃíÊ¸Áí³Û:');
+define('HEADING_ORDER_NUMBER', 'ã”æ³¨æ–‡ç•ªå· #%s');
+define('HEADING_ORDER_DATE', 'æ³¨æ–‡æ—¥:');
+define('HEADING_ORDER_TOTAL', 'æ³¨æ–‡ç·é¡:');
 
-define('HEADING_DELIVERY_ADDRESS', 'ÇÛÁ÷Àè');
-define('HEADING_SHIPPING_METHOD', 'ÇÛÁ÷ÊýË¡');
+define('HEADING_DELIVERY_ADDRESS', 'é…é€å…ˆ');
+define('HEADING_SHIPPING_METHOD', 'é…é€æ–¹æ³•');
 
-define('HEADING_PRODUCTS', '¿ôÎÌ / ¾¦ÉÊÌ¾');
-define('HEADING_TAX', '¾ÃÈñÀÇ');
-define('HEADING_TOTAL', '¹ç·×');
+define('HEADING_PRODUCTS', 'æ•°é‡ / å•†å“å');
+define('HEADING_TAX', 'æ¶ˆè²»ç¨Ž');
+define('HEADING_TOTAL', 'åˆè¨ˆ');
 
-define('HEADING_BILLING_INFORMATION', '¤´ÀÁµáÀè¾ðÊó');
-define('HEADING_BILLING_ADDRESS', '¤ªÌ¾Á°');
-define('HEADING_PAYMENT_METHOD', '»ÙÊ§ÊýË¡');
+define('HEADING_BILLING_INFORMATION', 'ã”è«‹æ±‚å…ˆæƒ…å ±');
+define('HEADING_BILLING_ADDRESS', 'ãŠåå‰');
+define('HEADING_PAYMENT_METHOD', 'æ”¯æ‰•æ–¹æ³•');
 
-define('HEADING_ORDER_HISTORY', 'ÃíÊ¸ÍúÎò');
-define('HEADING_COMMENT', '¥³¥á¥ó¥È');
-define('TEXT_NO_COMMENTS_AVAILABLE', '¥³¥á¥ó¥È¤Ï¤¢¤ê¤Þ¤»¤ó¡£');
+define('HEADING_ORDER_HISTORY', 'æ³¨æ–‡å±¥æ­´');
+define('HEADING_COMMENT', 'ã‚³ãƒ¡ãƒ³ãƒˆ');
+define('TEXT_NO_COMMENTS_AVAILABLE', 'ã‚³ãƒ¡ãƒ³ãƒˆã¯ã‚ã‚Šã¾ã›ã‚“ã€‚');
 
-define('TABLE_HEADING_DOWNLOAD_DATE', '¥À¥¦¥ó¥í¡¼¥ÉÍ­¸ú´ü¸Â: ');
-define('TABLE_HEADING_DOWNLOAD_COUNT', ' ²ó¥À¥¦¥ó¥í¡¼¥É¤Ç¤­¤Þ¤¹');
-define('HEADING_DOWNLOAD', '¥À¥¦¥ó¥í¡¼¥É¡¦¥ê¥ó¥¯');
+define('TABLE_HEADING_DOWNLOAD_DATE', 'ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰æœ‰åŠ¹æœŸé™: ');
+define('TABLE_HEADING_DOWNLOAD_COUNT', ' å›žãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã§ãã¾ã™');
+define('HEADING_DOWNLOAD', 'ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ãƒ»ãƒªãƒ³ã‚¯');
 ?>

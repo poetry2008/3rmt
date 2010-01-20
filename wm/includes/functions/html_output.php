@@ -319,6 +319,7 @@
 
     if (tep_not_null($value)) $selection .= ' value="' . tep_parse_input_field_data($value, array('"' => '&quot;')) . '"';
 
+    if (!isset($GLOBALS[$name])) $GLOBALS[$name] = NULL ; //del notice
     if ( ($checked == true) || ($GLOBALS[$name] == 'on') || ( (isset($value)) && ($GLOBALS[$name] == $value) ) ) {
       $selection .= ' CHECKED';
     }
@@ -440,7 +441,6 @@
   }
   function thumbimage ($image, $x, $y, $aspectratio, $resize, $cachedir){
 
-      error_reporting(0);
 
      $types = array (1 => "gif", "jpeg", "png", "swf", "psd", "wbmp");
 	 $not_supported_formats = array ("GIF"); 
@@ -453,7 +453,7 @@
        (!isset ($y) || ereg ('^[0-9]{1,}$', $y, $regs)) &&
        (isset ($x) || isset ($y))
             ? true
-          : DIE ('Fehlende(r) oder ung¡¦tige(r) Gr¡¦enparameter!');
+          : DIE ('Fehlende(r) oder ungãƒ»tige(r) Grãƒ»enparameter!');
 
      !isset ($resize) || !ereg ('^[0|1]$', $resize, $regs)
           ? $resize = 0
@@ -477,7 +477,7 @@
           ? DIE ('Bei der angegebenen Datei handelt es sich nicht um ein Bild!')
           : false;
 
-	 $imgtype="!(ImageTypes() & IMG_" . strtoupper($types[$imagedata[2]]) . ")";
+	 $imgtype="!(ImageTypes() & IMG_" . strtoupper($types[$imagedata[2]]) . ");";
      if ((eval($imgtype)) || (in_array(strtoupper(array_pop(explode('.', basename($image)))),$not_supported_formats))) {
      	$image = substr ($image, (strrpos (DIR_FS_CATALOG . '/', '/'))+1);
 	 	return $image;
@@ -544,7 +544,6 @@ return $image;
 
   function thumbimage2 ($image, $x, $y, $aspectratio, $resize, $cachedir){
 
-      error_reporting(0);
 
      $types = array (1 => "gif", "jpeg", "png", "swf", "psd", "wbmp");
 	 $not_supported_formats = array ("GIF"); 
@@ -557,7 +556,7 @@ return $image;
        (!isset ($y) || ereg ('^[0-9]{1,}$', $y, $regs)) &&
        (isset ($x) || isset ($y))
             ? true
-          : DIE ('Fehlende(r) oder ung¡¦tige(r) Gr¡¦enparameter!');
+          : DIE ('Fehlende(r) oder ungãƒ»tige(r) Grãƒ»enparameter!');
 
      !isset ($resize) || !ereg ('^[0|1]$', $resize, $regs)
           ? $resize = 0
@@ -581,7 +580,7 @@ return $image;
           ? DIE ('Bei der angegebenen Datei handelt es sich nicht um ein Bild!')
           : false;
 
-	 $imgtype="!(ImageTypes() & IMG_" . strtoupper($types[$imagedata[2]]) . ")";
+	 $imgtype="!(ImageTypes() & IMG_" . strtoupper($types[$imagedata[2]]) . ");";
      if ((eval($imgtype)) || (in_array(strtoupper(array_pop(explode('.', basename($image)))),$not_supported_formats))) {
      	$image = substr ($image, (strrpos (DIR_FS_CATALOG . '/', '/'))+1);
 	 	return $image;
@@ -647,7 +646,6 @@ return $image;
 
   function thumbimage3 ($image, $x, $y, $aspectratio, $resize, $cachedir){
 
-      error_reporting(0);
 
      $types = array (1 => "gif", "jpeg", "png", "swf", "psd", "wbmp");
 	 $not_supported_formats = array ("GIF"); 
@@ -660,7 +658,7 @@ return $image;
        (!isset ($y) || ereg ('^[0-9]{1,}$', $y, $regs)) &&
        (isset ($x) || isset ($y))
             ? true
-          : DIE ('Fehlende(r) oder ung¡¦tige(r) Gr¡¦enparameter!');
+          : DIE ('Fehlende(r) oder ungãƒ»tige(r) Grãƒ»enparameter!');
 
      !isset ($resize) || !ereg ('^[0|1]$', $resize, $regs)
           ? $resize = 0

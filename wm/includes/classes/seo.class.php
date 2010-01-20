@@ -813,13 +813,14 @@ class SEO_URL{
 					} # end switch
 					break;
 				//===========================================
-				// ÄÉ²Ã
+				// è¿½åŠ 
 				case 'colors':
 				  $url = $this->make_url($page, REWRITE_PRODUCTS, $p2[0], $p2[1], '.html', $separator);
 				  break;
 				  
 				//===========================================
 				default:
+          if (!isset($p2[1])) $p2[1] = NULL; //del notice
 					$container[$p2[0]] = $p2[1]; 
 					break;
 			} # end switch
@@ -852,6 +853,7 @@ class SEO_URL{
 		// In the future there will be additional methods here in the switch
 		switch ( $this->attributes['SEO_REWRITE_TYPE'] ){
 			case 'Rewrite':
+        if (!isset($this->reg_anchors[$anchor_type])) $this->reg_anchors[$anchor_type] = NULL;//del notice
 				return $string . $this->reg_anchors[$anchor_type] . $id . $extension;
 				break;
 			default:
@@ -1668,6 +1670,7 @@ class SEO_URL{
 					if ($global) $container['GLOBAL'][$cache_name] = false; 
 					else $container[$cache_name] = false; 
 				}# end if ( $cache['cache_expires'] > date("Y-m-d H:i:s") )			
+if (!isset($this->keep_in_memory)) $this->keep_in_memory= NULL;// del notice
 				if ( $this->keep_in_memory || $local_memory ) {
 					if ($global) $this->data['GLOBAL'][$cache_name] = $container['GLOBAL'][$cache_name]; 
 					else $this->data[$cache_name] = $container[$cache_name]; 
@@ -1832,7 +1835,7 @@ class SEO_URL{
  * @version 1.0
  */	
 	function check_seo_page(){
-		!defined( SEO_URLS ) 
+		!defined( 'SEO_URLS' ) 
 			?	$this->is_seopage = false 
 			:	$this->attributes['SEO_ENABLED'] == 'false'
 				?	$this->is_seopage = false

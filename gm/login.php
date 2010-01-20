@@ -17,14 +17,14 @@ if(isset($HTTP_POST_VARS['login_type']) && $HTTP_POST_VARS['login_type'] == 'new
 }else{ 
 
   if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'process')) {
-    // tamura 2002/12/30 ¡ÖÁ´³Ñ¡×±Ñ¿ô»ú¤ò¡ÖÈ¾³Ñ¡×¤ËÊÑ´¹
+    // tamura 2002/12/30 ã€Œå…¨è§’ã€è‹±æ•°å­—ã‚’ã€ŒåŠè§’ã€ã«å¤‰æ›
     $HTTP_POST_VARS['email_address'] = tep_an_zen_to_han($HTTP_POST_VARS['email_address']);
 
     $email_address = tep_db_prepare_input($HTTP_POST_VARS['email_address']);
     $password = tep_db_prepare_input($HTTP_POST_VARS['password']);
 
 // Check if email exists
-    $check_customer_query = tep_db_query("select customers_id, customers_firstname, customers_lastname, customers_password, customers_email_address, customers_default_address_id, customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "'");
+    $check_customer_query = tep_db_query("select customers_id, customers_firstname, customers_lastname, customers_password, customers_email_address, customers_default_address_id, customers_guest_chk from " . TABLE_CUSTOMERS .  " where customers_email_address = '" . tep_db_input($email_address) . "' and site_id = '".SITE_ID."'");
     if (!tep_db_num_rows($check_customer_query)) {
       $HTTP_GET_VARS['login'] = 'fail';
     } else {
@@ -37,7 +37,7 @@ if(isset($HTTP_POST_VARS['login_type']) && $HTTP_POST_VARS['login_type'] == 'new
           tep_session_recreate();
         }
 
-        $check_country_query = tep_db_query("select entry_country_id, entry_zone_id from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $check_customer['customers_id'] . "' and address_book_id = '1'");
+        $check_country_query = tep_db_query("select entry_country_id, entry_zone_id from " . TABLE_ADDRESS_BOOK . " where customers_id = '" .  $check_customer['customers_id'] . "' and address_book_id = '1' and site_id = '".SITE_ID."'");
         $check_country = tep_db_fetch_array($check_country_query);
 
         $customer_id = $check_customer['customers_id'];
@@ -59,7 +59,7 @@ if(isset($HTTP_POST_VARS['login_type']) && $HTTP_POST_VARS['login_type'] == 'new
         $date_now = date('Ymd');
         tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_of_last_logon = now(), customers_info_number_of_logons = customers_info_number_of_logons+1 where customers_info_id = '" . $customer_id . "'");
 		
-		//POINT_LIMIT CHECK ¥İ¥¤¥ó¥È¤ÎÍ­¸ú´ü¸Â¥Á¥§¥Ã¥¯ ds-style
+		//POINT_LIMIT CHECK ãƒã‚¤ãƒ³ãƒˆã®æœ‰åŠ¹æœŸé™ãƒã‚§ãƒƒã‚¯ ds-style
 		if(MODULE_ORDER_TOTAL_POINT_LIMIT != '0') {
 		  $plimit_count_query = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS." where  customers_id = '".$customer_id."'");
 		  $plimit_count = tep_db_fetch_array($plimit_count_query);
@@ -206,7 +206,7 @@ function session_win() {
                     </tr>
                    <tr>
                       <td align="right">
-                      <a href="<?php echo tep_href_link('send_mail.php', '', 'SSL');?>">¥á¡¼¥ë¼õ¿®¥Æ¥¹¥È¤ò¤¹¤ë</a> 
+                      <a href="<?php echo tep_href_link('send_mail.php', '', 'SSL');?>">ãƒ¡ãƒ¼ãƒ«å—ä¿¡ãƒ†ã‚¹ãƒˆã‚’ã™ã‚‹</a> 
                       </td>
                    </tr>
                   </table></td>
@@ -232,10 +232,10 @@ function session_win() {
         </tr>
       </table>
 	<p class="box_des" style="margin-right:5px;">
-		<i><strong>SSLÇ§¾Ú</strong></i><br>
-		Åö¥µ¥¤¥È¤Ç¤Ï¡¢¼ÂºßÀ­¤Î¾ÚÌÀ¤È¥×¥é¥¤¥Ğ¥·¡¼Êİ¸î¤Î¤¿¤á¡¢ÆüËÜ¥¸¥ª¥È¥é¥¹¥È¤ÎSSL¥µ¡¼¥Ğ¾ÚÌÀ½ñ¤ò»ÈÍÑ¤·¡¢SSL°Å¹æ²½ÄÌ¿®¤ò¼Â¸½¤·¤Æ¤¤¤Ş¤¹¡£
-		¥Ö¥é¥¦¥¶¤ÎURL¤¬¡Ö<?=HTTPS_SERVER;?>¡Á¡×¤Ç»Ï¤Ş¤ëURL¤Ç¤¢¤ë¤³¤È¤ò³ÎÇ§¤¯¤À¤µ¤¤¡£
-		°Ê²¼¤Ë·ÇºÜ¤¹¤ë¥¸¥ª¥È¥é¥¹¥ÈÈ¯¹ÔºÑ¤ß ¥¹¥Ş¡¼¥È¥·¡¼¥ë¤Î¥¯¥ê¥Ã¥¯¤Ë¤è¤ê¡¢¥µ¡¼¥Ğ¾ÚÌÀ½ñ¤Î¸¡¾Ú·ë²Ì¤ò¤´³ÎÇ§¤¯¤À¤µ¤¤¡£
+		<i><strong>SSLèªè¨¼</strong></i><br>
+		å½“ã‚µã‚¤ãƒˆã§ã¯ã€å®Ÿåœ¨æ€§ã®è¨¼æ˜ã¨ãƒ—ãƒ©ã‚¤ãƒã‚·ãƒ¼ä¿è­·ã®ãŸã‚ã€æ—¥æœ¬ã‚¸ã‚ªãƒˆãƒ©ã‚¹ãƒˆã®SSLã‚µãƒ¼ãƒè¨¼æ˜æ›¸ã‚’ä½¿ç”¨ã—ã€SSLæš—å·åŒ–é€šä¿¡ã‚’å®Ÿç¾ã—ã¦ã„ã¾ã™ã€‚
+		ãƒ–ãƒ©ã‚¦ã‚¶ã®URLãŒã€Œ<?=HTTPS_SERVER;?>ã€œã€ã§å§‹ã¾ã‚‹URLã§ã‚ã‚‹ã“ã¨ã‚’ç¢ºèªãã ã•ã„ã€‚
+		ä»¥ä¸‹ã«æ²è¼‰ã™ã‚‹ã‚¸ã‚ªãƒˆãƒ©ã‚¹ãƒˆç™ºè¡Œæ¸ˆã¿ ã‚¹ãƒãƒ¼ãƒˆã‚·ãƒ¼ãƒ«ã®ã‚¯ãƒªãƒƒã‚¯ã«ã‚ˆã‚Šã€ã‚µãƒ¼ãƒè¨¼æ˜æ›¸ã®æ¤œè¨¼çµæœã‚’ã”ç¢ºèªãã ã•ã„ã€‚
 	</p>
 	<p align="center">
 		<!-- GeoTrust Smart Icon tag. Do not edit. -->

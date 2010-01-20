@@ -10,8 +10,8 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE_1', '��������Ȥκ���');
-define('NAVBAR_TITLE_2', '��λ');
-define('HEADING_TITLE', '���ʤ��Υ�������Ȥ���������ޤ���!');
-define('TEXT_ACCOUNT_CREATED', '<b>�ؼ��ؿʤ�٤򥯥�å����Ƥ���������</b><br><br>���꤬�Ȥ��������ޤ�������Ǥ����ͤΥ�������Ⱥ����ϴ�λ�Ǥ���<br>���줫��' . STORE_NAME . '�ǤΥ���饤�󥷥�åԥ󥰤򡢻פ�¸ʬ���ڤ��ߤ����������⤷' . STORE_NAME . '������¾�Ǥ������������������ޤ����顢���䤤��碌�ڡ�����ꤪ���ڤˤ��䤤��碌����������<br><br>�ޤ�������Ͽ���������ޤ����᡼�륢�ɥ쥹�ˡ���Ͽ����ǧ�᡼������ꤤ�����ޤ������⤷10ʬ������Ϥ��ʤ��褦�Ǥ����顢��Ϣ���򤪴ꤤ�������ޤ���');
+define('NAVBAR_TITLE_1', 'アカウントの作成');
+define('NAVBAR_TITLE_2', '完了');
+define('HEADING_TITLE', 'あなたのアカウントが作成されました!');
+define('TEXT_ACCOUNT_CREATED', '<b>『次へ進む』をクリックしてください。</b><br><br>ありがとうございます。これでお客様のアカウント作成は完了です！<br>これから' . STORE_NAME . 'でのオンラインショッピングを、思う存分お楽しみください。もし' . STORE_NAME . '内の操作他でご不明な点がございましたら、お問い合わせページよりお気軽にお問い合わせください。<br><br>また、ご登録いただきましたメールアドレスに、登録ご確認メールをお送りいたしました。もし10分以内に届かないようでしたら、ご連絡をお願いいたします。');
 ?>

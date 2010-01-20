@@ -10,13 +10,13 @@
   Released under the GNU General Public License
 */
 
-define('TEXT_PRODUCT_NOT_FOUND', '���ʤ����Ĥ���ޤ���...');
-define('TEXT_CURRENT_REVIEWS', '�ǿ��Υ�ӥ塼:');
-define('TEXT_MORE_INFORMATION', '��äȾܤ�������ϡ����ξ��ʤ�<a href="%s" target="_blank"><u>�����֥ڡ���</u></a>�Ǥ�������������');
-define('TEXT_DATE_ADDED', '���ξ��ʤ� %s �˥�����������Ͽ����ޤ�����');
-define('TEXT_DATE_AVAILABLE', '<font color="#ff0000">���ξ��ʤ� %s ������ͽ��Ǥ���</font>');
-define('TEXT_ALSO_PURCHASED_PRODUCTS', '���ξ��ʤ���ä��ͤϡ�����ʾ��ʤ���äƤ��ޤ�');
-define('TEXT_PRODUCT_OPTIONS', '����Ǥ��륪�ץ����:');
-define('TEXT_CLICK_TO_ENLARGE', '�ڥ��᡼��������');
-define('TEXT_PDF_DOWNLOAD', 'PDF��������');
+define('TEXT_PRODUCT_NOT_FOUND', '商品が見つかりません...');
+define('TEXT_CURRENT_REVIEWS', '最新のレビュー:');
+define('TEXT_MORE_INFORMATION', 'もっと詳しい情報は、この商品の<a href="%s" target="_blank"><u>ウェブページ</u></a>でご覧ください。');
+define('TEXT_DATE_ADDED', 'この商品は %s にカタログに登録されました。');
+define('TEXT_DATE_AVAILABLE', '<font color="#ff0000">この商品は %s に入荷予定です。</font>');
+define('TEXT_ALSO_PURCHASED_PRODUCTS', 'この商品を買った人は、こんな商品も買っています');
+define('TEXT_PRODUCT_OPTIONS', '選択できるオプション:');
+define('TEXT_CLICK_TO_ENLARGE', '【イメージを拡大】');
+define('TEXT_PDF_DOWNLOAD', 'PDFカタログ');
 ?>

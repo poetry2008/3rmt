@@ -5,29 +5,29 @@
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
 
-  Copyright ¡¦2004 osCommerce
+  Copyright ãƒ»2004 osCommerce
 
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE', '¥µ¥¤¥È¥Þ¥Ã¥×');
-define('HEADING_TITLE', '¥µ¥¤¥È¥Þ¥Ã¥×');
+define('NAVBAR_TITLE', 'ã‚µã‚¤ãƒˆãƒžãƒƒãƒ—');
+define('HEADING_TITLE', 'ã‚µã‚¤ãƒˆãƒžãƒƒãƒ—');
 
-define('PAGE_ACCOUNT', '¥Þ¥¤¥¢¥«¥¦¥ó¥È');
-define('PAGE_ACCOUNT_EDIT', '¥¢¥«¥¦¥ó¥ÈÊÔ½¸');
-define('PAGE_ADDRESS_BOOK', '¥¢¥É¥ì¥¹Ä¢');
-define('PAGE_ACCOUNT_HISTORY', 'ÃíÊ¸ÍúÎò');
-define('PAGE_ACCOUNT_NOTIFICATIONS', '¾¦ÉÊ¤Î¤ªÃÎ¤é¤»');
-define('PAGE_SHOPPING_CART', '¥·¥ç¥Ã¥Ô¥ó¥°¥«¡¼¥È');
-define('PAGE_CHECKOUT_SHIPPING', '¥ì¥¸¤Ø¤¹¤¹¤à');
-define('PAGE_ADVANCED_SEARCH', '¾¦ÉÊ¸¡º÷');
-define('PAGE_PRODUCTS_NEW', '¿·Ãå¾¦ÉÊ');
-define('PAGE_SPECIALS', '¤ªÇã¤¤ÆÀ¾¦ÉÊ');
-define('PAGE_REVIEWS', '¥ì¥Ó¥å¡¼');
-define('PAGE_NEWS', '¤ªÃÎ¤é¤»');
+define('PAGE_ACCOUNT', 'ãƒžã‚¤ã‚¢ã‚«ã‚¦ãƒ³ãƒˆ');
+define('PAGE_ACCOUNT_EDIT', 'ã‚¢ã‚«ã‚¦ãƒ³ãƒˆç·¨é›†');
+define('PAGE_ADDRESS_BOOK', 'ã‚¢ãƒ‰ãƒ¬ã‚¹å¸³');
+define('PAGE_ACCOUNT_HISTORY', 'æ³¨æ–‡å±¥æ­´');
+define('PAGE_ACCOUNT_NOTIFICATIONS', 'å•†å“ã®ãŠçŸ¥ã‚‰ã›');
+define('PAGE_SHOPPING_CART', 'ã‚·ãƒ§ãƒƒãƒ”ãƒ³ã‚°ã‚«ãƒ¼ãƒˆ');
+define('PAGE_CHECKOUT_SHIPPING', 'ãƒ¬ã‚¸ã¸ã™ã™ã‚€');
+define('PAGE_ADVANCED_SEARCH', 'å•†å“æ¤œç´¢');
+define('PAGE_PRODUCTS_NEW', 'æ–°ç€å•†å“');
+define('PAGE_SPECIALS', 'ãŠè²·ã„å¾—å•†å“');
+define('PAGE_REVIEWS', 'ãƒ¬ãƒ“ãƒ¥ãƒ¼');
+define('PAGE_NEWS', 'ãŠçŸ¥ã‚‰ã›');
 
-define('PAGE_PASSWORD_FORGOTTEN', '¥Ñ¥¹¥ï¡¼¥ÉºÆÈ¯¹Ô¼êÂ³¤­');
-define('PAGE_SEND_MAIL', '¥á¡¼¥ë¼õ¿®¥Æ¥¹¥È');
-define('PAGE_EMAIL_TROUBLE', '¥Õ¥ê¡¼¥á¡¼¥ë¤Ç¥á¡¼¥ë¤¬¼õ¤±¼è¤ì¤Ê¤¤Êý¤Ø');
-define('PAGE_BROWSER_IE6X', 'Internet Explorer6¤ÎÀßÄê¤Ë¤Ä¤¤¤Æ');
+define('PAGE_PASSWORD_FORGOTTEN', 'ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰å†ç™ºè¡Œæ‰‹ç¶šã');
+define('PAGE_SEND_MAIL', 'ãƒ¡ãƒ¼ãƒ«å—ä¿¡ãƒ†ã‚¹ãƒˆ');
+define('PAGE_EMAIL_TROUBLE', 'ãƒ•ãƒªãƒ¼ãƒ¡ãƒ¼ãƒ«ã§ãƒ¡ãƒ¼ãƒ«ãŒå—ã‘å–ã‚Œãªã„æ–¹ã¸');
+define('PAGE_BROWSER_IE6X', 'Internet Explorer6ã®è¨­å®šã«ã¤ã„ã¦');
 ?>

@@ -1,9 +1,9 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
-  define('MODULE_METASEO_REORDER_TEXT_TITLE', 'ºÆÇÛÃ£¥Õ¥©¡¼¥à');
+  define('MODULE_METASEO_REORDER_TEXT_TITLE', 'å†é…é”ãƒ•ã‚©ãƒ¼ãƒ ');
   define('MODULE_METASEO_REORDER_TEXT_EXPLAIN', 'EXPLAIN');
-  define('MODULE_METASEO_REORDER_TEXT_DESCRIPTION', 'ºÆÇÛÃ£¥Õ¥©¡¼¥à¥Ú¡¼¥¸¤ÎSEO');
+  define('MODULE_METASEO_REORDER_TEXT_DESCRIPTION', 'å†é…é”ãƒ•ã‚©ãƒ¼ãƒ ãƒšãƒ¼ã‚¸ã®SEO');
 ?>

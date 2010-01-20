@@ -18,7 +18,7 @@
     tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT));
   }
 
-  // tamura 2002/12/30 ¡ÖÁ´³Ñ¡×±Ñ¿ô»ú¤ò¡ÖÈ¾³Ñ¡×¤ËÊÑ´¹
+  // tamura 2002/12/30 ã€Œå…¨è§’ã€è‹±æ•°å­—ã‚’ã€ŒåŠè§’ã€ã«å¤‰æ›
   $an_cols = array('password','confirmation','email_address','postcode','telephone','fax');
   if (ACCOUNT_DOB) $an_cols[] = 'dob';
   foreach ($an_cols as $col) {
@@ -336,7 +336,7 @@ function pass_hidd(){
 	  # Guest
       $check_cid = tep_db_query("select customers_id from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "'");
 	  if(tep_db_num_rows($check_cid)) {
-	    # Guest & 2²óÌÜ°Ê¾å //==============================================
+	    # Guest & 2å›žç›®ä»¥ä¸Š //==============================================
 		$check = tep_db_fetch_array($check_cid);
 		$NewPass = tep_create_random_value(ENTRY_PASSWORD_MIN_LENGTH);
  	    $sql_data_array = array('customers_firstname' => $firstname,
@@ -385,10 +385,10 @@ function pass_hidd(){
         }
 
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', 'customers_id = ' . $check['customers_id']);
-	    # //Guest & 2²óÌÜ°Ê¾å ==============================================
+	    # //Guest & 2å›žç›®ä»¥ä¸Š ==============================================
         tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_of_last_logon = now(), customers_info_number_of_logons = customers_info_number_of_logons+1 where customers_info_id = '" . $customer_id . "'");
 	  } else {
-	    # Guest & 1²óÌÜ //==================================================
+	    # Guest & 1å›žç›® //==================================================
 		$NewPass = tep_create_random_value(ENTRY_PASSWORD_MIN_LENGTH);
  	    $sql_data_array = array('customers_firstname' => $firstname,
                                 'customers_lastname' => $lastname,
@@ -396,7 +396,7 @@ function pass_hidd(){
                                 'customers_lastname_f' => $lastname_f,
                                 'customers_email_address' => $email_address,
                                 'customers_telephone' => $telephone,
-                                'customers_fax' => $fax,
+                                //'customers_fax' => $fax,
                                 'customers_newsletter' => '0',
                                 'customers_password' => tep_encrypt_password($NewPass),
                                 'customers_default_address_id' => 1,
@@ -436,14 +436,14 @@ function pass_hidd(){
         }
 
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
-		# Guest & 1²óÌÜ //==================================================
+		# Guest & 1å›žç›® //==================================================
 	    tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created) values ('" . tep_db_input($customer_id) . "', '0', now())");
       }
 	} else {
 	  # Member
       $check_cid = tep_db_query("select customers_id from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "'");
 	  if(tep_db_num_rows($check_cid)) {
-	    # Member & 2²óÌÜ°Ê¾å //==============================================
+	    # Member & 2å›žç›®ä»¥ä¸Š //==============================================
 		$check = tep_db_fetch_array($check_cid);
 		$NewPass = $password;
 		
@@ -493,10 +493,10 @@ function pass_hidd(){
         }
 
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', 'customers_id = ' . $check['customers_id']);
-	    # //Member & 2²óÌÜ°Ê¾å ==============================================
+	    # //Member & 2å›žç›®ä»¥ä¸Š ==============================================
         tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_of_last_logon = now(), customers_info_number_of_logons = customers_info_number_of_logons+1 where customers_info_id = '" . $customer_id . "'");
 	  } else {
-	    # Member & 1²óÌÜ //==================================================
+	    # Member & 1å›žç›® //==================================================
 		$NewPass = $password;
  	    $sql_data_array = array('customers_firstname' => $firstname,
                                 'customers_lastname' => $lastname,
@@ -504,7 +504,7 @@ function pass_hidd(){
                                 'customers_lastname_f' => $lastname_f,
                                 'customers_email_address' => $email_address,
                                 'customers_telephone' => $telephone,
-                                'customers_fax' => $fax,
+                                //'customers_fax' => $fax,
                                 'customers_newsletter' => $newsletter,
                                 'customers_password' => tep_encrypt_password($NewPass),
                                 'customers_default_address_id' => 1,
@@ -544,7 +544,7 @@ function pass_hidd(){
         }
 
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
-		# Member & 1²óÌÜ //==================================================
+		# Member & 1å›žç›® //==================================================
 		
  	    tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created) values ('" . tep_db_input($customer_id) . "', '0', now())");
 	  }

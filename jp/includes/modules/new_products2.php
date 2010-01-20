@@ -40,7 +40,7 @@
 		$col = 0;
 ?>
 <!-- new_products //-->
-<h3 class="pageHeading"><?php echo $new_c_name; ?>╓н©╥цЕ╬╕ий</h3>
+<h3 class="pageHeading"><?php echo $new_c_name; ?>Ц│╝Ф√╟Г²─Е∙├Е⌠│</h3>
 <table width="100%"  border="0" cellspacing="0" cellpadding="0">
 <?php
 		while ($new_products = tep_db_fetch_array($new_products_query)) {
@@ -79,7 +79,7 @@
 				<tr>
 					<td class="main" style="padding-left:5px; ">
 						<p class="main">
-							<?php echo '╩д╓Й&nbsp;' . number_format($new_products['products_quantity']) . '╦д'; ?>
+							<?php echo 'Ф╝▀Ц┌┼&nbsp;' . number_format($new_products['products_quantity']) . 'Е─▀'; ?>
 							&nbsp;&nbsp;&nbsp;
 							<span class="red"><?php echo $currencies->display_price($new_products['products_price'], tep_get_tax_rate($new_products['products_tax_class_id'])) ; ?></span>
 						</p>

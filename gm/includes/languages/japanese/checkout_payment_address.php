@@ -10,25 +10,25 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE_1', '¥ì¥¸');
-define('NAVBAR_TITLE_2', '¤´ÀÁµáÀè¤ÎÊÑ¹¹');
+define('NAVBAR_TITLE_1', 'ãƒ¬ã‚¸');
+define('NAVBAR_TITLE_2', 'ã”è«‹æ±‚å…ˆã®å¤‰æ›´');
 
-define('HEADING_TITLE', '¤´ÀÁµáÀè¤òÁª¤ó¤Ç¤¯¤À¤µ¤¤');
+define('HEADING_TITLE', 'ã”è«‹æ±‚å…ˆã‚’é¸ã‚“ã§ãã ã•ã„');
 
-define('TABLE_HEADING_PAYMENT_ADDRESS', '¤´ÀÁµáÀè');
-define('TEXT_SELECTED_PAYMENT_DESTINATION', '»ØÄê¤µ¤ì¤Æ¤¤¤ë¤´ÀÁµáÀè¤Ï¼¡¤ÎÄÌ¤ê¤Ç¤¹¡£');
-define('TITLE_PAYMENT_ADDRESS', '¤´ÀÁµáÀè:');
+define('TABLE_HEADING_PAYMENT_ADDRESS', 'ã”è«‹æ±‚å…ˆ');
+define('TEXT_SELECTED_PAYMENT_DESTINATION', 'æŒ‡å®šã•ã‚Œã¦ã„ã‚‹ã”è«‹æ±‚å…ˆã¯æ¬¡ã®é€šã‚Šã§ã™ã€‚');
+define('TITLE_PAYMENT_ADDRESS', 'ã”è«‹æ±‚å…ˆ:');
 
-define('TABLE_HEADING_ADDRESS_BOOK_ENTRIES', '¥¢¥É¥ì¥¹Ä¢ÅÐÏ¿°ìÍ÷');
-define('TEXT_SELECT_OTHER_PAYMENT_DESTINATION', '¤´ÃíÊ¸¾¦ÉÊ¤ÎÇÛÁ÷Àè¤È¤´ÀÁµáÀè¤¬°Û¤Ê¤ë¾ì¹ç¤ÏÁª¤ó¤Ç¤¯¤À¤µ¤¤¡£');
-define('TITLE_PLEASE_SELECT', 'Áª¤ó¤Ç¤¯¤À¤µ¤¤');
+define('TABLE_HEADING_ADDRESS_BOOK_ENTRIES', 'ã‚¢ãƒ‰ãƒ¬ã‚¹å¸³ç™»éŒ²ä¸€è¦§');
+define('TEXT_SELECT_OTHER_PAYMENT_DESTINATION', 'ã”æ³¨æ–‡å•†å“ã®é…é€å…ˆã¨ã”è«‹æ±‚å…ˆãŒç•°ãªã‚‹å ´åˆã¯é¸ã‚“ã§ãã ã•ã„ã€‚');
+define('TITLE_PLEASE_SELECT', 'é¸ã‚“ã§ãã ã•ã„');
 
-define('TABLE_HEADING_NEW_PAYMENT_ADDRESS', '¿·¤·¤¤¤´ÀÁµáÀè¤ÎºîÀ®');    
-define('TEXT_CREATE_NEW_PAYMENT_ADDRESS', '²¼µ­¤Ë¿·¤·¤¤¤´ÀÁµáÀè¾ðÊó¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£');
+define('TABLE_HEADING_NEW_PAYMENT_ADDRESS', 'æ–°ã—ã„ã”è«‹æ±‚å…ˆã®ä½œæˆ');    
+define('TEXT_CREATE_NEW_PAYMENT_ADDRESS', 'ä¸‹è¨˜ã«æ–°ã—ã„ã”è«‹æ±‚å…ˆæƒ…å ±ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚');
 
-define('TABLE_HEADING_NEW_PAYMENT_ADDRESS_PROBLEM', '¿·¤·¤¤ÀÁµáÀè¤Ë¤ÏÌäÂê¤¬¤¢¤ê¤Þ¤¹¡£');
-define('TEXT_NEW_PAYMENT_ADDRESS_PROBLEM', '¿·¤·¤¤ÀÁµáÀè¤Ë¤ÏÌäÂê¤¬¤¢¤ê¤Þ¤¹¡£ÆâÍÆ¤ò³ÎÇ§¤·¤Æ¤¯¤À¤µ¤¤¡£');
+define('TABLE_HEADING_NEW_PAYMENT_ADDRESS_PROBLEM', 'æ–°ã—ã„è«‹æ±‚å…ˆã«ã¯å•é¡ŒãŒã‚ã‚Šã¾ã™ã€‚');
+define('TEXT_NEW_PAYMENT_ADDRESS_PROBLEM', 'æ–°ã—ã„è«‹æ±‚å…ˆã«ã¯å•é¡ŒãŒã‚ã‚Šã¾ã™ã€‚å†…å®¹ã‚’ç¢ºèªã—ã¦ãã ã•ã„ã€‚');
 
-define('TITLE_CONTINUE_CHECKOUT_PROCEDURE', '¥ì¥¸¼êÂ³¤­¤òÂ³¤±¤ë¾ì¹ç¤Ï¼¡¤Ø¿Ê¤ó¤Ç¤¯¤À¤µ¤¤');
-define('TEXT_CONTINUE_CHECKOUT_PROCEDURE', '¤ª»ÙÊ§ÊýË¡¤ÎÁªÂò¤Ø');
+define('TITLE_CONTINUE_CHECKOUT_PROCEDURE', 'ãƒ¬ã‚¸æ‰‹ç¶šãã‚’ç¶šã‘ã‚‹å ´åˆã¯æ¬¡ã¸é€²ã‚“ã§ãã ã•ã„');
+define('TEXT_CONTINUE_CHECKOUT_PROCEDURE', 'ãŠæ”¯æ‰•æ–¹æ³•ã®é¸æŠžã¸');
 ?>

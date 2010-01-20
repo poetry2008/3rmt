@@ -1,9 +1,9 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
-  define('MODULE_METASEO_SITEMAP_TEXT_TITLE', '¥µ¥¤¥È¥Þ¥Ã¥×');
+  define('MODULE_METASEO_SITEMAP_TEXT_TITLE', 'ã‚µã‚¤ãƒˆãƒžãƒƒãƒ—');
   define('MODULE_METASEO_SITEMAP_TEXT_EXPLAIN', 'EXPLAIN');
-  define('MODULE_METASEO_SITEMAP_TEXT_DESCRIPTION', '¥µ¥¤¥È¥Þ¥Ã¥×¥Ú¡¼¥¸¤ÎSEO');
+  define('MODULE_METASEO_SITEMAP_TEXT_DESCRIPTION', 'ã‚µã‚¤ãƒˆãƒžãƒƒãƒ—ãƒšãƒ¼ã‚¸ã®SEO');
 ?>

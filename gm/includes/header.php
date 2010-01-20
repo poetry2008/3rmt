@@ -48,32 +48,20 @@
 <div id="header">
 <div class="header_div01">
 <?php 
+if (!isset($HTTP_GET_VARS['cPath'])) $HTTP_GET_VARS['cPath']= NULL;
+if (!isset($HTTP_GET_VARS['products_id'])) $HTTP_GET_VARS['products_id']= NULL;
   if ($HTTP_GET_VARS['cPath']) {
-    echo '<p class="header1"><strong>' . $seo_category['seo_name'] . '-RMT</strong> °Â¤¤¤¬°ìÈÖ¡ªºÇ°ÂÃÍ-¥²¡¼¥àÄÌ²ß¤Î·ã°ÂÈÎÇä</p>' . "\n";
-    echo '<p class="header2">' . $seo_category['seo_name'] . '¤ò·ã°ÂÈÎÇä-RMT-¥²¡¼¥à¥Þ¥Í¡¼</p>' . "\n";
+    echo '<p class="header1"><strong>' . $seo_category['seo_name'] . '-RMT</strong> å®‰ã„ãŒä¸€ç•ªï¼æœ€å®‰å€¤-ã‚²ãƒ¼ãƒ é€šè²¨ã®æ¿€å®‰è²©å£²</p>' . "\n";
+    echo '<p class="header2">' . $seo_category['seo_name'] . 'ã‚’æ¿€å®‰è²©å£²-RMT-ã‚²ãƒ¼ãƒ ãƒžãƒãƒ¼</p>' . "\n";
   } elseif ($HTTP_GET_VARS['products_id']) {
-    echo '<p class="header1"><strong>' . ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1) . '</strong> °Â¤¤¤¬°ìÈÖ¡ªºÇ°ÂÃÍ-¥²¡¼¥àÄÌ²ß¤Î·ã°ÂÈÎÇä</p>' . "\n";
-    echo '<p class="header2">' . ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1) . '¤ò·ã°ÂÈÎÇä-RMT-¥²¡¼¥à¥Þ¥Í¡¼</p>' . "\n";
+    echo '<p class="header1"><strong>' . ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1) . '</strong> å®‰ã„ãŒä¸€ç•ªï¼æœ€å®‰å€¤-ã‚²ãƒ¼ãƒ é€šè²¨ã®æ¿€å®‰è²©å£²</p>' . "\n";
+    echo '<p class="header2">' . ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1) . 'ã‚’æ¿€å®‰è²©å£²-RMT-ã‚²ãƒ¼ãƒ ãƒžãƒãƒ¼</p>' . "\n";
   } else {
-    echo '<h1 class="header1">RMT ºÇ°ÂÃÍ-¥¢¥¤¥Æ¥à¤Î·ã°ÂÈÎÇä</h1>' . "\n";
-    echo '<p class="header2">FF11¡¢¥ê¥Í¡¼¥¸¥å2¡¢¥ì¥Ã¥É¥¹¥È¡¼¥ó¡¢AION¤ò·ã°ÂÈÎÇä - RMT¥²¡¼¥à¥Þ¥Í¡¼</p>' . "\n";
+    echo '<h1 class="header1">RMT æœ€å®‰å€¤-ã‚¢ã‚¤ãƒ†ãƒ ã®æ¿€å®‰è²©å£²</h1>' . "\n";
+    echo '<p class="header2">FF11ã€ãƒªãƒãƒ¼ã‚¸ãƒ¥2ã€ãƒ¬ãƒƒãƒ‰ã‚¹ãƒˆãƒ¼ãƒ³ã€AIONã‚’æ¿€å®‰è²©å£² - RMTã‚²ãƒ¼ãƒ ãƒžãƒãƒ¼</p>' . "\n";
   }
 ?>
 </div>
-<?php
-/*
-  if ($HTTP_GET_VARS['cPath']) {
-    echo '<p class="header1"><strong>' . $seo_category['seo_name'] . '-RMT</strong> °Â¤¤¤¬°ìÈÖ¡ªºÇ°ÂÃÍ-¥²¡¼¥àÄÌ²ß¤Î·ã°ÂÈÎÇä</p>' . "\n";
-    echo '<p class="header2">' . $seo_category['seo_name'] . '¤ò·ã°ÂÈÎÇä-RMT-¥²¡¼¥à¥Þ¥Í¡¼</p>' . "\n";
-  } elseif ($HTTP_GET_VARS['products_id']) {
-    echo '<p class="header1"><strong>' . ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1) . '</strong> °Â¤¤¤¬°ìÈÖ¡ªºÇ°ÂÃÍ-¥²¡¼¥àÄÌ²ß¤Î·ã°ÂÈÎÇä</p>' . "\n";
-    echo '<p class="header2">' . ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1) . '¤ò·ã°ÂÈÎÇä-RMT-¥²¡¼¥à¥Þ¥Í¡¼</p>' . "\n";
-  } else {
-    echo '<p class="header1"><strong>RMT</strong>ºÇ°ÂÃÍ-¥¢¥¤¥Æ¥à¤Î·ã°ÂÈÎÇä</p>' . "\n";
-    echo '<p class="header2">FF11¡¢¥ê¥Í¡¼¥¸¥å2¡¢¥ì¥Ã¥É¥¹¥È¡¼¥ó¡¢AION¤ò·ã°ÂÈÎÇä - RMT¥²¡¼¥à¥Þ¥Í¡¼</p>' . "\n";
-  }
-*/
-?>
 <script type="text/javascript">
 <!--
 fflag=0;
@@ -111,9 +99,9 @@ if (fflag==0)
 </div>
 <div id="h_menubar">
   <ul>
-    <li><a href="<?php echo tep_href_link(FILENAME_SITEMAP,'',NONSSL);?>">¥µ¥¤¥È¥Þ¥Ã¥×</a>|</li>
-    <li><a href="<?php echo tep_href_link(FILENAME_LATEST_NEWS,'',NONSSL);?>">¤ªÃÎ¤é¤»</a>|</li>
-    <li><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'',NONSSL);?>">¥·¥ç¥Ã¥Ô¥ó¥°¥«¡¼¥È</a>|</li>
+    <li><a href="<?php echo tep_href_link(FILENAME_SITEMAP,'','NONSSL');?>">ã‚µã‚¤ãƒˆãƒžãƒƒãƒ—</a>|</li>
+    <li><a href="<?php echo tep_href_link(FILENAME_LATEST_NEWS,'','NONSSL');?>">ãŠçŸ¥ã‚‰ã›</a>|</li>
+    <li><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'','NONSSL');?>">ã‚·ãƒ§ãƒƒãƒ”ãƒ³ã‚°ã‚«ãƒ¼ãƒˆ</a>|</li>
     <li>
     <?php
       // add info romaji 
@@ -121,7 +109,7 @@ if (fflag==0)
       $co_res = tep_db_fetch_array($co_query); 
       if ($co_res) { 
     ?>
-    <a href="<?php echo info_tep_href_link($co_res['romaji']);?>">¤´ÍøÍÑÊýË¡</a>|
+    <a href="<?php echo info_tep_href_link($co_res['romaji']);?>">ã”åˆ©ç”¨æ–¹æ³•</a>|
     <?php
       }
     ?>
@@ -133,12 +121,12 @@ if (fflag==0)
       $gu_res = tep_db_fetch_array($gu_query); 
       if ($gu_res) { 
     ?>
-    <a href="<?php echo info_tep_href_link($gu_res['romaji']);?>">²ñ¼Ò³µÍ×</a>|
+    <a href="<?php echo info_tep_href_link($gu_res['romaji']);?>">ä¼šç¤¾æ¦‚è¦</a>|
     <?php
       }
     ?>
     </li>
-  <li><a href="<?php echo tep_href_link(FILENAME_CONTACT_US,'',NONSSL);?>">¤ªÌä¤¤¹ç¤ï¤»</a></li>
+  <li><a href="<?php echo tep_href_link(FILENAME_CONTACT_US,'','NONSSL');?>">ãŠå•ã„åˆã‚ã›</a></li>
   </ul>
 </div>
 <script type="text/JavaScript">

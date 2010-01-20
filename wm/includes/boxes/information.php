@@ -10,7 +10,7 @@
 <!-- information //-->
 <div id="information">
 	<?php //echo tep_image(DIR_WS_IMAGES.'design/box/information.gif',BOX_HEADING_INFORMATION,172,39) . "\n"; ?>
-	<img width="172" height="39" alt="RMT¾ðÊó" src="images/design/box/information.gif">
+	<img width="172" height="39" alt="RMTæƒ…å ±" src="images/design/box/information.gif">
 	<ul class="l_m_category_ul">
 <?php
 	$contents_page = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where status = 1 order by sort_id ");
@@ -33,7 +33,7 @@
 			<?php echo '<a href="' . tep_href_link(FILENAME_CONTACT_US) . '">' . BOX_INFORMATION_CONTACT . '</a>' . "\n"; ?>
 		</li>
 		<li class="l_m_category_li">
-			<?php echo '<a href="' . tep_href_link('reorder.php') . '">' . 'ºÆÇÛÃ£¥Õ¥©¡¼¥à' . '</a>' . "\n"; ?>
+			<?php echo '<a href="' . tep_href_link('reorder.php') . '">' . 'å†é…é”ãƒ•ã‚©ãƒ¼ãƒ ' . '</a>' . "\n"; ?>
 		</li>
 	</ul>
 	<img src="images/design/box/box_bottom_bg_01.gif" width="172" height="14" alt="" >

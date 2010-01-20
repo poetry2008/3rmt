@@ -142,7 +142,7 @@
 
     switch ($column_list[$col]) {
       case 'PRODUCT_LIST_MODEL':
-        $select_column_list .= 'p.products_model,pd.products_description_'.ABBR_SITENAME;
+        $select_column_list .= 'p.products_model,pd.products_description';
         break;
       case 'PRODUCT_LIST_MANUFACTURER':
         $select_column_list .= 'm.manufacturers_name';
@@ -221,7 +221,7 @@
             break;
           default:
             $where_str .= "(pd.products_name like '%" . addslashes($search_keywords[$i]) . "%' or p.products_model like '%" . addslashes($search_keywords[$i]) . "%' or m.manufacturers_name like '%" . addslashes($search_keywords[$i]) . "%'";
-            if (isset($HTTP_GET_VARS['search_in_description']) && ($HTTP_GET_VARS['search_in_description'] == '1')) $where_str .= " or pd.products_description_".ABBR_SITENAME." like '%" . addslashes($search_keywords[$i]) . "%'";
+            if (isset($HTTP_GET_VARS['search_in_description']) && ($HTTP_GET_VARS['search_in_description'] == '1')) $where_str .= " or pd.products_description like '%" . addslashes($search_keywords[$i]) . "%'";
               $where_str .= ')';
             break;
         }

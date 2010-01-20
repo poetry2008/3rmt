@@ -1,0 +1,999 @@
+  137  ls -lhs
+  138  ls -lhS
+  139  rm -fr everything.log
+  140  /etc/rc.d/nfs-common start
+  141  vim everything.log
+  142  ls -lhSt
+  143  vim /etc/conf.d/nfs-common.conf
+  144  vim /etc/rpc 
+  145  wget https://mail.google.com/mail/?ui=2&ik=63d4797039&view=att&th=126266f0fc43d00c&attid=0.1&disp=inline&realattid=f_g4dqzurz0&zw
+  146  mogrify 
+  147  sudo pacman -Ss mogrify
+  148  convert
+  149  sudo pacman -S imagemagick
+  150  mogirfy
+  151  mogrify
+  152  mogrify -format ico logo_ico.gif
+  153  sftp bobhero@192.168.2.111
+  154  cd gti
+  155  cd git
+  156  ssh root@192.168.1.149
+  157  ssh root@192.168.2.149
+  158  vim index.php 
+  159  exit
+  160  httpd
+  161  vim includes/application_top.php
+  162  l;s
+  163  /etc/rc.d/httpd restart
+  164  vim /etc/httpd/conf/extra/httpd-vhosts.conf
+  165  vim /etc/httpd/conf/httpd.conf 
+  166  vim includes/configure.php 
+  167  vim includes/boxes/best_sellers.php 
+  168  vim includes/application_top.php 
+  169  vim admin/includes/application_top.php 
+  170  echo "" red-error_log 
+  171  chmod 777 red-error_log 
+  172  /etc/rc.d/httpd restart
+  173  more red-error_log 
+  174  LS
+  175  PWD
+  176  cd /home/bobhero
+  177  rm -fr redmine
+  178  tar zxvf redmine.tar
+  179  mv redmine /usr/lib/re
+  180  cd /usr/lib
+  181  mv redmine rdbk
+  182  mv re redmine
+  183  cd config
+  184  vim database.yml 
+  185  cd db
+  186  find ./ -name '*.sql'
+  187  cd lib
+  188  mv redmine rejp
+  189  ls |grep re
+  190  ls |grep reb
+  191  mv rdbk redmine
+  192  chmod 777 -R redmine
+  193  sudo vi /etc/httpd/conf/extra/httpd-vhosts.conf
+  194  sudo vi /var/log/httpd/red-error_log 
+  195  sudo vi /usr/lib/redmine/log/production.log 
+  196  vim redmine.log 
+  197  sudo vi /etc/httpd/conf/extra/httpd-redmine.conf 
+  198  cd /var/log
+  199  cd httpd/
+  200  vim red-error_log 
+  201  vim access_log
+  202  cd redmine
+  203  more redmine.log 
+  204  cd /usr/lib/redmine/
+  205  cd log
+  206  more production.log 
+  207  yaourt -R redmine-svn
+  208  yaourt redmine-mysql-svn
+  209  yaourt -R redmine-mysql-svn
+  210  yaourt redmine
+  211  :gem install fastthread
+  212  /usr/bin/gem install fastthread
+  213  yaourt redmine
+  214  :gem install fastthread
+  215  /usr/bin/gem install fastthread
+  216  vim index.php 
+  217  vim includes/application_top.php 
+  218  yaourt redmine
+  219  :gem install fastthread
+  220  /usr/bin/gem install fastthread
+  221  yaourt redmine
+  222  :gem install fastthread
+  223  /usr/bin/gem install fastthread
+  224  vim stylesheet.css 
+  225  vim index.php 
+  226  vim includes/application_top.php 
+  227  vim includes/header.php 
+  228  vim design.css 
+  229  lsl
+  230  lsl
+  231  vim index.php 
+  232  /usr/bin/gem install fastthread
+  233  vim index.php 
+  234  vim includes/application_top.php 
+  235  mv newwm_test newwm_test03
+  236  rm -rf newwm_test
+  237  cp -rf newwm   newwm_test
+  238  cp newwm_test03/admin/includes/configure.php newwm_test/admin/includes/
+  239  cp newwm_test03/includes/configure.php newwm_test/includes/
+  240  vim newwm_test/includes/configure.php 
+  241  vim newwm_test/admin/includes/configure.php 
+  242  cp newwm/design.css  newwm_test/
+  243  cp newwm/design.css  newwm_test/
+  244  vim includes/application_top.php 
+  245  vim index.php 
+  246  vim includes/application_top.php
+  247  cd project/
+  248  vim script/__database.php 
+  249  php __database.php
+  250  php __database.php > log
+  251  mv newwm_test newwm_test04
+  252  cp -rf newwm newwm_test
+  253  cp  newwm_test04/includes/configure.php newwm_test/includes/
+  254  cp newwm_test04/admin/includes/configure.php newwm_test/admin/includes/
+  255  cd ../
+  256  cd patch/
+  257  git status|more
+  258  php __database.php 
+  259  vim __database.php 
+  260  exit
+  261  mv newwm_test newwm_test03
+  262  rm -rf newwm_test
+  263  cp -rf newwm   newwm_test
+  264  cp newwm_test03/admin/includes/configure.php newwm_test/admin/includes/
+  265  cp newwm_test03/includes/configure.php newwm_test/includes/
+  266  vim newwm_test/includes/configure.php 
+  267  vim newwm_test/admin/includes/configure.php 
+  268  cp newwm/design.css  newwm_test/
+  269  cp newwm/design.css  newwm_test/
+  270  vim index.php 
+  271  vim includes/application_top.php
+  272  cd project/
+  273  vim script/__database.php 
+  274  php __database.php
+  275  php __database.php > log
+  276  mv newwm_test newwm_test04
+  277  cp -rf newwm newwm_test
+  278  cp  newwm_test04/includes/configure.php newwm_test/includes/
+  279  cp newwm_test04/admin/includes/configure.php newwm_test/admin/includes/
+  280  cd ../
+  281  cd patch/
+  282  git status|more
+  283  php __database.php 
+  284  vim __database.php 
+  285  vim product_reviews_info.php 
+  286  vim shopping_cart.php 
+  287  vim login.php 
+  288  vim checkout_products.php 
+  289  vim checkout_payment.php 
+  290  vim checkout_confirmation.php 
+  291  vim checkout_success.php 
+  292  vim reorder2.php 
+  293  vim reorder.php 
+  294  vim advanced_search.php 
+  295  vim account_history.php 
+  296  vim account.php 
+  297  vim account_edit.php 
+  298  vim product_notifications.php 
+  299  vim password_forgotten.php 
+  300  vim reviews.php 
+  301  vim latest_news.php 
+  302  vim account_history_info.php 
+  303  vim create_account.php 
+  304  vim create_account_process.php 
+  305  vim account_edit_process.php 
+  306  vim checkout_shipping.php 
+  307  vim product_reviews.php 
+  308  vim tell_a_friend.php 
+  309  vim product_reviews_write.php 
+  310  vim contact_us.php 
+  311  vim send_mail.php 
+  312  vim email_trouble.php 
+  313  vim browser_ie6x.php 
+  314  find ./ -name "*.php"|xargs grep 'function page_head'
+  315  vim includes/languages/japanese/advanced_search_result.php 
+  316  vim advanced_search_result.php 
+  317  vim includes/functions/general.php 
+  318  vim specials.php 
+  319  vim manufacturers.php 
+  320  vim .htaccess
+  321  vim includes/application_top.php 
+  322  vim game_news.php 
+  323  exit
+  324  ln -s /home/kthiz/project/OSC_FS kthizpf.200.com
+  325  exit
+  326  vim httpd-vhosts.conf
+  327  cd 
+  328  exit
+  329  vim httpd-vhosts.conf
+  330  /etc/rc.d/httpd restart
+  331  cd 
+  332  exit
+  333  vim manufacturers.php 
+  334  vim .htaccess
+  335  vim includes/application_top.php 
+  336  vim game_news.php 
+  337  ln -s /home/kthiz/project/OSC_FS kthizpf.200.com
+  338  vim /etc/httpd/conf/httpd.conf 
+  339  vim /etc/php/php.ini
+  340  /etc/httpd restart
+  341  /etc/re.d/httpd restart
+  342  /etc/rc.d/httpd restart
+  343  exit
+  344  /etc/re.d/httpd restart
+  345  /etc/rc.d/httpd restart
+  346  vim includes/configure.php 
+  347  cd 
+  348  cd /home/maker/
+  349  cd project/
+  350  exit
+  351  cd project/
+  352  cp checkout_process.php /home/kthiz/
+  353  cd /home/kthiz/
+  354  chmod 755 checkout_process.php 
+  355  exit
+  356  vim /etc/php/php.ini
+  357  /etc/httpd restart
+  358  /etc/re.d/httpd restart
+  359  /etc/rc.d/httpd restart
+  360  /etc/re.d/httpd restart
+  361  /etc/rc.d/httpd restart
+  362  vim includes/configure.php 
+  363  cd 
+  364  cd /home/maker/
+  365  cd project/
+  366  cd project/
+  367  cp checkout_process.php /home/kthiz/
+  368  cd /home/kthiz/
+  369  chmod 755 checkout_process.php 
+  370  cp zhi.tar.gz /home/maker/project/
+  371  tar zxvf zhi.tar.gz 
+  372  cp -R pb20091023/ pb20091023_bak
+  373  cd zhifu/
+  374  cp account_edit_process.php ../pb20091023/
+  375  cp account_history.php ../pb20091023/
+  376  cp account_details.php ../pb20091023/includes/modules/
+  377  cp address_form.php ../pb20091023/includes/classes/
+  378  cp checkout_kurone.php ../pb20091023/
+  379  cp checkout_process.php ../pb20091023/
+  380  cp checkout_success.php ../pb20091023/
+  381  cp create_account_process.php ../pb20091023/
+  382  cp create_order_details.php ../pb20091023/admin/includes/modules/
+  383  cp html_output.php ../pb20091023/includes/functions/
+  384  cp kuroneko_at_payment.php ../pb20091023/includes/modules/payment/
+  385  cp logo_payment.gif ../pb20091023/images/
+  386  cp macFFBgHack.png ../pb20091023/css/
+  387  cp order.php ../pb20091023/includes/classes/
+  388  cp payment_kurone.php ../pb20091023/
+  389  cp payment_kurone_final.php ../pb20091023/
+  390  cp style_payment.css ../pb20091023/css/
+  391  cp thickbox_new.css ../pb20091023/css/
+  392  cp thickbox_new.js ../pb20091023/js/
+  393  cp language/japanese.php ../pb20091023/includes/languages/
+  394  cp language/account_history_info.php ../pb20091023/includes/languages/japanese/
+  395  cp language/kuroneko_at_payment.php ../pb20091023/includes/languages/japanese/modules/payment/
+  396  sl
+  397  rm zhifu/
+  398  rm -rf zhifu/
+  399  rm zhi.tar.gz 
+  400  cd pb20091023
+  401  exit
+  402  cp -R 777 pb20091023/
+  403  chmod -R 777 pb20091023/
+  404  exit
+  405  rm zhifu/
+  406  rm -rf zhifu/
+  407  rm zhi.tar.gz 
+  408  cd pb20091023
+  409  cp -R 777 pb20091023/
+  410  chmod -R 777 pb20091023/
+  411  cd admin
+  412  vim modules.php 
+  413  vim includes/configure.php 
+  414  cd /srv/http/
+  415  exit
+  416  chmod -R 777 pb20091023/
+  417  mv 0001-h-0114.patch /var/proj/coupon2
+  418  git apply --check 0001-h-0114.patch 
+  419  git apply 0001-h-0114.patch 
+  420  git status|more
+  421  git status>p0114
+  422  git add apps/
+  423  git add web/
+  424  git commit -m 'h 0114'
+  425  vim p0114 
+  426  exit
+  427  git add apps/
+  428  git add web/
+  429  git commit -m 'h 0114'
+  430  vim p0114 
+  431  cd /etc
+  432  cd php
+  433  vim php.ini
+  434  /etc/rc.d/httpd restart
+  435  exit
+  436  git commit -m 'h 0114'
+  437  mv 0001-h-add-link.patch /var/proj/coupon2
+  438  cd /var/proj/coupon
+  439  git apply --check 0001-h-add-link.patch 
+  440  git apply 0001-h-add-link.patch 
+  441  git status >> p0114
+  442  vim p0114 
+  443  git add apps/
+  444  git commit -m 'h add present link for menu list'
+  445  vim p0114
+  446  exit
+  447  mv redmine /usr/lib/re
+  448  cd /usr/lib
+  449  mv redmine rdbk
+  450  mv re redmine
+  451  cd config
+  452  vim database.yml 
+  453  cd db
+  454  find ./ -name '*.sql'
+  455  cd lib
+  456  mv redmine rejp
+  457  ls |grep re
+  458  ls |grep reb
+  459  mv rdbk redmine
+  460  chmod 777 -R redmine
+  461  sudo vi /etc/httpd/conf/extra/httpd-vhosts.conf
+  462  sudo vi /var/log/httpd/red-error_log 
+  463  sudo vi /usr/lib/redmine/log/production.log 
+  464  vim redmine.log 
+  465  sudo vi /etc/httpd/conf/extra/httpd-redmine.conf 
+  466  cd /var/log
+  467  cd httpd/
+  468  vim red-error_log 
+  469  vim access_log
+  470  cd redmine
+  471  more redmine.log 
+  472  cd /usr/lib/redmine/
+  473  cd log
+  474  more production.log 
+  475  yaourt -R redmine-svn
+  476  yaourt redmine-mysql-svn
+  477  yaourt -R redmine-mysql-svn
+  478  yaourt redmine
+  479  :gem install fastthread
+  480  /usr/bin/gem install fastthread
+  481  yaourt redmine
+  482  :gem install fastthread
+  483  /usr/bin/gem install fastthread
+  484  vim index.php 
+  485  yaourt redmine
+  486  :gem install fastthread
+  487  /usr/bin/gem install fastthread
+  488  yaourt redmine
+  489  :gem install fastthread
+  490  /usr/bin/gem install fastthread
+  491  vim stylesheet.css 
+  492  vim index.php 
+  493  vim includes/header.php 
+  494  vim design.css 
+  495  lsl
+  496  lsl
+  497  vim index.php 
+  498  /usr/bin/gem install fastthread
+  499  vim index.php 
+  500  mv newwm_test newwm_test03
+  501  rm -rf newwm_test
+  502  cp -rf newwm   newwm_test
+  503  cp newwm_test03/admin/includes/configure.php newwm_test/admin/includes/
+  504  cp newwm_test03/includes/configure.php newwm_test/includes/
+  505  vim newwm_test/admin/includes/configure.php 
+  506  cp newwm/design.css  newwm_test/
+  507  cp newwm/design.css  newwm_test/
+  508  vim index.php 
+  509  vim includes/application_top.php
+  510  cd project/
+  511  vim script/__database.php 
+  512  php __database.php
+  513  php __database.php > log
+  514  mv newwm_test newwm_test04
+  515  cp  newwm_test04/includes/configure.php newwm_test/includes/
+  516  cp newwm_test04/admin/includes/configure.php newwm_test/admin/includes/
+  517  cd ../
+  518  cd patch/
+  519  php __database.php 
+  520  exit
+  521  mv newwm_test newwm_test05
+  522  cp newwm_test04/includes/configure.php newwm_test/includes/
+  523  cp newwm_test04/admin/includes/configure.php newwm/admin/includes/
+  524  cd /home/zhuozi/project/oscen/catalog/
+  525  vim /home/maker/project/pf/includes/application_top.php 
+  526  mv newwm_test newwm_test06 
+  527  cp -rf newwm newwm_test
+  528  cp newwm_test05/includes/configure.php newwm/includes/
+  529  cp newwm_test05/admin/includes/configure.php newwm/admin/includes/configure.php 
+  530  cd patch
+  531  chmod -R 644 *
+  532  git status|more
+  533  rm patch.tar.gz 
+  534  git diff includes/configure.php 
+  535  git add includes/application_top.php 
+  536  git commit -m 'check ip&agent'
+  537  cp -rf pb20091023 pb2
+  538  git log 
+  539  mkdir ../p/includes -p
+  540  cp checkout_process.php ../p&&cp includes/application_top.php ../p/includes/
+  541  rm -rf pb2
+  542  mv p pb20091023/patch/pb-patch-201001141430
+  543  cd pb20091023/patch/
+  544  chmod -R 777 patch/
+  545  cd ../../zhuozi/
+  546  cd project/oscen/catalog/
+  547  vim includes/functions/general.php 
+  548  mkdir /home/maker/project/pb20091023/patch/pb-patch-201001141430/includes/functions
+  549  cp /home/maker/project/pb20091023/includes/functions/general.php /home/maker/project/pb20091023/includes/functions/
+  550  cp /home/maker/project/pb20091023/includes/functions/general.php /home/maker/project/pb20091023/patch/pb-patch-201001141430/includes/functions/
+  551  vim /home/maker/project/pb20091023/includes/functions/general.php 
+  552  cd /home/maker/project/pb20091023/
+  553  vim patch/pb-patch-201001141430/includes/functions/general.php 
+  554  cp patch/pb-patch-201001141430/includes/application_top.php includes/
+  555  cd ../pf
+  556  vim includes/application_top.php 
+  557  cd ~
+  558  vim .bash_history 
+  559  vim /var/proj/OSC_FS/includes/application_top.php 
+  560  vim newwm_test/includes/application_top.php 
+  561  vim newwm_test/includes/configure.php 
+  562  vim newwm_test03/includes/configure.php 
+  563  vim newwm/includes/configure.php 
+  564  cp newwm_test03/includes/configure.php newwm/includes/
+  565  cp newwm_test03/admin/includes/configure.php newwm/admin/includes/
+  566  vim pb20091023/includes/functions/general.php 
+  567  vim pf/includes/functions/general.php 
+  568  vim pf/includes/application_top.php 
+  569  cd pb20091023/
+  570  cp includes/application_top.php patch/pb-patch-201001141430/includes/
+  571  cp -rf pb20091023/ pb2
+  572  cd pb2
+  573  git reset --soft 2b5455
+  574  git reset HEAD checkout_process.php 
+  575  git diff checkout_process.php 
+  576  cd /srv/http/
+  577  cd cchm.vicp.net
+  578  rm pb.maker.200.com
+  579  sln --help
+  580  sln /home/maker/project/pb20091023 pb.maker.200.com
+  581  vim __database.php 
+  582  vim /etc/httpd/conf/extra/httpd-maker-vhosts.conf 
+  583  /etc/rc.d/httpd restart
+  584  vim pb20091023/includes/application_top.php 
+  585  vim __database.php 
+  586  vim /etc/httpd/conf/extra/httpd-maker-vhosts.conf 
+  587  /etc/rc.d/httpd restart
+  588  vim pb20091023/includes/application_top.php 
+  589  vim admin/includes/configure.php 
+  590  chmod -R 777 images
+  591  find ./ -name "*.php"|xargs grep 'Die angegebene'
+  592  cd images
+  593  vim includes/functions/html_output.php 
+  594  vim includes/configure.php 
+  595  exit
+  596  cd images
+  597  vim includes/functions/html_output.php 
+  598  vim includes/configure.php 
+  599  mv 0001-han-0115.patch /var/proj/coupon2/
+  600  cd /var/proj/coupon2/
+  601  cp coupon2 coupon2_0115 -r
+  602  cd coupon2
+  603  git apply --check 0001-han-0115.patch 
+  604  git apply 0001-han-0115.patch 
+  605  git status 
+  606  git add apps/
+  607  git commit -m '0115'
+  608  rm apps/trader/modules/shop/templates/'
+  609  rm apps/trader/modules/shop/templates/\'
+  610  git add apps/trader/modules/shop/templates/\'
+  611  git commit 
+  612  git rm apps/trader/modules/shop/templates/\'
+  613  git commit
+  614  exit
+  615  git commit
+  616  cp payment_kurone.php payment_kurone_final.php /home/maker/project/pb20091023/
+  617  cd pb20091023
+  618  chmod 777 payment_kurone.php 
+  619  chmod 777 payment_kurone_final.php 
+  620  exit
+  621  vim includes/configure.php 
+  622  mv 0001-han-0115.patch /var/proj/coupon2/
+  623  cd /var/proj/coupon2/
+  624  cp coupon2 coupon2_0115 -r
+  625  cd coupon2
+  626  git apply --check 0001-han-0115.patch 
+  627  git apply 0001-han-0115.patch 
+  628  git status 
+  629  git commit -m '0115'
+  630  rm apps/trader/modules/shop/templates/'
+  631  rm apps/trader/modules/shop/templates/\'
+  632  git add apps/trader/modules/shop/templates/\'
+  633  git rm apps/trader/modules/shop/templates/\'
+  634  git commit
+  635  mv 0001-han.patch /var/proj/coupon2
+  636  git apply --check 0001-han.patch 
+  637  git apply  0001-han.patch 
+  638  git status > p0115
+  639  git add apps/
+  640  git commit 
+  641  vim p0115
+  642  cd WM/vim
+  643  cd WM/
+  644  cd /home/maker/project/newwm
+  645  cd /var/proj/WM/
+  646  git add index.php 
+  647  git commit -m 'tagsid found'
+  648  cd /home/maker/project/WM/
+  649  git pull
+  650  git status|more
+  651  vim index.php 
+  652  cd GM/
+  653  grep fond ./ -rn
+  654  cd ../WM/
+  655  vim
+  656  exit
+  657  cd ../coupon2_0115/
+  658  vim
+  659  cd ../coupon2
+  660  git status|more
+  661  git add apps/trader/modules/requisition/actions/actions.class.php 
+  662  git commit 
+  663  cd /home/maker/project/WM/
+  664  grep found -r ./
+  665  grep found -rn ./
+  666  grep found -rn ./ |grep tags
+  667  grep found -rn ./ 
+  668  grep found -rn ./ >found
+  669  grep ^found$ -rn ./
+  670  vim found 
+  671  exit
+  672  vim includes/configure.php 
+  673  mv 0001-han-0115.patch /var/proj/coupon2/
+  674  cd /var/proj/coupon2/
+  675  cp coupon2 coupon2_0115 -r
+  676  cd coupon2
+  677  git apply --check 0001-han-0115.patch 
+  678  git apply 0001-han-0115.patch 
+  679  git status 
+  680  git commit -m '0115'
+  681  rm apps/trader/modules/shop/templates/'
+  682  rm apps/trader/modules/shop/templates/\'
+  683  git add apps/trader/modules/shop/templates/\'
+  684  git rm apps/trader/modules/shop/templates/\'
+  685  git commit
+  686  mv 0001-han.patch /var/proj/coupon2
+  687  git apply --check 0001-han.patch 
+  688  git apply  0001-han.patch 
+  689  git status > p0115
+  690  git add apps/
+  691  git commit 
+  692  vim p0115
+  693  cd WM/vim
+  694  cd WM/
+  695  cd /home/maker/project/newwm
+  696  cd /var/proj/WM/
+  697  git add index.php 
+  698  git commit -m 'tagsid found'
+  699  cd /home/maker/project/WM/
+  700  git pull
+  701  git status|more
+  702  vim index.php 
+  703  cd GM/
+  704  grep fond ./ -rn
+  705  cd ../WM/
+  706  vim
+  707  exit
+  708  cd ../coupon2_0115/
+  709  vim
+  710  cd ../coupon2
+  711  git status|more
+  712  git add apps/trader/modules/requisition/actions/actions.class.php 
+  713  git commit 
+  714  cd /home/maker/project/WM/
+  715  grep found -r ./
+  716  grep found -rn ./
+  717  grep found -rn ./ |grep tags
+  718  grep found -rn ./ 
+  719  grep found -rn ./ >found
+  720  grep ^found$ -rn ./
+  721  vim found 
+  722  exit
+  723  fd
+  724  fl
+  725  fdisk -l
+  726  df
+  727  df -l
+  728  cd /tmp
+  729  cd /var/log
+  730  cd httpd/
+  731  ls -lh
+  732  rm -fr error_log*
+  733  cd lost+found/
+  734  cd home.tgz 
+  735  cd bobhero/
+  736  cd backup/
+  737  cd GMB
+  738  rm -fr GMB
+  739  df -h
+  740  du *
+  741  du -sh bobhero
+  742  du -sh home
+  743  du -sh home/*
+  744  cd /home
+  745  cd maker
+  746  cd proj
+  747  cd project
+  748  cd WM
+  749  cd abc
+  750  rm -fr abc
+  751  rm -fr abcdefg 
+  752  du  -sh *
+  753  ps -e
+  754  cat /dev/null >; abc
+  755  cat /dev/null 
+  756  cat /dev/null > abc
+  757  df -lh
+  758  sudo reboot
+  759  grep found -rn ./ |grep tags
+  760  grep found -rn ./ 
+  761  grep found -rn ./ >found
+  762  grep ^found$ -rn ./
+  763  vim found 
+  764  exit
+  765  cd bobhero
+  766  cd cs3
+  767  cd cs4
+  768  rm -fr cs4
+  769  df -l
+  770  cd /home
+  771  su -s jhon
+  772  su -s john
+  773  su -s duandi
+  774  df -lh
+  775  cd 
+  776  exit
+  777  cd 
+  778  cd pb2
+  779  cp admin/create_order_process.php /home/maker/project/pb20091023/admin/
+  780  exit
+  781  df -l
+  782  cd /home
+  783  su -s jhon
+  784  su -s john
+  785  su -s duandi
+  786  df -lh
+  787  cd 
+  788  exit
+  789  cd 
+  790  cd pb2
+  791  cp admin/create_order_process.php /home/maker/project/pb20091023/admin/
+  792  exit
+  793  cd project/testgit/
+  794  git push origin
+  795  cd /home/maker/project/testgit/
+  796  git push origin master
+  797  git push origin :master
+  798  git clone root@192.168.2.200:/var/proj/test testgit2
+  799  cd testgit2/
+  800  git add *
+  801  git commit -m 'fff'
+  802  git push
+  803  cd 
+  804  exit
+  805  cd 
+  806  cd pb2
+  807  cp admin/create_order_process.php /home/maker/project/pb20091023/admin/
+  808  exit
+  809  cd /home/maker
+  810  cd project
+  811  cd Jp
+  812  cd WM
+  813  grep 'modified.js' *
+  814  grep 'modified.js' * -R
+  815  grep 'modified' * -R
+  816  grep 'swfobject' * -R
+  817  cd Script
+  818  cd Scripts
+  819  \ls
+  820  cd cs4
+  821  rm -fr cs4
+  822  df -l
+  823  cd /home
+  824  su -s jhon
+  825  su -s john
+  826  su -s duandi
+  827  cd /etc/rc.d/
+  828  cd /var/log
+  829  last
+  830  cd /home/maker
+  831  cd project
+  832  cd WM
+  833  ls |grep ab
+  834  ls -lh
+  835  rm -fr abc
+  836  df -lh
+  837  cd
+  838  su -s john
+  839  su -s duandi
+  840  df -lh
+  841  s
+  842  cd /home/maker/project/WM/
+  843  vim
+  844  su hansir
+  845  exi
+  846  exit
+  847  su hansir
+  848  exit
+  849  grep found -rn ./ |grep tags
+  850  grep found -rn ./ 
+  851  grep found -rn ./ >found
+  852  grep ^found$ -rn ./
+  853  vim found 
+  854  cd bobhero
+  855  cd cs3
+  856  cd cs4
+  857  rm -fr cs4
+  858  df -l
+  859  cd /home
+  860  su -s jhon
+  861  su -s john
+  862  su -s duandi
+  863  df -lh
+  864  cd /home/maker/project/WM/
+  865  chmod 777 ip_test.tx
+  866  chmod 777 ip_test.txt
+  867  cd /home/bobhero/
+  868  cd wm2010
+  869  vim
+  870  cp wm2010.zip /home/hansir/project/
+  871  cd /home/hansir/project/
+  872  unzip wm2010.zip 
+  873  chown -R hansir:hansir wm2010
+  874  cd WM/
+  875  su hansir
+  876  exit
+  877  groups 
+  878  groupadd --help
+  879  groups
+  880  groupadd git
+  881  cd /var/proj/test/
+  882  git reset HEAD test
+  883  git checkout -- test
+  884  vim test 
+  885  l
+  886  chmod 775 branches/ info/ objects/ refs/ remo
+  887  chmod 775 branches/ info/ objects/ refs/ 
+  888  chmod 777 HEAD 
+  889  chmod 664 config description index 
+  890  chmod -R 664 config description index 
+  891  chmod -R 775 branches/ info/ objects/ refs/ 
+  892  chmod -R 775 logs/
+  893  git receive-pack
+  894  git receive-pack --help
+  895  git receive-pack ./
+  896  cd /home/maker/project/3rmt
+  897  cd ../JP
+  898  cd ../GM/
+  899  cd /var/proj/coupon2
+  900  cd ../test
+  901  vim .gitattributes
+  902  vim index.html q
+  903  vim test.php
+  904  git add .gitattributes test.php 
+  905  git commit -m 'attributes'
+  906  rm test.txt
+  907  rm test.php && git checkout -- test.php
+  908  cat test.php
+  909  git add test.php && git commit -m 'id'
+  910  vim index.html 
+  911  git commit -a -m 'test'
+  912  git tag '.fucked'
+  913  git tag fucked
+  914  git tags
+  915  git tag
+  916  git show $Id$
+  917  git show $id
+  918  cp pre-commit.sample pre-commit
+  919  chmod +x pre-commit
+  920  cp pre-commit post-commit
+  921  ls 
+  922  vim post-commit
+  923  vim HEAD 
+  924  vim logs/
+  925  more logs/HEAD 
+  926  more logs/refs/heads/master 
+  927  vim description 
+  928  vim index 
+  929  vim info/exclude 
+  930  show $id
+  931  git show $id:test.php 
+  932  git show
+  933  git show|grep commit
+  934  git commit -m 'abc'
+  935  echo " ">>test
+  936  echo "$Id$">VERSION
+  937  echo "$$Id$">VERSION
+  938  echo $Id$
+  939  echo $
+  940  echo $$
+  941  echo $$$$$
+  942  echo '$'
+  943  echo '$$'
+  944* 
+  945  git commit -a -m 'abc'
+  946  vim .git/hooks/pre-commit
+  947  vim test
+  948  git add test
+  949  git commit -m
+  950  date
+  951  vim VERSION 
+  952  cd .git/hooks/
+  953  cp post-commit post-receive
+  954  vim pre-commit
+  955  vim post-receive
+  956  cd ../..
+  957  chmod -R 775 objects/
+  958  vim .git/post-receive
+  959  vim /etc/group
+  960  git fsck
+  961  git reset --hard 63fc
+  962  cd .git/
+  963  chmod -R g+ws *
+  964  vim .git/hooks/post-receive
+  965  vim .git/hooks/post-receive.sample 
+  966  git blame file
+  967  git blame
+  968  git blame test 
+  969  git blame index.html 
+  970  git reset HEAD *
+  971  git reset HEAD .gitattributes VERSION test.php
+  972  git checkout -- *
+  973* git stat
+  974  git checkout -- .gitattributes VERSION test.php
+  975  git config filter.rcs-keyword.clean 'perl -pe "s/\\\$Date[^\\\$]*\\\$/\\\$Date\''$/"'
+  976  git config filter.rcs-keyword.smudge 'perl -pe "s/\\\$Date[^\\\$]*\\\$/\\\$Date: `date`\\\$/"'
+  977  echo '* filter=rcs-keyword'>>.gitattributes 
+  978  git tatus
+  979  gitstatus
+  980  git commit -a -m 'g'
+  981  pacman -S perl
+  982  git commit -am 'sss'
+  983  perl -pe "s/"
+  984  perl -pe ""
+  985  whereis sh
+  986  sln /bin/sh sh
+  987  chmod +x sh
+  988  whereis php
+  989  cd /usr/bin/
+  990  rm sh
+  991  cd /var/proj/test
+  992  'Date'
+  993  echo " ">>test.php 
+  994  git commit -am 'f'
+  995  cd .git
+  996  ls -l
+  997  chmod -R 775 *
+  998  chown -R git *
+  999  chgrp -R git *
+ 1000  cd ..
+ 1001  vim test.php 
+ 1002  git checkout master
+ 1003  git reset --hard master
+ 1004  git diff
+ 1005  git commit -m 'test'
+ 1006  vim .gitattributes 
+ 1007  vim abc 
+ 1008  git add abc 
+ 1009  vim .git/config 
+ 1010  cd /home/maker/project/
+ 1011  cd 3rmt
+ 1012  vim 0001-clearimage-encode.patch 
+ 1013  git apply 0001-clearimage-encode.patch >log
+ 1014  vim log 
+ 1015  git apply --check 0001-clearimage-encode.patch >log
+ 1016  error: gm/googlec7b32143dad606ff.html: No such file or directory
+ 1017  error: gm/images/Business Skype.jpg: No such file or directory
+ 1018  error: gm/images/DgitalStudio.jpg: No such file or directory
+ 1019  error: gm/images/ab131b.jpg: No such file or directory
+ 1020  error: gm/images/box_products_notifications.gif: No such file or directory
+ 1021  error: gm/images/box_products_notifications_remove.gif: No such file or directory
+ 1022  error: gm/images/company.jpg: No such file or directory
+ 1023  error: gm/images/f_0115_natural.jpg: No such file or directory
+ 1024  error: gm/images/f_0115_walnut.jpg: No such file or directory
+ 1025  error: gm/images/f_0601.jpg: No such file or directory
+ 1026  error: gm/images/f_1358_blue_L.jpg: No such file or directory
+ 1027  error: gm/images/f_1358_clear_L.jpg: No such file or directory
+ 1028  error: gm/images/f_1358_red_L.jpg: No such file or directory
+ 1029  error: gm/images/f_3561_black.jpg: No such file or directory
+ 1030  error: gm/images/f_3561_red.jpg: No such file or directory
+ 1031  error: gm/images/f_5226_autumn.jpg: No such file or directory
+ 1032  error: gm/images/f_5226_dark_grey.jpg: No such file or directory
+ 1033  error: gm/images/f_5226_grey.jpg: No such file or directory
+ 1034  error: gm/images/f_6330_bayou.jpg: No such file or directory
+ 1035  error: gm/images/f_6330_poppy.jpg: No such file or directory
+ 1036  error: gm/images/f_6330_sprout.jpg: No such file or directory
+ 1037  error: gm/images/f_7630.jpg: No such file or directory
+ 1038  error: gm/images/image-1.jpg: No such file or directory
+ 1039  error: gm/images/sm_s_chairs_arm.jpg: No such file or directory
+ 1040  error: gm/images/sm_s_chairs_chaise_lounge.jpg: No such file or directory
+ 1041  error: gm/images/sm_s_chairs_dining.jpg: No such file or directory
+ 1042  error: gm/images/sm_s_chairs_side.jpg: No such file or directory
+ 1043  error: gm/images/sm_s_new.jpg: No such file or directory
+ 1044  error: gm/images/sm_s_sofas.jpg: No such file or directory
+ 1045  error: gm/images/sm_s_stools_bar.jpg: No such file or directory
+ 1046  error: gm/images/sm_s_stools_counter.jpg: No such file or directory
+ 1047  error: gm/images/sm_sleepsofas.jpg: No such file or directory
+ 1048  error: gm/images/thumb-1.jpg: No such file or directory
+ 1049  error: gm/images/tohoho.gif: No such file or directory
+ 1050  error: gm/images/value-camera01.gif: No such file or directory
+ 1051  error: gm/images/zm_7384_2.jpg: No such file or directory
+ 1052  error: gm/images/zm_7384_3.jpg: No such file or directory
+ 1053  error: gm/images/zm_7384_4.jpg: No such file or directory
+ 1054  error: gm/images/zm_7630_2.jpg: No such file or directory
+ 1055  error: gm/images/zm_7630_3.jpg: No such file or directory
+ 1056  error: jp/images/3.jpg: No such file or directory
+ 1057  error: jp/images/Business Skype.jpg: No such file or directory
+ 1058  error: jp/images/DgitalStudio.jpg: No such file or directory
+ 1059  error: jp/images/ab131b.jpg: No such file or directory
+ 1060  error: jp/images/box_products_notifications.gif: No such file or directory
+ 1061  error: jp/images/box_products_notifications_remove.gif: No such file or directory
+ 1062  error: jp/images/company.jpg: No such file or directory
+ 1063  error: jp/images/copyright.gif: No such file or directory
+ 1064  error: jp/images/f_0115_walnut.jpg: No such file or directory
+ 1065  error: jp/images/f_1358_clear_L.jpg: No such file or directory
+ 1066  error: jp/images/f_1358_red_L.jpg: No such file or directory
+ 1067  error: jp/images/f_3561_red.jpg: No such file or directory
+ 1068  error: jp/images/f_5226_dark_grey.jpg: No such file or directory
+ 1069  error: jp/images/f_5226_grey.jpg: No such file or directory
+ 1070  error: jp/images/f_6330_poppy.jpg: No such file or directory
+ 1071  error: jp/images/f_6330_sprout.jpg: No such file or directory
+ 1072  error: jp/images/image-1.jpg: No such file or directory
+ 1073  error: jp/images/logo.jpg: No such file or directory
+ 1074  error: jp/images/thumb-1.jpg: No such file or directory
+ 1075  error: jp/images/value-camera01.gif: No such file or directory
+ 1076  error: jp/images/zm_7384_2.jpg: No such file or directory
+ 1077  error: jp/images/zm_7384_3.jpg: No such file or directory
+ 1078  error: jp/images/zm_7630_2.jpg: No such file or directory
+ 1079  error: jp/images/zm_7630_3.jpg: No such file or directory
+ 1080  error: wm/.htaccess2: No such file or directory
+ 1081  error: wm/images/Business Skype.jpg: No such file or directory
+ 1082  error: wm/images/DgitalStudio.jpg: No such file or directory
+ 1083  error: wm/images/ab131b.jpg: No such file or directory
+ 1084  error: wm/images/box_products_notifications.gif: No such file or directory
+ 1085  error: wm/images/box_products_notifications_remove.gif: No such file or directory
+ 1086  error: wm/images/company.jpg: No such file or directory
+ 1087  error: wm/images/f_0115_walnut.jpg: No such file or directory
+ 1088  error: wm/images/f_1358_clear_L.jpg: No such file or directory
+ 1089  error: wm/images/f_1358_red_L.jpg: No such file or directory
+ 1090  error: wm/images/f_3561_red.jpg: No such file or directory
+ 1091  error: wm/images/f_5226_dark_grey.jpg: No such file or directory
+ 1092  error: wm/images/f_5226_grey.jpg: No such file or directory
+ 1093  error: wm/images/f_6330_poppy.jpg: No such file or directory
+ 1094  error: wm/images/f_6330_sprout.jpg: No such file or directory
+ 1095  error: wm/images/image-1.jpg: No such file or directory
+ 1096  error: wm/images/logo.jpg: No such file or directory
+ 1097  error: wm/images/thumb-1.jpg: No such file or directory
+ 1098  error: wm/images/value-camera01.gif: No such file or directory
+ 1099  error: wm/images/zm_7384_2.jpg: No such file or directory
+ 1100  error: wm/images/zm_7384_3.jpg: No such file or directory
+ 1101  error: wm/images/zm_7630_2.jpg: No such file or directory
+ 1102  error: wm/images/zm_7630_3.jpg: No such file or directory
+ 1103  mv testgit.txt testgit.sh
+ 1104  chmod +x testgit.sh 
+ 1105  whereis cp
+ 1106  ./testgit.sh 
+ 1107  rm a.txt b.txt a.sh b.sh 
+ 1108  rm log 
+ 1109  vim testgit.sh 
+ 1110  rm testgit.sh 
+ 1111  vi testgit.txt 
+ 1112  chmod +x testgit.txt 
+ 1113  ./testgit.txt 
+ 1114  cp testgit.txt
+ 1115  cp testgit.txt a.sh
+ 1116  vim a.sh
+ 1117  chmod +x a.sh
+ 1118  ./a.sh
+ 1119  chmod +x b.sh
+ 1120  vim b.sh
+ 1121  ./b.sh
+ 1122  pwd
+ 1123  vim a.sh 
+ 1124  ./a.sh 
+ 1125  vim testgit.txt 
+ 1126  vim b.sh 
+ 1127  ./b.sh 
+ 1128  git apply --check 0001-clearimage-encode.patch 
+ 1129  git status
+ 1130  git apply 0001-clearimage-encode.patch 
+ 1131  cd script/
+ 1132  ls
+ 1133  git log
+ 1134  vim db2.php 
+ 1135  history > history

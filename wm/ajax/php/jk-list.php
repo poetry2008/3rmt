@@ -23,7 +23,7 @@ $navigation->remove_current_page();
 	}
 	
 	echo '      <tr>' . "\n";
-	echo '        <td width="25" valign="top" class="main">' . mb_convert_encoding($products[$i]['quantity'] . '¸Ä','UTF-8','EUC-JP') . '</td>' . "\n";
+	echo '        <td width="25" valign="top" class="main">' . mb_convert_encoding($products[$i]['quantity'] . 'å€‹','UTF-8','EUC-JP') . '</td>' . "\n";
 	echo '        <td valign="top" class="main"><a href="'.tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='.$products[$i]['id']).'">' . mb_convert_encoding($pname,'UTF-8','EUC-JP') . '</a></td>' . "\n";
 	echo '        <td align="right" valign="top" class="main">'.mb_convert_encoding($currencies->format($products[$i]['price']),'UTF-8','EUC-JP').'</td>' . "\n";
 	echo '      </tr>' . "\n";
@@ -40,8 +40,8 @@ $navigation->remove_current_page();
   </tr>
   <tr>
     <td height="30" style="padding: 0px 15px 10px 15px;" class="main">
-	<?php echo mb_convert_encoding('¸Ä¿ô¡§<strong>' . number_format(sizeof($products)).'¸Ä','UTF-8','EUC-JP') . '</strong>'; ?>&nbsp;
-	<?php echo mb_convert_encoding('¹ç·×¡§<strong style="font-size:16px; color:red;">' . $currencies->format($cart->show_total()),'UTF-8','EUC-JP') . '</strong>'; ?>&nbsp;
+	<?php echo mb_convert_encoding('å€‹æ•°ï¼š<strong>' . number_format(sizeof($products)).'å€‹','UTF-8','EUC-JP') . '</strong>'; ?>&nbsp;
+	<?php echo mb_convert_encoding('åˆè¨ˆï¼š<strong style="font-size:16px; color:red;">' . $currencies->format($cart->show_total()),'UTF-8','EUC-JP') . '</strong>'; ?>&nbsp;
 	<?php echo '<a href="'.tep_href_link('step-0.php', '', 'SSL').'">' . tep_image(DIR_WS_IMAGES . 'design/btn_shopping_cart.gif') . '</a>'; ?>&nbsp;
 	<?php echo '<a href="'.tep_href_link('step-1.php', '', 'SSL').'">' . tep_image(DIR_WS_IMAGES . 'design/btn_checkout.gif') . '</a>'; ?>&nbsp;
 	</td>

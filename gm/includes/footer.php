@@ -17,7 +17,7 @@
   $fo_res = tep_db_fetch_array($fo_query); 
   if ($fo_res) { 
 ?>
-<a href="<?php echo info_tep_href_link($fo_res['romaji']); ?>">¤Ï¤¸¤á¤Æ¤ÎRMT</a>
+<a href="<?php echo info_tep_href_link($fo_res['romaji']); ?>">ã¯ã˜ã‚ã¦ã®RMT</a>
 <?php
   }
 ?>
@@ -28,7 +28,7 @@
   $so_res = tep_db_fetch_array($so_query); 
   if ($so_res) { 
 ?>
-<a href="<?php echo info_tep_href_link($so_res['romaji']); ?>">ÆÃÄê¾¦¼è°ú¤Ë´ğ¤Å¤¯É½µ­</a>
+<a href="<?php echo info_tep_href_link($so_res['romaji']); ?>">ç‰¹å®šå•†å–å¼•ã«åŸºã¥ãè¡¨è¨˜</a>
 <?php
   }
 ?>
@@ -41,7 +41,7 @@
   </address>
 </div>
 <?php if ($banner = tep_banner_exists('dynamic', 'footer')) { 
-  echo  '<div class="footer_links" align="center">' .tep_display_banner('static', $banner) . '<br><a target="_blank" href="'.HTTP_SERVER.'">RMT¥²¡¼¥à¥Ş¥Í¡¼</a></div>'; 
+  echo  '<div class="footer_links" align="center">' .tep_display_banner('static', $banner) . '<br><a target="_blank" href="'.HTTP_SERVER.'">RMTã‚²ãƒ¼ãƒ ãƒãƒãƒ¼</a></div>'; 
 }?>
 <script type="text/javascript" src="js/access.js"></script>
 <noscript><img src="axs/dsw.cgi?pg=RMT&amp;&amp;p=g&amp;&amp;md=nj" alt="img" height="1" width="1" border="0"></noscript>

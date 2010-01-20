@@ -1,10 +1,10 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
-  define('MODULE_PAYMENT_MONEYORDER_TEXT_TITLE', '¶ä¹Ô¿¶¹þ');// 'Âå¶âÀèÊ§¤¤'/'Í¹ÊØ¿¶ÂØ'/'¸½¶â½ñÎ±'¤ËÊÑ¹¹¤·¤Æ»ÈÍÑ¤Ç¤­¤Þ¤¹
-  define('MODULE_PAYMENT_MONEYORDER_TEXT_EXPLAIN', '¥¸¥ã¥Ñ¥ó¥Í¥Ã¥È¶ä¹Ô¡¢¥¤¡¼¥Ð¥ó¥¯¶ä¹Ô¤Þ¤¿¤Ï¥»¥Ö¥ó¶ä¹Ô¤Ø¤ª¿¶¤ê¹þ¤ß¡£¿¶¹þ¼ê¿ôÎÁ¤Ï¤ªµÒÍÍ¤Î¤´ÉéÃ´¤È¤Ê¤ê¤Þ¤¹¡£');
+  define('MODULE_PAYMENT_MONEYORDER_TEXT_TITLE', 'éŠ€è¡ŒæŒ¯è¾¼');// 'ä»£é‡‘å…ˆæ‰•ã„'/'éƒµä¾¿æŒ¯æ›¿'/'ç¾é‡‘æ›¸ç•™'ã«å¤‰æ›´ã—ã¦ä½¿ç”¨ã§ãã¾ã™
+  define('MODULE_PAYMENT_MONEYORDER_TEXT_EXPLAIN', 'ã‚¸ãƒ£ãƒ‘ãƒ³ãƒãƒƒãƒˆéŠ€è¡Œã€ã‚¤ãƒ¼ãƒãƒ³ã‚¯éŠ€è¡Œã¾ãŸã¯ã‚»ãƒ–ãƒ³éŠ€è¡Œã¸ãŠæŒ¯ã‚Šè¾¼ã¿ã€‚æŒ¯è¾¼æ‰‹æ•°æ–™ã¯ãŠå®¢æ§˜ã®ã”è² æ‹…ã¨ãªã‚Šã¾ã™ã€‚');
   define('MODULE_PAYMENT_MONEYORDER_TEXT_DESCRIPTION',  nl2br(C_BANK));
   define('MODULE_PAYMENT_MONEYORDER_TEXT_EMAIL_FOOTER', C_BANK."\n\n". EMAIL_SIGNATURE);	//Add Japanese osCommerce
 ?>

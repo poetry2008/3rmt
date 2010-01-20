@@ -1,8 +1,8 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://www.econline.jp/" class="blank" rel='nofollow'><span>еие▀еыепеэе╦епеыекеєещедеє ╕°╝░е╡еде╚</span></a></li>
+<li><a href="http://www.econline.jp/" class="blank" rel='nofollow'><span>уВиуГЯуГлуВпуГнуГЛуВпуГлуВкуГ│уГйуВдуГ│ хЕмх╝ПуВ╡уВдуГИ</span></a></li>
 <li><a href="http://ec.gamedb.info/wiki/" class="blank" rel='nofollow'><span>ECO Wiki</span></a></li>
-<li><a href="http://jbbs.livedoor.jp/game/23423/" class="blank" rel='nofollow'><span>ECO д╖д┐дщд╨╖╟╝и╚─ </span></a></li>
-<li><a href="http://oekaki.jp/eco/" class="blank" rel='nofollow'><span>еие▀еыеъеєеп ╣╢╬меъеєеп╜╕</span></a></li>
-<li><a href="http://emil.mmo-search.net/" class="blank" rel='nofollow'><span>еие▀еыд╡б╝д┴ббECO╕б║ўеиеєе╕еє</span></a></li>
+<li><a href="http://jbbs.livedoor.jp/game/23423/" class="blank" rel='nofollow'><span>ECO уБЧуБЯуВЙуБ░цО▓чд║цЭ┐ </span></a></li>
+<li><a href="http://oekaki.jp/eco/" class="blank" rel='nofollow'><span>уВиуГЯуГлуГкуГ│уВп цФ╗чХеуГкуГ│уВпщЫЖ</span></a></li>
+<li><a href="http://emil.mmo-search.net/" class="blank" rel='nofollow'><span>уВиуГЯуГлуБХуГ╝уБбуААECOцдЬч┤вуВиуГ│уВ╕уГ│</span></a></li>
 </ul>

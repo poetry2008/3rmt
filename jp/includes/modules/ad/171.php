@@ -2,15 +2,15 @@
 //<meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
 ?>
 <ul class="r_c_links_ul">
-<li><a href="http://at-x.net/" rel='nofollow' class="blank">еще░е╩еэеп▓┴│╩─┤║║┬т</a></li>
-<li><a href="http://quest.rowiki.jp/" rel='nofollow' class="blank">еще░е╩еэепд╬епеие╣е╚Wiki</a></li>
-<li><a href="http://homepage3.nifty.com/tea/qs/" rel='nofollow' class="blank">ROеиеєе╓еьер┴╟║р┤█</a></li>
-<li><a href="http://www.ragd.net/" rel='nofollow' class="blank">еще░е╩еэеп╣╢╬м</a></li>
-<li><a href="http://uniuni.dfz.jp/skill3/" rel='nofollow' class="blank">ROе╣енеые╖ехе▀еьб╝е┐б╝</a></li>
-<li><a href="http://wikiwiki.jp/ragna/" rel='nofollow' class="blank">еще░е╩еэеп Wiki</a></li>
-<li><a href="http://www.mmonavi.com/modules/game/86.html" rel='nofollow' class="blank">еще░е╩еэепекеєещедеєд╦д─ддд╞</a></li>
-<li><a href="http://roblog.jp/" rel='nofollow' class="blank">Ragnarokе╓еэе░</a></li>
-<li><a href="http://www3.to/roskin-search/" rel='nofollow' class="blank">еще░е╩еэепд╬е╣енеє</a></li>
-<li><a href="http://776.netgamers.jp/ro/" rel='nofollow' class="blank">RO╣╢╬м R.O.M 776</a></li>
-<li><a href="http://botroten.web.fc2.com/" rel='nofollow' class="blank">еще░е╩еэепBOT╔╘╟у</a></li>
+<li><a href="http://at-x.net/" rel='nofollow' class="blank">уГйуВ░уГКуГнуВпф╛бца╝шк┐цЯ╗щЪК</a></li>
+<li><a href="http://quest.rowiki.jp/" rel='nofollow' class="blank">уГйуВ░уГКуГнуВпуБоуВпуВиуВ╣уГИWiki</a></li>
+<li><a href="http://homepage3.nifty.com/tea/qs/" rel='nofollow' class="blank">ROуВиуГ│уГЦуГмуГач┤ацЭРщди</a></li>
+<li><a href="http://www.ragd.net/" rel='nofollow' class="blank">уГйуВ░уГКуГнуВпцФ╗чХе</a></li>
+<li><a href="http://uniuni.dfz.jp/skill3/" rel='nofollow' class="blank">ROуВ╣уВнуГлуВ╖уГеуГЯуГмуГ╝уВ┐уГ╝</a></li>
+<li><a href="http://wikiwiki.jp/ragna/" rel='nofollow' class="blank">уГйуВ░уГКуГнуВп Wiki</a></li>
+<li><a href="http://www.mmonavi.com/modules/game/86.html" rel='nofollow' class="blank">уГйуВ░уГКуГнуВпуВкуГ│уГйуВдуГ│уБлуБдуБДуБж</a></li>
+<li><a href="http://roblog.jp/" rel='nofollow' class="blank">RagnarokуГЦуГнуВ░</a></li>
+<li><a href="http://www3.to/roskin-search/" rel='nofollow' class="blank">уГйуВ░уГКуГнуВпуБоуВ╣уВнуГ│</a></li>
+<li><a href="http://776.netgamers.jp/ro/" rel='nofollow' class="blank">ROцФ╗чХе R.O.M 776</a></li>
+<li><a href="http://botroten.web.fc2.com/" rel='nofollow' class="blank">уГйуВ░уГКуГнуВпBOTф╕Нш▓╖</a></li>
 </ul>

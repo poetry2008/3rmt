@@ -1,11 +1,11 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://knight.mgame.jp/beginner/index.html" class="blank" rel='nofollow'><span>е╩еде╚екеєещедеє ╕°╝░е╡еде╚</span></a></li>
-<li><a href="http://www6.atwiki.jp/clantk/" class="blank" rel='nofollow'><span>д▀дєд╩д╟║юдыKOе╟б╝е┐е┘б╝е╣</span></a></li>
-<li><a href="http://ko21.blog28.fc2.com/" class="blank" rel='nofollow'><span>Knight Online ╜щ┐┤╝╘ Q&A</span></a></li>
-<li><a href="http://www.mmo-station.com/mmo/KnightOnline/" class="blank" rel='nofollow'><span>е╩еде╚екеєещедеє ┴э╣ч╛Ё╩єбж╣╢╬ме╡еде╚</span></a></li>
-<li><a href="http://www.geocities.jp/trade_bbs_by_assassin_hawk/" class="blank" rel='nofollow'><span>е╩еде╚екеєещедеє ┴э╣ч╖╟╝и╚─</span></a></li>
-<li><a href="http://wiki.livedoor.jp/kowiki/" class="blank" rel='nofollow'><span>е╩еде╚екеєещедеє д▐д╚дсWiki</span></a></li>
-<li><a href="http://www.hotgame.co.jp/" class="blank"><span>е╩еде╚екеєещедеє е│е▀ехе╦е╞егб╝</span></a></li>
-<li><a href="http://www.mmonavi.com/modules/game/252.html" class="blank"><span>е╩еде╚екеєещедеєе▓б╝ер╛Ё╩є</span></a></li>
+<li><a href="http://knight.mgame.jp/beginner/index.html" class="blank" rel='nofollow'><span>уГКуВдуГИуВкуГ│уГйуВдуГ│ хЕмх╝ПуВ╡уВдуГИ</span></a></li>
+<li><a href="http://www6.atwiki.jp/clantk/" class="blank" rel='nofollow'><span>уБ┐уВУуБкуБзф╜ЬуВЛKOуГЗуГ╝уВ┐уГЩуГ╝уВ╣</span></a></li>
+<li><a href="http://ko21.blog28.fc2.com/" class="blank" rel='nofollow'><span>Knight Online хИЭх┐ГшАЕ Q&A</span></a></li>
+<li><a href="http://www.mmo-station.com/mmo/KnightOnline/" class="blank" rel='nofollow'><span>уГКуВдуГИуВкуГ│уГйуВдуГ│ ч╖ПхРИцГЕха▒уГ╗цФ╗чХеуВ╡уВдуГИ</span></a></li>
+<li><a href="http://www.geocities.jp/trade_bbs_by_assassin_hawk/" class="blank" rel='nofollow'><span>уГКуВдуГИуВкуГ│уГйуВдуГ│ ч╖ПхРИцО▓чд║цЭ┐</span></a></li>
+<li><a href="http://wiki.livedoor.jp/kowiki/" class="blank" rel='nofollow'><span>уГКуВдуГИуВкуГ│уГйуВдуГ│ уБ╛уБиуВБWiki</span></a></li>
+<li><a href="http://www.hotgame.co.jp/" class="blank"><span>уГКуВдуГИуВкуГ│уГйуВдуГ│ уВ│уГЯуГеуГЛуГЖуВгуГ╝</span></a></li>
+<li><a href="http://www.mmonavi.com/modules/game/252.html" class="blank"><span>уГКуВдуГИуВкуГ│уГйуВдуГ│уВ▓уГ╝уГацГЕха▒</span></a></li>
 </ul>

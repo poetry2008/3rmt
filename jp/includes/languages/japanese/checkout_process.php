@@ -10,49 +10,49 @@
   Released under the GNU General Public License
 */
 
-define('EMAIL_TEXT_SUBJECT', '¤´ÃíÊ¸¤¢¤ê¤¬¤È¤¦¤´¤¶¤¤¤Þ¤¹¡ÚRMT¥¸¥ã¥Ã¥¯¥Ý¥Ã¥È¡Û¡¡');
-define('EMAIL_TEXT_SUBJECT2','¤´ÃíÊ¸¤¢¤ê¤¬¤È¤¦¤´¤¶¤¤¤Þ¤¹¡ÚRMT¥¸¥ã¥Ã¥¯¥Ý¥Ã¥È¡Û¡¡');
+define('EMAIL_TEXT_SUBJECT', 'ã”æ³¨æ–‡ã‚ã‚ŠãŒã¨ã†ã”ã–ã„ã¾ã™ã€RMTã‚¸ãƒ£ãƒƒã‚¯ãƒãƒƒãƒˆã€‘ã€€');
+define('EMAIL_TEXT_SUBJECT2','ã”æ³¨æ–‡ã‚ã‚ŠãŒã¨ã†ã”ã–ã„ã¾ã™ã€RMTã‚¸ãƒ£ãƒƒã‚¯ãƒãƒƒãƒˆã€‘ã€€');
 
-define('EMAIL_TEXT_STORE_CONFIRMATION', ' ¤Ø¤´ÃíÊ¸¤ò¤¤¤¿¤À¤­¤Þ¤·¤Æ¡¢À¿¤Ë¤¢¤ê¤¬¤È¤¦¤´¤¶¤¤¤Þ¤¹¡£' . "\n\n" . 
-'²¼µ­¤ÎÆâÍÆ¤Ë¤Æ¤´ÃíÊ¸¤ò¾µ¤ê¤Þ¤·¤¿¤Î¤Ç¡¢¤´³ÎÇ§¤¯¤À¤µ¤¤¡£' . "\n\n" . 
-'¤Ê¤ª¡¢ËÜ¥á¡¼¥ë¤Ëµ­ºÜ¤µ¤ì¤¿¤´ÃíÊ¸ÆâÍÆ¤Î¸í¤ê¤ä¡¢¤´¼ÁÌäÅù¤¬¤´¤¶¤¤¤Þ¤·¤¿¤é¡¢' . "\n" .
-'¤ª¼ê¿ô¤Ç¤¹¤¬ÁáµÞ¤ËÅöÅ¹¤Þ¤Ç¤ªÌä¤¤¹ç¤ï¤»¤¯¤À¤µ¤¤¤Þ¤¹¤è¤¦¡¢¤ª´ê¤¤¿½¤·¾å¤²¤Þ¤¹¡£' . "\n"); //Add Japanese osCommerce
+define('EMAIL_TEXT_STORE_CONFIRMATION', ' ã¸ã”æ³¨æ–‡ã‚’ã„ãŸã ãã¾ã—ã¦ã€èª ã«ã‚ã‚ŠãŒã¨ã†ã”ã–ã„ã¾ã™ã€‚' . "\n\n" . 
+'ä¸‹è¨˜ã®å†…å®¹ã«ã¦ã”æ³¨æ–‡ã‚’æ‰¿ã‚Šã¾ã—ãŸã®ã§ã€ã”ç¢ºèªãã ã•ã„ã€‚' . "\n\n" . 
+'ãªãŠã€æœ¬ãƒ¡ãƒ¼ãƒ«ã«è¨˜è¼‰ã•ã‚ŒãŸã”æ³¨æ–‡å†…å®¹ã®èª¤ã‚Šã‚„ã€ã”è³ªå•ç­‰ãŒã”ã–ã„ã¾ã—ãŸã‚‰ã€' . "\n" .
+'ãŠæ‰‹æ•°ã§ã™ãŒæ—©æ€¥ã«å½“åº—ã¾ã§ãŠå•ã„åˆã‚ã›ãã ã•ã„ã¾ã™ã‚ˆã†ã€ãŠé¡˜ã„ç”³ã—ä¸Šã’ã¾ã™ã€‚' . "\n"); //Add Japanese osCommerce
 
-define('EMAIL_TEXT_ORDER_NUMBER', '¤´ÃíÊ¸¼õÉÕÈÖ¹æ:');
-define('EMAIL_TEXT_INVOICE_URL', '¤´ÃíÊ¸¤Ë¤Ä¤¤¤Æ¤Î¾ðÊó¤ò²¼µ­URL¤Ç¤´Í÷¤Ë¤Ê¤ì¤Þ¤¹¡£' . "\n");
-define('EMAIL_TEXT_DATE_ORDERED', '¤´ÃíÊ¸Æü:');
-define('EMAIL_TEXT_PRODUCTS', '¿ôÎÌ / ¾¦ÉÊÌ¾');
-define('EMAIL_TEXT_SUBTOTAL', '¾®¡¡·×:');
-define('EMAIL_TEXT_TAX', '¾ÃÈñÀÇ:');
-define('EMAIL_TEXT_SHIPPING', 'Á÷¡¡ÎÁ:');
-define('EMAIL_TEXT_TOTAL', '¹ç·×³Û:');
-define('EMAIL_TEXT_DELIVERY_ADDRESS', '¤ªÆÏ¤±Àè');
-define('EMAIL_TEXT_BILLING_ADDRESS', '¤´ÀÁµáÀè');
-define('EMAIL_TEXT_PAYMENT_METHOD', '¤ª»ÙÊ§¤¤ÊýË¡');
+define('EMAIL_TEXT_ORDER_NUMBER', 'ã”æ³¨æ–‡å—ä»˜ç•ªå·:');
+define('EMAIL_TEXT_INVOICE_URL', 'ã”æ³¨æ–‡ã«ã¤ã„ã¦ã®æƒ…å ±ã‚’ä¸‹è¨˜URLã§ã”è¦§ã«ãªã‚Œã¾ã™ã€‚' . "\n");
+define('EMAIL_TEXT_DATE_ORDERED', 'ã”æ³¨æ–‡æ—¥:');
+define('EMAIL_TEXT_PRODUCTS', 'æ•°é‡ / å•†å“å');
+define('EMAIL_TEXT_SUBTOTAL', 'å°ã€€è¨ˆ:');
+define('EMAIL_TEXT_TAX', 'æ¶ˆè²»ç¨Ž:');
+define('EMAIL_TEXT_SHIPPING', 'é€ã€€æ–™:');
+define('EMAIL_TEXT_TOTAL', 'åˆè¨ˆé¡:');
+define('EMAIL_TEXT_DELIVERY_ADDRESS', 'ãŠå±Šã‘å…ˆ');
+define('EMAIL_TEXT_BILLING_ADDRESS', 'ã”è«‹æ±‚å…ˆ');
+define('EMAIL_TEXT_PAYMENT_METHOD', 'ãŠæ”¯æ‰•ã„æ–¹æ³•');
 
 define('EMAIL_SEPARATOR', '---------------------------------------------------------------------------');
-define('TEXT_EMAIL_VIA', '(ÇÛÁ÷ÊýË¡)');
+define('TEXT_EMAIL_VIA', '(é…é€æ–¹æ³•)');
 
 //Add Point System
-define('TEXT_POINT_NOW', 'º£²ó¤Î³ÍÆÀ¥Ý¥¤¥ó¥È:');
+define('TEXT_POINT_NOW', 'ä»Šå›žã®ç²å¾—ãƒã‚¤ãƒ³ãƒˆ:');
 
-//ºß¸ËÀÚ¤ì¥¢¥é¡¼¥È
-define('ZAIKO_ALART_TITLE','ºß¸Ë¤¬ÀÚ¤ì¤Þ¤·¤¿¡£');
-define('ZAIKO_ALART_TITLE2','¥ª¥×¥·¥ç¥óºß¸Ë¤¬ÀÚ¤ì¤Þ¤·¤¿¡£');
+//åœ¨åº«åˆ‡ã‚Œã‚¢ãƒ©ãƒ¼ãƒˆ
+define('ZAIKO_ALART_TITLE','åœ¨åº«ãŒåˆ‡ã‚Œã¾ã—ãŸã€‚');
+define('ZAIKO_ALART_TITLE2','ã‚ªãƒ—ã‚·ãƒ§ãƒ³åœ¨åº«ãŒåˆ‡ã‚Œã¾ã—ãŸã€‚');
 define('ZAIKO_ARART_BODY',
-'¾¦ÉÊºß¸Ë¤¬ÀÚ¤ì¤Æ¤¤¤Þ¤¹¡£´ÉÍý²èÌÌ¤Ë¥í¥°¥¤¥ó¤·¤Æ¤¤¤¿¤À¤­
-ºß¸Ë¤òÁý¤ä¤·¤Æ¤¤¤¿¤À¤¯¤«¡¢¾¦ÉÊ¤òºï½ü¤·¤Æ¤¯¤À¤µ¤¤¡£¸½ºß
-¾¦ÉÊ¤Ï¥ª¥ó¥é¥¤¥ó¾å¤«¤é¤ÏÈóÉ½¼¨¤Ë¤Ê¤Ã¤Æ¤¤¤Þ¤¹¡£
+'å•†å“åœ¨åº«ãŒåˆ‡ã‚Œã¦ã„ã¾ã™ã€‚ç®¡ç†ç”»é¢ã«ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ã„ãŸã ã
+åœ¨åº«ã‚’å¢—ã‚„ã—ã¦ã„ãŸã ãã‹ã€å•†å“ã‚’å‰Šé™¤ã—ã¦ãã ã•ã„ã€‚ç¾åœ¨
+å•†å“ã¯ã‚ªãƒ³ãƒ©ã‚¤ãƒ³ä¸Šã‹ã‚‰ã¯éžè¡¨ç¤ºã«ãªã£ã¦ã„ã¾ã™ã€‚
 
-ºß¸Ë¤òÁý¤ä¤·¡¢É½¼¨¥¹¥Æ¡¼¥¿¥¹¤òON¤Ë¤¹¤ë¤ÈºÆÅÙ¡¢É½¼¨¤µ¤ì
-¤Þ¤¹¡£°Ê²¼¤Î¥ê¥¹¥È¤Ïºß¸Ë¤¬¥¼¥í¤Î¾¦ÉÊ¤Ç¤¹¡£
+åœ¨åº«ã‚’å¢—ã‚„ã—ã€è¡¨ç¤ºã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’ONã«ã™ã‚‹ã¨å†åº¦ã€è¡¨ç¤ºã•ã‚Œ
+ã¾ã™ã€‚ä»¥ä¸‹ã®ãƒªã‚¹ãƒˆã¯åœ¨åº«ãŒã‚¼ãƒ­ã®å•†å“ã§ã™ã€‚
 '.EMAIL_SEPARATOR."\n");
 
-define('TEXT_BANK_NAME', '¶âÍ»µ¡´ØÌ¾¡¡¡¡¡¡¡¡');
-define('TEXT_BANK_SHITEN', '»ÙÅ¹Ì¾¡¡¡¡¡¡¡¡¡¡¡¡');
-define('TEXT_BANK_KAMOKU', '¸ýºÂ¼ïÊÌ¡¡¡¡¡¡¡¡¡¡');
-define('TEXT_BANK_KOUZA_NUM', '¸ýºÂÈÖ¹æ¡¡¡¡¡¡¡¡¡¡');
-define('TEXT_BANK_KOUZA_NAME', '¸ýºÂÌ¾µÁ¡¡¡¡¡¡¡¡¡¡');
+define('TEXT_BANK_NAME', 'é‡‘èžæ©Ÿé–¢åã€€ã€€ã€€ã€€');
+define('TEXT_BANK_SHITEN', 'æ”¯åº—åã€€ã€€ã€€ã€€ã€€ã€€');
+define('TEXT_BANK_KAMOKU', 'å£åº§ç¨®åˆ¥ã€€ã€€ã€€ã€€ã€€');
+define('TEXT_BANK_KOUZA_NUM', 'å£åº§ç•ªå·ã€€ã€€ã€€ã€€ã€€');
+define('TEXT_BANK_KOUZA_NAME', 'å£åº§åç¾©ã€€ã€€ã€€ã€€ã€€');
 
 
 ?>

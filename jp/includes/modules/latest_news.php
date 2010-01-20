@@ -11,7 +11,7 @@
 */
 ?>
 <!-- latest_news //-->
-<p class="pageHeading">RMT����å��ݥåȤ���Τ��Τ餻</p>
+<p class="pageHeading">RMTジャックポットからのお知らせ</p>
 <div id="news">
     <ul class="news_ul">
 

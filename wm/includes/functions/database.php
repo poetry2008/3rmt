@@ -22,7 +22,7 @@
     if ($$link) mysql_select_db($database);
 
     if (intval(substr(mysql_get_server_info(), 0, 1) >= 4)){
-      tep_db_query('set names ujis');
+      mysql_query('set names utf8');
     }
     return $$link;
   }

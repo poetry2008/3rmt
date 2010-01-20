@@ -1,7 +1,7 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://luna.hangame.co.jp/" class="blank" rel='nofollow'><span>еые╩ екеєещедеє ╕°╝░е╡еде╚</span></a></li>
-<li><a href="http://lunawiki.coresv.com/" class="blank" rel='nofollow'><span>еые╩екеєещедеє Wiki</span></a></li>
-<li><a href="http://www.mmo-station.com/mmo/LoL/" class="blank" rel='nofollow'><span>Legend of LUNA ┴э╣ч╛Ё╩єбж╣╢╬ме╡еде╚</span></a></li>
-<li><a href="http://velocityengine.hp.infoseek.co.jp/" class="blank" rel='nofollow'><span>еые╩екеєещедеє ╣╢╬мбже╒ебеєе╡еде╚</span></a></li>
+<li><a href="http://luna.hangame.co.jp/" class="blank" rel='nofollow'><span>уГлуГК уВкуГ│уГйуВдуГ│ хЕмх╝ПуВ╡уВдуГИ</span></a></li>
+<li><a href="http://lunawiki.coresv.com/" class="blank" rel='nofollow'><span>уГлуГКуВкуГ│уГйуВдуГ│ Wiki</span></a></li>
+<li><a href="http://www.mmo-station.com/mmo/LoL/" class="blank" rel='nofollow'><span>Legend of LUNA ч╖ПхРИцГЕха▒уГ╗цФ╗чХеуВ╡уВдуГИ</span></a></li>
+<li><a href="http://velocityengine.hp.infoseek.co.jp/" class="blank" rel='nofollow'><span>уГлуГКуВкуГ│уГйуВдуГ│ цФ╗чХеуГ╗уГХуВбуГ│уВ╡уВдуГИ</span></a></li>
 </ul>

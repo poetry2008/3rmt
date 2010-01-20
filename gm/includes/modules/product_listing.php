@@ -9,15 +9,15 @@
 */
 
 // Product_listing.php Add
- define('LISTING_DISPLAY_OPTION','É½¼¨·Á¼°:');
- define('LISTING_SORT_BY','ÊÂ¤ÓÂØ¤¨:');
- define('LISTING_PRICE_LOW','²Á³Ê¤¬°Â¤¤');
- define('LISTING_PRICE_HIGHT','²Á³Ê¤¬¹â¤¤');
- define('LISTING_TITLE_A_TO_Z','¥¿¥¤¥È¥ë A - Z');
- define('LISTING_TITLE_Z_TO_A','¥¿¥¤¥È¥ë Z - A');
+ define('LISTING_DISPLAY_OPTION','è¡¨ç¤ºå½¢å¼:');
+ define('LISTING_SORT_BY','ä¸¦ã³æ›¿ãˆ:');
+ define('LISTING_PRICE_LOW','ä¾¡æ ¼ãŒå®‰ã„');
+ define('LISTING_PRICE_HIGHT','ä¾¡æ ¼ãŒé«˜ã„');
+ define('LISTING_TITLE_A_TO_Z','ã‚¿ã‚¤ãƒˆãƒ« A - Z');
+ define('LISTING_TITLE_Z_TO_A','ã‚¿ã‚¤ãƒˆãƒ« Z - A');
  
- define('SORT_BY_IMAGE_TEXT','¥¿¥¤¥È¥ë¤È²èÁü');
- define('SORT_BY_IMAGE','²èÁü¤Î¤ß');
+ define('SORT_BY_IMAGE_TEXT','ã‚¿ã‚¤ãƒˆãƒ«ã¨ç”»åƒ');
+ define('SORT_BY_IMAGE','ç”»åƒã®ã¿');
 ?>
 <!--select searach -->
 <table width="100%" border="0" cellpadding="1" cellspacing="0">
@@ -108,6 +108,8 @@ if ($listing_numrows > 0) {
       }
       //buynow
       if($listing['products_quantity'] > 0) {
+        if(!defined('TEXT_BUY')) define('TEXT_BUY', NULL);
+        if(!defined('TEXT_NOW')) define('TEXT_NOW', NULL);
         $BUY_NOW = '<a href="' . tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('action')) . 'action=buy_now&products_id=' . $listing['products_id']) . '">' . tep_image_button('button_buy_now.gif', TEXT_BUY . $listing['products_name'] . TEXT_NOW) . '</a>&nbsp;';
       } else {
         $BUY_NOW = STOCK_MARK_PRODUCT_OUT_OF_STOCK;
@@ -120,11 +122,8 @@ if ($listing_numrows > 0) {
         $products_name = $listing['products_name'];
         $ten = '';
       }
-      // edit 2009.5.14 maker
-      //product_description
-      //$description_array = explode("|-#-|", $listing['products_description_'.ABBR_SITENAME]);
-      //$description = strip_tags(mb_substr ($description_array[0],0,60));//maker
-      $description = strip_tags(mb_substr ($listing['products_description_'.ABBR_SITENAME],0,60));//maker
+
+      $description = strip_tags(mb_substr ($listing['products_description'],0,60));//maker
     
       $row++;
       $col++;
@@ -139,30 +138,32 @@ if ($listing_numrows > 0) {
           <td style="padding-left:5px; "><p class="main"><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="middle" alt="img"><strong><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $listing['products_id']) . '">'.$products_name.$ten.'</a>';?></strong></p>
           </td>
           <td align="right">
-            <p class="main">1¸Ä<?php echo $price; ?>¤«¤é</p>
+            <p class="main">1å€‹<?php echo $price; ?>ã‹ã‚‰</p>
           </td>
           <td width="90" align="right">
-            <p class="main"><?php echo '»Ä¤ê&nbsp;<b>' . $listing['products_quantity'] . '</b>&nbsp;¸Ä'; ?></p>
+            <p class="main"><?php echo 'æ®‹ã‚Š&nbsp;<b>' . $listing['products_quantity'] . '</b>&nbsp;å€‹'; ?></p>
           </td>
         </tr>
         <tr>
           <td colspan="2" style="padding-left:5px; ">
             <p class="smallText">
 <?php
+if (!isset($listing['products_bflag'])) $listing['products_bflag'] = NULL;//delnotice
+if (!isset($listing['products_cflag'])) $listing['products_cflag'] = NULL;//delnotice
   if($listing['products_bflag'] == '1') {
-    # Çã¼è¾¦ÉÊ
+    # è²·å–å•†å“
     echo $description . '..';
   } elseif ($listing['products_cflag'] == '0') {
     echo $description . '..';
   } else {
-    # ÈÎÇä¾¦ÉÊ
-    echo $description . '..&nbsp;&nbsp;¤´´õË¾¤Î¿ôÎÌ¤¬¤Ê¤¤¾ì¹ç¤Ï¡Ö<a href="' . tep_href_link(FILENAME_PREORDER, 'products_id=' . $listing['products_id']) . '">' . $products_name . $ten . '¤òÍ½Ìó¤¹¤ë</a>¡×¤ò¥¯¥ê¥Ã¥¯';
+    # è²©å£²å•†å“
+    echo $description . '..&nbsp;&nbsp;ã”å¸Œæœ›ã®æ•°é‡ãŒãªã„å ´åˆã¯ã€Œ<a href="' . tep_href_link(FILENAME_PREORDER, 'products_id=' . $listing['products_id']) . '">' . $products_name . $ten . 'ã‚’äºˆç´„ã™ã‚‹</a>ã€ã‚’ã‚¯ãƒªãƒƒã‚¯';
   }
 ?>
             </p>
           </td>
           <td align="right">
-            <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $listing['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_order.gif', 'ÃíÊ¸¤Ï¤³¤Á¤é');?></a>
+            <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $listing['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_order.gif', 'æ³¨æ–‡ã¯ã“ã¡ã‚‰');?></a>
           </td>
         </tr>
       </table>

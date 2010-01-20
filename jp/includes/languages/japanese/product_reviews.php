@@ -10,13 +10,13 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE', '¥ì¥Ó¥å¡¼');
-define('HEADING_TITLE', '%s ¤Î¥ì¥Ó¥å¡¼');
+define('NAVBAR_TITLE', 'ãƒ¬ãƒ“ãƒ¥ãƒ¼');
+define('HEADING_TITLE', '%s ã®ãƒ¬ãƒ“ãƒ¥ãƒ¼');
 define('TABLE_HEADING_NUMBER', 'No.');
-define('TABLE_HEADING_AUTHOR', 'Åê¹Æ¼Ô');
-define('TABLE_HEADING_RATING', 'ºÎÅÀ');
-define('TABLE_HEADING_READ', 'ÆÉ¤Þ¤ì¤¿²ó¿ô');
-define('TABLE_HEADING_DATE_ADDED', 'Åê¹Æ¤µ¤ì¤¿ÆüÉÕ');
-define('TEXT_OF_5_STARS', '5ÅÀÃæ¤Î %sÅÀ!');
-define('TEXT_NO_REVIEWS', '¤³¤Î¾¦ÉÊ¤Ë¤Ä¤¤¤Æ¤Î¥ì¥Ó¥å¡¼¤Ï¡¢¤Þ¤À½ñ¤«¤ì¤Æ¤¤¤Þ¤»¤ó...');
+define('TABLE_HEADING_AUTHOR', 'æŠ•ç¨¿è€…');
+define('TABLE_HEADING_RATING', 'æŽ¡ç‚¹');
+define('TABLE_HEADING_READ', 'èª­ã¾ã‚ŒãŸå›žæ•°');
+define('TABLE_HEADING_DATE_ADDED', 'æŠ•ç¨¿ã•ã‚ŒãŸæ—¥ä»˜');
+define('TEXT_OF_5_STARS', '5ç‚¹ä¸­ã® %sç‚¹!');
+//define('TEXT_NO_REVIEWS', 'ã“ã®å•†å“ã«ã¤ã„ã¦ã®ãƒ¬ãƒ“ãƒ¥ãƒ¼ã¯ã€ã¾ã æ›¸ã‹ã‚Œã¦ã„ã¾ã›ã‚“...');
 ?>

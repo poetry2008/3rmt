@@ -10,34 +10,35 @@
   Released under the GNU General Public License
 */
 
-define('TEXT_MAIN', '���Υڡ����ϡ�����饤�󥷥�åפΥǥ�󥹥ȥ졼�����Ǥ���<b>�������ˤʤä����ʤϡ�����������⤵��ޤ���</b>���ʤ���¾�ˤĤ��Ƥξ�������ƲͶ��Τ�ΤǤ���<br><br>�⤷�����ʤ������Υ���饤�󥷥�åס��ǥ�����������ɤ��ƻȤäƤߤ����Ȼפä��ꡢ���Υץ��������Ȥ˹׸����褦�Ȼפä��ʤ顢����<a href="http://oscommerce.com"><u> ���ݡ��ȥ����� </u></a>��ˬ��Ƥ������������Υ���饤�󥷥�åפϡ�<font color="#f0000"><b>' . PROJECT_VERSION . '</b></font>�ǹ��ۤ���Ƥ��ޤ���<br><br>��ɽ������Ƥ�����ɤ�Ǥ���˥ƥ����Ȥϡ����Υե�����˵��Ҥ���Ƥ��ޤ�����:[catalog�ǥ��쥯�ȥ�]/includes/languages/[japanese]/default.php.<br><br>����ϡ�������˥塼��ͳ���Ƽ�ġ���-�������->[language]->Define���ץ���󡢤ޤ��ϳƼ�ġ���->�ե����������ǽ��Ȥ����Ȥˤ�äƼ�ư���Խ����뤳�Ȥ��Ǥ��ޤ���');
-define('TABLE_HEADING_NEW_PRODUCTS', '%s �ο��徦��');
-define('TABLE_HEADING_UPCOMING_PRODUCTS', '����ͽ��ξ���');
-define('TABLE_HEADING_DATE_EXPECTED', '����ͽ����');
+define('TEXT_MAIN', 'このページは、オンラインショップのデモンストレーションです。<b>ご購入になった商品は、配送も請求もされません。</b>商品その他についての情報は全て架空のものです。<br><br>もし、あなたがこのオンラインショップ・デモをダウンロードして使ってみたいと思ったり、このプロジェクトに貢献しようと思ったなら、ぜひ<a href="http://oscommerce.com"><u> サポートサイト </u></a>を訪れてください。このオンラインショップは、<font color="#f0000"><b>' . PROJECT_VERSION . '</b></font>で構築されています。<br><br>今表示されている（読んでいる）テキストは、次のファイルに記述されています。例:[catalogディレクトリ]/includes/languages/[japanese]/default.php.<br><br>これは、管理メニュー経由、各種ツール-言語定義->[language]->Defineオプション、または各種ツール->ファイル管理機能を使うことによって手動で編集することができます。');
+define('TABLE_HEADING_NEW_PRODUCTS', '%s の新着商品');
+define('TABLE_HEADING_UPCOMING_PRODUCTS', '入荷予定の商品');
+define('TABLE_HEADING_DATE_EXPECTED', '入荷予定日');
 
-define('HEADING_COLOR_TITLE', '���顼��������: ');
+define('HEADING_COLOR_TITLE', 'カラーから選択: ');
 
+   if (!isset($HTTP_GET_VARS['colors'])) $HTTP_GET_VARS['colors'] = NULL;// del notice 
 if ( ($category_depth == 'products') || ($HTTP_GET_VARS['manufacturers_id']) ||  ($HTTP_GET_VARS['colors'])) {
-  define('HEADING_TITLE', '�谷������');
+  define('HEADING_TITLE', '取扱い商品');
   define('TABLE_HEADING_IMAGE', '');
-  define('TABLE_HEADING_MODEL', '����');
-  define('TABLE_HEADING_PRODUCTS', '����̾');
-  define('TABLE_HEADING_MANUFACTURER', '�᡼����');
-  define('TABLE_HEADING_QUANTITY', '����');
-  define('TABLE_HEADING_PRICE', '����');
-  define('TABLE_HEADING_WEIGHT', '����');
-  define('TABLE_HEADING_BUY_NOW', '����������');
-  define('TEXT_NO_PRODUCTS', '���Υ��ƥ��꡼�ξ��ʤϤ���ޤ���...');
-  define('TEXT_NO_PRODUCTS2', '���Υ᡼�����ξ��ʤϤ���ޤ���...');
-  define('TEXT_NUMBER_OF_PRODUCTS', '�߸˿�: ');
-  define('TEXT_SHOW', '<b>�ʹ���:</b> ');
-  define('TEXT_BUY', '������ ');
-  define('TEXT_NOW', ' ���������');	
-  define('TEXT_ALL', '����');
-  define('TEXT_NO_COLORS', '���Υ��顼�ξ��ʤϤ���ޤ���...');
+  define('TABLE_HEADING_MODEL', '型番');
+  define('TABLE_HEADING_PRODUCTS', '商品名');
+  define('TABLE_HEADING_MANUFACTURER', 'メーカー');
+  define('TABLE_HEADING_QUANTITY', '数量');
+  define('TABLE_HEADING_PRICE', '価格');
+  define('TABLE_HEADING_WEIGHT', '重量');
+  define('TABLE_HEADING_BUY_NOW', '今すぐ購入');
+  //define('TEXT_NO_PRODUCTS', 'このカテゴリーの商品はありません...');
+  define('TEXT_NO_PRODUCTS2', 'このメーカーの商品はありません...');
+  define('TEXT_NUMBER_OF_PRODUCTS', '在庫数: ');
+  define('TEXT_SHOW', '<b>絞込み:</b> ');
+  define('TEXT_BUY', '今すぐ ');
+  define('TEXT_NOW', ' を購入する');	
+  define('TEXT_ALL', '全て');
+  define('TEXT_NO_COLORS', 'このカラーの商品はありません...');
 } elseif ($category_depth == 'top') {
   define('HEADING_TITLE', 'What\'s New!');
 } elseif ($category_depth == 'nested') {
-  define('HEADING_TITLE', '���ƥ��꡼');
+  define('HEADING_TITLE', 'カテゴリー');
 }
 ?>

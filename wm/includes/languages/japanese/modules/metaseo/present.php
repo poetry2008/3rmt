@@ -1,9 +1,9 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
-  define('MODULE_METASEO_PRESENT_TEXT_TITLE', '¥×¥ì¥¼¥ó¥È');
+  define('MODULE_METASEO_PRESENT_TEXT_TITLE', 'ãƒ—ãƒ¬ã‚¼ãƒ³ãƒˆ');
   define('MODULE_METASEO_PRESENT_TEXT_EXPLAIN', 'EXPLAIN');
-  define('MODULE_METASEO_PRESENT_TEXT_DESCRIPTION', '¥×¥ì¥¼¥ó¥È¥Ú¡¼¥¸¤ÎSEO');
+  define('MODULE_METASEO_PRESENT_TEXT_DESCRIPTION', 'ãƒ—ãƒ¬ã‚¼ãƒ³ãƒˆãƒšãƒ¼ã‚¸ã®SEO');
 ?>

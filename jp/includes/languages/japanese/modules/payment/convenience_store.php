@@ -10,20 +10,20 @@
   Released under the GNU General Public License
 */
 
-// ¥³¥ó¥Ó¥Ë·èºÑ
-  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_TITLE', '¥³¥ó¥Ó¥Ë·èºÑ');
-  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_DESCRIPTION', '¥³¥ó¥Ó¥Ë·èºÑ(Âå¶â¤Ë¼ê¿ôÎÁ¤¬Ï¢Æ°)');
-  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_PROCESS', '¥³¥ó¥Ó¥Ë·èºÑ¼ê¿ôÎÁ¤¬ÊÌÅÓ¤«¤«¤ê¤Þ¤¹¡£');
-  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FEE', '¥³¥ó¥Ó¥Ë·èºÑ¼ê¿ôÎÁ:');
-  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_OVERFLOW_ERROR', '¤ªÇã¤¤¾å¤²¶â³Û¤¬¥³¥ó¥Ó¥Ë·èºÑ¤ÎÀ©¸Â¤òÄ¶¤¨¤¿¤¿¤á¤ª¼è¤ê°·¤¤¤Ç¤­¤Þ¤»¤ó¡£');
+// ã‚³ãƒ³ãƒ“ãƒ‹æ±ºæ¸ˆ
+  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_TITLE', 'ã‚³ãƒ³ãƒ“ãƒ‹æ±ºæ¸ˆ');
+  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_DESCRIPTION', 'ã‚³ãƒ³ãƒ“ãƒ‹æ±ºæ¸ˆ(ä»£é‡‘ã«æ‰‹æ•°æ–™ãŒé€£å‹•)');
+  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_PROCESS', 'ã‚³ãƒ³ãƒ“ãƒ‹æ±ºæ¸ˆæ‰‹æ•°æ–™ãŒåˆ¥é€”ã‹ã‹ã‚Šã¾ã™ã€‚');
+  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FEE', 'ã‚³ãƒ³ãƒ“ãƒ‹æ±ºæ¸ˆæ‰‹æ•°æ–™:');
+  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_OVERFLOW_ERROR', 'ãŠè²·ã„ä¸Šã’é‡‘é¡ãŒã‚³ãƒ³ãƒ“ãƒ‹æ±ºæ¸ˆã®åˆ¶é™ã‚’è¶…ãˆãŸãŸã‚ãŠå–ã‚Šæ‰±ã„ã§ãã¾ã›ã‚“ã€‚');
   define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_MAILFOOTER',C_CONVENIENCE_STORE."\n\n". EMAIL_SIGNATURE);
   
-  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_SID', '¼è°ú¥³¡¼¥É:');
-  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ZIP_CODE', 'Í¹ÊØÈÖ¹æ:');
-  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ADDRESS', '½»½ê:');
-  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_NAME', '»áÌ¾:');
-  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_L_NAME', 'À«:');
-  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_F_NAME', 'Ì¾:');
-  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_TEL', 'ÅÅÏÃÈÖ¹æ:');
-  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE', '¥³¥ó¥Ó¥Ë·èºÑ¤Î½èÍýÃæ¤Ë¥¨¥é¡¼¤¬È¯À¸¤·¤Þ¤·¤¿. ÆþÎÏÆâÍÆ¤òÄûÀµ¤·¤â¤¦°ìÅÙ»î¤·¤Æ¤¯¤À¤µ¤¤¡£¡¡');
+  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_SID', 'å–å¼•ã‚³ãƒ¼ãƒ‰:');
+  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ZIP_CODE', 'éƒµä¾¿ç•ªå·:');
+  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ADDRESS', 'ä½æ‰€:');
+  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_NAME', 'æ°å:');
+  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_L_NAME', 'å§“:');
+  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_F_NAME', 'å:');
+  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_TEL', 'é›»è©±ç•ªå·:');
+  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE', 'ã‚³ãƒ³ãƒ“ãƒ‹æ±ºæ¸ˆã®å‡¦ç†ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸ. å…¥åŠ›å†…å®¹ã‚’è¨‚æ­£ã—ã‚‚ã†ä¸€åº¦è©¦ã—ã¦ãã ã•ã„ã€‚ã€€');
 ?>

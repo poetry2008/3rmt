@@ -1,10 +1,10 @@
 <?php // edit 2009.5.15 - maker ?>
 <ul class="r_c_links_ul">
-<li><a href="http://www.talesweaver.jp/" class="blank" rel='nofollow'><span>е╞едеые║ежегб╝е╨б╝ ╕°╝░е╡еде╚</span></a></li>
-<li><a href="http://erueru.s192.xrea.com/roten/" class="blank" rel='nofollow'><span>е╞едеые║ежегб╝е╨б╝ ▓┴│╩╛Ё╩єе╡еде╚</span></a></li>
-<li><a href="http://talesweaver110.web.fc2.com/keijiban/index.html" class="blank" rel='nofollow'><span>е╞едеые║ежегб╝е╨б╝ 110╚╓</span></a></li>
+<li><a href="http://www.talesweaver.jp/" class="blank" rel='nofollow'><span>уГЖуВдуГлуВ║уВжуВгуГ╝уГРуГ╝ хЕмх╝ПуВ╡уВдуГИ</span></a></li>
+<li><a href="http://erueru.s192.xrea.com/roten/" class="blank" rel='nofollow'><span>уГЖуВдуГлуВ║уВжуВгуГ╝уГРуГ╝ ф╛бца╝цГЕха▒уВ╡уВдуГИ</span></a></li>
+<li><a href="http://talesweaver110.web.fc2.com/keijiban/index.html" class="blank" rel='nofollow'><span>уГЖуВдуГлуВ║уВжуВгуГ╝уГРуГ╝ 110чХк</span></a></li>
 <li><a href="http://talewiki.com/talewiki.php" class="blank" rel='nofollow'><span>Tale Wiki </span></a></li>
-<li><a href="http://twplus.sakura.ne.jp/" class="blank" rel='nofollow'><span>е╞едеые║ежегб╝е╨б╝ енеуещ╩╠░щ└о╗┘▒че╡еде╚</span></a></li>
-<li><a href="http://www.mmonavi.com/modules/game/249.html" class="blank"><span>TalesWeaver MMORPG╛Ё╩є</span></a></li>
+<li><a href="http://twplus.sakura.ne.jp/" class="blank" rel='nofollow'><span>уГЖуВдуГлуВ║уВжуВгуГ╝уГРуГ╝ уВнуГгуГйхИешВ▓цИРцФпцП┤уВ╡уВдуГИ</span></a></li>
+<li><a href="http://www.mmonavi.com/modules/game/249.html" class="blank"><span>TalesWeaver MMORPGцГЕха▒</span></a></li>
 	
 </ul>

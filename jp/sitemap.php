@@ -60,7 +60,7 @@
                         </li>
                         <li><?php echo '<a href="' . tep_href_link(FILENAME_SHOPPING_CART) . '">' . PAGE_SHOPPING_CART . '</a>'; ?></li>
                         <li><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL') . '">' . PAGE_CHECKOUT_SHIPPING . '</a>'; ?></li>
-                        <li><?php echo '<a href="' . tep_href_link('reorder.php') . '">∫∆«€√£•’•©°º•‡</a>'; ?></li>
+                        <li><?php echo '<a href="' . tep_href_link(FILENAME_REORDER) . '">ÂÜçÈÖçÈÅî„Éï„Ç©„Éº„É†</a>'; ?></li>
                         <li><?php echo '<a href="' . tep_href_link(FILENAME_ADVANCED_SEARCH) . '">' . PAGE_ADVANCED_SEARCH . '</a>'; ?></li>
                         <li><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_NEW) . '">' . PAGE_PRODUCTS_NEW . '</a>'; ?></li>
                         <li><?php echo '<a href="' . tep_href_link(FILENAME_SPECIALS) . '">' . PAGE_SPECIALS . '</a>'; ?></li>
