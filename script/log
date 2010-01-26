@@ -1,359 +1,225 @@
-connect database
-geo_zones			Done
-zones			Done
-zones_to_geo_zones			Done
-configuration_group			Done
-configuration			Done
-address_format			Done
-categories			Done
-categories_description			Done
-products_description			Done
-currencies			Done
-insert into `information_page` (
-    `pID`, 
-    `navbar_title`, 
-    `heading_title`, 
-    `text_information`, 
-    `status`, 
-    `sort_id`, 
-    `romaji`, 
-    `site_id` 
+address_format 
+banners 
+calendar 
+categories 
+categories_description
+configuration 
+configuration_group 
+contents 
+currencies 
+color
+color_to_products
+present_goods 
+customers
+image_document_types 
+information_page 
+languages 
+latest_news 
+login 
+mail_magazine 
+manufacturers 
+manufacturers_info 
+newsletters 
+insert into orders_mail (
+      orders_status_id,
+      language_id,
+      site_id,
+      orders_status_title,
+      orders_status_mail
       ) values (
-    NULL, 
-    'プライバシーポリシー', 
-    'プライバシーポリシー', 
-    'このページのコンテンツは管理画面から入力を行うことができます。', 
-    '0', 
-    '0', 
-    '4', 
-    'R2MT_GM_ID' 
-    )
-Duplicate entry '4' for key 'romaji'
-insert into `information_page` (
-    `pID`, 
-    `navbar_title`, 
-    `heading_title`, 
-    `text_information`, 
-    `status`, 
-    `sort_id`, 
-    `romaji`, 
-    `site_id` 
+        '10',
+        '4',
+        '1',
+        '【重要】ご不在連絡メール【RMTジャックポット】',
+        '${NAME} 様
+
+この度は、RMTジャックポットをご利用いただき、誠にありがとうございます。
+
+お取引に参りましたがご不在でした。
+弊社キャラクターは、○:○まで配置しておきます。
+取引状況によりログアウトする場合がございますので予めご了承ください。
+
+ログインしていたにもかかわらず本メールを受け取りましたお客様は
+ご注文内容に間違いがないかご確認をお願いいたします。
+
+
+再配達受付連絡先のご案内
+下記の連絡方法いずれかをご利用ください。
+
+■再配達フォームからお申し込みください。
+http://www.iimy.co.jp/menu.cgi?mode=reOrder
+
+■電子メールにてご希望の取引日時をご連絡ください。
+下記の必要事項をご入力の上ご返信ください。
+━━━━━━━━━━━━━━━━━━━━━
+▼注文番号　　　：${ORDER_N}
+▼取引希望日時　：　月　日　時　分　（24時間表記）
+▼備考　　　　　：
+━━━━━━━━━━━━━━━━━━━━━
+
+
+
+ご不明な点がございましたら、注文番号をご確認の上、
+「RMTジャックポット」までお問い合わせください。
+
+[ご連絡・お問い合わせ先]━━━━━━━━━━━━
+株式会社iimy
+support@iimy.co.jp
+http://www.iimy.co.jp/
+━━━━━━━━━━━━━━━━━━━━━━━'
+      )
+Duplicate entry '10-1' for key 'PRIMARY'
+insert into orders_mail (
+      orders_status_id,
+      language_id,
+      site_id,
+      orders_status_title,
+      orders_status_mail
       ) values (
-    NULL, 
-    'ご利用方法', 
-    'ご利用方法について', 
-    '<h3>ご注文方法…RMT</h3>\r\n<div class=\"sub_menu\">\r\n	<dl>\r\n		<dt><a href=\"info-12.html\">お取引の流れ</a></dt>\r\n		<dd>ゲームマネー購入・買取の流れを説明しております。</dd>\r\n		<dt><a href=\"info-13.html\">ゲームマネー購入ガイド</a></dt>\r\n		<dd>ステップごとに分かりやすく購入手順の説明をしております。</dd>\r\n		<dt><a href=\"info-14.html\">ゲームマネー買取ガイド</a></dt>\r\n		<dd>ステップごとに分かりやすく買取手順の説明をしております。</dd>\r\n		<dt><a href=\"info-15.html\">携帯メールでの注文</a></dt>\r\n		<dd>携帯電話メールアドレスにてご注文の場合の注意点。</dd>\r\n		<dt><a href=\"info-7.html\">よくある質問</a></dt>\r\n		<dd>お客様から寄せられるよくある質問とその回答。</dd>\r\n	</dl>\r\n<p class=\"page_top\"><a href=\"javascript:history.back()\">前のページへ戻る</a></p>\r\n</div>', 
-    '1', 
-    '2', 
-    '26', 
-    'R2MT_GM_ID' 
-    )
-Duplicate entry '26' for key 'romaji'
-insert into `information_page` (
-    `pID`, 
-    `navbar_title`, 
-    `heading_title`, 
-    `text_information`, 
-    `status`, 
-    `sort_id`, 
-    `romaji`, 
-    `site_id` 
+        '9',
+        '4',
+        '2',
+        'ご入金を確認いたしました【RMTゲームマネー】',
+        '${NAME} 様
+
+この度は、RMTゲームマネーをご利用いただき、誠に
+ありがとうございます。
+
+お客様からの${PAY}を確認いたしましたので、
+商品手配に移らせていただきます。
+
+商品のお届けは、下記の日時に行います。
+━━━━━━━━━━━━━━━━━━━━━
+▼取引日時　：${TRADING}
+━━━━━━━━━━━━━━━━━━━━━
+
+取引日時に変更がございましたら、電子メール、または
+再配達フォームよりお申し込みください。
+
+■再配達フォームURL
+http://www.gamemoney.cc/redeliver/
+
+
+
+ご不明な点がございましたら、注文番号をご確認の上、
+「RMTゲームマネー」までお問い合わせください。
+
+[ご連絡・お問い合わせ先]━━━━━━━━━━━━
+株式会社iimy
+support@gamemoney.cc
+http://www.gamemoney.cc/
+━━━━━━━━━━━━━━━━━━━━━━━'
+      )
+Duplicate entry '9-2' for key 'PRIMARY'
+insert into orders_mail (
+      orders_status_id,
+      language_id,
+      site_id,
+      orders_status_title,
+      orders_status_mail
       ) values (
-    NULL, 
-    'お支払い方法', 
-    'お支払い方法について', 
-    '<h3>お支払い方法…RMT</h3>\r\n<div class=\"sub_menu\">\r\n	<dl>\r\n		<dt><a href=\"info-9.html\">銀行振込</a></dt>\r\n		<dd>銀行振込について説明しております。</dd>\r\n		<dt><a href=\"info-8.html\">クレジットカード</a></dt>\r\n		<dd>クレジットカード決済について説明しております。</dd>\r\n	</dl>\r\n</div>\r\n<p class=\"page_top\"><a href=\"javascript:history.back()\">前のページへ戻る</a></p>', 
-    '1', 
-    '3', 
-    '2', 
-    'R2MT_GM_ID' 
-    )
-Duplicate entry '2' for key 'romaji'
-insert into `information_page` (
-    `pID`, 
-    `navbar_title`, 
-    `heading_title`, 
-    `text_information`, 
-    `status`, 
-    `sort_id`, 
-    `romaji`, 
-    `site_id` 
+        '9',
+        '4',
+        '2',
+        'ご入金を確認いたしました【RMTゲームマネー】',
+        '${NAME} 様
+
+この度は、RMTゲームマネーをご利用いただき、誠に
+ありがとうございます。
+
+お客様からの${PAY}を確認いたしましたので、
+商品手配に移らせていただきます。
+
+商品のお届けは、下記の日時に行います。
+━━━━━━━━━━━━━━━━━━━━━
+▼取引日時　：${TRADING}
+━━━━━━━━━━━━━━━━━━━━━
+
+取引日時に変更がございましたら、電子メール、または
+再配達フォームよりお申し込みください。
+
+■再配達フォームURL
+http://www.gamemoney.cc/redeliver/
+
+
+
+ご不明な点がございましたら、注文番号をご確認の上、
+「RMTゲームマネー」までお問い合わせください。
+
+[ご連絡・お問い合わせ先]━━━━━━━━━━━━
+株式会社iimy
+support@gamemoney.cc
+http://www.gamemoney.cc/
+━━━━━━━━━━━━━━━━━━━━━━━'
+      )
+Duplicate entry '9-2' for key 'PRIMARY'
+insert into orders_mail (
+      orders_status_id,
+      language_id,
+      site_id,
+      orders_status_title,
+      orders_status_mail
       ) values (
-    NULL, 
-    'よくある質問', 
-    'よくある質問', 
-    '<div class=\"main\">\r\n	<p>お客様がプレイしているゲームタイトルをクリックしてください。</p>\r\n	<h3>ゲームタイトル一覧</h3>\r\n	<ul>\r\n		<li><a href=\"faq168/\">ファイナルファンタジーXIのよくある質問</a></li>\r\n		<li><a href=\"faq169/\">リネージュ2のよくある質問</a></li>\r\n		<li><a href=\"faq170/\">リネージュのよくある質問</a></li>\r\n		<li><a href=\"faq171/\">ラグナロクオンラインのよくある質問</a></li>\r\n		<li><a href=\"faq177/\">ファンタシースターユニバースのよくある質問</a></li>\r\n		<li><a href=\"faq178/\">信長の野望オンラインのよくある質問</a></li>\r\n		<li><a href=\"faq179/\">マビノギのよくある質問</a></li>\r\n		<li><a href=\"faq190/\">テイルズウィーバーのよくある質問</a></li>\r\n		<li><a href=\"faq195/\">レッドストーンのよくある質問</a></li>\r\n	</ul>\r\n	<p class=\"page_top\"><a href=\"./info-7.html#top\">▲このページのトップへ</a></p>\r\n	<p class=\"page_top\"><a href=\"javascript:history.back()\">前のページへ戻る</a></p>\r\n</div>', 
-    '1', 
-    '9', 
-    '7', 
-    'R2MT_GM_ID' 
-    )
-Duplicate entry '7' for key 'romaji'
-insert into `information_page` (
-    `pID`, 
-    `navbar_title`, 
-    `heading_title`, 
-    `text_information`, 
-    `status`, 
-    `sort_id`, 
-    `romaji`, 
-    `site_id` 
-      ) values (
-    NULL, 
-    'トップページ', 
-    'トップページ', 
-    '<div id=\"information\">\r\n	<p>\r\n		数多くのオンラインショップの中から<strong>RMTゲームマネー</strong>にご来店いただき、誠にありがとうございます。<br>\r\n		RMTゲームマネーは株式会社iimyが運営するオンラインゲーム通貨の売買(RMT)サイトです。左メニューからプレイされているゲームタイトルをクリックしてください。<br>\r\n		初めてご利用いただきますお客様は<a href=\"info-3.html\">はじめてのRMT</a>をご覧ください。<br>\r\n	</p>\r\n</div>\r\n<div class=\"box\">\r\n	<h3>FF11 RMTについて</h3>\r\n	<div class=\"sub_menu\">\r\n		<img src=\"images/design/oc/content_buy.jpg\" alt=\"FF11のギル販売\" width=\"432\" height=\"60\">\r\n		<p>\r\n			<strong>FF11</strong>のオンラインゲーム通貨ギルを購入(<em>RMT</em>)できます。<br>\r\n			1口(10万ギル)から激安販売しております。\r\n		</p>\r\n		<img src=\"images/design/oc/redarrow.gif\" alt=\"\" width=\"35\" height=\"11\"><a href=\"rmt/c-168_172.html\">FF11の販売価格表</a>\r\n		<img src=\"images/design/oc/redarrow.gif\" alt=\"\" width=\"35\" height=\"11\"><a href=\"info-13.html\">FF11のRMT 購入ガイド</a>\r\n	</div>\r\n	<div class=\"sub_menu\">\r\n		<img src=\"images/design/oc/content_sell.jpg\" alt=\"FF11のギル買取\" width=\"432\" height=\"60\">\r\n		<p>\r\n			<strong>FF11</strong>解約等により不要になったギルを買取(<em>RMT</em>)しております。<br>\r\n			10口(100万ギル)から買取しております。<br>\r\n			ギルの高価買取ただいま実施中!\r\n		</p>\r\n		<img src=\"images/design/oc/redarrow.gif\" alt=\"\" width=\"35\" height=\"11\"><a href=\"rmt/c-168_173.html\">FF11の買取価格表</a>\r\n		<img src=\"images/design/oc/redarrow.gif\" alt=\"\" width=\"35\" height=\"11\"><a href=\"info-14.html\">FF11のRMT 買取ガイド</a>\r\n	</div>\r\n	<div class=\"sub_menu\">\r\n		<img src=\"images/design/oc/content_wp.jpg\" alt=\"FF11のワールドパス発行\" width=\"432\" height=\"60\">\r\n		<p>ファイナルファンタジー11のワールドパス(数字10桁)を代行発行いたします。<br>\r\n		このワールドパスがあれば、お友達のいるワールドを指定した上でキャラクターを作成することができ、一緒にFF11を楽しむことができます。</p>\r\n		<img src=\"images/design/oc/redarrow.gif\" alt=\"\" width=\"35\" height=\"11\"><a href=\"rmt/c-168_174.html\">FF11のワールドパス発行</a>\r\n	</div>\r\n	<h3>FF11 RMTのお知らせ</h3>\r\n	<ul>\r\n		<li>お支払い方法については<a href=\"info-8.html\">クレジットカードについて</a>または<a href=\"info-9.html\">銀行振込について</a>をお読みください。</li>\r\n		<li>携帯電話メールアドレスにて、FF11のギルをご注文のお客様は<a href=\"info-15.html\">携帯電話の設定方法</a>をお読みください。</li>\r\n		<li>振り込みしたのにFF11のギルが届かない場合は<a href=\"latest_news.php\">入金者不明のお知らせ</a>をご確認ください。</li>\r\n	</ul>\r\n	<p class=\"page_top\"><a href=\"#top\">▲このページのトップへ</a></p>\r\n</div>', 
-    '0', 
-    '0', 
-    '11', 
-    'R2MT_GM_ID' 
-    )
-Duplicate entry '11' for key 'romaji'
-insert into `information_page` (
-    `pID`, 
-    `navbar_title`, 
-    `heading_title`, 
-    `text_information`, 
-    `status`, 
-    `sort_id`, 
-    `romaji`, 
-    `site_id` 
-      ) values (
-    NULL, 
-    'アフィリエイトプログラム 利用規約', 
-    'アフィリエイトプログラム 利用規約', 
-    'このページのコンテンツは管理画面から入力を行うことができます。', 
-    '0', 
-    '0', 
-    '29', 
-    'R2MT_GM_ID' 
-    )
-Duplicate entry '29' for key 'romaji'
-insert into `information_page` (
-    `pID`, 
-    `navbar_title`, 
-    `heading_title`, 
-    `text_information`, 
-    `status`, 
-    `sort_id`, 
-    `romaji`, 
-    `site_id` 
-      ) values (
-    NULL, 
-    'RMTの用語説明', 
-    '用語説明について', 
-    '<h3>RMTの用語説明</h3>\r\n<div class=\"sub_menu\">\r\n	<p>当サイトで用いているRMT用語を説明します。</p>\r\n	<dl>\r\n		<dt><em>FF11、FFXI</em></dt>\r\n		<dd>FINAL FANTASY XIの略称</dd>\r\n		<dt>リネ、リネ2</dt>\r\n		<dd>リネージュおよびリネージュ2の略称</dd>\r\n		<dt>RO</dt>\r\n		<dd>ラグナロクオンラインの略称</dd>\r\n		<dt>TW</dt>\r\n		<dd>テイルズウィーバーの略称</dd>\r\n		<dt>ギル</dt>\r\n		<dd>FF11のゲーム通貨</dd>\r\n		<dt>アデナ</dt>\r\n		<dd>リネージュおよびリネージュ2のゲーム通貨</dd>\r\n		<dt>ゼニー</dt>\r\n		<dd>ラグナロクオンラインのゲーム通貨</dd>\r\n		<dt>Seed</dt>\r\n		<dd>テイルズウィーバーのゲーム通貨</dd>\r\n		<dt>アカウント</dt>\r\n		<dd>オンラインゲームでゲームサーバにログインするために必要なID</dd>\r\n		<dt>ワールドパス</dt>\r\n		<dd>FF11において、ワールドを指定した上でキャラクターを作成することができるパス</dd>\r\n		<dt><em>RMT</em></dt>\r\n		<dd>(リアルマネートレード)ゲーム内アイテムまたは通貨の現金取引</dd>\r\n		<dt>トレード</dt>\r\n		<dd>プレイヤーとプレイヤーの間でアイテムや通貨を受け渡す行為</dd>\r\n		<dt>バザー・露天</dt>\r\n		<dd>プレイヤー自身が店主となり、手持ちのアイテムを販売する行為</dd>\r\n		<dt>ポスト宅配</dt>\r\n		<dd>FF11において、ゲーム内の宅配便を用いてお届けする行為</dd>\r\n		<dt>注文受付案内</dt>\r\n		<dd>ご注文を受け付けたことをお客様へお知らせする自動送信メール</dd>\r\n		<dt>発送完了メール</dt>\r\n		<dd>商品の発送が完了したことをお知らせするメール</dd>\r\n		<dt>受領確認</dt>\r\n		<dd>アイテムや通貨の受け取り確認</dd>\r\n	</dl>\r\n<p class=\"page_top\"><a href=\"javascript:history.back()\">前のページへ戻る</a></p>\r\n</div>', 
-    '1', 
-    '5', 
-    '10', 
-    'R2MT_GM_ID' 
-    )
-Duplicate entry '10' for key 'romaji'
-insert into `information_page` (
-    `pID`, 
-    `navbar_title`, 
-    `heading_title`, 
-    `text_information`, 
-    `status`, 
-    `sort_id`, 
-    `romaji`, 
-    `site_id` 
-      ) values (
-    NULL, 
-    '特定商取引に基づく表記', 
-    '特定商取引に基づく表記', 
-    '<table class=\"information_table\">\r\n	<tr valign=\"top\">\r\n		<td bgcolor=\"#eeeeee\"><b>社名</b></td>\r\n		<td>株式会社iimy</td>\r\n	</tr>\r\n	<tr valign=\"top\">\r\n		<td bgcolor=\"#eeeeee\"><b>所在地</b></td>\r\n		<td>〒761-0445<br>香川県高松市西植田町2925番地<br>087-862-1173</td>\r\n	</tr>\r\n	<tr valign=\"top\">\r\n		<td bgcolor=\"#eeeeee\"><b>代表取締役</b></td>\r\n		<td>飯間 幸緒</td>\r\n	</tr>\r\n	<tr valign=\"top\">\r\n		<td bgcolor=\"#eeeeee\"><b>ショップ名</b></td>\r\n		<td>RMTワールドマネー  <br><a href=\"http://rmt.worldmoney.jp/\">http://rmt.worldmoney.jp/</a></td>\r\n	</tr>\r\n	<tr valign=\"top\">\r\n		<td bgcolor=\"#eeeeee\"><b>販売価格</b></td>\r\n		<td>各商品ページに記載。表示価格は税込みとなります。</td>\r\n	</tr>\r\n	<tr valign=\"top\">\r\n		<td bgcolor=\"#eeeeee\"><b>発送方法<br>送料</b></td>\r\n		<td>商品の発送は、オンライン上で行いますので、送料はいただきません。</td>\r\n	</tr>\r\n	<tr valign=\"top\">\r\n		<td bgcolor=\"#eeeeee\"><b>商品代金以外にかかる費用</b></td>\r\n		<td>振込手数料はお客様ご負担となります。<br>支払い方法にコンビニ決済を選んだ場合、手数料200円が加算されます。 </td>\r\n	</tr>\r\n	<tr valign=\"top\">\r\n		<td bgcolor=\"#eeeeee\"><b>ご注文の有効期限</b></td>\r\n		<td>ご注文日から7日</td>\r\n	</tr>\r\n	<tr valign=\"top\">\r\n		<td bgcolor=\"#eeeeee\"><b>発送時期</b></td>\r\n		<td>ご入金確認後、お客様ご指定の日時にお届けいたします。</td>\r\n	</tr>\r\n	<tr valign=\"top\">\r\n		<td bgcolor=\"#eeeeee\"><b>返品期限</b></td>\r\n		<td>商品発送後の返品は、劣化欠損のない商品の特質上、お受けできません。</td>\r\n	</tr>\r\n	<tr valign=\"top\">\r\n		<td bgcolor=\"#eeeeee\"><b>お支払い方法</b></td>\r\n		<td>\r\n			銀行振込・クレジットカード決済<br>\r\n			コンビニ決済\r\n			<ul>\r\n				<li><a href=\"https://www.digitalcheck.jp/settle/info/payment_seven.html\" target=\"_blank\">セブンイレブン</a></li>\r\n				<li><a href=\"https://www.digitalcheck.jp/settle/info/payment_loppi.html\" target=\"_blank\">ローソン・セイコーマート</a></li>\r\n				<li><a href=\"https://www.digitalcheck.jp/settle/info/payment_fami.html\" target=\"_blank\">ファミリーマート</a></li>\r\n				<li><a href=\"https://www.digitalcheck.jp/settle/info/payment_conv.html\" target=\"_blank\">オンライン伝票</a></li>\r\n				<li><a href=\"http://www.digitalcheck.co.jp/2006html/acd_reg.htm\" target=\"_blank\">am/pm</a></li>\r\n				<li><a href=\"http://www.digitalcheck.co.jp/2006html/acd_getin.htm\" target=\"_blank\">デイリーヤマザキ</a></li>\r\n			</ul>\r\n		</td>\r\n</table>', 
-    '1', 
-    '1', 
-    '1', 
-    'R2MT_WM_ID' 
-    )
-Duplicate entry '1' for key 'romaji'
-insert into `information_page` (
-    `pID`, 
-    `navbar_title`, 
-    `heading_title`, 
-    `text_information`, 
-    `status`, 
-    `sort_id`, 
-    `romaji`, 
-    `site_id` 
-      ) values (
-    NULL, 
-    'プライバシーポリシー', 
-    'プライバシーポリシー', 
-    '<b>個人情報保護方針</b><br>\r\n<table class=\"information_table\" width=\"500\" cellspacing=\"0\" cellpadding=\"0\">\r\n	<tr>\r\n		<td valign=\"top\">\r\n			株式会社iimy(以下「当社」といいます)は、主たる事業である通信販売事業その他運営事業を通して多くの個人情報を取り扱っており、お客様情報(キャラクター名、氏名、クレジットカード情報など、その他の特定の個人を識別することができる情報)を始めとするすべての個人情報を最も重要な情報であると認識しています。<br>\r\n			当社は、次の個人情報保護方針のもと、適切に個人情報を取り扱います。<br>\r\n			<li>個人情報保護に関する法令、国が定める指針その他の規範を遵守するとともに､社内規程を定め､これを遵守します。</li>\r\n                        <li>個人情報の取得にあたり、個人情報の利用目的を明確に定め、その利用目的の達成に必要な範囲内で利用します。また、適法かつ公正な手段により取得します。</li>\r\n                        <li>ご本人の同意を得ることなく、利用目的を超えて個人情報を利用いたしません。個人情報の利用にあたっては、利用期限及び利用者を特定し、管理することなどにより、目的外利用の防止策を講じます。</li>\r\n                        <li>法令等に定める場合、あらかじめご本人の同意を得ている場合又は業務を委託する場合などを除き、個人情報を第三者に提供、開示いたしません。</li>\r\n                        <li>当社が取得した個人情報は、漏洩、滅失、棄損などに対する防止及び是正措置を講じ､厳正な管理のもとで利用・保管します。万一事故発生時には、ご本人への影響の防止を最優先課題として速やかな対応を行います。</li>\r\n                        <li>個人情報の処理等を社外に委託する場合は､委託業者に対し､個人情報取り扱いに関する留意事項について契約を締結し、適切な管理、指導を行います。</li>\r\n                        <li>個人情報の開示・訂正・利用停止等のご請求、ご相談につきましては、適切かつ迅速に対応します。</li>\r\n                        <li>個人情報保護に関する社内規定を定め、継続的かつ発展的な改善を行います。</li><br><br>\r\n			制定　2009年4月1日<br><br>\r\n                        株式会社iimy<br>\r\n                        代表取締役　飯間 幸緒<br>\r\n		</td>\r\n	</tr>\r\n</table>\r\n<br>\r\n<b>プライバシーポリシー</b><br>\r\n<table class=\"information_table\" width=\"500\" cellspacing=\"0\" cellpadding=\"0\">\r\n	<tr>\r\n		<td valign=\"top\">\r\n                        <b>1. 個人情報の収集及びその利用目的について</b><br>\r\n                        RMTワールドマネーマネー(以下「当サイト」といいます)は、当サイトで収集される個人情報の独占的な所有者です。当サイトが収集する個人情報は、当サイトのサービスをご利用いただくために必要なものに限られています。また、お客様が当サイトを閲覧されるにあたり、個人情報をお聞きする必要のないサービスをご利用いただく場合には、お客様の個人情報をお聞きする事はございません。<br>\r\n                        <li>収集している個人情報について</li><br>\r\n                        当サイトにおける個人情報の収集は以下のような目的利用の範囲内において、電子メールアドレス、その他の連絡先(電話番号)、銀行の口座情報等の個人情報をお預かりすることがございます。これらの個人情報等は注文フォームを通してのみ収集致します。<br>\r\n                        <li>個人情報の利用目的について</li><br>\r\n                        サービス利用による本人識別における手続きとして利用します。<br>\r\n                        当サイトのサービス利用による、各種代金の決済のため利用します。<br><br>\r\n                        <b>2. 個人情報の開示および共有、訂正について</b><br>\r\n                        当サイトは原則的にお客様本人の同意なく、個人情報を第三者へ開示または共有することはいたしません。ただし、以下の場合は例外といたします。<br>\r\n                        <li>お客様から同意をいただいた場合</li>\r\n                        <li>お客様が当サイトが定める利用約款等に反する行動を取った場合</li>\r\n                        <li>法律に基づき裁判所、警察等の公的機関に開示を求められた場合</li>\r\n                        <li>その他関係法令で定めた手続きによる要請がある場合</li><br>\r\n                        例外事項であっても法律に基づく公的機関の要請によって情報を提供した場合、これを当事者に告知することを原則とします。法律上の根拠によってやむを得なく告知をできない場合があります。<br>\r\n                        当サイトが提供するサービスを通じて取り引きが成立した場合、双方当事者に取り引きに関係する情報を、必要な範囲内でのみ提供いたします。</dd>\r\n                        お客様ご本人から個人情報の開示を求められた場合は開示し、誤りがある場合は速やかに訂正いたします。ただし、以下のいずれかに該当する場合は、開示などの対応はできません。<br>\r\n                        <li>ご本人または第三者の生命、身体、財産その他の権利利益を害するおそれがある場合</li>\r\n                        <li>当サイト及び当社関連サイトの業務の適正な実施に著しい支障を及ぼすおそれがある場合</li>\r\n                        <li>法令に違反することとなる場合</li>\r\n                        <li>当社が第三者から開示権限を与えられることなく委託を受けお預かりした個人情報の場合</li><br><br>\r\n                        <b>3. クッキー(Cookie)情報について</b><br>\r\n                        当サイトでは、サービス機能拡充のため、クッキーを使用する場合があります。<br>\r\n                        クッキーとはウェブサイトの運営に利用されるサーバーコンピューターからお客様ご使用のブラウザーに送信される少量の情報で、お客様が使用しているコンピューターのハードディスクに蓄積される情報のことです。<br>\r\n                        当サイト上にセットしたクッキーは、お客様のコンピューターを識別することはできますが、お客様のご氏名、ご住所、お電話番号等を識別することはできません。<br>\r\n                        主に、マイページのようなお客様ごとにカスタマイズされたコンテンツを提供できるようにするために利用されます。お客様は当サイトから送られるクッキーをブラウザーの設定で拒否することが可能ですが、その場合、当サイトで提供されているサービスの一部を受けることができなくなります。<br>\r\n                        当サイトのショッピングカートは、利便性を考慮してクッキーを使用し、データーはお客様のコンピューターに保存されます。<br><br>\r\n                        <b>4. アクセスログについて</b><br>\r\n                        当サイトは、利用傾向の分析、サイトの管理、ユーザー動向の探知等の収集に関して環境変数(IPアドレス・HTTPリファラーなど)などをアクセスログ・ファイルとして記録します。これにより、当サイトは、訪問されたページ、ページ滞在時間、アクセス元サイト、ユーザーのページ移動遷移の傾向ならびにブラウザーおよびオペレーティング・システム等についての統計的なサイト利用情報を得ることができますが、個人特定情報の収集のために利用することはありません。<br> <br>\r\n                        <b>5. リンクサイトについて</b><br>\r\n                        当サイトはお客様に他の会社のウェブサイトまたは資料に対するリンクを提供することができます。この場合、外部サイトおよび資料に対して、当サイトでのプライバシー・ポリシーおよび利用規約は適用されません。<br>\r\n                        外部サイトから提供されるサービスや資料に対して保証や責任を負うことはありません。訪問先サイトのプライバシー・ポリシーおよび利用規約をご確認ください。<br><br>\r\n                        <b>6. 個人情報保護のための管理について</b><br>\r\n                        当サイトはお客様の個人情報を扱う上で個人情報が紛失、盗難、漏洩、変造または棄損されないよう、安全確保のために以下のような対策を行っております。<br>\r\n                        <li>ハッキングやコンピューターウイルス、不正アクセスなどによるお客様の個人情報の流出や棄損を防ぐため、適切なセキュリティ対策の実施に努めています。個人情報は、一般の利用者がアクセスできない安全な環境下に保管しています。 </li>\r\n                        <li>個人情報の棄損に備え、資料のバックアップを随時行い、最新のワクチンプログラムを利用することでお客様の個人情報や資料の漏洩や損傷を防止しています。</li>\r\n                        <li>その他システム的に安全性を確保するために可能なあらゆる技術的な処置を実施する努力を行っております。</li><br>\r\n                        当サイトはお客様個人の誤りや基本的なインターネットの利用によって起こりうる個人情報流出に対しての責任は負いません。<br><br>\r\n                        <b>7. 利用者の義務について</b><br>\r\n                        お客様の最新の個人情報を正確に入力し、事故予防を行ってください。お客様が入力した不正確な情報によって発生する事故の責任はお客様本人にあります。<br>\r\n                        お客様は個人情報保護を受ける権利と共に自らを保護して他人の情報を侵害しない義務も発生します。客様本人の個人情報が流出されないように注意を払い、掲示物を含んだ他人の個人情報を棄損しないように留意してください。もしこのような責任を果たすことができず、他人の情報および尊厳性を棄損した場合には法律によって処罰されることがあります。<br><br>\r\n                        <b>8. 個人情報取り扱いに関するご質問</b><br>\r\n                        プライバシー・ポリシーについて、ご質問やご意見がございましたら、お問合せフォームよりお願いいたします。<br><br>\r\n                        <b>9. プライバシー・ポリシーの改訂について</b><br>\r\n                        今後、当サイトのプライバシー・ポリシーの全部または一部の内容を追加、削除および修正することがあります。重要な改訂がある場合には、当サイトのウェブページ上にてわかりやすい方法で公示いたします。 また、当サイトが収集した時点の目的とは異なった目的で個人特定情報を使用しようとする場合、事前に電子メールにてお客様にご連絡いたします。お客様は、当サイトが異なった方法でお客様の情報の使用して良いかどうかについて選択権を有します。<br>\r\n		</td>\r\n	</tr>\r\n</table>\r\n<br>', 
-    '1', 
-    '10', 
-    '4', 
-    'R2MT_WM_ID' 
-    )
-Duplicate entry '4' for key 'romaji'
-insert into `information_page` (
-    `pID`, 
-    `navbar_title`, 
-    `heading_title`, 
-    `text_information`, 
-    `status`, 
-    `sort_id`, 
-    `romaji`, 
-    `site_id` 
-      ) values (
-    NULL, 
-    '会社概要', 
-    '会社概要', 
-    '<table class=\"information_table\">\r\n	<tr>\r\n		<td valign=\"top\">\r\n			<img class=\"middle\" src=\"images/company.jpg\" width=\"110\" height=\"150\" alt=\"\">\r\n		</td>\r\n		<td valign=\"top\">\r\n株式会社iimyは2004年の設立以来、長年のソフトウェア開発やITのアウトソーシング事業で培った専門ノウハウを活かし、\r\nITのスペシャリストとしてオンラインゲーム関連商品の販売や買取を中心に、幅広く事業展開しております。<br>\r\n\r\nまた、事業開始当初より、RMT市場の健全化を図ることに尽力し、個人情報の取り扱いに対しても早期から積極的に取り組んでおります。<br>\r\nオンラインゲーム通貨売買(RMT)を通して、多数のお客様に快適なオンラインゲーム ライフを送っていただけるよう全力で取り組むと共に、\r\nこれからもお客様に最も支持される企業として、社員一同、常に向上心を持ち、オンライン事業を中心とした新たな事業展開や、\r\nお客様に対してのサービス向上に努めさせていただきます。<br>\r\n\r\n株式会社iimyは時代の寵児となるべく、個々の能力を日々高め、お客様に最大限のご満足を提供できるよう、\r\nお客様の立場で物事を考え、行動し、お客様と共に成長しております。<br>\r\n\r\n株式会社iimyは、お客様のニーズを的確に捉え、あらゆる側面で限りない挑戦を続けています。 <br>\r\n		</td>\r\n	</tr>\r\n</table>\r\n<br>\r\n<table class=\"information_table\">\r\n	<tr valign=\"top\">\r\n		<td bgcolor=\"#eeeeee\"><b>社名</b></td>\r\n		<td>株式会社iimy</td>\r\n	</tr>\r\n	<tr valign=\"top\">\r\n		<td bgcolor=\"#eeeeee\"><b>ショップ名</b></td>\r\n		<td>RMTワールドマネー</td>\r\n	</tr>\r\n	<tr valign=\"top\">\r\n		<td bgcolor=\"#eeeeee\"><b>設立</b></td>\r\n		<td>2004年11月25日</td>\r\n	</tr>\r\n	<tr valign=\"top\">\r\n		<td bgcolor=\"#eeeeee\"><b>主な事業内容</b></td>\r\n		<td>RMTワールドマネーの運営<br>オンラインゲーム関連商品の売買</td>\r\n	</tr>\r\n	<tr valign=\"top\">\r\n		<td bgcolor=\"#eeeeee\"><b>代表取締役</b></td>\r\n		<td>飯間 幸緒</td>\r\n	</tr>\r\n	<tr valign=\"top\">\r\n		<td bgcolor=\"#eeeeee\"><b>所在地</b></td>\r\n		<td>〒761-0445<br>香川県高松市西植田町2925番地</td>\r\n	</tr>\r\n	<tr valign=\"top\">\r\n		<td bgcolor=\"#eeeeee\"><b>電話/FAX</b></td>\r\n		<td>087-862-1173</td>\r\n	</tr>\r\n	<tr valign=\"top\">\r\n		<td bgcolor=\"#eeeeee\"><b>お問い合わせ</b></td>\r\n		<td>\r\n			<script type=\"text/javascript\" src=\"js/emailProtector.js\"></script>\r\n			<script>decrypt_and_echo(0)</script><noscript><a href=\"contact_us.php\">お問い合わせはコチラ</a></noscript><br>\r\n			365日24時間受付<br>			<span class=\"redtext\">※</span> ご返答は、営業時間内に行います。\r\n		</td>\r\n	</tr>\r\n	<tr valign=\"top\">\r\n		<td bgcolor=\"#eeeeee\"><b>URL</b></td>\r\n		<td><a href=\"http://www.iimy.jp/\" target=\"blank\">http://www.iimy.jp/</a></td>\r\n	</tr>\r\n	<tr valign=\"top\">\r\n		<td bgcolor=\"#eeeeee\"><b>運営サイト紹介</b></td>\r\n		<td><a href=\"http://www.iimy.co.jp/\" target=\"blank\">RMTジャックポット</a><br>\r\n		    <a href=\"http://www.gamemoney.cc/\" target=\"blank\">RMTゲームマネー</a><br>\r\n		    <a href=\"http://37109.jp/\" target=\"blank\">みな得クーポン</a></td>\r\n	</tr>\r\n</table>', 
-    '1', 
-    '8', 
-    '25', 
-    'R2MT_WM_ID' 
-    )
-Duplicate entry '25' for key 'romaji'
-insert into `information_page` (
-    `pID`, 
-    `navbar_title`, 
-    `heading_title`, 
-    `text_information`, 
-    `status`, 
-    `sort_id`, 
-    `romaji`, 
-    `site_id` 
-      ) values (
-    NULL, 
-    'ご利用方法', 
-    'ご利用方法', 
-    '<table class=\"information_table\" width=\"500\" cellspacing=\"0\" cellpadding=\"0\">\r\n	<tr>\r\n		<td valign=\"top\">\r\n<h3 class=\"bold\"><a name=\"buy\">購入方法</a></h3>\r\n<div class=\"underline\"> </div>\r\n<br>\r\n<b>1　[希望の商品をカートに入れる] </b><br>\r\n購入を希望される商品をお選びいただいたら数量および取引方法を選択し[カートに入れる]ボタンをクリックします。<br>\r\n<span class=\"red\">※</span> カートとは、ご希望の商品を一時的に入れておくお買い物かごのことです。カートに入れた段階では、ご注文は確定いたしておりません。カート内の商品は数量の変更やご注文の取り消しが可能です。<br>\r\n<div class=\"dot\"> </div>\r\n<b>2　[レジへ進む]</b><br>\r\nカート内の商品名と数量をご確認のうえ、お買物を完了されるお客様は[レジへ進む]ボタンをクリックします。お買物を続けるお客様は[買物を続ける]ボタンをクリックし再度商品をお選びください。<br>\r\n<span class=\"red\">※</span> ※数量の変更やご注文取り消しの際は必ず[カートを更新]ボタンをクリックしてください。<br>\r\n<div class=\"dot\"> </div>\r\n<b>3　[ログイン]  </b><br>\r\n既にアカウントをお持ちのお客様は、メールアドレス(ID)とパスワードを入力し[Login]ボタンをクリックし、<b>5</b>へお進みください。アカウントをお持ちでないお客様は[次へ進む]ボタンをクリックします。<br>\r\n<div class=\"dot\"> </div>\r\n<b>4　[会員登録]  <span class=\"red\">※</span> 会員登録をしなくても注文はできます</b><br>\r\nお客様のお名前とメールアドレスを入力後、｢会員登録をしない｣を選択されたお客様はご利用規約に同意のうえ[次へ進む]ボタンをクリックします。<br>\r\n｢会員登録をする｣を選択されたお客様は、半角英数5文字以上からなるご希望のパスワードを入力し、ご利用規約に同意のうえ[次へ進む]ボタンをクリックします。<br>\r\n<div class=\"dot\"> </div>\r\n<b>5　[キャラクター情報の入力]</b><br>\r\nお客様の、ゲーム内のキャラクター名をご入力していただき[次へ進む]ボタンをクリックします。<br>\r\n<span class=\"red\">※</span> 誤ったキャラクター名をご入力された場合は、お取り引きが出来ません。お間違いのないよう、ご入力ください。<br>\r\n<div class=\"dot\"> </div>\r\n<b>6　[取引日時]</b><br>\r\nお客様のご希望の取引日時を選択していただき[次へ進む]ボタンをクリックします。<br>\r\n<div class=\"dot\"> </div>\r\n<b>7　[支払い方法の選択]</b><br>\r\nお客様のご希望のお支払い方法を選択していただき[次へ進む]ボタンをクリックします。<br>\r\n<div class=\"dot\"> </div>\r\n<b>8　[注文内容の確認]</b><br>\r\nご注文内容をご確認の上、内容に誤りがなければ[注文する]ボタンをクリックします。<br>\r\n画面に『ご注文ありがとうございます。 ご注文の内容をお客様宛に自動送信いたしました』と表示されればご注文手続き完了です。<br><br>\r\n		</td>\r\n	</tr>\r\n</table>\r\n<br>\r\n<font color=red>クレジットカード情報入力画面ではYahoo!、Hotmail等のフリーメールアドレスが入力できません。ご契約のプロバイダーメールアドレス、または携帯電話メールアドレスをご入力ください。</font><br> \r\n<br>\r\n<hr>\r\n<br>\r\n<table class=\"information_table\" width=\"500\" cellspacing=\"0\" cellpadding=\"0\">\r\n	<tr>\r\n		<td valign=\"top\">\r\n<h3 class=\"bold\"><a name=\"sell\">売却方法</a></h3>\r\n<div class=\"underline\"> </div>\r\n<br>\r\n<b>1　[希望の商品をカートに入れる]</b><br>\r\n買取を希望される商品をお選びいただいたら数量および取引方法を選択し[カートに入れる]ボタンをクリックします。<br>\r\n<span class=\"red\">※</span> カートとは、ご希望の商品を一時的に入れておくお買い物かごのことです。カートに入れた段階では、ご注文は確定いたしておりません。カート内の商品は数量の変更やご注文の取り消しが可能です。<br>\r\n<div class=\"dot\"> </div>\r\n<b>2　[レジへ進む]</b><br>\r\nカート内の商品名と数量をご確認のうえ、お買物を完了されるお客様は[レジへ進む]ボタンをクリックします。お買物を続けるお客様は[買物を続ける]ボタンをクリックし再度商品をお選びください。<br>\r\n<span class=\"red\">※</span> カート内の商品名と数量をご確認のうえ、お買物を完了されるお客様は[レジへ進む]ボタンをクリックします。お買物を続けるお客様は[買物を続ける]ボタンをクリックし再度商品をお選びください。<br>\r\n<div class=\"dot\"> </div>\r\n<b>3　[ログイン] </b><br>\r\n既にアカウントをお持ちのお客様は、メールアドレス(ID)とパスワードを入力し[Login]ボタンをクリックし、<b>5</b>へお進みください。アカウントをお持ちでないお客様は[次へ進む]ボタンをクリックします。<br>\r\n<div class=\"dot\"> </div>\r\n<b>4　[会員登録]  <span class=\"red\">※</span> 会員登録をしなくても注文はできます</b><br>\r\n｢会員登録をする｣を選択されたお客様は、半角英数5文字以上からなるご希望のパスワードを入力し、ご利用規約に同意のうえ[次へ進む]ボタンをクリックします。<br>\r\n｢会員登録をする｣を選択されたお客様は、半角英数5文字以上からなるご希望のパスワードを入力し、ご利用規約に同意のうえ[次へ進む]ボタンをクリックします。<br>\r\n<div class=\"dot\"> </div>\r\n<b>5　[キャラクター情報の入力]</b><br>\r\nお客様の、ゲーム内のキャラクター名をご入力していただき[次へ進む]ボタンをクリックします。<br>\r\n<span class=\"red\">※</span> 誤ったキャラクター名をご入力された場合は、お取り引きが出来ません。お間違いのないよう、ご入力ください。<br>\r\n<div class=\"dot\"> </div>\r\n<b>6　[取引日時]</b><br>\r\nご希望の取引日時を選択していただき[次へ進む]ボタンをクリックします。<br>\r\n<div class=\"dot\"> </div>\r\n<b>7　[お支払い方法]</b><br>\r\n振込先口座情報をご入力していただき[次へ進む]ボタンをクリックします。<br>\r\n<div class=\"dot\"> </div>\r\n<b>8　[注文内容の確認]</b><br>\r\nご注文内容を再度確認されたうえ、[注文する]ボタンをクリックします。<br>\r\n画面に『ご注文ありがとうございます。 ご注文の内容をお客様宛に自動送信いたしました』と表示されればご注文手続き完了です。<br>\r\n<div class=\"dot\"> </div>\r\n<b>9　[振込手続き]</b><br>\r\n当社にて受領確認がとれましたら代金お支払い手続きに入ります。<br>\r\n<span class=\"red\">※</span> お取引完了後24時間以内にお支払い手続きを行います。<br>\r\n		</td>\r\n	</tr>\r\n</table>\r\n<br>\r\n<font color=red>お客様の元へ【会員登録完了案内】や【注文受付案内】が届かない場合は、メールアドレスの入力間違い、もしくはネットワークトラブルの可能性がございます。<br>\r\n自動返信メールの届かないお客様は、お手数ではございますが、<a href=\"/contact_us.php\" id=\"a_font_12\">お問い合わせ</a>フォームより、注文番号・お客さま情報・再送先メールアドレスをご記入いただき、件名を【再送希望】として送信をお願いいたします。</b></font>', 
-    '1', 
-    '3', 
-    '26', 
-    'R2MT_WM_ID' 
-    )
-Duplicate entry '26' for key 'romaji'
-insert into `information_page` (
-    `pID`, 
-    `navbar_title`, 
-    `heading_title`, 
-    `text_information`, 
-    `status`, 
-    `sort_id`, 
-    `romaji`, 
-    `site_id` 
-      ) values (
-    NULL, 
-    'ご注文の流れ', 
-    'ご注文の流れ', 
-    '<table class=\"information_table\" width=\"500\" cellspacing=\"0\" cellpadding=\"0\">\r\n	<tr>\r\n		<td valign=\"top\">\r\n<b>銀行振込による購入手続きの流れ</b>\r\n<ol>\r\n<li>当サイトのご注文フォームより、ご希望のゲーム通貨・サーバー・数量を選択します。</li>\r\n<li>利用規約に同意の上、必要事項をご入力し、ご注文を確定します。</li>\r\n<li>電子メールにてご注文内容を自動送信いたします。</li>\r\n<li>ご注文内容をご確認いただき、お支払いを完了します。</li>\r\n<li>お客様へご入金確認メールを送信いたします。</li>\r\n<li>お客様ご指定の日時にゲーム通貨等の商品のお取引を行います。</li>\r\n</ol>\r\n		</td>\r\n	</tr>\r\n</table>\r\n<table class=\"information_table\" width=\"500\" cellspacing=\"0\" cellpadding=\"0\">\r\n	<tr>\r\n		<td valign=\"top\">\r\n<b>クレジットカード決済による購入手続きの流れ</b>\r\n<ol>\r\n<li>当サイトのご注文フォームより、ご希望のゲーム通貨・サーバー・数量を選択します。</li>\r\n<li>利用規約に同意の上、必要事項をご入力し、ご注文を確定してください。</li>\r\n<li>注文完了後、クレジットカード決済画面が表示されます。</li>\r\n<li>カード情報をご入力いただき、決済を完了します。</li>\r\n<li>決済完了後、電子メールにてご注文内容を自動送信いたします。</li>\r\n<li>審査完了後、お客様へ決済確認メールを送信いたします。</li>\r\n<li>お客様ご指定の日時にゲーム通貨等の商品のお取引を行います。</li>\r\n</ol>\r\n		</td>\r\n	</tr>\r\n</table>\r\n<br>\r\n<font color=red>※クレジットカード情報入力画面ではYahoo!、Hotmail等のフリーメールアドレスでのご注文は出来ません。ご契約のプロバイダーメールアドレス、または携帯電話メールアドレスをご入力ください。</font> <br><br><br>\r\n<table class=\"information_table\" width=\"500\" cellspacing=\"0\" cellpadding=\"0\">\r\n	<tr>\r\n		<td valign=\"top\">\r\n<b>買取手続きの流れ</b>\r\n<ol>\r\n<li>当サイトのご注文フォームより、ご希望のゲーム通貨・サーバー・数量を選択します。</li>\r\n<li>利用規約に同意の上、必要事項をご入力し、ご注文を確定します。</li>\r\n<li>電子メールにてご注文内容を自動送信いたします。</li>\r\n<li>ご注文内容をご確認いただき、ご指定の日時にお取引を完了します。</li>\r\n<li>お客様の口座へお振り込みをいたします。</li>\r\n<li>お客様へお支払い完了メールを送信いたします。</li>\r\n</ol>\r\n		</td>\r\n	</tr>\r\n</table>\r\n<br>\r\n\r\n<font color=red>お客様の元へ注文書が届かない場合、メールアドレス記入間違いもしくはネットワークトラブルの可能性がございます。注文完了の際の画面を印刷していただくようお願いします。<br>\r\n注文書の再送をご希望されるお客様は、<a href=\"/contact_us.php\" id=\"a_font_12\">お問い合わせ</a>フォームより、注文番号・お客さま情報・再送先メールアドレスをご記入いただき、件名を【再送希望】として送信をお願いいたします。</font>', 
-    '1', 
-    '2', 
-    '2', 
-    'R2MT_WM_ID' 
-    )
-Duplicate entry '2' for key 'romaji'
-insert into `information_page` (
-    `pID`, 
-    `navbar_title`, 
-    `heading_title`, 
-    `text_information`, 
-    `status`, 
-    `sort_id`, 
-    `romaji`, 
-    `site_id` 
-      ) values (
-    NULL, 
-    'よくある質問', 
-    'よくある質問', 
-    '<div id=\"qa_q\">\r\n	<h4>商品に関しての質問</h4>\r\n	<ul>\r\n		<li><a href=\"./info-7.html#q01\">商品の受け取り方を教えてくれませんか?</a></li>\r\n		<li><a href=\"./info-7.html#q02\">1個あたりのゲーム通貨はいくらですか?</a></li>\r\n		<li><a href=\"./info-7.html#q03\">トレード以外の方法での受け渡しはできますか?</a></li>\r\n		<li><a href=\"./info-7.html#q04\">サーバー間やゲーム間での通貨の交換はできますか?</a></li>\r\n		<li><a href=\"./info-7.html#q05\">新しいゲームタイトルを取り扱う予定はありますか?</a></li>\r\n		<li><a href=\"./info-7.html#q06\">アカウントやアイテムを取り扱う予定はありますか?</a></li>\r\n		</ul>\r\n	<h4>商品購入についての質問</h4>\r\n	<ul>\r\n		<li><a href=\"./info-7.html#q07\">商品の購入はどのようにすればよいですか?</a></li>\r\n		<li><a href=\"./info-7.html#q08\">携帯電話のメールアドレスで購入できますか?</a></li>\r\n		<li><a href=\"./info-7.html#q09\">フリーメールアドレスで購入できますか?</a></li>\r\n		<li><a href=\"./info-7.html#q10\">電話で注文はできますか?</a></li>\r\n		<li><a href=\"./info-7.html#q11\">大量に購入したいのですが、もう少し安くなりませんか?</a></li>\r\n		<li><a href=\"./info-7.html#q12\">記載された以上の通貨が欲しいのですが、購入できますか?</a></li>\r\n		<li><a href=\"./info-7.html#q13\">注文内容を間違えたのですが、どうすればよいですか?</a></li>\r\n		<li><a href=\"./info-7.html#q14\">振込金額を間違えてしまいましたが、どうすればよいですか?</a></li>\r\n		<li><a href=\"./info-7.html#q15\">注文のキャンセルはできますか?</a></li>\r\n		</ul>\r\n	<h4>商品売却についての質問</h4>\r\n	<ul>\r\n		<li><a href=\"./info-7.html#q16\">記載された以上の通貨を売りたいのですが可能ですか?</a></li>\r\n		<li><a href=\"./info-7.html#q17\">買取は振込手数料が引かれた金額が入金されるのですか?</a></li>\r\n		<li><a href=\"./info-7.html#q18\">商品を売りたいのですが、いつ入金してくれますか?</a></li>\r\n		<li><a href=\"./info-7.html#q19\">振込先口座を間違えて記載したのですが?</a></li>\r\n		</ul>\r\n	<h4>お支払いについての質問</h4>\r\n	<ul>\r\n		<li><a href=\"./info-7.html#q20\">支払い方法にはどのようなものがありますか?</a></li>\r\n		<li><a href=\"./info-7.html#q21\">消費税も払わないといけませんか?</a></li>\r\n		<li><a href=\"./info-7.html#q22\">領収書が欲しいのですが?</a></li>\r\n		<li><a href=\"./info-7.html#q23\">代金後払いで商品を先に受け取ることはできますか?</a></li>\r\n		<li><a href=\"./info-7.html#q24\">支払い方法を変更できますか?</a></li>\r\n		</ul>\r\n	<h4>銀行振込についての質問</h4>\r\n	<ul>\r\n		<li><a href=\"./info-7.html#q25\">どこの銀行から振り込めばよいですか?</a></li>\r\n		<li><a href=\"./info-7.html#q26\">振り込みたいのですが、振込先情報はどこに記載していますか?</a></li>\r\n		<li><a href=\"./info-7.html#q27\">振り込みをしても入金確認メールが届きませんが?</a></li>\r\n		</ul>\r\n	<h4>クレジットカード決済についての質問</h4>\r\n	<ul>\r\n		<li><a href=\"./info-7.html#q28\">使えないクレジットカードはありますか?</a></li>\r\n		<li><a href=\"./info-7.html#q29\">決済時の通貨は何になりますか?</a></li>\r\n		<li><a href=\"./info-7.html#q30\">分割払いは可能ですか?</a></li>\r\n		<li><a href=\"./info-7.html#q31\">カード明細へはどのような名目で記載されますか?</a></li>\r\n		<li><a href=\"./info-7.html#q32\">「決済失敗:そのメールアドレスは許可されていません」と表示されるのですが?</a></li>\r\n		<li><a href=\"./info-7.html#q33\">クレジットカード決済の請求日はいつですか?</a></li>\r\n		<li><a href=\"./info-7.html#q34\">クレジットカード決済に関する問い合わせ先はどこですか?</a></li>\r\n		</ul>\r\n	<h4>商品お届けについての質問</h4>\r\n	<ul>\r\n		<li><a href=\"./info-7.html#q35\">商品を受け取るまでにどのくらいの時間がかかりますか?</a></li>\r\n		<li><a href=\"./info-7.html#q36\">取引の時間になってもキャラクターが見つかりませんが?</a></li>\r\n		<li><a href=\"./info-7.html#q37\">取引日時を変更することはできますか?</a></li>\r\n		<li><a href=\"./info-7.html#q38\">銀行休業日でも、すぐに商品を届けて欲しいのですが?</a></li>\r\n        </ul>\r\n	<h4>ポイントについての質問</h4>\r\n	<ul>\r\n		<li><a href=\"./info-7.html#q39\">ポイントって何ですか?</a></li>\r\n		<li><a href=\"./info-7.html#q40\">ポイントはいつ付与されますか?</a></li>\r\n		<li><a href=\"./info-7.html#q41\">ポイントはすぐに使えますか?</a></li>\r\n		<li><a href=\"./info-7.html#q42\">複数のIDのポイントを統合してもらえますか?</a></li>\r\n		<li><a href=\"./info-7.html#q43\">注文完了後の使用ポイントの変更は可能ですか?</a></li>\r\n		<li><a href=\"./info-7.html#q44\">ポイントはどこで確認できますか?</a></li>\r\n		<li><a href=\"./info-7.html#q45\">以前購入した際のポイントが累積されていませが?</a></li>\r\n		<li><a href=\"./info-7.html#q46\">ポイントは換金できますか?</a></li>\r\n      </ul>\r\n	<h4>その他の質問</h4>\r\n	<ul>\r\n		<li><a href=\"./info-7.html#q47\">初めてRMTを利用するのですが大丈夫ですか?</a></li>\r\n		<li><a href=\"./info-7.html#q48\">注文をしたのですが、自動送信メールが届きませんが?</a></li>\r\n		<li><a href=\"./info-7.html#q49\">営業時間以外に注文することはできますか?</a></li>\r\n		<li><a href=\"./info-7.html#q50\">今日は営業していますか?</a></li>\r\n	</ul><br><br>\r\n<h3>商品に関しての質問に対してのRMTワールドマネーからの回答</h3>\r\n<div id=\"qa\">\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q01>商品の受け取り方を教えてくれませんか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	ゲームタイトルによりお届け方法が異なります。各商品の詳細ページをご確認ください。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q02>1個あたりのゲーム通貨はいくらですか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	ゲーム通貨の受け渡し量はゲームタイトルにより異なります。各商品の詳細ページをご確認ください。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q03>トレード以外の方法での受け渡しはできますか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	｢トレード(取引)｣｢バザー(露天)｣「郵送(ポスト宅配)」など、ご注文の際にご選択いただける以外の取引方法をご希望のお客様は、ご注文の際にコメント欄に記載いただくか、ご注文前に<a href=\"/contact_us.php\"><font color=red>サポートセンター</font></a>へお問い合わせください。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q04>サーバー間やゲーム間での通貨の交換はできますか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	サーバー間トレードやゲーム間トレードも行っております。お客様から商品を受領後、事前にお見積りいたしました内容で商品をお渡しいたします。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q05>新しいゲームタイトルを取り扱う予定はありますか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	お客様のご要望にお応えすべく、随時、新規取扱商品の市場調査を行っております。ご要望のゲームタイトル等ございましたら、お気軽に<a href=\"/contact_us.php\"><font color=red>サポートセンター</font></a>までお問い合わせください。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q06>アカウントやアイテムを取り扱う予定はありますか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	ご希望のゲームタイトルやアイテム名を<a href=\"/contact_us.php\"><font color=red>サポートセンター</font></a>までご連絡ください。市場調査を行い円滑に対応いたします。アカウントの売却をご希望の場合も、随時、<a href=\"/contact_us.php\"><font color=red>サポートセンター</font></a>でご相談を承っております。\r\n</p>\r\n</div>\r\n<p><a href=\"./info-7.html#top\">▲このページのトップへ</a></p>\r\n\r\n<h3>商品購入についての質問に対してのRMTワールドマネーからの回答</h3>\r\n<div id=\"qa\">\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q07>商品の購入はどのようにすればよいですか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a href=\"info-26.html#buy\"><font color=red>ゲーム通貨購入ガイド</font></a>や<a href=\"info-26.html#sell\"><font color=red>ゲーム通貨買取ガイド</font></a>を記載した<a href=\"info-26.html\"><font color=red>ご利用方法</font></a>の項目がございます。ご不明な点がございましたらお気軽に<a href=\"/contact_us.php\"><font color=red>サポートセンター</font></a>までお問い合わせください。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q08>携帯電話のメールアドレスで購入できますか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	携帯電話のメールアドレスからもご購入いただけます。ドメイン指定を有効にされている場合、弊社からのメールが受信が出来ない場合がございます。事前にドメイン指定を解除していただくか、弊社のドメイン名「worldmoney.jp」のご登録をお願いいたします。\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q09>フリーメールアドレスで購入できますか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	フリーメールからもご購入いただけます。HotmailやYahoo!等のフリーメールはサーバーが重く不着や遅延の生じる場合がございます。そのため、当サイトではプロバイダーメールでのご利用を推奨しております。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q10>電話で注文はできますか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	承っております。ご連絡の際は、番号の誤り等にお気を付けください。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q11>大量に購入したいのですが、もう少し安くなりませんか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	当サイトでは大口割引をご用意しております。そのため、ご購入される個数に応じて、お得にお買い求めできる仕組みとなっています。詳しくは各商品の詳細ページをご確認ください。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q12>記載された以上の通貨が欲しいのですが、購入できますか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	当サイトでは表示在庫以上の個数のご注文も承っております。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q13>注文内容を間違えたのですが、どうすればよいですか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	誤った項目(キャラクター名、サーバー名、取引日時等)を訂正の上、<a href=\"/contact_us.php\"><font color=red>サポートセンター</font></a>までご連絡ください。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q14>振込金額を間違えてしまいましたが、どうすればよいですか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	お支払金額よりも多く振り込んだ場合は、お振り込み頂いた金額分のゲーム通貨をお渡しするか、差額をご返金いたします。返金手続きの際に発生する振込手数料は、お客様のご負担となります。ご利用金額よりも少なく振り込んだ場合は、追加で差額の金額をお振り込みいただくか、差額を差し引いたゲーム通貨をお渡しいたします。差額を差し引いてお取り引きを行う場合、1個に満たない金額は、当サイトでご利用いただけますポイントに換算してお渡しします。<br>※ポイントサービスのご利用は、<a href=\"/create_account.php\"><font color=red>会員登録</font></a>を行っていただく必要がございます。\r\n</div>\r\n<p><a href=\"./info-7.html#top\">▲このページのトップへ</a></p>\r\n\r\n<h3>商品売却についての質問に対してのRMTワールドマネーからの回答</h3>\r\n<div id=\"qa\">\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q16>記載された以上の通貨を売りたいのですが可能ですか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a href=\"/contact_us.php\"><font color=red>サポートセンター</font></a>までお問い合わせください。折り返し、お見積りを提示します。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q17>買取は振込手数料が引かれた金額が入金されるのですか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	買取総額が5,000円未満の場合、事務手数料(168円)を差し引いた金額をお振り込みいたします。買取総額が5,000円以上の場合、手数料は弊社にて負担いたします。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q18>商品を売りたいのですが、いつ入金してくれますか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	お取り引き完了後、24時間以内に振込手続きを行います。15時までにお取り引きが完了した場合は、お客様ご指定の口座に当日中に着金するよう手続きを行います。ただし、15時前後にお取り引きが完了した場合や、その他業務の混雑状況等により、必ずしも保証するものではございません。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q19>振込先口座を間違えて記載したのですが?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	速やかに<a href=\"/contact_us.php\"><font color=red>サポートセンター</font></a>へお問い合わせください。振込手続き完了後にお問い合わせいただいた場合は、返金を確認後、事務手数料(168円)を差し引いた金額を、再指定いただいた振込先口座にお振り込みいたします。\r\n</p>\r\n</div>\r\n<p><a href=\"./info-7.html#top\">▲このページのトップへ</a></p>\r\n\r\n<h3>お支払いについての質問に対してのRMTワールドマネーからの回答</h3>\r\n<div id=\"qa\">\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q20>支払い方法にはどのようなものがありますか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	クレジットカード決済・銀行振込(前払い)がございます。取扱金融機関は｢イーバンク銀行｣｢ジャパンネット銀行｣「ゆうちょ銀行」「セブン銀行」となっております。クレジットカードは、すべてのブランドをご使用いただけます。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q21>消費税も払わないといけませんか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	商品は全て税込み価格となっております。振込手数料はお客様のご負担となります。</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q22>領収書が欲しいのですが?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	お振り込みの際に金融機関から発行される｢お振り込み控え｣やATMから出る｢明細書｣などが領収書としてお使いいただけます。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q23>代金後払いで商品を先に受け取ることはできますか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	トラブル防止のため、当サイトにてご入金を確認後のお取り引きとなります。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q24>支払い方法を変更できますか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	お支払い前の場合は変更が可能です。<a href=\"/contact_us.php\"><font color=red>サポートセンター</font></a>までご連絡ください。\r\n</p>\r\n</div>\r\n<p><a href=\"./info-7.html#top\">▲このページのトップへ</a></p>\r\n\r\n<h3>銀行振込についての質問に対してのRMTワールドマネーからの回答</h3>\r\n<div id=\"qa\">\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q25>どこの銀行から振り込めばよいですか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	日本国内全ての金融機関の窓口・ATMにてお振込手続きが可能です。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q26>振り込みたいのですが、振込先情報はどこに記載していますか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	当サイトには振込先情報は記載しておりません。振込先情報は、ご注文いただいた際の｢最終確認｣画面もしくは、ご注文後に送信する｢注文受付案内｣に記載しておりますのでそちらをご確認ください。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q27>振り込みをしても入金確認メールが届きませんが?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	お振込明細書を再度ご確認いただき、ご入力された口座情報に誤りが無いか、振込明細書を手元にご用意いただき、再度ご確認ください。<br>※お振り込みされた時間により、銀行休業日や営業時間の関係上、入金が翌営業日以降となる場合がございます。 詳しくは、ご利用の金融機関へお問い合わせください。\r\n</p>\r\n</div>\r\n<p><a href=\"./info-7.html#top\">▲このページのトップへ</a></p>\r\n\r\n<h3>クレジットカード決済についての質問に対してのRMTワールドマネーからの回答</h3>\r\n<div id=\"qa\">\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q28>使えないクレジットカードはありますか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	VISA・Masterなどの国内ブランドのクレジットカード及びJCB・アメリカンエキスプレス・ダイナースクラブなどのインターナショナルカード、全てのブランドのご利用が可能です。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q29>決済時の通貨は何になりますか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	VISA・Masterカードをご利用の場合は、｢日本円｣でのご請求となります。その他インターナショナルカードをご利用の場合は、｢米ドル｣に変換した金額でのご請求になります。その際、為替相場の変動および為替手数料などにより、ご請求金額は申込金額とは若干異なります。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q30>分割払いは可能ですか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	一括払いでのご請求となります。ただし、クレジットカード決済後、ご利用のクレジットカード会社へご連絡いただけますと、変更できる場合もございます。詳しくは、ご利用のカード会社へお問い合わせください。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q31>カード明細へはどのような名目で記載されますか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	ご利用のカード会社からの明細にはご請求名として「TELECOM CREDIT」と記載されます。ご利用のサービス名は記載されません。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q32>「決済失敗:そのメールアドレスは許可されていません」と表示されるのですが?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	クレジットカードの情報入力画面ではHotmail・Yahoo!等のフリーメールアドレスの入力ができません。ご契約のプロバイダーメールアドレス、または携帯電話のメールアドレスをご入力ください。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q33>クレジットカード決済の請求日はいつですか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	カード決済の場合、お客様へのご請求は、カード会社の締め日などにより異なります。ご利用のカード会社へお問い合わせください。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q34>クレジットカード決済に関する問い合わせ先はどこですか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	テレコムクレジット株式会社に決済業務を委託しております。下記がお問い合わせ先となります。\r\n</p><table class=\"infoBoxContents\" width=\"410\">\r\n	<tr><td>テレコムクレジット カスタマーセンター</td><td><a href=\"http://www.telecomcredit.co.jp/\" target=_blank>http://www.telecomcredit.co.jp</a></td></tr>\r\n	<tr><td>メールアドレス</td><td><a href=\"mailto:info@telecomcredit.co.jp\">info@telecomcredit.co.jp</a></td></tr>\r\n	<tr><td>電話番号</td><td>03-3457-9124(365日24時間対応)</td></tr>\r\n</table>\r\n</div>\r\n<p><a href=\"./info-7.html#top\">▲このページのトップへ</a></p>\r\n\r\n<h3>商品お届けについての質問に対してのRMTワールドマネーからの回答</h3>\r\n<div id=\"qa\">\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q35>商品を受け取るまでにどのくらいの時間がかかりますか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	お客様ご指定の日時にお届けいたします。なお、ご入金確認後のお届けとなりますので取引日時は余裕をもってご指定ください。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q36>取引の時間になってもキャラクターが見つかりませんが?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	商品はご入金確認後のお届けとなります。お振り込みされた時間によっては、入金確認が翌営業日以降となる場合がございます。詳しくはご利用の金融機関に確認ください。クレジットカード決済を選択されたお客様につきましては、お電話にてご本人様確認をさせていただく場合がございます。お取引日時になっても弊社キャラクターが現れない場合は、電子メールのご確認をお願いいたします。 \r\nお取引が大変込み合っている場合は、誠に申し訳ございませんが少々お時間をいただく場合がございます。またゲームサーバーのトラブル、ゲーム内の混雑などの理由にってはお届けが出来ない場合がございます。10分経過しても弊社キャラクターが現れない場合、電子メールの確認、または<a href=\"/contact_us.php\"><font color=red>サポートセンター</font></a>へお問い合わせください。 また、お申し込みの際に入力されたお名前と｢カード名義人｣｢お振込名義人｣様が完全に一致しない場合や、お届けするキャラクター名に誤りがあった場合、商品をお届けすることが出来ません。再度ご注文内容をご確認いただいても間違いがない場合、何らかのトラブルの可能性がございます。早急に<a href=\"/contact_us.php\"><font color=red>サポートセンター</font></a>へご連絡ください。</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q37>取引日時を変更することはできますか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	お届け日時を変更する際は<a href=\"/reorder.php\"><font color=red>再配達フォーム</font></a>よりご連絡ください。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q38>銀行休業日でも、すぐに商品を届けて欲しいのですが?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	お支払い方法をクレジットカード決済にご指定されることで、素早いお取り引きが可能です。また、また、ジャパンネット銀行口座間、イーバンク銀行口座間、セブン銀行口座間、郵貯インターネットサービスをご利用の場合もほぼリアルタイムでの入金の確認が可能なため、素早いお取り引きを行えます。<br>※ジャパンネット銀行口座をご利用希望のお客様は、コンビニエンスストアampmの@B∧NKからの現金振込み、もしくは三井住友銀行の本支店ATMからお振り込みいただくと、ほぼリアルタイムでご入金の確認が可能です。ただし、メンテナンス等により振り込めない時間帯もございますので、詳細をご確認の上お振り込みください。(※九州地区の@B∧NKではご利用いただけません。また一部@B∧NKが設置されていないampmがございます。)\r\n</p>\r\n</div>\r\n<p><a href=\"./info-7.html#top\">▲このページのトップへ</a></p>\r\n\r\n<h3>ポイントについての質問に対してのRMTワールドマネーからの回答</h3>\r\n<div id=\"qa\">\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q39>ポイントって何ですか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	ご購入金額の1%を当サイトでご利用いただけますポイントとして加算いたします。1ポイント1円として、当サイト内でのみご利用いただけます。<br>※ポイントサービスのご利用は、<a href=\"/create_account.php\"><font color=red>会員登録</font></a>を行っていただく必要がございます。</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q40>ポイントはいつ付与されますか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	お取引完了後、当サイトより送信する取引完了メール受信後に付与されます。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q41>ポイントはすぐに使えますか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	ポイントは当サイトでの次回お買い物の際にご使用いただけます。累積ポイントの中より、ご必要に応じたポイントをご使用いただけます。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q42>複数のIDのポイントを統合してもらえますか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	ポイントの合算は行っておりません。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q43>注文完了後の使用ポイントの変更は可能ですか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	ご注文後の使用ポイントの変更には応じかねます。ご注文の際にお間違いのないようご入力ください。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q44>ポイントはどこで確認できますか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a href=\"/login.php\"><font color=red>会員ページ</font></a>にログインしていただき、お客様情報をご確認ください。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q45>以前購入した際のポイントが累積されていませが?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	ポイントの管理は全て電子メールアドレスごとに管理しております。ご購入いただいたメールアドレス以外でご注文されますとポイントは累積されません。また、前回ご利用日から50日を経過しますと、ポイントが消滅いたします。消滅したポイントの復元はできません。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q46>ポイントは換金できますか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	ポイントは換金することができません。当サイトでご利用ください。\r\n</p>\r\n</div>\r\n<p><a href=\"./info-7.html#top\">▲このページのトップへ</a></p>\r\n\r\n<h3>その他の質問に対してのRMTワールドマネーからの回答</h3>\r\n<div id=\"qa\">\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q47>初めてRMTを利用するのですが大丈夫ですか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	ご安心ください。RMT初心者のお客様にも安心してお取り引きしていただける様、当社では素早く安全な取り引きを行なっております、何かご不安な点がございましたらお気軽に<a href=\"/contact_us.php\"><font color=red>サポートセンター</font></a>までお問い合わせください。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q48>注文をしたのですが、自動送信メールが届きませんが?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	本来ご注文完了後、1分程度で｢注文受付案内｣が自動送信メールにてお客様のメールアドレスに送信されます。10分程度経過しましても自動送信メールが届かない場合、メールアドレスの入力間違い、もしくはネットワークトラブルの可能性がございます。再送を希望されるお客様は、お手数ですはございますが<a href=\"/contact_us.php\"><font color=red>サポートセンター</font></a>宛てに、件名を“再送希望”として<注文番号><お客さま情報><再送先メールアドレス>をご記入いただいたメールをお送りください。また、メールアドレスの入力間違いなどで、メールを送信することができないお客様に関しましては｢注文商品｣を<a href=\"/latest_news.php\"><font color=red>お知らせ</font></a>に掲示する場合がございます。 お心当たりのあるお客様は、お手数ではございますが<正しいメールアドレス><注文番号><お客さま情報>を<a href=\"/contact_us.php\"><font color=red>サポートセンター</font></a>までお知らせください。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q49>営業時間以外に注文することはできますか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	お客様からのご注文は24時間承っております。入金確認やお問い合わせに関しましては、営業時間内に電子メールでご返信いたします。\r\n</p>\r\n<p>\r\n	<img src=\"./images/q.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	<a name=q50>今日は営業していますか?</a><br>\r\n	<img src=\"./images/a.gif\" alt=\"\" width=\"23\" height=\"15\">\r\n	当サイトは年中無休で運営しております。何らかの事情により休業する場合は、当サイトTOPページまたは、<a href=\"/latest_news.php\"><font color=red>お知らせ</font></a>にて告知いたします。\r\n</p>\r\n</div>\r\n<p><a href=\"./info-7.html#top\">▲このページのトップへ</a></p>\r\n<p><a href=\"javascript:history.back()\">前のページへ戻る</a></p>\r\n</div>', 
-    '1', 
-    '6', 
-    '7', 
-    'R2MT_WM_ID' 
-    )
-Duplicate entry '7' for key 'romaji'
-insert into `information_page` (
-    `pID`, 
-    `navbar_title`, 
-    `heading_title`, 
-    `text_information`, 
-    `status`, 
-    `sort_id`, 
-    `romaji`, 
-    `site_id` 
-      ) values (
-    NULL, 
-    'トップページ2', 
-    'トップページ2', 
-    '<h1 class=\"pageHeading\"><span class=\"game_im\">\r\n<img width=\"26\" height=\"26\" src=\"images/design/title_img08.gif\" alt=\"\"/>\r\n</span>\r\n<span class=\"game_t\">RMTワールドマネーのゲーム通貨 販売の特徴</span></h1>\r\n<div class=\"comment\">\r\n<p><span style=\"float:right;\"><img alt=\"\" src=\"images/design/box_middle_img02.gif\"/></span>\r\n<div class=\"service_text\">販売の特徴</div>\r\nVISAやMasterなど全てのクレジットカード決済、ジャパンネット銀行やイーバンク銀行などの銀行振込、ローソンやセブンイレブンなどでお支払いができるコンビニ決済(近日導入予定)などの様々な決済方法を導入しており、土・日曜日、祝日も即時ゲームマネーを激安価格で購入いただけます。<br>\r\nまた、充実した品揃えのゲームマネーはもちろんのこと、取引場所や取引方法も豊富にあり、お客様のアカウントに対し、安心で速やかなお取引を選択することができます。\r\n</p>\r\n<p>\r\n<div class=\"service_text\">買取の特徴</div>\r\nオンラインゲームの引退や解約、サーバー移動などの理由により不要となりましたゲームマネーやアイテム、アカウントをRMT業界最高水準の価格にて高価買取しております。\r\n</p></div>\r\n<h1 class=\"pageHeading\"><span class=\"game_im\">\r\n<img width=\"26\" height=\"26\" src=\"images/design/title_img08.gif\" alt=\"\"/>\r\n</span>\r\n<span class=\"game_t\">RMT(リアルマネートレード)とは</span></h1>\r\n<p class=\"comment\">\r\n<span style=\"float:left;\"><img align=\"left\" alt=\"\" src=\"images/design/box_middle_img04.gif\"/></span>\r\nReal Money Trade(リアルマネートレード)の略称。一部のマスメディアではアールエムティーと呼ぶ場合もあります。ネットゲーム内で得られた架空財産を現金で売り買いする行為の総称を指します。\r\n世界中のユーザーがネットワークを通じて同時にプレイするネットゲームにおいて、ゲーム内の通貨やアイテム、アカウントを現実世界の現金で取引する行為です。<br>\r\nゲーム達成の優劣が個人の技量よりも、単純な累積プレイ時間とキャラクターのレベル値、そして装備の特殊能力や高級消耗アイテムなどのゲーム内総資産量に左右されがちな特性をもつオンラインゲームにおいて活発です。<br>\r\nRMTが盛んに行われているジャンルは主にMMORPGやMORPGです。FF11やリネージュ2、ラグナロク、レッドストーン、AIONをはじめとする大人気MMORPGでは、膨大なプレイ時間とゲーム通貨がなければ、アップデートで随時追加されるオンラインゲーム内の豊富なコンテンツを十分に攻略できないシチュエーションが無数に存在します。ゲーム内の様々な場面でゲーム通貨やアイテムが必要であり、ゲームマネーが乏しく、効率の良いゲーム攻略が困難な場合は、当RMTサービスの通貨やアイテムを購入することにより、金策などのプレイ時間の短縮やオンラインゲームをプレイする充実を実感できます。<br>\r\nRMTの利用により効率的に遊ぶことができるため、ゲーム通貨を求めるプレイヤーの需要に沿う形で、近年RMT取引が活発に行われるようになりました。\r\nプレイヤーは、RMTワールドマネーでゲーム通貨を購入することにより、膨大な時間をかけてレベリングや狩り、クエストを行わずとも、プレイヤーに最適なゲーム内の武器や防具、 アイテムを購入できます。<br>\r\n<br>\r\nRMTワールドマネーは、多数のお客様に支持していただけるショッピングサイトを目指して日々進化し続けております。 \r\n</p>', 
-    '0', 
-    '0', 
-    '11', 
-    'R2MT_WM_ID' 
-    )
-Duplicate entry '11' for key 'romaji'
-insert into `information_page` (
-    `pID`, 
-    `navbar_title`, 
-    `heading_title`, 
-    `text_information`, 
-    `status`, 
-    `sort_id`, 
-    `romaji`, 
-    `site_id` 
-      ) values (
-    NULL, 
-    'アフィリエイトについて', 
-    'アフィリエイトについて', 
-    'このページのコンテンツは管理画面から入力を行うことができます。', 
-    '0', 
-    '0', 
-    '28', 
-    'R2MT_WM_ID' 
-    )
-Duplicate entry '28' for key 'romaji'
-insert into `information_page` (
-    `pID`, 
-    `navbar_title`, 
-    `heading_title`, 
-    `text_information`, 
-    `status`, 
-    `sort_id`, 
-    `romaji`, 
-    `site_id` 
-      ) values (
-    NULL, 
-    'アフィリエイトプログラム 利用規約', 
-    'アフィリエイトプログラム 利用規約', 
-    'このページのコンテンツは管理画面から入力を行うことができます。', 
-    '0', 
-    '0', 
-    '29', 
-    'R2MT_WM_ID' 
-    )
-Duplicate entry '29' for key 'romaji'
-insert into `information_page` (
-    `pID`, 
-    `navbar_title`, 
-    `heading_title`, 
-    `text_information`, 
-    `status`, 
-    `sort_id`, 
-    `romaji`, 
-    `site_id` 
-      ) values (
-    NULL, 
-    'トップページ1', 
-    'トップページ1', 
-    '<h1 class=\"pageHeading\">\r\n<span class=\"game_im\">\r\n<img width=\"26\" height=\"26\" src=\"images/design/title_img21.gif\" alt=\"\"/>\r\n</span>\r\n<span class=\"game_t\">Welcome to <strong>RMT</strong>ワールドマネー</span>\r\n</h1>\r\n<p class=\"comment\"><span style=\"float:left;\"><img alt=\"\" src=\"images/design/box_middle_img.gif\"/></span>\r\nRMTワールドマネーは株式会社iimyが運営するRMT(リアルマネートレード)総合ショッピングサイトです。\r\nFF11、Lineage2、RedStone、TalesWeaver、CABAL、信長の野望Online、RAGNAROKなどの人気オンラインゲームをはじめ、\r\nATLANTICA、SUN、CRONOUS、LucentHeart、RFonlineZ、ROSE、AION、女神転生、大航海時代、ラテールなど多数のプレイヤーに当RMTサイトをご利用いただけるよう、様々なMMORPGのゲーム通貨・アカウント・アイテム・装備などを売買をしております。\r\nRMTワールドマネーは、新作オンラインゲームの動向の調査し、お客様のニーズに的確に対応した、クリーンな売買を心がけております。\r\n激安価格・高価買取を実現し、充実したサポート体制のRMTワールドマネーをこの機会に是非ご利用ください。\r\n\r\n<br>\r\n<b>表示された在庫以上の大口売買も可能ですので、お気軽にお問い合わせください。</b></p>', 
-    '0', 
-    '0', 
-    '10', 
-    'R2MT_WM_ID' 
-    )
-Duplicate entry '10' for key 'romaji'
-information_page			Done
-languages			Done
-permission			Done
-sites			Done
-specials			Done
-tax_class			Done
-tax_rates			Done
-users			Done
+        '10',
+        '4',
+        '3',
+        '【重要】ご不在連絡メール【RMTワールドマネー】',
+        '${NAME} 様
+
+この度は、RMTワールドマネーをご利用いただき、誠にありがとうございます。
+
+お取引に参りましたがご不在でした。
+弊社キャラクターは、○:○まで配置しておきます。
+取引状況によりログアウトする場合がございますので予めご了承ください。
+
+ログインしていたにもかかわらず本メールを受け取りましたお客様は
+ご注文内容に間違いがないかご確認をお願いいたします。
+
+
+再配達受付連絡先のご案内
+下記の連絡方法いずれかをご利用ください。
+
+■再配達フォームからお申し込みください。
+http://rmt.worldmoney.jp/reorder.php
+
+■電子メールにてご希望の取引日時をご連絡ください。
+下記の必要事項をご入力の上ご返信ください。
+━━━━━━━━━━━━━━━━━━━━━
+▼注文番号　　　：${ORDER_N}
+▼取引希望日時　：　月　日　時　分　（24時間表記）
+▼備考　　　　　：
+━━━━━━━━━━━━━━━━━━━━━
+
+
+
+ご不明な点がございましたら、注文番号をご確認の上、
+「RMTワールドマネー」までお問い合わせください。
+
+[ご連絡・お問い合わせ先]━━━━━━━━━━━━
+株式会社iimy
+support@worldmoney.jp
+http://rmt.worldmoney.jp/
+━━━━━━━━━━━━━━━━━━━━━━━'
+      )
+Duplicate entry '10-3' for key 'PRIMARY'
+orders_mail
+orders_status 
+permissions 
+products -> products diff fields : products_image_med,products_image_pop,products_image_description
+products 
+products_description
+products_attributes 
+products_attributes_download 
+products_options 
+products_options_values 
+products_options_values_to_products_options 
+products_to_categories 
+tags 
+products_to_tags 
+specials 
+tax_class 
+tax_rates 
+users 
+geo_zones 
+zones 
+zones_to_geo_zones 

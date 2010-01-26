@@ -29,7 +29,7 @@
     $row = 0;
     while ($latest_news = tep_db_fetch_array($latest_news_query)) {
       if($latest_news['news_image'] != '') { 
-      $latest_news_image = '&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'infobox/photo.gif', $latest_news['headline'], '15', '15');
+      $latest_news_image = '&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'infobox/photo.gif', strip_tags($latest_news['headline']), '15', '15');
     } else {
       $latest_news_image = '';
     }

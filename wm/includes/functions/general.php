@@ -1889,7 +1889,7 @@
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
-<title><?php echo $title ? $title : TITLE; ?></title>
+<title><?php echo strip_tags($title ? $title : TITLE); ?></title>
 <meta name="keywords" content="<?php echo $keywords ? $keywords : C_KEYWORDS;?>">
 <meta name="description" content="<?php echo $description ? $description : C_DESCRIPTION;?>">
 <meta name="robots" content="<?php echo strtoupper($robots ? $robots : C_ROBOTS);?>">
