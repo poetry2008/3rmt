@@ -10,38 +10,38 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', '¥ì¥Ó¥å¡¼´ÉÍý');
+define('HEADING_TITLE', 'ãƒ¬ãƒ“ãƒ¥ãƒ¼ç®¡ç†');
 
-define('TABLE_HEADING_PRODUCTS', '¾¦ÉÊÌ¾');
-define('TABLE_HEADING_RATING', 'ºÎÅÀ');
-define('TABLE_HEADING_DATE_ADDED', 'Åê¹ÆÆü');
-define('TABLE_HEADING_ACTION', 'Áàºî');
-define('TABLE_HEADING_STATUS', '¥¹¥Æ¡¼¥¿¥¹');
+define('TABLE_HEADING_PRODUCTS', 'å•†å“å');
+define('TABLE_HEADING_RATING', 'æŽ¡ç‚¹');
+define('TABLE_HEADING_DATE_ADDED', 'æŠ•ç¨¿æ—¥');
+define('TABLE_HEADING_ACTION', 'æ“ä½œ');
+define('TABLE_HEADING_STATUS', 'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹');
 
-define('TEXT_PRODUCTS_STATUS', '¥¹¥Æ¡¼¥¿¥¹:');
-define('TEXT_PRODUCT_AVAILABLE', '·ÇºÜ¤¹¤ë');
-define('TEXT_PRODUCT_NOT_AVAILABLE', '·ÇºÜ¤·¤Ê¤¤');
+define('TEXT_PRODUCTS_STATUS', 'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹:');
+define('TEXT_PRODUCT_AVAILABLE', 'æŽ²è¼‰ã™ã‚‹');
+define('TEXT_PRODUCT_NOT_AVAILABLE', 'æŽ²è¼‰ã—ãªã„');
 
-define('ENTRY_PRODUCT', '¾¦ÉÊÌ¾:');
-define('ENTRY_FROM', 'Åê¹Æ¼Ô:');
-define('ENTRY_DATE', 'ÆüÉÕ:');
-define('ENTRY_REVIEW', '¥ì¥Ó¥å¡¼ÆâÍÆ:');
-define('ENTRY_REVIEW_TEXT', '<small><font color="#ff0000"><b>Ãí:</b></font></small>&nbsp;HTML ¤Ï»ÈÍÑ¤Ç¤­¤Þ¤»¤ó!&nbsp;');
-define('ENTRY_RATING', 'ºÎÅÀ:');
+define('ENTRY_PRODUCT', 'å•†å“å:');
+define('ENTRY_FROM', 'æŠ•ç¨¿è€…:');
+define('ENTRY_DATE', 'æ—¥ä»˜:');
+define('ENTRY_REVIEW', 'ãƒ¬ãƒ“ãƒ¥ãƒ¼å†…å®¹:');
+define('ENTRY_REVIEW_TEXT', '<small><font color="#ff0000"><b>æ³¨:</b></font></small>&nbsp;HTML ã¯ä½¿ç”¨ã§ãã¾ã›ã‚“!&nbsp;');
+define('ENTRY_RATING', 'æŽ¡ç‚¹:');
 
-define('TEXT_INFO_DELETE_REVIEW_INTRO', 'ËÜÅö¤Ë¤³¤Î¥ì¥Ó¥å¡¼¤òºï½ü¤·¤Þ¤¹¤«?');
+define('TEXT_INFO_DELETE_REVIEW_INTRO', 'æœ¬å½“ã«ã“ã®ãƒ¬ãƒ“ãƒ¥ãƒ¼ã‚’å‰Šé™¤ã—ã¾ã™ã‹?');
 
-define('TEXT_INFO_DATE_ADDED', 'Åê¹ÆÆü:');
-define('TEXT_INFO_LAST_MODIFIED', '¹¹¿·Æü:');
-define('TEXT_INFO_IMAGE_NONEXISTENT', '²èÁü¤¬Â¸ºß¤·¤Þ¤»¤ó');
-define('TEXT_INFO_REVIEW_AUTHOR', 'Åê¹Æ¼Ô:');
-define('TEXT_INFO_REVIEW_RATING', 'ºÎÅÀ:');
-define('TEXT_INFO_REVIEW_READ', 'ÆÉ¤Þ¤ì¤¿²ó¿ô:');
-define('TEXT_INFO_REVIEW_SIZE', '¥µ¥¤¥º:');
-define('TEXT_INFO_PRODUCTS_AVERAGE_RATING', 'Ê¿¶ÑÅÀ:');
+define('TEXT_INFO_DATE_ADDED', 'æŠ•ç¨¿æ—¥:');
+define('TEXT_INFO_LAST_MODIFIED', 'æ›´æ–°æ—¥:');
+define('TEXT_INFO_IMAGE_NONEXISTENT', 'ç”»åƒãŒå­˜åœ¨ã—ã¾ã›ã‚“');
+define('TEXT_INFO_REVIEW_AUTHOR', 'æŠ•ç¨¿è€…:');
+define('TEXT_INFO_REVIEW_RATING', 'æŽ¡ç‚¹:');
+define('TEXT_INFO_REVIEW_READ', 'èª­ã¾ã‚ŒãŸå›žæ•°:');
+define('TEXT_INFO_REVIEW_SIZE', 'ã‚µã‚¤ã‚º:');
+define('TEXT_INFO_PRODUCTS_AVERAGE_RATING', 'å¹³å‡ç‚¹:');
 
-define('TEXT_OF_5_STARS', '5ÅÀÃæ¤Î %sÅÀ!');
-define('TEXT_GOOD', '<small><font color="#ff0000"><b>ÎÉ¤¤</b></font></small>');
-define('TEXT_BAD', '<small><font color="#ff0000"><b>°­¤¤</b></font></small>');
-define('TEXT_INFO_HEADING_DELETE_REVIEW', '¥ì¥Ó¥å¡¼¤òºï½ü');
+define('TEXT_OF_5_STARS', '5ç‚¹ä¸­ã® %sç‚¹!');
+define('TEXT_GOOD', '<small><font color="#ff0000"><b>è‰¯ã„</b></font></small>');
+define('TEXT_BAD', '<small><font color="#ff0000"><b>æ‚ªã„</b></font></small>');
+define('TEXT_INFO_HEADING_DELETE_REVIEW', 'ãƒ¬ãƒ“ãƒ¥ãƒ¼ã‚’å‰Šé™¤');
 ?>

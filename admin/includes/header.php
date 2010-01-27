@@ -1,6 +1,6 @@
 <?php
 /*
-	JP°¢GM∂¶ƒÃ•’•°•§•Î
+	JP„ÄÅGMÂÖ±ÈÄö„Éï„Ç°„Ç§„É´
 */
 
   if ($messageStack->size > 0) {
@@ -11,7 +11,7 @@
   <tr>
     <td><?php echo tep_image(DIR_WS_CATALOG .DIR_WS_IMAGES . ADMINPAGE_LOGO_IMAGE, STORE_NAME, '', ''); ?></td>
     <td align="right">
-		≥Ùº∞≤Òº“iimy&nbsp;<b>
+		Ê†™Âºè‰ºöÁ§æiimy&nbsp;<b>
 		<?php
 			if ($ocertify->npermission == 15) {
 				echo '<font color="blue">Admin</font>';
@@ -21,7 +21,7 @@
 				echo 'Staff';
 			}
 		?>
-		</b>&nbsp;§«•Ì•∞•§•Û§∑§∆§§§ﬁ§π°£&nbsp;
+		</b>&nbsp;„Åß„É≠„Ç∞„Ç§„É≥„Åó„Å¶„ÅÑ„Åæ„Åô„ÄÇ&nbsp;
 	</td>
   </tr>
   <tr class="headerBar">
@@ -32,15 +32,15 @@
 			&nbsp;&nbsp;|&nbsp;&nbsp;
 			<a href="' . tep_href_link(FILENAME_CUSTOMERS, '', 'NONSSL') . '" class="headerLink">' . BOX_CUSTOMERS_CUSTOMERS . '</a>
 			&nbsp;&nbsp;|&nbsp;&nbsp;
-			<a href="' . tep_href_link(FILENAME_CATEGORIES, '', 'NONSSL') . '" class="headerLink">æ¶… ≈–œø</a>
+			<a href="' . tep_href_link(FILENAME_CATEGORIES, '', 'NONSSL') . '" class="headerLink">ÂïÜÂìÅÁôªÈå≤</a>
 			&nbsp;&nbsp;|&nbsp;&nbsp;
 			<a href="' . tep_href_link(FILENAME_LATEST_NEWS, '', 'NONSSL') . '" class="headerLink">' . BOX_TOOLS_LATEST_NEWS . '</a>
 			&nbsp;&nbsp;|&nbsp;&nbsp;
-			<a href="' . tep_href_link('create_order.php', '', 'NONSSL') . '" class="headerLink">√Ì ∏∫Ó¿Æ</a>
+			<a href="' . tep_href_link('create_order.php', '', 'NONSSL') . '" class="headerLink">Ê≥®Êñá‰ΩúÊàê</a>
 			&nbsp;&nbsp;|&nbsp;&nbsp;
 			<a href="' . tep_catalog_href_link() . '" class="headerLink" target="_blank">' . HEADER_TITLE_ONLINE_CATALOG . '</a>
 			&nbsp;&nbsp;|&nbsp;&nbsp;
-			<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF']), '', 'NONSSL') . '?execute_logout_user=1" class="headerLink">•Ì•∞•¢•¶•»</a>';
+			<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF']), '', 'NONSSL') . '?execute_logout_user=1" class="headerLink">„É≠„Ç∞„Ç¢„Ç¶„Éà</a>';
 		?>
 		&nbsp;&nbsp;|&nbsp;&nbsp;
 	</td>

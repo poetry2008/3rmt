@@ -10,21 +10,21 @@
   Released under the GNU General Public License
 */
 
-define('TABLE_HEADING_COMMENTS', '¥³¥á¥ó¥È');
-define('TABLE_HEADING_PRODUCTS_MODEL', '·¿ÈÖ');
-define('TABLE_HEADING_PRODUCTS', '¿ôÎÌ / ¾¦ÉÊÌ¾');
-define('TABLE_HEADING_TAX', 'ÀÇÎ¨');
-define('TABLE_HEADING_TOTAL', '¹ç·×');
-define('TABLE_HEADING_PRICE_EXCLUDING_TAX', '²Á³Ê(ÀÇÊÌ)');
-define('TABLE_HEADING_PRICE_INCLUDING_TAX', '²Á³Ê(ÀÇ¹þ)');
-define('TABLE_HEADING_TOTAL_EXCLUDING_TAX', '¹ç·×(ÀÇÊÌ)');
-define('TABLE_HEADING_TOTAL_INCLUDING_TAX', '¹ç·×(ÀÇ¹þ)');
+define('TABLE_HEADING_COMMENTS', 'ã‚³ãƒ¡ãƒ³ãƒˆ');
+define('TABLE_HEADING_PRODUCTS_MODEL', 'åž‹ç•ª');
+define('TABLE_HEADING_PRODUCTS', 'æ•°é‡ / å•†å“å');
+define('TABLE_HEADING_TAX', 'ç¨ŽçŽ‡');
+define('TABLE_HEADING_TOTAL', 'åˆè¨ˆ');
+define('TABLE_HEADING_PRICE_EXCLUDING_TAX', 'ä¾¡æ ¼(ç¨Žåˆ¥)');
+define('TABLE_HEADING_PRICE_INCLUDING_TAX', 'ä¾¡æ ¼(ç¨Žè¾¼)');
+define('TABLE_HEADING_TOTAL_EXCLUDING_TAX', 'åˆè¨ˆ(ç¨Žåˆ¥)');
+define('TABLE_HEADING_TOTAL_INCLUDING_TAX', 'åˆè¨ˆ(ç¨Žè¾¼)');
 
-define('ENTRY_SOLD_TO', '¤´¹ØÆþ¼Ô:');
-define('ENTRY_SHIP_TO', 'ÇÛÁ÷Àè:');
-define('ENTRY_PAYMENT_METHOD', '¤ª»ÙÊ§¤¤ÊýË¡:');
-define('ENTRY_SUB_TOTAL', '¾®·×:');
-define('ENTRY_TAX', 'ÀÇ¶â:');
-define('ENTRY_SHIPPING', 'ÇÛÁ÷:');
-define('ENTRY_TOTAL', '¹ç·×:');
+define('ENTRY_SOLD_TO', 'ã”è³¼å…¥è€…:');
+define('ENTRY_SHIP_TO', 'é…é€å…ˆ:');
+define('ENTRY_PAYMENT_METHOD', 'ãŠæ”¯æ‰•ã„æ–¹æ³•:');
+define('ENTRY_SUB_TOTAL', 'å°è¨ˆ:');
+define('ENTRY_TAX', 'ç¨Žé‡‘:');
+define('ENTRY_SHIPPING', 'é…é€:');
+define('ENTRY_TOTAL', 'åˆè¨ˆ:');
 ?>

@@ -14,22 +14,22 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', 'Çä¾å´ÉÍý');
-define('HEADING_TITLE_SEARCH', '¤´ÃíÊ¸ÈÖ¹æ:');
-define('HEADING_TITLE_STATUS', '¥¹¥Æ¡¼¥¿¥¹:');
-define('TABLE_HEADING_ONLINE', '¥¯¥ê¥Ã¥¯¾õ¶·');
-define('TABLE_HEADING_AFFILIATE', '²ñ°÷Ì¾');
-define('TABLE_HEADING_DATE', 'ÆüÉÕ');
-define('TABLE_HEADING_PERCENTAGE','´Ô¸µÎ¨');
-define('TABLE_HEADING_SALES', '´Ô¸µ¶â³Û');
-define('TABLE_HEADING_STATUS', '¹ØÆþ¼Ô¤ÎÃíÊ¸¾õ¶·');
-define('TABLE_HEADING_ORDER_ID', '¤´ÃíÊ¸ÈÖ¹æ');
-define('TABLE_HEADING_VALUE', '¤´ÃíÊ¸¶â³Û');
-define('TEXT_NO_SALES', '¸½ºßÇä¾å¤Ï¤¢¤ê¤Þ¤»¤ó¡£');
+define('HEADING_TITLE', 'å£²ä¸Šç®¡ç†');
+define('HEADING_TITLE_SEARCH', 'ã”æ³¨æ–‡ç•ªå·:');
+define('HEADING_TITLE_STATUS', 'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹:');
+define('TABLE_HEADING_ONLINE', 'ã‚¯ãƒªãƒƒã‚¯çŠ¶æ³');
+define('TABLE_HEADING_AFFILIATE', 'ä¼šå“¡å');
+define('TABLE_HEADING_DATE', 'æ—¥ä»˜');
+define('TABLE_HEADING_PERCENTAGE','é‚„å…ƒçŽ‡');
+define('TABLE_HEADING_SALES', 'é‚„å…ƒé‡‘é¡');
+define('TABLE_HEADING_STATUS', 'è³¼å…¥è€…ã®æ³¨æ–‡çŠ¶æ³');
+define('TABLE_HEADING_ORDER_ID', 'ã”æ³¨æ–‡ç•ªå·');
+define('TABLE_HEADING_VALUE', 'ã”æ³¨æ–‡é‡‘é¡');
+define('TEXT_NO_SALES', 'ç¾åœ¨å£²ä¸Šã¯ã‚ã‚Šã¾ã›ã‚“ã€‚');
 
-define('TEXT_DELETED_ORDER_BY_ADMIN', 'ºï½üºÑ¤ß (Admin)');
-define('TEXT_DISPLAY_NUMBER_OF_SALES', '<b>%d</b>¤«¤é<b>%d</b>·ï¤òÉ½¼¨ ( <b>%d</b> ·ïÃæ)');
+define('TEXT_DELETED_ORDER_BY_ADMIN', 'å‰Šé™¤æ¸ˆã¿ (Admin)');
+define('TEXT_DISPLAY_NUMBER_OF_SALES', '<b>%d</b>ã‹ã‚‰<b>%d</b>ä»¶ã‚’è¡¨ç¤º ( <b>%d</b> ä»¶ä¸­)');
 
-define('TEXT_INFORMATION_SALES_TOTAL', '¥¢¥Õ¥§¥ê¥¨¥¤¥È¤«¤é¤ÎÇä¾å¶â³Û:');
-define('TEXT_INFORMATION_AFFILIATE_TOTAL', '²ñ°÷¤Ë´Ô¸µ¤¹¤ë»ÙÊ§Áí³Û:');
+define('TEXT_INFORMATION_SALES_TOTAL', 'ã‚¢ãƒ•ã‚§ãƒªã‚¨ã‚¤ãƒˆã‹ã‚‰ã®å£²ä¸Šé‡‘é¡:');
+define('TEXT_INFORMATION_AFFILIATE_TOTAL', 'ä¼šå“¡ã«é‚„å…ƒã™ã‚‹æ”¯æ‰•ç·é¡:');
 ?>

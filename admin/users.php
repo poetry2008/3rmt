@@ -1,39 +1,39 @@
 <?php
 /* *********************************************************
-  ¥â¥¸¥å¡¼¥ëÌ¾: users.php
+  ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«å: users.php
  * 2001/5/29
  *   modi 2002-05-10
  * Naomi Suzukawa
  * suzukawa@bitscope.co.jp
   ----------------------------------------------------------
-¥æ¡¼¥¶´ÉÍı
+ãƒ¦ãƒ¼ã‚¶ç®¡ç†
 
-  ¢£ÊÑ¹¹ÍúÎò
-	2003-04-07 add 	$HTTP_POST_VERS ¤ËÂĞ±ş¤µ¤»¤ë¡ÊPHP ¥¹¡¼¥Ñ¡¼¥°¥í¡¼¥Ğ¥ëÊÑ¿ô[$_POST]¤Ø¤ÎÂĞ±ş¤Ï¼¡²ó¤È¤¹¤ë¡Ë
+  â– å¤‰æ›´å±¥æ­´
+	2003-04-07 add 	$HTTP_POST_VERS ã«å¯¾å¿œã•ã›ã‚‹ï¼ˆPHP ã‚¹ãƒ¼ãƒ‘ãƒ¼ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°[$_POST]ã¸ã®å¯¾å¿œã¯æ¬¡å›ã¨ã™ã‚‹ï¼‰
 ********************************************************* */
 
 /* ===============================================
-	global Äê¿ô
+	global å®šæ•°
  ============================================== */
-// ¥Æ¡¼¥Ö¥ëÌ¾
+// ãƒ†ãƒ¼ãƒ–ãƒ«å
   define('TABLE_USERS', 'users');
   define('TABLE_PERMISSIONS', 'permissions');
 
 /* ===============================================
-	global ÊÑ¿ô
+	global å¤‰æ•°
  ============================================== */
-	$TableBorder = 'border="0"';				// ¥Æ¡¼¥Ö¥ë¡§Àş¤ÎÂÀ¤µ
-	$TableCellspacing = 'cellspacing="1"';		// ¥Æ¡¼¥Ö¥ë¡§¥»¥ë¤Î´Ö³Ö
-	$TableCellpadding = 'cellpadding="0"';		// ¥Æ¡¼¥Ö¥ë¡§¥»¥ë¤Î¥Ş¡¼¥¸¥ó
-	$TableBgcolor = 'bgcolor="#FFFFFF"';		// ¥Æ¡¼¥Ö¥ë¡§ÇØ·Ê¿§
+	$TableBorder = 'border="0"';				// ãƒ†ãƒ¼ãƒ–ãƒ«ï¼šç·šã®å¤ªã•
+	$TableCellspacing = 'cellspacing="1"';		// ãƒ†ãƒ¼ãƒ–ãƒ«ï¼šã‚»ãƒ«ã®é–“éš”
+	$TableCellpadding = 'cellpadding="0"';		// ãƒ†ãƒ¼ãƒ–ãƒ«ï¼šã‚»ãƒ«ã®ãƒãƒ¼ã‚¸ãƒ³
+	$TableBgcolor = 'bgcolor="#FFFFFF"';		// ãƒ†ãƒ¼ãƒ–ãƒ«ï¼šèƒŒæ™¯è‰²
 
-	$ThBgcolor = 'bgcolor="Gainsboro"';			// ¥Ø¥Ã¥À¥»¥ë¡§ÇØ·Ê¿§
-	$TdnBgcolor = 'bgcolor="WhiteSmoke"';		// ¥»¥ë¡§¹àÌÜÌ¾ÇØ·Ê¿§
+	$ThBgcolor = 'bgcolor="Gainsboro"';			// ãƒ˜ãƒƒãƒ€ã‚»ãƒ«ï¼šèƒŒæ™¯è‰²
+	$TdnBgcolor = 'bgcolor="WhiteSmoke"';		// ã‚»ãƒ«ï¼šé …ç›®åèƒŒæ™¯è‰²
 
 /* --------------------------------
 2003-04-07 add 
-$HTTP_POST_VERS ¤ËÂĞ±ş¤µ¤»¤ë
-¡ÊPHP ¥¹¡¼¥Ñ¡¼¥°¥í¡¼¥Ğ¥ëÊÑ¿ô[$_POST]¤Ø¤ÎÂĞ±ş¤Ï¼¡²ó¤È¤¹¤ë¡Ë
+$HTTP_POST_VERS ã«å¯¾å¿œã•ã›ã‚‹
+ï¼ˆPHP ã‚¹ãƒ¼ãƒ‘ãƒ¼ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°[$_POST]ã¸ã®å¯¾å¿œã¯æ¬¡å›ã¨ã™ã‚‹ï¼‰
 -------------------------------- */
 	if (isset($HTTP_POST_VARS['userid'])) { $userid = $HTTP_POST_VARS['userid']; }
 	if (isset($HTTP_POST_VARS['aval'])) { $aval = $HTTP_POST_VARS['aval']; }
@@ -52,78 +52,78 @@ $HTTP_POST_VERS ¤ËÂĞ±ş¤µ¤»¤ë
         if (isset($HTTP_POST_VARS['execute_reset'])) { $execute_reset = $HTTP_POST_VARS['execute_reset']; }
 
 /* ===============================================
-	ÆşÎÏ¥Á¥§¥Ã¥¯´Ø¿ô
+	å…¥åŠ›ãƒã‚§ãƒƒã‚¯é–¢æ•°
  ============================================== */
 
 /*--------------------------------------
-	µ¡  Ç½ : Ì¤ÆşÎÏ¥Á¥§¥Ã¥¯
-	°ú  ¿ô : $s_val - (i) ÃÍ
-	Ìá¤êÃÍ : "":£Ï£Ë,¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸:£Î£Ç
+	æ©Ÿ  èƒ½ : æœªå…¥åŠ›ãƒã‚§ãƒƒã‚¯
+	å¼•  æ•° : $s_val - (i) å€¤
+	æˆ»ã‚Šå€¤ : "":ï¼¯ï¼«,ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸:ï¼®ï¼§
  --------------------------------------*/
 function checkNotnull($s_val) {
 
-	// ÃÍ¤¬ÆşÎÏ¤µ¤ì¤Æ¤¤¤ë¤È¤­¥Á¥§¥Ã¥¯¤ò¹Ô¤¦
+	// å€¤ãŒå…¥åŠ›ã•ã‚Œã¦ã„ã‚‹ã¨ããƒã‚§ãƒƒã‚¯ã‚’è¡Œã†
 	if ($s_val == "") {
 		return TEXT_ERRINFO_INPUT_NOINPUT;
 	}
-	return '';				// Ìá¤êÃÍ
+	return '';				// æˆ»ã‚Šå€¤
 }
 
 /*--------------------------------------
-	µ¡  Ç½ : Ê¸»úÎó¹àÌÜ¤Î¥Á¥§¥Ã¥¯¡ÊÀµµ¬É½¸½¡Ë
-			 Àµµ¬É½¸½¥Ñ¥¿¡¼¥ó¤È¤ÎÆşÎÏ¥Á¥§¥Ã¥¯¡ÊÁ´È¾³Ñº®ºß¡Ë
-	°ú  ¿ô : $s_val		-(i)	Ê¸»úÎó. Ê¸»úÎó
-			 $s_ereg	-(i)	Ê¸»úÎó. Àµµ¬É½¸½¥Ñ¥¿¡¼¥ó¡Ê¾ÊÎ¬»ş:Àµµ¬É½¸½¥Á¥§¥Ã¥¯¤ò¤·¤Ê¤¤¡Ë
-	Ìá¤êÃÍ : "":£Ï£Ë,¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸:£Î£Ç
+	æ©Ÿ  èƒ½ : æ–‡å­—åˆ—é …ç›®ã®ãƒã‚§ãƒƒã‚¯ï¼ˆæ­£è¦è¡¨ç¾ï¼‰
+			 æ­£è¦è¡¨ç¾ãƒ‘ã‚¿ãƒ¼ãƒ³ã¨ã®å…¥åŠ›ãƒã‚§ãƒƒã‚¯ï¼ˆå…¨åŠè§’æ··åœ¨ï¼‰
+	å¼•  æ•° : $s_val		-(i)	æ–‡å­—åˆ—. æ–‡å­—åˆ—
+			 $s_ereg	-(i)	æ–‡å­—åˆ—. æ­£è¦è¡¨ç¾ãƒ‘ã‚¿ãƒ¼ãƒ³ï¼ˆçœç•¥æ™‚:æ­£è¦è¡¨ç¾ãƒã‚§ãƒƒã‚¯ã‚’ã—ãªã„ï¼‰
+	æˆ»ã‚Šå€¤ : "":ï¼¯ï¼«,ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸:ï¼®ï¼§
  -------------------------------------*/
 function checkStringEreg($s_val, $s_ereg = "") {
 
-	// ÃÍ¤¬Ì¤ÆşÎÏ¤Î¤È¤­½èÍı½ªÎ»
+	// å€¤ãŒæœªå…¥åŠ›ã®ã¨ãå‡¦ç†çµ‚äº†
 	if ($s_val == "") return '';
 
-	// ¥¨¥é¡¼È½Äê
+	// ã‚¨ãƒ©ãƒ¼åˆ¤å®š
 	if ($s_ereg && (ereg($s_ereg,$s_val) == false)) {
 		return TEXT_ERRINFO_INPUT_ERR;
 	}
 
-	return '';						// Ìá¤êÃÍ
+	return '';						// æˆ»ã‚Šå€¤
 }
 
 /*--------------------------------------
-	µ¡  Ç½ : Ê¸»ú¿ô¥Á¥§¥Ã¥¯
-	°ú  ¿ô : $s_val			-(i)	Ê¸»úÎó. Ê¸»úÎó
-			 $n_len			-(i)	À°¿ô. ¥Ğ¥¤¥È¿ô¡Ê¾ÊÎ¬»ş:¶õÊ¸»ú¡Ë
-	Ìá¤êÃÍ : "":£Ï£Ë,¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸:£Î£Ç
+	æ©Ÿ  èƒ½ : æ–‡å­—æ•°ãƒã‚§ãƒƒã‚¯
+	å¼•  æ•° : $s_val			-(i)	æ–‡å­—åˆ—. æ–‡å­—åˆ—
+			 $n_len			-(i)	æ•´æ•°. ãƒã‚¤ãƒˆæ•°ï¼ˆçœç•¥æ™‚:ç©ºæ–‡å­—ï¼‰
+	æˆ»ã‚Šå€¤ : "":ï¼¯ï¼«,ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸:ï¼®ï¼§
  -------------------------------------*/
 function checkLength_ge($s_val, $n_len) {
 
-	// ÃÍ¤¬Ì¤ÆşÎÏ¤Î¤È¤­½èÍı½ªÎ»
+	// å€¤ãŒæœªå…¥åŠ›ã®ã¨ãå‡¦ç†çµ‚äº†
 	if ($s_val == "") return '';
 
-	// ¥¨¥é¡¼È½Äê
+	// ã‚¨ãƒ©ãƒ¼åˆ¤å®š
 	$n_val_len = strlen($s_val);
 	if ($n_len > 0 && $n_len > $n_val_len) {
 		return sprintf(TEXT_ERRINFO_INPUT_LENGTH, $n_len);
 	}
 
-	return '';						// Ìá¤êÃÍ
+	return '';						// æˆ»ã‚Šå€¤
 }
 
 /*--------------------------------------
-	µ¡  Ç½ : ¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸É½¼¨
-	°ú  ¿ô : $a_error -(i) ¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸
-	Ìá¤êÃÍ : ¤Ê¤·
+	æ©Ÿ  èƒ½ : ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
+	å¼•  æ•° : $a_error -(i) ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+	æˆ»ã‚Šå€¤ : ãªã—
  --------------------------------------*/
 function print_err_message($a_error) {
 
-	$stable_bgcolor = 'bgcolor="#FFFFFF"';		// ¥Æ¡¼¥Ö¥ëÇØ·Ê¿§
-	$sfont_color = 'color="#FF0000"';			// ¥Õ¥©¥ó¥È¥«¥é¡¼¡Ê¥¨¥é¡¼¿§¡Ë
+	$stable_bgcolor = 'bgcolor="#FFFFFF"';		// ãƒ†ãƒ¼ãƒ–ãƒ«èƒŒæ™¯è‰²
+	$sfont_color = 'color="#FF0000"';			// ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ï¼ˆã‚¨ãƒ©ãƒ¼è‰²ï¼‰
 
 	echo '<font class="main" ' . $sfont_color . '">';
-	echo TABLE_HEADING_ERRINFO;		// ¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸É½¼¨¥¿¥¤¥È¥ë
+	echo TABLE_HEADING_ERRINFO;		// ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤ºã‚¿ã‚¤ãƒˆãƒ«
 	echo "<br>\n";
 
-	//-- ¥¨¥é¡¼É½¼¨ --
+	//-- ã‚¨ãƒ©ãƒ¼è¡¨ç¤º --
 	for ($i = 0 ; $i < count($a_error) ; $i++) {
 		echo $a_error[$i];
 		echo "<br>\n";
@@ -134,10 +134,10 @@ function print_err_message($a_error) {
 }
 
 /* -------------------------------------
-	µ¡  Ç½ : ¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸ÇÛÎó¤Ë¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸¥»¥Ã¥È
-	°ú  ¿ô : $a_error - (o) ÇÛÎó¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸
-			 $s_errmsg - (i) ¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸
-	Ìá¤êÃÍ : ¤Ê¤·
+	æ©Ÿ  èƒ½ : ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸é…åˆ—ã«ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚»ãƒƒãƒˆ
+	å¼•  æ•° : $a_error - (o) é…åˆ—ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+			 $s_errmsg - (i) ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+	æˆ»ã‚Šå€¤ : ãªã—
  ------------------------------------ */
 function set_errmsg_array(&$a_error,$s_errmsg) {
 
@@ -145,57 +145,57 @@ function set_errmsg_array(&$a_error,$s_errmsg) {
 }
 
 /* ===============================================
-	¥ì¥³¡¼¥É¼èÆÀ sql Ê¸»úÎóÀ¸À®´Ø¿ô¡ÊSelect¡Ë
+	ãƒ¬ã‚³ãƒ¼ãƒ‰å–å¾— sql æ–‡å­—åˆ—ç”Ÿæˆé–¢æ•°ï¼ˆSelectï¼‰
  ============================================== */
 /*--------------------------------------
-	µ¡  Ç½ : ¥æ¡¼¥¶¾ğÊó¼èÆÀ sql Ê¸»úÎóÀ¸À®
-	°ú  ¿ô : $s_user_ID - (i) ¥æ¡¼¥¶£É£Ä¡Ê¾ÊÎ¬²Ä¡Ë
-	Ìá¤êÃÍ : select ¶çÊ¸»úÎó
+	æ©Ÿ  èƒ½ : ãƒ¦ãƒ¼ã‚¶æƒ…å ±å–å¾— sql æ–‡å­—åˆ—ç”Ÿæˆ
+	å¼•  æ•° : $s_user_ID - (i) ãƒ¦ãƒ¼ã‚¶ï¼©ï¼¤ï¼ˆçœç•¥å¯ï¼‰
+	æˆ»ã‚Šå€¤ : select å¥æ–‡å­—åˆ—
  --------------------------------------*/
 function makeSelectUserInfo($s_user_ID = "") {
 
 	$s_select = "select * from " . TABLE_USERS;
 	$s_select .= ($s_user_ID == "" ? "" : " where userid = '$s_user_ID'");
-	$s_select .= " order by userid;";			// ¥æ¡¼¥¶£É£Ä¤Î½çÈÖ¤Ë¥Ç¡¼¥¿¤ò¼èÆÀ¤¹¤ë
+	$s_select .= " order by userid;";			// ãƒ¦ãƒ¼ã‚¶ï¼©ï¼¤ã®é †ç•ªã«ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹
 	return $s_select;
 
 }
 
 /*--------------------------------------
-	µ¡  Ç½ : ¥æ¡¼¥¶¸¢¸Â¤ò´Ş¤à¾ğÊó¼èÆÀ sql Ê¸»úÎóÀ¸À®
-	°ú  ¿ô : $nmode 	- (i) À°¿ô¡§À¸À®¥â¡¼¥É¡Ê0:°ìÈÌ¥æ¡¼¥¶¼èÆÀ[´ûÄêÃÍ]¡¢1:´ÉÍı¼Ô¼èÆÀ¡Ë
-	Ìá¤êÃÍ : select ¶çÊ¸»úÎó
+	æ©Ÿ  èƒ½ : ãƒ¦ãƒ¼ã‚¶æ¨©é™ã‚’å«ã‚€æƒ…å ±å–å¾— sql æ–‡å­—åˆ—ç”Ÿæˆ
+	å¼•  æ•° : $nmode 	- (i) æ•´æ•°ï¼šç”Ÿæˆãƒ¢ãƒ¼ãƒ‰ï¼ˆ0:ä¸€èˆ¬ãƒ¦ãƒ¼ã‚¶å–å¾—[æ—¢å®šå€¤]ã€1:ç®¡ç†è€…å–å¾—ï¼‰
+	æˆ»ã‚Šå€¤ : select å¥æ–‡å­—åˆ—
  --------------------------------------*/
 function makeSelectUserParmission($nmode=0) {
 
-	// ¥æ¡¼¥¶¸¢¸Â¤ò´Ş¤à¾ğÊó¼èÆÀ
+	// ãƒ¦ãƒ¼ã‚¶æ¨©é™ã‚’å«ã‚€æƒ…å ±å–å¾—
 	$s_select = "select u.userid as userid, u.name as name";
 	$s_select .= " from " . TABLE_USERS . " u, " . TABLE_PERMISSIONS . " p";
 	$s_select .= " where u.userid = p.userid";
-	if ($nmode == 0) $s_select .= " and p.permission < 15";		// À¸À®¥â¡¼¥É¤Ë¤è¤ê where ¶ç¤Î¾ò·ï¤òÊÔ½¸¤¹¤ë
+	if ($nmode == 0) $s_select .= " and p.permission < 15";		// ç”Ÿæˆãƒ¢ãƒ¼ãƒ‰ã«ã‚ˆã‚Š where å¥ã®æ¡ä»¶ã‚’ç·¨é›†ã™ã‚‹
 	else $s_select .= " and p.permission = 15";
-	$s_select .= " order by u.userid";							// ¥æ¡¼¥¶£É£Ä¤Î½çÈÖ¤Ë¥Ç¡¼¥¿¤ò¼èÆÀ¤¹¤ë
+	$s_select .= " order by u.userid";							// ãƒ¦ãƒ¼ã‚¶ï¼©ï¼¤ã®é †ç•ªã«ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹
 
 	return $s_select;
 
 }
 
 /* ==============================================
-	¥Æ¡¼¥Ö¥ë¹¹¿· sql Ê¸»úÎóÀ¸À®´Ø¿ô¡ÊInsert¡¢Update¡¢Delete¡Ë
+	ãƒ†ãƒ¼ãƒ–ãƒ«æ›´æ–° sql æ–‡å­—åˆ—ç”Ÿæˆé–¢æ•°ï¼ˆInsertã€Updateã€Deleteï¼‰
  ============================================= */
 /*--------------------------------------
-	µ¡  Ç½ : ¿·µ¬¥æ¡¼¥¶¤ÎÅĞÏ¿¡Ê¥æ¡¼¥¶´ÉÍı¡¢¥æ¡¼¥¶¸¢¸Â¥Æ¡¼¥Ö¥ë¤ËÄÉ²ÃÅĞÏ¿¡Ë
-	°ú  ¿ô : $aval		-(i)	Ï¢ÁÛÇÛÎó¡§ÄÉ²Ã¤¹¤ë¥Ç¡¼¥¿
-			 $nmode 	-(i)	À°¿ô¡§À¸À®¥â¡¼¥É¡Ê0:¥æ¡¼¥¶´ÉÍı¥Æ¡¼¥Ö¥ëÄÉ²Ãsql[´ûÄêÃÍ]¡¢1:¥æ¡¼¥¶¸¢¸Â¥Æ¡¼¥Ö¥ëÄÉ²Ãsql¡Ë
-	Ìá¤êÃÍ : ¤Ê¤·
+	æ©Ÿ  èƒ½ : æ–°è¦ãƒ¦ãƒ¼ã‚¶ã®ç™»éŒ²ï¼ˆãƒ¦ãƒ¼ã‚¶ç®¡ç†ã€ãƒ¦ãƒ¼ã‚¶æ¨©é™ãƒ†ãƒ¼ãƒ–ãƒ«ã«è¿½åŠ ç™»éŒ²ï¼‰
+	å¼•  æ•° : $aval		-(i)	é€£æƒ³é…åˆ—ï¼šè¿½åŠ ã™ã‚‹ãƒ‡ãƒ¼ã‚¿
+			 $nmode 	-(i)	æ•´æ•°ï¼šç”Ÿæˆãƒ¢ãƒ¼ãƒ‰ï¼ˆ0:ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ†ãƒ¼ãƒ–ãƒ«è¿½åŠ sql[æ—¢å®šå€¤]ã€1:ãƒ¦ãƒ¼ã‚¶æ¨©é™ãƒ†ãƒ¼ãƒ–ãƒ«è¿½åŠ sqlï¼‰
+	æˆ»ã‚Šå€¤ : ãªã—
  --------------------------------------*/
 function makeInsertUser($aval, $nmode=0) {
 
 	$ssql = "insert into ";
 	if ($nmode == 0) {
-		// DES ¤Ç°Å¹æ²½¤¹¤ë
+		// DES ã§æš—å·åŒ–ã™ã‚‹
 		$cryot_password = (string) crypt($aval['password']);
-		// ¥æ¡¼¥¶´ÉÍı¥Æ¡¼¥Ö¥ë¤Ø¤ÎÄÉ²Ã sql Ê¸»úÎóÀ¸À®
+		// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ†ãƒ¼ãƒ–ãƒ«ã¸ã®è¿½åŠ  sql æ–‡å­—åˆ—ç”Ÿæˆ
 		$ssql .= TABLE_USERS . " values (";
 		$ssql .= "'" . $aval['userid'] . "'";
 		$ssql .= ",'$cryot_password'";
@@ -203,7 +203,7 @@ function makeInsertUser($aval, $nmode=0) {
 		$ssql .= ",'" . $aval['email'] . "'";
 		$ssql .= ")";
 	} else {
-		// ¥æ¡¼¥¶¸¢¸Â¥Æ¡¼¥Ö¥ë¤Ø¤ÎÄÉ²Ã sql Ê¸»úÎóÀ¸À®
+		// ãƒ¦ãƒ¼ã‚¶æ¨©é™ãƒ†ãƒ¼ãƒ–ãƒ«ã¸ã®è¿½åŠ  sql æ–‡å­—åˆ—ç”Ÿæˆ
 		$ssql .= TABLE_PERMISSIONS . " values (";
 		$ssql .= "'" . $aval['userid'] . "'";
 		$ssql .= ",7";
@@ -214,10 +214,10 @@ function makeInsertUser($aval, $nmode=0) {
 }
 
 /*--------------------------------------
-	µ¡  Ç½ : ¥æ¡¼¥¶¾ğÊó¥Æ¡¼¥Ö¥ë¤Î¹¹¿·
-	°ú  ¿ô : $aval		-(i)	Ï¢ÁÛÇÛÎó¡§¹¹¿·¤¹¤ë¥Ç¡¼¥¿
-			 $nmode		-(i)	¹¹¿·¥â¡¼¥É¡Ê0:»áÌ¾¡¢e-mail¡¢1:¥Ñ¥¹¥ï¡¼¥É¡Ë
-	Ìá¤êÃÍ : ¤Ê¤·
+	æ©Ÿ  èƒ½ : ãƒ¦ãƒ¼ã‚¶æƒ…å ±ãƒ†ãƒ¼ãƒ–ãƒ«ã®æ›´æ–°
+	å¼•  æ•° : $aval		-(i)	é€£æƒ³é…åˆ—ï¼šæ›´æ–°ã™ã‚‹ãƒ‡ãƒ¼ã‚¿
+			 $nmode		-(i)	æ›´æ–°ãƒ¢ãƒ¼ãƒ‰ï¼ˆ0:æ°åã€e-mailã€1:ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ï¼‰
+	æˆ»ã‚Šå€¤ : ãªã—
  --------------------------------------*/
 function makeUpdateUser($aval, $nmode=0) {
 
@@ -226,7 +226,7 @@ function makeUpdateUser($aval, $nmode=0) {
 		$ssql .= " name='" . $aval['name'] . "'";
 		$ssql .= ", email='" . $aval['email'] . "'";
 	} else {
-		// DES ¤Ç°Å¹æ²½¤¹¤ë
+		// DES ã§æš—å·åŒ–ã™ã‚‹
 		$cryot_password = (string) crypt($aval['password']);
 		$ssql .= " password='$cryot_password'";
 	}
@@ -236,20 +236,20 @@ function makeUpdateUser($aval, $nmode=0) {
 }
 
 /*--------------------------------------
-	µ¡  Ç½ : ¥æ¡¼¥¶¤Îºï½ü¡¢¡Ê¥æ¡¼¥¶´ÉÍı¡¢¥æ¡¼¥¶¸¢¸Â¥Æ¡¼¥Ö¥ë¤«¤éºï½ü¡Ë
-	°ú  ¿ô :  $nmode 	-(i)	À°¿ô¡§À¸À®¥â¡¼¥É¡Ê0:¥æ¡¼¥¶´ÉÍı¥Æ¡¼¥Ö¥ëºï½üsql[´ûÄêÃÍ]¡¢1:¥æ¡¼¥¶¸¢¸Â¥Æ¡¼¥Ö¥ëºï½üsql¡Ë
-	Ìá¤êÃÍ : ¤Ê¤·
+	æ©Ÿ  èƒ½ : ãƒ¦ãƒ¼ã‚¶ã®å‰Šé™¤ã€ï¼ˆãƒ¦ãƒ¼ã‚¶ç®¡ç†ã€ãƒ¦ãƒ¼ã‚¶æ¨©é™ãƒ†ãƒ¼ãƒ–ãƒ«ã‹ã‚‰å‰Šé™¤ï¼‰
+	å¼•  æ•° :  $nmode 	-(i)	æ•´æ•°ï¼šç”Ÿæˆãƒ¢ãƒ¼ãƒ‰ï¼ˆ0:ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ†ãƒ¼ãƒ–ãƒ«å‰Šé™¤sql[æ—¢å®šå€¤]ã€1:ãƒ¦ãƒ¼ã‚¶æ¨©é™ãƒ†ãƒ¼ãƒ–ãƒ«å‰Šé™¤sqlï¼‰
+	æˆ»ã‚Šå€¤ : ãªã—
  --------------------------------------*/
 function makeDeleteUser($nmode=0) {
 
 	$ssql = "delete from ";
 	if ($nmode == 0) {
-		// DES ¤Ç°Å¹æ²½¤¹¤ë
+		// DES ã§æš—å·åŒ–ã™ã‚‹
 		$cryot_password = (string) crypt($aval['password']);
-		// ¥æ¡¼¥¶´ÉÍı¥Æ¡¼¥Ö¥ë¤Ø¤ÎÄÉ²Ã sql Ê¸»úÎóÀ¸À®
+		// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ†ãƒ¼ãƒ–ãƒ«ã¸ã®è¿½åŠ  sql æ–‡å­—åˆ—ç”Ÿæˆ
 		$ssql .= TABLE_USERS;
 	} else {
-		// ¥æ¡¼¥¶¸¢¸Â¥Æ¡¼¥Ö¥ë¤Ø¤ÎÄÉ²Ã sql Ê¸»úÎóÀ¸À®
+		// ãƒ¦ãƒ¼ã‚¶æ¨©é™ãƒ†ãƒ¼ãƒ–ãƒ«ã¸ã®è¿½åŠ  sql æ–‡å­—åˆ—ç”Ÿæˆ
 		$ssql .= TABLE_PERMISSIONS;
 	}
 	$ssql .= " where userid='" . $GLOBALS['userid'] . "'";
@@ -258,17 +258,17 @@ function makeDeleteUser($nmode=0) {
 }
 
 /*--------------------------------------
-	µ¡  Ç½ : ¥æ¡¼¥¶¸¢¸Â¥Æ¡¼¥Ö¥ë¤Î¹¹¿·
-	°ú  ¿ô : $nmode		-(i) ¹¹¿·¥â¡¼¥É¡Ê0:grant¡¢1:revoke¡Ë
-			 $susers	-(i) ¥æ¡¼¥¶ID
-	Ìá¤êÃÍ : ¤Ê¤·
+	æ©Ÿ  èƒ½ : ãƒ¦ãƒ¼ã‚¶æ¨©é™ãƒ†ãƒ¼ãƒ–ãƒ«ã®æ›´æ–°
+	å¼•  æ•° : $nmode		-(i) æ›´æ–°ãƒ¢ãƒ¼ãƒ‰ï¼ˆ0:grantã€1:revokeï¼‰
+			 $susers	-(i) ãƒ¦ãƒ¼ã‚¶ID
+	æˆ»ã‚Šå€¤ : ãªã—
  --------------------------------------*/
 function makeUpdatePermission($nmode=0, $susers) {
 
 	$ssql = "update " . TABLE_PERMISSIONS . " set";
-	if ($nmode == 0) 						// ¸¢¸Â¤òÍ¿¤¨¤ë
+	if ($nmode == 0) 						// æ¨©é™ã‚’ä¸ãˆã‚‹
 		$ssql .= " permission=15";
-	else $ssql .= " permission=7";			// ¸¢¸Â¤ò¼è¾Ã¤¹
+	else $ssql .= " permission=7";			// æ¨©é™ã‚’å–æ¶ˆã™
 	$ssql .= " where userid='$susers'";
 
 	return $ssql;
@@ -276,123 +276,123 @@ function makeUpdatePermission($nmode=0, $susers) {
 }
 
 /* ==============================================
-	²èÌÌÉ½¼¨´Ø¿ô¡Ê¥á¥¤¥ó¡Ë
+	ç”»é¢è¡¨ç¤ºé–¢æ•°ï¼ˆãƒ¡ã‚¤ãƒ³ï¼‰
  ============================================= */
 /*--------------------------------------
-	µ¡  Ç½ : ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¡ÊÉ½¼¨¡Ë
-	°ú  ¿ô : ¤Ê¤·
-	Ìá¤êÃÍ : ¤Ê¤·
+	æ©Ÿ  èƒ½ : ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ï¼ˆè¡¨ç¤ºï¼‰
+	å¼•  æ•° : ãªã—
+	æˆ»ã‚Šå€¤ : ãªã—
  --------------------------------------*/
 function UserManu_preview() {
 
-	global $ocertify;						// ¥æ¡¼¥¶Ç§¾Ú¥ª¥Ö¥¸¥§¥¯¥È
+	global $ocertify;						// ãƒ¦ãƒ¼ã‚¶èªè¨¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 
-	PageBody('t', PAGE_TITLE_MENU_USER);			// ¥æ¡¼¥¶´ÉÍı²èÌÌ¤Î¥¿¥¤¥È¥ëÉôÉ½¼¨¡Ê¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¡Ë
+	PageBody('t', PAGE_TITLE_MENU_USER);			// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ç”»é¢ã®ã‚¿ã‚¤ãƒˆãƒ«éƒ¨è¡¨ç¤ºï¼ˆãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ï¼‰
 
-	// ¥æ¡¼¥¶¾ğÊó¼èÆÀ
-	if ($ocertify->npermission < 15) $ssql = makeSelectUserInfo($ocertify->auth_user);		// °ìÈÌ¥æ¡¼¥¶¤Î¤È¤­
-	if ($ocertify->npermission == 15) $ssql = makeSelectUserInfo();		// ´ÉÍı¼Ô¤Î¤È¤­
+	// ãƒ¦ãƒ¼ã‚¶æƒ…å ±å–å¾—
+	if ($ocertify->npermission < 15) $ssql = makeSelectUserInfo($ocertify->auth_user);		// ä¸€èˆ¬ãƒ¦ãƒ¼ã‚¶ã®ã¨ã
+	if ($ocertify->npermission == 15) $ssql = makeSelectUserInfo();		// ç®¡ç†è€…ã®ã¨ã
 
 	@$oresult = tep_db_query($ssql);
-	if (!$oresult) {											// ¥¨¥é¡¼¤À¤Ã¤¿¤È¤­
-		echo TEXT_ERRINFO_DB_NO_USERINFO;						// ¥á¥Ã¥»¡¼¥¸É½¼¨
+	if (!$oresult) {											// ã‚¨ãƒ©ãƒ¼ã ã£ãŸã¨ã
+		echo TEXT_ERRINFO_DB_NO_USERINFO;						// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
 		echo "<br>\n";
-		echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));						// <form>¥¿¥°¤Î½ĞÎÏ
-		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-		echo "</form>\n";										// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
-		if ($oresult) @tep_db_free_result($oresult);			// ·ë²Ì¥ª¥Ö¥¸¥§¥¯¥È¤ò³«Êü¤¹¤ë
+		echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));						// <form>ã‚¿ã‚°ã®å‡ºåŠ›
+		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+		echo "</form>\n";										// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
+		if ($oresult) @tep_db_free_result($oresult);			// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é–‹æ”¾ã™ã‚‹
 		return FALSE;
 	}
 
-	$nrow = tep_db_num_rows($oresult);									// ¥ì¥³¡¼¥É·ï¿ô¤Î¼èÆÀ
-	// ¥Æ¡¼¥Ö¥ë¥¿¥°¤Î³«»Ï
+	$nrow = tep_db_num_rows($oresult);									// ãƒ¬ã‚³ãƒ¼ãƒ‰ä»¶æ•°ã®å–å¾—
+	// ãƒ†ãƒ¼ãƒ–ãƒ«ã‚¿ã‚°ã®é–‹å§‹
 	echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
 	echo "<tr>\n";
-	echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));		// <form>¥¿¥°¤Î½ĞÎÏ
+	echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));		// <form>ã‚¿ã‚°ã®å‡ºåŠ›
 
-	if ($nrow == 1) {													// ÂĞ¾İ¥Ç¡¼¥¿¤¬1·ï¤À¤Ã¤¿¤È¤­
-		// ¹àÌÜ¥¿¥¤¥È¥ë¡Ê1¥»¥ë¡Ë¤Î½ĞÎÏ
-		echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_USER . '</td>' . "\n";		// ¥æ¡¼¥¶
-		$nLsize = 'size="1"';											// ¥ê¥¹¥È¤Î¥µ¥¤¥ºÊÑ¿ô¤Ë1¤ò¥»¥Ã¥È
-	} elseif ($nrow > 1) {												// ÂĞ¾İ¥Ç¡¼¥¿¤¬1·ï°Ê¾å¤À¤Ã¤¿¤È¤­
-		// ¹àÌÜ¥¿¥¤¥È¥ë¡Ê1¥»¥ë¡Ë¤Î½ĞÎÏ
-		echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_USER_LIST . '</td>' . "\n";	// ¥æ¡¼¥¶°ìÍ÷
-		$nLsize = 'size="5"';											// ¥ê¥¹¥È¤Î¥µ¥¤¥ºÊÑ¿ô¤Ë5¤ò¥»¥Ã¥È
+	if ($nrow == 1) {													// å¯¾è±¡ãƒ‡ãƒ¼ã‚¿ãŒ1ä»¶ã ã£ãŸã¨ã
+		// é …ç›®ã‚¿ã‚¤ãƒˆãƒ«ï¼ˆ1ã‚»ãƒ«ï¼‰ã®å‡ºåŠ›
+		echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_USER . '</td>' . "\n";		// ãƒ¦ãƒ¼ã‚¶
+		$nLsize = 'size="1"';											// ãƒªã‚¹ãƒˆã®ã‚µã‚¤ã‚ºå¤‰æ•°ã«1ã‚’ã‚»ãƒƒãƒˆ
+	} elseif ($nrow > 1) {												// å¯¾è±¡ãƒ‡ãƒ¼ã‚¿ãŒ1ä»¶ä»¥ä¸Šã ã£ãŸã¨ã
+		// é …ç›®ã‚¿ã‚¤ãƒˆãƒ«ï¼ˆ1ã‚»ãƒ«ï¼‰ã®å‡ºåŠ›
+		echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_USER_LIST . '</td>' . "\n";	// ãƒ¦ãƒ¼ã‚¶ä¸€è¦§
+		$nLsize = 'size="5"';											// ãƒªã‚¹ãƒˆã®ã‚µã‚¤ã‚ºå¤‰æ•°ã«5ã‚’ã‚»ãƒƒãƒˆ
 	}
 	echo "</tr>\n";
 
-	// ¥ê¥¹¥È¥Ü¥Ã¥¯¥¹¤ËÉ½¼¨¤¹¤ë¥Ç¡¼¥¿¤òÇÛÎó¤Ë¥»¥Ã¥È¤¹¤ë
+	// ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã«è¡¨ç¤ºã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã‚’é…åˆ—ã«ã‚»ãƒƒãƒˆã™ã‚‹
 	$i=0;
-	while ($arec = tep_db_fetch_array($oresult)) {			// ¥ì¥³¡¼¥É¤ò¼èÆÀ
+	while ($arec = tep_db_fetch_array($oresult)) {			// ãƒ¬ã‚³ãƒ¼ãƒ‰ã‚’å–å¾—
 		$ausers[$i]['id'] = $arec['userid'];
 		$ausers[$i]['text'] = $arec['name'];
 		$i++;
 	}
 
-	echo '<tr><td>';													// ¥Ç¡¼¥¿¥»¥ë
-	echo tep_draw_pull_down_menu("userslist", $ausers, $ocertify->auth_user, $nLsize);	// ¥ê¥¹¥È¥Ü¥Ã¥¯¥¹¤ÎÉ½¼¨
+	echo '<tr><td>';													// ãƒ‡ãƒ¼ã‚¿ã‚»ãƒ«
+	echo tep_draw_pull_down_menu("userslist", $ausers, $ocertify->auth_user, $nLsize);	// ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã®è¡¨ç¤º
 	echo "</td></tr>\n";
 	echo "</table>\n";
 
 	echo '<br>';
 
-	// ¥Ü¥¿¥óÉ½¼¨
-	if ($ocertify->npermission == 15) {			// ´ÉÍı¼Ô¤Î¤È¤­
-		echo tep_draw_input_field("execute_new", BUTTON_INSERT_USER, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶¤ÎÄÉ²Ã
-		echo tep_draw_input_field("execute_user", BUTTON_INFO_USER, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶¾ğÊó
-		echo tep_draw_input_field("execute_password", BUTTON_CHANGE_PASSWORD, '', FALSE, "submit", FALSE);	// ¥Ñ¥¹¥ï¡¼¥ÉÊÑ¹¹
-		echo tep_draw_input_field("execute_permission", BUTTON_PERMISSION, '', FALSE, "submit", FALSE);	// ´ÉÍı¼Ô¸¢¸Â
+	// ãƒœã‚¿ãƒ³è¡¨ç¤º
+	if ($ocertify->npermission == 15) {			// ç®¡ç†è€…ã®ã¨ã
+		echo tep_draw_input_field("execute_new", BUTTON_INSERT_USER, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶ã®è¿½åŠ 
+		echo tep_draw_input_field("execute_user", BUTTON_INFO_USER, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶æƒ…å ±
+		echo tep_draw_input_field("execute_password", BUTTON_CHANGE_PASSWORD, '', FALSE, "submit", FALSE);	// ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰å¤‰æ›´
+		echo tep_draw_input_field("execute_permission", BUTTON_PERMISSION, '', FALSE, "submit", FALSE);	// ç®¡ç†è€…æ¨©é™
 		echo "\n";
 	} else {
-		echo tep_draw_input_field("execute_user", BUTTON_INFO_USER, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶¾ğÊó
-		echo tep_draw_input_field("execute_password", BUTTON_CHANGE_PASSWORD, '', FALSE, "submit", FALSE);	// ¥Ñ¥¹¥ï¡¼¥ÉÊÑ¹¹
+		echo tep_draw_input_field("execute_user", BUTTON_INFO_USER, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶æƒ…å ±
+		echo tep_draw_input_field("execute_password", BUTTON_CHANGE_PASSWORD, '', FALSE, "submit", FALSE);	// ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰å¤‰æ›´
 	}
 
-	echo "</form>\n";						// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
+	echo "</form>\n";						// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
 
-	if ($oresult) @tep_db_free_result($oresult);					// ·ë²Ì¥ª¥Ö¥¸¥§¥¯¥È¤ò³«Êü¤¹¤ë
+	if ($oresult) @tep_db_free_result($oresult);					// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é–‹æ”¾ã™ã‚‹
 
 	return TRUE;
 }
 
 /*--------------------------------------
-	µ¡  Ç½ : ¥æ¡¼¥¶¤ÎÄÉ²Ã¡ÊÉ½¼¨¥á¥¤¥ó¡Ë
-	°ú  ¿ô : ¤Ê¤·
-	Ìá¤êÃÍ : ¤Ê¤·
+	æ©Ÿ  èƒ½ : ãƒ¦ãƒ¼ã‚¶ã®è¿½åŠ ï¼ˆè¡¨ç¤ºãƒ¡ã‚¤ãƒ³ï¼‰
+	å¼•  æ•° : ãªã—
+	æˆ»ã‚Šå€¤ : ãªã—
  --------------------------------------*/
 function UserInsert_preview() {
 
-	PageBody('t', BUTTON_INSERT_USER);		// ¥æ¡¼¥¶´ÉÍı²èÌÌ¤Î¥¿¥¤¥È¥ëÉôÉ½¼¨¡Ê¥æ¡¼¥¶¤ÎÄÉ²Ã¡Ë
+	PageBody('t', BUTTON_INSERT_USER);		// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ç”»é¢ã®ã‚¿ã‚¤ãƒˆãƒ«éƒ¨è¡¨ç¤ºï¼ˆãƒ¦ãƒ¼ã‚¶ã®è¿½åŠ ï¼‰
 
-	echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));							// <form>¥¿¥°¤Î½ĞÎÏ
+	echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));							// <form>ã‚¿ã‚°ã®å‡ºåŠ›
 
-	// ¥Æ¡¼¥Ö¥ë¥¿¥°¤Î³«»Ï
+	// ãƒ†ãƒ¼ãƒ–ãƒ«ã‚¿ã‚°ã®é–‹å§‹
 	echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor']. '>' . "\n";
 	echo "<tr>\n";
-	// ¹àÌÜ¥¿¥¤¥È¥ë¡Ê1¥»¥ë¡Ë¤Î½ĞÎÏ
-	echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_COLUMN . '</td>' . "\n";	// ¥«¥é¥à
-	echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_DATA . '</td>' . "\n";	// ¥Ç¡¼¥¿
+	// é …ç›®ã‚¿ã‚¤ãƒˆãƒ«ï¼ˆ1ã‚»ãƒ«ï¼‰ã®å‡ºåŠ›
+	echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_COLUMN . '</td>' . "\n";	// ã‚«ãƒ©ãƒ 
+	echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_DATA . '</td>' . "\n";	// ãƒ‡ãƒ¼ã‚¿
 	echo "</tr>\n";
 
 	echo "<tr>\n";
-	echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TABLE_HEADING_USER_ID . '</td>';		// ¥æ¡¼¥¶ID
-	// ÆşÎÏ¹àÌÜ½ĞÎÏ
+	echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TABLE_HEADING_USER_ID . '</td>';		// ãƒ¦ãƒ¼ã‚¶ID
+	// å…¥åŠ›é …ç›®å‡ºåŠ›
 	echo '<td>';
 	echo tep_draw_input_field("aval[userid]", '', 'size="18" maxlength="16"', TRUE, 'text', FALSE);
 	echo '</td>';
 	echo "</tr>\n";
 
 	echo "<tr>\n";
-	echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TABLE_HEADING_PASSWORD . '</td>';		// ¥Ñ¥¹¥ï¡¼¥É
-	// ÆşÎÏ¹àÌÜ½ĞÎÏ
+	echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TABLE_HEADING_PASSWORD . '</td>';		// ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰
+	// å…¥åŠ›é …ç›®å‡ºåŠ›
 	echo '<td>';
 	echo tep_draw_password_field("aval[password]", '', TRUE);
 	echo '</td>';
 	echo "</tr>\n";
 
 	echo "<tr>\n";
-	echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TABLE_HEADING_NAME . '</td>';		// »áÌ¾
-	// ÆşÎÏ¹àÌÜ½ĞÎÏ
+	echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TABLE_HEADING_NAME . '</td>';		// æ°å
+	// å…¥åŠ›é …ç›®å‡ºåŠ›
 	echo '<td>';
 	echo tep_draw_input_field("aval[name]", '', 'size="32" maxlength="64"', TRUE, 'text', FALSE);
 	echo '</td>';
@@ -400,7 +400,7 @@ function UserInsert_preview() {
 
 	echo "<tr>\n";
 	echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TABLE_HEADING_EMAIL . '</td>';		// E-Mail
-	// ÆşÎÏ¹àÌÜ½ĞÎÏ
+	// å…¥åŠ›é …ç›®å‡ºåŠ›
 	echo '<td>';
 	echo tep_draw_input_field("aval[email]", '', 'size="32" maxlength="96"', FALSE, 'text', FALSE);
 	echo '</td>';
@@ -410,72 +410,72 @@ function UserInsert_preview() {
 
 	echo '<br>';
 
-	echo tep_draw_hidden_field("execute_new");				// ½èÍı¥â¡¼¥É¤ò±£¤·¹àÌÜ¤Ë¥»¥Ã¥È¤¹¤ë
+	echo tep_draw_hidden_field("execute_new");				// å‡¦ç†ãƒ¢ãƒ¼ãƒ‰ã‚’éš ã—é …ç›®ã«ã‚»ãƒƒãƒˆã™ã‚‹
 
-	// ¥Ü¥¿¥óÉ½¼¨
-	echo tep_draw_input_field("execute_insert", BUTTON_INSERT, '', FALSE, "submit", FALSE);		// ÄÉ²Ã
-	echo tep_draw_input_field("clear", BUTTON_CLEAR, '', FALSE, "reset", FALSE);				// ¥¯¥ê¥¢
+	// ãƒœã‚¿ãƒ³è¡¨ç¤º
+	echo tep_draw_input_field("execute_insert", BUTTON_INSERT, '', FALSE, "submit", FALSE);		// è¿½åŠ 
+	echo tep_draw_input_field("clear", BUTTON_CLEAR, '', FALSE, "reset", FALSE);				// ã‚¯ãƒªã‚¢
 
-	echo "</form>\n";						// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
+	echo "</form>\n";						// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
 
-	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-	echo '<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF'])) . '">&laquo;&nbsp;' . BUTTON_BACK_MENU . '</a>';	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
+	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+	echo '<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF'])) . '">&laquo;&nbsp;' . BUTTON_BACK_MENU . '</a>';	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
 
 	return TRUE;
 
 }
 
 /*--------------------------------------
-	µ¡  Ç½ : ¥æ¡¼¥¶¾ğÊóÊİ¼é¡ÊÉ½¼¨¥á¥¤¥ó¡Ë
-	°ú  ¿ô : ¤Ê¤·
-	Ìá¤êÃÍ : ¤Ê¤·
+	æ©Ÿ  èƒ½ : ãƒ¦ãƒ¼ã‚¶æƒ…å ±ä¿å®ˆï¼ˆè¡¨ç¤ºãƒ¡ã‚¤ãƒ³ï¼‰
+	å¼•  æ•° : ãªã—
+	æˆ»ã‚Šå€¤ : ãªã—
 
-2000.04.20 ÂĞ¾İ¥æ¡¼¥¶¤¬Â¸ºß¤·¤Ê¤¤¤È¤­¡¢¥á¥Ã¥»¡¼¥¸É½¼¨¤¹¤ë¤è¤¦¤ËÊÑ¹¹¤¹¤ë¡£
+2000.04.20 å¯¾è±¡ãƒ¦ãƒ¼ã‚¶ãŒå­˜åœ¨ã—ãªã„ã¨ãã€ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤ºã™ã‚‹ã‚ˆã†ã«å¤‰æ›´ã™ã‚‹ã€‚
 
  --------------------------------------*/
 function UserInfo_preview() {
 
-	global $ocertify;						// ¥æ¡¼¥¶Ç§¾Ú¥ª¥Ö¥¸¥§¥¯¥È
+	global $ocertify;						// ãƒ¦ãƒ¼ã‚¶èªè¨¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 
-	PageBody('t', BUTTON_INFO_USER);		// ¥æ¡¼¥¶´ÉÍı²èÌÌ¤Î¥¿¥¤¥È¥ëÉôÉ½¼¨¡Ê¥æ¡¼¥¶¾ğÊó¡Ë
+	PageBody('t', BUTTON_INFO_USER);		// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ç”»é¢ã®ã‚¿ã‚¤ãƒˆãƒ«éƒ¨è¡¨ç¤ºï¼ˆãƒ¦ãƒ¼ã‚¶æƒ…å ±ï¼‰
 
-	echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));				// <form>¥¿¥°¤Î½ĞÎÏ
+	echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));				// <form>ã‚¿ã‚°ã®å‡ºåŠ›
 
-	$ssql = makeSelectUserInfo($GLOBALS['userslist']);			// ¥æ¡¼¥¶¾ğÊó¼èÆÀ
+	$ssql = makeSelectUserInfo($GLOBALS['userslist']);			// ãƒ¦ãƒ¼ã‚¶æƒ…å ±å–å¾—
 	@$oresult = tep_db_query($ssql);
-	if (!$oresult) {											// ¥¨¥é¡¼¤À¤Ã¤¿¤È¤­
-		echo TEXT_ERRINFO_DB_NO_USERINFO;						// ¥á¥Ã¥»¡¼¥¸É½¼¨
+	if (!$oresult) {											// ã‚¨ãƒ©ãƒ¼ã ã£ãŸã¨ã
+		echo TEXT_ERRINFO_DB_NO_USERINFO;						// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
 		echo "<br>\n";
-		echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));						// <form>¥¿¥°¤Î½ĞÎÏ
-		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-		echo "</form>\n";										// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
-		if ($oresult) @tep_db_free_result($oresult);			// ·ë²Ì¥ª¥Ö¥¸¥§¥¯¥È¤ò³«Êü¤¹¤ë
+		echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));						// <form>ã‚¿ã‚°ã®å‡ºåŠ›
+		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+		echo "</form>\n";										// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
+		if ($oresult) @tep_db_free_result($oresult);			// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é–‹æ”¾ã™ã‚‹
 		return FALSE;
 	}
 
-	$nrow = tep_db_num_rows($oresult);							// ¥ì¥³¡¼¥É·ï¿ô¤Î¼èÆÀ
-	if ($nrow != 1) {											// ¼èÆÀ¤·¤¿¥ì¥³¡¼¥É·ï¿ô1·ï¤Ç¤Ê¤¤¤È¤­
-		echo TEXT_ERRINFO_DB_NO_USER;							// ¥á¥Ã¥»¡¼¥¸É½¼¨
+	$nrow = tep_db_num_rows($oresult);							// ãƒ¬ã‚³ãƒ¼ãƒ‰ä»¶æ•°ã®å–å¾—
+	if ($nrow != 1) {											// å–å¾—ã—ãŸãƒ¬ã‚³ãƒ¼ãƒ‰ä»¶æ•°1ä»¶ã§ãªã„ã¨ã
+		echo TEXT_ERRINFO_DB_NO_USER;							// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
 		echo "<br>\n";
-		echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));						// <form>¥¿¥°¤Î½ĞÎÏ
-		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-		echo "</form>\n";										// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
-		if ($oresult) @tep_db_free_result($oresult);			// ·ë²Ì¥ª¥Ö¥¸¥§¥¯¥È¤ò³«Êü¤¹¤ë
-		return FALSE;											// ½èÍı¤òÈ´¤±¤ë
+		echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));						// <form>ã‚¿ã‚°ã®å‡ºåŠ›
+		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+		echo "</form>\n";										// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
+		if ($oresult) @tep_db_free_result($oresult);			// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é–‹æ”¾ã™ã‚‹
+		return FALSE;											// å‡¦ç†ã‚’æŠœã‘ã‚‹
 	}
 
 	$arec = tep_db_fetch_array($oresult);
-	if ($oresult) @tep_db_free_result($oresult);				// ·ë²Ì¥ª¥Ö¥¸¥§¥¯¥È¤ò³«Êü¤¹¤ë
+	if ($oresult) @tep_db_free_result($oresult);				// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é–‹æ”¾ã™ã‚‹
 
-	// ¥Æ¡¼¥Ö¥ë¥¿¥°¤Î³«»Ï
+	// ãƒ†ãƒ¼ãƒ–ãƒ«ã‚¿ã‚°ã®é–‹å§‹
 	echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
 	echo "<tr>\n";
-	// ¥æ¡¼¥¶Ì¾¾Î¡Ê¥æ¡¼¥¶ID¡Ë
-	echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . ' colspan="2" nowrap>' . $arec['name'] . "¡Ê" . $GLOBALS['userslist'] . '¡Ë</td>' . "\n";
+	// ãƒ¦ãƒ¼ã‚¶åç§°ï¼ˆãƒ¦ãƒ¼ã‚¶IDï¼‰
+	echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . ' colspan="2" nowrap>' . $arec['name'] . "ï¼ˆ" . $GLOBALS['userslist'] . 'ï¼‰</td>' . "\n";
 	echo "</tr>\n";
 
 	echo "<tr>\n";
-	echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TABLE_HEADING_NAME . '</td>';		// »áÌ¾
+	echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TABLE_HEADING_NAME . '</td>';		// æ°å
 	echo '<td>';
 	echo tep_draw_input_field("aval[name]", $arec['name'], 'size="32" maxlength="64"', TRUE, 'text', FALSE);
 	echo '</td>';
@@ -483,7 +483,7 @@ function UserInfo_preview() {
 
 	echo "<tr>\n";
 	echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TABLE_HEADING_EMAIL . '</td>';		// E-Mail
-	// ÆşÎÏ¹àÌÜ½ĞÎÏ
+	// å…¥åŠ›é …ç›®å‡ºåŠ›
 	echo '<td>';
 	echo tep_draw_input_field("aval[email]", $arec['email'], 'size="32" maxlength="96"', FALSE, 'text', FALSE);
 	echo '</td>';
@@ -491,83 +491,83 @@ function UserInfo_preview() {
 
 	echo "</table>\n";
 
-	echo tep_draw_hidden_field("execute_user");						// ½èÍı¥â¡¼¥É¤ò±£¤·¹àÌÜ¤Ë¥»¥Ã¥È¤¹¤ë
-	echo tep_draw_hidden_field("userid", $GLOBALS['userslist']);		// ¥æ¡¼¥¶£É£Ä¤ò±£¤·¹àÌÜ¤Ë¥»¥Ã¥È¤¹¤ë
+	echo tep_draw_hidden_field("execute_user");						// å‡¦ç†ãƒ¢ãƒ¼ãƒ‰ã‚’éš ã—é …ç›®ã«ã‚»ãƒƒãƒˆã™ã‚‹
+	echo tep_draw_hidden_field("userid", $GLOBALS['userslist']);		// ãƒ¦ãƒ¼ã‚¶ï¼©ï¼¤ã‚’éš ã—é …ç›®ã«ã‚»ãƒƒãƒˆã™ã‚‹
 
 	echo '<br>';
 
-	// ¥Ü¥¿¥óÉ½¼¨
-	echo tep_draw_input_field("execute_update", BUTTON_UPDATE, "onClick=\"return formConfirm('update')\"", FALSE, "submit", FALSE);	// ¹¹¿·
+	// ãƒœã‚¿ãƒ³è¡¨ç¤º
+	echo tep_draw_input_field("execute_update", BUTTON_UPDATE, "onClick=\"return formConfirm('update')\"", FALSE, "submit", FALSE);	// æ›´æ–°
 
-	// ´ÉÍı¼Ô¤Î¤È¤­¡¢ºï½ü¥Ü¥¿¥ó¤òÉ½¼¨¤¹¤ë
+	// ç®¡ç†è€…ã®ã¨ãã€å‰Šé™¤ãƒœã‚¿ãƒ³ã‚’è¡¨ç¤ºã™ã‚‹
 	if ($ocertify->npermission == 15) 
-		echo tep_draw_input_field("execute_delete", BUTTON_DELETE, "onClick=\"return formConfirm('delete')\"", FALSE, "submit", FALSE);	// ºï½ü
+		echo tep_draw_input_field("execute_delete", BUTTON_DELETE, "onClick=\"return formConfirm('delete')\"", FALSE, "submit", FALSE);	// å‰Šé™¤
 
-	echo tep_draw_input_field("reset", BUTTON_RESET, '', FALSE, "reset", FALSE);	// ¸µ¤ÎÃÍ¤ËÌá¤¹
+	echo tep_draw_input_field("reset", BUTTON_RESET, '', FALSE, "reset", FALSE);	// å…ƒã®å€¤ã«æˆ»ã™
 	echo "\n";
 
-	echo "</form>\n";									// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
+	echo "</form>\n";									// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
 
-	echo '<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF'])) . '">&laquo;&nbsp;' . BUTTON_BACK_MENU . '</a>';	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
+	echo '<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF'])) . '">&laquo;&nbsp;' . BUTTON_BACK_MENU . '</a>';	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
 
 	return TRUE;
 }
 
 /*--------------------------------------
-	µ¡  Ç½ : ¥Ñ¥¹¥ï¡¼¥ÉÊÑ¹¹¡ÊÉ½¼¨¥á¥¤¥ó¡Ë
-	°ú  ¿ô : ¤Ê¤·
-	Ìá¤êÃÍ : ¤Ê¤·
+	æ©Ÿ  èƒ½ : ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰å¤‰æ›´ï¼ˆè¡¨ç¤ºãƒ¡ã‚¤ãƒ³ï¼‰
+	å¼•  æ•° : ãªã—
+	æˆ»ã‚Šå€¤ : ãªã—
  --------------------------------------*/
 function UserPassword_preview() {
 
-	PageBody('t', PAGE_TITLE_PASSWORD);		// ¥æ¡¼¥¶´ÉÍı²èÌÌ¤Î¥¿¥¤¥È¥ëÉôÉ½¼¨¡Ê¥Ñ¥¹¥ï¡¼¥ÉÊÑ¹¹¡Ë
+	PageBody('t', PAGE_TITLE_PASSWORD);		// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ç”»é¢ã®ã‚¿ã‚¤ãƒˆãƒ«éƒ¨è¡¨ç¤ºï¼ˆãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰å¤‰æ›´ï¼‰
 
-	echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));							// <form>¥¿¥°¤Î½ĞÎÏ
+	echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));							// <form>ã‚¿ã‚°ã®å‡ºåŠ›
 
-	$ssql = makeSelectUserInfo($GLOBALS['userslist']);			// ¥æ¡¼¥¶¾ğÊó¼èÆÀ
+	$ssql = makeSelectUserInfo($GLOBALS['userslist']);			// ãƒ¦ãƒ¼ã‚¶æƒ…å ±å–å¾—
 	@$oresult = tep_db_query($ssql);
-	if (!$oresult) {											// ¥¨¥é¡¼¤À¤Ã¤¿¤È¤­
-		echo TEXT_ERRINFO_DB_NO_USERINFO;						// ¥á¥Ã¥»¡¼¥¸É½¼¨
+	if (!$oresult) {											// ã‚¨ãƒ©ãƒ¼ã ã£ãŸã¨ã
+		echo TEXT_ERRINFO_DB_NO_USERINFO;						// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
 		echo "<br>\n";
-		echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));						// <form>¥¿¥°¤Î½ĞÎÏ
-		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-		echo "</form>\n";										// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
-		if ($oresult) @tep_db_free_result($oresult);			// ·ë²Ì¥ª¥Ö¥¸¥§¥¯¥È¤ò³«Êü¤¹¤ë
+		echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));						// <form>ã‚¿ã‚°ã®å‡ºåŠ›
+		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+		echo "</form>\n";										// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
+		if ($oresult) @tep_db_free_result($oresult);			// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é–‹æ”¾ã™ã‚‹
 		return FALSE;
 	}
 
-	$nrow = tep_db_num_rows($oresult);							// ¥ì¥³¡¼¥É·ï¿ô¤Î¼èÆÀ
-	if ($nrow != 1) {											// ¼èÆÀ¤·¤¿¥ì¥³¡¼¥É·ï¿ô1·ï¤Ç¤Ê¤¤¤È¤­
-		echo TEXT_ERRINFO_DB_NO_USER;							// ¥á¥Ã¥»¡¼¥¸É½¼¨
+	$nrow = tep_db_num_rows($oresult);							// ãƒ¬ã‚³ãƒ¼ãƒ‰ä»¶æ•°ã®å–å¾—
+	if ($nrow != 1) {											// å–å¾—ã—ãŸãƒ¬ã‚³ãƒ¼ãƒ‰ä»¶æ•°1ä»¶ã§ãªã„ã¨ã
+		echo TEXT_ERRINFO_DB_NO_USER;							// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
 		echo "<br>\n";
-		echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));						// <form>¥¿¥°¤Î½ĞÎÏ
-		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-		echo "</form>\n";										// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
-		if ($oresult) @tep_db_free_result($oresult);			// ·ë²Ì¥ª¥Ö¥¸¥§¥¯¥È¤ò³«Êü¤¹¤ë
-		return FALSE;											// ½èÍı¤òÈ´¤±¤ë
+		echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));						// <form>ã‚¿ã‚°ã®å‡ºåŠ›
+		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+		echo "</form>\n";										// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
+		if ($oresult) @tep_db_free_result($oresult);			// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é–‹æ”¾ã™ã‚‹
+		return FALSE;											// å‡¦ç†ã‚’æŠœã‘ã‚‹
 	}
 
 	$arec = tep_db_fetch_array($oresult);
-	if ($oresult) @tep_db_free_result($oresult);		// ·ë²Ì¥ª¥Ö¥¸¥§¥¯¥È¤ò³«Êü¤¹¤ë
+	if ($oresult) @tep_db_free_result($oresult);		// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é–‹æ”¾ã™ã‚‹
 
-	// ¥Æ¡¼¥Ö¥ë¥¿¥°¤Î³«»Ï
+	// ãƒ†ãƒ¼ãƒ–ãƒ«ã‚¿ã‚°ã®é–‹å§‹
 	echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
 	echo "<tr>\n";
-	// ¥æ¡¼¥¶Ì¾¾Î¡Ê¥æ¡¼¥¶ID¡Ë
-	echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . ' colspan="2" nowrap>' . $arec['name'] . "¡Ê" . $GLOBALS['userslist'] . '¡Ë</td>' . "\n";
+	// ãƒ¦ãƒ¼ã‚¶åç§°ï¼ˆãƒ¦ãƒ¼ã‚¶IDï¼‰
+	echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . ' colspan="2" nowrap>' . $arec['name'] . "ï¼ˆ" . $GLOBALS['userslist'] . 'ï¼‰</td>' . "\n";
 	echo "</tr>\n";
 
 	echo "<tr>\n";
-	echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TABLE_HEADING_NEW_PASSWORD . '</td>';		// ¿·¤·¤¤¥Ñ¥¹¥ï¡¼¥É
-	// ÆşÎÏ¹àÌÜ½ĞÎÏ
+	echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TABLE_HEADING_NEW_PASSWORD . '</td>';		// æ–°ã—ã„ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰
+	// å…¥åŠ›é …ç›®å‡ºåŠ›
 	echo '<td>';
 	echo tep_draw_password_field("aval[password]", '', TRUE);
 	echo '</td>';
 	echo "</tr>\n";
 
 	echo "<tr>\n";
-	echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TABLE_HEADING_CONFIRM_PASSWORD . '</td>';	// ³ÎÇ§¤Î¤¿¤áºÆÆşÎÏ
-	// ÆşÎÏ¹àÌÜ½ĞÎÏ
+	echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TABLE_HEADING_CONFIRM_PASSWORD . '</td>';	// ç¢ºèªã®ãŸã‚å†å…¥åŠ›
+	// å…¥åŠ›é …ç›®å‡ºåŠ›
 	echo '<td>';
 	echo tep_draw_password_field("aval[chk_password]", '', TRUE);
 	echo '</td>';
@@ -577,122 +577,122 @@ function UserPassword_preview() {
 
 	echo '<br>';
 
-	echo tep_draw_hidden_field("execute_password");					// ½èÍı¥â¡¼¥É¤ò±£¤·¹àÌÜ¤Ë¥»¥Ã¥È¤¹¤ë
-	echo tep_draw_hidden_field("userid", $GLOBALS['userslist']);		// ¥æ¡¼¥¶£É£Ä¤ò±£¤·¹àÌÜ¤Ë¥»¥Ã¥È¤¹¤ë
+	echo tep_draw_hidden_field("execute_password");					// å‡¦ç†ãƒ¢ãƒ¼ãƒ‰ã‚’éš ã—é …ç›®ã«ã‚»ãƒƒãƒˆã™ã‚‹
+	echo tep_draw_hidden_field("userid", $GLOBALS['userslist']);		// ãƒ¦ãƒ¼ã‚¶ï¼©ï¼¤ã‚’éš ã—é …ç›®ã«ã‚»ãƒƒãƒˆã™ã‚‹
 
-	// ¥Ü¥¿¥óÉ½¼¨
-	echo tep_draw_input_field("execute_update", BUTTON_CHANGE, "onClick=\"return formConfirm('password')\"", FALSE, "submit", FALSE);	// ÊÑ¹¹
-	echo tep_draw_input_field("clear", BUTTON_CLEAR, '', FALSE, "reset", FALSE);	// ¥¯¥ê¥¢
+	// ãƒœã‚¿ãƒ³è¡¨ç¤º
+	echo tep_draw_input_field("execute_update", BUTTON_CHANGE, "onClick=\"return formConfirm('password')\"", FALSE, "submit", FALSE);	// å¤‰æ›´
+	echo tep_draw_input_field("clear", BUTTON_CLEAR, '', FALSE, "reset", FALSE);	// ã‚¯ãƒªã‚¢
 	echo "\n";
 
-	echo "</form>\n";									// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
+	echo "</form>\n";									// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
 
-	echo '<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF'])) . '">&laquo;&nbsp;' . BUTTON_BACK_MENU . '</a>';	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
+	echo '<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF'])) . '">&laquo;&nbsp;' . BUTTON_BACK_MENU . '</a>';	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
 
 	return TRUE;
 }
 
 /*--------------------------------------
-	µ¡  Ç½ : ´ÉÍı¼Ô¸¢¸Â¡ÊÉ½¼¨¥á¥¤¥ó¡Ë
-	°ú  ¿ô : ¤Ê¤·
-	Ìá¤êÃÍ : ¤Ê¤·
+	æ©Ÿ  èƒ½ : ç®¡ç†è€…æ¨©é™ï¼ˆè¡¨ç¤ºãƒ¡ã‚¤ãƒ³ï¼‰
+	å¼•  æ•° : ãªã—
+	æˆ»ã‚Šå€¤ : ãªã—
  --------------------------------------*/
 function UserPermission_preview() {
 
-	PageBody('t', PAGE_TITLE_PERMISSION);		// ¥æ¡¼¥¶´ÉÍı²èÌÌ¤Î¥¿¥¤¥È¥ëÉôÉ½¼¨¡Ê´ÉÍı¼Ô¸¢¸Â¡Ë
+	PageBody('t', PAGE_TITLE_PERMISSION);		// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ç”»é¢ã®ã‚¿ã‚¤ãƒˆãƒ«éƒ¨è¡¨ç¤ºï¼ˆç®¡ç†è€…æ¨©é™ï¼‰
 
-	echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));	// <form>¥¿¥°¤Î½ĞÎÏ
+	echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));	// <form>ã‚¿ã‚°ã®å‡ºåŠ›
 
-	// °ìÈÌ¥æ¡¼¥¶¾ğÊó¼èÆÀ
-	$ssql = makeSelectUserParmission();							// °ìÈÌ¥æ¡¼¥¶¤Î¥Ç¡¼¥¿¤ò¼èÆÀ¤¹¤ë sql Ê¸»úÎóÀ¸À®
+	// ä¸€èˆ¬ãƒ¦ãƒ¼ã‚¶æƒ…å ±å–å¾—
+	$ssql = makeSelectUserParmission();							// ä¸€èˆ¬ãƒ¦ãƒ¼ã‚¶ã®ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹ sql æ–‡å­—åˆ—ç”Ÿæˆ
 
 	@$oresult = tep_db_query($ssql);
-	if (!$oresult) {											// ¥¨¥é¡¼¤À¤Ã¤¿¤È¤­
-		echo TEXT_ERRINFO_DB_NO_USERINFO;						// ¥á¥Ã¥»¡¼¥¸É½¼¨
+	if (!$oresult) {											// ã‚¨ãƒ©ãƒ¼ã ã£ãŸã¨ã
+		echo TEXT_ERRINFO_DB_NO_USERINFO;						// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
 		echo "<br>\n";
-		echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));			// <form>¥¿¥°¤Î½ĞÎÏ
-		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-		echo "</form>\n";										// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
-		if ($oresult) @tep_db_free_result($oresult);			// ·ë²Ì¥ª¥Ö¥¸¥§¥¯¥È¤ò³«Êü¤¹¤ë
+		echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));			// <form>ã‚¿ã‚°ã®å‡ºåŠ›
+		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+		echo "</form>\n";										// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
+		if ($oresult) @tep_db_free_result($oresult);			// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é–‹æ”¾ã™ã‚‹
 		return FALSE;
 	}
 
-	$nrow = tep_db_num_rows($oresult);							// ¥ì¥³¡¼¥É·ï¿ô¤Î¼èÆÀ
+	$nrow = tep_db_num_rows($oresult);							// ãƒ¬ã‚³ãƒ¼ãƒ‰ä»¶æ•°ã®å–å¾—
 	if ($nrow > 0) {
-		// ¥ê¥¹¥È¥Ü¥Ã¥¯¥¹¤ËÉ½¼¨¤¹¤ë¥Ç¡¼¥¿¤òÇÛÎó¤Ë¥»¥Ã¥È¤¹¤ë
+		// ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã«è¡¨ç¤ºã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã‚’é…åˆ—ã«ã‚»ãƒƒãƒˆã™ã‚‹
 		$i=0;
-		while ($arec = tep_db_fetch_array($oresult)) {			// ¥ì¥³¡¼¥É¤ò¼èÆÀ
+		while ($arec = tep_db_fetch_array($oresult)) {			// ãƒ¬ã‚³ãƒ¼ãƒ‰ã‚’å–å¾—
 			$ausers[$i]['id'] = $arec['userid'];
 			$ausers[$i]['text'] = $arec['name'];
 			$i++;
 		}
 	}
 
-	if ($oresult) @tep_db_free_result($oresult);				// ·ë²Ì¥ª¥Ö¥¸¥§¥¯¥È¤ò³«Êü¤¹¤ë
+	if ($oresult) @tep_db_free_result($oresult);				// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é–‹æ”¾ã™ã‚‹
 
-	// ´ÉÍı¼Ô¸¢¸Â¤ò»ı¤Ä¥æ¡¼¥¶¾ğÊó¼èÆÀ
-	$ssql = makeSelectUserParmission(1);						// ´ÉÍı¼Ô¸¢¸Â¤ò»ı¤Ä¥Ç¡¼¥¿¤ò¼èÆÀ¤¹¤ë sql Ê¸»úÎóÀ¸À®
+	// ç®¡ç†è€…æ¨©é™ã‚’æŒã¤ãƒ¦ãƒ¼ã‚¶æƒ…å ±å–å¾—
+	$ssql = makeSelectUserParmission(1);						// ç®¡ç†è€…æ¨©é™ã‚’æŒã¤ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹ sql æ–‡å­—åˆ—ç”Ÿæˆ
 
 	@$oresult = tep_db_query($ssql);
-	if (!$oresult) {											// ¥¨¥é¡¼¤À¤Ã¤¿¤È¤­
-		echo TEXT_ERRINFO_DB_NO_USERINFO;						// ¥á¥Ã¥»¡¼¥¸É½¼¨
+	if (!$oresult) {											// ã‚¨ãƒ©ãƒ¼ã ã£ãŸã¨ã
+		echo TEXT_ERRINFO_DB_NO_USERINFO;						// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
 		echo "<br>\n";
-		echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));			// <form>¥¿¥°¤Î½ĞÎÏ
-		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-		echo "</form>\n";										// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
-		if ($oresult) @tep_db_free_result($oresult);			// ·ë²Ì¥ª¥Ö¥¸¥§¥¯¥È¤ò³«Êü¤¹¤ë
+		echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));			// <form>ã‚¿ã‚°ã®å‡ºåŠ›
+		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+		echo "</form>\n";										// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
+		if ($oresult) @tep_db_free_result($oresult);			// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é–‹æ”¾ã™ã‚‹
 		return FALSE;
 	}
 
-	$nrow = tep_db_num_rows($oresult);							// ¥ì¥³¡¼¥É·ï¿ô¤Î¼èÆÀ
+	$nrow = tep_db_num_rows($oresult);							// ãƒ¬ã‚³ãƒ¼ãƒ‰ä»¶æ•°ã®å–å¾—
 	if ($nrow > 0) {
-		// ¥ê¥¹¥È¥Ü¥Ã¥¯¥¹¤ËÉ½¼¨¤¹¤ë¥Ç¡¼¥¿¤òÇÛÎó¤Ë¥»¥Ã¥È¤¹¤ë
+		// ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã«è¡¨ç¤ºã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã‚’é…åˆ—ã«ã‚»ãƒƒãƒˆã™ã‚‹
 		$i=0;
-		while ($arec = tep_db_fetch_array($oresult)) {		// ¥ì¥³¡¼¥É¤ò¼èÆÀ
+		while ($arec = tep_db_fetch_array($oresult)) {		// ãƒ¬ã‚³ãƒ¼ãƒ‰ã‚’å–å¾—
 			$ausers_admin[$i]['id'] = $arec['userid'];
 			$ausers_admin[$i]['text'] = $arec['name'];
 			$i++;
 		}
 	}
 
-	if ($oresult) @tep_db_free_result($oresult);					// ·ë²Ì¥ª¥Ö¥¸¥§¥¯¥È¤ò³«Êü¤¹¤ë
+	if ($oresult) @tep_db_free_result($oresult);					// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é–‹æ”¾ã™ã‚‹
 
-	// ¥Æ¡¼¥Ö¥ë¥¿¥°¤Î³«»Ï
+	// ãƒ†ãƒ¼ãƒ–ãƒ«ã‚¿ã‚°ã®é–‹å§‹
 	echo '<table border="0" gbcolor="#FFFFFF" cellpadding="5" cellspacing="0">' . "\n";
 	echo "<tr>\n";
-	echo "<td>\n";									// ¥Ç¡¼¥¿¥»¥ë
+	echo "<td>\n";									// ãƒ‡ãƒ¼ã‚¿ã‚»ãƒ«
 
-		// ¥Æ¡¼¥Ö¥ë¥¿¥°¤Î³«»Ï¡Ê°ìÈÌ¥æ¡¼¥¶¤Î¥ê¥¹¥È¥Ü¥Ã¥¯¥¹¡Ë
+		// ãƒ†ãƒ¼ãƒ–ãƒ«ã‚¿ã‚°ã®é–‹å§‹ï¼ˆä¸€èˆ¬ãƒ¦ãƒ¼ã‚¶ã®ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ï¼‰
 		echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
 		echo "<tr>\n";
-		echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_USER . '</td>' . "\n";	// °ìÈÌ¥æ¡¼¥¶
+		echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_USER . '</td>' . "\n";	// ä¸€èˆ¬ãƒ¦ãƒ¼ã‚¶
 		echo "</tr>\n";
 
-		echo "<td>\n";									// ¥Ç¡¼¥¿¥»¥ë
-		echo tep_draw_pull_down_menu("no_permission_list", $ausers, '', 'size="5"');	// ¥ê¥¹¥È¥Ü¥Ã¥¯¥¹¤ÎÉ½¼¨
+		echo "<td>\n";									// ãƒ‡ãƒ¼ã‚¿ã‚»ãƒ«
+		echo tep_draw_pull_down_menu("no_permission_list", $ausers, '', 'size="5"');	// ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã®è¡¨ç¤º
 		echo "</td>\n";
 		echo "</tr>\n";
 		echo "</table>\n";
 
 	echo "</td>\n";
-	echo '<td align="center" valign="middle">' . "\n";									// ¥Ç¡¼¥¿¥»¥ë
+	echo '<td align="center" valign="middle">' . "\n";									// ãƒ‡ãƒ¼ã‚¿ã‚»ãƒ«
 
 		echo '<br>';
-		echo tep_draw_input_field("execute_grant", BUTTON_GRANT, "onClick=\"return formConfirm('grant')\"", FALSE, "submit", FALSE);	// ¸¢¸Â¤òÍ¿¤¨¤ë >>
+		echo tep_draw_input_field("execute_grant", BUTTON_GRANT, "onClick=\"return formConfirm('grant')\"", FALSE, "submit", FALSE);	// æ¨©é™ã‚’ä¸ãˆã‚‹ >>
 		echo '<br>';
-		echo tep_draw_input_field("execute_revoke", BUTTON_REVOKE, "onClick=\"return formConfirm('revoket')\"", FALSE, "submit", FALSE);	// << ¸¢¸Â¤ò¼è¾Ã¤¹
+		echo tep_draw_input_field("execute_revoke", BUTTON_REVOKE, "onClick=\"return formConfirm('revoket')\"", FALSE, "submit", FALSE);	// << æ¨©é™ã‚’å–æ¶ˆã™
 
 	echo "</td>\n";
-	echo "<td>\n";									// ¥Ç¡¼¥¿¥»¥ë
+	echo "<td>\n";									// ãƒ‡ãƒ¼ã‚¿ã‚»ãƒ«
 
-		// ¥Æ¡¼¥Ö¥ë¥¿¥°¤Î³«»Ï¡Ê´ÉÍı¸¢¸Â¤ò»ı¤Ã¤Æ¤¤¤ë¥æ¡¼¥¶¤Î¥ê¥¹¥È¥Ü¥Ã¥¯¥¹¡Ë
+		// ãƒ†ãƒ¼ãƒ–ãƒ«ã‚¿ã‚°ã®é–‹å§‹ï¼ˆç®¡ç†æ¨©é™ã‚’æŒã£ã¦ã„ã‚‹ãƒ¦ãƒ¼ã‚¶ã®ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ï¼‰
 		echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
 		echo "<tr>\n";
-		echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_ADMIN . '</td>' . "\n";		// ¥µ¥¤¥È´ÉÍı¼Ô
+		echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_ADMIN . '</td>' . "\n";		// ã‚µã‚¤ãƒˆç®¡ç†è€…
 		echo "</tr>\n";
 
-		echo "<td>\n";									// ¥Ç¡¼¥¿¥»¥ë
-		echo tep_draw_pull_down_menu("permission_list", $ausers_admin, '', 'size="5"');	// ¥ê¥¹¥È¥Ü¥Ã¥¯¥¹¤ÎÉ½¼¨
+		echo "<td>\n";									// ãƒ‡ãƒ¼ã‚¿ã‚»ãƒ«
+		echo tep_draw_pull_down_menu("permission_list", $ausers_admin, '', 'size="5"');	// ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã®è¡¨ç¤º
 		echo "</td>\n";
 		echo "</tr>\n";
 		echo "</table>\n";
@@ -701,329 +701,329 @@ function UserPermission_preview() {
 	echo "</tr>\n";
 	echo "</table>\n";
 
-	echo tep_draw_hidden_field("execute_permission");				// ½èÍı¥â¡¼¥É¤ò±£¤·¹àÌÜ¤Ë¥»¥Ã¥È¤¹¤ë
+	echo tep_draw_hidden_field("execute_permission");				// å‡¦ç†ãƒ¢ãƒ¼ãƒ‰ã‚’éš ã—é …ç›®ã«ã‚»ãƒƒãƒˆã™ã‚‹
 
-	echo "</form>\n";						// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
+	echo "</form>\n";						// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
 
-	echo '<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF'])) . '">&laquo;&nbsp;' . BUTTON_BACK_MENU . '</a>';	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
+	echo '<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF'])) . '">&laquo;&nbsp;' . BUTTON_BACK_MENU . '</a>';	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
 
 	return TRUE;
 }
 
 /* ==============================================
-	½èÍı¼Â¹Ô´Ø¿ô
+	å‡¦ç†å®Ÿè¡Œé–¢æ•°
  ============================================= */
 /*--------------------------------------
-	µ¡  Ç½ : ¥æ¡¼¥¶¤ÎÄÉ²Ã½èÍı¼Â¹Ô
-	°ú  ¿ô : ¤Ê¤·
-	Ìá¤êÃÍ : true/false
-	Êä  Â­ : [:print:] °õ»ú²ÄÇ½¤Ê¥­¥ã¥é¥¯¥¿(=À©¸æÊ¸»ú°Ê³°¤Î¥­¥ã¥é¥¯¥¿) 
+	æ©Ÿ  èƒ½ : ãƒ¦ãƒ¼ã‚¶ã®è¿½åŠ å‡¦ç†å®Ÿè¡Œ
+	å¼•  æ•° : ãªã—
+	æˆ»ã‚Šå€¤ : true/false
+	è£œ  è¶³ : [:print:] å°å­—å¯èƒ½ãªã‚­ãƒ£ãƒ©ã‚¯ã‚¿(=åˆ¶å¾¡æ–‡å­—ä»¥å¤–ã®ã‚­ãƒ£ãƒ©ã‚¯ã‚¿) 
  --------------------------------------*/
 function UserInsert_execute() {
 
-	PageBody('t', PAGE_TITLE_INSERT_USER);		// ¥æ¡¼¥¶´ÉÍı²èÌÌ¤Î¥¿¥¤¥È¥ëÉôÉ½¼¨¡Ê¥æ¡¼¥¶¤ÎÄÉ²Ã¡Ë
+	PageBody('t', PAGE_TITLE_INSERT_USER);		// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ç”»é¢ã®ã‚¿ã‚¤ãƒˆãƒ«éƒ¨è¡¨ç¤ºï¼ˆãƒ¦ãƒ¼ã‚¶ã®è¿½åŠ ï¼‰
 
-	// ¥æ¡¼¥¶ID ¤ÎÆşÎÏ¥Á¥§¥Ã¥¯
+	// ãƒ¦ãƒ¼ã‚¶ID ã®å…¥åŠ›ãƒã‚§ãƒƒã‚¯
 	$aerror = "";
 	$ret_err = checkLength_ge($GLOBALS['aval']['userid'], 2);
 	if ($ret_err == "") $ret_err = checkNotnull($GLOBALS['aval']['userid']);
 	if ($ret_err == "") $ret_err = checkStringEreg($GLOBALS['aval']['userid'], "[[:print:]]");
-	if ($ret_err != "") set_errmsg_array($aerror, '<b>' . TABLE_HEADING_USER_ID . '</b>:' . $ret_err);	// ¥æ¡¼¥¶ID
+	if ($ret_err != "") set_errmsg_array($aerror, '<b>' . TABLE_HEADING_USER_ID . '</b>:' . $ret_err);	// ãƒ¦ãƒ¼ã‚¶ID
 
-	// ¥Ñ¥¹¥ï¡¼¥É¤ÎÆşÎÏ¥Á¥§¥Ã¥¯
+	// ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã®å…¥åŠ›ãƒã‚§ãƒƒã‚¯
 	$ret_err = checkLength_ge($GLOBALS['aval']['password'], 2);
 	if ($ret_err == "") $ret_err = checkNotnull($GLOBALS['aval']['password']);
 	if ($ret_err == "") $ret_err = checkStringEreg($GLOBALS['aval']['password'], "[[:print:]]");
-	if ($ret_err != "") set_errmsg_array($aerror, '<b>' . TABLE_HEADING_PASSWORD . '</b>:' . $ret_err);	// ¥Ñ¥¹¥ï¡¼¥É
+	if ($ret_err != "") set_errmsg_array($aerror, '<b>' . TABLE_HEADING_PASSWORD . '</b>:' . $ret_err);	// ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰
 
-	// »áÌ¾ ¤ÎÆşÎÏ¥Á¥§¥Ã¥¯
+	// æ°å ã®å…¥åŠ›ãƒã‚§ãƒƒã‚¯
 	$ret_err = checkNotnull($GLOBALS['aval']['name']);
-	if ($ret_err != "") set_errmsg_array($aerror, '<b>' . TABLE_HEADING_NAME . '</b>:' . $ret_err);		// »áÌ¾
+	if ($ret_err != "") set_errmsg_array($aerror, '<b>' . TABLE_HEADING_NAME . '</b>:' . $ret_err);		// æ°å
 
-	echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));			// <form>¥¿¥°¤Î½ĞÎÏ
+	echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));			// <form>ã‚¿ã‚°ã®å‡ºåŠ›
 
-	if (is_array($aerror)) {			// ÆşÎÏ¥¨¥é¡¼¤Î¤È¤­
-		print_err_message($aerror);		// ¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸É½¼¨
+	if (is_array($aerror)) {			// å…¥åŠ›ã‚¨ãƒ©ãƒ¼ã®ã¨ã
+		print_err_message($aerror);		// ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
 		echo "<br>\n";
-		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-		echo "</form>\n";				// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
+		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+		echo "</form>\n";				// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
 		return FALSE;
 	}
 
-	// ÄÉ²Ã¤¹¤ë¥Ç¡¼¥¿¤¬ÅĞÏ¿¤µ¤ì¤Æ¤¤¤Ê¤¤¤«¥Á¥§¥Ã¥¯¤¹¤ë
-	$ssql = makeSelectUserInfo($GLOBALS['aval']['userid']);		// ¥æ¡¼¥¶¾ğÊó¼èÆÀ
+	// è¿½åŠ ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ãŒç™»éŒ²ã•ã‚Œã¦ã„ãªã„ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹
+	$ssql = makeSelectUserInfo($GLOBALS['aval']['userid']);		// ãƒ¦ãƒ¼ã‚¶æƒ…å ±å–å¾—
 	@$oresult = tep_db_query($ssql);
-	if (!$oresult) {											// ¥¨¥é¡¼¤À¤Ã¤¿¤È¤­
-		echo TEXT_ERRINFO_DB_USERCHACK;							// ¥á¥Ã¥»¡¼¥¸É½¼¨
+	if (!$oresult) {											// ã‚¨ãƒ©ãƒ¼ã ã£ãŸã¨ã
+		echo TEXT_ERRINFO_DB_USERCHACK;							// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
 		echo "<br>\n";
-		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-		echo "</form>\n";										// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
-		if ($oresult) @tep_db_free_result($oresult);			// ·ë²Ì¥ª¥Ö¥¸¥§¥¯¥È¤ò³«Êü¤¹¤ë
+		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+		echo "</form>\n";										// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
+		if ($oresult) @tep_db_free_result($oresult);			// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é–‹æ”¾ã™ã‚‹
 		return FALSE;
 	}
 
-	$nrow = tep_db_num_rows($oresult);							// ¥ì¥³¡¼¥É·ï¿ô¤Î¼èÆÀ
-	if ($nrow >= 1) {											// ¼èÆÀ¤·¤¿¥ì¥³¡¼¥É·ï¿ô0·ï¤Ç¤Ê¤¤¤È¤­
-		echo TEXT_ERRINFO_DB_EXISTING_USER;						// ¥á¥Ã¥»¡¼¥¸É½¼¨
+	$nrow = tep_db_num_rows($oresult);							// ãƒ¬ã‚³ãƒ¼ãƒ‰ä»¶æ•°ã®å–å¾—
+	if ($nrow >= 1) {											// å–å¾—ã—ãŸãƒ¬ã‚³ãƒ¼ãƒ‰ä»¶æ•°0ä»¶ã§ãªã„ã¨ã
+		echo TEXT_ERRINFO_DB_EXISTING_USER;						// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
 		echo "<br>\n";
-		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-		echo "</form>\n";										// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
-		if ($oresult) @tep_db_free_result($oresult);			// ·ë²Ì¥ª¥Ö¥¸¥§¥¯¥È¤ò³«Êü¤¹¤ë
-		return FALSE;											// ½èÍı¤òÈ´¤±¤ë
+		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+		echo "</form>\n";										// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
+		if ($oresult) @tep_db_free_result($oresult);			// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é–‹æ”¾ã™ã‚‹
+		return FALSE;											// å‡¦ç†ã‚’æŠœã‘ã‚‹
 	}
 
-	$ssql = makeInsertUser($GLOBALS['aval']);					// ¥æ¡¼¥¶´ÉÍı¥Æ¡¼¥Ö¥ë¤ÎÄÉ²ÃsqlÊ¸»úÎó¤ò¼èÆÀ¤¹¤ë
+	$ssql = makeInsertUser($GLOBALS['aval']);					// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ†ãƒ¼ãƒ–ãƒ«ã®è¿½åŠ sqlæ–‡å­—åˆ—ã‚’å–å¾—ã™ã‚‹
 	@$oresult = tep_db_query($ssql);
-	if (!$oresult) {											// ¥¨¥é¡¼¤À¤Ã¤¿¤È¤­
-		echo TEXT_ERRINFO_DB_INSERT_USER;						// ¥á¥Ã¥»¡¼¥¸É½¼¨
+	if (!$oresult) {											// ã‚¨ãƒ©ãƒ¼ã ã£ãŸã¨ã
+		echo TEXT_ERRINFO_DB_INSERT_USER;						// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
 		echo "<br>\n";
-		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-		echo "</form>\n";										// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
-		if ($oresult) @tep_db_free_result($oresult);			// ·ë²Ì¥ª¥Ö¥¸¥§¥¯¥È¤ò³«Êü¤¹¤ë
+		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+		echo "</form>\n";										// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
+		if ($oresult) @tep_db_free_result($oresult);			// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é–‹æ”¾ã™ã‚‹
 		return FALSE;
 	}
 
-	$ssql = makeInsertUser($GLOBALS['aval'], 1);				// ¥æ¡¼¥¶¸¢¸Â¥Æ¡¼¥Ö¥ë¤ÎÄÉ²ÃsqlÊ¸»úÎó¤ò¼èÆÀ¤¹¤ë
+	$ssql = makeInsertUser($GLOBALS['aval'], 1);				// ãƒ¦ãƒ¼ã‚¶æ¨©é™ãƒ†ãƒ¼ãƒ–ãƒ«ã®è¿½åŠ sqlæ–‡å­—åˆ—ã‚’å–å¾—ã™ã‚‹
 	@$oresult = tep_db_query($ssql);
-	if (!$oresult) {											// ¥¨¥é¡¼¤À¤Ã¤¿¤È¤­
-		echo TEXT_ERRINFO_DB_INSERT_PERMISSION;					// ¥á¥Ã¥»¡¼¥¸É½¼¨
+	if (!$oresult) {											// ã‚¨ãƒ©ãƒ¼ã ã£ãŸã¨ã
+		echo TEXT_ERRINFO_DB_INSERT_PERMISSION;					// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
 		echo "<br>\n";
-		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-		echo "</form>\n";										// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
-		if ($oresult) @tep_db_free_result($oresult);			// ·ë²Ì¥ª¥Ö¥¸¥§¥¯¥È¤ò³«Êü¤¹¤ë
+		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+		echo "</form>\n";										// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
+		if ($oresult) @tep_db_free_result($oresult);			// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é–‹æ”¾ã™ã‚‹
 		return FALSE;
 	}
 
 	echo "<br>\n";
-	echo TEXT_SUCCESSINFO_INSERT_USER;		// ´°Î»¥á¥Ã¥»¡¼¥¸
+	echo TEXT_SUCCESSINFO_INSERT_USER;		// å®Œäº†ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 	echo '<br><br>';
-	echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-	echo "</form>\n";						// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
+	echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+	echo "</form>\n";						// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
 
-	if ($oresult) @tep_db_free_result($oresult);		// ·ë²Ì¥ª¥Ö¥¸¥§¥¯¥È¤ò³«Êü¤¹¤ë
+	if ($oresult) @tep_db_free_result($oresult);		// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é–‹æ”¾ã™ã‚‹
 
 	return TRUE;
 }
 /*--------------------------------------
-	µ¡  Ç½ : ¥æ¡¼¥¶¾ğÊó¤Î¹¹¿·½èÍı¼Â¹Ô
-	°ú  ¿ô : ¤Ê¤·
-	Ìá¤êÃÍ : true/false
-	Êä  Â­ : [:print:] °õ»ú²ÄÇ½¤Ê¥­¥ã¥é¥¯¥¿(=À©¸æÊ¸»ú°Ê³°¤Î¥­¥ã¥é¥¯¥¿) 
+	æ©Ÿ  èƒ½ : ãƒ¦ãƒ¼ã‚¶æƒ…å ±ã®æ›´æ–°å‡¦ç†å®Ÿè¡Œ
+	å¼•  æ•° : ãªã—
+	æˆ»ã‚Šå€¤ : true/false
+	è£œ  è¶³ : [:print:] å°å­—å¯èƒ½ãªã‚­ãƒ£ãƒ©ã‚¯ã‚¿(=åˆ¶å¾¡æ–‡å­—ä»¥å¤–ã®ã‚­ãƒ£ãƒ©ã‚¯ã‚¿) 
  --------------------------------------*/
 function UserInfor_execute() {
 
-	PageBody('t', PAGE_TITLE_USERINFO);		// ¥æ¡¼¥¶´ÉÍı²èÌÌ¤Î¥¿¥¤¥È¥ëÉôÉ½¼¨¡Ê¥æ¡¼¥¶¾ğÊó¡Ë
+	PageBody('t', PAGE_TITLE_USERINFO);		// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ç”»é¢ã®ã‚¿ã‚¤ãƒˆãƒ«éƒ¨è¡¨ç¤ºï¼ˆãƒ¦ãƒ¼ã‚¶æƒ…å ±ï¼‰
 
-	// »áÌ¾ ¤ÎÆşÎÏ¥Á¥§¥Ã¥¯
+	// æ°å ã®å…¥åŠ›ãƒã‚§ãƒƒã‚¯
 	$ret_err = checkNotnull($GLOBALS['aval']['name']);
-	if ($ret_err != "") set_errmsg_array($aerror, '<b>' . TABLE_HEADING_NAME . '</b>:' . $ret_err);		// »áÌ¾
+	if ($ret_err != "") set_errmsg_array($aerror, '<b>' . TABLE_HEADING_NAME . '</b>:' . $ret_err);		// æ°å
 
-	echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));			// <form>¥¿¥°¤Î½ĞÎÏ
+	echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));			// <form>ã‚¿ã‚°ã®å‡ºåŠ›
 
-	if (is_array($aerror)) {			// ÆşÎÏ¥¨¥é¡¼¤Î¤È¤­
-		print_err_message($aerror);		// ¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸É½¼¨
+	if (is_array($aerror)) {			// å…¥åŠ›ã‚¨ãƒ©ãƒ¼ã®ã¨ã
+		print_err_message($aerror);		// ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
 		echo "<br>\n";
-		echo tep_draw_hidden_field('userslist', $GLOBALS['userid']);						// ¥æ¡¼¥¶£É£Ä¤ò±£¤·¹àÌÜ¤Ë¥»¥Ã¥È¤¹¤ë
-		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-		echo "</form>\n";				// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
+		echo tep_draw_hidden_field('userslist', $GLOBALS['userid']);						// ãƒ¦ãƒ¼ã‚¶ï¼©ï¼¤ã‚’éš ã—é …ç›®ã«ã‚»ãƒƒãƒˆã™ã‚‹
+		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+		echo "</form>\n";				// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
 		return FALSE;
 	}
 
-	$ssql = makeUpdateUser($GLOBALS['aval']);					// ¥æ¡¼¥¶´ÉÍı¥Æ¡¼¥Ö¥ë¤Î»áÌ¾¤ÈE-Mai¤ò¹¹¿·¤¹¤ë sqlÊ¸»úÎó¤ò¼èÆÀ¤¹¤ë
+	$ssql = makeUpdateUser($GLOBALS['aval']);					// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ†ãƒ¼ãƒ–ãƒ«ã®æ°åã¨E-Maiã‚’æ›´æ–°ã™ã‚‹ sqlæ–‡å­—åˆ—ã‚’å–å¾—ã™ã‚‹
 	@$oresult = tep_db_query($ssql);
-	if (!$oresult) {											// ¥¨¥é¡¼¤À¤Ã¤¿¤È¤­
-		echo TEXT_ERRINFO_DB_UPDATE_USER;						// ¥á¥Ã¥»¡¼¥¸É½¼¨
+	if (!$oresult) {											// ã‚¨ãƒ©ãƒ¼ã ã£ãŸã¨ã
+		echo TEXT_ERRINFO_DB_UPDATE_USER;						// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
 		echo "<br>\n";
-		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-		echo "</form>\n";										// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
-		if ($oresult) @tep_db_free_result($oresult);			// ·ë²Ì¥ª¥Ö¥¸¥§¥¯¥È¤ò³«Êü¤¹¤ë
+		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+		echo "</form>\n";										// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
+		if ($oresult) @tep_db_free_result($oresult);			// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é–‹æ”¾ã™ã‚‹
 		return FALSE;
 	}
 
 	echo "<br>\n";
-	echo TEXT_SUCCESSINFO_UPDATE_USER;		// ´°Î»¥á¥Ã¥»¡¼¥¸
+	echo TEXT_SUCCESSINFO_UPDATE_USER;		// å®Œäº†ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 	echo "<br><br>\n";
-	echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-	echo "</form>\n";						// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
+	echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+	echo "</form>\n";						// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
 
-	if ($oresult) @tep_db_free_result($oresult);		// ·ë²Ì¥ª¥Ö¥¸¥§¥¯¥È¤ò³«Êü¤¹¤ë
+	if ($oresult) @tep_db_free_result($oresult);		// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é–‹æ”¾ã™ã‚‹
 
 	return TRUE;
 }
 
 /*--------------------------------------
-	µ¡  Ç½ : ¥æ¡¼¥¶ºï½ü¥Á¥§¥Ã¥¯
-	°ú  ¿ô : ¤Ê¤·
-	Ìá¤êÃÍ : true/false
+	æ©Ÿ  èƒ½ : ãƒ¦ãƒ¼ã‚¶å‰Šé™¤ãƒã‚§ãƒƒã‚¯
+	å¼•  æ•° : ãªã—
+	æˆ»ã‚Šå€¤ : true/false
  --------------------------------------*/
 function UserDelete_execute() {
 
-	global $ocertify;						// ¥æ¡¼¥¶Ç§¾Ú¥ª¥Ö¥¸¥§¥¯¥È
+	global $ocertify;						// ãƒ¦ãƒ¼ã‚¶èªè¨¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 
-	PageBody('t', PAGE_TITLE_USERINFO);		// ¥æ¡¼¥¶´ÉÍı²èÌÌ¤Î¥¿¥¤¥È¥ëÉôÉ½¼¨¡Ê¥æ¡¼¥¶¾ğÊó¡Ë
+	PageBody('t', PAGE_TITLE_USERINFO);		// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ç”»é¢ã®ã‚¿ã‚¤ãƒˆãƒ«éƒ¨è¡¨ç¤ºï¼ˆãƒ¦ãƒ¼ã‚¶æƒ…å ±ï¼‰
 
 	if (strcmp($GLOBALS['userid'],$ocertify->auth_user) == 0)
-		set_errmsg_array($aerror, TEXT_ERRINFO_USER_DELETE);			// ËÜ¿Í¤Î¾ğÊó¤òºï½ü¤Ï¥¨¥é¡¼
+		set_errmsg_array($aerror, TEXT_ERRINFO_USER_DELETE);			// æœ¬äººã®æƒ…å ±ã‚’å‰Šé™¤ã¯ã‚¨ãƒ©ãƒ¼
 
-	echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));		// <form>¥¿¥°¤Î½ĞÎÏ
+	echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));		// <form>ã‚¿ã‚°ã®å‡ºåŠ›
 
-	if (is_array($aerror)) {			// ÆşÎÏ¥¨¥é¡¼¤Î¤È¤­
-		print_err_message($aerror);		// ¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸É½¼¨
+	if (is_array($aerror)) {			// å…¥åŠ›ã‚¨ãƒ©ãƒ¼ã®ã¨ã
+		print_err_message($aerror);		// ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
 		echo "<br>\n";
-		echo tep_draw_hidden_field('userslist', $GLOBALS['userid']);	// ¥æ¡¼¥¶£É£Ä¤ò±£¤·¹àÌÜ¤Ë¥»¥Ã¥È¤¹¤ë
-		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-		echo "</form>\n";				// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
+		echo tep_draw_hidden_field('userslist', $GLOBALS['userid']);	// ãƒ¦ãƒ¼ã‚¶ï¼©ï¼¤ã‚’éš ã—é …ç›®ã«ã‚»ãƒƒãƒˆã™ã‚‹
+		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+		echo "</form>\n";				// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
 		return FALSE;
 	}
 
-	$ssql = makeDeleteUser(1);							// ¥æ¡¼¥¶¸¢¸Â¥Æ¡¼¥Ö¥ë¤«¤éÂĞ¾İ¥æ¡¼¥¶¤òºï½ü¤¹¤ë sqlÊ¸»úÎó¤ò¼èÆÀ¤¹¤ë
+	$ssql = makeDeleteUser(1);							// ãƒ¦ãƒ¼ã‚¶æ¨©é™ãƒ†ãƒ¼ãƒ–ãƒ«ã‹ã‚‰å¯¾è±¡ãƒ¦ãƒ¼ã‚¶ã‚’å‰Šé™¤ã™ã‚‹ sqlæ–‡å­—åˆ—ã‚’å–å¾—ã™ã‚‹
 	@$oresult = tep_db_query($ssql);
-	if (!$oresult) {									// ¥¨¥é¡¼¤À¤Ã¤¿¤È¤­
-		echo TEXT_ERRINFO_DB_DELETE_USER;				// ¥á¥Ã¥»¡¼¥¸É½¼¨
+	if (!$oresult) {									// ã‚¨ãƒ©ãƒ¼ã ã£ãŸã¨ã
+		echo TEXT_ERRINFO_DB_DELETE_USER;				// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
 		echo "<br>\n";
-		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-		echo "</form>\n";								// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
-		if ($oresult) @tep_db_free_result($oresult);	// ·ë²Ì¥ª¥Ö¥¸¥§¥¯¥È¤ò³«Êü¤¹¤ë
+		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+		echo "</form>\n";								// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
+		if ($oresult) @tep_db_free_result($oresult);	// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é–‹æ”¾ã™ã‚‹
 		return FALSE;
 	}
 
-	$ssql = makeDeleteUser();							// ¥æ¡¼¥¶´ÉÍı¥Æ¡¼¥Ö¥ë¤«¤éÂĞ¾İ¥æ¡¼¥¶¤òºï½ü¤¹¤ë sqlÊ¸»úÎó¤ò¼èÆÀ¤¹¤ë
+	$ssql = makeDeleteUser();							// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ†ãƒ¼ãƒ–ãƒ«ã‹ã‚‰å¯¾è±¡ãƒ¦ãƒ¼ã‚¶ã‚’å‰Šé™¤ã™ã‚‹ sqlæ–‡å­—åˆ—ã‚’å–å¾—ã™ã‚‹
 	@$oresult = tep_db_query($ssql);
-	if (!$oresult) {									// ¥¨¥é¡¼¤À¤Ã¤¿¤È¤­
-		echo TEXT_ERRINFO_DB_DELETE_USER;				// ¥á¥Ã¥»¡¼¥¸É½¼¨
+	if (!$oresult) {									// ã‚¨ãƒ©ãƒ¼ã ã£ãŸã¨ã
+		echo TEXT_ERRINFO_DB_DELETE_USER;				// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
 		echo "<br>\n";
-		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-		echo "</form>\n";								// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
-		if ($oresult) @tep_db_free_result($oresult);	// ·ë²Ì¥ª¥Ö¥¸¥§¥¯¥È¤ò³«Êü¤¹¤ë
+		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+		echo "</form>\n";								// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
+		if ($oresult) @tep_db_free_result($oresult);	// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é–‹æ”¾ã™ã‚‹
 		return FALSE;
 	}
 
 	echo "<br>\n";
-	echo TEXT_SUCCESSINFO_DELETE_USER;					// ´°Î»¥á¥Ã¥»¡¼¥¸
+	echo TEXT_SUCCESSINFO_DELETE_USER;					// å®Œäº†ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 	echo "<br><br>\n";
-	echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);		// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-	echo "</form>\n";									// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
+	echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);		// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+	echo "</form>\n";									// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
 
-	if ($oresult) @tep_db_free_result($oresult);		// ·ë²Ì¥ª¥Ö¥¸¥§¥¯¥È¤ò³«Êü¤¹¤ë
+	if ($oresult) @tep_db_free_result($oresult);		// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é–‹æ”¾ã™ã‚‹
 
 	return TRUE;
 
 }
 
 /*--------------------------------------
-	µ¡  Ç½ : ¥Ñ¥¹¥ï¡¼¥ÉÊÑ¹¹½èÍı¼Â¹Ô
-	°ú  ¿ô : ¤Ê¤·
-	Ìá¤êÃÍ : true/false
-	Êä  Â­ : [:print:] °õ»ú²ÄÇ½¤Ê¥­¥ã¥é¥¯¥¿(=À©¸æÊ¸»ú°Ê³°¤Î¥­¥ã¥é¥¯¥¿) 
+	æ©Ÿ  èƒ½ : ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰å¤‰æ›´å‡¦ç†å®Ÿè¡Œ
+	å¼•  æ•° : ãªã—
+	æˆ»ã‚Šå€¤ : true/false
+	è£œ  è¶³ : [:print:] å°å­—å¯èƒ½ãªã‚­ãƒ£ãƒ©ã‚¯ã‚¿(=åˆ¶å¾¡æ–‡å­—ä»¥å¤–ã®ã‚­ãƒ£ãƒ©ã‚¯ã‚¿) 
  --------------------------------------*/
 function UserPassword_execute() {
 
-	PageBody('t', PAGE_TITLE_PASSWORD);		// ¥æ¡¼¥¶´ÉÍı²èÌÌ¤Î¥¿¥¤¥È¥ëÉôÉ½¼¨¡Ê¥Ñ¥¹¥ï¡¼¥ÉÊÑ¹¹¡Ë
+	PageBody('t', PAGE_TITLE_PASSWORD);		// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ç”»é¢ã®ã‚¿ã‚¤ãƒˆãƒ«éƒ¨è¡¨ç¤ºï¼ˆãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰å¤‰æ›´ï¼‰
 
-	// ¿·¤·¤¤¥Ñ¥¹¥ï¡¼¥É¤ÎÆşÎÏ¥Á¥§¥Ã¥¯
+	// æ–°ã—ã„ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã®å…¥åŠ›ãƒã‚§ãƒƒã‚¯
 	$ret_err = checkNotnull($GLOBALS['aval']['password']);
 	if ($ret_err != "") set_errmsg_array($aerror, '<b>' . TABLE_HEADING_NEW_PASSWORD . '</b>:' . $ret_err);
 	$ret_err = checkLength_ge($GLOBALS['aval']['password'], 2);
 	if ($ret_err == "") $ret_err = checkStringEreg($GLOBALS['aval']['password'], "[[:print:]]");
 	if ($ret_err != "") set_errmsg_array($aerror, '<b>' . TABLE_HEADING_NEW_PASSWORD . '</b>:' . $ret_err);
-	// ³ÎÇ§¤Î¤¿¤áºÆÆşÎÏ¤ÎÆşÎÏ¥Á¥§¥Ã¥¯
+	// ç¢ºèªã®ãŸã‚å†å…¥åŠ›ã®å…¥åŠ›ãƒã‚§ãƒƒã‚¯
 	if (strcmp($GLOBALS['aval']['password'],$GLOBALS['aval']['chk_password']) != 0)
 		set_errmsg_array($aerror, TEXT_ERRINFO_CONFIRM_PASSWORD);
 
-	echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));			// <form>¥¿¥°¤Î½ĞÎÏ
+	echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));			// <form>ã‚¿ã‚°ã®å‡ºåŠ›
 
-	if (is_array($aerror)) {			// ÆşÎÏ¥¨¥é¡¼¤Î¤È¤­
-		print_err_message($aerror);		// ¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸É½¼¨
+	if (is_array($aerror)) {			// å…¥åŠ›ã‚¨ãƒ©ãƒ¼ã®ã¨ã
+		print_err_message($aerror);		// ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
 		echo "<br>\n";
-		echo tep_draw_hidden_field('userslist', $GLOBALS['userid']);		// ¥æ¡¼¥¶£É£Ä¤ò±£¤·¹àÌÜ¤Ë¥»¥Ã¥È¤¹¤ë
-		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-		echo "</form>\n";				// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
+		echo tep_draw_hidden_field('userslist', $GLOBALS['userid']);		// ãƒ¦ãƒ¼ã‚¶ï¼©ï¼¤ã‚’éš ã—é …ç›®ã«ã‚»ãƒƒãƒˆã™ã‚‹
+		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+		echo "</form>\n";				// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
 		return FALSE;
 	}
 
-	$ssql = makeUpdateUser($GLOBALS['aval'], 1);		// ¥æ¡¼¥¶´ÉÍı¥Æ¡¼¥Ö¥ë¤Î¥Ñ¥¹¥ï¡¼¥É¤ò¹¹¿·¤¹¤ë sqlÊ¸»úÎó¤ò¼èÆÀ¤¹¤ë
+	$ssql = makeUpdateUser($GLOBALS['aval'], 1);		// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ†ãƒ¼ãƒ–ãƒ«ã®ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’æ›´æ–°ã™ã‚‹ sqlæ–‡å­—åˆ—ã‚’å–å¾—ã™ã‚‹
 	@$oresult = tep_db_query($ssql);
-	if (!$oresult) {									// ¥¨¥é¡¼¤À¤Ã¤¿¤È¤­
-		echo TEXT_ERRINFO_DB_CHANGE_PASSWORD;			// ¥á¥Ã¥»¡¼¥¸É½¼¨
+	if (!$oresult) {									// ã‚¨ãƒ©ãƒ¼ã ã£ãŸã¨ã
+		echo TEXT_ERRINFO_DB_CHANGE_PASSWORD;			// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
 		echo "<br>\n";
-		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-		echo "</form>\n";								// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
-		if ($oresult) @tep_db_free_result($oresult);	// ·ë²Ì¥ª¥Ö¥¸¥§¥¯¥È¤ò³«Êü¤¹¤ë
+		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+		echo "</form>\n";								// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
+		if ($oresult) @tep_db_free_result($oresult);	// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é–‹æ”¾ã™ã‚‹
 		return FALSE;
 	}
 
 	echo "<br>\n";
-	echo TEXT_SUCCESSINFO_CHANGE_PASSWORD;		// ´°Î»¥á¥Ã¥»¡¼¥¸
+	echo TEXT_SUCCESSINFO_CHANGE_PASSWORD;		// å®Œäº†ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 	echo "<br><br>\n";
-	echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-	echo "</form>\n";						// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
+	echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+	echo "</form>\n";						// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
 
-	if ($oresult) @tep_db_free_result($oresult);		// ·ë²Ì¥ª¥Ö¥¸¥§¥¯¥È¤ò³«Êü¤¹¤ë
+	if ($oresult) @tep_db_free_result($oresult);		// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é–‹æ”¾ã™ã‚‹
 
 	return TRUE;
 
 }
 
 /*--------------------------------------
-	µ¡  Ç½ : ¥æ¡¼¥¶¸¢¸ÂÁªÂò¥Á¥§¥Ã¥¯
-	°ú  ¿ô : $nmode - (i) ¹¹¿·¥â¡¼¥É¡Ê0:grant¡¢1:revoke¡Ë
-	Ìá¤êÃÍ : true/false
+	æ©Ÿ  èƒ½ : ãƒ¦ãƒ¼ã‚¶æ¨©é™é¸æŠãƒã‚§ãƒƒã‚¯
+	å¼•  æ•° : $nmode - (i) æ›´æ–°ãƒ¢ãƒ¼ãƒ‰ï¼ˆ0:grantã€1:revokeï¼‰
+	æˆ»ã‚Šå€¤ : true/false
  --------------------------------------*/
 function UserPermission_execute($nmode=0) {
 
-	global $ocertify;						// ¥æ¡¼¥¶Ç§¾Ú¥ª¥Ö¥¸¥§¥¯¥È
+	global $ocertify;						// ãƒ¦ãƒ¼ã‚¶èªè¨¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 
-	PageBody('t', PAGE_TITLE_PERMISSION);		// ¥æ¡¼¥¶´ÉÍı²èÌÌ¤Î¥¿¥¤¥È¥ëÉôÉ½¼¨¡Ê´ÉÍı¼Ô¸¢¸Â¡Ë
+	PageBody('t', PAGE_TITLE_PERMISSION);		// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ç”»é¢ã®ã‚¿ã‚¤ãƒˆãƒ«éƒ¨è¡¨ç¤ºï¼ˆç®¡ç†è€…æ¨©é™ï¼‰
 
-	if ($nmode == 0) {		// ¸¢¸Â¤òÍ¿¤¨¤ë½èÍı¡§¥æ¡¼¥¶¤¬ÁªÂò¤µ¤ì¤Æ¤¤¤Ê¤¤
+	if ($nmode == 0) {		// æ¨©é™ã‚’ä¸ãˆã‚‹å‡¦ç†ï¼šãƒ¦ãƒ¼ã‚¶ãŒé¸æŠã•ã‚Œã¦ã„ãªã„
 		$suserid = $GLOBALS['no_permission_list'];
 		if ($suserid == "") set_errmsg_array($aerror, TEXT_ERRINFO_USER_GRANT);
-	} else {				// ¸¢¸Â¤ò¼è¾Ã¤¹½èÍı¡§¥æ¡¼¥¶¤¬ÁªÂò¤µ¤ì¤Æ¤¤¤Ê¤¤
+	} else {				// æ¨©é™ã‚’å–æ¶ˆã™å‡¦ç†ï¼šãƒ¦ãƒ¼ã‚¶ãŒé¸æŠã•ã‚Œã¦ã„ãªã„
 		$suserid = $GLOBALS['permission_list'];
 		if ($suserid == "") set_errmsg_array($aerror, TEXT_ERRINFO_USER_REVOKE);
 	}
-	// ¸¢¸Â¤ò¼è¾Ã¤¹½èÍı¡§¥æ¡¼¥¶ËÜ¿Í¤Î¤È¤­
+	// æ¨©é™ã‚’å–æ¶ˆã™å‡¦ç†ï¼šãƒ¦ãƒ¼ã‚¶æœ¬äººã®ã¨ã
 	if ($nmode == 1 && strcmp($suserid,$ocertify->auth_user) == 0) 
 			set_errmsg_array($aerror, TEXT_ERRINFO_USER_REVOKE_ONESELF);
 
-	echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));	// <form>¥¿¥°¤Î½ĞÎÏ
+	echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));	// <form>ã‚¿ã‚°ã®å‡ºåŠ›
 
-	if (is_array($aerror)) {										// ÆşÎÏ¥¨¥é¡¼¤Î¤È¤­
-		print_err_message($aerror);									// ¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸É½¼¨
+	if (is_array($aerror)) {										// å…¥åŠ›ã‚¨ãƒ©ãƒ¼ã®ã¨ã
+		print_err_message($aerror);									// ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
 		echo "<br>\n";
-		echo tep_draw_hidden_field('userslist', $GLOBALS['userid']);						// ¥æ¡¼¥¶£É£Ä¤ò±£¤·¹àÌÜ¤Ë¥»¥Ã¥È¤¹¤ë
-		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-		echo "</form>\n";											// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
+		echo tep_draw_hidden_field('userslist', $GLOBALS['userid']);						// ãƒ¦ãƒ¼ã‚¶ï¼©ï¼¤ã‚’éš ã—é …ç›®ã«ã‚»ãƒƒãƒˆã™ã‚‹
+		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+		echo "</form>\n";											// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
 		return FALSE;
 	}
 
-	$ssql = makeUpdatePermission($nmode, $suserid);					// ¥æ¡¼¥¶¸¢¸Â¥Æ¡¼¥Ö¥ë¤Î¸¢¸Â¤ò¹¹¿·¤¹¤ë sqlÊ¸»úÎó¤ò¼èÆÀ¤¹¤ë
+	$ssql = makeUpdatePermission($nmode, $suserid);					// ãƒ¦ãƒ¼ã‚¶æ¨©é™ãƒ†ãƒ¼ãƒ–ãƒ«ã®æ¨©é™ã‚’æ›´æ–°ã™ã‚‹ sqlæ–‡å­—åˆ—ã‚’å–å¾—ã™ã‚‹
 	@$oresult = tep_db_query($ssql);
-	if (!$oresult) {												// ¥¨¥é¡¼¤À¤Ã¤¿¤È¤­
-		echo TEXT_ERRINFO_DB_CHANGE_USER;							// ¥á¥Ã¥»¡¼¥¸É½¼¨
+	if (!$oresult) {												// ã‚¨ãƒ©ãƒ¼ã ã£ãŸã¨ã
+		echo TEXT_ERRINFO_DB_CHANGE_USER;							// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
 		echo "<br>\n";
-		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-		echo "</form>\n";											// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
-		if ($oresult) @tep_db_free_result($oresult);				// ·ë²Ì¥ª¥Ö¥¸¥§¥¯¥È¤ò³«Êü¤¹¤ë
+		echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);	// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+		echo "</form>\n";											// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
+		if ($oresult) @tep_db_free_result($oresult);				// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é–‹æ”¾ã™ã‚‹
 		return FALSE;
 	}
 
-	printf(TEXT_SUCCESSINFO_PERMISSION, ($nmode == 0 ? 'Í¿¤¨' : '¼è¾Ã¤·'));
+	printf(TEXT_SUCCESSINFO_PERMISSION, ($nmode == 0 ? 'ä¸ãˆ' : 'å–æ¶ˆã—'));
 	echo "<br><br>\n";
-	echo tep_draw_input_field("execute_permission", BUTTON_BACK_PERMISSION, '', FALSE, "submit", FALSE);	// ´ÉÍı¼Ô¸¢¸Â¤ËÌá¤ë
-	echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);						// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼¤ËÌá¤ë
-	echo "</form>\n";									// ¥Õ¥©¡¼¥à¤Î¥Õ¥Ã¥¿¡¼
+	echo tep_draw_input_field("execute_permission", BUTTON_BACK_PERMISSION, '', FALSE, "submit", FALSE);	// ç®¡ç†è€…æ¨©é™ã«æˆ»ã‚‹
+	echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);						// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
+	echo "</form>\n";									// ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ•ãƒƒã‚¿ãƒ¼
 
-	if ($oresult) @tep_db_free_result($oresult);		// ·ë²Ì¥ª¥Ö¥¸¥§¥¯¥È¤ò³«Êü¤¹¤ë
+	if ($oresult) @tep_db_free_result($oresult);		// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é–‹æ”¾ã™ã‚‹
 
 	return TRUE;
 
 }
 
 /*--------------------------------------
-	µ¡  Ç½ : ³ÎÇ§¥á¥Ã¥»¡¼¥¸¤Î¤¿¤á¤Î JavaScript
-	°ú  ¿ô : ¤Ê¤·
-	Ìá¤êÃÍ : true/false
+	æ©Ÿ  èƒ½ : ç¢ºèªãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®ãŸã‚ã® JavaScript
+	å¼•  æ•° : ãªã—
+	æˆ»ã‚Šå€¤ : true/false
  --------------------------------------*/
 function putJavaScript_ConfirmMsg() {
 
@@ -1058,9 +1058,9 @@ function formConfirm(type) {
 }
 
 /*--------------------------------------
-	µ¡  Ç½ : ¥Ú¡¼¥¸¥Ø¥Ã¥À¤ÎÉ½¼¨
-	°ú  ¿ô : ¤Ê¤·
-	Ìá¤êÃÍ : ¤Ê¤·
+	æ©Ÿ  èƒ½ : ãƒšãƒ¼ã‚¸ãƒ˜ãƒƒãƒ€ã®è¡¨ç¤º
+	å¼•  æ•° : ãªã—
+	æˆ»ã‚Šå€¤ : ãªã—
  --------------------------------------*/
 function PageHeader() {
 	echo '<!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">' . "\n";
@@ -1070,9 +1070,9 @@ function PageHeader() {
 	echo '<title>' . TITLE . '</title>' . "\n";
 	echo '<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">' . "\n";
 
-	// ¥æ¡¼¥¶¾ğÊó¡¢¥Ñ¥¹¥ï¡¼¥ÉÊÑ¹¹¡¢´ÉÍı¼Ô¸¢¸Â¤Î¤È¤­³ÎÇ§¥á¥Ã¥»¡¼¥¸ JavaScript ½ĞÎÏ
+	// ãƒ¦ãƒ¼ã‚¶æƒ…å ±ã€ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰å¤‰æ›´ã€ç®¡ç†è€…æ¨©é™ã®ã¨ãç¢ºèªãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ JavaScript å‡ºåŠ›
 	if ($GLOBALS['execute_user'] || $GLOBALS['execute_password'] || $GLOBALS['execute_permission'] ) {
-		putJavaScript_ConfirmMsg();						// ³ÎÇ§¥á¥Ã¥»¡¼¥¸¤òÉ½¼¨¤¹¤ë JavaScript
+		putJavaScript_ConfirmMsg();						// ç¢ºèªãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤ºã™ã‚‹ JavaScript
 	}
 
 	echo '</head>' . "\n";
@@ -1083,9 +1083,9 @@ function PageHeader() {
 }
 
 /*--------------------------------------
-	µ¡  Ç½ : ¥Ú¡¼¥¸¤Î¥ì¥¤¥¢¥¦¥È¥Æ¡¼¥Ö¥ëÉ½¼¨
-	°ú  ¿ô : $mode		-(i)	Ê¸»úÎó¡§¥â¡¼¥É¡Êt:¾å¡¢u:²¼¡Ë
-	Ìá¤êÃÍ : ¤Ê¤·
+	æ©Ÿ  èƒ½ : ãƒšãƒ¼ã‚¸ã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ†ãƒ¼ãƒ–ãƒ«è¡¨ç¤º
+	å¼•  æ•° : $mode		-(i)	æ–‡å­—åˆ—ï¼šãƒ¢ãƒ¼ãƒ‰ï¼ˆt:ä¸Šã€u:ä¸‹ï¼‰
+	æˆ»ã‚Šå€¤ : ãªã—
  --------------------------------------*/
 function PageBodyTable($mode='t') {
 	switch ($mode) {
@@ -1104,10 +1104,10 @@ function PageBodyTable($mode='t') {
 }
 
 /*--------------------------------------
-	µ¡  Ç½ : ¥Ú¡¼¥¸¥Ü¥Ç¥£¤ÎÉ½¼¨
-	°ú  ¿ô : $mode		-(i)	Ê¸»úÎó¡§¥â¡¼¥É¡Êt:¾å¡¢u:²¼¡Ë
-			 $stitle	-(i)	Ê¸»úÎó¡§¥Ü¥Ç¥£¤Î¥¿¥¤¥È¥ë
-	Ìá¤êÃÍ : ¤Ê¤·
+	æ©Ÿ  èƒ½ : ãƒšãƒ¼ã‚¸ãƒœãƒ‡ã‚£ã®è¡¨ç¤º
+	å¼•  æ•° : $mode		-(i)	æ–‡å­—åˆ—ï¼šãƒ¢ãƒ¼ãƒ‰ï¼ˆt:ä¸Šã€u:ä¸‹ï¼‰
+			 $stitle	-(i)	æ–‡å­—åˆ—ï¼šãƒœãƒ‡ã‚£ã®ã‚¿ã‚¤ãƒˆãƒ«
+	æˆ»ã‚Šå€¤ : ãªã—
  --------------------------------------*/
 function PageBody($mode='t', $stitle = "") {
 	switch ($mode) {
@@ -1137,9 +1137,9 @@ function PageBody($mode='t', $stitle = "") {
 }
 
 /*--------------------------------------
-	µ¡  Ç½ : ¥Ú¡¼¥¸¥Õ¥Ã¥¿¤ÎÉ½¼¨
-	°ú  ¿ô : ¤Ê¤·
-	Ìá¤êÃÍ : ¤Ê¤·
+	æ©Ÿ  èƒ½ : ãƒšãƒ¼ã‚¸ãƒ•ãƒƒã‚¿ã®è¡¨ç¤º
+	å¼•  æ•° : ãªã—
+	æˆ»ã‚Šå€¤ : ãªã—
  --------------------------------------*/
 function PageFooter() {
 	echo "<!-- footer //-->\n";
@@ -1152,58 +1152,58 @@ function PageFooter() {
 
 /* *************************************
 
-   ¥æ¡¼¥¶¾ğÊóÊİ¼é²èÌÌ¤Î¥×¥í¥°¥é¥àÀ©¸æ¡Ê¥á¥¤¥ó¡Ë
+   ãƒ¦ãƒ¼ã‚¶æƒ…å ±ä¿å®ˆç”»é¢ã®ãƒ—ãƒ­ã‚°ãƒ©ãƒ åˆ¶å¾¡ï¼ˆãƒ¡ã‚¤ãƒ³ï¼‰
 
  ************************************* */
 
   require('includes/application_top.php');
 
-	PageHeader();				// ¥Ú¡¼¥¸¡¦¥Ø¥Ã¥À¤ÎÉ½¼¨
-	PageBodyTable('t');			// ¥Ú¡¼¥¸¤Î¥ì¥¤¥¢¥¦¥È¥Æ¡¼¥Ö¥ë¡§³«»Ï¡Ê¥Ê¥Ó¥²¡¼¥·¥ç¥ó¥Ü¥Ã¥¯¥¹¤òÊñ³ç¤¹¤ë¥Æ¡¼¥Ö¥ë³«»Ï¡Ë
+	PageHeader();				// ãƒšãƒ¼ã‚¸ãƒ»ãƒ˜ãƒƒãƒ€ã®è¡¨ç¤º
+	PageBodyTable('t');			// ãƒšãƒ¼ã‚¸ã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ†ãƒ¼ãƒ–ãƒ«ï¼šé–‹å§‹ï¼ˆãƒŠãƒ“ã‚²ãƒ¼ã‚·ãƒ§ãƒ³ãƒœãƒƒã‚¯ã‚¹ã‚’åŒ…æ‹¬ã™ã‚‹ãƒ†ãƒ¼ãƒ–ãƒ«é–‹å§‹ï¼‰
 
-	// º¸¥Ê¥Ó¥²¡¼¥·¥ç¥ó¥Ü¥Ã¥¯¥¹¤ÎÉ½¼¨
+	// å·¦ãƒŠãƒ“ã‚²ãƒ¼ã‚·ãƒ§ãƒ³ãƒœãƒƒã‚¯ã‚¹ã®è¡¨ç¤º
 	echo "<!-- left_navigation //-->\n";		// 
 	include_once(DIR_WS_INCLUDES . 'column_left.php');
 	echo "\n<!-- left_navigation_eof //-->\n";
 	echo "    </table></td>\n";
 
-// ²èÌÌÉ½¼¨¡¢ÆşÎÏ¥Á¥§¥Ã¥¯£Ä£ÂÈ¿±Ç
+// ç”»é¢è¡¨ç¤ºã€å…¥åŠ›ãƒã‚§ãƒƒã‚¯ï¼¤ï¼¢åæ˜ 
 	if ($ocertify->auth_user) {
-		// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼
+		// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 		if ($execute_menu) {
-			UserManu_preview();								// ½é´üÉ½¼¨
+			UserManu_preview();								// åˆæœŸè¡¨ç¤º
 
-		// ¥æ¡¼¥¶¤ÎÄÉ²Ã
+		// ãƒ¦ãƒ¼ã‚¶ã®è¿½åŠ 
 		} elseif ($execute_new) {
-			if ($execute_insert) UserInsert_execute();		// ¥æ¡¼¥¶¤ÎÄÉ²Ã½èÍı¼Â¹Ô
-			else UserInsert_preview();						// ¥æ¡¼¥¶¤ÎÄÉ²Ã¥Ú¡¼¥¸É½¼¨
+			if ($execute_insert) UserInsert_execute();		// ãƒ¦ãƒ¼ã‚¶ã®è¿½åŠ å‡¦ç†å®Ÿè¡Œ
+			else UserInsert_preview();						// ãƒ¦ãƒ¼ã‚¶ã®è¿½åŠ ãƒšãƒ¼ã‚¸è¡¨ç¤º
 
-		// ¥æ¡¼¥¶¾ğÊóÊİ¼é
+		// ãƒ¦ãƒ¼ã‚¶æƒ…å ±ä¿å®ˆ
 		} elseif ($execute_user) {
-			if ($execute_update) UserInfor_execute();		// ¥æ¡¼¥¶¾ğÊó¹¹¿·½èÍı¼Â¹Ô
-			elseif ($execute_delete) UserDelete_execute();	// ¥æ¡¼¥¶¾ğÊóºï½ü½èÍı¼Â¹Ô
-			else UserInfo_preview();						// ¥æ¡¼¥¶¾ğÊó¥Ú¡¼¥¸É½¼¨
+			if ($execute_update) UserInfor_execute();		// ãƒ¦ãƒ¼ã‚¶æƒ…å ±æ›´æ–°å‡¦ç†å®Ÿè¡Œ
+			elseif ($execute_delete) UserDelete_execute();	// ãƒ¦ãƒ¼ã‚¶æƒ…å ±å‰Šé™¤å‡¦ç†å®Ÿè¡Œ
+			else UserInfo_preview();						// ãƒ¦ãƒ¼ã‚¶æƒ…å ±ãƒšãƒ¼ã‚¸è¡¨ç¤º
 
-		// ¥Ñ¥¹¥ï¡¼¥ÉÊÑ¹¹
+		// ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰å¤‰æ›´
 		} elseif ($execute_password) {
-			if ($execute_update) UserPassword_execute();	// ¥Ñ¥¹¥ï¡¼¥ÉÊÑ¹¹½èÍı¼Â¹Ô
-			else UserPassword_preview();					// ¥Ñ¥¹¥ï¡¼¥ÉÊÑ¹¹¥Ú¡¼¥¸É½¼¨
+			if ($execute_update) UserPassword_execute();	// ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰å¤‰æ›´å‡¦ç†å®Ÿè¡Œ
+			else UserPassword_preview();					// ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰å¤‰æ›´ãƒšãƒ¼ã‚¸è¡¨ç¤º
 
-		// ´ÉÍı¼Ô¸¢¸Â
+		// ç®¡ç†è€…æ¨©é™
 		} elseif ($execute_permission) {
-			if ($execute_grant) UserPermission_execute(0);				// ´ÉÍı¼Ô¸¢¸Â¤òÍ¿¤¨¤ë½èÍı¼Â¹Ô
-			elseif ($execute_revoke)  UserPermission_execute(1);		// ´ÉÍı¼Ô¸¢¸Â¤ò¼è¾Ã¤¹½èÍı¼Â¹Ô
-			else UserPermission_preview();								// ´ÉÍı¼Ô¸¢¸Â¥Ú¡¼¥¸É½¼¨
+			if ($execute_grant) UserPermission_execute(0);				// ç®¡ç†è€…æ¨©é™ã‚’ä¸ãˆã‚‹å‡¦ç†å®Ÿè¡Œ
+			elseif ($execute_revoke)  UserPermission_execute(1);		// ç®¡ç†è€…æ¨©é™ã‚’å–æ¶ˆã™å‡¦ç†å®Ÿè¡Œ
+			else UserPermission_preview();								// ç®¡ç†è€…æ¨©é™ãƒšãƒ¼ã‚¸è¡¨ç¤º
 
-		// ¥æ¡¼¥¶´ÉÍı¥á¥Ë¥å¡¼
+		// ãƒ¦ãƒ¼ã‚¶ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 		} else {
-			UserManu_preview();								// ½é´üÉ½¼¨
+			UserManu_preview();								// åˆæœŸè¡¨ç¤º
 		}
 	}
 
-	PageBody('u');				// ¥Ú¡¼¥¸¥Ü¥Ç¥£¤Î½ªÎ»
-	PageBodyTable('u');			// ¥Ú¡¼¥¸¤Î¥ì¥¤¥¢¥¦¥È¥Æ¡¼¥Ö¥ë¡§½ªÎ»
-	PageFooter();				// ¥Ú¡¼¥¸¥Õ¥Ã¥¿¤ÎÉ½¼¨
+	PageBody('u');				// ãƒšãƒ¼ã‚¸ãƒœãƒ‡ã‚£ã®çµ‚äº†
+	PageBodyTable('u');			// ãƒšãƒ¼ã‚¸ã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ†ãƒ¼ãƒ–ãƒ«ï¼šçµ‚äº†
+	PageFooter();				// ãƒšãƒ¼ã‚¸ãƒ•ãƒƒã‚¿ã®è¡¨ç¤º
 
 	require(DIR_WS_INCLUDES . 'application_bottom.php');
 ?>

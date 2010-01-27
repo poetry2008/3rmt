@@ -1,79 +1,79 @@
 <?php
 /* *********************************************************
- * ¥¯¥é¥¹Ì¾: user_certify.php
- * ´ÉÍı¥µ¥¤¥È¤Î¥æ¡¼¥¶Ç§¾Ú¤ò¹Ô¤¤¡¢¥¢¥¯¥»¥¹¥í¥°¤Ëµ­Ï¿¤¹¤ë¡£
+ * ã‚¯ãƒ©ã‚¹å: user_certify.php
+ * ç®¡ç†ã‚µã‚¤ãƒˆã®ãƒ¦ãƒ¼ã‚¶èªè¨¼ã‚’è¡Œã„ã€ã‚¢ã‚¯ã‚»ã‚¹ãƒ­ã‚°ã«è¨˜éŒ²ã™ã‚‹ã€‚
  * Naomi Suzukawa <suzukawa@bitscope.co.jp>
  *
- * 2001/05/29 ºîÀ®
- * 2002/05/10 osCommers ÍÑ¤ËÊÑ¹¹
- * 2002/05/21 osCommers IE5.01¤ÇÆ°ºî¤¬ÉÔÀµ¤Ë¤Ê¤ë¤¿¤áÂçÉı¤ËÊÑ¹¹
- *            PHP HTTP(Basic)Ç§¾Ú ¤ò PHP¥»¥Ã¥·¥ç¥ó´ÉÍı+¥Ñ¥¹¥ï¡¼¥ÉÇ§¾Ú¤ËÊÑ¹¹
+ * 2001/05/29 ä½œæˆ
+ * 2002/05/10 osCommers ç”¨ã«å¤‰æ›´
+ * 2002/05/21 osCommers IE5.01ã§å‹•ä½œãŒä¸æ­£ã«ãªã‚‹ãŸã‚å¤§å¹…ã«å¤‰æ›´
+ *            PHP HTTP(Basic)èªè¨¼ ã‚’ PHPã‚»ãƒƒã‚·ãƒ§ãƒ³ç®¡ç†+ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰èªè¨¼ã«å¤‰æ›´
  * 2004/03/19 replace get_cfg_var() with ini_get()
 ********************************************************* */
 class user_certify {
-    // ¥æ¡¼¥¶¸¢¸Â
+    // ãƒ¦ãƒ¼ã‚¶æ¨©é™
     var $apermissions = array('read'=>0, 'write'=>0, 'config'=>0, 'users'=>0);
     var $npermission = 0;
-    // ¥í¥°¥¤¥ó¥í¥°¤Î¥Ç¡¼¥¿Êİ»ı´ü´Ö¡ÊÆü¡Ë
+    // ãƒ­ã‚°ã‚¤ãƒ³ãƒ­ã‚°ã®ãƒ‡ãƒ¼ã‚¿ä¿æŒæœŸé–“ï¼ˆæ—¥ï¼‰
     var $login_log_span = 14;
-    // ÆüÉÕ·Á¼°
+    // æ—¥ä»˜å½¢å¼
     var $date_format = 'Y-m-d H:i:s';
 
-    // ½é²ó¥í¥°¥¤¥ó¥Õ¥é¥°
+    // åˆå›ãƒ­ã‚°ã‚¤ãƒ³ãƒ•ãƒ©ã‚°
     var $isFirstTime = FALSE;
-    // ¥í¥°¥¤¥ó¥¨¥é¡¼¥Õ¥é¥°
+    // ãƒ­ã‚°ã‚¤ãƒ³ã‚¨ãƒ©ãƒ¼ãƒ•ãƒ©ã‚°
     var $isErr = FALSE;
-    // ¥í¥°¥¤¥óºÑ¤ß¥Õ¥é¥°
+    // ãƒ­ã‚°ã‚¤ãƒ³æ¸ˆã¿ãƒ•ãƒ©ã‚°
     var $flg = FALSE;
 
-    // ¥æ¡¼¥¶ID
+    // ãƒ¦ãƒ¼ã‚¶ID
     var $auth_user = '';
 
 /* -------------------------------------
-    µ¡  Ç½ : ¥³¥ó¥¹¥È¥é¥¯¥¿
-    °ú  ¿ô : $s_sid             - (i) ¥»¥Ã¥·¥ç¥óID
-    Ìá¤êÃÍ : TRUE/FALSE
-    Àâ  ÌÀ : ¥æ¡¼¥¶¤ÎÇ§¾Ú¤ò¹Ô¤¦
+    æ©Ÿ  èƒ½ : ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    å¼•  æ•° : $s_sid             - (i) ã‚»ãƒƒã‚·ãƒ§ãƒ³ID
+    æˆ»ã‚Šå€¤ : TRUE/FALSE
+    èª¬  æ˜ : ãƒ¦ãƒ¼ã‚¶ã®èªè¨¼ã‚’è¡Œã†
  ------------------------------------ */
     function user_certify($s_sid) {
-        $this->user_admin_entry();           // ´ÉÍı¼Ô¡Êadmin¡ËÅĞÏ¿
+        $this->user_admin_entry();           // ç®¡ç†è€…ï¼ˆadminï¼‰ç™»éŒ²
 
-        // ¥¿¥¤¥à¥¢¥¦¥È»ş¹ï¤ò¼èÆÀ
+        // ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆæ™‚åˆ»ã‚’å–å¾—
         $actime = $this->time_out_time();
         //error_log('USER ' . date($this->date_format) . ' user_certify start. timeout='.$actime . "\n", 3, STORE_PAGE_PARSE_TIME_LOG);// DEBUG
 
-        // °ìÄê´ü´Ö·Ğ²á¤·¤¿¥¢¥¯¥»¥¹¥í¥°¤Î¥¹¥Æ¡¼¥¿¥¹¤ò¥í¥°¥¢¥¦¥È¤Ë¹¹¿·¤¹¤ë
+        // ä¸€å®šæœŸé–“çµŒéã—ãŸã‚¢ã‚¯ã‚»ã‚¹ãƒ­ã‚°ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’ãƒ­ã‚°ã‚¢ã‚¦ãƒˆã«æ›´æ–°ã™ã‚‹
         $this->logoutCertifyLog($actime,$s_sid);
 
         $user = '';
-        // ¥í¥°¥¤¥ó¥Ú¡¼¥¸¤Ç¥æ¡¼¥¶£É£Ä¤¬ÆşÎÏ¤µ¤ì¤Æ¤¤¤ë¤È¤­
+        // ãƒ­ã‚°ã‚¤ãƒ³ãƒšãƒ¼ã‚¸ã§ãƒ¦ãƒ¼ã‚¶ï¼©ï¼¤ãŒå…¥åŠ›ã•ã‚Œã¦ã„ã‚‹ã¨ã
         if ($GLOBALS['HTTP_POST_VARS']['execute_login']) {
             $user = trim($GLOBALS['HTTP_POST_VARS']['loginuid']);
         }
-        // ¥»¥Ã¥·¥ç¥ó£É£Ä¤Ë¤è¤ê¡¢¥æ¡¼¥¶¥í¥°¥¤¥ó¾ğÊó¼èÆÀ
+        // ã‚»ãƒƒã‚·ãƒ§ãƒ³ï¼©ï¼¤ã«ã‚ˆã‚Šã€ãƒ¦ãƒ¼ã‚¶ãƒ­ã‚°ã‚¤ãƒ³æƒ…å ±å–å¾—
         $oresult = tep_db_query("select * from login where sessionid='" . $s_sid . "'");
-        if (!$oresult) {                     // DB¥¨¥é¡¼¤À¤Ã¤¿¤È¤­
+        if (!$oresult) {                     // DBã‚¨ãƒ©ãƒ¼ã ã£ãŸã¨ã
             $this->putCertifyLog($s_sid,'e',$user);
             $this->isErr = TRUE;
             die('<br>'.TEXT_ERRINFO_DBERROR);
         }
 
-        $nrow = tep_db_num_rows($oresult);   // ¥ì¥³¡¼¥É·ï¿ô¤Î¼èÆÀ
-        if ($nrow == 1) {                    // ¥í¥°¥¤¥ó¥í¥°¤¬ÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë¤È¤­
+        $nrow = tep_db_num_rows($oresult);   // ãƒ¬ã‚³ãƒ¼ãƒ‰ä»¶æ•°ã®å–å¾—
+        if ($nrow == 1) {                    // ãƒ­ã‚°ã‚¤ãƒ³ãƒ­ã‚°ãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã¨ã
             $this->flg = TRUE;
-            $arec = tep_db_fetch_array($oresult);  // ¥ì¥³¡¼¥É¤ò¼èÆÀ
-			// UID¤¬¥í¥°¥¤¥ó¥Ú¡¼¥¸¤ÇÆşÎÏ¤µ¤ì¤Æ¤¤¤ë¤È¤­¥Æ¡¼¥Ö¥ë¤ÎÃÍ¤ÈÅù¤·¤¤¤«¥Á¥§¥Ã¥¯
+            $arec = tep_db_fetch_array($oresult);  // ãƒ¬ã‚³ãƒ¼ãƒ‰ã‚’å–å¾—
+			// UIDãŒãƒ­ã‚°ã‚¤ãƒ³ãƒšãƒ¼ã‚¸ã§å…¥åŠ›ã•ã‚Œã¦ã„ã‚‹ã¨ããƒ†ãƒ¼ãƒ–ãƒ«ã®å€¤ã¨ç­‰ã—ã„ã‹ãƒã‚§ãƒƒã‚¯
             if ($user && $user != $arec['account']) {
                 $this->putCertifyLog($s_sid,'n',$user);
                 $this->isErr = TRUE;
                 return;
-            } elseif ($arec['loginstatus'] != 'a') { // Á°¤Î¥í¥°¥¤¥ó¤¬¥¨¥é¡¼¤Ç¤Ê¤¤¤«?
+            } elseif ($arec['loginstatus'] != 'a') { // å‰ã®ãƒ­ã‚°ã‚¤ãƒ³ãŒã‚¨ãƒ©ãƒ¼ã§ãªã„ã‹?
                 $this->isFirstTime = TRUE;
                 return;
-            } elseif ($arec['logoutstatus'] != 'i') {// ¥¨¥é¡¼,¥í¥°¥¢¥¦¥È,¥¿¥¤¥à¥¢¥¦¥È?
+            } elseif ($arec['logoutstatus'] != 'i') {// ã‚¨ãƒ©ãƒ¼,ãƒ­ã‚°ã‚¢ã‚¦ãƒˆ,ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆ?
                 $this->isFirstTime = TRUE;
                 return;
-            } elseif (strcmp($arec['lastaccesstime'], $actime) < 0) {// ¥¿¥¤¥à¥¢¥¦¥È?
+            } elseif (strcmp($arec['lastaccesstime'], $actime) < 0) {// ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆ?
                 //error_log('USER ' . date($this->date_format) . ' timeout lastaccesstime[' . $arec['lastaccesstime'] . '] limit=[' . $actime . "]\n", 3, STORE_PAGE_PARSE_TIME_LOG);// DEBUG
                 $this->putTimeOut($s_sid);
                 $this->isFirstTime = TRUE;
@@ -83,29 +83,29 @@ class user_certify {
             }
 		}
 
-        if (!$user) {       // ½é²ó¥í¥°¥¤¥ó¤Î¤È¤­½èÍı¤òÈ´¤±¤ë
+        if (!$user) {       // åˆå›ãƒ­ã‚°ã‚¤ãƒ³ã®ã¨ãå‡¦ç†ã‚’æŠœã‘ã‚‹
             $this->isFirstTime = TRUE;
         } else {
-            // ¥æ¡¼¥¶£É£Ä¥Á¥§¥Ã¥¯
+            // ãƒ¦ãƒ¼ã‚¶ï¼©ï¼¤ãƒã‚§ãƒƒã‚¯
             $oresult = tep_db_query("select * from users where userid = '" . $user . "'");
-            if (!$oresult) {                 // DB¥¨¥é¡¼¤À¤Ã¤¿¤È¤­
+            if (!$oresult) {                 // DBã‚¨ãƒ©ãƒ¼ã ã£ãŸã¨ã
                 $this->putCertifyLog($s_sid,'e',$user);
                 $this->isErr = TRUE;
                 die('<br>'.TEXT_ERRINFO_DBERROR);
             }
 
-            $nrow = tep_db_num_rows($oresult); // ¥ì¥³¡¼¥É·ï¿ô¤Î¼èÆÀ
-            if ($nrow == 1) {  // ÆşÎÏ¤µ¤ì¤¿ UID ¤Î¥æ¡¼¥¶¤¬ÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë¤È¤­
-                $arec = tep_db_fetch_array($oresult); // ¥ì¥³¡¼¥É¤ò¼èÆÀ
-                $pret = $this->password_check($s_sid,$arec['password'],$user); // ¥Ñ¥¹¥ï¡¼¥É¸¡ºº
-                $aret = $this->user_parmission($s_sid,$user); // ¥æ¡¼¥¶¸¢¸Â¤ò¼èÆÀ
+            $nrow = tep_db_num_rows($oresult); // ãƒ¬ã‚³ãƒ¼ãƒ‰ä»¶æ•°ã®å–å¾—
+            if ($nrow == 1) {  // å…¥åŠ›ã•ã‚ŒãŸ UID ã®ãƒ¦ãƒ¼ã‚¶ãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã¨ã
+                $arec = tep_db_fetch_array($oresult); // ãƒ¬ã‚³ãƒ¼ãƒ‰ã‚’å–å¾—
+                $pret = $this->password_check($s_sid,$arec['password'],$user); // ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰æ¤œæŸ»
+                $aret = $this->user_parmission($s_sid,$user); // ãƒ¦ãƒ¼ã‚¶æ¨©é™ã‚’å–å¾—
                 if ($pret && $aret) {
                     $this->putCertifyLog($s_sid,'a',$user);
                     $this->auth_user = $user;
                 } else {
                     $this->isErr = TRUE;
                 }
-            } else {  // ÅĞÏ¿¤µ¤ì¤Æ¤¤¤Ê¤¤¥æ¡¼¥¶
+            } else {  // ç™»éŒ²ã•ã‚Œã¦ã„ãªã„ãƒ¦ãƒ¼ã‚¶
                 $this->putCertifyLog($s_sid,'n',$user);
                 $this->isErr = TRUE;
             }
@@ -113,20 +113,20 @@ class user_certify {
     }
 
 /* -------------------------------------
-    µ¡  Ç½ : ¥Ñ¥¹¥ï¡¼¥É¥Á¥§¥Ã¥¯
-    °ú  ¿ô : $s_sid             - (i) ¥»¥Ã¥·¥ç¥óID
-             $pwd               - (i) ¥Ñ¥¹¥ï¡¼¥É
-             $auth_user         - (i) ¥æ¡¼¥¶ID
-    Ìá¤êÃÍ : TRUE/FALSE
+    æ©Ÿ  èƒ½ : ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãƒã‚§ãƒƒã‚¯
+    å¼•  æ•° : $s_sid             - (i) ã‚»ãƒƒã‚·ãƒ§ãƒ³ID
+             $pwd               - (i) ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰
+             $auth_user         - (i) ãƒ¦ãƒ¼ã‚¶ID
+    æˆ»ã‚Šå€¤ : TRUE/FALSE
  ------------------------------------ */
     function password_check($s_sid,$pwd,$auth_user) {
         if ($GLOBALS['HTTP_POST_VARS']['execute_login']) {
             //error_log('USER ' . date($this->date_format) . ' password_check user='. $auth_user . "\n", 3, STORE_PAGE_PARSE_TIME_LOG);// DEBUG
             if ($GLOBALS['HTTP_POST_VARS']['loginpwd']) {
-                // ÆşÎÏ¤µ¤ì¤¿¥Ñ¥¹¥ï¡¼¥É¤ò DES °Å¹æ²½Ë¡¤Ë¤è¤ê°Å¹æ²½¤¹¤ë
-                //¡Ê¥Æ¡¼¥Ö¥ë¤ËÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë¥Ñ¥¹¥ï¡¼¥É¤ÈÆ±¤¸¾õÂÖ¤ËÊÑ´¹¡Ë
+                // å…¥åŠ›ã•ã‚ŒãŸãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’ DES æš—å·åŒ–æ³•ã«ã‚ˆã‚Šæš—å·åŒ–ã™ã‚‹
+                //ï¼ˆãƒ†ãƒ¼ãƒ–ãƒ«ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã¨åŒã˜çŠ¶æ…‹ã«å¤‰æ›ï¼‰
                 $sLogin_pwd = crypt($GLOBALS['HTTP_POST_VARS']['loginpwd'], $pwd);
-                $n_max = 64;                        // ¥Õ¥£¡¼¥ë¥ÉÄ¹¤ÎÀ©¸Â
+                $n_max = 64;                        // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰é•·ã®åˆ¶é™
                 if (substr($pwd,0,$n_max) != substr($sLogin_pwd,0,$n_max)) {
                     $this->putCertifyLog($s_sid,'p',$auth_user);
                     return FALSE;
@@ -140,9 +140,9 @@ class user_certify {
     }
 
 /* -------------------------------------
-    µ¡  Ç½ : ¥¿¥¤¥à¥¢¥¦¥È»ş¹ï¼èÆÀ
-    °ú  ¿ô : ¤Ê¤·
-    Ìá¤êÃÍ : ¥¿¥¤¥à¥¢¥¦¥È»ş¹ï
+    æ©Ÿ  èƒ½ : ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆæ™‚åˆ»å–å¾—
+    å¼•  æ•° : ãªã—
+    æˆ»ã‚Šå€¤ : ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆæ™‚åˆ»
  ------------------------------------ */
     function time_out_time() {
         if ($GLOBALS['SESS_LIFE']) {
@@ -155,23 +155,23 @@ class user_certify {
     }
 
 /* -------------------------------------
-    µ¡  Ç½ : ¥æ¡¼¥¶¸¢¸Â¼èÆÀ
-    °ú  ¿ô : $s_sid             - (i) ¥»¥Ã¥·¥ç¥óID
-             $auth_user         - (i) ¥æ¡¼¥¶ID
-    Ìá¤êÃÍ : Ç§¾Ú´°Î»¡§¶õÇòÊ¸»úÎó¡¢°Û¾ï½ªÎ»¡§¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸
-    Àâ  ÌÀ : ¼èÆÀ¤·¤¿¥æ¡¼¥¶¸¢¸Â¤ò¥¯¥é¥¹ÊÑ¿ô¤Ë¥»¥Ã¥È¤¹¤ë
+    æ©Ÿ  èƒ½ : ãƒ¦ãƒ¼ã‚¶æ¨©é™å–å¾—
+    å¼•  æ•° : $s_sid             - (i) ã‚»ãƒƒã‚·ãƒ§ãƒ³ID
+             $auth_user         - (i) ãƒ¦ãƒ¼ã‚¶ID
+    æˆ»ã‚Šå€¤ : èªè¨¼å®Œäº†ï¼šç©ºç™½æ–‡å­—åˆ—ã€ç•°å¸¸çµ‚äº†ï¼šã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+    èª¬  æ˜ : å–å¾—ã—ãŸãƒ¦ãƒ¼ã‚¶æ¨©é™ã‚’ã‚¯ãƒ©ã‚¹å¤‰æ•°ã«ã‚»ãƒƒãƒˆã™ã‚‹
  ------------------------------------ */
     function user_parmission($s_sid,$auth_user) {
-        // ¥æ¡¼¥¶¸¢¸Â¼èÆÀ
+        // ãƒ¦ãƒ¼ã‚¶æ¨©é™å–å¾—
         $oresult = tep_db_query("select permission from permissions where userid = '" . $auth_user . "'");
-        if (!$oresult) {                                        // ¥¨¥é¡¼¤À¤Ã¤¿¤È¤­
+        if (!$oresult) {                                        // ã‚¨ãƒ©ãƒ¼ã ã£ãŸã¨ã
             $this->putCertifyLog($s_sid,'n',$auth_user);
             die('<br>'.TEXT_ERRINFO_DBERROR);
         }
 
-        $nrow = tep_db_num_rows($oresult);      // ¥ì¥³¡¼¥É·ï¿ô¤Î¼èÆÀ
-        if ($nrow == 1) {                       // ÆşÎÏ¤µ¤ì¤¿ UID ¤Î¥æ¡¼¥¶¤¬ÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë¤È¤­
-            $arec = tep_db_fetch_array($oresult, DB_FETCHMODE_ASSOC); // ¥ì¥³¡¼¥É¤ò¼èÆÀ
+        $nrow = tep_db_num_rows($oresult);      // ãƒ¬ã‚³ãƒ¼ãƒ‰ä»¶æ•°ã®å–å¾—
+        if ($nrow == 1) {                       // å…¥åŠ›ã•ã‚ŒãŸ UID ã®ãƒ¦ãƒ¼ã‚¶ãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã¨ã
+            $arec = tep_db_fetch_array($oresult, DB_FETCHMODE_ASSOC); // ãƒ¬ã‚³ãƒ¼ãƒ‰ã‚’å–å¾—
             $this->npermission = $arec['permission'];
             $this->apermissions['read'] = ($this->npermission & 1);
             $this->apermissions['write'] = ($this->npermission & 2);
@@ -186,31 +186,31 @@ class user_certify {
         return FALSE;
     }
 /* -------------------------------------
-    µ¡  Ç½ : ´ÉÍı¼Ô¡Êadmin¡ËÅĞÏ¿
-    °ú  ¿ô : ¤Ê¤·
-    Ìá¤êÃÍ : ¤Ê¤·
-    Àâ  ÌÀ : ¥æ¡¼¥¶¤¬°ì¿Í¤âÅĞÏ¿¤µ¤ì¤Æ¤¤¤Ê¤¤¤È¤­¡¢´ÉÍı¼Ô¡Êadmin¡Ë¤òÅĞÏ¿¤¹¤ë
+    æ©Ÿ  èƒ½ : ç®¡ç†è€…ï¼ˆadminï¼‰ç™»éŒ²
+    å¼•  æ•° : ãªã—
+    æˆ»ã‚Šå€¤ : ãªã—
+    èª¬  æ˜ : ãƒ¦ãƒ¼ã‚¶ãŒä¸€äººã‚‚ç™»éŒ²ã•ã‚Œã¦ã„ãªã„ã¨ãã€ç®¡ç†è€…ï¼ˆadminï¼‰ã‚’ç™»éŒ²ã™ã‚‹
  ------------------------------------ */
     function user_admin_entry() {
-        // ´ÉÍı¼Ô¡Êadmin¡ËÅĞÏ¿
+        // ç®¡ç†è€…ï¼ˆadminï¼‰ç™»éŒ²
         $oresult = tep_db_query("select * from users");
-        $nrow = tep_db_num_rows($oresult); // ¥ì¥³¡¼¥É·ï¿ô¤Î¼èÆÀ
-        if ($nrow == 0) {      // ¥æ¡¼¥¶¤¬°ì¿Í¤âÅĞÏ¿¤µ¤ì¤Æ¤¤¤Ê¤¤¤È¤­¡¢´ÉÍı¼ÔÅĞÏ¿
+        $nrow = tep_db_num_rows($oresult); // ãƒ¬ã‚³ãƒ¼ãƒ‰ä»¶æ•°ã®å–å¾—
+        if ($nrow == 0) {      // ãƒ¦ãƒ¼ã‚¶ãŒä¸€äººã‚‚ç™»éŒ²ã•ã‚Œã¦ã„ãªã„ã¨ãã€ç®¡ç†è€…ç™»éŒ²
             $s_pwd = crypt('admin');
-            $result = tep_db_query("insert into users values ('admin','$s_pwd','¥·¥¹¥Æ¥à´ÉÍı¼Ô','')");
+            $result = tep_db_query("insert into users values ('admin','$s_pwd','ã‚·ã‚¹ãƒ†ãƒ ç®¡ç†è€…','')");
             $result = tep_db_query("insert into permissions values ('admin',15)");
         }
     }
 
 /* -------------------------------------
-    µ¡  Ç½ : Ç§¾Ú¥í¥°¤òµ­Ï¿¤¹¤ë
-    °ú  ¿ô : $s_sid             - (i) ¥»¥Ã¥·¥ç¥óID
-             $s_status          - (i) ¥¹¥Æ¡¼¥¿¥¹
-             $auth_user         - (i) ¥æ¡¼¥¶ID
-    Ìá¤êÃÍ : ¤Ê¤·
+    æ©Ÿ  èƒ½ : èªè¨¼ãƒ­ã‚°ã‚’è¨˜éŒ²ã™ã‚‹
+    å¼•  æ•° : $s_sid             - (i) ã‚»ãƒƒã‚·ãƒ§ãƒ³ID
+             $s_status          - (i) ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹
+             $auth_user         - (i) ãƒ¦ãƒ¼ã‚¶ID
+    æˆ»ã‚Šå€¤ : ãªã—
  ------------------------------------ */
     function putCertifyLog($s_sid,$s_status,$auth_user) {
-        $this->deleteCertifyLog();  // °ìÄê´ü´Ö¤è¤ê¤â¸Å¤¤Ç§¾Ú¥í¥°¤òºï½ü¤¹¤ë
+        $this->deleteCertifyLog();  // ä¸€å®šæœŸé–“ã‚ˆã‚Šã‚‚å¤ã„èªè¨¼ãƒ­ã‚°ã‚’å‰Šé™¤ã™ã‚‹
         $time_ = date($this->date_format);
 
         if ($this->flg) {
@@ -223,7 +223,7 @@ class user_certify {
         else {
             // The IP address of the remote host making the request.
             $as_ip = explode('.', getenv('REMOTE_ADDR'));
-            // IP¥¢¥É¥ì¥¹¤ò4¥Ğ¥¤¥ÈÀ°¿ô¤Ë¥Ñ¥Ã¥¯¤¹¤ë
+            // IPã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’4ãƒã‚¤ãƒˆæ•´æ•°ã«ãƒ‘ãƒƒã‚¯ã™ã‚‹
             $n_ip4 = 0;
             while (list($n_key, $s_byte) = each($as_ip)) {
                 $n_ip4 = ($n_ip4 << 8) | (int)$s_byte;
@@ -235,7 +235,7 @@ class user_certify {
                 $status_out = ",'i'";
             }
 
-            // µ­Ï¿
+            // è¨˜éŒ²
             $result = tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,loginstatus,address$status_out_c) values('$s_sid','" . $time_ . "','" . $time_ . "','" . $auth_user . "','$s_status',$n_ip4$status_out)");
             if (!$result) {
                 $this->isErr = TRUE;
@@ -246,10 +246,10 @@ class user_certify {
     }
 
 /* -------------------------------------
-    µ¡  Ç½ : ¥¿¥¤¥à¥¢¥¦¥È¤òµ­Ï¿¤¹¤ë
-    °ú  ¿ô : $s_sid             - (i) ¥»¥Ã¥·¥ç¥óID
-             $auth_user         - (i) ¥æ¡¼¥¶ID
-    Ìá¤êÃÍ : ¤Ê¤·
+    æ©Ÿ  èƒ½ : ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã‚’è¨˜éŒ²ã™ã‚‹
+    å¼•  æ•° : $s_sid             - (i) ã‚»ãƒƒã‚·ãƒ§ãƒ³ID
+             $auth_user         - (i) ãƒ¦ãƒ¼ã‚¶ID
+    æˆ»ã‚Šå€¤ : ãªã—
  ------------------------------------ */
     function putTimeOut($s_sid) {
         if ($this->flg) {
@@ -264,20 +264,20 @@ class user_certify {
     }
 
 /* -------------------------------------
-    µ¡  Ç½ : °ìÄê´ü´Ö·Ğ²á¤·¤¿¥¢¥¯¥»¥¹¥í¥°¤Î¥¹¥Æ¡¼¥¿¥¹¤ò¥í¥°¥¢¥¦¥È¤Ë¹¹¿·¤¹¤ë
-    °ú  ¿ô : $actime            - (i) ¥¿¥¤¥à¥¢¥¦¥È»ş¹ï
-             $s_sid             - (i) ¥¹¥Æ¡¼¥¿¥¹
-    Ìá¤êÃÍ : ¤Ê¤·
+    æ©Ÿ  èƒ½ : ä¸€å®šæœŸé–“çµŒéã—ãŸã‚¢ã‚¯ã‚»ã‚¹ãƒ­ã‚°ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’ãƒ­ã‚°ã‚¢ã‚¦ãƒˆã«æ›´æ–°ã™ã‚‹
+    å¼•  æ•° : $actime            - (i) ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆæ™‚åˆ»
+             $s_sid             - (i) ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹
+    æˆ»ã‚Šå€¤ : ãªã—
  ------------------------------------ */
     function logoutCertifyLog($actime,$s_sid) {
-        // ¸½ºß¤Î¥»¥Ã¥·¥ç¥óID¤Ç¤Ï¤Ê¤¯¡¢ºÇ½ª¥¢¥¯¥»¥¹»ş¹ï¤¬¥¿¥¤¥à¥¢¥¦¥È»ş¹ï¤è¤ê¤âÁ°¤Ç¡¢Àµ¾ï¥í¥°¥¤¥ó¤·¤Æ¤¤¤ë¥ì¥³¡¼¥É¤ò¥í¥°¥¢¥¦¥È¤µ¤»¤ë
+        // ç¾åœ¨ã®ã‚»ãƒƒã‚·ãƒ§ãƒ³IDã§ã¯ãªãã€æœ€çµ‚ã‚¢ã‚¯ã‚»ã‚¹æ™‚åˆ»ãŒã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆæ™‚åˆ»ã‚ˆã‚Šã‚‚å‰ã§ã€æ­£å¸¸ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ã„ã‚‹ãƒ¬ã‚³ãƒ¼ãƒ‰ã‚’ãƒ­ã‚°ã‚¢ã‚¦ãƒˆã•ã›ã‚‹
         $result = tep_db_query("update login set logoutstatus='o' where sessionid!='$s_sid' and lastaccesstime<'$actime' and logoutstatus='i'");
     }
 
 /* -------------------------------------
-    µ¡  Ç½ : °ìÄê´ü´Ö¤è¤ê¤â¸Å¤¤¥¢¥¯¥»¥¹¥í¥°¤òºï½ü¤¹¤ë
-    °ú  ¿ô : ¤Ê¤·
-    Ìá¤êÃÍ : ¤Ê¤·
+    æ©Ÿ  èƒ½ : ä¸€å®šæœŸé–“ã‚ˆã‚Šã‚‚å¤ã„ã‚¢ã‚¯ã‚»ã‚¹ãƒ­ã‚°ã‚’å‰Šé™¤ã™ã‚‹
+    å¼•  æ•° : ãªã—
+    æˆ»ã‚Šå€¤ : ãªã—
  ------------------------------------ */
     function deleteCertifyLog() {
         if ( 0 < $this->login_log_span) {
@@ -288,13 +288,13 @@ class user_certify {
 }
 
 /* -------------------------------------
-    µ¡  Ç½ : ¥í¥°¥¢¥¦¥È
-    °ú  ¿ô : $erf               - (i) ¥¨¥é¡¼¥Ö¥é¥°
-             $s_status          - (i) ¥¹¥Æ¡¼¥¿¥¹
-    Ìá¤êÃÍ : ¤Ê¤·
+    æ©Ÿ  èƒ½ : ãƒ­ã‚°ã‚¢ã‚¦ãƒˆ
+    å¼•  æ•° : $erf               - (i) ã‚¨ãƒ©ãƒ¼ãƒ–ãƒ©ã‚°
+             $s_status          - (i) ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹
+    æˆ»ã‚Šå€¤ : ãªã—
  ------------------------------------ */
 function logout_user($erf='',$s_status='') {
-    if ($s_status) {    // ¥í¥°¥¢¥¦¥È¤òµ­Ï¿¤¹¤ë
+    if ($s_status) {    // ãƒ­ã‚°ã‚¢ã‚¦ãƒˆã‚’è¨˜éŒ²ã™ã‚‹
         $s_sid = session_id();
         $result = tep_db_query("update login set logoutstatus='$s_status' where sessionid='$s_sid'");
     }
@@ -302,14 +302,14 @@ function logout_user($erf='',$s_status='') {
 }
 
 /* =====================================
-    ¥á¥¤¥ó
+    ãƒ¡ã‚¤ãƒ³
  ===================================== */
 if ($GLOBALS['HTTP_GET_VARS']['execute_logout_user']) { logout_user(FALSE,'o'); } //2003-07-16 hiroshi_sato
 
 if (file_exists(DIR_WS_LANGUAGES . $language . '/user_certify.php')) {
     include(DIR_WS_LANGUAGES . $language . '/user_certify.php');
 }
-$ocertify = new user_certify(session_id());     // Ç§¾Ú
+$ocertify = new user_certify(session_id());     // èªè¨¼
 if ($ocertify->isErr) { logout_user(1); }
 elseif ($ocertify->isFirstTime) { logout_user(); }
 

@@ -21,23 +21,23 @@ function SetFocus() {
 
 
 function submitChk() { 
-    /* ��ǧ����������ɽ�� */ 
-    var flag = confirm ( "��ǧ�Ϥ��ޤ�������\n\n�� ���� �۲��ʹ������Ǥ��ѹ��������ϡ���ˡ���ʸ���Ƴ�ǧ�ץܥ���򲡤�ɬ�פ�����ޤ���\n\n������ [����󥻥�] �ܥ���򥯥�å����Ƥ���������"); 
-    /* send_flg �� TRUE�ʤ�������FALSE�ʤ��������ʤ� */ 
+    /* 確認ダイアログ表示 */ 
+    var flag = confirm ( "確認はしましたか？\n\n【 重要 】価格構成要素を変更した場合は、先に「注文内容確認」ボタンを押す必要があります。\n\n戻る場合は [キャンセル] ボタンをクリックしてください。"); 
+    /* send_flg が TRUEなら送信、FALSEなら送信しない */ 
     return flag; 
 } 
 
 function update_price() {
 	
-	if (window.confirm("��ʸ���Ƥ��ǧ���ޤ�����")) {
+	if (window.confirm("注文内容を確認しますか？")) {
 		document.edit_order.notify.checked = false;
 		document.edit_order.notify_comments.checked = false;
 		document.edit_order.submit();
-		window.alert("��ʸ���Ƥ򹹿����ޤ�������׶�ۤ�ɬ����ǧ���Ƥ���������\n\n�� ���� �ۥ᡼�����������Ƥ��ޤ��󡣡� ���� ��");
+		window.alert("注文内容を更新しました。合計金額を必ず確認してください。\n\n【 重要 】メールは送信されていません。【 重要 】");
 		document.edit_order.notify.checked = true;
 		document.edit_order.notify_comments.checked = false;
 	} else {
-		window.alert("��ʸ���Ƴ�ǧ�򥭥�󥻥뤷�ޤ�����\n\n�� ���� �ۥ᡼�����������Ƥ��ޤ��󡣡� ���� ��");
+		window.alert("注文内容確認をキャンセルしました。\n\n【 重要 】メールは送信されていません。【 重要 】");
 	}
 
 }

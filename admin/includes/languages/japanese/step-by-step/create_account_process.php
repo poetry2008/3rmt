@@ -9,7 +9,7 @@
 
   Released under the GNU General Public License
 */
-define('HEADING_TITLE', '¿·¤·¤¤¸ÜµÒ¥¢¥«¥¦¥ó¥ÈºîÀ®');
-define('HEADING_NEW', 'ÃíÊ¸¼êÂ³¤­');
-define('NAVBAR_NEW_TITLE', 'ÃíÊ¸¼êÂ³¤­');
+define('HEADING_TITLE', 'æ–°ã—ã„é¡§å®¢ã‚¢ã‚«ã‚¦ãƒ³ãƒˆä½œæˆ');
+define('HEADING_NEW', 'æ³¨æ–‡æ‰‹ç¶šã');
+define('NAVBAR_NEW_TITLE', 'æ³¨æ–‡æ‰‹ç¶šã');
 ?>

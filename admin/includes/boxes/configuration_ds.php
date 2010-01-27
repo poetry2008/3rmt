@@ -17,7 +17,7 @@
   $heading = array();
   $contents = array();
 
-  $heading[] = array('text'  => 'ÄÉ²ÃÀßÄê',
+  $heading[] = array('text'  => 'è¿½åŠ è¨­å®š',
                      'link'  => tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('selected_box')) . 'selected_box=configuration_ds'));
 
   if ($selected_box == 'configuration_ds') {
@@ -26,7 +26,7 @@
     while ($configuration_groups = tep_db_fetch_array($configuration_groups_query)) {
       $cfg_groups .= '<a href="' . tep_href_link(FILENAME_CONFIGURATION_DS, 'gID=' . $configuration_groups['cgID'], 'NONSSL') . '" class="menuBoxContentLink">' . $configuration_groups['cgTitle'] . '</a><br>';
     }
-    //$cfg_groups .= '<a href="configuration_design.php" class="menuBoxContentLink">¥Ç¥¶¥¤¥óÀßÄê</a>';
+    //$cfg_groups .= '<a href="configuration_design.php" class="menuBoxContentLink">ãƒ‡ã‚¶ã‚¤ãƒ³è¨­å®š</a>';
     $contents[] = array('text'  => $cfg_groups);
   }
 

@@ -10,11 +10,11 @@
   Released under the GNU General Public License
 */
 
-define('TABLE_HEADING_COMMENTS', '¥³¥á¥ó¥È');
-define('TABLE_HEADING_PRODUCTS_MODEL', '·¿ÈÖ');
-define('TABLE_HEADING_PRODUCTS', '¿ôÎÌ / ¾¦ÉÊÌ¾');
+define('TABLE_HEADING_COMMENTS', 'ã‚³ãƒ¡ãƒ³ãƒˆ');
+define('TABLE_HEADING_PRODUCTS_MODEL', 'åž‹ç•ª');
+define('TABLE_HEADING_PRODUCTS', 'æ•°é‡ / å•†å“å');
 
-define('ENTRY_SOLD_TO', '¤´¹ØÆþ¼Ô:');
-define('ENTRY_SHIP_TO', 'ÇÛÁ÷Àè:');
-define('ENTRY_PAYMENT_METHOD', '¤ª»ÙÊ§¤¤ÊýË¡:');
+define('ENTRY_SOLD_TO', 'ã”è³¼å…¥è€…:');
+define('ENTRY_SHIP_TO', 'é…é€å…ˆ:');
+define('ENTRY_PAYMENT_METHOD', 'ãŠæ”¯æ‰•ã„æ–¹æ³•:');
 ?>

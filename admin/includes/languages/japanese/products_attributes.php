@@ -10,28 +10,28 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE_OPT', '¾¦ÉÊ¥ª¥×¥·¥ç¥óÅÐÏ¿');
-define('HEADING_TITLE_VAL', '¥ª¥×¥·¥ç¥óÃÍ');
-define('HEADING_TITLE_ATRIB', '¾¦ÉÊÂ°À­');
+define('HEADING_TITLE_OPT', 'å•†å“ã‚ªãƒ—ã‚·ãƒ§ãƒ³ç™»éŒ²');
+define('HEADING_TITLE_VAL', 'ã‚ªãƒ—ã‚·ãƒ§ãƒ³å€¤');
+define('HEADING_TITLE_ATRIB', 'å•†å“å±žæ€§');
 
 define('TABLE_HEADING_ID', 'ID');
-define('TABLE_HEADING_PRODUCT', '¾¦ÉÊÌ¾');
-define('TABLE_HEADING_OPT_NAME', '¥ª¥×¥·¥ç¥óÌ¾');
-define('TABLE_HEADING_OPT_VALUE', '¥ª¥×¥·¥ç¥óÃÍ');
-define('TABLE_HEADING_OPT_PRICE', '¥ª¥×¥·¥ç¥ó²Á³Ê');
-define('TABLE_HEADING_OPT_PRICE_PREFIX', 'ÀÜÆ¬¼­');
-define('TABLE_HEADING_ACTION', 'Áàºî');
-define('TABLE_HEADING_DOWNLOAD', '¥À¥¦¥ó¥í¡¼¥É²ÄÇ½¤Ê¾¦ÉÊ:');
-define('TABLE_TEXT_FILENAME', '¥Õ¥¡¥¤¥ëÌ¾:');
-define('TABLE_TEXT_MAX_DAYS', '½ªÎ»Æü:');
-define('TABLE_TEXT_MAX_COUNT', 'ºÇ¹â¥À¥¦¥ó¥í¡¼¥É²ó¿ô:');
+define('TABLE_HEADING_PRODUCT', 'å•†å“å');
+define('TABLE_HEADING_OPT_NAME', 'ã‚ªãƒ—ã‚·ãƒ§ãƒ³å');
+define('TABLE_HEADING_OPT_VALUE', 'ã‚ªãƒ—ã‚·ãƒ§ãƒ³å€¤');
+define('TABLE_HEADING_OPT_PRICE', 'ã‚ªãƒ—ã‚·ãƒ§ãƒ³ä¾¡æ ¼');
+define('TABLE_HEADING_OPT_PRICE_PREFIX', 'æŽ¥é ­è¾ž');
+define('TABLE_HEADING_ACTION', 'æ“ä½œ');
+define('TABLE_HEADING_DOWNLOAD', 'ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰å¯èƒ½ãªå•†å“:');
+define('TABLE_TEXT_FILENAME', 'ãƒ•ã‚¡ã‚¤ãƒ«å:');
+define('TABLE_TEXT_MAX_DAYS', 'çµ‚äº†æ—¥:');
+define('TABLE_TEXT_MAX_COUNT', 'æœ€é«˜ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰å›žæ•°:');
 
 define('MAX_ROW_LISTS_OPTIONS', 10);
 
-define('TEXT_WARNING_OF_DELETE', '¤³¤Î¥ª¥×¥·¥ç¥ó¤Ï¡¢¾¦ÉÊ¤È¥ª¥×¥·¥ç¥óÃÍ¤Ë¥ê¥ó¥¯¤·¤Æ¤¤¤Þ¤¹¡£ ºï½ü¤¹¤ë¤³¤È¤Ï°ÂÁ´¤Ç¤Ï¤¢¤ê¤Þ¤»¤ó¡£');
-define('TEXT_OK_TO_DELETE', '¤³¤Î¥ª¥×¥·¥ç¥ó¤Ï¡¢¾¦ÉÊ¤È¥ª¥×¥·¥ç¥óÃÍ¤Ë¥ê¥ó¥¯¤·¤Æ¤¤¤Þ¤»¤ó¡£ ºï½ü¤·¤Æ¤â°ÂÁ´¤Ç¤¹¡£');
-define('TEXT_OPTION_ID', '¥ª¥×¥·¥ç¥óID');
-define('TEXT_OPTION_NAME', '¥ª¥×¥·¥ç¥óÌ¾');
+define('TEXT_WARNING_OF_DELETE', 'ã“ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã¯ã€å•†å“ã¨ã‚ªãƒ—ã‚·ãƒ§ãƒ³å€¤ã«ãƒªãƒ³ã‚¯ã—ã¦ã„ã¾ã™ã€‚ å‰Šé™¤ã™ã‚‹ã“ã¨ã¯å®‰å…¨ã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚');
+define('TEXT_OK_TO_DELETE', 'ã“ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã¯ã€å•†å“ã¨ã‚ªãƒ—ã‚·ãƒ§ãƒ³å€¤ã«ãƒªãƒ³ã‚¯ã—ã¦ã„ã¾ã›ã‚“ã€‚ å‰Šé™¤ã—ã¦ã‚‚å®‰å…¨ã§ã™ã€‚');
+define('TEXT_OPTION_ID', 'ã‚ªãƒ—ã‚·ãƒ§ãƒ³ID');
+define('TEXT_OPTION_NAME', 'ã‚ªãƒ—ã‚·ãƒ§ãƒ³å');
 
-define('TABLE_HEADING_OPT_STOCK', 'ºß¸Ë¿ô');//add products_stock - 2005.09.20 ds-style
+define('TABLE_HEADING_OPT_STOCK', 'åœ¨åº«æ•°');//add products_stock - 2005.09.20 ds-style
 ?>

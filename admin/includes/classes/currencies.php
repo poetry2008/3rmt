@@ -56,11 +56,11 @@
       return $this->format(tep_add_tax($products_price, $products_tax) * $quantity);
     }
 
-// ¶â³Û¤ÎÃ¼¿ô½èÍý¤ò¹Ô¤¦
-// $number: ¶â³Û
-// $round_type: Ã¼¿ô½èÍý¤Î¥¿¥¤¥×  'drop'=ÀÚ¤ê¼Î¤Æ, 'round'=»Í¼Î¸ÞÆþ, 'raise'=ÀÚ¤ê¾å¤²
-// $currency_type: ÄÌ²ß¥³¡¼¥É (Îã) 'JPY'
-// 2002/06/01 ÄÉ²Ã tamura
+// é‡‘é¡ã®ç«¯æ•°å‡¦ç†ã‚’è¡Œã†
+// $number: é‡‘é¡
+// $round_type: ç«¯æ•°å‡¦ç†ã®ã‚¿ã‚¤ãƒ—  'drop'=åˆ‡ã‚Šæ¨ã¦, 'round'=å››æ¨äº”å…¥, 'raise'=åˆ‡ã‚Šä¸Šã’
+// $currency_type: é€šè²¨ã‚³ãƒ¼ãƒ‰ (ä¾‹) 'JPY'
+// 2002/06/01 è¿½åŠ  tamura
     function round_off($number, $round_type = '', $currency_type = '') {
       global $currency;
       $a_comp = array('drop'=>0.00001, 'round'=>0.50001, 'raise'=>0.99999);

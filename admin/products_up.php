@@ -19,26 +19,26 @@
   if (isset($_GET['action']) && $_GET['action'] == 'upload'){
      
     
-	echo '<P>���󥵡��Ⱥ�ȳ���...</P>';
-	// CSV�ե�����Υ����å�
+	echo '<P>インサート作業開始...</P>';
+	// CSVファイルのチェック
     $chk_csv = true;
     $filename = $HTTP_POST_FILES['products_csv']['name'];
     if(substr($filename, strrpos($filename,".")+1)!="csv") $chk_csv = false;
      
-    // �ե�����̾�λ��ȥ����å�
+    // ファイル名の参照チェック
     if($HTTP_POST_FILES['products_csv']['tmp_name']!="" && $chk_csv){
   	$file = fopen($products_csv,"r");
 	
 	$cnt = "0"; $chk_input = true;
 	while($dat = fgetcsv($file,10000,',')){
-		// ���ʾ��󤬿����Ǥʤ�����2���ܤ����ɤ�
+		// 価格情報が数字でない場合は2行目から読む
 		//if(!is_numeric($dat[8])) $dat = fgetcsv($file,10000,',');
 		
-		//������2006.08.28 ds-style
+		//修正：2006.08.28 ds-style
 		if(!is_numeric($dat[8])) {
-		  //������󤬿����Ȥ��ư����롩
+		  //定価情報が数字として扱える？
 		  if(is_numeric($dat[7])) {
-		    //�ò����󤬤��뤫��
+		    //特価情報があるか？
 			if(is_numeric($dat[9])) {
 			  //process OK
 			} else {
@@ -51,81 +51,81 @@
 		  //process OK
 		}
 		
-		// EUC���Ѵ�
+		// EUCに変換
 		for($e=0;$e<count($dat);$e++){
 			$dat[$e] = addslashes(jcodeconvert($dat[$e],"0","1"));
 		}
 		
 		####################
-		# DB�ؤΥǡ������� #
+		# DBへのデータ挿入 #
 		####################
 		if($chk_input){
-			//�ѿ�������
-			$dat0 = trim($dat[0]);//A �祫�ƥ���
-			$dat1 = trim($dat[1]);//B �楫�ƥ���
-			$dat2 = trim($dat[2]);//C �᡼����̾
-			$dat3 = trim($dat[3]);//D ����̾
-			$dat4 = trim($dat[4]);//E ��������
-			$dat5 = trim($dat[5]);//F ����
-			$dat6 = trim($dat[6]);//G �����ѥ�
-			$org_price = trim($dat[7]);//H ---�ɲù���---���
-			$dat7 = trim($dat[8]);//I ����
-			$dat8 = trim($dat[9]);//J �������
-			$dat9 = trim($dat[10]);//K ����
-			$dat10 = trim($dat[11]);//L ȯ����
-			$dat11 = trim($dat[12]);//M �߸˥��ơ�����
-			$dat12 = trim($dat[13]);//N ��ϢURL
-			$dat13 = trim($dat[14]);//O ����
-			$add_jan = trim($dat[15]);//P ---�ɲù���---JAN������
-			$add_size = trim($dat[16]);//Q ---�ɲù���---������
-			$add_naiyou = trim($dat[17]);//R ---�ɲù���---������
-			$add_zaishitu = trim($dat[18]);//S ---�ɲù���---���
-			$dat14 = trim($dat[19]);//T �Ǽ���
-			$add_com = trim($dat[20]);//U ---�ɲù���---����
+			//変数に挿入
+			$dat0 = trim($dat[0]);//A 大カテゴリ
+			$dat1 = trim($dat[1]);//B 中カテゴリ
+			$dat2 = trim($dat[2]);//C メーカー名
+			$dat3 = trim($dat[3]);//D 商品名
+			$dat4 = trim($dat[4]);//E 商品説明
+			$dat5 = trim($dat[5]);//F 型番
+			$dat6 = trim($dat[6]);//G 画像パス
+			$org_price = trim($dat[7]);//H ---追加項目---定価
+			$dat7 = trim($dat[8]);//I 価格
+			$dat8 = trim($dat[9]);//J 特売価格
+			$dat9 = trim($dat[10]);//K 数量
+			$dat10 = trim($dat[11]);//L 発売日
+			$dat11 = trim($dat[12]);//M 在庫ステータス
+			$dat12 = trim($dat[13]);//N 関連URL
+			$dat13 = trim($dat[14]);//O 重量
+			$add_jan = trim($dat[15]);//P ---追加項目---JANコード
+			$add_size = trim($dat[16]);//Q ---追加項目---サイズ
+			$add_naiyou = trim($dat[17]);//R ---追加項目---内容量
+			$add_zaishitu = trim($dat[18]);//S ---追加項目---材質
+			$dat14 = trim($dat[19]);//T 税種別
+			$add_com = trim($dat[20]);//U ---追加項目---備考
 			
-			//����ʸ������
+			//説明文を整形
 			// edit 2009.5.14 maker
-			//����ʸ[0]�����[1]��JAN������[2]�å�����[3]��������[4]�ú��[5]������[6]�äν�
+			//説明文[0]｜定価[1]｜JANコード[2]｜サイズ[3]｜内容量[4]｜材質[5]｜備考[6]｜の順
 			//$description = $dat4 . '|-#-|' . $org_price . '|-#-|' . $add_jan . '|-#-|' . $add_size . '|-#-|' . $add_naiyou . '|-#-|' . $add_zaishitu . '|-#-|' . $add_com;//maker
 			
-			//���ߤλ���
+			//現在の時刻
 			$now_date = date("Y-m-d H:i:s", time());
 			
-			//���������ɤ߹��ߥ��顼�ɻ��ѡ�
-			if($dat6 == "") $dat6 = 'NULL';//�����ѥ�
-			if($dat9 == "") $dat9 = '0';//����
-			if($dat10 == "") $dat10 = 'NULL';//ȯ����
-			if($dat11 == "" && $dat9 == '0') { $dat11 = '0'; }else{ $dat11 = '1' ;}//�߸�
-			if($dat14 == "") $dat14 = '1';//�Ǽ��̤������ä��顢�ְ��̾����ǡפ�����
+			//初期設定（読み込みエラー防止用）
+			if($dat6 == "") $dat6 = 'NULL';//画像パス
+			if($dat9 == "") $dat9 = '0';//数量
+			if($dat10 == "") $dat10 = 'NULL';//発売日
+			if($dat11 == "" && $dat9 == '0') { $dat11 = '0'; }else{ $dat11 = '1' ;}//在庫
+			if($dat14 == "") $dat14 = '1';//税種別が空だったら、「一般消費税」を挿入
 				
-			//���ƥ�������
+			//カテゴリ挿入
 			if($dat0 != "") {
-			  //�祫�ƥ���ν�ʣ�����å�
+			  //大カテゴリの重複チェック
 			  $dat0count_query = tep_db_query("select count(*) as cnt from categories_description where categories_name = '".$dat0."'");
 			  $dat0count = tep_db_fetch_array($dat0count_query);
 			  if($dat0count['cnt'] == 0) {
-			    //�ǡ������ʤ����ƥ���ʤΤ�����
+			    //データがないカテゴリなので挿入
 				tep_db_query("insert into categories (categories_id, categories_image, parent_id, date_added) values ('', '', '0', '".$now_date."')");
 				$categories_id = tep_db_insert_id();
 				tep_db_query("insert into categories_description(categories_id, language_id, categories_name) values ('".$categories_id."', '4', '".$dat0."')");
 			  } else {
-			    //���ƥ��꤬��ʣ���Ƥ����鳺�����ƥ���ID�����
+			    //カテゴリが重複していたら該当カテゴリIDを取得
 				$cquery = tep_db_query("select categories_id from categories_description where categories_name = '".$dat0."'");
 				$c = tep_db_fetch_array($cquery);
 				$categories_id = $c['categories_id'];
 			  }
 			  
-			  //�楫�ƥ���ν�ʣ�����å�
+			  //中カテゴリの重複チェック
 			  if($dat1 != '') {
 			  $dat1count_query = tep_db_query("select count(*) as cnt from categories_description where categories_name = '".$dat1."'");
 			  $dat1count = tep_db_fetch_array($dat1count_query);
 			  if($dat1count['cnt'] == 0) {
-			    //�ǡ������ʤ����ƥ���ʤΤ�����
+			    //データがないカテゴリなので挿入
 				tep_db_query("insert into categories (categories_id, categories_image, parent_id, date_added) values ('', '', '".$categories_id."', '".$now_date."')");
 				$categories_id_up = tep_db_insert_id();
 				tep_db_query("insert into categories_description(categories_id, language_id, categories_name) values ('".$categories_id_up."', '4', '".$dat1."')");
 			  } else {
-			    //���ƥ��ꥫ����Ȥ����ä��ΤǾ�̥��ƥ���Ȥ������������å�
+			    //カテゴリカウントがあったので上位カテゴリとの整合性チェック
 				$dat1chk_id = '';
 				$dat1chk_query = tep_db_query("select categories_id from categories_description where categories_name = '".$dat1."'");
 				while($dat1chk = tep_db_fetch_array($dat1chk_query)) {
@@ -137,10 +137,10 @@
 				}
 				
 				if($dat1chk_id != '') {
-				  //��̤Ȥ�����������줿��糺�����ƥ���ID�����
+				  //上位との整合性が取れた場合該当カテゴリIDを定義
 				  $categories_id_up = $dat1chk_id;
 				} else {
-				  //�����������ʤ������Υ��ƥ���ξ��
+				  //整合性が取れない新規のカテゴリの場合
 				  tep_db_query("insert into categories (categories_id, categories_image, parent_id, date_added) values ('', '', '".$categories_id."', '".$now_date."')");
 				  $categories_id_up = tep_db_insert_id();
 				  tep_db_query("insert into categories_description(categories_id, language_id, categories_name) values ('".$categories_id_up."', '4', '".$dat1."')");
@@ -152,13 +152,13 @@
 			
 			//----------------------------------//
 			
-			//�᡼��������
+			//メーカー挿入
 			if($dat2 != "") {
-			  //��ʣ�����å�����
+			  //重複チェック開始
 			  $dat2count_query = tep_db_query("select count(*) as cnt from manufacturers where manufacturers_name = '".$dat2."'");
 			  $dat2count = tep_db_fetch_array($dat2count_query);
 			  
-			  //��ʣ���Ƥ��ʤ���������(manufacturers)
+			  //重複していない場合は挿入(manufacturers)
 			  if($dat2count['cnt'] == 0 && $dat2 != "") {
 			    tep_db_query("insert into manufacturers (manufacturers_id, manufacturers_name, date_added) values ('', '".$dat2."', '".$now_date."')");
 				
@@ -166,7 +166,7 @@
 				
 				tep_db_query("insert into manufacturers_info (manufacturers_id, languages_id) values ('".$manufacturers_id."', '4')");
 			  } else {
-			    //��ʣ���Ƥ������ν���
+			    //重複していた場合の処理
 				$mquery = tep_db_query("select manufacturers_id from manufacturers where manufacturers_name = '".$dat2."'");
 				$m = tep_db_fetch_array($mquery);
 				$manufacturers_id = $m['manufacturers_id'];
@@ -176,13 +176,13 @@
 			
 			//----------------------------------//
 			
-			//���ʴ�Ϣ����
+			//商品関連挿入
 			if($dat3 != "" && $dat5 != "") {
-			  //��ʣ�����å����ϡʴ�ࡧ���֡�
+			  //重複チェック開始（基準：型番）
 			  $dat3count_query = tep_db_query("select count(*) as cnt from products where products_model = '".$dat5."'");
 			  $dat3count = tep_db_fetch_array($dat3count_query);
 			  
-			  //��ʣ���Ƥ��ʤ����ϥǡ�������������
+			  //重複していない場合はデータの挿入開始
 			  if($dat3count['cnt'] == 0) {
 			    
 				//products
@@ -203,7 +203,7 @@
 				$products_id = tep_db_insert_id();
 				
 				//products_description
-				/* �����ѹ� - 2005.11.29 ds-style
+				/* 仕様変更 - 2005.11.29 ds-style
 				tep_db_query("insert into products_description (
 				products_id, 
 				language_id,
@@ -235,9 +235,9 @@
 				}
 				
 			  } else {
-			    //��ʣ���Ƥ���������ι���
+			    //重複していた場合情報の更新
 				
-				//����ID����
+				//商品ID取得
 			    $datinfo_query = tep_db_query("select products_id from products where products_model = '".$dat5."'");
 			    $datinfo = tep_db_fetch_array($datinfo_query);
 				$products_id = $datinfo['products_id'];
@@ -256,7 +256,7 @@
 										
 			    tep_db_perform(TABLE_PRODUCTS, $products_array, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
 				
-				/* �����ѹ� - 2005.11.29 ds-style
+				/* 仕様変更 - 2005.11.29 ds-style
 				$products_description_array = array('language_id' => '4',
 													'products_name' => $dat3,
 													'products_description' => $dat4,
@@ -281,13 +281,13 @@
 			
 			//----------------------------------//
 			
-			//�ò���������
+			//特価商品挿入
 			if($dat8 != "") {
-			  //��ʣ�����å�
+			  //重複チェック
 			  $dat8count_query = tep_db_query("select count(*) as cnt from specials where products_id = '".$products_id."'");
 			  $dat8count = tep_db_fetch_array($dat8count_query);
 			  if($dat8count['cnt'] == 0) {
-			     //���󥵡���
+			     //インサート
 				 tep_db_query("insert into specials (
 				 specials_id, 
 				 products_id, 
@@ -296,7 +296,7 @@
 				 status
 				 ) values ('', '".$products_id."', '".$dat8."', '".$now_date."', '1')");
 			  } else {
-				//���åץǡ���
+				//アップデート
 				$products_specialprice_array = array('specials_new_products_price' => $dat8,
 													 'specials_last_modified' => $now_date,
 													 'status' => $dat11
@@ -308,7 +308,7 @@
 			  $dat8count_query = tep_db_query("select count(*) as cnt from specials where products_id = '".$products_id."'");
 			  $dat8count = tep_db_fetch_array($dat8count_query);
 			  if($dat8count['cnt'] != '0') {
-				//���åץǡ���
+				//アップデート
 				$products_specialprice_array = array('specials_new_products_price' => $dat8,
 													 'specials_last_modified' => $now_date,
 													 'status' => '0'
@@ -320,7 +320,7 @@
 			
 		    $cnt++;
 			if($cnt % 200 == 0) {
-			  echo '��';
+			  echo '・';
 			}
 			Flush();
 	    }
@@ -329,14 +329,14 @@
 	
 	fclose($file);
 	
-	   echo "<P><font color='#CC0000'><b>".$cnt."��ξ��ʥǡ����򥢥åץ����ɤ��ޤ�����</b></font></P>";
+	   echo "<P><font color='#CC0000'><b>".$cnt."件の商品データをアップロードしました。</b></font></P>";
 	
 	}else{
 	 
-	   echo "<P><font color='#CC0000'><b>���ʥǡ����򥢥åץ����ɤǤ��ޤ���Ǥ�����<br>�����CSV�ե�����򻲾Ȥ��Ƥ���������</b></font></P>";
+	   echo "<P><font color='#CC0000'><b>商品データをアップロードできませんでした。<br>所定のCSVファイルを参照してください。</b></font></P>";
 	
 	}
-	echo '<a href="products_up.php">�����</a>';
+	echo '<a href="products_up.php">←戻る</a>';
 } else {
 ?>
 <!-- body //-->
@@ -353,7 +353,7 @@
         <td width="100%"><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
 
-            <td class="pageHeading">���ʥǡ������åץ�����</td>
+            <td class="pageHeading">商品データアップロード</td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
           </tr>
         </table></td>
@@ -372,149 +372,149 @@
                 <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '5'); ?></td>
               </tr>
               <tr>
-                <td colspan="2" align="left"><input type=submit name=download value="���åץ�����"></td>
+                <td colspan="2" align="left"><input type=submit name=download value="アップロード"></td>
               </tr>
             </table></td>
 	    <input type="hidden" name="max_file_size" value="1000000">
           </form></tr>
           <tr>
-            <td class="pageHeading">�ǡ�������ˤĤ���<br>
-            <span class="fieldRequired">*ɬ�ܹ��� </span></td>
+            <td class="pageHeading">データ配列について<br>
+            <span class="fieldRequired">*必須項目 </span></td>
           </tr>
           <tr>
-            <td>            <p class="smallText">CSV�ǤȾ�����Ͽ��Ԥ�����<a href="backup.php" target="_blank">�����򥯥�å�</a>�������ǡ����ΥХå����åפ򤷤Ƥ���ɬ���Ԥ��褦�ˤ��Ƥ������������åץ����ɤ������˴�¸���ʥǡ����Υ���������ɤ򤷤��ե�������Խ����ƥ��åץ����ɤ��Ƥ���������</p>            <table width="100%"  border="0" cellpadding="2" cellspacing="1" class="infoBoxHeading">
+            <td>            <p class="smallText">CSVでと商品登録を行う場合は<a href="backup.php" target="_blank">ここをクリック</a>して全データのバックアップをしてから必ず行うようにしてください。アップロードする前に既存商品データのダウンロードをしたファイルを編集してアップロードしてください。</p>            <table width="100%"  border="0" cellpadding="2" cellspacing="1" class="infoBoxHeading">
               <tr>
                 <td width="20" align="center" class="infoBoxContent">&nbsp;</td>
-                <td width="120" class="menuBoxHeading">����</td>
-                <td class="menuBoxHeading">����</td>
+                <td width="120" class="menuBoxHeading">項目</td>
+                <td class="menuBoxHeading">説明</td>
               </tr>
               <tr>
                 <td align="center" class="infoBoxContent">A</td>
-                <td class="menuBoxHeading">�祫�ƥ���<span class="fieldRequired">*</span></td>
-                <td class="menuBoxHeading">�祫�ƥ���̾�����Ϥ��Ƥ����������祫�ƥ���̾������������������������������/������Ͽ������Ͽ����Ƥ��ʤ����ϼ�ưŪ���祫�ƥ�����������ޤ���<br>
-                <span class="fieldRequired">Ⱦ�ѱѿ�32ʸ�������ܸ�16ʸ���ޤ����ϲ�ǽ��</span></td>
+                <td class="menuBoxHeading">大カテゴリ<span class="fieldRequired">*</span></td>
+                <td class="menuBoxHeading">大カテゴリ名を入力してください。大カテゴリ名が　カタログ管理　→　カタログ/商品登録　に登録されていない場合は自動的に大カテゴリを生成します。<br>
+                <span class="fieldRequired">半角英数32文字、日本語16文字まで入力可能。</span></td>
               </tr>
               <tr>
                 <td align="center" class="infoBoxContent">B</td>
-                <td class="menuBoxHeading">�楫�ƥ���</td>
-                <td class="menuBoxHeading">�祫�ƥ�����Ф����楫�ƥ�������Ϥ��Ƥ���������<br>
-                <span class="fieldRequired">����Ǥ�ġ�Ⱦ�ѱѿ�32ʸ�������ܸ�16ʸ���ޤ����ϲ�ǽ��</span></td>
+                <td class="menuBoxHeading">中カテゴリ</td>
+                <td class="menuBoxHeading">大カテゴリに対する中カテゴリを入力してください。<br>
+                <span class="fieldRequired">空白でも可。半角英数32文字、日本語16文字まで入力可能。</span></td>
               </tr>
               <tr>
                 <td align="center" class="infoBoxContent">C</td>
-                <td class="menuBoxHeading">�᡼����̾</td>
-                <td class="menuBoxHeading">�᡼����̾�����Ϥ��Ƥ����������᡼����̾�����������������������᡼������Ͽ������Ͽ����Ƥ��ʤ����ϼ�ưŪ�˥᡼����̾���������ޤ���<br>
-                <span class="fieldRequired">����Ǥ�ġ�Ⱦ�ѱѿ�32ʸ�������ܸ�16ʸ���ޤ����ϲ�ǽ��</span></td>
+                <td class="menuBoxHeading">メーカー名</td>
+                <td class="menuBoxHeading">メーカー名を入力してください。メーカー名が　カタログ管理　→　メーカー登録　に登録されていない場合は自動的にメーカー名を生成します。<br>
+                <span class="fieldRequired">空白でも可。半角英数32文字、日本語16文字まで入力可能。</span></td>
               </tr>
               <tr>
                 <td align="center" class="infoBoxContent">D</td>
-                <td class="menuBoxHeading">����̾<span class="fieldRequired">*</span></td>
-                <td class="menuBoxHeading">����̾�����Ϥ��Ƥ���������<br>
-                <span class="fieldRequired">Ⱦ�ѱѿ�64ʸ�������ܸ�32ʸ���ޤ����ϲ�ǽ��</span></td>
+                <td class="menuBoxHeading">商品名<span class="fieldRequired">*</span></td>
+                <td class="menuBoxHeading">商品名を入力してください。<br>
+                <span class="fieldRequired">半角英数64文字、日本語32文字まで入力可能。</span></td>
               </tr>
               <tr>
                 <td align="center" class="infoBoxContent">E</td>
-                <td class="menuBoxHeading">��������</td>
-                <td class="menuBoxHeading">��������ʸ�����Ϥ��Ƥ���������HTML�����Ϥ�����ϳ��Ȥ����˰�Ԥ�CSV���������Ϥ��Ƥ���������<br>
-                ���&lt;table&gt;&lt;tr&gt;&lt;td&gt;XXXXXX&lt;/td&gt;&lt;/tr&gt;......<br>
-                <span class="fieldRequired">����Ǥ�ġ�HTML���Ѳġ�ʸ����̵���¡�</span></td>
+                <td class="menuBoxHeading">商品説明</td>
+                <td class="menuBoxHeading">商品説明文を入力してください。HTMLを入力する場合は開業せずに一行でCSVカラムに入力してください。<br>
+                例）&lt;table&gt;&lt;tr&gt;&lt;td&gt;XXXXXX&lt;/td&gt;&lt;/tr&gt;......<br>
+                <span class="fieldRequired">空白でも可。HTML使用可、文字数無制限。</span></td>
               </tr>
               <tr>
                 <td align="center" class="infoBoxContent">F</td>
-                <td class="menuBoxHeading">����<span class="fieldRequired">*</span></td>
-                <td class="menuBoxHeading">���ʤ��Ф��뷿�֡����֡ˤ����Ϥ��Ƥ���������<span class="fieldRequired"><strong>�ڽ��ס��ۥǡ����١������Ʊ��η��֤�¸�ߤ������ϴ�¸��Ͽ���ʤκ߸˿����������졢���ʤ���Ͽ�ϹԤ��ޤ���</strong></span><br>
-                <span class="fieldRequired">Ⱦ�ѱѿ�12ʸ�������ܸ������Բġ�</span></td>
+                <td class="menuBoxHeading">型番<span class="fieldRequired">*</span></td>
+                <td class="menuBoxHeading">商品に対する型番（品番）を入力してください。<span class="fieldRequired"><strong>【重要！】データベース内に同一の型番が存在した場合は既存登録商品の在庫数が更新され、商品の登録は行われません。</strong></span><br>
+                <span class="fieldRequired">半角英数12文字、日本語入力不可。</span></td>
               </tr>
               <tr>
                 <td align="center" class="infoBoxContent">G</td>
-                <td class="menuBoxHeading">�����ѥ�</td>
-                <td class="menuBoxHeading">�ᥤ������Τ���Ͽ���뤳�Ȥ��Ǥ��ޤ���ʣ���������CSV����Ͽ�塢��������ɲò����򥢥åץ����ɤ��Ƥ���������<br>                
-                <?php echo HTTP_SERVER .DIR_WS_CATALOG .DIR_WS_IMAGES ;?>���Ф�������Υѥ������Ϥ��Ƥ���������<br>
-                ���ʥڡ����ˤϡ�<span class="fieldRequired">����:<?php echo PRODUCT_INFO_IMAGE_WIDTH ; ?>px������:<?php echo PRODUCT_INFO_IMAGE_HEIGHT ; ?>px�����ꤵ��Ƥ��ޤ������������������礭�����ϲ����Ƚ�����ưŪ�˺�Ŭ����������ͥ����������������ޤ���</span>�������������ä˵��ˤ���ɬ�פϤ���ޤ���CSV�ǥե�����򥢥åץ����ɤ�����ˡ�FTP���饤����Ȥ�������Τߤ���ꤷ����¸�ǥ��쥯�ȥ�˥��åץ����ɤ�ɬ���ԤäƤ���������<br>
-                ���sample.gif</td>
+                <td class="menuBoxHeading">画像パス</td>
+                <td class="menuBoxHeading">メイン画像のみ登録することができます。複数ある場合はCSVで登録後、商品毎に追加画像をアップロードしてください。<br>                
+                <?php echo HTTP_SERVER .DIR_WS_CATALOG .DIR_WS_IMAGES ;?>に対する画像のパスを入力してください。<br>
+                商品ページには　<span class="fieldRequired">横幅:<?php echo PRODUCT_INFO_IMAGE_WIDTH ; ?>px　縦幅:<?php echo PRODUCT_INFO_IMAGE_HEIGHT ; ?>pxで設定されていますが、これよりも画像が大きい場合は横幅と縦幅を自動的に最適化したサムネイル画像が生成されます。</span>画像サイズは特に気にする必要はありません。CSVでファイルをアップロードした後に、FTPクライアントから画像のみを指定した保存ディレクトリにアップロードを必ず行ってください。<br>
+                例）sample.gif</td>
               </tr>
               <tr>
                 <td align="center" class="infoBoxContent">H</td>
-                <td class="menuBoxHeading">���<span class="fieldRequired">*</span></td>
-                <td class="menuBoxHeading">��ȴ������������Ϥ��Ƥ�������</td>
+                <td class="menuBoxHeading">定価<span class="fieldRequired">*</span></td>
+                <td class="menuBoxHeading">税抜きの定価を入力してください</td>
               </tr>
               <tr>
                 <td align="center" class="infoBoxContent">I</td>
-                <td class="menuBoxHeading">����<span class="fieldRequired">*</span></td>
-                <td class="menuBoxHeading">��ȴ�����ʤ����Ϥ��Ƥ���������</td>
+                <td class="menuBoxHeading">価格<span class="fieldRequired">*</span></td>
+                <td class="menuBoxHeading">税抜き価格を入力してください。</td>
               </tr>
               <tr>
                 <td align="center" class="infoBoxContent">J</td>
-                <td class="menuBoxHeading">�������</td>
-                <td class="menuBoxHeading">������ʤ��������������ʤ����Ϥ��Ƥ���������
-                ��ȴ�����ʤ����Ϥ��Ƥ���������������ʤ����Ϥ������ˤϾ��ʲ��ʤ����Τ褦��ɽ������ޤ���<br> 
-                ��˾��ʲ��ʤ�5000�����Ϥ���������ʤ�4000�����Ϥ�����硡<s>5,000</s>��&nbsp;<span class="specialPrice">4,000��</span>               <br>
-                <span class="fieldRequired">����Ǥ�ġ�</span></td>
+                <td class="menuBoxHeading">特売価格</td>
+                <td class="menuBoxHeading">特売価格がある場合は特売価格を入力してください。
+                税抜き価格を入力してください。特売価格を入力した場合には商品価格が次のように表示されます。<br> 
+                例）商品価格に5000と入力し、特売価格に4000と入力した場合　<s>5,000</s>円&nbsp;<span class="specialPrice">4,000円</span>               <br>
+                <span class="fieldRequired">空白でも可。</span></td>
               </tr>
               <tr>
                 <td align="center" class="infoBoxContent">K</td>
-                <td class="menuBoxHeading">���̡ʺ߸˿���</td>
-                <td class="menuBoxHeading"><a href="configuration.php?gID=9&cID=113&action=edit" target="_blank">�߸˿��Υ����å�</a>��TRUE�ˤ��Ƥ�����ϡ��߸˴����߸˿������Ϥ��Ƥ���������<br>
-                ����Ǥ�ġ������Τ߲ġ�</td>
+                <td class="menuBoxHeading">数量（在庫数）</td>
+                <td class="menuBoxHeading"><a href="configuration.php?gID=9&cID=113&action=edit" target="_blank">在庫水準のチェック</a>をTRUEにしている場合は、在庫管理在庫数を入力してください。<br>
+                空白でも可、数字のみ可。</td>
               </tr>
               <tr>
                 <td align="center" class="infoBoxContent">L</td>
-                <td class="menuBoxHeading">ȯ����</td>
-                <td class="menuBoxHeading">2005/01/26���Τ褦��YYYY/mm/dd�����������Ϥ��Ƥ���������<br>
-                ����ξ������������ա�<?php echo date("Y/m/d");?>�ˤ���Ͽ����ޤ���<span class="fieldRequired">���������դ���̤������դ����Ϥ������</span>�ϥȥåץڡ���What'sNew(�������)�˼�ưŪ��ȿ�Ǥ���ޤ���<br>
-                ����Ǥ�ġ�</td>
+                <td class="menuBoxHeading">発売日</td>
+                <td class="menuBoxHeading">2005/01/26　のようにYYYY/mm/dd　形式で入力してください。<br>
+                空白の場合は本日の日付（<?php echo date("Y/m/d");?>）が登録されます。<span class="fieldRequired">本日の日付よりも未来の日付を入力した場合</span>はトップページWhat'sNew(新着情報)に自動的に反映されます。<br>
+                空白でも可。</td>
               </tr>
               <tr>
                 <td align="center" class="infoBoxContent">M</td>
-                <td class="menuBoxHeading">�߸˥��ơ�����<span class="fieldRequired">*</span></td>
-                <td class="menuBoxHeading">���ʤ�ɽ��������ϣ�����ɽ���ˤ������0�����Ϥ��Ƥ���������</td>
+                <td class="menuBoxHeading">在庫ステータス<span class="fieldRequired">*</span></td>
+                <td class="menuBoxHeading">商品を表示する場合は１、非表示にする場合は0を入力してください。</td>
               </tr>
               <tr>
                 <td align="center" class="infoBoxContent">N</td>
-                <td class="menuBoxHeading">��ϢURL</td>
-                <td class="menuBoxHeading">���ʤ˴�Ϣ����ڡ������������http://�������www.xxx...�������Ϥ��Ƥ���������<br>
-                <span class="fieldRequired">����Ǥ�ġ�Ⱦ�ѱѿ�255ʸ�������ܸ�122ʸ���ޤ����ϲ�ǽ��</span></td>
+                <td class="menuBoxHeading">関連URL</td>
+                <td class="menuBoxHeading">商品に関連するページがある場合はhttp://を除く、www.xxx...から入力してください。<br>
+                <span class="fieldRequired">空白でも可。半角英数255文字、日本語122文字まで入力可能。</span></td>
               </tr>
               <tr>
                 <td align="center" class="infoBoxContent">O</td>
-                <td class="menuBoxHeading">����</td>
-                <td class="menuBoxHeading">��������̤���˷׻�������ϥ�ޥȡ����������ɽ�򸵤˥���������ñ�̤����Ϥ��Ƥ���������<br>
-                <span class="fieldRequired">����Ǥ�ġ������Τߡ�</span></td>
+                <td class="menuBoxHeading">重量</td>
+                <td class="menuBoxHeading">送料を重量を基準に計算する場合はヤマト、佐川の料金表を元にキログラムの単位で入力してください。<br>
+                <span class="fieldRequired">空白でも可。数字のみ。</span></td>
               </tr>
               <tr>
                 <td align="center" class="infoBoxContent">P</td>
-                <td class="menuBoxHeading">���ܣ�</td>
-                <td class="menuBoxHeading">JAN�����ɤ����Ϥ��Ƥ���������<br>
-                  ���ܸ졦�ѿ������Ʋġ�<span class="fieldRequired">ʸ����̵���¡�</span></td>
+                <td class="menuBoxHeading">項目１</td>
+                <td class="menuBoxHeading">JANコードを入力してください。<br>
+                  日本語・英数字全て可。<span class="fieldRequired">文字数無制限。</span></td>
               </tr>
               <tr>
                 <td align="center" class="infoBoxContent">Q</td>
-                <td class="menuBoxHeading">���ܣ�</td>
-                <td class="menuBoxHeading">�����������Ϥ��Ƥ�������<br>
-                  ���ܸ졦�ѿ������Ʋġ�<span class="fieldRequired">ʸ����̵���¡�</span></td>
+                <td class="menuBoxHeading">項目２</td>
+                <td class="menuBoxHeading">サイズを入力してください<br>
+                  日本語・英数字全て可。<span class="fieldRequired">文字数無制限。</span></td>
               </tr>
               <tr>
                 <td align="center" class="infoBoxContent">R</td>
-                <td class="menuBoxHeading">���ܣ�</td>
-                <td class="menuBoxHeading">�����̤�ñ�̤Ĥ������Ϥ��Ƥ����������㡧50Kg��<br>
-                  ���ܸ졦�ѿ������Ʋġ�<span class="fieldRequired">ʸ����̵���¡�</span></td>
+                <td class="menuBoxHeading">項目３</td>
+                <td class="menuBoxHeading">内容量を単位つきで入力してください（例：50Kg）<br>
+                  日本語・英数字全て可。<span class="fieldRequired">文字数無制限。</span></td>
               </tr>
               <tr>
                 <td align="center" class="infoBoxContent">S</td>
-                <td class="menuBoxHeading">���ܣ�</td>
-                <td class="menuBoxHeading">��������Ϥ��Ƥ���������<br>
-                  ���ܸ졦�ѿ������Ʋġ�<span class="fieldRequired">ʸ����̵���¡�</span></td>
+                <td class="menuBoxHeading">項目４</td>
+                <td class="menuBoxHeading">材質を入力してください。<br>
+                  日本語・英数字全て可。<span class="fieldRequired">文字数無制限。</span></td>
               </tr>
               <tr>
                 <td align="center" class="infoBoxContent">T</td>
-                <td class="menuBoxHeading">�Ǽ���<span class="fieldRequired">*</span></td>
-                <td class="menuBoxHeading">�ǹ�ɽ����1����ȴ��ɽ����0��</td>
+                <td class="menuBoxHeading">税種別<span class="fieldRequired">*</span></td>
+                <td class="menuBoxHeading">税込表示は1、税抜き表示は0。</td>
               </tr>
               <tr>
                 <td align="center" class="infoBoxContent">U</td>
-                <td class="menuBoxHeading">���ܣ�</td>
-                <td class="menuBoxHeading">���ͤ����Ϥ��Ƥ���������<br>
-                  <span class="fieldRequired">����Ǥ�ġ�HTML���Ѳġ�ʸ����̵���¡�</span></td>
+                <td class="menuBoxHeading">項目５</td>
+                <td class="menuBoxHeading">備考を入力してください。<br>
+                  <span class="fieldRequired">空白でも可。HTML使用可、文字数無制限。</span></td>
               </tr>
             </table></td>
           </tr>

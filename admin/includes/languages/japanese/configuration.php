@@ -10,11 +10,11 @@
   Released under the GNU General Public License
 */
 
-define('TABLE_HEADING_CONFIGURATION_TITLE', '¥¿¥¤¥È¥ë');
-define('TABLE_HEADING_CONFIGURATION_VALUE', 'ÀßÄêÃÍ');
-define('TABLE_HEADING_ACTION', 'Áàºî');
+define('TABLE_HEADING_CONFIGURATION_TITLE', 'ã‚¿ã‚¤ãƒˆãƒ«');
+define('TABLE_HEADING_CONFIGURATION_VALUE', 'è¨­å®šå€¤');
+define('TABLE_HEADING_ACTION', 'æ“ä½œ');
 
-define('TEXT_INFO_EDIT_INTRO', 'É¬Í×¤ÊÊÑ¹¹¤ò²Ã¤¨¤Æ¤¯¤À¤µ¤¤');
-define('TEXT_INFO_DATE_ADDED', 'ÅÐÏ¿Æü:');
-define('TEXT_INFO_LAST_MODIFIED', '¹¹¿·Æü:');
+define('TEXT_INFO_EDIT_INTRO', 'å¿…è¦ãªå¤‰æ›´ã‚’åŠ ãˆã¦ãã ã•ã„');
+define('TEXT_INFO_DATE_ADDED', 'ç™»éŒ²æ—¥:');
+define('TEXT_INFO_LAST_MODIFIED', 'æ›´æ–°æ—¥:');
 ?>

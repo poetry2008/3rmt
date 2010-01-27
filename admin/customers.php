@@ -15,7 +15,7 @@
   if ($HTTP_GET_VARS['action']) {
     switch ($HTTP_GET_VARS['action']) {
       case 'update':
-        // tamura 2002/12/30 ¡ÖÁ´³Ñ¡×±Ñ¿ô»ú¤ò¡ÖÈ¾³Ñ¡×¤ËÊÑ´¹
+        // tamura 2002/12/30 ã€Œå…¨è§’ã€è‹±æ•°å­—ã‚’ã€ŒåŠè§’ã€ã«å¤‰æ›
         $an_cols = array('customers_email_address','customers_telephone','customers_fax','customers_dob','entry_postcode');
         foreach ($an_cols as $col) {
           $HTTP_POST_VARS[$col] = tep_an_zen_to_han($HTTP_POST_VARS[$col]);
@@ -382,7 +382,7 @@ function check_form() {
       </tr>
       <tr>
 	    <?php echo tep_draw_form('customers', FILENAME_CUSTOMERS, tep_get_all_get_params(array('action')) . 'action=update', 'post', 'onSubmit="return check_form();"') . tep_draw_hidden_field('default_address_id', $cInfo->customers_default_address_id) . "\n"; ?>
-	    <input type="hidden" name="dummy" value="¤¢¤¤¤¦¤¨¤ªÈıÉı">
+	    <input type="hidden" name="dummy" value="ã‚ã„ã†ãˆãŠçœ‰å¹…">
         <td class="formAreaTitle"><?php echo CATEGORY_PERSONAL; ?></td>
       </tr>
       <tr>
@@ -442,19 +442,19 @@ function check_form() {
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>
       <tr>
-        <td class="formAreaTitle">Åö¼Ò»ÈÍÑÍó</td>
+        <td class="formAreaTitle">å½“ç¤¾ä½¿ç”¨æ¬„</td>
       </tr>
       <tr>
         <td class="formArea"><table border="0" cellspacing="2" cellpadding="2">
           <tr>
-            <td class="main">¿®ÍÑÄ´ºº:</td>
-            <td class="main"><?php echo tep_draw_input_field('customers_fax', $cInfo->customers_fax, 'size="60" maxlength="255"'); ?>&nbsp;&nbsp;¾ïÏ¢µÒ¡ÚHQ¡Û&nbsp;&nbsp;Ãí°Õ¡ÚWA¡Û&nbsp;&nbsp;È¯Á÷¶Ø»ß¡ÚBK¡Û</td>
+            <td class="main">ä¿¡ç”¨èª¿æŸ»:</td>
+            <td class="main"><?php echo tep_draw_input_field('customers_fax', $cInfo->customers_fax, 'size="60" maxlength="255"'); ?>&nbsp;&nbsp;å¸¸é€£å®¢ã€HQã€‘&nbsp;&nbsp;æ³¨æ„ã€WAã€‘&nbsp;&nbsp;ç™ºé€ç¦æ­¢ã€BKã€‘</td>
           </tr>
 		  <tr>
-            <td class="main" colspan="2">¥¯¥ì¥«½é²ó·èºÑÆü¡§C2007/01/01&nbsp;&nbsp;&nbsp;&nbsp;¥¨¥ê¥¢°ìÃ×¡§Aok&nbsp;&nbsp;&nbsp;&nbsp;ËÜ¿Í³ÎÇ§ºÑ¡§Hok&nbsp;&nbsp;&nbsp;&nbsp;YahooID¹¹¿·Æü¡§Y2007/01/01&nbsp;&nbsp;&nbsp;&nbsp;¥ê¥Õ¥¡¥é¡¼¡§R</td>
+            <td class="main" colspan="2">ã‚¯ãƒ¬ã‚«åˆå›æ±ºæ¸ˆæ—¥ï¼šC2007/01/01&nbsp;&nbsp;&nbsp;&nbsp;ã‚¨ãƒªã‚¢ä¸€è‡´ï¼šAok&nbsp;&nbsp;&nbsp;&nbsp;æœ¬äººç¢ºèªæ¸ˆï¼šHok&nbsp;&nbsp;&nbsp;&nbsp;YahooIDæ›´æ–°æ—¥ï¼šY2007/01/01&nbsp;&nbsp;&nbsp;&nbsp;ãƒªãƒ•ã‚¡ãƒ©ãƒ¼ï¼šR</td>
           </tr>
 		  <tr>
-            <td class="main" colspan="2"><b>µ­ÆşÎã¡§WA-Aok-C2007/01/01-Hok-R¥°¡¼¥°¥ëFF11 RMT</b></td>
+            <td class="main" colspan="2"><b>è¨˜å…¥ä¾‹ï¼šWA-Aok-C2007/01/01-Hok-Rã‚°ãƒ¼ã‚°ãƒ«FF11 RMT</b></td>
           </tr>
         </table></td>
       </tr>
@@ -505,7 +505,7 @@ function check_form() {
           <tr><?php echo tep_draw_form('search', FILENAME_CUSTOMERS, '', 'get'); ?>
             <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
-            <td class="smallText" align="right"><?php echo tep_draw_hidden_field('d', 'óş') . HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search'); ?><br>¢¨¸¡º÷ÂĞ¾İ¡§¡Ö¸ÜµÒÌ¾¡ÊÀ«/Ì¾/¡Ë¡×¡Ö¤Õ¤ê¤¬¤Ê¡ÊÀ«/Ì¾¡Ë¡×¡Ö¥á¡¼¥ë¥¢¥É¥ì¥¹¡×
+            <td class="smallText" align="right"><?php echo tep_draw_hidden_field('d', 'é¾ ') . HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search'); ?><br>â€»æ¤œç´¢å¯¾è±¡ï¼šã€Œé¡§å®¢åï¼ˆå§“/å/ï¼‰ã€ã€Œãµã‚ŠãŒãªï¼ˆå§“/åï¼‰ã€ã€Œãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã€
 			
 			</td>
           </form></tr>

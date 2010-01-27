@@ -32,25 +32,25 @@
   
   
   if(isset($HTTP_POST_VARS['act']) && $HTTP_POST_VARS['act'] == 'export') {
-    //CSV�ե�����͡������
+    //CSVファイルネーム指定
 	$filename = 'customer_' . date("YmdHis") . '.csv';
 	
-	//���顼�к�
+	//エラー対策
 	$start = "0000-00-00 00:00:00";
 	$end = "0000-00-00 00:00:01";
 	
-	//�����ϰϤμ���
+	//指定範囲の取得
 	if(!empty($HTTP_POST_VARS['s_y']) && !empty($HTTP_POST_VARS['s_m']) && !empty($HTTP_POST_VARS['s_d'])) {
-      $s_y = $HTTP_POST_VARS['s_y'] ; //��������ǯ
-      $s_m = $HTTP_POST_VARS['s_m'] ; //����������
-      $s_d = $HTTP_POST_VARS['s_d'] ; //����������
+      $s_y = $HTTP_POST_VARS['s_y'] ; //開始日　年
+      $s_m = $HTTP_POST_VARS['s_m'] ; //開始日　月
+      $s_d = $HTTP_POST_VARS['s_d'] ; //開始日　日
       $start = $s_y.'-'.$s_m.'-'.$s_d . ' 00:00:00';
 	}
   
     if(!empty($HTTP_POST_VARS['e_y']) && !empty($HTTP_POST_VARS['e_m']) && !empty($HTTP_POST_VARS['e_d'])) {
-	  $e_y = $HTTP_POST_VARS['e_y'] ; //��λ����ǯ
-      $e_m = $HTTP_POST_VARS['e_m'] ; //��λ������
-      $e_d = $HTTP_POST_VARS['e_d'] ; //��λ������
+	  $e_y = $HTTP_POST_VARS['e_y'] ; //終了日　年
+      $e_m = $HTTP_POST_VARS['e_m'] ; //終了日　月
+      $e_d = $HTTP_POST_VARS['e_d'] ; //終了日　日
       $end = $e_y.'-'.$e_m.'-'.$e_d . ' 00:00:00';
 	}
 	
@@ -61,7 +61,7 @@
 				
 				
 	//HEADER
-	$csv_header = '��������Ⱥ�����,����,��,̾,��ǯ����,�᡼�륢�ɥ쥹,���̾,͹���ֹ�,��ƻ�ܸ�,�Զ�Į¼,����1,����2,��̾,�����ֹ�,FAX�ֹ�,���ޥ�����,�ݥ����';
+	$csv_header = 'アカウント作成日,性別,姓,名,生年月日,メールアドレス,会社名,郵便番号,都道府県,市区町村,住所1,住所2,国名,電話番号,FAX番号,メルマガ購読,ポイント';
 	$csv_header = Jcode_EUCtoSJIS($csv_header);
 	print $csv_header."\r\n";
 	
@@ -82,71 +82,71 @@
 	    //Get Addressbood default data
 		$addressbook_query = tep_db_query("select * from ".TABLE_ADDRESS_BOOK." where customers_id = '".$customers['customers_id']."' and address_book_id = '".$customers['customers_default_address_id']."'");
 		$addressbook = tep_db_fetch_array($addressbook_query);
-		//��������Ⱥ�����
+		//アカウント作成日
 		$account_add = str_replace("-", "/", $customers['customers_info_date_account_created']);
 		print Jcode_EUCtoSJIS($account_add) . ',';
 		
-		//����
+		//性別
 		if($customers['customers_gender'] == 'm') {
-		  $gender = '����';
+		  $gender = '男性';
 		} else {
-		  $gender = '����';
+		  $gender = '女性';
 		}
 		print Jcode_EUCtoSJIS($gender) . ',';
 		
-		//��
+		//姓
 		print Jcode_EUCtoSJIS($customers['customers_lastname']) . ',';
 		
-		//̾
+		//名
 		print Jcode_EUCtoSJIS($customers['customers_firstname']) . ',';
 		
-		//��ǯ����
+		//生年月日
 		print Jcode_EUCtoSJIS($customers['customers_dob']) . ',';
 		
-		//�᡼�륢�ɥ쥹
+		//メールアドレス
 		print Jcode_EUCtoSJIS($customers['customers_email_address']) . ',';
 		
-		//���̾
+		//会社名
 		print Jcode_EUCtoSJIS($addressbook['entry_company']) . ',';
 		
-		//͹���ֹ�
+		//郵便番号
 		print Jcode_EUCtoSJIS($addressbook['entry_postcode']) . ',';
 		
-		//��ƻ�ܸ�
+		//都道府県
 		$zone = tep_get_zone_name($addressbook['entry_zone_id']);
 		print Jcode_EUCtoSJIS($zone) . ',';
 		
-		//�Զ�Į¼
+		//市区町村
 		print Jcode_EUCtoSJIS($addressbook['entry_city']) . ',';
 		
-		//����1
+		//住所1
 		print Jcode_EUCtoSJIS($addressbook['entry_street_address']) . ',';
 		
-		//����2
+		//住所2
 		print Jcode_EUCtoSJIS($addressbook['entry_suburb']) . ',';
 		
-		//��̾
+		//国名
 		$country = tep_get_country_name($addressbook['entry_country_id']);
 		print Jcode_EUCtoSJIS($country) . ',';
 		
-		//�����ֹ�
+		//電話番号
 		print Jcode_EUCtoSJIS($customers['customers_telephone']) . ',';
 		
-		//FAX�ֹ�
+		//FAX番号
 		print Jcode_EUCtoSJIS($customers['customers_fax']) . ',';
 		
-		//���ޥ�����
+		//メルマガ購読
 		if($customers['customers_newsletter'] == '0') {
-		  $mag = "̤����";
+		  $mag = "未購読";
 		} else {
-		  $mag = "����";
+		  $mag = "購読";
 		}
 		print Jcode_EUCtoSJIS($mag) . ',';
 		
-		//�ݥ����
+		//ポイント
 		print Jcode_EUCtoSJIS($customers['point']);
 		
-		//����
+		//改行
 		print "\r\n";
 	  }
 	}
@@ -178,7 +178,7 @@
         <tr> 
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
               <tr> 
-                <td class="pageHeading">�ܵҥǡ��������������</td> 
+                <td class="pageHeading">顧客データダウンロード</td> 
                 <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td> 
               </tr> 
             </table></td> 
@@ -189,13 +189,13 @@
         <tr> 
           <td> <form action="<?php echo tep_href_link('customers_csv_exe.php','',SSL) ; ?>" method="post"> 
               <fieldset> 
-              <legend class="smallText"><b>�ܵҥǡ��������������</b></legend> 
+              <legend class="smallText"><b>顧客データダウンロード</b></legend> 
               <table  border="0" cellpadding="0" cellspacing="2"> 
                 <tr> 
-                  <td class="main" height="35" style="padding-left:20px; "> <p>�������������ϥ����Ф��Ф��ƹ���٤Ȥʤ�ޤ������������ξ��ʤ����֤˼¹Ԥ��Ƥ���������</p></td> 
+                  <td class="main" height="35" style="padding-left:20px; "> <p>ダウンロード中はサーバに対して高負荷となります。アクセスの少ない時間に実行してください。</p></td> 
                 </tr> 
                 <tr> 
-                  <td class="main" style="padding-left:20px; " height="30">��������
+                  <td class="main" style="padding-left:20px; " height="30">開始日：
                     <select name="s_y"> 
                       <?php
 			for($i=2002; $i<2011; $i++) {
@@ -207,7 +207,7 @@
             }
 			?> 
                     </select> 
-                    ǯ
+                    年
                     <select name="s_m"> 
                       <?php
 			for($i=1; $i<13; $i++) {
@@ -219,7 +219,7 @@
             }
 			?> 
                     </select> 
-                    ��
+                    月
                     <select name="s_d"> 
                       <?php
 			for($i=1; $i<32; $i++) {
@@ -231,10 +231,10 @@
             }
 			?> 
                     </select> 
-                    �� </td> 
+                    日 </td> 
                 </tr> 
                 <tr> 
-                  <td class="main" style="padding-left:20px; " height="30">��λ����
+                  <td class="main" style="padding-left:20px; " height="30">終了日：
                     <select name="e_y"> 
                       <?php
 			for($i=2002; $i<2011; $i++) {
@@ -246,7 +246,7 @@
             }
 			?> 
                     </select> 
-                    ǯ
+                    年
                     <select name="e_m"> 
                       <?php
 			for($i=1; $i<13; $i++) {
@@ -258,7 +258,7 @@
             }
 			?> 
                     </select> 
-                    ��
+                    月
                     <select name="e_d"> 
                       <?php
 			for($i=1; $i<32; $i++) {
@@ -270,10 +270,10 @@
             }
 			?> 
                     </select> 
-                    �� </td> 
+                    日 </td> 
                 </tr> 
                 <tr> 
-                  <td style="padding-left:20px;" height="35"><input type="image" src="includes/languages/japanese/images/buttons/button_csv_exe.gif" alt="CSV�������ݡ���" width="105" height="22" border="0"></td> 
+                  <td style="padding-left:20px;" height="35"><input type="image" src="includes/languages/japanese/images/buttons/button_csv_exe.gif" alt="CSVエクスポート" width="105" height="22" border="0"></td> 
                 </tr> 
               </table> 
               <input type="hidden" name="act" value="export"> 
@@ -281,104 +281,104 @@
             </form></td> 
         </tr> 
         <tr> 
-          <td> <p class="main">�ܵҾ���Τ����ʲ��ξ���CSV�ե�����Ȥ��ƥ���������ɤ���ޤ���</p> 
+          <td> <p class="main">顧客情報のうち以下の情報がCSVファイルとしてダウンロードされます。</p> 
             <table width="100%"  border="0" cellpadding="2" cellspacing="1" class="infoBoxHeading"> 
               <tr> 
                 <td width="20" align="center" class="infoBoxContent">&nbsp;</td> 
-                <td width="120" class="menuBoxHeading">����</td> 
-                <td class="menuBoxHeading">����</td> 
+                <td width="120" class="menuBoxHeading">項目</td> 
+                <td class="menuBoxHeading">説明</td> 
               </tr> 
               <tr> 
                 <td align="center" class="infoBoxContent">A</td> 
-                <td class="menuBoxHeading">��������Ⱥ�����</td> 
-                <td class="menuBoxHeading">��������Ȥ����������������Ϥ��ޤ��ʷ�����2005/11/11
-                  10:15:32��</td> 
+                <td class="menuBoxHeading">アカウント作成日</td> 
+                <td class="menuBoxHeading">アカウントを作成した日時を出力します（形式：2005/11/11
+                  10:15:32）</td> 
               </tr> 
               <tr> 
                 <td align="center" class="infoBoxContent">B</td> 
-                <td class="menuBoxHeading">����</td> 
-                <td class="menuBoxHeading">�ܵҤ����̤��������/�ֽ����פȽ��Ϥ��ޤ�</td> 
+                <td class="menuBoxHeading">性別</td> 
+                <td class="menuBoxHeading">顧客の性別を「男性」/「女性」と出力します</td> 
               </tr> 
               <tr> 
                 <td align="center" class="infoBoxContent">C</td> 
-                <td class="menuBoxHeading">��</td> 
-                <td class="menuBoxHeading">�ܵҤ��Ļ�����Ϥ��ޤ�</td> 
+                <td class="menuBoxHeading">姓</td> 
+                <td class="menuBoxHeading">顧客の苗字を出力します</td> 
               </tr> 
               <tr> 
                 <td align="center" class="infoBoxContent">D</td> 
-                <td class="menuBoxHeading">̾</td> 
-                <td class="menuBoxHeading">�ܵҤ�̾������Ϥ��ޤ�</td> 
+                <td class="menuBoxHeading">名</td> 
+                <td class="menuBoxHeading">顧客の名前を出力します</td> 
               </tr> 
               <tr> 
                 <td align="center" class="infoBoxContent">E</td> 
-                <td class="menuBoxHeading">��ǯ����</td> 
-                <td class="menuBoxHeading">�ܵҤ���ǯ��������Ϥ��ޤ��ʷ�����1999/11/11��</td> 
+                <td class="menuBoxHeading">生年月日</td> 
+                <td class="menuBoxHeading">顧客の生年月日を出力します（形式：1999/11/11）</td> 
               </tr> 
               <tr> 
                 <td align="center" class="infoBoxContent">F</td> 
-                <td class="menuBoxHeading">�᡼�륢�ɥ쥹</td> 
-                <td class="menuBoxHeading">�᡼�륢�ɥ쥹����Ϥ��ޤ�</td> 
+                <td class="menuBoxHeading">メールアドレス</td> 
+                <td class="menuBoxHeading">メールアドレスを出力します</td> 
               </tr> 
               <tr> 
                 <td align="center" class="infoBoxContent">G</td> 
-                <td class="menuBoxHeading">���̾</td> 
-                <td class="menuBoxHeading">���̾�����Ϥ���Ƥ���н��Ϥ��ޤ�</td> 
+                <td class="menuBoxHeading">会社名</td> 
+                <td class="menuBoxHeading">会社名が入力されていれば出力します</td> 
               </tr> 
               <tr> 
                 <td align="center" class="infoBoxContent">H</td> 
-                <td class="menuBoxHeading">͹���ֹ�</td> 
-                <td class="menuBoxHeading">͹���ֹ����Ϥ��ޤ���</td> 
+                <td class="menuBoxHeading">郵便番号</td> 
+                <td class="menuBoxHeading">郵便番号を出力します。</td> 
               </tr> 
               <tr> 
                 <td align="center" class="infoBoxContent">I</td> 
-                <td class="menuBoxHeading">��ƻ�ܸ�</td> 
-                <td class="menuBoxHeading">��ƻ�ܸ�̾���㡧����ԡˤ���Ϥ��ޤ�</td> 
+                <td class="menuBoxHeading">都道府県</td> 
+                <td class="menuBoxHeading">都道府県名（例：東京都）を出力します</td> 
               </tr> 
               <tr> 
                 <td align="center" class="infoBoxContent">J</td> 
-                <td class="menuBoxHeading">�Զ�Į¼</td> 
-                <td class="menuBoxHeading">�Զ�Į¼̾���㡧����ˤ���Ϥ��ޤ�</td> 
+                <td class="menuBoxHeading">市区町村</td> 
+                <td class="menuBoxHeading">市区町村名（例：港区）を出力します</td> 
               </tr> 
               <tr> 
                 <td align="center" class="infoBoxContent">K</td> 
-                <td class="menuBoxHeading">����1</td> 
-                <td class="menuBoxHeading">����ʲ�ҡ˽������Ϥ��ޤ����㡧
+                <td class="menuBoxHeading">住所1</td> 
+                <td class="menuBoxHeading">自宅（会社）住所を出力します（例：
 
 
- �Ǹ��ࡻ��
+ 芝公園〇〇
 
-��</td> 
+）</td> 
               </tr> 
               <tr> 
                 <td align="center" class="infoBoxContent">L</td> 
-                <td class="menuBoxHeading">����2</td> 
-                <td class="menuBoxHeading">�ӥ롦�ޥ󥷥��̾�����Ϥ���Ƥ���н��Ϥ��ޤ����㡧�����ӥ�5F��</td> 
+                <td class="menuBoxHeading">住所2</td> 
+                <td class="menuBoxHeading">ビル・マンション名が入力されていれば出力します（例：〇〇ビル5F）</td> 
               </tr> 
               <tr> 
                 <td align="center" class="infoBoxContent">M</td> 
-                <td class="menuBoxHeading">��̾</td> 
-                <td class="menuBoxHeading">��̾��Japan���ˤ���Ϥ��ޤ�</td> 
+                <td class="menuBoxHeading">国名</td> 
+                <td class="menuBoxHeading">国名（Japan等）を出力します</td> 
               </tr> 
               <tr> 
                 <td align="center" class="infoBoxContent">N</td> 
-                <td class="menuBoxHeading">�����ֹ�</td> 
-                <td class="menuBoxHeading">�����ֹ����Ϥ��ޤ�</td> 
+                <td class="menuBoxHeading">電話番号</td> 
+                <td class="menuBoxHeading">電話番号を出力します</td> 
               </tr> 
               <tr> 
                 <td align="center" class="infoBoxContent">O</td> 
-                <td class="menuBoxHeading">FAX�ֹ�</td> 
-                <td class="menuBoxHeading">FAX�ֹ椬���Ϥ���Ƥ���н��Ϥ��ޤ�</td> 
+                <td class="menuBoxHeading">FAX番号</td> 
+                <td class="menuBoxHeading">FAX番号が入力されていれば出力します</td> 
               </tr> 
               <tr> 
                 <td align="center" class="infoBoxContent">P</td> 
-                <td class="menuBoxHeading">�᡼��ޥ�����</td> 
-                <td class="menuBoxHeading">�᡼��ޥ�����ι�ư���������Ϥ��ޤ���<br>
-                  ���ɤξ�硧�ֹ��ɡס�̤���ɤξ�硧��̤���ɡ�</td> 
+                <td class="menuBoxHeading">メールマガジン</td> 
+                <td class="menuBoxHeading">メールマガジンの行動区状況を出力します。<br>
+                  購読の場合：「購読」｜未購読の場合：「未購読」</td> 
               </tr> 
               <tr> 
                 <td align="center" class="infoBoxContent">Q</td> 
-                <td class="menuBoxHeading">�ݥ����</td> 
-                <td class="menuBoxHeading">�ܵҤθ��߻��äƤ���ݥ���ȿ�����Ϥ��ޤ���</td> 
+                <td class="menuBoxHeading">ポイント</td> 
+                <td class="menuBoxHeading">顧客の現在持っているポイント数を出力します。</td> 
               </tr> 
           </table></td> 
         </tr> 

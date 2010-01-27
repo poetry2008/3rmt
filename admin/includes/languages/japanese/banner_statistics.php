@@ -10,25 +10,25 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', '•–• °º≈˝∑◊');
+define('HEADING_TITLE', '„Éê„Éä„ÉºÁµ±Ë®à');
 
-define('TABLE_HEADING_SOURCE', '∆¸…’');
-define('TABLE_HEADING_VIEWS', '…Ωº®');
-define('TABLE_HEADING_CLICKS', '•Ø•Í•√•Ø');
+define('TABLE_HEADING_SOURCE', 'Êó•‰ªò');
+define('TABLE_HEADING_VIEWS', 'Ë°®Á§∫');
+define('TABLE_HEADING_CLICKS', '„ÇØ„É™„ÉÉ„ÇØ');
 
 define('TEXT_BANNERS_DATA', 'D<br>a<br>t<br>a');
 define('TEXT_BANNERS_DAILY_STATISTICS', '%s Daily Statistics For %s %s');
 define('TEXT_BANNERS_MONTHLY_STATISTICS', '%s Monthly Statistics For %s');
 define('TEXT_BANNERS_YEARLY_STATISTICS', '%s Yearly Statistics');
 
-define('STATISTICS_TYPE_DAILY', '∆¸ Ã');
-define('STATISTICS_TYPE_MONTHLY', '∑Ó Ã');
-define('STATISTICS_TYPE_YEARLY', '«Ø Ã');
+define('STATISTICS_TYPE_DAILY', 'Êó•Âà•');
+define('STATISTICS_TYPE_MONTHLY', 'ÊúàÂà•');
+define('STATISTICS_TYPE_YEARLY', 'Âπ¥Âà•');
 
-define('TITLE_TYPE', '•ø•§•◊:');
-define('TITLE_YEAR', '«Ø:');
-define('TITLE_MONTH', '∑Ó:');
+define('TITLE_TYPE', '„Çø„Ç§„Éó:');
+define('TITLE_YEAR', 'Âπ¥:');
+define('TITLE_MONTH', 'Êúà:');
 
-define('ERROR_GRAPHS_DIRECTORY_DOES_NOT_EXIST', "•®•È°º:  'graphs' •«•£•Ï•Ø•»•Í§¨¬∏∫ﬂ§∑§ﬁ§ª§Û°£'images' •«•£•Ï•Ø•»•Í∆‚§À'graphs'•«•£•Ï•Ø•»•Í§Ú∫Ó¿Æ§∑§∆§Ø§¿§µ§§°£");
-define('ERROR_GRAPHS_DIRECTORY_NOT_WRITEABLE', "•®•È°º:  'images/graphs' •«•£•Ï•Ø•»•Í§ÀΩÒ§≠π˛§ﬂ§¨§«§≠§ﬁ§ª§Û°£¿µ§∑§§•Ê°º•∂∏¢∏¬§Ú¿ﬂƒÍ§∑§∆§Ø§¿§µ§§°£");
+define('ERROR_GRAPHS_DIRECTORY_DOES_NOT_EXIST', "„Ç®„É©„Éº:  'graphs' „Éá„Ç£„É¨„ÇØ„Éà„É™„ÅåÂ≠òÂú®„Åó„Åæ„Åõ„Çì„ÄÇ'images' „Éá„Ç£„É¨„ÇØ„Éà„É™ÂÜÖ„Å´'graphs'„Éá„Ç£„É¨„ÇØ„Éà„É™„Çí‰ΩúÊàê„Åó„Å¶„Åè„Å†„Åï„ÅÑ„ÄÇ");
+define('ERROR_GRAPHS_DIRECTORY_NOT_WRITEABLE', "„Ç®„É©„Éº:  'images/graphs' „Éá„Ç£„É¨„ÇØ„Éà„É™„Å´Êõ∏„ÅçËæº„Åø„Åå„Åß„Åç„Åæ„Åõ„Çì„ÄÇÊ≠£„Åó„ÅÑ„É¶„Éº„Ç∂Ê®©Èôê„ÇíË®≠ÂÆö„Åó„Å¶„Åè„Å†„Åï„ÅÑ„ÄÇ");
 ?>

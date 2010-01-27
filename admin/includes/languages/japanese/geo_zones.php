@@ -10,38 +10,38 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', 'ÃÏ°èÀÇÀßÄê');
+define('HEADING_TITLE', 'åœ°åŸŸç¨Žè¨­å®š');
 
-define('TABLE_HEADING_COUNTRY', '¹ñÌ¾');
-define('TABLE_HEADING_COUNTRY_ZONE', 'ÃÏ°è');
-define('TABLE_HEADING_TAX_ZONES', 'ÃÏ°èÀÇ');
-define('TABLE_HEADING_ACTION', 'Áàºî');
+define('TABLE_HEADING_COUNTRY', 'å›½å');
+define('TABLE_HEADING_COUNTRY_ZONE', 'åœ°åŸŸ');
+define('TABLE_HEADING_TAX_ZONES', 'åœ°åŸŸç¨Ž');
+define('TABLE_HEADING_ACTION', 'æ“ä½œ');
 
-define('TEXT_INFO_HEADING_NEW_ZONE', '¿·¤·¤¤ÃÏ°è');
-define('TEXT_INFO_NEW_ZONE_INTRO', '¿·¤·¤¤ÃÏ°è¤Î¾ðÊó¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤');
+define('TEXT_INFO_HEADING_NEW_ZONE', 'æ–°ã—ã„åœ°åŸŸ');
+define('TEXT_INFO_NEW_ZONE_INTRO', 'æ–°ã—ã„åœ°åŸŸã®æƒ…å ±ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„');
 
-define('TEXT_INFO_HEADING_EDIT_ZONE', 'ÃÏ°è¤òÊÔ½¸');
-define('TEXT_INFO_EDIT_ZONE_INTRO', 'É¬Í×¤ÊÊÑ¹¹¤ò²Ã¤¨¤Æ¤¯¤À¤µ¤¤');
+define('TEXT_INFO_HEADING_EDIT_ZONE', 'åœ°åŸŸã‚’ç·¨é›†');
+define('TEXT_INFO_EDIT_ZONE_INTRO', 'å¿…è¦ãªå¤‰æ›´ã‚’åŠ ãˆã¦ãã ã•ã„');
 
-define('TEXT_INFO_HEADING_DELETE_ZONE', 'ÃÏ°è¤òºï½ü');
-define('TEXT_INFO_DELETE_ZONE_INTRO', 'ËÜÅö¤Ë¤³¤ÎÃÏ°è¤òºï½ü¤·¤Þ¤¹¤«?');
+define('TEXT_INFO_HEADING_DELETE_ZONE', 'åœ°åŸŸã‚’å‰Šé™¤');
+define('TEXT_INFO_DELETE_ZONE_INTRO', 'æœ¬å½“ã«ã“ã®åœ°åŸŸã‚’å‰Šé™¤ã—ã¾ã™ã‹?');
 
-define('TEXT_INFO_HEADING_NEW_SUB_ZONE', '¿·¤·¤¤ÉûÃÏ°è');
-define('TEXT_INFO_NEW_SUB_ZONE_INTRO', '¿·¤·¤¤ÉûÃÏ°è¤Î¾ðÊó¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤');
+define('TEXT_INFO_HEADING_NEW_SUB_ZONE', 'æ–°ã—ã„å‰¯åœ°åŸŸ');
+define('TEXT_INFO_NEW_SUB_ZONE_INTRO', 'æ–°ã—ã„å‰¯åœ°åŸŸã®æƒ…å ±ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„');
 
-define('TEXT_INFO_HEADING_EDIT_SUB_ZONE', 'ÉûÃÏ°è¤òÊÔ½¸');
-define('TEXT_INFO_EDIT_SUB_ZONE_INTRO', 'É¬Í×¤ÊÊÑ¹¹¤ò²Ã¤¨¤Æ¤¯¤À¤µ¤¤');
+define('TEXT_INFO_HEADING_EDIT_SUB_ZONE', 'å‰¯åœ°åŸŸã‚’ç·¨é›†');
+define('TEXT_INFO_EDIT_SUB_ZONE_INTRO', 'å¿…è¦ãªå¤‰æ›´ã‚’åŠ ãˆã¦ãã ã•ã„');
 
-define('TEXT_INFO_HEADING_DELETE_SUB_ZONE', 'ÉûÃÏ°è¤òºï½ü');
-define('TEXT_INFO_DELETE_SUB_ZONE_INTRO', 'ËÜÅö¤Ë¤³¤ÎÉûÃÏ°è¤òºï½ü¤·¤Þ¤¹¤«?');
+define('TEXT_INFO_HEADING_DELETE_SUB_ZONE', 'å‰¯åœ°åŸŸã‚’å‰Šé™¤');
+define('TEXT_INFO_DELETE_SUB_ZONE_INTRO', 'æœ¬å½“ã«ã“ã®å‰¯åœ°åŸŸã‚’å‰Šé™¤ã—ã¾ã™ã‹?');
 
-define('TEXT_INFO_DATE_ADDED', 'ÅÐÏ¿Æü:');
-define('TEXT_INFO_LAST_MODIFIED', '¹¹¿·Æü:');
-define('TEXT_INFO_ZONE_NAME', 'ÃÏ°èÌ¾:');
-define('TEXT_INFO_ZONE_DESCRIPTION', 'ÀâÌÀ:');
-define('TEXT_INFO_COUNTRY', '¹ñÌ¾:');
-define('TEXT_INFO_COUNTRY_ZONE', 'ÃÏ°è:');
-define('TYPE_BELOW', 'Á´¤Æ¤ÎÃÏ°è');
-define('PLEASE_SELECT', 'Á´¤Æ¤ÎÃÏ°è');
-define('TEXT_ALL_COUNTRIES', 'Á´¤Æ¤Î¹ñÌ¾');
+define('TEXT_INFO_DATE_ADDED', 'ç™»éŒ²æ—¥:');
+define('TEXT_INFO_LAST_MODIFIED', 'æ›´æ–°æ—¥:');
+define('TEXT_INFO_ZONE_NAME', 'åœ°åŸŸå:');
+define('TEXT_INFO_ZONE_DESCRIPTION', 'èª¬æ˜Ž:');
+define('TEXT_INFO_COUNTRY', 'å›½å:');
+define('TEXT_INFO_COUNTRY_ZONE', 'åœ°åŸŸ:');
+define('TYPE_BELOW', 'å…¨ã¦ã®åœ°åŸŸ');
+define('PLEASE_SELECT', 'å…¨ã¦ã®åœ°åŸŸ');
+define('TEXT_ALL_COUNTRIES', 'å…¨ã¦ã®å›½å');
 ?>

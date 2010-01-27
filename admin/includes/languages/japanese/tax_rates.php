@@ -10,27 +10,27 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', 'ÀÇÎ¨ÀßÄê');
+define('HEADING_TITLE', 'ç¨ŽçŽ‡è¨­å®š');
 
-define('TABLE_HEADING_TAX_RATE_PRIORITY', 'Í¥Àè½ç°Ì');
-define('TABLE_HEADING_TAX_CLASS_TITLE', 'ÀÇ¼ïÊÌ');
-define('TABLE_HEADING_COUNTRIES_NAME', '¹ñÌ¾');
-define('TABLE_HEADING_ZONE', 'ÃÏ°è');
-define('TABLE_HEADING_TAX_RATE', 'ÀÇÎ¨');
-define('TABLE_HEADING_ACTION', 'Áàºî');
+define('TABLE_HEADING_TAX_RATE_PRIORITY', 'å„ªå…ˆé †ä½');
+define('TABLE_HEADING_TAX_CLASS_TITLE', 'ç¨Žç¨®åˆ¥');
+define('TABLE_HEADING_COUNTRIES_NAME', 'å›½å');
+define('TABLE_HEADING_ZONE', 'åœ°åŸŸ');
+define('TABLE_HEADING_TAX_RATE', 'ç¨ŽçŽ‡');
+define('TABLE_HEADING_ACTION', 'æ“ä½œ');
 
-define('TEXT_INFO_EDIT_INTRO', 'É¬Í×¤ÊÊÑ¹¹¤ò²Ã¤¨¤Æ¤¯¤À¤µ¤¤');
-define('TEXT_INFO_DATE_ADDED', 'ÅÐÏ¿Æü:');
-define('TEXT_INFO_LAST_MODIFIED', 'ÊÑ¹¹Æü:');
-define('TEXT_INFO_CLASS_TITLE', 'ÀÇ¼ïÊÌ¥¿¥¤¥È¥ë:');
-define('TEXT_INFO_COUNTRY_NAME', '¹ñÌ¾:');
-define('TEXT_INFO_ZONE_NAME', 'ÃÏ°è:');
-define('TEXT_INFO_TAX_RATE', 'ÀÇÎ¨ (%):');
-define('TEXT_INFO_TAX_RATE_PRIORITY', 'Í¥Àè½ç°Ì:');
-define('TEXT_INFO_RATE_DESCRIPTION', 'ÀâÌÀ:');
-define('TEXT_INFO_INSERT_INTRO', '¿·¤·¤¤ÀÇÎ¨¤È¤½¤ì¤Ë´ØÏ¢¤¹¤ë¥Ç¡¼¥¿¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤');
-define('TEXT_INFO_DELETE_INTRO', 'ËÜÅö¤Ë¤³¤ÎÀÇÎ¨¤òºï½ü¤·¤Þ¤¹¤«?');
-define('TEXT_INFO_HEADING_NEW_TAX_RATE', '¿·¤·¤¤ÀÇÎ¨');
-define('TEXT_INFO_HEADING_EDIT_TAX_RATE', 'ÀÇÎ¨¤òÊÔ½¸');
-define('TEXT_INFO_HEADING_DELETE_TAX_RATE', 'ÀÇÎ¨¤òºï½ü');
+define('TEXT_INFO_EDIT_INTRO', 'å¿…è¦ãªå¤‰æ›´ã‚’åŠ ãˆã¦ãã ã•ã„');
+define('TEXT_INFO_DATE_ADDED', 'ç™»éŒ²æ—¥:');
+define('TEXT_INFO_LAST_MODIFIED', 'å¤‰æ›´æ—¥:');
+define('TEXT_INFO_CLASS_TITLE', 'ç¨Žç¨®åˆ¥ã‚¿ã‚¤ãƒˆãƒ«:');
+define('TEXT_INFO_COUNTRY_NAME', 'å›½å:');
+define('TEXT_INFO_ZONE_NAME', 'åœ°åŸŸ:');
+define('TEXT_INFO_TAX_RATE', 'ç¨ŽçŽ‡ (%):');
+define('TEXT_INFO_TAX_RATE_PRIORITY', 'å„ªå…ˆé †ä½:');
+define('TEXT_INFO_RATE_DESCRIPTION', 'èª¬æ˜Ž:');
+define('TEXT_INFO_INSERT_INTRO', 'æ–°ã—ã„ç¨ŽçŽ‡ã¨ãã‚Œã«é–¢é€£ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„');
+define('TEXT_INFO_DELETE_INTRO', 'æœ¬å½“ã«ã“ã®ç¨ŽçŽ‡ã‚’å‰Šé™¤ã—ã¾ã™ã‹?');
+define('TEXT_INFO_HEADING_NEW_TAX_RATE', 'æ–°ã—ã„ç¨ŽçŽ‡');
+define('TEXT_INFO_HEADING_EDIT_TAX_RATE', 'ç¨ŽçŽ‡ã‚’ç·¨é›†');
+define('TEXT_INFO_HEADING_DELETE_TAX_RATE', 'ç¨ŽçŽ‡ã‚’å‰Šé™¤');
 ?>

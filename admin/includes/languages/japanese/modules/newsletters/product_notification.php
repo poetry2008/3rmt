@@ -10,15 +10,15 @@
   Released under the GNU General Public License
 */
 
-define('TEXT_COUNT_CUSTOMERS', 'E-Mail¤Ç¤ªÃÎ¤é¤»¤ò¼õ¿®¤¹¤ë¸ÜµÒ¿ô: %s');
-define('TEXT_PRODUCTS', '¾¦ÉÊÌ¾');
-define('TEXT_SELECTED_PRODUCTS', 'ÁªÂò¤µ¤ì¤¿¾¦ÉÊ');
+define('TEXT_COUNT_CUSTOMERS', 'E-Mailã§ãŠçŸ¥ã‚‰ã›ã‚’å—ä¿¡ã™ã‚‹é¡§å®¢æ•°: %s');
+define('TEXT_PRODUCTS', 'å•†å“å');
+define('TEXT_SELECTED_PRODUCTS', 'é¸æŠžã•ã‚ŒãŸå•†å“');
 
-define('JS_PLEASE_SELECT_PRODUCTS', '¾¦ÉÊ¤òÁªÂò¤·¤Æ¤¯¤À¤µ¤¤¡£');
+define('JS_PLEASE_SELECT_PRODUCTS', 'å•†å“ã‚’é¸æŠžã—ã¦ãã ã•ã„ã€‚');
 
-define('BUTTON_GLOBAL', 'Á´¾¦ÉÊ');
+define('BUTTON_GLOBAL', 'å…¨å•†å“');
 define('BUTTON_SELECT', '>>>');
 define('BUTTON_UNSELECT', '<<<');
-define('BUTTON_SUBMIT', 'Á÷¿®');
-define('BUTTON_CANCEL', '¥­¥ã¥ó¥»¥ë');
+define('BUTTON_SUBMIT', 'é€ä¿¡');
+define('BUTTON_CANCEL', 'ã‚­ãƒ£ãƒ³ã‚»ãƒ«');
 ?>

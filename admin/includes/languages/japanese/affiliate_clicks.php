@@ -14,17 +14,17 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', 'епеъе├епеье▌б╝е╚');
+define('HEADING_TITLE', 'уВпуГкуГГуВпуГмуГЭуГ╝уГИ');
 
-define('TABLE_HEADING_ONLINE', 'епеъе├еп╛ї╢╖');
-define('TABLE_HEADING_AFFILIATE_USERNAME', '▓ё░ў╠╛');
-define('TABLE_HEADING_IPADDRESS', 'IPеве╔еье╣');
-define('TABLE_HEADING_ENTRY_TIME', '╗■┤╓');
-define('TABLE_HEADING_BROWSER', 'е╓ещеже╢');
-define('TABLE_HEADING_ENTRY_DATE', '╞№╔╒');
-define('TABLE_HEADING_CLICKED_PRODUCT','евепе╗е╣е┌б╝е╕');
-define('TABLE_HEADING_REFERRAL_URL', 'евепе╗е╣╕╡е┌б╝е╕');
+define('TABLE_HEADING_ONLINE', 'уВпуГкуГГуВпчК╢ц│Б');
+define('TABLE_HEADING_AFFILIATE_USERNAME', 'ф╝ЪхУбхРН');
+define('TABLE_HEADING_IPADDRESS', 'IPуВвуГЙуГмуВ╣');
+define('TABLE_HEADING_ENTRY_TIME', 'цЩВщЦУ');
+define('TABLE_HEADING_BROWSER', 'уГЦуГйуВжуВ╢');
+define('TABLE_HEADING_ENTRY_DATE', 'цЧеф╗Ш');
+define('TABLE_HEADING_CLICKED_PRODUCT','уВвуВпуВ╗уВ╣уГЪуГ╝уВ╕');
+define('TABLE_HEADING_REFERRAL_URL', 'уВвуВпуВ╗уВ╣хЕГуГЪуГ╝уВ╕');
 
-define('TEXT_NO_CLICKS', 'епеъе├епд╡дьд┐еье│б╝е╔д╧┬╕║▀д╖д▐д╗дєбг');
-define('TEXT_DISPLAY_NUMBER_OF_CLICKS', '<b>%d</b> длдщ <b>%d</b> ╖яд▐д╟дЄ╔╜╝и(<b>%d</b>епеъе├еп├ц)');
+define('TEXT_NO_CLICKS', 'уВпуГкуГГуВпуБХуВМуБЯуГмуВ│уГ╝уГЙуБпхнШхЬиуБЧуБ╛уБЫуВУуАВ');
+define('TEXT_DISPLAY_NUMBER_OF_CLICKS', '<b>%d</b> уБЛуВЙ <b>%d</b> ф╗╢уБ╛уБзуВТшбичд║(<b>%d</b>уВпуГкуГГуВпф╕н)');
 ?>

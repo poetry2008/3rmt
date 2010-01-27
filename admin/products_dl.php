@@ -80,7 +80,7 @@
 		
 		set_time_limit(3600);
 		$query = tep_db_query("select distinct p.*, pd.* from products p, products_description pd where p.products_id = pd.products_id and pd.language_id = '4' order by p.products_id");
-		$CsvFields = array("Âç¥«¥Æ¥´¥ê", "Ãæ¥«¥Æ¥´¥ê",  "¥á¡¼¥«¡¼Ì¾", "¾¦ÉÊÌ¾", "¾¦ÉÊÀâÌÀ", "·¿ÈÖ", "²èÁü¥Ñ¥¹", "Äê²Á", "²Á³Ê", "ÆÃÇä²Á³Ê", "¿ôÎÌ", "È¯ÇäÆü", "ºß¸Ë¥¹¥Æ¡¼¥¿¥¹", "´ØÏ¢URL", "½ÅÎÌ", "¹àÌÜ£±", "¹àÌÜ£²", "¹àÌÜ£³", "¹àÌÜ£´", "ÀÇ¼ïÊÌ", "¹àÌÜ£µ");
+		$CsvFields = array("å¤§ã‚«ãƒ†ã‚´ãƒª", "ä¸­ã‚«ãƒ†ã‚´ãƒª",  "ãƒ¡ãƒ¼ã‚«ãƒ¼å", "å•†å“å", "å•†å“èª¬æ˜Ž", "åž‹ç•ª", "ç”»åƒãƒ‘ã‚¹", "å®šä¾¡", "ä¾¡æ ¼", "ç‰¹å£²ä¾¡æ ¼", "æ•°é‡", "ç™ºå£²æ—¥", "åœ¨åº«ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹", "é–¢é€£URL", "é‡é‡", "é …ç›®ï¼‘", "é …ç›®ï¼’", "é …ç›®ï¼“", "é …ç›®ï¼”", "ç¨Žç¨®åˆ¥", "é …ç›®ï¼•");
 		for($i=0;$i<count($CsvFields);$i++){
 			if($i!="0") print ",";
 			print jcodeconvert($CsvFields[$i],0,2) . "";
@@ -88,11 +88,11 @@
 		print "\n";
 		
 		while($result = tep_db_fetch_array($query)) {
-		  //¾¦ÉÊID	
+		  //å•†å“ID	
 		  $products_id = chenge_block($result['products_id']);
 		  //print jcodeconvert($products_id,0,2) . ",";
 		  
-		  /*¥«¥Æ¥´¥ê¼èÆÀ*/
+		  /*ã‚«ãƒ†ã‚´ãƒªå–å¾—*/
 		  $cachk_query = tep_db_query("select categories_id from products_to_categories where products_id = '".$result['products_id']."'");
 		  $cachk = tep_db_fetch_array($cachk_query);
 		  if($cachk['categories_id'] != "0") {
@@ -104,13 +104,13 @@
 		  $categories_name1 = "";
 		  }
 		  
-		  //Âç¥«¥Æ¥´¥ê
+		  //å¤§ã‚«ãƒ†ã‚´ãƒª
 		  print jcodeconvert(get_categories_name($categories_name0),0,2) . ",";
 		  
-		  //Ãæ¥«¥Æ¥´¥ê
+		  //ä¸­ã‚«ãƒ†ã‚´ãƒª
 		  print jcodeconvert(get_categories_name($categories_name1),0,2) . ",";
 			  
-		  //¥á¡¼¥«¡¼Ì¾
+		  //ãƒ¡ãƒ¼ã‚«ãƒ¼å
 		  $mquery = tep_db_query("select manufacturers_name from manufacturers where manufacturers_id = '".$result['manufacturers_id']."'");
 		  $mresult = tep_db_fetch_array($mquery);
 		  $mname = chenge_block($mresult['manufacturers_name']);
@@ -119,33 +119,33 @@
 		  $pd_query = tep_db_query("select * from products_description where  products_id = '".$products_id."' and language_id = '4'");
 		  $pd = tep_db_fetch_array($pd_query);
 		  
-		  //¾¦ÉÊÌ¾
+		  //å•†å“å
 		  $pd_name = chenge_block($pd['products_name']);
 		  print jcodeconvert($pd_name,0,2) . ",";
 		  
-		  //¾¦ÉÊÀâÌÀ - edit 2005.11.29 ds-style
+		  //å•†å“èª¬æ˜Ž - edit 2005.11.29 ds-style
 		  // edit 2009.5.14 maker
 		  $pd['products_description'] = str_replace(array("\r\n", "\n", "\r", ","), array("", "", "", "."), $pd['products_description_'.ABBR_SITENAME]);
 		  //$description_array = explode("|-#-|", $pd['products_description']);
 		  print jcodeconvert($pd['products_description_'.ABBR_SITENAME],0,2) . ",";
 		  //print jcodeconvert($pd['products_description'],0,2) . ",";
 		  
-		  //·¿ÈÖ
+		  //åž‹ç•ª
 		  $p_model = chenge_block($result['products_model']);
 		  print jcodeconvert($p_model,0,2) . ",";
 		  
-		  //²èÁü¥Ñ¥¹	
+		  //ç”»åƒãƒ‘ã‚¹	
 		  $p_image = chenge_block($result['products_image']);
 		  print jcodeconvert($p_image,0,2) . ",";
 		  
-		  //Äê²Á - add 2005.11.29 ds-style
+		  //å®šä¾¡ - add 2005.11.29 ds-style
 		  //print jcodeconvert($pd['products_attention_1'],0,2) . ",";//maker
 		  
-		  //²Á³Ê	
+		  //ä¾¡æ ¼	
 		  $p_price = chenge_block($result['products_price']);
 		  print jcodeconvert($p_price,0,2) . ",";
 		  
-		  //ÆÃÇä²Á³Ê	
+		  //ç‰¹å£²ä¾¡æ ¼	
 		  $sp_count_query = tep_db_query("select count(*) as cnt from specials where products_id = '".$products_id."'");
 		  $sp_count_result = tep_db_fetch_array($sp_count_query);
 		  
@@ -159,49 +159,49 @@
 		    print ",";
 		  }
 		  
-		  //¿ôÎÌ
+		  //æ•°é‡
 		  $p_quantity = chenge_block($result['products_quantity']);
 		  print jcodeconvert($p_quantity,0,2) . ",";
 		  
-		  //È¯ÇäÆü	
+		  //ç™ºå£²æ—¥	
 		  $p_available = chenge_block($result['products_available']);
 		  print jcodeconvert($p_available,0,2) . ",";
 		  
-		  //ºß¸Ë¥¹¥Æ¡¼¥¿¥¹
+		  //åœ¨åº«ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹
 		  $p_status = chenge_block($result['products_status']);
 		  print jcodeconvert($p_status,0,2) . ",";
 		  
-		  //´ØÏ¢URL	
+		  //é–¢é€£URL	
 		  $pd_url = chenge_block($pd['products_url']);
 		  print jcodeconvert($pd_url,0,2) . ",";
 
-		  //½ÅÎÌ	
+		  //é‡é‡	
 		  $p_weight = chenge_block($result['products_weight']);
 		  print jcodeconvert($p_weight,0,2) . ",";
 		  
-		  //JAN¥³¡¼¥É - add 2005.11.29 ds-style
+		  //JANã‚³ãƒ¼ãƒ‰ - add 2005.11.29 ds-style
 		  print jcodeconvert($pd['products_attention_1'],0,2) . ",";
 
-		  //¥µ¥¤¥º - add 2005.11.29 ds-style
+		  //ã‚µã‚¤ã‚º - add 2005.11.29 ds-style
 		  print jcodeconvert($pd['products_attention_2'],0,2) . ",";
 
-		  //ÆâÍÆÎÌ - add 2005.11.29 ds-style
+		  //å†…å®¹é‡ - add 2005.11.29 ds-style
 		  // edit 2009.05.14 maker
 		  print jcodeconvert($pd['products_attention_3'],0,2) . ",";
 
-		  //ºà¼Á - add 2005.11.29 ds-style
+		  //æè³ª - add 2005.11.29 ds-style
 		  // edit 2009.05.14 maker
 		  print jcodeconvert($pd['products_attention_4'],0,2) . ",";
 		  
-		  //ÀÇ¼ïÊÌ	
+		  //ç¨Žç¨®åˆ¥	
 		  $p_tcid = chenge_block($result['products_tax_class_id']);
 		  print jcodeconvert($p_tcid,0,2) . ",";
 		
-		  //È÷¹Í - add 2005.11.29 ds-style
+		  //å‚™è€ƒ - add 2005.11.29 ds-style
 		  // edit 2009.05.14 maker
 		  //print jcodeconvert($pd['products_attention_5'],0,2) . ",";
 
-		  //½ªÎ»
+		  //çµ‚äº†
 		  print "\n";
 		  
 		}
@@ -238,7 +238,7 @@
       <tr>
         <td width="100%"><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td class="pageHeading">¾¦ÉÊ¥Ç¡¼¥¿¥À¥¦¥ó¥í¡¼¥É</td>
+            <td class="pageHeading">å•†å“ãƒ‡ãƒ¼ã‚¿ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰</td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
           </tr>
         </table></td>

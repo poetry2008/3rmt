@@ -10,29 +10,29 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', '¥Õ¥¡¥¤¥ë´ÉÍý');
+define('HEADING_TITLE', 'ãƒ•ã‚¡ã‚¤ãƒ«ç®¡ç†');
 
-define('TABLE_HEADING_FILENAME', '¥Õ¥¡¥¤¥ëÌ¾');
-define('TABLE_HEADING_SIZE', '¥µ¥¤¥º');
-define('TABLE_HEADING_PERMISSIONS', '¥Ñ¡¼¥ß¥Ã¥·¥ç¥ó');
-define('TABLE_HEADING_USER', '¥æ¡¼¥¶');
-define('TABLE_HEADING_GROUP', '¥°¥ë¡¼¥×');
-define('TABLE_HEADING_LAST_MODIFIED', '¹¹¿·Æü');
-define('TABLE_HEADING_ACTION', 'Áàºî');
+define('TABLE_HEADING_FILENAME', 'ãƒ•ã‚¡ã‚¤ãƒ«å');
+define('TABLE_HEADING_SIZE', 'ã‚µã‚¤ã‚º');
+define('TABLE_HEADING_PERMISSIONS', 'ãƒ‘ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³');
+define('TABLE_HEADING_USER', 'ãƒ¦ãƒ¼ã‚¶');
+define('TABLE_HEADING_GROUP', 'ã‚°ãƒ«ãƒ¼ãƒ—');
+define('TABLE_HEADING_LAST_MODIFIED', 'æ›´æ–°æ—¥');
+define('TABLE_HEADING_ACTION', 'æ“ä½œ');
 
-define('TEXT_INFO_HEADING_UPLOAD', '¥¢¥Ã¥×¥í¡¼¥É');
-define('TEXT_FILE_NAME', '¥Õ¥¡¥¤¥ëÌ¾:');
-define('TEXT_FILE_SIZE', '¥µ¥¤¥º:');
-define('TEXT_FILE_CONTENTS', 'ÆâÍÆ:');
-define('TEXT_LAST_MODIFIED', '¹¹¿·Æü:');
-define('TEXT_NEW_FOLDER', '¿·¤·¤¤¥Õ¥©¥ë¥À');
-define('TEXT_NEW_FOLDER_INTRO', '¿·¤·¤¤¥Õ¥©¥ë¥À¤ÎÌ¾Á°¤òÆþÎÏ:');
-define('TEXT_DELETE_INTRO', 'ËÜÅö¤Ë¤³¤Î¥Õ¥¡¥¤¥ë¤òºï½ü¤·¤Þ¤¹¤«?');
-define('TEXT_UPLOAD_INTRO', '¥¢¥Ã¥×¥í¡¼¥É¤¹¤ë¥Õ¥¡¥¤¥ë¤òÁªÂò');
+define('TEXT_INFO_HEADING_UPLOAD', 'ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰');
+define('TEXT_FILE_NAME', 'ãƒ•ã‚¡ã‚¤ãƒ«å:');
+define('TEXT_FILE_SIZE', 'ã‚µã‚¤ã‚º:');
+define('TEXT_FILE_CONTENTS', 'å†…å®¹:');
+define('TEXT_LAST_MODIFIED', 'æ›´æ–°æ—¥:');
+define('TEXT_NEW_FOLDER', 'æ–°ã—ã„ãƒ•ã‚©ãƒ«ãƒ€');
+define('TEXT_NEW_FOLDER_INTRO', 'æ–°ã—ã„ãƒ•ã‚©ãƒ«ãƒ€ã®åå‰ã‚’å…¥åŠ›:');
+define('TEXT_DELETE_INTRO', 'æœ¬å½“ã«ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤ã—ã¾ã™ã‹?');
+define('TEXT_UPLOAD_INTRO', 'ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é¸æŠž');
 
-define('ERROR_DIRECTORY_NOT_WRITEABLE', '¥¨¥é¡¼: ¤³¤Î¥Ç¥£¥ì¥¯¥È¥ê¤Ë½ñ¤­¹þ¤ß¤Ç¤­¤Þ¤»¤ó¡£Àµ¤·¤¤¥æ¡¼¥¶¸¢¸Â¤ò %s ¤ËÀßÄê¤·¤Æ¤¯¤À¤µ¤¤¡£');
-define('ERROR_FILE_NOT_WRITEABLE', '¥¨¥é¡¼: ¤³¤Î¥Õ¥¡¥¤¥ë¤Ë½ñ¤­¹þ¤ß¤Ç¤­¤Þ¤»¤ó¡£Àµ¤·¤¤¥æ¡¼¥¶¸¢¸Â¤ò %s ¤ËÀßÄê¤·¤Æ¤¯¤À¤µ¤¤¡£');
-define('ERROR_DIRECTORY_NOT_REMOVEABLE', '¥¨¥é¡¼: ¤³¤Î¥Ç¥£¥ì¥¯¥È¥ê¤òºï½ü¤Ç¤­¤Þ¤»¤ó¡£Àµ¤·¤¤¥æ¡¼¥¶¸¢¸Â¤ò %s ¤ËÀßÄê¤·¤Æ¤¯¤À¤µ¤¤¡£');
-define('ERROR_FILE_NOT_REMOVEABLE', '¥¨¥é¡¼: ¤³¤Î¥Õ¥¡¥¤¥ë¤òºï½ü¤Ç¤­¤Þ¤»¤ó¡£Àµ¤·¤¤¥æ¡¼¥¶¸¢¸Â¤ò %s ¤ËÀßÄê¤·¤Æ¤¯¤À¤µ¤¤¡£');
-define('ERROR_DIRECTORY_DOES_NOT_EXIST', '¥¨¥é¡¼: %s ¥Ç¥£¥ì¥¯¥È¥ê¤¬Â¸ºß¤·¤Þ¤»¤ó¡£');
+define('ERROR_DIRECTORY_NOT_WRITEABLE', 'ã‚¨ãƒ©ãƒ¼: ã“ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«æ›¸ãè¾¼ã¿ã§ãã¾ã›ã‚“ã€‚æ­£ã—ã„ãƒ¦ãƒ¼ã‚¶æ¨©é™ã‚’ %s ã«è¨­å®šã—ã¦ãã ã•ã„ã€‚');
+define('ERROR_FILE_NOT_WRITEABLE', 'ã‚¨ãƒ©ãƒ¼: ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã«æ›¸ãè¾¼ã¿ã§ãã¾ã›ã‚“ã€‚æ­£ã—ã„ãƒ¦ãƒ¼ã‚¶æ¨©é™ã‚’ %s ã«è¨­å®šã—ã¦ãã ã•ã„ã€‚');
+define('ERROR_DIRECTORY_NOT_REMOVEABLE', 'ã‚¨ãƒ©ãƒ¼: ã“ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’å‰Šé™¤ã§ãã¾ã›ã‚“ã€‚æ­£ã—ã„ãƒ¦ãƒ¼ã‚¶æ¨©é™ã‚’ %s ã«è¨­å®šã—ã¦ãã ã•ã„ã€‚');
+define('ERROR_FILE_NOT_REMOVEABLE', 'ã‚¨ãƒ©ãƒ¼: ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤ã§ãã¾ã›ã‚“ã€‚æ­£ã—ã„ãƒ¦ãƒ¼ã‚¶æ¨©é™ã‚’ %s ã«è¨­å®šã—ã¦ãã ã•ã„ã€‚');
+define('ERROR_DIRECTORY_DOES_NOT_EXIST', 'ã‚¨ãƒ©ãƒ¼: %s ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒå­˜åœ¨ã—ã¾ã›ã‚“ã€‚');
 ?>

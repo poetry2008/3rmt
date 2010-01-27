@@ -1,6 +1,6 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
   require('includes/application_top.php');
@@ -55,7 +55,7 @@
 
         tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $HTTP_GET_VARS['cPath']));
         break;
-      case 'simple_update': // ²Á³Ê¤È¿ôÎÌ¤Î´Ê°×¥¢¥Ã¥×¥Ç¡¼¥È
+      case 'simple_update': // ä¾¡æ ¼ã¨æ•°é‡ã®ç°¡æ˜“ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ
 	    $products_id = tep_db_prepare_input($HTTP_GET_VARS['pID']);
         $update_sql_data = array('products_last_modified' => 'now()',
                                  'products_quantity' => tep_db_prepare_input($HTTP_POST_VARS['products_quantity']),
@@ -63,9 +63,9 @@
         //$sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
         tep_db_perform(TABLE_PRODUCTS, $update_sql_data, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
 
-		  // ÆÃ²Á¾¦ÉÊ¥¤¥ó¥µ¡¼¥È
+		  // ç‰¹ä¾¡å•†å“ã‚¤ãƒ³ã‚µãƒ¼ãƒˆ
           if(!empty($HTTP_POST_VARS['products_special_price'])) {
-			//¡ó»ØÄê¤Î¾ì¹ç¤Ï²Á³Ê¤ò»»½Ğ
+			//ï¼…æŒ‡å®šã®å ´åˆã¯ä¾¡æ ¼ã‚’ç®—å‡º
             if (substr($HTTP_POST_VARS['products_special_price'], -1) == '%') {
               $new_special_insert_query = tep_db_query("select products_id, products_price from " . TABLE_PRODUCTS . " where products_id = '" . tep_db_prepare_input($products_id) . "'");
               $new_special_insert = tep_db_fetch_array($new_special_insert_query);
@@ -76,23 +76,23 @@
 		    $spcnt_query = tep_db_query("select count(*) as cnt from " . TABLE_SPECIALS . " where products_id = '".tep_db_prepare_input($products_id)."'");
 			$spcnt = tep_db_fetch_array($spcnt_query);
 			if($spcnt['cnt'] > 0) {
-			  //ÅĞÏ¿ºÑ¤ß¤Ê¤Î¤Ç¥¢¥Ã¥×¥Ç¡¼¥È
+			  //ç™»éŒ²æ¸ˆã¿ãªã®ã§ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ
 			  tep_db_query("update " . TABLE_SPECIALS . " set specials_new_products_price = '".tep_db_prepare_input($HTTP_POST_VARS['products_special_price'])."', specials_last_modified = now(), status = '1' where  products_id = '".tep_db_prepare_input($products_id)."'");
 			} else {
-			  //Ì¤ÅĞÏ¿¤Ê¤Î¤Ç¥¤¥ó¥µ¡¼¥È
+			  //æœªç™»éŒ²ãªã®ã§ã‚¤ãƒ³ã‚µãƒ¼ãƒˆ
 			  tep_db_query("insert into " . TABLE_SPECIALS . "(specials_id, products_id, specials_new_products_price, specials_date_added, status) values ('', '".tep_db_prepare_input($products_id)."', '".tep_db_prepare_input($HTTP_POST_VARS['products_special_price'])."', now(), '1')");
 			}
 		  } else {
 		    $spcnt_query = tep_db_query("select count(*) as cnt from " . TABLE_SPECIALS . " where products_id = '".tep_db_prepare_input($products_id)."'");
 			$spcnt = tep_db_fetch_array($spcnt_query);
 			if($spcnt['cnt'] > 0) {
-			  //¥Ç¡¼¥¿¤òºï½ü
+			  //ãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤
               tep_db_query("delete from " . TABLE_SPECIALS . " where products_id = '" . tep_db_prepare_input($products_id) . "'");
 		    }
 		  }
-		  // ÆÃ²Á¾¦ÉÊ¥¤¥ó¥µ¡¼¥È½ªÎ»
+		  // ç‰¹ä¾¡å•†å“ã‚¤ãƒ³ã‚µãƒ¼ãƒˆçµ‚äº†
 
-// ¥­¥ã¥é¥¯¥¿¡¼Ì¾¥¤¥ó¥µ¡¼¥È
+// ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åã‚¤ãƒ³ã‚µãƒ¼ãƒˆ
 $des_query = tep_db_query("select products_attention_1,products_attention_2,products_attention_3,products_attention_4,products_attention_5,products_description_".ABBR_SITENAME." from products_description where language_id = '4' and products_id = '" . tep_db_input($products_id) . "'");//maker
 $des_result = tep_db_fetch_array($des_query);
 // edit 2009.5.14 maker
@@ -109,7 +109,7 @@ $sql_data_array = array( // maker
 	'products_attention_5' => tep_db_prepare_input($HTTP_POST_VARS['products_attention_5'])
 );
 tep_db_perform(TABLE_PRODUCTS_DESCRIPTION, $sql_data_array, 'update', 'products_id = \'' . tep_db_input($products_id) . '\' and language_id = \'4\'');
-// ½ª
+// çµ‚
         tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $HTTP_GET_VARS['cPath'] . '&pID=' . $products_id));
         break;
       case 'insert_category':
@@ -386,7 +386,7 @@ tep_db_perform(TABLE_PRODUCTS_DESCRIPTION, $sql_data_array, 'update', 'products_
                   }
 
 		  //-----------------------------------------
-		  // ¥«¥é¡¼ÊÌ²èÁü¥¤¥ó¥µ¡¼¥È¥¹¥¿¡¼¥È
+		  // ã‚«ãƒ©ãƒ¼åˆ¥ç”»åƒã‚¤ãƒ³ã‚µãƒ¼ãƒˆã‚¹ã‚¿ãƒ¼ãƒˆ
 		  //-----------------------------------------
 		  $color_query = tep_db_query("select * from ".TABLE_COLOR." order by color_name");
 		  $cnt=0;
@@ -418,14 +418,14 @@ tep_db_perform(TABLE_PRODUCTS_DESCRIPTION, $sql_data_array, 'update', 'products_
 			}
 	      }
 		  //-----------------------------------------
-		  // ¥«¥é¡¼ÊÌ²èÁü¥¤¥ó¥µ¡¼¥È½ªÎ»
+		  // ã‚«ãƒ©ãƒ¼åˆ¥ç”»åƒã‚¤ãƒ³ã‚µãƒ¼ãƒˆçµ‚äº†
 		  //-----------------------------------------
 
           $languages = tep_get_languages();
           for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
             $language_id = $languages[$i]['id'];
 			
-			//¾¦ÉÊÀâÌÀ¤ò·ë¹ç
+			//å•†å“èª¬æ˜ã‚’çµåˆ
 			// edit 2009.5.14 maker
 			//$des = tep_db_prepare_input($HTTP_POST_VARS['products_description'][$language_id]) . "|-#-|";//maker
 			//$des .= tep_db_prepare_input($HTTP_POST_VARS['products_price_def']) . "|-#-|";//maker
@@ -467,19 +467,19 @@ tep_db_perform(TABLE_PRODUCTS_DESCRIPTION, $sql_data_array, 'update', 'products_
           }
 		  
 		  //-----------------------------------------
-		  // ¥ª¥×¥·¥ç¥óÃÍ¥¤¥ó¥µ¡¼¥È¥¹¥¿¡¼¥È
+		  // ã‚ªãƒ—ã‚·ãƒ§ãƒ³å€¤ã‚¤ãƒ³ã‚µãƒ¼ãƒˆã‚¹ã‚¿ãƒ¼ãƒˆ
 		  //-----------------------------------------
 		  /*
-		    ¥á¥â
+		    ãƒ¡ãƒ¢
 			----------------------------
-			$op1 -> ¥ª¥×¥·¥ç¥óÌ¾ID
-			$op2 -> ¥ª¥×¥·¥ç¥óÃÍID
+			$op1 -> ã‚ªãƒ—ã‚·ãƒ§ãƒ³åID
+			$op2 -> ã‚ªãƒ—ã‚·ãƒ§ãƒ³å€¤ID
 			$op3 -> 
 		  */
 		  $products_options_array = $HTTP_POST_VARS['products_options'];
 		  $options_array = explode("\n", $products_options_array);
 		  
-		  //¾¦ÉÊ¤ËÂĞ±ş¤¹¤ë¥ª¥×¥·¥ç¥ó¤òÁ´ºï½ü
+		  //å•†å“ã«å¯¾å¿œã™ã‚‹ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’å…¨å‰Šé™¤
 		  tep_db_query("delete from products_attributes where products_id = '".$products_id."'");
 		  
 		  for($i=0; $i<sizeof($options_array); $i++) {
@@ -491,13 +491,13 @@ tep_db_perform(TABLE_PRODUCTS_DESCRIPTION, $sql_data_array, 'update', 'products_
 			$products_at_quantity = $products_options[4];
 
 			if(!empty($options_name) && !empty($options_value) && $options_price != '' && !empty($options_prefix)) {
-			  //products_options¤ò¥Á¥§¥Ã¥¯
+			  //products_optionsã‚’ãƒã‚§ãƒƒã‚¯
 			  $op_query1 = tep_db_query("select products_options_id from products_options where products_options_name = '".$options_name."' and language_id = '4'");
 			  if(tep_db_num_rows($op_query1)) {
 			    $op_result1 = tep_db_fetch_array($op_query1);
 				$op1 = $op_result1['products_options_id'];
 			  } else {
-			    //products_options_id¤òºîÀ®
+			    //products_options_idã‚’ä½œæˆ
 				$poid_query = tep_db_query("select products_options_id from products_options order by products_options_id desc limit 1");
 				$poid_result = tep_db_fetch_array($poid_query);
 				$poid = $poid_result['products_options_id'] + 1;
@@ -506,13 +506,13 @@ tep_db_perform(TABLE_PRODUCTS_DESCRIPTION, $sql_data_array, 'update', 'products_
 				$op1 = $poid;
 			  }
 			  
-			  //products_options_values¤ò¥Á¥§¥Ã¥¯
+			  //products_options_valuesã‚’ãƒã‚§ãƒƒã‚¯
 			  $op_query2 = tep_db_query("select products_options_values_id from products_options_values where products_options_values_name = '".$options_value."' and language_id = '4'");
 			  if(tep_db_num_rows($op_query2)) {
 			    $op_result2 = tep_db_fetch_array($op_query2);
 				$op2 = $op_result2['products_options_values_id'];
 			  } else {
-			    //products_options_values_id¤òºîÀ®
+			    //products_options_values_idã‚’ä½œæˆ
 				$povid_query = tep_db_query("select products_options_values_id from products_options_values order by products_options_values_id desc limit 1");
 				$povid_result = tep_db_fetch_array($povid_query);
 				$povid = $povid_result['products_options_values_id'] + 1;
@@ -521,7 +521,7 @@ tep_db_perform(TABLE_PRODUCTS_DESCRIPTION, $sql_data_array, 'update', 'products_
 				$op2 = $povid;
 			  }
 			  
-			  //products_options_values_to_products_options¤ò¥Á¥§¥Ã¥¯
+			  //products_options_values_to_products_optionsã‚’ãƒã‚§ãƒƒã‚¯
 			  $op_cnt_query3 = tep_db_query("select count(*) as cnt from products_options_values_to_products_options where products_options_id = '".$op1."' and products_options_values_id = '".$op2."'");
 			  $op_cnt_result3 = tep_db_fetch_array($op_cnt_query3);
 			  if($op_cnt_result3['cnt'] == 0) {
@@ -542,14 +542,14 @@ tep_db_perform(TABLE_PRODUCTS_DESCRIPTION, $sql_data_array, 'update', 'products_
 		  }
 		  
 		  //-----------------------------------------
-		  // ¥ª¥×¥·¥ç¥óÃÍ¥¤¥ó¥µ¡¼¥È½ªÎ»
+		  // ã‚ªãƒ—ã‚·ãƒ§ãƒ³å€¤ã‚¤ãƒ³ã‚µãƒ¼ãƒˆçµ‚äº†
 		  //-----------------------------------------
 		  
 		  //-----------------------------------------
-		  // ÆÃ²Á¾¦ÉÊ¥¤¥ó¥µ¡¼¥È
+		  // ç‰¹ä¾¡å•†å“ã‚¤ãƒ³ã‚µãƒ¼ãƒˆ
 		  //-----------------------------------------
           if(!empty($HTTP_POST_VARS['products_special_price'])) {
-			//¡ó»ØÄê¤Î¾ì¹ç¤Ï²Á³Ê¤ò»»½Ğ
+			//ï¼…æŒ‡å®šã®å ´åˆã¯ä¾¡æ ¼ã‚’ç®—å‡º
             if (substr($HTTP_POST_VARS['products_special_price'], -1) == '%') {
               $new_special_insert_query = tep_db_query("select products_id, products_price from " . TABLE_PRODUCTS . " where products_id = '" . tep_db_prepare_input($products_id) . "'");
               $new_special_insert = tep_db_fetch_array($new_special_insert_query);
@@ -560,23 +560,23 @@ tep_db_perform(TABLE_PRODUCTS_DESCRIPTION, $sql_data_array, 'update', 'products_
 		    $spcnt_query = tep_db_query("select count(*) as cnt from " . TABLE_SPECIALS . " where products_id = '".tep_db_prepare_input($products_id)."'");
 			$spcnt = tep_db_fetch_array($spcnt_query);
 			if($spcnt['cnt'] > 0) {
-			  //ÅĞÏ¿ºÑ¤ß¤Ê¤Î¤Ç¥¢¥Ã¥×¥Ç¡¼¥È
+			  //ç™»éŒ²æ¸ˆã¿ãªã®ã§ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ
 			  tep_db_query("update " . TABLE_SPECIALS . " set specials_new_products_price = '".tep_db_prepare_input($HTTP_POST_VARS['products_special_price'])."', specials_last_modified = now(), status = '1' where  products_id = '".tep_db_prepare_input($products_id)."'");
 			} else {
-			  //Ì¤ÅĞÏ¿¤Ê¤Î¤Ç¥¤¥ó¥µ¡¼¥È
+			  //æœªç™»éŒ²ãªã®ã§ã‚¤ãƒ³ã‚µãƒ¼ãƒˆ
 			  tep_db_query("insert into " . TABLE_SPECIALS . "(specials_id, products_id, specials_new_products_price, specials_date_added, status) values ('', '".tep_db_prepare_input($products_id)."', '".tep_db_prepare_input($HTTP_POST_VARS['products_special_price'])."', now(), '1')");
 			}
 		  } else {
 		    $spcnt_query = tep_db_query("select count(*) as cnt from " . TABLE_SPECIALS . " where products_id = '".tep_db_prepare_input($products_id)."'");
 			$spcnt = tep_db_fetch_array($spcnt_query);
 			if($spcnt['cnt'] > 0) {
-			  //¥Ç¡¼¥¿¤òºï½ü
+			  //ãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤
               tep_db_query("delete from " . TABLE_SPECIALS . " where products_id = '" . tep_db_prepare_input($products_id) . "'");
 		    }
 		  }
 		  
 		  //-----------------------------------------
-		  // ÆÃ²Á¾¦ÉÊ¥¤¥ó¥µ¡¼¥È½ªÎ»
+		  // ç‰¹ä¾¡å•†å“ã‚¤ãƒ³ã‚µãƒ¼ãƒˆçµ‚äº†
 		  //-----------------------------------------
 		  
           if (USE_CACHE == 'true') {
@@ -637,16 +637,16 @@ tep_db_perform(TABLE_PRODUCTS_DESCRIPTION, $sql_data_array, 'update', 'products_
     $messageStack->add(ERROR_CATALOG_IMAGE_DIRECTORY_DOES_NOT_EXIST, 'error');
   }
   
-  //¾¦ÉÊ²èÁüºï½ü
+  //å•†å“ç”»åƒå‰Šé™¤
         if ($HTTP_GET_VARS['mode'] == 'p_delete') {
-          $image_location = DIR_FS_DOCUMENT_ROOT . DIR_WS_CATALOG_IMAGES . $HTTP_GET_VARS['file'];//¸µ²èÁü
-		  $image_location2 = DIR_FS_DOCUMENT_ROOT . DIR_WS_CATALOG_IMAGES .'imagecache3/'. $HTTP_GET_VARS['file'];//¥µ¥à¥Í¥¤¥ë²èÁü
+          $image_location = DIR_FS_DOCUMENT_ROOT . DIR_WS_CATALOG_IMAGES . $HTTP_GET_VARS['file'];//å…ƒç”»åƒ
+		  $image_location2 = DIR_FS_DOCUMENT_ROOT . DIR_WS_CATALOG_IMAGES .'imagecache3/'. $HTTP_GET_VARS['file'];//ã‚µãƒ ãƒã‚¤ãƒ«ç”»åƒ
 		  $delete_image = $HTTP_GET_VARS['cl'];
            if (file_exists($image_location)) @unlink($image_location);
 		   if (file_exists($image_location2)) @unlink($image_location2);
              tep_db_query("update  " . TABLE_PRODUCTS . " set ".$delete_image." = '' where products_id  = '" . $HTTP_GET_VARS['pID'] . "'");
              tep_redirect(tep_href_link('categories.php?cPath='.$HTTP_GET_VARS['cPath'].'&pID='.$HTTP_GET_VARS['pID'].'&action='.$HTTP_GET_VARS['action']));
-             $messageStack->add('²èÁüºï½ü¤ËÀ®¸ù¤·¤Ş¤·¤¿', 'success');
+             $messageStack->add('ç”»åƒå‰Šé™¤ã«æˆåŠŸã—ã¾ã—ãŸ', 'success');
 	  }
 ?>
 <!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -666,7 +666,7 @@ tep_db_perform(TABLE_PRODUCTS_DESCRIPTION, $sql_data_array, 'update', 'products_
 	
 function mess(){
   if(document.getElementById('pp').value == "" || document.getElementById('pp').value < 1){
-    alert("²Á³Ê¾ğÊó¤òÆşÎÏ¤·¤Æ²¼¤µ¤¤");
+    alert("ä¾¡æ ¼æƒ…å ±ã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„");
 	document.getElementById('pp').focus();
 	return false;
   }
@@ -738,7 +738,7 @@ function mess(){
       default: $in_bflag = true; $out_bflag = false;
     }
 	
-	//¾¦ÉÊÀâÌÀ¤òÊ¬³ä
+	//å•†å“èª¬æ˜ã‚’åˆ†å‰²
 	$des_query = tep_db_query("select products_attention_1,products_attention_2,products_attention_3,products_attention_4,products_attention_5,products_description_".ABBR_SITENAME." from products_description where language_id = '4' and products_id = '".$pInfo->products_id."'"); //maker
 	$des_result = tep_db_fetch_array($des_query);//maker
 	//$des = explode("|-#-|", $des_result['products_description_'.ABBR_SITENAME]);//maker
@@ -764,7 +764,7 @@ function mess(){
           <td><table border="0" cellspacing="0" cellpadding="2">
               <tr>
                 <td colspan="2"><fieldset>
-                  <legend style="color:#FF0000 ">¾¦ÉÊ¤Î´ğËÜ¾ğÊó</legend>
+                  <legend style="color:#FF0000 ">å•†å“ã®åŸºæœ¬æƒ…å ±</legend>
                   <table>
 				  <tr>
                       <td class="main"><?php echo TEXT_PRODUCTS_STATUS; ?></td>
@@ -816,7 +816,7 @@ function mess(){
               <tr>
                 <td class="main"><?php if ($i == 0) echo TEXT_PRODUCTS_NAME; ?></td>
                 <td class="main"><?php echo tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('products_name[' . $languages[$i]['id'] . ']', (($products_name[$languages[$i]['id']]) ? stripslashes($products_name[$languages[$i]['id']]) : tep_get_products_name($pInfo->products_id, $languages[$i]['id']))); ?></td>
-                <td class="fieldRequired">¸¡º÷¥­¡¼</td>
+                <td class="fieldRequired">æ¤œç´¢ã‚­ãƒ¼</td>
               </tr>
               <?php
     }
@@ -837,14 +837,14 @@ function mess(){
                       <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                     </tr>
                     <tr bgcolor="#CCCCCC">
-                      <td class="main"><?php echo '<font color="blue"><b>ÆÃÊÌ²Á³Ê:</b></font>'; ?></td>
+                      <td class="main"><?php echo '<font color="blue"><b>ç‰¹åˆ¥ä¾¡æ ¼:</b></font>'; ?></td>
                       <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_special_price', tep_get_products_special_price($pInfo->products_id)); ?></td>
                     </tr>
                     <tr>
                       <td class="main">&nbsp;</td>
-					  <td colspan="2" class="smallText"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;# ³ä¤ê°ú¤¯¥Ñ¡¼¥»¥ó¥Æ¡¼¥¸¤ò "ÆÃÊÌ²Á³Ê" Íó¤ËÆşÎÏ¤¹¤ë¤³¤È¤¬¤Ç¤­¤Ş¤¹¡£Îã: 20%'; ?><br>
-					  <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;# ¿·¤·¤¤²Á³Ê¤òÆşÎÏ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¢¿·¤·¤¤²Á³Ê¤òÆşÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£Îã: 1980'; ?><br>
-					  <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;# ÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë¾ğÊó¤ò¾Ãµî¤¹¤ë¾ì¹ç¤Ï¡¢ÃÍ¤ò¶õÇò¤Ë¤·¤Æ¤¯¤À¤µ¤¤¡£'; ?></td>
+					  <td colspan="2" class="smallText"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;# å‰²ã‚Šå¼•ããƒ‘ãƒ¼ã‚»ãƒ³ãƒ†ãƒ¼ã‚¸ã‚’ "ç‰¹åˆ¥ä¾¡æ ¼" æ¬„ã«å…¥åŠ›ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚ä¾‹: 20%'; ?><br>
+					  <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;# æ–°ã—ã„ä¾¡æ ¼ã‚’å…¥åŠ›ã™ã‚‹å ´åˆã«ã¯ã€æ–°ã—ã„ä¾¡æ ¼ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚ä¾‹: 1980'; ?><br>
+					  <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;# ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹æƒ…å ±ã‚’æ¶ˆå»ã™ã‚‹å ´åˆã¯ã€å€¤ã‚’ç©ºç™½ã«ã—ã¦ãã ã•ã„ã€‚'; ?></td>
                     </tr>
                     <tr>
                       <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
@@ -856,12 +856,12 @@ function mess(){
 					<tr>
                       <td class="main">&nbsp;</td>
 					  <td colspan="2" class="smallText">
-					  <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;(Îã£±¡§³äÁı)¾¦ÉÊÃ±²Á¤ò100±ß¤È¤·¤¿¾ì¹ç'; ?><br>
+					  <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;(ä¾‹ï¼‘ï¼šå‰²å¢—)å•†å“å˜ä¾¡ã‚’100å††ã¨ã—ãŸå ´åˆ'; ?><br>
 					  <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp; 1:20,50:10,100:0'; ?><br>
-					  <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp; 1¸Ä¤«¤é49¸Ä¤Ş¤Ç¤Î²Ã»»ÃÍ¤Ï20¢ª¾¦ÉÊÃ±²Á¤Ï120±ß'; ?><br>
-					  <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp; 50¸Ä¡Á99¸Ä¤Ş¤Ç¤Î²Ã»»ÃÍ¤Ï10¢ª¾¦ÉÊÃ±²Á¤Ï110±ß'; ?><br>
-					  <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp; ³ä°ú¤Î¾ì¹ç¤Ï¡¢²Ã»»ÃÍ¤ò-20¤ÎÍÍ¤Ê¥Ş¥¤¥Ê¥¹ÃÍ¤Ë¤·¤Æ²¼¤µ¤¤¡£'; ?><br>
-					  <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp; <b>³ä°ú¤ÏÌ¤¸¡¾Ú¤Ê¤Î¤ÇÆşÎÏ¤·¤Ê¤¤¤³¤È¡ª</b>'; ?></td>
+					  <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp; 1å€‹ã‹ã‚‰49å€‹ã¾ã§ã®åŠ ç®—å€¤ã¯20â†’å•†å“å˜ä¾¡ã¯120å††'; ?><br>
+					  <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp; 50å€‹ã€œ99å€‹ã¾ã§ã®åŠ ç®—å€¤ã¯10â†’å•†å“å˜ä¾¡ã¯110å††'; ?><br>
+					  <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp; å‰²å¼•ã®å ´åˆã¯ã€åŠ ç®—å€¤ã‚’-20ã®æ§˜ãªãƒã‚¤ãƒŠã‚¹å€¤ã«ã—ã¦ä¸‹ã•ã„ã€‚'; ?><br>
+					  <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp; <b>å‰²å¼•ã¯æœªæ¤œè¨¼ãªã®ã§å…¥åŠ›ã—ãªã„ã“ã¨ï¼</b>'; ?></td>
                     </tr>
 					<tr>
                       <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
@@ -880,7 +880,7 @@ function mess(){
               </tr>
 			  <tr>
 			    <td>&nbsp;</td>
-                <td class="smallText" colspan="2">ºß¸Ë·×»»¤¹¤ë¾ì¹ç¤ÏÆşÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£ºß¸Ë¤ò·×»»¤¹¤ë¾ì¹ç¤Ï¡¡´ğËÜÀßÄê¢ªºß¸Ë´ÉÍı¡¡¤òÀßÄê¤·¤Æ¤¯¤À¤µ¤¤¡£</td>
+                <td class="smallText" colspan="2">åœ¨åº«è¨ˆç®—ã™ã‚‹å ´åˆã¯å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚åœ¨åº«ã‚’è¨ˆç®—ã™ã‚‹å ´åˆã¯ã€€åŸºæœ¬è¨­å®šâ†’åœ¨åº«ç®¡ç†ã€€ã‚’è¨­å®šã—ã¦ãã ã•ã„ã€‚</td>
 			  </tr>
               <tr>
                 <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
@@ -888,36 +888,36 @@ function mess(){
               <tr>
                 <td class="main"><?php echo TEXT_PRODUCTS_MODEL; ?></td>
                 <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_model', $pInfo->products_model); ?></td>
-                <td class="fieldRequired">¸¡º÷¥­¡¼</td>
+                <td class="fieldRequired">æ¤œç´¢ã‚­ãƒ¼</td>
               </tr>
 
 					<tr>
-                      <td class="main">¹àÌÜ£±</td>
+                      <td class="main">é …ç›®ï¼‘</td>
                       <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_jan', $des_result['products_attention_1']); ?><br><?php // maker ?>
-                      <span class="smallText">¹àÌÜÌ¾¤È¥Ç¡¼¥¿¤Ï¡Ö//¡×¥¹¥é¥Ã¥·¥å2ËÜ¤Ç¶èÀÚ¤Ã¤Æ¤¯¤À¤µ¤¤¡£Îã¡Ë¥µ¥¤¥º//H1000¡¡W560</span></td>
+                      <span class="smallText">é …ç›®åã¨ãƒ‡ãƒ¼ã‚¿ã¯ã€Œ//ã€ã‚¹ãƒ©ãƒƒã‚·ãƒ¥2æœ¬ã§åŒºåˆ‡ã£ã¦ãã ã•ã„ã€‚ä¾‹ï¼‰ã‚µã‚¤ã‚º//H1000ã€€W560</span></td>
                     </tr>
 					<tr>
-                      <td class="main">¹àÌÜ£²</td>
+                      <td class="main">é …ç›®ï¼’</td>
                       <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_size', $des_result['products_attention_2']); ?></td><?php // maker ?>
                     </tr>
 					<tr>
-                      <td class="main">¹àÌÜ£³</td>
+                      <td class="main">é …ç›®ï¼“</td>
                       <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_naiyou', $des_result['products_attention_3']); ?></td><?php // maker ?>
                     </tr>
 					<tr>
-                      <td class="main">¹àÌÜ£´</td>
+                      <td class="main">é …ç›®ï¼”</td>
                       <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_zaishitu', $des_result['products_attention_4']); ?></td><?php // maker ?>
                     </tr>
               <tr>
                 <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
 			  <tr>
-                <td class="main" valign="top">¥­¥ã¥é¥¯¥¿Ì¾</td>
+                <td class="main" valign="top">ã‚­ãƒ£ãƒ©ã‚¯ã‚¿å</td>
                 <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_textarea_field('products_attention_5', 'soft', '70', '15', $des_result['products_attention_5']); ?></td><?php // maker ?>
               </tr>
               <!--
 			  <tr>
-                <td class="main" valign="top">¹àÌÜ£µ</td>
+                <td class="main" valign="top">é …ç›®ï¼•</td>
                 <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_textarea_field('products_com', 'soft', '70', '15', $des_result['products_attention_5']); ?></td><?php // maker ?>
               </tr>
               -->
@@ -931,7 +931,7 @@ function mess(){
 
               <tr>
                 <td colspan="2"><fieldset>
-                  <legend style="color:#FF0000">¾¦ÉÊ¤ÎÀâÌÀÊ¸/¥ª¥×¥·¥ç¥óÅĞÏ¿</legend>
+                  <legend style="color:#FF0000">å•†å“ã®èª¬æ˜æ–‡/ã‚ªãƒ—ã‚·ãƒ§ãƒ³ç™»éŒ²</legend>
                   <table>
 
 <?php
@@ -945,15 +945,15 @@ function mess(){
                       <td class="main"><?php echo tep_draw_textarea_field('products_description[' . $languages[$i]['id'] . ']', 'soft', '70', '15', (($products_description[$languages[$i]['id']]) ? stripslashes($products_description[$languages[$i]['id']]) : tep_get_products_description($pInfo->products_id, $languages[$i]['id']))); ?></td>
                     </tr>
                   </table>
-                  HTML¤Ë¤è¤ëÆşÎÏ²Ä<br>
-                  <span class="fieldRequired">¸¡º÷¥­¡¼</span></td>
+                  HTMLã«ã‚ˆã‚‹å…¥åŠ›å¯<br>
+                  <span class="fieldRequired">æ¤œç´¢ã‚­ãƒ¼</span></td>
               </tr>
 <?php
     }
 ?>
               <!-- options// -->
               <?php
-		  //¥ª¥×¥·¥ç¥óÌ¾¼èÆÀ
+		  //ã‚ªãƒ—ã‚·ãƒ§ãƒ³åå–å¾—
 		  function tep_get_add_options_name($id, $languages='4') {
 		    $query = tep_db_query("select products_options_name from products_options where products_options_id = '".$id."' and language_id = '".$languages."'");
 			if(tep_db_num_rows($query)) {
@@ -964,7 +964,7 @@ function mess(){
 			}
 		  }
 
-		  //¥ª¥×¥·¥ç¥óÃÍÅĞÏ¿
+		  //ã‚ªãƒ—ã‚·ãƒ§ãƒ³å€¤ç™»éŒ²
 		  function tep_get_add_options_value($id, $languages='4') {
 		    $query = tep_db_query("select products_options_values_name from products_options_values where products_options_values_id = '".$id."' and language_id = '".$languages."'");
 			if(tep_db_num_rows($query)) {
@@ -975,7 +975,7 @@ function mess(){
 			}
 		  }
 		  
-		  //¥ª¥×¥·¥ç¥ó¥Ç¡¼¥¿¼èÆÀ
+		  //ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒ‡ãƒ¼ã‚¿å–å¾—
 		  if($HTTP_GET_VARS['pID']) {
 		    $options_query = tep_db_query("select * from products_attributes where products_id = '".(int)$HTTP_GET_VARS['pID']."' order by products_attributes_id");
 			if(tep_db_num_rows($options_query)) {
@@ -994,24 +994,24 @@ function mess(){
                 <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
               <tr>
-                <td class="main" valign="top">¥ª¥×¥·¥ç¥óÅĞÏ¿</td>
+                <td class="main" valign="top">ã‚ªãƒ—ã‚·ãƒ§ãƒ³ç™»éŒ²</td>
                 <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_textarea_field('products_options', 'soft', '70', '15', $options_array); ?></td>
               </tr>
               <tr>
                 <td></td>
-                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;'; ?>¡Ö¥ª¥×¥·¥ç¥óÌ¾,¥ª¥×¥·¥ç¥óÃÍ,¥ª¥×¥·¥ç¥ó²Á³Ê,ÀÜÆ¬¼­,ºß¸Ë¿ô¡×¤Î½ç¤ÇÆşÎÏ¡Ê¶èÀÚ¤ê¤Ï¡Ö,¡×¡¦²ş¹Ô¤ÇÊ£¿ôÆ±»şÅĞÏ¿²Ä¡Ë<br>
-                  <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;'; ?>Îã¡Ë<br>
+                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;'; ?>ã€Œã‚ªãƒ—ã‚·ãƒ§ãƒ³å,ã‚ªãƒ—ã‚·ãƒ§ãƒ³å€¤,ã‚ªãƒ—ã‚·ãƒ§ãƒ³ä¾¡æ ¼,æ¥é ­è¾,åœ¨åº«æ•°ã€ã®é †ã§å…¥åŠ›ï¼ˆåŒºåˆ‡ã‚Šã¯ã€Œ,ã€ãƒ»æ”¹è¡Œã§è¤‡æ•°åŒæ™‚ç™»éŒ²å¯ï¼‰<br>
+                  <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;'; ?>ä¾‹ï¼‰<br>
                   <table border="0" cellspacing="0" cellpadding="3">
                     <tr>
-                      <td class="main">                  ¸À¸ì,ÆüËÜ¸ì,0,+ <br>
-                  ¸À¸ì,Ãæ¹ñ¸ì,400,+ <br>
-                  ¸À¸ì,´Ú¹ñ¸ì,100,-</td>
-                      <td width="50" align="center" class="main">¢ª</td>
-					  <td class="main">¸À¸ì:
+                      <td class="main">                  è¨€èª,æ—¥æœ¬èª,0,+ <br>
+                  è¨€èª,ä¸­å›½èª,400,+ <br>
+                  è¨€èª,éŸ“å›½èª,100,-</td>
+                      <td width="50" align="center" class="main">â†’</td>
+					  <td class="main">è¨€èª:
                         <select name="select">
-                          <option selected>ÆüËÜ¸ì</option>
-                          <option>Ãæ¹ñ¸ì(+400±ß)</option>
-                          <option>´Ú¹ñ¸ì(-100±ß)</option>
+                          <option selected>æ—¥æœ¬èª</option>
+                          <option>ä¸­å›½èª(+400å††)</option>
+                          <option>éŸ“å›½èª(-100å††)</option>
                           </select></td>
                     </tr>
                   </table>
@@ -1026,7 +1026,7 @@ function mess(){
               </tr>
               <tr>
                 <td colspan="2"><fieldset>
-                  <legend style="color:#009900 ">¾¦ÉÊ¤Î²èÁü</legend>
+                  <legend style="color:#009900 ">å•†å“ã®ç”»åƒ</legend>
                   <table>
           <tr>
             <td class="main"><?php echo TEXT_PRODUCTS_IMAGE; ?></td>
@@ -1035,7 +1035,7 @@ function mess(){
 			if(tep_not_null($pInfo->products_image)){
 			 echo '<br>'.tep_info_image($pInfo->products_image,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT).'<br>'."\n";
 			?>
-			<a href="javascript:confirmg('¤³¤Î²èÁü¤òºï½ü¤·¤Ş¤¹¤«¡©','<?php echo tep_href_link('categories.php?cPath='.$HTTP_GET_VARS['cPath'].'&pID='.$HTTP_GET_VARS['pID'].'&cl=products_image&action='.$HTTP_GET_VARS['action'].'&file='.$pInfo->products_image.'&mode=p_delete') ; ?>');" style="color:#0000FF;">¤³¤Î²èÁü¤òºï½ü¤¹¤ë</a>
+			<a href="javascript:confirmg('ã“ã®ç”»åƒã‚’å‰Šé™¤ã—ã¾ã™ã‹ï¼Ÿ','<?php echo tep_href_link('categories.php?cPath='.$HTTP_GET_VARS['cPath'].'&pID='.$HTTP_GET_VARS['pID'].'&cl=products_image&action='.$HTTP_GET_VARS['action'].'&file='.$pInfo->products_image.'&mode=p_delete') ; ?>');" style="color:#0000FF;">ã“ã®ç”»åƒã‚’å‰Šé™¤ã™ã‚‹</a>
 			<? } ?>
 			</td>
           </tr>
@@ -1046,7 +1046,7 @@ function mess(){
 			if(tep_not_null($pInfo->products_image2)){
 			 echo '<br>'.tep_info_image($pInfo->products_image2,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT).'<br>'."\n";
 			?>
-			<a href="javascript:confirmg('¤³¤Î²èÁü¤òºï½ü¤·¤Ş¤¹¤«¡©','<?php echo tep_href_link('categories.php?cPath='.$HTTP_GET_VARS['cPath'].'&pID='.$HTTP_GET_VARS['pID'].'&cl=products_image2&action='.$HTTP_GET_VARS['action'].'&file='.$pInfo->products_image2.'&mode=p_delete') ; ?>');" style="color:#0000FF;">¤³¤Î²èÁü¤òºï½ü¤¹¤ë</a>
+			<a href="javascript:confirmg('ã“ã®ç”»åƒã‚’å‰Šé™¤ã—ã¾ã™ã‹ï¼Ÿ','<?php echo tep_href_link('categories.php?cPath='.$HTTP_GET_VARS['cPath'].'&pID='.$HTTP_GET_VARS['pID'].'&cl=products_image2&action='.$HTTP_GET_VARS['action'].'&file='.$pInfo->products_image2.'&mode=p_delete') ; ?>');" style="color:#0000FF;">ã“ã®ç”»åƒã‚’å‰Šé™¤ã™ã‚‹</a>
 			<? } ?>
 			</td>
           </tr>
@@ -1057,7 +1057,7 @@ function mess(){
 			if(tep_not_null($pInfo->products_image3)){
 			 echo '<br>'.tep_info_image($pInfo->products_image3,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT).'<br>'."\n";
 			?>
-			<a href="javascript:confirmg('¤³¤Î²èÁü¤òºï½ü¤·¤Ş¤¹¤«¡©','<?php echo tep_href_link('categories.php?cPath='.$HTTP_GET_VARS['cPath'].'&pID='.$HTTP_GET_VARS['pID'].'&cl=products_image3&action='.$HTTP_GET_VARS['action'].'&file='.$pInfo->products_image3.'&mode=p_delete') ; ?>');" style="color:#0000FF;">¤³¤Î²èÁü¤òºï½ü¤¹¤ë</a>
+			<a href="javascript:confirmg('ã“ã®ç”»åƒã‚’å‰Šé™¤ã—ã¾ã™ã‹ï¼Ÿ','<?php echo tep_href_link('categories.php?cPath='.$HTTP_GET_VARS['cPath'].'&pID='.$HTTP_GET_VARS['pID'].'&cl=products_image3&action='.$HTTP_GET_VARS['action'].'&file='.$pInfo->products_image3.'&mode=p_delete') ; ?>');" style="color:#0000FF;">ã“ã®ç”»åƒã‚’å‰Šé™¤ã™ã‚‹</a>
 			<? } ?>
 			</td>
           </tr>
@@ -1065,9 +1065,9 @@ function mess(){
 				  <?php
 				   if(COLOR_SEARCH_BOX_TF == "true" ){
 				   ?>
-				  <!-- ¥«¥é¡¼ÊÌ²èÁü// -->
+				  <!-- ã‚«ãƒ©ãƒ¼åˆ¥ç”»åƒ// -->
 				  <hr size="1">
-				  <legend style="color:#009900 ">¥«¥é¡¼ÊÌ²èÁü</legend>
+				  <legend style="color:#009900 ">ã‚«ãƒ©ãƒ¼åˆ¥ç”»åƒ</legend>
 				  <table border="0" cellpadding="1" cellspacing="5">
 					<tr>
 					  
@@ -1080,7 +1080,7 @@ function mess(){
 					  echo '<td bgcolor="'.$color['color_tag'].'">';
 					  echo '<table border="0" cellpadding="0" cellspacing="5" width="100%" bgcolor="#FFFFFF">';
 					  echo '<tr>';
-					  echo '<td class="main" width="33%">¥Æ¥­¥¹¥È¡§&nbsp;'.tep_draw_input_field('colorname_'.$color['color_id'], $ctp['color_to_products_name']).'<br>'.$color['color_name'].': '.tep_draw_file_field('image_'.$color['color_id']).'<br>&nbsp;&nbsp;&nbsp;' . $ctp['color_image'].tep_draw_hidden_field('image_pre_'.$color['color_id'], $ctp['color_image']).'</td>';
+					  echo '<td class="main" width="33%">ãƒ†ã‚­ã‚¹ãƒˆï¼š&nbsp;'.tep_draw_input_field('colorname_'.$color['color_id'], $ctp['color_to_products_name']).'<br>'.$color['color_name'].': '.tep_draw_file_field('image_'.$color['color_id']).'<br>&nbsp;&nbsp;&nbsp;' . $ctp['color_image'].tep_draw_hidden_field('image_pre_'.$color['color_id'], $ctp['color_image']).'</td>';
 					  echo '</tr>';
 					  echo '</table>';
 					  echo '</td>';
@@ -1094,7 +1094,7 @@ function mess(){
 				      
 					</tr>
 				  </table>
-				  <!-- //¥«¥é¡¼ÊÌ²èÁü -->
+				  <!-- //ã‚«ãƒ©ãƒ¼åˆ¥ç”»åƒ -->
 				 <?php
 				 }
 				 ?>
@@ -1262,17 +1262,17 @@ function mess(){
         $pInfo->products_url = tep_db_prepare_input($products_url[$languages[$i]['id']]);
       }
 
-	  //ÆÃ²Á¤¬¤¢¤ë¾ì¹ç¤Î½èÍı
+	  //ç‰¹ä¾¡ãŒã‚ã‚‹å ´åˆã®å‡¦ç†
       $special_price_check = tep_get_products_special_price($pInfo->products_id);
       if (!empty($pInfo->products_special_price)) {
-	    //¡ó»ØÄê¤Î¾ì¹ç¤Ï²Á³Ê¤ò»»½Ğ
+	    //ï¼…æŒ‡å®šã®å ´åˆã¯ä¾¡æ ¼ã‚’ç®—å‡º
         if (substr($HTTP_POST_VARS['products_special_price'], -1) == '%') {
           $sprice = ($pInfo->products_price - (($pInfo->products_special_price / 100) * $pInfo->products_price));
         } else {
 		  $sprice = $pInfo->products_special_price;
 		}
 		$products_price_preview = '<s>' . $currencies->format($pInfo->products_price) . '</s> <span class="specialPrice">' . $currencies->format($sprice) . '</span>';
-	  } elseif (!empty($special_price_check)) { //¥×¥ì¥Ó¥å¡¼¤ÎÉ½¼¨ÍÑ
+	  } elseif (!empty($special_price_check)) { //ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ã®è¡¨ç¤ºç”¨
         $products_price_preview = '<s>' . $currencies->format($pInfo->products_price) . '</s> <span class="specialPrice">' . $currencies->format($special_price_check) . '</span>';
 	  } else {
         $products_price_preview = $currencies->format($pInfo->products_price);
@@ -1284,30 +1284,30 @@ function mess(){
 		  </td>
 		</tr>
 		<tr>
-		  <td><hr size="2" noshade><b><?php //²Á³Ê¿ôÎÌÊÑ¹¹µ¡Ç½
+		  <td><hr size="2" noshade><b><?php //ä¾¡æ ¼æ•°é‡å¤‰æ›´æ©Ÿèƒ½
 if ($HTTP_GET_VARS['read'] == 'only' && !$HTTP_GET_VARS['origin']) {
-	echo '²Á³Ê¡§&nbsp;' . tep_draw_input_field('products_price', (int)$pInfo->products_price,'id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;±ß' . '&nbsp;&nbsp;¢«&nbsp;' . (int)$pInfo->products_price . '±ß<br><hr size="2" noshade>' . "\n";
-	echo 'ÆÃ²Á¡§&nbsp;' . tep_draw_input_field('products_special_price', (int)tep_get_products_special_price($pInfo->products_id),'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;color: red;"') . '&nbsp;±ß' . '&nbsp;&nbsp;¢«&nbsp;' . (int)tep_get_products_special_price($pInfo->products_id) . '±ß<br><hr size="2" noshade>' . "\n";
-	echo '¿ôÎÌ¡§&nbsp;' . tep_draw_input_field('products_quantity', $pInfo->products_quantity,'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;¸Ä' . '&nbsp;&nbsp;¢«&nbsp;' . $pInfo->products_quantity . '¸Ä<br><hr size="2" noshade>' . "\n";
-	//¾¦ÉÊÀâÌÀ¤òÊ¬³ä
+	echo 'ä¾¡æ ¼ï¼š&nbsp;' . tep_draw_input_field('products_price', (int)$pInfo->products_price,'id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;å††' . '&nbsp;&nbsp;â†&nbsp;' . (int)$pInfo->products_price . 'å††<br><hr size="2" noshade>' . "\n";
+	echo 'ç‰¹ä¾¡ï¼š&nbsp;' . tep_draw_input_field('products_special_price', (int)tep_get_products_special_price($pInfo->products_id),'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;color: red;"') . '&nbsp;å††' . '&nbsp;&nbsp;â†&nbsp;' . (int)tep_get_products_special_price($pInfo->products_id) . 'å††<br><hr size="2" noshade>' . "\n";
+	echo 'æ•°é‡ï¼š&nbsp;' . tep_draw_input_field('products_quantity', $pInfo->products_quantity,'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;å€‹' . '&nbsp;&nbsp;â†&nbsp;' . $pInfo->products_quantity . 'å€‹<br><hr size="2" noshade>' . "\n";
+	//å•†å“èª¬æ˜ã‚’åˆ†å‰²
 	$des_query = tep_db_query("select products_attention_1,products_attention_2,products_attention_3,products_attention_4,products_attention_5,products_description_".ABBR_SITENAME." from products_description where language_id = '4' and products_id = '" . $pInfo->products_id . "'"); // maker
 	$des_result = tep_db_fetch_array($des_query); // maker
 	//$des = explode("|-#-|", $des_result['products_description_'.ABBR_SITENAME]); //maker
-	//echo 'Åö¼Ò¥­¥ã¥é¥¯¥¿¡¼Ì¾¤ÎÆşÎÏÍó¡§<br>' . tep_draw_textarea_field('products_com', 'soft', '70', '10', $des_result['products_attention_1']) . '<br>' . "\n";//maker
-	echo 'Åö¼Ò¥­¥ã¥é¥¯¥¿¡¼Ì¾¤ÎÆşÎÏÍó¡§<br>' . tep_draw_textarea_field('products_attention_5', 'soft', '70', '10', $des_result['products_attention_5']) . '<br>' . "\n";//maker
-	echo '<table width="100%" cellspacing="0" cellpadding="5" border="0" class="smalltext"><tr><td><b>ÈÎÇä</b></td><td><b>Çã¼è</b></td></tr>' . "\n";
-	echo '<tr><td>½ê»ı¶â¾å¸Â¤ä¡¢ÊÀ¼Ò¥­¥ã¥é¥¯¥¿¡¼¤Îºß¸Ë¤ÎÅÔ¹ç¾å¡¢Ê£¿ô¤Î¥­¥ã¥é¥¯¥¿¡¼¤Ë¤Æ<br>Ê¬³ä¤·¤Æ¤ªÆÏ¤±¤¹¤ë¾ì¹ç¤¬¤´¤¶¤¤¤Ş¤¹¡£¤´ÃíÊ¸¤¤¤¿¤À¤­¤Ş¤·¤¿¿ôÎÌ¤ËÃ£¤¹¤ë<br>¤Ş¤Ç¼õÎÎÁàºî¤ò¤ª´ê¤¤¤¤¤¿¤·¤Ş¤¹¡£<br>¡Ú¡Û¤Ş¤¿¤Ï¡Ú¡Û¤è¤ê¤ªÆÏ¤±¤¤¤¿¤·¤Ş¤¹¡£</td><td>Åö¼Ò¥­¥ã¥é¥¯¥¿¡¼¡Ú¡Û¤Ş¤¿¤Ï¡Ú¡Û¤Ë¥È¥ì¡¼¥É¤ò¤ª´ê¤¤¤¤¤¿¤·¤Ş¤¹¡£</td></tr></table><hr size="2" noshade>' . "\n";
-	echo tep_image_submit('button_update.gif', '¤è¤¯³ÎÇ§¤·¤Æ¤«¤é²¡¤·¤Ê¤µ¤¤') . '</form>' . "\n";
+	//echo 'å½“ç¤¾ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åã®å…¥åŠ›æ¬„ï¼š<br>' . tep_draw_textarea_field('products_com', 'soft', '70', '10', $des_result['products_attention_1']) . '<br>' . "\n";//maker
+	echo 'å½“ç¤¾ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åã®å…¥åŠ›æ¬„ï¼š<br>' . tep_draw_textarea_field('products_attention_5', 'soft', '70', '10', $des_result['products_attention_5']) . '<br>' . "\n";//maker
+	echo '<table width="100%" cellspacing="0" cellpadding="5" border="0" class="smalltext"><tr><td><b>è²©å£²</b></td><td><b>è²·å–</b></td></tr>' . "\n";
+	echo '<tr><td>æ‰€æŒé‡‘ä¸Šé™ã‚„ã€å¼Šç¤¾ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®åœ¨åº«ã®éƒ½åˆä¸Šã€è¤‡æ•°ã®ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã«ã¦<br>åˆ†å‰²ã—ã¦ãŠå±Šã‘ã™ã‚‹å ´åˆãŒã”ã–ã„ã¾ã™ã€‚ã”æ³¨æ–‡ã„ãŸã ãã¾ã—ãŸæ•°é‡ã«é”ã™ã‚‹<br>ã¾ã§å—é ˜æ“ä½œã‚’ãŠé¡˜ã„ã„ãŸã—ã¾ã™ã€‚<br>ã€ã€‘ã¾ãŸã¯ã€ã€‘ã‚ˆã‚ŠãŠå±Šã‘ã„ãŸã—ã¾ã™ã€‚</td><td>å½“ç¤¾ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã€ã€‘ã¾ãŸã¯ã€ã€‘ã«ãƒˆãƒ¬ãƒ¼ãƒ‰ã‚’ãŠé¡˜ã„ã„ãŸã—ã¾ã™ã€‚</td></tr></table><hr size="2" noshade>' . "\n";
+	echo tep_image_submit('button_update.gif', 'ã‚ˆãç¢ºèªã—ã¦ã‹ã‚‰æŠ¼ã—ãªã•ã„') . '</form>' . "\n";
 } else {
-	echo '²Á³Ê¡§&nbsp;' . $products_price_preview . '<br>¿ôÎÌ¡§&nbsp;' . $pInfo->products_quantity . '¸Ä' . "\n";
+	echo 'ä¾¡æ ¼ï¼š&nbsp;' . $products_price_preview . '<br>æ•°é‡ï¼š&nbsp;' . $pInfo->products_quantity . 'å€‹' . "\n";
 }
 ?>
 		    </b>
 		  </td>
         </tr>
 		<?php
-if ($HTTP_GET_VARS['read'] == 'only' && !$HTTP_GET_VARS['origin']) { //É½¼¨À©¸Â
-	echo '<tr><td><b>¤è¤¯³ÎÇ§¤·¤Æ¤«¤é²¡¤·¤Ê¤µ¤¤</b></td></tr>' . "\n";
+if ($HTTP_GET_VARS['read'] == 'only' && !$HTTP_GET_VARS['origin']) { //è¡¨ç¤ºåˆ¶é™
+	echo '<tr><td><b>ã‚ˆãç¢ºèªã—ã¦ã‹ã‚‰æŠ¼ã—ãªã•ã„</b></td></tr>' . "\n";
 } else {
 ?>
         <tr>
@@ -1351,7 +1351,7 @@ if ($HTTP_GET_VARS['read'] == 'only' && !$HTTP_GET_VARS['origin']) { //É½¼¨À©¸Â
         </tr>
         <?php
     }
-} // É½¼¨À©¸Â½ª¤ï¤ê
+} // è¡¨ç¤ºåˆ¶é™çµ‚ã‚ã‚Š
 
     if ($HTTP_GET_VARS['read'] == 'only') {
       if ($HTTP_GET_VARS['origin']) {
@@ -1440,12 +1440,12 @@ if ($HTTP_GET_VARS['read'] == 'only' && !$HTTP_GET_VARS['origin']) { //É½¼¨À©¸Â
 
 					  <?php if ($ocertify->npermission == 15 or $ocertify->npermission == 10) {?>
 					  <?php if (!isset($HTTP_GET_VARS['cPath']) or !$HTTP_GET_VARS['cPath']){?>
-					  <td class="dataTableHeadingContent" align="right">É½¼¨</td>
+					  <td class="dataTableHeadingContent" align="right">è¡¨ç¤º</td>
 					  <?php }?>
 					  <?php }?>
 	
-					  <td class="dataTableHeadingContent" align="right">²Á³Ê</td>
-					  <td class="dataTableHeadingContent" align="right">¿ôÎÌ</td>
+					  <td class="dataTableHeadingContent" align="right">ä¾¡æ ¼</td>
+					  <td class="dataTableHeadingContent" align="right">æ•°é‡</td>
                       <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_STATUS; ?></td>
                       <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
                     </tr>
@@ -1473,7 +1473,7 @@ if ($HTTP_GET_VARS['read'] == 'only' && !$HTTP_GET_VARS['origin']) { //É½¼¨À©¸Â
         $cInfo = new objectInfo($cInfo_array);
       }
 
-// Îó¤ò¿§°ã¤¤¤Ë¤¹¤ë
+// åˆ—ã‚’è‰²é•ã„ã«ã™ã‚‹
 $even = 'dataTableSecondRow';
 $odd = 'dataTableRow';
 if ($nowColor == $odd) {
@@ -1532,7 +1532,7 @@ if ($nowColor == $odd) {
         $pInfo = new objectInfo($pInfo_array);
       }
 
-// Îó¤ò¿§°ã¤¤¤Ë¤¹¤ë
+// åˆ—ã‚’è‰²é•ã„ã«ã™ã‚‹
 $even = 'dataTableSecondRow';
 $odd = 'dataTableRow';
 if ($nowColor == $odd) {
@@ -1559,34 +1559,34 @@ if (!empty($special_price_check)) {
 } ?></td>
 					  <td class="dataTableContent" align="right"><?php
 if (empty($products['products_quantity'])) {
-	echo '<b>ºß¸ËÀÚ¤ì</b>';
+	echo '<b>åœ¨åº«åˆ‡ã‚Œ</b>';
 } else {
-	echo $products['products_quantity'] . '¸Ä';
+	echo $products['products_quantity'] . 'å€‹';
 } ?></td>
 					  <td class="dataTableContent" align="center"><?php
-if ($ocertify->npermission >= 10) { //É½¼¨À©¸Â
+if ($ocertify->npermission >= 10) { //è¡¨ç¤ºåˆ¶é™
       if ($products['products_status'] == '1') {
         echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=0&pID=' . $products['products_id'] . '&cPath=' . $cPath) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>';
       } else {
         echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=1&pID=' . $products['products_id'] . '&cPath=' . $cPath) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
       }
 } else {
-	// ²Á³Ê¹¹¿··Ù¹ğ
+	// ä¾¡æ ¼æ›´æ–°è­¦å‘Š
 	$last_modified_array = getdate(strtotime(tep_datetime_short($products['products_last_modified'])));
 	$today_array = getdate();
 	if ($last_modified_array["year"] == $today_array["year"] && $last_modified_array["mon"] == $today_array["mon"] && $last_modified_array["mday"] == $today_array["mday"]) {
 		if ($last_modified_array["hours"] >= ($today_array["hours"]-2)) {
-			echo tep_image(DIR_WS_ICONS . 'signal_blue.gif', '¹¹¿·Àµ¾ï');
+			echo tep_image(DIR_WS_ICONS . 'signal_blue.gif', 'æ›´æ–°æ­£å¸¸');
 		} elseif ($last_modified_array["hours"] >= ($today_array["hours"]-5)) {
-			echo tep_image(DIR_WS_ICONS . 'signal_yellow.gif', '¹¹¿·Ãí°Õ');
+			echo tep_image(DIR_WS_ICONS . 'signal_yellow.gif', 'æ›´æ–°æ³¨æ„');
 		} else {
-			echo tep_image(DIR_WS_ICONS . 'signal_red.gif', '¹¹¿··Ù¹ğ');
+			echo tep_image(DIR_WS_ICONS . 'signal_red.gif', 'æ›´æ–°è­¦å‘Š');
 		}
 	} else {
-		echo tep_image(DIR_WS_ICONS . 'signal_blink.gif', '¹¹¿·°Û¾ï');
+		echo tep_image(DIR_WS_ICONS . 'signal_blink.gif', 'æ›´æ–°ç•°å¸¸');
 	}
 	
-	echo '&nbsp;&nbsp;' . tep_image(DIR_WS_ICONS . 'battery_0.gif', '¿ôÎÌ°Û¾ï');
+	echo '&nbsp;&nbsp;' . tep_image(DIR_WS_ICONS . 'battery_0.gif', 'æ•°é‡ç•°å¸¸');
 	
 }
 ?></td>
@@ -1623,7 +1623,7 @@ if ($ocertify->npermission >= 10) { //É½¼¨À©¸Â
 	if ($cPath) {
 		echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, $cPath_back . '&cID=' . $current_category_id) . '">' . tep_image_button('button_back.gif', IMAGE_BACK) . '</a>&nbsp;';
 	}
-	if (!$HTTP_GET_VARS['search'] && $ocertify->npermission >= 10) { //É½¼¨À©¸Â
+	if (!$HTTP_GET_VARS['search'] && $ocertify->npermission >= 10) { //è¡¨ç¤ºåˆ¶é™
 		echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&action=new_category') . '">' . tep_image_button('button_new_category.gif', IMAGE_NEW_CATEGORY) . '</a>&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&action=new_product') . '">' . tep_image_button('button_new_product.gif', IMAGE_NEW_PRODUCT) . '</a>';
 	}
 ?>&nbsp;</td>
@@ -1645,16 +1645,16 @@ if ($ocertify->npermission >= 10) { //É½¼¨À©¸Â
         $languages = tep_get_languages();
         for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
           $category_inputs_string .= '<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('categories_name[' . $languages[$i]['id'] . ']').'<br>'."\n".
-		                             '<br>¥È¥Ã¥×¥Ú¡¼¥¸¥«¥Æ¥´¥ê¥Ğ¥Ê¡¼²èÁü:<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;'.tep_draw_file_field('categories_image2').'<br>'."\n".
-		                             '<br>¥«¥Æ¥´¥ê¥¿¥¤¥È¥ë²èÁü:<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;'.tep_draw_file_field('categories_image3').'<br><font color="red">²èÁü¤¬¤Ê¤¤¾ì¹ç¤Ï¥Æ¥­¥¹¥ÈÉ½¼¨¤µ¤ì¤Ş¤¹</font><br>'."\n".
-									 '<br>META¥¿¥°<br>¡Ê¤³¤ÎÀâÌÀÊ¸¤Ï¥È¥Ã¥×¥Ú¡¼¥¸¤Î¥«¥Æ¥´¥ê¥Ğ¥Ê¡¼¤Î²¼¤ËÉ½¼¨¤µ¤ì¤ëÊ¸¾Ï¤È¤·¤Æ¤â»ÈÍÑ¤µ¤ì¤Ş¤¹¡£2¹Ô¤Ë¤¹¤ë¤Ë¤Ï¥«¥ó¥Ş¡Ö,¡×¶èÀÚ¤ê¤ÇÊ¸¾Ï¤òµ­½Ò¤·¤Æ¤¯¤À¤µ¤¤¡£)<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_meta_text[' . $languages[$i]['id'] . ']','',30,3).
+		                             '<br>ãƒˆãƒƒãƒ—ãƒšãƒ¼ã‚¸ã‚«ãƒ†ã‚´ãƒªãƒãƒŠãƒ¼ç”»åƒ:<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;'.tep_draw_file_field('categories_image2').'<br>'."\n".
+		                             '<br>ã‚«ãƒ†ã‚´ãƒªã‚¿ã‚¤ãƒˆãƒ«ç”»åƒ:<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;'.tep_draw_file_field('categories_image3').'<br><font color="red">ç”»åƒãŒãªã„å ´åˆã¯ãƒ†ã‚­ã‚¹ãƒˆè¡¨ç¤ºã•ã‚Œã¾ã™</font><br>'."\n".
+									 '<br>METAã‚¿ã‚°<br>ï¼ˆã“ã®èª¬æ˜æ–‡ã¯ãƒˆãƒƒãƒ—ãƒšãƒ¼ã‚¸ã®ã‚«ãƒ†ã‚´ãƒªãƒãƒŠãƒ¼ã®ä¸‹ã«è¡¨ç¤ºã•ã‚Œã‚‹æ–‡ç« ã¨ã—ã¦ã‚‚ä½¿ç”¨ã•ã‚Œã¾ã™ã€‚2è¡Œã«ã™ã‚‹ã«ã¯ã‚«ãƒ³ãƒã€Œ,ã€åŒºåˆ‡ã‚Šã§æ–‡ç« ã‚’è¨˜è¿°ã—ã¦ãã ã•ã„ã€‚)<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_meta_text[' . $languages[$i]['id'] . ']','',30,3).
 
-									 '<br>SEO¥Í¡¼¥à:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('seo_name[' . $languages[$i]['id'] . ']', '').'<br>'."\n".
-									 '<br>¥«¥Æ¥´¥êHeader¤Î¥Æ¥­¥¹¥È:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_header_text[' . $languages[$i]['id'] . ']','soft',30,3,'','categories_header_text_'.ABBR_SITENAME).
-									 '<br>¥«¥Æ¥´¥êFooter¤Î¥Æ¥­¥¹¥È:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_footer_text[' . $languages[$i]['id'] . ']','soft',30,3,'','categories_footer_text_'.ABBR_SITENAME).
-									 '<br>¥Æ¥­¥¹¥È¤Î¥¤¥ó¥Õ¥©¥á¡¼¥·¥ç¥ó:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('text_information[' . $languages[$i]['id'] . ']','soft',30,3,'','text_information_'.ABBR_SITENAME).
-									 '<br>meta¤Î¥­¡¼¥ï¡¼¥É:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('meta_keywords[' . $languages[$i]['id'] . ']','soft',30,3,'','meta_keywords_'.ABBR_SITENAME).
-									 '<br>meta¤ÎÀâÌÀ:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('meta_description[' . $languages[$i]['id'] . ']','soft',30,3,'','meta_description_'.ABBR_SITENAME).
+									 '<br>SEOãƒãƒ¼ãƒ :<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('seo_name[' . $languages[$i]['id'] . ']', '').'<br>'."\n".
+									 '<br>ã‚«ãƒ†ã‚´ãƒªHeaderã®ãƒ†ã‚­ã‚¹ãƒˆ:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_header_text[' . $languages[$i]['id'] . ']','soft',30,3,'','categories_header_text_'.ABBR_SITENAME).
+									 '<br>ã‚«ãƒ†ã‚´ãƒªFooterã®ãƒ†ã‚­ã‚¹ãƒˆ:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_footer_text[' . $languages[$i]['id'] . ']','soft',30,3,'','categories_footer_text_'.ABBR_SITENAME).
+									 '<br>ãƒ†ã‚­ã‚¹ãƒˆã®ã‚¤ãƒ³ãƒ•ã‚©ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('text_information[' . $languages[$i]['id'] . ']','soft',30,3,'','text_information_'.ABBR_SITENAME).
+									 '<br>metaã®ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('meta_keywords[' . $languages[$i]['id'] . ']','soft',30,3,'','meta_keywords_'.ABBR_SITENAME).
+									 '<br>metaã®èª¬æ˜:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('meta_description[' . $languages[$i]['id'] . ']','soft',30,3,'','meta_description_'.ABBR_SITENAME).
 									 "\n";
         }
 
@@ -1673,16 +1673,16 @@ if ($ocertify->npermission >= 10) { //É½¼¨À©¸Â
         $languages = tep_get_languages();
         for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
           $category_inputs_string .= '<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('categories_name[' . $languages[$i]['id'] . ']', tep_get_category_name($cInfo->categories_id, $languages[$i]['id'])).'<br>'."\n".
-									 '<br>'.tep_image(DIR_WS_CATALOG_IMAGES . $cInfo->categories_image2, $cInfo->categories_name).'<br>' . DIR_WS_CATALOG_IMAGES . '<br><b>' . $cInfo->categories_image2 . '</b><br><br>¥È¥Ã¥×¥Ú¡¼¥¸¥«¥Æ¥´¥ê¥Ğ¥Ê¡¼²èÁü<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;'.tep_draw_file_field('categories_image2').'<br>'."\n".
-									 '<br>'.tep_image(DIR_WS_CATALOG_IMAGES . $cInfo->categories_image3, $cInfo->categories_name).'<br>' . DIR_WS_CATALOG_IMAGES . '<br><b>' . $cInfo->categories_image3 . '</b><br><br>¥«¥Æ¥´¥ê¥¿¥¤¥È¥ë²èÁü<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;'.tep_draw_file_field('categories_image3').'<br>'."\n".
-									 '<br>META¥¿¥°¡Ê¤³¤ÎÀâÌÀÊ¸¤Ï¥È¥Ã¥×¥Ú¡¼¥¸¤Î¥«¥Æ¥´¥ê¥Ğ¥Ê¡¼¤Î²¼¤ËÉ½¼¨¤µ¤ì¤ëÊ¸¾Ï¤È¤·¤Æ¤â»ÈÍÑ¤µ¤ì¤Ş¤¹¡£2¹Ô¤Ë¤¹¤ë¤Ë¤Ï¥«¥ó¥Ş¡Ö,¡×¶èÀÚ¤ê¤ÇÊ¸¾Ï¤òµ­½Ò¤·¤Æ¤¯¤À¤µ¤¤¡£)<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_meta_text[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_category_meta_text($cInfo->categories_id, $languages[$i]['id']),'categories_meta_text').
+									 '<br>'.tep_image(DIR_WS_CATALOG_IMAGES . $cInfo->categories_image2, $cInfo->categories_name).'<br>' . DIR_WS_CATALOG_IMAGES . '<br><b>' . $cInfo->categories_image2 . '</b><br><br>ãƒˆãƒƒãƒ—ãƒšãƒ¼ã‚¸ã‚«ãƒ†ã‚´ãƒªãƒãƒŠãƒ¼ç”»åƒ<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;'.tep_draw_file_field('categories_image2').'<br>'."\n".
+									 '<br>'.tep_image(DIR_WS_CATALOG_IMAGES . $cInfo->categories_image3, $cInfo->categories_name).'<br>' . DIR_WS_CATALOG_IMAGES . '<br><b>' . $cInfo->categories_image3 . '</b><br><br>ã‚«ãƒ†ã‚´ãƒªã‚¿ã‚¤ãƒˆãƒ«ç”»åƒ<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;'.tep_draw_file_field('categories_image3').'<br>'."\n".
+									 '<br>METAã‚¿ã‚°ï¼ˆã“ã®èª¬æ˜æ–‡ã¯ãƒˆãƒƒãƒ—ãƒšãƒ¼ã‚¸ã®ã‚«ãƒ†ã‚´ãƒªãƒãƒŠãƒ¼ã®ä¸‹ã«è¡¨ç¤ºã•ã‚Œã‚‹æ–‡ç« ã¨ã—ã¦ã‚‚ä½¿ç”¨ã•ã‚Œã¾ã™ã€‚2è¡Œã«ã™ã‚‹ã«ã¯ã‚«ãƒ³ãƒã€Œ,ã€åŒºåˆ‡ã‚Šã§æ–‡ç« ã‚’è¨˜è¿°ã—ã¦ãã ã•ã„ã€‚)<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_meta_text[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_category_meta_text($cInfo->categories_id, $languages[$i]['id']),'categories_meta_text').
 
-									 '<br>SEO¥Í¡¼¥à:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('seo_name[' . $languages[$i]['id'] . ']', tep_get_seo_name($cInfo->categories_id, $languages[$i]['id'])).'<br>'."\n".
-									 '<br>¥«¥Æ¥´¥êHeader¤Î¥Æ¥­¥¹¥È:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_header_text[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_categories_header_text($cInfo->categories_id, $languages[$i]['id']),'categories_header_text_'.ABBR_SITENAME).
-									 '<br>¥«¥Æ¥´¥êFooter¤Î¥Æ¥­¥¹¥È:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_footer_text[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_categories_footer_text($cInfo->categories_id, $languages[$i]['id']),'categories_footer_text_'.ABBR_SITENAME).
-									 '<br>¥Æ¥­¥¹¥È¤Î¥¤¥ó¥Õ¥©¥á¡¼¥·¥ç¥ó:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('text_information[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_text_information($cInfo->categories_id, $languages[$i]['id']),'text_information_'.ABBR_SITENAME).
-									 '<br>meta¤Î¥­¡¼¥ï¡¼¥É:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('meta_keywords[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_meta_keywords($cInfo->categories_id, $languages[$i]['id']),'meta_keywords_'.ABBR_SITENAME).
-									 '<br>meta¤ÎÀâÌÀ:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('meta_description[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_meta_description($cInfo->categories_id, $languages[$i]['id']),'meta_description_'.ABBR_SITENAME).
+									 '<br>SEOãƒãƒ¼ãƒ :<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('seo_name[' . $languages[$i]['id'] . ']', tep_get_seo_name($cInfo->categories_id, $languages[$i]['id'])).'<br>'."\n".
+									 '<br>ã‚«ãƒ†ã‚´ãƒªHeaderã®ãƒ†ã‚­ã‚¹ãƒˆ:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_header_text[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_categories_header_text($cInfo->categories_id, $languages[$i]['id']),'categories_header_text_'.ABBR_SITENAME).
+									 '<br>ã‚«ãƒ†ã‚´ãƒªFooterã®ãƒ†ã‚­ã‚¹ãƒˆ:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_footer_text[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_categories_footer_text($cInfo->categories_id, $languages[$i]['id']),'categories_footer_text_'.ABBR_SITENAME).
+									 '<br>ãƒ†ã‚­ã‚¹ãƒˆã®ã‚¤ãƒ³ãƒ•ã‚©ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('text_information[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_text_information($cInfo->categories_id, $languages[$i]['id']),'text_information_'.ABBR_SITENAME).
+									 '<br>metaã®ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('meta_keywords[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_meta_keywords($cInfo->categories_id, $languages[$i]['id']),'meta_keywords_'.ABBR_SITENAME).
+									 '<br>metaã®èª¬æ˜:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('meta_description[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_meta_description($cInfo->categories_id, $languages[$i]['id']),'meta_description_'.ABBR_SITENAME).
 									 '';
         }
 
@@ -1756,7 +1756,7 @@ if ($ocertify->npermission >= 10) { //É½¼¨À©¸Â
           if (is_object($cInfo)) { // category info box contents
             $heading[] = array('text' => '<b>' . $cInfo->categories_name . '</b>');
 
-if ($ocertify->npermission >= 10) { //É½¼¨À©¸Â
+if ($ocertify->npermission >= 10) { //è¡¨ç¤ºåˆ¶é™
             $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id . '&action=edit_category') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id . '&action=delete_category') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a> <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id . '&action=move_category') . '">' . tep_image_button('button_move.gif', IMAGE_MOVE) . '</a>');
 }
 
@@ -1767,7 +1767,7 @@ if ($ocertify->npermission >= 10) { //É½¼¨À©¸Â
           } elseif (is_object($pInfo)) { // product info box contents
             $heading[] = array('text' => '<b>' . tep_get_products_name($pInfo->products_id, $languages_id) . '</b>');
 
-if ($ocertify->npermission >= 10) { //É½¼¨À©¸Â
+if ($ocertify->npermission >= 10) { //è¡¨ç¤ºåˆ¶é™
             $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=new_product') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=delete_product') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a> <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=move_product') . '">' . tep_image_button('button_move.gif', IMAGE_MOVE) . '</a> <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=copy_to') . '">' . tep_image_button('button_copy_to.gif', IMAGE_COPY_TO) . '</a>');
 }
 
@@ -1781,14 +1781,14 @@ if ($ocertify->npermission >= 10) { //É½¼¨À©¸Â
             if($pInfo->products_image3) {
 			$contents[] = array('text' => '<br>' . tep_info_image($pInfo->products_image3, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '<br>' . $pInfo->products_image3);
 			}
-//ÆÃ²Á¤¬¤¢¤ë¾ì¹ç¤Î½èÍı
+//ç‰¹ä¾¡ãŒã‚ã‚‹å ´åˆã®å‡¦ç†
 $special_price_check = tep_get_products_special_price($pInfo->products_id);
 if (!empty($special_price_check)) {
 	$contents[] = array('text' => '<br><b>' . TEXT_PRODUCTS_PRICE_INFO . ' <s>' . $currencies->format($pInfo->products_price) . '</s> <span class="specialPrice">' . $currencies->format($special_price_check) . '</span></b>');
 } else {
 	$contents[] = array('text' => '<br><b>' . TEXT_PRODUCTS_PRICE_INFO . ' ' . $currencies->format($pInfo->products_price) . '</b>');
 }
-$contents[] = array('text' => '<br><b>' . TEXT_PRODUCTS_QUANTITY_INFO . ' ' . $pInfo->products_quantity . '¸Ä</b>');
+$contents[] = array('text' => '<br><b>' . TEXT_PRODUCTS_QUANTITY_INFO . ' ' . $pInfo->products_quantity . 'å€‹</b>');
 $contents[] = array('text' => '<br>' . TEXT_PRODUCTS_AVERAGE_RATING . ' ' . number_format($pInfo->average_rating, 2) . '%');
           }
         } else { // create category/product info

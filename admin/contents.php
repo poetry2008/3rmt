@@ -15,7 +15,7 @@
   if ($HTTP_GET_VARS['act']) {
     switch ($HTTP_GET_VARS['act']) {
       case 'update':
-        // tamura 2002/12/30 ¡ÖÁ´³Ñ¡×±Ñ¿ô»ú¤ò¡ÖÈ¾³Ñ¡×¤ËÊÑ´¹
+        // tamura 2002/12/30 ã€Œå…¨è§’ã€è‹±æ•°å­—ã‚’ã€ŒåŠè§’ã€ã«å¤‰æ›
         $an_cols = array('navbar_title','heading_title','text_information');
         $error = false; 
         foreach ($an_cols as $col) {
@@ -64,7 +64,7 @@
         }
         break;
       case 'insert':
-        // tamura 2002/12/30 ¡ÖÁ´³Ñ¡×±Ñ¿ô»ú¤ò¡ÖÈ¾³Ñ¡×¤ËÊÑ´¹
+        // tamura 2002/12/30 ã€Œå…¨è§’ã€è‹±æ•°å­—ã‚’ã€ŒåŠè§’ã€ã«å¤‰æ›
         $an_cols = array('navbar_title','heading_title','text_information');
         $error = false; 
         foreach ($an_cols as $col) {
@@ -344,7 +344,7 @@
       if ($cID && tep_not_null($cID)) {
 		$heading[] = array('text' => '<b>' . $c_title . '</b>');
 
-        $contents[] = array('align' => 'center', 'text' => '<br>¤³¤Î¥Ú¡¼¥¸¤Î¥ê¥ó¥¯¤òÉ½¼¨¤µ¤»¤ë¤Ë¤Ï°Ê²¼¤Î¥½¡¼¥¹¥³¡¼¥É¤òÉ½¼¨¤·¤¿¤¤²Õ½ê¤Ë¥³¥Ô¡¼¤·¤Æ¤¯¤À¤µ¤¤¡£<br>'.tep_draw_textarea_field('link','soft',30,5,'<a href="'.tep_catalog_href_link('page.php','pID='.$HTTP_GET_VARS['cID']).'">'.$c_title.'</a>').'<br><a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=confirm') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>');
+        $contents[] = array('align' => 'center', 'text' => '<br>ã“ã®ãƒšãƒ¼ã‚¸ã®ãƒªãƒ³ã‚¯ã‚’è¡¨ç¤ºã•ã›ã‚‹ã«ã¯ä»¥ä¸‹ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã‚’è¡¨ç¤ºã—ãŸã„ç®‡æ‰€ã«ã‚³ãƒ”ãƒ¼ã—ã¦ãã ã•ã„ã€‚<br>'.tep_draw_textarea_field('link','soft',30,5,'<a href="'.tep_catalog_href_link('page.php','pID='.$HTTP_GET_VARS['cID']).'">'.$c_title.'</a>').'<br><a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=confirm') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>');
       }
       break;
   }

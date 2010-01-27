@@ -65,11 +65,11 @@
                                          array('title' => TOOLS_BANNERS, 'link' => tep_href_link(FILENAME_BANNER_MANAGER, 'selected_box=tools')),
                                          array('title' => TOOLS_FILES, 'link' => tep_href_link(FILENAME_FILE_MANAGER, 'selected_box=tools')))),
 										 
-			   array('title' => '¥µ¥Ý¡¼¥È',
+			   array('title' => 'ã‚µãƒãƒ¼ãƒˆ',
                      'image' => 'support.gif',
                      'href' => tep_href_link(FILENAME_BACKUP, 'selected_box=support'),
-                     'children' => array(array('title' => '¤ªÌä¹ç¤»', 'link' => tep_href_link('support_contact.php', 'selected_box=support')),
-                                         array('title' => '¥í¥°¥¤¥ó', 'link' => tep_href_link('support_login.php', 'selected_box=support')))));
+                     'children' => array(array('title' => 'ãŠå•åˆã›', 'link' => tep_href_link('support_contact.php', 'selected_box=support')),
+                                         array('title' => 'ãƒ­ã‚°ã‚¤ãƒ³', 'link' => tep_href_link('support_login.php', 'selected_box=support')))));
   $languages = tep_get_languages();
   $languages_array = array();
   $languages_selected = DEFAULT_LANGUAGE;

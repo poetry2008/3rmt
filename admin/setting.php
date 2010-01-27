@@ -12,7 +12,7 @@
 
   require('includes/application_top.php');
 
-  define('HEADING_TITLE','����ƥ�Ķ�������');
+  define('HEADING_TITLE','コンテンツ共通設定');
 ?>
 <!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html <?php echo HTML_PARAMS; ?>>
@@ -48,79 +48,79 @@
           <td>
             <table width="100%"  border="0" cellspacing="0" cellpadding="2"> 
               <tr> 
-                <td colspan="2" class="formAreaTitle">����</td> 
+                <td colspan="2" class="formAreaTitle">基本</td> 
               </tr>
               <tr>
-                <td width="150" valign="top" class="main">�ۡ���ڡ��������ȥ�</td>
+                <td width="150" valign="top" class="main">ホームページタイトル</td>
                 <td class="smallText"><?php echo tep_draw_input_field('title',$title,'style="width:250px;"');?><br>
-�֥饦���Υ����ȥ�Ȥʤ�ޤ���</td>
+ブラウザのタイトルとなります。</td>
               </tr> 
               <tr> 
-                <td valign="top" class="main">�������</td> 
+                <td valign="top" class="main">キーワード</td> 
                 <td class="smallText"><?php echo tep_draw_input_field('keywords',$title,'style="width:400px;"');?><br>
-                  �ۡ���ڡ����Υ�����ɤ򥫥�ޡ�,�׶��ڤ�����Ϥ��Ƥ���������META������ȿ�Ǥ���ޤ���</td> 
+                  ホームページのキーワードをカンマ「,」区切りで入力してください。METAタグに反映されます。</td> 
               </tr>
               <tr>
-                <td valign="top" class="main">�ۡ���ڡ�������</td>
+                <td valign="top" class="main">ホームページ説明</td>
                 <td class="smallText"><?php echo tep_draw_textarea_field('description',$title,'','','','style="width:400px;height:50px;"');?><br>
-                  �ۡ���ڡ��������������Ϥ��Ƥ���������META������ȿ�Ǥ���ޤ���</td>
+                  ホームページの説明を入力してください。METAタグに反映されます。</td>
               </tr> 
               <tr> 
-                <td valign="top" class="main">���ܥå�</td> 
+                <td valign="top" class="main">ロボット</td> 
                 <td class="smallText"><input name="robots" type="radio" value="yes">
                 index,follow 
                 <input name="robots" type="radio" value="no">
                 no<br>
-                �������󥸥�˥���ǥ������������index.follow�˥����å�������Ƥ���������</td> 
+                検索エンジンにインデクスさせる場合はindex.followにチェックを入れてください。</td> 
               </tr> 
               <tr> 
-                <td valign="top" class="main">�����</td> 
+                <td valign="top" class="main">著作者</td> 
                 <td class="smallText"><?php echo tep_draw_input_field('copyright',$title);?><br>
-                  �ۡ���ڡ���������Ԥ����Ϥ��Ƥ���������</td> 
+                  ホームページの著作者を入力してください。</td> 
               </tr> 
               <tr> 
-                <td colspan="2" class="formAreaTitle">�᡼��</td> 
+                <td colspan="2" class="formAreaTitle">メール</td> 
               </tr> 
 
               <tr> 
-                <td valign="top" class="main">E�᡼���̾</td> 
+                <td valign="top" class="main">Eメール署名</td> 
                 <td class="smallText"><?php echo tep_draw_input_field('email_footer',$title);?><br>
-                  ������������ƤΥ᡼��Υեå�����ɽ������ޤ���</td> 
+                  送信される全てのメールのフッターに表示されます。</td> 
               </tr> 
               <tr> 
-                <td valign="top" class="main">�����Ͽ�᡼��</td> 
+                <td valign="top" class="main">会員登録メール</td> 
                 <td class="smallText"><?php echo tep_draw_textarea_field('email_creat_account',$title,'','','','style="width:400px;height:50px;"');?><br>
-                  ��������Ⱥ����������������᡼��Ǥ���</td> 
+                  アカウント作成時に送信されるメールです。</td> 
               </tr>
               <tr>
-                <td valign="top" class="main">��ʸ�᡼��</td>
+                <td valign="top" class="main">注文メール</td>
                 <td class="smallText"><?php echo tep_draw_textarea_field('email_order',$title,'','','','style="width:400px;height:50px;"');?><br>
-                  ��ʸ�������������᡼��Ǥ���</td>
+                  注文時に送信されるメールです。</td>
               </tr>
               <tr>
-                <td valign="top" class="main">������</td>
+                <td valign="top" class="main">代金引換</td>
                 <td class="smallText"><?php echo tep_draw_textarea_field('email_cod_table',$title,'','','','style="width:400px;height:50px;"');?><br>
-                ��ʸ��������������������Υ᡼��Ǥ���ͭ���ˤ���ˤϥ⥸�塼�����ꢪ��ѥ⥸�塼�뢪��������ON�ˤ��Ƥ���������</td>
+                注文時に送信される代金引換のメールです。有効にするにはモジュール設定→決済モジュール→代金引換をONにしてください。</td>
               </tr>
               <tr>
-                <td valign="top" class="main">��Կ���</td>
+                <td valign="top" class="main">銀行振込</td>
                 <td class="smallText"><?php echo tep_draw_textarea_field('email_bank',$title,'','','','style="width:400px;height:50px;"');?><br>
-                ��ʸ��������������������Υ᡼��Ǥ���ͭ���ˤ���ˤϥ⥸�塼�����ꢪ��ѥ⥸�塼�뢪��Կ�����ߤ�ON�ˤ��Ƥ���������</td>
+                注文時に送信される代金引換のメールです。有効にするにはモジュール設定→決済モジュール→銀行振り込みをONにしてください。</td>
               </tr>
               <tr>
-                <td valign="top" class="main">͹�ؿ���</td>
+                <td valign="top" class="main">郵便振替</td>
                 <td class="smallText"><?php echo tep_draw_textarea_field('email_postal',$title,'','','','style="width:400px;height:50px;"');?><br>
-                ��ʸ�������������͹�ؿ��ؤΥ᡼��Ǥ���ͭ���ˤ���ˤϥ⥸�塼�����ꢪ��ѥ⥸�塼�뢪͹�ؿ��ؤ�ON�ˤ��Ƥ���������</td>
+                注文時に送信される郵便振替のメールです。有効にするにはモジュール設定→決済モジュール→郵便振替をONにしてください。</td>
               </tr>
               <tr>
-                <td valign="top" class="main">���쥸�åȥ�����</td>
+                <td valign="top" class="main">クレジットカード</td>
                 <td class="smallText"><?php echo tep_draw_textarea_field('email_cc',$title,'','','','style="width:400px;height:50px;"');?><br>
-                ��ʸ������������륯�쥸�åȥ����ɤΥ᡼��Ǥ���ͭ���ˤ���ˤϥ⥸�塼�����ꢪ��ѥ⥸�塼�뢪���쥸�åȥ����ɤ�ON�ˤ��Ƥ���������</td>
+                注文時に送信されるクレジットカードのメールです。有効にするにはモジュール設定→決済モジュール→クレジットカードをONにしてください。</td>
               </tr>
               <tr>
-                <td valign="top" class="main">����åץ���</td>
+                <td valign="top" class="main">ショップロゴ</td>
                 <td class="smallText"><?php echo tep_draw_textarea_field('logo',$title,'','','','style="width:400px;height:50px;"');?><br>
-                  Ǽ�ʽ�����ɼ�����������ڡ����Υإå����������ڡ����Υإå�����ɽ�����������Ǥ���</td>
+                  納品書、配送票、カタログページのヘッダー、管理ページのヘッダーに表示されるロゴです。</td>
               </tr>
               <tr>
                 <td valign="top" class="main">&nbsp;</td>

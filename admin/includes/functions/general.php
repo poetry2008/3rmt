@@ -1686,7 +1686,7 @@ function tep_reset_cache_data_seo_urls($action){
     }
   }
 
-// ¼è°úÆü»ş
+// å–å¼•æ—¥æ™‚
   function tep_torihiki($raw_datetime) {
     if ( ($raw_datetime == '0000-00-00 00:00:00') || ($raw_datetime == '') ) return false;
 
@@ -1697,7 +1697,7 @@ function tep_reset_cache_data_seo_urls($action){
     $minute = (int)substr($raw_datetime, 14, 2);
     $second = (int)substr($raw_datetime, 17, 2);
 
-    return date('YÇ¯m·îdÆü H»şiÊ¬', mktime($hour, $minute, $second, $month, $day, $year));
+    return date('Yå¹´mæœˆdæ—¥ Hæ™‚iåˆ†', mktime($hour, $minute, $second, $month, $day, $year));
   }
   
   // return all types with options
@@ -1766,18 +1766,18 @@ function tep_reset_cache_data_seo_urls($action){
     if (strlen($rate) > 50 or strlen(trim($rate)) < 2) {
       return '';
     }
-    if (trim($rate) == 'Å·¶õ¤Î±©ÌÓ5¸Ä¡¦¥¤¥ó¥¯¥ê¥¹¥¯¥í¡¼¥ë5¸Ä¤Î¥»¥Ã¥È'){
-    	return '(Å·¶õ¤Î±©ÌÓ'.number_format(strval(5*$cnt)).'¸Ä¡¦¥¤¥ó¥¯¥ê¥¹¥¯¥í¡¼¥ë'.number_format(strval(5*$cnt)).'¸Ä¤Î¥»¥Ã¥È)';
+    if (trim($rate) == 'å¤©ç©ºã®ç¾½æ¯›5å€‹ãƒ»ã‚¤ãƒ³ã‚¯ãƒªã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«5å€‹ã®ã‚»ãƒƒãƒˆ'){
+    	return '(å¤©ç©ºã®ç¾½æ¯›'.number_format(strval(5*$cnt)).'å€‹ãƒ»ã‚¤ãƒ³ã‚¯ãƒªã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«'.number_format(strval(5*$cnt)).'å€‹ã®ã‚»ãƒƒãƒˆ)';
     }
-    if (trim($rate) == '¥Í¥Ã¥È¥«¥Õ¥§1DAY¥Á¥±¥Ã¥È5Ëç¥»¥Ã¥È'){
-    	return '(¥Í¥Ã¥È¥«¥Õ¥§1DAY¥Á¥±¥Ã¥È'.number_format(strval(5*$cnt)).'Ëç¥»¥Ã¥È)';
+    if (trim($rate) == 'ãƒãƒƒãƒˆã‚«ãƒ•ã‚§1DAYãƒã‚±ãƒƒãƒˆ5æšã‚»ãƒƒãƒˆ'){
+    	return '(ãƒãƒƒãƒˆã‚«ãƒ•ã‚§1DAYãƒã‚±ãƒƒãƒˆ'.number_format(strval(5*$cnt)).'æšã‚»ãƒƒãƒˆ)';
     }
     $rate = str_replace(array(','), array(''), $rate);
-    if (preg_match('/^(.*)²¯(.*)Ëü(.*)$/', $rate, $out)) {
+    if (preg_match('/^(.*)å„„(.*)ä¸‡(.*)$/', $rate, $out)) {
       $rate = (($out[1] * 100000000) + ($out[2] * 10000)) . $out[3];
     }
-    $rate = str_replace(array('Ëü','²¯'), array('0000','00000000'), $rate);
-    if (preg_match('/^(\d+)(.*)¡Ê\d+.*¡Ë$/', $rate, $out)) {
+    $rate = str_replace(array('ä¸‡','å„„'), array('0000','00000000'), $rate);
+    if (preg_match('/^(\d+)(.*)ï¼ˆ\d+.*ï¼‰$/', $rate, $out)) {
       //print_r($out);
       return '(' . number_format($out[1] * $cnt) . $out[2] . ')';
     }

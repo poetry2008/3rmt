@@ -10,9 +10,9 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', '¸À¸ì¥Õ¥¡¥¤¥ë´ÉÍý');
+define('HEADING_TITLE', 'è¨€èªžãƒ•ã‚¡ã‚¤ãƒ«ç®¡ç†');
 
-define('TEXT_FILE_DOES_NOT_EXIST', '¥Õ¥¡¥¤¥ë¤¬Â¸ºß¤·¤Þ¤»¤ó¡£');
+define('TEXT_FILE_DOES_NOT_EXIST', 'ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ã¾ã›ã‚“ã€‚');
 
-define('ERROR_FILE_NOT_WRITEABLE', '¥¨¥é¡¼: ¤³¤Î¥Õ¥¡¥¤¥ë¤Ë½ñ¤­¹þ¤ß¤Ç¤­¤Þ¤»¤ó¡£Àµ¤·¤¤¥æ¡¼¥¶¸¢¸Â¤ò %s ¤ËÀßÄê¤·¤Æ¤¯¤À¤µ¤¤¡£');
+define('ERROR_FILE_NOT_WRITEABLE', 'ã‚¨ãƒ©ãƒ¼: ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã«æ›¸ãè¾¼ã¿ã§ãã¾ã›ã‚“ã€‚æ­£ã—ã„ãƒ¦ãƒ¼ã‚¶æ¨©é™ã‚’ %s ã«è¨­å®šã—ã¦ãã ã•ã„ã€‚');
 ?>

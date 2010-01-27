@@ -433,8 +433,8 @@ class email{
 ***************************************/
 
   function send($to_name, $to_addr, $from_name, $from_addr, $subject = '', $headers = ''){
-    // $from_name ¤¬ "" ¤Ç $from_addr ¤¬ "Name <someone@abc.com>" ·Á¼°¤Î¾ì¹ç¤Ë
-    // $from_addr ¤òÊ¬²ò¤·¤Æ½ã¿è¤Ê E-mail ¥¢¥É¥ì¥¹¤ËÊÑ¤¨¤ë
+    // $from_name ãŒ "" ã§ $from_addr ãŒ "Name <someone@abc.com>" å½¢å¼ã®å ´åˆã«
+    // $from_addr ã‚’åˆ†è§£ã—ã¦ç´”ç²‹ãª E-mail ã‚¢ãƒ‰ãƒ¬ã‚¹ã«å¤‰ãˆã‚‹
     // tamura 2002/05/08
     if (ereg("[ ]*(.+[^ ]+)[ ]*<([^@]+@[^@]+)>[ ]*", $from_addr, $a_regs)) {
       $from_name = $a_regs[1];
@@ -442,7 +442,7 @@ class email{
 	}
 
     if ($subject != '') {
-      $subject = mb_convert_encoding($subject, 'ISO-2022-JP'); // ÄÉ²Ã
+      $subject = mb_convert_encoding($subject, 'ISO-2022-JP'); // è¿½åŠ 
 	  //$subject = mb_encode_mimeheader(mb_convert_kana($subject, "KV"), 'ISO-2022-JP');
 	  //$subject = mb_encode_mimeheader($subject, 'ISO-2022-JP');
 	  $subject = '=?ISO-2022-JP?B?'.base64_encode(mb_convert_kana($subject, "KV"))."?=";
@@ -452,13 +452,13 @@ class email{
       $subject = '=?UTF-8?B?'.base64_encode($subject)."?=";
     }*/
 	if($to_name != '') {
-	  $to_name = mb_convert_encoding($to_name, 'ISO-2022-JP'); // ÄÉ²Ã
-      $to_addr = mb_convert_encoding($to_addr, 'ISO-2022-JP'); // ÄÉ²Ã
+	  $to_name = mb_convert_encoding($to_name, 'ISO-2022-JP'); // è¿½åŠ 
+      $to_addr = mb_convert_encoding($to_addr, 'ISO-2022-JP'); // è¿½åŠ 
 	}
 	  
 	if($from_name != '') {
-	  $from_name = mb_convert_encoding($from_name, 'ISO-2022-JP'); // ÄÉ²Ã
-      $from_addr = mb_convert_encoding($from_addr, 'ISO-2022-JP'); // ÄÉ²Ã
+	  $from_name = mb_convert_encoding($from_name, 'ISO-2022-JP'); // è¿½åŠ 
+      $from_addr = mb_convert_encoding($from_addr, 'ISO-2022-JP'); // è¿½åŠ 
 	}
 
     $to    = ($to_name != '')

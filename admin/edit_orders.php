@@ -1,6 +1,6 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
   require('includes/application_top.php');
@@ -51,12 +51,12 @@
   // Update Inventory Quantity
   $order_query = tep_db_query("select products_id, products_quantity from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . tep_db_input($oID) . "'");
   
-  // ºÇ¿·¤ÎÃíÊ¸¾ðÊó¼èÆÀ
+  // æœ€æ–°ã®æ³¨æ–‡æƒ…å ±å–å¾—
   $order = new order($oID);
-  // ¥Ý¥¤¥ó¥È¤ò¼èÆÀ¤¹¤ë
+  // ãƒã‚¤ãƒ³ãƒˆã‚’å–å¾—ã™ã‚‹
   $customer_point_query = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '" . $order->customer['id'] . "'");
   $customer_point = tep_db_fetch_array($customer_point_query);
-  // ¥²¥¹¥È¥Á¥§¥Ã¥¯
+  // ã‚²ã‚¹ãƒˆãƒã‚§ãƒƒã‚¯
   $customer_guest_query = tep_db_query("select customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_id = '" . $order->customer['id'] . "'");
   $customer_guest = tep_db_fetch_array($customer_guest_query);
 
@@ -72,23 +72,23 @@
 		$goods_check = $order_query;
 		
 		if (tep_db_num_rows($goods_check) == 0) {
-			$messageStack->add('¾¦ÉÊ¤¬ÄÉ²Ã¤µ¤ì¤Æ¤¤¤Þ¤»¤ó¡£', 'error');
+			$messageStack->add('å•†å“ãŒè¿½åŠ ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚', 'error');
 			$action = 'edit';
 			break;
 		}
 		
-		if (isset($update_tori_torihiki_date)) { //Æü»þ¤¬Í­¸ú¤«¥Á¥§¥Ã¥¯
+		if (isset($update_tori_torihiki_date)) { //æ—¥æ™‚ãŒæœ‰åŠ¹ã‹ãƒã‚§ãƒƒã‚¯
 			if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $update_tori_torihiki_date, $m)) { // check the date format
-				$messageStack->add('Æü»þ¥Õ¥©¡¼¥Þ¥Ã¥È¤¬´Ö°ã¤Ã¤Æ¤¤¤Þ¤¹¡£ "2008-01-01 10:30:00"', 'error');
+				$messageStack->add('æ—¥æ™‚ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚ "2008-01-01 10:30:00"', 'error');
 				$action = 'edit';
 				break;
 			} elseif (!checkdate($m[2], $m[3], $m[1]) || $m[4] >= 24 || $m[5] >= 60 || $m[6] >= 60) { // make sure the date provided is a validate date
-				$messageStack->add('Ìµ¸ú¤ÊÆüÉÕ¤Þ¤¿¤Ï±¦µ­¤Î¿ô»ú¤òÄ¶¤¨¤Æ¤¤¤Þ¤¹¡£ "23:59:59"', 'error');
+				$messageStack->add('ç„¡åŠ¹ãªæ—¥ä»˜ã¾ãŸã¯å³è¨˜ã®æ•°å­—ã‚’è¶…ãˆã¦ã„ã¾ã™ã€‚ "23:59:59"', 'error');
 				$action = 'edit';
 				break;
 			}
 		} else {
-			$messageStack->add('Æü»þ¤¬ÆþÎÏ¤µ¤ì¤Æ¤¤¤Þ¤»¤ó¡£', 'error');
+			$messageStack->add('æ—¥æ™‚ãŒå…¥åŠ›ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚', 'error');
 			$action = 'edit';
 			break;
 		}
@@ -98,7 +98,7 @@
 			if ($ot_class == "ot_point" && (int)$ot_value > 0) {
 				$current_point = $customer_point['point'] + $before_point;
 				if ((int)$ot_value > $current_point) {
-					$messageStack->add('¥Ý¥¤¥ó¥È¤¬Â­¤ê¤Þ¤»¤ó¡£ÆþÎÏ²ÄÇ½¤Ê¥Ý¥¤¥ó¥È¤Ï <b>' . $current_point . '</b> ¤Ç¤¹¡£', 'error');
+					$messageStack->add('ãƒã‚¤ãƒ³ãƒˆãŒè¶³ã‚Šã¾ã›ã‚“ã€‚å…¥åŠ›å¯èƒ½ãªãƒã‚¤ãƒ³ãƒˆã¯ <b>' . $current_point . '</b> ã§ã™ã€‚', 'error');
 					$action = 'edit';
 					break 2;
 				}
@@ -164,7 +164,7 @@
     $check_status_query = tep_db_query("select customers_name, customers_email_address, orders_status, date_purchased from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
     $check_status = tep_db_fetch_array($check_status_query);
 
-	// fin mise ¡¦jour
+	// fin mise ãƒ»jour
 	// 1.3 UPDATE PRODUCTS #####
 	
 	$RunningSubTotal = 0;
@@ -251,7 +251,7 @@
 			$order = new order($oID);
 			$RunningTax += $ot_value * $products_details['tax'] / $order->info['currency_value'] / 100 ; // corrected tax by cb
 
-//} elseif ($ot_class == "ot_point") { // ¥Ý¥¤¥ó¥È³ä°ú
+//} elseif ($ot_class == "ot_point") { // ãƒã‚¤ãƒ³ãƒˆå‰²å¼•
 //$order = new order($oID);
 //$RunningTax -= $ot_value * $products_details['tax'] / $order->info['currency_value'] / 100 ;
 
@@ -323,7 +323,7 @@
 	
 			$order = new order($oID);
 
-			if ($customer_guest['customers_guest_chk'] == 0 && $ot_class == "ot_point" && $ot_value != $before_point) { //²ñ°÷¤Ê¤é¥Ý¥ó¥È¤ÎÁý¸º
+			if ($customer_guest['customers_guest_chk'] == 0 && $ot_class == "ot_point" && $ot_value != $before_point) { //ä¼šå“¡ãªã‚‰ãƒãƒ³ãƒˆã®å¢—æ¸›
 				$point_difference = ($ot_value - $before_point);
 				tep_db_query("update " . TABLE_CUSTOMERS . " set point = point - " . $point_difference . " where customers_id = '" . $order->customer['id'] . "'");	
 			}
@@ -358,7 +358,7 @@
 				$RunningTotal += $ot_value / $order->info['currency_value'];
 
 //} elseif ($ot_class == "ot_point") {
-//$RunningTotal -= $ot_value; // ¥Ý¥¤¥ó¥È³ä°ú
+//$RunningTotal -= $ot_value; // ãƒã‚¤ãƒ³ãƒˆå‰²å¼•
 
 			} else {
 				$RunningTotal += $ot_value;
@@ -402,7 +402,7 @@
 		tep_db_query("update " . TABLE_ORDERS_TOTAL . " set value = '".$new_tax."', text = '".$currencies->format($new_tax, true, $order->info['currency'])."' where class='ot_tax' and orders_id = '".$oID."'");
 	}
 
-	//point½¤ÀµÃæ
+	//pointä¿®æ­£ä¸­
 	$point_query = tep_db_query("select sum(value) as total_point from " . TABLE_ORDERS_TOTAL . " where class = 'ot_point' and orders_id = '" . $oID . "'");
 	$total_point = tep_db_fetch_array($point_query);
 
@@ -429,7 +429,7 @@
 	$totals = "update " . TABLE_ORDERS_TOTAL . " set value = '" . $newtotal . "', text = '<b>" . $currencies->format($newtotal, true, $order->info['currency']) . "</b>' where class='ot_total' and orders_id = '" . $oID . "'";
 	tep_db_query($totals);
 		
-	// ºÇ½ª½èÍý¡Ê¹¹¿·¤ª¤è¤Ó¥á¡¼¥ëÁ÷¿®¡Ë
+	// æœ€çµ‚å‡¦ç†ï¼ˆæ›´æ–°ãŠã‚ˆã³ãƒ¡ãƒ¼ãƒ«é€ä¿¡ï¼‰
 	if ($products_delete == false) {
 		tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
 		$notify_comments = '';
@@ -447,12 +447,12 @@
 			$products_ordered_mail = '';
 			for ($i=0; $i<sizeof($order->products); $i++) {
 				//$orders_products_id = $order->products[$i]['orders_products_id'];
-				$products_ordered_mail .= "\t" . 'ÃíÊ¸¾¦ÉÊ¡¡¡¡¡¡¡¡¡¡¡§' . $order->products[$i]['name'] . '¡Ê' . $order->products[$i]['model'] . '¡Ë' . "\n";
+				$products_ordered_mail .= "\t" . 'æ³¨æ–‡å•†å“ã€€ã€€ã€€ã€€ã€€ï¼š' . $order->products[$i]['name'] . 'ï¼ˆ' . $order->products[$i]['model'] . 'ï¼‰' . "\n";
 				// Has Attributes?
 				if (sizeof($order->products[$i]['attributes']) > 0) {
 					for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
 						$orders_products_attributes_id = $order->products[$i]['attributes'][$j]['orders_products_attributes_id'];
-						$products_ordered_mail .=  "\t" . tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option'], array("'"=>"&quot;")) . '¡¡¡¡¡¡¡¡¡¡¡§';
+						$products_ordered_mail .=  "\t" . tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option'], array("'"=>"&quot;")) . 'ã€€ã€€ã€€ã€€ã€€ï¼š';
 						$products_ordered_mail .= tep_parse_input_field_data($order->products[$i]['attributes'][$j]['value'], array("'"=>"&quot;")) . "\n";
 					}
 				}
@@ -460,16 +460,16 @@
 			    $product_info = tep_db_fetch_array($_product_info_query);
 			    $data1 = explode("//", $product_info['products_attention_1']);
 
-				$products_ordered_mail .= "\t" . '¸Ä¿ô¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡§' . $order->products[$i]['qty'] . '¸Ä' . tep_get_full_count($order->products[$i]['qty'], $data1[1]) . "\n";
-				$products_ordered_mail .= "\t" . 'Ã±²Á¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡§' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
-				$products_ordered_mail .= "\t" . '¾®·×¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡§' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
-				$products_ordered_mail .= "\t" . '¥­¥ã¥é¥¯¥¿¡¼Ì¾¡¡¡¡¡§' . $order->products[$i]['character'] . "\n";
+				$products_ordered_mail .= "\t" . 'å€‹æ•°ã€€ã€€ã€€ã€€ã€€ã€€ã€€ï¼š' . $order->products[$i]['qty'] . 'å€‹' . tep_get_full_count($order->products[$i]['qty'], $data1[1]) . "\n";
+				$products_ordered_mail .= "\t" . 'å˜ä¾¡ã€€ã€€ã€€ã€€ã€€ã€€ã€€ï¼š' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
+				$products_ordered_mail .= "\t" . 'å°è¨ˆã€€ã€€ã€€ã€€ã€€ã€€ã€€ï¼š' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
+				$products_ordered_mail .= "\t" . 'ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åã€€ã€€ï¼š' . $order->products[$i]['character'] . "\n";
 				$products_ordered_mail .= "\t" . '------------------------------------------' . "\n";
 				if (tep_get_cflag_by_product_id($order->products[$i]['id'])) {
     				if (tep_get_bflag_by_product_id($order->products[$i]['id'])) {
-    					$products_ordered_mail .= "¢¨ Åö¼Ò¥­¥ã¥é¥¯¥¿¡¼Ì¾¤Ï¡¢¤ª¼è°ú10Ê¬Á°¤Þ¤Ç¤ËÅÅ»Ò¥á¡¼¥ë¤Ë¤Æ¤ªÃÎ¤é¤»¤¤¤¿¤·¤Þ¤¹¡£\n\n";
+    					$products_ordered_mail .= "â€» å½“ç¤¾ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åã¯ã€ãŠå–å¼•10åˆ†å‰ã¾ã§ã«é›»å­ãƒ¡ãƒ¼ãƒ«ã«ã¦ãŠçŸ¥ã‚‰ã›ã„ãŸã—ã¾ã™ã€‚\n\n";
     				} else {
-    					$products_ordered_mail .= "¢¨ Åö¼Ò¥­¥ã¥é¥¯¥¿¡¼Ì¾¤Ï¡¢¤ª»ÙÊ§¤¤³ÎÇ§¸å¤ËÅÅ»Ò¥á¡¼¥ë¤Ë¤Æ¤ªÃÎ¤é¤»¤¤¤¿¤·¤Þ¤¹¡£\n\n";
+    					$products_ordered_mail .= "â€» å½“ç¤¾ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åã¯ã€ãŠæ”¯æ‰•ã„ç¢ºèªå¾Œã«é›»å­ãƒ¡ãƒ¼ãƒ«ã«ã¦ãŠçŸ¥ã‚‰ã›ã„ãŸã—ã¾ã™ã€‚\n\n";
     				}
                 }
 			}
@@ -480,50 +480,50 @@ $order->totals = array();
 while ($totals = tep_db_fetch_array($totals_query)) {
 	if ($totals['class'] == "ot_point" || $totals['class'] == "ot_subtotal") {
 		if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
-			$total_details_mail .= "\t" . '¥Ý¥¤¥ó¥È³ä°ú¡¡¡¡¡§-' . strip_tags($totals['text']) . "\n";
+			$total_details_mail .= "\t" . 'ãƒã‚¤ãƒ³ãƒˆå‰²å¼•ã€€ã€€ï¼š-' . strip_tags($totals['text']) . "\n";
 		}
 	} elseif ($totals['class'] == "ot_total") {
-		$total_details_mail .= "\t" . '¤ª»ÙÊ§¶â³Û¡¡¡¡¡¡¡§' . strip_tags($totals['text']) . "\n";
+		$total_details_mail .= "\t" . 'ãŠæ”¯æ‰•é‡‘é¡ã€€ã€€ã€€ï¼š' . strip_tags($totals['text']) . "\n";
 	} else {
-		$total_details_mail .= "\t" . $totals['title'] . '¡§' . strip_tags($totals['text']) . "\n";
+		$total_details_mail .= "\t" . $totals['title'] . 'ï¼š' . strip_tags($totals['text']) . "\n";
 	}
 }
 
   function str_string($string='') {
     if(ereg("-", $string)) {
 	  $string_array = explode("-", $string);
-	  return $string_array[0] . 'Ç¯' . $string_array[1] . '·î' . $string_array[2] . 'Æü';
+	  return $string_array[0] . 'å¹´' . $string_array[1] . 'æœˆ' . $string_array[2] . 'æ—¥';
 	}
   }
 
 			$email = '';
-			$email .= $order->customer['name'] . 'ÍÍ' . "\n\n";
-			$email .= '¤¤¤Ä¤â' . STORE_NAME . '¤ò¤´ÍøÍÑ¤¤¤¿¤À¤­¡¢À¿¤Ë¤¢¤ê¤¬¤È¤¦¤´¤¶¤¤¤Þ¤¹¡£' . "\n";
-			$email .= '²¼µ­¤ÎÆâÍÆ¤Ë¤ÆÊÑ¹¹¤ò¾µ¤ê¤Þ¤·¤¿¤Î¤Ç¡¢¤´³ÎÇ§¤¯¤À¤µ¤¤¡£' . "\n\n";
+			$email .= $order->customer['name'] . 'æ§˜' . "\n\n";
+			$email .= 'ã„ã¤ã‚‚' . STORE_NAME . 'ã‚’ã”åˆ©ç”¨ã„ãŸã ãã€èª ã«ã‚ã‚ŠãŒã¨ã†ã”ã–ã„ã¾ã™ã€‚' . "\n";
+			$email .= 'ä¸‹è¨˜ã®å†…å®¹ã«ã¦å¤‰æ›´ã‚’æ‰¿ã‚Šã¾ã—ãŸã®ã§ã€ã”ç¢ºèªãã ã•ã„ã€‚' . "\n\n";
 			$email .= $notify_comments_mail;
-			$email .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
-			$email .= '¢§ÃíÊ¸ÈÖ¹æ¡¡¡¡¡¡¡¡¡§' . $oID . "\n";
-			$email .= '¢§¤ªÌ¾Á°¡¡¡¡¡¡¡¡¡¡¡§' . $order->customer['name'] . 'ÍÍ' . "\n";
-			$email .= '¢§¥á¡¼¥ë¥¢¥É¥ì¥¹¡¡¡§' . $order->customer['email_address'] . "\n";
-			$email .= '¢§»ÙÊ§ÊýË¡¡¡¡¡¡¡¡¡¡§' . $order->info['payment_method'] . "\n";
-			$email .= '¢§¼è°úÆü»þ¡¡¡¡¡¡¡¡¡§' . $order->tori['date'] . '¡Ê24»þ´ÖÉ½µ­¡Ë' . "\n";
-			$email .= '¢§¥ª¥×¥·¥ç¥ó¡¡¡¡¡¡¡§' . $order->tori['houhou'] . "\n";
-			$email .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n\n";
-			$email .= '¢§ÃíÊ¸¾¦ÉÊ' . "\n";
+			$email .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
+			$email .= 'â–¼æ³¨æ–‡ç•ªå·ã€€ã€€ã€€ã€€ï¼š' . $oID . "\n";
+			$email .= 'â–¼ãŠåå‰ã€€ã€€ã€€ã€€ã€€ï¼š' . $order->customer['name'] . 'æ§˜' . "\n";
+			$email .= 'â–¼ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã€€ï¼š' . $order->customer['email_address'] . "\n";
+			$email .= 'â–¼æ”¯æ‰•æ–¹æ³•ã€€ã€€ã€€ã€€ï¼š' . $order->info['payment_method'] . "\n";
+			$email .= 'â–¼å–å¼•æ—¥æ™‚ã€€ã€€ã€€ã€€ï¼š' . $order->tori['date'] . 'ï¼ˆ24æ™‚é–“è¡¨è¨˜ï¼‰' . "\n";
+			$email .= 'â–¼ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã€€ã€€ã€€ï¼š' . $order->tori['houhou'] . "\n";
+			$email .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n\n";
+			$email .= 'â–¼æ³¨æ–‡å•†å“' . "\n";
 			$email .= "\t" . '------------------------------------------' . "\n";
 			$email .= $products_ordered_mail;
 			$email .= $total_details_mail;
 			$email .= "\n\n\n\n";
-//			$email .= '²ñ°÷¤Î¤ªµÒÍÍ¤Ï' . EMAIL_TEXT_INVOICE_URL . ' ' . tep_catalog_href_link(FILENAME_CATALOG_ACCOUNT_HISTORY_INFO, 'order_id=' . $oID, 'SSL') . "\n\n\n\n";
-			$email .= '¤´ÉÔÌÀ¤ÊÅÀ¤¬¤´¤¶¤¤¤Þ¤·¤¿¤é¡¢ÃíÊ¸ÈÖ¹æ¤ò¤´³ÎÇ§¤Î¾å¡¢' . "\n";
-			$email .= '¡Ö' . STORE_NAME . '¡×¤Þ¤Ç¤ªÌä¤¤¹ç¤ï¤»¤¯¤À¤µ¤¤¡£' . "\n\n";
-			$email .= '[¤´Ï¢Íí¡¦¤ªÌä¤¤¹ç¤ï¤»Àè]¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
-			$email .= '³ô¼°²ñ¼Ò iimy' . "\n";
+//			$email .= 'ä¼šå“¡ã®ãŠå®¢æ§˜ã¯' . EMAIL_TEXT_INVOICE_URL . ' ' . tep_catalog_href_link(FILENAME_CATALOG_ACCOUNT_HISTORY_INFO, 'order_id=' . $oID, 'SSL') . "\n\n\n\n";
+			$email .= 'ã”ä¸æ˜Žãªç‚¹ãŒã”ã–ã„ã¾ã—ãŸã‚‰ã€æ³¨æ–‡ç•ªå·ã‚’ã”ç¢ºèªã®ä¸Šã€' . "\n";
+			$email .= 'ã€Œ' . STORE_NAME . 'ã€ã¾ã§ãŠå•ã„åˆã‚ã›ãã ã•ã„ã€‚' . "\n\n";
+			$email .= '[ã”é€£çµ¡ãƒ»ãŠå•ã„åˆã‚ã›å…ˆ]â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
+			$email .= 'æ ªå¼ä¼šç¤¾ iimy' . "\n";
 			$email .= SUPPORT_EMAIL_ADDRESS . "\n";
 			$email .= HTTP_CATALOG_SERVER . "\n";
-			$email .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
-			tep_mail($check_status['customers_name'], $check_status['customers_email_address'], 'ÃíÊ¸ÆâÍÆ¤ÎÊÑ¹¹¤ò¾µ¤ê¤Þ¤·¤¿¡Ú' . STORE_NAME . '¡Û', $email, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-			tep_mail(STORE_OWNER, SENTMAIL_ADDRESS, 'Á÷¿®ºÑ¡§ÃíÊ¸ÆâÍÆ¤ÎÊÑ¹¹¤ò¾µ¤ê¤Þ¤·¤¿¡Ú' . STORE_NAME . '¡Û', $email, $check_status['customers_name'], $check_status['customers_email_address']);
+			$email .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
+			tep_mail($check_status['customers_name'], $check_status['customers_email_address'], 'æ³¨æ–‡å†…å®¹ã®å¤‰æ›´ã‚’æ‰¿ã‚Šã¾ã—ãŸã€' . STORE_NAME . 'ã€‘', $email, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+			tep_mail(STORE_OWNER, SENTMAIL_ADDRESS, 'é€ä¿¡æ¸ˆï¼šæ³¨æ–‡å†…å®¹ã®å¤‰æ›´ã‚’æ‰¿ã‚Šã¾ã—ãŸã€' . STORE_NAME . 'ã€‘', $email, $check_status['customers_name'], $check_status['customers_email_address']);
 			$customer_notified = '1';
 		}
 		tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . tep_db_input($customer_notified) . "', '" . $notify_comments . "')");
@@ -533,9 +533,9 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 		if ($order_updated && !$products_delete && $order_updated_2) {
 			$messageStack->add_session(SUCCESS_ORDER_UPDATED, 'success');
 		} elseif ($order_updated && $products_delete) {
-			$messageStack->add_session('¾¦ÉÊ¤òºï½ü¤·¤Þ¤·¤¿¡£<font color="red">¥á¡¼¥ë¤ÏÁ÷¿®¤µ¤ì¤Æ¤¤¤Þ¤»¤ó¡£</font>', 'success');
+			$messageStack->add_session('å•†å“ã‚’å‰Šé™¤ã—ã¾ã—ãŸã€‚<font color="red">ãƒ¡ãƒ¼ãƒ«ã¯é€ä¿¡ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚</font>', 'success');
 		} else {
-			$messageStack->add_session('¥¨¥é¡¼¤¬È¯À¸¤·¤Þ¤·¤¿¡£Àµ¾ï¤Ë½èÍý¤¬¹Ô¤ï¤ì¤Æ¤¤¤Ê¤¤²ÄÇ½À­¤¬¤¢¤ê¤Þ¤¹¡£', 'error');
+			$messageStack->add_session('ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚æ­£å¸¸ã«å‡¦ç†ãŒè¡Œã‚ã‚Œã¦ã„ãªã„å¯èƒ½æ€§ãŒã‚ã‚Šã¾ã™ã€‚', 'error');
 		}
 
 		tep_redirect(tep_href_link("edit_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
@@ -577,14 +577,14 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 			$row = tep_db_fetch_array($result);
 			extract($row, EXTR_PREFIX_ALL, "p");
 			
-			// ÆÃ²Á¤òÅ¬ÍÑ
+			// ç‰¹ä¾¡ã‚’é©ç”¨
 			$specials_query = tep_db_query("select specials_new_products_price from " . TABLE_SPECIALS . " where products_id = '" . $add_product_products_id . "' and status = '1'");
 			if (tep_db_num_rows ($specials_query)) {
 				$specials = tep_db_fetch_array($specials_query);
 				$p_products_price = $specials['specials_new_products_price'];
 			}
 			
-			// Âç¸ý³ä°ú¤òÅ¬ÍÑ
+			// å¤§å£å‰²å¼•ã‚’é©ç”¨
 			$wari_array = array();
 			if(tep_not_null($p_products_small_sum)) {
 				$parray = explode(",", $p_products_small_sum);
@@ -763,7 +763,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 						<!-- Begin Update Block -->
 						<table width="100%" border="0" cellpadding="2" cellspacing="1">
 							<tr>
-								<td class="main" bgcolor="#FAEDDE" height="25">ÊÑ¹¹¤·¤¿¤¤ÆâÍÆ¤ò¿µ½Å¤ËÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£<b>¶õÇò¤Ê¤É¤ÎÍ¾Ê¬¤ÊÊ¸»ú¤¬ÆþÎÏ¤µ¤ì¤Æ¤¤¤Ê¤¤¤«¥Á¥§¥Ã¥¯¤¹¤ë¤è¤¦¤Ë¡ª</b></td>
+								<td class="main" bgcolor="#FAEDDE" height="25">å¤‰æ›´ã—ãŸã„å†…å®¹ã‚’æ…Žé‡ã«å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚<b>ç©ºç™½ãªã©ã®ä½™åˆ†ãªæ–‡å­—ãŒå…¥åŠ›ã•ã‚Œã¦ã„ãªã„ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹ã‚ˆã†ã«ï¼</b></td>
 								<td class="main" bgcolor="#FBE2C8" width="10">&nbsp;</td>
 								<td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
 								<td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
@@ -776,47 +776,47 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 						<span class="SubTitle"><?php echo MENUE_TITLE_CUSTOMER; ?></span>
 						<table width="100%" border="0" class="dataTableRow" cellpadding="2" cellspacing="0">
 							<tr>
-								<td class="main" valign="top" width="30%"><b>ÃíÊ¸ÈÖ¹æ:</b></td>
+								<td class="main" valign="top" width="30%"><b>æ³¨æ–‡ç•ªå·:</b></td>
 								<td class="main" width="70%"><?php echo $oID;?></td>
 							</tr>
 							<tr>
-								<td class="main" valign="top"><b>ÃíÊ¸Æü:</b></td>
+								<td class="main" valign="top"><b>æ³¨æ–‡æ—¥:</b></td>
 								<td class="main"><?php echo tep_date_long($order->info['date_purchased']);?></td>
 							</tr>
 							<tr>
-								<td class="main" valign="top"><b>¸ÜµÒÌ¾:</b></td>
+								<td class="main" valign="top"><b>é¡§å®¢å:</b></td>
 								<td class="main">
 									<input name="update_customer_name" size="25" value="<?php echo tep_html_quotes($order->customer['name']); ?>">
-									<span class="smalltext"><font color="red">¢¨</font>&nbsp;À­¤ÈÌ¾¤Î´Ö¤Ë¤Ï<font color="red">È¾³Ñ¥¹¥Ú¡¼¥¹</font>¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£</span>
+									<span class="smalltext"><font color="red">â€»</font>&nbsp;æ€§ã¨åã®é–“ã«ã¯<font color="red">åŠè§’ã‚¹ãƒšãƒ¼ã‚¹</font>ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚</span>
 								</td>
 							</tr>
 							<tr>
-								<td class="main" valign="top"><b>¥á¡¼¥ë¥¢¥É¥ì¥¹:</b></td>
+								<td class="main" valign="top"><b>ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹:</b></td>
 								<td class="main"><input name="update_customer_email_address" size="45" value="<?php echo $order->customer['email_address']; ?>"></td>
 							</tr>
 							<!-- End Addresses Block -->
 							<!-- Begin Payment Block -->
 							<tr>
-								<td class="main" valign="top"><b>»ÙÊ§ÊýË¡:</b></td>
+								<td class="main" valign="top"><b>æ”¯æ‰•æ–¹æ³•:</b></td>
 								<td class="main">
 									<input name='update_info_payment_method' size='25' value='<?php echo $order->info['payment_method']; ?>'>
-									<table><tr class="smalltext"><td><font color="red">¢¨</font>&nbsp;¥³¥Ô¥ÚÍÑ:</td><td>¶ä¹Ô¿¶¹þ</td><td>¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ</td><td>¶ä¹Ô¿¶¹þ¡ÊÇã¤¤¼è¤ê¡Ë</td></tr></table>
+									<table><tr class="smalltext"><td><font color="red">â€»</font>&nbsp;ã‚³ãƒ”ãƒšç”¨:</td><td>éŠ€è¡ŒæŒ¯è¾¼</td><td>ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰æ±ºæ¸ˆ</td><td>éŠ€è¡ŒæŒ¯è¾¼ï¼ˆè²·ã„å–ã‚Šï¼‰</td></tr></table>
 								</td>
 							</tr>
 							<!-- End Payment Block -->
 							<!-- Begin Trade Date Block -->
 							<tr>
-								<td class="main" valign="top"><b>¼è°úÆü»þ:</b></td>
+								<td class="main" valign="top"><b>å–å¼•æ—¥æ™‚:</b></td>
 								<td class="main">
 									<input name='update_tori_torihiki_date' size='25' value='<?php echo $order->tori['date']; ?>'>
-									<span class="smalltext"><font color="red">¢¨</font>&nbsp;ÆüÉÕ¡¦»þ´Ö¤Î½ñ¼°:&nbsp;2008-01-01 10:30:00</span>
+									<span class="smalltext"><font color="red">â€»</font>&nbsp;æ—¥ä»˜ãƒ»æ™‚é–“ã®æ›¸å¼:&nbsp;2008-01-01 10:30:00</span>
 								</td>
 							</tr>
 							<tr>
-								<td class="main" valign="top"><b>¥ª¥×¥·¥ç¥ó:</b></td>
+								<td class="main" valign="top"><b>ã‚ªãƒ—ã‚·ãƒ§ãƒ³:</b></td>
 								<td class="main">
 									<input name='update_tori_torihiki_houhou' size='45' value='<?php echo $order->tori['houhou']; ?>'>
-									<table><tr class="smalltext"><td><font color="red">¢¨</font>&nbsp;¥³¥Ô¥ÚÍÑ:</td><td>»ØÄê¤·¤¿»þ´Ö¤É¤ª¤ê¤Ë¼è°ú¤·¤ÆÍß¤·¤¤</td><td>»ØÄê¤·¤¿»þ´Ö¤è¤êÁá¤¯¤Ç¤­¤ë¤Ê¤éÁá¤¯Íè¤ÆÍß¤·¤¤</td></tr></table>
+									<table><tr class="smalltext"><td><font color="red">â€»</font>&nbsp;ã‚³ãƒ”ãƒšç”¨:</td><td>æŒ‡å®šã—ãŸæ™‚é–“ã©ãŠã‚Šã«å–å¼•ã—ã¦æ¬²ã—ã„</td><td>æŒ‡å®šã—ãŸæ™‚é–“ã‚ˆã‚Šæ—©ãã§ãã‚‹ãªã‚‰æ—©ãæ¥ã¦æ¬²ã—ã„</td></tr></table>
 									
 <input name="update_customer_company" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['company']); ?>">
 <input name="update_delivery_company" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['company']); ?>">
@@ -845,7 +845,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 				</tr>
 				<!-- Begin Products Listing Block -->
 				<tr>
-					<td class="SubTitle"><br>2. ÃíÊ¸¾¦ÉÊ</td>
+					<td class="SubTitle"><br>2. æ³¨æ–‡å•†å“</td>
 				</tr>
 				<tr>
 					<td>		  
@@ -885,13 +885,13 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 <?php // Version without editable names & prices ?>
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
 	<tr class="dataTableHeadingRow">
-	  <td class="dataTableHeadingContent" colspan="2">¿ôÎÌ / ¾¦ÉÊÌ¾</td>
+	  <td class="dataTableHeadingContent" colspan="2">æ•°é‡ / å•†å“å</td>
 	  <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCTS_MODEL; ?></td>
-	  <td class="dataTableHeadingContent">ÀÇÎ¨</td>
-	  <td class="dataTableHeadingContent" align="right">²Á³Ê(ÀÇÊÌ)</td>
-	  <td class="dataTableHeadingContent" align="right">²Á³Ê(ÀÇ¹þ)</td>
-	  <td class="dataTableHeadingContent" align="right">¹ç·×(ÀÇÊÌ)</td>
-	  <td class="dataTableHeadingContent" align="right">¹ç·×(ÀÇ¹þ)</td>
+	  <td class="dataTableHeadingContent">ç¨ŽçŽ‡</td>
+	  <td class="dataTableHeadingContent" align="right">ä¾¡æ ¼(ç¨Žåˆ¥)</td>
+	  <td class="dataTableHeadingContent" align="right">ä¾¡æ ¼(ç¨Žè¾¼)</td>
+	  <td class="dataTableHeadingContent" align="right">åˆè¨ˆ(ç¨Žåˆ¥)</td>
+	  <td class="dataTableHeadingContent" align="right">åˆè¨ˆ(ç¨Žè¾¼)</td>
 	</tr>
 	
 <?php
@@ -901,7 +901,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 		echo '	  <tr class="dataTableRow">' . "\n" .
 		     '	    <td class="' . $RowStyle . '" align="left" valign="top" width="20">' . "<input name='update_products[$orders_products_id][qty]' size='2' value='" . $order->products[$i]['qty'] . "'>&nbsp;x</td>\n" . 
 		     '	    <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input name='update_products[$orders_products_id][name]' size='64' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
-			 '      &nbsp;&nbsp;¥­¥ã¥éÌ¾¡§' . "<input type='hidden' name='dummy' value='¤¢¤¤¤¦¤¨¤ªÈýÉý'><input name='update_products[$orders_products_id][character]' size='20' value='" . $order->products[$i]['character'] . "'>";
+			 '      &nbsp;&nbsp;ã‚­ãƒ£ãƒ©åï¼š' . "<input type='hidden' name='dummy' value='ã‚ã„ã†ãˆãŠçœ‰å¹…'><input name='update_products[$orders_products_id][character]' size='20' value='" . $order->products[$i]['character'] . "'>";
 		// Has Attributes?
 		if (sizeof($order->products[$i]['attributes']) > 0) {
 			for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
@@ -933,7 +933,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 	      <td>
 				  <table width="100%" cellpadding="0" cellspacing="0">
 					  <tr>
-						  <td valign="top"><?php echo "<span class='smalltext'>" . HINT_DELETE_POSITION . "¾¦ÉÊÄÉ²Ã¤ÈÂ¾¤Î¹àÌÜ¤ÏÆ±»þ¤ËÊÑ¹¹¤Ç¤­¤Þ¤»¤ó¡£<b>¡Ö ¾¦ÉÊ¤ÎÄÉ²Ã ¡×¤ÏÃ±ÂÎ¤Ç¹Ô¤Ã¤Æ¤¯¤À¤µ¤¤¡£</b></span>"; ?></td>
+						  <td valign="top"><?php echo "<span class='smalltext'>" . HINT_DELETE_POSITION . "å•†å“è¿½åŠ ã¨ä»–ã®é …ç›®ã¯åŒæ™‚ã«å¤‰æ›´ã§ãã¾ã›ã‚“ã€‚<b>ã€Œ å•†å“ã®è¿½åŠ  ã€ã¯å˜ä½“ã§è¡Œã£ã¦ãã ã•ã„ã€‚</b></span>"; ?></td>
 			        <td align="right"><?php echo '<a href="' . $PHP_SELF . '?oID=' . $oID . '&action=add_product&step=1">' . tep_image_button('button_add_article.gif', ADDING_TITLE) . '</a>'; ?></td>
 						</tr>
 					</table>
@@ -942,7 +942,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 	<!-- End Products Listings Block -->
 	<!-- Begin Order Total Block -->
       <tr>
-	      <td class="SubTitle">3. ¥Ý¥¤¥ó¥È³ä°ú¡¢¼ê¿ôÎÁ¡¢ÃÍ°ú¤­</td>
+	      <td class="SubTitle">3. ãƒã‚¤ãƒ³ãƒˆå‰²å¼•ã€æ‰‹æ•°æ–™ã€å€¤å¼•ã</td>
 			</tr>
       <tr>
 	      <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '1'); ?></td>
@@ -952,7 +952,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 
 <table width="100%" border="0" cellspacing="0" cellpadding="2" class="dataTableRow">
 	<tr class="dataTableHeadingRow">
-	  <td class="dataTableHeadingContent" align="left" width="75%">Ãí°Õ»ö¹à</td>
+	  <td class="dataTableHeadingContent" align="left" width="75%">æ³¨æ„äº‹é …</td>
 	  <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_MODULE; ?></td>
 	  <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_AMOUNT; ?></td>
 	  <td class="dataTableHeadingContent"width="1"><?php echo tep_draw_separator('pixel_trans.gif', '1', '1'); ?></td>
@@ -990,7 +990,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 		$TotalStyle = "smallText";
 		if ($TotalDetails["Class"] == "ot_total") {
 			echo '	<tr>' . "\n" .
-				   '		<td align="left" class="' . $TotalStyle . '">¹ç·×¶â³Û¤¬¹ç¤Ã¤Æ¤¤¤ë¤«É¬¤º³ÎÇ§¤·¤Æ¤¯¤À¤µ¤¤¡£</td>' . 
+				   '		<td align="left" class="' . $TotalStyle . '">åˆè¨ˆé‡‘é¡ãŒåˆã£ã¦ã„ã‚‹ã‹å¿…ãšç¢ºèªã—ã¦ãã ã•ã„ã€‚</td>' . 
 				   '		<td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' . 
 				   '		<td align="right" class="' . $TotalStyle . '"><b>' . $currencies->format($TotalDetails["Price"], true, $order->info['currency'], $order->info['currency_value']) . '</b>' . 
 						    "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
@@ -1001,7 +1001,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 				   '	</tr>' . "\n";
 		} elseif ($TotalDetails["Class"] == "ot_subtotal") {
 			echo '	<tr>' . "\n" .
-				   '		<td align="left" class="' . $TotalStyle . '"><table><tr class="smalltext"><td><font color="red">¢¨</font>&nbsp;¥³¥Ô¥ÚÍÑ:</td><td>Ä´À°³Û</td><td>»öÌ³¼ê¿ôÎÁ</td><td>ÃÍ°ú¤­</td></tr></table></td>' . 
+				   '		<td align="left" class="' . $TotalStyle . '"><table><tr class="smalltext"><td><font color="red">â€»</font>&nbsp;ã‚³ãƒ”ãƒšç”¨:</td><td>èª¿æ•´é¡</td><td>äº‹å‹™æ‰‹æ•°æ–™</td><td>å€¤å¼•ã</td></tr></table></td>' . 
 				   '		<td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' .
 				   '		<td align="right" class="' . $TotalStyle . '"><b>' . $currencies->format($TotalDetails["Price"], true, $order->info['currency'], $order->info['currency_value']) . '</b>' . 
 						    "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
@@ -1021,12 +1021,12 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 				   '		<td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
 				   '	</tr>' . "\n";
 		} elseif ($TotalDetails["Class"] == "ot_point") {
-			if ($customer_guest['customers_guest_chk'] == 0) { //²ñ°÷
+			if ($customer_guest['customers_guest_chk'] == 0) { //ä¼šå“¡
 				$current_point = $customer_point['point'] + $TotalDetails["Price"];
 				echo '	<tr>' . "\n" .
-					   '		<td align="left" class="' . $TotalStyle . '">¤³¤Î¤ªµÒÍÍ¤Ï²ñ°÷¤Ç¤¹¡£ÆþÎÏ²ÄÇ½¥Ý¥¤¥ó¥È¤Ï <font color="red"><b>»Ä¤ê' . $customer_point['point'] . '¡Ê¹ç·×' . $current_point . '¡Ë</b></font> ¤Ç¤¹¡£¡Ý¡Ê¥Þ¥¤¥Ê¥¹¡ËÉä¹æ¤ÎÆþÎÏ¤ÏÉ¬Í×¤¢¤ê¤Þ¤»¤ó¡£É¬¤ºÀµ¿ô¤òÆþÎÏ¤¹¤ë¤è¤¦¤Ë¡ª</td>' . 
+					   '		<td align="left" class="' . $TotalStyle . '">ã“ã®ãŠå®¢æ§˜ã¯ä¼šå“¡ã§ã™ã€‚å…¥åŠ›å¯èƒ½ãƒã‚¤ãƒ³ãƒˆã¯ <font color="red"><b>æ®‹ã‚Š' . $customer_point['point'] . 'ï¼ˆåˆè¨ˆ' . $current_point . 'ï¼‰</b></font> ã§ã™ã€‚âˆ’ï¼ˆãƒžã‚¤ãƒŠã‚¹ï¼‰ç¬¦å·ã®å…¥åŠ›ã¯å¿…è¦ã‚ã‚Šã¾ã›ã‚“ã€‚å¿…ãšæ­£æ•°ã‚’å…¥åŠ›ã™ã‚‹ã‚ˆã†ã«ï¼</td>' . 
 					   '		<td align="right" class="' . $TotalStyle . '">' . trim($TotalDetails["Name"]) . '</td>' . "\n" .
-					   '		<td align="right" class="' . $TotalStyle . '" nowrap>¡Ý' . "<input name='update_totals[$TotalIndex][value]' size='6' value='" . $TotalDetails["Price"] . "'>" . 
+					   '		<td align="right" class="' . $TotalStyle . '" nowrap>âˆ’' . "<input name='update_totals[$TotalIndex][value]' size='6' value='" . $TotalDetails["Price"] . "'>" . 
 								"<input type='hidden' name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . 
 								"<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
 								"<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
@@ -1034,9 +1034,9 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 					   '		<td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
 						 '   </td>' . "\n" .
 					   '	</tr>' . "\n";
-			} else { //¥²¥¹¥È
+			} else { //ã‚²ã‚¹ãƒˆ
 				echo '	<tr>' . "\n" .
-					   '		<td align="left" class="' . $TotalStyle . '">¤³¤Î¤ªµÒÍÍ¤Ï¥²¥¹¥È¤Ç¤¹¡£¥Ý¥¤¥ó¥È³ä°ú¤ÎÆþÎÏ¤Ï¤Ç¤­¤Þ¤»¤ó¡£</td>' . 
+					   '		<td align="left" class="' . $TotalStyle . '">ã“ã®ãŠå®¢æ§˜ã¯ã‚²ã‚¹ãƒˆã§ã™ã€‚ãƒã‚¤ãƒ³ãƒˆå‰²å¼•ã®å…¥åŠ›ã¯ã§ãã¾ã›ã‚“ã€‚</td>' . 
 					   '		<td align="right" class="' . $TotalStyle . '">' . trim($TotalDetails["Name"]) . '</td>' . "\n" .
 					   '		<td align="right" class="' . $TotalStyle . '">' . $TotalDetails["Price"] . 
 								"<input type='hidden' name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . 
@@ -1049,7 +1049,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 			}
 		} else {
 			echo '	<tr>' . "\n" .
-				   '		<td align="left" class="' . $TotalStyle . '">ÃÍ°ú¤­¤¹¤ë¾ì¹ç¤Ï¡¢¡Ý¡Ê¥Þ¥¤¥Ê¥¹¡ËÉä¹æ¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£</td>' . 
+				   '		<td align="left" class="' . $TotalStyle . '">å€¤å¼•ãã™ã‚‹å ´åˆã¯ã€âˆ’ï¼ˆãƒžã‚¤ãƒŠã‚¹ï¼‰ç¬¦å·ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚</td>' . 
 				   '		<td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
 				   '		<td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][value]' size='6' value='" . $TotalDetails["Price"] . "'>" . 
 						    "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
@@ -1061,7 +1061,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 	}
 ?>
 </table>
-<span class='smalltext'><font color="red">¥Ò¥ó¥È:</font>&nbsp;²Á³Ê¹½À®Í×ÁÇ¤òºï½ü¤¹¤ë¾ì¹ç¤Ï¶â³Û¤Ë¡Ö0¡×¤ÈÆþÎÏ¤·¤Æ¹¹¿·¤·¤Æ¤¯¤À¤µ¤¤¡£</span>
+<span class='smalltext'><font color="red">ãƒ’ãƒ³ãƒˆ:</font>&nbsp;ä¾¡æ ¼æ§‹æˆè¦ç´ ã‚’å‰Šé™¤ã™ã‚‹å ´åˆã¯é‡‘é¡ã«ã€Œ0ã€ã¨å…¥åŠ›ã—ã¦æ›´æ–°ã—ã¦ãã ã•ã„ã€‚</span>
 	      </td>
       </tr>
       <tr>
@@ -1074,11 +1074,11 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 	      <td>
           <table width="100%" border="0" cellpadding="2" cellspacing="1">
             <tr>
-              <td class="main" bgcolor="#FAEDDE" height="25"><font color="red">½ÅÍ×:</font>&nbsp;<b>²Á³Ê¹½À®Í×ÁÇ¤òÊÑ¹¹¤·¤¿¾ì¹ç¤Ï¡Ö<font color="red">ÃíÊ¸ÆâÍÆ³ÎÇ§</font>¡×¥Ü¥¿¥ó¤ò¥¯¥ê¥Ã¥¯¤·¤Æ¹ç·×¶â³Û¤¬°ìÃ×¤¹¤ë¤«³ÎÇ§¤·¤Æ¤¯¤À¤µ¤¤¡£&nbsp;¢Í</b></td>
+              <td class="main" bgcolor="#FAEDDE" height="25"><font color="red">é‡è¦:</font>&nbsp;<b>ä¾¡æ ¼æ§‹æˆè¦ç´ ã‚’å¤‰æ›´ã—ãŸå ´åˆã¯ã€Œ<font color="red">æ³¨æ–‡å†…å®¹ç¢ºèª</font>ã€ãƒœã‚¿ãƒ³ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦åˆè¨ˆé‡‘é¡ãŒä¸€è‡´ã™ã‚‹ã‹ç¢ºèªã—ã¦ãã ã•ã„ã€‚&nbsp;â‡’</b></td>
               <td class="main" bgcolor="#FBE2C8" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
               <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
-              <td class="main" bgcolor="#FF9933" width="120" align="center"><INPUT type="button" value=" ÃíÊ¸ÆâÍÆ³ÎÇ§ " onClick="update_price()"></td>
+              <td class="main" bgcolor="#FF9933" width="120" align="center"><INPUT type="button" value=" æ³¨æ–‡å†…å®¹ç¢ºèª " onClick="update_price()"></td>
 	          </tr>
           </table>
 				</td>
@@ -1089,7 +1089,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 	<!-- End of Update Block -->
 	<!-- Begin Status Block -->
       <tr>
-	      <td class="SubTitle">4. ÃíÊ¸¥¹¥Æ¡¼¥¿¥¹¡¢¥³¥á¥ó¥ÈÄÌÃÎ</td>
+	      <td class="SubTitle">4. æ³¨æ–‡ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã€ã‚³ãƒ¡ãƒ³ãƒˆé€šçŸ¥</td>
 			</tr>
       <tr>
 	      <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '1'); ?></td>
@@ -1160,20 +1160,20 @@ if (tep_db_num_rows($orders_history_query)) {
           <td class="main"><?php echo tep_draw_pull_down_menu('status', $orders_statuses, '16'); ?></td>
         </tr>
         <tr>
-          <td class="main"><b>¥á¡¼¥ëÁ÷¿®:</b></td>
+          <td class="main"><b>ãƒ¡ãƒ¼ãƒ«é€ä¿¡:</b></td>
           <td class="main"><table bgcolor="red" cellspacing="5"><tr><td><?php echo tep_draw_checkbox_field('notify', '', true); ?></td></tr></table></td>
         </tr>
         <? if($CommentsWithStatus) { ?>
         <tr>
-          <td class="main"><b>¥³¥á¥ó¥Èµ­Ï¿:</b></td>
-          <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', false); ?>&nbsp;&nbsp;<b style="color:#FF0000;">¢«¤³¤³¤Ï¥Á¥§¥Ã¥¯¤·¤Ê¤¤¤è¤¦¤Ë</b></td>
+          <td class="main"><b>ã‚³ãƒ¡ãƒ³ãƒˆè¨˜éŒ²:</b></td>
+          <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', false); ?>&nbsp;&nbsp;<b style="color:#FF0000;">â†ã“ã“ã¯ãƒã‚§ãƒƒã‚¯ã—ãªã„ã‚ˆã†ã«</b></td>
         </tr>
         <? } ?>
       </table>
 	  </td>
     <td class="main" width="10">&nbsp;</td>
     <td class="main">
-		¤³¤Á¤é¤ËÆþÎÏ¤·¤¿Ê¸¾Ï¤Ï¥á¡¼¥ëËÜÊ¸¤ËÁÞÆþ¤µ¤ì¤Þ¤¹¡£<br>
+		ã“ã¡ã‚‰ã«å…¥åŠ›ã—ãŸæ–‡ç« ã¯ãƒ¡ãƒ¼ãƒ«æœ¬æ–‡ã«æŒ¿å…¥ã•ã‚Œã¾ã™ã€‚<br>
     <?
     if($CommentsWithStatus) {
 	
@@ -1196,7 +1196,7 @@ if (tep_db_num_rows($orders_history_query)) {
 	<!-- End of Status Block -->
 	<!-- Begin Update Block -->
       <tr>
-	      <td class="SubTitle">5. ¥Ç¡¼¥¿¤ò¹¹¿·</td>
+	      <td class="SubTitle">5. ãƒ‡ãƒ¼ã‚¿ã‚’æ›´æ–°</td>
 		</tr>
       <tr>
 	      <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '1'); ?></td>
@@ -1205,7 +1205,7 @@ if (tep_db_num_rows($orders_history_query)) {
 	    <td>
           <table width="100%" border="0" cellpadding="2" cellspacing="1">
             <tr>
-              <td class="main" bgcolor="#FAEDDE"><b>ºÇ½ª³ÎÇ§¤Ï¤·¤Þ¤·¤¿¤«¡©</b>&nbsp;<?php echo HINT_PRESS_UPDATE; ?></td>
+              <td class="main" bgcolor="#FAEDDE"><b>æœ€çµ‚ç¢ºèªã¯ã—ã¾ã—ãŸã‹ï¼Ÿ</b>&nbsp;<?php echo HINT_PRESS_UPDATE; ?></td>
               <td class="main" bgcolor="#FBE2C8" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
               <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
@@ -1217,35 +1217,35 @@ if (tep_db_num_rows($orders_history_query)) {
 	  <tr>
 	    <td>
 <table width="100%" cellspacing="0" cellpadding="2">
-	<tr class="smalltext"><td valign="top" colspan="3"><font color="red">¢¨</font>&nbsp;¥³¥Ô¥ÚÍÑ¥Õ¥ì¡¼¥º¤Ç¤¹¡£¥È¥ê¥×¥ë¥¯¥ê¥Ã¥¯¤ò¤¹¤ë¤ÈÁ´ÁªÂò¤Ç¤­¤Þ¤¹¡£</td></tr>
-	<tr class="smalltext" bgcolor="#999999"><td>¾¦ÉÊ¤ÎÊÑ¹¹</td><td>»ÙÊ§ÊýË¡¤ÎÊÑ¹¹¡ÊÈÎÇäÍÑ¡Ë</td><td>»ÙÊ§ÊýË¡¤ÎÊÑ¹¹¡ÊÈÎÇäÍÑ¡Ë</td></tr>
+	<tr class="smalltext"><td valign="top" colspan="3"><font color="red">â€»</font>&nbsp;ã‚³ãƒ”ãƒšç”¨ãƒ•ãƒ¬ãƒ¼ã‚ºã§ã™ã€‚ãƒˆãƒªãƒ—ãƒ«ã‚¯ãƒªãƒƒã‚¯ã‚’ã™ã‚‹ã¨å…¨é¸æŠžã§ãã¾ã™ã€‚</td></tr>
+	<tr class="smalltext" bgcolor="#999999"><td>å•†å“ã®å¤‰æ›´</td><td>æ”¯æ‰•æ–¹æ³•ã®å¤‰æ›´ï¼ˆè²©å£²ç”¨ï¼‰</td><td>æ”¯æ‰•æ–¹æ³•ã®å¤‰æ›´ï¼ˆè²©å£²ç”¨ï¼‰</td></tr>
 	<tr class="smalltext" bgcolor="#CCCCCC">
-	<td valign="top">ÊÀ¼Ò¤Î¥­¥ã¥é¥¯¥¿¡¼Ì¾¤Ï¡Ú¡Û¤È¤Ê¤ê¤Þ¤¹¡£</td>
+	<td valign="top">å¼Šç¤¾ã®ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åã¯ã€ã€‘ã¨ãªã‚Šã¾ã™ã€‚</td>
 	<td valign="top">
-		²¼µ­¤Î¶âÍ»µ¡´Ø¤Ø¤ª¿¶¤ê¹þ¤ß¤¯¤À¤µ¤¤¡£<br>
+		ä¸‹è¨˜ã®é‡‘èžæ©Ÿé–¢ã¸ãŠæŒ¯ã‚Šè¾¼ã¿ãã ã•ã„ã€‚<br>
 		------------------------------------------<br>
-		¶ä¹ÔÌ¾¡¡¡¡¡§¡¡¥¸¥ã¥Ñ¥ó¥Í¥Ã¥È¶ä¹Ô<br>
-		»ÙÅ¹Ì¾¡¡¡¡¡§¡¡ËÜÅ¹±Ä¶ÈÉô<br>
-		¸ýºÂ¼ïÊÌ¡¡¡§¡¡ÉáÄÌ<br>
-		¸ýºÂÌ¾¡¡¡¡¡§¡¡¥«¡Ë¥¢¥¤¥¢¥¤¥¨¥à¥ï¥¤<br>
-		¸ýºÂÈÖ¹æ¡¡¡§¡¡1164394<br>
+		éŠ€è¡Œåã€€ã€€ï¼šã€€ã‚¸ãƒ£ãƒ‘ãƒ³ãƒãƒƒãƒˆéŠ€è¡Œ<br>
+		æ”¯åº—åã€€ã€€ï¼šã€€æœ¬åº—å–¶æ¥­éƒ¨<br>
+		å£åº§ç¨®åˆ¥ã€€ï¼šã€€æ™®é€š<br>
+		å£åº§åã€€ã€€ï¼šã€€ã‚«ï¼‰ã‚¢ã‚¤ã‚¢ã‚¤ã‚¨ãƒ ãƒ¯ã‚¤<br>
+		å£åº§ç•ªå·ã€€ï¼šã€€1164394<br>
 		------------------------------------------<br>
-		¶ä¹ÔÌ¾¡¡¡¡¡§¡¡¥¤¡¼¥Ð¥ó¥¯¶ä¹Ô<br>
-		»ÙÅ¹Ì¾¡¡¡¡¡§¡¡¥ï¥ë¥Ä»ÙÅ¹<br>
-		»ÙÅ¹ÈÖ¹æ¡¡¡§¡¡204<br>
-		¸ýºÂÌ¾¡¡¡¡¡§¡¡¥«¡Ë¥¢¥¤¥¢¥¤¥¨¥à¥ï¥¤<br>
-		¸ýºÂÈÖ¹æ¡¡¡§¡¡7003965<br>
+		éŠ€è¡Œåã€€ã€€ï¼šã€€ã‚¤ãƒ¼ãƒãƒ³ã‚¯éŠ€è¡Œ<br>
+		æ”¯åº—åã€€ã€€ï¼šã€€ãƒ¯ãƒ«ãƒ„æ”¯åº—<br>
+		æ”¯åº—ç•ªå·ã€€ï¼šã€€204<br>
+		å£åº§åã€€ã€€ï¼šã€€ã‚«ï¼‰ã‚¢ã‚¤ã‚¢ã‚¤ã‚¨ãƒ ãƒ¯ã‚¤<br>
+		å£åº§ç•ªå·ã€€ï¼šã€€7003965<br>
 		------------------------------------------<br>
-		¢¨ É¬¤º¤´ÃíÊ¸»þ¤ËÆþÎÏ¤·¤¿¤ªÌ¾Á°¤Ç¤ª¿¶¤ê¹þ¤ß¤¯¤À¤µ¤¤¡£<br>
-		¢¨ ¿¶¹þ¼ê¿ôÎÁ¤Ï¤ªµÒÍÍ¤Î¤´ÉéÃ´¤È¤Ê¤ê¤Þ¤¹¡£<br>
-		¢¨ ¤ª¿¶¤ê¹þ¤ß¤Ï¤´ÃíÊ¸¤«¤é£·Æü°ÊÆâ¤Ë¤ª´ê¤¤¤¤¤¿¤·¤Þ¤¹¡£<br>
-		¢¨ ¤´Æþ¶â¤ò³ô¼°²ñ¼Òiimy¤¬³ÎÇ§¤·¤¿»þÅÀ¤Ç¤´·ÀÌó¤ÎÀ®Î©¤È¤Ê¤ê¤Þ¤¹¡£
+		â€» å¿…ãšã”æ³¨æ–‡æ™‚ã«å…¥åŠ›ã—ãŸãŠåå‰ã§ãŠæŒ¯ã‚Šè¾¼ã¿ãã ã•ã„ã€‚<br>
+		â€» æŒ¯è¾¼æ‰‹æ•°æ–™ã¯ãŠå®¢æ§˜ã®ã”è² æ‹…ã¨ãªã‚Šã¾ã™ã€‚<br>
+		â€» ãŠæŒ¯ã‚Šè¾¼ã¿ã¯ã”æ³¨æ–‡ã‹ã‚‰ï¼—æ—¥ä»¥å†…ã«ãŠé¡˜ã„ã„ãŸã—ã¾ã™ã€‚<br>
+		â€» ã”å…¥é‡‘ã‚’æ ªå¼ä¼šç¤¾iimyãŒç¢ºèªã—ãŸæ™‚ç‚¹ã§ã”å¥‘ç´„ã®æˆç«‹ã¨ãªã‚Šã¾ã™ã€‚
 	</td>
 	<td valign="top">
-		10Ê¬ÄøÅÙ¤Ç¤ªµÒÍÍÀìÍÑ¤Î¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑURL¤òÅÅ»Ò¥á¡¼¥ë¤Ë¤Æ¤´Ï¢Íí¤¤<br>
-		¤¿¤·¤Þ¤¹¡£<br>
-		¥á¡¼¥ëËÜÊ¸¤Ëµ­ºÜ¤·¤Æ¤¤¤Þ¤¹URL¤ò¥¯¥ê¥Ã¥¯¤·¡¢¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ¤ò´°Î»<br>
-		¤·¤Æ¤¯¤À¤µ¤¤¡£
+		10åˆ†ç¨‹åº¦ã§ãŠå®¢æ§˜å°‚ç”¨ã®ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰æ±ºæ¸ˆURLã‚’é›»å­ãƒ¡ãƒ¼ãƒ«ã«ã¦ã”é€£çµ¡ã„<br>
+		ãŸã—ã¾ã™ã€‚<br>
+		ãƒ¡ãƒ¼ãƒ«æœ¬æ–‡ã«è¨˜è¼‰ã—ã¦ã„ã¾ã™URLã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã€ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰æ±ºæ¸ˆã‚’å®Œäº†<br>
+		ã—ã¦ãã ã•ã„ã€‚
 	</td>
 	</tr>
 </table>
@@ -1411,7 +1411,7 @@ if($action == "add_product")
 		{
 			print "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
 			print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 4: </b></td>";
-			print "<td class='dataTableContent' valign='top'>" . ADDPRODUCT_TEXT_CONFIRM_QUANTITY . "<input name='add_product_quantity' size='2' value='1'>&nbsp;¸Ä&nbsp;&nbsp;&nbsp;¥­¥ã¥é¥¯¥¿¡¼Ì¾:&nbsp;<input type='hidden' name='dummy' value='¤¢¤¤¤¦¤¨¤ªÈýÉý'><input name='add_product_character' size='20' value=''></td>";
+			print "<td class='dataTableContent' valign='top'>" . ADDPRODUCT_TEXT_CONFIRM_QUANTITY . "<input name='add_product_quantity' size='2' value='1'>&nbsp;å€‹&nbsp;&nbsp;&nbsp;ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼å:&nbsp;<input type='hidden' name='dummy' value='ã‚ã„ã†ãˆãŠçœ‰å¹…'><input name='add_product_character' size='20' value=''></td>";
 			print "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
 
 			if(IsSet($add_product_options))

@@ -80,7 +80,7 @@ setlocale (LC_ALL, 'ja_JP.eucJP');
   define('FILENAME_MODULES', 'modules.php');
   define('FILENAME_NEWSLETTERS', 'newsletters.php');
   define('FILENAME_ORDERS', 'orders.php');
-  define('FILENAME_ORDERS_EDIT', 'edit_orders.php');//ди╡ц-order_editer 2005.10.20
+  define('FILENAME_ORDERS_EDIT', 'edit_orders.php');//Х©╫Е┼═-order_editer 2005.10.20
   define('FILENAME_ORDERS_INVOICE', 'invoice.php');
   define('FILENAME_ORDERS_PACKINGSLIP', 'packingslip.php');
   define('FILENAME_ORDERS_STATUS', 'orders_status.php');
@@ -198,7 +198,7 @@ setlocale (LC_ALL, 'ja_JP.eucJP');
   
     
   //Language define
-  define('BOX_CATALOG_COLORS', '╬╕ий╔╚╔И║╪епо©');
+  define('BOX_CATALOG_COLORS', 'Е∙├Е⌠│Ц┌╚Ц┐╘Ц┐╪Г≥╩И▄╡');
   //=======================================================  
 
 // initialize the logger class

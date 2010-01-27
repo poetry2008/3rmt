@@ -18,7 +18,7 @@
         $configuration_value = tep_db_prepare_input($HTTP_POST_VARS['configuration_value']);
         $cID = tep_db_prepare_input($HTTP_GET_VARS['cID']);
 		
-		//²èÁü¥¢¥Ã¥×¥í¡¼¥É»ş¤Î¤ß
+		//ç”»åƒã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰æ™‚ã®ã¿
         $upfile_name = $_FILES["upfile"]["name"];
         $upfile = $_FILES["upfile"]["tmp_name"];
 		if(file_exists($upfile)){

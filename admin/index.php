@@ -17,7 +17,7 @@
   require(DIR_WS_CLASSES . 'currencies.php');
   $currencies = new currencies();
 
-  // ¥…Õ˝•·•À•Â°º° •π•ø•√•’§À§œ»Û…Ωº®°À
+  // ÁÆ°ÁêÜ„É°„Éã„É•„ÉºÔºà„Çπ„Çø„ÉÉ„Éï„Å´„ÅØÈùûË°®Á§∫Ôºâ
   if ($ocertify->npermission >= 10) {
   $cat = array(array('title' => BOX_CUSTOMERS_ORDERS,
                      'image' => 'modules.gif',
@@ -111,7 +111,7 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
   $contents = array();
 
   $heading[] = array('params' => 'class="menuBoxHeading"',
-                     'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=important.php') . '"><font color="#ff6600">Ω≈Õ◊§ §™√Œ§È§ª</font></a>');
+                     'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=important.php') . '"><font color="#ff6600">ÈáçË¶Å„Å™„ÅäÁü•„Çâ„Åõ</font></a>');
 
   $contents[] = array('params' => 'class="infoBox"',
                       'text'  => '<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/important.php")) . '</font><br>' . nl2br(strip_tags($adminimpo)));
@@ -287,9 +287,9 @@ $affiliate_number= $affiliates_raw['count'];
 ?>
 				</table>
 				<br>
-				<span class="heading">RMT«‰«„•Î°º•Î</span>
+				<span class="heading">RMTÂ£≤Ë≤∑„É´„Éº„É´</span>
 <?php
-	// FF11«‰«„•Î°º•Î
+	// FF11Â£≤Ë≤∑„É´„Éº„É´
 	$buyfile = '';
 	$buyprice = '';
 	$buyfile = file("../includes/languages/japanese/ff11_buy.php");
@@ -307,14 +307,14 @@ $affiliate_number= $affiliates_raw['count'];
 	$b_heading = array();
 	$b_contents = array();
 	$b_heading[] = array('params' => 'class="menuBoxHeading"',
-						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=ff11_buy.php') . '"><font color="#ffffff">FF11»Œ«‰</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/ff11_buy.php")) . '</font>');
+						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=ff11_buy.php') . '"><font color="#ffffff">FF11Ë≤©Â£≤</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/ff11_buy.php")) . '</font>');
 	$b_contents[] = array('params' => 'class="infoBox"',
 						'text'  => nl2br(strip_tags($buyprice)));
 
 	$s_heading = array();
 	$s_contents = array();
 	$s_heading[] = array('params' => 'class="menuBoxHeading"',
-						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=ff11_sell.php') . '"><font color="#ffffff">FF11«„ºË</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/ff11_sell.php")) . '</font>');
+						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=ff11_sell.php') . '"><font color="#ffffff">FF11Ë≤∑Âèñ</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/ff11_sell.php")) . '</font>');
 	$s_contents[] = array('params' => 'class="infoBox"',
 						'text'  => nl2br(strip_tags($sellprice)));
 
@@ -324,7 +324,7 @@ $affiliate_number= $affiliates_raw['count'];
 	echo '<table width="100%"><tr valign="top"><td width="50%">' . $b_box->menuBox($b_heading, $b_contents) . '</td><td width="50%">' . $s_box->menuBox($s_heading, $s_contents) . '</td></tr></table>';
 	echo '<br>';
 	
-	// L2«‰«„•Î°º•Î
+	// L2Â£≤Ë≤∑„É´„Éº„É´
 	$buyfile = '';
 	$buyprice = '';
 	$buyfile = file("../includes/languages/japanese/l2_buy.php");
@@ -342,14 +342,14 @@ $affiliate_number= $affiliates_raw['count'];
 	$b_heading = array();
 	$b_contents = array();
 	$b_heading[] = array('params' => 'class="menuBoxHeading"',
-						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=l2_buy.php') . '"><font color="#ffffff">L2»Œ«‰</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/l2_buy.php")) . '</font>');
+						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=l2_buy.php') . '"><font color="#ffffff">L2Ë≤©Â£≤</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/l2_buy.php")) . '</font>');
 	$b_contents[] = array('params' => 'class="infoBox"',
 						'text'  => nl2br(strip_tags($buyprice)));
 
 	$s_heading = array();
 	$s_contents = array();
 	$s_heading[] = array('params' => 'class="menuBoxHeading"',
-						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=l2_sell.php') . '"><font color="#ffffff">L2«„ºË</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/l2_sell.php")) . '</font>');
+						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=l2_sell.php') . '"><font color="#ffffff">L2Ë≤∑Âèñ</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/l2_sell.php")) . '</font>');
 	$s_contents[] = array('params' => 'class="infoBox"',
 						'text'  => nl2br(strip_tags($sellprice)));
 
@@ -359,7 +359,7 @@ $affiliate_number= $affiliates_raw['count'];
 	echo '<table width="100%"><tr valign="top"><td width="50%">' . $b_box->menuBox($b_heading, $b_contents) . '</td><td width="50%">' . $s_box->menuBox($s_heading, $s_contents) . '</td></tr></table>';
 	echo '<br>';
 
-	// L1«‰«„•Î°º•Î
+	// L1Â£≤Ë≤∑„É´„Éº„É´
 	$buyfile = '';
 	$buyprice = '';
 	$buyfile = file("../includes/languages/japanese/l1_buy.php");
@@ -377,14 +377,14 @@ $affiliate_number= $affiliates_raw['count'];
 	$b_heading = array();
 	$b_contents = array();
 	$b_heading[] = array('params' => 'class="menuBoxHeading"',
-						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=l1_buy.php') . '"><font color="#ffffff">L1»Œ«‰</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/l1_buy.php")) . '</font>');
+						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=l1_buy.php') . '"><font color="#ffffff">L1Ë≤©Â£≤</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/l1_buy.php")) . '</font>');
 	$b_contents[] = array('params' => 'class="infoBox"',
 						'text'  => nl2br(strip_tags($buyprice)));
 
 	$s_heading = array();
 	$s_contents = array();
 	$s_heading[] = array('params' => 'class="menuBoxHeading"',
-						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=l1_sell.php') . '"><font color="#ffffff">L1«„ºË</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/l1_sell.php")) . '</font>');
+						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=l1_sell.php') . '"><font color="#ffffff">L1Ë≤∑Âèñ</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/l1_sell.php")) . '</font>');
 	$s_contents[] = array('params' => 'class="infoBox"',
 						'text'  => nl2br(strip_tags($sellprice)));
 
@@ -394,7 +394,7 @@ $affiliate_number= $affiliates_raw['count'];
 	echo '<table width="100%"><tr valign="top"><td width="50%">' . $b_box->menuBox($b_heading, $b_contents) . '</td><td width="50%">' . $s_box->menuBox($s_heading, $s_contents) . '</td></tr></table>';
 	echo '<br>';
 
-	// RO«‰«„•Î°º•Î
+	// ROÂ£≤Ë≤∑„É´„Éº„É´
 	$buyfile = '';
 	$buyprice = '';
 	$buyfile = file("../includes/languages/japanese/ro_buy.php");
@@ -412,14 +412,14 @@ $affiliate_number= $affiliates_raw['count'];
 	$b_heading = array();
 	$b_contents = array();
 	$b_heading[] = array('params' => 'class="menuBoxHeading"',
-						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=ro_buy.php') . '"><font color="#ffffff">RO»Œ«‰</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/ro_buy.php")) . '</font>');
+						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=ro_buy.php') . '"><font color="#ffffff">ROË≤©Â£≤</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/ro_buy.php")) . '</font>');
 	$b_contents[] = array('params' => 'class="infoBox"',
 						'text'  => nl2br(strip_tags($buyprice)));
 
 	$s_heading = array();
 	$s_contents = array();
 	$s_heading[] = array('params' => 'class="menuBoxHeading"',
-						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=ro_sell.php') . '"><font color="#ffffff">RO«„ºË</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/ro_sell.php")) . '</font>');
+						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=ro_sell.php') . '"><font color="#ffffff">ROË≤∑Âèñ</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/ro_sell.php")) . '</font>');
 	$s_contents[] = array('params' => 'class="infoBox"',
 						'text'  => nl2br(strip_tags($sellprice)));
 
@@ -429,7 +429,7 @@ $affiliate_number= $affiliates_raw['count'];
 	echo '<table width="100%"><tr valign="top"><td width="50%">' . $b_box->menuBox($b_heading, $b_contents) . '</td><td width="50%">' . $s_box->menuBox($s_heading, $s_contents) . '</td></tr></table>';
 	echo '<br>';
 
-	// §Ω§Œ¬æ«‰«„•Î°º•Î
+	// „Åù„ÅÆ‰ªñÂ£≤Ë≤∑„É´„Éº„É´
 	$buyfile = '';
 	$buyprice = '';
 	$buyfile = file("../includes/languages/japanese/other_buy.php");
@@ -447,14 +447,14 @@ $affiliate_number= $affiliates_raw['count'];
 	$b_heading = array();
 	$b_contents = array();
 	$b_heading[] = array('params' => 'class="menuBoxHeading"',
-						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=other_buy.php') . '"><font color="#ffffff">§Ω§Œ¬æ»Œ«‰</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/other_buy.php")) . '</font>');
+						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=other_buy.php') . '"><font color="#ffffff">„Åù„ÅÆ‰ªñË≤©Â£≤</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/other_buy.php")) . '</font>');
 	$b_contents[] = array('params' => 'class="infoBox"',
 						'text'  => nl2br(strip_tags($buyprice)));
 
 	$s_heading = array();
 	$s_contents = array();
 	$s_heading[] = array('params' => 'class="menuBoxHeading"',
-						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=other_sell.php') . '"><font color="#ffffff">§Ω§Œ¬æ«„ºË</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/other_sell.php")) . '</font>');
+						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=other_sell.php') . '"><font color="#ffffff">„Åù„ÅÆ‰ªñË≤∑Âèñ</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/other_sell.php")) . '</font>');
 	$s_contents[] = array('params' => 'class="infoBox"',
 						'text'  => nl2br(strip_tags($sellprice)));
 
@@ -464,7 +464,7 @@ $affiliate_number= $affiliates_raw['count'];
 	echo '<table width="100%"><tr valign="top"><td width="50%">' . $b_box->menuBox($b_heading, $b_contents) . '</td><td width="50%">' . $s_box->menuBox($s_heading, $s_contents) . '</td></tr></table>';
 	echo '<br>';
 
-	// •¥°º•Î•…•’•°°º•ﬁ°º1°¡3
+	// „Ç¥„Éº„É´„Éâ„Éï„Ç°„Éº„Éû„Éº1„Äú3
 	$sellprice01file = '';
 	$sellprice01 = '';
 	$sellprice01file = file("../includes/languages/japanese/sellprice01.php");
@@ -514,7 +514,7 @@ $affiliate_number= $affiliates_raw['count'];
 	echo '<table width="100%"><tr valign="top"><td width="33%">' . $b_box->menuBox($b_heading, $b_contents) . '</td><td width="33%">' . $s_box->menuBox($s_heading, $s_contents) . '</td><td width="33%">' . $w_box->menuBox($w_heading, $w_contents) . '</td></tr></table>';
 	echo '<br>';
 
-	// •¥°º•Î•…•’•°°º•ﬁ°º4°¡6
+	// „Ç¥„Éº„É´„Éâ„Éï„Ç°„Éº„Éû„Éº4„Äú6
 	$sellprice01file = '';
 	$sellprice01 = '';
 	$sellprice01file = file("../includes/languages/japanese/sellprice04.php");
@@ -564,7 +564,7 @@ $affiliate_number= $affiliates_raw['count'];
 	echo '<table width="100%"><tr valign="top"><td width="33%">' . $b_box->menuBox($b_heading, $b_contents) . '</td><td width="33%">' . $s_box->menuBox($s_heading, $s_contents) . '</td><td width="33%">' . $w_box->menuBox($w_heading, $w_contents) . '</td></tr></table>';
 	echo '<br>';
 
-	// •¥°º•Î•…•’•°°º•ﬁ°º7°¡9
+	// „Ç¥„Éº„É´„Éâ„Éï„Ç°„Éº„Éû„Éº7„Äú9
 	$sellprice01file = '';
 	$sellprice01 = '';
 	$sellprice01file = file("../includes/languages/japanese/sellprice07.php");

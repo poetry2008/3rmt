@@ -10,8 +10,8 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', '¥È¥é¥ó¥¶¥¯¥·¥ç¥ó¡¦¥³¥ó¥È¥í¡¼¥ë¥Ñ¥Í¥ë¤ò³«¤¤¤Æ¤¯¤À¤µ¤¤¡£'); //Open Your Transaction Control Panel'
-define('SUB_BAR_TITLE', '²¼¤Î²èÁü¤ò¥¯¥ê¥Ã¥¯¤·¤Æ¤¯¤À¤µ¤¤¡£¥²¡¼¥È¥¦¥§¥¤ID¤È¥Ñ¥¹¥ï¡¼¥É¤¬É¬Í×¤Ç¤¹¡£'); //Click the image below.  Your Gateway ID and Password are required.
+define('HEADING_TITLE', 'ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ãƒ»ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‘ãƒãƒ«ã‚’é–‹ã„ã¦ãã ã•ã„ã€‚'); //Open Your Transaction Control Panel'
+define('SUB_BAR_TITLE', 'ä¸‹ã®ç”»åƒã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚ã‚²ãƒ¼ãƒˆã‚¦ã‚§ã‚¤IDã¨ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãŒå¿…è¦ã§ã™ã€‚'); //Click the image below.  Your Gateway ID and Password are required.
 
 define('CPANEL_URL', 'https://secure.itransact.com/support/login.html');
 define('CPANEL_URL_NAME', 'ctrlpan');

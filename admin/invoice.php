@@ -38,7 +38,7 @@
         <td class="pageHeading"><?php echo nl2br(STORE_NAME_ADDRESS); ?></td>
         <td class="pageHeading" align="right"><?php echo tep_image(HTTP_CATALOG_SERVER . DIR_WS_CATALOG .DIR_WS_IMAGES . ADMINPAGE_LOGO_IMAGE, STORE_NAME, '', ''); ?></td>
       </tr>
-    </table><div align="right">ÃíÊ¸Æü : <?php echo tep_date_long($order->customer['date']) . ' ÃíÊ¸ÈÖ¹æ : ' . $HTTP_GET_VARS['oID'] ; ?></div></td>
+    </table><div align="right">æ³¨æ–‡æ—¥ : <?php echo tep_date_long($order->customer['date']) . ' æ³¨æ–‡ç•ªå· : ' . $HTTP_GET_VARS['oID'] ; ?></div></td>
   </tr>
   <tr>
     <td><table width="100%" border="0" cellspacing="0" cellpadding="2">

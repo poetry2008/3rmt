@@ -453,7 +453,7 @@
        (!isset ($y) || ereg ('^[0-9]{1,}$', $y, $regs)) &&
        (isset ($x) || isset ($y))
             ? true
-          : DIE ('Fehlende(r) oder ung・tige(r) Gr・enparameter!');
+          : DIE ('Fehlende(r) oder ung繝ｻtige(r) Gr繝ｻenparameter!');
 
      !isset ($resize) || !ereg ('^[0|1]$', $resize, $regs)
           ? $resize = 0
@@ -556,7 +556,7 @@ return $image;
        (!isset ($y) || ereg ('^[0-9]{1,}$', $y, $regs)) &&
        (isset ($x) || isset ($y))
             ? true
-          : DIE ('Fehlende(r) oder ung・tige(r) Gr・enparameter!');
+          : DIE ('Fehlende(r) oder ung繝ｻtige(r) Gr繝ｻenparameter!');
 
      !isset ($resize) || !ereg ('^[0|1]$', $resize, $regs)
           ? $resize = 0
@@ -658,7 +658,7 @@ return $image;
        (!isset ($y) || ereg ('^[0-9]{1,}$', $y, $regs)) &&
        (isset ($x) || isset ($y))
             ? true
-          : DIE ('Fehlende(r) oder ung・tige(r) Gr・enparameter!');
+          : DIE ('Fehlende(r) oder ung繝ｻtige(r) Gr繝ｻenparameter!');
 
      !isset ($resize) || !ereg ('^[0|1]$', $resize, $regs)
           ? $resize = 0

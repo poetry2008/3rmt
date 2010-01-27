@@ -10,93 +10,93 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', 'ÃíÊ¸´ÉÍý');
-define('HEADING_TITLE_SEARCH', 'ÃíÊ¸ID:');
-define('HEADING_TITLE_STATUS', '¥¹¥Æ¡¼¥¿¥¹:');
+define('HEADING_TITLE', 'æ³¨æ–‡ç®¡ç†');
+define('HEADING_TITLE_SEARCH', 'æ³¨æ–‡ID:');
+define('HEADING_TITLE_STATUS', 'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹:');
 
-define('TABLE_HEADING_COMMENTS', '¥³¥á¥ó¥È');
-define('TABLE_HEADING_CUSTOMERS', '¸ÜµÒÌ¾');
-define('TABLE_HEADING_ORDER_TOTAL', 'ÃíÊ¸Áí³Û');
-define('TABLE_HEADING_DATE_PURCHASED', 'ÃíÊ¸Æü');
-define('TABLE_HEADING_STATUS', '¥¹¥Æ¡¼¥¿¥¹');
-define('TABLE_HEADING_ACTION', 'Áàºî');
-define('TABLE_HEADING_QUANTITY', '¿ôÎÌ');
-define('TABLE_HEADING_PRODUCTS_MODEL', '·¿ÈÖ');
-define('TABLE_HEADING_PRODUCTS', '¿ôÎÌ / ¾¦ÉÊÌ¾');
-define('TABLE_HEADING_CHARACTER', '¥­¥ã¥é¥¯¥¿¡¼Ì¾');
-define('TABLE_HEADING_TAX', 'ÀÇÎ¨');
-define('TABLE_HEADING_TOTAL', '¹ç·×');
-define('TABLE_HEADING_STATUS', '¥¹¥Æ¡¼¥¿¥¹');
-define('TABLE_HEADING_PRICE_EXCLUDING_TAX', '²Á³Ê(ÀÇÊÌ)');
-define('TABLE_HEADING_PRICE_INCLUDING_TAX', '²Á³Ê(ÀÇ¹þ)');
-define('TABLE_HEADING_TOTAL_EXCLUDING_TAX', '¹ç·×(ÀÇÊÌ)');
-define('TABLE_HEADING_TOTAL_INCLUDING_TAX', '¹ç·×(ÀÇ¹þ)');
+define('TABLE_HEADING_COMMENTS', 'ã‚³ãƒ¡ãƒ³ãƒˆ');
+define('TABLE_HEADING_CUSTOMERS', 'é¡§å®¢å');
+define('TABLE_HEADING_ORDER_TOTAL', 'æ³¨æ–‡ç·é¡');
+define('TABLE_HEADING_DATE_PURCHASED', 'æ³¨æ–‡æ—¥');
+define('TABLE_HEADING_STATUS', 'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹');
+define('TABLE_HEADING_ACTION', 'æ“ä½œ');
+define('TABLE_HEADING_QUANTITY', 'æ•°é‡');
+define('TABLE_HEADING_PRODUCTS_MODEL', 'åž‹ç•ª');
+define('TABLE_HEADING_PRODUCTS', 'æ•°é‡ / å•†å“å');
+define('TABLE_HEADING_CHARACTER', 'ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼å');
+define('TABLE_HEADING_TAX', 'ç¨ŽçŽ‡');
+define('TABLE_HEADING_TOTAL', 'åˆè¨ˆ');
+define('TABLE_HEADING_STATUS', 'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹');
+define('TABLE_HEADING_PRICE_EXCLUDING_TAX', 'ä¾¡æ ¼(ç¨Žåˆ¥)');
+define('TABLE_HEADING_PRICE_INCLUDING_TAX', 'ä¾¡æ ¼(ç¨Žè¾¼)');
+define('TABLE_HEADING_TOTAL_EXCLUDING_TAX', 'åˆè¨ˆ(ç¨Žåˆ¥)');
+define('TABLE_HEADING_TOTAL_INCLUDING_TAX', 'åˆè¨ˆ(ç¨Žè¾¼)');
 
-define('TABLE_HEADING_STATUS', '¥¹¥Æ¡¼¥¿¥¹');
-define('TABLE_HEADING_CUSTOMER_NOTIFIED', '¸ÜµÒ¤ËÄÌÃÎ');
-define('TABLE_HEADING_DATE_ADDED', '½èÍýÆü');
+define('TABLE_HEADING_STATUS', 'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹');
+define('TABLE_HEADING_CUSTOMER_NOTIFIED', 'é¡§å®¢ã«é€šçŸ¥');
+define('TABLE_HEADING_DATE_ADDED', 'å‡¦ç†æ—¥');
 
-define('ENTRY_CUSTOMER', '¸ÜµÒÌ¾:');
-define('ENTRY_SOLD_TO', '¤´ÃíÊ¸¼ÔÌ¾:');
-define('ENTRY_STREET_ADDRESS', '½»½ê£±:');
-define('ENTRY_SUBURB', '½»½ê£²:');
-define('ENTRY_CITY', '»Ô¶èÄ®Â¼:');
-define('ENTRY_POST_CODE', 'Í¹ÊØÈÖ¹æ:');
-define('ENTRY_STATE', 'ÅÔÆ»ÉÜ¸©:');
-define('ENTRY_COUNTRY', '¹ñÌ¾:');
-define('ENTRY_TELEPHONE', 'ÅÅÏÃÈÖ¹æ:');
-define('ENTRY_EMAIL_ADDRESS', 'E-Mail ¥¢¥É¥ì¥¹:');
-define('ENTRY_DELIVERY_TO', 'ÇÛÁ÷Àè:');
-define('ENTRY_SHIP_TO', 'ÇÛÁ÷Àè:');
-define('ENTRY_SHIPPING_ADDRESS', 'ÇÛÁ÷Àè:');
-define('ENTRY_BILLING_ADDRESS', 'ÀÁµáÀè:');
-define('ENTRY_PAYMENT_METHOD', '»ÙÊ§ÊýË¡:');
-define('ENTRY_CREDIT_CARD_TYPE', '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É¼ïÊÌ:');
-define('ENTRY_CREDIT_CARD_OWNER', '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É½êÍ­¼Ô:');
-define('ENTRY_CREDIT_CARD_NUMBER', '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥ÉÈÖ¹æ:');
-define('ENTRY_CREDIT_CARD_EXPIRES', '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥ÉÍ­¸ú´ü¸Â:');
-define('ENTRY_SUB_TOTAL', '¾®·×:');
-define('ENTRY_TAX', 'ÀÇ¶â:');
-define('ENTRY_SHIPPING', 'ÇÛÁ÷:');
-define('ENTRY_TOTAL', '¹ç·×:');
-define('ENTRY_DATE_PURCHASED', 'ÃíÊ¸Æü:');
-define('ENTRY_STATUS', '¥¹¥Æ¡¼¥¿¥¹:');
-define('ENTRY_DATE_LAST_UPDATED', '¹¹¿·Æü:');
-define('ENTRY_NOTIFY_CUSTOMER', '½èÍý¾õ¶·¤òÄÌÃÎ:');
-define('ENTRY_NOTIFY_COMMENTS', '¥³¥á¥ó¥È¤òÄÉ²Ã:');
-define('ENTRY_PRINTABLE', 'Ç¼ÉÊ½ñ¤ò¥×¥ê¥ó¥È');
+define('ENTRY_CUSTOMER', 'é¡§å®¢å:');
+define('ENTRY_SOLD_TO', 'ã”æ³¨æ–‡è€…å:');
+define('ENTRY_STREET_ADDRESS', 'ä½æ‰€ï¼‘:');
+define('ENTRY_SUBURB', 'ä½æ‰€ï¼’:');
+define('ENTRY_CITY', 'å¸‚åŒºç”ºæ‘:');
+define('ENTRY_POST_CODE', 'éƒµä¾¿ç•ªå·:');
+define('ENTRY_STATE', 'éƒ½é“åºœçœŒ:');
+define('ENTRY_COUNTRY', 'å›½å:');
+define('ENTRY_TELEPHONE', 'é›»è©±ç•ªå·:');
+define('ENTRY_EMAIL_ADDRESS', 'E-Mail ã‚¢ãƒ‰ãƒ¬ã‚¹:');
+define('ENTRY_DELIVERY_TO', 'é…é€å…ˆ:');
+define('ENTRY_SHIP_TO', 'é…é€å…ˆ:');
+define('ENTRY_SHIPPING_ADDRESS', 'é…é€å…ˆ:');
+define('ENTRY_BILLING_ADDRESS', 'è«‹æ±‚å…ˆ:');
+define('ENTRY_PAYMENT_METHOD', 'æ”¯æ‰•æ–¹æ³•:');
+define('ENTRY_CREDIT_CARD_TYPE', 'ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰ç¨®åˆ¥:');
+define('ENTRY_CREDIT_CARD_OWNER', 'ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰æ‰€æœ‰è€…:');
+define('ENTRY_CREDIT_CARD_NUMBER', 'ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰ç•ªå·:');
+define('ENTRY_CREDIT_CARD_EXPIRES', 'ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰æœ‰åŠ¹æœŸé™:');
+define('ENTRY_SUB_TOTAL', 'å°è¨ˆ:');
+define('ENTRY_TAX', 'ç¨Žé‡‘:');
+define('ENTRY_SHIPPING', 'é…é€:');
+define('ENTRY_TOTAL', 'åˆè¨ˆ:');
+define('ENTRY_DATE_PURCHASED', 'æ³¨æ–‡æ—¥:');
+define('ENTRY_STATUS', 'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹:');
+define('ENTRY_DATE_LAST_UPDATED', 'æ›´æ–°æ—¥:');
+define('ENTRY_NOTIFY_CUSTOMER', 'å‡¦ç†çŠ¶æ³ã‚’é€šçŸ¥:');
+define('ENTRY_NOTIFY_COMMENTS', 'ã‚³ãƒ¡ãƒ³ãƒˆã‚’è¿½åŠ :');
+define('ENTRY_PRINTABLE', 'ç´å“æ›¸ã‚’ãƒ—ãƒªãƒ³ãƒˆ');
 
-define('TEXT_INFO_HEADING_DELETE_ORDER', 'ÃíÊ¸¤òºï½ü');
-define('TEXT_INFO_DELETE_INTRO', 'ËÜÅö¤Ë¤³¤ÎÃíÊ¸¤òºï½ü¤·¤Þ¤¹¤«?');
-define('TEXT_INFO_RESTOCK_PRODUCT_QUANTITY', 'ºß¸Ë¿ô¤ò¸µ¤ËÌá¤¹'); // 'Restock product quantity'
-define('TEXT_DATE_ORDER_CREATED', 'ÃíÊ¸Æü:');
-define('TEXT_DATE_ORDER_LAST_MODIFIED', '¹¹¿·Æü:');
-define('TEXT_INFO_PAYMENT_METHOD', '»ÙÊ§ÊýË¡:');
+define('TEXT_INFO_HEADING_DELETE_ORDER', 'æ³¨æ–‡ã‚’å‰Šé™¤');
+define('TEXT_INFO_DELETE_INTRO', 'æœ¬å½“ã«ã“ã®æ³¨æ–‡ã‚’å‰Šé™¤ã—ã¾ã™ã‹?');
+define('TEXT_INFO_RESTOCK_PRODUCT_QUANTITY', 'åœ¨åº«æ•°ã‚’å…ƒã«æˆ»ã™'); // 'Restock product quantity'
+define('TEXT_DATE_ORDER_CREATED', 'æ³¨æ–‡æ—¥:');
+define('TEXT_DATE_ORDER_LAST_MODIFIED', 'æ›´æ–°æ—¥:');
+define('TEXT_INFO_PAYMENT_METHOD', 'æ”¯æ‰•æ–¹æ³•:');
 
-define('TEXT_ALL_ORDERS', 'Á´¤Æ¤ÎÃíÊ¸');
-define('TEXT_NO_ORDER_HISTORY', 'ÃíÊ¸ÍúÎò¤Ï¤¢¤ê¤Þ¤»¤ó');
+define('TEXT_ALL_ORDERS', 'å…¨ã¦ã®æ³¨æ–‡');
+define('TEXT_NO_ORDER_HISTORY', 'æ³¨æ–‡å±¥æ­´ã¯ã‚ã‚Šã¾ã›ã‚“');
 
 define('EMAIL_SEPARATOR', '--------------------------------------------------------------------------------');
-define('EMAIL_TEXT_SUBJECT', '¤´ÃíÊ¸¼õÉÕ¾õ¶·¤Î¤ªÃÎ¤é¤»');
-define('EMAIL_TEXT_ORDER_NUMBER', '¤´ÃíÊ¸¼õÉÕÈÖ¹æ:');
-define('EMAIL_TEXT_INVOICE_URL', '¤´ÃíÊ¸¤Ë¤Ä¤¤¤Æ¤Î¾ðÊó¤ò²¼µ­URL¤Ç¤´Í÷¤Ë¤Ê¤ì¤Þ¤¹¡£' . "\n");
-define('EMAIL_TEXT_DATE_ORDERED', '¤´ÃíÊ¸Æü:');
+define('EMAIL_TEXT_SUBJECT', 'ã”æ³¨æ–‡å—ä»˜çŠ¶æ³ã®ãŠçŸ¥ã‚‰ã›');
+define('EMAIL_TEXT_ORDER_NUMBER', 'ã”æ³¨æ–‡å—ä»˜ç•ªå·:');
+define('EMAIL_TEXT_INVOICE_URL', 'ã”æ³¨æ–‡ã«ã¤ã„ã¦ã®æƒ…å ±ã‚’ä¸‹è¨˜URLã§ã”è¦§ã«ãªã‚Œã¾ã™ã€‚' . "\n");
+define('EMAIL_TEXT_DATE_ORDERED', 'ã”æ³¨æ–‡æ—¥:');
 define('EMAIL_TEXT_STATUS_UPDATE',
-'¤´ÃíÊ¸¤Î¼õÉÕ¾õ¶·¤Ï¼¡¤Î¤è¤¦¤Ê¤Ã¤Æ¤ª¤ê¤Þ¤¹¡£' . "\n"
-.'¸½ºß¤Î¼õÉÕ¾õ¶·: [ %s ]' . "\n\n");
-define('EMAIL_TEXT_COMMENTS_UPDATE', '[¤´Ï¢Íí»ö¹à]' . "\n%s");
+'ã”æ³¨æ–‡ã®å—ä»˜çŠ¶æ³ã¯æ¬¡ã®ã‚ˆã†ãªã£ã¦ãŠã‚Šã¾ã™ã€‚' . "\n"
+.'ç¾åœ¨ã®å—ä»˜çŠ¶æ³: [ %s ]' . "\n\n");
+define('EMAIL_TEXT_COMMENTS_UPDATE', '[ã”é€£çµ¡äº‹é …]' . "\n%s");
 
-define('ERROR_ORDER_DOES_NOT_EXIST', '¥¨¥é¡¼: ÃíÊ¸¤¬Â¸ºß¤·¤Þ¤»¤ó¡£');
-define('SUCCESS_ORDER_UPDATED', 'À®¸ù: ÃíÊ¸¾õÂÖ¤¬¹¹¿·¤µ¤ì¤Þ¤·¤¿¡£');
-define('WARNING_ORDER_NOT_UPDATED', '·Ù¹ð: ÃíÊ¸¾õÂÖ¤Ï¤Ê¤Ë¤âÊÑ¹¹¤µ¤ì¤Þ¤»¤ó¤Ç¤·¤¿¡£');
+define('ERROR_ORDER_DOES_NOT_EXIST', 'ã‚¨ãƒ©ãƒ¼: æ³¨æ–‡ãŒå­˜åœ¨ã—ã¾ã›ã‚“ã€‚');
+define('SUCCESS_ORDER_UPDATED', 'æˆåŠŸ: æ³¨æ–‡çŠ¶æ…‹ãŒæ›´æ–°ã•ã‚Œã¾ã—ãŸã€‚');
+define('WARNING_ORDER_NOT_UPDATED', 'è­¦å‘Š: æ³¨æ–‡çŠ¶æ…‹ã¯ãªã«ã‚‚å¤‰æ›´ã•ã‚Œã¾ã›ã‚“ã§ã—ãŸã€‚');
 
 // Add Japanese osCommerce
-define('EMAIL_TEXT_STORE_CONFIRMATION', ' ¤Ø¤Î¤´ÃíÊ¸¡¢À¿¤Ë¤¢¤ê¤¬¤È¤¦¤´¤¶¤¤¤Þ¤¹¡£' . "\n\n"
-.'¤´ÃíÊ¸¤Î¼õÉÕ¾õ¶·µÚ¤Ó¤´Ï¢Íí»ö¹à¤ò¡¢²¼µ­¤Ë¤´°ÆÆâ¿½¤·¾å¤²¤Þ¤¹¡£');
+define('EMAIL_TEXT_STORE_CONFIRMATION', ' ã¸ã®ã”æ³¨æ–‡ã€èª ã«ã‚ã‚ŠãŒã¨ã†ã”ã–ã„ã¾ã™ã€‚' . "\n\n"
+.'ã”æ³¨æ–‡ã®å—ä»˜çŠ¶æ³åŠã³ã”é€£çµ¡äº‹é …ã‚’ã€ä¸‹è¨˜ã«ã”æ¡ˆå†…ç”³ã—ä¸Šã’ã¾ã™ã€‚');
 define('EMAIL_TEXT_STORE_CONFIRMATION_FOOTER', 
-'¼õÉÕ¾õ¶·¤Ë´Ø¤·¤Æ¤´¼ÁÌäÅù¤¬¤´¤¶¤¤¤Þ¤·¤¿¤é¡¢ÅöÅ¹°¸¤Ë¤´Ï¢ÍíÄº¤­¤Þ¤¹¤è¤¦¤ª´ê¤¤¿½¤·' . "\n"
-.'¾å¤²¤Þ¤¹¡£' . "\n\n"
+'å—ä»˜çŠ¶æ³ã«é–¢ã—ã¦ã”è³ªå•ç­‰ãŒã”ã–ã„ã¾ã—ãŸã‚‰ã€å½“åº—å®›ã«ã”é€£çµ¡é ‚ãã¾ã™ã‚ˆã†ãŠé¡˜ã„ç”³ã—' . "\n"
+.'ä¸Šã’ã¾ã™ã€‚' . "\n\n"
 . EMAIL_SIGNATURE);
 
-define('ENTRY_EMAIL_TITLE', '¥á¡¼¥ë¥¿¥¤¥È¥ë¡§');
+define('ENTRY_EMAIL_TITLE', 'ãƒ¡ãƒ¼ãƒ«ã‚¿ã‚¤ãƒˆãƒ«ï¼š');
 ?>

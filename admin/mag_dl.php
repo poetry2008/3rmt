@@ -32,7 +32,7 @@
 						from mail_magazine order by mag_id");
 
 
-	    $CsvFields = array("г╔г─","есб╝еыеве╔еье╣","└л╠╛");
+	    $CsvFields = array("я╝йя╝д","уГбуГ╝уГлуВвуГЙуГмуВ╣","хзУхРН");
 		for($i=0;$i<count($CsvFields);$i++){
 			print jcodeconvert($CsvFields[$i],0,2) . ",";
 		}
@@ -42,10 +42,10 @@
 		  //ID
 		  print jcodeconvert($result['mag_id'],0,2) . ",";
 		
-		  //есб╝еыеве╔еье╣
+		  //уГбуГ╝уГлуВвуГЙуГмуВ╣
 		  print jcodeconvert($result['mag_email'],0,2) . ",";
 		
-		  //└л╠╛
+		  //хзУхРН
 		  print jcodeconvert($result['mag_name'],0,2);
 		  
 		  print "\n";
@@ -86,7 +86,7 @@
       <tr>
         <td width="100%"><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td class="pageHeading">есб╝еые▐еме╕еє╣╪╞╔╝╘е╟б╝е┐е└ежеєеэб╝е╔</td>
+            <td class="pageHeading">уГбуГ╝уГлуГЮуВмуВ╕уГ│ш│╝шкншАЕуГЗуГ╝уВ┐уГАуВжуГ│уГнуГ╝уГЙ</td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
           </tr>
         </table></td>
@@ -101,7 +101,7 @@
               <tr>
                 <td colspan="2" align="right">
 				<form action="mag_dl.php" method="get">
-				  <input type="submit" value="е└ежеєеэб╝е╔">
+				  <input type="submit" value="уГАуВжуГ│уГнуГ╝уГЙ">
 				  <input type="hidden" name="action" value="download">
 				</form>
 				

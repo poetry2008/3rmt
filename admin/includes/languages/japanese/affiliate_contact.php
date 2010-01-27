@@ -14,16 +14,16 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', '²ñ°÷¤ËE¥á¡¼¥ë¤òÁ÷¿®');
+define('HEADING_TITLE', 'ä¼šå“¡ã«Eãƒ¡ãƒ¼ãƒ«ã‚’é€ä¿¡');
 
-define('TEXT_AFFILIATE', 'Á÷¿®Àè:');
-define('TEXT_SUBJECT', '·ïÌ¾:');
-define('TEXT_FROM', 'º¹½Ð¿Í:');
-define('TEXT_MESSAGE', '¥á¥Ã¥»¡¼¥¸:');
-define('TEXT_SELECT_AFFILIATE', 'ÁªÂò¤·¤Æ¤¯¤À¤µ¤¤');
-define('TEXT_ALL_AFFILIATES', '¤¹¤Ù¤Æ¤Î¥¢¥Õ¥£¥ê¥¨¥¤¥È²ñ°÷');
-define('TEXT_NEWSLETTER_AFFILIATES', 'Á´¤Æ¤Î¥á¡¼¥ë¥Þ¥¬¥¸¥ó¹ØÆÉ¼Ô');
+define('TEXT_AFFILIATE', 'é€ä¿¡å…ˆ:');
+define('TEXT_SUBJECT', 'ä»¶å:');
+define('TEXT_FROM', 'å·®å‡ºäºº:');
+define('TEXT_MESSAGE', 'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸:');
+define('TEXT_SELECT_AFFILIATE', 'é¸æŠžã—ã¦ãã ã•ã„');
+define('TEXT_ALL_AFFILIATES', 'ã™ã¹ã¦ã®ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆä¼šå“¡');
+define('TEXT_NEWSLETTER_AFFILIATES', 'å…¨ã¦ã®ãƒ¡ãƒ¼ãƒ«ãƒžã‚¬ã‚¸ãƒ³è³¼èª­è€…');
 
-define('NOTICE_EMAIL_SENT_TO', 'Notice:  %s¡¡°¸¤ËÁ÷¿®¤µ¤ì¤Þ¤·¤¿¡£');
-define('ERROR_NO_AFFILIATE_SELECTED', 'Error: Á÷¿®Àè¤¬ÁªÂò¤µ¤ì¤Æ¤¤¤Þ¤»¤ó¡£');
+define('NOTICE_EMAIL_SENT_TO', 'Notice:  %sã€€å®›ã«é€ä¿¡ã•ã‚Œã¾ã—ãŸã€‚');
+define('ERROR_NO_AFFILIATE_SELECTED', 'Error: é€ä¿¡å…ˆãŒé¸æŠžã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚');
 ?>

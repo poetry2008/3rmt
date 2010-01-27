@@ -1,20 +1,20 @@
 <?php
-define('HEADING_TITLE', '¥¿¥°ÀßÄê');
+define('HEADING_TITLE', 'ã‚¿ã‚°è¨­å®š');
 
-define('TABLE_HEADING_TAGS_NAME', '¥¿¥°');
-define('TABLE_HEADING_TAGS_IMAGE', '²èÁü');
-define('TABLE_HEADING_ACTION', 'Áàºî');
+define('TABLE_HEADING_TAGS_NAME', 'ã‚¿ã‚°');
+define('TABLE_HEADING_TAGS_IMAGE', 'ç”»åƒ');
+define('TABLE_HEADING_ACTION', 'æ“ä½œ');
 
-define('TEXT_INFO_EDIT_INTRO', 'É¬Í×¤ÊÊÑ¹¹¤ò²Ã¤¨¤Æ¤¯¤À¤µ¤¤');
-define('TEXT_INFO_TAGS_NAME', '¥¿¥°Ì¾:');
-define('TEXT_INFO_TAGS_IMAGE', '²èÁü:');
-define('TEXT_INFO_INSERT_INTRO', '¿·¤·¤¤¥¿¥°¤È¤½¤Î¥Ç¡¼¥¿¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤');
-define('TEXT_INFO_DELETE_INTRO', 'ËÜÅö¤Ë¤³¤Î¥¿¥°¤òºï½ü¤·¤Þ¤¹¤«?');
-define('TEXT_INFO_HEADING_NEW_TAG', '¿·¤·¤¤¥¿¥°');
-define('TEXT_INFO_HEADING_EDIT_TAG', '¥¿¥°¤òÊÔ½¸');
-define('TEXT_INFO_HEADING_DELETE_TAG', '¥¿¥°¤òºï½ü');
-define('TEXT_TAGS_NAME_EXISTS', '¥¿¥°¤Ï¤â¤¦Â¸ºß¤·¤Æ¤¤¤Þ¤¹');
+define('TEXT_INFO_EDIT_INTRO', 'å¿…è¦ãªå¤‰æ›´ã‚’åŠ ãˆã¦ãã ã•ã„');
+define('TEXT_INFO_TAGS_NAME', 'ã‚¿ã‚°å:');
+define('TEXT_INFO_TAGS_IMAGE', 'ç”»åƒ:');
+define('TEXT_INFO_INSERT_INTRO', 'æ–°ã—ã„ã‚¿ã‚°ã¨ãã®ãƒ‡ãƒ¼ã‚¿ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„');
+define('TEXT_INFO_DELETE_INTRO', 'æœ¬å½“ã«ã“ã®ã‚¿ã‚°ã‚’å‰Šé™¤ã—ã¾ã™ã‹?');
+define('TEXT_INFO_HEADING_NEW_TAG', 'æ–°ã—ã„ã‚¿ã‚°');
+define('TEXT_INFO_HEADING_EDIT_TAG', 'ã‚¿ã‚°ã‚’ç·¨é›†');
+define('TEXT_INFO_HEADING_DELETE_TAG', 'ã‚¿ã‚°ã‚’å‰Šé™¤');
+define('TEXT_TAGS_NAME_EXISTS', 'ã‚¿ã‚°ã¯ã‚‚ã†å­˜åœ¨ã—ã¦ã„ã¾ã™');
 //define('TEXT_DISPLAY_NUMBER_OF_TAGS', 'Displaying <b>%d</b> to <b>%d</b> (of <b>%d</b> Tags)');
-define('TEXT_DISPLAY_NUMBER_OF_TAGS', '<b>%d</b>~<b>%d</b>ÈÖÌÜ¤òÉ½¼¨¡Ê<b>%d</b>¥¿¥°¤Î¤¦¤Á¡Ë ');
-define('TEXT_CONFIRM_DELETE_TAG', '¥¢¥¤¥³¥ó¤òºï½ü');
+define('TEXT_DISPLAY_NUMBER_OF_TAGS', '<b>%d</b>~<b>%d</b>ç•ªç›®ã‚’è¡¨ç¤ºï¼ˆ<b>%d</b>ã‚¿ã‚°ã®ã†ã¡ï¼‰ ');
+define('TEXT_CONFIRM_DELETE_TAG', 'ã‚¢ã‚¤ã‚³ãƒ³ã‚’å‰Šé™¤');
 ?>

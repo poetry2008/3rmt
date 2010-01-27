@@ -10,31 +10,31 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', '¸ÜµÒ´ÉÍý');
-define('HEADING_TITLE_SEARCH', '¸¡º÷:');
+define('HEADING_TITLE', 'é¡§å®¢ç®¡ç†');
+define('HEADING_TITLE_SEARCH', 'æ¤œç´¢:');
 
-define('TABLE_HEADING_FIRSTNAME', 'Ì¾');
-define('TABLE_HEADING_LASTNAME', 'À«');
-define('TABLE_HEADING_ACCOUNT_CREATED', '¥¢¥«¥¦¥ó¥ÈºîÀ®Æü');
-define('TABLE_HEADING_ACTION', 'Áàºî');
+define('TABLE_HEADING_FIRSTNAME', 'å');
+define('TABLE_HEADING_LASTNAME', 'å§“');
+define('TABLE_HEADING_ACCOUNT_CREATED', 'ã‚¢ã‚«ã‚¦ãƒ³ãƒˆä½œæˆæ—¥');
+define('TABLE_HEADING_ACTION', 'æ“ä½œ');
 
-define('TEXT_DATE_ACCOUNT_CREATED', '¥¢¥«¥¦¥ó¥ÈºîÀ®Æü:');
-define('TEXT_DATE_ACCOUNT_LAST_MODIFIED', '¥¢¥«¥¦¥ó¥È¹¹¿·Æü:');
-define('TEXT_INFO_DATE_LAST_LOGON', 'ºÇ½ª¥í¥°¥¤¥óÆü:');
-define('TEXT_INFO_NUMBER_OF_LOGONS', '¥í¥°¥¤¥ó²ó¿ô:');
-define('TEXT_INFO_COUNTRY', '¹ñÌ¾:');
-define('TEXT_INFO_NUMBER_OF_REVIEWS', '¥ì¥Ó¥å¡¼Åê¹Æ¿ô:');
-define('TEXT_DELETE_INTRO', 'ËÜÅö¤Ë¤³¤Î¸ÜµÒ¤òºï½ü¤·¤Þ¤¹¤«?');
-define('TEXT_DELETE_REVIEWS', '¥ì¥Ó¥å¡¼¤âºï½ü¡ÊÅê¹Æ¿ô: %s ¡Ë');
-define('TEXT_INFO_HEADING_DELETE_CUSTOMER', '¸ÜµÒ¤òºï½ü');
-define('TYPE_BELOW', '²¼¤ËÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤');
-define('PLEASE_SELECT', 'ÁªÂò¤·¤Æ¤¯¤À¤µ¤¤');
+define('TEXT_DATE_ACCOUNT_CREATED', 'ã‚¢ã‚«ã‚¦ãƒ³ãƒˆä½œæˆæ—¥:');
+define('TEXT_DATE_ACCOUNT_LAST_MODIFIED', 'ã‚¢ã‚«ã‚¦ãƒ³ãƒˆæ›´æ–°æ—¥:');
+define('TEXT_INFO_DATE_LAST_LOGON', 'æœ€çµ‚ãƒ­ã‚°ã‚¤ãƒ³æ—¥:');
+define('TEXT_INFO_NUMBER_OF_LOGONS', 'ãƒ­ã‚°ã‚¤ãƒ³å›žæ•°:');
+define('TEXT_INFO_COUNTRY', 'å›½å:');
+define('TEXT_INFO_NUMBER_OF_REVIEWS', 'ãƒ¬ãƒ“ãƒ¥ãƒ¼æŠ•ç¨¿æ•°:');
+define('TEXT_DELETE_INTRO', 'æœ¬å½“ã«ã“ã®é¡§å®¢ã‚’å‰Šé™¤ã—ã¾ã™ã‹?');
+define('TEXT_DELETE_REVIEWS', 'ãƒ¬ãƒ“ãƒ¥ãƒ¼ã‚‚å‰Šé™¤ï¼ˆæŠ•ç¨¿æ•°: %s ï¼‰');
+define('TEXT_INFO_HEADING_DELETE_CUSTOMER', 'é¡§å®¢ã‚’å‰Šé™¤');
+define('TYPE_BELOW', 'ä¸‹ã«å…¥åŠ›ã—ã¦ãã ã•ã„');
+define('PLEASE_SELECT', 'é¸æŠžã—ã¦ãã ã•ã„');
 
 //Add Point System
-define('CATEGORY_POINT', '¥Ý¥¤¥ó¥È');
-define('ENTRY_POINT', '¸½ºß¤Î¥Ý¥¤¥ó¥È');
+define('CATEGORY_POINT', 'ãƒã‚¤ãƒ³ãƒˆ');
+define('ENTRY_POINT', 'ç¾åœ¨ã®ãƒã‚¤ãƒ³ãƒˆ');
 
-define('TABLE_HEADING_MEMBER_TYPE', '²ñ°÷¼ïÊÌ');
-define('TABLE_HEADING_MEMBER_TYPE_GUEST', '¥²¥¹¥È');
-define('TABLE_HEADING_MEMBER_TYPE_MEMBER', '²ñ°÷');
+define('TABLE_HEADING_MEMBER_TYPE', 'ä¼šå“¡ç¨®åˆ¥');
+define('TABLE_HEADING_MEMBER_TYPE_GUEST', 'ã‚²ã‚¹ãƒˆ');
+define('TABLE_HEADING_MEMBER_TYPE_MEMBER', 'ä¼šå“¡');
 ?>

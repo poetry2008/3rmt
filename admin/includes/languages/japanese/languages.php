@@ -10,23 +10,23 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', '¸À¸ìÀßÄê');
+define('HEADING_TITLE', 'è¨€èªžè¨­å®š');
 
-define('TABLE_HEADING_LANGUAGE_NAME', '¸À¸ì');
-define('TABLE_HEADING_LANGUAGE_CODE', '¥³¡¼¥É');
-define('TABLE_HEADING_ACTION', 'Áàºî');
+define('TABLE_HEADING_LANGUAGE_NAME', 'è¨€èªž');
+define('TABLE_HEADING_LANGUAGE_CODE', 'ã‚³ãƒ¼ãƒ‰');
+define('TABLE_HEADING_ACTION', 'æ“ä½œ');
 
-define('TEXT_INFO_EDIT_INTRO', 'É¬Í×¤ÊÊÑ¹¹¤ò²Ã¤¨¤Æ¤¯¤À¤µ¤¤');
-define('TEXT_INFO_LANGUAGE_NAME', '¸À¸ìÌ¾:');
-define('TEXT_INFO_LANGUAGE_CODE', '¥³¡¼¥É:');
-define('TEXT_INFO_LANGUAGE_IMAGE', '²èÁü:');
-define('TEXT_INFO_LANGUAGE_DIRECTORY', '¥Ç¥£¥ì¥¯¥È¥ê:');
-define('TEXT_INFO_LANGUAGE_SORT_ORDER', 'À°Îó½ç:');
-define('TEXT_INFO_INSERT_INTRO', '¿·¤·¤¤¸À¸ì¤È¤½¤Î¥Ç¡¼¥¿¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤');
-define('TEXT_INFO_DELETE_INTRO', 'ËÜÅö¤Ë¤³¤Î¸À¸ì¤òºï½ü¤·¤Þ¤¹¤«?');
-define('TEXT_INFO_HEADING_NEW_LANGUAGE', '¿·¤·¤¤¸À¸ì');
-define('TEXT_INFO_HEADING_EDIT_LANGUAGE', '¸À¸ì¤òÊÔ½¸');
-define('TEXT_INFO_HEADING_DELETE_LANGUAGE', '¸À¸ì¤òºï½ü');
+define('TEXT_INFO_EDIT_INTRO', 'å¿…è¦ãªå¤‰æ›´ã‚’åŠ ãˆã¦ãã ã•ã„');
+define('TEXT_INFO_LANGUAGE_NAME', 'è¨€èªžå:');
+define('TEXT_INFO_LANGUAGE_CODE', 'ã‚³ãƒ¼ãƒ‰:');
+define('TEXT_INFO_LANGUAGE_IMAGE', 'ç”»åƒ:');
+define('TEXT_INFO_LANGUAGE_DIRECTORY', 'ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª:');
+define('TEXT_INFO_LANGUAGE_SORT_ORDER', 'æ•´åˆ—é †:');
+define('TEXT_INFO_INSERT_INTRO', 'æ–°ã—ã„è¨€èªžã¨ãã®ãƒ‡ãƒ¼ã‚¿ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„');
+define('TEXT_INFO_DELETE_INTRO', 'æœ¬å½“ã«ã“ã®è¨€èªžã‚’å‰Šé™¤ã—ã¾ã™ã‹?');
+define('TEXT_INFO_HEADING_NEW_LANGUAGE', 'æ–°ã—ã„è¨€èªž');
+define('TEXT_INFO_HEADING_EDIT_LANGUAGE', 'è¨€èªžã‚’ç·¨é›†');
+define('TEXT_INFO_HEADING_DELETE_LANGUAGE', 'è¨€èªžã‚’å‰Šé™¤');
 
-define('ERROR_REMOVE_DEFAULT_LANGUAGE', '¥¨¥é¡¼: ¥Ç¥Õ¥©¥ë¥È¤Î¸À¸ì¤Ïºï½ü¤Ç¤­¤Þ¤»¤ó¡£Â¾¤Î¸À¸ì¤ò¥Ç¥Õ¥©¥ë¥È¤ËÀßÄê¤·¤Æ¡¢¤â¤¦°ìÅÙÁàºî¤·¤Æ¤¯¤À¤µ¤¤¡£');
+define('ERROR_REMOVE_DEFAULT_LANGUAGE', 'ã‚¨ãƒ©ãƒ¼: ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®è¨€èªžã¯å‰Šé™¤ã§ãã¾ã›ã‚“ã€‚ä»–ã®è¨€èªžã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã«è¨­å®šã—ã¦ã€ã‚‚ã†ä¸€åº¦æ“ä½œã—ã¦ãã ã•ã„ã€‚');
 ?>

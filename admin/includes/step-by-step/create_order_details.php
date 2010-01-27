@@ -1,6 +1,6 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
     tep_draw_hidden_field($customer_id);    
@@ -10,7 +10,7 @@ function hidden_payment(){
   var idx = document.create_order.elements["payment_method"].selectedIndex;
   var CI = document.create_order.elements["payment_method"].options[idx].value;
   
-  if(CI == '¶ä¹Ô¿¶¹ş(Çã¤¤¼è¤ê)'){
+  if(CI == 'éŠ€è¡ŒæŒ¯è¾¼(è²·ã„å–ã‚Š)'){
     document.getElementById('trpass1').style.display = "";
 	document.getElementById('trpass2').style.display = "";
     document.getElementById('trpass3').style.display = "";
@@ -37,11 +37,11 @@ function hidden_payment(){
               </tr>
               <tr>
                 <td class="main">&nbsp;<?php echo ENTRY_LAST_NAME; ?></td>
-                <td class="main">&nbsp;<?php echo tep_draw_input_field('lastname', $lastname) . '&nbsp;' . ENTRY_LAST_NAME_TEXT; ?>&nbsp;&nbsp;ÊÑ¹¹¤¬¤¢¤ì¤Ğ½¤Àµ¤·¤Æ¤¯¤À¤µ¤¤<?php if ($entry_firstname_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+                <td class="main">&nbsp;<?php echo tep_draw_input_field('lastname', $lastname) . '&nbsp;' . ENTRY_LAST_NAME_TEXT; ?>&nbsp;&nbsp;å¤‰æ›´ãŒã‚ã‚Œã°ä¿®æ­£ã—ã¦ãã ã•ã„<?php if ($entry_firstname_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
               <tr>
                 <td class="main">&nbsp;<?php echo ENTRY_FIRST_NAME; ?></td>
-                <td class="main">&nbsp;<?php echo tep_draw_input_field('firstname', $firstname) . '&nbsp;' . ENTRY_FIRST_NAME_TEXT; ?>&nbsp;&nbsp;ÊÑ¹¹¤¬¤¢¤ì¤Ğ½¤Àµ¤·¤Æ¤¯¤À¤µ¤¤<?php if ($entry_lastname_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+                <td class="main">&nbsp;<?php echo tep_draw_input_field('firstname', $firstname) . '&nbsp;' . ENTRY_FIRST_NAME_TEXT; ?>&nbsp;&nbsp;å¤‰æ›´ãŒã‚ã‚Œã°ä¿®æ­£ã—ã¦ãã ã•ã„<?php if ($entry_lastname_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
               <tr>
                 <td class="main">&nbsp;<?php echo ENTRY_EMAIL_ADDRESS; ?></td>
@@ -132,24 +132,24 @@ function hidden_payment(){
 -->
 
 <?php
-	// ¥ª¥×¥·¥ç¥ó¤Î¥ê¥¹¥ÈºîÀ®
+	// ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®ãƒªã‚¹ãƒˆä½œæˆ
 	$torihiki_array = explode("\n", DS_TORIHIKI_HOUHOU);
-	$torihiki_list[] = array('id' => '', 'text' => 'ÁªÂò¤·¤Æ¤¯¤À¤µ¤¤');
+	$torihiki_list[] = array('id' => '', 'text' => 'é¸æŠã—ã¦ãã ã•ã„');
 	for($i=0; $i<sizeof($torihiki_array); $i++) {
 		$torihiki_list[] = array('id' => $torihiki_array[$i],
 								'text' => $torihiki_array[$i]);
 	}
-	// ¼è°úÆü¤Î¥ê¥¹¥ÈºîÀ®
+	// å–å¼•æ—¥ã®ãƒªã‚¹ãƒˆä½œæˆ
 	$today = getdate();
 	$m_num = $today[mon];
 	$d_num = $today[mday];
 	$year = $today[year];
-	$date_list[] = array('id' => '', 'text' => '¼è°úÆü¤òÁªÂò¤·¤Æ¤¯¤À¤µ¤¤');
+	$date_list[] = array('id' => '', 'text' => 'å–å¼•æ—¥ã‚’é¸æŠã—ã¦ãã ã•ã„');
 	for($i=0; $i<14; $i++) {
 		$date_list[] = array('id' => date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)),
-							'text' => strftime("%YÇ¯%m·î%dÆü¡Ê%a¡Ë", mktime(0,0,0,$m_num,$d_num+$i,$year)));
+							'text' => strftime("%Yå¹´%mæœˆ%dæ—¥ï¼ˆ%aï¼‰", mktime(0,0,0,$m_num,$d_num+$i,$year)));
 	}
-	// ¼è°ú»ş´Ö¤Î¥ê¥¹¥ÈºîÀ®
+	// å–å¼•æ™‚é–“ã®ãƒªã‚¹ãƒˆä½œæˆ
 	$hour_list[] = array('id' => '', 'text' => '--');
 	for($i=1; $i<24; $i++) {
 		$hour_num = str_pad($i, 2, "0", STR_PAD_LEFT);
@@ -163,23 +163,23 @@ function hidden_payment(){
 		$min_list[] = array('id' => $min_num,
 							'text' => $min_num);
 	}
-	// »ÙÊ§ÊıË¡¤Î¥ê¥¹¥ÈºîÀ®
-	$payment_text = "¶ä¹Ô¿¶¹ş\n¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ\n¶ä¹Ô¿¶¹ş(Çã¤¤¼è¤ê)\n¥³¥ó¥Ó¥Ë·èºÑ\n¤æ¤¦¤Á¤ç¶ä¹Ô¡ÊÍ¹ÊØ¶É¡Ë\n¤½¤ÎÂ¾";
+	// æ”¯æ‰•æ–¹æ³•ã®ãƒªã‚¹ãƒˆä½œæˆ
+	$payment_text = "éŠ€è¡ŒæŒ¯è¾¼\nã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰æ±ºæ¸ˆ\néŠ€è¡ŒæŒ¯è¾¼(è²·ã„å–ã‚Š)\nã‚³ãƒ³ãƒ“ãƒ‹æ±ºæ¸ˆ\nã‚†ã†ã¡ã‚‡éŠ€è¡Œï¼ˆéƒµä¾¿å±€ï¼‰\nãã®ä»–";
 	$payment_array = explode("\n", $payment_text);
-	$payment_list[] = array('id' => '', 'text' => '»ÙÊ§ÊıË¡¤òÁªÂò¤·¤Æ¤¯¤À¤µ¤¤');
+	$payment_list[] = array('id' => '', 'text' => 'æ”¯æ‰•æ–¹æ³•ã‚’é¸æŠã—ã¦ãã ã•ã„');
 	for($i=0; $i<sizeof($payment_array); $i++) {
 		$payment_list[] = array('id' => $payment_array[$i],
 								'text' => $payment_array[$i]);
 	}
 
-	// ¸ıºÂ²ÊÌÜ¤Îµ­²±
+	// å£åº§ç§‘ç›®ã®è¨˜æ†¶
 	switch($bank_kamoku) {
-		case 'ÉáÄÌ':
+		case 'æ™®é€š':
 			default:
 			$bank_sele_f = true;
 			$bank_sele_t = false;
 			break;
-		case 'ÅöºÂ':
+		case 'å½“åº§':
 			$bank_sele_f = false;
 			$bank_sele_t = true;
 			break;
@@ -187,18 +187,18 @@ function hidden_payment(){
 
 ?>
   <tr>
-    <td class="formAreaTitle"><br>»ÙÊ§ÊıË¡</td>
+    <td class="formAreaTitle"><br>æ”¯æ‰•æ–¹æ³•</td>
   </tr>
   <tr>
     <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
         <tr>
           <td class="main"><table border="0" cellspacing="0" cellpadding="2">
               <tr>
-				<td class="main">&nbsp;»ÙÊ§ÊıË¡:</td>
+				<td class="main">&nbsp;æ”¯æ‰•æ–¹æ³•:</td>
                 <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('payment_method', $payment_list, $payment_method, 'onchange="hidden_payment()"'); ?><?php if ($entry_payment_method_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
 <?php
-	if ($payment_method == '¶ä¹Ô¿¶¹ş(Çã¤¤¼è¤ê)') {
+	if ($payment_method == 'éŠ€è¡ŒæŒ¯è¾¼(è²·ã„å–ã‚Š)') {
 		echo '<tr>';
 	} else {
 		echo '<tr id="trpass1" style="display: none;">';
@@ -206,23 +206,23 @@ function hidden_payment(){
 ?>
 			  	<td colspan="2"><br><table border="0" cellspacing="0" cellpadding="0">
 					<tr>
-						<td class="main">&nbsp;¶âÍ»µ¡´ØÌ¾:</td>
+						<td class="main">&nbsp;é‡‘èæ©Ÿé–¢å:</td>
 						<td class="main">&nbsp;<?php echo tep_draw_input_field('bank_name', ''); ?><?php if ($entry_bank_name_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
 					</tr>
 					<tr>
-						<td class="main">&nbsp;»ÙÅ¹Ì¾:</td>
+						<td class="main">&nbsp;æ”¯åº—å:</td>
 						<td class="main">&nbsp;<?php echo tep_draw_input_field('bank_shiten', ''); ?><?php if ($entry_bank_shiten_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
 					</tr>
 					<tr>
-						<td class="main">&nbsp;¸ıºÂ¼ïÊÌ:</td>
-						<td class="main">&nbsp;	<?php echo tep_draw_radio_field('bank_kamoku', 'ÉáÄÌ', $bank_sele_f); ?>&nbsp;ÉáÄÌ&nbsp;&nbsp;<?php echo tep_draw_radio_field('bank_kamoku', 'ÅöºÂ', $bank_sele_t); ?>&nbsp;ÅöºÂ</td>
+						<td class="main">&nbsp;å£åº§ç¨®åˆ¥:</td>
+						<td class="main">&nbsp;	<?php echo tep_draw_radio_field('bank_kamoku', 'æ™®é€š', $bank_sele_f); ?>&nbsp;æ™®é€š&nbsp;&nbsp;<?php echo tep_draw_radio_field('bank_kamoku', 'å½“åº§', $bank_sele_t); ?>&nbsp;å½“åº§</td>
 					</tr>
 					<tr>
-						<td class="main">&nbsp;¸ıºÂÈÖ¹æ:</td>
+						<td class="main">&nbsp;å£åº§ç•ªå·:</td>
 						<td class="main">&nbsp;<?php echo tep_draw_input_field('bank_kouza_num', ''); ?><?php if ($entry_bank_kouza_num_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
 					</tr>
 					<tr>
-						<td class="main">&nbsp;¸ıºÂÌ¾µÁ:</td>
+						<td class="main">&nbsp;å£åº§åç¾©:</td>
 						<td class="main">&nbsp;<?php echo tep_draw_input_field('bank_kouza_name', ''); ?><?php if ($entry_bank_kouza_name_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
 					</tr>
 				</table></td>
@@ -233,22 +233,22 @@ function hidden_payment(){
 	</td>
   </tr>
   <tr>
-    <td class="formAreaTitle"><br>¼è°úÆü»ş</td>
+    <td class="formAreaTitle"><br>å–å¼•æ—¥æ™‚</td>
   </tr>
   <tr>
     <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
         <tr>
           <td class="main"><table border="0" cellspacing="0" cellpadding="2">
               <tr>
-				<td class="main">&nbsp;¼è°úÆü:</td>
+				<td class="main">&nbsp;å–å¼•æ—¥:</td>
                 <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('date', $date_list, $date); ?><?php if ($entry_date_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
               <tr>
-                <td class="main">&nbsp;¼è°ú»ş´Ö:</td>
-                <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('hour', $hour_list, $hour); ?>&nbsp;»ş&nbsp;<?php echo tep_draw_pull_down_menu('min', $min_list, $min); ?>&nbsp;Ê¬&nbsp;<b>¡Ê24»ş´ÖÉ½µ­¡Ë</b><?php if ($entry_tardetime_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+                <td class="main">&nbsp;å–å¼•æ™‚é–“:</td>
+                <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('hour', $hour_list, $hour); ?>&nbsp;æ™‚&nbsp;<?php echo tep_draw_pull_down_menu('min', $min_list, $min); ?>&nbsp;åˆ†&nbsp;<b>ï¼ˆ24æ™‚é–“è¡¨è¨˜ï¼‰</b><?php if ($entry_tardetime_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
               <tr>
-                <td class="main">&nbsp;¥ª¥×¥·¥ç¥ó:</td>
+                <td class="main">&nbsp;ã‚ªãƒ—ã‚·ãƒ§ãƒ³:</td>
                 <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('torihikihouhou', tep_get_all_torihiki(), $torihikihouhou);//tep_draw_pull_down_menu('torihikihouhou', $torihiki_list, $torihikihouhou); ?><?php if ($entry_torihikihouhou_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
             </table></td>
@@ -257,7 +257,7 @@ function hidden_payment(){
 	</td>
   </tr>
   <tr>
-    <td class="formAreaTitle"><br>Åö¼Ò»ÈÍÑÍó</td>
+    <td class="formAreaTitle"><br>å½“ç¤¾ä½¿ç”¨æ¬„</td>
   </tr>
   <tr>
     <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
@@ -274,14 +274,14 @@ function hidden_payment(){
 -->
 
               <tr>
-                <td class="main">&nbsp;¿®ÍÑÄ´ºº:</td>
-                <td class="main">&nbsp;<?php echo tep_draw_input_field('fax', $fax, 'size="60" maxlength="255"'); ?>&nbsp;&nbsp;¾ïÏ¢µÒ¡ÚHQ¡Û&nbsp;&nbsp;Ãí°Õ¡ÚWA¡Û&nbsp;&nbsp;È¯Á÷¶Ø»ß¡ÚBK¡Û</td>
+                <td class="main">&nbsp;ä¿¡ç”¨èª¿æŸ»:</td>
+                <td class="main">&nbsp;<?php echo tep_draw_input_field('fax', $fax, 'size="60" maxlength="255"'); ?>&nbsp;&nbsp;å¸¸é€£å®¢ã€HQã€‘&nbsp;&nbsp;æ³¨æ„ã€WAã€‘&nbsp;&nbsp;ç™ºé€ç¦æ­¢ã€BKã€‘</td>
               </tr>
 			  <tr>
-			  	<td class="main" colspan="2">&nbsp;¥¯¥ì¥«½é²ó·èºÑÆü¡§C2007/01/01&nbsp;&nbsp;&nbsp;&nbsp;¥¨¥ê¥¢°ìÃ×¡§Aok&nbsp;&nbsp;&nbsp;&nbsp;ËÜ¿Í³ÎÇ§ºÑ¡§Hok&nbsp;&nbsp;&nbsp;&nbsp;YahooID¹¹¿·Æü¡§Y2007/01/01&nbsp;&nbsp;&nbsp;&nbsp;¥ê¥Õ¥¡¥é¡¼¡§R</td>
+			  	<td class="main" colspan="2">&nbsp;ã‚¯ãƒ¬ã‚«åˆå›æ±ºæ¸ˆæ—¥ï¼šC2007/01/01&nbsp;&nbsp;&nbsp;&nbsp;ã‚¨ãƒªã‚¢ä¸€è‡´ï¼šAok&nbsp;&nbsp;&nbsp;&nbsp;æœ¬äººç¢ºèªæ¸ˆï¼šHok&nbsp;&nbsp;&nbsp;&nbsp;YahooIDæ›´æ–°æ—¥ï¼šY2007/01/01&nbsp;&nbsp;&nbsp;&nbsp;ãƒªãƒ•ã‚¡ãƒ©ãƒ¼ï¼šR</td>
 			  </tr>
 			  <tr>
-			  	<td class="main" colspan="2">&nbsp;<b>µ­ÆşÎã¡§WA-Aok-C2007/01/01-Hok-R¥°¡¼¥°¥ëFF11 RMT</b></td>
+			  	<td class="main" colspan="2">&nbsp;<b>è¨˜å…¥ä¾‹ï¼šWA-Aok-C2007/01/01-Hok-Rã‚°ãƒ¼ã‚°ãƒ«FF11 RMT</b></td>
 			  </tr>
             </table></td>
         </tr>

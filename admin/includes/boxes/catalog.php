@@ -20,7 +20,7 @@
   $heading[] = array('text'  => BOX_HEADING_CATALOG,
                      'link'  => tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('selected_box')) . 'selected_box=catalog'));
                 				   if(COLOR_SEARCH_BOX_TF == "true" ){
-                                   $_color_l = '<a href="' . tep_href_link(FILENAME_COLOR, '', 'NONSSL') . '" class="menuBoxContentLink">•´•È°º•ﬁ•π•ø≈–œø</a><br>'  ;
+                                   $_color_l = '<a href="' . tep_href_link(FILENAME_COLOR, '', 'NONSSL') . '" class="menuBoxContentLink">„Ç´„É©„Éº„Éû„Çπ„ÇøÁôªÈå≤</a><br>'  ;
                                    }
   
   
@@ -33,7 +33,7 @@
 				                   '<a href="' . tep_href_link(FILENAME_MANUFACTURERS, '', 'NONSSL') . '" class="menuBoxContentLink">' . BOX_CATALOG_MANUFACTURERS . '</a><br>'.
                                     $_color_l .
 
-				 //				   '<a href="' . tep_href_link('products_mark.php', '', 'NONSSL') . '" class="menuBoxContentLink">æ¶… •¢•§•≥•Û≈–œø</a><br>' .
+				 //				   '<a href="' . tep_href_link('products_mark.php', '', 'NONSSL') . '" class="menuBoxContentLink">ÂïÜÂìÅ„Ç¢„Ç§„Ç≥„É≥ÁôªÈå≤</a><br>' .
 								   '<a href="' . tep_href_link(FILENAME_REVIEWS, '', 'NONSSL') . '" class="menuBoxContentLink">' . BOX_CATALOG_REVIEWS . '</a><br>' .
                                    '<a href="' . tep_href_link(FILENAME_SPECIALS, '', 'NONSSL') . '" class="menuBoxContentLink">' . BOX_CATALOG_SPECIALS . '</a><br>' .
                                    '<a href="' . tep_href_link(FILENAME_PRODUCTS_EXPECTED, '', 'NONSSL') . '" class="menuBoxContentLink">' . BOX_CATALOG_PRODUCTS_EXPECTED . '</a>'.

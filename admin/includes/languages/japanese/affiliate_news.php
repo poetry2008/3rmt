@@ -14,21 +14,21 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', 'ºÇ¿·¾ðÊó´ÉÍý');
+define('HEADING_TITLE', 'æœ€æ–°æƒ…å ±ç®¡ç†');
 
-define('TABLE_HEADING_AFFILIATE_NEWS_HEADLINE', '¥¿¥¤¥È¥ë');
-define('TABLE_HEADING_AFFILIATE_NEWS_ACTION', 'Áàºî');
-define('TABLE_HEADING_AFFILIATE_NEWS_STATUS', '¥¹¥Æ¡¼¥¿¥¹');
+define('TABLE_HEADING_AFFILIATE_NEWS_HEADLINE', 'ã‚¿ã‚¤ãƒˆãƒ«');
+define('TABLE_HEADING_AFFILIATE_NEWS_ACTION', 'æ“ä½œ');
+define('TABLE_HEADING_AFFILIATE_NEWS_STATUS', 'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹');
 
-define('TEXT_NEWS_ITEMS', 'ÅÐÏ¿¿ô:');
-define('TEXT_INFO_HEADING_DELETE_ITEM', 'ºï½ü');
-define('TEXT_DELETE_ITEM_INTRO', 'ËÜÅö¤Ëºï½ü¤·¤Æ¤â¤è¤í¤·¤¤¤Ç¤¹¤«¡©');
+define('TEXT_NEWS_ITEMS', 'ç™»éŒ²æ•°:');
+define('TEXT_INFO_HEADING_DELETE_ITEM', 'å‰Šé™¤');
+define('TEXT_DELETE_ITEM_INTRO', 'æœ¬å½“ã«å‰Šé™¤ã—ã¦ã‚‚ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ');
 
-define('TEXT_AFFILIATE_NEWS_HEADLINE', '¥¿¥¤¥È¥ë');
-define('TEXT_AFFILIATE_NEWS_CONTENT', '¥³¥á¥ó¥È');
+define('TEXT_AFFILIATE_NEWS_HEADLINE', 'ã‚¿ã‚¤ãƒˆãƒ«');
+define('TEXT_AFFILIATE_NEWS_CONTENT', 'ã‚³ãƒ¡ãƒ³ãƒˆ');
 
-define('IMAGE_NEW_NEWS_ITEM', 'ºÇ¿·¾ðÊó¤òÅÐÏ¿');
+define('IMAGE_NEW_NEWS_ITEM', 'æœ€æ–°æƒ…å ±ã‚’ç™»éŒ²');
 
 define('EMPTY_CATEGORY', '&nbsp;');
-define('TEXT_NO_CHILD_CATEGORIES_OR_PRODUCTS', 'µ­»ö¤¬¤¢¤ê¤Þ¤»¤ó...');
+define('TEXT_NO_CHILD_CATEGORIES_OR_PRODUCTS', 'è¨˜äº‹ãŒã‚ã‚Šã¾ã›ã‚“...');
 ?>

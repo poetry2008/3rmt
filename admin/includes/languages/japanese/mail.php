@@ -10,16 +10,16 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', '¸ÜµÒ¤Ø E-MailÁ÷¿®');
+define('HEADING_TITLE', 'é¡§å®¢ã¸ E-Mailé€ä¿¡');
 
-define('TEXT_CUSTOMER', '¸ÜµÒÌ¾:');
-define('TEXT_SUBJECT', '·ïÌ¾:');
-define('TEXT_FROM', 'º¹½Ð¿Í:');
-define('TEXT_MESSAGE', '¥á¥Ã¥»¡¼¥¸:');
-define('TEXT_SELECT_CUSTOMER', '¸ÜµÒ¤òÁªÂò');
-define('TEXT_ALL_CUSTOMERS', 'Á´¤Æ¤Î¸ÜµÒ');
-define('TEXT_NEWSLETTER_CUSTOMERS', 'Á´¤Æ¤Î¥á¡¼¥ë¥Þ¥¬¥¸¥ó¹ØÆÉ¼Ô');
+define('TEXT_CUSTOMER', 'é¡§å®¢å:');
+define('TEXT_SUBJECT', 'ä»¶å:');
+define('TEXT_FROM', 'å·®å‡ºäºº:');
+define('TEXT_MESSAGE', 'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸:');
+define('TEXT_SELECT_CUSTOMER', 'é¡§å®¢ã‚’é¸æŠž');
+define('TEXT_ALL_CUSTOMERS', 'å…¨ã¦ã®é¡§å®¢');
+define('TEXT_NEWSLETTER_CUSTOMERS', 'å…¨ã¦ã®ãƒ¡ãƒ¼ãƒ«ãƒžã‚¬ã‚¸ãƒ³è³¼èª­è€…');
 
-define('NOTICE_EMAIL_SENT_TO', 'Ãí: %s ¤ØE-Mail¤òÁ÷¿®¤·¤Þ¤·¤¿¡£');
-define('ERROR_NO_CUSTOMER_SELECTED', '¥¨¥é¡¼: ¸ÜµÒ¤¬ÁªÂò¤µ¤ì¤Æ¤¤¤Þ¤»¤ó¡£');
+define('NOTICE_EMAIL_SENT_TO', 'æ³¨: %s ã¸E-Mailã‚’é€ä¿¡ã—ã¾ã—ãŸã€‚');
+define('ERROR_NO_CUSTOMER_SELECTED', 'ã‚¨ãƒ©ãƒ¼: é¡§å®¢ãŒé¸æŠžã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚');
 ?>

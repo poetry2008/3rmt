@@ -36,8 +36,8 @@
 								   '<a href="' . tep_href_link(FILENAME_CONTENTS) . '" class="menuBoxContentLink">' . BOX_TOOLS_CONTENTS . '</a><br>' .
 								   '<a href="' . tep_href_link(FILENAME_PRESENT) . '" class="menuBoxContentLink">' . BOX_TOOLS_PRESENT . '</a>' . 
 								   '<hr size="1">' . 
-								   '<a href="' . tep_href_link('mag_up.php', '', 'NONSSL') . '" class="menuBoxContentLink">¥á¡¼¥ë¥Þ¥¬¥¸¥ó°ì³çÅÐÏ¿</a><br>' . 
-								   '<a href="' . tep_href_link('mag_dl.php', '', 'NONSSL') . '" class="menuBoxContentLink">¥á¡¼¥ë¥Þ¥¬¥¸¥ó¥Ç¡¼¥¿DL</a>');
+								   '<a href="' . tep_href_link('mag_up.php', '', 'NONSSL') . '" class="menuBoxContentLink">ãƒ¡ãƒ¼ãƒ«ãƒžã‚¬ã‚¸ãƒ³ä¸€æ‹¬ç™»éŒ²</a><br>' . 
+								   '<a href="' . tep_href_link('mag_dl.php', '', 'NONSSL') . '" class="menuBoxContentLink">ãƒ¡ãƒ¼ãƒ«ãƒžã‚¬ã‚¸ãƒ³ãƒ‡ãƒ¼ã‚¿DL</a>');
   }
 
   $box = new box;

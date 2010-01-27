@@ -1,13 +1,13 @@
 <?php
 /* *********************************************************
-  •‚•∏•Â°º•ÎÃæ: users_log.php
+  „É¢„Ç∏„É•„Éº„É´Âêç: users_log.php
  * 2002-05-13
  * Naomi Suzukawa
  * suzukawa@bitscope.co.jp
   ----------------------------------------------------------
-•Ê°º•∂•¢•Ø•ª•π•Ì•∞
+„É¶„Éº„Ç∂„Ç¢„ÇØ„Çª„Çπ„É≠„Ç∞
 
-  ¢£ —ππÕ˙ŒÚ
+  ‚ñ†Â§âÊõ¥Â±•Ê≠¥
 ********************************************************* */
 
   define('TABLE_CONFIGURATION', 'wm_configuration');
@@ -27,8 +27,8 @@
   session_name('osCAdminsID');
 // 2003-01-30 add -e
 
-  // •ª•√•∑•Á•ÛID §Ú∫ÔΩ¸§π§Î
-  // PHPSESSID§Œ•Ø•√•≠°ºÃæ§«µ≠œø§µ§Ï§∆§§§Î
+  // „Çª„ÉÉ„Ç∑„Éß„É≥ID „ÇíÂâäÈô§„Åô„Çã
+  // PHPSESSID„ÅÆ„ÇØ„ÉÉ„Ç≠„ÉºÂêç„ÅßË®òÈå≤„Åï„Çå„Å¶„ÅÑ„Çã
   setcookie(session_name(), '', time() - 3600, '/');
   setcookie(session_name(), '', time() - 3600, substr(DIR_WS_ADMIN, 0, -1));
 
@@ -59,10 +59,10 @@ if (file_exists(DIR_WS_LANGUAGES . $language . '/user_certify.php')) {
 	include(DIR_WS_LANGUAGES . $language . '/user_certify.php');
 }
 /* -------------------------------------
-	•Ì•∞•§•Û≤ËÃÃ…Ωº®
+	„É≠„Ç∞„Ç§„É≥ÁîªÈù¢Ë°®Á§∫
  ------------------------------------ */
 
-// •®•È°º•·•√•ª°º•∏
+// „Ç®„É©„Éº„É°„ÉÉ„Çª„Éº„Ç∏
 $msg = ($erf ? '<div align="center"><font color="#FF0000">'.TEXT_ERRINFO_LOGIN.'</font></div>' : '');
 
 echo '<!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">' . "\n";
@@ -74,7 +74,7 @@ echo '<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">' . 
 echo '</head>' . "\n";
 echo '<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">' . "\n";
 
-echo tep_draw_form('defaultpage', FILENAME_DEFAULT . "?SID=" . session_id());		// <form>•ø•∞§ŒΩ–Œœ
+echo tep_draw_form('defaultpage', FILENAME_DEFAULT . "?SID=" . session_id());		// <form>„Çø„Ç∞„ÅÆÂá∫Âäõ
 
 echo '<!-- body_text //-->' . "\n";
 echo '<table border="0" cellspacing="0" cellpadding="2">' . "\n";
@@ -110,7 +110,7 @@ echo '</tr>' . "\n";
 echo '<tr>';
 echo '<td>&nbsp;</td>' . "\n";
 echo '<td align="left"><br>';
-echo tep_draw_input_field("execute_login", BUTTON_LOGIN, "", FALSE, "submit", FALSE);	// •Ì•∞•§•Û
+echo tep_draw_input_field("execute_login", BUTTON_LOGIN, "", FALSE, "submit", FALSE);	// „É≠„Ç∞„Ç§„É≥
 echo '</td>' . "\n";
 echo '</tr>' . "\n";
 echo '</table>' . "\n";
@@ -121,7 +121,7 @@ echo '</td>' . "\n";
 echo '</tr>' . "\n";
 echo '</table>' . "\n";
 
-echo "</form>\n";						// •’•©°º•‡§Œ•’•√•ø°º
+echo "</form>\n";						// „Éï„Ç©„Éº„É†„ÅÆ„Éï„ÉÉ„Çø„Éº
 
 echo "</body>\n";
 echo "</html>\n";

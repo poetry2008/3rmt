@@ -51,7 +51,7 @@
         }
       }
 	  
-	  //mailËÜÊ¸ add
+	  //mailæœ¬æ–‡ add
 	  if ($HTTP_GET_VARS['action'] == 'insert') {
 	    $sql_os_array = array('orders_status_id' => $orders_status_id,
                               'language_id' => $languages_id,
@@ -78,7 +78,7 @@
 	    }
 		
 	  }
-	  //mailËÜÊ¸ add end
+	  //mailæœ¬æ–‡ add end
 
       if ($HTTP_POST_VARS['default'] == 'on') {
         tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . tep_db_input($orders_status_id) . "' where configuration_key = 'DEFAULT_ORDERS_STATUS_ID'");
@@ -222,13 +222,13 @@
         $orders_status_inputs_string .= '<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('orders_status_name[' . $languages[$i]['id'] . ']');
       }
 	  
-	  //mail¥¿¥¤¥È¥ë add
+	  //mailã‚¿ã‚¤ãƒˆãƒ« add
 	  $orders_status_inputs_string .= '<br><br>' . TEXT_INFO_ORDERS_STATUS_TITLE . '<br>' . tep_draw_input_field('os_title');
-	  //mail¥¿¥¤¥È¥ë add end
+	  //mailã‚¿ã‚¤ãƒˆãƒ« add end
 	  
-	  //mailËÜÊ¸ add
+	  //mailæœ¬æ–‡ add
 	  $orders_status_inputs_string .= '<br><br>' . TEXT_INFO_ORDERS_STATUS_MAIL . '<br>' . tep_draw_textarea_field('os_mail', 'soft', '25', '5');
-	  //mailËÜÊ¸ add end
+	  //mailæœ¬æ–‡ add end
 
       $contents[] = array('text' => '<br>' . TEXT_INFO_ORDERS_STATUS_NAME . $orders_status_inputs_string);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('default') . ' ' . TEXT_SET_DEFAULT);
@@ -255,21 +255,21 @@
 	  $os_mail = $os_result['orders_status_mail'];
 	  $os_title = $os_result['orders_status_title'];
 	  
-	  //mail¥¿¥¤¥È¥ë add
+	  //mailã‚¿ã‚¤ãƒˆãƒ« add
 	  $orders_status_inputs_string .= '<br><br>' . TEXT_INFO_ORDERS_STATUS_TITLE . '<br>' . tep_draw_input_field('os_title', $os_title);
-	  //mail¥¿¥¤¥È¥ë add end
+	  //mailã‚¿ã‚¤ãƒˆãƒ« add end
 
-	  //mailËÜÊ¸ add
-	  $explanation = 'Ì¾Á°¡§${NAME}<br>¥á¡¼¥ë¥¢¥É¥ì¥¹¡§${MAIL}<br>ÃíÊ¸Æü¡§${ORDER_D}<br>ÃíÊ¸ÈÖ¹æ¡§${ORDER_N}<br>»ÙÊ§¤¤ÊıË¡¡§${PAY}<br>ÃíÊ¸¶â³Û¡§${ORDER_M}<br>¼è°úÊıË¡¡§${TRADING}<br>ÃíÊ¸¥¹¥Æ¡¼¥¿¥¹¡§${ORDER_S}<br>¼«¼Ò¥­¥ã¥éÌ¾¡§${ORDER_A}';
+	  //mailæœ¬æ–‡ add
+	  $explanation = 'åå‰ï¼š${NAME}<br>ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ï¼š${MAIL}<br>æ³¨æ–‡æ—¥ï¼š${ORDER_D}<br>æ³¨æ–‡ç•ªå·ï¼š${ORDER_N}<br>æ”¯æ‰•ã„æ–¹æ³•ï¼š${PAY}<br>æ³¨æ–‡é‡‘é¡ï¼š${ORDER_M}<br>å–å¼•æ–¹æ³•ï¼š${TRADING}<br>æ³¨æ–‡ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ï¼š${ORDER_S}<br>è‡ªç¤¾ã‚­ãƒ£ãƒ©åï¼š${ORDER_A}';
 	  $orders_status_inputs_string .= '<br><br>' . TEXT_INFO_ORDERS_STATUS_MAIL . '<br>' . tep_draw_textarea_field('os_mail', 'soft', '25', '5', $os_mail) . '<br>' . $explanation;
-	  //mailËÜÊ¸ add end
+	  //mailæœ¬æ–‡ add end
 
       $contents[] = array('text' => '<br>' . TEXT_INFO_ORDERS_STATUS_NAME . $orders_status_inputs_string);
       if (DEFAULT_ORDERS_STATUS_ID != $oInfo->orders_status_id) $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('default') . ' ' . TEXT_SET_DEFAULT);
       
       if(!is_dir(tep_get_local_path(DIR_FS_CATALOG_IMAGES).DIRECTORY_SEPARATOR.$oInfo->orders_status_image) && file_exists(tep_get_local_path(DIR_FS_CATALOG_IMAGES).DIRECTORY_SEPARATOR.$oInfo->orders_status_image)) {
       	$contents[] = array('text' => '<br>' . tep_image(DIR_WS_CATALOG_IMAGES . $oInfo->orders_status_image, $oInfo->orders_status_name, 15, 15));
-      	$contents[] = array('text' => '<br><input type="checkbox" name="delete_image" value="1" >¥¢¥¤¥³¥ó¤òºï½ü');
+      	$contents[] = array('text' => '<br><input type="checkbox" name="delete_image" value="1" >ã‚¢ã‚¤ã‚³ãƒ³ã‚’å‰Šé™¤');
       }
       $contents[] = array('text' => '<br>' . TEXT_EDIT_ORDERS_STATUS_IMAGE . '<br>' . tep_draw_file_field('orders_status_image'));
       

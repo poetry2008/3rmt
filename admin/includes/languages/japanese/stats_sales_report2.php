@@ -10,54 +10,54 @@
   Released under the GNU General Public License
 */
 
-define('SR_HEADING_TITLE', 'Çä¾å´ÉÍý');
+define('SR_HEADING_TITLE', 'å£²ä¸Šç®¡ç†');
 
-define('SR_REPORT_TYPE_YEARLY', 'Ç¯ÊÌ');
-define('SR_REPORT_TYPE_MONTHLY', '·îÊÌ');
-define('SR_REPORT_TYPE_WEEKLY', '½µÊÌ');
-define('SR_REPORT_TYPE_DAILY', 'ÆüÊÌ');
-define('SR_REPORT_START_DATE', '½¸·×´ü´Ö');
-define('SR_REPORT_END_DATE', '½¸·×½ªÎ»Æü (Åö³ºÆü¤ò´Þ¤à)');
-define('SR_REPORT_DETAIL', '¾ÜºÙ');
-define('SR_REPORT_MAX', 'É½¼¨¿ô');
-define('SR_REPORT_ALL', '¤¹¤Ù¤Æ');
-define('SR_REPORT_SORT', 'À°Îó½ç');
-define('SR_REPORT_EXP', '¥¨¥¯¥¹¥Ý¡¼¥È');
-define('SR_REPORT_SEND', 'Á÷¿®');
-define('SR_EXP_NORMAL', 'É¸½à');
-define('SR_EXP_HTML', '½¸·×¤Î¤ß');
+define('SR_REPORT_TYPE_YEARLY', 'å¹´åˆ¥');
+define('SR_REPORT_TYPE_MONTHLY', 'æœˆåˆ¥');
+define('SR_REPORT_TYPE_WEEKLY', 'é€±åˆ¥');
+define('SR_REPORT_TYPE_DAILY', 'æ—¥åˆ¥');
+define('SR_REPORT_START_DATE', 'é›†è¨ˆæœŸé–“');
+define('SR_REPORT_END_DATE', 'é›†è¨ˆçµ‚äº†æ—¥ (å½“è©²æ—¥ã‚’å«ã‚€)');
+define('SR_REPORT_DETAIL', 'è©³ç´°');
+define('SR_REPORT_MAX', 'è¡¨ç¤ºæ•°');
+define('SR_REPORT_ALL', 'ã™ã¹ã¦');
+define('SR_REPORT_SORT', 'æ•´åˆ—é †');
+define('SR_REPORT_EXP', 'ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ');
+define('SR_REPORT_SEND', 'é€ä¿¡');
+define('SR_EXP_NORMAL', 'æ¨™æº–');
+define('SR_EXP_HTML', 'é›†è¨ˆã®ã¿');
 define('SR_EXP_CSV', 'CSV');
 
-define('SR_TABLE_HEADING_DATE', 'ÆüÉÕ');
-define('SR_TABLE_HEADING_ORDERS', '#ÃíÊ¸·ï¿ô');
-define('SR_TABLE_HEADING_ITEMS', '#¾¦ÉÊÅÀ¿ô');
-define('SR_TABLE_HEADING_REVENUE', 'ÈÎÇä¶â³Û');
-define('SR_TABLE_HEADING_SHIPPING', 'ÇÛÁ÷ÎÁ¶â');
+define('SR_TABLE_HEADING_DATE', 'æ—¥ä»˜');
+define('SR_TABLE_HEADING_ORDERS', '#æ³¨æ–‡ä»¶æ•°');
+define('SR_TABLE_HEADING_ITEMS', '#å•†å“ç‚¹æ•°');
+define('SR_TABLE_HEADING_REVENUE', 'è²©å£²é‡‘é¡');
+define('SR_TABLE_HEADING_SHIPPING', 'é…é€æ–™é‡‘');
 
-define('SR_DET_HEAD_ONLY', '³µÍ×');
-define('SR_DET_DETAIL', '¾ÜºÙ');
-define('SR_DET_DETAIL_ONLY', '¾ÜºÙ¡Ü¶â³Û');
+define('SR_DET_HEAD_ONLY', 'æ¦‚è¦');
+define('SR_DET_DETAIL', 'è©³ç´°');
+define('SR_DET_DETAIL_ONLY', 'è©³ç´°ï¼‹é‡‘é¡');
 
-define('SR_SORT_VAL0', 'É¸½à');
-define('SR_SORT_VAL1', '¾¦ÉÊÌ¾');
-define('SR_SORT_VAL2', '¾¦ÉÊÌ¾(¹ß½ç)');
-define('SR_SORT_VAL3', '¾¦ÉÊÅÀ¿ô');
-define('SR_SORT_VAL4', '¾¦ÉÊÅÀ¿ô(¹ß½ç)');
-define('SR_SORT_VAL5', 'ÈÎÇä¶â³Û');
-define('SR_SORT_VAL6', 'ÈÎÇä¶â³Û(¹ß½ç)');
+define('SR_SORT_VAL0', 'æ¨™æº–');
+define('SR_SORT_VAL1', 'å•†å“å');
+define('SR_SORT_VAL2', 'å•†å“å(é™é †)');
+define('SR_SORT_VAL3', 'å•†å“ç‚¹æ•°');
+define('SR_SORT_VAL4', 'å•†å“ç‚¹æ•°(é™é †)');
+define('SR_SORT_VAL5', 'è²©å£²é‡‘é¡');
+define('SR_SORT_VAL6', 'è²©å£²é‡‘é¡(é™é †)');
 
-define('SR_REPORT_STATUS_FILTER', '¥¹¥Æ¡¼¥¿¥¹');
+define('SR_REPORT_STATUS_FILTER', 'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹');
 
 define('SR_SEPARATOR1', ',');
 define('SR_SEPARATOR2', ',');
 define('SR_NEWLINE', "\n");
 
-define('SR_TEXT_COMPARE', 'ÂÐÈæ:');
+define('SR_TEXT_COMPARE', 'å¯¾æ¯”:');
 
-define('SR_REPORT_COMP_FILTER', 'ÂÐÈæ');
-define('SR_REPORT_COMP_NO', 'Á´¤Æ');
-define('SR_REPORT_COMP_DAY', 'Á°ÆüÈæ');
-define('SR_REPORT_COMP_MONTH', 'Àè·îÈæ');
-define('SR_REPORT_COMP_YEAR', 'Á°Ç¯Èæ');
+define('SR_REPORT_COMP_FILTER', 'å¯¾æ¯”');
+define('SR_REPORT_COMP_NO', 'å…¨ã¦');
+define('SR_REPORT_COMP_DAY', 'å‰æ—¥æ¯”');
+define('SR_REPORT_COMP_MONTH', 'å…ˆæœˆæ¯”');
+define('SR_REPORT_COMP_YEAR', 'å‰å¹´æ¯”');
 
 ?>

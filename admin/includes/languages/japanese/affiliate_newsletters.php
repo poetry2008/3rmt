@@ -14,30 +14,30 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', '¥Ë¥å¡¼¥¹¥ì¥¿¡¼');
+define('HEADING_TITLE', 'ãƒ‹ãƒ¥ãƒ¼ã‚¹ãƒ¬ã‚¿ãƒ¼');
 
-define('TABLE_HEADING_NEWSLETTERS', '¥Ë¥å¡¼¥¹¥ì¥¿¡¼Ì¾');
-define('TABLE_HEADING_SIZE', '¥µ¥¤¥º');
-define('TABLE_HEADING_MODULE', 'Á÷¿®ÆâÍÆ');
-define('TABLE_HEADING_SENT', 'Á÷¿®¾õÂÖ');
-define('TABLE_HEADING_STATUS', '¥¹¥Æ¡¼¥¿¥¹');
-define('TABLE_HEADING_ACTION', 'Áàºî');
+define('TABLE_HEADING_NEWSLETTERS', 'ãƒ‹ãƒ¥ãƒ¼ã‚¹ãƒ¬ã‚¿ãƒ¼å');
+define('TABLE_HEADING_SIZE', 'ã‚µã‚¤ã‚º');
+define('TABLE_HEADING_MODULE', 'é€ä¿¡å†…å®¹');
+define('TABLE_HEADING_SENT', 'é€ä¿¡çŠ¶æ…‹');
+define('TABLE_HEADING_STATUS', 'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹');
+define('TABLE_HEADING_ACTION', 'æ“ä½œ');
 
-define('TEXT_NEWSLETTER_MODULE', 'Á÷¿®ÆâÍÆ:');
-define('TEXT_NEWSLETTER_TITLE', '¥¿¥¤¥È¥ë:');
-define('TEXT_NEWSLETTER_CONTENT', '¥³¥á¥ó¥È:');
+define('TEXT_NEWSLETTER_MODULE', 'é€ä¿¡å†…å®¹:');
+define('TEXT_NEWSLETTER_TITLE', 'ã‚¿ã‚¤ãƒˆãƒ«:');
+define('TEXT_NEWSLETTER_CONTENT', 'ã‚³ãƒ¡ãƒ³ãƒˆ:');
 
-define('TEXT_NEWSLETTER_DATE_ADDED', 'ÅÐÏ¿Æü:');
-define('TEXT_NEWSLETTER_DATE_SENT', 'Á÷¿®Æü:');
+define('TEXT_NEWSLETTER_DATE_ADDED', 'ç™»éŒ²æ—¥:');
+define('TEXT_NEWSLETTER_DATE_SENT', 'é€ä¿¡æ—¥:');
 
-define('TEXT_INFO_DELETE_INTRO', 'ËÜÅö¤Ëºï½ü¤·¤Æ¤â¤è¤í¤·¤¤¤Ç¤¹¤«¡©');
+define('TEXT_INFO_DELETE_INTRO', 'æœ¬å½“ã«å‰Šé™¤ã—ã¦ã‚‚ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ');
 
-define('TEXT_PLEASE_WAIT', '¤·¤Ð¤é¤¯¤ªÂÔ¤Á¤¯¤À¤µ¤¤ .. E¥á¡¼¥ëÁ÷¿®Ãæ ..<br><br>Á÷¿®¤¬´°Î»¤¹¤ë¤Þ¤Ç¥Ú¡¼¥¸¤ò°ÜÆ°¤·¤Ê¤¤¤Ç¤¯¤À¤µ¤¤!');
-define('TEXT_FINISHED_SENDING_EMAILS', 'Àµ¾ï¤Ë¥á¡¼¥ë¥Þ¥¬¥¸¥ó¤ÏÁ÷¿®¤µ¤ì¤Þ¤·¤¿!');
+define('TEXT_PLEASE_WAIT', 'ã—ã°ã‚‰ããŠå¾…ã¡ãã ã•ã„ .. Eãƒ¡ãƒ¼ãƒ«é€ä¿¡ä¸­ ..<br><br>é€ä¿¡ãŒå®Œäº†ã™ã‚‹ã¾ã§ãƒšãƒ¼ã‚¸ã‚’ç§»å‹•ã—ãªã„ã§ãã ã•ã„!');
+define('TEXT_FINISHED_SENDING_EMAILS', 'æ­£å¸¸ã«ãƒ¡ãƒ¼ãƒ«ãƒžã‚¬ã‚¸ãƒ³ã¯é€ä¿¡ã•ã‚Œã¾ã—ãŸ!');
 
-define('ERROR_NEWSLETTER_TITLE', '¥¨¥é¡¼¡§¥á¡¼¥ë¥Þ¥¬¥¸¥ó¤Î¥¿¥¤¥È¥ë¤ÏÉ¬¿Ü¤Ç¤¹¡£');
-define('ERROR_NEWSLETTER_MODULE', '¥¨¥é¡¼: Á÷¿®¤¹¤ë·ïÌ¾¡ÊÆâÍÆ¡Ë¤¬ÁªÂò¤µ¤ì¤Æ¤¤¤Þ¤»¤ó¡£');
-define('ERROR_REMOVE_UNLOCKED_NEWSLETTER', '¥¨¥é¡¼: ºï½ü¤¹¤ëÁ°¤Ë¥í¥Ã¥¯¤ò¤·¤Æ¤¯¤À¤µ¤¤¡£');
-define('ERROR_EDIT_UNLOCKED_NEWSLETTER', '¥¨¥é¡¼: ÊÔ½¸¤¹¤ëÁ°¤Ë¥í¥Ã¥¯¤ò¤·¤Æ¤¯¤À¤µ¤¤¡£');
-define('ERROR_SEND_UNLOCKED_NEWSLETTER', '¥¨¥é¡¼: Á÷¿®¤¹¤ëÁ°¤Ë¥í¥Ã¥¯¤ò¤·¤Æ¤¯¤À¤µ¤¤¡£');
+define('ERROR_NEWSLETTER_TITLE', 'ã‚¨ãƒ©ãƒ¼ï¼šãƒ¡ãƒ¼ãƒ«ãƒžã‚¬ã‚¸ãƒ³ã®ã‚¿ã‚¤ãƒˆãƒ«ã¯å¿…é ˆã§ã™ã€‚');
+define('ERROR_NEWSLETTER_MODULE', 'ã‚¨ãƒ©ãƒ¼: é€ä¿¡ã™ã‚‹ä»¶åï¼ˆå†…å®¹ï¼‰ãŒé¸æŠžã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚');
+define('ERROR_REMOVE_UNLOCKED_NEWSLETTER', 'ã‚¨ãƒ©ãƒ¼: å‰Šé™¤ã™ã‚‹å‰ã«ãƒ­ãƒƒã‚¯ã‚’ã—ã¦ãã ã•ã„ã€‚');
+define('ERROR_EDIT_UNLOCKED_NEWSLETTER', 'ã‚¨ãƒ©ãƒ¼: ç·¨é›†ã™ã‚‹å‰ã«ãƒ­ãƒƒã‚¯ã‚’ã—ã¦ãã ã•ã„ã€‚');
+define('ERROR_SEND_UNLOCKED_NEWSLETTER', 'ã‚¨ãƒ©ãƒ¼: é€ä¿¡ã™ã‚‹å‰ã«ãƒ­ãƒƒã‚¯ã‚’ã—ã¦ãã ã•ã„ã€‚');
 ?>

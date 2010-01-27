@@ -16,5 +16,5 @@
 
 
 
-define('TEXT_COUNT_AFFILIATES', '¥Ë¥å¡¼¥¹¥ì¥¿¡¼Á÷¿®¿ô: %s');
+define('TEXT_COUNT_AFFILIATES', 'ãƒ‹ãƒ¥ãƒ¼ã‚¹ãƒ¬ã‚¿ãƒ¼é€ä¿¡æ•°: %s');
 ?>

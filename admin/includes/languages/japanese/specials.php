@@ -10,26 +10,26 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', 'ÆÃ²Á¾¦ÉÊÅÐÏ¿');
+define('HEADING_TITLE', 'ç‰¹ä¾¡å•†å“ç™»éŒ²');
 
-define('TABLE_HEADING_PRODUCTS', '¾¦ÉÊÌ¾');
-define('TABLE_HEADING_PRODUCTS_PRICE', '¾¦ÉÊ¤Î²Á³Ê');
-define('TABLE_HEADING_STATUS', '¥¹¥Æ¡¼¥¿¥¹');
-define('TABLE_HEADING_ACTION', 'Áàºî');
+define('TABLE_HEADING_PRODUCTS', 'å•†å“å');
+define('TABLE_HEADING_PRODUCTS_PRICE', 'å•†å“ã®ä¾¡æ ¼');
+define('TABLE_HEADING_STATUS', 'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹');
+define('TABLE_HEADING_ACTION', 'æ“ä½œ');
 
-define('TEXT_SPECIALS_PRODUCT', '¾¦ÉÊÌ¾:');
-define('TEXT_SPECIALS_SPECIAL_PRICE', 'ÆÃÊÌ²Á³Ê:');
-define('TEXT_SPECIALS_EXPIRES_DATE', '½ªÎ»Æü:');
-define('TEXT_SPECIALS_PRICE_TIP', '<b>ÆÃ²Á¾¦ÉÊ¤Ë¤Ä¤¤¤Æ:</b><ul><li>³ä¤ê°ú¤¯¥Ñ¡¼¥»¥ó¥Æ¡¼¥¸¤ò &quot;ÆÃÊÌ²Á³Ê&quot; Íó¤ËÆþÎÏ¤¹¤ë¤³¤È¤¬¤Ç¤­¤Þ¤¹¡£Îã: <b>20%</b></li><li>¿·¤·¤¤²Á³Ê¤òÆþÎÏ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¢¾®¿ôÅÀ¤ò &quot;.&quot; ¤Ç¶èÀÚ¤Ã¤Æ¤¯¤À¤µ¤¤¡£Îã: <b>49.99</b></li><li>´ü´Ö¤ò¸ÂÄê¤·¤Ê¤¤¾ì¹ç¤Ï¡¢&quot;½ªÎ»Æü&quot; ¤ò¶õ¤Î¤Þ¤Þ¤Ë¤·¤Æ¤ª¤¤¤Æ¤¯¤À¤µ¤¤¡£</li></ul>');
+define('TEXT_SPECIALS_PRODUCT', 'å•†å“å:');
+define('TEXT_SPECIALS_SPECIAL_PRICE', 'ç‰¹åˆ¥ä¾¡æ ¼:');
+define('TEXT_SPECIALS_EXPIRES_DATE', 'çµ‚äº†æ—¥:');
+define('TEXT_SPECIALS_PRICE_TIP', '<b>ç‰¹ä¾¡å•†å“ã«ã¤ã„ã¦:</b><ul><li>å‰²ã‚Šå¼•ããƒ‘ãƒ¼ã‚»ãƒ³ãƒ†ãƒ¼ã‚¸ã‚’ &quot;ç‰¹åˆ¥ä¾¡æ ¼&quot; æ¬„ã«å…¥åŠ›ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚ä¾‹: <b>20%</b></li><li>æ–°ã—ã„ä¾¡æ ¼ã‚’å…¥åŠ›ã™ã‚‹å ´åˆã«ã¯ã€å°æ•°ç‚¹ã‚’ &quot;.&quot; ã§åŒºåˆ‡ã£ã¦ãã ã•ã„ã€‚ä¾‹: <b>49.99</b></li><li>æœŸé–“ã‚’é™å®šã—ãªã„å ´åˆã¯ã€&quot;çµ‚äº†æ—¥&quot; ã‚’ç©ºã®ã¾ã¾ã«ã—ã¦ãŠã„ã¦ãã ã•ã„ã€‚</li></ul>');
 
-define('TEXT_INFO_DATE_ADDED', 'ÄÉ²ÃÆü:');
-define('TEXT_INFO_LAST_MODIFIED', '¹¹¿·Æü:');
-define('TEXT_INFO_NEW_PRICE', '¿·¤·¤¤²Á³Ê:');
-define('TEXT_INFO_ORIGINAL_PRICE', '¸µ¤Î²Á³Ê:');
-define('TEXT_INFO_PERCENTAGE', 'ÃÍ°úÎ¨:');
-define('TEXT_INFO_EXPIRES_DATE', '½ªÎ»Æü:');
-define('TEXT_INFO_STATUS_CHANGE', '¥¹¥Æ¡¼¥¿¥¹ÊÑ¹¹:');
+define('TEXT_INFO_DATE_ADDED', 'è¿½åŠ æ—¥:');
+define('TEXT_INFO_LAST_MODIFIED', 'æ›´æ–°æ—¥:');
+define('TEXT_INFO_NEW_PRICE', 'æ–°ã—ã„ä¾¡æ ¼:');
+define('TEXT_INFO_ORIGINAL_PRICE', 'å…ƒã®ä¾¡æ ¼:');
+define('TEXT_INFO_PERCENTAGE', 'å€¤å¼•çŽ‡:');
+define('TEXT_INFO_EXPIRES_DATE', 'çµ‚äº†æ—¥:');
+define('TEXT_INFO_STATUS_CHANGE', 'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹å¤‰æ›´:');
 
-define('TEXT_INFO_HEADING_DELETE_SPECIALS', 'ÆÃ²Á¾¦ÉÊ¤òºï½ü');
-define('TEXT_INFO_DELETE_INTRO', 'ËÜÅö¤ËÆÃÊÌ²Á³Ê¤òºï½ü¤·¤Þ¤¹¤«?');
+define('TEXT_INFO_HEADING_DELETE_SPECIALS', 'ç‰¹ä¾¡å•†å“ã‚’å‰Šé™¤');
+define('TEXT_INFO_DELETE_INTRO', 'æœ¬å½“ã«ç‰¹åˆ¥ä¾¡æ ¼ã‚’å‰Šé™¤ã—ã¾ã™ã‹?');
 ?>

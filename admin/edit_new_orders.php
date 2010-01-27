@@ -1,6 +1,6 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
   require('includes/application_top.php');
@@ -51,12 +51,12 @@
   // Update Inventory Quantity
   $order_query = tep_db_query("select products_id, products_quantity from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . tep_db_input($oID) . "'");
   
-  // ºÇ¿·¤ÎÃíÊ¸¾ðÊó¼èÆÀ
+  // æœ€æ–°ã®æ³¨æ–‡æƒ…å ±å–å¾—
   $order = new order($oID);
-  // ¥Ý¥¤¥ó¥È¤ò¼èÆÀ¤¹¤ë
+  // ãƒã‚¤ãƒ³ãƒˆã‚’å–å¾—ã™ã‚‹
   $customer_point_query = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '" . $order->customer['id'] . "'");
   $customer_point = tep_db_fetch_array($customer_point_query);
-  // ¥²¥¹¥È¥Á¥§¥Ã¥¯
+  // ã‚²ã‚¹ãƒˆãƒã‚§ãƒƒã‚¯
   $customer_guest_query = tep_db_query("select customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_id = '" . $order->customer['id'] . "'");
   $customer_guest = tep_db_fetch_array($customer_guest_query);
 
@@ -68,27 +68,27 @@
 
 		$oID = tep_db_prepare_input($HTTP_GET_VARS['oID']);
 		$order = new order($oID);
-		$status = '1'; // ½é´üÃÍ
+		$status = '1'; // åˆæœŸå€¤
 		$goods_check = $order_query;
 		
 		if (tep_db_num_rows($goods_check) == 0) {
-			$messageStack->add('¾¦ÉÊ¤¬ÄÉ²Ã¤µ¤ì¤Æ¤¤¤Þ¤»¤ó¡£', 'error');
+			$messageStack->add('å•†å“ãŒè¿½åŠ ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚', 'error');
 			$action = 'edit';
 			break;
 		}
 
-		if (isset($update_tori_torihiki_date)) { //Æü»þ¤¬Í­¸ú¤«¥Á¥§¥Ã¥¯
+		if (isset($update_tori_torihiki_date)) { //æ—¥æ™‚ãŒæœ‰åŠ¹ã‹ãƒã‚§ãƒƒã‚¯
 			if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $update_tori_torihiki_date, $m)) { // check the date format
-				$messageStack->add('Æü»þ¥Õ¥©¡¼¥Þ¥Ã¥È¤¬´Ö°ã¤Ã¤Æ¤¤¤Þ¤¹¡£ "2008-01-01 10:30:00"', 'error');
+				$messageStack->add('æ—¥æ™‚ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚ "2008-01-01 10:30:00"', 'error');
 				$action = 'edit';
 				break;
 			} elseif (!checkdate($m[2], $m[3], $m[1]) || $m[4] >= 24 || $m[5] >= 60 || $m[6] >= 60) { // make sure the date provided is a validate date
-				$messageStack->add('Ìµ¸ú¤ÊÆüÉÕ¤Þ¤¿¤Ï±¦µ­¤Î¿ô»ú¤òÄ¶¤¨¤Æ¤¤¤Þ¤¹¡£ "23:59:59"', 'error');
+				$messageStack->add('ç„¡åŠ¹ãªæ—¥ä»˜ã¾ãŸã¯å³è¨˜ã®æ•°å­—ã‚’è¶…ãˆã¦ã„ã¾ã™ã€‚ "23:59:59"', 'error');
 				$action = 'edit';
 				break;
 			}
 		} else {
-			$messageStack->add('Æü»þ¤¬ÆþÎÏ¤µ¤ì¤Æ¤¤¤Þ¤»¤ó¡£', 'error');
+			$messageStack->add('æ—¥æ™‚ãŒå…¥åŠ›ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚', 'error');
 			$action = 'edit';
 			break;
 		}
@@ -98,7 +98,7 @@
 			if ($ot_class == "ot_point" && (int)$ot_value > 0) {
 				$current_point = $customer_point['point'] + $before_point;
 				if ((int)$ot_value > $current_point) {
-					$messageStack->add('¥Ý¥¤¥ó¥È¤¬Â­¤ê¤Þ¤»¤ó¡£ÆþÎÏ²ÄÇ½¤Ê¥Ý¥¤¥ó¥È¤Ï <b>' . $current_point . '</b> ¤Ç¤¹¡£', 'error');
+					$messageStack->add('ãƒã‚¤ãƒ³ãƒˆãŒè¶³ã‚Šã¾ã›ã‚“ã€‚å…¥åŠ›å¯èƒ½ãªãƒã‚¤ãƒ³ãƒˆã¯ <b>' . $current_point . '</b> ã§ã™ã€‚', 'error');
 					$action = 'edit';
 					break 2;
 				}
@@ -164,7 +164,7 @@
     $check_status_query = tep_db_query("select customers_name, customers_email_address, orders_status, date_purchased from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
     $check_status = tep_db_fetch_array($check_status_query);
 
-	// fin mise ¡¦jour
+	// fin mise ãƒ»jour
 	// 1.3 UPDATE PRODUCTS #####
 	
 	$RunningSubTotal = 0;
@@ -251,7 +251,7 @@
 			$order = new order($oID);
 			$RunningTax += $ot_value * $products_details['tax'] / $order->info['currency_value'] / 100 ; // corrected tax by cb
 
-//} elseif ($ot_class == "ot_point") { // ¥Ý¥¤¥ó¥È³ä°ú
+//} elseif ($ot_class == "ot_point") { // ãƒã‚¤ãƒ³ãƒˆå‰²å¼•
 //$order = new order($oID);
 //$RunningTax -= $ot_value * $products_details['tax'] / $order->info['currency_value'] / 100 ;
 
@@ -323,7 +323,7 @@
 	
 			$order = new order($oID);
 
-			if ($customer_guest['customers_guest_chk'] == 0 && $ot_class == "ot_point" && $ot_value != $before_point) { //²ñ°÷¤Ê¤é¥Ý¥ó¥È¤ÎÁý¸º
+			if ($customer_guest['customers_guest_chk'] == 0 && $ot_class == "ot_point" && $ot_value != $before_point) { //ä¼šå“¡ãªã‚‰ãƒãƒ³ãƒˆã®å¢—æ¸›
 				$point_difference = ($ot_value - $before_point);
 				tep_db_query("update " . TABLE_CUSTOMERS . " set point = point - " . $point_difference . " where customers_id = '" . $order->customer['id'] . "'");	
 			}
@@ -358,7 +358,7 @@
 				$RunningTotal += $ot_value / $order->info['currency_value'];
 
 //} elseif ($ot_class == "ot_point") {
-//$RunningTotal -= $ot_value; // ¥Ý¥¤¥ó¥È³ä°ú
+//$RunningTotal -= $ot_value; // ãƒã‚¤ãƒ³ãƒˆå‰²å¼•
 
 			} else {
 				$RunningTotal += $ot_value;
@@ -402,7 +402,7 @@
 		tep_db_query("update " . TABLE_ORDERS_TOTAL . " set value = '".$new_tax."', text = '".$currencies->format($new_tax, true, $order->info['currency'])."' where class='ot_tax' and orders_id = '".$oID."'");
 	}
 
-	//point½¤ÀµÃæ
+	//pointä¿®æ­£ä¸­
 	$point_query = tep_db_query("select sum(value) as total_point from " . TABLE_ORDERS_TOTAL . " where class = 'ot_point' and orders_id = '" . $oID . "'");
 	$total_point = tep_db_fetch_array($point_query);
 
@@ -429,7 +429,7 @@
 	$totals = "update " . TABLE_ORDERS_TOTAL . " set value = '" . $newtotal . "', text = '<b>" . $currencies->format($newtotal, true, $order->info['currency']) . "</b>' where class='ot_total' and orders_id = '" . $oID . "'";
 	tep_db_query($totals);
 		
-	// ºÇ½ª½èÍý¡Ê¹¹¿·¤ª¤è¤Ó¥á¡¼¥ëÁ÷¿®¡Ë
+	// æœ€çµ‚å‡¦ç†ï¼ˆæ›´æ–°ãŠã‚ˆã³ãƒ¡ãƒ¼ãƒ«é€ä¿¡ï¼‰
 	if ($products_delete == false) {
 		tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
 		$notify_comments = '';
@@ -447,12 +447,12 @@
 			$products_ordered_mail = '';
 			for ($i=0; $i<sizeof($order->products); $i++) {
 				//$orders_products_id = $order->products[$i]['orders_products_id'];
-				$products_ordered_mail .= 'ÃíÊ¸¾¦ÉÊ¡¡¡¡¡¡¡¡¡¡¡§' . $order->products[$i]['name'] . '¡Ê' . $order->products[$i]['model'] . '¡Ë' . "\n";
+				$products_ordered_mail .= 'æ³¨æ–‡å•†å“ã€€ã€€ã€€ã€€ã€€ï¼š' . $order->products[$i]['name'] . 'ï¼ˆ' . $order->products[$i]['model'] . 'ï¼‰' . "\n";
 				// Has Attributes?
 				if (sizeof($order->products[$i]['attributes']) > 0) {
 					for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
 						$orders_products_attributes_id = $order->products[$i]['attributes'][$j]['orders_products_attributes_id'];
-						$products_ordered_mail .= tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option'], array("'"=>"&quot;")) . '¡¡¡¡¡¡¡¡¡¡¡§';
+						$products_ordered_mail .= tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option'], array("'"=>"&quot;")) . 'ã€€ã€€ã€€ã€€ã€€ï¼š';
 						$products_ordered_mail .= tep_parse_input_field_data($order->products[$i]['attributes'][$j]['value'], array("'"=>"&quot;")) . "\n";
 					}
 				}
@@ -460,16 +460,16 @@
 			    $product_info = tep_db_fetch_array($_product_info_query);
 			    $data1 = explode("//", $product_info['products_attention_1']);
 			    
-				$products_ordered_mail .= '¸Ä¿ô¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡§' . $order->products[$i]['qty'] . '¸Ä' . tep_get_full_count($order->products[$i]['qty'], $data1[1]) . "\n";
-				$products_ordered_mail .= 'Ã±²Á¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡§' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
-				$products_ordered_mail .= '¾®·×¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡§' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
-				$products_ordered_mail .= '¥­¥ã¥é¥¯¥¿¡¼Ì¾¡¡¡¡¡§' . $order->products[$i]['character'] . "\n";
+				$products_ordered_mail .= 'å€‹æ•°ã€€ã€€ã€€ã€€ã€€ã€€ã€€ï¼š' . $order->products[$i]['qty'] . 'å€‹' . tep_get_full_count($order->products[$i]['qty'], $data1[1]) . "\n";
+				$products_ordered_mail .= 'å˜ä¾¡ã€€ã€€ã€€ã€€ã€€ã€€ã€€ï¼š' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
+				$products_ordered_mail .= 'å°è¨ˆã€€ã€€ã€€ã€€ã€€ã€€ã€€ï¼š' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
+				$products_ordered_mail .= 'ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åã€€ã€€ï¼š' . $order->products[$i]['character'] . "\n";
 				$products_ordered_mail .= "------------------------------------------\n";
 				if (tep_get_cflag_by_product_id($order->products[$i]['id'])) {
     				if (tep_get_bflag_by_product_id($order->products[$i]['id'])) {
-    					$products_ordered_mail .= "¢¨ Åö¼Ò¥­¥ã¥é¥¯¥¿¡¼Ì¾¤Ï¡¢¤ª¼è°ú10Ê¬Á°¤Þ¤Ç¤ËÅÅ»Ò¥á¡¼¥ë¤Ë¤Æ¤ªÃÎ¤é¤»¤¤¤¿¤·¤Þ¤¹¡£\n\n";
+    					$products_ordered_mail .= "â€» å½“ç¤¾ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åã¯ã€ãŠå–å¼•10åˆ†å‰ã¾ã§ã«é›»å­ãƒ¡ãƒ¼ãƒ«ã«ã¦ãŠçŸ¥ã‚‰ã›ã„ãŸã—ã¾ã™ã€‚\n\n";
     				} else {
-    					$products_ordered_mail .= "¢¨ Åö¼Ò¥­¥ã¥é¥¯¥¿¡¼Ì¾¤Ï¡¢¤ª»ÙÊ§¤¤³ÎÇ§¸å¤ËÅÅ»Ò¥á¡¼¥ë¤Ë¤Æ¤ªÃÎ¤é¤»¤¤¤¿¤·¤Þ¤¹¡£\n\n";
+    					$products_ordered_mail .= "â€» å½“ç¤¾ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åã¯ã€ãŠæ”¯æ‰•ã„ç¢ºèªå¾Œã«é›»å­ãƒ¡ãƒ¼ãƒ«ã«ã¦ãŠçŸ¥ã‚‰ã›ã„ãŸã—ã¾ã™ã€‚\n\n";
     				}
                 }
 /*
@@ -492,81 +492,81 @@ $order->totals = array();
 while ($totals = tep_db_fetch_array($totals_query)) {
 	if ($totals['class'] == "ot_point" || $totals['class'] == "ot_subtotal") {
 		if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
-			$total_details_mail .= '¢§¥Ý¥¤¥ó¥È³ä°ú¡¡¡¡¡§-' . strip_tags($totals['text']) . "\n";
+			$total_details_mail .= 'â–¼ãƒã‚¤ãƒ³ãƒˆå‰²å¼•ã€€ã€€ï¼š-' . strip_tags($totals['text']) . "\n";
 		}
 	} elseif ($totals['class'] == "ot_total") {
-		$total_details_mail .= '¢§¤ª»ÙÊ§¶â³Û¡¡¡¡¡¡¡§' . strip_tags($totals['text']) . "\n";
+		$total_details_mail .= 'â–¼ãŠæ”¯æ‰•é‡‘é¡ã€€ã€€ã€€ï¼š' . strip_tags($totals['text']) . "\n";
 		$total_price_mail = floor($totals['value']);
 	} else {
-		$total_details_mail .= '¢§' . $totals['title'] . ':' . strip_tags($totals['text']) . "\n";
+		$total_details_mail .= 'â–¼' . $totals['title'] . ':' . strip_tags($totals['text']) . "\n";
 	}
 }
 
   function str_string($string='') {
     if(ereg("-", $string)) {
 	  $string_array = explode("-", $string);
-	  return $string_array[0] . 'Ç¯' . $string_array[1] . '·î' . $string_array[2] . 'Æü';
+	  return $string_array[0] . 'å¹´' . $string_array[1] . 'æœˆ' . $string_array[2] . 'æ—¥';
 	}
   }
 
 			$email = '';
-			$email .= $order->customer['name'] . 'ÍÍ' . "\n\n";
-			$email .= '¤³¤ÎÅÙ¤Ï¡¢' . STORE_NAME . '¤ò¤´ÍøÍÑ¤¤¤¿¤À¤­¡¢À¿¤Ë¤¢¤ê¤¬' . "\n";
-			$email .= '¤È¤¦¤´¤¶¤¤¤Þ¤¹¡£' . "\n";
-			$email .= '²¼µ­¤ÎÆâÍÆ¤Ë¤Æ¤´ÃíÊ¸¤ò¾µ¤ê¤Þ¤·¤¿¤Î¤Ç¡¢¤´³ÎÇ§¤¯¤À¤µ¤¤¡£' . "\n";
-			$email .= '¤´ÉÔÌÀ¤ÊÅÀ¤¬¤´¤¶¤¤¤Þ¤·¤¿¤é¡¢¤´ÃíÊ¸ÈÖ¹æ¤ò¤´³ÎÇ§¤Î¾å¡¢' . "\n";
-			$email .= '¡Ö' . STORE_NAME . '¡×¤Þ¤Ç¤ªÌä¤¤¹ç¤ï¤»¤¯¤À¤µ¤¤¡£' . "\n\n";
+			$email .= $order->customer['name'] . 'æ§˜' . "\n\n";
+			$email .= 'ã“ã®åº¦ã¯ã€' . STORE_NAME . 'ã‚’ã”åˆ©ç”¨ã„ãŸã ãã€èª ã«ã‚ã‚ŠãŒ' . "\n";
+			$email .= 'ã¨ã†ã”ã–ã„ã¾ã™ã€‚' . "\n";
+			$email .= 'ä¸‹è¨˜ã®å†…å®¹ã«ã¦ã”æ³¨æ–‡ã‚’æ‰¿ã‚Šã¾ã—ãŸã®ã§ã€ã”ç¢ºèªãã ã•ã„ã€‚' . "\n";
+			$email .= 'ã”ä¸æ˜Žãªç‚¹ãŒã”ã–ã„ã¾ã—ãŸã‚‰ã€ã”æ³¨æ–‡ç•ªå·ã‚’ã”ç¢ºèªã®ä¸Šã€' . "\n";
+			$email .= 'ã€Œ' . STORE_NAME . 'ã€ã¾ã§ãŠå•ã„åˆã‚ã›ãã ã•ã„ã€‚' . "\n\n";
 			$email .= $notify_comments_mail;
-			$email .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
-			$email .= '¢§ÃíÊ¸ÈÖ¹æ¡¡¡¡¡¡¡¡¡§' . $oID . "\n";
-			$email .= '¢§ÃíÊ¸Æü¡¡¡¡¡¡¡¡¡¡¡§' . strftime(DATE_FORMAT_LONG) . "\n";
-			$email .= '¢§¤ªÌ¾Á°¡¡¡¡¡¡¡¡¡¡¡§' . $order->customer['name'] . 'ÍÍ' . "\n";
-			$email .= '¢§¥á¡¼¥ë¥¢¥É¥ì¥¹¡¡¡§' . $order->customer['email_address'] . "\n";
-			$email .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
+			$email .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
+			$email .= 'â–¼æ³¨æ–‡ç•ªå·ã€€ã€€ã€€ã€€ï¼š' . $oID . "\n";
+			$email .= 'â–¼æ³¨æ–‡æ—¥ã€€ã€€ã€€ã€€ã€€ï¼š' . strftime(DATE_FORMAT_LONG) . "\n";
+			$email .= 'â–¼ãŠåå‰ã€€ã€€ã€€ã€€ã€€ï¼š' . $order->customer['name'] . 'æ§˜' . "\n";
+			$email .= 'â–¼ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã€€ï¼š' . $order->customer['email_address'] . "\n";
+			$email .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
 			$email .= $total_details_mail;
-			$email .= '¢§¤ª»ÙÊ§ÊýË¡¡¡¡¡¡¡¡§' . $order->info['payment_method'] . "\n";
+			$email .= 'â–¼ãŠæ”¯æ‰•æ–¹æ³•ã€€ã€€ã€€ï¼š' . $order->info['payment_method'] . "\n";
 
-//if ( strcmp($a,$b)==0 ){ print 'Æ±¤¸¤Ç¤¹'; }
+//if ( strcmp($a,$b)==0 ){ print 'åŒã˜ã§ã™'; }
 
 
 
-if ($order->info['payment_method'] === '¶ä¹Ô¿¶¹þ') {
+if ($order->info['payment_method'] === 'éŠ€è¡ŒæŒ¯è¾¼') {
 			$email .= C_BANK;
-} elseif ($order->info['payment_method'] === '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ') {
+} elseif ($order->info['payment_method'] === 'ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰æ±ºæ¸ˆ') {
 			$email .= C_CC;
-} elseif ($order->info['payment_method'] === '¶ä¹Ô¿¶¹þ(Çã¤¤¼è¤ê)') {
+} elseif ($order->info['payment_method'] === 'éŠ€è¡ŒæŒ¯è¾¼(è²·ã„å–ã‚Š)') {
 	$orders_bank_account_query = tep_db_query("select comments from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($oID) . "' and orders_status_id = '1' and customer_notified = '1' order by date_added");
 	if (tep_db_num_rows($orders_bank_account_query)) {
 		while ($orders_bank_account = tep_db_fetch_array($orders_bank_account_query)) {
-			if (strncmp($orders_bank_account['comments'], '¶âÍ»µ¡´ØÌ¾¡¡¡¡¡¡¡¡¡§', 20) == 0) {
+			if (strncmp($orders_bank_account['comments'], 'é‡‘èžæ©Ÿé–¢åã€€ã€€ã€€ã€€ï¼š', 20) == 0) {
 				$bbbank = $orders_bank_account['comments'];
 			}
 		}
 	} else {
-		$bbbank = '¥¨¥é¡¼¤¬È¯À¸¤·¤Þ¤·¤¿¡£' . "\n" . STORE_NAME . '¤Ø¤ªÌä¤¤¹ç¤ï¤»¤¯¤À¤¤¡£' . "\n";
+		$bbbank = 'ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚' . "\n" . STORE_NAME . 'ã¸ãŠå•ã„åˆã‚ã›ãã ã„ã€‚' . "\n";
 	}
-		    $email .= '¢§¤ª»ÙÊ§Àè¶âÍ»µ¡´Ø' . "\n";
+		    $email .= 'â–¼ãŠæ”¯æ‰•å…ˆé‡‘èžæ©Ÿé–¢' . "\n";
 			$email .= $bbbank . "\n";
-			$email .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n\n";
-			//$email .= '¡¦ËÜ¥á¡¼¥ë¤Ëµ­ºÜ¤µ¤ì¤¿Åö¼Ò¥­¥ã¥é¥¯¥¿¡¼°¸¤Ë¾¦ÉÊ¤ò¥È¥ì¡¼¥É¤·¤Æ¤¯¤À¤µ¤¤¡£' . "\n";
-			$email .= '¡¦Åö¼Ò¤Ë¤Æ¾¦ÉÊ¤Î¼õÎÎ³ÎÇ§¤¬¤È¤ì¤Þ¤·¤¿¤éÂå¶â¤ª»ÙÊ§¤¤¼êÂ³¤­¤ËÆþ¤ê¤Þ¤¹¡£' . "\n";
-			$email .= '¡¦ËÜ¥á¡¼¥ëÁ÷¿®¸å7Æü°ÊÆâ¤Ë¼è°ú¤¬´°Î»¤Ç¤­¤Ê¤¤¾ì¹ç¡¢' . "\n";
-			$email .= '¡¡Åö¼Ò¤Ï¡¢¤ªµÒÍÍ¤¬¤´ÃíÊ¸¤ò¼è¤ê¾Ã¤µ¤ì¤¿¤â¤Î¤È¤·¤Æ¼è¤ê°·¤¤¤Þ¤¹¡£';
-} elseif ($order->info['payment_method'] === '¥³¥ó¥Ó¥Ë·èºÑ') {
+			$email .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n\n";
+			//$email .= 'ãƒ»æœ¬ãƒ¡ãƒ¼ãƒ«ã«è¨˜è¼‰ã•ã‚ŒãŸå½“ç¤¾ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼å®›ã«å•†å“ã‚’ãƒˆãƒ¬ãƒ¼ãƒ‰ã—ã¦ãã ã•ã„ã€‚' . "\n";
+			$email .= 'ãƒ»å½“ç¤¾ã«ã¦å•†å“ã®å—é ˜ç¢ºèªãŒã¨ã‚Œã¾ã—ãŸã‚‰ä»£é‡‘ãŠæ”¯æ‰•ã„æ‰‹ç¶šãã«å…¥ã‚Šã¾ã™ã€‚' . "\n";
+			$email .= 'ãƒ»æœ¬ãƒ¡ãƒ¼ãƒ«é€ä¿¡å¾Œ7æ—¥ä»¥å†…ã«å–å¼•ãŒå®Œäº†ã§ããªã„å ´åˆã€' . "\n";
+			$email .= 'ã€€å½“ç¤¾ã¯ã€ãŠå®¢æ§˜ãŒã”æ³¨æ–‡ã‚’å–ã‚Šæ¶ˆã•ã‚ŒãŸã‚‚ã®ã¨ã—ã¦å–ã‚Šæ‰±ã„ã¾ã™ã€‚';
+} elseif ($order->info['payment_method'] === 'ã‚³ãƒ³ãƒ“ãƒ‹æ±ºæ¸ˆ') {
 			$email .= C_CONVENIENCE_STORE;
 } else {
-			$email .= 'ÊÌÅÓ¼è¤ê·è¤á¤¿ÊýË¡¤Ë½à¤¸¤Æ¹Ô¤¤¤Þ¤¹¡£';
+			$email .= 'åˆ¥é€”å–ã‚Šæ±ºã‚ãŸæ–¹æ³•ã«æº–ã˜ã¦è¡Œã„ã¾ã™ã€‚';
 }
 			$email .= "\n\n\n";
-			$email .= '¢§ÃíÊ¸¾¦ÉÊ' . "\n";
+			$email .= 'â–¼æ³¨æ–‡å•†å“' . "\n";
 			$email .= '------------------------------------------' . "\n";
 			$email .= $products_ordered_mail;
 			
 			/*
-			if ($order->info['payment_method'] === '¶ä¹Ô¿¶¹þ(Çã¤¤¼è¤ê)') { //Sell
-				$email .= '¢¨ ÊÀ¼Ò¥­¥ã¥é¥¯¥¿¡¼Ì¾¤Ï¡¢¸å¤Û¤ÉÅÅ»Ò¥á¡¼¥ë¤Ë¤Æ¤ªÃÎ¤é¤»¤¤¤¿¤·¤Þ¤¹¡£' . "\n\n";
+			if ($order->info['payment_method'] === 'éŠ€è¡ŒæŒ¯è¾¼(è²·ã„å–ã‚Š)') { //Sell
+				$email .= 'â€» å¼Šç¤¾ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åã¯ã€å¾Œã»ã©é›»å­ãƒ¡ãƒ¼ãƒ«ã«ã¦ãŠçŸ¥ã‚‰ã›ã„ãŸã—ã¾ã™ã€‚' . "\n\n";
 			} else { //Buy
-				$email .= '¢¨ ÊÀ¼Ò¥­¥ã¥é¥¯¥¿¡¼Ì¾¤Ï¡¢¤ª»ÙÊ§¤¤³ÎÇ§¸å¤ËÅÅ»Ò¥á¡¼¥ë¤Ë¤Æ¤ªÃÎ¤é¤»¤¤¤¿¤·¤Þ¤¹¡£' . "\n\n";
+				$email .= 'â€» å¼Šç¤¾ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åã¯ã€ãŠæ”¯æ‰•ã„ç¢ºèªå¾Œã«é›»å­ãƒ¡ãƒ¼ãƒ«ã«ã¦ãŠçŸ¥ã‚‰ã›ã„ãŸã—ã¾ã™ã€‚' . "\n\n";
 			}
 			*/
 
@@ -574,44 +574,44 @@ if ($order->info['payment_method'] === '¶ä¹Ô¿¶¹þ') {
 	$array_ymd = explode("-",$array1[0]);
 	$array_hms = explode(":",$array1[1]);
 	$time1 = mktime($array_hms[0],$array_hms[1],$array_hms[2],$array_ymd[1],$array_ymd[2],$array_ymd[0]);
-	$trade_time = date("YÇ¯m·îdÆüH»þiÊ¬", $time1);
+	$trade_time = date("Yå¹´mæœˆdæ—¥Hæ™‚iåˆ†", $time1);
 
-			$email .= '¢§¼è°úÆü»þ¡¡¡¡¡¡¡¡¡§' . $trade_time . '¡¡¡Ê24»þ´ÖÉ½µ­¡Ë' . "\n";
-			$email .= '¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡§' . strip_tags($order->tori['houhou']) . "\n";
-			$email .= '¢§È÷¹Í¡¡¡¡¡¡¡¡¡¡¡¡¡§' . "\n";
+			$email .= 'â–¼å–å¼•æ—¥æ™‚ã€€ã€€ã€€ã€€ï¼š' . $trade_time . 'ã€€ï¼ˆ24æ™‚é–“è¡¨è¨˜ï¼‰' . "\n";
+			$email .= 'ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ï¼š' . strip_tags($order->tori['houhou']) . "\n";
+			$email .= 'â–¼å‚™è€ƒã€€ã€€ã€€ã€€ã€€ã€€ï¼š' . "\n";
 			$email .= "\n\n\n";
-			$email .= '[¤´Ï¢Íí¡¦¤ªÌä¤¤¹ç¤ï¤»Àè]¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
-			$email .= '³ô¼°²ñ¼Ò iimy' . "\n";
+			$email .= '[ã”é€£çµ¡ãƒ»ãŠå•ã„åˆã‚ã›å…ˆ]â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
+			$email .= 'æ ªå¼ä¼šç¤¾ iimy' . "\n";
 			$email .= SUPPORT_EMAIL_ADDRESS . "\n";
 			$email .= HTTP_CATALOG_SERVER . "\n";
-			$email .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
-			tep_mail($check_status['customers_name'], $check_status['customers_email_address'], '¤´ÃíÊ¸¤¢¤ê¤¬¤È¤¦¤´¤¶¤¤¤Þ¤¹¡Ú' . STORE_NAME . '¡Û', $email, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-			tep_mail(STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '¤´ÃíÊ¸¤¢¤ê¤¬¤È¤¦¤´¤¶¤¤¤Þ¤¹¡Ú' . STORE_NAME . '¡Û', $email, $check_status['customers_name'], $check_status['customers_email_address']);
+			$email .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
+			tep_mail($check_status['customers_name'], $check_status['customers_email_address'], 'ã”æ³¨æ–‡ã‚ã‚ŠãŒã¨ã†ã”ã–ã„ã¾ã™ã€' . STORE_NAME . 'ã€‘', $email, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+			tep_mail(STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, 'ã”æ³¨æ–‡ã‚ã‚ŠãŒã¨ã†ã”ã–ã„ã¾ã™ã€' . STORE_NAME . 'ã€‘', $email, $check_status['customers_name'], $check_status['customers_email_address']);
 			$customer_notified = '1';
 			
-// »ÙÊ§ÊýË¡¤¬¥¯¥ì¥¸¥Ã¥È¤Ê¤é·èºÑURL¤òÁ÷¤ë
-if ($order->info['payment_method'] === '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ') {
+// æ”¯æ‰•æ–¹æ³•ãŒã‚¯ãƒ¬ã‚¸ãƒƒãƒˆãªã‚‰æ±ºæ¸ˆURLã‚’é€ã‚‹
+if ($order->info['payment_method'] === 'ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰æ±ºæ¸ˆ') {
 			$email_credit = '';
-			$email_credit .= $order->customer['name'] . 'ÍÍ' . "\n\n";
-			$email_credit .= '¤³¤ÎÅÙ¤Ï¡¢' . STORE_NAME . '¤ò¤´ÍøÍÑ¤¤¤¿¤À¤­¡¢À¿¤Ë¤¢¤ê¤¬¤È¤¦¤´¤¶¤¤¤Þ¤¹¡£' . "\n\n";
-			$email_credit .= 'ÃíÊ¸ÈÖ¹æ' . $oID . '¤Î·èºÑURL¤ò¤ªÃÎ¤é¤»¤¤¤¿¤·¤Þ¤¹¡£' . "\n";
-			$email_credit .= '²¼µ­URL¤ò¥¯¥ê¥Ã¥¯¤·¡¢¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ¤ò´°Î»¤·¤Æ¤¯¤À¤µ¤¤¡£' . "\n";
-			$email_credit .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
+			$email_credit .= $order->customer['name'] . 'æ§˜' . "\n\n";
+			$email_credit .= 'ã“ã®åº¦ã¯ã€' . STORE_NAME . 'ã‚’ã”åˆ©ç”¨ã„ãŸã ãã€èª ã«ã‚ã‚ŠãŒã¨ã†ã”ã–ã„ã¾ã™ã€‚' . "\n\n";
+			$email_credit .= 'æ³¨æ–‡ç•ªå·' . $oID . 'ã®æ±ºæ¸ˆURLã‚’ãŠçŸ¥ã‚‰ã›ã„ãŸã—ã¾ã™ã€‚' . "\n";
+			$email_credit .= 'ä¸‹è¨˜URLã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã€ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰æ±ºæ¸ˆã‚’å®Œäº†ã—ã¦ãã ã•ã„ã€‚' . "\n";
+			$email_credit .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
 			$email_credit .= 'https://secure.telecomcredit.co.jp/inetcredit/secure/order.pl?clientip=76011&usrmail=' . $order->customer['email_address'] . '&money=' . $total_price_mail . "\n";
-			$email_credit .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
-			$email_credit .= '¢¨ ¾åµ­URL¤ò¥¯¥ê¥Ã¥¯¤·¤Æ¤â·èºÑ¥Ú¡¼¥¸¤¬É½¼¨¤µ¤ì¤Ê¤¤¾ì¹ç¤Ï¡¢¤ª¼ê¿ô¤Ç¤Ï¤´' . "\n";
-			$email_credit .= '¤¶¤¤¤Þ¤¹¤¬¡Ö²þ¹Ô¡×¤ò¼è¤ê½ü¤­¥Ö¥é¥¦¥¶¤ËÄ¾ÀÜÆþÎÏ¤·¤Æ¥¢¥¯¥»¥¹¤·¤Æ¤¯¤À¤µ¤¤¡£' . "\n\n\n";
-			$email_credit .= '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ¤¬À®¸ù¤·¤Þ¤·¤¿¤é¡¢¾¦ÉÊ¤Î¼êÇÛ¤Ë°Ü¤é¤»¤Æ¤¤¤¿¤À¤­¤Þ¤¹¡£' . "\n";
+			$email_credit .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
+			$email_credit .= 'â€» ä¸Šè¨˜URLã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ã‚‚æ±ºæ¸ˆãƒšãƒ¼ã‚¸ãŒè¡¨ç¤ºã•ã‚Œãªã„å ´åˆã¯ã€ãŠæ‰‹æ•°ã§ã¯ã”' . "\n";
+			$email_credit .= 'ã–ã„ã¾ã™ãŒã€Œæ”¹è¡Œã€ã‚’å–ã‚Šé™¤ããƒ–ãƒ©ã‚¦ã‚¶ã«ç›´æŽ¥å…¥åŠ›ã—ã¦ã‚¢ã‚¯ã‚»ã‚¹ã—ã¦ãã ã•ã„ã€‚' . "\n\n\n";
+			$email_credit .= 'ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰æ±ºæ¸ˆãŒæˆåŠŸã—ã¾ã—ãŸã‚‰ã€å•†å“ã®æ‰‹é…ã«ç§»ã‚‰ã›ã¦ã„ãŸã ãã¾ã™ã€‚' . "\n";
 			$email_credit .= "\n\n\n";
-			$email_credit .= '¤´ÉÔÌÀ¤ÊÅÀ¤¬¤´¤¶¤¤¤Þ¤·¤¿¤é¡¢ÃíÊ¸ÈÖ¹æ¤ò¤´³ÎÇ§¤Î¾å¡¢' . "\n";
-			$email_credit .= '¡Ö' . STORE_NAME . '¡×¤Þ¤Ç¤ªÌä¤¤¹ç¤ï¤»¤¯¤À¤µ¤¤¡£' . "\n\n";
-			$email_credit .= '[¤´Ï¢Íí¡¦¤ªÌä¤¤¹ç¤ï¤»Àè]¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
-			$email_credit .= '³ô¼°²ñ¼Ò iimy' . "\n";
+			$email_credit .= 'ã”ä¸æ˜Žãªç‚¹ãŒã”ã–ã„ã¾ã—ãŸã‚‰ã€æ³¨æ–‡ç•ªå·ã‚’ã”ç¢ºèªã®ä¸Šã€' . "\n";
+			$email_credit .= 'ã€Œ' . STORE_NAME . 'ã€ã¾ã§ãŠå•ã„åˆã‚ã›ãã ã•ã„ã€‚' . "\n\n";
+			$email_credit .= '[ã”é€£çµ¡ãƒ»ãŠå•ã„åˆã‚ã›å…ˆ]â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
+			$email_credit .= 'æ ªå¼ä¼šç¤¾ iimy' . "\n";
 			$email_credit .= SUPPORT_EMAIL_ADDRESS . "\n";
 			$email_credit .= HTTP_CATALOG_SERVER . "\n";
-			$email_credit .= '¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬¨¬' . "\n";
-			tep_mail($check_status['customers_name'], $check_status['customers_email_address'], '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ¤Ë¤Ä¤¤¤Æ¡Ú' . STORE_NAME . '¡Û', $email_credit, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-			tep_mail(STORE_OWNER, SENTMAIL_ADDRESS, 'Á÷¿®ºÑ¡§¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ¤Ë¤Ä¤¤¤Æ¡Ú' . STORE_NAME . '¡Û', $email_credit, $check_status['customers_name'], $check_status['customers_email_address']);
+			$email_credit .= 'â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”' . "\n";
+			tep_mail($check_status['customers_name'], $check_status['customers_email_address'], 'ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰æ±ºæ¸ˆã«ã¤ã„ã¦ã€' . STORE_NAME . 'ã€‘', $email_credit, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+			tep_mail(STORE_OWNER, SENTMAIL_ADDRESS, 'é€ä¿¡æ¸ˆï¼šã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰æ±ºæ¸ˆã«ã¤ã„ã¦ã€' . STORE_NAME . 'ã€‘', $email_credit, $check_status['customers_name'], $check_status['customers_email_address']);
 }
 
 		}
@@ -622,9 +622,9 @@ if ($order->info['payment_method'] === '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ') {
 		if ($order_updated && !$products_delete && $order_updated_2) {
 			$messageStack->add_session(SUCCESS_ORDER_UPDATED, 'success');
 		} elseif ($order_updated && $products_delete) {
-			$messageStack->add_session('¾¦ÉÊ¤òºï½ü¤·¤Þ¤·¤¿¡£<font color="red">¥á¡¼¥ë¤ÏÁ÷¿®¤µ¤ì¤Æ¤¤¤Þ¤»¤ó¡£</font>', 'success');
+			$messageStack->add_session('å•†å“ã‚’å‰Šé™¤ã—ã¾ã—ãŸã€‚<font color="red">ãƒ¡ãƒ¼ãƒ«ã¯é€ä¿¡ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚</font>', 'success');
 		} else {
-			$messageStack->add_session('¥¨¥é¡¼¤¬È¯À¸¤·¤Þ¤·¤¿¡£Àµ¾ï¤Ë½èÍý¤¬¹Ô¤ï¤ì¤Æ¤¤¤Ê¤¤²ÄÇ½À­¤¬¤¢¤ê¤Þ¤¹¡£', 'error');
+			$messageStack->add_session('ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚æ­£å¸¸ã«å‡¦ç†ãŒè¡Œã‚ã‚Œã¦ã„ãªã„å¯èƒ½æ€§ãŒã‚ã‚Šã¾ã™ã€‚', 'error');
 		}
 
 		tep_redirect(tep_href_link("edit_new_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
@@ -666,14 +666,14 @@ if ($order->info['payment_method'] === '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ') {
 			$row = tep_db_fetch_array($result);
 			extract($row, EXTR_PREFIX_ALL, "p");
 			
-			// ÆÃ²Á¤òÅ¬ÍÑ
+			// ç‰¹ä¾¡ã‚’é©ç”¨
 			$specials_query = tep_db_query("select specials_new_products_price from " . TABLE_SPECIALS . " where products_id = '" . $add_product_products_id . "' and status = '1'");
 			if (tep_db_num_rows ($specials_query)) {
 				$specials = tep_db_fetch_array($specials_query);
 				$p_products_price = $specials['specials_new_products_price'];
 			}
 			
-			// Âç¸ý³ä°ú¤òÅ¬ÍÑ
+			// å¤§å£å‰²å¼•ã‚’é©ç”¨
 			$wari_array = array();
 			if(tep_not_null($p_products_small_sum)) {
 				$parray = explode(",", $p_products_small_sum);
@@ -798,7 +798,7 @@ if ($order->info['payment_method'] === '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ') {
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
-<!--µþ-->
+<!--äº¬-->
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/general.js"></script>
@@ -838,12 +838,12 @@ if ($order->info['payment_method'] === '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ') {
 					<td width="100%">
 						<table border="0" width="100%" cellspacing="0" cellpadding="0">
 							<tr>
-								<td class="pageHeading">ÃíÊ¸½ñ¤ÎºîÀ®</td>
+								<td class="pageHeading">æ³¨æ–‡æ›¸ã®ä½œæˆ</td>
 								<td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
 								<td class="pageHeading" align="right">&nbsp;</td>
 							</tr>
 							<tr>
-								<td colspan="3"><font color="red">¡Ú½ÅÍ×¡ÛÃíÊ¸ÊÔ½¸¤Ç¤Ï¤¢¤ê¤Þ¤»¤ó¡£¿·µ¬ÃíÊ¸ºîÀ®¥·¥¹¥Æ¥à¤Ç¤¹¡£</font></td>
+								<td colspan="3"><font color="red">ã€é‡è¦ã€‘æ³¨æ–‡ç·¨é›†ã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚æ–°è¦æ³¨æ–‡ä½œæˆã‚·ã‚¹ãƒ†ãƒ ã§ã™ã€‚</font></td>
 							</tr>
 						</table>
 						<?php echo tep_draw_separator(); ?>
@@ -854,7 +854,7 @@ if ($order->info['payment_method'] === '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ') {
 						<!-- Begin Update Block -->
 						<table width="100%" border="0" cellpadding="2" cellspacing="1">
 							<tr>
-								<td class="main" bgcolor="#FFDDFF" height="25">ÊÑ¹¹¤·¤¿¤¤ÆâÍÆ¤ò¿µ½Å¤ËÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£<b>¶õÇò¤Ê¤É¤ÎÍ¾Ê¬¤ÊÊ¸»ú¤¬ÆþÎÏ¤µ¤ì¤Æ¤¤¤Ê¤¤¤«¥Á¥§¥Ã¥¯¤¹¤ë¤è¤¦¤Ë¡ª</b></td>
+								<td class="main" bgcolor="#FFDDFF" height="25">å¤‰æ›´ã—ãŸã„å†…å®¹ã‚’æ…Žé‡ã«å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚<b>ç©ºç™½ãªã©ã®ä½™åˆ†ãªæ–‡å­—ãŒå…¥åŠ›ã•ã‚Œã¦ã„ãªã„ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹ã‚ˆã†ã«ï¼</b></td>
 								<td class="main" bgcolor="#FFBBFF" width="10">&nbsp;</td>
 								<td class="main" bgcolor="#FF99FF" width="10">&nbsp;</td>
 								<td class="main" bgcolor="#FF77FF" width="10">&nbsp;</td>
@@ -867,35 +867,35 @@ if ($order->info['payment_method'] === '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ') {
 						<span class="SubTitle"><?php echo MENUE_TITLE_CUSTOMER; ?></span>
 						<table width="100%" border="0" class="dataTableRow" cellpadding="2" cellspacing="0">
 							<tr>
-								<td class="main" valign="top" width="30%"><b>ÃíÊ¸ÈÖ¹æ:</b></td>
+								<td class="main" valign="top" width="30%"><b>æ³¨æ–‡ç•ªå·:</b></td>
 								<td class="main" width="70%"><?php echo $oID;?></td>
 							</tr>
 							<tr>
-								<td class="main" valign="top"><b>ÃíÊ¸Æü:</b></td>
+								<td class="main" valign="top"><b>æ³¨æ–‡æ—¥:</b></td>
 								<td class="main"><?php echo tep_date_long($order->info['date_purchased']);?></td>
 							</tr>
 							<tr>
-								<td class="main" valign="top"><b>¸ÜµÒÌ¾:</b></td>
+								<td class="main" valign="top"><b>é¡§å®¢å:</b></td>
 								<td class="main"><?php echo tep_html_quotes($order->customer['name']); ?></td>
 							</tr>
 							<tr>
-								<td class="main" valign="top"><b>¥á¡¼¥ë¥¢¥É¥ì¥¹:</b></td>
+								<td class="main" valign="top"><b>ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹:</b></td>
 								<td class="main"><font color="red"><b><?php echo $order->customer['email_address']; ?></b></font></td>
 							</tr>
 							<!-- End Addresses Block -->
 							<!-- Begin Payment Block -->
 							<tr>
-								<td class="main" valign="top"><b>»ÙÊ§ÊýË¡:</b></td>
+								<td class="main" valign="top"><b>æ”¯æ‰•æ–¹æ³•:</b></td>
 								<td class="main"><?php echo $order->info['payment_method']; ?></td>
 							</tr>
 							<!-- End Payment Block -->
 							<!-- Begin Trade Date Block -->
 							<tr>
-								<td class="main" valign="top"><b>¼è°úÆü»þ:</b></td>
+								<td class="main" valign="top"><b>å–å¼•æ—¥æ™‚:</b></td>
 								<td class="main"><?php echo $order->tori['date']; ?></td>
 							</tr>
 							<tr>
-								<td class="main" valign="top"><b>¥ª¥×¥·¥ç¥ó:</b></td>
+								<td class="main" valign="top"><b>ã‚ªãƒ—ã‚·ãƒ§ãƒ³:</b></td>
 								<td class="main"><?php echo $order->tori['houhou']; ?>
 <input type="hidden" name="update_customer_name" size="25" value="<?php echo tep_html_quotes($order->customer['name']); ?>">
 <input type="hidden" name="update_customer_email_address" size="45" value="<?php echo $order->customer['email_address']; ?>">
@@ -929,7 +929,7 @@ if ($order->info['payment_method'] === '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ') {
 				</tr>
 				<!-- Begin Products Listing Block -->
 				<tr>
-					<td class="SubTitle"><br>2. ÃíÊ¸¾¦ÉÊ</td>
+					<td class="SubTitle"><br>2. æ³¨æ–‡å•†å“</td>
 				</tr>
 				<tr>
 					<td>		  
@@ -969,13 +969,13 @@ if ($order->info['payment_method'] === '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ') {
 <?php // Version without editable names & prices ?>
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
 	<tr class="dataTableHeadingRow">
-	  <td class="dataTableHeadingContent" colspan="2">¿ôÎÌ / ¾¦ÉÊÌ¾</td>
+	  <td class="dataTableHeadingContent" colspan="2">æ•°é‡ / å•†å“å</td>
 	  <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCTS_MODEL; ?></td>
-	  <td class="dataTableHeadingContent">ÀÇÎ¨</td>
-	  <td class="dataTableHeadingContent" align="right">²Á³Ê(ÀÇÊÌ)</td>
-	  <td class="dataTableHeadingContent" align="right">²Á³Ê(ÀÇ¹þ)</td>
-	  <td class="dataTableHeadingContent" align="right">¹ç·×(ÀÇÊÌ)</td>
-	  <td class="dataTableHeadingContent" align="right">¹ç·×(ÀÇ¹þ)</td>
+	  <td class="dataTableHeadingContent">ç¨ŽçŽ‡</td>
+	  <td class="dataTableHeadingContent" align="right">ä¾¡æ ¼(ç¨Žåˆ¥)</td>
+	  <td class="dataTableHeadingContent" align="right">ä¾¡æ ¼(ç¨Žè¾¼)</td>
+	  <td class="dataTableHeadingContent" align="right">åˆè¨ˆ(ç¨Žåˆ¥)</td>
+	  <td class="dataTableHeadingContent" align="right">åˆè¨ˆ(ç¨Žè¾¼)</td>
 	</tr>
 	
 <?php
@@ -985,7 +985,7 @@ if ($order->info['payment_method'] === '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ') {
 		echo '	  <tr class="dataTableRow">' . "\n" .
 		     '	    <td class="' . $RowStyle . '" align="left" valign="top" width="20">' . "<input name='update_products[$orders_products_id][qty]' size='2' value='" . $order->products[$i]['qty'] . "'>&nbsp;x</td>\n" . 
 		     '	    <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input name='update_products[$orders_products_id][name]' size='64' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
-			 '      &nbsp;&nbsp;¥­¥ã¥éÌ¾¡§<input type="hidden" name="dummy" value="¤¢¤¤¤¦¤¨¤ªÈýÉý"><input name="update_products[' . $orders_products_id . '][character]" size="20" value="' . $order->products[$i]['character'] . '">';
+			 '      &nbsp;&nbsp;ã‚­ãƒ£ãƒ©åï¼š<input type="hidden" name="dummy" value="ã‚ã„ã†ãˆãŠçœ‰å¹…"><input name="update_products[' . $orders_products_id . '][character]" size="20" value="' . $order->products[$i]['character'] . '">';
 		// Has Attributes?
 		if (sizeof($order->products[$i]['attributes']) > 0) {
 			for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
@@ -1017,7 +1017,7 @@ if ($order->info['payment_method'] === '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ') {
 	      <td>
 				  <table width="100%" cellpadding="0" cellspacing="0">
 					  <tr>
-						  <td valign="top"><?php echo "<span class='smalltext'>" . HINT_DELETE_POSITION . "¾¦ÉÊÄÉ²Ã¤ÈÂ¾¤Î¹àÌÜ¤ÏÆ±»þ¤ËÊÑ¹¹¤Ç¤­¤Þ¤»¤ó¡£<b>¡Ö ¾¦ÉÊ¤ÎÄÉ²Ã ¡×¤ÏÃ±ÂÎ¤Ç¹Ô¤Ã¤Æ¤¯¤À¤µ¤¤¡£</b></span>"; ?></td>
+						  <td valign="top"><?php echo "<span class='smalltext'>" . HINT_DELETE_POSITION . "å•†å“è¿½åŠ ã¨ä»–ã®é …ç›®ã¯åŒæ™‚ã«å¤‰æ›´ã§ãã¾ã›ã‚“ã€‚<b>ã€Œ å•†å“ã®è¿½åŠ  ã€ã¯å˜ä½“ã§è¡Œã£ã¦ãã ã•ã„ã€‚</b></span>"; ?></td>
 			        <td align="right"><?php echo '<a href="' . $PHP_SELF . '?oID=' . $oID . '&action=add_product&step=1">' . tep_image_button('button_add_article.gif', ADDING_TITLE) . '</a>'; ?></td>
 						</tr>
 					</table>
@@ -1026,7 +1026,7 @@ if ($order->info['payment_method'] === '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ') {
 	<!-- End Products Listings Block -->
 	<!-- Begin Order Total Block -->
       <tr>
-	      <td class="SubTitle">3. ¥Ý¥¤¥ó¥È³ä°ú¡¢¼ê¿ôÎÁ¡¢ÃÍ°ú¤­</td>
+	      <td class="SubTitle">3. ãƒã‚¤ãƒ³ãƒˆå‰²å¼•ã€æ‰‹æ•°æ–™ã€å€¤å¼•ã</td>
 			</tr>
       <tr>
 	      <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '1'); ?></td>
@@ -1036,7 +1036,7 @@ if ($order->info['payment_method'] === '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ') {
 
 <table width="100%" border="0" cellspacing="0" cellpadding="2" class="dataTableRow">
 	<tr class="dataTableHeadingRow">
-	  <td class="dataTableHeadingContent" align="left" width="75%">Ãí°Õ»ö¹à</td>
+	  <td class="dataTableHeadingContent" align="left" width="75%">æ³¨æ„äº‹é …</td>
 	  <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_MODULE; ?></td>
 	  <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_AMOUNT; ?></td>
 	  <td class="dataTableHeadingContent"width="1"><?php echo tep_draw_separator('pixel_trans.gif', '1', '1'); ?></td>
@@ -1074,7 +1074,7 @@ if ($order->info['payment_method'] === '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ') {
 		$TotalStyle = "smallText";
 		if ($TotalDetails["Class"] == "ot_total") {
 			echo '	<tr>' . "\n" .
-				   '		<td align="left" class="' . $TotalStyle . '">¹ç·×¶â³Û¤¬¹ç¤Ã¤Æ¤¤¤ë¤«É¬¤º³ÎÇ§¤·¤Æ¤¯¤À¤µ¤¤¡£</td>' . 
+				   '		<td align="left" class="' . $TotalStyle . '">åˆè¨ˆé‡‘é¡ãŒåˆã£ã¦ã„ã‚‹ã‹å¿…ãšç¢ºèªã—ã¦ãã ã•ã„ã€‚</td>' . 
 				   '		<td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' . 
 				   '		<td align="right" class="' . $TotalStyle . '"><b>' . $currencies->format($TotalDetails["Price"], true, $order->info['currency'], $order->info['currency_value']) . '</b>' . 
 						    "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
@@ -1085,7 +1085,7 @@ if ($order->info['payment_method'] === '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ') {
 				   '	</tr>' . "\n";
 		} elseif ($TotalDetails["Class"] == "ot_subtotal") {
 			echo '	<tr>' . "\n" .
-				   '		<td align="left" class="' . $TotalStyle . '"><table><tr class="smalltext"><td><font color="red">¢¨</font>&nbsp;¥³¥Ô¥ÚÍÑ:</td><td>Ä´À°³Û</td><td>»öÌ³¼ê¿ôÎÁ</td><td>ÃÍ°ú¤­</td></tr></table></td>' . 
+				   '		<td align="left" class="' . $TotalStyle . '"><table><tr class="smalltext"><td><font color="red">â€»</font>&nbsp;ã‚³ãƒ”ãƒšç”¨:</td><td>èª¿æ•´é¡</td><td>äº‹å‹™æ‰‹æ•°æ–™</td><td>å€¤å¼•ã</td></tr></table></td>' . 
 				   '		<td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' .
 				   '		<td align="right" class="' . $TotalStyle . '"><b>' . $currencies->format($TotalDetails["Price"], true, $order->info['currency'], $order->info['currency_value']) . '</b>' . 
 						    "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
@@ -1105,12 +1105,12 @@ if ($order->info['payment_method'] === '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ') {
 				   '		<td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
 				   '	</tr>' . "\n";
 		} elseif ($TotalDetails["Class"] == "ot_point") {
-			if ($customer_guest['customers_guest_chk'] == 0) { //²ñ°÷
+			if ($customer_guest['customers_guest_chk'] == 0) { //ä¼šå“¡
 				$current_point = $customer_point['point'] + $TotalDetails["Price"];
 				echo '	<tr>' . "\n" .
-					   '		<td align="left" class="' . $TotalStyle . '">¤³¤Î¤ªµÒÍÍ¤Ï²ñ°÷¤Ç¤¹¡£ÆþÎÏ²ÄÇ½¥Ý¥¤¥ó¥È¤Ï <font color="red"><b>»Ä¤ê' . $customer_point['point'] . '¡Ê¹ç·×' . $current_point . '¡Ë</b></font> ¤Ç¤¹¡£¡Ý¡Ê¥Þ¥¤¥Ê¥¹¡ËÉä¹æ¤ÎÆþÎÏ¤ÏÉ¬Í×¤¢¤ê¤Þ¤»¤ó¡£É¬¤ºÀµ¿ô¤òÆþÎÏ¤¹¤ë¤è¤¦¤Ë¡ª</td>' . 
+					   '		<td align="left" class="' . $TotalStyle . '">ã“ã®ãŠå®¢æ§˜ã¯ä¼šå“¡ã§ã™ã€‚å…¥åŠ›å¯èƒ½ãƒã‚¤ãƒ³ãƒˆã¯ <font color="red"><b>æ®‹ã‚Š' . $customer_point['point'] . 'ï¼ˆåˆè¨ˆ' . $current_point . 'ï¼‰</b></font> ã§ã™ã€‚âˆ’ï¼ˆãƒžã‚¤ãƒŠã‚¹ï¼‰ç¬¦å·ã®å…¥åŠ›ã¯å¿…è¦ã‚ã‚Šã¾ã›ã‚“ã€‚å¿…ãšæ­£æ•°ã‚’å…¥åŠ›ã™ã‚‹ã‚ˆã†ã«ï¼</td>' . 
 					   '		<td align="right" class="' . $TotalStyle . '">' . trim($TotalDetails["Name"]) . '</td>' . "\n" .
-					   '		<td align="right" class="' . $TotalStyle . '" nowrap>¡Ý' . "<input name='update_totals[$TotalIndex][value]' size='6' value='" . $TotalDetails["Price"] . "'>" . 
+					   '		<td align="right" class="' . $TotalStyle . '" nowrap>âˆ’' . "<input name='update_totals[$TotalIndex][value]' size='6' value='" . $TotalDetails["Price"] . "'>" . 
 								"<input type='hidden' name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . 
 								"<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
 								"<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
@@ -1118,9 +1118,9 @@ if ($order->info['payment_method'] === '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ') {
 					   '		<td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
 						 '   </td>' . "\n" .
 					   '	</tr>' . "\n";
-			} else { //¥²¥¹¥È
+			} else { //ã‚²ã‚¹ãƒˆ
 				echo '	<tr>' . "\n" .
-					   '		<td align="left" class="' . $TotalStyle . '">¤³¤Î¤ªµÒÍÍ¤Ï¥²¥¹¥È¤Ç¤¹¡£¥Ý¥¤¥ó¥È³ä°ú¤ÎÆþÎÏ¤Ï¤Ç¤­¤Þ¤»¤ó¡£</td>' . 
+					   '		<td align="left" class="' . $TotalStyle . '">ã“ã®ãŠå®¢æ§˜ã¯ã‚²ã‚¹ãƒˆã§ã™ã€‚ãƒã‚¤ãƒ³ãƒˆå‰²å¼•ã®å…¥åŠ›ã¯ã§ãã¾ã›ã‚“ã€‚</td>' . 
 					   '		<td align="right" class="' . $TotalStyle . '">' . trim($TotalDetails["Name"]) . '</td>' . "\n" .
 					   '		<td align="right" class="' . $TotalStyle . '">' . $TotalDetails["Price"] . 
 								"<input type='hidden' name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . 
@@ -1133,7 +1133,7 @@ if ($order->info['payment_method'] === '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ') {
 			}
 		} else {
 			echo '	<tr>' . "\n" .
-				   '		<td align="left" class="' . $TotalStyle . '">ÃÍ°ú¤­¤¹¤ë¾ì¹ç¤Ï¡¢¡Ý¡Ê¥Þ¥¤¥Ê¥¹¡ËÉä¹æ¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£</td>' . 
+				   '		<td align="left" class="' . $TotalStyle . '">å€¤å¼•ãã™ã‚‹å ´åˆã¯ã€âˆ’ï¼ˆãƒžã‚¤ãƒŠã‚¹ï¼‰ç¬¦å·ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚</td>' . 
 				   '		<td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
 				   '		<td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][value]' size='6' value='" . $TotalDetails["Price"] . "'>" . 
 						    "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
@@ -1145,7 +1145,7 @@ if ($order->info['payment_method'] === '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ') {
 	}
 ?>
 </table>
-<span class='smalltext'><font color="red">¥Ò¥ó¥È:</font>&nbsp;²Á³Ê¹½À®Í×ÁÇ¤òºï½ü¤¹¤ë¾ì¹ç¤Ï¶â³Û¤Ë¡Ö0¡×¤ÈÆþÎÏ¤·¤Æ¹¹¿·¤·¤Æ¤¯¤À¤µ¤¤¡£</span>
+<span class='smalltext'><font color="red">ãƒ’ãƒ³ãƒˆ:</font>&nbsp;ä¾¡æ ¼æ§‹æˆè¦ç´ ã‚’å‰Šé™¤ã™ã‚‹å ´åˆã¯é‡‘é¡ã«ã€Œ0ã€ã¨å…¥åŠ›ã—ã¦æ›´æ–°ã—ã¦ãã ã•ã„ã€‚</span>
 	      </td>
       </tr>
       <tr>
@@ -1158,11 +1158,11 @@ if ($order->info['payment_method'] === '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ') {
 	      <td>
           <table width="100%" border="0" cellpadding="2" cellspacing="1">
             <tr>
-              <td class="main" bgcolor="#FFDDFF" height="25"><font color="red">½ÅÍ×:</font>&nbsp;<b>²Á³Ê¹½À®Í×ÁÇ¤òÊÑ¹¹¤·¤¿¾ì¹ç¤Ï¡Ö<font color="red">ÃíÊ¸ÆâÍÆ³ÎÇ§</font>¡×¥Ü¥¿¥ó¤ò¥¯¥ê¥Ã¥¯¤·¤Æ¹ç·×¶â³Û¤¬°ìÃ×¤¹¤ë¤«³ÎÇ§¤·¤Æ¤¯¤À¤µ¤¤¡£&nbsp;¢Í</b></td>
+              <td class="main" bgcolor="#FFDDFF" height="25"><font color="red">é‡è¦:</font>&nbsp;<b>ä¾¡æ ¼æ§‹æˆè¦ç´ ã‚’å¤‰æ›´ã—ãŸå ´åˆã¯ã€Œ<font color="red">æ³¨æ–‡å†…å®¹ç¢ºèª</font>ã€ãƒœã‚¿ãƒ³ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦åˆè¨ˆé‡‘é¡ãŒä¸€è‡´ã™ã‚‹ã‹ç¢ºèªã—ã¦ãã ã•ã„ã€‚&nbsp;â‡’</b></td>
               <td class="main" bgcolor="#FFBBFF" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FF99FF" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FF77FF" width="10">&nbsp;</td>
-              <td class="main" bgcolor="#FF55FF" width="120" align="center"><INPUT type="button" value=" ÃíÊ¸ÆâÍÆ³ÎÇ§ " onClick="update_price()"></td>
+              <td class="main" bgcolor="#FF55FF" width="120" align="center"><INPUT type="button" value=" æ³¨æ–‡å†…å®¹ç¢ºèª " onClick="update_price()"></td>
 	          </tr>
           </table>
 				</td>
@@ -1173,7 +1173,7 @@ if ($order->info['payment_method'] === '¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É·èºÑ') {
 	<!-- End of Update Block -->
 	<!-- Begin Status Block -->
       <tr>
-	      <td class="SubTitle">4. ÃíÊ¸¥¹¥Æ¡¼¥¿¥¹¡¢¥³¥á¥ó¥ÈÄÌÃÎ</td>
+	      <td class="SubTitle">4. æ³¨æ–‡ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã€ã‚³ãƒ¡ãƒ³ãƒˆé€šçŸ¥</td>
 			</tr>
       <tr>
 	      <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '1'); ?></td>
@@ -1241,23 +1241,23 @@ if (tep_db_num_rows($orders_history_query)) {
 		  <table border="0" cellspacing="0" cellpadding="2">
         <tr>
           <td class="main"><b><?php echo ENTRY_STATUS; ?></b></td>
-          <td class="main">--&nbsp;&nbsp;¡Ê½é´üÃÍ¡Ë</td>
+          <td class="main">--&nbsp;&nbsp;ï¼ˆåˆæœŸå€¤ï¼‰</td>
         </tr>
         <tr>
-          <td class="main"><b>¥á¡¼¥ëÁ÷¿®:</b></td>
+          <td class="main"><b>ãƒ¡ãƒ¼ãƒ«é€ä¿¡:</b></td>
           <td class="main"><table bgcolor="red" cellspacing="5"><tr><td><?php echo tep_draw_checkbox_field('notify', '', true); ?></td></tr></table></td>
         </tr>
         <? if($CommentsWithStatus) { ?>
         <tr>
-          <td class="main"><b>¥³¥á¥ó¥Èµ­Ï¿:</b></td>
-          <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', false); ?>&nbsp;&nbsp;<b style="color:#FF0000;">¢«¤³¤³¤Ï¥Á¥§¥Ã¥¯¤·¤Ê¤¤¤è¤¦¤Ë</b></td>
+          <td class="main"><b>ã‚³ãƒ¡ãƒ³ãƒˆè¨˜éŒ²:</b></td>
+          <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', false); ?>&nbsp;&nbsp;<b style="color:#FF0000;">â†ã“ã“ã¯ãƒã‚§ãƒƒã‚¯ã—ãªã„ã‚ˆã†ã«</b></td>
         </tr>
         <? } ?>
       </table>
 	  </td>
     <td class="main" width="10">&nbsp;</td>
     <td class="main">
-		¤³¤Á¤é¤ËÆþÎÏ¤·¤¿Ê¸¾Ï¤Ï¥á¡¼¥ëËÜÊ¸¤ËÁÞÆþ¤µ¤ì¤Þ¤¹¡£<br>
+		ã“ã¡ã‚‰ã«å…¥åŠ›ã—ãŸæ–‡ç« ã¯ãƒ¡ãƒ¼ãƒ«æœ¬æ–‡ã«æŒ¿å…¥ã•ã‚Œã¾ã™ã€‚<br>
     <?
     if($CommentsWithStatus) {
 	
@@ -1280,7 +1280,7 @@ if (tep_db_num_rows($orders_history_query)) {
 	<!-- End of Status Block -->
 	<!-- Begin Update Block -->
       <tr>
-	      <td class="SubTitle">5. ¥Ç¡¼¥¿¤ò¹¹¿·</td>
+	      <td class="SubTitle">5. ãƒ‡ãƒ¼ã‚¿ã‚’æ›´æ–°</td>
 		</tr>
       <tr>
 	      <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '1'); ?></td>
@@ -1289,7 +1289,7 @@ if (tep_db_num_rows($orders_history_query)) {
 	    <td>
           <table width="100%" border="0" cellpadding="2" cellspacing="1">
             <tr>
-              <td class="main" bgcolor="#FFDDFF"><b>ºÇ½ª³ÎÇ§¤Ï¤·¤Þ¤·¤¿¤«¡©</b>&nbsp;<?php echo HINT_PRESS_UPDATE; ?></td>
+              <td class="main" bgcolor="#FFDDFF"><b>æœ€çµ‚ç¢ºèªã¯ã—ã¾ã—ãŸã‹ï¼Ÿ</b>&nbsp;<?php echo HINT_PRESS_UPDATE; ?></td>
               <td class="main" bgcolor="#FFBBFF" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FF99FF" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FF77FF" width="10">&nbsp;</td>
@@ -1301,12 +1301,12 @@ if (tep_db_num_rows($orders_history_query)) {
 	  <tr>
 	    <td>
 <table width="100%" cellspacing="0" cellpadding="2">
-	<tr class="smalltext"><td valign="top" colspan="2"><font color="red">¢¨</font>&nbsp;¥³¥Ô¥ÚÍÑ¥Õ¥ì¡¼¥º¤Ç¤¹¡£¥È¥ê¥×¥ë¥¯¥ê¥Ã¥¯¤ò¤¹¤ë¤ÈÁ´ÁªÂò¤Ç¤­¤Þ¤¹¡£</td></tr>
-	<tr class="smalltext" bgcolor="#999999"><td>DB¤ËÅÐÏ¿¤µ¤ì¤Æ¤¤¤ë¥­¥ã¥é¥¯¥¿¡¼°Ê³°¤Î¾ì¹ç</td><td>Í½È÷</td></tr>
+	<tr class="smalltext"><td valign="top" colspan="2"><font color="red">â€»</font>&nbsp;ã‚³ãƒ”ãƒšç”¨ãƒ•ãƒ¬ãƒ¼ã‚ºã§ã™ã€‚ãƒˆãƒªãƒ—ãƒ«ã‚¯ãƒªãƒƒã‚¯ã‚’ã™ã‚‹ã¨å…¨é¸æŠžã§ãã¾ã™ã€‚</td></tr>
+	<tr class="smalltext" bgcolor="#999999"><td>DBã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ä»¥å¤–ã®å ´åˆ</td><td>äºˆå‚™</td></tr>
 	<tr class="smalltext" bgcolor="#CCCCCC">
-	<td valign="top">¡Ú½ÅÍ×¡ÛÊÀ¼Ò¥­¥ã¥é¥¯¥¿¡¼¡Ú¡Û¤¬¤ª¼è¤ê°ú¤­¤Ë»Ç¤¤¤Þ¤¹¡£</td>
+	<td valign="top">ã€é‡è¦ã€‘å¼Šç¤¾ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã€ã€‘ãŒãŠå–ã‚Šå¼•ãã«ä¼ºã„ã¾ã™ã€‚</td>
 	<td valign="top">
-		Í½È÷
+		äºˆå‚™
 	</td>
 	</tr>
 </table>
@@ -1471,7 +1471,7 @@ if (tep_db_num_rows($orders_history_query)) {
 		{
 			echo "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
 			echo "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 4: </b></td>";
-			echo '<td class="' . dataTableContent . '" valign="top">' . ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1">&nbsp;¸Ä&nbsp;&nbsp;&nbsp;¥­¥ã¥é¥¯¥¿¡¼Ì¾:&nbsp;<input type="hidden" name="dummy" value="¤¢¤¤¤¦¤¨¤ªÈýÉý"><input name="add_product_character" size="20" value=""></td>';
+			echo '<td class="' . dataTableContent . '" valign="top">' . ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1">&nbsp;å€‹&nbsp;&nbsp;&nbsp;ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼å:&nbsp;<input type="hidden" name="dummy" value="ã‚ã„ã†ãˆãŠçœ‰å¹…"><input name="add_product_character" size="20" value=""></td>';
 			echo "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
 
 			if(IsSet($add_product_options))

@@ -1,444 +1,444 @@
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
 /* links */
 /* ---------------------------
-A¡§¥ê¥ó¥¯¡ÊÄÌ¾ï¡Ë
+Aï¼šãƒªãƒ³ã‚¯ï¼ˆé€šå¸¸ï¼‰
 --------------------------- */
 a:link {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #000000;                                 /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-font-weight: normal;                            /* ¥Õ¥©¥ó¥ÈÂÀ¤µ */
-text-decoration: none;                          /* ¥Æ¥­¥¹¥È¤ÎÁõ¾ş */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #000000;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+font-weight: normal;                            /* ãƒ•ã‚©ãƒ³ãƒˆå¤ªã• */
+text-decoration: none;                          /* ãƒ†ã‚­ã‚¹ãƒˆã®è£…é£¾ */
 }
 /* ---------------------------
-A¡§¥ê¥ó¥¯¡ÊË¬ÌäºÑ¤ß¡Ë
+Aï¼šãƒªãƒ³ã‚¯ï¼ˆè¨ªå•æ¸ˆã¿ï¼‰
 --------------------------- */
 a:visited {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #000000;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
-font-weight: normal;                            /* ¥Õ¥©¥ó¥ÈÂÀ¤µ */
-text-decoration: none;                          /* ¥Æ¥­¥¹¥È¤ÎÁõ¾ş */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #000000;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
+font-weight: normal;                            /* ãƒ•ã‚©ãƒ³ãƒˆå¤ªã• */
+text-decoration: none;                          /* ãƒ†ã‚­ã‚¹ãƒˆã®è£…é£¾ */
 }
 /* ---------------------------
-A¡§¥ê¥ó¥¯¡ÊÁªÂò¤·¤Æ¤¤¤ë¡Ë
+Aï¼šãƒªãƒ³ã‚¯ï¼ˆé¸æŠã—ã¦ã„ã‚‹ï¼‰
 --------------------------- */
 a:active {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #000000;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
-font-weight: normal;                            /* ¥Õ¥©¥ó¥ÈÂÀ¤µ */
-text-decoration: none;                          /* ¥Æ¥­¥¹¥È¤ÎÁõ¾ş */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #000000;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
+font-weight: normal;                            /* ãƒ•ã‚©ãƒ³ãƒˆå¤ªã• */
+text-decoration: none;                          /* ãƒ†ã‚­ã‚¹ãƒˆã®è£…é£¾ */
 }
 /* ---------------------------
-A¡§¥ê¥ó¥¯¡Ê¥«¡¼¥½¥ë¤¬¾å¤Ë¾è¤Ã¤¿¤È¤­¡Ë
+Aï¼šãƒªãƒ³ã‚¯ï¼ˆã‚«ãƒ¼ã‚½ãƒ«ãŒä¸Šã«ä¹—ã£ãŸã¨ãï¼‰
 --------------------------- */
 a:hover {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #000000;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
-font-weight: normal;                            /* ¥Õ¥©¥ó¥ÈÂÀ¤µ */
-text-decoration: underline;                     /* ¥Æ¥­¥¹¥È¤ÎÁõ¾ş */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #000000;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
+font-weight: normal;                            /* ãƒ•ã‚©ãƒ³ãƒˆå¤ªã• */
+text-decoration: underline;                     /* ãƒ†ã‚­ã‚¹ãƒˆã®è£…é£¾ */
 }
 
 /* ---------------------------
-A¡§¥Ø¥Ã¥À¥ê¥ó¥¯¡ÊÄÌ¾ï¡Ë
+Aï¼šãƒ˜ãƒƒãƒ€ãƒªãƒ³ã‚¯ï¼ˆé€šå¸¸ï¼‰
 --------------------------- */
 a.headerLink:link {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #ffffff;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
-font-weight: bold;                              /* ¥Õ¥©¥ó¥ÈÂÀ¤µ */
-text-decoration: none;                          /* ¥Æ¥­¥¹¥È¤ÎÁõ¾ş */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #ffffff;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
+font-weight: bold;                              /* ãƒ•ã‚©ãƒ³ãƒˆå¤ªã• */
+text-decoration: none;                          /* ãƒ†ã‚­ã‚¹ãƒˆã®è£…é£¾ */
 }
 /* ---------------------------
-A¡§¥Ø¥Ã¥À¥ê¥ó¥¯¡ÊË¬ÌäºÑ¤ß¡Ë
+Aï¼šãƒ˜ãƒƒãƒ€ãƒªãƒ³ã‚¯ï¼ˆè¨ªå•æ¸ˆã¿ï¼‰
 --------------------------- */
 a.headerLink:visited {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */ 
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #ffffff;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
-font-weight: bold;                              /* ¥Õ¥©¥ó¥ÈÂÀ¤µ */
-text-decoration: none;                          /* ¥Æ¥­¥¹¥È¤ÎÁõ¾ş */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */ 
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #ffffff;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
+font-weight: bold;                              /* ãƒ•ã‚©ãƒ³ãƒˆå¤ªã• */
+text-decoration: none;                          /* ãƒ†ã‚­ã‚¹ãƒˆã®è£…é£¾ */
 }
 /* ---------------------------
-A¡§¥Ø¥Ã¥À¥ê¥ó¥¯¡ÊÁªÂò¤·¤Æ¤¤¤ë¡Ë
+Aï¼šãƒ˜ãƒƒãƒ€ãƒªãƒ³ã‚¯ï¼ˆé¸æŠã—ã¦ã„ã‚‹ï¼‰
 --------------------------- */
 a.headerLink:active {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #ffffff;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
-font-weight: bold;                              /* ¥Õ¥©¥ó¥ÈÂÀ¤µ */
-text-decoration: none;                          /* ¥Æ¥­¥¹¥È¤ÎÁõ¾ş */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #ffffff;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
+font-weight: bold;                              /* ãƒ•ã‚©ãƒ³ãƒˆå¤ªã• */
+text-decoration: none;                          /* ãƒ†ã‚­ã‚¹ãƒˆã®è£…é£¾ */
 }
 /* ---------------------------
-A¡§¥Ø¥Ã¥À¥ê¥ó¥¯¡Ê¥«¡¼¥½¥ë¤¬¾å¤Ë¾è¤Ã¤¿¤È¤­¡Ë
+Aï¼šãƒ˜ãƒƒãƒ€ãƒªãƒ³ã‚¯ï¼ˆã‚«ãƒ¼ã‚½ãƒ«ãŒä¸Šã«ä¹—ã£ãŸã¨ãï¼‰
 --------------------------- */
 a.headerLink:hover {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #ffffff;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
-font-weight: bold;                              /* ¥Õ¥©¥ó¥ÈÂÀ¤µ */
-text-decoration: underline;                     /* ¥Æ¥­¥¹¥È¤ÎÁõ¾ş */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #ffffff;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
+font-weight: bold;                              /* ãƒ•ã‚©ãƒ³ãƒˆå¤ªã• */
+text-decoration: underline;                     /* ãƒ†ã‚­ã‚¹ãƒˆã®è£…é£¾ */
 }
 
 /* ---------------------------
-A¡§¥á¥Ë¥å¡¼¥Ü¥Ã¥¯¥¹¥Ø¥Ã¥À¥ê¥ó¥¯¡ÊÄÌ¾ï¡Ë
+Aï¼šãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒœãƒƒã‚¯ã‚¹ãƒ˜ãƒƒãƒ€ãƒªãƒ³ã‚¯ï¼ˆé€šå¸¸ï¼‰
 --------------------------- */
 a.menuBoxHeadingLink:link {
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #616060;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
-font-weight: bold;                              /* ¥Õ¥©¥ó¥ÈÂÀ¤µ */
-text-decoration: none;                          /* ¥Æ¥­¥¹¥È¤ÎÁõ¾ş */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #616060;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
+font-weight: bold;                              /* ãƒ•ã‚©ãƒ³ãƒˆå¤ªã• */
+text-decoration: none;                          /* ãƒ†ã‚­ã‚¹ãƒˆã®è£…é£¾ */
 }
 /* ---------------------------
-A¡§¥á¥Ë¥å¡¼¥Ü¥Ã¥¯¥¹¥Ø¥Ã¥À¥ê¥ó¥¯¡ÊË¬ÌäºÑ¤ß¡Ë
+Aï¼šãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒœãƒƒã‚¯ã‚¹ãƒ˜ãƒƒãƒ€ãƒªãƒ³ã‚¯ï¼ˆè¨ªå•æ¸ˆã¿ï¼‰
 --------------------------- */
 a.menuBoxHeadingLink:visited {
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #616060;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
-font-weight: bold;                              /* ¥Õ¥©¥ó¥ÈÂÀ¤µ */
-text-decoration: none;                          /* ¥Æ¥­¥¹¥È¤ÎÁõ¾ş */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #616060;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
+font-weight: bold;                              /* ãƒ•ã‚©ãƒ³ãƒˆå¤ªã• */
+text-decoration: none;                          /* ãƒ†ã‚­ã‚¹ãƒˆã®è£…é£¾ */
 }
 /* ---------------------------
-A¡§¥á¥Ë¥å¡¼¥Ü¥Ã¥¯¥¹¥Ø¥Ã¥À¥ê¥ó¥¯¡ÊÁªÂò¤·¤Æ¤¤¤ë¡Ë
+Aï¼šãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒœãƒƒã‚¯ã‚¹ãƒ˜ãƒƒãƒ€ãƒªãƒ³ã‚¯ï¼ˆé¸æŠã—ã¦ã„ã‚‹ï¼‰
 --------------------------- */
 a.menuBoxHeadingLink:active {
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #616060;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
-font-weight: bold;                              /* ¥Õ¥©¥ó¥ÈÂÀ¤µ */
-text-decoration: none;                          /* ¥Æ¥­¥¹¥È¤ÎÁõ¾ş */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #616060;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
+font-weight: bold;                              /* ãƒ•ã‚©ãƒ³ãƒˆå¤ªã• */
+text-decoration: none;                          /* ãƒ†ã‚­ã‚¹ãƒˆã®è£…é£¾ */
 }
 /* ---------------------------
-A¡§¥á¥Ë¥å¡¼¥Ü¥Ã¥¯¥¹¥Ø¥Ã¥À¥ê¥ó¥¯¡Ê¥«¡¼¥½¥ë¤¬¾å¤Ë¾è¤Ã¤¿¤È¤­¡Ë
+Aï¼šãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒœãƒƒã‚¯ã‚¹ãƒ˜ãƒƒãƒ€ãƒªãƒ³ã‚¯ï¼ˆã‚«ãƒ¼ã‚½ãƒ«ãŒä¸Šã«ä¹—ã£ãŸã¨ãï¼‰
 --------------------------- */
 a.menuBoxHeadingLink:hover {
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #616060;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
-font-weight: bold;                              /* ¥Õ¥©¥ó¥ÈÂÀ¤µ */
-text-decoration: none;                          /* ¥Æ¥­¥¹¥È¤ÎÁõ¾ş */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #616060;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
+font-weight: bold;                              /* ãƒ•ã‚©ãƒ³ãƒˆå¤ªã• */
+text-decoration: none;                          /* ãƒ†ã‚­ã‚¹ãƒˆã®è£…é£¾ */
 }
 
 /* ---------------------------
-A¡§¥á¥Ë¥å¡¼¥Ü¥Ã¥¯¥¹¥³¥ó¥Æ¥ó¥Ä¥ê¥ó¥¯¡ÊÄÌ¾ï¡Ë
+Aï¼šãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒœãƒƒã‚¯ã‚¹ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ãƒªãƒ³ã‚¯ï¼ˆé€šå¸¸ï¼‰
 --------------------------- */
 a.menuBoxContentLink:link {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #616060;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
-font-weight: normal;                            /* ¥Õ¥©¥ó¥ÈÂÀ¤µ */
-text-decoration: none;                          /* ¥Æ¥­¥¹¥È¤ÎÁõ¾ş */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #616060;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
+font-weight: normal;                            /* ãƒ•ã‚©ãƒ³ãƒˆå¤ªã• */
+text-decoration: none;                          /* ãƒ†ã‚­ã‚¹ãƒˆã®è£…é£¾ */
 }
 /* ---------------------------
-A¡§¥á¥Ë¥å¡¼¥Ü¥Ã¥¯¥¹¥³¥ó¥Æ¥ó¥Ä¥ê¥ó¥¯¡ÊË¬ÌäºÑ¤ß¡Ë
+Aï¼šãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒœãƒƒã‚¯ã‚¹ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ãƒªãƒ³ã‚¯ï¼ˆè¨ªå•æ¸ˆã¿ï¼‰
 --------------------------- */
 a.menuBoxContentLink:visited {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #616060;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
-font-weight: normal;                            /* ¥Õ¥©¥ó¥ÈÂÀ¤µ */
-text-decoration: none;                          /* ¥Æ¥­¥¹¥È¤ÎÁõ¾ş */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #616060;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
+font-weight: normal;                            /* ãƒ•ã‚©ãƒ³ãƒˆå¤ªã• */
+text-decoration: none;                          /* ãƒ†ã‚­ã‚¹ãƒˆã®è£…é£¾ */
 }
 /* ---------------------------
-A¡§¥á¥Ë¥å¡¼¥Ü¥Ã¥¯¥¹¥³¥ó¥Æ¥ó¥Ä¥ê¥ó¥¯¡ÊÁªÂò¤·¤Æ¤¤¤ë¡Ë
+Aï¼šãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒœãƒƒã‚¯ã‚¹ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ãƒªãƒ³ã‚¯ï¼ˆé¸æŠã—ã¦ã„ã‚‹ï¼‰
 --------------------------- */
 a.menuBoxContentLink:active {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #616060;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
-font-weight: normal;                            /* ¥Õ¥©¥ó¥ÈÂÀ¤µ */
-text-decoration: none;                          /* ¥Æ¥­¥¹¥È¤ÎÁõ¾ş */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #616060;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
+font-weight: normal;                            /* ãƒ•ã‚©ãƒ³ãƒˆå¤ªã• */
+text-decoration: none;                          /* ãƒ†ã‚­ã‚¹ãƒˆã®è£…é£¾ */
 }
 /* ---------------------------
-A¡§¥á¥Ë¥å¡¼¥Ü¥Ã¥¯¥¹¥³¥ó¥Æ¥ó¥Ä¥ê¥ó¥¯¡Ê¥«¡¼¥½¥ë¤¬¾å¤Ë¾è¤Ã¤¿¤È¤­¡Ë
+Aï¼šãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒœãƒƒã‚¯ã‚¹ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ãƒªãƒ³ã‚¯ï¼ˆã‚«ãƒ¼ã‚½ãƒ«ãŒä¸Šã«ä¹—ã£ãŸã¨ãï¼‰
 --------------------------- */
 a.menuBoxContentLink:hover {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #616060;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
-font-weight: normal;                            /* ¥Õ¥©¥ó¥ÈÂÀ¤µ */
-text-decoration: underline;                     /* ¥Æ¥­¥¹¥È¤ÎÁõ¾ş */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #616060;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
+font-weight: normal;                            /* ãƒ•ã‚©ãƒ³ãƒˆå¤ªã• */
+text-decoration: underline;                     /* ãƒ†ã‚­ã‚¹ãƒˆã®è£…é£¾ */
 }
 
 /* ---------------------------
-A¡§¥Ú¡¼¥¸¥ê¥ó¥¯¡ÊÄÌ¾ï¡Ë
+Aï¼šãƒšãƒ¼ã‚¸ãƒªãƒ³ã‚¯ï¼ˆé€šå¸¸ï¼‰
 --------------------------- */
 a.splitPageLink:link {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #0000FF;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
-font-weight: normal;                            /* ¥Õ¥©¥ó¥ÈÂÀ¤µ */
-text-decoration: none;                          /* ¥Æ¥­¥¹¥È¤ÎÁõ¾ş */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #0000FF;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
+font-weight: normal;                            /* ãƒ•ã‚©ãƒ³ãƒˆå¤ªã• */
+text-decoration: none;                          /* ãƒ†ã‚­ã‚¹ãƒˆã®è£…é£¾ */
 }
 /* ---------------------------
-A¡§¥Ú¡¼¥¸¥ê¥ó¥¯¡ÊË¬ÌäºÑ¤ß¡Ë
+Aï¼šãƒšãƒ¼ã‚¸ãƒªãƒ³ã‚¯ï¼ˆè¨ªå•æ¸ˆã¿ï¼‰
 --------------------------- */
 a.splitPageLink:visited {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #0000FF;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
-font-weight: normal;                            /* ¥Õ¥©¥ó¥ÈÂÀ¤µ */
-text-decoration: none;                          /* ¥Æ¥­¥¹¥È¤ÎÁõ¾ş */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #0000FF;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
+font-weight: normal;                            /* ãƒ•ã‚©ãƒ³ãƒˆå¤ªã• */
+text-decoration: none;                          /* ãƒ†ã‚­ã‚¹ãƒˆã®è£…é£¾ */
 }
 /* ---------------------------
-A¡§¥Ú¡¼¥¸¥ê¥ó¥¯¡ÊÁªÂò¤·¤Æ¤¤¤ë¡Ë
+Aï¼šãƒšãƒ¼ã‚¸ãƒªãƒ³ã‚¯ï¼ˆé¸æŠã—ã¦ã„ã‚‹ï¼‰
 --------------------------- */
 a.splitPageLink:active {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #0000FF;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
-font-weight: normal;                            /* ¥Õ¥©¥ó¥ÈÂÀ¤µ */
-text-decoration: none;                          /* ¥Æ¥­¥¹¥È¤ÎÁõ¾ş */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #0000FF;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
+font-weight: normal;                            /* ãƒ•ã‚©ãƒ³ãƒˆå¤ªã• */
+text-decoration: none;                          /* ãƒ†ã‚­ã‚¹ãƒˆã®è£…é£¾ */
 }
 /* ---------------------------
-A¡§¥Ú¡¼¥¸¥ê¥ó¥¯¡Ê¥«¡¼¥½¥ë¤¬¾å¤Ë¾è¤Ã¤¿¤È¤­¡Ë
+Aï¼šãƒšãƒ¼ã‚¸ãƒªãƒ³ã‚¯ï¼ˆã‚«ãƒ¼ã‚½ãƒ«ãŒä¸Šã«ä¹—ã£ãŸã¨ãï¼‰
 --------------------------- */
 a.splitPageLink:hover {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #0000FF;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
-font-weight: normal;                            /* ¥Õ¥©¥ó¥ÈÂÀ¤µ */
-text-decoration: underline;                     /* ¥Æ¥­¥¹¥È¤ÎÁõ¾ş */
-background-color: #FFFF33;                      /* ÇØ·Ê¿§ */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #0000FF;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
+font-weight: normal;                            /* ãƒ•ã‚©ãƒ³ãƒˆå¤ªã• */
+text-decoration: underline;                     /* ãƒ†ã‚­ã‚¹ãƒˆã®è£…é£¾ */
+background-color: #FFFF33;                      /* èƒŒæ™¯è‰² */
 }
 
 /* menu box */
 /* ---------------------------
-.[TD]¡§¥á¥Ë¥å¡¼¥Ü¥Ã¥¯¥¹¥³¥ó¥Æ¥ó¥Ä
+.[TD]ï¼šãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒœãƒƒã‚¯ã‚¹ã‚³ãƒ³ãƒ†ãƒ³ãƒ„
 --------------------------- */
 .menuBoxHeading {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #616060;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
-background-color: #ffffff;                      /* ÇØ·Ê¿§ */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #616060;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
+background-color: #ffffff;                      /* èƒŒæ™¯è‰² */
 }
 /* ---------------------------
-.[TD]¡§¥á¥Ë¥å¡¼¥Ü¥Ã¥¯¥¹¥³¥ó¥Æ¥ó¥Ä
+.[TD]ï¼šãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒœãƒƒã‚¯ã‚¹ã‚³ãƒ³ãƒ†ãƒ³ãƒ„
 --------------------------- */
 .menuBoxContent {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #616060;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #616060;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
 }
 
 /* page */
 /* ---------------------------
-BODY¡§¥Ü¥Ç¥£
+BODYï¼šãƒœãƒ‡ã‚£
 --------------------------- */
 body {
-background-color: #ffffff;                      /* ÇØ·Ê¿§ */
-color: #000000;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
-margin: 0px;                                    /* ¥Ş¡¼¥¸¥ó */
+background-color: #ffffff;                      /* èƒŒæ™¯è‰² */
+color: #000000;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
+margin: 0px;                                    /* ãƒãƒ¼ã‚¸ãƒ³ */
 }
 /* ---------------------------
-.[TR]¡§¥Ø¥Ã¥À¡Ê¥Ê¥Ó¥²¡¼¥·¥ç¥ó¡Ë
+.[TR]ï¼šãƒ˜ãƒƒãƒ€ï¼ˆãƒŠãƒ“ã‚²ãƒ¼ã‚·ãƒ§ãƒ³ï¼‰
 --------------------------- */
 .headerBar {
-background-color: #000000;                      /* ÇØ·Ê¿§ */
+background-color: #000000;                      /* èƒŒæ™¯è‰² */
 }
 /* ---------------------------
-.[TD]¡§¥Ø¥Ã¥À¡Ê¥Ê¥Ó¥²¡¼¥·¥ç¥ó¡Ë
+.[TD]ï¼šãƒ˜ãƒƒãƒ€ï¼ˆãƒŠãƒ“ã‚²ãƒ¼ã‚·ãƒ§ãƒ³ï¼‰
 --------------------------- */
 .headerBarContent {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #ffffff;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
-font-weight: bold;                              /* ¥Õ¥©¥ó¥ÈÂÀ¤µ */
-padding: 2px;                                   /* ¶­³¦Àş¤ÈÆâÍÆ¤È¤Î´Ö¤Î¶õ´Ö */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #ffffff;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
+font-weight: bold;                              /* ãƒ•ã‚©ãƒ³ãƒˆå¤ªã• */
+padding: 2px;                                   /* å¢ƒç•Œç·šã¨å†…å®¹ã¨ã®é–“ã®ç©ºé–“ */
 }
 /* ---------------------------
-.[TABLE]¡§¥á¥Ë¥å¡¼¥Ü¥Ã¥¯¥¹¤òÅı³ç¤¹¤ë¥Æ¡¼¥Ö¥ë
+.[TABLE]ï¼šãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒœãƒƒã‚¯ã‚¹ã‚’çµ±æ‹¬ã™ã‚‹ãƒ†ãƒ¼ãƒ–ãƒ«
 --------------------------- */
 .columnLeft {
-background-color: #F0F1F1;                      /* ÇØ·Ê¿§ */
-border-color: #999999;                          /* ¶­³¦Àş¤Î¿§ */
-border-width: 1px;                              /* ¶­³¦Àş¤ÎÉı */
-border-style: solid;                            /* ¶­³¦Àş¤Î¥¹¥¿¥¤¥ë */
-padding: 2px;                                   /* ¶­³¦Àş¤ÈÆâÍÆ¤È¤Î´Ö¤Î¶õ´Ö */
+background-color: #F0F1F1;                      /* èƒŒæ™¯è‰² */
+border-color: #999999;                          /* å¢ƒç•Œç·šã®è‰² */
+border-width: 1px;                              /* å¢ƒç•Œç·šã®å¹… */
+border-style: solid;                            /* å¢ƒç•Œç·šã®ã‚¹ã‚¿ã‚¤ãƒ« */
+padding: 2px;                                   /* å¢ƒç•Œç·šã¨å†…å®¹ã¨ã®é–“ã®ç©ºé–“ */
 }
 /* ---------------------------
-.[TD]¡§¥Ú¡¼¥¸¥Ø¥Ã¥À
+.[TD]ï¼šãƒšãƒ¼ã‚¸ãƒ˜ãƒƒãƒ€
 --------------------------- */
 .pageHeading {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 18px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #727272;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
-font-weight: bold;                              /* ¥Õ¥©¥ó¥ÈÂÀ¤µ */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 18px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #727272;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
+font-weight: bold;                              /* ãƒ•ã‚©ãƒ³ãƒˆå¤ªã• */
 }
 
 /* data table */
 /* ---------------------------
-.[TR]¡§°ìÍ÷É½¤Î¹àÌÜÌ¾¡ÊÇØ·Ê¿§¡Ë
+.[TR]ï¼šä¸€è¦§è¡¨ã®é …ç›®åï¼ˆèƒŒæ™¯è‰²ï¼‰
 --------------------------- */
 .dataTableHeadingRow {
-background-color: #808080;                      /* ÇØ·Ê¿§ */
+background-color: #808080;                      /* èƒŒæ™¯è‰² */
 }
 /* ---------------------------
-.[TD]¡§°ìÍ÷É½¤Î¹àÌÜÌ¾¡Ê¥³¥ó¥Æ¥ó¥Ä¡Ë
+.[TD]ï¼šä¸€è¦§è¡¨ã®é …ç›®åï¼ˆã‚³ãƒ³ãƒ†ãƒ³ãƒ„ï¼‰
 --------------------------- */
 .dataTableHeadingContent {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #ffffff;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
-font-weight: bold;                              /* ¥Õ¥©¥ó¥ÈÂÀ¤µ */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #ffffff;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
+font-weight: bold;                              /* ãƒ•ã‚©ãƒ³ãƒˆå¤ªã• */
 }
 /* ---------------------------
-.[TR]¡§°ìÍ÷É½¥Ç¡¼¥¿¡ÊÄÌ¾ï¹Ô¡Ë
+.[TR]ï¼šä¸€è¦§è¡¨ãƒ‡ãƒ¼ã‚¿ï¼ˆé€šå¸¸è¡Œï¼‰
 --------------------------- */
 .dataTableRow {
-background-color: #F0F1F1;                      /* ÇØ·Ê¿§ */
+background-color: #F0F1F1;                      /* èƒŒæ™¯è‰² */
 }
 /* ---------------------------
-.[TR]¡§°ìÍ÷É½¥Ç¡¼¥¿¡Ê¿§°ã¹Ô¡Ë
+.[TR]ï¼šä¸€è¦§è¡¨ãƒ‡ãƒ¼ã‚¿ï¼ˆè‰²é•è¡Œï¼‰
 --------------------------- */
 .dataTableSecondRow {
-background-color: #E0E0E0;                      /* ÇØ·Ê¿§ */
+background-color: #E0E0E0;                      /* èƒŒæ™¯è‰² */
 }
 /* ---------------------------
-.[TR]¡§°ìÍ÷É½¥Ç¡¼¥¿¡ÊÁªÂò¹Ô¡Ë
+.[TR]ï¼šä¸€è¦§è¡¨ãƒ‡ãƒ¼ã‚¿ï¼ˆé¸æŠè¡Œï¼‰
 --------------------------- */
 .dataTableRowSelected {
-background-color: #FFD700;                      /* ÇØ·Ê¿§ */
+background-color: #FFD700;                      /* èƒŒæ™¯è‰² */
 }
 /* ---------------------------
-.[TR]¡§°ìÍ÷É½¥Ç¡¼¥¿¡Ê¥«¡¼¥½¥ë¤¬¾è¤Ã¤Æ¤¤¤ë¹Ô¡Ë
+.[TR]ï¼šä¸€è¦§è¡¨ãƒ‡ãƒ¼ã‚¿ï¼ˆã‚«ãƒ¼ã‚½ãƒ«ãŒä¹—ã£ã¦ã„ã‚‹è¡Œï¼‰
 --------------------------- */
 .dataTableRowOver {
-background-color: #FFCC99;                      /* ÇØ·Ê¿§ */
+background-color: #FFCC99;                      /* èƒŒæ™¯è‰² */
 }
 /* ---------------------------
-.[TD]¡§°ìÍ÷É½¥Ç¡¼¥¿¡Ê¥³¥ó¥Æ¥ó¥Ä¡Ë
+.[TD]ï¼šä¸€è¦§è¡¨ãƒ‡ãƒ¼ã‚¿ï¼ˆã‚³ãƒ³ãƒ†ãƒ³ãƒ„ï¼‰
 --------------------------- */
 .dataTableContent {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #000000;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #000000;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
 }
 
 /* info box */
 /* ---------------------------
-.[TR]¡§¾ğÊó¥Ü¥Ã¥¯¥¹¡Ê¥¿¥¤¥È¥ë¡Ë - ±¦Â¦¤ËÉ½¼¨¤µ¤ì¤ë¡¢°ìÍ÷¤«¤éÁª¤ó¤À¹àÌÜ¤Î¾ğÊó
+.[TR]ï¼šæƒ…å ±ãƒœãƒƒã‚¯ã‚¹ï¼ˆã‚¿ã‚¤ãƒˆãƒ«ï¼‰ - å³å´ã«è¡¨ç¤ºã•ã‚Œã‚‹ã€ä¸€è¦§ã‹ã‚‰é¸ã‚“ã é …ç›®ã®æƒ…å ±
 --------------------------- */
 .infoBoxHeading {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #000000;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
-background-color: #FFD700;                      /* ÇØ·Ê¿§ */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #000000;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
+background-color: #FFD700;                      /* èƒŒæ™¯è‰² */
 }
 /* ---------------------------
-.[TD]¡§¾ğÊó¥Ü¥Ã¥¯¥¹¡Ê¥³¥ó¥Æ¥ó¥Ä¡Ë - ±¦Â¦¤ËÉ½¼¨¤µ¤ì¤ë¡¢°ìÍ÷¤«¤éÁª¤ó¤À¹àÌÜ¤Î¾ğÊó
+.[TD]ï¼šæƒ…å ±ãƒœãƒƒã‚¯ã‚¹ï¼ˆã‚³ãƒ³ãƒ†ãƒ³ãƒ„ï¼‰ - å³å´ã«è¡¨ç¤ºã•ã‚Œã‚‹ã€ä¸€è¦§ã‹ã‚‰é¸ã‚“ã é …ç›®ã®æƒ…å ±
 --------------------------- */
 .infoBoxContent {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #000000;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
-background-color: #FFD700;                      /* ÇØ·Ê¿§ */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #000000;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
+background-color: #FFD700;                      /* èƒŒæ™¯è‰² */
 }
 
 /* message box */
 /* ---------------------------
-.[TR]¡§¥á¥Ã¥»¡¼¥¸¥Ü¥Ã¥¯¥¹
+.[TR]ï¼šãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒœãƒƒã‚¯ã‚¹
 --------------------------- */
 .messageBox {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
 }
 /* ---------------------------
-.[TR,TD]¡§¥¨¥é¡¼¡¢·Ù¹ğ¥á¥Ã¥»¡¼¥¸
+.[TR,TD]ï¼šã‚¨ãƒ©ãƒ¼ã€è­¦å‘Šãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 --------------------------- */
 .messageStackError, .messageStackWarning {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-background-color: #ffb3b5;                      /* ÇØ·Ê¿§ */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+background-color: #ffb3b5;                      /* èƒŒæ™¯è‰² */
 }
 /* ---------------------------
-.[TR,TD]¡§À®¸ù¥á¥Ã¥»¡¼¥¸
+.[TR,TD]ï¼šæˆåŠŸãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 --------------------------- */
 .messageStackSuccess {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-background-color: #99ff00;                      /* ÇØ·Ê¿§ */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+background-color: #99ff00;                      /* èƒŒæ™¯è‰² */
 }
 
 /* forms */
 /* ---------------------------
-CHECKBOX, INPUT, RADIO, SELECT, TEXTAREA, FILE¡§FORM¤ÎÆşÎÏ¡¦ÁªÂò¹àÌÜ
+CHECKBOX, INPUT, RADIO, SELECT, TEXTAREA, FILEï¼šFORMã®å…¥åŠ›ãƒ»é¸æŠé …ç›®
 --------------------------- */
 CHECKBOX, INPUT, RADIO, SELECT, TEXTAREA, FILE {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
 }
 
 /* account */
 /* ---------------------------
-.[TABLE]¡§¥Õ¥©¡¼¥à¥¨¥ê¥¢¡Ê¶­³¦Àş¡Ë
+.[TABLE]ï¼šãƒ•ã‚©ãƒ¼ãƒ ã‚¨ãƒªã‚¢ï¼ˆå¢ƒç•Œç·šï¼‰
 --------------------------- */
 .formArea {
-background-color: #f1f9fe;                      /* ÇØ·Ê¿§ */
-border-color: #7b9ebd;                          /* ¶­³¦Àş¤Î¿§ */
-border-style: solid;                            /* ¶­³¦Àş¤Î¥¹¥¿¥¤¥ë */
-border-width: 1px;                              /* ¶­³¦Àş¤ÎÉı */
+background-color: #f1f9fe;                      /* èƒŒæ™¯è‰² */
+border-color: #7b9ebd;                          /* å¢ƒç•Œç·šã®è‰² */
+border-style: solid;                            /* å¢ƒç•Œç·šã®ã‚¹ã‚¿ã‚¤ãƒ« */
+border-width: 1px;                              /* å¢ƒç•Œç·šã®å¹… */
 }
 /* ---------------------------
-.[TD]¡§¥Õ¥©¡¼¥à¥¨¥ê¥¢¡Ê¥¿¥¤¥È¥ë¡Ë
+.[TD]ï¼šãƒ•ã‚©ãƒ¼ãƒ ã‚¨ãƒªã‚¢ï¼ˆã‚¿ã‚¤ãƒˆãƒ«ï¼‰
 --------------------------- */
 .formAreaTitle {
-font-family: Osaka, Tahoma, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 12px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-font-weight: bold;                              /* ¥Õ¥©¥ó¥ÈÂÀ¤µ */
+font-family: Osaka, Tahoma, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 12px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+font-weight: bold;                              /* ãƒ•ã‚©ãƒ³ãƒˆå¤ªã• */
 }
 
 /* attributes */
 /* ---------------------------
-TR¡§´ñ¿ô¹Ô
+TRï¼šå¥‡æ•°è¡Œ
 --------------------------- */
 .attributes-odd {
-background-color: #f4f7fd;                      /* ÇØ·Ê¿§ */
+background-color: #f4f7fd;                      /* èƒŒæ™¯è‰² */
 }
 /* ---------------------------
-TR¡§¶ö¿ô¹Ô
+TRï¼šå¶æ•°è¡Œ
 --------------------------- */
 .attributes-even {
-background-color: #ffffff;                      /* ÇØ·Ê¿§ */
+background-color: #ffffff;                      /* èƒŒæ™¯è‰² */
 }
 
 /* miscellaneous */
 /* ---------------------------
-.[SPAN]¡§ÆÃ²Á¾¦ÉÊ²Á³Ê
+.[SPAN]ï¼šç‰¹ä¾¡å•†å“ä¾¡æ ¼
 --------------------------- */
 .specialPrice {
-color: #ff0000;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
+color: #ff0000;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
 }
 /* ---------------------------
-.[SPAN]¡§µì¾¦ÉÊ²Á³Ê
+.[SPAN]ï¼šæ—§å•†å“ä¾¡æ ¼
 --------------------------- */
 .oldPrice {
-text-decoration: line-through;                  /* ¥Æ¥­¥¹¥È¤ÎÁõ¾ş */
+text-decoration: line-through;                  /* ãƒ†ã‚­ã‚¹ãƒˆã®è£…é£¾ */
 }
 /* ---------------------------
-.[SPAN]¡§¡Ö*É¬¿Ü¡×Ê¸»úÎó
+.[SPAN]ï¼šã€Œ*å¿…é ˆã€æ–‡å­—åˆ—
 --------------------------- */
 .fieldRequired {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 11px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
-color: #ff0000;                                 /* ¥Õ¥©¥ó¥È¥«¥é¡¼ */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 11px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
+color: #ff0000;                                 /* ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼ */
 }
 /* ---------------------------
-.[TD]¡§¾®¤µ¤¤Ê¸»ú¡Ê¥á¥Ã¥»¡¼¥¸¡Ë
+.[TD]ï¼šå°ã•ã„æ–‡å­—ï¼ˆãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ï¼‰
 --------------------------- */
 .smallText {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 10px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 10px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
 }
 /* ---------------------------
-.[TD]¡§¥á¥¤¥ó
+.[TD]ï¼šãƒ¡ã‚¤ãƒ³
 --------------------------- */
 .main {
-font-family: Osaka, Verdana, Arial, sans-serif; /* ¥Õ¥©¥ó¥È¥Õ¥¡¥ß¥ê */
-font-size: 12px;                                /* ¥Õ¥©¥ó¥È¥µ¥¤¥º */
+font-family: Osaka, Verdana, Arial, sans-serif; /* ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª */
+font-size: 12px;                                /* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º */
 }
 legend {
 	font-size: 12px;

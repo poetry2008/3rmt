@@ -26,7 +26,7 @@
     while ($configuration_groups = tep_db_fetch_array($configuration_groups_query)) {
       $cfg_groups .= '<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $configuration_groups['cgID'], 'NONSSL') . '" class="menuBoxContentLink">' . $configuration_groups['cgTitle'] . '</a><br>';
     }
-    //$cfg_groups .= '<a href="configuration_design.php" class="menuBoxContentLink">¥Ç¥¶¥¤¥óÀßÄê</a>';
+    //$cfg_groups .= '<a href="configuration_design.php" class="menuBoxContentLink">ãƒ‡ã‚¶ã‚¤ãƒ³è¨­å®š</a>';
     $contents[] = array('text'  => $cfg_groups);
   }
 

@@ -145,7 +145,7 @@
       $contents[] = array('text' => TEXT_NEW_INTRO);
       $contents[] = array('text' => '<br>' . TEXT_COLORS_NAME . '<br>' . tep_draw_input_field('color_name'));
 	  $contents[] = array('text' => '<br>' . TEXT_COLORS_TAG . '<br>' . tep_draw_input_field('color_tag'));
-	  $contents[] = array('text' => '<br>¥½¡¼¥È½ç<br>' . tep_draw_input_field('sort_id'));
+	  $contents[] = array('text' => '<br>ã‚½ãƒ¼ãƒˆé †<br>' . tep_draw_input_field('sort_id'));
 
       $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_save.gif', IMAGE_SAVE) . ' <a href="' . tep_href_link(FILENAME_COLOR, 'page=' . $HTTP_GET_VARS['page'] . '&mID=' . $HTTP_GET_VARS['mID']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
@@ -156,7 +156,7 @@
       $contents[] = array('text' => TEXT_EDIT_INTRO);
       $contents[] = array('text' => '<br>' . TEXT_COLORS_NAME . '<br>' . tep_draw_input_field('color_name', $mInfo->color_name));
 	  $contents[] = array('text' => '<br>' . TEXT_COLORS_TAG . '<br>' . tep_draw_input_field('color_tag', $mInfo->color_tag));
-	  $contents[] = array('text' => '<br>¥½¡¼¥È½ç<br>' . tep_draw_input_field('sort_id', $mInfo->sort_id));
+	  $contents[] = array('text' => '<br>ã‚½ãƒ¼ãƒˆé †<br>' . tep_draw_input_field('sort_id', $mInfo->sort_id));
 
       $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_save.gif', IMAGE_SAVE) . ' <a href="' . tep_href_link(FILENAME_COLOR, 'page=' . $HTTP_GET_VARS['page'] . '&mID=' . $mInfo->color_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;

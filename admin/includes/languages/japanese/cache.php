@@ -10,15 +10,15 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', '¥­¥ã¥Ã¥·¥å¥³¥ó¥È¥í¡¼¥ë');
+define('HEADING_TITLE', 'ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«');
 
-define('TABLE_HEADING_CACHE', '¥­¥ã¥Ã¥·¥å¡¦¥Ö¥í¥Ã¥¯');
-define('TABLE_HEADING_DATE_CREATED', 'ºîÀ®Æü');
-define('TABLE_HEADING_ACTION', '¥Õ¥¡¥¤¥ëºï½ü');
+define('TABLE_HEADING_CACHE', 'ã‚­ãƒ£ãƒƒã‚·ãƒ¥ãƒ»ãƒ–ãƒ­ãƒƒã‚¯');
+define('TABLE_HEADING_DATE_CREATED', 'ä½œæˆæ—¥');
+define('TABLE_HEADING_ACTION', 'ãƒ•ã‚¡ã‚¤ãƒ«å‰Šé™¤');
 
-define('TEXT_FILE_DOES_NOT_EXIST', '¥Õ¥¡¥¤¥ë¤¬Â¸ºß¤·¤Þ¤»¤ó');
-define('TEXT_CACHE_DIRECTORY', '¥­¥ã¥Ã¥·¥å¡¦¥Ç¥£¥ì¥¯¥È¥ê:');
+define('TEXT_FILE_DOES_NOT_EXIST', 'ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ã¾ã›ã‚“');
+define('TEXT_CACHE_DIRECTORY', 'ã‚­ãƒ£ãƒƒã‚·ãƒ¥ãƒ»ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª:');
 
-define('ERROR_CACHE_DIRECTORY_DOES_NOT_EXIST', '¥¨¥é¡¼: ¥­¥ã¥Ã¥·¥å¡¦¥Ç¥£¥ì¥¯¥È¥ê¤¬Â¸ºß¤·¤Þ¤»¤ó¡£includes/configure.php ¤ÎÀßÄê¤ò³ÎÇ§¤·¤Æ¤¯¤À¤µ¤¤¡£');
-define('ERROR_CACHE_DIRECTORY_NOT_WRITEABLE', '¥¨¥é¡¼: ¥­¥ã¥Ã¥·¥å¡¦¥Ç¥£¥ì¥¯¥È¥ê¤Ë½ñ¤­¹þ¤ß¤¬¤Ç¤­¤Þ¤»¤ó¡£Àµ¤·¤¤¥æ¡¼¥¶¸¢¸Â¤òÀßÄê¤·¤Æ¤¯¤À¤µ¤¤¡£');
+define('ERROR_CACHE_DIRECTORY_DOES_NOT_EXIST', 'ã‚¨ãƒ©ãƒ¼: ã‚­ãƒ£ãƒƒã‚·ãƒ¥ãƒ»ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒå­˜åœ¨ã—ã¾ã›ã‚“ã€‚includes/configure.php ã®è¨­å®šã‚’ç¢ºèªã—ã¦ãã ã•ã„ã€‚');
+define('ERROR_CACHE_DIRECTORY_NOT_WRITEABLE', 'ã‚¨ãƒ©ãƒ¼: ã‚­ãƒ£ãƒƒã‚·ãƒ¥ãƒ»ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«æ›¸ãè¾¼ã¿ãŒã§ãã¾ã›ã‚“ã€‚æ­£ã—ã„ãƒ¦ãƒ¼ã‚¶æ¨©é™ã‚’è¨­å®šã—ã¦ãã ã•ã„ã€‚');
 ?>

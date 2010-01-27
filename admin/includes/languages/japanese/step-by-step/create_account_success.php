@@ -10,8 +10,8 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE_1', '¥¢¥«¥¦¥ó¥È¤ÎºîÀ®');
-define('NAVBAR_TITLE_2', '´°Î»');
-define('HEADING_TITLE', '¥¢¥«¥¦¥ó¥È¤¬ºîÀ®¤µ¤ì¤Þ¤·¤¿!');
-define('TEXT_ACCOUNT_CREATED', '¥¢¥«¥¦¥ó¥È¤ÎºîÀ®¤¬´°Î»¤·¤Þ¤·¤¿¡ª<br><br>Â³¤¤¤ÆÃíÊ¸¤òºîÀ®¤·¤Þ¤¹<br><br><br>¿·¤·¤¤ÃíÊ¸¤òºîÀ®¤¹¤ë¾ì¹ç¤Ï¡Ö¿·¤·¤¤¾¦ÉÊ¡×¤ò¥¯¥ê¥Ã¥¯¤·¤Æ¤¯¤À¤µ¤¤¡£');
+define('NAVBAR_TITLE_1', 'ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã®ä½œæˆ');
+define('NAVBAR_TITLE_2', 'å®Œäº†');
+define('HEADING_TITLE', 'ã‚¢ã‚«ã‚¦ãƒ³ãƒˆãŒä½œæˆã•ã‚Œã¾ã—ãŸ!');
+define('TEXT_ACCOUNT_CREATED', 'ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã®ä½œæˆãŒå®Œäº†ã—ã¾ã—ãŸï¼<br><br>ç¶šã„ã¦æ³¨æ–‡ã‚’ä½œæˆã—ã¾ã™<br><br><br>æ–°ã—ã„æ³¨æ–‡ã‚’ä½œæˆã™ã‚‹å ´åˆã¯ã€Œæ–°ã—ã„å•†å“ã€ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚');
 ?>

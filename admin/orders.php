@@ -1,6 +1,6 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
   require('includes/application_top.php');
@@ -25,7 +25,7 @@
       }
       if ($products[$orders_id]) {
         foreach($products[$orders_id] as $p){
-            $str .= $p['products_name'] . " Åö¼Ò¤Î¥­¥ã¥é¥¯¥¿¡¼Ì¾¡§\n";
+            $str .= $p['products_name'] . " å½“ç¤¾ã®ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åï¼š\n";
             $str .= $p['products_attention_5'] . "\n";
         }
       } else {
@@ -35,7 +35,7 @@
       	  	  $sql = "select * from `".TABLE_PRODUCTS_DESCRIPTION."` WHERE `products_id`='".$orders_products['products_id']."'";
       	  	  $products_description = tep_db_fetch_array(tep_db_query($sql));
       	  	  if ($products_description['products_attention_5']) {
-    	  	  	  $str .= $orders_products['products_name']." Åö¼Ò¤Î¥­¥ã¥é¥¯¥¿¡¼Ì¾¡§\n";
+    	  	  	  $str .= $orders_products['products_name']." å½“ç¤¾ã®ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åï¼š\n";
     	  	  	  $str .= $products_description['products_attention_5'] . "\n";
       	  	  }
       	  }
@@ -55,7 +55,7 @@
   }
 
   switch ($HTTP_GET_VARS['action']) {
-    //°ì³çÊÑ¹¹----------------------------------
+    //ä¸€æ‹¬å¤‰æ›´----------------------------------
 	case 'sele_act':
 	  if($HTTP_POST_VARS['chk'] == ""){
 	    $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
@@ -85,11 +85,11 @@
 		      $query4 = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '".$result1['customers_id']."'");
 		      $result4 = tep_db_fetch_array($query4);
 		  
-		    // ¤³¤³¤«¤é¥«¥¹¥¿¥Ş¡¼¥ì¥Ù¥ë¤Ë±ş¤¸¤¿¥İ¥¤¥ó¥È´Ô¸µÎ¨»»½Ğ============================================================
+		    // ã“ã“ã‹ã‚‰ã‚«ã‚¹ã‚¿ãƒãƒ¼ãƒ¬ãƒ™ãƒ«ã«å¿œã˜ãŸãƒã‚¤ãƒ³ãƒˆé‚„å…ƒç‡ç®—å‡º============================================================
 		    // 2005.11.17 K.Kaneko
 		    if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
 		      $customer_id = $result1['customers_id'];
-		      //ÀßÄê¤·¤¿´ü´ÖÆâ¤ÎÃíÊ¸¹ç·×¶â³Û¤ò»»½Ğ------------
+		      //è¨­å®šã—ãŸæœŸé–“å†…ã®æ³¨æ–‡åˆè¨ˆé‡‘é¡ã‚’ç®—å‡º------------
 		      $ptoday = date("Y-m-d H:i:s", time());
 		      $pstday_array = getdate();
 		      $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
@@ -108,10 +108,10 @@
 			    }
 		      }
 		      //----------------------------------------------
-		      //º£²ó¤ÎÃíÊ¸³Û¤Ï½ü³°
+		      //ä»Šå›ã®æ³¨æ–‡é¡ã¯é™¤å¤–
 		      $total_buyed_date = $total_buyed_date - ($result3['value'] - (int)$result2['value']);
 		  
-		      //´Ô¸µÎ¨¤ò·×»»----------------------------------
+		      //é‚„å…ƒç‡ã‚’è¨ˆç®—----------------------------------
 		      if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
 			    $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
 			    $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
@@ -134,7 +134,7 @@
 		    } else {
 		      $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
 		    }
-		    // ¤³¤³¤Ş¤Ç¥«¥¹¥¿¥Ş¡¼¥ì¥Ù¥ë¤Ë±ş¤¸¤¿¥İ¥¤¥ó¥È´Ô¸µÎ¨»»½Ğ============================================================
+		    // ã“ã“ã¾ã§ã‚«ã‚¹ã‚¿ãƒãƒ¼ãƒ¬ãƒ™ãƒ«ã«å¿œã˜ãŸãƒã‚¤ãƒ³ãƒˆé‚„å…ƒç‡ç®—å‡º============================================================
 		  
 		      //$get_point = ($result3['value'] - (int)$result2['value']) * MODULE_ORDER_TOTAL_POINT_FEE;
 		      $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
@@ -154,14 +154,14 @@
 	
 			  $ot_query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_total'");
 			  $ot_result = tep_db_fetch_array($ot_query);
-			  $otm = (int)$ot_result['value'] . '±ß';
+			  $otm = (int)$ot_result['value'] . 'å††';
 			  
 			  $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
 			  $os_result = tep_db_fetch_array($os_query);
 	
 			  $comments = str_replace(array('${NAME}','${MAIL}','${ORDER_D}','${ORDER_N}','${PAY}','${ORDER_M}','${TRADING}','${ORDER_S}'),array($check_status['customers_name'],$check_status['customers_email_address'],tep_date_long($check_status['date_purchased']),$oID,$check_status['payment_method'],$otm,tep_torihiki($check_status['torihiki_date']),$os_result['orders_status_name']),$comments);
 			  tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, nl2br($comments), STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-			  tep_mail(STORE_OWNER, SENTMAIL_ADDRESS, 'Á÷¿®ºÑ¡§'.$title, nl2br($comments), $check_status['customers_name'], $check_status['customers_email_address']);
+			  tep_mail(STORE_OWNER, SENTMAIL_ADDRESS, 'é€ä¿¡æ¸ˆï¼š'.$title, nl2br($comments), $check_status['customers_name'], $check_status['customers_email_address']);
 			  $customer_notified = '1';
 			}
 			
@@ -177,9 +177,9 @@
     }
 
     if ($order_updated) {
-      $messageStack->add_session('ÃíÊ¸ID' . $oID . '¤Î' . SUCCESS_ORDER_UPDATED, 'success');
+      $messageStack->add_session('æ³¨æ–‡ID' . $oID . 'ã®' . SUCCESS_ORDER_UPDATED, 'success');
     } else {
-      $messageStack->add_session('ÃíÊ¸ID' . $oID . '¤Î' . WARNING_ORDER_NOT_UPDATED, 'warning');
+      $messageStack->add_session('æ³¨æ–‡ID' . $oID . 'ã®' . WARNING_ORDER_NOT_UPDATED, 'warning');
     }
 		}
     //tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '" . tep_db_input($comments)  . "')");
@@ -213,11 +213,11 @@
 		  $query4 = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '".$result1['customers_id']."'");
 		  $result4 = tep_db_fetch_array($query4);
 		  
-		// ¤³¤³¤«¤é¥«¥¹¥¿¥Ş¡¼¥ì¥Ù¥ë¤Ë±ş¤¸¤¿¥İ¥¤¥ó¥È´Ô¸µÎ¨»»½Ğ============================================================
+		// ã“ã“ã‹ã‚‰ã‚«ã‚¹ã‚¿ãƒãƒ¼ãƒ¬ãƒ™ãƒ«ã«å¿œã˜ãŸãƒã‚¤ãƒ³ãƒˆé‚„å…ƒç‡ç®—å‡º============================================================
 		// 2005.11.17 K.Kaneko
 		if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
 		  $customer_id = $result1['customers_id'];
-		  //ÀßÄê¤·¤¿´ü´ÖÆâ¤ÎÃíÊ¸¹ç·×¶â³Û¤ò»»½Ğ------------
+		  //è¨­å®šã—ãŸæœŸé–“å†…ã®æ³¨æ–‡åˆè¨ˆé‡‘é¡ã‚’ç®—å‡º------------
 		  $ptoday = date("Y-m-d H:i:s", time());
 		  $pstday_array = getdate();
 		  $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
@@ -236,10 +236,10 @@
 			}
 		  }
 		  //----------------------------------------------
-		  //º£²ó¤ÎÃíÊ¸³Û¤Ï½ü³°
+		  //ä»Šå›ã®æ³¨æ–‡é¡ã¯é™¤å¤–
 		  $total_buyed_date = $total_buyed_date - ($result3['value'] - (int)$result2['value']);
 		  
-		  //´Ô¸µÎ¨¤ò·×»»----------------------------------
+		  //é‚„å…ƒç‡ã‚’è¨ˆç®—----------------------------------
 		  if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
 			$back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
 			$back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
@@ -262,7 +262,7 @@
 		} else {
 		  $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
 		}
-		// ¤³¤³¤Ş¤Ç¥«¥¹¥¿¥Ş¡¼¥ì¥Ù¥ë¤Ë±ş¤¸¤¿¥İ¥¤¥ó¥È´Ô¸µÎ¨»»½Ğ============================================================
+		// ã“ã“ã¾ã§ã‚«ã‚¹ã‚¿ãƒãƒ¼ãƒ¬ãƒ™ãƒ«ã«å¿œã˜ãŸãƒã‚¤ãƒ³ãƒˆé‚„å…ƒç‡ç®—å‡º============================================================
 		  
 		  //$get_point = ($result3['value'] - (int)$result2['value']) * MODULE_ORDER_TOTAL_POINT_FEE;
 		  $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
@@ -282,14 +282,14 @@
 
 		  $ot_query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_total'");
 		  $ot_result = tep_db_fetch_array($ot_query);
-		  $otm = (int)$ot_result['value'] . '±ß';
+		  $otm = (int)$ot_result['value'] . 'å††';
 		  
 		  $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
 		  $os_result = tep_db_fetch_array($os_query);
 
 		  $comments = str_replace(array('${NAME}','${MAIL}','${ORDER_D}','${ORDER_N}','${PAY}','${ORDER_M}','${TRADING}','${ORDER_S}'),array($check_status['customers_name'],$check_status['customers_email_address'],tep_date_long($check_status['date_purchased']),$oID,$check_status['payment_method'],$otm,tep_torihiki($check_status['torihiki_date']),$os_result['orders_status_name']),$comments);
 		  tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, nl2br($comments), STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-		  tep_mail(STORE_OWNER, SENTMAIL_ADDRESS, 'Á÷¿®ºÑ¡§'.$title, nl2br($comments), $check_status['customers_name'], $check_status['customers_email_address']);
+		  tep_mail(STORE_OWNER, SENTMAIL_ADDRESS, 'é€ä¿¡æ¸ˆï¼š'.$title, nl2br($comments), $check_status['customers_name'], $check_status['customers_email_address']);
     $customer_notified = '1';
     }
 		
@@ -336,7 +336,7 @@
 
   include(DIR_WS_CLASSES . 'order.php');
   
-  //mailËÜÊ¸¤ò¼èÆÀ----------------------------------
+  //mailæœ¬æ–‡ã‚’å–å¾—----------------------------------
   /*
   $suu = 0;
   $text_suu = 0;  
@@ -442,7 +442,7 @@ function auto_reload(){
   window.location.reload();
 }
 
-timerID = setInterval("auto_reload()",<?php echo (int)$reloadcnt * 1000; ?>); //1ÉÃ¡§1000
+timerID = setInterval("auto_reload()",<?php echo (int)$reloadcnt * 1000; ?>); //1ç§’ï¼š1000
 <?php }?>
 function getCheckboxValue(ccName)
 {
@@ -461,9 +461,9 @@ function mail_text(st,tt,ot){
   chk = getCheckboxValue('chk[]');
   if((chk.length > 1 || chk.length < 1) && window.status_text[CI].indexOf('${ORDER_A}') != -1){
     if(chk.length > 1){
-    	alert('Ê£¿ô¤ÎÁªÂò¤Ï¤Ç¤­¤Ş¤»¤ó¡£');
+    	alert('è¤‡æ•°ã®é¸æŠã¯ã§ãã¾ã›ã‚“ã€‚');
     } else {
-    	alert('ÃíÊ¸½ñ¤Ï¤Ş¤ÀÁªÂò¤·¤Æ¤¤¤Ş¤»¤ó¡£');
+    	alert('æ³¨æ–‡æ›¸ã¯ã¾ã é¸æŠã—ã¦ã„ã¾ã›ã‚“ã€‚');
     }
     document.sele_act.elements[st].options[window.last_status].selected = true;
     return false;
@@ -543,26 +543,26 @@ function mail_text(st,tt,ot){
     <tr>
       <td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="2">
     <tr>
-    <td class="main" valign="top" width="30%"><b>¼è°úÆü»ş</b></td>
+    <td class="main" valign="top" width="30%"><b>å–å¼•æ—¥æ™‚</b></td>
     <td class="main" width="70%"><b style=" color:#0000FF"><?php echo $order->tori['date'];?></b></td>
     </tr>
     <tr>
     <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '5'); ?></td>
     </tr>
     <tr>
-    <td class="main" valign="top"><b>¥ª¥×¥·¥ç¥ó</b></td>
+    <td class="main" valign="top"><b>ã‚ªãƒ—ã‚·ãƒ§ãƒ³</b></td>
     <td class="main"><b style=" color:#0000FF"><?php echo $order->tori['houhou'];?></b></td>
     </tr>
     <tr>
     <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '5'); ?></td>
     </tr>    <tr>
-    <td class="main" valign="top"><b>¤´ÃíÊ¸ÈÖ¹æ</b></td>
+    <td class="main" valign="top"><b>ã”æ³¨æ–‡ç•ªå·</b></td>
     <td class="main"><?php echo $HTTP_GET_VARS['oID'] ?></td>
     </tr>
     <tr>
     <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '5'); ?></td>
     </tr>    <tr>
-    <td class="main" valign="top"><b>ÃíÊ¸Æü</b></td>
+    <td class="main" valign="top"><b>æ³¨æ–‡æ—¥</b></td>
     <td class="main"><?php echo tep_date_long($order->customer['date']); ?></td>
     </tr>
     <tr>
@@ -644,7 +644,7 @@ function mail_text(st,tt,ot){
     echo '<br><nobr><small>&nbsp;<i> - ' . $order->products[$i]['attributes'][$j]['option'] . ': ' . $order->products[$i]['attributes'][$j]['value'];
     if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')<br>';
 		  echo '</i></small></nobr>';
-//		  echo '<br><small>&nbsp;<i> - JAN¥³¡¼¥É¡§'.$order->products[$i]['attributes'][$j]['jan'] . '<br>&nbsp; - ·¿ÈÖ¡§'.$order->products[$i]['attributes'][$j]['model'].'</small>';
+//		  echo '<br><small>&nbsp;<i> - JANã‚³ãƒ¼ãƒ‰ï¼š'.$order->products[$i]['attributes'][$j]['jan'] . '<br>&nbsp; - å‹ç•ªï¼š'.$order->products[$i]['attributes'][$j]['model'].'</small>';
     
     }
       }
@@ -685,16 +685,16 @@ function mail_text(st,tt,ot){
     }
 ?>
 				<tr>
-					<td align="right" class="smallText">»î¸³±¿ÍÑÃæ<font color="red">¡Ê¾åµ­¤Î¿ôÃÍ¤È°ìÃ×¤·¤Æ¤¤¤ë¤«³ÎÇ§¤¹¤ë¤è¤¦¤Ë¡Ë</font>Çã¼è¥³¥Ô¥ÚÍÑ:</td>
+					<td align="right" class="smallText">è©¦é¨“é‹ç”¨ä¸­<font color="red">ï¼ˆä¸Šè¨˜ã®æ•°å€¤ã¨ä¸€è‡´ã—ã¦ã„ã‚‹ã‹ç¢ºèªã™ã‚‹ã‚ˆã†ã«ï¼‰</font>è²·å–ã‚³ãƒ”ãƒšç”¨:</td>
 <?php
 	$warning_sell = '';
-	$warning_sell = str_replace(array("," , "<b>" , "</b>" , "±ß") , array("" , "" , "" , "") , $order->totals[2]['text']);
+	$warning_sell = str_replace(array("," , "<b>" , "</b>" , "å††") , array("" , "" , "" , "") , $order->totals[2]['text']);
 ?>
 					<td align="right" class="smallText"><?php echo $warning_sell; ?></td>
 				</tr>
 <?php
 	if ( $warning_sell < 5000 ) {
-		echo '<tr><td align="right" colspan="2" class="smallText"><font color="blue">¤³¤ÎÃíÊ¸¤Ï5,000±ßÌ¤Ëş¤Ç¤¹¡£Çã¼è¤Ê¤é¼ê¿ôÎÁ168±ß°ú¤¯</font></td></tr>';
+		echo '<tr><td align="right" colspan="2" class="smallText"><font color="blue">ã“ã®æ³¨æ–‡ã¯5,000å††æœªæº€ã§ã™ã€‚è²·å–ãªã‚‰æ‰‹æ•°æ–™168å††å¼•ã</font></td></tr>';
 	}
 ?>
       </table></td>
@@ -791,8 +791,8 @@ function mail_text(st,tt,ot){
       </tr>
       <tr>
     <td class="main">
-			<b><?php echo TABLE_HEADING_COMMENTS; ?>:</b>¼«Æ°Åª¤Ë²ş¹Ô¤·¤ÆÉ½¼¨¤·¡¢Á÷¿®¤µ¤ì¤ë¥á¡¼¥ë¤Ë¤â²ş¹Ô¤¬Æş¤ê¤Ş¤¹¡£
-			<table><tr class="smalltext"><td><font color="red">¢¨</font>&nbsp;¥³¥Ô¥ÚÍÑ:</td><td>¤¿¤Àº£¤è¤ê¥í¥°¥¤¥ó¤¤¤¿¤·¤Ş¤¹¡£</td></tr></table>
+			<b><?php echo TABLE_HEADING_COMMENTS; ?>:</b>è‡ªå‹•çš„ã«æ”¹è¡Œã—ã¦è¡¨ç¤ºã—ã€é€ä¿¡ã•ã‚Œã‚‹ãƒ¡ãƒ¼ãƒ«ã«ã‚‚æ”¹è¡ŒãŒå…¥ã‚Šã¾ã™ã€‚
+			<table><tr class="smalltext"><td><font color="red">â€»</font>&nbsp;ã‚³ãƒ”ãƒšç”¨:</td><td>ãŸã ä»Šã‚ˆã‚Šãƒ­ã‚°ã‚¤ãƒ³ã„ãŸã—ã¾ã™ã€‚</td></tr></table>
 		</td>
       </tr>
       <tr>
@@ -810,11 +810,11 @@ function mail_text(st,tt,ot){
 			      <tr>
 				    <td><table width="100%" border="0" cellspacing="0" cellpadding="2">
 					  <tr>
-						<td class="main"><?php echo tep_draw_checkbox_field('notify', '', true); ?><b>¥á¡¼¥ëÁ÷¿®</b></td>
-						<td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', true); ?><b>¥¹¥Æ¡¼¥¿¥¹ÄÌÃÎ</b></td>
+						<td class="main"><?php echo tep_draw_checkbox_field('notify', '', true); ?><b>ãƒ¡ãƒ¼ãƒ«é€ä¿¡</b></td>
+						<td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', true); ?><b>ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹é€šçŸ¥</b></td>
 					  </tr>
 					  <tr>
-						<td class="main" colspan="2"><br><b style="color:#FF0000;">´Ö°ã¤¤Ãµ¤·¤Ï¤·¤Ş¤·¤¿¤«¡©</b><br><br><?php echo tep_image_submit('button_update.gif', IMAGE_UPDATE); ?></td>
+						<td class="main" colspan="2"><br><b style="color:#FF0000;">é–“é•ã„æ¢ã—ã¯ã—ã¾ã—ãŸã‹ï¼Ÿ</b><br><br><?php echo tep_image_submit('button_update.gif', IMAGE_UPDATE); ?></td>
 					  </tr>
       		</table></td>
       		<td valign="top">&nbsp;</td>
@@ -836,12 +836,12 @@ function mail_text(st,tt,ot){
       <table width=""  border="0" cellspacing="1" cellpadding="0">
     <tr>
     
-				<td class="smallText">¸¡º÷ : 
+				<td class="smallText">æ¤œç´¢ : 
 				<input name="keywords" type="text" id="keywords" size="40" value="<?php if(isset($HTTP_GET_VARS['keywords'])) echo stripslashes($HTTP_GET_VARS['keywords']); ?>"></td>
-    <td><?php echo tep_image_submit('button_search.gif', '¸¡º÷¤¹¤ë'); ?></td>
+    <td><?php echo tep_image_submit('button_search.gif', 'æ¤œç´¢ã™ã‚‹'); ?></td>
     </tr>
 			  <tr>
-			    <td colspan="2" class="smallText">¢¨¸¡º÷ÂĞ¾İ¡§¡Ö¸ÜµÒÌ¾¡ÊÀ«/Ì¾/¡Ë¡×¡Ö¤Õ¤ê¤¬¤Ê¡ÊÀ«/Ì¾¡Ë¡×¡Ö¥á¡¼¥ë¥¢¥É¥ì¥¹¡×¡Ö¹ØÆş¾¦ÉÊÌ¾¡×¡ÖÅÅÏÃÈÖ¹æ¡×</td>
+			    <td colspan="2" class="smallText">â€»æ¤œç´¢å¯¾è±¡ï¼šã€Œé¡§å®¢åï¼ˆå§“/å/ï¼‰ã€ã€Œãµã‚ŠãŒãªï¼ˆå§“/åï¼‰ã€ã€Œãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã€ã€Œè³¼å…¥å•†å“åã€ã€Œé›»è©±ç•ªå·ã€</td>
 			  </tr>
       </table></form></td>
       <td align="right"><table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -863,11 +863,11 @@ function mail_text(st,tt,ot){
 	<td>
 		<!--ORDER EXPORT SCRIPT //-->
 		<form action="<?php echo tep_href_link('orders_csv_exe.php','csv_exe=true',SSL) ; ?>" method="post">
-    <fieldset><legend class="smallText"><b>ÃíÊ¸¥Ç¡¼¥¿¥À¥¦¥ó¥í¡¼¥É</b></legend>
-    <span class="smallText">¥À¥¦¥ó¥í¡¼¥ÉÃæ¤Ï¥µ¡¼¥Ğ¤ËÂĞ¤·¤Æ¹âÉé²Ù¤È¤Ê¤ê¤Ş¤¹¡£¥¢¥¯¥»¥¹¤Î¾¯¤Ê¤¤»ş´Ö¤Ë¼Â¹Ô¤·¤Æ¤¯¤À¤µ¤¤¡£</span>
+    <fieldset><legend class="smallText"><b>æ³¨æ–‡ãƒ‡ãƒ¼ã‚¿ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰</b></legend>
+    <span class="smallText">ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ä¸­ã¯ã‚µãƒ¼ãƒã«å¯¾ã—ã¦é«˜è² è·ã¨ãªã‚Šã¾ã™ã€‚ã‚¢ã‚¯ã‚»ã‚¹ã®å°‘ãªã„æ™‚é–“ã«å®Ÿè¡Œã—ã¦ãã ã•ã„ã€‚</span>
     <table  border="0" align="center" cellpadding="0" cellspacing="2">
     <tr>
-      <td class="smallText">³«»ÏÆü:
+      <td class="smallText">é–‹å§‹æ—¥:
       <select name="s_y">
 			<?php
 			for($i=2002; $i<2011; $i++) {
@@ -879,7 +879,7 @@ function mail_text(st,tt,ot){
       }
 			?>    
       </select>
-      Ç¯
+      å¹´
       <select name="s_m">
 			<?php
 			for($i=1; $i<13; $i++) {
@@ -891,7 +891,7 @@ function mail_text(st,tt,ot){
       }
 			?>    
       </select>
-      ·î
+      æœˆ
       <select name="s_d">
 			<?php
 			for($i=1; $i<32; $i++) {
@@ -903,9 +903,9 @@ function mail_text(st,tt,ot){
       }
 			?>    
       </select>
-      Æü </td>
-      <td width="100" align="center">¡Á</td>
-      <td class="smallText">½ªÎ»Æü
+      æ—¥ </td>
+      <td width="100" align="center">ã€œ</td>
+      <td class="smallText">çµ‚äº†æ—¥
       <select name="e_y">
 			<?php
 			for($i=2002; $i<2011; $i++) {
@@ -917,7 +917,7 @@ function mail_text(st,tt,ot){
       }
 			?>    
       </select>
-      Ç¯
+      å¹´
       <select name="e_m">
 			<?php
 			for($i=1; $i<13; $i++) {
@@ -929,7 +929,7 @@ function mail_text(st,tt,ot){
       }
 			?>    
       </select>
-      ·î
+      æœˆ
       <select name="e_d">
 			<?php
 			for($i=1; $i<32; $i++) {
@@ -941,10 +941,10 @@ function mail_text(st,tt,ot){
       }
 			?>    
       </select>
-      Æü </td>
+      æ—¥ </td>
        <td class="smallText"><?php echo HEADING_TITLE_STATUS . ' ' . tep_draw_pull_down_menu('status', tep_array_merge(array(array('id' => '', 'text' => TEXT_ALL_ORDERS)), $orders_statuses), '', ''); ?></td>
       <td>&nbsp;</td>
-    <td><input type="image" src="includes/languages/japanese/images/buttons/button_csv_exe.gif" alt="CSV¥¨¥¯¥¹¥İ¡¼¥È" width="105" height="22" border="0"></td>
+    <td><input type="image" src="includes/languages/japanese/images/buttons/button_csv_exe.gif" alt="CSVã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ" width="105" height="22" border="0"></td>
 		  </tr>
     </table></fieldset>
 		</form>
@@ -965,7 +965,7 @@ function mail_text(st,tt,ot){
 ?>
 			<table border="0" width="100%" cellspacing="1" cellpadding="2" style="background: #FF8E90;" height="30"> 
     <tr style="background: #FFE6E6; font-size: 10px; "> 
-    <td><strong><font color="#FF0000"> ¡ÚÃí°Õ¡Û </font></strong>¸½ºß¼«Æ°¥ê¥í¡¼¥Éµ¡Ç½¤¬Í­¸ú¤Ë¤Ê¤Ã¤Æ¤¤¤Ş¤¹¡¡¢ª ¡Ú<a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=No'); ?>"><b>Ìµ¸ú¤Ë¤¹¤ë</b></a>¡Û&nbsp;&nbsp;|&nbsp;&nbsp;°ìÍ÷¤ËÉ½¼¨¤¹¤ë<a href="orders_status.php"><b>ÃíÊ¸¥¹¥Æ¡¼¥¿¥¹ÀßÄê</b></a></td>
+    <td><strong><font color="#FF0000"> ã€æ³¨æ„ã€‘ </font></strong>ç¾åœ¨è‡ªå‹•ãƒªãƒ­ãƒ¼ãƒ‰æ©Ÿèƒ½ãŒæœ‰åŠ¹ã«ãªã£ã¦ã„ã¾ã™ã€€â†’ ã€<a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=No'); ?>"><b>ç„¡åŠ¹ã«ã™ã‚‹</b></a>ã€‘&nbsp;&nbsp;|&nbsp;&nbsp;ä¸€è¦§ã«è¡¨ç¤ºã™ã‚‹<a href="orders_status.php"><b>æ³¨æ–‡ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¨­å®š</b></a></td>
 			  </tr>
 			</table>
 <?php
@@ -973,7 +973,7 @@ function mail_text(st,tt,ot){
 ?>
 			<table border="0" width="100%" cellspacing="1" cellpadding="2" style="background: #FF8E90;" height="30"> 
     <tr style="background: #FFE6E6; font-size: 10px; "> 
-    <td><strong><font color="#FF0000"> ¡ÚÃí°Õ¡Û </font></strong>¸½ºß¼«Æ°¥ê¥í¡¼¥Éµ¡Ç½¤¬Ìµ¸ú¤Ë¤Ê¤Ã¤Æ¤¤¤Ş¤¹¡¡¢ª ¡Ú<a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes'); ?>"><b>Í­¸ú¤Ë¤¹¤ë</b></a>¡Û&nbsp;&nbsp;|&nbsp;&nbsp;°ìÍ÷¤ËÉ½¼¨¤¹¤ë<a href="orders_status.php"><b>ÃíÊ¸¥¹¥Æ¡¼¥¿¥¹ÀßÄê</b></a></td>
+    <td><strong><font color="#FF0000"> ã€æ³¨æ„ã€‘ </font></strong>ç¾åœ¨è‡ªå‹•ãƒªãƒ­ãƒ¼ãƒ‰æ©Ÿèƒ½ãŒç„¡åŠ¹ã«ãªã£ã¦ã„ã¾ã™ã€€â†’ ã€<a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes'); ?>"><b>æœ‰åŠ¹ã«ã™ã‚‹</b></a>ã€‘&nbsp;&nbsp;|&nbsp;&nbsp;ä¸€è¦§ã«è¡¨ç¤ºã™ã‚‹<a href="orders_status.php"><b>æ³¨æ–‡ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¨­å®š</b></a></td>
 			  </tr>
 			</table>
 <?php
@@ -987,7 +987,7 @@ function mail_text(st,tt,ot){
 			    <td class="dataTableHeadingContent"><input type="checkbox" name="all_chk" onClick="all_check()"></td>
     <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CUSTOMERS; ?></td>
     <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ORDER_TOTAL; ?></td>
-    <td class="dataTableHeadingContent" align="center">¼è°úÆü</td>
+    <td class="dataTableHeadingContent" align="center">å–å¼•æ—¥</td>
     <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_DATE_PURCHASED; ?></td>
     <td class="dataTableHeadingContent" align="right"></td>
     			<td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_STATUS; ?></td>
@@ -1004,7 +1004,7 @@ function mail_text(st,tt,ot){
     } elseif ($HTTP_GET_VARS['keywords']) {
       
 	  $orders_query_raw = "select distinct(o.orders_id), o.torihiki_date, o.customers_id, o.customers_name, o.payment_method, o.date_purchased, o.last_modified, o.currency, o.currency_value, s.orders_status_name, ot.text as order_total  from " . TABLE_ORDERS . " o, " . TABLE_ORDERS_TOTAL . " ot, " . TABLE_ORDERS_STATUS . " s, " . TABLE_ORDERS_PRODUCTS . " op where o.orders_id = ot.orders_id and o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "' and ot.class = 'ot_total' and o.orders_id = op.orders_id";
-	  $keywords = str_replace('¡¡', ' ', $HTTP_GET_VARS['keywords']);
+	  $keywords = str_replace('ã€€', ' ', $HTTP_GET_VARS['keywords']);
 	  tep_parse_search_string($keywords, $search_keywords);
 	  if (isset($search_keywords) && (sizeof($search_keywords) > 0)) {
 	    $orders_query_raw .= " and (";
@@ -1054,13 +1054,13 @@ function mail_text(st,tt,ot){
       }
 	  */
 
-	//º£Æü¤Î¼è°ú¤Ê¤éÀÖ¿§
+	//ä»Šæ—¥ã®å–å¼•ãªã‚‰èµ¤è‰²
 	$trade_array = getdate(strtotime(tep_datetime_short($orders['torihiki_date'])));
 	$today_array = getdate();
 	if ($trade_array["year"] == $today_array["year"] && $trade_array["mon"] == $today_array["mon"] && $trade_array["mday"] == $today_array["mday"]) {
 		$today_color = 'red';
 		if ($trade_array["hours"] >= $today_array["hours"]) {
-			$next_mark = tep_image(DIR_WS_ICONS . 'arrow_blinking.gif', '¼¡¤ÎÃíÊ¸'); //¼¡¤ÎÃíÊ¸¤ËÌÜ°õ¤ò¤Ä¤±¤ë
+			$next_mark = tep_image(DIR_WS_ICONS . 'arrow_blinking.gif', 'æ¬¡ã®æ³¨æ–‡'); //æ¬¡ã®æ³¨æ–‡ã«ç›®å°ã‚’ã¤ã‘ã‚‹
 		} else {
 			$next_mark = '';
 		}
@@ -1074,8 +1074,8 @@ function mail_text(st,tt,ot){
     
 				<td style="border-bottom:1px solid #000000;" class="dataTableContent"><input type="checkbox" name="chk[]" value="<?php echo $orders['orders_id']; ?>" onClick="chg_tr_color(this)"></td>
 				<td style="border-bottom:1px solid #000000;" class="dataTableContent" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><?php echo '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $orders['orders_id'] . '&action=edit') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;
-				<a href="' . tep_href_link('orders.php', 'cID=' . tep_output_string_protected($orders['customers_id'])) . '">' . tep_image(DIR_WS_ICONS . 'search.gif', '²áµî¤ÎÃíÊ¸') . '</a>&nbsp;
-				<a href="' . tep_href_link('customers.php', 'page=1&cID=' . tep_output_string_protected($orders['customers_id']) . '&action=edit') . '">' . tep_image(DIR_WS_ICONS . 'arrow_r_red.gif', '¸ÜµÒ¾ğÊó') . '</a>&nbsp;&nbsp;<b>' . tep_output_string_protected($orders['customers_name']) . '</b>'; ?></td>
+				<a href="' . tep_href_link('orders.php', 'cID=' . tep_output_string_protected($orders['customers_id'])) . '">' . tep_image(DIR_WS_ICONS . 'search.gif', 'éå»ã®æ³¨æ–‡') . '</a>&nbsp;
+				<a href="' . tep_href_link('customers.php', 'page=1&cID=' . tep_output_string_protected($orders['customers_id']) . '&action=edit') . '">' . tep_image(DIR_WS_ICONS . 'arrow_r_red.gif', 'é¡§å®¢æƒ…å ±') . '</a>&nbsp;&nbsp;<b>' . tep_output_string_protected($orders['customers_name']) . '</b>'; ?></td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><?php echo strip_tags($orders['order_total']); ?></td>
 			    
 				<td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><?php echo $next_mark; ?><font color="<?php echo $today_color; ?>"><?php echo tep_datetime_short($orders['torihiki_date']); ?></font></td>
@@ -1102,7 +1102,7 @@ function mail_text(st,tt,ot){
        		$_osh[] = $_orders_status_history['orders_status_id'];
     	}
     	if(!$_osi){
-    		echo '¡¡';
+    		echo 'ã€€';
     	}
         */
     // ===============================================================
@@ -1124,7 +1124,7 @@ function mail_text(st,tt,ot){
        		$_osh[] = $_orders_status_history['orders_status_id'];
     	}
     	if(!$_osi){
-    		echo '¡¡';
+    		echo 'ã€€';
     	}
     // ===============================================================
     ?>
@@ -1147,9 +1147,9 @@ function submit_confirm()
   chk = getCheckboxValue('chk[]')
   if((chk.length > 1 || chk.length < 1) && window.status_text[CI].indexOf('${ORDER_A}') != -1){
     if(chk.length > 1){
-    	alert('Ê£¿ô¤ÎÁªÂò¤Ï¤Ç¤­¤Ş¤»¤ó¡£');
+    	alert('è¤‡æ•°ã®é¸æŠã¯ã§ãã¾ã›ã‚“ã€‚');
     } else {
-    	alert('ÃíÊ¸½ñ¤Ï¤Ş¤ÀÁªÂò¤·¤Æ¤¤¤Ş¤»¤ó¡£');
+    	alert('æ³¨æ–‡æ›¸ã¯ã¾ã é¸æŠã—ã¦ã„ã¾ã›ã‚“ã€‚');
     }
     return false;
   }
@@ -1161,7 +1161,7 @@ function submit_confirm()
 			<table width="100%" id="select_send" style="display:none">
 			  <tr>
 			    <td class="main"><b><?php echo ENTRY_STATUS; ?></b></td>
-				<td class="main"><?php echo tep_draw_pull_down_menu('status', $orders_statuses, $select_select,  'onChange="mail_text(\'status\',\'comments\',\'os_title\')"'); ?> &nbsp;<a href="<?php echo tep_href_link(FILENAME_ORDERS_STATUS,'',SSL);?>">¥á¡¼¥ëËÜÊ¸ÊÔ½¸</a></td>
+				<td class="main"><?php echo tep_draw_pull_down_menu('status', $orders_statuses, $select_select,  'onChange="mail_text(\'status\',\'comments\',\'os_title\')"'); ?> &nbsp;<a href="<?php echo tep_href_link(FILENAME_ORDERS_STATUS,'',SSL);?>">ãƒ¡ãƒ¼ãƒ«æœ¬æ–‡ç·¨é›†</a></td>
 			  </tr>
 			  <tr>
 			    <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
@@ -1176,8 +1176,8 @@ function submit_confirm()
 			  <tr>
 			    <td class="main" valign="top"><b><?php echo TABLE_HEADING_COMMENTS . ':'; ?></b></td>
 				<td class="main">
-					¼«Æ°Åª¤Ë²ş¹Ô¤·¤ÆÉ½¼¨¤·¡¢Á÷¿®¤µ¤ì¤ë¥á¡¼¥ë¤Ë¤â²ş¹Ô¤¬Æş¤ê¤Ş¤¹¡£
-					<table><tr class="smalltext"><td><font color="red">¢¨</font>&nbsp;¥³¥Ô¥ÚÍÑ:</td><td>¤¿¤Àº£¤è¤ê¥í¥°¥¤¥ó¤¤¤¿¤·¤Ş¤¹¡£</td></tr></table>
+					è‡ªå‹•çš„ã«æ”¹è¡Œã—ã¦è¡¨ç¤ºã—ã€é€ä¿¡ã•ã‚Œã‚‹ãƒ¡ãƒ¼ãƒ«ã«ã‚‚æ”¹è¡ŒãŒå…¥ã‚Šã¾ã™ã€‚
+					<table><tr class="smalltext"><td><font color="red">â€»</font>&nbsp;ã‚³ãƒ”ãƒšç”¨:</td><td>ãŸã ä»Šã‚ˆã‚Šãƒ­ã‚°ã‚¤ãƒ³ã„ãŸã—ã¾ã™ã€‚</td></tr></table>
 					<br>
 					<?php echo tep_draw_textarea_field('comments', 'hard', '74', '30', $select_text, 'style="font-family:monospace;font-size:x-small"'); ?>
 				</td>
@@ -1189,11 +1189,11 @@ function submit_confirm()
 			    <td>&nbsp;</td>
 				<td><table width="100%" border="0" cellspacing="0" cellpadding="2">
 					<tr>
-						<td class="main"><?php echo tep_draw_checkbox_field('notify', '', true); ?><b>¥á¡¼¥ëÁ÷¿®</b></td>
-						<td class="main" align="right"><?php echo tep_draw_checkbox_field('notify_comments', '', true); ?><b>¥¹¥Æ¡¼¥¿¥¹ÄÌÃÎ</b></td>
+						<td class="main"><?php echo tep_draw_checkbox_field('notify', '', true); ?><b>ãƒ¡ãƒ¼ãƒ«é€ä¿¡</b></td>
+						<td class="main" align="right"><?php echo tep_draw_checkbox_field('notify_comments', '', true); ?><b>ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹é€šçŸ¥</b></td>
 					</tr>
 					<tr>
-						<td class="main" colspan="2"><br><b style="color:#FF0000;">´Ö°ã¤¤Ãµ¤·¤Ï¤·¤Ş¤·¤¿¤«¡©</b><br><br><?php echo tep_image_submit('button_update.gif', IMAGE_UPDATE, 'onclick="return submit_confirm();"'); ?></td>
+						<td class="main" colspan="2"><br><b style="color:#FF0000;">é–“é•ã„æ¢ã—ã¯ã—ã¾ã—ãŸã‹ï¼Ÿ</b><br><br><?php echo tep_image_submit('button_update.gif', IMAGE_UPDATE, 'onclick="return submit_confirm();"'); ?></td>
 					</tr>
       	</table></td>
 			  </tr>

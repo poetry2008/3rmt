@@ -1,6 +1,6 @@
 <?php
 /*
-	JP��GM���̥ե�����
+	JP、GM共通ファイル
 */
 
   require('includes/application_top.php');
@@ -108,10 +108,10 @@
     <td width="100%" valign="top">
 	<table border='0' bgcolor='#7c6bce' width='100%'>
       <tr>
-        <td class="main"><font color="#ffffff"><b>���ƥå� 1 - �ܵҤ򸡺����ޤ�</b></font></td>
+        <td class="main"><font color="#ffffff"><b>ステップ 1 - 顧客を検索します</b></font></td>
       </tr>
     </table>
-	<p class="pageHeading">��Ͽ�ǡ�����̵ͭ���ǧ:</p>
+	<p class="pageHeading">登録データの有無を確認:</p>
 <?php
 /*
 	echo "<form action='$PHP_SELF' method='GET'>\n";
@@ -133,7 +133,7 @@
 	echo "</form>\n";
 */
 	echo '<form action="' . $PHP_SELF . '" method="GET">' . "\n";
-	echo '<p class=main>�᡼�륢�ɥ쥹�����Ϥ��ָ����ץܥ���򥯥�å����Ƥ���������<br>�᡼�륢�ɥ쥹:&nbsp;<input type="text" name="Customer_mail" size="40">&nbsp;&nbsp;<input type="submit" value="  ����  "></p>' . "\n";
+	echo '<p class=main>メールアドレスを入力し「検索」ボタンをクリックしてください。<br>メールアドレス:&nbsp;<input type="text" name="Customer_mail" size="40">&nbsp;&nbsp;<input type="submit" value="  検索  "></p>' . "\n";
 	echo '</form>' . "\n";
 ?>
 	<br>
@@ -147,7 +147,7 @@
 	  </tr>
 	</table>
 <?php
-	//�ѿ�����
+	//変数挿入
     $customer_id = $account['customers_id'];
     $firstname = $account['customers_firstname'];
     $lastname = $account['customers_lastname'];

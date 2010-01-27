@@ -1,91 +1,91 @@
 <?php
 /* *********************************************************
-  �⥸�塼��̾: users.php
+  モジュール名: users.php
  * 2001/5/29
  *   modi 2002-05-10
  * Naomi Suzukawa
  * suzukawa@bitscope.co.jp
   ----------------------------------------------------------
-�桼�������θ������
+ユーザ管理の言語定義
 
-  ���ѹ�����
+  ■変更履歴
 ********************************************************* */
-// �ڡ��������ȥ�
-define('HEADING_TITLE', '�桼������');
+// ページタイトル
+define('HEADING_TITLE', 'ユーザ管理');
 
-// ���顼��å�����ɽ�������ȥ�
-define('TABLE_HEADING_ERRINFO', '!!!!! ���顼��å����� !!!!!');
+// エラーメッセージ表示タイトル
+define('TABLE_HEADING_ERRINFO', '!!!!! エラーメッセージ !!!!!');
 
-// ���ϥ��顼��å�����
-define('TEXT_ERRINFO_INPUT_NOINPUT', '̤���ϤǤ�');
-define('TEXT_ERRINFO_INPUT_ERR', '���������Ϥ���Ƥ��ޤ���');
-define('TEXT_ERRINFO_INPUT_LENGTH', '%d ʸ���ʾ����Ϥ��Ƥ�������');
-define('TEXT_ERRINFO_USER_DELETE', '<b>�桼������κ��</b>:�桼���ܿͤξ���Ϻ���Ǥ��ޤ���');
-define('TEXT_ERRINFO_USER_GRANT', '<b>���¤�Ϳ����</b>:�桼�������򤷤Ƥ�������');
-define('TEXT_ERRINFO_USER_REVOKE', '<b>���¤��ä�</b>:�桼�������򤷤Ƥ�������');
-define('TEXT_ERRINFO_USER_REVOKE_ONESELF', '<b>���¤��ä�</b>:�桼���ܿͤθ��¤��ä����ȤϤǤ��ޤ���');
-define('TEXT_ERRINFO_CONFIRM_PASSWORD', '<b>��ǧ�Τ��������</b>:��ǧ�Τ�������Ϥ����ѥ���ɤ��㤤�ޤ�');
+// 入力エラーメッセージ
+define('TEXT_ERRINFO_INPUT_NOINPUT', '未入力です');
+define('TEXT_ERRINFO_INPUT_ERR', '正しく入力されていません');
+define('TEXT_ERRINFO_INPUT_LENGTH', '%d 文字以上入力してください');
+define('TEXT_ERRINFO_USER_DELETE', '<b>ユーザ情報の削除</b>:ユーザ本人の情報は削除できません');
+define('TEXT_ERRINFO_USER_GRANT', '<b>権限を与える</b>:ユーザを選択してください');
+define('TEXT_ERRINFO_USER_REVOKE', '<b>権限を取消す</b>:ユーザを選択してください');
+define('TEXT_ERRINFO_USER_REVOKE_ONESELF', '<b>権限を取消す</b>:ユーザ本人の権限を取消すことはできません');
+define('TEXT_ERRINFO_CONFIRM_PASSWORD', '<b>確認のため再入力</b>:確認のため再入力したパスワードが違います');
 
-// �ơ��֥륢���������顼��å�����
-define('TEXT_ERRINFO_DB_NO_USERINFO', '�桼�����󤬼����Ǥ��ޤ���Ǥ���');
-define('TEXT_ERRINFO_DB_NO_USER', '�оݤȤʤ�桼����¸�ߤ��ޤ���');
-define('TEXT_ERRINFO_DB_USERCHACK', '�桼����¸�ߥ����å��ǥ��顼��ȯ�����ޤ���');
-define('TEXT_ERRINFO_DB_EXISTING_USER', '������Ͽ����Ƥ���桼���Ǥ�');
-define('TEXT_ERRINFO_DB_INSERT_USER', '�桼���������Ͽ���Ǥ��ޤ���Ǥ���');
-define('TEXT_ERRINFO_DB_INSERT_PERMISSION', '�桼�����¾������Ͽ���Ǥ��ޤ���Ǥ���');
-define('TEXT_ERRINFO_DB_UPDATE_USER', '�桼������ι������Ǥ��ޤ���Ǥ���');
-define('TEXT_ERRINFO_DB_DELETE_USER', '�桼������κ�����Ǥ��ޤ���Ǥ���');
-define('TEXT_ERRINFO_DB_CHANGE_PASSWORD', '�ѥ���ɤ��ѹ����Ǥ��ޤ���Ǥ���');
-define('TEXT_ERRINFO_DB_CHANGE_USER', '�桼�����¤��ѹ����Ǥ��ޤ���Ǥ���');
+// テーブルアクセスエラーメッセージ
+define('TEXT_ERRINFO_DB_NO_USERINFO', 'ユーザ情報が取得できませんでした');
+define('TEXT_ERRINFO_DB_NO_USER', '対象となるユーザが存在しません');
+define('TEXT_ERRINFO_DB_USERCHACK', 'ユーザの存在チェックでエラーが発生しました');
+define('TEXT_ERRINFO_DB_EXISTING_USER', '既に登録されているユーザです');
+define('TEXT_ERRINFO_DB_INSERT_USER', 'ユーザ情報の登録ができませんでした');
+define('TEXT_ERRINFO_DB_INSERT_PERMISSION', 'ユーザ権限情報の登録ができませんでした');
+define('TEXT_ERRINFO_DB_UPDATE_USER', 'ユーザ情報の更新ができませんでした');
+define('TEXT_ERRINFO_DB_DELETE_USER', 'ユーザ情報の削除ができませんでした');
+define('TEXT_ERRINFO_DB_CHANGE_PASSWORD', 'パスワードの変更ができませんでした');
+define('TEXT_ERRINFO_DB_CHANGE_USER', 'ユーザ権限の変更ができませんでした');
 
-// ��λ��å�����
-define('TEXT_SUCCESSINFO_INSERT_USER', '�桼�����ɲä��ޤ���');
-define('TEXT_SUCCESSINFO_UPDATE_USER', '�桼������򹹿����ޤ���');
-define('TEXT_SUCCESSINFO_DELETE_USER', '�桼������������ޤ���');
-define('TEXT_SUCCESSINFO_CHANGE_PASSWORD', '�ѥ���ɤ��ѹ����ޤ���');
-define('TEXT_SUCCESSINFO_PERMISSION', '�桼�����¤�%s�ޤ���');
+// 完了メッセージ
+define('TEXT_SUCCESSINFO_INSERT_USER', 'ユーザを追加しました');
+define('TEXT_SUCCESSINFO_UPDATE_USER', 'ユーザ情報を更新しました');
+define('TEXT_SUCCESSINFO_DELETE_USER', 'ユーザ情報を削除しました');
+define('TEXT_SUCCESSINFO_CHANGE_PASSWORD', 'パスワードを変更しました');
+define('TEXT_SUCCESSINFO_PERMISSION', 'ユーザ権限を%sました');
 
-// �ڡ��������ȥ�
-define('PAGE_TITLE_MENU_USER', '�桼��������˥塼');
-define('PAGE_TITLE_INSERT_USER', '�桼�����ɲ�');
-define('PAGE_TITLE_USERINFO', '�桼������');
-define('PAGE_TITLE_PASSWORD', '�ѥ�����ѹ�');
-define('PAGE_TITLE_PERMISSION', '�����Ը���');
+// ページタイトル
+define('PAGE_TITLE_MENU_USER', 'ユーザ管理メニュー');
+define('PAGE_TITLE_INSERT_USER', 'ユーザの追加');
+define('PAGE_TITLE_USERINFO', 'ユーザ情報');
+define('PAGE_TITLE_PASSWORD', 'パスワード変更');
+define('PAGE_TITLE_PERMISSION', '管理者権限');
 
-// �ܥ���
-define('BUTTON_BACK_MENU', '�桼��������˥塼�����');
-define('BUTTON_INSERT_USER', '�桼�����ɲ�');
-define('BUTTON_INFO_USER', '�桼������');
-define('BUTTON_CHANGE_PASSWORD', '�ѥ�����ѹ�');
-define('BUTTON_PERMISSION', '�����Ը���');
-define('BUTTON_INSERT', '�ɲ�');
-define('BUTTON_CLEAR', '���ꥢ');
-define('BUTTON_UPDATE', '����');
-define('BUTTON_DELETE', '���');
-define('BUTTON_RESET', '�����ͤ��᤹');
-define('BUTTON_CHANGE', '�ѹ�');
-define('BUTTON_GRANT', '���¤�Ϳ���� >>');
-define('BUTTON_REVOKE', '<< ���¤��ä�');
-define('BUTTON_BACK_PERMISSION', '�����Ը��¤����');
+// ボタン
+define('BUTTON_BACK_MENU', 'ユーザ管理メニューに戻る');
+define('BUTTON_INSERT_USER', 'ユーザの追加');
+define('BUTTON_INFO_USER', 'ユーザ情報');
+define('BUTTON_CHANGE_PASSWORD', 'パスワード変更');
+define('BUTTON_PERMISSION', '管理者権限');
+define('BUTTON_INSERT', '追加');
+define('BUTTON_CLEAR', 'クリア');
+define('BUTTON_UPDATE', '更新');
+define('BUTTON_DELETE', '削除');
+define('BUTTON_RESET', '元の値に戻す');
+define('BUTTON_CHANGE', '変更');
+define('BUTTON_GRANT', '権限を与える >>');
+define('BUTTON_REVOKE', '<< 権限を取消す');
+define('BUTTON_BACK_PERMISSION', '管理者権限に戻る');
 
-// ����̾
-define('TABLE_HEADING_COLUMN', '�����');
-define('TABLE_HEADING_DATA', '�ǡ���');
-define('TABLE_HEADING_USER', '�桼��');
-define('TABLE_HEADING_USER_LIST', '�桼������');
-define('TABLE_HEADING_USER_ID', '�桼��ID');
-define('TABLE_HEADING_PASSWORD', '�ѥ����');
-define('TABLE_HEADING_NAME', '��̾');
+// 項目名
+define('TABLE_HEADING_COLUMN', 'カラム');
+define('TABLE_HEADING_DATA', 'データ');
+define('TABLE_HEADING_USER', 'ユーザ');
+define('TABLE_HEADING_USER_LIST', 'ユーザ一覧');
+define('TABLE_HEADING_USER_ID', 'ユーザID');
+define('TABLE_HEADING_PASSWORD', 'パスワード');
+define('TABLE_HEADING_NAME', '氏名');
 define('TABLE_HEADING_EMAIL', 'E-Mail');
-define('TABLE_HEADING_NEW_PASSWORD', '�������ѥ����');
-define('TABLE_HEADING_CONFIRM_PASSWORD', '��ǧ�Τ��������');
-define('TABLE_HEADING_USER', '���̥桼��');
-define('TABLE_HEADING_ADMIN', '�����ȴ�����');
+define('TABLE_HEADING_NEW_PASSWORD', '新しいパスワード');
+define('TABLE_HEADING_CONFIRM_PASSWORD', '確認のため再入力');
+define('TABLE_HEADING_USER', '一般ユーザ');
+define('TABLE_HEADING_ADMIN', 'サイト管理者');
 
-// JavaScript�γ�ǧ��å�����
-define('JAVA_SCRIPT_INFO_CHANGE', '�桼������������ѹ����ޤ���\n��������Ǥ�����');
-define('JAVA_SCRIPT_INFO_DELETE', '�桼����������������ޤ���\n��������Ǥ�����');
-define('JAVA_SCRIPT_INFO_PASSWORD', '�ѥ���ɤ��ѹ����ޤ���\n��������Ǥ�����');
-define('JAVA_SCRIPT_INFO_GRANT', '�����Ը��¤�Ϳ���ޤ���\n��������Ǥ�����');
-define('JAVA_SCRIPT_INFO_REVOKE', '�����Ը��¤���ä��ޤ���\n��������Ǥ�����');
+// JavaScriptの確認メッセージ
+define('JAVA_SCRIPT_INFO_CHANGE', 'ユーザ管理情報を変更します。\nよろしいですか？');
+define('JAVA_SCRIPT_INFO_DELETE', 'ユーザ管理情報を削除します。\nよろしいですか？');
+define('JAVA_SCRIPT_INFO_PASSWORD', 'パスワードを変更します。\nよろしいですか？');
+define('JAVA_SCRIPT_INFO_GRANT', '管理者権限を与えます。\nよろしいですか？');
+define('JAVA_SCRIPT_INFO_REVOKE', '管理者権限を取り消します。\nよろしいですか？');
 ?>

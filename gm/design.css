@@ -25,21 +25,21 @@
 	border-left-color: #CCCCCC;
 }
 .category_menu {
-    font-size: 11px;                                 /* 繝輔か繝ｳ繝医し繧､繧ｺ */
+    font-size: 11px;          
 	background-color: #E5EBF2;
 	border: 1px solid #B0BFCF;
 	margin: 1px;
 	padding-left: 1px;
 }
 .menu {
-    font-size: 11px;                                 /* 繝輔か繝ｳ繝医し繧､繧ｺ */
+    font-size: 11px;  
 	padding-left: 10px;
 	background-image: url(images/design/box/dot.gif);
 	background-repeat: repeat-x;
 	background-position: bottom;
 }
 .bestseller_text {
-    font-size: 10px;                                 /* 繝輔か繝ｳ繝医し繧､繧ｺ */
+    font-size: 10px;                                
 	background-color: #E4ECF6;
 	padding-left: 5px;
 	border-bottom-width: 1px;
@@ -83,7 +83,7 @@
   margin-top:5px;
 }
 .news_list {
-    font-size: 11px;                                 /* 繝輔か繝ｳ繝医し繧､繧ｺ */
+    font-size: 11px;                           
 	background-image: url(images/design/box/dot.gif);
 	background-repeat: repeat-x;
 	background-position: bottom;

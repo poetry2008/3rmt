@@ -11,19 +11,19 @@
 */
 
   require('includes/application_top.php');
-define('HEADING_TITLE', '����åץǥ���������');
-define('TEXT_NEW_LATEST_NEWS', '������Ͽ');
-define('TABLE_HEADING_LATEST_NEWS_HEADLINE', '�����ȥ�');
-define('TABLE_HEADING_LATEST_NEWS_ACTION', '���������');
-define('TABLE_HEADING_LATEST_NEWS_STATUS', '���ơ�����');
-define('TEXT_NEWS_ITEMS', '�˥塼��:');
-define('TEXT_INFO_HEADING_DELETE_ITEM', '���');
-define('TEXT_DELETE_ITEM_INTRO', '�����ˤ��Υ˥塼����ä��Ƥ⤤���Ǥ�����');
-define('TEXT_LATEST_NEWS_HEADLINE', '�إåɥ饤��ʥ����ȥ��');
-define('TEXT_LATEST_NEWS_CONTENT', '����������');
-define('TEXT_LATEST_NEWS_IMAGE', '��Ϣ����');
-define('TEXT_LATEST_NEWS_IMAGE_DESCRIPTION', '�������Ф��Ƥδ�ñ������');
-define('IMAGE_NEW_NEWS_ITEM', '�������˥塼�������');
+define('HEADING_TITLE', 'ショップデザイン設定');
+define('TEXT_NEW_LATEST_NEWS', '新規登録');
+define('TABLE_HEADING_LATEST_NEWS_HEADLINE', 'タイトル');
+define('TABLE_HEADING_LATEST_NEWS_ACTION', 'アクション');
+define('TABLE_HEADING_LATEST_NEWS_STATUS', 'ステータス');
+define('TEXT_NEWS_ITEMS', 'ニュース:');
+define('TEXT_INFO_HEADING_DELETE_ITEM', '削除');
+define('TEXT_DELETE_ITEM_INTRO', '本当にこのニュースを消してもいいですか？');
+define('TEXT_LATEST_NEWS_HEADLINE', 'ヘッドライン（タイトル）');
+define('TEXT_LATEST_NEWS_CONTENT', '記事の内容');
+define('TEXT_LATEST_NEWS_IMAGE', '関連画像');
+define('TEXT_LATEST_NEWS_IMAGE_DESCRIPTION', '画像に対しての簡単な説明');
+define('IMAGE_NEW_NEWS_ITEM', '新しいニュースを作成');
 
 
   if ($HTTP_GET_VARS['action']) {

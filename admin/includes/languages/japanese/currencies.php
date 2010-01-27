@@ -10,30 +10,30 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', 'ÄÌ²ßÀßÄê');
+define('HEADING_TITLE', 'é€šè²¨è¨­å®š');
 
-define('TABLE_HEADING_CURRENCY_NAME', 'ÄÌ²ß');
-define('TABLE_HEADING_CURRENCY_CODES', '¥³¡¼¥É');
-define('TABLE_HEADING_CURRENCY_VALUE', 'ÀßÄêÃÍ');
-define('TABLE_HEADING_ACTION', 'Áàºî');
+define('TABLE_HEADING_CURRENCY_NAME', 'é€šè²¨');
+define('TABLE_HEADING_CURRENCY_CODES', 'ã‚³ãƒ¼ãƒ‰');
+define('TABLE_HEADING_CURRENCY_VALUE', 'è¨­å®šå€¤');
+define('TABLE_HEADING_ACTION', 'æ“ä½œ');
 
-define('TEXT_INFO_EDIT_INTRO', 'É¬Í×¤ÊÊÑ¹¹¤ò²Ã¤¨¤Æ¤¯¤À¤µ¤¤');
-define('TEXT_INFO_CURRENCY_TITLE', '¥¿¥¤¥È¥ë:');
-define('TEXT_INFO_CURRENCY_CODE', '¥³¡¼¥É:');
-define('TEXT_INFO_CURRENCY_SYMBOL_LEFT', 'º¸Â¦¥·¥ó¥Ü¥ë:');
-define('TEXT_INFO_CURRENCY_SYMBOL_RIGHT', '±¦Â¦¥·¥ó¥Ü¥ë:');
-define('TEXT_INFO_CURRENCY_DECIMAL_POINT', '¾®¿ôÅÀ:');
-define('TEXT_INFO_CURRENCY_THOUSANDS_POINT', '3·å¤´¤È¤Î¶èÀÚ¤ê:');
-define('TEXT_INFO_CURRENCY_DECIMAL_PLACES', '¾®¿ôÅÀ°ÌÃÖ:');
-define('TEXT_INFO_CURRENCY_LAST_UPDATED', '¹¹¿·Æü:');
-define('TEXT_INFO_CURRENCY_VALUE', 'ÀßÄêÃÍ:');
-define('TEXT_INFO_CURRENCY_EXAMPLE', 'É½¼¨Îã:');
-define('TEXT_INFO_INSERT_INTRO', '¿·¤·¤¤ÄÌ²ß¤È´ØÏ¢¤¹¤ë¥Ç¡¼¥¿¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤');
-define('TEXT_INFO_DELETE_INTRO', 'ËÜÅö¤Ë¤³¤ÎÄÌ²ß¤òºï½ü¤·¤Þ¤¹¤«?');
-define('TEXT_INFO_HEADING_NEW_CURRENCY', '¿·¤·¤¤ÄÌ²ß');
-define('TEXT_INFO_HEADING_EDIT_CURRENCY', 'ÄÌ²ß¤òÊÔ½¸');
-define('TEXT_INFO_HEADING_DELETE_CURRENCY', 'ÄÌ²ß¤òºï½ü');
-define('TEXT_INFO_SET_AS_DEFAULT', TEXT_SET_DEFAULT . ' (ÄÌ²ß¤ÎÃÍ¤òÄ¾ÀÜÆþÎÏ¤·¤Æ¹¹¿·¤¹¤ëÉ¬Í×¤¬¤¢¤ê¤Þ¤¹)');
+define('TEXT_INFO_EDIT_INTRO', 'å¿…è¦ãªå¤‰æ›´ã‚’åŠ ãˆã¦ãã ã•ã„');
+define('TEXT_INFO_CURRENCY_TITLE', 'ã‚¿ã‚¤ãƒˆãƒ«:');
+define('TEXT_INFO_CURRENCY_CODE', 'ã‚³ãƒ¼ãƒ‰:');
+define('TEXT_INFO_CURRENCY_SYMBOL_LEFT', 'å·¦å´ã‚·ãƒ³ãƒœãƒ«:');
+define('TEXT_INFO_CURRENCY_SYMBOL_RIGHT', 'å³å´ã‚·ãƒ³ãƒœãƒ«:');
+define('TEXT_INFO_CURRENCY_DECIMAL_POINT', 'å°æ•°ç‚¹:');
+define('TEXT_INFO_CURRENCY_THOUSANDS_POINT', '3æ¡ã”ã¨ã®åŒºåˆ‡ã‚Š:');
+define('TEXT_INFO_CURRENCY_DECIMAL_PLACES', 'å°æ•°ç‚¹ä½ç½®:');
+define('TEXT_INFO_CURRENCY_LAST_UPDATED', 'æ›´æ–°æ—¥:');
+define('TEXT_INFO_CURRENCY_VALUE', 'è¨­å®šå€¤:');
+define('TEXT_INFO_CURRENCY_EXAMPLE', 'è¡¨ç¤ºä¾‹:');
+define('TEXT_INFO_INSERT_INTRO', 'æ–°ã—ã„é€šè²¨ã¨é–¢é€£ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„');
+define('TEXT_INFO_DELETE_INTRO', 'æœ¬å½“ã«ã“ã®é€šè²¨ã‚’å‰Šé™¤ã—ã¾ã™ã‹?');
+define('TEXT_INFO_HEADING_NEW_CURRENCY', 'æ–°ã—ã„é€šè²¨');
+define('TEXT_INFO_HEADING_EDIT_CURRENCY', 'é€šè²¨ã‚’ç·¨é›†');
+define('TEXT_INFO_HEADING_DELETE_CURRENCY', 'é€šè²¨ã‚’å‰Šé™¤');
+define('TEXT_INFO_SET_AS_DEFAULT', TEXT_SET_DEFAULT . ' (é€šè²¨ã®å€¤ã‚’ç›´æŽ¥å…¥åŠ›ã—ã¦æ›´æ–°ã™ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™)');
 
-define('ERROR_REMOVE_DEFAULT_CURRENCY', '¥¨¥é¡¼: ¥Ç¥Õ¥©¥ë¥È¤ÎÄÌ²ß¤Ïºï½ü¤Ç¤­¤Þ¤»¤ó¡£Â¾¤ÎÄÌ²ß¤ò¥Ç¥Õ¥©¥ë¥È¤ËÀßÄê¤·¤Æ¡¢¤â¤¦°ìÅÙÁàºî¤·¤Æ¤¯¤À¤µ¤¤¡£');
+define('ERROR_REMOVE_DEFAULT_CURRENCY', 'ã‚¨ãƒ©ãƒ¼: ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®é€šè²¨ã¯å‰Šé™¤ã§ãã¾ã›ã‚“ã€‚ä»–ã®é€šè²¨ã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã«è¨­å®šã—ã¦ã€ã‚‚ã†ä¸€åº¦æ“ä½œã—ã¦ãã ã•ã„ã€‚');
 ?>

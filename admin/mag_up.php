@@ -18,19 +18,19 @@
   if (isset($_GET['action']) && $_GET['action'] == 'upload'){
     /*
 	  $dat[0] => ID
-	  $dat[1] => есб╝еыеве╔еье╣
-	  $dat[2] => └л╠╛
+	  $dat[1] => уГбуГ╝уГлуВвуГЙуГмуВ╣
+	  $dat[2] => хзУхРН
 	*/
-    // CSVе╒ебедеыд╬е┴езе├еп
+    // CSVуГХуВбуВдуГлуБоуГБуВзуГГуВп
     $chk_csv = true;
     $filename = $HTTP_POST_FILES['products_csv']['name'];
     if(substr($filename, strrpos($filename,".")+1)!="csv") $chk_csv = false;
      
-    // е╒ебедеы╠╛д╬╗▓╛╚е┴езе├еп
+    // уГХуВбуВдуГлхРНуБохПВчЕзуГБуВзуГГуВп
     if($HTTP_POST_FILES['products_csv']['tmp_name']!="" && $chk_csv){
   	$file = fopen($products_csv,"r");
 	
-	//SQLдЄ╢їд╦д╣ды
+	//SQLуВТчй║уБлуБЩуВЛ
 	mysql_query("TRUNCATE TABLE mail_magazine");
 	
 	$cnt = "0"; 
@@ -39,17 +39,17 @@
 	
 	echo '<P>';
 	while($dat = fgetcsv($file,10000,',')){
-		// г▒╣╘╠▄дме╒егб╝еые╔╠╛д╬д╚днбвг▓╣╘╠▄длдщ╞╔др
+		// я╝СшбМчЫоуБМуГХуВгуГ╝уГлуГЙхРНуБоуБиуБНуАБя╝ТшбМчЫоуБЛуВЙшкнуВА
 		if(!ereg("@", $dat[1])) $dat = fgetcsv($file,10000,',');
 		
-		// EUCд╦╩╤┤╣
+		// EUCуБлхдЙцПЫ
 		for($e=0;$e<count($dat);$e++){
 			$dat[$e] = addslashes(jcodeconvert($dat[$e],"0","1"));
 		}
 		
 		if($chk_input){
 			
-			//едеєе╡б╝е╚
+			//уВдуГ│уВ╡уГ╝уГИ
 			//if(!empty($dat[1]) && !empty($dat[2])) {
 			if(!empty($dat[1])) {
 					  
@@ -59,7 +59,7 @@
 			  
 			  $updated = false;
 			  
-			  //╕▄╡╥╛Ё╩єд╬е╞б╝е╓еы╗▓╛╚
+			  //щбзховцГЕха▒уБоуГЖуГ╝уГЦуГлхПВчЕз
 			  $ccnt_query = tep_db_query("select count(*) as cnt from customers where customers_email_address = '".$dat1."'");
 			  $ccnt = tep_db_fetch_array($ccnt_query);
 			  
@@ -72,16 +72,16 @@
 			  //--------------------------------------
 			  //mail_magazine Update
 			  if($updated == false) {
-			    //╜┼╩ге┴езе├еп
+			    //щЗНшдЗуГБуВзуГГуВп
 			    $jcnt_query = tep_db_query("select count(*) as cnt from mail_magazine where mag_email = '".$dat1."'");
 			    $jcnt = tep_db_fetch_array($jcnt_query);
 			  
-			    //едеєе╡б╝е╚б╩╜┼╩гд╩д╖б╦
+			    //уВдуГ│уВ╡уГ╝уГИя╝ИщЗНшдЗуБкуБЧя╝Й
 			    if($jcnt['cnt'] == 0) {
 				  tep_db_query("insert into mail_magazine (mag_email, mag_name) values ('".$dat1."', '".$dat2."')");
 			    } 
 			  
-			    //еве├е╫е╟б╝е╚б╩╜┼╩г═ндъб╦
+			    //уВвуГГуГЧуГЗуГ╝уГИя╝ИщЗНшдЗцЬЙуВКя╝Й
 			    else {
 				  tep_db_query("update mail_magazine set mag_name = '".$dat2."' where mag_email = '".$dat1."'");
 			    }
@@ -92,7 +92,7 @@
 		    
 			
 		  if( ($cnt % 200) == 0 ){
-		    echo "бж";
+		    echo "уГ╗";
 		    Flush();
 		  }
 			
@@ -102,15 +102,15 @@
 	echo '</P>';
 	fclose($file);
 	
-	   echo "<font color='#CC0000'><b>".$cnt."╖ядЄеве├е╫еэб╝е╔д╖д▐д╖д┐бг</b></font>";
+	   echo "<font color='#CC0000'><b>".$cnt."ф╗╢уВТуВвуГГуГЧуГнуГ╝уГЙуБЧуБ╛уБЧуБЯуАВ</b></font>";
 	
 	}else{
 	 
-	   echo "<font color='#CC0000'><b>еве├е╫еэб╝е╔д╟днд▐д╗дєд╟д╖д┐бг<br>╜ъ─ъд╬CSVе╒ебедеыдЄ╗▓╛╚д╖д╞дпд└д╡ддбг</b></font>";
+	   echo "<font color='#CC0000'><b>уВвуГГуГЧуГнуГ╝уГЙуБзуБНуБ╛уБЫуВУуБзуБЧуБЯуАВ<br>цЙАхоЪуБоCSVуГХуВбуВдуГлуВТхПВчЕзуБЧуБжуБПуБауБХуБДуАВ</b></font>";
 	
 	}
 	
-	echo '<br><br><br><a href="mag_up.php">╠сды</a>';
+	echo '<br><br><br><a href="mag_up.php">цИ╗уВЛ</a>';
   } else {
 ?>
 
@@ -130,7 +130,7 @@
         <td width="100%"><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
 
-            <td class="pageHeading">есб╝еые▐еме╕еє╣╪╞╔╝╘░ь│чеве├е╫еэб╝е╔</td>
+            <td class="pageHeading">уГбуГ╝уГлуГЮуВмуВ╕уГ│ш│╝шкншАЕф╕АцЛмуВвуГГуГЧуГнуГ╝уГЙ</td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
           </tr>
         </table></td>
@@ -148,7 +148,7 @@
                 <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '5'); ?></td>
               </tr>
               <tr>
-                <td colspan="2" align="left"><input type=submit name=download value="еве├е╫еэб╝е╔"></td>
+                <td colspan="2" align="left"><input type=submit name=download value="уВвуГГуГЧуГнуГ╝уГЙ"></td>
               </tr>
             </table></td>
 	    <input type="hidden" name="max_file_size" value="1000000">

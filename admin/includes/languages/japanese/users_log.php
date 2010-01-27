@@ -1,43 +1,43 @@
 <?php
 /* *********************************************************
-  ¥â¥¸¥å¡¼¥ëÌ¾: users_log.php
+  ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«å: users_log.php
  * 2002-05-13
  * Naomi Suzukawa
  * suzukawa@bitscope.co.jp
   ----------------------------------------------------------
-¥æ¡¼¥¶¥¢¥¯¥»¥¹¥í¥°¤Î¸À¸ìÄêµÁ
+ãƒ¦ãƒ¼ã‚¶ã‚¢ã‚¯ã‚»ã‚¹ãƒ­ã‚°ã®è¨€èªžå®šç¾©
 
-  ¢£ÊÑ¹¹ÍúÎò
+  â– å¤‰æ›´å±¥æ­´
 ********************************************************* */
-// ¥Ú¡¼¥¸¥¿¥¤¥È¥ë
-define('HEADING_TITLE', '¥¢¥¯¥»¥¹¥í¥°');
+// ãƒšãƒ¼ã‚¸ã‚¿ã‚¤ãƒˆãƒ«
+define('HEADING_TITLE', 'ã‚¢ã‚¯ã‚»ã‚¹ãƒ­ã‚°');
 
-// ¥Æ¡¼¥Ö¥ë¥¢¥¯¥»¥¹¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸
-define('TEXT_ERRINFO_DB_NO_LOGINFO', '¥¢¥¯¥»¥¹¾ðÊó¤¬¼èÆÀ¤Ç¤­¤Þ¤»¤ó¤Ç¤·¤¿');
+// ãƒ†ãƒ¼ãƒ–ãƒ«ã‚¢ã‚¯ã‚»ã‚¹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+define('TEXT_ERRINFO_DB_NO_LOGINFO', 'ã‚¢ã‚¯ã‚»ã‚¹æƒ…å ±ãŒå–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸ');
 
-// ¥á¥Ã¥»¡¼¥¸
-define('TEXT_INFO_DELETE_DAY', '¥¢¥¯¥»¥¹¾ðÊó¤Îºï½ü');
-define('TEXT_INFO_DELETE_FORMER_DAY', 'Æü°ÊÁ°¤Î¥Ç¡¼¥¿');
+// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+define('TEXT_INFO_DELETE_DAY', 'ã‚¢ã‚¯ã‚»ã‚¹æƒ…å ±ã®å‰Šé™¤');
+define('TEXT_INFO_DELETE_FORMER_DAY', 'æ—¥ä»¥å‰ã®ãƒ‡ãƒ¼ã‚¿');
 // Format: '(id1:val1,id2:val2)'
-define('TEXT_INFO_STATUS_IN', 'a:Ç§¾Ú,e:DB¥¨¥é¡¼,p:Password¥¨¥é¡¼,n:¼ºÇÔ');
-define('TEXT_INFO_STATUS_OUT', 'i:¥í¥°¥¤¥ó,o:¥í¥°¥¢¥¦¥È,t:¥¿¥¤¥à¥¢¥¦¥È');
+define('TEXT_INFO_STATUS_IN', 'a:èªè¨¼,e:DBã‚¨ãƒ©ãƒ¼,p:Passwordã‚¨ãƒ©ãƒ¼,n:å¤±æ•—');
+define('TEXT_INFO_STATUS_OUT', 'i:ãƒ­ã‚°ã‚¤ãƒ³,o:ãƒ­ã‚°ã‚¢ã‚¦ãƒˆ,t:ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆ');
 define('TEXT_PAGE', '( %s / %s Page [ %s / %s Rows ] )');
 
-// ¥Ü¥¿¥ó
-define('BUTTON_DELETE_LOGINLOG', 'ºï½ü');
-define('BUTTON_PREVIOUS_PAGE', 'Á°¥Ú¡¼¥¸');
-define('BUTTON_NEXT_PAGE', '¼¡¥Ú¡¼¥¸');
-define('BUTTON_JUMP_PAGE', '¥Ú¡¼¥¸¤Ø¥¸¥ã¥ó¥×');
+// ãƒœã‚¿ãƒ³
+define('BUTTON_DELETE_LOGINLOG', 'å‰Šé™¤');
+define('BUTTON_PREVIOUS_PAGE', 'å‰ãƒšãƒ¼ã‚¸');
+define('BUTTON_NEXT_PAGE', 'æ¬¡ãƒšãƒ¼ã‚¸');
+define('BUTTON_JUMP_PAGE', 'ãƒšãƒ¼ã‚¸ã¸ã‚¸ãƒ£ãƒ³ãƒ—');
 
-// ¹àÌÜÌ¾
+// é …ç›®å
 define('TABLE_HEADING_LOGINID', 'ID');
-define('TABLE_HEADING_LOGINTIME', '¥í¥°¥¤¥óÆü»þ');
-define('TABLE_HEADING_LAST_ACCESSTIME', 'ºÇ½ª¥¢¥¯¥»¥¹Æü»þ');
-define('TABLE_HEADING_USER', '¥æ¡¼¥¶');
-define('TABLE_HEADING_STATUS', '¥¹¥Æ¡¼¥¿¥¹');
-define('TABLE_HEADING_ADDRESS', '¥¢¥É¥ì¥¹');
-define('TABLE_HEADING_PAGE', '¥Ú¡¼¥¸');
+define('TABLE_HEADING_LOGINTIME', 'ãƒ­ã‚°ã‚¤ãƒ³æ—¥æ™‚');
+define('TABLE_HEADING_LAST_ACCESSTIME', 'æœ€çµ‚ã‚¢ã‚¯ã‚»ã‚¹æ—¥æ™‚');
+define('TABLE_HEADING_USER', 'ãƒ¦ãƒ¼ã‚¶');
+define('TABLE_HEADING_STATUS', 'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹');
+define('TABLE_HEADING_ADDRESS', 'ã‚¢ãƒ‰ãƒ¬ã‚¹');
+define('TABLE_HEADING_PAGE', 'ãƒšãƒ¼ã‚¸');
 
-// JavaScript¤Î³ÎÇ§¥á¥Ã¥»¡¼¥¸
-define('JAVA_SCRIPT_INFO_DELETE', '¥¢¥¯¥»¥¹¥í¥°¤òºï½ü¤·¤Þ¤¹¡£\n¤è¤í¤·¤¤¤Ç¤¹¤«¡©');
+// JavaScriptã®ç¢ºèªãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+define('JAVA_SCRIPT_INFO_DELETE', 'ã‚¢ã‚¯ã‚»ã‚¹ãƒ­ã‚°ã‚’å‰Šé™¤ã—ã¾ã™ã€‚\nã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ');
 ?>

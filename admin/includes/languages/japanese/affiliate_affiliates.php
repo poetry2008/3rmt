@@ -14,45 +14,45 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', '¥¢¥Õ¥£¥ê¥¨¥¤¥È');
-define('HEADING_TITLE_SEARCH', '¸¡º÷:');
+define('HEADING_TITLE', 'ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆ');
+define('HEADING_TITLE_SEARCH', 'æ¤œç´¢:');
 
-define('TABLE_HEADING_FIRSTNAME', 'Ì¾');
-define('TABLE_HEADING_LASTNAME', 'À«');
-define('TABLE_HEADING_USERHOMEPAGE', '¥Û¡¼¥à¥Ú¡¼¥¸');
-define('TABLE_HEADING_COMMISSION','¥³¥ß¥Ã¥·¥ç¥ó');
-define('TABLE_HEADING_ACCOUNT_CREATED', '¥¢¥«¥¦¥ó¥ÈºîÀ®Æü');
-define('TABLE_HEADING_ACTION', 'Áàºî');
-define('TABLE_HEADING_AFFILIATE_ID','¥¢¥Õ¥£¥ê¥¨¥¤¥ÈID');
+define('TABLE_HEADING_FIRSTNAME', 'å');
+define('TABLE_HEADING_LASTNAME', 'å§“');
+define('TABLE_HEADING_USERHOMEPAGE', 'ãƒ›ãƒ¼ãƒ ãƒšãƒ¼ã‚¸');
+define('TABLE_HEADING_COMMISSION','ã‚³ãƒŸãƒƒã‚·ãƒ§ãƒ³');
+define('TABLE_HEADING_ACCOUNT_CREATED', 'ã‚¢ã‚«ã‚¦ãƒ³ãƒˆä½œæˆæ—¥');
+define('TABLE_HEADING_ACTION', 'æ“ä½œ');
+define('TABLE_HEADING_AFFILIATE_ID','ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆID');
 
-define('TEXT_DATE_ACCOUNT_CREATED', '¥¢¥«¥¦¥ó¥ÈºîÀ®Æü:');
-define('TEXT_DATE_ACCOUNT_LAST_MODIFIED', 'ºÇ½ª¹¹¿·Æü:');
-define('TEXT_INFO_DATE_LAST_LOGON', 'ºÇ½ª¥í¥°¥¤¥óÆü:');
-define('TEXT_INFO_NUMBER_OF_LOGONS', '¥í¥°¥¤¥ó²ó¿ô:');
-define('TEXT_INFO_COMMISSION','¥³¥ß¥Ã¥·¥ç¥ó');
-define('TEXT_INFO_NUMBER_OF_SALES', 'ÈÎÇä¿ô:');
-define('TEXT_INFO_COUNTRY', '¹ñÌ¾:');
-define('TEXT_INFO_SALES_TOTAL', 'ÁíÇä¾å:');
-define('TEXT_INFO_AFFILIATE_TOTAL', '¥³¥ß¥Ã¥·¥ç¥ó:');
-define('TEXT_DELETE_INTRO', 'ËÜÅö¤Ëºï½ü¤·¤Þ¤¹¤«¡©');
-define('TEXT_INFO_HEADING_DELETE_CUSTOMER', 'ºï½ü');
-define('TEXT_DISPLAY_NUMBER_OF_AFFILIATES', '<b>%d</b> ¤«¤é <b>%d</b> ¤Þ¤Ç¤òÉ½¼¨(<b>%d</b> ¿Í¤Î¥¢¥Õ¥£¥ê¥¨¥¤¥È²ñ°÷Ãæ)');
+define('TEXT_DATE_ACCOUNT_CREATED', 'ã‚¢ã‚«ã‚¦ãƒ³ãƒˆä½œæˆæ—¥:');
+define('TEXT_DATE_ACCOUNT_LAST_MODIFIED', 'æœ€çµ‚æ›´æ–°æ—¥:');
+define('TEXT_INFO_DATE_LAST_LOGON', 'æœ€çµ‚ãƒ­ã‚°ã‚¤ãƒ³æ—¥:');
+define('TEXT_INFO_NUMBER_OF_LOGONS', 'ãƒ­ã‚°ã‚¤ãƒ³å›žæ•°:');
+define('TEXT_INFO_COMMISSION','ã‚³ãƒŸãƒƒã‚·ãƒ§ãƒ³');
+define('TEXT_INFO_NUMBER_OF_SALES', 'è²©å£²æ•°:');
+define('TEXT_INFO_COUNTRY', 'å›½å:');
+define('TEXT_INFO_SALES_TOTAL', 'ç·å£²ä¸Š:');
+define('TEXT_INFO_AFFILIATE_TOTAL', 'ã‚³ãƒŸãƒƒã‚·ãƒ§ãƒ³:');
+define('TEXT_DELETE_INTRO', 'æœ¬å½“ã«å‰Šé™¤ã—ã¾ã™ã‹ï¼Ÿ');
+define('TEXT_INFO_HEADING_DELETE_CUSTOMER', 'å‰Šé™¤');
+define('TEXT_DISPLAY_NUMBER_OF_AFFILIATES', '<b>%d</b> ã‹ã‚‰ <b>%d</b> ã¾ã§ã‚’è¡¨ç¤º(<b>%d</b> äººã®ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆä¼šå“¡ä¸­)');
 
-define('ENTRY_AFFILIATE_PAYMENT_DETAILS', '»ÙÊ§³Û:');
-define('ENTRY_AFFILIATE_PAYMENT_CHECK','»ÙÊ§¤¤¥Á¥§¥Ã¥¯:');
-define('ENTRY_AFFILIATE_PAYMENT_PAYPAL','PayPal¥¢¥«¥¦¥ó¥ÈEmail:');
-define('ENTRY_AFFILIATE_PAYMENT_BANK_NAME','¶ä¹ÔÌ¾:');
-define('ENTRY_AFFILIATE_PAYMENT_BANK_ACCOUNT_NAME','¸ýºÂÌ¾µÁ¿Í:');
-define('ENTRY_AFFILIATE_PAYMENT_BANK_ACCOUNT_NUMBER','¸ýºÂÈÖ¹æ:');
-define('ENTRY_AFFILIATE_PAYMENT_BANK_BRANCH_NUMBER','»ÙÅ¹ÈÖ¹æ');
-define('ENTRY_AFFILIATE_PAYMENT_BANK_SWIFT_CODE','»ÙÅ¹Ì¾ ');
-define('ENTRY_AFFILIATE_COMPANY','²ñ¼ÒÌ¾');
+define('ENTRY_AFFILIATE_PAYMENT_DETAILS', 'æ”¯æ‰•é¡:');
+define('ENTRY_AFFILIATE_PAYMENT_CHECK','æ”¯æ‰•ã„ãƒã‚§ãƒƒã‚¯:');
+define('ENTRY_AFFILIATE_PAYMENT_PAYPAL','PayPalã‚¢ã‚«ã‚¦ãƒ³ãƒˆEmail:');
+define('ENTRY_AFFILIATE_PAYMENT_BANK_NAME','éŠ€è¡Œå:');
+define('ENTRY_AFFILIATE_PAYMENT_BANK_ACCOUNT_NAME','å£åº§åç¾©äºº:');
+define('ENTRY_AFFILIATE_PAYMENT_BANK_ACCOUNT_NUMBER','å£åº§ç•ªå·:');
+define('ENTRY_AFFILIATE_PAYMENT_BANK_BRANCH_NUMBER','æ”¯åº—ç•ªå·');
+define('ENTRY_AFFILIATE_PAYMENT_BANK_SWIFT_CODE','æ”¯åº—å ');
+define('ENTRY_AFFILIATE_COMPANY','ä¼šç¤¾å');
 define('ENTRY_AFFILIATE_COMPANY_TAXID','Tax-Id.:');
-define('ENTRY_AFFILIATE_HOMEPAGE','¥Û¡¼¥à¥Ú¡¼¥¸');
-define('ENTRY_AFFILIATE_COMMISSION',' ´Ô¸µ¥ì¡¼¥È¡Ê¡ó¡Ë');
+define('ENTRY_AFFILIATE_HOMEPAGE','ãƒ›ãƒ¼ãƒ ãƒšãƒ¼ã‚¸');
+define('ENTRY_AFFILIATE_COMMISSION',' é‚„å…ƒãƒ¬ãƒ¼ãƒˆï¼ˆï¼…ï¼‰');
 
-define('CATEGORY_COMMISSION','¸ÄÊÌ¤Î´Ô¸µ¥ì¡¼¥È');
-define('CATEGORY_PAYMENT_DETAILS','¤ª»ÙÊ§¤¤Àè:');
+define('CATEGORY_COMMISSION','å€‹åˆ¥ã®é‚„å…ƒãƒ¬ãƒ¼ãƒˆ');
+define('CATEGORY_PAYMENT_DETAILS','ãŠæ”¯æ‰•ã„å…ˆ:');
 
 define('TYPE_BELOW', 'Type below');
 define('PLEASE_SELECT', 'Select One');

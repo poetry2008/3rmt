@@ -10,17 +10,17 @@
   Released under the GNU General Public License
   
 */
-define('HEADING_TITLE', '¼êÆ°ÃíÊ¸¼êÂ³¤­');
-define('HEADING_CREATE', '¼êÆ°ÃíÊ¸¤¹¤ë¸ÜµÒ¤Î¾ÜºÙ¤ò³ÎÇ§:'); 
+define('HEADING_TITLE', 'æ‰‹å‹•æ³¨æ–‡æ‰‹ç¶šã');
+define('HEADING_CREATE', 'æ‰‹å‹•æ³¨æ–‡ã™ã‚‹é¡§å®¢ã®è©³ç´°ã‚’ç¢ºèª:'); 
 
-define('TEXT_SELECT_CUST', '¸ÜµÒÁªÂò:'); 
-define('TEXT_SELECT_CURRENCY', 'ÄÌ²ßÁªÂò:');
-define('BUTTON_TEXT_SELECT_CUST', '¸ÜµÒÁªÂò:'); 
-define('TEXT_OR_BY', '¤Þ¤¿¤Ï¸ÜµÒID:'); 
-define('TEXT_STEP_1', '¥¹¥Æ¥Ã¥× 1 - ¸ÜµÒ¤òÁªÂò¤·¾ÜºÙ¤ò³ÎÇ§¤·¤Æ¤¯¤À¤µ¤¤');
-define('BUTTON_SUBMIT', '³ÎÇ§¤¹¤ë');
-define('ENTRY_CURRENCY','·èºÑÄÌ²ß');
-define('CATEGORY_ORDER_DETAILS','ÄÌ²ßÀßÄê');
+define('TEXT_SELECT_CUST', 'é¡§å®¢é¸æŠž:'); 
+define('TEXT_SELECT_CURRENCY', 'é€šè²¨é¸æŠž:');
+define('BUTTON_TEXT_SELECT_CUST', 'é¡§å®¢é¸æŠž:'); 
+define('TEXT_OR_BY', 'ã¾ãŸã¯é¡§å®¢ID:'); 
+define('TEXT_STEP_1', 'ã‚¹ãƒ†ãƒƒãƒ— 1 - é¡§å®¢ã‚’é¸æŠžã—è©³ç´°ã‚’ç¢ºèªã—ã¦ãã ã•ã„');
+define('BUTTON_SUBMIT', 'ç¢ºèªã™ã‚‹');
+define('ENTRY_CURRENCY','æ±ºæ¸ˆé€šè²¨');
+define('CATEGORY_ORDER_DETAILS','é€šè²¨è¨­å®š');
 
-define('CATEGORY_CORRECT', '¸ÜµÒ¾ðÊó');
+define('CATEGORY_CORRECT', 'é¡§å®¢æƒ…å ±');
 ?>

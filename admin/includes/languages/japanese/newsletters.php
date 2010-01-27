@@ -10,30 +10,30 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', 'есб╝еые▐еме╕еє┤╔═¤');
+define('HEADING_TITLE', 'уГбуГ╝уГлуГЮуВмуВ╕уГ│чобчРЖ');
 
-define('TABLE_HEADING_NEWSLETTERS', 'есб╝еые▐еме╕еє╠╛');
-define('TABLE_HEADING_SIZE', 'е╡еде║');
-define('TABLE_HEADING_MODULE', 'ете╕ехб╝еы');
-define('TABLE_HEADING_SENT', '┴ў┐о╛ї┬╓');
-define('TABLE_HEADING_STATUS', 'е╣е╞б╝е┐е╣');
-define('TABLE_HEADING_ACTION', '┴р║ю');
+define('TABLE_HEADING_NEWSLETTERS', 'уГбуГ╝уГлуГЮуВмуВ╕уГ│хРН');
+define('TABLE_HEADING_SIZE', 'уВ╡уВдуВ║');
+define('TABLE_HEADING_MODULE', 'уГвуВ╕уГеуГ╝уГл');
+define('TABLE_HEADING_SENT', 'щАБф┐бчК╢цЕЛ');
+define('TABLE_HEADING_STATUS', 'уВ╣уГЖуГ╝уВ┐уВ╣');
+define('TABLE_HEADING_ACTION', 'цУНф╜Ь');
 
-define('TEXT_NEWSLETTER_MODULE', 'ете╕ехб╝еыд╬┴к┬Є:');
-define('TEXT_NEWSLETTER_TITLE', 'есб╝еые▐еме╕еєд╬┬ъ╠╛:');
-define('TEXT_NEWSLETTER_CONTENT', '╞т═╞:');
+define('TEXT_NEWSLETTER_MODULE', 'уГвуВ╕уГеуГ╝уГлуБощБ╕цКЮ:');
+define('TEXT_NEWSLETTER_TITLE', 'уГбуГ╝уГлуГЮуВмуВ╕уГ│уБощбМхРН:');
+define('TEXT_NEWSLETTER_CONTENT', 'хЖЕхо╣:');
 
-define('TEXT_NEWSLETTER_DATE_ADDED', '║ю└о╞№:');
-define('TEXT_NEWSLETTER_DATE_SENT', '┴ў┐о╞№:');
+define('TEXT_NEWSLETTER_DATE_ADDED', 'ф╜ЬцИРцЧе:');
+define('TEXT_NEWSLETTER_DATE_SENT', 'щАБф┐бцЧе:');
 
-define('TEXT_INFO_DELETE_INTRO', '╦▄┼Ўд╦д│д╬есб╝еые▐еме╕еєдЄ║я╜№д╖д▐д╣дл?');
+define('TEXT_INFO_DELETE_INTRO', 'цЬмх╜УуБлуБУуБоуГбуГ╝уГлуГЮуВмуВ╕уГ│уВТхЙКщЩдуБЧуБ╛уБЩуБЛ?');
 
-define('TEXT_PLEASE_WAIT', 'д╖д╨дщдпдк┬╘д┴дпд└д╡дд.. есб╝еыдЄ┴ў┐од╖д╞ддд▐д╣..<br><br>д│д╬╜ш═¤дЄ├ц├╟д╖д╩ддд╟дпд└д╡дд!');
-define('TEXT_FINISHED_SENDING_EMAILS', 'есб╝еыд╬┴ў┐одЄ╜к╬╗д╖д▐д╖д┐!');
+define('TEXT_PLEASE_WAIT', 'уБЧуБ░уВЙуБПуБКх╛ЕуБбуБПуБауБХуБД.. уГбуГ╝уГлуВТщАБф┐буБЧуБжуБДуБ╛уБЩ..<br><br>уБУуБохЗжчРЖуВТф╕нцЦнуБЧуБкуБДуБзуБПуБауБХуБД!');
+define('TEXT_FINISHED_SENDING_EMAILS', 'уГбуГ╝уГлуБощАБф┐буВТч╡Вф║ЖуБЧуБ╛уБЧуБЯ!');
 
-define('ERROR_NEWSLETTER_TITLE', 'еиещб╝: есб╝еые▐еме╕еєд╬┬ъ╠╛дм╔м═╫д╟д╣бг');
-define('ERROR_NEWSLETTER_MODULE', 'еиещб╝: есб╝еые▐еме╕еєбжете╕ехб╝еыдм╔м═╫д╟д╣бг');
-define('ERROR_REMOVE_UNLOCKED_NEWSLETTER', 'еиещб╝: ║я╜№д╣дыд╦д╧есб╝еые▐еме╕еєд╬еэе├епдм╔м═╫д╟д╣бг');
-define('ERROR_EDIT_UNLOCKED_NEWSLETTER', 'еиещб╝: ╩╘╜╕д╣дыд╦д╧есб╝еые▐еме╕еєд╬еэе├епдм╔м═╫д╟д╣бг');
-define('ERROR_SEND_UNLOCKED_NEWSLETTER', 'еиещб╝: ┴ў┐од╣дыд╦д╧есб╝еые▐еме╕еєд╬еэе├епдм╔м═╫д╟д╣бг');
+define('ERROR_NEWSLETTER_TITLE', 'уВиуГйуГ╝: уГбуГ╝уГлуГЮуВмуВ╕уГ│уБощбМхРНуБМх┐ЕшжБуБзуБЩуАВ');
+define('ERROR_NEWSLETTER_MODULE', 'уВиуГйуГ╝: уГбуГ╝уГлуГЮуВмуВ╕уГ│уГ╗уГвуВ╕уГеуГ╝уГлуБМх┐ЕшжБуБзуБЩуАВ');
+define('ERROR_REMOVE_UNLOCKED_NEWSLETTER', 'уВиуГйуГ╝: хЙКщЩдуБЩуВЛуБлуБпуГбуГ╝уГлуГЮуВмуВ╕уГ│уБоуГнуГГуВпуБМх┐ЕшжБуБзуБЩуАВ');
+define('ERROR_EDIT_UNLOCKED_NEWSLETTER', 'уВиуГйуГ╝: ч╖ищЫЖуБЩуВЛуБлуБпуГбуГ╝уГлуГЮуВмуВ╕уГ│уБоуГнуГГуВпуБМх┐ЕшжБуБзуБЩуАВ');
+define('ERROR_SEND_UNLOCKED_NEWSLETTER', 'уВиуГйуГ╝: щАБф┐буБЩуВЛуБлуБпуГбуГ╝уГлуГЮуВмуВ╕уГ│уБоуГнуГГуВпуБМх┐ЕшжБуБзуБЩуАВ');
 ?>

@@ -12,21 +12,21 @@
 
 require('includes/application_top.php');
 
-//Ç¯·îÆü¤Î¼èÆÀ
+//å¹´æœˆæ—¥ã®å–å¾—
   $today = getdate();
   $yyyy = $today[year];
   $mm = $today[mon];
   $dd = $today[mday];
   $pd = $dd + 1;
 
-//¥Õ¥¡¥¤¥ë¤Î³ÈÄ¥»Ò¤ò¼èÆÀ
+//ãƒ•ã‚¡ã‚¤ãƒ«ã®æ‹¡å¼µå­ã‚’å–å¾—
   function GetExt($filepath){
     $f = strrev($filepath);
     $ext = substr($f,0,strpos($f,"."));
     return strrev($ext);
   }
 
-//ÅĞÏ¿½èÍı
+//ç™»éŒ²å‡¦ç†
   if($HTTP_GET_VARS['action'] == 'insert'){
 
     $ins_title = tep_db_prepare_input($HTTP_POST_VARS['title']);
@@ -45,13 +45,13 @@ require('includes/application_top.php');
     $ins_period2 = tep_db_prepare_input($HTTP_POST_VARS['limit_y']).tep_db_prepare_input($HTTP_POST_VARS['limit_m']).tep_db_prepare_input($HTTP_POST_VARS['limit_d']);
 
     $ins = "insert into ".TABLE_PRESENT_GOODS."(title, html_check, image, text, start_date, limit_date) values ('".$ins_title."','".$ins_ht."','".$filepath2."','".$ins_text."','".$ins_period1."','".$ins_period2."')";
-    $mess = mysql_query($ins) or die("¥Ç¡¼¥¿ÄÉ²Ã¥¨¥é¡¼");
+    $mess = mysql_query($ins) or die("ãƒ‡ãƒ¼ã‚¿è¿½åŠ ã‚¨ãƒ©ãƒ¼");
       if($mess == true){
       }
     header("location: present.php");
   }
 
-//¹¹¿·½èÍı
+//æ›´æ–°å‡¦ç†
   if($HTTP_GET_VARS['action'] == 'update'){
     $up_id = tep_db_prepare_input($HTTP_GET_VARS['cID']);
     $up_ht = tep_db_prepare_input($HTTP_POST_VARS['ht']);
@@ -74,18 +74,18 @@ require('includes/application_top.php');
       }else{
 	    $up = "update ".TABLE_PRESENT_GOODS." set title='".$up_title."', html_check='".$up_ht."', image='".$filepath2."',text='".$up_text."',start_date='".$up_period1."',limit_date='".$up_period2."' where goods_id='".$up_id."'";
       }
-    $mess = mysql_query($up) or die("¥Ç¡¼¥¿ÄÉ²Ã¥¨¥é¡¼");
+    $mess = mysql_query($up) or die("ãƒ‡ãƒ¼ã‚¿è¿½åŠ ã‚¨ãƒ©ãƒ¼");
       if($mess == true){
       }
     header("location: present.php");
   }
 
-//ºï½ü½èÍı
+//å‰Šé™¤å‡¦ç†
   if($HTTP_GET_VARS['action'] == 'delete'){
     $dele_id = tep_db_prepare_input($HTTP_GET_VARS['cID']);
 
     $dele = "delete from ".TABLE_PRESENT_GOODS." where goods_id = '".$dele_id."'";
-    $mess = mysql_query($dele) or die("¥Ç¡¼¥¿ÄÉ²Ã¥¨¥é¡¼");
+    $mess = mysql_query($dele) or die("ãƒ‡ãƒ¼ã‚¿è¿½åŠ ã‚¨ãƒ©ãƒ¼");
       if($mess == true){
       }
     header("location: present.php");
@@ -105,17 +105,17 @@ require('includes/application_top.php');
 <script language="javascript">
 function msg(){
 	if(document.apply.title.value == ""){
-		alert("¥¿¥¤¥È¥ë¤òÆşÎÏ¤·¤Æ²¼¤µ¤¤");
+		alert("ã‚¿ã‚¤ãƒˆãƒ«ã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„");
 		document.apply.title.focus();
 		return false;
 	}
 	if(document.apply.text.value == ""){
-		alert("ËÜÊ¸¤òÆşÎÏ¤·¤Æ²¼¤µ¤¤");
+		alert("æœ¬æ–‡ã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„");
 		document.apply.text.focus();
 		return false;
 	}
 	if((document.apply.start_y.value + document.apply.start_m.value + document.apply.start_d.value) > (document.apply.limit_y.value + document.apply.limit_m.value +document.apply.limit_d.value)){
-		alert("³«»ÏÆü¡ä½ªÎ»Æü¤Ë¤Ê¤Ã¤Æ¤¤¤Ş¤¹");
+		alert("é–‹å§‹æ—¥ï¼çµ‚äº†æ—¥ã«ãªã£ã¦ã„ã¾ã™");
 		document.apply.start_y.focus();
 		return false;
 	}
@@ -123,17 +123,17 @@ function msg(){
 
 function msg2(){
 	if(document.view.title.value == ""){
-		alert("¥¿¥¤¥È¥ë¤òÆşÎÏ¤·¤Æ²¼¤µ¤¤");
+		alert("ã‚¿ã‚¤ãƒˆãƒ«ã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„");
 		document.view.title.focus();
 		return false;
 	}
 	if(document.view.text.value == ""){
-		alert("ËÜÊ¸¤òÆşÎÏ¤·¤Æ²¼¤µ¤¤");
+		alert("æœ¬æ–‡ã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„");
 		document.view.text.focus();
 		return false;
 	}
 	if((document.view.start_y.value + document.view.start_m.value + document.view.start_d.value) > (document.view.limit_y.value + document.view.limit_m.value +document.view.limit_d.value)){
-		alert("³«»ÏÆü¡ä½ªÎ»Æü¤Ë¤Ê¤Ã¤Æ¤¤¤Ş¤¹");
+		alert("é–‹å§‹æ—¥ï¼çµ‚äº†æ—¥ã«ãªã£ã¦ã„ã¾ã™");
 		document.view.start_y.focus();
 		return false;
 	}
@@ -163,7 +163,7 @@ case 'input' :
             <form onSubmit="return msg()" name="apply" action="present.php?action=insert" method="post" enctype="multipart/form-data">
               <table width="100%" align="center" border="0" cellspacing="0" cellpadding="8">
                 <tr>
-                  <td valign="middle" class="pageHeading" height="10">¥×¥ì¥¼¥ó¥ÈÅĞÏ¿¡Ê¿·µ¬¡Ë</td>
+                  <td valign="middle" class="pageHeading" height="10">ãƒ—ãƒ¬ã‚¼ãƒ³ãƒˆç™»éŒ²ï¼ˆæ–°è¦ï¼‰</td>
                   <td align="right" valign="top">&nbsp;</td>
                 </tr>
                 <tr>
@@ -172,22 +172,22 @@ case 'input' :
                       <tr>
                         <td><table width="100%"  border="0" cellspacing="1" cellpadding="3">
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF">¥¿¥¤¥È¥ë</td>
+                              <td class="main" width="150" bgcolor="#FFFFFF">ã‚¿ã‚¤ãƒˆãƒ«</td>
                               <td class="main" width="630" bgcolor="#FFFFFF"><input name="title" type="text"></td>
                             </tr>
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF">²èÁü</td>
+                              <td class="main" width="150" bgcolor="#FFFFFF">ç”»åƒ</td>
                               <td class="main" width="630" bgcolor="#FFFFFF"><input type="file" name="file"></td>
                             </tr>
                             <tr>
-                              <td class="main" valign="top" bgcolor="#FFFFFF">ËÜÊ¸</td>
+                              <td class="main" valign="top" bgcolor="#FFFFFF">æœ¬æ–‡</td>
                               <td class="main" bgcolor="#FFFFFF">
-							  <input type="checkbox" name="ht" value="1">HTML¤òµö²Ä¤¹¤ë
+							  <input type="checkbox" name="ht" value="1">HTMLã‚’è¨±å¯ã™ã‚‹
                                 <textarea name="text" style="width:95%; height:100px;"></textarea></td>
                             </tr>
                             <tr>
-                              <td class="main" valign="top" bgcolor="#FFFFFF">´ü´Ö</td>
-                              <td class="main" bgcolor="#FFFFFF">³«»ÏÆü¡§
+                              <td class="main" valign="top" bgcolor="#FFFFFF">æœŸé–“</td>
+                              <td class="main" bgcolor="#FFFFFF">é–‹å§‹æ—¥ï¼š
                                 <select name="start_y">
                                   <?
 					for($y=0;$y<=5;$y++){
@@ -200,7 +200,7 @@ case 'input' :
 					}
 					?>
                                 </select>
-                                Ç¯
+                                å¹´
                                 <select name="start_m">
                                   <?
 					for($m=1;$m<=9;$m++){
@@ -219,7 +219,7 @@ case 'input' :
 					}
 					?>
                                 </select>
-                                ·î
+                                æœˆ
                                 <select name="start_d">
                                   <?
 					for($d=1;$d<=9;$d++){
@@ -238,8 +238,8 @@ case 'input' :
 					}
 					?>
                                 </select>
-                                Æü<br>
-                                ½ªÎ»Æü¡§
+                                æ—¥<br>
+                                çµ‚äº†æ—¥ï¼š
                                 <select name="limit_y">
                                   <?
 					for($y=0;$y<=5;$y++){
@@ -252,7 +252,7 @@ case 'input' :
 					}
 					?>
                                 </select>
-                                Ç¯
+                                å¹´
                                 <select name="limit_m">
                                   <?
 					for($m=1;$m<=9;$m++){
@@ -271,7 +271,7 @@ case 'input' :
 					}
 					?>
                                 </select>
-                                ·î
+                                æœˆ
                                 <select name="limit_d">
                                   <?
 					for($d=1;$d<=9;$d++){
@@ -290,7 +290,7 @@ case 'input' :
 					}
 					?>
                                 </select>
-                                Æü </td>
+                                æ—¥ </td>
                             </tr>
                           </table></td>
                       </tr>
@@ -298,8 +298,8 @@ case 'input' :
                     <div align="right">
 					  <a href=
 					  <?php echo tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))); ?>
-					  ><?php echo tep_image_button('button_back.gif', 'Ìá¤ë'); ?></a>
-					  <?php echo tep_image_submit('button_save.gif', 'ÊİÂ¸'); ?>
+					  ><?php echo tep_image_button('button_back.gif', 'æˆ»ã‚‹'); ?></a>
+					  <?php echo tep_image_submit('button_save.gif', 'ä¿å­˜'); ?>
                     </div></td>
                 </tr>
               </table>
@@ -310,9 +310,9 @@ case 'view' :
 $sele1_id = $HTTP_GET_VARS['cID'];
 $sele1 = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".$sele1_id."'");
 $sql1 = tep_db_fetch_array($sele1);
-//²èÁü
+//ç”»åƒ
 $pic = HTTP_CATALOG_SERVER . DIR_WS_CATALOG . DIR_WS_IMAGES . "present/".$sql1['image'];
-//´ü´Ö
+//æœŸé–“
 $sele_sty = substr($sql1['start_date'],0,4);
 $sele_stm = substr($sql1['start_date'],5,2);
 $sele_std = substr($sql1['start_date'],8,2);
@@ -324,7 +324,7 @@ $sele_lid = substr($sql1['limit_date'],8,2);
             <form onSubmit="return msg2()" name="view" method="post" action="present.php?action=update&cID=<?=$sele1_id?>" enctype="multipart/form-data">
               <table width="100%" align="center" border="0" cellspacing="0" cellpadding="8">
                 <tr>
-                  <td valign="middle" class="pageHeading" height="10">¥×¥ì¥¼¥ó¥ÈÅĞÏ¿¡Ê¹¹¿·¡Ë</td>
+                  <td valign="middle" class="pageHeading" height="10">ãƒ—ãƒ¬ã‚¼ãƒ³ãƒˆç™»éŒ²ï¼ˆæ›´æ–°ï¼‰</td>
                   <td align="right" valign="top">&nbsp;</td>
                 </tr>
                 <tr>
@@ -333,11 +333,11 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                       <tr>
                         <td><table width="100%"  border="0" cellspacing="1" cellpadding="3">
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF">¥¿¥¤¥È¥ë</td>
+                              <td class="main" width="150" bgcolor="#FFFFFF">ã‚¿ã‚¤ãƒˆãƒ«</td>
                               <td class="main" width="630" bgcolor="#FFFFFF"><input name="title" type="text" value="<? echo $sql1['title'] ;?>"></td>
                             </tr>
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF">²èÁü</td>
+                              <td class="main" width="150" bgcolor="#FFFFFF">ç”»åƒ</td>
                               <td class="main" width="630" bgcolor="#FFFFFF">
 							  <?
 							  if($sql1['image'] == ""){
@@ -350,23 +350,23 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                                 <input type="file" name="file"></td>
                             </tr>
                             <tr>
-                              <td class="main" valign="top" bgcolor="#FFFFFF">ËÜÊ¸</td>
+                              <td class="main" valign="top" bgcolor="#FFFFFF">æœ¬æ–‡</td>
                               <td class="main" bgcolor="#FFFFFF">
 							  <?
 							  if($sql1['html_check'] == 1){
-							  	echo '<input type="checkbox" name="ht" value="1" checked>HTML¤òµö²Ä¤¹¤ë'."\n";
+							  	echo '<input type="checkbox" name="ht" value="1" checked>HTMLã‚’è¨±å¯ã™ã‚‹'."\n";
 							  	echo '<textarea name="text" style="width:95%; height:300px;">'.stripslashes($sql1['text']).'</textarea>'."\n";
 							  }else{
-							  	echo '<input type="checkbox" name="ht" value="1">HTML¤òµö²Ä¤¹¤ë'."\n";
+							  	echo '<input type="checkbox" name="ht" value="1">HTMLã‚’è¨±å¯ã™ã‚‹'."\n";
 							  	echo '<textarea name="text" style="width:95%; height:300px;">'.stripslashes($sql1['text']).'</textarea>'."\n";
 							  }
 							  ?>
 							  </td>
                             </tr>
                             <tr>
-                              <td class="main" valign="top" bgcolor="#FFFFFF">´ü´Ö</td>
+                              <td class="main" valign="top" bgcolor="#FFFFFF">æœŸé–“</td>
                               <td class="main" bgcolor="#FFFFFF">
-							  ³«»ÏÆü¡§
+							  é–‹å§‹æ—¥ï¼š
                                 <select name="start_y">
                                   <?
 					for($y=0;$y<=5;$y++){
@@ -379,7 +379,7 @@ $sele_lid = substr($sql1['limit_date'],8,2);
 					}
 					?>
                                 </select>
-                                Ç¯
+                                å¹´
                                 <select name="start_m">
                                   <?
 					for($m=1;$m<=9;$m++){
@@ -398,7 +398,7 @@ $sele_lid = substr($sql1['limit_date'],8,2);
 					}
 					?>
                                 </select>
-                                ·î
+                                æœˆ
                                 <select name="start_d">
                                   <?
 					for($d=1;$d<=9;$d++){
@@ -417,9 +417,9 @@ $sele_lid = substr($sql1['limit_date'],8,2);
 					}
 					?>
                                 </select>
-                                Æü
+                                æ—¥
 								<br>
-                                ½ªÎ»Æü¡§
+                                çµ‚äº†æ—¥ï¼š
                                 <select name="limit_y">
                                   <?
 					for($y=0;$y<=5;$y++){
@@ -432,7 +432,7 @@ $sele_lid = substr($sql1['limit_date'],8,2);
 					}
 					?>
                                 </select>
-                                Ç¯
+                                å¹´
                                 <select name="limit_m">
                                   <?
 					for($m=1;$m<=9;$m++){
@@ -451,7 +451,7 @@ $sele_lid = substr($sql1['limit_date'],8,2);
 					}
 					?>
                                 </select>
-                                ·î
+                                æœˆ
                                 <select name="limit_d">
                                   <?
 					for($d=1;$d<=9;$d++){
@@ -470,7 +470,7 @@ $sele_lid = substr($sql1['limit_date'],8,2);
 					}
 					?>
                                 </select>
-                                Æü </td>
+                                æ—¥ </td>
                             </tr>
                           </table></td>
                       </tr>
@@ -478,8 +478,8 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                     <div align="right">
 					  <a href=
 					  <?php echo tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))); ?>
-					  ><?php echo tep_image_button('button_back.gif', 'Ìá¤ë'); ?></a>
-					  <?php echo tep_image_submit('button_update.gif', '¹¹¿·'); ?>
+					  ><?php echo tep_image_button('button_back.gif', 'æˆ»ã‚‹'); ?></a>
+					  <?php echo tep_image_submit('button_update.gif', 'æ›´æ–°'); ?>
                     </div></td>
                 </tr>
               </table>
@@ -495,7 +495,7 @@ $sql2 = tep_db_fetch_array($sele2);
             <form name="listview" method="post">
               <table width="100%" align="center" border="0" cellspacing="0" cellpadding="8">
                 <tr>
-                  <td valign="middle" class="pageHeading" height="10">¸ÜµÒ¾ğÊó</td>
+                  <td valign="middle" class="pageHeading" height="10">é¡§å®¢æƒ…å ±</td>
                   <td align="right" valign="top">&nbsp;</td>
                 </tr>
                 <tr>
@@ -508,7 +508,7 @@ $sql2 = tep_db_fetch_array($sele2);
                               <td class="main" width="630" bgcolor="#FFFFFF"><? echo $sql2['customer_id'] ;?></td>
                             </tr>
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF">À«Ì¾</td>
+                              <td class="main" width="150" bgcolor="#FFFFFF">å§“å</td>
                               <td class="main" width="630" bgcolor="#FFFFFF"><? echo $sql2['family_name'] ;?><? echo $sql2['first_name'] ;?></td>
                             </tr>
                             <tr>
@@ -516,18 +516,18 @@ $sql2 = tep_db_fetch_array($sele2);
                               <td class="main" width="630" bgcolor="#FFFFFF"><? echo $sql2['mail'] ;?></td>
                             </tr>
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF">½»½ê</td>
-                              <td class="main" width="630" bgcolor="#FFFFFF">¢©<? echo $sql2['postcode'] ;?><br>
+                              <td class="main" width="150" bgcolor="#FFFFFF">ä½æ‰€</td>
+                              <td class="main" width="630" bgcolor="#FFFFFF">ã€’<? echo $sql2['postcode'] ;?><br>
                                 <? echo $sql2['prefectures'] ;?><? echo $sql2['cities'] ;?><br>
                                 <? echo $sql2['address1'] ;?><br>
                                 <? echo $sql2['address2'] ;?></td>
                             </tr>
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF">ÅÅÏÃ</td>
+                              <td class="main" width="150" bgcolor="#FFFFFF">é›»è©±</td>
                               <td class="main" width="630" bgcolor="#FFFFFF"><? echo $sql2['phone'] ;?></td>
                             </tr>
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF">¿½¹ş¤ßÆü</td>
+                              <td class="main" width="150" bgcolor="#FFFFFF">ç”³è¾¼ã¿æ—¥</td>
                               <td class="main" width="630" bgcolor="#FFFFFF"><? echo $sql2['tourokubi'] ;?></td>
                             </tr>
                           </table>
@@ -537,7 +537,7 @@ $sql2 = tep_db_fetch_array($sele2);
 					<div align="right">
 					  <a href=
 					  <?php echo tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action')). '&action=list'); ?>
-					  ><?php echo tep_image_button('button_back.gif', 'Ìá¤ë'); ?></a>
+					  ><?php echo tep_image_button('button_back.gif', 'æˆ»ã‚‹'); ?></a>
                     </div>
 					</td>
                 </tr>
@@ -561,10 +561,10 @@ $c_id = tep_db_prepare_input($HTTP_GET_VARS['cID']);
               <tr>
                 <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
                     <tr class="dataTableHeadingRow">
-                      <td class="dataTableHeadingContent" align="center">À«</td>
-                      <td class="dataTableHeadingContent" align="center">Ì¾</td>
-                      <td class="dataTableHeadingContent" align="center">¿½¤·¹ş¤ßÆü</td>
-                      <td class="dataTableHeadingContent" align="center">Áàºî</td>
+                      <td class="dataTableHeadingContent" align="center">å§“</td>
+                      <td class="dataTableHeadingContent" align="center">å</td>
+                      <td class="dataTableHeadingContent" align="center">ç”³ã—è¾¼ã¿æ—¥</td>
+                      <td class="dataTableHeadingContent" align="center">æ“ä½œ</td>
                     </tr>
                     <?php
 		$search = '';
@@ -593,7 +593,7 @@ $c_id = tep_db_prepare_input($HTTP_GET_VARS['cID']);
                     </tr>
                     <?php
 		}
-	//While½ªÎ»
+	//Whileçµ‚äº†
 	?>
                     <tr>
                       <td colspan="4"><table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -620,7 +620,7 @@ $c_id = tep_db_prepare_input($HTTP_GET_VARS['cID']);
 					  if ($list_id && tep_not_null($list_id)) {
 						$heading[] = array('text' => '<b>' . $c_title . '</b>');
 				
-						$present[] = array('align' => 'center', 'text' => '<br><br><a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action','list_id')) . 'list_id=' . $list_id  .'&action=listview') . '">' . tep_image_button('button_list_indication.gif', 'É½¼¨') .'</a> <a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))) . '">' . tep_image_button('button_back.gif', 'Ìá¤ë') . '</a>');
+						$present[] = array('align' => 'center', 'text' => '<br><br><a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action','list_id')) . 'list_id=' . $list_id  .'&action=listview') . '">' . tep_image_button('button_list_indication.gif', 'è¡¨ç¤º') .'</a> <a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))) . '">' . tep_image_button('button_back.gif', 'æˆ»ã‚‹') . '</a>');
 					  }
 					  break;
 				  }
@@ -653,8 +653,8 @@ default:
                       <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
                           <tr class="dataTableHeadingRow">
                             <td class="dataTableHeadingContent">TITLE</td>
-                            <td class="dataTableHeadingContent" align="center">´ü´Ö</td>
-                            <td class="dataTableHeadingContent" align="center">Áàºî</td>
+                            <td class="dataTableHeadingContent" align="center">æœŸé–“</td>
+                            <td class="dataTableHeadingContent" align="center">æ“ä½œ</td>
                           </tr>
                           <?php
     $search = '';
@@ -689,7 +689,7 @@ default:
                           </tr>
                           <?php
     }
-//While½ªÎ»
+//Whileçµ‚äº†
 ?>
                           <tr>
                             <td colspan="4"><table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -700,7 +700,7 @@ default:
                               </table></td>
                           </tr>
                           <tr>
-                            <td><a href="present.php?action=input"><?php echo tep_image_button('button_new_list.gif', '¿·µ¬'); ?></a></td>
+                            <td><a href="present.php?action=input"><?php echo tep_image_button('button_new_list.gif', 'æ–°è¦'); ?></a></td>
                           </tr>
                         </table></td>
                       <?php
@@ -726,7 +726,7 @@ default:
 					  if ($cID && tep_not_null($cID)) {
 						$heading[] = array('text' => '<b>' . $c_title . '</b>');
 				
-						$present[] = array('align' => 'center', 'text' => '<br><br><a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=view') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=deleform') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a> <a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action','page')) . 'cID=' . $cID . '&action=list') . '">' . tep_image_button('button_list.gif', '¥ê¥¹¥È') . '</a>' );
+						$present[] = array('align' => 'center', 'text' => '<br><br><a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=view') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=deleform') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a> <a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action','page')) . 'cID=' . $cID . '&action=list') . '">' . tep_image_button('button_list.gif', 'ãƒªã‚¹ãƒˆ') . '</a>' );
 					  }
 					  break;
 				  }

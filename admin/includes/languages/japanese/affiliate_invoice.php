@@ -14,20 +14,20 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', '-»ÙÊ§ÌÀºÙ½ñ-');
+define('HEADING_TITLE', '-æ”¯æ‰•æ˜Žç´°æ›¸-');
 
-define ('TEXT_AFFILIATE','²ñ°÷Ì¾');
-define ('TEXT_AFFILIATE_PAYMENT','¤ª»ÙÊ§¤¤¶â³Û');
-define ('TEXT_AFFILIATE_BILLED','»ÙÊ§Æü');
-define('TABLE_HEADING_ORDER_ID', 'ÃíÊ¸ÈÖ¹æ');
-define('TABLE_HEADING_ORDER_DATE', 'ÆüÉÕ');
-define('TABLE_HEADING_ORDER_VALUE', 'ÃíÊ¸¶â³Û');
-define('TABLE_HEADING_COMMISSION_RATE', '´Ô¸µÎ¨');
-define('TABLE_HEADING_COMMISSION_VALUE', '´Ô¸µ¶â³Û');
-define('TABLE_HEADING_TOTAL', '¹ç·×');
+define ('TEXT_AFFILIATE','ä¼šå“¡å');
+define ('TEXT_AFFILIATE_PAYMENT','ãŠæ”¯æ‰•ã„é‡‘é¡');
+define ('TEXT_AFFILIATE_BILLED','æ”¯æ‰•æ—¥');
+define('TABLE_HEADING_ORDER_ID', 'æ³¨æ–‡ç•ªå·');
+define('TABLE_HEADING_ORDER_DATE', 'æ—¥ä»˜');
+define('TABLE_HEADING_ORDER_VALUE', 'æ³¨æ–‡é‡‘é¡');
+define('TABLE_HEADING_COMMISSION_RATE', 'é‚„å…ƒçŽ‡');
+define('TABLE_HEADING_COMMISSION_VALUE', 'é‚„å…ƒé‡‘é¡');
+define('TABLE_HEADING_TOTAL', 'åˆè¨ˆ');
 
-define('TEXT_SUB_TOTAL', '¾®·×');
-define('TEXT_TAX', '¾ÃÈñÀÇ');
-define('TEXT_TOTAL', '¹ç·×');
+define('TEXT_SUB_TOTAL', 'å°è¨ˆ');
+define('TEXT_TAX', 'æ¶ˆè²»ç¨Ž');
+define('TEXT_TOTAL', 'åˆè¨ˆ');
 define('ENTRY_PERCENT', '%');
 ?>

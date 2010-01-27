@@ -1,18 +1,18 @@
 <?php
 /* *********************************************************
-  ¥â¥¸¥å¡¼¥ëÌ¾: boxes_users.php
+  ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«å: boxes_users.php
  * 2003/04/16
  * Naomi Suzukawa
  * suzukawa@bitscope.co.jp
   ----------------------------------------------------------
-[´ÉÍý¥á¥Ë¥å¡¼] - [¥æ¡¼¥¶]¤Î¤¿¤á¤Î¸À¸ì¥Õ¥¡¥¤¥ë
+[ç®¡ç†ãƒ¡ãƒ‹ãƒ¥ãƒ¼] - [ãƒ¦ãƒ¼ã‚¶]ã®ãŸã‚ã®è¨€èªžãƒ•ã‚¡ã‚¤ãƒ«
 
-  ¢£ÊÑ¹¹ÍúÎò
+  â– å¤‰æ›´å±¥æ­´
 ********************************************************* */
 
 // users box text in includes/boxes/users.php
-define('BOX_HEADING_USER', '¥æ¡¼¥¶');
-define('BOX_USER_ADMIN', '¥æ¡¼¥¶´ÉÍý');
-define('BOX_USER_LOG', '¥¢¥¯¥»¥¹¥í¥°');
-define('BOX_USER_LOGOUT', '¥í¥°¥¢¥¦¥È');
+define('BOX_HEADING_USER', 'ãƒ¦ãƒ¼ã‚¶');
+define('BOX_USER_ADMIN', 'ãƒ¦ãƒ¼ã‚¶ç®¡ç†');
+define('BOX_USER_LOG', 'ã‚¢ã‚¯ã‚»ã‚¹ãƒ­ã‚°');
+define('BOX_USER_LOGOUT', 'ãƒ­ã‚°ã‚¢ã‚¦ãƒˆ');
 

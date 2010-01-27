@@ -19,7 +19,7 @@
   if (tep_db_num_rows($best_sellers_query) >= MIN_DISPLAY_BESTSELLERS) {
 ?>
 <!-- best_sellers //-->
-<div class="box_des">ランキング</div>
+<div class="box_des">繝ｩ繝ｳ繧ｭ繝ｳ繧ｰ</div>
 <ol> 
 <?php
   $info_box_contents = array();

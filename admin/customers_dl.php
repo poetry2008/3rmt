@@ -56,14 +56,14 @@
     	    //}
 
 
-	    $CsvFields = array("ёиёд","","","" ,"","╔А║╪╔К╔╒╔и╔Л╔╧","ееоц","FAX","╔я╔╧╔О║╪╔и","╔к╔Е║╪╔╧╔Л╔©║╪","╔╒╔и╔Л╔╧ёиёд","" ,"","","" ,"╫╩╫Й","╫╩╫Й(2)","");
+	    $CsvFields = array("О╪╘О╪╓","","","" ,"","Ц┐║Ц┐╪Ц┐╚Ц┌╒Ц┐┴Ц┐╛Ц┌╧","И⌡╩Х╘╠","FAX","Ц┐▒Ц┌╧Ц┐╞Ц┐╪Ц┐┴","Ц┐▀Ц┐╔Ц┐╪Ц┌╧Ц┐╛Ц┌©Ц┐╪","Ц┌╒Ц┐┴Ц┐╛Ц┌╧О╪╘О╪╓","" ,"","","" ,"Д╫▐Ф┴─","Д╫▐Ф┴─(2)","");
 		for($i=0;$i<count($CsvFields);$i++){
 			print jcodeconvert($CsvFields[$i],0,2) . ",";
 		}
 		print "\n";
 		
 		while($result = mysql_fetch_array($query)) {
-	      //ёиёд
+	      //О╪╘О╪╓
 		  print jcodeconvert($result['customers_id'],0,2) . ",";
 	      //
 		  print jcodeconvert($result['customers_gender'],0,2) . ",";
@@ -73,17 +73,17 @@
 		  print jcodeconvert($result['customers_firstname'],0,2) . ",";
 	      //
 		  print jcodeconvert($result['customers_dob'],0,2) . ",";
-	      //╔А║╪╔К╔╒╔и╔Л╔╧
+	      //Ц┐║Ц┐╪Ц┐╚Ц┌╒Ц┐┴Ц┐╛Ц┌╧
 		  print jcodeconvert($result['customers_email_address'],0,2) . ",";
 	      //
 		  print jcodeconvert($result['customers_telephone'],0,2) . ",";
 	      //FAX
 		  print jcodeconvert($result['customers_fax'],0,2) . ",";
-	      //╔я╔╧╔О║╪╔и
+	      //Ц┐▒Ц┌╧Ц┐╞Ц┐╪Ц┐┴
 		  print jcodeconvert($result['customers_password'],0,2) . ",";
-	      //╔к╔Е║╪╔╧╔Л╔©║╪
+	      //Ц┐▀Ц┐╔Ц┐╪Ц┌╧Ц┐╛Ц┌©Ц┐╪
 		  print jcodeconvert($result['customers_newsletter'],0,2) . ",";
-	      //╔╒╔и╔Л╔╧ёиёд
+	      //Ц┌╒Ц┐┴Ц┐╛Ц┌╧О╪╘О╪╓
 		  print jcodeconvert($result['customers_default_address_id'],0,2) . ",";
 	      //
 		  print jcodeconvert($result['entry_company'],0,2) . ",";
@@ -94,9 +94,9 @@
 		  print jcodeconvert($zone,0,2) . ",";
 	      //
 		  print jcodeconvert($result['entry_city'],0,2) . ",";
-	      //╫╩╫Й
+	      //Д╫▐Ф┴─
 		  print jcodeconvert($result['entry_street_address'],0,2) . ",";
-	      //╫╩╫Й(2)
+	      //Д╫▐Ф┴─(2)
 		  print jcodeconvert($result['entry_suburb'],0,2) . ",";
 	      //
 		  print jcodeconvert($result['entry_country_id'],0,2) . "\n";

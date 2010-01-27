@@ -11,77 +11,77 @@
   Released under the GNU General Public License
 */
 
-  define ('HEADING_TITLE_TYPES', '•’•°•§•Î•ø•§•◊');
-  define ('HEADING_TITLE', '•’•°•§•Î');
+  define ('HEADING_TITLE_TYPES', '„Éï„Ç°„Ç§„É´„Çø„Ç§„Éó');
+  define ('HEADING_TITLE', '„Éï„Ç°„Ç§„É´');
 
-  define ('TABLE_HEADING_ACTION', '¡‡∫Ó');
+  define ('TABLE_HEADING_ACTION', 'Êìç‰Ωú');
 
-  define ('TABLE_HEADING_DESCRIPTION', '•’•°•§•Î•ø•§•◊');
-  define ('TABLE_HEADING_DIRECTORY', '•’•°•§•Î•¢•…•Ï•π');
-  define ('TABLE_HEADING_VISIBLE', '…Ωº®');
-  define ('TABLE_HEADING_SORT_ORDER', '•Ω°º•π');
+  define ('TABLE_HEADING_DESCRIPTION', '„Éï„Ç°„Ç§„É´„Çø„Ç§„Éó');
+  define ('TABLE_HEADING_DIRECTORY', '„Éï„Ç°„Ç§„É´„Ç¢„Éâ„É¨„Çπ');
+  define ('TABLE_HEADING_VISIBLE', 'Ë°®Á§∫');
+  define ('TABLE_HEADING_SORT_ORDER', '„ÇΩ„Éº„Çπ');
 
-  define ('TABLE_HEADING_DOCUMENTS_NAME', '•’•°•§•ÎÃæ');
-  define ('TABLE_HEADING_DOCUMENTS_THUMB', '•µ•‡•Õ•§•Î');
-  define ('TABLE_HEADING_DOCUMENTS_SIZE', '•µ•§•∫(kb)');
-  define ('TABLE_HEADING_DOCUMENTS_TITLE', '•’•°•§•Î•ø•§•»•Î');
-  define ('TABLE_HEADING_DOCUMENTS_TYPE', '•ø•§•◊');
-  define ('TABLE_HEADING_DOCUMENTS_STATUS', 'æı¬÷');
-  define ('TABLE_HEADING_DOCUMENTS_VISIBLE', '…Ωº®');
-  define ('TABLE_HEADING_DOCUMENTS_MOVE', '∞‹∆∞');
-  define ('TABLE_HEADING_DOCUMENTS_SORT_ORDER', '•Ω°º•π');
+  define ('TABLE_HEADING_DOCUMENTS_NAME', '„Éï„Ç°„Ç§„É´Âêç');
+  define ('TABLE_HEADING_DOCUMENTS_THUMB', '„Çµ„É†„Éç„Ç§„É´');
+  define ('TABLE_HEADING_DOCUMENTS_SIZE', '„Çµ„Ç§„Ç∫(kb)');
+  define ('TABLE_HEADING_DOCUMENTS_TITLE', '„Éï„Ç°„Ç§„É´„Çø„Ç§„Éà„É´');
+  define ('TABLE_HEADING_DOCUMENTS_TYPE', '„Çø„Ç§„Éó');
+  define ('TABLE_HEADING_DOCUMENTS_STATUS', 'Áä∂ÊÖã');
+  define ('TABLE_HEADING_DOCUMENTS_VISIBLE', 'Ë°®Á§∫');
+  define ('TABLE_HEADING_DOCUMENTS_MOVE', 'ÁßªÂãï');
+  define ('TABLE_HEADING_DOCUMENTS_SORT_ORDER', '„ÇΩ„Éº„Çπ');
   
-  define ('TEXT_TYPES_TOTAL', '•ø•§•◊øÙ:');
-  define ('TEXT_FILE_DOES_NOT_EXIST', '•’•°•§•Î§¨§¢§Í§ﬁ§ª§Û.');
-  define ('TEXT_DISPLAY_NUMBER_OF_DOCUMENTS', '<b>%d</b> §´§È <b>%d</b>°°§Ú…Ωº®° ∂¶<b>%d</b>∏ƒ°À');
+  define ('TEXT_TYPES_TOTAL', '„Çø„Ç§„ÉóÊï∞:');
+  define ('TEXT_FILE_DOES_NOT_EXIST', '„Éï„Ç°„Ç§„É´„Åå„ÅÇ„Çä„Åæ„Åõ„Çì.');
+  define ('TEXT_DISPLAY_NUMBER_OF_DOCUMENTS', '<b>%d</b> „Åã„Çâ <b>%d</b>„ÄÄ„ÇíË°®Á§∫ÔºàÂÖ±<b>%d</b>ÂÄãÔºâ');
 
-  define ('TEXT_INFO_HEADING_DOC_TYPES', '•’•°•§•Î•ø•§•◊');
+  define ('TEXT_INFO_HEADING_DOC_TYPES', '„Éï„Ç°„Ç§„É´„Çø„Ç§„Éó');
   
-  define ('TEXT_INFO_HEADING_NEW_DOC_TYPE', 'ø∑•’•°•§•Î•ø•§•◊∫Ó¿Æ');
-  define ('TEXT_INFO_NEW_TYPE_INTRO', '.ø∑•’•°•§•Î•ø•§•◊∫Ó¿Æ¡∞°¢Ã‹œø§Ú∫Ó¿Æ§∑§∆§Ø§¿§µ§§');
-  define ('TEXT_INFO_TYPE_DIRECTORY', ' •’•°•§•Î•¢•…•Ï•π:');
-  define ('TEXT_INFO_TYPE_DESCRIPTION', '•ø•§•◊:');
-  define ('TEXT_INFO_TYPE_SORT_ORDER', '•Ω°º•π:');
+  define ('TEXT_INFO_HEADING_NEW_DOC_TYPE', 'Êñ∞„Éï„Ç°„Ç§„É´„Çø„Ç§„Éó‰ΩúÊàê');
+  define ('TEXT_INFO_NEW_TYPE_INTRO', '.Êñ∞„Éï„Ç°„Ç§„É´„Çø„Ç§„Éó‰ΩúÊàêÂâç„ÄÅÁõÆÈå≤„Çí‰ΩúÊàê„Åó„Å¶„Åè„Å†„Åï„ÅÑ');
+  define ('TEXT_INFO_TYPE_DIRECTORY', ' „Éï„Ç°„Ç§„É´„Ç¢„Éâ„É¨„Çπ:');
+  define ('TEXT_INFO_TYPE_DESCRIPTION', '„Çø„Ç§„Éó:');
+  define ('TEXT_INFO_TYPE_SORT_ORDER', '„ÇΩ„Éº„Çπ:');
   
-  define ('TEXT_INFO_HEADING_EDIT_DOC_TYPE', '•’•°•§•Î•ø•§•◊ ‘Ω∏');
+  define ('TEXT_INFO_HEADING_EDIT_DOC_TYPE', '„Éï„Ç°„Ç§„É´„Çø„Ç§„ÉóÁ∑®ÈõÜ');
   
-  define ('TEXT_INFO_HEADING_DELETE_DOC_TYPE', '•’•°•§•Î•ø•§•◊∫ÔΩ¸');
-  define ('TEXT_INFO_DELETE_DOC_TYPE_INTRO', '§Ω§Œ•’•°•§•Î•ø•§•◊§Ú¥ﬁ§·§∆§§§Î•’•°•§•Î§»§‚∫ÔΩ¸.');
-  define ('TEXT_INFO_DOCUMENTS_IN_TYPE', '§Ω§Œ•’•°•§•Î•ø•§•◊§À§∑§ø§Œ§Ë§¶§ •’•°•§•Î§¨¥ﬁ§·§∆§§§ﬁ§π:');
+  define ('TEXT_INFO_HEADING_DELETE_DOC_TYPE', '„Éï„Ç°„Ç§„É´„Çø„Ç§„ÉóÂâäÈô§');
+  define ('TEXT_INFO_DELETE_DOC_TYPE_INTRO', '„Åù„ÅÆ„Éï„Ç°„Ç§„É´„Çø„Ç§„Éó„ÇíÂê´„ÇÅ„Å¶„ÅÑ„Çã„Éï„Ç°„Ç§„É´„Å®„ÇÇÂâäÈô§.');
+  define ('TEXT_INFO_DOCUMENTS_IN_TYPE', '„Åù„ÅÆ„Éï„Ç°„Ç§„É´„Çø„Ç§„Éó„Å´„Åó„Åü„ÅÆ„Çà„ÅÜ„Å™„Éï„Ç°„Ç§„É´„ÅåÂê´„ÇÅ„Å¶„ÅÑ„Åæ„Åô:');
 
-  define ('TEXT_INFO_HEADING_UPLOAD', '≤Ë¡¸§Ú•¢•√•◊•Ì°º•…');
-  define ('TEXT_UPLOAD_INTRO', '≤Ë¡¸§Ú•¢•√•◊•Ì°º•…µ⁄§” ‘Ω∏');
-  define ('TEXT_UPLOAD_FILE_NAME', '•¢•√•◊•Ì°º•…•’•°•§•Î§Ú¡™§÷:');
-  define ('TEXT_UPLOAD_FILE_TITLE', '•’•°•§•Î•ø•§•»•Î:');
-  define ('TEXT_INFO_SORT_ORDER', '•Ω°º•π:');
+  define ('TEXT_INFO_HEADING_UPLOAD', 'ÁîªÂÉè„Çí„Ç¢„ÉÉ„Éó„É≠„Éº„Éâ');
+  define ('TEXT_UPLOAD_INTRO', 'ÁîªÂÉè„Çí„Ç¢„ÉÉ„Éó„É≠„Éº„ÉâÂèä„Å≥Á∑®ÈõÜ');
+  define ('TEXT_UPLOAD_FILE_NAME', '„Ç¢„ÉÉ„Éó„É≠„Éº„Éâ„Éï„Ç°„Ç§„É´„ÇíÈÅ∏„Å∂:');
+  define ('TEXT_UPLOAD_FILE_TITLE', '„Éï„Ç°„Ç§„É´„Çø„Ç§„Éà„É´:');
+  define ('TEXT_INFO_SORT_ORDER', '„ÇΩ„Éº„Çπ:');
   
   define ('TEXT_INFO_HEADING_UPDATE', 'Update the Document List');
   define ('TEXT_UPDATE_INTRO', 'Update the list of documents after you have FTPd new documents to the server.');
 
-  define ('TEXT_INFO_HEADING_EDIT_DOCUMENT', ' ‘Ω∏');
-  define ('TEXT_INFO_EDIT_INTRO', '•’•°•§•Îæ Û ‘Ω∏');
-  define ('TEXT_INFO_DOCUMENT_TITLE', '•ø•§•»•Î:');
-  define ('TEXT_INFO_DOCUMENT_SORT_ORDER', '•Ω°º•π:');
-  define ('TEXT_INFO_DOCUMENT_VISIBLE', '…Ωº®¿ﬂƒÍ§´§…§¶§´');
-  define ('TEXT_IS_VISIBLE', '…Ωº®');
-  define ('TEXT_SET_VISIBLE', '…Ωº®¿ﬂƒÍ');
+  define ('TEXT_INFO_HEADING_EDIT_DOCUMENT', 'Á∑®ÈõÜ');
+  define ('TEXT_INFO_EDIT_INTRO', '„Éï„Ç°„Ç§„É´ÊÉÖÂ†±Á∑®ÈõÜ');
+  define ('TEXT_INFO_DOCUMENT_TITLE', '„Çø„Ç§„Éà„É´:');
+  define ('TEXT_INFO_DOCUMENT_SORT_ORDER', '„ÇΩ„Éº„Çπ:');
+  define ('TEXT_INFO_DOCUMENT_VISIBLE', 'Ë°®Á§∫Ë®≠ÂÆö„Åã„Å©„ÅÜ„Åã');
+  define ('TEXT_IS_VISIBLE', 'Ë°®Á§∫');
+  define ('TEXT_SET_VISIBLE', 'Ë°®Á§∫Ë®≠ÂÆö');
 
-  define ('TEXT_INFO_HEADING_ASSOCIATE_DOCUMENT', '•’•°•§•Î§»¥ÿœ¢');
-  define ('TEXT_INFO_ASSOCIATE_INTRO', 'æ¶… §»•’•°•§•Î¥ÿœ¢');
-  define ('TEXT_INFO_ASSOCIATE_SELECT', '%s ¥ÿœ¢§∑§∆§§§Îæ¶… ');
-  define ('TEXT_INFO_EXISTING_ASSOCIATIONS', '¥ÿ∑∏§¨§¢§Í');
-  define ('TEXT_INFO_REMOVE_ASSOCIATIONS', ' - ∫ÔΩ¸');
+  define ('TEXT_INFO_HEADING_ASSOCIATE_DOCUMENT', '„Éï„Ç°„Ç§„É´„Å®Èñ¢ÈÄ£');
+  define ('TEXT_INFO_ASSOCIATE_INTRO', 'ÂïÜÂìÅ„Å®„Éï„Ç°„Ç§„É´Èñ¢ÈÄ£');
+  define ('TEXT_INFO_ASSOCIATE_SELECT', '%s Èñ¢ÈÄ£„Åó„Å¶„ÅÑ„ÇãÂïÜÂìÅ');
+  define ('TEXT_INFO_EXISTING_ASSOCIATIONS', 'Èñ¢‰øÇ„Åå„ÅÇ„Çä');
+  define ('TEXT_INFO_REMOVE_ASSOCIATIONS', ' - ÂâäÈô§');
 
-  define ('TEXT_INFO_HEADING_DELETE_DOCUMENT', '•’•°•§•Î∫ÔΩ¸');
-  define ('TEXT_INFO_DELETE_INTRO', '•’•°•§•Î§»§Œ¥ÿœ¢');
-  define ('TEXT_INFO_ASSOCIATIONS', '¥ÿœ¢æ¶… :');
+  define ('TEXT_INFO_HEADING_DELETE_DOCUMENT', '„Éï„Ç°„Ç§„É´ÂâäÈô§');
+  define ('TEXT_INFO_DELETE_INTRO', '„Éï„Ç°„Ç§„É´„Å®„ÅÆÈñ¢ÈÄ£');
+  define ('TEXT_INFO_ASSOCIATIONS', 'Èñ¢ÈÄ£ÂïÜÂìÅ:');
 
-  define ('TEXT_INFO_HEADING_GENERAL', '¡‡∫Ó§∑§∆§§§Î§≥§»§œ ');
+  define ('TEXT_INFO_HEADING_GENERAL', 'Êìç‰Ωú„Åó„Å¶„ÅÑ„Çã„Åì„Å®„ÅØ ');
 
-  define ('ERROR_FILE_NOT_FOUND', '•’•°•§•Î %s §¨Ãµ§∑°¢∞ø§§§œ«À≤ı§∑§ﬁ§∑§ø°¢§¥≥Œ«ß§Ø§¿§µ§§.');
-  define ('ERROR_FILE_NOT_REMOVEABLE', '∫ÔΩ¸§«§≠§ﬁ§ª§Û°¢ºÍ∆∞§«∫ÔΩ¸§∑§∆§Ø§¿§µ§§');
+  define ('ERROR_FILE_NOT_FOUND', '„Éï„Ç°„Ç§„É´ %s „ÅåÁÑ°„Åó„ÄÅÊàñ„ÅÑ„ÅØÁ†¥Â£ä„Åó„Åæ„Åó„Åü„ÄÅ„ÅîÁ¢∫Ë™ç„Åè„Å†„Åï„ÅÑ.');
+  define ('ERROR_FILE_NOT_REMOVEABLE', 'ÂâäÈô§„Åß„Åç„Åæ„Åõ„Çì„ÄÅÊâãÂãï„ÅßÂâäÈô§„Åó„Å¶„Åè„Å†„Åï„ÅÑ');
 
-  define ('IMAGE_COPY_URL', '•’•°•§•Î•—•π§Ú•≥•‘°º');
+  define ('IMAGE_COPY_URL', '„Éï„Ç°„Ç§„É´„Éë„Çπ„Çí„Ç≥„Éî„Éº');
 
-  define ('IMAGE_NEW', 'ø∑µ¨≤Ë¡¸');
+  define ('IMAGE_NEW', 'Êñ∞Ë¶èÁîªÂÉè');
 ?>

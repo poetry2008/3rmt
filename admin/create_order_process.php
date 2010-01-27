@@ -1,6 +1,6 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
   require('includes/application_top.php');
@@ -97,7 +97,7 @@
 	if ($payment_method == '') {
 		$error = true;
 		$entry_payment_method_error = true;
-	} elseif ($payment_method == '¶ä¹Ô¿¶¹þ(Çã¤¤¼è¤ê)') {
+	} elseif ($payment_method == 'éŠ€è¡ŒæŒ¯è¾¼(è²·ã„å–ã‚Š)') {
 		if ($bank_name == '') {
 			$error = true;
 			$entry_bank_name_error = true;
@@ -313,7 +313,7 @@
 	<?php echo tep_draw_form('create_order', FILENAME_CREATE_ORDER_PROCESS, '', 'post', '', '') . tep_draw_hidden_field('customers_id', $account->customers_id); ?>
 	<table border="0" width="100%" cellspacing="0" cellpadding="0">
 	  <tr>
-	    <td class="pageHeading"><font color="red">ÆþÎÏ¾ðÊó¤Ë¸í¤ê¤¬¤¢¤ê¤Þ¤¹</font></td>
+	    <td class="pageHeading"><font color="red">å…¥åŠ›æƒ…å ±ã«èª¤ã‚ŠãŒã‚ã‚Šã¾ã™</font></td>
 	  </tr>
 	  <tr>
 	    <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
@@ -401,13 +401,13 @@
 							'comments' => '');
     tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
 
-	// Çã¼è¡Ê¸ýºÂ¾ðÊó¤ò¥³¥á¥ó¥È¤ËÄÉ²Ã¡Ë
+	// è²·å–ï¼ˆå£åº§æƒ…å ±ã‚’ã‚³ãƒ¡ãƒ³ãƒˆã«è¿½åŠ ï¼‰
 	if (isset($bank_name) && $bank_name != '') {
-		$bbbank = '¶âÍ»µ¡´ØÌ¾¡¡¡¡¡¡¡¡¡§' . $bank_name . "\n";
-		$bbbank .= '»ÙÅ¹Ì¾¡¡¡¡¡¡¡¡¡¡¡¡¡§' . $bank_shiten . "\n";
-		$bbbank .= '¸ýºÂ¼ïÊÌ¡¡¡¡¡¡¡¡¡¡¡§' . $bank_kamoku . "\n";
-		$bbbank .= '¸ýºÂÈÖ¹æ¡¡¡¡¡¡¡¡¡¡¡§' . $bank_kouza_num . "\n";
-		$bbbank .= '¸ýºÂÌ¾µÁ¡¡¡¡¡¡¡¡¡¡¡§' . $bank_kouza_name;
+		$bbbank = 'é‡‘èžæ©Ÿé–¢åã€€ã€€ã€€ã€€ï¼š' . $bank_name . "\n";
+		$bbbank .= 'æ”¯åº—åã€€ã€€ã€€ã€€ã€€ã€€ï¼š' . $bank_shiten . "\n";
+		$bbbank .= 'å£åº§ç¨®åˆ¥ã€€ã€€ã€€ã€€ã€€ï¼š' . $bank_kamoku . "\n";
+		$bbbank .= 'å£åº§ç•ªå·ã€€ã€€ã€€ã€€ã€€ï¼š' . $bank_kouza_num . "\n";
+		$bbbank .= 'å£åº§åç¾©ã€€ã€€ã€€ã€€ã€€ï¼š' . $bank_kouza_name;
 	
 		$sql_data_array = array('orders_id' => $insert_id, 
 								'orders_status_id' => $new_value, 

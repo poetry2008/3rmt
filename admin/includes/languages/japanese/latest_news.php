@@ -10,24 +10,24 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', 'ºÇ¿·¾ðÊó');
+define('HEADING_TITLE', 'æœ€æ–°æƒ…å ±');
 
-define('TEXT_NEW_LATEST_NEWS', '¿·Ãå¾ðÊóÆþÎÏ');
+define('TEXT_NEW_LATEST_NEWS', 'æ–°ç€æƒ…å ±å…¥åŠ›');
 
-define('TABLE_HEADING_LATEST_NEWS_HEADLINE', '¥¿¥¤¥È¥ë');
-define('TABLE_HEADING_LATEST_NEWS_ACTION', '¥¢¥¯¥·¥ç¥ó');
-define('TABLE_HEADING_LATEST_NEWS_STATUS', '¥¹¥Æ¡¼¥¿¥¹');
+define('TABLE_HEADING_LATEST_NEWS_HEADLINE', 'ã‚¿ã‚¤ãƒˆãƒ«');
+define('TABLE_HEADING_LATEST_NEWS_ACTION', 'ã‚¢ã‚¯ã‚·ãƒ§ãƒ³');
+define('TABLE_HEADING_LATEST_NEWS_STATUS', 'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹');
 
-define('TEXT_NEWS_ITEMS', '¥Ë¥å¡¼¥¹:');
-define('TEXT_INFO_HEADING_DELETE_ITEM', 'ºï½ü');
-define('TEXT_DELETE_ITEM_INTRO', 'ËÜÅö¤Ë¤³¤Î¥Ë¥å¡¼¥¹¤ò¾Ã¤·¤Æ¤â¤¤¤¤¤Ç¤¹¤«¡©');
+define('TEXT_NEWS_ITEMS', 'ãƒ‹ãƒ¥ãƒ¼ã‚¹:');
+define('TEXT_INFO_HEADING_DELETE_ITEM', 'å‰Šé™¤');
+define('TEXT_DELETE_ITEM_INTRO', 'æœ¬å½“ã«ã“ã®ãƒ‹ãƒ¥ãƒ¼ã‚¹ã‚’æ¶ˆã—ã¦ã‚‚ã„ã„ã§ã™ã‹ï¼Ÿ');
 
-define('TEXT_LATEST_NEWS_HEADLINE', '¥Ø¥Ã¥É¥é¥¤¥ó¡Ê¥¿¥¤¥È¥ë¡Ë');
-define('TEXT_LATEST_NEWS_CONTENT', 'µ­»ö¤ÎÆâÍÆ');
-define('TEXT_LATEST_NEWS_IMAGE', '´ØÏ¢²èÁü');
-define('TEXT_LATEST_NEWS_IMAGE_DESCRIPTION', '²èÁü¤ËÂÐ¤·¤Æ¤Î´ÊÃ±¤ÊÀâÌÀ');
-define('TABLE_HEADING_LATEST_NEWS_ISFIRST', '¥È¥Ã¥×¤Ë¤·¤Þ¤¹');
+define('TEXT_LATEST_NEWS_HEADLINE', 'ãƒ˜ãƒƒãƒ‰ãƒ©ã‚¤ãƒ³ï¼ˆã‚¿ã‚¤ãƒˆãƒ«ï¼‰');
+define('TEXT_LATEST_NEWS_CONTENT', 'è¨˜äº‹ã®å†…å®¹');
+define('TEXT_LATEST_NEWS_IMAGE', 'é–¢é€£ç”»åƒ');
+define('TEXT_LATEST_NEWS_IMAGE_DESCRIPTION', 'ç”»åƒã«å¯¾ã—ã¦ã®ç°¡å˜ãªèª¬æ˜Ž');
+define('TABLE_HEADING_LATEST_NEWS_ISFIRST', 'ãƒˆãƒƒãƒ—ã«ã—ã¾ã™');
 
 
-define('IMAGE_NEW_NEWS_ITEM', '¿·¤·¤¤¥Ë¥å¡¼¥¹¤òºîÀ®');
+define('IMAGE_NEW_NEWS_ITEM', 'æ–°ã—ã„ãƒ‹ãƒ¥ãƒ¼ã‚¹ã‚’ä½œæˆ');
 ?>

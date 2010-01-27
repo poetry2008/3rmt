@@ -10,15 +10,15 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE_MODULES_PAYMENT', '»ÙÊ§¥â¥¸¥å¡¼¥ëÀßÄê');
-define('HEADING_TITLE_MODULES_METASEO', 'SEO¥â¥¸¥å¡¼¥ëÀßÄê');
-define('HEADING_TITLE_MODULES_SHIPPING', 'ÇÛÁ÷¥â¥¸¥å¡¼¥ëÀßÄê');
-define('HEADING_TITLE_MODULES_ORDER_TOTAL', '¹ç·×¥â¥¸¥å¡¼¥ëÀßÄê');
+define('HEADING_TITLE_MODULES_PAYMENT', 'æ”¯æ‰•ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«è¨­å®š');
+define('HEADING_TITLE_MODULES_METASEO', 'SEOãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«è¨­å®š');
+define('HEADING_TITLE_MODULES_SHIPPING', 'é…é€ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«è¨­å®š');
+define('HEADING_TITLE_MODULES_ORDER_TOTAL', 'åˆè¨ˆãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«è¨­å®š');
 
-define('TABLE_HEADING_MODULES', '¥â¥¸¥å¡¼¥ë');
-define('TABLE_HEADING_SORT_ORDER', 'À°Îó½ç');
-define('TABLE_HEADING_STATUS', '¥¹¥Æ¡¼¥¿¥¹');
-define('TABLE_HEADING_ACTION', 'Áàºî');
+define('TABLE_HEADING_MODULES', 'ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«');
+define('TABLE_HEADING_SORT_ORDER', 'æ•´åˆ—é †');
+define('TABLE_HEADING_STATUS', 'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹');
+define('TABLE_HEADING_ACTION', 'æ“ä½œ');
 
-define('TEXT_MODULE_DIRECTORY', '¥â¥¸¥å¡¼¥ë¡¦¥Ç¥£¥ì¥¯¥È¥ê:');
+define('TEXT_MODULE_DIRECTORY', 'ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ãƒ»ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª:');
 ?>

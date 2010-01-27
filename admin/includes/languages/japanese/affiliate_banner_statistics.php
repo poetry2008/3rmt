@@ -14,25 +14,25 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', '¥Ğ¥Ê¡¼É½¼¨¿ôÅı·×');
+define('HEADING_TITLE', 'ãƒãƒŠãƒ¼è¡¨ç¤ºæ•°çµ±è¨ˆ');
 
-define('TABLE_HEADING_SOURCE', '¥ê¥ó¥¯¸µ');
-define('TABLE_HEADING_VIEWS', 'É½¼¨¿ô');
-define('TABLE_HEADING_CLICKS', '¥¯¥ê¥Ã¥¯¿ô');
+define('TABLE_HEADING_SOURCE', 'ãƒªãƒ³ã‚¯å…ƒ');
+define('TABLE_HEADING_VIEWS', 'è¡¨ç¤ºæ•°');
+define('TABLE_HEADING_CLICKS', 'ã‚¯ãƒªãƒƒã‚¯æ•°');
 
 define('TEXT_BANNERS_DATA', 'D<br>a<br>t<br>a');
-define('TEXT_BANNERS_DAILY_STATISTICS', '%s ÆüÊÌ¤ÎÅı·× %s %s');
-define('TEXT_BANNERS_MONTHLY_STATISTICS', '%s ·îÊÌ¤ÎÅı·× %s');
-define('TEXT_BANNERS_YEARLY_STATISTICS', '%s Ç¯ÊÌ¤ÎÅı·×');
+define('TEXT_BANNERS_DAILY_STATISTICS', '%s æ—¥åˆ¥ã®çµ±è¨ˆ %s %s');
+define('TEXT_BANNERS_MONTHLY_STATISTICS', '%s æœˆåˆ¥ã®çµ±è¨ˆ %s');
+define('TEXT_BANNERS_YEARLY_STATISTICS', '%s å¹´åˆ¥ã®çµ±è¨ˆ');
 
-define('STATISTICS_TYPE_DAILY', 'ÆüÊÌ');
-define('STATISTICS_TYPE_MONTHLY', '·îÊÌ');
-define('STATISTICS_TYPE_YEARLY', 'Ç¯ÊÌ');
+define('STATISTICS_TYPE_DAILY', 'æ—¥åˆ¥');
+define('STATISTICS_TYPE_MONTHLY', 'æœˆåˆ¥');
+define('STATISTICS_TYPE_YEARLY', 'å¹´åˆ¥');
 
-define('TITLE_TYPE', '¥¿¥¤¥×:');
-define('TITLE_YEAR', 'Ç¯:');
-define('TITLE_MONTH', '·î:');
+define('TITLE_TYPE', 'ã‚¿ã‚¤ãƒ—:');
+define('TITLE_YEAR', 'å¹´:');
+define('TITLE_MONTH', 'æœˆ:');
 
-define('ERROR_GRAPHS_DIRECTORY_DOES_NOT_EXIST', '¥¨¥é¡¼: ¡ÖGraphs¡×¥Ç¥£¥ì¥¯¥È¥ê¤¬Â¸ºß¤·¤Ş¤»¤ó¡£\'graphs\'¥Ç¥£¥ì¥¯¥È¥ê¤ò\'images\'¥Õ¥©¥ë¥ÀÆâ¤ËºîÀ®¤·¤Æ¤¯¤À¤µ¤¤¡£');
-define('ERROR_GRAPHS_DIRECTORY_NOT_WRITEABLE', '¥¨¥é¡¼: ¡ÖGraphs¡×¥Ç¥£¥ì¥¯¥È¥ê¤Ë½ñ¤­¹ş¤à¤³¤È¤¬¤Ç¤­¤Ş¤»¤ó¡£¥Ñ¡¼¥ß¥Ã¥·¥ç¥ó¤ò³ÎÇ§¤·¤Æ¤¯¤À¤µ¤¤¡£');
+define('ERROR_GRAPHS_DIRECTORY_DOES_NOT_EXIST', 'ã‚¨ãƒ©ãƒ¼: ã€ŒGraphsã€ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒå­˜åœ¨ã—ã¾ã›ã‚“ã€‚\'graphs\'ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’\'images\'ãƒ•ã‚©ãƒ«ãƒ€å†…ã«ä½œæˆã—ã¦ãã ã•ã„ã€‚');
+define('ERROR_GRAPHS_DIRECTORY_NOT_WRITEABLE', 'ã‚¨ãƒ©ãƒ¼: ã€ŒGraphsã€ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«æ›¸ãè¾¼ã‚€ã“ã¨ãŒã§ãã¾ã›ã‚“ã€‚ãƒ‘ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³ã‚’ç¢ºèªã—ã¦ãã ã•ã„ã€‚');
 ?>

@@ -1,6 +1,6 @@
 <?php
 /*
-	JP¡¢GM¶¦ÄÌ¥Õ¥¡¥¤¥ë
+	JPã€GMå…±é€šãƒ•ã‚¡ã‚¤ãƒ«
 */
 
   require('includes/application_top.php');
@@ -11,7 +11,7 @@
     tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT));
   }
 
-  // tamura 2002/12/30 ¡ÖÁ´³Ñ¡×±Ñ¿ô»ú¤ò¡ÖÈ¾³Ñ¡×¤ËÊÑ´¹
+  // tamura 2002/12/30 ã€Œå…¨è§’ã€è‹±æ•°å­—ã‚’ã€ŒåŠè§’ã€ã«å¤‰æ›
   $an_cols = array('password','confirmation','email_address','postcode','telephone','fax');
   if (ACCOUNT_DOB) $an_cols[] = 'dob';
   foreach ($an_cols as $col) {

@@ -1,6 +1,6 @@
 <?php
 /*
-	JP��GM���̥ե�����
+	JP、GM共通ファイル
 */
 
   require('includes/application_top.php');
@@ -41,7 +41,7 @@
 		<td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
       </tr>
       <tr>
-        <td class="main"><br>�����ȥ桼������������ޤ�������Ϥ����ͼ��ȤǤʤ���к��ޤ���<br><br></td>
+        <td class="main"><br>ゲストユーザーを作成します。会員はお客様自身でなければ作れません。<br><br></td>
       </tr>
       <tr>
         <td>
