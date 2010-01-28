@@ -22,7 +22,7 @@
 <!--select searach -->
 <table width="100%" border="0" cellpadding="1" cellspacing="0">
     <tr>
-      <? 
+      <?php
 // optional Product List Filter
 if(basename($PHP_SELF) == FILENAME_DEFAULT) {
    if (PRODUCT_LIST_FILTER > 0 && !empty($filterlist_sql)) {
@@ -128,11 +128,11 @@ if ($listing_numrows > 0) {
       $row++;
       $col++;
 ?>
-      <!-- products_id <?=$listing['products_id']?>-->
+      <!-- products_id <?php echo $listing['products_id'];?>-->
       <tr><td>
       <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
-          <td rowspan="2" width="<?=SMALL_IMAGE_WIDTH?>" style="padding-right:8px; " align="center">
+          <td rowspan="2" width="<?php echo SMALL_IMAGE_WIDTH;?>" style="padding-right:8px; " align="center">
             <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $listing['products_id']) . '">'.tep_image(DIR_WS_IMAGES . $listing['products_image'], $listing['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"').'</a>' ; ?>
           </td>
           <td style="padding-left:5px; "><p class="main"><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="middle" alt="img"><strong><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $listing['products_id']) . '">'.$products_name.$ten.'</a>';?></strong></p>

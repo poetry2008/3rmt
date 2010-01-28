@@ -11,7 +11,6 @@
 */
 
   require('includes/application_top.php');
-
 // the following cPath references come from application_top.php
   $category_depth = 'top';
   if (isset($cPath) && tep_not_null($cPath)) {
@@ -55,7 +54,7 @@
 ?>
 <?php page_head();?>
 </head>
-<body <?=$body_option?>>
+<body <?php echo $body_option?>>
 <div align="center">
 	<!-- header //-->
 	<?php require(DIR_WS_INCLUDES . 'header.php'); ?>

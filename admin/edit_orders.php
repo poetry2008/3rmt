@@ -1104,10 +1104,10 @@ while ($totals = tep_db_fetch_array($totals_query)) {
     <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_CUSTOMER_NOTIFIED; ?></td>
     <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>
     <td class="dataTableHeadingContent" align="left"><?php echo TABLE_HEADING_STATUS; ?></td>
-    <? if($CommentsWithStatus) { ?>
+    <?php if($CommentsWithStatus) { ?>
     <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>
     <td class="dataTableHeadingContent" align="left"><?php echo TABLE_HEADING_COMMENTS; ?></td>
-    <? } ?>
+    <?php } ?>
   </tr>
 <?php
 $orders_history_query = tep_db_query("select * from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($oID) . "' order by date_added");
@@ -1163,12 +1163,12 @@ if (tep_db_num_rows($orders_history_query)) {
           <td class="main"><b>メール送信:</b></td>
           <td class="main"><table bgcolor="red" cellspacing="5"><tr><td><?php echo tep_draw_checkbox_field('notify', '', true); ?></td></tr></table></td>
         </tr>
-        <? if($CommentsWithStatus) { ?>
+        <?php if($CommentsWithStatus) { ?>
         <tr>
           <td class="main"><b>コメント記録:</b></td>
           <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', false); ?>&nbsp;&nbsp;<b style="color:#FF0000;">←ここはチェックしないように</b></td>
         </tr>
-        <? } ?>
+        <?php } ?>
       </table>
 	  </td>
     <td class="main" width="10">&nbsp;</td>
@@ -1270,7 +1270,7 @@ if($action == "add_product")
 				</td>
       </tr>
 
-<?
+<?php 
 	// ############################################################################
 	//   Get List of All Products
 	// ############################################################################
@@ -1443,7 +1443,7 @@ if($action == "add_product")
 <br>
 </body>
 </html>
-<?
+<?php
   // Function    : tep_get_country_id
   // Arguments   : country_name		country name string
   // Return      : country_id

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
   $Id: mail.php,v 1.3 2003/03/18 02:51:42 ptosh Exp $
 
@@ -189,7 +189,7 @@ case 'input' :
                               <td class="main" valign="top" bgcolor="#FFFFFF">期間</td>
                               <td class="main" bgcolor="#FFFFFF">開始日：
                                 <select name="start_y">
-                                  <?
+                                  <?php 
 					for($y=0;$y<=5;$y++){
 						$nen = $yyyy + $y;
 						if($yyyy == $nen){
@@ -202,7 +202,7 @@ case 'input' :
                                 </select>
                                 年
                                 <select name="start_m">
-                                  <?
+                                  <?php
 					for($m=1;$m<=9;$m++){
 						if($mm == $m){
 							echo "<option value=\"0$m\" selected>$m</option>"."\n";
@@ -221,7 +221,7 @@ case 'input' :
                                 </select>
                                 月
                                 <select name="start_d">
-                                  <?
+                                  <?php
 					for($d=1;$d<=9;$d++){
 						if($dd == $d){
 							echo "<option value=\"0$d\" selected>$d</option>"."\n";
@@ -241,7 +241,7 @@ case 'input' :
                                 日<br>
                                 終了日：
                                 <select name="limit_y">
-                                  <?
+                                  <?php
 					for($y=0;$y<=5;$y++){
 						$nen = $yyyy + $y;
 						if($yyyy == $nen){
@@ -254,7 +254,7 @@ case 'input' :
                                 </select>
                                 年
                                 <select name="limit_m">
-                                  <?
+                                  <?php
 					for($m=1;$m<=9;$m++){
 						if($mm == $m){
 							echo "<option value=\"0$m\" selected>$m</option>"."\n";
@@ -273,7 +273,7 @@ case 'input' :
                                 </select>
                                 月
                                 <select name="limit_d">
-                                  <?
+                                  <?php
 					for($d=1;$d<=9;$d++){
 						if($pd == $d){
 							echo "<option value=\"0$d\" selected>$d</option>"."\n";
@@ -321,7 +321,8 @@ $sele_lim = substr($sql1['limit_date'],5,2);
 $sele_lid = substr($sql1['limit_date'],8,2);
 
 ?>
-            <form onSubmit="return msg2()" name="view" method="post" action="present.php?action=update&cID=<?=$sele1_id?>" enctype="multipart/form-data">
+            <form onSubmit="return msg2()" name="view" method="post"
+            action="present.php?action=update&cID=<?php echo $sele1_id;?>" enctype="multipart/form-data">
               <table width="100%" align="center" border="0" cellspacing="0" cellpadding="8">
                 <tr>
                   <td valign="middle" class="pageHeading" height="10">プレゼント登録（更新）</td>
@@ -339,12 +340,12 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                             <tr>
                               <td class="main" width="150" bgcolor="#FFFFFF">画像</td>
                               <td class="main" width="630" bgcolor="#FFFFFF">
-							  <?
+							  <?php 
 							  if($sql1['image'] == ""){
 							  }else{
 							  ?>
 							    <?php echo tep_image($pic) ; ?> <br>
-							  <?
+							  <?php
 							  }
 							  ?>
                                 <input type="file" name="file"></td>
@@ -352,7 +353,7 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                             <tr>
                               <td class="main" valign="top" bgcolor="#FFFFFF">本文</td>
                               <td class="main" bgcolor="#FFFFFF">
-							  <?
+							  <?php
 							  if($sql1['html_check'] == 1){
 							  	echo '<input type="checkbox" name="ht" value="1" checked>HTMLを許可する'."\n";
 							  	echo '<textarea name="text" style="width:95%; height:300px;">'.stripslashes($sql1['text']).'</textarea>'."\n";
@@ -368,7 +369,7 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                               <td class="main" bgcolor="#FFFFFF">
 							  開始日：
                                 <select name="start_y">
-                                  <?
+                                  <?php
 					for($y=0;$y<=5;$y++){
 						$nen = $yyyy + $y;
 						if($sele_sty == $nen){
@@ -381,7 +382,7 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                                 </select>
                                 年
                                 <select name="start_m">
-                                  <?
+                                  <?php
 					for($m=1;$m<=9;$m++){
 						if($sele_stm == $m){
 							echo "<option value=\"0$m\" selected>$m</option>"."\n";
@@ -400,7 +401,7 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                                 </select>
                                 月
                                 <select name="start_d">
-                                  <?
+                                  <?php
 					for($d=1;$d<=9;$d++){
 						if($sele_std == $d){
 							echo "<option value=\"0$d\" selected>$d</option>"."\n";
@@ -421,7 +422,7 @@ $sele_lid = substr($sql1['limit_date'],8,2);
 								<br>
                                 終了日：
                                 <select name="limit_y">
-                                  <?
+                                  <?php
 					for($y=0;$y<=5;$y++){
 						$nen = $yyyy + $y;
 						if($sele_liy == $nen){
@@ -434,7 +435,7 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                                 </select>
                                 年
                                 <select name="limit_m">
-                                  <?
+                                  <?php
 					for($m=1;$m<=9;$m++){
 						if($sele_lim == $m){
 							echo "<option value=\"0$m\" selected>$m</option>"."\n";
@@ -453,7 +454,7 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                                 </select>
                                 月
                                 <select name="limit_d">
-                                  <?
+                                  <?php
 					for($d=1;$d<=9;$d++){
 						if($sele_lid == $d){
 							echo "<option value=\"0$d\" selected>$d</option>"."\n";
@@ -505,7 +506,7 @@ $sql2 = tep_db_fetch_array($sele2);
                         <td><table width="100%"  border="1" cellspacing="1" cellpadding="3">
                             <tr>
                               <td class="main" width="150" bgcolor="#FFFFFF">customer_id</td>
-                              <td class="main" width="630" bgcolor="#FFFFFF"><? echo $sql2['customer_id'] ;?></td>
+                              <td class="main" width="630" bgcolor="#FFFFFF"><?php echo $sql2['customer_id'] ;?></td>
                             </tr>
                             <tr>
                               <td class="main" width="150" bgcolor="#FFFFFF">姓名</td>
@@ -513,7 +514,7 @@ $sql2 = tep_db_fetch_array($sele2);
                             </tr>
                             <tr>
                               <td class="main" width="150" bgcolor="#FFFFFF">e-mail</td>
-                              <td class="main" width="630" bgcolor="#FFFFFF"><? echo $sql2['mail'] ;?></td>
+                              <td class="main" width="630" bgcolor="#FFFFFF"><?php echo $sql2['mail'] ;?></td>
                             </tr>
                             <tr>
                               <td class="main" width="150" bgcolor="#FFFFFF">住所</td>
@@ -749,7 +750,7 @@ default:
     <!-- body_text_eof //-->
   </tr>
 </table>
-<?
+<?php
 break;
 }
 ?>

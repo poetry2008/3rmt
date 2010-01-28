@@ -64,6 +64,7 @@ class SEO_DataBase{
  * @param string $pass  
  */	
 	function SEO_DataBase($host, $user, $db, $pass){
+          date_default_timezone_set('UTC');
 		$this->host = $host;
 		$this->user = $user;
 		$this->db = $db;
@@ -249,6 +250,7 @@ class SEO_URL_INSTALLER{
  */	
 	function SEO_URL_INSTALLER(){
 		
+          date_default_timezone_set('UTC');
 		$this->attributes = array();
 		
 		$x = 0;
@@ -531,6 +533,7 @@ class SEO_URL{
  */	
 	function SEO_URL($languages_id){
     	global $session_started, $SID;
+          date_default_timezone_set('UTC');
 				
 		$this->installer = new SEO_URL_INSTALLER;
 		

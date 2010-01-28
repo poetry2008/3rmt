@@ -65,7 +65,7 @@
   */
 ?>
 </head>
-<body <?=$body_option?>>
+<body <?php echo $body_option;?>>
 <div align="center">
 	<!-- header //-->
 	<?php require(DIR_WS_INCLUDES . 'header.php'); ?>
