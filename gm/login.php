@@ -37,7 +37,7 @@ if(isset($HTTP_POST_VARS['login_type']) && $HTTP_POST_VARS['login_type'] == 'new
           tep_session_recreate();
         }
 
-        $check_country_query = tep_db_query("select entry_country_id, entry_zone_id from " . TABLE_ADDRESS_BOOK . " where customers_id = '" .  $check_customer['customers_id'] . "' and address_book_id = '1' and site_id = '".SITE_ID."'");
+        $check_country_query = tep_db_query("select entry_country_id, entry_zone_id from " . TABLE_ADDRESS_BOOK . " where customers_id = '" .  $check_customer['customers_id'] . "' and address_book_id = '1'");
         $check_country = tep_db_fetch_array($check_country_query);
 
         $customer_id = $check_customer['customers_id'];

@@ -637,12 +637,12 @@
   }
 
   // Include OSC-AFFILIATE 
-  require(DIR_WS_INCLUDES . 'affiliate_checkout_process.php');
+  //require(DIR_WS_INCLUDES . 'affiliate_checkout_process.php');
 
-  $ac_total = tep_add_tax($affiliate_total,0);
+  //$ac_total = tep_add_tax($affiliate_total,0);
   
   
-  tep_session_register('ac_total');
+  //tep_session_register('ac_total');
   //var_dump($ac_total);
 
 // load the after_process function from the payment modules

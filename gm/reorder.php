@@ -22,7 +22,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
 <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; ');?></div>
   <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
   <?php if ($HTTP_POST_VARS) {
-  include('admin/includes/classes/order.php');
+  include('../admin/includes/classes/order.php');
 
   if(isset($HTTP_POST_VARS['order_id'])){
   	$oID    = tep_db_prepare_input($HTTP_POST_VARS['order_id']);

@@ -76,7 +76,7 @@ function popupWindow(url) {
                 </table>
 <?php
 	} else {
-		$latest_news_query_raw = 'SELECT * from ' . TABLE_LATEST_NEWS . ' WHERE status = 1 and site_id = ' . SITE_ID . 'ORDER BY isfirst DESC, date_added DESC';
+		$latest_news_query_raw = 'SELECT * from ' . TABLE_LATEST_NEWS . ' WHERE status = 1 and site_id = ' . SITE_ID . ' ORDER BY isfirst DESC, date_added DESC';
 		$latest_news_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_LATEST_NEWS, $latest_news_query_raw, $latest_news_numrows);
 		$latest_news_query = tep_db_query($latest_news_query_raw);
 	

@@ -619,7 +619,10 @@
     $minute = (int)substr($raw_date, 14, 2);
     $second = (int)substr($raw_date, 17, 2);
 
-    return strftime(DATE_FORMAT_LONG, mktime($hour,$minute,$second,$month,$day,$year));
+    $returntime = strftime(DATE_FORMAT_LONG, mktime($hour,$minute,$second,$month,$day,$year));
+    $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+    $newarr = array('月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日');
+    return str_replace($oarr, $newarr, $returntime);
   }
 
 ////
@@ -1474,15 +1477,17 @@ if (!isset($torihikihouhou)) $torihikihouhou=NULL;
 	  }
 	}
 	if($categories){
-	  foreach($categories as $key => $category){
-	  	$j = 0;
-	    if(in_array($category['parent_id'], $categories_ids)){
-	      $categories_ids[] = $category['categories_id'];
-	      unset($categories[$key]);
-	      $j ++;
-	    }
+	  while(1) { 
+            foreach($categories as $key => $category){
+                  $j = 0;
+              if(in_array($category['parent_id'], $categories_ids)){
+                $categories_ids[] = $category['categories_id'];
+                unset($categories[$key]);
+                $j ++;
+              }
+            }
+            if($j == 0)break;
 	  }
-	  if($j == 0)break;
 	}
 	return $categories_ids;
   }

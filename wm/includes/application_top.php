@@ -310,7 +310,12 @@
     }
 
     include(DIR_WS_CLASSES . 'language.php');
-    $lng = new language($HTTP_GET_VARS['language']);
+    
+    if (isset($HTTP_GET_VARS['language'])) {
+      $lng = new language($HTTP_GET_VARS['language']);
+    } else {
+      $lng = new language();
+    }
 
     if (!isset($HTTP_GET_VARS['language'])) $lng->get_browser_language();
 

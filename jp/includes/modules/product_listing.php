@@ -87,7 +87,7 @@
 			$row++;
 			$col++;
 ?>
-			<!-- products_id <?php echo listing['products_id'];?>-->
+			<!-- products_id <?php //echo listing['products_id'];?>-->
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td rowspan="2" width="<?php echo SMALL_IMAGE_WIDTH;?>" style="padding-right:8px; " align="center">
