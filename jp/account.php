@@ -82,7 +82,7 @@
             </tr>
           </table></td>
         </tr>
-        <? } ?>
+        <?php } ?>
         <tr>
           <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
         </tr>

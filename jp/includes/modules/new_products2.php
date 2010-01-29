@@ -65,7 +65,7 @@
 		<td>
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
-					<td width="<?=SMALL_IMAGE_WIDTH?>" rowspan="2" style="padding-right:8px; " align="center">
+					<td width="<?php echo SMALL_IMAGE_WIDTH;?>" rowspan="2" style="padding-right:8px; " align="center">
 						<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES . $new_products['products_image'], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>'; ?>
 					</td>
 					<td height="40" colspan="2" valign="top" style="padding-left:5px; ">

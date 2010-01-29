@@ -1484,8 +1484,8 @@
 	      unset($categories[$key]);
 	      $j ++;
 	    }
-	  }
 	  if($j == 0)break;
+	  }
 	}
 	return $categories_ids;
   }

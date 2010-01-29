@@ -427,7 +427,7 @@ if (!isset($bank_kamoku)) $bank_kamoku=NULL;
             <tr> 
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
-            <? 
+            <?php
 			if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {//point --  
 			  if($guestchk == '1') {
 			    echo '<input type="hidden" name="point" value="0">';
@@ -455,7 +455,7 @@ if (!isset($bank_kamoku)) $bank_kamoku=NULL;
             <tr> 
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
-            <? 
+            <?php 
 			  }
 			}//point eof// 
 			?> 

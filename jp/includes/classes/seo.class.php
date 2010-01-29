@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * Ultimate SEO URLs Contribution - osCommerce MS-2.2
  *
@@ -64,6 +64,7 @@ class SEO_DataBase{
  * @param string $pass  
  */	
 	function SEO_DataBase($host, $user, $db, $pass){
+          date_default_timezone_set('UTC');
 		$this->host = $host;
 		$this->user = $user;
 		$this->db = $db;
@@ -248,6 +249,7 @@ class SEO_URL_INSTALLER{
  * @version 1.1
  */	
 	function SEO_URL_INSTALLER(){
+          date_default_timezone_set('UTC');
 		
 		$this->attributes = array();
 		
@@ -531,6 +533,7 @@ class SEO_URL{
  */	
 	function SEO_URL($languages_id){
     	global $session_started, $SID;
+        date_default_timezone_set('UTC');
 				
 		$this->installer = new SEO_URL_INSTALLER;
 		
@@ -1729,7 +1732,8 @@ class SEO_URL{
  * @version 1.0
  */	
 	function cache_gc(){
-		$this->DB->Query("DELETE FROM cache WHERE cache_expires <= '" . date("Y-m-d H:i:s") . "'" );
+          date_default_timezone_set('UTC');
+          $this->DB->Query("DELETE FROM cache WHERE cache_expires <= '" . date("Y-m-d H:i:s") . "'" );
 	}
 
 /**

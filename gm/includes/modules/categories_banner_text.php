@@ -13,11 +13,15 @@ $categories_tab_query1 = tep_db_query("select c.categories_id, c.parent_id, c.ca
 ?>
 <!-- categories_banner_text //-->
         <h2> 
-          <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" summary="<?=sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B'))?>"> 
+          <table width="100%" border="0" align="center" cellpadding="0"
+          cellspacing="0" summary="<?php echo sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B'));?>"> 
             <tr> 
-              <td width="63"><img src="images/design/contents/title_lineup.jpg" width="118" height="23" title="<?=BOX_HEADING_CATEGORIES?>"></td> 
+              <td width="63"><img src="images/design/contents/title_lineup.jpg"
+              width="118" height="23" title="<?php echo BOX_HEADING_CATEGORIES;?>"></td> 
               <td background="images/design/contents/title_bg.jpg">&nbsp;</td> 
-              <td width="47"><img src="images/design/contents/title_lignup_right.jpg" width="54" height="23" title="<?=BOX_HEADING_CATEGORIES?>"></td> 
+              <td width="47"><img
+              src="images/design/contents/title_lignup_right.jpg" width="54"
+              height="23" title="<?php echo BOX_HEADING_CATEGORIES;?>"></td> 
             </tr> 
           </table> 
         </h2>

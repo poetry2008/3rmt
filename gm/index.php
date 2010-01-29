@@ -50,7 +50,7 @@
 ?>
 <?php page_head();?>
 </head>
-<body<?=$body_option?>>
+<body<?php echo $body_option;?>>
 <!-- header //--> 
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
 <!-- header_eof //--> 

@@ -13,9 +13,11 @@
 <!-- latest_news //-->
  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0"> 
   <tr> 
-     <td width="79"><img src="images/design/contents/title_news_left.jpg" width="79" height="23" title="<?=TABLE_HEADING_LATEST_NEWS?>"></td> 
+     <td width="79"><img src="images/design/contents/title_news_left.jpg" width="79"
+     height="23" title="<?php echo TABLE_HEADING_LATEST_NEWS;?>"></td> 
      <td background="images/design/contents/title_bg.jpg">&nbsp;</td> 
-     <td width="47"><img src="images/design/contents/title_news_right.jpg" width="47" height="23" title="<?=TABLE_HEADING_LATEST_NEWS?>"></td> 
+     <td width="47"><img src="images/design/contents/title_news_right.jpg"
+     width="47" height="23" title="<?php echo TABLE_HEADING_LATEST_NEWS;?>"></td> 
    </tr> 
 </table> 
 <div id="news"> 

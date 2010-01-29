@@ -10,11 +10,16 @@
 ?>
 <!-- new_products //-->
         <h2> 
-          <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" summary="<?=sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B'))?>"> 
+          <table width="100%" border="0" align="center" cellpadding="0"
+          cellspacing="0" summary="<?php echo sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B'));?>"> 
             <tr> 
-              <td width="63"><img src="images/design/contents/title_newproducts_left.jpg" width="63" height="23" title="<?=sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B'))?>"></td> 
+              <td width="63"><img
+              src="images/design/contents/title_newproducts_left.jpg" width="63"
+              height="23" title="<?php echo sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B'));?>"></td> 
               <td background="images/design/contents/title_bg.jpg">&nbsp;</td> 
-              <td width="47"><img src="images/design/contents/title_newproducts_right.jpg" width="47" height="23" title="<?=sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B'))?>"></td> 
+              <td width="47"><img
+              src="images/design/contents/title_newproducts_right.jpg" width="47"
+              height="23" title="<?php echo sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B'));?>"></td> 
             </tr> 
           </table> 
         </h2>
@@ -57,9 +62,9 @@
 	$description_view = strip_tags(mb_substr($description_array[0],0,63));
 //	$description = strip_tags(mb_substr ($description_array[0],0,50));
 ?>
-            <td width="250"><!-- products_id <?=$new_products['products_id']?>--><table width="250"  border="0" cellspacing="0" cellpadding="0"> 
+            <td width="250"><!-- products_id <?php echo $new_products['products_id'];?>--><table width="250"  border="0" cellspacing="0" cellpadding="0"> 
               <tr> 
-                <td width="<?=SMALL_IMAGE_WIDTH?>" style="padding-right:8px; " align="center"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES . $new_products['products_image'], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>' ; ?></td> 
+                <td width="<?php echo SMALL_IMAGE_WIDTH;?>" style="padding-right:8px; " align="center"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES . $new_products['products_image'], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>' ; ?></td> 
                 <td valign="top" style="padding-left:5px; "><p class="main"><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="absmiddle"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">'.$products_name.$ten.'</a>';?><br> 
                   <span class="red"><?php echo $currencies->display_price($new_products['products_price'], tep_get_tax_rate($new_products['products_tax_class_id'])) ; ?></span><br> 
                   <span class="smallText"><?php echo $description_view; ?>...</span></p></td> 
