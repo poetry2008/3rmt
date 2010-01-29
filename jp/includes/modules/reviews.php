@@ -12,6 +12,7 @@
 ?>
 <table border="0" cellspacing="0" cellpadding="2">
 <?php
+if (!isset($reviews_array)) $reviews_array = NULL;
   if (sizeof($reviews_array) < 1) {
 ?>
   <tr>

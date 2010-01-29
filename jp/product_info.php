@@ -330,8 +330,9 @@ while($tag = tep_db_fetch_array($tag_query)) {
 			
 		  }
         }
-        if (!isset($cart->contents[$HTTP_GET_VARS['products_id']]['attributes'][$products_options_name['products_options_id']])) $cart->contents[$HTTP_GET_VARS['products_id']]['attributes'][$products_options_name['products_options_id']] = NULL; 
-        echo tep_draw_pull_down_menu('id[' . $products_options_name['products_options_id'] . ']' , $products_options_array, $cart->contents[$HTTP_GET_VARS['products_id']]['attributes'][$products_options_name['products_options_id']]);
+        //if (!isset($cart->contents[$HTTP_GET_VARS['products_id']]['attributes'][$products_options_name['products_options_id']])) $cart->contents[$HTTP_GET_VARS['products_id']]['attributes'][$products_options_name['products_options_id']] = NULL; 
+        echo tep_draw_pull_down_menu('id[' .  $products_options_name['products_options_id'] . ']' ,
+            $products_options_array, isset($cart->contents[$HTTP_GET_VARS['products_id']]['attributes'][$products_options_name['products_options_id']])?$cart->contents[$HTTP_GET_VARS['products_id']]['attributes'][$products_options_name['products_options_id']]:NULL);
         echo '</td></tr>';
       }
       echo '</table>';

@@ -167,7 +167,8 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action']= NULL;
         p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left
         join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id =
         pd.products_id left join " . TABLE_SPECIALS . " as s
-         on p.products_id = s.products_id where p2t.tags_id = " . $HTTP_GET_VARS['tags_id'];
+         on p.products_id = s.products_id where p2t.tags_id = " .
+         intval($HTTP_GET_VARS['tags_id']);
   } 
 
      $listing_sql = $products_query;
