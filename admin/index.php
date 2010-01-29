@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: index.php,v 1.1.1.1 2003/02/20 01:03:52 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -164,56 +164,7 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
 
   $box = new box;
   echo $box->menuBox($heading, $contents);
-
   echo '<br>';
-
-// Include OSC-AFFILIATE
-$affiliate_sales_raw = "select count(*) as count, sum(affiliate_value) as total, sum(affiliate_payment) as payment from " . TABLE_AFFILIATE_SALES . " ";
-$affiliate_sales_query= tep_db_query($affiliate_sales_raw);
-$affiliate_sales= tep_db_fetch_array($affiliate_sales_query);
-
-$affiliate_clickthroughs_raw = "select count(*) as count from " . TABLE_AFFILIATE_CLICKTHROUGHS . " ";
-$affiliate_clickthroughs_query=tep_db_query($affiliate_clickthroughs_raw);
-$affiliate_clickthroughs= tep_db_fetch_array($affiliate_clickthroughs_query);
-$affiliate_clickthroughs=$affiliate_clickthroughs['count'];
-
-$affiliate_transactions=$affiliate_sales['count'];
-if ($affiliate_transactions>0) {
-	$affiliate_conversions = tep_round($affiliate_transactions/$affiliate_clickthroughs,6)."%";
-}
-else $affiliate_conversions="n/a";
-
-$affiliate_amount=$affiliate_sales['total'];
-if ($affiliate_transactions>0) {
-	$affiliate_average=tep_round($affiliate_amount/$affiliate_transactions,2);
-}
-else {
-	$affiliate_average="n/a";
-}
-$affiliate_commission=$affiliate_sales['payment'];
-
-$affiliates_raw = "select count(*) as count from " . TABLE_AFFILIATE . "";
-$affiliates_raw_query=tep_db_query($affiliates_raw);
-$affiliates_raw = tep_db_fetch_array($affiliates_raw_query);
-$affiliate_number= $affiliates_raw['count'];
-
-
-  $heading = array();
-  $contents = array();
-
-  $heading[] = array('params' => 'class="menuBoxHeading"',
-                     'text'  => BOX_TITLE_AFFILIATES);
-
-  $contents[] = array('params' => 'class="infoBox"',
-                      'text'  => BOX_ENTRY_AFFILIATES . ' ' . $affiliate_number . '<br>' .
-                                 BOX_ENTRY_CONVERSION . ' ' . $affiliate_conversions . '<br>' .
-                                 BOX_ENTRY_COMMISSION . ' ' . $currencies->display_price($affiliate_commission, ''));
-
-  $box = new box;
-  echo $box->menuBox($heading, $contents);
-
-  echo '<br>';
-  
   
   $contents = array();
 
