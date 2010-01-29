@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: footer.php,v 1.1.1.1 2003/02/20 01:03:52 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -49,3 +49,10 @@ tep_db_query('select * from cache');
 $testArray = array();
 //end for sql_log
 ?>
+<?php if (STORE_DB_TRANSACTIONS) {?>
+<div id="debug_info">
+<pre>
+<?php print_r($logger->queries);?>
+</pre>
+</div>
+<? }?>

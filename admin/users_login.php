@@ -10,8 +10,8 @@
   ■変更履歴
 ********************************************************* */
 
-  define('TABLE_CONFIGURATION', 'wm_configuration');
-  define('TABLE_LANGUAGES', 'wm_languages');
+  define('TABLE_CONFIGURATION', 'configuration');
+  define('TABLE_LANGUAGES', 'languages');
   define('FILENAME_DEFAULT', 'index.php');
 
 // Set the local configuration parameters - mainly for developers

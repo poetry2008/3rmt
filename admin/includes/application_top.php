@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: application_top.php,v 1.2 2003/04/16 07:36:16 suzukawa Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -9,22 +9,16 @@
 
   Released under the GNU General Public License
 */
-/**
- * change $_GET ,$_POST to $HTTP_GET_VAR;$HTTP_POST_VAR
- */
-
-// edit by bobhero start 
-//session_start();
 $GLOBALS['HTTP_GET_VARS']=$_GET;
 $GLOBALS['HTTP_POST_VARS']=$_POST;
-//$HTTP_SERVER_VARS= $_SERVER;
-// edit by bobhero end
+
 setlocale (LC_ALL, 'ja_JP.eucJP');
 // Start the clock for the page parse time log
   define('PAGE_PARSE_START_TIME', microtime());
 
 // Set the level of error reporting
-  error_reporting(E_ALL & ~E_NOTICE);
+  //error_reporting(E_ALL & ~E_NOTICE);
+  error_reporting(E_ALL);
 
 // Check if register_globals is enabled.
 // Since this is a temporary measure this message is hardcoded. The requirement will be removed before 2.2 is finalized.
@@ -112,36 +106,36 @@ setlocale (LC_ALL, 'ja_JP.eucJP');
 
 
 // define the database table names used in the project
-  define('TABLE_IMAGE_DOCUMENTS', 'wm_image_documents');
-  define('TABLE_IMAGE_DOCUMENT_TYPES', 'wm_image_document_types');
-  define('TABLE_PRODUCTS_TO_IMAGE_DOCUMENTS', 'wm_products_to_image_documents');
+  define('TABLE_IMAGE_DOCUMENTS', 'image_documents');
+  define('TABLE_IMAGE_DOCUMENT_TYPES', 'image_document_types');
+  define('TABLE_PRODUCTS_TO_IMAGE_DOCUMENTS', 'products_to_image_documents');
   define('TABLE_TAGS', 'tags');
   define('TABLE_PRODUCTS_TO_TAGS', 'products_to_tags');
-  define('TABLE_ADDRESS_BOOK', 'wm_address_book');
-  define('TABLE_ADDRESS_FORMAT', 'wm_address_format');
-  define('TABLE_BANNERS', 'wm_banners');
-  define('TABLE_BANNERS_HISTORY', 'wm_banners_history');
+  define('TABLE_ADDRESS_BOOK', 'address_book');
+  define('TABLE_ADDRESS_FORMAT', 'address_format');
+  define('TABLE_BANNERS', 'banners');
+  define('TABLE_BANNERS_HISTORY', 'banners_history');
   define('TABLE_CATEGORIES', 'categories');
   define('TABLE_CATEGORIES_DESCRIPTION', 'categories_description');
-  define('TABLE_CONFIGURATION', 'wm_configuration');
-  define('TABLE_CONFIGURATION_GROUP', 'wm_configuration_group');
-  define('TABLE_COUNTRIES', 'wm_countries');
-  define('TABLE_CURRENCIES', 'wm_currencies');
-  define('TABLE_CUSTOMERS', 'wm_customers');
-  define('TABLE_CUSTOMERS_BASKET', 'wm_customers_basket');
-  define('TABLE_CUSTOMERS_BASKET_ATTRIBUTES', 'wm_customers_basket_attributes');
-  define('TABLE_CUSTOMERS_INFO', 'wm_customers_info');
-  define('TABLE_LANGUAGES', 'wm_languages');
+  define('TABLE_CONFIGURATION', 'configuration');
+  define('TABLE_CONFIGURATION_GROUP', 'configuration_group');
+  define('TABLE_COUNTRIES', 'countries');
+  define('TABLE_CURRENCIES', 'currencies');
+  define('TABLE_CUSTOMERS', 'customers');
+  define('TABLE_CUSTOMERS_BASKET', 'customers_basket');
+  define('TABLE_CUSTOMERS_BASKET_ATTRIBUTES', 'customers_basket_attributes');
+  define('TABLE_CUSTOMERS_INFO', 'customers_info');
+  define('TABLE_LANGUAGES', 'languages');
   define('TABLE_MANUFACTURERS', 'manufacturers');
   define('TABLE_MANUFACTURERS_INFO', 'manufacturers_info');
-  define('TABLE_NEWSLETTERS', 'wm_newsletters');
-  define('TABLE_ORDERS', 'wm_orders');
-  define('TABLE_ORDERS_PRODUCTS', 'wm_orders_products');
-  define('TABLE_ORDERS_PRODUCTS_ATTRIBUTES', 'wm_orders_products_attributes');
-  define('TABLE_ORDERS_PRODUCTS_DOWNLOAD', 'wm_orders_products_download');
-  define('TABLE_ORDERS_STATUS', 'wm_orders_status');
-  define('TABLE_ORDERS_STATUS_HISTORY', 'wm_orders_status_history');
-  define('TABLE_ORDERS_TOTAL', 'wm_orders_total');
+  define('TABLE_NEWSLETTERS', 'newsletters');
+  define('TABLE_ORDERS', 'orders');
+  define('TABLE_ORDERS_PRODUCTS', 'orders_products');
+  define('TABLE_ORDERS_PRODUCTS_ATTRIBUTES', 'orders_products_attributes');
+  define('TABLE_ORDERS_PRODUCTS_DOWNLOAD', 'orders_products_download');
+  define('TABLE_ORDERS_STATUS', 'orders_status');
+  define('TABLE_ORDERS_STATUS_HISTORY', 'orders_status_history');
+  define('TABLE_ORDERS_TOTAL', 'orders_total');
   define('TABLE_PRODUCTS', 'products');
   define('TABLE_PRODUCTS_ATTRIBUTES', 'products_attributes');
   define('TABLE_PRODUCTS_ATTRIBUTES_DOWNLOAD', 'products_attributes_download');
@@ -151,27 +145,26 @@ setlocale (LC_ALL, 'ja_JP.eucJP');
   define('TABLE_PRODUCTS_OPTIONS_VALUES', 'products_options_values');
   define('TABLE_PRODUCTS_OPTIONS_VALUES_TO_PRODUCTS_OPTIONS', 'products_options_values_to_products_options');
   define('TABLE_PRODUCTS_TO_CATEGORIES', 'products_to_categories');
-  define('TABLE_REVIEWS', 'wm_reviews');
-  define('TABLE_REVIEWS_DESCRIPTION', 'wm_reviews_description');
-  define('TABLE_SESSIONS', 'wm_sessions');
+  define('TABLE_REVIEWS', 'reviews');
+  define('TABLE_REVIEWS_DESCRIPTION', 'reviews_description');
+  define('TABLE_SESSIONS', 'sessions');
   define('TABLE_SPECIALS', 'specials');
-  define('TABLE_TAX_CLASS', 'wm_tax_class');
-  define('TABLE_TAX_RATES', 'wm_tax_rates');
-  define('TABLE_GEO_ZONES', 'wm_geo_zones');
-  define('TABLE_ZONES_TO_GEO_ZONES', 'wm_zones_to_geo_zones');
-  define('TABLE_WHOS_ONLINE', 'wm_whos_online');
-  define('TABLE_ZONES', 'wm_zones');
-  define('TABLE_CALENDAR', 'wm_calendar'); //add calendar
+  define('TABLE_TAX_CLASS', 'tax_class');
+  define('TABLE_TAX_RATES', 'tax_rates');
+  define('TABLE_GEO_ZONES', 'geo_zones');
+  define('TABLE_ZONES_TO_GEO_ZONES', 'zones_to_geo_zones');
+  define('TABLE_WHOS_ONLINE', 'whos_online');
+  define('TABLE_ZONES', 'zones');
+  define('TABLE_CALENDAR', 'calendar'); //add calendar
   //Add DB - ds-style
-  define('TABLE_INFORMATION_PAGE', 'wm_information_page');//information box
-  define('TABLE_LATEST_NEWS', 'wm_latest_news'); //latest_news
+  define('TABLE_INFORMATION_PAGE', 'information_page');//information box
+  define('TABLE_LATEST_NEWS', 'latest_news'); //latest_news
   
-  define('TABLE_PRESENT_GOODS', 'wm_present_goods');
-  define('TABLE_PRESENT_APPLICANT', 'wm_present_applicant');
-  define('TABLE_PRESENT_APPLICANT', 'wm_present_applicant');
-  define('TABLE_MAIL_MAGAZINE', 'wm_mail_magazine');
-  define('TABLE_ORDERS_MAIL', 'wm_orders_mail');
-  define('TABLE_CALENDER', 'wm_calendar');
+  define('TABLE_PRESENT_GOODS', 'present_goods');
+  define('TABLE_PRESENT_APPLICANT', 'present_applicant');
+  define('TABLE_MAIL_MAGAZINE', 'mail_magazine');
+  define('TABLE_ORDERS_MAIL', 'orders_mail');
+  define('TABLE_CALENDER', 'calendar');
 
 // customization for the design layout
   define('BOX_WIDTH', 125); // how wide the boxes should be in pixels (default: 125)
@@ -189,14 +182,9 @@ setlocale (LC_ALL, 'ja_JP.eucJP');
   define('FILENAME_COLOR', 'color.php');//color add/edit/delete
   
   //Database define
-  define('TABLE_COLOR', 'wm_color');//Color setting
-  define('TABLE_COLOR_TO_PRODUCTS', 'wm_color_to_products');//products_id <-> color_id
+  define('TABLE_COLOR', 'color');//Color setting
+  define('TABLE_COLOR_TO_PRODUCTS', 'color_to_products');//products_id <-> color_id
 
-  define('TABLE_CONFIGURATION_DS', 'wm_configuration_ds');
-  define('TABLE_CONFIGURATION_DS_GROUP', 'wm_configuration_ds_group');
-  define('FILENAME_CONFIGURATION_DS', 'configuration_ds.php');
-  
-    
   //Language define
   define('BOX_CATALOG_COLORS', '商品カラー登録');
   //=======================================================  
@@ -212,12 +200,6 @@ setlocale (LC_ALL, 'ja_JP.eucJP');
 
 // set application wide parameters
   $configuration_query = tep_db_query('select configuration_key as cfgKey, configuration_value as cfgValue from ' . TABLE_CONFIGURATION . '');
-  while ($configuration = tep_db_fetch_array($configuration_query)) {
-    define($configuration['cfgKey'], $configuration['cfgValue']);
-  }
-
-// set application wide parameters
-  $configuration_query = tep_db_query('select configuration_key as cfgKey, configuration_value as cfgValue from ' . TABLE_CONFIGURATION_DS);
   while ($configuration = tep_db_fetch_array($configuration_query)) {
     define($configuration['cfgKey'], $configuration['cfgValue']);
   }
@@ -334,8 +316,6 @@ setlocale (LC_ALL, 'ja_JP.eucJP');
     $messageStack->add(ERROR_NO_DEFAULT_LANGUAGE_DEFINED, 'error');
   }
   
-// Include OSC-AFFILIATE
-  require('includes/affiliate_application_top.php');
   //for sql_log
   $testArray = array();
   $logNumber = 1;

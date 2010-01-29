@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: japanese.php,v 1.14 2003/07/22 00:45:16 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -16,7 +16,7 @@
 // A compatible module is loaded for environment without mbstring-extension
 //
 if (extension_loaded('mbstring')) {
-  mb_internal_encoding('EUC-JP'); // 内部コードを指定
+  mb_internal_encoding('UTF-8'); // 内部コードを指定
 } else {
   include_once(DIR_WS_LANGUAGES . $language . '/jcode.phps');
   include_once(DIR_WS_LANGUAGES . $language . '/mbstring_wrapper.php');
@@ -49,7 +49,7 @@ function tep_date_raw($date, $reverse = false) {
 define('HTML_PARAMS','dir="ltr" lang="ja"');
 
 // charset for web pages and emails
-define('CHARSET', 'EUC-JP');    // Shift_JIS / euc-jp / iso-2022-jp
+define('CHARSET', 'UTF-8');    // Shift_JIS / euc-jp / iso-2022-jp
 
 // page title
 define('TITLE', STORE_NAME);  //ショップ名を記述してください。
@@ -298,9 +298,6 @@ define('TEXT_NONE', '--なし--');
 define('TEXT_TOP', 'トップ');
 
 define('EMAIL_SIGNATURE',C_EMAIL_FOOTER);  //Add Japanese osCommerce
-
-// Include OSC-AFFILIATE
-include("affiliate_japanese.php");
 
 //Add languages
 //------------------------
