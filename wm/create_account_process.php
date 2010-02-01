@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: create_account_process.php,v 1.6 2004/04/25 02:29:00 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -202,7 +202,7 @@
     }
   }
 
-  $check_email = tep_db_query("select customers_email_address from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "' and customers_id <> '" . tep_db_input($customer_id) . "' and customers_guest_chk = '0'");
+  $check_email = tep_db_query("select customers_email_address from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and customers_id <> '" .  tep_db_input($customer_id) . "' and customers_guest_chk = '0' and site_id = '".SITE_ID."'");
   if (tep_db_num_rows($check_email)) {
     $error = true;
     $entry_email_address_exists = true;
@@ -333,7 +333,7 @@ function pass_hidd(){
 */
     if($guestchk == '1') {
 	  # Guest
-      $check_cid = tep_db_query("select customers_id from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "'");
+      $check_cid = tep_db_query("select customers_id from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "' and site_id = '".SITE_ID."'");
 	  if(tep_db_num_rows($check_cid)) {
 	    # Guest & 2回目以上 //==============================================
 		$check = tep_db_fetch_array($check_cid);
@@ -354,7 +354,7 @@ function pass_hidd(){
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
         if (ACCOUNT_DOB == 'true') $sql_data_array['customers_dob'] = tep_date_raw($dob);
 
-        tep_db_perform(TABLE_CUSTOMERS, $sql_data_array, 'update', 'customers_id = ' . $check['customers_id']);
+        tep_db_perform(TABLE_CUSTOMERS, $sql_data_array, 'update', 'customers_id = ' . $check['customers_id'] . ' and site_id = ' . SITE_ID);
 
         $customer_id = $check['customers_id'];
 		
@@ -400,6 +400,7 @@ function pass_hidd(){
                                 'customers_password' => tep_encrypt_password($NewPass),
                                 'customers_default_address_id' => 1,
 						  	    'customers_guest_chk' => '1',
+						  	    'site_id' => SITE_ID,
 								'point' => '0');
 
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
@@ -440,7 +441,7 @@ function pass_hidd(){
       }
 	} else {
 	  # Member
-      $check_cid = tep_db_query("select customers_id from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "'");
+      $check_cid = tep_db_query("select customers_id from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "' and site_id = '".SITE_ID."'");
 	  if(tep_db_num_rows($check_cid)) {
 	    # Member & 2回目以上 //==============================================
 		$check = tep_db_fetch_array($check_cid);
@@ -462,7 +463,7 @@ function pass_hidd(){
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
         if (ACCOUNT_DOB == 'true') $sql_data_array['customers_dob'] = tep_date_raw($dob);
 
-        tep_db_perform(TABLE_CUSTOMERS, $sql_data_array, 'update', 'customers_id = ' . $check['customers_id']);
+        tep_db_perform(TABLE_CUSTOMERS, $sql_data_array, 'update', 'customers_id = ' . $check['customers_id'] . ' and site_id = ' . SITE_ID);
 
         $customer_id = $check['customers_id'];
 		
@@ -508,6 +509,7 @@ function pass_hidd(){
                                 'customers_password' => tep_encrypt_password($NewPass),
                                 'customers_default_address_id' => 1,
 						  	    'customers_guest_chk' => '0',
+						  	    'site_id' => SITE_ID,
 								'point' => '0');
 
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;

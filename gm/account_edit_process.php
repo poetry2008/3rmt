@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: account_edit_process.php,v 1.3 2003/06/09 00:54:22 suzukawa Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -196,7 +196,7 @@
     $entry_password_error = true;
   }
 
-  $check_email_query = tep_db_query("select count(*) as total from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "' and customers_id != '" . tep_db_input($customer_id) . "'");
+  $check_email_query = tep_db_query("select count(*) as total from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and customers_id != '" .  tep_db_input($customer_id) . "' and site_id = '".SITE_ID."'");
   $check_email = tep_db_fetch_array($check_email_query);
   if ($check_email['total'] > 0) {
     $error = true;
@@ -283,7 +283,7 @@
     if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
     if (ACCOUNT_DOB == 'true') $sql_data_array['customers_dob'] = tep_date_raw($dob);
 
-    tep_db_perform(TABLE_CUSTOMERS, $sql_data_array, 'update', "customers_id = '" . tep_db_input($customer_id) . "'");
+    tep_db_perform(TABLE_CUSTOMERS, $sql_data_array, 'update', "customers_id = '" .  tep_db_input($customer_id) . "' and site_id = '".SITE_ID."'");
 
 // 2003-06-06 add_telephone
     $sql_data_array = array('entry_street_address' => $street_address,
