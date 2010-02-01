@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: privacy.php,v 1.1.1.1 2003/02/20 01:03:53 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -13,7 +13,7 @@
   require('includes/application_top.php');
   
   if($HTTP_GET_VARS['goods_id']) {
-    $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$HTTP_GET_VARS['goods_id']."'") ;
+    $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$HTTP_GET_VARS['goods_id']."' and site_id = '".SITE_ID."'") ;
 	$present = tep_db_fetch_array($present_query) ;
   }else{
     tep_redirect(tep_href_link(FILENAME_PRESENT, 'error_message='.urlencode(TEXT_PRESENT_ERROR_NOT_SELECTED), 'SSL'));	
@@ -45,7 +45,7 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;
       
 	  //check
 	  $login_error = false;
-	  $check_customer_query = tep_db_query("select customers_id, customers_firstname, customers_lastname, customers_password, customers_email_address, customers_default_address_id from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "'");
+	  $check_customer_query = tep_db_query("select customers_id, customers_firstname, customers_lastname, customers_password, customers_email_address, customers_default_address_id from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and site_id = '".SITE_ID."'");
       if (tep_db_num_rows($check_customer_query)) {
         $check_customer = tep_db_fetch_array($check_customer_query);
         // Check that password is good
@@ -53,7 +53,7 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;
           $pc_id = $check_customer['customers_id'];
 		  tep_session_register('pc_id');
 		  
-		  $customers_query = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$pc_id."'");
+		  $customers_query = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$pc_id."' and site_id = '".SITE_ID."'");
 		  $customers_result = tep_db_fetch_array($customers_query);
 		  
 		  $address_query = tep_db_query("select * from ".TABLE_ADDRESS_BOOK." where customers_id = '".$pc_id."' and address_book_id = '1'");
@@ -248,7 +248,7 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;
 	
 	  //check_email_count for regist user
 	  if(!empty($password)) {
-	    $check_email = tep_db_query("select customers_email_address from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "' and customers_id <> '" . tep_db_input($customer_id) . "'");
+	    $check_email = tep_db_query("select customers_email_address from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and customers_id <> '" .  tep_db_input($customer_id) . "' and site_id = '".SITE_ID."'");
 	    if (tep_db_num_rows($check_email)) {
 		  $error = true;
 		  $entry_email_address_exists = true;

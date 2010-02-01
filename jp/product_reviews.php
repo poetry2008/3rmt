@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: product_reviews.php,v 1.2 2004/05/26 05:07:55 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -22,7 +22,7 @@
     $get_params_back = $get_params;
   }
 
-  $product_info_query = tep_db_query("select pd.products_name from " . TABLE_PRODUCTS_DESCRIPTION . " pd left join " . TABLE_PRODUCTS . " p on pd.products_id = p.products_id where pd.language_id = '" . $languages_id . "' and p.products_status = '1' and pd.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "'");
+  $product_info_query = tep_db_query("select pd.products_name from " .  TABLE_PRODUCTS_DESCRIPTION . " pd left join " . TABLE_PRODUCTS . " p on pd.products_id = p.products_id where pd.language_id = '" . $languages_id . "' and p.products_status = '1' and pd.products_id = '" .  (int)$HTTP_GET_VARS['products_id'] . "' and pd.site_id = ".SITE_ID);
   if (!tep_db_num_rows($product_info_query)) tep_redirect(tep_href_link(FILENAME_REVIEWS));
   $product_info = tep_db_fetch_array($product_info_query);
 
@@ -62,7 +62,7 @@
             <td colspan="5"><?php echo tep_draw_separator(); ?></td>
           </tr>
 <?php
-  $reviews_query = tep_db_query("select reviews_rating, reviews_id, customers_name, date_added, last_modified, reviews_read from " . TABLE_REVIEWS . " where products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and reviews_status = '1' order by reviews_id DESC");
+  $reviews_query = tep_db_query("select reviews_rating, reviews_id, customers_name, date_added, last_modified, reviews_read from " . TABLE_REVIEWS . " where products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and reviews_status = '1' and site_id = ".SITE_ID." order by reviews_id DESC");
   if (tep_db_num_rows($reviews_query)) {
     $row = 0;
     while ($reviews = tep_db_fetch_array($reviews_query)) {

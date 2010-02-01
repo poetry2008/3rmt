@@ -110,7 +110,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   $o = new order($oID);
 
   # Check
-  $NewOidQuery = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS." where orders_id = '".$insert_id."'");
+  $NewOidQuery = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS." where orders_id = '".$insert_id."' and site_id = '".SITE_ID."'");
   $NewOid = tep_db_fetch_array($NewOidQuery);
   
   # load the selected shipping module(convenience_store)

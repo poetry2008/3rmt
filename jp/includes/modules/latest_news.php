@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: latest_news.php,v 1.2 2002/11/11 06:38:08 will Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -16,7 +16,7 @@
     <ul class="news_ul">
 
 <?php
-    $latest_news_query = tep_db_query('SELECT * from ' . TABLE_LATEST_NEWS . ' WHERE status = 1 ORDER BY isfirst DESC, date_added DESC LIMIT 5');
+    $latest_news_query = tep_db_query('SELECT * from ' . TABLE_LATEST_NEWS . ' WHERE status = 1 and site_id = '.SITE_ID.' ORDER BY isfirst DESC, date_added DESC LIMIT 5');
     if (!tep_db_num_rows($latest_news_query)) { // there is no news
       echo '<!-- ' . TEXT_NO_LATEST_NEWS . ' -->';
     } else {

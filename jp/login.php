@@ -24,7 +24,7 @@ if(isset($HTTP_POST_VARS['login_type']) && $HTTP_POST_VARS['login_type'] == 'new
     $password = tep_db_prepare_input($HTTP_POST_VARS['password']);
 
 // Check if email exists
-    $check_customer_query = tep_db_query("select customers_id, customers_firstname, customers_lastname, customers_password, customers_email_address, customers_default_address_id, customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "'");
+    $check_customer_query = tep_db_query("select customers_id, customers_firstname, customers_lastname, customers_password, customers_email_address, customers_default_address_id, customers_guest_chk from " . TABLE_CUSTOMERS .  " where customers_email_address = '" . tep_db_input($email_address) . "' and site_id = ".SITE_ID);
     if (!tep_db_num_rows($check_customer_query)) {
       $HTTP_GET_VARS['login'] = 'fail';
     } else {
@@ -61,11 +61,11 @@ if(isset($HTTP_POST_VARS['login_type']) && $HTTP_POST_VARS['login_type'] == 'new
 		
 		//POINT_LIMIT CHECK ポイントの有効期限チェック ds-style
 		if(MODULE_ORDER_TOTAL_POINT_LIMIT != '0') {
-		  $plimit_count_query = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS." where  customers_id = '".$customer_id."'");
+		  $plimit_count_query = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS." where  customers_id = '".$customer_id."' and site_id = '".SITE_ID."'");
 		  $plimit_count = tep_db_fetch_array($plimit_count_query);
 		  
 		  if($plimit_count['cnt'] > 0) {
-		  $plimit_query = tep_db_query("select date_purchased from ".TABLE_ORDERS." where customers_id = '".$customer_id."' order by date_purchased desc limit 1");
+		  $plimit_query = tep_db_query("select date_purchased from ".TABLE_ORDERS." where customers_id = '".$customer_id."' and site_id = '".SITE_ID."' order by date_purchased desc limit 1");
 		  $plimit = tep_db_fetch_array($plimit_query);
 		  $p_year = substr($plimit['date_purchased'], 0, 4);
 		  $p_mon = substr($plimit['date_purchased'], 5, 2);
@@ -74,7 +74,7 @@ if(isset($HTTP_POST_VARS['login_type']) && $HTTP_POST_VARS['login_type'] == 'new
 		  $now = time();
 		  $point_limit = mktime(0, 0, 0, $p_mon, $p_day+MODULE_ORDER_TOTAL_POINT_LIMIT, $p_year);
 		    if($now > $point_limit) {
-			  tep_db_query("update ".TABLE_CUSTOMERS." set point = '0' where customers_id = '".$customer_id."'");
+			  tep_db_query("update ".TABLE_CUSTOMERS." set point = '0' where customers_id = '".$customer_id."' and site_id = '".SITE_ID."'");
 			}
 		  }
 		}

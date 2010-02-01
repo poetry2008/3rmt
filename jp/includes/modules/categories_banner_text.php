@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: also_purchased_products.php,v 1.1.1.1 2003/02/20 01:03:54 ptosh Exp $
+  $Id$
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
   Copyright (c) 2003 osCommerce
@@ -23,7 +23,7 @@ $categories_tab_query1 = tep_db_query("select c.categories_id, c.parent_id, c.ca
 		$cbt_dec = explode(',',$cbt['categories_meta_text']);
 		for($i=0; $i < sizeof($cbt_dec); $i++) {
 			if($cbt_dec[$i] != ''){
-				echo strip_tags(substr($cbt_dec[$i],0,36)) . "\n";
+				echo strip_tags(mb_substr($cbt_dec[$i],0,36, "UTF-8")) . "\n";
 			}
 		}	
 		echo  '</a></h3>' . "\n" . '</td>' . "\n";

@@ -515,7 +515,7 @@
 // add category names or the manufacturer name to the breadcrumb trail
   if (isset($cPath_array)) {
     for ($i=0, $n=sizeof($cPath_array); $i<$n; $i++) {
-      $categories_query = tep_db_query("select categories_name from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . $cPath_array[$i] . "' and language_id='" . $languages_id . "'");
+      $categories_query = tep_db_query("select categories_name from " .  TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" .  $cPath_array[$i] . "' and language_id='" . $languages_id . "' and site_id = ".SITE_ID);
       if (tep_db_num_rows($categories_query) > 0) {
         $categories = tep_db_fetch_array($categories_query);
         $breadcrumb->add($categories['categories_name'], tep_href_link(FILENAME_DEFAULT, 'cPath=' . implode('_', array_slice($cPath_array, 0, ($i+1)))));
@@ -537,7 +537,7 @@
     $model = tep_db_fetch_array($model_query);
     $breadcrumb->add($model['products_model'], tep_href_link(FILENAME_PRODUCT_INFO, 'cPath=' . $cPath . '&products_id=' . $HTTP_GET_VARS['products_id']));
 */
-    $model_query = tep_db_query("select products_name from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . $HTTP_GET_VARS['products_id'] . "' and language_id='" . $languages_id . "'");
+    $model_query = tep_db_query("select products_name from " .  TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" .  $HTTP_GET_VARS['products_id'] . "' and language_id='" . $languages_id . "' and site_id = ".SITE_ID);
     $model = tep_db_fetch_array($model_query);
     //$breadcrumb->add($model['products_name'], tep_href_link(FILENAME_PRODUCT_INFO, 'cPath=' . $cPath . '&products_id=' . $HTTP_GET_VARS['products_id']));
     $breadcrumb->add($model['products_name'], tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $HTTP_GET_VARS['products_id']));

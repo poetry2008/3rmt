@@ -164,6 +164,7 @@
                           'currency' => $order->info['currency'], 
                           'currency_value' => $order->info['currency_value'],
 						  'torihiki_houhou' => $torihikihouhou,
+						  'site_id' => SITE_ID,
 						  'torihiki_date' => $insert_torihiki_date
 						  );
   tep_db_perform(TABLE_ORDERS, $sql_data_array);

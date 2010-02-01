@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: header.php,v 1.2 2003/07/04 01:14:11 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -83,10 +83,7 @@ if (!isset($HTTP_GET_VARS['products_id'])) $HTTP_GET_VARS['products_id'] = NULL;
 	}
 if (!isset($cat0[0])) $cat0[0] = NULL;
 	$cat1 = $cat0[0];
-	$categories_parent0_query = tep_db_query("select c.categories_id, c.categories_status, cd.categories_name 
-      from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
-      where cd.site_id = '" . SITE_ID . "' and c.parent_id = '0' and c.categories_status = '0' and c.categories_id = cd.categories_id and cd.language_id = '" . (int)$languages_id . "' 
-      order by sort_order, cd.categories_name");
+	$categories_parent0_query = tep_db_query("select c.categories_id, c.categories_status, cd.categories_name from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where cd.site_id = '" . SITE_ID . "' and c.parent_id = '0' and c.categories_status = '0' and c.categories_id = cd.categories_id and cd.language_id = '" . (int)$languages_id . "' order by sort_order, cd.categories_name and cd.site_id = '".SITE_ID."'");
 	$categories_array = '<select name="categories_id" class="header_search_select">'."\n";
 	$categories_array .= '<option value=""';
 	if($cat1 == '') {

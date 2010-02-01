@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: order.php,v 1.4 2003/06/09 00:54:22 suzukawa Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -33,7 +33,7 @@
       $order_id = tep_db_prepare_input($order_id);
 
 // 2003-06-06 add_telephone
-      $order_query = tep_db_query("select customers_id, customers_name, customers_name_f, customers_company, customers_street_address, customers_suburb, customers_city, customers_postcode, customers_state, customers_country, customers_telephone, customers_email_address, customers_address_format_id, delivery_name, delivery_name_f, delivery_company, delivery_street_address, delivery_suburb, delivery_city, delivery_postcode, delivery_state, delivery_country, delivery_telephone, delivery_address_format_id, billing_name, billing_name_f, billing_company, billing_street_address, billing_suburb, billing_city, billing_postcode, billing_state, billing_country, billing_telephone, billing_address_format_id, payment_method, cc_type, cc_owner, cc_number, cc_expires, currency, currency_value, date_purchased, orders_status, last_modified from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($order_id) . "'");
+      $order_query = tep_db_query("select customers_id, customers_name, customers_name_f, customers_company, customers_street_address, customers_suburb, customers_city, customers_postcode, customers_state, customers_country, customers_telephone, customers_email_address, customers_address_format_id, delivery_name, delivery_name_f, delivery_company, delivery_street_address, delivery_suburb, delivery_city, delivery_postcode, delivery_state, delivery_country, delivery_telephone, delivery_address_format_id, billing_name, billing_name_f, billing_company, billing_street_address, billing_suburb, billing_city, billing_postcode, billing_state, billing_country, billing_telephone, billing_address_format_id, payment_method, cc_type, cc_owner, cc_number, cc_expires, currency, currency_value, date_purchased, orders_status, last_modified from " . TABLE_ORDERS . " where orders_id = '" .  tep_db_input($order_id) . "' and site_id = ".SITE_ID);
       $order = tep_db_fetch_array($order_query);
 
       $totals_query = tep_db_query("select title, text from " . TABLE_ORDERS_TOTAL . " where orders_id = '" . tep_db_input($order_id) . "' order by sort_order");
@@ -142,7 +142,7 @@
 
       $this->content_type = $cart->get_content_type();
 
-      $customer_address_query = tep_db_query("select c.customers_firstname, c.customers_lastname, c.customers_firstname_f, c.customers_lastname_f, c.customers_telephone, c.customers_email_address, ab.entry_company, ab.entry_street_address, ab.entry_suburb, ab.entry_postcode, ab.entry_city, ab.entry_zone_id, z.zone_name, co.countries_id, co.countries_name, co.countries_iso_code_2, co.countries_iso_code_3, co.address_format_id, ab.entry_state from " . TABLE_CUSTOMERS . " c, " . TABLE_ADDRESS_BOOK . " ab left join " . TABLE_ZONES . " z on (ab.entry_zone_id = z.zone_id) left join " . TABLE_COUNTRIES . " co on (ab.entry_country_id = co.countries_id) where c.customers_id = '" . $customer_id . "' and ab.customers_id = '" . $customer_id . "' and c.customers_default_address_id = ab.address_book_id");
+      $customer_address_query = tep_db_query("select c.customers_firstname, c.customers_lastname, c.customers_firstname_f, c.customers_lastname_f, c.customers_telephone, c.customers_email_address, ab.entry_company, ab.entry_street_address, ab.entry_suburb, ab.entry_postcode, ab.entry_city, ab.entry_zone_id, z.zone_name, co.countries_id, co.countries_name, co.countries_iso_code_2, co.countries_iso_code_3, co.address_format_id, ab.entry_state from " . TABLE_CUSTOMERS . " c, " .  TABLE_ADDRESS_BOOK . " ab left join " . TABLE_ZONES . " z on (ab.entry_zone_id = z.zone_id) left join " . TABLE_COUNTRIES . " co on (ab.entry_country_id = co.countries_id) where c.customers_id = '" .  $customer_id . "' and ab.customers_id = '" . $customer_id . "' and c.customers_default_address_id = ab.address_book_id and c.site_id = ".SITE_ID);
       $customer_address = tep_db_fetch_array($customer_address_query);
 
 // 2003-06-06 add_telephone

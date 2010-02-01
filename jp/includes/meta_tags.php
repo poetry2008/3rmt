@@ -14,6 +14,8 @@ $metaQuery .= "AND products.manufacturers_id = manufacturers.manufacturers_id ";
 $metaQuery .= "AND products.products_status = 1 ";
 $metaQuery .= "AND ".TABLE_CONFIGURATION.".configuration_key = 'DEFAULT_LANGUAGE' ";
 $metaQuery .= "AND ".TABLE_LANGUAGES.".code = ".TABLE_CONFIGURATION.".configuration_value ";
+$metaQuery .= "AND products_description.site_id = '".SITE_ID."'";
+$metaQuery .= "AND ".TABLE_CONFIGURATION.".site_id = '".SITE_ID."'";
 
 
 //Step 2. Narrow the search!

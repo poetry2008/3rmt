@@ -99,7 +99,7 @@
 
     if (empty($language)) $language = $languages_id;
 
-    $product_query = tep_db_query("select products_name from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . (int)$product_id . "' and language_id = '" . (int)$language . "'");
+    $product_query = tep_db_query("select products_name from " .  TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . (int)$product_id .  "' and language_id = '" . (int)$language . "' and site_id = ".SITE_ID);
     $product = tep_db_fetch_array($product_query);
 
     return $product['products_name'];
@@ -113,7 +113,7 @@
 
     if (empty($language)) $language = $languages_id;
 
-    $product_query = tep_db_query("select products_description from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . (int)$product_id . "' and language_id = '" . (int)$language . "'");
+    $product_query = tep_db_query("select products_description from " .  TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . (int)$product_id .  "' and language_id = '" . (int)$language . "' and site_id = ".SITE_ID);
     $product = tep_db_fetch_array($product_query);
 
     return $product['products_description'];
@@ -570,7 +570,7 @@
 
     if (!is_array($categories_array)) $categories_array = array();
 
-    $categories_query = tep_db_query("select c.categories_id, cd.categories_name from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where parent_id = '" . tep_db_input($parent_id) . "' and c.categories_id = cd.categories_id and cd.language_id = '" . (int)$languages_id . "' order by sort_order, cd.categories_name");
+    $categories_query = tep_db_query("select c.categories_id, cd.categories_name from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where parent_id = '" . tep_db_input($parent_id) . "' and c.categories_id = cd.categories_id and cd.language_id = '" . (int)$languages_id . "' and cd.site_id = ".SITE_ID." order by sort_order, cd.categories_name");
     while ($categories = tep_db_fetch_array($categories_query)) {
       $categories_array[] = array('id' => $categories['categories_id'],
                                   'text' => $indent . $categories['categories_name']);
@@ -1287,7 +1287,7 @@
 // 商品IDから説明文を呼び出す
   function ds_tep_get_description($products_id) {
 	  global $languages_id;
-	  $description_query = tep_db_query("select products_description from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$products_id."' and language_id = '".$languages_id."'");
+	  $description_query = tep_db_query("select products_description from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$products_id."' and language_id = '".$languages_id."' and site_id = ".SITE_ID);
 	  $description = tep_db_fetch_array($description_query);
 	  // edit 2009.5.14 maker
 	  //$description_array = explode('|-#-|',$description['products_description']);

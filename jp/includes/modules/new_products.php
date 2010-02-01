@@ -45,7 +45,7 @@
 	$info_box_contents = array();
     while ($new_products = tep_db_fetch_array($new_products_query)) {
       $row ++;
-    $product_query = tep_db_query("select products_name, products_description from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . $new_products['products_id'] . "' and language_id = '" . $languages_id . "'");
+    $product_query = tep_db_query("select products_name, products_description from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" .  $new_products['products_id'] . "' and language_id = '" . $languages_id . "' and site_id = '".SITE_ID."'");
     $product_details = tep_db_fetch_array($product_query);
   
   

@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: password_forgotten.php,v 1.4 2003/03/15 10:35:21 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -15,7 +15,7 @@
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PASSWORD_FORGOTTEN);
 
   if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'process')) {
-    $check_customer_query = tep_db_query("select customers_firstname, customers_lastname, customers_password, customers_id, customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_email_address = '" . $HTTP_POST_VARS['email_address'] . "'");
+    $check_customer_query = tep_db_query("select customers_firstname, customers_lastname, customers_password, customers_id, customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_email_address = '" .  $HTTP_POST_VARS['email_address'] . "' and site_id =".SITE_ID);
     if (tep_db_num_rows($check_customer_query)) {
       $check_customer = tep_db_fetch_array($check_customer_query);
 	  if($check_customer['customers_guest_chk'] == '0') {
