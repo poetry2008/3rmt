@@ -31,7 +31,7 @@ if (isset($HTTP_GET_VARS['tags_id']))
   forward404Unless($_404);
 }
 
-if (isset($HTTP_GET_VARS['manufacturers_id']))
+if (!empty($HTTP_GET_VARS['manufacturers_id']))
 {
   $_404_query = tep_db_query("select * from " . TABLE_MANUFACTURERS . " where manufacturers_id = '"
       . $HTTP_GET_VARS['manufacturers_id'] . "'");
