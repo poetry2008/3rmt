@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: header.php,v 1.2 2003/07/04 01:14:11 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

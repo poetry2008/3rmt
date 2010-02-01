@@ -12,6 +12,15 @@
 
   require('includes/application_top.php');
 
+  //forward 404
+if (isset($HTTP_GET_VARS['products_id'])) {
+  $_404_query = tep_db_query("select * from " . TABLE_PRODUCTS . " where products_id
+      = '" . intval($HTTP_GET_VARS['products_id']) . "'");
+  $_404 = tep_db_fetch_array($_404_query);
+
+  forward404Unless($_404);
+}
+	
 // lets retrieve all $HTTP_GET_VARS keys and values..
   $get_params = tep_get_all_get_params();
   $get_params_back = tep_get_all_get_params(array('reviews_id')); // for back button

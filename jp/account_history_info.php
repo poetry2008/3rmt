@@ -12,6 +12,15 @@
 
   require('includes/application_top.php');
 
+  //forward 404
+  if (isset($HTTP_GET_VARS['order_id']))
+{
+  $_404_query = tep_db_query("select * from " .TABLE_ORDERS . " where orders_id = '"
+      . $HTTP_GET_VARS['order_id'] . "'");
+  $_404 = tep_db_fetch_array($_404_query);
+
+  forward404Unless($_404);
+}
   if (!tep_session_is_registered('customer_id')) {
     $navigation->set_snapshot();
     tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));

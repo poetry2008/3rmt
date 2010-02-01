@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: product_info.php,v 1.2 2003/04/22 04:37:37 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -12,6 +12,15 @@
 
   require('includes/application_top.php');
 
+  //forward 404
+if ($HTTP_GET_VARS['products_id'])
+{
+  $_404_query = tep_db_query("select * from " . TABLE_PRODUCTS . " where products_id
+      = '" . $HTTP_GET_VARS['products_id'] . "'");
+  $_404 = tep_db_fetch_array($_404_query);
+
+  forward404Unless($_404);
+}
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRODUCT_INFO);
   
 //begin dynamic meta tags query -->

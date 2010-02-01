@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: product_info.php,v 1.2 2003/04/22 04:37:37 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -12,6 +12,15 @@
 
   require('includes/application_top.php');
 
+  //forward 404
+if ($HTTP_GET_VARS['products_id'])
+{
+  $_404_query = tep_db_query("select * from " . TABLE_PRODUCTS . " where products_id
+      = '" . $HTTP_GET_VARS['products_id'] . "'");
+  $_404 = tep_db_fetch_array($_404_query);
+
+  forward404Unless($_404);
+}
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRODUCT_INFO);
   
 //begin dynamic meta tags query -->
@@ -101,7 +110,16 @@ function change_num(ob, targ, quan,a_quan)
       <td valign="top" id="contents">
           <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_PRODUCT_INFO, tep_get_all_get_params(array('action')) . 'action=add_product')) . "\n"; ?>
 <?php
-  $product_info_query = tep_db_query("select p.products_id, pd.products_name, pd.products_attention_1,pd.products_attention_2,pd.products_attention_3,pd.products_attention_4,pd.products_attention_5,pd.products_description, p.products_model, p.products_quantity, p.products_image,p.products_image2,p.products_image3, pd.products_url, p.products_price, p.products_tax_class_id, p.products_date_added, p.products_date_available, p.manufacturers_id, p.products_bflag, p.products_cflag, p.products_small_sum from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "'");
+  $product_info_query = tep_db_query("select p.products_id, pd.products_name,
+      pd.products_attention_1,pd.products_attention_2,pd.products_attention_3,pd.products_attention_4,pd.products_attention_5,pd.products_description,
+      p.products_model, p.products_quantity,
+      p.products_image,p.products_image2,p.products_image3, pd.products_url,
+      p.products_price, p.products_tax_class_id, p.products_date_added,
+      p.products_date_available, p.manufacturers_id, p.products_bflag,
+      p.products_cflag, p.products_small_sum from " . TABLE_PRODUCTS . " p, " .
+      TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and
+      p.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and
+      pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "'");
   if (!tep_db_num_rows($product_info_query)) { // product not found in database
 ?>
         <P><?php echo TEXT_PRODUCT_NOT_FOUND; ?></P>

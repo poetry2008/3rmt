@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: shipping.php,v 1.1.1.1 2003/02/20 01:03:53 ptosh Exp $
+  $Id$
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
   Copyright (c) 2003 osCommerce
@@ -8,6 +8,15 @@
 */
 
 	require('includes/application_top.php');
+	
+  //forward 404
+if (isset($HTTP_GET_VARS['news_id'])) {
+  $_404_query = tep_db_query("select * from " . TABLE_LATEST_NEWS. " where
+      news_id = '" . intval($HTTP_GET_VARS['news_id']) . "'");
+  $_404 = tep_db_fetch_array($_404_query);
+
+  forward404Unless($_404);
+}
 	
 	require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_LATEST_NEWS);
 	

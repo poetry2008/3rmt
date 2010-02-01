@@ -11,6 +11,14 @@
 */
 
   require('includes/application_top.php');
+  //forward 404
+if (isset($HTTP_GET_VARS['pID'])) {
+  $_404_query = tep_db_query("select * from " . TABLE_INFORMATION_PAGE. " where
+      romaji = '" . intval($HTTP_GET_VARS['pID']) . "'");
+  $_404 = tep_db_fetch_array($_404_query);
+
+  forward404Unless($_404);
+}
   if (!isset($HTTP_GET_VARS['pID'])) {
     $page_info_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where status = 1 and site_id = '".SITE_ID."'order by sort_id"); 
     define('PAGE_NAVBAR_TITLE', PAGE_NEW_TITLE); 

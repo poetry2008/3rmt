@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: japanese.php,v 1.24 2003/06/06 01:34:50 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

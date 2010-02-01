@@ -11,6 +11,44 @@
 */
 
   require('includes/application_top.php');
+
+  //redirect 404
+if (isset($HTTP_GET_VARS['cPath']))
+{
+  $_404_query = tep_db_query("select * from " . TABLE_CATEGORIES . " where
+      categories_id = '" . $HTTP_GET_VARS['cPath'] . "'");
+  $_404 = tep_db_fetch_array($_404_query);
+
+  forward404Unless($_404);
+}
+
+if (isset($HTTP_GET_VARS['tags_id']))
+{
+  $_404_query = tep_db_query("select * from " . TABLE_TAGS . " where tags_id = '"
+      . $HTTP_GET_VARS['tags_id'] . "'");
+  $_404 = tep_db_fetch_array($_404_query);
+
+  forward404Unless($_404);
+}
+
+if (isset($HTTP_GET_VARS['manufacturers_id']))
+{
+  $_404_query = tep_db_query("select * from " . TABLE_MANUFACTURERS . " where manufacturers_id = '"
+      . $HTTP_GET_VARS['manufacturers_id'] . "'");
+  $_404 = tep_db_fetch_array($_404_query);
+
+  forward404Unless($_404);
+}
+
+if (isset($HTTP_GET_VARS['colors']))
+{
+  $_404_query = tep_db_query("select * from " . TABLE_COLOR. " where color_id = '" .
+      $HTTP_GET_VARS['colors'] . "'");
+  $_404 = tep_db_fetch_array($_404_query);
+
+  forward404Unless($_404);
+}
+
 // the following cPath references come from application_top.php
   $category_depth = 'top';
   if (isset($cPath) && tep_not_null($cPath)) {
@@ -46,7 +84,8 @@
   
 
    if (!isset($HTTP_GET_VARS['tags_id'])) $HTTP_GET_VARS['tags_id'] = NULL;// del notice 
-  $seo_tags_query = tep_db_query("select * from ". TABLE_TAGS . " where tags_id = '".$HTTP_GET_VARS['tags_id']."'");
+  $seo_tags_query = tep_db_query("select * from ". TABLE_TAGS . " where tags_id =
+      '".(int)$HTTP_GET_VARS['tags_id']."'");
   $seo_tags = tep_db_fetch_array($seo_tags_query);  
   //------ SEO TUNING  -----//
 
@@ -176,7 +215,7 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;//del noti
         p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left
         join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id =
         pd.products_id left join " . TABLE_SPECIALS . " as s
-         on p.products_id = s.products_id where p2t.tags_id = " . $HTTP_GET_VARS['tags_id'];
+         on p.products_id = s.products_id where p2t.tags_id = " . (int)$HTTP_GET_VARS['tags_id'];
   }
   else
   {
@@ -184,7 +223,7 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;//del noti
         p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left
         join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id =
         pd.products_id left join " . TABLE_SPECIALS . " as s
-         on p.products_id = s.products_id where p2t.tags_id = " . $HTTP_GET_VARS['tags_id'];
+         on p.products_id = s.products_id where p2t.tags_id = " .(int)$HTTP_GET_VARS['tags_id'];
   } 
 
      $listing_sql = $products_query;
@@ -234,7 +273,8 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;//del noti
 	<td valign="top" id="contents_long">
         <h1 class="pageHeading_long">
         <?php
-        $sel_tags_query = tep_db_query("select * from ".TABLE_TAGS." where tags_id = '".$HTTP_GET_VARS['tags_id']."'"); 
+        $sel_tags_query = tep_db_query("select * from ".TABLE_TAGS." where tags_id =
+            '".(int)$HTTP_GET_VARS['tags_id']."'"); 
         $sel_tags_res = tep_db_fetch_array($sel_tags_query); 
         if ($sel_tags_res) {
           echo $sel_tags_res['tags_name']; 

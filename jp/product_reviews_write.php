@@ -11,6 +11,16 @@
 */
 
   require('includes/application_top.php');
+
+  //forward 404
+if (isset($HTTP_GET_VARS['products_id'])) {
+  $_404_query = tep_db_query("select * from " . TABLE_PRODUCTS . " where products_id
+      = '" . intval($HTTP_GET_VARS['products_id']). "'");
+  $_404 = tep_db_fetch_array($_404_query);
+
+  forward404Unless($_404);
+}
+
 /*
   if (!tep_session_is_registered('customer_id')) {
     $navigation->set_snapshot();
