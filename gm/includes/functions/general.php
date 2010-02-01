@@ -35,6 +35,30 @@
 	tep_exit();
   }
 
+
+function forward404()
+{
+  header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
+  throw new Exception();
+}
+//在条件成立的时候，404
+function forward404If($condition)
+{
+  if ($condition)
+  {
+    forward404();
+  }
+}
+
+//在条件不成立时，404
+function forward404Unless($condition)
+{
+  if (!$condition)
+  {
+    forward404();
+  }
+}
+
 ////
 // Parse the data used in the html tags to ensure the tags will not break
   function tep_parse_input_field_data($data, $parse) {

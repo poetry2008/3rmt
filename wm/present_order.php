@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: privacy.php,v 1.1.1.1 2003/02/20 01:03:53 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -11,6 +11,15 @@
 */
 
   require('includes/application_top.php');
+  //forward 404
+if (isset($HTTP_GET_VARS['goods_id'])) {
+  $_404_query = tep_db_query("select * from " . TABLE_PRESENT_GOODS. " where
+      goods_id = '" . intval($HTTP_GET_VARS['goods_id']) . "'");
+  $_404 = tep_db_fetch_array($_404_query);
+
+  forward404Unless($_404);
+}
+	
   
   if($HTTP_GET_VARS['goods_id']) {
     $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$HTTP_GET_VARS['goods_id']."'") ;

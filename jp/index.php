@@ -11,6 +11,42 @@
 */
   require('includes/application_top.php');
 
+  //redirect 404
+if (isset($HTTP_GET_VARS['cPath']))
+{
+  $_404_query = tep_db_query("select * from " . TABLE_CATEGORIES . " where
+      categories_id = " . $HTTP_GET_VARS['cPath']);
+  $_404 = tep_db_fetch_array($_404_query);
+
+  forward404Unless($_404);
+}
+
+if (isset($HTTP_GET_VARS['tags_id']))
+{
+  $_404_query = tep_db_query("select * from " . TABLE_TAGS . " where tags_id = "
+      . $HTTP_GET_VARS['tags_id']);
+  $_404 = tep_db_fetch_array($_404_query);
+
+  forward404Unless($_404);
+}
+
+if (isset($HTTP_GET_VARS['manufacturers_id']))
+{
+  $_404_query = tep_db_query("select * from " . TABLE_MANUFACTURERS . " where manufacturers_id = "
+      . $HTTP_GET_VARS['manufacturers_id']);
+  $_404 = tep_db_fetch_array($_404_query);
+
+  forward404Unless($_404);
+}
+
+if (isset($HTTP_GET_VARS['colors']))
+{
+  $_404_query = tep_db_query("select * from " . TABLE_COLOR. " where color_id = " .
+      $HTTP_GET_VARS['colors']);
+  $_404 = tep_db_fetch_array($_404_query);
+
+  forward404Unless($_404);
+}
 // the following cPath references come from application_top.php
   $category_depth = 'top';
   if (isset($cPath) && tep_not_null($cPath)) {

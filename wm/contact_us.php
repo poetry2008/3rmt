@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: contact_us.php,v 1.2 2003/03/12 13:32:37 hawk Exp $
+  $Id$
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
   Copyright (c) 2003 osCommerce
@@ -8,6 +8,15 @@
 */
 
 	require('includes/application_top.php');
+	
+  //forward 404
+if (isset($HTTP_GET_VARS['products_id'])) {
+  $_404_query = tep_db_query("select * from " . TABLE_PRODUCTS . " where products_id
+      = '" . intval($HTTP_GET_VARS['products_id'] . "'"));
+  $_404 = tep_db_fetch_array($_404_query);
+
+  forward404Unless($_404);
+}
 	
 	require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CONTACT_US);
 	
