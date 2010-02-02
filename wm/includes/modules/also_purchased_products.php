@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: also_purchased_products.php,v 1.1.1.1 2003/02/20 01:03:54 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -11,7 +11,7 @@
 */
 
   if (isset($HTTP_GET_VARS['products_id'])) {
-    $orders_query = tep_db_query("select p.products_id, p.products_image from " . TABLE_ORDERS_PRODUCTS . " opa, " . TABLE_ORDERS_PRODUCTS . " opb, " . TABLE_ORDERS . " o, " . TABLE_PRODUCTS . " p where opa.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and opa.orders_id = opb.orders_id and opb.products_id != '" . (int)$HTTP_GET_VARS['products_id'] . "' and opb.products_id = p.products_id and opb.orders_id = o.orders_id and p.products_status = '1' group by p.products_id order by o.date_purchased desc limit " . MAX_DISPLAY_ALSO_PURCHASED);
+    $orders_query = tep_db_query("select p.products_id, p.products_image from " .  TABLE_ORDERS_PRODUCTS . " opa, " . TABLE_ORDERS_PRODUCTS . " opb, " .  TABLE_ORDERS . " o, " . TABLE_PRODUCTS . " p where opa.products_id = '" .  (int)$HTTP_GET_VARS['products_id'] . "' and opa.orders_id = opb.orders_id and opb.products_id != '" . (int)$HTTP_GET_VARS['products_id'] . "' and opb.products_id = p.products_id and opb.orders_id = o.orders_id and p.products_status = '1' and o.site_id = '".SITE_ID."' group by p.products_id order by o.date_purchased desc limit " . MAX_DISPLAY_ALSO_PURCHASED);
     $num_products_ordered = tep_db_num_rows($orders_query);
     if ($num_products_ordered >= MIN_DISPLAY_ALSO_PURCHASED) {
 ?>
@@ -25,7 +25,7 @@
     echo   '<tr>'."\n";
       while ($orders = tep_db_fetch_array($orders_query)) {
         $orders['products_name'] = tep_get_products_name($orders['products_id']);
-		$products_description = tep_db_query("select products_description from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '".$orders['products_id']."' ");
+		$products_description = tep_db_query("select products_description from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '".$orders['products_id']."' and site_id = '".SITE_ID."'");
         $products_description = tep_db_fetch_array($products_description);
 		$products_description = strip_tags(substr ($products_description['products_description'],0,96));
 	  echo '

@@ -32,7 +32,7 @@ if (isset($HTTP_GET_VARS['products_id'])) {
 
   if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'process') {
     if ($valid_product == true) { // We got to the process but it is an illegal product, don't write
-      $customer = tep_db_query("select customers_firstname, customers_lastname from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
+      $customer = tep_db_query("select customers_firstname, customers_lastname from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "' and site_id = '".SITE_ID."'");
       $customer_values = tep_db_fetch_array($customer);
       $date_now = date('Ymd');
 	  if($HTTP_POST_VARS['reviews_name'] && tep_not_null($HTTP_POST_VARS['reviews_name'])) {

@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: specials.php,v 1.1.1.1 2003/02/20 01:03:53 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -33,7 +33,7 @@
  
              <table border="0" width="95%" cellspacing="0" cellpadding="0"> 
   <?php
-    $specials_query_raw = "select p.products_id, pd.products_name, p.products_price, p.products_tax_class_id, p.products_image, s.specials_new_products_price from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_SPECIALS . " s where p.products_id not in".tep_not_in_disabled_products()." and p.products_status = '1' and s.products_id = p.products_id and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and s.status = '1' order by s.specials_date_added DESC";
+    $specials_query_raw = "select p.products_id, pd.products_name, p.products_price, p.products_tax_class_id, p.products_image, s.specials_new_products_price from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " .  TABLE_SPECIALS . " s where p.products_id not in".tep_not_in_disabled_products()." and p.products_status = '1' and s.products_id = p.products_id and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and s.status = '1'  and pd.site_id = '".SITE_ID."' order by s.specials_date_added DESC";
     $specials_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SPECIAL_PRODUCTS, $specials_query_raw, $specials_numrows);
     $specials_query = tep_db_query($specials_query_raw);
     

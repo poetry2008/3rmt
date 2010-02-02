@@ -30,7 +30,7 @@
 	echo   '<tr>'."\n";
       while ($orders = tep_db_fetch_array($orders_query)) {
         $orders['products_name'] = tep_get_products_name($orders['products_id']);
-		$products_description = tep_db_query("select products_description from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '".$orders['products_id']."' ");
+		$products_description = tep_db_query("select products_description from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '".$orders['products_id']."' and site_id = '".SITE_ID."'");
         $products_description = tep_db_fetch_array($products_description);
 		$products_description = strip_tags(substr ($products_description['products_description'],0,96));
 	  echo '

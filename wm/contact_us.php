@@ -24,7 +24,7 @@ if (isset($HTTP_GET_VARS['products_id'])) {
 	
 	//product_idを取得した場合商品名を呼び出す
 	if (isset($HTTP_GET_VARS['products_id'])) {
-		$product_info_query = tep_db_query("select pd.products_name from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "'");
+		$product_info_query = tep_db_query("select pd.products_name from " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" .  (int)$HTTP_GET_VARS['products_id'] . "' and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and pd.site_id = '".SITE_ID."'");
 		$product_info = tep_db_fetch_array($product_info_query);
 	}
 	
