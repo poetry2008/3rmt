@@ -82,7 +82,7 @@
   
   //Add point
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
-  $point_query = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
+  $point_query = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "' and site_id = '".SITE_ID."'");
   $point = tep_db_fetch_array($point_query);
   }
 ?>

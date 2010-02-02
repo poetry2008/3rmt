@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: checkout_success.php,v 1.1.1.1 2003/02/20 01:03:53 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -38,7 +38,7 @@
   $global = tep_db_fetch_array($global_query);
 
   if ($global['global_product_notifications'] != '1') {
-    $orders_query = tep_db_query("select orders_id from " . TABLE_ORDERS . " where customers_id = '" . $customer_id . "' order by date_purchased desc limit 1");
+    $orders_query = tep_db_query("select orders_id from " . TABLE_ORDERS . " where customers_id = '" . $customer_id . "' and site_id = '".SITE_ID."' order by date_purchased desc limit 1");
     $orders = tep_db_fetch_array($orders_query);
 
     $products_array = array();

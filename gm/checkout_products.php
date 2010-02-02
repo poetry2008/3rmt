@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: checkout_products.php,v 1.1.1.1 2003/02/20 01:03:53 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -68,7 +68,7 @@ function chara_mess(){
 foreach($cart as $key => $val){
   if($key == 'contents'){
     foreach($val as $key2 => $val2){
-	  $cp_query = tep_db_query("select p.products_id,p.products_image,p.products_date_added,p.products_price,p.products_cflag,pd.products_name from " . TABLE_PRODUCTS . " p," . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_id = '".$key2."' and p.products_id = pd.products_id");
+	  $cp_query = tep_db_query("select p.products_id,p.products_image,p.products_date_added,p.products_price,p.products_cflag,pd.products_name from " . TABLE_PRODUCTS . " p," . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_id = '".$key2."' and p.products_id = pd.products_id and pd.site_id = '".SITE_ID."'");
 	  $cp_result = tep_db_fetch_array($cp_query);
 	  if($cp_result['products_cflag'] == 1){
 	    $cid = 'cname_' . $key2;
@@ -121,7 +121,7 @@ foreach($cart as $key => $val){
 				  foreach($cart as $key => $val){
 				    if($key == 'contents'){
 					  foreach($val as $key2 => $val2){
-						$cp_query = tep_db_query("select p.products_id,p.products_image,p.products_date_added,p.products_price,p.products_cflag,pd.products_name from " . TABLE_PRODUCTS . " p," . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_id = '".$key2."' and p.products_id = pd.products_id");
+						$cp_query = tep_db_query("select p.products_id,p.products_image,p.products_date_added,p.products_price,p.products_cflag,pd.products_name from " . TABLE_PRODUCTS . " p," . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_id = '".$key2."' and p.products_id = pd.products_id and pd.site_id = '".SITE_ID."'");
 						$cp_result = tep_db_fetch_array($cp_query);
 				?>
 				  <tr>

@@ -58,7 +58,7 @@
   $insert_id = date("Ymd") . '-' . date("His") . ds_makeRandStr(2);
 
   # Check
-  $NewOidQuery = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS." where orders_id = '".$insert_id."'");
+  $NewOidQuery = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS." where orders_id = '".$insert_id."' and site_id = '".SITE_ID."'");
   $NewOid = tep_db_fetch_array($NewOidQuery);
   if($NewOid['cnt'] == 0) {
     # OrderNo
@@ -163,6 +163,7 @@
                           'currency' => $order->info['currency'], 
                           'currency_value' => $order->info['currency_value'],
 						  'torihiki_houhou' => $torihikihouhou,
+						  'site_id' => SITE_ID,
 						  'torihiki_date' => $insert_torihiki_date
 						  );
   tep_db_perform(TABLE_ORDERS, $sql_data_array);
@@ -366,8 +367,8 @@
 	  $products_ordered .= ' (' . $order->products[$i]['model'] . ')';
 	}
 	
-    $_product_info_query = tep_db_query("select p.products_id, pd.products_name, pd.products_attention_1,pd.products_attention_2,pd.products_attention_3,pd.products_attention_4,pd.products_attention_5,pd.products_description, p.products_model, p.products_quantity, p.products_image,p.products_image2,p.products_image3, pd.products_url, p.products_price, p.products_tax_class_id, p.products_date_added, p.products_date_available, p.manufacturers_id, p.products_bflag, p.products_cflag, p.products_small_sum from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" . $order->products[$i]['id'] . "' and pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "'");
-    tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_viewed = products_viewed+1 where products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and language_id = '" . $languages_id . "'");
+    $_product_info_query = tep_db_query("select p.products_id, pd.products_name, pd.products_attention_1,pd.products_attention_2,pd.products_attention_3,pd.products_attention_4,pd.products_attention_5,pd.products_description, p.products_model, p.products_quantity, p.products_image,p.products_image2,p.products_image3, pd.products_url, p.products_price, p.products_tax_class_id, p.products_date_added, p.products_date_available, p.manufacturers_id, p.products_bflag, p.products_cflag, p.products_small_sum from " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" . $order->products[$i]['id'] . "' and pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "' and pd.site_id = '".SITE_ID."'");
+    tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_viewed = products_viewed+1 where products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and language_id = '" . $languages_id . "' and site_id = '".SITE_ID."'");
     $product_info = tep_db_fetch_array($_product_info_query);
     $data1 = explode("//", $product_info['products_attention_1']);
 	
@@ -537,7 +538,7 @@
   $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
   $email_printing_order .= '信用調査' . "\n";
   
-	$credit_inquiry_query = tep_db_query("select customers_fax, customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
+	$credit_inquiry_query = tep_db_query("select customers_fax, customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "' and site_id = '".SITE_ID."'");
     $credit_inquiry = tep_db_fetch_array($credit_inquiry_query);
 	
   $email_printing_order .= $credit_inquiry['customers_fax'] . "\n";
@@ -653,16 +654,16 @@
 //Add point
   if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
     if(MODULE_ORDER_TOTAL_POINT_ADD_STATUS == '0') {
-	  tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . intval($get_point - $point) . " where customers_id = " . $customer_id );
+	  tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  intval($get_point - $point) . " where customers_id = " . $customer_id . " and site_id = ".SITE_ID);
     } else {
-	  tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point - " . intval($point) . " where customers_id = " . $customer_id );
+	  tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point - " .  intval($point) . " where customers_id = " . $customer_id . " and site_id = ".SITE_ID);
 	}
   }
   
   
 // ゲスト購入の場合はポイントリセット
   if($guestchk == '1') {
-    tep_db_query("update ".TABLE_CUSTOMERS." set point = '0' where customers_id = '".$customer_id."'");
+    tep_db_query("update ".TABLE_CUSTOMERS." set point = '0' where customers_id = '".$customer_id."' and site_id = '".SITE_ID."'");
   }  
   
   
