@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: account_details.php,v 1.5 2004/05/22 04:18:53 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -51,6 +51,7 @@
           $a_value = $firstname . tep_draw_hidden_field('firstname');
       }
   } else {
+      if (!isset($account['customers_firstname'])) $account['customers_firstname'] = NULL;
       $a_value = tep_draw_input_field('firstname', $account['customers_firstname']) . '&nbsp;' . ENTRY_FIRST_NAME_TEXT;
   }
   $address_form->setFormLine('firstname',ENTRY_FIRST_NAME,$a_value);
@@ -65,6 +66,7 @@
           $a_value = $lastname . tep_draw_hidden_field('lastname');
       }
   } else {
+      if (!isset($account['customers_lastname'])) $account['customers_lastname'] = NULL;
       $a_value = tep_draw_input_field('lastname', $account['customers_lastname']) . '&nbsp;' . ENTRY_LAST_NAME_TEXT;
   }
   $address_form->setFormLine('lastname',ENTRY_LAST_NAME,$a_value);
@@ -131,6 +133,7 @@
           $a_value = $email_address . tep_draw_hidden_field('email_address');
       }
   } else {
+      if (!isset($account['customers_email_address'])) $account['customers_email_address'] = NULL;
       $a_value = tep_draw_input_field('email_address', $account['customers_email_address']) . '&nbsp;' . ENTRY_EMAIL_ADDRESS_TEXT;
   }
   $address_form->setFormLine('email_address',ENTRY_EMAIL_ADDRESS,$a_value);
@@ -400,6 +403,7 @@
     }
     echo tep_draw_hidden_field('newsletter');  
   } else {
+    if (!isset($account['customers_newsletter'])) $account['customers_newsletter'] = NULL;
     echo tep_draw_pull_down_menu('newsletter', $newsletter_array, $account['customers_newsletter']) . '&nbsp;' . ENTRY_NEWSLETTER_TEXT;
   }
 ?>
@@ -517,7 +521,7 @@
               <tr>
                 <td class="main">
                   <?php
-  echo tep_draw_textarea_field('agreement', 'soft', '48', '5', mb_convert_encoding($agreement_text, 'EUC-JP', 'ASCII, JIS, UTF-8, EUC-JP, SJIS'));
+  echo tep_draw_textarea_field('agreement', 'soft', '48', '5', mb_convert_encoding($agreement_text, 'UTF-8', 'ASCII, JIS, UTF-8, EUC-JP, SJIS'));
   echo '<br>';
   echo tep_draw_checkbox_field('agreement_chk', 'ok') . ENTRY_AGREEMENT_TEXT;
 ?>
