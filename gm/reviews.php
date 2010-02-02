@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: reviews.php,v 1.3 2004/05/26 05:07:55 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -40,7 +40,7 @@
 
 <?php
   $reviews_array = array(); 
-  $reviews_query_raw = "select r.reviews_id, rd.reviews_text, r.reviews_rating, r.date_added, p.products_id, pd.products_name, p.products_image, r.customers_name from " . TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd, " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = r.products_id and r.reviews_id = rd.reviews_id and p.products_id = pd.products_id and pd.language_id = '" .  $languages_id . "' and rd.languages_id = '" . $languages_id . "' and r.reviews_status = '1' and r.site_id = '".SITE_ID."' and p.products_id not in".tep_not_in_disabled_products()." order by r.reviews_id DESC";
+  $reviews_query_raw = "select r.reviews_id, rd.reviews_text, r.reviews_rating, r.date_added, p.products_id, pd.products_name, p.products_image, r.customers_name from " . TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd, " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = r.products_id and r.reviews_id = rd.reviews_id and p.products_id = pd.products_id and pd.language_id = '" .  $languages_id . "' and rd.languages_id = '" . $languages_id . "' and r.reviews_status = '1' and r.site_id = '".SITE_ID."' and pd.site_id = '".SITE_ID."' and p.products_id not in".tep_not_in_disabled_products()." order by r.reviews_id DESC";
   $reviews_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_NEW_REVIEWS, $reviews_query_raw, $reviews_numrows);
   $reviews_query = tep_db_query($reviews_query_raw);
   while ($reviews = tep_db_fetch_array($reviews_query)) {

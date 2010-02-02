@@ -74,17 +74,11 @@ while ($tag = tep_db_fetch_array($tags_query))
 {
   if (tep_session_is_registered('customer_id'))
   {
-    $products_query = tep_db_query("select *,p.products_id from " . TABLE_PRODUCTS_TO_TAGS . " as p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id where p2t.tags_id = " . $tag['tags_id'] . " order by p.products_date_added desc limit 5");
+    $products_query = tep_db_query("select *,p.products_id from " .  TABLE_PRODUCTS_TO_TAGS . " as p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id where p2t.tags_id = " . $tag['tags_id'] .  " and pd.site_id = '".SITE_ID."' order by p.products_date_added desc limit 5");
   }
   else
   {
-    $products_query = tep_db_query("select *,p.products_id from " . TABLE_PRODUCTS_TO_TAGS . " as
-        p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left
-        join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id =
-        pd.products_id left join " . TABLE_SPECIALS . " as s
-         on p.products_id = s.products_id where p2t.tags_id = " . $tag['tags_id'] .
-         " order by p.products_date_added
-        desc limit 5");
+    $products_query = tep_db_query("select *,p.products_id from " . TABLE_PRODUCTS_TO_TAGS . " as p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id where p2t.tags_id = " . $tag['tags_id'] .  " and pd.site_id = '".SITE_ID."' order by p.products_date_added desc limit 5");
   } 
   if (tep_db_num_rows($products_query))
   {

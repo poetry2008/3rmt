@@ -122,7 +122,7 @@ function forward404Unless($condition)
 
     if (empty($language)) $language = $languages_id;
 
-    $product_query = tep_db_query("select products_name from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . (int)$product_id . "' and language_id = '" . (int)$language . "'");
+    $product_query = tep_db_query("select products_name from " .  TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . (int)$product_id .  "' and language_id = '" . (int)$language . "' and site_id = '".SITE_ID."'");
     $product = tep_db_fetch_array($product_query);
 
     return $product['products_name'];
@@ -136,7 +136,7 @@ function forward404Unless($condition)
 
     if (empty($language)) $language = $languages_id;
 
-    $product_query = tep_db_query("select products_description from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . (int)$product_id . "' and language_id = '" . (int)$language . "'");
+    $product_query = tep_db_query("select products_description from " .  TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . (int)$product_id .  "' and language_id = '" . (int)$language . "' and site_id = '".SITE_ID."'");
     $product = tep_db_fetch_array($product_query);
 
     return $product['products_description'];

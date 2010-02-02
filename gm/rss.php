@@ -96,8 +96,8 @@ while ($row = mysql_fetch_array($sql_result)) {
   $desc = $row2['products_description'];
 
 // add extra data here
-  $name = htmlentities($name, ENT_QUOTES, 'EUC-JP');
-  $desc = htmlentities(strip_tags($desc), ENT_QUOTES, 'EUC-JP');
+  $name = htmlentities($name, ENT_QUOTES, 'UTF-8');
+  $desc = htmlentities(strip_tags($desc), ENT_QUOTES, 'UTF-8');
   $image_url = HTTP_SERVER . DIR_WS_CATALOG . DIR_WS_IMAGES . $image;
   
 // Replace HTML entities &something; by real characters

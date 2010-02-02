@@ -191,20 +191,9 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action']= NULL;
     }
   if (tep_session_is_registered('customer_id'))
   {
-    $products_query = "select *, p.products_id , IF(s.status,
-      s.specials_new_products_price, p.products_price) as final_price from " . TABLE_PRODUCTS_TO_TAGS . " as
-        p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left
-        join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id =
-        pd.products_id left join " . TABLE_SPECIALS . " as s
-        on p.products_id = s.products_id 
-        where p2t.tags_id = " . intval($HTTP_GET_VARS['tags_id']);
+    $products_query = "select *, p.products_id , IF(s.status, s.specials_new_products_price, p.products_price) as final_price from " .  TABLE_PRODUCTS_TO_TAGS . " as p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id where p2t.tags_id = " .  intval($HTTP_GET_VARS['tags_id']) . " and pd.site_id = '".SITE_ID."'";
   } else {
-    $products_query = "select *, p.products_id, IF(s.status, s.specials_new_products_price, p.products_price) as final_price from " . TABLE_PRODUCTS_TO_TAGS . " as
-        p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left
-        join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id =
-        pd.products_id left join " . TABLE_SPECIALS . " as s
-         on p.products_id = s.products_id where p2t.tags_id = " .
-         intval($HTTP_GET_VARS['tags_id']);
+    $products_query = "select *, p.products_id, IF(s.status, s.specials_new_products_price, p.products_price) as final_price from " .  TABLE_PRODUCTS_TO_TAGS . " as p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id where p2t.tags_id = " .  intval($HTTP_GET_VARS['tags_id']) . " and pd.site_id = '".SITE_ID."'";
   } 
 
      $listing_sql = $products_query;

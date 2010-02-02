@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: shipping.php,v 1.1.1.1 2003/02/20 01:03:53 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -95,7 +95,7 @@ echo '
 	     $products['products_name'] = tep_get_products_name($products['products_id']);
 	     $products['products_description'] = tep_get_products_description($products['products_id']);
 		 echo '<td align="center" valign="top" class="smallText" width="20%"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products['products_id']) . '">'.tep_image2(DIR_WS_IMAGES.$products['products_image'],$products['products_name'],60, 60,'class="image_border"').'<br>' .$products['products_name'] . '</a><br>'.$currencies->display_price($products['products_price'], tep_get_tax_rate($products['products_tax_class_id'])).'<!--<div class="s_smallText">'.strip_tags(substr($products['products_description'],0,50)).'</div>--></td>'."\n";
-         $col ++;
+         //$col ++;
      /*     if ($col > 2) {
 	       echo '</tr>'."\n".'<tr>';
             $col = 0;
