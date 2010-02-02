@@ -108,7 +108,7 @@ function showimage($1) {
         <div align="right"><a href="<?php echo tep_href_link(FILENAME_DEFAULT); ?>"><?php echo tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></a></div>
         <?php
   } else {
-    tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_viewed = products_viewed+1 where products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and language_id = '" . $languages_id . "'");
+    tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_viewed = products_viewed+1 where products_id = '" .  (int)$HTTP_GET_VARS['products_id'] . "' and language_id = '" . $languages_id . "' and site_id = '".SITE_ID."'");
     $product_info = tep_db_fetch_array($product_info_query);
 
     if ($new_price = tep_get_products_special_price($product_info['products_id'])) {
