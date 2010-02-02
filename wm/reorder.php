@@ -35,7 +35,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   $cEmail = tep_db_prepare_input($HTTP_POST_VARS['email']);
   
   $o      = new order($oID);
-  $order  = tep_db_fetch_array(tep_db_query("select * from `".TABLE_ORDERS."` where `orders_id` = '".$oID."' and `customers_email_address` = '".$cEmail."'"));
+  $order  = tep_db_fetch_array(tep_db_query("select * from `".TABLE_ORDERS."` where `orders_id` = '".$oID."' and `customers_email_address` = '".$cEmail."' and site_id = '".SITE_ID."'"));
 
 
   if ($order) {
@@ -58,7 +58,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
       } else {
         // update time
         if ($date && $hour && $minute) {
-          tep_db_query("update `".TABLE_ORDERS."` set `orders_status`='17' ,`torihiki_date` = '".$datetime."' WHERE `orders_id`='".$order_id."'");
+          tep_db_query("update `".TABLE_ORDERS."` set `orders_status`='17' ,`torihiki_date` = '".$datetime."' WHERE `orders_id`='".$order_id."' and site_id = '".SITE_ID."'");
           // insert a history
           $sql = "INSERT INTO `".TABLE_ORDERS_STATUS_HISTORY."` (`orders_status_history_id` ,`orders_id` ,`orders_status_id` ,`date_added` ,`customer_notified` ,`comments`) VALUES (NULL , '".$order_id."', '17', '".date("Y-m-d H:i:s")."', '1', '".mysql_real_escape_string($comment)."');";
           tep_db_query($sql);
@@ -111,7 +111,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   $o = new order($oID);
 
   # Check
-  $NewOidQuery = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS." where orders_id = '".$insert_id."'");
+  $NewOidQuery = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS." where orders_id = '".$insert_id."' and site_id = '".SITE_ID."'");
   $NewOid = tep_db_fetch_array($NewOidQuery);
   
   # load the selected shipping module(convenience_store)
@@ -203,8 +203,8 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
 	  $products_ordered .= ' (' . $o->products[$i]['model'] . ')';
 	}
 	
-    $_product_info_query = tep_db_query("select p.products_id, pd.products_name, pd.products_attention_1,pd.products_attention_2,pd.products_attention_3,pd.products_attention_4,pd.products_attention_5,pd.products_description, p.products_model, p.products_quantity, p.products_image,p.products_image2,p.products_image3, pd.products_url, p.products_price, p.products_tax_class_id, p.products_date_added, p.products_date_available, p.manufacturers_id, p.products_bflag, p.products_cflag, p.products_small_sum from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" . $o->products[$i]['id'] . "' and pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "'");
-    tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_viewed = products_viewed+1 where products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and language_id = '" . $languages_id . "'");
+    $_product_info_query = tep_db_query("select p.products_id, pd.products_name, pd.products_attention_1,pd.products_attention_2,pd.products_attention_3,pd.products_attention_4,pd.products_attention_5,pd.products_description, p.products_model, p.products_quantity, p.products_image,p.products_image2,p.products_image3, pd.products_url, p.products_price, p.products_tax_class_id, p.products_date_added, p.products_date_available, p.manufacturers_id, p.products_bflag, p.products_cflag, p.products_small_sum from " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" . $o->products[$i]['id'] . "' and pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "' and pd.site_id = '".SITE_ID."'");
+    tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_viewed = products_viewed+1 where products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and language_id = '" . $languages_id . "' and site_id = '".SITE_ID."'");
     $product_info = tep_db_fetch_array($_product_info_query);
     $data1 = explode("//", $product_info['products_attention_1']);
 	
