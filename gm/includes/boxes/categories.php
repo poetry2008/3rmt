@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: categories.php,v 1.1.1.1 2003/02/20 01:03:53 ptosh Exp $
+  $Id$
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
   Copyright (c) 2002 osCommerce
@@ -62,7 +62,7 @@ if($cPath){
 
         <?php
             $_subcategories = array();
-            $_subcategories_query = tep_db_query("select c.categories_id, c.categories_status, cd.categories_name, c.parent_id from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where c.categories_status = '0' and c.parent_id = '".$subcategory['categories_id']."' and c.categories_id = cd.categories_id and cd.language_id='" . $languages_id ."' order by sort_order, cd.categories_name");
+            $_subcategories_query = tep_db_query("select c.categories_id, c.categories_status, cd.categories_name, c.parent_id from " .  TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where c.categories_status = '0' and c.parent_id = '".$subcategory['categories_id']."' and c.categories_id = cd.categories_id and cd.language_id='" . $languages_id ."' and cd.site_id = ".SITE_ID." order by sort_order, cd.categories_name");
             while ($_subcategory = tep_db_fetch_array($_subcategories_query))  {
               $_subcategories[] = $_subcategory;
             }

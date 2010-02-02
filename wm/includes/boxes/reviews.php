@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: reviews.php,v 1.1.1.1 2003/02/20 01:03:53 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -13,7 +13,7 @@
 <!-- reviews //-->
 <?php
   if(basename($PHP_SELF) == FILENAME_PRODUCT_INFO){
-    $reviews_query = tep_db_query("select rd.reviews_text, r.reviews_rating, r.reviews_id, r.products_id, r.customers_name, r.date_added, r.last_modified, r.reviews_read from " . TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd where  r.reviews_id = rd.reviews_id and r.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and r.reviews_status = '1' and  r.products_id not in".tep_not_in_disabled_products()." limit " . MAX_RANDOM_SELECT_REVIEWS );
+    $reviews_query = tep_db_query("select rd.reviews_text, r.reviews_rating, r.reviews_id, r.products_id, r.customers_name, r.date_added, r.last_modified, r.reviews_read from " . TABLE_REVIEWS . " r, " .  TABLE_REVIEWS_DESCRIPTION . " rd where  r.reviews_id = rd.reviews_id and r.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and r.reviews_status = '1' and  r.products_id not in".tep_not_in_disabled_products()." and r.site_id = '".SITE_ID."'limit " . MAX_RANDOM_SELECT_REVIEWS );
     if(tep_db_num_rows($reviews_query)) {
       echo  '<div class="pageHeading_long">この商品のレビュー</div>'."\n" . '<div class="comment_long">'."\n" ;
       while ($reviews = tep_db_fetch_array($reviews_query)) {
@@ -34,7 +34,7 @@
   <tr>
     <td class="boxText" align="center" style="padding: 3px 14px 0px 14px; background: url(images/design/box/reviews_content_bg.gif) repeat-y;">
     <?php
-  $random_select = "select r.reviews_id, r.reviews_rating, p.products_id, p.products_image, pd.products_name from " . TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd, " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = r.products_id and r.reviews_id = rd.reviews_id and rd.languages_id = '" . $languages_id . "' and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and r.reviews_status = '1'";
+  $random_select = "select r.reviews_id, r.reviews_rating, p.products_id, p.products_image, pd.products_name from " . TABLE_REVIEWS . " r, " .  TABLE_REVIEWS_DESCRIPTION . " rd, " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = r.products_id and r.reviews_id = rd.reviews_id and rd.languages_id = '" . $languages_id . "' and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and r.reviews_status = '1' and r.site_id = '".SITE_ID."' and pd.site_id = '".SITE_ID."'";
   if (isset($HTTP_GET_VARS['products_id'])) {
     $random_select .= " and p.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "'";
   }

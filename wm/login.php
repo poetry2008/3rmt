@@ -24,7 +24,7 @@ if(isset($HTTP_POST_VARS['login_type']) && $HTTP_POST_VARS['login_type'] == 'new
     $password = tep_db_prepare_input($HTTP_POST_VARS['password']);
 
 // Check if email exists
-    $check_customer_query = tep_db_query("select customers_id, customers_firstname, customers_lastname, customers_password, customers_email_address, customers_default_address_id, customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "'");
+    $check_customer_query = tep_db_query("select customers_id, customers_firstname, customers_lastname, customers_password, customers_email_address, customers_default_address_id, customers_guest_chk from " . TABLE_CUSTOMERS .  " where customers_email_address = '" . tep_db_input($email_address) . "' and site_id = '".SITE_ID."'");
     if (!tep_db_num_rows($check_customer_query)) {
       $HTTP_GET_VARS['login'] = 'fail';
     } else {

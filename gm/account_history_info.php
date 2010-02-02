@@ -15,8 +15,7 @@
   //forward 404
   if (isset($HTTP_GET_VARS['order_id']))
 {
-  $_404_query = tep_db_query("select * from " .TABLE_ORDERS . " where orders_id = '"
-      . $HTTP_GET_VARS['order_id'] . "'");
+  $_404_query = tep_db_query("select * from " .TABLE_ORDERS . " where orders_id = '" . $HTTP_GET_VARS['order_id'] . "' and site_id = '".SITE_ID."'");
   $_404 = tep_db_fetch_array($_404_query);
 
   forward404Unless($_404);

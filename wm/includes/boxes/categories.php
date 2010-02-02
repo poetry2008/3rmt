@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: categories.php,v 1.1.1.1 2003/02/20 01:03:53 ptosh Exp $
+  $Id$
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
   Copyright (c) 2002 osCommerce
@@ -125,7 +125,7 @@ if($cPath){
 			<a href="<?php echo tep_href_link(FILENAME_SPECIALS); ?>"><?php echo BOX_HEADING_SPECIALS; ?></a>
 		</li>
 <?php
-	$present_query = tep_db_query("select count(*) as cnt from " . TABLE_PRESENT_GOODS);
+	$present_query = tep_db_query("select count(*) as cnt from " .  TABLE_PRESENT_GOODS . " where site_id = '".SITE_ID."'");
 	$present_result = tep_db_fetch_array($present_query);
 	if($present_result['cnt'] > 0) {
 		echo '		<li class="l_m_category_li">

@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: reviews.php,v 1.1.1.1 2003/02/20 01:03:53 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -16,7 +16,7 @@ $faq_c_name ='';
 if($HTTP_GET_VARS['cPath']) {
 	$categories_path = explode('_', $HTTP_GET_VARS['cPath']);
 	$faq_c_url = 'faq' . $categories_path[0] . '/';
-	$_categories_query = tep_db_query("select categories_name from categories_description where categories_id = '".$categories_path[0]."' and language_id = '".$languages_id."'");
+	$_categories_query = tep_db_query("select categories_name from categories_description where categories_id = '".$categories_path[0]."' and language_id = '".$languages_id."' and site_id = '".SITE_ID."'");
 	$_categories = tep_db_fetch_array($_categories_query);
 	$faq_c_name = $_categories['categories_name'];
 } else {

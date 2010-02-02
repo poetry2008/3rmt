@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: product_notifications.php,v 1.1.1.1 2003/02/20 01:03:53 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -175,7 +175,7 @@
           <?php echo tep_draw_form('notifications', tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, 'action=update_notifications', 'SSL')); ?>
           <table width="100%">
 <?php
-    $products_query = tep_db_query("select pd.products_id, pd.products_name from " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_NOTIFICATIONS . " pn where pn.customers_id = '" . $customer_id . "' and pn.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' order by pd.products_name");
+    $products_query = tep_db_query("select pd.products_id, pd.products_name from " .  TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_NOTIFICATIONS . " pn where pn.customers_id = '" . $customer_id . "' and pn.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and pd.site_id = '".SITE_ID."' order by pd.products_name");
     while ($products = tep_db_fetch_array($products_query)) {
       echo '          <tr>' . "\n" .
            '            <td class="main">' . tep_draw_checkbox_field('products[]', $products['products_id']) . '&nbsp;' . $products['products_name'] . '</td>' . "\n" .
