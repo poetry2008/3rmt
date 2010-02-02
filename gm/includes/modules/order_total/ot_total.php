@@ -41,7 +41,9 @@
           && (0 < intval($point))) {
         $total -= intval($point);
       }	  
-	  
+	if (!defined('MODULE_PAYMENT_CONVENIENCE_STORE_STATUS')) {
+          define('MODULE_PAYMENT_CONVENIENCE_STORE_STATUS', NULL); 
+        }
 	  if(MODULE_PAYMENT_CONVENIENCE_STORE_STATUS == 'true' && ($payment == 'convenience_store')) {
         $total += intval($HTTP_POST_VARS['codt_fee']);
 	  }

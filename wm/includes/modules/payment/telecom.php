@@ -35,7 +35,10 @@
 // class methods
     function update_status() {
       global $order;
-
+      
+      if (!defined('MODULE_PAYMENT_TELECOM_ZONE')) {
+        define('MODULE_PAYMENT_TELECOM_ZONE', NULL); 
+      }
       if ( ($this->enabled == true) && ((int)MODULE_PAYMENT_TELECOM_ZONE > 0) ) {
         $check_flag = false;
         $check_query = tep_db_query("select zone_id from " . TABLE_ZONES_TO_GEO_ZONES . " where geo_zone_id = '" . MODULE_PAYMENT_TELECOM_ZONE . "' and zone_country_id = '" . $order->billing['country']['id'] . "' order by zone_id");
