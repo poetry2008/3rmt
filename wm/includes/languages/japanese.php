@@ -430,7 +430,7 @@ define('SENDMAIL_TROUBLE_PRE', 'メール受信の設定に関しては、');
 define('SENDMAIL_TROUBLE_LINK', '<b>「フリーメールでメールが受け取れない方へ」</b>');
 define('SENDMAIL_TROUBLE_END', 'をご参考ください。');
 define('PAGE_NEW_TITLE', 'インフォメーション');
-define('TEXT_NO_PRODUCTS', '現在商品は登録されていません...');
+//define('TEXT_NO_PRODUCTS', '現在商品は登録されていません...');
 define('SEND_MAIL_HEADING_TITLE', 'メール受信テスト');
 
 define('TEXT_NO_LATEST_NEWS', 'お知らせはありません');

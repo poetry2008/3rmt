@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: advanced_search_result.php,v 1.1.1.1 2003/02/20 01:03:53 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -254,7 +254,8 @@
     if ($pfrom) $where_str .= " and (IF(s.status, s.specials_new_products_price, p.products_price) >= " . $pfrom . ")";
     if ($pto)   $where_str .= " and (IF(s.status, s.specials_new_products_price, p.products_price) <= " . $pto . ")";
   }
-
+  
+  $where_str .= " and pd.site_id = '".SITE_ID."'";
   if ( (DISPLAY_PRICE_WITH_TAX == 'true') && ((isset($HTTP_GET_VARS['pfrom']) && tep_not_null($HTTP_GET_VARS['pfrom'])) || (isset($HTTP_GET_VARS['pto']) && tep_not_null($HTTP_GET_VARS['pto']))) ) {
     $where_str .= " group by p.products_id, tr.tax_priority";
   }

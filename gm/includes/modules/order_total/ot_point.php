@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: ot_point.php,v 1.4 2003/05/10 12:00:28 hawk Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -40,7 +40,7 @@
 
     function check() {
       if (!isset($this->_check)) {
-        $check_query = tep_db_query("select configuration_value from " . TABLE_CONFIGURATION . " where configuration_key = 'MODULE_ORDER_TOTAL_POINT_STATUS'");
+        $check_query = tep_db_query("select configuration_value from " .  TABLE_CONFIGURATION . " where configuration_key = 'MODULE_ORDER_TOTAL_POINT_STATUS' and site_id = '".SITE_ID."'");
         $this->_check = tep_db_num_rows($check_query);
       }
 
@@ -66,7 +66,7 @@
 	}
 
     function remove() {
-      tep_db_query("delete from " . TABLE_CONFIGURATION . " where configuration_key in ('" . implode("', '", $this->keys()) . "')");
+      tep_db_query("delete from " . TABLE_CONFIGURATION . " where configuration_key in ('" . implode("', '", $this->keys()) . "') and site_id = '".SITE_ID."'");
     }
   }
 ?>

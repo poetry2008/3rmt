@@ -85,7 +85,7 @@
 
     function check() {
       if (!isset($this->_check)) {
-        $check_query = tep_db_query("select configuration_value from " . TABLE_CONFIGURATION . " where configuration_key = 'MODULE_PAYMENT_POSTALMONEYORDER_STATUS'");
+        $check_query = tep_db_query("select configuration_value from " .  TABLE_CONFIGURATION . " where configuration_key = 'MODULE_PAYMENT_POSTALMONEYORDER_STATUS' and site_id = '".SITE_ID."'");
         $this->_check = tep_db_num_rows($check_query);
       }
       return $this->_check;

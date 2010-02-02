@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: convenience_store.php,v 1.5 2003/09/17 00:54:27 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -231,7 +231,7 @@
 
     function check() {
       if (!isset($this->_check)) {
-        $check_query = tep_db_query("select configuration_value from " . TABLE_CONFIGURATION . " where configuration_key = 'MODULE_PAYMENT_CONVENIENCE_STORE_STATUS'");
+        $check_query = tep_db_query("select configuration_value from " .  TABLE_CONFIGURATION . " where configuration_key = 'MODULE_PAYMENT_CONVENIENCE_STORE_STATUS' and site_id = '".SITE_ID."'");
         $this->_check = tep_db_num_rows($check_query);
       }
       return $this->_check;

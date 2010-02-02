@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: advanced_search_result.php,v 1.1.1.1 2003/02/20 01:03:53 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -25,8 +25,9 @@
     $errorno += 1;
     $error = 1;
   }
-
+  if (!isset($HTTP_GET_VARS['dfrom'])) $HTTP_GET_VARS['dfrom'] = NULL;
   $dfrom_to_check = (($HTTP_GET_VARS['dfrom'] == DOB_FORMAT_STRING) ? '' : $HTTP_GET_VARS['dfrom']);
+  if (!isset($HTTP_GET_VARS['dto'])) $HTTP_GET_VARS['dto'] = NULL;
   $dto_to_check = (($HTTP_GET_VARS['dto'] == DOB_FORMAT_STRING) ? '' : $HTTP_GET_VARS['dto']);
 
   if (strlen($dfrom_to_check) > 0) {
@@ -50,6 +51,7 @@
     }
   }
 
+  if (!isset($HTTP_GET_VARS['pfrom'])) $HTTP_GET_VARS['pfrom'] = NULL;
   if (strlen($HTTP_GET_VARS['pfrom']) > 0) {
     $pfrom_to_check = $HTTP_GET_VARS['pfrom'];
     if (!settype($pfrom_to_check, "double")) {
@@ -58,6 +60,7 @@
     }
   }
 
+  if (!isset($HTTP_GET_VARS['pto'])) $HTTP_GET_VARS['pto'] = NULL;
   if (strlen($HTTP_GET_VARS['pto']) > 0) {
     $pto_to_check = $HTTP_GET_VARS['pto'];
     if (!settype($pto_to_check, "double")) {
@@ -252,10 +255,10 @@
     if ($pto)   $where_str .= " and (IF(s.status, s.specials_new_products_price, p.products_price) <= " . $pto . ")";
   }
 
+  $where_str .= " and pd.site_id = '".SITE_ID."'";
   if ( (DISPLAY_PRICE_WITH_TAX == 'true') && ((isset($HTTP_GET_VARS['pfrom']) && tep_not_null($HTTP_GET_VARS['pfrom'])) || (isset($HTTP_GET_VARS['pto']) && tep_not_null($HTTP_GET_VARS['pto']))) ) {
     $where_str .= " group by p.products_id, tr.tax_priority";
   }
-
   if ( (!isset($HTTP_GET_VARS['sort'])) || (!ereg('[1-8][ad]', $HTTP_GET_VARS['sort'])) || (substr($HTTP_GET_VARS['sort'], 0 , 1) > sizeof($column_list)) ) {
     for ($col=0, $n=sizeof($column_list); $col<$n; $col++) {
       if ($column_list[$col] == 'PRODUCT_LIST_NAME') {
