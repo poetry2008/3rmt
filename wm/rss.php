@@ -109,26 +109,24 @@ while ($row = mysql_fetch_array($sql_result)) {
 // dumb method , but it works
   $name = str_replace ('&amp;','&',$name);
   $desc = str_replace ('&amp;','&',$desc);
-  $name = str_replace ('&eacute;','繝ｻ',$name);
-  $desc = str_replace ('&eacute;','繝ｻ',$desc);
-  $name = str_replace ('&agrave;','繝ｻ',$name);
-  $desc = str_replace ('&agrave;','繝ｻ',$desc);
-  $name = str_replace ('&egrave;','繝ｻ',$name);
-  $desc = str_replace ('&egrave;','繝ｻ',$desc);
-  $name = str_replace ('&acirc;','繝ｻ',$name);
-  $desc = str_replace ('&acirc;','繝ｻ',$desc);
-  $name = str_replace ('&ccedil;','繝ｻ',$name);
-  $desc = str_replace ('&ccedil;','繝ｻ',$desc);
-  $name = str_replace ('&ecirc;','繝ｻ',$name);
-  $desc = str_replace ('&ecirc;','繝ｻ',$desc);
-  $name = str_replace ('&icirc;','繝ｻ',$name);
-  $desc = str_replace ('&icirc;','繝ｻ',$desc);
-  $name = str_replace ('&ocirc;','繝ｻ',$name);
-  $desc = str_replace ('&ocirc;','繝ｻ',$desc);
+  $name = str_replace ('&eacute;','ˇ',$name);
+  $desc = str_replace ('&eacute;','ˇ',$desc);
+  $name = str_replace ('&agrave;','ˇ',$name);
+  $desc = str_replace ('&agrave;','ˇ',$desc);
+  $name = str_replace ('&egrave;','ˇ',$name);
+  $desc = str_replace ('&egrave;','ˇ',$desc);
+  $name = str_replace ('&acirc;','ˇ',$name);
+  $desc = str_replace ('&acirc;','ˇ',$desc);
+  $name = str_replace ('&ccedil;','ˇ',$name);
+  $desc = str_replace ('&ccedil;','ˇ',$desc);
+  $name = str_replace ('&ecirc;','ˇ',$name);
+  $desc = str_replace ('&ecirc;','ˇ',$desc);
+  $name = str_replace ('&icirc;','ˇ',$name);
+  $desc = str_replace ('&icirc;','ˇ',$desc);
+  $name = str_replace ('&ocirc;','ˇ',$name);
+  $desc = str_replace ('&ocirc;','ˇ',$desc);
   $name = str_replace ('&nbsp;',' ',$name);
   $desc = str_replace ('&nbsp;',' ',$desc);
-  
-
   
   echo "<item>
   <title>" . htmlspecialchars($name) . "</title>
