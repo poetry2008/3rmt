@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: popup_image.php,v 1.1.1.1 2003/02/20 01:03:53 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -14,7 +14,7 @@
 
   $navigation->remove_current_page();
 
-  $latest_news_query = tep_db_query('SELECT * from ' . TABLE_LATEST_NEWS . ' WHERE news_id = ' . $HTTP_GET_VARS['nID']);
+  $latest_news_query = tep_db_query('SELECT * from ' . TABLE_LATEST_NEWS . ' WHERE news_id = ' . $HTTP_GET_VARS['nID'] . ' and site_id = '.SITE_ID);
   $latest_news = tep_db_fetch_array($latest_news_query);
 ?>
 <!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
