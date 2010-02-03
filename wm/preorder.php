@@ -9,7 +9,7 @@
   require('includes/application_top.php');
 
   if (tep_session_is_registered('customer_id')) {
-    $account = tep_db_query("select customers_firstname, customers_lastname, customers_email_address from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
+    $account = tep_db_query("select customers_firstname, customers_lastname, customers_email_address from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "' and site_id = '".SITE_ID."'");
     $account_values = tep_db_fetch_array($account);
   } elseif (ALLOW_GUEST_TO_TELL_A_FRIEND == 'false') {
     $navigation->set_snapshot();
@@ -18,7 +18,7 @@
 
   $valid_product = false;
   if (isset($HTTP_GET_VARS['products_id'])) {
-    $product_info_query = tep_db_query("select pd.products_name from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "'");
+    $product_info_query = tep_db_query("select pd.products_name from " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" .  (int)$HTTP_GET_VARS['products_id'] . "' and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and pd.site_id = '".SITE_ID."'");
     $valid_product = (tep_db_num_rows($product_info_query) > 0);
   }
 
