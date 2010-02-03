@@ -93,7 +93,17 @@ if (isset($HTTP_GET_VARS['colors']))
 ?>
 <?php page_head();?>
 </head>
-<body <?php echo $body_option?>>
+<?php
+  if (isset($body_option)) {
+?>
+<body <?php echo $body_option;?>>
+<?php
+  } else {
+?>
+<body>
+<?php
+  }
+?>
 <div align="center">
 	<!-- header //-->
 	<?php require(DIR_WS_INCLUDES . 'header.php'); ?>
