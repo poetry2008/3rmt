@@ -14,8 +14,7 @@
 
   //forward 404
 if (isset($HTTP_GET_VARS['goods_id'])) {
-  $_404_query = tep_db_query("select * from " . TABLE_PRESENT_GOODS. " where
-      goods_id = '" . intval($HTTP_GET_VARS['goods_id']) . "'");
+  $_404_query = tep_db_query("select * from " . TABLE_PRESENT_GOODS. " where goods_id = '" . intval($HTTP_GET_VARS['goods_id']) . "' and site_id = '".SITE_ID."'");
   $_404 = tep_db_fetch_array($_404_query);
 
   forward404Unless($_404);
@@ -24,7 +23,7 @@ if (isset($HTTP_GET_VARS['goods_id'])) {
   
   if (!isset($HTTP_GET_VARS['goods_id'])) $HTTP_GET_VARS['goods_id'] = NULL;//del notice
   if($HTTP_GET_VARS['goods_id']) {
-    $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$HTTP_GET_VARS['goods_id']."'") ;
+    $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$HTTP_GET_VARS['goods_id']."' and site_id = '".SITE_ID."'") ;
 	$present = tep_db_fetch_array($present_query) ;
   }	
   
@@ -61,7 +60,7 @@ function popupWindow(url) {
 		  ##    詳細ページ    ##
 		  ######################
 		  if($HTTP_GET_VARS['goods_id'] && !empty($HTTP_GET_VARS['goods_id'])) {
-		  $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$HTTP_GET_VARS['goods_id']."'") ;
+		  $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$HTTP_GET_VARS['goods_id']."' and site_id = '".SITE_ID."'") ;
 		  $present = tep_db_fetch_array($present_query) ;
 		  ?>
           <p align="right" class="main">応募期間 <?php echo tep_date_long($present['start_date']) . '&nbsp;&nbsp;&nbsp;〜&nbsp;&nbsp;&nbsp;' . tep_date_long($present['limit_date']) ; ?></p>
@@ -100,7 +99,7 @@ function popupWindow(url) {
 		  ?>
           <?php
 			  $today = date("Y-m-d", time());
-			  $present_query_raw = "select * from ".TABLE_PRESENT_GOODS." order by start_date DESC";
+			  $present_query_raw = "select * from ".TABLE_PRESENT_GOODS." where site_id = '".SITE_ID."' order by start_date DESC";
 			  $present_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $present_query_raw, $present_numrows);
 			  $present_query = tep_db_query($present_query_raw);
 	?>

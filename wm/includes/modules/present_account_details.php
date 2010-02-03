@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: account_details.php,v 1.5 2004/05/22 04:18:53 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -22,8 +22,10 @@
   $address_form = new addressForm;
 
   // gender
+  if (!isset($account['customers_gender']))  $account['customers_gender'] = NULL;
   $male   = ($account['customers_gender'] == 'm') ? true : false;
   $female = ($account['customers_gender'] == 'f') ? true : false;
+  if (!isset($error))  $error = NULL;
   if ($is_read_only == true) {
       $a_value = ($account['customers_gender'] == 'm') ? MALE : FEMALE;
   } elseif ($error == true) {
@@ -50,6 +52,7 @@
           $a_value = $firstname . tep_draw_hidden_field('firstname');
       }
   } else {
+      if (!isset($account['customers_firstname']))  $account['customers_firstname'] = NULL;
       $a_value = tep_draw_input_field('firstname', $account['customers_firstname'] , "class='input_text'") . '&nbsp;' . ENTRY_FIRST_NAME_TEXT;
   }
   $address_form->setFormLine('firstname',ENTRY_FIRST_NAME,$a_value);
@@ -64,6 +67,7 @@
           $a_value = $lastname . tep_draw_hidden_field('lastname');
       }
   } else {
+      if (!isset($account['customers_lastname']))  $account['customers_lastname'] = NULL;
       $a_value = tep_draw_input_field('lastname', $account['customers_lastname'] , "class='input_text'") . '&nbsp;' . ENTRY_LAST_NAME_TEXT;
   }
   $address_form->setFormLine('lastname',ENTRY_LAST_NAME,$a_value);
@@ -82,6 +86,7 @@
 		  $a_value = tep_draw_input_field('dob','' , "class='input_text'");
       }
   } else {
+      if (!isset($account['customers_dob']))  $account['customers_dob'] = NULL;
       $a_value = tep_draw_input_field('dob', tep_date_short($account['customers_dob']) , "class='input_text'") . '&nbsp;' . ENTRY_DATE_OF_BIRTH_TEXT;
   }
   $address_form->setFormLine('dob',ENTRY_DATE_OF_BIRTH,$a_value);
@@ -100,6 +105,7 @@
           $a_value = $email_address . tep_draw_hidden_field('email_address');
       }
   } else {
+      if (!isset($account['customers_email_address'])) $account['customers_email_address'] = NULL;
       $a_value = tep_draw_input_field('email_address', $account['customers_email_address'] , "class='input_text'") . '&nbsp;' . ENTRY_EMAIL_ADDRESS_TEXT;
   }
   $address_form->setFormLine('email_address',ENTRY_EMAIL_ADDRESS,$a_value);
@@ -128,6 +134,7 @@
           $a_value = $street_address . tep_draw_hidden_field('street_address');
       }
   } else {
+      if (!isset($account['entry_street_address']))  $account['entry_street_address'] = NULL;
       $a_value = tep_draw_input_field('street_address', $account['entry_street_address'] , "class='input_text'") . '&nbsp;' . ENTRY_STREET_ADDRESS_TEXT;
   }
   $address_form->setFormLine('street_address',ENTRY_STREET_ADDRESS,$a_value);
@@ -142,6 +149,7 @@
           $a_value = $suburb . tep_draw_hidden_field('suburb');
       }
   } else {
+      if (!isset($account['entry_suburb']))  $account['entry_suburb'] = NULL;
       $a_value = tep_draw_input_field('suburb', $account['entry_suburb'] , "class='input_text'") . '&nbsp;' . ENTRY_SUBURB_TEXT;
   }
   $address_form->setFormLine('suburb',ENTRY_SUBURB,$a_value);
@@ -156,6 +164,7 @@
           $a_value = $postcode . tep_draw_hidden_field('postcode');
       }
   } else {
+      if (!isset($account['entry_postcode']))  $account['entry_postcode'] = NULL;
       $a_value = tep_draw_input_field('postcode', $account['entry_postcode'] , "class='input_text'") . '&nbsp;' . ENTRY_POST_CODE_TEXT;
   }
   $address_form->setFormLine('postcode',ENTRY_POST_CODE,$a_value);
@@ -170,6 +179,7 @@
           $a_value = $city . tep_draw_hidden_field('city');
       }
   } else {
+      if (!isset($account['entry_city']))  $account['entry_city'] = NULL;
       $a_value = tep_draw_input_field('city', $account['entry_city'] , "class='input_text'") . '&nbsp;' . ENTRY_CITY_TEXT;
   }
   $address_form->setFormLine('city',ENTRY_CITY,$a_value);
@@ -189,6 +199,9 @@
         $a_value = $state . tep_draw_hidden_field('zone_id') . tep_draw_hidden_field('state');
       }
   } else {
+      if (!isset($account['entry_country_id']))  $account['entry_country_id'] = NULL;
+      if (!isset($account['entry_zone_id']))  $account['entry_zone_id'] = NULL;
+      if (!isset($account['entry_state']))  $account['entry_state'] = NULL;
       $state = tep_get_zone_name($account['entry_country_id'], $account['entry_zone_id'], $account['entry_state']);
       if ($address_form->inForm('country')) {
           $a_value = tep_draw_input_field('state', $state , "class='input_text'") . '&nbsp;' . ENTRY_STATE_TEXT;
@@ -286,6 +299,7 @@
       echo $telephone . tep_draw_hidden_field('telephone');
     }
   } else {
+    if (!isset($account['customers_telephone']))  $account['customers_telephone'] = NULL;
     echo tep_draw_input_field('telephone', $account['customers_telephone'], "class='input_text'") . '&nbsp;' . ENTRY_TELEPHONE_NUMBER_TEXT;
   }
 ?></td>
@@ -299,6 +313,7 @@
   } elseif ($processed == true) {
     echo $fax . tep_draw_hidden_field('fax');
   } else {
+    if (!isset($account['customers_fax']))  $account['customers_fax'] = NULL;
     echo tep_draw_input_field('fax', $account['customers_fax'], "class='input_text'") . '&nbsp;' . ENTRY_FAX_NUMBER_TEXT;
   }
 ?></td>
