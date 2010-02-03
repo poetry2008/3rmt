@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: mail_magazine.php,v 1.0 2005/06/21 ds-style Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -35,11 +35,11 @@
 	  }
 	  
 	  
-	  $regist_query = tep_db_query("select count(*) as cnt from " . TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."'");
+	  $regist_query = tep_db_query("select count(*) as cnt from " .  TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."' and site_id = '".SITE_ID."'");
 	  $regist_result = tep_db_fetch_array($regist_query);
 	  if($regist_result['cnt'] == '0') {
 	    //新規登録
-		tep_db_query("insert into " . TABLE_MAIL_MAGAZINE . "(mag_id, mag_email, mag_name) values ('', '".$mag_mail."', '".$mag_name."')");
+		tep_db_query("insert into " . TABLE_MAIL_MAGAZINE . "(mag_id, mag_email, mag_name, site_id) values ('', '".$mag_mail."', '".$mag_name."', '".SITE_ID."')");
 		
 		tep_session_unregister('mag_mail');
 		tep_session_unregister('mag_name');
@@ -60,7 +60,7 @@
 		tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_EMAIL_ERROR), 'SSL'));
 	  }
 
-	  $regist_query = tep_db_query("select count(*) as cnt from " . TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."'");
+	  $regist_query = tep_db_query("select count(*) as cnt from " .  TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."' and site_id = '".SITE_ID."'");
 	  $regist_result = tep_db_fetch_array($regist_query);
 	  if($regist_result['cnt'] == '0') {
 	    //登録情報なし：エラー
@@ -70,7 +70,7 @@
 	    tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_STOP_ERROR), 'SSL'));
 	  } else {
 	    //削除（退会）処理
-		TEP_DB_QUery("delete from " . TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."'");
+		TEP_DB_QUery("delete from " . TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."' and site_id = '".SITE_ID."'");
 		
 		tep_session_unregister('mag_mail');
 		tep_session_unregister('mag_name');
