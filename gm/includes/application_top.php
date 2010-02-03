@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: application_top.php,v 1.3 2003/05/02 10:48:47 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -307,7 +307,11 @@
     }
 
     include(DIR_WS_CLASSES . 'language.php');
-    $lng = new language($HTTP_GET_VARS['language']);
+    if (isset($HTTP_GET_VARS['language'])) {
+      $lng = new language($HTTP_GET_VARS['language']);
+    } else {
+      $lng = new language();
+    }
 
     if (!isset($HTTP_GET_VARS['language'])) $lng->get_browser_language();
 
