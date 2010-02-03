@@ -23,7 +23,7 @@ if(isset($_GET['faq_id'])) {
 		$q_no = $faq_no[1];
 		$q_id = rtrim($q_no, ".html");
 		
-		$categories_query = tep_db_query("select categories_name from categories_description where categories_id = '".$g_id."' and language_id = '".$languages_id."'");
+		$categories_query = tep_db_query("select categories_name from categories_description where categories_id = '".$g_id."' and language_id = '".$languages_id."' and site_id = '".SITE_ID."'");
 		$categories = tep_db_fetch_array($categories_query);
 		$gc_name = $categories['categories_name'];
 		
