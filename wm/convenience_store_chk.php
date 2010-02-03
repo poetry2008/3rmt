@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: convenience_store_chk.php,v 1.6 2003/06/09 00:54:22 suzukawa Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -53,7 +53,7 @@
 	}
 	
 	
-	$order_query = tep_db_query("select customers_email_address from " . TABLE_ORDERS . " where orders_id = '" . $oid . "'");
+	$order_query = tep_db_query("select customers_email_address from " .  TABLE_ORDERS . " where orders_id = '" . $oid . "' and site_id = '".SITE_ID."'");
 	$order_result = tep_db_fetch_array($order_query);
 	$mail = $order_result['customers_email_address'];
 	
