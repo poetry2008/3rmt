@@ -1,4 +1,4 @@
-<a href="http://www.hotgame.co.jp/" class="blank">オンラインゲーム</a>
+﻿<a href="http://www.hotgame.co.jp/" class="blank">オンラインゲーム</a>
 <a href="http://www.hotgame.co.jp/" class="blank">ネットゲーム</a>
 <a href="http://www.hotgame.co.jp/Action/member.php?ACTION=ChatSelectForm&amp;SUBJECT=Bbs" class="blank">オンラインゲーム掲示板</a>
 <a href="http://www.hotgame.co.jp/Action/member.php?ACTION=ItemTradeSelectForm&amp;SUBJECT=Bbs" class="blank">MMORPG アイテムトレード</a>

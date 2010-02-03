@@ -1,6 +1,6 @@
-<?php
+﻿<?php
 /*
-  $Id: latest_news.php.php,v 1.3 2003/05/06 12:10:02 hawk Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -10,7 +10,7 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE', '縺顔衍繧峨○');
-define('HEADING_TITLE', '縺顔衍繧峨○');
+define('NAVBAR_TITLE', 'お知らせ');
+define('HEADING_TITLE', 'お知らせ');
 
 ?>
