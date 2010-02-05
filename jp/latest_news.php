@@ -12,7 +12,7 @@
   //forward 404
 if (isset($HTTP_GET_VARS['news_id'])) {
   $_404_query = tep_db_query("select * from " . TABLE_LATEST_NEWS. " where
-      news_id = '" . intval($HTTP_GET_VARS['news_id']) . "'");
+      news_id = '" . intval($HTTP_GET_VARS['news_id']) . "' and site_id = '".SITE_ID."'");
   $_404 = tep_db_fetch_array($_404_query);
 
   forward404Unless($_404);
