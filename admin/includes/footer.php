@@ -55,4 +55,4 @@ $testArray = array();
 <?php print_r($logger->queries);?>
 </pre>
 </div>
-<? }?>
+<?php }?>

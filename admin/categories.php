@@ -1036,7 +1036,7 @@ function mess(){
 			 echo '<br>'.tep_info_image($pInfo->products_image,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT).'<br>'."\n";
 			?>
 			<a href="javascript:confirmg('この画像を削除しますか？','<?php echo tep_href_link('categories.php?cPath='.$HTTP_GET_VARS['cPath'].'&pID='.$HTTP_GET_VARS['pID'].'&cl=products_image&action='.$HTTP_GET_VARS['action'].'&file='.$pInfo->products_image.'&mode=p_delete') ; ?>');" style="color:#0000FF;">この画像を削除する</a>
-			<? } ?>
+			<?php } ?>
 			</td>
           </tr>
           <tr>
@@ -1047,7 +1047,7 @@ function mess(){
 			 echo '<br>'.tep_info_image($pInfo->products_image2,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT).'<br>'."\n";
 			?>
 			<a href="javascript:confirmg('この画像を削除しますか？','<?php echo tep_href_link('categories.php?cPath='.$HTTP_GET_VARS['cPath'].'&pID='.$HTTP_GET_VARS['pID'].'&cl=products_image2&action='.$HTTP_GET_VARS['action'].'&file='.$pInfo->products_image2.'&mode=p_delete') ; ?>');" style="color:#0000FF;">この画像を削除する</a>
-			<? } ?>
+			<?php } ?>
 			</td>
           </tr>
           <tr>
@@ -1058,7 +1058,7 @@ function mess(){
 			 echo '<br>'.tep_info_image($pInfo->products_image3,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT).'<br>'."\n";
 			?>
 			<a href="javascript:confirmg('この画像を削除しますか？','<?php echo tep_href_link('categories.php?cPath='.$HTTP_GET_VARS['cPath'].'&pID='.$HTTP_GET_VARS['pID'].'&cl=products_image3&action='.$HTTP_GET_VARS['action'].'&file='.$pInfo->products_image3.'&mode=p_delete') ; ?>');" style="color:#0000FF;">この画像を削除する</a>
-			<? } ?>
+			<?php } ?>
 			</td>
           </tr>
                   </table>

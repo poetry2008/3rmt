@@ -335,7 +335,7 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                         <td><table width="100%"  border="0" cellspacing="1" cellpadding="3">
                             <tr>
                               <td class="main" width="150" bgcolor="#FFFFFF">タイトル</td>
-                              <td class="main" width="630" bgcolor="#FFFFFF"><input name="title" type="text" value="<? echo $sql1['title'] ;?>"></td>
+                              <td class="main" width="630" bgcolor="#FFFFFF"><input name="title" type="text" value="<?php echo $sql1['title'] ;?>"></td>
                             </tr>
                             <tr>
                               <td class="main" width="150" bgcolor="#FFFFFF">画像</td>
@@ -510,7 +510,7 @@ $sql2 = tep_db_fetch_array($sele2);
                             </tr>
                             <tr>
                               <td class="main" width="150" bgcolor="#FFFFFF">姓名</td>
-                              <td class="main" width="630" bgcolor="#FFFFFF"><? echo $sql2['family_name'] ;?><? echo $sql2['first_name'] ;?></td>
+                              <td class="main" width="630" bgcolor="#FFFFFF"><?php echo $sql2['family_name'] ;?><?php echo $sql2['first_name'] ;?></td>
                             </tr>
                             <tr>
                               <td class="main" width="150" bgcolor="#FFFFFF">e-mail</td>
@@ -518,18 +518,18 @@ $sql2 = tep_db_fetch_array($sele2);
                             </tr>
                             <tr>
                               <td class="main" width="150" bgcolor="#FFFFFF">住所</td>
-                              <td class="main" width="630" bgcolor="#FFFFFF">〒<? echo $sql2['postcode'] ;?><br>
-                                <? echo $sql2['prefectures'] ;?><? echo $sql2['cities'] ;?><br>
-                                <? echo $sql2['address1'] ;?><br>
-                                <? echo $sql2['address2'] ;?></td>
+                              <td class="main" width="630" bgcolor="#FFFFFF">〒<?php echo $sql2['postcode'] ;?><br>
+                                <?php echo $sql2['prefectures'] ;?><?php echo $sql2['cities'] ;?><br>
+                                <?php echo $sql2['address1'] ;?><br>
+                                <?php echo $sql2['address2'] ;?></td>
                             </tr>
                             <tr>
                               <td class="main" width="150" bgcolor="#FFFFFF">電話</td>
-                              <td class="main" width="630" bgcolor="#FFFFFF"><? echo $sql2['phone'] ;?></td>
+                              <td class="main" width="630" bgcolor="#FFFFFF"><?php echo $sql2['phone'] ;?></td>
                             </tr>
                             <tr>
                               <td class="main" width="150" bgcolor="#FFFFFF">申込み日</td>
-                              <td class="main" width="630" bgcolor="#FFFFFF"><? echo $sql2['tourokubi'] ;?></td>
+                              <td class="main" width="630" bgcolor="#FFFFFF"><?php echo $sql2['tourokubi'] ;?></td>
                             </tr>
                           </table>
 						  </td>
