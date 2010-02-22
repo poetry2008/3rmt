@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: address_book_process.php,v 1.4 2004/05/16 02:56:49 suzukawa Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

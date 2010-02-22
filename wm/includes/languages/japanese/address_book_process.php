@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: address_book_process.php,v 1.4 2003/05/03 11:12:40 hawk Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

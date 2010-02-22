@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: _sagawaex.php,v 1.1 2003/04/12 11:28:46 ptosh Exp $
+  $Id$
 
   SagawaEx Shipping Calculator.
   Calculate shipping costs.

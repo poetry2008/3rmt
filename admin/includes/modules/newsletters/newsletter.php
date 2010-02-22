@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: newsletter.php,v 1.2 2003/03/18 02:51:42 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

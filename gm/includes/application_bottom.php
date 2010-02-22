@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: application_bottom.php,v 1.2 2004/07/01 02:27:49 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

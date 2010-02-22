@@ -92,27 +92,6 @@
 
   $order_totals = $order_total_modules->process();
   
-  # Random
-  function ds_makeRandStr( $len=2 ) {
-
-    $strElem = "0123456789";
-
-    $strElemArray = preg_split("//", $strElem, 0, PREG_SPLIT_NO_EMPTY);
-
-    $retStr = "";
-
-    srand( (double)microtime() * 100000);
-
-    for( $i=0; $i<$len; $i++ ) {
-
-        $retStr .= $strElemArray[array_rand($strElemArray, 1)];
-
-    }
-
-    return $retStr;
-
-  }
-  
   # Select
   $cnt = strlen($NewOid);
 
@@ -428,12 +407,6 @@
   $email_order .= $products_ordered . "\n";
 
   //$email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
-  function str_string($string='') {
-    if(ereg("-", $string)) {
-	  $string_array = explode("-", $string);
-	  return $string_array[0] . '年' . $string_array[1] . '月' . $string_array[2] . '日';
-	}
-  }
   $email_order .= '▼取引日時　　　　：' . str_string($date) . $hour . '時' . $min . '分　（24時間表記）' . "\n";
   $email_order .= '　　　　　　　　　：' . $torihikihouhou . "\n";
   //$email_order .= '※ 取引の混雑により5分程度お待ちいただく場合がございます。予めご了承ください。' . "\n\n";

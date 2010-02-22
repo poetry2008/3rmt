@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: orders.php,v 1.7 2003/05/31 06:59:00 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

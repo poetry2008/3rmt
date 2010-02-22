@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: packingslip.php,v 1.3 2004/05/31 10:48:37 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

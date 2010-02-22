@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: html_output.php,v 1.2 2003/03/07 01:21:41 junnichi Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

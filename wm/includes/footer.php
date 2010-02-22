@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: footer.php,v 1.1 2003/09/08 19:26:06 jhtalk Exp jhtalk $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

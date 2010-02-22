@@ -1,6 +1,10 @@
 <?php
+// 3rmt over
 /*
   $Id$
+
+  一个商品的评论列表页
+  ex: http://www.iimy.co.jp/item/pr-31693.html
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -14,24 +18,35 @@
 
   //forward 404
 if (isset($HTTP_GET_VARS['products_id'])) {
-  $_404_query = tep_db_query("select * from " . TABLE_PRODUCTS . " where products_id
-      = '" . intval($HTTP_GET_VARS['products_id']) . "'");
+  $_404_query = tep_db_query("
+      SELECT * 
+      FROM " . TABLE_PRODUCTS . " 
+      WHERE products_id = '" . intval($HTTP_GET_VARS['products_id']) . "'
+      ");
   $_404 = tep_db_fetch_array($_404_query);
 
   forward404Unless($_404);
 }
-	
+
 // lets retrieve all $HTTP_GET_VARS keys and values..
-  $get_params = tep_get_all_get_params();
+  $get_params      = tep_get_all_get_params();
   $get_params_back = tep_get_all_get_params(array('reviews_id')); // for back button
-  $get_params = substr($get_params, 0, -1); //remove trailing &
+  $get_params      = substr($get_params, 0, -1); //remove trailing &
   if (tep_not_null($get_params_back)) {
     $get_params_back = substr($get_params_back, 0, -1); //remove trailing &
   } else {
     $get_params_back = $get_params;
   }
 
-  $product_info_query = tep_db_query("select pd.products_name from " .  TABLE_PRODUCTS_DESCRIPTION . " pd left join " . TABLE_PRODUCTS . " p on pd.products_id = p.products_id where pd.language_id = '" . $languages_id . "' and p.products_status = '1' and pd.products_id = '" .  (int)$HTTP_GET_VARS['products_id'] . "' and pd.site_id = ".SITE_ID);
+  $product_info_query = tep_db_query("
+      SELECT pd.products_name 
+      FROM " .  TABLE_PRODUCTS_DESCRIPTION . " pd 
+        LEFT JOIN " . TABLE_PRODUCTS . " p ON pd.products_id = p.products_id 
+      WHERE pd.language_id = '" . $languages_id . "' 
+        AND p.products_status = '1' 
+        AND pd.products_id = '" .  (int)$HTTP_GET_VARS['products_id'] . "' 
+        AND pd.site_id = " . SITE_ID
+      );
   if (!tep_db_num_rows($product_info_query)) tep_redirect(tep_href_link(FILENAME_REVIEWS));
   $product_info = tep_db_fetch_array($product_info_query);
 
@@ -71,7 +86,19 @@ if (isset($HTTP_GET_VARS['products_id'])) {
             <td colspan="5"><?php echo tep_draw_separator(); ?></td>
           </tr>
 <?php
-  $reviews_query = tep_db_query("select reviews_rating, reviews_id, customers_name, date_added, last_modified, reviews_read from " . TABLE_REVIEWS . " where products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and reviews_status = '1' and site_id = ".SITE_ID." order by reviews_id DESC");
+  $reviews_query = tep_db_query("
+      SELECT reviews_rating, 
+             reviews_id, 
+             customers_name, 
+             date_added, 
+             last_modified, 
+             reviews_read 
+      FROM " . TABLE_REVIEWS . " 
+      WHERE products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' 
+        AND reviews_status = '1' 
+        AND site_id = ".SITE_ID." 
+      ORDER BY reviews_id DESC
+      ");
   if (tep_db_num_rows($reviews_query)) {
     $row = 0;
     while ($reviews = tep_db_fetch_array($reviews_query)) {

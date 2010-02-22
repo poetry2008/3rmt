@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: stats_customers.php,v 1.2 2003/02/21 03:40:38 hawk Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

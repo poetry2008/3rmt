@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: account_details.php,v 1.5 2004/05/22 04:18:53 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

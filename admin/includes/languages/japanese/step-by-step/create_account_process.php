@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: create_account_process.php,v 1 12:01 AM 17/08/2003 frankl Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

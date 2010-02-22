@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: ot_total.php,v 1.6 2003/05/09 07:14:35 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

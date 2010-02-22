@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: documents.php, v 1.0 20090909 PM kymation Exp $
+  $Id$
   $Loc: catalog/admin/includes/languages/english/
 
   osCommerce, Open Source E-Commerce Solutions

@@ -1,6 +1,9 @@
 <?php
+// 3rmt over
 /*
-  $Id: checkout_shipping_address.php,v 1.4 2004/05/26 06:18:27 ptosh Exp $
+  $Id$
+
+  编辑订单送货地址页
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -33,30 +36,29 @@
     tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL'));
   }
 
-  $error = false;
+  $error   = false;
   $process = false;
+  // 以下是处理表单部分
   if (isset($HTTP_POST_VARS['action']) && ($HTTP_POST_VARS['action'] == 'submit')) {
 // process a new shipping address
     if (tep_not_null($HTTP_POST_VARS['firstname']) && tep_not_null($HTTP_POST_VARS['lastname']) && tep_not_null($HTTP_POST_VARS['street_address'])) {
       $process = true;
 
-      $gender = tep_db_prepare_input($HTTP_POST_VARS['gender']);
-      $company = tep_db_prepare_input($HTTP_POST_VARS['company']);
+      $gender    = tep_db_prepare_input($HTTP_POST_VARS['gender']);
+      $company   = tep_db_prepare_input($HTTP_POST_VARS['company']);
       $firstname = tep_db_prepare_input($HTTP_POST_VARS['firstname']);
-      $lastname = tep_db_prepare_input($HTTP_POST_VARS['lastname']);
+      $lastname  = tep_db_prepare_input($HTTP_POST_VARS['lastname']);
 	  
-	  //add
-	  $firstname_f = tep_db_prepare_input($HTTP_POST_VARS['firstname_f']);
-      $lastname_f = tep_db_prepare_input($HTTP_POST_VARS['lastname_f']);
+      $firstname_f = tep_db_prepare_input($HTTP_POST_VARS['firstname_f']);
+      $lastname_f  = tep_db_prepare_input($HTTP_POST_VARS['lastname_f']);
 	  
       $street_address = tep_db_prepare_input($HTTP_POST_VARS['street_address']);
-      $suburb = tep_db_prepare_input($HTTP_POST_VARS['suburb']);
+      $suburb   = tep_db_prepare_input($HTTP_POST_VARS['suburb']);
       $postcode = tep_db_prepare_input($HTTP_POST_VARS['postcode']);
-      $city = tep_db_prepare_input($HTTP_POST_VARS['city']);
-      $country = tep_db_prepare_input($HTTP_POST_VARS['country']);
-      $zone_id = tep_db_prepare_input($HTTP_POST_VARS['zone_id']);
-      $state = tep_db_prepare_input($HTTP_POST_VARS['state']);
-// 2003-06-06 add_telephone
+      $city     = tep_db_prepare_input($HTTP_POST_VARS['city']);
+      $country  = tep_db_prepare_input($HTTP_POST_VARS['country']);
+      $zone_id  = tep_db_prepare_input($HTTP_POST_VARS['zone_id']);
+      $state    = tep_db_prepare_input($HTTP_POST_VARS['state']);
       $telephone = tep_db_prepare_input($HTTP_POST_VARS['telephone']);
 
       if (ACCOUNT_GENDER == 'true') {
@@ -139,11 +141,20 @@
         } else {
           $zone_id = 0;
           $entry_state_error = false;
-          $check_query = tep_db_query("select count(*) as total from " . TABLE_ZONES . " where zone_country_id = '" . tep_db_input($country) . "'");
+          $check_query = tep_db_query("
+              SELECT count(*) AS total 
+              FROM " . TABLE_ZONES . " 
+              WHERE zone_country_id = '" . tep_db_input($country) . "'
+              ");
           $check_value = tep_db_fetch_array($check_query);
           $entry_state_has_zones = ($check_value['total'] > 0);
           if ($entry_state_has_zones == true) {
-            $zone_query = tep_db_query("select zone_id from " . TABLE_ZONES . " where zone_country_id = '" . tep_db_input($country) . "' and zone_name = '" . tep_db_input($state) . "'");
+            $zone_query = tep_db_query("
+                SELECT zone_id 
+                FROM " . TABLE_ZONES . " 
+                WHERE zone_country_id = '" . tep_db_input($country) . "' 
+                  AND zone_name       = '" . tep_db_input($state) . "'
+                ");
             if (tep_db_num_rows($zone_query) == 1) {
               $zone_values = tep_db_fetch_array($zone_query);
               $zone_id = $zone_values['zone_id'];
@@ -160,7 +171,6 @@
         }
       }
 
-// 2003-06-06 add_telephone
       if (strlen($telephone) < ENTRY_TELEPHONE_MIN_LENGTH) {
         $telephone_error = true;
         $error = true;
@@ -169,7 +179,11 @@
       }
 
       if ($error == false) {
-        $next_id_query = tep_db_query("select max(address_book_id) as address_book_id from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer_id . "'");
+        $next_id_query = tep_db_query("
+            SELECT MAX(address_book_id) AS address_book_id 
+            FROM " . TABLE_ADDRESS_BOOK . " 
+            WHERE customers_id = '" . $customer_id . "'
+            ");
         if (tep_db_num_rows($next_id_query)) {
           $next_id = tep_db_fetch_array($next_id_query);
           $entry_id = $next_id['address_book_id']+1;
@@ -231,7 +245,12 @@
 
       $sendto = $HTTP_POST_VARS['address'];
 
-      $check_address_query = tep_db_query("select count(*) as total from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer_id . "' and address_book_id = '" . $sendto . "'");
+      $check_address_query = tep_db_query("
+          SELECT COUNT(*) AS total 
+          FROM " . TABLE_ADDRESS_BOOK . " 
+          WHERE customers_id = '" . $customer_id . "' 
+            AND address_book_id = '" . $sendto . "'
+          ");
       $check_address = tep_db_fetch_array($check_address_query);
 
       if ($check_address['total'] == '1') {
@@ -248,6 +267,11 @@
     }
   }
 
+
+
+
+
+// 下面是静态页部分
 // if no shipping destination address was selected, use their own address as default
   if (!tep_session_is_registered('sendto')) {
     $sendto = $customer_default_address_id;
@@ -295,13 +319,12 @@ function check_form() {
   var error = 0;
   var error_message = "<?php echo JS_ERROR; ?>";
 
-  var firstname = document.checkout_address.firstname.value;
-  var lastname = document.checkout_address.lastname.value;
+  var firstname      = document.checkout_address.firstname.value;
+  var lastname       = document.checkout_address.lastname.value;
   var street_address = document.checkout_address.street_address.value;
-  var postcode = document.checkout_address.postcode.value;
-  var city = document.checkout_address.city.value;
-<?php // 2003-06-06 add_telephone ?>
-  var telephone = document.checkout_address.telephone.value;
+  var postcode       = document.checkout_address.postcode.value;
+  var city           = document.checkout_address.city.value;
+  var telephone      = document.checkout_address.telephone.value;
 
   if (firstname == '' && lastname == '' && street_address == '') {
     return true;
@@ -463,7 +486,12 @@ function check_form() {
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
             <?php
-    $addresses_count_query = tep_db_query("select count(*) as total from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer_id . "' and address_book_id != '" . $sendto . "'");
+    $addresses_count_query = tep_db_query("
+        SELECT COUNT(*) AS total 
+        FROM " . TABLE_ADDRESS_BOOK . " 
+        WHERE customers_id = '" . $customer_id . "' 
+          AND address_book_id != '" . $sendto . "'
+        ");
     $addresses_count = tep_db_fetch_array($addresses_count_query);
 
     if ($addresses_count['total'] > 0) {
@@ -489,7 +517,22 @@ function check_form() {
       $radio_buttons = 0;
 
 // 2003-06-06 add_telephone
-      $addresses_query = tep_db_query("select address_book_id, entry_firstname as firstname, entry_lastname as lastname, entry_company as company, entry_street_address as street_address, entry_suburb as suburb, entry_city as city, entry_postcode as postcode, entry_state as state, entry_zone_id as zone_id, entry_country_id as country_id, entry_telephone as telephone from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer_id . "'");
+      $addresses_query = tep_db_query("
+          SELECt address_book_id, 
+                 entry_firstname      AS firstname, 
+                 entry_lastname       AS lastname, 
+                 entry_company        AS company, 
+                 entry_street_address AS street_address, 
+                 entry_suburb         AS suburb, 
+                 entry_city           AS city, 
+                 entry_postcode       AS postcode, 
+                 entry_state          AS state, 
+                 entry_zone_id        AS zone_id, 
+                 entry_country_id     AS country_id, 
+                 entry_telephone      AS telephone 
+           FROM " . TABLE_ADDRESS_BOOK . " 
+           WHERE customers_id = '" . $customer_id . "'
+         ");
       while ($addresses = tep_db_fetch_array($addresses_query)) {
         $format_id = tep_get_address_format_id($addresses['country_id']);
 ?> 

@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: specials.php,v 1.1.1.1 2003/02/20 01:03:52 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

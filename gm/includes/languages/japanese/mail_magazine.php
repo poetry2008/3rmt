@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: mail_magazine.php,v 1.0 2005/06/21 ds-style Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

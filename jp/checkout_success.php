@@ -1,6 +1,9 @@
 <?php
+// 3rmt over
 /*
   $Id$
+
+  订制订单完成页
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -12,6 +15,7 @@
 
   require('includes/application_top.php');
 
+// 以下是动作
 // if the customer is not logged on, redirect them to the shopping cart page
   if (!tep_session_is_registered('customer_id')) {
     tep_redirect(tep_href_link(FILENAME_SHOPPING_CART));
@@ -29,20 +33,39 @@
     tep_redirect(tep_href_link(FILENAME_DEFAULT, $notify_string));
   }
 
+
+
+// 以下是页面
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_SUCCESS);
 
   $breadcrumb->add(NAVBAR_TITLE_1);
   $breadcrumb->add(NAVBAR_TITLE_2);
 
-  $global_query = tep_db_query("select global_product_notifications from " . TABLE_CUSTOMERS_INFO . " where customers_info_id = '" . $customer_id . "'");
+  $global_query = tep_db_query("
+      SELECT global_product_notifications 
+      FROM " . TABLE_CUSTOMERS_INFO . " 
+      WHERE customers_info_id = '" . $customer_id . "'
+      ");
   $global = tep_db_fetch_array($global_query);
 
   if ($global['global_product_notifications'] != '1') {
-    $orders_query = tep_db_query("select orders_id from " . TABLE_ORDERS . " where customers_id = '" . $customer_id . "' and site_id = '".SITE_ID."' order by date_purchased desc limit 1");
+    $orders_query = tep_db_query("
+        SELECT orders_id 
+        FROM " . TABLE_ORDERS . " 
+        WHERE customers_id = '" . $customer_id . "' 
+         AND site_id = '".SITE_ID."' 
+        ORDER BY date_purchased DESC 
+        LIMIT 1
+      ");
     $orders = tep_db_fetch_array($orders_query);
 
     $products_array = array();
-    $products_query = tep_db_query("select products_id, products_name from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . $orders['orders_id'] . "' order by products_name");
+    $products_query = tep_db_query("
+        SELECT products_id, products_name 
+        FROM " . TABLE_ORDERS_PRODUCTS . " 
+        WHERE orders_id = '" . $orders['orders_id'] . "' 
+        ORDER BY products_name
+      ");
     while ($products = tep_db_fetch_array($products_query)) {
       $products_array[] = array('id' => $products['products_id'],
                                 'text' => $products['products_name']);
@@ -58,9 +81,11 @@
   <!-- body //--> 
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
     <tr> 
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
+      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> 
+      <!-- left_navigation //--> 
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-        <!-- left_navigation_eof //--> </td> 
+      <!-- left_navigation_eof //-->
+      </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents"><?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_SUCCESS, 'action=update', 'SSL')); ?> 
         <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 

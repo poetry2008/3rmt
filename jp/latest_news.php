@@ -1,30 +1,24 @@
 <?php
+// 3rmt over
 /*
   $Id$
+
+  新闻列表和新闻内容页面
+
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
+
   Copyright (c) 2003 osCommerce
+
   Released under the GNU General Public License
 */
 
 	require('includes/application_top.php');
-	
-  //forward 404
-if (isset($HTTP_GET_VARS['news_id'])) {
-  $_404_query = tep_db_query("select * from " . TABLE_LATEST_NEWS. " where
-      news_id = '" . intval($HTTP_GET_VARS['news_id']) . "' and site_id = '".SITE_ID."'");
-  $_404 = tep_db_fetch_array($_404_query);
-
-  forward404Unless($_404);
-}
-	
 	require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_LATEST_NEWS);
 	
 	$breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_LATEST_NEWS));
 	
-  if (!isset($HTTP_GET_VARS['news_id'])) $HTTP_GET_VARS['news_id']=NULL;
-	$latest_news_query = tep_db_query('SELECT * from ' . TABLE_LATEST_NEWS . ' WHERE news_id = ' . (int)$HTTP_GET_VARS['news_id'] . ' and site_id=' . SITE_ID);
-	$latest_news = tep_db_fetch_array($latest_news_query);
+  //if (!isset($HTTP_GET_VARS['news_id'])) $HTTP_GET_VARS['news_id']=NULL;
 ?>
 <?php page_head();?>
 <script type="text/javascript" src="js/emailProtector.js"></script>
@@ -54,12 +48,23 @@ function popupWindow(url) {
 					<tr>
 						<td>
 <?php
-	if ($HTTP_GET_VARS['news_id']) {  
-          echo '<table width="100%">';
-		if($latest_news['news_image']) {
-          echo '<tr>';
-          echo '<td  width="60" align="left">';
+	if (isset($HTTP_GET_VARS['news_id']) && intval($HTTP_GET_VARS['news_id'])) {  
+    $latest_news_query = tep_db_query('
+        SELECT * 
+        FROM ' . TABLE_LATEST_NEWS . ' 
+        WHERE news_id = ' . (int)$HTTP_GET_VARS['news_id'] . ' 
+          AND site_id=' . SITE_ID
+    );
+    $latest_news = tep_db_fetch_array($latest_news_query);
+    // forward 404
+    forward404Unless($latest_news);
 ?>
+          <table width="100%">
+<?
+		if($latest_news['news_image']) {
+?>
+          <tr>
+          <td  width="60" align="left">
 											<script type="text/javascript">
 												<!--
 													document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link(FILENAME_POPUP_IMAGE_NEWS, 'nID=' . $latest_news['news_id']) . '\\\')">' . tep_image(DIR_WS_IMAGES . $latest_news['news_image'], addslashes($latest_news['headline']), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?>');
@@ -84,7 +89,13 @@ function popupWindow(url) {
                                                                 </table>
 <?php
 	} else {
-		$latest_news_query_raw = 'SELECT * from ' . TABLE_LATEST_NEWS . ' WHERE status = 1 and site_id = ' . SITE_ID . ' ORDER BY isfirst DESC, date_added DESC';
+		$latest_news_query_raw = '
+      SELECT * 
+      FROM ' . TABLE_LATEST_NEWS . ' 
+      WHERE status = 1 
+        AND site_id = ' . SITE_ID . ' 
+      ORDER BY isfirst DESC, date_added DESC
+    ';
 		$latest_news_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_LATEST_NEWS, $latest_news_query_raw, $latest_news_numrows);
 		$latest_news_query = tep_db_query($latest_news_query_raw);
 	

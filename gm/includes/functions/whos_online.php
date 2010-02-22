@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: whos_online.php,v 1.4 2004/05/26 06:18:27 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

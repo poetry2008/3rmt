@@ -12,14 +12,14 @@
 
   require('includes/application_top.php');
   //forward 404
-if ($HTTP_GET_VARS['products_id'])
-{
-  $_404_query = tep_db_query("select * from " . TABLE_PRODUCTS . " where products_id
-      = " . $HTTP_GET_VARS['products_id']);
-  $_404 = tep_db_fetch_array($_404_query);
+  if ($HTTP_GET_VARS['products_id'])
+  {
+    $_404_query = tep_db_query("select * from " . TABLE_PRODUCTS . " where products_id
+        = " . $HTTP_GET_VARS['products_id']);
+    $_404 = tep_db_fetch_array($_404_query);
 
-  forward404Unless($_404);
-}
+    forward404Unless($_404);
+  }
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRODUCT_INFO);
   
@@ -35,6 +35,8 @@ $the_manufacturer_query = tep_db_query("select m.manufacturers_id, m.manufacture
 $the_manufacturers = tep_db_fetch_array($the_manufacturer_query);
 // end dynamic meta tags query -->
 ?>
+
+
 <?php page_head();?>
 <script type="text/javascript" src="js/prototype.js"></script>
 <script type="text/javascript" src="js/scriptaculous.js?load=effects"></script>
@@ -119,27 +121,11 @@ function showimage($1) {
 	  $products_price = $currencies->display_price($product_info['products_price'], tep_get_tax_rate($product_info['products_tax_class_id']));
     }
 	
-	//Add ds-style - 2005.11.29
-	// edit 2009.5.14 maker
-	//$description = explode("|-#-|", $product_info['products_description']);
 	$description = $product_info['products_description'];
-	//data1
 	$data1 = explode("//", $product_info['products_attention_1']);
-	//data1
 	$data2 = explode("//", $product_info['products_attention_2']);
-	//data1
 	$data3 = explode("//", $product_info['products_attention_3']);
-	//data1
 	$data4 = explode("//", $product_info['products_attention_4']);
-	//data1
-	//$data5 = explode("//", $product_info['products_attention_5']);
-?>
-<?php 
-			//if(tep_not_null(ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1)) { 
-			//    echo tep_image(DIR_WS_IMAGES.tep_not_null(ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1) ;
-            //  }else{
-			//    echo '' ;
-            //  }
 ?>
         <h1 class="pageHeading_long"><?php echo $product_info['products_name']; ?></h1>
         <h2 class="line"><?php echo ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1); ?> <?php echo ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],2); ?></h2>
@@ -260,9 +246,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
 <?php if (file_exists(DIR_FS_CATALOG . DIR_WS_IMAGES . $tag['tags_images']) && $tag['tags_images'])
  {
    echo tep_image(DIR_WS_IMAGES . $tag['tags_images'], $tag['tags_name'] , 20, 15);
- }
-  else
-  { 
+ } else { 
     $tag['tags_name'];
   }
   ?>
@@ -327,18 +311,14 @@ while($tag = tep_db_fetch_array($tag_query)) {
         echo '<tr><td class="main">' . $products_options_name['products_options_name'] . ':</td><td>' . "\n";
         $products_options_query = tep_db_query("select pov.products_options_values_id, pov.products_options_values_name, pa.options_values_price, pa.price_prefix, pa.products_at_quantity, pa.products_at_quantity from " . TABLE_PRODUCTS_ATTRIBUTES . " pa, " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov where pa.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and pa.options_id = '" . $products_options_name['products_options_id'] . "' and pa.options_values_id = pov.products_options_values_id and pov.language_id = '" . $languages_id . "' order by pa.products_attributes_id");
         while ($products_options = tep_db_fetch_array($products_options_query)) {
-          //add products_at_quantity - ds-style
 		  if($products_options['products_at_quantity'] > 0) {
 		    $products_options_array[] = array('id' => $products_options['products_options_values_id'], 'text' => $products_options['products_options_values_name']);
             if ($products_options['options_values_price'] != '0') {
               $products_options_array[sizeof($products_options_array)-1]['text'] .= ' (' . $products_options['price_prefix'] . $currencies->display_price($products_options['options_values_price'], tep_get_tax_rate($product_info['products_tax_class_id'])) .') ';
             }
-			//options stock
-//			$products_options_array[sizeof($products_options_array)-1]['text'] .= ' (在庫:' . $products_options['products_at_quantity'] .') ';
 			
 		  }
         }
-        //if (!isset($cart->contents[$HTTP_GET_VARS['products_id']]['attributes'][$products_options_name['products_options_id']])) $cart->contents[$HTTP_GET_VARS['products_id']]['attributes'][$products_options_name['products_options_id']] = NULL; 
         echo tep_draw_pull_down_menu('id[' .  $products_options_name['products_options_id'] . ']' ,
             $products_options_array, isset($cart->contents[$HTTP_GET_VARS['products_id']]['attributes'][$products_options_name['products_options_id']])?$cart->contents[$HTTP_GET_VARS['products_id']]['attributes'][$products_options_name['products_options_id']]:NULL);
         echo '</td></tr>';
@@ -430,31 +410,19 @@ document.write('<?php //echo '<td class="smallText" align="center"><a href="java
         }
  ?>
         <div class="underline">&nbsp;</div>
-     	<?php if($description){?>
+     <?php if($description){?>
 		<br>
 		<h3 class="pageHeading_long"><?php echo $product_info['products_name']; ?>について</h3>
         <!-- 説明文　-->
-        <p>
-              <?php 
-            //Edit ds-style 2005.11.29
-            //echo stripslashes($product_info['products_description']);
-            echo $description;
-            ?>
-        </p>
-         <?php }?>
-        <?php
-//    $reviews = tep_db_query("select count(*) as count from " . TABLE_REVIEWS . " where products_id = '" . $HTTP_GET_VARS['products_id'] . "'");
-//    $reviews_values = tep_db_fetch_array($reviews);
-//    if ($reviews_values['count'] > 0) {
-    include(DIR_WS_BOXES.'reviews.php') ;
-?>
+        <p> <?php echo $description; ?> </p>
+     <?php }?>
+        <?php include(DIR_WS_BOXES.'reviews.php') ; ?>
         <!-- 		<p><a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS,'product_id='.(int)$HTTP_GET_VARS['products_id']) ; ?>"><?php echo TEXT_CURRENT_REVIEWS . ' ' . $reviews_values['count']; ?></a></p>
  -->
         <?php
 //    }
 
     if (tep_not_null($product_info['products_url'])) {
-      //var_dump(urlencode($product_info['products_url']));
 ?>
         <p><?php echo sprintf(TEXT_MORE_INFORMATION,
             tep_href_link(FILENAME_REDIRECT, 'action=url&goto=' .  urlencode($product_info['products_url']), 'NONSSL', true, false)); ?></p>
@@ -467,7 +435,6 @@ document.write('<?php //echo '<td class="smallText" align="center"><a href="java
         <?php
     } else {
 ?>
-
         <?php
     }
 ?>
@@ -488,19 +455,6 @@ document.write('<?php //echo '<td class="smallText" align="center"><a href="java
   }
 ?>
         </form>
-        <?php
-	  if (tep_session_is_registered('affiliate_id')) {
-?>
-        <h1 class="pageHeading_long"><?php echo 'アフィリエイト広告用タグ' ; ?> </h1>
-        <p><b>この商品の広告を登録することができます！！</b><br>
-          あなたのホームページにこの商品を表示させるには以下のソースコードをコピーしてホームページにペースとしてください。この商品の画像が表示されます。</p>
-        <textarea class="boxText" style="width:95%; height:90px; "><a href="<?php echo HTTP_SERVER.DIR_WS_CATALOG.FILENAME_PRODUCT_INFO.'?products_id='.(int)$HTTP_GET_VARS['products_id'].'&ref='.$affiliate_id ; ?>" target="_blank"><?php echo tep_image(DIR_WS_IMAGES . $product_info['products_image'], $product_info['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"');?><br><?php echo $product_info['products_name'] ; ?> </a></textarea>
-        <p align="center">実際に表示されるイメージ<br>
-          <a href="<?php echo HTTP_SERVER.DIR_WS_CATALOG.FILENAME_PRODUCT_INFO.'?products_id='.(int)$HTTP_GET_VARS['products_id'].'&ref='.$affiliate_id ; ?>" target="_blank"><?php echo tep_image(DIR_WS_IMAGES . $product_info['products_image'], $product_info['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"'); ?><br>
-          <?php echo $product_info['products_name'] ; ?> </a></p>
-        <?php
-   }
- ?>
       </td>
       <!-- body_text_eof //-->
   </table>

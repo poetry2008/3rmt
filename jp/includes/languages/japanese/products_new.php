@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: products_new.php,v 1.2 2003/02/24 15:32:36 hawk Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

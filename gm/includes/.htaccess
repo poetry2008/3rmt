@@ -1,4 +1,4 @@
-# $Id: .htaccess,v 1.1.1.1 2003/02/20 01:03:53 ptosh Exp $
+# $Id$
 #
 # This is used with Apache WebServers
 # The following blocks direct HTTP requests in this directory recursively

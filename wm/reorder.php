@@ -264,12 +264,6 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   $email_order .= $products_ordered . "\n";
 
   //$email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
-  function str_string($string='') {
-    if(ereg("-", $string)) {
-      $string_array = explode("-", $string);
-      return $string_array[0] . '年' . $string_array[1] . '月' . $string_array[2] . '日';
-    }
-  }
   $email_order .= '▼取引日時　　　　：' . str_string($date) . $hour . '時' . $minute . '分　（24時間表記）' . "\n";
   //$email_order .= '　　　　　　　　　：' . $torihikihouhou . "\n";
   

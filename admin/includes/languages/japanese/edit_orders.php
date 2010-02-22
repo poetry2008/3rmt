@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: edit_orders.php,v 1.25 2003/08/07 00:28:44 jwh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

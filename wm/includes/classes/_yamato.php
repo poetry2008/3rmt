@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: _yamato.php,v 1.2 2003/12/03 11:09:23 ptosh Exp $
+  $Id$
 
   Yamato Shipping Calculator.
   Calculate shipping costs.

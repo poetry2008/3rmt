@@ -1,6 +1,19 @@
 <?php
+// 3rmt over
 /*
+  $Id$
+
+  设置快捷链接
+
+  osCommerce, Open Source E-Commerce Solutions
+  http://www.oscommerce.com
+
+  Copyright (c) 2003 osCommerce
+
+  Released under the GNU General Public License
 */
+  // JP无此功能
+  forward404Unless($_404);
 
   require('includes/application_top.php');
 

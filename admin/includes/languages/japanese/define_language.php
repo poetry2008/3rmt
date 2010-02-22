@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: define_language.php,v 1.3 2003/03/03 16:10:29 hawk Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

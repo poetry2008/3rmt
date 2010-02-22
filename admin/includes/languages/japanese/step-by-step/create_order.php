@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: create_order.php,v 1 2003/08/17 23:21:34 frankl Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

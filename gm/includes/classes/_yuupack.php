@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: _yuupack.php,v 1.2 2004/01/07 06:57:13 ptosh Exp $
+  $Id$
 
   YuuPack Shipping Calculator.
   Calculate shipping costs.

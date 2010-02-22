@@ -1596,13 +1596,13 @@ function forward404Unless($condition)
               $keywords    = $seo_category['meta_keywords'];
               $description = $seo_category['meta_description'];
             }
-         } elseif ($HTTP_GET_VARS['manufacturers_id']) {
+         } elseif (isset($HTTP_GET_VARS['manufacturers_id']) && $HTTP_GET_VARS['manufacturers_id']) {
             $title = $seo_manufacturers['manufacturers_name'] . '-' . C_TITLE;
             // meta_tags
             $metas       = tep_get_metas_by_manufacturers_id(intval($HTTP_GET_VARS['manufacturers_id']));
             $keywords    = "RMT, " . $metas['keywords'];
             $description = "RMT総合サイト RMTジャックポットへようこそ。" . $metas['description'];
-         } else if ($HTTP_GET_VARS['tags_id']) {
+         } else if (isset($HTTP_GET_VARS['tags_id']) && $HTTP_GET_VARS['tags_id']) {
            global $breadcrumb;
            $breadcrumb->add($seo_tags['tags_name'], tep_href_link(FILENAME_TAGS, 'tags_id=' . $seo_tags['tags_id']));
            $title = $seo_tags['tags_name'] . '-' . C_TITLE;
@@ -1826,5 +1826,200 @@ function forward404Unless($condition)
           'keywords'    => $metaKeywords,
           'description' => $metaDescription
         );
+  }
+  // checkout_confirmation.php
+  function str_string($string='') {
+    if(ereg("-", $string)) {
+	  $string_array = explode("-", $string);
+	  return $string_array[0] . '&nbsp;年&nbsp;' . $string_array[1] . '&nbsp;月&nbsp;' . $string_array[2] . '&nbsp;日';
+	}
+  }
+  // checkout_process.php
+  // reorder.php
+/*
+  function str_string($string='') {
+    if(ereg("-", $string)) {
+	  $string_array = explode("-", $string);
+	  return $string_array[0] . '年' . $string_array[1] . '月' . $string_array[2] . '日';
+	}
+	}*/
+  // checkout_process.php
+  # Random
+  function ds_makeRandStr( $len=2 ) {
+
+    $strElem = "0123456789";
+
+    $strElemArray = preg_split("//", $strElem, 0, PREG_SPLIT_NO_EMPTY);
+
+    $retStr = "";
+
+    srand( (double)microtime() * 100000);
+
+    for( $i=0; $i<$len; $i++ ) {
+
+        $retStr .= $strElemArray[array_rand($strElemArray, 1)];
+
+    }
+
+    return $retStr;
+
+  }
+// download.php
+// Returns a random name, 16 to 20 characters long
+// There are more than 10^28 combinations
+// The directory is "hidden", i.e. starts with '.'
+function tep_random_name()
+{
+  $letters = 'abcdefghijklmnopqrstuvwxyz';
+  $dirname = '.';
+  $length = floor(tep_rand(16,20));
+  for ($i = 1; $i <= $length; $i++) {
+   $q = floor(tep_rand(1,26));
+   $dirname .= $letters[$q];
+  }
+  return $dirname;
+}
+// download.php
+// Unlinks all subdirectories and files in $dir
+// Works only on one subdir level, will not recurse
+function tep_unlink_temp_dir($dir)
+{
+  $h1 = opendir($dir);
+  while ($subdir = readdir($h1)) {
+// Ignore non directories
+    if (!is_dir($dir . $subdir)) continue;
+// Ignore . and .. and CVS
+    if ($subdir == '.' || $subdir == '..' || $subdir == 'CVS') continue;
+// Loop and unlink files in subdirectory
+    $h2 = opendir($dir . $subdir);
+    while ($file = readdir($h2)) {
+      if ($file == '.' || $file == '..') continue;
+      @unlink($dir . $subdir . '/' . $file);
+    }
+    closedir($h2); 
+    @rmdir($dir . $subdir);
+  }
+  closedir($h1);
+}
+// ggsitemap.php
+  function get_cPath($id, $categories)
+  {
+  	  if($categories[$id]['parent_id'] == '0'){
+  	  	return $categories[$id]['categories_id'];
+  	  } else {
+  	  	return ($categories[$categories[$id]['parent_id']]['parent_id'] == 0 ? $categories[$categories[$id]['parent_id']]['categories_id'] : $categories[$categories[$id]['parent_id']]['parent_id'].'_'.$categories[$categories[$id]['parent_id']]['categories_id']) . '_' . $categories[$id]['categories_id'];
+  	  }
+  }
+// ggsitemap.php
+  function gg_url($loc, $lastmod = null, $changefreq = 'daily', $priority = 0.3)
+  {
+?>
+  <url>
+    <loc><?php echo $loc;?></loc>
+    <lastmod><?php echo $lastmod?$lastmod:date('c');?></lastmod>
+    <changefreq><?php echo $changefreq?$changefreq:'daily';?></changefreq>
+    <priority><?php echo $priority;?></priority>
+  </url>
+<?php
+  }
+// present_confirmation.php
+      function tep_get_zone_list2($name, $selected = '', $country_code = '107') {
+			  $zones_query = tep_db_query("select zone_name, zone_id from ".TABLE_ZONES." where zone_country_id = '107' order by zone_code");
+			  $string = '<select name="'.$name.'">';
+			  while ($zones_values = tep_db_fetch_array($zones_query)) {
+			    $string .= '<option value="'.$zones_values['zone_id'].'"';
+          if($zones_values['zone_id'] == $selected) $string .= ' selected';
+          $string .= '>'.$zones_values['zone_name'].'</option>';
+			  }
+			  $string .= '</select>';
+			  return $string;
+      }  
+
+// Get Categories_image & subcategories_name
+  function ds_tep_get_categories($products_id, $return) {
+    global $languages_id;
+	
+	$categories_path = tep_get_product_path($products_id);
+	$categories_path_array = explode("_", $categories_path);
+	
+	if($return == 1) {
+	  //大カテゴリの画像を返す
+	  $categories_query = tep_db_query("select categories_name from categories_description where categories_id = '".$categories_path_array[0]."'");
+	  $categories = tep_db_fetch_array($categories_query);
+	  
+	  $creturn = $categories['categories_name'];
+	} elseif($return == 2) {
+	  //中カテゴリ名を返す
+	  $categories_query = tep_db_query("select categories_name from categories_description where categories_id = '".$categories_path_array[1]."' and language_id = '".$languages_id."'");
+	  $categories = tep_db_fetch_array($categories_query);
+	  
+	  $creturn = $categories['categories_name'];
+	}
+	
+	return $creturn;
+  }
+
+////
+// Get Point
+  function ds_tep_get_point_value($products_id) {
+	if ($new_price = tep_get_products_special_price($products_id)) {
+	  $price = $new_price;
+	} else {
+      $query = tep_db_query("select products_price from products where products_id = '".$products_id."'");
+	  $result = tep_db_fetch_array($query);
+	  
+	  $price = $result['products_price'];
+	}
+	
+	//ポイント計算
+	$point_value = (int)($price * MODULE_ORDER_TOTAL_POINT_FEE);
+	
+	return $point_value;
+  }
+
+////
+// Options stock check
+  function tep_check_opstock($options_stock, $orders_quantity) {
+    $stock_left = $options_stock - $orders_quantity;
+    $out_of_stock = '';
+
+    if ($stock_left < 0) {
+      $out_of_stock = '<span class="markProductOutOfStock">' . STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</span>';
+    }
+
+    return $out_of_stock;
+  }
+
+////
+// 買い取り商品が存在するか？
+  function ds_count_bflag() {
+    global $cart;
+    $products = $cart->get_products();
+    for ($i=0, $n=sizeof($products); $i<$n; $i++) {
+	  if($products[$i]['bflag'] == '1') {
+	    return 'View';
+	  }
+	}
+	
+	return false;
+  }
+  
+////
+// 在庫調査  
+  function ds_replace_plist($pID, $qty, $string) {
+    $query = tep_db_query("select * from products where products_id = '".(int)tep_get_prid($pID)."'");
+	$result = mysql_fetch_array($query);
+	
+	if($qty < 1) {
+	  if($result['products_bflag'] == '1') {
+	    # 買い取り商品
+		return '<span class="markProductOutOfStock">一時停止</span>';
+	  } else {
+	    # 通常商品
+	    return '<span class="markProductOutOfStock">在庫切れ</span>';
+	  }
+	} else {
+	  return $string;
+	}
   }
 ?>

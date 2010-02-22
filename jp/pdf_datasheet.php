@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: pdf_datasheet_creator v1.1 2003/03/11 13:46:29 ip chilipepper.it Exp $
+  $Id$
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
   Copyright (c) 2003 osCommerce

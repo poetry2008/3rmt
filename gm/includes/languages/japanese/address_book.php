@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: address_book.php,v 1.7 2003/05/22 10:55:46 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

@@ -4,7 +4,6 @@ Options -Indexes
 AddType application/x-httpd-cgi .cgi
 
 php_flag register_globals On
-
 <Limit GET POST>
 allow from all
 </Limit>
@@ -35,33 +34,56 @@ Options +FollowSymLinks
 RewriteEngine On 
 RewriteBase /
 
-RewriteRule ^(.*)p-(.*).html$ product_info.php?products_id=$2&%{QUERY_STRING}
-RewriteRule ^(.*)c-(.*).html$ index.php?cPath=$2&%{QUERY_STRING}
-RewriteRule ^(.*)m-(.*).html$ index.php?manufacturers_id=$2&%{QUERY_STRING}
-RewriteRule ^(.*)t-(.*).html$ index.php?tags_id=$2&%{QUERY_STRING}
-RewriteRule ^(.*)pi-(.*).html$ popup_image.php?pID=$2&%{QUERY_STRING}
-RewriteRule ^(.*)co-(.*).html$ index.php?colors=$2&%{QUERY_STRING}
-
-RewriteCond %{REQUEST_FILENAME} !-f 
-RedirectMatch  301 ^(.*)info$ /info/ 
-
-RewriteCond %{REQUEST_FILENAME} !-f 
-RewriteRule ^(.*)info/index.html$ /info/ [R,L] 
-
-RewriteCond %{REQUEST_FILENAME} !-f 
-RewriteRule ^(.*)info/$ page.php
-
-RewriteCond %{REQUEST_FILENAME} !-f 
-RewriteRule ^(.*)info/(.*).html$ page.php?pID=$2&%{QUERY_STRING}
-
-RewriteRule ^(.*)info-(.*).html$ page.php?pID=$2&%{QUERY_STRING}
-
-RewriteRule ^(.*)pr-(.*).html$ product_reviews.php?products_id=$2&%{QUERY_STRING}
-RewriteRule ^(.*)pri-(.*).html$ product_reviews_info.php?products_id=$2&%{QUERY_STRING}
-RewriteRule ^faq(.*)$ faq.php?faq_id=$1&%{QUERY_STRING}
-
-# maker
-RewriteRule ^(.*)pl-(.*).html$ product_listing.php?cPath=$2&%{QUERY_STRING}
-RewriteRule ^(.*)select.html$ index.php?action=select&%{QUERY_STRING}
+#RewriteRule ^(.*)select.html$ index.php?action=select&%{QUERY_STRING}
 RewriteRule ^(.*)sitemap.xml$ ggsitemap.php
+
+# http://www.gamemoney.cc/item/p-33129.html
+# if romaji RewriteRule ^item/p-([0-9A-Za-z_-]+).html$ product_info.php?products_id=$1&%{QUERY_STRING}
+RewriteRule ^item/p-([0-9]+).html$ product_info.php?products_id=$1&%{QUERY_STRING}
+# http://www.gamemoney.cc/rmt/c-195_197.html
+# if romaji RewriteRule ^rmt/c-([0-9A-Za-z_--_]+).html$ index.php?cPath=$1&%{QUERY_STRING}
+RewriteRule ^rmt/c-([0-9-_]+).html$ index.php?cPath=$1&%{QUERY_STRING}
+# http://www.gamemoney.cc/game/m-18.html
+# if romaji RewriteRule ^game/m-([0-9A-Za-z_-]+).html$ index.php?manufacturers_id=$1&%{QUERY_STRING}
+RewriteRule ^game/m-([0-9]+).html$ index.php?manufacturers_id=$1&%{QUERY_STRING}
+# http://www.gamemoney.cc/item/pr-\d.html
+# if romaji RewriteRule ^item/pr-([0-9A-Za-z_-]+).html$ product_reviews.php?products_id=$1&%{QUERY_STRING}
+RewriteRule ^item/pr-([0-9]+).html$ product_reviews.php?products_id=$1&%{QUERY_STRING}
+# http://www.gamemoney.cc/faq169
+# http://www.gamemoney.cc/faq169/
+# http://www.gamemoney.cc/faq169/1.html
+RewriteRule ^faq([0-9]+)(/|/[0-9]+\.html)?$ faq.php?faq_id=$1$2&%{QUERY_STRING}
+# http://www.gamemoney.cc/tags/t-\d.html
+# not find in gm
+# if romaji RewriteRule ^tags/t-([0-9A-Za-z_-]+).html$ index.php?tags_id=$1&%{QUERY_STRING}
+RewriteRule ^tags/t-([0-9]+).html$ index.php?tags_id=$1&%{QUERY_STRING}
+# http://www.gamemoney.cc/item/co-\d.html
+# not find in gm
+# if romaji RewriteRule ^item/co-([0-9A-Za-z_-]+).html$ index.php?colors=$1&%{QUERY_STRING}
+RewriteRule ^item/co-([0-9]+).html$ index.php?colors=$1&%{QUERY_STRING}
+# http://www.gamemoney.cc/item/pri-\d.html?reviews_id=\d
+# not find in gm
+# if romaji RewriteRule ^item/pri-([0-9A-Za-z_-]+).html$ product_reviews_info.php?products_id=$1&%{QUERY_STRING}
+RewriteRule ^item/pri-([0-9]+).html$ product_reviews_info.php?products_id=$1&%{QUERY_STRING}
+
+#pl-*.html does not exist
+# not find in gm
+#RewriteRule ^(.*)pl-(.*).html$ product_listing.php?cPath=$2&%{QUERY_STRING}
+#pi-*.html does not exist
+# not find in gm
+#RewriteRule ^([A-Za-z0-9-_]+)/pi-([A-Za-z0-9-_]+).html$ popup_image.php?pID=$2&%{QUERY_STRING}
+
+
+#info {{{
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteRule ^info$ /info/ 
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteRule ^info/index.html$ /info/ [R,L] 
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteRule ^info/$ page.php
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteRule ^info/([A-Za-z0-9_]+).html$ page.php?pID=$1&%{QUERY_STRING}
+RewriteRule ^info-([A-Za-z0-9_]+).html$ page.php?pID=$1&%{QUERY_STRING}
+#}}}
+
 </IfModule>

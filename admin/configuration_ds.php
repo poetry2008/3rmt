@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: configuration.php,v 1.2 2003/06/05 03:43:51 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

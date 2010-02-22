@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: stats_sales_report2.php,v 1.00 2003/03/08 19:02:22 Exp $
+  $Id$
 
   Charly Wilhelm  charly@yoshi.ch
   

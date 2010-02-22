@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: currencies.php,v 1.2 2003/04/09 08:11:54 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

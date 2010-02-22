@@ -231,14 +231,6 @@
             <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
                 <tr class="infoBoxContents"> 
                   <td>
-<?php
-  function str_string($string='') {
-    if(ereg("-", $string)) {
-	  $string_array = explode("-", $string);
-	  return $string_array[0] . '&nbsp;年&nbsp;' . $string_array[1] . '&nbsp;月&nbsp;' . $string_array[2] . '&nbsp;日';
-	}
-  }
-?>				  
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
   <tr>
 	<td class="main" colspan="3"><b><?php echo TEXT_TORIHIKI_TITLE; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>

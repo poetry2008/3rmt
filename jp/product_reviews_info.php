@@ -1,6 +1,9 @@
 <?php
+// 3rmt over
 /*
   $Id$
+
+  商品评论详细页
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -14,8 +17,11 @@
 
   //forward 404
 if (isset($HTTP_GET_VARS['reviews_id'])) {
-  $_404_query = tep_db_query("select * from " . TABLE_REVIEWS . " where reviews_id =
-      '" . intval($HTTP_GET_VARS['reviews_id']) . "'");
+  $_404_query = tep_db_query("
+      SELECT * 
+      FROM " . TABLE_REVIEWS . " 
+      WHERE reviews_id = '" . intval($HTTP_GET_VARS['reviews_id']) . "'
+  ");
   $_404 = tep_db_fetch_array($_404_query);
 
   forward404Unless($_404);
@@ -25,7 +31,30 @@ if (isset($HTTP_GET_VARS['reviews_id'])) {
   $get_params = tep_get_all_get_params(array('reviews_id'));
   $get_params = substr($get_params, 0, -1); //remove trailing &
 
-  $reviews_query = tep_db_query("select rd.reviews_text, r.reviews_rating, r.reviews_id, r.products_id, r.customers_name, r.date_added, r.last_modified, r.reviews_read, p.products_id, pd.products_name, p.products_image from (( " .  TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd ) left join " .  TABLE_PRODUCTS . " p on (r.products_id = p.products_id) )left join " .  TABLE_PRODUCTS_DESCRIPTION . " pd on (p.products_id = pd.products_id and pd.language_id = '". $languages_id . "') where r.reviews_id = '" .  (int)$HTTP_GET_VARS['reviews_id'] . "' and r.reviews_id = rd.reviews_id and p.products_status = '1' and r.reviews_status = '1' and r.site_id = ".SITE_ID." and pd.site_id = ".SITE_ID);
+  $reviews_query = tep_db_query("
+      SELECT rd.reviews_text, 
+             r.reviews_rating, 
+             r.reviews_id, 
+             r.products_id, 
+             r.customers_name, 
+             r.date_added, 
+             r.last_modified, 
+             r.reviews_read, 
+             p.products_id, 
+             pd.products_name, 
+             p.products_image 
+      FROM (( " .  TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd ) 
+              LEFT JOIN " .  TABLE_PRODUCTS . " p 
+              ON (r.products_id = p.products_id) )
+        LEFT JOIN " .  TABLE_PRODUCTS_DESCRIPTION . " pd 
+        ON (p.products_id = pd.products_id AND pd.language_id = '". $languages_id . "') 
+      WHERE r.reviews_id = '" .  (int)$HTTP_GET_VARS['reviews_id'] . "' 
+        AND r.reviews_id = rd.reviews_id 
+        AND p.products_status = '1' 
+        AND r.reviews_status = '1' 
+        AND r.site_id  = ".SITE_ID." 
+        AND pd.site_id = ".SITE_ID
+      );
   if (!tep_db_num_rows($reviews_query)) tep_redirect(tep_href_link(FILENAME_REVIEWS));
   $reviews = tep_db_fetch_array($reviews_query);
 
@@ -59,7 +88,11 @@ function showimage($1) {
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents"> <?php
-  tep_db_query("update " . TABLE_REVIEWS . " set reviews_read = reviews_read+1 where reviews_id = '" . $reviews['reviews_id'] . "'");
+  tep_db_query("
+      UPDATE " . TABLE_REVIEWS . " 
+      SET reviews_read = reviews_read+1 
+      WHERE reviews_id = '" . $reviews['reviews_id'] . "'
+  ");
 
   $reviews_text = tep_break_string(tep_output_string_protected($reviews['reviews_text']), 60, '-<br>');
 ?> 

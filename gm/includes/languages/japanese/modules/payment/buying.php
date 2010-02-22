@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: moneyorder.php,v 1.5 2003/07/01 11:48:09 hawk Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

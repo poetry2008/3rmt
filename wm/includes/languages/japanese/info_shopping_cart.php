@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: info_shopping_cart.php,v 1.6 2003/05/22 04:56:30 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

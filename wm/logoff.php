@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: logoff.php,v 1.2 2003/03/12 13:32:37 hawk Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

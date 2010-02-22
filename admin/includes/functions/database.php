@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: database.php,v 1.2 2004/05/22 03:45:31 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -22,7 +22,7 @@
     if ($$link) mysql_select_db($database);
 
     if (intval(substr(mysql_get_server_info(), 0, 1) >= 4)){
-      tep_db_query('set names ujis');
+      tep_db_query('set names utf8');
     }
 
     return $$link;

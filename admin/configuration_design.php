@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: latest_news.php,v 1.1.1.1 2002/11/11 06:15:14 will Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

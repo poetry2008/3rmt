@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: sitemap.php,v1.0 2004/05/25 devosc Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

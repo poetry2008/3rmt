@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: address_form.php,v 1.1 2003/03/18 00:39:22 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

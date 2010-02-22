@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: ot_codt.php,v 1.1 2003/05/02 10:26:24 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

@@ -1,16 +1,6 @@
 <?php
 /*
-  $Id: FAQ.php,v o.1 2006/12/01 
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
-*/
-
-$game_name = 'レッドストーン';
+  $Id$game_name = 'レッドストーン';
 
 // IF USER HAS CLICKED ON A QUESTION
 if($q_id == "" || $q_id == "index") {

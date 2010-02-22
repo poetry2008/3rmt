@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: manufacturers.php,v 1.2 2003/02/20 21:25:02 junnichi Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

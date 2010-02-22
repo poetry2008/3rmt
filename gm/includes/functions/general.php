@@ -1821,4 +1821,112 @@ if (!isset($torihikihouhou)) $torihikihouhou=NULL;
           'description' => $metaDescription
         );
   }
+//checkout_confirmation.php
+  function str_string($string='') {
+    if(ereg("-", $string)) {
+	  $string_array = explode("-", $string);
+	  return $string_array[0] . '&nbsp;年&nbsp;' . $string_array[1] . '&nbsp;月&nbsp;' . $string_array[2] . '&nbsp;日';
+	}
+  }
+  // checkout_process.php
+  // reorder.php
+  //function str_string($string='') {
+    //if(ereg("-", $string)) {
+		//$string_array = explode("-", $string);
+		//return $string_array[0] . '年' . $string_array[1] . '月' . $string_array[2] . '日';
+	//}
+  //}
+  // checkout_process.php
+  # Random
+  function ds_makeRandStr( $len=2 ) {
+
+    $strElem = "0123456789";
+
+    $strElemArray = preg_split("//", $strElem, 0, PREG_SPLIT_NO_EMPTY);
+
+    $retStr = "";
+
+    srand( (double)microtime() * 100000);
+
+    for( $i=0; $i<$len; $i++ ) {
+
+        $retStr .= $strElemArray[array_rand($strElemArray, 1)];
+
+    }
+
+    return $retStr;
+
+  }
+  // download.php
+// Returns a random name, 16 to 20 characters long
+// There are more than 10^28 combinations
+// The directory is "hidden", i.e. starts with '.'
+function tep_random_name()
+{
+  $letters = 'abcdefghijklmnopqrstuvwxyz';
+  $dirname = '.';
+  $length = floor(tep_rand(16,20));
+  for ($i = 1; $i <= $length; $i++) {
+   $q = floor(tep_rand(1,26));
+   $dirname .= $letters[$q];
+  }
+  return $dirname;
+}
+
+// download.php
+// Unlinks all subdirectories and files in $dir
+// Works only on one subdir level, will not recurse
+function tep_unlink_temp_dir($dir)
+{
+  $h1 = opendir($dir);
+  while ($subdir = readdir($h1)) {
+// Ignore non directories
+    if (!is_dir($dir . $subdir)) continue;
+// Ignore . and .. and CVS
+    if ($subdir == '.' || $subdir == '..' || $subdir == 'CVS') continue;
+// Loop and unlink files in subdirectory
+    $h2 = opendir($dir . $subdir);
+    while ($file = readdir($h2)) {
+      if ($file == '.' || $file == '..') continue;
+      @unlink($dir . $subdir . '/' . $file);
+    }
+    closedir($h2); 
+    @rmdir($dir . $subdir);
+  }
+  closedir($h1);
+}
+
+// ggsitemap.php
+  function gg_url($loc, $lastmod = null, $changefreq = 'daily', $priority = 0.3)
+  {
+?>
+  <url>
+    <loc><?php echo $loc;?></loc>
+    <lastmod><?php echo $lastmod?$lastmod:date('c');?></lastmod>
+    <changefreq><?php echo $changefreq?$changefreq:'daily';?></changefreq>
+    <priority><?php echo $priority;?></priority>
+  </url>
+<?php
+  }
+// ggsitemap.php
+  function get_cPath($id, $categories)
+  {
+  	  if($categories[$id]['parent_id'] == '0'){
+  	  	return $categories[$id]['categories_id'];
+  	  } else {
+  	  	return ($categories[$categories[$id]['parent_id']]['parent_id'] == 0 ? $categories[$categories[$id]['parent_id']]['categories_id'] : $categories[$categories[$id]['parent_id']]['parent_id'].'_'.$categories[$categories[$id]['parent_id']]['categories_id']) . '_' . $categories[$id]['categories_id'];
+  	  }
+  }
+// present_confirmation.php
+		    function tep_get_zone_list2($name, $selected = '', $country_code = '107') {
+			  $zones_query = tep_db_query("select zone_name, zone_id from ".TABLE_ZONES." where zone_country_id = '107' order by zone_code");
+			  $string = '<select name="'.$name.'">';
+			  while ($zones_values = tep_db_fetch_array($zones_query)) {
+			    $string .= '<option value="'.$zones_values['zone_id'].'"';
+				if($zones_values['zone_id'] == $selected) $string .= ' selected';
+				$string .= '>'.$zones_values['zone_name'].'</option>';
+			  }
+			  $string .= '</select>';
+			  return $string;
+		    }		  
 ?>

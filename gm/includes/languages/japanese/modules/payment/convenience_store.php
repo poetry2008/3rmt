@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: convenience_store.php,v 1.2 2003/04/15 12:46:39 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

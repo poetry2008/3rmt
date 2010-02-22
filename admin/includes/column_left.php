@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: column_left.php,v 1.2 2003/04/16 07:36:16 suzukawa Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

@@ -1,4 +1,5 @@
 <?php
+// 3rmt over
 /*
   $Id$
   osCommerce, Open Source E-Commerce Solutions
@@ -8,26 +9,24 @@
 */
 
 	require('includes/application_top.php');
-	
-  //forward 404
-if (isset($HTTP_GET_VARS['products_id'])) {
-  $_404_query = tep_db_query("select * from " . TABLE_PRODUCTS . " where products_id
-      = '" . intval($HTTP_GET_VARS['products_id']) . "'");
-  $_404 = tep_db_fetch_array($_404_query);
-
-  forward404Unless($_404);
-}
-	
 	require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CONTACT_US);
 	
 	$mail_text = '';
 	
 	//product_idを取得した場合商品名を呼び出す
 	if (isset($HTTP_GET_VARS['products_id'])) {
-		$product_info_query = tep_db_query("select pd.products_name 
-      from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
-      where pd.site_id = '" . SITE_ID . "' and p.products_status = '1' and p.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "'");
+		$product_info_query = tep_db_query("
+        SELECT pd.products_name 
+        FROM " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
+        WHERE pd.site_id = '" . SITE_ID . "' 
+          AND p.products_status = '1' 
+          AND p.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' 
+          AND p.products_id = pd.products_id 
+          AND pd.language_id = '" . $languages_id . "'
+    ");
 		$product_info = tep_db_fetch_array($product_info_query);
+    //forward 404
+    forward404Unless($product_info);
 	}
 	
 	//「商品名」についてのお問い合わせ

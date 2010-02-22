@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: default.php,v 1.7 2003/05/06 12:10:02 hawk Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

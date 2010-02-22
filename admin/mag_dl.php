@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: mail.php,v 1.3 2003/03/18 02:51:42 ptosh Exp $
+  $Id$
 
 
   osCommerce, Open Source E-Commerce Solutions

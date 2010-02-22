@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: general.php,v 1.13 2004/05/26 05:05:11 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

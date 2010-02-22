@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: create_account.php,v 1.1.1.1 2002/11/28 23:22:06 wilt Exp $
+  $Id$
 
   The Exchange Project - Community Made Shopping!
   http://www.theexchangeproject.org

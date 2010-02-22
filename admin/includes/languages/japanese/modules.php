@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: modules.php,v 1.3 2003/03/07 05:27:30 hawk Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

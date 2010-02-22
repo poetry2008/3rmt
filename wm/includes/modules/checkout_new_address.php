@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: checkout_new_address.php,v 1.5 2004/05/16 02:55:05 suzukawa Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

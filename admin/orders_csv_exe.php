@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: orders_csv_exe.php,v 1.4 2005/02/15 08:30:57 hiroyuki Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

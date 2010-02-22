@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 ini_set("display_errors", "On");
 /*
-  $Id: documents.php,v 1.0.2 20090919 kymation Exp $
+  $Id$
   $Loc: catalog/admin/ $
   
   osCommerce, Open Source E-Commerce Solutions

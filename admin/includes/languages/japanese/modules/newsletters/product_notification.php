@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: product_notification.php,v 1.2 2003/02/21 03:40:39 hawk Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

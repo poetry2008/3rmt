@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: itransact.php,v 1.2 2003/03/25 15:12:07 hawk Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

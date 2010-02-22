@@ -1,6 +1,6 @@
 <?php 
 /*
-  $Id: mbstring_wrapper.php,v 1.4 2003/04/21 05:10:19 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: login.php,v 1.8 2003/05/22 10:55:46 ptosh Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

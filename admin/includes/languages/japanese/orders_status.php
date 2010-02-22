@@ -1,6 +1,6 @@
 <?php
 /*
-  $Id: orders_status.php,v 1.4 2003/05/06 12:10:00 hawk Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -37,7 +37,7 @@ define('TEXT_EDIT_ORDERS_STATUS_IMAGE', 'ステータスに表示するアイコ
 ?>
 <?php
 /*
-  $Id: orders_status.php,v 1.4 2003/05/06 12:10:00 hawk Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -73,7 +73,7 @@ define('TEXT_EDIT_ORDERS_STATUS_IMAGE', 'ステータスに表示するアイコ
 //mail本文 add end
 ?><?php
 /*
-  $Id: orders_status.php,v 1.4 2003/05/06 12:10:00 hawk Exp $
+  $Id$
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com

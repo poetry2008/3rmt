@@ -1,4 +1,5 @@
 <?php
+// 3rmt over
 /*
   $Id$
 
@@ -35,13 +36,12 @@ if (isset($HTTP_GET_VARS['pID'])) {
   //check error
   if($error == false) {
     $page = tep_db_fetch_array($page_query);
-	define('PAGE_NAVBAR_TITLE', $page['navbar_title']);
-	define('PAGE_HEADING_TITLE', $page['heading_title']);
-	define('PAGE_TEXT_INFORMATION', $page['text_information']);
+    define('PAGE_NAVBAR_TITLE', $page['navbar_title']);
+    define('PAGE_HEADING_TITLE', $page['heading_title']);
+    define('PAGE_TEXT_INFORMATION', $page['text_information']);
   } else {
-	define('PAGE_NAVBAR_TITLE', PAGE_ERR_NAVBER_TITLE);
+    define('PAGE_NAVBAR_TITLE', PAGE_ERR_NAVBER_TITLE);
   }
-  
 
   $breadcrumb->add(PAGE_NAVBAR_TITLE, '');
 ?>

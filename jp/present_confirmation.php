@@ -259,17 +259,6 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action']=NULL;
 			$address2 = $suburb;
 			$tel = $telephone;
 			
-		    function tep_get_zone_list2($name, $selected = '', $country_code = '107') {
-			  $zones_query = tep_db_query("select zone_name, zone_id from ".TABLE_ZONES." where zone_country_id = '107' order by zone_code");
-			  $string = '<select name="'.$name.'">';
-			  while ($zones_values = tep_db_fetch_array($zones_query)) {
-			    $string .= '<option value="'.$zones_values['zone_id'].'"';
-				if($zones_values['zone_id'] == $selected) $string .= ' selected';
-				$string .= '>'.$zones_values['zone_name'].'</option>';
-			  }
-			  $string .= '</select>';
-			  return $string;
-		    }		  
 		  ?> 
               <table width="100%" cellpadding="1" cellspacing="0" class="infoBox" border="0"> 
                 <tr> 

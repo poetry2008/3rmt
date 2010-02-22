@@ -1,11 +1,7 @@
 <?php
+
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
 
   Released under the GNU General Public License
 */
@@ -43,14 +39,19 @@
 // include server parameters
   require('includes/configure.php');
 
-
 // define the project version
   define('PROJECT_VERSION', 'osCommerce 2.2-MS1');
 
 // set the type of request (secure or not)
   $request_type = (getenv('HTTPS') == 'on') ? 'SSL' : 'NONSSL';
 
-// define the filenames used in the project
+// set which precautions should be checked
+  define('WARN_INSTALL_EXISTENCE', 'true');
+  define('WARN_CONFIG_WRITEABLE', 'true');
+  define('WARN_SESSION_DIRECTORY_NOT_WRITEABLE', 'true');
+  define('WARN_SESSION_AUTO_START', 'true');
+  define('WARN_DOWNLOAD_DIRECTORY_NOT_READABLE', 'true');
+
 // define the filenames used in the project
   define('FILENAME_TAGS', 'tags.php');
   define('FILENAME_SEND_MAIL', 'send_mail.php');
@@ -525,6 +526,9 @@
       }
     }
   } elseif (isset($HTTP_GET_VARS['manufacturers_id'])) {
+
+
+
     $manufacturers_query = tep_db_query("select manufacturers_name from " . TABLE_MANUFACTURERS . " where manufacturers_id = '" . $HTTP_GET_VARS['manufacturers_id'] . "'");
     $manufacturers = tep_db_fetch_array($manufacturers_query);
     $breadcrumb->add($manufacturers['manufacturers_name'], tep_href_link(FILENAME_DEFAULT, 'manufacturers_id=' . $HTTP_GET_VARS['manufacturers_id']));
@@ -544,21 +548,23 @@
     $breadcrumb->add($model['products_name'], tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $HTTP_GET_VARS['products_id']));
   }
 
-// set which precautions should be checked
-  define('WARN_INSTALL_EXISTENCE', 'true');
-  define('WARN_CONFIG_WRITEABLE', 'true');
-  define('WARN_SESSION_DIRECTORY_NOT_WRITEABLE', 'true');
-  define('WARN_SESSION_AUTO_START', 'true');
-  define('WARN_DOWNLOAD_DIRECTORY_NOT_READABLE', 'true');
-
-// Include OSC-AFFILIATE
-  //require(DIR_WS_INCLUDES . 'affiliate_application_topphp');
   
-// Include edit application_top.php
-  require(DIR_WS_INCLUDES . 'add_apprication_top.php');
+// SESSION REGISTER
+if (!isset($HTTP_GET_VARS['ajax'])) $HTTP_GET_VARS['ajax'] = '';
+switch($HTTP_GET_VARS['ajax']){
+  case 'on' :
+    $ajax = 'on' ;
+    break;
+  case 'off' :
+    $ajax = 'off' ;
+    break;
+}
 
-  //for sql_log
-  $testArray = array();
-  $logNumber = 1;
-  //end for sql_log
-?>
+tep_session_register('ajax');
+
+# 注文上限金額設定
+  if(substr(basename($PHP_SELF),0,9) == 'checkout_') {
+    if(DS_LIMIT_PRICE < $cart->show_total()) {
+      tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, 'limit_error=true'));
+    }
+  }

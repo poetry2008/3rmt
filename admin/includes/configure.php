@@ -11,15 +11,15 @@
 // Define the webserver and path parameters
 // * DIR_FS_* = Filesystem directories (local/physical)
 // * DIR_WS_* = Webserver directories (virtual/URL)
-  define('HTTP_SERVER', 'http://wm.maker.200.com'); // eg, http://localhost or - https://localhost should not be empty for productive servers
-  define('HTTP_CATALOG_SERVER', 'http://wm.maker.200.com');
-  define('HTTPS_CATALOG_SERVER', 'https://wm.maker.200.com');
+  define('HTTP_SERVER', 'http://3admin.maker.200.com'); // eg, http://localhost or - https://localhost should not be empty for productive servers
+  define('HTTP_CATALOG_SERVER', 'http://3admin.maker.200.com');
+  define('HTTPS_CATALOG_SERVER', 'https://3admin.maker.200.com');
   define('ENABLE_SSL_CATALOG', 'false'); // secure webserver for catalog module
-  define('DIR_FS_DOCUMENT_ROOT', '/home/maker/project/WM/'); // where the pages are located on the server
-  define('DIR_WS_ADMIN', '/admin/'); // absolute path required
-  define('DIR_FS_ADMIN', '/home/maker/project/WM/admin/'); // absolute pate required
+  define('DIR_FS_DOCUMENT_ROOT', '/home/maker/project/3rmt/'); // where the pages are located on the server
+  define('DIR_WS_ADMIN', '/'); // absolute path required
+  define('DIR_FS_ADMIN', '/home/maker/project/3rmt/admin/'); // absolute pate required
   define('DIR_WS_CATALOG', '/'); // absolute path required
-  define('DIR_FS_CATALOG', '/home/maker/project/WM/'); // absolute path required
+  define('DIR_FS_CATALOG', '/home/maker/project/3rmt/'); // absolute path required
   define('DIR_WS_IMAGES', 'images/');
   define('DIR_WS_ICONS', DIR_WS_IMAGES . 'icons/');
   define('DIR_WS_CATALOG_IMAGES', DIR_WS_CATALOG . 'images/');
