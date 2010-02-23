@@ -56,6 +56,7 @@
 
     function check() {
       if (!isset($this->_check)) {
+        // ccdd
         $check_query = tep_db_query("select configuration_value from " .  TABLE_CONFIGURATION . " where configuration_key = 'MODULE_ORDER_TOTAL_LOWORDERFEE_STATUS' and site_id = '".SITE_ID."'");
         $this->_check = tep_db_num_rows($check_query);
       }
@@ -68,16 +69,24 @@
     }
 
     function install() {
+      // ccdd
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('低額取扱い手数料の表示', 'MODULE_ORDER_TOTAL_LOWORDERFEE_STATUS', 'true', '低額取扱い手数料の表示をしますか?', '6', '1','tep_cfg_select_option(array(\'true\', \'false\'), ', now(), ".SITE_ID.")");
+      // ccdd
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('表示の整列順', 'MODULE_ORDER_TOTAL_LOWORDERFEE_SORT_ORDER', '4', '表示の整列順を設定できます. 数字が小さいほど上位に表示されます.', '6', '2', now(), ".SITE_ID.")");
+      // ccdd
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('低額取扱い手数料設定', 'MODULE_ORDER_TOTAL_LOWORDERFEE_LOW_ORDER_FEE', 'false', '低額取扱い手数料設定を有効にしますか?', '6', '3', 'tep_cfg_select_option(array(\'true\', \'false\'), ', now(), ".SITE_ID.")");
+      // ccdd
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, date_added, site_id) values ('取扱い手数料を課金する注文金額', 'MODULE_ORDER_TOTAL_LOWORDERFEE_ORDER_UNDER', '5000', 'この注文金額未満で手数料を課金します.', '6', '4', 'currencies->format', now(), ".SITE_ID.")");
+      // ccdd
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, date_added, site_id) values ('取扱い手数料', 'MODULE_ORDER_TOTAL_LOWORDERFEE_FEE', '50', '手数料金額.', '6', '5', 'currencies->format', now(), ".SITE_ID.")");
+      // ccdd
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('取扱い手数料適用地域', 'MODULE_ORDER_TOTAL_LOWORDERFEE_DESTINATION', 'both', '設定した配送地域に対して低額取扱い手数料が課金されます.', '6', '6', 'tep_cfg_select_option(array(\'national\', \'international\', \'both\'), ', now(), ".SITE_ID.")");
+      // ccdd
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added, site_id) values ('税種別', 'MODULE_ORDER_TOTAL_LOWORDERFEE_TAX_CLASS', '0', '低額取扱い手数料金額に適用される税種別', '6', '7', 'tep_get_tax_class_title', 'tep_cfg_pull_down_tax_classes(', now(), ".SITE_ID.")");
     }
 
     function remove() {
+      // ccdd
       tep_db_query("delete from " . TABLE_CONFIGURATION . " where configuration_key in ('" . implode("', '", $this->keys()) . "') and site_id = '".SITE_ID."'");
     }
   }

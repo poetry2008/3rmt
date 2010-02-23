@@ -16,6 +16,7 @@
     <ul class="news_ul">
 
 <?php
+//ccdd
     $latest_news_query = tep_db_query('SELECT * from ' . TABLE_LATEST_NEWS . ' WHERE status = 1 and site_id = '.SITE_ID.' ORDER BY isfirst DESC, date_added DESC LIMIT 5');
     if (!tep_db_num_rows($latest_news_query)) { // there is no news
       echo '<!-- ' . TEXT_NO_LATEST_NEWS . ' -->';

@@ -19,15 +19,3 @@
 </div>
 <script type="text/javascript" src="js/access.js"></script>
 <noscript><img src="axs/dsw.cgi?pg=RMT&amp;&amp;p=g&amp;&amp;md=nj" alt="" height="1" width="1" ></noscript>
-<?php
-/*
-Some functions Supported by <a href="http://www.ds-style.com">DigitalStudio</a> INC.  Powered by <a href="http://osc.ds-style.com">osCommerce</a>
-*/
-?>
-<?php 
-//for sql_log
-$logNumber = 0;
-tep_db_query('select * from cache');
-$testArray = array();
-//end for sql_log
-?>

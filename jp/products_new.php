@@ -2,16 +2,10 @@
 /*
   $Id$
 
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
+  新到商品列表
 */
 
   require('includes/application_top.php');
-
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRODUCTS_NEW);
 
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_PRODUCTS_NEW));
@@ -36,10 +30,24 @@
             <tr> 
               <td>
 <?php
-  $products_new_query_raw = "select p.products_id, pd.products_name, p.products_image, p.products_price, p.products_tax_class_id, IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, p.products_date_added, m.manufacturers_name from " . TABLE_PRODUCTS . " p left join " . TABLE_MANUFACTURERS . " m on p.manufacturers_id = m.manufacturers_id left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id where p.products_status = '1' and pd.site_id = ".SITE_ID." order by p.products_date_added DESC, pd.products_name";
+  $products_new_query_raw = "
+  select p.products_id, 
+         pd.products_name, 
+         p.products_image, 
+         p.products_price, 
+         p.products_tax_class_id, 
+         IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, 
+         p.products_date_added, 
+         m.manufacturers_name 
+  from " . TABLE_PRODUCTS . " p left join " . TABLE_MANUFACTURERS . " m on p.manufacturers_id = m.manufacturers_id left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id 
+  where p.products_status = '1' 
+    and pd.site_id = ".SITE_ID." 
+  order by p.products_date_added DESC, pd.products_name
+  ";
 
   $products_new_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_PRODUCTS_NEW, $products_new_query_raw, $products_new_numrows);
 
+  // ccdd
   $products_new_query = tep_db_query($products_new_query_raw);
   while ($products_new = tep_db_fetch_array($products_new_query)) {
     $products_new_array[] = array('id' => $products_new['products_id'],

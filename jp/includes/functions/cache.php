@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
 ////
@@ -83,6 +76,7 @@
     if (($refresh == true)|| !read_cache($var, $filename)) {
 // Didn' get cache so go to the database.
 //      $conn = mysql_connect("localhost", "apachecon", "apachecon");
+      // ccdd
       $res = tep_db_query($sql);
 //      if ($err = mysql_error()) trigger_error($err, E_USER_ERROR);
 // loop through the results and add them to an array

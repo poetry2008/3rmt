@@ -1,21 +1,17 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
 ////
 // Sets the status of a banner
   function tep_set_banner_status($banners_id, $status) {
     if ($status == '1') {
+//ccdd
       return tep_db_query("update " . TABLE_BANNERS . " set status = '1', date_status_change = now(), date_scheduled = NULL where banners_id = '" .  $banners_id . "' and site_id = '".SITE_ID."'");
     } elseif ($status == '0') {
+/ccdd
+  // ccdd
       return tep_db_query("update " . TABLE_BANNERS . " set status = '0', date_status_change = now() where banners_id = '" . $banners_id . "' and site_id = '".SITE_ID."'");
     } else {
       return -1;
@@ -25,6 +21,7 @@
 ////
 // Auto activate banners
   function tep_activate_banners() {
+//ccdd
     $banners_query = tep_db_query("select banners_id, date_scheduled from " .  TABLE_BANNERS . " where date_scheduled != '' and site_id = ".SITE_ID);
     if (tep_db_num_rows($banners_query)) {
       while ($banners = tep_db_fetch_array($banners_query)) {
@@ -38,6 +35,7 @@
 ////
 // Auto expire banners
   function tep_expire_banners() {
+//ccdd
     $banners_query = tep_db_query("select b.banners_id, b.expires_date, b.expires_impressions, sum(bh.banners_shown) as banners_shown from " .  TABLE_BANNERS . " b, " . TABLE_BANNERS_HISTORY . " bh where b.status = '1' and b.banners_id = bh.banners_id and b.site_id = ".SITE_ID."group by b.banners_id");
     if (tep_db_num_rows($banners_query)) {
       while ($banners = tep_db_fetch_array($banners_query)) {
@@ -58,6 +56,7 @@
 // Display a banner from the specified group or banner id ($identifier)
   function tep_display_banner($action, $identifier, $width = null, $height = null) {
     if ($action == 'dynamic') {
+//ccdd
       $banners_query = tep_db_query("select count(*) as count from " . TABLE_BANNERS . " where status = '1' and banners_group = '" . $identifier . "' and site_id = '".SITE_ID."'");
       $banners = tep_db_fetch_array($banners_query);
       if ($banners['count'] > 0) {
@@ -69,6 +68,7 @@
       if (is_array($identifier)) {
         $banner = $identifier;
       } else {
+//ccdd
         $banner_query = tep_db_query("select banners_id, banners_title, banners_url,banners_image, banners_html_text from " . TABLE_BANNERS . " where status = '1' and banners_id = '" . $identifier . "' and site_id = '".SITE_ID."'");
         if (tep_db_num_rows($banner_query)) {
           $banner = tep_db_fetch_array($banner_query);
@@ -107,8 +107,10 @@
 // Check to see if a banner exists
   function tep_banner_exists($action, $identifier) {
     if ($action == 'dynamic') {
+//ccdd
       return tep_random_select("select banners_id, banners_title, banners_image,banners_url, banners_html_text from " . TABLE_BANNERS . " where status = '1' and banners_group = '" . $identifier . "' and site_id = '".SITE_ID."'");
     } elseif ($action == 'static') {
+//ccdd
       $banner_query = tep_db_query("select banners_id, banners_title, banners_image,banners_url, banners_html_text from " . TABLE_BANNERS . " where status = '1' and banners_id = '" . $identifier . "' and site_id = '".SITE_ID."'");
       return tep_db_fetch_array($banner_query);
     } else {
@@ -119,12 +121,15 @@
 ////
 // Update the banner display statistics
   function tep_update_banner_display_count($banner_id) {
+//ccdd
     $banner_check_query = tep_db_query("select count(*) as count from " . TABLE_BANNERS_HISTORY . " where banners_id = '" . $banner_id . "' and date_format(banners_history_date, '%Y%m%d') = date_format(now(), '%Y%m%d')");
     $banner_check = tep_db_fetch_array($banner_check_query);
 
     if ($banner_check['count'] > 0) {
+//ccdd
       tep_db_query("update " . TABLE_BANNERS_HISTORY . " set banners_shown = banners_shown + 1 where banners_id = '" . $banner_id . "' and date_format(banners_history_date, '%Y%m%d') = date_format(now(), '%Y%m%d')");
     } else {
+//ccdd
       tep_db_query("insert into " . TABLE_BANNERS_HISTORY . " (banners_id, banners_shown, banners_history_date) values ('" . $banner_id . "', 1, now())");
     }
   }
@@ -132,6 +137,7 @@
 ////
 // Update the banner click statistics
   function tep_update_banner_click_count($banner_id) {
+//ccdd
     tep_db_query("update " . TABLE_BANNERS_HISTORY . " set banners_clicked = banners_clicked + 1 where banners_id = '" . $banner_id . "' and date_format(banners_history_date, '%Y%m%d') = date_format(now(), '%Y%m%d')");
   }
 ?>

@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
@@ -52,6 +45,7 @@
     $billto = $customer_default_address_id;
   } else {
 // verify the selected billing address
+//ccdd
     $check_address_query = tep_db_query("select count(*) as total from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . (int)$customer_id . "' and address_book_id = '" . (int)$billto . "'");
     $check_address = tep_db_fetch_array($check_address_query);
 
@@ -82,6 +76,7 @@
   
   //Add point
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
+//ccdd
   $point_query = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
   $point = tep_db_fetch_array($point_query);
   }

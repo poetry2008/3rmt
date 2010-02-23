@@ -1,29 +1,20 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
   
-  //forward 404
-if (isset($HTTP_GET_VARS['goods_id'])) {
-  $_404_query = tep_db_query("select * from " . TABLE_PRESENT_GOODS. " where
-      goods_id = '" . intval($HTTP_GET_VARS['goods_id']) . "'");
-  $_404 = tep_db_fetch_array($_404_query);
-
-  forward404Unless($_404);
-}
-	
   if($HTTP_GET_VARS['goods_id']) {
-    $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$HTTP_GET_VARS['goods_id']."' and site_id = '".SITE_ID."'") ;
-	$present = tep_db_fetch_array($present_query) ;
+//ccdd
+    $present_query = tep_db_query("
+        select * 
+        from ".TABLE_PRESENT_GOODS." 
+        where goods_id = '".(int)$HTTP_GET_VARS['goods_id']."' 
+          and site_id = '".SITE_ID."'
+    ") ;
+    $present       = tep_db_fetch_array($present_query) ;
+    forward404Unless($present);
   }else{
     tep_redirect(tep_href_link(FILENAME_PRESENT, 'error_message='.urlencode(TEXT_PRESENT_ERROR_NOT_SELECTED), 'SSL'));	
   }
@@ -54,29 +45,50 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;
       
 	  //check
 	  $login_error = false;
-	  $check_customer_query = tep_db_query("select customers_id, customers_firstname, customers_lastname, customers_password, customers_email_address, customers_default_address_id from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and site_id = '".SITE_ID."'");
+//ccdd
+	  $check_customer_query = tep_db_query("
+        select customers_id, 
+               customers_firstname, 
+               customers_lastname, 
+               customers_password, 
+               customers_email_address, 
+               customers_default_address_id 
+        from " .  TABLE_CUSTOMERS . " 
+        where customers_email_address = '" .  tep_db_input($email_address) . "' 
+          and site_id = '".SITE_ID."'
+      ");
       if (tep_db_num_rows($check_customer_query)) {
         $check_customer = tep_db_fetch_array($check_customer_query);
         // Check that password is good
         if (tep_validate_password($password, $check_customer['customers_password'])) {
           $pc_id = $check_customer['customers_id'];
 		  tep_session_register('pc_id');
-		  
-		  $customers_query = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$pc_id."' and site_id = '".SITE_ID."'");
+		  //ccdd
+		  $customers_query = tep_db_query("
+          select * 
+          from ".TABLE_CUSTOMERS." 
+          where customers_id = '".$pc_id."' 
+            and site_id = '".SITE_ID."'
+      ");
 		  $customers_result = tep_db_fetch_array($customers_query);
-		  
-		  $address_query = tep_db_query("select * from ".TABLE_ADDRESS_BOOK." where customers_id = '".$pc_id."' and address_book_id = '1'");
+		  //ccdd
+		  $address_query = tep_db_query("
+          select * 
+          from ".TABLE_ADDRESS_BOOK." 
+          where customers_id = '".$pc_id."' 
+            and address_book_id = '1'
+      ");
 		  $address_result = tep_db_fetch_array($address_query);
 			
-		  $firstname = $customers_result['customers_firstname'];
-		  $lastname = $customers_result['customers_lastname'];
-		  $email_address = $customers_result['customers_email_address'];
-		  $telephone = $customers_result['customers_telephone'];
+		  $firstname      = $customers_result['customers_firstname'];
+		  $lastname       = $customers_result['customers_lastname'];
+		  $email_address  = $customers_result['customers_email_address'];
+		  $telephone      = $customers_result['customers_telephone'];
 		  $street_address = $address_result['entry_street_address'];
-		  $suburb = $address_result['entry_suburb'];
-		  $postcode = $address_result['entry_postcode'];
-		  $city = $address_result['entry_city'];
-		  $zone_id = $address_result['entry_zone_id'];
+		  $suburb         = $address_result['entry_suburb'];
+		  $postcode       = $address_result['entry_postcode'];
+		  $city           = $address_result['entry_city'];
+		  $zone_id        = $address_result['entry_zone_id'];
 
 	      //セッション内に情報を一時的に挿入
 		  tep_session_register('firstname');
@@ -90,8 +102,8 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;
 		  tep_session_register('zone_id');
 		  
 	    } else {
-		  $login_error = true;
-		  $HTTP_GET_VARS['login'] = 'fail';
+        $login_error = true;
+        $HTTP_GET_VARS['login'] = 'fail';
 		}
 	  } else {
 	    $login_error = true;
@@ -202,39 +214,56 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;
 		} else {
 		  $zone_id = 0;
 		  $entry_state_error = false;
-		  $check_query = tep_db_query("select count(*) as total from " . TABLE_ZONES . " where zone_country_id = '" . tep_db_input($country) . "'");
+//ccdd
+		  $check_query = tep_db_query("
+          select count(*) as total 
+          from " . TABLE_ZONES . " 
+          where zone_country_id = '" . tep_db_input($country) . "'
+      ");
 		  $check_value = tep_db_fetch_array($check_query);
 		  $entry_state_has_zones = ($check_value['total'] > 0);
 		  if ($entry_state_has_zones == true) {
-			$zone_query = tep_db_query("select zone_id from " . TABLE_ZONES . " where zone_country_id = '" . tep_db_input($country) . "' and zone_name = '" . tep_db_input($state) . "'");
+//ccdd
+			$zone_query = tep_db_query("
+          select zone_id 
+          from " . TABLE_ZONES . " 
+          where zone_country_id = '" . tep_db_input($country) . "' 
+            and zone_name = '" . tep_db_input($state) . "'
+      ");
 			if (tep_db_num_rows($zone_query) == 1) {
 			  $zone_values = tep_db_fetch_array($zone_query);
 			  $zone_id = $zone_values['zone_id'];
 			} else {
-			  $zone_query = tep_db_query("select zone_id from " . TABLE_ZONES . " where zone_country_id = '" . tep_db_input($country) . "' and zone_code = '" . tep_db_input($state) . "'");
-			  if (tep_db_num_rows($zone_query) == 1) {
-				$zone_values = tep_db_fetch_array($zone_query);
-				$zone_id = $zone_values['zone_id'];
-			  } else {
-				$error = true;
-				$entry_state_error = true;
-			  }
-			}
-		  } else {
-			if ($state == false) {
-			  $error = true;
-			  $entry_state_error = true;
-			}
+//ccdd
+			  $zone_query = tep_db_query("
+            select zone_id 
+            from " . TABLE_ZONES . " 
+            where zone_country_id = '" . tep_db_input($country) . "' 
+              and zone_code = '" . tep_db_input($state) . "'
+        ");
+        if (tep_db_num_rows($zone_query) == 1) {
+          $zone_values = tep_db_fetch_array($zone_query);
+          $zone_id = $zone_values['zone_id'];
+        } else {
+          $error = true;
+          $entry_state_error = true;
+        }
+      }
+      } else {
+        if ($state == false) {
+          $error = true;
+          $entry_state_error = true;
+        }
 		  }
 		}
 	  }
 	
 	  //telephone
 	  if (strlen($telephone) < ENTRY_TELEPHONE_MIN_LENGTH) {
-		$error = true;
-		$entry_telephone_error = true;
+      $error = true;
+      $entry_telephone_error = true;
 	  } else {
-		$entry_telephone_error = false;
+      $entry_telephone_error = false;
 	  }
 	  
 	  //password check
@@ -257,7 +286,13 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;
 	
 	  //check_email_count for regist user
 	  if(!empty($password)) {
-	    $check_email = tep_db_query("select customers_email_address from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and customers_id <> '" .  tep_db_input($customer_id) . "' and site_id = '".SITE_ID."'");
+//ccdd
+	    $check_email = tep_db_query("
+          select customers_email_address 
+          from " .  TABLE_CUSTOMERS . " 
+          where customers_email_address = '" .  tep_db_input($email_address) . "' 
+            and customers_id <> '" .  tep_db_input($customer_id) . "' 
+            and site_id = '".SITE_ID."'");
 	    if (tep_db_num_rows($check_email)) {
 		  $error = true;
 		  $entry_email_address_exists = true;
@@ -313,8 +348,17 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;
 		  }
 	
 		  tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
-	
-		  tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created) values ('" . tep_db_input($customer_id) . "', '0', now())");
+		  //ccdd
+		  tep_db_query("
+          insert into " . TABLE_CUSTOMERS_INFO . " (
+            customers_info_id, 
+            customers_info_number_of_logons, 
+            customers_info_date_account_created
+          ) values (
+            '" . tep_db_input($customer_id) . "', 
+            '0', 
+            now())
+      ");
 	
 		  if (SESSION_RECREATE == 'True') { // 2004/04/25 Add session management
 		    tep_session_recreate();
@@ -421,7 +465,13 @@ function popupWindow(url) {
               <td class="main"><?php
       if (!isset($HTTP_POST_VARS['goods_id'])) $HTTP_POST_VARS['goods_id']=NULL;
   if($HTTP_POST_VARS['goods_id']) {
-    $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$HTTP_GET_VARS['goods_id']."'") ;
+//ccdd
+    $present_query = tep_db_query("
+        select * 
+        from ".TABLE_PRESENT_GOODS." 
+        where goods_id = '".(int)$HTTP_GET_VARS['goods_id']."'
+          and site_id  = '" . SITE_ID . "'
+    ") ;
 	$present = tep_db_fetch_array($present_query) ;
   }	
 ?>

@@ -1,17 +1,49 @@
 <?php
 /*
   $Id$
+
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
+
   Copyright (c) 2003 osCommerce
   Released under the GNU General Public License
-  <meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
 */
 
 	if (isset($current_category_id) && ($current_category_id > 0)) {
-		$best_sellers_query = tep_db_query("select distinct p.products_id,p.products_image,pd.products_name,pd.products_description from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION .  " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " .  TABLE_CATEGORIES . " c where p.products_status = '1' and p.products_ordered > 0 and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and p.products_id = p2c.products_id and p2c.categories_id = c.categories_id and '" .  $current_category_id . "' in (c.categories_id, c.parent_id) and pd.site_id = '".SITE_ID."' order by p.products_ordered desc, pd.products_name limit " . MAX_DISPLAY_BESTSELLERS);
-	} else {
-		$best_sellers_query = tep_db_query("select distinct p.products_id,p.products_image,pd.products_name,pd.products_description from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION .  " pd where p.products_status = '1' and p.products_ordered > 0 and p.products_id = pd.products_id and pd.language_id = '" .  $languages_id . "' and p.products_id not in".tep_not_in_disabled_products()." and pd.site_id = '".SITE_ID."' order by p.products_ordered desc, pd.products_name limit " . MAX_DISPLAY_BESTSELLERS);
+    // ccdd
+    $best_sellers_query = tep_db_query("
+        select distinct p.products_id,
+                        p.products_image,
+                        pd.products_name,
+                        pd.products_description 
+        from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION .  " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " .  TABLE_CATEGORIES . " c 
+        where p.products_status = '1' 
+          and p.products_ordered > 0 
+          and p.products_id = pd.products_id 
+          and pd.language_id = '" . $languages_id . "' 
+          and p.products_id = p2c.products_id 
+          and p2c.categories_id = c.categories_id 
+          and '" .  $current_category_id . "' in (c.categories_id, c.parent_id) 
+          and pd.site_id = '".SITE_ID."' 
+        order by p.products_ordered desc, pd.products_name 
+        limit " . MAX_DISPLAY_BESTSELLERS);
+  } else {
+    // ccdd
+    $best_sellers_query = tep_db_query("
+        select distinct p.products_id,
+                        p.products_image,
+                        pd.products_name,
+                        pd.products_description 
+        from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION .  " pd 
+        where p.products_status = '1' 
+          and p.products_ordered > 0 
+          and p.products_id = pd.products_id 
+          and pd.language_id = '" .  $languages_id . "' 
+          and p.products_id not in".tep_not_in_disabled_products()." 
+          and pd.site_id = '".SITE_ID."' 
+        order by p.products_ordered desc, pd.products_name 
+        limit " . MAX_DISPLAY_BESTSELLERS
+        );
 	}
 
 	if (tep_db_num_rows($best_sellers_query) >= MIN_DISPLAY_BESTSELLERS) {

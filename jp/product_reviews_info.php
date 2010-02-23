@@ -4,33 +4,14 @@
   $Id$
 
   商品评论详细页
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
-
   require('includes/application_top.php');
-
-  //forward 404
-if (isset($HTTP_GET_VARS['reviews_id'])) {
-  $_404_query = tep_db_query("
-      SELECT * 
-      FROM " . TABLE_REVIEWS . " 
-      WHERE reviews_id = '" . intval($HTTP_GET_VARS['reviews_id']) . "'
-  ");
-  $_404 = tep_db_fetch_array($_404_query);
-
-  forward404Unless($_404);
-}
 
 // lets retrieve all $HTTP_GET_VARS keys and values..
   $get_params = tep_get_all_get_params(array('reviews_id'));
   $get_params = substr($get_params, 0, -1); //remove trailing &
 
+  // ccdd
   $reviews_query = tep_db_query("
       SELECT rd.reviews_text, 
              r.reviews_rating, 
@@ -55,6 +36,7 @@ if (isset($HTTP_GET_VARS['reviews_id'])) {
         AND r.site_id  = ".SITE_ID." 
         AND pd.site_id = ".SITE_ID
       );
+  //forward if no reviews
   if (!tep_db_num_rows($reviews_query)) tep_redirect(tep_href_link(FILENAME_REVIEWS));
   $reviews = tep_db_fetch_array($reviews_query);
 
@@ -88,6 +70,7 @@ function showimage($1) {
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents"> <?php
+      // ccdd
   tep_db_query("
       UPDATE " . TABLE_REVIEWS . " 
       SET reviews_read = reviews_read+1 

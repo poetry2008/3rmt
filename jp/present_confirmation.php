@@ -20,7 +20,13 @@
 
 
   if($HTTP_GET_VARS['goods_id']) {
-    $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$HTTP_GET_VARS['goods_id']."' and site_id = '".SITE_ID."'") ;
+//ccdd
+    $present_query = tep_db_query("
+        select * 
+        from ".TABLE_PRESENT_GOODS." 
+        where goods_id = '".(int)$HTTP_GET_VARS['goods_id']."' 
+          and site_id  = '".SITE_ID."'
+    ") ;
 	$present = tep_db_fetch_array($present_query) ;
   }else{
     tep_redirect(tep_href_link(FILENAME_PRESENT, 'error_message='.urlencode(TEXT_PRESENT_ERROR_NOT_SELECTED), 'SSL'));	
@@ -51,21 +57,39 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action']=NULL;
 	  
 	  //check pre insert - customers
 	  if($pc_id != '0') {
-	    $cmcnt_query = tep_db_query("select count(*) as cnt from ".TABLE_CUSTOMERS." where customers_email_address = '".tep_db_prepare_input($email_address)."' and site_id = '".SITE_ID."'");
+//ccdd
+	    $cmcnt_query = tep_db_query("
+          select count(*) as cnt 
+          from ".TABLE_CUSTOMERS." 
+          where customers_email_address = '".tep_db_prepare_input($email_address)."' 
+          and site_id = '".SITE_ID."'
+      ");
 	    $cmcnt_result = tep_db_fetch_array($cmcnt_query);
 		
 		$cmcnt = $cmcnt_result['cnt'];
 		
 		//update mail_mag
 		if($cmcnt != 0) {
-		  tep_db_query("update ".TABLE_CUSTOMERS." set customers_newsletter = '1' where customers_email_address = '".tep_db_prepare_input($email_address)."' and site_id ='".SITE_ID."'");
+//ccdd
+		  tep_db_query("
+          update ".TABLE_CUSTOMERS." 
+          set customers_newsletter = '1' 
+          where customers_email_address = '".tep_db_prepare_input($email_address)."' 
+            and site_id ='".SITE_ID."'
+      ");
 		}
 	  } else {
 	    $cmcnt = 0;
 	  }
 	  
 	  //check pre insert - main_magazine
-	  $mgcnt_query = tep_db_query("select count(*) as cnt from ".TABLE_MAIL_MAGAZINE." where mag_email = '".tep_db_prepare_input($email_address)."' and site_id = '".SITE_ID."'");
+//ccdd
+	  $mgcnt_query = tep_db_query("
+        select count(*) as cnt 
+        from ".TABLE_MAIL_MAGAZINE." 
+        where mag_email = '".tep_db_prepare_input($email_address)."' 
+          and site_id = '".SITE_ID."'
+    ");
 	  $mgcnt_result = tep_db_fetch_array($mgcnt_query);
 	  
 	  //insert mail_magazine ** customers=0 & mail_magazine=0
@@ -162,17 +186,42 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action']=NULL;
         default:
           if (!tep_session_is_registered('firstname'))
           {
-          $account_query = tep_db_query("select c.customers_gender, c.customers_firstname, c.customers_lastname, c.customers_firstname_f, c.customers_lastname_f, c.customers_dob, c.customers_email_address, a.entry_company, a.entry_street_address, a.entry_suburb, a.entry_postcode, a.entry_city, a.entry_zone_id, a.entry_state, a.entry_country_id, c.customers_telephone, c.customers_fax, c.customers_newsletter from " . TABLE_CUSTOMERS . " c, " .  TABLE_ADDRESS_BOOK . " a where c.customers_id = '" . $customer_id . "' and a.customers_id = c.customers_id and a.address_book_id = '" .  $customer_default_address_id . "' and c.site_id = '".SITE_ID."'");
-          $account = tep_db_fetch_array($account_query);
-          $firstname = $account['customers_firstname'];
-          $lastname = $account['customers_lastname'];
+//ccdd
+          $account_query = tep_db_query("
+              select c.customers_gender, 
+                     c.customers_firstname, 
+                     c.customers_lastname, 
+                     c.customers_firstname_f, 
+                     c.customers_lastname_f, 
+                     c.customers_dob, 
+                     c.customers_email_address, 
+                     a.entry_company, 
+                     a.entry_street_address, 
+                     a.entry_suburb, 
+                     a.entry_postcode, 
+                     a.entry_city, 
+                     a.entry_zone_id, 
+                     a.entry_state, 
+                     a.entry_country_id, 
+                     c.customers_telephone, 
+                     c.customers_fax, 
+                     c.customers_newsletter 
+              from " . TABLE_CUSTOMERS . " c, " .  TABLE_ADDRESS_BOOK . " a 
+              where c.customers_id = '" . $customer_id . "' 
+                and a.customers_id = c.customers_id 
+                and a.address_book_id = '" .  $customer_default_address_id . "' 
+                and c.site_id = '".SITE_ID."'
+              ");
+          $account       = tep_db_fetch_array($account_query);
+          $firstname     = $account['customers_firstname'];
+          $lastname      = $account['customers_lastname'];
           $email_address = $account['customers_email_address'];
-          $postcode = $account['entry_postcode'];
-          $zone_id = $account['entry_zone_id'];
-          $city = $account['entry_city'];
+          $postcode      = $account['entry_postcode'];
+          $zone_id       = $account['entry_zone_id'];
+          $city          = $account['entry_city'];
           $street_address = $account['entry_street_address'];
-          $telephone = $account['customers_telephone'];
-          $suburb = $account['entry_suburb'];
+          $telephone     = $account['customers_telephone'];
+          $suburb        = $account['entry_suburb'];
           
     	  tep_session_register('firstname');
     	  tep_session_register('lastname');

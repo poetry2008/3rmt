@@ -1,12 +1,6 @@
 <?php
 /*
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
+  $Id$
 */
   class addressForm {
     // private
@@ -93,8 +87,12 @@
 
     // public
     function storeAddressFormat($address_format_id){
-        $query = tep_db_query("select address_format from " . TABLE_ADDRESS_FORMAT
-          . " where address_format_id = '" . $address_format_id . "'");
+//ccdd
+        $query = tep_db_query("
+            select address_format 
+            from " . TABLE_ADDRESS_FORMAT . " 
+            where address_format_id = '" . $address_format_id . "'
+        ");
         $row = tep_db_fetch_array($query);
         $formatstring = ereg_replace('[^a-z]+', ' ', $row['address_format']);
         $elements = explode(' ', $formatstring);

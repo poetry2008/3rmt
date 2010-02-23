@@ -2,12 +2,6 @@
 /*
   $Id$
 
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   include('includes/application_top.php');
@@ -17,8 +11,10 @@
 	$ip = MODULE_PAYMENT_CONVENIENCE_STORE_IP;
 	$sid = $HTTP_GET_VARS['sid'];
 	$oid = substr($HTTP_GET_VARS['sid'],0,8) . '-' . substr($HTTP_GET_VARS['sid'],8,8);
-	
+//todo :此处应加一个过滤，是否oid存在且是本站的	
 	#DB取得情報
+//ccdd
+// 从get 取得信息，，没有过滤的话可能会出现看到其它网站的comment
 	$orders_status_history_query = tep_db_query("select comments from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . $oid . "'");
 	$orders_status_history_result = tep_db_fetch_array($orders_status_history_query);
 	
@@ -52,11 +48,12 @@
 	  }
 	}
 	
-	
+	//ccdd
 	$order_query = tep_db_query("select customers_email_address from " .  TABLE_ORDERS . " where orders_id = '" . $oid . "' and site_id = '".SITE_ID."'");
 	$order_result = tep_db_fetch_array($order_query);
 	$mail = $order_result['customers_email_address'];
 	
+//ccdd
 	$op_count_query = tep_db_query("select count(*) from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . $oid . "'");
 	$op_count_result = tep_db_fetch_array($op_count_query);
 	
@@ -64,7 +61,7 @@
 	  $count = 1;
 	  $n = "";
 	  $k = "";
-	  
+	  //ccdd
 	  $order_products_query = tep_db_query("select * from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . $oid . "'");
 	  while($order_products_result = tep_db_fetch_array($order_products_query)){
 	    $n .= '&N' . $count . '=' . mb_substr($order_products_result['products_name'],0,20) . '(' . $order_products_result['products_quantity'] . ')';
@@ -79,7 +76,7 @@
 	}else{
 	  $n = "";
 	  $k = "";
-	  
+	  //ccdd
 	  $order_total_query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where orders_id = '" . $oid . "' and class = 'ot_subtotal'");
 	  $order_total_result = tep_db_fetch_array($order_total_query);
 	  

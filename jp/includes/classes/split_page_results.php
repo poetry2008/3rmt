@@ -1,23 +1,9 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
 */
 
   class splitPageResults {
-/*
-NOTE: the constructor (also) builds an sql query that counts the total records from $sql_query..
-      this value is then saved as $query_num_rows (which does not have to be set before
-      creating an instance of this class.
-      Please note the function references (&$variable) - please read up on this in the PHP documentation.
-*/
-
 /* class constructor */
 
     function splitPageResults(&$current_page_number, $max_rows_per_page, &$sql_query, &$query_num_rows) {
@@ -45,6 +31,7 @@ NOTE: the constructor (also) builds an sql query that counts the total records f
       $offset = ($max_rows_per_page * ($current_page_number - 1));
       $sql_query .= " limit " . $offset . ", " . $max_rows_per_page;
 
+      // ccdd
       $reviews_count_query = tep_db_query("select count(*) as total " . substr($sql_query, $pos_from, ($pos_to - $pos_from)));
       $reviews_count = tep_db_fetch_array($reviews_count_query);
       $query_num_rows = $reviews_count['total'];
@@ -175,6 +162,7 @@ NOTE: the constructor (also) builds an sql query that counts the total records f
         $count_string = tep_db_input($count_key);
       }
 
+      // ccdd
       $count_query = tep_db_query("select count(" . $count_string . ") as total " . substr($this->sql_query, $pos_from, ($pos_to - $pos_from)));
       $count = tep_db_fetch_array($count_query);
 

@@ -29,7 +29,17 @@
 
    function osC_CategoryTree($load_from_database = true) {
      global $languages_id;
-         $categories_query = tep_db_query("select c.categories_id, c.categories_status, cd.categories_name, c.parent_id from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where c.categories_id = cd.categories_id and cd.language_id = '" . (int)$languages_id . "' and cd.site_id = '".SITE_ID."' order by c.parent_id, c.sort_order, cd.categories_name");
+//ccdd
+         $categories_query = tep_db_query("
+             select c.categories_id, 
+                    c.categories_status, 
+                    cd.categories_name, 
+                    c.parent_id 
+             from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
+             where c.categories_id = cd.categories_id 
+               and cd.language_id = '" . (int)$languages_id . "' 
+               and cd.site_id = '".SITE_ID."' 
+             order by c.parent_id, c.sort_order, cd.categories_name");
 		 
          $this->data = array();
          while ($categories = tep_db_fetch_array($categories_query)) {

@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
   require('includes/application_top.php');
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_SPECIALS);
@@ -32,10 +25,25 @@
 				<h1 class="pageHeading"><?php echo HEADING_TITLE ; ?>RMTジャックポットの特価商品</h1>
 				<table border="0" width="100%" cellspacing="0" cellpadding="0">
 <?php
-	$specials_query_raw = "select p.products_id, pd.products_name, p.products_price, p.products_tax_class_id, p.products_image, s.specials_new_products_price 
+	$specials_query_raw = "
+    select p.products_id, 
+           pd.products_name, 
+           p.products_price, 
+           p.products_tax_class_id, 
+           p.products_image, 
+           s.specials_new_products_price 
     from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_SPECIALS . " s 
-    where pd.site_id = '" . SITE_ID . "' and p.products_id not in".tep_not_in_disabled_products()." and p.products_status = '1' and s.products_id = p.products_id and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and s.status = '1' order by s.specials_date_added DESC";
+    where pd.site_id = '" . SITE_ID . "' 
+      and p.products_id not in".tep_not_in_disabled_products()." 
+      and p.products_status = '1' 
+      and s.products_id = p.products_id 
+      and p.products_id = pd.products_id 
+      and pd.language_id = '" . $languages_id . "' 
+      and s.status = '1' 
+    order by s.specials_date_added DESC
+  ";
 	$specials_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SPECIAL_PRODUCTS, $specials_query_raw, $specials_numrows);
+  // ccdd
 	$specials_query = tep_db_query($specials_query_raw);
 	
 	if (($specials_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3'))) {

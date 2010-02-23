@@ -17,18 +17,21 @@
   $categories = $pages = $products = array();
 
   // 取得全部分类
+//ccdd
   $categories_query = tep_db_query("select * from " . TABLE_CATEGORIES);
   while ($category = tep_db_fetch_array($categories_query))  {
     $categories[$category['categories_id']] = $category;
   }
 
   // 取得全部信息页内容
+//ccdd
   $contents_page = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where status = 1 and site_id = '" . SITE_ID . "' order by sort_id ");
   while ($result = tep_db_fetch_array($contents_page)){
     $pages[] = info_tep_href_link($result['romaji']);
   } 
 
   // 取得全部商品
+//ccdd
   $products_query = tep_db_query("select * from ".TABLE_PRODUCTS);
   while ($product = tep_db_fetch_array($products_query)){
     $products[] = tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $product['products_id']);

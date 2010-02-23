@@ -14,8 +14,9 @@
 
   //forward 404
   if (isset($HTTP_GET_VARS['order_id']))
-{
-  $_404_query = tep_db_query("select * from " .TABLE_ORDERS . " where orders_id = '"
+      {
+//ccdd
+  $_404_query = tep_db_query("select * from " .TABLE_ORDERS . " where site_id = '".SITE_ID."' and orders_id = '"
       . $HTTP_GET_VARS['order_id'] . "'");
   $_404 = tep_db_fetch_array($_404_query);
 
@@ -34,7 +35,7 @@
   if (!isset($HTTP_GET_VARS['order_id'])) {
     tep_redirect(tep_href_link(FILENAME_HISTORY, '', 'SSL'));
   }
-  
+//ccdd
   $customer_number_query = tep_db_query("select customers_id from " . TABLE_ORDERS .  " where orders_id = '".  tep_db_input(tep_db_prepare_input($HTTP_GET_VARS['order_id'])) . "' and site_id = ".SITE_ID);
   $customer_number = tep_db_fetch_array($customer_number_query);
   if ($customer_number['customers_id'] != $customer_id) {
@@ -204,7 +205,9 @@
               <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
                   <tr class="infoBoxContents"> 
                     <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-                        <?php
+<?php
+//ccdd
+//todo: need filter
   $statuses_query = tep_db_query("select os.orders_status_name, osh.date_added, osh.comments from " . TABLE_ORDERS_STATUS . " os, " . TABLE_ORDERS_STATUS_HISTORY . " osh where osh.orders_id = '" . $HTTP_GET_VARS['order_id'] . "' and osh.orders_status_id = os.orders_status_id and os.language_id = '" . $languages_id . "' and osh.customer_notified = '1' order by osh.date_added");
   while ($statuses = tep_db_fetch_array($statuses_query)) {
     echo '              <tr>' . "\n" .

@@ -58,6 +58,7 @@
   $insert_id = date("Ymd") . '-' . date("His") . ds_makeRandStr(2);
 
   # Check
+  //ccdd
   $NewOidQuery = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS." where orders_id = '".$insert_id."'");
   $NewOid = tep_db_fetch_array($NewOidQuery);
   if($NewOid['cnt'] == 0) {
@@ -204,8 +205,10 @@
         if (is_array($products_attributes)) {
           $stock_query_raw .= " AND pa.options_id = '" . $products_attributes[0]['option_id'] . "' AND pa.options_values_id = '" . $products_attributes[0]['value_id'] . "'";
         }
+//ccdd
         $stock_query = tep_db_query($stock_query_raw);
       } else {
+//ccdd
         $stock_query = tep_db_query("select products_quantity from " . TABLE_PRODUCTS . " where products_id = '" . tep_get_prid($order->products[$i]['id']) . "'");
       }
       if (tep_db_num_rows($stock_query) > 0) {
@@ -216,6 +219,7 @@
         } else {
           $stock_left = $stock_values['products_quantity'];
         }
+//ccdd
         tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = '" . $stock_left . "' where products_id = '" . tep_get_prid($order->products[$i]['id']) . "'");
         if ($stock_left < 1) {
 		  // 在庫切れでも商品は表示
@@ -233,6 +237,7 @@
     }
 
 // Update products_ordered (for bestsellers list)
+//ccdd
     tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . sprintf('%d', $order->products[$i]['qty']) . " where products_id = '" . tep_get_prid($order->products[$i]['id']) . "'");
 
 	$chara = '';
@@ -273,8 +278,10 @@
                                 and pa.options_values_id = poval.products_options_values_id 
                                 and popt.language_id = '" . $languages_id . "' 
                                 and poval.language_id = '" . $languages_id . "'";
+//ccdd
           $attributes = tep_db_query($attributes_query);
         } else {
+//ccdd
           $attributes = tep_db_query("select popt.products_options_name, poval.products_options_values_name, pa.options_values_price, pa.price_prefix, pa.products_at_quantity, pa.products_attributes_id from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_OPTIONS_VALUES . " poval, " . TABLE_PRODUCTS_ATTRIBUTES . " pa where pa.products_id = '" . $order->products[$i]['id'] . "' and pa.options_id = '" . $order->products[$i]['attributes'][$j]['option_id'] . "' and pa.options_id = popt.products_options_id and pa.options_values_id = '" . $order->products[$i]['attributes'][$j]['value_id'] . "' and pa.options_values_id = poval.products_options_values_id and popt.language_id = '" . $languages_id . "' and poval.language_id = '" . $languages_id . "'");
         }
         $attributes_values = tep_db_fetch_array($attributes);
@@ -284,9 +291,11 @@
 		//---------------------------------------
 		if (STOCK_LIMITED == 'true') {
 		  $zaiko = $attributes_values['products_at_quantity']-$order->products[$i]['qty'];
+//ccdd
 		  tep_db_query("update ".TABLE_PRODUCTS_ATTRIBUTES." set products_at_quantity = '". $zaiko ."' where products_id = '" . tep_get_prid($order->products[$i]['id']) . "' and options_id = '" . $order->products[$i]['attributes'][$j]['option_id'] . "' and options_values_id = '" . $order->products[$i]['attributes'][$j]['value_id'] . "'");
 
           //全てのオプション値が「0」担った時点で商品のステータスを（falseに）更新
+//ccdd
 		  $attributes_stock_check_query = tep_db_query("select * from ".TABLE_PRODUCTS_ATTRIBUTES." where products_id = '" . tep_get_prid($order->products[$i]['id']) . "'");
 		  $stock_cnt = 0;
 		  while($attributes_stock_check = tep_db_fetch_array($attributes_stock_check_query)) {
@@ -297,6 +306,7 @@
 		    //Not process
 		  } else {
             //Update products_status(TABLE: PRODUCTS)
+//ccdd
 			tep_db_query("update " . TABLE_PRODUCTS . " set products_status = '0' where products_id = '" . tep_get_prid($order->products[$i]['id']) . "'");
 		  
 		  
@@ -336,7 +346,7 @@
 	if(tep_not_null($order->products[$i]['model'])) {
 	  $products_ordered .= ' (' . $order->products[$i]['model'] . ')';
 	}
-	
+	//ccdd
     $_product_info_query = tep_db_query("select p.products_id, pd.products_name, pd.products_attention_1,pd.products_attention_2,pd.products_attention_3,pd.products_attention_4,pd.products_attention_5,pd.products_description, p.products_model, p.products_quantity, p.products_image,p.products_image2,p.products_image3, pd.products_url, p.products_price, p.products_tax_class_id, p.products_date_added, p.products_date_available, p.manufacturers_id, p.products_bflag, p.products_cflag, p.products_small_sum from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" . $order->products[$i]['id'] . "' and pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "'");
     tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_viewed = products_viewed+1 where products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and language_id = '" . $languages_id . "'");
     $product_info = tep_db_fetch_array($_product_info_query);
@@ -361,7 +371,7 @@
 
   # メール本文整形 --------------------------------------
   $email_order = '';
-  
+//ccdd
   $otq = tep_db_query("select * from ".TABLE_ORDERS_TOTAL." where class = 'ot_total' and orders_id = '".$insert_id."'");
   $ot = tep_db_fetch_array($otq);
   
@@ -494,7 +504,7 @@
   $email_printing_order .= 'ユーザーエージェント　：' . $_SERVER["HTTP_USER_AGENT"] . "\n";
   $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
   $email_printing_order .= '信用調査' . "\n";
-  
+//ccdd
 	$credit_inquiry_query = tep_db_query("select customers_fax, customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
     $credit_inquiry = tep_db_fetch_array($credit_inquiry_query);
 	
@@ -507,6 +517,7 @@
   $email_printing_order .= "\n";
   
   $order_history_query_raw = "select o.orders_id, o.customers_name, o.customers_id, o.date_purchased, s.orders_status_name, ot.text as order_total from " . TABLE_ORDERS . " o left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s where o.customers_id = '" . tep_db_input($customer_id) . "' and o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "' and ot.class = 'ot_total' order by o.date_purchased DESC limit 0,5";  
+//ccdd
   $order_history_query = tep_db_query($order_history_query_raw);
   while ($order_history = tep_db_fetch_array($order_history_query)) {
 	$email_printing_order .= $order_history['date_purchased'] . '　　' . tep_output_string_protected($order_history['customers_name']) . '　　' . strip_tags($order_history['order_total']) . '　　' . $order_history['orders_status_name'] . "\n";
@@ -610,8 +621,10 @@
 //Add point
   if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
     if(MODULE_ORDER_TOTAL_POINT_ADD_STATUS == '0') {
+//ccdd
 	  tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . intval($get_point - $point) . " where customers_id = " . $customer_id );
     } else {
+//ccdd
 	  tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point - " . intval($point) . " where customers_id = " . $customer_id );
 	}
   }
@@ -619,6 +632,7 @@
   
 // ゲスト購入の場合はポイントリセット
   if($guestchk == '1') {
+//ccdd
     tep_db_query("update ".TABLE_CUSTOMERS." set point = '0' where customers_id = '".$customer_id."'");
   }  
   

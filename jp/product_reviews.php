@@ -5,28 +5,9 @@
 
   一个商品的评论列表页
   ex: http://www.iimy.co.jp/item/pr-31693.html
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
-
-  //forward 404
-if (isset($HTTP_GET_VARS['products_id'])) {
-  $_404_query = tep_db_query("
-      SELECT * 
-      FROM " . TABLE_PRODUCTS . " 
-      WHERE products_id = '" . intval($HTTP_GET_VARS['products_id']) . "'
-      ");
-  $_404 = tep_db_fetch_array($_404_query);
-
-  forward404Unless($_404);
-}
 
 // lets retrieve all $HTTP_GET_VARS keys and values..
   $get_params      = tep_get_all_get_params();
@@ -38,6 +19,7 @@ if (isset($HTTP_GET_VARS['products_id'])) {
     $get_params_back = $get_params;
   }
 
+// ccdd
   $product_info_query = tep_db_query("
       SELECT pd.products_name 
       FROM " .  TABLE_PRODUCTS_DESCRIPTION . " pd 
@@ -49,6 +31,8 @@ if (isset($HTTP_GET_VARS['products_id'])) {
       );
   if (!tep_db_num_rows($product_info_query)) tep_redirect(tep_href_link(FILENAME_REVIEWS));
   $product_info = tep_db_fetch_array($product_info_query);
+  //forward 404
+  forward404Unless($product_info);
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRODUCT_REVIEWS);
 
@@ -86,6 +70,7 @@ if (isset($HTTP_GET_VARS['products_id'])) {
             <td colspan="5"><?php echo tep_draw_separator(); ?></td>
           </tr>
 <?php
+// ccdd
   $reviews_query = tep_db_query("
       SELECT reviews_rating, 
              reviews_id, 

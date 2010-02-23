@@ -1,5 +1,7 @@
 <?php
-
+/*
+$id
+*/
 require('includes/application_top.php');
 require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_TAGS);
 
@@ -23,9 +25,14 @@ $breadcrumb->add(TAGS_NAVBAR_TITLE, tep_href_link(FILENAME_TAGS));
 </h1>
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php 
-$tags_query_string = "select * from " . TABLE_TAGS . " order by tags_order";
+$tags_query_string = "
+    select * 
+    from " . TABLE_TAGS . " 
+    order by tags_order
+";
 $tags_split = new splitPageResults($HTTP_GET_VARS['page'],
     MAX_DISPLAY_SEARCH_RESULTS, $tags_query_string, $tags_numrows);
+//ccdd
 $tags_query = tep_db_query($tags_query_string);
 if (($tags_numrows > 0 ) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3')))
 {
@@ -66,11 +73,33 @@ while ($tag = tep_db_fetch_array($tags_query))
 {
   if (tep_session_is_registered('customer_id'))
   {
-    $products_query = tep_db_query("select *,p.products_id from " . TABLE_PRODUCTS_TO_TAGS . " as p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id where p2t.tags_id = " . $tag['tags_id'] .  " and pd.site_id = '".SITE_ID."' order by p.products_date_added desc limit 5");
+//ccdd
+    $products_query = tep_db_query("
+        select *,p.products_id 
+        from " . TABLE_PRODUCTS_TO_TAGS . " as p2t 
+          join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id 
+          left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id 
+          left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id 
+        where p2t.tags_id = " . $tag['tags_id'] .  " 
+          and pd.site_id = '".SITE_ID."' 
+        order by p.products_date_added desc 
+        limit 5
+    ");
   }
   else
   {
-    $products_query = tep_db_query("select *,p.products_id from " . TABLE_PRODUCTS_TO_TAGS . " as p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id where p2t.tags_id = " . $tag['tags_id'] .  " and pd.site_id = '".SITE_ID."' order by p.products_date_added desc limit 5");
+//ccdd
+    $products_query = tep_db_query("
+        select *,p.products_id 
+        from " . TABLE_PRODUCTS_TO_TAGS . " as p2t 
+          join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id 
+          left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id 
+          left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id 
+        where p2t.tags_id = " . $tag['tags_id'] .  " 
+          and pd.site_id = '".SITE_ID."' 
+        order by p.products_date_added desc 
+        limit 5
+    ");
   } 
   if (tep_db_num_rows($products_query))
   {

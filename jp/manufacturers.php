@@ -1,12 +1,6 @@
 <?php
 /*
   $Id$
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-  Copyright (c) 2003 osCommerce
-  Released under the GNU General Public License
-  <meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
-  次へボタンが表示されない手入力で8タイトル表示させている
 */
 	require('includes/application_top.php');
 //require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_MANUFAXTURERS);
@@ -39,8 +33,17 @@ $breadcrumb->add(NAVBAR_TITLE, tep_href_link('manufacturers.php'));
 						<td>
 							<table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php 
-    $manufacturer_query_raw = "select m.manufacturers_id, m.manufacturers_name, m.manufacturers_image, mi.manufacturers_url from " . TABLE_MANUFACTURERS . " m, " . TABLE_MANUFACTURERS_INFO . " mi  where  m.manufacturers_id = mi.manufacturers_id and languages_id = '" . $languages_id . "' order by manufacturers_name";
+    $manufacturer_query_raw = "
+      select m.manufacturers_id, 
+             m.manufacturers_name, 
+             m.manufacturers_image, 
+             mi.manufacturers_url 
+      from " . TABLE_MANUFACTURERS . " m, " . TABLE_MANUFACTURERS_INFO . " mi 
+      where m.manufacturers_id = mi.manufacturers_id 
+        and languages_id = '" . $languages_id . "' 
+      order by manufacturers_name";
 	$manufacturer_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $manufacturer_query_raw, $manufacturer_numrows);
+// ccdd
 	$manufacturer_query = tep_db_query($manufacturer_query_raw);
 
 	if (($manufacturer_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3'))) {
@@ -63,7 +66,14 @@ $breadcrumb->add(NAVBAR_TITLE, tep_href_link('manufacturers.php'));
 									<td>
 <?php
 while ($manufacturer = tep_db_fetch_array($manufacturer_query)){
-	$products_query = tep_db_query("select p.products_id, p.products_image, p.products_tax_class_id, if(s.status, s.specials_new_products_price, p.products_price) as products_price from " . TABLE_PRODUCTS . " p left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id where  p.products_id not in".tep_not_in_disabled_products()." and products_status = '1' and manufacturers_id = '".$manufacturer['manufacturers_id']."' order by p.products_date_added desc limit 5");
+  // ccdd
+	$products_query = tep_db_query("
+      select p.products_id, p.products_image, p.products_tax_class_id, if(s.status, s.specials_new_products_price, p.products_price) as products_price 
+      from " . TABLE_PRODUCTS . " p left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id 
+      where  p.products_id not in".tep_not_in_disabled_products()." and products_status = '1' and manufacturers_id = '".$manufacturer['manufacturers_id']."' 
+      order by p.products_date_added desc 
+      limit 5
+  ");
 	if (tep_db_num_rows($products_query)) {
 
 		echo '<table width="100%" border="0" cellspacing="0" cellpadding="0">' . "\n";

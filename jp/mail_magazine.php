@@ -34,11 +34,12 @@
 		tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_EMAIL_ERROR), 'SSL'));
 	  }
 	  
-	  
+	  //ccdd
 	  $regist_query = tep_db_query("select count(*) as cnt from " .  TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."' and site_id = '".SITE_ID."'");
 	  $regist_result = tep_db_fetch_array($regist_query);
 	  if($regist_result['cnt'] == '0') {
 	    //新規登録
+//ccdd
 		tep_db_query("insert into " . TABLE_MAIL_MAGAZINE . "(mag_id, mag_email, mag_name, site_id) values ('', '".$mag_mail."', '".$mag_name."', '".SITE_ID."')");
 		
 		tep_session_unregister('mag_mail');
@@ -59,7 +60,7 @@
 	  if (!tep_validate_email($mag_mail)) {
 		tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_EMAIL_ERROR), 'SSL'));
 	  }
-
+//ccdd
 	  $regist_query = tep_db_query("select count(*) as cnt from " .  TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."' and site_id = '".SITE_ID."'");
 	  $regist_result = tep_db_fetch_array($regist_query);
 	  if($regist_result['cnt'] == '0') {
@@ -70,7 +71,8 @@
 	    tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_STOP_ERROR), 'SSL'));
 	  } else {
 	    //削除（退会）処理
-		TEP_DB_QUery("delete from " . TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."' and site_id = '".SITE_ID."'");
+//ccdd 
+		tep_db_query("delete from " . TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."' and site_id = '".SITE_ID."'");
 		
 		tep_session_unregister('mag_mail');
 		tep_session_unregister('mag_name');

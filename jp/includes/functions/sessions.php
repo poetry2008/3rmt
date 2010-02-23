@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   if (STORE_SESSIONS == 'mysql') {
@@ -24,6 +17,7 @@
     }
 
     function _sess_read($key) {
+      // ccdd
       $qid = tep_db_query("select value from " . TABLE_SESSIONS . " where sesskey = '" . $key . "' and expiry > '" . time() . "'");
 
       $value = tep_db_fetch_array($qid);
@@ -40,21 +34,26 @@
       $expiry = time() + $SESS_LIFE;
       $value = addslashes($val);
 
+      // ccdd
       $qid = tep_db_query("select count(*) as total from " . TABLE_SESSIONS . " where sesskey = '" . $key . "'");
       $total = tep_db_fetch_array($qid);
 
       if ($total['total'] > 0) {
+        // ccdd
         return tep_db_query("update " . TABLE_SESSIONS . " set expiry = '" . $expiry . "', value = '" . $value . "' where sesskey = '" . $key . "'");
       } else {
+        // ccdd
         return tep_db_query("insert into " . TABLE_SESSIONS . " values ('" . $key . "', '" . $expiry . "', '" . $value . "')");
       }
     }
 
     function _sess_destroy($key) {
+      // ccdd
       return tep_db_query("delete from " . TABLE_SESSIONS . " where sesskey = '" . $key . "'");
     }
 
     function _sess_gc($maxlifetime) {
+      // ccdd
       tep_db_query("delete from " . TABLE_SESSIONS . " where expiry < '" . time() . "'");
 
       return true;

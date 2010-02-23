@@ -1,4 +1,7 @@
 <?php
+/*
+   $Id$
+ */
   $listing_numrows_sql = $listing_sql;
   $listing_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $listing_sql, $listing_numrows);
 // fix counted products

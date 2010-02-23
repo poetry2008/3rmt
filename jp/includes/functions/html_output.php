@@ -1,69 +1,9 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
-/*
-////
-// The HTML href link wrapper function
-  function tep_href_link($page = '', $parameters = '', $connection = 'NONSSL', $add_session_id = true, $search_engine_safe = true) {
-    if (!tep_not_null($page)) {
-      die('</td></tr></table></td></tr></table><br><br><font color="#ff0000"><b>Error!</b></font><br><br><b>Unable to determine the page link!<br><br>');
-    }
 
-    if ($connection == 'NONSSL') {
-      $link = HTTP_SERVER . DIR_WS_CATALOG;
-    } elseif ($connection == 'SSL') {
-      if (ENABLE_SSL == true) {
-        $link = HTTPS_SERVER . DIR_WS_CATALOG;
-      } else {
-        $link = HTTP_SERVER . DIR_WS_CATALOG;
-      }
-    } else {
-      die('</td></tr></table></td></tr></table><br><br><font color="#ff0000"><b>Error!</b></font><br><br><b>Unable to determine connection method on a link!<br><br>Known methods: NONSSL SSL</b><br><br>');
-    }
-
-    if (tep_not_null($parameters)) {
-      $link .= $page . '?' . tep_output_string($parameters);
-      $separator = '&';
-    } else {
-      $link .= $page;
-      $separator = '?';
-    }
-
-    while ( (substr($link, -1) == '&') || (substr($link, -1) == '?') ) $link = substr($link, 0, -1);
-
-// Add the session ID when moving from HTTP and HTTPS servers or when SID is defined
-    if ( (ENABLE_SSL == true ) && ($connection == 'SSL') && ($add_session_id == true) ) {
-      $sid = tep_session_name() . '=' . tep_session_id();
-    } elseif ( ($add_session_id == true) && (tep_not_null(SID)) ) {
-      $sid = defined('SID_NEW') ? SID_NEW : SID; // 2004/04/25
-    }
-
-    if ( (SEARCH_ENGINE_FRIENDLY_URLS == 'true') && ($search_engine_safe == true) ) {
-      while (strstr($link, '&&')) $link = str_replace('&&', '&', $link);
-
-      $link = str_replace('?', '/', $link);
-      $link = str_replace('&', '/', $link);
-      $link = str_replace('=', '/', $link);
-
-      $separator = '?';
-    }
-    
-    if (isset($sid)) {
-      $link .= $separator . tep_output_string($sid);
-    }
-
-    return $link;
-  }
-*/
 ////
 // Ultimate SEO URLs v2.1
 // The HTML href link wrapper function
@@ -431,9 +371,13 @@
 // added for Japanese localize
   function tep_get_zone_list($name, $country_code = '', $selected = '', $parameters = '') {
     $zones_array = array();
-    $zones_query = tep_db_query("select zone_name from " . TABLE_ZONES
-       . " where zone_country_id = '" . tep_db_input($country_code)
-       . "' order by " . (($country_code == 107) ? "zone_code" : "zone_name"));
+//ccdd
+    $zones_query = tep_db_query("
+        select zone_name 
+        from " . TABLE_ZONES . " 
+        where zone_country_id = '" . tep_db_input($country_code) . "' 
+        order by " . (($country_code == 107) ? "zone_code" : "zone_name")
+    );
     while ($zones_values = tep_db_fetch_array($zones_query)) {
       $zones_array[] = array('id' => $zones_values['zone_name'], 'text' => $zones_values['zone_name']);
     }

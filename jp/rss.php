@@ -17,10 +17,22 @@ $db = mysql_select_db(DB_DATABASE, $connection) or die(mysql_error());
 
 if (!isset($HTTP_GET_VARS['language'])) $HTTP_GET_VARS['language'] = NULL;
 if ($HTTP_GET_VARS['language'] == "") {
-  $lang_query = tep_db_query("select languages_id, code from " . TABLE_LANGUAGES . " where directory = '" . $language . "'");
+  // ccdd
+  $lang_query = tep_db_query("
+      select languages_id, 
+             code 
+      from " . TABLE_LANGUAGES . " 
+      where directory = '" . $language . "'
+  ");
 } else {
   $cur_language = tep_db_output($HTTP_GET_VARS['language']);
-  $lang_query = tep_db_query("select languages_id, code from " . TABLE_LANGUAGES . " where code = '" . $cur_language . "'");
+  // ccdd
+  $lang_query = tep_db_query("
+      select languages_id, 
+             code 
+      from " . TABLE_LANGUAGES . "
+      where code = '" . $cur_language . "'
+  ");
 }
 
 if (tep_db_num_rows($lang_query)) {
@@ -86,7 +98,20 @@ while ($row = mysql_fetch_array($sql_result)) {
   if ($price=='$0.00') {$price= 'Many price options availably for this product';}  else {
   $price = $currencies->format($price);}
 
-  $sql2 = "SELECT products_name, products_attention_1, products_attention_2, products_attention_3, products_attention_4, products_attention_5, products_description FROM products_description WHERE products_id = '$id' AND language_id = '$lang_id' AND site_id = '".SITE_ID."' LIMIT 1";
+  $sql2 = "SELECT products_name, 
+                  products_attention_1, 
+                  products_attention_2, 
+                  products_attention_3, 
+                  products_attention_4, 
+                  products_attention_5, 
+                  products_description 
+           FROM ".TABLE_PRODUCTS_DESCRIPTION." 
+           WHERE products_id = '$id' 
+             AND language_id = '$lang_id' 
+             AND site_id = '".SITE_ID."' 
+           LIMIT 1
+   ";
+  //ccdd
   $sql2_result = mysql_query($sql2,$connection) or die("Couldn't execute query.");
   $row2 = mysql_fetch_array($sql2_result);
   

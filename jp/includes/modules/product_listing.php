@@ -56,8 +56,6 @@
 	if ($listing_numrows > 0) {
 	
 		$listing_query = tep_db_query($listing_sql);
-		//echo '<table border="0" width="100%" cellspacing="0" cellpadding="0">'."\n" ;
-		//echo   '<tr>'."\n";
 		$row = 0 ;
 		$col = 0 ;
 		
@@ -133,7 +131,6 @@ if (!isset($listing['products_cflag'])) $listing['products_cflag'] = NULL;
 			<div class="dot">&nbsp;</div>
 <?php
 	}
-	//echo '</tr>';
 	echo '		</td>' . "\n" . '	</tr>' . "\n";
 	} else {
 ?>

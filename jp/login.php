@@ -24,6 +24,7 @@ if(isset($HTTP_POST_VARS['login_type']) && $HTTP_POST_VARS['login_type'] == 'new
     $password = tep_db_prepare_input($HTTP_POST_VARS['password']);
 
 // Check if email exists
+//ccdd
     $check_customer_query = tep_db_query("
         SELECT customers_id, 
                customers_firstname, 
@@ -47,7 +48,7 @@ if(isset($HTTP_POST_VARS['login_type']) && $HTTP_POST_VARS['login_type'] == 'new
         if (SESSION_RECREATE == 'True') {
           tep_session_recreate();
         }
-
+//ccdd
         $check_country_query = tep_db_query("
             SELECT entry_country_id, 
                    entry_zone_id 
@@ -74,6 +75,7 @@ if(isset($HTTP_POST_VARS['login_type']) && $HTTP_POST_VARS['login_type'] == 'new
 		tep_session_register('guestchk');
 
         $date_now = date('Ymd');
+//ccdd
         tep_db_query("
             UPDATE " . TABLE_CUSTOMERS_INFO . " 
             SET customers_info_date_of_last_logon = now(), 
@@ -83,6 +85,7 @@ if(isset($HTTP_POST_VARS['login_type']) && $HTTP_POST_VARS['login_type'] == 'new
 		
 		//POINT_LIMIT CHECK ポイントの有効期限チェック ds-style
 		if(MODULE_ORDER_TOTAL_POINT_LIMIT != '0') {
+//ccdd
 		  $plimit_count_query = tep_db_query("
           SELECT count(*) as cnt 
           FROM ".TABLE_ORDERS." 
@@ -92,6 +95,7 @@ if(isset($HTTP_POST_VARS['login_type']) && $HTTP_POST_VARS['login_type'] == 'new
 		  $plimit_count = tep_db_fetch_array($plimit_count_query);
 		  
 		  if($plimit_count['cnt'] > 0) {
+//ccdd
 		  $plimit_query = tep_db_query("
           SELECT date_purchased 
           FROM ".TABLE_ORDERS." 
@@ -108,6 +112,7 @@ if(isset($HTTP_POST_VARS['login_type']) && $HTTP_POST_VARS['login_type'] == 'new
 		  $now = time();
 		  $point_limit = mktime(0, 0, 0, $p_mon, $p_day+MODULE_ORDER_TOTAL_POINT_LIMIT, $p_year);
 		    if($now > $point_limit) {
+//ccdd
 			  tep_db_query("update ".TABLE_CUSTOMERS." set point = '0' where customers_id = '".$customer_id."' and site_id = '".SITE_ID."'");
 			}
 		  }

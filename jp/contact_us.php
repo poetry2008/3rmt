@@ -2,10 +2,7 @@
 // 3rmt over
 /*
   $Id$
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-  Copyright (c) 2003 osCommerce
-  Released under the GNU General Public License
+
 */
 
 	require('includes/application_top.php');
@@ -15,6 +12,7 @@
 	
 	//product_idを取得した場合商品名を呼び出す
 	if (isset($HTTP_GET_VARS['products_id'])) {
+//ccdd
 		$product_info_query = tep_db_query("
         SELECT pd.products_name 
         FROM " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 

@@ -35,7 +35,14 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   $cEmail = tep_db_prepare_input($HTTP_POST_VARS['email']);
   
   $o      = new order($oID);
-  $order  = tep_db_fetch_array(tep_db_query("select * from `".TABLE_ORDERS."` where site_id = '" . SITE_ID . "' and `orders_id` = '".$oID."' and `customers_email_address` = '".$cEmail."'"));
+  // ccdd
+  $order  = tep_db_fetch_array(tep_db_query("
+        select * 
+        from `".TABLE_ORDERS."` 
+        where site_id = '" . SITE_ID . "' 
+          and `orders_id` = '".$oID."' 
+          and `customers_email_address` = '".$cEmail."'
+        "));
 
 
   if ($order) {
@@ -58,16 +65,46 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
       } else {
         // update time
         if ($date && $hour && $minute) {
-          tep_db_query("update `".TABLE_ORDERS."` set `orders_status`='17' ,`torihiki_date` = '".$datetime."' WHERE `orders_id`='".$order_id."' and site_id = '" . SITE_ID . "'");
+          // ccdd
+          tep_db_query("
+              update `".TABLE_ORDERS."` 
+              set `orders_status`='17' ,
+                  `torihiki_date` = '".$datetime."' 
+              WHERE `orders_id`='".$order_id."' 
+                and site_id = '" . SITE_ID . "'
+          ");
           // insert a history
-          $sql = "INSERT INTO `".TABLE_ORDERS_STATUS_HISTORY."` (`orders_status_history_id` ,`orders_id` ,`orders_status_id` ,`date_added` ,`customer_notified` ,`comments`) VALUES (NULL , '".$order_id."', '17', '".date("Y-m-d H:i:s")."', '1', '".mysql_real_escape_string($comment)."');";
+          $sql = "
+            INSERT INTO `".TABLE_ORDERS_STATUS_HISTORY."` (
+                `orders_status_history_id`,
+                `orders_id` ,
+                `orders_status_id` ,
+                `date_added` ,
+                `customer_notified` ,
+                `comments`
+              ) VALUES (
+                NULL ,
+                '".$order_id."', 
+                '17', 
+                '".date("Y-m-d H:i:s")."', 
+                '1', 
+                '".mysql_real_escape_string($comment)."'
+              )
+          ";
+          // ccdd
           tep_db_query($sql);
         }
 
         // update character
         if (isset($HTTP_POST_VARS['character']) && is_array($HTTP_POST_VARS['character'])){
           foreach(tep_db_prepare_input($HTTP_POST_VARS['character']) as $pid=>$character){
-            tep_db_query("update `".TABLE_ORDERS_PRODUCTS."` set `products_character`='".$character."' where `orders_id`='".$oID."' and `products_id`='".$pid."'");
+            // ccdd
+            tep_db_query("
+                update `".TABLE_ORDERS_PRODUCTS."` 
+                set `products_character`='".$character."' 
+                where `orders_id`='".$oID."' 
+                  and `products_id`='".$pid."'
+            ");
           }
         }
         // update attributes
@@ -77,16 +114,46 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
               foreach($p['attributes'] as $a) {
                 if(isset($HTTP_POST_VARS['id'][$p['id']])) {
                   // old attribute
-                  $attributes = tep_db_fetch_array(tep_db_query("select * from `".TABLE_PRODUCTS_ATTRIBUTES."` where `products_attributes_id`='".$a['attributes_id']."'"));
+                  // ccdd
+                  $attributes = tep_db_fetch_array(tep_db_query("
+                        select * 
+                        from `".TABLE_PRODUCTS_ATTRIBUTES."` 
+                        where `products_attributes_id`='".$a['attributes_id']."'
+                  "));
                   if(isset($HTTP_POST_VARS['id'][(int)$p['id']][(int)$attributes['options_id']]) && $HTTP_POST_VARS['id'][(int)$p['id']][(int)$attributes['options_id']]){
                     // new option
-                    $option = tep_db_fetch_array(tep_db_query("select * from `".TABLE_PRODUCTS_OPTIONS."` where `products_options_id`='".$attributes['options_id']."'"));
+                    // ccdd
+                    $option = tep_db_fetch_array(tep_db_query("
+                          select * 
+                          from `".TABLE_PRODUCTS_OPTIONS."` 
+                          where `products_options_id`='".$attributes['options_id']."'
+                    "));
                     // new attribute
-                    $nattribute = tep_db_fetch_array(tep_db_query("select * from `".TABLE_PRODUCTS_ATTRIBUTES."` where `products_id`='".$p['id']."' and `options_id`='".$attributes['options_id']."' and `options_values_id`='".$HTTP_POST_VARS['id'][(int)$p['id']][(int)$attributes['options_id']]."'"));
+                    // ccdd
+                    $nattribute = tep_db_fetch_array(tep_db_query("
+                          select * 
+                          from `".TABLE_PRODUCTS_ATTRIBUTES."` 
+                          where `products_id`='".$p['id']."' 
+                            and `options_id`='".$attributes['options_id']."' 
+                            and `options_values_id`='".$HTTP_POST_VARS['id'][(int)$p['id']][(int)$attributes['options_id']]."'
+                    "));
                     // new option value
-                    $value = tep_db_fetch_array(tep_db_query("select * from `".TABLE_PRODUCTS_OPTIONS_VALUES."` where `products_options_values_id`='".$HTTP_POST_VARS['id'][(int)$p['id']][(int)$attributes['options_id']]."'"));
+                    // ccdd
+                    $value = tep_db_fetch_array(tep_db_query("
+                          select * 
+                          from `".TABLE_PRODUCTS_OPTIONS_VALUES."` 
+                          where `products_options_values_id`='".$HTTP_POST_VARS['id'][(int)$p['id']][(int)$attributes['options_id']]."'
+                    "));
                     // execute update`
-                    $update_query = tep_db_query("update `".TABLE_ORDERS_PRODUCTS_ATTRIBUTES."` set `products_options_values`='".$value['products_options_values_name']."',`attributes_id`='".$nattribute['products_attributes_id']."' where `orders_id`='".$oID."' and `products_options`='".$option['products_options_name']."' and `attributes_id`='".$a['attributes_id']."'");
+                    // ccdd
+                    $update_query = tep_db_query("
+                        update `".TABLE_ORDERS_PRODUCTS_ATTRIBUTES."` 
+                        set `products_options_values`='".$value['products_options_values_name']."',
+                            `attributes_id`='".$nattribute['products_attributes_id']."' 
+                        where `orders_id`='".$oID."' 
+                          and `products_options`='".$option['products_options_name']."' 
+                          and `attributes_id`='".$a['attributes_id']."'
+                    ");
                   }
                 }
               }
@@ -95,7 +162,13 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
         }
         echo '<div class="comment">注文内容の変更を承りました。電子メールをご確認ください。 <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" alt="TOPに戻る" title="TOPに戻る"></a></div></div>';
         // sent mail to customer
-        $mail    = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS_MAIL." where orders_status_id=17 and site_id = '" . SITE_ID . "'"));
+        // ccdd
+        $mail    = tep_db_fetch_array(tep_db_query("
+              select * 
+              from ".TABLE_ORDERS_MAIL." 
+              where orders_status_id=17 
+                and site_id = '" . SITE_ID . "'
+        "));
         // $mail_title = "注文内容の変更を承りました";
         $mail_title   = $mail['orders_status_title'];
         $mail_content = $mail['orders_status_mail'];
@@ -110,7 +183,13 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   $o = new order($oID);
 
   # Check
-  $NewOidQuery = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS." where orders_id = '".$insert_id."' and site_id = '".SITE_ID."'");
+  // ccdd
+  $NewOidQuery = tep_db_query("
+      select count(*) as cnt 
+      from ".TABLE_ORDERS." 
+      where orders_id = '".$insert_id."' 
+        and site_id = '".SITE_ID."'
+  ");
   $NewOid = tep_db_fetch_array($NewOidQuery);
   
   # load the selected shipping module(convenience_store)
@@ -169,14 +248,23 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
                                 and poval.language_id = '" . $languages_id . "'";
           $attributes = tep_db_query($attributes_query);
         } else {
-          $sql = "select popt.products_options_name, poval.products_options_values_name, pa.options_values_price, pa.price_prefix, pa.products_at_quantity, pa.products_attributes_id from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_OPTIONS_VALUES . " poval, " . TABLE_PRODUCTS_ATTRIBUTES . " pa 
-        	where pa.products_id = '" . $o->products[$i]['id'] . "' 
-        	and pa.options_id = '" . $o->products[$i]['attributes'][$j]['option_id'] . "' 
-        	and pa.options_id = popt.products_options_id 
-        	and pa.options_values_id = '" . $o->products[$i]['attributes'][$j]['value_id'] . "' 
-        	and pa.options_values_id = poval.products_options_values_id 
-        	and popt.language_id = '" . $languages_id . "' 
-        	and poval.language_id = '" . $languages_id . "'";
+          // ccdd
+          $sql = "
+            select popt.products_options_name, 
+                   poval.products_options_values_name, 
+                   pa.options_values_price, 
+                   pa.price_prefix, 
+                   pa.products_at_quantity, 
+                   pa.products_attributes_id 
+            from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_OPTIONS_VALUES . " poval, " . TABLE_PRODUCTS_ATTRIBUTES . " pa 
+            where pa.products_id = '" . $o->products[$i]['id'] . "' 
+              and pa.options_id = '" . $o->products[$i]['attributes'][$j]['option_id'] . "' 
+              and pa.options_id = popt.products_options_id 
+              and pa.options_values_id = '" . $o->products[$i]['attributes'][$j]['value_id'] . "' 
+              and pa.options_values_id = poval.products_options_values_id 
+              and popt.language_id = '" . $languages_id . "' 
+              and poval.language_id = '" . $languages_id . "'
+            ";
 
           $attributes = tep_db_query($sql);
         }
@@ -196,8 +284,45 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
 	  $products_ordered .= ' (' . $o->products[$i]['model'] . ')';
 	}
 	
-    $_product_info_query = tep_db_query("select p.products_id, pd.products_name, pd.products_attention_1,pd.products_attention_2,pd.products_attention_3,pd.products_attention_4,pd.products_attention_5,pd.products_description, p.products_model, p.products_quantity, p.products_image,p.products_image2,p.products_image3, pd.products_url, p.products_price, p.products_tax_class_id, p.products_date_added, p.products_date_available, p.manufacturers_id, p.products_bflag, p.products_cflag, p.products_small_sum from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and pd.site_id = '" . SITE_ID . "' and p.products_id = '" . $o->products[$i]['id'] . "' and pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "'");
-    tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_viewed = products_viewed+1 where products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and site_id = '" . SITE_ID . "' and language_id = '" . $languages_id . "'");
+  // ccdd
+    $_product_info_query = tep_db_query("
+      select p.products_id, 
+             pd.products_name, 
+             pd.products_attention_1,
+             pd.products_attention_2,
+             pd.products_attention_3,
+             pd.products_attention_4,
+             pd.products_attention_5,
+             pd.products_description, 
+             p.products_model, 
+             p.products_quantity, 
+             p.products_image,
+             p.products_image2,
+             p.products_image3, 
+             pd.products_url, 
+             p.products_price, 
+             p.products_tax_class_id, 
+             p.products_date_added, 
+             p.products_date_available, 
+             p.manufacturers_id, 
+             p.products_bflag, 
+             p.products_cflag, 
+             p.products_small_sum 
+      from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
+      where p.products_status = '1' 
+        and pd.site_id = '" . SITE_ID . "' 
+        and p.products_id = '" . $o->products[$i]['id'] . "' 
+        and pd.products_id = p.products_id 
+        and pd.language_id = '" . $languages_id . "'
+    ");
+    // ccdd
+    tep_db_query("
+        update " . TABLE_PRODUCTS_DESCRIPTION . " 
+        set products_viewed = products_viewed+1 
+        where products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' 
+          and site_id = '" . SITE_ID . "' 
+          and language_id = '" . $languages_id . "'
+    ");
     $product_info = tep_db_fetch_array($_product_info_query);
     $data1 = explode("//", $product_info['products_attention_1']);
 	
@@ -213,7 +338,13 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   # メール本文整形 --------------------------------------
   $email_order = '';
 
-  $otq = tep_db_query("select * from ".TABLE_ORDERS_TOTAL." where class = 'ot_total' and orders_id = '".$insert_id."'");
+  // ccdd
+  $otq = tep_db_query("
+      select * 
+      from ".TABLE_ORDERS_TOTAL." 
+      where class = 'ot_total' 
+        and orders_id = '".$insert_id."'
+  ");
   $ot = tep_db_fetch_array($otq);
 
   $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
@@ -316,18 +447,45 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
 <?php }?>
  <?php
  // 補竃斌瞳奉來和性崇
-        $products_attributes_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_ATTRIBUTES . " patrib where patrib.products_id='" . $value['id'] . "' and patrib.options_id = popt.products_options_id and popt.language_id = '" . $languages_id . "'");
+ // ccdd
+        $products_attributes_query = tep_db_query("
+            select count(*) as total 
+            from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_ATTRIBUTES . " patrib 
+            where patrib.products_id='" . $value['id'] . "' 
+              and patrib.options_id = popt.products_options_id 
+              and popt.language_id = '" . $languages_id . "'
+        ");
         $products_attributes = tep_db_fetch_array($products_attributes_query);
         if ($products_attributes['total'] > 0) {
-              //echo '<table border="0" cellpadding="2" cellspacing="0">';
-          $products_options_name_query = tep_db_query("select distinct popt.products_options_id, popt.products_options_name from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_ATTRIBUTES . " patrib where patrib.products_id='" . $value['id'] . "' and patrib.options_id = popt.products_options_id and popt.language_id = '" . $languages_id . "'");
+          //ccdd
+          $products_options_name_query = tep_db_query("
+              select distinct popt.products_options_id, 
+                              popt.products_options_name 
+              from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_ATTRIBUTES . " patrib 
+              where patrib.products_id='" . $value['id'] . "' 
+                and patrib.options_id = popt.products_options_id 
+                and popt.language_id = '" . $languages_id . "'
+              ");
           while ($products_options_name = tep_db_fetch_array($products_options_name_query)) {
             $selected = 0;
             $products_options_array = array();
             echo '<tr><td bgcolor="#eeeeee">' . $products_options_name['products_options_name'] . '(変更後)</td><td>' . "\n";
-            $products_options_query = tep_db_query("select pov.products_options_values_id, pov.products_options_values_name, pa.options_values_price, pa.price_prefix, pa.products_at_quantity, pa.products_at_quantity from " . TABLE_PRODUCTS_ATTRIBUTES . " pa, " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov where pa.products_id = '" . $value['id'] . "' and pa.options_id = '" . $products_options_name['products_options_id'] . "' and pa.options_values_id = pov.products_options_values_id and pov.language_id = '" . $languages_id . "' order by pa.products_attributes_id");
+            // ccdd
+            $products_options_query = tep_db_query("
+                select pov.products_options_values_id, 
+                       pov.products_options_values_name, 
+                       pa.options_values_price, 
+                       pa.price_prefix, 
+                       pa.products_at_quantity, 
+                       pa.products_at_quantity 
+                from " . TABLE_PRODUCTS_ATTRIBUTES . " pa, " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov 
+                where pa.products_id = '" . $value['id'] . "' 
+                  and pa.options_id = '" . $products_options_name['products_options_id'] . "' 
+                  and pa.options_values_id = pov.products_options_values_id 
+                  and pov.language_id = '" . $languages_id . "' 
+                order by pa.products_attributes_id
+            ");
             while ($products_options = tep_db_fetch_array($products_options_query)) {
-              //add products_at_quantity - ds-style
               if($products_options['products_at_quantity'] > 0) {
                 $products_options_array[] = array('id' => $products_options['products_options_values_id'], 'text' => $products_options['products_options_values_name']);
                 if ($products_options['options_values_price'] != '0') {

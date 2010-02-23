@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require("includes/application_top.php");
@@ -134,7 +127,12 @@ function change_num(ob,targ, quan,a_quan)
       if (isset($products[$i]['attributes'])) {
         while (list($option, $value) = each($products[$i]['attributes'])) {
           echo tep_draw_hidden_field('id[' . $products[$i]['id'] . '][' . $option . ']', $value);
-          $attributes = tep_db_query("select popt.products_options_name, poval.products_options_values_name, pa.options_values_price, pa.price_prefix, pa.products_at_quantity
+          // ccdd
+          $attributes = tep_db_query("select popt.products_options_name, 
+                                             poval.products_options_values_name, 
+                                             pa.options_values_price, 
+                                             pa.price_prefix, 
+                                             pa.products_at_quantity
                                       from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_OPTIONS_VALUES . " poval, " . TABLE_PRODUCTS_ATTRIBUTES . " pa
                                       where pa.products_id = '" . $products[$i]['id'] . "'
                                        and pa.options_id = '" . $option . "'

@@ -1,7 +1,24 @@
 <?php
 /*
+   $Id$
 */
-$categories_tab_query1 = tep_db_query("select c.categories_id, c.categories_status,c.parent_id, c.categories_image, cd.categories_name, cd.categories_meta_text, cd.categories_image2 from categories c, categories_description cd where c.categories_status='0' and c.categories_id = cd.categories_id and c.parent_id = '0' and  cd.language_id='" .  (int)$languages_id ."' and cd.site_id = '".SITE_ID."' order by sort_order");
+// ccdd
+$categories_tab_query1 = tep_db_query("
+    select c.categories_id, 
+           c.categories_status,
+           c.parent_id, 
+           c.categories_image, 
+           cd.categories_name, 
+           cd.categories_meta_text, 
+           cd.categories_image2 
+    from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd 
+    where c.categories_status='0' 
+      and c.categories_id = cd.categories_id 
+      and c.parent_id = '0' 
+      and  cd.language_id='" .  (int)$languages_id ."' 
+      and cd.site_id = '".SITE_ID."' 
+    order by sort_order"
+);
 ?>
 <!-- select_categories //-->
 <h1 class="pageHeading">SELECT A GAME</h1>

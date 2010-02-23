@@ -1,24 +1,12 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
- // require(DIR_WS_BOXES . 'shopping_cart.php');
-
-//  if (isset($HTTP_GET_VARS['products_id'])) include(DIR_WS_BOXES . 'manufacturer_info.php');
-
- // if (tep_session_is_registered('customer_id')) include(DIR_WS_BOXES . 'order_history.php');
-
   include(DIR_WS_BOXES . 'login.php');
 
   if (isset($HTTP_GET_VARS['products_id'])) {
     if (tep_session_is_registered('customer_id')) {
+//ccdd
       $check_query = tep_db_query("select count(*) as count from " . TABLE_CUSTOMERS_INFO . " where customers_info_id = '" . $customer_id . "' and global_product_notifications = '1'");
       $check = tep_db_fetch_array($check_query);
       if ($check['count'] > 0) {

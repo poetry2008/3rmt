@@ -1,15 +1,8 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
-
+//todo: 是否需要删掉此文件
   $counter_query = tep_db_query("select startdate, counter from " . TABLE_COUNTER);
 
   if (!tep_db_num_rows($counter_query)) {

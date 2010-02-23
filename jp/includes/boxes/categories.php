@@ -1,15 +1,23 @@
 <?php
 /*
   $Id$
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-  Copyright (c) 2002 osCommerce
-  Released under the GNU General Public License
 */
 
 $categories = array();
-$categories_query = tep_db_query("select c.categories_id, cd.categories_name, c.categories_status, c.parent_id from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where site_id = '" . SITE_ID . "' and c.categories_status = '0' and c.parent_id = '0' and c.categories_id = cd.categories_id and cd.language_id='" . $languages_id ."' 
-    order by sort_order, cd.categories_name");
+// ccdd
+$categories_query = tep_db_query("
+    select c.categories_id, 
+           cd.categories_name, 
+           c.categories_status, 
+           c.parent_id 
+    from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
+    where site_id = '" . SITE_ID . "' 
+      and c.categories_status = '0' 
+      and c.parent_id = '0' 
+      and c.categories_id = cd.categories_id 
+      and cd.language_id='" . $languages_id ."' 
+    order by sort_order, cd.categories_name
+");
 while ($category = tep_db_fetch_array($categories_query))  {
   $categories[] = $category;
 }
@@ -35,7 +43,20 @@ if($cPath){
           </a>
         <?php
           $subcategories = array();
-          $subcategories_query = tep_db_query("select c.categories_id, c.categories_status, cd.categories_name, c.parent_id from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where cd.site_id = '" . SITE_ID . "' and c.categories_status = '0' and c.parent_id = '".$category['categories_id']."' and c.categories_id = cd.categories_id and cd.language_id='" . $languages_id ."' order by sort_order, cd.categories_name");
+          // ccdd
+          $subcategories_query = tep_db_query("
+              select c.categories_id, 
+                     c.categories_status, 
+                     cd.categories_name, 
+                     c.parent_id 
+              from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
+              where cd.site_id = '" . SITE_ID . "' 
+                and c.categories_status = '0' 
+                and c.parent_id = '".$category['categories_id']."' 
+                and c.categories_id = cd.categories_id 
+                and cd.language_id='" . $languages_id ."' 
+              order by sort_order, cd.categories_name
+              ");
           while ($subcategory = tep_db_fetch_array($subcategories_query))  {
             $subcategories[] = $subcategory;
           }
@@ -61,7 +82,20 @@ if($cPath){
 
         <?php
             $_subcategories = array();
-            $_subcategories_query = tep_db_query("select c.categories_id, c.categories_status, cd.categories_name, c.parent_id from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where cd.site_id = '" . SITE_ID . "' and c.categories_status = '0' and c.parent_id = '".$subcategory['categories_id']."' and c.categories_id = cd.categories_id and cd.language_id='" . $languages_id ."' order by sort_order, cd.categories_name");
+            // ccdd
+            $_subcategories_query = tep_db_query("
+                select c.categories_id, 
+                       c.categories_status, 
+                       cd.categories_name, 
+                       c.parent_id 
+                from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
+                where cd.site_id = '" . SITE_ID . "' 
+                  and c.categories_status = '0' 
+                  and c.parent_id = '".$subcategory['categories_id']."' 
+                  and c.categories_id = cd.categories_id 
+                  and cd.language_id='" . $languages_id ."' 
+                order by sort_order, cd.categories_name
+            ");
             while ($_subcategory = tep_db_fetch_array($_subcategories_query))  {
               $_subcategories[] = $_subcategory;
             }
@@ -116,7 +150,12 @@ if($cPath){
 			<a href="<?php echo tep_href_link(FILENAME_SPECIALS); ?>"><?php echo BOX_HEADING_SPECIALS; ?></a>
 		</li>
 <?php
-	$present_query = tep_db_query("select count(*) as cnt from " . TABLE_PRESENT_GOODS);
+// ccdd
+	$present_query = tep_db_query("
+      select count(*) as cnt 
+      from " . TABLE_PRESENT_GOODS . "
+      where site_id = '".SITE_ID."'
+  ");
 	$present_result = tep_db_fetch_array($present_query);
 	if($present_result['cnt'] > 0) {
 		echo '		<li class="l_m_category_li">

@@ -1,5 +1,10 @@
 <?php
-$colors_query = tep_db_query("select * from ".TABLE_COLOR." order by sort_id, color_name");
+// ccdd
+$colors_query = tep_db_query("
+    select * 
+    from ".TABLE_COLOR." 
+    order by sort_id, color_name
+");
 if(tep_db_num_rows($colors_query)) {
 ?>
 <!-- by color// -->

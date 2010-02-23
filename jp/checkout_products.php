@@ -2,12 +2,6 @@
 /*
   $Id$
 
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
@@ -68,6 +62,7 @@ function chara_mess(){
 foreach($cart as $key => $val){
   if($key == 'contents'){
     foreach($val as $key2 => $val2){
+//ccdd
 	  $cp_query = tep_db_query("select p.products_id,p.products_image,p.products_date_added,p.products_price,p.products_cflag,pd.products_name from " . TABLE_PRODUCTS . " p," . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_id = '".$key2."' and p.products_id = pd.products_id and pd.site_id = ".SITE_ID);
 	  $cp_result = tep_db_fetch_array($cp_query);
 	  if($cp_result['products_cflag'] == 1){
@@ -118,6 +113,7 @@ foreach($cart as $key => $val){
 				  foreach($cart as $key => $val){
 				    if($key == 'contents'){
 					  foreach($val as $key2 => $val2){
+//ccdd
 						$cp_query = tep_db_query("select p.products_id,p.products_image,p.products_date_added,p.products_price,p.products_cflag,pd.products_name from " . TABLE_PRODUCTS . " p," . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_id = '".$key2."' and p.products_id = pd.products_id and pd.site_id = ".SITE_ID);
 						$cp_result = tep_db_fetch_array($cp_query);
 				?>

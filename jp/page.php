@@ -2,24 +2,9 @@
 // 3rmt over
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
-  //forward 404
-if (isset($HTTP_GET_VARS['pID'])) {
-  $_404_query = tep_db_query("select * from " . TABLE_INFORMATION_PAGE. " where
-      romaji = '" . intval($HTTP_GET_VARS['pID']) . "'");
-  $_404 = tep_db_fetch_array($_404_query);
-
-  forward404Unless($_404);
-}
   
   $error = false;
   $romaji= $HTTP_GET_VARS['pID'];
@@ -27,7 +12,14 @@ if (isset($HTTP_GET_VARS['pID'])) {
   if(!$pID || $pID == '0' || $pID == '') {
     $error = true;
   } else {
-    $page_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where romaji = '".$romaji."' and status = '1' and site_id = '".SITE_ID."'");
+//ccdd
+    $page_query = tep_db_query("
+        select * 
+        from ".TABLE_INFORMATION_PAGE." 
+        where romaji = '".$romaji."' 
+          and status = '1' 
+          and site_id = '".SITE_ID."'
+    ");
     if (!tep_db_num_rows($page_query)) {
       $error = true;
     }

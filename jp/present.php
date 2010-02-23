@@ -11,20 +11,14 @@
 */
 
   require('includes/application_top.php');
-  //forward 404
-if (isset($HTTP_GET_VARS['goods_id'])) {
-  $_404_query = tep_db_query("select * from " . TABLE_PRESENT_GOODS. " where
-      goods_id = '" . intval($HTTP_GET_VARS['goods_id']) . "'");
-  $_404 = tep_db_fetch_array($_404_query);
-
-  forward404Unless($_404);
-}
-	
   
   if(!isset($HTTP_GET_VARS['goods_id'])) $HTTP_GET_VARS['goods_id'] = NULL;
   if($HTTP_GET_VARS['goods_id']) {
+//ccdd
     $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$HTTP_GET_VARS['goods_id']."' and site_id = '" . SITE_ID . "'") ;
-	$present = tep_db_fetch_array($present_query) ;
+    $present = tep_db_fetch_array($present_query) ;
+    //forward 404
+    forward404Unless($present);
   }	
   
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRESENT);
@@ -58,8 +52,15 @@ function popupWindow(url) {
 		  ##    詳細ページ    ##
 		  ######################
 		  if($HTTP_GET_VARS['goods_id'] && !empty($HTTP_GET_VARS['goods_id'])) {
-		  $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$HTTP_GET_VARS['goods_id']."' and site_id = '" . SITE_ID . "'") ;
+//ccdd
+		  $present_query = tep_db_query("
+          select * 
+          from ".TABLE_PRESENT_GOODS." 
+          where goods_id = '".(int)$HTTP_GET_VARS['goods_id']."' 
+            and site_id  = '" . SITE_ID . "'
+      ") ;
 		  $present = tep_db_fetch_array($present_query) ;
+      forward404Unless($present);
 		  ?>
           <p align="right" class="main">応募期間 <?php echo tep_date_long($present['start_date']) . '&nbsp;&nbsp;&nbsp;〜&nbsp;&nbsp;&nbsp;' . tep_date_long($present['limit_date']) ; ?></p>
           <table border="0" cellspacing="0" cellpadding="2" align="right">
@@ -97,8 +98,13 @@ function popupWindow(url) {
 		  ?>
           <?php
 			  $today = date("Y-m-d", time());
-			  $present_query_raw = "select * from ".TABLE_PRESENT_GOODS."  where site_id = '" . SITE_ID . "'order by start_date DESC";
+			  $present_query_raw = "
+              select * from ".TABLE_PRESENT_GOODS."  
+              where site_id = '" . SITE_ID . "'
+              order by start_date DESC
+        ";
 			  $present_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $present_query_raw, $present_numrows);
+//ccdd
 			  $present_query = tep_db_query($present_query_raw);
 	?>
           <br>

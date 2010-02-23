@@ -16,12 +16,13 @@
                   <td height="40"><?php echo tep_image(DIR_WS_IMAGES.'design/menu_left/by_brand.gif',BOX_HEADING_MANUFACTURERS);?></td> 
                 </tr> 
 <?php
- // $info_box_contents = array();
- // $info_box_contents[] = array('text' => BOX_HEADING_MANUFACTURERS);
-
- // new infoBoxHeading($info_box_contents, false, false);
-
-  $manufacturers_query = tep_db_query("select manufacturers_id, manufacturers_name from " . TABLE_MANUFACTURERS . " order by manufacturers_name");
+// ccdd
+  $manufacturers_query = tep_db_query("
+      select manufacturers_id, 
+             manufacturers_name 
+      from " . TABLE_MANUFACTURERS . " 
+      order by manufacturers_name
+  ");
   if (tep_db_num_rows($manufacturers_query) <= MAX_DISPLAY_MANUFACTURERS_IN_A_LIST) {
 // Display a list
     $manufacturers_list = '';

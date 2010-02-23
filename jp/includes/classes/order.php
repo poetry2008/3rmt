@@ -31,23 +31,76 @@
       global $languages_id;
 
       $order_id = tep_db_prepare_input($order_id);
-
-// 2003-06-06 add_telephone
-      $order_query = tep_db_query("select customers_id, customers_name, customers_name_f, customers_company, customers_street_address, customers_suburb, customers_city, customers_postcode, customers_state, customers_country, customers_telephone, customers_email_address, customers_address_format_id, delivery_name, delivery_name_f, delivery_company, delivery_street_address, delivery_suburb, delivery_city, delivery_postcode, delivery_state, delivery_country, delivery_telephone, delivery_address_format_id, billing_name, billing_name_f, billing_company, billing_street_address, billing_suburb, billing_city, billing_postcode, billing_state, billing_country, billing_telephone, billing_address_format_id, payment_method, cc_type, cc_owner, cc_number, cc_expires, currency, currency_value, date_purchased, orders_status, last_modified from " . TABLE_ORDERS . " where orders_id = '" .  tep_db_input($order_id) . "' and site_id = ".SITE_ID);
+//ccdd
+      $order_query = tep_db_query("
+          select customers_id, 
+                 customers_name, 
+                 customers_name_f, 
+                 customers_company, 
+                 customers_street_address, 
+                 customers_suburb, 
+                 customers_city, 
+                 customers_postcode, 
+                 customers_state, 
+                 customers_country, 
+                 customers_telephone, 
+                 customers_email_address, 
+                 customers_address_format_id, 
+                 delivery_name, 
+                 delivery_name_f, 
+                 delivery_company, 
+                 delivery_street_address, 
+                 delivery_suburb, 
+                 delivery_city, 
+                 delivery_postcode, 
+                 delivery_state, 
+                 delivery_country, 
+                 delivery_telephone, 
+                 delivery_address_format_id, 
+                 billing_name, 
+                 billing_name_f, 
+                 billing_company, 
+                 billing_street_address, 
+                 billing_suburb, 
+                 billing_city, 
+                 billing_postcode, 
+                 billing_state, 
+                 billing_country, 
+                 billing_telephone, 
+                 billing_address_format_id, 
+                 payment_method, 
+                 cc_type, 
+                 cc_owner, 
+                 cc_number, 
+                 cc_expires, 
+                 currency, 
+                 currency_value, 
+                 date_purchased, 
+                 orders_status, 
+                 last_modified 
+          from " . TABLE_ORDERS . " 
+          where orders_id = '" .  tep_db_input($order_id) . "' 
+            and site_id = ".SITE_ID
+      );
       $order = tep_db_fetch_array($order_query);
-
-      $totals_query = tep_db_query("select title, text from " . TABLE_ORDERS_TOTAL . " where orders_id = '" . tep_db_input($order_id) . "' order by sort_order");
+//ccdd
+      $totals_query = tep_db_query("
+          select title, text 
+          from " . TABLE_ORDERS_TOTAL . " 
+          where orders_id = '" . tep_db_input($order_id) . "' 
+          order by sort_order
+      ");
       while ($totals = tep_db_fetch_array($totals_query)) {
         $this->totals[] = array('title' => $totals['title'],
                                 'text' => $totals['text']);
       }
-
+//ccdd
       $order_total_query = tep_db_query("select text from " . TABLE_ORDERS_TOTAL . " where orders_id = '" . $order_id . "' and class = 'ot_total'");
       $order_total = tep_db_fetch_array($order_total_query);
-
+//ccdd
       $shipping_method_query = tep_db_query("select title from " . TABLE_ORDERS_TOTAL . " where orders_id = '" . $order_id . "' and class = 'ot_shipping'");
       $shipping_method = tep_db_fetch_array($shipping_method_query);
-
+//ccdd
       $order_status_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '" . $order['orders_status'] . "' and language_id = '" . $languages_id . "'");
       $order_status = tep_db_fetch_array($order_status_query);
 
@@ -108,6 +161,7 @@
                              'format_id' => $order['billing_address_format_id']);
 
       $index = 0;
+//ccdd
       $orders_products_query = tep_db_query("select orders_products_id, products_id, products_name, products_model, products_price, products_tax, products_quantity, final_price from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . tep_db_input($order_id) . "'");
       while ($orders_products = tep_db_fetch_array($orders_products_query)) {
         $this->products[$index] = array('qty' => $orders_products['products_quantity'],
@@ -119,6 +173,7 @@
                                         'final_price' => $orders_products['final_price']);
 
         $subindex = 0;
+//ccdd
         $attributes_query = tep_db_query("select products_options, products_options_values, options_values_price, price_prefix from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where orders_id = '" . tep_db_input($order_id) . "' and orders_products_id = '" . $orders_products['orders_products_id'] . "'");
         if (tep_db_num_rows($attributes_query)) {
           while ($attributes = tep_db_fetch_array($attributes_query)) {
@@ -141,18 +196,35 @@
       global $customer_id, $sendto, $billto, $cart, $languages_id, $currency, $currencies, $shipping, $payment;
 
       $this->content_type = $cart->get_content_type();
-
-      $customer_address_query = tep_db_query("select c.customers_firstname, c.customers_lastname, c.customers_firstname_f, c.customers_lastname_f, c.customers_telephone, c.customers_email_address, ab.entry_company, ab.entry_street_address, ab.entry_suburb, ab.entry_postcode, ab.entry_city, ab.entry_zone_id, z.zone_name, co.countries_id, co.countries_name, co.countries_iso_code_2, co.countries_iso_code_3, co.address_format_id, ab.entry_state from " . TABLE_CUSTOMERS . " c, " .  TABLE_ADDRESS_BOOK . " ab left join " . TABLE_ZONES . " z on (ab.entry_zone_id = z.zone_id) left join " . TABLE_COUNTRIES . " co on (ab.entry_country_id = co.countries_id) where c.customers_id = '" .  $customer_id . "' and ab.customers_id = '" . $customer_id . "' and c.customers_default_address_id = ab.address_book_id and c.site_id = ".SITE_ID);
+//ccdd
+      $customer_address_query = tep_db_query("
+          select c.customers_firstname, c.customers_lastname, c.customers_firstname_f, c.customers_lastname_f, c.customers_telephone, c.customers_email_address, ab.entry_company, ab.entry_street_address, ab.entry_suburb, ab.entry_postcode, ab.entry_city, ab.entry_zone_id, z.zone_name, co.countries_id, co.countries_name, co.countries_iso_code_2, co.countries_iso_code_3, co.address_format_id, ab.entry_state 
+          from " . TABLE_CUSTOMERS . " c, " .  TABLE_ADDRESS_BOOK . " ab left join " . TABLE_ZONES . " z on (ab.entry_zone_id = z.zone_id) left join " . TABLE_COUNTRIES . " co on (ab.entry_country_id = co.countries_id) 
+          where c.customers_id = '" .  $customer_id . "' 
+          and ab.customers_id = '" . $customer_id . "' 
+          and c.customers_default_address_id = ab.address_book_id 
+          and c.site_id = ".SITE_ID);
       $customer_address = tep_db_fetch_array($customer_address_query);
 
-// 2003-06-06 add_telephone
-      $shipping_address_query = tep_db_query("select ab.entry_firstname, ab.entry_lastname, ab.entry_firstname_f, ab.entry_lastname_f, ab.entry_telephone, ab.entry_company, ab.entry_street_address, ab.entry_suburb, ab.entry_postcode, ab.entry_city, ab.entry_zone_id, z.zone_name, ab.entry_country_id, c.countries_id, c.countries_name, c.countries_iso_code_2, c.countries_iso_code_3, c.address_format_id, ab.entry_state from " . TABLE_ADDRESS_BOOK . " ab left join " . TABLE_ZONES . " z on (ab.entry_zone_id = z.zone_id) left join " . TABLE_COUNTRIES . " c on (ab.entry_country_id = c.countries_id) where ab.customers_id = '" . $customer_id . "' and ab.address_book_id = '" . $sendto . "'");
+//ccdd
+      $shipping_address_query = tep_db_query("
+          select ab.entry_firstname, ab.entry_lastname, ab.entry_firstname_f, ab.entry_lastname_f, ab.entry_telephone, ab.entry_company, ab.entry_street_address, ab.entry_suburb, ab.entry_postcode, ab.entry_city, ab.entry_zone_id, z.zone_name, ab.entry_country_id, c.countries_id, c.countries_name, c.countries_iso_code_2, c.countries_iso_code_3, c.address_format_id, ab.entry_state 
+          from " . TABLE_ADDRESS_BOOK . " ab left join " . TABLE_ZONES . " z on (ab.entry_zone_id = z.zone_id) left join " . TABLE_COUNTRIES . " c on (ab.entry_country_id = c.countries_id) 
+          where ab.customers_id = '" . $customer_id . "' 
+            and ab.address_book_id = '" . $sendto . "'
+      ");
       $shipping_address = tep_db_fetch_array($shipping_address_query);
       
-// 2003-06-06 add_telephone
-      $billing_address_query = tep_db_query("select ab.entry_firstname, ab.entry_lastname, ab.entry_firstname_f, ab.entry_lastname_f, ab.entry_telephone, ab.entry_company, ab.entry_street_address, ab.entry_suburb, ab.entry_postcode, ab.entry_city, ab.entry_zone_id, z.zone_name, ab.entry_country_id, c.countries_id, c.countries_name, c.countries_iso_code_2, c.countries_iso_code_3, c.address_format_id, ab.entry_state from " . TABLE_ADDRESS_BOOK . " ab left join " . TABLE_ZONES . " z on (ab.entry_zone_id = z.zone_id) left join " . TABLE_COUNTRIES . " c on (ab.entry_country_id = c.countries_id) where ab.customers_id = '" . $customer_id . "' and ab.address_book_id = '" . $billto . "'");
+      // ccdd
+      $billing_address_query = tep_db_query("
+          select ab.entry_firstname, ab.entry_lastname, ab.entry_firstname_f, ab.entry_lastname_f, ab.entry_telephone, ab.entry_company, ab.entry_street_address, ab.entry_suburb, ab.entry_postcode, ab.entry_city, ab.entry_zone_id, z.zone_name, ab.entry_country_id, c.countries_id, c.countries_name, c.countries_iso_code_2, c.countries_iso_code_3, c.address_format_id, ab.entry_state 
+          from " . TABLE_ADDRESS_BOOK . " ab left join " . TABLE_ZONES . " z on (ab.entry_zone_id = z.zone_id) left join " . TABLE_COUNTRIES . " c on (ab.entry_country_id = c.countries_id) 
+          where ab.customers_id = '" . $customer_id . "' 
+          and ab.address_book_id = '" . $billto . "'
+      ");
       $billing_address = tep_db_fetch_array($billing_address_query);
 
+      // ccdd
       $tax_address_query = tep_db_query("select ab.entry_country_id, ab.entry_zone_id from " . TABLE_ADDRESS_BOOK . " ab left join " . TABLE_ZONES . " z on (ab.entry_zone_id = z.zone_id) where ab.customers_id = '" . $customer_id . "' and ab.address_book_id = '" . ($this->content_type == 'virtual' ? $billto : $sendto) . "'");
       $tax_address = tep_db_fetch_array($tax_address_query);
 
@@ -254,7 +326,18 @@
           $subindex = 0;
           reset($products[$i]['attributes']);
           while (list($option, $value) = each($products[$i]['attributes'])) {
-            $attributes_query = tep_db_query("select popt.products_options_name, poval.products_options_values_name, pa.options_values_price, pa.price_prefix from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_OPTIONS_VALUES . " poval, " . TABLE_PRODUCTS_ATTRIBUTES . " pa where pa.products_id = '" . $products[$i]['id'] . "' and pa.options_id = '" . $option . "' and pa.options_id = popt.products_options_id and pa.options_values_id = '" . $value . "' and pa.options_values_id = poval.products_options_values_id and popt.language_id = '" . $languages_id . "' and poval.language_id = '" . $languages_id . "'");
+//ccdd
+            $attributes_query = tep_db_query("
+                select popt.products_options_name, poval.products_options_values_name, pa.options_values_price, pa.price_prefix 
+                from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_OPTIONS_VALUES . " poval, " . TABLE_PRODUCTS_ATTRIBUTES . " pa 
+                where pa.products_id = '" . $products[$i]['id'] . "' 
+                  and pa.options_id = '" . $option . "' 
+                  and pa.options_id = popt.products_options_id 
+                  and pa.options_values_id = '" . $value . "' 
+                  and pa.options_values_id = poval.products_options_values_id 
+                  and popt.language_id = '" . $languages_id . "' 
+                  and poval.language_id = '" . $languages_id . "'
+            ");
             $attributes = tep_db_fetch_array($attributes_query);
 
             $this->products[$index]['attributes'][$subindex] = array('option' => $attributes['products_options_name'],

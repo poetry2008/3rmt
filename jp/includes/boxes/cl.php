@@ -39,7 +39,13 @@ $ymd = date("Ym", time());
 
 
 
-$calen_query = tep_db_query("select * from ".TABLE_CL." where cl_ym = '".$ymd."'");
+  // ccdd
+$calen_query = tep_db_query("
+    select * 
+    from ".TABLE_CL." 
+    where cl_ym = '".$ymd."'
+      and site_id = '".SITE_ID."'
+");
 $calen = tep_db_fetch_array($calen_query);
 
 $array = array("1"=>substr($calen['cl_value'], 0, 1), "2"=>substr($calen['cl_value'], 1, 1), "3"=>substr($calen['cl_value'], 2, 1), "4"=>substr($calen['cl_value'], 3, 1), "5"=>substr($calen['cl_value'], 4, 1), "6"=>substr($calen['cl_value'], 5, 1), "7"=>substr($calen['cl_value'], 6, 1), "8"=>substr($calen['cl_value'], 7, 1), "9"=>substr($calen['cl_value'], 8, 1), "10"=>substr($calen['cl_value'], 9, 1), "11"=>substr($calen['cl_value'], 10, 1), "12"=>substr($calen['cl_value'], 11, 1), "13"=>substr($calen['cl_value'], 12, 1), "14"=>substr($calen['cl_value'], 13, 1), "15"=>substr($calen['cl_value'], 14, 1), "16"=>substr($calen['cl_value'], 15, 1), "17"=>substr($calen['cl_value'], 16, 1), "18"=>substr($calen['cl_value'], 17, 1), "19"=>substr($calen['cl_value'], 18, 1), "20"=>substr($calen['cl_value'], 19, 1), "21"=>substr($calen['cl_value'], 20, 1), "22"=>substr($calen['cl_value'], 21, 1), "23"=>substr($calen['cl_value'], 22, 1), "24"=>substr($calen['cl_value'], 23, 1), "25"=>substr($calen['cl_value'], 24, 1), "26"=>substr($calen['cl_value'], 25, 1), "27"=>substr($calen['cl_value'], 26, 1), "28"=>substr($calen['cl_value'], 27, 1), "29"=>substr($calen['cl_value'], 28, 1), "30"=>substr($calen['cl_value'], 29, 1), "31"=>substr($calen['cl_value'], 30, 1));
@@ -133,7 +139,13 @@ echo $cl_string ;
 		
 		//月のデータ取得
 		$ymd2 = date("Ym", mktime(0,0,0,$m_num2,1,$year2));
-		$calen_query2 = tep_db_query("select cl_value from ".TABLE_CL." where cl_ym = '".$ymd2."'");
+    // ccdd
+		$calen_query2 = tep_db_query("
+        select cl_value 
+        from ".TABLE_CL." 
+        where cl_ym = '".$ymd2."'
+          and site_id = '".SITE_ID."' 
+    ");
 		$calen2 = tep_db_fetch_array($calen_query2);
 		
 		$array2 = array("101"=>substr($calen2['cl_value'], 0, 1), "102"=>substr($calen2['cl_value'], 1, 1), "103"=>substr($calen2['cl_value'], 2, 1), "104"=>substr($calen2['cl_value'], 3, 1), "105"=>substr($calen2['cl_value'], 4, 1), "106"=>substr($calen2['cl_value'], 5, 1), "107"=>substr($calen2['cl_value'], 6, 1), "108"=>substr($calen2['cl_value'], 7, 1), "109"=>substr($calen2['cl_value'], 8, 1), "110"=>substr($calen2['cl_value'], 9, 1), "111"=>substr($calen2['cl_value'], 10, 1), "112"=>substr($calen2['cl_value'], 11, 1), "113"=>substr($calen2['cl_value'], 12, 1), "114"=>substr($calen2['cl_value'], 13, 1), "115"=>substr($calen2['cl_value'], 14, 1), "116"=>substr($calen2['cl_value'], 15, 1), "117"=>substr($calen2['cl_value'], 16, 1), "118"=>substr($calen2['cl_value'], 17, 1), "119"=>substr($calen2['cl_value'], 18, 1), "120"=>substr($calen2['cl_value'], 19, 1), "121"=>substr($calen2['cl_value'], 20, 1), "122"=>substr($calen2['cl_value'], 21, 1), "123"=>substr($calen2['cl_value'], 22, 1), "124"=>substr($calen2['cl_value'], 23, 1), "125"=>substr($calen2['cl_value'], 24, 1), "126"=>substr($calen2['cl_value'], 25, 1), "127"=>substr($calen2['cl_value'], 26, 1), "128"=>substr($calen2['cl_value'], 27, 1), "129"=>substr($calen2['cl_value'], 28, 1), "130"=>substr($calen2['cl_value'], 29, 1), "131"=>substr($calen2['cl_value'], 30, 1));

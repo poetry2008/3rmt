@@ -4,13 +4,6 @@
   $Id$
 
   新闻列表和新闻内容页面
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
 	require('includes/application_top.php');
@@ -49,6 +42,7 @@ function popupWindow(url) {
 						<td>
 <?php
 	if (isset($HTTP_GET_VARS['news_id']) && intval($HTTP_GET_VARS['news_id'])) {  
+//ccdd
     $latest_news_query = tep_db_query('
         SELECT * 
         FROM ' . TABLE_LATEST_NEWS . ' 
@@ -97,6 +91,7 @@ function popupWindow(url) {
       ORDER BY isfirst DESC, date_added DESC
     ';
 		$latest_news_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_LATEST_NEWS, $latest_news_query_raw, $latest_news_numrows);
+//ccdd
 		$latest_news_query = tep_db_query($latest_news_query_raw);
 	
 		if (($latest_news_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3'))) {

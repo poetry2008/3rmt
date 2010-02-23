@@ -116,7 +116,8 @@
   }
   if (!isset($cat0[0])) $cat0[0] = NULL; //del notice
   $cat1 = $cat0[0];
-  $categories_parent0_query = tep_db_query("select c.categories_id, c.categories_status, cd.categories_name 
+  $categories_parent0_query = tep_db_query("
+      select c.categories_id, c.categories_status, cd.categories_name 
       from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
       where cd.site_id = '" . SITE_ID . "' and c.parent_id = '0' and c.categories_status = '0' and c.categories_id = cd.categories_id and cd.language_id = '" . (int)$languages_id . "' 
       order by sort_order, cd.categories_name");
