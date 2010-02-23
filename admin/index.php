@@ -1,23 +1,12 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
-// <meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
 */
-
   require('includes/application_top.php');
-  
-  // Include OSC-AFFILIATE 
   require(DIR_WS_CLASSES . 'currencies.php');
-  $currencies = new currencies();
 
-  // 管理メニュー（スタッフには非表示）
+  $currencies = new currencies();
+var_dump($ocertify);
   if ($ocertify->npermission >= 10) {
   $cat = array(array('title' => BOX_CUSTOMERS_ORDERS,
                      'image' => 'modules.gif',

@@ -1,20 +1,13 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 $GLOBALS['HTTP_GET_VARS']=$_GET;
 $GLOBALS['HTTP_POST_VARS']=$_POST;
 
   setlocale (LC_ALL, 'ja_JP.eucJP');
-
 // Set default timezone
+
   if(function_exists('date_default_timezone_set')) date_default_timezone_set('Asia/Shanghai');
 
 

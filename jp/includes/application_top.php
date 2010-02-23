@@ -581,7 +581,7 @@
   if (isset($HTTP_GET_VARS['products_id'])) {
     $model = tep_db_fetch_array($model_query);
     $breadcrumb->add($model['products_model'], tep_href_link(FILENAME_PRODUCT_INFO, 'cPath=' . $cPath . '&products_id=' . $HTTP_GET_VARS['products_id']));
-*/
+
   // ccdd
     $model_query = tep_db_query("
         select products_name 
@@ -596,15 +596,7 @@
 
   
 // SESSION REGISTER
-if (!isset($HTTP_GET_VARS['ajax'])) $HTTP_GET_VARS['ajax'] = '';
-switch($HTTP_GET_VARS['ajax']){
-  case 'on' :
-    $ajax = 'on' ;
-    break;
-  case 'off' :
-    $ajax = 'off' ;
-    break;
-}
+$ajax = (isset($HTTP_GET_VARS['ajax']) && $HTTP_GET_VARS['ajax']) ? 'on' : 'off';
 
 tep_session_register('ajax');
 

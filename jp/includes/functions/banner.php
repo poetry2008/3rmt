@@ -10,7 +10,6 @@
 //ccdd
       return tep_db_query("update " . TABLE_BANNERS . " set status = '1', date_status_change = now(), date_scheduled = NULL where banners_id = '" .  $banners_id . "' and site_id = '".SITE_ID."'");
     } elseif ($status == '0') {
-/ccdd
   // ccdd
       return tep_db_query("update " . TABLE_BANNERS . " set status = '0', date_status_change = now() where banners_id = '" . $banners_id . "' and site_id = '".SITE_ID."'");
     } else {

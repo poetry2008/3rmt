@@ -1,4 +1,7 @@
 <?php
+/*
+  $Id$
+ */
 require('includes/application_top.php');
 require(DIR_WS_ACTIONS.'index_top.php');
 
@@ -35,9 +38,10 @@ page_head();
   // 根绝颜色color_id取得商品列表
   //   ex: http://www.iimy.co.jp/item/co-1.html
   require(DIR_WS_ACTIONS.'index_colors.php');
-} elseif(isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'select' && 0) {
-  // 选择页面左侧的快捷链接, JP中无此功能
-  //   require(DIR_WS_ACTIONS.'index_action_select.php');
+
+// 选择页面左侧的快捷链接, JP中无此功能
+//} elseif(isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'select') {
+  //   require(DIR_WS_ACTIONS.'index_select.php');
 } else {
   // 默认显示首页
   //   ex: http://www.iimy.co.jp 

@@ -46,11 +46,9 @@
 ?>
 <div id="title">
 <?php
-if (!isset($HTTP_GET_VARS['cPath'])) $HTTP_GET_VARS['cPath'] = NULL;
-if (!isset($HTTP_GET_VARS['products_id'])) $HTTP_GET_VARS['products_id'] = NULL;
-	if ($HTTP_GET_VARS['cPath']) {
+	if (isset($HTTP_GET_VARS['cPath']) && $HTTP_GET_VARS['cPath']) {
 		echo $seo_category['seo_name'] . ' RMT ジャックポットは安全で安心・信頼できる取り引きを目指していきます。' . "\n";
-	} elseif ($HTTP_GET_VARS['products_id']) {
+	} elseif (isset($HTTP_GET_VARS['products_id']) && $HTTP_GET_VARS['products_id']) {
 		echo ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1) . ' ジャックポットは安全で安心・信頼できる取り引きを目指していきます。' . "\n";
 	} else {
 		echo 'RMT専門店！ RMTジャックポットは安全で安心・信頼できる取り引きを目指していきます。' . "\n";
@@ -75,9 +73,9 @@ if (!isset($HTTP_GET_VARS['products_id'])) $HTTP_GET_VARS['products_id'] = NULL;
 <?php
 // --- get categoris list ( parent_id = 0 ) --- //
 	$cat1 = '';
-	if ($HTTP_GET_VARS['cPath']) {
+	if (isset($HTTP_GET_VARS['cPath']) && $HTTP_GET_VARS['cPath']) {
 		$cat0 = explode('_', $HTTP_GET_VARS['cPath']);
-	} elseif ($HTTP_GET_VARS['products_id']) {
+	} elseif (isset($HTTP_GET_VARS['products_id']) && $HTTP_GET_VARS['products_id']) {
 		$cat_products = tep_get_product_path($HTTP_GET_VARS['products_id']);
 		$cat0 = explode('_', $cat_products);
 	}
