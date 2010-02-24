@@ -37,15 +37,15 @@ function hidden_payment(){
               </tr>
               <tr>
                 <td class="main">&nbsp;<?php echo ENTRY_LAST_NAME; ?></td>
-                <td class="main">&nbsp;<?php echo tep_draw_input_field('lastname', $lastname) . '&nbsp;' . ENTRY_LAST_NAME_TEXT; ?>&nbsp;&nbsp;変更があれば修正してください<?php if ($entry_firstname_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+                <td class="main">&nbsp;<?php echo tep_draw_input_field('lastname', $lastname) . '&nbsp;' . ENTRY_LAST_NAME_TEXT; ?>&nbsp;&nbsp;変更があれば修正してください<?php if (isset($entry_firstname_error) && $entry_firstname_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
               <tr>
                 <td class="main">&nbsp;<?php echo ENTRY_FIRST_NAME; ?></td>
-                <td class="main">&nbsp;<?php echo tep_draw_input_field('firstname', $firstname) . '&nbsp;' . ENTRY_FIRST_NAME_TEXT; ?>&nbsp;&nbsp;変更があれば修正してください<?php if ($entry_lastname_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+                <td class="main">&nbsp;<?php echo tep_draw_input_field('firstname', $firstname) . '&nbsp;' . ENTRY_FIRST_NAME_TEXT; ?>&nbsp;&nbsp;変更があれば修正してください<?php if (isset($entry_lastname_error) && $entry_lastname_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
               <tr>
                 <td class="main">&nbsp;<?php echo ENTRY_EMAIL_ADDRESS; ?></td>
-                <td class="main">&nbsp;<?php echo tep_draw_hidden_field('email_address', $email_address) . '<font color="red"><b>' . $email_address . '</b></font>'; ?><?php if ($entry_email_address_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+                <td class="main">&nbsp;<?php echo tep_draw_hidden_field('email_address', $email_address) . '<font color="red"><b>' . $email_address . '</b></font>'; ?><?php if (isset($entry_email_address_error) && $entry_email_address_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
             </table></td>
         </tr>
@@ -141,9 +141,9 @@ function hidden_payment(){
 	}
 	// 取引日のリスト作成
 	$today = getdate();
-	$m_num = $today[mon];
-	$d_num = $today[mday];
-	$year = $today[year];
+	$m_num = $today['mon'];
+	$d_num = $today['mday'];
+	$year = $today['year'];
 	$date_list[] = array('id' => '', 'text' => '取引日を選択してください');
 	for($i=0; $i<14; $i++) {
 		$date_list[] = array('id' => date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)),
@@ -173,7 +173,7 @@ function hidden_payment(){
 	}
 
 	// 口座科目の記憶
-	switch($bank_kamoku) {
+	switch(isset($bank_kamoku)?$bank_kamoku:null) {
 		case '普通':
 			default:
 			$bank_sele_f = true;
@@ -195,10 +195,10 @@ function hidden_payment(){
           <td class="main"><table border="0" cellspacing="0" cellpadding="2">
               <tr>
 				<td class="main">&nbsp;支払方法:</td>
-                <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('payment_method', $payment_list, $payment_method, 'onchange="hidden_payment()"'); ?><?php if ($entry_payment_method_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+                <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('payment_method', $payment_list, isset($payment_method)?$payment_method:'', 'onchange="hidden_payment()"'); ?><?php if (isset($entry_payment_method_error ) && $entry_payment_method_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
 <?php
-	if ($payment_method == '銀行振込(買い取り)') {
+	if (isset($payment_method) && $payment_method == '銀行振込(買い取り)') {
 		echo '<tr>';
 	} else {
 		echo '<tr id="trpass1" style="display: none;">';
@@ -241,15 +241,15 @@ function hidden_payment(){
           <td class="main"><table border="0" cellspacing="0" cellpadding="2">
               <tr>
 				<td class="main">&nbsp;取引日:</td>
-                <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('date', $date_list, $date); ?><?php if ($entry_date_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+                <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('date', $date_list, isset($date)?$date:''); ?><?php if (isset($entry_date_error) && $entry_date_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
               <tr>
                 <td class="main">&nbsp;取引時間:</td>
-                <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('hour', $hour_list, $hour); ?>&nbsp;時&nbsp;<?php echo tep_draw_pull_down_menu('min', $min_list, $min); ?>&nbsp;分&nbsp;<b>（24時間表記）</b><?php if ($entry_tardetime_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+                <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('hour', $hour_list, isset($hour)?$hour:''); ?>&nbsp;時&nbsp;<?php echo tep_draw_pull_down_menu('min', $min_list, isset($min)?$min:''); ?>&nbsp;分&nbsp;<b>（24時間表記）</b><?php if (isset($entry_tardetime_error ) && $entry_tardetime_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
               <tr>
                 <td class="main">&nbsp;オプション:</td>
-                <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('torihikihouhou', tep_get_all_torihiki(), $torihikihouhou);//tep_draw_pull_down_menu('torihikihouhou', $torihiki_list, $torihikihouhou); ?><?php if ($entry_torihikihouhou_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+                <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('torihikihouhou', tep_get_all_torihiki(), isset($torihikihouhou)?$torihikihouhou:''); ?><?php if (isset($entry_torihikihouhou_error) && $entry_torihikihouhou_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
             </table></td>
         </tr>

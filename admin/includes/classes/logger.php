@@ -11,7 +11,7 @@
 */
 
   class logger {
-    var $timer_start, $timer_stop, $timer_total;
+    var $timer_start, $timer_stop, $timer_total, $queries;
 
 // class constructor
     function logger() {
@@ -46,6 +46,7 @@
     }
 
     function write($message, $type) {
+      $this->queries[] = $message;
       @error_log(strftime(STORE_PARSE_DATE_TIME_FORMAT) . ' [' . $type . '] ' . $message . "\n", 3, STORE_PAGE_PARSE_TIME_LOG);
     }
   }

@@ -9,7 +9,6 @@
 
   Released under the GNU General Public License
 */
- error_reporting(7); 
   function tep_db_connect($server = DB_SERVER, $username = DB_SERVER_USERNAME, $password = DB_SERVER_PASSWORD, $database = DB_DATABASE, $link = 'db_link') {
     global $$link;
 
@@ -22,7 +21,7 @@
     if ($$link) mysql_select_db($database);
 
     if (intval(substr(mysql_get_server_info(), 0, 1) >= 4)){
-      tep_db_query('set names utf8');
+      mysql_query('set names utf8');
     }
 
     return $$link;
@@ -63,7 +62,6 @@
       $sql     = $query;
       $n       = "\r\n";
       $content = $time."<".$sql.">".$n;
-      //$dir     = "/home/zhuozi/project/GM/log";
       if($logNumber == 1){
         $log['time']    = $time.' '.$usec;
         $log['project'] = $project;
@@ -88,11 +86,6 @@
           }
         }
       }
-      //put sql in txt
-      //$file = $dir.'/sqllog.txt';
-      //$handle  = fopen($file, "a+");
-      //fwrite($handle, $content);
-      //fclose($handle);
     }
     //end sql log
     return $result;

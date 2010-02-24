@@ -12,7 +12,7 @@
 
   require('includes/application_top.php');
 
-  if ($HTTP_GET_VARS['action']) {
+  if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action']) {
     if ($HTTP_GET_VARS['action'] == 'reset') {
       tep_reset_cache_block($HTTP_GET_VARS['block']);
     }

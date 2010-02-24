@@ -1,6 +1,6 @@
 <?php
 /*
-	JP、GM共通ファイル
+   $Id$
 */
 
   include('includes/application_top.php');
@@ -109,11 +109,11 @@
                           'customers_state' => $order->customer['state'], 
                           'customers_country' => $order->customer['country']['title'], 
                           'customers_telephone' => $order->customer['telephone'],
-						  //'customers_fax' => $order->customer['fax'],
+                          //'customers_fax' => $order->customer['fax'],
                           'customers_email_address' => $order->customer['email_address'],
                           'customers_address_format_id' => $order->customer['format_id'], 
                           'delivery_name' => tep_get_fullname($order->delivery['firstname'],$order->delivery['lastname']),
-						  'delivery_name_f' => tep_get_fullname($order->delivery['firstname_f'],$order->delivery['lastname_f']),
+                          'delivery_name_f' => tep_get_fullname($order->delivery['firstname_f'],$order->delivery['lastname_f']),
                           'delivery_company' => $order->delivery['company'],
                           'delivery_street_address' => $order->delivery['street_address'], 
                           'delivery_suburb' => $order->delivery['suburb'], 
@@ -124,7 +124,7 @@
                           'delivery_telephone' => $order->delivery['telephone'], 
                           'delivery_address_format_id' => $order->delivery['format_id'], 
                           'billing_name' => tep_get_fullname($order->billing['firstname'],$order->billing['lastname']),
-						  'billing_name_f' => tep_get_fullname($order->billing['firstname_f'],$order->billing['lastname_f']),
+                          'billing_name_f' => tep_get_fullname($order->billing['firstname_f'],$order->billing['lastname_f']),
                           'billing_company' => $order->billing['company'],
                           'billing_street_address' => $order->billing['street_address'], 
                           'billing_suburb' => $order->billing['suburb'], 
@@ -143,10 +143,11 @@
                           'orders_status' => $order->info['order_status'], 
                           'currency' => $order->info['currency'], 
                           'currency_value' => $order->info['currency_value'],
-						  'torihiki_houhou' => $torihikihouhou,
-						  'site_id' => SITE_ID,
-						  'torihiki_date' => $insert_torihiki_date
-						  );
+                          'torihiki_houhou' => $torihikihouhou,
+                          'site_id' => SITE_ID,
+                          'torihiki_date' => $insert_torihiki_date
+                );
+  // ccdd
   tep_db_perform(TABLE_ORDERS, $sql_data_array);
   //$insert_id = tep_db_insert_id();
   for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
@@ -156,6 +157,7 @@
                             'value' => $order_totals[$i]['value'], 
                             'class' => $order_totals[$i]['code'], 
                             'sort_order' => $order_totals[$i]['sort_order']);
+    // ccdd
     tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
   }
 
@@ -165,6 +167,7 @@
                           'date_added' => 'now()', 
                           'customer_notified' => $customer_notification,
                           'comments' => $order->info['comments']);
+  // ccdd
   tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
   
   # 追加分（買取情報）
@@ -180,6 +183,7 @@
                             'date_added' => 'now()', 
                             'customer_notified' => $customer_notification,
                             'comments' => $bbbank);
+    // ccdd
     tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
   }
 
@@ -256,7 +260,8 @@
                             'final_price' => $order->products[$i]['final_price'], 
                             'products_tax' => $order->products[$i]['tax'], 
                             'products_quantity' => $order->products[$i]['qty'],
-							'products_character' => $chara);
+                            'products_character' => $chara);
+    // ccdd
     tep_db_perform(TABLE_ORDERS_PRODUCTS, $sql_data_array);
     $order_products_id = tep_db_insert_id();
 
@@ -320,7 +325,8 @@
                                 'products_options_values' => $attributes_values['products_options_values_name'], 
                                 'options_values_price' => $attributes_values['options_values_price'], 
                                 'price_prefix' => $attributes_values['price_prefix'],
-								'attributes_id'  => $attributes_values['products_attributes_id']);
+                                'attributes_id'  => $attributes_values['products_attributes_id']);
+        // ccdd
         tep_db_perform(TABLE_ORDERS_PRODUCTS_ATTRIBUTES, $sql_data_array);
 
         if ((DOWNLOAD_ENABLED == 'true') && isset($attributes_values['products_attributes_filename']) && tep_not_null($attributes_values['products_attributes_filename'])) {
@@ -329,6 +335,7 @@
                                   'orders_products_filename' => $attributes_values['products_attributes_filename'], 
                                   'download_maxdays' => $attributes_values['products_attributes_maxdays'], 
                                   'download_count' => $attributes_values['products_attributes_maxcount']);
+          // ccdd
           tep_db_perform(TABLE_ORDERS_PRODUCTS_DOWNLOAD, $sql_data_array);
         }
         $products_ordered_attributes .= "\n" 

@@ -12,7 +12,7 @@
 
   require('includes/application_top.php');
 
-  if ($HTTP_GET_VARS['action']) {
+  if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action']) {
     switch ($HTTP_GET_VARS['action']) {
       case 'lock':
       case 'unlock':
@@ -123,7 +123,7 @@
         </table></td>
       </tr>
 <?php
-  if ($HTTP_GET_VARS['action'] == 'new') {
+  if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'new') {
     $form_action = 'insert';
     if ($HTTP_GET_VARS['nID']) {
       $nID = tep_db_prepare_input($HTTP_GET_VARS['nID']);

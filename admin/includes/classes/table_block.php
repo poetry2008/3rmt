@@ -25,7 +25,7 @@
       $tableBox_string .= '>' . "\n";
 
       $form_set = false;
-      if ($contents['form']) {
+      if (isset($contents['form']) && $contents['form']) {
         echo $contents['form'] . "\n";
         $form_set = true;
         tep_array_shift($contents);
@@ -34,10 +34,10 @@
       for ($i = 0, $n = sizeof($contents); $i < $n; $i++) {
         $tableBox_string .= '  <tr';
         if ($this->table_row_parameters != '') $tableBox_string .= ' ' . $this->table_row_parameters;
-        if ($contents[$i]['params']) $tableBox_string .= ' ' . $contents[$i]['params'];
+        if (isset($contents[$i]['params']) && $contents[$i]['params']) $tableBox_string .= ' ' . $contents[$i]['params'];
         $tableBox_string .= '>' . "\n";
 
-        if (is_array($contents[$i][0])) {
+        if (isset($contents[$i][0]) && is_array($contents[$i][0])) {
           for ($x = 0, $y = sizeof($contents[$i]); $x < $y; $x++) {
             if ($contents[$i][$x]['text']) {
               $tableBox_string .= '    <td';
@@ -56,8 +56,8 @@
           }
         } else {
           $tableBox_string .= '    <td';
-          if ($contents[$i]['align'] != '') $tableBox_string .= ' align="' . $contents[$i]['align'] . '"';
-          if ($contents[$i]['params']) {
+          if (isset($contents[$i]['align']) && $contents[$i]['align'] != '') $tableBox_string .= ' align="' . $contents[$i]['align'] . '"';
+          if (isset($contents[$i]['params']) && $contents[$i]['params']) {
             $tableBox_string .= ' ' . $contents[$i]['params'];
           } elseif ($this->table_data_parameters != '') {
             $tableBox_string .= ' ' . $this->table_data_parameters;
@@ -66,7 +66,7 @@
         }
 
         $tableBox_string .= '  </tr>' . "\n";
-        if ($contents[$i]['form']) $tableBox_string .= '</form>' . "\n";
+        if (isset($contents[$i]['form']) && $contents[$i]['form']) $tableBox_string .= '</form>' . "\n";
       }
 
       $tableBox_string .= '</table>' . "\n";

@@ -15,7 +15,6 @@
 
 
   require('includes/application_top.php');
-  require(DIR_FS_CATALOG . 'includes/configure.php');
   require("includes/jcode.phps");
   
   $msg = "";
@@ -123,12 +122,9 @@
 		  $pd_name = chenge_block($pd['products_name']);
 		  print jcodeconvert($pd_name,0,2) . ",";
 		  
-		  //商品説明 - edit 2005.11.29 ds-style
-		  // edit 2009.5.14 maker
+		  //商品説明
 		  $pd['products_description'] = str_replace(array("\r\n", "\n", "\r", ","), array("", "", "", "."), $pd['products_description_'.ABBR_SITENAME]);
-		  //$description_array = explode("|-#-|", $pd['products_description']);
 		  print jcodeconvert($pd['products_description_'.ABBR_SITENAME],0,2) . ",";
-		  //print jcodeconvert($pd['products_description'],0,2) . ",";
 		  
 		  //型番
 		  $p_model = chenge_block($result['products_model']);
@@ -138,7 +134,7 @@
 		  $p_image = chenge_block($result['products_image']);
 		  print jcodeconvert($p_image,0,2) . ",";
 		  
-		  //定価 - add 2005.11.29 ds-style
+		  //定価
 		  //print jcodeconvert($pd['products_attention_1'],0,2) . ",";//maker
 		  
 		  //価格	
@@ -179,26 +175,23 @@
 		  $p_weight = chenge_block($result['products_weight']);
 		  print jcodeconvert($p_weight,0,2) . ",";
 		  
-		  //JANコード - add 2005.11.29 ds-style
+		  //JANコード
 		  print jcodeconvert($pd['products_attention_1'],0,2) . ",";
 
-		  //サイズ - add 2005.11.29 ds-style
+		  //サイズ
 		  print jcodeconvert($pd['products_attention_2'],0,2) . ",";
 
-		  //内容量 - add 2005.11.29 ds-style
-		  // edit 2009.05.14 maker
+		  //内容量
 		  print jcodeconvert($pd['products_attention_3'],0,2) . ",";
 
-		  //材質 - add 2005.11.29 ds-style
-		  // edit 2009.05.14 maker
+		  //材質
 		  print jcodeconvert($pd['products_attention_4'],0,2) . ",";
 		  
 		  //税種別	
 		  $p_tcid = chenge_block($result['products_tax_class_id']);
 		  print jcodeconvert($p_tcid,0,2) . ",";
 		
-		  //備考 - add 2005.11.29 ds-style
-		  // edit 2009.05.14 maker
+		  //備考
 		  //print jcodeconvert($pd['products_attention_5'],0,2) . ",";
 
 		  //終了
@@ -215,7 +208,7 @@
 <!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html <?php echo HTML_PARAMS; ?>>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET;?>">
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 </head>

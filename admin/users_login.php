@@ -1,5 +1,7 @@
 <?php
 /* *********************************************************
+   $Id$
+
   モジュール名: users_log.php
  * 2002-05-13
  * Naomi Suzukawa
@@ -11,8 +13,8 @@
 ********************************************************* */
 
   define('TABLE_CONFIGURATION', 'configuration');
-  define('TABLE_LANGUAGES', 'languages');
-  define('FILENAME_DEFAULT', 'index.php');
+  define('TABLE_LANGUAGES',     'languages');
+  define('FILENAME_DEFAULT',    'index.php');
 
 // Set the local configuration parameters - mainly for developers
   if (file_exists('includes/local/configure.php')) include('includes/local/configure.php');
@@ -23,9 +25,19 @@
 // initialize the logger class
   require(DIR_WS_CLASSES . 'logger.php');
 
-// 2003-01-30 add -s
-  session_name('osCAdminsID');
-// 2003-01-30 add -e
+  if (!function_exists('session_start')) {
+    define('PHP_SESSION_NAME', 'sID');
+    define('PHP_SESSION_SAVE_PATH', '/tmp');
+
+    include(DIR_WS_CLASSES . 'sessions.php');
+  }
+
+  require(DIR_WS_FUNCTIONS . 'sessions.php');
+  tep_session_name('osCAdminsID');
+
+// lets start our session
+  tep_session_start();
+
 
   // セッションID を削除する
   // PHPSESSIDのクッキー名で記録されている
@@ -39,9 +51,11 @@
   tep_db_connect() or die('Unable to connect to database server!');
 
 // set application wide parameters
-  $configuration_query = tep_db_query('select configuration_key as cfgKey, configuration_value as cfgValue from ' . TABLE_CONFIGURATION . '');
+  $configuration_query = mysql_query('select configuration_key as cfgKey, configuration_value as cfgValue from ' . TABLE_CONFIGURATION . '');
   while ($configuration = tep_db_fetch_array($configuration_query)) {
-    define($configuration['cfgKey'], $configuration['cfgValue']);
+    if (!defined($configuration['cfgKey'])) {
+      define($configuration['cfgKey'], $configuration['cfgValue']);
+    }
   }
 
 // language
@@ -63,7 +77,7 @@ if (file_exists(DIR_WS_LANGUAGES . $language . '/user_certify.php')) {
  ------------------------------------ */
 
 // エラーメッセージ
-$msg = ($erf ? '<div align="center"><font color="#FF0000">'.TEXT_ERRINFO_LOGIN.'</font></div>' : '');
+$msg = (isset($erf) && $erg ? '<div align="center"><font color="#FF0000">'.TEXT_ERRINFO_LOGIN.'</font></div>' : '');
 
 echo '<!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">' . "\n";
 echo '<html ' . HTML_PARAMS . '>' . "\n";

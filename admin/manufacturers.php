@@ -12,6 +12,7 @@
 
   require('includes/application_top.php');
 
+  if (isset($HTTP_GET_VARS['action'])) 
   switch ($HTTP_GET_VARS['action']) {
     case 'insert':
     case 'save':
@@ -144,7 +145,7 @@
   $manufacturers_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $manufacturers_query_raw, $manufacturers_query_numrows);
   $manufacturers_query = tep_db_query($manufacturers_query_raw);
   while ($manufacturers = tep_db_fetch_array($manufacturers_query)) {
-    if (((!$HTTP_GET_VARS['mID']) || (@$HTTP_GET_VARS['mID'] == $manufacturers['manufacturers_id'])) && (!$mInfo) && (substr($HTTP_GET_VARS['action'], 0, 3) != 'new')) {
+    if (((!isset($HTTP_GET_VARS['mID']) || !$HTTP_GET_VARS['mID']) || (@$HTTP_GET_VARS['mID'] == $manufacturers['manufacturers_id'])) && (!isset($mInfo) || !$mInfo) && (!isset($HTTP_GET_VARS['action']) || substr($HTTP_GET_VARS['action'], 0, 3) != 'new')) {
       $manufacturer_products_query = tep_db_query("select count(*) as products_count from " . TABLE_PRODUCTS . " where manufacturers_id = '" . $manufacturers['manufacturers_id'] . "'");
       $manufacturer_products = tep_db_fetch_array($manufacturer_products_query);
 
@@ -173,7 +174,7 @@
                 </table></td>
               </tr>
 <?php
-  if ($HTTP_GET_VARS['action'] != 'new') {
+  if (!isset($HTTP_GET_VARS['action']) || $HTTP_GET_VARS['action'] != 'new') {
 ?>
               <tr>
                 <td align="right" colspan="2" class="smallText"><?php echo '<a href="' . tep_href_link(FILENAME_MANUFACTURERS, 'page=' . $HTTP_GET_VARS['page'] . '&mID=' . $mInfo->manufacturers_id . '&action=new') . '">' . tep_image_button('button_insert.gif', IMAGE_INSERT) . '</a>'; ?></td>
@@ -185,7 +186,7 @@
 <?php
   $heading = array();
   $contents = array();
-  switch ($HTTP_GET_VARS['action']) {
+  switch (isset($HTTP_GET_VARS['action'])?$HTTP_GET_VARS['action']:null) {
     case 'new':
       $heading[] = array('text' => '<b>' . TEXT_HEADING_NEW_MANUFACTURER . '</b>');
 

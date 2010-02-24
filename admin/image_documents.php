@@ -1,6 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set("display_errors", "On");
 /*
   $Id$
   $Loc: catalog/admin/ $
@@ -364,7 +362,7 @@ ini_set("display_errors", "On");
   }
 
   $in_directory = substr (substr (DIR_FS_DOCUMENT_ROOT, strrpos (DIR_FS_DOCUMENT_ROOT, '/') ), 1);
-  $current_path_array = explode ('/', $current_path);
+  $current_path_array = explode ('/', isset($current_path)?$current_path:'');
   $document_root_array = explode ('/', DIR_FS_DOCUMENT_ROOT);
   $goto_array = array (array ('id' => DIR_FS_DOCUMENT_ROOT, 'text' => $in_directory) );
   for ($i=0, $n=sizeof($current_path_array); $i<$n; $i++) {

@@ -213,209 +213,6 @@ class SEO_DataBase{
 } # end class
 
 /**
- * Ultimate SEO URLs Installer and Configuration Class
- *
- * Ultimate SEO URLs installer and configuration class offers a modular 
- * and easy to manage method of configuration.  The class enables the base
- * class to be configured and installed on the fly without the hassle of 
- * calling additional scripts or executing SQL.
- * @package Ultimate-SEO-URLs
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version 1.1
- * @link http://www.oscommerce-freelancers.com/ osCommerce-Freelancers
- * @copyright Copyright 2005, Bobby Easland 
- * @author Bobby Easland 
- */
-class SEO_URL_INSTALLER{	
-	/**
- 	* The default_config array has all the default settings which should be all that is needed to make the base class work.
-	* @var array
- 	*/
-	var $default_config;
-	/**
- 	* Database object
-	* @var object
- 	*/
-	var $DB;
-	/**
- 	* $attributes array holds information about this instance
-	* @var array
- 	*/
-	var $attributes;
-	
-/**
- * SEO_URL_INSTALLER class constructor 
- * @author Bobby Easland 
- * @version 1.1
- */	
-	function SEO_URL_INSTALLER(){
-          date_default_timezone_set('UTC');
-		
-		$this->attributes = array();
-		
-		$x = 0;
-		$this->default_config = array();
-		$this->default_config['SEO_ENABLED'] = array('DEFAULT' => 'true',
-												     'QUERY' => "INSERT INTO `".TABLE_CONFIGURATION."` VALUES ('', 'Enable SEO URLs?', 'SEO_ENABLED', 'true', 'Enable the SEO URLs?  This is a global setting and will turn them off completely.', GROUP_INSERT_ID, ".$x.", NOW(), NOW(), NULL, 'tep_cfg_select_option(array(''true'', ''false''),')"
-												     );
-		$x++;
-		$this->default_config['SEO_ADD_CPATH_TO_PRODUCT_URLS'] = array('DEFAULT' => 'false',
-		   															   'QUERY' => "INSERT INTO `".TABLE_CONFIGURATION."` VALUES ('', 'Add cPath to product URLs?', 'SEO_ADD_CPATH_TO_PRODUCT_URLS', 'false', 'This setting will append the cPath to the end of product URLs (i.e. - some-product-p-1.html?cPath=xx).', GROUP_INSERT_ID, ".$x.", NOW(), NOW(), NULL, 'tep_cfg_select_option(array(''true'', ''false''),')"
-																		);
-		$x++;
-		$this->default_config['SEO_ADD_CAT_PARENT'] = array('DEFAULT' => 'true',
-		   													'QUERY' => "INSERT INTO `".TABLE_CONFIGURATION."` VALUES ('', 'Add category parent to begining of URLs?', 'SEO_ADD_CAT_PARENT', 'true', 'This setting will add the category parent name to the beginning of the category URLs (i.e. - parent-category-c-1.html).', GROUP_INSERT_ID, ".$x.", NOW(), NOW(), NULL, 'tep_cfg_select_option(array(''true'', ''false''),')"
-															);
-		$x++;
-		$this->default_config['SEO_URLS_FILTER_SHORT_WORDS'] = array('DEFAULT' => '3',
-		   															 'QUERY' => "INSERT INTO `".TABLE_CONFIGURATION."` VALUES ('', 'Filter Short Words', 'SEO_URLS_FILTER_SHORT_WORDS', '3', 'This setting will filter words less than or equal to the value from the URL.', GROUP_INSERT_ID, ".$x.", NOW(), NOW(), NULL, NULL)"
-																	);
-		$x++;
-		$this->default_config['USE_SEO_CACHE_GLOBAL'] = array('DEFAULT' => 'true',
-		   													  'QUERY' => "INSERT INTO `".TABLE_CONFIGURATION."` VALUES ('', 'Enable SEO cache to save queries?', 'USE_SEO_CACHE_GLOBAL', 'true', 'This is a global setting and will turn off caching completely.', GROUP_INSERT_ID, ".$x.", NOW(), NOW(), NULL, 'tep_cfg_select_option(array(''true'', ''false''),')"
-															  );
-		$x++;
-		$this->default_config['USE_SEO_CACHE_PRODUCTS'] = array('DEFAULT' => 'true',
-																'QUERY' => "INSERT INTO `".TABLE_CONFIGURATION."` VALUES ('', 'Enable product cache?', 'USE_SEO_CACHE_PRODUCTS', 'true', 'This will turn off caching for the products.', GROUP_INSERT_ID, ".$x.", NOW(), NOW(), NULL, 'tep_cfg_select_option(array(''true'', ''false''),')"
-																);
-		$x++;
-		$this->default_config['USE_SEO_CACHE_CATEGORIES'] = array('DEFAULT' => 'true',
-		   														  'QUERY' => "INSERT INTO `".TABLE_CONFIGURATION."` VALUES ('', 'Enable categories cache?', 'USE_SEO_CACHE_CATEGORIES', 'true', 'This will turn off caching for the categories.', GROUP_INSERT_ID, ".$x.", NOW(), NOW(), NULL, 'tep_cfg_select_option(array(''true'', ''false''),')"
-																  );
-
-		$x++;
-		$this->default_config['USE_SEO_CACHE_MANUFACTURERS'] = array('DEFAULT' => 'true',
-		   															 'QUERY' => "INSERT INTO `".TABLE_CONFIGURATION."` VALUES ('', 'Enable manufacturers cache?', 'USE_SEO_CACHE_MANUFACTURERS', 'true', 'This will turn off caching for the manufacturers.', GROUP_INSERT_ID, ".$x.", NOW(), NOW(), NULL, 'tep_cfg_select_option(array(''true'', ''false''),')"
-																	 );
-
-		$x++;
-		$this->default_config['USE_SEO_CACHE_ARTICLES'] = array('DEFAULT' => 'true',
-		   														'QUERY' => "INSERT INTO `".TABLE_CONFIGURATION."` VALUES ('', 'Enable articles cache?', 'USE_SEO_CACHE_ARTICLES', 'true', 'This will turn off caching for the articles.', GROUP_INSERT_ID, ".$x.", NOW(), NOW(), NULL, 'tep_cfg_select_option(array(''true'', ''false''),')"
-																);
-		$x++;
-		$this->default_config['USE_SEO_CACHE_TOPICS'] = array('DEFAULT' => 'true',
-		   													  'QUERY' => "INSERT INTO `".TABLE_CONFIGURATION."` VALUES ('', 'Enable topics cache?', 'USE_SEO_CACHE_TOPICS', 'true', 'This will turn off caching for the article topics.', GROUP_INSERT_ID, ".$x.", NOW(), NOW(), NULL, 'tep_cfg_select_option(array(''true'', ''false''),')"
-															  );
-		$x++;
-		$this->default_config['USE_SEO_CACHE_INFO_PAGES'] = array('DEFAULT' => 'true',
-		   														  'QUERY' => "INSERT INTO `".TABLE_CONFIGURATION."` VALUES ('', 'Enable information cache?', 'USE_SEO_CACHE_INFO_PAGES', 'true', 'This will turn off caching for the information pages.', GROUP_INSERT_ID, ".$x.", NOW(), NOW(), NULL, 'tep_cfg_select_option(array(''true'', ''false''),')"
-																  );
-		$x++;
-		$this->default_config['USE_SEO_REDIRECT'] = array('DEFAULT' => 'true',
-		   												  'QUERY' => "INSERT INTO `".TABLE_CONFIGURATION."` VALUES ('', 'Enable automatic redirects?', 'USE_SEO_REDIRECT', 'true', 'This will activate the automatic redirect code and send 301 headers for old to new URLs.', GROUP_INSERT_ID, ".$x.", NOW(), NOW(), NULL, 'tep_cfg_select_option(array(''true'', ''false''),')"
-														  );
-		$x++;
-		$this->default_config['SEO_REWRITE_TYPE'] = array('DEFAULT' => 'Rewrite',
-		   												  'QUERY' => "INSERT INTO `".TABLE_CONFIGURATION."` VALUES ('', 'Choose URL Rewrite Type', 'SEO_REWRITE_TYPE', 'Rewrite', 'Choose which SEO URL format to use.', GROUP_INSERT_ID, ".$x.", NOW(), NOW(), NULL, 'tep_cfg_select_option(array(''Rewrite''),')"
-														  );
-		$x++;
-		$this->default_config['SEO_CHAR_CONVERT_SET'] = array('DEFAULT' => '',
-		   													  'QUERY' => "INSERT INTO `".TABLE_CONFIGURATION."` VALUES ('', 'Enter special character conversions', 'SEO_CHAR_CONVERT_SET', '', 'This setting will convert characters.<br><br>The format <b>MUST</b> be in the form: <b>char=>conv,char2=>conv2</b>', GROUP_INSERT_ID, ".$x.", NOW(), NOW(), NULL, NULL)"
-															  );
-		$x++;
-		$this->default_config['SEO_REMOVE_ALL_SPEC_CHARS'] = array('DEFAULT' => 'false',
-		   														   'QUERY' => "INSERT INTO `".TABLE_CONFIGURATION."` VALUES ('', 'Remove all non-alphanumeric characters?', 'SEO_REMOVE_ALL_SPEC_CHARS', 'false', 'This will remove all non-letters and non-numbers.  This should be handy to remove all special characters with 1 setting.', GROUP_INSERT_ID, ".$x.", NOW(), NOW(), NULL, 'tep_cfg_select_option(array(''true'', ''false''),')"
-																	);
-		$x++;
-		$this->default_config['SEO_URLS_CACHE_RESET'] = array('DEFAULT' => 'false',
-		   													  'QUERY' => "INSERT INTO `".TABLE_CONFIGURATION."` VALUES ('', 'Reset SEO URLs Cache', 'SEO_URLS_CACHE_RESET', 'false', 'This will reset the cache data for SEO', GROUP_INSERT_ID, ".$x.", NOW(), NOW(), 'tep_reset_cache_data_seo_urls', 'tep_cfg_select_option(array(''reset'', ''false''),')"
-															  );
-
-		$this->init();
-	} # end class constructor
-	
-/**
- * Initializer - if there are settings not defined the default config will be used and database settings installed. 
- * @author Bobby Easland 
- * @version 1.1
- */	
-	function init(){
-		foreach( $this->default_config as $key => $value ){
-			$container[] = defined($key) ? 'true' : 'false';
-		} # end foreach
-		$this->attributes['IS_DEFINED'] = in_array('false', $container) ? false : true;
-		switch(true){
-			case ( !$this->attributes['IS_DEFINED'] ):
-				$this->eval_defaults();
-				$this->DB = new SEO_DataBase(DB_SERVER, DB_SERVER_USERNAME, DB_DATABASE, DB_SERVER_PASSWORD);
-				$sql = "SELECT configuration_key, configuration_value  
-						FROM " . TABLE_CONFIGURATION . " 
-						WHERE configuration_key LIKE '%SEO%'";
-				$result = $this->DB->Query($sql);
-				$num_rows = $this->DB->NumRows($result);
-				$this->DB->Free($result);		
-				$this->attributes['IS_INSTALLED'] = (sizeof($container) == $num_rows) ? true : false;
-				if ( !$this->attributes['IS_INSTALLED'] ){
-					$this->install_settings(); 
-				}
-				break;
-			default:
-				$this->attributes['IS_INSTALLED'] = true;
-				break;
-		} # end switch
-	} # end function
-	
-/**
- * This function evaluates the default serrings into defined constants 
- * @author Bobby Easland 
- * @version 1.0
- */	
-	function eval_defaults(){
-		foreach( $this->default_config as $key => $value ){
-			define($key, $value['DEFAULT']);
-		} # end foreach
-	} # end function
-	
-/**
- * This function removes the database settings (configuration and cache)
- * @author Bobby Easland 
- * @version 1.0
- */	
-	function uninstall_settings(){
-		$this->DB->Query("DELETE FROM `".TABLE_CONFIGURATION_GROUP."` WHERE `configuration_group_title` LIKE '%SEO%'");
-		$this->DB->Query("DELETE FROM `".TABLE_CONFIGURATION."` WHERE `configuration_key` LIKE '%SEO%'");
-	    $this->DB->Query("DROP TABLE IF EXISTS `cache`");
-	} # end function
-	
-/**
- * This function installs the database settings
- * @author Bobby Easland 
- * @version 1.0
- */	
-	function install_settings(){
-		$this->uninstall_settings();
-		$sort_order_query = "SELECT MAX(sort_order) as max_sort FROM `".TABLE_CONFIGURATION_GROUP."`";
-		$sort = $this->DB->FetchArray( $this->DB->Query($sort_order_query) );
-		$next_sort = $sort['max_sort'] + 1;
-		$insert_group = "INSERT INTO `".TABLE_CONFIGURATION_GROUP."` VALUES ('', 'SEO URLs', 'Options for Ultimate SEO URLs by Chemo', '".$next_sort."', '1')";
-		$this->DB->Query($insert_group);
-		$group_id = $this->DB->InsertID();
-
-		foreach ($this->default_config as $key => $value){
-			$sql = str_replace('GROUP_INSERT_ID', $group_id, $value['QUERY']);
-			$this->DB->Query($sql);
-		}
-
-		$insert_cache_table = "CREATE TABLE `cache` (
-		  `cache_id` varchar(32) NOT NULL default '',
-		  `cache_language_id` tinyint(1) NOT NULL default '0',
-		  `cache_name` varchar(255) NOT NULL default '',
-		  `cache_data` mediumtext NOT NULL,
-		  `cache_global` tinyint(1) NOT NULL default '1',
-		  `cache_gzip` tinyint(1) NOT NULL default '1',
-		  `cache_method` varchar(20) NOT NULL default 'RETURN',
-		  `cache_date` datetime NOT NULL default '0000-00-00 00:00:00',
-		  `cache_expires` datetime NOT NULL default '0000-00-00 00:00:00',
-		  PRIMARY KEY  (`cache_id`,`cache_language_id`),
-		  KEY `cache_id` (`cache_id`),
-		  KEY `cache_language_id` (`cache_language_id`),
-		  KEY `cache_global` (`cache_global`)
-		) TYPE=MyISAM;";
-		$this->DB->Query($insert_cache_table);
-	} # end function	
-} # end class
-
-/**
  * Ultimate SEO URLs Base Class
  *
  * Ultimate SEO URLs offers search engine optimized URLS for osCommerce
@@ -535,7 +332,7 @@ class SEO_URL{
     	global $session_started, $SID;
         date_default_timezone_set('UTC');
 				
-		$this->installer = new SEO_URL_INSTALLER;
+		//$this->installer = new SEO_URL_INSTALLER;
 		
 		$this->DB = new SEO_DataBase(DB_SERVER, DB_SERVER_USERNAME, DB_DATABASE, DB_SERVER_PASSWORD);
 		
@@ -546,7 +343,7 @@ class SEO_URL{
 		$seo_pages = array(FILENAME_DEFAULT, 
 		                   FILENAME_PRODUCT_INFO, 
 						   FILENAME_POPUP_IMAGE,
-						   'page.php',
+						   FILENAME_PAGE,
 						   FILENAME_PRODUCT_REVIEWS,
 						   FILENAME_PRODUCT_REVIEWS_INFO);
 		if ( defined('FILENAME_ARTICLES') ) $seo_pages[] = FILENAME_ARTICLES;
@@ -572,7 +369,7 @@ class SEO_URL{
 								  'SEO_CHAR_CONVERT_SET' => defined('SEO_CHAR_CONVERT_SET') ? $this->expand(SEO_CHAR_CONVERT_SET) : 'false',
 								  'SEO_REMOVE_ALL_SPEC_CHARS' => defined('SEO_REMOVE_ALL_SPEC_CHARS') ? SEO_REMOVE_ALL_SPEC_CHARS : 'false',
 								  'SEO_PAGES' => $seo_pages,
-								  'SEO_INSTALLER' => $this->installer->attributes
+									//'SEO_INSTALLER' => $this->installer->attributes
 								  );		
 		
 		$this->base_url = HTTP_SERVER . DIR_WS_CATALOG;
@@ -654,7 +451,7 @@ class SEO_URL{
   function stock_href_link($page = '', $parameters = '', $connection = 'NONSSL', $add_session_id = true, $search_engine_safe = true) {
     global $request_type, $session_started, $SID;
     if (!$this->not_null($page)) {
-      die('</td></tr></table></td></tr></table><br><br><font color="#ff0000"><b>Error!</b></font><br><br><b>Unable to determine the page link!<br><br>');
+      die('<font color="#ff0000"><b>Error!</b></font><br><br><b>Unable to determine the page link!<br><br>');
     }
 	if ($page == '/') $page = '';
     if ($connection == 'NONSSL') {
@@ -666,7 +463,7 @@ class SEO_URL{
         $link = HTTP_SERVER . DIR_WS_CATALOG;
       }
     } else {
-      die('</td></tr></table></td></tr></table><br><br><font color="#ff0000"><b>Error!</b></font><br><br><b>Unable to determine connection method on a link!<br><br>Known methods: NONSSL SSL</b><br><br>');
+      die('<font color="#ff0000"><b>Error!</b></font><br><br><b>Unable to determine connection method on a link!<br><br>Known methods: NONSSL SSL</b><br><br>');
     }
     if ($this->not_null($parameters)) {
       $link .= $page . '?' . $this->output_string($parameters);
@@ -751,13 +548,6 @@ class SEO_URL{
         $url = $this->make_url($page, '', $p2[0], $p2[1], '.html', $separator);
       } else {
 			switch ($p2[0]){ 
-        //case 'action': // maker
-          //if ($page == FILENAME_DEFAULT) {
-            //$url = $this->make_url($page, '', $p2[0], $p2[1], '.html', $separator);
-          //} else {
-            //$container[$p2[0]] = $p2[1];
-          //}
-          //break;
 				case 'products_id':
 					switch(true){
 						case ( $page == FILENAME_PRODUCT_INFO && !$this->is_attribute_string($p2[1]) ):
@@ -807,7 +597,7 @@ class SEO_URL{
 						break;
 					    //==========================
 					    // Contents page
-					    case ($page == 'page.php'):
+					    case ($page == FILENAME_PAGE):
 						$url = $this->make_url($page, '', $p2[0], $p2[1], '.html', $separator);
 						break;
 					    //==========================
@@ -887,6 +677,7 @@ class SEO_URL{
 						FROM ".TABLE_PRODUCTS_DESCRIPTION." 
 						WHERE products_id='".(int)$pID."' 
 						AND language_id='".(int)$this->languages_id."' 
+            AND site_id = '".SITE_ID."'
 						LIMIT 1";
 				$result = $this->DB->FetchArray( $this->DB->Query( $sql ) );
 				$pName = $this->strip( $result['pName'] );
@@ -929,6 +720,8 @@ class SEO_URL{
 								WHERE c.categories_id='".(int)$single_cID."' 
 								AND cd.categories_id='".(int)$single_cID."' 
 								AND cd.language_id='".(int)$this->languages_id."' 
+                AND cd.site_id='".SITE_ID."'
+                AND cd2.site_id='".SITE_ID."'
 								LIMIT 1";
 						$result = $this->DB->FetchArray( $this->DB->Query( $sql ) );
 						$cName = $this->not_null($result['pName']) ? $result['pName'] . ' ' . $result['cName'] : $result['cName'];
@@ -938,6 +731,7 @@ class SEO_URL{
 								FROM ".TABLE_CATEGORIES_DESCRIPTION." 
 								WHERE categories_id='".(int)$single_cID."' 
 								AND language_id='".(int)$this->languages_id."' 
+                and site_id = '".SITE_ID."'
 								LIMIT 1";
 						$result = $this->DB->FetchArray( $this->DB->Query( $sql ) );
 						$cName = $result['cName'];
@@ -994,6 +788,7 @@ class SEO_URL{
  * @param integer $aID
  * @return string
  */	
+  /*
 	function get_article_name($aID){
 		switch(true){
 			case ($this->attributes['USE_SEO_CACHE_GLOBAL'] == 'true' && defined('ARTICLE_NAME_' . $mID)):
@@ -1021,6 +816,7 @@ class SEO_URL{
 		} # end switch		
 		return $return;
 	} # end function
+  */
 
 /**
  * Function to get the topic name. Use evaluated cache, per page cache, or database query in that order of precedent.
@@ -1029,6 +825,7 @@ class SEO_URL{
  * @param integer $tID
  * @return string
  */	
+  /*
 	function get_topic_name($tID){
 		switch(true){
 			case ($this->attributes['USE_SEO_CACHE_GLOBAL'] == 'true' && defined('TOPIC_NAME_' . $tID)):
@@ -1056,6 +853,7 @@ class SEO_URL{
 		} # end switch		
 		return $return;
 	} # end function
+  */
 
 /**
  * Function to get the informatin name. Use evaluated cache, per page cache, or database query in that order of precedent.
@@ -1064,6 +862,7 @@ class SEO_URL{
  * @param integer $iID
  * @return string
  */	
+  /*
 	function get_information_name($iID){
 		switch(true){
 			case ($this->attributes['USE_SEO_CACHE_GLOBAL'] == 'true' && defined('INFO_NAME_' . $iID)):
@@ -1091,6 +890,7 @@ class SEO_URL{
 		} # end switch		
 		return $return;
 	} # end function
+  */
 
 /**
  * Function to retrieve full cPath from category ID 
@@ -1279,6 +1079,7 @@ class SEO_URL{
  * @return string Short word filtered
  */	
 	function short_name($str, $limit=3){
+    $container = array();
 		if ( $this->attributes['SEO_URLS_FILTER_SHORT_WORDS'] != 'false' ) $limit = (int)$this->attributes['SEO_URLS_FILTER_SHORT_WORDS'];
 		$foo = @explode('-', $str);
 		foreach($foo as $index => $value){
@@ -1319,6 +1120,7 @@ class SEO_URL{
  * @version 1.0
  * @param mixed $array
  */	
+  /*
 	function PrintArray($array, $heading = ''){
 		echo '<fieldset style="border-style:solid; border-width:1px;">' . "\n";
 		echo '<legend style="background-color:#FFFFCC; border-style:solid; border-width:1px;">' . $heading . '</legend>' . "\n";
@@ -1327,6 +1129,7 @@ class SEO_URL{
 		echo '</pre>' . "\n";
 		echo '</fieldset><br>' . "\n";
 	} # end function
+  */
 
 /**
  * Function to start time for performance metric 
@@ -1391,11 +1194,7 @@ class SEO_URL{
  * @return string
  */	
 	function SessionID($sessid = '') {
-		if (!empty($sessid)) {
-		  return session_id($sessid);
-		} else {
-		  return session_id();
-		}
+    return tep_session_id($sessid);
 	}
 	
 /**
@@ -1406,11 +1205,7 @@ class SEO_URL{
  * @return string
  */	
 	function SessionName($name = '') {
-		if (!empty($name)) {
-		  return session_name($name);
-		} else {
-		  return session_name();
-		}
+    return tep_session_name($name);
 	}
 
 /**
@@ -1426,7 +1221,9 @@ class SEO_URL{
 				LEFT JOIN ".TABLE_PRODUCTS_DESCRIPTION." pd 
 				ON p.products_id=pd.products_id 
 				AND pd.language_id='".(int)$this->languages_id."' 
-				WHERE p.products_status='1'";
+				WHERE p.products_status='1'
+        AND pd.site='".SITE_ID."'
+        ";
 		$product_query = $this->DB->Query( $sql );
 		$prod_cache = '';
 		while ($product = $this->DB->FetchArray($product_query)) {
@@ -1486,12 +1283,17 @@ class SEO_URL{
 							LEFT JOIN ".TABLE_CATEGORIES_DESCRIPTION." cd2 
 							ON c.parent_id=cd2.categories_id AND cd2.language_id='".(int)$this->languages_id."' 
 							WHERE c.categories_id=cd.categories_id 
-							AND cd.language_id='".(int)$this->languages_id."'";
+							AND cd.language_id='".(int)$this->languages_id."'
+              AND cd.site_id='".SITE_ID."'
+              AND cd2.site_id='".SITE_ID."'
+            ";
 					break;
 				default:
 					$sql = "SELECT categories_id as id, categories_name as cName 
 							FROM ".TABLE_CATEGORIES_DESCRIPTION."  
-							WHERE language_id='".(int)$this->languages_id."'";
+							WHERE language_id='".(int)$this->languages_id."'
+              AND site_id='".SITE_ID."'
+              ";
 					break;
 			} # end switch
 		$category_query = $this->DB->Query( $sql );
@@ -1516,6 +1318,7 @@ class SEO_URL{
  * @author Bobby Easland 
  * @version 1.0
  */	
+  /*
 	function generate_articles_cache(){
 		$this->is_cached($this->cache_file . 'articles', $is_cached, $is_expired);  	
 		if ( !$is_cached || $is_expired ) { // it's not cached so create it
@@ -1536,12 +1339,14 @@ class SEO_URL{
 			$this->get_cache($this->cache_file . 'articles');		
 		}
 	} # end function
+  */
 
 /**
  * Function to generate topics cache entries 
  * @author Bobby Easland 
  * @version 1.0
  */	
+  /*
 	function generate_topics_cache(){
 		$this->is_cached($this->cache_file . 'topics', $is_cached, $is_expired);  	
 		if ( !$is_cached || $is_expired ) { // it's not cached so create it
@@ -1562,12 +1367,14 @@ class SEO_URL{
 			$this->get_cache($this->cache_file . 'topics');		
 		}
 	} # end function
+  */
 
 /**
  * Function to generate information cache entries 
  * @author Bobby Easland 
  * @version 1.0
  */	
+  /*
 	function generate_information_cache(){
 		$this->is_cached($this->cache_file . 'information', $is_cached, $is_expired);  	
 		if ( !$is_cached || $is_expired ) { // it's not cached so create it
@@ -1588,6 +1395,7 @@ class SEO_URL{
 			$this->get_cache($this->cache_file . 'information');		
 		}
 	} # end function
+  */
 
 /**
  * Function to save the cache to database 
@@ -1672,7 +1480,6 @@ class SEO_URL{
 					if ($global) $container['GLOBAL'][$cache_name] = false; 
 					else $container[$cache_name] = false; 
 				}# end if ( $cache['cache_expires'] > date("Y-m-d H:i:s") )			
-				//if ( $this->keep_in_memory || $local_memory ) {
 				if ($local_memory ) {
 					if ($global) $this->data['GLOBAL'][$cache_name] = $container['GLOBAL'][$cache_name]; 
 					else $this->data[$cache_name] = $container[$cache_name]; 

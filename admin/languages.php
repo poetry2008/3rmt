@@ -12,6 +12,7 @@
 
   require('includes/application_top.php');
 
+  if (isset($HTTP_GET_VARS['action']))
   switch ($HTTP_GET_VARS['action']) {
     case 'insert':
       $name = tep_db_prepare_input($HTTP_POST_VARS['name']);
@@ -160,7 +161,7 @@
   $languages_query = tep_db_query($languages_query_raw);
 
   while ($languages = tep_db_fetch_array($languages_query)) {
-    if (((!$HTTP_GET_VARS['lID']) || (@$HTTP_GET_VARS['lID'] == $languages['languages_id'])) && (!$lInfo) && (substr($HTTP_GET_VARS['action'], 0, 3) != 'new')) {
+    if (((!isset($HTTP_GET_VARS['lID']) || !$HTTP_GET_VARS['lID']) || ($HTTP_GET_VARS['lID'] == $languages['languages_id'])) && (!isset($lInfo) || !$lInfo) && (!isset($HTTP_GET_VARS['action']) || substr($HTTP_GET_VARS['action'], 0, 3) != 'new')) {
       $lInfo = new objectInfo($languages);
     }
 
@@ -189,7 +190,7 @@
                     <td class="smallText" align="right"><?php echo $languages_split->display_links($languages_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page']); ?></td>
                   </tr>
 <?php
-  if (!$HTTP_GET_VARS['action']) {
+  if (!isset($HTTP_GET_VARS['action']) || !$HTTP_GET_VARS['action']) {
 ?>
                   <tr>
                     <td align="right" colspan="2"><?php echo '<a href="' . tep_href_link(FILENAME_LANGUAGES, 'page=' . $HTTP_GET_VARS['page'] . '&lID=' . $lInfo->languages_id . '&action=new') . '">' . tep_image_button('button_new_language.gif', IMAGE_NEW_LANGUAGE) . '</a>'; ?></td>
@@ -201,13 +202,13 @@
               </tr>
             </table></td>
 <?php
-  $direction_options = array( array('id' => '', 'text' => TEXT_INFO_LANGUAGE_DIRECTION_DEFAULT),
-                              array('id' => 'ltr', 'text' => TEXT_INFO_LANGUAGE_DIRECTION_LEFT_TO_RIGHT),
-                              array('id' => 'rtl', 'text' => TEXT_INFO_LANGUAGE_DIRECTION_RIGHT_TO_LEFT));
+  //$direction_options = array( array('id' => '', 'text' => TEXT_INFO_LANGUAGE_DIRECTION_DEFAULT),
+                              //array('id' => 'ltr', 'text' => TEXT_INFO_LANGUAGE_DIRECTION_LEFT_TO_RIGHT),
+                              //array('id' => 'rtl', 'text' => TEXT_INFO_LANGUAGE_DIRECTION_RIGHT_TO_LEFT));
 
   $heading = array();
   $contents = array();
-  switch ($HTTP_GET_VARS['action']) {
+  switch (isset($HTTP_GET_VARS['action'])?$HTTP_GET_VARS['action']:'') {
     case 'new':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_NEW_LANGUAGE . '</b>');
 

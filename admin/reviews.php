@@ -12,7 +12,7 @@
 
   require('includes/application_top.php');
 
-  if ($HTTP_GET_VARS['action']) {
+  if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action']) {
     switch ($HTTP_GET_VARS['action']) {
       case 'setflag':
         if ( ($HTTP_GET_VARS['flag'] == '0') || ($HTTP_GET_VARS['flag'] == '1') ) {
@@ -80,7 +80,7 @@
         </table></td>
       </tr>
 <?php
-  if ($HTTP_GET_VARS['action'] == 'edit') {
+  if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'edit') {
     $rID = tep_db_prepare_input($HTTP_GET_VARS['rID']);
 
     $reviews_query = tep_db_query("select r.reviews_id, r.products_id, r.customers_name, r.date_added, r.last_modified, r.reviews_read, rd.reviews_text, r.reviews_rating, r.reviews_status from " . TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd where r.reviews_id = '" . tep_db_input($rID) . "' and r.reviews_id = rd.reviews_id");
@@ -137,7 +137,7 @@
         <td align="right" class="main"><?php echo tep_draw_hidden_field('reviews_id', $rInfo->reviews_id) . tep_draw_hidden_field('products_id', $rInfo->products_id) . tep_draw_hidden_field('customers_name', tep_output_string_protected($rInfo->customers_name)) . tep_draw_hidden_field('products_name', $rInfo->products_name) . tep_draw_hidden_field('products_image', $rInfo->products_image) . tep_draw_hidden_field('date_added', $rInfo->date_added) . tep_image_submit('button_preview.gif', IMAGE_PREVIEW) . ' <a href="' . tep_href_link(FILENAME_REVIEWS, 'page=' . $HTTP_GET_VARS['page'] . '&rID=' . $HTTP_GET_VARS['rID']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; ?></td>
       </form></tr>
 <?php
-  } elseif ($HTTP_GET_VARS['action'] == 'preview') {
+  } elseif (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'preview') {
     if ($HTTP_POST_VARS) {
       $rInfo = new objectInfo($HTTP_POST_VARS);
     } else {
@@ -219,7 +219,7 @@
     $reviews_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $reviews_query_raw, $reviews_query_numrows);
     $reviews_query = tep_db_query($reviews_query_raw);
     while ($reviews = tep_db_fetch_array($reviews_query)) {
-      if ( ((!$HTTP_GET_VARS['rID']) || ($HTTP_GET_VARS['rID'] == $reviews['reviews_id'])) && (!$rInfo) ) {
+      if ( ((!isset($HTTP_GET_VARS['rID']) || !$HTTP_GET_VARS['rID']) || ($HTTP_GET_VARS['rID'] == $reviews['reviews_id'])) && (!isset($rInfo) || !$rInfo) ) {
         $reviews_text_query = tep_db_query("select r.reviews_read, r.customers_name, length(rd.reviews_text) as reviews_text_size from " . TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd where r.reviews_id = '" . $reviews['reviews_id'] . "' and r.reviews_id = rd.reviews_id");
         $reviews_text = tep_db_fetch_array($reviews_text_query);
 
@@ -247,9 +247,9 @@
 				<td class="dataTableContent" align="center">
 <?php
       if ($reviews['reviews_status'] == '1') {
-        echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_REVIEWS, 'action=setflag&flag=0&page=' . $_GET['page'] . '&pID=' . $reviews['reviews_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>';
+        echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_REVIEWS, 'action=setflag&flag=0&page=' . isset($HTTP_GET_VARS['page'])?$HTTP_GET_VARS['page']:'' . '&pID=' . $reviews['reviews_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>';
       } else {
-        echo '<a href="' . tep_href_link(FILENAME_REVIEWS, 'action=setflag&flag=1&page=' . $_GET['page'] . '&pID=' . $reviews['reviews_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
+        echo '<a href="' . tep_href_link(FILENAME_REVIEWS, 'action=setflag&flag=1&page=' . isset($HTTP_GET_VARS['page'])?$HTTP_GET_VARS['page']:'' . '&pID=' . $reviews['reviews_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
       }
 ?>
                 </td>
@@ -272,7 +272,7 @@
 <?php
     $heading = array();
     $contents = array();
-    switch ($HTTP_GET_VARS['action']) {
+    switch (isset($HTTP_GET_VARS['action'])?$HTTP_GET_VARS['action']:'') {
       case 'delete':
         $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_REVIEW . '</b>');
 

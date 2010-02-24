@@ -12,29 +12,31 @@
 
   require('includes/application_top.php');
 
-  if (!$HTTP_GET_VARS['lngdir']) $HTTP_GET_VARS['lngdir'] = $language;
+  if (!isset($HTTP_GET_VARS['lngdir']) || !$HTTP_GET_VARS['lngdir']) $HTTP_GET_VARS['lngdir'] = $language;
 
-  switch ($HTTP_GET_VARS['action']) {
-    case 'save':
-      if ( ($HTTP_GET_VARS['lngdir']) && ($HTTP_GET_VARS['filename']) ) {
-        if ($HTTP_GET_VARS['filename'] == $HTTP_GET_VARS['lng_dir'] . '.php') {
-          $file = DIR_FS_CATALOG_LANGUAGES . $HTTP_GET_VARS['filename'];
-        } else {
-          $file = DIR_FS_CATALOG_LANGUAGES . $HTTP_GET_VARS['lngdir'] . '/' . $HTTP_GET_VARS['filename'];
-        }
-        if (file_exists($file)) {
-          if (file_exists('bak' . $file)) {
-            @unlink('bak' . $file);
+  if (isset($HTTPS_GET_VARS['action'])) {
+    switch ($HTTP_GET_VARS['action']) {
+      case 'save':
+        if ( ($HTTP_GET_VARS['lngdir']) && ($HTTP_GET_VARS['filename']) ) {
+          if ($HTTP_GET_VARS['filename'] == $HTTP_GET_VARS['lng_dir'] . '.php') {
+            $file = DIR_FS_CATALOG_LANGUAGES . $HTTP_GET_VARS['filename'];
+          } else {
+            $file = DIR_FS_CATALOG_LANGUAGES . $HTTP_GET_VARS['lngdir'] . '/' . $HTTP_GET_VARS['filename'];
           }
-          @rename($file, 'bak' . $file);
-          $new_file = fopen($file, 'w');
-          $file_contents = stripslashes($HTTP_POST_VARS['file_contents']);
-          fwrite($new_file, $file_contents, strlen($file_contents));
-          fclose($new_file);
+          if (file_exists($file)) {
+            if (file_exists('bak' . $file)) {
+              @unlink('bak' . $file);
+            }
+            @rename($file, 'bak' . $file);
+            $new_file = fopen($file, 'w');
+            $file_contents = stripslashes($HTTP_POST_VARS['file_contents']);
+            fwrite($new_file, $file_contents, strlen($file_contents));
+            fclose($new_file);
+          }
+          tep_redirect(tep_href_link(FILENAME_DEFINE_LANGUAGE, 'lngdir=' . $HTTP_GET_VARS['lngdir']));
         }
-        tep_redirect(tep_href_link(FILENAME_DEFINE_LANGUAGE, 'lngdir=' . $HTTP_GET_VARS['lngdir']));
-      }
-      break;
+        break;
+    }
   }
 
   $languages_array = array();
@@ -82,7 +84,7 @@
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
-  if ( ($HTTP_GET_VARS['lngdir']) && ($HTTP_GET_VARS['filename']) ) {
+  if ( isset($HTTP_GET_VARS['lngdir']) && ($HTTP_GET_VARS['lngdir']) && ( isset($HTTP_GET_VARS['filename']) && $HTTP_GET_VARS['filename']) ) {
     if ($HTTP_GET_VARS['filename'] == $HTTP_GET_VARS['lngdir'] . '.php') {
       $file = DIR_FS_CATALOG_LANGUAGES . $HTTP_GET_VARS['filename'];
     } else {

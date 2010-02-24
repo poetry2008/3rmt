@@ -12,7 +12,7 @@
 
   require('includes/application_top.php');
 
-  if ($HTTP_GET_VARS['action']) {
+  if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action']) {
     switch ($HTTP_GET_VARS['action']) {
       case 'setflag': //set the status of a news item.
         if ( ($HTTP_GET_VARS['flag'] == '0') || ($HTTP_GET_VARS['flag'] == '1') ) {
@@ -144,7 +144,7 @@
 <!-- body_text //-->
     <td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
-  if ($HTTP_GET_VARS['action'] == 'new_latest_news') { //insert or edit a news item
+  if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'new_latest_news') { //insert or edit a news item
     if ( isset($HTTP_GET_VARS['latest_news_id']) ) { //editing exsiting news item
       $latest_news_query = tep_db_query("select news_id, headline, content, news_image, news_image_description from " . TABLE_LATEST_NEWS . " where news_id = '" . $HTTP_GET_VARS['latest_news_id'] . "'");
       $latest_news = tep_db_fetch_array($latest_news_query);
@@ -240,10 +240,10 @@
       $latest_news_count++;
       $rows++;
       
-      if ( ((!$HTTP_GET_VARS['latest_news_id']) || (@$HTTP_GET_VARS['latest_news_id'] == $latest_news['news_id'])) && (!$selected_item) && (substr($HTTP_GET_VARS['action'], 0, 4) != 'new_') ) {
+      if ( ((!isset($HTTP_GET_VARS['latest_news_id']) || !$HTTP_GET_VARS['latest_news_id']) || ($HTTP_GET_VARS['latest_news_id'] == $latest_news['news_id'])) && (!isset($selected_item) || !$selected_item) && (!isset($HTTP_GET_VARS['action']) || substr($HTTP_GET_VARS['action'], 0, 4) != 'new_') ) {
         $selected_item = $latest_news;
       }
-      if ( (is_array($selected_item)) && ($latest_news['news_id'] == $selected_item['news_id']) ) {
+      if ( (isset($selected_item) && is_array($selected_item)) && ($latest_news['news_id'] == $selected_item['news_id']) ) {
         echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $latest_news['news_id']) . '\'">' . "\n";
       } else {
         echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $latest_news['news_id']) . '\'">' . "\n";
@@ -292,7 +292,7 @@ if ($listAllRes) {
 <?php
     $heading = array();
     $contents = array();
-    switch ($HTTP_GET_VARS['action']) {
+    switch (isset($HTTP_GET_VARS['action'])?$HTTP_GET_VARS['action']:null) {
       case 'delete_latest_news': //generate box for confirming a news article deletion
         $heading[] = array('text'   => '<b>' . TEXT_INFO_HEADING_DELETE_ITEM . '</b>');
         

@@ -250,6 +250,7 @@
     if ( ($image) && (file_exists(DIR_FS_CATALOG_IMAGES . $image)) ) {
       $image = tep_image(DIR_WS_CATALOG_IMAGES . $image, $alt, $width, $height);
     } else {
+      // TEXT_IMAGE_NONEXISTENT 数据表和程序中都未发现
       $image = TEXT_IMAGE_NONEXISTENT;
     }
 
@@ -550,35 +551,35 @@
     $category_query = tep_db_query("select * from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . $category_id . "' and language_id = '" . $language_id . "'");
     $category = tep_db_fetch_array($category_query);
 
-    return $category['categories_header_text_'.ABBR_SITENAME];
+    return $category['categories_header_text'];
   }
   
   function tep_get_categories_footer_text($category_id, $language_id) { //ADD ds-style.com
     $category_query = tep_db_query("select * from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . $category_id . "' and language_id = '" . $language_id . "'");
     $category = tep_db_fetch_array($category_query);
 
-    return $category['categories_footer_text_'.ABBR_SITENAME];
+    return $category['categories_footer_text'];
   }
 
   function tep_get_text_information($category_id, $language_id) { //ADD ds-style.com
     $category_query = tep_db_query("select * from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . $category_id . "' and language_id = '" . $language_id . "'");
     $category = tep_db_fetch_array($category_query);
 
-    return $category['text_information_'.ABBR_SITENAME];
+    return $category['text_information'];
   }
   
   function tep_get_meta_keywords($category_id, $language_id) { //ADD ds-style.com
     $category_query = tep_db_query("select * from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . $category_id . "' and language_id = '" . $language_id . "'");
     $category = tep_db_fetch_array($category_query);
 
-    return $category['meta_keywords_'.ABBR_SITENAME];
+    return $category['meta_keywords'];
   }
 
   function tep_get_meta_description($category_id, $language_id) { //ADD ds-style.com
     $category_query = tep_db_query("select * from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . $category_id . "' and language_id = '" . $language_id . "'");
     $category = tep_db_fetch_array($category_query);
 
-    return $category['meta_description_'.ABBR_SITENAME];
+    return $category['meta_description'];
   }
 
   function tep_get_orders_status_name($orders_status_id, $language_id = '') {
@@ -616,15 +617,10 @@
   }
 
   function tep_get_products_description($product_id, $language_id) {
-    $product_query = tep_db_query("select products_description_".ABBR_SITENAME." from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . $product_id . "' and language_id = '" . $language_id . "'");
+    $product_query = tep_db_query("select products_description from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . $product_id . "' and language_id = '" . $language_id . "'");
     $product = tep_db_fetch_array($product_query);
 	
-	//Add ds-style - 2005.11.29
-	// edit 2009.5.14 maker
-	// $description = explode("|-#-|", $product['products_description_'.ABBR_SITENAME]); // maker
-
-    return $product['products_description_'.ABBR_SITENAME];//maker
-	//return $product['products_description'];
+    return $product['products_description'];
   }
   
   function tep_get_products_description_mobile($product_id, $language_id) {

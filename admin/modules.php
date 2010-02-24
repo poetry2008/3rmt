@@ -40,6 +40,7 @@
       break;
   }
 
+  if (isset($HTTP_GET_VARS['action'])) 
   switch ($HTTP_GET_VARS['action']) {
     case 'save':
       while (list($key, $value) = each($HTTP_POST_VARS['configuration'])) {
@@ -198,7 +199,7 @@
 <?php
   $heading = array();
   $contents = array();
-  switch ($HTTP_GET_VARS['action']) {
+  switch (isset($HTTP_GET_VARS['action'])?$HTTP_GET_VARS['action']:'') {
     case 'edit':
       $keys = '';
       reset($mInfo->keys);
@@ -221,9 +222,9 @@
       $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_update.gif', IMAGE_UPDATE) . ' <a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $HTTP_GET_VARS['set'] . '&module=' . $HTTP_GET_VARS['module']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
     default:
-      $heading[] = array('text' => '<b>' . $mInfo->title . '</b>');
+      $heading[] = array('text' => '<b>' . (isset($mInfo->title)?$mInfo->title:'') . '</b>');
 
-      if ($mInfo->status == '1') {
+      if (isset($mInfo->status) && $mInfo->status == '1') {
         $keys = '';
         reset($mInfo->keys);
         while (list(, $value) = each($mInfo->keys)) {
@@ -251,7 +252,7 @@
         $contents[] = array('text' => '<br>' . $mInfo->description);
         $contents[] = array('text' => '<br>' . $keys);
       } else {
-        $contents[] = array('text' => $mInfo->description);
+        $contents[] = array('text' => isset($mInfo->description)?$mInfo->description:'');
       }
       break;
   }

@@ -1,6 +1,6 @@
 <?php
 /*
-	JP、GM共通ファイル
+   $Id$
 */
 
   require('includes/application_top.php');
@@ -24,7 +24,7 @@
   if ( eregi("(insert|update|setflag)", $action) ) include_once('includes/reset_seo_cache.php');
 
 
-  if ($HTTP_GET_VARS['action']) {
+  if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action']) {
     switch ($HTTP_GET_VARS['action']) {
       case 'toggle':
           if ($HTTP_GET_VARS['cID']) {
@@ -93,19 +93,10 @@
 		  // 特価商品インサート終了
 
 // キャラクター名インサート
-$des_query = tep_db_query("select products_attention_1,products_attention_2,products_attention_3,products_attention_4,products_attention_5,products_description_".ABBR_SITENAME." from products_description where language_id = '4' and products_id = '" . tep_db_input($products_id) . "'");//maker
+$des_query = tep_db_query("select products_attention_1,products_attention_2,products_attention_3,products_attention_4,products_attention_5,products_description from products_description where language_id = '4' and products_id = '" . tep_db_input($products_id) . "'");
 $des_result = tep_db_fetch_array($des_query);
-// edit 2009.5.14 maker
-//$des = explode("|-#-|", $des_result['products_description_'.ABBR_SITENAME]);//maker
-
-//$des_unite = $des[0] . '|-#-|' . $des[1] . '|-#-|' . $des[2] . '|-#-|' . $des[3] . '|-#-|' . $des[4] . '|-#-|' . $des[5] . '|-#-|' . tep_db_prepare_input($HTTP_POST_VARS['products_com']);//maker
-$sql_data_array = array( // maker
-	'products_description_'.ABBR_SITENAME => tep_db_prepare_input($des_result['products_description_'.ABBR_SITENAME]),
-	//'products_attention_1' => $des_result['products_attention_1'],
-	//'products_attention_2' => $des_result['products_attention_2'],
-	//'products_attention_3' => $des_result['products_attention_3'],
-	//'products_attention_4' => $des_result['products_attention_4'],
-	//'products_attention_5' => $des_result['products_attention_5'],
+$sql_data_array = array( 
+	'products_description' => tep_db_prepare_input($des_result['products_description']),
 	'products_attention_5' => tep_db_prepare_input($HTTP_POST_VARS['products_attention_5'])
 );
 tep_db_perform(TABLE_PRODUCTS_DESCRIPTION, $sql_data_array, 'update', 'products_id = \'' . tep_db_input($products_id) . '\' and language_id = \'4\'');
@@ -146,14 +137,13 @@ tep_db_perform(TABLE_PRODUCTS_DESCRIPTION, $sql_data_array, 'update', 'products_
 		  
 		  $language_id = $languages[$i]['id'];
           $sql_data_array = array('categories_name' => tep_db_prepare_input($categories_name_array[$language_id]),
-								  'categories_meta_text' => tep_db_prepare_input($categories_meta_text[$language_id]),//ADD ds-style.com
-				
-								  'seo_name' => tep_db_prepare_input($seo_name[$language_id]),//ADD maker
-								  'categories_header_text_'.ABBR_SITENAME => tep_db_prepare_input($categories_header_text[$language_id]),//ADD maker
-								  'categories_footer_text_'.ABBR_SITENAME => tep_db_prepare_input($categories_footer_text[$language_id]),//ADD maker
-								  'text_information_'.ABBR_SITENAME => tep_db_prepare_input($text_information[$language_id]),//ADD maker
-								  'meta_keywords_'.ABBR_SITENAME => tep_db_prepare_input($meta_keywords[$language_id]),//ADD maker
-								  'meta_description_'.ABBR_SITENAME => tep_db_prepare_input($meta_description[$language_id]),//ADD maker
+								  'categories_meta_text' => tep_db_prepare_input($categories_meta_text[$language_id]),
+								  'seo_name' => tep_db_prepare_input($seo_name[$language_id]),
+								  'categories_header_text' => tep_db_prepare_input($categories_header_text[$language_id]),
+								  'categories_footer_text' => tep_db_prepare_input($categories_footer_text[$language_id]),
+								  'text_information' => tep_db_prepare_input($text_information[$language_id]),
+								  'meta_keywords' => tep_db_prepare_input($meta_keywords[$language_id]),
+								  'meta_description' => tep_db_prepare_input($meta_description[$language_id]),
 								);
 				
           if ($HTTP_GET_VARS['action'] == 'insert_category') {
@@ -424,39 +414,25 @@ tep_db_perform(TABLE_PRODUCTS_DESCRIPTION, $sql_data_array, 'update', 'products_
           $languages = tep_get_languages();
           for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
             $language_id = $languages[$i]['id'];
-			
-			//商品説明を結合
-			// edit 2009.5.14 maker
-			//$des = tep_db_prepare_input($HTTP_POST_VARS['products_description'][$language_id]) . "|-#-|";//maker
-			//$des .= tep_db_prepare_input($HTTP_POST_VARS['products_price_def']) . "|-#-|";//maker
-			//$des .= tep_db_prepare_input($HTTP_POST_VARS['products_jan']) . "|-#-|";//maker
-			//$des .= tep_db_prepare_input($HTTP_POST_VARS['products_size']) . "|-#-|";//maker
-			//$des .= tep_db_prepare_input($HTTP_POST_VARS['products_naiyou']) . "|-#-|";//maker
-			//$des .= tep_db_prepare_input($HTTP_POST_VARS['products_zaishitu']) . "|-#-|";//maker
-			//$des .= tep_db_prepare_input($HTTP_POST_VARS['products_com']);//maker
-			$des = tep_db_prepare_input($HTTP_POST_VARS['products_description'][$language_id]);//maker
-			$products_attention_1 = tep_db_prepare_input($HTTP_POST_VARS['products_jan']);//maker
-			$products_attention_2 = tep_db_prepare_input($HTTP_POST_VARS['products_size']);//maker
-			$products_attention_3 = tep_db_prepare_input($HTTP_POST_VARS['products_naiyou']);//maker
-			$products_attention_4 = tep_db_prepare_input($HTTP_POST_VARS['products_zaishitu']);//maker
-			//$products_attention_5 = tep_db_prepare_input($HTTP_POST_VARS['products_com']);//maker
-			$products_attention_5 = tep_db_prepare_input($HTTP_POST_VARS['products_attention_5']);//maker
-			
-            $sql_data_array = array('products_name' => tep_db_prepare_input($HTTP_POST_VARS['products_name'][$language_id]),
-                                    'products_description_'.ABBR_SITENAME => $des,
-                					'products_attention_1' => $products_attention_1,//maker
-					                'products_attention_2' => $products_attention_2,//maker
-					                'products_attention_3' => $products_attention_3,//maker
-					                'products_attention_4' => $products_attention_4,//maker
-					                'products_attention_5' => $products_attention_5,//maker
-									//'products_attention_5' => $products_attention_5,//maker
-                                    /*'products_description_mobile' => tep_db_prepare_input($HTTP_POST_VARS['products_description_mobile'][$language_id]),*/
-                                    'products_url' => tep_db_prepare_input($HTTP_POST_VARS['products_url'][$language_id]));
 
-			//var_dump($sql_data_array);
-			//exit;
+            //商品説明を結合
+            $des = tep_db_prepare_input($HTTP_POST_VARS['products_description'][$language_id]);
+            $products_attention_1 = tep_db_prepare_input($HTTP_POST_VARS['products_jan']);
+            $products_attention_2 = tep_db_prepare_input($HTTP_POST_VARS['products_size']);
+            $products_attention_3 = tep_db_prepare_input($HTTP_POST_VARS['products_naiyou']);
+            $products_attention_4 = tep_db_prepare_input($HTTP_POST_VARS['products_zaishitu']);
+            $products_attention_5 = tep_db_prepare_input($HTTP_POST_VARS['products_attention_5']);
+            $sql_data_array = array(
+                'products_name'        => tep_db_prepare_input($HTTP_POST_VARS['products_name'][$language_id]),
+                'products_description' => $des,
+                'products_attention_1' => $products_attention_1,
+                'products_attention_2' => $products_attention_2,
+                'products_attention_3' => $products_attention_3,
+                'products_attention_4' => $products_attention_4,
+                'products_attention_5' => $products_attention_5,
+                'products_url'         => tep_db_prepare_input($HTTP_POST_VARS['products_url'][$language_id]));
 
-            if ($HTTP_GET_VARS['action'] == 'insert_product') {
+            if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'insert_product') {
               $insert_sql_data = array('products_id' => $products_id,
                                        'language_id' => $language_id);
               $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
@@ -609,10 +585,9 @@ tep_db_perform(TABLE_PRODUCTS_DESCRIPTION, $sql_data_array, 'update', 'products_
             tep_db_query("insert into " . TABLE_PRODUCTS . " (products_quantity, products_model,products_image,products_image2,products_image3, products_price, products_date_added, products_date_available, products_weight, products_status, products_tax_class_id, manufacturers_id) values ('" . $product['products_quantity'] . "', '" . $product['products_model'] . "', '" . $product['products_image'] . "', '" . $product['products_image2'] . "', '" . $product['products_image3'] . "','" . $product['products_price'] . "',  now(), '" . $product['products_date_available'] . "', '" . $product['products_weight'] . "', '0', '" . $product['products_tax_class_id'] . "', '" . $product['manufacturers_id'] . "')");
             $dup_products_id = tep_db_insert_id();
 			
-			// maker
-            $description_query = tep_db_query("select language_id, products_name, products_description_".ABBR_SITENAME.", products_attention_1, products_attention_2, products_attention_3, products_attention_4, products_attention_5, products_url from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . tep_db_input($products_id) . "'");
+            $description_query = tep_db_query("select language_id, products_name, products_description, products_attention_1, products_attention_2, products_attention_3, products_attention_4, products_attention_5, products_url from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . tep_db_input($products_id) . "'");
             while ($description = tep_db_fetch_array($description_query)) {
-              tep_db_query("insert into " . TABLE_PRODUCTS_DESCRIPTION . " (products_id, language_id, products_name, products_description_".ABBR_SITENAME.",products_attention_1, products_attention_2, products_attention_3, products_attention_4,products_attention_5,products_url, products_viewed) values ('" . $dup_products_id . "', '" . $description['language_id'] . "', '" . addslashes($description['products_name']) . "', '" . addslashes($description['products_description_'.ABBR_SITENAME]) . "', '". addslashes($description['products_attention_1']) . "', '". addslashes($description['products_attention_2']) . "', '". addslashes($description['products_attention_3']) . "', '". addslashes($description['products_attention_4']) . "', '". addslashes($description['products_attention_5']) . "', '" . $description['products_url'] . "', '0')");
+              tep_db_query("insert into " . TABLE_PRODUCTS_DESCRIPTION . " (products_id, language_id, products_name, products_description,products_attention_1, products_attention_2, products_attention_3, products_attention_4,products_attention_5,products_url, products_viewed) values ('" . $dup_products_id . "', '" . $description['language_id'] . "', '" . addslashes($description['products_name']) . "', '" . addslashes($description['products_description']) . "', '". addslashes($description['products_attention_1']) . "', '". addslashes($description['products_attention_2']) . "', '". addslashes($description['products_attention_3']) . "', '". addslashes($description['products_attention_4']) . "', '". addslashes($description['products_attention_5']) . "', '" . $description['products_url'] . "', '0')");
             }
 
             tep_db_query("insert into " . TABLE_PRODUCTS_TO_CATEGORIES . " (products_id, categories_id) values ('" . $dup_products_id . "', '" . tep_db_input($categories_id) . "')");
@@ -638,7 +613,7 @@ tep_db_perform(TABLE_PRODUCTS_DESCRIPTION, $sql_data_array, 'update', 'products_
   }
   
   //商品画像削除
-        if ($HTTP_GET_VARS['mode'] == 'p_delete') {
+        if (isset($HTTP_GET_VARS['mode']) && $HTTP_GET_VARS['mode'] == 'p_delete') {
           $image_location = DIR_FS_DOCUMENT_ROOT . DIR_WS_CATALOG_IMAGES . $HTTP_GET_VARS['file'];//元画像
 		  $image_location2 = DIR_FS_DOCUMENT_ROOT . DIR_WS_CATALOG_IMAGES .'imagecache3/'. $HTTP_GET_VARS['file'];//サムネイル画像
 		  $delete_image = $HTTP_GET_VARS['cl'];
@@ -689,9 +664,9 @@ function mess(){
     <!-- body_text //-->
     <td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
         <?php
-  if ($HTTP_GET_VARS['action'] == 'new_product') {
+  if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'new_product') {
     if ( ($HTTP_GET_VARS['pID']) && (!$HTTP_POST_VARS) ) {
-      $product_query = tep_db_query("select pd.products_name, pd.products_description_".ABBR_SITENAME.", pd.products_url, p.products_id,p.option_type, p.products_quantity, p.products_model, p.products_image,p.products_image2,p.products_image3, p.products_price, p.products_weight, p.products_date_added, p.products_last_modified, date_format(p.products_date_available, '%Y-%m-%d') as products_date_available, p.products_status, p.products_tax_class_id, p.manufacturers_id, p.products_bflag, p.products_cflag, p.products_small_sum from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_id = '" . $HTTP_GET_VARS['pID'] . "' and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "'");
+      $product_query = tep_db_query("select pd.products_name, pd.products_description, pd.products_url, p.products_id,p.option_type, p.products_quantity, p.products_model, p.products_image,p.products_image2,p.products_image3, p.products_price, p.products_weight, p.products_date_added, p.products_last_modified, date_format(p.products_date_available, '%Y-%m-%d') as products_date_available, p.products_status, p.products_tax_class_id, p.manufacturers_id, p.products_bflag, p.products_cflag, p.products_small_sum from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_id = '" . $HTTP_GET_VARS['pID'] . "' and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "'");
       $product = tep_db_fetch_array($product_query);
       $pInfo = new objectInfo($product);
     } elseif ($HTTP_POST_VARS) {
@@ -739,10 +714,8 @@ function mess(){
     }
 	
 	//商品説明を分割
-	$des_query = tep_db_query("select products_attention_1,products_attention_2,products_attention_3,products_attention_4,products_attention_5,products_description_".ABBR_SITENAME." from products_description where language_id = '4' and products_id = '".$pInfo->products_id."'"); //maker
-	$des_result = tep_db_fetch_array($des_query);//maker
-	//$des = explode("|-#-|", $des_result['products_description_'.ABBR_SITENAME]);//maker
-
+	$des_query = tep_db_query("select products_attention_1,products_attention_2,products_attention_3,products_attention_4,products_attention_5,products_description from products_description where language_id = '4' and products_id = '".$pInfo->products_id."'"); 
+	$des_result = tep_db_fetch_array($des_query);
 ?>
         <link rel="stylesheet" type="text/css" href="includes/javascript/spiffyCal/spiffyCal_v2_1.css">
         <script language="JavaScript" src="includes/javascript/spiffyCal/spiffyCal_v2_1.js"></script>
@@ -1163,7 +1136,7 @@ function mess(){
           </form>
         </tr>
         <?php
-  } elseif ($HTTP_GET_VARS['action'] == 'new_product_preview') {
+  } elseif (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'new_product_preview') {
     if ($HTTP_POST_VARS) {
       $pInfo = new objectInfo($HTTP_POST_VARS);
       $products_name = $HTTP_POST_VARS['products_name'];
@@ -1230,7 +1203,7 @@ function mess(){
 	  
 	  
     } else {
-      $product_query = tep_db_query("select p.products_id, pd.language_id, pd.products_name, pd.products_description_".ABBR_SITENAME.", pd.products_url, p.products_quantity, p.products_model, p.products_image,p.products_image2,p.products_image3, p.products_price, p.products_weight, p.products_date_added, p.products_last_modified, p.products_date_available, p.products_status, p.manufacturers_id  from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_id = pd.products_id and p.products_id = '" . $HTTP_GET_VARS['pID'] . "'");
+      $product_query = tep_db_query("select p.products_id, pd.language_id, pd.products_name, pd.products_description, pd.products_url, p.products_quantity, p.products_model, p.products_image,p.products_image2,p.products_image3, p.products_price, p.products_weight, p.products_date_added, p.products_last_modified, p.products_date_available, p.products_status, p.manufacturers_id  from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_id = pd.products_id and p.products_id = '" . $HTTP_GET_VARS['pID'] . "'");
       $product = tep_db_fetch_array($product_query);
 
       $pInfo = new objectInfo($product);
@@ -1290,11 +1263,9 @@ if ($HTTP_GET_VARS['read'] == 'only' && !$HTTP_GET_VARS['origin']) {
 	echo '特価：&nbsp;' . tep_draw_input_field('products_special_price', (int)tep_get_products_special_price($pInfo->products_id),'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;color: red;"') . '&nbsp;円' . '&nbsp;&nbsp;←&nbsp;' . (int)tep_get_products_special_price($pInfo->products_id) . '円<br><hr size="2" noshade>' . "\n";
 	echo '数量：&nbsp;' . tep_draw_input_field('products_quantity', $pInfo->products_quantity,'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;個' . '&nbsp;&nbsp;←&nbsp;' . $pInfo->products_quantity . '個<br><hr size="2" noshade>' . "\n";
 	//商品説明を分割
-	$des_query = tep_db_query("select products_attention_1,products_attention_2,products_attention_3,products_attention_4,products_attention_5,products_description_".ABBR_SITENAME." from products_description where language_id = '4' and products_id = '" . $pInfo->products_id . "'"); // maker
-	$des_result = tep_db_fetch_array($des_query); // maker
-	//$des = explode("|-#-|", $des_result['products_description_'.ABBR_SITENAME]); //maker
-	//echo '当社キャラクター名の入力欄：<br>' . tep_draw_textarea_field('products_com', 'soft', '70', '10', $des_result['products_attention_1']) . '<br>' . "\n";//maker
-	echo '当社キャラクター名の入力欄：<br>' . tep_draw_textarea_field('products_attention_5', 'soft', '70', '10', $des_result['products_attention_5']) . '<br>' . "\n";//maker
+	$des_query = tep_db_query("select products_attention_1,products_attention_2,products_attention_3,products_attention_4,products_attention_5,products_description from products_description where language_id = '4' and products_id = '" . $pInfo->products_id . "'"); 
+	$des_result = tep_db_fetch_array($des_query); 
+	echo '当社キャラクター名の入力欄：<br>' . tep_draw_textarea_field('products_attention_5', 'soft', '70', '10', $des_result['products_attention_5']) . '<br>' . "\n";
 	echo '<table width="100%" cellspacing="0" cellpadding="5" border="0" class="smalltext"><tr><td><b>販売</b></td><td><b>買取</b></td></tr>' . "\n";
 	echo '<tr><td>所持金上限や、弊社キャラクターの在庫の都合上、複数のキャラクターにて<br>分割してお届けする場合がございます。ご注文いただきました数量に達する<br>まで受領操作をお願いいたします。<br>【】または【】よりお届けいたします。</td><td>当社キャラクター【】または【】にトレードをお願いいたします。</td></tr></table><hr size="2" noshade>' . "\n";
 	echo tep_image_submit('button_update.gif', 'よく確認してから押しなさい') . '</form>' . "\n";
@@ -1420,7 +1391,7 @@ if ($HTTP_GET_VARS['read'] == 'only' && !$HTTP_GET_VARS['origin']) { //表示制
 				<td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
 				<?php echo tep_draw_form('search', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
 					<td class="smallText" align="right">
-						<?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search', $HTTP_GET_VARS['search']) . "\n"; ?>
+						<?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search', isset($HTTP_GET_VARS['search'])?$HTTP_GET_VARS['search']:'') . "\n"; ?>
 					</td>
 				</form>
 				<?php echo tep_draw_form('goto', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
@@ -1452,7 +1423,7 @@ if ($HTTP_GET_VARS['read'] == 'only' && !$HTTP_GET_VARS['origin']) { //表示制
                     <?php
     $categories_count = 0;
     $rows = 0;
-    if ($HTTP_GET_VARS['search']) {
+    if (isset($HTTP_GET_VARS['search']) && $HTTP_GET_VARS['search']) {
       $categories_query_raw = "select c.categories_id, c.categories_status, cd.categories_name, cd.categories_image2, cd.categories_image3, cd.categories_meta_text, c.categories_image, c.parent_id, c.sort_order, c.date_added, c.last_modified from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where c.categories_id = cd.categories_id and cd.language_id = '" . $languages_id . "' and cd.categories_name like '%" . $HTTP_GET_VARS['search'] . "%' order by c.sort_order, cd.categories_name";
     } else {
       $categories_query_raw = "select c.categories_id, c.categories_status, cd.categories_name, cd.categories_image2, cd.categories_image3, cd.categories_meta_text, c.categories_image, c.parent_id, c.sort_order, c.date_added, c.last_modified from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where c.parent_id = '" . $current_category_id . "' and c.categories_id = cd.categories_id and cd.language_id = '" . $languages_id . "' order by c.sort_order, cd.categories_name";
@@ -1463,9 +1434,13 @@ if ($HTTP_GET_VARS['read'] == 'only' && !$HTTP_GET_VARS['origin']) { //表示制
       $rows++;
 
 // Get parent_id for subcategories if search 
-      if ($HTTP_GET_VARS['search']) $cPath= $categories['parent_id'];
+      if (isset($HTTP_GET_VARS['search']) && $HTTP_GET_VARS['search']) $cPath= $categories['parent_id'];
 
-      if ( ((!$HTTP_GET_VARS['cID']) && (!$HTTP_GET_VARS['pID']) || (@$HTTP_GET_VARS['cID'] == $categories['categories_id'])) && (!$cInfo) && (substr($HTTP_GET_VARS['action'], 0, 4) != 'new_') ) {
+      if ( 
+          ((!isset($HTTP_GET_VARS['cID']) || !$HTTP_GET_VARS['cID']) && (!isset($HTTP_GET_VARS['pID']) || !$HTTP_GET_VARS['pID']) || (isset($HTTP_GET_VARS['cID']) && $HTTP_GET_VARS['cID'] == $categories['categories_id'])) 
+          && (!isset($cInfo) || !$cInfo) 
+          && (!isset($HTTP_GET_VARS['action']) || substr($HTTP_GET_VARS['action'], 0, 4) != 'new_')
+        ) {
         $category_childs = array('childs_count' => tep_childs_in_category_count($categories['categories_id']));
         $category_products = array('products_count' => tep_products_in_category_count($categories['categories_id']));
 
@@ -1476,16 +1451,16 @@ if ($HTTP_GET_VARS['read'] == 'only' && !$HTTP_GET_VARS['origin']) { //表示制
 // 列を色違いにする
 $even = 'dataTableSecondRow';
 $odd = 'dataTableRow';
-if ($nowColor == $odd) {
+if (isset($nowColor) && $nowColor == $odd) {
 	$nowColor = $even;
 } else {
 	$nowColor = $odd;
 }
 
-      if ( (is_object($cInfo)) && ($categories['categories_id'] == $cInfo->categories_id) ) {
+      if ( (isset($cInfo) && is_object($cInfo)) && ($categories['categories_id'] == $cInfo->categories_id) ) {
         echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id'])) . '\'">' . "\n";
       } else {
-        echo '              <tr class="' . $nowColor . '" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($HTTP_GET_VARS['page'] ? ('&page=' . $HTTP_GET_VARS['page']) : '' ) . '&cID=' . $categories['categories_id']) . '\'">' . "\n";
+        echo '              <tr class="' . $nowColor . '" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . (isset($HTTP_GET_VARS['page'])&&$HTTP_GET_VARS['page'] ? ('&page=' . $HTTP_GET_VARS['page']) : '' ) . '&cID=' . $categories['categories_id']) . '\'">' . "\n";
       }
 ?>
                     <td class="dataTableContent"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id'])) . '">' . tep_image(DIR_WS_ICONS . 'folder.gif', ICON_FOLDER) . '</a>&nbsp;<b>' . $categories['categories_name'] . '</b>'; ?></td>
@@ -1503,14 +1478,14 @@ if ($nowColor == $odd) {
                       <td class="dataTableContent" align="right">&nbsp;</td>
 					  <td class="dataTableContent" align="right">&nbsp;</td>
 					  <td class="dataTableContent" align="center">&nbsp;</td>
-                      <td class="dataTableContent" align="right"><?php if ( (is_object($cInfo)) && ($categories['categories_id'] == $cInfo->categories_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $categories['categories_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>
+                      <td class="dataTableContent" align="right"><?php if ( (isset($cInfo) && is_object($cInfo)) && ($categories['categories_id'] == $cInfo->categories_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $categories['categories_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>
 &nbsp;</td>
                     </tr>
                     <?php
     }
 
     $products_count = 0;
-    if ($HTTP_GET_VARS['search']) {
+    if (isset($HTTP_GET_VARS['search']) && $HTTP_GET_VARS['search']) {
   	  $products_query_raw = "select p.products_id, pd.products_name, p.products_quantity, p.products_image,p.products_image2,p.products_image3, p.products_price, p.products_date_added, p.products_last_modified, p.products_date_available, p.products_status, p2c.categories_id from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c where p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and p.products_id = p2c.products_id and pd.products_name like '%" . $HTTP_GET_VARS['search'] . "%' order by pd.products_name";
     } else {
       $products_query_raw = "select p.products_id, pd.products_name, p.products_quantity, p.products_image,p.products_image2,p.products_image3, p.products_price, p.products_date_added, p.products_last_modified, p.products_date_available, p.products_status from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c where p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and p.products_id = p2c.products_id and p2c.categories_id = '" . $current_category_id . "' order by pd.products_name";
@@ -1522,9 +1497,14 @@ if ($nowColor == $odd) {
       $rows++;
 
 // Get categories_id for product if search 
-      if ($HTTP_GET_VARS['search']) $cPath=$products['categories_id'];
+      if (isset($HTTP_GET_VARS['search']) && $HTTP_GET_VARS['search']) $cPath=$products['categories_id'];
 
-      if ( ((!$HTTP_GET_VARS['pID']) && (!$HTTP_GET_VARS['cID']) || (@$HTTP_GET_VARS['pID'] == $products['products_id'])) && (!$pInfo) && (!$cInfo) && (substr($HTTP_GET_VARS['action'], 0, 4) != 'new_') ) {
+      if ( 
+          ((!isset($HTTP_GET_VARS['pID']) || !$HTTP_GET_VARS['pID']) && (!isset($HTTP_GET_VARS['cID']) || !$HTTP_GET_VARS['cID']) || (isset($HTTP_GET_VARS['pID']) && $HTTP_GET_VARS['pID'] == $products['products_id'])) 
+          && (!isset($pInfo) || !$pInfo) 
+          && (!isset($cInfo) || !$cInfo) 
+          && (!isset($HTTP_GET_VARS['action']) || substr($HTTP_GET_VARS['action'], 0, 4) != 'new_') 
+        ) {
 // find out the rating average from customer reviews
         $reviews_query = tep_db_query("select (avg(reviews_rating) / 5 * 100) as average_rating from " . TABLE_REVIEWS . " where products_id = '" . $products['products_id'] . "'");
         $reviews = tep_db_fetch_array($reviews_query);
@@ -1541,7 +1521,7 @@ if ($nowColor == $odd) {
 	$nowColor = $odd;
 }
 
-      if ( (is_object($pInfo)) && ($products['products_id'] == $pInfo->products_id) ) {
+      if ( (isset($pInfo) && is_object($pInfo)) && ($products['products_id'] == $pInfo->products_id) ) {
         echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($HTTP_GET_VARS['page'] ? ('&page=' . $HTTP_GET_VARS['page']) : '' ) . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '\'">' . "\n";
       } else {
         echo '              <tr class="' . $nowColor . '" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($HTTP_GET_VARS['page'] ? ('&page=' . $HTTP_GET_VARS['page']) : '' ) . '&pID=' . $products['products_id']) . '\'">' . "\n";
@@ -1607,7 +1587,7 @@ if ($ocertify->npermission >= 10) { //表示制限
       }
     }
 
-    $cPath_back = ($cPath_back) ? 'cPath=' . $cPath_back : '';
+    $cPath_back = isset($cPath_back) && $cPath_back ? 'cPath=' . $cPath_back : '';
 ?>
   <tr>
     <td class="smallText" valign="top"><?php echo $products_split->display_count($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, $HTTP_GET_VARS['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
@@ -1634,7 +1614,7 @@ if ($ocertify->npermission >= 10) { //表示制限
                 <?php
     $heading = array();
     $contents = array();
-    switch ($HTTP_GET_VARS['action']) {
+    switch (isset($HTTP_GET_VARS['action'])?$HTTP_GET_VARS['action']:null) {
       case 'new_category':
         $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_NEW_CATEGORY . '</b>');
 
@@ -1650,11 +1630,11 @@ if ($ocertify->npermission >= 10) { //表示制限
 									 '<br>METAタグ<br>（この説明文はトップページのカテゴリバナーの下に表示される文章としても使用されます。2行にするにはカンマ「,」区切りで文章を記述してください。)<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_meta_text[' . $languages[$i]['id'] . ']','',30,3).
 
 									 '<br>SEOネーム:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('seo_name[' . $languages[$i]['id'] . ']', '').'<br>'."\n".
-									 '<br>カテゴリHeaderのテキスト:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_header_text[' . $languages[$i]['id'] . ']','soft',30,3,'','categories_header_text_'.ABBR_SITENAME).
-									 '<br>カテゴリFooterのテキスト:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_footer_text[' . $languages[$i]['id'] . ']','soft',30,3,'','categories_footer_text_'.ABBR_SITENAME).
-									 '<br>テキストのインフォメーション:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('text_information[' . $languages[$i]['id'] . ']','soft',30,3,'','text_information_'.ABBR_SITENAME).
-									 '<br>metaのキーワード:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('meta_keywords[' . $languages[$i]['id'] . ']','soft',30,3,'','meta_keywords_'.ABBR_SITENAME).
-									 '<br>metaの説明:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('meta_description[' . $languages[$i]['id'] . ']','soft',30,3,'','meta_description_'.ABBR_SITENAME).
+									 '<br>カテゴリHeaderのテキスト:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_header_text[' . $languages[$i]['id'] . ']','soft',30,3,'','categories_header_text').
+									 '<br>カテゴリFooterのテキスト:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_footer_text[' . $languages[$i]['id'] . ']','soft',30,3,'','categories_footer_text').
+									 '<br>テキストのインフォメーション:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('text_information[' . $languages[$i]['id'] . ']','soft',30,3,'','text_information').
+									 '<br>metaのキーワード:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('meta_keywords[' . $languages[$i]['id'] . ']','soft',30,3,'','meta_keywords').
+									 '<br>metaの説明:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('meta_description[' . $languages[$i]['id'] . ']','soft',30,3,'','meta_description').
 									 "\n";
         }
 
@@ -1678,11 +1658,11 @@ if ($ocertify->npermission >= 10) { //表示制限
 									 '<br>METAタグ（この説明文はトップページのカテゴリバナーの下に表示される文章としても使用されます。2行にするにはカンマ「,」区切りで文章を記述してください。)<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_meta_text[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_category_meta_text($cInfo->categories_id, $languages[$i]['id']),'categories_meta_text').
 
 									 '<br>SEOネーム:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('seo_name[' . $languages[$i]['id'] . ']', tep_get_seo_name($cInfo->categories_id, $languages[$i]['id'])).'<br>'."\n".
-									 '<br>カテゴリHeaderのテキスト:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_header_text[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_categories_header_text($cInfo->categories_id, $languages[$i]['id']),'categories_header_text_'.ABBR_SITENAME).
-									 '<br>カテゴリFooterのテキスト:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_footer_text[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_categories_footer_text($cInfo->categories_id, $languages[$i]['id']),'categories_footer_text_'.ABBR_SITENAME).
-									 '<br>テキストのインフォメーション:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('text_information[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_text_information($cInfo->categories_id, $languages[$i]['id']),'text_information_'.ABBR_SITENAME).
-									 '<br>metaのキーワード:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('meta_keywords[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_meta_keywords($cInfo->categories_id, $languages[$i]['id']),'meta_keywords_'.ABBR_SITENAME).
-									 '<br>metaの説明:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('meta_description[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_meta_description($cInfo->categories_id, $languages[$i]['id']),'meta_description_'.ABBR_SITENAME).
+									 '<br>カテゴリHeaderのテキスト:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_header_text[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_categories_header_text($cInfo->categories_id, $languages[$i]['id']),'categories_header_text').
+									 '<br>カテゴリFooterのテキスト:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_footer_text[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_categories_footer_text($cInfo->categories_id, $languages[$i]['id']),'categories_footer_text').
+									 '<br>テキストのインフォメーション:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('text_information[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_text_information($cInfo->categories_id, $languages[$i]['id']),'text_information').
+									 '<br>metaのキーワード:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('meta_keywords[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_meta_keywords($cInfo->categories_id, $languages[$i]['id']),'meta_keywords').
+									 '<br>metaの説明:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('meta_description[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_meta_description($cInfo->categories_id, $languages[$i]['id']),'meta_description').
 									 '';
         }
 

@@ -47,7 +47,7 @@ class user_certify {
 
         $user = '';
         // ログインページでユーザＩＤが入力されているとき
-        if ($GLOBALS['HTTP_POST_VARS']['execute_login']) {
+        if (isset($GLOBALS['HTTP_POST_VARS']['execute_login']) && $GLOBALS['HTTP_POST_VARS']['execute_login']) {
             $user = trim($GLOBALS['HTTP_POST_VARS']['loginuid']);
         }
         // セッションＩＤにより、ユーザログイン情報取得
@@ -120,9 +120,8 @@ class user_certify {
     戻り値 : TRUE/FALSE
  ------------------------------------ */
     function password_check($s_sid,$pwd,$auth_user) {
-        if ($GLOBALS['HTTP_POST_VARS']['execute_login']) {
-            //error_log('USER ' . date($this->date_format) . ' password_check user='. $auth_user . "\n", 3, STORE_PAGE_PARSE_TIME_LOG);// DEBUG
-            if ($GLOBALS['HTTP_POST_VARS']['loginpwd']) {
+        if (isset($GLOBALS['HTTP_POST_VARS']['execute_login']) && $GLOBALS['HTTP_POST_VARS']['execute_login']) {
+            if (isset($GLOBALS['HTTP_POST_VARS']['loginpwd']) && $GLOBALS['HTTP_POST_VARS']['loginpwd']) {
                 // 入力されたパスワードを DES 暗号化法により暗号化する
                 //（テーブルに登録されているパスワードと同じ状態に変換）
                 $sLogin_pwd = crypt($GLOBALS['HTTP_POST_VARS']['loginpwd'], $pwd);
@@ -145,7 +144,7 @@ class user_certify {
     戻り値 : タイムアウト時刻
  ------------------------------------ */
     function time_out_time() {
-        if ($GLOBALS['SESS_LIFE']) {
+        if (isset($GLOBALS['SESS_LIFE']) && $GLOBALS['SESS_LIFE']) {
             $life_time = $GLOBALS['SESS_LIFE'];
         } else {
             $life_time = ini_get('session.gc_maxlifetime'); // replace get_cfg_var() with ini_get()
@@ -171,7 +170,7 @@ class user_certify {
 
         $nrow = tep_db_num_rows($oresult);      // レコード件数の取得
         if ($nrow == 1) {                       // 入力された UID のユーザが登録されているとき
-            $arec = tep_db_fetch_array($oresult, DB_FETCHMODE_ASSOC); // レコードを取得
+            $arec = tep_db_fetch_array($oresult); // レコードを取得
             $this->npermission = $arec['permission'];
             $this->apermissions['read'] = ($this->npermission & 1);
             $this->apermissions['write'] = ($this->npermission & 2);
@@ -304,7 +303,7 @@ function logout_user($erf='',$s_status='') {
 /* =====================================
     メイン
  ===================================== */
-if ($GLOBALS['HTTP_GET_VARS']['execute_logout_user']) { logout_user(FALSE,'o'); } //2003-07-16 hiroshi_sato
+if (isset($GLOBALS['HTTP_GET_VARS']['execute_logout_user']) && $GLOBALS['HTTP_GET_VARS']['execute_logout_user']) { logout_user(FALSE,'o'); } 
 
 if (file_exists(DIR_WS_LANGUAGES . $language . '/user_certify.php')) {
     include(DIR_WS_LANGUAGES . $language . '/user_certify.php');

@@ -179,8 +179,7 @@
   } else {
     $sql_data_array = array('customers_firstname' => $firstname,
                             'customers_lastname' => $lastname,
-							//add
-							'customers_firstname_f' => $firstname_f,
+                            'customers_firstname_f' => $firstname_f,
                             'customers_lastname_f' => $lastname_f,
                             'customers_email_address' => $email_address,
                             'customers_telephone' => $telephone,
@@ -191,9 +190,9 @@
     if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
     if (ACCOUNT_DOB == 'true') $sql_data_array['customers_dob'] = tep_date_raw($dob);
 
+    // ccdd
     tep_db_perform(TABLE_CUSTOMERS, $sql_data_array, 'update', "customers_id = '" .  tep_db_input($customer_id) . "' and site_id = '".SITE_ID."'");
 
-// 2003-06-06 add_telephone
     $sql_data_array = array('entry_street_address' => $street_address,
                             'entry_firstname' => $firstname,
                             'entry_lastname' => $lastname,
@@ -215,6 +214,7 @@
       }
     }
 
+    // ccdd
     tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', "customers_id = '" . tep_db_input($customer_id) . "' and address_book_id = '" . tep_db_input($customer_default_address_id) . "'");
 //ccdd
     tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_account_last_modified = now() where customers_info_id = '" . tep_db_input($customer_id) . "'");

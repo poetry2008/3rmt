@@ -40,38 +40,40 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action']=NULL;
 	  $now = date("Y/m/d H:i:s", time());
 	  
 	  //insert present_aplicant
-	  $sql_data_array = array('goods_id' => tep_db_prepare_input($HTTP_GET_VARS['goods_id']),
-	  						  'customer_id' => tep_db_prepare_input($pc_id),
-							  'family_name' => tep_db_prepare_input($lastname),
-							  'first_name' => tep_db_prepare_input($firstname),
-							  'mail' => tep_db_prepare_input($email_address),
-							  'postcode' => tep_db_prepare_input($postcode),
-							  'prefectures' => tep_db_prepare_input(tep_get_zone_name('107',$state, $zone)),
-							  'cities' => tep_db_prepare_input($city),
-							  'address1' => tep_db_prepare_input($street_address),
-							  'address2' => tep_db_prepare_input($suburb),
-							  'phone' => tep_db_prepare_input($telephone),
-							  'tourokubi' => tep_db_prepare_input($now));
-	  
+	  $sql_data_array = array(
+                'goods_id'    => tep_db_prepare_input($HTTP_GET_VARS['goods_id']),
+                'customer_id' => tep_db_prepare_input($pc_id),
+                'family_name' => tep_db_prepare_input($lastname),
+                'first_name'  => tep_db_prepare_input($firstname),
+                'mail'        => tep_db_prepare_input($email_address),
+                'postcode'    => tep_db_prepare_input($postcode),
+                'prefectures' => tep_db_prepare_input(tep_get_zone_name('107',$state, $zone)),
+                'cities'      => tep_db_prepare_input($city),
+                'address1'    => tep_db_prepare_input($street_address),
+                'address2'    => tep_db_prepare_input($suburb),
+                'phone'       => tep_db_prepare_input($telephone),
+                'tourokubi'   => tep_db_prepare_input($now));
+
+      // ccdd
       tep_db_perform(TABLE_PRESENT_APPLICANT, $sql_data_array);
 	  
 	  //check pre insert - customers
 	  if($pc_id != '0') {
-//ccdd
-	    $cmcnt_query = tep_db_query("
+      //ccdd
+      $cmcnt_query = tep_db_query("
           select count(*) as cnt 
           from ".TABLE_CUSTOMERS." 
           where customers_email_address = '".tep_db_prepare_input($email_address)."' 
           and site_id = '".SITE_ID."'
       ");
-	    $cmcnt_result = tep_db_fetch_array($cmcnt_query);
+      $cmcnt_result = tep_db_fetch_array($cmcnt_query);
 		
-		$cmcnt = $cmcnt_result['cnt'];
-		
+      $cmcnt = $cmcnt_result['cnt'];
+
 		//update mail_mag
 		if($cmcnt != 0) {
-//ccdd
-		  tep_db_query("
+    //ccdd
+      tep_db_query("
           update ".TABLE_CUSTOMERS." 
           set customers_newsletter = '1' 
           where customers_email_address = '".tep_db_prepare_input($email_address)."' 
@@ -82,9 +84,9 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action']=NULL;
 	    $cmcnt = 0;
 	  }
 	  
-	  //check pre insert - main_magazine
-//ccdd
-	  $mgcnt_query = tep_db_query("
+    //check pre insert - main_magazine
+    //ccdd
+    $mgcnt_query = tep_db_query("
         select count(*) as cnt 
         from ".TABLE_MAIL_MAGAZINE." 
         where mag_email = '".tep_db_prepare_input($email_address)."' 
@@ -94,10 +96,13 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action']=NULL;
 	  
 	  //insert mail_magazine ** customers=0 & mail_magazine=0
 	  if($cmcnt == 0 && $mgcnt_result['cnt'] == 0) {
-	    $sql_data_array2 = array('mag_email' => tep_db_prepare_input($email_address),
-	  						     'mag_name' => tep_get_fullname($firstname, $lastname));
-		
-		tep_db_perform(TABLE_MAIL_MAGAZINE, $sql_data_array2);
+	    $sql_data_array2 = array(
+          'mag_email' => tep_db_prepare_input($email_address),
+          'mag_name'  => tep_get_fullname($firstname, $lastname),
+          'site_id'   => SITE_ID
+          );
+      // ccdd
+      tep_db_perform(TABLE_MAIL_MAGAZINE, $sql_data_array2);
 	  }
 	  
 	  
@@ -105,15 +110,15 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action']=NULL;
 	  break;
 	
 	case 'update'://申込者情報変更
-	  $firstname = tep_db_prepare_input($HTTP_POST_VARS['firstname']);
-	  $lastname = tep_db_prepare_input($HTTP_POST_VARS['lastname']);
-	  $email_address = tep_db_prepare_input($HTTP_POST_VARS['email_address']);
-	  $telephone = tep_db_prepare_input($HTTP_POST_VARS['telephone']);
+	  $firstname      = tep_db_prepare_input($HTTP_POST_VARS['firstname']);
+	  $lastname       = tep_db_prepare_input($HTTP_POST_VARS['lastname']);
+	  $email_address  = tep_db_prepare_input($HTTP_POST_VARS['email_address']);
+	  $telephone      = tep_db_prepare_input($HTTP_POST_VARS['telephone']);
 	  $street_address = tep_db_prepare_input($HTTP_POST_VARS['street_address']);
-	  $suburb = tep_db_prepare_input($HTTP_POST_VARS['suburb']);
-	  $postcode = tep_db_prepare_input($HTTP_POST_VARS['postcode']);
-	  $city = tep_db_prepare_input($HTTP_POST_VARS['city']);
-	  $zone_id = tep_db_prepare_input($HTTP_POST_VARS['zone_id']);
+	  $suburb         = tep_db_prepare_input($HTTP_POST_VARS['suburb']);
+	  $postcode       = tep_db_prepare_input($HTTP_POST_VARS['postcode']);
+	  $city           = tep_db_prepare_input($HTTP_POST_VARS['city']);
+	  $zone_id        = tep_db_prepare_input($HTTP_POST_VARS['zone_id']);
 
 	  $error = false;
 	  
@@ -186,7 +191,7 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action']=NULL;
         default:
           if (!tep_session_is_registered('firstname'))
           {
-//ccdd
+          //ccdd
           $account_query = tep_db_query("
               select c.customers_gender, 
                      c.customers_firstname, 
@@ -210,18 +215,18 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action']=NULL;
               where c.customers_id = '" . $customer_id . "' 
                 and a.customers_id = c.customers_id 
                 and a.address_book_id = '" .  $customer_default_address_id . "' 
-                and c.site_id = '".SITE_ID."'
+                and c.site_id = '" . SITE_ID . "'
               ");
-          $account       = tep_db_fetch_array($account_query);
-          $firstname     = $account['customers_firstname'];
-          $lastname      = $account['customers_lastname'];
-          $email_address = $account['customers_email_address'];
-          $postcode      = $account['entry_postcode'];
-          $zone_id       = $account['entry_zone_id'];
-          $city          = $account['entry_city'];
+          $account        = tep_db_fetch_array($account_query);
+          $firstname      = $account['customers_firstname'];
+          $lastname       = $account['customers_lastname'];
+          $email_address  = $account['customers_email_address'];
+          $postcode       = $account['entry_postcode'];
+          $zone_id        = $account['entry_zone_id'];
+          $city           = $account['entry_city'];
           $street_address = $account['entry_street_address'];
-          $telephone     = $account['customers_telephone'];
-          $suburb        = $account['entry_suburb'];
+          $telephone      = $account['customers_telephone'];
+          $suburb         = $account['entry_suburb'];
           
     	  tep_session_register('firstname');
     	  tep_session_register('lastname');
@@ -299,16 +304,14 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action']=NULL;
           </tr> 
           <tr> 
             <td class="main"><?php
-			
-			$name = tep_get_fullname($firstname, $lastname);
-			$email = $email_address;
-			$postcode = $postcode;
-			$state = $zone_id;
-			$address1 = $city . $street_address;
-			$address2 = $suburb;
-			$tel = $telephone;
-			
-		  ?> 
+        $name     = tep_get_fullname($firstname, $lastname);
+        $email    = $email_address;
+        $postcode = $postcode;
+        $state    = $zone_id;
+        $address1 = $city . $street_address;
+        $address2 = $suburb;
+        $tel      = $telephone;
+?> 
               <table width="100%" cellpadding="1" cellspacing="0" class="infoBox" border="0"> 
                 <tr> 
                   <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxContents"> 

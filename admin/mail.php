@@ -12,7 +12,7 @@
 
   require('includes/application_top.php');
 
-  if ( ($HTTP_GET_VARS['action'] == 'send_email_to_user') && ($HTTP_POST_VARS['customers_email_address']) && (!$HTTP_POST_VARS['back_x']) ) {
+  if ( isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'send_email_to_user') && ($HTTP_POST_VARS['customers_email_address']) && (!$HTTP_POST_VARS['back_x']) ) {
     switch ($HTTP_POST_VARS['customers_email_address']) {
       case '***':
         $mail_query = tep_db_query("select customers_firstname, customers_lastname, customers_email_address from " . TABLE_CUSTOMERS);
@@ -46,11 +46,11 @@
     tep_redirect(tep_href_link(FILENAME_MAIL, 'mail_sent_to=' . urlencode($mail_sent_to)));
   }
 
-  if ( ($HTTP_GET_VARS['action'] == 'preview') && (!$HTTP_POST_VARS['customers_email_address']) ) {
+  if ( isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'preview') && (!$HTTP_POST_VARS['customers_email_address']) ) {
     $messageStack->add(ERROR_NO_CUSTOMER_SELECTED, 'error');
   }
 
-  if ($HTTP_GET_VARS['mail_sent_to']) {
+  if (isset($HTTP_GET_VARS['mail_sent_to']) && $HTTP_GET_VARS['mail_sent_to']) {
     $messageStack->add(sprintf(NOTICE_EMAIL_SENT_TO, $HTTP_GET_VARS['mail_sent_to']), 'notice');
   }
 ?>
@@ -87,7 +87,7 @@
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
-  if ( ($HTTP_GET_VARS['action'] == 'preview') && ($HTTP_POST_VARS['customers_email_address']) ) {
+  if ( isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'preview') && ($HTTP_POST_VARS['customers_email_address']) ) {
     switch ($HTTP_POST_VARS['customers_email_address']) {
       case '***':
         $mail_sent_to = TEXT_ALL_CUSTOMERS;
@@ -170,7 +170,7 @@
 ?>
               <tr>
                 <td class="main"><?php echo TEXT_CUSTOMER; ?></td>
-                <td><?php echo tep_draw_pull_down_menu('customers_email_address', $customers, $HTTP_GET_VARS['customer']);?></td>
+                <td><?php echo tep_draw_pull_down_menu('customers_email_address', $customers, isset($HTTP_GET_VARS['customer'])?$HTTP_GET_VARS['customer']:'');?></td>
               </tr>
               <tr>
                 <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>

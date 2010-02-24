@@ -63,7 +63,6 @@
       $sql     = $query;
       $n       = "\r\n";
       $content = $time."<".$sql.">".$n;
-      //$dir     = "/home/zhuozi/project/GM/log";
       if($logNumber == 1){
         $log['time']    = $time.' '.$usec;
         $log['project'] = $project;
@@ -87,11 +86,6 @@
           mysql_query('INSERT INTO sql_log(time,gruup,project,content,file,param) VALUES("'.$test['time'].'", "'.$order.'", "'.$test['project'].'", "'.$test['sql'].'", "'.$_SERVER['SCRIPT_NAME'].'", "'.addslashes($test['paramarray']).'")');
         }
       }
-      //put sql in txt
-      //$file = $dir.'/sqllog.txt';
-      //$handle  = fopen($file, "a+");
-      //fwrite($handle, $content);
-      //fclose($handle);
     }
     //end sql log
     return $result;

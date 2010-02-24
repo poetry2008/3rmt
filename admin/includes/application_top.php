@@ -16,7 +16,7 @@ $GLOBALS['HTTP_POST_VARS']=$_POST;
 
 // Set the level of error reporting
   //error_reporting(E_ALL & ~E_NOTICE);
-  error_reporting(E_ALL);
+  error_reporting(E_ALL & ~E_DEPRECATED);
 
 // Check if register_globals is enabled.
 // Since this is a temporary measure this message is hardcoded. The requirement will be removed before 2.2 is finalized.
@@ -197,9 +197,11 @@ $GLOBALS['HTTP_POST_VARS']=$_POST;
   tep_db_connect() or die('Unable to connect to database server!');
 
 // set application wide parameters
-  $configuration_query = tep_db_query('select configuration_key as cfgKey, configuration_value as cfgValue from ' . TABLE_CONFIGURATION . '');
+  $configuration_query = mysql_query('select configuration_key as cfgKey, configuration_value as cfgValue from ' . TABLE_CONFIGURATION . '');
   while ($configuration = tep_db_fetch_array($configuration_query)) {
-    define($configuration['cfgKey'], $configuration['cfgValue']);
+    if(!defined($configuration['cfgKey'])){
+      define($configuration['cfgKey'], $configuration['cfgValue']);
+    }
   }
 
 // include shopping cart class
@@ -225,14 +227,14 @@ $GLOBALS['HTTP_POST_VARS']=$_POST;
   if (function_exists('session_set_cookie_params')) {
     session_set_cookie_params(0, substr(DIR_WS_ADMIN, 0, -1));
   }
-  if($HTTP_GET_VARS['string'] == ADMIN_FREE_PASS) {
+  if(isset($HTTP_GET_VARS['string']) && $HTTP_GET_VARS['string'] == ADMIN_FREE_PASS) {
     $adminaccs = ADMIN_FREE_PASS;
-	tep_session_register('adminaccs');
+    tep_session_register('adminaccs');
   }
 
 // language
   require(DIR_WS_FUNCTIONS . 'languages.php');
-  if ( (!$language) || ($HTTP_GET_VARS['language']) ) {
+  if ( (!isset($language) || !$language) || (isset($HTTP_GET_VARS['language']) && $HTTP_GET_VARS['language']) ) {
     if (!$language) {
       tep_session_register('language');
       tep_session_register('languages_id');
@@ -280,7 +282,7 @@ $GLOBALS['HTTP_POST_VARS']=$_POST;
   require(DIR_WS_CLASSES . 'email.php');
 
 // calculate category path
-  $cPath = $HTTP_GET_VARS['cPath'];
+  $cPath = isset($HTTP_GET_VARS['cPath']) ? $HTTP_GET_VARS['cPath'] : null;
   if (strlen($cPath) > 0) {
     $cPath_array = explode('_', $cPath);
     $current_category_id = $cPath_array[(sizeof($cPath_array)-1)];
@@ -293,7 +295,7 @@ $GLOBALS['HTTP_POST_VARS']=$_POST;
     tep_session_register('selected_box');
     $selected_box = 'configuration';
   }
-  if ($HTTP_GET_VARS['selected_box']) {
+  if (isset($HTTP_GET_VARS['selected_box']) && $HTTP_GET_VARS['selected_box']) {
     $selected_box = $HTTP_GET_VARS['selected_box'];
   }
 

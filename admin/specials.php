@@ -15,6 +15,7 @@
   require(DIR_WS_CLASSES . 'currencies.php');
   $currencies = new currencies();
 
+  if (isset($HTTP_GET_VARS['action']))
   switch ($HTTP_GET_VARS['action']) {
     case 'setflag':
       tep_set_specials_status($HTTP_GET_VARS['id'], $HTTP_GET_VARS['flag']);
@@ -70,7 +71,7 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/general.js"></script>
 <?php
-  if ( ($HTTP_GET_VARS['action'] == 'new') || ($HTTP_GET_VARS['action'] == 'edit') ) {
+  if ( isset($HTTP_GET_VARS['action']) && (($HTTP_GET_VARS['action'] == 'new') || ($HTTP_GET_VARS['action'] == 'edit')) ) {
 ?>
 <link rel="stylesheet" type="text/css" href="includes/javascript/calendar.css">
 <script language="JavaScript" src="includes/javascript/calendarcode.js"></script>
@@ -103,7 +104,7 @@
         </table></td>
       </tr>
 <?php
-  if ( ($HTTP_GET_VARS['action'] == 'new') || ($HTTP_GET_VARS['action'] == 'edit') ) {
+  if ( isset($HTTP_GET_VARS['action']) && (($HTTP_GET_VARS['action'] == 'new') || ($HTTP_GET_VARS['action'] == 'edit')) ) {
     $form_action = 'insert';
     if ( ($HTTP_GET_VARS['action'] == 'edit') && ($HTTP_GET_VARS['sID']) ) {
 	  $form_action = 'update';
@@ -166,7 +167,7 @@
     $specials_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $specials_query_raw, $specials_query_numrows);
     $specials_query = tep_db_query($specials_query_raw);
     while ($specials = tep_db_fetch_array($specials_query)) {
-      if ( ((!$HTTP_GET_VARS['sID']) || ($HTTP_GET_VARS['sID'] == $specials['specials_id'])) && (!$sInfo) ) {
+      if ( ((!isset($HTTP_GET_VARS['sID']) || !$HTTP_GET_VARS['sID']) || ($HTTP_GET_VARS['sID'] == $specials['specials_id'])) && (!isset($sInfo) || !$sInfo) ) {
 
         $products_query = tep_db_query("select products_image from " . TABLE_PRODUCTS . " where products_id = '" . $specials['products_id'] . "'");
         $products = tep_db_fetch_array($products_query);
@@ -185,9 +186,9 @@
                 <td  class="dataTableContent" align="right">
 <?php
       if ($specials['status'] == '1') {
-        echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_SPECIALS, 'action=setflag&flag=0&page=' . $_GET['page'] . '&id=' . $specials['specials_id'], 'NONSSL') . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>';
+        echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_SPECIALS, 'action=setflag&flag=0&page=' . (isset($HTTP_GET_VARS['page'])?$HTTP_GET_VARS['page']:'') . '&id=' . $specials['specials_id'], 'NONSSL') . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>';
       } else {
-        echo '<a href="' . tep_href_link(FILENAME_SPECIALS, 'action=setflag&flag=1&page=' . $_GET['page'] . '&id=' . $specials['specials_id'], 'NONSSL') . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
+        echo '<a href="' . tep_href_link(FILENAME_SPECIALS, 'action=setflag&flag=1&page=' . (isset($HTTP_GET_VARS['page'])?$HTTP_GET_VARS['page']:'') . '&id=' . $specials['specials_id'], 'NONSSL') . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
       }
 ?></td>
                 <td class="dataTableContent" align="right"><?php if ( (is_object($sInfo)) && ($specials['specials_id'] == $sInfo->specials_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_SPECIALS, 'page=' . $HTTP_GET_VARS['page'] . '&sID=' . $specials['specials_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
@@ -216,7 +217,7 @@
 <?php
   $heading = array();
   $contents = array();
-  switch ($HTTP_GET_VARS['action']) {
+  switch (isset($HTTP_GET_VARS['action']) ? $HTTP_GET_VARS['action'] : '') {
     case 'delete':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_SPECIALS . '</b>');
 

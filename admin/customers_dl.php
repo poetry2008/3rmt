@@ -15,7 +15,6 @@
 
 
   require('includes/application_top.php');
-  require(DIR_FS_CATALOG . 'includes/configure.php');
   require("includes/jcode.phps");
   
   $msg = "";
@@ -48,12 +47,6 @@
 					a.entry_country_id 
 					from " . TABLE_CUSTOMERS . " c left join " . TABLE_ADDRESS_BOOK . " a 
 					on c.customers_default_address_id = a.address_book_id and c.customers_id = a.customers_id");
-	    //$query = tep_db_query("select * from " . TABLE_CUSTOMERS . " order by customers_id");
-	    //$mail_query = tep_db_query("select customers_email_address, customers_firstname, customers_lastname from " . TABLE_CUSTOMERS . " order by customers_lastname");
-	    //while($customers_values = tep_db_fetch_array($mail_query)) {
-	    //$customers[] = array('id' => $customers_values['customers_email_address'],
-            //           'text' => $customers_values['customers_lastname'] . ', ' . $customers_values['customers_firstname'] . ' (' . $customers_values['customers_email_address'] . ')');
-    	    //}
 
 
 	    $CsvFields = array("ＩＤ","","","" ,"","メールアドレス","電話","FAX","パスワード","ニュースレター","アドレスＩＤ","" ,"","","" ,"住所","住所(2)","");

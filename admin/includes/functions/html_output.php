@@ -164,7 +164,7 @@
 // Output a form input field
   function tep_draw_input_field($name, $value = '', $parameters = '', $required = false, $type = 'text', $reinsert_value = true) {
     $field = '<input type="' . $type . '" name="' . $name . '"';
-    if ( ($GLOBALS[$name]) && ($reinsert_value) ) {
+    if ( isset($GLOBALS[$name]) && ($GLOBALS[$name]) && ($reinsert_value) ) {
       $field .= ' value="' . htmlspecialchars(trim($GLOBALS[$name])) . '"';
     } elseif ($value != '') {
       $field .= ' value="' . htmlspecialchars(trim($value)) . '"';
@@ -202,7 +202,12 @@
     if ($value != '') {
       $selection .= ' value="' . $value . '"';
     }
-    if ( ($checked == true) || ($GLOBALS[$name] == 'on') || ($value && ($GLOBALS[$name] == $value)) || ($value && ($value == $compare)) ) {
+    if ( 
+        ($checked == true) 
+        || (isset($GLOBALS[$name]) && $GLOBALS[$name] == 'on') 
+        || ($value && (isset($GLOBALS[$name]) && $GLOBALS[$name] == $value)) 
+        || ($value && ($value == $compare)) 
+      ) {
       $selection .= ' CHECKED';
     }
     $selection .= '>';
@@ -228,7 +233,7 @@
     $field = '<textarea name="' . $name . '" wrap="' . $wrap . '" cols="' . $width . '" rows="' . $height . '"';
     if ($params) $field .= ' ' . $params;
     $field .= '>';
-    if ( ($GLOBALS[$name]) && ($reinsert_value) ) {
+    if ( isset($GLOBALS[$name]) && ($GLOBALS[$name]) && ($reinsert_value) ) {
       $field .= $GLOBALS[$name];
     } elseif ($text != '') {
       $field .= $text;
@@ -245,7 +250,7 @@
     if ($value != '') {
       $field .= trim($value);
     } else {
-      $field .= trim($GLOBALS[$name]);
+      $field .= isset($GLOBALS[$name]) ? trim($GLOBALS[$name]) : '';
     }
     $field .= '">';
 
@@ -259,11 +264,11 @@
     if ($params) $field .= ' ' . $params;
     $field .= '>';
     for ($i=0; $i<sizeof($values); $i++) {
-      $field .= '<option value="' . $values[$i]['id'] . '"';
-      if ( ((strlen($values[$i]['id']) > 0) && ($GLOBALS[$name] == $values[$i]['id'])) || ($default == $values[$i]['id']) ) {
+      $field .= '<option value="' . (isset($values[$i]['id'])?$values[$i]['id']:'') . '"';
+      if ( ( isset($values[$i]['id']) && (strlen($values[$i]['id']) > 0) && isset($GLOBALS[$name]) && ($GLOBALS[$name] == $values[$i]['id'])) || ($default == (isset($values[$i]['id'])?$values[$i]['id']:'')) ) {
         $field .= ' SELECTED';
       }
-      $field .= '>' . $values[$i]['text'] . '</option>';
+      $field .= '>' . (isset($values[$i]['text'])?$values[$i]['text']:'') . '</option>';
     }
     $field .= '</select>';
 

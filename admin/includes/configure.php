@@ -18,8 +18,8 @@
   define('DIR_FS_DOCUMENT_ROOT', '/home/maker/project/3rmt/'); // where the pages are located on the server
   define('DIR_WS_ADMIN', '/'); // absolute path required
   define('DIR_FS_ADMIN', '/home/maker/project/3rmt/admin/'); // absolute pate required
-  define('DIR_WS_CATALOG', '/'); // absolute path required
-  define('DIR_FS_CATALOG', '/home/maker/project/3rmt/'); // absolute path required
+  define('DIR_WS_CATALOG', './'); // absolute path required
+  define('DIR_FS_CATALOG', './'); // absolute path required
   define('DIR_WS_IMAGES', 'images/');
   define('DIR_WS_ICONS', DIR_WS_IMAGES . 'icons/');
   define('DIR_WS_CATALOG_IMAGES', DIR_WS_CATALOG . 'images/');

@@ -6,7 +6,7 @@
 			<td valign="top" id="contents">
 			<!-- heading title --> 
 <?php  
-	if isset($cPath_array)) {
+	if( isset($cPath_array)) {
 		   echo '<h1 class="pageHeading">'.$seo_category['categories_name'].'</h1>'; 
 	} elseif ($HTTP_GET_VARS['manufacturers_id']) {
        echo '<h1 class="pageHeading">'.$seo_manufacturers['manufacturers_name'].'</h1>';

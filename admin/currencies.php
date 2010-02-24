@@ -15,7 +15,7 @@
   require(DIR_WS_CLASSES . 'currencies.php');
   $currencies = new currencies();
 
-  if ($HTTP_GET_VARS['action']) {
+  if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action']) {
     switch ($HTTP_GET_VARS['action']) {
       case 'insert':
       case 'save':
@@ -139,7 +139,7 @@
   $currency_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $currency_query_raw, $currency_query_numrows);
   $currency_query = tep_db_query($currency_query_raw);
   while ($currency = tep_db_fetch_array($currency_query)) {
-    if (((!$HTTP_GET_VARS['cID']) || (@$HTTP_GET_VARS['cID'] == $currency['currencies_id'])) && (!$cInfo) && (substr($HTTP_GET_VARS['action'], 0, 3) != 'new')) {
+    if (((!isset($HTTP_GET_VARS['cID']) || !$HTTP_GET_VARS['cID']) || (@$HTTP_GET_VARS['cID'] == $currency['currencies_id'])) && (!isset($cInfo) || !$cInfo) && (!isset($HTTP_GET_VARS['action']) || substr($HTTP_GET_VARS['action'], 0, 3) != 'new')) {
       $cInfo = new objectInfo($currency);
     }
 
@@ -169,7 +169,7 @@
                     <td class="smallText" align="right"><?php echo $currency_split->display_links($currency_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page']); ?></td>
                   </tr>
 <?php
-  if (!$HTTP_GET_VARS['action']) {
+  if (!isset($HTTP_GET_VARS['action']) || !$HTTP_GET_VARS['action']) {
 ?>
                   <tr>
                     <td><?php if (CURRENCY_SERVER_PRIMARY) { echo '<a href="' . tep_href_link(FILENAME_CURRENCIES, 'page=' . $HTTP_GET_VARS['page'] . '&cID=' . $cInfo->currencies_id . '&action=update') . '">' . tep_image_button('button_update_currencies.gif', IMAGE_UPDATE_CURRENCIES) . '</a>'; } ?></td>
@@ -184,7 +184,7 @@
 <?php
   $heading = array();
   $contents = array();
-  switch ($HTTP_GET_VARS['action']) {
+  switch (isset($HTTP_GET_VARS['action']) ? $HTTP_GET_VARS['action'] : null) {
     case 'new':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_NEW_CURRENCY . '</b>');
 

@@ -314,11 +314,14 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;
 								  //'customers_newsletter' => $newsletter,
 								  'customers_newsletter' => 1,
 								  'customers_password' => tep_encrypt_password($password),
-								  'customers_default_address_id' => 1);
+								  'customers_default_address_id' => 1,
+                  'site_id' => SITE_ID
+                  );
 	
 		  if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
 		  if (ACCOUNT_DOB == 'true') $sql_data_array['customers_dob'] = tep_date_raw($dob);
 	
+      // ccdd
 		  tep_db_perform(TABLE_CUSTOMERS, $sql_data_array);
 	
 		  $customer_id = tep_db_insert_id();
@@ -347,6 +350,7 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;
 		    }
 		  }
 	
+      // ccdd
 		  tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
 		  //ccdd
 		  tep_db_query("

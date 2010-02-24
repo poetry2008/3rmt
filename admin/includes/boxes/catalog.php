@@ -31,9 +31,8 @@
                                    '<a href="' .  tep_href_link(FILENAME_IMAGE_DOCUMENT, '', 'NONSSL') . '" class="menuBoxContentLink">' .  BOX_CATALOG_IMAGE_DOCUMENT . '</a><br>' .
 
 				                   '<a href="' . tep_href_link(FILENAME_MANUFACTURERS, '', 'NONSSL') . '" class="menuBoxContentLink">' . BOX_CATALOG_MANUFACTURERS . '</a><br>'.
-                                    $_color_l .
+                                    (isset($_color_l)?$_color_l:'') .
 
-				 //				   '<a href="' . tep_href_link('products_mark.php', '', 'NONSSL') . '" class="menuBoxContentLink">商品アイコン登録</a><br>' .
 								   '<a href="' . tep_href_link(FILENAME_REVIEWS, '', 'NONSSL') . '" class="menuBoxContentLink">' . BOX_CATALOG_REVIEWS . '</a><br>' .
                                    '<a href="' . tep_href_link(FILENAME_SPECIALS, '', 'NONSSL') . '" class="menuBoxContentLink">' . BOX_CATALOG_SPECIALS . '</a><br>' .
                                    '<a href="' . tep_href_link(FILENAME_PRODUCTS_EXPECTED, '', 'NONSSL') . '" class="menuBoxContentLink">' . BOX_CATALOG_PRODUCTS_EXPECTED . '</a>'.

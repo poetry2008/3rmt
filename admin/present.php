@@ -14,9 +14,9 @@ require('includes/application_top.php');
 
 //年月日の取得
   $today = getdate();
-  $yyyy = $today[year];
-  $mm = $today[mon];
-  $dd = $today[mday];
+  $yyyy = $today['year'];
+  $mm = $today['mon'];
+  $dd = $today['mday'];
   $pd = $dd + 1;
 
 //ファイルの拡張子を取得
@@ -27,7 +27,7 @@ require('includes/application_top.php');
   }
 
 //登録処理
-  if($HTTP_GET_VARS['action'] == 'insert'){
+  if(isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'insert'){
 
     $ins_title = tep_db_prepare_input($HTTP_POST_VARS['title']);
 
@@ -52,7 +52,7 @@ require('includes/application_top.php');
   }
 
 //更新処理
-  if($HTTP_GET_VARS['action'] == 'update'){
+  if(isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'update'){
     $up_id = tep_db_prepare_input($HTTP_GET_VARS['cID']);
     $up_ht = tep_db_prepare_input($HTTP_POST_VARS['ht']);
 	$up_title = tep_db_prepare_input($HTTP_POST_VARS['title']);
@@ -81,7 +81,7 @@ require('includes/application_top.php');
   }
 
 //削除処理
-  if($HTTP_GET_VARS['action'] == 'delete'){
+  if(isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'delete'){
     $dele_id = tep_db_prepare_input($HTTP_GET_VARS['cID']);
 
     $dele = "delete from ".TABLE_PRESENT_GOODS." where goods_id = '".$dele_id."'";
@@ -157,7 +157,7 @@ function msg2(){
         <tr>
           <td><!-- insert -->
             <?php
-switch($HTTP_GET_VARS['action']){
+switch(isset($HTTP_GET_VARS['action'])?$HTTP_GET_VARS['action']:''){
 case 'input' :
 ?>
             <form onSubmit="return msg()" name="apply" action="present.php?action=insert" method="post" enctype="multipart/form-data">
@@ -659,22 +659,22 @@ default:
                           </tr>
                           <?php
     $search = '';
-	$count = 0;
+    $count = 0;
     $present_query_raw = "select * from ".TABLE_PRESENT_GOODS." order by goods_id";
     $present_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $present_query_raw, $present_query_numrows);
     $present_query = tep_db_query($present_query_raw);
     while ($present = tep_db_fetch_array($present_query)) {
 
-	  $count++;
-	  if ( ($present['goods_id'] == $cID || (!$HTTP_GET_VARS['cID'] && $count == 1)) ) {
+      $count++;
+      if ( ((isset($cID) && $present['goods_id'] == $cID) || ((!isset($HTTP_GET_VARS['cID']) || !$HTTP_GET_VARS['cID']) && $count == 1)) ) {
         echo '          <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $present['goods_id'] . '&action=view') . '\'">' . "\n";
         
-		if(!$HTTP_GET_VARS['cID']) {
-		  $cID = $present['goods_id'];
-		}
-	  } else {
-      	echo '          <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID')) . 'cID=' . $present['goods_id']) . '\'">' . "\n";
-	  }
+        if(!isset($HTTP_GET_VARS['cID']) || !$HTTP_GET_VARS['cID']) {
+          $cID = $present['goods_id'];
+        }
+      } else {
+        echo '          <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID')) . 'cID=' . $present['goods_id']) . '\'">' . "\n";
+      }
 ?>
                           <td class="dataTableContent"><?php echo htmlspecialchars($present['title']); ?></td>
                             <td class="dataTableContent" align="center"><?php
@@ -715,7 +715,7 @@ default:
 					
 				  $heading = array();
 				  $present = array();
-				  switch ($HTTP_GET_VARS['action']) {
+				  switch (isset($HTTP_GET_VARS['action'])?$HTTP_GET_VARS['action']:'') {
 					case 'deleform':
 					  $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_PRESENT . '</b>');
 				

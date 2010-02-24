@@ -49,10 +49,12 @@ tep_db_query('select * from cache');
 $testArray = array();
 //end for sql_log
 ?>
-<?php if (STORE_DB_TRANSACTIONS) {?>
+<?php 
+// 显示SQL执行记录
+if (STORE_DB_TRANSACTIONS) {?>
 <div id="debug_info">
-<pre>
-<?php print_r($logger->queries);?>
-</pre>
+  <pre>
+  <?php print_r($logger->queries);?>
+  </pre>
 </div>
 <?php }?>

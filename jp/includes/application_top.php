@@ -1,9 +1,6 @@
 <?php
-
 /*
   $Id$
-
-  Released under the GNU General Public License
 */
   $GLOBALS['HTTP_GET_VARS']    = $_GET;
 
@@ -107,13 +104,13 @@
   define('FILENAME_PRODUCTS_NEW', 'products_new.php');
   define('FILENAME_PRODUCT_LISTING', 'product_listing.php');
   define('FILENAME_PRESENT','present.php');
-  define('FILENAME_PRESENT_ORDER','present_order.php');
-  define('FILENAME_PRESENT_POPUP_IMAGE','present_popup_image.php');
-  define('FILENAME_PRESENT_CONFIRMATION','present_confirmation.php');
-  define('FILENAME_PRESENT_SUCCESS','present_success.php');
-  define('FILENAME_PDF_DATASHEET', 'pdf_datasheet.php');
-  define('FILENAME_PAGE', 'page.php');//Add Filename
-  define('FILENAME_REORDER', 'reorder.php');
+  define('FILENAME_PRESENT_ORDER',        'present_order.php');
+  define('FILENAME_PRESENT_POPUP_IMAGE',  'present_popup_image.php');
+  define('FILENAME_PRESENT_CONFIRMATION', 'present_confirmation.php');
+  define('FILENAME_PRESENT_SUCCESS',      'present_success.php');
+  define('FILENAME_PDF_DATASHEET',        'pdf_datasheet.php');
+  define('FILENAME_PAGE',                 'page.php');//Add Filename
+  define('FILENAME_REORDER',  'reorder.php');
   define('FILENAME_REORDER2', 'reorder2.php');
   define('FILENAME_PREORDER', 'preorder.php');
   define('FILENAME_REDIRECT', 'redirect.php');
@@ -579,8 +576,8 @@
 
 // add the products model to the breadcrumb trail
   if (isset($HTTP_GET_VARS['products_id'])) {
-    $model = tep_db_fetch_array($model_query);
-    $breadcrumb->add($model['products_model'], tep_href_link(FILENAME_PRODUCT_INFO, 'cPath=' . $cPath . '&products_id=' . $HTTP_GET_VARS['products_id']));
+    //$model = tep_db_fetch_array($model_query);
+    //$breadcrumb->add($model['products_model'], tep_href_link(FILENAME_PRODUCT_INFO, 'cPath=' . $cPath . '&products_id=' . $HTTP_GET_VARS['products_id']));
 
   // ccdd
     $model_query = tep_db_query("

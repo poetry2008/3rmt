@@ -12,7 +12,7 @@
 
   require('includes/application_top.php');
 
-  if ($HTTP_GET_VARS['act']) {
+  if (isset($HTTP_GET_VARS['act']) && $HTTP_GET_VARS['act']) {
     switch ($HTTP_GET_VARS['act']) {
       case 'update':
         // tamura 2002/12/30 「全角」英数字を「半角」に変換
@@ -23,13 +23,13 @@
         }
 
         $cID = tep_db_prepare_input($HTTP_POST_VARS['cID']);
-		$navbar_title = tep_db_prepare_input($HTTP_POST_VARS['navbar_title']);
-		$heading_title = tep_db_prepare_input($HTTP_POST_VARS['heading_title']);
-		$text_information = tep_db_prepare_input($HTTP_POST_VARS['text_information']);
-		$status = tep_db_prepare_input($HTTP_POST_VARS['status']);
-		$sort_id = tep_db_prepare_input($HTTP_POST_VARS['sort_id']);
-		$page = tep_db_prepare_input($HTTP_POST_VARS['page']);
-		$romaji = tep_db_prepare_input($HTTP_POST_VARS['romaji']);
+        $navbar_title = tep_db_prepare_input($HTTP_POST_VARS['navbar_title']);
+        $heading_title = tep_db_prepare_input($HTTP_POST_VARS['heading_title']);
+        $text_information = tep_db_prepare_input($HTTP_POST_VARS['text_information']);
+        $status = tep_db_prepare_input($HTTP_POST_VARS['status']);
+        $sort_id = tep_db_prepare_input($HTTP_POST_VARS['sort_id']);
+        $page = tep_db_prepare_input($HTTP_POST_VARS['page']);
+        $romaji = tep_db_prepare_input($HTTP_POST_VARS['romaji']);
         if (empty($romaji)) {
          $error = true;
          $error_message = ROMAJI_NOT_NULL;
@@ -143,7 +143,7 @@
     <!-- body_text //--> 
     <td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
 <?php
-  if ($HTTP_GET_VARS['action'] == 'edit') {
+  if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'edit') {
   $detail_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where pID = '".$cID."'");
   $detail = tep_db_fetch_array($detail_query);
   
@@ -204,7 +204,7 @@
             </form> </td> 
         </tr> 
 <?php
-  } elseif ($HTTP_GET_VARS['action'] == 'insert') {
+  } elseif (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'insert') {
 ?>
         <tr> 
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
@@ -249,14 +249,14 @@
                 <td><?php echo tep_draw_textarea_field('text_information', 'soft', '70', '20', ''); ?></td> 
               </tr> 
               <tr> 
-                <td colspan="2" align="right"><?php echo tep_image_submit('button_save.gif', IMAGE_INSERT) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_CONTENTS, 'cID=' . $cID . '&page=' . $HTTP_GET_VARS['page']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; ?></td> 
+                <td colspan="2" align="right"><?php echo tep_image_submit('button_save.gif', IMAGE_INSERT) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_CONTENTS, 'cID=' . (isset($cID)?$cID:'') . '&page=' . (isset($HTTP_GET_VARS['page'])?$HTTP_GET_VARS['page']:'')) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; ?></td> 
               </tr> 
             </table> 
             </form> </td> 
         </tr> 
 <?php
   } else {
-  	  $cID = trim($HTTP_GET_VARS['cID']);
+  	  $cID = trim(isset($HTTP_GET_VARS['cID'])?$HTTP_GET_VARS['cID']:'');
 ?> 
         <tr> 
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
@@ -278,19 +278,19 @@
                     </tr> 
                     <?php
     $search = '';
-	$count = 0;
+    $count = 0;
     $contents_query_raw = "select * from ".TABLE_INFORMATION_PAGE." order by sort_id, heading_title";
     $contents_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $contents_query_raw, $contents_query_numrows);
     $contents_query = tep_db_query($contents_query_raw);
     while ($contents = tep_db_fetch_array($contents_query)) {
 
 	  $count++;
-	  if ( ($contents['pID'] == $cID || (!$HTTP_GET_VARS['cID'] && $count == 1)) ) {
+	  if ( ((isset($cID) && $contents['pID'] == $cID) || ((!isset($HTTP_GET_VARS['cID']) || !$HTTP_GET_VARS['cID']) && $count == 1)) ) {
         echo '          <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $contents['pID'] . '&action=edit') . '\'">' . "\n";
-        if(!$HTTP_GET_VARS['cID']) {
-		  $cID = $contents['pID'];
-		}
-	  } else {
+        if(!isset($HTTP_GET_VARS['cID']) || !$HTTP_GET_VARS['cID']) {
+          $cID = $contents['pID'];
+        }
+      } else {
         echo '          <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID')) . 'cID=' . $contents['pID']) . '\'">' . "\n";
       }
 ?> 
@@ -304,7 +304,7 @@
 						  }
 					  ?></td>
 					  <td class="dataTableContent" align="right"><?php echo htmlspecialchars($contents['sort_id']); ?></td> 
-                      <td class="dataTableContent" align="right"><?php if ( ($contents['pID'] == $cID) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID')) . 'cID=' . $customers['customers_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?> 
+                      <td class="dataTableContent" align="right"><?php if ( ($contents['pID'] == $cID) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID')) . 'cID=' . $contents['pID']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?> 
 &nbsp;</td> 
                     </tr> <?php
     }
@@ -332,7 +332,7 @@
     
   $heading = array();
   $contents = array();
-  switch ($HTTP_GET_VARS['action']) {
+  switch (isset($HTTP_GET_VARS['action']) ? $HTTP_GET_VARS['action'] : null) {
 	case 'confirm':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_CONTENTS . '</b>');
 
@@ -344,7 +344,7 @@
       if ($cID && tep_not_null($cID)) {
 		$heading[] = array('text' => '<b>' . $c_title . '</b>');
 
-        $contents[] = array('align' => 'center', 'text' => '<br>このページのリンクを表示させるには以下のソースコードを表示したい箇所にコピーしてください。<br>'.tep_draw_textarea_field('link','soft',30,5,'<a href="'.tep_catalog_href_link('page.php','pID='.$HTTP_GET_VARS['cID']).'">'.$c_title.'</a>').'<br><a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=confirm') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>');
+        $contents[] = array('align' => 'center', 'text' => '<br>このページのリンクを表示させるには以下のソースコードを表示したい箇所にコピーしてください。<br>'.tep_draw_textarea_field('link','soft',30,5,'<a href="'.tep_catalog_href_link('page.php','pID='.(isset($HTTP_GET_VARS['cID'])?$HTTP_GET_VARS['cID']:'')).'">'.$c_title.'</a>').'<br><a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=confirm') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>');
       }
       break;
   }

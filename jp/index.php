@@ -8,7 +8,7 @@ require(DIR_WS_ACTIONS.'index_top.php');
 page_head();
 ?>
 </head>
-<body <?php echo $body_option;?>>
+<body<?php echo isset($body_option)?' '.$body_option:'';?>>
 <div align="center">
 <!-- header //-->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>

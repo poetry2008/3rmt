@@ -193,7 +193,7 @@
         }
 
         if (!tep_session_is_registered('billto')) tep_session_register('billto');
-
+        // ccdd
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
 
         $billto = $entry_id;

@@ -6,7 +6,6 @@
   require(DIR_WS_CLASSES . 'currencies.php');
 
   $currencies = new currencies();
-var_dump($ocertify);
   if ($ocertify->npermission >= 10) {
   $cat = array(array('title' => BOX_CUSTOMERS_ORDERS,
                      'image' => 'modules.gif',
@@ -91,7 +90,7 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
 <?php
 	$impofile = '';
 	$adminimpo = '';
-	$impofile = file("../includes/languages/japanese/important.php");
+	$impofile = file("includes/languages/japanese/important.php");
 	foreach($impofile as $key => $value) {
 		$adminimpo .= $value;
 	}
@@ -103,7 +102,7 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
                      'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=important.php') . '"><font color="#ff6600">重要なお知らせ</font></a>');
 
   $contents[] = array('params' => 'class="infoBox"',
-                      'text'  => '<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/important.php")) . '</font><br>' . nl2br(strip_tags($adminimpo)));
+                      'text'  => '<font color="black">' . date("Y-n-j G:i:s" , filemtime("includes/languages/japanese/important.php")) . '</font><br>' . nl2br(strip_tags($adminimpo)));
 
   $box = new box;
   echo $box->menuBox($heading, $contents);
@@ -232,14 +231,14 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
 	// FF11売買ルール
 	$buyfile = '';
 	$buyprice = '';
-	$buyfile = file("../includes/languages/japanese/ff11_buy.php");
+	$buyfile = file("includes/languages/japanese/ff11_buy.php");
 	foreach($buyfile as $key => $value) {
 		$buyprice .= $value;
 	}
 
 	$sellfile = '';
 	$sellprice = '';
-	$sellfile = file("../includes/languages/japanese/ff11_sell.php");
+	$sellfile = file("includes/languages/japanese/ff11_sell.php");
 	foreach($sellfile as $key => $value) {
 		$sellprice .= $value;
 	}
@@ -247,14 +246,14 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
 	$b_heading = array();
 	$b_contents = array();
 	$b_heading[] = array('params' => 'class="menuBoxHeading"',
-						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=ff11_buy.php') . '"><font color="#ffffff">FF11販売</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/ff11_buy.php")) . '</font>');
+						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=ff11_buy.php') . '"><font color="#ffffff">FF11販売</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("includes/languages/japanese/ff11_buy.php")) . '</font>');
 	$b_contents[] = array('params' => 'class="infoBox"',
 						'text'  => nl2br(strip_tags($buyprice)));
 
 	$s_heading = array();
 	$s_contents = array();
 	$s_heading[] = array('params' => 'class="menuBoxHeading"',
-						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=ff11_sell.php') . '"><font color="#ffffff">FF11買取</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/ff11_sell.php")) . '</font>');
+						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=ff11_sell.php') . '"><font color="#ffffff">FF11買取</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("includes/languages/japanese/ff11_sell.php")) . '</font>');
 	$s_contents[] = array('params' => 'class="infoBox"',
 						'text'  => nl2br(strip_tags($sellprice)));
 
@@ -267,14 +266,14 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
 	// L2売買ルール
 	$buyfile = '';
 	$buyprice = '';
-	$buyfile = file("../includes/languages/japanese/l2_buy.php");
+	$buyfile = file("includes/languages/japanese/l2_buy.php");
 	foreach($buyfile as $key => $value) {
 		$buyprice .= $value;
 	}
 
 	$sellfile = '';
 	$sellprice = '';
-	$sellfile = file("../includes/languages/japanese/l2_sell.php");
+	$sellfile = file("includes/languages/japanese/l2_sell.php");
 	foreach($sellfile as $key => $value) {
 		$sellprice .= $value;
 	}
@@ -282,14 +281,14 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
 	$b_heading = array();
 	$b_contents = array();
 	$b_heading[] = array('params' => 'class="menuBoxHeading"',
-						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=l2_buy.php') . '"><font color="#ffffff">L2販売</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/l2_buy.php")) . '</font>');
+						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=l2_buy.php') . '"><font color="#ffffff">L2販売</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("includes/languages/japanese/l2_buy.php")) . '</font>');
 	$b_contents[] = array('params' => 'class="infoBox"',
 						'text'  => nl2br(strip_tags($buyprice)));
 
 	$s_heading = array();
 	$s_contents = array();
 	$s_heading[] = array('params' => 'class="menuBoxHeading"',
-						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=l2_sell.php') . '"><font color="#ffffff">L2買取</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/l2_sell.php")) . '</font>');
+						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=l2_sell.php') . '"><font color="#ffffff">L2買取</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("includes/languages/japanese/l2_sell.php")) . '</font>');
 	$s_contents[] = array('params' => 'class="infoBox"',
 						'text'  => nl2br(strip_tags($sellprice)));
 
@@ -302,14 +301,14 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
 	// L1売買ルール
 	$buyfile = '';
 	$buyprice = '';
-	$buyfile = file("../includes/languages/japanese/l1_buy.php");
+	$buyfile = file("includes/languages/japanese/l1_buy.php");
 	foreach($buyfile as $key => $value) {
 		$buyprice .= $value;
 	}
 
 	$sellfile = '';
 	$sellprice = '';
-	$sellfile = file("../includes/languages/japanese/l1_sell.php");
+	$sellfile = file("includes/languages/japanese/l1_sell.php");
 	foreach($sellfile as $key => $value) {
 		$sellprice .= $value;
 	}
@@ -317,14 +316,14 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
 	$b_heading = array();
 	$b_contents = array();
 	$b_heading[] = array('params' => 'class="menuBoxHeading"',
-						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=l1_buy.php') . '"><font color="#ffffff">L1販売</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/l1_buy.php")) . '</font>');
+						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=l1_buy.php') . '"><font color="#ffffff">L1販売</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("includes/languages/japanese/l1_buy.php")) . '</font>');
 	$b_contents[] = array('params' => 'class="infoBox"',
 						'text'  => nl2br(strip_tags($buyprice)));
 
 	$s_heading = array();
 	$s_contents = array();
 	$s_heading[] = array('params' => 'class="menuBoxHeading"',
-						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=l1_sell.php') . '"><font color="#ffffff">L1買取</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/l1_sell.php")) . '</font>');
+						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=l1_sell.php') . '"><font color="#ffffff">L1買取</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("includes/languages/japanese/l1_sell.php")) . '</font>');
 	$s_contents[] = array('params' => 'class="infoBox"',
 						'text'  => nl2br(strip_tags($sellprice)));
 
@@ -337,14 +336,14 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
 	// RO売買ルール
 	$buyfile = '';
 	$buyprice = '';
-	$buyfile = file("../includes/languages/japanese/ro_buy.php");
+	$buyfile = file("includes/languages/japanese/ro_buy.php");
 	foreach($buyfile as $key => $value) {
 		$buyprice .= $value;
 	}
 
 	$sellfile = '';
 	$sellprice = '';
-	$sellfile = file("../includes/languages/japanese/ro_sell.php");
+	$sellfile = file("includes/languages/japanese/ro_sell.php");
 	foreach($sellfile as $key => $value) {
 		$sellprice .= $value;
 	}
@@ -352,14 +351,14 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
 	$b_heading = array();
 	$b_contents = array();
 	$b_heading[] = array('params' => 'class="menuBoxHeading"',
-						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=ro_buy.php') . '"><font color="#ffffff">RO販売</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/ro_buy.php")) . '</font>');
+						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=ro_buy.php') . '"><font color="#ffffff">RO販売</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("includes/languages/japanese/ro_buy.php")) . '</font>');
 	$b_contents[] = array('params' => 'class="infoBox"',
 						'text'  => nl2br(strip_tags($buyprice)));
 
 	$s_heading = array();
 	$s_contents = array();
 	$s_heading[] = array('params' => 'class="menuBoxHeading"',
-						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=ro_sell.php') . '"><font color="#ffffff">RO買取</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/ro_sell.php")) . '</font>');
+						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=ro_sell.php') . '"><font color="#ffffff">RO買取</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("includes/languages/japanese/ro_sell.php")) . '</font>');
 	$s_contents[] = array('params' => 'class="infoBox"',
 						'text'  => nl2br(strip_tags($sellprice)));
 
@@ -372,14 +371,14 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
 	// その他売買ルール
 	$buyfile = '';
 	$buyprice = '';
-	$buyfile = file("../includes/languages/japanese/other_buy.php");
+	$buyfile = file("includes/languages/japanese/other_buy.php");
 	foreach($buyfile as $key => $value) {
 		$buyprice .= $value;
 	}
 
 	$sellfile = '';
 	$sellprice = '';
-	$sellfile = file("../includes/languages/japanese/other_sell.php");
+	$sellfile = file("includes/languages/japanese/other_sell.php");
 	foreach($sellfile as $key => $value) {
 		$sellprice .= $value;
 	}
@@ -387,14 +386,14 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
 	$b_heading = array();
 	$b_contents = array();
 	$b_heading[] = array('params' => 'class="menuBoxHeading"',
-						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=other_buy.php') . '"><font color="#ffffff">その他販売</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/other_buy.php")) . '</font>');
+						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=other_buy.php') . '"><font color="#ffffff">その他販売</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("includes/languages/japanese/other_buy.php")) . '</font>');
 	$b_contents[] = array('params' => 'class="infoBox"',
 						'text'  => nl2br(strip_tags($buyprice)));
 
 	$s_heading = array();
 	$s_contents = array();
 	$s_heading[] = array('params' => 'class="menuBoxHeading"',
-						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=other_sell.php') . '"><font color="#ffffff">その他買取</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/other_sell.php")) . '</font>');
+						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=other_sell.php') . '"><font color="#ffffff">その他買取</font></a>&nbsp;&raquo;&nbsp;<font color="black">' . date("Y-n-j G:i:s" , filemtime("includes/languages/japanese/other_sell.php")) . '</font>');
 	$s_contents[] = array('params' => 'class="infoBox"',
 						'text'  => nl2br(strip_tags($sellprice)));
 
@@ -407,21 +406,21 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
 	// ゴールドファーマー1〜3
 	$sellprice01file = '';
 	$sellprice01 = '';
-	$sellprice01file = file("../includes/languages/japanese/sellprice01.php");
+	$sellprice01file = file("includes/languages/japanese/sellprice01.php");
 	foreach($sellprice01file as $key => $value) {
 		$sellprice01 .= $value;
 	}
 
 	$sellprice02file = '';
 	$sellprice02 = '';
-	$sellprice02file = file("../includes/languages/japanese/sellprice02.php");
+	$sellprice02file = file("includes/languages/japanese/sellprice02.php");
 	foreach($sellprice02file as $key => $value) {
 		$sellprice02 .= $value;
 	}
 
 	$sellprice03file = '';
 	$sellprice03 = '';
-	$sellprice03file = file("../includes/languages/japanese/sellprice03.php");
+	$sellprice03file = file("includes/languages/japanese/sellprice03.php");
 	foreach($sellprice03file as $key => $value) {
 		$sellprice03 .= $value;
 	}
@@ -431,21 +430,21 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
 	$b_heading[] = array('params' => 'class="menuBoxHeading"',
 						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=sellprice01.php') . '"><font color="#ffffff">GF01</font></a>&nbsp;&raquo;');
 	$b_contents[] = array('params' => 'class="infoBox"',
-						'text'  => '<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/sellprice01.php")) . '</font><br>' . nl2br(strip_tags($sellprice01)));
+						'text'  => '<font color="black">' . date("Y-n-j G:i:s" , filemtime("includes/languages/japanese/sellprice01.php")) . '</font><br>' . nl2br(strip_tags($sellprice01)));
 
 	$s_heading = array();
 	$s_contents = array();
 	$s_heading[] = array('params' => 'class="menuBoxHeading"',
 						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=sellprice02.php') . '"><font color="#ffffff">GF02</font></a>&nbsp;&raquo;');
 	$s_contents[] = array('params' => 'class="infoBox"',
-						'text'  => '<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/sellprice02.php")) . '</font><br>' . nl2br(strip_tags($sellprice02)));
+						'text'  => '<font color="black">' . date("Y-n-j G:i:s" , filemtime("includes/languages/japanese/sellprice02.php")) . '</font><br>' . nl2br(strip_tags($sellprice02)));
 
 	$w_heading = array();
 	$w_contents = array();
 	$w_heading[] = array('params' => 'class="menuBoxHeading"',
 						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=sellprice03.php') . '"><font color="#ffffff">GF03</font></a>&nbsp;&raquo;');
 	$w_contents[] = array('params' => 'class="infoBox"',
-						'text'  => '<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/sellprice03.php")) . '</font><br>' . nl2br(strip_tags($sellprice03)));
+						'text'  => '<font color="black">' . date("Y-n-j G:i:s" , filemtime("includes/languages/japanese/sellprice03.php")) . '</font><br>' . nl2br(strip_tags($sellprice03)));
 
 	$b_box = new box;
 	$s_box = new box;
@@ -457,21 +456,21 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
 	// ゴールドファーマー4〜6
 	$sellprice01file = '';
 	$sellprice01 = '';
-	$sellprice01file = file("../includes/languages/japanese/sellprice04.php");
+	$sellprice01file = file("includes/languages/japanese/sellprice04.php");
 	foreach($sellprice01file as $key => $value) {
 		$sellprice01 .= $value;
 	}
 
 	$sellprice02file = '';
 	$sellprice02 = '';
-	$sellprice02file = file("../includes/languages/japanese/sellprice05.php");
+	$sellprice02file = file("includes/languages/japanese/sellprice05.php");
 	foreach($sellprice02file as $key => $value) {
 		$sellprice02 .= $value;
 	}
 
 	$sellprice03file = '';
 	$sellprice03 = '';
-	$sellprice03file = file("../includes/languages/japanese/sellprice06.php");
+	$sellprice03file = file("includes/languages/japanese/sellprice06.php");
 	foreach($sellprice03file as $key => $value) {
 		$sellprice03 .= $value;
 	}
@@ -481,21 +480,21 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
 	$b_heading[] = array('params' => 'class="menuBoxHeading"',
 						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=sellprice04.php') . '"><font color="#ffffff">GF04</font></a>&nbsp;&raquo;');
 	$b_contents[] = array('params' => 'class="infoBox"',
-						'text'  => '<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/sellprice04.php")) . '</font><br>' . nl2br(strip_tags($sellprice01)));
+						'text'  => '<font color="black">' . date("Y-n-j G:i:s" , filemtime("includes/languages/japanese/sellprice04.php")) . '</font><br>' . nl2br(strip_tags($sellprice01)));
 
 	$s_heading = array();
 	$s_contents = array();
 	$s_heading[] = array('params' => 'class="menuBoxHeading"',
 						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=sellprice05.php') . '"><font color="#ffffff">GF05</font></a>&nbsp;&raquo;');
 	$s_contents[] = array('params' => 'class="infoBox"',
-						'text'  => '<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/sellprice05.php")) . '</font><br>' . nl2br(strip_tags($sellprice02)));
+						'text'  => '<font color="black">' . date("Y-n-j G:i:s" , filemtime("includes/languages/japanese/sellprice05.php")) . '</font><br>' . nl2br(strip_tags($sellprice02)));
 
 	$w_heading = array();
 	$w_contents = array();
 	$w_heading[] = array('params' => 'class="menuBoxHeading"',
 						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=sellprice06.php') . '"><font color="#ffffff">GF06</font></a>&nbsp;&raquo;');
 	$w_contents[] = array('params' => 'class="infoBox"',
-						'text'  => '<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/sellprice06.php")) . '</font><br>' . nl2br(strip_tags($sellprice03)));
+						'text'  => '<font color="black">' . date("Y-n-j G:i:s" , filemtime("includes/languages/japanese/sellprice06.php")) . '</font><br>' . nl2br(strip_tags($sellprice03)));
 
 	$b_box = new box;
 	$s_box = new box;
@@ -507,21 +506,21 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
 	// ゴールドファーマー7〜9
 	$sellprice01file = '';
 	$sellprice01 = '';
-	$sellprice01file = file("../includes/languages/japanese/sellprice07.php");
+	$sellprice01file = file("includes/languages/japanese/sellprice07.php");
 	foreach($sellprice01file as $key => $value) {
 		$sellprice01 .= $value;
 	}
 
 	$sellprice02file = '';
 	$sellprice02 = '';
-	$sellprice02file = file("../includes/languages/japanese/sellprice08.php");
+	$sellprice02file = file("includes/languages/japanese/sellprice08.php");
 	foreach($sellprice02file as $key => $value) {
 		$sellprice02 .= $value;
 	}
 
 	$sellprice03file = '';
 	$sellprice03 = '';
-	$sellprice03file = file("../includes/languages/japanese/sellprice09.php");
+	$sellprice03file = file("includes/languages/japanese/sellprice09.php");
 	foreach($sellprice03file as $key => $value) {
 		$sellprice03 .= $value;
 	}
@@ -531,21 +530,21 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
 	$b_heading[] = array('params' => 'class="menuBoxHeading"',
 						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=sellprice07.php') . '"><font color="#ffffff">GF07</font></a>&nbsp;&raquo;');
 	$b_contents[] = array('params' => 'class="infoBox"',
-						'text'  => '<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/sellprice07.php")) . '</font><br>' . nl2br(strip_tags($sellprice01)));
+						'text'  => '<font color="black">' . date("Y-n-j G:i:s" , filemtime("includes/languages/japanese/sellprice07.php")) . '</font><br>' . nl2br(strip_tags($sellprice01)));
 
 	$s_heading = array();
 	$s_contents = array();
 	$s_heading[] = array('params' => 'class="menuBoxHeading"',
 						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=sellprice08.php') . '"><font color="#ffffff">GF08</font></a>&nbsp;&raquo;');
 	$s_contents[] = array('params' => 'class="infoBox"',
-						'text'  => '<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/sellprice08.php")) . '</font><br>' . nl2br(strip_tags($sellprice02)));
+						'text'  => '<font color="black">' . date("Y-n-j G:i:s" , filemtime("includes/languages/japanese/sellprice08.php")) . '</font><br>' . nl2br(strip_tags($sellprice02)));
 
 	$w_heading = array();
 	$w_contents = array();
 	$w_heading[] = array('params' => 'class="menuBoxHeading"',
 						'text'  => '<a href="' . tep_href_link('define_language.php' , 'lngdir=japanese&filename=sellprice09.php') . '"><font color="#ffffff">GF09</font></a>&nbsp;&raquo;');
 	$w_contents[] = array('params' => 'class="infoBox"',
-						'text'  => '<font color="black">' . date("Y-n-j G:i:s" , filemtime("../includes/languages/japanese/sellprice09.php")) . '</font><br>' . nl2br(strip_tags($sellprice03)));
+						'text'  => '<font color="black">' . date("Y-n-j G:i:s" , filemtime("includes/languages/japanese/sellprice09.php")) . '</font><br>' . nl2br(strip_tags($sellprice03)));
 
 	$b_box = new box;
 	$s_box = new box;

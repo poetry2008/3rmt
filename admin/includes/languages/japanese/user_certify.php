@@ -23,6 +23,6 @@ define('TEXT_ERRINFO_LOGIN', '!!!!! ログインエラー !!!!!');
 define('BUTTON_LOGIN', 'ログイン');
 
 // 項目名
-define('TABLE_HEADING_USER', 'ユーザ');
+!defined('TABLE_HEADING_USER') && define('TABLE_HEADING_USER', 'ユーザ');
 define('TABLE_HEADING_PASSWORD', 'パスワード');
 ?>

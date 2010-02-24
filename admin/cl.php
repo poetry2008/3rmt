@@ -1,7 +1,10 @@
 <?php
+/*
+  $Id$
+ */
 include("includes/application_top.php");
 
-if($_POST['updata'] == 'on') {
+if(isset($HTTP_POST_VARS['updata']) && $HTTP_POST_VARS['updata'] == 'on') {
 	$mm_1 = "";
 	for($i=1; $i<32; $i++) {
 	  $mm_1 .= $_POST[$i];
@@ -18,8 +21,7 @@ if($_POST['updata'] == 'on') {
 }
 ?>
 <?php
-
-if($_GET['action'] == 'success') {
+if(isset($_GET['action']) && $_GET['action'] == 'success') {
   echo '<table border="0" cellspacing="0" cellpadding="0" width="100%">' . "\n";
   echo '<tr>' . "\n";
   echo '<td class="messageStackSuccess" height="20" align="center"><strong>更新しました。</strong></td>' . "\n";
@@ -30,7 +32,7 @@ if($_GET['action'] == 'success') {
 <!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html <?php echo HTML_PARAMS; ?>>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET;?>">
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/general.js"></script>
@@ -67,14 +69,14 @@ if($_GET['action'] == 'success') {
 		//今日
 		$today = getdate();
 		
-		$m_num = $today[mon];
-		$d_num = $today[mday];
-		$year = $today[year];
+		$m_num = $today['mon'];
+		$d_num = $today['mday'];
+		$year = $today['year'];
 		// 1日目の曜日
 		$f_today = getdate(mktime(0,0,0,$m_num,1,$year));
-		$wday = $f_today[wday];
+		$wday = $f_today['wday'];
 		// 月表示
-		$m_name = "$year ".substr($today[month],0,3);
+		$m_name = "$year ".substr($today['month'],0,3);
 		
 		//前のつきの最終日（月の日数）
 		$test = date("d", mktime(0,0,0,$m_num+2,0,$year));
@@ -132,7 +134,7 @@ if($_GET['action'] == 'success') {
 		  }
 		  
 		  
-		  if(($day == $today[mday]) && ($m_num == $today[mon]) && ($year == $today[year])){ 
+		  if(($day == $today['mday']) && ($m_num == $today['mon']) && ($year == $today['year'])){ 
 			//  Today 
 			if($array[$day] == '1'){
 			
@@ -186,14 +188,14 @@ if($_GET['action'] == 'success') {
 		
 		$today2 = getdate(mktime(0,0,0,$m_num+1,1,$year));
 		
-		$m_num2 = $today2[mon];
-		$d_num2 = $today2[mday];
-		$year2 = $today2[year];
+		$m_num2 = $today2['mon'];
+		$d_num2 = $today2['mday'];
+		$year2 = $today2['year'];
 		// 1日目の曜日
 		$f_today2 = getdate(mktime(0,0,0,$m_num2,1,$year2));
-		$wday2 = $f_today2[wday];
+		$wday2 = $f_today2['wday'];
 		// 月表示
-		$m_name2 = "$year ".substr($today2[month],0,3);
+		$m_name2 = "$year ".substr($today2['month'],0,3);
 		
 		//月のデータ取得
 		$ymd2 = date("Ym", mktime(0,0,0,$m_num2,1,$year2));

@@ -185,16 +185,12 @@
           $entry_id = 1;
         }
 
-// 2003-06-06 add_telephone
         $sql_data_array = array('customers_id' => $customer_id,
                                 'address_book_id' => $entry_id,
                                 'entry_firstname' => $firstname,
                                 'entry_lastname' => $lastname,
-								
-								//add
-								'entry_firstname_f' => $firstname_f,
+                                'entry_firstname_f' => $firstname_f,
                                 'entry_lastname_f' => $lastname_f,
-								
                                 'entry_street_address' => $street_address,
                                 'entry_postcode' => $postcode,
                                 'entry_city' => $city,
@@ -216,6 +212,7 @@
 
         if (!tep_session_is_registered('sendto')) tep_session_register('sendto');
         
+        // ccdd
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
 
         $sendto = $entry_id;
