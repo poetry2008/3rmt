@@ -17,19 +17,19 @@ define('TEXT_DISCOUNT', "Discount :");
 define('TEXT_DELIVERY', "Delivery :");
 define('TEXT_TAX', "Tax :");
 define('TEXT_TOTAL', "Total :");
-define('TEXT_SELECT_CURRENCY', '通貨選択:');
+define('TEXT_SELECT_CURRENCY', '货币选择:');
 
-define('HEADING_TITLE', '手動注文手続き');
-define('HEADING_CREATE', '手動注文する顧客の詳細を確認:'); 
+define('HEADING_TITLE', '手动订购手续');
+define('HEADING_CREATE', '确认手动订购的顾客的详细信息:'); 
 
-define('TEXT_SELECT_CUST', '顧客選択:'); 
-define('TEXT_SELECT_CURRENCY', '通貨選択:');
-define('BUTTON_TEXT_SELECT_CUST', '顧客選択:'); 
-define('TEXT_OR_BY', 'または顧客ID:'); 
-define('TEXT_STEP_1', 'ステップ 1 - 顧客を選択し詳細を確認してください');
-define('BUTTON_SUBMIT', '確認する');
-define('ENTRY_CURRENCY','決済通貨');
-define('CATEGORY_ORDER_DETAILS','通貨設定');
+define('TEXT_SELECT_CUST', '选择顾客:'); 
+define('TEXT_SELECT_CURRENCY', '货币选择:');
+define('BUTTON_TEXT_SELECT_CUST', '顾客选择:'); 
+define('TEXT_OR_BY', '或者是顾客的ID:'); 
+define('TEXT_STEP_1', 'step 1 - 选择顾客，确认详细');
+define('BUTTON_SUBMIT', '确认');
+define('ENTRY_CURRENCY','结算货币');
+define('CATEGORY_ORDER_DETAILS','货币设定');
 
-define('CATEGORY_CORRECT', '顧客情報');
+define('CATEGORY_CORRECT', '顾客信息');
 ?>

@@ -46,23 +46,57 @@
         </table></td>
       </tr>
       <tr>
-        <td><table border="0" width="100%" cellspacing="0" cellpadding="2">
+        <td>
+
+
+          <?php if (!isset($HTTP_GET_VARS['site_id']) || !$HTTP_GET_VARS['site_id']) {?>
+            all
+          <?php } else { ?>
+            <a href="<?php echo tep_href_link(FILENAME_STATS_CUSTOMERS, tep_get_all_get_params(array('site_id', 'page')));?>">all</a>
+          <?php } ?>
+          <?php foreach (tep_get_sites() as $site) {?>
+            <?php if (isset($HTTP_GET_VARS['site_id']) && $HTTP_GET_VARS['site_id'] == $site['id']) {?>
+              <?php echo $site['romaji'];?>
+            <?php } else {?>
+              <a href="<?php echo tep_href_link(FILENAME_STATS_CUSTOMERS, tep_get_all_get_params(array('site_id', 'page')) . 'site_id=' . $site['id']);?>">
+              <?php echo $site['romaji'];?>
+              </a>
+            <?php }?>
+          <?php }?>
+
+
+        <table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
             <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr class="dataTableHeadingRow">
-                <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_NUMBER; ?></td>
+                <td class="dataTableHeadingContent" width="60"><?php echo TABLE_HEADING_NUMBER; ?></td>
+                <td class="dataTableHeadingContent" width="60"><?php echo TABLE_HEADING_SITE; ?></td>
                 <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CUSTOMERS; ?></td>
                 <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_PURCHASED; ?>&nbsp;</td>
               </tr>
 <?php
   if ($HTTP_GET_VARS['page'] > 1) $rows = $HTTP_GET_VARS['page'] * MAX_DISPLAY_SEARCH_RESULTS - MAX_DISPLAY_SEARCH_RESULTS;
-  $customers_query_raw = "select c.customers_firstname, c.customers_lastname, sum(op.products_quantity * op.final_price) as ordersum from " . TABLE_CUSTOMERS . " c, " . TABLE_ORDERS_PRODUCTS . " op, " . TABLE_ORDERS . " o where c.customers_id = o.customers_id and o.orders_id = op.orders_id group by c.customers_firstname, c.customers_lastname order by ordersum DESC";
+  $customers_query_raw = "select c.customers_firstname, 
+                                 c.customers_lastname, 
+                                 sum(op.products_quantity * op.final_price) as ordersum ,
+                                 s.romaji
+                          from " . TABLE_CUSTOMERS . " c, " . TABLE_ORDERS_PRODUCTS . " op, " . TABLE_ORDERS . " o , " . TABLE_SITES . " s
+                          where c.customers_id = o.customers_id 
+                            and o.orders_id = op.orders_id 
+                            and c.site_id = s.id
+                            " . (isset($HTTP_GET_VARS['site_id']) && intval($HTTP_GET_VARS['site_id']) ? " and s.id = '" . intval($HTTP_GET_VARS['site_id']) . "' " : '') . "
+                          group by c.customers_firstname, c.customers_lastname 
+                          order by ordersum DESC";
+
+  $customers_query_raw2 = $customers_query_raw;
   $customers_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $customers_query_raw, $customers_query_numrows);
-// fix counted customers
-  $customers_query_numrows = tep_db_query("select customers_id from " . TABLE_ORDERS . " group by customers_id");
-  $customers_query_numrows = tep_db_num_rows($customers_query_numrows);
+  
+  // fix counted customers
+  $customers_count_query = tep_db_query($customers_query_raw2);
+  $customers_query_numrows = tep_db_num_rows($customers_count_query);
 
   $customers_query = tep_db_query($customers_query_raw);
+  $rows = 0;
   while ($customers = tep_db_fetch_array($customers_query)) {
     $rows++;
 
@@ -72,6 +106,7 @@
 ?>
               <tr class="dataTableRow" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='dataTableRow'" onclick="document.location.href='<?php echo tep_href_link(FILENAME_CUSTOMERS, 'search=' . urlencode($customers['customers_lastname']), 'NONSSL'); ?>'">
                 <td class="dataTableContent"><?php echo $rows; ?>.</td>
+                <td class="dataTableContent"><?php echo $customers['romaji'];?></td>
                 <td class="dataTableContent"><?php echo '<a href="' . tep_href_link(FILENAME_CUSTOMERS, 'search=' . urlencode($customers['customers_lastname']), 'NONSSL') . '">' . tep_output_string_protected(tep_get_fullname($customers['customers_firstname'], $customers['customers_lastname'])) . '</a>'; ?></td>
                 <td class="dataTableContent" align="right"><?php echo $currencies->format($customers['ordersum']); ?>&nbsp;</td>
               </tr>

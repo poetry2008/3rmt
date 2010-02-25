@@ -10,124 +10,124 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', '注文の編集・詳細');
-define('HEADING_TITLE_NUMBER', '注文番号:');
+define('HEADING_TITLE', '订单的编辑·详细');
+define('HEADING_TITLE_NUMBER', '订单号:');
 define('HEADING_TITLE_DATE', ' - ');
-define('HEADING_SUBTITLE', '編集したい部分の内容を入力し、更新ボタンをクリックしてください。');
-define('HEADING_TITLE_SEARCH', '注文 ID:');
-define('HEADING_TITLE_STATUS', 'ステータス:');
-define('ADDING_TITLE', '商品を追加する');
+define('HEADING_SUBTITLE', '输入想要编辑的部分的内容，点击更新按钮。');
+define('HEADING_TITLE_SEARCH', '订单ID:');
+define('HEADING_TITLE_STATUS', '状态:');
+define('ADDING_TITLE', '添加商品');
 
-define('HINT_UPDATE_TO_CC', '<font color="#FF0000">ヒント: </font>Set payment to "Credit Card" to show some additional fields.');
-define('HINT_DELETE_POSITION', '<font color="#FF0000">ヒント: </font>商品を削除する場合は個数に「0」と入力して更新してください。');
-define('HINT_TOTALS', '<font color="#FF0000">ヒント: </font>Feel free to give discounts by adding negative amounts to the list.<br>Fields with "0" values are deleted when updating the order (exception: shipping).');
-define('HINT_PRESS_UPDATE', '更新ボタンをクリックして、編集した内容を更新してください。');
+define('HINT_UPDATE_TO_CC', '<font color="#FF0000">提示: </font>Set payment to "Credit Card" to show some additional fields.');
+define('HINT_DELETE_POSITION', '<font color="#FF0000">提示: </font>删除商品的时候，在个数处输入「0」，然后更新。');
+define('HINT_TOTALS', '<font color="#FF0000">提示: </font>Feel free to give discounts by adding negative amounts to the list.<br>Fields with "0" values are deleted when updating the order (exception: shipping).');
+define('HINT_PRESS_UPDATE', '点击更新按钮、更新编辑过的内容。');
 
-define('TABLE_HEADING_COMMENTS', 'コメント');
-define('TABLE_HEADING_CUSTOMERS', '顧客情報');
-define('TABLE_HEADING_ORDER_TOTAL', '合計金額');
-define('TABLE_HEADING_DATE_PURCHASED', '注文日');
-define('TABLE_HEADING_STATUS', '新しいステータス');
+define('TABLE_HEADING_COMMENTS', 'comment');
+define('TABLE_HEADING_CUSTOMERS', '顾客信息');
+define('TABLE_HEADING_ORDER_TOTAL', '合计金额');
+define('TABLE_HEADING_DATE_PURCHASED', '订购日期');
+define('TABLE_HEADING_STATUS', '新状态');
 define('TABLE_HEADING_ACTION', '操作');
 define('TABLE_HEADING_QUANTITY', '数量');
-define('TABLE_HEADING_PRODUCTS_MODEL', '商品型番');
+define('TABLE_HEADING_PRODUCTS_MODEL', '商品型号');
 define('TABLE_HEADING_PRODUCTS', '商品');
-define('TABLE_HEADING_TAX', '消費税');
-define('TABLE_HEADING_TOTAL', '合計');
-define('TABLE_HEADING_UNIT_PRICE', '価格 (税抜き)');
-define('TABLE_HEADING_UNIT_PRICE_TAXED', '価格 (税込み)');
-define('TABLE_HEADING_TOTAL_PRICE', '合計 (税抜き)');
-define('TABLE_HEADING_TOTAL_PRICE_TAXED', '合計 (税込み)');
-define('TABLE_HEADING_TOTAL_MODULE', '価格構成要素');
-define('TABLE_HEADING_TOTAL_AMOUNT', '金額');
+define('TABLE_HEADING_TAX', '消费税');
+define('TABLE_HEADING_TOTAL', '合计');
+define('TABLE_HEADING_UNIT_PRICE', '价格 (不含税)');
+define('TABLE_HEADING_UNIT_PRICE_TAXED', '价格 (含税)');
+define('TABLE_HEADING_TOTAL_PRICE', '合计 (不含税)');
+define('TABLE_HEADING_TOTAL_PRICE_TAXED', '合计 (含税)');
+define('TABLE_HEADING_TOTAL_MODULE', '价格的构成要素');
+define('TABLE_HEADING_TOTAL_AMOUNT', '金额');
 
-define('TABLE_HEADING_CUSTOMER_NOTIFIED', '顧客に通知');
-define('TABLE_HEADING_DATE_ADDED', '送信日');
+define('TABLE_HEADING_CUSTOMER_NOTIFIED', '通知顾客');
+define('TABLE_HEADING_DATE_ADDED', '发送日期');
 
-define('ENTRY_CUSTOMER', '顧客情報');
-define('ENTRY_CUSTOMER_NAME', 'お名前');
-define('ENTRY_CUSTOMER_COMPANY', '会社名');
-define('ENTRY_CUSTOMER_ADDRESS', '住所1');
-define('ENTRY_CUSTOMER_SUBURB', '住所2');
+define('ENTRY_CUSTOMER', '顾客信息');
+define('ENTRY_CUSTOMER_NAME', '姓名');
+define('ENTRY_CUSTOMER_COMPANY', '公司名');
+define('ENTRY_CUSTOMER_ADDRESS', '地址1');
+define('ENTRY_CUSTOMER_SUBURB', '地址2');
 define('ENTRY_CUSTOMER_CITY', '市町村');
 define('ENTRY_CUSTOMER_STATE', '都道府県');
-define('ENTRY_CUSTOMER_POSTCODE', '郵便番号');
+define('ENTRY_CUSTOMER_POSTCODE', '邮编');
 define('ENTRY_CUSTOMER_COUNTRY', '国名');
-define('ENTRY_CUSTOMER_PHONE', '電話番号');
-define('ENTRY_CUSTOMER_EMAIL', 'Eメールアドレス');
+define('ENTRY_CUSTOMER_PHONE', '电话号码');
+define('ENTRY_CUSTOMER_EMAIL', '邮箱地址');
 
-define('ENTRY_SOLD_TO', '注文者:');
-define('ENTRY_DELIVERY_TO', '送付先:');
+define('ENTRY_SOLD_TO', '订购者:');
+define('ENTRY_DELIVERY_TO', '送货地址:');
 define('ENTRY_SHIP_TO', 'Shipping to:');
-define('ENTRY_SHIPPING_ADDRESS', '配送先住所');
-define('ENTRY_BILLING_ADDRESS', '請求先住所');
-define('ENTRY_PAYMENT_METHOD', '支払方法:');
-define('ENTRY_CREDIT_CARD_TYPE', 'カードタイプ:');
-define('ENTRY_CREDIT_CARD_OWNER', 'カード保有者:');
-define('ENTRY_CREDIT_CARD_NUMBER', 'カード番号:');
-define('ENTRY_CREDIT_CARD_EXPIRES', '有効期限:');
-define('ENTRY_SUB_TOTAL', '小計:');
-define('ENTRY_TAX', '消費税:');
-define('ENTRY_SHIPPING', '送料:');
-define('ENTRY_TOTAL', '合計:');
-define('ENTRY_DATE_PURCHASED', '注文日:');
-define('ENTRY_STATUS', 'ステータス:');
-define('ENTRY_DATE_LAST_UPDATED', '最終更新日:');
-define('ENTRY_NOTIFY_CUSTOMER', '顧客へ通知:');
-define('ENTRY_NOTIFY_COMMENTS', 'コメントを送信:');
-define('ENTRY_PRINTABLE', '納品書印刷');
+define('ENTRY_SHIPPING_ADDRESS', '送货地址住所');
+define('ENTRY_BILLING_ADDRESS', '购买者地址住所');
+define('ENTRY_PAYMENT_METHOD', '支付方法:');
+define('ENTRY_CREDIT_CARD_TYPE', '卡类型:');
+define('ENTRY_CREDIT_CARD_OWNER', '持卡人:');
+define('ENTRY_CREDIT_CARD_NUMBER', '卡号:');
+define('ENTRY_CREDIT_CARD_EXPIRES', '有效期限:');
+define('ENTRY_SUB_TOTAL', '小计:');
+define('ENTRY_TAX', '消费税:');
+define('ENTRY_SHIPPING', '邮费:');
+define('ENTRY_TOTAL', '合计:');
+define('ENTRY_DATE_PURCHASED', '订购日期:');
+define('ENTRY_STATUS', '状态:');
+define('ENTRY_DATE_LAST_UPDATED', '最后更新日期期:');
+define('ENTRY_NOTIFY_CUSTOMER', '告诉顾客:');
+define('ENTRY_NOTIFY_COMMENTS', '发送comment:');
+define('ENTRY_PRINTABLE', '打印发票');
 
-define('TEXT_INFO_HEADING_DELETE_ORDER', '注文を削除');
-define('TEXT_INFO_DELETE_INTRO', '本当に注文を削除しますか？');
-define('TEXT_INFO_RESTOCK_PRODUCT_QUANTITY', '在庫を戻す');
-define('TEXT_DATE_ORDER_CREATED', '作成日:');
-define('TEXT_DATE_ORDER_LAST_MODIFIED', '最終更新日:');
-define('TEXT_DATE_ORDER_ADDNEW', '新しい商品を追加');
-define('TEXT_INFO_PAYMENT_METHOD', '支払方法:');
+define('TEXT_INFO_HEADING_DELETE_ORDER', '删除订单');
+define('TEXT_INFO_DELETE_INTRO', '确认删除订单？');
+define('TEXT_INFO_RESTOCK_PRODUCT_QUANTITY', '返回库存');
+define('TEXT_DATE_ORDER_CREATED', '创建日期:');
+define('TEXT_DATE_ORDER_LAST_MODIFIED', '最后更新日期期:');
+define('TEXT_DATE_ORDER_ADDNEW', '添加新商品');
+define('TEXT_INFO_PAYMENT_METHOD', '支付方法:');
 
-define('TEXT_ALL_ORDERS', '全ての注文');
-define('TEXT_NO_ORDER_HISTORY', '注文は存在しません。');
+define('TEXT_ALL_ORDERS', '全部的订单');
+define('TEXT_NO_ORDER_HISTORY', '订单不存在。');
 
 define('EMAIL_SEPARATOR', '------------------------------------------------------');
-define('EMAIL_TEXT_SUBJECT', 'ご注文受付状況のお知らせ');
-define('EMAIL_TEXT_ORDER_NUMBER', 'ご注文受付番号:');
-define('EMAIL_TEXT_INVOICE_URL', 'ご注文についての情報を下記URLでご覧になれます。' . "\n");
-define('EMAIL_TEXT_DATE_ORDERED', '注文日:');
+define('EMAIL_TEXT_SUBJECT', '订单受理状态的通知');
+define('EMAIL_TEXT_ORDER_NUMBER', '订单受理号:');
+define('EMAIL_TEXT_INVOICE_URL', '关于订购的信息，通过下面的URL查看。' . "\n");
+define('EMAIL_TEXT_DATE_ORDERED', '订购日期:');
 define('EMAIL_TEXT_STATUS_UPDATE',
-'ご注文の受付状況は次のようなっております。' . "\n"
-.'現在の受付状況: [ %s ]' . "\n\n");
-define('EMAIL_TEXT_COMMENTS_UPDATE', '[ご連絡事項]' . "\n%s");
+'订单的受理状态如下。' . "\n"
+.'现在的受理状态: [ %s ]' . "\n\n");
+define('EMAIL_TEXT_COMMENTS_UPDATE', '[联系事项]' . "\n%s");
 
-define('ERROR_ORDER_DOES_NOT_EXIST', 'エラー: 注文が存在しません。');
-define('SUCCESS_ORDER_UPDATED', '成功: 注文状態が更新されました。');
-define('WARNING_ORDER_NOT_UPDATED', '警告: 注文状態はなにも変更されませんでした。');
+define('ERROR_ORDER_DOES_NOT_EXIST', '错误: 订单不存在。');
+define('SUCCESS_ORDER_UPDATED', '成功: 订单状态已更新。');
+define('WARNING_ORDER_NOT_UPDATED', '警告: 订单状态没有变化。');
 
 // Add Japanese osCommerce
-define('EMAIL_TEXT_STORE_CONFIRMATION', ' へのご注文、誠にありがとうございます。' . "\n\n"
-.'ご注文の受付状況及びご連絡事項を、下記にご案内申し上げます。');
+define('EMAIL_TEXT_STORE_CONFIRMATION', ' 感谢订购~~~~`。' . "\n\n"
+.'订单的受理状态及联络事项如下。');
 define('EMAIL_TEXT_STORE_CONFIRMATION_FOOTER', 
-'受付状況に関してご質問等がございましたら、当店宛にご連絡頂きますようお願い申し' . "\n"
-.'上げます。' . "\n\n"
+'关于订单状态，如果有疑问时，请联系本店的地址' . "\n"
+.'。' . "\n\n"
 . EMAIL_SIGNATURE);
 
 
 define('ADDPRODUCT_TEXT_CATEGORY_CONFIRM', 'OK');
-define('ADDPRODUCT_TEXT_SELECT_PRODUCT', '商品を選択');
+define('ADDPRODUCT_TEXT_SELECT_PRODUCT', '选择商品');
 define('ADDPRODUCT_TEXT_PRODUCT_CONFIRM', 'OK');
-define('ADDPRODUCT_TEXT_SELECT_OPTIONS', '商品オプションを選択');
+define('ADDPRODUCT_TEXT_SELECT_OPTIONS', '选择商品option');
 define('ADDPRODUCT_TEXT_OPTIONS_CONFIRM', 'OK');
-define('ADDPRODUCT_TEXT_OPTIONS_NOTEXIST', '商品オプションは存在しません。スキップ...');
-define('ADDPRODUCT_TEXT_CONFIRM_QUANTITY', 'この商品の数量');
-define('ADDPRODUCT_TEXT_CONFIRM_ADDNOW', '追加する');
-define('ADDPRODUCT_TEXT_STEP', 'ステップ');
-define('ADDPRODUCT_TEXT_STEP1', ' &laquo; カテゴリ選択. ');
-define('ADDPRODUCT_TEXT_STEP2', ' &laquo; 商品選択. ');
-define('ADDPRODUCT_TEXT_STEP3', ' &laquo; オプション選択. ');
+define('ADDPRODUCT_TEXT_OPTIONS_NOTEXIST', '商品没有option，跳过....');
+define('ADDPRODUCT_TEXT_CONFIRM_QUANTITY', '商品数量');
+define('ADDPRODUCT_TEXT_CONFIRM_ADDNOW', '添加');
+define('ADDPRODUCT_TEXT_STEP', 'step');
+define('ADDPRODUCT_TEXT_STEP1', ' &laquo; 分类选择. ');
+define('ADDPRODUCT_TEXT_STEP2', ' &laquo; 商品选择. ');
+define('ADDPRODUCT_TEXT_STEP3', ' &laquo; option选择. ');
 
-define('MENUE_TITLE_CUSTOMER', '1. 顧客情報');
-define('MENUE_TITLE_PAYMENT', '2. 支払方法');
-define('MENUE_TITLE_ORDER', '3. 注文商品');
-define('MENUE_TITLE_TOTAL', '4. 配送、決済、税金');
-define('MENUE_TITLE_STATUS', '5. 注文ステータス、コメント通知');
-define('MENUE_TITLE_UPDATE', '6. データを更新');
+define('MENUE_TITLE_CUSTOMER', '1. 顾客信息');
+define('MENUE_TITLE_PAYMENT', '2. 支付方法');
+define('MENUE_TITLE_ORDER', '3. 订购商品');
+define('MENUE_TITLE_TOTAL', '4. 发送、结算、税金');
+define('MENUE_TITLE_STATUS', '5. 订单状态、comment通知');
+define('MENUE_TITLE_UPDATE', '6. 更新数据');
 ?>

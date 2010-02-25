@@ -10,95 +10,95 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', 'カテゴリー / 商品');
-define('HEADING_TITLE_SEARCH', '検索:');
-define('HEADING_TITLE_GOTO', 'ジャンプ:');
+define('HEADING_TITLE', '分类 / 商品');
+define('HEADING_TITLE_SEARCH', '搜索:');
+define('HEADING_TITLE_GOTO', '跳过:');
 
 define('TABLE_HEADING_ID', 'ID');
-define('TABLE_HEADING_CATEGORIES_PRODUCTS', 'カテゴリー / 商品');
+define('TABLE_HEADING_CATEGORIES_PRODUCTS', '分类 / 商品');
 define('TABLE_HEADING_ACTION', '操作');
-define('TABLE_HEADING_STATUS', 'ステータス');
+define('TABLE_HEADING_STATUS', '状态');
 
-define('TEXT_NEW_PRODUCT', '&quot;%s&quot; への商品登録');
-define('TEXT_CATEGORIES', 'カテゴリー:');
-define('TEXT_SUBCATEGORIES', 'サブカテゴリー数:');
+define('TEXT_NEW_PRODUCT', '&quot;%s&quot; 的商品登录');
+define('TEXT_CATEGORIES', '分类:');
+define('TEXT_SUBCATEGORIES', '分类数:');
 define('TEXT_PRODUCTS', '商品数:');
-define('TEXT_PRODUCTS_PRICE_INFO', '価格:');
-define('TEXT_PRODUCTS_TAX_CLASS', '税種別:');
+define('TEXT_PRODUCTS_PRICE_INFO', '价格:');
+define('TEXT_PRODUCTS_TAX_CLASS', '税种类:');
 define('TEXT_PRODUCTS_AVERAGE_RATING', '平均点:');
 define('TEXT_PRODUCTS_QUANTITY_INFO', '数量:');
-define('TEXT_DATE_ADDED', '登録日:');
-define('TEXT_DATE_AVAILABLE', '発売日:');
-define('TEXT_LAST_MODIFIED', '更新日:');
-define('TEXT_IMAGE_NONEXISTENT', '画像が存在しません');
-define('TEXT_NO_CHILD_CATEGORIES_OR_PRODUCTS', '新しいカテゴリーまたは商品を追加してください<br>&nbsp;<br><b>%s</b>');
-define('TEXT_PRODUCT_MORE_INFORMATION', 'もっと詳しい情報は、この商品の<a href="http://%s" target="blank"><u>ウェブページ</u>をご覧ください</a>。');
-define('TEXT_PRODUCT_DATE_ADDED', 'この商品は %s にカタログに登録されました。');
-define('TEXT_PRODUCT_DATE_AVAILABLE', 'この商品は %s に入荷予定です。');
+define('TEXT_DATE_ADDED', '创建日期:');
+define('TEXT_DATE_AVAILABLE', '出售日期:');
+define('TEXT_LAST_MODIFIED', '更新日期期:');
+define('TEXT_IMAGE_NONEXISTENT', '图片不存在');
+define('TEXT_NO_CHILD_CATEGORIES_OR_PRODUCTS', '添加新分类或者商品 <br>&nbsp;<br><b>%s</b>');
+define('TEXT_PRODUCT_MORE_INFORMATION', '详细信息，请查看商品的<a href="http://%s" target="blank"><u>web页</u> </a>。');
+define('TEXT_PRODUCT_DATE_ADDED', '这个商品登录在 %s 目录下。');
+define('TEXT_PRODUCT_DATE_AVAILABLE', '这个商品预定 %s进货。');
 
-define('TEXT_EDIT_INTRO', '必要な変更を加えてください');
-define('TEXT_EDIT_CATEGORIES_ID', 'カテゴリーID:');
-define('TEXT_EDIT_CATEGORIES_NAME', 'カテゴリー名:');
-define('TEXT_EDIT_CATEGORIES_IMAGE', 'カテゴリー画像:');
-define('TEXT_EDIT_SORT_ORDER', '整列順:');
+define('TEXT_EDIT_INTRO', '添加必要的更改');
+define('TEXT_EDIT_CATEGORIES_ID', '分类ID:');
+define('TEXT_EDIT_CATEGORIES_NAME', '分类名:');
+define('TEXT_EDIT_CATEGORIES_IMAGE', '分类图片:');
+define('TEXT_EDIT_SORT_ORDER', '排列顺序:');
 
-define('TEXT_INFO_COPY_TO_INTRO', 'この商品をコピーする先のカテゴリーを選んでください');
-define('TEXT_INFO_CURRENT_CATEGORIES', '現在のカテゴリー:');
+define('TEXT_INFO_COPY_TO_INTRO', '选择商品复制到的地址的分类');
+define('TEXT_INFO_CURRENT_CATEGORIES', '现在的分类:');
 
-define('TEXT_INFO_HEADING_NEW_CATEGORY', '新しいカテゴリー');
-define('TEXT_INFO_HEADING_EDIT_CATEGORY', 'カテゴリーを編集');
-define('TEXT_INFO_HEADING_DELETE_CATEGORY', 'カテゴリーを削除');
-define('TEXT_INFO_HEADING_MOVE_CATEGORY', 'カテゴリーを移動');
-define('TEXT_INFO_HEADING_DELETE_PRODUCT', '商品を削除');
-define('TEXT_INFO_HEADING_MOVE_PRODUCT', '商品を移動');
-define('TEXT_INFO_HEADING_COPY_TO', 'コピー先');
+define('TEXT_INFO_HEADING_NEW_CATEGORY', '新分类');
+define('TEXT_INFO_HEADING_EDIT_CATEGORY', '编辑分类');
+define('TEXT_INFO_HEADING_DELETE_CATEGORY', '删除分类');
+define('TEXT_INFO_HEADING_MOVE_CATEGORY', '移动分类');
+define('TEXT_INFO_HEADING_DELETE_PRODUCT', '删除商品');
+define('TEXT_INFO_HEADING_MOVE_PRODUCT', '移动商品');
+define('TEXT_INFO_HEADING_COPY_TO', '复制地址');
 
-define('TEXT_DELETE_CATEGORY_INTRO', '本当にこのカテゴリーを削除しますか？');
-define('TEXT_DELETE_PRODUCT_INTRO', '本当にこの商品を削除しますか？');
+define('TEXT_DELETE_CATEGORY_INTRO', '确定删除这个分类？');
+define('TEXT_DELETE_PRODUCT_INTRO', '确定删除这个商品？');
 
-define('TEXT_DELETE_WARNING_CHILDS', '<b>警告:</b> このカテゴリーには %s 個のサブカテゴリーがリンクされています!');
-define('TEXT_DELETE_WARNING_PRODUCTS', '<b>警告:</b> このカテゴリーには %s 個の商品がリンクされています!');
+define('TEXT_DELETE_WARNING_CHILDS', '<b>警告:</b> 这个分类中包含 %s 个副分类!');
+define('TEXT_DELETE_WARNING_PRODUCTS', '<b>警告:</b> 这个分类中包含 %s 个商品!');
 
-define('TEXT_MOVE_PRODUCTS_INTRO', '<b>%s</b> を移動する先のカテゴリーを選んでください');
-define('TEXT_MOVE_CATEGORIES_INTRO', '<b>%s</b> を移動する先のカテゴリーを選んでください');
-define('TEXT_MOVE', '<b>%s</b> の移動先:');
+define('TEXT_MOVE_PRODUCTS_INTRO', '<b>%s</b> 选择移动到的分类');
+define('TEXT_MOVE_CATEGORIES_INTRO', '<b>%s</b> 选择移动到的分类');
+define('TEXT_MOVE', '<b>%s</b> 的移动位置:');
 
-define('TEXT_NEW_CATEGORY_INTRO', '新しいカテゴリーの情報を入力してください');
-define('TEXT_CATEGORIES_NAME', '新しいカテゴリー:');
-define('TEXT_CATEGORIES_IMAGE', 'カテゴリー画像:');
-define('TEXT_SORT_ORDER', '整列順:');
+define('TEXT_NEW_CATEGORY_INTRO', '请输入新分类的信息');
+define('TEXT_CATEGORIES_NAME', '新分类:');
+define('TEXT_CATEGORIES_IMAGE', '分类图片:');
+define('TEXT_SORT_ORDER', '排列顺序:');
 
-define('TEXT_PRODUCTS_STATUS', '商品ステータス:');
-define('TEXT_PRODUCTS_CHARACTER', 'キャラクター名:');
-define('TEXT_PRODUCTS_BUY_AND_SELL', '売買ステータス:');
-define('TEXT_PRODUCTS_SMALL_SUM', '小口割:');
-define('TEXT_PRODUCTS_DATE_AVAILABLE', '発売日:');
-define('TEXT_PRODUCT_AVAILABLE', '在庫あり');
-define('TEXT_PRODUCT_NOT_AVAILABLE', '品切れ');
-define('TEXT_PRODUCT_INDISPENSABILITY', '入力必須');
-define('TEXT_PRODUCT_NOT_INDISPENSABILITY', '入力不要');
+define('TEXT_PRODUCTS_STATUS', '商品状态:');
+define('TEXT_PRODUCTS_CHARACTER', '人物名:');
+define('TEXT_PRODUCTS_BUY_AND_SELL', '买卖状态:');
+define('TEXT_PRODUCTS_SMALL_SUM', '小折扣:');
+define('TEXT_PRODUCTS_DATE_AVAILABLE', '发售日期:');
+define('TEXT_PRODUCT_AVAILABLE', '有库存');
+define('TEXT_PRODUCT_NOT_AVAILABLE', '卖完');
+define('TEXT_PRODUCT_INDISPENSABILITY', '必须输入');
+define('TEXT_PRODUCT_NOT_INDISPENSABILITY', '不用输入');
 define('TEXT_PRODUCT_USUALLY', '通常商品');
-define('TEXT_PRODUCT_PURCHASE', '買い取り商品');
-define('TEXT_PRODUCTS_MANUFACTURER', 'メーカー名:');
+define('TEXT_PRODUCT_PURCHASE', '买取商品');
+define('TEXT_PRODUCTS_MANUFACTURER', 'maker名:');
 define('TEXT_PRODUCTS_NAME', '商品名:');
-define('TEXT_PRODUCTS_DESCRIPTION', '商品の説明:');
-define('TEXT_PRODUCTS_QUANTITY', '商品の数量:');
-define('TEXT_PRODUCTS_MODEL', '商品の型番:');
-define('TEXT_PRODUCTS_IMAGE', '商品の画像:');
-define('TEXT_PRODUCTS_URL', '商品のURL:');
-define('TEXT_PRODUCTS_URL_WITHOUT_HTTP', '<small>(http:// は不要)</small>');
-define('TEXT_PRODUCTS_PRICE', '商品の価格:');
-define('TEXT_PRODUCTS_WEIGHT', '商品の重量:');
-define('TEXT_PRODUCTS_OPTION', 'オプション:');
+define('TEXT_PRODUCTS_DESCRIPTION', '商品说明:');
+define('TEXT_PRODUCTS_QUANTITY', '商品数量:');
+define('TEXT_PRODUCTS_MODEL', '商品型号:');
+define('TEXT_PRODUCTS_IMAGE', '商品图像:');
+define('TEXT_PRODUCTS_URL', '商品URL:');
+define('TEXT_PRODUCTS_URL_WITHOUT_HTTP', '<small>(http:// 不要)</small>');
+define('TEXT_PRODUCTS_PRICE', '商品价格:');
+define('TEXT_PRODUCTS_WEIGHT', '商品重量:');
+define('TEXT_PRODUCTS_OPTION', 'option:');
 
-define('EMPTY_CATEGORY', '空カテゴリー');
+define('EMPTY_CATEGORY', '空分类');
 
-define('TEXT_HOW_TO_COPY', 'コピー方法:');
-define('TEXT_COPY_AS_LINK', 'リンクコピー（他カテゴリーへ）');
-define('TEXT_COPY_AS_DUPLICATE', '重複コピー（同一カテゴリー可）');
+define('TEXT_HOW_TO_COPY', '复制方法:');
+define('TEXT_COPY_AS_LINK', '链接复制（复制到其他分类）');
+define('TEXT_COPY_AS_DUPLICATE', '重复复制（可以是同一分类）');
 
-define('ERROR_CANNOT_LINK_TO_SAME_CATEGORY', 'エラー: 同じカテゴリー内にはリンクできません。');
-define('ERROR_CATALOG_IMAGE_DIRECTORY_NOT_WRITEABLE', 'エラー: カテゴリー画像のディレクトリに書き込みできません: ' . DIR_FS_CATALOG_IMAGES);
-define('ERROR_CATALOG_IMAGE_DIRECTORY_DOES_NOT_EXIST', 'エラー: カテゴリー画像のディレクトリが存在しません: ' . DIR_FS_CATALOG_IMAGES);
-define('TEXT_PRODUCTS_TAGS', '商品タグ:');
+define('ERROR_CANNOT_LINK_TO_SAME_CATEGORY', '错误: 同一分类不可以链接。');
+define('ERROR_CATALOG_IMAGE_DIRECTORY_NOT_WRITEABLE', '错误: 无法写入分类图片的目录: ' . DIR_FS_CATALOG_IMAGES);
+define('ERROR_CATALOG_IMAGE_DIRECTORY_DOES_NOT_EXIST', '错误:分类图片目录不存在: ' . DIR_FS_CATALOG_IMAGES);
+define('TEXT_PRODUCTS_TAGS', '商品标签:');
 ?>

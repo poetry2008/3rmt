@@ -244,6 +244,8 @@ define('IMAGE_UNLOCK', 'ロック解除');
 define('IMAGE_UPDATE', '更新');
 define('IMAGE_UPDATE_CURRENCIES', '為替レートの更新');
 define('IMAGE_UPLOAD', 'アップロード');
+define('IMAGE_EFFECT', '有效');
+define('IMAGE_DEFFECT', '無效');
 
 define('ICON_CROSS', '偽(False)');
 define('ICON_CURRENT_FOLDER', '現在のフォルダ');
@@ -314,4 +316,7 @@ define('BOX_CATALOG_PRODUCTS_DL', '商品データダウンロード');
 define('BOX_TOOLS_CL', 'カレンダー');
 define('BOX_CATALOG_PRODUCTS_TAGS', 'タグ登録');
 define('BOX_CATALOG_IMAGE_DOCUMENT', 'imageファイル管理');
+
+define('TABLE_HEADING_SITE', 'SITE');
+
 ?>

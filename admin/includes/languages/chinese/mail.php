@@ -10,16 +10,16 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', '顧客へ E-Mail送信');
+define('HEADING_TITLE', '给顾客发邮件');
 
-define('TEXT_CUSTOMER', '顧客名:');
-define('TEXT_SUBJECT', '件名:');
-define('TEXT_FROM', '差出人:');
-define('TEXT_MESSAGE', 'メッセージ:');
-define('TEXT_SELECT_CUSTOMER', '顧客を選択');
-define('TEXT_ALL_CUSTOMERS', '全ての顧客');
-define('TEXT_NEWSLETTER_CUSTOMERS', '全てのメールマガジン購読者');
+define('TEXT_CUSTOMER', '顾客名:');
+define('TEXT_SUBJECT', '邮件名:');
+define('TEXT_FROM', '发信人:');
+define('TEXT_MESSAGE', '消息:');
+define('TEXT_SELECT_CUSTOMER', '选择顾客');
+define('TEXT_ALL_CUSTOMERS', '全部顾客');
+define('TEXT_NEWSLETTER_CUSTOMERS', '所有的邮件杂志订阅者');
 
-define('NOTICE_EMAIL_SENT_TO', '注: %s へE-Mailを送信しました。');
-define('ERROR_NO_CUSTOMER_SELECTED', 'エラー: 顧客が選択されていません。');
+define('NOTICE_EMAIL_SENT_TO', '注: 给%s 的邮件已发生。');
+define('ERROR_NO_CUSTOMER_SELECTED', '错误: 没有选择顾客。');
 ?>

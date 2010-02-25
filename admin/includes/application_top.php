@@ -146,6 +146,7 @@ $GLOBALS['HTTP_POST_VARS']=$_POST;
   define('TABLE_REVIEWS', 'reviews');
   define('TABLE_REVIEWS_DESCRIPTION', 'reviews_description');
   define('TABLE_SESSIONS', 'sessions');
+  define('TABLE_SITES', 'sites');
   define('TABLE_SPECIALS', 'specials');
   define('TABLE_TAX_CLASS', 'tax_class');
   define('TABLE_TAX_RATES', 'tax_rates');
@@ -235,12 +236,12 @@ $GLOBALS['HTTP_POST_VARS']=$_POST;
 // language
   require(DIR_WS_FUNCTIONS . 'languages.php');
   if ( (!isset($language) || !$language) || (isset($HTTP_GET_VARS['language']) && $HTTP_GET_VARS['language']) ) {
-    if (!$language) {
+    if (!isset($language) || !$language) {
       tep_session_register('language');
       tep_session_register('languages_id');
     }
 
-    $language = tep_get_languages_directory($HTTP_GET_VARS['language']);
+    $language = tep_get_languages_directory(isset($HTTP_GET_VARS['language'])?$HTTP_GET_VARS['language']:'');
     if (!$language) $language = tep_get_languages_directory(DEFAULT_LANGUAGE);
   }
 

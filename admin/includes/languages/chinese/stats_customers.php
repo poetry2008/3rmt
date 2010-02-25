@@ -10,9 +10,9 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', '顧客別の売上順位');
+define('HEADING_TITLE', '各顾客的营业额顺序');
 
 define('TABLE_HEADING_NUMBER', 'No.');
-define('TABLE_HEADING_CUSTOMERS', '顧客名');
-define('TABLE_HEADING_TOTAL_PURCHASED', '総購入額');
+define('TABLE_HEADING_CUSTOMERS', '顾客名');
+define('TABLE_HEADING_TOTAL_PURCHASED', '总购入金额');
 ?>

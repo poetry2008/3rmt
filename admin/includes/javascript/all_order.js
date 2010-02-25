@@ -7,28 +7,32 @@ function all_check(){
   var chk_flag = document.sele_act.all_chk.checked;
   
   if(chk_flag == true){
-	
-	if(document.sele_act.elements["chk[]"].length == null){
-	    document.sele_act.elements["chk[]"].checked = true;
-	    var tr_id = 'tr_' + document.sele_act.elements["chk[]"].value;
-	    document.getElementById(tr_id).style.backgroundColor = "#FFCC99";
-	}else{
-      for(i = 0; i < document.sele_act.elements["chk[]"].length; i++){
-	    document.sele_act.elements["chk[]"][i].checked = true;
-	    var tr_id = 'tr_' + document.sele_act.elements["chk[]"][i].value;
-	    document.getElementById(tr_id).style.backgroundColor = "#FFCC99";
-      }
-	}
+    
+    if(document.sele_act.elements["chk[]"].length == null){
+        document.sele_act.elements["chk[]"].checked = true;
+        var tr_id = 'tr_' + document.sele_act.elements["chk[]"].value;
+        if (document.getElementById(tr_id).className != 'dataTableRowSelected') 
+          document.getElementById(tr_id).style.backgroundColor = "#FFCC99";
+    }else{
+        for(i = 0; i < document.sele_act.elements["chk[]"].length; i++){
+          document.sele_act.elements["chk[]"][i].checked = true;
+          var tr_id = 'tr_' + document.sele_act.elements["chk[]"][i].value;
+          if (document.getElementById(tr_id).className != 'dataTableRowSelected') 
+            document.getElementById(tr_id).style.backgroundColor = "#FFCC99";
+        }
+    }
   }else{
-	if(document.sele_act.elements["chk[]"].length == null){
-	  document.sele_act.elements["chk[]"].checked = false;
-	  var tr_id = 'tr_' + document.sele_act.elements["chk[]"].value;
-	  document.getElementById(tr_id).style.backgroundColor = "#F0F1F1";
-	}else{
+    if(document.sele_act.elements["chk[]"].length == null){
+      document.sele_act.elements["chk[]"].checked = false;
+      var tr_id = 'tr_' + document.sele_act.elements["chk[]"].value;
+      if (document.getElementById(tr_id).className != 'dataTableRowSelected') 
+        document.getElementById(tr_id).style.backgroundColor = "#F0F1F1";
+    }else{
       for(i = 0; i < document.sele_act.elements["chk[]"].length; i++){
-	    document.sele_act.elements["chk[]"][i].checked = false;
-	    var tr_id = 'tr_' + document.sele_act.elements["chk[]"][i].value;
-	    document.getElementById(tr_id).style.backgroundColor = "#F0F1F1";
+        document.sele_act.elements["chk[]"][i].checked = false;
+        var tr_id = 'tr_' + document.sele_act.elements["chk[]"][i].value;
+        if (document.getElementById(tr_id).className != 'dataTableRowSelected') 
+          document.getElementById(tr_id).style.backgroundColor = "#F0F1F1";
       }
     }
   }
@@ -39,16 +43,19 @@ function chg_tr_color(aaa){
   var c_flag = aaa.checked;
   var tr_id = 'tr_' + aaa.value;
   
+  if (document.getElementById(tr_id).className != 'dataTableRowSelected') 
   if(c_flag == true){
+    old_color = document.getElementById(tr_id).style.backgroundColor
     document.getElementById(tr_id).style.backgroundColor = "#FFCC99";
-	old_color = document.getElementById(tr_id).style.backgroundColor
   }else{
-    document.getElementById(tr_id).style.backgroundColor = "#F0F1F1";
-	old_color = document.getElementById(tr_id).style.backgroundColor
+    document.getElementById(tr_id).style.backgroundColor = old_color;
+    //document.getElementById(tr_id).style.backgroundColor = "#F0F1F1";
+    //old_color = document.getElementById(tr_id).style.backgroundColor
   }
 }
 
 function chg_td_color(bbb){
+  /*
   field_on();
   
   if(document.sele_act.elements["chk[]"].length == null){
@@ -57,12 +64,12 @@ function chg_td_color(bbb){
 	    document.sele_act.elements["chk[]"].checked = false;
 	    var tr_id = 'tr_' + bbb;
 	    document.getElementById(tr_id).style.backgroundColor = "#F0F1F1";
-		old_color = document.getElementById(tr_id).style.backgroundColor
+      old_color = document.getElementById(tr_id).style.backgroundColor
 	  }else{
 	    document.sele_act.elements["chk[]"].checked = true;
 	    var tr_id = 'tr_' + bbb;
 	    document.getElementById(tr_id).style.backgroundColor = "#FFCC99";
-		old_color = document.getElementById(tr_id).style.backgroundColor
+      old_color = document.getElementById(tr_id).style.backgroundColor
 	  }
 	}
   }else{
@@ -72,16 +79,17 @@ function chg_td_color(bbb){
 	      document.sele_act.elements["chk[]"][i].checked = false;
 	      var tr_id = 'tr_' + bbb;
 	      document.getElementById(tr_id).style.backgroundColor = "#F0F1F1";
-		  old_color = document.getElementById(tr_id).style.backgroundColor
+        old_color = document.getElementById(tr_id).style.backgroundColor
 	    }else{
 	      document.sele_act.elements["chk[]"][i].checked = true;
 	      var tr_id = 'tr_' + bbb;
 	      document.getElementById(tr_id).style.backgroundColor = "#FFCC99";
-		  old_color = document.getElementById(tr_id).style.backgroundColor
+        old_color = document.getElementById(tr_id).style.backgroundColor
 	    }
 	  }
     }
   }
+  */
 }
 
 function field_on(){
@@ -91,6 +99,7 @@ function field_on(){
   }
 }
 
+/*
 function over_color(ccc){
   var tr_id = 'tr_' + ccc;
   old_color = document.getElementById(tr_id).style.backgroundColor
@@ -101,3 +110,4 @@ function out_color(ddd){
   var tr_id = 'tr_' + ddd;
   document.getElementById(tr_id).style.backgroundColor = old_color;
 }
+*/

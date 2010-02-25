@@ -1819,7 +1819,7 @@ function forward404Unless($condition)
         $metaQuery .= "AND ".TABLE_CONFIGURATION.".configuration_key = 'DEFAULT_LANGUAGE' ";
         $metaQuery .= "AND ".TABLE_LANGUAGES.".code = ".TABLE_CONFIGURATION.".configuration_value ";
         $metaQuery .= "AND ".TABLE_CONFIGURATION.".site_id= '".SITE_ID."' ";
-        $metaQuery .= "AND product_description.site_id= '".SITE_ID."' ";
+        $metaQuery .= "AND products_description.site_id= '".SITE_ID."' ";
         $metaQuery .= "AND categories_description.site_id= '".SITE_ID."' ";
 
         //Step 2. Narrow the search!

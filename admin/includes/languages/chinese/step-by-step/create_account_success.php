@@ -10,8 +10,8 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE_1', 'アカウントの作成');
-define('NAVBAR_TITLE_2', '完了');
-define('HEADING_TITLE', 'アカウントが作成されました!');
-define('TEXT_ACCOUNT_CREATED', 'アカウントの作成が完了しました！<br><br>続いて注文を作成します<br><br><br>新しい注文を作成する場合は「新しい商品」をクリックしてください。');
+define('NAVBAR_TITLE_1', '账号的创建');
+define('NAVBAR_TITLE_2', '完成');
+define('HEADING_TITLE', '账号创建完成!');
+define('TEXT_ACCOUNT_CREATED', '账号创建完成！<br><br>接着创建订单<br><br><br>订购新商品的时候，点击[新商品]。');
 ?>

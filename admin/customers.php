@@ -21,52 +21,52 @@
           $HTTP_POST_VARS[$col] = tep_an_zen_to_han($HTTP_POST_VARS[$col]);
         }
 
-        $customers_id = tep_db_prepare_input($HTTP_GET_VARS['cID']);
-        $customers_firstname = tep_db_prepare_input($HTTP_POST_VARS['customers_firstname']);
-        $customers_lastname = tep_db_prepare_input($HTTP_POST_VARS['customers_lastname']);
-        $customers_firstname_f = tep_db_prepare_input($HTTP_POST_VARS['customers_firstname_f']);
-        $customers_lastname_f = tep_db_prepare_input($HTTP_POST_VARS['customers_lastname_f']);
+        $customers_id            = tep_db_prepare_input($HTTP_GET_VARS['cID']);
+        $customers_firstname     = tep_db_prepare_input($HTTP_POST_VARS['customers_firstname']);
+        $customers_lastname      = tep_db_prepare_input($HTTP_POST_VARS['customers_lastname']);
+        $customers_firstname_f   = tep_db_prepare_input($HTTP_POST_VARS['customers_firstname_f']);
+        $customers_lastname_f    = tep_db_prepare_input($HTTP_POST_VARS['customers_lastname_f']);
         $customers_email_address = tep_db_prepare_input($HTTP_POST_VARS['customers_email_address']);
-        $customers_telephone = tep_db_prepare_input($HTTP_POST_VARS['customers_telephone']);
-        $customers_fax = tep_db_prepare_input($HTTP_POST_VARS['customers_fax']);
-        $customers_newsletter = tep_db_prepare_input($HTTP_POST_VARS['customers_newsletter']);
-        $customers_gender = tep_db_prepare_input($HTTP_POST_VARS['customers_gender']);
-        $customers_dob = tep_db_prepare_input($HTTP_POST_VARS['customers_dob']);
+        $customers_telephone     = tep_db_prepare_input($HTTP_POST_VARS['customers_telephone']);
+        $customers_fax           = tep_db_prepare_input($HTTP_POST_VARS['customers_fax']);
+        $customers_newsletter    = tep_db_prepare_input($HTTP_POST_VARS['customers_newsletter']);
+        $customers_gender        = tep_db_prepare_input($HTTP_POST_VARS['customers_gender']);
+        $customers_dob           = tep_db_prepare_input($HTTP_POST_VARS['customers_dob']);
 
-        $sql_data_array = array('customers_firstname' => $customers_firstname,
-                                'customers_lastname' => $customers_lastname,
-                                'customers_firstname_f' => $customers_firstname_f,
-                                'customers_lastname_f' => $customers_lastname_f,
+        $sql_data_array = array('customers_firstname'     => $customers_firstname,
+                                'customers_lastname'      => $customers_lastname,
+                                'customers_firstname_f'   => $customers_firstname_f,
+                                'customers_lastname_f'    => $customers_lastname_f,
                                 'customers_email_address' => $customers_email_address,
-                                'customers_telephone' => $customers_telephone,
-                                'customers_fax' => $customers_fax,
-                                'customers_newsletter' => $customers_newsletter);
+                                'customers_telephone'     => $customers_telephone,
+                                'customers_fax'           => $customers_fax,
+                                'customers_newsletter'    => $customers_newsletter);
 
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $customers_gender;
-        if (ACCOUNT_DOB == 'true') $sql_data_array['customers_dob'] = tep_date_raw($customers_dob);
-		
+        if (ACCOUNT_DOB    == 'true') $sql_data_array['customers_dob']    = tep_date_raw($customers_dob);
+        
         //Add Point System
-		if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
-		  $point = tep_db_prepare_input($HTTP_POST_VARS['point']);
-		  $sql_data_array['point'] = $point;
-		}		
+        if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
+          $point = tep_db_prepare_input($HTTP_POST_VARS['point']);
+          $sql_data_array['point'] = $point;
+        }
 
         tep_db_perform(TABLE_CUSTOMERS, $sql_data_array, 'update', "customers_id = '" . tep_db_input($customers_id) . "'");
 
         tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_account_last_modified = now() where customers_info_id = '" . tep_db_input($customers_id) . "'");
 
-        $default_address_id = tep_db_prepare_input($HTTP_POST_VARS['default_address_id']);
+        $default_address_id   = tep_db_prepare_input($HTTP_POST_VARS['default_address_id']);
         $entry_street_address = tep_db_prepare_input($HTTP_POST_VARS['entry_street_address']);
-        $entry_suburb = tep_db_prepare_input($HTTP_POST_VARS['entry_suburb']);
-        $entry_postcode = tep_db_prepare_input($HTTP_POST_VARS['entry_postcode']);
-        $entry_city = tep_db_prepare_input($HTTP_POST_VARS['entry_city']);
-        $entry_country_id = tep_db_prepare_input($HTTP_POST_VARS['entry_country_id']);
+        $entry_suburb         = tep_db_prepare_input($HTTP_POST_VARS['entry_suburb']);
+        $entry_postcode       = tep_db_prepare_input($HTTP_POST_VARS['entry_postcode']);
+        $entry_city           = tep_db_prepare_input($HTTP_POST_VARS['entry_city']);
+        $entry_country_id     = tep_db_prepare_input($HTTP_POST_VARS['entry_country_id']);
+        $entry_company        = tep_db_prepare_input($HTTP_POST_VARS['entry_company']);
+        $entry_state          = tep_db_prepare_input($HTTP_POST_VARS['entry_state']);
+        $entry_zone_id        = tep_db_prepare_input($HTTP_POST_VARS['entry_zone_id']);
+        $entry_telephone      = tep_db_prepare_input($HTTP_POST_VARS['customers_telephone']);
 
-        $entry_company = tep_db_prepare_input($HTTP_POST_VARS['entry_company']);
-        $entry_state = tep_db_prepare_input($HTTP_POST_VARS['entry_state']);
-        $entry_zone_id = tep_db_prepare_input($HTTP_POST_VARS['entry_zone_id']);
         if ($entry_zone_id > 0) $entry_state = '';
-        $entry_telephone = tep_db_prepare_input($HTTP_POST_VARS['customers_telephone']);
 
         $sql_data_array = array('entry_firstname' => $customers_firstname,
                                 'entry_lastname' => $customers_lastname,
@@ -77,12 +77,12 @@
                                 'entry_telephone' => $entry_telephone);
 
         if (ACCOUNT_COMPANY == 'true') $sql_data_array['entry_company'] = $entry_company;
-        if (ACCOUNT_SUBURB == 'true') $sql_data_array['entry_suburb'] = $entry_suburb;
+        if (ACCOUNT_SUBURB  == 'true') $sql_data_array['entry_suburb']  = $entry_suburb;
         if (ACCOUNT_STATE == 'true') {
-          $sql_data_array['entry_state'] = $entry_state;
+          $sql_data_array['entry_state']   = $entry_state;
           $sql_data_array['entry_zone_id'] = $entry_zone_id;
         }
-		
+
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', "customers_id = '" . tep_db_input($customers_id) . "' and address_book_id = '" . tep_db_input($default_address_id) . "'");
 
 		tep_redirect(tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $customers_id));
@@ -120,6 +120,7 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/general.js"></script>
 <?php
+  // 编辑页面
   if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'edit') {
 ?>
 <script language="javascript"><!--
@@ -478,20 +479,38 @@ function check_form() {
 ?>
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
-          <tr><?php echo tep_draw_form('search', FILENAME_CUSTOMERS, '', 'get'); ?>
+          <tr><?php echo tep_draw_form('search', FILENAME_CUSTOMERS, tep_get_all_get_params(), 'get'); ?>
             <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
-            <td class="smallText" align="right"><?php echo tep_draw_hidden_field('d', '龠') . HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search'); ?><br>※検索対象：「顧客名（姓/名/）」「ふりがな（姓/名）」「メールアドレス」
+            <td class="smallText" align="right"><?php //echo tep_draw_hidden_field('d', '龠');?><?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search'); ?><br>※検索対象：「顧客名（姓/名/）」「ふりがな（姓/名）」「メールアドレス」
 			
 			</td>
           </form></tr>
         </table></td>
       </tr>
       <tr>
+          <?php if (!isset($HTTP_GET_VARS['site_id']) || !$HTTP_GET_VARS['site_id']) {?>
+            all
+          <?php } else { ?>
+            <a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('site_id', 'page')));?>">all</a>
+          <?php } ?>
+          <?php foreach (tep_get_sites() as $site) {?>
+            <?php if (isset($HTTP_GET_VARS['site_id']) && $HTTP_GET_VARS['site_id'] == $site['id']) {?>
+              <?php echo $site['romaji'];?>
+            <?php } else {?>
+              <a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('site_id', 'page')) . 'site_id=' . $site['id']);?>">
+              <?php echo $site['romaji'];?>
+              </a>
+            <?php }?>
+          <?php }?>
+        </td>
+      </tr>
+      <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr class="dataTableHeadingRow">
+                <td class="dataTableHeadingContent" width="60"><?php echo TABLE_HEADING_SITE; ?></td>
                 <td class="dataTableHeadingContent" width="80"><?php echo TABLE_HEADING_MEMBER_TYPE; ?></td>
                 <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_LASTNAME; ?></td>
                 <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_FIRSTNAME; ?></td>
@@ -502,7 +521,7 @@ function check_form() {
     $search = '';
     if ( isset($HTTP_GET_VARS['search']) && ($HTTP_GET_VARS['search']) && (tep_not_null($HTTP_GET_VARS['search'])) ) {
       $keywords = tep_db_input(tep_db_prepare_input($HTTP_GET_VARS['search']));
-      $search = "where c.customers_lastname like '%" . $keywords . "%' or c.customers_firstname like '%" . $keywords . "%' or c.customers_email_address like '%" . $keywords . "' or c.customers_firstname_f like '%" . $keywords . "'  or c.customers_lastname_f like '%" . $keywords . "'";
+      $search = "and (c.customers_lastname like '%" . $keywords . "%' or c.customers_firstname like '%" . $keywords . "%' or c.customers_email_address like '%" . $keywords . "%' or c.customers_firstname_f like '%" . $keywords . "%'  or c.customers_lastname_f like '%" . $keywords . "%')";
     }
     $customers_query_raw = "
       select c.customers_id, 
@@ -510,9 +529,12 @@ function check_form() {
              c.customers_firstname, 
              c.customers_email_address, 
              a.entry_country_id, 
-             c.customers_guest_chk 
-      from " . TABLE_CUSTOMERS . " c 
-        left join " . TABLE_ADDRESS_BOOK . " a on c.customers_id = a.customers_id and c.customers_default_address_id = a.address_book_id " . $search . " 
+             c.customers_guest_chk,
+             s.romaji
+      from " . TABLE_CUSTOMERS . " c left join " . TABLE_ADDRESS_BOOK . " a on c.customers_id = a.customers_id and c.customers_default_address_id = a.address_book_id, " . TABLE_SITES . " s
+        where c.site_id = s.id
+        " . (isset($HTTP_GET_VARS['site_id']) && intval($HTTP_GET_VARS['site_id']) ? " and s.id = '" . intval($HTTP_GET_VARS['site_id']) . "' " : '') . "
+        " . $search . " 
       order by c.customers_lastname, c.customers_firstname
     ";
     $customers_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $customers_query_raw, $customers_query_numrows);
@@ -554,17 +576,18 @@ function check_form() {
 	    $type = TABLE_HEADING_MEMBER_TYPE_MEMBER;
 	  }
 
-      if ( (is_object($cInfo)) && ($customers['customers_id'] == $cInfo->customers_id) ) {
+      if ( (isset($cInfo) && is_object($cInfo)) && ($customers['customers_id'] == $cInfo->customers_id) ) {
         echo '          <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cInfo->customers_id . '&action=edit') . '\'">' . "\n";
       } else {
         echo '          <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID')) . 'cID=' . $customers['customers_id']) . '\'">' . "\n";
 	  }
 ?>
+                <td class="dataTableContent"><?php echo $customers['romaji']; ?></td>
                 <td class="dataTableContent"><?php echo $type; ?></td>
                 <td class="dataTableContent"><?php echo htmlspecialchars($customers['customers_lastname']); ?></td>
                 <td class="dataTableContent"><?php echo htmlspecialchars($customers['customers_firstname']); ?></td>
                 <td class="dataTableContent" align="right"><?php echo tep_date_short($info['date_account_created']); ?></td>
-                <td class="dataTableContent" align="right"><?php if ( (is_object($cInfo)) && ($customers['customers_id'] == $cInfo->customers_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID')) . 'cID=' . $customers['customers_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
+                <td class="dataTableContent" align="right"><?php if ( (isset($cInfo) && is_object($cInfo)) && ($customers['customers_id'] == $cInfo->customers_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID')) . 'cID=' . $customers['customers_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
               </tr>
 <?php
     }

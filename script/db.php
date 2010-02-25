@@ -105,6 +105,7 @@ while($desc = mysql_fetch_array($query)){
 }
 print("categories_description\n");
 
+/*
 //configuration!
 cp3table('configuration');
 foreach($sites as $s){
@@ -159,6 +160,7 @@ while($group = mysql_fetch_array($query)) {
       '" . $group['visible'] . "')";
   r3q($sql);
 }
+*/
 //contents*  unused
 cp3table('contents');
 //currencies%
@@ -173,13 +175,11 @@ foreach($sites as $s){
       color_id,
       color_tag,
       color_name,
-      sort_id,
-      site_id) values (
+      sort_id) values (
         NULL,
         '" . $color['color_tag'] . "',
         '" . $color['color_tag'] . "',
-        '" . $color['color_tag'] . "',
-        '" . site_id($s) . "'
+        '" . $color['color_tag'] . "'
       )";
     r3q($sql);
     $color_id = mysql_insert_id();
@@ -516,7 +516,7 @@ foreach($sites as $s){
              products_character
         )values(
              NULL,
-             '".$orders_id."',
+             '".$o['orders_id']."',
              '".$op['products_id']."',
              '".$op['products_model']."',
              '".$op['products_name']."',
@@ -542,7 +542,7 @@ foreach($sites as $s){
               attributes_id
             ) values (
               NULL,
-              '".$orders_id."',
+              '".$o['orders_id']."',
               '".$orders_products_id."',
               '".$opa['products_options']."',
               '".$opa['products_options_values']."',
@@ -566,7 +566,7 @@ foreach($sites as $s){
               download_count
             ) values (
               NULL,
-              '".$orders_id."',
+              '".$o['orders_id']."',
               '".$orders_products_id."',
               '".$opd['orders_products_filename']."',
               '".$opd['download_maxdays']."',
@@ -589,7 +589,7 @@ foreach($sites as $s){
           comments
           ) values (
             NULL,
-            '".$orders_id."',
+            '".$o['orders_id']."',
             '".$osh['orders_status_id']."',
             '".$osh['date_added']."',
             '".$osh['customer_notified']."',
@@ -610,7 +610,7 @@ foreach($sites as $s){
           sort_order
           ) values (
             NULL,
-            '".$orders_id."',
+            '".$o['orders_id']."',
             '".$ot['title']."',
             '".$ot['text']."',
             '".$ot['value']."',
@@ -702,7 +702,7 @@ cptable('wm_image_document_types', 'image_document_types');
 //information_page*
 cp3table('information_page');
 //languages%
-cptable('wm_languages', 'languages');
+//cptable('wm_languages', 'languages');
 //latest_news*
 cp3table('latest_news');
 //login+

@@ -10,11 +10,11 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', '入荷予定商品管理');
+define('HEADING_TITLE', '预定进货商品管理');
 
 define('TABLE_HEADING_PRODUCTS', '商品名');
-define('TABLE_HEADING_DATE_EXPECTED', '入荷予定日');
+define('TABLE_HEADING_DATE_EXPECTED', '预定进货时间');
 define('TABLE_HEADING_ACTION', '操作');
 
-define('TEXT_INFO_DATE_EXPECTED', '入荷予定日:');
+define('TEXT_INFO_DATE_EXPECTED', '预定进货日期:');
 ?>

@@ -10,6 +10,6 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE', '新しい顧客アカウント作成');
-define('HEADING_TITLE', '新しい顧客アカウント作成');
+define('NAVBAR_TITLE', '创建新账号');
+define('HEADING_TITLE', '创建新账号');
 ?>

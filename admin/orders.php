@@ -5,45 +5,9 @@
   require('includes/application_top.php');
 
   require(DIR_WS_CLASSES . 'currencies.php');
-  
-  // replace actor name in mail
-  function orders_a($orders_id, $allorders = null)
-  {
-      static $products;
-      $str = "";
-      if ($allorders && $products === null) {
-        foreach($allorders as $o) {
-          $allorders_ids[] = $o['orders_id'];
-        }
-        $sql = "select * from ".TABLE_ORDERS_PRODUCTS." op, ".TABLE_PRODUCTS_DESCRIPTION." pd WHERE op.products_id=pd.products_id and `orders_id` IN ('".join("','", $allorders_ids)."')";
-        $orders_products_query = tep_db_query($sql);
-        while ($product = tep_db_fetch_array($orders_products_query)) {
-          $products[$product['orders_id']][] = $product;
-        }
-      }
-      if ($products[$orders_id]) {
-        foreach($products[$orders_id] as $p){
-            $str .= $p['products_name'] . " 当社のキャラクター名：\n";
-            $str .= $p['products_attention_5'] . "\n";
-        }
-      } else {
-      	  $sql = "select * from `".TABLE_ORDERS_PRODUCTS."` WHERE `orders_id`='".$orders_id."'";
-      	  $orders_products_query = tep_db_query($sql);
-      	  while ($orders_products = tep_db_fetch_array($orders_products_query)){
-      	  	  $sql = "select * from `".TABLE_PRODUCTS_DESCRIPTION."` WHERE `products_id`='".$orders_products['products_id']."'";
-      	  	  $products_description = tep_db_fetch_array(tep_db_query($sql));
-      	  	  if ($products_description['products_attention_5']) {
-    	  	  	  $str .= $orders_products['products_name']." 当社のキャラクター名：\n";
-    	  	  	  $str .= $products_description['products_attention_5'] . "\n";
-      	  	  }
-      	  }
-      }
-  	  return $str;
-  }
-  
-  $currencies = new currencies();
 
-  $orders_statuses = array();
+  $currencies          = new currencies();
+  $orders_statuses     = array();
   $orders_status_array = array();
   $orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_ORDERS_STATUS . " where language_id = '" . $languages_id . "'");
   while ($orders_status = tep_db_fetch_array($orders_status_query)) {
@@ -52,7 +16,8 @@
     $orders_status_array[$orders_status['orders_status_id']] = $orders_status['orders_status_name'];
   }
 
-  switch (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action']) {
+  if ($HTTP_GET_VARS['action']) 
+  switch ($HTTP_GET_VARS['action']) {
     //一括変更----------------------------------
 	case 'sele_act':
 	  if($HTTP_POST_VARS['chk'] == ""){
@@ -60,9 +25,9 @@
 		tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action'))));
 	  }else{
 	    foreach($HTTP_POST_VARS['chk'] as $value){
-		  $oID = $value;
-		  $status = tep_db_prepare_input($HTTP_POST_VARS['status']);
-		  $title = tep_db_prepare_input($HTTP_POST_VARS['os_title']);
+		  $oID      = $value;
+		  $status   = tep_db_prepare_input($HTTP_POST_VARS['status']);
+		  $title    = tep_db_prepare_input($HTTP_POST_VARS['os_title']);
 		  $comments = tep_db_prepare_input($HTTP_POST_VARS['comments']);
 	  
 		  $order_updated = false;
@@ -84,7 +49,6 @@
 		      $result4 = tep_db_fetch_array($query4);
 		  
 		    // ここからカスタマーレベルに応じたポイント還元率算出============================================================
-		    // 2005.11.17 K.Kaneko
 		    if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
 		      $customer_id = $result1['customers_id'];
 		      //設定した期間内の注文合計金額を算出------------
@@ -134,7 +98,6 @@
 		    }
 		    // ここまでカスタマーレベルに応じたポイント還元率算出============================================================
 		  
-		      //$get_point = ($result3['value'] - (int)$result2['value']) * MODULE_ORDER_TOTAL_POINT_FEE;
 		      $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
 		  
 		      $plus = $result4['point'] + $get_point;
@@ -180,7 +143,6 @@
       $messageStack->add_session('注文ID' . $oID . 'の' . WARNING_ORDER_NOT_UPDATED, 'warning');
     }
 		}
-    //tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '" . tep_db_input($comments)  . "')");
 
 	    tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action'))));
 	  }
@@ -212,7 +174,6 @@
 		  $result4 = tep_db_fetch_array($query4);
 		  
 		// ここからカスタマーレベルに応じたポイント還元率算出============================================================
-		// 2005.11.17 K.Kaneko
 		if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
 		  $customer_id = $result1['customers_id'];
 		  //設定した期間内の注文合計金額を算出------------
@@ -262,7 +223,6 @@
 		}
 		// ここまでカスタマーレベルに応じたポイント還元率算出============================================================
 		  
-		  //$get_point = ($result3['value'] - (int)$result2['value']) * MODULE_ORDER_TOTAL_POINT_FEE;
 		  $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
 		  
 		  $plus = $result4['point'] + $get_point;
@@ -334,33 +294,6 @@
 
   include(DIR_WS_CLASSES . 'order.php');
   
-  //mail本文を取得----------------------------------
-  /*
-  $suu = 0;
-  $text_suu = 0;  
-  $select_query = tep_db_query("select * from " . TABLE_ORDERS_STATUS . " where language_id = " . $languages_id . " order by orders_status_id");
-  while($select_result = tep_db_fetch_array($select_query)){
-    
-	if($suu == 0){
-	  $select_select = $select_result['orders_status_id'];
-	  $suu = 1;
-	}
-	
-	$osid = $select_result['orders_status_id'];
-  
-    $mt_query = tep_db_query("select orders_status_mail,orders_status_title from ".TABLE_ORDERS_MAIL." where language_id = " . $languages_id . " and orders_status_id = " . $osid);
-    $mt_result = tep_db_fetch_array($mt_query);
-	
-	if($text_suu == 0){
-	  $select_text = $mt_result['orders_status_mail'];
-	  $select_title = $mt_result['orders_status_title'];
-	  $text_suu = 1;
-	}
-	
-	$mt[$osid] = $mt_result['orders_status_mail'];
-	$mo[$osid] = $mt_result['orders_status_title'];
-	
-  }*/
   //------------------------------------------------
   $suu = 0;
   $text_suu = 0;  
@@ -418,7 +351,6 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/all_order.js"></script>
 <script language="javascript">
-	// edit 2009.5.27 - maker
 	window.status_text = new Array();
 	window.last_status = 0;
 
@@ -468,16 +400,6 @@ function mail_text(st,tt,ot){
   }
   window.last_status = idx;
   document.sele_act.elements[tt].value = window.status_text[CI].replace('${ORDER_A}', window.orderStr[chk[0]]);
-
-  /*switch(CI){
-    <?php
-	  foreach ($mt as $key => $value){
-		echo "case '" . $key . "':" . "\n";
-		echo 'document.sele_act.elements[tt].value = "' . str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'),$value) . '";' . "\n";
-		echo 'break;' . "\n";
-	  }
-	?>
-  } */
 
   switch(CI){
     <?php
@@ -778,8 +700,8 @@ function mail_text(st,tt,ot){
 		  }
 		  
 		  $mail_sele = tep_db_query($ma_se);
-		  $mail_sql = tep_db_fetch_array($mail_sele);
-		  $sta = $HTTP_GET_VARS['status'];
+		  $mail_sql  = tep_db_fetch_array($mail_sele);
+		  $sta       = $HTTP_GET_VARS['status'];
 	  ?>
 	  <tr>
 	    <td class="main"><b><?php echo ENTRY_EMAIL_TITLE; ?></b><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title']); ?></td>
@@ -821,7 +743,7 @@ function mail_text(st,tt,ot){
       <tr>
     <td colspan="2" align="right">
 		<?php echo '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action','status'))) . '">' . tep_image_button('button_back.gif', IMAGE_BACK) . '</a>'; ?></td>
-		<?php //edit//]]echo '<a href="' . tep_href_link(FILENAME_ORDERS_INVOICE, 'oID=' . $HTTP_GET_VARS['oID']) . '" TARGET="_blank">' . tep_image_button('button_invoice.gif', IMAGE_ORDERS_INVOICE) . '</a> <a href="' . tep_href_link(FILENAME_ORDERS_PACKINGSLIP, 'oID=' . $HTTP_GET_VARS['oID']) . '" TARGET="_blank">' . tep_image_button('button_packingslip.gif', IMAGE_ORDERS_PACKINGSLIP) . '</a> <a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action','status'))) . '">' . tep_image_button('button_back.gif', IMAGE_BACK) . '</a>'; ?></td>
+    </td>
       </tr>
 <?php
   } else {
@@ -869,7 +791,7 @@ function mail_text(st,tt,ot){
       <select name="s_y">
 			<?php
 			for($i=2002; $i<2011; $i++) {
-			  if($i == date(Y)){
+			  if($i == date('Y')){
 			    echo '<option value="'.$i.'" selected>'.$i.'</option>'."\n" ;
 			  }else{
 			    echo '<option value="'.$i.'">'.$i.'</option>'."\n" ;
@@ -881,7 +803,7 @@ function mail_text(st,tt,ot){
       <select name="s_m">
 			<?php
 			for($i=1; $i<13; $i++) {
-			  if($i == date(m)-1){
+			  if($i == date('m')-1){
 			    echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
 			  }else{
 			    echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
@@ -893,7 +815,7 @@ function mail_text(st,tt,ot){
       <select name="s_d">
 			<?php
 			for($i=1; $i<32; $i++) {
-			  if($i == date(d)){
+			  if($i == date('d')){
 			    echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
 			  }else{
 			    echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
@@ -907,7 +829,7 @@ function mail_text(st,tt,ot){
       <select name="e_y">
 			<?php
 			for($i=2002; $i<2011; $i++) {
-			  if($i == date(Y)){
+			  if($i == date('Y')){
 			    echo '<option value="'.$i.'" selected>'.$i.'</option>'."\n" ;
 			  }else{
 			    echo '<option value="'.$i.'">'.$i.'</option>'."\n" ;
@@ -919,7 +841,7 @@ function mail_text(st,tt,ot){
       <select name="e_m">
 			<?php
 			for($i=1; $i<13; $i++) {
-			  if($i == date(m)){
+			  if($i == date('m')){
 			    echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
 			  }else{
 			    echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
@@ -931,7 +853,7 @@ function mail_text(st,tt,ot){
       <select name="e_d">
 			<?php
 			for($i=1; $i<32; $i++) {
-			  if($i == date(d)){
+			  if($i == date('d')){
 			    echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
 			  }else{
 			    echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
@@ -1030,27 +952,43 @@ function mail_text(st,tt,ot){
 	  }
 	  
 	  $orders_query_raw .= " order by o.torihiki_date DESC";
-      //$orders_query_raw = "select o.orders_id, o.customers_name, o.date_send, o.payment_method, o.date_purchased, o.last_modified, o.currency, o.currency_value, s.orders_status_name, ot.text as order_total  from " . TABLE_ORDERS . " o, " . TABLE_ORDERS_TOTAL . " ot, " . TABLE_ORDERS_STATUS . " s where o.orders_id = ot.orders_id and (o.customers_name like '%" . $keywords . "%' or o.customers_email_address like '%" . $keywords . "%') and o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "' and ot.class = 'ot_total' order by o.orders_id DESC";
 	} else {
-      $orders_query_raw = "select s.orders_status_id, o.orders_id, o.torihiki_date, o.customers_id, o.customers_name, o.payment_method, o.date_purchased, o.last_modified, o.currency, o.currency_value, s.orders_status_name, s.orders_status_image, ot.text as order_total from " . TABLE_ORDERS . " o left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s where o.orders_status = s.orders_status_id and ((s.orders_status_id != '2') and (s.orders_status_id != '5') and (s.orders_status_id != '6') and (s.orders_status_id != '7') and (s.orders_status_id != '8')) and s.language_id = '" . $languages_id . "' and ot.class = 'ot_total' order by o.torihiki_date DESC";
+      $orders_query_raw = "
+        select s.orders_status_id, 
+               o.orders_id, 
+               o.torihiki_date, 
+               o.customers_id, 
+               o.customers_name, 
+               o.payment_method, 
+               o.date_purchased, 
+               o.last_modified, 
+               o.currency, 
+               o.currency_value, 
+               s.orders_status_name, 
+               s.orders_status_image, 
+               ot.text as order_total 
+         from " . TABLE_ORDERS . " o 
+           left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s 
+         where o.orders_status = s.orders_status_id 
+           and ((s.orders_status_id != '2') 
+           and (s.orders_status_id != '5') 
+           and (s.orders_status_id != '6') 
+           and (s.orders_status_id != '7') 
+           and (s.orders_status_id != '8')) 
+           and s.language_id = '" . $languages_id . "' 
+           and ot.class = 'ot_total' 
+         order by o.torihiki_date DESC
+      ";
     }
-	
+
     $orders_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_ORDERS_RESULTS, $orders_query_raw, $orders_query_numrows);
     $orders_query = tep_db_query($orders_query_raw);
-    $allorders = $allorders_ids = array();
+    $allorders    = $allorders_ids = array();
     while ($orders = tep_db_fetch_array($orders_query)) {
       $allorders[] = $orders;
-      if (((!$HTTP_GET_VARS['oID']) || ($HTTP_GET_VARS['oID'] == $orders['orders_id'])) && (!$oInfo)) {
-    $oInfo = new objectInfo($orders);
+      if (((!isset($HTTP_GET_VARS['oID']) || !$HTTP_GET_VARS['oID']) || ($HTTP_GET_VARS['oID'] == $orders['orders_id'])) && (!isset($oInfo) || !$oInfo)) {
+        $oInfo = new objectInfo($orders);
       }
-
-      /*
-	  if ( (is_object($oInfo)) && ($orders['orders_id'] == $oInfo->orders_id) ) {
-    echo '    <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $oInfo->orders_id . '&action=edit') . '\'">' . "\n";
-      } else {
-    echo '    <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID')) . 'oID=' . $orders['orders_id']) . '\'">' . "\n";
-      }
-	  */
 
 	//今日の取引なら赤色
 	$trade_array = getdate(strtotime(tep_datetime_short($orders['torihiki_date'])));
@@ -1067,13 +1005,22 @@ function mail_text(st,tt,ot){
 		$next_mark = '';
 	}
 	
-	  echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="over_color(' . $orders['orders_id'] . ')" onmouseout="out_color(' . $orders['orders_id'] . ')">' . "\n";
+  if ( (isset($oInfo) && is_object($oInfo)) && ($orders['orders_id'] == $oInfo->orders_id) ) {
+	  echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'">' . "\n";
+  } else {
+	  echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'">' . "\n";
+  }
 ?>
     
-				<td style="border-bottom:1px solid #000000;" class="dataTableContent"><input type="checkbox" name="chk[]" value="<?php echo $orders['orders_id']; ?>" onClick="chg_tr_color(this)"></td>
-				<td style="border-bottom:1px solid #000000;" class="dataTableContent" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><?php echo '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $orders['orders_id'] . '&action=edit') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;
-				<a href="' . tep_href_link('orders.php', 'cID=' . tep_output_string_protected($orders['customers_id'])) . '">' . tep_image(DIR_WS_ICONS . 'search.gif', '過去の注文') . '</a>&nbsp;
-				<a href="' . tep_href_link('customers.php', 'page=1&cID=' . tep_output_string_protected($orders['customers_id']) . '&action=edit') . '">' . tep_image(DIR_WS_ICONS . 'arrow_r_red.gif', '顧客情報') . '</a>&nbsp;&nbsp;<b>' . tep_output_string_protected($orders['customers_name']) . '</b>'; ?></td>
+				<td style="border-bottom:1px solid #000000;" class="dataTableContent">
+          <input type="checkbox" name="chk[]" value="<?php echo $orders['orders_id']; ?>" onClick="chg_tr_color(this)">
+        </td>
+				<td style="border-bottom:1px solid #000000;" class="dataTableContent" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)">
+          <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $orders['orders_id'] . '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);?></a>&nbsp;
+          <a href="<?php echo tep_href_link('orders.php', 'cID=' . tep_output_string_protected($orders['customers_id']));?>"><?php echo tep_image(DIR_WS_ICONS . 'search.gif', '過去の注文');?></a>&nbsp;
+          <a href="<?php echo tep_href_link('customers.php', 'page=1&cID=' . tep_output_string_protected($orders['customers_id']) . '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS . 'arrow_r_red.gif', '顧客情報');?></a>&nbsp;&nbsp;
+          <b><?php echo tep_output_string_protected($orders['customers_name']);?></b>
+        </td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><?php echo strip_tags($orders['order_total']); ?></td>
 			    
 				<td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><?php echo $next_mark; ?><font color="<?php echo $today_color; ?>"><?php echo tep_datetime_short($orders['torihiki_date']); ?></font></td>
@@ -1082,34 +1029,13 @@ function mail_text(st,tt,ot){
 
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="center" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)">
     <?php 
-      /*
-    	$_orders_status_history_query_raw = "select * from `".TABLE_ORDERS_STATUS_HISTORY."` WHERE `orders_id`='".$orders['orders_id']."' order by `date_added` asc";
-    	$_orders_status_history_query    = tep_db_query($_orders_status_history_query_raw);
-    	$_osh = array();
-    	$_osi = false;
-    	while ($_orders_status_history = tep_db_fetch_array($_orders_status_history_query)){
-    		$_orders_status_query_raw  = "select * from `".TABLE_ORDERS_STATUS."` WHERE `orders_status_id`='".$_orders_status_history['orders_status_id']."'";
-    		$_orders_status_query      = tep_db_query($_orders_status_query_raw);
-    		$_orders_status            = tep_db_fetch_array($_orders_status_query);
-    		if(!in_array($_orders_status_history['orders_status_id'], $_osh)
-    		&& !is_dir(tep_get_local_path(DIR_FS_CATALOG_IMAGES).DIRECTORY_SEPARATOR.$_orders_status['orders_status_image']) 
-    		&& file_exists(tep_get_local_path(DIR_FS_CATALOG_IMAGES).DIRECTORY_SEPARATOR.$_orders_status['orders_status_image'])){
-    			echo tep_image(DIR_WS_CATALOG_IMAGES . $_orders_status['orders_status_image'], $_orders_status['orders_status_image'], 15, 15, ($_orders_status['orders_status_id'] == $orders['orders_status_id'])?'style="vertical-align: middle;"':'style="vertical-align: middle;"');
-    			$_osi = $_osi or true;
-    		}
-       		$_osh[] = $_orders_status_history['orders_status_id'];
-    	}
-    	if(!$_osi){
-    		echo '　';
-    	}
-        */
     // ===============================================================
         $___orders_status_query = tep_db_query("select orders_status_id from `".TABLE_ORDERS_STATUS_HISTORY."` WHERE `orders_id`='".$orders['orders_id']."' order by `date_added` asc");
-    	$___orders_status_ids   = array();
+        $___orders_status_ids   = array();
         while($___orders_status = tep_db_fetch_array($___orders_status_query)){
           $___orders_status_ids[] = $___orders_status['orders_status_id'];
         }
-    	$_orders_status_history_query_raw = "select * from `".TABLE_ORDERS_STATUS."` WHERE `orders_status_id` IN (".join(',',$___orders_status_ids).")";
+        $_orders_status_history_query_raw = "select * from `".TABLE_ORDERS_STATUS."` WHERE `orders_status_id` IN (".join(',',$___orders_status_ids).")";
         $_orders_status_history_query    = tep_db_query($_orders_status_history_query_raw);    	$_osh = array();
     	$_osi = false;
     	while ($_orders_status_history = tep_db_fetch_array($_orders_status_history_query)){
@@ -1128,7 +1054,12 @@ function mail_text(st,tt,ot){
     ?>
     </td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><font color="<?php echo $today_color; ?>"><?php echo $orders['orders_status_name']; ?></font></td>
-    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php if ( (is_object($oInfo)) && ($orders['orders_id'] == $oInfo->orders_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID')) . 'oID=' . $orders['orders_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
+    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php 
+    if ( isset($oInfo) && (is_object($oInfo)) && ($orders['orders_id'] == $oInfo->orders_id) ) { 
+      echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); 
+    } else { 
+      echo '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID')) . 'oID=' . $orders['orders_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
+    } ?>&nbsp;</td>
     </tr>
 <?php }?>
       </table>

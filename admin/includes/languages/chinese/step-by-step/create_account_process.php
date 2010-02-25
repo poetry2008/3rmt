@@ -9,7 +9,7 @@
 
   Released under the GNU General Public License
 */
-define('HEADING_TITLE', '新しい顧客アカウント作成');
-define('HEADING_NEW', '注文手続き');
-define('NAVBAR_NEW_TITLE', '注文手続き');
+define('HEADING_TITLE', '创建新的顾客账号');
+define('HEADING_NEW', '订购手续');
+define('NAVBAR_NEW_TITLE', '订购手续');
 ?>

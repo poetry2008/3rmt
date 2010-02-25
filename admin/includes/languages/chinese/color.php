@@ -10,29 +10,29 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', '商品カラー登録');
+define('HEADING_TITLE', '商品颜色登录');
 
-define('TABLE_HEADING_COLORS', '商品カラー名');
+define('TABLE_HEADING_COLORS', '商品颜色名');
 define('TABLE_HEADING_ACTION', '操作');
 
-define('TEXT_HEADING_NEW_MANUFACTURER', '新しい商品カラー');
-define('TEXT_HEADING_EDIT_MANUFACTURER', '商品カラーを編集');
-define('TEXT_HEADING_DELETE_MANUFACTURER', '商品カラーを削除');
+define('TEXT_HEADING_NEW_MANUFACTURER', '新商品颜色');
+define('TEXT_HEADING_EDIT_MANUFACTURER', '编集商品颜色');
+define('TEXT_HEADING_DELETE_MANUFACTURER', '删除商品颜色');
 
-define('TEXT_COLORS', '商品カラー:');
-define('TEXT_IMAGE_NONEXISTENT', '画像が存在しません');
+define('TEXT_COLORS', '商品颜色:');
+define('TEXT_IMAGE_NONEXISTENT', '图片不存在');
 
-define('TEXT_NEW_INTRO', '新しい商品カラーの情報を入力してください');
-define('TEXT_EDIT_INTRO', '必要な変更を加えてください');
+define('TEXT_NEW_INTRO', '输入新商品的颜色信息');
+define('TEXT_EDIT_INTRO', '添加必要的更改');
 
-define('TEXT_COLORS_NAME', '商品カラー名:');
-define('TEXT_COLORS_TAG', 'カラータグ(ex:#FFCC00):');
-define('TEXT_COLORS_TAG2', 'カラータグ:');
+define('TEXT_COLORS_NAME', '商品颜色名:');
+define('TEXT_COLORS_TAG', '颜色标签(ex:#FFCC00):');
+define('TEXT_COLORS_TAG2', '颜色标签:');
 
-define('TEXT_DELETE_INTRO', '本当にこの商品カラーを削除しますか?');
+define('TEXT_DELETE_INTRO', '确定删除商品颜色吗？');
 
-define('ERROR_DIRECTORY_NOT_WRITEABLE', 'エラー: このディレクトリに書き込みできません。正しいユーザ権限を %s に設定してください。');
-define('ERROR_DIRECTORY_DOES_NOT_EXIST', 'エラー: %s ディレクトリが存在しません。');
+define('ERROR_DIRECTORY_NOT_WRITEABLE', '错误: 无法写入目录。在 %s 设置正确的用户权限。');
+define('ERROR_DIRECTORY_DOES_NOT_EXIST', '错误: %s 目录不存在。');
 
-define('TEXT_DISPLAY_NUMBER_OF_COLORS', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の商品カラーのうち)')
+define('TEXT_DISPLAY_NUMBER_OF_COLORS', '<b>%d</b> &sim; <b>%d</b> 显示某号 (<b>%d</b> 个商品颜色中)')
 ?>

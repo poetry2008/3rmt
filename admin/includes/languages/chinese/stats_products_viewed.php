@@ -10,9 +10,9 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', '商品別の閲覧回数順位');
+define('HEADING_TITLE', '各商品的浏览次数排序');
 
 define('TABLE_HEADING_NUMBER', 'No.');
 define('TABLE_HEADING_PRODUCTS', '商品名');
-define('TABLE_HEADING_VIEWED', '閲覧回数');
+define('TABLE_HEADING_VIEWED', '浏览次数');
 ?>

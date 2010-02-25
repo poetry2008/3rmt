@@ -1994,4 +1994,53 @@ function tep_get_image_document_image($document_id)
     return null;
   }
 }
+  // orders.php
+  // replace actor name in mail
+  function orders_a($orders_id, $allorders = null)
+  {
+      static $products;
+      $str = "";
+      if ($allorders && $products === null) {
+        foreach($allorders as $o) {
+          $allorders_ids[] = $o['orders_id'];
+        }
+        $sql = "select * from ".TABLE_ORDERS_PRODUCTS." op, ".TABLE_PRODUCTS_DESCRIPTION." pd WHERE op.products_id=pd.products_id and `orders_id` IN ('".join("','", $allorders_ids)."')";
+        $orders_products_query = tep_db_query($sql);
+        while ($product = tep_db_fetch_array($orders_products_query)) {
+          $products[$product['orders_id']][] = $product;
+        }
+      }
+      if ($products[$orders_id]) {
+        foreach($products[$orders_id] as $p){
+            $str .= $p['products_name'] . " 当社のキャラクター名：\n";
+            $str .= $p['products_attention_5'] . "\n";
+        }
+      } else {
+      	  $sql = "select * from `".TABLE_ORDERS_PRODUCTS."` WHERE `orders_id`='".$orders_id."'";
+      	  $orders_products_query = tep_db_query($sql);
+      	  while ($orders_products = tep_db_fetch_array($orders_products_query)){
+      	  	  $sql = "select * from `".TABLE_PRODUCTS_DESCRIPTION."` WHERE `products_id`='".$orders_products['products_id']."'";
+      	  	  $products_description = tep_db_fetch_array(tep_db_query($sql));
+      	  	  if ($products_description['products_attention_5']) {
+    	  	  	  $str .= $orders_products['products_name']." 当社のキャラクター名：\n";
+    	  	  	  $str .= $products_description['products_attention_5'] . "\n";
+      	  	  }
+      	  }
+      }
+  	  return $str;
+  }
+
+  function tep_get_sites() {
+    $sites = array();
+    $sites_query = tep_db_query("
+        select * 
+        from " . TABLE_SITES . "
+        order by order_num ASC
+    ");
+    while ($site = tep_db_fetch_array($sites_query)) {
+      $sites[] = $site;
+    }
+    return $sites;
+  }
+  
 ?>

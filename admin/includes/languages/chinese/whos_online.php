@@ -10,17 +10,17 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', 'オンラインユーザ');
+define('HEADING_TITLE', '在线用户');
 
-define('TABLE_HEADING_ONLINE', '経過時間');
+define('TABLE_HEADING_ONLINE', '经过时间');
 define('TABLE_HEADING_CUSTOMER_ID', 'ID');
-define('TABLE_HEADING_FULL_NAME', '氏名');
-define('TABLE_HEADING_IP_ADDRESS', 'IP アドレス');
-define('TABLE_HEADING_ENTRY_TIME', '接続時刻');
-define('TABLE_HEADING_LAST_CLICK', '最新のクリック');
-define('TABLE_HEADING_LAST_PAGE_URL', '最新のURL');
+define('TABLE_HEADING_FULL_NAME', '姓名');
+define('TABLE_HEADING_IP_ADDRESS', 'IP 地址');
+define('TABLE_HEADING_ENTRY_TIME', '持续时间');
+define('TABLE_HEADING_LAST_CLICK', '最新的点击');
+define('TABLE_HEADING_LAST_PAGE_URL', '最新的URL');
 define('TABLE_HEADING_ACTION', '操作');
-define('TABLE_HEADING_SHOPPING_CART', 'ユーザのショッピングカート');
-define('TEXT_SHOPPING_CART_SUBTOTAL', '小計');
-define('TEXT_NUMBER_OF_CUSTOMERS', '現在、%s 人の顧客が接続しています');
+define('TABLE_HEADING_SHOPPING_CART', '用户的购物卡');
+define('TEXT_SHOPPING_CART_SUBTOTAL', '小计');
+define('TEXT_NUMBER_OF_CUSTOMERS', '现在、%s名顾客在线');
 ?>

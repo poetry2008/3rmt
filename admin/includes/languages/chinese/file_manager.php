@@ -10,29 +10,29 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', 'ファイル管理');
+define('HEADING_TITLE', '文件管理');
 
-define('TABLE_HEADING_FILENAME', 'ファイル名');
-define('TABLE_HEADING_SIZE', 'サイズ');
-define('TABLE_HEADING_PERMISSIONS', 'パーミッション');
-define('TABLE_HEADING_USER', 'ユーザ');
-define('TABLE_HEADING_GROUP', 'グループ');
-define('TABLE_HEADING_LAST_MODIFIED', '更新日');
+define('TABLE_HEADING_FILENAME', '文件名');
+define('TABLE_HEADING_SIZE', '大小');
+define('TABLE_HEADING_PERMISSIONS', 'Permission');
+define('TABLE_HEADING_USER', '用户');
+define('TABLE_HEADING_GROUP', '组');
+define('TABLE_HEADING_LAST_MODIFIED', '更新日期');
 define('TABLE_HEADING_ACTION', '操作');
 
-define('TEXT_INFO_HEADING_UPLOAD', 'アップロード');
-define('TEXT_FILE_NAME', 'ファイル名:');
-define('TEXT_FILE_SIZE', 'サイズ:');
+define('TEXT_INFO_HEADING_UPLOAD', '上传');
+define('TEXT_FILE_NAME', '文件名:');
+define('TEXT_FILE_SIZE', '大小:');
 define('TEXT_FILE_CONTENTS', '内容:');
-define('TEXT_LAST_MODIFIED', '更新日:');
-define('TEXT_NEW_FOLDER', '新しいフォルダ');
-define('TEXT_NEW_FOLDER_INTRO', '新しいフォルダの名前を入力:');
-define('TEXT_DELETE_INTRO', '本当にこのファイルを削除しますか?');
-define('TEXT_UPLOAD_INTRO', 'アップロードするファイルを選択');
+define('TEXT_LAST_MODIFIED', '更新日期:');
+define('TEXT_NEW_FOLDER', '新文件夹');
+define('TEXT_NEW_FOLDER_INTRO', '输入新文件夹的名字:');
+define('TEXT_DELETE_INTRO', '确定删除这个文件夹吗?');
+define('TEXT_UPLOAD_INTRO', '选择上传的文件夹');
 
-define('ERROR_DIRECTORY_NOT_WRITEABLE', 'エラー: このディレクトリに書き込みできません。正しいユーザ権限を %s に設定してください。');
-define('ERROR_FILE_NOT_WRITEABLE', 'エラー: このファイルに書き込みできません。正しいユーザ権限を %s に設定してください。');
-define('ERROR_DIRECTORY_NOT_REMOVEABLE', 'エラー: このディレクトリを削除できません。正しいユーザ権限を %s に設定してください。');
-define('ERROR_FILE_NOT_REMOVEABLE', 'エラー: このファイルを削除できません。正しいユーザ権限を %s に設定してください。');
-define('ERROR_DIRECTORY_DOES_NOT_EXIST', 'エラー: %s ディレクトリが存在しません。');
+define('ERROR_DIRECTORY_NOT_WRITEABLE', '错误: 无法写入目录。在 %s 设置正确的用户权限。');
+define('ERROR_FILE_NOT_WRITEABLE', '错误: 无法写入文件夹。在%s 设置正确的用户权限');
+define('ERROR_DIRECTORY_NOT_REMOVEABLE', '错误: 目录无法删除.在 %s 设定正确的用户权限。');
+define('ERROR_FILE_NOT_REMOVEABLE', '错误: 文件无法。在を %s设定正确的用户权限。');
+define('ERROR_DIRECTORY_DOES_NOT_EXIST', '错误: %s 目录不存在。');
 ?>

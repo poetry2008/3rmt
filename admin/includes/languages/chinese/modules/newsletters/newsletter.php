@@ -10,5 +10,5 @@
   Released under the GNU General Public License
 */
 
-define('TEXT_COUNT_CUSTOMERS', 'メールマガジンを受信する顧客数: %s');
+define('TEXT_COUNT_CUSTOMERS', '接收邮件杂志的顾客数: %s');
 ?>

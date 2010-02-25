@@ -10,34 +10,34 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', '処理を選択してください...');
+define('HEADING_TITLE', ' 选择处理...');
 
-define('BOX_TITLE_ORDERS', '注文');
-define('BOX_TITLE_STATISTICS', '統計');
+define('BOX_TITLE_ORDERS', '订购');
+define('BOX_TITLE_STATISTICS', '统计');
 
-define('BOX_ENTRY_SUPPORT_SITE', 'サポートサイト');
-define('BOX_ENTRY_SUPPORT_FORUMS', 'サポートフォーラム');
-define('BOX_ENTRY_MAILING_LISTS', 'メーリングリスト');
-define('BOX_ENTRY_BUG_REPORTS', 'バグレポート');
-define('BOX_ENTRY_FAQ', 'よくある質問');
-define('BOX_ENTRY_LIVE_DISCUSSIONS', 'ディスカッション');
-define('BOX_ENTRY_CVS_REPOSITORY', 'CVS リポジトリ');
-define('BOX_ENTRY_INFORMATION_PORTAL', 'インフォメーション');
+define('BOX_ENTRY_SUPPORT_SITE', '支持网站');
+define('BOX_ENTRY_SUPPORT_FORUMS', '网站论坛');
+define('BOX_ENTRY_MAILING_LISTS', '邮寄列表');
+define('BOX_ENTRY_BUG_REPORTS', '错误报告');
+define('BOX_ENTRY_FAQ', 'FAQ');
+define('BOX_ENTRY_LIVE_DISCUSSIONS', '讨论');
+define('BOX_ENTRY_CVS_REPOSITORY', 'CVS 库');
+define('BOX_ENTRY_INFORMATION_PORTAL', '信息');
 
-define('BOX_ENTRY_CUSTOMERS', '顧客数:');
+define('BOX_ENTRY_CUSTOMERS', '顾客数:');
 define('BOX_ENTRY_PRODUCTS', '商品数:');
-define('BOX_ENTRY_REVIEWS', 'レビュー数:');
+define('BOX_ENTRY_REVIEWS', '评论数:');
 
-define('BOX_CONNECTION_PROTECTED', 'この接続は %s secure SSL connection で保護されています.');
-define('BOX_CONNECTION_UNPROTECTED', 'この接続は secure SSL connection による<font color="#ff0000">保護がありません</font>.');
-define('BOX_CONNECTION_UNKNOWN', '接続状態不明');
+define('BOX_CONNECTION_PROTECTED', '这个接续在 %s secure SSL connection 中被保护.');
+define('BOX_CONNECTION_UNPROTECTED', '这个接续没有通过 secure SSL connection  <font color="#ff0000">保护</font>.');
+define('BOX_CONNECTION_UNKNOWN', '接续状态不明');
 
-define('CATALOG_CONTENTS', '商品登録');
+define('CATALOG_CONTENTS', '商品登录');
 
-define('REPORTS_PRODUCTS', '商品別');
-define('REPORTS_ORDERS', '顧客別');
+define('REPORTS_PRODUCTS', '按商品');
+define('REPORTS_ORDERS', '按顾客');
 
-define('TOOLS_BACKUP', 'バックアップ');
-define('TOOLS_BANNERS', 'バナー');
-define('TOOLS_FILES', 'ファイル');
+define('TOOLS_BACKUP', '备份');
+define('TOOLS_BANNERS', 'banner');
+define('TOOLS_FILES', '文件');
 ?>

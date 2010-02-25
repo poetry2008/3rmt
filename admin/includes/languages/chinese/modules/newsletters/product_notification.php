@@ -10,15 +10,15 @@
   Released under the GNU General Public License
 */
 
-define('TEXT_COUNT_CUSTOMERS', 'E-Mailでお知らせを受信する顧客数: %s');
+define('TEXT_COUNT_CUSTOMERS', '通过邮件接收通知的顾客数: %s');
 define('TEXT_PRODUCTS', '商品名');
-define('TEXT_SELECTED_PRODUCTS', '選択された商品');
+define('TEXT_SELECTED_PRODUCTS', '选择的商品');
 
-define('JS_PLEASE_SELECT_PRODUCTS', '商品を選択してください。');
+define('JS_PLEASE_SELECT_PRODUCTS', '请选择商品。');
 
-define('BUTTON_GLOBAL', '全商品');
+define('BUTTON_GLOBAL', '全部商品');
 define('BUTTON_SELECT', '>>>');
 define('BUTTON_UNSELECT', '<<<');
-define('BUTTON_SUBMIT', '送信');
-define('BUTTON_CANCEL', 'キャンセル');
+define('BUTTON_SUBMIT', '发送');
+define('BUTTON_CANCEL', '取消');
 ?>

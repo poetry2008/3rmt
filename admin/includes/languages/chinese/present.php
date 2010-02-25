@@ -10,26 +10,26 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', 'プレゼント機能');
-define('HEADING_TITLE2', '応募者リスト');
+define('HEADING_TITLE', '礼物功能');
+define('HEADING_TITLE2', '申请者列表');
 /*
-define('TABLE_HEADING_CONTENTS_TITLE', 'タイトル');
-define('TABLE_HEADING_CONTENTS_STATUS', 'ステータス');
-define('TABLE_HEADING_CONTENTS_SORT', 'ソート順');
+define('TABLE_HEADING_CONTENTS_TITLE', '标题');
+define('TABLE_HEADING_CONTENTS_STATUS', '状态');
+define('TABLE_HEADING_CONTENTS_SORT', '顺序');
 define('TABLE_HEADING_ACTION', '操作');
 */
-define('TEXT_DELETE_INTRO', '本当にこのプレゼント商品を削除しますか?');
-define('TEXT_INFO_HEADING_DELETE_PRESENT', 'プレゼント商品を削除');
+define('TEXT_DELETE_INTRO', '确定删除礼物商品吗?');
+define('TEXT_INFO_HEADING_DELETE_PRESENT', '删除礼物商品');
 
 //detail page
 /*
-define('TEXT_PRODUCT_AVAILABLE', '表示する');
-define('TEXT_PRODUCT_NOT_AVAILABLE', '表示しない');
-define('TEXT_DETAIL_STATUS', 'ステータス');
-define('TEXT_DETAIL_SORT', '並び順');
-define('TEXT_DETAIL_NAVBAR_TITLE', 'ナビゲーションタイトル');
-define('TEXT_DETAIL_HEADING_TITLE', 'タイトル名');
-define('TEXT_DETAIL_CONTENTS', 'コンテンツ内容（HTML可能）<br>改行は無視されます<br>改行する場合は「&lt;BR&gt;」と入力');
+define('TEXT_PRODUCT_AVAILABLE', '显示');
+define('TEXT_PRODUCT_NOT_AVAILABLE', '不显示');
+define('TEXT_DETAIL_STATUS', '状态');
+define('TEXT_DETAIL_SORT', '排列顺序');
+define('TEXT_DETAIL_NAVBAR_TITLE', '导航标题');
+define('TEXT_DETAIL_HEADING_TITLE', '标题名');
+define('TEXT_DETAIL_CONTENTS', 'comments内容（HTML也可以）<br>忽略换行<br>换行时，输入「&lt;BR&gt;」 ');
 */
 
 ?>

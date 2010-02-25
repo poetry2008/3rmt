@@ -1,28 +1,28 @@
 <?php
 /* *********************************************************
-  モジュール名: user_certify.php
+  模块名: user_certify.php
  * 2002-05-21
  * Naomi Suzukawa
  * suzukawa@bitscope.co.jp
   ----------------------------------------------------------
-ユーザ認証の言語定義
+用户验证的语言定义
 
-  ■変更履歴
+  ■更改记录
 ********************************************************* */
-// ページタイトル
-define('HEADING_TITLE_', 'ユーザ認証');
+// 页标题
+define('HEADING_TITLE_', '用户认证');
 
-// テーブルアクセスエラーメッセージ
-define('TEXT_ERRINFO_DBERROR', 'DBエラーが発生しました');
+// table访问错误信息
+define('TEXT_ERRINFO_DBERROR', '出现DB错误');
 
-// メッセージ
-define('TEXT_ADMIN_USER', 'システム管理者');
-define('TEXT_ERRINFO_LOGIN', '!!!!! ログインエラー !!!!!');
+// 信息
+define('TEXT_ADMIN_USER', '系统管理者');
+define('TEXT_ERRINFO_LOGIN', '!!!!! 登录出错 !!!!!');
 
-// ボタン
-define('BUTTON_LOGIN', 'ログイン');
+// 按钮
+define('BUTTON_LOGIN', '登录');
 
-// 項目名
-define('TABLE_HEADING_USER', 'ユーザ');
-define('TABLE_HEADING_PASSWORD', 'パスワード');
+// 项目名
+define('TABLE_HEADING_USER', '用户');
+define('TABLE_HEADING_PASSWORD', '密码');
 ?>
