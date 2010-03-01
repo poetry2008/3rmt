@@ -250,6 +250,7 @@ $GLOBALS['HTTP_POST_VARS']=$_POST;
   $current_page = split('\?', basename($PHP_SELF)); $current_page = $current_page[0]; // for BadBlue(Win32) webserver compatibility
   if (file_exists(DIR_WS_LANGUAGES . $language . '/' . $current_page)) {
     include(DIR_WS_LANGUAGES . $language . '/' . $current_page);
+
   }
 
 // define our general functions used application-wide

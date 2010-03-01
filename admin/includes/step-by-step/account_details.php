@@ -1,6 +1,6 @@
 <?php
 /*
-	JP、GM共通ファイル
+   $Id$
 */
 
   $newsletter_array = array(array('id' => '1',
@@ -10,15 +10,32 @@
 
   if (!isset($is_read_only)) $is_read_only = false;
   if (!isset($processed)) $processed = false;
+  if (!isset($error)) $error= false;
 
   include_once(DIR_WS_CLASSES . 'address_form.php');
   $address_form = new addressForm;
 
+  // site_id
+  /*
+  if($is_read_only == true) {
+      $a_value = isset($account['site_id']) ? tep_get_site_romaji_by_id($account['site_id']) : '';
+  } elseif($error == true) {
+      if ($entry_site_id_error == true) {
+        $a_value = tep_site_pull_down_menu() . '&nbsp;' . ENTRY_GENDER_ERROR;
+      } else {
+        $a_value = tep_site_pull_down_menu() ;
+      }
+  } else {
+      $a_value = tep_site_pull_down_menu(isset($account['site_id']) ? $account['site_id'] : '');
+  }
+  $address_form->setFormLine('site_id', ENTRY_SITE, $a_value);
+  */
+
   // gender
-  $male   = ($account['customers_gender'] == 'm') ? true : false;
-  $female = ($account['customers_gender'] == 'f') ? true : false;
+  $male   = (isset($account['customers_gender']) && $account['customers_gender'] == 'm') ? true : false;
+  $female = (isset($account['customers_gender']) && $account['customers_gender'] == 'f') ? true : false;
   if ($is_read_only == true) {
-      $a_value = ($account['customers_gender'] == 'm') ? MALE : FEMALE;
+      $a_value = (isset($account['customers_gender']) && $account['customers_gender'] == 'm') ? MALE : FEMALE;
   } elseif ($error == true) {
       if ($entry_gender_error == true) {
         $a_value = tep_draw_radio_field('gender', 'm', $male) . '&nbsp;&nbsp;' . MALE . '&nbsp;&nbsp;'
@@ -43,7 +60,7 @@
           $a_value = $firstname . tep_draw_hidden_field('firstname');
       }
   } else {
-      $a_value = tep_draw_input_field('firstname', $account['customers_firstname']) . '&nbsp;' . ENTRY_FIRST_NAME_TEXT;
+      $a_value = tep_draw_input_field('firstname', isset($account['customers_firstname']) ? $account['customers_firstname'] : '') . '&nbsp;' . ENTRY_FIRST_NAME_TEXT;
   }
   $address_form->setFormLine('firstname',ENTRY_FIRST_NAME,$a_value);
 
@@ -57,7 +74,7 @@
           $a_value = $lastname . tep_draw_hidden_field('lastname');
       }
   } else {
-      $a_value = tep_draw_input_field('lastname', $account['customers_lastname']) . '&nbsp;' . ENTRY_LAST_NAME_TEXT;
+      $a_value = tep_draw_input_field('lastname', isset($account['customers_lastname'])?$account['customers_lastname']:'') . '&nbsp;' . ENTRY_LAST_NAME_TEXT;
   }
   $address_form->setFormLine('lastname',ENTRY_LAST_NAME,$a_value);
 
@@ -71,13 +88,13 @@
           $a_value = $dob . tep_draw_hidden_field('dob');
       }
   } else {
-      $a_value = tep_draw_input_field('dob', tep_date_short($account['customers_dob'])) . '&nbsp;' . ENTRY_DATE_OF_BIRTH_TEXT;
+      $a_value = tep_draw_input_field('dob', tep_date_short(isset($account['customers_dob'])?$account['customers_dob']:'')) . '&nbsp;' . ENTRY_DATE_OF_BIRTH_TEXT;
   }
   $address_form->setFormLine('dob',ENTRY_DATE_OF_BIRTH,$a_value);
 
   // email_address
   if ($is_read_only == true) {
-      $a_value = tep_output_string($account['customers_email_address'],false,true);
+      $a_value = tep_output_string(isset($account['customers_email_address'])?$account['customers_email_address']:'',false,true);
   } elseif ($error == true) {
       if ($entry_email_address_error == true) {
           $a_value = tep_draw_input_field('email_address') . '&nbsp;' . ENTRY_EMAIL_ADDRESS_ERROR;
@@ -89,13 +106,13 @@
           $a_value = $email_address . tep_draw_hidden_field('email_address');
       }
   } else {
-      $a_value = tep_draw_input_field('email_address', $account['customers_email_address']) . '&nbsp;' . ENTRY_EMAIL_ADDRESS_TEXT;
+      $a_value = tep_draw_input_field('email_address', isset($account['customers_email_address'])?$account['customers_email_address']:'') . '&nbsp;' . ENTRY_EMAIL_ADDRESS_TEXT;
   }
   $address_form->setFormLine('email_address',ENTRY_EMAIL_ADDRESS,$a_value);
 
   // company
   if ($is_read_only == true) {
-      $a_value = tep_output_string($account['entry_company'],false,true);
+      $a_value = tep_output_string(isset($account['entry_company'])?$account['entry_company']:'',false,true);
     } elseif ($error == true) {
       if ($entry_company_error == true) {
         $a_value = tep_draw_input_field('company') . '&nbsp;' . ENTRY_COMPANY_ERROR;
@@ -103,13 +120,13 @@
         $a_value = $company . tep_draw_hidden_field('company');
       }
     } else {
-      $a_value = tep_draw_input_field('company', $account['entry_company']) . '&nbsp;' . ENTRY_COMPANY_TEXT;
+      $a_value = tep_draw_input_field('company', isset($account['entry_company'])?$account['entry_company']:'') . '&nbsp;' . ENTRY_COMPANY_TEXT;
   }
   $address_form->setFormLine('company',ENTRY_COMPANY,$a_value);
 
   // street_address
   if ($is_read_only == true) {
-      $a_value = tep_output_string($account['entry_street_address'],false,true);
+      $a_value = tep_output_string(isset($account['entry_street_address'])?$account['entry_street_address']:'',false,true);
   } elseif ($error == true) {
       if ($entry_street_address_error == true) {
           $a_value = tep_draw_input_field('street_address') . '&nbsp;' . ENTRY_STREET_ADDRESS_ERROR;
@@ -117,13 +134,13 @@
           $a_value = $street_address . tep_draw_hidden_field('street_address');
       }
   } else {
-      $a_value = tep_draw_input_field('street_address', $account['entry_street_address']) . '&nbsp;' . ENTRY_STREET_ADDRESS_TEXT;
+      $a_value = tep_draw_input_field('street_address', isset($account['entry_street_address'])?$account['entry_street_address']:'') . '&nbsp;' . ENTRY_STREET_ADDRESS_TEXT;
   }
   $address_form->setFormLine('street_address',ENTRY_STREET_ADDRESS,$a_value);
 
   // suburb
   if ($is_read_only == true) {
-      $a_value = tep_output_string($account['entry_suburb'],false,true);
+      $a_value = tep_output_string(isset($account['entry_suburb'])?$account['entry_suburb']:'',false,true);
   } elseif ($error == true) {
       if ($entry_suburb_error == true) {
           $a_value = tep_draw_input_field('suburb') . '&nbsp;' . ENTRY_SUBURB_ERROR;
@@ -131,13 +148,13 @@
           $a_value = $suburb . tep_draw_hidden_field('suburb');
       }
   } else {
-      $a_value = tep_draw_input_field('suburb', $account['entry_suburb']) . '&nbsp;' . ENTRY_SUBURB_TEXT;
+      $a_value = tep_draw_input_field('suburb', isset($account['entry_suburb'])?$account['entry_suburb']:'') . '&nbsp;' . ENTRY_SUBURB_TEXT;
   }
   $address_form->setFormLine('suburb',ENTRY_SUBURB,$a_value);
 
   // postcode
   if ($is_read_only == true) {
-      $a_value = tep_output_string($account['entry_postcode'],false,true);
+      $a_value = tep_output_string(isset($account['entry_postcode'])?$account['entry_postcode']:'',false,true);
   } elseif ($error) {
       if ($entry_post_code_error == true) {
           $a_value = tep_draw_input_field('postcode') . '&nbsp;' . ENTRY_POST_CODE_ERROR;
@@ -145,13 +162,13 @@
           $a_value = $postcode . tep_draw_hidden_field('postcode');
       }
   } else {
-      $a_value = tep_draw_input_field('postcode', $account['entry_postcode']) . '&nbsp;' . ENTRY_POST_CODE_TEXT;
+      $a_value = tep_draw_input_field('postcode', isset($account['entry_postcode'])?$account['entry_postcode']:'') . '&nbsp;' . ENTRY_POST_CODE_TEXT;
   }
   $address_form->setFormLine('postcode',ENTRY_POST_CODE,$a_value);
 
   // city
   if ($is_read_only == true) {
-      $a_value = tep_output_string($account['entry_city'],false,true);
+      $a_value = tep_output_string(isset($account['entry_city'])?$account['entry_city']:'',false,true);
   } elseif ($error) {
       if ($entry_city_error == true) {
           $a_value = tep_draw_input_field('city') . '&nbsp;' . ENTRY_CITY_ERROR;
@@ -159,7 +176,7 @@
           $a_value = $city . tep_draw_hidden_field('city');
       }
   } else {
-      $a_value = tep_draw_input_field('city', $account['entry_city']) . '&nbsp;' . ENTRY_CITY_TEXT;
+      $a_value = tep_draw_input_field('city', isset($account['entry_city'])?$account['entry_city']:'') . '&nbsp;' . ENTRY_CITY_TEXT;
   }
   $address_form->setFormLine('city',ENTRY_CITY,$a_value);
 
@@ -227,6 +244,17 @@
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
   <tr>
     <td class="formAreaTitle"><?php echo CATEGORY_PERSONAL; ?></td>
+  </tr>
+  <tr>
+    <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
+      <tr>
+        <td class="main"><table border="0" cellspacing="0" cellpadding="2">
+<?php
+  $address_form->printCategorySite();
+?>
+        </table></td>
+      </tr>
+    </table></td>
   </tr>
   <tr>
     <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
@@ -345,7 +373,7 @@
     }
     echo tep_draw_hidden_field('newsletter');  
   } else {
-    echo tep_draw_pull_down_menu('newsletter', $newsletter_array, $account['customers_newsletter']) . '&nbsp;' . ENTRY_NEWSLETTER_TEXT;
+    echo tep_draw_pull_down_menu('newsletter', $newsletter_array, isset($account['customers_newsletters'])?$account['customers_newsletter']:'') . '&nbsp;' . ENTRY_NEWSLETTER_TEXT;
   }
 ?></td>
           </tr>

@@ -274,7 +274,12 @@ if ($listAllRes) {
 }
                 ?>
                 </td>
-                <td class="dataTableContent" align="right"><?php if ($latest_news['news_id'] == $HTTP_GET_VARS['latest_news_id']) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $latest_news['news_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
+                <td class="dataTableContent" align="right">
+<?php
+if (isset($HTTP_GET_VARS['latest_news_id']) and $latest_news['news_id'] == $HTTP_GET_VARS['latest_news_id']) { 
+    echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); 
+} else { 
+    echo '<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $latest_news['news_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
               </tr>
 <?php
     }

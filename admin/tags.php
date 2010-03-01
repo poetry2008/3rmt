@@ -1,7 +1,7 @@
 <?php
   require('includes/application_top.php');
 
-  if ($HTTP_GET_VARS['action']) {
+if (isset($HTTP_GET_VARS['action']) and $HTTP_GET_VARS['action']) {
     switch ($HTTP_GET_VARS['action']) {
       case 'insert':
         $tags_name = tep_db_prepare_input($HTTP_POST_VARS['tags_name']);
@@ -104,7 +104,7 @@
   $tags_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $tags_query_raw, $tags_query_numrows);
   $tags_query = tep_db_query($tags_query_raw);
   while ($tags = tep_db_fetch_array($tags_query)) {
-    if (((!$HTTP_GET_VARS['cID']) || (@$HTTP_GET_VARS['cID'] == $tags['tags_id'])) && (!$cInfo) && (substr($HTTP_GET_VARS['action'], 0, 3) != 'new')) {
+      if (( (!@$HTTP_GET_VARS['cID']) || (@$HTTP_GET_VARS['cID'] == $tags['tags_id'])) && (!@$cInfo) && (substr(@$HTTP_GET_VARS['action'], 0, 3) != 'new')) {
       $cInfo = new objectInfo($tags);
     }
 
@@ -127,7 +127,8 @@
                     <td class="smallText" align="right"><?php echo $tags_split->display_links($tags_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page']); ?></td>
                   </tr>
 <?php
-  if (!$HTTP_GET_VARS['action']) {
+		    if (!isset($HTTP_GET_VARS['action'])) {
+//  if (!$HTTP_GET_VARS['action']) {
 ?>
                   <tr>
                     <td colspan="2" align="right"><?php echo '<a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $HTTP_GET_VARS['page'] . '&action=new') . '">' . tep_image_button('button_new_tag.gif', IMAGE_NEW_TAG) . '</a>'; ?></td>
@@ -141,7 +142,7 @@
 <?php
   $heading = array();
   $contents = array();
-  switch ($HTTP_GET_VARS['action']) {
+switch (isset($HTTP_GET_VARS['action']) and $HTTP_GET_VARS['action']) {
     case 'new':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_NEW_TAG . '</b>');
 

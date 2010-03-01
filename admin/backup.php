@@ -11,7 +11,7 @@
 */
 
   require('includes/application_top.php');
-
+if(!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = '';
   if ($HTTP_GET_VARS['action']) {
     switch ($HTTP_GET_VARS['action']) {
       case 'forget':
@@ -444,7 +444,7 @@
       $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_delete.gif', IMAGE_DELETE) . ' <a href="' . tep_href_link(FILENAME_BACKUP, 'file=' . $buInfo->file) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
     default:
-      if (is_object($buInfo)) {
+	if (isset($buInfo) and is_object($buInfo)) {
         $heading[] = array('text' => '<b>' . $buInfo->date . '</b>');
 
         $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_BACKUP, 'file=' . $buInfo->file . '&action=restore') . '">' . tep_image_button('button_restore.gif', IMAGE_RESTORE) . '</a> <a href="' . tep_href_link(FILENAME_BACKUP, 'file=' . $buInfo->file . '&action=delete') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>');

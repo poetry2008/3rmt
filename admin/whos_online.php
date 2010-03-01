@@ -94,7 +94,7 @@
 <?php
   $heading = array();
   $contents = array();
-  if ($info) {
+if (isset($info)) {
     $heading[] = array('text' => '<b>' . TABLE_HEADING_SHOPPING_CART . '</b>');
 
     if (STORE_SESSIONS == 'mysql') {

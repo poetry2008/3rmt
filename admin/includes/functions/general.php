@@ -2042,5 +2042,43 @@ function tep_get_image_document_image($document_id)
     }
     return $sites;
   }
+
+  function tep_site_filter($filename){
+    global $HTTP_GET_VARS, $HTTP_POST_VARS;
+          if (!isset($HTTP_GET_VARS['site_id']) || !$HTTP_GET_VARS['site_id']) {?>
+            all
+          <?php } else { ?>
+            <a href="<?php echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page')));?>">all</a>
+          <?php } ?>
+          <?php foreach (tep_get_sites() as $site) {?>
+            <?php if (isset($HTTP_GET_VARS['site_id']) && $HTTP_GET_VARS['site_id'] == $site['id']) {?>
+              <?php echo $site['romaji'];?>
+            <?php } else {?>
+              <a href="<?php echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page')) . 'site_id=' . $site['id']);?>">
+              <?php echo $site['romaji'];?>
+              </a>
+            <?php }
+           }
+  }
+
+  // 生成选择SITE_ID的下拉框
+  function tep_site_pull_down_menu($default = ''){
+    $sites_array = array();
+    $sites = tep_get_sites();
+    foreach($sites as $site){
+      $sites_array[] = array('id' => $site['id'], 'text' => $site['romaji']);
+    }
+    return tep_draw_pull_down_menu('site_id', $sites_array, $default, $params = '', true);
+  }
+
+  function tep_get_site_romaji_by_id($id){
+    $site_query = tep_db_query("
+        select * 
+        from " . TABLE_SITES . "
+        where id = '".intval($id)."'
+    ");
+    $site = tep_db_fetch_array($site_query);
+    return isset($site['romaji'])?$site['romaji']:'';
+  }
   
 ?>

@@ -82,13 +82,7 @@ define('SUCCESS_ORDER_UPDATED', '成功:订单状态已更新。');
 define('WARNING_ORDER_NOT_UPDATED', '警告: 订单状态没有更改。');
 
 // Add Japanese osCommerce
-define('EMAIL_TEXT_STORE_CONFIRMATION', ' 感谢订购~~~~。' . "\n\n"
-.'订单处理状态及联络事项、请参考下面。');
-define('EMAIL_TEXT_STORE_CONFIRMATION_FOOTER', 
-'关于订单状态有疑问的话，请联络本店地址' . "\n"
-.' 。' . "\n\n"
-. EMAIL_SIGNATURE);
-
-def
-ine('ENTRY_EMAIL_TITLE', '邮件标题：');
+define('EMAIL_TEXT_STORE_CONFIRMATION', ' 感谢订购~~~~。' . "\n\n".'订单处理状态及联络事项、请参考下面。');
+define('EMAIL_TEXT_STORE_CONFIRMATION_FOOTER', '关于订单状态有疑问的话，请联络本店地址' . "\n".' 。' . "\n\n". EMAIL_SIGNATURE);
+define('ENTRY_EMAIL_TITLE', '邮件标题：');
 ?>

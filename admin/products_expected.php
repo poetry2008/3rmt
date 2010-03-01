@@ -88,7 +88,7 @@
 <?php
   $heading = array();
   $contents = array();
-  if (is_object($pInfo)) {
+  if (isset($pInfo) and is_object($pInfo)) {
     $heading[] = array('text' => '<b>' . $pInfo->products_name . '</b>');
 
     $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'pID=' . $pInfo->products_id . '&action=new_product') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>');

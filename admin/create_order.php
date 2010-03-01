@@ -67,7 +67,7 @@
 	echo '</form>' . "\n";
 ?>
 	<br>
-	<?php echo tep_draw_form('create_order', FILENAME_CREATE_ORDER_PROCESS, '', 'post', '', '') . tep_draw_hidden_field('customers_id', isset($account->customers_id)?$account->customers_id:''); ?>
+	<?php echo tep_draw_form('create_order', FILENAME_CREATE_ORDER_PROCESS, '', 'post', '', '') . tep_draw_hidden_field('customers_id', isset($account['customers_id'])?$account['customers_id']:''); ?>
 	<table border="0" width="100%" cellspacing="0" cellpadding="0">
 	  <tr>
 	    <td class="pageHeading"><?php echo HEADING_CREATE; ?></td>
@@ -85,6 +85,7 @@
     $telephone      = isset($account['customers_telephone'])    ? $account['customers_telephone']:'';
     $fax            = isset($account['customers_fax'])          ? $account['customers_fax']:'';
     $zone_id        = isset($account['entry_zone_id'])          ? $account['entry_zone_id']:'';
+    $site_id        = isset($account['site_id'])                ? $account['site_id']:'';
 
     $street_address = isset($address['entry_street_address'])   ? $address['entry_street_address']:'';
     $company        = isset($address['entry_company'])          ? $address['entry_company']:'';

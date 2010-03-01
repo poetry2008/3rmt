@@ -47,24 +47,7 @@
       </tr>
       <tr>
         <td>
-
-
-          <?php if (!isset($HTTP_GET_VARS['site_id']) || !$HTTP_GET_VARS['site_id']) {?>
-            all
-          <?php } else { ?>
-            <a href="<?php echo tep_href_link(FILENAME_STATS_CUSTOMERS, tep_get_all_get_params(array('site_id', 'page')));?>">all</a>
-          <?php } ?>
-          <?php foreach (tep_get_sites() as $site) {?>
-            <?php if (isset($HTTP_GET_VARS['site_id']) && $HTTP_GET_VARS['site_id'] == $site['id']) {?>
-              <?php echo $site['romaji'];?>
-            <?php } else {?>
-              <a href="<?php echo tep_href_link(FILENAME_STATS_CUSTOMERS, tep_get_all_get_params(array('site_id', 'page')) . 'site_id=' . $site['id']);?>">
-              <?php echo $site['romaji'];?>
-              </a>
-            <?php }?>
-          <?php }?>
-
-
+        <?php tep_site_filter(FILENAME_STATS_CUSTOMERS);?>
         <table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
             <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -75,7 +58,7 @@
                 <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_PURCHASED; ?>&nbsp;</td>
               </tr>
 <?php
-  if ($HTTP_GET_VARS['page'] > 1) $rows = $HTTP_GET_VARS['page'] * MAX_DISPLAY_SEARCH_RESULTS - MAX_DISPLAY_SEARCH_RESULTS;
+		if (isset($HTTP_GET_VARS['page']) and $HTTP_GET_VARS['page'] > 1) $rows = $HTTP_GET_VARS['page'] * MAX_DISPLAY_SEARCH_RESULTS - MAX_DISPLAY_SEARCH_RESULTS;
   $customers_query_raw = "select c.customers_firstname, 
                                  c.customers_lastname, 
                                  sum(op.products_quantity * op.final_price) as ordersum ,

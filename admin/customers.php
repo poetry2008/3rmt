@@ -489,20 +489,8 @@ function check_form() {
         </table></td>
       </tr>
       <tr>
-          <?php if (!isset($HTTP_GET_VARS['site_id']) || !$HTTP_GET_VARS['site_id']) {?>
-            all
-          <?php } else { ?>
-            <a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('site_id', 'page')));?>">all</a>
-          <?php } ?>
-          <?php foreach (tep_get_sites() as $site) {?>
-            <?php if (isset($HTTP_GET_VARS['site_id']) && $HTTP_GET_VARS['site_id'] == $site['id']) {?>
-              <?php echo $site['romaji'];?>
-            <?php } else {?>
-              <a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('site_id', 'page')) . 'site_id=' . $site['id']);?>">
-              <?php echo $site['romaji'];?>
-              </a>
-            <?php }?>
-          <?php }?>
+        <td>
+        <?php tep_site_filter(FILENAME_CUSTOMERS);?>
         </td>
       </tr>
       <tr>
@@ -599,7 +587,7 @@ function check_form() {
                     <td class="smallText" align="right"><?php echo $customers_split->display_links($customers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'cID'))); ?></td>
                   </tr>
 <?php
-    if (tep_not_null($HTTP_GET_VARS['search'])) {
+																																		  if (isset($HTTP_GET_VARS['search']) and tep_not_null($HTTP_GET_VARS['search'])) {
 ?>
                   <tr>
                     <td align="right" colspan="2"><?php echo '<a href="' . tep_href_link(FILENAME_CUSTOMERS) . '">' . tep_image_button('button_reset.gif', IMAGE_RESET) . '</a>'; ?></td>

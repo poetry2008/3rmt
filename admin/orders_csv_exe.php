@@ -28,9 +28,24 @@
 
 // ダウンロード範囲の指定
     if($HTTP_POST_VARS['status'] && $HTTP_POST_VARS['status'] !=""){
-      $csv_query = tep_db_query("select o.*, op.* from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and o.date_purchased >= '" . $start . "' and o.date_purchased <= '" . $end . "' and o.orders_status = '".(int)$HTTP_POST_VARS['status']."' order by o.orders_id, op.orders_products_id");
+      $csv_query = tep_db_query("
+          select o.*, op.* 
+          from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op 
+          where o.orders_id = op.orders_id 
+            and o.date_purchased >= '" . $start . "' 
+            and o.date_purchased <= '" . $end . "' 
+            and o.orders_status = '".(int)$HTTP_POST_VARS['status']."' 
+          order by o.orders_id, op.orders_products_id
+      ");
 	}else{
-      $csv_query = tep_db_query("select o.*, op.* from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and o.date_purchased >= '" . $start . "' and o.date_purchased <= '" . $end . "' order by o.orders_id, op.orders_products_id");
+      $csv_query = tep_db_query("
+          select o.*, op.* 
+          from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op 
+          where o.orders_id = op.orders_id 
+            and o.date_purchased >= '" . $start . "' 
+            and o.date_purchased <= '" . $end . "' 
+          order by o.orders_id, op.orders_products_id
+      ");
     }
 
   header("Content-Type: application/force-download");

@@ -16,7 +16,7 @@
     $orders_status_array[$orders_status['orders_status_id']] = $orders_status['orders_status_name'];
   }
 
-  if ($HTTP_GET_VARS['action']) 
+  if (isset($HTTP_GET_VARS['action'])) 
   switch ($HTTP_GET_VARS['action']) {
     //一括変更----------------------------------
 	case 'sele_act':
@@ -564,8 +564,6 @@ function mail_text(st,tt,ot){
     echo '<br><nobr><small>&nbsp;<i> - ' . $order->products[$i]['attributes'][$j]['option'] . ': ' . $order->products[$i]['attributes'][$j]['value'];
     if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')<br>';
 		  echo '</i></small></nobr>';
-//		  echo '<br><small>&nbsp;<i> - JANコード：'.$order->products[$i]['attributes'][$j]['jan'] . '<br>&nbsp; - 型番：'.$order->products[$i]['attributes'][$j]['model'].'</small>';
-    
     }
       }
 
@@ -900,30 +898,92 @@ function mail_text(st,tt,ot){
 		}
 	}
 ?>
-			<!-- display add -->
-			<?php echo tep_draw_form('sele_act', FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'action=sele_act'); ?>
-			<table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <?php echo tep_draw_form('sele_act', FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'action=sele_act'); ?>
+    <?php tep_site_filter(FILENAME_ORDERS);?>
+    <table border="0" width="100%" cellspacing="0" cellpadding="2">
     <tr class="dataTableHeadingRow">
-			    <td class="dataTableHeadingContent"><input type="checkbox" name="all_chk" onClick="all_check()"></td>
-    <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CUSTOMERS; ?></td>
-    <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ORDER_TOTAL; ?></td>
-    <td class="dataTableHeadingContent" align="center">取引日</td>
-    <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_DATE_PURCHASED; ?></td>
-    <td class="dataTableHeadingContent" align="right"></td>
-    			<td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_STATUS; ?></td>
-    <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
+      <td class="dataTableHeadingContent"><input type="checkbox" name="all_chk" onClick="all_check()"></td>
+      <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_SITE; ?></td>
+      <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CUSTOMERS; ?></td>
+      <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ORDER_TOTAL; ?></td>
+      <td class="dataTableHeadingContent" align="center">取引日</td>
+      <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_DATE_PURCHASED; ?></td>
+      <td class="dataTableHeadingContent" align="right"></td>
+      <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_STATUS; ?></td>
+      <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
     </tr>
 <?php
     
 	if (isset($HTTP_GET_VARS['cID']) && $HTTP_GET_VARS['cID']) {
       $cID = tep_db_prepare_input($HTTP_GET_VARS['cID']);
-      $orders_query_raw = "select o.orders_id, o.torihiki_date, o.customers_name, o.customers_id, o.payment_method, o.date_purchased, o.last_modified, o.currency, o.currency_value, s.orders_status_name, ot.text as order_total from " . TABLE_ORDERS . " o left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s where o.customers_id = '" . tep_db_input($cID) . "' and o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "' and ot.class = 'ot_total' order by o.torihiki_date DESC";
+      $orders_query_raw = "
+        select o.orders_id, 
+               o.torihiki_date, 
+               o.customers_name, 
+               o.customers_id, 
+               o.payment_method, 
+               o.date_purchased, 
+               o.last_modified, 
+               o.currency, 
+               o.currency_value, 
+               s.orders_status_name, 
+               ot.text as order_total,
+               si.romaji
+        from " . TABLE_ORDERS . " o 
+          left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s, ".TABLE_SITES."
+        where o.customers_id = '" . tep_db_input($cID) . "' 
+          " . (isset($HTTP_GET_VARS['site_id']) && intval($HTTP_GET_VARS['site_id']) ? " and si.id = '" . intval($HTTP_GET_VARS['site_id']) . "' " : '') . "
+          and si.id = o.site_id
+          and o.orders_status = s.orders_status_id 
+          and s.language_id = '" . $languages_id . "' 
+          and ot.class = 'ot_total' 
+        order by o.torihiki_date DESC";
     } elseif (isset($HTTP_GET_VARS['cID']) && $HTTP_GET_VARS['status']) {
       $status = tep_db_prepare_input($HTTP_GET_VARS['status']);
-      $orders_query_raw = "select o.orders_id, o.torihiki_date, o.customers_id, o.customers_name, o.payment_method, o.date_purchased, o.last_modified, o.currency, o.currency_value, s.orders_status_name, ot.text as order_total from " . TABLE_ORDERS . " o left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s where o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "' and s.orders_status_id = '" . tep_db_input($status) . "' and ot.class = 'ot_total' order by o.torihiki_date DESC";
+      $orders_query_raw = "
+        select o.orders_id, 
+               o.torihiki_date, 
+               o.customers_id, 
+               o.customers_name, 
+               o.payment_method, 
+               o.date_purchased, 
+               o.last_modified, 
+               o.currency, 
+               o.currency_value, 
+               s.orders_status_name, 
+               ot.text as order_total,
+               si.romaji
+        from " . TABLE_ORDERS . " o 
+          left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s, ".TABLE_SITES." si
+        where o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "' 
+          " . (isset($HTTP_GET_VARS['site_id']) && intval($HTTP_GET_VARS['site_id']) ? " and si.id = '" . intval($HTTP_GET_VARS['site_id']) . "' " : '') . "
+          and s.orders_status_id = '" . tep_db_input($status) . "' 
+          and ot.class = 'ot_total' 
+          and si.id = o.site_id
+        order by o.torihiki_date DESC";
     } elseif (isset($HTTP_GET_VARS['cID']) && $HTTP_GET_VARS['keywords']) {
       
-	  $orders_query_raw = "select distinct(o.orders_id), o.torihiki_date, o.customers_id, o.customers_name, o.payment_method, o.date_purchased, o.last_modified, o.currency, o.currency_value, s.orders_status_name, ot.text as order_total  from " . TABLE_ORDERS . " o, " . TABLE_ORDERS_TOTAL . " ot, " . TABLE_ORDERS_STATUS . " s, " . TABLE_ORDERS_PRODUCTS . " op where o.orders_id = ot.orders_id and o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "' and ot.class = 'ot_total' and o.orders_id = op.orders_id";
+      $orders_query_raw = "
+        select distinct(o.orders_id), 
+               o.torihiki_date, 
+               o.customers_id, 
+               o.customers_name, 
+               o.payment_method, 
+               o.date_purchased, 
+               o.last_modified, 
+               o.currency, 
+               o.currency_value, 
+               s.orders_status_name, 
+               ot.text as order_total,
+               si.romaji
+        from " . TABLE_ORDERS . " o, " . TABLE_ORDERS_TOTAL . " ot, " . TABLE_ORDERS_STATUS . " s, " . TABLE_ORDERS_PRODUCTS . " op , ".TABLE_SITES." si
+        where o.orders_id = ot.orders_id 
+          " . (isset($HTTP_GET_VARS['site_id']) && intval($HTTP_GET_VARS['site_id']) ? " and si.id = '" . intval($HTTP_GET_VARS['site_id']) . "' " : '') . "
+          and si.id = o.site_id
+          and o.orders_status = s.orders_status_id 
+          and s.language_id = '" . $languages_id . "' 
+          and ot.class = 'ot_total' 
+          and o.orders_id = op.orders_id";
 	  $keywords = str_replace('　', ' ', $HTTP_GET_VARS['keywords']);
 	  tep_parse_search_string($keywords, $search_keywords);
 	  if (isset($search_keywords) && (sizeof($search_keywords) > 0)) {
@@ -966,10 +1026,13 @@ function mail_text(st,tt,ot){
                o.currency_value, 
                s.orders_status_name, 
                s.orders_status_image, 
-               ot.text as order_total 
+               ot.text as order_total,
+               si.romaji
          from " . TABLE_ORDERS . " o 
-           left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s 
+           left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s , ".TABLE_SITES." si
          where o.orders_status = s.orders_status_id 
+          " . (isset($HTTP_GET_VARS['site_id']) && intval($HTTP_GET_VARS['site_id']) ? " and si.id = '" . intval($HTTP_GET_VARS['site_id']) . "' " : '') . "
+           and si.id=o.site_id
            and ((s.orders_status_id != '2') 
            and (s.orders_status_id != '5') 
            and (s.orders_status_id != '6') 
@@ -1011,10 +1074,10 @@ function mail_text(st,tt,ot){
 	  echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'">' . "\n";
   }
 ?>
-    
 				<td style="border-bottom:1px solid #000000;" class="dataTableContent">
           <input type="checkbox" name="chk[]" value="<?php echo $orders['orders_id']; ?>" onClick="chg_tr_color(this)">
         </td>
+				<td style="border-bottom:1px solid #000000;" class="dataTableContent" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><?php echo $orders['romaji'];?></td>
 				<td style="border-bottom:1px solid #000000;" class="dataTableContent" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)">
           <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $orders['orders_id'] . '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);?></a>&nbsp;
           <a href="<?php echo tep_href_link('orders.php', 'cID=' . tep_output_string_protected($orders['customers_id']));?>"><?php echo tep_image(DIR_WS_ICONS . 'search.gif', '過去の注文');?></a>&nbsp;
@@ -1086,7 +1149,6 @@ function submit_confirm()
 }
 </script>
 
-			
 			<table width="100%" id="select_send" style="display:none">
 			  <tr>
 			    <td class="main"><b><?php echo ENTRY_STATUS; ?></b></td>

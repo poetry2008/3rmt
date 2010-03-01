@@ -108,7 +108,10 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
   echo $box->menuBox($heading, $contents);
 
   echo '<br>';
-
+$i = 0;
+while ($i<3)
+  {
+      $i++;
   $orders_contents = '';
   $orders_status_query = tep_db_query("select orders_status_name, orders_status_id from " . TABLE_ORDERS_STATUS . " where language_id = '" . $languages_id . "'");
   while ($orders_status = tep_db_fetch_array($orders_status_query)) {
@@ -129,9 +132,9 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
 
   $box = new box;
   echo $box->menuBox($heading, $contents);
-
   echo '<br>';
 
+}
   $customers_query = tep_db_query("select count(*) as count from " . TABLE_CUSTOMERS);
   $customers = tep_db_fetch_array($customers_query);
   $products_query = tep_db_query("select count(*) as count from " . TABLE_PRODUCTS . " where products_status = '1'");

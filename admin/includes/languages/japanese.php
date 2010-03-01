@@ -229,6 +229,7 @@ define('IMAGE_NEW_TAX_CLASS', '新しい税種別');
 define('IMAGE_NEW_TAX_RATE', '新しい税率');
 define('IMAGE_NEW_TAX_ZONE', '新しい税地域');
 define('IMAGE_NEW_ZONE', '新しい地域');
+define('IMAGE_NEW_TAG', '新标签'); 
 define('IMAGE_ORDERS', '注文');
 define('IMAGE_ORDERS_INVOICE', '納品書');
 define('IMAGE_ORDERS_PACKINGSLIP', '配送票');
@@ -318,5 +319,12 @@ define('BOX_CATALOG_PRODUCTS_TAGS', 'タグ登録');
 define('BOX_CATALOG_IMAGE_DOCUMENT', 'imageファイル管理');
 
 define('TABLE_HEADING_SITE', 'SITE');
+
+define('IMAGE_BUTTON_BACK', '');
+define('IMAGE_BUTTON_CONFIRM', '');
+define('IMAGE_DETAILS', '');
+
+define('CATEGORY_SITE', 'CATEGORY_SITE');
+define('ENTRY_SITE', 'ENTRY_SITE');
 
 ?>

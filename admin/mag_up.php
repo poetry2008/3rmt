@@ -1,7 +1,6 @@
 <?php
   require('includes/application_top.php');
   require("includes/jcode.phps");
-  
 ?>
 <!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html <?php echo HTML_PARAMS; ?>>
@@ -90,32 +89,22 @@
 			}
 			
 		    
-			
 		  if( ($cnt % 200) == 0 ){
 		    echo "・";
 		    Flush();
 		  }
-			
 	    }
 	}
-	
-	echo '</P>';
-	fclose($file);
-	
-	   echo "<font color='#CC0000'><b>".$cnt."件をアップロードしました。</b></font>";
-	
-	}else{
-	 
-	   echo "<font color='#CC0000'><b>アップロードできませんでした。<br>所定のCSVファイルを参照してください。</b></font>";
-	
-	}
+    echo '</P>';
+    fclose($file);
+    echo "<font color='#CC0000'><b>".$cnt."件をアップロードしました。</b></font>";
+  }else{
+    echo "<font color='#CC0000'><b>アップロードできませんでした。<br>所定のCSVファイルを参照してください。</b></font>";
+  }
 	
 	echo '<br><br><br><a href="mag_up.php">戻る</a>';
   } else {
 ?>
-
-
-
 <!-- body //-->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
@@ -173,6 +162,4 @@
 <?php 
   }
   require(DIR_WS_INCLUDES . 'application_bottom.php');
-
-
 ?>

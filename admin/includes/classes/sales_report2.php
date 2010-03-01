@@ -102,6 +102,8 @@
     }
 
     function next() {
+	$sd = time();
+	$ed = time();
       switch ($this->mode) {
         // yearly
         case '1':

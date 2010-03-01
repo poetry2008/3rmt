@@ -1,6 +1,6 @@
 <?php
 /*
-	JP、GM共通ファイル
+   $Id$
 */
 
     tep_draw_hidden_field($customer_id);    
@@ -12,14 +12,14 @@ function hidden_payment(){
   
   if(CI == '銀行振込(買い取り)'){
     document.getElementById('trpass1').style.display = "";
-	document.getElementById('trpass2').style.display = "";
+    document.getElementById('trpass2').style.display = "";
     document.getElementById('trpass3').style.display = "";
-	document.getElementById('trpass4').style.display = "";
+    document.getElementById('trpass4').style.display = "";
   }else{
     document.getElementById('trpass1').style.display = "none";
-	document.getElementById('trpass2').style.display = "none";
+    document.getElementById('trpass2').style.display = "none";
     document.getElementById('trpass3').style.display = "none";
-	document.getElementById('trpass4').style.display = "none";
+    document.getElementById('trpass4').style.display = "none";
   }
 }
 </script>
@@ -51,8 +51,24 @@ function hidden_payment(){
         </tr>
       </table></td>
   </tr>
+  <tr>
+    <td class="formAreaTitle"><br>
+      <?php echo CATEGORY_SITE; ?></td>
+  </tr>
+  <tr>
+    <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
+        <tr>
+          <td class="main"><table border="0" cellspacing="0" cellpadding="2">
+              <tr>
+                <td class="main">&nbsp;<?php echo ENTRY_SITE; ?></td>
+                <td class="main">&nbsp;<?php echo tep_site_pull_down_menu($site_id) . '&nbsp;' . ENTRY_COMPANY_TEXT; ?></td>
+              </tr>
+            </table></td>
+        </tr>
+      </table></td>
+  </tr>
   <?php
-  if (ACCOUNT_COMPANY == 'true') {
+  if (ACCOUNT_COMPANY == 'true' && false) {
 ?>
   <tr>
     <td class="formAreaTitle"><br>

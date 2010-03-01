@@ -33,11 +33,11 @@
   
   if(isset($HTTP_POST_VARS['act']) && $HTTP_POST_VARS['act'] == 'export') {
     //CSVファイルネーム指定
-	$filename = 'customer_' . date("YmdHis") . '.csv';
-	
+    $filename = 'customer_' . date("YmdHis") . '.csv';
+
 	//エラー対策
 	$start = "0000-00-00 00:00:00";
-	$end = "0000-00-00 00:00:01";
+	$end   = "0000-00-00 00:00:01";
 	
 	//指定範囲の取得
 	if(!empty($HTTP_POST_VARS['s_y']) && !empty($HTTP_POST_VARS['s_m']) && !empty($HTTP_POST_VARS['s_d'])) {
@@ -55,8 +55,8 @@
 	}
 	
     ### Download Start #######################################
-	header("Content-Type: application/force-download");
-	header('Pragma: public');
+    header("Content-Type: application/force-download");
+    header('Pragma: public');
     header('Content-Disposition: attachment; filename='.$filename);
 				
 				

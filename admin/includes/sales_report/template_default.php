@@ -251,7 +251,7 @@ while ($sr->hasNext()) {
                 <td class="dataTableContent" align="right"><?php echo $currencies->format($info[0]['shipping']);?></td>
               </tr>
               <?php
-  if ($srDetail) {
+if (isset($srDetail)){
     for ($i = 0; $i < $last; $i++) {
       if ($srMax == 0 or $i < $srMax) {
 ?>

@@ -1,13 +1,6 @@
 ﻿<?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
 */
 
 //
@@ -74,6 +67,7 @@ define('BOX_HEADING_MODULES', '模块设定');
 define('BOX_MODULES_PAYMENT', '支付模块'); 
 define('BOX_MODULES_SHIPPING', '配送模块'); 
 define('BOX_MODULES_ORDER_TOTAL', '合计模块'); 
+define('BOX_MODULES_METASEO', 'SEO 模块');
 // categories box text in includes/boxes/catalog.php 
 define('BOX_HEADING_CATALOG', '目录管理'); 
 define('BOX_CATALOG_CATEGORIES_PRODUCTS', '分类/商品登录'); 
@@ -104,8 +98,7 @@ define('BOX_HEADING_TOOLS', '各种工具');
 define('BOX_TOOLS_BACKUP', 'DB备份管理'); 
 define('BOX_TOOLS_BANNER_MANAGER', 'banner管理'); 
 define('BOX_TOOLS_CACHE', '缓存控制'); 
-define('BOX_TOOLS_
-define_LANGUAGE', '语言文件管理'); 
+define('BOX_TOOLS_DEFINE_LANGUAGE', '语言文件管理'); 
 define('BOX_TOOLS_FILE_MANAGER', '文件管理'); 
 define('BOX_TOOLS_MAIL', '邮件发送'); 
 define('BOX_TOOLS_NEWSLETTER_MANAGER', '邮件杂志管理'); 
@@ -210,6 +203,10 @@ define('IMAGE_NEW_TAX_CLASS', '新税种');
 define('IMAGE_NEW_TAX_RATE', '新税率'); 
 define('IMAGE_NEW_TAX_ZONE', '新税地域'); 
 define('IMAGE_NEW_ZONE', '新地域'); 
+define('IMAGE_NEW_TAG', '新标签'); 
+
+
+
 define('IMAGE_ORDERS', '订购'); 
 define('IMAGE_ORDERS_INVOICE', '货单'); 
 define('IMAGE_ORDERS_PACKINGSLIP', '发送票'); 
@@ -280,10 +277,14 @@ define('BOX_TOOLS_CONTENTS', '内容管理');
 define('TEXT_DISPLAY_NUMBER_OF_CONTENS', '<b>%d</b> &sim; <b>%d</b> 显示某号 (<b>%d</b>内容中)'); 
 //latest news 
 define('BOX_TOOLS_LATEST_NEWS', '新到消息管理'); 
-//leftbox 
 define('BOX_CATALOG_PRODUCTS_UP', '上传商品数据'); 
 define('BOX_CATALOG_PRODUCTS_DL', '下载商品数据'); 
 define('BOX_TOOLS_CL', '日历'); 
 define('BOX_CATALOG_CATEGORIES_TAGS', '标签登录'); 
 define('BOX_CATALOG_IMAGE_DOCUMENTS', '图片文件管理'); 
+define('BOX_CATALOG_IMAGE_DOCUMENT', '图片文件管理'); 
+define('BOX_CATALOG_PRODUCTS_TAGS', 'タグ登録');
+
+
+define('TABLE_HEADING_SITE', 'SITE');
 ?> 

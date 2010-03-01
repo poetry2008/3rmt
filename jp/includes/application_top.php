@@ -211,7 +211,13 @@
   while ($configuration = mysql_fetch_array($configuration_query)) {
     define($configuration['cfgKey'], $configuration['cfgValue']);
   }
-  
+// 将其它设置加入到本站，即主站的信息
+  $configuration_query = mysql_query('select configuration_key as cfgKey, configuration_value as cfgValue from ' . TABLE_CONFIGURATION . ' where site_id = 0' );
+  while ($configuration = mysql_fetch_array($configuration_query)) {
+      if (!defined($configuration['cfgKey'])) {
+	  define($configuration['cfgKey'], $configuration['cfgValue']);
+      }
+  } 
 // if gzip_compression is enabled, start to buffer the output
   if ( (GZIP_COMPRESSION == 'true') && ($ext_zlib_loaded = extension_loaded('zlib')) && (PHP_VERSION >= '4') ) {
     if (($ini_zlib_output_compression = (int)ini_get('zlib.output_compression')) < 1) {
