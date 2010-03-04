@@ -1,6 +1,8 @@
 <?php
 /*
    $Id$
+  
+   3rmt over
 */
 
     tep_draw_hidden_field($customer_id);    
@@ -60,8 +62,8 @@ function hidden_payment(){
         <tr>
           <td class="main"><table border="0" cellspacing="0" cellpadding="2">
               <tr>
-                <td class="main">&nbsp;<?php echo ENTRY_SITE; ?></td>
-                <td class="main">&nbsp;<?php echo tep_site_pull_down_menu($site_id) . '&nbsp;' . ENTRY_COMPANY_TEXT; ?></td>
+                <td class="main">&nbsp;<?php echo ENTRY_SITE; ?>:</td>
+                <td class="main">&nbsp;<?php echo isset($account) && $account?( '<font color="#FF0000"><b>'.tep_get_site_romaji_by_id($account['site_id']).'</b></font>'.tep_draw_hidden_field('site_id', $account['site_id'])):(tep_site_pull_down_menu($site_id) . '&nbsp;' . ENTRY_SITE_TEXT); ?></td>
               </tr>
             </table></td>
         </tr>

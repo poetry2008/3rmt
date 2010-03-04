@@ -2,6 +2,8 @@
 /*
   $Id$
 
+  3rmt over
+
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
 
@@ -39,12 +41,30 @@ require('includes/application_top.php');
       $filepath2 = "";
 	}
 
-	$ins_ht = tep_db_prepare_input($HTTP_POST_VARS['ht']);
+	$ins_ht   = tep_db_prepare_input($HTTP_POST_VARS['ht']);
+	$site_id  = tep_db_prepare_input($HTTP_POST_VARS['site_id']);
 	$ins_text = addslashes($HTTP_POST_VARS['text']);
     $ins_period1 = tep_db_prepare_input($HTTP_POST_VARS['start_y']).tep_db_prepare_input($HTTP_POST_VARS['start_m']).tep_db_prepare_input($HTTP_POST_VARS['start_d']);
     $ins_period2 = tep_db_prepare_input($HTTP_POST_VARS['limit_y']).tep_db_prepare_input($HTTP_POST_VARS['limit_m']).tep_db_prepare_input($HTTP_POST_VARS['limit_d']);
 
-    $ins = "insert into ".TABLE_PRESENT_GOODS."(title, html_check, image, text, start_date, limit_date) values ('".$ins_title."','".$ins_ht."','".$filepath2."','".$ins_text."','".$ins_period1."','".$ins_period2."')";
+    $ins = "insert into ".TABLE_PRESENT_GOODS."(
+              title, 
+              html_check, 
+              image, 
+              text, 
+              start_date, 
+              limit_date,
+              site_id
+            ) values (
+              '".$ins_title."',
+              '".$ins_ht."',
+              '".$filepath2."',
+              '".$ins_text."',
+              '".$ins_period1."',
+              '".$ins_period2."',
+              '".$site_id."')";
+
+          
     $mess = mysql_query($ins) or die("データ追加エラー");
       if($mess == true){
       }
@@ -171,6 +191,9 @@ case 'input' :
                     <table width="780" cellpadding="0" cellspacing="0">
                       <tr>
                         <td><table width="100%"  border="0" cellspacing="1" cellpadding="3">
+                            <tr>
+                              <td class="main" width="150" bgcolor="#FFFFFF"><?php echo ENTRY_SITE;?></td>
+                              <td class="main" width="630" bgcolor="#FFFFFF"><?php echo tep_site_pull_down_menu();?></td>
                             <tr>
                               <td class="main" width="150" bgcolor="#FFFFFF">タイトル</td>
                               <td class="main" width="630" bgcolor="#FFFFFF"><input name="title" type="text"></td>
@@ -307,8 +330,20 @@ case 'input' :
             <?php
 break;
 case 'view' :
-$sele1_id = $HTTP_GET_VARS['cID'];
-$sele1 = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".$sele1_id."'");
+$sele1_id = (int)$HTTP_GET_VARS['cID'];
+$sele1 = tep_db_query("
+    select g.goods_id,
+           g.html_check,
+           g.title,
+           g.image,
+           g.text,
+           g.start_date,
+           g.limit_date,
+           s.romaji
+    from ".TABLE_PRESENT_GOODS." g, ".TABLE_SITES." s
+    where g.goods_id = '".$sele1_id."'
+      and g.site_id = s.id
+    ");
 $sql1 = tep_db_fetch_array($sele1);
 //画像
 $pic = HTTP_CATALOG_SERVER . DIR_WS_CATALOG . DIR_WS_IMAGES . "present/".$sql1['image'];
@@ -333,6 +368,10 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                     <table width="780" cellpadding="0" cellspacing="0">
                       <tr>
                         <td><table width="100%"  border="0" cellspacing="1" cellpadding="3">
+                            <tr>
+                              <td class="main" width="150" bgcolor="#FFFFFF"><?php echo ENTRY_SITE;?></td>
+                              <td class="main" width="630" bgcolor="#FFFFFF"><?php echo $sql1['romaji'] ;?></td>
+                            </tr>
                             <tr>
                               <td class="main" width="150" bgcolor="#FFFFFF">タイトル</td>
                               <td class="main" width="630" bgcolor="#FFFFFF"><input name="title" type="text" value="<?php echo $sql1['title'] ;?>"></td>
@@ -489,7 +528,10 @@ $sele_lid = substr($sql1['limit_date'],8,2);
 break;
 case 'listview' :
 $lv_id = tep_db_prepare_input($HTTP_GET_VARS['list_id']);
-$sele2 = tep_db_query("select * from ".TABLE_PRESENT_APPLICANT." where id = '".$lv_id."'");
+$sele2 = tep_db_query("
+    select * 
+    from ".TABLE_PRESENT_APPLICANT." 
+    where id = '".$lv_id."'");
 $sql2 = tep_db_fetch_array($sele2);
 
 ?>
@@ -570,15 +612,33 @@ $c_id = tep_db_prepare_input($HTTP_GET_VARS['cID']);
                     <?php
 		$search = '';
 		$count = 0;
-		$list_query_raw = "select * from ".TABLE_PRESENT_APPLICANT." where goods_id='".$c_id."' order by id";
+		$list_query_raw = "
+      select p.id ,
+             p.goods_id, 
+             p.customer_id, 
+             p.family_name, 
+             p.first_name, 
+             p.mail, 
+             p.postcode, 
+             p.prefectures, 
+             p.cities, 
+             p.address1, 
+             p.address2, 
+             p.phone, 
+             p.tourokubi, 
+             s.romaji
+      from ".TABLE_PRESENT_APPLICANT." p , ".TABLE_SITES." s, ".TABLE_PRESENT_GOODS." g
+      where p.goods_id='".$c_id."' 
+        and g.goods_id = p.goods_id
+        and s.id = g.site_id
+      order by id";
 		$list_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $list_query_raw, $list_query_numrows);
 		$list_query = tep_db_query($list_query_raw);
 		while ($list = tep_db_fetch_array($list_query)) {
-	
 		  $count++;
-		  if ( ($list['id'] == $HTTP_GET_VARS['list_id'] || (!$HTTP_GET_VARS['list_id'] && $count == 1)) ) {
+		  if ( ((isset($HTTP_GET_VARS['list_id']) && $list['id'] == $HTTP_GET_VARS['list_id']) || ((!isset($HTTP_GET_VARS['list_id']) || !$HTTP_GET_VARS['list_id']) && $count == 1)) ) {
 			echo '          <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('list_id', 'action')) . 'list_id=' . $list['id'] . '&action=listview') . '\'">' . "\n";
-			if(!$HTTP_GET_VARS['list_id']) {
+			if(!isset($HTTP_GET_VARS['list_id']) || !$HTTP_GET_VARS['list_id']) {
 
 			  $list_id = $list['id'];
 			}
@@ -607,7 +667,10 @@ $c_id = tep_db_prepare_input($HTTP_GET_VARS['cID']);
                   </table></td>
                 <?php
 				  if($list_id && tep_not_null($list_id)) {
-					$cquery = tep_db_query("select * from ".TABLE_PRESENT_APPLICANT." where id = '".$list_id."'");
+					$cquery = tep_db_query("
+              select * 
+              from ".TABLE_PRESENT_APPLICANT." 
+              where id = '".$list_id."'");
 					$cresult = tep_db_fetch_array($cquery);
 					$c_title = $cresult['family_name'].$cresult['first_name'];
 				  } else {
@@ -649,10 +712,13 @@ default:
                   </table></td>
               </tr>
               <tr>
-                <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
+                <td>
+                <?php tep_site_filter(FILENAME_PRESENT);?>
+                <table border="0" width="100%" cellspacing="0" cellpadding="0">
                     <tr>
                       <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
                           <tr class="dataTableHeadingRow">
+                            <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_SITE;?></td>
                             <td class="dataTableHeadingContent">TITLE</td>
                             <td class="dataTableHeadingContent" align="center">期間</td>
                             <td class="dataTableHeadingContent" align="center">操作</td>
@@ -660,7 +726,20 @@ default:
                           <?php
     $search = '';
     $count = 0;
-    $present_query_raw = "select * from ".TABLE_PRESENT_GOODS." order by goods_id";
+    $present_query_raw = "
+      select g.goods_id,
+             g.html_check,
+             g.title,
+             g.title,
+             g.image,
+             g.text,
+             g.start_date,
+             g.limit_date,
+             s.romaji
+      from ".TABLE_PRESENT_GOODS." g , ".TABLE_SITES." s
+      where s.id = g.site_id
+        " . (isset($HTTP_GET_VARS['site_id']) && intval($HTTP_GET_VARS['site_id']) ? " and s.id = '" . intval($HTTP_GET_VARS['site_id']) . "' " : '') . "
+      order by goods_id";
     $present_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $present_query_raw, $present_query_numrows);
     $present_query = tep_db_query($present_query_raw);
     while ($present = tep_db_fetch_array($present_query)) {
@@ -676,6 +755,7 @@ default:
         echo '          <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID')) . 'cID=' . $present['goods_id']) . '\'">' . "\n";
       }
 ?>
+                          <td class="dataTableContent"><?php echo $present['romaji']; ?></td>
                           <td class="dataTableContent"><?php echo htmlspecialchars($present['title']); ?></td>
                             <td class="dataTableContent" align="center"><?php
 					  $st_date = htmlspecialchars($present['start_date']);
@@ -705,7 +785,7 @@ default:
                           </tr>
                         </table></td>
                       <?php
-				  if($cID && tep_not_null($cID)) {
+				  if(isset($cID) && $cID && tep_not_null($cID)) {
 					$cquery = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".$cID."'");
 					$cresult = tep_db_fetch_array($cquery);
 					$c_title = $cresult['title'];
@@ -724,7 +804,7 @@ default:
 					  $present[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_delete.gif', IMAGE_DELETE) . ' <a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
 					  break;
 					default:
-					  if ($cID && tep_not_null($cID)) {
+					  if (isset($cID) && $cID && tep_not_null($cID)) {
 						$heading[] = array('text' => '<b>' . $c_title . '</b>');
 				
 						$present[] = array('align' => 'center', 'text' => '<br><br><a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=view') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=deleform') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a> <a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action','page')) . 'cID=' . $cID . '&action=list') . '">' . tep_image_button('button_list.gif', 'リスト') . '</a>' );

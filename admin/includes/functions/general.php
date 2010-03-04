@@ -2061,14 +2061,23 @@ function tep_get_image_document_image($document_id)
            }
   }
 
+function tep_siteurl_pull_down_menu($default = '',$require = false){
+    $site_array = array();
+    $sites = tep_get_sites();
+    foreach($sites as $site){
+      $sites_array[] = array('id' => $site['url'], 'text' => $site['romaji']);
+    }
+    return tep_draw_pull_down_menu('site_url_id', $sites_array, $default, $params = 'onChange="window.open(this.value)"', $require);
+
+}
   // 生成选择SITE_ID的下拉框
-  function tep_site_pull_down_menu($default = ''){
+function tep_site_pull_down_menu($default = '',$require = true){
     $sites_array = array();
     $sites = tep_get_sites();
     foreach($sites as $site){
       $sites_array[] = array('id' => $site['id'], 'text' => $site['romaji']);
     }
-    return tep_draw_pull_down_menu('site_id', $sites_array, $default, $params = '', true);
+    return tep_draw_pull_down_menu('site_id', $sites_array, $default, $params = '', $require);
   }
 
   function tep_get_site_romaji_by_id($id){
@@ -2081,4 +2090,14 @@ function tep_get_image_document_image($document_id)
     return isset($site['romaji'])?$site['romaji']:'';
   }
   
+  function tep_get_site_romaji_by_order_id($id){
+    $order_query = tep_db_query("
+        select s.romaji
+        from " . TABLE_ORDERS . " o, ".TABLE_SITES." s
+        where o.orders_id = '".$id."'
+          and s.id = o.site_id
+    ");
+    $order = tep_db_fetch_array($order_query);
+    return isset($order['romaji'])?$order['romaji']:'';
+  }
 ?>

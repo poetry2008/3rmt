@@ -22,19 +22,20 @@
           $HTTP_POST_VARS[$col] = tep_an_zen_to_han($HTTP_POST_VARS[$col]);
         }
 
-        $cID = tep_db_prepare_input($HTTP_POST_VARS['cID']);
-        $navbar_title = tep_db_prepare_input($HTTP_POST_VARS['navbar_title']);
-        $heading_title = tep_db_prepare_input($HTTP_POST_VARS['heading_title']);
+        $cID              = tep_db_prepare_input($HTTP_POST_VARS['cID']);
+        $navbar_title     = tep_db_prepare_input($HTTP_POST_VARS['navbar_title']);
+        $heading_title    = tep_db_prepare_input($HTTP_POST_VARS['heading_title']);
         $text_information = tep_db_prepare_input($HTTP_POST_VARS['text_information']);
-        $status = tep_db_prepare_input($HTTP_POST_VARS['status']);
-        $sort_id = tep_db_prepare_input($HTTP_POST_VARS['sort_id']);
-        $page = tep_db_prepare_input($HTTP_POST_VARS['page']);
-        $romaji = tep_db_prepare_input($HTTP_POST_VARS['romaji']);
+        $status           = tep_db_prepare_input($HTTP_POST_VARS['status']);
+        $sort_id          = tep_db_prepare_input($HTTP_POST_VARS['sort_id']);
+        $page             = tep_db_prepare_input($HTTP_POST_VARS['page']);
+        $romaji           = tep_db_prepare_input($HTTP_POST_VARS['romaji']);
         if (empty($romaji)) {
          $error = true;
          $error_message = ROMAJI_NOT_NULL;
          $HTTP_GET_VARS['action'] = 'edit';
         }
+
 
         if (preg_match('/[^a-zA-Z0-9_]/i', $romaji))
         {
@@ -42,7 +43,13 @@
           $error_message = ROMAJI_WRONG_FORMAT;
           $HTTP_GET_VARS['action'] = 'edit';
         }
-        $exists_romaji_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where romaji = '".$romaji."' and pID != '".$cID."'"); 
+        $exists_romaji_query = tep_db_query("
+            select * 
+            from ".TABLE_INFORMATION_PAGE." 
+            where romaji = '".$romaji."' 
+            and pID != '".$cID."'
+            and site_id = '".$site_id."'
+        "); 
         $exists_romaji_num = tep_db_num_rows($exists_romaji_query); 
         if ($exists_romaji_num > 0) {
           $error_message = ROMAJI_EXISTS; 
@@ -56,7 +63,8 @@
                                 'text_information' => $text_information,
                                 'status' => $status,
                                 'romaji' => $romaji,
-                                'sort_id' => $sort_id);
+                                'sort_id' => $sort_id
+                                );
 
         if ($error == false) {
           tep_db_perform(TABLE_INFORMATION_PAGE, $sql_data_array, 'update', "pID = '" . tep_db_input($cID) . "'");
@@ -71,18 +79,27 @@
           $HTTP_POST_VARS[$col] = tep_an_zen_to_han($HTTP_POST_VARS[$col]);
         }
 
-		$navbar_title = tep_db_prepare_input($HTTP_POST_VARS['navbar_title']);
-		$heading_title = tep_db_prepare_input($HTTP_POST_VARS['heading_title']);
-		$text_information = tep_db_prepare_input($HTTP_POST_VARS['text_information']);
-		$status = tep_db_prepare_input($HTTP_POST_VARS['status']);
-		$sort_id = tep_db_prepare_input($HTTP_POST_VARS['sort_id']);
-		$romaji = tep_db_prepare_input($HTTP_POST_VARS['romaji']);
+        $navbar_title     = tep_db_prepare_input($HTTP_POST_VARS['navbar_title']);
+        $heading_title    = tep_db_prepare_input($HTTP_POST_VARS['heading_title']);
+        $text_information = tep_db_prepare_input($HTTP_POST_VARS['text_information']);
+        $status           = tep_db_prepare_input($HTTP_POST_VARS['status']);
+        $sort_id          = tep_db_prepare_input($HTTP_POST_VARS['sort_id']);
+        $romaji           = tep_db_prepare_input($HTTP_POST_VARS['romaji']);
+        $site_id          = tep_db_prepare_input($HTTP_POST_VARS['site_id']);
+        if (empty($site_id)) {
+         $error = true;
+         $error_message = SITE_ID_NOT_NULL;
+         $HTTP_GET_VARS['action'] = 'edit';
+        }
         if (empty($romaji)) {
          $error = true;
          $error_message = ROMAJI_NOT_NULL;
          $HTTP_GET_VARS['action'] = 'insert';
         }
-        $exists_romaji_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where romaji = '".$romaji."'"); 
+        $exists_romaji_query = tep_db_query("
+            select * 
+            from ".TABLE_INFORMATION_PAGE." 
+            where romaji = '".$romaji."'"); 
         $exists_romaji_num = tep_db_num_rows($exists_romaji_query); 
         if ($exists_romaji_num > 0) {
           $error_message = ROMAJI_EXISTS; 
@@ -95,20 +112,24 @@
                                 'text_information' => $text_information,
                                 'status' => $status,
                                 'romaji' => $romaji,
-                                'sort_id' => $sort_id);
+                                'sort_id' => $sort_id,
+                                'site_id' => $site_id);
 
         if ($error == false) {
           tep_db_perform(TABLE_INFORMATION_PAGE, $sql_data_array);
           tep_redirect(tep_href_link(FILENAME_CONTENTS));
         }
         break;	  
-	  case 'setflag':
-	    $status = tep_db_prepare_input($HTTP_GET_VARS['flag']);
-		$cID = tep_db_prepare_input($HTTP_GET_VARS['cID']);
-		$page = tep_db_prepare_input($HTTP_GET_VARS['page']);
-		
-		tep_db_query("update ".TABLE_INFORMATION_PAGE." set status = '".$status."' where pID = '".tep_db_input($cID)."'");
-		tep_redirect(tep_href_link(FILENAME_CONTENTS, 'cID=' . $cID . '&page='.$page));
+    case 'setflag':
+      $status = tep_db_prepare_input($HTTP_GET_VARS['flag']);
+      $cID    = tep_db_prepare_input($HTTP_GET_VARS['cID']);
+      $page   = tep_db_prepare_input($HTTP_GET_VARS['page']);
+      tep_db_query("
+          update ".TABLE_INFORMATION_PAGE." 
+          set status = '".$status."' 
+          where pID = '".tep_db_input($cID)."'
+      ");
+      tep_redirect(tep_href_link(FILENAME_CONTENTS, 'cID=' . $cID . '&page='.$page));
 	    break;
 	  case 'deleteconfirm':
         $cID = tep_db_prepare_input($HTTP_GET_VARS['cID']);
@@ -144,7 +165,10 @@
     <td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
 <?php
   if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'edit') {
-  $detail_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where pID = '".$cID."'");
+  $detail_query = tep_db_query("
+      select * 
+      from ".TABLE_INFORMATION_PAGE." 
+      where pID = '".$cID."'");
   $detail = tep_db_fetch_array($detail_query);
   
     switch ($detail['status']) {
@@ -164,6 +188,10 @@
         <tr> 
           <td> <?php echo tep_draw_form('update', FILENAME_CONTENTS, 'act=update'); ?> 
             <table border="0" cellspacing="0" cellpadding="5"> 
+              <tr> 
+                <td class="main"><?php echo ENTRY_SITE; ?></td> 
+            	<td class="main"><?php echo tep_site_pull_down_menu($detail['site_id'])?></td>
+              </tr> 
               <tr> 
                 <td class="main"><?php echo TEXT_DETAIL_STATUS; ?></td> 
             	<td class="main"><?php echo tep_draw_radio_field('status', '1', $in_status) . '&nbsp;' . TEXT_PRODUCT_AVAILABLE . '&nbsp;' . tep_draw_radio_field('status', '0', $out_status) . '&nbsp;' . TEXT_PRODUCT_NOT_AVAILABLE; ?></td>
@@ -218,6 +246,10 @@
           <td> <?php echo tep_draw_form('update', FILENAME_CONTENTS, 'act=insert'); ?> 
             <table border="0" cellspacing="0" cellpadding="5"> 
               <tr> 
+                <td class="main"><?php echo ENTRY_SITE; ?></td> 
+            	<td class="main"><?php echo tep_site_pull_down_menu();?></td>
+              </tr> 
+              <tr> 
                 <td class="main"><?php echo TEXT_DETAIL_STATUS; ?></td> 
             	<td class="main"><?php echo tep_draw_radio_field('status', '1', true) . '&nbsp;' . TEXT_PRODUCT_AVAILABLE . '&nbsp;' . tep_draw_radio_field('status', '0', false) . '&nbsp;' . TEXT_PRODUCT_NOT_AVAILABLE; ?></td>
               </tr> 
@@ -267,10 +299,13 @@
             </table></td> 
         </tr> 
         <tr> 
-          <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+          <td>
+          <?php tep_site_filter(FILENAME_CONTENTS);?>
+          <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
               <tr> 
                 <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                     <tr class="dataTableHeadingRow"> 
+                      <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_SITE; ?></td> 
                       <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CONTENTS_TITLE; ?></td> 
                       <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_CONTENTS_STATUS; ?></td> 
                       <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_CONTENTS_SORT; ?></td> 
@@ -279,7 +314,20 @@
                     <?php
     $search = '';
     $count = 0;
-    $contents_query_raw = "select * from ".TABLE_INFORMATION_PAGE." order by sort_id, heading_title";
+    $contents_query_raw = "
+      select i.pID,
+             i.navbar_title,
+             i.heading_title,
+             i.text_information,
+             i.status,
+             i.sort_id,
+             i.romaji,
+             i.site_id,
+             s.romaji as sromaji
+      from ".TABLE_INFORMATION_PAGE." i , ".TABLE_SITES." s
+      where s.id = i.site_id
+        " . (isset($HTTP_GET_VARS['site_id']) && intval($HTTP_GET_VARS['site_id']) ? " and s.id = '" . intval($HTTP_GET_VARS['site_id']) . "' " : '') . "
+      order by i.sort_id, i.heading_title";
     $contents_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $contents_query_raw, $contents_query_numrows);
     $contents_query = tep_db_query($contents_query_raw);
     while ($contents = tep_db_fetch_array($contents_query)) {
@@ -294,6 +342,7 @@
         echo '          <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID')) . 'cID=' . $contents['pID']) . '\'">' . "\n";
       }
 ?> 
+                    <td class="dataTableContent"><?php echo $contents['sromaji']; ?></td> 
                     <td class="dataTableContent"><?php echo htmlspecialchars($contents['heading_title']); ?></td> 
                       <td class="dataTableContent" align="center">
 					  <?php

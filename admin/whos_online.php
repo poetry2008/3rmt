@@ -18,7 +18,10 @@
   $currencies = new currencies();
 
 // remove entries that have expired
-  tep_db_query("delete from " . TABLE_WHOS_ONLINE . " where time_last_click < '" . $xx_mins_ago . "'");
+  tep_db_query("
+      delete from " . TABLE_WHOS_ONLINE . " 
+      where time_last_click < '" . $xx_mins_ago . "'
+  ");
 ?>
 <!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html <?php echo HTML_PARAMS; ?>>
@@ -51,10 +54,13 @@
         </table></td>
       </tr>
       <tr>
-        <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
+        <td>
+        <?php tep_site_filter(FILENAME_WHOS_ONLINE);?>
+        <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr class="dataTableHeadingRow">
+                <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_SITE; ?></td>
                 <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_ONLINE; ?></td>
                 <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_CUSTOMER_ID; ?></td>
                 <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_FULL_NAME; ?></td>
@@ -64,7 +70,19 @@
                 <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_LAST_PAGE_URL; ?>&nbsp;</td>
               </tr>
 <?php
-  $whos_online_query = tep_db_query("select customer_id, full_name, ip_address, time_entry, time_last_click, last_page_url, session_id from " . TABLE_WHOS_ONLINE);
+  $whos_online_query = tep_db_query("
+      select w.customer_id, 
+             w.full_name, 
+             w.ip_address, 
+             w.time_entry, 
+             w.time_last_click, 
+             w.last_page_url, 
+             w.session_id,
+             s.romaji
+      from " . TABLE_WHOS_ONLINE . " w, ".TABLE_SITES." s
+      where s.id = w.site_id
+        " . (isset($HTTP_GET_VARS['site_id']) && intval($HTTP_GET_VARS['site_id']) ? " and s.id = '" . intval($HTTP_GET_VARS['site_id']) . "' " : '') . "
+      ");
   while ($whos_online = tep_db_fetch_array($whos_online_query)) {
     $time_online = (time() - $whos_online['time_entry']);
     if ( ((!$HTTP_GET_VARS['info']) || (@$HTTP_GET_VARS['info'] == $whos_online['session_id'])) && (!$info) ) {
@@ -76,6 +94,7 @@
       echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_WHOS_ONLINE, tep_get_all_get_params(array('info', 'action')) . 'info=' . $whos_online['session_id'], 'NONSSL') . '\'">' . "\n";
     }
 ?>
+                <td class="dataTableContent"><?php echo $whos_online['romaji']?></td>
                 <td class="dataTableContent"><?php echo gmdate('H:i:s', $time_online); ?></td>
                 <td class="dataTableContent" align="center"><?php echo $whos_online['customer_id']; ?></td>
                 <td class="dataTableContent"><?php echo $whos_online['full_name']; ?></td>
@@ -98,7 +117,11 @@ if (isset($info)) {
     $heading[] = array('text' => '<b>' . TABLE_HEADING_SHOPPING_CART . '</b>');
 
     if (STORE_SESSIONS == 'mysql') {
-      $session_data = tep_db_query("select value from " . TABLE_SESSIONS . " WHERE sesskey = '" . $info . "'");
+      $session_data = tep_db_query("
+          select value 
+          from " . TABLE_SESSIONS . " 
+          WHERE sesskey = '" . $info . "'
+      ");
       $session_data = tep_db_fetch_array($session_data);
       $session_data = trim($session_data['value']);
     } else {
@@ -110,17 +133,17 @@ if (isset($info)) {
 
     if ($length = strlen($session_data)) {
       if (PHP_VERSION < 4) {
-        $start_id = strpos($session_data, 'customer_id[==]s');
-        $start_cart = strpos($session_data, 'cart[==]o');
+        $start_id       = strpos($session_data, 'customer_id[==]s');
+        $start_cart     = strpos($session_data, 'cart[==]o');
         $start_currency = strpos($session_data, 'currency[==]s');
-        $start_country = strpos($session_data, 'customer_country_id[==]s');
-        $start_zone = strpos($session_data, 'customer_zone_id[==]s');
+        $start_country  = strpos($session_data, 'customer_country_id[==]s');
+        $start_zone     = strpos($session_data, 'customer_zone_id[==]s');
       } else {
-        $start_id = strpos($session_data, 'customer_id|s');
-        $start_cart = strpos($session_data, 'cart|O');
+        $start_id       = strpos($session_data, 'customer_id|s');
+        $start_cart     = strpos($session_data, 'cart|O');
         $start_currency = strpos($session_data, 'currency|s');
-        $start_country = strpos($session_data, 'customer_country_id|s');
-        $start_zone = strpos($session_data, 'customer_zone_id|s');
+        $start_country  = strpos($session_data, 'customer_country_id|s');
+        $start_zone     = strpos($session_data, 'customer_zone_id|s');
       }
 
       for ($i=$start_cart; $i<$length; $i++) {

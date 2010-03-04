@@ -1,6 +1,8 @@
 <?php
 /*
-	JP、GM共通ファイル
+   $Id$
+
+   3rmt over
 */
 
   require('includes/application_top.php');
@@ -15,27 +17,28 @@
   $an_cols = array('password','confirmation','email_address','postcode','telephone','fax');
   if (ACCOUNT_DOB) $an_cols[] = 'dob';
   foreach ($an_cols as $col) {
-    $HTTP_POST_VARS[$col] = tep_an_zen_to_han($HTTP_POST_VARS[$col]);
+    $HTTP_POST_VARS[$col] = isset($HTTP_POST_VARS[$col]) ? tep_an_zen_to_han($HTTP_POST_VARS[$col]) : '';
   }
 
-  $gender = tep_db_prepare_input($HTTP_POST_VARS['gender']);
-  $firstname = tep_db_prepare_input($HTTP_POST_VARS['firstname']);
-  $lastname = tep_db_prepare_input($HTTP_POST_VARS['lastname']);
-  $dob = tep_db_prepare_input($HTTP_POST_VARS['dob']);
-  $email_address = tep_db_prepare_input($HTTP_POST_VARS['email_address']);
-  $telephone = tep_db_prepare_input($HTTP_POST_VARS['telephone']);
-  $fax = tep_db_prepare_input($HTTP_POST_VARS['fax']);
-  $newsletter = tep_db_prepare_input($HTTP_POST_VARS['newsletter']);
-  $password = tep_db_prepare_input($HTTP_POST_VARS['password']);
-  $confirmation = tep_db_prepare_input($HTTP_POST_VARS['confirmation']);
+  $gender         = tep_db_prepare_input($HTTP_POST_VARS['gender']);
+  $firstname      = tep_db_prepare_input($HTTP_POST_VARS['firstname']);
+  $lastname       = tep_db_prepare_input($HTTP_POST_VARS['lastname']);
+  $dob            = tep_db_prepare_input($HTTP_POST_VARS['dob']);
+  $email_address  = tep_db_prepare_input($HTTP_POST_VARS['email_address']);
+  $telephone      = tep_db_prepare_input($HTTP_POST_VARS['telephone']);
+  $fax            = tep_db_prepare_input($HTTP_POST_VARS['fax']);
+  $newsletter     = tep_db_prepare_input($HTTP_POST_VARS['newsletter']);
+  $password       = tep_db_prepare_input($HTTP_POST_VARS['password']);
+  $confirmation   = tep_db_prepare_input($HTTP_POST_VARS['confirmation']);
   $street_address = tep_db_prepare_input($HTTP_POST_VARS['street_address']);
-  $company = tep_db_prepare_input($HTTP_POST_VARS['company']);
-  $suburb = tep_db_prepare_input($HTTP_POST_VARS['suburb']);
-  $postcode = tep_db_prepare_input($HTTP_POST_VARS['postcode']);
-  $city = tep_db_prepare_input($HTTP_POST_VARS['city']);
-  $zone_id = tep_db_prepare_input($HTTP_POST_VARS['zone_id']);
-  $state = tep_db_prepare_input($HTTP_POST_VARS['state']);
-  $country = tep_db_prepare_input($HTTP_POST_VARS['country']);
+  $company        = tep_db_prepare_input($HTTP_POST_VARS['company']);
+  $suburb         = tep_db_prepare_input($HTTP_POST_VARS['suburb']);
+  $postcode       = tep_db_prepare_input($HTTP_POST_VARS['postcode']);
+  $city           = tep_db_prepare_input($HTTP_POST_VARS['city']);
+  $zone_id        = tep_db_prepare_input($HTTP_POST_VARS['zone_id']);
+  $site_id        = tep_db_prepare_input($HTTP_POST_VARS['site_id']);
+  $state          = tep_db_prepare_input($HTTP_POST_VARS['state']);
+  $country        = tep_db_prepare_input($HTTP_POST_VARS['country']);
 
   $error = false; // reset error flag
 
@@ -60,6 +63,13 @@
     $entry_lastname_error = true;
   } else {
     $entry_lastname_error = false;
+  }
+
+  if (in_array($site_id, tep_get_sites())) {
+    $error = true;
+    $entry_site_id_error = true;
+  } else {
+    $entry_site_id_error = false;
   }
 /*
   if (ACCOUNT_DOB == 'true') {
@@ -166,7 +176,12 @@
     $entry_password_error = true;
   }
 */
-  $check_email = tep_db_query("select customers_email_address from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "' and customers_id <> '" . tep_db_input($customer_id) . "'");
+  $check_email = tep_db_query("
+      select customers_email_address 
+      from " . TABLE_CUSTOMERS . " 
+      where customers_email_address = '" . tep_db_input($email_address) . "' 
+        and customers_id <> '" . tep_db_input($customer_id) . "'
+  ");
   if (tep_db_num_rows($check_email)) {
     $error = true;
     $entry_email_address_exists = true;
@@ -252,6 +267,7 @@
                             'customers_password' => tep_encrypt_password($password),
                             'point' => 0,
                             'customers_default_address_id' => 1,
+                            'site_id' => $site_id,
                             'customers_guest_chk' => 1);
 
     if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;

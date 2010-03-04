@@ -7,6 +7,8 @@
 
   Released under the GNU General Public License
 */
+$libpath = "/home/maker/project/3rmt/3rmtlib/";
+ini_set('include_path',ini_get('include_path').':'.$libpath);
 
 // Define the webserver and path parameters
 // * DIR_FS_* = Filesystem directories (local/physical)
@@ -19,7 +21,7 @@
   define('DIR_WS_ADMIN', '/'); // absolute path required
   define('DIR_FS_ADMIN', '/home/maker/project/3rmt/admin/'); // absolute pate required
   define('DIR_WS_CATALOG', './'); // absolute path required
-  define('DIR_FS_CATALOG', './'); // absolute path required
+  define('DIR_FS_CATALOG', ''); // absolute path required
   define('DIR_WS_IMAGES', 'images/');
   define('DIR_WS_ICONS', DIR_WS_IMAGES . 'icons/');
   define('DIR_WS_CATALOG_IMAGES', DIR_WS_CATALOG . 'images/');
@@ -32,7 +34,7 @@
   define('DIR_WS_CATALOG_LANGUAGES', DIR_WS_CATALOG . 'includes/languages/');
   define('DIR_FS_CATALOG_LANGUAGES', DIR_FS_CATALOG . 'includes/languages/');
   define('DIR_FS_CATALOG_IMAGES', DIR_FS_CATALOG . 'images/');
-  define('DIR_FS_CATALOG_MODULES', DIR_FS_CATALOG . 'includes/modules/');
+  define('DIR_FS_CATALOG_MODULES', $libpath. 'includes/modules/');
   define('DIR_FS_BACKUP', DIR_FS_ADMIN . 'backups/');
 
 // define our database connection

@@ -1,6 +1,6 @@
 <?php
 /*
-	JP、GM共通ファイル
+   $Id$
 */
 
   require('includes/application_top.php');

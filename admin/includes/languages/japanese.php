@@ -286,6 +286,18 @@ define('TEXT_DISPLAY_NUMBER_OF_ZONES', '<b>%d</b> &sim; <b>%d</b> 番目を表�
 
 define('PREVNEXT_BUTTON_PREV', '&lt;&lt;');
 define('PREVNEXT_BUTTON_NEXT', '&gt;&gt;');
+//define('PREVNEXT_BUTTON_PREV', '前のページ');
+//define('PREVNEXT_BUTTON_NEXT', '次のページ');
+
+define('PREVNEXT_TITLE_FIRST_PAGE', '最初のページ');
+define('PREVNEXT_TITLE_PREVIOUS_PAGE', '前ページ');
+define('PREVNEXT_TITLE_NEXT_PAGE', '次ページ');
+define('PREVNEXT_TITLE_LAST_PAGE', '最後のページ');
+define('PREVNEXT_TITLE_PAGE_NO', 'ページ %d');
+define('PREVNEXT_TITLE_PREV_SET_OF_NO_PAGE', '前 %d ページ');
+define('PREVNEXT_TITLE_NEXT_SET_OF_NO_PAGE', '次 %d ページ');
+define('PREVNEXT_BUTTON_FIRST', '&lt;&lt;最初');
+define('PREVNEXT_BUTTON_LAST', '最後&gt;&gt;');
 
 define('TEXT_DEFAULT', 'デフォルト');
 define('TEXT_SET_DEFAULT', 'デフォルトに設定');
@@ -326,5 +338,8 @@ define('IMAGE_DETAILS', '');
 
 define('CATEGORY_SITE', 'CATEGORY_SITE');
 define('ENTRY_SITE', 'ENTRY_SITE');
+
+define('TEXT_IMAGE_NONEXISTENT', '');
+define('SITE_ID_NOT_NULL', '');
 
 ?>

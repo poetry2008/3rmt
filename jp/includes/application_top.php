@@ -2,6 +2,10 @@
 /*
   $Id$
 */
+$libpath = "/home/maker/project/3rmt/3rmtlib/";
+ini_set('include_path',ini_get('include_path').':'.$libpath);
+
+
   $GLOBALS['HTTP_GET_VARS']    = $_GET;
 
   $GLOBALS['HTTP_POST_VARS']   = $_POST;

@@ -2,6 +2,8 @@
 /*
   $Id$
 
+  3rmt over
+
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
 
@@ -9,7 +11,6 @@
 
   Released under the GNU General Public License
 */
-
   require('includes/application_top.php');
 
   if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action']) {
@@ -58,9 +59,10 @@
         if ($HTTP_POST_VARS['headline']) {
           $sql_data_array = array('headline'   => tep_db_prepare_input($HTTP_POST_VARS['headline']),
                                   'content'    => tep_db_prepare_input($HTTP_POST_VARS['content']),
-		  						  'news_image' => tep_db_prepare_input($HTTP_POST_VARS['news_image']),
-								  'news_image_description' => tep_db_prepare_input($HTTP_POST_VARS['news_image_description']),
+                                  'news_image' => tep_db_prepare_input($HTTP_POST_VARS['news_image']),
+                                  'news_image_description' => tep_db_prepare_input($HTTP_POST_VARS['news_image_description']),
                                   'date_added' => 'now()', //uses the inbuilt mysql function 'now'
+                                  'site_id'    => tep_db_prepare_input($HTTP_POST_VARS['site_id']),
                                   'status'     => '1' );
 
           tep_db_perform(TABLE_LATEST_NEWS, $sql_data_array);
@@ -91,8 +93,7 @@
 	  
         if($HTTP_GET_VARS['latest_news_id']) {
           $sql_data_array = array('headline' => tep_db_prepare_input($HTTP_POST_VARS['headline']),
-		  						  //'news_image' => (($HTTP_POST_VARS['news_image'] == 'none') ? '' : tep_db_prepare_input($HTTP_POST_VARS['news_image'])),
-		  						  'news_image_description' => tep_db_prepare_input($HTTP_POST_VARS['news_image_description']),
+                                  'news_image_description' => tep_db_prepare_input($HTTP_POST_VARS['news_image_description']),
                                   'content'  => tep_db_prepare_input($HTTP_POST_VARS['content']) );
                                   
           tep_db_perform(TABLE_LATEST_NEWS, $sql_data_array, 'update', "news_id = '" . tep_db_prepare_input($HTTP_GET_VARS['latest_news_id']) . "'");
@@ -110,8 +111,10 @@
 		$path = 'news/';
 		
 		if (is_uploaded_file($news_image['tmp_name'])) {
-		  tep_db_query("update " . TABLE_LATEST_NEWS . " set news_image = '"
-                      . $path . $news_image_name . "' where news_id = '" . $HTTP_GET_VARS['latest_news_id'] . "'");
+		  tep_db_query("
+          update " . TABLE_LATEST_NEWS . " 
+          set news_image = '" . $path . $news_image_name . "' 
+          where news_id = '" . $HTTP_GET_VARS['latest_news_id'] . "'");
           tep_copy_uploaded_file($news_image, $image_directory);
         }
         tep_redirect(tep_href_link(FILENAME_LATEST_NEWS));
@@ -146,7 +149,15 @@
 <?php
   if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'new_latest_news') { //insert or edit a news item
     if ( isset($HTTP_GET_VARS['latest_news_id']) ) { //editing exsiting news item
-      $latest_news_query = tep_db_query("select news_id, headline, content, news_image, news_image_description from " . TABLE_LATEST_NEWS . " where news_id = '" . $HTTP_GET_VARS['latest_news_id'] . "'");
+      $latest_news_query = tep_db_query("
+          select news_id, 
+                 headline,  
+                 content, 
+                 news_image, 
+                 news_image_description,
+                 site_id
+          from " . TABLE_LATEST_NEWS . " 
+          where news_id = '" . (int)$HTTP_GET_VARS['latest_news_id'] . "'");
       $latest_news = tep_db_fetch_array($latest_news_query);
 	  
 	  $nInfo = new objectInfo($latest_news);
@@ -168,29 +179,33 @@
       <tr><?php echo tep_draw_form('new_latest_news', FILENAME_LATEST_NEWS, isset($HTTP_GET_VARS['latest_news_id']) ? 'latest_news_id=' . $HTTP_GET_VARS['latest_news_id'] . '&action=update_latest_news' : 'action=insert_latest_news', 'post', 'enctype="multipart/form-data"'); ?>
         <td><table border="0" cellspacing="0" cellpadding="2">
           <tr>
+            <td class="main"><?php echo TEXT_LATEST_NEWS_SITE; ?></td>
+            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . (isset($HTTP_GET_VARS['latest_news_id']) && $HTTP_GET_VARS['latest_news_id'] && $latest_news?tep_get_site_romaji_by_id($latest_news['site_id']):tep_site_pull_down_menu(isset($latest_news['site_id'])?$latest_news['site_id']:'')); ?></td>
+          </tr>
+          <tr>
             <td class="main"><?php echo TEXT_LATEST_NEWS_HEADLINE; ?></td>
-            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('headline', $latest_news['headline'], '', true); ?></td>
+            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('headline', isset($latest_news['headline'])?$latest_news['headline']:'', '', true); ?></td>
           </tr>
           <tr>
             <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
           <tr>
             <td class="main"><?php echo TEXT_LATEST_NEWS_CONTENT; ?></td>
-            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_textarea_field('content', 'soft', '70', '15', stripslashes($latest_news['content'])); ?></td>
+            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_textarea_field('content', 'soft', '70', '15',isset($latest_news['content'])? stripslashes($latest_news['content']):''); ?></td>
           </tr>
           <tr>
             <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
           <tr>
             <td class="main"><?php echo TEXT_LATEST_NEWS_IMAGE; ?></td>
-            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_file_field('news_image') . '<br>' . tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . $latest_news['news_image'] . tep_draw_hidden_field('news_image', $latest_news['news_image']); ?></td>
+            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_file_field('news_image') . '<br>' . tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . (isset($latest_news['news_image'])?$latest_news['news_image']:'') . tep_draw_hidden_field('news_image',isset($latest_news['news_image'])? $latest_news['news_image']:''); ?></td>
           </tr>		  
           <tr>
             <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
           <tr>
             <td class="main"><?php echo TEXT_LATEST_NEWS_IMAGE_DESCRIPTION; ?></td>
-            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_textarea_field('news_image_description', 'soft', '70', '7', stripslashes($latest_news['news_image_description'])); ?></td>
+            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_textarea_field('news_image_description', 'soft', '70', '7', isset($latest_news['news_image_description'])?stripslashes($latest_news['news_image_description']):''); ?></td>
           </tr>		  
         </table></td>
       </tr>
@@ -221,10 +236,13 @@
         </td>
       </tr>
       <tr>
-        <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
+        <td>
+        <?php tep_site_filter(FILENAME_LATEST_NEWS);?>
+        <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr class="dataTableHeadingRow">
+                <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_SITE; ?></td>
                 <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_LATEST_NEWS_HEADLINE; ?></td>
                 <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_LATEST_NEWS_STATUS; ?></td>
                 <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_LATEST_NEWS_ISFIRST; ?></td>
@@ -234,7 +252,20 @@
     $rows = 0;
 
     $latest_news_count = 0;
-    $latest_news_query = tep_db_query('select news_id, headline, content, status, news_image, news_image_description from ' . TABLE_LATEST_NEWS . ' order by date_added desc');
+    $latest_news_query = tep_db_query('
+        select n.news_id, 
+               n.headline, 
+               n.content, 
+               n.status, 
+               n.news_image, 
+               n.news_image_description, 
+               n.isfirst ,
+               s.romaji
+        from ' . TABLE_LATEST_NEWS . ' n, '.TABLE_SITES.' s
+        where n.site_id = s.id
+        ' . (isset($HTTP_GET_VARS['site_id']) && intval($HTTP_GET_VARS['site_id']) ? " and s.id = '" . intval($HTTP_GET_VARS['site_id']) . "' " : '') . '
+        order by date_added desc
+    ');
     
     while ($latest_news = tep_db_fetch_array($latest_news_query)) {
       $latest_news_count++;
@@ -249,6 +280,7 @@
         echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $latest_news['news_id']) . '\'">' . "\n";
       }
 ?>
+                <td class="dataTableContent"><?php echo '&nbsp;'.$latest_news['romaji']; ?></td>
                 <td class="dataTableContent"><?php echo '&nbsp;' . $latest_news['headline']; ?></td>
                 <td class="dataTableContent" align="center">
 <?php
@@ -260,18 +292,17 @@
 ?></td>
                 <td class="dataTableContent" align="center">
                 <?php
-$listAllQuery = tep_db_query("select * from " . TABLE_LATEST_NEWS . " where isfirst = '1'");
-$listAllRes = tep_db_fetch_array($listAllQuery);
-if ($listAllRes) {
-  if ($latest_news['news_id'] == $listAllRes['news_id']) {
+//$listAllQuery = tep_db_query("select * from " . TABLE_LATEST_NEWS . " where isfirst = '1'");
+//$listAllRes = tep_db_fetch_array($listAllQuery);
+//if ($listAllRes) {
+  if ($latest_news['isfirst']) {
     echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'action=setfirst&isfirst=0&latest_news_id=' . $latest_news['news_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>';
   } else {
-        //echo tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
         echo '<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'action=setfirst&isfirst=1&latest_news_id=' . $latest_news['news_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
   }
-} else {
-        echo '<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'action=setfirst&isfirst=1&latest_news_id=' . $latest_news['news_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
-}
+//} else {
+        //echo '<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'action=setfirst&isfirst=1&latest_news_id=' . $latest_news['news_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
+//}
                 ?>
                 </td>
                 <td class="dataTableContent" align="right">

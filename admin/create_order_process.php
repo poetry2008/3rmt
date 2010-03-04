@@ -1,6 +1,7 @@
 <?php
 /*
    $Id$
+   3rmt over
 */
 
   require('includes/application_top.php');

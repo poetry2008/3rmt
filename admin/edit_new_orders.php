@@ -1,6 +1,6 @@
 <?php
 /*
-	JP、GM共通ファイル
+   $Id$
 */
 
   require('includes/application_top.php');
@@ -39,7 +39,11 @@
   
   $orders_statuses = array();
   $orders_status_array = array();
-  $orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_ORDERS_STATUS . " where language_id = '" . (int)$languages_id . "'");
+  $orders_status_query = tep_db_query("
+      select orders_status_id, 
+             orders_status_name 
+      from " . TABLE_ORDERS_STATUS . " 
+      where language_id = '" . (int)$languages_id . "'");
   while ($orders_status = tep_db_fetch_array($orders_status_query)) {
     $orders_statuses[] = array('id' => $orders_status['orders_status_id'],
                                'text' => $orders_status['orders_status_name']);
@@ -49,15 +53,25 @@
   $action = (isset($HTTP_GET_VARS['action']) ? $HTTP_GET_VARS['action'] : 'edit');
 
   // Update Inventory Quantity
-  $order_query = tep_db_query("select products_id, products_quantity from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . tep_db_input($oID) . "'");
+  $order_query = tep_db_query("
+      select products_id, 
+             products_quantity 
+      from " . TABLE_ORDERS_PRODUCTS . " 
+      where orders_id = '" . tep_db_input($oID) . "'");
   
   // 最新の注文情報取得
   $order = new order($oID);
   // ポイントを取得する
-  $customer_point_query = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '" . $order->customer['id'] . "'");
+  $customer_point_query = tep_db_query("
+      select point 
+      from " . TABLE_CUSTOMERS . " 
+      where customers_id = '" . $order->customer['id'] . "'");
   $customer_point = tep_db_fetch_array($customer_point_query);
   // ゲストチェック
-  $customer_guest_query = tep_db_query("select customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_id = '" . $order->customer['id'] . "'");
+  $customer_guest_query = tep_db_query("
+      select customers_guest_chk 
+      from " . TABLE_CUSTOMERS . " 
+      where customers_id = '" . $order->customer['id'] . "'");
   $customer_guest = tep_db_fetch_array($customer_guest_query);
 
   if (tep_not_null($action)) {
@@ -867,6 +881,10 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
 						<span class="SubTitle"><?php echo MENUE_TITLE_CUSTOMER; ?></span>
 						<table width="100%" border="0" class="dataTableRow" cellpadding="2" cellspacing="0">
 							<tr>
+								<td class="main" valign="top" width="30%"><b><?php echo ENTRY_SITE;?>:</b></td>
+								<td class="main" width="70%"><font color='#FF0000'><b><?php echo tep_get_site_romaji_by_order_id($oID)?></b></font></td>
+							</tr>
+							<tr>
 								<td class="main" valign="top" width="30%"><b>注文番号:</b></td>
 								<td class="main" width="70%"><?php echo $oID;?></td>
 							</tr>
@@ -1263,10 +1281,10 @@ if (tep_db_num_rows($orders_history_query)) {
 	
 	//<textarea style="font-family:monospace;font-size:x-small" name="comments" wrap="hard" rows="30" cols="74"></textarea>
 	
-   	  echo tep_draw_textarea_field('comments', 'hard', '74', '5', $order->info['comments']);
+   	  echo tep_draw_textarea_field('comments', 'hard', '74', '5', isset($order->info['comments'])?$order->info['comments']:'');
   // 	  echo tep_draw_textarea_field('comments', 'soft', '40', '5');
 	  } else {
-		  echo tep_draw_textarea_field('comments', 'hard', '74', '5', $order->info['comments']);
+		  echo tep_draw_textarea_field('comments', 'hard', '74', '5', isset($order->info['comments'])?$order->info['comments']:'');
     }
 	  ?>
 	</td>

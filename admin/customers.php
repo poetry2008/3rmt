@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
@@ -239,6 +232,7 @@ function check_form() {
 <!-- header_eof //-->
 
 <!-- body //-->
+
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
@@ -269,11 +263,13 @@ function check_form() {
                c.customers_telephone, 
                c.customers_fax, 
                c.customers_newsletter, 
-               c.customers_default_address_id 
+               c.customers_default_address_id,
+               s.romaji
         from " . TABLE_CUSTOMERS . " c 
-          left join " . TABLE_ADDRESS_BOOK . " a on c.customers_default_address_id = a.address_book_id 
+          left join " . TABLE_ADDRESS_BOOK . " a on c.customers_default_address_id = a.address_book_id ,".TABLE_SITES." s
         where a.customers_id = c.customers_id 
-          and c.customers_id = '" . $HTTP_GET_VARS['cID'] . "'
+          and s.id = c.site_id
+          and c.customers_id = '" . (int)$HTTP_GET_VARS['cID'] . "'
     ");
     $customers = tep_db_fetch_array($customers_query);
     $cInfo = new objectInfo($customers);
@@ -359,6 +355,20 @@ function check_form() {
       <tr>
 	    <?php echo tep_draw_form('customers', FILENAME_CUSTOMERS, tep_get_all_get_params(array('action')) . 'action=update', 'post', 'onSubmit="return check_form();"') . tep_draw_hidden_field('default_address_id', $cInfo->customers_default_address_id) . "\n"; ?>
 	    <input type="hidden" name="dummy" value="あいうえお眉幅">
+        <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+      </tr>
+      <tr>
+        <td class="formAreaTitle"><?php echo CATEGORY_SITE; ?></td>
+      </tr>
+      <tr>
+        <td class="formArea"><table border="0" cellspacing="2" cellpadding="2">
+          <tr>
+            <td class="main"><?php echo ENTRY_SITE;?>:</td>
+            <td class="main">&nbsp;<?php echo $customers['romaji'];?></td>
+          </tr>
+        </table></td>
+      </tr>
+      <tr>
         <td class="formAreaTitle"><?php echo CATEGORY_PERSONAL; ?></td>
       </tr>
       <tr>
@@ -518,9 +528,14 @@ function check_form() {
              c.customers_email_address, 
              a.entry_country_id, 
              c.customers_guest_chk,
-             s.romaji
-      from " . TABLE_CUSTOMERS . " c left join " . TABLE_ADDRESS_BOOK . " a on c.customers_id = a.customers_id and c.customers_default_address_id = a.address_book_id, " . TABLE_SITES . " s
+             s.romaji,
+             ci.customers_info_date_account_created as date_account_created, 
+             ci.customers_info_date_account_last_modified as date_account_last_modified, 
+             ci.customers_info_date_of_last_logon as date_last_logon, 
+             ci.customers_info_number_of_logons as number_of_logons 
+      from " . TABLE_CUSTOMERS . " c left join " . TABLE_ADDRESS_BOOK . " a on c.customers_id = a.customers_id and c.customers_default_address_id = a.address_book_id, " . TABLE_SITES . " s, ".TABLE_CUSTOMERS_INFO." ci
         where c.site_id = s.id
+          and c.customers_id = ci.customers_info_id
         " . (isset($HTTP_GET_VARS['site_id']) && intval($HTTP_GET_VARS['site_id']) ? " and s.id = '" . intval($HTTP_GET_VARS['site_id']) . "' " : '') . "
         " . $search . " 
       order by c.customers_lastname, c.customers_firstname
@@ -528,15 +543,15 @@ function check_form() {
     $customers_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $customers_query_raw, $customers_query_numrows);
     $customers_query = tep_db_query($customers_query_raw);
     while ($customers = tep_db_fetch_array($customers_query)) {
-      $info_query = tep_db_query("
-          select customers_info_date_account_created as date_account_created, 
-                 customers_info_date_account_last_modified as date_account_last_modified, 
-                 customers_info_date_of_last_logon as date_last_logon, 
-                 customers_info_number_of_logons as number_of_logons 
-          from " . TABLE_CUSTOMERS_INFO . " 
-          where customers_info_id = '" . $customers['customers_id'] . "'
-      ");
-      $info = tep_db_fetch_array($info_query);
+      //$info_query = tep_db_query("
+          //select customers_info_date_account_created as date_account_created, 
+                 //customers_info_date_account_last_modified as date_account_last_modified, 
+                 //customers_info_date_of_last_logon as date_last_logon, 
+                 //customers_info_number_of_logons as number_of_logons 
+          //from " . TABLE_CUSTOMERS_INFO . " 
+          //where customers_info_id = '" . $customers['customers_id'] . "'
+      //");
+      //$info = tep_db_fetch_array($info_query);
 
       if (
           ((!isset($HTTP_GET_VARS['cID']) || !$HTTP_GET_VARS['cID']) || (@$HTTP_GET_VARS['cID'] == $customers['customers_id'])) 
@@ -549,10 +564,13 @@ function check_form() {
         ");
         $country = tep_db_fetch_array($country_query);
 
-        $reviews_query = tep_db_query("select count(*) as number_of_reviews from " . TABLE_REVIEWS . " where customers_id = '" . $customers['customers_id'] . "'");
+        $reviews_query = tep_db_query("
+            select count(*) as number_of_reviews 
+            from " . TABLE_REVIEWS . " 
+            where customers_id = '" . $customers['customers_id'] . "'");
         $reviews = tep_db_fetch_array($reviews_query);
 
-        $customer_info = tep_array_merge($country, $info, $reviews);
+        $customer_info = tep_array_merge($country, $customers, $reviews);
 
         $cInfo_array = tep_array_merge($customers, $customer_info);
         $cInfo = new objectInfo($cInfo_array);
@@ -574,7 +592,7 @@ function check_form() {
                 <td class="dataTableContent"><?php echo $type; ?></td>
                 <td class="dataTableContent"><?php echo htmlspecialchars($customers['customers_lastname']); ?></td>
                 <td class="dataTableContent"><?php echo htmlspecialchars($customers['customers_firstname']); ?></td>
-                <td class="dataTableContent" align="right"><?php echo tep_date_short($info['date_account_created']); ?></td>
+                <td class="dataTableContent" align="right"><?php echo tep_date_short($customers['date_account_created']); ?></td>
                 <td class="dataTableContent" align="right"><?php if ( (isset($cInfo) && is_object($cInfo)) && ($customers['customers_id'] == $cInfo->customers_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID')) . 'cID=' . $customers['customers_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
               </tr>
 <?php

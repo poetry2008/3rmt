@@ -284,7 +284,10 @@
   if ( isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'edit') && ($HTTP_GET_VARS['oID']) ) {
     $oID = tep_db_prepare_input($HTTP_GET_VARS['oID']);
 
-    $orders_query = tep_db_query("select orders_id from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
+    $orders_query = tep_db_query("
+        select orders_id 
+        from " . TABLE_ORDERS . " 
+        where orders_id = '" . tep_db_input($oID) . "'");
     $order_exists = true;
     if (!tep_db_num_rows($orders_query)) {
       $order_exists = false;
@@ -297,12 +300,22 @@
   //------------------------------------------------
   $suu = 0;
   $text_suu = 0;  
-  $__orders_status_query = tep_db_query("select orders_status_id from " . TABLE_ORDERS_STATUS . " where language_id = " . $languages_id . " order by orders_status_id");
+  $__orders_status_query = tep_db_query("
+      select orders_status_id 
+      from " . TABLE_ORDERS_STATUS . " 
+      where language_id = " . $languages_id . " 
+      order by orders_status_id");
   $__orders_status_ids   = array();
   while($__orders_status = tep_db_fetch_array($__orders_status_query)){
     $__orders_status_ids[] = $__orders_status['orders_status_id'];
   }
-  $select_query = tep_db_query("select distinct orders_status_mail,orders_status_title,orders_status_id from ".TABLE_ORDERS_MAIL." where language_id = " . $languages_id . " and orders_status_id IN (".join(',', $__orders_status_ids).")");
+  $select_query = tep_db_query("
+      select distinct orders_status_mail,
+                      orders_status_title,
+                      orders_status_id 
+      from ".TABLE_ORDERS_MAIL." 
+      where language_id = " . $languages_id . " 
+        and orders_status_id IN (".join(',', $__orders_status_ids).")");
 
   while($select_result = tep_db_fetch_array($select_query)){
     
@@ -462,6 +475,9 @@ function mail_text(st,tt,ot){
     </tr>	  
     <tr>
       <td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="2">
+    <tr>
+    <td class="main" valign="top" width="30%"><b><?php echo ENTRY_SITE;?></b></td> <td class="main" width="70%"><b style=" color:#FF0000"><?php echo tep_get_site_romaji_by_order_id($oID);?></b></td>
+    </tr>
     <tr>
     <td class="main" valign="top" width="30%"><b>取引日時</b></td>
     <td class="main" width="70%"><b style=" color:#0000FF"><?php echo $order->tori['date'];?></b></td>
@@ -688,8 +704,8 @@ function mail_text(st,tt,ot){
     <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '5'); ?></td>
       </tr>
 	  <?php
-		  $ma_se = " select * from ".TABLE_ORDERS_MAIL." where ";
-		  if($HTTP_GET_VARS['status'] == ""){
+		  $ma_se = "select * from ".TABLE_ORDERS_MAIL." where ";
+		  if(!isset($HTTP_GET_VARS['status']) || $HTTP_GET_VARS['status'] == ""){
 		    $ma_se .= " orders_status_id = '".$order->info['orders_status']."' ";
 			echo '<input type="hidden" name="status" value="' .$order->info['orders_status'].'">';
 		  }else{
@@ -699,7 +715,7 @@ function mail_text(st,tt,ot){
 		  
 		  $mail_sele = tep_db_query($ma_se);
 		  $mail_sql  = tep_db_fetch_array($mail_sele);
-		  $sta       = $HTTP_GET_VARS['status'];
+		  $sta       = isset($HTTP_GET_VARS['status'])?$HTTP_GET_VARS['status']:'';
 	  ?>
 	  <tr>
 	    <td class="main"><b><?php echo ENTRY_EMAIL_TITLE; ?></b><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title']); ?></td>

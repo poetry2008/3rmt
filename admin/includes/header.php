@@ -28,6 +28,8 @@
     <td class="headerBarContent">&nbsp;&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_DEFAULT, '', 'NONSSL') . '" class="headerLink">' . HEADER_TITLE_TOP . '</a>'; ?></td>
     <td class="headerBarContent" align="right">
 		<?php echo '|&nbsp;&nbsp;
+                         '.tep_siteurl_pull_down_menu().'
+		&nbsp;&nbsp;|&nbsp;&nbsp;
 			<a href="' . tep_href_link(FILENAME_ORDERS, '', 'NONSSL') . '" class="headerLink">' . BOX_CUSTOMERS_ORDERS . '</a>
 			&nbsp;&nbsp;|&nbsp;&nbsp;
 			<a href="' . tep_href_link(FILENAME_CUSTOMERS, '', 'NONSSL') . '" class="headerLink">' . BOX_CUSTOMERS_CUSTOMERS . '</a>
@@ -38,9 +40,8 @@
 			&nbsp;&nbsp;|&nbsp;&nbsp;
 			<a href="' . tep_href_link('create_order.php', '', 'NONSSL') . '" class="headerLink">注文作成</a>
 			&nbsp;&nbsp;|&nbsp;&nbsp;
-			<a href="' . tep_catalog_href_link() . '" class="headerLink" target="_blank">' . HEADER_TITLE_ONLINE_CATALOG . '</a>
-			&nbsp;&nbsp;|&nbsp;&nbsp;
 			<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF']), '', 'NONSSL') . '?execute_logout_user=1" class="headerLink">ログアウト</a>';
+//			<a href="' . tep_catalog_href_link() . '" class="headerLink" target="_blank">' . HEADER_TITLE_ONLINE_CATALOG . '</a>
 		?>
 		&nbsp;&nbsp;|&nbsp;&nbsp;
 	</td>

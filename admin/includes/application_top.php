@@ -2,6 +2,7 @@
 /*
   $Id$
 */
+
 $GLOBALS['HTTP_GET_VARS']=$_GET;
 $GLOBALS['HTTP_POST_VARS']=$_POST;
 

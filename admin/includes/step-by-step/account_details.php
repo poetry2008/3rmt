@@ -15,21 +15,6 @@
   include_once(DIR_WS_CLASSES . 'address_form.php');
   $address_form = new addressForm;
 
-  // site_id
-  /*
-  if($is_read_only == true) {
-      $a_value = isset($account['site_id']) ? tep_get_site_romaji_by_id($account['site_id']) : '';
-  } elseif($error == true) {
-      if ($entry_site_id_error == true) {
-        $a_value = tep_site_pull_down_menu() . '&nbsp;' . ENTRY_GENDER_ERROR;
-      } else {
-        $a_value = tep_site_pull_down_menu() ;
-      }
-  } else {
-      $a_value = tep_site_pull_down_menu(isset($account['site_id']) ? $account['site_id'] : '');
-  }
-  $address_form->setFormLine('site_id', ENTRY_SITE, $a_value);
-  */
 
   // gender
   $male   = (isset($account['customers_gender']) && $account['customers_gender'] == 'm') ? true : false;
@@ -82,7 +67,7 @@
   if ($is_read_only == true) {
       $a_value = tep_date_short($account['customers_dob']);
   } elseif ($error == true) {
-      if ($entry_date_of_birth_error == true) {
+      if (isset($entry_date_of_birth_error) && $entry_date_of_birth_error == true) {
           $a_value = tep_draw_input_field('dob') . '&nbsp;' . ENTRY_DATE_OF_BIRTH_ERROR;
       } else {
           $a_value = $dob . tep_draw_hidden_field('dob');
@@ -114,7 +99,7 @@
   if ($is_read_only == true) {
       $a_value = tep_output_string(isset($account['entry_company'])?$account['entry_company']:'',false,true);
     } elseif ($error == true) {
-      if ($entry_company_error == true) {
+      if (isset($entry_company_error) && $entry_company_error == true) {
         $a_value = tep_draw_input_field('company') . '&nbsp;' . ENTRY_COMPANY_ERROR;
       } else {
         $a_value = $company . tep_draw_hidden_field('company');
@@ -128,7 +113,7 @@
   if ($is_read_only == true) {
       $a_value = tep_output_string(isset($account['entry_street_address'])?$account['entry_street_address']:'',false,true);
   } elseif ($error == true) {
-      if ($entry_street_address_error == true) {
+      if (isset($entry_street_address_error) && $entry_street_address_error == true) {
           $a_value = tep_draw_input_field('street_address') . '&nbsp;' . ENTRY_STREET_ADDRESS_ERROR;
       } else {
           $a_value = $street_address . tep_draw_hidden_field('street_address');
@@ -142,7 +127,7 @@
   if ($is_read_only == true) {
       $a_value = tep_output_string(isset($account['entry_suburb'])?$account['entry_suburb']:'',false,true);
   } elseif ($error == true) {
-      if ($entry_suburb_error == true) {
+      if (isset($entry_suburb_error) && $entry_suburb_error == true) {
           $a_value = tep_draw_input_field('suburb') . '&nbsp;' . ENTRY_SUBURB_ERROR;
       } else {
           $a_value = $suburb . tep_draw_hidden_field('suburb');
@@ -156,7 +141,7 @@
   if ($is_read_only == true) {
       $a_value = tep_output_string(isset($account['entry_postcode'])?$account['entry_postcode']:'',false,true);
   } elseif ($error) {
-      if ($entry_post_code_error == true) {
+      if (isset($entry_post_code_error ) && $entry_post_code_error == true) {
           $a_value = tep_draw_input_field('postcode') . '&nbsp;' . ENTRY_POST_CODE_ERROR;
       } else {
           $a_value = $postcode . tep_draw_hidden_field('postcode');
@@ -170,7 +155,7 @@
   if ($is_read_only == true) {
       $a_value = tep_output_string(isset($account['entry_city'])?$account['entry_city']:'',false,true);
   } elseif ($error) {
-      if ($entry_city_error == true) {
+      if (isset($entry_city_error ) && $entry_city_error == true) {
           $a_value = tep_draw_input_field('city') . '&nbsp;' . ENTRY_CITY_ERROR;
       } else {
           $a_value = $city . tep_draw_hidden_field('city');
@@ -184,7 +169,7 @@
   if ($is_read_only == true) {
       $a_value = tep_get_zone_name($account['entry_country_id'], $account['entry_zone_id'], $account['entry_state']);
   } elseif ($error == true) {
-      if ($entry_state_error == true) {
+      if (isset($entry_state_error) && $entry_state_error == true) {
         if ($entry_state_has_zones == true) {
           $a_value = tep_get_zone_list('state', $country) . '&nbsp;' . ENTRY_STATE_ERROR;
         } else {
@@ -222,13 +207,13 @@
 //  $a_hidden = tep_draw_hidden_field('country',$account['entry_country_id'] ? $account['entry_country_id'] : STORE_COUNTRY);
 //  $address_form->setFormHidden('country',$a_hidden); // in case without country
 
-	if ($account['entry_country_id']) { $country = $account['entry_country_id']; }
+	if (isset($account['entry_country_id']) && $account['entry_country_id']) { $country = $account['entry_country_id']; }
 	else if (!$country) { $country = STORE_COUNTRY; } 
 	  // coutry
 	  if ($is_read_only == true) {
 	    $a_value = tep_get_country_name($account['entry_country_id']);
 	  } elseif ($error == true) {
-	    if ($entry_country_error == true) {
+	    if (isset($entry_country_error) && $entry_country_error == true) {
 	      $a_value = tep_get_country_list('country') . '&nbsp;' . ENTRY_COUNTRY_ERROR;
 	    } else {
 	      $a_value = tep_get_country_name($country) . tep_draw_hidden_field('country');
@@ -242,19 +227,44 @@
 // 2003-07-15 modi -e
 ?>
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
+
+
+
+
+
   <tr>
-    <td class="formAreaTitle"><?php echo CATEGORY_PERSONAL; ?></td>
+    <td class="formAreaTitle"><?php echo CATEGORY_SITE; ?></td>
   </tr>
   <tr>
     <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
       <tr>
-        <td class="main"><table border="0" cellspacing="0" cellpadding="2">
+        <td class="main"><table cellspacing="0" cellpadding="2" border="0">
+        <tbody>
+        <tr>
+        <td class="main"><?php echo ENTRY_SITE;?>:</td>
+        <td class="main">&nbsp;
 <?php
-  $address_form->printCategorySite();
-?>
-        </table></td>
+  if ($is_read_only == true) {
+    echo isset($account['site_id']) ? tep_get_site_romaji_by_id($account['site_id']) : '';
+  } elseif ($error == true) {
+    if (isset($entry_site_id_error ) && $entry_site_id_error == true) {
+      echo tep_site_pull_down_menu() . '&nbsp;' . ENTRY_SITE_ERROR;
+    } else {
+      echo tep_site_pull_down_menu(isset($account['site_id']) ? $account['site_id'] : '');
+    }
+  } else {
+    echo tep_site_pull_down_menu(isset($account['site_id']) ? $account['site_id'] : '');
+  }
+?></td>
+</tr></tbody></table></td>
       </tr>
     </table></td>
+  </tr>
+
+
+
+  <tr>
+    <td class="formAreaTitle"><?php echo CATEGORY_PERSONAL; ?></td>
   </tr>
   <tr>
     <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
@@ -267,6 +277,7 @@
       </tr>
     </table></td>
   </tr>
+
   
 <!--
 

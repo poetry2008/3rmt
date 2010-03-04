@@ -23,6 +23,7 @@ define('TEXT_INFO_HEADING_DELETE_ITEM', '削除');
 define('TEXT_DELETE_ITEM_INTRO', '本当にこのニュースを消してもいいですか？');
 
 define('TEXT_LATEST_NEWS_HEADLINE', 'ヘッドライン（タイトル）');
+define('TEXT_LATEST_NEWS_SITE', 'SITE');
 define('TEXT_LATEST_NEWS_CONTENT', '記事の内容');
 define('TEXT_LATEST_NEWS_IMAGE', '関連画像');
 define('TEXT_LATEST_NEWS_IMAGE_DESCRIPTION', '画像に対しての簡単な説明');

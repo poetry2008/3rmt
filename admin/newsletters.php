@@ -69,7 +69,7 @@
         tep_redirect(tep_href_link(FILENAME_NEWSLETTERS, 'page=' . $HTTP_GET_VARS['page']));
         break;
       case 'delete':
-      case 'new': if (!$HTTP_GET_VARS['nID']) break;
+      case 'new': if (!@$HTTP_GET_VARS['nID']) break;
       case 'send':
       case 'confirm_send':
         $newsletter_id = tep_db_prepare_input($HTTP_GET_VARS['nID']);
@@ -125,7 +125,7 @@
 <?php
   if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'new') {
     $form_action = 'insert';
-    if ($HTTP_GET_VARS['nID']) {
+    if (@$HTTP_GET_VARS['nID']) {
       $nID = tep_db_prepare_input($HTTP_GET_VARS['nID']);
       $form_action = 'update';
 
@@ -141,7 +141,11 @@
 
     $file_extension = substr($PHP_SELF, strrpos($PHP_SELF, '.'));
     $directory_array = array();
-    if ($dir = dir(DIR_WS_MODULES . 'newsletters/')) {
+    if (!$dir = dir(DIR_WS_MODULES . 'newsletters/')) $dir =  dir($libpath.'includes/modules/'.'newsletters/'); 
+    if($dir)
+	{
+//    if ($dir = dir(DIR_WS_MODULES . 'newsletters/') or dir($libpath.'includes/modules/'.'newsletters/')) {
+    
       while ($file = $dir->read()) {
         if (!is_dir(DIR_WS_MODULES . 'newsletters/' . $file)) {
           if (substr($file, strrpos($file, '.')) == $file_extension) {
@@ -193,7 +197,7 @@
         </table></td>
       </form></tr>
 <?php
-  } elseif ($HTTP_GET_VARS['action'] == 'preview') {
+  } elseif (@$HTTP_GET_VARS['action'] == 'preview') {
     $nID = tep_db_prepare_input($HTTP_GET_VARS['nID']);
 
     $newsletter_query = tep_db_query("select title, content, module from " . TABLE_NEWSLETTERS . " where newsletters_id = '" . tep_db_input($nID) . "'");
@@ -211,7 +215,7 @@
         <td align="right"><?php echo '<a href="' . tep_href_link(FILENAME_NEWSLETTERS, 'page=' . $HTTP_GET_VARS['page'] . '&nID=' . $HTTP_GET_VARS['nID']) . '">' . tep_image_button('button_back.gif', IMAGE_BACK) . '</a>'; ?></td>
       </tr>
 <?php
-  } elseif ($HTTP_GET_VARS['action'] == 'send') {
+  } elseif (@$HTTP_GET_VARS['action'] == 'send') {
     $nID = tep_db_prepare_input($HTTP_GET_VARS['nID']);
 
     $newsletter_query = tep_db_query("select title, content, module from " . TABLE_NEWSLETTERS . " where newsletters_id = '" . tep_db_input($nID) . "'");
@@ -228,7 +232,7 @@
         <td><?php if ($module->show_choose_audience) { echo $module->choose_audience(); } else { echo $module->confirm(); } ?></td>
       </tr>
 <?php
-  } elseif ($HTTP_GET_VARS['action'] == 'confirm') {
+  } elseif (@$HTTP_GET_VARS['action'] == 'confirm') {
     $nID = tep_db_prepare_input($HTTP_GET_VARS['nID']);
 
     $newsletter_query = tep_db_query("select title, content, module from " . TABLE_NEWSLETTERS . " where newsletters_id = '" . tep_db_input($nID) . "'");
@@ -245,14 +249,13 @@
         <td><?php echo $module->confirm(); ?></td>
       </tr>
 <?php
-  } elseif ($HTTP_GET_VARS['action'] == 'confirm_send') {
+  } elseif (@$HTTP_GET_VARS['action'] == 'confirm_send') {
     $nID = tep_db_prepare_input($HTTP_GET_VARS['nID']);
 
     $newsletter_query = tep_db_query("select newsletters_id, title, content, module from " . TABLE_NEWSLETTERS . " where newsletters_id = '" . tep_db_input($nID) . "'");
     $newsletter = tep_db_fetch_array($newsletter_query);
 
     $nInfo = new objectInfo($newsletter);
-
     include(DIR_WS_LANGUAGES . $language . '/modules/newsletters/' . $nInfo->module . substr($PHP_SELF, strrpos($PHP_SELF, '.')));
     include(DIR_WS_MODULES . 'newsletters/' . $nInfo->module . substr($PHP_SELF, strrpos($PHP_SELF, '.')));
     $module_name = $nInfo->module;
@@ -338,7 +341,7 @@
 <?php
   $heading = array();
   $contents = array();
-  switch ($HTTP_GET_VARS['action']) {
+  switch (@$HTTP_GET_VARS['action']) {
     case 'delete':
       $heading[] = array('text' => '<b>' . $nInfo->title . '</b>');
 
@@ -348,7 +351,7 @@
       $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_delete.gif', IMAGE_DELETE) . ' <a href="' . tep_href_link(FILENAME_NEWSLETTERS, 'page=' . $HTTP_GET_VARS['page'] . '&nID=' . $HTTP_GET_VARS['nID']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
     default:
-      if (is_object($nInfo)) {
+	if (isset($nInfo) && is_object($nInfo)) {
         $heading[] = array('text' => '<b>' . $nInfo->title . '</b>');
 
         if ($nInfo->locked > 0) {
