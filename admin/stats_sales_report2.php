@@ -98,22 +98,28 @@
   // report views (1: yearly 2: monthly 3: weekly 4: daily)
   if ( isset($HTTP_GET_VARS['report']) && ($HTTP_GET_VARS['report']) && (tep_not_null($HTTP_GET_VARS['report'])) ) 
 {    $srView = $HTTP_GET_VARS['report'];
+  } else {
+    $srView = $srDefaultView;
   }
-  if (isset($srView) && ($srView < SR_VIEW_YEARLY || $srView > SR_VIEW_DAILY)) {
+  if ($srView < SR_VIEW_YEARLY || $srView > SR_VIEW_DAILY) {
     $srView = $srDefaultView;
   }
 
   // detail
-  if ( isset($HTTP_GET_VARS['detail']) &&  ($HTTP_GET_VARS['detail']) && (tep_not_null($HTTP_GET_VARS['detail'])) ) 
+  if ( isset($HTTP_GET_VARS['detail']) && ($HTTP_GET_VARS['detail']) && (tep_not_null($HTTP_GET_VARS['detail'])) ) 
 {    $srDetail = $HTTP_GET_VARS['detail'];
+  } else {
+    $srDetail = $srDefaultDetail;
   }
-  if (isset($srDetail) && ($srDetail < SR_DETAIL_NO || $srDetail > SR_DETAIL_EXT)) {
+  if ($srDetail < SR_DETAIL_NO || $srDetail > SR_DETAIL_EXT) {
     $srDetail = $srDefaultDetail;
   }
   
   // export
   if ( isset($HTTP_GET_VARS['export']) && ($HTTP_GET_VARS['export']) && (tep_not_null($HTTP_GET_VARS['export'])) ) 
 {    $srExp = $HTTP_GET_VARS['export'];
+  } else {
+    $srExp = $srDefaultExp;
   }
   if ($srExp < SR_EXPORT_NO || $srExp > SR_EXPORT_CSV) {
     $srExp = $srDefaultExp;
@@ -122,32 +128,40 @@
   // item_level
   if ( isset($HTTP_GET_VARS['max']) && ($HTTP_GET_VARS['max']) && (tep_not_null($HTTP_GET_VARS['max'])) ) {
     $srMax = $HTTP_GET_VARS['max'];
+  } else {
+    $srMax = $srDefaultMax;
   }
-  if (!isset($srMax) || !is_numeric($srMax)) {
+  if (!is_numeric($srMax)) {
     $srMax = $srDefaultMax;
   }
       
   // order status
-  if (isset($HTTP_GET_VARS['status']) && ($HTTP_GET_VARS['status']) && (tep_not_null($HTTP_GET_VARS['status'])) ) 
+  if ( isset($HTTP_GET_VARS['statux']) && ($HTTP_GET_VARS['status']) && (tep_not_null($HTTP_GET_VARS['status'])) ) 
 {    $srStatus = $HTTP_GET_VARS['status'];
+  } else {
+    $srStatus = $srDefaultStatus;
   }
-  if (!isset($srStatus) || !is_numeric($srStatus)) {
+  if (!is_numeric($srStatus)) {
     $srStatus = $srDefaultStatus;
   }
   
   // sort
   if ( isset($HTTP_GET_VARS['sort']) && ($HTTP_GET_VARS['sort']) && (tep_not_null($HTTP_GET_VARS['sort'])) ) {
     $srSort = $HTTP_GET_VARS['sort'];
+  } else {
+    $srSort = $srDefaultSort;
   }
-  if (isset($srSort) && ($srSort < SR_SORT_NO || $srSort > SR_SORT_REVENUE_DESC)) {
+  if ($srSort < SR_SORT_NO || $srSort > SR_SORT_REVENUE_DESC) {
     $srSort = $srDefaultSort;
   }
     
   // compare
   if ( isset($HTTP_GET_VARS['compare']) && ($HTTP_GET_VARS['compare']) && (tep_not_null($HTTP_GET_VARS['compare'])) ) {
     $srCompare = $HTTP_GET_VARS['compare'];
+  } else {
+    $srCompare = $srDefaultCompare;
   }
-  if (isset($srCompare) && ($srCompare < SR_COMPARE_NO || $srCompare > SR_COMPARE_YEAR)) {
+  if ($srCompare < SR_COMPARE_NO || $srCompare > SR_COMPARE_YEAR) {
     $srCompare = $srDefaultCompare;
   }
 
@@ -205,7 +219,7 @@
   }
   
   require(DIR_WS_CLASSES . 'sales_report2.php');
-  $sr = new sales_report($srView, $startDate, $endDate, $srSort, $srStatus, $srFilter);
+  $sr = new sales_report($srView, $startDate, $endDate, $srSort, $srStatus, isset($srFilter)?$srFilter:'');
   if ($srCompare > SR_COMPARE_NO) {
     if ($srCompare == SR_COMPARE_DAY) {
       $compStartDate = mktime(0, 0, 0, date("m", $startDate), date("d", $startDate) - 1, date("Y", $startDate));
@@ -218,7 +232,7 @@
       $compEndDate = mktime(0, 0, 0, date("m", $endDate), date("d", $endDate), date("Y", $endDate) - 1);
     }
     if ($compStartDate != $startDate) {
-      $sr2 = new sales_report($srView, $compStartDate, $compEndDate, $srSort, $srStatus, $srFilter);
+      $sr2 = new sales_report($srView, $compStartDate, $compEndDate, $srSort, $srStatus, isset($srFilter) ? $srFilter : '');
       $compStartDate = $sr2->startDate;
       $compEndDate = $sr2->endDate;
     }

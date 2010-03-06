@@ -52,8 +52,21 @@
                 <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_PURCHASED; ?>&nbsp;</td>
               </tr>
 <?php
-  if ($HTTP_GET_VARS['page'] > 1) $rows = $HTTP_GET_VARS['page'] * MAX_DISPLAY_SEARCH_RESULTS - MAX_DISPLAY_SEARCH_RESULTS;
-  $products_query_raw = "select p.products_id, p.products_ordered, pd.products_name from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where pd.products_id = p.products_id and pd.language_id = '" . $languages_id. "' and p.products_ordered > 0 group by pd.products_id order by p.products_ordered DESC, pd.products_name";
+  if (isset($HTTP_GET_VARS['page']) && $HTTP_GET_VARS['page'] > 1) {
+    $rows = $HTTP_GET_VARS['page'] * MAX_DISPLAY_SEARCH_RESULTS - MAX_DISPLAY_SEARCH_RESULTS;
+  } else {
+    $rows = 0;
+  }
+  $products_query_raw = "
+    select p.products_id, 
+           p.products_ordered, 
+           pd.products_name 
+    from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
+    where pd.products_id = p.products_id 
+      and pd.language_id = '" . $languages_id. "' 
+      and p.products_ordered > 0 
+    group by pd.products_id 
+    order by p.products_ordered DESC, pd.products_name";
   $products_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $products_query_raw, $products_query_numrows);
 
   $products_query = tep_db_query($products_query_raw);

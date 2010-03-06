@@ -796,12 +796,17 @@ function mail_text(st,tt,ot){
 	<tr>
 	<td>
 		<!--ORDER EXPORT SCRIPT //-->
-		<form action="<?php echo tep_href_link('orders_csv_exe.php','csv_exe=true',SSL) ; ?>" method="post">
+		<form action="<?php echo tep_href_link('orders_csv_exe.php','csv_exe=true', 'SSL') ; ?>" method="post">
     <fieldset><legend class="smallText"><b>注文データダウンロード</b></legend>
     <span class="smallText">ダウンロード中はサーバに対して高負荷となります。アクセスの少ない時間に実行してください。</span>
     <table  border="0" align="center" cellpadding="0" cellspacing="2">
     <tr>
-      <td class="smallText">開始日:
+      <td class="smallText" width='150'>
+      <?php echo ENTRY_SITE;?>:
+      <?php echo tep_site_pull_down_menu_with_all(isset($HTTP_GET_VARS['site_id']) ? $HTTP_GET_VARS['site_id'] :'', false);?>
+      </td>
+      <td class="smallText">
+      開始日:
       <select name="s_y">
 			<?php
 			for($i=2002; $i<2011; $i++) {
@@ -838,7 +843,7 @@ function mail_text(st,tt,ot){
 			?>    
       </select>
       日 </td>
-      <td width="100" align="center">〜</td>
+      <td width="80" align="center">〜</td>
       <td class="smallText">終了日
       <select name="e_y">
 			<?php

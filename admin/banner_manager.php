@@ -27,19 +27,24 @@
         tep_redirect(tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $HTTP_GET_VARS['page'] . '&bID=' . $HTTP_GET_VARS['bID']));
         break;
       case 'insert':
+        $site_id              = tep_db_prepare_input($HTTP_POST_VARS['site_id']);
+        if (empty($site_id)) {
+          $messageStack->add(SITE_ID_NOT_NULL, 'error');
+          $banner_error = true;
+        }
       case 'update':
-        $banners_id = tep_db_prepare_input($HTTP_POST_VARS['banners_id']);
-        $banners_title = tep_db_prepare_input($HTTP_POST_VARS['banners_title']);
-        $banners_url = tep_db_prepare_input($HTTP_POST_VARS['banners_url']);
-        $new_banners_group = tep_db_prepare_input($HTTP_POST_VARS['new_banners_group']);
-        $banners_group = (empty($new_banners_group)) ? tep_db_prepare_input($HTTP_POST_VARS['banners_group']) : $new_banners_group;
-        $html_text = tep_db_prepare_input($HTTP_POST_VARS['html_text']);
-        $banners_image = tep_get_uploaded_file('banners_image');
-        $banners_image_local = tep_db_prepare_input($HTTP_POST_VARS['banners_image_local']);
+        $banners_id           = tep_db_prepare_input($HTTP_POST_VARS['banners_id']);
+        $banners_title        = tep_db_prepare_input($HTTP_POST_VARS['banners_title']);
+        $banners_url          = tep_db_prepare_input($HTTP_POST_VARS['banners_url']);
+        $new_banners_group    = tep_db_prepare_input($HTTP_POST_VARS['new_banners_group']);
+        $banners_group        = (empty($new_banners_group)) ? tep_db_prepare_input($HTTP_POST_VARS['banners_group']) : $new_banners_group;
+        $html_text            = tep_db_prepare_input($HTTP_POST_VARS['html_text']);
+        $banners_image        = tep_get_uploaded_file('banners_image');
+        $banners_image_local  = tep_db_prepare_input($HTTP_POST_VARS['banners_image_local']);
         $banners_image_target = tep_db_prepare_input($HTTP_POST_VARS['banners_image_target']);
-        $db_image_location = '';
+        $db_image_location    = '';
 
-        $image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES . $banners_image_target);
+        $image_directory      = tep_get_local_path(DIR_FS_CATALOG_IMAGES . $banners_image_target);
 
         $banner_error = false;
         if (empty($banners_title)) {
@@ -69,15 +74,17 @@
             tep_copy_uploaded_file($banners_image, $image_directory);
           }
           $db_image_location = (tep_not_null($banners_image_local)) ? $banners_image_local : $banners_image_target . $banners_image['name'];
-          $sql_data_array = array('banners_title' => $banners_title,
-                                  'banners_url' => $banners_url,
-                                  'banners_image' => $db_image_location,
-                                  'banners_group' => $banners_group,
+          $sql_data_array = array('banners_title'     => $banners_title,
+                                  'banners_url'       => $banners_url,
+                                  'banners_image'     => $db_image_location,
+                                  'banners_group'     => $banners_group,
                                   'banners_html_text' => $html_text);
 
           if ($HTTP_GET_VARS['action'] == 'insert') {
             $insert_sql_data = array('date_added' => 'now()',
-                                      'status' => '1');
+                                      'status' => '1',
+                                      'site_id' => $site_id
+                                     );
             $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
             tep_db_perform(TABLE_BANNERS, $sql_data_array);
             $banners_id = tep_db_insert_id();
@@ -87,7 +94,7 @@
             $messageStack->add_session(SUCCESS_BANNER_UPDATED, 'success');
           }
 
-          if ($HTTP_POST_VARS['expires_date']) {
+          if (isset($HTTP_POST_VARS['expires_date']) && $HTTP_POST_VARS['expires_date']) {
             $expires_date = tep_db_prepare_input($HTTP_POST_VARS['expires_date']);
             list($day, $month, $year) = explode('/', $expires_date);
 
@@ -95,10 +102,20 @@
                             ((strlen($month) == 1) ? '0' . $month : $month) .
                             ((strlen($day) == 1) ? '0' . $day : $day);
 
-            tep_db_query("update " . TABLE_BANNERS . " set expires_date = '" . tep_db_input($expires_date) . "', expires_impressions = null where banners_id = '" . $banners_id . "'");
-          } elseif ($HTTP_POST_VARS['impressions']) {
+            tep_db_query("
+                update " . TABLE_BANNERS . " 
+                set expires_date = '" . tep_db_input($expires_date) . "', 
+                    expires_impressions = null 
+                where banners_id = '" . $banners_id . "'
+            ");
+          } elseif (isset($HTTP_POST_VARS['impressions']) && $HTTP_POST_VARS['impressions']) {
             $impressions = tep_db_prepare_input($HTTP_POST_VARS['impressions']);
-            tep_db_query("update " . TABLE_BANNERS . " set expires_impressions = '" . tep_db_input($impressions) . "', expires_date = null where banners_id = '" . $banners_id . "'");
+            tep_db_query("
+                update " . TABLE_BANNERS . " 
+                set expires_impressions = '" . tep_db_input($impressions) . "', 
+                    expires_date = null 
+                where banners_id = '" . $banners_id . "'
+            ");
           }
 
           if ($HTTP_POST_VARS['date_scheduled']) {
@@ -109,7 +126,11 @@
                               ((strlen($month) == 1) ? '0' . $month : $month) .
                               ((strlen($day) == 1) ? '0' . $day : $day);
 
-            tep_db_query("update " . TABLE_BANNERS . " set status = '0', date_scheduled = '" . tep_db_input($date_scheduled) . "' where banners_id = '" . $banners_id . "'");
+            tep_db_query("
+                update " . TABLE_BANNERS . " 
+                set status = '0', 
+                    date_scheduled = '" . tep_db_input($date_scheduled) . "' 
+                where banners_id = '" . $banners_id . "'");
           }
 
           tep_redirect(tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $HTTP_GET_VARS['page'] . '&bID=' . $banners_id));
@@ -118,11 +139,15 @@
         }
         break;
       case 'deleteconfirm':
-        $banners_id = tep_db_prepare_input($HTTP_GET_VARS['bID']);
+        $banners_id   = tep_db_prepare_input($HTTP_GET_VARS['bID']);
         $delete_image = tep_db_prepare_input($HTTP_POST_VARS['delete_image']);
 
         if ($delete_image == 'on') {
-          $banner_query = tep_db_query("select banners_image from " . TABLE_BANNERS . " where banners_id = '" . tep_db_input($banners_id) . "'");
+          $banner_query = tep_db_query("
+              select banners_image 
+              from " . TABLE_BANNERS . " 
+              where banners_id = '" . tep_db_input($banners_id) . "'
+          ");
           $banner = tep_db_fetch_array($banner_query);
           if (is_file(DIR_FS_CATALOG_IMAGES . $banner['banners_image'])) {
             if (is_writeable(DIR_FS_CATALOG_IMAGES . $banner['banners_image'])) {
@@ -228,7 +253,22 @@ function popupImageWindow(url) {
       $bID = tep_db_prepare_input($HTTP_GET_VARS['bID']);
       $form_action = 'update';
 
-      $banner_query = tep_db_query("select banners_title, banners_url, banners_image, banners_group, banners_html_text, status, date_format(date_scheduled, '%d/%m/%Y') as date_scheduled, date_format(expires_date, '%d/%m/%Y') as expires_date, expires_impressions, date_status_change from " . TABLE_BANNERS . " where banners_id = '" . tep_db_input($bID) . "'");
+      $banner_query = tep_db_query("
+          select b.banners_title, 
+                 b.banners_url, 
+                 b.banners_image, 
+                 b.banners_group, 
+                 b.banners_html_text, 
+                 b.status, 
+                 date_format(b.date_scheduled, '%d/%m/%Y') as date_scheduled, 
+                 date_format(b.expires_date, '%d/%m/%Y') as expires_date, 
+                 b.expires_impressions, 
+                 b.date_status_change,
+                 s.romaji
+          from " . TABLE_BANNERS . " b, ".TABLE_SITES." s
+          where banners_id = '" . tep_db_input($bID) . "'
+            and s.id = b.site_id
+          ");
       $banner = tep_db_fetch_array($banner_query);
 
       $bInfo = new objectInfo($banner);
@@ -239,7 +279,10 @@ function popupImageWindow(url) {
     }
 
     $groups_array = array();
-    $groups_query = tep_db_query("select distinct banners_group from " . TABLE_BANNERS . " order by banners_group");
+    $groups_query = tep_db_query("
+        select distinct banners_group 
+        from " . TABLE_BANNERS . " 
+        order by banners_group");
     while ($groups = tep_db_fetch_array($groups_query)) {
       $groups_array[] = array('id' => $groups['banners_group'], 'text' => $groups['banners_group']);
     }
@@ -255,6 +298,10 @@ function popupImageWindow(url) {
       </tr>
       <tr><?php echo tep_draw_form('new_banner', FILENAME_BANNER_MANAGER, 'page=' . (isset($HTTP_GET_VARS['page'])?$HTTP_GET_VARS['page']:'') . '&action=' . $form_action, 'post', 'enctype="multipart/form-data"'); if ($form_action == 'update') echo tep_draw_hidden_field('banners_id', $bID); ?>
         <td><table border="0" cellspacing="0" cellpadding="2">
+          <tr>
+            <td class="main"><?php echo ENTRY_SITE; ?></td>
+            <td class="main"><?php echo (isset($HTTP_GET_VARS['bID']) && $HTTP_GET_VARS['bID'])?$banner['romaji']:tep_site_pull_down_menu(); ?></td>
+          </tr>
           <tr>
             <td class="main"><?php echo TEXT_BANNERS_TITLE; ?></td>
             <td class="main"><?php echo tep_draw_input_field('banners_title', isset($bInfo->banners_title)?$bInfo->banners_title:'', '', true); ?></td>
@@ -324,8 +371,11 @@ function popupImageWindow(url) {
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+            <td valign="top">
+            <?php tep_site_filter(FILENAME_BANNER_MANAGER);?>
+            <table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr class="dataTableHeadingRow">
+                <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_SITE; ?></td>
                 <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_BANNERS; ?></td>
                 <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_GROUPS; ?></td>
                 <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_STATISTICS; ?></td>
@@ -333,7 +383,22 @@ function popupImageWindow(url) {
                 <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
               </tr>
 <?php
-    $banners_query_raw = "select banners_id, banners_title, banners_image, banners_group, status, expires_date, expires_impressions, date_status_change, date_scheduled, date_added from " . TABLE_BANNERS . " order by banners_group";
+    $banners_query_raw = "
+      select b.banners_id, 
+             b.banners_title, 
+             b.banners_image, 
+             b.banners_group, 
+             b.status, 
+             b.expires_date, 
+             b.expires_impressions, 
+             b.date_status_change, 
+             b.date_scheduled, 
+             b.date_added,
+             s.romaji
+      from " . TABLE_BANNERS . " b, ".TABLE_SITES." s
+      where s.id = b.site_id
+        " . (isset($HTTP_GET_VARS['site_id']) && intval($HTTP_GET_VARS['site_id']) ? " and s.id = '" . intval($HTTP_GET_VARS['site_id']) . "' " : '') . "
+      order by b.banners_group";
     $banners_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $banners_query_raw, $banners_query_numrows);
     $banners_query = tep_db_query($banners_query_raw);
     while ($banners = tep_db_fetch_array($banners_query)) {
@@ -354,6 +419,7 @@ function popupImageWindow(url) {
         echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $HTTP_GET_VARS['page'] . '&bID=' . $banners['banners_id']) . '\'">' . "\n";
       }
 ?>
+                <td class="dataTableContent"><?php echo $banners['romaji'];?></td>
                 <td class="dataTableContent"><?php echo '<a href="javascript:popupImageWindow(\'' . FILENAME_POPUP_IMAGE . '?banner=' . $banners['banners_id'] . '\')">' . tep_image(DIR_WS_IMAGES . 'icon_popup.gif', 'View Banner') . '</a>&nbsp;' . $banners['banners_title']; ?></td>
                 <td class="dataTableContent" align="right"><?php echo $banners['banners_group']; ?></td>
                 <td class="dataTableContent" align="right"><?php echo $banners_shown . ' / ' . $banners_clicked; ?></td>

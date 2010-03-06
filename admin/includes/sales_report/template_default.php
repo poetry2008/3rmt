@@ -246,8 +246,8 @@ while ($sr->hasNext()) {
     }
 ?>
                 <td class="dataTableContent" align="right"><?php echo $info[0]['order']; ?></td>
-                <td class="dataTableContent" align="right"><?php echo $info[$last - 1]['totitem']; ?></td>
-                <td class="dataTableContent" align="right"><?php echo $currencies->format($info[$last - 1]['totsum']);?></td>
+                <td class="dataTableContent" align="right"><?php echo isset($info[$last - 1]['totitem'])?$info[$last - 1]['totitem']:''; ?></td>
+                <td class="dataTableContent" align="right"><?php echo $currencies->format(isset($info[$last - 1]['totsum'])?$info[$last - 1]['totsum']:'');?></td>
                 <td class="dataTableContent" align="right"><?php echo $currencies->format($info[0]['shipping']);?></td>
               </tr>
               <?php

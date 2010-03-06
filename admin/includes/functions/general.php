@@ -2043,6 +2043,19 @@ function tep_get_image_document_image($document_id)
     return $sites;
   }
 
+  function tep_get_sites_id() {
+    $sites_id = array();
+    $sites_query = tep_db_query("
+        select * 
+        from " . TABLE_SITES . "
+        order by order_num ASC
+    ");
+    while ($site = tep_db_fetch_array($sites_query)) {
+      $sites_id[] = $site['id'];
+    }
+    return $sites_id;
+  }
+
   function tep_site_filter($filename){
     global $HTTP_GET_VARS, $HTTP_POST_VARS;
           if (!isset($HTTP_GET_VARS['site_id']) || !$HTTP_GET_VARS['site_id']) {?>
@@ -2071,13 +2084,26 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
 
 }
   // 生成选择SITE_ID的下拉框
-function tep_site_pull_down_menu($default = '',$require = true){
+  function tep_site_pull_down_menu($default = '',$require = true){
     $sites_array = array();
     $sites = tep_get_sites();
     foreach($sites as $site){
       $sites_array[] = array('id' => $site['id'], 'text' => $site['romaji']);
     }
     return tep_draw_pull_down_menu('site_id', $sites_array, $default, $params = '', $require);
+  }
+
+  function tep_site_pull_down_menu_with_all($default = '',$require = true){
+    $sites_array = array();
+    $sites = tep_get_sites();
+    $sites_array[] = array('id' => '', 'text' => 'all');
+    foreach($sites as $site){
+      $sites_array[] = array('id' => $site['id'], 'text' => $site['romaji']);
+    }
+    return tep_draw_pull_down_menu('site_id', $sites_array, $default, $params = '', $require);
+  }
+
+  function tep_site_pull_down_menu_with_none($default = '',$require = true){
   }
 
   function tep_get_site_romaji_by_id($id){

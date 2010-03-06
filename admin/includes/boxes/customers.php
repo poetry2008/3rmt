@@ -23,7 +23,7 @@
   if ($selected_box == 'customers') {
     $contents[] = array('text'  => '<a href="' . tep_href_link(FILENAME_CUSTOMERS, '', 'NONSSL') . '" class="menuBoxContentLink">' . BOX_CUSTOMERS_CUSTOMERS . '</a><br>' .
                                    '<a href="' . tep_href_link(FILENAME_ORDERS, '', 'NONSSL') . '" class="menuBoxContentLink">' . BOX_CUSTOMERS_ORDERS . '</a><br>'.
-								   '<a href="customers_dl.php" class="menuBoxContentLink">顧客データダウンロード</a>');
+								   '<!--<a href="customers_dl.php" class="menuBoxContentLink">顧客データダウンロード</a>-->');
   }
 
   $box = new box;

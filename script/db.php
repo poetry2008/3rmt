@@ -33,6 +33,22 @@ cptable('wm_address_format', 'address_format');
 cp3table('banners');
 //calendar*
 cp3table('calendar');
+$sql = 'select * from wm_calendar';
+$query = rq($sql);
+while($cl = mysql_fetch_array($query)){
+  $sql = "insert into calendar (
+      cl_id,
+      cl_ym,
+      cl_value,
+      site_id
+    ) values (
+      NULL,
+      '".$cl['cl_ym']."',
+      '".$cl['cl_value']."',
+      '".R3MT_JP_ID."',
+    )";
+  r3q($sql);
+}
 //categories%
 cptable('categories');
 //categories_description!
