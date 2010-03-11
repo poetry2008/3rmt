@@ -250,7 +250,7 @@
     if ($value != '') {
       $field .= trim($value);
     } else {
-      $field .= isset($GLOBALS[$name]) ? trim($GLOBALS[$name]) : '';
+      $field .= isset($GLOBALS[$name]) && is_string($GLOBALS[$name]) ? trim($GLOBALS[$name]) : '';
     }
     $field .= '">';
 

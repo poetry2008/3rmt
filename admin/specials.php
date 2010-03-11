@@ -109,7 +109,19 @@
     if ( ($HTTP_GET_VARS['action'] == 'edit') && ($HTTP_GET_VARS['sID']) ) {
 	  $form_action = 'update';
 
-      $product_query = tep_db_query("select p.products_id, pd.products_name, p.products_price, s.specials_new_products_price, s.expires_date from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_SPECIALS . " s where p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and p.products_id = s.products_id and s.specials_id = '" . $HTTP_GET_VARS['sID'] . "'");
+      $product_query = tep_db_query("
+          select p.products_id, 
+                 pd.products_name, 
+                 p.products_price, 
+                 s.specials_new_products_price, 
+                 s.expires_date 
+          from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_SPECIALS . " s 
+          where p.products_id = pd.products_id 
+            and pd.language_id = '" . $languages_id . "' 
+            and p.products_id = s.products_id 
+            and s.specials_id = '" . $HTTP_GET_VARS['sID'] . "'
+            and pd.site_id = '0'
+            ");
       $product = tep_db_fetch_array($product_query);
 
       $sInfo = new objectInfo($product);
@@ -119,7 +131,10 @@
 // create an array of products on special, which will be excluded from the pull down menu of products
 // (when creating a new product on special)
       $specials_array = array();
-      $specials_query = tep_db_query("select p.products_id from " . TABLE_PRODUCTS . " p, " . TABLE_SPECIALS . " s where s.products_id = p.products_id");
+      $specials_query = tep_db_query("
+          select p.products_id 
+          from " . TABLE_PRODUCTS . " p, " . TABLE_SPECIALS . " s 
+          where s.products_id = p.products_id");
       while ($specials = tep_db_fetch_array($specials_query)) {
         $specials_array[] = $specials['products_id'];
       }
@@ -163,13 +178,32 @@
                 <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
               </tr>
 <?php
-    $specials_query_raw = "select p.products_id, pd.products_name, p.products_price, s.specials_id, s.specials_new_products_price, s.specials_date_added, s.specials_last_modified, s.expires_date, s.date_status_change, s.status from " . TABLE_PRODUCTS . " p, " . TABLE_SPECIALS . " s, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and p.products_id = s.products_id order by pd.products_name";
+    $specials_query_raw = "
+      select p.products_id, 
+             pd.products_name, 
+             p.products_price, 
+             s.specials_id, 
+             s.specials_new_products_price, 
+             s.specials_date_added, 
+             s.specials_last_modified, 
+             s.expires_date, 
+             s.date_status_change, 
+             s.status 
+      from " . TABLE_PRODUCTS . " p, " . TABLE_SPECIALS . " s, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
+      where p.products_id = pd.products_id 
+        and pd.language_id = '" . $languages_id . "' 
+        and p.products_id = s.products_id 
+        and pd.site_id = '0'
+      order by pd.products_name";
     $specials_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $specials_query_raw, $specials_query_numrows);
     $specials_query = tep_db_query($specials_query_raw);
     while ($specials = tep_db_fetch_array($specials_query)) {
       if ( ((!isset($HTTP_GET_VARS['sID']) || !$HTTP_GET_VARS['sID']) || ($HTTP_GET_VARS['sID'] == $specials['specials_id'])) && (!isset($sInfo) || !$sInfo) ) {
 
-        $products_query = tep_db_query("select products_image from " . TABLE_PRODUCTS . " where products_id = '" . $specials['products_id'] . "'");
+        $products_query = tep_db_query("
+            select products_image 
+            from " . TABLE_PRODUCTS . " 
+            where products_id = '" . $specials['products_id'] . "'");
         $products = tep_db_fetch_array($products_query);
         $sInfo_array = tep_array_merge($specials, $products);
         $sInfo = new objectInfo($sInfo_array);
@@ -203,7 +237,7 @@
                     <td class="smallText" align="right"><?php echo $specials_split->display_links($specials_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page']); ?></td>
                   </tr>
 <?php
-  if (!$HTTP_GET_VARS['action']) {
+  if (!isset($HTTP_GET_VARS['action']) || !$HTTP_GET_VARS['action']) {
 ?>
                   <tr> 
                     <td colspan="2" align="right"><?php echo '<a href="' . tep_href_link(FILENAME_SPECIALS, 'page=' . $HTTP_GET_VARS['page'] . '&action=new') . '">' . tep_image_button('button_new_product.gif', IMAGE_NEW_PRODUCT) . '</a>'; ?></td>

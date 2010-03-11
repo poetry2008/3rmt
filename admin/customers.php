@@ -498,13 +498,9 @@ function check_form() {
           </form></tr>
         </table></td>
       </tr>
-      <tr>
-        <td>
+      <tr><td>
         <?php tep_site_filter(FILENAME_CUSTOMERS);?>
-        </td>
-      </tr>
-      <tr>
-        <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr class="dataTableHeadingRow">

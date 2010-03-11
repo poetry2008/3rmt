@@ -23,7 +23,6 @@ define('TEXT_MANUFACTURERS', 'メーカー:');
 define('TEXT_DATE_ADDED', '追加日:');
 define('TEXT_LAST_MODIFIED', '更新日:');
 define('TEXT_PRODUCTS', '商品数:');
-define('TEXT_IMAGE_NONEXISTENT', '画像が存在しません');
 
 define('TEXT_NEW_INTRO', '新しいメーカーの情報を入力してください');
 define('TEXT_EDIT_INTRO', '必要な変更を加えてください');

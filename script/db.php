@@ -71,7 +71,22 @@ while($desc = mysql_fetch_array($query)){
     `text_information`,
     `meta_keywords`,
     `meta_description`
-    ) values (
+     ) values (
+      '" . $desc['categories_id'] . "',
+      '0',
+      '" . $desc['language_id'] . "',
+      '" . mysql_real_escape_string($desc['categories_name']) . "',
+      '" . mysql_real_escape_string($desc['seo_name']) . "',
+      '" . $desc['categories_image2'] . "',
+      '" . $desc['categories_image3'] . "',
+      '" . mysql_real_escape_string($desc['categories_meta_text']) . "',
+      '" . mysql_real_escape_string($desc['seo_description']) . "',
+      '" . mysql_real_escape_string($desc['categories_header_text_jp']) . "',
+      '" . mysql_real_escape_string($desc['categories_footer_text_jp']) . "',
+      '" . mysql_real_escape_string($desc['text_information']) . "',
+      '" . mysql_real_escape_string($desc['meta_keywords_jp']) . "',
+      '" . mysql_real_escape_string($desc['meta_description_jp']) . "'
+      ),(
       '" . $desc['categories_id'] . "',
       '" . R3MT_JP_ID . "',
       '" . $desc['language_id'] . "',
@@ -781,6 +796,19 @@ while($pd = mysql_fetch_array($query)){
     `products_url`,
     `products_viewed`
       ) values (
+        '" . $pd['products_id'] . "',
+        '" . $pd['language_id'] . "',
+        '" . mysql_real_escape_string($pd['products_name']) . "',
+        '" . mysql_real_escape_string($pd['products_description']) . "',
+        '0',
+        '" . mysql_real_escape_string($pd['products_attention_1']) . "',
+        '" . mysql_real_escape_string($pd['products_attention_2']) . "',
+        '" . mysql_real_escape_string($pd['products_attention_3']) . "',
+        '" . mysql_real_escape_string($pd['products_attention_4']) . "',
+        '" . mysql_real_escape_string($pd['products_attention_5']) . "',
+        '" . mysql_real_escape_string($pd['products_url']) . "',
+        '" . $pd['products_viewed'] . "'
+           ),(
         '" . $pd['products_id'] . "',
         '" . $pd['language_id'] . "',
         '" . mysql_real_escape_string($pd['products_name']) . "',
