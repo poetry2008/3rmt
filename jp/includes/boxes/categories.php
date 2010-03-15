@@ -6,6 +6,28 @@
 $categories = array();
 // ccdd
 $categories_query = tep_db_query("
+    select * 
+    from (
+      select c.categories_id, 
+             cd.categories_name, 
+             c.categories_status, 
+             c.parent_id,
+             cd.site_id,
+             c.sort_order
+      from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
+      where c.categories_status = '0' 
+        and c.parent_id = '0' 
+        and c.categories_id = cd.categories_id 
+        and cd.language_id='" . $languages_id ."' 
+      order by sort_order, cd.categories_name, site_id DESC
+    ) c 
+    where site_id = ".SITE_ID."
+       or site_id = 0
+    group by categories_id
+    order by sort_order, categories_name
+");
+/*
+$categories_query = tep_db_query("
     select c.categories_id, 
            cd.categories_name, 
            c.categories_status, 
@@ -18,6 +40,7 @@ $categories_query = tep_db_query("
       and cd.language_id='" . $languages_id ."' 
     order by sort_order, cd.categories_name
 ");
+*/
 while ($category = tep_db_fetch_array($categories_query))  {
   $categories[] = $category;
 }
@@ -45,6 +68,28 @@ if($cPath){
           $subcategories = array();
           // ccdd
           $subcategories_query = tep_db_query("
+              select *
+              from (
+                select c.categories_id, 
+                       c.categories_status, 
+                       cd.categories_name, 
+                       c.parent_id,
+                       cd.site_id,
+                       c.sort_order
+                from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
+                where c.categories_status = '0' 
+                  and c.parent_id = '".$category['categories_id']."' 
+                  and c.categories_id = cd.categories_id 
+                  and cd.language_id='" . $languages_id ."' 
+                order by sort_order, cd.categories_name, cd.site_id DESC
+                ) c
+              where site_id = 0
+                 or site_id = ".SITE_ID."
+              group by categories_id
+              order by sort_order, categories_name
+              ");
+          /*
+          $subcategories_query = tep_db_query("
               select c.categories_id, 
                      c.categories_status, 
                      cd.categories_name, 
@@ -57,6 +102,7 @@ if($cPath){
                 and cd.language_id='" . $languages_id ."' 
               order by sort_order, cd.categories_name
               ");
+              */
           while ($subcategory = tep_db_fetch_array($subcategories_query))  {
             $subcategories[] = $subcategory;
           }
@@ -84,6 +130,28 @@ if($cPath){
             $_subcategories = array();
             // ccdd
             $_subcategories_query = tep_db_query("
+                select *
+                from (
+                  select c.categories_id, 
+                         c.categories_status, 
+                         cd.categories_name, 
+                         c.parent_id,
+                         cd.site_id,
+                         c.sort_order
+                  from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
+                  where c.categories_status = '0' 
+                    and c.parent_id = '".$subcategory['categories_id']."' 
+                    and c.categories_id = cd.categories_id 
+                    and cd.language_id='" . $languages_id ."' 
+                  order by sort_order, cd.categories_name, cd.site_id DESC
+                ) c
+                where site_id = 0
+                   or site_id = ".SITE_ID."
+                group by categories_id
+                order by sort_order, categories_name
+            ");
+            /*
+            $_subcategories_query = tep_db_query("
                 select c.categories_id, 
                        c.categories_status, 
                        cd.categories_name, 
@@ -96,6 +164,7 @@ if($cPath){
                   and cd.language_id='" . $languages_id ."' 
                 order by sort_order, cd.categories_name
             ");
+            */
             while ($_subcategory = tep_db_fetch_array($_subcategories_query))  {
               $_subcategories[] = $_subcategory;
             }

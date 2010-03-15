@@ -30,8 +30,26 @@
      //------ SEO TUNING  -----//
   if ($current_category_id) {
     // ccdd
-    $seo_category_query = tep_db_query("select categories_name,seo_name,seo_description,categories_image3,categories_meta_text,categories_header_text,categories_footer_text,text_information,meta_keywords,meta_description, categories_id from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '".$current_category_id."' and language_id='" . $languages_id . "' and site_id='" . SITE_ID . "'");
+    /*
+    $seo_category_query = tep_db_query("
+        select categories_name,
+               seo_name,
+               seo_description,
+               categories_image3,
+               categories_meta_text,
+               categories_header_text,
+               categories_footer_text,
+               text_information,
+               meta_keywords,
+               meta_description, 
+               categories_id 
+        from " . TABLE_CATEGORIES_DESCRIPTION . " 
+        where categories_id = '".$current_category_id."' 
+          and language_id='" . $languages_id . "' 
+          and site_id='" . SITE_ID . "'");
     $seo_category = tep_db_fetch_array($seo_category_query);
+      */
+    $seo_category = tep_get_category_by_id($current_category_id, SITE_ID, $languages_id);
   }
     
   if (isset($HTTP_GET_VARS['manufacturers_id'])) {

@@ -202,6 +202,25 @@
 <?php
     // ccdd
     $products_query = tep_db_query("
+      select *
+      from (
+        select pd.products_id, 
+               pd.products_name ,
+               pd.site_id,
+               pn.customers_id
+        from " .  TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_NOTIFICATIONS . " pn 
+        where pn.customers_id = '" . $customer_id . "' 
+          and pn.products_id = pd.products_id 
+          and pd.language_id = '" . $languages_id . "' 
+        order by site_id DESC
+      ) p
+      where site_id = '0'
+         or site_id = '".SITE_ID."' 
+      group by products_id, customers_id
+      order by products_name
+    ");
+/*
+    $products_query = tep_db_query("
         select pd.products_id, pd.products_name 
         from " .  TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_NOTIFICATIONS . " pn 
         where pn.customers_id = '" . $customer_id . "' 
@@ -210,6 +229,7 @@
           and pd.site_id = '".SITE_ID."' 
         order by pd.products_name
     ");
+*/
     while ($products = tep_db_fetch_array($products_query)) {
       echo '          <tr>' . "\n" .
            '            <td class="main">' . tep_draw_checkbox_field('products[]', $products['products_id']) . '&nbsp;' . $products['products_name'] . '</td>' . "\n" .

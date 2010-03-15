@@ -108,7 +108,8 @@ while ($row = mysql_fetch_array($sql_result)) {
            FROM ".TABLE_PRODUCTS_DESCRIPTION." 
            WHERE products_id = '$id' 
              AND language_id = '$lang_id' 
-             AND site_id = '".SITE_ID."' 
+             AND (site_id = '".SITE_ID."' or site_id ='0')
+           order by site_id DESC
            LIMIT 1
    ";
   //ccdd

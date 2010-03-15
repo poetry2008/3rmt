@@ -15,11 +15,12 @@
       where p.products_id  = '" . (int)$HTTP_GET_VARS['products_id'] . "' 
         and pd.products_id = p.products_id 
         and pd.language_id = '" . $languages_id . "' 
-        and pd.site_id     = ".SITE_ID
-  );
+        and (pd.site_id = '0' or pd.site_id = '".SITE_ID."')
+      order by pd.site_id DESC
+    ");
   $valid_product = (tep_db_num_rows($product_query) > 0);
   //forward 404
-  forward404Unless($valid_product);
+  //forward404Unless($valid_product);
 
   if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'process') {
     if ($valid_product == true) { // We got to the process but it is an illegal product, don't write

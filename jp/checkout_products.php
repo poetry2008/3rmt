@@ -63,8 +63,21 @@ foreach($cart as $key => $val){
   if($key == 'contents'){
     foreach($val as $key2 => $val2){
 //ccdd
-	  $cp_query = tep_db_query("select p.products_id,p.products_image,p.products_date_added,p.products_price,p.products_cflag,pd.products_name from " . TABLE_PRODUCTS . " p," . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_id = '".$key2."' and p.products_id = pd.products_id and pd.site_id = ".SITE_ID);
+    /*
+	  $cp_query = tep_db_query("
+        select p.products_id,
+               p.products_image,
+               p.products_date_added,
+               p.products_price,
+               p.products_cflag,
+               pd.products_name 
+        from " . TABLE_PRODUCTS . " p," . TABLE_PRODUCTS_DESCRIPTION . " pd 
+        where p.products_id = '".$key2."' 
+          and p.products_id = pd.products_id 
+          and pd.site_id = ".SITE_ID);
 	  $cp_result = tep_db_fetch_array($cp_query);
+    */
+    $cp_result = tep_get_product_by_id($key2, SITE_ID, $languages_id);
 	  if($cp_result['products_cflag'] == 1){
 	    $cid = 'cname_' . $key2;
 		
@@ -114,8 +127,21 @@ foreach($cart as $key => $val){
 				    if($key == 'contents'){
 					  foreach($val as $key2 => $val2){
 //ccdd
-						$cp_query = tep_db_query("select p.products_id,p.products_image,p.products_date_added,p.products_price,p.products_cflag,pd.products_name from " . TABLE_PRODUCTS . " p," . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_id = '".$key2."' and p.products_id = pd.products_id and pd.site_id = ".SITE_ID);
+              /*
+						$cp_query = tep_db_query("
+                select p.products_id,
+                       p.products_image,
+                       p.products_date_added,
+                       p.products_price,
+                       p.products_cflag,
+                       pd.products_name 
+                from " . TABLE_PRODUCTS . " p," . TABLE_PRODUCTS_DESCRIPTION . " pd 
+                where p.products_id = '".$key2."' 
+                  and p.products_id = pd.products_id 
+                  and pd.site_id = ".SITE_ID);
 						$cp_result = tep_db_fetch_array($cp_query);
+            */
+						$cp_result = tep_get_product_by_id($key2, SITE_ID, $languages_id);
 				?>
 				  <tr>
 				    <td width="<?php echo SMALL_IMAGE_WIDTH + 10; ?>" valign="top" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $key2) . '">' . tep_image(DIR_WS_IMAGES . $cp_result['products_image'], $cp_result['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>'; ?></td>

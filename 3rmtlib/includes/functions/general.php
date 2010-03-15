@@ -2111,4 +2111,96 @@ function tep_unlink_temp_dir($dir)
 	  return $string;
 	}
   }
+
+  function tep_get_category_by_id($cid, $site_id, $lid, $default = true){
+    $category_query = tep_db_query("
+        select c.categories_id,
+               c.categories_status,
+               c.categories_image,
+               c.parent_id,
+               c.sort_order,
+               c.date_added,
+               c.last_modified,
+               cd.site_id,
+               cd.language_id,
+               cd.categories_name,
+               cd.seo_name,
+               cd.categories_image2,
+               cd.categories_image3,
+               cd.categories_meta_text,
+               cd.seo_description,
+               cd.categories_header_text,
+               cd.categories_footer_text,
+               cd.text_information,
+               cd.meta_keywords,
+               cd.meta_description
+        from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
+        where c.categories_id = '" . $cid. "' 
+          and cd.categories_id = '" . $cid. "' 
+          and cd.language_id = '" . $lid.  "' 
+          and cd.site_id = '" . $site_id . "'"
+    );
+    $category = tep_db_fetch_array($category_query);
+    return $category;
+  }
+
+  function tep_get_product_by_id($pid,$site_id, $lid, $default = true){
+    $product_query = tep_db_query("
+        SELECT p.products_id, 
+               p.products_quantity, 
+               p.products_model, 
+               p.products_image, 
+               p.products_image2, 
+               p.products_image3, 
+               p.products_price, 
+               p.products_date_added, 
+               p.products_date_available, 
+               p.products_weight,
+               p.products_status,
+               p.products_tax_class_id, 
+               p.manufacturers_id,
+               p.products_ordered,
+               p.products_bflag,
+               p.products_cflag,
+               p.products_small_sum,
+               p.option_type,
+               pd.language_id,
+               pd.products_name, 
+               pd.products_description,
+               pd.site_id,
+               pd.products_attention_1, 
+               pd.products_attention_2, 
+               pd.products_attention_3, 
+               pd.products_attention_4, 
+               pd.products_attention_5, 
+               pd.products_url,
+               pd.products_viewed
+        FROM " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
+        WHERE p.products_id = '" . $pid . "' 
+          AND p.products_status = '1' 
+          AND pd.products_id = '" .  $pid . "'" . " 
+          AND pd.language_id ='" . $lid . "' 
+          AND pd.site_id='" . $site_id . "' 
+          "); 
+    $product = tep_db_fetch_array($product_query);
+    return $product;
+  }
+
+    function tep_categories_description_exist($cid, $sid, $lid){
+      $query = tep_db_query("select * from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$cid."' and site_id = '".$sid."' and language_id='".$lid."'");
+      if(tep_db_num_rows($query)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    function tep_products_description_exist($pid, $sid, $lid){
+      $query = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where products_id='".$pid."' and site_id = '".$sid."' and language_id='".$lid."'");
+      if(tep_db_num_rows($query)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
 ?>

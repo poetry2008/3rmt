@@ -559,8 +559,19 @@ ini_set('include_path',ini_get('include_path').':'.$libpath);
           from " .  TABLE_CATEGORIES_DESCRIPTION . " 
           where categories_id = '" .  $cPath_array[$i] . "' 
             and language_id='" . $languages_id . "' 
+            and (site_id = ".SITE_ID." or site_id = 0)
+          order by site_id DESC
+          limit 1" 
+      );
+      /*
+      $categories_query = tep_db_query("
+          select categories_name 
+          from " .  TABLE_CATEGORIES_DESCRIPTION . " 
+          where categories_id = '" .  $cPath_array[$i] . "' 
+            and language_id='" . $languages_id . "' 
             and site_id = ".SITE_ID
       );
+      */
       if (tep_db_num_rows($categories_query) > 0) {
         $categories = tep_db_fetch_array($categories_query);
         $breadcrumb->add($categories['categories_name'], tep_href_link(FILENAME_DEFAULT, 'cPath=' . implode('_', array_slice($cPath_array, 0, ($i+1)))));
@@ -595,8 +606,10 @@ ini_set('include_path',ini_get('include_path').':'.$libpath);
         from " .  TABLE_PRODUCTS_DESCRIPTION . " 
         where products_id = '" .  $HTTP_GET_VARS['products_id'] . "' 
           and language_id ='" . $languages_id . "' 
-          and site_id     = ".SITE_ID
-        );
+          and (site_id     = ".SITE_ID." or site_id = 0)
+        order by site_id DESC
+        limit 1
+        ");
     $model = tep_db_fetch_array($model_query);
     $breadcrumb->add($model['products_name'], tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $HTTP_GET_VARS['products_id']));
   }

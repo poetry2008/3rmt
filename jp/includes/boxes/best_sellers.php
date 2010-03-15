@@ -12,10 +12,14 @@
 	if (isset($current_category_id) && ($current_category_id > 0)) {
     // ccdd
     $best_sellers_query = tep_db_query("
+      select *
+      from (
         select distinct p.products_id,
                         p.products_image,
+                        p.products_ordered,
                         pd.products_name,
-                        pd.products_description 
+                        pd.products_description,
+                        pd.site_id
         from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION .  " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " .  TABLE_CATEGORIES . " c 
         where p.products_status = '1' 
           and p.products_ordered > 0 
@@ -24,25 +28,37 @@
           and p.products_id = p2c.products_id 
           and p2c.categories_id = c.categories_id 
           and '" .  $current_category_id . "' in (c.categories_id, c.parent_id) 
-          and pd.site_id = '".SITE_ID."' 
-        order by p.products_ordered desc, pd.products_name 
-        limit " . MAX_DISPLAY_BESTSELLERS);
+        order by pd.site_id DESC
+        ) p
+      where site_id = '0'
+         or site_id = '".SITE_ID."' 
+      group by products_id
+      order by products_ordered desc, products_name 
+      limit " . MAX_DISPLAY_BESTSELLERS);
   } else {
     // ccdd
     $best_sellers_query = tep_db_query("
+      select *
+      from (
         select distinct p.products_id,
                         p.products_image,
+                        p.products_ordered,
                         pd.products_name,
-                        pd.products_description 
+                        pd.products_description,
+                        pd.site_id
         from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION .  " pd 
         where p.products_status = '1' 
           and p.products_ordered > 0 
           and p.products_id = pd.products_id 
           and pd.language_id = '" .  $languages_id . "' 
           and p.products_id not in".tep_not_in_disabled_products()." 
-          and pd.site_id = '".SITE_ID."' 
-        order by p.products_ordered desc, pd.products_name 
-        limit " . MAX_DISPLAY_BESTSELLERS
+        order by pd.site_id DESC
+      ) p
+      where site_id = '0'
+         or site_id = '".SITE_ID."' 
+      group by products_id
+      order by products_ordered desc, products_name 
+      limit " . MAX_DISPLAY_BESTSELLERS
         );
 	}
 
@@ -55,13 +71,9 @@
 	$info_box_contents = array();
 	$info_box_contents[] = array('text' => BOX_HEADING_BESTSELLERS);
 	
-	// new infoBoxHeading($info_box_contents, false, false);
-	
 	$rows = 0;
-	//$bestsellers_list = '<table border="0" width="100%" cellspacing="0" cellpadding="1">';
 	while ($best_sellers = tep_db_fetch_array($best_sellers_query)) {
 		$rows++;
-		// $bestsellers_list .= '<tr><td class="infoBoxContents" valign="top">' . tep_row_number_format($rows) . '.</td><td class="infoBoxContents"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']) . '">' . $best_sellers['products_name'] . '</a></td></tr>';
 ?>
 	<tr><td colspan="2">
 		<table width="100%" border="0" cellpadding="0" cellspacing="0">

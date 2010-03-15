@@ -37,6 +37,36 @@
             <?php
   $reviews_array = array();  
   $reviews_query_raw = "
+  select * 
+  from (
+    select r.reviews_id, 
+           rd.reviews_text, 
+           r.reviews_rating, 
+           r.date_added, 
+           p.products_id, 
+           pd.products_name, 
+           p.products_image, 
+           r.customers_name,
+           pd.site_id as psid
+    from " . TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd, " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
+    where pd.site_id        = '" . SITE_ID . "' 
+      and p.products_status = '1' 
+      and p.products_id     = r.products_id 
+      and r.reviews_id      = rd.reviews_id 
+      and p.products_id     = pd.products_id 
+      and pd.language_id    = '" . $languages_id . "' 
+      and rd.languages_id   = '" . $languages_id . "' 
+      and r.reviews_status  = '1' 
+      and r.site_id         = ".SITE_ID." 
+    ORDER by pd.site_id DESC
+    ) p
+    where psid = '0'
+       or psid = '".SITE_ID."'
+    group by reviews_id
+    order by reviews_id DESC
+  ";
+  /*
+  $reviews_query_raw = "
     select r.reviews_id, 
            rd.reviews_text, 
            r.reviews_rating, 
@@ -58,6 +88,7 @@
       and pd.site_id        = '".SITE_ID."' 
     order by r.reviews_id DESC
   ";
+  */
   $reviews_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_NEW_REVIEWS, $reviews_query_raw, $reviews_numrows);
 //ccdd
   $reviews_query = tep_db_query($reviews_query_raw);

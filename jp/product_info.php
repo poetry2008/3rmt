@@ -8,6 +8,7 @@
   
 //begin dynamic meta tags query -->
   // ccdd
+/*
 $the_product_info_query = tep_db_query("
     SELECT pd.language_id, 
            p.products_id, 
@@ -34,6 +35,8 @@ $the_product_info_query = tep_db_query("
       AND pd.site_id = ".SITE_ID
     ); 
 $the_product_info = tep_db_fetch_array($the_product_info_query);
+*/
+$the_product_info = tep_get_product_by_id((int)$HTTP_GET_VARS['products_id'], SITE_ID, $languages_id);
 //forward 404
 forward404Unless($the_product_info);
 
@@ -123,6 +126,7 @@ function showimage($1) {
 	  	<?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_PRODUCT_INFO, tep_get_all_get_params(array('action')) . 'action=add_product')) . "\n"; ?>
 <?php
 // ccdd
+/*
   $product_info_query = tep_db_query("
       SELECT p.products_id, 
              pd.products_name, 
@@ -154,20 +158,23 @@ function showimage($1) {
         AND pd.site_id = ".SITE_ID
   );
   if (!tep_db_num_rows($product_info_query)) { // product not found in database
+  */
+  
+  $product_info = tep_get_product_by_id((int)$HTTP_GET_VARS['products_id'], SITE_ID, $languages_id);
+  if (!$product_info) { // product not found in database
 ?>
         <P><?php echo TEXT_PRODUCT_NOT_FOUND; ?></P>
         <div align="right"><a href="<?php echo tep_href_link(FILENAME_DEFAULT); ?>"><?php echo tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></a></div>
         <?php
   } else {
     // ccdd
-    tep_db_query("
+    $product_info['site_id'] == SITE_ID && tep_db_query("
         UPDATE " . TABLE_PRODUCTS_DESCRIPTION . " 
         SET products_viewed = products_viewed+1 
         WHERE products_id = '" .  (int)$HTTP_GET_VARS['products_id'] . "' 
           AND language_id = '" . $languages_id . "' 
           AND site_id     = '".SITE_ID."'
     ");
-    $product_info = tep_db_fetch_array($product_info_query);
 
     if ($new_price = tep_get_products_special_price($product_info['products_id'])) {
       $pricedef = $new_price;

@@ -173,7 +173,18 @@ if (!isset($HTTP_GET_VARS['pto'])) $HTTP_GET_VARS['pto'] = NULL;
     $select_column_list .= ', ';
   }
 
-  $select_str = "select distinct " . $select_column_list . " m.manufacturers_id, p.products_id, pd.products_name, p.products_price, p.products_tax_class_id, IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, IF(s.status, s.specials_new_products_price, p.products_price) as final_price ";
+  $select_str = "
+    select * 
+    from (
+    select distinct " . $select_column_list . " 
+                    m.manufacturers_id, 
+                    p.products_id, 
+                    pd.products_name, 
+                    p.products_price, 
+                    p.products_tax_class_id, 
+                    IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, 
+                    IF(s.status, s.specials_new_products_price, p.products_price) as final_price,
+                    p.sort_order";
 
   if(isset($HTTP_GET_VARS['colors']) && !empty($HTTP_GET_VARS['colors'])) {
     $select_str .= ", cp.color_image ";
@@ -190,7 +201,6 @@ if (!isset($HTTP_GET_VARS['pto'])) $HTTP_GET_VARS['pto'] = NULL;
       $customer_country_id = STORE_COUNTRY;
       $customer_zone_id = STORE_ZONE;
     }
-    // maker
     $from_str = '(('.$from_str.") left join " . TABLE_TAX_RATES . " tr on p.products_tax_class_id = tr.tax_class_id) left join " . TABLE_ZONES_TO_GEO_ZONES . " gz on tr.tax_zone_id = gz.geo_zone_id and (gz.zone_country_id is null or gz.zone_country_id = '0' or gz.zone_country_id = '" . $customer_country_id . "') and (gz.zone_id is null or gz.zone_id = '0' or gz.zone_id = '" . $customer_zone_id . "')";
   }
 
@@ -262,11 +272,18 @@ if (!isset($HTTP_GET_VARS['pto'])) $HTTP_GET_VARS['pto'] = NULL;
     if ($pto)   $where_str .= " and (IF(s.status, s.specials_new_products_price, p.products_price) <= " . $pto . ")";
   }
 
-  $where_str .= " and pd.site_id = ".SITE_ID;
+  //$where_str .= " and pd.site_id = ".SITE_ID;
   
   if ( (DISPLAY_PRICE_WITH_TAX == 'true') && ((isset($HTTP_GET_VARS['pfrom']) && tep_not_null($HTTP_GET_VARS['pfrom'])) || (isset($HTTP_GET_VARS['pto']) && tep_not_null($HTTP_GET_VARS['pto']))) ) {
-    $where_str .= " group by p.products_id, tr.tax_priority";
+    $where_str .= " group by p.products_id, tr.tax_priority
+      order by pd.site_id DESC";
   }
+  $where_str .= "
+    ) p 
+    where site_id = 0
+       or site_id = ".SITE_ID."
+    group by categories_id
+    ";
 
   if ( (!isset($HTTP_GET_VARS['sort'])) || (!ereg('[1-9][ad]', $HTTP_GET_VARS['sort'])) || (substr($HTTP_GET_VARS['sort'], 0 , 1) > sizeof($column_list)) ) {
     for ($col=0, $n=sizeof($column_list); $col<$n; $col++) {
@@ -308,7 +325,6 @@ if (!isset($HTTP_GET_VARS['pto'])) $HTTP_GET_VARS['pto'] = NULL;
     }
   }
 
-  // maker
   $listing_sql = $select_str . ' from ' . $from_str . $where_str . $order_str;
 
   require(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING);

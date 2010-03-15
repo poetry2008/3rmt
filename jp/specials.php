@@ -26,21 +26,29 @@
 				<table border="0" width="100%" cellspacing="0" cellpadding="0">
 <?php
 	$specials_query_raw = "
+  select * 
+  from (
     select p.products_id, 
            pd.products_name, 
            p.products_price, 
            p.products_tax_class_id, 
            p.products_image, 
-           s.specials_new_products_price 
+           pd.site_id,
+           s.specials_new_products_price ,
+           s.specials_date_added
     from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_SPECIALS . " s 
-    where pd.site_id = '" . SITE_ID . "' 
-      and p.products_id not in".tep_not_in_disabled_products()." 
+    where p.products_id not in".tep_not_in_disabled_products()." 
       and p.products_status = '1' 
       and s.products_id = p.products_id 
       and p.products_id = pd.products_id 
       and pd.language_id = '" . $languages_id . "' 
       and s.status = '1' 
-    order by s.specials_date_added DESC
+    ORDER by pd.site_id DESC
+    ) p
+  where site_id = '0'
+     or site_id = '".SITE_ID."'
+  group by products_id
+  order by specials_date_added DESC
   ";
 	$specials_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SPECIAL_PRODUCTS, $specials_query_raw, $specials_numrows);
   // ccdd

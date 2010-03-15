@@ -9,8 +9,50 @@
 
   Released under the GNU General Public License
 */
-
-  if ($random_product = tep_random_select("select p.products_id, pd.products_name, p.products_price, p.products_tax_class_id, p.products_image, s.specials_new_products_price from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_SPECIALS . " s where p.products_status = '1' and p.products_id = s.products_id and pd.products_id = s.products_id and pd.language_id = '" . $languages_id . "' and s.status = '1' order by s.specials_date_added desc limit " . MAX_RANDOM_SELECT_SPECIALS)) {
+  if ($random_product = tep_random_select("
+      select *
+      from (
+        select p.products_id, 
+               pd.products_name,
+               pd.site_id,
+               p.products_price, 
+               p.products_tax_class_id, 
+               p.products_image, 
+               s.specials_date_added,
+               s.specials_new_products_price 
+        from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_SPECIALS . " s 
+        where p.products_status = '1' 
+          and p.products_id = s.products_id 
+          and pd.products_id = s.products_id 
+          and pd.language_id = '" . $languages_id . "' 
+          and s.status = '1' 
+        order by pd.site_id DESC
+        ) p
+        where site_id = '0'
+           or site_id = '".SITE_ID."'
+        group by products_id
+        order by specials_date_added desc 
+        limit " . MAX_RANDOM_SELECT_SPECIALS
+        )) {
+*/
+/*
+  if ($random_product = tep_random_select("
+        select p.products_id, 
+               pd.products_name,
+               p.products_price, 
+               p.products_tax_class_id, 
+               p.products_image, 
+               s.specials_new_products_price 
+        from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_SPECIALS . " s 
+        where p.products_status = '1' 
+          and p.products_id = s.products_id 
+          and pd.products_id = s.products_id 
+          and pd.language_id = '" . $languages_id . "' 
+          and s.status = '1' 
+        order by s.specials_date_added desc 
+        limit " . MAX_RANDOM_SELECT_SPECIALS
+        )) {
+*/
 ?>
 <!-- specials //-->
           <tr>

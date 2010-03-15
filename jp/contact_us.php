@@ -13,6 +13,7 @@
 	//product_idを取得した場合商品名を呼び出す
 	if (isset($HTTP_GET_VARS['products_id'])) {
 //ccdd
+    /*
 		$product_info_query = tep_db_query("
         SELECT pd.products_name 
         FROM " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
@@ -23,6 +24,8 @@
           AND pd.language_id = '" . $languages_id . "'
     ");
 		$product_info = tep_db_fetch_array($product_info_query);
+    */
+		$product_info = tep_get_product_by_id((int)$HTTP_GET_VARS['products_id'], SITE_ID, $languages_id);
     //forward 404
     forward404Unless($product_info);
 	}

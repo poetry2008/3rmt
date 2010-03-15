@@ -30,7 +30,9 @@
           and p.products_id = '" .  (int)$HTTP_GET_VARS['products_id'] . "' 
           and p.products_id = pd.products_id 
           and pd.language_id = '" . $languages_id . "' 
-          and pd.site_id = '".SITE_ID."'
+          and (pd.site_id = '".SITE_ID."' or pd.site_id = '0'
+        order by pd.site_id DESC
+        limit 1
     ");
 		$valid_product = (tep_db_num_rows($product_info_query) > 0);
 	}

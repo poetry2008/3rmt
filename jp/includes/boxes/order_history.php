@@ -45,12 +45,19 @@
       $customer_orders_string = '<table border="0" width="100%" cellspacing="0" cellpadding="1">';
       // ccdd
       $products_query = tep_db_query("
-          select products_id, products_name 
+        select * 
+        from (
+          select products_id, 
+                 products_name 
           from " . TABLE_PRODUCTS_DESCRIPTION . " 
           where products_id in (" . $product_ids . ") 
             and language_id = '" . $languages_id . "' 
-            and site_id = '".SITE_ID."'
-          order by products_name
+          order by site_id DESC
+          ) p
+        where site_id = '0'
+           or site_id = '".SITE_ID."'
+        group by products_id
+        order by products_name
       ");
       while ($products = tep_db_fetch_array($products_query)) {
         $customer_orders_string .= '  <tr>' .

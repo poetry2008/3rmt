@@ -21,22 +21,43 @@
   if (tep_session_is_registered('customer_id'))
   {
     // ccdd
-    $products_query = "select *, p.products_id , IF(s.status, s.specials_new_products_price, p.products_price) as final_price from " . TABLE_PRODUCTS_TO_TAGS . " as p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id where p2t.tags_id = " .  (int)$HTTP_GET_VARS['tags_id']." and pd.site_id = ".SITE_ID;
-  }
-  else
-  {
+    $products_query = "
+      select *, 
+             p.products_id , 
+             pd.site_id,
+             IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
+      from " . TABLE_PRODUCTS_TO_TAGS . " as p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id 
+      where p2t.tags_id = " .  (int)$HTTP_GET_VARS['tags_id']."
+      order by pd.site_id DESC
+      ";
+  } else {
     // ccdd
-    $products_query = "select *, p.products_id, IF(s.status, s.specials_new_products_price, p.products_price) as final_price from " . TABLE_PRODUCTS_TO_TAGS . " as p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id where p2t.tags_id = " .  (int)$HTTP_GET_VARS['tags_id']." and pd.site_id = ".SITE_ID;
+    $products_query = "
+      select *, 
+             p.products_id, 
+             pd.site_id,
+             IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
+      from " . TABLE_PRODUCTS_TO_TAGS . " as p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id 
+      where p2t.tags_id = " .  (int)$HTTP_GET_VARS['tags_id']." 
+      order by pd.site_id DESC";
   } 
 
-     $listing_sql = $products_query;
+     $listing_sql = "
+       select *
+       from (
+       ".$products_query."
+       ) p
+       where site_id = '0'
+          or site_id = '".SITE_ID."'
+       group by products_id
+     ";
 
      if (!isset($HTTP_GET_VARS['sort'])) $HTTP_GET_VARS['sort'] = NULL;
   if ( (!$HTTP_GET_VARS['sort']) || (!preg_match('/[1-9][ad]/', $HTTP_GET_VARS['sort'])) || (substr($HTTP_GET_VARS['sort'],0,1) > sizeof($column_list)) ) {
     for ($col=0, $n=sizeof($column_list); $col<$n; $col++) {
       if ($column_list[$col] == 'PRODUCT_LIST_NAME') {
         $HTTP_GET_VARS['sort'] = $col+1 . 'a';
-        $listing_sql .= " order by pd.products_name";
+        $listing_sql .= " order by products_name";
         break;
       }
     }
@@ -46,28 +67,28 @@
     $listing_sql .= ' order by ';
     switch ($column_list[$sort_col-1]) {
       case 'PRODUCT_LIST_MODEL':
-        $listing_sql .= "p.products_model " . ($sort_order == 'd' ? 'desc' : '') . ", pd.products_name";
+        $listing_sql .= "products_model " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
         break;
       case 'PRODUCT_LIST_NAME':
-       $listing_sql .= "pd.products_name " . ($sort_order == 'd' ? 'desc' : '');
+       $listing_sql .= "products_name " . ($sort_order == 'd' ? 'desc' : '');
         break;
       case 'PRODUCT_LIST_MANUFACTURER':
-        $listing_sql .= "m.manufacturers_name " . ($sort_order == 'd' ? 'desc' : '') . ", pd.products_name";
+        $listing_sql .= "manufacturers_name " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
         break;
       case 'PRODUCT_LIST_QUANTITY':
-        $listing_sql .= "p.products_quantity " . ($sort_order == 'd' ? 'desc' : '') . ", pd.products_name";
+        $listing_sql .= "products_quantity " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
         break;
       case 'PRODUCT_LIST_IMAGE':
-        $listing_sql .= "pd.products_name";
+        $listing_sql .= "products_name";
         break;
       case 'PRODUCT_LIST_WEIGHT':
-        $listing_sql .= "p.products_weight " . ($sort_order == 'd' ? 'desc' : '') . ", pd.products_name";
+        $listing_sql .= "products_weight " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
         break;
       case 'PRODUCT_LIST_PRICE':
-        $listing_sql .= "final_price " . ($sort_order == 'd' ? 'desc' : '') . ", pd.products_name";
+        $listing_sql .= "final_price " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
         break;
       case 'PRODUCT_LIST_ORDERED':
-        $listing_sql .= "p.products_ordered " . ($sort_order == 'd' ? 'desc' : '') . ", pd.products_name";
+        $listing_sql .= "products_ordered " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
         break;
     }
   }

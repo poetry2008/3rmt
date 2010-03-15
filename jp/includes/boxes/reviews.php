@@ -44,13 +44,60 @@
 	<tr>
 		<td class="boxText" align="center">
 		<?php
-	$random_select = "select r.reviews_id, r.reviews_rating, p.products_id, p.products_image, pd.products_name from " . TABLE_REVIEWS . " r, " .  TABLE_REVIEWS_DESCRIPTION . " rd, " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = r.products_id and r.reviews_id = rd.reviews_id and rd.languages_id = '" . $languages_id . "' and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and r.reviews_status = '1' and
-    r.site_id = '".SITE_ID."' and pd.site_id = '".SITE_ID."'";
-	if (isset($HTTP_GET_VARS['products_id'])) {
-		$random_select .= " and p.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "'";
-	}
-	$random_select .= " order by r.reviews_id desc limit " . MAX_RANDOM_SELECT_REVIEWS;
-	$random_product = tep_random_select($random_select);
+  $random_select = "
+  select *
+  from (
+    select r.reviews_id, 
+           r.reviews_rating, 
+           p.products_id, 
+           p.products_image, 
+           pd.products_name,
+           r.site_id as rsid,
+           pd.site_id as psid
+    from " . TABLE_REVIEWS . " r, " .  TABLE_REVIEWS_DESCRIPTION . " rd, " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd 
+    where p.products_status = '1' 
+      and p.products_id = r.products_id 
+      and r.reviews_id = rd.reviews_id 
+      and rd.languages_id = '" . $languages_id . "' 
+      and p.products_id = pd.products_id 
+      and pd.language_id = '" . $languages_id . "' 
+      and r.reviews_status = '1' 
+      and r.site_id = '".SITE_ID."'";
+      //and pd.site_id = '".SITE_ID."'"; 
+  if (isset($HTTP_GET_VARS['products_id'])) {
+    $random_select .= " and p.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "'";
+  }
+  $random_select .= "
+    order by reviews_id, psid DESC
+  ) p
+  where psid = '0'
+     or psid = '".SITE_ID."'
+  group by reviews_id
+  ";
+  $random_select .= " order by reviews_id desc limit " . MAX_RANDOM_SELECT_REVIEWS;
+    /*
+  $random_select = "
+    select r.reviews_id, 
+           r.reviews_rating, 
+           p.products_id, 
+           p.products_image, 
+           pd.products_name 
+    from " . TABLE_REVIEWS . " r, " .  TABLE_REVIEWS_DESCRIPTION . " rd, " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd 
+    where p.products_status = '1' 
+      and p.products_id = r.products_id 
+      and r.reviews_id = rd.reviews_id 
+      and rd.languages_id = '" . $languages_id . "' 
+      and p.products_id = pd.products_id 
+      and pd.language_id = '" . $languages_id . "' 
+      and r.reviews_status = '1' 
+      and r.site_id = '".SITE_ID."' 
+      and pd.site_id = '".SITE_ID."'"; 
+  if (isset($HTTP_GET_VARS['products_id'])) {
+    $random_select .= " and p.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "'";
+  }
+  $random_select .= " order by r.reviews_id desc limit " . MAX_RANDOM_SELECT_REVIEWS;
+  */
+  $random_product = tep_random_select($random_select);
 	
 	$info_box_contents = array();
 	

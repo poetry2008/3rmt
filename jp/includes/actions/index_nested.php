@@ -1,7 +1,5 @@
-<?Php
-// ccdd
-    $category_query = tep_db_query("select cd.categories_name, c.categories_image from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where c.categories_id = '" . $current_category_id . "' and cd.categories_id = '" . $current_category_id . "' and cd.language_id = '" . $languages_id .  "' and cd.site_id = ".SITE_ID);
-    $category = tep_db_fetch_array($category_query);
+<?php
+    $category = tep_get_category_by_id($current_category_id, SITE_ID, $languages_id);
 ?>
 			<td valign="top" id="contents">
 			<!-- heading title --> 
@@ -22,7 +20,40 @@
       $category_links = array_reverse($cPath_array);
       for($i=0, $n=sizeof($category_links); $i<$n; $i++) {
         // ccdd
-        $categories_query = tep_db_query("select c.categories_id, cd.categories_name, c.categories_image, c.parent_id from " .  TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where c.parent_id = '" . $category_links[$i] . "' and c.categories_id = cd.categories_id and cd.language_id = '" . $languages_id . "'  and cd.site_id = ".SITE_ID." order by sort_order, cd.categories_name");
+        $categories_query = tep_db_query("
+          select * 
+          from (
+            select c.categories_id, 
+                   cd.categories_name, 
+                   c.categories_image, 
+                   c.parent_id,
+                   cd.site_id,
+                   c.sort_order
+            from " .  TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
+            where c.parent_id = '" . $category_links[$i] . "' 
+              and c.categories_id = cd.categories_id 
+              and cd.language_id = '" . $languages_id . "'  
+            order by sort_order, cd.categories_name, cd.site_id DESC
+          ) c
+          where site_id = 0 
+             or site_id = ".SITE_ID."
+          group by categories_id
+          order by sort_order, categories_name
+        ");
+        /*
+        $categories_query = tep_db_query("
+            select c.categories_id, 
+                   cd.categories_name, 
+                   c.categories_image, 
+                   c.parent_id 
+            from " .  TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
+            where c.parent_id = '" . $category_links[$i] . "' 
+              and c.categories_id = cd.categories_id 
+              and cd.language_id = '" . $languages_id . "'  
+              and cd.site_id = ".SITE_ID." 
+            order by sort_order, cd.categories_name
+        ");
+        */
         if (tep_db_num_rows($categories_query) < 1) {
           // do nothing, go through the loop
         } else {
@@ -31,7 +62,39 @@
       }
     } else {
       // ccdd
-      $categories_query = tep_db_query("select c.categories_id, cd.categories_name, c.categories_image, c.parent_id from " . TABLE_CATEGORIES . " c, " .  TABLE_CATEGORIES_DESCRIPTION . " cd where c.parent_id = '" .  $current_category_id . "' and c.categories_id = cd.categories_id and cd.language_id = '" . $languages_id . "' and cd.site_id = ".SITE_ID." order by sort_order, cd.categories_name");
+        $categories_query = tep_db_query("
+          select * 
+          from (
+            select c.categories_id, 
+                   cd.categories_name, 
+                   c.categories_image, 
+                   c.parent_id,
+                   cd.site_id,
+                   c.sort_order
+            from " .  TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
+            where c.parent_id = '" . $current_category_id . "' 
+              and c.categories_id = cd.categories_id 
+              and cd.language_id = '" . $languages_id . "'  
+            order by sort_order, cd.categories_name, cd.site_id DESC
+          ) c
+          where site_id = 0 
+             or site_id = ".SITE_ID."
+          group by categories_id
+          order by sort_order, categories_name
+        ");
+/*
+      $categories_query = tep_db_query("
+          select c.categories_id, 
+                 cd.categories_name, 
+                 c.categories_image, 
+                 c.parent_id 
+          from " . TABLE_CATEGORIES . " c, " .  TABLE_CATEGORIES_DESCRIPTION . " cd 
+          where c.parent_id = '" .  $current_category_id . "' 
+            and c.categories_id = cd.categories_id 
+            and cd.language_id = '" . $languages_id . "' 
+            and cd.site_id = ".SITE_ID." 
+          order by sort_order, cd.categories_name");
+    */
     }
 
     $rows = 0;
@@ -80,4 +143,3 @@
 			<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
 			<!-- right_navigation_eof //-->
 		</td> 
-<?php
