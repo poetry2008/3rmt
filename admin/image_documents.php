@@ -725,6 +725,7 @@
                                     products_id
                              from " . TABLE_PRODUCTS_DESCRIPTION . "
                              where language_id = '" . $languages_id . "'
+                               and site_id = '0'
                              order by products_name
                             ";
       // print $products_query_raw . '<br>';                              
@@ -744,6 +745,7 @@
                                                " . TABLE_PRODUCTS_TO_IMAGE_DOCUMENTS . " p2d
                                           where pd.language_id = '" . $languages_id . "'
                                             and pd.products_id = p2d.products_id
+                                            and pd.site_id = '0'
                                             and p2d.documents_id = '" . $dInfo->documents_id . "'"
                                         );
       if (tep_db_num_rows ($associations_query) > 0) {
@@ -768,6 +770,7 @@
                                                 " . TABLE_PRODUCTS_TO_IMAGE_DOCUMENTS . " p2d
                                            where pd.products_id = p2d.products_id
                                              and p2d.documents_id = '" . (int) $dInfo->documents_id . "'
+                                             and pd.site_id = '0'
                                              and pd.language_id = '" . $languages_id . "'
                                         ");
       if (tep_db_num_rows ($associations_query) > 0) {
@@ -818,6 +821,7 @@
                                                    " . TABLE_PRODUCTS_TO_IMAGE_DOCUMENTS . " p2d
                                               where pd.language_id = '" . $languages_id . "'
                                                 and pd.products_id = p2d.products_id
+                                                and pd.site_id = '0'
                                                 and p2d.documents_id = '" . $dInfo->documents_id . "'"
                                             );
           if (tep_db_num_rows ($associations_query) > 0) {

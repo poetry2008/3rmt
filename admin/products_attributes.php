@@ -134,7 +134,19 @@ function go_option() {
                     <td colspan="3"><?php echo tep_black_line(); ?></td>
                   </tr>
 <?php
-    $products = tep_db_query("select p.products_id, pd.products_name, pov.products_options_values_name from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov, " . TABLE_PRODUCTS_ATTRIBUTES . " pa, " . TABLE_PRODUCTS_DESCRIPTION . " pd where pd.products_id = p.products_id and pov.language_id = '" . $languages_id . "' and pd.language_id = '" . $languages_id . "' and pa.products_id = p.products_id and pa.options_id='" . $HTTP_GET_VARS['option_id'] . "' and pov.products_options_values_id = pa.options_values_id order by pd.products_name");
+    $products = tep_db_query("
+        select p.products_id, 
+               pd.products_name, 
+               pov.products_options_values_name 
+        from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov, " . TABLE_PRODUCTS_ATTRIBUTES . " pa, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
+        where pd.products_id = p.products_id 
+          and pov.language_id = '" . $languages_id . "' 
+          and pd.language_id = '" . $languages_id . "' 
+          and pa.products_id = p.products_id 
+          and pa.options_id='" . $HTTP_GET_VARS['option_id'] . "' 
+          and pov.products_options_values_id = pa.options_values_id 
+          and pd.site_id = '0'
+        order by pd.products_name");
     if (tep_db_num_rows($products)) {
 ?>
                   <tr class="dataTableHeadingRow">
@@ -335,7 +347,19 @@ function go_option() {
                     <td colspan="3"><?php echo tep_black_line(); ?></td>
                   </tr>
 <?php
-    $products = tep_db_query("select p.products_id, pd.products_name, po.products_options_name from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_ATTRIBUTES . " pa, " . TABLE_PRODUCTS_OPTIONS . " po, " . TABLE_PRODUCTS_DESCRIPTION . " pd where pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "' and po.language_id = '" . $languages_id . "' and pa.products_id = p.products_id and pa.options_values_id='" . $HTTP_GET_VARS['value_id'] . "' and po.products_options_id = pa.options_id order by pd.products_name");
+    $products = tep_db_query("
+        select p.products_id, 
+               pd.products_name, 
+               po.products_options_name 
+        from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_ATTRIBUTES . " pa, " . TABLE_PRODUCTS_OPTIONS . " po, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
+        where pd.products_id = p.products_id 
+          and pd.language_id = '" . $languages_id . "' 
+          and po.language_id = '" . $languages_id . "' 
+          and pa.products_id = p.products_id 
+          and pa.options_values_id='" . $HTTP_GET_VARS['value_id'] . "' 
+          and po.products_options_id = pa.options_id 
+          and pd.site_id = '0'
+        order by pd.products_name");
     if (tep_db_num_rows($products)) {
 ?>
                   <tr class="dataTableHeadingRow">
@@ -561,7 +585,11 @@ function go_option() {
             <td colspan="7" class="smallText">
 <?php
   $per_page = MAX_ROW_LISTS_OPTIONS;
-  $attributes = "select pa.* from " . TABLE_PRODUCTS_ATTRIBUTES . " pa left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on pa.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' order by pd.products_name";
+  $attributes = "
+    select pa.* 
+    from " . TABLE_PRODUCTS_ATTRIBUTES . " pa left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on pa.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' 
+    where pd.site_id = '0'
+    order by pd.products_name";
   if (!isset($attribute_page) || !$attribute_page) {
     $attribute_page = 1;
   }
@@ -636,7 +664,14 @@ function go_option() {
             <td class="smallText">&nbsp;<?php echo $attributes_values['products_attributes_id']; ?><input type="hidden" name="attribute_id" value="<?php echo $attributes_values['products_attributes_id']; ?>">&nbsp;</td>
             <td class="smallText">&nbsp;<select name="products_id">
 <?php
-      $products = tep_db_query("select p.products_id, pd.products_name from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "' order by pd.products_name");
+      $products = tep_db_query("
+          select p.products_id, 
+                 pd.products_name 
+          from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
+          where pd.products_id = p.products_id 
+            and pd.language_id = '" . $languages_id . "' 
+            and pd.site_id = '0'
+          order by pd.products_name");
       while($products_values = tep_db_fetch_array($products)) {
         if ($attributes_values['products_id'] == $products_values['products_id']) {
           echo "\n" . '<option name="' . $products_values['products_name'] . '" value="' . $products_values['products_id'] . '" SELECTED>' . $products_values['products_name'] . '</option>';
@@ -749,7 +784,13 @@ function go_option() {
             <td class="smallText">&nbsp;<?php echo $next_id; ?>&nbsp;</td>
       	    <td class="smallText">&nbsp;<select name="products_id">
 <?php
-    $products = tep_db_query("select p.products_id, pd.products_name from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "' order by pd.products_name");
+    $products = tep_db_query("
+        select p.products_id, pd.products_name 
+        from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
+        where pd.products_id = p.products_id 
+          and pd.language_id = '" . $languages_id . "' 
+          and pd.site_id = '0'
+        order by pd.products_name");
     while ($products_values = tep_db_fetch_array($products)) {
       echo '<option name="' . $products_values['products_name'] . '" value="' . $products_values['products_id'] . '">' . $products_values['products_name'] . '</option>';
     } 

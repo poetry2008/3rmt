@@ -471,7 +471,35 @@
 						$products_ordered_mail .= tep_parse_input_field_data($order->products[$i]['attributes'][$j]['value'], array("'"=>"&quot;")) . "\n";
 					}
 				}
-			    $_product_info_query = tep_db_query("select p.products_id, pd.products_name, pd.products_attention_1,pd.products_attention_2,pd.products_attention_3,pd.products_attention_4,pd.products_attention_5,pd.products_description_".ABBR_SITENAME.", p.products_model, p.products_quantity, p.products_image,p.products_image2,p.products_image3, pd.products_url, p.products_price, p.products_tax_class_id, p.products_date_added, p.products_date_available, p.manufacturers_id, p.products_bflag, p.products_cflag, p.products_small_sum from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" . $order->products[$i]['id'] . "' and pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "'");
+			    $_product_info_query = tep_db_query("
+              select p.products_id, 
+                     pd.products_name, 
+                     pd.products_attention_1,
+                     pd.products_attention_2,
+                     pd.products_attention_3,
+                     pd.products_attention_4,
+                     pd.products_attention_5,
+                     pd.products_description, 
+                     p.products_model, 
+                     p.products_quantity, 
+                     p.products_image,
+                     p.products_image2,
+                     p.products_image3, 
+                     pd.products_url, 
+                     p.products_price, 
+                     p.products_tax_class_id, 
+                     p.products_date_added, 
+                     p.products_date_available, 
+                     p.manufacturers_id, 
+                     p.products_bflag, 
+                     p.products_cflag, 
+                     p.products_small_sum 
+              from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
+              where p.products_status = '1' 
+                and p.products_id = '" . $order->products[$i]['id'] . "' 
+                and pd.products_id = p.products_id 
+                and pd.site_id = '0'
+                and pd.language_id = '" . $languages_id . "'");
 			    $product_info = tep_db_fetch_array($_product_info_query);
 			    $data1 = explode("//", $product_info['products_attention_1']);
 
@@ -586,7 +614,16 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 			}
 
 			// 2.1.2 Get Product Info
-			$InfoQuery = "select p.products_model, p.products_price, pd.products_name, p.products_tax_class_id, p.products_small_sum from " . TABLE_PRODUCTS . " p left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on pd.products_id=p.products_id where p.products_id='$add_product_products_id' and pd.language_id = '" . (int)$languages_id . "'";
+			$InfoQuery = "
+        select p.products_model, 
+               p.products_price, 
+               pd.products_name, 
+               p.products_tax_class_id, 
+               p.products_small_sum 
+        from " . TABLE_PRODUCTS . " p left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on pd.products_id=p.products_id 
+        where p.products_id='$add_product_products_id' 
+          and pd.site_id = '0'
+          and pd.language_id = '" . (int)$languages_id . "'";
 			$result = tep_db_query($InfoQuery);
 
 			$row = tep_db_fetch_array($result);
@@ -1295,7 +1332,15 @@ if($action == "add_product")
 	// ############################################################################
 
 		//$result = tep_db_query("SELECT products_name, p.products_id, x.categories_name, ptc.categories_id FROM " . TABLE_PRODUCTS . " p LEFT JOIN " . TABLE_PRODUCTS_DESCRIPTION . " pd ON pd.products_id=p.products_id LEFT JOIN " . TABLE_PRODUCTS_TO_CATEGORIES . " ptc ON ptc.products_id=p.products_id LEFT JOIN " . TABLE_CATEGORIES_DESCRIPTION . " cd ON cd.categories_id=ptc.categories_id LEFT JOIN " . TABLE_CATEGORIES_DESCRIPTION . " x ON x.categories_id=ptc.categories_id ORDER BY categories_id");
-		$result = tep_db_query("SELECT products_name, p.products_id, cd.categories_name, ptc.categories_id FROM " . TABLE_PRODUCTS . " p LEFT JOIN " . TABLE_PRODUCTS_DESCRIPTION . " pd ON pd.products_id=p.products_id LEFT JOIN " . TABLE_PRODUCTS_TO_CATEGORIES . " ptc ON ptc.products_id=p.products_id LEFT JOIN " . TABLE_CATEGORIES_DESCRIPTION . " cd ON cd.categories_id=ptc.categories_id where pd.language_id = '" . (int)$languages_id . "' ORDER BY categories_name");
+		$result = tep_db_query("
+        SELECT products_name, 
+               p.products_id, 
+               cd.categories_name, 
+               ptc.categories_id 
+        FROM " . TABLE_PRODUCTS . " p LEFT JOIN " . TABLE_PRODUCTS_DESCRIPTION . " pd ON pd.products_id=p.products_id LEFT JOIN " . TABLE_PRODUCTS_TO_CATEGORIES . " ptc ON ptc.products_id=p.products_id LEFT JOIN " . TABLE_CATEGORIES_DESCRIPTION . " cd ON cd.categories_id=ptc.categories_id 
+        where pd.language_id = '" . (int)$languages_id . "' 
+          and pd.site_id = 0;
+        ORDER BY categories_name");
 		while($row = tep_db_fetch_array($result))
 		{
 			extract($row,EXTR_PREFIX_ALL,"db");

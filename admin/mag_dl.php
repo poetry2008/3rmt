@@ -25,11 +25,13 @@
 	    header('Pragma: public');
 	    header("Content-Disposition: attachment; filename=mag_list.csv");
 	
- 	    $query = tep_db_query("select 
-	    				mag_id,
-						mag_email,
-						mag_name
-						from mail_magazine order by mag_id");
+ 	    $query = tep_db_query("
+          select mag_id,
+                 mag_email,
+                 mag_name
+          from mail_magazine 
+          where site_id = '".$HTTP_GET_VARS['site_id']."'
+          order by mag_id");
 
 
 	    $CsvFields = array("ＩＤ","メールアドレス","姓名");
@@ -100,12 +102,12 @@
               </tr>
               <tr>
                 <td colspan="2" align="right">
-				<form action="mag_dl.php" method="get">
-				  <input type="submit" value="ダウンロード">
-				  <input type="hidden" name="action" value="download">
-				</form>
-				
-				</td>
+                  <form action="mag_dl.php" method="get">
+                    <?php echo tep_site_pull_down_menu('', false);?>
+                    <input type="submit" value="ダウンロード">
+                    <input type="hidden" name="action" value="download">
+                  </form>
+                </td>
               </tr>
             </table></td>
           </tr>

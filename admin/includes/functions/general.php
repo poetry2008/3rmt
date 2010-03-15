@@ -631,7 +631,12 @@
   }
   
   function tep_get_products_url($product_id, $language_id, $site_id = 0) {
-    $product_query = tep_db_query("select products_url from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . $product_id . "' and language_id = '" . $language_id . "' and site_id='".$site_id."'");
+    $product_query = tep_db_query("
+        select products_url 
+        from " . TABLE_PRODUCTS_DESCRIPTION . " 
+        where products_id = '" . $product_id . "' 
+          and language_id = '" . $language_id . "' 
+          and site_id='".$site_id."'");
     $product = tep_db_fetch_array($product_query);
 
     return $product['products_url'];

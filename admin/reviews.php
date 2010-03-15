@@ -120,6 +120,7 @@
         select products_name 
         from " . TABLE_PRODUCTS_DESCRIPTION . " 
         where products_id = '" . $reviews['products_id'] . "' 
+          and site_id = '0'
           and language_id = '" . $languages_id . "'");
     $products_name = tep_db_fetch_array($products_name_query);
 
@@ -198,6 +199,7 @@
           select products_name 
           from " . TABLE_PRODUCTS_DESCRIPTION . " 
           where products_id = '" . $reviews['products_id'] . "' 
+            and site_id = '0'
             and language_id = '" . $languages_id . "'
       ");
       $products_name = tep_db_fetch_array($products_name_query);
@@ -310,7 +312,9 @@
         $products_name_query = tep_db_query("
             select products_name 
             from " . TABLE_PRODUCTS_DESCRIPTION . " 
-            where products_id = '" . $reviews['products_id'] . "' and language_id = '" . $languages_id . "'");
+            where products_id = '" . $reviews['products_id'] . "' 
+              and pd.site_id ='0'
+              and language_id = '" . $languages_id . "'");
         $products_name = tep_db_fetch_array($products_name_query);
 
         $reviews_average_query = tep_db_query("

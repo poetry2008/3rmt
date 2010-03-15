@@ -64,6 +64,7 @@
     from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
     where pd.products_id = p.products_id 
       and pd.language_id = '" . $languages_id. "' 
+      and pd.site_id ='0'
       and p.products_ordered > 0 
     group by pd.products_id 
     order by p.products_ordered DESC, pd.products_name";
