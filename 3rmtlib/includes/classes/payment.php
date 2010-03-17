@@ -11,11 +11,13 @@
 */
 
   class payment {
-    var $modules, $selected_module;
+    var $site_id, $modules, $selected_module;
 
 // class constructor
-    function payment($module = '') {
+    function payment($module = '', $site_id = 0) {
       global $payment, $language, $PHP_SELF;
+
+      $this->site_id = $site_id;
 
       if (defined('MODULE_PAYMENT_INSTALLED') && tep_not_null(MODULE_PAYMENT_INSTALLED)) {
         $this->modules = explode(';', MODULE_PAYMENT_INSTALLED);
@@ -38,7 +40,7 @@
           include(DIR_WS_LANGUAGES . $language . '/modules/payment/' . $include_modules[$i]['file']);
           include(DIR_WS_MODULES . 'payment/' . $include_modules[$i]['file']);
 
-          $GLOBALS[$include_modules[$i]['class']] = new $include_modules[$i]['class'];
+          $GLOBALS[$include_modules[$i]['class']] = new $include_modules[$i]['class']($this->site_id);
         }
 
 // if there is only one payment method, select it as default because in

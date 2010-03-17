@@ -16,6 +16,7 @@
     case 'insert':
     case 'save':
       $orders_status_id = tep_db_prepare_input($HTTP_GET_VARS['oID']);
+      $site_id          = isset($HTTP_POST_VARS['site_id']) ? $HTTP_POST_VARS['site_id'] : 0 ;
 
       $languages = tep_get_languages();
       for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
@@ -32,7 +33,8 @@
           }
 
           $insert_sql_data = array('orders_status_id' => $orders_status_id,
-                                   'language_id' => $language_id);
+                                   'language_id' => $language_id
+                                   );
           $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
           tep_db_perform(TABLE_ORDERS_STATUS, $sql_data_array);
         } elseif ($HTTP_GET_VARS['action'] == 'save') {
@@ -54,27 +56,36 @@
 	  //mail本文 add
 	  if ($HTTP_GET_VARS['action'] == 'insert') {
 	    $sql_os_array = array('orders_status_id' => $orders_status_id,
-                              'language_id' => $languages_id,
-							  'orders_status_title' => tep_db_prepare_input($os_title),
-							  'orders_status_mail' => tep_db_prepare_input($os_mail));
+                            'language_id' => $languages_id,
+                            'orders_status_title' => tep_db_prepare_input($os_title),
+                            'orders_status_mail' => tep_db_prepare_input($os_mail),
+                            'site_id' => $site_id
+                            );
         tep_db_perform(TABLE_ORDERS_MAIL, $sql_os_array);
 		
 	  } elseif ($HTTP_GET_VARS['action'] == 'save') {    
 		
-		$om_check_query = tep_db_query("select count(*) from ".TABLE_ORDERS_MAIL." where orders_status_id = " . tep_db_input($orders_status_id) . " and language_id = " . $languages_id);
+		$om_check_query = tep_db_query("
+        select count(*) 
+        from ".TABLE_ORDERS_MAIL." 
+        where orders_status_id = " . tep_db_input($orders_status_id) . " 
+          and site_id = '".$site_id."'
+          and language_id = " . $languages_id);
 		$om_check_result = tep_db_fetch_array($om_check_query);
 		$om_count = $om_check_result['count(*)'];
 		
 		if($om_count == 0){
 		  $sql_os_array = array('orders_status_id' => $orders_status_id,
-                                'language_id' => $languages_id,
-							    'orders_status_title' => tep_db_prepare_input($os_title),
-								'orders_status_mail' => tep_db_prepare_input($os_mail));
+                            'language_id' => $languages_id,
+                            'orders_status_title' => tep_db_prepare_input($os_title),
+                            'orders_status_mail' => tep_db_prepare_input($os_mail), 
+                            'site_id' => $site_id
+                            );
           tep_db_perform(TABLE_ORDERS_MAIL, $sql_os_array);
 		}else{
 		  $sql_os_array = array('orders_status_mail' => tep_db_prepare_input($os_mail),
 		                        'orders_status_title' => tep_db_prepare_input($os_title));
-		  tep_db_perform(TABLE_ORDERS_MAIL, $sql_os_array, 'update', "orders_status_id = '" . tep_db_input($orders_status_id) . "' and language_id = '" . $languages_id . "'");
+		  tep_db_perform(TABLE_ORDERS_MAIL, $sql_os_array, 'update', "orders_status_id = '" . tep_db_input($orders_status_id) . "' and language_id = '" . $languages_id . "' and site_id = '".$site_id."'");
 	    }
 		
 	  }
@@ -163,7 +174,13 @@
                 <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
               </tr>
 <?php
-  $orders_status_query_raw = "select orders_status_id, orders_status_name, orders_status_image from " . TABLE_ORDERS_STATUS . " where language_id = '" . $languages_id . "' order by orders_status_id";
+  $orders_status_query_raw = "
+    select orders_status_id, 
+           orders_status_name, 
+           orders_status_image 
+    from " . TABLE_ORDERS_STATUS . " 
+    where language_id = '" . $languages_id . "' 
+    order by orders_status_id";
   $orders_status_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $orders_status_query_raw, $orders_status_query_numrows);
   $orders_status_query = tep_db_query($orders_status_query_raw);
   while ($orders_status = tep_db_fetch_array($orders_status_query)) {
@@ -171,7 +188,7 @@
       $oInfo = new objectInfo($orders_status);
     }
 
-    if ( (is_object($oInfo)) && ($orders_status['orders_status_id'] == $oInfo->orders_status_id) ) {
+    if ( isset($oInfo) && (is_object($oInfo)) && ($orders_status['orders_status_id'] == $oInfo->orders_status_id) ) {
       echo '                  <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $HTTP_GET_VARS['page'] . '&oID=' . $oInfo->orders_status_id . '&action=edit') . '\'">' . "\n";
     } else {
       echo '                  <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $HTTP_GET_VARS['page'] . '&oID=' . $orders_status['orders_status_id']) . '\'">' . "\n";
@@ -183,7 +200,7 @@
       echo '                <td class="dataTableContent">' . $orders_status['orders_status_name'] . '</td>' . "\n";
     }
 ?>
-                <td class="dataTableContent" align="right"><?php if ( (is_object($oInfo)) && ($orders_status['orders_status_id'] == $oInfo->orders_status_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $HTTP_GET_VARS['page'] . '&oID=' . $orders_status['orders_status_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
+                <td class="dataTableContent" align="right"><?php if ( isset($oInfo) && (is_object($oInfo)) && ($orders_status['orders_status_id'] == $oInfo->orders_status_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $HTTP_GET_VARS['page'] . '&oID=' . $orders_status['orders_status_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
               </tr>
 <?php
   }
@@ -211,10 +228,12 @@
   $contents = array();
   switch (isset($HTTP_GET_VARS['action'])?$HTTP_GET_VARS['action']:null) {
     case 'new':
+      $site_id   = isset($HTTP_GET_VARS['site_id']) ? (int)$HTTP_GET_VARS['site_id']:0;
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_NEW_ORDERS_STATUS . '</b>');
 
       $contents = array('form' => tep_draw_form('status', FILENAME_ORDERS_STATUS, 'page=' . $HTTP_GET_VARS['page'] . '&action=insert', 'post', 'enctype="multipart/form-data"'));
       $contents[] = array('text' => TEXT_INFO_INSERT_INTRO);
+      $contents[] = array('text' => '<input type="hidden" name="site_id" value="'.$site_id.'">');
 
       $orders_status_inputs_string = '';
       $languages = tep_get_languages();
@@ -249,11 +268,18 @@
         $orders_status_inputs_string .= '<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('orders_status_name[' . $languages[$i]['id'] . ']', tep_get_orders_status_name($oInfo->orders_status_id, $languages[$i]['id']));
       }
 	  
-	  
-	  $os_query = tep_db_query("select * from ".TABLE_ORDERS_MAIL." where orders_status_id = '".$oID."' and language_id = '".$languages_id."'");
+    $site_id = isset($HTTP_GET_VARS['site_id']) ? (int) $HTTP_GET_VARS['site_id']: 0;
+	  $os_query = tep_db_query("
+        select * 
+        from ".TABLE_ORDERS_MAIL." 
+        where orders_status_id = '".$oID."' 
+          and language_id = '".$languages_id."'
+          and site_id = '".$site_id."'
+    ");
 	  $os_result = tep_db_fetch_array($os_query);
 	  $os_mail = $os_result['orders_status_mail'];
 	  $os_title = $os_result['orders_status_title'];
+    $contents[] = array('text' => '<input type="hidden" name="site_id" value="'.($os_result?$os_result['site_id']:$site_id).'">');
 	  
 	  //mailタイトル add
 	  $orders_status_inputs_string .= '<br><br>' . TEXT_INFO_ORDERS_STATUS_TITLE . '<br>' . tep_draw_input_field('os_title', $os_title);
@@ -287,8 +313,12 @@
 	if (isset($oInfo) and is_object($oInfo)) {
         $heading[] = array('text' => '<b>' . $oInfo->orders_status_name . '</b>');
 
-        $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $HTTP_GET_VARS['page'] . '&oID=' . $oInfo->orders_status_id . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $HTTP_GET_VARS['page'] . '&oID=' . $oInfo->orders_status_id . '&action=delete') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>');
+        $contents[] = array('align' => 'ledt', 'text' => '<a href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $HTTP_GET_VARS['page'] . '&oID=' . $oInfo->orders_status_id . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $HTTP_GET_VARS['page'] . '&oID=' . $oInfo->orders_status_id . '&action=delete') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>');
 
+        foreach(tep_get_sites() as $s){
+          $contents[] = array('text' => '<b>' . $s['romaji'] . '</b>');
+          $contents[] = array('align' => 'ledt', 'text' => '<a href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $HTTP_GET_VARS['page'] . '&oID=' . $oInfo->orders_status_id . '&action=edit&site_id=' . $s['id']) . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>');
+        }
         $orders_status_inputs_string = '';
         $languages = tep_get_languages();
         for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {

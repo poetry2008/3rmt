@@ -11,10 +11,10 @@
 */
 
   class order_total {
-    var $modules;
+    var $site_id, $modules;
 
 // class constructor
-    function order_total() {
+    function order_total($site_id = 0) {
       global $language;
 
       if (defined('MODULE_ORDER_TOTAL_INSTALLED') && tep_not_null(MODULE_ORDER_TOTAL_INSTALLED)) {
@@ -26,7 +26,7 @@
           include(DIR_WS_MODULES . 'order_total/' . $value);
 
           $class = substr($value, 0, strrpos($value, '.'));
-          $GLOBALS[$class] = new $class;
+          $GLOBALS[$class] = new $class($site_id);
         }
       }
     }

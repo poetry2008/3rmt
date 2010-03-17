@@ -43,8 +43,19 @@
   if (isset($HTTP_GET_VARS['action'])) 
   switch ($HTTP_GET_VARS['action']) {
     case 'save':
+      $site_id = isset($HTTP_POST_VARS['site_id'])?(int)$HTTP_POST_VARS['site_id']:0;
+      $class = basename($HTTP_GET_VARS['module']);
+      $file_extension = substr($PHP_SELF, strrpos($PHP_SELF, '.'));
+      if (file_exists($module_directory . $class . $file_extension)) {
+        include($module_directory . $class . $file_extension);
+      }
+      if(!tep_module_installed($class, $site_id)){
+          $module = new $class($site_id);
+          $module->install();
+      }
+
       while (list($key, $value) = each($HTTP_POST_VARS['configuration'])) {
-        tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value . "' where configuration_key = '" . $key . "'");
+        tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
       }
       tep_redirect(tep_href_link(FILENAME_MODULES, 'set=' . $HTTP_GET_VARS['set'] . '&module=' . $HTTP_GET_VARS['module']));
       break;
@@ -54,16 +65,20 @@
       $class = basename($HTTP_GET_VARS['module']);
       if (file_exists($module_directory . $class . $file_extension)) {
         include($module_directory . $class . $file_extension);
-        $module = new $class;
         if ($HTTP_GET_VARS['action'] == 'install') {
+          $module = new $class;
           $module->install();
         } elseif ($HTTP_GET_VARS['action'] == 'remove') {
-          $module->remove();
+          foreach(tep_get_sites() as $s){
+            $module = new $class($s['id']);
+            $module->remove();
+          }
         }
       }
       tep_redirect(tep_href_link(FILENAME_MODULES, 'set=' . $HTTP_GET_VARS['set'] . '&module=' . $class));
       break;
   }
+$site_id = isset($HTTP_GET_VARS['site_id'])?$HTTP_GET_VARS['site_id']:'0';
 ?>
 <!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html <?php echo HTML_PARAMS; ?>>
@@ -146,8 +161,9 @@
         $module_keys = $module->keys();
 
         $keys_extra = array();
+        $get_site_id = tep_module_installed($class, $site_id) ? $site_id : 0;
         for ($j = 0, $k = sizeof($module_keys); $j < $k; $j++) {
-          $key_value_query = tep_db_query("select configuration_title, configuration_value, configuration_description, use_function, set_function from " . TABLE_CONFIGURATION . " where configuration_key = '" . $module_keys[$j] . "'");
+          $key_value_query = tep_db_query("select configuration_title, configuration_value, configuration_description, use_function, set_function from " . TABLE_CONFIGURATION . " where configuration_key = '" . $module_keys[$j] . "' and site_id = '".$get_site_id."'");
           $key_value = tep_db_fetch_array($key_value_query);
 
           $keys_extra[$module_keys[$j]]['title'] = $key_value['configuration_title'];
@@ -180,9 +196,12 @@
 <?php
     }
   }
-
   ksort($installed_modules);
-  $check_query = tep_db_query("select configuration_value from " . TABLE_CONFIGURATION . " where configuration_key = '" . $module_key . "'");
+  $check_query = tep_db_query("
+      select configuration_value 
+      from " . TABLE_CONFIGURATION . " 
+      where configuration_key = '" . $module_key . "' 
+        and site_id = '0'");
   if (tep_db_num_rows($check_query)) {
     $check = tep_db_fetch_array($check_query);
     if ($check['configuration_value'] != implode(';', $installed_modules)) {
@@ -219,6 +238,7 @@
 
       $contents = array('form' => tep_draw_form('modules', FILENAME_MODULES, 'set=' . $HTTP_GET_VARS['set'] . '&module=' . $HTTP_GET_VARS['module'] . '&action=save'));
       $contents[] = array('text' => $keys);
+      $contents[] = array('text' => '<input type="hidden" name="site_id" value="'.$site_id.'">');
       $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_update.gif', IMAGE_UPDATE) . ' <a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $HTTP_GET_VARS['set'] . '&module=' . $HTTP_GET_VARS['module']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
     default:
@@ -248,7 +268,17 @@
         }
         $keys = substr($keys, 0, strrpos($keys, '<br><br>'));
 
-        $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $HTTP_GET_VARS['set'] . '&module=' . @$HTTP_GET_VARS['module'] . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>');
+        if (!isset($HTTP_GET_VARS['module']) || !$HTTP_GET_VARS['module']) {
+          if(isset($directory_array[0])) {
+            $HTTP_GET_VARS['module'] = str_replace('.php', '', $directory_array[0]);
+          }
+        }
+
+        $contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $HTTP_GET_VARS['set'] . '&module=' . @$HTTP_GET_VARS['module'] . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>');
+        foreach(tep_get_sites() as $s){
+          $contents[] = array('text' => '<b>'.$s['romaji'].'</b>');
+          $contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $HTTP_GET_VARS['set'] . '&module=' . @$HTTP_GET_VARS['module'] . '&action=edit&site_id='.$s['id']) . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>');
+        }
         $contents[] = array('text' => '<br>' . $mInfo->description);
         $contents[] = array('text' => '<br>' . $keys);
       } else {

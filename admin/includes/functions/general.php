@@ -838,6 +838,7 @@
 ////
 // Alias function for Store configuration values in the Administration Tool
   function tep_cfg_select_option($select_array, $key_value, $key = '') {
+    $string = '';
     for ($i = 0, $n = sizeof($select_array); $i < $n; $i++) {
       $name = (($key) ? 'configuration[' . $key . ']' : 'configuration_value');
       $string .= '<br><input type="radio" name="' . $name . '" value="' . $select_array[$i] . '"';
@@ -916,7 +917,7 @@
     if (substr($target, -1) != '/') $target .= '/';
 
     $target .= $filename['name'];
-
+    
     move_uploaded_file($filename['tmp_name'], $target);
     chmod($target, 0666);
   }
@@ -2186,6 +2187,9 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
       }
     }
 
+  function tep_module_installed($class, $site_id = 0){
+    $module = new $class($site_id);
+    return $module->check();
+  }
   
-		  
 ?>

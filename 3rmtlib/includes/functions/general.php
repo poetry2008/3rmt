@@ -2203,4 +2203,7 @@ function tep_unlink_temp_dir($dir)
         return false;
       }
     }
+
+  //function tep_module_installed(){
+  //}
 ?>

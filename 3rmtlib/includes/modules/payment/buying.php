@@ -11,11 +11,13 @@
 */
 
   class buying {
-    var $code, $title, $description, $enabled;
+    var $site_id, $code, $title, $description, $enabled;
 
 // class constructor
-    function buying() {
+    function buying($site_id = 0) {
       global $order;
+
+      $this->site_id = $site_id;
 
       $this->code = 'buying';
       $this->title = MODULE_PAYMENT_BUYING_TEXT_TITLE;
@@ -40,7 +42,13 @@
       if ( ($this->enabled == true) && ((int)MODULE_PAYMENT_BUYING_ZONE > 0) ) {
         $check_flag = false;
         // ccdd
-        $check_query = tep_db_query("select zone_id from " . TABLE_ZONES_TO_GEO_ZONES . " where geo_zone_id = '" . MODULE_PAYMENT_BUYING_ZONE . "' and zone_country_id = '" . $order->billing['country']['id'] . "' order by zone_id");
+        $check_query = tep_db_query("
+            select zone_id 
+            from " . TABLE_ZONES_TO_GEO_ZONES . " 
+            where geo_zone_id = '" . MODULE_PAYMENT_BUYING_ZONE . "' 
+              and zone_country_id = '" . $order->billing['country']['id'] . "' 
+              order by zone_id
+        ");
         while ($check = tep_db_fetch_array($check_query)) {
           if ($check['zone_id'] < 1) {
             $check_flag = true;
@@ -94,7 +102,11 @@
     function check() {
       if (!isset($this->_check)) {
         // ccdd
-        $check_query = tep_db_query("select configuration_value from " .  TABLE_CONFIGURATION . " where configuration_key = 'MODULE_PAYMENT_BUYING_STATUS' and site_id = '".SITE_ID."'");
+        $check_query = tep_db_query("
+            select configuration_value 
+            from " .  TABLE_CONFIGURATION . " 
+            where configuration_key = 'MODULE_PAYMENT_BUYING_STATUS' 
+              and site_id = '".$this->site_id."'");
         $this->_check = tep_db_num_rows($check_query);
       }
       return $this->_check;
@@ -102,22 +114,29 @@
 
     function install() {
       // ccdd
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('買い取りを有効にする', 'MODULE_PAYMENT_BUYING_STATUS', 'True', '銀行振込による支払いを受け付けますか?', '6', '1', 'tep_cfg_select_option(array(\'True\', \'False\'), ', now(), ".SITE_ID.");");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('買い取りを有効にする', 'MODULE_PAYMENT_BUYING_STATUS', 'True', '銀行振込による支払いを受け付けますか?', '6', '1', 'tep_cfg_select_option(array(\'True\', \'False\'), ', now(), ".$this->site_id.");");
       // ccdd
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('表示の整列順', 'MODULE_PAYMENT_BUYING_SORT_ORDER', '0', '表示の整列順を設定できます。数字が小さいほど上位に表示されます.', '6', '0', now(), ".SITE_ID.")"); 
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('表示の整列順', 'MODULE_PAYMENT_BUYING_SORT_ORDER', '0', '表示の整列順を設定できます。数字が小さいほど上位に表示されます.', '6', '0', now(), ".$this->site_id.")"); 
       // ccdd
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added, site_id) values ('適用地域', 'MODULE_PAYMENT_BUYING_ZONE', '0', '適用地域を選択すると、選択した地域のみで利用可能となります.', '6', '2', 'tep_get_zone_class_title', 'tep_cfg_pull_down_zone_classes(', now(), ".SITE_ID.")");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added, site_id) values ('適用地域', 'MODULE_PAYMENT_BUYING_ZONE', '0', '適用地域を選択すると、選択した地域のみで利用可能となります.', '6', '2', 'tep_get_zone_class_title', 'tep_cfg_pull_down_zone_classes(', now(), ".$this->site_id.")");
       // ccdd
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, use_function, date_added, site_id) values ('初期注文ステータス', 'MODULE_PAYMENT_BUYING_ORDER_STATUS_ID', '0', '設定したステータスが受注時に適用されます.', '6', '0', 'tep_cfg_pull_down_order_statuses(', 'tep_get_order_status_name', now(), ".SITE_ID.")");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, use_function, date_added, site_id) values ('初期注文ステータス', 'MODULE_PAYMENT_BUYING_ORDER_STATUS_ID', '0', '設定したステータスが受注時に適用されます.', '6', '0', 'tep_cfg_pull_down_order_statuses(', 'tep_get_order_status_name', now(), ".$this->site_id.")");
     }
 
     function remove() {
       // ccdd
-      tep_db_query("delete from " . TABLE_CONFIGURATION . " where configuration_key in ('" . implode("', '", $this->keys()) . "') and site_id = '".SITE_ID."'");
+      tep_db_query("
+          delete from " . TABLE_CONFIGURATION . " 
+          where configuration_key in ('" . implode("', '", $this->keys()) . "') 
+            and site_id = '".$this->site_id."'");
     }
 
     function keys() {
-      return array('MODULE_PAYMENT_BUYING_STATUS', 'MODULE_PAYMENT_BUYING_ZONE', 'MODULE_PAYMENT_BUYING_ORDER_STATUS_ID', 'MODULE_PAYMENT_BUYING_SORT_ORDER');
+      return array(
+          'MODULE_PAYMENT_BUYING_STATUS', 
+          'MODULE_PAYMENT_BUYING_ZONE', 
+          'MODULE_PAYMENT_BUYING_ORDER_STATUS_ID', 
+          'MODULE_PAYMENT_BUYING_SORT_ORDER');
     }
   }
 ?>

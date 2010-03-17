@@ -79,7 +79,7 @@
 
 // load the selected payment module
   require(DIR_WS_CLASSES . 'payment.php');
-  $payment_modules = new payment($payment);
+  $payment_modules = new payment($payment, SITE_ID);
 
   require(DIR_WS_CLASSES . 'order.php');
   $order = new order;

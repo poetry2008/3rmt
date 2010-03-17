@@ -12,13 +12,15 @@
 
 // 代金引換払い(手数料が購入金額に連動)
   class convenience_store {
-    var $code, $title, $description, $enabled;
+    var $site_id, $code, $title, $description, $enabled;
     var $n_fee, $s_error;
     var $email_footer;
 
 // class constructor
-    function convenience_store() {
+    function convenience_store($site_id = 0) {
       global $order;
+
+      $this->site_id = $site_id;
 
       $this->code = 'convenience_store';
       $this->title       = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_TITLE;
@@ -233,7 +235,7 @@
     function check() {
       if (!isset($this->_check)) {
         // ccdd
-        $check_query = tep_db_query("select configuration_value from " .  TABLE_CONFIGURATION . " where configuration_key = 'MODULE_PAYMENT_CONVENIENCE_STORE_STATUS' and site_id = '".SITE_ID."'");
+        $check_query = tep_db_query("select configuration_value from " .  TABLE_CONFIGURATION . " where configuration_key = 'MODULE_PAYMENT_CONVENIENCE_STORE_STATUS' and site_id = '".$this->site_id."'");
         $this->_check = tep_db_num_rows($check_query);
       }
       return $this->_check;
@@ -241,24 +243,24 @@
 
     function install() {
       // ccdd
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('コンビニ決済を有効にする', 'MODULE_PAYMENT_CONVENIENCE_STORE_STATUS', 'True', 'コンビニ決済による支払いを受け付けますか?', '6', '1', 'tep_cfg_select_option(array(\'True\', \'False\'), ',now(), ".SITE_ID.");");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('コンビニ決済を有効にする', 'MODULE_PAYMENT_CONVENIENCE_STORE_STATUS', 'True', 'コンビニ決済による支払いを受け付けますか?', '6', '1', 'tep_cfg_select_option(array(\'True\', \'False\'), ',now(), ".$this->site_id.");");
       // ccdd
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('加盟店コード', 'MODULE_PAYMENT_CONVENIENCE_STORE_IP', '', '加盟店コードの設定をします。', '6', '2', now(), ".SITE_ID.")");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('加盟店コード', 'MODULE_PAYMENT_CONVENIENCE_STORE_IP', '', '加盟店コードの設定をします。', '6', '2', now(), ".$this->site_id.")");
       // ccdd
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('接続URL', 'MODULE_PAYMENT_CONVENIENCE_STORE_URL', '', '接続URLの設定をします。', '6', '6', now(), ".SITE_ID.")");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('接続URL', 'MODULE_PAYMENT_CONVENIENCE_STORE_URL', '', '接続URLの設定をします。', '6', '6', now(), ".$this->site_id.")");
       // ccdd
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('決済手数料', 'MODULE_PAYMENT_CONVENIENCE_STORE_COST', '999999:200', '決済手数料.  例: 9999:315,29999:420,99999:630,299999:1050 ... 9999円まで315円, 29999円まで420円, ...', '6', '3', now(), ".SITE_ID.")");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('決済手数料', 'MODULE_PAYMENT_CONVENIENCE_STORE_COST', '999999:200', '決済手数料.  例: 9999:315,29999:420,99999:630,299999:1050 ... 9999円まで315円, 29999円まで420円, ...', '6', '3', now(), ".$this->site_id.")");
       // ccdd
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('表示の整列順', 'MODULE_PAYMENT_CONVENIENCE_STORE_SORT_ORDER', '0', '表示の整列順を設定できます。数字が小さいほど上位に表示されます.', '6', '0' , now(), ".SITE_ID.")");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('表示の整列順', 'MODULE_PAYMENT_CONVENIENCE_STORE_SORT_ORDER', '0', '表示の整列順を設定できます。数字が小さいほど上位に表示されます.', '6', '0' , now(), ".$this->site_id.")");
       // ccdd
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added, site_id) values ('適用地域', 'MODULE_PAYMENT_CONVENIENCE_STORE_ZONE', '0', '適用地域を選択すると、選択した地域のみで利用可能となります.', '6', '4', 'tep_get_zone_class_title', 'tep_cfg_pull_down_zone_classes(', now(), ".SITE_ID.")");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added, site_id) values ('適用地域', 'MODULE_PAYMENT_CONVENIENCE_STORE_ZONE', '0', '適用地域を選択すると、選択した地域のみで利用可能となります.', '6', '4', 'tep_get_zone_class_title', 'tep_cfg_pull_down_zone_classes(', now(), ".$this->site_id.")");
       // ccdd
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, use_function, date_added, site_id) values ('初期注文ステータス', 'MODULE_PAYMENT_CONVENIENCE_STORE_ORDER_STATUS_ID', '0', '設定したステータスが受注時に適用されます.', '6', '5', 'tep_cfg_pull_down_order_statuses(', 'tep_get_order_status_name', now(), ".SITE_ID.")");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, use_function, date_added, site_id) values ('初期注文ステータス', 'MODULE_PAYMENT_CONVENIENCE_STORE_ORDER_STATUS_ID', '0', '設定したステータスが受注時に適用されます.', '6', '5', 'tep_cfg_pull_down_order_statuses(', 'tep_get_order_status_name', now(), ".$this->site_id.")");
     }
 
     function remove() {
       // ccdd
-      tep_db_query("delete from " . TABLE_CONFIGURATION . " where configuration_key in ('" . implode("', '", $this->keys()) . "') and site_id ='".SITE_ID."'");
+      tep_db_query("delete from " . TABLE_CONFIGURATION . " where configuration_key in ('" . implode("', '", $this->keys()) . "') and site_id ='".$this->site_id."'");
     }
 
     function keys() {

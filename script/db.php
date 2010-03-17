@@ -748,12 +748,26 @@ cptable('manufacturers_info');
 cp3table('newsletters');
 //orders_mail
 r3q("truncate orders_mail");
+$osquery = rq("select * from jp_orders_mail");
+while($os = mysql_fetch_array($osquery)){
+  $sql = "insert into orders_mail (
+    orders_status_id,
+    language_id,
+    site_id,
+    orders_status_title,
+    orders_status_mail
+    ) values (
+      '".$os['orders_status_id']."',
+      '".$os['language_id']."',
+      '0',
+      '".mysql_real_escape_string($os['orders_status_title'])."',
+      '".mysql_real_escape_string($os['orders_status_mail'])."'
+    )";
+  r3q($sql);
+}
 foreach($sites as $s){
   $osquery = rq("select * from ".table_prefix($s)."orders_mail");
   while($os = mysql_fetch_array($osquery)){
-        //echo $os['orders_status_id'].'-'.
-        //$os['language_id'].'-'.
-        //site_id($s)."\n";
     $sql = "insert into orders_mail (
       orders_status_id,
       language_id,
