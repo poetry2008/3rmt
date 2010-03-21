@@ -54,6 +54,7 @@
       //echo '    <td align="center" height="25">' . tep_draw_checkbox_field('cart_delete[]', $products[$i]['id']) . '</td>' . "\n";
     }
     // ccdd
+    /*
     $_product_info_query = tep_db_query("
         select p.products_image, 
                p.products_image2, 
@@ -87,7 +88,9 @@
           and pd.language_id = '" . $languages_id . "' 
           and pd.site_id = ".SITE_ID
     );
+    */
     // ccdd
+    /*
     tep_db_query("
         update " . TABLE_PRODUCTS_DESCRIPTION . " 
         set products_viewed = products_viewed+1 
@@ -95,7 +98,9 @@
         and language_id = '" . $languages_id . "' 
         and site_id = '".SITE_ID."'
     ");
-    $product_info = tep_db_fetch_array($_product_info_query);
+    */
+    //$product_info = tep_db_fetch_array($_product_info_query);
+    $product_info = tep_get_product_by_id($products[$i]['id'], SITE_ID, $languages_id);
     $data1 = explode("//", $product_info['products_attention_1']);
 
 // Quantity box or information as an input box or text

@@ -31,19 +31,19 @@ require('includes/application_top.php');
 //登録処理
   if(isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'insert'){
 
+    $site_id  = tep_db_prepare_input($HTTP_POST_VARS['site_id']);
     $ins_title = tep_db_prepare_input($HTTP_POST_VARS['title']);
 
     if($_FILES['file']['tmp_name'] != ""){
-      $filepath = DIR_FS_CATALOG . DIR_WS_IMAGES ."present/"."image".".".date("YmdHis").".".GetExt($_FILES['file']['name']);
-	  $filepath2 = "image".".".date("YmdHis").".".GetExt($_FILES['file']['name']);
-	  move_uploaded_file($_FILES['file']['tmp_name'],$filepath);
-	}else{
+      $filepath = tep_get_upload_dir($site_id) ."present/"."image".".".date("YmdHis").".".GetExt($_FILES['file']['name']);
+      $filepath2 = "image".".".date("YmdHis").".".GetExt($_FILES['file']['name']);
+      move_uploaded_file($_FILES['file']['tmp_name'],$filepath);
+    }else{
       $filepath2 = "";
-	}
+    }
 
-	$ins_ht   = tep_db_prepare_input($HTTP_POST_VARS['ht']);
-	$site_id  = tep_db_prepare_input($HTTP_POST_VARS['site_id']);
-	$ins_text = addslashes($HTTP_POST_VARS['text']);
+    $ins_ht   = tep_db_prepare_input($HTTP_POST_VARS['ht']);
+    $ins_text = addslashes($HTTP_POST_VARS['text']);
     $ins_period1 = tep_db_prepare_input($HTTP_POST_VARS['start_y']).tep_db_prepare_input($HTTP_POST_VARS['start_m']).tep_db_prepare_input($HTTP_POST_VARS['start_d']);
     $ins_period2 = tep_db_prepare_input($HTTP_POST_VARS['limit_y']).tep_db_prepare_input($HTTP_POST_VARS['limit_m']).tep_db_prepare_input($HTTP_POST_VARS['limit_d']);
 
@@ -66,8 +66,8 @@ require('includes/application_top.php');
 
           
     $mess = mysql_query($ins) or die("データ追加エラー");
-      if($mess == true){
-      }
+    if($mess == true){
+    }
     header("location: present.php");
   }
 
@@ -75,15 +75,16 @@ require('includes/application_top.php');
   if(isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'update'){
     $up_id = tep_db_prepare_input($HTTP_GET_VARS['cID']);
     $up_ht = tep_db_prepare_input($HTTP_POST_VARS['ht']);
-	$up_title = tep_db_prepare_input($HTTP_POST_VARS['title']);
+    $up_title = tep_db_prepare_input($HTTP_POST_VARS['title']);
+    $present = tep_get_present_by_id($HTTP_GET_VARS['cID']);
 
-      if($_FILES['file']['tmp_name'] != ""){
-	    $filepath = DIR_FS_CATALOG . DIR_WS_IMAGES."present/"."image".".".date("YmdHis").".".GetExt($_FILES['file']['name']);
-		$filepath2 = "image".".".date("YmdHis").".".GetExt($_FILES['file']['name']);
-		move_uploaded_file($_FILES['file']['tmp_name'],$filepath);
-	  }else{
-		$filepath2 = "";
-	  }
+    if($_FILES['file']['tmp_name'] != ""){
+      $filepath = tep_get_upload_dir($present['site_id'])."present/"."image".".".date("YmdHis").".".GetExt($_FILES['file']['name']);
+      $filepath2 = "image".".".date("YmdHis").".".GetExt($_FILES['file']['name']);
+      move_uploaded_file($_FILES['file']['tmp_name'],$filepath);
+    }else{
+      $filepath2 = "";
+    }
 
     $up_text = addslashes($HTTP_POST_VARS['text']);
     $up_period1 = tep_db_prepare_input($HTTP_POST_VARS['start_y']).tep_db_prepare_input($HTTP_POST_VARS['start_m']).tep_db_prepare_input($HTTP_POST_VARS['start_d']);
@@ -339,6 +340,7 @@ $sele1 = tep_db_query("
            g.text,
            g.start_date,
            g.limit_date,
+           g.site_id,
            s.romaji
     from ".TABLE_PRESENT_GOODS." g, ".TABLE_SITES." s
     where g.goods_id = '".$sele1_id."'
@@ -346,7 +348,7 @@ $sele1 = tep_db_query("
     ");
 $sql1 = tep_db_fetch_array($sele1);
 //画像
-$pic = HTTP_CATALOG_SERVER . DIR_WS_CATALOG . DIR_WS_IMAGES . "present/".$sql1['image'];
+//$pic = HTTP_CATALOG_SERVER . DIR_WS_CATALOG . DIR_WS_IMAGES . "present/".$sql1['image'];
 //期間
 $sele_sty = substr($sql1['start_date'],0,4);
 $sele_stm = substr($sql1['start_date'],5,2);
@@ -380,10 +382,9 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                               <td class="main" width="150" bgcolor="#FFFFFF">画像</td>
                               <td class="main" width="630" bgcolor="#FFFFFF">
 							  <?php 
-							  if($sql1['image'] == ""){
-							  }else{
+							  if($sql1['image']){
 							  ?>
-							    <?php echo tep_image($pic) ; ?> <br>
+							    <?php echo tep_info_image('present/'.$sql1['image'], $sql1['title'],'','',$sql1['site_id']) ; ?> <br>
 							  <?php
 							  }
 							  ?>

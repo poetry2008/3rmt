@@ -78,7 +78,7 @@
 	$row = 0;
 	while ($specials = tep_db_fetch_array($specials_query)) {
 		$row++;
-		echo '<td align="center" width="33%" class="smallText"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $specials['products_id']) . '">' . tep_image(DIR_WS_IMAGES . $specials['products_image'], $specials['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"') . '<br>' . $specials['products_name'] . '<br>';
+		echo '<td align="center" width="33%" class="smallText"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $specials['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/' .$specials['products_image'], $specials['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"') . '<br>' . $specials['products_name'] . '<br>';
 		
 		echo '<img src="images/design/button/button_order.gif" width="81" height="24" alt="注文する"></a><br>';
 		

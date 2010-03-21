@@ -11,17 +11,24 @@
 */
 
   // ccdd
-  $expected_query = tep_db_query(
-      "select p.products_id, 
+  $expected_query = tep_db_query("
+    select * 
+    from (
+      select p.products_id, 
               pd.products_name, 
-              products_date_available as date_expected 
+              products_date_available as date_expected ,
+              pd.site_id
        from " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd 
        where to_days(products_date_available) >= to_days(now()) 
          and p.products_id = pd.products_id 
          and pd.language_id = '" .  $languages_id . "' 
-         and pd.site_id = '".SITE_ID."' 
-       order by " . EXPECTED_PRODUCTS_FIELD . " " . EXPECTED_PRODUCTS_SORT . " 
-       limit " . MAX_DISPLAY_UPCOMING_PRODUCTS
+       group by pd.site_id DESC
+      ) p
+    where site_id = '0'
+       or site_id = '".SITE_ID."' 
+    group by products_id
+    order by " . EXPECTED_PRODUCTS_FIELD . " " . EXPECTED_PRODUCTS_SORT . " 
+    limit " . MAX_DISPLAY_UPCOMING_PRODUCTS
    );
   if (tep_db_num_rows($expected_query) > 0) {
 ?>

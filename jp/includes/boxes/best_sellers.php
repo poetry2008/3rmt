@@ -88,7 +88,7 @@
 		</table>
 	</td></tr>
 	<tr>
-		<td width="50" class="bestseller_img" align="center" valign="middle"><a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']); ?>"><?php echo tep_image2(DIR_WS_IMAGES.$best_sellers['products_image'],$best_sellers['products_name'],50,50); ?></a></td>
+		<td width="50" class="bestseller_img" align="center" valign="middle"><a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']); ?>"><?php echo tep_image2(DIR_WS_IMAGES.'products/'.$best_sellers['products_image'],$best_sellers['products_name'],50,50); ?></a></td>
 		<td valign="top" class="bestseller_description"><?php echo mb_substr(strip_tags($best_sellers['products_description']),0,30); ?>...</td>
 	</tr>	
 <?php

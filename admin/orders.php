@@ -150,13 +150,22 @@
 	  break;
 	  //------------------------------------------
 	case 'update_order':
-      $oID = tep_db_prepare_input($HTTP_GET_VARS['oID']);
-      $status = tep_db_prepare_input($HTTP_POST_VARS['status']);
-	  $title = tep_db_prepare_input($HTTP_POST_VARS['title']);
+      $oID      = tep_db_prepare_input($HTTP_GET_VARS['oID']);
+      $status   = tep_db_prepare_input($HTTP_POST_VARS['status']);
+      $title    = tep_db_prepare_input($HTTP_POST_VARS['title']);
       $comments = tep_db_prepare_input($HTTP_POST_VARS['comments']);
 
       $order_updated = false;
-      $check_status_query = tep_db_query("select orders_id, customers_name, customers_email_address, orders_status, date_purchased, payment_method, torihiki_date from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
+      $check_status_query = tep_db_query("
+          select orders_id, 
+                 customers_name, 
+                 customers_email_address, 
+                 orders_status, 
+                 date_purchased, 
+                 payment_method, 
+                 torihiki_date 
+          from " . TABLE_ORDERS . " 
+          where orders_id = '" . tep_db_input($oID) . "'");
       $check_status = tep_db_fetch_array($check_status_query);
 	  
 	  //Add Point System
@@ -982,7 +991,7 @@ function mail_text(st,tt,ot){
           and ot.class = 'ot_total' 
           and si.id = o.site_id
         order by o.torihiki_date DESC";
-    } elseif (isset($HTTP_GET_VARS['cID']) && $HTTP_GET_VARS['keywords']) {
+    } elseif (isset($HTTP_GET_VARS['keywords']) && $HTTP_GET_VARS['keywords']) {
       
       $orders_query_raw = "
         select distinct(o.orders_id), 
@@ -1054,13 +1063,9 @@ function mail_text(st,tt,ot){
          where o.orders_status = s.orders_status_id 
           " . (isset($HTTP_GET_VARS['site_id']) && intval($HTTP_GET_VARS['site_id']) ? " and si.id = '" . intval($HTTP_GET_VARS['site_id']) . "' " : '') . "
            and si.id=o.site_id
-           and ((s.orders_status_id != '2') 
-           and (s.orders_status_id != '5') 
-           and (s.orders_status_id != '6') 
-           and (s.orders_status_id != '7') 
-           and (s.orders_status_id != '8')) 
            and s.language_id = '" . $languages_id . "' 
            and ot.class = 'ot_total' 
+           and s.finished = '0'
          order by o.torihiki_date DESC
       ";
     }
@@ -1124,9 +1129,9 @@ function mail_text(st,tt,ot){
     	$_osi = false;
     	while ($_orders_status_history = tep_db_fetch_array($_orders_status_history_query)){
     		if(!in_array($_orders_status_history['orders_status_id'], $_osh)
-    		&& !is_dir(tep_get_local_path(DIR_FS_CATALOG_IMAGES).DIRECTORY_SEPARATOR.$_orders_status_history['orders_status_image']) 
-    		&& file_exists(tep_get_local_path(DIR_FS_CATALOG_IMAGES).DIRECTORY_SEPARATOR.$_orders_status_history['orders_status_image'])){
-    			echo tep_image(DIR_WS_CATALOG_IMAGES . $_orders_status_history['orders_status_image'], $_orders_status_history['orders_status_image'], 15, 15, ($_orders_status_history['orders_status_id'] == $orders['orders_status_id'])?'style="vertical-align: middle;"':'style="vertical-align: middle;"');
+    		&& !is_dir(tep_get_upload_dir().'orders_status/'.$_orders_status_history['orders_status_image']) 
+    		&& file_exists(tep_get_upload_dir().'orders_status/'.$_orders_status_history['orders_status_image'])){
+    			echo tep_image(tep_get_web_upload_dir(). 'orders_status/' . $_orders_status_history['orders_status_image'], $_orders_status_history['orders_status_image'], 15, 15, ($_orders_status_history['orders_status_id'] == $orders['orders_status_id'])?'style="vertical-align: middle;"':'style="vertical-align: middle;"');
     			$_osi = $_osi or true;
     		}
        		$_osh[] = $_orders_status_history['orders_status_id'];

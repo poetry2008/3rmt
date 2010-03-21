@@ -17,12 +17,12 @@
     case 'save':
       $color_id = tep_db_prepare_input($HTTP_GET_VARS['mID']);
       $color_name = tep_db_prepare_input($HTTP_POST_VARS['color_name']);
-	  $color_tag = tep_db_prepare_input($HTTP_POST_VARS['color_tag']);
-	  $sort_id = tep_db_prepare_input($HTTP_POST_VARS['sort_id']);
+      $color_tag = tep_db_prepare_input($HTTP_POST_VARS['color_tag']);
+      $sort_id = tep_db_prepare_input($HTTP_POST_VARS['sort_id']);
 
       $sql_data_array = array('color_name' => $color_name,
-	                          'color_tag' => $color_tag,
-							  'sort_id' => $sort_id);
+                              'color_tag' => $color_tag,
+                              'sort_id' => $sort_id);
 
       if ($HTTP_GET_VARS['action'] == 'insert') {
         $insert_sql_data = array();
@@ -34,7 +34,6 @@
         $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
         tep_db_perform(TABLE_COLOR, $sql_data_array, 'update', "color_id = '" . tep_db_input($color_id) . "'");
       }
-
       if (USE_CACHE == 'true') {
         tep_reset_cache_block('color');
       }

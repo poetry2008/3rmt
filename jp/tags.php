@@ -77,7 +77,44 @@ while ($tag = tep_db_fetch_array($tags_query))
     $products_query = tep_db_query("
       select * 
       from (
-        select *,p.products_id, pd.site_id
+        select p.products_id,
+               p.products_quantity,
+               p.products_model,
+               p.products_image,
+               p.products_image2,
+               p.products_image3,
+               p.products_price,
+               p.products_date_added,
+               p.products_last_modified,
+               p.products_date_available,
+               p.products_weight,
+               p.products_status,
+               p.products_tax_class_id,
+               p.manufacturers_id,
+               p.products_ordered,
+               p.products_bflag,
+               p.products_cflag,
+               p.products_small_sum,
+               p.option_type,
+               p2t.tags_id,
+               pd.language_id,
+               pd.products_name,
+               pd.products_description,
+               pd.site_id,
+               pd.products_attention_1,
+               pd.products_attention_2,
+               pd.products_attention_3,
+               pd.products_attention_4,
+               pd.products_attention_5,
+               pd.products_url,
+               pd.products_viewed,
+               s.specials_new_products_price,
+               s.specials_date_added,
+               s.specials_last_modified,
+               s.expires_date,
+               s.date_status_change,
+               s.status,
+               IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
         from " . TABLE_PRODUCTS_TO_TAGS . " as p2t 
           join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id 
           left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id 
@@ -104,14 +141,49 @@ while ($tag = tep_db_fetch_array($tags_query))
         limit 5
     ");
     */
-  }
-  else
-  {
+  } else {
 //ccdd
     $products_query = tep_db_query("
       select *
       from (
-        select *,p.products_id,pd.site_id
+        select p.products_id,
+               p.products_quantity,
+               p.products_model,
+               p.products_image,
+               p.products_image2,
+               p.products_image3,
+               p.products_price,
+               p.products_date_added,
+               p.products_last_modified,
+               p.products_date_available,
+               p.products_weight,
+               p.products_status,
+               p.products_tax_class_id,
+               p.manufacturers_id,
+               p.products_ordered,
+               p.products_bflag,
+               p.products_cflag,
+               p.products_small_sum,
+               p.option_type,
+               p2t.tags_id,
+               pd.language_id,
+               pd.products_name,
+               pd.products_description,
+               pd.site_id,
+               pd.products_attention_1,
+               pd.products_attention_2,
+               pd.products_attention_3,
+               pd.products_attention_4,
+               pd.products_attention_5,
+               pd.products_url,
+               pd.products_viewed,
+               s.specials_new_products_price,
+               s.specials_date_added,
+               s.specials_last_modified,
+               s.expires_date,
+               s.date_status_change,
+               s.status,
+               IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
         from " . TABLE_PRODUCTS_TO_TAGS . " as p2t 
           join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id 
           left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id 
@@ -159,7 +231,7 @@ while ($tag = tep_db_fetch_array($tags_query))
                           tep_href_link(FILENAME_PRODUCT_INFO,'products_id='.  $products['products_id']) . '">';
                         if ($products['products_image'])
                         {
-                          echo tep_image2(DIR_WS_IMAGES.$products['products_image'],$products['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"');
+                          echo tep_image2(DIR_WS_IMAGES.'products/'.$products['products_image'],$products['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"');
                         }
                         else
                         {

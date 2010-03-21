@@ -246,9 +246,12 @@
     return $values_values['products_options_values_name'];
   }
 
-  function tep_info_image($image, $alt, $width = '', $height = '') {
-    if ( ($image) && (file_exists(DIR_FS_CATALOG_IMAGES . $image)) ) {
-      $image = tep_image(DIR_WS_CATALOG_IMAGES . $image, $alt, $width, $height);
+  function tep_info_image($image, $alt, $width = '', $height = '', $site_id = '0') {
+    //if ( ($image) && (file_exists(DIR_FS_CATALOG_IMAGES . $image)) ) {
+      //$image = tep_image(DIR_WS_CATALOG_IMAGES . $image, $alt, $width, $height);
+    //echo tep_get_upload_dir($site_id) . $image;
+    if ( ($image) && (file_exists(tep_get_upload_dir($site_id). $image)) ) {
+      $image = tep_image(tep_get_web_upload_dir($site_id). $image, $alt, $width, $height);
     } else {
       // TEXT_IMAGE_NONEXISTENT 数据表和程序中都未发现
       $image = TEXT_IMAGE_NONEXISTENT;
@@ -569,7 +572,7 @@
   }
   
   function tep_get_meta_keywords($category_id, $language_id, $site_id = 0 ) {
-    $category_query = tep_db_query("select * from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . $category_id . "' and language_id = '" . $language_id . "' and site_id = '".$siet_id."'");
+    $category_query = tep_db_query("select * from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . $category_id . "' and language_id = '" . $language_id . "' and site_id = '".$site_id."'");
     $category = tep_db_fetch_array($category_query);
 
     return $category['meta_keywords'];
@@ -917,7 +920,10 @@
     if (substr($target, -1) != '/') $target .= '/';
 
     $target .= $filename['name'];
-    
+    //if (!file_exists($target)) {
+      //@mkdir($target);
+      //@chmod($target, 0777);
+    //}
     move_uploaded_file($filename['tmp_name'], $target);
     chmod($target, 0666);
   }
@@ -1014,11 +1020,11 @@
     $duplicate_image_query = tep_db_query("select count(*) as total from " . TABLE_CATEGORIES . " where categories_image = '" . tep_db_input($category_image['categories_image']) . "'");
     $duplicate_image = tep_db_fetch_array($duplicate_image_query);
 
-    if ($duplicate_image['total'] < 2) {
-      if (file_exists(DIR_FS_CATALOG_IMAGES . $category_image['categories_image'])) {
-        @unlink(DIR_FS_CATALOG_IMAGES . $category_image['categories_image']);
-      }
-    }
+    //if ($duplicate_image['total'] < 2) {
+      //if (file_exists(DIR_FS_CATALOG_IMAGES . $category_image['categories_image'])) {
+        //@unlink(DIR_FS_CATALOG_IMAGES . $category_image['categories_image']);
+      //}
+    //}
 
     tep_db_query("delete from " . TABLE_CATEGORIES . " where categories_id = '" . tep_db_input($category_id) . "'");
     tep_db_query("delete from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . tep_db_input($category_id) . "'");
@@ -1037,11 +1043,11 @@
     $duplicate_image_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS . " where products_image = '" . tep_db_input($product_image['products_image']) . "'");
     $duplicate_image = tep_db_fetch_array($duplicate_image_query);
 
-    if ($duplicate_image['total'] < 2) {
-      if (file_exists(DIR_FS_CATALOG_IMAGES . $product_image['products_image'])) {
-        @unlink(DIR_FS_CATALOG_IMAGES . $product_image['products_image']);
-      }
-    }
+    //if ($duplicate_image['total'] < 2) {
+      //if (file_exists(DIR_FS_CATALOG_IMAGES . $product_image['products_image'])) {
+        //@unlink(DIR_FS_CATALOG_IMAGES . $product_image['products_image']);
+      //}
+    //}
 
     tep_db_query("delete from " . TABLE_SPECIALS . " where products_id = '" . tep_db_input($product_id) . "'");
     tep_db_query("delete from " . TABLE_PRODUCTS . " where products_id = '" . tep_db_input($product_id) . "'");
@@ -2190,6 +2196,33 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
   function tep_module_installed($class, $site_id = 0){
     $module = new $class($site_id);
     return $module->check();
+  }
+
+  function tep_get_upload_dir($site_id = '0'){
+    if (!trim($site_id)) $site_id = '0';
+    return DIR_FS_CATALOG . 'upload_images/' . $site_id . '/';
+  }
+
+  function tep_get_web_upload_dir($site_id = '0'){
+    if (!trim($site_id)) $site_id = '0';
+    return DIR_WS_CATALOG . 'upload_images/' . $site_id . '/';
+  }
+
+  function tep_get_upload_root(){
+    return DIR_WS_CATALOG . 'upload_images/';
+  }
+
+  function tep_get_banner($bid){
+    $banner_query = tep_db_query("select * from " .TABLE_BANNERS. " where banners_id = '".$bid."'");
+    return tep_db_fetch_array($banner_query);
+  }
+
+  function tep_get_latest_news_by_id($latest_news_id){
+    return tep_db_fetch_array(tep_db_query("select * from " . TABLE_LATEST_NEWS . " where news_id = '".$latest_news_id."'"));
+  }
+
+  function tep_get_present_by_id($id){
+    return tep_db_fetch_array(tep_db_query("select * from " . TABLE_PRESENT_GOODS . " where goods_id = '".$id."'"));
   }
   
 ?>

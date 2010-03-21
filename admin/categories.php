@@ -143,7 +143,10 @@
 								  'meta_keywords' => tep_db_prepare_input($meta_keywords[$language_id]),
 								  'meta_description' => tep_db_prepare_input($meta_description[$language_id]),
 								);
-				
+          //echo "<pre>";
+				//print_r($_POST);
+				//print_r($_FILES);
+        //exit;
           if ($HTTP_GET_VARS['action'] == 'insert_category' || ($HTTP_GET_VARS['action'] == 'update_category' && !tep_categories_description_exist($categories_id, $site_id, $language_id))) {
             $insert_sql_data = array('categories_id' => $categories_id,
                                      'language_id'   => $languages[$i]['id'],
@@ -155,7 +158,8 @@
 			
 			//categories_image2 upload => INSERT
             $categories_image2 = tep_get_uploaded_file('categories_image2');
-            $image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES);
+            //$image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES);
+            $image_directory = tep_get_local_path(tep_get_upload_dir($site_id) . 'categories/');
            
 		   if (is_uploaded_file($categories_image2['tmp_name'])) {
              tep_db_query("update " . TABLE_CATEGORIES_DESCRIPTION . " set categories_image2 = '" . $categories_image2['name'] . "' where categories_id = '" . tep_db_input($categories_id) . "' and site_id='".$site_id."'");
@@ -163,7 +167,8 @@
            }
 			//categories_image3 upload => INSERT
             $categories_image3 = tep_get_uploaded_file('categories_image3');
-            $image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES);
+            //$image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES);
+            $image_directory = tep_get_local_path(tep_get_upload_dir($site_id) . 'categories/');
            
 		   if (is_uploaded_file($categories_image3['tmp_name'])) {
              tep_db_query("update " . TABLE_CATEGORIES_DESCRIPTION . " set categories_image3 = '" . $categories_image3['name'] . "' where categories_id = '" . tep_db_input($categories_id) . "' and site_id='".$site_id."'");
@@ -176,7 +181,22 @@
             
       //categories_image2 upload => UPDATE
       $categories_image2 = tep_get_uploaded_file('categories_image2');
-      $image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES);
+      //$image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES);
+      $image_directory = tep_get_local_path(tep_get_upload_dir($site_id) . 'categories/');
+           
+		   if (is_uploaded_file($categories_image3['tmp_name'])) {
+             tep_db_query("update " . TABLE_CATEGORIES_DESCRIPTION . " set categories_image3 = '" . $categories_image3['name'] . "' where categories_id = '" . tep_db_input($categories_id) . "' and site_id='".$site_id."'");
+             tep_copy_uploaded_file($categories_image3, $image_directory);
+           }
+		  
+		  
+		  } elseif ($HTTP_GET_VARS['action'] == 'update_category') {
+            tep_db_perform(TABLE_CATEGORIES_DESCRIPTION, $sql_data_array, 'update', 'categories_id = \'' . $categories_id . '\' and language_id = \'' . $languages[$i]['id'] . '\' and site_id = \''.$site_id.'\'');
+            
+      //categories_image2 upload => UPDATE
+      $categories_image2 = tep_get_uploaded_file('categories_image2');
+      //$image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES);
+      $image_directory = tep_get_local_path(tep_get_upload_dir($site_id) . 'categories/');
        
       if (is_uploaded_file($categories_image2['tmp_name'])) {
         tep_db_query("update " . TABLE_CATEGORIES_DESCRIPTION . " set categories_image2 = '" . $categories_image2['name'] . "' where categories_id = '" . tep_db_input($categories_id) . "' and site_id='".$site_id."'");
@@ -184,7 +204,15 @@
       }
       //categories_image3 upload => UPDATE
       $categories_image3 = tep_get_uploaded_file('categories_image3');
-      $image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES);
+       
+      if (is_uploaded_file($categories_image2['tmp_name'])) {
+        tep_db_query("update " . TABLE_CATEGORIES_DESCRIPTION . " set categories_image2 = '" . $categories_image2['name'] . "' where categories_id = '" . tep_db_input($categories_id) . "' and site_id='".$site_id."'");
+        tep_copy_uploaded_file($categories_image2, $image_directory);
+      }
+      //categories_image3 upload => UPDATE
+      $categories_image3 = tep_get_uploaded_file('categories_image3');
+      //$image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES);
+      $image_directory = tep_get_local_path(tep_get_upload_dir($site_id) . 'categories/');
        
       if (is_uploaded_file($categories_image3['tmp_name'])) {
         tep_db_query("update " . TABLE_CATEGORIES_DESCRIPTION . " set categories_image3 = '" . $categories_image3['name'] . "' where categories_id = '" . tep_db_input($categories_id) . "' and site_id = '".$site_id."'");
@@ -194,10 +222,13 @@
       }
 
         $categories_image = tep_get_uploaded_file('categories_image');
-        $image_directory  = tep_get_local_path(DIR_FS_CATALOG_IMAGES);
+        //$image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES);
+        $image_directory = tep_get_local_path(tep_get_upload_dir($site_id) . 'categories/');
 
         if (is_uploaded_file($categories_image['tmp_name'])) {
-          tep_db_query("update " . TABLE_CATEGORIES . " set categories_image = '" . $categories_image['name'] . "' where categories_id = '" . tep_db_input($categories_id) . "' and site_id = '".$site_id."'");
+          //print($categories_image.' '.$image_directory);
+          //exit;
+          tep_db_query("update " . TABLE_CATEGORIES . " set categories_image = '" . $categories_image['name'] . "' where categories_id = '" . tep_db_input($categories_id) . "'");
           tep_copy_uploaded_file($categories_image, $image_directory);
         }
 
@@ -606,19 +637,23 @@
   }
 
 // check if the catalog image directory exists
-  if (is_dir(DIR_FS_CATALOG_IMAGES)) {
-    if (!is_writeable(DIR_FS_CATALOG_IMAGES)) $messageStack->add(ERROR_CATALOG_IMAGE_DIRECTORY_NOT_WRITEABLE, 'error');
+  //if (is_dir(DIR_FS_CATALOG_IMAGES)) {
+    //if (!is_writeable(DIR_FS_CATALOG_IMAGES)) $messageStack->add(ERROR_CATALOG_IMAGE_DIRECTORY_NOT_WRITEABLE, 'error');
+  if (is_dir(tep_get_upload_root())) {
+    if (!is_writeable(tep_get_upload_root())) $messageStack->add(ERROR_CATALOG_IMAGE_DIRECTORY_NOT_WRITEABLE, 'error');
   } else {
     $messageStack->add(ERROR_CATALOG_IMAGE_DIRECTORY_DOES_NOT_EXIST, 'error');
   }
   
   //商品画像削除
         if (isset($HTTP_GET_VARS['mode']) && $HTTP_GET_VARS['mode'] == 'p_delete') {
-          $image_location = DIR_FS_DOCUMENT_ROOT . DIR_WS_CATALOG_IMAGES . $HTTP_GET_VARS['file'];//元画像
-		  $image_location2 = DIR_FS_DOCUMENT_ROOT . DIR_WS_CATALOG_IMAGES .'imagecache3/'. $HTTP_GET_VARS['file'];//サムネイル画像
-		  $delete_image = $HTTP_GET_VARS['cl'];
+          //$image_location  = DIR_FS_DOCUMENT_ROOT . DIR_WS_CATALOG_IMAGES . $HTTP_GET_VARS['file'];//元画像
+          //$image_location2 = DIR_FS_DOCUMENT_ROOT . DIR_WS_CATALOG_IMAGES .'imagecache3/'. $HTTP_GET_VARS['file'];//サムネイル画像
+          $image_location  = tep_get_upload_dir($site_id). 'products/' . $HTTP_GET_VARS['file'];//元画像
+          $image_location2 = tep_get_upload_dir($site_id) .'imagecache3/'. $HTTP_GET_VARS['file'];//サムネイル画像
+          $delete_image = $HTTP_GET_VARS['cl'];
            if (file_exists($image_location)) @unlink($image_location);
-		   if (file_exists($image_location2)) @unlink($image_location2);
+           if (file_exists($image_location2)) @unlink($image_location2);
              tep_db_query("update  " . TABLE_PRODUCTS . " set ".$delete_image." = '' where products_id  = '" . $HTTP_GET_VARS['pID'] . "'");
              tep_redirect(tep_href_link('categories.php?cPath='.$HTTP_GET_VARS['cPath'].'&pID='.$HTTP_GET_VARS['pID'].'&action='.$HTTP_GET_VARS['action']));
              $messageStack->add('画像削除に成功しました', 'success');
@@ -1031,9 +1066,9 @@ function mess(){
             <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_file_field('products_image') . '<br>' . tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . (isset($pInfo->products_image)?$pInfo->products_image:'') . tep_draw_hidden_field('products_previous_image', isset($pInfo->products_image)?$pInfo->products_image:''); ?>
 			<?php
 			if(isset($pInfo->products_image) && tep_not_null($pInfo->products_image)){
-			 echo '<br>'.tep_info_image($pInfo->products_image,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT).'<br>'."\n";
+			 echo '<br>'.tep_info_image('products/'.$pInfo->products_image,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, $site_id).'<br>'."\n";
 			?>
-			<a href="javascript:confirmg('この画像を削除しますか？','<?php echo tep_href_link('categories.php?cPath='.$HTTP_GET_VARS['cPath'].'&pID='.$HTTP_GET_VARS['pID'].'&cl=products_image&action='.$HTTP_GET_VARS['action'].'&file='.(isset($pInfo->products_image)?$pInfo->products_image:'').'&mode=p_delete') ; ?>');" style="color:#0000FF;">この画像を削除する</a>
+			<a href="javascript:confirmg('この画像を削除しますか？','<?php echo tep_href_link('categories.php?cPath='.$HTTP_GET_VARS['cPath'].'&pID='.$HTTP_GET_VARS['pID'].'&cl=products_image&action='.$HTTP_GET_VARS['action'].'&file='.(isset($pInfo->products_image)?$pInfo->products_image:'').'&mode=p_delete&site_id='.$site_id) ; ?>');" style="color:#0000FF;">この画像を削除する</a>
 			<?php } ?>
 			</td>
           </tr>
@@ -1042,7 +1077,7 @@ function mess(){
             <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_file_field('products_image2') . '<br>' . tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . (isset($pInfo->products_image2)?$pInfo->products_image2:'') . tep_draw_hidden_field('products_previous_image2', isset($pInfo->products_image2)?$pInfo->products_image2:''); ?>
 			<?php
 			if(isset($pInfo->products_image2) && tep_not_null($pInfo->products_image2)){
-			 echo '<br>'.tep_info_image($pInfo->products_image2,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT).'<br>'."\n";
+			 echo '<br>'.tep_info_image('products/'.$pInfo->products_image2,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, $site_id).'<br>'."\n";
 			?>
 			<a href="javascript:confirmg('この画像を削除しますか？','<?php echo tep_href_link('categories.php?cPath='.$HTTP_GET_VARS['cPath'].'&pID='.$HTTP_GET_VARS['pID'].'&cl=products_image2&action='.$HTTP_GET_VARS['action'].'&file='.$pInfo->products_image2.'&mode=p_delete') ; ?>');" style="color:#0000FF;">この画像を削除する</a>
 			<?php } ?>
@@ -1053,7 +1088,7 @@ function mess(){
             <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_file_field('products_image3') . '<br>' . tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . (isset($pInfo->products_image3)?$pInfo->products_image3:'') . tep_draw_hidden_field('products_previous_image3', isset($pInfo->products_image3)?$pInfo->products_image3:''); ?>
 			<?php
 			if(isset($pInfo->products_image3) && tep_not_null($pInfo->products_image3)){
-			 echo '<br>'.tep_info_image($pInfo->products_image3,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT).'<br>'."\n";
+			 echo '<br>'.tep_info_image('products/'.$pInfo->products_image3,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT . $site_id).'<br>'."\n";
 			?>
 			<a href="javascript:confirmg('この画像を削除しますか？','<?php echo tep_href_link('categories.php?cPath='.$HTTP_GET_VARS['cPath'].'&pID='.$HTTP_GET_VARS['pID'].'&cl=products_image3&action='.$HTTP_GET_VARS['action'].'&file='.$pInfo->products_image3.'&mode=p_delete') ; ?>');" style="color:#0000FF;">この画像を削除する</a>
 			<?php } ?>
@@ -1174,7 +1209,7 @@ function mess(){
 
 // copy image only if modified
       $products_image = tep_get_uploaded_file('products_image');
-      $image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES);
+      $image_directory = tep_get_local_path(tep_get_upload_dir($site_id).'products/');
 
       if (is_uploaded_file($products_image['tmp_name'])) {
         tep_copy_uploaded_file($products_image, $image_directory);
@@ -1189,7 +1224,7 @@ function mess(){
 // copy image only if modified -- add ds-style
       $products_image2 = tep_get_uploaded_file('products_image2');
       $products_image3 = tep_get_uploaded_file('products_image3');
-      $image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES);
+      $image_directory = tep_get_local_path(tep_get_upload_dir($site_id).'products/');
 
       if (is_uploaded_file($products_image2['tmp_name'])) {
         tep_copy_uploaded_file($products_image2, $image_directory);
@@ -1214,7 +1249,7 @@ function mess(){
       $ctp_query = tep_db_query("select color_image from ".TABLE_COLOR_TO_PRODUCTS." where color_id = '".$color['color_id']."' and products_id = '".(isset($pInfo->products_id)?$pInfo->products_id:'')."'");
       $ctp = tep_db_fetch_array($ctp_query);
       $color_image = tep_get_uploaded_file('image_'.$color['color_id']);
-      $image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES . 'colors/');
+      $image_directory = tep_get_local_path(tep_get_upload_dir() . 'colors/');
       if (is_uploaded_file($color_image['tmp_name'])) {
         tep_copy_uploaded_file($color_image, $image_directory);
         //$products_image_name2 = $products_image2['name'];
@@ -1227,7 +1262,28 @@ function mess(){
 	  
     } else {
       $site_id = isset($HTTP_GET_VARS['site_id']) ? $HTTP_GET_VARS['site_id'] : '0';
-      $product_query = tep_db_query("select p.products_id, pd.language_id, pd.products_name, pd.products_description, pd.products_url, p.products_quantity, p.products_model, p.products_image,p.products_image2,p.products_image3, p.products_price, p.products_weight, p.products_date_added, p.products_last_modified, p.products_date_available, p.products_status, p.manufacturers_id  from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_id = pd.products_id and p.products_id = '" . $HTTP_GET_VARS['pID'] . "' and pd.site_id='".(isset($HTTP_GET_VARS['site_id'])?$HTTP_GET_VARS['site_id']:'0')."'");
+      $product_query = tep_db_query("
+          select p.products_id, 
+                 pd.language_id, 
+                 pd.products_name, 
+                 pd.products_description, 
+                 pd.products_url, 
+                 p.products_quantity, 
+                 p.products_model, 
+                 p.products_image,
+                 p.products_image2,
+                 p.products_image3, 
+                 p.products_price, 
+                 p.products_weight, 
+                 p.products_date_added, 
+                 p.products_last_modified, 
+                 p.products_date_available, 
+                 p.products_status, 
+                 p.manufacturers_id  
+          from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
+          where p.products_id = pd.products_id 
+            and p.products_id = '" . $HTTP_GET_VARS['pID'] . "' 
+            and pd.site_id='".(isset($HTTP_GET_VARS['site_id'])?$HTTP_GET_VARS['site_id']:'0')."'");
       $product = tep_db_fetch_array($product_query);
 
       $pInfo = new objectInfo($product);
@@ -1754,8 +1810,8 @@ if ($ocertify->npermission >= 10) { //表示制限
         $languages = tep_get_languages();
         for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
           $category_inputs_string .= '<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('categories_name[' . $languages[$i]['id'] . ']', tep_get_category_name($cInfo->categories_id, $languages[$i]['id'])).'<br>'."\n".
-									 '<br>'.tep_image(DIR_WS_CATALOG_IMAGES . $cInfo->categories_image2, $cInfo->categories_name).'<br>' . DIR_WS_CATALOG_IMAGES . '<br><b>' . $cInfo->categories_image2 . '</b><br><br>トップページカテゴリバナー画像<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;'.tep_draw_file_field('categories_image2').'<br>'."\n".
-									 '<br>'.tep_image(DIR_WS_CATALOG_IMAGES . $cInfo->categories_image3, $cInfo->categories_name).'<br>' . DIR_WS_CATALOG_IMAGES . '<br><b>' . $cInfo->categories_image3 . '</b><br><br>カテゴリタイトル画像<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;'.tep_draw_file_field('categories_image3').'<br>'."\n".
+									 '<br>'.tep_image(tep_get_web_upload_dir($site_id) .'categories/'. $cInfo->categories_image2, $cInfo->categories_name).'<br>' . tep_get_upload_dir($site_id) . 'categories/<br><b>' . $cInfo->categories_image2 . '</b><br><br>トップページカテゴリバナー画像<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;'.tep_draw_file_field('categories_image2').'<br>'."\n".
+									 '<br>'.tep_image(tep_get_web_upload_dir($site_id) . 'categories/'. $cInfo->categories_image3, $cInfo->categories_name).'<br>' . tep_get_upload_dir($site_id). 'categories/<br><b>' . $cInfo->categories_image3 . '</b><br><br>カテゴリタイトル画像<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;'.tep_draw_file_field('categories_image3').'<br>'."\n".
 									 '<br>METAタグ（この説明文はトップページのカテゴリバナーの下に表示される文章としても使用されます。2行にするにはカンマ「,」区切りで文章を記述してください。)<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_meta_text[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_category_meta_text($cInfo->categories_id, $languages[$i]['id']),'categories_meta_text').
 
 									 '<br>SEOネーム:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('seo_name[' . $languages[$i]['id'] . ']', tep_get_seo_name($cInfo->categories_id, $languages[$i]['id'])).'<br>'."\n".
@@ -1768,7 +1824,7 @@ if ($ocertify->npermission >= 10) { //表示制限
         }
 
         $contents[] = array('text' => '<br>' . TEXT_EDIT_CATEGORIES_NAME . $category_inputs_string);
-        $contents[] = array('text' => '<br>' . tep_image(DIR_WS_CATALOG_IMAGES . $cInfo->categories_image, $cInfo->categories_name) . '<br>' . DIR_WS_CATALOG_IMAGES . '<br><b>' . $cInfo->categories_image . '</b>');
+        $contents[] = array('text' => '<br>' . tep_image(tep_get_web_upload_dir($site_id).'categories/'. $cInfo->categories_image, $cInfo->categories_name) . '<br>' . tep_get_upload_dir($site_id). 'categories/<br><b>' . $cInfo->categories_image . '</b>');
         $contents[] = array('text' => '<br>' . TEXT_EDIT_CATEGORIES_IMAGE . '<br>' . tep_draw_file_field('categories_image'));
         $contents[] = array('text' => '<br>' . TEXT_EDIT_SORT_ORDER . '<br>' . tep_draw_input_field('sort_order', $cInfo->sort_order, 'size="2"'));
         $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_save.gif', IMAGE_SAVE) . ' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
@@ -1850,9 +1906,10 @@ if ($ocertify->npermission >= 10) { //表示制限
             }
 }
 
+//print_r($cInfo);
             $contents[] = array('text' => '<br>' . TEXT_DATE_ADDED . ' ' . tep_date_short($cInfo->date_added));
             if (tep_not_null($cInfo->last_modified)) $contents[] = array('text' => TEXT_LAST_MODIFIED . ' ' . tep_date_short($cInfo->last_modified));
-            $contents[] = array('text' => '<br>' . tep_info_image($cInfo->categories_image, $cInfo->categories_name, HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT) . '<br>' . $cInfo->categories_image);
+            $contents[] = array('text' => '<br>' . tep_info_image('categories/'.$cInfo->categories_image, $cInfo->categories_name, HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT, $site_id) . '<br>' . $cInfo->categories_image);
             $contents[] = array('text' => '<br>' . TEXT_SUBCATEGORIES . ' ' . $cInfo->childs_count . '<br>' . TEXT_PRODUCTS . ' ' . $cInfo->products_count);
           } elseif (is_object($pInfo)) { // product info box contents
             $heading[] = array('text' => '<b>' . tep_get_products_name($pInfo->products_id, $languages_id) . '</b>');
@@ -1868,12 +1925,12 @@ if ($ocertify->npermission >= 10) { //表示制限
             $contents[] = array('text' => '<br>' . TEXT_DATE_ADDED . ' ' . tep_date_short($pInfo->products_date_added));
             if (tep_not_null($pInfo->products_last_modified)) $contents[] = array('text' => TEXT_LAST_MODIFIED . ' ' . tep_datetime_short($pInfo->products_last_modified));
             if (date('Y-m-d') < $pInfo->products_date_available) $contents[] = array('text' => TEXT_DATE_AVAILABLE . ' ' . tep_date_short($pInfo->products_date_available));
-            $contents[] = array('text' => '<br>' . tep_info_image($pInfo->products_image, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '<br>' . $pInfo->products_image);
+            $contents[] = array('text' => '<br>' . tep_info_image('products/'.$pInfo->products_image, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, $site_id) . '<br>' . $pInfo->products_image);
             if($pInfo->products_image2) {
-			$contents[] = array('text' => '<br>' . tep_info_image($pInfo->products_image2, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '<br>' . $pInfo->products_image2);
+			$contents[] = array('text' => '<br>' . tep_info_image('products/'.$pInfo->products_image2, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '<br>' . $pInfo->products_image2, $site_id);
 			}
             if($pInfo->products_image3) {
-			$contents[] = array('text' => '<br>' . tep_info_image($pInfo->products_image3, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '<br>' . $pInfo->products_image3);
+			$contents[] = array('text' => '<br>' . tep_info_image('products/'.$pInfo->products_image3, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '<br>' . $pInfo->products_image3, $site_id);
 			}
 //特価がある場合の処理
 $special_price_check = tep_get_products_special_price($pInfo->products_id);

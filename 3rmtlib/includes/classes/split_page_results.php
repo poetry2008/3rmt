@@ -29,12 +29,13 @@
       if (($pos_procedure < $pos_to) && ($pos_procedure != false)) $pos_to = $pos_procedure;
 
       $offset = ($max_rows_per_page * ($current_page_number - 1));
+      $query_num_rows = tep_db_num_rows(tep_db_query($sql_query));
       $sql_query .= " limit " . $offset . ", " . $max_rows_per_page;
 
       // ccdd
-      $reviews_count_query = tep_db_query("select count(*) as total " . substr($sql_query, $pos_from, ($pos_to - $pos_from)));
-      $reviews_count = tep_db_fetch_array($reviews_count_query);
-      $query_num_rows = $reviews_count['total'];
+      //$reviews_count_query = tep_db_query("select count(*) as total " . substr($sql_query, $pos_from, ($pos_to - $pos_from)));
+      //$reviews_count = tep_db_fetch_array($reviews_count_query);
+      //$query_num_rows = $reviews_count['total'];
     }
 	
 

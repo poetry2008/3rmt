@@ -316,7 +316,7 @@ ini_set('include_path',ini_get('include_path').':'.$libpath);
     }
 
     include(DIR_WS_CLASSES . 'language.php');
-    $lng = new language($HTTP_GET_VARS['language']);
+    $lng = new language(isset($HTTP_GET_VARS['language'])?$HTTP_GET_VARS['languages']:'');
 
     if (!isset($HTTP_GET_VARS['language'])) $lng->get_browser_language();
 

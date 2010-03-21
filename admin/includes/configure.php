@@ -20,22 +20,30 @@ ini_set('include_path',ini_get('include_path').':'.$libpath);
   define('DIR_FS_DOCUMENT_ROOT', '/home/maker/project/3rmt/'); // where the pages are located on the server
   define('DIR_WS_ADMIN', '/'); // absolute path required
   define('DIR_FS_ADMIN', '/home/maker/project/3rmt/admin/'); // absolute pate required
-  define('DIR_WS_CATALOG', './'); // absolute path required
-  define('DIR_FS_CATALOG', ''); // absolute path required
+  //define('DIR_WS_CATALOG', './'); // absolute path required
+  //define('DIR_FS_CATALOG', ''); // absolute path required
+  define('DIR_WS_CATALOG', '/'); // absolute path required
+  define('DIR_FS_CATALOG', '/home/maker/project/3rmt/admin/'); // absolute path required
   define('DIR_WS_IMAGES', 'images/');
   define('DIR_WS_ICONS', DIR_WS_IMAGES . 'icons/');
+
   define('DIR_WS_CATALOG_IMAGES', DIR_WS_CATALOG . 'images/');
+
   define('DIR_WS_INCLUDES', 'includes/');
   define('DIR_WS_BOXES', DIR_WS_INCLUDES . 'boxes/');
   define('DIR_WS_FUNCTIONS', DIR_WS_INCLUDES . 'functions/');
   define('DIR_WS_CLASSES', DIR_WS_INCLUDES . 'classes/');
   define('DIR_WS_MODULES', DIR_WS_INCLUDES . 'modules/');
   define('DIR_WS_LANGUAGES', DIR_WS_INCLUDES . 'languages/');
-  define('DIR_WS_CATALOG_LANGUAGES', DIR_WS_CATALOG . 'includes/languages/');
-  define('DIR_FS_CATALOG_LANGUAGES', DIR_FS_CATALOG . 'includes/languages/');
+  //define('DIR_WS_CATALOG_LANGUAGES', DIR_WS_CATALOG . 'includes/languages/');
+  //define('DIR_FS_CATALOG_LANGUAGES', DIR_FS_CATALOG . 'includes/languages/');
+  define('DIR_WS_CATALOG_LANGUAGES', DIR_WS_ADMIN . 'includes/languages/');
+  define('DIR_FS_CATALOG_LANGUAGES', DIR_FS_ADMIN . 'includes/languages/');
+
   define('DIR_FS_CATALOG_IMAGES', DIR_FS_CATALOG . 'images/');
+
   define('DIR_FS_CATALOG_MODULES', $libpath. 'includes/modules/');
-  define('DIR_FS_BACKUP', DIR_FS_ADMIN . 'backups/');
+  //define('DIR_FS_BACKUP', DIR_FS_ADMIN . 'backups/');
 
 // define our database connection
   define('DB_SERVER', 'localhost'); // eg, localhost - should not be empty for productive servers

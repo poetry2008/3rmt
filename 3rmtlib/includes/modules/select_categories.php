@@ -4,6 +4,8 @@
 */
 // ccdd
 $categories_tab_query1 = tep_db_query("
+  select * 
+  from (
     select c.categories_id, 
            c.categories_status,
            c.parent_id, 
@@ -16,8 +18,12 @@ $categories_tab_query1 = tep_db_query("
       and c.categories_id = cd.categories_id 
       and c.parent_id = '0' 
       and  cd.language_id='" .  (int)$languages_id ."' 
-      and cd.site_id = '".SITE_ID."' 
-    order by sort_order"
+    order by cd.site_id DESC
+  ) c
+  where site_id = 0
+     or site_id = '".SITE_ID."' 
+  group by categories_id
+  order by sort_order"
 );
 ?>
 <!-- select_categories //-->

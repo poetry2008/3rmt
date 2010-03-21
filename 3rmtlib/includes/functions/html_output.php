@@ -30,6 +30,7 @@
 			} elseif ( $height==0 ) {
 			  unset($height);
 			}
+			//print(DIR_FS_CATALOG . '/' .$src. $width. $height. DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'imagecache');
 			$src=thumbimage(DIR_FS_CATALOG . '/' .$src, $width, $height, 1, 1, DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'imagecache');
 			if ((($image_size[1]/$height) > ($image_size[0]/$width) ) && $height>0){
 				 $width=ceil(($image_size[0]/$image_size[1])* $height);
@@ -626,10 +627,11 @@ return $image;
           ? DIE ('Bei der angegebenen Datei handelt es sich nicht um ein Bild!')
           : false;
 
-	 $imgtype="!(ImageTypes() & IMG_" . strtoupper($types[$imagedata[2]]) . ")";
+	 $imgtype="!(ImageTypes() & IMG_" . strtoupper($types[$imagedata[2]]) . ");";
+   //echo $imgtype;
      if ((eval($imgtype)) || (in_array(strtoupper(array_pop(explode('.', basename($image)))),$not_supported_formats))) {
-     	$image = substr ($image, (strrpos (DIR_FS_CATALOG . '/', '/'))+1);
-	 	return $image;
+        $image = substr ($image, (strrpos (DIR_FS_CATALOG . '/', '/'))+1);
+      return $image;
 
      }
 

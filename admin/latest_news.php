@@ -78,7 +78,8 @@
         } else {
           $news_image_name = ''; 
         }
-        $image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES . 'news/');
+        //$image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES . 'news/');
+        $image_directory = tep_get_local_path(tep_get_upload_dir($sql_data_array['site_id']) . 'news/');
 		$path = 'news/';
 		
 		if (is_uploaded_file($news_image['tmp_name'])) {
@@ -92,6 +93,7 @@
       case 'update_latest_news': //user wants to modify a news article.
 	  
         if($HTTP_GET_VARS['latest_news_id']) {
+          $latest_news = tep_get_latest_news_by_id($HTTP_GET_VARS['latest_news_id']);
           $sql_data_array = array('headline' => tep_db_prepare_input($HTTP_POST_VARS['headline']),
                                   'news_image_description' => tep_db_prepare_input($HTTP_POST_VARS['news_image_description']),
                                   'content'  => tep_db_prepare_input($HTTP_POST_VARS['content']) );
@@ -107,7 +109,8 @@
         } else {
           $news_image_name = ''; 
         }
-        $image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES . 'news/');
+        //$image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES . 'news/');
+        $image_directory = tep_get_local_path(tep_get_upload_dir($latest_news['site_id']) . 'news/');
 		$path = 'news/';
 		
 		if (is_uploaded_file($news_image['tmp_name'])) {
@@ -116,7 +119,7 @@
           set news_image = '" . $path . $news_image_name . "' 
           where news_id = '" . $HTTP_GET_VARS['latest_news_id'] . "'");
           tep_copy_uploaded_file($news_image, $image_directory);
-        }
+    }
         tep_redirect(tep_href_link(FILENAME_LATEST_NEWS));
         break;
     }

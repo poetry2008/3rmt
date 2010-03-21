@@ -677,7 +677,8 @@ class SEO_URL{
 						FROM ".TABLE_PRODUCTS_DESCRIPTION." 
 						WHERE products_id='".(int)$pID."' 
 						AND language_id='".(int)$this->languages_id."' 
-            AND site_id = '".SITE_ID."'
+            AND (site_id = '".SITE_ID."' or site_id = '0')
+            ORDER by site_id DESC
 						LIMIT 1";
 				$result = $this->DB->FetchArray( $this->DB->Query( $sql ) );
 				$pName = $this->strip( $result['pName'] );
@@ -712,26 +713,30 @@ class SEO_URL{
 				$this->performance['NUMBER_QUERIES']++;
 				switch(true){
 					case ($this->attributes['SEO_ADD_CAT_PARENT'] == 'true'):
-						$sql = "SELECT c.categories_id, c.parent_id, cd.categories_name as cName, cd2.categories_name as pName  
-								FROM ".TABLE_CATEGORIES." c, 
-								".TABLE_CATEGORIES_DESCRIPTION." cd 
-								LEFT JOIN ".TABLE_CATEGORIES_DESCRIPTION." cd2 
-								ON c.parent_id=cd2.categories_id AND cd2.language_id='".(int)$this->languages_id."' 
-								WHERE c.categories_id='".(int)$single_cID."' 
-								AND cd.categories_id='".(int)$single_cID."' 
-								AND cd.language_id='".(int)$this->languages_id."' 
-                AND cd.site_id='".SITE_ID."'
-                AND cd2.site_id='".SITE_ID."'
-								LIMIT 1";
+						$sql = "
+             SELECT c.categories_id, 
+                    c.parent_id, 
+                    cd.categories_name as cName, 
+                    cd2.categories_name as pName  
+            FROM ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd LEFT JOIN ".TABLE_CATEGORIES_DESCRIPTION." cd2 ON c.parent_id=cd2.categories_id AND cd2.language_id='".(int)$this->languages_id."' 
+            WHERE c.categories_id='".(int)$single_cID."' 
+              AND cd.categories_id='".(int)$single_cID."' 
+              AND cd.language_id='".(int)$this->languages_id."' 
+              AND (cd.site_id='".SITE_ID."' or cd.site_id = '0')
+              AND (cd2.site_id='".SITE_ID."' or cd2.site_id = '0')
+              ORDER BY cd.site_id DESC, cd2.site_id DESC
+              LIMIT 1";
 						$result = $this->DB->FetchArray( $this->DB->Query( $sql ) );
 						$cName = $this->not_null($result['pName']) ? $result['pName'] . ' ' . $result['cName'] : $result['cName'];
 						break;
 					default:
-						$sql = "SELECT categories_name as cName 
+						$sql = "
+                SELECT categories_name as cName 
 								FROM ".TABLE_CATEGORIES_DESCRIPTION." 
 								WHERE categories_id='".(int)$single_cID."' 
-								AND language_id='".(int)$this->languages_id."' 
-                and site_id = '".SITE_ID."'
+                  AND language_id='".(int)$this->languages_id."' 
+                  and (site_id = '".SITE_ID."' or site_id = '0')
+                ORDER BY site_id DESC
 								LIMIT 1";
 						$result = $this->DB->FetchArray( $this->DB->Query( $sql ) );
 						$cName = $result['cName'];
@@ -1216,13 +1221,20 @@ class SEO_URL{
 	function generate_products_cache(){
 		$this->is_cached($this->cache_file . 'products', $is_cached, $is_expired);  	
 		if ( !$is_cached || $is_expired ) {
-		$sql = "SELECT p.products_id as id, pd.products_name as name 
-		        FROM ".TABLE_PRODUCTS." p 
-				LEFT JOIN ".TABLE_PRODUCTS_DESCRIPTION." pd 
-				ON p.products_id=pd.products_id 
-				AND pd.language_id='".(int)$this->languages_id."' 
+		$sql = "
+      select *
+      from (
+        SELECT p.products_id as id, pd.products_name as name , pd.site_id
+		    FROM ".TABLE_PRODUCTS." p 
+          LEFT JOIN ".TABLE_PRODUCTS_DESCRIPTION." pd 
+          ON p.products_id=pd.products_id 
+          AND pd.language_id='".(int)$this->languages_id."' 
 				WHERE p.products_status='1'
-        AND pd.site='".SITE_ID."'
+        ORDER BY pd.site_id DESC
+      ) p
+      where site_id = '0'
+         or site_id = '".SITE_ID."'
+      group by id
         ";
 		$product_query = $this->DB->Query( $sql );
 		$prod_cache = '';
@@ -1277,22 +1289,37 @@ class SEO_URL{
 		if ( !$is_cached || $is_expired ) { // it's not cached so create it
 			switch(true){
 				case ($this->attributes['SEO_ADD_CAT_PARENT'] == 'true'):
-					$sql = "SELECT c.categories_id as id, c.parent_id, cd.categories_name as cName, cd2.categories_name as pName  
-							FROM ".TABLE_CATEGORIES." c, 
-							".TABLE_CATEGORIES_DESCRIPTION." cd 
-							LEFT JOIN ".TABLE_CATEGORIES_DESCRIPTION." cd2 
-							ON c.parent_id=cd2.categories_id AND cd2.language_id='".(int)$this->languages_id."' 
+					$sql = "
+           select *
+           from * (
+              SELECT c.categories_id as id, 
+                     c.parent_id, 
+                     cd.categories_name as cName, 
+                     cd2.categories_name as pName,
+                     cd.site_id as site_id,
+                     cd2.site_id as site_id2
+							FROM ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd LEFT JOIN ".TABLE_CATEGORIES_DESCRIPTION." cd2 ON c.parent_id=cd2.categories_id AND cd2.language_id='".(int)$this->languages_id."' 
 							WHERE c.categories_id=cd.categories_id 
-							AND cd.language_id='".(int)$this->languages_id."'
-              AND cd.site_id='".SITE_ID."'
-              AND cd2.site_id='".SITE_ID."'
+                AND cd.language_id='".(int)$this->languages_id."'
+              ORDER by cd.site_id DESC, cd2.site_id DESC
+            ) c 
+            WHERE (site_id='".SITE_ID."' or site_id = '0')
+              AND (site_id2='".SITE_ID."' or site_id2= '0')
+            GROUP BY id
             ";
 					break;
 				default:
-					$sql = "SELECT categories_id as id, categories_name as cName 
+					$sql = "
+            select * 
+            from (
+              SELECT categories_id as id, categories_name as cName, site_id
 							FROM ".TABLE_CATEGORIES_DESCRIPTION."  
 							WHERE language_id='".(int)$this->languages_id."'
+              ORDER BY site_id DESC
+            ) c
+            where site_id = '0'
               AND site_id='".SITE_ID."'
+            GROUP BY id
               ";
 					break;
 			} # end switch

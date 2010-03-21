@@ -10,7 +10,7 @@
       from ".TABLE_CATEGORIES_DESCRIPTION." 
       where categories_id = '".$categories_path[0]."' 
         and language_id = '".$languages_id."' 
-        and site_id = '".SITE_ID."'
+        and (site_id = '".SITE_ID."' or site_id = '0')
       ");
 	$_categories = tep_db_fetch_array($_categories_query);
 	$new_c_name = $_categories['categories_name'];
@@ -92,8 +92,11 @@
 <?php
 		while ($new_products = tep_db_fetch_array($new_products_query)) {
       // ccdd
+      /*
 			$product_query = tep_db_query("select products_name, products_description from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" .  $new_products['products_id'] . "' and language_id = '" .  $languages_id . "' and site_id = '".SITE_ID."'");
 			$product_details = tep_db_fetch_array($product_query);
+      */
+      $product_details = tep_get_product_by_id($new_products['products_id'], SITE_ID, $languages_id);
 	
 			$new_products['products_name'] = $product_details['products_name'];
 			$description_view = strip_tags(mb_substr($product_details['products_description'],0,110));
@@ -106,7 +109,7 @@
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td width="<?php echo SMALL_IMAGE_WIDTH;?>" rowspan="2" style="padding-right:8px; " align="center">
-						<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES . $new_products['products_image'], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>'; ?>
+						<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/' . $new_products['products_image'], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>'; ?>
 					</td>
 					<td height="40" colspan="2" valign="top" style="padding-left:5px; ">
 						<p class="main">

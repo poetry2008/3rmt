@@ -309,9 +309,8 @@
       $products_array = array();
       reset($this->contents);
       while (list($products_id, ) = each($this->contents)) {
-//ccdd
-        $products_query = tep_db_query("select p.products_id, pd.products_name, p.products_model, p.products_price, p.products_weight, p.products_tax_class_id, p.products_bflag, p.products_small_sum from " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_id='" . tep_get_prid($products_id) . "' and pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "' and pd.site_id = ".SITE_ID);
-        if ($products = tep_db_fetch_array($products_query)) {
+        $products = tep_get_product_by_id(tep_get_prid($products_id), SITE_ID, $languages_id);
+        if ($products) {
           $prid = $products['products_id'];
           $products_price = $products['products_price'];
 //ccdd

@@ -88,121 +88,9 @@
             and p2c.categories_id = '" . $HTTP_GET_VARS['filter_id'] . "' 
           order by pd.site_id DESC"
             ;
-            /*
-        $listing_sql = "
-          select " . $select_column_list . " 
-                 p.products_id, 
-                 p.manufacturers_id, 
-                 p.products_price, 
-                 p.products_tax_class_id, 
-                 IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, 
-                 IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
-          from (" . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . "
-              pd, " . TABLE_MANUFACTURERS . " m, " .
-              TABLE_PRODUCTS_TO_CATEGORIES . " p2c) left join " .
-              TABLE_SPECIALS . " s on p.products_id = s.products_id 
-          where p.products_status = '1' 
-            and p.manufacturers_id = m.manufacturers_id 
-            and m.manufacturers_id = '" .  $HTTP_GET_VARS['manufacturers_id'] . "' 
-            and p.products_id = p2c.products_id 
-            and pd.products_id = p2c.products_id 
-            and pd.language_id = '" . $languages_id . "' 
-            and p2c.categories_id = '" . $HTTP_GET_VARS['filter_id'] . "' 
-            and pd.site_id = ".SITE_ID;
-            */
-      } else {
-        $listing_sql = "
-          select " . $select_column_list . " 
-                 p.products_id, 
-                 p.manufacturers_id, 
-                 p.products_price, 
-                 p.products_tax_class_id, 
-                 pd.site_id,
-                 IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, 
-                 IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
-          from (" . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . "
-              pd, " . TABLE_MANUFACTURERS . " m, " .
-              TABLE_PRODUCTS_TO_CATEGORIES . " p2c) left join " .
-              TABLE_SPECIALS . " s on p.products_id = s.products_id 
-          where p.products_status = '1' 
-            and p.manufacturers_id = m.manufacturers_id 
-            and m.manufacturers_id = '" .  $HTTP_GET_VARS['manufacturers_id'] . "' 
-            and p.products_id = p2c.products_id 
-            and pd.products_id = p2c.products_id 
-            and pd.language_id = '" . $languages_id . "' 
-            and p2c.categories_id = '" . $HTTP_GET_VARS['filter_id'] . "' 
-          order by pd.site_id DESC
-            ";
-        /*
-        $listing_sql = "
-          select " . $select_column_list . " 
-                 p.products_id, 
-                 p.manufacturers_id, 
-                 p.products_price, 
-                 p.products_tax_class_id, 
-                 IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, 
-                 IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
-          from (" . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . "
-              pd, " . TABLE_MANUFACTURERS . " m, " .
-              TABLE_PRODUCTS_TO_CATEGORIES . " p2c) left join " .
-              TABLE_SPECIALS . " s on p.products_id = s.products_id 
-          where p.products_status = '1' 
-            and p.manufacturers_id = m.manufacturers_id 
-            and m.manufacturers_id = '" .  $HTTP_GET_VARS['manufacturers_id'] . "' 
-            and p.products_id = p2c.products_id 
-            and pd.products_id = p2c.products_id 
-            and pd.language_id = '" . $languages_id . "' 
-            and p2c.categories_id = '" . $HTTP_GET_VARS['filter_id'] . "' 
-            and pd.site_id = ".SITE_ID;
-            */
-      } else {
-        $listing_sql = "
-          select " . $select_column_list . " 
-                 p.products_id, 
-                 p.manufacturers_id, 
-                 p.products_price, 
-                 p.products_tax_class_id, 
-                 pd.site_id,
-                 IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, 
-                 IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
-          from (" . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . "
-              pd, " . TABLE_MANUFACTURERS . " m, " .
-              TABLE_PRODUCTS_TO_CATEGORIES . " p2c) left join " .
-              TABLE_SPECIALS . " s on p.products_id = s.products_id 
-          where p.products_status = '1' 
-            and p.manufacturers_id = m.manufacturers_id 
-            and m.manufacturers_id = '" .  $HTTP_GET_VARS['manufacturers_id'] . "' 
-            and p.products_id = p2c.products_id 
-            and pd.products_id = p2c.products_id 
-            and pd.language_id = '" . $languages_id . "' 
-            and p2c.categories_id = '" . $HTTP_GET_VARS['filter_id'] . "' 
-          order by pd.site_id DESC
-            ";
-            /*
-        $listing_sql = "
-          select " . $select_column_list . " 
-                 p.products_id, 
-                 p.manufacturers_id, 
-                 p.products_price, 
-                 p.products_tax_class_id, 
-                 IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, 
-                 IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
-          from (" . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . "
-              pd, " . TABLE_MANUFACTURERS . " m, " .
-              TABLE_PRODUCTS_TO_CATEGORIES . " p2c) left join " .
-              TABLE_SPECIALS . " s on p.products_id = s.products_id 
-          where p.products_status = '1' 
-            and p.manufacturers_id = m.manufacturers_id 
-            and m.manufacturers_id = '" .  $HTTP_GET_VARS['manufacturers_id'] . "' 
-            and p.products_id = p2c.products_id 
-            and pd.products_id = p2c.products_id 
-            and pd.language_id = '" . $languages_id . "' 
-            and p2c.categories_id = '" . $HTTP_GET_VARS['filter_id'] . "' 
-            and pd.site_id = ".SITE_ID;
-            */
       } else {
 // We show them all
-        $listing_sql = "
+        $listing_sql.= "
         select " . $select_column_list . " 
               p.products_id, 
               p.manufacturers_id, 
@@ -276,7 +164,7 @@
 // show the products in a given categorie
       if (isset($HTTP_GET_VARS['filter_id'])) {
 // We are asked to show only specific catgeory
-        $listing_sql = "
+        $listing_sql .= "
           select " . $select_column_list . " 
                  p.products_id, 
                  p.manufacturers_id, 
@@ -316,7 +204,7 @@
             */
       } else {
 // We show them all
-        $listing_sql = "
+        $listing_sql .= "
           select " . $select_column_list . " 
                  p.products_id, 
                  p.manufacturers_id, 

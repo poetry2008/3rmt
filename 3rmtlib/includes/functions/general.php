@@ -128,7 +128,8 @@ function forward404Unless($condition)
         from " .  TABLE_PRODUCTS_DESCRIPTION . " 
         where products_id = '" . (int)$product_id .  "' 
           and language_id = '" . (int)$language . "' 
-          and site_id = ".SITE_ID
+          and (site_id = '".SITE_ID."' or site_id = '0')
+        order by site_id DESC"
     );
     $product = tep_db_fetch_array($product_query);
 
@@ -148,13 +149,30 @@ function forward404Unless($condition)
         from " .  TABLE_PRODUCTS_DESCRIPTION . " 
         where products_id = '" . (int)$product_id .  "' 
           and language_id = '" . (int)$language . "' 
-          and site_id = ".SITE_ID
+          and (site_id = '".SITE_ID."' or site_id = '0')
+        order by site_id DESC"
     );
     $product = tep_db_fetch_array($product_query);
 
     return $product['products_description'];
   }
 
+////
+// 商品IDから説明文を呼び出す
+  function ds_tep_get_description($products_id) {
+	  global $languages_id;
+//ccdd
+	  $description_query = tep_db_query("
+        select products_description 
+        from ".TABLE_PRODUCTS_DESCRIPTION." 
+        where products_id = '".$products_id."' 
+          and language_id = '".$languages_id."' 
+          and (site_id = '".SITE_ID."' or site_id = '0')
+        order by site_id DESC"
+        );
+	  $description = tep_db_fetch_array($description_query);
+    return strip_tags($description['products_description']) ;
+  }
 
 ////
 // Return a product's special price (returns nothing if there is no offer)
@@ -668,7 +686,20 @@ function forward404Unless($condition)
 
     if (!is_array($categories_array)) $categories_array = array();
     //ccdd
-    $categories_query = tep_db_query("select c.categories_id, cd.categories_name from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where parent_id = '" . tep_db_input($parent_id) . "' and c.categories_id = cd.categories_id and cd.language_id = '" . (int)$languages_id . "' and cd.site_id = ".SITE_ID." order by sort_order, cd.categories_name");
+    $categories_query = tep_db_query("
+      select *
+      from (
+        select c.categories_id, cd.categories_name ,c.sort_order, cd.site_id
+        from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
+        where parent_id = '" . tep_db_input($parent_id) . "' 
+          and c.categories_id = cd.categories_id 
+          and cd.language_id = '" . (int)$languages_id . "' 
+        order by cd.site_id DESC
+      ) c
+      where site_id = '0'
+         or site_id = ".SITE_ID." 
+      group by categories_id
+      order by sort_order, categories_name");
     while ($categories = tep_db_fetch_array($categories_query)) {
       $categories_array[] = array('id' => $categories['categories_id'],
                                   'text' => $indent . $categories['categories_name']);
@@ -1389,17 +1420,6 @@ function forward404Unless($condition)
 	return $manufactures['total'];
   }
    
-////
-// 商品IDから説明文を呼び出す
-  function ds_tep_get_description($products_id) {
-	  global $languages_id;
-//ccdd
-	  $description_query = tep_db_query("select products_description from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$products_id."' and language_id = '".$languages_id."' and site_id = ".SITE_ID);
-	  $description = tep_db_fetch_array($description_query);
-	  // edit 2009.5.14 maker
-	  //$description_array = explode('|-#-|',$description['products_description']);
-	return strip_tags($description['products_description']) ;
-  }
 
 ////
 // 商品IDからメーカー名を呼び出す
@@ -1725,7 +1745,7 @@ function forward404Unless($condition)
         break;
       case FILENAME_LATEST_NEWS:
         global $breadcrumb, $latest_news;
-        $title = (!(int)$HTTP_GET_VARS['news_id']) ? $breadcrumb->trail_title(' &raquo; ') : $latest_news['headline'];
+        $title = (!isset($HTTP_GET_VARS['news_id']) or !(int)$HTTP_GET_VARS['news_id']) ? $breadcrumb->trail_title(' &raquo; ') : $latest_news['headline'];
         break;
       case FILENAME_MANUFACTURERS:
         global $breadcrumb;
@@ -2031,14 +2051,27 @@ function tep_unlink_temp_dir($dir)
 	if($return == 1) {
 	  //大カテゴリの画像を返す
     // ccdd
-	  $categories_query = tep_db_query("select categories_name from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id = '".$categories_path_array[0]."' and site_id = ". SITE_ID);
+	  $categories_query = tep_db_query("
+        select categories_name
+        from ".TABLE_CATEGORIES_DESCRIPTION." 
+        where categories_id = '".$categories_path_array[0]."' 
+          and (site_id = ". SITE_ID ." or site_id = '0')
+        order by site_id DESC"
+        );
 	  $categories = tep_db_fetch_array($categories_query);
 	  
 	  $creturn = $categories['categories_name'];
 	} elseif($return == 2) {
 	  //中カテゴリ名を返す
     // ccdd
-	  $categories_query = tep_db_query("select categories_name from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id = '".$categories_path_array[1]."' and language_id = '".$languages_id."' and site_id = ".SITE_ID);
+	  $categories_query = tep_db_query("
+      select categories_name 
+      from ".TABLE_CATEGORIES_DESCRIPTION." 
+      where categories_id = '".$categories_path_array[1]."' 
+        and language_id = '".$languages_id."' 
+        and (site_id = ".SITE_ID . " or site_id = '0')
+      order by site_id DESC"
+      );
 	  $categories = tep_db_fetch_array($categories_query);
 	  
 	  $creturn = $categories['categories_name'];
@@ -2113,7 +2146,7 @@ function tep_unlink_temp_dir($dir)
   }
 
   function tep_get_category_by_id($cid, $site_id, $lid, $default = true){
-    $category_query = tep_db_query("
+    $sql = "
         select c.categories_id,
                c.categories_status,
                c.categories_image,
@@ -2137,15 +2170,20 @@ function tep_unlink_temp_dir($dir)
         from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
         where c.categories_id = '" . $cid. "' 
           and cd.categories_id = '" . $cid. "' 
-          and cd.language_id = '" . $lid.  "' 
-          and cd.site_id = '" . $site_id . "'"
-    );
+          and cd.language_id = '" . $lid.  "'"
+    ;
+    if ($default) {
+          $sql = " and (cd.site_id = '" . $site_id . "') or cd.site_id = '0' order by site_id DESC";
+    } else {
+          $sql = " and cd.site_id = '" . $site_id . "'";
+    }
+    $category_query = tep_db_query($sql);
     $category = tep_db_fetch_array($category_query);
     return $category;
   }
 
   function tep_get_product_by_id($pid,$site_id, $lid, $default = true){
-    $product_query = tep_db_query("
+    $sql = "
         SELECT p.products_id, 
                p.products_quantity, 
                p.products_model, 
@@ -2180,8 +2218,20 @@ function tep_unlink_temp_dir($dir)
           AND p.products_status = '1' 
           AND pd.products_id = '" .  $pid . "'" . " 
           AND pd.language_id ='" . $lid . "' 
+          "; 
+    if ($default) {
+      $sql .= "
+        AND (pd.site_id = '0'
+         OR pd.site_id = '".$site_id."')
+        ORDER BY pd.site_id DESC
+        ";
+    } else {
+      $sql .= "
           AND pd.site_id='" . $site_id . "' 
-          "); 
+      ";
+    }
+    //echo $sql;
+    $product_query = tep_db_query($sql);
     $product = tep_db_fetch_array($product_query);
     return $product;
   }
@@ -2196,7 +2246,12 @@ function tep_unlink_temp_dir($dir)
     }
 
     function tep_products_description_exist($pid, $sid, $lid){
-      $query = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where products_id='".$pid."' and site_id = '".$sid."' and language_id='".$lid."'");
+      $query = tep_db_query("
+          select * 
+          from ".TABLE_PRODUCTS_DESCRIPTION." 
+          where products_id='".$pid."' 
+            and site_id = '".$sid."' 
+            and language_id='".$lid."'");
       if(tep_db_num_rows($query)) {
         return true;
       } else {

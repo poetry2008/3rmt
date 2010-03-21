@@ -72,6 +72,7 @@
     while ($new_products = tep_db_fetch_array($new_products_query)) {
       $row ++;
       // ccdd
+      /*
       $product_query = tep_db_query("
           select products_name, 
                  products_description 
@@ -81,7 +82,9 @@
             and site_id = '".SITE_ID."'
           ");
       $product_details = tep_db_fetch_array($product_query);
+      */
   
+    $product_details = tep_get_product_by_id($new_products['products_id'], SITE_ID, $languages_id);
   
     $new_products['products_name'] = $product_details['products_name'];
 	
@@ -98,7 +101,7 @@
 ?>
             <td width="250"><!-- products_id <?php echo $new_products['products_id'];?>--><table width="250"  border="0" cellspacing="0" cellpadding="0"> 
               <tr> 
-                <td width="<?php echo SMALL_IMAGE_WIDTH;?>" style="padding-right:8px; " align="center"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES . $new_products['products_image'], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>' ; ?></td> 
+                <td width="<?php echo SMALL_IMAGE_WIDTH;?>" style="padding-right:8px; " align="center"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/' . $new_products['products_image'], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>' ; ?></td> 
                 <td valign="top" style="padding-left:5px; "><p class="main"><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="absmiddle"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">'.$products_name.$ten.'</a>';?><br> 
                   <span class="red"><?php echo $currencies->display_price($new_products['products_price'], tep_get_tax_rate($new_products['products_tax_class_id'])) ; ?></span><br> 
                   <span class="smallText"><?php echo $description_view; ?>...</span></p></td> 

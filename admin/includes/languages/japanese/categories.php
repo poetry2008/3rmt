@@ -99,5 +99,7 @@ define('TEXT_COPY_AS_DUPLICATE', '重複コピー（同一カテゴリー可）'
 define('ERROR_CANNOT_LINK_TO_SAME_CATEGORY', 'エラー: 同じカテゴリー内にはリンクできません。');
 define('ERROR_CATALOG_IMAGE_DIRECTORY_NOT_WRITEABLE', 'エラー: カテゴリー画像のディレクトリに書き込みできません: ' . DIR_FS_CATALOG_IMAGES);
 define('ERROR_CATALOG_IMAGE_DIRECTORY_DOES_NOT_EXIST', 'エラー: カテゴリー画像のディレクトリが存在しません: ' . DIR_FS_CATALOG_IMAGES);
+//define('ERROR_CATALOG_IMAGE_DIRECTORY_NOT_WRITEABLE', 'エラー: カテゴリー画像のディレクトリに書き込みできません: ' . tep_get_upload_root());
+//define('ERROR_CATALOG_IMAGE_DIRECTORY_DOES_NOT_EXIST', 'エラー: カテゴリー画像のディレクトリが存在しません: ' . tep_get_upload_root());
 define('TEXT_PRODUCTS_TAGS', '商品タグ:');
 ?>

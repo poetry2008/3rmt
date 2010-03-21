@@ -23,7 +23,10 @@
         $orders_status_name_array = $HTTP_POST_VARS['orders_status_name'];
         $language_id = $languages[$i]['id'];
 
-        $sql_data_array = array('orders_status_name' => tep_db_prepare_input($orders_status_name_array[$language_id]));
+        $sql_data_array = array(
+            'orders_status_name' => tep_db_prepare_input($orders_status_name_array[$language_id]),
+            'finished' => tep_db_prepare_input((int)$HTTP_POST_VARS['finished']),
+            );
 
         if ($HTTP_GET_VARS['action'] == 'insert') {
           if (!tep_not_null($orders_status_id)) {
@@ -40,16 +43,17 @@
         } elseif ($HTTP_GET_VARS['action'] == 'save') {
           tep_db_perform(TABLE_ORDERS_STATUS, $sql_data_array, 'update', "orders_status_id = '" . tep_db_input($orders_status_id) . "' and language_id = '" . $language_id . "'");
         }
-		//orders_status_image upload => UPDATE
-		$orders_status_image = tep_get_uploaded_file('orders_status_image');
-        $image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES);
-		if (is_uploaded_file($orders_status_image['tmp_name'])) {
+        //orders_status_image upload => UPDATE
+        $orders_status_image = tep_get_uploaded_file('orders_status_image');
+        //$image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES);
+        $image_directory = tep_get_local_path(tep_get_upload_dir().'orders_status/');
+        if (is_uploaded_file($orders_status_image['tmp_name'])) {
           tep_db_query("update " . TABLE_ORDERS_STATUS . " set orders_status_image = '" . $orders_status_image['name'] . "' where orders_status_id = '" . tep_db_input($orders_status_id) . "'");
           tep_copy_uploaded_file($orders_status_image, $image_directory);
         }
         if(isset($_POST['delete_image']) && $_POST['delete_image']){
-        	tep_db_query("update " . TABLE_ORDERS_STATUS . " set orders_status_image = '' where orders_status_id = '" . tep_db_input($orders_status_id) . "'");
-        	//unlink();
+          tep_db_query("update " . TABLE_ORDERS_STATUS . " set orders_status_image = '' where orders_status_id = '" . tep_db_input($orders_status_id) . "'");
+          //unlink();
         }
       }
 	  
@@ -175,9 +179,7 @@
               </tr>
 <?php
   $orders_status_query_raw = "
-    select orders_status_id, 
-           orders_status_name, 
-           orders_status_image 
+    select *
     from " . TABLE_ORDERS_STATUS . " 
     where language_id = '" . $languages_id . "' 
     order by orders_status_id";
@@ -293,11 +295,13 @@
       $contents[] = array('text' => '<br>' . TEXT_INFO_ORDERS_STATUS_NAME . $orders_status_inputs_string);
       if (DEFAULT_ORDERS_STATUS_ID != $oInfo->orders_status_id) $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('default') . ' ' . TEXT_SET_DEFAULT);
       
-      if(!is_dir(tep_get_local_path(DIR_FS_CATALOG_IMAGES).DIRECTORY_SEPARATOR.$oInfo->orders_status_image) && file_exists(tep_get_local_path(DIR_FS_CATALOG_IMAGES).DIRECTORY_SEPARATOR.$oInfo->orders_status_image)) {
-      	$contents[] = array('text' => '<br>' . tep_image(DIR_WS_CATALOG_IMAGES . $oInfo->orders_status_image, $oInfo->orders_status_name, 15, 15));
-      	$contents[] = array('text' => '<br><input type="checkbox" name="delete_image" value="1" >アイコンを削除');
+      //if(!is_dir(tep_get_local_path(DIR_FS_CATALOG_IMAGES).DIRECTORY_SEPARATOR.$oInfo->orders_status_image) && file_exists(tep_get_local_path(DIR_FS_CATALOG_IMAGES).DIRECTORY_SEPARATOR.$oInfo->orders_status_image)) {
+      if(!is_dir(tep_get_web_upload_dir().'orders_status/'.$oInfo->orders_status_image) && file_exists(tep_get_upload_dir().'orders_status/'.$oInfo->orders_status_image)) {
+        $contents[] = array('text' => '<br>' . tep_image(tep_get_web_upload_dir() .'orders_status/'. $oInfo->orders_status_image, $oInfo->orders_status_name, 15, 15));
+        $contents[] = array('text' => '<br><input type="checkbox" name="delete_image" value="1" >アイコンを削除');
       }
       $contents[] = array('text' => '<br>' . TEXT_EDIT_ORDERS_STATUS_IMAGE . '<br>' . tep_draw_file_field('orders_status_image'));
+      $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('finished', '1', $oInfo->finished) . ' ' . TEXT_ORDERS_STATUS_FINISHED);
       
       $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_update.gif', IMAGE_UPDATE) . ' <a href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $HTTP_GET_VARS['page'] . '&oID=' . $oInfo->orders_status_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;

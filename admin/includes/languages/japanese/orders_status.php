@@ -33,5 +33,7 @@ define('TEXT_INFO_ORDERS_STATUS_TITLE', 'メールタイトル');
 
 //define('TEXT_EDIT_ORDERS_STATUS_IMAGE', 'メール&#22270;像');
 define('TEXT_EDIT_ORDERS_STATUS_IMAGE', 'ステータスに表示するアイコンを指定');
+
+define('TEXT_ORDERS_STATUS_FINISHED', 'TEXT_ORDERS_STATUS_FINISHED');
 //mail本文 add end
 ?>

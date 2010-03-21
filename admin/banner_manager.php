@@ -44,7 +44,9 @@
         $banners_image_target = tep_db_prepare_input($HTTP_POST_VARS['banners_image_target']);
         $db_image_location    = '';
 
-        $image_directory      = tep_get_local_path(DIR_FS_CATALOG_IMAGES . $banners_image_target);
+        //$image_directory      = tep_get_local_path(DIR_FS_CATALOG_IMAGES . $banners_image_target);
+        $banners = tep_get_banner($banners_id);
+        $image_directory      = tep_get_local_path(tep_get_upload_dir(isset($banners['site_id']) ? $banners['site_id']: $site_id ) . $banners_image_target);
 
         $banner_error = false;
         if (empty($banners_title)) {
@@ -144,12 +146,15 @@
 
         if ($delete_image == 'on') {
           $banner_query = tep_db_query("
-              select banners_image 
+              select *
               from " . TABLE_BANNERS . " 
               where banners_id = '" . tep_db_input($banners_id) . "'
           ");
           $banner = tep_db_fetch_array($banner_query);
-          if (is_file(DIR_FS_CATALOG_IMAGES . $banner['banners_image'])) {
+          //if (is_file(DIR_FS_CATALOG_IMAGES . $banner['banners_image'])) {
+            //if (is_writeable(DIR_FS_CATALOG_IMAGES . $banner['banners_image'])) {
+              //unlink(DIR_FS_CATALOG_IMAGES . $banner['banners_image']);
+          if (is_file(tep_get_upload_dir($banner['site_id']). $banner['banners_image'])) {
             if (is_writeable(DIR_FS_CATALOG_IMAGES . $banner['banners_image'])) {
               unlink(DIR_FS_CATALOG_IMAGES . $banner['banners_image']);
             } else {
@@ -264,6 +269,7 @@ function popupImageWindow(url) {
                  date_format(b.expires_date, '%d/%m/%Y') as expires_date, 
                  b.expires_impressions, 
                  b.date_status_change,
+                 b.site_id,
                  s.romaji
           from " . TABLE_BANNERS . " b, ".TABLE_SITES." s
           where banners_id = '" . tep_db_input($bID) . "'
@@ -320,7 +326,7 @@ function popupImageWindow(url) {
           <tr>
             <td class="main" valign="top"><?php echo TEXT_BANNERS_IMAGE; ?></td>
             <td class="main"><?php echo tep_draw_file_field('banners_image') . ' ' . TEXT_BANNERS_IMAGE_LOCAL . '<br>' . DIR_FS_CATALOG_IMAGES . tep_draw_input_field('banners_image_local', isset($bInfo->banners_image)?$bInfo->banners_image:''); ?><br>
-<?php echo tep_image(HTTP_CATALOG_SERVER.DIR_WS_CATALOG_IMAGES.(isset($bInfo->banners_image)?$bInfo->banners_image:'')) ; ?>
+<?php if($bInfo->banners_image)echo tep_info_image($bInfo->banners_image, $bInfo->banners_title, '', '', $bInfo->site_id) ; ?>
 <br>
 </td>
           </tr>
