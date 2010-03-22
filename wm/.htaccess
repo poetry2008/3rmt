@@ -88,4 +88,8 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^info/([A-Za-z0-9_]+).html$ page.php?pID=$1&%{QUERY_STRING}
 RewriteRule ^info-([A-Za-z0-9_]+).html$ page.php?pID=$1&%{QUERY_STRING}
 #}}}
+
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteRule ^images/(.*)$ default_images/$1
+
 </IfModule>

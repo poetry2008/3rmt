@@ -1,2 +1,12 @@
 <?php
-
+admin/upload_images/
+admin/upload_images/0/products/
+admin/upload_images/0/categories/
+admin/upload_images/0/news/
+admin/upload_images/0/colors/
+admin/upload_images/0/present/
+admin/upload_images/0/banners/
+admin/upload_images/0/products/
+admin/upload_images/0/orders_status/
+admin/upload_images/0/tags/
+admin/upload_images/0/manufacturers/
