@@ -4,7 +4,6 @@
  */
 require('includes/application_top.php');
 require(DIR_WS_ACTIONS.'index_top.php');
-
 page_head();
 ?>
 </head>

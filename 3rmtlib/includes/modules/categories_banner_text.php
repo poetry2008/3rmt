@@ -7,30 +7,6 @@
   Released under the GNU General Public License
 */
 // ccdd
-echo "
-  select * 
-  from (
-    select c.categories_id, 
-           c.parent_id, 
-           c.categories_status, 
-           c.categories_image, 
-           cd.categories_name, 
-           cd.categories_meta_text, 
-           cd.categories_image2 ,
-           c.sort_order,
-           cd.site_id
-    from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd 
-    where c.categories_id = cd.categories_id 
-      and c.parent_id = '0' 
-      and c.categories_status='0' 
-      and cd.language_id='" . (int)$languages_id ."' 
-    order by cd.site_id DESC
-    ) p
-    where site_id = '0'
-       or site_id = '" . SITE_ID . "' 
-    group by categories_id 
-    order by sort_order
-";
 $categories_tab_query1 = tep_db_query("
   select * 
   from (

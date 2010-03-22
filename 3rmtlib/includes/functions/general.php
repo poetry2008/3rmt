@@ -2173,9 +2173,9 @@ function tep_unlink_temp_dir($dir)
           and cd.language_id = '" . $lid.  "'"
     ;
     if ($default) {
-          $sql = " and (cd.site_id = '" . $site_id . "') or cd.site_id = '0' order by site_id DESC";
+          $sql .= " and (cd.site_id = '" . $site_id . "' or cd.site_id = '0') order by site_id DESC";
     } else {
-          $sql = " and cd.site_id = '" . $site_id . "'";
+          $sql .= " and cd.site_id = '" . $site_id . "'";
     }
     $category_query = tep_db_query($sql);
     $category = tep_db_fetch_array($category_query);
