@@ -614,7 +614,7 @@ class SEO_URL{
 				  
 				//===========================================
 				default:
-					$container[$p2[0]] = $p2[1]; 
+					$container[$p2[0]] = isset($p2[1]) ? $p2[1] : ''; 
 					break;
 			} # end switch
      }

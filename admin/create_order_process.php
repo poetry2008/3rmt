@@ -13,16 +13,16 @@
   $firstname      = tep_db_prepare_input($HTTP_POST_VARS['firstname']);
   $lastname       = tep_db_prepare_input($HTTP_POST_VARS['lastname']);
   $email_address  = tep_db_prepare_input($HTTP_POST_VARS['email_address']);
-  $telephone      = tep_db_prepare_input($HTTP_POST_VARS['telephone']);
+  $telephone      = isset($HTTP_POST_VARS['telephone']) ? tep_db_prepare_input($HTTP_POST_VARS['telephone']) : '';
   $fax            = tep_db_prepare_input($HTTP_POST_VARS['fax']);
-  $street_address = tep_db_prepare_input($HTTP_POST_VARS['street_address']);
-  $company        = tep_db_prepare_input($HTTP_POST_VARS['company']);
-  $suburb         = tep_db_prepare_input($HTTP_POST_VARS['suburb']);
-  $postcode       = tep_db_prepare_input($HTTP_POST_VARS['postcode']);
-  $city           = tep_db_prepare_input($HTTP_POST_VARS['city']);
-  $zone_id        = tep_db_prepare_input($HTTP_POST_VARS['zone_id']);
-  $state          = tep_db_prepare_input($HTTP_POST_VARS['state']);
-  $country        = tep_db_prepare_input($HTTP_POST_VARS['country']);
+  $street_address = isset($HTTP_POST_VARS['street_address']) ? tep_db_prepare_input($HTTP_POST_VARS['street_address']) : '';
+  $company        = isset($HTTP_POST_VARS['company']) ? tep_db_prepare_input($HTTP_POST_VARS['company']) : '';
+  $suburb         = isset($HTTP_POST_VARS['suburb']) ? tep_db_prepare_input($HTTP_POST_VARS['suburb']) : '';
+  $postcode       = isset($HTTP_POST_VARS['postcode']) ? tep_db_prepare_input($HTTP_POST_VARS['postcode']) : '';
+  $city           = isset($HTTP_POST_VARS['city']) ? tep_db_prepare_input($HTTP_POST_VARS['city']) : '';
+  $zone_id        = isset($HTTP_POST_VARS['zone_id']) ? tep_db_prepare_input($HTTP_POST_VARS['zone_id']) : '';
+  $state          = isset($HTTP_POST_VARS['state']) ? tep_db_prepare_input($HTTP_POST_VARS['state']) : '';
+  $country        = isset($HTTP_POST_VARS['country']) ? tep_db_prepare_input($HTTP_POST_VARS['country']) : '';
   $site_id        = tep_db_prepare_input($HTTP_POST_VARS['site_id']);
   $format_id      = "1";
   $size           = "1";
@@ -350,7 +350,8 @@
       reset($thismodules);
       while (list(, $value) = each($thismodules)) {
         if($value != 'ot_tax.php') {
-		  include(DIR_FS_CATALOG_LANGUAGES . $language . '/modules/' . $module_type . '/' . $value);
+          include(DIR_WS_LANGUAGES . $language . '/modules/' . $module_type . '/' . $value);
+          //include(DIR_FS_CATALOG_LANGUAGES . $language . '/modules/' . $module_type . '/' . $value);
           include($module_directory . $value);
 
           $class = substr($value, 0, strrpos($value, '.'));

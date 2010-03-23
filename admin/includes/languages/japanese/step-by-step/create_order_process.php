@@ -20,10 +20,10 @@ define('TEXT_TOTAL', "Total :");
 define('TEXT_SELECT_CURRENCY', '通貨選択:');
 
 define('HEADING_TITLE', '手動注文手続き');
-define('HEADING_CREATE', '手動注文する顧客の詳細を確認:'); 
+if(!defined('HEADING_CREATE'))define('HEADING_CREATE', '手動注文する顧客の詳細を確認:'); 
 
 define('TEXT_SELECT_CUST', '顧客選択:'); 
-define('TEXT_SELECT_CURRENCY', '通貨選択:');
+if(!defined('TEXT_SELECT_CURRENCY'))define('TEXT_SELECT_CURRENCY', '通貨選択:');
 define('BUTTON_TEXT_SELECT_CUST', '顧客選択:'); 
 define('TEXT_OR_BY', 'または顧客ID:'); 
 define('TEXT_STEP_1', 'ステップ 1 - 顧客を選択し詳細を確認してください');

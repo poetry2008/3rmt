@@ -6,7 +6,8 @@
   require('includes/application_top.php');
   require('includes/step-by-step/new_application_top.php');
 
-  require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_EDIT_ORDERS);
+  include(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/' . FILENAME_EDIT_ORDERS);
+  require(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_EDIT_ORDERS);
 
   require(DIR_WS_CLASSES . 'currencies.php');
   $currencies = new currencies();

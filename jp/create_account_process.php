@@ -15,15 +15,15 @@
   $an_cols = array('password','confirmation','email_address','postcode','telephone','fax');
   if (ACCOUNT_DOB) $an_cols[] = 'dob';
   foreach ($an_cols as $col) {
-    $HTTP_POST_VARS[$col] = tep_an_zen_to_han($HTTP_POST_VARS[$col]);
+    $HTTP_POST_VARS[$col] = isset($HTTP_POST_VARS[$col]) ? tep_an_zen_to_han($HTTP_POST_VARS[$col]) : '';
   }
 
-  $gender         = tep_db_prepare_input($HTTP_POST_VARS['gender']);
+  $gender         = isset($HTTP_POST_VARS['gender']) ? tep_db_prepare_input($HTTP_POST_VARS['gender']) : '';
   $firstname      = tep_db_prepare_input($HTTP_POST_VARS['firstname']);
   $lastname       = tep_db_prepare_input($HTTP_POST_VARS['lastname']);
   
-  $firstname_f    = tep_db_prepare_input($HTTP_POST_VARS['firstname_f']);
-  $lastname_f     = tep_db_prepare_input($HTTP_POST_VARS['lastname_f']);
+  $firstname_f    = isset($HTTP_POST_VARS['firstname_f']) ? tep_db_prepare_input($HTTP_POST_VARS['firstname_f']) : '';
+  $lastname_f     = isset($HTTP_POST_VARS['lastname_f']) ? tep_db_prepare_input($HTTP_POST_VARS['lastname_f']) : '';
   
   $dob            = tep_db_prepare_input($HTTP_POST_VARS['dob']);
   $email_address  = tep_db_prepare_input($HTTP_POST_VARS['email_address']);
@@ -32,13 +32,13 @@
   $newsletter     = tep_db_prepare_input($HTTP_POST_VARS['newsletter']);
   $password       = tep_db_prepare_input($HTTP_POST_VARS['password']);
   $confirmation   = tep_db_prepare_input($HTTP_POST_VARS['confirmation']);
-  $street_address = tep_db_prepare_input($HTTP_POST_VARS['street_address']);
-  $company        = tep_db_prepare_input($HTTP_POST_VARS['company']);
-  $suburb         = tep_db_prepare_input($HTTP_POST_VARS['suburb']);
+  $street_address = isset($HTTP_POST_VARS['street_address']) ? tep_db_prepare_input($HTTP_POST_VARS['street_address']) : '';
+  $company        = isset($HTTP_POST_VARS['company']) ? tep_db_prepare_input($HTTP_POST_VARS['company']) : '';
+  $suburb         = isset($HTTP_POST_VARS['suburb']) ? tep_db_prepare_input($HTTP_POST_VARS['suburb']) : '';
   $postcode       = tep_db_prepare_input($HTTP_POST_VARS['postcode']);
-  $city           = tep_db_prepare_input($HTTP_POST_VARS['city']);
-  $zone_id        = tep_db_prepare_input($HTTP_POST_VARS['zone_id']);
-  $state          = tep_db_prepare_input($HTTP_POST_VARS['state']);
+  $city           = isset($HTTP_POST_VARS['city']) ? tep_db_prepare_input($HTTP_POST_VARS['city']) : '';
+  $zone_id        = isset($HTTP_POST_VARS['zone_id']) ? tep_db_prepare_input($HTTP_POST_VARS['zone_id']): '';
+  $state          = isset($HTTP_POST_VARS['state']) ? tep_db_prepare_input($HTTP_POST_VARS['state']) : '';
   $country        = tep_db_prepare_input($HTTP_POST_VARS['country']);
   $guestchk       = tep_db_prepare_input($HTTP_POST_VARS['guestchk']);
 

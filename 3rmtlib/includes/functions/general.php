@@ -2067,7 +2067,7 @@ function tep_unlink_temp_dir($dir)
 	  $categories_query = tep_db_query("
       select categories_name 
       from ".TABLE_CATEGORIES_DESCRIPTION." 
-      where categories_id = '".$categories_path_array[1]."' 
+      where categories_id = '".(isset($categories_path_array[1])?$categories_path_array[1]:'')."' 
         and language_id = '".$languages_id."' 
         and (site_id = ".SITE_ID . " or site_id = '0')
       order by site_id DESC"

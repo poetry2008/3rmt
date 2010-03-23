@@ -43,7 +43,7 @@
         );
         $products_description = tep_db_fetch_array($products_description);
         */
-        $products_description = tep_get_products_description($orders['products_id'], $languages_id) {
+        $products_description = tep_get_products_description($orders['products_id'], $languages_id) ;
         $products_description = strip_tags(substr ($products_description['products_description'],0,96));
 	  echo '
 

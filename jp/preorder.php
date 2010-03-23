@@ -30,7 +30,7 @@
           and p.products_id = '" .  (int)$HTTP_GET_VARS['products_id'] . "' 
           and p.products_id = pd.products_id 
           and pd.language_id = '" . $languages_id . "' 
-          and (pd.site_id = '".SITE_ID."' or pd.site_id = '0'
+          and (pd.site_id = '".SITE_ID."' or pd.site_id = '0')
         order by pd.site_id DESC
         limit 1
     ");
@@ -88,8 +88,8 @@
 			$from_name = tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']);
 			$from_email_address = $account_values['customers_email_address'];
 		} else {
-			$from_name = $HTTP_POST_VARS['yourname'];
-			$from_email_address = $HTTP_POST_VARS['from'];
+			$from_name = isset($HTTP_POST_VARS['yourname'])?$HTTP_POST_VARS['yourname']:'';
+			$from_email_address = isset($HTTP_POST_VARS['from'])?$HTTP_POST_VARS['from']:'';
 		}
 		
 		if (!tep_session_is_registered('customer_id')) {
@@ -132,9 +132,9 @@
 				$your_name_prompt = tep_output_string_protected(tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']));
 				$your_email_address_prompt = $account_values['customers_email_address'];
 			} else {
-				$your_name_prompt = tep_draw_input_field('yourname', (($fromname_error == true) ? $HTTP_POST_VARS['yourname'] : $HTTP_GET_VARS['yourname']));
+				$your_name_prompt = tep_draw_input_field('yourname', (($fromname_error == true) ? $HTTP_POST_VARS['yourname'] : (isset($HTTP_GET_VARS['yourname'])?$HTTP_GET_VARS['yourname']:'')));
 				if ($fromname_error == true) $your_name_prompt .= '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
-				$your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $HTTP_POST_VARS['from'] : $HTTP_GET_VARS['from']) , 'size="30"') . '&nbsp;&nbsp;携帯電話メールアドレス推奨';
+				$your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? ($HTTP_POST_VARS['from']) : (isset($HTTP_GET_VARS['from'])?$HTTP_GET_VARS['from']:'')) , 'size="30"') . '&nbsp;&nbsp;携帯電話メールアドレス推奨';
 				if ($fromemail_error == true) $your_email_address_prompt .= ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
 			}
 ?>

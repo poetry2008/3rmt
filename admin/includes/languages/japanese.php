@@ -338,6 +338,7 @@ define('IMAGE_DETAILS', '');
 
 define('CATEGORY_SITE', 'CATEGORY_SITE');
 define('ENTRY_SITE', 'ENTRY_SITE');
+define('ENTRY_SITE_TEXT', 'ENTRY_SITE_TEXT');
 
 define('TEXT_IMAGE_NONEXISTENT', '画像が存在しません');
 define('SITE_ID_NOT_NULL', '');

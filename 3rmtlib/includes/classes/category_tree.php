@@ -38,7 +38,7 @@
                     cd.categories_name, 
                     c.parent_id,
                     cd.site_id,
-                    cd.sort_order
+                    c.sort_order
              from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
              where c.categories_id = cd.categories_id 
                and cd.language_id = '" . (int)$languages_id . "' 

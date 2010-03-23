@@ -85,7 +85,7 @@
       ");
   while ($whos_online = tep_db_fetch_array($whos_online_query)) {
     $time_online = (time() - $whos_online['time_entry']);
-    if ( ((!$HTTP_GET_VARS['info']) || (@$HTTP_GET_VARS['info'] == $whos_online['session_id'])) && (!$info) ) {
+    if ( ((!isset($HTTP_GET_VARS['info']) || !$HTTP_GET_VARS['info']) || ($HTTP_GET_VARS['info'] == $whos_online['session_id'])) && (!isset($info) || !$info) ) {
       $info = $whos_online['session_id'];
     }
     if ($whos_online['session_id'] == $info) {
@@ -113,6 +113,7 @@
 <?php
   $heading = array();
   $contents = array();
+  $session_data = '';
 if (isset($info)) {
     $heading[] = array('text' => '<b>' . TABLE_HEADING_SHOPPING_CART . '</b>');
 

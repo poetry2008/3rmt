@@ -225,11 +225,11 @@ function hidden_payment(){
 			  	<td colspan="2"><br><table border="0" cellspacing="0" cellpadding="0">
 					<tr>
 						<td class="main">&nbsp;金融機関名:</td>
-						<td class="main">&nbsp;<?php echo tep_draw_input_field('bank_name', ''); ?><?php if ($entry_bank_name_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+						<td class="main">&nbsp;<?php echo tep_draw_input_field('bank_name', ''); ?><?php if (isset($entry_bank_name_error) && $entry_bank_name_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
 					</tr>
 					<tr>
 						<td class="main">&nbsp;支店名:</td>
-						<td class="main">&nbsp;<?php echo tep_draw_input_field('bank_shiten', ''); ?><?php if ($entry_bank_shiten_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+						<td class="main">&nbsp;<?php echo tep_draw_input_field('bank_shiten', ''); ?><?php if (isset($entry_bank_shiten_error) && $entry_bank_shiten_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
 					</tr>
 					<tr>
 						<td class="main">&nbsp;口座種別:</td>
@@ -237,11 +237,11 @@ function hidden_payment(){
 					</tr>
 					<tr>
 						<td class="main">&nbsp;口座番号:</td>
-						<td class="main">&nbsp;<?php echo tep_draw_input_field('bank_kouza_num', ''); ?><?php if ($entry_bank_kouza_num_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+						<td class="main">&nbsp;<?php echo tep_draw_input_field('bank_kouza_num', ''); ?><?php if (isset($entry_bank_kouza_num_error) && $entry_bank_kouza_num_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
 					</tr>
 					<tr>
 						<td class="main">&nbsp;口座名義:</td>
-						<td class="main">&nbsp;<?php echo tep_draw_input_field('bank_kouza_name', ''); ?><?php if ($entry_bank_kouza_name_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+						<td class="main">&nbsp;<?php echo tep_draw_input_field('bank_kouza_name', ''); ?><?php if (isset($entry_bank_kouza_name_error) && $entry_bank_kouza_name_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
 					</tr>
 				</table></td>
 			  </tr>

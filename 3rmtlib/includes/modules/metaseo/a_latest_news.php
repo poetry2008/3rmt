@@ -9,7 +9,7 @@
       $this->code = 'a_latest_news';
       $this->title = MODULE_METASEO_A_LATEST_NEWS_TEXT_TITLE;
       $this->description = MODULE_METASEO_A_LATEST_NEWS_TEXT_DESCRIPTION;
-	  $this->explain = MODULE_METASEO_A_LATEST_NEWS_TEXT_EXPLAIN;
+      $this->explain = MODULE_METASEO_A_LATEST_NEWS_TEXT_EXPLAIN;
       $this->sort_order = MODULE_METASEO_A_LATEST_NEWS_SORT_ORDER;
     }
 

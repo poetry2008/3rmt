@@ -34,7 +34,7 @@
 
       if (is_object($order)) $this->update_status();
 
-      $this->email_footer = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_EMAIL_FOOTER;
+      $this->email_footer = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_MAILFOOTER;
     }
 
 // class methods

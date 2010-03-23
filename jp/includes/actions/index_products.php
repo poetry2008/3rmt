@@ -96,7 +96,7 @@
               p.manufacturers_id, 
               p.products_price, 
               p.products_tax_class_id, 
-              p.site_id,
+              pd.site_id,
               IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, 
               IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
         from (" . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_MANUFACTURERS . " m ) left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id 
@@ -314,7 +314,7 @@
 ?></h1>
 		<p class="comment"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?></p>
 		<h2 class="line"><?php
-	if($HTTP_GET_VARS['cPath']) {
+	if(isset($HTTP_GET_VARS['cPath']) && $HTTP_GET_VARS['cPath']) {
 		$categories_path = explode('_', $HTTP_GET_VARS['cPath']);
 		//大カテゴリの画像を返す
     // ccdd

@@ -104,7 +104,8 @@
                rd.reviews_text, 
                r.reviews_rating, 
                r.reviews_status,
-               s.romaji
+               s.romaji,
+               r.site_id
         from " . TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd , ".TABLE_SITES." s
         where r.reviews_id = '" . tep_db_input($rID) . "' 
           and s.id = r.site_id
@@ -183,7 +184,8 @@
                  r.last_modified, 
                  r.reviews_read, 
                  rd.reviews_text, 
-                 r.reviews_rating 
+                 r.reviews_rating ,
+                 r.site_id
           from " . TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd 
           where r.reviews_id = '" . $HTTP_GET_VARS['rID'] . "' 
             and r.reviews_id = rd.reviews_id");
@@ -296,6 +298,7 @@
         $reviews_text_query = tep_db_query("
             select r.reviews_read, 
                    r.customers_name, 
+                   r.site_id,
                    length(rd.reviews_text) as reviews_text_size 
             from " . TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd 
             where r.reviews_id = '" . $reviews['reviews_id'] . "' 
@@ -313,7 +316,7 @@
             select products_name 
             from " . TABLE_PRODUCTS_DESCRIPTION . " 
             where products_id = '" . $reviews['products_id'] . "' 
-              and pd.site_id ='0'
+              and site_id ='0'
               and language_id = '" . $languages_id . "'");
         $products_name = tep_db_fetch_array($products_name_query);
 
