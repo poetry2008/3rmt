@@ -13,7 +13,7 @@
 
 // CSVファイル名の作成
 
-  $filename = (isset($HTTP_POST_VARS['site_id']&&$HTTP_POST_VARS['site_id']) ? (tep_get_site_romaji_by_id(intval($HTTP_POST_VARS['site_id'])).'_') :'')."orders_".date("Ymd_His", time()).".csv";
+  $filename = ((isset($HTTP_POST_VARS['site_id'])&&$HTTP_POST_VARS['site_id']) ? (tep_get_site_romaji_by_id(intval($HTTP_POST_VARS['site_id'])).'_') :'')."orders_".date("Ymd_His", time()).".csv";
 
 //ダウンロード範囲の取得
   $s_y = $HTTP_POST_VARS['s_y'] ; //開始日　年

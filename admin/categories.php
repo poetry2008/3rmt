@@ -1195,8 +1195,6 @@ function mess(){
       $products_url = $HTTP_POST_VARS['products_url'];
       $site_id = $HTTP_POST_VARS['site_id'];
 
-      //echo $site_id;
-
 // copy image only if modified
       $products_image = tep_get_uploaded_file('products_image');
       $image_directory = tep_get_local_path(tep_get_upload_dir($site_id).'products/');
@@ -1358,7 +1356,13 @@ if (isset($HTTP_GET_VARS['read']) && $HTTP_GET_VARS['read'] == 'only' && (!isset
           <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
         </tr>
         <tr>
-          <td class="main"><?php echo $pInfo->products_description.'<hr size="1" noshade><table width=""><tr><td>'.tep_image(DIR_WS_CATALOG_IMAGES . $products_image_name, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="" hspace="5" vspace="5"').'</td><td>'.tep_image(DIR_WS_CATALOG_IMAGES . $products_image_name2, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="right" hspace="5" vspace="5"').'</td><td align="right">'.tep_image(DIR_WS_CATALOG_IMAGES . $products_image_name3, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="right" hspace="5" vspace="5"').'</td></tr></table>'; ?></td>
+          <td class="main"><?php echo $pInfo->products_description.'<hr size="1" noshade><table width=""><tr><td>'.
+          tep_image(tep_get_web_upload_dir($site_id) . 'products/' . $products_image_name, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="" hspace="5" vspace="5"')
+          .'</td><td>'.
+          tep_image(tep_get_web_upload_dir($site_id) . 'products/' . $products_image_name2, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="right" hspace="5" vspace="5"')
+          .'</td><td align="right">'.
+          tep_image(tep_get_web_upload_dir($site_id) . 'products/' . $products_image_name3, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="right" hspace="5" vspace="5"')
+          .'</td></tr></table>'; ?></td>
         </tr>
         <?php
       if ($pInfo->products_url) {
@@ -1899,7 +1903,7 @@ if ($ocertify->npermission >= 10) { //表示制限
 //print_r($cInfo);
             $contents[] = array('text' => '<br>' . TEXT_DATE_ADDED . ' ' . tep_date_short($cInfo->date_added));
             if (tep_not_null($cInfo->last_modified)) $contents[] = array('text' => TEXT_LAST_MODIFIED . ' ' . tep_date_short($cInfo->last_modified));
-            $contents[] = array('text' => '<br>' . tep_info_image('categories/'.$cInfo->categories_image, $cInfo->categories_name, HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT, $site_id) . '<br>' . $cInfo->categories_image);
+            $contents[] = array('text' => '<br>' . tep_info_image('categories/'.$cInfo->categories_image, $cInfo->categories_name, HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT, 0) . '<br>' . $cInfo->categories_image);
             $contents[] = array('text' => '<br>' . TEXT_SUBCATEGORIES . ' ' . $cInfo->childs_count . '<br>' . TEXT_PRODUCTS . ' ' . $cInfo->products_count);
           } elseif (is_object($pInfo)) { // product info box contents
             $heading[] = array('text' => '<b>' . tep_get_products_name($pInfo->products_id, $languages_id) . '</b>');
@@ -1915,13 +1919,13 @@ if ($ocertify->npermission >= 10) { //表示制限
             $contents[] = array('text' => '<br>' . TEXT_DATE_ADDED . ' ' . tep_date_short($pInfo->products_date_added));
             if (tep_not_null($pInfo->products_last_modified)) $contents[] = array('text' => TEXT_LAST_MODIFIED . ' ' . tep_datetime_short($pInfo->products_last_modified));
             if (date('Y-m-d') < $pInfo->products_date_available) $contents[] = array('text' => TEXT_DATE_AVAILABLE . ' ' . tep_date_short($pInfo->products_date_available));
-            $contents[] = array('text' => '<br>' . tep_info_image('products/'.$pInfo->products_image, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, $site_id) . '<br>' . $pInfo->products_image);
+            $contents[] = array('text' => '<br>' . tep_info_image('products/'.$pInfo->products_image, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 0) . '<br>' . $pInfo->products_image);
             if($pInfo->products_image2) {
-			$contents[] = array('text' => '<br>' . tep_info_image('products/'.$pInfo->products_image2, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '<br>' . $pInfo->products_image2, $site_id);
-			}
+              $contents[] = array('text' => '<br>' . tep_info_image('products/'.$pInfo->products_image2, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '<br>' . $pInfo->products_image2, 0);
+            }
             if($pInfo->products_image3) {
-			$contents[] = array('text' => '<br>' . tep_info_image('products/'.$pInfo->products_image3, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '<br>' . $pInfo->products_image3, $site_id);
-			}
+              $contents[] = array('text' => '<br>' . tep_info_image('products/'.$pInfo->products_image3, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '<br>' . $pInfo->products_image3, 0);
+            }
 //特価がある場合の処理
 $special_price_check = tep_get_products_special_price($pInfo->products_id);
 if (!empty($special_price_check)) {

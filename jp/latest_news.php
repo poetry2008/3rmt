@@ -12,6 +12,14 @@
 	$breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_LATEST_NEWS));
 	
   //if (!isset($HTTP_GET_VARS['news_id'])) $HTTP_GET_VARS['news_id']=NULL;
+  if (isset($HTTP_GET_VARS['news_id'])) {
+    $latest_news_query = tep_db_query('
+        SELECT * 
+        from ' . TABLE_LATEST_NEWS . ' 
+        WHERE news_id = ' . (int)$HTTP_GET_VARS['news_id'] . ' 
+          and site_id=' . SITE_ID);
+    $latest_news = tep_db_fetch_array($latest_news_query);
+  }
 ?>
 <?php page_head();?>
 <script type="text/javascript" src="js/emailProtector.js"></script>
@@ -36,7 +44,12 @@ function popupWindow(url) {
 			</td>
 			<!-- body_text //-->
 			<td valign="top" id="contents">
-				<h1 class="pageHeading"><?php if ($HTTP_GET_VARS['news_id']) { echo $latest_news['headline']; } else { echo HEADING_TITLE; } ?></h1>
+				<h1 class="pageHeading"><?php 
+        if (isset($HTTP_GET_VARS['news_id']) && $HTTP_GET_VARS['news_id']) { 
+          echo $latest_news['headline']; 
+        } else { 
+          echo HEADING_TITLE; 
+        } ?></h1>
 				<table border="0" width="100%" cellspacing="0" cellpadding="0">
 					<tr>
 						<td>

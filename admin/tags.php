@@ -145,9 +145,9 @@ if (isset($HTTP_GET_VARS['action']) and $HTTP_GET_VARS['action']) {
 <?php
   $heading = array();
   $contents = array();
-switch (isset($HTTP_GET_VARS['action']) and $HTTP_GET_VARS['action']) {
+switch (isset($HTTP_GET_VARS['action'])? $HTTP_GET_VARS['action']:'') {
     case 'new':
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_NEW_TAG . '</b>');
+      $heading[] = array('text' => '1111111111111<b>' . TEXT_INFO_HEADING_NEW_TAG . '</b>');
 
       $contents = array('form' => tep_draw_form('tags', FILENAME_TAGS, 'page=' . $HTTP_GET_VARS['page'] . '&action=insert', 'post', 'enctype="multipart/form-data"'));
       $contents[] = array('text' => TEXT_INFO_INSERT_INTRO);
@@ -157,7 +157,7 @@ switch (isset($HTTP_GET_VARS['action']) and $HTTP_GET_VARS['action']) {
       $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_insert.gif', IMAGE_INSERT) . '&nbsp;<a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $HTTP_GET_VARS['page']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
     case 'edit':
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_EDIT_TAG . '</b>');
+      $heading[] = array('text' => '2222222222222222<b>' . TEXT_INFO_HEADING_EDIT_TAG . '</b>');
 
       $contents = array('form' => tep_draw_form('tags', FILENAME_TAGS, 'page=' . $HTTP_GET_VARS['page'] . '&cID=' . $cInfo->tags_id . '&action=save', 'post', 'enctype="multipart/form-data"'));
       $contents[] = array('text' => TEXT_INFO_EDIT_INTRO);

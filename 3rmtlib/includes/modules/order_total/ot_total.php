@@ -24,7 +24,7 @@
       global $payment, $point;
       global $HTTP_POST_VARS;
 
-      $total = $order->info['total'];
+      $total = isset($order->info['total'])?$order->info['total']:0;
       if ((MODULE_ORDER_TOTAL_CODT_STATUS == 'true')
           && ($payment == 'cod_table')
           && isset($HTTP_POST_VARS['codt_fee'])
@@ -39,11 +39,16 @@
       }	  
 	  
 	  if(MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'convenience_store')) {
-        $total += intval($HTTP_POST_VARS['codt_fee']);
+        $total += isset($HTTP_POST_VARS['codt_fee']) ? intval($HTTP_POST_VARS['codt_fee']) : 0;
 	  }
 
       $this->output[] = array('title' => $this->title . ':',
-                              'text' => '<b>' . $currencies->format($total, true, $order->info['currency'], $order->info['currency_value']) . '</b>',
+                              'text' => '<b>' . $currencies->format(
+                                $total, 
+                                true, 
+                                isset($order->info['currency'])?$order->info['currency']:'', 
+                                isset($order->info['currency_value'])?$order->info['currency_value']:''
+                                ) . '</b>',
                               'value' => $total);
     }
 

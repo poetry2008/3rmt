@@ -31,7 +31,7 @@
 			  unset($height);
 			}
 			//print(DIR_FS_CATALOG . '/' .$src. $width. $height. DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'imagecache');
-			$src=thumbimage(DIR_FS_CATALOG . '/' .$src, $width, $height, 1, 1, DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'imagecache');
+			$src = thumbimage(DIR_FS_CATALOG . '/' .$src, $width, $height, 1, 1, DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'imagecache');
 			if ((($image_size[1]/$height) > ($image_size[0]/$width) ) && $height>0){
 				 $width=ceil(($image_size[0]/$image_size[1])* $height);
 			} elseif ($width>0) {

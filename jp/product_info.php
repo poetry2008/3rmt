@@ -238,19 +238,19 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                         <td class="main"><?php if (PRODUCT_LIST_MODEL > 0){ echo $product_info['products_model'] ; }else{ echo '-' ; } ?></td>
                       </tr>
                       <?php 
-				  if(!empty($data1[0])){
+				  if(!empty($data1[0]) && !empty($data1[1])){
 				  ?>
                       <tr class="infoBoxContents">
                         <td class="main"><font color="#0070AF"><?php echo $data1[0] ; ?></font></td>
-                        <td class="main"><?php echo $data1[1] ; ?></td>
+                        <td class="main"><?php print($data1[1]) ; ?></td>
                       </tr>
                       <?php } ?>
                       <?php 
-				  if(!empty($data2[0])){
+				  if(!empty($data2[0]) && !empty($data2[1])){
 				  ?>
                       <tr class="infoBoxContents">
-                        <td class="main"><font color="#0070AF"><?php echo $data2[0] ; ?></font></td>
-                        <td class="main"><?php echo $data2[1] ; ?></td>
+                        <td class="main"><font color="#0070AF"><?php print($data2[0]) ; ?></font></td>
+                        <td class="main"><?php print( $data2[1]) ; ?></td>
                       </tr>
                       <?php } ?>
                       <tr class="infoBoxContents">
@@ -331,7 +331,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                       </tr>
                       <?php 
 }
-				  if(!empty($data3[0])){
+				  if(!empty($data3[0]) && !empty($data3[1])){
 				  ?>
                       <tr class="infoBoxContents">
                         <td class="main"><font color="#0070AF"><?php echo $data3[0] ; ?></font></td>
@@ -339,7 +339,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                       </tr>
                       <?php } ?>
                       <?php 
-				  if(!empty($data4[0])){
+				  if(!empty($data4[0]) && !empty($data4[1])){
 				  ?>
                       <tr class="infoBoxContents">
                         <td class="main"><font color="#0070AF"><?php echo $data4[0] ; ?></font></td>

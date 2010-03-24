@@ -88,7 +88,7 @@ if (!isset($HTTP_GET_VARS['pto'])) $HTTP_GET_VARS['pto'] = NULL;
     tep_redirect(tep_href_link(FILENAME_ADVANCED_SEARCH, 'errorno=' . $errorno . '&' . tep_get_all_get_params(array('x', 'y'))));
   } else {
     $breadcrumb->add(NAVBAR_TITLE1, tep_href_link(FILENAME_ADVANCED_SEARCH));
-    $breadcrumb->add(NAVBAR_TITLE2, tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 'keywords=' . $HTTP_GET_VARS['keywords'] . '&search_in_description=' . $HTTP_GET_VARS['search_in_description'] . '&categories_id=' . $HTTP_GET_VARS['categories_id'] . '&inc_subcat=' . $HTTP_GET_VARS['inc_subcat'] . '&manufacturers_id=' . $HTTP_GET_VARS['manufacturers_id'] . '&pfrom=' . $HTTP_GET_VARS['pfrom'] . '&pto=' . $HTTP_GET_VARS['pto'] . '&dfrom=' . $HTTP_GET_VARS['dfrom'] . '&dto=' . $HTTP_GET_VARS['dto']));
+    $breadcrumb->add(NAVBAR_TITLE2, tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 'keywords=' . $HTTP_GET_VARS['keywords'] . '&search_in_description=' . $HTTP_GET_VARS['search_in_description'] . '&categories_id=' . $HTTP_GET_VARS['categories_id'] . '&inc_subcat=' . $HTTP_GET_VARS['inc_subcat'] . '&manufacturers_id=' . (isset($HTTP_GET_VARS['manufacturers_id'])?$HTTP_GET_VARS['manufacturers_id']:'') . '&pfrom=' . $HTTP_GET_VARS['pfrom'] . '&pto=' . $HTTP_GET_VARS['pto'] . '&dfrom=' . $HTTP_GET_VARS['dfrom'] . '&dto=' . $HTTP_GET_VARS['dto']));
 ?>
 <?php page_head();?>
 <?php
@@ -182,10 +182,9 @@ if (!isset($HTTP_GET_VARS['pto'])) $HTTP_GET_VARS['pto'] = NULL;
                     pd.products_name, 
                     p.products_price, 
                     p.products_tax_class_id, 
+                    pd.site_id,
                     IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, 
-                    IF(s.status, s.specials_new_products_price, p.products_price) as final_price,
-                    p.sort_order";
-
+                    IF(s.status, s.specials_new_products_price, p.products_price) as final_price"; 
   if(isset($HTTP_GET_VARS['colors']) && !empty($HTTP_GET_VARS['colors'])) {
     $select_str .= ", cp.color_image ";
   }
@@ -282,14 +281,14 @@ if (!isset($HTTP_GET_VARS['pto'])) $HTTP_GET_VARS['pto'] = NULL;
     ) p 
     where site_id = 0
        or site_id = ".SITE_ID."
-    group by categories_id
+    group by products_id
     ";
 
   if ( (!isset($HTTP_GET_VARS['sort'])) || (!ereg('[1-9][ad]', $HTTP_GET_VARS['sort'])) || (substr($HTTP_GET_VARS['sort'], 0 , 1) > sizeof($column_list)) ) {
     for ($col=0, $n=sizeof($column_list); $col<$n; $col++) {
       if ($column_list[$col] == 'PRODUCT_LIST_NAME') {
         $HTTP_GET_VARS['sort'] = $col+1 . 'a';
-        $order_str = ' order by pd.products_name';
+        $order_str = ' order by products_name';
         break;
       }
     }
@@ -299,28 +298,28 @@ if (!isset($HTTP_GET_VARS['pto'])) $HTTP_GET_VARS['pto'] = NULL;
     $order_str = ' order by ';
     switch ($column_list[$sort_col-1]) {
       case 'PRODUCT_LIST_MODEL':
-        $order_str .= "p.products_model " . ($sort_order == 'd' ? "desc" : "") . ", pd.products_name";
+        $order_str .= "products_model " . ($sort_order == 'd' ? "desc" : "") . ", products_name";
         break;
       case 'PRODUCT_LIST_NAME':
-        $order_str .= "pd.products_name " . ($sort_order == 'd' ? "desc" : "");
+        $order_str .= "products_name " . ($sort_order == 'd' ? "desc" : "");
         break;
       case 'PRODUCT_LIST_MANUFACTURER':
-        $order_str .= "m.manufacturers_name " . ($sort_order == 'd' ? "desc" : "") . ", pd.products_name";
+        $order_str .= "manufacturers_name " . ($sort_order == 'd' ? "desc" : "") . ", products_name";
         break;
       case 'PRODUCT_LIST_QUANTITY':
-        $order_str .= "p.products_quantity " . ($sort_order == 'd' ? "desc" : "") . ", pd.products_name";
+        $order_str .= "products_quantity " . ($sort_order == 'd' ? "desc" : "") . ", products_name";
         break;
       case 'PRODUCT_LIST_IMAGE':
-        $order_str .= "pd.products_name";
+        $order_str .= "products_name";
         break;
       case 'PRODUCT_LIST_WEIGHT':
-        $order_str .= "p.products_weight " . ($sort_order == 'd' ? "desc" : "") . ", pd.products_name";
+        $order_str .= "products_weight " . ($sort_order == 'd' ? "desc" : "") . ", products_name";
         break;
       case 'PRODUCT_LIST_PRICE':
-        $order_str .= "final_price " . ($sort_order == 'd' ? "desc" : "") . ", pd.products_name";
+        $order_str .= "final_price " . ($sort_order == 'd' ? "desc" : "") . ", products_name";
         break;
       case 'PRODUCT_LIST_ORDERED':
-        $order_str .= "p.products_ordered " . ($sort_order == 'd' ? "desc" : "") . ", pd.products_name";
+        $order_str .= "products_ordered " . ($sort_order == 'd' ? "desc" : "") . ", products_name";
         break;
     }
   }

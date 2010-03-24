@@ -23,8 +23,13 @@
       global $order, $currencies;
 
       $this->output[] = array('title' => $this->title . ':',
-                              'text' => $currencies->format($order->info['subtotal'], true, $order->info['currency'], $order->info['currency_value']),
-                              'value' => $order->info['subtotal']);
+                              'text'  => $currencies->format(
+                                isset($order->info['subtotal'])?$order->info['subtotal']:'', 
+                                true, 
+                                isset($order->info['currency'])?$order->info['currency']:'', 
+                                isset($order->info['currency_value'])?$order->info['currency_value']:''
+                              ),
+                              'value' => isset($order->info['subtotal']) ? $order->info['subtotal'] : '');
     }
 
     function check() {

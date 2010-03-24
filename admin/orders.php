@@ -960,7 +960,7 @@ function mail_text(st,tt,ot){
                ot.text as order_total,
                si.romaji
         from " . TABLE_ORDERS . " o 
-          left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s, ".TABLE_SITES."
+          left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s, ".TABLE_SITES." si
         where o.customers_id = '" . tep_db_input($cID) . "' 
           " . (isset($HTTP_GET_VARS['site_id']) && intval($HTTP_GET_VARS['site_id']) ? " and si.id = '" . intval($HTTP_GET_VARS['site_id']) . "' " : '') . "
           and si.id = o.site_id

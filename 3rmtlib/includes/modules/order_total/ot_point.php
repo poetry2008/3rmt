@@ -29,7 +29,12 @@
       if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
 
           $this->output[] = array('title' => $this->title . ':',
-                                  'text' => $currencies->format($point, true, $order->info['currency'], $order->info['currency_value']),
+                                  'text' => $currencies->format(
+                                    $point, 
+                                    true, 
+                                    isset($order->info['currency'])?$order->info['currency']:'', 
+                                    isset($order->info['currency_value'])?$order->info['currency_value']:''
+                                  ),
                                   'value' => $this->point);
       }
     }

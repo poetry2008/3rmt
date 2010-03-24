@@ -1,4 +1,5 @@
 <?php
+chmod('admin/imageDocuments/', 0777);
 chmod('admin/upload_images/', 0777);
 
 chmod('admin/upload_images/0/products/', 0777);

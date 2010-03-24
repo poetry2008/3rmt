@@ -325,8 +325,8 @@ function popupImageWindow(url) {
           </tr>
           <tr>
             <td class="main" valign="top"><?php echo TEXT_BANNERS_IMAGE; ?></td>
-            <td class="main"><?php echo tep_draw_file_field('banners_image') . ' ' . TEXT_BANNERS_IMAGE_LOCAL . '<br>' . DIR_FS_CATALOG_IMAGES . tep_draw_input_field('banners_image_local', isset($bInfo->banners_image)?$bInfo->banners_image:''); ?><br>
-<?php if($bInfo->banners_image)echo tep_info_image($bInfo->banners_image, $bInfo->banners_title, '', '', $bInfo->site_id) ; ?>
+            <td class="main"><?php echo tep_draw_file_field('banners_image') . ' ' . TEXT_BANNERS_IMAGE_LOCAL . '<br>' . (tep_get_upload_root().'x/') . tep_draw_input_field('banners_image_local', isset($bInfo->banners_image)?$bInfo->banners_image:''); ?><br>
+<?php if(isset($bInfo->banners_image) && $bInfo->banners_image) echo tep_info_image($bInfo->banners_image, $bInfo->banners_title, '', '', $bInfo->site_id) ; ?>
 <br>
 </td>
           </tr>
@@ -335,7 +335,7 @@ function popupImageWindow(url) {
           </tr>
           <tr>
             <td class="main"><?php echo TEXT_BANNERS_IMAGE_TARGET; ?></td>
-            <td class="main"><?php echo DIR_FS_CATALOG_IMAGES . tep_draw_input_field('banners_image_target'); ?></td>
+            <td class="main"><?php echo (tep_get_upload_root().'x/') . tep_draw_input_field('banners_image_target'); ?></td>
           </tr>
           <tr>
             <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>

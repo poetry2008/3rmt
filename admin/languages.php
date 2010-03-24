@@ -25,15 +25,15 @@
       $insert_id = tep_db_insert_id();
 
 // create additional categories_description records
-      $categories_query = tep_db_query("select c.categories_id, cd.categories_name from " . TABLE_CATEGORIES . " c left join " . TABLE_CATEGORIES_DESCRIPTION . " cd on c.categories_id = cd.categories_id where cd.language_id = '" . $languages_id . "'");
+      $categories_query = tep_db_query("select c.categories_id, cd.categories_name, cd.site_id from " . TABLE_CATEGORIES . " c left join " . TABLE_CATEGORIES_DESCRIPTION . " cd on c.categories_id = cd.categories_id where cd.language_id = '" . $languages_id . "'");
       while ($categories = tep_db_fetch_array($categories_query)) {
-        tep_db_query("insert into " . TABLE_CATEGORIES_DESCRIPTION . " (categories_id, language_id, categories_name) values ('" . $categories['categories_id'] . "', '" . $insert_id . "', '" . tep_db_input($categories['categories_name']) . "')");
+        tep_db_query("insert into " . TABLE_CATEGORIES_DESCRIPTION . " (categories_id, language_id, categories_name, site_id) values ('" . $categories['categories_id'] . "', '" . $insert_id . "', '" . tep_db_input($categories['categories_name']) . "', '".$categories['site_id']."')");
       }
 
 // create additional products_description records
-      $products_query = tep_db_query("select p.products_id, pd.products_name, pd.products_description_".ABBR_SITENAME.", pd.products_url from " . TABLE_PRODUCTS . " p left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id where pd.language_id = '" . $languages_id . "'");
+      $products_query = tep_db_query("select p.products_id, pd.products_name, pd.products_description, pd.products_url, pd.site_id from " . TABLE_PRODUCTS . " p left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id where pd.language_id = '" . $languages_id . "'");
       while ($products = tep_db_fetch_array($products_query)) {
-        tep_db_query("insert into " . TABLE_PRODUCTS_DESCRIPTION . " (products_id, language_id, products_name, products_description_".ABBR_SITENAME.", products_url) values ('" . $products['products_id'] . "', '" . $insert_id . "', '" . tep_db_input($products['products_name']) . "', '" . tep_db_input($products['products_description']) . "', '" . tep_db_input($products['products_url']) . "')");
+        tep_db_query("insert into " . TABLE_PRODUCTS_DESCRIPTION . " (products_id, language_id, products_name, products_description, products_url, site_id) values ('" . $products['products_id'] . "', '" . $insert_id . "', '" . tep_db_input($products['products_name']) . "', '" . tep_db_input($products['products_description']) . "', '" . tep_db_input($products['products_url']) . "', '".$products['site_id']."')");
       }
 
 // create additional products_options records
@@ -165,7 +165,7 @@
       $lInfo = new objectInfo($languages);
     }
 
-    if ( (is_object($lInfo)) && ($languages['languages_id'] == $lInfo->languages_id) ) {
+    if ( isset($lInfo) && (is_object($lInfo)) && ($languages['languages_id'] == $lInfo->languages_id) ) {
       echo '                  <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_LANGUAGES, 'page=' . $HTTP_GET_VARS['page'] . '&lID=' . $lInfo->languages_id . '&action=edit') . '\'">' . "\n";
     } else {
       echo '                  <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_LANGUAGES, 'page=' . $HTTP_GET_VARS['page'] . '&lID=' . $languages['languages_id']) . '\'">' . "\n";
@@ -178,7 +178,7 @@
     }
 ?>
                 <td class="dataTableContent"><?php echo $languages['code']; ?></td>
-                <td class="dataTableContent" align="right"><?php if ( (is_object($lInfo)) && ($languages['languages_id'] == $lInfo->languages_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif'); } else { echo '<a href="' . tep_href_link(FILENAME_LANGUAGES, 'page=' . $HTTP_GET_VARS['page'] . '&lID=' . $languages['languages_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
+                <td class="dataTableContent" align="right"><?php if (isset($lInfo) && (is_object($lInfo)) && ($languages['languages_id'] == $lInfo->languages_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif'); } else { echo '<a href="' . tep_href_link(FILENAME_LANGUAGES, 'page=' . $HTTP_GET_VARS['page'] . '&lID=' . $languages['languages_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
               </tr>
 <?php
   }

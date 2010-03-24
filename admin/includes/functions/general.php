@@ -2209,7 +2209,7 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
   }
 
   function tep_get_upload_root(){
-    return DIR_WS_CATALOG . 'upload_images/';
+    return DIR_FS_CATALOG . 'upload_images/';
   }
 
   function tep_get_banner($bid){

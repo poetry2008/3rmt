@@ -110,7 +110,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
         // update attributes
         if($o->products){
           foreach($o->products as $p){
-            if($p['attributes']){
+            if(isset($p['attributes']) && $p['attributes']){
               foreach($p['attributes'] as $a) {
                 if(isset($HTTP_POST_VARS['id'][$p['id']])) {
                   // old attribute
@@ -175,7 +175,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
 
   // load selected payment module
   require(DIR_WS_CLASSES . 'payment.php');
-  $payment_modules = new payment($payment);
+  $payment_modules = new payment(isset($payment) ? $payment : '');
 
   # OrderNo
   $insert_id = $oID;
@@ -221,7 +221,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
 
   
   # Select
-  $cnt = strlen($NewOid);
+  //$cnt = strlen($NewOid);
 
   // initialized for the email confirmation
   $products_ordered = '';
@@ -275,9 +275,20 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
       }
     }
 //------insert customer choosen option eof ----
-    $total_weight += ($o->products[$i]['qty'] * $o->products[$i]['weight']);
-    $total_tax += tep_calculate_tax($total_products_price, $products_tax) * $o->products[$i]['qty'];
-    $total_cost += $total_products_price;
+    if(isset($o->products[$i]['weight']) && isset($o->products[$i]['qty'])){
+      $total_weight += ($o->products[$i]['qty'] * $o->products[$i]['weight']);
+    }
+    if(isset($o->products[$i]['qty'])) {
+      $total_tax += tep_calculate_tax(
+        isset($total_products_price)?$total_products_price:0, 
+        $products_tax
+        ) * $o->products[$i]['qty'];
+    }
+    if(isset($total_cost)){
+      $total_cost += isset($total_products_price)?$total_products_price:0;
+    } else {
+      $total_cost = 0;
+    }
 
     $products_ordered .= '注文商品　　　　　：' . $o->products[$i]['name'];
 	if(tep_not_null($o->products[$i]['model'])) {
@@ -442,7 +453,8 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   <td><input type='text' id='character_<?php echo $value['id'];?>' name='character[<?php echo $value['id'];?>]' value='<?php echo $value['character']?>' class="input_text" ></td>
  </tr>
 <?php }?>
-<?php if($value['attributes'])foreach ($value['attributes'] as $att) {?>
+<?php if(isset($value['attributes']) && $value['attributes'])
+foreach ($value['attributes'] as $att) {?>
  <tr>
   <td bgcolor="#eeeeee"><?php echo $att['option'];?>(変更前)</td>
   <td><?php echo $att['value'];?></td>
@@ -497,7 +509,10 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
               }
             }
             $products_options_array = array_merge(array(array('id' => '', 'text' => '--')), $products_options_array);
-            echo tep_draw_pull_down_menu('id['.$value['id'].'][' . $products_options_name['products_options_id'] . ']', $products_options_array, $cart->contents[$value['id']]['attributes'][$products_options_name['products_options_id']]);
+            echo tep_draw_pull_down_menu(
+                'id['.$value['id'].'][' . $products_options_name['products_options_id'] . ']', 
+                $products_options_array, 
+                isset($cart->contents[$value['id']]['attributes'][$products_options_name['products_options_id']])?  $cart->contents[$value['id']]['attributes'][$products_options_name['products_options_id']]:'');
             echo '</td></tr>';
           }
           //echo '</table>';

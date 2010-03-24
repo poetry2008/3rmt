@@ -174,6 +174,7 @@
       // 追加 - 2007.01.05 ----------------------------------------------
       $total = $order->info['total'];
       if ((MODULE_ORDER_TOTAL_CODT_STATUS == 'true')
+          && isset($payment) 
           && ($payment == 'cod_table')
           && isset($HTTP_POST_VARS['codt_fee'])
           && (0 < intval($HTTP_POST_VARS['codt_fee']))) {
@@ -186,7 +187,7 @@
         $total -= intval($point);
       }	  
 	  
-	  if(MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'convenience_store')) {
+	  if(MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && (isset($payment) && $payment == 'convenience_store')) {
         $total += intval($HTTP_POST_VARS['codt_fee']);
 	  }
       // 追加 - 2007.01.05 ----------------------------------------------
@@ -199,7 +200,7 @@
             $currencies->format($HTTP_POST_VARS['codt_fee']));
 
 	  return tep_draw_hidden_field('codt_message', $s_message)
-           . tep_draw_hidden_field('codt_fee',$HTTP_POST_VARS['codt_fee']) // for ot_codt
+           . tep_draw_hidden_field('codt_fee', isset($HTTP_POST_VARS['codt_fee']) ? $HTTP_POST_VARS['codt_fee'] : '') // for ot_codt
 		   . tep_draw_hidden_field('convenience_store_zip_code',$HTTP_POST_VARS['convenience_store_zip_code'])
 		   . tep_draw_hidden_field('convenience_store_address1',$HTTP_POST_VARS['convenience_store_address1'])
 		   . tep_draw_hidden_field('convenience_store_address2',$HTTP_POST_VARS['convenience_store_address2'])

@@ -215,7 +215,7 @@
   );
   */
 //ccdd
-    tep_products_description_exist((int)$HTTP_GET_VARS['products_id'], SITE_ID) && tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_viewed = products_viewed+1 where products_id = '" .  (int)$HTTP_GET_VARS['products_id'] . "' and language_id = '" . $languages_id . "' and site_id = ".SITE_ID);
+    //tep_products_description_exist((int)$HTTP_GET_VARS['products_id'], SITE_ID, $languages_id) && tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_viewed = products_viewed+1 where products_id = '" .  (int)$HTTP_GET_VARS['products_id'] . "' and language_id = '" . $languages_id . "' and site_id = ".SITE_ID);
     $product_info = tep_get_product_by_id($order->products[$i]['id'], SITE_ID, $languages_id);
     //$product_info = tep_db_fetch_array($_product_info_query);
     $data1 = explode("//", $product_info['products_attention_1']);

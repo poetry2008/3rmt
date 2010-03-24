@@ -85,6 +85,7 @@
       // 追加 - 2007.01.05 ----------------------------------------------
       $total = $order->info['total'];
       if ((MODULE_ORDER_TOTAL_CODT_STATUS == 'true')
+          && isset($payment) 
           && ($payment == 'cod_table')
           && isset($HTTP_POST_VARS['codt_fee'])
           && (0 < intval($HTTP_POST_VARS['codt_fee']))) {
@@ -97,7 +98,7 @@
         $total -= intval($point);
       }	  
 	  
-	  if(MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'convenience_store')) {
+	  if(isset($HTTP_POST_VARS['codt_fee']) && MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'convenience_store')) {
         $total += intval($HTTP_POST_VARS['codt_fee']);
 	  }
       // 追加 - 2007.01.05 ----------------------------------------------
