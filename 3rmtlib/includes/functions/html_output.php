@@ -18,6 +18,13 @@
     if ( (empty($src) || ($src == DIR_WS_IMAGES)) && (IMAGE_REQUIRED == 'false') ) {
       return false;
     }
+##########
+   if(!file_exists(DIR_FS_CATALOG . '/' . $src)
+       && file_exists(DIR_FS_CATALOG . '/' . str_replace('images/', 'default_images/', $src))
+       ){
+     $src = str_replace('images/', 'default_images/', $src);
+     }
+##########
    if ($image_size = @getimagesize($src)) {
       if ((CONFIG_CALCULATE_IMAGE_SIZE == 'true' && $src != DIR_WS_IMAGES . 'pixel_black.gif' && $src != DIR_WS_IMAGES . 'pixel_trans.gif' && $src != DIR_WS_IMAGES . 'pixel_silver.gif' )) {
 		if ( ($width) || ($height) ) {
@@ -69,6 +76,13 @@
     if ( (empty($src) || ($src == DIR_WS_IMAGES)) && (IMAGE_REQUIRED == 'false') ) {
       return false;
     }
+##########
+   if(!file_exists(DIR_FS_CATALOG . '/' . $src)
+       && file_exists(DIR_FS_CATALOG . '/' . str_replace('images/', 'default_images/', $src))
+       ){
+     $src = str_replace('images/', 'default_images/', $src);
+     }
+##########
    if ($image_size = @getimagesize($src)) {
       if ((CONFIG_CALCULATE_IMAGE_SIZE == 'true' && $src != DIR_WS_IMAGES . 'pixel_black.gif' && $src != DIR_WS_IMAGES . 'pixel_trans.gif' && $src != DIR_WS_IMAGES . 'pixel_silver.gif' )) {
 		if ( ($width) || ($height) ) {
@@ -117,9 +131,17 @@
 
 
   function tep_image3($src, $alt = '', $width = '', $height = '', $parameters = '') {
+    //echo 'tep_image3';
     if ( (empty($src) || ($src == DIR_WS_IMAGES)) && (IMAGE_REQUIRED == 'false') ) {
       return false;
     }
+##########
+   if(!file_exists(DIR_FS_CATALOG . '/' . $src)
+       && file_exists(DIR_FS_CATALOG . '/' . str_replace('images/', 'default_images/', $src))
+       ){
+     $src = str_replace('images/', 'default_images/', $src);
+     }
+##########
    if ($image_size = @getimagesize($src)) {
       if ((CONFIG_CALCULATE_IMAGE_SIZE == 'true' && $src != DIR_WS_IMAGES . 'pixel_black.gif' && $src != DIR_WS_IMAGES . 'pixel_trans.gif' && $src != DIR_WS_IMAGES . 'pixel_silver.gif' )) {
 		if ( ($width) || ($height) ) {
@@ -388,7 +410,7 @@
 
 
      $types = array (1 => "gif", "jpeg", "png", "swf", "psd", "wbmp");
-	 $not_supported_formats = array ("GIF"); 
+     $not_supported_formats = array ("GIF"); 
      umask(0);
      !is_dir ($cachedir)
          ? mkdir ($cachedir, 0777)
@@ -398,7 +420,7 @@
        (!isset ($y) || ereg ('^[0-9]{1,}$', $y, $regs)) &&
        (isset ($x) || isset ($y))
             ? true
-          : DIE ('Fehlende(r) oder ung繝ｻtige(r) Gr繝ｻenparameter!');
+          : DIE ('Image width or height undefine!');
 
      !isset ($resize) || !ereg ('^[0|1]$', $resize, $regs)
           ? $resize = 0
@@ -411,22 +433,21 @@
           : $aspectratio;
 
      !isset ($image)
-          ? DIE ('Es wurde kein Bild angegeben!')
+          ? DIE ('Image undefine.')
           : !file_exists($image)
-               ? DIE ('Die angegebene Datei konnte nicht auf dem Server gefunden werden!')
+               ? DIE ('Image not exists!')
                : false;
 
      $imagedata = getimagesize($image);
 
      !$imagedata[2] || $imagedata[2] == 4 || $imagedata[2] == 5
-          ? DIE ('Bei der angegebenen Datei handelt es sich nicht um ein Bild!')
+          ? DIE ('Image type not avaliable!')
           : false;
 
-	 $imgtype="!(ImageTypes() & IMG_" . strtoupper($types[$imagedata[2]]) . ");";
+     $imgtype = "!(ImageTypes() & IMG_" . strtoupper($types[$imagedata[2]]) . ");";
      if ((eval($imgtype)) || (in_array(strtoupper(array_pop(explode('.', basename($image)))),$not_supported_formats))) {
-     	$image = substr ($image, (strrpos (DIR_FS_CATALOG . '/', '/'))+1);
-	 	return $image;
-
+        $image = substr ($image, (strrpos (DIR_FS_CATALOG . '/', '/'))+1);
+        return $image;
      }
 
      if (!isset ($x)) $x = floor ($y * $imagedata[0] / $imagedata[1]);
@@ -460,16 +481,14 @@
           $makethumb = false;
      }
 
-
-
      if ($makethumb) {
           $image = call_user_func("imagecreatefrom".$types[$imagedata[2]], $image);
-	  if (function_exists("imagecreatetruecolor") && ($thumb = imagecreatetruecolor ($x, $y))) {
-		imagecopyresampled ($thumb, $image, 0, 0, 0, 0, $x, $y, $imagedata[0], $imagedata[1]);
-	  } else {
-		$thumb = imagecreate ($x, $y);
-		imagecopyresized ($thumb, $image, 0, 0, 0, 0, $x, $y, $imagedata[0], $imagedata[1]);
-	  }
+        if (function_exists("imagecreatetruecolor") && ($thumb = imagecreatetruecolor ($x, $y))) {
+        imagecopyresampled ($thumb, $image, 0, 0, 0, 0, $x, $y, $imagedata[0], $imagedata[1]);
+      } else {
+        $thumb = imagecreate ($x, $y);
+        imagecopyresized ($thumb, $image, 0, 0, 0, 0, $x, $y, $imagedata[0], $imagedata[1]);
+      }
           call_user_func("image".$types[$imagedata[2]], $thumb, $cachedir.$thumbfile);
           imagedestroy ($image);
           imagedestroy ($thumb);
@@ -479,7 +498,7 @@
                ? $image = DIR_WS_IMAGES . 'imagecache' . $thumbfile
                : $image = substr ($image, (strrpos (DIR_FS_CATALOG . '/', '/'))+1);
      }
-return $image;
+  return $image;
 
 }
 

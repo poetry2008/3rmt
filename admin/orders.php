@@ -968,7 +968,7 @@ function mail_text(st,tt,ot){
           and s.language_id = '" . $languages_id . "' 
           and ot.class = 'ot_total' 
         order by o.torihiki_date DESC";
-    } elseif (isset($HTTP_GET_VARS['cID']) && $HTTP_GET_VARS['status']) {
+    } elseif (isset($HTTP_GET_VARS['status']) && $HTTP_GET_VARS['status']) {
       $status = tep_db_prepare_input($HTTP_GET_VARS['status']);
       $orders_query_raw = "
         select o.orders_id, 
@@ -1131,7 +1131,7 @@ function mail_text(st,tt,ot){
     		if(!in_array($_orders_status_history['orders_status_id'], $_osh)
     		&& !is_dir(tep_get_upload_dir().'orders_status/'.$_orders_status_history['orders_status_image']) 
     		&& file_exists(tep_get_upload_dir().'orders_status/'.$_orders_status_history['orders_status_image'])){
-    			echo tep_image(tep_get_web_upload_dir(). 'orders_status/' . $_orders_status_history['orders_status_image'], $_orders_status_history['orders_status_image'], 15, 15, ($_orders_status_history['orders_status_id'] == $orders['orders_status_id'])?'style="vertical-align: middle;"':'style="vertical-align: middle;"');
+    			echo tep_image(tep_get_web_upload_dir(). 'orders_status/' . $_orders_status_history['orders_status_image'], $_orders_status_history['orders_status_image'], 15, 15, ($_orders_status_history['orders_status_id'] == @$orders['orders_status_id'])?'style="vertical-align: middle;"':'style="vertical-align: middle;"');
     			$_osi = $_osi or true;
     		}
        		$_osh[] = $_orders_status_history['orders_status_id'];
