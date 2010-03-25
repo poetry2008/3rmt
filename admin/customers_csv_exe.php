@@ -2,6 +2,8 @@
   require("includes/application_top.php");
   
   function Jcode_EUCtoSJIS(&$str_EUC) {
+    return $str_EUC;
+    /*
 	$str_SJIS = '';
 	$b = unpack('C*', $str_EUC);
 	$n = count($b);
@@ -28,6 +30,7 @@
 	}
 
 	return $str_SJIS;
+  */
   }
   
   
@@ -63,6 +66,7 @@
 	//HEADER
 	$csv_header = 'アカウント作成日,性別,姓,名,生年月日,メールアドレス,会社名,郵便番号,都道府県,市区町村,住所1,住所2,国名,電話番号,FAX番号,メルマガ購読,ポイント';
 	$csv_header = Jcode_EUCtoSJIS($csv_header);
+  print chr(0xEF).chr(0xBB).chr(0xBF);
 	print $csv_header."\r\n";
 	
 	//DATA

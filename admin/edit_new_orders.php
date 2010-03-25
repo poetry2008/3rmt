@@ -1534,7 +1534,7 @@ if (tep_db_num_rows($orders_history_query)) {
 		{
 			echo "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
 			echo "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 4: </b></td>";
-			echo '<td class="' . dataTableContent . '" valign="top">' . ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1">&nbsp;個&nbsp;&nbsp;&nbsp;キャラクター名:&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅"><input name="add_product_character" size="20" value=""></td>';
+			echo '<td class="dataTableContent" valign="top">' . ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1">&nbsp;個&nbsp;&nbsp;&nbsp;キャラクター名:&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅"><input name="add_product_character" size="20" value=""></td>';
 			echo "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
 
 			if(IsSet($add_product_options))

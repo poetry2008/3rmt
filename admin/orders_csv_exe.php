@@ -59,6 +59,7 @@
 
   //$csv_header = mb_convert_encoding($csv_header,'SJIS','EUC-JP');
 
+  print chr(0xEF).chr(0xBB).chr(0xBF);
   print $csv_header."\r\n";
 
   while ($csv_orders = tep_db_fetch_array($csv_query)) {

@@ -27,6 +27,9 @@
         tep_redirect(tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $HTTP_GET_VARS['page'] . '&bID=' . $HTTP_GET_VARS['bID']));
         break;
       case 'insert':
+        //echo "<pre>";
+        //print_r($_POST);
+        //exit;
         $site_id              = tep_db_prepare_input($HTTP_POST_VARS['site_id']);
         if (empty($site_id)) {
           $messageStack->add(SITE_ID_NOT_NULL, 'error');

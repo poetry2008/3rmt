@@ -318,7 +318,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
  {
    echo tep_image(DIR_WS_IMAGES . $tag['tags_images'], $tag['tags_name'] , 20, 15);
  } else { 
-    $tag['tags_name'];
+   echo $tag['tags_name'];
   }
   ?>
 </a>
