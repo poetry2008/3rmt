@@ -286,27 +286,27 @@ function check_form() {
     $address_form->setFormLine('gender',ENTRY_GENDER,$a_value);
 
     // firstname
-    $a_value = tep_draw_input_field('customers_firstname', $cInfo->customers_firstname, 'maxlength="32"', true);
+    $a_value = tep_draw_input_field('customers_firstname', $cInfo->customers_firstname, 'maxlength="32"', false);
     $address_form->setFormLine('firstname',ENTRY_FIRST_NAME,$a_value);
 
     // lastname
-    $a_value = tep_draw_input_field('customers_lastname', $cInfo->customers_lastname, 'maxlength="32"', true);
+    $a_value = tep_draw_input_field('customers_lastname', $cInfo->customers_lastname, 'maxlength="32"', false);
     $address_form->setFormLine('lastname',ENTRY_LAST_NAME,$a_value);
 	
 	// firstname_f
-    $a_value = tep_draw_input_field('customers_firstname_f', $cInfo->customers_firstname_f, 'maxlength="32"', true);
+    $a_value = tep_draw_input_field('customers_firstname_f', $cInfo->customers_firstname_f, 'maxlength="32"', false);
     $address_form->setFormLine('firstname_f',ENTRY_FIRST_NAME_F,$a_value);
 
     // lastname_f
-    $a_value = tep_draw_input_field('customers_lastname_f', $cInfo->customers_lastname_f, 'maxlength="32"', true);
+    $a_value = tep_draw_input_field('customers_lastname_f', $cInfo->customers_lastname_f, 'maxlength="32"', false);
     $address_form->setFormLine('lastname_f',ENTRY_LAST_NAME_F,$a_value);
 
     // dob
-    $a_value = tep_draw_input_field('customers_dob', tep_date_short($cInfo->customers_dob), 'maxlength="10"', true);
+    $a_value = tep_draw_input_field('customers_dob', tep_date_short($cInfo->customers_dob), 'maxlength="10"', false);
     $address_form->setFormLine('dob',ENTRY_DATE_OF_BIRTH,$a_value);
 
     // email_address
-    $a_value = tep_draw_input_field('customers_email_address', $cInfo->customers_email_address, 'maxlength="96"', true);
+    $a_value = tep_draw_input_field('customers_email_address', $cInfo->customers_email_address, 'maxlength="96"', false);
     $address_form->setFormLine('email_address',ENTRY_EMAIL_ADDRESS,$a_value);
 
     // company
@@ -625,7 +625,7 @@ function check_form() {
       $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_delete.gif', IMAGE_DELETE) . ' <a href="' . tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cInfo->customers_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
     default:
-      if (is_object($cInfo)) {
+      if (isset($cInfo) && is_object($cInfo)) {
         $heading[] = array('text' => '<b>' . tep_get_fullname($cInfo->customers_firstname, $cInfo->customers_lastname) . '</b>');
 
         $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cInfo->customers_id . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cInfo->customers_id . '&action=confirm') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a> <a href="' . tep_href_link(FILENAME_ORDERS, 'cID=' . $cInfo->customers_id) . '">' . tep_image_button('button_orders.gif', IMAGE_ORDERS) . '</a> <a href="' . tep_href_link(FILENAME_MAIL, 'selected_box=tools&customer=' . $cInfo->customers_email_address) . '">' . tep_image_button('button_email.gif', IMAGE_EMAIL) . '</a>');

@@ -1235,10 +1235,10 @@ if (tep_db_num_rows($orders_history_query)) {
 	
 	//<textarea style="font-family:monospace;font-size:x-small" name="comments" wrap="hard" rows="30" cols="74"></textarea>
 	
-   	  echo tep_draw_textarea_field('comments', 'hard', '74', '5', $order->info['comments']);
+   	  echo tep_draw_textarea_field('comments', 'hard', '74', '5', isset($order->info['comments'])?$order->info['comments']:'');
   // 	  echo tep_draw_textarea_field('comments', 'soft', '40', '5');
 	  } else {
-		  echo tep_draw_textarea_field('comments', 'hard', '74', '5', $order->info['comments']);
+		  echo tep_draw_textarea_field('comments', 'hard', '74', '5', isset($order->info['comments'])?$order->info['comments']:'');
     }
 	  ?>
 	</td>
@@ -1339,7 +1339,7 @@ if($action == "add_product")
                ptc.categories_id 
         FROM " . TABLE_PRODUCTS . " p LEFT JOIN " . TABLE_PRODUCTS_DESCRIPTION . " pd ON pd.products_id=p.products_id LEFT JOIN " . TABLE_PRODUCTS_TO_CATEGORIES . " ptc ON ptc.products_id=p.products_id LEFT JOIN " . TABLE_CATEGORIES_DESCRIPTION . " cd ON cd.categories_id=ptc.categories_id 
         where pd.language_id = '" . (int)$languages_id . "' 
-          and pd.site_id = 0;
+          and pd.site_id = 0
         ORDER BY categories_name");
 		while($row = tep_db_fetch_array($result))
 		{

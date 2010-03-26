@@ -2225,4 +2225,13 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
     return tep_db_fetch_array(tep_db_query("select * from " . TABLE_PRESENT_GOODS . " where goods_id = '".$id."'"));
   }
   
+  function tep_get_cflag_by_product_id($product_id) {
+    // 0 => no   1=> yes
+    // ccdd
+    $product_query = tep_db_query("select products_cflag from " . TABLE_PRODUCTS . " where products_id = '" . (int)$product_id . "'");
+    $product = tep_db_fetch_array($product_query);
+
+    return $product['products_cflag'];
+  }
 ?>
+
