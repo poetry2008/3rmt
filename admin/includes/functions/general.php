@@ -2233,5 +2233,16 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
 
     return $product['products_cflag'];
   }
+
+  function tep_get_default_configuration_id_by_id($cid) {
+    $configuration_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_id = '".$cid."'");
+    $configuration = tep_db_fetch_array($configuration_query);
+    $default_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$configuration['configuration_key']."' and site_id = '0'");
+    $default = tep_db_fetch_array($default_query);
+    if($default)
+      return $default['configuration_id'];
+    else 
+      return $cid;
+  }
 ?>
 

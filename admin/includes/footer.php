@@ -54,7 +54,7 @@ $testArray = array();
 if (STORE_DB_TRANSACTIONS) {?>
 <div id="debug_info">
   <pre>
-  <?php print_r($logger->queries);?>
+  <?php isset($logger) && print_r($logger->queries);?>
   </pre>
 </div>
 <?php }?>

@@ -62,7 +62,7 @@ WHERE
 	    tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . tep_db_input($upfile_name) . "', last_modified = now() where configuration_id = '" . tep_db_input($cID) . "'");
 	}
         tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . tep_db_input($configuration_value) . "', last_modified = now() where configuration_id = '" . tep_db_input($cID) . "'");
-        tep_redirect(tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $HTTP_GET_VARS['gID'] . '&cID=' . $cID));
+        tep_redirect(tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $HTTP_GET_VARS['gID'] . '&cID=' .  tep_get_default_configuration_id_by_id($cID)));
 	break;
     case 'tdel':
 	$two_id = explode('_',$HTTP_GET_VARS['cID']);

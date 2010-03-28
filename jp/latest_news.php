@@ -149,7 +149,7 @@ function popupWindow(url) {
 <?php
 		}
 	}
-	if ($HTTP_GET_VARS['news_id']) { 
+	if (isset($HTTP_GET_VARS['news_id']) && $HTTP_GET_VARS['news_id']) { 
 ?>
 								<p align="right" class="smallText">
 									[ <?php echo tep_date_long($latest_news['date_added']) ;?> ]

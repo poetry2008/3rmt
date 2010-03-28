@@ -79,7 +79,7 @@ define('TABLE_HEADING_NAME', '氏名');
 define('TABLE_HEADING_EMAIL', 'E-Mail');
 define('TABLE_HEADING_NEW_PASSWORD', '新しいパスワード');
 define('TABLE_HEADING_CONFIRM_PASSWORD', '確認のため再入力');
-define('TABLE_HEADING_USER', '一般ユーザ');
+!defined('TABLE_HEADING_USER')&& define('TABLE_HEADING_USER', '一般ユーザ');
 define('TABLE_HEADING_ADMIN', 'サイト管理者');
 
 // JavaScriptの確認メッセージ

@@ -103,6 +103,7 @@ function show_loginlog_list($oresult) {
 	戻り値 : レコード件数
  --------------------------------------*/
 function show_page_ctl($nrow) {
+  $c_page = 0;
 
 	// 総レコード件数取得
 	$ssql = "select count(*) as rc from " . TABLE_LOGIN;
@@ -172,9 +173,9 @@ function UserLoginLog_list() {
 	PageBody('t', PAGE_TITLE_MENU_USER);	// ユーザ管理画面のタイトル部表示（ユーザ管理メニュー）
 
 	// 現在のページ（レコード取得開始位置）
-	if ($GLOBALS['jp']) $GLOBALS['lm'] = (int)$GLOBALS['sp'];
-	if ($GLOBALS['pp']) (int)$GLOBALS['lm'] -= LOGIN_LOG_MAX_LINE;
-	if ($GLOBALS['np']) (int)$GLOBALS['lm'] += LOGIN_LOG_MAX_LINE;
+	if (isset($GLOBALS['jp']) && $GLOBALS['jp']) $GLOBALS['lm'] = (int)$GLOBALS['sp'];
+	if (isset($GLOBALS['pp']) && $GLOBALS['pp']) (int)$GLOBALS['lm'] -= LOGIN_LOG_MAX_LINE;
+	if (isset($GLOBALS['np']) && $GLOBALS['np']) (int)$GLOBALS['lm'] += LOGIN_LOG_MAX_LINE;
 
 	// アクセスログ情報取得
 	$ssql = makeSelectLoginLog();
@@ -367,7 +368,7 @@ function PageFooter() {
 
   require('includes/application_top.php');
 
-	if ($execute_delete) {		// アクセスログ情報の削除
+	if (isset($execute_delete) && $execute_delete) {		// アクセスログ情報の削除
 		LoginLogDelete_execute();
 		$lm = 0;
 	}

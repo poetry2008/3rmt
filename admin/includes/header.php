@@ -1,9 +1,9 @@
 <?php
 /*
-	JP、GM共通ファイル
+   $Id$
 */
 
-  if ($messageStack->size > 0) {
+  if (isset($messageStack) && $messageStack->size > 0) {
     echo $messageStack->output();
   }
 ?>
@@ -13,9 +13,9 @@
     <td align="right">
 		株式会社iimy&nbsp;<b>
 		<?php
-			if ($ocertify->npermission == 15) {
+			if (isset($ocertify) && $ocertify->npermission == 15) {
 				echo '<font color="blue">Admin</font>';
-			} elseif ($ocertify->npermission == 10) {
+			} elseif (isset($ocertify) && $ocertify->npermission == 10) {
 				echo '<font color="red">Chief</font>';
 			} else {
 				echo 'Staff';

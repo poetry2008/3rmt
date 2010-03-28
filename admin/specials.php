@@ -145,15 +145,15 @@
         <td><br><table border="0" cellspacing="0" cellpadding="2">
           <tr>
             <td class="main"><?php echo TEXT_SPECIALS_PRODUCT; ?>&nbsp;</td>
-            <td class="main"><?php echo ($sInfo->products_name) ? $sInfo->products_name . ' <small>(' . $currencies->format($sInfo->products_price) . ')</small>' : tep_draw_products_pull_down('products_id', 'style="font-size:10px"', $specials_array); echo tep_draw_hidden_field('products_price', $sInfo->products_price); ?></td>
+            <td class="main"><?php echo (isset($sInfo->products_name) && $sInfo->products_name) ? $sInfo->products_name . ' <small>(' . $currencies->format(isset($sInfo->products_price)?$sInfo->products_price:'') . ')</small>' : tep_draw_products_pull_down('products_id', 'style="font-size:10px"', $specials_array); echo tep_draw_hidden_field('products_price', isset($sInfo->products_price) ? $sInfo->products_price : ''); ?></td>
           </tr>
           <tr>
             <td class="main"><?php echo TEXT_SPECIALS_SPECIAL_PRICE; ?>&nbsp;</td>
-            <td class="main"><?php echo tep_draw_input_field('specials_price', $sInfo->specials_new_products_price); ?></td>
+            <td class="main"><?php echo tep_draw_input_field('specials_price', isset($sInfo->specials_new_products_price)?$sInfo->specials_new_products_price:''); ?></td>
           </tr>
           <tr>
             <td class="main"><?php echo TEXT_SPECIALS_EXPIRES_DATE; ?>&nbsp;</td>
-            <td class="main"><?php echo tep_draw_input_field('day', substr($sInfo->expires_date, 8, 2), 'size="2" maxlength="2" class="cal-TextBox"') . tep_draw_input_field('month', substr($sInfo->expires_date, 5, 2), 'size="2" maxlength="2" class="cal-TextBox"') . tep_draw_input_field('year', substr($sInfo->expires_date, 0, 4), 'size="4" maxlength="4" class="cal-TextBox"'); ?><a class="so-BtnLink" href="javascript:calClick();return false;" onmouseover="calSwapImg('BTN_date', 'img_Date_OVER',true);" onmouseout="calSwapImg('BTN_date', 'img_Date_UP',true);" onclick="calSwapImg('BTN_date', 'img_Date_DOWN');showCalendar('new_special','dteWhen','BTN_date');return false;"><?php echo tep_image(DIR_WS_IMAGES . 'cal_date_up.gif', 'Calendar', '22', '17', 'align="absmiddle" name="BTN_date"'); ?></a></td>
+            <td class="main"><?php echo tep_draw_input_field('day', isset($sInfo->expires_date)?substr($sInfo->expires_date, 8, 2):'', 'size="2" maxlength="2" class="cal-TextBox"') . tep_draw_input_field('month', isset($sInfo->expires_date) ? substr($sInfo->expires_date, 5, 2) :'', 'size="2" maxlength="2" class="cal-TextBox"') . tep_draw_input_field('year', isset($sInfo->expires_date)?substr($sInfo->expires_date, 0, 4):'', 'size="4" maxlength="4" class="cal-TextBox"'); ?><a class="so-BtnLink" href="javascript:calClick();return false;" onmouseover="calSwapImg('BTN_date', 'img_Date_OVER',true);" onmouseout="calSwapImg('BTN_date', 'img_Date_UP',true);" onclick="calSwapImg('BTN_date', 'img_Date_DOWN');showCalendar('new_special','dteWhen','BTN_date');return false;"><?php echo tep_image(DIR_WS_IMAGES . 'cal_date_up.gif', 'Calendar', '22', '17', 'align="absmiddle" name="BTN_date"'); ?></a></td>
           </tr>
         </table></td>
       </tr>

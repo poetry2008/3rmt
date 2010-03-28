@@ -40,4 +40,5 @@ define('TABLE_HEADING_PAGE', 'ページ');
 
 // JavaScriptの確認メッセージ
 define('JAVA_SCRIPT_INFO_DELETE', 'アクセスログを削除します。\nよろしいですか？');
+define('PAGE_TITLE_MENU_USER', '');
 ?>

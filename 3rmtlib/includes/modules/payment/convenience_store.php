@@ -139,7 +139,7 @@
       global $currencies;
       global $HTTP_POST_VARS;
 
-      $s_result = !$HTTP_POST_VARS['codt_fee_error'];
+      $s_result = !isset($HTTP_POST_VARS['codt_fee_error']) || !$HTTP_POST_VARS['codt_fee_error'];
       $s_message = $s_result
         ? (MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FEE . '&nbsp;' . $currencies->format($HTTP_POST_VARS['codt_fee']))
         : ('<font color="#FF0000">' . $HTTP_POST_VARS['codt_fee_error'] . '</font>');
@@ -193,7 +193,7 @@
       // 追加 - 2007.01.05 ----------------------------------------------
 	  
       // email_footer に使用する文字列
-      $s_message = $HTTP_POST_VARS['codt_fee_error']
+      $s_message = (isset($HTTP_POST_VARS['codt_fee_error']) && $HTTP_POST_VARS['codt_fee_error'])
         ? $HTTP_POST_VARS['codt_fee_error']
         : sprintf(MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_MAILFOOTER,
             $currencies->format($total),

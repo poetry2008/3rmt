@@ -36,7 +36,7 @@
   if (isset($HTTP_POST_VARS['payment'])) $payment = $HTTP_POST_VARS['payment'];
 
   if (!tep_session_is_registered('comments')) tep_session_register('comments');
-  if ($HTTP_POST_VARS['comments_added'] != '') {
+  if (isset($HTTP_POST_VARS['comments_added']) && $HTTP_POST_VARS['comments_added'] != '') {
     $comments = tep_db_prepare_input($HTTP_POST_VARS['comments']);
   }
   
@@ -361,8 +361,8 @@
                 <td width="70%" valign="top" align="right"><table width="100%" border="0" cellspacing="0" cellpadding="2"> 
                     <?php
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
-    if($HTTP_POST_VARS['point'] < $order->info['subtotal']) {
-	  $point = $HTTP_POST_VARS['point'];
+    if(@$HTTP_POST_VARS['point'] < $order->info['subtotal']) {
+	  $point = isset($HTTP_POST_VARS['point'])?$HTTP_POST_VARS['point']:0;
 	} else {
 	  $point = $order->info['subtotal'];
 	}

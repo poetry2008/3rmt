@@ -151,7 +151,7 @@
 
     $file_extension = substr($PHP_SELF, strrpos($PHP_SELF, '.'));
     $directory_array = array();
-    if (!$dir = dir(DIR_WS_MODULES . 'newsletters/')) $dir =  dir($libpath.'includes/modules/'.'newsletters/'); 
+    if (!$dir = dir($libpath.'includes/modules/'. 'newsletters/')) $dir =  dir($libpath.'includes/modules/'.'newsletters/'); 
     if($dir)
 	{
 //    if ($dir = dir(DIR_WS_MODULES . 'newsletters/') or dir($libpath.'includes/modules/'.'newsletters/')) {
@@ -220,7 +220,7 @@
     $nInfo = new objectInfo($newsletter);
 ?>
       <tr>
-        <td align="right"><?php echo '<a href="' . tep_href_link(FILENAME_NEWSLETTERS, 'page=' . $HTTP_GET_VARS['page'] . '&nID=' . $HTTP_GET_VARS['nID']) . '">' . tep_image_button('button_back.gif', IMAGE_BACK) . '</a>'; ?></td>
+        <td align="right"><!--<?php echo '<a href="' . tep_href_link(FILENAME_NEWSLETTERS, 'page=' . $HTTP_GET_VARS['page'] . '&nID=' . $HTTP_GET_VARS['nID']) . '">' . tep_image_button('button_back.gif', IMAGE_BACK) . '</a>'; ?>--></td>
       </tr>
       <tr>
         <td><tt><?php echo nl2br($nInfo->content); ?></tt></td>

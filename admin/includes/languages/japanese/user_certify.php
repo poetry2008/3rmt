@@ -24,5 +24,5 @@ define('BUTTON_LOGIN', 'ログイン');
 
 // 項目名
 !defined('TABLE_HEADING_USER') && define('TABLE_HEADING_USER', 'ユーザ');
-define('TABLE_HEADING_PASSWORD', 'パスワード');
+!defined('TABLE_HEADING_PASSWORD')&& define('TABLE_HEADING_PASSWORD', 'パスワード');
 ?>

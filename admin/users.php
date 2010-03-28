@@ -1071,7 +1071,7 @@ function PageHeader() {
 	echo '<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">' . "\n";
 
 	// ユーザ情報、パスワード変更、管理者権限のとき確認メッセージ JavaScript 出力
-	if ($GLOBALS['execute_user'] || $GLOBALS['execute_password'] || $GLOBALS['execute_permission'] ) {
+	if ((isset($GLOBALS['execute_user']) && $GLOBALS['execute_user']) || (isset($GLOBALS['execute_password']) && $GLOBALS['execute_password']) || (isset($GLOBALS['execute_permission']) && $GLOBALS['execute_permission']) ) {
 		putJavaScript_ConfirmMsg();						// 確認メッセージを表示する JavaScript
 	}
 
@@ -1170,29 +1170,29 @@ function PageFooter() {
 // 画面表示、入力チェックＤＢ反映
 	if ($ocertify->auth_user) {
 		// ユーザ管理メニュー
-		if ($execute_menu) {
+		if (isset($execute_menu) && $execute_menu) {
 			UserManu_preview();								// 初期表示
 
 		// ユーザの追加
-		} elseif ($execute_new) {
-			if ($execute_insert) UserInsert_execute();		// ユーザの追加処理実行
+		} elseif (isset($execute_new) && $execute_new) {
+			if (isset($execute_insert) && $execute_insert) UserInsert_execute();		// ユーザの追加処理実行
 			else UserInsert_preview();						// ユーザの追加ページ表示
 
 		// ユーザ情報保守
-		} elseif ($execute_user) {
-			if ($execute_update) UserInfor_execute();		// ユーザ情報更新処理実行
-			elseif ($execute_delete) UserDelete_execute();	// ユーザ情報削除処理実行
+		} elseif (isset($execute_user) && $execute_user) {
+			if (isset($execute_update) && $execute_update) UserInfor_execute();		// ユーザ情報更新処理実行
+			elseif (isset($execute_delete) && $execute_delete) UserDelete_execute();	// ユーザ情報削除処理実行
 			else UserInfo_preview();						// ユーザ情報ページ表示
 
 		// パスワード変更
-		} elseif ($execute_password) {
-			if ($execute_update) UserPassword_execute();	// パスワード変更処理実行
+		} elseif (isset($execute_password) && $execute_password) {
+			if (isset($execute_update) && $execute_update) UserPassword_execute();	// パスワード変更処理実行
 			else UserPassword_preview();					// パスワード変更ページ表示
 
 		// 管理者権限
-		} elseif ($execute_permission) {
-			if ($execute_grant) UserPermission_execute(0);				// 管理者権限を与える処理実行
-			elseif ($execute_revoke)  UserPermission_execute(1);		// 管理者権限を取消す処理実行
+		} elseif (isset($execute_permission) && $execute_permission) {
+			if (isset($execute_grant) && $execute_grant) UserPermission_execute(0);				// 管理者権限を与える処理実行
+			elseif (isset($execute_revoke) && $execute_revoke)  UserPermission_execute(1);		// 管理者権限を取消す処理実行
 			else UserPermission_preview();								// 管理者権限ページ表示
 
 		// ユーザ管理メニュー
