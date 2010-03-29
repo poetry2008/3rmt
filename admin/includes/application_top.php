@@ -263,6 +263,11 @@ $GLOBALS['HTTP_POST_VARS']=$_POST;
     include(DIR_WS_CLASSES . 'user_certify.php');
   }
 
+//exit($PHP_SELF);
+	if ($ocertify->npermission == 0 && $PHP_SELF != '/'.FILENAME_ORDERS) {
+    tep_redirect(FILENAME_ORDERS);
+  }
+
 // define our localization functions
   require(DIR_WS_FUNCTIONS . 'localization.php');
 

@@ -472,7 +472,13 @@ function mail_text(st,tt,ot){
       <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
       <td class="pageHeading" align="right">
 			<!---->
+      <?php
+	if ($ocertify->npermission) {
+    ?>
 			<?php echo '<a href="' . tep_href_link(FILENAME_ORDERS_EDIT, tep_get_all_get_params(array('action','status')) . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>'; ?>
+      <?php 
+  }
+?>
 			<?php echo '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action','status'))) . '">' . tep_image_button('button_back.gif', IMAGE_BACK) . '</a>'; ?></td>
       <!---->
     </tr>
@@ -585,7 +591,7 @@ function mail_text(st,tt,ot){
      '      <td class="dataTableContent" valign="top" align="right">' . $order->products[$i]['qty'] . '&nbsp;x</td>' . "\n" .
      '      <td class="dataTableContent" valign="top">' . $order->products[$i]['name'];
 
-      if ($order->products[$i]['attributes'] && ($k = sizeof($order->products[$i]['attributes'])) > 0) {
+      if (isset($order->products[$i]['attributes']) && $order->products[$i]['attributes'] && ($k = sizeof($order->products[$i]['attributes'])) > 0) {
     for ($j = 0; $j < $k; $j++) {
     echo '<br><nobr><small>&nbsp;<i> - ' . $order->products[$i]['attributes'][$j]['option'] . ': ' . $order->products[$i]['attributes'][$j]['value'];
     if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')<br>';
@@ -683,6 +689,11 @@ function mail_text(st,tt,ot){
 	  <tr>
     <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '5'); ?></td>
       </tr> 
+
+
+      <?php 
+	if ($ocertify->npermission == 15) {
+  ?>
 	  <?php echo tep_draw_form('status', FILENAME_ORDERS, tep_get_all_get_params(array('action')) . 'action=update_order'); ?>
 	  <tr>
 	    <td class="main"><b><?php echo ENTRY_STATUS; ?></b>
@@ -765,6 +776,7 @@ function mail_text(st,tt,ot){
     		  </tr>
 	  </form>
       <tr>
+    <?php }?>
     <td colspan="2" align="right">
 		<?php echo '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action','status'))) . '">' . tep_image_button('button_back.gif', IMAGE_BACK) . '</a>'; ?></td>
     </td>
@@ -933,7 +945,13 @@ function mail_text(st,tt,ot){
     <?php tep_site_filter(FILENAME_ORDERS);?>
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
     <tr class="dataTableHeadingRow">
+<?php 
+	if ($ocertify->npermission) {
+?>
       <td class="dataTableHeadingContent"><input type="checkbox" name="all_chk" onClick="all_check()"></td>
+<?php 
+  }
+?>
       <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_SITE; ?></td>
       <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CUSTOMERS; ?></td>
       <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ORDER_TOTAL; ?></td>
@@ -1101,14 +1119,26 @@ function mail_text(st,tt,ot){
 	  echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, 'oID='.$orders['orders_id']).'\'">' . "\n";
   }
 ?>
+  <?php 
+	if ($ocertify->npermission) {
+    ?>
 				<td style="border-bottom:1px solid #000000;" class="dataTableContent">
           <input type="checkbox" name="chk[]" value="<?php echo $orders['orders_id']; ?>" onClick="chg_tr_color(this)">
         </td>
+<?php 
+  }
+?>
 				<td style="border-bottom:1px solid #000000;" class="dataTableContent" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><?php echo $orders['romaji'];?></td>
 				<td style="border-bottom:1px solid #000000;" class="dataTableContent" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)">
           <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $orders['orders_id'] . '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);?></a>&nbsp;
+  <?php 
+	if ($ocertify->npermission) {
+    ?>
           <a href="<?php echo tep_href_link('orders.php', 'cID=' . tep_output_string_protected($orders['customers_id']));?>"><?php echo tep_image(DIR_WS_ICONS . 'search.gif', '過去の注文');?></a>&nbsp;
           <a href="<?php echo tep_href_link('customers.php', 'page=1&cID=' . tep_output_string_protected($orders['customers_id']) . '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS . 'arrow_r_red.gif', '顧客情報');?></a>&nbsp;&nbsp;
+          <?php 
+  }
+  ?>
           <b><?php echo tep_output_string_protected($orders['customers_name']);?></b>
         </td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><?php echo strip_tags($orders['order_total']); ?></td>
