@@ -667,7 +667,7 @@ $c_id = tep_db_prepare_input($HTTP_GET_VARS['cID']);
                     </tr>
                   </table></td>
                 <?php
-				  if($list_id && tep_not_null($list_id)) {
+				  if(isset($list_id) && $list_id && tep_not_null($list_id)) {
 					$cquery = tep_db_query("
               select * 
               from ".TABLE_PRESENT_APPLICANT." 
@@ -682,7 +682,7 @@ $c_id = tep_db_prepare_input($HTTP_GET_VARS['cID']);
 				  $present = array();
 				  switch ($HTTP_GET_VARS['action']) {
 					default:
-					  if ($list_id && tep_not_null($list_id)) {
+					  if (isset($list_id) && $list_id && tep_not_null($list_id)) {
 						$heading[] = array('text' => '<b>' . $c_title . '</b>');
 				
 						$present[] = array('align' => 'center', 'text' => '<br><br><a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action','list_id')) . 'list_id=' . $list_id  .'&action=listview') . '">' . tep_image_button('button_list_indication.gif', '表示') .'</a> <a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))) . '">' . tep_image_button('button_back.gif', '戻る') . '</a>');

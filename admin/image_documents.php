@@ -688,7 +688,7 @@
       $contents[] = array ('text' => '<br>' . TEXT_UPLOAD_FILE_NAME . '<br>' . tep_draw_file_field ('documents_name') );
       $contents[] = array ('text' => '<br>' . TEXT_UPLOAD_FILE_TITLE . '<br>' . tep_draw_input_field ('documents_title') );
       $contents[] = array ('text' => '<br>' . TEXT_INFO_SORT_ORDER . ' ' . tep_draw_input_field ('sort_order', '', 'size=5') );
-      $contents[] = array ('text' => '<br>' . TEXT_INFO_DOCUMENT_VISIBLE . '<br>' . tep_draw_checkbox_field ('documents_visible', 'True', ( ($dInfo->documents_visible == 'True') ? true : false) . TEXT_IS_VISIBLE));
+      $contents[] = array ('text' => '<br>' . TEXT_INFO_DOCUMENT_VISIBLE . '<br>' . tep_draw_checkbox_field ('documents_visible', 'True', ( (isset($dInfo->documents_visible) && $dInfo->documents_visible == 'True') ? true : false) . TEXT_IS_VISIBLE));
       $contents[] = array ('align' => 'center', 'text' => '<br>' . tep_image_submit ('button_upload.gif', IMAGE_UPLOAD) . ' <a href="' . tep_href_link (FILENAME_IMAGE_DOCUMENTS, (isset($_GET['info']) ? 'info=' . urlencode($_GET['info']) : '')) . '">' . tep_image_button ('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
 

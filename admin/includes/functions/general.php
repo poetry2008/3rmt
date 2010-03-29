@@ -2244,5 +2244,58 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
     else 
       return $cid;
   }
+  function tep_get_product_by_id($pid,$site_id, $lid, $default = true){
+    $sql = "
+        SELECT p.products_id, 
+               p.products_quantity, 
+               p.products_model, 
+               p.products_image, 
+               p.products_image2, 
+               p.products_image3, 
+               p.products_price, 
+               p.products_date_added, 
+               p.products_date_available, 
+               p.products_weight,
+               p.products_status,
+               p.products_tax_class_id, 
+               p.manufacturers_id,
+               p.products_ordered,
+               p.products_bflag,
+               p.products_cflag,
+               p.products_small_sum,
+               p.option_type,
+               pd.language_id,
+               pd.products_name, 
+               pd.products_description,
+               pd.site_id,
+               pd.products_attention_1, 
+               pd.products_attention_2, 
+               pd.products_attention_3, 
+               pd.products_attention_4, 
+               pd.products_attention_5, 
+               pd.products_url,
+               pd.products_viewed
+        FROM " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
+        WHERE p.products_id = '" . $pid . "' 
+          AND p.products_status = '1' 
+          AND pd.products_id = '" .  $pid . "'" . " 
+          AND pd.language_id ='" . $lid . "' 
+          "; 
+    if ($default) {
+      $sql .= "
+        AND (pd.site_id = '0'
+         OR pd.site_id = '".$site_id."')
+        ORDER BY pd.site_id DESC
+        ";
+    } else {
+      $sql .= "
+          AND pd.site_id='" . $site_id . "' 
+      ";
+    }
+    //echo $sql;
+    $product_query = tep_db_query($sql);
+    $product = tep_db_fetch_array($product_query);
+    return $product;
+  }
 ?>
 

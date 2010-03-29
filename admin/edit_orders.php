@@ -959,7 +959,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 		     '	    <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input name='update_products[$orders_products_id][name]' size='64' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
 			 '      &nbsp;&nbsp;キャラ名：' . "<input type='hidden' name='dummy' value='あいうえお眉幅'><input name='update_products[$orders_products_id][character]' size='20' value='" . $order->products[$i]['character'] . "'>";
 		// Has Attributes?
-		if (sizeof($order->products[$i]['attributes']) > 0) {
+    if ($order->products[$i]['attributes'] && sizeof($order->products[$i]['attributes']) > 0) {
 			for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
 				$orders_products_attributes_id = $order->products[$i]['attributes'][$j]['orders_products_attributes_id'];
 				echo '<br><nobr><small>&nbsp;<i> - ' . 

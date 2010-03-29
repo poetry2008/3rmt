@@ -14,7 +14,7 @@
   $languages = tep_get_languages();
 
   if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action']) {
-    $page_info = 'option_page=' . $HTTP_GET_VARS['option_page'] . '&value_page=' . $HTTP_GET_VARS['value_page'] . '&attribute_page=' . $HTTP_GET_VARS['attribute_page'];
+    $page_info = 'option_page=' . (isset($HTTP_GET_VARS['option_page'])?$HTTP_GET_VARS['option_page']:'') . '&value_page=' . (isset($HTTP_GET_VARS['value_page'])?$HTTP_GET_VARS['value_page']:'') . '&attribute_page=' . (isset($HTTP_GET_VARS['attribute_page'])?$HTTP_GET_VARS['attribute_page']:'');
     switch($HTTP_GET_VARS['action']) {
       case 'add_product_options':
         for ($i = 0, $n = sizeof($languages); $i < $n; $i ++) {
@@ -752,7 +752,7 @@ function go_option() {
             <td class="smallText">&nbsp;<b><?php echo $options_name; ?></b>&nbsp;</td>
             <td class="smallText">&nbsp;<b><?php echo $values_name; ?></b>&nbsp;</td>
             <td align="right" class="smallText">&nbsp;<b><?php echo $attributes_values["options_values_price"]; ?></b>&nbsp;</td>
-			<td align="center" class="smallText">&nbsp;<?php echo $attributes_values["products_stock"]; ?>&nbsp;</td>
+            <td align="center" class="smallText">&nbsp;<?php echo isset($attributes_values['products_stock'])?$attributes_values["products_stock"]:''; ?>&nbsp;</td>
             <td align="center" class="smallText">&nbsp;<b><?php echo $attributes_values["price_prefix"]; ?></b>&nbsp;</td>
             <td align="center" class="smallText">&nbsp;<b><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=delete_attribute&attribute_id=' . $HTTP_GET_VARS['attribute_id']) . '">'; ?><?php echo tep_image_button('button_confirm.gif', IMAGE_CONFIRM); ?></a>&nbsp;&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '&option_page=' . $option_page . '&value_page=' . $value_page . '&attribute_page=' . $attribute_page, 'NONSSL') . '">'; ?><?php echo tep_image_button('button_cancel.gif', IMAGE_CANCEL); ?></a>&nbsp;</b></td>
 <?php
@@ -829,7 +829,7 @@ function go_option() {
                 <tr class="<?php echo (!($rows % 2)? 'attributes-even' : 'attributes-odd');?>">
                   <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_DOWNLOAD; ?>&nbsp;</td>
                   <td class="smallText"><?php echo TABLE_TEXT_FILENAME; ?></td>
-                  <td class="smallText"><?php echo tep_draw_input_field('products_attributes_filename', $products_attributes_filename, 'size="15"'); ?>&nbsp;</td>
+                  <td class="smallText"><?php echo tep_draw_input_field('products_attributes_filename', isset($products_attributes_filename)?$products_attributes_filename:'', 'size="15"'); ?>&nbsp;</td>
                   <td class="smallText"><?php echo TABLE_TEXT_MAX_DAYS; ?></td>
                   <td class="smallText"><?php echo tep_draw_input_field('products_attributes_maxdays', $products_attributes_maxdays, 'size="5"'); ?>&nbsp;</td>
                   <td class="smallText"><?php echo TABLE_TEXT_MAX_COUNT; ?></td>

@@ -245,7 +245,7 @@
       </form></tr>
 <?php
     } else {
-      if ($HTTP_GET_VARS['origin']) {
+      if (isset($HTTP_GET_VARS['origin']) && $HTTP_GET_VARS['origin']) {
         $back_url = $HTTP_GET_VARS['origin'];
         $back_url_params = '';
       } else {
@@ -333,9 +333,9 @@
       }
 
       if ( isset($rInfo) && (is_object($rInfo)) && ($reviews['reviews_id'] == $rInfo->reviews_id) ) {
-        echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_REVIEWS, 'page=' . $HTTP_GET_VARS['page'] . '&rID=' . $rInfo->reviews_id . '&action=preview') . '\'">' . "\n";
+        echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_REVIEWS, 'page=' . $HTTP_GET_VARS['page'] . '&rID=' . $rInfo->reviews_id . '&site_id=' . (isset($HTTP_GET_VARS['site_id'])?$HTTP_GET_VARS['site_id']:''). '&action=preview') . '\'">' . "\n";
       } else {
-        echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_REVIEWS, 'page=' . $HTTP_GET_VARS['page'] . '&rID=' . $reviews['reviews_id']) . '\'">' . "\n";
+        echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_REVIEWS, 'page=' . $HTTP_GET_VARS['page'] . '&rID=' . $reviews['reviews_id']. '&site_id=' . (isset($HTTP_GET_VARS['site_id'])?$HTTP_GET_VARS['site_id']:'')) . '\'">' . "\n";
       }
 ?>
                 <td class="dataTableContent"><?php echo $reviews['romaji'];?></td>

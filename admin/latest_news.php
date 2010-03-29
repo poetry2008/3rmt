@@ -25,13 +25,14 @@
         tep_redirect(tep_href_link(FILENAME_LATEST_NEWS));
         break;
       case 'setfirst':
+        $latest_news = tep_get_latest_news_by_id($HTTP_GET_VARS['latest_news_id']);
         if ($HTTP_GET_VARS['isfirst'] == '0') {
           if ($HTTP_GET_VARS['latest_news_id']) {
             tep_db_query("update " . TABLE_LATEST_NEWS . " set isfirst = '" . $HTTP_GET_VARS['isfirst'] . "' where news_id = '" . $HTTP_GET_VARS['latest_news_id'] . "'");
           }
         }
         if ($HTTP_GET_VARS['isfirst'] == '1') {
-          $listAllQuery = tep_db_query("select * from " . TABLE_LATEST_NEWS . " where isfirst = '1'");
+          $listAllQuery = tep_db_query("select * from " . TABLE_LATEST_NEWS . " where isfirst = '1' and site_id = '".$latest_news['site_id']."'");
           $listAllRes = tep_db_fetch_array($listAllQuery);
           if (!$listAllRes) {
             if ($HTTP_GET_VARS['latest_news_id']) {
