@@ -44,7 +44,11 @@
         $products_description = tep_db_fetch_array($products_description);
         */
         $products_description = tep_get_products_description($orders['products_id'], $languages_id) ;
-        $products_description = strip_tags(substr ($products_description['products_description'],0,96));
+        if($products_description){
+          $products_description = strip_tags(substr($products_description['products_description'],0,96));
+        } else {
+          $products_description = '';
+        }
 	  echo '
 
 <td width="25%" align="center" class="smallText">		

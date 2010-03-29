@@ -338,8 +338,13 @@ if ($srCompare > SR_COMPARE_NO) {
       }
   ?>
                 <td class="dataTableContent" align="right"><?php echo $info[0]['order']; ?></td>
-                <td class="dataTableContent" align="right"><?php echo $info[$last - 1]['totitem']; ?></td>
-                <td class="dataTableContent" align="right"><?php echo $currencies->format($info[$last - 1]['totsum']);?></td>
+                <td class="dataTableContent" align="right"><?php 
+                if(isset($info[$last - 1]['totitem']) ) 
+                echo $info[$last - 1]['totitem']; 
+  ?></td>
+                <td class="dataTableContent" align="right"><?php 
+                if(isset($info[$last - 1]['totsum']) ) 
+                echo $currencies->format($info[$last - 1]['totsum']);?></td>
                 <td class="dataTableContent" align="right"><?php echo $currencies->format($info[0]['shipping']);?></td>
               </tr>
               <?php
