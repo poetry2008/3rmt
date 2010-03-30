@@ -245,7 +245,7 @@ function makeDeleteUser($nmode=0) {
 	$ssql = "delete from ";
 	if ($nmode == 0) {
 		// DES で暗号化する
-		$cryot_password = (string) crypt($aval['password']);
+		$cryot_password = (string) crypt(isset($aval['password'])?$aval['password']:'');
 		// ユーザ管理テーブルへの追加 sql 文字列生成
 		$ssql .= TABLE_USERS;
 	} else {
@@ -820,7 +820,7 @@ function UserInfor_execute() {
 
 	echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));			// <form>タグの出力
 
-	if (is_array($aerror)) {			// 入力エラーのとき
+	if (isset($aerror) && is_array($aerror)) {			// 入力エラーのとき
 		print_err_message($aerror);		// エラーメッセージ表示
 		echo "<br>\n";
 		echo tep_draw_hidden_field('userslist', $GLOBALS['userid']);						// ユーザＩＤを隠し項目にセットする
@@ -867,7 +867,7 @@ function UserDelete_execute() {
 
 	echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));		// <form>タグの出力
 
-	if (is_array($aerror)) {			// 入力エラーのとき
+	if (isset($aerror)&&is_array($aerror)) {			// 入力エラーのとき
 		print_err_message($aerror);		// エラーメッセージ表示
 		echo "<br>\n";
 		echo tep_draw_hidden_field('userslist', $GLOBALS['userid']);	// ユーザＩＤを隠し項目にセットする
@@ -932,7 +932,7 @@ function UserPassword_execute() {
 
 	echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));			// <form>タグの出力
 
-	if (is_array($aerror)) {			// 入力エラーのとき
+	if (isset($aerror) && is_array($aerror)) {			// 入力エラーのとき
 		print_err_message($aerror);		// エラーメッセージ表示
 		echo "<br>\n";
 		echo tep_draw_hidden_field('userslist', $GLOBALS['userid']);		// ユーザＩＤを隠し項目にセットする

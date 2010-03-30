@@ -146,7 +146,7 @@
  */
 
     function add_text($text = '') {
-      $this->text = mb_convert_encoding(mb_convert_kana($text, "KV"), 'JIS', 'EUC');
+      $this->text = mb_convert_encoding(mb_convert_kana($text, "KV"), 'iso-2022-jp' );
     }
 
 /**

@@ -328,4 +328,3 @@ $GLOBALS['HTTP_POST_VARS']=$_POST;
   $testArray = array();
   $logNumber = 1;
   //end for sql_log
-?>

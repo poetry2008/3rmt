@@ -88,7 +88,7 @@ if (!isset($HTTP_GET_VARS['pto'])) $HTTP_GET_VARS['pto'] = NULL;
     tep_redirect(tep_href_link(FILENAME_ADVANCED_SEARCH, 'errorno=' . $errorno . '&' . tep_get_all_get_params(array('x', 'y'))));
   } else {
     $breadcrumb->add(NAVBAR_TITLE1, tep_href_link(FILENAME_ADVANCED_SEARCH));
-    $breadcrumb->add(NAVBAR_TITLE2, tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 'keywords=' . $HTTP_GET_VARS['keywords'] . '&search_in_description=' . $HTTP_GET_VARS['search_in_description'] . '&categories_id=' . $HTTP_GET_VARS['categories_id'] . '&inc_subcat=' . $HTTP_GET_VARS['inc_subcat'] . '&manufacturers_id=' . (isset($HTTP_GET_VARS['manufacturers_id'])?$HTTP_GET_VARS['manufacturers_id']:'') . '&pfrom=' . $HTTP_GET_VARS['pfrom'] . '&pto=' . $HTTP_GET_VARS['pto'] . '&dfrom=' . $HTTP_GET_VARS['dfrom'] . '&dto=' . $HTTP_GET_VARS['dto']));
+    $breadcrumb->add(NAVBAR_TITLE2, tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 'keywords=' . $HTTP_GET_VARS['keywords'] . '&search_in_description=' . (isset($HTTP_GET_VARS['search_in_description']) ? $HTTP_GET_VARS['search_in_description']:'') . '&categories_id=' . $HTTP_GET_VARS['categories_id'] . '&inc_subcat=' . $HTTP_GET_VARS['inc_subcat'] . '&manufacturers_id=' . (isset($HTTP_GET_VARS['manufacturers_id'])?$HTTP_GET_VARS['manufacturers_id']:'') . '&pfrom=' . $HTTP_GET_VARS['pfrom'] . '&pto=' . $HTTP_GET_VARS['pto'] . '&dfrom=' . $HTTP_GET_VARS['dfrom'] . '&dto=' . $HTTP_GET_VARS['dto']));
 ?>
 <?php page_head();?>
 <?php

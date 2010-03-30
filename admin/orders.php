@@ -1114,9 +1114,9 @@ function mail_text(st,tt,ot){
 	}
 	
   if ( (isset($oInfo) && is_object($oInfo)) && ($orders['orders_id'] == $oInfo->orders_id) ) {
-	  echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, 'oID='.$orders['orders_id']).'\'">' . "\n";
+	  echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" ondblclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, 'oID='.$orders['orders_id']).'\'">' . "\n";
   } else {
-	  echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, 'oID='.$orders['orders_id']).'\'">' . "\n";
+	  echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" ondblclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, 'oID='.$orders['orders_id']).'\'">' . "\n";
   }
 ?>
   <?php 

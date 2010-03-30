@@ -12,19 +12,14 @@
 
   Released under the GNU General Public License
 */
-
-
   require('includes/application_top.php');
-  require("includes/jcode.phps");
-  
+  //require("includes/jcode.phps");
   $msg = "";
-
-
   if (isset($_GET['action']) && $_GET['action'] == 'download'){
 	    header("Content-Type: application/force-download");
 	    header('Pragma: public');
 	    header("Content-Disposition: attachment; filename=mag_list.csv");
-	
+      print chr(0xEF).chr(0xBB).chr(0xBF);
  	    $query = tep_db_query("
           select mag_id,
                  mag_email,
@@ -36,19 +31,19 @@
 
 	    $CsvFields = array("ＩＤ","メールアドレス","姓名");
 		for($i=0;$i<count($CsvFields);$i++){
-			print jcodeconvert($CsvFields[$i],0,2) . ",";
+			print $CsvFields[$i] . ",";
 		}
 		print "\n";
 		
 		while($result = tep_db_fetch_array($query)) {
 		  //ID
-		  print jcodeconvert($result['mag_id'],0,2) . ",";
+		  print $result['mag_id'] . ",";
 		
 		  //メールアドレス
-		  print jcodeconvert($result['mag_email'],0,2) . ",";
+		  print $result['mag_email'] . ",";
 		
 		  //姓名
-		  print jcodeconvert($result['mag_name'],0,2);
+		  print $result['mag_name'];
 		  
 		  print "\n";
 		}

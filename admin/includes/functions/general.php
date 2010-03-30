@@ -522,63 +522,91 @@
     return $languages_array;
   }
 
-  function tep_get_category_name($category_id, $language_id, $site_id = 0) {
+  function tep_get_category_name($category_id, $language_id, $site_id = 0, $default = false) {
+    if ($default && $site_id != 0 && !tep_categories_description_exist($category_id, $language_id, $site_id)) {
+      $site_id = 0;
+    }
     $category_query = tep_db_query("select categories_name from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . $category_id . "' and language_id = '" . $language_id . "' and site_id='".$site_id."'");
     $category = tep_db_fetch_array($category_query);
 
     return $category['categories_name'];
   }
 
-  function tep_get_category_image2($category_id, $language_id, $site_id = 0) {
+  function tep_get_category_image2($category_id, $language_id, $site_id = 0, $default = false) {
+    if ($default && $site_id != 0 && !tep_categories_description_exist($category_id, $language_id, $site_id)) {
+      $site_id = 0;
+    }
     $category_query = tep_db_query("select categories_image2 from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . $category_id . "' and language_id = '" . $language_id . "' and site_id = '".$site_id."'");
     $category = tep_db_fetch_array($category_query);
 
     return $category['categories_image2'];
   }
 
-  function tep_get_category_meta_text($category_id, $language_id, $site_id = 0) {
+  function tep_get_category_meta_text($category_id, $language_id, $site_id = 0, $default = false) {
+    if ($default && $site_id != 0 && !tep_categories_description_exist($category_id, $language_id, $site_id)) {
+      $site_id = 0;
+    }
     $category_query = tep_db_query("select categories_meta_text from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . $category_id . "' and language_id = '" . $language_id . "' and site_id = '".$site_id."'");
     $category = tep_db_fetch_array($category_query);
 
     return $category['categories_meta_text'];
   }
   
-  function tep_get_seo_name($category_id, $language_id, $site_id = 0) { 
+  function tep_get_seo_name($category_id, $language_id, $site_id = 0, $default = false) { 
+    if ($default && $site_id != 0 && !tep_categories_description_exist($category_id, $language_id, $site_id)) {
+      $site_id = 0;
+    }
     $category_query = tep_db_query("select * from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . $category_id . "' and language_id = '" . $language_id . "' and site_id = '".$site_id."'");
     $category = tep_db_fetch_array($category_query);
 
     return $category['seo_name'];
   }
   
-  function tep_get_categories_header_text($category_id, $language_id, $site_id = 0) {
+  function tep_get_categories_header_text($category_id, $language_id, $site_id = 0, $default = false) {
+    if ($default && $site_id != 0 && !tep_categories_description_exist($category_id, $language_id, $site_id)) {
+      $site_id = 0;
+    }
     $category_query = tep_db_query("select * from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . $category_id . "' and language_id = '" . $language_id . "' and site_id = '".$site_id."'");
     $category = tep_db_fetch_array($category_query);
 
     return $category['categories_header_text'];
   }
   
-  function tep_get_categories_footer_text($category_id, $language_id, $site_id = 0) {
+  function tep_get_categories_footer_text($category_id, $language_id, $site_id = 0, $default = false) {
+    if ($default && $site_id != 0 && !tep_categories_description_exist($category_id, $language_id, $site_id)) {
+      $site_id = 0;
+    }
     $category_query = tep_db_query("select * from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . $category_id . "' and language_id = '" . $language_id . "' and site_id = '".$site_id."'");
     $category = tep_db_fetch_array($category_query);
 
     return $category['categories_footer_text'];
   }
 
-  function tep_get_text_information($category_id, $language_id, $site_id = 0) {
+  function tep_get_text_information($category_id, $language_id, $site_id = 0, $default = false) {
+    if ($default && $site_id != 0 && !tep_categories_description_exist($category_id, $language_id, $site_id)) {
+      $site_id = 0;
+    }
     $category_query = tep_db_query("select * from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . $category_id . "' and language_id = '" . $language_id . "' and site_id = '".$site_id."'");
     $category = tep_db_fetch_array($category_query);
 
+    //print_r($category);
     return $category['text_information'];
   }
   
-  function tep_get_meta_keywords($category_id, $language_id, $site_id = 0 ) {
+  function tep_get_meta_keywords($category_id, $language_id, $site_id = 0 , $default = false) {
+    if ($default && $site_id != 0 && !tep_categories_description_exist($category_id, $language_id, $site_id)) {
+      $site_id = 0;
+    }
     $category_query = tep_db_query("select * from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . $category_id . "' and language_id = '" . $language_id . "' and site_id = '".$site_id."'");
     $category = tep_db_fetch_array($category_query);
 
     return $category['meta_keywords'];
   }
 
-  function tep_get_meta_description($category_id, $language_id, $site_id = 0) { 
+  function tep_get_meta_description($category_id, $language_id, $site_id = 0, $default = false) { 
+    if ($default && $site_id != 0 && !tep_categories_description_exist($category_id, $language_id, $site_id)) {
+      $site_id = 0;
+    }
     $category_query = tep_db_query("select * from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . $category_id . "' and language_id = '" . $language_id . "' and site_id = '".$site_id ."'");
     $category = tep_db_fetch_array($category_query);
 
@@ -2297,5 +2325,3 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
     $product = tep_db_fetch_array($product_query);
     return $product;
   }
-?>
-

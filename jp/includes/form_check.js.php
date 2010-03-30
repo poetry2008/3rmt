@@ -170,7 +170,7 @@ function check_form() {
     }
   }
 */
-  if (document.account_edit.elements['agreement_chk'].type != "hidden") {
+  if (document.account_edit.elements['agreement_chk'] && document.account_edit.elements['agreement_chk'].type != "hidden") {
     if (document.account_edit.agreement_chk.checked != true) {
       error_message = error_message + "<?php echo JS_AGREEMENT; ?>";
       error = 1;

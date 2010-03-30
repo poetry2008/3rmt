@@ -26,13 +26,13 @@
   </tr>
   <tr class="headerBar">
     <td class="headerBarContent">&nbsp;&nbsp;<?php 
-	if ($ocertify->npermission == 0) {
+	if (!isset($ocertify->npermission) || $ocertify->npermission == 0) {
     echo '<a href="' . tep_href_link(FILENAME_DEFAULT, '', 'NONSSL') . '" class="headerLink">' . HEADER_TITLE_TOP . '</a>';
   }
     ?></td>
     <td class="headerBarContent" align="right">
 		<?php 
-	if ($ocertify->npermission == 15) {
+	if (!isset($ocertify->npermission) || $ocertify->npermission == 15) {
     echo '|&nbsp;&nbsp;
                          '.tep_siteurl_pull_down_menu().'
 		&nbsp;&nbsp;|&nbsp;&nbsp;

@@ -22,11 +22,11 @@
 	*/
     // CSVファイルのチェック
     $chk_csv = true;
-    $filename = $HTTP_POST_FILES['products_csv']['name'];
+    $filename = isset($HTTP_POST_FILES['products_csv']['name'])?$HTTP_POST_FILES['products_csv']['name']:'';
     if(substr($filename, strrpos($filename,".")+1)!="csv") $chk_csv = false;
      
     // ファイル名の参照チェック
-    if($HTTP_POST_FILES['products_csv']['tmp_name']!="" && $chk_csv){
+    if(isset($HTTP_POST_FILES['products_csv']['tmp_name']) && $HTTP_POST_FILES['products_csv']['tmp_name']!="" && $chk_csv){
   	$file = fopen($products_csv,"r");
 	
 	//SQLを空にする

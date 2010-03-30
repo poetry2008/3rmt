@@ -281,7 +281,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
     if(isset($o->products[$i]['qty'])) {
       $total_tax += tep_calculate_tax(
         isset($total_products_price)?$total_products_price:0, 
-        $products_tax
+        (isset($products_tax)?$products_tax:0)
         ) * $o->products[$i]['qty'];
     }
     if(isset($total_cost)){
