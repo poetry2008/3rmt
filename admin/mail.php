@@ -39,9 +39,12 @@
     // add the message to the object
     $mimemessage->add_text($message);
     $mimemessage->build_message();
-    while ($mail = tep_db_fetch_array($mail_query)) {
-      $mimemessage->send(tep_get_fullname($mail['customers_firstname'], $mail['customers_lastname']), $mail['customers_email_address'], '', $from, $subject);
-    }
+    //while ($mail = tep_db_fetch_array($mail_query)) {
+      //$mimemessage->send(tep_get_fullname($mail['customers_firstname'], $mail['customers_lastname']), $mail['customers_email_address'], '', $from, $subject);
+    //}
+    $mail = tep_db_fetch_array($mail_query);
+    if($mail)
+    $mimemessage->send(tep_get_fullname($mail['customers_firstname'], $mail['customers_lastname']), $mail['customers_email_address'], '', $from, $subject);
 
     tep_redirect(tep_href_link(FILENAME_MAIL, 'mail_sent_to=' . urlencode($mail_sent_to)));
   }

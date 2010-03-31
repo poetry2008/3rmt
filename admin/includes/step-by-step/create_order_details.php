@@ -14,14 +14,14 @@ function hidden_payment(){
   
   if(CI == '銀行振込(買い取り)'){
     document.getElementById('trpass1').style.display = "";
-    document.getElementById('trpass2').style.display = "";
-    document.getElementById('trpass3').style.display = "";
-    document.getElementById('trpass4').style.display = "";
+    //document.getElementById('trpass2').style.display = "";
+    //document.getElementById('trpass3').style.display = "";
+    //document.getElementById('trpass4').style.display = "";
   }else{
     document.getElementById('trpass1').style.display = "none";
-    document.getElementById('trpass2').style.display = "none";
-    document.getElementById('trpass3').style.display = "none";
-    document.getElementById('trpass4').style.display = "none";
+    //document.getElementById('trpass2').style.display = "none";
+    //document.getElementById('trpass3').style.display = "none";
+    //document.getElementById('trpass4').style.display = "none";
   }
 }
 </script>

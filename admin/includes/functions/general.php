@@ -2050,7 +2050,7 @@ function tep_get_image_document_image($document_id)
           $products[$product['orders_id']][] = $product;
         }
       }
-      if ($products[$orders_id]) {
+      if (isset($products[$orders_id]) && $products[$orders_id]) {
         foreach($products[$orders_id] as $p){
             $str .= $p['products_name'] . " 当社のキャラクター名：\n";
             $str .= $p['products_attention_5'] . "\n";

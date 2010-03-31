@@ -659,11 +659,11 @@
 	}
 	
 function mess(){
-  if(document.getElementById('pp').value == "" || document.getElementById('pp').value < 1){
-    alert("価格情報を入力して下さい");
-	document.getElementById('pp').focus();
-	return false;
-  }
+  //if(document.getElementById('pp').value == "" || document.getElementById('pp').value < 1){
+    //alert("価格情報を入力して下さい");
+	//document.getElementById('pp').focus();
+	//return false;
+  //}
 }
 </script>
 </head>

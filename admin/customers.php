@@ -162,10 +162,10 @@ function check_form() {
 <?php if (ACCOUNT_COMPANY == 'true') echo 'var entry_company = document.customers.entry_company.value;' . "\n"; ?>
 <?php if (ACCOUNT_DOB == 'true') echo 'var customers_dob = document.customers.customers_dob.value;' . "\n"; ?>
   var customers_email_address = document.customers.customers_email_address.value;  
-  var entry_street_address = document.customers.entry_street_address.value;
-  var entry_postcode = document.customers.entry_postcode.value;
-  var entry_city = document.customers.entry_city.value;
-  var customers_telephone = document.customers.customers_telephone.value;
+  //var entry_street_address = document.customers.entry_street_address.value;
+  //var entry_postcode = document.customers.entry_postcode.value;
+  //var entry_city = document.customers.entry_city.value;
+  //var customers_telephone = document.customers.customers_telephone.value;
 
 <?php if (ACCOUNT_GENDER == 'true') { ?>
   if (document.customers.customers_gender[0].checked || document.customers.customers_gender[1].checked) {
@@ -210,10 +210,10 @@ function check_form() {
   }
 <?php } ?>
 
-  if (document.customers.entry_country_id.value == 0) {
-    error_message = error_message + "<?php echo JS_COUNTRY; ?>";
-    error = 1;
-  }
+  //if (document.customers.entry_country_id.value == 0) {
+    //error_message = error_message + "<?php echo JS_COUNTRY; ?>";
+    //error = 1;
+  //}
   if (error == 1) {
     alert(error_message);
     return false;
