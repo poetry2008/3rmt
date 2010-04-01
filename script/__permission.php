@@ -14,6 +14,7 @@ chmod('admin/upload_images/0/manufacturers/', 0777);
 chmod('admin/upload_images/0/imagecache/', 0777);
 chmod('admin/upload_images/0/imagecache2/', 0777);
 chmod('admin/upload_images/0/imagecache3/', 0777);
+chmod('admin/upload_images/0/imageDocuments/', 0777);
 
 chmod('admin/upload_images/1/products/', 0777);
 chmod('admin/upload_images/1/categories/', 0777);

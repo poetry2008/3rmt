@@ -523,7 +523,7 @@
     $directory_array = image_document_types(); 
     while ($documents = tep_db_fetch_array($documents_query)) {
     
-    if (!is_object ($dInfo) && !isset ($_GET['did']) || (isset ($_GET['did']) && ($_GET['did'] == $documents['documents_id'] ) ) ) {
+    if ((!isset($dInfo) || !is_object ($dInfo)) && !isset ($_GET['did']) || (isset ($_GET['did']) && ($_GET['did'] == $documents['documents_id'] ) ) ) {
       $dInfo = new objectInfo ($documents);
     }
       
@@ -583,7 +583,7 @@
 ?>
   </form>
                 </td>
-                <td class="dataTableContent" align="right"><?php if (isset($dInfo) && is_object($dInfo) && ($documents['documents_id'] == $dInfo->documents_id)) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif'); } else { echo '<a href="' . tep_href_link(FILENAME_IMAGE_DOCUMENTS, tep_get_all_get_params (array ('did') ) . 'did=' . $documents['documents_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
+                <td class="dataTableContent" align="right"><?php if (isset($dInfo) && is_object($dInfo) && (isset($dInfo->documents_id) && $documents['documents_id'] == $dInfo->documents_id)) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif'); } else { echo '<a href="' . tep_href_link(FILENAME_IMAGE_DOCUMENTS, tep_get_all_get_params (array ('did') ) . 'did=' . $documents['documents_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
               </tr>
 <?php
     } // while
@@ -631,7 +631,7 @@
       $contents[] = array ('text' => '<br>' . TEXT_INFO_TYPE_DESCRIPTION . ' ' . tep_draw_input_field ('type_description') );
       $contents[] = array ('text' => '<br>' . TEXT_INFO_TYPE_SORT_ORDER . ' ' . tep_draw_input_field ('sort_order', '', 'size=5') );
       $contents[] = array ('text' => '<br>' . TEXT_INFO_DOCUMENT_VISIBLE . '<br>' . tep_draw_checkbox_field ('type_visible', 'True', 'True') . TEXT_IS_VISIBLE);
-      $contents[] = array ('align' => 'center', 'text' => '<br>' . tep_image_submit('button_update.gif', IMAGE_UPDATE) . ' <a href="' . tep_href_link (FILENAME_IMAGE_DOCUMENTS, tep_get_all_get_params (array ('action','did') ) . 'did=' . $dInfo->document_types_id) . '">' . tep_image_button ('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+      $contents[] = array ('align' => 'center', 'text' => '<br>' . tep_image_submit('button_update.gif', IMAGE_UPDATE) . ' <a href="' . tep_href_link (FILENAME_IMAGE_DOCUMENTS, tep_get_all_get_params (array ('action','did') ) . 'did=' . (isset($dInfo->document_types_id) ? $dInfo->document_types_id:'')) . '">' . tep_image_button ('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
 
     case 'edit_type':

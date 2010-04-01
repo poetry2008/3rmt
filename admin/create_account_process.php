@@ -20,7 +20,7 @@
     $HTTP_POST_VARS[$col] = isset($HTTP_POST_VARS[$col]) ? tep_an_zen_to_han($HTTP_POST_VARS[$col]) : '';
   }
 
-  $gender         = tep_db_prepare_input($HTTP_POST_VARS['gender']);
+  $gender         = isset($HTTP_POST_VARS['gender']) ? tep_db_prepare_input($HTTP_POST_VARS['gender']):'';
   $firstname      = tep_db_prepare_input($HTTP_POST_VARS['firstname']);
   $lastname       = tep_db_prepare_input($HTTP_POST_VARS['lastname']);
   $dob            = tep_db_prepare_input($HTTP_POST_VARS['dob']);
@@ -30,15 +30,15 @@
   $newsletter     = tep_db_prepare_input($HTTP_POST_VARS['newsletter']);
   $password       = tep_db_prepare_input($HTTP_POST_VARS['password']);
   $confirmation   = tep_db_prepare_input($HTTP_POST_VARS['confirmation']);
-  $street_address = tep_db_prepare_input($HTTP_POST_VARS['street_address']);
-  $company        = tep_db_prepare_input($HTTP_POST_VARS['company']);
-  $suburb         = tep_db_prepare_input($HTTP_POST_VARS['suburb']);
+  $street_address = isset($HTTP_POST_VARS['street_address']) ? tep_db_prepare_input($HTTP_POST_VARS['street_address']):'';
+  $company        = isset($HTTP_POST_VARS['company'])?tep_db_prepare_input($HTTP_POST_VARS['company']):'';
+  $suburb         = isset($HTTP_POST_VARS['suburb']) ?tep_db_prepare_input($HTTP_POST_VARS['suburb']):'';
   $postcode       = tep_db_prepare_input($HTTP_POST_VARS['postcode']);
-  $city           = tep_db_prepare_input($HTTP_POST_VARS['city']);
-  $zone_id        = tep_db_prepare_input($HTTP_POST_VARS['zone_id']);
-  $site_id        = tep_db_prepare_input($HTTP_POST_VARS['site_id']);
-  $state          = tep_db_prepare_input($HTTP_POST_VARS['state']);
-  $country        = tep_db_prepare_input($HTTP_POST_VARS['country']);
+  $city           = isset($HTTP_POST_VARS['city']) ? tep_db_prepare_input($HTTP_POST_VARS['city']):'';
+  $zone_id        = isset($HTTP_POST_VARS['zone_id']) ? tep_db_prepare_input($HTTP_POST_VARS['zone_id']):'';
+  $site_id        = isset($HTTP_POST_VARS['site_id']) ? tep_db_prepare_input($HTTP_POST_VARS['site_id']):'';
+  $state          = isset($HTTP_POST_VARS['state']) ? tep_db_prepare_input($HTTP_POST_VARS['state']):'';
+  $country        = isset($HTTP_POST_VARS['country']) ? tep_db_prepare_input($HTTP_POST_VARS['country']):'';
 
   $error = false; // reset error flag
 
@@ -79,7 +79,7 @@
       $error = true;
       $entry_date_of_birth_error = true;
     }
-  }
+  
 */
   if (strlen($email_address) < ENTRY_EMAIL_ADDRESS_MIN_LENGTH) {
     $error = true;
@@ -180,7 +180,8 @@
       select customers_email_address 
       from " . TABLE_CUSTOMERS . " 
       where customers_email_address = '" . tep_db_input($email_address) . "' 
-        and customers_id <> '" . tep_db_input($customer_id) . "'
+        and site_id = '".$site_id."'
+        
   ");
   if (tep_db_num_rows($check_email)) {
     $error = true;

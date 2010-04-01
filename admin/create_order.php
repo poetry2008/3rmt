@@ -20,7 +20,8 @@
     $address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $HTTP_GET_VARS['Customer_nr'] . "'");
     $address = tep_db_fetch_array($address_query);
   } elseif (IsSet($HTTP_GET_VARS['Customer_mail'])) {
-    $account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_email_address = '" . $HTTP_GET_VARS['Customer_mail'] . "'");
+    $site_id = isset($HTTP_GET_VARS['site_id']) ? $HTTP_GET_VARS['site_id']: 0;
+    $account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_email_address = '" . $HTTP_GET_VARS['Customer_mail'] . "' and site_id = '".$site_id."'");
     $account = tep_db_fetch_array($account_query);
     $customer = $account['customers_id'];
     $address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer . "'");
@@ -63,7 +64,7 @@
 	<p class="pageHeading">登録データの有無を確認:</p>
 <?php
 	echo '<form action="' . $PHP_SELF . '" method="GET">' . "\n";
-	echo '<p class=main>メールアドレスを入力し「検索」ボタンをクリックしてください。<br>メールアドレス:&nbsp;<input type="text" name="Customer_mail" size="40">&nbsp;&nbsp;<input type="submit" value="  検索  "></p>' . "\n";
+	echo '<p class=main>メールアドレスを入力し「検索」ボタンをクリックしてください。<br>メールアドレス:&nbsp;<input type="text" name="Customer_mail" size="40">'.tep_site_pull_down_menu('', false).'&nbsp;&nbsp;<input type="submit" value="  検索  "></p>' . "\n";
 	echo '</form>' . "\n";
 ?>
 	<br>

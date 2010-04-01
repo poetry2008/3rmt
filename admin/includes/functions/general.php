@@ -1980,7 +1980,7 @@ function tep_get_image_document_path($document_id)
   $document = tep_db_fetch_array($document_query);
   if ($document)
   {
-    return DIR_WS_IMAGE_DOCUMENTS . $document['type_name'] . '/' . $document['documents_name'];
+    return tep_get_web_upload_dir() . DIR_WS_IMAGE_DOCUMENTS . $document['type_name'] . '/' . $document['documents_name'];
   }
   else
   {
@@ -1998,7 +1998,7 @@ function tep_get_new_file_path($documents_id, $type_id)
        documents_id=" . $documents_id);
    $document = tep_db_fetch_array($document_query);
 
-   return DIR_WS_IMAGE_DOCUMENTS . $type['type_name'] . '/' . $document['documents_name'];
+   return tep_get_web_upload_dir() . DIR_WS_IMAGE_DOCUMENTS . $type['type_name'] . '/' . $document['documents_name'];
 }
 
 function tep_get_image_document_url($document_id)
@@ -2010,7 +2010,7 @@ function tep_get_image_document_url($document_id)
   $document = tep_db_fetch_array($document_query);
   if ($document)
   {
-    return DIR_WS_IMAGE_DOCUMENTS . $document['type_name'] . '/' . $document['documents_name'];
+    return  tep_get_web_upload_dir() . DIR_WS_IMAGE_DOCUMENTS . $document['type_name'] . '/' . $document['documents_name'];
   }
   else
   {
@@ -2026,7 +2026,7 @@ function tep_get_image_document_image($document_id)
   $document = tep_db_fetch_array($document_query);
   if ($document)
   {
-    return '&lt;img src=&quot;' . HTTP_SERVER . '/' . DIR_WS_IMAGE_DOCUMENTS .
+    return '&lt;img src=&quot;' . HTTP_SERVER . tep_get_web_upload_dir() . DIR_WS_IMAGE_DOCUMENTS .
       $document['type_name'] . '/' .  $document['documents_name'] . '&quot;&gt;';
   }
   else

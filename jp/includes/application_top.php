@@ -2,9 +2,6 @@
 /*
   $Id$
 */
-$libpath = "/home/maker/project/3rmt/3rmtlib/";
-ini_set('include_path',ini_get('include_path').':'.$libpath);
-
 
   $GLOBALS['HTTP_GET_VARS']    = $_GET;
 
@@ -39,6 +36,9 @@ ini_set('include_path',ini_get('include_path').':'.$libpath);
 
 // include server parameters
   require('includes/configure.php');
+
+// Set lib path
+  ini_set('include_path',ini_get('include_path').':'.DIR_FS_3RMTLIB);
 
 // define the project version
   define('PROJECT_VERSION', 'osCommerce 2.2-MS1');

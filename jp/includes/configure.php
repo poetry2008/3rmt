@@ -30,6 +30,8 @@
   define('DIR_FS_CATALOG', '/home/maker/project/3rmt/jp/');
   define('DIR_FS_DOWNLOAD', DIR_FS_CATALOG . 'download/');
   define('DIR_FS_DOWNLOAD_PUBLIC', DIR_FS_CATALOG . 'pub/');
+//$libpath = "/home/maker/project/3rmt/3rmtlib/";
+  define('DIR_FS_3RMTLIB', '/home/maker/project/3rmt/3rmtlib');
 
 // define our database connection
   define('DB_SERVER', 'localhost'); // eg, localhost - should not be empty for productive servers

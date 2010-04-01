@@ -28,6 +28,8 @@ mysql_query('set names utf8');
 
 //address_format
 cptable('wm_address_format', 'address_format');
+// countries
+cptable('iimy_countries', 'countries');
 //exit;
 //banners*
 cp3table('banners');

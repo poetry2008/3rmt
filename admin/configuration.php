@@ -222,7 +222,11 @@ case 'edit':
 // for 3rmt {{{
     $contents_sites_array = array();
     $select_site_configure = tep_db_query('select * from sites order by order_num');
-    while(    $site = tep_db_fetch_array($select_site_configure)) {
+    // configuration admin page only
+    if(!in_array($cInfo->configuration_key, array(
+            'ADMINPAGE_LOGO_IMAGE'
+            ))) 
+    while($site = tep_db_fetch_array($select_site_configure)) {
 	$site_romaji[] = $site['romaji'];
 	$select_configurations = tep_db_query('select * from configuration where configuration_key =\''.$cInfo->configuration_key.'\' and site_id = '.$site['id'] );
         $fetch_result = tep_db_fetch_array($select_configurations);

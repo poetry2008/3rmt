@@ -288,7 +288,7 @@
      where r.site_id = s.id
            and r.products_id = pd.products_id
            and pd.language_id = '".$languages_id."'
-           and pd.site_id = r.site_id
+           and pd.site_id = 0
         " . (isset($HTTP_GET_VARS['site_id']) && intval($HTTP_GET_VARS['site_id']) ? " and s.id = '" . intval($HTTP_GET_VARS['site_id']) . "' " : '') . "
      order by date_added DESC";
     $reviews_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $reviews_query_raw, $reviews_query_numrows);

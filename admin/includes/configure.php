@@ -57,5 +57,5 @@ ini_set('include_path',ini_get('include_path').':'.$libpath);
   define('SQL_LOG', false);
   //add image document
   define('DIR_WS_IMAGE_DOCUMENTS', 'imageDocuments/');
-  define('DIR_FS_CATALOG_IMAGE_DOCUMENTS', DIR_FS_CATALOG.'imageDocuments/');
+  define('DIR_FS_CATALOG_IMAGE_DOCUMENTS', DIR_FS_CATALOG.'upload_images/0/imageDocuments/');
 ?>

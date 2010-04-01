@@ -38,6 +38,19 @@
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $customers_gender;
         if (ACCOUNT_DOB    == 'true') $sql_data_array['customers_dob']    = tep_date_raw($customers_dob);
         
+        $customers = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".tep_db_input($customers_id)."'"));
+        $check_email = tep_db_query("
+            select customers_email_address 
+            from " . TABLE_CUSTOMERS . " 
+            where customers_email_address = '" . tep_db_input($customers_email_address) . "' 
+              and customers_id <> '" . tep_db_input($customers['customers_id']) . "'
+              and site_id = '".$customers['site_id']."'
+              
+        ");
+        if (tep_db_num_rows($check_email)) {
+          $messageStack->add_session(ERROR_EMAIL_EXISTS, 'error');
+          tep_redirect(tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')) . 'action=edit&cID=' . $customers_id));
+        }
         //Add Point System
         if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
           $point = tep_db_prepare_input($HTTP_POST_VARS['point']);

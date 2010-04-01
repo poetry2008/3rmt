@@ -22,7 +22,7 @@
   if ($is_read_only == true) {
       $a_value = (isset($account['customers_gender']) && $account['customers_gender'] == 'm') ? MALE : FEMALE;
   } elseif ($error == true) {
-      if ($entry_gender_error == true) {
+      if (isset($entry_gender_error) && $entry_gender_error == true) {
         $a_value = tep_draw_radio_field('gender', 'm', $male) . '&nbsp;&nbsp;' . MALE . '&nbsp;&nbsp;'
          . tep_draw_radio_field('gender', 'f', $female) . '&nbsp;&nbsp;' . FEMALE . '&nbsp;' . ENTRY_GENDER_ERROR;
       } else {

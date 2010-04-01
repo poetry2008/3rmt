@@ -199,7 +199,7 @@ $GLOBALS['HTTP_POST_VARS']=$_POST;
   tep_db_connect() or die('Unable to connect to database server!');
 
 // set application wide parameters
-  $configuration_query = mysql_query('select configuration_key as cfgKey, configuration_value as cfgValue from ' . TABLE_CONFIGURATION . '');
+  $configuration_query = mysql_query('select configuration_key as cfgKey, configuration_value as cfgValue from ' . TABLE_CONFIGURATION . ' order by site_id ASC');
   while ($configuration = tep_db_fetch_array($configuration_query)) {
     if(!defined($configuration['cfgKey'])){
       define($configuration['cfgKey'], $configuration['cfgValue']);
