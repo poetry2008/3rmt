@@ -12,7 +12,7 @@
 
   require('includes/application_top.php');
 
-  switch ($HTTP_GET_VARS['action']) {
+  switch (isset($HTTP_GET_VARS['action']) ? $HTTP_GET_VARS['action']:'') {
     case 'insert':
     case 'save':
       $color_id = tep_db_prepare_input($HTTP_GET_VARS['mID']);
@@ -98,19 +98,19 @@
   $color_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $color_query_raw, $color_query_numrows);
   $color_query = tep_db_query($color_query_raw);
   while ($color = tep_db_fetch_array($color_query)) {
-    if (((!$HTTP_GET_VARS['mID']) || (@$HTTP_GET_VARS['mID'] == $color['color_id'])) && (!$mInfo) && (substr($HTTP_GET_VARS['action'], 0, 3) != 'new')) {
+    if (((!isset($HTTP_GET_VARS['mID']) || !$HTTP_GET_VARS['mID']) || (@$HTTP_GET_VARS['mID'] == $color['color_id'])) && (!isset($mInfo) || !$mInfo) && (!isset($HTTP_GET_VARS['action']) || substr($HTTP_GET_VARS['action'], 0, 3) != 'new')) {
       $mInfo_array = $color;
       $mInfo = new objectInfo($mInfo_array);
     }
 
-    if ( (is_object($mInfo)) && ($color['color_id'] == $mInfo->color_id) ) {
+    if ( (isset($mInfo) && is_object($mInfo)) && ($color['color_id'] == $mInfo->color_id) ) {
       echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_COLOR, 'page=' . $HTTP_GET_VARS['page'] . '&mID=' . $color['color_id'] . '&action=edit') . '\'">' . "\n";
     } else {
       echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_COLOR, 'page=' . $HTTP_GET_VARS['page'] . '&mID=' . $color['color_id']) . '\'">' . "\n";
     }
 ?>
                 <td class="dataTableContent"><?php echo $color['color_name']; ?></td>
-                <td class="dataTableContent" align="right"><?php if ( (is_object($mInfo)) && ($color['color_id'] == $mInfo->color_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif'); } else { echo '<a href="' . tep_href_link(FILENAME_COLOR, 'page=' . $HTTP_GET_VARS['page'] . '&mID=' . $color['color_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
+                <td class="dataTableContent" align="right"><?php if ( (isset($mInfo) && is_object($mInfo)) && ($color['color_id'] == $mInfo->color_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif'); } else { echo '<a href="' . tep_href_link(FILENAME_COLOR, 'page=' . $HTTP_GET_VARS['page'] . '&mID=' . $color['color_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
               </tr>
 <?php
   }
@@ -124,7 +124,7 @@
                 </table></td>
               </tr>
 <?php
-  if ($HTTP_GET_VARS['action'] != 'new') {
+  if (!isset($HTTP_GET_VARS['action']) || $HTTP_GET_VARS['action'] != 'new') {
 ?>
               <tr>
                 <td align="right" colspan="2" class="smallText"><?php echo '<a href="' . tep_href_link(FILENAME_COLOR, 'page=' . $HTTP_GET_VARS['page'] . '&mID=' . $mInfo->color_id . '&action=new') . '">' . tep_image_button('button_insert.gif', IMAGE_INSERT) . '</a>'; ?></td>
@@ -136,7 +136,7 @@
 <?php
   $heading = array();
   $contents = array();
-  switch ($HTTP_GET_VARS['action']) {
+  switch (isset($HTTP_GET_VARS['action'])?$HTTP_GET_VARS['action']:'') {
     case 'new':
       $heading[] = array('text' => '<b>' . TEXT_HEADING_NEW_MANUFACTURER . '</b>');
 

@@ -68,7 +68,7 @@
       $this->n_fee = 0;
       for ($i = 0; $i < count($table_fee); $i+=2) {
         if ($total_cost <= $table_fee[$i]) {
-          $this->n_fee = $table_fee[$i+1];
+          eval('$this->n_fee = '.$total_cost.$table_fee[$i + 1].';');
           $f_find = true;
           break;
         }

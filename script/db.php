@@ -1,6 +1,8 @@
 <?php
 // iimy,gm,wm to 3rmt
 
+// @todo configuration default value
+
 define('RMT_DB_HOST', 'localhost');
 define('RMT_DB_USER', 'root');
 define('RMT_DB_PASS', '123456');
@@ -35,6 +37,7 @@ cptable('iimy_countries', 'countries');
 cp3table('banners');
 //calendar*
 cp3table('calendar');
+/*
 $sql = 'select * from wm_calendar';
 $query = rq($sql);
 while($cl = mysql_fetch_array($query)){
@@ -51,6 +54,7 @@ while($cl = mysql_fetch_array($query)){
     )";
   r3q($sql);
 }
+*/
 //categories%
 cptable('categories');
 //categories_description!
@@ -138,7 +142,6 @@ while($desc = mysql_fetch_array($query)){
 }
 print("categories_description\n");
 
-/*
 //configuration!
 cp3table('configuration');
 foreach($sites as $s){
@@ -193,7 +196,6 @@ while($group = mysql_fetch_array($query)) {
       '" . $group['visible'] . "')";
   r3q($sql);
 }
-*/
 //contents*  unused
 cp3table('contents');
 //currencies%

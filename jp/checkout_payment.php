@@ -210,8 +210,8 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
   $radio_buttons = 0;
   for ($i=0, $n=sizeof($selection); $i<$n; $i++) {
     if($selection[$i]['id'] == 'buying') {
-	  //buying not view
-	} else {
+    //buying not view
+    } else {
 ?> 
                         <tr> 
                           <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 

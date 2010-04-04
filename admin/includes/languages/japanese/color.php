@@ -20,7 +20,7 @@ define('TEXT_HEADING_EDIT_MANUFACTURER', '商品カラーを編集');
 define('TEXT_HEADING_DELETE_MANUFACTURER', '商品カラーを削除');
 
 define('TEXT_COLORS', '商品カラー:');
-define('TEXT_IMAGE_NONEXISTENT', '画像が存在しません');
+//define('TEXT_IMAGE_NONEXISTENT', '画像が存在しません');
 
 define('TEXT_NEW_INTRO', '新しい商品カラーの情報を入力してください');
 define('TEXT_EDIT_INTRO', '必要な変更を加えてください');
