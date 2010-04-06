@@ -68,7 +68,7 @@
   $products_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $products_query_raw, $products_query_numrows);
   $products_query = tep_db_query($products_query_raw);
   while ($products = tep_db_fetch_array($products_query)) {
-    if (((!isset($HTTP_GET_VAR['pID']) || !$HTTP_GET_VARS['pID']) || ($HTTP_GET_VARS['pID'] == $products['products_id'])) && (!isset($pInfo) || !$pInfo) ) {
+    if (((!isset($HTTP_GET_VARS['pID']) || !$HTTP_GET_VARS['pID']) || ($HTTP_GET_VARS['pID'] == $products['products_id'])) && (!isset($pInfo) || !$pInfo) ) {
       $pInfo = new objectInfo($products);
     }
 

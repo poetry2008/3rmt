@@ -4,9 +4,6 @@
 */
 
   require("includes/application_top.php");
-//echo "<pre>";
-//print_r($_SESSION);
-//echo "</pre>";
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_SHOPPING_CART);
 

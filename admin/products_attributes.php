@@ -731,11 +731,11 @@ function go_option() {
                 <tr class="<?php echo (!($rows % 2)? 'attributes-even' : 'attributes-odd');?>">
                   <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_DOWNLOAD; ?>&nbsp;</td>
                   <td class="smallText"><?php echo TABLE_TEXT_FILENAME; ?></td>
-                  <td class="smallText"><?php echo tep_draw_input_field('products_attributes_filename', $products_attributes_filename, 'size="15"'); ?>&nbsp;</td>
+                  <td class="smallText"><?php echo tep_draw_input_field('products_attributes_filename', isset($products_attributes_filename)?$products_attributes_filename:'', 'size="15"'); ?>&nbsp;</td>
                   <td class="smallText"><?php echo TABLE_TEXT_MAX_DAYS; ?></td>
-                  <td class="smallText"><?php echo tep_draw_input_field('products_attributes_maxdays', $products_attributes_maxdays, 'size="5"'); ?>&nbsp;</td>
+                  <td class="smallText"><?php echo tep_draw_input_field('products_attributes_maxdays', isset($products_attributes_maxdays)?$products_attributes_maxdays:'', 'size="5"'); ?>&nbsp;</td>
                   <td class="smallText"><?php echo TABLE_TEXT_MAX_COUNT; ?></td>
-                  <td class="smallText"><?php echo tep_draw_input_field('products_attributes_maxcount', $products_attributes_maxcount, 'size="5"'); ?>&nbsp;</td>
+                  <td class="smallText"><?php echo tep_draw_input_field('products_attributes_maxcount', isset($products_attributes_maxcount)?$products_attributes_maxcount:'', 'size="5"'); ?>&nbsp;</td>
                 </tr>
               </table>
             </td>
