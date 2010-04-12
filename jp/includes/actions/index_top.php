@@ -52,16 +52,16 @@
     $seo_category = tep_get_category_by_id($current_category_id, SITE_ID, $languages_id);
   }
     
-  if (isset($HTTP_GET_VARS['manufacturers_id'])) {
+  if (isset($_GET['manufacturers_id'])) {
     // ccdd
-    $seo_manufacturers_query = tep_db_query("select manufacturers_id, manufacturers_name from " . TABLE_MANUFACTURERS . " where manufacturers_id = '".(int)$HTTP_GET_VARS['manufacturers_id']."'");
+    $seo_manufacturers_query = tep_db_query("select manufacturers_id, manufacturers_name from " . TABLE_MANUFACTURERS . " where manufacturers_id = '".(int)$_GET['manufacturers_id']."'");
     $seo_manufacturers = tep_db_fetch_array($seo_manufacturers_query);
   }
 
-  if (isset($HTTP_GET_VARS['tags_id']))
+  if (isset($_GET['tags_id']))
   {
     // ccdd
-    $seo_tags_query = tep_db_query("select * from " . TABLE_TAGS. " where tags_id = '".$HTTP_GET_VARS['tags_id']."'");
+    $seo_tags_query = tep_db_query("select * from " . TABLE_TAGS. " where tags_id = '".$_GET['tags_id']."'");
     $seo_tags = tep_db_fetch_array($seo_tags_query);
 }
    

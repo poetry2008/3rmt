@@ -208,29 +208,29 @@ function popupWindow(url) {
             </tr> 
             <tr> 
               <td class="main"> <?php
-  if (isset($HTTP_GET_VARS['errorno'])) {
-    if (($HTTP_GET_VARS['errorno'] & 1) == 1) {
+  if (isset($_GET['errorno'])) {
+    if (($_GET['errorno'] & 1) == 1) {
       echo str_replace('\n', '<br>', JS_AT_LEAST_ONE_INPUT);
     }
-    if (($HTTP_GET_VARS['errorno'] & 10) == 10) {
+    if (($_GET['errorno'] & 10) == 10) {
       echo str_replace('\n', '<br>', JS_INVALID_FROM_DATE);
     }
-    if (($HTTP_GET_VARS['errorno'] & 100) == 100) {
+    if (($_GET['errorno'] & 100) == 100) {
       echo str_replace('\n', '<br>', JS_INVALID_TO_DATE);
     }
-    if (($HTTP_GET_VARS['errorno'] & 1000) == 1000) {
+    if (($_GET['errorno'] & 1000) == 1000) {
       echo str_replace('\n', '<br>', JS_TO_DATE_LESS_THAN_FROM_DATE);
     }
-    if (($HTTP_GET_VARS['errorno'] & 10000) == 10000) {
+    if (($_GET['errorno'] & 10000) == 10000) {
       echo str_replace('\n', '<br>', JS_PRICE_FROM_MUST_BE_NUM);
     }
-    if (($HTTP_GET_VARS['errorno'] & 100000) == 100000) {
+    if (($_GET['errorno'] & 100000) == 100000) {
       echo str_replace('\n', '<br>', JS_PRICE_TO_MUST_BE_NUM);
     }
-    if (($HTTP_GET_VARS['errorno'] & 1000000) == 1000000) {
+    if (($_GET['errorno'] & 1000000) == 1000000) {
       echo str_replace('\n', '<br>', JS_PRICE_TO_LESS_THAN_PRICE_FROM);
     }
-    if (($HTTP_GET_VARS['errorno'] & 10000000) == 10000000) {
+    if (($_GET['errorno'] & 10000000) == 10000000) {
       echo str_replace('\n', '<br>', JS_INVALID_KEYWORDS);
     }
   }

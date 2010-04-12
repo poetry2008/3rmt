@@ -7,7 +7,7 @@ require(DIR_WS_ACTIONS.'index_top.php');
 page_head();
 ?>
 </head>
-<body<?php echo isset($body_option)?' '.$body_option:'';?>>
+<body>
 <div align="center">
 <!-- header //-->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
@@ -21,25 +21,25 @@ page_head();
       <!-- left_navigation_eof //-->
     </td>
 <?php
- if ($category_depth == 'nested') {
+  if ($category_depth == 'nested') {
   // 一级分类页面, 分类下只有子分类无商品
   //   ex: http://www.iimy.co.jp/rmt/c-169.html
   require(DIR_WS_ACTIONS.'index_nested.php');
-} elseif (isset($HTTP_GET_VARS['tags_id'])) {
+} elseif (isset($_GET['tags_id'] )) {
   // 根据标签tags_id取得产品列表
   //   ex: http://www.iimy.co.jp/tags/t-10.html
   require(DIR_WS_ACTIONS.'index_tags.php');
-} elseif ($category_depth == 'products' || isset($HTTP_GET_VARS['manufacturers_id'])) {
+} elseif ($category_depth == 'products' || isset($_GET['manufacturers_id'])) {
   // 根据当前分类或者生产商manufacturers_id商品列表
   //   ex: http://www.iimy.co.jp/game/m-2.html
   require(DIR_WS_ACTIONS.'index_products.php');
-} elseif(isset($HTTP_GET_VARS['colors']) && !empty($HTTP_GET_VARS['colors'])) {
+} elseif(isset($_GET['colors']) && !empty($_GET['colors'])) {
   // 根绝颜色color_id取得商品列表
   //   ex: http://www.iimy.co.jp/item/co-1.html
   require(DIR_WS_ACTIONS.'index_colors.php');
 
 // 选择页面左侧的快捷链接, JP中无此功能
-//} elseif(isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'select') {
+//} elseif(isset($_GET['action']) && $_GET['action'] == 'select') {
   //   require(DIR_WS_ACTIONS.'index_select.php');
 } else {
   // 默认显示首页
@@ -54,4 +54,4 @@ page_head();
 </div> 
 </body>
 </html>
-<?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
+<?php require(DIR_WS_INCLUDES . 'application_bottom.php'); 

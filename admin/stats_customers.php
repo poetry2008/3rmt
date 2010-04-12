@@ -58,7 +58,7 @@
                 <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_PURCHASED; ?>&nbsp;</td>
               </tr>
 <?php
-		if (isset($HTTP_GET_VARS['page']) and $HTTP_GET_VARS['page'] > 1) $rows = $HTTP_GET_VARS['page'] * MAX_DISPLAY_SEARCH_RESULTS - MAX_DISPLAY_SEARCH_RESULTS;
+		if (isset($_GET['page']) and $_GET['page'] > 1) $rows = $_GET['page'] * MAX_DISPLAY_SEARCH_RESULTS - MAX_DISPLAY_SEARCH_RESULTS;
   $customers_query_raw = "select c.customers_firstname, 
                                  c.customers_lastname, 
                                  sum(op.products_quantity * op.final_price) as ordersum ,
@@ -67,12 +67,12 @@
                           where c.customers_id = o.customers_id 
                             and o.orders_id = op.orders_id 
                             and c.site_id = s.id
-                            " . (isset($HTTP_GET_VARS['site_id']) && intval($HTTP_GET_VARS['site_id']) ? " and s.id = '" . intval($HTTP_GET_VARS['site_id']) . "' " : '') . "
+                            " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and s.id = '" . intval($_GET['site_id']) . "' " : '') . "
                           group by c.customers_firstname, c.customers_lastname 
                           order by ordersum DESC";
 
   $customers_query_raw2 = $customers_query_raw;
-  $customers_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $customers_query_raw, $customers_query_numrows);
+  $customers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $customers_query_raw, $customers_query_numrows);
   
   // fix counted customers
   $customers_count_query = tep_db_query($customers_query_raw2);
@@ -101,8 +101,8 @@
           <tr>
             <td colspan="3"><table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr>
-                <td class="smallText" valign="top"><?php echo $customers_split->display_count($customers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $HTTP_GET_VARS['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
-                <td class="smallText" align="right"><?php echo $customers_split->display_links($customers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page'], tep_get_all_get_params(array('page'))); ?>&nbsp;</td>
+                <td class="smallText" valign="top"><?php echo $customers_split->display_count($customers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
+                <td class="smallText" align="right"><?php echo $customers_split->display_links($customers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page'))); ?>&nbsp;</td>
               </tr>
             </table></td>
           </tr>

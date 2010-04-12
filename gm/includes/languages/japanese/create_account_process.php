@@ -15,9 +15,9 @@ define('NAVBAR_TITLE_2', '手続き');
 define('HEADING_TITLE', 'お客様情報');
 
 define('EMAIL_SUBJECT', '会員登録が完了いたしました【RMTゲームマネー】');
-define('EMAIL_GREET_MR', stripslashes($HTTP_POST_VARS['lastname']) . ' ' . stripslashes($HTTP_POST_VARS['firstname']) . ' 様 ' . "\n\n");
-define('EMAIL_GREET_MS', stripslashes($HTTP_POST_VARS['lastname']) . ' ' . stripslashes($HTTP_POST_VARS['firstname']) . ' 様 ' . "\n\n");
-define('EMAIL_GREET_NONE', stripslashes($HTTP_POST_VARS['lastname']) . ' ' . stripslashes($HTTP_POST_VARS['firstname']) . ' 様 ' . "\n\n");
+define('EMAIL_GREET_MR', stripslashes($_POST['lastname']) . ' ' . stripslashes($_POST['firstname']) . ' 様 ' . "\n\n");
+define('EMAIL_GREET_MS', stripslashes($_POST['lastname']) . ' ' . stripslashes($_POST['firstname']) . ' 様 ' . "\n\n");
+define('EMAIL_GREET_NONE', stripslashes($_POST['lastname']) . ' ' . stripslashes($_POST['firstname']) . ' 様 ' . "\n\n");
 define('EMAIL_WELCOME', 'RMTゲームマネーへの会員登録が完了いたしました。' . "\n"
 . '誠にありがとうございます。' . "\n\n");
 define('EMAIL_TEXT',

@@ -1,5 +1,5 @@
 <?php
-	$colors_title_query = tep_db_query("select color_name from ".TABLE_COLOR." where color_id = '".(int)$HTTP_GET_VARS['colors']."'");
+	$colors_title_query = tep_db_query("select color_name from ".TABLE_COLOR." where color_id = '".(int)$_GET['colors']."'");
 	$colors_title = tep_db_fetch_array($colors_title_query);
 	
   // ccdd
@@ -25,7 +25,7 @@
       and pd.products_id = p2c.products_id 
       and pd.language_id = '" . $languages_id . "' 
       and cp.products_id = p.products_id 
-      and cp.color_id = '".(int)$HTTP_GET_VARS['colors']."' 
+      and cp.color_id = '".(int)$_GET['colors']."' 
     order by pd.products_name, pd.site_id DESC
   ) p
   where site_id = '0'

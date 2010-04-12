@@ -17,11 +17,11 @@
   //-----------------
   // Process
   //-----------------
-  switch($HTTP_GET_VARS['action']) {
+  switch($_GET['action']) {
 	case 'regist':
 	  //新規登録
-	  $mag_mail = tep_db_prepare_input(tep_an_zen_to_han($HTTP_POST_VARS['email']));
-	  $mag_name = tep_db_prepare_input($HTTP_POST_VARS['name']);
+	  $mag_mail = tep_db_prepare_input(tep_an_zen_to_han($_POST['email']));
+	  $mag_name = tep_db_prepare_input($_POST['name']);
 	  
 	  //session_start
 	  tep_session_register('mag_mail');
@@ -56,7 +56,7 @@
 	  
     case 'stop':
 	  //登録削除（退会）
-	  $mag_mail = tep_db_prepare_input(tep_an_zen_to_han($HTTP_POST_VARS['email']));
+	  $mag_mail = tep_db_prepare_input(tep_an_zen_to_han($_POST['email']));
 	  if (!tep_validate_email($mag_mail)) {
 		tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_EMAIL_ERROR), 'SSL'));
 	  }

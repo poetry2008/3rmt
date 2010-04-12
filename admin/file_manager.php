@@ -17,8 +17,8 @@
     tep_session_register('current_path');
   }
 
-  if (isset($HTTP_GET_VARS['goto']) && $HTTP_GET_VARS['goto']) {
-    $current_path = $HTTP_GET_VARS['goto'];
+  if (isset($_GET['goto']) && $_GET['goto']) {
+    $current_path = $_GET['goto'];
     tep_redirect(tep_href_link(FILENAME_FILE_MANAGER));
   }
 
@@ -28,28 +28,28 @@
 
   if (!ereg('^' . DIR_FS_DOCUMENT_ROOT, $current_path)) $current_path = DIR_FS_DOCUMENT_ROOT;
 
-  if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action']) {
-    switch ($HTTP_GET_VARS['action']) {
+  if (isset($_GET['action']) && $_GET['action']) {
+    switch ($_GET['action']) {
       case 'reset':
         tep_session_unregister('current_path');
         tep_redirect(tep_href_link(FILENAME_FILE_MANAGER));
         break;
       case 'deleteconfirm':
-        if (strstr($HTTP_GET_VARS['info'], '..')) tep_redirect(tep_href_link(FILENAME_FILE_MANAGER));
+        if (strstr($_GET['info'], '..')) tep_redirect(tep_href_link(FILENAME_FILE_MANAGER));
 
-        tep_remove($current_path . '/' . $HTTP_GET_VARS['info']);
+        tep_remove($current_path . '/' . $_GET['info']);
         if (!$tep_remove_error) tep_redirect(tep_href_link(FILENAME_FILE_MANAGER));
         break;
       case 'insert':
-        if (mkdir($current_path . '/' . $HTTP_POST_VARS['folder_name'], 0777)) {
-          tep_redirect(tep_href_link(FILENAME_FILE_MANAGER, 'info=' . urlencode($HTTP_POST_VARS['folder_name'])));
+        if (mkdir($current_path . '/' . $_POST['folder_name'], 0777)) {
+          tep_redirect(tep_href_link(FILENAME_FILE_MANAGER, 'info=' . urlencode($_POST['folder_name'])));
         }
         break;
       case 'save':
-        if ($fp = fopen($current_path . '/' . $HTTP_POST_VARS['filename'], 'w+')) {
-          fputs($fp, stripslashes($HTTP_POST_VARS['file_contents']));
+        if ($fp = fopen($current_path . '/' . $_POST['filename'], 'w+')) {
+          fputs($fp, stripslashes($_POST['file_contents']));
           fclose($fp);
-          tep_redirect(tep_href_link(FILENAME_FILE_MANAGER, 'info=' . urlencode($HTTP_POST_VARS['filename'])));
+          tep_redirect(tep_href_link(FILENAME_FILE_MANAGER, 'info=' . urlencode($_POST['filename'])));
         }
         break;
       case 'processuploads':
@@ -75,8 +75,8 @@
         break;
       case 'download':
         header('Content-type: application/x-octet-stream');
-        header('Content-disposition: attachment; filename=' . urldecode($HTTP_GET_VARS['filename']));
-        readfile($current_path . '/' . urldecode($HTTP_GET_VARS['filename']));
+        header('Content-disposition: attachment; filename=' . urldecode($_GET['filename']));
+        readfile($current_path . '/' . urldecode($_GET['filename']));
         exit;
         break;
       case 'upload':
@@ -89,16 +89,16 @@
         }
         break;
       case 'edit':
-        if (strstr($HTTP_GET_VARS['info'], '..')) tep_redirect(tep_href_link(FILENAME_FILE_MANAGER));
+        if (strstr($_GET['info'], '..')) tep_redirect(tep_href_link(FILENAME_FILE_MANAGER));
 
         $file_writeable = true;
-        if (!is_writeable($current_path . '/' . $HTTP_GET_VARS['info'])) {
+        if (!is_writeable($current_path . '/' . $_GET['info'])) {
           $file_writeable = false;
-          $messageStack->add(sprintf(ERROR_FILE_NOT_WRITEABLE, $current_path . '/' . $HTTP_GET_VARS['info']), 'error');
+          $messageStack->add(sprintf(ERROR_FILE_NOT_WRITEABLE, $current_path . '/' . $_GET['info']), 'error');
         }
         break;
       case 'delete':
-        if (strstr($HTTP_GET_VARS['info'], '..')) tep_redirect(tep_href_link(FILENAME_FILE_MANAGER));
+        if (strstr($_GET['info'], '..')) tep_redirect(tep_href_link(FILENAME_FILE_MANAGER));
         break;
     }
   }
@@ -145,18 +145,18 @@
         </table></td>
       </tr>
 <?php
-  if ( isset($directory_writeable) && ($directory_writeable) && isset($HTTP_GET_VARS['action']) && (($HTTP_GET_VARS['action'] == 'new_file') || ($HTTP_GET_VARS['action'] == 'edit')) ) {
-    if (strstr($HTTP_GET_VARS['info'], '..')) tep_redirect(tep_href_link(FILENAME_FILE_MANAGER));
+  if ( isset($directory_writeable) && ($directory_writeable) && isset($_GET['action']) && (($_GET['action'] == 'new_file') || ($_GET['action'] == 'edit')) ) {
+    if (strstr($_GET['info'], '..')) tep_redirect(tep_href_link(FILENAME_FILE_MANAGER));
 
     if (!isset($file_writeable)) $file_writeable = true;
     $file_contents = '';
-    if ($HTTP_GET_VARS['action'] == 'new_file') {
+    if ($_GET['action'] == 'new_file') {
       $filename_input_field = tep_draw_input_field('filename');
-    } elseif ($HTTP_GET_VARS['action'] == 'edit') {
-      if ($file_array = file($current_path . '/' . $HTTP_GET_VARS['info'])) {
+    } elseif ($_GET['action'] == 'edit') {
+      if ($file_array = file($current_path . '/' . $_GET['info'])) {
         $file_contents = htmlspecialchars(implode('', $file_array));
       }
-      $filename_input_field = $HTTP_GET_VARS['info'] . tep_draw_hidden_field('filename', $HTTP_GET_VARS['info']);
+      $filename_input_field = $_GET['info'] . tep_draw_hidden_field('filename', $_GET['info']);
     }
 ?>
       <tr>
@@ -176,7 +176,7 @@
             <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
           <tr>
-            <td align="right" class="main" colspan="2"><?php if ($file_writeable) echo tep_image_submit('button_save.gif', IMAGE_SAVE) . '&nbsp;'; echo '<a href="' . tep_href_link(FILENAME_FILE_MANAGER, 'info=' . urlencode($HTTP_GET_VARS['info'])) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; ?></td>
+            <td align="right" class="main" colspan="2"><?php if ($file_writeable) echo tep_image_submit('button_save.gif', IMAGE_SAVE) . '&nbsp;'; echo '<a href="' . tep_href_link(FILENAME_FILE_MANAGER, 'info=' . urlencode($_GET['info'])) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; ?></td>
           </tr>
         </table></td>
       </form></tr>
@@ -228,7 +228,7 @@
               </tr>
 <?php
   for ($i = 0, $n = sizeof($contents); $i < $n; $i++) {
-    if (((!isset($HTTP_GET_VARS['info']) || !$HTTP_GET_VARS['info']) || (@$HTTP_GET_VARS['info'] == $contents[$i]['name'])) && (!isset($fInfo) || !$fInfo) && (!isset($HTTP_GET_VARS['action']) || (($HTTP_GET_VARS['action'] != 'upload') && ($HTTP_GET_VARS['action'] != 'new_folder'))) ) {
+    if (((!isset($_GET['info']) || !$_GET['info']) || (@$_GET['info'] == $contents[$i]['name'])) && (!isset($fInfo) || !$fInfo) && (!isset($_GET['action']) || (($_GET['action'] != 'upload') && ($_GET['action'] != 'new_folder'))) ) {
       $fInfo = new objectInfo($contents[$i]);
     }
 
@@ -278,7 +278,7 @@
                 <td colspan="7"><table border="0" width="100%" cellspacing="0" cellpadding="2">
                   <tr valign="top">
                     <td class="smallText"><?php echo '<a href="' . tep_href_link(FILENAME_FILE_MANAGER, 'action=reset') . '">' . tep_image_button('button_reset.gif', IMAGE_RESET) . '</a>'; ?></td>
-                    <td class="smallText" align="right"><?php echo '<a href="' . tep_href_link(FILENAME_FILE_MANAGER, 'info=' . (isset($HTTP_GET_VARS['info']) ? urlencode($HTTP_GET_VARS['info']):'') . '&action=upload') . '">' . tep_image_button('button_upload.gif', IMAGE_UPLOAD) . '</a>&nbsp;<a href="' . tep_href_link(FILENAME_FILE_MANAGER, 'info=' . (isset($HTTP_GET_VARS['info']) ? urlencode($HTTP_GET_VARS['info']):'') . '&action=new_file') . '">' . tep_image_button('button_new_file.gif', IMAGE_NEW_FILE) . '</a>&nbsp;<a href="' . tep_href_link(FILENAME_FILE_MANAGER, 'info=' . (isset($HTTP_GET_VARS['info']) ? urlencode($HTTP_GET_VARS['info']):'') . '&action=new_folder') . '">' . tep_image_button('button_new_folder.gif', IMAGE_NEW_FOLDER) . '</a>'; ?></td>
+                    <td class="smallText" align="right"><?php echo '<a href="' . tep_href_link(FILENAME_FILE_MANAGER, 'info=' . (isset($_GET['info']) ? urlencode($_GET['info']):'') . '&action=upload') . '">' . tep_image_button('button_upload.gif', IMAGE_UPLOAD) . '</a>&nbsp;<a href="' . tep_href_link(FILENAME_FILE_MANAGER, 'info=' . (isset($_GET['info']) ? urlencode($_GET['info']):'') . '&action=new_file') . '">' . tep_image_button('button_new_file.gif', IMAGE_NEW_FILE) . '</a>&nbsp;<a href="' . tep_href_link(FILENAME_FILE_MANAGER, 'info=' . (isset($_GET['info']) ? urlencode($_GET['info']):'') . '&action=new_folder') . '">' . tep_image_button('button_new_folder.gif', IMAGE_NEW_FOLDER) . '</a>'; ?></td>
                   </tr>
                 </table></td>
               </tr>
@@ -286,7 +286,7 @@
 <?php
     $heading = array();
     $contents = array();
-    switch (isset($HTTP_GET_VARS['action'])?$HTTP_GET_VARS['action']:'') {
+    switch (isset($_GET['action'])?$_GET['action']:'') {
       case 'delete':
         $heading[] = array('text' => '<b>' . $fInfo->name . '</b>');
 
@@ -301,7 +301,7 @@
         $contents = array('form' => tep_draw_form('folder', FILENAME_FILE_MANAGER, 'action=insert'));
         $contents[] = array('text' => TEXT_NEW_FOLDER_INTRO);
         $contents[] = array('text' => '<br>' . TEXT_FILE_NAME . '<br>' . tep_draw_input_field('folder_name'));
-        $contents[] = array('align' => 'center', 'text' => '<br>' . (($directory_writeable) ? tep_image_submit('button_save.gif', IMAGE_SAVE) : '') . ' <a href="' . tep_href_link(FILENAME_FILE_MANAGER, 'info=' . urlencode($HTTP_GET_VARS['info'])) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+        $contents[] = array('align' => 'center', 'text' => '<br>' . (($directory_writeable) ? tep_image_submit('button_save.gif', IMAGE_SAVE) : '') . ' <a href="' . tep_href_link(FILENAME_FILE_MANAGER, 'info=' . urlencode($_GET['info'])) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
         break;
       case 'upload':
         $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_UPLOAD . '</b>');
@@ -310,7 +310,7 @@
         $contents[] = array('text' => TEXT_UPLOAD_INTRO);
         for ($i=1; $i<6; $i++) $file_upload .= tep_draw_file_field('file_' . $i) . '<br>';
         $contents[] = array('text' => '<br>' . $file_upload);
-        $contents[] = array('align' => 'center', 'text' => '<br>' . (($directory_writeable) ? tep_image_submit('button_upload.gif', IMAGE_UPLOAD) : '') . ' <a href="' . tep_href_link(FILENAME_FILE_MANAGER, 'info=' . urlencode($HTTP_GET_VARS['info'])) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+        $contents[] = array('align' => 'center', 'text' => '<br>' . (($directory_writeable) ? tep_image_submit('button_upload.gif', IMAGE_UPLOAD) : '') . ' <a href="' . tep_href_link(FILENAME_FILE_MANAGER, 'info=' . urlencode($_GET['info'])) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
         break;
       default:
         if (is_object($fInfo)) {

@@ -22,7 +22,7 @@
     tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
   }
 
-  if (!isset($HTTP_POST_VARS['action']) || ($HTTP_POST_VARS['action'] != 'process')) {
+  if (!isset($_POST['action']) || ($_POST['action'] != 'process')) {
     tep_redirect(tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'));
   }
 
@@ -30,40 +30,40 @@
   $an_cols = array('password','confirmation','email_address','postcode','telephone','fax');
   if (ACCOUNT_DOB) $an_cols[] = 'dob';
   foreach ($an_cols as $col) {
-    if (!isset($HTTP_POST_VARS[$col])) $HTTP_POST_VARS[$col]=NULL; //del notice
-    $HTTP_POST_VARS[$col] = tep_an_zen_to_han($HTTP_POST_VARS[$col]);
+    if (!isset($_POST[$col])) $_POST[$col]=NULL; //del notice
+    $_POST[$col] = tep_an_zen_to_han($_POST[$col]);
   }
 
-    if (!isset($HTTP_POST_VARS['gender'])) $HTTP_POST_VARS['gender']=NULL; //del notice
-  $gender = tep_db_prepare_input($HTTP_POST_VARS['gender']);
-  $firstname = tep_db_prepare_input($HTTP_POST_VARS['firstname']);
-  $lastname = tep_db_prepare_input($HTTP_POST_VARS['lastname']);
+    if (!isset($_POST['gender'])) $_POST['gender']=NULL; //del notice
+  $gender = tep_db_prepare_input($_POST['gender']);
+  $firstname = tep_db_prepare_input($_POST['firstname']);
+  $lastname = tep_db_prepare_input($_POST['lastname']);
   //add
-    if (!isset($HTTP_POST_VARS['firstname_f'])) $HTTP_POST_VARS['firstname_f']=NULL; //del notice
-  $firstname_f = tep_db_prepare_input($HTTP_POST_VARS['firstname_f']);
-    if (!isset($HTTP_POST_VARS['lastname_f'])) $HTTP_POST_VARS['lastname_f']=NULL; //del notice
-  $lastname_f = tep_db_prepare_input($HTTP_POST_VARS['lastname_f']);
-  $dob = tep_db_prepare_input($HTTP_POST_VARS['dob']);
-  $email_address = tep_db_prepare_input($HTTP_POST_VARS['email_address']);
-  $telephone = tep_db_prepare_input($HTTP_POST_VARS['telephone']);
-  $fax = tep_db_prepare_input($HTTP_POST_VARS['fax']);
-  $newsletter = tep_db_prepare_input($HTTP_POST_VARS['newsletter']);
-  $password = tep_db_prepare_input($HTTP_POST_VARS['password']);
-  $confirmation = tep_db_prepare_input($HTTP_POST_VARS['confirmation']);
-    if (!isset($HTTP_POST_VARS['stree_address'])) $HTTP_POST_VARS['street_address']=NULL; //del notice
-  $street_address = tep_db_prepare_input($HTTP_POST_VARS['street_address']);
-    if (!isset($HTTP_POST_VARS['company'])) $HTTP_POST_VARS['company']=NULL; //del notice
-  $company = tep_db_prepare_input($HTTP_POST_VARS['company']);
-    if (!isset($HTTP_POST_VARS['suburb'])) $HTTP_POST_VARS['suburb']=NULL; //del notice
-  $suburb = tep_db_prepare_input($HTTP_POST_VARS['suburb']);
-  $postcode = tep_db_prepare_input($HTTP_POST_VARS['postcode']);
-    if (!isset($HTTP_POST_VARS['city'])) $HTTP_POST_VARS['city']=NULL; //del notice
-  $city = tep_db_prepare_input($HTTP_POST_VARS['city']);
-    if (!isset($HTTP_POST_VARS['zone_id'])) $HTTP_POST_VARS['zone_id']=NULL; //del notice
-  $zone_id = tep_db_prepare_input($HTTP_POST_VARS['zone_id']);
-    if (!isset($HTTP_POST_VARS['state'])) $HTTP_POST_VARS['state']=NULL; //del notice
-  $state = tep_db_prepare_input($HTTP_POST_VARS['state']);
-  $country = tep_db_prepare_input($HTTP_POST_VARS['country']);
+    if (!isset($_POST['firstname_f'])) $_POST['firstname_f']=NULL; //del notice
+  $firstname_f = tep_db_prepare_input($_POST['firstname_f']);
+    if (!isset($_POST['lastname_f'])) $_POST['lastname_f']=NULL; //del notice
+  $lastname_f = tep_db_prepare_input($_POST['lastname_f']);
+  $dob = tep_db_prepare_input($_POST['dob']);
+  $email_address = tep_db_prepare_input($_POST['email_address']);
+  $telephone = tep_db_prepare_input($_POST['telephone']);
+  $fax = tep_db_prepare_input($_POST['fax']);
+  $newsletter = tep_db_prepare_input($_POST['newsletter']);
+  $password = tep_db_prepare_input($_POST['password']);
+  $confirmation = tep_db_prepare_input($_POST['confirmation']);
+    if (!isset($_POST['stree_address'])) $_POST['street_address']=NULL; //del notice
+  $street_address = tep_db_prepare_input($_POST['street_address']);
+    if (!isset($_POST['company'])) $_POST['company']=NULL; //del notice
+  $company = tep_db_prepare_input($_POST['company']);
+    if (!isset($_POST['suburb'])) $_POST['suburb']=NULL; //del notice
+  $suburb = tep_db_prepare_input($_POST['suburb']);
+  $postcode = tep_db_prepare_input($_POST['postcode']);
+    if (!isset($_POST['city'])) $_POST['city']=NULL; //del notice
+  $city = tep_db_prepare_input($_POST['city']);
+    if (!isset($_POST['zone_id'])) $_POST['zone_id']=NULL; //del notice
+  $zone_id = tep_db_prepare_input($_POST['zone_id']);
+    if (!isset($_POST['state'])) $_POST['state']=NULL; //del notice
+  $state = tep_db_prepare_input($_POST['state']);
+  $country = tep_db_prepare_input($_POST['country']);
 
   $error = false; // reset error flag
 /*

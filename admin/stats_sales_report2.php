@@ -96,8 +96,8 @@
   $currencies = new currencies();
 
   // report views (1: yearly 2: monthly 3: weekly 4: daily)
-  if ( isset($HTTP_GET_VARS['report']) && ($HTTP_GET_VARS['report']) && (tep_not_null($HTTP_GET_VARS['report'])) ) 
-{    $srView = $HTTP_GET_VARS['report'];
+  if ( isset($_GET['report']) && ($_GET['report']) && (tep_not_null($_GET['report'])) ) 
+{    $srView = $_GET['report'];
   } else {
     $srView = $srDefaultView;
   }
@@ -106,8 +106,8 @@
   }
 
   // detail
-  if ( isset($HTTP_GET_VARS['detail']) && ($HTTP_GET_VARS['detail']) && (tep_not_null($HTTP_GET_VARS['detail'])) ) 
-{    $srDetail = $HTTP_GET_VARS['detail'];
+  if ( isset($_GET['detail']) && ($_GET['detail']) && (tep_not_null($_GET['detail'])) ) 
+{    $srDetail = $_GET['detail'];
   } else {
     $srDetail = $srDefaultDetail;
   }
@@ -116,8 +116,8 @@
   }
   
   // export
-  if ( isset($HTTP_GET_VARS['export']) && ($HTTP_GET_VARS['export']) && (tep_not_null($HTTP_GET_VARS['export'])) ) 
-{    $srExp = $HTTP_GET_VARS['export'];
+  if ( isset($_GET['export']) && ($_GET['export']) && (tep_not_null($_GET['export'])) ) 
+{    $srExp = $_GET['export'];
   } else {
     $srExp = $srDefaultExp;
   }
@@ -126,8 +126,8 @@
   }
   
   // item_level
-  if ( isset($HTTP_GET_VARS['max']) && ($HTTP_GET_VARS['max']) && (tep_not_null($HTTP_GET_VARS['max'])) ) {
-    $srMax = $HTTP_GET_VARS['max'];
+  if ( isset($_GET['max']) && ($_GET['max']) && (tep_not_null($_GET['max'])) ) {
+    $srMax = $_GET['max'];
   } else {
     $srMax = $srDefaultMax;
   }
@@ -136,8 +136,8 @@
   }
       
   // order status
-  if ( isset($HTTP_GET_VARS['statux']) && ($HTTP_GET_VARS['status']) && (tep_not_null($HTTP_GET_VARS['status'])) ) 
-{    $srStatus = $HTTP_GET_VARS['status'];
+  if ( isset($_GET['statux']) && ($_GET['status']) && (tep_not_null($_GET['status'])) ) 
+{    $srStatus = $_GET['status'];
   } else {
     $srStatus = $srDefaultStatus;
   }
@@ -146,8 +146,8 @@
   }
   
   // sort
-  if ( isset($HTTP_GET_VARS['sort']) && ($HTTP_GET_VARS['sort']) && (tep_not_null($HTTP_GET_VARS['sort'])) ) {
-    $srSort = $HTTP_GET_VARS['sort'];
+  if ( isset($_GET['sort']) && ($_GET['sort']) && (tep_not_null($_GET['sort'])) ) {
+    $srSort = $_GET['sort'];
   } else {
     $srSort = $srDefaultSort;
   }
@@ -156,8 +156,8 @@
   }
     
   // compare
-  if ( isset($HTTP_GET_VARS['compare']) && ($HTTP_GET_VARS['compare']) && (tep_not_null($HTTP_GET_VARS['compare'])) ) {
-    $srCompare = $HTTP_GET_VARS['compare'];
+  if ( isset($_GET['compare']) && ($_GET['compare']) && (tep_not_null($_GET['compare'])) ) {
+    $srCompare = $_GET['compare'];
   } else {
     $srCompare = $srDefaultCompare;
   }
@@ -168,20 +168,20 @@
   // check start and end Date
   $startDate = "";
   $startDateG = 0;
-  if ( isset($HTTP_GET_VARS['startD']) && ($HTTP_GET_VARS['startD']) && (tep_not_null($HTTP_GET_VARS['startD'])) ) 
-{    $sDay = $HTTP_GET_VARS['startD'];
+  if ( isset($_GET['startD']) && ($_GET['startD']) && (tep_not_null($_GET['startD'])) ) 
+{    $sDay = $_GET['startD'];
     $startDateG = 1;
   } else {
     $sDay = 1;
   }
-  if ( isset($HTTP_GET_VARS['startM']) && ($HTTP_GET_VARS['startM']) && (tep_not_null($HTTP_GET_VARS['startM'])) ) 
-{    $sMon = $HTTP_GET_VARS['startM'];
+  if ( isset($_GET['startM']) && ($_GET['startM']) && (tep_not_null($_GET['startM'])) ) 
+{    $sMon = $_GET['startM'];
     $startDateG = 1;
   } else {
     $sMon = 1;
   }
-  if ( isset($HTTP_GET_VARS['startY']) && ($HTTP_GET_VARS['startY']) && (tep_not_null($HTTP_GET_VARS['startY'])) ) 
-{    $sYear = $HTTP_GET_VARS['startY'];
+  if ( isset($_GET['startY']) && ($_GET['startY']) && (tep_not_null($_GET['startY'])) ) 
+{    $sYear = $_GET['startY'];
     $startDateG = 1;
   } else {
     $sYear = date("Y");
@@ -194,20 +194,20 @@
     
   $endDate = "";
   $endDateG = 0;
-  if ( isset($HTTP_GET_VARS['endD']) && ($HTTP_GET_VARS['endD']) && (tep_not_null($HTTP_GET_VARS['endD'])) ) {
-    $eDay = $HTTP_GET_VARS['endD'];
+  if ( isset($_GET['endD']) && ($_GET['endD']) && (tep_not_null($_GET['endD'])) ) {
+    $eDay = $_GET['endD'];
     $endDateG = 1;
   } else {
     $eDay = 1;
   }
-  if ( isset($HTTP_GET_VARS['endM']) && ($HTTP_GET_VARS['endM']) && (tep_not_null($HTTP_GET_VARS['endM'])) ) {
-    $eMon = $HTTP_GET_VARS['endM'];
+  if ( isset($_GET['endM']) && ($_GET['endM']) && (tep_not_null($_GET['endM'])) ) {
+    $eMon = $_GET['endM'];
     $endDateG = 1;
   } else {
     $eMon = 1;
   }
-  if ( isset($HTTP_GET_VARS['endY']) && ($HTTP_GET_VARS['endY']) && (tep_not_null($HTTP_GET_VARS['endY'])) ) {
-    $eYear = $HTTP_GET_VARS['endY'];
+  if ( isset($_GET['endY']) && ($_GET['endY']) && (tep_not_null($_GET['endY'])) ) {
+    $eYear = $_GET['endY'];
     $endDateG = 1;
   } else {
     $eYear = date("Y");

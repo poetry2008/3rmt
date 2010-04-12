@@ -12,7 +12,7 @@
 
   require('includes/application_top.php');
 
-  switch ($HTTP_GET_VARS['set']) {
+  switch ($_GET['set']) {
     case 'shipping':
       $module_type = 'shipping';
       $module_directory = DIR_FS_CATALOG_MODULES . 'shipping/';
@@ -40,11 +40,11 @@
       break;
   }
 
-  if (isset($HTTP_GET_VARS['action'])) 
-  switch ($HTTP_GET_VARS['action']) {
+  if (isset($_GET['action'])) 
+  switch ($_GET['action']) {
     case 'save':
-      $site_id = isset($HTTP_POST_VARS['site_id'])?(int)$HTTP_POST_VARS['site_id']:0;
-      $class = basename($HTTP_GET_VARS['module']);
+      $site_id = isset($_POST['site_id'])?(int)$_POST['site_id']:0;
+      $class = basename($_GET['module']);
       $file_extension = substr($PHP_SELF, strrpos($PHP_SELF, '.'));
       if (file_exists($module_directory . $class . $file_extension)) {
         include($module_directory . $class . $file_extension);
@@ -54,31 +54,31 @@
           $module->install();
       }
 
-      while (list($key, $value) = each($HTTP_POST_VARS['configuration'])) {
+      while (list($key, $value) = each($_POST['configuration'])) {
         tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
       }
-      tep_redirect(tep_href_link(FILENAME_MODULES, 'set=' . $HTTP_GET_VARS['set'] . '&module=' . $HTTP_GET_VARS['module']));
+      tep_redirect(tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $_GET['module']));
       break;
     case 'install':
     case 'remove':
       $file_extension = substr($PHP_SELF, strrpos($PHP_SELF, '.'));
-      $class = basename($HTTP_GET_VARS['module']);
+      $class = basename($_GET['module']);
       if (file_exists($module_directory . $class . $file_extension)) {
         include($module_directory . $class . $file_extension);
-        if ($HTTP_GET_VARS['action'] == 'install') {
+        if ($_GET['action'] == 'install') {
           $module = new $class;
           $module->install();
-        } elseif ($HTTP_GET_VARS['action'] == 'remove') {
+        } elseif ($_GET['action'] == 'remove') {
           foreach(tep_get_sites() as $s){
             $module = new $class($s['id']);
             $module->remove();
           }
         }
       }
-      tep_redirect(tep_href_link(FILENAME_MODULES, 'set=' . $HTTP_GET_VARS['set'] . '&module=' . $class));
+      tep_redirect(tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class));
       break;
   }
-$site_id = isset($HTTP_GET_VARS['site_id'])?$HTTP_GET_VARS['site_id']:'0';
+$site_id = isset($_GET['site_id'])?$_GET['site_id']:'0';
 ?>
 <!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html <?php echo HTML_PARAMS; ?>>
@@ -152,7 +152,7 @@ $site_id = isset($HTTP_GET_VARS['site_id'])?$HTTP_GET_VARS['site_id']:'0';
         }
       }
 
-      if (((!@$HTTP_GET_VARS['module']) || ($HTTP_GET_VARS['module'] == $class)) && (!@$mInfo)) {
+      if (((!@$_GET['module']) || ($_GET['module'] == $class)) && (!@$mInfo)) {
         $module_info = array('code' => $module->code,
                              'title' => $module->title,
                              'description' => $module->description,
@@ -180,18 +180,18 @@ $site_id = isset($HTTP_GET_VARS['site_id'])?$HTTP_GET_VARS['site_id']:'0';
 
       if (isset($mInfo)&& (is_object($mInfo)) && ($class == $mInfo->code) ) {
         if ($module->check() > 0) {
-          echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_MODULES, 'set=' . $HTTP_GET_VARS['set'] . '&module=' . $class . '&action=edit') . '\'">' . "\n";
+          echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class . '&action=edit') . '\'">' . "\n";
         } else {
           echo '              <tr class="dataTableRowSelected">' . "\n";
         }
       } else {
-        echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_MODULES, 'set=' . $HTTP_GET_VARS['set'] . '&module=' . $class) . '\'">' . "\n";
+        echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class) . '\'">' . "\n";
       }
 ?>
                 <td class="dataTableContent"><?php echo $module->title; ?></td>
                 <td class="dataTableContent" align="right"><?php if (is_numeric($module->sort_order)) echo $module->sort_order; ?></td>
-                <td class="dataTableContent" align="right"><?php if ($module->check() > 0) { echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $HTTP_GET_VARS['set'] . '&module=' . $class . '&action=remove') . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>'; } else { echo '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $HTTP_GET_VARS['set'] . '&module=' . $class . '&action=install') . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10); } ?></td>
-                <td class="dataTableContent" align="right"><?php if ( (@is_object($mInfo)) && ($class == $mInfo->code) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif'); } else { echo '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $HTTP_GET_VARS['set'] . '&module=' . $class) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
+                <td class="dataTableContent" align="right"><?php if ($module->check() > 0) { echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class . '&action=remove') . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>'; } else { echo '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class . '&action=install') . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10); } ?></td>
+                <td class="dataTableContent" align="right"><?php if ( (@is_object($mInfo)) && ($class == $mInfo->code) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif'); } else { echo '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
               </tr>
 <?php
     }
@@ -218,7 +218,7 @@ $site_id = isset($HTTP_GET_VARS['site_id'])?$HTTP_GET_VARS['site_id']:'0';
 <?php
   $heading = array();
   $contents = array();
-  switch (isset($HTTP_GET_VARS['action'])?$HTTP_GET_VARS['action']:'') {
+  switch (isset($_GET['action'])?$_GET['action']:'') {
     case 'edit':
       $keys = '';
       reset($mInfo->keys);
@@ -236,10 +236,10 @@ $site_id = isset($HTTP_GET_VARS['site_id'])?$HTTP_GET_VARS['site_id']:'0';
 
       $heading[] = array('text' => '<b>' . $mInfo->title . '</b>');
 
-      $contents = array('form' => tep_draw_form('modules', FILENAME_MODULES, 'set=' . $HTTP_GET_VARS['set'] . '&module=' . $HTTP_GET_VARS['module'] . '&action=save'));
+      $contents = array('form' => tep_draw_form('modules', FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $_GET['module'] . '&action=save'));
       $contents[] = array('text' => $keys);
       $contents[] = array('text' => '<input type="hidden" name="site_id" value="'.$site_id.'">');
-      $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_update.gif', IMAGE_UPDATE) . ' <a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $HTTP_GET_VARS['set'] . '&module=' . $HTTP_GET_VARS['module']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_update.gif', IMAGE_UPDATE) . ' <a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $_GET['module']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
     default:
       $heading[] = array('text' => '<b>' . (isset($mInfo->title)?$mInfo->title:'') . '</b>');
@@ -268,16 +268,16 @@ $site_id = isset($HTTP_GET_VARS['site_id'])?$HTTP_GET_VARS['site_id']:'0';
         }
         $keys = substr($keys, 0, strrpos($keys, '<br><br>'));
 
-        if (!isset($HTTP_GET_VARS['module']) || !$HTTP_GET_VARS['module']) {
+        if (!isset($_GET['module']) || !$_GET['module']) {
           if(isset($directory_array[0])) {
-            $HTTP_GET_VARS['module'] = str_replace('.php', '', $directory_array[0]);
+            $_GET['module'] = str_replace('.php', '', $directory_array[0]);
           }
         }
 
-        $contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $HTTP_GET_VARS['set'] . '&module=' . @$HTTP_GET_VARS['module'] . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>');
+        $contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . @$_GET['module'] . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>');
         foreach(tep_get_sites() as $s){
           $contents[] = array('text' => '<b>'.$s['romaji'].'</b>');
-          $contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $HTTP_GET_VARS['set'] . '&module=' . @$HTTP_GET_VARS['module'] . '&action=edit&site_id='.$s['id']) . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>');
+          $contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . @$_GET['module'] . '&action=edit&site_id='.$s['id']) . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>');
         }
         $contents[] = array('text' => '<br>' . $mInfo->description);
         $contents[] = array('text' => '<br>' . $keys);

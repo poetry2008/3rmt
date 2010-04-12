@@ -40,7 +40,7 @@
                 <?php
   $products_new_query_raw = "select p.products_id, pd.products_name, p.products_image, p.products_price, p.products_tax_class_id, IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, p.products_date_added, m.manufacturers_name from " . TABLE_PRODUCTS . " p left join " . TABLE_MANUFACTURERS . " m on p.manufacturers_id = m.manufacturers_id left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id where p.products_status = '1' and pd.site_id = '".SITE_ID."' order by p.products_date_added DESC, pd.products_name";
 
-  $products_new_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_PRODUCTS_NEW, $products_new_query_raw, $products_new_numrows);
+  $products_new_split = new splitPageResults($_GET['page'], MAX_DISPLAY_PRODUCTS_NEW, $products_new_query_raw, $products_new_numrows);
 
   $products_new_query = tep_db_query($products_new_query_raw);
   while ($products_new = tep_db_fetch_array($products_new_query)) {
@@ -65,9 +65,9 @@
               <td><br>
                 <table border="0" width="100%" cellspacing="0" cellpadding="2">
                   <tr>
-                    <td class="smallText"><?php echo $products_new_split->display_count($products_new_numrows, MAX_DISPLAY_PRODUCTS_NEW, $HTTP_GET_VARS['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS_NEW); ?></td>
+                    <td class="smallText"><?php echo $products_new_split->display_count($products_new_numrows, MAX_DISPLAY_PRODUCTS_NEW, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS_NEW); ?></td>
                     <td align="right" class="smallText"><?php echo TEXT_RESULT_PAGE; ?>
-                      <?php echo $products_new_split->display_links($products_new_numrows, MAX_DISPLAY_PRODUCTS_NEW, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
+                      <?php echo $products_new_split->display_links($products_new_numrows, MAX_DISPLAY_PRODUCTS_NEW, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
                   </tr>
                 </table>
               </td>

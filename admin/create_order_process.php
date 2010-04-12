@@ -9,21 +9,21 @@
 
   require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER_PROCESS);
 
-  $customer_id    = tep_db_prepare_input($HTTP_POST_VARS['customers_id']);
-  $firstname      = tep_db_prepare_input($HTTP_POST_VARS['firstname']);
-  $lastname       = tep_db_prepare_input($HTTP_POST_VARS['lastname']);
-  $email_address  = tep_db_prepare_input($HTTP_POST_VARS['email_address']);
-  $telephone      = isset($HTTP_POST_VARS['telephone']) ? tep_db_prepare_input($HTTP_POST_VARS['telephone']) : '';
-  $fax            = tep_db_prepare_input($HTTP_POST_VARS['fax']);
-  $street_address = isset($HTTP_POST_VARS['street_address']) ? tep_db_prepare_input($HTTP_POST_VARS['street_address']) : '';
-  $company        = isset($HTTP_POST_VARS['company']) ? tep_db_prepare_input($HTTP_POST_VARS['company']) : '';
-  $suburb         = isset($HTTP_POST_VARS['suburb']) ? tep_db_prepare_input($HTTP_POST_VARS['suburb']) : '';
-  $postcode       = isset($HTTP_POST_VARS['postcode']) ? tep_db_prepare_input($HTTP_POST_VARS['postcode']) : '';
-  $city           = isset($HTTP_POST_VARS['city']) ? tep_db_prepare_input($HTTP_POST_VARS['city']) : '';
-  $zone_id        = isset($HTTP_POST_VARS['zone_id']) ? tep_db_prepare_input($HTTP_POST_VARS['zone_id']) : '';
-  $state          = isset($HTTP_POST_VARS['state']) ? tep_db_prepare_input($HTTP_POST_VARS['state']) : '';
-  $country        = isset($HTTP_POST_VARS['country']) ? tep_db_prepare_input($HTTP_POST_VARS['country']) : '';
-  $site_id        = tep_db_prepare_input($HTTP_POST_VARS['site_id']);
+  $customer_id    = tep_db_prepare_input($_POST['customers_id']);
+  $firstname      = tep_db_prepare_input($_POST['firstname']);
+  $lastname       = tep_db_prepare_input($_POST['lastname']);
+  $email_address  = tep_db_prepare_input($_POST['email_address']);
+  $telephone      = isset($_POST['telephone']) ? tep_db_prepare_input($_POST['telephone']) : '';
+  $fax            = tep_db_prepare_input($_POST['fax']);
+  $street_address = isset($_POST['street_address']) ? tep_db_prepare_input($_POST['street_address']) : '';
+  $company        = isset($_POST['company']) ? tep_db_prepare_input($_POST['company']) : '';
+  $suburb         = isset($_POST['suburb']) ? tep_db_prepare_input($_POST['suburb']) : '';
+  $postcode       = isset($_POST['postcode']) ? tep_db_prepare_input($_POST['postcode']) : '';
+  $city           = isset($_POST['city']) ? tep_db_prepare_input($_POST['city']) : '';
+  $zone_id        = isset($_POST['zone_id']) ? tep_db_prepare_input($_POST['zone_id']) : '';
+  $state          = isset($_POST['state']) ? tep_db_prepare_input($_POST['state']) : '';
+  $country        = isset($_POST['country']) ? tep_db_prepare_input($_POST['country']) : '';
+  $site_id        = tep_db_prepare_input($_POST['site_id']);
   $format_id      = "1";
   $size           = "1";
   $new_value      = "1";
@@ -32,9 +32,9 @@
   $temp_amount    = number_format($temp_amount, 2, '.', '');
   
   $currency_text  = DEFAULT_CURRENCY . ",1";
-  if(isset($HTTP_POST_VARS['Currency']) && !empty($HTTP_POST_VARS['Currency']))
+  if(isset($_POST['Currency']) && !empty($_POST['Currency']))
   {
-  	$currency_text = tep_db_prepare_input($HTTP_POST_VARS['Currency']);
+  	$currency_text = tep_db_prepare_input($_POST['Currency']);
   }
   
   //Add input string check - 2006.4.14 ds-style
@@ -148,7 +148,7 @@
  		$SelectCustomerBox = "<select name='Customer'><option value=''>" . TEXT_SELECT_CUST . "</option>\n";
  		while($db_Row = tep_db_fetch_array($result))
  		{ $SelectCustomerBox .= "<option value='" . $db_Row["customers_id"] . "'";
-		  if(IsSet($HTTP_GET_VARS['Customer']) and $db_Row["customers_id"]==$HTTP_GET_VARS['Customer'])
+		  if(IsSet($_GET['Customer']) and $db_Row["customers_id"]==$_GET['Customer'])
 			$SelectCustomerBox .= " SELECTED ";
 		  $SelectCustomerBox .= ">" . $db_Row["customers_lastname"] . " , " . $db_Row["customers_firstname"] . "</option>\n";
 		
@@ -173,20 +173,20 @@
 		$SelectCurrencyBox .= "</select>\n";
 	}
 
-	if(IsSet($HTTP_GET_VARS['Customer']))
+	if(IsSet($_GET['Customer']))
 	{
- 	$account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_id = '" . $HTTP_GET_VARS['Customer'] . "'");
+ 	$account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_id = '" . $_GET['Customer'] . "'");
  	$account = tep_db_fetch_array($account_query);
  	$customer = $account['customers_id'];
- 	$address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $HTTP_GET_VARS['Customer'] . "'");
+ 	$address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $_GET['Customer'] . "'");
  	$address = tep_db_fetch_array($address_query);
  	//$customer = $account['customers_id'];
-	} elseif (IsSet($HTTP_GET_VARS['Customer_nr']))
+	} elseif (IsSet($_GET['Customer_nr']))
 	{
- 	$account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_id = '" . $HTTP_GET_VARS['Customer_nr'] . "'");
+ 	$account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_id = '" . $_GET['Customer_nr'] . "'");
  	$account = tep_db_fetch_array($account_query);
  	$customer = $account['customers_id'];
- 	$address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $HTTP_GET_VARS['Customer_nr'] . "'");
+ 	$address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $_GET['Customer_nr'] . "'");
  	$address = tep_db_fetch_array($address_query);
  	//$customer = $account['customers_id'];
 	}

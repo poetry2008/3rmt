@@ -13,9 +13,9 @@
   require('includes/application_top.php');
 
   //forward404
-if (isset($HTTP_GET_VARS['products_id'])) {
+if (isset($_GET['products_id'])) {
   $_404_query = tep_db_query("select * from " . TABLE_PRODUCTS . " where products_id
-      = '" . intval($HTTP_GET_VARS['products_id']) . "'");
+      = '" . intval($_GET['products_id']) . "'");
   $_404 = tep_db_fetch_array($_404_query);
 
   forward404Unless($_404);
@@ -30,15 +30,15 @@ if (isset($HTTP_GET_VARS['products_id'])) {
   }
 
   $valid_product = false;
-  if (isset($HTTP_GET_VARS['products_id'])) {
-    $product_info_query = tep_db_query("select pd.products_name from " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" .  (int)$HTTP_GET_VARS['products_id'] . "' and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and pd.site_id = '".SITE_ID."'");
+  if (isset($_GET['products_id'])) {
+    $product_info_query = tep_db_query("select pd.products_name from " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" .  (int)$_GET['products_id'] . "' and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and pd.site_id = '".SITE_ID."'");
     $valid_product = (tep_db_num_rows($product_info_query) > 0);
   }
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_TELL_A_FRIEND);
 
-  if (!isset($HTTP_GET_VARS['send_to'])) $HTTP_GET_VARS['send_to'] = NULL;
-  $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_TELL_A_FRIEND, 'send_to=' . $HTTP_GET_VARS['send_to'] . '&products_id=' . $HTTP_GET_VARS['products_id']));
+  if (!isset($_GET['send_to'])) $_GET['send_to'] = NULL;
+  $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_TELL_A_FRIEND, 'send_to=' . $_GET['send_to'] . '&products_id=' . $_GET['products_id']));
 ?>
 <?php page_head();?>
 </head>
@@ -67,14 +67,14 @@ if (isset($HTTP_GET_VARS['products_id'])) {
       <?php
     $error = false;
 
-    if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'process') && !tep_validate_email(trim($HTTP_POST_VARS['friendemail']))) {
+    if (isset($_GET['action']) && ($_GET['action'] == 'process') && !tep_validate_email(trim($_POST['friendemail']))) {
       $friendemail_error = true;
       $error = true;
     } else {
       $friendemail_error = false;
     }
 
-    if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'process') && empty($HTTP_POST_VARS['friendname'])) {
+    if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($_POST['friendname'])) {
       $friendname_error = true;
       $error = true;
     } else {
@@ -85,14 +85,14 @@ if (isset($HTTP_GET_VARS['products_id'])) {
       $from_name = tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']);
       $from_email_address = $account_values['customers_email_address'];
     } else {
-      if (!isset($HTTP_POST_VARS['yourname'])) $HTTP_POST_VARS['yourname'] = NULL;
-      $from_name = $HTTP_POST_VARS['yourname'];
-      if (!isset($HTTP_POST_VARS['from'])) $HTTP_POST_VARS['from'] = NULL;
-      $from_email_address = $HTTP_POST_VARS['from'];
+      if (!isset($_POST['yourname'])) $_POST['yourname'] = NULL;
+      $from_name = $_POST['yourname'];
+      if (!isset($_POST['from'])) $_POST['from'] = NULL;
+      $from_email_address = $_POST['from'];
     }
       
     if (!tep_session_is_registered('customer_id')) {
-      if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'process') && !tep_validate_email(trim($from_email_address))) {
+      if (isset($_GET['action']) && ($_GET['action'] == 'process') && !tep_validate_email(trim($from_email_address))) {
         $fromemail_error = true;
         $error = true;
       } else {
@@ -100,29 +100,29 @@ if (isset($HTTP_GET_VARS['products_id'])) {
       }
     }
 
-    if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'process') && empty($from_name)) {
+    if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($from_name)) {
       $fromname_error = true;
       $error = true;
     } else {
       $fromname_error = false;
     }
 
-    if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'process') && ($error == false)) {
+    if (isset($_GET['action']) && ($_GET['action'] == 'process') && ($error == false)) {
       $email_subject = sprintf(TEXT_EMAIL_SUBJECT, $from_name, STORE_NAME);
-      $email_body = sprintf(TEXT_EMAIL_INTRO, $HTTP_POST_VARS['friendname'], $from_name, $HTTP_POST_VARS['products_name'], STORE_NAME) . "\n\n";
+      $email_body = sprintf(TEXT_EMAIL_INTRO, $_POST['friendname'], $from_name, $_POST['products_name'], STORE_NAME) . "\n\n";
 
-      if (tep_not_null($HTTP_POST_VARS['yourmessage'])) {
-        $email_body .= $HTTP_POST_VARS['yourmessage'] . "\n\n";
+      if (tep_not_null($_POST['yourmessage'])) {
+        $email_body .= $_POST['yourmessage'] . "\n\n";
       }
 
-      $email_body .= sprintf(TEXT_EMAIL_LINK, tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $HTTP_GET_VARS['products_id'])) . "\n\n" .
+      $email_body .= sprintf(TEXT_EMAIL_LINK, tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $_GET['products_id'])) . "\n\n" .
                      sprintf(TEXT_EMAIL_SIGNATURE, STORE_NAME . "\n" . HTTP_SERVER . DIR_WS_CATALOG . "\n");
 
-      tep_mail($HTTP_POST_VARS['friendname'], $HTTP_POST_VARS['friendemail'], $email_subject, stripslashes($email_body), '', $from_email_address);
+      tep_mail($_POST['friendname'], $_POST['friendemail'], $email_subject, stripslashes($email_body), '', $from_email_address);
 ?> 
       <div class="comment"> 
-        <p class="main"><?php echo sprintf(TEXT_EMAIL_SUCCESSFUL_SENT, stripslashes($HTTP_POST_VARS['products_name']), $HTTP_POST_VARS['friendemail']); ?></p> 
-        <div align="right"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $HTTP_GET_VARS['products_id']) . '">' . tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></div> 
+        <p class="main"><?php echo sprintf(TEXT_EMAIL_SUCCESSFUL_SENT, stripslashes($_POST['products_name']), $_POST['friendemail']); ?></p> 
+        <div align="right"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $_GET['products_id']) . '">' . tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></div> 
       </div>
       <?php
     } else {
@@ -130,15 +130,15 @@ if (isset($HTTP_GET_VARS['products_id'])) {
         $your_name_prompt = tep_output_string_protected(tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']));
         $your_email_address_prompt = $account_values['customers_email_address'];
       } else {
-        if (!isset($HTTP_GET_VARS['yourname'])) $HTTP_GET_VARS['yourname'] = NULL;
-        $your_name_prompt = tep_draw_input_field('yourname', (($fromname_error == true) ? $HTTP_POST_VARS['yourname'] : $HTTP_GET_VARS['yourname']),'class="input_text"');
+        if (!isset($_GET['yourname'])) $_GET['yourname'] = NULL;
+        $your_name_prompt = tep_draw_input_field('yourname', (($fromname_error == true) ? $_POST['yourname'] : $_GET['yourname']),'class="input_text"');
         if ($fromname_error == true) $your_name_prompt .= '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
-        if (!isset($HTTP_GET_VARS['from'])) $HTTP_GET_VARS['from'] = NULL;
-        $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $HTTP_POST_VARS['from'] : $HTTP_GET_VARS['from']),'class="input_text"');
+        if (!isset($_GET['from'])) $_GET['from'] = NULL;
+        $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']),'class="input_text"');
         if ($fromemail_error == true) $your_email_address_prompt .= ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
       }
 ?> 
-      <?php echo tep_draw_form('email_friend', tep_href_link(FILENAME_TELL_A_FRIEND, 'action=process&products_id=' . $HTTP_GET_VARS['products_id'])) . tep_draw_hidden_field('products_name', $product_info['products_name']); ?> 
+      <?php echo tep_draw_form('email_friend', tep_href_link(FILENAME_TELL_A_FRIEND, 'action=process&products_id=' . $_GET['products_id'])) . tep_draw_hidden_field('products_name', $product_info['products_name']); ?> 
       <div class="comment">
       <table width="100%" cellpadding="0" cellspacing="0" border="0" summary="table"> 
         <tr> 
@@ -171,13 +171,13 @@ if (isset($HTTP_GET_VARS['products_id'])) {
                 <tr> 
                   <td class="main"><?php echo FORM_FIELD_FRIEND_NAME; ?></td> 
                   <td class="main">
-                  <?php if (!isset($HTTP_GET_VARS['friendname'])) $HTTP_GET_VARS['friendname'] = NULL;//del notice?>
-                  <?php if (!isset($HTTP_POST_VARS['friendname'])) $HTTP_POST_VARS['friendname'] = NULL;//del notice?>
-                  <?php echo tep_draw_input_field('friendname', (($friendname_error == true) ? $HTTP_POST_VARS['friendname'] : $HTTP_GET_VARS['friendname']),'class="input_text"'); if ($friendname_error == true) echo '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';?></td> 
+                  <?php if (!isset($_GET['friendname'])) $_GET['friendname'] = NULL;//del notice?>
+                  <?php if (!isset($_POST['friendname'])) $_POST['friendname'] = NULL;//del notice?>
+                  <?php echo tep_draw_input_field('friendname', (($friendname_error == true) ? $_POST['friendname'] : $_GET['friendname']),'class="input_text"'); if ($friendname_error == true) echo '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';?></td> 
                 </tr> 
                 <tr> 
                   <td class="main"><?php echo FORM_FIELD_FRIEND_EMAIL; ?></td> 
-                  <td class="main"><?php echo tep_draw_input_field('friendemail', (($friendemail_error == true) ? $HTTP_POST_VARS['friendemail'] : $HTTP_GET_VARS['send_to']),'class="input_text"'); if ($friendemail_error == true) echo '<br>'.ENTRY_EMAIL_ADDRESS_CHECK_ERROR; ?></td> 
+                  <td class="main"><?php echo tep_draw_input_field('friendemail', (($friendemail_error == true) ? $_POST['friendemail'] : $_GET['send_to']),'class="input_text"'); if ($friendemail_error == true) echo '<br>'.ENTRY_EMAIL_ADDRESS_CHECK_ERROR; ?></td> 
                 </tr> 
               </table></td> 
             </tr> 
@@ -198,7 +198,7 @@ if (isset($HTTP_GET_VARS['products_id'])) {
           <td><br> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="table"> 
             <tr> 
-              <td class="main"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $HTTP_GET_VARS['products_id']) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
+              <td class="main"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $_GET['products_id']) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
               <td align="right" class="main"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
             </tr> 
           </table></td> 

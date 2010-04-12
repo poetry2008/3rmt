@@ -65,7 +65,7 @@ function pass_hidd(){
             </tr> 
             <tr> 
               <td><?php
-  if (isset($HTTP_GET_VARS['email_address'])) $email_address = tep_db_prepare_input($HTTP_GET_VARS['email_address']);
+  if (isset($_GET['email_address'])) $email_address = tep_db_prepare_input($_GET['email_address']);
   $account['entry_country_id'] = STORE_COUNTRY;
 
   require(DIR_WS_MODULES . 'account_details.php');

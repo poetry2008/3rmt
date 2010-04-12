@@ -29,7 +29,7 @@ $breadcrumb->add(TAGS_NAVBAR_TITLE, tep_href_link(FILENAME_TAGS));
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php 
 $tags_query_string = "select * from " . TABLE_TAGS . " order by tags_order";
-$tags_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $tags_query_string, $tags_numrows);
+$tags_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $tags_query_string, $tags_numrows);
 $tags_query = tep_db_query($tags_query_string);
 if (($tags_numrows > 0 ) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3')))
 {
@@ -40,7 +40,7 @@ if (($tags_numrows > 0 ) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_L
 <tr>
 <td class="smallText" style="border-bottom:#ccc solid 1px;">
 <?php 
-echo $tags_split->display_count($tags_numrows, MAX_DISPLAY_SEARCH_RESULTS, $HTTP_GET_VARS['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS);
+echo $tags_split->display_count($tags_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS);
 ?>
 <br>
 <br>
@@ -50,7 +50,7 @@ echo $tags_split->display_count($tags_numrows, MAX_DISPLAY_SEARCH_RESULTS, $HTTP
 echo TEXT_RESULT_PAGE;
 ?>
 <?php 
-echo $tags_split->display_links($tags_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y')));
+echo $tags_split->display_links($tags_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y')));
 ?>
 <br>
 <br>
@@ -140,10 +140,10 @@ while ($tag = tep_db_fetch_array($tags_query))
 ?>
                                 <tr>
                                   <td class="smallText"><?php echo
-                                  $tags_split->display_count($tags_numrows, MAX_DISPLAY_SEARCH_RESULTS, $HTTP_GET_VARS['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
+                                  $tags_split->display_count($tags_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
                                   <td align="right" class="smallText"><?php echo
                                   TEXT_RESULT_PAGE; ?> <?php echo
-                                  $tags_split->display_links($tags_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
+                                  $tags_split->display_links($tags_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
                                 </tr>
                                 <?php
 	}

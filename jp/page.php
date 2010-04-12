@@ -7,7 +7,7 @@
   require('includes/application_top.php');
   
   $error = false;
-  $romaji= $HTTP_GET_VARS['pID'];
+  $romaji= $_GET['pID'];
   
   if(!$pID || $pID == '0' || $pID == '') {
     $error = true;

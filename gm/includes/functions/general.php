@@ -207,14 +207,14 @@ function forward404Unless($condition)
 ////
 // Return all HTTP GET variables, except those passed as a parameter
   function tep_get_all_get_params($exclude_array = '') {
-    global $HTTP_GET_VARS;
+    global $_GET;
 
     if (!is_array($exclude_array)) $exclude_array = array();
 
     $get_url = '';
-    if (is_array($HTTP_GET_VARS) && (sizeof($HTTP_GET_VARS) > 0)) {
-      reset($HTTP_GET_VARS);
-      while (list($key, $value) = each($HTTP_GET_VARS)) {
+    if (is_array($_GET) && (sizeof($_GET) > 0)) {
+      reset($_GET);
+      while (list($key, $value) = each($_GET)) {
         if ( (strlen($value) > 0) && ($key != tep_session_name()) && ($key != 'error') && (!in_array($key, $exclude_array)) && ($key != 'x') && ($key != 'y') ) {
           $get_url .= $key . '=' . rawurlencode(stripslashes($value)) . '&';
         }
@@ -1569,7 +1569,7 @@ if (!isset($torihikihouhou)) $torihikihouhou=NULL;
   }
 
   function page_head(){
-    global $HTTP_GET_VARS,$request_type;
+    global $_GET,$request_type;
     $title       = C_TITLE;
     $keywords    = C_KEYWORDS;
     $description = C_DESCRIPTION;
@@ -1584,9 +1584,9 @@ if (!isset($torihikihouhou)) $torihikihouhou=NULL;
               $keywords    = $seo_category['meta_keywords'];
               $description = $seo_category['meta_description'];
             }
-         } elseif ($HTTP_GET_VARS['manufacturers_id']) {
+         } elseif ($_GET['manufacturers_id']) {
            $title = $seo_manufacturers['manufacturers_name'].'-' .C_TITLE;
-           $metas       = tep_get_metas_by_manufacturers_id(intval($HTTP_GET_VARS['manufacturers_id']));
+           $metas       = tep_get_metas_by_manufacturers_id(intval($_GET['manufacturers_id']));
            $keywords    = $metas['keywords'];
            $description = "RMT総合サイト RMTゲームマネーへようこそ。" . $metas['description'];
          } else {
@@ -1603,7 +1603,7 @@ if (!isset($torihikihouhou)) $torihikihouhou=NULL;
         break;
       case FILENAME_PRESENT:
         global $breadcrumb, $present;
-        $title    = (!$HTTP_GET_VARS['goods_id']) ? $breadcrumb->trail_title(' &raquo; ') : strip_tags($present['title']);
+        $title    = (!$_GET['goods_id']) ? $breadcrumb->trail_title(' &raquo; ') : strip_tags($present['title']);
         if ($present['title']) 
           $keywords = strip_tags($present['title']);
         if ($present['text'])
@@ -1621,13 +1621,13 @@ if (!isset($torihikihouhou)) $torihikihouhou=NULL;
         break;
       case FILENAME_PREORDER:
         global $po_game_c, $product_info;
-        $title       = ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1) . '/' . $product_info['products_name'] . '/' . TITLE;
-        $keywords    = "rmt,激安,販売," . ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1) . ',' . $product_info['products_name'] . ',' . TITLE;
-        $description = ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1) . '-' . $product_info['products_name'] . 'を予約するページです。' . TITLE;
+        $title       = ds_tep_get_categories((int)$_GET['products_id'],1) . '/' . $product_info['products_name'] . '/' . TITLE;
+        $keywords    = "rmt,激安,販売," . ds_tep_get_categories((int)$_GET['products_id'],1) . ',' . $product_info['products_name'] . ',' . TITLE;
+        $description = ds_tep_get_categories((int)$_GET['products_id'],1) . '-' . $product_info['products_name'] . 'を予約するページです。' . TITLE;
         break;
       case FILENAME_LATEST_NEWS:
         global $breadcrumb, $latest_news;
-        $title = (!(int)$HTTP_GET_VARS['news_id']) ? $breadcrumb->trail_title(' &raquo; ') : $latest_news['headline'];
+        $title = (!(int)$_GET['news_id']) ? $breadcrumb->trail_title(' &raquo; ') : $latest_news['headline'];
         break;
       case FILENAME_MANUFACTURERS:
         global $breadcrumb;

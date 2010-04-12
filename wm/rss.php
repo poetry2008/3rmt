@@ -15,11 +15,11 @@ $connection = mysql_connect(DB_SERVER, DB_SERVER_USERNAME, DB_SERVER_PASSWORD)  
 // select database
 $db = mysql_select_db(DB_DATABASE, $connection) or die(mysql_error());
 
-if (!isset($HTTP_GET_VARS['language'])) $HTTP_GET_VARS['language'] = NULL;//del notice
-if ($HTTP_GET_VARS['language'] == "") {
+if (!isset($_GET['language'])) $_GET['language'] = NULL;//del notice
+if ($_GET['language'] == "") {
   $lang_query = tep_db_query("select languages_id, code from " . TABLE_LANGUAGES . " where directory = '" . $language . "'");
 } else {
-  $cur_language = tep_db_output($HTTP_GET_VARS['language']);
+  $cur_language = tep_db_output($_GET['language']);
   $lang_query = tep_db_query("select languages_id, code from " . TABLE_LANGUAGES . " where code = '" . $cur_language . "'");
 }
 
@@ -59,8 +59,8 @@ echo "<!-- RSS for " . STORE_NAME . ", generated on " . date('r') . " -->\n";
 
 <?php
 // Create SQL statement
-if ($HTTP_GET_VARS['cPath'] != "") {
-  $sql = "SELECT p.products_id, products_model, products_image, products_price, products_tax_class_id FROM products p, products_to_categories pc WHERE p.products_id = pc.products_id AND pc.categories_id = '" . $HTTP_GET_VARS['cPath'] . "' AND products_status=1 ORDER BY products_id DESC LIMIT " . MAX_DISPLAY_SEARCH_RESULTS;
+if ($_GET['cPath'] != "") {
+  $sql = "SELECT p.products_id, products_model, products_image, products_price, products_tax_class_id FROM products p, products_to_categories pc WHERE p.products_id = pc.products_id AND pc.categories_id = '" . $_GET['cPath'] . "' AND products_status=1 ORDER BY products_id DESC LIMIT " . MAX_DISPLAY_SEARCH_RESULTS;
 } else {
   $sql = "SELECT products_id, products_model, products_image, products_price,  products_tax_class_id FROM products WHERE products_status=1 ORDER BY products_id DESC LIMIT " . MAX_DISPLAY_SEARCH_RESULTS;
 }

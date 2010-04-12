@@ -13,28 +13,28 @@
 
 // CSVファイル名の作成
 
-  $filename = ((isset($HTTP_POST_VARS['site_id'])&&$HTTP_POST_VARS['site_id']) ? (tep_get_site_romaji_by_id(intval($HTTP_POST_VARS['site_id'])).'_') :'')."orders_".date("Ymd_His", time()).".csv";
+  $filename = ((isset($_POST['site_id'])&&$_POST['site_id']) ? (tep_get_site_romaji_by_id(intval($_POST['site_id'])).'_') :'')."orders_".date("Ymd_His", time()).".csv";
 
 //ダウンロード範囲の取得
-  $s_y = $HTTP_POST_VARS['s_y'] ; //開始日　年
-  $s_m = $HTTP_POST_VARS['s_m'] ; //開始日　月
-  $s_d = $HTTP_POST_VARS['s_d'] ; //開始日　日
+  $s_y = $_POST['s_y'] ; //開始日　年
+  $s_m = $_POST['s_m'] ; //開始日　月
+  $s_d = $_POST['s_d'] ; //開始日　日
   $start = $s_y.$s_m.$s_d ;
   
-  $e_y = $HTTP_POST_VARS['e_y'] ; //終了日　年
-  $e_m = $HTTP_POST_VARS['e_m'] ; //終了日　月
-  $e_d = $HTTP_POST_VARS['e_d'] ; //終了日　日
+  $e_y = $_POST['e_y'] ; //終了日　年
+  $e_m = $_POST['e_m'] ; //終了日　月
+  $e_d = $_POST['e_d'] ; //終了日　日
   $end = $e_y.$e_m.$e_d ;
 
 // ダウンロード範囲の指定
-    //if($HTTP_POST_VARS['status'] && $HTTP_POST_VARS['status'] !=""){
+    //if($_POST['status'] && $_POST['status'] !=""){
       //$csv_query = tep_db_query("
           //select o.*, op.* 
           //from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op 
           //where o.orders_id = op.orders_id 
             //and o.date_purchased >= '" . $start . "' 
             //and o.date_purchased <= '" . $end . "' 
-            //and o.orders_status = '".(int)$HTTP_POST_VARS['status']."' 
+            //and o.orders_status = '".(int)$_POST['status']."' 
           //order by o.orders_id, op.orders_products_id
       //");
 	//}else{
@@ -45,8 +45,8 @@
             and o.site_id = s.id
             and o.date_purchased >= '" . $start . "' 
             and o.date_purchased <= '" . $end . "' 
-            ".(isset($HTTP_POST_VARS['status']) && $HTTP_POST_VARS['status'] ? ("and o.orders_status = '".(int)$HTTP_POST_VARS['status'] . "'") : '')."
-            ".(isset($HTTP_POST_VARS['site_id']) && $HTTP_POST_VARS['site_id'] ? ("and o.site_id = '".(int)$HTTP_POST_VARS['site_id'] . "'") : '')."
+            ".(isset($_POST['status']) && $_POST['status'] ? ("and o.orders_status = '".(int)$_POST['status'] . "'") : '')."
+            ".(isset($_POST['site_id']) && $_POST['site_id'] ? ("and o.site_id = '".(int)$_POST['site_id'] . "'") : '')."
           order by o.orders_id, op.orders_products_id
       ");
     //}
@@ -55,7 +55,7 @@
   header('Pragma: public');
   header('Content-Disposition: attachment; filename='.$filename);
 
-  $csv_header = (isset($HTTP_POST_VARS['site_id']) && $HTTP_POST_VARS['site_id']?'"'.ENTRY_SITE.'",':'').'"受注番号","注文日時","商品名","商品ID","商品番号","個数","単価","項目・選択肢","顧客ID","注文者名","注文者名フリガナ","メールアドレス","注文者郵便番号","注文者住所国名","注文者住所都道府県","注文者住所都市区","注文者住所１","注文者住所２","注文者会社名","注文者電話番号","請求先名","請求先名フリガナ","請求先郵便番号","請求先住所国名","請求先住所都道府県","請求先住所都市区","請求先住所１","請求先住所２","請求先会社名","請求先電話番号","送付先名","送付先名フリガナ","送付先郵便番号","送付先住所国名","送付先住所都道府県","送付先住所都市区","送付先住所１","送付先住所２","送付先会社名","送付先電話番号","決済方法","クレジットカード種類","クレジットカード番号","クレジットカード名義人","クレジットカード有効期限","配送方法","コメント","合計","送料","代引料","取扱手数料","消費税","請求金額","ポイント割引","ポイント利用条件","ポイント利用額","合計金額"';
+  $csv_header = (isset($_POST['site_id']) && $_POST['site_id']?'"'.ENTRY_SITE.'",':'').'"受注番号","注文日時","商品名","商品ID","商品番号","個数","単価","項目・選択肢","顧客ID","注文者名","注文者名フリガナ","メールアドレス","注文者郵便番号","注文者住所国名","注文者住所都道府県","注文者住所都市区","注文者住所１","注文者住所２","注文者会社名","注文者電話番号","請求先名","請求先名フリガナ","請求先郵便番号","請求先住所国名","請求先住所都道府県","請求先住所都市区","請求先住所１","請求先住所２","請求先会社名","請求先電話番号","送付先名","送付先名フリガナ","送付先郵便番号","送付先住所国名","送付先住所都道府県","送付先住所都市区","送付先住所１","送付先住所２","送付先会社名","送付先電話番号","決済方法","クレジットカード種類","クレジットカード番号","クレジットカード名義人","クレジットカード有効期限","配送方法","コメント","合計","送料","代引料","取扱手数料","消費税","請求金額","ポイント割引","ポイント利用条件","ポイント利用額","合計金額"';
 
   //$csv_header = mb_convert_encoding($csv_header,'SJIS','EUC-JP');
 
@@ -104,7 +104,7 @@
     if(!isset($start_id) || !$start_id){ $start_id = $csv_orders['orders_id']; }
     $end_id = $csv_orders['orders_id'];
 
-    $csv  = isset($HTTP_POST_VARS['site_id']) && $HTTP_POST_VARS['site_id'] ? ('"'.$csv_orders['romaji'].'",' ):'';
+    $csv  = isset($_POST['site_id']) && $_POST['site_id'] ? ('"'.$csv_orders['romaji'].'",' ):'';
     $csv .=  '"'.precsv($csv_orders['orders_id']).'"';
     $csv .= ',"'.precsv($csv_orders['date_purchased']).'"';
     $csv .= ',"'.precsv($csv_orders['products_name']).'"';

@@ -63,8 +63,8 @@
     ";
 
 // show the products of a specified manufacturer
-    if (isset($HTTP_GET_VARS['manufacturers_id'])) {
-      if (isset($HTTP_GET_VARS['filter_id'])) {
+    if (isset($_GET['manufacturers_id'])) {
+      if (isset($_GET['filter_id'])) {
 // We are asked to show only a specific category
         $listing_sql .= "
           select " . $select_column_list . " 
@@ -81,11 +81,11 @@
               TABLE_SPECIALS . " s on p.products_id = s.products_id 
           where p.products_status = '1' 
             and p.manufacturers_id = m.manufacturers_id 
-            and m.manufacturers_id = '" .  $HTTP_GET_VARS['manufacturers_id'] . "' 
+            and m.manufacturers_id = '" .  $_GET['manufacturers_id'] . "' 
             and p.products_id = p2c.products_id 
             and pd.products_id = p2c.products_id 
             and pd.language_id = '" . $languages_id . "' 
-            and p2c.categories_id = '" . $HTTP_GET_VARS['filter_id'] . "' 
+            and p2c.categories_id = '" . $_GET['filter_id'] . "' 
           order by pd.site_id DESC"
             ;
       } else {
@@ -104,7 +104,7 @@
           and pd.products_id = p.products_id 
           and pd.language_id = '" . $languages_id . "' 
           and p.manufacturers_id = m.manufacturers_id 
-          and m.manufacturers_id = '" . $HTTP_GET_VARS['manufacturers_id'] . "' 
+          and m.manufacturers_id = '" . $_GET['manufacturers_id'] . "' 
         order by pd.site_id DESC
           ";
         /*
@@ -121,7 +121,7 @@
           and pd.products_id = p.products_id 
           and pd.language_id = '" . $languages_id . "' 
           and p.manufacturers_id = m.manufacturers_id 
-          and m.manufacturers_id = '" . $HTTP_GET_VARS['manufacturers_id'] . "' 
+          and m.manufacturers_id = '" . $_GET['manufacturers_id'] . "' 
           and pd.site_id = ".SITE_ID;
           */
       }
@@ -138,7 +138,7 @@
             and p2c.categories_id = c.categories_id 
             and p2c.categories_id = cd.categories_id 
             and cd.language_id = '" . $languages_id . "' 
-            and p.manufacturers_id = '" .  $HTTP_GET_VARS['manufacturers_id'] . "' 
+            and p.manufacturers_id = '" .  $_GET['manufacturers_id'] . "' 
           order by cd.categories_name
         ) c
         where site_id = 0
@@ -156,13 +156,13 @@
           and p2c.categories_id = c.categories_id 
           and p2c.categories_id = cd.categories_id 
           and cd.language_id = '" . $languages_id . "' 
-          and p.manufacturers_id = '" .  $HTTP_GET_VARS['manufacturers_id'] . "' 
+          and p.manufacturers_id = '" .  $_GET['manufacturers_id'] . "' 
           and cd.site_id = ".SITE_ID." 
         order by cd.categories_name";
         */
     } else {
 // show the products in a given categorie
-      if (isset($HTTP_GET_VARS['filter_id'])) {
+      if (isset($_GET['filter_id'])) {
 // We are asked to show only specific catgeory
         $listing_sql .= "
           select " . $select_column_list . " 
@@ -176,7 +176,7 @@
           from ( " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_MANUFACTURERS . " m, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c  ) left join " .  TABLE_SPECIALS . " s on p.products_id = s.products_id 
           where p.products_status = '1' 
             and p.manufacturers_id = m.manufacturers_id 
-            and m.manufacturers_id = '" .  $HTTP_GET_VARS['filter_id'] . "' 
+            and m.manufacturers_id = '" .  $_GET['filter_id'] . "' 
             and p.products_id = p2c.products_id 
             and pd.products_id = p2c.products_id 
             and pd.language_id = '" . $languages_id . "' 
@@ -195,7 +195,7 @@
           from ( " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_MANUFACTURERS . " m, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c  ) left join " .  TABLE_SPECIALS . " s on p.products_id = s.products_id 
           where p.products_status = '1' 
             and p.manufacturers_id = m.manufacturers_id 
-            and m.manufacturers_id = '" .  $HTTP_GET_VARS['filter_id'] . "' 
+            and m.manufacturers_id = '" .  $_GET['filter_id'] . "' 
             and p.products_id = p2c.products_id 
             and pd.products_id = p2c.products_id 
             and pd.language_id = '" . $languages_id . "' 
@@ -261,18 +261,18 @@
     group by products_id
     ";
 
-    if (!isset($HTTP_GET_VARS['sort'])) $HTTP_GET_VARS['sort']=NULL;
-    if ( (!$HTTP_GET_VARS['sort']) || (!ereg('[1-9][ad]', $HTTP_GET_VARS['sort'])) || (substr($HTTP_GET_VARS['sort'],0,1) > sizeof($column_list)) ) {
+    if (!isset($_GET['sort'])) $_GET['sort']=NULL;
+    if ( (!$_GET['sort']) || (!ereg('[1-9][ad]', $_GET['sort'])) || (substr($_GET['sort'],0,1) > sizeof($column_list)) ) {
       for ($col=0, $n=sizeof($column_list); $col<$n; $col++) {
         if ($column_list[$col] == 'PRODUCT_LIST_NAME') {
-          $HTTP_GET_VARS['sort'] = $col+1 . 'a';
+          $_GET['sort'] = $col+1 . 'a';
           $listing_sql .= " order by products_name";
           break;
         }
       }
     } else {
-      $sort_col = substr($HTTP_GET_VARS['sort'], 0 , 1);
-      $sort_order = substr($HTTP_GET_VARS['sort'], 1);
+      $sort_col = substr($_GET['sort'], 0 , 1);
+      $sort_order = substr($_GET['sort'], 1);
       $listing_sql .= ' order by ';
       switch ($column_list[$sort_col-1]) {
         case 'PRODUCT_LIST_MODEL':
@@ -306,7 +306,7 @@
 		<h1 class="pageHeading_long"><?php
 	if (isset($cPath_array)) {
 		echo $seo_category['categories_name'];
-	} elseif ($HTTP_GET_VARS['manufacturers_id']) {
+	} elseif ($_GET['manufacturers_id']) {
 		echo $seo_manufacturers['manufacturers_name'];
 	} else {
 		echo HEADING_TITLE;
@@ -314,8 +314,8 @@
 ?></h1>
 		<p class="comment"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?></p>
 		<h2 class="line"><?php
-	if(isset($HTTP_GET_VARS['cPath']) && $HTTP_GET_VARS['cPath']) {
-		$categories_path = explode('_', $HTTP_GET_VARS['cPath']);
+	if(isset($_GET['cPath']) && $_GET['cPath']) {
+		$categories_path = explode('_', $_GET['cPath']);
 		//大カテゴリの画像を返す
     // ccdd
     /*

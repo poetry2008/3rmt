@@ -22,16 +22,16 @@
 <!--select searach -->
 <table width="100%"  border="0" cellpadding="0" cellspacing="1" bgcolor="#dddddd">
   <tr>
-    <td><a class="product_listing_link" <?php echo ($HTTP_GET_VARS['sort'] == '4a') ? 'style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=4a') ; ?>">タイトル順(A〜)に並べる</a></td>
-    <td><a class="product_listing_link" <?php echo ($HTTP_GET_VARS['sort'] == '4d') ? 'style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=4d') ; ?>">タイトル順(Z〜)に並べる</a></td>
-    <td><a class="product_listing_link" <?php echo ($HTTP_GET_VARS['sort'] == '5a') ? 'style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=5a') ; ?>">価格順(安い)に並べる</a></td>
-    <td><a class="product_listing_link" <?php echo ($HTTP_GET_VARS['sort'] == '5d') ? 'style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=5d') ; ?>">価格順(高い)に並べる</a></td>
-    <td><a class="product_listing_link" <?php echo ($HTTP_GET_VARS['sort'] == '9d') ? 'style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=9d') ; ?>">人気順に並べる</a></td>
+    <td><a class="product_listing_link" <?php echo ($_GET['sort'] == '4a') ? 'style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=4a') ; ?>">タイトル順(A〜)に並べる</a></td>
+    <td><a class="product_listing_link" <?php echo ($_GET['sort'] == '4d') ? 'style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=4d') ; ?>">タイトル順(Z〜)に並べる</a></td>
+    <td><a class="product_listing_link" <?php echo ($_GET['sort'] == '5a') ? 'style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=5a') ; ?>">価格順(安い)に並べる</a></td>
+    <td><a class="product_listing_link" <?php echo ($_GET['sort'] == '5d') ? 'style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=5d') ; ?>">価格順(高い)に並べる</a></td>
+    <td><a class="product_listing_link" <?php echo ($_GET['sort'] == '9d') ? 'style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=9d') ; ?>">人気順に並べる</a></td>
   </tr>
 </table>
 <?php
   $listing_numrows_sql = $listing_sql;
-  $listing_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $listing_sql, $listing_numrows);
+  $listing_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $listing_sql, $listing_numrows);
   // fix counted products
   $listing_numrows = tep_db_query($listing_numrows_sql);
   $listing_numrows = tep_db_num_rows($listing_numrows);
@@ -40,8 +40,8 @@
 ?>
 <table border="0" width="100%" cellspacing="0" cellpadding="2" style="background: url(images/design/box/product_listing_page.gif) repeat-x; height: 23px; color: #005c69;">
   <tr>
-    <td class="smallText"><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $HTTP_GET_VARS['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
-    <td align="right" class="smallText">&nbsp;<?php echo TEXT_RESULT_PAGE; ?> <?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?>&nbsp;</td>
+    <td class="smallText"><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
+    <td align="right" class="smallText">&nbsp;<?php echo TEXT_RESULT_PAGE; ?> <?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?>&nbsp;</td>
   </tr>
 </table>
 <?php
@@ -140,7 +140,7 @@ if (!isset($listing['products_cflag'])) $listing['products_cflag'] = NULL;//del 
   } else {
 ?>
   <tr class="productListing-odd">
-    <td class="smallText">&nbsp;<?php echo (isset($HTTP_GET_VARS['manufacturers_id']) ? TEXT_NO_PRODUCTS2 : TEXT_NO_PRODUCTS); ?>&nbsp;</td>
+    <td class="smallText">&nbsp;<?php echo (isset($_GET['manufacturers_id']) ? TEXT_NO_PRODUCTS2 : TEXT_NO_PRODUCTS); ?>&nbsp;</td>
   </tr>
 <?php
   }
@@ -152,8 +152,8 @@ if (!isset($listing['products_cflag'])) $listing['products_cflag'] = NULL;//del 
     <td>
       <table border="0" width="100%" cellspacing="0" cellpadding="2" style="background: url(images/design/box/product_listing_page.gif) repeat-x; height: 23px; color: #005c69; margin-top: 10px;">
         <tr>
-          <td class="smallText"><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $HTTP_GET_VARS['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
-          <td align="right" class="smallText">&nbsp;<?php echo TEXT_RESULT_PAGE; ?> <?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?>&nbsp;</td>
+          <td class="smallText"><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
+          <td align="right" class="smallText">&nbsp;<?php echo TEXT_RESULT_PAGE; ?> <?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?>&nbsp;</td>
         </tr>
       </table>
     </td>

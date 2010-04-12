@@ -26,14 +26,14 @@
     function process() {
       global $order, $currencies;
       global $payment, $point;
-      global $HTTP_POST_VARS;
+      global $_POST;
 
       $total = $order->info['total'];
       if ((MODULE_ORDER_TOTAL_CODT_STATUS == 'true')
           && ($payment == 'cod_table')
-          && isset($HTTP_POST_VARS['codt_fee'])
-          && (0 < intval($HTTP_POST_VARS['codt_fee']))) {
-        $total += intval($HTTP_POST_VARS['codt_fee']);
+          && isset($_POST['codt_fee'])
+          && (0 < intval($_POST['codt_fee']))) {
+        $total += intval($_POST['codt_fee']);
       }
 	  
 	  //Add point
@@ -44,7 +44,7 @@
 	  
       if (!defined('MODULE_PAYMENT_CONVENIENCE_STORE_STATUS')) define('MODULE_PAYMENT_CONVENIENCE_STORE_STATUS', NULL);
 	  if(MODULE_PAYMENT_CONVENIENCE_STORE_STATUS == 'true' && ($payment == 'convenience_store')) {
-        $total += intval($HTTP_POST_VARS['codt_fee']);
+        $total += intval($_POST['codt_fee']);
 	  }
 
       $this->output[] = array('title' => $this->title . ':',

@@ -14,8 +14,8 @@
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PASSWORD_FORGOTTEN);
 
-  if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'process')) {
-    $check_customer_query = tep_db_query("select customers_firstname, customers_lastname, customers_password, customers_id, customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_email_address = '" .  $HTTP_POST_VARS['email_address'] . "' and site_id = '".SITE_ID."'");
+  if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
+    $check_customer_query = tep_db_query("select customers_firstname, customers_lastname, customers_password, customers_id, customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_email_address = '" .  $_POST['email_address'] . "' and site_id = '".SITE_ID."'");
     if (tep_db_num_rows($check_customer_query)) {
       $check_customer = tep_db_fetch_array($check_customer_query);
 	  if($check_customer['customers_guest_chk'] == '0') {
@@ -24,7 +24,7 @@
         $crypted_password = tep_encrypt_password($newpass);
         tep_db_query("update " . TABLE_CUSTOMERS . " set customers_password = '" .  $crypted_password . "' where customers_id = '" .  $check_customer['customers_id'] . "' and site_id = '".SITE_ID."'");
 
-        tep_mail(tep_get_fullname($check_customer['customers_firstname'],$check_customer['customers_lastname']), $HTTP_POST_VARS['email_address'], EMAIL_PASSWORD_REMINDER_SUBJECT, nl2br(sprintf(EMAIL_PASSWORD_REMINDER_BODY, $newpass)), STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+        tep_mail(tep_get_fullname($check_customer['customers_firstname'],$check_customer['customers_lastname']), $_POST['email_address'], EMAIL_PASSWORD_REMINDER_SUBJECT, nl2br(sprintf(EMAIL_PASSWORD_REMINDER_BODY, $newpass)), STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
         tep_redirect(tep_href_link(FILENAME_LOGIN, 'info_message=' . urlencode(TEXT_PASSWORD_SENT), 'SSL', true, false));
 	  } else {
 	    tep_redirect(tep_href_link(FILENAME_PASSWORD_FORGOTTEN, 'email=nonexistent', 'SSL'));
@@ -76,7 +76,7 @@
               </td>
             </tr>
             <?php
-  if (isset($HTTP_GET_VARS['email']) && ($HTTP_GET_VARS['email'] == 'nonexistent')) {
+  if (isset($_GET['email']) && ($_GET['email'] == 'nonexistent')) {
     echo '          <tr>' . "\n";
     echo '            <td colspan="2" class="smallText">' .  TEXT_NO_EMAIL_ADDRESS_FOUND . '</td>' . "\n";
     echo '          </tr>' . "\n";

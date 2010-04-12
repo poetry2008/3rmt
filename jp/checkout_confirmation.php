@@ -33,21 +33,21 @@
 //  }
 
   if (!tep_session_is_registered('payment')) tep_session_register('payment');
-  if (isset($HTTP_POST_VARS['payment'])) $payment = $HTTP_POST_VARS['payment'];
+  if (isset($_POST['payment'])) $payment = $_POST['payment'];
 
   if (!tep_session_is_registered('comments')) tep_session_register('comments');
-  if (isset($HTTP_POST_VARS['comments_added']) && $HTTP_POST_VARS['comments_added'] != '') {
-    $comments = tep_db_prepare_input($HTTP_POST_VARS['comments']);
+  if (isset($_POST['comments_added']) && $_POST['comments_added'] != '') {
+    $comments = tep_db_prepare_input($_POST['comments']);
   }
   
 ////
 // check if bank info
-  if(isset($HTTP_POST_VARS['bank_name'])) {
-	$bank_name = tep_db_prepare_input($HTTP_POST_VARS['bank_name']);
-	$bank_shiten = tep_db_prepare_input($HTTP_POST_VARS['bank_shiten']);
-	$bank_kamoku = tep_db_prepare_input($HTTP_POST_VARS['bank_kamoku']);
-	$bank_kouza_num = tep_db_prepare_input($HTTP_POST_VARS['bank_kouza_num']);
-	$bank_kouza_name = tep_db_prepare_input($HTTP_POST_VARS['bank_kouza_name']);
+  if(isset($_POST['bank_name'])) {
+	$bank_name = tep_db_prepare_input($_POST['bank_name']);
+	$bank_shiten = tep_db_prepare_input($_POST['bank_shiten']);
+	$bank_kamoku = tep_db_prepare_input($_POST['bank_kamoku']);
+	$bank_kouza_num = tep_db_prepare_input($_POST['bank_kouza_num']);
+	$bank_kouza_name = tep_db_prepare_input($_POST['bank_kouza_name']);
 	
 	tep_session_register('bank_name');
 	tep_session_register('bank_shiten');
@@ -215,7 +215,7 @@
   );
   */
 //ccdd
-    //tep_products_description_exist((int)$HTTP_GET_VARS['products_id'], SITE_ID, $languages_id) && tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_viewed = products_viewed+1 where products_id = '" .  (int)$HTTP_GET_VARS['products_id'] . "' and language_id = '" . $languages_id . "' and site_id = ".SITE_ID);
+    //tep_products_description_exist((int)$_GET['products_id'], SITE_ID, $languages_id) && tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_viewed = products_viewed+1 where products_id = '" .  (int)$_GET['products_id'] . "' and language_id = '" . $languages_id . "' and site_id = ".SITE_ID);
     $product_info = tep_get_product_by_id($order->products[$i]['id'], SITE_ID, $languages_id);
     //$product_info = tep_db_fetch_array($_product_info_query);
     $data1 = explode("//", $product_info['products_attention_1']);
@@ -361,8 +361,8 @@
                 <td width="70%" valign="top" align="right"><table width="100%" border="0" cellspacing="0" cellpadding="2"> 
                     <?php
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
-    if(@$HTTP_POST_VARS['point'] < $order->info['subtotal']) {
-	  $point = isset($HTTP_POST_VARS['point'])?$HTTP_POST_VARS['point']:0;
+    if(@$_POST['point'] < $order->info['subtotal']) {
+	  $point = isset($_POST['point'])?$_POST['point']:0;
 	} else {
 	  $point = $order->info['subtotal'];
 	}

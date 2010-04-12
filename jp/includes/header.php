@@ -12,13 +12,13 @@
 
 // check if the 'install' directory exists, and warn of its existence
 	if (WARN_INSTALL_EXISTENCE == 'true') {
-		if (file_exists(dirname($HTTP_SERVER_VARS['SCRIPT_FILENAME']) . '/install')) {
+		if (file_exists(dirname($_SERVER['SCRIPT_FILENAME']) . '/install')) {
 			tep_output_warning(WARNING_INSTALL_DIRECTORY_EXISTS);
 		}
 	}
 	// check if the configure.php file is writeable
 	if (WARN_CONFIG_WRITEABLE == 'true') {
-		if ( (file_exists(dirname($HTTP_SERVER_VARS['SCRIPT_FILENAME']) . '/includes/configure.php')) && (is_writeable(dirname($HTTP_SERVER_VARS['SCRIPT_FILENAME']) . '/includes/configure.php')) ) {
+		if ( (file_exists(dirname($_SERVER['SCRIPT_FILENAME']) . '/includes/configure.php')) && (is_writeable(dirname($_SERVER['SCRIPT_FILENAME']) . '/includes/configure.php')) ) {
 			tep_output_warning(WARNING_CONFIG_FILE_WRITEABLE);
 		}
 	}
@@ -46,10 +46,10 @@
 ?>
 <div id="title">
 <?php
-	if (isset($HTTP_GET_VARS['cPath']) && $HTTP_GET_VARS['cPath']) {
+	if (isset($_GET['cPath']) && $_GET['cPath']) {
 		echo $seo_category['seo_name'] . ' RMT ジャックポットは安全で安心・信頼できる取り引きを目指していきます。' . "\n";
-	} elseif (isset($HTTP_GET_VARS['products_id']) && $HTTP_GET_VARS['products_id']) {
-		echo ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1) . ' ジャックポットは安全で安心・信頼できる取り引きを目指していきます。' . "\n";
+	} elseif (isset($_GET['products_id']) && $_GET['products_id']) {
+		echo ds_tep_get_categories((int)$_GET['products_id'],1) . ' ジャックポットは安全で安心・信頼できる取り引きを目指していきます。' . "\n";
 	} else {
 		echo 'RMT専門店！ RMTジャックポットは安全で安心・信頼できる取り引きを目指していきます。' . "\n";
 	}	
@@ -73,10 +73,10 @@
 <?php
 // --- get categoris list ( parent_id = 0 ) --- //
 	$cat1 = '';
-	if (isset($HTTP_GET_VARS['cPath']) && $HTTP_GET_VARS['cPath']) {
-		$cat0 = explode('_', $HTTP_GET_VARS['cPath']);
-	} elseif (isset($HTTP_GET_VARS['products_id']) && $HTTP_GET_VARS['products_id']) {
-		$cat_products = tep_get_product_path($HTTP_GET_VARS['products_id']);
+	if (isset($_GET['cPath']) && $_GET['cPath']) {
+		$cat0 = explode('_', $_GET['cPath']);
+	} elseif (isset($_GET['products_id']) && $_GET['products_id']) {
+		$cat_products = tep_get_product_path($_GET['products_id']);
 		$cat0 = explode('_', $cat_products);
 	}
 if (!isset($cat0[0])) $cat0[0] = NULL;
@@ -149,20 +149,20 @@ if (!isset($cat0[0])) $cat0[0] = NULL;
 	</div>
 </div>
 <?php
-	if (isset($HTTP_GET_VARS['error_message']) && tep_not_null($HTTP_GET_VARS['error_message'])) {
+	if (isset($_GET['error_message']) && tep_not_null($_GET['error_message'])) {
 ?>
 <table width="100%" border="0" align="center" cellpadding="2" cellspacing="0">
 	<tr class="headerError">
-		<td class="headerError"><?php echo htmlspecialchars(urldecode($HTTP_GET_VARS['error_message'])); ?></td>
+		<td class="headerError"><?php echo htmlspecialchars(urldecode($_GET['error_message'])); ?></td>
 	</tr>
 </table>
 <?php
 	}
-	if (isset($HTTP_GET_VARS['info_message']) && tep_not_null($HTTP_GET_VARS['info_message'])) {
+	if (isset($_GET['info_message']) && tep_not_null($_GET['info_message'])) {
 ?>
 <table width="900" border="0" align="center" cellpadding="2" cellspacing="0">
 	<tr class="headerInfo">
-		<td class="headerInfo"><?php echo htmlspecialchars($HTTP_GET_VARS['info_message']); ?></td>
+		<td class="headerInfo"><?php echo htmlspecialchars($_GET['info_message']); ?></td>
 	</tr>
 </table>
 <?php

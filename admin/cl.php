@@ -4,27 +4,27 @@
  */
 include("includes/application_top.php");
 
-if(isset($HTTP_POST_VARS['updata']) && $HTTP_POST_VARS['updata'] == 'on') {
+if(isset($_POST['updata']) && $_POST['updata'] == 'on') {
 	$mm_1 = "";
 	for($i=1; $i<32; $i++) {
 	  $mm_1 .= $_POST[$i];
 	}
-	tep_db_query("update ".TABLE_CALENDER." set cl_value='".$mm_1."' where cl_ym = '".$_POST['ymd']."' and site_id = '".(int)$HTTP_POST_VARS['site_id']."'");
+	tep_db_query("update ".TABLE_CALENDER." set cl_value='".$mm_1."' where cl_ym = '".$_POST['ymd']."' and site_id = '".(int)$_POST['site_id']."'");
 	
 	$mm_2 = "";
 	for($j=101; $j<132; $j++) {
 	  $mm_2 .= $_POST[$j];
 	}
-	tep_db_query("update ".TABLE_CALENDER." set cl_value='".$mm_2."' where cl_ym = '".$_POST['ymd2']."' and site_id = '".(int)$HTTP_POST_VARS['site_id']."'");
+	tep_db_query("update ".TABLE_CALENDER." set cl_value='".$mm_2."' where cl_ym = '".$_POST['ymd2']."' and site_id = '".(int)$_POST['site_id']."'");
 	
-	tep_redirect(tep_href_link(FILENAME_CL, 'site_id='.(int)$HTTP_POST_VARS['site_id'].'&action=success'));
+	tep_redirect(tep_href_link(FILENAME_CL, 'site_id='.(int)$_POST['site_id'].'&action=success'));
 }
 
 // 处理多站点
 $sites    = tep_get_sites();
 $sites_id = tep_get_sites_id();
-if (isset($HTTP_GET_VARS['site_id']) && in_array((int)$HTTP_GET_VARS['site_id'], $sites_id)) {
-  $site_id = (int)$HTTP_GET_VARS['site_id'];
+if (isset($_GET['site_id']) && in_array((int)$_GET['site_id'], $sites_id)) {
+  $site_id = (int)$_GET['site_id'];
 } else {
   $site_id = $sites_id[0];
 }

@@ -22,16 +22,16 @@
 <!--select searach -->
 <table width="689"  border="0" cellpadding="1" cellspacing="1" bgcolor="#C0CEDD">
 	<tr>
-		<td height="25" align="center" <?php echo ($HTTP_GET_VARS['sort'] == '4a') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" title="" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($HTTP_GET_VARS['sort'] == '4a') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="3" alt=""><a href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=4a') ; ?>">タイトル順(A〜)に並べる</a></td>
-		<td height="25" align="center" <?php echo ($HTTP_GET_VARS['sort'] == '4d') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" title="" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($HTTP_GET_VARS['sort'] == '4d') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="3" alt=""><a href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=4d') ; ?>">タイトル順(Z〜)に並べる</a></td>
-		<td height="25" align="center" <?php echo ($HTTP_GET_VARS['sort'] == '5a') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" title="" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($HTTP_GET_VARS['sort'] == '5a') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="3" alt=""><a href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=5a') ; ?>">価格順(安い)に並べる</a></td>
-		<td height="25" align="center" <?php echo ($HTTP_GET_VARS['sort'] == '5d') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" title="" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($HTTP_GET_VARS['sort'] == '5d') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="3" alt=""><a href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=5d') ; ?>">価格順(高い)に並べる</a></td>
-		<td height="25" align="center" <?php echo ($HTTP_GET_VARS['sort'] == '9d') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" title="" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($HTTP_GET_VARS['sort'] == '9d') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="3" alt=""><a href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=9d') ; ?>">人気順に並べる</a></td>
+		<td height="25" align="center" <?php echo ($_GET['sort'] == '4a') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" title="" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($_GET['sort'] == '4a') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="3" alt=""><a href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=4a') ; ?>">タイトル順(A〜)に並べる</a></td>
+		<td height="25" align="center" <?php echo ($_GET['sort'] == '4d') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" title="" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($_GET['sort'] == '4d') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="3" alt=""><a href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=4d') ; ?>">タイトル順(Z〜)に並べる</a></td>
+		<td height="25" align="center" <?php echo ($_GET['sort'] == '5a') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" title="" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($_GET['sort'] == '5a') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="3" alt=""><a href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=5a') ; ?>">価格順(安い)に並べる</a></td>
+		<td height="25" align="center" <?php echo ($_GET['sort'] == '5d') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" title="" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($_GET['sort'] == '5d') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="3" alt=""><a href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=5d') ; ?>">価格順(高い)に並べる</a></td>
+		<td height="25" align="center" <?php echo ($_GET['sort'] == '9d') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" title="" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($_GET['sort'] == '9d') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="3" alt=""><a href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=9d') ; ?>">人気順に並べる</a></td>
 	</tr>
 </table>
 <?php
 	$listing_numrows_sql = $listing_sql;
-	$listing_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $listing_sql, $listing_numrows);
+	$listing_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $listing_sql, $listing_numrows);
 	// fix counted products
 	$listing_numrows = tep_db_query($listing_numrows_sql);
 	$listing_numrows = tep_db_num_rows($listing_numrows);
@@ -40,8 +40,8 @@
 ?>
 <table border="0" width="689" cellspacing="0" cellpadding="2">
 	<tr>
-		<td class="smallText"><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $HTTP_GET_VARS['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
-		<td align="right" class="smallText">&nbsp;<?php echo TEXT_RESULT_PAGE; ?> <?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?>&nbsp;</td>
+		<td class="smallText"><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
+		<td align="right" class="smallText">&nbsp;<?php echo TEXT_RESULT_PAGE; ?> <?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?>&nbsp;</td>
 	</tr>
 </table>
 <?php
@@ -136,7 +136,7 @@ if (!isset($listing['products_cflag'])) $listing['products_cflag'] = NULL;
 ?>
 	<tr class="productListing-odd">
         <?php if (!defined('TEXT_NO_PRODUCTS2')) define('TEXT_NO_PRODUCTS2', NULL);?>
-		<td class="smallText">&nbsp;<?php echo (isset($HTTP_GET_VARS['manufacturers_id']) ? TEXT_NO_PRODUCTS2 : TEXT_NO_PRODUCTS); ?>&nbsp;</td>
+		<td class="smallText">&nbsp;<?php echo (isset($_GET['manufacturers_id']) ? TEXT_NO_PRODUCTS2 : TEXT_NO_PRODUCTS); ?>&nbsp;</td>
 	</tr>
 <?php
 	}
@@ -151,8 +151,8 @@ if (!isset($listing['products_cflag'])) $listing['products_cflag'] = NULL;
 		<td>
 			<table border="0" width="100%" cellspacing="0" cellpadding="2">
 				<tr>
-					<td class="smallText"><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $HTTP_GET_VARS['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
-					<td align="right" class="smallText">&nbsp;<?php echo TEXT_RESULT_PAGE; ?> <?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?>&nbsp;</td>
+					<td class="smallText"><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
+					<td align="right" class="smallText">&nbsp;<?php echo TEXT_RESULT_PAGE; ?> <?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?>&nbsp;</td>
 				</tr>
 			</table>
 		</td>

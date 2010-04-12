@@ -5,9 +5,9 @@
 
   require('includes/application_top.php');
 
-  if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action']) {
-    if ($HTTP_GET_VARS['action'] == 'reset') {
-      tep_reset_cache_block($HTTP_GET_VARS['block']);
+  if (isset($_GET['action']) && $_GET['action']) {
+    if ($_GET['action'] == 'reset') {
+      tep_reset_cache_block($_GET['block']);
     }
     tep_redirect(tep_href_link(FILENAME_CACHE));
   }

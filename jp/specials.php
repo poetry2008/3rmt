@@ -50,7 +50,7 @@
   group by products_id
   order by specials_date_added DESC
   ";
-	$specials_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SPECIAL_PRODUCTS, $specials_query_raw, $specials_numrows);
+	$specials_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SPECIAL_PRODUCTS, $specials_query_raw, $specials_numrows);
   // ccdd
 	$specials_query = tep_db_query($specials_query_raw);
 	
@@ -61,8 +61,8 @@
 							<br>
 							<table border="0" width="100%" cellspacing="0" cellpadding="2">
 								<tr>
-									<td class="smallText"><?php echo $specials_split->display_count($specials_numrows, MAX_DISPLAY_SPECIAL_PRODUCTS, $HTTP_GET_VARS['page'], TEXT_DISPLAY_NUMBER_OF_SPECIALS); ?></td>
-									<td class="smallText" align="right"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $specials_split->display_links($specials_numrows, MAX_DISPLAY_SPECIAL_PRODUCTS, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
+									<td class="smallText"><?php echo $specials_split->display_count($specials_numrows, MAX_DISPLAY_SPECIAL_PRODUCTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_SPECIALS); ?></td>
+									<td class="smallText" align="right"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $specials_split->display_links($specials_numrows, MAX_DISPLAY_SPECIAL_PRODUCTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
 								</tr>
 							</table>
 						</td>
@@ -103,8 +103,8 @@
 							<br>
 							<table border="0" width="100%" cellspacing="0" cellpadding="2">
 								<tr>
-									<td class="smallText"><?php echo $specials_split->display_count($specials_numrows, MAX_DISPLAY_SPECIAL_PRODUCTS, $HTTP_GET_VARS['page'], TEXT_DISPLAY_NUMBER_OF_SPECIALS); ?></td>
-									<td class="smallText" align="right"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $specials_split->display_links($specials_numrows, MAX_DISPLAY_SPECIAL_PRODUCTS, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
+									<td class="smallText"><?php echo $specials_split->display_count($specials_numrows, MAX_DISPLAY_SPECIAL_PRODUCTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_SPECIALS); ?></td>
+									<td class="smallText" align="right"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $specials_split->display_links($specials_numrows, MAX_DISPLAY_SPECIAL_PRODUCTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
 								</tr>
 							</table>
 						</td>

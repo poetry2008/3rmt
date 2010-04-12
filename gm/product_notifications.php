@@ -22,8 +22,8 @@
     tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
   }
 
-  if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'update_notifications')) {
-    $products = $HTTP_POST_VARS['products'];
+  if (isset($_GET['action']) && ($_GET['action'] == 'update_notifications')) {
+    $products = $_POST['products'];
     $remove = '';
     for ($i=0, $n=sizeof($products); $i<$n; $i++) {
       $remove .= '\'' . $products[$i] . '\',';
@@ -35,8 +35,8 @@
     }
 
     tep_redirect(tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, '', 'SSL'));
-  } elseif (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'global_notify')) {
-    if (isset($HTTP_POST_VARS['global']) && ($HTTP_POST_VARS['global'] == 'enable')) {
+  } elseif (isset($_GET['action']) && ($_GET['action'] == 'global_notify')) {
+    if (isset($_POST['global']) && ($_POST['global'] == 'enable')) {
       tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set global_product_notifications = '1' where customers_info_id = '" . $customer_id . "'");
     } else {
       $check_query = tep_db_query("select count(*) as count from " . TABLE_CUSTOMERS_INFO . " where customers_info_id = '" . $customer_id . "' and global_product_notifications = '1'");

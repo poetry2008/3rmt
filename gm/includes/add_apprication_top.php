@@ -14,8 +14,8 @@
     $seo_category_query = tep_db_query("select categories_name,categories_image3,categories_meta_text, categories_id from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '".$current_category_id."' and language_id='" . $languages_id . "'");
 	$seo_category = tep_db_fetch_array($seo_category_query);
     
-if (!isset($HTTP_GET_VARS['manufacturers_id'])) $HTTP_GET_VARS['manufacturers_id']= NULL;
-	$seo_manufacturers_query = tep_db_query("select manufacturers_id, manufacturers_name from " . TABLE_MANUFACTURERS . " where manufacturers_id = '".$HTTP_GET_VARS['manufacturers_id']."'");
+if (!isset($_GET['manufacturers_id'])) $_GET['manufacturers_id']= NULL;
+	$seo_manufacturers_query = tep_db_query("select manufacturers_id, manufacturers_name from " . TABLE_MANUFACTURERS . " where manufacturers_id = '".$_GET['manufacturers_id']."'");
     $seo_manufacturers = tep_db_fetch_array($seo_manufacturers_query);
    
    
@@ -24,7 +24,7 @@ if (!isset($HTTP_GET_VARS['manufacturers_id'])) $HTTP_GET_VARS['manufacturers_id
 	   $header_title.= tep_not_null($seo_category['categories_meta_text']) ? '-' . $seo_category['categories_meta_text'] : C_TITLE ; 
 	   $header_text = $seo_category['categories_name'] . '&nbsp;&nbsp;&nbsp;' .strip_tags($seo_category['categories_meta_text']);
 
-   } elseif ($HTTP_GET_VARS['manufacturers_id']) {
+   } elseif ($_GET['manufacturers_id']) {
        $header_title = $seo_manufacturers['manufacturers_name'].'-' .C_TITLE;
        $header_text = $seo_manufacturers['manufacturers_name'] ;
    } else {
@@ -124,8 +124,8 @@ if (!isset($categories_path_array[1])) $categories_path_array[1]= NULL;//del not
   }
   
 // SESSION REGISTER
-if (!isset($HTTP_GET_VARS['ajax'])) $HTTP_GET_VARS['ajax']= NULL;
-switch($HTTP_GET_VARS['ajax']){
+if (!isset($_GET['ajax'])) $_GET['ajax']= NULL;
+switch($_GET['ajax']){
   case 'on' :
     $ajax = 'on' ;
     break;

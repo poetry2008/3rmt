@@ -24,15 +24,15 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
   <div id="content">
     <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; ');?></div>
     <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
-    <?php if($HTTP_POST_VARS){
-					$date     = tep_db_prepare_input($HTTP_POST_VARS['date']);
-					$hour     = tep_db_prepare_input($HTTP_POST_VARS['hour']);
-					$minute   = tep_db_prepare_input($HTTP_POST_VARS['minute']);
+    <?php if($_POST){
+					$date     = tep_db_prepare_input($_POST['date']);
+					$hour     = tep_db_prepare_input($_POST['hour']);
+					$minute   = tep_db_prepare_input($_POST['minute']);
 
-					$name      = tep_db_prepare_input($HTTP_POST_VARS['name']);
-					$character = tep_db_prepare_input($HTTP_POST_VARS['character']);
-					$product   = tep_db_prepare_input($HTTP_POST_VARS['product']);
-					$comment   = tep_db_prepare_input($HTTP_POST_VARS['comment']);
+					$name      = tep_db_prepare_input($_POST['name']);
+					$character = tep_db_prepare_input($_POST['character']);
+					$product   = tep_db_prepare_input($_POST['product']);
+					$comment   = tep_db_prepare_input($_POST['comment']);
 
 					$datetime = $date.' '.$hour.':'.$minute;
 					$time     = strtotime($datetime);

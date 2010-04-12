@@ -41,7 +41,7 @@ $breadcrumb->add(NAVBAR_TITLE, tep_href_link('manufacturers.php'));
 							<table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php 
     $manufacturer_query_raw = "select m.manufacturers_id, m.manufacturers_name, m.manufacturers_image, mi.manufacturers_url from " . TABLE_MANUFACTURERS . " m, " . TABLE_MANUFACTURERS_INFO . " mi  where  m.manufacturers_id = mi.manufacturers_id and languages_id = '" . $languages_id . "' order by manufacturers_name";
-	$manufacturer_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $manufacturer_query_raw, $manufacturer_numrows);
+	$manufacturer_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $manufacturer_query_raw, $manufacturer_numrows);
 	$manufacturer_query = tep_db_query($manufacturer_query_raw);
 
 	if (($manufacturer_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3'))) {
@@ -50,8 +50,8 @@ $breadcrumb->add(NAVBAR_TITLE, tep_href_link('manufacturers.php'));
 									<td>
 										<table border="0" width="100%" cellspacing="0" cellpadding="2">
 											<tr>
-												<td class="smallText"><?php echo $manufacturer_split->display_count($manufacturer_numrows, MAX_DISPLAY_SEARCH_RESULTS, $HTTP_GET_VARS['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
-												<td align="right" class="smallText"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $manufacturer_split->display_links($manufacturer_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
+												<td class="smallText"><?php echo $manufacturer_split->display_count($manufacturer_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
+												<td align="right" class="smallText"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $manufacturer_split->display_links($manufacturer_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
 											</tr>
 										</table>
 										<?php echo tep_draw_separator('pixel_trans.gif', '100%', '10') . "\n"; ?>
@@ -99,8 +99,8 @@ while ($manufacturer = tep_db_fetch_array($manufacturer_query)){
 	if (tep_db_num_rows($manufacturer_query)) {
 ?>
 											<tr>
-												<td class="smallText"><?php echo $manufacturer_split->display_count($manufacturer_numrows, MAX_DISPLAY_SEARCH_RESULTS, $HTTP_GET_VARS['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
-												<td align="right" class="smallText"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $manufacturer_split->display_links($manufacturer_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
+												<td class="smallText"><?php echo $manufacturer_split->display_count($manufacturer_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
+												<td align="right" class="smallText"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $manufacturer_split->display_links($manufacturer_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
 											</tr>
 <?php
 	}

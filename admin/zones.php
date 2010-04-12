@@ -12,30 +12,30 @@
 
   require('includes/application_top.php');
 
-  if ($HTTP_GET_VARS['action']) {
-    switch ($HTTP_GET_VARS['action']) {
+  if ($_GET['action']) {
+    switch ($_GET['action']) {
       case 'insert':
-        $zone_country_id = tep_db_prepare_input($HTTP_POST_VARS['zone_country_id']);
-        $zone_code = tep_db_prepare_input($HTTP_POST_VARS['zone_code']);
-        $zone_name = tep_db_prepare_input($HTTP_POST_VARS['zone_name']);
+        $zone_country_id = tep_db_prepare_input($_POST['zone_country_id']);
+        $zone_code = tep_db_prepare_input($_POST['zone_code']);
+        $zone_name = tep_db_prepare_input($_POST['zone_name']);
 
         tep_db_query("insert into " . TABLE_ZONES . " (zone_country_id, zone_code, zone_name) values ('" . tep_db_input($zone_country_id) . "', '" . tep_db_input($zone_code) . "', '" . tep_db_input($zone_name) . "')");
         tep_redirect(tep_href_link(FILENAME_ZONES));
         break;
       case 'save':
-        $zone_id = tep_db_prepare_input($HTTP_GET_VARS['cID']);
-        $zone_country_id = tep_db_prepare_input($HTTP_POST_VARS['zone_country_id']);
-        $zone_code = tep_db_prepare_input($HTTP_POST_VARS['zone_code']);
-        $zone_name = tep_db_prepare_input($HTTP_POST_VARS['zone_name']);
+        $zone_id = tep_db_prepare_input($_GET['cID']);
+        $zone_country_id = tep_db_prepare_input($_POST['zone_country_id']);
+        $zone_code = tep_db_prepare_input($_POST['zone_code']);
+        $zone_name = tep_db_prepare_input($_POST['zone_name']);
 
         tep_db_query("update " . TABLE_ZONES . " set zone_country_id = '" . tep_db_input($zone_country_id) . "', zone_code = '" . tep_db_input($zone_code) . "', zone_name = '" . tep_db_input($zone_name) . "' where zone_id = '" . tep_db_input($zone_id) . "'");
-        tep_redirect(tep_href_link(FILENAME_ZONES, 'page=' . $HTTP_GET_VARS['page'] . '&cID=' . $zone_id));
+        tep_redirect(tep_href_link(FILENAME_ZONES, 'page=' . $_GET['page'] . '&cID=' . $zone_id));
         break;
       case 'deleteconfirm':
-        $zone_id = tep_db_prepare_input($HTTP_GET_VARS['cID']);
+        $zone_id = tep_db_prepare_input($_GET['cID']);
 
         tep_db_query("delete from " . TABLE_ZONES . " where zone_id = '" . tep_db_input($zone_id) . "'");
-        tep_redirect(tep_href_link(FILENAME_ZONES, 'page=' . $HTTP_GET_VARS['page']));
+        tep_redirect(tep_href_link(FILENAME_ZONES, 'page=' . $_GET['page']));
         break;
     }
   }
@@ -83,23 +83,23 @@
               </tr>
 <?php
   $zones_query_raw = "select z.zone_id, c.countries_id, c.countries_name, z.zone_name, z.zone_code, z.zone_country_id from " . TABLE_ZONES . " z, " . TABLE_COUNTRIES . " c where z.zone_country_id = c.countries_id order by c.countries_name, z.zone_code";
-  $zones_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $zones_query_raw, $zones_query_numrows);
+  $zones_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $zones_query_raw, $zones_query_numrows);
   $zones_query = tep_db_query($zones_query_raw);
   while ($zones = tep_db_fetch_array($zones_query)) {
-    if (((!$HTTP_GET_VARS['cID']) || (@$HTTP_GET_VARS['cID'] == $zones['zone_id'])) && (!$cInfo) && (substr($HTTP_GET_VARS['action'], 0, 3) != 'new')) {
+    if (((!$_GET['cID']) || (@$_GET['cID'] == $zones['zone_id'])) && (!$cInfo) && (substr($_GET['action'], 0, 3) != 'new')) {
       $cInfo = new objectInfo($zones);
     }
 
     if ( (is_object($cInfo)) && ($zones['zone_id'] == $cInfo->zone_id) ) {
-      echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_ZONES, 'page=' . $HTTP_GET_VARS['page'] . '&cID=' . $cInfo->zone_id . '&action=edit') . '\'">' . "\n";
+      echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_ZONES, 'page=' . $_GET['page'] . '&cID=' . $cInfo->zone_id . '&action=edit') . '\'">' . "\n";
     } else {
-      echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_ZONES, 'page=' . $HTTP_GET_VARS['page'] . '&cID=' . $zones['zone_id']) . '\'">' . "\n";
+      echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_ZONES, 'page=' . $_GET['page'] . '&cID=' . $zones['zone_id']) . '\'">' . "\n";
     }
 ?>
                 <td class="dataTableContent"><?php echo $zones['countries_name']; ?></td>
                 <td class="dataTableContent"><?php echo $zones['zone_name']; ?></td>
                 <td class="dataTableContent" align="center"><?php echo $zones['zone_code']; ?></td>
-                <td class="dataTableContent" align="right"><?php if ( (is_object($cInfo)) && ($zones['zone_id'] == $cInfo->zone_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_ZONES, 'page=' . $HTTP_GET_VARS['page'] . '&cID=' . $zones['zone_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
+                <td class="dataTableContent" align="right"><?php if ( (is_object($cInfo)) && ($zones['zone_id'] == $cInfo->zone_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_ZONES, 'page=' . $_GET['page'] . '&cID=' . $zones['zone_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
               </tr>
 <?php
   }
@@ -107,14 +107,14 @@
               <tr>
                 <td colspan="4"><table border="0" width="100%" cellspacing="0" cellpadding="2">
                   <tr>
-                    <td class="smallText" valign="top"><?php echo $zones_split->display_count($zones_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $HTTP_GET_VARS['page'], TEXT_DISPLAY_NUMBER_OF_ZONES); ?></td>
-                    <td class="smallText" align="right"><?php echo $zones_split->display_links($zones_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page']); ?></td>
+                    <td class="smallText" valign="top"><?php echo $zones_split->display_count($zones_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_ZONES); ?></td>
+                    <td class="smallText" align="right"><?php echo $zones_split->display_links($zones_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']); ?></td>
                   </tr>
 <?php
-  if (!$HTTP_GET_VARS['action']) {
+  if (!$_GET['action']) {
 ?>
                   <tr>
-                    <td colspan="2" align="right"><?php echo '<a href="' . tep_href_link(FILENAME_ZONES, 'page=' . $HTTP_GET_VARS['page'] . '&action=new') . '">' . tep_image_button('button_new_zone.gif', IMAGE_NEW_ZONE) . '</a>'; ?></td>
+                    <td colspan="2" align="right"><?php echo '<a href="' . tep_href_link(FILENAME_ZONES, 'page=' . $_GET['page'] . '&action=new') . '">' . tep_image_button('button_new_zone.gif', IMAGE_NEW_ZONE) . '</a>'; ?></td>
                   </tr>
 <?php
   }
@@ -125,40 +125,40 @@
 <?php
   $heading = array();
   $contents = array();
-  switch ($HTTP_GET_VARS['action']) {
+  switch ($_GET['action']) {
     case 'new':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_NEW_ZONE . '</b>');
 
-      $contents = array('form' => tep_draw_form('zones', FILENAME_ZONES, 'page=' . $HTTP_GET_VARS['page'] . '&action=insert'));
+      $contents = array('form' => tep_draw_form('zones', FILENAME_ZONES, 'page=' . $_GET['page'] . '&action=insert'));
       $contents[] = array('text' => TEXT_INFO_INSERT_INTRO);
       $contents[] = array('text' => '<br>' . TEXT_INFO_ZONES_NAME . '<br>' . tep_draw_input_field('zone_name'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_ZONES_CODE . '<br>' . tep_draw_input_field('zone_code'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_COUNTRY_NAME . '<br>' . tep_draw_pull_down_menu('zone_country_id', tep_get_countries()));
-      $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_insert.gif', IMAGE_INSERT) . '&nbsp;<a href="' . tep_href_link(FILENAME_ZONES, 'page=' . $HTTP_GET_VARS['page']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_insert.gif', IMAGE_INSERT) . '&nbsp;<a href="' . tep_href_link(FILENAME_ZONES, 'page=' . $_GET['page']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
     case 'edit':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_EDIT_ZONE . '</b>');
 
-      $contents = array('form' => tep_draw_form('zones', FILENAME_ZONES, 'page=' . $HTTP_GET_VARS['page'] . '&cID=' . $cInfo->zone_id . '&action=save'));
+      $contents = array('form' => tep_draw_form('zones', FILENAME_ZONES, 'page=' . $_GET['page'] . '&cID=' . $cInfo->zone_id . '&action=save'));
       $contents[] = array('text' => TEXT_INFO_EDIT_INTRO);
       $contents[] = array('text' => '<br>' . TEXT_INFO_ZONES_NAME . '<br>' . tep_draw_input_field('zone_name', $cInfo->zone_name));
       $contents[] = array('text' => '<br>' . TEXT_INFO_ZONES_CODE . '<br>' . tep_draw_input_field('zone_code', $cInfo->zone_code));
       $contents[] = array('text' => '<br>' . TEXT_INFO_COUNTRY_NAME . '<br>' . tep_draw_pull_down_menu('zone_country_id', tep_get_countries(), $cInfo->countries_id));
-      $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_update.gif', IMAGE_UPDATE) . '&nbsp;<a href="' . tep_href_link(FILENAME_ZONES, 'page=' . $HTTP_GET_VARS['page'] . '&cID=' . $cInfo->zone_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_update.gif', IMAGE_UPDATE) . '&nbsp;<a href="' . tep_href_link(FILENAME_ZONES, 'page=' . $_GET['page'] . '&cID=' . $cInfo->zone_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
     case 'delete':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_ZONE . '</b>');
 
-      $contents = array('form' => tep_draw_form('zones', FILENAME_ZONES, 'page=' . $HTTP_GET_VARS['page'] . '&cID=' . $cInfo->zone_id . '&action=deleteconfirm'));
+      $contents = array('form' => tep_draw_form('zones', FILENAME_ZONES, 'page=' . $_GET['page'] . '&cID=' . $cInfo->zone_id . '&action=deleteconfirm'));
       $contents[] = array('text' => TEXT_INFO_DELETE_INTRO);
       $contents[] = array('text' => '<br><b>' . $cInfo->zone_name . '</b>');
-      $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_delete.gif', IMAGE_DELETE) . '&nbsp;<a href="' . tep_href_link(FILENAME_ZONES, 'page=' . $HTTP_GET_VARS['page'] . '&cID=' . $cInfo->zone_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_delete.gif', IMAGE_DELETE) . '&nbsp;<a href="' . tep_href_link(FILENAME_ZONES, 'page=' . $_GET['page'] . '&cID=' . $cInfo->zone_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
     default:
       if (is_object($cInfo)) {
         $heading[] = array('text' => '<b>' . $cInfo->zone_name . '</b>');
 
-        $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_ZONES, 'page=' . $HTTP_GET_VARS['page'] . '&cID=' . $cInfo->zone_id . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_ZONES, 'page=' . $HTTP_GET_VARS['page'] . '&cID=' . $cInfo->zone_id . '&action=delete') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>');
+        $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_ZONES, 'page=' . $_GET['page'] . '&cID=' . $cInfo->zone_id . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_ZONES, 'page=' . $_GET['page'] . '&cID=' . $cInfo->zone_id . '&action=delete') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>');
         $contents[] = array('text' => '<br>' . TEXT_INFO_ZONES_NAME . '<br>' . $cInfo->zone_name . ' (' . $cInfo->zone_code . ')');
         $contents[] = array('text' => '<br>' . TEXT_INFO_COUNTRY_NAME . ' ' . $cInfo->countries_name);
       }

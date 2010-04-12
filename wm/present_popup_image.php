@@ -14,7 +14,7 @@
 
   $navigation->remove_current_page();
 
-  $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$HTTP_GET_VARS['pID']."' and site_id = '".SITE_ID."'") ;
+  $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$_GET['pID']."' and site_id = '".SITE_ID."'") ;
   $present = tep_db_fetch_array($present_query) ;
 ?>
 <!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">

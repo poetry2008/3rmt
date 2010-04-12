@@ -93,14 +93,14 @@
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_SHIPPING);
 
 // process the selected shipping method
-  if ( isset($HTTP_POST_VARS['action']) && ($HTTP_POST_VARS['action'] == 'process') ) {
+  if ( isset($_POST['action']) && ($_POST['action'] == 'process') ) {
     if (!tep_session_is_registered('comments')) tep_session_register('comments');
 
     if (!tep_session_is_registered('shipping')) tep_session_register('shipping');
-	$torihikihouhou = tep_db_prepare_input($HTTP_POST_VARS['torihikihouhou']);
-	$date = tep_db_prepare_input($HTTP_POST_VARS['date']);
-	$hour = tep_db_prepare_input($HTTP_POST_VARS['hour']);
-	$min = tep_db_prepare_input($HTTP_POST_VARS['min']);
+	$torihikihouhou = tep_db_prepare_input($_POST['torihikihouhou']);
+	$date = tep_db_prepare_input($_POST['date']);
+	$hour = tep_db_prepare_input($_POST['hour']);
+	$min = tep_db_prepare_input($_POST['min']);
 	
 	$insert_torihiki_date = $date . ' ' . $hour . ':' . $min . ':00';
 	

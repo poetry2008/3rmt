@@ -13,72 +13,72 @@
   require('includes/application_top.php'); 
   $languages = tep_get_languages();
 
-  if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action']) {
-    $page_info = 'option_page=' . (isset($HTTP_GET_VARS['option_page'])?$HTTP_GET_VARS['option_page']:'') . '&value_page=' . (isset($HTTP_GET_VARS['value_page'])?$HTTP_GET_VARS['value_page']:'') . '&attribute_page=' . (isset($HTTP_GET_VARS['attribute_page'])?$HTTP_GET_VARS['attribute_page']:'');
-    switch($HTTP_GET_VARS['action']) {
+  if (isset($_GET['action']) && $_GET['action']) {
+    $page_info = 'option_page=' . (isset($_GET['option_page'])?$_GET['option_page']:'') . '&value_page=' . (isset($_GET['value_page'])?$_GET['value_page']:'') . '&attribute_page=' . (isset($_GET['attribute_page'])?$_GET['attribute_page']:'');
+    switch($_GET['action']) {
       case 'add_product_options':
         for ($i = 0, $n = sizeof($languages); $i < $n; $i ++) {
-          $option_name = $HTTP_POST_VARS['option_name'];
-          tep_db_query("insert into " . TABLE_PRODUCTS_OPTIONS . " (products_options_id, products_options_name, language_id) values ('" . $HTTP_POST_VARS['products_options_id'] . "', '" . $option_name[$languages[$i]['id']] . "', '" . $languages[$i]['id'] . "')");
+          $option_name = $_POST['option_name'];
+          tep_db_query("insert into " . TABLE_PRODUCTS_OPTIONS . " (products_options_id, products_options_name, language_id) values ('" . $_POST['products_options_id'] . "', '" . $option_name[$languages[$i]['id']] . "', '" . $languages[$i]['id'] . "')");
         }
         tep_redirect(tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, $page_info)); 
         break;
       case 'add_product_option_values':
         for ($i = 0, $n = sizeof($languages); $i < $n; $i ++) {
-          $value_name = $HTTP_POST_VARS['value_name'];
-          tep_db_query("insert into " . TABLE_PRODUCTS_OPTIONS_VALUES . " (products_options_values_id, language_id, products_options_values_name) values ('" . $HTTP_POST_VARS['value_id'] . "', '" . $languages[$i]['id'] . "', '" . $value_name[$languages[$i]['id']] . "')");
+          $value_name = $_POST['value_name'];
+          tep_db_query("insert into " . TABLE_PRODUCTS_OPTIONS_VALUES . " (products_options_values_id, language_id, products_options_values_name) values ('" . $_POST['value_id'] . "', '" . $languages[$i]['id'] . "', '" . $value_name[$languages[$i]['id']] . "')");
         }
-        tep_db_query("insert into " . TABLE_PRODUCTS_OPTIONS_VALUES_TO_PRODUCTS_OPTIONS . " (products_options_id, products_options_values_id) values ('" . $HTTP_POST_VARS['option_id'] . "', '" . $HTTP_POST_VARS['value_id'] . "')");
+        tep_db_query("insert into " . TABLE_PRODUCTS_OPTIONS_VALUES_TO_PRODUCTS_OPTIONS . " (products_options_id, products_options_values_id) values ('" . $_POST['option_id'] . "', '" . $_POST['value_id'] . "')");
         tep_redirect(tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, $page_info));
         break;
       case 'add_product_attributes':
-        tep_db_query("insert into " . TABLE_PRODUCTS_ATTRIBUTES . " values ('', '" . $HTTP_POST_VARS['products_id'] . "', '" . $HTTP_POST_VARS['options_id'] . "', '" . $HTTP_POST_VARS['values_id'] . "', '" . $HTTP_POST_VARS['value_price'] . "', '" . $HTTP_POST_VARS['price_prefix'] . "', '" . $HTTP_POST_VARS['products_stock'] . "')");
+        tep_db_query("insert into " . TABLE_PRODUCTS_ATTRIBUTES . " values ('', '" . $_POST['products_id'] . "', '" . $_POST['options_id'] . "', '" . $_POST['values_id'] . "', '" . $_POST['value_price'] . "', '" . $_POST['price_prefix'] . "', '" . $_POST['products_stock'] . "')");
         $products_attributes_id = tep_db_insert_id();
-        if ((DOWNLOAD_ENABLED == 'true') && $HTTP_POST_VARS['products_attributes_filename'] != '') {
-          tep_db_query("insert into " . TABLE_PRODUCTS_ATTRIBUTES_DOWNLOAD . " values (" . $products_attributes_id . ", '" . $HTTP_POST_VARS['products_attributes_filename'] . "', '" . $HTTP_POST_VARS['products_attributes_maxdays'] . "', '" . $HTTP_POST_VARS['products_attributes_maxcount'] . "')");
+        if ((DOWNLOAD_ENABLED == 'true') && $_POST['products_attributes_filename'] != '') {
+          tep_db_query("insert into " . TABLE_PRODUCTS_ATTRIBUTES_DOWNLOAD . " values (" . $products_attributes_id . ", '" . $_POST['products_attributes_filename'] . "', '" . $_POST['products_attributes_maxdays'] . "', '" . $_POST['products_attributes_maxcount'] . "')");
         }
         tep_redirect(tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, $page_info));
         break;
       case 'update_option_name':
         for ($i = 0, $n = sizeof($languages); $i < $n; $i ++) {
-          $option_name = $HTTP_POST_VARS['option_name'];
-          tep_db_query("update " . TABLE_PRODUCTS_OPTIONS . " set products_options_name = '" . $option_name[$languages[$i]['id']] . "' where products_options_id = '" . $HTTP_POST_VARS['option_id'] . "' and language_id = '" . $languages[$i]['id'] . "'");
+          $option_name = $_POST['option_name'];
+          tep_db_query("update " . TABLE_PRODUCTS_OPTIONS . " set products_options_name = '" . $option_name[$languages[$i]['id']] . "' where products_options_id = '" . $_POST['option_id'] . "' and language_id = '" . $languages[$i]['id'] . "'");
         }
         tep_redirect(tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, $page_info));
         break;
       case 'update_value':
         for ($i = 0, $n = sizeof($languages); $i < $n; $i ++) {
-          $value_name = $HTTP_POST_VARS['value_name'];
-          tep_db_query("update " . TABLE_PRODUCTS_OPTIONS_VALUES . " set products_options_values_name = '" . $value_name[$languages[$i]['id']] . "' where products_options_values_id = '" . $HTTP_POST_VARS['value_id'] . "' and language_id = '" . $languages[$i]['id'] . "'");
+          $value_name = $_POST['value_name'];
+          tep_db_query("update " . TABLE_PRODUCTS_OPTIONS_VALUES . " set products_options_values_name = '" . $value_name[$languages[$i]['id']] . "' where products_options_values_id = '" . $_POST['value_id'] . "' and language_id = '" . $languages[$i]['id'] . "'");
         }
-        tep_db_query("update " . TABLE_PRODUCTS_OPTIONS_VALUES_TO_PRODUCTS_OPTIONS . " set products_options_id = '" . $HTTP_POST_VARS['option_id'] . "', products_options_values_id = '" . $HTTP_POST_VARS['value_id'] . "'  where products_options_values_to_products_options_id = '" . $HTTP_POST_VARS['value_id'] . "'");
+        tep_db_query("update " . TABLE_PRODUCTS_OPTIONS_VALUES_TO_PRODUCTS_OPTIONS . " set products_options_id = '" . $_POST['option_id'] . "', products_options_values_id = '" . $_POST['value_id'] . "'  where products_options_values_to_products_options_id = '" . $_POST['value_id'] . "'");
         tep_redirect(tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, $page_info));
         break;
       case 'update_product_attribute':
-        tep_db_query("update " . TABLE_PRODUCTS_ATTRIBUTES . " set products_id = '" . $HTTP_POST_VARS['products_id'] . "', options_id = '" . $HTTP_POST_VARS['options_id'] . "', options_values_id = '" . $HTTP_POST_VARS['values_id'] . "', options_values_price = '" . $HTTP_POST_VARS['value_price'] . "', price_prefix = '" . $HTTP_POST_VARS['price_prefix'] . "', products_stock = '".$HTTP_POST_VARS['products_stock']."' where products_attributes_id = '" . $HTTP_POST_VARS['attribute_id'] . "'");
-        if ((DOWNLOAD_ENABLED == 'true') && $HTTP_POST_VARS['products_attributes_filename'] != '') {
+        tep_db_query("update " . TABLE_PRODUCTS_ATTRIBUTES . " set products_id = '" . $_POST['products_id'] . "', options_id = '" . $_POST['options_id'] . "', options_values_id = '" . $_POST['values_id'] . "', options_values_price = '" . $_POST['value_price'] . "', price_prefix = '" . $_POST['price_prefix'] . "', products_stock = '".$_POST['products_stock']."' where products_attributes_id = '" . $_POST['attribute_id'] . "'");
+        if ((DOWNLOAD_ENABLED == 'true') && $_POST['products_attributes_filename'] != '') {
           tep_db_query("update " . TABLE_PRODUCTS_ATTRIBUTES_DOWNLOAD . " 
-                        set products_attributes_filename='" . $HTTP_POST_VARS['products_attributes_filename'] . "', 
-                            products_attributes_maxdays='" . $HTTP_POST_VARS['products_attributes_maxdays'] . "', 
-                            products_attributes_maxcount='" . $HTTP_POST_VARS['products_attributes_maxcount'] . "'
-                        where products_attributes_id = '" . $HTTP_POST_VARS['attribute_id'] . "'");
+                        set products_attributes_filename='" . $_POST['products_attributes_filename'] . "', 
+                            products_attributes_maxdays='" . $_POST['products_attributes_maxdays'] . "', 
+                            products_attributes_maxcount='" . $_POST['products_attributes_maxcount'] . "'
+                        where products_attributes_id = '" . $_POST['attribute_id'] . "'");
         }
         tep_redirect(tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, $page_info));
         break;
       case 'delete_option':
-        tep_db_query("delete from " . TABLE_PRODUCTS_OPTIONS . " where products_options_id = '" . $HTTP_GET_VARS['option_id'] . "'");
+        tep_db_query("delete from " . TABLE_PRODUCTS_OPTIONS . " where products_options_id = '" . $_GET['option_id'] . "'");
         tep_redirect(tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, $page_info));
         break;
       case 'delete_value':
-        tep_db_query("delete from " . TABLE_PRODUCTS_OPTIONS_VALUES . " where products_options_values_id = '" . $HTTP_GET_VARS['value_id'] . "'");
-        tep_db_query("delete from " . TABLE_PRODUCTS_OPTIONS_VALUES . " where products_options_values_id = '" . $HTTP_GET_VARS['value_id'] . "'");
-        tep_db_query("delete from " . TABLE_PRODUCTS_OPTIONS_VALUES_TO_PRODUCTS_OPTIONS . " where products_options_values_id = '" . $HTTP_GET_VARS['value_id'] . "'");
+        tep_db_query("delete from " . TABLE_PRODUCTS_OPTIONS_VALUES . " where products_options_values_id = '" . $_GET['value_id'] . "'");
+        tep_db_query("delete from " . TABLE_PRODUCTS_OPTIONS_VALUES . " where products_options_values_id = '" . $_GET['value_id'] . "'");
+        tep_db_query("delete from " . TABLE_PRODUCTS_OPTIONS_VALUES_TO_PRODUCTS_OPTIONS . " where products_options_values_id = '" . $_GET['value_id'] . "'");
         tep_redirect(tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, $page_info));
         break;
       case 'delete_attribute':
-        tep_db_query("delete from " . TABLE_PRODUCTS_ATTRIBUTES . " where products_attributes_id = '" . $HTTP_GET_VARS['attribute_id'] . "'");
+        tep_db_query("delete from " . TABLE_PRODUCTS_ATTRIBUTES . " where products_attributes_id = '" . $_GET['attribute_id'] . "'");
 // Added for DOWNLOAD_ENABLED. Always try to remove attributes, even if downloads are no longer enabled
-        tep_db_query("delete from " . TABLE_PRODUCTS_ATTRIBUTES_DOWNLOAD . " where products_attributes_id = '" . $HTTP_GET_VARS['attribute_id'] . "'");
+        tep_db_query("delete from " . TABLE_PRODUCTS_ATTRIBUTES_DOWNLOAD . " where products_attributes_id = '" . $_GET['attribute_id'] . "'");
         tep_redirect(tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, $page_info));
         break;
     }
@@ -93,7 +93,7 @@
 <script language="javascript"><!--
 function go_option() {
   if (document.option_order_by.selected.options[document.option_order_by.selected.selectedIndex].value != "none") {
-    location = "<?php echo tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'option_page=' . (isset($HTTP_GET_VARS['option_page']) && $HTTP_GET_VARS['option_page'] ? $HTTP_GET_VARS['option_page'] : 1)); ?>&option_order_by="+document.option_order_by.selected.options[document.option_order_by.selected.selectedIndex].value;
+    location = "<?php echo tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'option_page=' . (isset($_GET['option_page']) && $_GET['option_page'] ? $_GET['option_page'] : 1)); ?>&option_order_by="+document.option_order_by.selected.options[document.option_order_by.selected.selectedIndex].value;
   }
 }
 //--></script>
@@ -120,8 +120,8 @@ function go_option() {
             <td valign="top" width="50%"><table width="100%" border="0" cellspacing="0" cellpadding="2">
 <!-- options //-->
 <?php
-  if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'delete_product_option') { // delete product option
-    $options = tep_db_query("select products_options_id, products_options_name from " . TABLE_PRODUCTS_OPTIONS . " where products_options_id = '" . $HTTP_GET_VARS['option_id'] . "' and language_id = '" . $languages_id . "'");
+  if (isset($_GET['action']) && $_GET['action'] == 'delete_product_option') { // delete product option
+    $options = tep_db_query("select products_options_id, products_options_name from " . TABLE_PRODUCTS_OPTIONS . " where products_options_id = '" . $_GET['option_id'] . "' and language_id = '" . $languages_id . "'");
     $options_values = tep_db_fetch_array($options);
 ?>
               <tr>
@@ -143,7 +143,7 @@ function go_option() {
           and pov.language_id = '" . $languages_id . "' 
           and pd.language_id = '" . $languages_id . "' 
           and pa.products_id = p.products_id 
-          and pa.options_id='" . $HTTP_GET_VARS['option_id'] . "' 
+          and pa.options_id='" . $_GET['option_id'] . "' 
           and pov.products_options_values_id = pa.options_values_id 
           and pd.site_id = '0'
         order by pd.products_name");
@@ -185,7 +185,7 @@ function go_option() {
                     <td class="main" colspan="3"><br><?php echo TEXT_OK_TO_DELETE; ?></td>
                   </tr>
                   <tr>
-                    <td class="main" align="right" colspan="3"><br><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=delete_option&option_id=' . $HTTP_GET_VARS['option_id'], 'NONSSL') . '">'; ?><?php echo tep_image_button('button_delete.gif', ' delete '); ?></a>&nbsp;&nbsp;&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '&order_by=' . $order_by . '&page=' . $page, 'NONSSL') . '">'; ?><?php echo tep_image_button('button_cancel.gif', ' cancel '); ?></a>&nbsp;</td>
+                    <td class="main" align="right" colspan="3"><br><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=delete_option&option_id=' . $_GET['option_id'], 'NONSSL') . '">'; ?><?php echo tep_image_button('button_delete.gif', ' delete '); ?></a>&nbsp;&nbsp;&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '&order_by=' . $order_by . '&page=' . $page, 'NONSSL') . '">'; ?><?php echo tep_image_button('button_cancel.gif', ' cancel '); ?></a>&nbsp;</td>
                   </tr>
 <?php
     }
@@ -194,8 +194,8 @@ function go_option() {
               </tr>
 <?php
   } else {
-    if (isset($HTTP_GET_VARS['option_order_by']) && $HTTP_GET_VARS['option_order_by']) {
-      $option_order_by = $HTTP_GET_VARS['option_order_by'];
+    if (isset($_GET['option_order_by']) && $_GET['option_order_by']) {
+      $option_order_by = $_GET['option_order_by'];
     } else {
       $option_order_by = 'products_options_id';
     }
@@ -271,7 +271,7 @@ function go_option() {
 ?>
               <tr class="<?php echo (floor($rows/2) == ($rows/2) ? 'attributes-even' : 'attributes-odd'); ?>">
 <?php
-      if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'update_option') && ($HTTP_GET_VARS['option_id'] == $options_values['products_options_id'])) {
+      if (isset($_GET['action']) && ($_GET['action'] == 'update_option') && ($_GET['option_id'] == $options_values['products_options_id'])) {
         echo '<form name="option" action="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=update_option_name', 'NONSSL') . '" method="post">';
         $inputs = '';
         for ($i = 0, $n = sizeof($languages); $i < $n; $i ++) {
@@ -304,7 +304,7 @@ function go_option() {
                 <td colspan="3"><?php echo tep_black_line(); ?></td>
               </tr>
 <?php
-    if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] != 'update_option') {
+    if (isset($_GET['action']) && $_GET['action'] != 'update_option') {
 ?>
               <tr class="<?php echo (floor($rows/2) == ($rows/2) ? 'attributes-even' : 'attributes-odd'); ?>">
 <?php
@@ -333,8 +333,8 @@ function go_option() {
             <td valign="top" width="50%"><table width="100%" border="0" cellspacing="0" cellpadding="2">
 <!-- value //-->
 <?php
-  if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'delete_option_value') { // delete product option value
-    $values = tep_db_query("select products_options_values_id, products_options_values_name from " . TABLE_PRODUCTS_OPTIONS_VALUES . " where products_options_values_id = '" . $HTTP_GET_VARS['value_id'] . "' and language_id = '" . $languages_id . "'");
+  if (isset($_GET['action']) && $_GET['action'] == 'delete_option_value') { // delete product option value
+    $values = tep_db_query("select products_options_values_id, products_options_values_name from " . TABLE_PRODUCTS_OPTIONS_VALUES . " where products_options_values_id = '" . $_GET['value_id'] . "' and language_id = '" . $languages_id . "'");
     $values_values = tep_db_fetch_array($values);
 ?>
               <tr>
@@ -356,7 +356,7 @@ function go_option() {
           and pd.language_id = '" . $languages_id . "' 
           and po.language_id = '" . $languages_id . "' 
           and pa.products_id = p.products_id 
-          and pa.options_values_id='" . $HTTP_GET_VARS['value_id'] . "' 
+          and pa.options_values_id='" . $_GET['value_id'] . "' 
           and po.products_options_id = pa.options_id 
           and pd.site_id = '0'
         order by pd.products_name");
@@ -398,7 +398,7 @@ function go_option() {
                     <td class="main" colspan="3"><br><?php echo TEXT_OK_TO_DELETE; ?></td>
                   </tr>
                   <tr>
-                    <td class="main" align="right" colspan="3"><br><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=delete_value&value_id=' . $HTTP_GET_VARS['value_id'], 'NONSSL') . '">'; ?><?php echo tep_image_button('button_delete.gif', ' delete '); ?></a>&nbsp;&nbsp;&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '&option_page=' . $option_page . '&value_page=' . $value_page . '&attribute_page=' . $attribute_page, 'NONSSL') . '">'; ?><?php echo tep_image_button('button_cancel.gif', ' cancel '); ?></a>&nbsp;</td>
+                    <td class="main" align="right" colspan="3"><br><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=delete_value&value_id=' . $_GET['value_id'], 'NONSSL') . '">'; ?><?php echo tep_image_button('button_delete.gif', ' delete '); ?></a>&nbsp;&nbsp;&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '&option_page=' . $option_page . '&value_page=' . $value_page . '&attribute_page=' . $attribute_page, 'NONSSL') . '">'; ?><?php echo tep_image_button('button_cancel.gif', ' cancel '); ?></a>&nbsp;</td>
                   </tr>
 <?php
     }
@@ -481,7 +481,7 @@ function go_option() {
 ?>
               <tr class="<?php echo (floor($rows/2) == ($rows/2) ? 'attributes-even' : 'attributes-odd'); ?>">
 <?php
-      if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'update_option_value') && ($HTTP_GET_VARS['value_id'] == $values_values['products_options_values_id'])) {
+      if (isset($_GET['action']) && ($_GET['action'] == 'update_option_value') && ($_GET['value_id'] == $values_values['products_options_values_id'])) {
         echo '<form name="values" action="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=update_value', 'NONSSL') . '" method="post">';
         $inputs = '';
         for ($i = 0, $n = sizeof($languages); $i < $n; $i ++) {
@@ -512,7 +512,7 @@ function go_option() {
                 <td align="center" class="smallText">&nbsp;<?php echo $values_values["products_options_values_id"]; ?>&nbsp;</td>
                 <td align="center" class="smallText">&nbsp;<?php echo $options_name; ?>&nbsp;</td>
                 <td class="smallText">&nbsp;<?php echo $values_name; ?>&nbsp;</td>
-                <td align="center" class="smallText">&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=update_option_value&value_id=' . $values_values['products_options_values_id'] . '&value_page=' . (isset($HTTP_GET_VARS['value_page'])?$HTTP_GET_VARS['value_page']:''), 'NONSSL') . '">'; ?><?php echo tep_image_button('button_edit.gif', IMAGE_UPDATE); ?></a>&nbsp;&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=delete_option_value&value_id=' . $values_values['products_options_values_id'], 'NONSSL') , '">'; ?><?php echo tep_image_button('button_delete.gif', IMAGE_DELETE); ?></a>&nbsp;</td>
+                <td align="center" class="smallText">&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=update_option_value&value_id=' . $values_values['products_options_values_id'] . '&value_page=' . (isset($_GET['value_page'])?$_GET['value_page']:''), 'NONSSL') . '">'; ?><?php echo tep_image_button('button_edit.gif', IMAGE_UPDATE); ?></a>&nbsp;&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=delete_option_value&value_id=' . $values_values['products_options_values_id'], 'NONSSL') , '">'; ?><?php echo tep_image_button('button_delete.gif', IMAGE_DELETE); ?></a>&nbsp;</td>
 <?php
       }
       $max_values_id_query = tep_db_query("select max(products_options_values_id) + 1 as next_id from " . TABLE_PRODUCTS_OPTIONS_VALUES);
@@ -525,7 +525,7 @@ function go_option() {
                 <td colspan="4"><?php echo tep_black_line(); ?></td>
               </tr>
 <?php
-    if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] != 'update_option_value') {
+    if (isset($_GET['action']) && $_GET['action'] != 'update_option_value') {
 ?>
               <tr class="<?php echo (floor($rows/2) == ($rows/2) ? 'attributes-even' : 'attributes-odd'); ?>">
 <?php
@@ -574,7 +574,7 @@ function go_option() {
       </tr>
       <tr>
 <?php
-    if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'update_attribute') {
+    if (isset($_GET['action']) && $_GET['action'] == 'update_attribute') {
       $form_action = 'update_product_attribute';
     } else {
       $form_action = 'add_product_attributes';
@@ -659,7 +659,7 @@ function go_option() {
 ?>
           <tr class="<?php echo (floor($rows/2) == ($rows/2) ? 'attributes-even' : 'attributes-odd'); ?>">
 <?php
-    if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'update_attribute') && ($HTTP_GET_VARS['attribute_id'] == $attributes_values['products_attributes_id'])) {
+    if (isset($_GET['action']) && ($_GET['action'] == 'update_attribute') && ($_GET['attribute_id'] == $attributes_values['products_attributes_id'])) {
 ?>
             <td class="smallText">&nbsp;<?php echo $attributes_values['products_attributes_id']; ?><input type="hidden" name="attribute_id" value="<?php echo $attributes_values['products_attributes_id']; ?>">&nbsp;</td>
             <td class="smallText">&nbsp;<select name="products_id">
@@ -745,7 +745,7 @@ function go_option() {
       }
 ?>
 <?php
-    } elseif (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'delete_product_attribute') && ($HTTP_GET_VARS['attribute_id'] == $attributes_values['products_attributes_id'])) {
+    } elseif (isset($_GET['action']) && ($_GET['action'] == 'delete_product_attribute') && ($_GET['attribute_id'] == $attributes_values['products_attributes_id'])) {
 ?>
             <td class="smallText">&nbsp;<b><?php echo $attributes_values["products_attributes_id"]; ?></b>&nbsp;</td>
             <td class="smallText">&nbsp;<b><?php echo $products_name_only; ?></b>&nbsp;</td>
@@ -754,7 +754,7 @@ function go_option() {
             <td align="right" class="smallText">&nbsp;<b><?php echo $attributes_values["options_values_price"]; ?></b>&nbsp;</td>
             <td align="center" class="smallText">&nbsp;<?php echo isset($attributes_values['products_stock'])?$attributes_values["products_stock"]:''; ?>&nbsp;</td>
             <td align="center" class="smallText">&nbsp;<b><?php echo $attributes_values["price_prefix"]; ?></b>&nbsp;</td>
-            <td align="center" class="smallText">&nbsp;<b><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=delete_attribute&attribute_id=' . $HTTP_GET_VARS['attribute_id']) . '">'; ?><?php echo tep_image_button('button_confirm.gif', IMAGE_CONFIRM); ?></a>&nbsp;&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '&option_page=' . $option_page . '&value_page=' . $value_page . '&attribute_page=' . $attribute_page, 'NONSSL') . '">'; ?><?php echo tep_image_button('button_cancel.gif', IMAGE_CANCEL); ?></a>&nbsp;</b></td>
+            <td align="center" class="smallText">&nbsp;<b><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=delete_attribute&attribute_id=' . $_GET['attribute_id']) . '">'; ?><?php echo tep_image_button('button_confirm.gif', IMAGE_CONFIRM); ?></a>&nbsp;&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '&option_page=' . $option_page . '&value_page=' . $value_page . '&attribute_page=' . $attribute_page, 'NONSSL') . '">'; ?><?php echo tep_image_button('button_cancel.gif', IMAGE_CANCEL); ?></a>&nbsp;</b></td>
 <?php
     } else {
 ?>
@@ -775,7 +775,7 @@ function go_option() {
           </tr>
 <?php
   }
-  if (!isset($HTTP_GET_VARS['action']) || $HTTP_GET_VARS['action'] != 'update_attribute') {
+  if (!isset($_GET['action']) || $_GET['action'] != 'update_attribute') {
 ?>
           <tr>
             <td colspan="8"><?php echo tep_black_line(); ?></td>

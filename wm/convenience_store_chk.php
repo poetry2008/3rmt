@@ -12,11 +12,11 @@
 
   include('includes/application_top.php');
   
-  if($HTTP_GET_VARS['sid'] != ""){
+  if($_GET['sid'] != ""){
     #基本情報
 	$ip = MODULE_PAYMENT_CONVENIENCE_STORE_IP;
-	$sid = $HTTP_GET_VARS['sid'];
-	$oid = substr($HTTP_GET_VARS['sid'],0,8) . '-' . substr($HTTP_GET_VARS['sid'],8,8);
+	$sid = $_GET['sid'];
+	$oid = substr($_GET['sid'],0,8) . '-' . substr($_GET['sid'],8,8);
 	
 	#DB取得情報
 	$orders_status_history_query = tep_db_query("select comments from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . $oid . "'");

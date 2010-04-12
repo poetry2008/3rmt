@@ -21,16 +21,16 @@
   }
 
   $valid_product = false;
-  if (isset($HTTP_GET_VARS['products_id'])) {
-    $product_info_query = tep_db_query("select pd.products_name from " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" .  (int)$HTTP_GET_VARS['products_id'] . "' and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and pd.site_id = '".SITE_ID."'");
+  if (isset($_GET['products_id'])) {
+    $product_info_query = tep_db_query("select pd.products_name from " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" .  (int)$_GET['products_id'] . "' and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and pd.site_id = '".SITE_ID."'");
     $valid_product = (tep_db_num_rows($product_info_query) > 0);
   }
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PREORDER);
 
   $product_info = tep_db_fetch_array($product_info_query);
-  $breadcrumb->add($product_info['products_name'] . 'を予約する', tep_href_link(FILENAME_PREORDER, 'products_id=' . $HTTP_GET_VARS['products_id']));
-  $po_game_c = ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1);
+  $breadcrumb->add($product_info['products_name'] . 'を予約する', tep_href_link(FILENAME_PREORDER, 'products_id=' . $_GET['products_id']));
+  $po_game_c = ds_tep_get_categories((int)$_GET['products_id'],1);
 ?>
 <?php page_head();?>
 </head>
@@ -65,7 +65,7 @@
     <?php
     $error = false;
 
-    if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'process') && empty($HTTP_POST_VARS['quantity'])) {
+    if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($_POST['quantity'])) {
       $quantity_error = true;
       $error = true;
     } else {
@@ -76,12 +76,12 @@
       $from_name = tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']);
       $from_email_address = $account_values['customers_email_address'];
     } else {
-      $from_name = $HTTP_POST_VARS['yourname'];
-      $from_email_address = $HTTP_POST_VARS['from'];
+      $from_name = $_POST['yourname'];
+      $from_email_address = $_POST['from'];
     }
       
     if (!tep_session_is_registered('customer_id')) {
-      if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'process') && !tep_validate_email(trim($from_email_address))) {
+      if (isset($_GET['action']) && ($_GET['action'] == 'process') && !tep_validate_email(trim($from_email_address))) {
         $fromemail_error = true;
         $error = true;
       } else {
@@ -89,31 +89,31 @@
       }
     }
 
-    if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'process') && empty($from_name)) {
+    if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($from_name)) {
       $fromname_error = true;
       $error = true;
     } else {
       $fromname_error = false;
     }
 
-    if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'process') && ($error == false)) {
+    if (isset($_GET['action']) && ($_GET['action'] == 'process') && ($error == false)) {
       $email_subject = sprintf(TEXT_EMAIL_SUBJECT, $product_info['products_name'], STORE_NAME);
-      $email_body = sprintf(TEXT_EMAIL_INTRO, $from_name, STORE_NAME, $from_name, $from_email_address, $HTTP_POST_VARS['products_name'], $HTTP_POST_VARS['quantity'], $HTTP_POST_VARS['timelimit'], STORE_NAME) . "\n\n";
+      $email_body = sprintf(TEXT_EMAIL_INTRO, $from_name, STORE_NAME, $from_name, $from_email_address, $_POST['products_name'], $_POST['quantity'], $_POST['timelimit'], STORE_NAME) . "\n\n";
 
-      if (tep_not_null($HTTP_POST_VARS['yourmessage'])) {
-        $email_body .= '▼ご要望' . "\n" . $HTTP_POST_VARS['yourmessage'] . "\n\n";
+      if (tep_not_null($_POST['yourmessage'])) {
+        $email_body .= '▼ご要望' . "\n" . $_POST['yourmessage'] . "\n\n";
       }
 
-      $email_body .= sprintf(TEXT_EMAIL_LINK, tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $HTTP_GET_VARS['products_id'])) . "\n\n" .
+      $email_body .= sprintf(TEXT_EMAIL_LINK, tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $_GET['products_id'])) . "\n\n" .
                      sprintf(TEXT_EMAIL_SIGNATURE, STORE_NAME . "\n" . HTTP_SERVER . DIR_WS_CATALOG . "\n");
 
       tep_mail('', SEND_EXTRA_ORDER_EMAILS_TO, $email_subject, stripslashes($email_body), $from_name, $from_email_address);
 	  tep_mail('', $from_email_address, $email_subject, stripslashes($email_body), STORE_NAME, STORE_OWNER_EMAIL_ADDRESS);
 ?>
     <div>
-      <?php echo sprintf(TEXT_EMAIL_SUCCESSFUL_SENT, $from_email_address, stripslashes($HTTP_POST_VARS['products_name']), $HTTP_POST_VARS['quantity'], $HTTP_POST_VARS['timelimit']); ?>
+      <?php echo sprintf(TEXT_EMAIL_SUCCESSFUL_SENT, $from_email_address, stripslashes($_POST['products_name']), $_POST['quantity'], $_POST['timelimit']); ?>
       <div align="center">
-        <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $HTTP_GET_VARS['products_id']) . '">' . tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?>
+        <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $_GET['products_id']) . '">' . tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?>
       </div>
     </div>
     <?php
@@ -122,14 +122,14 @@
         $your_name_prompt = tep_output_string_protected(tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']));
         $your_email_address_prompt = $account_values['customers_email_address'];
       } else {
-        $your_name_prompt = tep_draw_input_field('yourname', (($fromname_error == true) ? $HTTP_POST_VARS['yourname'] : $HTTP_GET_VARS['yourname']));
+        $your_name_prompt = tep_draw_input_field('yourname', (($fromname_error == true) ? $_POST['yourname'] : $_GET['yourname']));
         if ($fromname_error == true) $your_name_prompt .= '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
-        $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $HTTP_POST_VARS['from'] : $HTTP_GET_VARS['from']) , 'size="30"') . '&nbsp;&nbsp;携帯電話メールアドレス推奨';
+        $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']) , 'size="30"') . '&nbsp;&nbsp;携帯電話メールアドレス推奨';
         if ($fromemail_error == true) $your_email_address_prompt .='<br>'. ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
       }
 ?>
-    <?php echo tep_draw_form('email_friend', tep_href_link(FILENAME_PREORDER, 'action=process&products_id=' . $HTTP_GET_VARS['products_id'])) . tep_draw_hidden_field('products_name', $product_info['products_name']); ?>
-    <p><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $HTTP_GET_VARS['products_id']) . '" target="_blank">' . $product_info['products_name']; ?>についての詳細ページはこちら</a></p>
+    <?php echo tep_draw_form('email_friend', tep_href_link(FILENAME_PREORDER, 'action=process&products_id=' . $_GET['products_id'])) . tep_draw_hidden_field('products_name', $product_info['products_name']); ?>
+    <p><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $_GET['products_id']) . '" target="_blank">' . $product_info['products_name']; ?>についての詳細ページはこちら</a></p>
     <?php
 	if($error == true) {
 		echo '<span class="errorText">入力した内容に誤りがございます。正しく入力してください。</span>';
@@ -163,15 +163,15 @@
       </tr>
       <tr>
         <td class="main" valign="top">商品名:</td>
-        <td class="main"><strong><?php echo ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1) . '<br>' . $product_info['products_name']; ?></strong></td>
+        <td class="main"><strong><?php echo ds_tep_get_categories((int)$_GET['products_id'],1) . '<br>' . $product_info['products_name']; ?></strong></td>
       </tr>
       <tr>
         <td class="main"><?php echo FORM_FIELD_FRIEND_NAME; ?></td>
         <td class="main">
           <?php
-          if (!isset($HTTP_POST_VARS['quantity'])) $HTTP_POST_VARS['quantity'] = NULL; //del notice
-          if (!isset($HTTP_GET_VARS['quantity'])) $HTTP_GET_VARS['quantity'] = NULL; //del notice
-	echo tep_draw_input_field('quantity', (($quantity_error == true) ? $HTTP_POST_VARS['quantity'] : $HTTP_GET_VARS['quantity']) , 'size="7" maxlength="15"');
+          if (!isset($_POST['quantity'])) $_POST['quantity'] = NULL; //del notice
+          if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
+	echo tep_draw_input_field('quantity', (($quantity_error == true) ? $_POST['quantity'] : $_GET['quantity']) , 'size="7" maxlength="15"');
 	echo '&nbsp;&nbsp;個';
 	if ($quantity_error == true) echo '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
 ?>
@@ -182,8 +182,8 @@
         <td class="main">
           <?php
           if (!isset($timelimit_error)) $timelimit_error = NULL;//del notice
-          if (!isset($HTTP_GET_VARS['send_to'])) $HTTP_GET_VARS['send_to'] = NULL; //del notice
-	echo tep_draw_input_field('timelimit', (($timelimit_error == true) ? $HTTP_POST_VARS['timelimit'] : $HTTP_GET_VARS['send_to']) , 'size="30" maxlength="50"');
+          if (!isset($_GET['send_to'])) $_GET['send_to'] = NULL; //del notice
+	echo tep_draw_input_field('timelimit', (($timelimit_error == true) ? $_POST['timelimit'] : $_GET['send_to']) , 'size="30" maxlength="50"');
 	echo '&nbsp;&nbsp;(例.&nbsp;15日までに届けて欲しい。)';
 ?>
         </td>
@@ -206,7 +206,7 @@
           </div>
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
-              <td class="main"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $HTTP_GET_VARS['products_id']) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td>
+              <td class="main"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $_GET['products_id']) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td>
               <td align="right" class="main"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td>
             </tr>
           </table>

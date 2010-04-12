@@ -9,7 +9,7 @@
 
   require('includes/application_top.php');
 
-// lets retrieve all $HTTP_GET_VARS keys and values..
+// lets retrieve all $_GET keys and values..
   $get_params      = tep_get_all_get_params();
   $get_params_back = tep_get_all_get_params(array('reviews_id')); // for back button
   $get_params      = substr($get_params, 0, -1); //remove trailing &
@@ -27,13 +27,13 @@
         LEFT JOIN " . TABLE_PRODUCTS . " p ON pd.products_id = p.products_id 
       WHERE pd.language_id = '" . $languages_id . "' 
         AND p.products_status = '1' 
-        AND pd.products_id = '" .  (int)$HTTP_GET_VARS['products_id'] . "' 
+        AND pd.products_id = '" .  (int)$_GET['products_id'] . "' 
         AND pd.site_id = " . SITE_ID
       );
   if (!tep_db_num_rows($product_info_query)) tep_redirect(tep_href_link(FILENAME_REVIEWS));
   $product_info = tep_db_fetch_array($product_info_query);
   */
-  $product_info = tep_get_product_by_id((int)$HTTP_GET_VARS['products_id'], SITE_ID, $languages_id);
+  $product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID, $languages_id);
   if (!$product_info) tep_redirect(tep_href_link(FILENAME_REVIEWS));
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRODUCT_REVIEWS);
@@ -81,7 +81,7 @@
              last_modified, 
              reviews_read 
       FROM " . TABLE_REVIEWS . " 
-      WHERE products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' 
+      WHERE products_id = '" . (int)$_GET['products_id'] . "' 
         AND reviews_status = '1' 
         AND site_id = ".SITE_ID." 
       ORDER BY reviews_id DESC

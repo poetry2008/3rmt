@@ -94,14 +94,14 @@
   }
 
   function tep_get_all_get_params($exclude_array = '') {
-    global $HTTP_GET_VARS;
+    global $_GET;
 
     if ($exclude_array == '') $exclude_array = array();
 
     $get_url = '';
 
-    reset($HTTP_GET_VARS);
-    while (list($key, $value) = each($HTTP_GET_VARS)) {
+    reset($_GET);
+    while (list($key, $value) = each($_GET)) {
       if (($key != tep_session_name()) && ($key != 'error') && (!tep_in_array($key, $exclude_array))) $get_url .= $key . '=' . rawurlencode($value) . '&';
     }
 
@@ -897,7 +897,7 @@
 ////
 // Retreive server information
   function tep_get_system_information() {
-    global $HTTP_SERVER_VARS;
+    global $_SERVER;
 
     $db_query = tep_db_query("select now() as datetime");
     $db = tep_db_fetch_array($db_query);
@@ -910,7 +910,7 @@
                  'host' => $host,
                  'ip' => gethostbyname($host),
                  'uptime' => @exec('uptime'),
-                 'http_server' => $HTTP_SERVER_VARS['SERVER_SOFTWARE'],
+                 'http_server' => $_SERVER['SERVER_SOFTWARE'],
                  'php' => PHP_VERSION,
                  'zend' => (function_exists('zend_version') ? zend_version() : ''),
                  'db_server' => DB_SERVER,
@@ -2097,11 +2097,11 @@ function tep_get_image_document_image($document_id)
   }
 
   function tep_site_filter($filename){
-    global $HTTP_GET_VARS, $HTTP_POST_VARS;
+    global $_GET, $_POST;
     ?>
       <div id="tep_site_filter">
       <?php
-          if (!isset($HTTP_GET_VARS['site_id']) || !$HTTP_GET_VARS['site_id']) {?>
+          if (!isset($_GET['site_id']) || !$_GET['site_id']) {?>
             <span class="site_filter_selected">all</span>
           <?php } else { ?>
             <span><a href="<?php 
@@ -2110,7 +2110,7 @@ function tep_get_image_document_image($document_id)
             ?>">all</a></span> 
             <?php } ?>
           <?php foreach (tep_get_sites() as $site) {?>
-            <?php if (isset($HTTP_GET_VARS['site_id']) && $HTTP_GET_VARS['site_id'] == $site['id']) {?>
+            <?php if (isset($_GET['site_id']) && $_GET['site_id'] == $site['id']) {?>
 <span class="site_filter_selected"><?php echo $site['romaji'];?></span>
             <?php } else {?>
 <span><a href="<?php 
@@ -2326,8 +2326,24 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
           AND pd.site_id='" . $site_id . "' 
       ";
     }
-    //echo $sql;
     $product_query = tep_db_query($sql);
     $product = tep_db_fetch_array($product_query);
     return $product;
+  }
+
+  function tep_get_faq_game_id_string(){
+    $g_ids = array();
+    $query = tep_db_query("select g_id from " . TABLE_FAQ_CATEGORIES . " group by g_id");
+    while ($c = tep_db_fetch_array($query)) {
+      $g_ids[] = $c['g_id'];
+    }
+    return implode(',', $g_ids);
+  }
+
+  function tep_get_faq_question($q_id){
+    return tep_db_fetch_array(tep_db_query("select * from ".TABLE_FAQ_QUESTIONS." where q_id = '".$q_id."'"));
+  }
+
+  function tep_get_faq_category($c_id){
+    return tep_db_fetch_array(tep_db_query("select * from ".TABLE_FAQ_CATEGORIES." where c_id = '".$c_id."'"));
   }

@@ -13,8 +13,8 @@
 $faq_c_url ='';
 $faq_c_name ='';
 
-if($HTTP_GET_VARS['cPath']) {
-	$categories_path = explode('_', $HTTP_GET_VARS['cPath']);
+if($_GET['cPath']) {
+	$categories_path = explode('_', $_GET['cPath']);
 	$faq_c_url = 'faq' . $categories_path[0] . '/';
 	$_categories_query = tep_db_query("select categories_name from categories_description where categories_id = '".$categories_path[0]."' and language_id = '".$languages_id."' and site_id = '".SITE_ID."'");
 	$_categories = tep_db_fetch_array($_categories_query);

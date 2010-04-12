@@ -249,14 +249,14 @@ function forward404Unless($condition)
 ////
 // Return all HTTP GET variables, except those passed as a parameter
   function tep_get_all_get_params($exclude_array = '') {
-    global $HTTP_GET_VARS;
+    global $_GET;
 
     if (!is_array($exclude_array)) $exclude_array = array();
 
     $get_url = '';
-    if (is_array($HTTP_GET_VARS) && (sizeof($HTTP_GET_VARS) > 0)) {
-      reset($HTTP_GET_VARS);
-      while (list($key, $value) = each($HTTP_GET_VARS)) {
+    if (is_array($_GET) && (sizeof($_GET) > 0)) {
+      reset($_GET);
+      while (list($key, $value) = each($_GET)) {
         if ( (strlen($value) > 0) && ($key != tep_session_name()) && ($key != 'error') && (!in_array($key, $exclude_array)) && ($key != 'x') && ($key != 'y') ) {
           $get_url .= $key . '=' . rawurlencode(stripslashes($value)) . '&';
         }
@@ -1682,7 +1682,7 @@ function forward404Unless($condition)
   }
 
   function page_head(){
-    global $HTTP_GET_VARS, $request_type;
+    global $_GET, $request_type;
     $title       = C_TITLE;
     $keywords    = C_KEYWORDS;
     $description = C_DESCRIPTION;
@@ -1697,13 +1697,13 @@ function forward404Unless($condition)
               $keywords    = $seo_category['meta_keywords'];
               $description = $seo_category['meta_description'];
             }
-         } elseif (isset($HTTP_GET_VARS['manufacturers_id']) && $HTTP_GET_VARS['manufacturers_id']) {
+         } elseif (isset($_GET['manufacturers_id']) && $_GET['manufacturers_id']) {
             $title = $seo_manufacturers['manufacturers_name'] . '-' . C_TITLE;
             // meta_tags
-            $metas       = tep_get_metas_by_manufacturers_id(intval($HTTP_GET_VARS['manufacturers_id']));
+            $metas       = tep_get_metas_by_manufacturers_id(intval($_GET['manufacturers_id']));
             $keywords    = "RMT, " . $metas['keywords'];
             $description = "RMT総合サイト RMTジャックポットへようこそ。" . $metas['description'];
-         } else if (isset($HTTP_GET_VARS['tags_id']) && $HTTP_GET_VARS['tags_id']) {
+         } else if (isset($_GET['tags_id']) && $_GET['tags_id']) {
            global $breadcrumb;
            $breadcrumb->add($seo_tags['tags_name'], tep_href_link(FILENAME_TAGS, 'tags_id=' . $seo_tags['tags_id']));
            $title = $seo_tags['tags_name'] . '-' . C_TITLE;
@@ -1726,7 +1726,7 @@ function forward404Unless($condition)
       case FILENAME_PRESENT:
         global $breadcrumb, $present;
 
-        $title = (!$HTTP_GET_VARS['goods_id']) ? $breadcrumb->trail_title(' &raquo; ') : strip_tags($present['title']);
+        $title = (!$_GET['goods_id']) ? $breadcrumb->trail_title(' &raquo; ') : strip_tags($present['title']);
         if ($present['title']) 
           $keywords = strip_tags($present['title']);
         if ($present['text'])
@@ -1745,7 +1745,7 @@ function forward404Unless($condition)
         break;
       case FILENAME_LATEST_NEWS:
         global $breadcrumb, $latest_news;
-        $title = (!isset($HTTP_GET_VARS['news_id']) or !(int)$HTTP_GET_VARS['news_id']) ? $breadcrumb->trail_title(' &raquo; ') : $latest_news['headline'];
+        $title = (!isset($_GET['news_id']) or !(int)$_GET['news_id']) ? $breadcrumb->trail_title(' &raquo; ') : $latest_news['headline'];
         break;
       case FILENAME_MANUFACTURERS:
         global $breadcrumb;
@@ -2261,4 +2261,49 @@ function tep_unlink_temp_dir($dir)
 
   //function tep_module_installed(){
   //}
+
+  function tep_get_faq_categories($c_id){
+    $query = tep_db_query("
+        select * 
+        from faq_categories 
+        where c_id = '".(int)$c_id."'
+        ");
+    return tep_db_fetch_array($query);
+  }
+
+  function tep_get_faq_questions($q_id){
+    $query = tep_db_query("
+        select * 
+        from faq_questions 
+        where q_id = '".(int)$q_id."'
+        ");
+    return tep_db_fetch_array($query);
+  }
+
+  function tep_get_faq_categories_by_g_id($g_id){
+    $categories = array();
+    $query = tep_db_query("
+        select * 
+        from faq_categories 
+        where g_id = '".(int)$g_id."'
+        ");
+    while($c = tep_db_fetch_array($query)){
+      $categories[] = $c;
+    }
+    return $categories;
+  }
+
+  function  tep_get_questions_by_c_id($c_id){
+    $questions = array();
+    $query = tep_db_query("
+        select * 
+        from faq_questions 
+        where c_id = '".(int)$c_id."'
+        ");
+    while($q = tep_db_fetch_array($query)){
+      $questions[] = $q;
+    }
+    return $questions;
+  }
+
 ?>

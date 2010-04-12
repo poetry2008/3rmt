@@ -70,12 +70,12 @@
     $convenience_sid = str_replace('-', "", $insert_id);
 	
     $pay_comments = '取引コード' . $convenience_sid ."\n";
-	$pay_comments .= '郵便番号:' . $HTTP_POST_VARS['convenience_store_zip_code'] ."\n";
-	$pay_comments .= '住所1:' . $HTTP_POST_VARS['convenience_store_address1'] ."\n";
-	$pay_comments .= '住所2:' . $HTTP_POST_VARS['convenience_store_address2'] ."\n";
-	$pay_comments .= '氏:' . $HTTP_POST_VARS['convenience_store_l_name'] ."\n";
-	$pay_comments .= '名:' . $HTTP_POST_VARS['convenience_store_f_name'] ."\n";
-	$pay_comments .= '電話番号:' . $HTTP_POST_VARS['convenience_store_tel'] ."\n";
+	$pay_comments .= '郵便番号:' . $_POST['convenience_store_zip_code'] ."\n";
+	$pay_comments .= '住所1:' . $_POST['convenience_store_address1'] ."\n";
+	$pay_comments .= '住所2:' . $_POST['convenience_store_address2'] ."\n";
+	$pay_comments .= '氏:' . $_POST['convenience_store_l_name'] ."\n";
+	$pay_comments .= '名:' . $_POST['convenience_store_f_name'] ."\n";
+	$pay_comments .= '電話番号:' . $_POST['convenience_store_tel'] ."\n";
 	$pay_comments .= '接続URL:' . tep_href_link('convenience_store_chk.php', 'sid=' . $convenience_sid, 'SSL');
 	$comments = $pay_comments ."\n".$comments;
   }
@@ -239,8 +239,8 @@
 /*
 	//$character = tep_get_prid($order->products[$i]['id']);
 	$character = $order->products[$i]['id'];
-	if(array_key_exists($character,$HTTP_POST_VARS['character'])){
-	  $chara = $HTTP_POST_VARS['character'][$character];
+	if(array_key_exists($character,$_POST['character'])){
+	  $chara = $_POST['character'][$character];
 	}else{
 	  $chara = "";
 	}
@@ -348,7 +348,7 @@
 	}
 	
     $_product_info_query = tep_db_query("select p.products_id, pd.products_name, pd.products_attention_1,pd.products_attention_2,pd.products_attention_3,pd.products_attention_4,pd.products_attention_5,pd.products_description, p.products_model, p.products_quantity, p.products_image,p.products_image2,p.products_image3, pd.products_url, p.products_price, p.products_tax_class_id, p.products_date_added, p.products_date_available, p.manufacturers_id, p.products_bflag, p.products_cflag, p.products_small_sum from " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" . $order->products[$i]['id'] . "' and pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "' and pd.site_id = '".SITE_ID."'");
-    tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_viewed = products_viewed+1 where products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and language_id = '" . $languages_id . "' and site_id = '".SITE_ID."'");
+    tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_viewed = products_viewed+1 where products_id = '" . (int)$_GET['products_id'] . "' and language_id = '" . $languages_id . "' and site_id = '".SITE_ID."'");
     $product_info = tep_db_fetch_array($_product_info_query);
     $data1 = explode("//", $product_info['products_attention_1']);
 	
@@ -437,10 +437,10 @@
   
   if ($_SESSION['payment'] == 'convenience_store') {
     $email_order .= '■コンビニ決済情報' . "\n";
-	$email_order .= '郵便番号:' . $HTTP_POST_VARS['convenience_store_zip_code'] ."\n";
-	$email_order .= '住所    :' . $HTTP_POST_VARS['convenience_store_address1'] . " " . $HTTP_POST_VARS['convenience_store_address2'] ."\n";
-	$email_order .= 'お名前  :' . $HTTP_POST_VARS['convenience_store_l_name'] . " " . $HTTP_POST_VARS['convenience_store_f_name'] ."\n";
-	$email_order .= '電話番号:' . $HTTP_POST_VARS['convenience_store_tel'] . "\n\n";
+	$email_order .= '郵便番号:' . $_POST['convenience_store_zip_code'] ."\n";
+	$email_order .= '住所    :' . $_POST['convenience_store_address1'] . " " . $_POST['convenience_store_address2'] ."\n";
+	$email_order .= 'お名前  :' . $_POST['convenience_store_l_name'] . " " . $_POST['convenience_store_f_name'] ."\n";
+	$email_order .= '電話番号:' . $_POST['convenience_store_tel'] . "\n\n";
   }
   
   $email_order .= "\n\n\n";
@@ -499,10 +499,10 @@
 
   if ($_SESSION['payment'] == 'convenience_store') {
     $email_printing_order .= '■コンビニ決済情報' . "\n";
-	$email_printing_order .= '郵便番号:' . $HTTP_POST_VARS['convenience_store_zip_code'] ."\n";
-	$email_printing_order .= '住所    :' . $HTTP_POST_VARS['convenience_store_address1'] . " " . $HTTP_POST_VARS['convenience_store_address2'] ."\n";
-	$email_printing_order .= 'お名前  :' . $HTTP_POST_VARS['convenience_store_l_name'] . " " . $HTTP_POST_VARS['convenience_store_f_name'] ."\n";
-	$email_printing_order .= '電話番号:' . $HTTP_POST_VARS['convenience_store_tel'] . "\n";
+	$email_printing_order .= '郵便番号:' . $_POST['convenience_store_zip_code'] ."\n";
+	$email_printing_order .= '住所    :' . $_POST['convenience_store_address1'] . " " . $_POST['convenience_store_address2'] ."\n";
+	$email_printing_order .= 'お名前  :' . $_POST['convenience_store_l_name'] . " " . $_POST['convenience_store_f_name'] ."\n";
+	$email_printing_order .= '電話番号:' . $_POST['convenience_store_tel'] . "\n";
   }
 
   $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";

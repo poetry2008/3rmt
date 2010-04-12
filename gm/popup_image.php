@@ -14,7 +14,7 @@
 
   $navigation->remove_current_page();
 
-  $products_query = tep_db_query("select pd.products_name, p.products_image,p.products_image2,p.products_image3 from " . TABLE_PRODUCTS .  " p left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id where p.products_status = '1' and p.products_id = '" .  (int)$HTTP_GET_VARS['pIID'] . "' and pd.language_id = '" . $languages_id . "' and pd.site_id = '".SITE_ID."'");
+  $products_query = tep_db_query("select pd.products_name, p.products_image,p.products_image2,p.products_image3 from " . TABLE_PRODUCTS .  " p left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id where p.products_status = '1' and p.products_id = '" .  (int)$_GET['pIID'] . "' and pd.language_id = '" . $languages_id . "' and pd.site_id = '".SITE_ID."'");
   $products_values = tep_db_fetch_array($products_query);
 ?>
 <!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -65,9 +65,9 @@ A {
 <h1 class="pageHeading"><?php echo $products_values['products_name'] ; ?></h1>
       <table border="0" cellspacing="6" cellpadding="0">
 <tr>
-        <?php echo (tep_not_null($products_values['products_image'])) ?  '<td align="center" class="image_border"><a href="popup_image.php?image='.$products_values['products_image'] .'&pIID='.$HTTP_GET_VARS['pIID'].' ">'. tep_image2(DIR_WS_IMAGES . $products_values['products_image'], $products_values['products_name'], 60, 60, 'name="prod_thum_1"').'</a></td>' : '' ; ?>
-        <?php echo (tep_not_null($products_values['products_image2'])) ?  '<td align="center" class="image_border"><a href="popup_image.php?image='.$products_values['products_image2'] .'&pIID='.$HTTP_GET_VARS['pIID'].' ">'. tep_image2(DIR_WS_IMAGES . $products_values['products_image2'], $products_values['products_name'], 60, 60, 'name="prod_thum_1"').'</a></td>' : '' ; ?>
-        <?php echo (tep_not_null($products_values['products_image3'])) ?  '<td align="center" class="image_border"><a href="popup_image.php?image='.$products_values['products_image3'] .'&pIID='.$HTTP_GET_VARS['pIID'].' ">'. tep_image2(DIR_WS_IMAGES . $products_values['products_image3'], $products_values['products_name'], 60, 60, 'name="prod_thum_1"').'</a></td>' : '' ; ?>
+        <?php echo (tep_not_null($products_values['products_image'])) ?  '<td align="center" class="image_border"><a href="popup_image.php?image='.$products_values['products_image'] .'&pIID='.$_GET['pIID'].' ">'. tep_image2(DIR_WS_IMAGES . $products_values['products_image'], $products_values['products_name'], 60, 60, 'name="prod_thum_1"').'</a></td>' : '' ; ?>
+        <?php echo (tep_not_null($products_values['products_image2'])) ?  '<td align="center" class="image_border"><a href="popup_image.php?image='.$products_values['products_image2'] .'&pIID='.$_GET['pIID'].' ">'. tep_image2(DIR_WS_IMAGES . $products_values['products_image2'], $products_values['products_name'], 60, 60, 'name="prod_thum_1"').'</a></td>' : '' ; ?>
+        <?php echo (tep_not_null($products_values['products_image3'])) ?  '<td align="center" class="image_border"><a href="popup_image.php?image='.$products_values['products_image3'] .'&pIID='.$_GET['pIID'].' ">'. tep_image2(DIR_WS_IMAGES . $products_values['products_image3'], $products_values['products_name'], 60, 60, 'name="prod_thum_1"').'</a></td>' : '' ; ?>
 
 </tr>
 </table>
@@ -75,8 +75,8 @@ A {
 
 <div align="center">
 <?php 
-   if($HTTP_GET_VARS['image'] && $HTTP_GET_VARS['image'] != '') {
-     echo tep_image(DIR_WS_IMAGES . $HTTP_GET_VARS['image'], $products_values['products_name']);
+   if($_GET['image'] && $_GET['image'] != '') {
+     echo tep_image(DIR_WS_IMAGES . $_GET['image'], $products_values['products_name']);
   }else{	 
     echo tep_image(DIR_WS_IMAGES . $products_values['products_image'], $products_values['products_name'],'','','name="featImage"');
   }

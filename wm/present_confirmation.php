@@ -15,26 +15,26 @@
 // if the customer is not logged on, redirect them to the present page
   if (!tep_session_is_registered('pc_id')) {
    $navigation->set_snapshot();
-    tep_redirect(tep_href_link(FILENAME_PRESENT_ORDER,'goods_id='.$HTTP_GET_VARS['goods_id']));
+    tep_redirect(tep_href_link(FILENAME_PRESENT_ORDER,'goods_id='.$_GET['goods_id']));
   }
 
 
-  if($HTTP_GET_VARS['goods_id']) {
-    $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$HTTP_GET_VARS['goods_id']."' and site_id = '".SITE_ID."'") ;
+  if($_GET['goods_id']) {
+    $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$_GET['goods_id']."' and site_id = '".SITE_ID."'") ;
 	$present = tep_db_fetch_array($present_query) ;
   }else{
     tep_redirect(tep_href_link(FILENAME_PRESENT, 'error_message='.urlencode(TEXT_PRESENT_ERROR_NOT_SELECTED), 'SSL'));	
   }
   
   //process
-if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;//delnotice
-  switch($HTTP_GET_VARS['action']) {
+if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
+  switch($_GET['action']) {
     case 'process'://申し込みプロセス
 	  //現在の日時
 	  $now = date("Y/m/d H:i:s", time());
 	  
 	  //insert present_aplicant
-	  $sql_data_array = array('goods_id' => tep_db_prepare_input($HTTP_GET_VARS['goods_id']),
+	  $sql_data_array = array('goods_id' => tep_db_prepare_input($_GET['goods_id']),
 	  						  'customer_id' => tep_db_prepare_input($pc_id),
 							  'family_name' => tep_db_prepare_input($lastname),
 							  'first_name' => tep_db_prepare_input($firstname),
@@ -77,19 +77,19 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;//delnotic
 	  }
 	  
 	  
-	  tep_redirect(tep_href_link(FILENAME_PRESENT_SUCCESS,'goods_id='.$HTTP_GET_VARS['goods_id']));
+	  tep_redirect(tep_href_link(FILENAME_PRESENT_SUCCESS,'goods_id='.$_GET['goods_id']));
 	  break;
 	
 	case 'update'://申込者情報変更
-	  $firstname = tep_db_prepare_input($HTTP_POST_VARS['firstname']);
-	  $lastname = tep_db_prepare_input($HTTP_POST_VARS['lastname']);
-	  $email_address = tep_db_prepare_input($HTTP_POST_VARS['email_address']);
-	  $telephone = tep_db_prepare_input($HTTP_POST_VARS['telephone']);
-	  $street_address = tep_db_prepare_input($HTTP_POST_VARS['street_address']);
-	  $suburb = tep_db_prepare_input($HTTP_POST_VARS['suburb']);
-	  $postcode = tep_db_prepare_input($HTTP_POST_VARS['postcode']);
-	  $city = tep_db_prepare_input($HTTP_POST_VARS['city']);
-	  $zone_id = tep_db_prepare_input($HTTP_POST_VARS['zone_id']);
+	  $firstname = tep_db_prepare_input($_POST['firstname']);
+	  $lastname = tep_db_prepare_input($_POST['lastname']);
+	  $email_address = tep_db_prepare_input($_POST['email_address']);
+	  $telephone = tep_db_prepare_input($_POST['telephone']);
+	  $street_address = tep_db_prepare_input($_POST['street_address']);
+	  $suburb = tep_db_prepare_input($_POST['suburb']);
+	  $postcode = tep_db_prepare_input($_POST['postcode']);
+	  $city = tep_db_prepare_input($_POST['city']);
+	  $zone_id = tep_db_prepare_input($_POST['zone_id']);
 
 	  $error = false;
 	  
@@ -156,7 +156,7 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;//delnotic
 	    tep_session_register('city');
 	    tep_session_register('zone_id');
 		
-		tep_redirect(tep_href_link(FILENAME_PRESENT_CONFIRMATION,'goods_id='.$HTTP_GET_VARS['goods_id']));
+		tep_redirect(tep_href_link(FILENAME_PRESENT_CONFIRMATION,'goods_id='.$_GET['goods_id']));
 	  }
 	  break;
         default:
@@ -191,7 +191,7 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;//delnotic
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRESENT_ORDER);
 
   $breadcrumb->add(NAVBAR_TITLE1, tep_href_link(FILENAME_PRESENT));
-  $breadcrumb->add(NAVBAR_TITLE2, tep_href_link(FILENAME_PRESENT,'good_id='.$HTTP_GET_VARS['goods_id']));
+  $breadcrumb->add(NAVBAR_TITLE2, tep_href_link(FILENAME_PRESENT,'good_id='.$_GET['goods_id']));
   $breadcrumb->add(NAVBAR_TITLE3, tep_href_link(FILENAME_PRESENT_ORDER));
 
 ?>
@@ -208,8 +208,8 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;//delnotic
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents"> <h1 class="pageHeading"> 
-      <?php if (!isset($HTTP_GET_VARS['news_id'])) $HTTP_GET_VARS['news_id'] = NULL; //del notice?>
-          <?php if ($HTTP_GET_VARS['news_id']) { echo $latest_news['headline']; } else { echo HEADING_TITLE; } ?> 
+      <?php if (!isset($_GET['news_id'])) $_GET['news_id'] = NULL; //del notice?>
+          <?php if ($_GET['news_id']) { echo $latest_news['headline']; } else { echo HEADING_TITLE; } ?> 
         </h1>
         <div class="comment">
         <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
@@ -275,8 +275,8 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;//delnotic
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
           </tr> 
           <?php 
-		if(!$HTTP_GET_VARS['action'] || $HTTP_GET_VARS['action'] != 'update') {
-		echo tep_draw_form('process', tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.$HTTP_GET_VARS['goods_id'].'&action=process', 'SSL')); ?> 
+		if(!$_GET['action'] || $_GET['action'] != 'update') {
+		echo tep_draw_form('process', tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.$_GET['goods_id'].'&action=process', 'SSL')); ?> 
           <tr> 
             <td class="main"><table width="100%"  border="0" cellspacing="0" cellpadding="2"> 
                 <tr> 
@@ -338,7 +338,7 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;//delnotic
           </tr> 
           <?php 
 		}
-		echo tep_draw_form('process', tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.$HTTP_GET_VARS['goods_id'].'&action=update', 'SSL')); ?> 
+		echo tep_draw_form('process', tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.$_GET['goods_id'].'&action=update', 'SSL')); ?> 
           <tr> 
             <td class="main"><table width="100%"  border="0" cellspacing="0" cellpadding="2"> 
                 <tr> 

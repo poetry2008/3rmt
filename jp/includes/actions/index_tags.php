@@ -61,7 +61,7 @@
                s.status,
                IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
       from " . TABLE_PRODUCTS_TO_TAGS . " as p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id 
-      where p2t.tags_id = " .  (int)$HTTP_GET_VARS['tags_id']."
+      where p2t.tags_id = " .  (int)$_GET['tags_id']."
       order by pd.site_id DESC
       ";
   } else {
@@ -106,7 +106,7 @@
                s.status,
                IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
       from " . TABLE_PRODUCTS_TO_TAGS . " as p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id 
-      where p2t.tags_id = " .  (int)$HTTP_GET_VARS['tags_id']." 
+      where p2t.tags_id = " .  (int)$_GET['tags_id']." 
       order by pd.site_id DESC";
   } 
 
@@ -120,18 +120,18 @@
        group by products_id
      ";
 
-     if (!isset($HTTP_GET_VARS['sort'])) $HTTP_GET_VARS['sort'] = NULL;
-  if ( (!$HTTP_GET_VARS['sort']) || (!preg_match('/[1-9][ad]/', $HTTP_GET_VARS['sort'])) || (substr($HTTP_GET_VARS['sort'],0,1) > sizeof($column_list)) ) {
+     if (!isset($_GET['sort'])) $_GET['sort'] = NULL;
+  if ( (!$_GET['sort']) || (!preg_match('/[1-9][ad]/', $_GET['sort'])) || (substr($_GET['sort'],0,1) > sizeof($column_list)) ) {
     for ($col=0, $n=sizeof($column_list); $col<$n; $col++) {
       if ($column_list[$col] == 'PRODUCT_LIST_NAME') {
-        $HTTP_GET_VARS['sort'] = $col+1 . 'a';
+        $_GET['sort'] = $col+1 . 'a';
         $listing_sql .= " order by products_name";
         break;
       }
     }
   } else {
-    $sort_col = substr($HTTP_GET_VARS['sort'], 0 , 1);
-    $sort_order = substr($HTTP_GET_VARS['sort'], 1);
+    $sort_col = substr($_GET['sort'], 0 , 1);
+    $sort_order = substr($_GET['sort'], 1);
     $listing_sql .= ' order by ';
     switch ($column_list[$sort_col-1]) {
       case 'PRODUCT_LIST_MODEL':

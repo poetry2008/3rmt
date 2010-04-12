@@ -12,13 +12,13 @@
 
 // check if the 'install' directory exists, and warn of its existence
   if (WARN_INSTALL_EXISTENCE == 'true') {
-    if (file_exists(dirname($HTTP_SERVER_VARS['SCRIPT_FILENAME']) . '/install')) {
+    if (file_exists(dirname($_SERVER['SCRIPT_FILENAME']) . '/install')) {
       tep_output_warning(WARNING_INSTALL_DIRECTORY_EXISTS);
     }
   }
   // check if the configure.php file is writeable
   if (WARN_CONFIG_WRITEABLE == 'true') {
-    if ( (file_exists(dirname($HTTP_SERVER_VARS['SCRIPT_FILENAME']) . '/includes/configure.php')) && (is_writeable(dirname($HTTP_SERVER_VARS['SCRIPT_FILENAME']) . '/includes/configure.php')) ) {
+    if ( (file_exists(dirname($_SERVER['SCRIPT_FILENAME']) . '/includes/configure.php')) && (is_writeable(dirname($_SERVER['SCRIPT_FILENAME']) . '/includes/configure.php')) ) {
       tep_output_warning(WARNING_CONFIG_FILE_WRITEABLE);
     }
   }
@@ -48,14 +48,14 @@
 <div id="header">
 <div class="header_div01">
 <?php 
-if (!isset($HTTP_GET_VARS['cPath'])) $HTTP_GET_VARS['cPath']= NULL;
-if (!isset($HTTP_GET_VARS['products_id'])) $HTTP_GET_VARS['products_id']= NULL;
-  if ($HTTP_GET_VARS['cPath']) {
+if (!isset($_GET['cPath'])) $_GET['cPath']= NULL;
+if (!isset($_GET['products_id'])) $_GET['products_id']= NULL;
+  if ($_GET['cPath']) {
     echo '<p class="header1"><strong>' . $seo_category['seo_name'] . '-RMT</strong> 安いが一番！最安値-ゲーム通貨の激安販売</p>' . "\n";
     echo '<p class="header2">' . $seo_category['seo_name'] . 'を激安販売-RMT-ゲームマネー</p>' . "\n";
-  } elseif ($HTTP_GET_VARS['products_id']) {
-    echo '<p class="header1"><strong>' . ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1) . '</strong> 安いが一番！最安値-ゲーム通貨の激安販売</p>' . "\n";
-    echo '<p class="header2">' . ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1) . 'を激安販売-RMT-ゲームマネー</p>' . "\n";
+  } elseif ($_GET['products_id']) {
+    echo '<p class="header1"><strong>' . ds_tep_get_categories((int)$_GET['products_id'],1) . '</strong> 安いが一番！最安値-ゲーム通貨の激安販売</p>' . "\n";
+    echo '<p class="header2">' . ds_tep_get_categories((int)$_GET['products_id'],1) . 'を激安販売-RMT-ゲームマネー</p>' . "\n";
   } else {
     echo '<h1 class="header1">RMT 最安値-アイテムの激安販売</h1>' . "\n";
     echo '<p class="header2">FF11、リネージュ2、レッドストーン、AIONを激安販売 - RMTゲームマネー</p>' . "\n";
@@ -137,20 +137,20 @@ function popupWindow(url) {
 //-->
 </script>
 <?php
-  if (isset($HTTP_GET_VARS['error_message']) && tep_not_null($HTTP_GET_VARS['error_message'])) {
+  if (isset($_GET['error_message']) && tep_not_null($_GET['error_message'])) {
 ?>
 <table width="100%" border="0" align="center" cellpadding="2" cellspacing="0">
   <tr class="headerError">
-    <td class="headerError"><?php echo htmlspecialchars(urldecode($HTTP_GET_VARS['error_message'])); ?></td>
+    <td class="headerError"><?php echo htmlspecialchars(urldecode($_GET['error_message'])); ?></td>
   </tr>
 </table>
 <?php
   }
-  if (isset($HTTP_GET_VARS['info_message']) && tep_not_null($HTTP_GET_VARS['info_message'])) {
+  if (isset($_GET['info_message']) && tep_not_null($_GET['info_message'])) {
 ?>
 <table width="100%" border="0" align="center" cellpadding="2" cellspacing="0">
   <tr class="headerInfo">
-    <td class="headerInfo"><?php echo htmlspecialchars($HTTP_GET_VARS['info_message']); ?></td>
+    <td class="headerInfo"><?php echo htmlspecialchars($_GET['info_message']); ?></td>
   </tr>
 </table>
 <?php

@@ -12,16 +12,16 @@
 
   require('includes/application_top.php');
   //forward 404
-if (isset($HTTP_GET_VARS['goods_id'])) {
-  $_404_query = tep_db_query("select * from " . TABLE_PRESENT_GOODS. " where goods_id = '" . intval($HTTP_GET_VARS['goods_id']) . "' and site_id = '".SITE_ID."'");
+if (isset($_GET['goods_id'])) {
+  $_404_query = tep_db_query("select * from " . TABLE_PRESENT_GOODS. " where goods_id = '" . intval($_GET['goods_id']) . "' and site_id = '".SITE_ID."'");
   $_404 = tep_db_fetch_array($_404_query);
 
   forward404Unless($_404);
 }
 	
   
-  if($HTTP_GET_VARS['goods_id']) {
-    $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$HTTP_GET_VARS['goods_id']."' and site_id = '".SITE_ID."'") ;
+  if($_GET['goods_id']) {
+    $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$_GET['goods_id']."' and site_id = '".SITE_ID."'") ;
 	$present = tep_db_fetch_array($present_query) ;
   }else{
     tep_redirect(tep_href_link(FILENAME_PRESENT, 'error_message='.urlencode(TEXT_PRESENT_ERROR_NOT_SELECTED), 'SSL'));	
@@ -31,24 +31,24 @@ if (isset($HTTP_GET_VARS['goods_id'])) {
   if(tep_session_is_registered('customer_id')) {
     $pc_id = $customer_id;
     tep_session_register('pc_id');
-	tep_redirect(tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.(int)$HTTP_GET_VARS['goods_id'], 'SSL'));
+	tep_redirect(tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.(int)$_GET['goods_id'], 'SSL'));
   }
   
   //セッション内に「pc_id」が入っていた場合は確認画面へリダイレクト
   if(tep_session_is_registered('pc_id')) {
-	tep_redirect(tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.(int)$HTTP_GET_VARS['goods_id'], 'SSL'));
+	tep_redirect(tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.(int)$_GET['goods_id'], 'SSL'));
   }
  
  
- if (!isset($HTTP_GET_VARS['action']))  $HTTP_GET_VARS['action'] = NULL;
-  switch($HTTP_GET_VARS['action']) {
+ if (!isset($_GET['action']))  $_GET['action'] = NULL;
+  switch($_GET['action']) {
     //既会員ログイン
 	case 'login':
-      $HTTP_POST_VARS['email_address'] = tep_an_zen_to_han($HTTP_POST_VARS['email_address']);
+      $_POST['email_address'] = tep_an_zen_to_han($_POST['email_address']);
 
-      $email_address = tep_db_prepare_input($HTTP_POST_VARS['email_address']);
-      $password = tep_db_prepare_input($HTTP_POST_VARS['password']);
-	  $goods_id = $HTTP_GET_VARS['goods_id'];
+      $email_address = tep_db_prepare_input($_POST['email_address']);
+      $password = tep_db_prepare_input($_POST['password']);
+	  $goods_id = $_GET['goods_id'];
       
 	  //check
 	  $login_error = false;
@@ -89,11 +89,11 @@ if (isset($HTTP_GET_VARS['goods_id'])) {
 		  
 	    } else {
 		  $login_error = true;
-		  $HTTP_GET_VARS['login'] = 'fail';
+		  $_GET['login'] = 'fail';
 		}
 	  } else {
 	    $login_error = true;
-		$HTTP_GET_VARS['login'] = 'fail';
+		$_GET['login'] = 'fail';
 	  }
 	  
 	  if($login_error == false) tep_redirect(tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.$goods_id, 'SSL'));
@@ -102,26 +102,26 @@ if (isset($HTTP_GET_VARS['goods_id'])) {
   
     //ゲストまたは新規会員
 	case 'process':
-	  $gender = tep_db_prepare_input($HTTP_POST_VARS['gender']);
-	  $firstname = tep_db_prepare_input($HTTP_POST_VARS['firstname']);
-	  $lastname = tep_db_prepare_input($HTTP_POST_VARS['lastname']);
-	  $dob = tep_db_prepare_input($HTTP_POST_VARS['dob']);
-	  $email_address = tep_db_prepare_input($HTTP_POST_VARS['email_address']);
-	  $telephone = tep_db_prepare_input($HTTP_POST_VARS['telephone']);
-	  $fax = tep_db_prepare_input($HTTP_POST_VARS['fax']);
-	  $newsletter = tep_db_prepare_input($HTTP_POST_VARS['newsletter']);
-	  $password = tep_db_prepare_input($HTTP_POST_VARS['password']);
-	  $confirmation = tep_db_prepare_input($HTTP_POST_VARS['confirmation']);
-	  $street_address = tep_db_prepare_input($HTTP_POST_VARS['street_address']);
-	  $company = tep_db_prepare_input($HTTP_POST_VARS['company']);
-	  $suburb = tep_db_prepare_input($HTTP_POST_VARS['suburb']);
-	  $postcode = tep_db_prepare_input($HTTP_POST_VARS['postcode']);
-	  $city = tep_db_prepare_input($HTTP_POST_VARS['city']);
-	  $zone_id = tep_db_prepare_input($HTTP_POST_VARS['zone_id']);
-	  $state = tep_db_prepare_input($HTTP_POST_VARS['state']);
-	  $country = tep_db_prepare_input($HTTP_POST_VARS['country']);
+	  $gender = tep_db_prepare_input($_POST['gender']);
+	  $firstname = tep_db_prepare_input($_POST['firstname']);
+	  $lastname = tep_db_prepare_input($_POST['lastname']);
+	  $dob = tep_db_prepare_input($_POST['dob']);
+	  $email_address = tep_db_prepare_input($_POST['email_address']);
+	  $telephone = tep_db_prepare_input($_POST['telephone']);
+	  $fax = tep_db_prepare_input($_POST['fax']);
+	  $newsletter = tep_db_prepare_input($_POST['newsletter']);
+	  $password = tep_db_prepare_input($_POST['password']);
+	  $confirmation = tep_db_prepare_input($_POST['confirmation']);
+	  $street_address = tep_db_prepare_input($_POST['street_address']);
+	  $company = tep_db_prepare_input($_POST['company']);
+	  $suburb = tep_db_prepare_input($_POST['suburb']);
+	  $postcode = tep_db_prepare_input($_POST['postcode']);
+	  $city = tep_db_prepare_input($_POST['city']);
+	  $zone_id = tep_db_prepare_input($_POST['zone_id']);
+	  $state = tep_db_prepare_input($_POST['state']);
+	  $country = tep_db_prepare_input($_POST['country']);
 	  
-	  $goods_id = $HTTP_GET_VARS['goods_id'];
+	  $goods_id = $_GET['goods_id'];
 	  
 	  // start check
 	  $error = false;
@@ -359,7 +359,7 @@ if (isset($HTTP_GET_VARS['goods_id'])) {
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRESENT_ORDER);
 
   $breadcrumb->add(NAVBAR_TITLE1, tep_href_link(FILENAME_PRESENT));
-  $breadcrumb->add(NAVBAR_TITLE2, tep_href_link(FILENAME_PRESENT,'good_id='.$HTTP_GET_VARS['goods_id']));
+  $breadcrumb->add(NAVBAR_TITLE2, tep_href_link(FILENAME_PRESENT,'good_id='.$_GET['goods_id']));
   $breadcrumb->add(NAVBAR_TITLE3, tep_href_link(FILENAME_PRESENT_ORDER));
 
 ?>
@@ -383,7 +383,7 @@ function popupWindow(url) {
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents"> <h1 class="pageHeading"> 
-          <?php if (isset($HTTP_GET_VARS['news_id'])) { echo $latest_news['headline']; } else { echo HEADING_TITLE; } ?> 
+          <?php if (isset($_GET['news_id'])) { echo $latest_news['headline']; } else { echo HEADING_TITLE; } ?> 
         </h1> 
         <div class="comment">
         <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="table"> 
@@ -416,8 +416,8 @@ function popupWindow(url) {
             </tr>
             <tr>
               <td class="main"><?php
-  if(isset($HTTP_POST_VARS['goods_id'])) {
-    $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$HTTP_GET_VARS['goods_id']."' and site_id = '".SITE_ID."'") ;
+  if(isset($_POST['goods_id'])) {
+    $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$_GET['goods_id']."' and site_id = '".SITE_ID."'") ;
 	$present = tep_db_fetch_array($present_query) ;
   }	
 ?>
@@ -427,7 +427,7 @@ function popupWindow(url) {
                         <tr <?php echo $_class?"class='".$_class."'":'' ; ?>>
                           <td class="main" width="<?php echo SMALL_IMAGE_WIDTH ; ?>">
 <script type="text/javascript" language="javascript"><!--
-	document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link('present_popup_image.php', 'pID=' . (int)$HTTP_GET_VARS['goods_id']) . '\\\')">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right" hspace="5" vspace="5"') . '</a>'; ?>');
+	document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link('present_popup_image.php', 'pID=' . (int)$_GET['goods_id']) . '\\\')">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right" hspace="5" vspace="5"') . '</a>'; ?>');
 --></script>
 <noscript>
 <?php echo tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right"'); ?>
@@ -444,7 +444,7 @@ function popupWindow(url) {
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
             </tr>
             <?php
-  if (isset($HTTP_GET_VARS['login']) && ($HTTP_GET_VARS['login'] == 'fail')) {
+  if (isset($_GET['login']) && ($_GET['login'] == 'fail')) {
     $info_message = TEXT_LOGIN_ERROR;
   } elseif ($cart->count_contents()) {
     $info_message = TEXT_VISITORS_CART;
@@ -462,7 +462,7 @@ function popupWindow(url) {
   }
 ?>
             <tr>
-              <td class="main"><?php echo tep_draw_form('login', tep_href_link(FILENAME_PRESENT_ORDER, 'goods_id='.$HTTP_GET_VARS['goods_id'].'&action=login', 'SSL')); ?>
+              <td class="main"><?php echo tep_draw_form('login', tep_href_link(FILENAME_PRESENT_ORDER, 'goods_id='.$_GET['goods_id'].'&action=login', 'SSL')); ?>
                 <table width="100%"  border="0" cellspacing="0" cellpadding="2" summary="table">
                   <tr>
                     <td width="25%">&nbsp;</td>
@@ -507,9 +507,9 @@ function popupWindow(url) {
             <tr>
               <td class="main"><?php
 		  
-  if (isset($HTTP_GET_VARS['email_address'])) $email_address = tep_db_prepare_input($HTTP_GET_VARS['email_address']);
+  if (isset($_GET['email_address'])) $email_address = tep_db_prepare_input($_GET['email_address']);
   $account['entry_country_id'] = STORE_COUNTRY;
-    echo tep_draw_form('present_account', tep_href_link(FILENAME_PRESENT_ORDER, 'goods_id='.$HTTP_GET_VARS['goods_id'].'&action=process', 'SSL'), 'post', 'onSubmit="return check_form();"'); 
+    echo tep_draw_form('present_account', tep_href_link(FILENAME_PRESENT_ORDER, 'goods_id='.$_GET['goods_id'].'&action=process', 'SSL'), 'post', 'onSubmit="return check_form();"'); 
     require(DIR_WS_MODULES . 'present_account_details.php');
     echo '<div align="right">'. tep_draw_hidden_field('goods_id', $present['goods_id']) . tep_image_submit('button_continue.gif', '') .'</div>' . "\n";
     echo '</form>';

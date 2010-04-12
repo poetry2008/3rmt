@@ -21,9 +21,9 @@
     tep_redirect(tep_href_link(FILENAME_SHOPPING_CART));
   }
 
-  if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'update')) {
+  if (isset($_GET['action']) && ($_GET['action'] == 'update')) {
     $notify_string = 'action=notify&';
-    $notify = $HTTP_POST_VARS['notify'];
+    $notify = $_POST['notify'];
     if (!is_array($notify)) $notify = array($notify);
     for ($i=0, $n=sizeof($notify); $i<$n; $i++) {
       $notify_string .= 'notify[]=' . $notify[$i] . '&';
@@ -97,15 +97,15 @@
 		    
 			<?php
 			#convenience_store
-      if (!isset($HTTP_POST_VARS['SID'])) $HTTP_POST_VARS['SID']=NULL;
-			if($HTTP_GET_VARS['SID'] != "" || $HTTP_POST_VARS['SID'] != ""){
+      if (!isset($_POST['SID'])) $_POST['SID']=NULL;
+			if($_GET['SID'] != "" || $_POST['SID'] != ""){
 			  
-			  if($HTTP_GET_VARS['SID'] != ""){
-			    $pr = '?sid=' . $HTTP_GET_VARS['SID'];
+			  if($_GET['SID'] != ""){
+			    $pr = '?sid=' . $_GET['SID'];
 			  }
 			  
-			  if($HTTP_POST_VARS['SID'] != ""){
-			    $pr = '?sid=' . $HTTP_POST_VARS['SID'];
+			  if($_POST['SID'] != ""){
+			    $pr = '?sid=' . $_POST['SID'];
 			  }
 			  
 			  echo '<tr><td>';

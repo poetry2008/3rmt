@@ -39,9 +39,9 @@
   
   $error = 'F';
   
-  if (!isset($HTTP_POST_VARS['act'])) $HTTP_POST_VARS['act'] = NULL;//del notcie
-  if($HTTP_POST_VARS['act'] == 'chk'){
-	foreach($HTTP_POST_VARS as $value){
+  if (!isset($_POST['act'])) $_POST['act'] = NULL;//del notcie
+  if($_POST['act'] == 'chk'){
+	foreach($_POST as $value){
 	  if($value == ""){
 	    $error = 'T';
 	  }
@@ -53,7 +53,7 @@
 	  foreach($cart as $key => $val){
 	    if($key == 'contents'){
 	      foreach($val as $key2 => $val2){
-		    $_SESSION['character'][$key2] = $HTTP_POST_VARS['cname_' . $key2]; 
+		    $_SESSION['character'][$key2] = $_POST['cname_' . $key2]; 
 		  }
 	    }
 	  }

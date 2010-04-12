@@ -7,7 +7,7 @@
 */
   require('includes/application_top.php');
 
-// lets retrieve all $HTTP_GET_VARS keys and values..
+// lets retrieve all $_GET keys and values..
   $get_params = tep_get_all_get_params(array('reviews_id'));
   $get_params = substr($get_params, 0, -1); //remove trailing &
 
@@ -32,7 +32,7 @@
               ON (r.products_id = p.products_id) )
         LEFT JOIN " .  TABLE_PRODUCTS_DESCRIPTION . " pd 
         ON (p.products_id = pd.products_id AND pd.language_id = '". $languages_id . "') 
-      WHERE r.reviews_id = '" .  (int)$HTTP_GET_VARS['reviews_id'] . "' 
+      WHERE r.reviews_id = '" .  (int)$_GET['reviews_id'] . "' 
         AND r.reviews_id = rd.reviews_id 
         AND p.products_status = '1' 
         AND r.reviews_status = '1' 

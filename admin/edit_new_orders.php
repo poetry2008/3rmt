@@ -51,7 +51,7 @@
     $orders_status_array[$orders_status['orders_status_id']] = $orders_status['orders_status_name'];
   }
 
-  $action = (isset($HTTP_GET_VARS['action']) ? $HTTP_GET_VARS['action'] : 'edit');
+  $action = (isset($_GET['action']) ? $_GET['action'] : 'edit');
 
   // Update Inventory Quantity
   $order_query = tep_db_query("
@@ -81,7 +81,7 @@
 	// 1. UPDATE ORDER ###############################################################################################
 	case 'update_order':
 
-		$oID = tep_db_prepare_input($HTTP_GET_VARS['oID']);
+		$oID = tep_db_prepare_input($_GET['oID']);
 		$order = new order($oID);
 		$status = '1'; // 初期値
 		$goods_check = $order_query;
@@ -455,10 +455,10 @@
 			$notify_comments_mail .= "\n\n";
 		}
 		
-		if (isset($HTTP_POST_VARS['notify_comments']) && ($HTTP_POST_VARS['notify_comments'] == 'on')) {
+		if (isset($_POST['notify_comments']) && ($_POST['notify_comments'] == 'on')) {
 			$notify_comments = $comments;
 		}
-		if (isset($HTTP_POST_VARS['notify']) && ($HTTP_POST_VARS['notify'] == 'on')) {
+		if (isset($_POST['notify']) && ($_POST['notify'] == 'on')) {
 			$products_ordered_mail = '';
 			for ($i=0; $i<sizeof($order->products); $i++) {
 				//$orders_products_id = $order->products[$i]['orders_products_id'];
@@ -681,7 +681,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
 		{
 			// 2.1 GET ORDER INFO #####
 			
-			$oID = tep_db_prepare_input($HTTP_GET_VARS['oID']);
+			$oID = tep_db_prepare_input($_GET['oID']);
 			$order = new order($oID);
 
 			$AddedOptionsPrice = 0;
@@ -835,8 +835,8 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
   }
 }
 
-  if (($action == 'edit') && isset($HTTP_GET_VARS['oID'])) {
-    $oID = tep_db_prepare_input($HTTP_GET_VARS['oID']);
+  if (($action == 'edit') && isset($_GET['oID'])) {
+    $oID = tep_db_prepare_input($_GET['oID']);
 
     $orders_query = tep_db_query("select orders_id from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
     $order_exists = true;

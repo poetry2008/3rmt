@@ -7,7 +7,7 @@
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PASSWORD_FORGOTTEN);
 
-  if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'process')) {
+  if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
 //ccdd
     $check_customer_query = tep_db_query("
         select customers_firstname, 
@@ -16,7 +16,7 @@
                customers_id, 
                customers_guest_chk 
         from " . TABLE_CUSTOMERS . " 
-        where customers_email_address = '" .  $HTTP_POST_VARS['email_address'] . "' 
+        where customers_email_address = '" .  $_POST['email_address'] . "' 
           and site_id =".SITE_ID
     );
     if (tep_db_num_rows($check_customer_query)) {
@@ -32,7 +32,7 @@
             where customers_id = '" . $check_customer['customers_id'] . "'
         ");
 
-        tep_mail(tep_get_fullname($check_customer['customers_firstname'],$check_customer['customers_lastname']), $HTTP_POST_VARS['email_address'], EMAIL_PASSWORD_REMINDER_SUBJECT, nl2br(sprintf(EMAIL_PASSWORD_REMINDER_BODY, $newpass)), STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+        tep_mail(tep_get_fullname($check_customer['customers_firstname'],$check_customer['customers_lastname']), $_POST['email_address'], EMAIL_PASSWORD_REMINDER_SUBJECT, nl2br(sprintf(EMAIL_PASSWORD_REMINDER_BODY, $newpass)), STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
         tep_redirect(tep_href_link(FILENAME_LOGIN, 'info_message=' . urlencode(TEXT_PASSWORD_SENT), 'SSL', true, false));
 	  } else {
 	    tep_redirect(tep_href_link(FILENAME_PASSWORD_FORGOTTEN, 'email=nonexistent', 'SSL'));
@@ -76,7 +76,7 @@
             </table></td>
           </tr>
 <?php
-  if (isset($HTTP_GET_VARS['email']) && ($HTTP_GET_VARS['email'] == 'nonexistent')) {
+  if (isset($_GET['email']) && ($_GET['email'] == 'nonexistent')) {
     echo '          <tr>' . "\n";
     echo '            <td colspan="2" class="smallText">' .  TEXT_NO_EMAIL_ADDRESS_FOUND . '</td>' . "\n";
     echo '          </tr>' . "\n";

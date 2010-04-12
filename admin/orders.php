@@ -16,19 +16,19 @@
     $orders_status_array[$orders_status['orders_status_id']] = $orders_status['orders_status_name'];
   }
 
-  if (isset($HTTP_GET_VARS['action'])) 
-  switch ($HTTP_GET_VARS['action']) {
+  if (isset($_GET['action'])) 
+  switch ($_GET['action']) {
     //一括変更----------------------------------
 	case 'sele_act':
-	  if($HTTP_POST_VARS['chk'] == ""){
+	  if($_POST['chk'] == ""){
 	    $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
 		tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action'))));
 	  }else{
-	    foreach($HTTP_POST_VARS['chk'] as $value){
+	    foreach($_POST['chk'] as $value){
 		  $oID      = $value;
-		  $status   = tep_db_prepare_input($HTTP_POST_VARS['status']);
-		  $title    = tep_db_prepare_input($HTTP_POST_VARS['os_title']);
-		  $comments = tep_db_prepare_input($HTTP_POST_VARS['comments']);
+		  $status   = tep_db_prepare_input($_POST['status']);
+		  $title    = tep_db_prepare_input($_POST['os_title']);
+		  $comments = tep_db_prepare_input($_POST['comments']);
 	  
 		  $order_updated = false;
     $check_status_query = tep_db_query("select customers_name, customers_email_address, orders_status, date_purchased, payment_method, torihiki_date from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
@@ -111,7 +111,7 @@
 
       $customer_notified = '0';
 			
-			if ($HTTP_POST_VARS['notify'] == 'on') {
+			if ($_POST['notify'] == 'on') {
 	
 			  $ot_query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_total'");
 			  $ot_result = tep_db_fetch_array($ot_query);
@@ -127,7 +127,7 @@
 			}
 			
 			  
-			if($HTTP_POST_VARS['notify_comments'] == 'on') {
+			if($_POST['notify_comments'] == 'on') {
 			  $customer_notified = '1';
 			} else {
 			  $customer_notified = '0';
@@ -150,10 +150,10 @@
 	  break;
 	  //------------------------------------------
 	case 'update_order':
-      $oID      = tep_db_prepare_input($HTTP_GET_VARS['oID']);
-      $status   = tep_db_prepare_input($HTTP_POST_VARS['status']);
-      $title    = tep_db_prepare_input($HTTP_POST_VARS['title']);
-      $comments = tep_db_prepare_input($HTTP_POST_VARS['comments']);
+      $oID      = tep_db_prepare_input($_GET['oID']);
+      $status   = tep_db_prepare_input($_POST['status']);
+      $title    = tep_db_prepare_input($_POST['title']);
+      $comments = tep_db_prepare_input($_POST['comments']);
 
       $order_updated = false;
       $check_status_query = tep_db_query("
@@ -245,7 +245,7 @@
 
     $customer_notified = '0';
     
-		if ($HTTP_POST_VARS['notify'] == 'on') {
+		if ($_POST['notify'] == 'on') {
 
 		  $ot_query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_total'");
 		  $ot_result = tep_db_fetch_array($ot_query);
@@ -261,7 +261,7 @@
     }
 		
 		  
-		if($HTTP_POST_VARS['notify_comments'] == 'on') {
+		if($_POST['notify_comments'] == 'on') {
     $customer_notified = '1';
 		} else {
 		  $customer_notified = '0';
@@ -280,18 +280,18 @@
       tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action')) . 'action=edit'));
       break;
     case 'deleteconfirm':
-      $oID = tep_db_prepare_input($HTTP_GET_VARS['oID']);
+      $oID = tep_db_prepare_input($_GET['oID']);
 
-      tep_remove_attributes($oID, $HTTP_POST_VARS['restock']);
+      tep_remove_attributes($oID, $_POST['restock']);
 	  
-	  tep_remove_order($oID, $HTTP_POST_VARS['restock']);
+	  tep_remove_order($oID, $_POST['restock']);
 
       tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action'))));
       break;
   }
 
-  if ( isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'edit') && ($HTTP_GET_VARS['oID']) ) {
-    $oID = tep_db_prepare_input($HTTP_GET_VARS['oID']);
+  if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($_GET['oID']) ) {
+    $oID = tep_db_prepare_input($_GET['oID']);
 
     $orders_query = tep_db_query("
         select orders_id 
@@ -346,8 +346,8 @@
   }
 
   //------------------------------------------------
-  if(isset($HTTP_GET_VARS['reload'])) {
-    switch($HTTP_GET_VARS['reload']) {
+  if(isset($_GET['reload'])) {
+    switch($_GET['reload']) {
 	  case 'Yes':
 	    $reload = 'yes';
 		tep_session_register('reload');
@@ -462,7 +462,7 @@ function mail_text(st,tt,ot){
 <!-- body_text //-->
     <td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
-  if ( isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'edit') && ($order_exists) ) {
+  if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) {
     $order = new order($oID);
 ?>
       <tr>
@@ -509,7 +509,7 @@ function mail_text(st,tt,ot){
     <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '5'); ?></td>
     </tr>    <tr>
     <td class="main" valign="top"><b>ご注文番号</b></td>
-    <td class="main"><?php echo $HTTP_GET_VARS['oID'] ?></td>
+    <td class="main"><?php echo $_GET['oID'] ?></td>
     </tr>
     <tr>
     <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '5'); ?></td>
@@ -704,12 +704,12 @@ function mail_text(st,tt,ot){
 		  while ($pull_status = tep_db_fetch_array($status_query)) {
 			echo '<option value="' . tep_href_link('orders.php',tep_get_all_get_params(array('status')).'status='.$pull_status['orders_status_id']) . '"';
 					
-			if($HTTP_GET_VARS['status'] == ''){
+			if($_GET['status'] == ''){
 			  if($order->info['orders_status'] == $pull_status['orders_status_id']){
 			    echo 'selected' ;
 			  }
 			}else{
-			  if($HTTP_GET_VARS['status'] == $pull_status['orders_status_id']) {
+			  if($_GET['status'] == $pull_status['orders_status_id']) {
 			    echo 'selected' ;
 			  }
 			}
@@ -726,17 +726,17 @@ function mail_text(st,tt,ot){
       </tr>
 	  <?php
 		  $ma_se = "select * from ".TABLE_ORDERS_MAIL." where ";
-		  if(!isset($HTTP_GET_VARS['status']) || $HTTP_GET_VARS['status'] == ""){
+		  if(!isset($_GET['status']) || $_GET['status'] == ""){
 		    $ma_se .= " orders_status_id = '".$order->info['orders_status']."' ";
 			echo '<input type="hidden" name="status" value="' .$order->info['orders_status'].'">';
 		  }else{
-		    $ma_se .= " orders_status_id = '".$HTTP_GET_VARS['status']."' ";
-			echo '<input type="hidden" name="status" value="' .$HTTP_GET_VARS['status'].'">';
+		    $ma_se .= " orders_status_id = '".$_GET['status']."' ";
+			echo '<input type="hidden" name="status" value="' .$_GET['status'].'">';
 		  }
 		  
 		  $mail_sele = tep_db_query($ma_se);
 		  $mail_sql  = tep_db_fetch_array($mail_sele);
-		  $sta       = isset($HTTP_GET_VARS['status'])?$HTTP_GET_VARS['status']:'';
+		  $sta       = isset($_GET['status'])?$_GET['status']:'';
 	  ?>
 	  <tr>
 	    <td class="main"><b><?php echo ENTRY_EMAIL_TITLE; ?></b><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title']); ?></td>
@@ -793,7 +793,7 @@ function mail_text(st,tt,ot){
     <tr>
     
 				<td class="smallText">検索 : 
-				<input name="keywords" type="text" id="keywords" size="40" value="<?php if(isset($HTTP_GET_VARS['keywords'])) echo stripslashes($HTTP_GET_VARS['keywords']); ?>"></td>
+				<input name="keywords" type="text" id="keywords" size="40" value="<?php if(isset($_GET['keywords'])) echo stripslashes($_GET['keywords']); ?>"></td>
     <td><?php echo tep_image_submit('button_search.gif', '検索する'); ?></td>
     </tr>
 			  <tr>
@@ -825,7 +825,7 @@ function mail_text(st,tt,ot){
     <tr>
       <td class="smallText" width='150'>
       <?php echo ENTRY_SITE;?>:
-      <?php echo tep_site_pull_down_menu_with_all(isset($HTTP_GET_VARS['site_id']) ? $HTTP_GET_VARS['site_id'] :'', false);?>
+      <?php echo tep_site_pull_down_menu_with_all(isset($_GET['site_id']) ? $_GET['site_id'] :'', false);?>
       </td>
       <td class="smallText">
       開始日:
@@ -963,8 +963,8 @@ function mail_text(st,tt,ot){
     </tr>
 <?php
     
-	if (isset($HTTP_GET_VARS['cID']) && $HTTP_GET_VARS['cID']) {
-      $cID = tep_db_prepare_input($HTTP_GET_VARS['cID']);
+	if (isset($_GET['cID']) && $_GET['cID']) {
+      $cID = tep_db_prepare_input($_GET['cID']);
       $orders_query_raw = "
         select o.orders_id, 
                o.torihiki_date, 
@@ -981,14 +981,14 @@ function mail_text(st,tt,ot){
         from " . TABLE_ORDERS . " o 
           left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s, ".TABLE_SITES." si
         where o.customers_id = '" . tep_db_input($cID) . "' 
-          " . (isset($HTTP_GET_VARS['site_id']) && intval($HTTP_GET_VARS['site_id']) ? " and si.id = '" . intval($HTTP_GET_VARS['site_id']) . "' " : '') . "
+          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and si.id = '" . intval($_GET['site_id']) . "' " : '') . "
           and si.id = o.site_id
           and o.orders_status = s.orders_status_id 
           and s.language_id = '" . $languages_id . "' 
           and ot.class = 'ot_total' 
         order by o.torihiki_date DESC";
-    } elseif (isset($HTTP_GET_VARS['status']) && $HTTP_GET_VARS['status']) {
-      $status = tep_db_prepare_input($HTTP_GET_VARS['status']);
+    } elseif (isset($_GET['status']) && $_GET['status']) {
+      $status = tep_db_prepare_input($_GET['status']);
       $orders_query_raw = "
         select o.orders_id, 
                o.torihiki_date, 
@@ -1005,12 +1005,12 @@ function mail_text(st,tt,ot){
         from " . TABLE_ORDERS . " o 
           left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s, ".TABLE_SITES." si
         where o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "' 
-          " . (isset($HTTP_GET_VARS['site_id']) && intval($HTTP_GET_VARS['site_id']) ? " and si.id = '" . intval($HTTP_GET_VARS['site_id']) . "' " : '') . "
+          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and si.id = '" . intval($_GET['site_id']) . "' " : '') . "
           and s.orders_status_id = '" . tep_db_input($status) . "' 
           and ot.class = 'ot_total' 
           and si.id = o.site_id
         order by o.torihiki_date DESC";
-    } elseif (isset($HTTP_GET_VARS['keywords']) && $HTTP_GET_VARS['keywords']) {
+    } elseif (isset($_GET['keywords']) && $_GET['keywords']) {
       
       $orders_query_raw = "
         select distinct(o.orders_id), 
@@ -1027,13 +1027,13 @@ function mail_text(st,tt,ot){
                si.romaji
         from " . TABLE_ORDERS . " o, " . TABLE_ORDERS_TOTAL . " ot, " . TABLE_ORDERS_STATUS . " s, " . TABLE_ORDERS_PRODUCTS . " op , ".TABLE_SITES." si
         where o.orders_id = ot.orders_id 
-          " . (isset($HTTP_GET_VARS['site_id']) && intval($HTTP_GET_VARS['site_id']) ? " and si.id = '" . intval($HTTP_GET_VARS['site_id']) . "' " : '') . "
+          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and si.id = '" . intval($_GET['site_id']) . "' " : '') . "
           and si.id = o.site_id
           and o.orders_status = s.orders_status_id 
           and s.language_id = '" . $languages_id . "' 
           and ot.class = 'ot_total' 
           and o.orders_id = op.orders_id";
-	  $keywords = str_replace('　', ' ', $HTTP_GET_VARS['keywords']);
+	  $keywords = str_replace('　', ' ', $_GET['keywords']);
 	  tep_parse_search_string($keywords, $search_keywords);
 	  if (isset($search_keywords) && (sizeof($search_keywords) > 0)) {
 	    $orders_query_raw .= " and (";
@@ -1080,7 +1080,7 @@ function mail_text(st,tt,ot){
          from " . TABLE_ORDERS . " o 
            left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s , ".TABLE_SITES." si
          where o.orders_status = s.orders_status_id 
-          " . (isset($HTTP_GET_VARS['site_id']) && intval($HTTP_GET_VARS['site_id']) ? " and si.id = '" . intval($HTTP_GET_VARS['site_id']) . "' " : '') . "
+          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and si.id = '" . intval($_GET['site_id']) . "' " : '') . "
            and si.id=o.site_id
            and s.language_id = '" . $languages_id . "' 
            and ot.class = 'ot_total' 
@@ -1089,12 +1089,12 @@ function mail_text(st,tt,ot){
       ";
     }
 
-    $orders_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_ORDERS_RESULTS, $orders_query_raw, $orders_query_numrows);
+    $orders_split = new splitPageResults($_GET['page'], MAX_DISPLAY_ORDERS_RESULTS, $orders_query_raw, $orders_query_numrows);
     $orders_query = tep_db_query($orders_query_raw);
     $allorders    = $allorders_ids = array();
     while ($orders = tep_db_fetch_array($orders_query)) {
       $allorders[] = $orders;
-      if (((!isset($HTTP_GET_VARS['oID']) || !$HTTP_GET_VARS['oID']) || ($HTTP_GET_VARS['oID'] == $orders['orders_id'])) && (!isset($oInfo) || !$oInfo)) {
+      if (((!isset($_GET['oID']) || !$_GET['oID']) || ($_GET['oID'] == $orders['orders_id'])) && (!isset($oInfo) || !$oInfo)) {
         $oInfo = new objectInfo($orders);
       }
 
@@ -1252,8 +1252,8 @@ function submit_confirm()
 			  <tr>
     <td colspan="5"><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
-    <td class="smallText" valign="top"><?php echo $orders_split->display_count($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, $HTTP_GET_VARS['page'], TEXT_DISPLAY_NUMBER_OF_ORDERS); ?></td>
-    <td class="smallText" align="right"><?php echo $orders_split->display_links($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page'], tep_get_all_get_params(array('page', 'oID', 'action'))); ?></td>
+    <td class="smallText" valign="top"><?php echo $orders_split->display_count($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_ORDERS); ?></td>
+    <td class="smallText" align="right"><?php echo $orders_split->display_links($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'oID', 'action'))); ?></td>
       </tr>
     </table></td>
     </tr>
@@ -1264,7 +1264,7 @@ function submit_confirm()
 <?php
   $heading = array();
   $contents = array();
-  switch (isset($HTTP_GET_VARS['action'])?$HTTP_GET_VARS['action']:null) {
+  switch (isset($_GET['action'])?$_GET['action']:null) {
     case 'delete':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_ORDER . '</b>');
 

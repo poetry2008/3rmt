@@ -331,7 +331,7 @@
   }
 
   function session_start() {
-    global $session, $SID, $HTTP_COOKIE_VARS, $HTTP_GET_VARS, $HTTP_POST_VARS;
+    global $session, $SID, $HTTP_COOKIE_VARS, $_GET, $_POST;
 
 // Define the global variable $SID?
     $define_sid = true;
@@ -340,7 +340,7 @@
     $send_cookie = true;
 
 // Is track_vars enabled?
-    $track_vars = ( (isset($HTTP_COOKIE_VARS)) || (isset($HTTP_GET_VARS)) || (isset($HTTP_POST_VARS)) ) ? true : false;
+    $track_vars = ( (isset($HTTP_COOKIE_VARS)) || (isset($_GET)) || (isset($_POST)) ) ? true : false;
 
 // Check if session_start() has been called once already
     if ($session->nr_open_sessions != 0) {
@@ -365,12 +365,12 @@
         $send_cookie = false;
       }
 
-      if (isset($HTTP_GET_VARS[$session->name])) {
-        $session->id = $HTTP_GET_VARS[$session->name];
+      if (isset($_GET[$session->name])) {
+        $session->id = $_GET[$session->name];
       }
 
-      if (isset($HTTP_POST_VARS[$session->name])) {
-        $session->id = $HTTP_POST_VARS[$session->name];
+      if (isset($_POST[$session->name])) {
+        $session->id = $_POST[$session->name];
       }
     }
 

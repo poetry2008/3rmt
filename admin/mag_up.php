@@ -31,7 +31,7 @@
 	
 	//SQLを空にする
 	//mysql_query("TRUNCATE TABLE mail_magazine");
-  mysql_query("delete from ".TABLE_MAIL_MAGAZINE." where site_id = '".(int)$HTTP_POST_VARS['site_id']."'");
+  mysql_query("delete from ".TABLE_MAIL_MAGAZINE." where site_id = '".(int)$_POST['site_id']."'");
 	
 	$cnt = "0"; 
 	$chk_input = true;
@@ -60,7 +60,7 @@
 			  $updated = false;
 			  
 			  //顧客情報のテーブル参照
-			  $ccnt_query = tep_db_query("select count(*) as cnt from customers where customers_email_address = '".$dat1."' and site_id = '".$HTTP_POST_VARS['site_id']."'");
+			  $ccnt_query = tep_db_query("select count(*) as cnt from customers where customers_email_address = '".$dat1."' and site_id = '".$_POST['site_id']."'");
 			  $ccnt = tep_db_fetch_array($ccnt_query);
 			  
 			  if($ccnt['cnt'] > 0) {
@@ -73,17 +73,17 @@
 			  //mail_magazine Update
 			  if($updated == false) {
 			    //重複チェック
-			    $jcnt_query = tep_db_query("select count(*) as cnt from mail_magazine where mag_email = '".$dat1."' and site_id = '".(int)$HTTP_POST_VARS['site_id']."'");
+			    $jcnt_query = tep_db_query("select count(*) as cnt from mail_magazine where mag_email = '".$dat1."' and site_id = '".(int)$_POST['site_id']."'");
 			    $jcnt = tep_db_fetch_array($jcnt_query);
 			  
 			    //インサート（重複なし）
 			    if($jcnt['cnt'] == 0) {
-				  tep_db_query("insert into mail_magazine (mag_email, mag_name, site_id) values ('".$dat1."', '".$dat2."', '".(int)$HTTP_POST_VARS['site_id']."')");
+				  tep_db_query("insert into mail_magazine (mag_email, mag_name, site_id) values ('".$dat1."', '".$dat2."', '".(int)$_POST['site_id']."')");
 			    } 
 			  
 			    //アップデート（重複有り）
 			    else {
-				  tep_db_query("update mail_magazine set mag_name = '".$dat2."' where mag_email = '".$dat1."' where site_id = '".(int)$HTTP_POST_VARS['site_id']."'");
+				  tep_db_query("update mail_magazine set mag_name = '".$dat2."' where mag_email = '".$dat1."' where site_id = '".(int)$_POST['site_id']."'");
 			    }
 			  }
 			  $cnt++;

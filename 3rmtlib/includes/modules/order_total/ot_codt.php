@@ -22,12 +22,12 @@
     function process() {
       global $order, $currencies;
       global $payment;
-      global $HTTP_POST_VARS;
+      global $_POST;
 
       if (($payment == 'cod_table')
-          && isset($HTTP_POST_VARS['codt_fee'])
-          && (0 < intval($HTTP_POST_VARS['codt_fee']))) {
-        $fee = intval($HTTP_POST_VARS['codt_fee']);
+          && isset($_POST['codt_fee'])
+          && (0 < intval($_POST['codt_fee']))) {
+        $fee = intval($_POST['codt_fee']);
         $this->output[] = array('title' => $this->title . ':',
                                 'text' => $currencies->format($fee, true, $order->info['currency'], $order->info['currency_value']),
                                 'value' => $fee);

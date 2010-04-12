@@ -20,15 +20,15 @@
   STORE_NAME_ADDRESS."\n".	  	  
   HTTP_SERVER."\n".  
   STORE_OWNER_EMAIL_ADDRESS;
-  if (isset($HTTP_POST_VARS['email_address'])) {
-    if (empty($HTTP_POST_VARS['email_address'])) {
+  if (isset($_POST['email_address'])) {
+    if (empty($_POST['email_address'])) {
       $error_single = true;
       $error_msg =  EMAIL_PATTERN_WRONG;
-    } else if (!tep_validate_email($HTTP_POST_VARS['email_address'])){
+    } else if (!tep_validate_email($_POST['email_address'])){
       $error_single = true;
       $error_msg =  EMAIL_PATTERN_WRONG;
     } else {
-      tep_mail('', $HTTP_POST_VARS['email_address'], $subject, $body_text, EMAIL_FROM, STORE_OWNER_EMAIL_ADDRESS);  
+      tep_mail('', $_POST['email_address'], $subject, $body_text, EMAIL_FROM, STORE_OWNER_EMAIL_ADDRESS);  
       $success_single = true; 
     }
   }

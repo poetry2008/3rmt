@@ -4,11 +4,11 @@
 */
 require('includes/application_top.php');
 
-if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action']) {
-    switch  ($HTTP_GET_VARS['action']) {
+if (isset($_GET['action']) && $_GET['action']) {
+    switch  ($_GET['action']) {
     case 'save': 
-        $configuration_value = tep_db_prepare_input($HTTP_POST_VARS['configuration_value']);
-        $cID = tep_db_prepare_input($HTTP_GET_VARS['cID']);
+        $configuration_value = tep_db_prepare_input($_POST['configuration_value']);
+        $cID = tep_db_prepare_input($_GET['cID']);
         if (!is_numeric($cID))
 	    {
 		$exploded_cid = explode('_',$cID);
@@ -50,7 +50,7 @@ now(),
 WHERE
 `configuration_id` = ".$config_id);
 
-        tep_redirect(tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $HTTP_GET_VARS['gID'] . '&cID=' . $config_id.'&action=edit'));
+        tep_redirect(tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $config_id.'&action=edit'));
 	    }
 	//画像アップロード時のみ
         $upfile_name = $_FILES["upfile"]["name"];
@@ -62,15 +62,15 @@ WHERE
 	    tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . tep_db_input($upfile_name) . "', last_modified = now() where configuration_id = '" . tep_db_input($cID) . "'");
 	}
         tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . tep_db_input($configuration_value) . "', last_modified = now() where configuration_id = '" . tep_db_input($cID) . "'");
-        tep_redirect(tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $HTTP_GET_VARS['gID'] . '&cID=' .  tep_get_default_configuration_id_by_id($cID)));
+        tep_redirect(tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' .  tep_get_default_configuration_id_by_id($cID)));
 	break;
     case 'tdel':
-	$two_id = explode('_',$HTTP_GET_VARS['cID']);
+	$two_id = explode('_',$_GET['cID']);
 	$config_id =$two_id[0];
 	$default_id = $two_id[1];
 
 	tep_db_query("DELETE FROM ".TABLE_CONFIGURATION." WHERE configuration_id = ".$config_id);
-        tep_redirect(tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $HTTP_GET_VARS['gID'] . '&cID=' . $default_id.'&action=edit'));
+        tep_redirect(tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $default_id.'&action=edit'));
 break;
 
 
@@ -81,7 +81,7 @@ break;
 $cfg_group_query = tep_db_query("
       select configuration_group_title 
       from " . TABLE_CONFIGURATION_GROUP . " 
-      where   configuration_group_id = '" . $HTTP_GET_VARS['gID'] . "'
+      where   configuration_group_id = '" . $_GET['gID'] . "'
   ");
 $cfg_group = tep_db_fetch_array($cfg_group_query);
 ?>
@@ -138,7 +138,7 @@ select
     use_function 
 from " . TABLE_CONFIGURATION . " 
 where 
-    configuration_group_id = '" . $HTTP_GET_VARS['gID'] . "' 
+    configuration_group_id = '" . $_GET['gID'] . "' 
     and 
     `site_id` = '0'  order by sort_order"
 				       );
@@ -160,9 +160,9 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     }
 
     if (
-        ((!isset($HTTP_GET_VARS['cID']) || !$HTTP_GET_VARS['cID']) || ($HTTP_GET_VARS['cID'] == $configuration['configuration_id'])) 
+        ((!isset($_GET['cID']) || !$_GET['cID']) || ($_GET['cID'] == $configuration['configuration_id'])) 
         && (!isset($cInfo) || !$cInfo) 
-        && (!isset($HTTP_GET_VARS['action']) or substr($HTTP_GET_VARS['action'], 0, 3) != 'new')
+        && (!isset($_GET['action']) or substr($_GET['action'], 0, 3) != 'new')
     ) {
 	$cfg_extra_query = tep_db_query("select  configuration_key, configuration_description, date_added, last_modified, use_function, set_function from " . TABLE_CONFIGURATION . " where configuration_id = '" . $configuration['configuration_id'] . "'");
 //	$cfg_extra_query = tep_db_query("select configuration_key,configuration_description,date_added,last_modified,use_function,set_function  from ".TABLE_CONFIGURATION. " where configuration_key = ( select configuration_key from " . TABLE_CONFIGURATION . " where configuration_id = '" . $configuration['configuration_id'] . "')");
@@ -178,14 +178,14 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     }
 
     if ( (isset($cInfo) && is_object($cInfo)) && ($configuration['configuration_id'] == $cInfo->configuration_id) ) {
-	echo '                  <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $HTTP_GET_VARS['gID'] . '&cID=' . $cInfo->configuration_id . '&action=edit') . '\'">' . "\n";
+	echo '                  <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $cInfo->configuration_id . '&action=edit') . '\'">' . "\n";
     } else {
-	echo '                  <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $HTTP_GET_VARS['gID'] . '&cID=' . $configuration['configuration_id']) . '\'">' . "\n";
+	echo '                  <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $configuration['configuration_id']) . '\'">' . "\n";
     }
 ?>
     <td class="dataTableContent"><?php echo $configuration['configuration_title']; ?></td>
 											   <td class="dataTableContent"><?php echo mb_substr(htmlspecialchars($cfgValue),0,50); ?></td>
-																							<td class="dataTableContent" align="right"><?php if ( (isset($cInfo) && is_object($cInfo)) && ($configuration['configuration_id'] == $cInfo->configuration_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $HTTP_GET_VARS['gID'] . '&cID=' . $configuration['configuration_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
+																							<td class="dataTableContent" align="right"><?php if ( (isset($cInfo) && is_object($cInfo)) && ($configuration['configuration_id'] == $cInfo->configuration_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $configuration['configuration_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
     </tr>
 <?php
 																																																																																       }
@@ -194,7 +194,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
 <?php
 $heading = array();
 $contents = array();
-switch (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action']) {
+switch (isset($_GET['action']) && $_GET['action']) {
 case 'edit':
     $heading[] = array('text' => '<b>' . $cInfo->configuration_title . '</b>');
 
@@ -209,14 +209,14 @@ case 'edit':
     }
 // 针对 logo—image 做特殊处理
     if($cInfo->configuration_key == 'ADMINPAGE_LOGO_IMAGE') {
-	$contents = array('form' => tep_draw_form('configuration', FILENAME_CONFIGURATION, 'gID=' . $HTTP_GET_VARS['gID'] . '&cID=' . $cInfo->configuration_id . '&action=save', 'post', 'enctype="multipart/form-data"'));
+	$contents = array('form' => tep_draw_form('configuration', FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $cInfo->configuration_id . '&action=save', 'post', 'enctype="multipart/form-data"'));
     } else {
-	$contents = array('form' => tep_draw_form('configuration', FILENAME_CONFIGURATION, 'gID=' . $HTTP_GET_VARS['gID'] . '&cID=' . $cInfo->configuration_id . '&action=save'));
+	$contents = array('form' => tep_draw_form('configuration', FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $cInfo->configuration_id . '&action=save'));
     }
     $contents[] = array('text' => TEXT_INFO_EDIT_INTRO);
     $contents[] = array('text' => '<br><b>' . $cInfo->configuration_title . '</b><br>' . $cInfo->configuration_description . '<br>' . $value_field);
 	
-    $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_update.gif', IMAGE_UPDATE) . '&nbsp;<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $HTTP_GET_VARS['gID'] . '&cID=' . $cInfo->configuration_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+    $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_update.gif', IMAGE_UPDATE) . '&nbsp;<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $cInfo->configuration_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
 
 //----------------------------------
 // for 3rmt {{{
@@ -246,9 +246,9 @@ case 'edit':
 	    }
 	}
 	if($fetch_result['configuration_key'] == 'ADMINPAGE_LOGO_IMAGE') {
-	    $contents_site = array('form' => tep_draw_form('configuration', FILENAME_CONFIGURATION, 'gID=' . $HTTP_GET_VARS['gID'] . '&cID=' . $fetch_result['configuration_id'] . '&action=save', 'post', 'enctype="multipart/form-data"'));
+	    $contents_site = array('form' => tep_draw_form('configuration', FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $fetch_result['configuration_id'] . '&action=save', 'post', 'enctype="multipart/form-data"'));
 	} else {
-	    $contents_site = array('form' => tep_draw_form('configuration', FILENAME_CONFIGURATION, 'gID=' . $HTTP_GET_VARS['gID'] . '&cID=' . $fetch_result['configuration_id'] . '&action=save'));
+	    $contents_site = array('form' => tep_draw_form('configuration', FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $fetch_result['configuration_id'] . '&action=save'));
 	}
 //	$contents_site[] = array('text' => TEXT_INFO_EDIT_INTRO);
 	$contents_site[] = array('text' => '<br><b>' . $fetch_result['configuration_title'] . '</b><br>' . $fetch_result['configuration_description'] . '<br>' . $value_field);
@@ -258,10 +258,10 @@ case 'edit':
 	$contents_site[] = array(
 	    'align' => 'center',
 	    'text' => '<br>' . 
-	    tep_image_submit('button_update.gif', IMAGE_UPDATE) .'&nbsp;<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $HTTP_GET_VARS['gID'] . '&action=tdel&cID=' . $fetch_result['configuration_id'].'_'.$cInfo->configuration_id) . '">'.tep_image_button('button_deffect.gif',IMAGE_DEFFECT).'</a>'. '&nbsp;<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $HTTP_GET_VARS['gID'] . '&cID=' . $fetch_result['configuration_id']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
-//	    $contents_site[] = array('align' => 'center', 'text' => '<br>' . '<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $HTTP_GET_VARS['gID'] . '&action=tdel&cID=' . $fetch_result['configuration_id'].'_'.$cInfo->configuration_id) . '">'.tep_image_button('button_delete.gif',IMAGE_DELETE).'</a>');
+	    tep_image_submit('button_update.gif', IMAGE_UPDATE) .'&nbsp;<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&action=tdel&cID=' . $fetch_result['configuration_id'].'_'.$cInfo->configuration_id) . '">'.tep_image_button('button_deffect.gif',IMAGE_DEFFECT).'</a>'. '&nbsp;<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $fetch_result['configuration_id']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+//	    $contents_site[] = array('align' => 'center', 'text' => '<br>' . '<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&action=tdel&cID=' . $fetch_result['configuration_id'].'_'.$cInfo->configuration_id) . '">'.tep_image_button('button_delete.gif',IMAGE_DELETE).'</a>');
 	}else {
-	$contents_site[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_effect.gif', IMAGE_EFFECT) . '&nbsp;<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $HTTP_GET_VARS['gID'] . '&cID=' . $fetch_result['configuration_id']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+	$contents_site[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_effect.gif', IMAGE_EFFECT) . '&nbsp;<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $fetch_result['configuration_id']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
 	}
 	$contents_sites_array[] = $contents_site;
 	
@@ -274,7 +274,7 @@ default:
 
         $heading[] = array('text' => '<b>' . $cInfo->configuration_title . '</b>');
 
-        $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $HTTP_GET_VARS['gID'] . '&cID=' . $cInfo->configuration_id . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>');
+        $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $cInfo->configuration_id . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>');
         $contents[] = array('text' => '<br>' . $cInfo->configuration_description);
         $contents[] = array('text' => '<br>' . TEXT_INFO_DATE_ADDED . ' ' . tep_date_short($cInfo->date_added));
         if (tep_not_null($cInfo->last_modified)) $contents[] = array('text' => TEXT_INFO_LAST_MODIFIED . ' ' . tep_date_short($cInfo->last_modified));

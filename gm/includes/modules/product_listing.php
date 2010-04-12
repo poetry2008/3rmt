@@ -29,16 +29,16 @@ if(basename($PHP_SELF) == FILENAME_DEFAULT) {
       $filterlist_query = tep_db_query($filterlist_sql);
       if (tep_db_num_rows($filterlist_query) > 1) {
         echo '            <td class="smallText" align="right">' . TEXT_SHOW . '<select size="1" onChange="if(options[selectedIndex].value) window.location.href=(options[selectedIndex].value)">';
-        if (isset($HTTP_GET_VARS['manufacturers_id'])) {
-          $arguments = 'manufacturers_id=' . $HTTP_GET_VARS['manufacturers_id'];
+        if (isset($_GET['manufacturers_id'])) {
+          $arguments = 'manufacturers_id=' . $_GET['manufacturers_id'];
         } else {
           $arguments = 'cPath=' . $cPath;
         }
-        $arguments .= '&sort=' . $HTTP_GET_VARS['sort'];
+        $arguments .= '&sort=' . $_GET['sort'];
 
         $option_url = tep_href_link(FILENAME_DEFAULT, $arguments);
 
-        if (!isset($HTTP_GET_VARS['filter_id'])) {
+        if (!isset($_GET['filter_id'])) {
           echo '<option value="' . $option_url . '" SELECTED>' . TEXT_ALL . '</option>';
         } else {
           echo '<option value="' . $option_url . '">' . TEXT_ALL . '</option>';
@@ -47,7 +47,7 @@ if(basename($PHP_SELF) == FILENAME_DEFAULT) {
         echo '<option value="">---------------</option>';
         while ($filterlist = tep_db_fetch_array($filterlist_query)) {
           $option_url = tep_href_link(FILENAME_DEFAULT, $arguments . '&filter_id=' . $filterlist['id']);
-          if (isset($HTTP_GET_VARS['filter_id']) && ($HTTP_GET_VARS['filter_id'] == $filterlist['id'])) {
+          if (isset($_GET['filter_id']) && ($_GET['filter_id'] == $filterlist['id'])) {
             echo '<option value="' . $option_url . '" SELECTED>' . $filterlist['name'] . '</option>';
           } else {
             echo '<option value="' . $option_url . '">' . $filterlist['name'] . '</option>';
@@ -60,15 +60,15 @@ if(basename($PHP_SELF) == FILENAME_DEFAULT) {
 ?>
       <td class="smallText"><b><?php echo LISTING_SORT_BY ; ?></b>
         <select name="select" onChange="if(options[selectedIndex].value) window.location.href=(options[selectedIndex].value)">
-          <option value="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=5a') ; ?>"  <?php if($HTTP_GET_VARS['sort'] == '5a') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_PRICE_LOW ; ?></option>
-          <option value="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=5d') ; ?>"  <?php if($HTTP_GET_VARS['sort'] == '5d') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_PRICE_HIGHT ; ?></option>
-          <option value="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=4a') ; ?>"  <?php if($HTTP_GET_VARS['sort'] == '4a') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_TITLE_A_TO_Z ; ?></option>
-          <option value="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=4d') ; ?>"  <?php if($HTTP_GET_VARS['sort'] == '4d') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_TITLE_Z_TO_A ; ?></option>
+          <option value="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=5a') ; ?>"  <?php if($_GET['sort'] == '5a') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_PRICE_LOW ; ?></option>
+          <option value="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=5d') ; ?>"  <?php if($_GET['sort'] == '5d') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_PRICE_HIGHT ; ?></option>
+          <option value="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=4a') ; ?>"  <?php if($_GET['sort'] == '4a') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_TITLE_A_TO_Z ; ?></option>
+          <option value="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=4d') ; ?>"  <?php if($_GET['sort'] == '4d') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_TITLE_Z_TO_A ; ?></option>
         </select></td>
     </tr>
   <?php
   $listing_numrows_sql = $listing_sql;
-  $listing_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $listing_sql, $listing_numrows);
+  $listing_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $listing_sql, $listing_numrows);
   // fix counted products
   $listing_numrows = tep_db_query($listing_numrows_sql);
   $listing_numrows = tep_db_num_rows($listing_numrows);
@@ -78,8 +78,8 @@ if(basename($PHP_SELF) == FILENAME_DEFAULT) {
     <td colspan="2"><div class="sep">&nbsp;</div>
       <table border="0" width="100%" cellspacing="0" cellpadding="2">
         <tr>
-          <td class="smallText"><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $HTTP_GET_VARS['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
-          <td align="right" class="smallText">&nbsp;<?php echo TEXT_RESULT_PAGE; ?> <?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?>&nbsp;</td>
+          <td class="smallText"><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
+          <td align="right" class="smallText">&nbsp;<?php echo TEXT_RESULT_PAGE; ?> <?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?>&nbsp;</td>
         </tr>
       </table></td>
   </tr>
@@ -180,7 +180,7 @@ if (!isset($listing['products_cflag'])) $listing['products_cflag'] = NULL;//deln
   } else {
 ?>
   <tr class="productListing-odd">
-    <td class="smallText">&nbsp;<?php echo (isset($HTTP_GET_VARS['manufacturers_id']) ? TEXT_NO_PRODUCTS2 : TEXT_NO_PRODUCTS); ?>&nbsp;</td>
+    <td class="smallText">&nbsp;<?php echo (isset($_GET['manufacturers_id']) ? TEXT_NO_PRODUCTS2 : TEXT_NO_PRODUCTS); ?>&nbsp;</td>
   </tr>
 <?php
   }
@@ -195,8 +195,8 @@ if (!isset($listing['products_cflag'])) $listing['products_cflag'] = NULL;//deln
     <td>
       <table border="0" width="100%" cellspacing="0" cellpadding="2">
         <tr>
-          <td class="smallText"><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $HTTP_GET_VARS['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
-          <td align="right" class="smallText">&nbsp;<?php echo TEXT_RESULT_PAGE; ?> <?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?>&nbsp;</td>
+          <td class="smallText"><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
+          <td align="right" class="smallText">&nbsp;<?php echo TEXT_RESULT_PAGE; ?> <?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?>&nbsp;</td>
         </tr>
       </table>
     </td>

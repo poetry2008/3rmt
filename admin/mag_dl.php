@@ -25,7 +25,7 @@
                  mag_email,
                  mag_name
           from mail_magazine 
-          where site_id = '".$HTTP_GET_VARS['site_id']."'
+          where site_id = '".$_GET['site_id']."'
           order by mag_id");
 
 

@@ -15,7 +15,7 @@
   require(DIR_WS_CLASSES . 'currencies.php');
   $currencies = new currencies();
 
-  $oID = tep_db_prepare_input($HTTP_GET_VARS['oID']);
+  $oID = tep_db_prepare_input($_GET['oID']);
   $orders_query = tep_db_query("
       select orders_id 
       from " . TABLE_ORDERS . "
@@ -41,7 +41,7 @@
         <td class="pageHeading"><?php echo nl2br(STORE_NAME_ADDRESS); ?></td>
         <td class="pageHeading" align="right"><?php echo tep_image(HTTP_CATALOG_SERVER . DIR_WS_CATALOG .DIR_WS_IMAGES . ADMINPAGE_LOGO_IMAGE, STORE_NAME, '', ''); ?></td>
       </tr>
-    </table><div align="right">注文日 : <?php echo tep_date_long($order->customer['date']) . ' 注文番号 : ' . $HTTP_GET_VARS['oID'] ; ?></div></td>
+    </table><div align="right">注文日 : <?php echo tep_date_long($order->customer['date']) . ' 注文番号 : ' . $_GET['oID'] ; ?></div></td>
   </tr>
   <tr>
     <td><table width="100%" border="0" cellspacing="0" cellpadding="2">

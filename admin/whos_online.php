@@ -81,11 +81,11 @@
              s.romaji
       from " . TABLE_WHOS_ONLINE . " w, ".TABLE_SITES." s
       where s.id = w.site_id
-        " . (isset($HTTP_GET_VARS['site_id']) && intval($HTTP_GET_VARS['site_id']) ? " and s.id = '" . intval($HTTP_GET_VARS['site_id']) . "' " : '') . "
+        " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and s.id = '" . intval($_GET['site_id']) . "' " : '') . "
       ");
   while ($whos_online = tep_db_fetch_array($whos_online_query)) {
     $time_online = (time() - $whos_online['time_entry']);
-    if ( ((!isset($HTTP_GET_VARS['info']) || !$HTTP_GET_VARS['info']) || ($HTTP_GET_VARS['info'] == $whos_online['session_id'])) && (!isset($info) || !$info) ) {
+    if ( ((!isset($_GET['info']) || !$_GET['info']) || ($_GET['info'] == $whos_online['session_id'])) && (!isset($info) || !$info) ) {
       $info = $whos_online['session_id'];
     }
     if ($whos_online['session_id'] == $info) {

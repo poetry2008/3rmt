@@ -122,9 +122,9 @@
     }
 
     function pre_confirmation_check() {
-      global $HTTP_POST_VARS;
+      global $_POST;
 	  
-	  if($HTTP_POST_VARS['convenience_store_zip_code'] == "" || $HTTP_POST_VARS['convenience_store_address1'] == "" || $HTTP_POST_VARS['convenience_store_l_name'] == "" || $HTTP_POST_VARS['convenience_store_f_name'] == "" || $HTTP_POST_VARS['convenience_store_tel'] == ""){
+	  if($_POST['convenience_store_zip_code'] == "" || $_POST['convenience_store_address1'] == "" || $_POST['convenience_store_l_name'] == "" || $_POST['convenience_store_f_name'] == "" || $_POST['convenience_store_tel'] == ""){
 	    $payment_error_return = 'payment_error=' . $this->code ;
         tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return, 'SSL', true, false));
 	  }else{
@@ -134,12 +134,12 @@
 
     function confirmation() {
       global $currencies;
-      global $HTTP_POST_VARS;
+      global $_POST;
 
-      $s_result = !$HTTP_POST_VARS['codt_fee_error'];
+      $s_result = !$_POST['codt_fee_error'];
       $s_message = $s_result
-        ? (MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FEE . '&nbsp;' . $currencies->format($HTTP_POST_VARS['codt_fee']))
-        : ('<font color="#FF0000">' . $HTTP_POST_VARS['codt_fee_error'] . '</font>');
+        ? (MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FEE . '&nbsp;' . $currencies->format($_POST['codt_fee']))
+        : ('<font color="#FF0000">' . $_POST['codt_fee_error'] . '</font>');
 
       $confirmation = array(
           'title' => $this->title,
@@ -147,15 +147,15 @@
                                   'field' => ''),
                             array('title' => $s_message,
                                   'field' => ''),
-							array('title' => MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ZIP_CODE . $HTTP_POST_VARS['convenience_store_zip_code'],
+							array('title' => MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ZIP_CODE . $_POST['convenience_store_zip_code'],
                                   'field' => ''),
-							array('title' => MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ADDRESS . $HTTP_POST_VARS['convenience_store_address1'] . "&nbsp;" . $HTTP_POST_VARS['convenience_store_address2'],
+							array('title' => MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ADDRESS . $_POST['convenience_store_address1'] . "&nbsp;" . $_POST['convenience_store_address2'],
                                   'field' => ''),
-							array('title' => MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_L_NAME . $HTTP_POST_VARS['convenience_store_l_name'],
+							array('title' => MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_L_NAME . $_POST['convenience_store_l_name'],
                                   'field' => ''),
-							array('title' => MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_F_NAME . $HTTP_POST_VARS['convenience_store_f_name'],
+							array('title' => MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_F_NAME . $_POST['convenience_store_f_name'],
                                   'field' => ''),
-							array('title' => MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_TEL . $HTTP_POST_VARS['convenience_store_tel'],
+							array('title' => MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_TEL . $_POST['convenience_store_tel'],
                                   'field' => ''),
                            )
       );
@@ -165,16 +165,16 @@
 
     function process_button() {
       global $currencies;
-      global $HTTP_POST_VARS;
+      global $_POST;
       global $order, $point;
 
       // 追加 - 2007.01.05 ----------------------------------------------
       $total = $order->info['total'];
       if ((MODULE_ORDER_TOTAL_CODT_STATUS == 'true')
           && ($payment == 'cod_table')
-          && isset($HTTP_POST_VARS['codt_fee'])
-          && (0 < intval($HTTP_POST_VARS['codt_fee']))) {
-        $total += intval($HTTP_POST_VARS['codt_fee']);
+          && isset($_POST['codt_fee'])
+          && (0 < intval($_POST['codt_fee']))) {
+        $total += intval($_POST['codt_fee']);
       }
 	  
 	  //Add point
@@ -184,31 +184,31 @@
       }	  
 	  
 	  if(MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'convenience_store')) {
-        $total += intval($HTTP_POST_VARS['codt_fee']);
+        $total += intval($_POST['codt_fee']);
 	  }
       // 追加 - 2007.01.05 ----------------------------------------------
 	  
       // email_footer に使用する文字列
-      $s_message = $HTTP_POST_VARS['codt_fee_error']
-        ? $HTTP_POST_VARS['codt_fee_error']
+      $s_message = $_POST['codt_fee_error']
+        ? $_POST['codt_fee_error']
         : sprintf(MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_MAILFOOTER,
             $currencies->format($total),
-            $currencies->format($HTTP_POST_VARS['codt_fee']));
+            $currencies->format($_POST['codt_fee']));
 
 	  return tep_draw_hidden_field('codt_message', $s_message)
-           . tep_draw_hidden_field('codt_fee',$HTTP_POST_VARS['codt_fee']) // for ot_codt
-		   . tep_draw_hidden_field('convenience_store_zip_code',$HTTP_POST_VARS['convenience_store_zip_code'])
-		   . tep_draw_hidden_field('convenience_store_address1',$HTTP_POST_VARS['convenience_store_address1'])
-		   . tep_draw_hidden_field('convenience_store_address2',$HTTP_POST_VARS['convenience_store_address2'])
-		   . tep_draw_hidden_field('convenience_store_l_name',$HTTP_POST_VARS['convenience_store_l_name'])
-		   . tep_draw_hidden_field('convenience_store_f_name',$HTTP_POST_VARS['convenience_store_f_name'])
-		   . tep_draw_hidden_field('convenience_store_tel',$HTTP_POST_VARS['convenience_store_tel']);
+           . tep_draw_hidden_field('codt_fee',$_POST['codt_fee']) // for ot_codt
+		   . tep_draw_hidden_field('convenience_store_zip_code',$_POST['convenience_store_zip_code'])
+		   . tep_draw_hidden_field('convenience_store_address1',$_POST['convenience_store_address1'])
+		   . tep_draw_hidden_field('convenience_store_address2',$_POST['convenience_store_address2'])
+		   . tep_draw_hidden_field('convenience_store_l_name',$_POST['convenience_store_l_name'])
+		   . tep_draw_hidden_field('convenience_store_f_name',$_POST['convenience_store_f_name'])
+		   . tep_draw_hidden_field('convenience_store_tel',$_POST['convenience_store_tel']);
     }
 
     function before_process() {
-      global $HTTP_POST_VARS;
+      global $_POST;
 
-      $this->email_footer = $HTTP_POST_VARS['codt_message'];
+      $this->email_footer = $_POST['codt_message'];
     }
 
     function after_process() {
@@ -216,9 +216,9 @@
     }
 
     function get_error() {
-      global $HTTP_POST_VARS,$HTTP_GET_VARS;
+      global $_POST,$_GET;
 
-      if (isset($HTTP_GET_VARS['payment_error']) && (strlen($HTTP_GET_VARS['payment_error']) > 0)) {
+      if (isset($_GET['payment_error']) && (strlen($_GET['payment_error']) > 0)) {
         $error_message = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE;
         
 		return array('title' => 'コンビニ決済 エラー!',

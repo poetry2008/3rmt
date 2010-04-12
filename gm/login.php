@@ -12,26 +12,26 @@
 
   require('includes/application_top.php');
 
-if(isset($HTTP_POST_VARS['login_type']) && $HTTP_POST_VARS['login_type'] == 'new') {
-  tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT,'email_address='.$HTTP_POST_VARS['email_address']));
+if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
+  tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT,'email_address='.$_POST['email_address']));
 }else{ 
 
-  if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'process')) {
+  if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
     // tamura 2002/12/30 「全角」英数字を「半角」に変換
-    $HTTP_POST_VARS['email_address'] = tep_an_zen_to_han($HTTP_POST_VARS['email_address']);
+    $_POST['email_address'] = tep_an_zen_to_han($_POST['email_address']);
 
-    $email_address = tep_db_prepare_input($HTTP_POST_VARS['email_address']);
-    $password = tep_db_prepare_input($HTTP_POST_VARS['password']);
+    $email_address = tep_db_prepare_input($_POST['email_address']);
+    $password = tep_db_prepare_input($_POST['password']);
 
 // Check if email exists
     $check_customer_query = tep_db_query("select customers_id, customers_firstname, customers_lastname, customers_password, customers_email_address, customers_default_address_id, customers_guest_chk from " . TABLE_CUSTOMERS .  " where customers_email_address = '" . tep_db_input($email_address) . "' and site_id = '".SITE_ID."'");
     if (!tep_db_num_rows($check_customer_query)) {
-      $HTTP_GET_VARS['login'] = 'fail';
+      $_GET['login'] = 'fail';
     } else {
       $check_customer = tep_db_fetch_array($check_customer_query);
 // Check that password is good
       if (!tep_validate_password($password, $check_customer['customers_password'])) {
-        $HTTP_GET_VARS['login'] = 'fail';
+        $_GET['login'] = 'fail';
       } else {
         if (SESSION_RECREATE == 'True') { // 2004/04/25 Add session management
           tep_session_recreate();
@@ -124,7 +124,7 @@ function session_win() {
       <table class="box_des" width="95%" border="0" align="center" cellpadding="0" cellspacing="0">
 
         <?php
-  if (isset($HTTP_GET_VARS['login']) && ($HTTP_GET_VARS['login'] == 'fail')) {
+  if (isset($_GET['login']) && ($_GET['login'] == 'fail')) {
     $info_message = TEXT_LOGIN_ERROR;
   } elseif ($cart->count_contents()) {
     $info_message = TEXT_VISITORS_CART;

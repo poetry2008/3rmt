@@ -23,16 +23,16 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
 			<!-- body_text //-->
 			<td id="contents" valign="top">
 				<h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
-<?php if ($HTTP_POST_VARS) {
+<?php if ($_POST) {
   include(DIR_WS_CLASSES . 'admin_order.php');
 
-  if(isset($HTTP_POST_VARS['order_id'])){
-  	$oID    = tep_db_prepare_input($HTTP_POST_VARS['order_id']);
+  if(isset($_POST['order_id'])){
+  	$oID    = tep_db_prepare_input($_POST['order_id']);
   } else {
-  	$oID    = tep_db_prepare_input($HTTP_POST_VARS['order_id_1']).'-'.tep_db_prepare_input($HTTP_POST_VARS['order_id_2']);
+  	$oID    = tep_db_prepare_input($_POST['order_id_1']).'-'.tep_db_prepare_input($_POST['order_id_2']);
   }
   
-  $cEmail = tep_db_prepare_input($HTTP_POST_VARS['email']);
+  $cEmail = tep_db_prepare_input($_POST['email']);
   
   $o      = new order($oID);
   // ccdd
@@ -46,12 +46,12 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
 
 
   if ($order) {
-    if (isset($HTTP_POST_VARS['hour'])){
-      $date   = tep_db_prepare_input($HTTP_POST_VARS['date']);
-      $hour   = tep_db_prepare_input($HTTP_POST_VARS['hour']);
-      $minute = tep_db_prepare_input($HTTP_POST_VARS['minute']);
+    if (isset($_POST['hour'])){
+      $date   = tep_db_prepare_input($_POST['date']);
+      $hour   = tep_db_prepare_input($_POST['hour']);
+      $minute = tep_db_prepare_input($_POST['minute']);
       
-      $comment = tep_db_prepare_input($HTTP_POST_VARS['comment']);
+      $comment = tep_db_prepare_input($_POST['comment']);
 
       $datetime = $date.' '.$hour.':'.$minute;
       $time     = strtotime($datetime);
@@ -96,8 +96,8 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
         }
 
         // update character
-        if (isset($HTTP_POST_VARS['character']) && is_array($HTTP_POST_VARS['character'])){
-          foreach(tep_db_prepare_input($HTTP_POST_VARS['character']) as $pid=>$character){
+        if (isset($_POST['character']) && is_array($_POST['character'])){
+          foreach(tep_db_prepare_input($_POST['character']) as $pid=>$character){
             // ccdd
             tep_db_query("
                 update `".TABLE_ORDERS_PRODUCTS."` 
@@ -112,7 +112,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
           foreach($o->products as $p){
             if(isset($p['attributes']) && $p['attributes']){
               foreach($p['attributes'] as $a) {
-                if(isset($HTTP_POST_VARS['id'][$p['id']])) {
+                if(isset($_POST['id'][$p['id']])) {
                   // old attribute
                   // ccdd
                   $attributes = tep_db_fetch_array(tep_db_query("
@@ -120,7 +120,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
                         from `".TABLE_PRODUCTS_ATTRIBUTES."` 
                         where `products_attributes_id`='".$a['attributes_id']."'
                   "));
-                  if(isset($HTTP_POST_VARS['id'][(int)$p['id']][(int)$attributes['options_id']]) && $HTTP_POST_VARS['id'][(int)$p['id']][(int)$attributes['options_id']]){
+                  if(isset($_POST['id'][(int)$p['id']][(int)$attributes['options_id']]) && $_POST['id'][(int)$p['id']][(int)$attributes['options_id']]){
                     // new option
                     // ccdd
                     $option = tep_db_fetch_array(tep_db_query("
@@ -135,14 +135,14 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
                           from `".TABLE_PRODUCTS_ATTRIBUTES."` 
                           where `products_id`='".$p['id']."' 
                             and `options_id`='".$attributes['options_id']."' 
-                            and `options_values_id`='".$HTTP_POST_VARS['id'][(int)$p['id']][(int)$attributes['options_id']]."'
+                            and `options_values_id`='".$_POST['id'][(int)$p['id']][(int)$attributes['options_id']]."'
                     "));
                     // new option value
                     // ccdd
                     $value = tep_db_fetch_array(tep_db_query("
                           select * 
                           from `".TABLE_PRODUCTS_OPTIONS_VALUES."` 
-                          where `products_options_values_id`='".$HTTP_POST_VARS['id'][(int)$p['id']][(int)$attributes['options_id']]."'
+                          where `products_options_values_id`='".$_POST['id'][(int)$p['id']][(int)$attributes['options_id']]."'
                     "));
                     // execute update`
                     // ccdd
@@ -197,12 +197,12 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
     $convenience_sid = str_replace('-', "", $insert_id);
 	
     $pay_comments = '取引コード' . $convenience_sid ."\n";
-	$pay_comments .= '郵便番号:' . $HTTP_POST_VARS['convenience_store_zip_code'] ."\n";
-	$pay_comments .= '住所1:' . $HTTP_POST_VARS['convenience_store_address1'] ."\n";
-	$pay_comments .= '住所2:' . $HTTP_POST_VARS['convenience_store_address2'] ."\n";
-	$pay_comments .= '氏:' . $HTTP_POST_VARS['convenience_store_l_name'] ."\n";
-	$pay_comments .= '名:' . $HTTP_POST_VARS['convenience_store_f_name'] ."\n";
-	$pay_comments .= '電話番号:' . $HTTP_POST_VARS['convenience_store_tel'] ."\n";
+	$pay_comments .= '郵便番号:' . $_POST['convenience_store_zip_code'] ."\n";
+	$pay_comments .= '住所1:' . $_POST['convenience_store_address1'] ."\n";
+	$pay_comments .= '住所2:' . $_POST['convenience_store_address2'] ."\n";
+	$pay_comments .= '氏:' . $_POST['convenience_store_l_name'] ."\n";
+	$pay_comments .= '名:' . $_POST['convenience_store_f_name'] ."\n";
+	$pay_comments .= '電話番号:' . $_POST['convenience_store_tel'] ."\n";
 	$pay_comments .= '接続URL:' . tep_href_link('convenience_store_chk.php', 'sid=' . $convenience_sid, 'SSL');
 	
 	$comments = $pay_comments ."\n".$comments;
@@ -331,7 +331,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
     tep_db_query("
         update " . TABLE_PRODUCTS_DESCRIPTION . " 
         set products_viewed = products_viewed+1 
-        where products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' 
+        where products_id = '" . (int)$_GET['products_id'] . "' 
           and site_id = '" . SITE_ID . "' 
           and language_id = '" . $languages_id . "'
     ");

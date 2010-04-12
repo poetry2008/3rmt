@@ -11,7 +11,7 @@
   $latest_news_query = tep_db_query('
       SELECT * 
       from ' . TABLE_LATEST_NEWS . ' 
-      WHERE news_id = ' . $HTTP_GET_VARS['nID'] . ' 
+      WHERE news_id = ' . $_GET['nID'] . ' 
       and site_id = '.SITE_ID
   );
   $latest_news = tep_db_fetch_array($latest_news_query);

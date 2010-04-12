@@ -29,10 +29,10 @@ require('includes/application_top.php');
   }
 
 //登録処理
-  if(isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'insert'){
+  if(isset($_GET['action']) && $_GET['action'] == 'insert'){
 
-    $site_id  = tep_db_prepare_input($HTTP_POST_VARS['site_id']);
-    $ins_title = tep_db_prepare_input($HTTP_POST_VARS['title']);
+    $site_id  = tep_db_prepare_input($_POST['site_id']);
+    $ins_title = tep_db_prepare_input($_POST['title']);
 
     if($_FILES['file']['tmp_name'] != ""){
       $filepath = tep_get_upload_dir($site_id) ."present/"."image".".".date("YmdHis").".".GetExt($_FILES['file']['name']);
@@ -42,10 +42,10 @@ require('includes/application_top.php');
       $filepath2 = "";
     }
 
-    $ins_ht   = tep_db_prepare_input($HTTP_POST_VARS['ht']);
-    $ins_text = addslashes($HTTP_POST_VARS['text']);
-    $ins_period1 = tep_db_prepare_input($HTTP_POST_VARS['start_y']).tep_db_prepare_input($HTTP_POST_VARS['start_m']).tep_db_prepare_input($HTTP_POST_VARS['start_d']);
-    $ins_period2 = tep_db_prepare_input($HTTP_POST_VARS['limit_y']).tep_db_prepare_input($HTTP_POST_VARS['limit_m']).tep_db_prepare_input($HTTP_POST_VARS['limit_d']);
+    $ins_ht   = tep_db_prepare_input($_POST['ht']);
+    $ins_text = addslashes($_POST['text']);
+    $ins_period1 = tep_db_prepare_input($_POST['start_y']).tep_db_prepare_input($_POST['start_m']).tep_db_prepare_input($_POST['start_d']);
+    $ins_period2 = tep_db_prepare_input($_POST['limit_y']).tep_db_prepare_input($_POST['limit_m']).tep_db_prepare_input($_POST['limit_d']);
 
     $ins = "insert into ".TABLE_PRESENT_GOODS."(
               title, 
@@ -72,11 +72,11 @@ require('includes/application_top.php');
   }
 
 //更新処理
-  if(isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'update'){
-    $up_id = tep_db_prepare_input($HTTP_GET_VARS['cID']);
-    $up_ht = tep_db_prepare_input($HTTP_POST_VARS['ht']);
-    $up_title = tep_db_prepare_input($HTTP_POST_VARS['title']);
-    $present = tep_get_present_by_id($HTTP_GET_VARS['cID']);
+  if(isset($_GET['action']) && $_GET['action'] == 'update'){
+    $up_id = tep_db_prepare_input($_GET['cID']);
+    $up_ht = tep_db_prepare_input($_POST['ht']);
+    $up_title = tep_db_prepare_input($_POST['title']);
+    $present = tep_get_present_by_id($_GET['cID']);
 
     if($_FILES['file']['tmp_name'] != ""){
       $filepath = tep_get_upload_dir($present['site_id'])."present/"."image".".".date("YmdHis").".".GetExt($_FILES['file']['name']);
@@ -86,9 +86,9 @@ require('includes/application_top.php');
       $filepath2 = "";
     }
 
-    $up_text = addslashes($HTTP_POST_VARS['text']);
-    $up_period1 = tep_db_prepare_input($HTTP_POST_VARS['start_y']).tep_db_prepare_input($HTTP_POST_VARS['start_m']).tep_db_prepare_input($HTTP_POST_VARS['start_d']);
-    $up_period2 = tep_db_prepare_input($HTTP_POST_VARS['limit_y']).tep_db_prepare_input($HTTP_POST_VARS['limit_m']).tep_db_prepare_input($HTTP_POST_VARS['limit_d']);
+    $up_text = addslashes($_POST['text']);
+    $up_period1 = tep_db_prepare_input($_POST['start_y']).tep_db_prepare_input($_POST['start_m']).tep_db_prepare_input($_POST['start_d']);
+    $up_period2 = tep_db_prepare_input($_POST['limit_y']).tep_db_prepare_input($_POST['limit_m']).tep_db_prepare_input($_POST['limit_d']);
 
       if($filepath2 == ""){
 	    $up = "update ".TABLE_PRESENT_GOODS." set title='".$up_title."', html_check='".$up_ht."', text='".$up_text."',start_date='".$up_period1."',limit_date='".$up_period2."' where goods_id='".$up_id."'";
@@ -102,8 +102,8 @@ require('includes/application_top.php');
   }
 
 //削除処理
-  if(isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'delete'){
-    $dele_id = tep_db_prepare_input($HTTP_GET_VARS['cID']);
+  if(isset($_GET['action']) && $_GET['action'] == 'delete'){
+    $dele_id = tep_db_prepare_input($_GET['cID']);
 
     $dele = "delete from ".TABLE_PRESENT_GOODS." where goods_id = '".$dele_id."'";
     $mess = mysql_query($dele) or die("データ追加エラー");
@@ -178,7 +178,7 @@ function msg2(){
         <tr>
           <td><!-- insert -->
             <?php
-switch(isset($HTTP_GET_VARS['action'])?$HTTP_GET_VARS['action']:''){
+switch(isset($_GET['action'])?$_GET['action']:''){
 case 'input' :
 ?>
             <form onSubmit="return msg()" name="apply" action="present.php?action=insert" method="post" enctype="multipart/form-data">
@@ -331,7 +331,7 @@ case 'input' :
             <?php
 break;
 case 'view' :
-$sele1_id = (int)$HTTP_GET_VARS['cID'];
+$sele1_id = (int)$_GET['cID'];
 $sele1 = tep_db_query("
     select g.goods_id,
            g.html_check,
@@ -528,7 +528,7 @@ $sele_lid = substr($sql1['limit_date'],8,2);
             <?php
 break;
 case 'listview' :
-$lv_id = tep_db_prepare_input($HTTP_GET_VARS['list_id']);
+$lv_id = tep_db_prepare_input($_GET['list_id']);
 $sele2 = tep_db_query("
     select * 
     from ".TABLE_PRESENT_APPLICANT." 
@@ -590,7 +590,7 @@ $sql2 = tep_db_fetch_array($sele2);
             <?php
 break;
 case 'list' :
-$c_id = tep_db_prepare_input($HTTP_GET_VARS['cID']);
+$c_id = tep_db_prepare_input($_GET['cID']);
 ?>
         <tr>
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -633,13 +633,13 @@ $c_id = tep_db_prepare_input($HTTP_GET_VARS['cID']);
         and g.goods_id = p.goods_id
         and s.id = g.site_id
       order by id";
-		$list_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $list_query_raw, $list_query_numrows);
+		$list_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $list_query_raw, $list_query_numrows);
 		$list_query = tep_db_query($list_query_raw);
 		while ($list = tep_db_fetch_array($list_query)) {
 		  $count++;
-		  if ( ((isset($HTTP_GET_VARS['list_id']) && $list['id'] == $HTTP_GET_VARS['list_id']) || ((!isset($HTTP_GET_VARS['list_id']) || !$HTTP_GET_VARS['list_id']) && $count == 1)) ) {
+		  if ( ((isset($_GET['list_id']) && $list['id'] == $_GET['list_id']) || ((!isset($_GET['list_id']) || !$_GET['list_id']) && $count == 1)) ) {
 			echo '          <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('list_id', 'action')) . 'list_id=' . $list['id'] . '&action=listview') . '\'">' . "\n";
-			if(!isset($HTTP_GET_VARS['list_id']) || !$HTTP_GET_VARS['list_id']) {
+			if(!isset($_GET['list_id']) || !$_GET['list_id']) {
 
 			  $list_id = $list['id'];
 			}
@@ -660,8 +660,8 @@ $c_id = tep_db_prepare_input($HTTP_GET_VARS['cID']);
                     <tr>
                       <td colspan="4"><table border="0" width="100%" cellspacing="0" cellpadding="2">
                           <tr>
-                            <td class="smallText" valign="top"><?php echo $list_split->display_count($list_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $HTTP_GET_VARS['page'], TEXT_DISPLAY_NUMBER_OF_CONTENS); ?></td>
-                            <td class="smallText" align="right"><?php echo $list_split->display_links($list_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
+                            <td class="smallText" valign="top"><?php echo $list_split->display_count($list_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CONTENS); ?></td>
+                            <td class="smallText" align="right"><?php echo $list_split->display_links($list_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
                           </tr>
                         </table></td>
                     </tr>
@@ -680,7 +680,7 @@ $c_id = tep_db_prepare_input($HTTP_GET_VARS['cID']);
 					
 				  $heading = array();
 				  $present = array();
-				  switch ($HTTP_GET_VARS['action']) {
+				  switch ($_GET['action']) {
 					default:
 					  if (isset($list_id) && $list_id && tep_not_null($list_id)) {
 						$heading[] = array('text' => '<b>' . $c_title . '</b>');
@@ -739,17 +739,17 @@ default:
              s.romaji
       from ".TABLE_PRESENT_GOODS." g , ".TABLE_SITES." s
       where s.id = g.site_id
-        " . (isset($HTTP_GET_VARS['site_id']) && intval($HTTP_GET_VARS['site_id']) ? " and s.id = '" . intval($HTTP_GET_VARS['site_id']) . "' " : '') . "
+        " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and s.id = '" . intval($_GET['site_id']) . "' " : '') . "
       order by goods_id";
-    $present_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $present_query_raw, $present_query_numrows);
+    $present_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $present_query_raw, $present_query_numrows);
     $present_query = tep_db_query($present_query_raw);
     while ($present = tep_db_fetch_array($present_query)) {
 
       $count++;
-      if ( ((isset($cID) && $present['goods_id'] == $cID) || ((!isset($HTTP_GET_VARS['cID']) || !$HTTP_GET_VARS['cID']) && $count == 1)) ) {
+      if ( ((isset($cID) && $present['goods_id'] == $cID) || ((!isset($_GET['cID']) || !$_GET['cID']) && $count == 1)) ) {
         echo '          <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $present['goods_id'] . '&action=view') . '\'">' . "\n";
         
-        if(!isset($HTTP_GET_VARS['cID']) || !$HTTP_GET_VARS['cID']) {
+        if(!isset($_GET['cID']) || !$_GET['cID']) {
           $cID = $present['goods_id'];
         }
       } else {
@@ -776,8 +776,8 @@ default:
                           <tr>
                             <td colspan="4"><table border="0" width="100%" cellspacing="0" cellpadding="2">
                                 <tr>
-                                  <td class="smallText" valign="top"><?php echo $present_split->display_count($present_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $HTTP_GET_VARS['page'], TEXT_DISPLAY_NUMBER_OF_CONTENS); ?></td>
-                                  <td class="smallText" align="right"><?php echo $present_split->display_links($present_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'cID'))); ?></td>
+                                  <td class="smallText" valign="top"><?php echo $present_split->display_count($present_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CONTENS); ?></td>
+                                  <td class="smallText" align="right"><?php echo $present_split->display_links($present_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'cID'))); ?></td>
                                 </tr>
                               </table></td>
                           </tr>
@@ -796,7 +796,7 @@ default:
 					
 				  $heading = array();
 				  $present = array();
-				  switch (isset($HTTP_GET_VARS['action'])?$HTTP_GET_VARS['action']:'') {
+				  switch (isset($_GET['action'])?$_GET['action']:'') {
 					case 'deleform':
 					  $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_PRESENT . '</b>');
 				

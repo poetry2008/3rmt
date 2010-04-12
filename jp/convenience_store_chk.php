@@ -6,11 +6,11 @@
 
   include('includes/application_top.php');
   
-  if($HTTP_GET_VARS['sid'] != ""){
+  if($_GET['sid'] != ""){
     #基本情報
 	$ip = MODULE_PAYMENT_CONVENIENCE_STORE_IP;
-	$sid = $HTTP_GET_VARS['sid'];
-	$oid = substr($HTTP_GET_VARS['sid'],0,8) . '-' . substr($HTTP_GET_VARS['sid'],8,8);
+	$sid = $_GET['sid'];
+	$oid = substr($_GET['sid'],0,8) . '-' . substr($_GET['sid'],8,8);
 //todo :此处应加一个过滤，是否oid存在且是本站的	
 	#DB取得情報
 //ccdd

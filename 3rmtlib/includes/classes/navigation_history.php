@@ -23,7 +23,7 @@
     }
 
     function add_current_page() {
-      global $PHP_SELF, $HTTP_GET_VARS, $HTTP_POST_VARS, $HTTP_SERVER_VARS, $cPath;
+      global $PHP_SELF, $_GET, $_POST, $_SERVER, $cPath;
 
       $set = 'true';
       for ($i=0, $n=sizeof($this->path); $i<$n; $i++) {
@@ -59,9 +59,9 @@
 
       if ($set == 'true') {
         $this->path[] = array('page' => basename($PHP_SELF),
-                              'mode' => (isset($HTTP_SERVER_VARS['HTTPS'])?(($HTTP_SERVER_VARS['HTTPS'] == 'on') ? 'SSL' : 'NONSSL'):'NONSSL'),
-                              'get' => $HTTP_GET_VARS,
-                              'post' => $HTTP_POST_VARS);
+                              'mode' => (isset($_SERVER['HTTPS'])?(($_SERVER['HTTPS'] == 'on') ? 'SSL' : 'NONSSL'):'NONSSL'),
+                              'get' => $_GET,
+                              'post' => $_POST);
       }
     }
 
@@ -75,7 +75,7 @@
     }
 
     function set_snapshot($page = '') {
-      global $PHP_SELF, $HTTP_GET_VARS, $HTTP_POST_VARS, $HTTP_SERVER_VARS;
+      global $PHP_SELF, $_GET, $_POST, $_SERVER;
 
       if (is_array($page)) {
         $this->snapshot = array('page' => $page['page'],
@@ -84,9 +84,9 @@
                                 'post' => $page['post']);
       } else {
         $this->snapshot = array('page' => basename($PHP_SELF),
-                                'mode' => (($HTTP_SERVER_VARS['HTTPS'] == 'on') ? 'SSL' : 'NONSSL'),
-                                'get' => $HTTP_GET_VARS,
-                                'post' => $HTTP_POST_VARS);
+                                'mode' => (($_SERVER['HTTPS'] == 'on') ? 'SSL' : 'NONSSL'),
+                                'get' => $_GET,
+                                'post' => $_POST);
       }
     }
 

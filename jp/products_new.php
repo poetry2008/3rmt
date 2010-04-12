@@ -52,7 +52,7 @@ group by products_id
 order by products_date_added DESC, products_name
   ";
 
-  $products_new_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_PRODUCTS_NEW, $products_new_query_raw, $products_new_numrows);
+  $products_new_split = new splitPageResults($_GET['page'], MAX_DISPLAY_PRODUCTS_NEW, $products_new_query_raw, $products_new_numrows);
 
   // ccdd
   $products_new_query = tep_db_query($products_new_query_raw);
@@ -77,8 +77,8 @@ order by products_date_added DESC, products_name
       <tr>
         <td><br><table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
-            <td class="smallText"><?php echo $products_new_split->display_count($products_new_numrows, MAX_DISPLAY_PRODUCTS_NEW, $HTTP_GET_VARS['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS_NEW); ?></td>
-            <td class="smallText" align="right"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $products_new_split->display_links($products_new_numrows, MAX_DISPLAY_PRODUCTS_NEW, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
+            <td class="smallText"><?php echo $products_new_split->display_count($products_new_numrows, MAX_DISPLAY_PRODUCTS_NEW, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS_NEW); ?></td>
+            <td class="smallText" align="right"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $products_new_split->display_links($products_new_numrows, MAX_DISPLAY_PRODUCTS_NEW, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
           </tr>
         </table></td>
       </tr>

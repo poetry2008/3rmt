@@ -12,7 +12,7 @@
       select pd.products_name, 
              p.products_image 
       from " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
-      where p.products_id  = '" . (int)$HTTP_GET_VARS['products_id'] . "' 
+      where p.products_id  = '" . (int)$_GET['products_id'] . "' 
         and pd.products_id = p.products_id 
         and pd.language_id = '" . $languages_id . "' 
         and (pd.site_id = '0' or pd.site_id = '".SITE_ID."')
@@ -22,7 +22,7 @@
   //forward 404
   //forward404Unless($valid_product);
 
-  if (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'process') {
+  if (isset($_GET['action']) && $_GET['action'] == 'process') {
     if ($valid_product == true) { // We got to the process but it is an illegal product, don't write
       // ccdd
       $customer = tep_db_query("
@@ -34,8 +34,8 @@
       ");
       $customer_values = tep_db_fetch_array($customer);
       $date_now = date('Ymd');
-	  if($HTTP_POST_VARS['reviews_name'] && tep_not_null($HTTP_POST_VARS['reviews_name'])) {
-	    $reviews_name = $HTTP_POST_VARS['reviews_name'];
+	  if($_POST['reviews_name'] && tep_not_null($_POST['reviews_name'])) {
+	    $reviews_name = $_POST['reviews_name'];
 	  } else {
       require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRODUCT_REVIEWS_WRITE);
       $reviews_name = REVIEWS_NO_NAMES;
@@ -51,10 +51,10 @@
             reviews_status, 
             site_id
           ) values (
-            '" . $HTTP_GET_VARS['products_id'] . "', 
+            '" . $_GET['products_id'] . "', 
             '" . $customer_id . "', 
             '" . addslashes($reviews_name) . "', 
-            '" . $HTTP_POST_VARS['rating'] . "', 
+            '" . $_POST['rating'] . "', 
             now(), 
             '0', 
             '".SITE_ID."'
@@ -69,15 +69,15 @@
           ) values (
             '" . $insert_id . "', 
             '" . $languages_id . "', 
-            '" . $HTTP_POST_VARS['review'] . "'
+            '" . $_POST['review'] . "'
           )
       ");
     }
 
-    tep_redirect(tep_href_link(FILENAME_PRODUCT_INFO, $HTTP_POST_VARS['get_params']));
+    tep_redirect(tep_href_link(FILENAME_PRODUCT_INFO, $_POST['get_params']));
   }
 
-// lets retrieve all $HTTP_GET_VARS keys and values..
+// lets retrieve all $_GET keys and values..
   $get_params      = tep_get_all_get_params();
   $get_params_back = tep_get_all_get_params(array('reviews_id')); // for back button
   $get_params      = substr($get_params, 0, -1); //remove trailing &
@@ -148,7 +148,7 @@ function checkForm() {
   } else {
     $product_info = tep_db_fetch_array($product_query);
 ?> 
-      <div><?php echo tep_draw_form('product_reviews_write', tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE, 'action=process&products_id=' . $HTTP_GET_VARS['products_id']), 'post', 'onSubmit="return checkForm();"'); ?> 
+      <div><?php echo tep_draw_form('product_reviews_write', tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE, 'action=process&products_id=' . $_GET['products_id']), 'post', 'onSubmit="return checkForm();"'); ?> 
         <table width="100%" cellpadding="0" cellspacing="0" border="0"> 
           <tr> 
             <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 

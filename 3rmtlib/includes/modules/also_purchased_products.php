@@ -4,15 +4,15 @@
 
 */
 
-  if (isset($HTTP_GET_VARS['products_id'])) {
+  if (isset($_GET['products_id'])) {
     // ccdd
     $orders_query = tep_db_query("
         select p.products_id, 
                p.products_image 
         from " .  TABLE_ORDERS_PRODUCTS . " opa, " . TABLE_ORDERS_PRODUCTS . " opb, " .  TABLE_ORDERS . " o, " . TABLE_PRODUCTS . " p 
-        where opa.products_id = '" .  (int)$HTTP_GET_VARS['products_id'] . "' 
+        where opa.products_id = '" .  (int)$_GET['products_id'] . "' 
           and opa.orders_id = opb.orders_id 
-          and opb.products_id != '" . (int)$HTTP_GET_VARS['products_id'] . "' 
+          and opb.products_id != '" . (int)$_GET['products_id'] . "' 
           and opb.products_id = p.products_id 
           and opb.orders_id = o.orders_id 
           and p.products_status = '1' 

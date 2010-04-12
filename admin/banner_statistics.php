@@ -28,11 +28,11 @@
     }
   }
 
-  $banner_query = tep_db_query("select banners_title from " . TABLE_BANNERS . " where banners_id = '" . $HTTP_GET_VARS['bID'] . "'");
+  $banner_query = tep_db_query("select banners_title from " . TABLE_BANNERS . " where banners_id = '" . $_GET['bID'] . "'");
   $banner = tep_db_fetch_array($banner_query);
 
   $years_array = array();
-  $years_query = tep_db_query("select distinct year(banners_history_date) as banner_year from " . TABLE_BANNERS_HISTORY . " where banners_id = '" . $HTTP_GET_VARS['bID'] . "'");
+  $years_query = tep_db_query("select distinct year(banners_history_date) as banner_year from " . TABLE_BANNERS_HISTORY . " where banners_id = '" . $_GET['bID'] . "'");
   while ($years = tep_db_fetch_array($years_query)) {
     $years_array[] = array('id' => $years['banner_year'],
                            'text' => $years['banner_year']);
@@ -78,21 +78,21 @@
           <tr><?php echo tep_draw_form('year', FILENAME_BANNER_STATISTICS, '', 'get'); ?>
             <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', '1', HEADING_IMAGE_HEIGHT); ?></td>
-            <td class="main" align="right"><?php echo TITLE_TYPE . ' ' . tep_draw_pull_down_menu('type', $type_array, (($HTTP_GET_VARS['type']) ? $HTTP_GET_VARS['type'] : 'daily'), 'onChange="this.form.submit();"'); ?><noscript><input type="submit" value="GO"></noscript><br>
+            <td class="main" align="right"><?php echo TITLE_TYPE . ' ' . tep_draw_pull_down_menu('type', $type_array, (($_GET['type']) ? $_GET['type'] : 'daily'), 'onChange="this.form.submit();"'); ?><noscript><input type="submit" value="GO"></noscript><br>
 <?php
-  switch ($HTTP_GET_VARS['type']) {
+  switch ($_GET['type']) {
     case 'yearly': break;
     case 'monthly':
-      echo TITLE_YEAR . ' ' . tep_draw_pull_down_menu('year', $years_array, (($HTTP_GET_VARS['year']) ? $HTTP_GET_VARS['year'] : date('Y')), 'onChange="this.form.submit();"') . '<noscript><input type="submit" value="GO"></noscript>';
+      echo TITLE_YEAR . ' ' . tep_draw_pull_down_menu('year', $years_array, (($_GET['year']) ? $_GET['year'] : date('Y')), 'onChange="this.form.submit();"') . '<noscript><input type="submit" value="GO"></noscript>';
       break;
     default:
     case 'daily':
-      echo TITLE_MONTH . ' ' . tep_draw_pull_down_menu('month', $months_array, (($HTTP_GET_VARS['month']) ? $HTTP_GET_VARS['month'] : date('n')), 'onChange="this.form.submit();"') . '<noscript><input type="submit" value="GO"></noscript><br>' . TITLE_YEAR . ' ' . tep_draw_pull_down_menu('year', $years_array, (($HTTP_GET_VARS['year']) ? $HTTP_GET_VARS['year'] : date('Y')), 'onChange="this.form.submit();"') . '<noscript><input type="submit" value="GO"></noscript>';
+      echo TITLE_MONTH . ' ' . tep_draw_pull_down_menu('month', $months_array, (($_GET['month']) ? $_GET['month'] : date('n')), 'onChange="this.form.submit();"') . '<noscript><input type="submit" value="GO"></noscript><br>' . TITLE_YEAR . ' ' . tep_draw_pull_down_menu('year', $years_array, (($_GET['year']) ? $_GET['year'] : date('Y')), 'onChange="this.form.submit();"') . '<noscript><input type="submit" value="GO"></noscript>';
       break;
   }
 ?>
             </td>
-          <?php echo tep_draw_hidden_field('page', $HTTP_GET_VARS['page']) . tep_draw_hidden_field('bID', $HTTP_GET_VARS['bID']); ?></form></tr>
+          <?php echo tep_draw_hidden_field('page', $_GET['page']) . tep_draw_hidden_field('bID', $_GET['bID']); ?></form></tr>
         </table></td>
       </tr>
       <tr>
@@ -102,8 +102,8 @@
         <td align="center">
 <?php
   if ( (function_exists('imagecreate')) && ($dir_ok) && ($banner_extension) ) {
-    $banner_id = $HTTP_GET_VARS['bID'];
-    switch ($HTTP_GET_VARS['type']) {
+    $banner_id = $_GET['bID'];
+    switch ($_GET['type']) {
       case 'yearly':
         include(DIR_WS_INCLUDES . 'graphs/banner_yearly.php');
         echo tep_image(DIR_WS_IMAGES . 'graphs/banner_yearly-' . $banner_id . '.' . $banner_extension);
@@ -138,16 +138,16 @@
 <?php
   } else {
     include(DIR_WS_FUNCTIONS . 'html_graphs.php');
-    switch ($HTTP_GET_VARS['type']) {
+    switch ($_GET['type']) {
       case 'yearly':
-        echo tep_banner_graph_yearly($HTTP_GET_VARS['bID']);
+        echo tep_banner_graph_yearly($_GET['bID']);
         break;
       case 'monthly':
-        echo tep_banner_graph_monthly($HTTP_GET_VARS['bID']);
+        echo tep_banner_graph_monthly($_GET['bID']);
         break;
       default:
       case 'daily':
-        echo tep_banner_graph_daily($HTTP_GET_VARS['bID']);
+        echo tep_banner_graph_daily($_GET['bID']);
         break;
     }
   }
@@ -158,7 +158,7 @@
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>
       <tr>
-        <td class="main" align="right"><?php echo '<a href="' . tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $HTTP_GET_VARS['page'] . '&bID=' . $HTTP_GET_VARS['bID']) . '">' . tep_image_button('button_back.gif', IMAGE_BACK) . '</a>'; ?></td>
+        <td class="main" align="right"><?php echo '<a href="' . tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' . $_GET['bID']) . '">' . tep_image_button('button_back.gif', IMAGE_BACK) . '</a>'; ?></td>
       </tr>
     </table></td>
 <!-- body_text_eof //-->

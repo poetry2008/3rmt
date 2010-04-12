@@ -9,8 +9,8 @@
 
   Released under the GNU General Public License
 */
-if (!isset($HTTP_GET_VARS['origin'])) $HTTP_GET_VARS['origin']=NULL;
-if ($HTTP_GET_VARS['origin'] == FILENAME_CHECKOUT_PAYMENT) {
+if (!isset($_GET['origin'])) $_GET['origin']=NULL;
+if ($_GET['origin'] == FILENAME_CHECKOUT_PAYMENT) {
   define('NAVBAR_TITLE', 'ご注文');
   define('HEADING_TITLE', 'ご注文は簡単');
   define('TEXT_STEP_BY_STEP', '注文手続きを１ステップごとにお手伝いいたします');

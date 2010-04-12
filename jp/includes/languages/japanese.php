@@ -348,8 +348,8 @@ define('TEXT_REQUIRED', '必須');
 define('TEXT_TIME_SPECIFY', 'お届けする時間帯: '); // add for Japanese update
 
 define('ERROR_TEP_MAIL', '<font face="Verdana, Arial" size="2" color="#ff0000"><b><small>エラー:</small> 指定されたSMTP サーバからメールを送信できません。 php.ini のSMTP サーバ設定を確認して、必要があれば修正してください。</b></font>');
-define('WARNING_INSTALL_DIRECTORY_EXISTS', '警告: インストール・ディレクトリ(/install)が存在したままです: ' . dirname($HTTP_SERVER_VARS['SCRIPT_FILENAME']) . '/install. ディレクトリはセキュリティ上の危険がありますので削除してください。');
-define('WARNING_CONFIG_FILE_WRITEABLE', '警告: 設定ファイル(/includes/configure.php)に書き込み権限が設定されたままです: ' . dirname($HTTP_SERVER_VARS['SCRIPT_FILENAME']) . '/includes/configure.php. ファイルのユーザ権限を変更してください。');
+define('WARNING_INSTALL_DIRECTORY_EXISTS', '警告: インストール・ディレクトリ(/install)が存在したままです: ' . dirname($_SERVER['SCRIPT_FILENAME']) . '/install. ディレクトリはセキュリティ上の危険がありますので削除してください。');
+define('WARNING_CONFIG_FILE_WRITEABLE', '警告: 設定ファイル(/includes/configure.php)に書き込み権限が設定されたままです: ' . dirname($_SERVER['SCRIPT_FILENAME']) . '/includes/configure.php. ファイルのユーザ権限を変更してください。');
 define('WARNING_SESSION_DIRECTORY_NON_EXISTENT', '警告: セッション・ディレクトリが存在しません: ' . tep_session_save_path() . '. セッションを利用するためにディレクトリを作成してください。');
 define('WARNING_SESSION_DIRECTORY_NOT_WRITEABLE', '警告: セッション・ディレクトリに書き込みができません: ' . tep_session_save_path() . '. セッション・ディレクトリに正しいユーザ権限を設定してください。');
 define('WARNING_SESSION_AUTO_START', '警告: セッション・オートスタートが有効になっています。設定ファイル（php.ini）で無効に設定し、ウェブサーバをリスタートしてください。');

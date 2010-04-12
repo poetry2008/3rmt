@@ -151,7 +151,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
 
   if($cnt > 0) {
 
-  if (isset($HTTP_GET_VARS['payment_error']) && is_object(${$HTTP_GET_VARS['payment_error']}) && ($error = ${$HTTP_GET_VARS['payment_error']}->get_error())) {
+  if (isset($_GET['payment_error']) && is_object(${$_GET['payment_error']}) && ($error = ${$_GET['payment_error']}->get_error())) {
 ?> 
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="infoBoxNotice"> 
@@ -330,7 +330,7 @@ if (!isset($bank_kamoku)) $bank_kamoku=NULL;
 ?>						  
 <table width="100%" border="0" cellspacing="0" cellpadding="2" class="box_des">
 <?php
-  if (isset($HTTP_GET_VARS['bank_error']) && tep_not_null($HTTP_GET_VARS['bank_error'])) {
+  if (isset($_GET['bank_error']) && tep_not_null($_GET['bank_error'])) {
 ?> 
   <tr>
     <td colspan="3">
@@ -340,7 +340,7 @@ if (!isset($bank_kamoku)) $bank_kamoku=NULL;
 	    <table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des"> 
           <tr> 
             <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-            <td class="main" width="100%" valign="top"><font color="red"><?php echo urldecode($HTTP_GET_VARS['bank_error']); ?></font></td> 
+            <td class="main" width="100%" valign="top"><font color="red"><?php echo urldecode($_GET['bank_error']); ?></font></td> 
             <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
           </tr> 
         </table>

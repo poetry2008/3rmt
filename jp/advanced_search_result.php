@@ -17,19 +17,19 @@
   $error = 0; // reset error flag to false
   $errorno = 0;
 
-  if ( (isset($HTTP_GET_VARS['keywords']) && empty($HTTP_GET_VARS['keywords'])) &&
-       (isset($HTTP_GET_VARS['dfrom']) && (empty($HTTP_GET_VARS['dfrom']) || ($HTTP_GET_VARS['dfrom'] == DOB_FORMAT_STRING))) &&
-       (isset($HTTP_GET_VARS['dto']) && (empty($HTTP_GET_VARS['dto']) || ($HTTP_GET_VARS['dto'] == DOB_FORMAT_STRING))) &&
-       (isset($HTTP_GET_VARS['pfrom']) && empty($HTTP_GET_VARS['pfrom'])) &&
-       (isset($HTTP_GET_VARS['pto']) && empty($HTTP_GET_VARS['pto'])) ) {
+  if ( (isset($_GET['keywords']) && empty($_GET['keywords'])) &&
+       (isset($_GET['dfrom']) && (empty($_GET['dfrom']) || ($_GET['dfrom'] == DOB_FORMAT_STRING))) &&
+       (isset($_GET['dto']) && (empty($_GET['dto']) || ($_GET['dto'] == DOB_FORMAT_STRING))) &&
+       (isset($_GET['pfrom']) && empty($_GET['pfrom'])) &&
+       (isset($_GET['pto']) && empty($_GET['pto'])) ) {
     $errorno += 1;
     $error = 1;
   }
 
-if (!isset($HTTP_GET_VARS['dfrom'])) $HTTP_GET_VARS['dfrom'] = NULL;
-  $dfrom_to_check = (($HTTP_GET_VARS['dfrom'] == DOB_FORMAT_STRING) ? '' : $HTTP_GET_VARS['dfrom']);
-if (!isset($HTTP_GET_VARS['dto'])) $HTTP_GET_VARS['dto'] = NULL;
-  $dto_to_check = (($HTTP_GET_VARS['dto'] == DOB_FORMAT_STRING) ? '' : $HTTP_GET_VARS['dto']);
+if (!isset($_GET['dfrom'])) $_GET['dfrom'] = NULL;
+  $dfrom_to_check = (($_GET['dfrom'] == DOB_FORMAT_STRING) ? '' : $_GET['dfrom']);
+if (!isset($_GET['dto'])) $_GET['dto'] = NULL;
+  $dto_to_check = (($_GET['dto'] == DOB_FORMAT_STRING) ? '' : $_GET['dto']);
 
   if (strlen($dfrom_to_check) > 0) {
     if (!tep_checkdate($dfrom_to_check, DOB_FORMAT_STRING, $dfrom_array)) {
@@ -52,33 +52,33 @@ if (!isset($HTTP_GET_VARS['dto'])) $HTTP_GET_VARS['dto'] = NULL;
     }
   }
 
-if (!isset($HTTP_GET_VARS['pfrom'])) $HTTP_GET_VARS['pfrom'] = NULL;
-  if (strlen($HTTP_GET_VARS['pfrom']) > 0) {
-    $pfrom_to_check = $HTTP_GET_VARS['pfrom'];
+if (!isset($_GET['pfrom'])) $_GET['pfrom'] = NULL;
+  if (strlen($_GET['pfrom']) > 0) {
+    $pfrom_to_check = $_GET['pfrom'];
     if (!settype($pfrom_to_check, "double")) {
       $errorno += 10000;
       $error = 1;
     }
   }
 
-if (!isset($HTTP_GET_VARS['pto'])) $HTTP_GET_VARS['pto'] = NULL;
-  if (strlen($HTTP_GET_VARS['pto']) > 0) {
-    $pto_to_check = $HTTP_GET_VARS['pto'];
+if (!isset($_GET['pto'])) $_GET['pto'] = NULL;
+  if (strlen($_GET['pto']) > 0) {
+    $pto_to_check = $_GET['pto'];
     if (!settype($pto_to_check, "double")) {
       $errorno += 100000;
       $error = 1;
     }
   }
 
-  if (strlen($HTTP_GET_VARS['pfrom']) > 0 && !(($errorno & 10000) == 10000) && strlen($HTTP_GET_VARS['pto']) > 0 && !(($errorno & 100000) == 100000)) {
+  if (strlen($_GET['pfrom']) > 0 && !(($errorno & 10000) == 10000) && strlen($_GET['pto']) > 0 && !(($errorno & 100000) == 100000)) {
     if ($pfrom_to_check > $pto_to_check) {
       $errorno += 1000000;
       $error = 1;
     }
   }
 
-  if (strlen($HTTP_GET_VARS['keywords']) > 0) {
-    if (!tep_parse_search_string(stripslashes($HTTP_GET_VARS['keywords']), $search_keywords)) {
+  if (strlen($_GET['keywords']) > 0) {
+    if (!tep_parse_search_string(stripslashes($_GET['keywords']), $search_keywords)) {
       $errorno += 10000000;
       $error = 1;
     }
@@ -88,7 +88,7 @@ if (!isset($HTTP_GET_VARS['pto'])) $HTTP_GET_VARS['pto'] = NULL;
     tep_redirect(tep_href_link(FILENAME_ADVANCED_SEARCH, 'errorno=' . $errorno . '&' . tep_get_all_get_params(array('x', 'y'))));
   } else {
     $breadcrumb->add(NAVBAR_TITLE1, tep_href_link(FILENAME_ADVANCED_SEARCH));
-    $breadcrumb->add(NAVBAR_TITLE2, tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 'keywords=' . $HTTP_GET_VARS['keywords'] . '&search_in_description=' . (isset($HTTP_GET_VARS['search_in_description']) ? $HTTP_GET_VARS['search_in_description']:'') . '&categories_id=' . $HTTP_GET_VARS['categories_id'] . '&inc_subcat=' . $HTTP_GET_VARS['inc_subcat'] . '&manufacturers_id=' . (isset($HTTP_GET_VARS['manufacturers_id'])?$HTTP_GET_VARS['manufacturers_id']:'') . '&pfrom=' . $HTTP_GET_VARS['pfrom'] . '&pto=' . $HTTP_GET_VARS['pto'] . '&dfrom=' . $HTTP_GET_VARS['dfrom'] . '&dto=' . $HTTP_GET_VARS['dto']));
+    $breadcrumb->add(NAVBAR_TITLE2, tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 'keywords=' . $_GET['keywords'] . '&search_in_description=' . (isset($_GET['search_in_description']) ? $_GET['search_in_description']:'') . '&categories_id=' . $_GET['categories_id'] . '&inc_subcat=' . $_GET['inc_subcat'] . '&manufacturers_id=' . (isset($_GET['manufacturers_id'])?$_GET['manufacturers_id']:'') . '&pfrom=' . $_GET['pfrom'] . '&pto=' . $_GET['pto'] . '&dfrom=' . $_GET['dfrom'] . '&dto=' . $_GET['dto']));
 ?>
 <?php page_head();?>
 <?php
@@ -185,17 +185,17 @@ if (!isset($HTTP_GET_VARS['pto'])) $HTTP_GET_VARS['pto'] = NULL;
                     pd.site_id,
                     IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, 
                     IF(s.status, s.specials_new_products_price, p.products_price) as final_price"; 
-  if(isset($HTTP_GET_VARS['colors']) && !empty($HTTP_GET_VARS['colors'])) {
+  if(isset($_GET['colors']) && !empty($_GET['colors'])) {
     $select_str .= ", cp.color_image ";
   }
 
-  if ( (DISPLAY_PRICE_WITH_TAX == 'true') && ( (isset($HTTP_GET_VARS['pfrom']) && tep_not_null($HTTP_GET_VARS['pfrom'])) || (isset($HTTP_GET_VARS['pto']) && tep_not_null($HTTP_GET_VARS['pto']))) ) {
+  if ( (DISPLAY_PRICE_WITH_TAX == 'true') && ( (isset($_GET['pfrom']) && tep_not_null($_GET['pfrom'])) || (isset($_GET['pto']) && tep_not_null($_GET['pto']))) ) {
     $select_str .= ", SUM(tr.tax_rate) as tax_rate ";
   }
   
   $from_str = "(( " . TABLE_PRODUCTS . " p ) left join " . TABLE_MANUFACTURERS . " m using(manufacturers_id), " . TABLE_PRODUCTS_DESCRIPTION . " pd )left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id, " . TABLE_CATEGORIES . " c, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, ".TABLE_COLOR_TO_PRODUCTS." cp";
 
-  if ( (DISPLAY_PRICE_WITH_TAX == 'true') && ( (isset($HTTP_GET_VARS['pfrom']) && tep_not_null($HTTP_GET_VARS['pfrom'])) || (isset($HTTP_GET_VARS['pto']) && tep_not_null($HTTP_GET_VARS['pto']))) ) {
+  if ( (DISPLAY_PRICE_WITH_TAX == 'true') && ( (isset($_GET['pfrom']) && tep_not_null($_GET['pfrom'])) || (isset($_GET['pto']) && tep_not_null($_GET['pto']))) ) {
     if (!tep_session_is_registered('customer_country_id')) {
       $customer_country_id = STORE_COUNTRY;
       $customer_zone_id = STORE_ZONE;
@@ -205,30 +205,30 @@ if (!isset($HTTP_GET_VARS['pto'])) $HTTP_GET_VARS['pto'] = NULL;
 
   $where_str = " where p.products_status = '1' and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and p.products_id = p2c.products_id and p2c.categories_id = c.categories_id ";
 
-  if (isset($HTTP_GET_VARS['categories_id']) && tep_not_null($HTTP_GET_VARS['categories_id'])) {
-    if ($HTTP_GET_VARS['inc_subcat'] == '1') {
+  if (isset($_GET['categories_id']) && tep_not_null($_GET['categories_id'])) {
+    if ($_GET['inc_subcat'] == '1') {
       $subcategories_array = array();
-      tep_get_subcategories($subcategories_array, $HTTP_GET_VARS['categories_id']);
-      $where_str .= " and p2c.products_id = p.products_id and p2c.products_id = pd.products_id and (p2c.categories_id = '" . (int)$HTTP_GET_VARS['categories_id'] . "'";
+      tep_get_subcategories($subcategories_array, $_GET['categories_id']);
+      $where_str .= " and p2c.products_id = p.products_id and p2c.products_id = pd.products_id and (p2c.categories_id = '" . (int)$_GET['categories_id'] . "'";
       for ($i=0, $n=sizeof($subcategories_array); $i<$n; $i++ ) {
         $where_str .= " or p2c.categories_id = '" . $subcategories_array[$i] . "'";
       }
       $where_str .= ")";
     } else {
-      $where_str .= " and p2c.products_id = p.products_id and p2c.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and p2c.categories_id = '" . $HTTP_GET_VARS['categories_id'] . "'";
+      $where_str .= " and p2c.products_id = p.products_id and p2c.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and p2c.categories_id = '" . $_GET['categories_id'] . "'";
     }
   }
 
-  if(isset($HTTP_GET_VARS['colors']) && !empty($HTTP_GET_VARS['colors'])) {
-    $where_str .= " and p.products_id = cp.products_id and cp.color_id = '".$HTTP_GET_VARS['colors']."'";
+  if(isset($_GET['colors']) && !empty($_GET['colors'])) {
+    $where_str .= " and p.products_id = cp.products_id and cp.color_id = '".$_GET['colors']."'";
   }
 
-  if (isset($HTTP_GET_VARS['manufacturers_id']) && tep_not_null($HTTP_GET_VARS['manufacturers_id'])) {
-    $where_str .= " and m.manufacturers_id = '" . $HTTP_GET_VARS['manufacturers_id'] . "'";
+  if (isset($_GET['manufacturers_id']) && tep_not_null($_GET['manufacturers_id'])) {
+    $where_str .= " and m.manufacturers_id = '" . $_GET['manufacturers_id'] . "'";
   }
 
-  if (isset($HTTP_GET_VARS['keywords']) && tep_not_null($HTTP_GET_VARS['keywords'])) {
-    if (tep_parse_search_string(stripslashes($HTTP_GET_VARS['keywords']), $search_keywords)) {
+  if (isset($_GET['keywords']) && tep_not_null($_GET['keywords'])) {
+    if (tep_parse_search_string(stripslashes($_GET['keywords']), $search_keywords)) {
       $where_str .= " and (";
       for ($i=0, $n=sizeof($search_keywords); $i<$n; $i++ ) {
         switch ($search_keywords[$i]) {
@@ -240,7 +240,7 @@ if (!isset($HTTP_GET_VARS['pto'])) $HTTP_GET_VARS['pto'] = NULL;
             break;
           default:
             $where_str .= "(pd.products_name like '%" . addslashes($search_keywords[$i]) . "%' or p.products_model like '%" . addslashes($search_keywords[$i]) . "%' or m.manufacturers_name like '%" . addslashes($search_keywords[$i]) . "%'";
-            if (isset($HTTP_GET_VARS['search_in_description']) && ($HTTP_GET_VARS['search_in_description'] == '1')) $where_str .= " or pd.products_description like '%" . addslashes($search_keywords[$i]) . "%'";
+            if (isset($_GET['search_in_description']) && ($_GET['search_in_description'] == '1')) $where_str .= " or pd.products_description like '%" . addslashes($search_keywords[$i]) . "%'";
               $where_str .= ')';
             break;
         }
@@ -249,18 +249,18 @@ if (!isset($HTTP_GET_VARS['pto'])) $HTTP_GET_VARS['pto'] = NULL;
     }
   }
 
-  if (isset($HTTP_GET_VARS['dfrom']) && tep_not_null($HTTP_GET_VARS['dfrom']) && ($HTTP_GET_VARS['dfrom'] != DOB_FORMAT_STRING)) {
+  if (isset($_GET['dfrom']) && tep_not_null($_GET['dfrom']) && ($_GET['dfrom'] != DOB_FORMAT_STRING)) {
     $where_str .= " and p.products_date_added >= '" . tep_date_raw($dfrom_to_check) . "'";
   }
 
-  if (isset($HTTP_GET_VARS['dto']) && tep_not_null($HTTP_GET_VARS['dto']) && ($HTTP_GET_VARS['dto'] != DOB_FORMAT_STRING)) {
+  if (isset($_GET['dto']) && tep_not_null($_GET['dto']) && ($_GET['dto'] != DOB_FORMAT_STRING)) {
     $where_str .= " and p.products_date_added <= '" . tep_date_raw($dto_to_check) . "'";
   }
 
   $rate = $currencies->get_value($currency);
   if ($rate) {
-    $pfrom = $HTTP_GET_VARS['pfrom'] / $rate;
-    $pto = $HTTP_GET_VARS['pto'] / $rate;
+    $pfrom = $_GET['pfrom'] / $rate;
+    $pto = $_GET['pto'] / $rate;
   }
 
   if (DISPLAY_PRICE_WITH_TAX == 'true') {
@@ -273,7 +273,7 @@ if (!isset($HTTP_GET_VARS['pto'])) $HTTP_GET_VARS['pto'] = NULL;
 
   //$where_str .= " and pd.site_id = ".SITE_ID;
   
-  if ( (DISPLAY_PRICE_WITH_TAX == 'true') && ((isset($HTTP_GET_VARS['pfrom']) && tep_not_null($HTTP_GET_VARS['pfrom'])) || (isset($HTTP_GET_VARS['pto']) && tep_not_null($HTTP_GET_VARS['pto']))) ) {
+  if ( (DISPLAY_PRICE_WITH_TAX == 'true') && ((isset($_GET['pfrom']) && tep_not_null($_GET['pfrom'])) || (isset($_GET['pto']) && tep_not_null($_GET['pto']))) ) {
     $where_str .= " group by p.products_id, tr.tax_priority
       order by pd.site_id DESC";
   }
@@ -284,17 +284,17 @@ if (!isset($HTTP_GET_VARS['pto'])) $HTTP_GET_VARS['pto'] = NULL;
     group by products_id
     ";
 
-  if ( (!isset($HTTP_GET_VARS['sort'])) || (!ereg('[1-9][ad]', $HTTP_GET_VARS['sort'])) || (substr($HTTP_GET_VARS['sort'], 0 , 1) > sizeof($column_list)) ) {
+  if ( (!isset($_GET['sort'])) || (!ereg('[1-9][ad]', $_GET['sort'])) || (substr($_GET['sort'], 0 , 1) > sizeof($column_list)) ) {
     for ($col=0, $n=sizeof($column_list); $col<$n; $col++) {
       if ($column_list[$col] == 'PRODUCT_LIST_NAME') {
-        $HTTP_GET_VARS['sort'] = $col+1 . 'a';
+        $_GET['sort'] = $col+1 . 'a';
         $order_str = ' order by products_name';
         break;
       }
     }
   } else {
-    $sort_col = substr($HTTP_GET_VARS['sort'], 0 , 1);
-    $sort_order = substr($HTTP_GET_VARS['sort'], 1);
+    $sort_col = substr($_GET['sort'], 0 , 1);
+    $sort_order = substr($_GET['sort'], 1);
     $order_str = ' order by ';
     switch ($column_list[$sort_col-1]) {
       case 'PRODUCT_LIST_MODEL':

@@ -7,27 +7,27 @@
   
   require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER);
   
-  if (IsSet($HTTP_GET_VARS['Customer'])) {
-    $account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_id = '" . $HTTP_GET_VARS['Customer'] . "'");
+  if (IsSet($_GET['Customer'])) {
+    $account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_id = '" . $_GET['Customer'] . "'");
     $account = tep_db_fetch_array($account_query);
     $customer = $account['customers_id'];
-    $address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $HTTP_GET_VARS['Customer'] . "'");
+    $address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $_GET['Customer'] . "'");
     $address = tep_db_fetch_array($address_query);
-  } elseif (IsSet($HTTP_GET_VARS['Customer_nr'])) {
-    $account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_id = '" . $HTTP_GET_VARS['Customer_nr'] . "'");
+  } elseif (IsSet($_GET['Customer_nr'])) {
+    $account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_id = '" . $_GET['Customer_nr'] . "'");
     $account = tep_db_fetch_array($account_query);
     $customer = $account['customers_id'];
-    $address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $HTTP_GET_VARS['Customer_nr'] . "'");
+    $address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $_GET['Customer_nr'] . "'");
     $address = tep_db_fetch_array($address_query);
-  } elseif (IsSet($HTTP_GET_VARS['Customer_mail'])) {
-    $site_id = isset($HTTP_GET_VARS['site_id']) ? $HTTP_GET_VARS['site_id']: 0;
-    $account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_email_address = '" . $HTTP_GET_VARS['Customer_mail'] . "' and site_id = '".$site_id."'");
+  } elseif (IsSet($_GET['Customer_mail'])) {
+    $site_id = isset($_GET['site_id']) ? $_GET['site_id']: 0;
+    $account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_email_address = '" . $_GET['Customer_mail'] . "' and site_id = '".$site_id."'");
     $account = tep_db_fetch_array($account_query);
     $customer = $account['customers_id'];
     $address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer . "'");
     $address = tep_db_fetch_array($address_query);
     if (tep_db_num_rows($account_query) == 0) {
-      tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT, 'email_address=' . $HTTP_GET_VARS['Customer_mail'], 'SSL'));
+      tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT, 'email_address=' . $_GET['Customer_mail'], 'SSL'));
     }
   }
 // #### Generate Page

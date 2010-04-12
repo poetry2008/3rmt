@@ -15,12 +15,12 @@
   if (!tep_session_is_registered('customer_id')) die;
 
 // Check download.php was called with proper GET parameters
-  if ((isset($HTTP_GET_VARS['order']) && !is_numeric($HTTP_GET_VARS['order'])) || (isset($HTTP_GET_VARS['id']) && !is_numeric($HTTP_GET_VARS['id'])) ) {
+  if ((isset($_GET['order']) && !is_numeric($_GET['order'])) || (isset($_GET['id']) && !is_numeric($_GET['id'])) ) {
     die;
   }
   
 // Check that order_id, customer_id and filename match
-  $downloads_query = tep_db_query("select date_format(o.date_purchased, '%Y-%m-%d') as date_purchased_day, opd.download_maxdays, opd.download_count, opd.download_maxdays, opd.orders_products_filename from " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op, " . TABLE_ORDERS_PRODUCTS_DOWNLOAD . " opd where o.customers_id = '" . $customer_id . "' and o.orders_id = '" . (int)$HTTP_GET_VARS['order'] . "' and o.orders_id = op.orders_id and op.orders_products_id = opd.orders_products_id and opd.orders_products_download_id = '" . (int)$HTTP_GET_VARS['id'] . "' and opd.orders_products_filename != ''");
+  $downloads_query = tep_db_query("select date_format(o.date_purchased, '%Y-%m-%d') as date_purchased_day, opd.download_maxdays, opd.download_count, opd.download_maxdays, opd.orders_products_filename from " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op, " . TABLE_ORDERS_PRODUCTS_DOWNLOAD . " opd where o.customers_id = '" . $customer_id . "' and o.orders_id = '" . (int)$_GET['order'] . "' and o.orders_id = op.orders_id and op.orders_products_id = opd.orders_products_id and opd.orders_products_download_id = '" . (int)$_GET['id'] . "' and opd.orders_products_filename != ''");
   if (!tep_db_num_rows($downloads_query)) die;
   $downloads = tep_db_fetch_array($downloads_query);
 // MySQL 3.22 does not have INTERVAL
@@ -35,7 +35,7 @@
   if (!file_exists(DIR_FS_DOWNLOAD . $downloads['orders_products_filename'])) die;
   
 // Now decrement counter
-  tep_db_query("update " . TABLE_ORDERS_PRODUCTS_DOWNLOAD . " set download_count = download_count-1 where orders_products_download_id = '" . (int)$HTTP_GET_VARS['id'] . "'");
+  tep_db_query("update " . TABLE_ORDERS_PRODUCTS_DOWNLOAD . " set download_count = download_count-1 where orders_products_download_id = '" . (int)$_GET['id'] . "'");
 
 
 // Now send the file with header() magic

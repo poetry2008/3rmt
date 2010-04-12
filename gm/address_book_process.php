@@ -26,8 +26,8 @@
     $navigation->set_path_as_snapshot(1);
   }
 
-  if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'remove') && tep_not_null($HTTP_GET_VARS['entry_id']) ) {
-    $entry_id = tep_db_prepare_input($HTTP_GET_VARS['entry_id']);
+  if (isset($_GET['action']) && ($_GET['action'] == 'remove') && tep_not_null($_GET['entry_id']) ) {
+    $entry_id = tep_db_prepare_input($_GET['entry_id']);
 
     tep_db_query("delete from " . TABLE_ADDRESS_BOOK . " where address_book_id = '" . tep_db_input($entry_id) . "' and customers_id = '" . $customer_id . "'");
     tep_db_query("update " . TABLE_ADDRESS_BOOK . " set address_book_id = address_book_id - 1 where address_book_id > " . tep_db_input($entry_id)  . " and customers_id = '" . $customer_id . "'");
@@ -37,30 +37,30 @@
 
 // Post-entry error checking when updating or adding an entry
   $process = false;
-  if (isset($HTTP_POST_VARS['action']) && (($HTTP_POST_VARS['action'] == 'process') || ($HTTP_POST_VARS['action'] == 'update'))) {
+  if (isset($_POST['action']) && (($_POST['action'] == 'process') || ($_POST['action'] == 'update'))) {
     $process = true;
     $error = false;
 
     // tamura 2002/12/30 「全角」英数字を「半角」に変換
-    $HTTP_POST_VARS['postcode'] = tep_an_zen_to_han($HTTP_POST_VARS['postcode']);
+    $_POST['postcode'] = tep_an_zen_to_han($_POST['postcode']);
 
-    $gender = tep_db_prepare_input($HTTP_POST_VARS['gender']);
-    $company = tep_db_prepare_input($HTTP_POST_VARS['company']);
-    $firstname = tep_db_prepare_input($HTTP_POST_VARS['firstname']);
-    $lastname = tep_db_prepare_input($HTTP_POST_VARS['lastname']);
+    $gender = tep_db_prepare_input($_POST['gender']);
+    $company = tep_db_prepare_input($_POST['company']);
+    $firstname = tep_db_prepare_input($_POST['firstname']);
+    $lastname = tep_db_prepare_input($_POST['lastname']);
 	
-	$firstname_f = tep_db_prepare_input($HTTP_POST_VARS['firstname_f']);
-    $lastname_f = tep_db_prepare_input($HTTP_POST_VARS['lastname_f']);
+	$firstname_f = tep_db_prepare_input($_POST['firstname_f']);
+    $lastname_f = tep_db_prepare_input($_POST['lastname_f']);
 	
-    $street_address = tep_db_prepare_input($HTTP_POST_VARS['street_address']);
-    $suburb = tep_db_prepare_input($HTTP_POST_VARS['suburb']);
-    $postcode = tep_db_prepare_input($HTTP_POST_VARS['postcode']);
-    $city = tep_db_prepare_input($HTTP_POST_VARS['city']);
-    $country = tep_db_prepare_input($HTTP_POST_VARS['country']);
-    $zone_id = tep_db_prepare_input($HTTP_POST_VARS['zone_id']);
-    $state = tep_db_prepare_input($HTTP_POST_VARS['state']);
+    $street_address = tep_db_prepare_input($_POST['street_address']);
+    $suburb = tep_db_prepare_input($_POST['suburb']);
+    $postcode = tep_db_prepare_input($_POST['postcode']);
+    $city = tep_db_prepare_input($_POST['city']);
+    $country = tep_db_prepare_input($_POST['country']);
+    $zone_id = tep_db_prepare_input($_POST['zone_id']);
+    $state = tep_db_prepare_input($_POST['state']);
 // 2003-06-06 add_telephone
-    $telephone = tep_db_prepare_input($HTTP_POST_VARS['telephone']);
+    $telephone = tep_db_prepare_input($_POST['telephone']);
 
     if (ACCOUNT_GENDER == 'true') {
       if (($gender == 'm') || ($gender == 'f')) {
@@ -204,8 +204,8 @@
         }
       }
 
-      $entry_id = tep_db_prepare_input($HTTP_POST_VARS['entry_id']);
-      if ($HTTP_POST_VARS['action'] == 'update') {
+      $entry_id = tep_db_prepare_input($_POST['entry_id']);
+      if ($_POST['action'] == 'update') {
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', "address_book_id = '" . tep_db_input($entry_id) . "' and customers_id ='" . tep_db_input($customer_id) . "'");
       } else {
         $sql_data_array['customers_id'] = $customer_id;
@@ -225,9 +225,9 @@
     }
   }
 
-  if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'modify') && tep_not_null($HTTP_GET_VARS['entry_id'])) {
+  if (isset($_GET['action']) && ($_GET['action'] == 'modify') && tep_not_null($_GET['entry_id'])) {
 // 2003-06-06 add_telephone
-    $entry_query = tep_db_query("select entry_gender, entry_company, entry_firstname, entry_lastname, entry_firstname_f, entry_lastname_f, entry_street_address, entry_suburb, entry_postcode, entry_city, entry_state, entry_zone_id, entry_country_id,entry_telephone from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer_id . "' and address_book_id = '" . $HTTP_GET_VARS['entry_id'] . "'");
+    $entry_query = tep_db_query("select entry_gender, entry_company, entry_firstname, entry_lastname, entry_firstname_f, entry_lastname_f, entry_street_address, entry_suburb, entry_postcode, entry_city, entry_state, entry_zone_id, entry_country_id,entry_telephone from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer_id . "' and address_book_id = '" . $_GET['entry_id'] . "'");
     $entry = tep_db_fetch_array($entry_query);
   } else {
     $entry = array('entry_country_id' => STORE_COUNTRY);
@@ -238,8 +238,8 @@
   $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_ACCOUNT, '', 'SSL'));
   $breadcrumb->add(NAVBAR_TITLE_2, tep_href_link(FILENAME_ADDRESS_BOOK, '', 'SSL'));
 
-  if ( (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'modify')) || (isset($HTTP_POST_VARS['action']) && ($HTTP_POST_VARS['action'] == 'update') && tep_not_null($HTTP_POST_VARS['entry_id'])) ) {
-    $breadcrumb->add(NAVBAR_TITLE_MODIFY_ENTRY, tep_href_link(FILENAME_ADDRESS_BOOK_PROCESS, 'action=modify&entry_id=' . ((isset($HTTP_GET_VARS['entry_id'])) ? $HTTP_GET_VARS['entry_id'] : $HTTP_POST_VARS['entry_id']), 'SSL'));
+  if ( (isset($_GET['action']) && ($_GET['action'] == 'modify')) || (isset($_POST['action']) && ($_POST['action'] == 'update') && tep_not_null($_POST['entry_id'])) ) {
+    $breadcrumb->add(NAVBAR_TITLE_MODIFY_ENTRY, tep_href_link(FILENAME_ADDRESS_BOOK_PROCESS, 'action=modify&entry_id=' . ((isset($_GET['entry_id'])) ? $_GET['entry_id'] : $_POST['entry_id']), 'SSL'));
   } else {
     $breadcrumb->add(NAVBAR_TITLE_ADD_ENTRY, tep_href_link(FILENAME_ADDRESS_BOOK_PROCESS, '', 'SSL'));
   }
@@ -354,7 +354,7 @@ function check_form() {
 <!-- body_text //-->
 <div id="content"><?php echo tep_draw_form('add_entry', tep_href_link(FILENAME_ADDRESS_BOOK_PROCESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"'); ?> 
         <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-		<h1 class="pageHeading"><?php echo (isset($HTTP_GET_VARS['action']) && $HTTP_GET_VARS['action'] == 'modify') ? HEADING_TITLE_MODIFY_ENTRY : HEADING_TITLE_ADD_ENTRY; ?></h1> 
+		<h1 class="pageHeading"><?php echo (isset($_GET['action']) && $_GET['action'] == 'modify') ? HEADING_TITLE_MODIFY_ENTRY : HEADING_TITLE_ADD_ENTRY; ?></h1> 
         
         <div> 
           <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
@@ -365,19 +365,19 @@ function check_form() {
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
             <?php
-    if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'modify') && tep_not_null($HTTP_GET_VARS['entry_id'])) {
+    if (isset($_GET['action']) && ($_GET['action'] == 'modify') && tep_not_null($_GET['entry_id'])) {
 ?> 
             <tr> 
               <td><table border="0" width="100%" cellspacing="2" cellpadding="0"> 
                   <tr> 
-                    <td class="main"><?php echo tep_draw_hidden_field('action', 'update') . tep_draw_hidden_field('entry_id', $HTTP_GET_VARS['entry_id']) . '<a href="' . tep_href_link(FILENAME_ADDRESS_BOOK, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
-                    <td class="main" align="center"><?php echo '<a href="' . tep_href_link(FILENAME_ADDRESS_BOOK_PROCESS, 'action=remove&entry_id=' . $HTTP_GET_VARS['entry_id'], 'SSL') . '">' . tep_image_button('button_delete.gif', IMAGE_BUTTON_DELETE) . '</a>'; ?></td> 
+                    <td class="main"><?php echo tep_draw_hidden_field('action', 'update') . tep_draw_hidden_field('entry_id', $_GET['entry_id']) . '<a href="' . tep_href_link(FILENAME_ADDRESS_BOOK, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
+                    <td class="main" align="center"><?php echo '<a href="' . tep_href_link(FILENAME_ADDRESS_BOOK_PROCESS, 'action=remove&entry_id=' . $_GET['entry_id'], 'SSL') . '">' . tep_image_button('button_delete.gif', IMAGE_BUTTON_DELETE) . '</a>'; ?></td> 
                     <td class="main" align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
                   </tr> 
                 </table></td> 
             </tr> 
             <?php
-    } elseif (isset($HTTP_POST_VARS['action']) && ($HTTP_POST_VARS['action'] == 'update') && tep_not_null($HTTP_POST_VARS['entry_id'])) {
+    } elseif (isset($_POST['action']) && ($_POST['action'] == 'update') && tep_not_null($_POST['entry_id'])) {
 ?> 
             <tr> 
               <td><table border="0" width="100%" cellspacing="2" cellpadding="0"> 
@@ -399,7 +399,7 @@ function check_form() {
               <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                   <tr> 
                     <td class="main"><?php echo '<a href="' . $back_link . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
-                    <td align="right" class="main"><?php echo tep_draw_hidden_field('entry_id', (isset($HTTP_GET_VARS['entry_id']) ? $HTTP_GET_VARS['entry_id'] : $entry_id)) . tep_draw_hidden_field('action', 'process') . tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
+                    <td align="right" class="main"><?php echo tep_draw_hidden_field('entry_id', (isset($_GET['entry_id']) ? $_GET['entry_id'] : $entry_id)) . tep_draw_hidden_field('action', 'process') . tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
                   </tr> 
                 </table></td> 
             </tr> 

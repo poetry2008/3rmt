@@ -8,7 +8,7 @@
 
 // class constructor
     function telecom($site_id = 0) {
-      global $order, $HTTP_GET_VARS;
+      global $order, $_GET;
 
       $this->site_id = $site_id;
 
@@ -27,8 +27,8 @@
 
       $this->form_action_url = MODULE_PAYMENT_TELECOM_CONNECTION_URL;
 	  
-	  if(isset($HTTP_GET_VARS['submit_x']) || isset($HTTP_GET_VARS['submit_y'])){
-	    $HTTP_GET_VARS['payment_error'] = 'telecom';
+	  if(isset($_GET['submit_x']) || isset($_GET['submit_y'])){
+	    $_GET['payment_error'] = 'telecom';
 	  }
 	  
 	  $this->email_footer = MODULE_PAYMENT_TELECOM_TEXT_EMAIL_FOOTER;
@@ -87,9 +87,9 @@
       if ((MODULE_ORDER_TOTAL_CODT_STATUS == 'true')
           && isset($payment) 
           && ($payment == 'cod_table')
-          && isset($HTTP_POST_VARS['codt_fee'])
-          && (0 < intval($HTTP_POST_VARS['codt_fee']))) {
-        $total += intval($HTTP_POST_VARS['codt_fee']);
+          && isset($_POST['codt_fee'])
+          && (0 < intval($_POST['codt_fee']))) {
+        $total += intval($_POST['codt_fee']);
       }
 	  
 	  //Add point
@@ -98,8 +98,8 @@
         $total -= intval($point);
       }	  
 	  
-	  if(isset($HTTP_POST_VARS['codt_fee']) && MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'convenience_store')) {
-        $total += intval($HTTP_POST_VARS['codt_fee']);
+	  if(isset($_POST['codt_fee']) && MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'convenience_store')) {
+        $total += intval($_POST['codt_fee']);
 	  }
       // 追加 - 2007.01.05 ----------------------------------------------
 	  
@@ -243,7 +243,7 @@
 	
 	//エラー
 	function get_error() {
-      global $HTTP_GET_VARS;
+      global $_GET;
 	  
       $error_message = MODULE_PAYMENT_TELECOM_TEXT_ERROR_MESSAGE;	
 

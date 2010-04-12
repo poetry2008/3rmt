@@ -47,7 +47,7 @@
             <tr> 
               <td><?php
   $history_query_raw = "select o.orders_id, o.date_purchased, o.delivery_name, ot.text as order_total, s.orders_status_name from " . TABLE_ORDERS . " o left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id) left join " .  TABLE_ORDERS_STATUS . " s on (o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "') where o.customers_id = '" . $customer_id . "' and ot.class = 'ot_total' and o.site_id = ".SITE_ID." order by orders_id DESC";
-  $history_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_ORDER_HISTORY, $history_query_raw, $history_numrows);
+  $history_split = new splitPageResults($_GET['page'], MAX_DISPLAY_ORDER_HISTORY, $history_query_raw, $history_numrows);
 //ccdd
   $history_query = tep_db_query($history_query_raw);
 
@@ -71,7 +71,7 @@
                '  <tr>' . "\n" .
                '    <td class="main" width="50%" valign="top"><b>' . TEXT_ORDER_DATE . '</b> ' . tep_date_long($history['date_purchased']) . '<br><b>' . TEXT_ORDER_SHIPPED_TO . '</b> ' . tep_output_string_protected($history['delivery_name']) . '</td>' . "\n" .
                '    <td class="main" width="30%" valign="top"><b>' . TEXT_ORDER_PRODUCTS . '</b> ' . $products['count'] . '<br><b>' . TEXT_ORDER_COST . '</b> ' . strip_tags($history['order_total']) . '</td>' . "\n" .
-               '    <td class="main" width="20%"><a href="' . tep_href_link(FILENAME_ACCOUNT_HISTORY_INFO, 'page=' . $HTTP_GET_VARS['page'] . '&order_id=' . $history['orders_id'], 'SSL') . '">' . TEXT_VIEW_ORDER . '</a></td>' . "\n" .
+               '    <td class="main" width="20%"><a href="' . tep_href_link(FILENAME_ACCOUNT_HISTORY_INFO, 'page=' . $_GET['page'] . '&order_id=' . $history['orders_id'], 'SSL') . '">' . TEXT_VIEW_ORDER . '</a></td>' . "\n" .
                '  </tr>' . "\n" .
                '</table>';
 
@@ -91,8 +91,8 @@
   if (tep_db_num_rows($history_query)) {
 ?> 
                   <tr> 
-                    <td class="smallText" valign="top"><?php echo $history_split->display_count($history_numrows, MAX_DISPLAY_ORDER_HISTORY, $HTTP_GET_VARS['page'], TEXT_DISPLAY_NUMBER_OF_ORDERS); ?></td> 
-                    <td class="smallText" align="right"><?php echo TEXT_RESULT_PAGE; echo $history_split->display_links($history_numrows, MAX_DISPLAY_ORDER_HISTORY, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td> 
+                    <td class="smallText" valign="top"><?php echo $history_split->display_count($history_numrows, MAX_DISPLAY_ORDER_HISTORY, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_ORDERS); ?></td> 
+                    <td class="smallText" align="right"><?php echo TEXT_RESULT_PAGE; echo $history_split->display_links($history_numrows, MAX_DISPLAY_ORDER_HISTORY, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td> 
                   </tr> 
                   <?php
   }

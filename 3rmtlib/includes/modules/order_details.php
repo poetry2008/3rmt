@@ -94,7 +94,7 @@
     tep_db_query("
         update " . TABLE_PRODUCTS_DESCRIPTION . " 
         set products_viewed = products_viewed+1 
-        where products_id = '" .  (int)$HTTP_GET_VARS['products_id'] . "' 
+        where products_id = '" .  (int)$_GET['products_id'] . "' 
         and language_id = '" . $languages_id . "' 
         and site_id = '".SITE_ID."'
     ");

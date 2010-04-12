@@ -17,7 +17,7 @@ define('TABLE_HEADING_DATE_EXPECTED', '入荷予定日');
 
 define('HEADING_COLOR_TITLE', 'カラーから選択: ');
 
-if ( ($category_depth == 'products') || (isset($HTTP_GET_VARS['manufacturers_id']) && $HTTP_GET_VARS['manufacturers_id']) ||  (isset($HTTP_GET_VARS['colors']) && $HTTP_GET_VARS['colors'])) {
+if ( ($category_depth == 'products') || (isset($_GET['manufacturers_id']) && $_GET['manufacturers_id']) ||  (isset($_GET['colors']) && $_GET['colors'])) {
   define('HEADING_TITLE', '取扱い商品');
   define('TABLE_HEADING_IMAGE', '');
   define('TABLE_HEADING_MODEL', '型番');

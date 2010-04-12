@@ -46,8 +46,8 @@ $HTTP_POST_VERS に対応させる
 	if (isset($HTTP_POST_VERS['np'])) { $np = $HTTP_POST_VERS['np']; }
 	if (isset($HTTP_POST_VERS['aval'])) { $aval = $HTTP_POST_VERS['aval']; }
 //2003-07-16 hiroshi_sato add 2 line
-        if (isset($HTTP_POST_VARS['sp'])) { $sp = $HTTP_POST_VARS['sp']; }
-        if (isset($HTTP_POST_VARS['execute_delete'])) { $execute_delete = $HTTP_POST_VARS['execute_delete']; }
+        if (isset($_POST['sp'])) { $sp = $_POST['sp']; }
+        if (isset($_POST['execute_delete'])) { $execute_delete = $_POST['execute_delete']; }
 
 /* ===============================================
 	レコード取得 sql 文字列生成関数（Select）

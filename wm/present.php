@@ -13,17 +13,17 @@
   require('includes/application_top.php');
 
   //forward 404
-if (isset($HTTP_GET_VARS['goods_id'])) {
-  $_404_query = tep_db_query("select * from " . TABLE_PRESENT_GOODS. " where goods_id = '" . intval($HTTP_GET_VARS['goods_id']) . "' and site_id = '".SITE_ID."'");
+if (isset($_GET['goods_id'])) {
+  $_404_query = tep_db_query("select * from " . TABLE_PRESENT_GOODS. " where goods_id = '" . intval($_GET['goods_id']) . "' and site_id = '".SITE_ID."'");
   $_404 = tep_db_fetch_array($_404_query);
 
   forward404Unless($_404);
 }
 	
   
-  if (!isset($HTTP_GET_VARS['goods_id'])) $HTTP_GET_VARS['goods_id'] = NULL;//del notice
-  if($HTTP_GET_VARS['goods_id']) {
-    $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$HTTP_GET_VARS['goods_id']."' and site_id = '".SITE_ID."'") ;
+  if (!isset($_GET['goods_id'])) $_GET['goods_id'] = NULL;//del notice
+  if($_GET['goods_id']) {
+    $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$_GET['goods_id']."' and site_id = '".SITE_ID."'") ;
 	$present = tep_db_fetch_array($present_query) ;
   }	
   
@@ -51,7 +51,7 @@ function popupWindow(url) {
       </td>
       <!-- body_text //-->
       <td valign="top" id="contents">
-      <h1 class="pageHeading"> <?php echo ($HTTP_GET_VARS['goods_id'] && $HTTP_GET_VARS['goods_id'] != '' ) ? $present['title'] : HEADING_TITLE ; ?> </h1>
+      <h1 class="pageHeading"> <?php echo ($_GET['goods_id'] && $_GET['goods_id'] != '' ) ? $present['title'] : HEADING_TITLE ; ?> </h1>
       <div class="comment">
       <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="table">
         <tr>
@@ -59,15 +59,15 @@ function popupWindow(url) {
 		  ######################
 		  ##    詳細ページ    ##
 		  ######################
-		  if($HTTP_GET_VARS['goods_id'] && !empty($HTTP_GET_VARS['goods_id'])) {
-		  $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$HTTP_GET_VARS['goods_id']."' and site_id = '".SITE_ID."'") ;
+		  if($_GET['goods_id'] && !empty($_GET['goods_id'])) {
+		  $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$_GET['goods_id']."' and site_id = '".SITE_ID."'") ;
 		  $present = tep_db_fetch_array($present_query) ;
 		  ?>
           <p align="right" class="main">応募期間 <?php echo tep_date_long($present['start_date']) . '&nbsp;&nbsp;&nbsp;〜&nbsp;&nbsp;&nbsp;' . tep_date_long($present['limit_date']) ; ?></p>
           <table border="0" cellspacing="0" cellpadding="2" align="right" summary="table">
             <tr>
               <td align="center" class="smallText"><script type="text/javascript" language="javascript"><!--
-			document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link('present_popup_image.php', 'pID=' . (int)$HTTP_GET_VARS['goods_id']) . '\\\')">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '<br>イメージを拡大</a>'; ?>');
+			document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link('present_popup_image.php', 'pID=' . (int)$_GET['goods_id']) . '\\\')">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '<br>イメージを拡大</a>'; ?>');
 			//--></script>
               <noscript>
               <?php echo tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right"'); ?>
@@ -88,7 +88,7 @@ function popupWindow(url) {
           <table width="100%" border="0" cellpadding="2" cellspacing="0" summary="table">
             <tr>
               <td><a href="javascript:history.back()"><?php echo tep_image_button('button_back.gif', IMAGE_BUTTON_BACK); ?></a> </td>
-              <td align="right"><a href="<?php echo tep_href_link(FILENAME_PRESENT_ORDER,'goods_id='.$HTTP_GET_VARS['goods_id'],'SSL'); ?>"><?php echo tep_image_button('button_present.gif', IMAGE_BUTTON_PRESENT); ?></a></td>
+              <td align="right"><a href="<?php echo tep_href_link(FILENAME_PRESENT_ORDER,'goods_id='.$_GET['goods_id'],'SSL'); ?>"><?php echo tep_image_button('button_present.gif', IMAGE_BUTTON_PRESENT); ?></a></td>
             </tr>
           </table>
           <?php
@@ -100,14 +100,14 @@ function popupWindow(url) {
           <?php
 			  $today = date("Y-m-d", time());
 			  $present_query_raw = "select * from ".TABLE_PRESENT_GOODS." where site_id = '".SITE_ID."' order by start_date DESC";
-			  $present_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_SEARCH_RESULTS, $present_query_raw, $present_numrows);
+			  $present_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $present_query_raw, $present_numrows);
 			  $present_query = tep_db_query($present_query_raw);
 	?>
           <br>
           <table border="0" width="100%" cellspacing="0" cellpadding="2" summary="table">
             <tr>
-              <td class="smallText"><?php echo $present_split->display_count($present_numrows, MAX_DISPLAY_SEARCH_RESULTS, $HTTP_GET_VARS['page'], TEXT_DISPLAY_NUMBER_OF_PRESENT); ?></td>
-              <td align="right" class="smallText"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $present_split->display_links($present_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
+              <td class="smallText"><?php echo $present_split->display_count($present_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRESENT); ?></td>
+              <td align="right" class="smallText"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $present_split->display_links($present_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
             </tr>
           </table>
           <div class="underline">&nbsp;</div>
@@ -139,14 +139,14 @@ function popupWindow(url) {
           </td>
         </tr>
         <?php
-		if (!$HTTP_GET_VARS['goods_id'] && ($present_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '2') || (PREV_NEXT_BAR_LOCATION == '3'))) {
+		if (!$_GET['goods_id'] && ($present_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '2') || (PREV_NEXT_BAR_LOCATION == '3'))) {
 		?>
         <tr>
           <td><div class="underline">&nbsp;</div>
           <table border="0" width="100%" cellspacing="0" cellpadding="2" summary="table">
             <tr>
-              <td class="smallText"><?php echo $present_split->display_count($present_numrows, MAX_DISPLAY_SEARCH_RESULTS, $HTTP_GET_VARS['page'], TEXT_DISPLAY_NUMBER_OF_PRESENT); ?></td>
-              <td align="right" class="smallText"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $present_split->display_links($present_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
+              <td class="smallText"><?php echo $present_split->display_count($present_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRESENT); ?></td>
+              <td align="right" class="smallText"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $present_split->display_links($present_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
             </tr>
           </table></td>
         </tr>

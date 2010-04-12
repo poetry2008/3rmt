@@ -29,14 +29,14 @@ $the_product_info_query = tep_db_query("
            p.products_date_available, 
            p.manufacturers_id 
     FROM " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
-    WHERE p.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' 
-      AND pd.products_id = '" .  (int)$HTTP_GET_VARS['products_id'] . "'" . " 
+    WHERE p.products_id = '" . (int)$_GET['products_id'] . "' 
+      AND pd.products_id = '" .  (int)$_GET['products_id'] . "'" . " 
       AND pd.language_id ='" .  (int)$languages_id . "' 
       AND pd.site_id = ".SITE_ID
     ); 
 $the_product_info = tep_db_fetch_array($the_product_info_query);
 */
-$the_product_info = tep_get_product_by_id((int)$HTTP_GET_VARS['products_id'], SITE_ID, $languages_id);
+$the_product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID, $languages_id);
 //forward 404
 forward404Unless($the_product_info);
 
@@ -51,7 +51,7 @@ $the_manufacturer_query = tep_db_query("
     FROM " . TABLE_MANUFACTURERS . " m 
       LEFT join " . TABLE_MANUFACTURERS_INFO . " mi 
         ON (m.manufacturers_id = mi.manufacturers_id and mi.languages_id = '" . (int)$languages_id . "'), " . TABLE_PRODUCTS . " p  
-    WHERE p.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' 
+    WHERE p.products_id = '" . (int)$_GET['products_id'] . "' 
       AND p.manufacturers_id = m.manufacturers_id
     "); 
 $the_manufacturers = tep_db_fetch_array($the_manufacturer_query);
@@ -152,7 +152,7 @@ function showimage($1) {
              p.products_small_sum 
       FROM " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd 
       WHERE p.products_status = '1' 
-        AND p.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' 
+        AND p.products_id = '" . (int)$_GET['products_id'] . "' 
         AND pd.products_id = p.products_id 
         AND pd.language_id = '" . $languages_id . "' 
         AND pd.site_id = ".SITE_ID
@@ -160,7 +160,7 @@ function showimage($1) {
   if (!tep_db_num_rows($product_info_query)) { // product not found in database
   */
   
-  $product_info = tep_get_product_by_id((int)$HTTP_GET_VARS['products_id'], SITE_ID, $languages_id);
+  $product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID, $languages_id);
   if (!$product_info) { // product not found in database
 ?>
         <P><?php echo TEXT_PRODUCT_NOT_FOUND; ?></P>
@@ -171,7 +171,7 @@ function showimage($1) {
     $product_info['site_id'] == SITE_ID && tep_db_query("
         UPDATE " . TABLE_PRODUCTS_DESCRIPTION . " 
         SET products_viewed = products_viewed+1 
-        WHERE products_id = '" .  (int)$HTTP_GET_VARS['products_id'] . "' 
+        WHERE products_id = '" .  (int)$_GET['products_id'] . "' 
           AND language_id = '" . $languages_id . "' 
           AND site_id     = '".SITE_ID."'
     ");
@@ -191,7 +191,7 @@ function showimage($1) {
 	$data4 = explode("//", $product_info['products_attention_4']);
 ?>
         <h1 class="pageHeading_long"><?php echo $product_info['products_name']; ?></h1>
-        <h2 class="line"><?php echo ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1); ?> <?php echo ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],2); ?></h2>
+        <h2 class="line"><?php echo ds_tep_get_categories((int)$_GET['products_id'],1); ?> <?php echo ds_tep_get_categories((int)$_GET['products_id'],2); ?></h2>
         <table width="689"  border="0" cellpadding="0" cellspacing="0">
           <tr>
             <td width="250" valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="0">
@@ -349,7 +349,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                       <?php if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { ?>
                       <tr class="infoBoxContents">
                         <td class="main"><font color="#0070AF">ポイント</font></td>
-                        <td class="main"><?php echo ds_tep_get_point_value($HTTP_GET_VARS['products_id']) ; ?>&nbsp;ポイント</td>
+                        <td class="main"><?php echo ds_tep_get_point_value($_GET['products_id']) ; ?>&nbsp;ポイント</td>
                       </tr>
                       <?php } ?>
                     </table></td>
@@ -364,14 +364,14 @@ while($tag = tep_db_fetch_array($tag_query)) {
 	  echo '<span class="markProductOutOfStock">売り切れ</span>';
 	} else {
 	  # 通常商品
-	  echo '<br><span class="markProductOutOfStock">在庫切れ<br><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="absmiddle" alt=""><a href=' . tep_href_link(FILENAME_PREORDER, 'products_id=' . $HTTP_GET_VARS['products_id']) . '>' . $product_info['products_name'] . 'を予約する</a></span>';
+	  echo '<br><span class="markProductOutOfStock">在庫切れ<br><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="absmiddle" alt=""><a href=' . tep_href_link(FILENAME_PREORDER, 'products_id=' . $_GET['products_id']) . '>' . $product_info['products_name'] . 'を予約する</a></span>';
 	}
   }else{	
     // ccdd
     $products_attributes_query = tep_db_query("
         SELECT count(*) as total 
         FROM " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_ATTRIBUTES . " patrib 
-        WHERE patrib.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' 
+        WHERE patrib.products_id = '" . (int)$_GET['products_id'] . "' 
           AND patrib.options_id  = popt.products_options_id 
           AND popt.language_id   = '" . $languages_id . "'
     ");
@@ -385,7 +385,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
           SELECT distinct popt.products_options_id, 
                  popt.products_options_name 
           FROM " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_ATTRIBUTES . " patrib 
-          WHERE patrib.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' 
+          WHERE patrib.products_id = '" . (int)$_GET['products_id'] . "' 
             AND patrib.options_id  = popt.products_options_id 
             AND popt.language_id   = '" . $languages_id . "'
       ");
@@ -402,7 +402,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                    pa.products_at_quantity, 
                    pa.products_at_quantity 
             FROM " . TABLE_PRODUCTS_ATTRIBUTES . " pa, " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov 
-            WHERE pa.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' 
+            WHERE pa.products_id = '" . (int)$_GET['products_id'] . "' 
               AND pa.options_id = '" . $products_options_name['products_options_id'] . "' 
               AND pa.options_values_id = pov.products_options_values_id and pov.language_id = '" . $languages_id . "' 
             ORDER BY pa.products_attributes_id");
@@ -416,7 +416,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
 		  }
         }
         echo tep_draw_pull_down_menu('id[' .  $products_options_name['products_options_id'] . ']' ,
-            $products_options_array, isset($cart->contents[$HTTP_GET_VARS['products_id']]['attributes'][$products_options_name['products_options_id']])?$cart->contents[$HTTP_GET_VARS['products_id']]['attributes'][$products_options_name['products_options_id']]:NULL);
+            $products_options_array, isset($cart->contents[$_GET['products_id']]['attributes'][$products_options_name['products_options_id']])?$cart->contents[$_GET['products_id']]['attributes'][$products_options_name['products_options_id']]:NULL);
         echo '</td></tr>';
       }
       echo '</table>';
@@ -456,7 +456,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                 </tr>
                 <tr class="header2">
                   <td height="40" align="right" valign="bottom" class="smallText"><div class="dot">&nbsp;</div>
-                    <a href="<?php echo tep_href_link(FILENAME_TELL_A_FRIEND,'products_id='.(int)$HTTP_GET_VARS['products_id']) ;  ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_tellafriend.jpg',BOX_HEADING_TELL_A_FRIEND);?></a>&nbsp; <a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE,'products_id='.(int)$HTTP_GET_VARS['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_review.jpg',BOX_REVIEWS_WRITE_REVIEW);?></a>&nbsp; <a href="<?php echo tep_href_link(FILENAME_CONTACT_US,'products_id='.(int)$HTTP_GET_VARS['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/botton_question.jpg',IMAGE_BUTTON_QUT);?></a> </td>
+                    <a href="<?php echo tep_href_link(FILENAME_TELL_A_FRIEND,'products_id='.(int)$_GET['products_id']) ;  ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_tellafriend.jpg',BOX_HEADING_TELL_A_FRIEND);?></a>&nbsp; <a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE,'products_id='.(int)$_GET['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_review.jpg',BOX_REVIEWS_WRITE_REVIEW);?></a>&nbsp; <a href="<?php echo tep_href_link(FILENAME_CONTACT_US,'products_id='.(int)$_GET['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/botton_question.jpg',IMAGE_BUTTON_QUT);?></a> </td>
                 </tr>
               </table></td>
           </tr>
@@ -469,7 +469,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                    color_id, 
                    color_to_products_name 
             FROM ".TABLE_COLOR_TO_PRODUCTS." 
-            WHERE products_id = '".(int)$HTTP_GET_VARS['products_id']."'
+            WHERE products_id = '".(int)$_GET['products_id']."'
         ");
 				$cnt=0;
                if(tep_db_num_rows($sub_colors_query) >= 1) {
@@ -525,7 +525,7 @@ document.write('<?php //echo '<td class="smallText" align="center"><a href="java
         <p> <?php echo $description; ?> </p>
      <?php }?>
         <?php include(DIR_WS_BOXES.'reviews.php') ; ?>
-        <!-- 		<p><a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS,'product_id='.(int)$HTTP_GET_VARS['products_id']) ; ?>"><?php echo TEXT_CURRENT_REVIEWS . ' ' . $reviews_values['count']; ?></a></p>
+        <!-- 		<p><a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS,'product_id='.(int)$_GET['products_id']) ; ?>"><?php echo TEXT_CURRENT_REVIEWS . ' ' . $reviews_values['count']; ?></a></p>
  -->
         <?php
 //    }

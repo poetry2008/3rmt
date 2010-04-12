@@ -34,7 +34,7 @@
   }
   
   
-  if(isset($HTTP_POST_VARS['act']) && $HTTP_POST_VARS['act'] == 'export') {
+  if(isset($_POST['act']) && $_POST['act'] == 'export') {
     //CSVファイルネーム指定
     $filename = 'customer_' . date("YmdHis") . '.csv';
 
@@ -43,17 +43,17 @@
 	$end   = "0000-00-00 00:00:01";
 	
 	//指定範囲の取得
-	if(!empty($HTTP_POST_VARS['s_y']) && !empty($HTTP_POST_VARS['s_m']) && !empty($HTTP_POST_VARS['s_d'])) {
-      $s_y = $HTTP_POST_VARS['s_y'] ; //開始日　年
-      $s_m = $HTTP_POST_VARS['s_m'] ; //開始日　月
-      $s_d = $HTTP_POST_VARS['s_d'] ; //開始日　日
+	if(!empty($_POST['s_y']) && !empty($_POST['s_m']) && !empty($_POST['s_d'])) {
+      $s_y = $_POST['s_y'] ; //開始日　年
+      $s_m = $_POST['s_m'] ; //開始日　月
+      $s_d = $_POST['s_d'] ; //開始日　日
       $start = $s_y.'-'.$s_m.'-'.$s_d . ' 00:00:00';
 	}
   
-    if(!empty($HTTP_POST_VARS['e_y']) && !empty($HTTP_POST_VARS['e_m']) && !empty($HTTP_POST_VARS['e_d'])) {
-	  $e_y = $HTTP_POST_VARS['e_y'] ; //終了日　年
-      $e_m = $HTTP_POST_VARS['e_m'] ; //終了日　月
-      $e_d = $HTTP_POST_VARS['e_d'] ; //終了日　日
+    if(!empty($_POST['e_y']) && !empty($_POST['e_m']) && !empty($_POST['e_d'])) {
+	  $e_y = $_POST['e_y'] ; //終了日　年
+      $e_m = $_POST['e_m'] ; //終了日　月
+      $e_d = $_POST['e_d'] ; //終了日　日
       $end = $e_y.'-'.$e_m.'-'.$e_d . ' 00:00:00';
 	}
 	

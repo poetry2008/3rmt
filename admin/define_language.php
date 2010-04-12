@@ -12,16 +12,16 @@
 
   require('includes/application_top.php');
 
-  if (!isset($HTTP_GET_VARS['lngdir']) || !$HTTP_GET_VARS['lngdir']) $HTTP_GET_VARS['lngdir'] = $language;
+  if (!isset($_GET['lngdir']) || !$_GET['lngdir']) $_GET['lngdir'] = $language;
 
   if (isset($HTTPS_GET_VARS['action'])) {
-    switch ($HTTP_GET_VARS['action']) {
+    switch ($_GET['action']) {
       case 'save':
-        if ( ($HTTP_GET_VARS['lngdir']) && ($HTTP_GET_VARS['filename']) ) {
-          if ($HTTP_GET_VARS['filename'] == $HTTP_GET_VARS['lng_dir'] . '.php') {
-            $file = DIR_FS_CATALOG_LANGUAGES . $HTTP_GET_VARS['filename'];
+        if ( ($_GET['lngdir']) && ($_GET['filename']) ) {
+          if ($_GET['filename'] == $_GET['lng_dir'] . '.php') {
+            $file = DIR_FS_CATALOG_LANGUAGES . $_GET['filename'];
           } else {
-            $file = DIR_FS_CATALOG_LANGUAGES . $HTTP_GET_VARS['lngdir'] . '/' . $HTTP_GET_VARS['filename'];
+            $file = DIR_FS_CATALOG_LANGUAGES . $_GET['lngdir'] . '/' . $_GET['filename'];
           }
           if (file_exists($file)) {
             if (file_exists('bak' . $file)) {
@@ -29,11 +29,11 @@
             }
             @rename($file, 'bak' . $file);
             $new_file = fopen($file, 'w');
-            $file_contents = stripslashes($HTTP_POST_VARS['file_contents']);
+            $file_contents = stripslashes($_POST['file_contents']);
             fwrite($new_file, $file_contents, strlen($file_contents));
             fclose($new_file);
           }
-          tep_redirect(tep_href_link(FILENAME_DEFINE_LANGUAGE, 'lngdir=' . $HTTP_GET_VARS['lngdir']));
+          tep_redirect(tep_href_link(FILENAME_DEFINE_LANGUAGE, 'lngdir=' . $_GET['lngdir']));
         }
         break;
     }
@@ -43,12 +43,12 @@
   $languages = tep_get_languages();
   $lng_exists = false;
   for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
-    if ($languages[$i]['directory'] == $HTTP_GET_VARS['lngdir']) $lng_exists = true;
+    if ($languages[$i]['directory'] == $_GET['lngdir']) $lng_exists = true;
 
     $languages_array[] = array('id' => $languages[$i]['directory'],
                                'text' => $languages[$i]['name']);
   }
-  if (!$lng_exists) $HTTP_GET_VARS['lngdir'] = $language;
+  if (!$lng_exists) $_GET['lngdir'] = $language;
 ?>
 <!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html <?php echo HTML_PARAMS; ?>>
@@ -84,11 +84,11 @@
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
-  if ( isset($HTTP_GET_VARS['lngdir']) && ($HTTP_GET_VARS['lngdir']) && ( isset($HTTP_GET_VARS['filename']) && $HTTP_GET_VARS['filename']) ) {
-    if ($HTTP_GET_VARS['filename'] == $HTTP_GET_VARS['lngdir'] . '.php') {
-      $file = DIR_FS_CATALOG_LANGUAGES . $HTTP_GET_VARS['filename'];
+  if ( isset($_GET['lngdir']) && ($_GET['lngdir']) && ( isset($_GET['filename']) && $_GET['filename']) ) {
+    if ($_GET['filename'] == $_GET['lngdir'] . '.php') {
+      $file = DIR_FS_CATALOG_LANGUAGES . $_GET['filename'];
     } else {
-      $file = DIR_FS_CATALOG_LANGUAGES . $HTTP_GET_VARS['lngdir'] . '/' . $HTTP_GET_VARS['filename'];
+      $file = DIR_FS_CATALOG_LANGUAGES . $_GET['lngdir'] . '/' . $_GET['filename'];
     }
     if (file_exists($file)) {
       $file_array = file($file);
@@ -103,10 +103,10 @@
       }
 
 ?>
-          <tr><?php echo tep_draw_form('language', FILENAME_DEFINE_LANGUAGE, 'lngdir=' . $HTTP_GET_VARS['lngdir'] . '&filename=' . $HTTP_GET_VARS['filename'] . '&action=save'); ?>
+          <tr><?php echo tep_draw_form('language', FILENAME_DEFINE_LANGUAGE, 'lngdir=' . $_GET['lngdir'] . '&filename=' . $_GET['filename'] . '&action=save'); ?>
             <td><table border="0" cellspacing="0" cellpadding="2">
               <tr>
-                <td class="main"><b><?php echo $HTTP_GET_VARS['filename']; ?></b></td>
+                <td class="main"><b><?php echo $_GET['filename']; ?></b></td>
               </tr>
               <tr>
                 <td class="main"><?php echo tep_draw_textarea_field('file_contents', 'soft', '80', '20', $file_contents, (($file_writeable) ? '' : 'readonly')); ?></td>
@@ -115,7 +115,7 @@
                 <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
               <tr>
-                <td align="right"><?php if ($file_writeable) { echo tep_image_submit('button_save.gif', IMAGE_SAVE) . '&nbsp;<a href="' . tep_href_link(FILENAME_DEFINE_LANGUAGE, 'lngdir=' . $HTTP_GET_VARS['lngdir']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; } else { echo '<a href="' . tep_href_link(FILENAME_DEFINE_LANGUAGE, 'lngdir=' . $HTTP_GET_VARS['lngdir']) . '">' . tep_image_button('button_back.gif', IMAGE_BACK) . '</a>'; } ?></td>
+                <td align="right"><?php if ($file_writeable) { echo tep_image_submit('button_save.gif', IMAGE_SAVE) . '&nbsp;<a href="' . tep_href_link(FILENAME_DEFINE_LANGUAGE, 'lngdir=' . $_GET['lngdir']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; } else { echo '<a href="' . tep_href_link(FILENAME_DEFINE_LANGUAGE, 'lngdir=' . $_GET['lngdir']) . '">' . tep_image_button('button_back.gif', IMAGE_BACK) . '</a>'; } ?></td>
               </tr>
             </table></td>
           </form></tr>
@@ -129,25 +129,25 @@
             <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
           <tr>
-            <td><?php echo '<a href="' . tep_href_link(FILENAME_DEFINE_LANGUAGE, 'lngdir=' . $HTTP_GET_VARS['lngdir']) . '">' . tep_image_button('button_back.gif', IMAGE_BACK) . '</a>'; ?></td>
+            <td><?php echo '<a href="' . tep_href_link(FILENAME_DEFINE_LANGUAGE, 'lngdir=' . $_GET['lngdir']) . '">' . tep_image_button('button_back.gif', IMAGE_BACK) . '</a>'; ?></td>
           </tr>
 <?php
     }
   } else {
-    $filename = $HTTP_GET_VARS['lngdir'] . '.php';
+    $filename = $_GET['lngdir'] . '.php';
 ?>
           <tr>
             <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
-                <td class="smallText"><a href="<?php echo tep_href_link(FILENAME_DEFINE_LANGUAGE, 'lngdir=' . $HTTP_GET_VARS['lngdir'] . '&filename=' . $filename); ?>"><b><?php echo $filename; ?></b></a></td>
+                <td class="smallText"><a href="<?php echo tep_href_link(FILENAME_DEFINE_LANGUAGE, 'lngdir=' . $_GET['lngdir'] . '&filename=' . $filename); ?>"><b><?php echo $filename; ?></b></a></td>
 <?php
-    $dir = dir(DIR_FS_CATALOG_LANGUAGES . $HTTP_GET_VARS['lngdir']);
+    $dir = dir(DIR_FS_CATALOG_LANGUAGES . $_GET['lngdir']);
     $left = false;
     if ($dir) {
       $file_extension = substr($PHP_SELF, strrpos($PHP_SELF, '.'));
       while ($file = $dir->read()) {
         if (substr($file, strrpos($file, '.')) == $file_extension) {
-          echo '                <td class="smallText"><a href="' . tep_href_link(FILENAME_DEFINE_LANGUAGE, 'lngdir=' . $HTTP_GET_VARS['lngdir'] . '&filename=' . $file) . '">' . $file . '</a></td>' . "\n";
+          echo '                <td class="smallText"><a href="' . tep_href_link(FILENAME_DEFINE_LANGUAGE, 'lngdir=' . $_GET['lngdir'] . '&filename=' . $file) . '">' . $file . '</a></td>' . "\n";
           if (!$left) {
             echo '              </tr>' . "\n" .
                  '              <tr>' . "\n";
@@ -165,7 +165,7 @@
             <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
           <tr>
-            <td align="right"><?php echo '<a href="' . tep_href_link(FILENAME_FILE_MANAGER, 'current_path=' . DIR_FS_CATALOG_LANGUAGES . $HTTP_GET_VARS['lngdir']) . '">' . tep_image_button('button_file_manager.gif', IMAGE_FILE_MANAGER) . '</a>'; ?></td>
+            <td align="right"><?php echo '<a href="' . tep_href_link(FILENAME_FILE_MANAGER, 'current_path=' . DIR_FS_CATALOG_LANGUAGES . $_GET['lngdir']) . '">' . tep_image_button('button_file_manager.gif', IMAGE_FILE_MANAGER) . '</a>'; ?></td>
           </tr>
 <?php
   }

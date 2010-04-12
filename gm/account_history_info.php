@@ -13,9 +13,9 @@
   require('includes/application_top.php');
 
   //forward 404
-  if (isset($HTTP_GET_VARS['order_id']))
+  if (isset($_GET['order_id']))
 {
-  $_404_query = tep_db_query("select * from " .TABLE_ORDERS . " where orders_id = '" . $HTTP_GET_VARS['order_id'] . "' and site_id = '".SITE_ID."'");
+  $_404_query = tep_db_query("select * from " .TABLE_ORDERS . " where orders_id = '" . $_GET['order_id'] . "' and site_id = '".SITE_ID."'");
   $_404 = tep_db_fetch_array($_404_query);
 
   forward404Unless($_404);
@@ -30,11 +30,11 @@
     tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
   }
 
-  if (!isset($HTTP_GET_VARS['order_id'])) {
+  if (!isset($_GET['order_id'])) {
     tep_redirect(tep_href_link(FILENAME_HISTORY, '', 'SSL'));
   }
   
-  $customer_number_query = tep_db_query("select customers_id from " . TABLE_ORDERS .  " where orders_id = '".  tep_db_input(tep_db_prepare_input($HTTP_GET_VARS['order_id'])) . "' and site_id = '".SITE_ID."'");
+  $customer_number_query = tep_db_query("select customers_id from " . TABLE_ORDERS .  " where orders_id = '".  tep_db_input(tep_db_prepare_input($_GET['order_id'])) . "' and site_id = '".SITE_ID."'");
   $customer_number = tep_db_fetch_array($customer_number_query);
   if ($customer_number['customers_id'] != $customer_id) {
     tep_redirect(tep_href_link(FILENAME_ACCOUNT_HISTORY, '', 'SSL'));
@@ -44,10 +44,10 @@
 
   $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_ACCOUNT, '', 'SSL'));
   $breadcrumb->add(NAVBAR_TITLE_2, tep_href_link(FILENAME_ACCOUNT_HISTORY, '', 'SSL'));
-  $breadcrumb->add(NAVBAR_TITLE_3, tep_href_link(FILENAME_ACCOUNT_HISTORY_INFO, 'order_id=' . $HTTP_GET_VARS['order_id'], 'SSL'));
+  $breadcrumb->add(NAVBAR_TITLE_3, tep_href_link(FILENAME_ACCOUNT_HISTORY_INFO, 'order_id=' . $_GET['order_id'], 'SSL'));
 
   require(DIR_WS_CLASSES . 'order.php');
-  $order = new order($HTTP_GET_VARS['order_id']);
+  $order = new order($_GET['order_id']);
 ?>
 <?php page_head();?>
 </head>
@@ -72,7 +72,7 @@
             <tr> 
               <td><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2"> 
                   <tr> 
-                    <td class="main" colspan="2"><b><?php echo sprintf(HEADING_ORDER_NUMBER, $HTTP_GET_VARS['order_id']) . ' <small>(' . $order->info['orders_status'] . ')</small>'; ?></b></td> 
+                    <td class="main" colspan="2"><b><?php echo sprintf(HEADING_ORDER_NUMBER, $_GET['order_id']) . ' <small>(' . $order->info['orders_status'] . ')</small>'; ?></b></td> 
                   </tr> 
                   <tr> 
                     <td class="smallText"><?php echo HEADING_ORDER_DATE . ' ' . tep_date_long($order->info['date_purchased']); ?></td> 
@@ -207,7 +207,7 @@
                   <tr class="infoBoxContents"> 
                     <td valign="top"><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <?php
-  $statuses_query = tep_db_query("select os.orders_status_name, osh.date_added, osh.comments from " . TABLE_ORDERS_STATUS . " os, " . TABLE_ORDERS_STATUS_HISTORY . " osh where osh.orders_id = '" . $HTTP_GET_VARS['order_id'] . "' and osh.orders_status_id = os.orders_status_id and os.language_id = '" . $languages_id . "' and osh.customer_notified = '1' order by osh.date_added");
+  $statuses_query = tep_db_query("select os.orders_status_name, osh.date_added, osh.comments from " . TABLE_ORDERS_STATUS . " os, " . TABLE_ORDERS_STATUS_HISTORY . " osh where osh.orders_id = '" . $_GET['order_id'] . "' and osh.orders_status_id = os.orders_status_id and os.language_id = '" . $languages_id . "' and osh.customer_notified = '1' order by osh.date_added");
   while ($statuses = tep_db_fetch_array($statuses_query)) {
     echo '              <tr>' . "\n" .
          '                <td class="main" valign="top" width="75">' . tep_date_short($statuses['date_added']) . '</td>' . "\n" .

@@ -13,37 +13,37 @@
   require('includes/application_top.php');
 
   //redirect 404
-if (isset($HTTP_GET_VARS['cPath']))
+if (isset($_GET['cPath']))
 {
   $_404_query = tep_db_query("select * from " . TABLE_CATEGORIES . " where
-      categories_id = '" . $HTTP_GET_VARS['cPath'] . "'");
+      categories_id = '" . $_GET['cPath'] . "'");
   $_404 = tep_db_fetch_array($_404_query);
 
   forward404Unless($_404);
 }
 
-if (isset($HTTP_GET_VARS['tags_id']))
+if (isset($_GET['tags_id']))
 {
   $_404_query = tep_db_query("select * from " . TABLE_TAGS . " where tags_id = '"
-      . $HTTP_GET_VARS['tags_id'] . "'");
+      . $_GET['tags_id'] . "'");
   $_404 = tep_db_fetch_array($_404_query);
 
   forward404Unless($_404);
 }
 
-if (!empty($HTTP_GET_VARS['manufacturers_id']))
+if (!empty($_GET['manufacturers_id']))
 {
   $_404_query = tep_db_query("select * from " . TABLE_MANUFACTURERS . " where manufacturers_id = '"
-      . $HTTP_GET_VARS['manufacturers_id'] . "'");
+      . $_GET['manufacturers_id'] . "'");
   $_404 = tep_db_fetch_array($_404_query);
 
   forward404Unless($_404);
 }
 
-if (isset($HTTP_GET_VARS['colors']))
+if (isset($_GET['colors']))
 {
   $_404_query = tep_db_query("select * from " . TABLE_COLOR. " where color_id = '" .
-      $HTTP_GET_VARS['colors'] . "'");
+      $_GET['colors'] . "'");
   $_404 = tep_db_fetch_array($_404_query);
 
   forward404Unless($_404);
@@ -79,13 +79,13 @@ if (isset($HTTP_GET_VARS['colors']))
   $seo_category_query = tep_db_query("select categories_name,seo_name,seo_description,categories_image3,categories_meta_text,categories_header_text,categories_footer_text,text_information,meta_keywords,meta_description, categories_id from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '".$current_category_id."' and language_id='" . $languages_id . "' and site_id = '".SITE_ID."'");
   $seo_category = tep_db_fetch_array($seo_category_query);
   
-  $seo_manufacturers_query = tep_db_query("select manufacturers_id, manufacturers_name from " . TABLE_MANUFACTURERS . " where manufacturers_id = '".$HTTP_GET_VARS['manufacturers_id']."'");
+  $seo_manufacturers_query = tep_db_query("select manufacturers_id, manufacturers_name from " . TABLE_MANUFACTURERS . " where manufacturers_id = '".$_GET['manufacturers_id']."'");
   $seo_manufacturers = tep_db_fetch_array($seo_manufacturers_query);
   
 
-   if (!isset($HTTP_GET_VARS['tags_id'])) $HTTP_GET_VARS['tags_id'] = NULL;// del notice 
+   if (!isset($_GET['tags_id'])) $_GET['tags_id'] = NULL;// del notice 
   $seo_tags_query = tep_db_query("select * from ". TABLE_TAGS . " where tags_id =
-      '".(int)$HTTP_GET_VARS['tags_id']."'");
+      '".(int)$_GET['tags_id']."'");
   $seo_tags = tep_db_fetch_array($seo_tags_query);  
   //------ SEO TUNING  -----//
 
@@ -118,7 +118,7 @@ if (isset($HTTP_GET_VARS['colors']))
 			</td>
 			<!-- body_text //-->
 <?php
-if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;//del notice
+if (!isset($_GET['action'])) $_GET['action'] = NULL;//del notice
   if ($category_depth == 'nested') {
     $category_query = tep_db_query("select cd.categories_name, c.categories_image from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where c.categories_id = '" . $current_category_id . "' and cd.categories_id = '" . $current_category_id . "' and cd.language_id = '" . $languages_id .  "' and cd.site_id = '".SITE_ID."'");
     $category = tep_db_fetch_array($category_query);
@@ -128,7 +128,7 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;//del noti
 <?php  
 	if (isset($cPath_array)) {
       echo '<h1 class="pageHeading">'.$seo_category['categories_name'].'</h1>';
-	  } elseif ($HTTP_GET_VARS['manufacturers_id']) {
+	  } elseif ($_GET['manufacturers_id']) {
        echo '<h1 class="pageHeading">'.$seo_manufacturers['manufacturers_name'].'</h1>';
       }
 ?> 
@@ -199,7 +199,7 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;//del noti
 			<!-- right_navigation_eof //-->
 		</td> 
 <?php
- } elseif ($HTTP_GET_VARS['tags_id']) {
+ } elseif ($_GET['tags_id']) {
 // create column list
     $define_list = array('PRODUCT_LIST_MODEL' => PRODUCT_LIST_MODEL,
                          'PRODUCT_LIST_NAME' => PRODUCT_LIST_NAME,
@@ -220,27 +220,27 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;//del noti
     }
   if (tep_session_is_registered('customer_id'))
   {
-    $products_query = "select *, p.products_id , IF(s.status, s.specials_new_products_price, p.products_price) as final_price from " . TABLE_PRODUCTS_TO_TAGS . " as p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id where p2t.tags_id = " .  (int)$HTTP_GET_VARS['tags_id'] . " and pd.site_id = '".SITE_ID."'";
+    $products_query = "select *, p.products_id , IF(s.status, s.specials_new_products_price, p.products_price) as final_price from " . TABLE_PRODUCTS_TO_TAGS . " as p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id where p2t.tags_id = " .  (int)$_GET['tags_id'] . " and pd.site_id = '".SITE_ID."'";
   }
   else
   {
-    $products_query = "select *, p.products_id, IF(s.status, s.specials_new_products_price, p.products_price) as final_price from " . TABLE_PRODUCTS_TO_TAGS . " as p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id where p2t.tags_id = " .(int)$HTTP_GET_VARS['tags_id'] . " and pd.site_id = '".SITE_ID."'";
+    $products_query = "select *, p.products_id, IF(s.status, s.specials_new_products_price, p.products_price) as final_price from " . TABLE_PRODUCTS_TO_TAGS . " as p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id where p2t.tags_id = " .(int)$_GET['tags_id'] . " and pd.site_id = '".SITE_ID."'";
   } 
 
      $listing_sql = $products_query;
 
-     if (!isset($HTTP_GET_VARS['sort'])) $HTTP_GET_VARS['sort'] = NULL;//del notice
-  if ( (!$HTTP_GET_VARS['sort']) || (!preg_match('/[1-9][ad]/', $HTTP_GET_VARS['sort'])) || (substr($HTTP_GET_VARS['sort'],0,1) > sizeof($column_list)) ) {
+     if (!isset($_GET['sort'])) $_GET['sort'] = NULL;//del notice
+  if ( (!$_GET['sort']) || (!preg_match('/[1-9][ad]/', $_GET['sort'])) || (substr($_GET['sort'],0,1) > sizeof($column_list)) ) {
     for ($col=0, $n=sizeof($column_list); $col<$n; $col++) {
       if ($column_list[$col] == 'PRODUCT_LIST_NAME') {
-        $HTTP_GET_VARS['sort'] = $col+1 . 'a';
+        $_GET['sort'] = $col+1 . 'a';
         $listing_sql .= " order by pd.products_name";
         break;
       }
     }
   } else {
-    $sort_col = substr($HTTP_GET_VARS['sort'], 0 , 1);
-    $sort_order = substr($HTTP_GET_VARS['sort'], 1);
+    $sort_col = substr($_GET['sort'], 0 , 1);
+    $sort_order = substr($_GET['sort'], 1);
     $listing_sql .= ' order by ';
     switch ($column_list[$sort_col-1]) {
       case 'PRODUCT_LIST_MODEL':
@@ -275,7 +275,7 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;//del noti
         <h1 class="pageHeading_long">
         <?php
         $sel_tags_query = tep_db_query("select * from ".TABLE_TAGS." where tags_id =
-            '".(int)$HTTP_GET_VARS['tags_id']."'"); 
+            '".(int)$_GET['tags_id']."'"); 
         $sel_tags_res = tep_db_fetch_array($sel_tags_query); 
         if ($sel_tags_res) {
           echo $sel_tags_res['tags_name']; 
@@ -287,7 +287,7 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;//del noti
         <p class="pageBottom_long"></p>
         </td>
 <?php
-  } elseif ($category_depth == 'products' || $HTTP_GET_VARS['manufacturers_id']) {
+  } elseif ($category_depth == 'products' || $_GET['manufacturers_id']) {
 // create column list
     $define_list = array('PRODUCT_LIST_MODEL' => PRODUCT_LIST_MODEL,
                          'PRODUCT_LIST_NAME' => PRODUCT_LIST_NAME,
@@ -347,30 +347,30 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;//del noti
     }
 
 // show the products of a specified manufacturer
-    if (isset($HTTP_GET_VARS['manufacturers_id'])) {
-      if (isset($HTTP_GET_VARS['filter_id'])) {
+    if (isset($_GET['manufacturers_id'])) {
+      if (isset($_GET['filter_id'])) {
 // We are asked to show only a specific category
 	/* edit by bobhero start  */
         /* add '(' after final_price before '"' */
 	/* add ')' after p2c before left join */
-        $listing_sql = "select " . $select_column_list . " p.products_id, p.manufacturers_id, p.products_price, p.products_tax_class_id, IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, IF(s.status, s.specials_new_products_price, p.products_price) as final_price from (" . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_MANUFACTURERS . " m, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c) left join " .  TABLE_SPECIALS . " s on p.products_id = s.products_id where p.products_status = '1' and p.manufacturers_id = m.manufacturers_id and m.manufacturers_id = '" .  $HTTP_GET_VARS['manufacturers_id'] . "' and p.products_id = p2c.products_id and pd.products_id = p2c.products_id and pd.language_id = '" . $languages_id . "' and p2c.categories_id = '" . $HTTP_GET_VARS['filter_id'] . "' and pd.site_id = '".SITE_ID."'";
+        $listing_sql = "select " . $select_column_list . " p.products_id, p.manufacturers_id, p.products_price, p.products_tax_class_id, IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, IF(s.status, s.specials_new_products_price, p.products_price) as final_price from (" . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_MANUFACTURERS . " m, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c) left join " .  TABLE_SPECIALS . " s on p.products_id = s.products_id where p.products_status = '1' and p.manufacturers_id = m.manufacturers_id and m.manufacturers_id = '" .  $_GET['manufacturers_id'] . "' and p.products_id = p2c.products_id and pd.products_id = p2c.products_id and pd.language_id = '" . $languages_id . "' and p2c.categories_id = '" . $_GET['filter_id'] . "' and pd.site_id = '".SITE_ID."'";
 	/* edit by bobhero end  */
       } else {
 // We show them all
 	/* edit by bobhero start  */
 	/* do as above */
-        $listing_sql = "select " . $select_column_list . " p.products_id, p.manufacturers_id, p.products_price, p.products_tax_class_id, IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, IF(s.status, s.specials_new_products_price, p.products_price) as final_price from (" . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_MANUFACTURERS . " m ) left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id where p.products_status = '1' and pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "' and p.manufacturers_id = m.manufacturers_id and m.manufacturers_id = '" . $HTTP_GET_VARS['manufacturers_id'] . "' and pd.site_id = '".SITE_ID."'";
+        $listing_sql = "select " . $select_column_list . " p.products_id, p.manufacturers_id, p.products_price, p.products_tax_class_id, IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, IF(s.status, s.specials_new_products_price, p.products_price) as final_price from (" . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_MANUFACTURERS . " m ) left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id where p.products_status = '1' and pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "' and p.manufacturers_id = m.manufacturers_id and m.manufacturers_id = '" . $_GET['manufacturers_id'] . "' and pd.site_id = '".SITE_ID."'";
 	/* bobhero edit end */
       }
 // We build the categories-dropdown
-      $filterlist_sql = "select distinct c.categories_id as id, cd.categories_name as name from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where p.products_status = '1' and p.products_id = p2c.products_id and p2c.categories_id = c.categories_id and p2c.categories_id = cd.categories_id and cd.language_id = '" . $languages_id . "' and p.manufacturers_id = '" .  $HTTP_GET_VARS['manufacturers_id'] . "' and cd.site_id = '".SITE_ID."' order by cd.categories_name";
+      $filterlist_sql = "select distinct c.categories_id as id, cd.categories_name as name from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where p.products_status = '1' and p.products_id = p2c.products_id and p2c.categories_id = c.categories_id and p2c.categories_id = cd.categories_id and cd.language_id = '" . $languages_id . "' and p.manufacturers_id = '" .  $_GET['manufacturers_id'] . "' and cd.site_id = '".SITE_ID."' order by cd.categories_name";
     } else {
 // show the products in a given categorie
-      if (isset($HTTP_GET_VARS['filter_id'])) {
+      if (isset($_GET['filter_id'])) {
 // We are asked to show only specific catgeory
 	/* edit by bobhero start */
 	/* as above */
-        $listing_sql = "select " . $select_column_list . " p.products_id, p.manufacturers_id, p.products_price, p.products_tax_class_id, IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, IF(s.status, s.specials_new_products_price, p.products_price) as final_price from ( " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_MANUFACTURERS . " m, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c  ) left join " .  TABLE_SPECIALS . " s on p.products_id = s.products_id where p.products_status = '1' and p.manufacturers_id = m.manufacturers_id and m.manufacturers_id = '" .  $HTTP_GET_VARS['filter_id'] . "' and p.products_id = p2c.products_id and pd.products_id = p2c.products_id and pd.language_id = '" . $languages_id . "' and p2c.categories_id = '" . $current_category_id . "' and pd.site_id = '".SITE_ID."'";
+        $listing_sql = "select " . $select_column_list . " p.products_id, p.manufacturers_id, p.products_price, p.products_tax_class_id, IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, IF(s.status, s.specials_new_products_price, p.products_price) as final_price from ( " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_MANUFACTURERS . " m, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c  ) left join " .  TABLE_SPECIALS . " s on p.products_id = s.products_id where p.products_status = '1' and p.manufacturers_id = m.manufacturers_id and m.manufacturers_id = '" .  $_GET['filter_id'] . "' and p.products_id = p2c.products_id and pd.products_id = p2c.products_id and pd.language_id = '" . $languages_id . "' and p2c.categories_id = '" . $current_category_id . "' and pd.site_id = '".SITE_ID."'";
 	/* edit by bobhero end  */
       } else {
 // We show them all
@@ -380,18 +380,18 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;//del noti
       $filterlist_sql= "select distinct m.manufacturers_id as id, m.manufacturers_name as name from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " . TABLE_MANUFACTURERS . " m where p.products_status = '1' and p.manufacturers_id = m.manufacturers_id and p.products_id = p2c.products_id and p2c.categories_id = '" . $current_category_id . "' order by m.manufacturers_name";
     }
 
-    if (!isset($HTTP_GET_VARS['sort'])) $HTTP_GET_VARS['sort'] = NULL;
-    if ( (!$HTTP_GET_VARS['sort']) || (!ereg('[1-9][ad]', $HTTP_GET_VARS['sort'])) || (substr($HTTP_GET_VARS['sort'],0,1) > sizeof($column_list)) ) {
+    if (!isset($_GET['sort'])) $_GET['sort'] = NULL;
+    if ( (!$_GET['sort']) || (!ereg('[1-9][ad]', $_GET['sort'])) || (substr($_GET['sort'],0,1) > sizeof($column_list)) ) {
       for ($col=0, $n=sizeof($column_list); $col<$n; $col++) {
         if ($column_list[$col] == 'PRODUCT_LIST_NAME') {
-          $HTTP_GET_VARS['sort'] = $col+1 . 'a';
+          $_GET['sort'] = $col+1 . 'a';
           $listing_sql .= " order by pd.products_name";
           break;
         }
       }
     } else {
-      $sort_col = substr($HTTP_GET_VARS['sort'], 0 , 1);
-      $sort_order = substr($HTTP_GET_VARS['sort'], 1);
+      $sort_col = substr($_GET['sort'], 0 , 1);
+      $sort_order = substr($_GET['sort'], 1);
       $listing_sql .= ' order by ';
       switch ($column_list[$sort_col-1]) {
         case 'PRODUCT_LIST_MODEL':
@@ -425,7 +425,7 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;//del noti
 		<h1 class="pageHeading_long"><?php
 	if (isset($cPath_array)) {
 		echo $seo_category['categories_name'];
-	} elseif ($HTTP_GET_VARS['manufacturers_id']) {
+	} elseif ($_GET['manufacturers_id']) {
 		echo $seo_manufacturers['manufacturers_name'];
 	} else {
 		echo HEADING_TITLE;
@@ -433,8 +433,8 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;//del noti
 ?></h1>
 		<div class="comment_long"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?>
 		<h2 class="line"><?php
-	if($HTTP_GET_VARS['cPath']) {
-		$categories_path = explode('_', $HTTP_GET_VARS['cPath']);
+	if($_GET['cPath']) {
+		$categories_path = explode('_', $_GET['cPath']);
 
 		//大カテゴリの画像を返す
 		$_categories_query = tep_db_query("select categories_name from categories_description where categories_id = '".$categories_path[0]."' and language_id = '".$languages_id."' and site_id = '".SITE_ID."'");
@@ -450,12 +450,12 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;//del noti
       </td> 
       <?php
   // Add Color =============================================================================
-  } elseif($HTTP_GET_VARS['colors'] && !empty($HTTP_GET_VARS['colors'])) {
+  } elseif($_GET['colors'] && !empty($_GET['colors'])) {
 	
-	$colors_title_query = tep_db_query("select color_name from ".TABLE_COLOR." where color_id = '".(int)$HTTP_GET_VARS['colors']."'");
+	$colors_title_query = tep_db_query("select color_name from ".TABLE_COLOR." where color_id = '".(int)$_GET['colors']."'");
 	$colors_title = tep_db_fetch_array($colors_title_query);
 	
-	$listing_sql = "select pd.products_name, p.products_image, cp.color_id, cp.color_image, p.products_id, p.manufacturers_id, p.products_price, p.products_tax_class_id, IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, IF(s.status, s.specials_new_products_price, p.products_price) as final_price, p.products_quantity, pd.products_description from " . TABLE_PRODUCTS_DESCRIPTION . " pd, ".TABLE_COLOR_TO_PRODUCTS." cp, " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id where p.products_status = '1' and p.products_id = p2c.products_id and pd.products_id = p2c.products_id and pd.language_id = '" . $languages_id . "' and cp.products_id = p.products_id and cp.color_id = '".(int)$HTTP_GET_VARS['colors']."'";
+	$listing_sql = "select pd.products_name, p.products_image, cp.color_id, cp.color_image, p.products_id, p.manufacturers_id, p.products_price, p.products_tax_class_id, IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, IF(s.status, s.specials_new_products_price, p.products_price) as final_price, p.products_quantity, pd.products_description from " . TABLE_PRODUCTS_DESCRIPTION . " pd, ".TABLE_COLOR_TO_PRODUCTS." cp, " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id where p.products_status = '1' and p.products_id = p2c.products_id and pd.products_id = p2c.products_id and pd.language_id = '" . $languages_id . "' and cp.products_id = p.products_id and cp.color_id = '".(int)$_GET['colors']."'";
 	$listing_sql .= " order by pd.products_name";
 	
 	//View
@@ -465,7 +465,7 @@ if (!isset($HTTP_GET_VARS['action'])) $HTTP_GET_VARS['action'] = NULL;//del noti
 	echo '</td>';
 	//======================================================================================
   // maker
-  } elseif($HTTP_GET_VARS['action'] && $HTTP_GET_VARS['action'] == 'select') { // select my game 
+  } elseif($_GET['action'] && $_GET['action'] == 'select') { // select my game 
 ?> 
 	  <td valign="top" id="contents">
       <?php include(DIR_WS_MODULES . 'select_categories.php');?>

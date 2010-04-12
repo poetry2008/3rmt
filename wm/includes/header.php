@@ -18,7 +18,7 @@
   }
   // check if the configure.php file is writeable
   if (WARN_CONFIG_WRITEABLE == 'true') {
-    if ( (file_exists(dirname($HTTP_SERVER_VARS['SCRIPT_FILENAME']) . '/includes/configure.php')) && (is_writeable(dirname($HTTP_SERVER_VARS['SCRIPT_FILENAME']) . '/includes/configure.php')) ) {
+    if ( (file_exists(dirname($_SERVER['SCRIPT_FILENAME']) . '/includes/configure.php')) && (is_writeable(dirname($_SERVER['SCRIPT_FILENAME']) . '/includes/configure.php')) ) {
       tep_output_warning(WARNING_CONFIG_FILE_WRITEABLE);
     }
   }
@@ -48,12 +48,12 @@
 
 <div id="title">
   <?php
-  if (!isset($HTTP_GET_VARS['cPath'])) $HTTP_GET_VARS['cPath'] = NULL; //del notice
-  if (!isset($HTTP_GET_VARS['products_id'])) $HTTP_GET_VARS['products_id'] = NULL; //del notice
-  if ($HTTP_GET_VARS['cPath']) {
+  if (!isset($_GET['cPath'])) $_GET['cPath'] = NULL; //del notice
+  if (!isset($_GET['products_id'])) $_GET['products_id'] = NULL; //del notice
+  if ($_GET['cPath']) {
     echo $seo_category['seo_name'] . ' RMT <a href="javascript:void(0);" onkeypress="SomeJavaScriptCode" style="cursor:hand" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト ワールドマネーをお気に入りに追加して下さい！</a>' . "\n";
-  } elseif ($HTTP_GET_VARS['products_id']) {
-    echo ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1) . 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">総合サイト ワールドマネーをお気に入りに追加して下さい！</a>' . "\n";
+  } elseif ($_GET['products_id']) {
+    echo ds_tep_get_categories((int)$_GET['products_id'],1) . 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">総合サイト ワールドマネーをお気に入りに追加して下さい！</a>' . "\n";
   } else {
     echo 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト ワールドマネーをお気に入りに追加して下さい！</a>' . "\n";
   }  
@@ -108,10 +108,10 @@
                       <?php
 // --- get categoris list ( parent_id = 0 ) --- //
   $cat1 = '';
-  if ($HTTP_GET_VARS['cPath']) {
-    $cat0 = explode('_', $HTTP_GET_VARS['cPath']);
-  } elseif ($HTTP_GET_VARS['products_id']) {
-    $cat_products = tep_get_product_path($HTTP_GET_VARS['products_id']);
+  if ($_GET['cPath']) {
+    $cat0 = explode('_', $_GET['cPath']);
+  } elseif ($_GET['products_id']) {
+    $cat_products = tep_get_product_path($_GET['products_id']);
     $cat0 = explode('_', $cat_products);
   }
   if (!isset($cat0[0])) $cat0[0] = NULL; //del notice
@@ -192,20 +192,20 @@
   </div>
 </div>
 <?php
-  if (isset($HTTP_GET_VARS['error_message']) && tep_not_null($HTTP_GET_VARS['error_message'])) {
+  if (isset($_GET['error_message']) && tep_not_null($_GET['error_message'])) {
 ?>
 <table width="100%" border="0" align="center" cellpadding="2" cellspacing="0" summary="headerError">
   <tr class="headerError">
-    <td class="headerError"><?php echo htmlspecialchars(urldecode($HTTP_GET_VARS['error_message'])); ?></td>
+    <td class="headerError"><?php echo htmlspecialchars(urldecode($_GET['error_message'])); ?></td>
   </tr>
 </table>
 <?php
   }
-  if (isset($HTTP_GET_VARS['info_message']) && tep_not_null($HTTP_GET_VARS['info_message'])) {
+  if (isset($_GET['info_message']) && tep_not_null($_GET['info_message'])) {
 ?>
 <table width="100%" border="0" align="center" cellpadding="2" cellspacing="0" summary="headerInfo">
   <tr class="headerInfo">
-    <td class="headerInfo"><?php echo htmlspecialchars($HTTP_GET_VARS['info_message']); ?></td>
+    <td class="headerInfo"><?php echo htmlspecialchars($_GET['info_message']); ?></td>
   </tr>
 </table>
 <?php

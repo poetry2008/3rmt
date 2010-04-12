@@ -35,29 +35,29 @@
 
   $error = false;
   $process = false;
-  if (isset($HTTP_POST_VARS['action']) && ($HTTP_POST_VARS['action'] == 'submit')) {
+  if (isset($_POST['action']) && ($_POST['action'] == 'submit')) {
 // process a new shipping address
-    if (tep_not_null($HTTP_POST_VARS['firstname']) && tep_not_null($HTTP_POST_VARS['lastname']) && tep_not_null($HTTP_POST_VARS['street_address'])) {
+    if (tep_not_null($_POST['firstname']) && tep_not_null($_POST['lastname']) && tep_not_null($_POST['street_address'])) {
       $process = true;
 
-      $gender = tep_db_prepare_input($HTTP_POST_VARS['gender']);
-      $company = tep_db_prepare_input($HTTP_POST_VARS['company']);
-      $firstname = tep_db_prepare_input($HTTP_POST_VARS['firstname']);
-      $lastname = tep_db_prepare_input($HTTP_POST_VARS['lastname']);
+      $gender = tep_db_prepare_input($_POST['gender']);
+      $company = tep_db_prepare_input($_POST['company']);
+      $firstname = tep_db_prepare_input($_POST['firstname']);
+      $lastname = tep_db_prepare_input($_POST['lastname']);
 	  
 	  //add
-	  $firstname_f = tep_db_prepare_input($HTTP_POST_VARS['firstname_f']);
-      $lastname_f = tep_db_prepare_input($HTTP_POST_VARS['lastname_f']);
+	  $firstname_f = tep_db_prepare_input($_POST['firstname_f']);
+      $lastname_f = tep_db_prepare_input($_POST['lastname_f']);
 	  
-      $street_address = tep_db_prepare_input($HTTP_POST_VARS['street_address']);
-      $suburb = tep_db_prepare_input($HTTP_POST_VARS['suburb']);
-      $postcode = tep_db_prepare_input($HTTP_POST_VARS['postcode']);
-      $city = tep_db_prepare_input($HTTP_POST_VARS['city']);
-      $country = tep_db_prepare_input($HTTP_POST_VARS['country']);
-      $zone_id = tep_db_prepare_input($HTTP_POST_VARS['zone_id']);
-      $state = tep_db_prepare_input($HTTP_POST_VARS['state']);
+      $street_address = tep_db_prepare_input($_POST['street_address']);
+      $suburb = tep_db_prepare_input($_POST['suburb']);
+      $postcode = tep_db_prepare_input($_POST['postcode']);
+      $city = tep_db_prepare_input($_POST['city']);
+      $country = tep_db_prepare_input($_POST['country']);
+      $zone_id = tep_db_prepare_input($_POST['zone_id']);
+      $state = tep_db_prepare_input($_POST['state']);
 // 2003-06-06 add_telephone
-      $telephone = tep_db_prepare_input($HTTP_POST_VARS['telephone']);
+      $telephone = tep_db_prepare_input($_POST['telephone']);
 
       if (ACCOUNT_GENDER == 'true') {
         if (($gender == 'm') || ($gender == 'f')) {
@@ -217,10 +217,10 @@
         tep_redirect(tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
       }
 // process the selected shipping destination
-    } elseif (isset($HTTP_POST_VARS['address'])) {
+    } elseif (isset($_POST['address'])) {
       $reset_shipping = false;
       if (tep_session_is_registered('sendto')) {
-        if ($sendto != $HTTP_POST_VARS['address']) {
+        if ($sendto != $_POST['address']) {
           if (tep_session_is_registered('shipping')) {
             $reset_shipping = true;
           }
@@ -229,7 +229,7 @@
         tep_session_register('sendto');
       }
 
-      $sendto = $HTTP_POST_VARS['address'];
+      $sendto = $_POST['address'];
 
       $check_address_query = tep_db_query("select count(*) as total from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer_id . "' and address_book_id = '" . $sendto . "'");
       $check_address = tep_db_fetch_array($check_address_query);

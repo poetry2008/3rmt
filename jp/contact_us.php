@@ -11,7 +11,7 @@
 	$mail_text = '';
 	
 	//product_idを取得した場合商品名を呼び出す
-	if (isset($HTTP_GET_VARS['products_id'])) {
+	if (isset($_GET['products_id'])) {
 //ccdd
     /*
 		$product_info_query = tep_db_query("
@@ -19,13 +19,13 @@
         FROM " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
         WHERE pd.site_id = '" . SITE_ID . "' 
           AND p.products_status = '1' 
-          AND p.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' 
+          AND p.products_id = '" . (int)$_GET['products_id'] . "' 
           AND p.products_id = pd.products_id 
           AND pd.language_id = '" . $languages_id . "'
     ");
 		$product_info = tep_db_fetch_array($product_info_query);
     */
-		$product_info = tep_get_product_by_id((int)$HTTP_GET_VARS['products_id'], SITE_ID, $languages_id);
+		$product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID, $languages_id);
     //forward 404
     forward404Unless($product_info);
 	}
@@ -37,12 +37,12 @@
 	
 	
 	$error = false;
-	if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'send')) {
-		if (tep_validate_email(trim($HTTP_POST_VARS['email']))) {
-			$mail_text .= $HTTP_POST_VARS['name'] . ' 様からお問い合わせを承りました。' . "\n";
-			$mail_text .= 'メールアドレス：' . $HTTP_POST_VARS['email'] . "\n\n";
-			$mail_text .= $HTTP_POST_VARS['enquiry'];
-			tep_mail(STORE_OWNER, SUPPORT_EMAIL_ADDRESS, EMAIL_SUBJECT, nl2br($mail_text), $HTTP_POST_VARS['name'], $HTTP_POST_VARS['email']);
+	if (isset($_GET['action']) && ($_GET['action'] == 'send')) {
+		if (tep_validate_email(trim($_POST['email']))) {
+			$mail_text .= $_POST['name'] . ' 様からお問い合わせを承りました。' . "\n";
+			$mail_text .= 'メールアドレス：' . $_POST['email'] . "\n\n";
+			$mail_text .= $_POST['enquiry'];
+			tep_mail(STORE_OWNER, SUPPORT_EMAIL_ADDRESS, EMAIL_SUBJECT, nl2br($mail_text), $_POST['name'], $_POST['email']);
 			tep_redirect(tep_href_link(FILENAME_CONTACT_US, 'action=success'));
 		} else {
 			$error = true;
@@ -50,12 +50,12 @@
 	}
 	
 	//prouct_idを取得した場合の処理（題名を商品名についてのお問い合わせに変更）
-	if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'send_p')) {
-		if (tep_validate_email(trim($HTTP_POST_VARS['email']))) {
-			$mail_text .= $HTTP_POST_VARS['name'] . ' 様からお問い合わせを承りました。' . "\n";
-			$mail_text .= 'メールアドレス：' . $HTTP_POST_VARS['email'] . "\n\n";
-			$mail_text .= $HTTP_POST_VARS['enquiry'];
-			tep_mail(STORE_OWNER, SUPPORT_EMAIL_ADDRESS, $HTTP_POST_VARS['email_title'] . HEADING_TITLE_CONTACT, nl2br($mail_text), $HTTP_POST_VARS['name'], $HTTP_POST_VARS['email']);
+	if (isset($_GET['action']) && ($_GET['action'] == 'send_p')) {
+		if (tep_validate_email(trim($_POST['email']))) {
+			$mail_text .= $_POST['name'] . ' 様からお問い合わせを承りました。' . "\n";
+			$mail_text .= 'メールアドレス：' . $_POST['email'] . "\n\n";
+			$mail_text .= $_POST['enquiry'];
+			tep_mail(STORE_OWNER, SUPPORT_EMAIL_ADDRESS, $_POST['email_title'] . HEADING_TITLE_CONTACT, nl2br($mail_text), $_POST['name'], $_POST['email']);
 			tep_redirect(tep_href_link(FILENAME_CONTACT_US, 'action=success'));
 		} else {
 			$error = true;
@@ -82,7 +82,7 @@
       <td valign="top" id="contents">
         <h1 class="pageHeading">
           <?php
-	if (isset($HTTP_GET_VARS['products_id'])) {
+	if (isset($_GET['products_id'])) {
 		echo $product_info['products_name'] . HEADING_TITLE_CONTACT;
 	}else{
 		echo HEADING_TITLE;
@@ -92,7 +92,7 @@
         <div>
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <?php
-	if (isset($HTTP_GET_VARS['action']) && ($HTTP_GET_VARS['action'] == 'success')) {
+	if (isset($_GET['action']) && ($_GET['action'] == 'success')) {
 ?>
             <tr>
               <td>
@@ -114,7 +114,7 @@
             <tr>
               <td>
                 <?php 
-	if (isset($HTTP_GET_VARS['products_id'])) {
+	if (isset($_GET['products_id'])) {
 		//product_idを取得した場合のフォームのアクション先
 		echo tep_draw_form('contact_us', tep_href_link(FILENAME_CONTACT_US, 'action=send_p'));
 	} else {
@@ -127,18 +127,18 @@
                     <td class="main"><?php echo ENTRY_NAME; ?><br>
                     <?php if (!isset($last_name)) $last_name = NULL;?>
                     <?php if (!isset($first_name)) $first_name = NULL;?>
-                      <?php echo tep_draw_input_field('name', ($error ? $HTTP_POST_VARS['name'] : (($language == 'japanese') ? ($last_name . ' ' . $first_name) : ($first_name . ' ' . $last_name)))); // 2003.03.10 Edit Japanese osCommerce ?></td>
+                      <?php echo tep_draw_input_field('name', ($error ? $_POST['name'] : (($language == 'japanese') ? ($last_name . ' ' . $first_name) : ($first_name . ' ' . $last_name)))); // 2003.03.10 Edit Japanese osCommerce ?></td>
                   </tr>
                   <tr>
                     <td class="main"><?php echo ENTRY_EMAIL; ?><br>
                     <?php if (!isset($email_address)) $email_address= NULL;?>
-                      <?php echo tep_draw_input_field('email', ($error ? $HTTP_POST_VARS['email'] : $email_address), 'size="30"'); if ($error) echo ENTRY_EMAIL_ADDRESS_CHECK_ERROR; ?></td>
+                      <?php echo tep_draw_input_field('email', ($error ? $_POST['email'] : $email_address), 'size="30"'); if ($error) echo ENTRY_EMAIL_ADDRESS_CHECK_ERROR; ?></td>
                   </tr>
                   <tr>
                     <td class="main">
 					<?php echo ENTRY_ENQUIRY; ?>
                       <?php 
-	if (isset($HTTP_GET_VARS['products_id'])) {
+	if (isset($_GET['products_id'])) {
 		$product_name = $product_info['products_name']; //変数に商品名を格納
 		//product_idを取得した場合
 		echo tep_draw_hidden_field('email_title', $product_name , ''); 

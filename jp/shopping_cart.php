@@ -11,9 +11,9 @@
 ?>
 <?php page_head();?>
 <?php
-  if (isset($HTTP_GET_VARS['action'])) {
-    if ($HTTP_GET_VARS['action'] == 'delete') {
-      $cart->remove($HTTP_GET_VARS['products_id']); 
+  if (isset($_GET['action'])) {
+    if ($_GET['action'] == 'delete') {
+      $cart->remove($_GET['products_id']); 
       tep_redirect(tep_href_link(FILENAME_SHOPPING_CART)); 
     }
   }
@@ -167,7 +167,7 @@ function change_num(ob,targ, quan,a_quan)
              <?php echo $currencies->format($cart->show_total()); ?></span></b></td>
           </tr>
           <?php		
-    if(isset($HTTP_GET_VARS['limit_error']) && $HTTP_GET_VARS['limit_error'] == 'true') {
+    if(isset($_GET['limit_error']) && $_GET['limit_error'] == 'true') {
 ?>
           <tr>
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>

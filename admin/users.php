@@ -35,21 +35,21 @@
 $HTTP_POST_VERS に対応させる
 （PHP スーパーグローバル変数[$_POST]への対応は次回とする）
 -------------------------------- */
-	if (isset($HTTP_POST_VARS['userid'])) { $userid = $HTTP_POST_VARS['userid']; }
-	if (isset($HTTP_POST_VARS['aval'])) { $aval = $HTTP_POST_VARS['aval']; }
-	if (isset($HTTP_POST_VARS['userslist'])) { $userslist = $HTTP_POST_VARS['userslist']; }
-	if (isset($HTTP_POST_VARS['no_permission_list'])) { $no_permission_list = $HTTP_POST_VARS['no_permission_list']; }
-	if (isset($HTTP_POST_VARS['permission_list'])) { $permission_list = $HTTP_POST_VARS['permission_list']; }
-	if (isset($HTTP_POST_VARS['execute_user'])) { $execute_user = $HTTP_POST_VARS['execute_user']; }
-	if (isset($HTTP_POST_VARS['execute_password'])) { $execute_password = $HTTP_POST_VARS['execute_password']; }
-	if (isset($HTTP_POST_VARS['execute_permission'])) { $execute_permission = $HTTP_POST_VARS['execute_permission']; }
+	if (isset($_POST['userid'])) { $userid = $_POST['userid']; }
+	if (isset($_POST['aval'])) { $aval = $_POST['aval']; }
+	if (isset($_POST['userslist'])) { $userslist = $_POST['userslist']; }
+	if (isset($_POST['no_permission_list'])) { $no_permission_list = $_POST['no_permission_list']; }
+	if (isset($_POST['permission_list'])) { $permission_list = $_POST['permission_list']; }
+	if (isset($_POST['execute_user'])) { $execute_user = $_POST['execute_user']; }
+	if (isset($_POST['execute_password'])) { $execute_password = $_POST['execute_password']; }
+	if (isset($_POST['execute_permission'])) { $execute_permission = $_POST['execute_permission']; }
 //2003-07-16 hiroshi_sato add 6 lines
-        if (isset($HTTP_POST_VARS['execute_new'])) { $execute_new = $HTTP_POST_VARS['execute_new']; }
-        if (isset($HTTP_POST_VARS['execute_insert'])) { $execute_insert = $HTTP_POST_VARS['execute_insert']; }
-        if (isset($HTTP_POST_VARS['execute_update'])) { $execute_update = $HTTP_POST_VARS['execute_update']; }
-        if (isset($HTTP_POST_VARS['execute_delete'])) { $execute_delete = $HTTP_POST_VARS['execute_delete']; }
-        if (isset($HTTP_POST_VARS['execute_grant'])) { $execute_grant = $HTTP_POST_VARS['execute_grant']; }
-        if (isset($HTTP_POST_VARS['execute_reset'])) { $execute_reset = $HTTP_POST_VARS['execute_reset']; }
+        if (isset($_POST['execute_new'])) { $execute_new = $_POST['execute_new']; }
+        if (isset($_POST['execute_insert'])) { $execute_insert = $_POST['execute_insert']; }
+        if (isset($_POST['execute_update'])) { $execute_update = $_POST['execute_update']; }
+        if (isset($_POST['execute_delete'])) { $execute_delete = $_POST['execute_delete']; }
+        if (isset($_POST['execute_grant'])) { $execute_grant = $_POST['execute_grant']; }
+        if (isset($_POST['execute_reset'])) { $execute_reset = $_POST['execute_reset']; }
 
 /* ===============================================
 	入力チェック関数

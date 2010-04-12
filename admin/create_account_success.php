@@ -8,7 +8,7 @@
 
   require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ACCOUNT_SUCCESS);
   
-  $customer_id = $HTTP_GET_VARS['customer_id'];
+  $customer_id = $_GET['customer_id'];
 ?>
 <!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html <?php echo HTML_PARAMS; ?>>

@@ -11,12 +11,12 @@
 	
 	$breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_LATEST_NEWS));
 	
-  //if (!isset($HTTP_GET_VARS['news_id'])) $HTTP_GET_VARS['news_id']=NULL;
-  if (isset($HTTP_GET_VARS['news_id'])) {
+  //if (!isset($_GET['news_id'])) $_GET['news_id']=NULL;
+  if (isset($_GET['news_id'])) {
     $latest_news_query = tep_db_query('
         SELECT * 
         from ' . TABLE_LATEST_NEWS . ' 
-        WHERE news_id = ' . (int)$HTTP_GET_VARS['news_id'] . ' 
+        WHERE news_id = ' . (int)$_GET['news_id'] . ' 
           and site_id=' . SITE_ID);
     $latest_news = tep_db_fetch_array($latest_news_query);
   }
@@ -45,7 +45,7 @@ function popupWindow(url) {
 			<!-- body_text //-->
 			<td valign="top" id="contents">
 				<h1 class="pageHeading"><?php 
-        if (isset($HTTP_GET_VARS['news_id']) && $HTTP_GET_VARS['news_id']) { 
+        if (isset($_GET['news_id']) && $_GET['news_id']) { 
           echo $latest_news['headline']; 
         } else { 
           echo HEADING_TITLE; 
@@ -54,12 +54,12 @@ function popupWindow(url) {
 					<tr>
 						<td>
 <?php
-	if (isset($HTTP_GET_VARS['news_id']) && intval($HTTP_GET_VARS['news_id'])) {  
+	if (isset($_GET['news_id']) && intval($_GET['news_id'])) {  
 //ccdd
     $latest_news_query = tep_db_query('
         SELECT * 
         FROM ' . TABLE_LATEST_NEWS . ' 
-        WHERE news_id = ' . (int)$HTTP_GET_VARS['news_id'] . ' 
+        WHERE news_id = ' . (int)$_GET['news_id'] . ' 
           AND site_id=' . SITE_ID
     );
     $latest_news = tep_db_fetch_array($latest_news_query);
@@ -103,7 +103,7 @@ function popupWindow(url) {
         AND site_id = ' . SITE_ID . ' 
       ORDER BY isfirst DESC, date_added DESC
     ';
-		$latest_news_split = new splitPageResults($HTTP_GET_VARS['page'], MAX_DISPLAY_LATEST_NEWS, $latest_news_query_raw, $latest_news_numrows);
+		$latest_news_split = new splitPageResults($_GET['page'], MAX_DISPLAY_LATEST_NEWS, $latest_news_query_raw, $latest_news_numrows);
 //ccdd
 		$latest_news_query = tep_db_query($latest_news_query_raw);
 	
@@ -111,8 +111,8 @@ function popupWindow(url) {
 ?>
 								<table border="0" width="100%" cellspacing="0" cellpadding="2">
 									<tr>
-										<td class="smallText"><?php echo $latest_news_split->display_count($latest_news_numrows, MAX_DISPLAY_LATEST_NEWS, $HTTP_GET_VARS['page'], TEXT_DISPLAY_NUMBER_OF_LATEST_NEWS); ?></td>
-										<td class="smallText" align="right"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $latest_news_split->display_links($latest_news_numrows, MAX_DISPLAY_LATEST_NEWS, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
+										<td class="smallText"><?php echo $latest_news_split->display_count($latest_news_numrows, MAX_DISPLAY_LATEST_NEWS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_LATEST_NEWS); ?></td>
+										<td class="smallText" align="right"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $latest_news_split->display_links($latest_news_numrows, MAX_DISPLAY_LATEST_NEWS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
 									</tr>
 								</table>
 <?php
@@ -142,14 +142,14 @@ function popupWindow(url) {
 								<br>
 								<table border="0" width="100%" cellspacing="0" cellpadding="2">
 									<tr>
-										<td class="smallText"><?php echo $latest_news_split->display_count($latest_news_numrows, MAX_DISPLAY_LATEST_NEWS, $HTTP_GET_VARS['page'], TEXT_DISPLAY_NUMBER_OF_LATEST_NEWS); ?></td>
-										<td class="smallText" align="right"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $latest_news_split->display_links($latest_news_numrows, MAX_DISPLAY_LATEST_NEWS, MAX_DISPLAY_PAGE_LINKS, $HTTP_GET_VARS['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
+										<td class="smallText"><?php echo $latest_news_split->display_count($latest_news_numrows, MAX_DISPLAY_LATEST_NEWS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_LATEST_NEWS); ?></td>
+										<td class="smallText" align="right"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $latest_news_split->display_links($latest_news_numrows, MAX_DISPLAY_LATEST_NEWS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
 									</tr>
 								</table>
 <?php
 		}
 	}
-	if (isset($HTTP_GET_VARS['news_id']) && $HTTP_GET_VARS['news_id']) { 
+	if (isset($_GET['news_id']) && $_GET['news_id']) { 
 ?>
 								<p align="right" class="smallText">
 									[ <?php echo tep_date_long($latest_news['date_added']) ;?> ]

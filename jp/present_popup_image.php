@@ -10,7 +10,7 @@
   $present_query = tep_db_query("
       select * 
       from ".TABLE_PRESENT_GOODS." 
-      where goods_id = '".(int)$HTTP_GET_VARS['pID']."' 
+      where goods_id = '".(int)$_GET['pID']."' 
         and site_id = '".SITE_ID."'"
   ) ;
   $present = tep_db_fetch_array($present_query) ;
