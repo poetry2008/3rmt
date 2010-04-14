@@ -7,10 +7,13 @@ define('RMT_DB_HOST', 'localhost');
 define('RMT_DB_USER', 'root');
 define('RMT_DB_PASS', '123456');
 define('RMT_DB_NAME', 'maker_rmt');
-define('R3MT_DB_NAME', 'maker_3rmt');
+define('R3MT_DB_NAME', 'test_3rmt');
 
 $sites =  array('jp', 'gm', 'wm');
 $faq = array('168', '169', '170', '171', '177', '178', '179', '190', '195');
+$delete_configuration = array(
+    'AFFILIATE_PAYMENT_ORDER_MIN_STATUS'
+  );
 
 define('R3MT_JP_ID', '1');
 define('R3MT_GM_ID', '2');
@@ -144,6 +147,8 @@ print("categories_description\n");
 
 //configuration!
 cp3table('configuration');
+
+
 foreach($sites as $s){
   $sql   = "select * from ".table_prefix($s)."configuration_ds";
   $query = rq($sql);
@@ -196,6 +201,41 @@ while($group = mysql_fetch_array($query)) {
       '" . $group['visible'] . "')";
   r3q($sql);
 }
+
+$query = r3q("select * from configuration group by configuration_key order by site_id asc");
+while ($c = mysql_fetch_array($query)) {
+  $sql = "insert into `configuration` (
+    configuration_id, 
+    configuration_title, 
+    configuration_key, 
+    configuration_value, 
+    configuration_description, 
+    configuration_group_id, 
+    sort_order, 
+    last_modified, 
+    date_added, 
+    use_function, 
+    set_function, 
+    site_id
+    ) values (
+      NULL,
+      '".$c['configuration_title']."',
+      '".$c['configuration_key']."',
+      '".$c['configuration_value']."',
+      '".$c['configuration_description']."',
+      '".$c['configuration_group_id']."',
+      '".$c['sort_order']."',
+      '".$c['last_modified']."',
+      '".$c['date_added']."',
+      '".$c['use_function']."',
+      '".$c['set_function']."',
+      '0'
+      )
+    ";
+  r3q($sql);
+}
+
+
 //contents*  unused
 cp3table('contents');
 //currencies%
@@ -713,7 +753,7 @@ foreach($faq as $f){
       )";
     r3q($sql);
     $fid = mysql_insert_id();
-    $faqqquery = rq("select * from gm_faq".$f."_questions");
+    $faqqquery = rq("select * from gm_faq".$f."_questions where c_id ='".$faqc['c_id']."'");
     while($faqq = mysql_fetch_array($faqqquery)){
       $sql = "insert into faq_questions (
         q_id,
@@ -955,6 +995,11 @@ cptable('users');
 cptable('wm_geo_zones', 'geo_zones');
 cptable('wm_zones', 'zones');
 cptable('wm_zones_to_geo_zones', 'zones_to_geo_zones');
+
+// clear configuration
+foreach($delete_configuration as $c){
+  r3q("delete form configuration where configuration_key='".$c."'");
+}
 
 
 // functions
