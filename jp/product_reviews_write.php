@@ -20,8 +20,7 @@
     ");
   $valid_product = (tep_db_num_rows($product_query) > 0);
   //forward 404
-  //forward404Unless($valid_product);
-
+  forward404Unless($valid_product);
   if (isset($_GET['action']) && $_GET['action'] == 'process') {
     if ($valid_product == true) { // We got to the process but it is an illegal product, don't write
       // ccdd
@@ -34,12 +33,12 @@
       ");
       $customer_values = tep_db_fetch_array($customer);
       $date_now = date('Ymd');
-	  if($_POST['reviews_name'] && tep_not_null($_POST['reviews_name'])) {
-	    $reviews_name = $_POST['reviews_name'];
-	  } else {
+    if($_POST['reviews_name'] && tep_not_null($_POST['reviews_name'])) {
+      $reviews_name = $_POST['reviews_name'];
+    } else {
       require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRODUCT_REVIEWS_WRITE);
       $reviews_name = REVIEWS_NO_NAMES;
-	  }
+    }
     // ccdd
       tep_db_query("
           INSERT INTO " . TABLE_REVIEWS . " (
@@ -190,7 +189,7 @@ function checkForm() {
         </form> 
       </div> 
       <?php
-		}
+    }
 ?> </td> 
       <!-- body_text_eof //--> 
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 

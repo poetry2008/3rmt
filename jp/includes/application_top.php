@@ -219,7 +219,7 @@
   $configuration_query = mysql_query('select configuration_key as cfgKey, configuration_value as cfgValue from ' . TABLE_CONFIGURATION . ' where site_id = 0' );
   while ($configuration = mysql_fetch_array($configuration_query)) {
       if (!defined($configuration['cfgKey'])) {
-	  define($configuration['cfgKey'], $configuration['cfgValue']);
+    define($configuration['cfgKey'], $configuration['cfgValue']);
       }
   } 
 // if gzip_compression is enabled, start to buffer the output
@@ -283,7 +283,7 @@
 
    if (function_exists('session_set_cookie_params')) {
     //session_set_cookie_params(0, substr(DIR_WS_CATALOG, 0, -1));
-	session_set_cookie_params(0, '/');
+  session_set_cookie_params(0, '/');
   }
 
   tep_session_start();
@@ -580,8 +580,6 @@
       }
     }
   } elseif (isset($_GET['manufacturers_id'])) {
-
-
 
     // ccdd
     $manufacturers_query = tep_db_query("

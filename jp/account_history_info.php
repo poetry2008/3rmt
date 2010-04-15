@@ -186,6 +186,13 @@
          '                <td class="main" align="right" width="100%">' . $order->totals[$i]['title'] . '</td>' . "\n" .
          '                <td class="main" align="right" nowrap>' . $order->totals[$i]['text'] . '</td>' . "\n" .
          '              </tr>' . "\n";
+    if ($i == 0) {
+      echo '              <tr>' . "\n" .
+           '                <td class="main" align="right" width="100%">' . TEXT_FEE_HANDLE . '</td>' . "\n" .
+           '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['code_fee'])  . '</td>' . "\n" .
+           '              </tr>' . "\n";
+    
+    }
   }
 ?> 
                       </table></td> 

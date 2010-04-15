@@ -34,7 +34,7 @@
   $currency_text  = DEFAULT_CURRENCY . ",1";
   if(isset($_POST['Currency']) && !empty($_POST['Currency']))
   {
-  	$currency_text = tep_db_prepare_input($_POST['Currency']);
+    $currency_text = tep_db_prepare_input($_POST['Currency']);
   }
   
   //Add input string check - 2006.4.14 ds-style
@@ -96,100 +96,100 @@
     $entry_torihikihouhou_error = false;
   }
 
-	if ($payment_method == '') {
-		$error = true;
-		$entry_payment_method_error = true;
-	} elseif ($payment_method == '銀行振込(買い取り)') {
-		if ($bank_name == '') {
-			$error = true;
-			$entry_bank_name_error = true;
-		} else {
-			$entry_bank_name_error = false;
-		}
-		
-		if ($bank_shiten == '') {
-			$error = true;
-			$entry_bank_shiten_error = true;
-		} else {
-			$entry_bank_shiten_error = false;
-		}
-		
-		if ($bank_kouza_num == '') {
-			$error = true;
-			$entry_bank_kouza_num_error = true;
-		} else {
-			$entry_bank_kouza_num_error = false;
-		}
-		
-		if ($bank_kouza_name == '') {
-			$error = true;
-			$entry_bank_kouza_name_error = true;
-		} else {
-			$entry_bank_kouza_name_error = false;
-		}
-		
-		$entry_payment_method_error = false;
-	} else {
-		$entry_payment_method_error = false;
-	}
+  if ($payment_method == '') {
+    $error = true;
+    $entry_payment_method_error = true;
+  } elseif ($payment_method == '銀行振込(買い取り)') {
+    if ($bank_name == '') {
+      $error = true;
+      $entry_bank_name_error = true;
+    } else {
+      $entry_bank_name_error = false;
+    }
+    
+    if ($bank_shiten == '') {
+      $error = true;
+      $entry_bank_shiten_error = true;
+    } else {
+      $entry_bank_shiten_error = false;
+    }
+    
+    if ($bank_kouza_num == '') {
+      $error = true;
+      $entry_bank_kouza_num_error = true;
+    } else {
+      $entry_bank_kouza_num_error = false;
+    }
+    
+    if ($bank_kouza_name == '') {
+      $error = true;
+      $entry_bank_kouza_name_error = true;
+    } else {
+      $entry_bank_kouza_name_error = false;
+    }
+    
+    $entry_payment_method_error = false;
+  } else {
+    $entry_payment_method_error = false;
+  }
 
   //Add input string check - NG return Input order data - d2006.4.14 ds-style
   if($error == true) {
   
 // #### Get Available Customers
 
-	$query = tep_db_query("select customers_id, customers_firstname, customers_lastname from " . TABLE_CUSTOMERS . " ORDER BY customers_lastname");
+  $query = tep_db_query("select customers_id, customers_firstname, customers_lastname from " . TABLE_CUSTOMERS . " ORDER BY customers_lastname");
     $result = $query;
 
-	
-	if (tep_db_num_rows($result) > 0)
-	{
- 		// Query Successful
- 		$SelectCustomerBox = "<select name='Customer'><option value=''>" . TEXT_SELECT_CUST . "</option>\n";
- 		while($db_Row = tep_db_fetch_array($result))
- 		{ $SelectCustomerBox .= "<option value='" . $db_Row["customers_id"] . "'";
-		  if(IsSet($_GET['Customer']) and $db_Row["customers_id"]==$_GET['Customer'])
-			$SelectCustomerBox .= " SELECTED ";
-		  $SelectCustomerBox .= ">" . $db_Row["customers_lastname"] . " , " . $db_Row["customers_firstname"] . "</option>\n";
-		
-		}
-		
-		$SelectCustomerBox .= "</select>\n";
-	}
-	
-	$query = tep_db_query("select code, value from " . TABLE_CURRENCIES . " ORDER BY code");
-	$result = $query;
-	
-	if (tep_db_num_rows($result) > 0)
-	{
- 		// Query Successful
- 		$SelectCurrencyBox = "<select name='Currency'><option value='' SELECTED>" . TEXT_SELECT_CURRENCY . "</option>\n";
- 		while($db_Row = tep_db_fetch_array($result))
- 		{ 
-			$SelectCurrencyBox .= "<option value='" . $db_Row["code"] . " , " . $db_Row["value"] . "'";
-		  	$SelectCurrencyBox .= ">" . $db_Row["code"] . "</option>\n";
-		}
-		
-		$SelectCurrencyBox .= "</select>\n";
-	}
+  
+  if (tep_db_num_rows($result) > 0)
+  {
+    // Query Successful
+    $SelectCustomerBox = "<select name='Customer'><option value=''>" . TEXT_SELECT_CUST . "</option>\n";
+    while($db_Row = tep_db_fetch_array($result))
+    { $SelectCustomerBox .= "<option value='" . $db_Row["customers_id"] . "'";
+      if(IsSet($_GET['Customer']) and $db_Row["customers_id"]==$_GET['Customer'])
+      $SelectCustomerBox .= " SELECTED ";
+      $SelectCustomerBox .= ">" . $db_Row["customers_lastname"] . " , " . $db_Row["customers_firstname"] . "</option>\n";
+    
+    }
+    
+    $SelectCustomerBox .= "</select>\n";
+  }
+  
+  $query = tep_db_query("select code, value from " . TABLE_CURRENCIES . " ORDER BY code");
+  $result = $query;
+  
+  if (tep_db_num_rows($result) > 0)
+  {
+    // Query Successful
+    $SelectCurrencyBox = "<select name='Currency'><option value='' SELECTED>" . TEXT_SELECT_CURRENCY . "</option>\n";
+    while($db_Row = tep_db_fetch_array($result))
+    { 
+      $SelectCurrencyBox .= "<option value='" . $db_Row["code"] . " , " . $db_Row["value"] . "'";
+        $SelectCurrencyBox .= ">" . $db_Row["code"] . "</option>\n";
+    }
+    
+    $SelectCurrencyBox .= "</select>\n";
+  }
 
-	if(IsSet($_GET['Customer']))
-	{
- 	$account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_id = '" . $_GET['Customer'] . "'");
- 	$account = tep_db_fetch_array($account_query);
- 	$customer = $account['customers_id'];
- 	$address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $_GET['Customer'] . "'");
- 	$address = tep_db_fetch_array($address_query);
- 	//$customer = $account['customers_id'];
-	} elseif (IsSet($_GET['Customer_nr']))
-	{
- 	$account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_id = '" . $_GET['Customer_nr'] . "'");
- 	$account = tep_db_fetch_array($account_query);
- 	$customer = $account['customers_id'];
- 	$address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $_GET['Customer_nr'] . "'");
- 	$address = tep_db_fetch_array($address_query);
- 	//$customer = $account['customers_id'];
-	}
+  if(IsSet($_GET['Customer']))
+  {
+  $account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_id = '" . $_GET['Customer'] . "'");
+  $account = tep_db_fetch_array($account_query);
+  $customer = $account['customers_id'];
+  $address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $_GET['Customer'] . "'");
+  $address = tep_db_fetch_array($address_query);
+  //$customer = $account['customers_id'];
+  } elseif (IsSet($_GET['Customer_nr']))
+  {
+  $account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_id = '" . $_GET['Customer_nr'] . "'");
+  $account = tep_db_fetch_array($account_query);
+  $customer = $account['customers_id'];
+  $address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $_GET['Customer_nr'] . "'");
+  $address = tep_db_fetch_array($address_query);
+  //$customer = $account['customers_id'];
+  }
 
   require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER);
   
@@ -219,31 +219,31 @@
     </table></td>
 <!-- body_text //-->
     <td width="100%" valign="top">
-	<table border='0' bgcolor='#7c6bce' width='100%'>
+  <table border='0' bgcolor='#7c6bce' width='100%'>
       <tr>
         <td class="main"><font color="#ffffff"><b><?php echo TEXT_STEP_1 ?></b></font></td>
       </tr>
     </table>
-	<?php echo tep_draw_form('create_order', FILENAME_CREATE_ORDER_PROCESS, '', 'post', '', '') . tep_draw_hidden_field('customers_id', $account->customers_id); ?>
-	<table border="0" width="100%" cellspacing="0" cellpadding="0">
-	  <tr>
-	    <td class="pageHeading"><font color="red">入力情報に誤りがあります</font></td>
-	  </tr>
-	  <tr>
-	    <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-	  </tr>
-	</table>
-	<?php
-	require(DIR_WS_INCLUDES . 'step-by-step/create_order_details.php');
-	?>
-	<table border="0" width="100%" cellspacing="0" cellpadding="2">
+  <?php echo tep_draw_form('create_order', FILENAME_CREATE_ORDER_PROCESS, '', 'post', '', '') . tep_draw_hidden_field('customers_id', $account->customers_id); ?>
+  <table border="0" width="100%" cellspacing="0" cellpadding="0">
+    <tr>
+      <td class="pageHeading"><font color="red">入力情報に誤りがあります</font></td>
+    </tr>
+    <tr>
+      <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
+    </tr>
+  </table>
+  <?php
+  require(DIR_WS_INCLUDES . 'step-by-step/create_order_details.php');
+  ?>
+  <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td class="main"><?php echo '<a href="' . tep_href_link(FILENAME_DEFAULT, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td>
         <td class="main" align="right"><?php echo tep_image_submit('button_confirm.gif', IMAGE_BUTTON_CONFIRM); ?></td>
       </tr>
     </table>
-	</form>
-	</td>
+  </form>
+  </td>
   </tr>
 </table>
 <!-- body_eof //-->
@@ -315,34 +315,42 @@
                 'comments' => '');
     tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
 
-	// 買取（口座情報をコメントに追加）
-	if (isset($bank_name) && $bank_name != '') {
-		$bbbank = '金融機関名　　　　：' . $bank_name . "\n";
-		$bbbank .= '支店名　　　　　　：' . $bank_shiten . "\n";
-		$bbbank .= '口座種別　　　　　：' . $bank_kamoku . "\n";
-		$bbbank .= '口座番号　　　　　：' . $bank_kouza_num . "\n";
-		$bbbank .= '口座名義　　　　　：' . $bank_kouza_name;
-	
-		$sql_data_array = array('orders_id' => $insert_id, 
-								'orders_status_id' => $new_value, 
-								'date_added' => 'now()', 
-								'customer_notified' => '1',
-								'comments' => $bbbank);
-		tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
-	}
-
-	//insert into order total
-	//=================================================
-	
-	require(DIR_FS_CATALOG . 'includes/classes/order.php');
-	$order = new order($insert_id);
-	
-	require(DIR_WS_CLASSES . 'currencies.php');
-	$currencies = new currencies;
-	
-	$module_directory = DIR_FS_CATALOG_MODULES . 'order_total/';
-	$module_type = 'order_total';
-	$ot_tax_status = false;
+  // 買取（口座情報をコメントに追加）
+  if (isset($bank_name) && $bank_name != '') {
+    $bbbank = '金融機関名　　　　：' . $bank_name . "\n";
+    $bbbank .= '支店名　　　　　　：' . $bank_shiten . "\n";
+    $bbbank .= '口座種別　　　　　：' . $bank_kamoku . "\n";
+    $bbbank .= '口座番号　　　　　：' . $bank_kouza_num . "\n";
+    $bbbank .= '口座名義　　　　　：' . $bank_kouza_name;
+  
+    $sql_data_array = array('orders_id' => $insert_id, 
+                'orders_status_id' => $new_value, 
+                'date_added' => 'now()', 
+                'customer_notified' => '1',
+                'comments' => $bbbank);
+    tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
+  }
+  if ($payment_method  == 'コンビニ決済') {
+    $convenience_comments = 'PCメールアドレス:'.$HTTP_POST_VARS['con_email']."\n"; 
+  $sql_data_array = array('orders_id' => $insert_id, 
+                'orders_status_id' => $new_value, 
+                'date_added' => 'now()', 
+                'customer_notified' => '1',
+                'comments' => $convenience_comments);
+  tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
+  }
+  //insert into order total
+  //=================================================
+  
+  require(DIR_FS_CATALOG . 'includes/classes/order.php');
+  $order = new order($insert_id);
+  
+  require(DIR_WS_CLASSES . 'currencies.php');
+  $currencies = new currencies;
+  
+  $module_directory = DIR_FS_CATALOG_MODULES . 'order_total/';
+  $module_type = 'order_total';
+  $ot_tax_status = false;
 
     if (defined('MODULE_ORDER_TOTAL_INSTALLED') && tep_not_null(MODULE_ORDER_TOTAL_INSTALLED)) {
       $thismodules = explode(';', MODULE_ORDER_TOTAL_INSTALLED);
@@ -356,12 +364,12 @@
 
           $class = substr($value, 0, strrpos($value, '.'));
           $GLOBALS[$class] = new $class;
-		} elseif($value == 'ot_tax.php') {
-		  $ot_tax_status = true;
-		}
+    } elseif($value == 'ot_tax.php') {
+      $ot_tax_status = true;
+    }
       }
     }
-	
+  
     $order_total_array = array();
     if (is_array($thismodules)) {
       reset($thismodules);
@@ -381,9 +389,9 @@
           }
         }
       }
-	}
-	
-	$order_totals = $order_total_array;
+  }
+  
+  $order_totals = $order_total_array;
     for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
       $sql_data_array = array('orders_id' => $insert_id,
                               'title' => $order_totals[$i]['title'],
@@ -393,12 +401,12 @@
                               'sort_order' => $order_totals[$i]['sort_order']);
       tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
     }
-	
-	if($ot_tax_status == true) {
-	  include(DIR_FS_CATALOG_LANGUAGES . $language . '/modules/' . $module_type . '/ot_tax.php');
-	  include($module_directory . 'ot_tax.php');
-	  $ot_tax = new ot_tax;
-	  
+  
+  if($ot_tax_status == true) {
+    include(DIR_FS_CATALOG_LANGUAGES . $language . '/modules/' . $module_type . '/ot_tax.php');
+    include($module_directory . 'ot_tax.php');
+    $ot_tax = new ot_tax;
+    
       $sql_data_array = array('orders_id' => $insert_id,
                               'title' => $ot_tax->title,
                               'text' => $ot_tax->text,
@@ -406,8 +414,8 @@
                               'class' => $ot_tax->code, 
                               'sort_order' => $ot_tax->sort_order);
       tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
-	}
-	
+  }
+  
     tep_redirect(tep_href_link(FILENAME_EDIT_NEW_ORDERS, 'oID=' . $insert_id, 'SSL'));
 
 

@@ -6,6 +6,9 @@
 /* ---------------------------
 A：リンク（通常）
 --------------------------- */
+a img {
+border: 0;
+}
 a:link {
 font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */

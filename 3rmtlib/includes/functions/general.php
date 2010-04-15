@@ -25,12 +25,12 @@
     }
 
     header('Location: ' . $url);
-	
-	if($suc == 'T'){
-	  echo 'SuccessOK';
+  
+  if($suc == 'T'){
+    echo 'SuccessOK';
     }
-	
-	tep_exit();
+  
+  tep_exit();
   }
 
 
@@ -160,9 +160,9 @@ function forward404Unless($condition)
 ////
 // 商品IDから説明文を呼び出す
   function ds_tep_get_description($products_id) {
-	  global $languages_id;
+    global $languages_id;
 //ccdd
-	  $description_query = tep_db_query("
+    $description_query = tep_db_query("
         select products_description 
         from ".TABLE_PRODUCTS_DESCRIPTION." 
         where products_id = '".$products_id."' 
@@ -170,7 +170,7 @@ function forward404Unless($condition)
           and (site_id = '".SITE_ID."' or site_id = '0')
         order by site_id DESC"
         );
-	  $description = tep_db_fetch_array($description_query);
+    $description = tep_db_fetch_array($description_query);
     return strip_tags($description['products_description']) ;
   }
 
@@ -572,11 +572,11 @@ function forward404Unless($condition)
     $firstname = tep_output_string_protected($address['firstname']);
     if (!isset($address['lastname'])) $address['lastname'] = NULL;
     $lastname = tep_output_string_protected($address['lastname']);
-	
+  
     if (!isset($address['lastname_f'])) $address['lastname_f'] = NULL;
     if (!isset($address['firstname_f'])) $address['firstname_f'] = NULL;
     $name_f = tep_output_string_protected($address['lastname_f']) . tep_output_string_protected($address['firstname_f']);
-	
+  
     $street = tep_output_string_protected($address['street_address']);
     $suburb = tep_output_string_protected($address['suburb']);
     $city   = tep_output_string_protected($address['city']);
@@ -616,11 +616,12 @@ function forward404Unless($condition)
     $streets = $street;
     if ($suburb != '') $streets = $street . $cr . $suburb;
     if ($firstname == '') $firstname = tep_output_string_protected($address['name']);
-	if ($name_f == '') $name_f = tep_output_string_protected($address['name_f']);
+  if ($name_f == '') $name_f = tep_output_string_protected($address['name_f']);
     if ($country == '') $country = tep_output_string_protected($address['country']);
     if ($state != '') $statecomma = $state . ', ';
-	
-	$fmt = $address_format['format'];
+  
+    $fmt = $address_format['format'];
+    $fmt = str_replace(",", "", $fmt); 
     eval("\$address = \"$fmt\";");
     $address = stripslashes($address);
 
@@ -1414,34 +1415,34 @@ function forward404Unless($condition)
 // 商品IDからメーカー名を呼び出す
   function ds_tep_get_count_manufactures($manufacturers_id) {
 //ccdd
-	  $manufactures_query = tep_db_query("select count(*) as total from ".TABLE_PRODUCTS." where manufacturers_id = '".$manufacturers_id."'");
-	  $manufactures = tep_db_fetch_array($manufactures_query);
-	  
-	return $manufactures['total'];
+    $manufactures_query = tep_db_query("select count(*) as total from ".TABLE_PRODUCTS." where manufacturers_id = '".$manufacturers_id."'");
+    $manufactures = tep_db_fetch_array($manufactures_query);
+    
+  return $manufactures['total'];
   }
    
 
 ////
 // 商品IDからメーカー名を呼び出す
   function ds_tep_get_manufactures($manufacturers_id, $return) {
-	
-	if($return == 1) {
-	  //メーカー名を返す
+  
+  if($return == 1) {
+    //メーカー名を返す
 //ccdd
-	  $manufactures_query = tep_db_query("select manufacturers_name from ".TABLE_MANUFACTURERS." where manufacturers_id = '".$manufacturers_id."'");
-	  $manufactures = tep_db_fetch_array($manufactures_query);
-	  
-	  $mreturn = $manufactures['manufacturers_name'];
-	} elseif($return == 2) {
-	  //メーカー画像
+    $manufactures_query = tep_db_query("select manufacturers_name from ".TABLE_MANUFACTURERS." where manufacturers_id = '".$manufacturers_id."'");
+    $manufactures = tep_db_fetch_array($manufactures_query);
+    
+    $mreturn = $manufactures['manufacturers_name'];
+  } elseif($return == 2) {
+    //メーカー画像
 //ccdd
-	  $manufactures_query = tep_db_query("select manufacturers_image from ".TABLE_MANUFACTURERS." where manufacturers_id = '".$manufacturers_id."'");
-	  $manufactures = tep_db_fetch_array($manufactures_query);
-	  
-	  $mreturn = $manufactures['manufacturers_image'];
-	}
-	
-	return $mreturn;
+    $manufactures_query = tep_db_query("select manufacturers_image from ".TABLE_MANUFACTURERS." where manufacturers_id = '".$manufacturers_id."'");
+    $manufactures = tep_db_fetch_array($manufactures_query);
+    
+    $mreturn = $manufactures['manufacturers_image'];
+  }
+  
+  return $mreturn;
   }
   
 ////
@@ -1456,10 +1457,10 @@ function forward404Unless($condition)
       return '';
     }
     if (trim($rate) == '天空の羽毛5個・インクリスクロール5個のセット'){
-    	return '(天空の羽毛'.number_format(strval(5*$cnt)).'個・インクリスクロール'.number_format(strval(5*$cnt)).'個のセット)';
+      return '(天空の羽毛'.number_format(strval(5*$cnt)).'個・インクリスクロール'.number_format(strval(5*$cnt)).'個のセット)';
     }
     if (trim($rate) == 'ネットカフェ1DAYチケット5枚セット'){
-    	return '(ネットカフェ1DAYチケット'.number_format(strval(5*$cnt)).'枚セット)';
+      return '(ネットカフェ1DAYチケット'.number_format(strval(5*$cnt)).'枚セット)';
     }
     $rate = str_replace(array(','), array(''), $rate);
     if (preg_match('/^(.*)億(.*)万(.*)$/', $rate, $out)) {
@@ -1486,10 +1487,10 @@ function forward404Unless($condition)
       return '';
     }
     if (trim($rate) == '天空の羽毛5個・インクリスクロール5個のセット'){
-    	return '天空の羽毛'.number_format(strval(5*$cnt)).'個・インクリスクロール'.number_format(strval(5*$cnt)).'個のセット';
+      return '天空の羽毛'.number_format(strval(5*$cnt)).'個・インクリスクロール'.number_format(strval(5*$cnt)).'個のセット';
     }
     if (trim($rate) == 'ネットカフェ1DAYチケット5枚セット'){
-    	return 'ネットカフェ1DAYチケット'.number_format(strval(5*$cnt)).'枚セット';
+      return 'ネットカフェ1DAYチケット'.number_format(strval(5*$cnt)).'枚セット';
     }
     
     $rate = str_replace(array(','), array(''), $rate);
@@ -1530,12 +1531,12 @@ function forward404Unless($condition)
     $option_types = array();
     if ($product_ids) {
       $sql = "select * from `" . TABLE_PRODUCTS . "` where products_id IN (" . implode(',', $product_ids) . ")";
-	  
+    
       // ccdd
-	  $product_query = tep_db_query($sql);
-	  while($product = tep_db_fetch_array($product_query)){
-	    $option_types[] = $product['option_type'];
-	  }
+    $product_query = tep_db_query($sql);
+    while($product = tep_db_fetch_array($product_query)){
+      $option_types[] = $product['option_type'];
+    }
     }
     $torihikis = tep_get_torihiki_houhou();
     if($option_types){
@@ -1576,15 +1577,15 @@ function forward404Unless($condition)
   
   function tep_get_option_array()
   {
-  	  $return = array();
-  	  $arr = array_keys(tep_get_torihiki_houhou());
-  	  foreach($arr as $key => $value){
-  	  	$return [] = array(
-  	  		'id' => $value,
-  	  		'text' => $value,
-  	  	);
-  	  }
-  	  return $return;
+      $return = array();
+      $arr = array_keys(tep_get_torihiki_houhou());
+      foreach($arr as $key => $value){
+        $return [] = array(
+          'id' => $value,
+          'text' => $value,
+        );
+      }
+      return $return;
   }
   
   function tep_get_disabled_categories()
@@ -1592,17 +1593,17 @@ function forward404Unless($condition)
     $categories_ids = array();
     $categories = array();
     // ccdd
-	$categories_query = tep_db_query("select * from `" . TABLE_CATEGORIES . "`");
-	while($category = tep_db_fetch_array($categories_query)){
-	  if($category['categories_status']){
-	    $categories_ids[] = $category['categories_id'];
-	  } else {
-	    $categories[] = $category;
-	  }
-	}
+  $categories_query = tep_db_query("select * from `" . TABLE_CATEGORIES . "`");
+  while($category = tep_db_fetch_array($categories_query)){
+    if($category['categories_status']){
+      $categories_ids[] = $category['categories_id'];
+    } else {
+      $categories[] = $category;
+    }
+  }
 
-	if($categories){
-	  while(1) { 
+  if($categories){
+    while(1) { 
             foreach($categories as $key => $category){
                   $j = 0;
               if(in_array($category['parent_id'], $categories_ids)){
@@ -1611,10 +1612,10 @@ function forward404Unless($condition)
                 $j ++;
               }
             }
-	    if($j == 0)break;
-	  }
-	}
-	return $categories_ids;
+      if($j == 0)break;
+    }
+  }
+  return $categories_ids;
   }
   
   function tep_not_in_disabled_categories()
@@ -1633,11 +1634,11 @@ function forward404Unless($condition)
   function tep_get_disabled_products(){
     $products_ids = array();
     // ccdd
-	$products_query = tep_db_query("select p.products_id from `" . TABLE_CATEGORIES . "` c," . TABLE_PRODUCTS . " p, "  . TABLE_PRODUCTS_TO_CATEGORIES . " p2c where p.products_id = p2c.products_id and p2c.categories_id = c.categories_id and c.categories_id in".tep_not_in_disabled_categories());
-	while($product = tep_db_fetch_array($products_query)){
-	  $products_ids[] = $product['products_id'];
-	}
-	return $products_ids;
+  $products_query = tep_db_query("select p.products_id from `" . TABLE_CATEGORIES . "` c," . TABLE_PRODUCTS . " p, "  . TABLE_PRODUCTS_TO_CATEGORIES . " p2c where p.products_id = p2c.products_id and p2c.categories_id = c.categories_id and c.categories_id in".tep_not_in_disabled_categories());
+  while($product = tep_db_fetch_array($products_query)){
+    $products_ids[] = $product['products_id'];
+  }
+  return $products_ids;
   }
 
   function tep_not_in_disabled_products()
@@ -1848,9 +1849,9 @@ function forward404Unless($condition)
         if (isset($manufacturers_id) && tep_not_null($manufacturers_id))
         {
         
-        	$metaManufacturersId = $manufacturers_id;
+          $metaManufacturersId = $manufacturers_id;
         
-        	$metaQuery .= "AND manufacturers.manufacturers_id = '" . $metaManufacturersId . "' ";
+          $metaQuery .= "AND manufacturers.manufacturers_id = '" . $metaManufacturersId . "' ";
         }
         
         //Step 3. Extract the info from the DB
@@ -1864,41 +1865,41 @@ function forward404Unless($condition)
         //Step 4. Remove duplicates by using the name as the key in an array
         while($metaQueryData = tep_db_fetch_array ($metaQueryResult))
         {
-        	$metaProductsNames[$metaQueryData['products_name']] = $metaQueryData['products_name'];
-        	$metaCategoriesNames[$metaQueryData['categories_name']] = $metaQueryData['categories_name'];
-        	$metaManufacturersNames[$metaQueryData['manufacturers_name']] = $metaQueryData['manufacturers_name'];
+          $metaProductsNames[$metaQueryData['products_name']] = $metaQueryData['products_name'];
+          $metaCategoriesNames[$metaQueryData['categories_name']] = $metaQueryData['categories_name'];
+          $metaManufacturersNames[$metaQueryData['manufacturers_name']] = $metaQueryData['manufacturers_name'];
         }
         
         //Step 5. Construct the keywords
         $metaKeywords = "";
         foreach($metaProductsNames as $metaProductsName)
         {
-        	if($metaKeywords == "")
-        	{
-        		//First Row
-        		$metaKeywords = $metaProductsName;
-        	}
-        	else
-        	{
-        		//Other Rows
-        		$metaKeywords .= ", " . $metaProductsName;
-        	}
+          if($metaKeywords == "")
+          {
+            //First Row
+            $metaKeywords = $metaProductsName;
+          }
+          else
+          {
+            //Other Rows
+            $metaKeywords .= ", " . $metaProductsName;
+          }
         }
         
         foreach($metaCategoriesNames as $metaCategoriesName)
         {
-        	if($metaKeywords == "")
-        	{
-        		//No previous entries
-        		$metaKeywords = $metaCategoriesName;
-        	}
-        	else
-        	{
-        		//Other Rows
-        		$metaKeywords .= ", " . $metaCategoriesName;
-        	}
+          if($metaKeywords == "")
+          {
+            //No previous entries
+            $metaKeywords = $metaCategoriesName;
+          }
+          else
+          {
+            //Other Rows
+            $metaKeywords .= ", " . $metaCategoriesName;
+          }
         }
-        	
+          
         //Limit the keywords to 1000 characters
         $metaKeywords = mb_substr($metaKeywords, 0, 90);
         
@@ -1907,24 +1908,24 @@ function forward404Unless($condition)
         $i = 0;
         foreach($metaManufacturersNames as $metaManufacturersName)
         {
-        	//Limit the decription to 150 words
-        	if($i >= 149)
-        	{
-        		break;
-        	}
+          //Limit the decription to 150 words
+          if($i >= 149)
+          {
+            break;
+          }
         
-        	if($i == 0)
-        	{
-        		//First Row
-        		$metaDescription .= $metaManufacturersName;
-        	}
-        	else
-        	{
-        		//Other Rows
-        		$metaDescription .= ", " . $metaManufacturersName;
-        	}
+          if($i == 0)
+          {
+            //First Row
+            $metaDescription .= $metaManufacturersName;
+          }
+          else
+          {
+            //Other Rows
+            $metaDescription .= ", " . $metaManufacturersName;
+          }
         
-        	$i++;
+          $i++;
         }
 
         return array(
@@ -1935,19 +1936,19 @@ function forward404Unless($condition)
   // checkout_confirmation.php
   function str_string($string='') {
     if(ereg("-", $string)) {
-	  $string_array = explode("-", $string);
-	  return $string_array[0] . '&nbsp;年&nbsp;' . $string_array[1] . '&nbsp;月&nbsp;' . $string_array[2] . '&nbsp;日';
-	}
+    $string_array = explode("-", $string);
+    return $string_array[0] . '&nbsp;年&nbsp;' . $string_array[1] . '&nbsp;月&nbsp;' . $string_array[2] . '&nbsp;日';
+  }
   }
   // checkout_process.php
   // reorder.php
 /*
   function str_string($string='') {
     if(ereg("-", $string)) {
-	  $string_array = explode("-", $string);
-	  return $string_array[0] . '年' . $string_array[1] . '月' . $string_array[2] . '日';
-	}
-	}*/
+    $string_array = explode("-", $string);
+    return $string_array[0] . '年' . $string_array[1] . '月' . $string_array[2] . '日';
+  }
+  }*/
   // checkout_process.php
   # Random
   function ds_makeRandStr( $len=2 ) {
@@ -2009,11 +2010,11 @@ function tep_unlink_temp_dir($dir)
 // ggsitemap.php
   function get_cPath($id, $categories)
   {
-  	  if($categories[$id]['parent_id'] == '0'){
-  	  	return $categories[$id]['categories_id'];
-  	  } else {
-  	  	return ($categories[$categories[$id]['parent_id']]['parent_id'] == 0 ? $categories[$categories[$id]['parent_id']]['categories_id'] : $categories[$categories[$id]['parent_id']]['parent_id'].'_'.$categories[$categories[$id]['parent_id']]['categories_id']) . '_' . $categories[$id]['categories_id'];
-  	  }
+      if($categories[$id]['parent_id'] == '0'){
+        return $categories[$id]['categories_id'];
+      } else {
+        return ($categories[$categories[$id]['parent_id']]['parent_id'] == 0 ? $categories[$categories[$id]['parent_id']]['categories_id'] : $categories[$categories[$id]['parent_id']]['parent_id'].'_'.$categories[$categories[$id]['parent_id']]['categories_id']) . '_' . $categories[$id]['categories_id'];
+      }
   }
 // ggsitemap.php
   function gg_url($loc, $lastmod = null, $changefreq = 'daily', $priority = 0.3)
@@ -2030,41 +2031,41 @@ function tep_unlink_temp_dir($dir)
 // present_confirmation.php
       function tep_get_zone_list2($name, $selected = '', $country_code = '107') {
         // ccdd
-			  $zones_query = tep_db_query("select zone_name, zone_id from ".TABLE_ZONES." where zone_country_id = '107' order by zone_code");
-			  $string = '<select name="'.$name.'">';
-			  while ($zones_values = tep_db_fetch_array($zones_query)) {
-			    $string .= '<option value="'.$zones_values['zone_id'].'"';
+        $zones_query = tep_db_query("select zone_name, zone_id from ".TABLE_ZONES." where zone_country_id = '107' order by zone_code");
+        $string = '<select name="'.$name.'">';
+        while ($zones_values = tep_db_fetch_array($zones_query)) {
+          $string .= '<option value="'.$zones_values['zone_id'].'"';
           if($zones_values['zone_id'] == $selected) $string .= ' selected';
           $string .= '>'.$zones_values['zone_name'].'</option>';
-			  }
-			  $string .= '</select>';
-			  return $string;
+        }
+        $string .= '</select>';
+        return $string;
       }  
 
 // Get Categories_image & subcategories_name
   function ds_tep_get_categories($products_id, $return) {
     global $languages_id;
-	
-	$categories_path = tep_get_product_path($products_id);
-	$categories_path_array = explode("_", $categories_path);
-	
-	if($return == 1) {
-	  //大カテゴリの画像を返す
+  
+  $categories_path = tep_get_product_path($products_id);
+  $categories_path_array = explode("_", $categories_path);
+  
+  if($return == 1) {
+    //大カテゴリの画像を返す
     // ccdd
-	  $categories_query = tep_db_query("
+    $categories_query = tep_db_query("
         select categories_name
         from ".TABLE_CATEGORIES_DESCRIPTION." 
         where categories_id = '".$categories_path_array[0]."' 
           and (site_id = ". SITE_ID ." or site_id = '0')
         order by site_id DESC"
         );
-	  $categories = tep_db_fetch_array($categories_query);
-	  
-	  $creturn = $categories['categories_name'];
-	} elseif($return == 2) {
-	  //中カテゴリ名を返す
+    $categories = tep_db_fetch_array($categories_query);
+    
+    $creturn = $categories['categories_name'];
+  } elseif($return == 2) {
+    //中カテゴリ名を返す
     // ccdd
-	  $categories_query = tep_db_query("
+    $categories_query = tep_db_query("
       select categories_name 
       from ".TABLE_CATEGORIES_DESCRIPTION." 
       where categories_id = '".(isset($categories_path_array[1])?$categories_path_array[1]:'')."' 
@@ -2072,12 +2073,12 @@ function tep_unlink_temp_dir($dir)
         and (site_id = ".SITE_ID . " or site_id = '0')
       order by site_id DESC"
       );
-	  $categories = tep_db_fetch_array($categories_query);
-	  
-	  $creturn = $categories['categories_name'];
-	}
-	
-	return $creturn;
+    $categories = tep_db_fetch_array($categories_query);
+    
+    $creturn = $categories['categories_name'];
+  }
+  
+  return $creturn;
   }
 
 ////
@@ -2091,11 +2092,11 @@ function tep_unlink_temp_dir($dir)
     $result = tep_db_fetch_array($query);
     $price = $result['products_price'];
   }
-	
-	//ポイント計算
-	$point_value = (int)($price * MODULE_ORDER_TOTAL_POINT_FEE);
-	
-	return $point_value;
+  
+  //ポイント計算
+  $point_value = (int)($price * MODULE_ORDER_TOTAL_POINT_FEE);
+  
+  return $point_value;
   }
 
 ////
@@ -2117,12 +2118,12 @@ function tep_unlink_temp_dir($dir)
     global $cart;
     $products = $cart->get_products();
     for ($i=0, $n=sizeof($products); $i<$n; $i++) {
-	  if($products[$i]['bflag'] == '1') {
-	    return 'View';
-	  }
-	}
-	
-	return false;
+    if($products[$i]['bflag'] == '1') {
+      return 'View';
+    }
+  }
+  
+  return false;
   }
   
 ////
@@ -2130,19 +2131,19 @@ function tep_unlink_temp_dir($dir)
   function ds_replace_plist($pID, $qty, $string) {
     // ccdd
     $query = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".(int)tep_get_prid($pID)."'");
-	$result = mysql_fetch_array($query);
-	
-	if($qty < 1) {
-	  if($result['products_bflag'] == '1') {
-	    # 買い取り商品
-		return '<span class="markProductOutOfStock">一時停止</span>';
-	  } else {
-	    # 通常商品
-	    return '<span class="markProductOutOfStock">在庫切れ</span>';
-	  }
-	} else {
-	  return $string;
-	}
+  $result = mysql_fetch_array($query);
+  
+  if($qty < 1) {
+    if($result['products_bflag'] == '1') {
+      # 買い取り商品
+    return '<span class="markProductOutOfStock">一時停止</span>';
+    } else {
+      # 通常商品
+      return '<span class="markProductOutOfStock">在庫切れ</span>';
+    }
+  } else {
+    return $string;
+  }
   }
 
   function tep_get_category_by_id($cid, $site_id, $lid, $default = true){
@@ -2305,5 +2306,21 @@ function tep_unlink_temp_dir($dir)
     }
     return $questions;
   }
-
+  
+  function calc_buy_handle($total)
+  {
+    $buy_table_fee = split("[:,]", MODULE_PAYMENT_BUYING_COST);
+    $buying_fee = 0;
+    for ($i = 0; $i < count($buy_table_fee); $i+=2) {
+      if ($total <= $buy_table_fee[$i]) {
+        $buy_add_fee = $total.$buy_table_fee[$i+1]; 
+        @eval("\$buy_add_fee = $buy_add_fee;");
+        if (is_numeric($buy_add_fee)) {
+          $buying_fee = $buy_add_fee; 
+        }
+        break; 
+      }
+    }
+    return $buying_fee; 
+  }
 ?>

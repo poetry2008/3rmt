@@ -199,7 +199,8 @@ case 'edit':
     $heading[] = array('text' => '<b>' . $cInfo->configuration_title . '</b>');
 
     if ($cInfo->set_function) {
-	eval('$value_field = ' . $cInfo->set_function . '"' . htmlspecialchars($cInfo->configuration_value) . '");');
+	eval('$value_field = ' . $cInfo->set_function . '\'' . htmlspecialchars($cInfo->configuration_value) . '\');');
+  $value_field = htmlspecialchars_decode($value_field);
     } else {
         if($cInfo->configuration_key == 'ADMINPAGE_LOGO_IMAGE') {
 	    $value_field = tep_draw_file_field('upfile') . '<br>' . $cInfo->configuration_value;

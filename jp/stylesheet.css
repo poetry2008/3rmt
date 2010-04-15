@@ -256,6 +256,10 @@ TD.main, P.main {
 	font-size: 11px;
 	line-height: 1.5;
 }
+.main02{
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 11px;
+}
 /* ---------------------------
 TD,SPAN：小さい文字（メッセージ）
 --------------------------- */
@@ -538,6 +542,9 @@ width:390px;
 .news_list02 .link01{
 font-size:10px;
 }
+.news_list02 .link01 img{
+padding-left:8px;
+}
 .send_mail {
   font-size: 12px;
 }
@@ -578,4 +585,13 @@ height:24px;
 padding:0;
 border:0;
 background-image: url(./includes/languages/japanese/images/buttons/button_checkout02.gif);
+}
+.con_email01{
+display:inline;
+margin-left:146px;
+*+margin-left:149px;
+}
+.con_email02{
+display:inline;
+margin-left:103px;
 }

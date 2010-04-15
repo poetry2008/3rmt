@@ -121,5 +121,5 @@ define('SELECT_STEP_ONE', 'STEP 1:');
 define('SELECT_STEP_TWO', 'STEP 2:');
 define('SELECT_STEP_THREE', 'STEP 3:');
 define('SELECT_STEP_FOUR', 'STEP 4:');
-
+define('TEXT_CODE_HANDLE_FEE', '手数料:');
 ?>

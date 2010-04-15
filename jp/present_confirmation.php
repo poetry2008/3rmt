@@ -27,20 +27,20 @@
         where goods_id = '".(int)$_GET['goods_id']."' 
           and site_id  = '".SITE_ID."'
     ") ;
-	$present = tep_db_fetch_array($present_query) ;
+  $present = tep_db_fetch_array($present_query) ;
   }else{
-    tep_redirect(tep_href_link(FILENAME_PRESENT, 'error_message='.urlencode(TEXT_PRESENT_ERROR_NOT_SELECTED), 'SSL'));	
+    tep_redirect(tep_href_link(FILENAME_PRESENT, 'error_message='.urlencode(TEXT_PRESENT_ERROR_NOT_SELECTED), 'SSL'));  
   }
   
   //process
-if (!isset($_GET['action'])) $_GET['action']=NULL;
+if (!=isset($_GET['action'])) {
   switch($_GET['action']) {
     case 'process'://申し込みプロセス
-	  //現在の日時
-	  $now = date("Y/m/d H:i:s", time());
-	  
-	  //insert present_aplicant
-	  $sql_data_array = array(
+    //現在の日時
+    $now = date("Y/m/d H:i:s", time());
+    
+    //insert present_aplicant
+    $sql_data_array = array(
                 'goods_id'    => tep_db_prepare_input($_GET['goods_id']),
                 'customer_id' => tep_db_prepare_input($pc_id),
                 'family_name' => tep_db_prepare_input($lastname),
@@ -56,9 +56,9 @@ if (!isset($_GET['action'])) $_GET['action']=NULL;
 
       // ccdd
       tep_db_perform(TABLE_PRESENT_APPLICANT, $sql_data_array);
-	  
-	  //check pre insert - customers
-	  if($pc_id != '0') {
+    
+    //check pre insert - customers
+    if($pc_id != '0') {
       //ccdd
       $cmcnt_query = tep_db_query("
           select count(*) as cnt 
@@ -67,11 +67,11 @@ if (!isset($_GET['action'])) $_GET['action']=NULL;
           and site_id = '".SITE_ID."'
       ");
       $cmcnt_result = tep_db_fetch_array($cmcnt_query);
-		
+    
       $cmcnt = $cmcnt_result['cnt'];
 
-		//update mail_mag
-		if($cmcnt != 0) {
+    //update mail_mag
+    if($cmcnt != 0) {
     //ccdd
       tep_db_query("
           update ".TABLE_CUSTOMERS." 
@@ -79,11 +79,11 @@ if (!isset($_GET['action'])) $_GET['action']=NULL;
           where customers_email_address = '".tep_db_prepare_input($email_address)."' 
             and site_id ='".SITE_ID."'
       ");
-		}
-	  } else {
-	    $cmcnt = 0;
-	  }
-	  
+    }
+    } else {
+      $cmcnt = 0;
+    }
+    
     //check pre insert - main_magazine
     //ccdd
     $mgcnt_query = tep_db_query("
@@ -92,102 +92,102 @@ if (!isset($_GET['action'])) $_GET['action']=NULL;
         where mag_email = '".tep_db_prepare_input($email_address)."' 
           and site_id = '".SITE_ID."'
     ");
-	  $mgcnt_result = tep_db_fetch_array($mgcnt_query);
-	  
-	  //insert mail_magazine ** customers=0 & mail_magazine=0
-	  if($cmcnt == 0 && $mgcnt_result['cnt'] == 0) {
-	    $sql_data_array2 = array(
+    $mgcnt_result = tep_db_fetch_array($mgcnt_query);
+    
+    //insert mail_magazine ** customers=0 & mail_magazine=0
+    if($cmcnt == 0 && $mgcnt_result['cnt'] == 0) {
+      $sql_data_array2 = array(
           'mag_email' => tep_db_prepare_input($email_address),
           'mag_name'  => tep_get_fullname($firstname, $lastname),
           'site_id'   => SITE_ID
           );
       // ccdd
       tep_db_perform(TABLE_MAIL_MAGAZINE, $sql_data_array2);
-	  }
-	  
-	  
-	  tep_redirect(tep_href_link(FILENAME_PRESENT_SUCCESS,'goods_id='.$_GET['goods_id']));
-	  break;
-	
-	case 'update'://申込者情報変更
-	  $firstname      = tep_db_prepare_input($_POST['firstname']);
-	  $lastname       = tep_db_prepare_input($_POST['lastname']);
-	  $email_address  = tep_db_prepare_input($_POST['email_address']);
-	  $telephone      = tep_db_prepare_input($_POST['telephone']);
-	  $street_address = tep_db_prepare_input($_POST['street_address']);
-	  $suburb         = tep_db_prepare_input($_POST['suburb']);
-	  $postcode       = tep_db_prepare_input($_POST['postcode']);
-	  $city           = tep_db_prepare_input($_POST['city']);
-	  $zone_id        = tep_db_prepare_input($_POST['zone_id']);
+    }
+    
+    
+    tep_redirect(tep_href_link(FILENAME_PRESENT_SUCCESS,'goods_id='.$_GET['goods_id']));
+    break;
+  
+  case 'update'://申込者情報変更
+    $firstname      = tep_db_prepare_input($_POST['firstname']);
+    $lastname       = tep_db_prepare_input($_POST['lastname']);
+    $email_address  = tep_db_prepare_input($_POST['email_address']);
+    $telephone      = tep_db_prepare_input($_POST['telephone']);
+    $street_address = tep_db_prepare_input($_POST['street_address']);
+    $suburb         = tep_db_prepare_input($_POST['suburb']);
+    $postcode       = tep_db_prepare_input($_POST['postcode']);
+    $city           = tep_db_prepare_input($_POST['city']);
+    $zone_id        = tep_db_prepare_input($_POST['zone_id']);
 
-	  $error = false;
-	  
-	  //first_name
-	  if (empty($firstname)) {
-		$error = true;
-	  }
-	
-	  //last_name
-	  if (empty($lastname)) {
-		$error = true;
-	  }
-	  
-	  //email-1
-	  if (empty($email_address)) {
-		$entry_email_address_error = false;
-	  }
-	
-	  //email-2
-	  if (!tep_validate_email($email_address)) {
-		$error = true;
-	  }
-	
-	  //street_address
-	  if (empty($street_address)) {
-		$error = true;
-	  }
-	
-	  //postcode
-	  if (empty($postcode)) {
-		$error = true;
-	  }
-	
-	  //city
-	  if (empty($city)) {
-		$error = true;
-	  }
-	
-	  //telephone
-	  if (empty($telephone)) {
-		$error = true;
-	  }
-	  
-	  if($error == false) {
-	    //セッションを一時的に開放
-	    tep_session_unregister('firstname');
-	    tep_session_unregister('lastname');
-	    tep_session_unregister('email_address');
-	    tep_session_unregister('telephone');
-	    tep_session_unregister('street_address');
-	    tep_session_unregister('suburb');
-	    tep_session_unregister('postcode');
-	    tep_session_unregister('city');
-	    tep_session_unregister('zone_id');
-	  
-	    //セッション更新
-	    tep_session_register('firstname');
-	    tep_session_register('lastname');
-	    tep_session_register('email_address');
-	    tep_session_register('telephone');
-	    tep_session_register('street_address');
-	    tep_session_register('suburb');
-	    tep_session_register('postcode');
-	    tep_session_register('city');
-	    tep_session_register('zone_id');
-		
-		tep_redirect(tep_href_link(FILENAME_PRESENT_CONFIRMATION,'goods_id='.$_GET['goods_id']));
-	  }
-	  break;  
+    $error = false;
+    
+    //first_name
+    if (empty($firstname)) {
+    $error = true;
+    }
+  
+    //last_name
+    if (empty($lastname)) {
+    $error = true;
+    }
+    
+    //email-1
+    if (empty($email_address)) {
+    $entry_email_address_error = false;
+    }
+  
+    //email-2
+    if (!tep_validate_email($email_address)) {
+    $error = true;
+    }
+  
+    //street_address
+    if (empty($street_address)) {
+    $error = true;
+    }
+  
+    //postcode
+    if (empty($postcode)) {
+    $error = true;
+    }
+  
+    //city
+    if (empty($city)) {
+    $error = true;
+    }
+  
+    //telephone
+    if (empty($telephone)) {
+    $error = true;
+    }
+    
+    if($error == false) {
+      //セッションを一時的に開放
+      tep_session_unregister('firstname');
+      tep_session_unregister('lastname');
+      tep_session_unregister('email_address');
+      tep_session_unregister('telephone');
+      tep_session_unregister('street_address');
+      tep_session_unregister('suburb');
+      tep_session_unregister('postcode');
+      tep_session_unregister('city');
+      tep_session_unregister('zone_id');
+    
+      //セッション更新
+      tep_session_register('firstname');
+      tep_session_register('lastname');
+      tep_session_register('email_address');
+      tep_session_register('telephone');
+      tep_session_register('street_address');
+      tep_session_register('suburb');
+      tep_session_register('postcode');
+      tep_session_register('city');
+      tep_session_register('zone_id');
+    
+    tep_redirect(tep_href_link(FILENAME_PRESENT_CONFIRMATION,'goods_id='.$_GET['goods_id']));
+    }
+    break;  
         default:
           if (!tep_session_is_registered('firstname'))
           {
@@ -228,19 +228,18 @@ if (!isset($_GET['action'])) $_GET['action']=NULL;
           $telephone      = $account['customers_telephone'];
           $suburb         = $account['entry_suburb'];
           
-    	  tep_session_register('firstname');
-    	  tep_session_register('lastname');
-    	  tep_session_register('email_address');
-    	  tep_session_register('telephone');
-    	  tep_session_register('street_address');
-    	  tep_session_register('suburb');
-    	  tep_session_register('postcode');
-    	  tep_session_register('city');
-    	  tep_session_register('zone_id');
+        tep_session_register('firstname');
+        tep_session_register('lastname');
+        tep_session_register('email_address');
+        tep_session_register('telephone');
+        tep_session_register('street_address');
+        tep_session_register('suburb');
+        tep_session_register('postcode');
+        tep_session_register('city');
+        tep_session_register('zone_id');
           }
   }
-  
-    
+}
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRESENT_ORDER);
 
@@ -328,8 +327,8 @@ if (!isset($_GET['action'])) $_GET['action']=NULL;
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
           </tr> 
           <?php 
-		if(!$_GET['action'] || $_GET['action'] != 'update') {
-		echo tep_draw_form('process', tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.$_GET['goods_id'].'&action=process', 'SSL')); ?> 
+    if(!$_GET['action'] || $_GET['action'] != 'update') {
+    echo tep_draw_form('process', tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.$_GET['goods_id'].'&action=process', 'SSL')); ?> 
           <tr> 
             <td class="main"><table width="100%"  border="0" cellspacing="0" cellpadding="2"> 
                 <tr> 
@@ -390,8 +389,8 @@ if (!isset($_GET['action'])) $_GET['action']=NULL;
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
           </tr> 
           <?php 
-		}
-		echo tep_draw_form('process', tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.$_GET['goods_id'].'&action=update', 'SSL')); ?> 
+    }
+    echo tep_draw_form('process', tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.$_GET['goods_id'].'&action=update', 'SSL')); ?> 
           <tr> 
             <td class="main"><table width="100%"  border="0" cellspacing="0" cellpadding="2"> 
                 <tr> 

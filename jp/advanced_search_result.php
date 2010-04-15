@@ -26,10 +26,10 @@
     $error = 1;
   }
 
-if (!isset($_GET['dfrom'])) $_GET['dfrom'] = NULL;
-  $dfrom_to_check = (($_GET['dfrom'] == DOB_FORMAT_STRING) ? '' : $_GET['dfrom']);
-if (!isset($_GET['dto'])) $_GET['dto'] = NULL;
-  $dto_to_check = (($_GET['dto'] == DOB_FORMAT_STRING) ? '' : $_GET['dto']);
+  $notice_dfrom = (isset($HTTP_GET_VARS['dfrom']))?$HTTP_GET_VARS['dfrom']:NULL; //del notice
+  $dfrom_to_check = (($notice_dfrom == DOB_FORMAT_STRING) ? '' : $notice_dfrom);
+  $notice_dto = (isset($HTTP_GET_VARS['dto']))?$HTTP_GET_VARS['dto']:NULL; //del notice
+  $dto_to_check = (($notice_dto == DOB_FORMAT_STRING) ? '' : $notice_dto);
 
   if (strlen($dfrom_to_check) > 0) {
     if (!tep_checkdate($dfrom_to_check, DOB_FORMAT_STRING, $dfrom_array)) {

@@ -99,6 +99,14 @@ function field_on(){
   }
 }
 
+function fax_over_color(ele){
+  old_color = ele.style.backgroundColor
+  ele.style.backgroukdColor = "#ffcc99";
+}
+function fax_over_color(ele){
+  ele.style.backgroukdColor = old_color;
+}
+
 /*
 function over_color(ccc){
   var tr_id = 'tr_' + ccc;
@@ -111,3 +119,4 @@ function out_color(ddd){
   document.getElementById(tr_id).style.backgroundColor = old_color;
 }
 */
+

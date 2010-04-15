@@ -97,4 +97,5 @@ define('EMAIL_TEXT_STORE_CONFIRMATION_FOOTER',
 . EMAIL_SIGNATURE);
 
 define('ENTRY_EMAIL_TITLE', 'メールタイトル：');
+define('TEXT_CODE_HANDLE_FEE', '手数料:');
 ?>

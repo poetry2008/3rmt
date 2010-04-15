@@ -38,4 +38,7 @@ define('TEXT_NO_COMMENTS_AVAILABLE', 'コメントはありません。');
 define('TABLE_HEADING_DOWNLOAD_DATE', 'ダウンロード有効期限: ');
 define('TABLE_HEADING_DOWNLOAD_COUNT', ' 回ダウンロードできます');
 define('HEADING_DOWNLOAD', 'ダウンロード・リンク');
+
+define('TEXT_FEE_HANDLE', '手数料:');
+define('MONEY_UNIT', 'men');
 ?>

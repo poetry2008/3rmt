@@ -406,6 +406,7 @@ function pass_hidd(){
     $customer_default_address_id = 1;
     $customer_country_id         = $country;
     $customer_zone_id            = $zone_id;
+    $customer_emailaddress       = $email_address;
 
     tep_session_register('customer_id');
     tep_session_register('customer_first_name');
@@ -414,6 +415,7 @@ function pass_hidd(){
     tep_session_register('customer_country_id');
     tep_session_register('customer_zone_id');
     tep_session_register('guestchk');
+    tep_session_register('customer_emailaddress');
 
     // restore cart contents
     $cart->restore_contents();
@@ -432,15 +434,14 @@ function pass_hidd(){
     }
 
     if($guestchk == '1') {
-    # For Guest
-    tep_redirect(tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL'));
-  } else {
-    # For Member
-    $email_text .= EMAIL_WELCOME . EMAIL_TEXT . EMAIL_CONTACT . EMAIL_WARNING;
+      # For Guest
+      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL'));
+    } else {
+      # For Member
+      //$email_text .= EMAIL_WELCOME . EMAIL_TEXT . EMAIL_CONTACT . EMAIL_WARNING;
       tep_mail($name, $email_address, EMAIL_SUBJECT, nl2br($email_text), STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-
       tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT_SUCCESS, '', 'SSL'));
-  }
+    }
   }
 
   require(DIR_WS_INCLUDES . 'application_bottom.php');

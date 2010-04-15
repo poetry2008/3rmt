@@ -64,15 +64,16 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
         $customer_last_name          = $check_customer['customers_lastname']; // 2003.03.08 Add Japanese osCommerce
         $customer_country_id         = $check_country['entry_country_id'];
         $customer_zone_id            = $check_country['entry_zone_id'];
+        $customer_emailaddress       = $email_address; 
+        $guestchk                    = $check_customer['customers_guest_chk'];
         tep_session_register('customer_id');
         tep_session_register('customer_default_address_id');
         tep_session_register('customer_first_name');
         tep_session_register('customer_last_name'); // 2003.03.08 Add Japanese osCommerce
         tep_session_register('customer_country_id');
         tep_session_register('customer_zone_id');
-
-		$guestchk = $check_customer['customers_guest_chk'];
-		tep_session_register('guestchk');
+        tep_session_register('customer_emailaddress');
+        tep_session_register('guestchk');
 
         $date_now = date('Ymd');
 //ccdd
@@ -82,21 +83,21 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
                 customers_info_number_of_logons   = customers_info_number_of_logons+1 
             WHERE customers_info_id = '" . $customer_id . "'
         ");
-		
-		//POINT_LIMIT CHECK ポイントの有効期限チェック ds-style
-		if(MODULE_ORDER_TOTAL_POINT_LIMIT != '0') {
+    
+    //POINT_LIMIT CHECK ポイントの有効期限チェック ds-style
+    if(MODULE_ORDER_TOTAL_POINT_LIMIT != '0') {
 //ccdd
-		  $plimit_count_query = tep_db_query("
+      $plimit_count_query = tep_db_query("
           SELECT count(*) as cnt 
           FROM ".TABLE_ORDERS." 
           WHERE customers_id = '".$customer_id."' 
             AND site_id = '".SITE_ID."'
       ");
-		  $plimit_count = tep_db_fetch_array($plimit_count_query);
-		  
-		  if($plimit_count['cnt'] > 0) {
+      $plimit_count = tep_db_fetch_array($plimit_count_query);
+      
+      if($plimit_count['cnt'] > 0) {
 //ccdd
-		  $plimit_query = tep_db_query("
+      $plimit_query = tep_db_query("
           SELECT date_purchased 
           FROM ".TABLE_ORDERS." 
           WHERE customers_id = '".$customer_id."' 
@@ -104,19 +105,19 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
           ORDER BY date_purchased DESC 
           LIMIT 1
       ");
-		  $plimit = tep_db_fetch_array($plimit_query);
-		  $p_year = substr($plimit['date_purchased'], 0, 4);
-		  $p_mon = substr($plimit['date_purchased'], 5, 2);
-		  $p_day = substr($plimit['date_purchased'], 8, 2);
+      $plimit = tep_db_fetch_array($plimit_query);
+      $p_year = substr($plimit['date_purchased'], 0, 4);
+      $p_mon = substr($plimit['date_purchased'], 5, 2);
+      $p_day = substr($plimit['date_purchased'], 8, 2);
 
-		  $now = time();
-		  $point_limit = mktime(0, 0, 0, $p_mon, $p_day+MODULE_ORDER_TOTAL_POINT_LIMIT, $p_year);
-		    if($now > $point_limit) {
+      $now = time();
+      $point_limit = mktime(0, 0, 0, $p_mon, $p_day+MODULE_ORDER_TOTAL_POINT_LIMIT, $p_year);
+        if($now > $point_limit) {
 //ccdd
-			  tep_db_query("update ".TABLE_CUSTOMERS." set point = '0' where customers_id = '".$customer_id."' and site_id = '".SITE_ID."'");
-			}
-		  }
-		}
+        tep_db_query("update ".TABLE_CUSTOMERS." set point = '0' where customers_id = '".$customer_id."' and site_id = '".SITE_ID."'");
+      }
+      }
+    }
 
 // restore cart contents
         $cart->restore_contents();
@@ -267,7 +268,7 @@ function session_win() {
 <i><strong>SSL認証</strong></i><br>
 当サイトでは、実在性の証明とプライバシー保護のため、グローバルサインのSSLサーバ証明書を使用し、SSL暗号化通信を実現しています。
 ブラウザのURLが「<?php echo HTTPS_SERVER;?>〜」で始まるURLであることを確認ください。
-以下に掲載するグローバルサイン発行済み サイトシールのクリックにより、サーバ証明書の検証結果をご確認ください。		
+以下に掲載するグローバルサイン発行済み サイトシールのクリックにより、サーバ証明書の検証結果をご確認ください。   
 </p>
          <p align="center"> 
 <!-- GlobalSign SiteSeal tag. Do not edit. -->
@@ -280,7 +281,7 @@ src="//seal.globalsign.com/SiteSeal/images/seal_noscript_jp.gif"></a>
 
         </p>
 <div class="underline"></div>
-<?php echo TEXT_POINT ; ?>			
+<?php echo TEXT_POINT ; ?>      
       </form>
       </td>
       <!-- body_text_eof //-->

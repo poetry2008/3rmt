@@ -20,28 +20,52 @@
     }
 
     function process() {
-      global $order, $currencies;
-      global $payment, $point;
-      global $_POST;
+      global $order, $currencies, $payment, $point, $_POST, $cart;
 
-      $total = isset($order->info['total'])?$order->info['total']:0;
+      $total = @$order->info['total'];
       if ((MODULE_ORDER_TOTAL_CODT_STATUS == 'true')
           && ($payment == 'cod_table')
-          && isset($_POST['codt_fee'])
-          && (0 < intval($_POST['codt_fee']))) {
-        $total += intval($_POST['codt_fee']);
+          && isset($HTTP_POST_VARS['codt_fee'])
+          && (0 < intval($HTTP_POST_VARS['codt_fee']))) {
+        $total += intval($HTTP_POST_VARS['codt_fee']);
       }
-	  
-	  //Add point
+    
+    //Add point
       if ((MODULE_ORDER_TOTAL_POINT_STATUS == 'true')
           && (0 < intval($point))) {
         $total -= intval($point);
-      }	  
-	  
-	  if(MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'convenience_store')) {
+      }   
+    
+    if(MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'convenience_store')) {
         $total += isset($_POST['codt_fee']) ? intval($_POST['codt_fee']) : 0;
-	  }
-
+    }
+      if ($payment == 'moneyorder') {
+        $total += intval($HTTP_POST_VARS['money_order_fee']);
+      }
+      if ($payment == 'postalmoneyorder') {
+        $total += intval($HTTP_POST_VARS['postal_money_order_fee']);
+      }
+      if ($payment == 'telecom') {
+        $total += intval($HTTP_POST_VARS['telecom_order_fee']);
+      }
+      if (isset($cart)) {
+      $bflag_single = $this->ds_count_bflags();
+      if ($bflag_single == 'View') {
+        $buy_table_fee = split("[:,]", MODULE_PAYMENT_BUYING_COST);
+        $buying_fee = 0;
+        for ($i = 0; $i < count($buy_table_fee); $i+=2) {
+          if ($total <= $buy_table_fee[$i]) {
+            $buy_add_fee = $total.$buy_table_fee[$i+1]; 
+            @eval("\$buy_add_fee = $buy_add_fee;");
+            if (is_numeric($buy_add_fee)) {
+              $buying_fee = $buy_add_fee; 
+            }
+            break; 
+          }
+        }
+        $total += $buying_fee; 
+      }
+    }
       $this->output[] = array('title' => $this->title . ':',
                               'text' => '<b>' . $currencies->format(
                                 $total, 
@@ -76,6 +100,17 @@
     function remove() {
       // ccdd
       tep_db_query("delete from " . TABLE_CONFIGURATION . " where configuration_key in ('" . implode("', '", $this->keys()) . "') and site_id = '".$this->site_id."'");
+    }
+    
+    function ds_count_bflags() {
+      global $cart;
+      $products = $cart->get_products();
+      for ($i=0, $n=sizeof($products); $i<$n; $i++) {
+        if ($products[$i]['bflag'] == '1') {
+          return 'View'; 
+        }
+      }
+      return false; 
     }
   }
 ?>

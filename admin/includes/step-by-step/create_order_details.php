@@ -23,6 +23,11 @@ function hidden_payment(){
     //document.getElementById('trpass3').style.display = "none";
     //document.getElementById('trpass4').style.display = "none";
   }
+  if (CI == 'コンビニ決済') {
+    document.getElementById('copass1').style.display = "";
+  } else {
+    document.getElementById('copass1').style.display = "none";
+  }
 }
 </script>
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -100,13 +105,13 @@ function hidden_payment(){
   </tr>
   <tr>
     <td class="main">
-	<table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
+  <table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
         <tr>
           <td class="main"><table border="0" cellspacing="0" cellpadding="2">
               <tr>
                 <td class="main">&nbsp;<?php echo ENTRY_POST_CODE; ?></td>
                 <td class="main">&nbsp;<?php echo tep_draw_input_field('postcode', $postcode) . '&nbsp;' . ENTRY_POST_CODE_TEXT; ?></td>
-              </tr>		  
+              </tr>     
               <?php
   if (ACCOUNT_STATE == 'true') {
               ?>
@@ -144,64 +149,64 @@ function hidden_payment(){
             </table></td>
         </tr>
       </table> 
-	  </td>
+    </td>
   </tr>
   
 -->
 
 <?php
-	// オプションのリスト作成
-	$torihiki_array = explode("\n", DS_TORIHIKI_HOUHOU);
-	$torihiki_list[] = array('id' => '', 'text' => '選択してください');
-	for($i=0; $i<sizeof($torihiki_array); $i++) {
-		$torihiki_list[] = array('id' => $torihiki_array[$i],
-								'text' => $torihiki_array[$i]);
-	}
-	// 取引日のリスト作成
-	$today = getdate();
-	$m_num = $today['mon'];
-	$d_num = $today['mday'];
-	$year = $today['year'];
-	$date_list[] = array('id' => '', 'text' => '取引日を選択してください');
-	for($i=0; $i<14; $i++) {
-		$date_list[] = array('id' => date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)),
-							'text' => strftime("%Y年%m月%d日（%a）", mktime(0,0,0,$m_num,$d_num+$i,$year)));
-	}
-	// 取引時間のリスト作成
-	$hour_list[] = array('id' => '', 'text' => '--');
-	for($i=1; $i<24; $i++) {
-		$hour_num = str_pad($i, 2, "0", STR_PAD_LEFT);
-		$hour_list[] = array('id' => $hour_num,
-							'text' => $hour_num);
-	}
-	
-	$min_list[] = array('id' => '', 'text' => '--');
-	for($i=0; $i<6; $i++) {
-		$min_num = str_pad($i, 2, "0", STR_PAD_RIGHT);
-		$min_list[] = array('id' => $min_num,
-							'text' => $min_num);
-	}
-	// 支払方法のリスト作成
-	$payment_text = "銀行振込\nクレジットカード決済\n銀行振込(買い取り)\nコンビニ決済\nゆうちょ銀行（郵便局）\nその他";
-	$payment_array = explode("\n", $payment_text);
-	$payment_list[] = array('id' => '', 'text' => '支払方法を選択してください');
-	for($i=0; $i<sizeof($payment_array); $i++) {
-		$payment_list[] = array('id' => $payment_array[$i],
-								'text' => $payment_array[$i]);
-	}
+  // オプションのリスト作成
+  $torihiki_array = explode("\n", DS_TORIHIKI_HOUHOU);
+  $torihiki_list[] = array('id' => '', 'text' => '選択してください');
+  for($i=0; $i<sizeof($torihiki_array); $i++) {
+    $torihiki_list[] = array('id' => $torihiki_array[$i],
+                'text' => $torihiki_array[$i]);
+  }
+  // 取引日のリスト作成
+  $today = getdate();
+  $m_num = $today['mon'];
+  $d_num = $today['mday'];
+  $year = $today['year'];
+  $date_list[] = array('id' => '', 'text' => '取引日を選択してください');
+  for($i=0; $i<14; $i++) {
+    $date_list[] = array('id' => date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)),
+              'text' => strftime("%Y年%m月%d日（%a）", mktime(0,0,0,$m_num,$d_num+$i,$year)));
+  }
+  // 取引時間のリスト作成
+  $hour_list[] = array('id' => '', 'text' => '--');
+  for($i=1; $i<24; $i++) {
+    $hour_num = str_pad($i, 2, "0", STR_PAD_LEFT);
+    $hour_list[] = array('id' => $hour_num,
+              'text' => $hour_num);
+  }
+  
+  $min_list[] = array('id' => '', 'text' => '--');
+  for($i=0; $i<6; $i++) {
+    $min_num = str_pad($i, 2, "0", STR_PAD_RIGHT);
+    $min_list[] = array('id' => $min_num,
+              'text' => $min_num);
+  }
+  // 支払方法のリスト作成
+  $payment_text = "銀行振込\nクレジットカード決済\n銀行振込(買い取り)\nコンビニ決済\nゆうちょ銀行（郵便局）\nその他";
+  $payment_array = explode("\n", $payment_text);
+  $payment_list[] = array('id' => '', 'text' => '支払方法を選択してください');
+  for($i=0; $i<sizeof($payment_array); $i++) {
+    $payment_list[] = array('id' => $payment_array[$i],
+                'text' => $payment_array[$i]);
+  }
 
-	// 口座科目の記憶
-	switch(isset($bank_kamoku)?$bank_kamoku:null) {
-		case '普通':
-			default:
-			$bank_sele_f = true;
-			$bank_sele_t = false;
-			break;
-		case '当座':
-			$bank_sele_f = false;
-			$bank_sele_t = true;
-			break;
-	}
+  // 口座科目の記憶
+  switch(isset($bank_kamoku)?$bank_kamoku:null) {
+    case '普通':
+      default:
+      $bank_sele_f = true;
+      $bank_sele_t = false;
+      break;
+    case '当座':
+      $bank_sele_f = false;
+      $bank_sele_t = true;
+      break;
+  }
 
 ?>
   <tr>
@@ -212,43 +217,43 @@ function hidden_payment(){
         <tr>
           <td class="main"><table border="0" cellspacing="0" cellpadding="2">
               <tr>
-				<td class="main">&nbsp;支払方法:</td>
+        <td class="main">&nbsp;支払方法:</td>
                 <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('payment_method', $payment_list, isset($payment_method)?$payment_method:'', 'onchange="hidden_payment()"'); ?><?php if (isset($entry_payment_method_error ) && $entry_payment_method_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
 <?php
-	if (isset($payment_method) && $payment_method == '銀行振込(買い取り)') {
-		echo '<tr>';
-	} else {
-		echo '<tr id="trpass1" style="display: none;">';
-	}  
+  if (isset($payment_method) && $payment_method == '銀行振込(買い取り)') {
+    echo '<tr>';
+  } else {
+    echo '<tr id="trpass1" style="display: none;">';
+  }  
 ?>
-			  	<td colspan="2"><br><table border="0" cellspacing="0" cellpadding="0">
-					<tr>
-						<td class="main">&nbsp;金融機関名:</td>
-						<td class="main">&nbsp;<?php echo tep_draw_input_field('bank_name', ''); ?><?php if (isset($entry_bank_name_error) && $entry_bank_name_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
-					</tr>
-					<tr>
-						<td class="main">&nbsp;支店名:</td>
-						<td class="main">&nbsp;<?php echo tep_draw_input_field('bank_shiten', ''); ?><?php if (isset($entry_bank_shiten_error) && $entry_bank_shiten_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
-					</tr>
-					<tr>
-						<td class="main">&nbsp;口座種別:</td>
-						<td class="main">&nbsp;	<?php echo tep_draw_radio_field('bank_kamoku', '普通', $bank_sele_f); ?>&nbsp;普通&nbsp;&nbsp;<?php echo tep_draw_radio_field('bank_kamoku', '当座', $bank_sele_t); ?>&nbsp;当座</td>
-					</tr>
-					<tr>
-						<td class="main">&nbsp;口座番号:</td>
-						<td class="main">&nbsp;<?php echo tep_draw_input_field('bank_kouza_num', ''); ?><?php if (isset($entry_bank_kouza_num_error) && $entry_bank_kouza_num_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
-					</tr>
-					<tr>
-						<td class="main">&nbsp;口座名義:</td>
-						<td class="main">&nbsp;<?php echo tep_draw_input_field('bank_kouza_name', ''); ?><?php if (isset($entry_bank_kouza_name_error) && $entry_bank_kouza_name_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
-					</tr>
-				</table></td>
-			  </tr>
+          <td colspan="2"><br><table border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td class="main">&nbsp;金融機関名:</td>
+            <td class="main">&nbsp;<?php echo tep_draw_input_field('bank_name', ''); ?><?php if (isset($entry_bank_name_error) && $entry_bank_name_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+          </tr>
+          <tr>
+            <td class="main">&nbsp;支店名:</td>
+            <td class="main">&nbsp;<?php echo tep_draw_input_field('bank_shiten', ''); ?><?php if (isset($entry_bank_shiten_error) && $entry_bank_shiten_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+          </tr>
+          <tr>
+            <td class="main">&nbsp;口座種別:</td>
+            <td class="main">&nbsp; <?php echo tep_draw_radio_field('bank_kamoku', '普通', $bank_sele_f); ?>&nbsp;普通&nbsp;&nbsp;<?php echo tep_draw_radio_field('bank_kamoku', '当座', $bank_sele_t); ?>&nbsp;当座</td>
+          </tr>
+          <tr>
+            <td class="main">&nbsp;口座番号:</td>
+            <td class="main">&nbsp;<?php echo tep_draw_input_field('bank_kouza_num', ''); ?><?php if (isset($entry_bank_kouza_num_error) && $entry_bank_kouza_num_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+          </tr>
+          <tr>
+            <td class="main">&nbsp;口座名義:</td>
+            <td class="main">&nbsp;<?php echo tep_draw_input_field('bank_kouza_name', ''); ?><?php if (isset($entry_bank_kouza_name_error) && $entry_bank_kouza_name_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+          </tr>
+        </table></td>
+        </tr>
             </table></td>
         </tr>
       </table>
-	</td>
+  </td>
   </tr>
   <tr>
     <td class="formAreaTitle"><br>取引日時</td>
@@ -258,7 +263,7 @@ function hidden_payment(){
         <tr>
           <td class="main"><table border="0" cellspacing="0" cellpadding="2">
               <tr>
-				<td class="main">&nbsp;取引日:</td>
+        <td class="main">&nbsp;取引日:</td>
                 <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('date', $date_list, isset($date)?$date:''); ?><?php if (isset($entry_date_error) && $entry_date_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
               <tr>
@@ -272,7 +277,7 @@ function hidden_payment(){
             </table></td>
         </tr>
       </table>
-	</td>
+  </td>
   </tr>
   <tr>
     <td class="formAreaTitle"><br>当社使用欄</td>
@@ -295,16 +300,16 @@ function hidden_payment(){
                 <td class="main">&nbsp;信用調査:</td>
                 <td class="main">&nbsp;<?php echo tep_draw_input_field('fax', $fax, 'size="60" maxlength="255"'); ?>&nbsp;&nbsp;常連客【HQ】&nbsp;&nbsp;注意【WA】&nbsp;&nbsp;発送禁止【BK】</td>
               </tr>
-			  <tr>
-			  	<td class="main" colspan="2">&nbsp;クレカ初回決済日：C2007/01/01&nbsp;&nbsp;&nbsp;&nbsp;エリア一致：Aok&nbsp;&nbsp;&nbsp;&nbsp;本人確認済：Hok&nbsp;&nbsp;&nbsp;&nbsp;YahooID更新日：Y2007/01/01&nbsp;&nbsp;&nbsp;&nbsp;リファラー：R</td>
-			  </tr>
-			  <tr>
-			  	<td class="main" colspan="2">&nbsp;<b>記入例：WA-Aok-C2007/01/01-Hok-RグーグルFF11 RMT</b></td>
-			  </tr>
+        <tr>
+          <td class="main" colspan="2">&nbsp;クレカ初回決済日：C2007/01/01&nbsp;&nbsp;&nbsp;&nbsp;エリア一致：Aok&nbsp;&nbsp;&nbsp;&nbsp;本人確認済：Hok&nbsp;&nbsp;&nbsp;&nbsp;YahooID更新日：Y2007/01/01&nbsp;&nbsp;&nbsp;&nbsp;リファラー：R</td>
+        </tr>
+        <tr>
+          <td class="main" colspan="2">&nbsp;<b>記入例：WA-Aok-C2007/01/01-Hok-RグーグルFF11 RMT</b></td>
+        </tr>
             </table></td>
         </tr>
       </table>
-	</td>
+  </td>
   </tr>
 
 <!--

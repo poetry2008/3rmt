@@ -77,7 +77,8 @@
                  currency_value, 
                  date_purchased, 
                  orders_status, 
-                 last_modified 
+                 last_modified ,
+                 code_fee
           from " . TABLE_ORDERS . " 
           where orders_id = '" .  tep_db_input($order_id) . "' 
             and site_id = ".SITE_ID
@@ -114,6 +115,7 @@
                           'date_purchased' => $order['date_purchased'],
                           'orders_status' => $order_status['orders_status_name'],
                           'last_modified' => $order['last_modified'],
+                          'code_fee' => $order['code_fee'],
                           'total' => strip_tags($order_total['text']),
                           'shipping_method' => ((substr($shipping_method['title'], -1) == ':') ? substr(strip_tags($shipping_method['title']), 0, -1) : strip_tags($shipping_method['title'])));
 

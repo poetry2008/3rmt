@@ -5,7 +5,7 @@
 */
 
   require('includes/application_top.php');
-  
+
   $error = false;
   $romaji= $_GET['pID'];
   
@@ -22,6 +22,8 @@
     ");
     if (!tep_db_num_rows($page_query)) {
       $error = true;
+      //forward 404
+      forward404();
     }
   }
   
@@ -52,21 +54,20 @@
       <!-- body_text //--> 
       <td valign="top" id="contents"> 
         <?php
-	  if($error == true) {//No page result
-	  ?>
-
+    if($error == true) {//No page result
+    ?>
             <p><?php echo PAGE_TEXT_NOT_FOUND; ?></p>
             <div align="right"><a href="<?php echo tep_href_link(FILENAME_DEFAULT); ?>"><?php echo tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></a></div>
         <?php
-	  } else {
-	  ?>
+    } else {
+    ?>
 <h1 class="pageHeading"><?php echo PAGE_HEADING_TITLE ; ?></h1> 
         
         <div id="contents"> 
           <?php echo PAGE_TEXT_INFORMATION; ?>
         <?php
-	  }
-	  ?>
+    }
+    ?>
       </div></td> 
       <!-- body_text_eof //--> 
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 

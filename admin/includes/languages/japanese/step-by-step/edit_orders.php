@@ -130,4 +130,5 @@ define('MENUE_TITLE_ORDER', '3. 注文商品');
 define('MENUE_TITLE_TOTAL', '4. 配送、決済、税金');
 define('MENUE_TITLE_STATUS', '5. 注文ステータス、コメント通知');
 define('MENUE_TITLE_UPDATE', '6. データを更新');
+define('TEXT_CODE_HANDLE_FEE', '手数料:');
 ?>

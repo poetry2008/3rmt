@@ -105,7 +105,7 @@ function popupWindow(url) {
   window.open(url,'popupImageWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
 }
 function showimage($1) {
-	document.images.lrgproduct.src = $1;
+  document.images.lrgproduct.src = $1;
 }
 
 //--></script>
@@ -123,7 +123,7 @@ function showimage($1) {
       </td>
       <!-- body_text //-->
       <td valign="top" class="contents">
-	  	<?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_PRODUCT_INFO, tep_get_all_get_params(array('action')) . 'action=add_product')) . "\n"; ?>
+      <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_PRODUCT_INFO, tep_get_all_get_params(array('action')) . 'action=add_product')) . "\n"; ?>
 <?php
 // ccdd
 /*
@@ -178,17 +178,17 @@ function showimage($1) {
 
     if ($new_price = tep_get_products_special_price($product_info['products_id'])) {
       $pricedef = $new_price;
-	  $products_price = '<s>' . $currencies->display_price($product_info['products_price'], tep_get_tax_rate($product_info['products_tax_class_id'])) . '</s> <span class="productSpecialPrice">' . $currencies->display_price($new_price, tep_get_tax_rate($product_info['products_tax_class_id'])) . '</span>';
+    $products_price = '<s>' . $currencies->display_price($product_info['products_price'], tep_get_tax_rate($product_info['products_tax_class_id'])) . '</s> <span class="productSpecialPrice">' . $currencies->display_price($new_price, tep_get_tax_rate($product_info['products_tax_class_id'])) . '</span>';
     } else {
       $pricedef = $product_info['products_price'];
-	  $products_price = $currencies->display_price($product_info['products_price'], tep_get_tax_rate($product_info['products_tax_class_id']));
+    $products_price = $currencies->display_price($product_info['products_price'], tep_get_tax_rate($product_info['products_tax_class_id']));
     }
-	
-	$description = $product_info['products_description'];
-	$data1 = explode("//", $product_info['products_attention_1']);
-	$data2 = explode("//", $product_info['products_attention_2']);
-	$data3 = explode("//", $product_info['products_attention_3']);
-	$data4 = explode("//", $product_info['products_attention_4']);
+  
+  $description = $product_info['products_description'];
+  $data1 = explode("//", $product_info['products_attention_1']);
+  $data2 = explode("//", $product_info['products_attention_2']);
+  $data3 = explode("//", $product_info['products_attention_3']);
+  $data4 = explode("//", $product_info['products_attention_4']);
 ?>
         <h1 class="pageHeading_long"><?php echo $product_info['products_name']; ?></h1>
         <h2 class="line"><?php echo ds_tep_get_categories((int)$_GET['products_id'],1); ?> <?php echo ds_tep_get_categories((int)$_GET['products_id'],2); ?></h2>
@@ -238,16 +238,16 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                         <td class="main"><?php if (PRODUCT_LIST_MODEL > 0){ echo $product_info['products_model'] ; }else{ echo '-' ; } ?></td>
                       </tr>
                       <?php 
-				  if(!empty($data1[0]) && !empty($data1[1])){
-				  ?>
+          if(!empty($data1[0]) && !empty($data1[1])){
+          ?>
                       <tr class="infoBoxContents">
                         <td class="main"><font color="#0070AF"><?php echo $data1[0] ; ?></font></td>
                         <td class="main"><?php print($data1[1]) ; ?></td>
                       </tr>
                       <?php } ?>
                       <?php 
-				  if(!empty($data2[0]) && !empty($data2[1])){
-				  ?>
+          if(!empty($data2[0]) && !empty($data2[1])){
+          ?>
                       <tr class="infoBoxContents">
                         <td class="main"><font color="#0070AF"><?php print($data2[0]) ; ?></font></td>
                         <td class="main"><?php print( $data2[1]) ; ?></td>
@@ -260,36 +260,36 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                       <tr class="infoBoxContents">
                         <td class="main"><font color="#0070AF">価格</font></td>
                         <td class="main">
-							<?php
-							  # 追加スタート ---------------------------------------
-							  # -- 注文数量と単価のリスト --------------------------
-							  if(tep_not_null($product_info['products_small_sum'])) {
-								$wari_array = array();
-								echo '<span class="smallText">単位は1個あたりの価格となります</span><table border="0" cellpadding="0" cellspacing="0" class="infoBox">';
-								$parray = explode(",", $product_info['products_small_sum']);
-								for($i=0; $i<sizeof($parray); $i++) {
-								  $tt = explode(':', $parray[$i]);
-								  $wari_array[$tt[0]] = $tt[1];
-								}
-								
-								@ksort($wari_array);
-							  
-								foreach($wari_array as $key => $val) {
-								  echo '<tr class="infoBoxContents">';
-								  echo '<td class="main" align="right">'.$key.'個以上&nbsp;注文すると&nbsp;</td>';
-								  echo '<td class="main"><b>'.$currencies->display_price(round($pricedef + $val),0).'</b></td>';
-								  echo '</tr>'."\n";
-								}
-								echo '</table>'."\n";
-							  } else {
-							    echo '<strong>'.$products_price.'</strong>';
-							  }
-							  
-							  # -- 注文数量と単価のリスト --------------------------
-							  # 追加エンド -------------------------------------------
-							
-							?>
-						</td>
+              <?php
+                # 追加スタート ---------------------------------------
+                # -- 注文数量と単価のリスト --------------------------
+                if(tep_not_null($product_info['products_small_sum'])) {
+                $wari_array = array();
+                echo '<span class="smallText">単位は1個あたりの価格となります</span><table border="0" cellpadding="0" cellspacing="0" class="infoBox">';
+                $parray = explode(",", $product_info['products_small_sum']);
+                for($i=0; $i<sizeof($parray); $i++) {
+                  $tt = explode(':', $parray[$i]);
+                  $wari_array[$tt[0]] = $tt[1];
+                }
+                
+                @ksort($wari_array);
+                
+                foreach($wari_array as $key => $val) {
+                  echo '<tr class="infoBoxContents">';
+                  echo '<td class="main" align="right">'.$key.'個以上&nbsp;注文すると&nbsp;</td>';
+                  echo '<td class="main"><b>'.$currencies->display_price(round($pricedef + $val),0).'</b></td>';
+                  echo '</tr>'."\n";
+                }
+                echo '</table>'."\n";
+                } else {
+                  echo '<strong>'.$products_price.'</strong>';
+                }
+                
+                # -- 注文数量と単価のリスト --------------------------
+                # 追加エンド -------------------------------------------
+              
+              ?>
+            </td>
                       </tr>
                       <tr class="infoBoxContents">
                         <td class="main"><font color="#0070AF">注文可能数</font></td>
@@ -331,16 +331,16 @@ while($tag = tep_db_fetch_array($tag_query)) {
                       </tr>
                       <?php 
 }
-				  if(!empty($data3[0]) && !empty($data3[1])){
-				  ?>
+          if(!empty($data3[0]) && !empty($data3[1])){
+          ?>
                       <tr class="infoBoxContents">
                         <td class="main"><font color="#0070AF"><?php echo $data3[0] ; ?></font></td>
                         <td class="main"><?php echo $data3[1] ; ?></td>
                       </tr>
                       <?php } ?>
                       <?php 
-				  if(!empty($data4[0]) && !empty($data4[1])){
-				  ?>
+          if(!empty($data4[0]) && !empty($data4[1])){
+          ?>
                       <tr class="infoBoxContents">
                         <td class="main"><font color="#0070AF"><?php echo $data4[0] ; ?></font></td>
                         <td class="main"><?php echo $data4[1] ; ?></td>
@@ -358,15 +358,15 @@ while($tag = tep_db_fetch_array($tag_query)) {
                   <td height="30" class="main" style="padding-bottom:4px; " align="right"><?php
   if($product_info['products_quantity'] < 1) {
     if($product_info['products_bflag'] == '1') {
-	  # 買い取り商品
-	  echo '<span class="markProductOutOfStock">一時停止</span>';
-	} elseif ($product_info['products_cflag'] == '0') {
-	  echo '<span class="markProductOutOfStock">売り切れ</span>';
-	} else {
-	  # 通常商品
-	  echo '<br><span class="markProductOutOfStock">在庫切れ<br><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="absmiddle" alt=""><a href=' . tep_href_link(FILENAME_PREORDER, 'products_id=' . $_GET['products_id']) . '>' . $product_info['products_name'] . 'を予約する</a></span>';
-	}
-  }else{	
+    # 買い取り商品
+    echo '<span class="markProductOutOfStock">一時停止</span>';
+  } elseif ($product_info['products_cflag'] == '0') {
+    echo '<span class="markProductOutOfStock">売り切れ</span>';
+  } else {
+    # 通常商品
+    echo '<br><span class="markProductOutOfStock">在庫切れ<br><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="absmiddle" alt=""><a href=' . tep_href_link(FILENAME_PREORDER, 'products_id=' . $_GET['products_id']) . '>' . $product_info['products_name'] . 'を予約する</a></span>';
+  }
+  }else{  
     // ccdd
     $products_attributes_query = tep_db_query("
         SELECT count(*) as total 
@@ -407,16 +407,14 @@ while($tag = tep_db_fetch_array($tag_query)) {
               AND pa.options_values_id = pov.products_options_values_id and pov.language_id = '" . $languages_id . "' 
             ORDER BY pa.products_attributes_id");
         while ($products_options = tep_db_fetch_array($products_options_query)) {
-		  if($products_options['products_at_quantity'] > 0) {
-		    $products_options_array[] = array('id' => $products_options['products_options_values_id'], 'text' => $products_options['products_options_values_name']);
+          if($products_options['products_at_quantity'] > 0) {
+            $products_options_array[] = array('id' => $products_options['products_options_values_id'], 'text' => $products_options['products_options_values_name']);
             if ($products_options['options_values_price'] != '0') {
               $products_options_array[sizeof($products_options_array)-1]['text'] .= ' (' . $products_options['price_prefix'] . $currencies->display_price($products_options['options_values_price'], tep_get_tax_rate($product_info['products_tax_class_id'])) .') ';
             }
-			
-		  }
+          }
         }
-        echo tep_draw_pull_down_menu('id[' .  $products_options_name['products_options_id'] . ']' ,
-            $products_options_array, isset($cart->contents[$_GET['products_id']]['attributes'][$products_options_name['products_options_id']])?$cart->contents[$_GET['products_id']]['attributes'][$products_options_name['products_options_id']]:NULL);
+        echo tep_draw_pull_down_menu('id[' . $products_options_name['products_options_id'] . ']' , $products_options_array, isset($cart->contents[$_GET['products_id']]['attributes'][$products_options_name['products_options_id']])?$cart->contents[$_GET['products_id']]['attributes'][$products_options_name['products_options_id']]:NULL);
         echo '</td></tr>';
       }
       echo '</table>';
@@ -462,35 +460,35 @@ while($tag = tep_db_fetch_array($tag_query)) {
           </tr>
         </table>
         <?php
-			    //サブ画像
+          //サブ画像
         // ccdd
-				$sub_colors_query = tep_db_query("
+        $sub_colors_query = tep_db_query("
             SELECT color_image, 
                    color_id, 
                    color_to_products_name 
             FROM ".TABLE_COLOR_TO_PRODUCTS." 
             WHERE products_id = '".(int)$_GET['products_id']."'
         ");
-				$cnt=0;
+        $cnt=0;
                if(tep_db_num_rows($sub_colors_query) >= 1) {
 ?>
         <!-- //color image -->
         <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <?php
-				while($sub_colors = tep_db_fetch_array($sub_colors_query)) {
-				  //色名を取得
+        while($sub_colors = tep_db_fetch_array($sub_colors_query)) {
+          //色名を取得
           // ccdd
-				  $colors_name_query = tep_db_query("
+          $colors_name_query = tep_db_query("
               SELECT color_name 
               FROM ".TABLE_COLOR." 
               WHERE color_id = '".$sub_colors['color_id']."'
           ");
-				  $colors_name_result = tep_db_fetch_array($colors_name_query);
-				  
-				  $mcnt++;
-				  if($mcnt == 1) {
-				  ?>
+          $colors_name_result = tep_db_fetch_array($colors_name_query);
+          
+          $mcnt++;
+          if($mcnt == 1) {
+          ?>
             <script type="text/javascript"><!--
 document.write('<?php //echo '<td class="smallText" align="center"><a href="javascript:popupWindow(\\\'' . tep_href_link(FILENAME_POPUP_IMAGE, 'pID=' . $product_info['products_id']) . '\\\')">' . tep_image2(DIR_WS_IMAGES . $product_info['products_image'], addslashes($product_info['products_name']), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="2" vspace="2"  class="image_border"') . '</a><br>-</td>'; ?>');
 //--></script>
@@ -498,34 +496,34 @@ document.write('<?php //echo '<td class="smallText" align="center"><a href="java
             <?php echo '<td class="smallText" align="center" width="20%"><a href="' . tep_href_link(DIR_WS_IMAGES .'products/'. $product_info['products_image']) . '" rel="lightbox[products]">' . tep_image3(DIR_WS_IMAGES .'products/'. $product_info['products_image'], $product_info['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="2" vspace="2" class="image_border"') . '</a><br>-</td>'; ?>
             </noscript>
             <?php
-				  }
-				   // $cnt++;
-				  ?>
+          }
+           // $cnt++;
+          ?>
             <?php echo '<td class="smallText" align="center" width="20%"><a href="' . tep_href_link(DIR_WS_IMAGES . 'colors/' . $sub_colors['color_image']) . '" rel="lightbox[products]">' . tep_image3(DIR_WS_IMAGES . 'colors/' . $sub_colors['color_image'], $product_info['products_name'],SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="2" vspace="2" class="image_border"') . '</a><br>'.$sub_colors['color_to_products_name'].'</td>'; ?>
             <?php
-				  
-				  $cnt++;
-				  if($cnt > 6) {
-				    echo '</tr><tr>';
-				    $cnt=0;
-				  }
-				}
+          
+          $cnt++;
+          if($cnt > 6) {
+            echo '</tr><tr>';
+            $cnt=0;
+          }
+        }
 ?>
           </tr>
         </table>
         <!-- //color image -->
-        <?php			
+        <?php     
         }
  ?>
         <div class="underline">&nbsp;</div>
      <?php if($description){?>
-		<br>
-		<h3 class="pageHeading_long"><?php echo $product_info['products_name']; ?>について</h3>
+    <br>
+    <h3 class="pageHeading_long"><?php echo $product_info['products_name']; ?>について</h3>
         <!-- 説明文　-->
         <p> <?php echo $description; ?> </p>
      <?php }?>
         <?php include(DIR_WS_BOXES.'reviews.php') ; ?>
-        <!-- 		<p><a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS,'product_id='.(int)$_GET['products_id']) ; ?>"><?php echo TEXT_CURRENT_REVIEWS . ' ' . $reviews_values['count']; ?></a></p>
+        <!--    <p><a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS,'product_id='.(int)$_GET['products_id']) ; ?>"><?php echo TEXT_CURRENT_REVIEWS . ' ' . $reviews_values['count']; ?></a></p>
  -->
         <?php
 //    }

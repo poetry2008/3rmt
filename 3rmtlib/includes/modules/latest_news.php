@@ -35,7 +35,7 @@
       $latest_news_image = '';
     }
                 if(time()-strtotime($latest_news['date_added'])<(defined('DS_LATEST_NEWS_NEW_LIMIT')?DS_LATEST_NEWS_NEW_LIMIT:7)*86400){
-                    $latest_news_new = tep_image(DIR_WS_IMAGES . 'design/latest_news_new.gif', $latest_news['headline'], '28', '14');
+                    $latest_news_new = tep_image(DIR_WS_IMAGES . 'design/latest_news_new.gif', strip_tags($latest_news['headline']), '28', '14');
                 } else {
                     $latest_news_new = '';
                 }

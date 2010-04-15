@@ -408,9 +408,9 @@
     $company = tep_output_string_protected($address['company']);
     $firstname = tep_output_string_protected($address['firstname']);
     $lastname = tep_output_string_protected($address['lastname']);
-	
-	$name_f = tep_output_string_protected($address['name_f']);
-	
+  
+  $name_f = tep_output_string_protected($address['name_f']);
+  
     $street = tep_output_string_protected($address['street_address']);
     $suburb = tep_output_string_protected($address['suburb']);
     $city = tep_output_string_protected($address['city']);
@@ -650,7 +650,7 @@
   function tep_get_products_description($product_id, $language_id, $site_id = 0) {
     $product_query = tep_db_query("select products_description from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . $product_id . "' and language_id = '" . $language_id . "' and site_id ='".$site_id."'");
     $product = tep_db_fetch_array($product_query);
-	
+  
     return $product['products_description'];
   }
   
@@ -1523,9 +1523,9 @@
 // Get manufacturers_name from manufacturers_id
   function tep_get_manufacturers_name($id) {
     $mquery = tep_db_query("select manufacturers_name from manufacturers where manufacturers_id = '".$id."'");
-	$mresult = tep_db_fetch_array($mquery);
-	
-	return $mresult['manufacturers_name'];
+  $mresult = tep_db_fetch_array($mquery);
+  
+  return $mresult['manufacturers_name'];
   }
 
 ////
@@ -1544,33 +1544,33 @@
   function tep_remove_attributes($order_id, $restock = false) {
     if ($restock == 'on') {
       $orderproduct_query = tep_db_query("select orders_products_id, products_quantity from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . tep_db_input($order_id) . "'");
-	  while ($o_product = tep_db_fetch_array($orderproduct_query)) {
-		$opID = $o_product['orders_products_id'];
-		$zaiko = $o_product['products_quantity'];
-		
-		$order_attributes_query = tep_db_query("select attributes_id from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where orders_products_id = '" . $opID . "'");
-		$order_attributes_result = tep_db_fetch_array($order_attributes_query);
-		$att_id = $order_attributes_result['attributes_id'];
-		
-		tep_db_query("update " . TABLE_PRODUCTS_ATTRIBUTES . " set products_at_quantity = products_at_quantity + " . $zaiko . " where products_attributes_id = '" . $att_id . "'");
+    while ($o_product = tep_db_fetch_array($orderproduct_query)) {
+    $opID = $o_product['orders_products_id'];
+    $zaiko = $o_product['products_quantity'];
+    
+    $order_attributes_query = tep_db_query("select attributes_id from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where orders_products_id = '" . $opID . "'");
+    $order_attributes_result = tep_db_fetch_array($order_attributes_query);
+    $att_id = $order_attributes_result['attributes_id'];
+    
+    tep_db_query("update " . TABLE_PRODUCTS_ATTRIBUTES . " set products_at_quantity = products_at_quantity + " . $zaiko . " where products_attributes_id = '" . $att_id . "'");
       }
     }
   }
 
 // Function to reset SEO URLs database cache entries 
 // Ultimate SEO URLs v2.1
-function tep_reset_cache_data_seo_urls($action){	
-	switch ($action){
-		case 'reset':
-			tep_db_query("DELETE FROM cache WHERE cache_name LIKE '%seo_urls%'");
-			tep_db_query("UPDATE configuration SET configuration_value='false' WHERE configuration_key='SEO_URLS_CACHE_RESET'");
-			break;
-		default:
-			break;
-	}
-	# The return value is used to set the value upon viewing
-	# It's NOT returining a false to indicate failure!!
-	return 'false';
+function tep_reset_cache_data_seo_urls($action){  
+  switch ($action){
+    case 'reset':
+      tep_db_query("DELETE FROM cache WHERE cache_name LIKE '%seo_urls%'");
+      tep_db_query("UPDATE configuration SET configuration_value='false' WHERE configuration_key='SEO_URLS_CACHE_RESET'");
+      break;
+    default:
+      break;
+  }
+  # The return value is used to set the value upon viewing
+  # It's NOT returining a false to indicate failure!!
+  return 'false';
 }
 
   function tep_parse_search_string($search_str = '', &$objects) {
@@ -1757,37 +1757,37 @@ function tep_reset_cache_data_seo_urls($action){
   
   function tep_get_option_array()
   {
-  	  $return = array('0' => array());
-  	  $arr = array_keys(tep_get_torihiki_houhou());
-  	  foreach($arr as $key => $value){
-  	  	$return [] = array(
-  	  		'id' => $value,
-  	  		'text' => $value,
-  	  	);
-  	  }
-  	  return $return;
+      $return = array('0' => array());
+      $arr = array_keys(tep_get_torihiki_houhou());
+      foreach($arr as $key => $value){
+        $return [] = array(
+          'id' => $value,
+          'text' => $value,
+        );
+      }
+      return $return;
   }
   
   function tep_get_all_torihiki()
   {
-  	  $torihikis = array();
-  	  $return = array(0 => array());
-  	  $all = tep_get_torihiki_houhou();
-  	  foreach($all as $key=>$value){
-  	  	foreach($value as $item){
-  	  	  if(!in_array($item, $torihikis)){
-  	  	  	  $torihikis[] = $item;
-  	  	  }
-  	  	}
-  	  }
-  	  foreach($torihikis as $tkey => $torihiki){
-  	  	  $return[] = array(
-  	  	  	'id' => $torihiki,
-  	  	  	'text' => $torihiki,
-  	  	  );
-  	  }
-  	  //print_r($return);
-  	  return $return;
+      $torihikis = array();
+      $return = array(0 => array());
+      $all = tep_get_torihiki_houhou();
+      foreach($all as $key=>$value){
+        foreach($value as $item){
+          if(!in_array($item, $torihikis)){
+              $torihikis[] = $item;
+          }
+        }
+      }
+      foreach($torihikis as $tkey => $torihiki){
+          $return[] = array(
+            'id' => $torihiki,
+            'text' => $torihiki,
+          );
+      }
+      //print_r($return);
+      return $return;
   }
   
   function tep_get_bflag_by_product_id($product_id) {
@@ -1803,10 +1803,10 @@ function tep_reset_cache_data_seo_urls($action){
       return '';
     }
     if (trim($rate) == '天空の羽毛5個・インクリスクロール5個のセット'){
-    	return '(天空の羽毛'.number_format(strval(5*$cnt)).'個・インクリスクロール'.number_format(strval(5*$cnt)).'個のセット)';
+      return '(天空の羽毛'.number_format(strval(5*$cnt)).'個・インクリスクロール'.number_format(strval(5*$cnt)).'個のセット)';
     }
     if (trim($rate) == 'ネットカフェ1DAYチケット5枚セット'){
-    	return '(ネットカフェ1DAYチケット'.number_format(strval(5*$cnt)).'枚セット)';
+      return '(ネットカフェ1DAYチケット'.number_format(strval(5*$cnt)).'枚セット)';
     }
     $rate = str_replace(array(','), array(''), $rate);
     if (preg_match('/^(.*)億(.*)万(.*)$/', $rate, $out)) {
@@ -2056,18 +2056,18 @@ function tep_get_image_document_image($document_id)
             $str .= $p['products_attention_5'] . "\n";
         }
       } else {
-      	  $sql = "select * from `".TABLE_ORDERS_PRODUCTS."` WHERE `orders_id`='".$orders_id."'";
-      	  $orders_products_query = tep_db_query($sql);
-      	  while ($orders_products = tep_db_fetch_array($orders_products_query)){
-      	  	  $sql = "select * from `".TABLE_PRODUCTS_DESCRIPTION."` WHERE `products_id`='".$orders_products['products_id']."' and site_id = '".$site_id."'";
-      	  	  $products_description = tep_db_fetch_array(tep_db_query($sql));
-      	  	  if ($products_description['products_attention_5']) {
-    	  	  	  $str .= $orders_products['products_name']." 当社のキャラクター名：\n";
-    	  	  	  $str .= $products_description['products_attention_5'] . "\n";
-      	  	  }
-      	  }
+          $sql = "select * from `".TABLE_ORDERS_PRODUCTS."` WHERE `orders_id`='".$orders_id."'";
+          $orders_products_query = tep_db_query($sql);
+          while ($orders_products = tep_db_fetch_array($orders_products_query)){
+              $sql = "select * from `".TABLE_PRODUCTS_DESCRIPTION."` WHERE `products_id`='".$orders_products['products_id']."' and site_id = '".$site_id."'";
+              $products_description = tep_db_fetch_array(tep_db_query($sql));
+              if ($products_description['products_attention_5']) {
+                $str .= $orders_products['products_name']." 当社のキャラクター名：\n";
+                $str .= $products_description['products_attention_5'] . "\n";
+              }
+          }
       }
-  	  return $str;
+      return $str;
   }
 
   function tep_get_sites() {
@@ -2190,13 +2190,13 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
   
     //オプション名取得
     function tep_get_add_options_name($id, $languages='4') {
-		    $query = tep_db_query("select products_options_name from products_options where products_options_id = '".$id."' and language_id = '".$languages."'");
-			if(tep_db_num_rows($query)) {
-			  $result = tep_db_fetch_array($query);
-			  return $result['products_options_name'];
-			} else {
-			  return '';
-			}
+        $query = tep_db_query("select products_options_name from products_options where products_options_id = '".$id."' and language_id = '".$languages."'");
+      if(tep_db_num_rows($query)) {
+        $result = tep_db_fetch_array($query);
+        return $result['products_options_name'];
+      } else {
+        return '';
+      }
     }
     //オプション値登録
     function tep_get_add_options_value($id, $languages='4') {
@@ -2347,3 +2347,41 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
   function tep_get_faq_category($c_id){
     return tep_db_fetch_array(tep_db_query("select * from ".TABLE_FAQ_CATEGORIES." where c_id = '".$c_id."'"));
   }
+
+function calc_handle_fee($payment_name, $products_total)
+{
+  if ($products_total == 0) {
+    return 0; 
+  }
+  $handle_fee = 0; 
+  if ($payment_name == '銀行振込(買い取り)') {
+    $handle_fee = calc_fee_final(MODULE_PAYMENT_BUYING_COST, $products_total); 
+  } else if ($payment_name == 'コンビニ決済') {
+    $handle_fee = calc_fee_final(MODULE_PAYMENT_CONVENIENCE_STORE_COST, $products_total); 
+  } else if ($payment_name == '銀行振込') {
+    $handle_fee = calc_fee_final(MODULE_PAYMENT_MONEYORDER_COST, $products_total); 
+  } else if ($payment_name == 'ゆうちょ銀行（郵便局）') {
+    $handle_fee = calc_fee_final(MODULE_PAYMENT_POSTALMONEYORDER_COST, $products_total); 
+  } else if ($payment_name == 'クレジットカード決済') {
+    $handle_fee = calc_fee_final(MODULE_PAYMENT_TELECOM_COST, $products_total); 
+  } else {
+    return 0; 
+  }
+  return $handle_fee;
+}
+function calc_fee_final($fee_set, $total_cost)
+{
+  $return_fee = 0; 
+  $table_fee = split("[:,]", $fee_set);
+  for ($i = 0; $i < count($table_fee); $i+=2) {
+    if ($total_cost <= $table_fee[$i]) {
+      $additional_fee = $total_cost.$table_fee[$i+1];
+      @eval("\$additional_fee = $additional_fee;");
+      if (is_numeric($additional_fee)) {
+        $return_fee = $additional_fee; 
+      }
+      break; 
+    }
+  }
+  return $return_fee;
+}

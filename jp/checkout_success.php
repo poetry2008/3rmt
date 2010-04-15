@@ -94,26 +94,26 @@
         
         <div> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
-		    
-			<?php
-			#convenience_store
+        
+      <?php
+      #convenience_store
       if (!isset($_POST['SID'])) $_POST['SID']=NULL;
-			if($_GET['SID'] != "" || $_POST['SID'] != ""){
-			  
-			  if($_GET['SID'] != ""){
-			    $pr = '?sid=' . $_GET['SID'];
-			  }
-			  
-			  if($_POST['SID'] != ""){
-			    $pr = '?sid=' . $_POST['SID'];
-			  }
-			  
-			  echo '<tr><td>';
-			  echo '<a href="convenience_store_chk.php' . $pr . '">' . 'コンビニ決済はこちらから！！</a>';
-			  echo '</td></tr>';
-			}
-			?>
-			 
+      if($_GET['SID'] != "" || $_POST['SID'] != ""){
+        
+        if($_GET['SID'] != ""){
+          $pr = '?sid=' . $_GET['SID'];
+        }
+        
+        if($_POST['SID'] != ""){
+          $pr = '?sid=' . $_POST['SID'];
+        }
+        
+        echo '<tr><td>';
+        //echo '<a href="convenience_store_chk.php' . $pr . '">' . 'コンビニ決済はこちらから！！</a>';
+        echo '</td></tr>';
+      }
+      ?>
+       
             <tr> 
               <td><table border="0" width="100%" cellspacing="4" cellpadding="2"> 
                   <tr> 

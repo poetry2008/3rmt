@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  $Id$
 
@@ -48,26 +48,26 @@
                or site_id = '".SITE_ID."' 
             group by categories_id
             order by parent_id, sort_order, categories_name");
-		 
+     
          $this->data = array();
          while ($categories = tep_db_fetch_array($categories_query)) {
-			// Ultimate SEO URLs compatibility - Chemo
+      // Ultimate SEO URLs compatibility - Chemo
             # initialize array container for parent_id 
-			$p = array();
-			tep_get_parent_categories($p, $categories['parent_id']);
-			# For some reason it seems to return in reverse order so reverse the array 
-			$p = array_reverse($p);
-			# Implode the array to get the parent category path
-			$cID = (implode('_', $p) ? implode('_', $p) . '_' . $categories['parent_id'] :
-			$categories['parent_id']);
+      $p = array();
+      tep_get_parent_categories($p, $categories['parent_id']);
+      # For some reason it seems to return in reverse order so reverse the array 
+      $p = array_reverse($p);
+      # Implode the array to get the parent category path
+      $cID = (implode('_', $p) ? implode('_', $p) . '_' . $categories['parent_id'] :
+      $categories['parent_id']);
             # initialize array container for category_id 
-			$c = array();
-			tep_get_parent_categories($c, $categories['categories_id']);
-			# For some reason it seems to return in reverse order so reverse the array 
-			$c = array_reverse($c);
-			# Implode the array to get the full category path
-			$id = (implode('_', $c) ? implode('_', $c) . '_' . $categories['categories_id'] :
-			$categories['categories_id']);
+      $c = array();
+      tep_get_parent_categories($c, $categories['categories_id']);
+      # For some reason it seems to return in reverse order so reverse the array 
+      $c = array_reverse($c);
+      # Implode the array to get the full category path
+      $id = (implode('_', $c) ? implode('_', $c) . '_' . $categories['categories_id'] :
+      $categories['categories_id']);
 
            $this->data[$cID][$id] = array('name' => $categories['categories_name'], 'count' => 0);
          } // eof While loop
@@ -87,9 +87,9 @@
          if (isset($this->data[$category_id])) $result .= $this->parent_start_string;
 
          if ($level == 0) $result .= $this->root_start_string;
-		 
+     
          $result .= str_repeat($this->spacer_string, $this->spacer_multiplier * $level) . 
-		 '<a href="' . tep_href_link(FILENAME_DEFAULT, 'cPath=' . $category_link) . '">';
+     '<a href="' . tep_href_link(FILENAME_DEFAULT, 'cPath=' . $category_link) . '">';
          $result .= $category['name'];
          $result .= '</a>';
 
@@ -100,7 +100,7 @@
          $result .= $this->child_end_string;
 
          if (isset($this->data[$category_id]) && (($this->max_level == '0') ||
-		 ($this->max_level > $level+1))) $result .= $this->buildBranch($category_id, $level+1);
+     ($this->max_level > $level+1))) $result .= $this->buildBranch($category_id, $level+1);
        }
      }
 
@@ -116,4 +116,3 @@
      return $this->buildBranch($this->root_category_id);
    }
  }
-?>

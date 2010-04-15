@@ -8,8 +8,8 @@
 // Ultimate SEO URLs v2.1
 // The HTML href link wrapper function
   function tep_href_link($page = '', $parameters = '', $connection = 'NONSSL', $add_session_id = true, $search_engine_safe = true) {
-		global $seo_urls;
-		return $seo_urls->href_link($page, $parameters, $connection, $add_session_id);
+    global $seo_urls;
+    return $seo_urls->href_link($page, $parameters, $connection, $add_session_id);
   }
 
 ////
@@ -27,29 +27,29 @@
 ##########
    if ($image_size = @getimagesize($src)) {
       if ((CONFIG_CALCULATE_IMAGE_SIZE == 'true' && $src != DIR_WS_IMAGES . 'pixel_black.gif' && $src != DIR_WS_IMAGES . 'pixel_trans.gif' && $src != DIR_WS_IMAGES . 'pixel_silver.gif' )) {
-		if ( ($width) || ($height) ) {
-			if ( $width=="100%" ) {
-			  $width = $image_size[0];
-			} elseif ( $height=="100%" ) {
-			  $height = $image_size[1];
-			} elseif ( $width==0 ) {
-			  unset($width);
-			} elseif ( $height==0 ) {
-			  unset($height);
-			}
-			//print(DIR_FS_CATALOG . '/' .$src. $width. $height. DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'imagecache');
-			$src = thumbimage(DIR_FS_CATALOG . '/' .$src, $width, $height, 1, 1, DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'imagecache');
-			if ((($image_size[1]/$height) > ($image_size[0]/$width) ) && $height>0){
-				 $width=ceil(($image_size[0]/$image_size[1])* $height);
-			} elseif ($width>0) {
-				 $height=ceil($width/($image_size[0]/$image_size[1]));
-			}
-		}
- 	  }
+    if ( ($width) || ($height) ) {
+      if ( $width=="100%" ) {
+        $width = $image_size[0];
+      } elseif ( $height=="100%" ) {
+        $height = $image_size[1];
+      } elseif ( $width==0 ) {
+        unset($width);
+      } elseif ( $height==0 ) {
+        unset($height);
+      }
+      //print(DIR_FS_CATALOG . '/' .$src. $width. $height. DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'imagecache');
+      $src = thumbimage(DIR_FS_CATALOG . '/' .$src, $width, $height, 1, 1, DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'imagecache');
+      if ((($image_size[1]/$height) > ($image_size[0]/$width) ) && $height>0){
+         $width=ceil(($image_size[0]/$image_size[1])* $height);
+      } elseif ($width>0) {
+         $height=ceil($width/($image_size[0]/$image_size[1]));
+      }
+    }
+    }
       } elseif (IMAGE_REQUIRED == 'false') {
         return '';
-      }	
-	
+      } 
+  
 
 // alt is added to the img tag even if it is null to prevent browsers from outputting
 // the image filename as default
@@ -85,28 +85,28 @@
 ##########
    if ($image_size = @getimagesize($src)) {
       if ((CONFIG_CALCULATE_IMAGE_SIZE == 'true' && $src != DIR_WS_IMAGES . 'pixel_black.gif' && $src != DIR_WS_IMAGES . 'pixel_trans.gif' && $src != DIR_WS_IMAGES . 'pixel_silver.gif' )) {
-		if ( ($width) || ($height) ) {
-			if ( $width=="100%" ) {
-			  $width = $image_size[0];
-			} elseif ( $height=="100%" ) {
-			  $height = $image_size[1];
-			} elseif ( $width==0 ) {
-			  unset($width);
-			} elseif ( $height==0 ) {
-			  unset($height);
-			}
-			$src=thumbimage2(DIR_FS_CATALOG . '/' .$src, $width, $height, 1, 1, DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'imagecache2');
-			if ((($image_size[1]/$height) > ($image_size[0]/$width) ) && $height>0){
-				 $width=ceil(($image_size[0]/$image_size[1])* $height);
-			} elseif ($width>0) {
-				 $height=ceil($width/($image_size[0]/$image_size[1]));
-			}
-		}
- 	  }
+    if ( ($width) || ($height) ) {
+      if ( $width=="100%" ) {
+        $width = $image_size[0];
+      } elseif ( $height=="100%" ) {
+        $height = $image_size[1];
+      } elseif ( $width==0 ) {
+        unset($width);
+      } elseif ( $height==0 ) {
+        unset($height);
+      }
+      $src=thumbimage2(DIR_FS_CATALOG . '/' .$src, $width, $height, 1, 1, DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'imagecache2');
+      if ((($image_size[1]/$height) > ($image_size[0]/$width) ) && $height>0){
+         $width=ceil(($image_size[0]/$image_size[1])* $height);
+      } elseif ($width>0) {
+         $height=ceil($width/($image_size[0]/$image_size[1]));
+      }
+    }
+    }
       } elseif (IMAGE_REQUIRED == 'false') {
         return '';
-      }	
-	
+      } 
+  
 
 // alt is added to the img tag even if it is null to prevent browsers from outputting
 // the image filename as default
@@ -144,28 +144,28 @@
 ##########
    if ($image_size = @getimagesize($src)) {
       if ((CONFIG_CALCULATE_IMAGE_SIZE == 'true' && $src != DIR_WS_IMAGES . 'pixel_black.gif' && $src != DIR_WS_IMAGES . 'pixel_trans.gif' && $src != DIR_WS_IMAGES . 'pixel_silver.gif' )) {
-		if ( ($width) || ($height) ) {
-			if ( $width=="100%" ) {
-			  $width = $image_size[0];
-			} elseif ( $height=="100%" ) {
-			  $height = $image_size[1];
-			} elseif ( $width==0 ) {
-			  unset($width);
-			} elseif ( $height==0 ) {
-			  unset($height);
-			}
-			$src=thumbimage3(DIR_FS_CATALOG . '/' .$src, $width, $height, 1, 1, DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'imagecache3');
-			if ((($image_size[1]/$height) > ($image_size[0]/$width) ) && $height>0){
-				 $width=ceil(($image_size[0]/$image_size[1])* $height);
-			} elseif ($width>0) {
-				 $height=ceil($width/($image_size[0]/$image_size[1]));
-			}
-		}
- 	  }
+    if ( ($width) || ($height) ) {
+      if ( $width=="100%" ) {
+        $width = $image_size[0];
+      } elseif ( $height=="100%" ) {
+        $height = $image_size[1];
+      } elseif ( $width==0 ) {
+        unset($width);
+      } elseif ( $height==0 ) {
+        unset($height);
+      }
+      $src=thumbimage3(DIR_FS_CATALOG . '/' .$src, $width, $height, 1, 1, DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'imagecache3');
+      if ((($image_size[1]/$height) > ($image_size[0]/$width) ) && $height>0){
+         $width=ceil(($image_size[0]/$image_size[1])* $height);
+      } elseif ($width>0) {
+         $height=ceil($width/($image_size[0]/$image_size[1]));
+      }
+    }
+    }
       } elseif (IMAGE_REQUIRED == 'false') {
         return '';
-      }	
-	
+      } 
+  
 
 // alt is added to the img tag even if it is null to prevent browsers from outputting
 // the image filename as default
@@ -456,11 +456,11 @@
      if (!isset ($y)) $y = floor ($x * $imagedata[1] / $imagedata[0]);
 
      if ($aspectratio && isset ($x) && isset ($y)) {
-		if ((($imagedata[1]/$y) > ($imagedata[0]/$x) )){
-			 $x=ceil(($imagedata[0]/$imagedata[1])* $y);
-		} else {
-			 $y=ceil($x/($imagedata[0]/$imagedata[1]));
-		}
+    if ((($imagedata[1]/$y) > ($imagedata[0]/$x) )){
+       $x=ceil(($imagedata[0]/$imagedata[1])* $y);
+    } else {
+       $y=ceil($x/($imagedata[0]/$imagedata[1]));
+    }
      }
 
      $thumbfile =  '/' . basename($image);
@@ -510,7 +510,7 @@
 
 
      $types = array (1 => "gif", "jpeg", "png", "swf", "psd", "wbmp");
-	 $not_supported_formats = array ("GIF"); 
+   $not_supported_formats = array ("GIF"); 
      umask(0);
      !is_dir ($cachedir)
          ? mkdir ($cachedir, 0777)
@@ -544,10 +544,10 @@
           ? DIE ('Bei der angegebenen Datei handelt es sich nicht um ein Bild!')
           : false;
 
-	 $imgtype="!(ImageTypes() & IMG_" . strtoupper($types[$imagedata[2]]) . ");";
+   $imgtype="!(ImageTypes() & IMG_" . strtoupper($types[$imagedata[2]]) . ");";
      if ((eval($imgtype)) || (in_array(strtoupper(array_pop(explode('.', basename($image)))),$not_supported_formats))) {
-     	$image = substr ($image, (strrpos (DIR_FS_CATALOG . '/', '/'))+1);
-	 	return $image;
+      $image = substr ($image, (strrpos (DIR_FS_CATALOG . '/', '/'))+1);
+    return $image;
 
      }
 
@@ -557,11 +557,11 @@
      if (!isset ($y)) $y = floor ($x * $imagedata[1] / $imagedata[0]);
 
      if ($aspectratio && isset ($x) && isset ($y)) {
-		if ((($imagedata[1]/$y) > ($imagedata[0]/$x) )){
-			 $x=ceil(($imagedata[0]/$imagedata[1])* $y);
-		} else {
-			 $y=ceil($x/($imagedata[0]/$imagedata[1]));
-		}
+    if ((($imagedata[1]/$y) > ($imagedata[0]/$x) )){
+       $x=ceil(($imagedata[0]/$imagedata[1])* $y);
+    } else {
+       $y=ceil($x/($imagedata[0]/$imagedata[1]));
+    }
      }
 
      $thumbfile =  '/' . basename($image);
@@ -586,12 +586,12 @@
 
      if ($makethumb) {
           $image = call_user_func("imagecreatefrom".$types[$imagedata[2]], $image);
-	  if (function_exists("imagecreatetruecolor") && ($thumb = imagecreatetruecolor ($x, $y))) {
-		imagecopyresampled ($thumb, $image, 0, 0, 0, 0, $x, $y, $imagedata[0], $imagedata[1]);
-	  } else {
-		$thumb = imagecreate ($x, $y);
-		imagecopyresized ($thumb, $image, 0, 0, 0, 0, $x, $y, $imagedata[0], $imagedata[1]);
-	  }
+    if (function_exists("imagecreatetruecolor") && ($thumb = imagecreatetruecolor ($x, $y))) {
+    imagecopyresampled ($thumb, $image, 0, 0, 0, 0, $x, $y, $imagedata[0], $imagedata[1]);
+    } else {
+    $thumb = imagecreate ($x, $y);
+    imagecopyresized ($thumb, $image, 0, 0, 0, 0, $x, $y, $imagedata[0], $imagedata[1]);
+    }
           call_user_func("image".$types[$imagedata[2]], $thumb, $cachedir.$thumbfile);
           imagedestroy ($image);
           imagedestroy ($thumb);
@@ -612,7 +612,7 @@ return $image;
 
 
      $types = array (1 => "gif", "jpeg", "png", "swf", "psd", "wbmp");
-	 $not_supported_formats = array ("GIF"); 
+   $not_supported_formats = array ("GIF"); 
      umask(0);
      !is_dir ($cachedir)
          ? mkdir ($cachedir, 0777)
@@ -646,7 +646,7 @@ return $image;
           ? DIE ('Bei der angegebenen Datei handelt es sich nicht um ein Bild!')
           : false;
 
-	 $imgtype="!(ImageTypes() & IMG_" . strtoupper($types[$imagedata[2]]) . ");";
+   $imgtype="!(ImageTypes() & IMG_" . strtoupper($types[$imagedata[2]]) . ");";
    //echo $imgtype;
      if ((eval($imgtype)) || (in_array(strtoupper(array_pop(explode('.', basename($image)))),$not_supported_formats))) {
         $image = substr ($image, (strrpos (DIR_FS_CATALOG . '/', '/'))+1);
@@ -660,11 +660,11 @@ return $image;
      if (!isset ($y)) $y = floor ($x * $imagedata[1] / $imagedata[0]);
 
      if ($aspectratio && isset ($x) && isset ($y)) {
-		if ((($imagedata[1]/$y) > ($imagedata[0]/$x) )){
-			 $x=ceil(($imagedata[0]/$imagedata[1])* $y);
-		} else {
-			 $y=ceil($x/($imagedata[0]/$imagedata[1]));
-		}
+    if ((($imagedata[1]/$y) > ($imagedata[0]/$x) )){
+       $x=ceil(($imagedata[0]/$imagedata[1])* $y);
+    } else {
+       $y=ceil($x/($imagedata[0]/$imagedata[1]));
+    }
      }
 
      $thumbfile =  '/' . basename($image);
@@ -689,12 +689,12 @@ return $image;
 
      if ($makethumb) {
           $image = call_user_func("imagecreatefrom".$types[$imagedata[2]], $image);
-	  if (function_exists("imagecreatetruecolor") && ($thumb = imagecreatetruecolor ($x, $y))) {
-		imagecopyresampled ($thumb, $image, 0, 0, 0, 0, $x, $y, $imagedata[0], $imagedata[1]);
-	  } else {
-		$thumb = imagecreate ($x, $y);
-		imagecopyresized ($thumb, $image, 0, 0, 0, 0, $x, $y, $imagedata[0], $imagedata[1]);
-	  }
+    if (function_exists("imagecreatetruecolor") && ($thumb = imagecreatetruecolor ($x, $y))) {
+    imagecopyresampled ($thumb, $image, 0, 0, 0, 0, $x, $y, $imagedata[0], $imagedata[1]);
+    } else {
+    $thumb = imagecreate ($x, $y);
+    imagecopyresized ($thumb, $image, 0, 0, 0, 0, $x, $y, $imagedata[0], $imagedata[1]);
+    }
           call_user_func("image".$types[$imagedata[2]], $thumb, $cachedir.$thumbfile);
           imagedestroy ($image);
           imagedestroy ($thumb);
@@ -720,5 +720,28 @@ function tags_tep_href_link($tags_id)
   $returnstr = HTTP_SERVER . DIR_WS_CATALOG;
   $returnstr .= "tags/t-".$tags_id.".html";
   return $returnstr;
+}
+
+function check_money_limit($limit_set, $total)
+{
+  $limit_arr = explode(",", $limit_set); 
+  if (isset($limit_arr[0]) && isset($limit_arr[1])) {
+    if (is_numeric($limit_arr[0]) && is_numeric($limit_arr[1])) {
+      if ($limit_arr[0] < $limit_arr[1]) {
+        if ($total < $limit_arr[0] || $total > $limit_arr[1]) {
+          return true; 
+        } else {
+          return false; 
+        }
+      } else {
+        return true; 
+      }
+    } else {
+      return true;
+    }
+  } else {
+    return true;
+  }
+  return false;
 }
 ?>

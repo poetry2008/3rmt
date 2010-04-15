@@ -280,7 +280,7 @@ $site_id = isset($_GET['site_id'])?$_GET['site_id']:'0';
           $contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . @$_GET['module'] . '&action=edit&site_id='.$s['id']) . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>');
         }
         $contents[] = array('text' => '<br>' . $mInfo->description);
-        $contents[] = array('text' => '<br>' . $keys);
+        $contents[] = array('text' => '<div style="word-wrap:break-word;width:200px;overflow:hidden;"><br>' . $keys . '</div>');
       } else {
         $contents[] = array('text' => isset($mInfo->description)?$mInfo->description:'');
       }

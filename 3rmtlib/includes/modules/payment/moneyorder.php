@@ -1,23 +1,23 @@
 <?php
 /*
-   $Id$
+  $Id$
 */
 
   class moneyorder {
-    var $site_id, $code, $title, $description, $enabled;
+    var $site_id, $code, $title, $description, $enabled, $s_error, $n_fee, $email_footer;
 
 // class constructor
     function moneyorder($site_id = 0) {
       global $order;
-
+      
       $this->site_id = $site_id;
 
-      $this->code = 'moneyorder';
-      $this->title = MODULE_PAYMENT_MONEYORDER_TEXT_TITLE;
+      $this->code        = 'moneyorder';
+      $this->title       = MODULE_PAYMENT_MONEYORDER_TEXT_TITLE;
       $this->description = MODULE_PAYMENT_MONEYORDER_TEXT_DESCRIPTION;
-      $this->explain = MODULE_PAYMENT_MONEYORDER_TEXT_EXPLAIN;
-      $this->sort_order = MODULE_PAYMENT_MONEYORDER_SORT_ORDER;
-      $this->enabled = ((MODULE_PAYMENT_MONEYORDER_STATUS == 'True') ? true : false);
+    $this->explain       = MODULE_PAYMENT_MONEYORDER_TEXT_EXPLAIN;
+      $this->sort_order  = MODULE_PAYMENT_MONEYORDER_SORT_ORDER;
+      $this->enabled     = ((MODULE_PAYMENT_MONEYORDER_STATUS == 'True') ? true : false);
 
       if ((int)MODULE_PAYMENT_MONEYORDER_ORDER_STATUS_ID > 0) {
         $this->order_status = MODULE_PAYMENT_MONEYORDER_ORDER_STATUS_ID;
@@ -34,7 +34,6 @@
 
       if ( ($this->enabled == true) && ((int)MODULE_PAYMENT_MONEYORDER_ZONE > 0) ) {
         $check_flag = false;
-        // ccdd
         $check_query = tep_db_query("select zone_id from " . TABLE_ZONES_TO_GEO_ZONES . " where geo_zone_id = '" . MODULE_PAYMENT_MONEYORDER_ZONE . "' and zone_country_id = '" . $order->billing['country']['id'] . "' order by zone_id");
         while ($check = tep_db_fetch_array($check_query)) {
           if ($check['zone_id'] < 1) {
@@ -51,15 +50,53 @@
         }
       }
     }
+    
+    function calc_fee($total_cost) {
+      $table_fee = split("[:,]" , MODULE_PAYMENT_MONEYORDER_COST);
+      $f_find = false;
+      $this->n_fee = 0;
+      for ($i = 0; $i < count($table_fee); $i+=2) {
+        if ($total_cost <= $table_fee[$i]) { 
+          $additional_fee = $total_cost.$table_fee[$i+1]; 
+          @eval("\$additional_fee = $additional_fee;"); 
+          //$this->n_fee = $table_fee[$i+1]; 
+          if (is_numeric($additional_fee)) {
+            $this->n_fee = intval($additional_fee); 
+          } else {
+            $this->n_fee = 0; 
+          }
+          $f_find = true;
+          break;
+        }
+      }
+      if ( !$f_find ) {
+        $this->s_error = MODULE_PAYMENT_MONEYORDER_TEXT_OVERFLOW_ERROR;
+      }
 
+      return $f_find;
+    }
     function javascript_validation() {
       return false;
     }
 
     function selection() {
+      global $currencies;
+      global $order;
+      
+      $total_cost = $order->info['total'];
+      $f_result = $this->calc_fee($total_cost); 
+      $added_hidden = $f_result ? tep_draw_hidden_field('money_order_fee', $this->n_fee):tep_draw_hidden_field('money_order_fee_error', $this->s_error);
+      
+      if (!empty($this->n_fee)) {
+        $s_message = $f_result ? (MODULE_PAYMENT_MONEY_ORDER_TEXT_FEE . '&nbsp;' .  $currencies->format($this->n_fee)):('<font color="#FF0000">'.$this->s_error.'</font>'); 
+      } else {
+        $s_message = $f_result ? '':('<font color="#FF0000">'.$this->s_error.'</font>'); 
+      }
       return array('id' => $this->code,
                    'module' => $this->title,
-				   'fields' => array(array('title' => $this->explain,'field' => '')));
+           'fields' => array(array('title' => $this->explain,'field' => ''),
+                                     array('title' => $s_message, 'field' => $added_hidden) 
+                                     ));
     }
 
     function pre_confirmation_check() {
@@ -67,15 +104,57 @@
     }
 
     function confirmation() {
-      return array('title' => MODULE_PAYMENT_MONEYORDER_TEXT_DESCRIPTION);
+      global $currencies;
+      global $HTTP_POST_VARS;
+      
+      $s_result = !$_POST['money_order_fee_error'];
+     
+      if (!empty($HTTP_POST_VARS['money_order_fee'])) {
+        //$s_message = $s_result ? (MODULE_PAYMENT_MONEY_ORDER_TEXT_FEE . '&nbsp;' .  $currencies->format($HTTP_POST_VARS['money_order_fee'])):('<font color="#FF0000">'.$HTTP_POST_VARS['money_order_fee_error'].'</font>'); 
+        $s_message = $s_result ? '':('<font color="#FF0000">'.$HTTP_POST_VARS['money_order_fee_error'].'</font>'); 
+      } else {
+        $s_message = $s_result ? '':('<font color="#FF0000">'.$HTTP_POST_VARS['money_order_fee_error'].'</font>'); 
+      }
+      
+      if (!empty($HTTP_POST_VARS['money_order_fee'])) {
+        return array(
+            'title' => MODULE_PAYMENT_MONEYORDER_TEXT_DESCRIPTION,
+            'fields' => array(array('title' => MODULE_PAYMENT_MONEY_ORDER_TEXT_PROCESS,
+                                    'field' => ''),
+                              array('title' => $s_message, 'field' => '')  
+                       )           
+            );
+      } else {
+        return array(
+            'title' => MODULE_PAYMENT_MONEYORDER_TEXT_DESCRIPTION,
+            'fields' => array(array('title' => $s_message, 'field' => '')  
+                       )           
+            );
+      }
     }
 
     function process_button() {
-      return false;
+      global $currencies;
+      global $HTTP_POST_VARS; 
+      global $order;
+
+      $total = $order->info['total'];
+      if ($payment == 'moneyorder') {
+        $total += intval($HTTP_POST_VARS['money_order_fee']); 
+      }
+      
+      $s_message = $HTTP_POST_VARS['money_order_fee_error']?$HTTP_POST_VARS['money_order_fee_error']:sprintf(MODULE_PAYMENT_MONEY_ORDER_TEXT_MAILFOOTER, $currencies->format($total), $currencies->format($HTTP_POST_VARS['money_order_fee']));
+      
+      return tep_draw_hidden_field('money_order_message', htmlspecialchars($s_message)). tep_draw_hidden_field('money_order_fee', $HTTP_POST_VARS['money_order_fee']);
+      //return false;
     }
 
     function before_process() {
-      return false;
+      global $_POST;
+
+      $this->email_footer = str_replace("\r\n", "\n", $HTTP__POST_VARS['money_order_message']);
+      
+      //return false;
     }
 
     function after_process() {
@@ -83,43 +162,43 @@
     }
 
     function get_error() {
-      return false;
+      global $HTTP_POST_VARS, $HTTP_GET_VARS;
+
+      if (isset($HTTP_GET_VARS['payment_error']) && (strlen($HTTP_GET_VARS['payment_error']) > 0)) {
+        $error_message = MODULE_PAYMENT_MONEY_ORDER_TEXT_ERROR_MESSAGE;
+        
+        return array('title' => 'コンビニ決済 エラー!', 'error' => $error_message);
+      } else {
+        return false;
+      }
     }
 
     function check() {
       if (!isset($this->_check)) {
-        // ccdd
-        $check_query = tep_db_query("select configuration_value from " .  TABLE_CONFIGURATION . " where configuration_key = 'MODULE_PAYMENT_MONEYORDER_STATUS' and site_id = '".$this->site_id."'");
+        $check_query = tep_db_query("select configuration_value from " . TABLE_CONFIGURATION . " where configuration_key = 'MODULE_PAYMENT_MONEYORDER_STATUS' and site_id = '".$this->site_id."'");
         $this->_check = tep_db_num_rows($check_query);
       }
       return $this->_check;
     }
 
     function install() {
-      // ccdd
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('銀行振込を有効にする', 'MODULE_PAYMENT_MONEYORDER_STATUS', 'True', '銀行振込による支払いを受け付けますか?', '6', '1', 'tep_cfg_select_option(array(\'True\', \'False\'), ', now(), ".$this->site_id.");");
-      // ccdd
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('お振込先:', 'MODULE_PAYMENT_MONEYORDER_PAYTO', '', 'お振込先名義を設定してください.', '6', '1', now(), ".$this->site_id.");");
-      // ccdd
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('表示の整列順', 'MODULE_PAYMENT_MONEYORDER_SORT_ORDER', '0', '表示の整列順を設定できます。数字が小さいほど上位に表示されます.', '6', '0', now(), ".$this->site_id.")");
-      // ccdd
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added, site_id) values ('適用地域', 'MODULE_PAYMENT_MONEYORDER_ZONE', '0', '適用地域を選択すると、選択した地域のみで利用可能となります.', '6', '2', 'tep_get_zone_class_title', 'tep_cfg_pull_down_zone_classes(', now(), ".$this->site_id.")");
-      // ccdd
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, use_function, date_added, site_id) values ('初期注文ステータス', 'MODULE_PAYMENT_MONEYORDER_ORDER_STATUS_ID', '0', '設定したステータスが受注時に適用されます.', '6', '0', 'tep_cfg_pull_down_order_statuses(', 'tep_get_order_status_name', now(), ".$this->site_id.")");
+    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('決済手数料', 'MODULE_PAYMENT_MONEYORDER_COST', '99999999999:*0', '決済手数料 例: 代金300円以下、30円手数料をとる場合　300:*0+30, 代金301～1000円以内、代金の2％の手数料をとる場合　999:*0.02, 代金1000円以上の場合、手数料を無料する場合　99999999:*0, 無限大の符号を使えないため、このサイトで存在可能性がない数値で使ってください。 300:*0+30では*0がなければ、手数料は300+30になってしまいますので、ご注意ください。', '6', '3', now(), ".$this->site_id.")");
+    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('決済可能金額', 'MODULE_PAYMENT_MONEYORDER_MONEY_LIMIT', '0,99999999999', '決済可能金額の最大と最小値の設置
+例：0,3000
+0,3000円に入れると、0円から3000円までの金額が決済可能。設定範囲外の決済は不可。', '6', '0', now(), ".$this->site_id.")");
     }
 
     function remove() {
-      // ccdd
       tep_db_query("delete from " . TABLE_CONFIGURATION . " where configuration_key in ('" . implode("', '", $this->keys()) . "') and site_id = '".$this->site_id."'");
     }
 
     function keys() {
-      return array(
-          'MODULE_PAYMENT_MONEYORDER_STATUS', 
-          'MODULE_PAYMENT_MONEYORDER_ZONE', 
-          'MODULE_PAYMENT_MONEYORDER_ORDER_STATUS_ID', 
-          'MODULE_PAYMENT_MONEYORDER_SORT_ORDER', 
-          'MODULE_PAYMENT_MONEYORDER_PAYTO');
+      return array('MODULE_PAYMENT_MONEYORDER_STATUS', 'MODULE_PAYMENT_MONEYORDER_ZONE', 'MODULE_PAYMENT_MONEYORDER_ORDER_STATUS_ID', 'MODULE_PAYMENT_MONEYORDER_SORT_ORDER', 'MODULE_PAYMENT_MONEYORDER_PAYTO', 'MODULE_PAYMENT_MONEYORDER_COST', 'MODULE_PAYMENT_MONEYORDER_MONEY_LIMIT');
     }
   }
 ?>
