@@ -3,8 +3,8 @@
   $Id$
 */
 
-$GLOBALS['HTTP_GET_VARS']=$_GET;
-$GLOBALS['HTTP_POST_VARS']=$_POST;
+$GLOBALS['HTTP_GET_VARS']  = $_GET;
+$GLOBALS['HTTP_POST_VARS'] = $_POST;
 
   setlocale (LC_ALL, 'ja_JP.UTF-8');
 // Set default timezone

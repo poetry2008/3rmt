@@ -33,7 +33,7 @@
   }
   
   //process
-if (!=isset($_GET['action'])) {
+if (!isset($_GET['action'])) {
   switch($_GET['action']) {
     case 'process'://申し込みプロセス
     //現在の日時
