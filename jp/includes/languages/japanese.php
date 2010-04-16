@@ -15,14 +15,12 @@
 //
 // A compatible module is loaded for environment without mbstring-extension
 //
-/*
 if (extension_loaded('mbstring')) {
   mb_internal_encoding('UTF-8'); // 内部コードを指定
 } else {
   include_once(DIR_WS_LANGUAGES . $language . '/jcode.phps');
   include_once(DIR_WS_LANGUAGES . $language . '/mbstring_wrapper.php');
 }
-*/
 // look in your $PATH_LOCALE/locale directory for available locales..
 // on RedHat try 'en_US'
 // on FreeBSD try 'en_US.ISO_8859-1'

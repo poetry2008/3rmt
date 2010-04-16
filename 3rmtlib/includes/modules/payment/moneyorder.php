@@ -152,7 +152,7 @@
     function before_process() {
       global $_POST;
 
-      $this->email_footer = str_replace("\r\n", "\n", $HTTP__POST_VARS['money_order_message']);
+      $this->email_footer = str_replace("\r\n", "\n", $HTTP_POST_VARS['money_order_message']);
       
       //return false;
     }

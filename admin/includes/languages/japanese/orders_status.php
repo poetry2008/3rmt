@@ -36,4 +36,4 @@ define('TEXT_EDIT_ORDERS_STATUS_IMAGE', 'ステータスに表示するアイコ
 
 define('TEXT_ORDERS_STATUS_FINISHED', '完了注文');
 //mail本文 add end
-?>
+
