@@ -54,5 +54,3 @@ define('TEXT_BANK_KAMOKU', '口座種別　　　　　');
 define('TEXT_BANK_KOUZA_NUM', '口座番号　　　　　');
 define('TEXT_BANK_KOUZA_NAME', '口座名義　　　　　');
 
-
-?>

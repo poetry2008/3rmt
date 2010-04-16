@@ -1,6 +1,6 @@
 <?php
 /*
-	JP、GM共通ファイル
+  $Id$
 */
 
   define('MODULE_METASEO_ACCOUNT_TEXT_TITLE', 'お客様情報');

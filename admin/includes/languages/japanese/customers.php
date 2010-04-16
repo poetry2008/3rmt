@@ -38,5 +38,5 @@ define('TABLE_HEADING_MEMBER_TYPE', '会員種別');
 define('TABLE_HEADING_MEMBER_TYPE_GUEST', 'ゲスト');
 define('TABLE_HEADING_MEMBER_TYPE_MEMBER', '会員');
 
-define('ERROR_EMAIL_EXISTS', 'ERROR_EMAIL_EXISTS');
+define('ERROR_EMAIL_EXISTS', 'メールアドレスはもう存在しています。');
 ?>

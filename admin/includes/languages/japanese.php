@@ -330,18 +330,19 @@ define('BOX_TOOLS_CL', 'カレンダー');
 define('BOX_CATALOG_PRODUCTS_TAGS', 'タグ登録');
 define('BOX_CATALOG_IMAGE_DOCUMENT', 'imageファイル管理');
 
-define('TABLE_HEADING_SITE', 'SITE');
+
+define('TABLE_HEADING_SITE', 'サイト');
 
 define('IMAGE_BUTTON_BACK', '');
 define('IMAGE_BUTTON_CONFIRM', '');
 define('IMAGE_DETAILS', '');
 
-define('CATEGORY_SITE', 'CATEGORY_SITE');
-define('ENTRY_SITE', 'ENTRY_SITE');
-define('ENTRY_SITE_TEXT', 'ENTRY_SITE_TEXT');
+define('CATEGORY_SITE', '所属サイト');
+define('ENTRY_SITE', 'サイト');
+define('ENTRY_SITE_TEXT', '所属サイト');
 
 define('TEXT_IMAGE_NONEXISTENT', '画像が存在しません');
-define('SITE_ID_NOT_NULL', '');
+define('SITE_ID_NOT_NULL', 'サイトを選んでください');
 define('IMAGE_NEW_DOCUMENT_TYPE', '');
 define('MSG_UPLOAD_IMG', '');
 define('JS_ERROR_SUBMITTED', '');

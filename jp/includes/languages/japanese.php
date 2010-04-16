@@ -15,19 +15,20 @@
 //
 // A compatible module is loaded for environment without mbstring-extension
 //
+/*
 if (extension_loaded('mbstring')) {
   mb_internal_encoding('UTF-8'); // 内部コードを指定
 } else {
   include_once(DIR_WS_LANGUAGES . $language . '/jcode.phps');
   include_once(DIR_WS_LANGUAGES . $language . '/mbstring_wrapper.php');
 }
-
+*/
 // look in your $PATH_LOCALE/locale directory for available locales..
 // on RedHat try 'en_US'
 // on FreeBSD try 'en_US.ISO_8859-1'
 // on Windows try 'en', or 'English'
 //@setlocale(LC_TIME, 'ja_JP');
-@setlocale(LC_TIME, 'en_US');
+//@setlocale(LC_TIME, 'en_US');
 define('DATE_FORMAT_SHORT', '%Y/%m/%d');  // this is used for strftime()
 define('DATE_FORMAT_LONG', '%Y年%m月%d日 %A'); // this is used for strftime()
 define('DATE_FORMAT', 'Y/m/d'); // this is used for date()
