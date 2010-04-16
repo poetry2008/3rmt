@@ -221,6 +221,21 @@ function hidden_payment(){
                 <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('payment_method', $payment_list, isset($payment_method)?$payment_method:'', 'onchange="hidden_payment()"'); ?><?php if (isset($entry_payment_method_error ) && $entry_payment_method_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
 <?php
+  if ($payment_method == 'コンビニ決済') {
+    echo '<tr>';
+  } else {
+    echo '<tr id="copass1" style="display: none;">';
+  ?>
+  <td colspan="2"><br><table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td class="main">PCメールアドレス:</td> 
+      <td class="main">&nbsp;<?php echo tep_draw_input_field('con_email', $email_address); ?></td>
+    </tr>
+  </table>
+  </td> 
+  <?php
+  }
+  echo '</tr>';
   if (isset($payment_method) && $payment_method == '銀行振込(買い取り)') {
     echo '<tr>';
   } else {
