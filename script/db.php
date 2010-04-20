@@ -12,8 +12,8 @@ define('R3MT_DB_NAME', 'test_3rmt');
 $sites =  array('jp', 'gm', 'wm');
 $faq = array('168', '169', '170', '171', '177', '178', '179', '190', '195');
 $delete_configuration = array(
-    'AFFILIATE_PAYMENT_ORDER_MIN_STATUS'
-  );
+    'AFFILIATE_PAYMENT_ORDER_MIN_STATUS',
+    'AFFILIATE_VALUE');
 
 define('R3MT_JP_ID', '1');
 define('R3MT_GM_ID', '2');

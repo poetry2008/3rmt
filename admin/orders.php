@@ -949,6 +949,35 @@ function mail_text(st,tt,ot){
 ?>
     <?php echo tep_draw_form('sele_act', FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'action=sele_act'); ?>
     <?php tep_site_filter(FILENAME_ORDERS);?>
+  
+          <table>
+          <tr>
+          <td align="right">
+          <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'type')) . 'type=sell', 'SSL');?>" title="売">
+          <img src="images/icons/mai4.gif" alt="売" title="売"> 
+          </a>
+          <a href="<?php echo tep_href_link(FILENAME_ORDERS,  tep_get_all_get_params(array('oID', 'action', 'type')) . 'type=buy','SSL');?>" title="買">
+          <img src="images/icons/mai3.gif" alt="買" title="買"> 
+          </a>
+          <a href="<?php echo tep_href_link(FILENAME_ORDERS,  tep_get_all_get_params(array('oID', 'action', 'type')) . 'type=mix','SSL');?>" title="混">
+          <img src="images/icons/kon.gif" alt="混" title="混"> 
+          </a>
+          <a href="<?php echo tep_href_link(FILENAME_ORDERS,  tep_get_all_get_params(array('oID', 'action', 'payment')) . 'payment=moneyorder','SSL');?>" title="銀行振込">
+          <img src="images/icons/gi.gif" alt="銀行振込" title="銀行振込"> 
+          </a>
+          <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'payment')) . 'payment=postalmoneyorder','SSL');?>" title="ゆうちょ銀行（郵便局）">
+          <img src="images/icons/yu.gif" alt="ゆうちょ銀行（郵便局）" title="ゆうちょ銀行（郵便局）"> 
+          </a>
+          <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'payment')) . 'payment=telecom','SSL');?>" title="クレジットカード決済">
+          <img src="images/icons/ku.gif" alt="クレジットカード決済" title="クレジットカード決済"> 
+          </a>
+          <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'payment')) . 'payment=convenience_store','SSL');?>" title="コンビニ決済">
+          <img src="images/icons/ko.gif" alt="コンビニ決済" title="コンビニ決済"> 
+          </a>
+          </td>
+          </tr>
+          </table>
+  
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
     <tr class="dataTableHeadingRow">
 <?php 
@@ -969,6 +998,40 @@ function mail_text(st,tt,ot){
     </tr>
 <?php
     
+  $where_type = '';
+  if(isset($_GET['type'])){
+  switch ($_GET['type']) { 
+    case 'sell':
+      $where_type = " and (!(o.payment_method = '銀行振込(買い取り)' or o.payment_method = '銀行振込（買い取り）') and h.orders_id not in (select orders_id from ".TABLE_ORDERS_STATUS_HISTORY." where comments like '金融機関名%支店名%'))"; 
+      break;
+    case 'buy':
+      $where_type = " and (o.payment_method = '銀行振込(買い取り)' or o.payment_method = '銀行振込（買い取り）')"; 
+      break;
+    case 'mix':
+      $where_type = " and (!(o.payment_method = '銀行振込(買い取り)' or o.payment_method = '銀行振込（買い取り）') and h.comments like '金融機関名%支店名%')"; 
+      break;
+  }
+  }
+    
+  $where_payment = '';
+  if(isset($_GET['payment'])){
+  switch ($_GET['payment']) { 
+    case 'convenience_store':
+      $where_payment = " and o.payment_method = 'コンビニ決済'";
+      break;
+    case 'telecom':
+      $where_payment = " and o.payment_method = 'クレジットカード決済'";
+      break;
+    case 'postalmoneyorder':
+      $where_payment = " and o.payment_method = 'ゆうちょ銀行（郵便局）'";
+      break;
+    case 'moneyorder':
+    case 'buying':
+      $where_payment .= " and (o.payment_method = '銀行振込' or o.payment_method = '銀行振込(買い取り)' or o.payment_method = '銀行振込（買い取り）')"; 
+      break;
+  }
+  }
+
   if (isset($_GET['cID']) && $_GET['cID']) {
       $cID = tep_db_prepare_input($_GET['cID']);
       $orders_query_raw = "
@@ -985,13 +1048,14 @@ function mail_text(st,tt,ot){
                ot.text as order_total,
                si.romaji
         from " . TABLE_ORDERS . " o 
-          left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s, ".TABLE_SITES." si
+          left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id)  left join " . TABLE_ORDERS_STATUS_HISTORY . " h on (o.orders_id = h.orders_id), " . TABLE_ORDERS_STATUS . " s, ".TABLE_SITES." si
         where o.customers_id = '" . tep_db_input($cID) . "' 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and si.id = '" . intval($_GET['site_id']) . "' " : '') . "
           and si.id = o.site_id
           and o.orders_status = s.orders_status_id 
           and s.language_id = '" . $languages_id . "' 
           and ot.class = 'ot_total' 
+          " . $where_payment . $where_type . "
         order by o.torihiki_date DESC";
     } elseif (isset($_GET['status']) && $_GET['status']) {
       $status = tep_db_prepare_input($_GET['status']);
@@ -1009,12 +1073,13 @@ function mail_text(st,tt,ot){
                ot.text as order_total,
                si.romaji
         from " . TABLE_ORDERS . " o 
-          left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s, ".TABLE_SITES." si
+          left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id)  left join " . TABLE_ORDERS_STATUS_HISTORY . " h on (o.orders_id = h.orders_id), " . TABLE_ORDERS_STATUS . " s, ".TABLE_SITES." si
         where o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "' 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and si.id = '" . intval($_GET['site_id']) . "' " : '') . "
           and s.orders_status_id = '" . tep_db_input($status) . "' 
           and ot.class = 'ot_total' 
           and si.id = o.site_id
+          " . $where_payment . $where_type . "
         order by o.torihiki_date DESC";
     } elseif (isset($_GET['keywords']) && $_GET['keywords']) {
       
@@ -1031,13 +1096,14 @@ function mail_text(st,tt,ot){
                s.orders_status_name, 
                ot.text as order_total,
                si.romaji
-        from " . TABLE_ORDERS . " o, " . TABLE_ORDERS_TOTAL . " ot, " . TABLE_ORDERS_STATUS . " s, " . TABLE_ORDERS_PRODUCTS . " op , ".TABLE_SITES." si
+        from " . TABLE_ORDERS . " o left join " . TABLE_ORDERS_STATUS_HISTORY . " h on (o.orders_id = h.orders_id), " . TABLE_ORDERS_TOTAL . " ot, " . TABLE_ORDERS_STATUS . " s, " . TABLE_ORDERS_PRODUCTS . " op , ".TABLE_SITES." si 
         where o.orders_id = ot.orders_id 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and si.id = '" . intval($_GET['site_id']) . "' " : '') . "
           and si.id = o.site_id
           and o.orders_status = s.orders_status_id 
           and s.language_id = '" . $languages_id . "' 
           and ot.class = 'ot_total' 
+          " . $where_payment . $where_type . "
           and o.orders_id = op.orders_id";
     $keywords = str_replace('　', ' ', $_GET['keywords']);
     tep_parse_search_string($keywords, $search_keywords);
@@ -1084,13 +1150,14 @@ function mail_text(st,tt,ot){
                ot.text as order_total,
                si.romaji
          from " . TABLE_ORDERS . " o 
-           left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s , ".TABLE_SITES." si
+           left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id) left join " . TABLE_ORDERS_STATUS_HISTORY . " h on (o.orders_id = h.orders_id), " . TABLE_ORDERS_STATUS . " s , ".TABLE_SITES." si
          where o.orders_status = s.orders_status_id 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and si.id = '" . intval($_GET['site_id']) . "' " : '') . "
            and si.id=o.site_id
            and s.language_id = '" . $languages_id . "' 
            and ot.class = 'ot_total' 
            and s.finished = '0'
+           " . $where_payment . $where_type . "
          order by o.torihiki_date DESC
       ";
     }
@@ -1120,9 +1187,9 @@ function mail_text(st,tt,ot){
   }
   
   if ( (isset($oInfo) && is_object($oInfo)) && ($orders['orders_id'] == $oInfo->orders_id) ) {
-    echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" ondblclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, 'oID='.$orders['orders_id']).'\'">' . "\n";
+    echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" ondblclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']).'\'">' . "\n";
   } else {
-    echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" ondblclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, 'oID='.$orders['orders_id']).'\'">' . "\n";
+    echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" ondblclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']).'\'">' . "\n";
   }
 ?>
   <?php 

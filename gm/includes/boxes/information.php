@@ -19,12 +19,6 @@
              echo '<li><a href="'.tep_href_link(FILENAME_PAGE,'pID='.$result['pID'],NONSSL).'">'.$result['heading_title'].'</a></li>'."\n" ;
   } 
 // Extra Pages ADDED END
-  
-  if(AFFILIATE_VALUE == 'true') {
-?>
-<li><?php echo '<a href="' . tep_href_link(FILENAME_AFFILIATE_INFO, '', 'NONSSL'). '">' . BOX_HEADING_AFFILIATE . '</a>';?></li> 
-<?php
-  }
 ?>
 <li><?php echo '<a href="' . tep_href_link(FILENAME_CONTACT_US) . '">' . BOX_INFORMATION_CONTACT . '</a>';?></li> 
 <li><?php echo '<a href="' . tep_href_link('reorder.php') . '">' . '再配達フォーム' . '</a>'; ?></li> 

@@ -21,13 +21,6 @@
 	} 
 // Extra Pages ADDED END
 
-	if (AFFILIATE_VALUE == 'true') {
-?>
-		<li class="l_m_category_li">
-			<?php echo '<a href="' . tep_href_link(FILENAME_AFFILIATE_INFO, '', 'NONSSL'). '">' . BOX_HEADING_AFFILIATE . '</a>' . "\n"; ?>
-		</li>
-<?php
-	}
 ?>
 		<li class="l_m_category_li">
 			<?php echo '<a href="' . tep_href_link(FILENAME_CONTACT_US) . '">' . BOX_INFORMATION_CONTACT . '</a>' . "\n"; ?>

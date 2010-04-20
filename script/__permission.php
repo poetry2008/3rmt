@@ -7,7 +7,9 @@ upload -> 777
 .htaccess -> 604
 */
 
+function changepermission($dir){
 
+}
 
 
 
