@@ -331,7 +331,7 @@
     tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
   }
   if ($payment_method  == 'コンビニ決済') {
-    $convenience_comments = 'PCメールアドレス:'.$HTTP_POST_VARS['con_email']."\n"; 
+    $convenience_comments = 'PCメールアドレス:'.$_POST['con_email']."\n"; 
   $sql_data_array = array('orders_id' => $insert_id, 
                 'orders_status_id' => $new_value, 
                 'date_added' => 'now()', 

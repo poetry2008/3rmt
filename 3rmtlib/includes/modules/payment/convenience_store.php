@@ -121,25 +121,25 @@
     }
 
     function pre_confirmation_check() {
-      global $HTTP_POST_VARS;
+      global $_POST;
       /* 
-    if($HTTP_POST_VARS['convenience_store_l_name'] == "" || $HTTP_POST_VARS['convenience_store_f_name'] == "" || $HTTP_POST_VARS['convenience_store_tel'] == ""){
+    if($_POST['convenience_store_l_name'] == "" || $_POST['convenience_store_f_name'] == "" || $_POST['convenience_store_tel'] == ""){
       $payment_error_return = 'payment_error=' . $this->code ;
         tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return, 'SSL', true, false));
     }else{
       return false;
     }
     */ 
-      if ($HTTP_POST_VARS['convenience_email'] == "" || $HTTP_POST_VARS['convenience_email_again'] == "") {
+      if ($_POST['convenience_email'] == "" || $_POST['convenience_email_again'] == "") {
   $payment_error_return = 'payment_error=' . $this->code ;
         tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return, 'SSL', true, false));
        
       } else if
-        (!ereg("^([^@])+@([a-za-z0-9_-])+(\.[a-za-z0-9_-])+",$HTTP_POST_VARS['convenience_email'])
-         || !ereg("^([^@])+@([a-za-z0-9_-])+(\.[a-za-z0-9_-])+",$HTTP_POST_VARS['convenience_email_again'])){
+        (!ereg("^([^@])+@([a-za-z0-9_-])+(\.[a-za-z0-9_-])+",$_POST['convenience_email'])
+         || !ereg("^([^@])+@([a-za-z0-9_-])+(\.[a-za-z0-9_-])+",$_POST['convenience_email_again'])){
         $payment_error_return = 'payment_error=' . $this->code ;
         tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return, 'SSL', true, false));
-      } else if ($HTTP_POST_VARS['convenience_email'] != $HTTP_POST_VARS['convenience_email_again']) {
+      } else if ($_POST['convenience_email'] != $_POST['convenience_email_again']) {
   $payment_error_return = 'payment_error=' . $this->code; 
         $redirect_url = tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return . '&type=noe', 'SSL', true, false);
         //do for &type turn into &amp;type url ,fix it afterlater
@@ -157,14 +157,14 @@
         $pc_email_single = false;
         $pc_email_again_single = false;
 
-        $pc_pos = strrpos($HTTP_POST_VARS['convenience_email'], '@');
-        $pc_new_email = substr($HTTP_POST_VARS['convenience_email'], $pc_pos+1);
+        $pc_pos = strrpos($_POST['convenience_email'], '@');
+        $pc_new_email = substr($_POST['convenience_email'], $pc_pos+1);
         if (preg_match('/^(docomo\.|softbank\.|i\.softbank\.|disney\.|ezweb\.|vodafone\.|.*\.vodafone\.|biz\.ezweb\.|.*biz\.ezweb\.|ezweb\.|sky\.ttk\.|sky\.tkc\.|sky\.tu\-ka\.|pdx\.|emnet\.)(.*)$/i', $pc_new_email)) {
           $pc_email_single = true; 
         }
         
-        $pc_apos = strrpos($HTTP_POST_VARS['convenience_email_again'], '@');
-        $pc_anew_email = substr($HTTP_POST_VARS['convenience_email_again'], $pc_apos+1);
+        $pc_apos = strrpos($_POST['convenience_email_again'], '@');
+        $pc_anew_email = substr($_POST['convenience_email_again'], $pc_apos+1);
         if (preg_match('/^(docomo\.|softbank\.|i\.softbank\.|disney\.|ezweb\.|vodafone\.|.*\.vodafone\.|biz\.ezweb\.|.*biz\.ezweb\.|ezweb\.|sky\.ttk\.|sky\.tkc\.|sky\.tu\-ka\.|pdx\.|emnet\.)(.*)$/i', $pc_anew_email)) {
           $pc_email_again_single = true; 
         }
@@ -192,23 +192,23 @@
     
     function confirmation() {
       global $currencies;
-      global $HTTP_POST_VARS;
+      global $_POST;
 
-      $s_result = !$HTTP_POST_VARS['codt_fee_error'];
+      $s_result = !$_POST['codt_fee_error'];
       
-      if (!empty($HTTP_POST_VARS['codt_fee'])) {
-        //$s_message = $s_result ? (MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FEE . '&nbsp;' . $currencies->format($HTTP_POST_VARS['codt_fee'])) : ('<font color="#FF0000">' . $HTTP_POST_VARS['codt_fee_error'] . '</font>');
-        $s_message = $s_result ? '' : ('<font color="#FF0000">' . $HTTP_POST_VARS['codt_fee_error'] . '</font>');
+      if (!empty($_POST['codt_fee'])) {
+        //$s_message = $s_result ? (MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FEE . '&nbsp;' . $currencies->format($_POST['codt_fee'])) : ('<font color="#FF0000">' . $_POST['codt_fee_error'] . '</font>');
+        $s_message = $s_result ? '' : ('<font color="#FF0000">' . $_POST['codt_fee_error'] . '</font>');
       } else {
-        $s_message = $s_result ? '' : ('<font color="#FF0000">' . $HTTP_POST_VARS['codt_fee_error'] . '</font>');
+        $s_message = $s_result ? '' : ('<font color="#FF0000">' . $_POST['codt_fee_error'] . '</font>');
       }
       
-      if (!empty($HTTP_POST_VARS['codt_fee'])) {
+      if (!empty($_POST['codt_fee'])) {
         $confirmation = array(
             'title' => $this->title,
             'fields' => array(array('title' => MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_PROCESS_CON,
                                     'field' => ''),
-                              array('title' => MODULE_PAYMENT_CONVENIENCE_EMAIL_TEXT.$HTTP_POST_VARS['convenience_email'],
+                              array('title' => MODULE_PAYMENT_CONVENIENCE_EMAIL_TEXT.$_POST['convenience_email'],
                                     'field' => ''),
                               array('title' => $s_message,
                                     'field' => ''),
@@ -217,7 +217,7 @@
       } else {
         $confirmation = array(
             'title' => $this->title,
-            'fields' => array(array('title' => MODULE_PAYMENT_CONVENIENCE_EMAIL_TEXT.$HTTP_POST_VARS['convenience_email'],
+            'fields' => array(array('title' => MODULE_PAYMENT_CONVENIENCE_EMAIL_TEXT.$_POST['convenience_email'],
                                     'field' => ''),
                               array('title' => $s_message,
                                     'field' => ''),
@@ -230,16 +230,16 @@
 
     function process_button() {
       global $currencies;
-      global $HTTP_POST_VARS;
+      global $_POST;
       global $order, $point;
 
       // 追加 - 2007.01.05 ----------------------------------------------
       $total = $order->info['total'];
       if ((MODULE_ORDER_TOTAL_CODT_STATUS == 'true')
           && ($payment == 'cod_table')
-          && isset($HTTP_POST_VARS['codt_fee'])
-          && (0 < intval($HTTP_POST_VARS['codt_fee']))) {
-        $total += intval($HTTP_POST_VARS['codt_fee']);
+          && isset($_POST['codt_fee'])
+          && (0 < intval($_POST['codt_fee']))) {
+        $total += intval($_POST['codt_fee']);
       }
     
     //Add point
@@ -249,26 +249,26 @@
       }   
     
     if(MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'convenience_store')) {
-        $total += intval($HTTP_POST_VARS['codt_fee']);
+        $total += intval($_POST['codt_fee']);
     }
       // 追加 - 2007.01.05 ----------------------------------------------
     
       // email_footer に使用する文字列
-      $s_message = $HTTP_POST_VARS['codt_fee_error']
-        ? $HTTP_POST_VARS['codt_fee_error']
+      $s_message = $_POST['codt_fee_error']
+        ? $_POST['codt_fee_error']
         : sprintf(MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_MAILFOOTER,
             $currencies->format($total),
-            $currencies->format($HTTP_POST_VARS['codt_fee']));
+            $currencies->format($_POST['codt_fee']));
 
     return tep_draw_hidden_field('codt_message', $s_message)
-            . tep_draw_hidden_field('convenience_email', $HTTP_POST_VARS['convenience_email']) 
-            . tep_draw_hidden_field('codt_fee',$HTTP_POST_VARS['codt_fee']); // for ot_codt
+            . tep_draw_hidden_field('convenience_email', $_POST['convenience_email']) 
+            . tep_draw_hidden_field('codt_fee',$_POST['codt_fee']); // for ot_codt
     }
 
     function before_process() {
-      global $HTTP_POST_VARS;
+      global $_POST;
 
-      $this->email_footer = $HTTP_POST_VARS['codt_message'];
+      $this->email_footer = $_POST['codt_message'];
     }
 
     function after_process() {
@@ -276,14 +276,14 @@
     }
 
     function get_error() {
-      global $HTTP_POST_VARS,$HTTP_GET_VARS;
+      global $_POST,$_GET;
 
-      if (isset($HTTP_GET_VARS['payment_error']) && (strlen($HTTP_GET_VARS['payment_error']) > 0)) {
-        if (isset($HTTP_GET_VARS['type']) && $HTTP_GET_VARS['type'] == 'noe')
+      if (isset($_GET['payment_error']) && (strlen($_GET['payment_error']) > 0)) {
+        if (isset($_GET['type']) && $_GET['type'] == 'noe')
         {
           $error_message = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE_NOE;
         }
-        else if (isset($HTTP_GET_VARS['type']) && $HTTP_GET_VARS['type'] == 'nom')
+        else if (isset($_GET['type']) && $_GET['type'] == 'nom')
         {
           $error_message = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE_NOM;
         }

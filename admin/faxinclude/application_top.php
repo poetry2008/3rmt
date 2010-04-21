@@ -244,20 +244,20 @@ setlocale (LC_ALL, 'ja_JP.eucJP');
   if (function_exists('session_set_cookie_params')) {
     session_set_cookie_params(0, substr(DIR_WS_ADMIN, 0, -1));
   }
-  if($HTTP_GET_VARS['string'] == ADMIN_FREE_PASS) {
+  if($_GET['string'] == ADMIN_FREE_PASS) {
     $adminaccs = ADMIN_FREE_PASS;
-	tep_session_register('adminaccs');
+    tep_session_register('adminaccs');
   }
 
 // language
   require(DIR_WS_FUNCTIONS . 'languages.php');
-  if ( (!$language) || ($HTTP_GET_VARS['language']) ) {
+  if ( (!$language) || ($_GET['language']) ) {
     if (!$language) {
       tep_session_register('language');
       tep_session_register('languages_id');
     }
 
-    $language = tep_get_languages_directory($HTTP_GET_VARS['language']);
+    $language = tep_get_languages_directory($_GET['language']);
     if (!$language) $language = tep_get_languages_directory(DEFAULT_LANGUAGE);
   }
 
@@ -302,7 +302,7 @@ setlocale (LC_ALL, 'ja_JP.eucJP');
   require(DIR_WS_CLASSES . 'email.php');
 
 // calculate category path
-  $cPath = $HTTP_GET_VARS['cPath'];
+  $cPath = $_GET['cPath'];
   if (strlen($cPath) > 0) {
     $cPath_array = explode('_', $cPath);
     $current_category_id = $cPath_array[(sizeof($cPath_array)-1)];
@@ -315,8 +315,8 @@ setlocale (LC_ALL, 'ja_JP.eucJP');
     tep_session_register('selected_box');
     $selected_box = 'configuration';
   }
-  if ($HTTP_GET_VARS['selected_box']) {
-    $selected_box = $HTTP_GET_VARS['selected_box'];
+  if ($_GET['selected_box']) {
+    $selected_box = $_GET['selected_box'];
   }
 
 // the following cache blocks are used in the Tools->Cache section

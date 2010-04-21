@@ -47,8 +47,8 @@ class user_certify {
 
         $user = '';
         // ログインページでユーザＩＤが入力されているとき
-        if ($GLOBALS['HTTP_POST_VARS']['execute_login']) {
-            $user = trim($GLOBALS['HTTP_POST_VARS']['loginuid']);
+        if ($GLOBALS['_POST']['execute_login']) {
+            $user = trim($GLOBALS['_POST']['loginuid']);
         }
         // セッションＩＤにより、ユーザログイン情報取得
         $oresult = tep_db_query("select * from login where sessionid='" . $s_sid . "'");
@@ -120,12 +120,12 @@ class user_certify {
     戻り値 : TRUE/FALSE
  ------------------------------------ */
     function password_check($s_sid,$pwd,$auth_user) {
-        if ($GLOBALS['HTTP_POST_VARS']['execute_login']) {
+        if ($GLOBALS['_POST']['execute_login']) {
             //error_log('USER ' . date($this->date_format) . ' password_check user='. $auth_user . "\n", 3, STORE_PAGE_PARSE_TIME_LOG);// DEBUG
-            if ($GLOBALS['HTTP_POST_VARS']['loginpwd']) {
+            if ($GLOBALS['_POST']['loginpwd']) {
                 // 入力されたパスワードを DES 暗号化法により暗号化する
                 //（テーブルに登録されているパスワードと同じ状態に変換）
-                $sLogin_pwd = crypt($GLOBALS['HTTP_POST_VARS']['loginpwd'], $pwd);
+                $sLogin_pwd = crypt($GLOBALS['_POST']['loginpwd'], $pwd);
                 $n_max = 64;                        // フィールド長の制限
                 if (substr($pwd,0,$n_max) != substr($sLogin_pwd,0,$n_max)) {
                     $this->putCertifyLog($s_sid,'p',$auth_user);
@@ -305,7 +305,7 @@ function logout_user($erf='',$s_status='') {
 /* =====================================
     メイン
  ===================================== */
-if ($GLOBALS['HTTP_GET_VARS']['execute_logout_user']) { logout_user(FALSE,'o'); } //2003-07-16 hiroshi_sato
+if ($GLOBALS['_GET']['execute_logout_user']) { logout_user(FALSE,'o'); } //2003-07-16 hiroshi_sato
 
 if (file_exists(DIR_WS_LANGUAGES . $language . '/user_certify.php')) {
     include(DIR_WS_LANGUAGES . $language . '/user_certify.php');

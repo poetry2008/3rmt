@@ -83,20 +83,20 @@
       global $order;
       global $cart;
       global $payment, $currencies;
-      global $HTTP_POST_VARS;
+      global $_POST;
 
       $show_handle_fee = 0;
       if (MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'convenience_store')) {
-        $show_handle_fee = intval($HTTP_POST_VARS['codt_fee']); 
+        $show_handle_fee = intval($_POST['codt_fee']); 
       }
       if ($payment == 'moneyorder') {
-        $show_handle_fee = intval($HTTP_POST_VARS['money_order_fee']); 
+        $show_handle_fee = intval($_POST['money_order_fee']); 
       }
       if ($payment == 'postalmoneyorder') {
-        $show_handle_fee = intval($HTTP_POST_VARS['postal_money_order_fee']); 
+        $show_handle_fee = intval($_POST['postal_money_order_fee']); 
       }
       if ($payment == 'telecom') {
-        $show_handle_fee = intval($HTTP_POST_VARS['telecom_order_fee']); 
+        $show_handle_fee = intval($_POST['telecom_order_fee']); 
       }
       $buying_fee = 0; 
       if (isset($cart)) { 

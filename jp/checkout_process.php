@@ -79,7 +79,7 @@
     //$pay_comments .= '電話番号:' . $_POST['convenience_store_tel'] ."\n";
     //$pay_comments .= '接続URL:' . tep_href_link('convenience_store_chk.php', 'sid=' . $convenience_sid, 'SSL');
 
-    $pay_comments = 'PCメールアドレス:'.$HTTP_POST_VARS['convenience_email']; 
+    $pay_comments = 'PCメールアドレス:'.$_POST['convenience_email']; 
     $comments = $pay_comments ."\n".$comments;
   }
   
@@ -421,14 +421,14 @@
   $email_order .= '▼ポイント割引　　：' . $point . '円' . "\n";
   }
   $mail_fee = 0; 
-  if (isset($HTTP_POST_VARS['codt_fee']) && intval($HTTP_POST_VARS['codt_fee'])) {
-    $mail_fee =  intval($HTTP_POST_VARS['codt_fee']);
-  } else if (isset($HTTP_POST_VARS['money_order_fee']) && intval($HTTP_POST_VARS['money_order_fee'])) {
-    $mail_fee = intval($HTTP_POST_VARS['money_order_fee']);
-  } else if (isset($HTTP_POST_VARS['postal_money_order_fee']) && intval($HTTP_POST_VARS['postal_money_order_fee'])) {
-    $mail_fee = intval($HTTP_POST_VARS['postal_money_order_fee']);
-  } else if (isset($HTTP_POST_VARS['telecom_order_fee']) && intval($HTTP_POST_VARS['telecom_order_fee'])) {
-    $mail_fee = intval($HTTP_POST_VARS['telecom_order_fee']);
+  if (isset($_POST['codt_fee']) && intval($_POST['codt_fee'])) {
+    $mail_fee =  intval($_POST['codt_fee']);
+  } else if (isset($_POST['money_order_fee']) && intval($_POST['money_order_fee'])) {
+    $mail_fee = intval($_POST['money_order_fee']);
+  } else if (isset($_POST['postal_money_order_fee']) && intval($_POST['postal_money_order_fee'])) {
+    $mail_fee = intval($_POST['postal_money_order_fee']);
+  } else if (isset($_POST['telecom_order_fee']) && intval($_POST['telecom_order_fee'])) {
+    $mail_fee = intval($_POST['telecom_order_fee']);
   }
   
   $buy_mail_fee = 0;

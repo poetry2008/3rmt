@@ -26,9 +26,9 @@
     $error = 1;
   }
 
-  $notice_dfrom = (isset($HTTP_GET_VARS['dfrom']))?$HTTP_GET_VARS['dfrom']:NULL; //del notice
+  $notice_dfrom = (isset($_GET['dfrom']))?$_GET['dfrom']:NULL; //del notice
   $dfrom_to_check = (($notice_dfrom == DOB_FORMAT_STRING) ? '' : $notice_dfrom);
-  $notice_dto = (isset($HTTP_GET_VARS['dto']))?$HTTP_GET_VARS['dto']:NULL; //del notice
+  $notice_dto = (isset($_GET['dto']))?$_GET['dto']:NULL; //del notice
   $dto_to_check = (($notice_dto == DOB_FORMAT_STRING) ? '' : $notice_dto);
 
   if (strlen($dfrom_to_check) > 0) {

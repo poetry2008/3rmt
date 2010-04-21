@@ -262,7 +262,7 @@
     
       
     if($_POST['notify_comments'] == 'on') {
-    $customer_notified = '1';
+      $customer_notified = '1';
     } else {
       $customer_notified = '0';
     }
@@ -490,10 +490,13 @@ function mail_text(st,tt,ot){
       <td colspan="3"><?php echo tep_draw_separator(); ?></td>
     </tr>   
     <tr>
-      <td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="2">
+      <td class="main" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="2">
     <tr>
-    <td class="main" valign="top" width="30%"><b><?php echo ENTRY_SITE;?></b></td> <td class="main" width="70%"><b style=" color:#FF0000"><?php echo tep_get_site_romaji_by_order_id($oID);?></b></td>
+    <td class="main" valign="top" width="30%"><b>注文書サイト<?php //echo ENTRY_SITE;?></b></td> <td class="main" width="70%"><b style=" color:#FF0000"><?php echo tep_get_site_romaji_by_order_id($oID);?></b></td>
     </tr>
+    <tr>
+    <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '5'); ?></td>
+    </tr>   
     <tr>
     <td class="main" valign="top" width="30%"><b>取引日時</b></td>
     <td class="main" width="70%"><b style=" color:#0000FF"><?php echo $order->tori['date'];?></b></td>
@@ -830,7 +833,7 @@ function mail_text(st,tt,ot){
     <table  border="0" align="center" cellpadding="0" cellspacing="2">
     <tr>
       <td class="smallText" width='150'>
-      <?php echo ENTRY_SITE;?>:
+      注文書サイト<?php //echo ENTRY_SITE;?>:
       <?php echo tep_site_pull_down_menu_with_all(isset($_GET['site_id']) ? $_GET['site_id'] :'', false);?>
       </td>
       <td class="smallText">
@@ -950,33 +953,29 @@ function mail_text(st,tt,ot){
     <?php echo tep_draw_form('sele_act', FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'action=sele_act'); ?>
     <?php tep_site_filter(FILENAME_ORDERS);?>
   
-          <table>
-          <tr>
-          <td align="right">
-          <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'type')) . 'type=sell', 'SSL');?>" title="売">
-          <img src="images/icons/mai4.gif" alt="売" title="売"> 
-          </a>
-          <a href="<?php echo tep_href_link(FILENAME_ORDERS,  tep_get_all_get_params(array('oID', 'action', 'type')) . 'type=buy','SSL');?>" title="買">
-          <img src="images/icons/mai3.gif" alt="買" title="買"> 
-          </a>
-          <a href="<?php echo tep_href_link(FILENAME_ORDERS,  tep_get_all_get_params(array('oID', 'action', 'type')) . 'type=mix','SSL');?>" title="混">
-          <img src="images/icons/kon.gif" alt="混" title="混"> 
-          </a>
-          <a href="<?php echo tep_href_link(FILENAME_ORDERS,  tep_get_all_get_params(array('oID', 'action', 'payment')) . 'payment=moneyorder','SSL');?>" title="銀行振込">
-          <img src="images/icons/gi.gif" alt="銀行振込" title="銀行振込"> 
-          </a>
-          <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'payment')) . 'payment=postalmoneyorder','SSL');?>" title="ゆうちょ銀行（郵便局）">
-          <img src="images/icons/yu.gif" alt="ゆうちょ銀行（郵便局）" title="ゆうちょ銀行（郵便局）"> 
-          </a>
-          <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'payment')) . 'payment=telecom','SSL');?>" title="クレジットカード決済">
-          <img src="images/icons/ku.gif" alt="クレジットカード決済" title="クレジットカード決済"> 
-          </a>
-          <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'payment')) . 'payment=convenience_store','SSL');?>" title="コンビニ決済">
-          <img src="images/icons/ko.gif" alt="コンビニ決済" title="コンビニ決済"> 
-          </a>
-          </td>
-          </tr>
-          </table>
+          <div id="order_icons">
+          <span<?php if (isset($_GET['type']) && $_GET['type'] == 'sell') {?> class="order_icons_selected"<?php }?>>
+            <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'type')) . 'type=sell', 'SSL');?>" title="売"><img src="images/icons/mai4.gif" alt="売" title="売"> </a>
+          </span>
+          <span<?php if (isset($_GET['type']) && $_GET['type'] == 'buy') {?> class="order_icons_selected"<?php }?>>
+            <a href="<?php echo tep_href_link(FILENAME_ORDERS,  tep_get_all_get_params(array('oID', 'action', 'type')) . 'type=buy','SSL');?>" title="買"><img src="images/icons/mai3.gif" alt="買" title="買"> </a>
+          </span>
+          <span<?php if (isset($_GET['type']) && $_GET['type'] == 'mix') {?> class="order_icons_selected"<?php }?>>
+            <a href="<?php echo tep_href_link(FILENAME_ORDERS,  tep_get_all_get_params(array('oID', 'action', 'type')) . 'type=mix','SSL');?>" title="混"><img src="images/icons/kon.gif" alt="混" title="混"> </a>
+          </span>
+          <span<?php if (isset($_GET['payment']) && $_GET['payment'] == 'moneyorder') {?> class="order_icons_selected"<?php }?>>
+            <a href="<?php echo tep_href_link(FILENAME_ORDERS,  tep_get_all_get_params(array('oID', 'action', 'payment')) . 'payment=moneyorder','SSL');?>" title="銀行振込"><img src="images/icons/gi.gif" alt="銀行振込" title="銀行振込"> </a>
+          </span>
+          <span<?php if (isset($_GET['payment']) && $_GET['payment'] == 'postalmoneyorder') {?> class="order_icons_selected"<?php }?>>
+            <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'payment')) . 'payment=postalmoneyorder','SSL');?>" title="ゆうちょ銀行（郵便局）"><img src="images/icons/yu.gif" alt="ゆうちょ銀行（郵便局）" title="ゆうちょ銀行（郵便局）"> </a>
+          </span>
+          <span<?php if (isset($_GET['payment']) && $_GET['payment'] == 'telecom') {?> class="order_icons_selected"<?php }?>>
+            <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'payment')) . 'payment=telecom','SSL');?>" title="クレジットカード決済"><img src="images/icons/ku.gif" alt="クレジットカード決済" title="クレジットカード決済"> </a>
+          </span>
+          <span<?php if (isset($_GET['payment']) && $_GET['payment'] == 'convenience_store') {?> class="order_icons_selected"<?php }?>>
+            <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'payment')) . 'payment=convenience_store','SSL');?>" title="コンビニ決済"><img src="images/icons/ko.gif" alt="コンビニ決済" title="コンビニ決済"> </a>
+          </span>
+          </div>
   
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
     <tr class="dataTableHeadingRow">
@@ -1056,6 +1055,7 @@ function mail_text(st,tt,ot){
           and s.language_id = '" . $languages_id . "' 
           and ot.class = 'ot_total' 
           " . $where_payment . $where_type . "
+        group by o.orders_id
         order by o.torihiki_date DESC";
     } elseif (isset($_GET['status']) && $_GET['status']) {
       $status = tep_db_prepare_input($_GET['status']);
@@ -1080,6 +1080,7 @@ function mail_text(st,tt,ot){
           and ot.class = 'ot_total' 
           and si.id = o.site_id
           " . $where_payment . $where_type . "
+        group by o.orders_id
         order by o.torihiki_date DESC";
     } elseif (isset($_GET['keywords']) && $_GET['keywords']) {
       
@@ -1132,7 +1133,7 @@ function mail_text(st,tt,ot){
     $orders_query_raw .= ")";  
     }
     
-    $orders_query_raw .= " order by o.torihiki_date DESC";
+    $orders_query_raw .= "group by o.orders_id order by o.torihiki_date DESC";
   } else {
       $orders_query_raw = "
         select s.orders_status_id, 
@@ -1158,6 +1159,7 @@ function mail_text(st,tt,ot){
            and ot.class = 'ot_total' 
            and s.finished = '0'
            " . $where_payment . $where_type . "
+         group by o.orders_id
          order by o.torihiki_date DESC
       ";
     }
@@ -1182,7 +1184,11 @@ function mail_text(st,tt,ot){
       $next_mark = '';
     }
   } else {
-    $today_color = 'black';
+    if ($ocertify->npermission) {
+      $today_color = 'black';
+    } else {
+      $today_color = '#999';
+    }
     $next_mark = '';
   }
   
@@ -1204,14 +1210,10 @@ function mail_text(st,tt,ot){
         <td style="border-bottom:1px solid #000000;" class="dataTableContent" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><?php echo $orders['romaji'];?></td>
         <td style="border-bottom:1px solid #000000;" class="dataTableContent" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)">
           <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $orders['orders_id'] . '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);?></a>&nbsp;
-  <?php 
-  if ($ocertify->npermission) {
-    ?>
-          <a href="<?php echo tep_href_link('orders.php', 'cID=' . tep_output_string_protected($orders['customers_id']));?>"><?php echo tep_image(DIR_WS_ICONS . 'search.gif', '過去の注文');?></a>&nbsp;
-          <a href="<?php echo tep_href_link('customers.php', 'page=1&cID=' . tep_output_string_protected($orders['customers_id']) . '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS . 'arrow_r_red.gif', '顧客情報');?></a>&nbsp;&nbsp;
-          <?php 
-  }
-  ?>
+          <a href="<?php echo tep_href_link('orders.php', 'cID=' . tep_output_string_protected($orders['customers_id']));?>"><?php echo tep_image(DIR_WS_ICONS . 'search.gif', '過去の注文');?></a>
+<?php if ($ocertify->npermission) {?>
+          &nbsp;<a href="<?php echo tep_href_link('customers.php', 'page=1&cID=' . tep_output_string_protected($orders['customers_id']) . '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS . 'arrow_r_red.gif', '顧客情報');?></a>&nbsp;&nbsp;
+<?php }?>
           <b><?php echo tep_output_string_protected($orders['customers_name']);?></b>
         </td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><?php echo strip_tags($orders['order_total']); ?></td>

@@ -14,7 +14,7 @@
 
   if (!isset($_GET['lngdir']) || !$_GET['lngdir']) $_GET['lngdir'] = $language;
 
-  if (isset($HTTPS_GET_VARS['action'])) {
+  if (isset($_GET['action'])) {
     switch ($_GET['action']) {
       case 'save':
         if ( ($_GET['lngdir']) && ($_GET['filename']) ) {

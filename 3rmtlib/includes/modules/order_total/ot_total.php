@@ -25,9 +25,9 @@
       $total = @$order->info['total'];
       if ((MODULE_ORDER_TOTAL_CODT_STATUS == 'true')
           && ($payment == 'cod_table')
-          && isset($HTTP_POST_VARS['codt_fee'])
-          && (0 < intval($HTTP_POST_VARS['codt_fee']))) {
-        $total += intval($HTTP_POST_VARS['codt_fee']);
+          && isset($_POST['codt_fee'])
+          && (0 < intval($_POST['codt_fee']))) {
+        $total += intval($_POST['codt_fee']);
       }
     
     //Add point
@@ -40,13 +40,13 @@
         $total += isset($_POST['codt_fee']) ? intval($_POST['codt_fee']) : 0;
     }
       if ($payment == 'moneyorder') {
-        $total += intval($HTTP_POST_VARS['money_order_fee']);
+        $total += intval($_POST['money_order_fee']);
       }
       if ($payment == 'postalmoneyorder') {
-        $total += intval($HTTP_POST_VARS['postal_money_order_fee']);
+        $total += intval($_POST['postal_money_order_fee']);
       }
       if ($payment == 'telecom') {
-        $total += intval($HTTP_POST_VARS['telecom_order_fee']);
+        $total += intval($_POST['telecom_order_fee']);
       }
       if (isset($cart)) {
       $bflag_single = $this->ds_count_bflags();

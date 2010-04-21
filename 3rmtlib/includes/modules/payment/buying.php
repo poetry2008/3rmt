@@ -107,23 +107,23 @@
 
     function confirmation() {
       global $currencies;
-      global $HTTP_POST_VARS;
+      global $_POST;
       global $order;
       
       $s_result = !$_POST['buying_order_fee_error'];
       /* 
-      if (!empty($HTTP_POST_VARS['buying_order_fee_error'])) {
-        $s_message = $s_result ? (MODULE_PAYMENT_BUYING_TEXT_FEE . '&nbsp;' .  $currencies->format($HTTP_POST_VARS['buying_order_fee'])):('<font color="#FF0000">'.$HTTP_POST_VARS['buying_order_fee_error'].'</font>'); 
+      if (!empty($_POST['buying_order_fee_error'])) {
+        $s_message = $s_result ? (MODULE_PAYMENT_BUYING_TEXT_FEE . '&nbsp;' .  $currencies->format($_POST['buying_order_fee'])):('<font color="#FF0000">'.$_POST['buying_order_fee_error'].'</font>'); 
       } else {
-        $s_message = $s_result ? '':('<font color="#FF0000">'.$HTTP_POST_VARS['buying_order_fee_error'].'</font>'); 
+        $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['buying_order_fee_error'].'</font>'); 
       }
      */
       $this->calc_fee($order->info['total']);
       if (!empty($this->n_fee)) {
-        //$s_message = $s_result ? (MODULE_PAYMENT_BUYING_TEXT_FEE . '&nbsp;' .  $currencies->format($this->n_fee)):('<font color="#FF0000">'.$HTTP_POST_VARS['buying_order_fee_error'].'</font>'); 
-        $s_message = $s_result ? '':('<font color="#FF0000">'.$HTTP_POST_VARS['buying_order_fee_error'].'</font>'); 
+        //$s_message = $s_result ? (MODULE_PAYMENT_BUYING_TEXT_FEE . '&nbsp;' .  $currencies->format($this->n_fee)):('<font color="#FF0000">'.$_POST['buying_order_fee_error'].'</font>'); 
+        $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['buying_order_fee_error'].'</font>'); 
       } else {
-        $s_message = $s_result ? '':('<font color="#FF0000">'.$HTTP_POST_VARS['buying_order_fee_error'].'</font>'); 
+        $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['buying_order_fee_error'].'</font>'); 
       }
       
       if (!empty($this->n_fee)) {
@@ -174,24 +174,24 @@
     }
     function process_button() {
       global $currencies;
-      global $HTTP_POST_VARS; 
+      global $_POST; 
       global $order;
 
       $total = $order->info['total'];
       if ($payment == 'buying') {
-        $total += intval($HTTP_POST_VARS['buying_order_fee']); 
+        $total += intval($_POST['buying_order_fee']); 
       }
       
-      $s_message = $HTTP_POST_VARS['buying_order_fee_error']?$HTTP_POST_VARS['buying_order_fee_error']:sprintf(MODULE_PAYMENT_BUYING_TEXT_MAILFOOTER, $currencies->format($total), $currencies->format($HTTP_POST_VARS['buying_order_fee']));
+      $s_message = $_POST['buying_order_fee_error']?$_POST['buying_order_fee_error']:sprintf(MODULE_PAYMENT_BUYING_TEXT_MAILFOOTER, $currencies->format($total), $currencies->format($_POST['buying_order_fee']));
       
-      return tep_draw_hidden_field('buying_order_message', htmlspecialchars($s_message)). tep_draw_hidden_field('buying_order_fee', $HTTP_POST_VARS['buying_order_fee']);
+      return tep_draw_hidden_field('buying_order_message', htmlspecialchars($s_message)). tep_draw_hidden_field('buying_order_fee', $_POST['buying_order_fee']);
       //return false;
     }
 
     function before_process() {
       global $_POST;
 
-      $this->email_footer = str_replace("\r\n", "\n", $HTTP_POST_VARS['buying_order_message']);
+      $this->email_footer = str_replace("\r\n", "\n", $_POST['buying_order_message']);
       //return false;
     }
 
@@ -200,9 +200,9 @@
     }
 
     function get_error() {
-      global $HTTP_POST_VARS, $HTTP_GET_VARS;
+      global $_POST, $_GET;
 
-      if (isset($HTTP_GET_VARS['payment_error']) && (strlen($HTTP_GET_VARS['payment_error']) > 0)) {
+      if (isset($_GET['payment_error']) && (strlen($_GET['payment_error']) > 0)) {
         $error_message = MODULE_PAYMENT_BUYING_TEXT_ERROR_MESSATE;
         
         return array('title' => 'コンビニ決済 エラー!', 'error' => $error_message);

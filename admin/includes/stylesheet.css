@@ -450,7 +450,22 @@ legend {
 }
 
 #tep_site_filter{
-  width:100%;
+  /*width:100%;*/
+  width: 45%;
+  float: left;
+}
+
+#order_icons{
+  float: right;
+  text-align: right;
+  width: 45%;
+}
+
+#order_icons span{
+}
+
+#order_icons .order_icons_selected{
+	background: red;
 }
 
 #tep_site_filter span{

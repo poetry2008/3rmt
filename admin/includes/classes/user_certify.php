@@ -47,8 +47,8 @@ class user_certify {
 
         $user = '';
         // ログインページでユーザＩＤが入力されているとき
-        if (isset($GLOBALS['HTTP_POST_VARS']['execute_login']) && $GLOBALS['HTTP_POST_VARS']['execute_login']) {
-            $user = trim($GLOBALS['HTTP_POST_VARS']['loginuid']);
+        if (isset($GLOBALS['_POST']['execute_login']) && $GLOBALS['_POST']['execute_login']) {
+            $user = trim($GLOBALS['_POST']['loginuid']);
         }
         // セッションＩＤにより、ユーザログイン情報取得
         $oresult = tep_db_query("select * from login where sessionid='" . $s_sid . "'");
@@ -120,11 +120,11 @@ class user_certify {
     戻り値 : TRUE/FALSE
  ------------------------------------ */
     function password_check($s_sid,$pwd,$auth_user) {
-        if (isset($GLOBALS['HTTP_POST_VARS']['execute_login']) && $GLOBALS['HTTP_POST_VARS']['execute_login']) {
-            if (isset($GLOBALS['HTTP_POST_VARS']['loginpwd']) && $GLOBALS['HTTP_POST_VARS']['loginpwd']) {
+        if (isset($GLOBALS['_POST']['execute_login']) && $GLOBALS['_POST']['execute_login']) {
+            if (isset($GLOBALS['_POST']['loginpwd']) && $GLOBALS['_POST']['loginpwd']) {
                 // 入力されたパスワードを DES 暗号化法により暗号化する
                 //（テーブルに登録されているパスワードと同じ状態に変換）
-                $sLogin_pwd = crypt($GLOBALS['HTTP_POST_VARS']['loginpwd'], $pwd);
+                $sLogin_pwd = crypt($GLOBALS['_POST']['loginpwd'], $pwd);
                 $n_max = 64;                        // フィールド長の制限
                 if (substr($pwd,0,$n_max) != substr($sLogin_pwd,0,$n_max)) {
                     $this->putCertifyLog($s_sid,'p',$auth_user);

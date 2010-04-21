@@ -7,7 +7,7 @@
 
 // class constructor
     function telecom($site_id = 0) {
-      global $order, $HTTP_GET_VARS;
+      global $order, $_GET;
       
       $this->site_id = $site_id;
 
@@ -26,8 +26,8 @@
 
       $this->form_action_url = MODULE_PAYMENT_TELECOM_CONNECTION_URL;
     
-    if(isset($HTTP_GET_VARS['submit_x']) || isset($HTTP_GET_VARS['submit_y'])){
-      $HTTP_GET_VARS['payment_error'] = 'telecom';
+    if(isset($_GET['submit_x']) || isset($_GET['submit_y'])){
+      $_GET['payment_error'] = 'telecom';
     }
     
     $this->email_footer = MODULE_PAYMENT_TELECOM_TEXT_EMAIL_FOOTER;
@@ -112,18 +112,18 @@
 
     function confirmation() {
       global $currencies;
-      global $HTTP_POST_VARS;
+      global $_POST;
       
       $s_result = !$_POST['telecom_order_fee_error'];
      
-      if (!empty($HTTP_POST_VARS['telecom_order_fee'])) {
-        //$s_message = $s_result ? (MODULE_PAYMENT_TELECOM_TEXT_FEE . '&nbsp;' .  $currencies->format($HTTP_POST_VARS['telecom_order_fee'])):('<font color="#FF0000">'.$HTTP_POST_VARS['telecom_order_fee_error'].'</font>'); 
-        $s_message = $s_result ? '':('<font color="#FF0000">'.$HTTP_POST_VARS['telecom_order_fee_error'].'</font>'); 
+      if (!empty($_POST['telecom_order_fee'])) {
+        //$s_message = $s_result ? (MODULE_PAYMENT_TELECOM_TEXT_FEE . '&nbsp;' .  $currencies->format($_POST['telecom_order_fee'])):('<font color="#FF0000">'.$_POST['telecom_order_fee_error'].'</font>'); 
+        $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['telecom_order_fee_error'].'</font>'); 
       } else {
-        $s_message = $s_result ? '':('<font color="#FF0000">'.$HTTP_POST_VARS['telecom_order_fee_error'].'</font>'); 
+        $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['telecom_order_fee_error'].'</font>'); 
       }
       
-      if (!empty($HTTP_POST_VARS['telecom_order_fee'])) {
+      if (!empty($_POST['telecom_order_fee'])) {
         return array(
             'title' => MODULE_PAYMENT_TELECOM_TEXT_DESCRIPTION,
             'fields' => array(array('title' => MODULE_PAYMENT_TELECOM_TEXT_PROCESS,
@@ -151,9 +151,9 @@
       $f_result = $this->calc_fee($total); 
       if ((MODULE_ORDER_TOTAL_CODT_STATUS == 'true')
           && ($payment == 'cod_table')
-          && isset($HTTP_POST_VARS['codt_fee'])
-          && (0 < intval($HTTP_POST_VARS['codt_fee']))) {
-        $total += intval($HTTP_POST_VARS['codt_fee']);
+          && isset($_POST['codt_fee'])
+          && (0 < intval($_POST['codt_fee']))) {
+        $total += intval($_POST['codt_fee']);
       }
     
     //Add point
@@ -163,7 +163,7 @@
       }   
     
     if(MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'convenience_store')) {
-        $total += intval($HTTP_POST_VARS['codt_fee']);
+        $total += intval($_POST['codt_fee']);
     }
           $total += intval($this->n_fee); 
           // 追加 - 2007.01.05 ----------------------------------------------
@@ -251,7 +251,7 @@
                  tep_draw_hidden_field('redirect_url', tep_href_link(MODULE_PAYMENT_OK_URL, '', 'SSL')) .
                  tep_draw_hidden_field('redirect_back_url', tep_href_link(MODULE_PAYMENT_NO_URL, '', 'SSL'));
    
-      $process_button_string .= tep_draw_hidden_field('telecom_order_message', htmlspecialchars($s_message)). tep_draw_hidden_field('telecom_order_fee', $HTTP_POST_VARS['telecom_order_fee']);
+      $process_button_string .= tep_draw_hidden_field('telecom_order_message', htmlspecialchars($s_message)). tep_draw_hidden_field('telecom_order_fee', $_POST['telecom_order_fee']);
       return $process_button_string;
     }
   
@@ -259,7 +259,7 @@
     function before_process() {
       global $_POST;
 
-      $this->email_footer = str_replace("\r\n", "\n", $HTTP_POST_VARS['telecom_order_message']);
+      $this->email_footer = str_replace("\r\n", "\n", $_POST['telecom_order_message']);
       
       return false;
     }
@@ -310,7 +310,7 @@
   
   //エラー
   function get_error() {
-      global $HTTP_GET_VARS;
+      global $_GET;
     
       $error_message = MODULE_PAYMENT_TELECOM_TEXT_ERROR_MESSAGE; 
 

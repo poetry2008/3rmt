@@ -442,7 +442,7 @@
   }
   
   $handle_fee = calc_handle_fee($update_info_payment_method, $newtotal);
-  //$newtotal = $newtotal + $HTTP_POST_VARS['payment_code_fee']; 
+  //$newtotal = $newtotal + $_POST['payment_code_fee']; 
   $newtotal = $newtotal+$handle_fee;
   
   $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '" . $newtotal . "', text = '<b>" . $currencies->format($newtotal, true, $order->info['currency']) . "</b>' where class='ot_total' and orders_id = '" . $oID . "'";
