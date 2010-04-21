@@ -1184,11 +1184,11 @@ function mail_text(st,tt,ot){
       $next_mark = '';
     }
   } else {
-    if ($ocertify->npermission) {
+    #if ($ocertify->npermission) {
       $today_color = 'black';
-    } else {
-      $today_color = '#999';
-    }
+    #} else {
+      #$today_color = '#999';
+    #}
     $next_mark = '';
   }
   
@@ -1214,11 +1214,27 @@ function mail_text(st,tt,ot){
 <?php if ($ocertify->npermission) {?>
           &nbsp;<a href="<?php echo tep_href_link('customers.php', 'page=1&cID=' . tep_output_string_protected($orders['customers_id']) . '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS . 'arrow_r_red.gif', '顧客情報');?></a>&nbsp;&nbsp;
 <?php }?>
+  <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
+  <font color="#999">
+  <?php }?>
           <b><?php echo tep_output_string_protected($orders['customers_name']);?></b>
+  <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
+  </font>
+  <?php }?>
         </td>
-    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><?php echo strip_tags($orders['order_total']); ?></td>
+    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)">
+  <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
+  <font color="#999">
+  <?php }?>
+          <?php echo strip_tags($orders['order_total']); ?>
+  <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
+  </font>
+  <?php }?>
+    </td>
           
-        <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><?php echo $next_mark; ?><font color="<?php echo $today_color; ?>"><?php echo tep_datetime_short($orders['torihiki_date']); ?></font></td>
+    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><?php echo $next_mark; ?>
+    <font color="<?php !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>"><?php echo tep_datetime_short($orders['torihiki_date']); ?></font>
+    </td>
 
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="center" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><span style="color:#999999;"><?php echo tep_datetime_short($orders['date_purchased']); ?></span></td>
 
