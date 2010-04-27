@@ -121,8 +121,8 @@
         $os_result = tep_db_fetch_array($os_query);
   
         $comments = str_replace(array('${NAME}','${MAIL}','${ORDER_D}','${ORDER_N}','${PAY}','${ORDER_M}','${TRADING}','${ORDER_S}'),array($check_status['customers_name'],$check_status['customers_email_address'],tep_date_long($check_status['date_purchased']),$oID,$check_status['payment_method'],$otm,tep_torihiki($check_status['torihiki_date']),$os_result['orders_status_name']),$comments);
-        tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, nl2br($comments), STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-        tep_mail(STORE_OWNER, SENTMAIL_ADDRESS, '送信済：'.$title, nl2br($comments), $check_status['customers_name'], $check_status['customers_email_address']);
+        tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+        tep_mail(STORE_OWNER, SENTMAIL_ADDRESS, '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address']);
         $customer_notified = '1';
       }
       
@@ -255,8 +255,8 @@
       $os_result = tep_db_fetch_array($os_query);
 
       $comments = str_replace(array('${NAME}','${MAIL}','${ORDER_D}','${ORDER_N}','${PAY}','${ORDER_M}','${TRADING}','${ORDER_S}'),array($check_status['customers_name'],$check_status['customers_email_address'],tep_date_long($check_status['date_purchased']),$oID,$check_status['payment_method'],$otm,tep_torihiki($check_status['torihiki_date']),$os_result['orders_status_name']),$comments);
-      tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, nl2br($comments), STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-      tep_mail(STORE_OWNER, SENTMAIL_ADDRESS, '送信済：'.$title, nl2br($comments), $check_status['customers_name'], $check_status['customers_email_address']);
+      tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+      tep_mail(STORE_OWNER, SENTMAIL_ADDRESS, '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address']);
     $customer_notified = '1';
     }
     

@@ -13,7 +13,7 @@
       $this->code = 'postalmoneyorder';
       $this->title = MODULE_PAYMENT_POSTALMONEYORDER_TEXT_TITLE;
       $this->description = MODULE_PAYMENT_POSTALMONEYORDER_TEXT_DESCRIPTION;
-	  $this->explain = MODULE_PAYMENT_POSTALMONEYORDER_TEXT_EXPLAIN;
+      $this->explain = MODULE_PAYMENT_POSTALMONEYORDER_TEXT_EXPLAIN;
       $this->sort_order = MODULE_PAYMENT_POSTALMONEYORDER_SORT_ORDER;
       $this->enabled = ((MODULE_PAYMENT_POSTALMONEYORDER_STATUS == 'True') ? true : false);
 

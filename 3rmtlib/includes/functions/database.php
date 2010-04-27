@@ -109,7 +109,7 @@
             $query .= 'null, ';
             break;
           default:
-            $query .= '\'' . tep_db_input($value) . '\', ';
+            $query .= '\'' . mysql_real_escape_string($value) . '\', ';
             break;
         }
       }
@@ -125,7 +125,7 @@
             $query .= $columns .= ' = null, ';
             break;
           default:
-            $query .= $columns . ' = \'' . tep_db_input($value) . '\', ';
+            $query .= $columns . ' = \'' . mysql_real_escape_string($value) . '\', ';
             break;
         }
       }

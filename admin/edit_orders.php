@@ -210,7 +210,7 @@
       $Query = "update " . TABLE_ORDERS_PRODUCTS . " set
           products_model = '" . $products_details["model"] . "',
           products_name = '" . str_replace("'", "&#39;", $products_details["name"]) . "',
-          products_character = '" . $products_details["character"] . "',
+          products_character = '" . mysql_real_escape_string($products_details["character"]) . "',
           final_price = '" . $products_details["final_price"] . "',
           products_tax = '" . $products_details["tax"] . "',
           products_quantity = '" . $products_details["qty"] . "'
@@ -513,7 +513,7 @@
         $products_ordered_mail .= "\t" . '個数　　　　　　　：' . $order->products[$i]['qty'] . '個' . tep_get_full_count($order->products[$i]['qty'], $data1[1]) . "\n";
         $products_ordered_mail .= "\t" . '単価　　　　　　　：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
         $products_ordered_mail .= "\t" . '小計　　　　　　　：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
-        $products_ordered_mail .= "\t" . 'キャラクター名　　：' . $order->products[$i]['character'] . "\n";
+        $products_ordered_mail .= "\t" . 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($order->products[$i]['character']) : $order->products[$i]['character']) . "\n";
         $products_ordered_mail .= "\t" . '------------------------------------------' . "\n";
         if (tep_get_cflag_by_product_id($order->products[$i]['id'])) {
             if (tep_get_bflag_by_product_id($order->products[$i]['id'])) {
@@ -678,7 +678,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         products_id = $add_product_products_id,
         products_model = '$p_products_model',
         products_name = '" . str_replace("'", "&#39;", $p_products_name) . "',
-        products_character = '$add_product_character',
+        products_character = '" . mysql_real_escape_string($add_product_character) . "',
         products_price = '$p_products_price',
         final_price = '" . ($p_products_price + $AddedOptionsPrice) . "',
         products_tax = '$ProductsTax',
@@ -931,7 +931,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
     $order->products[$index] = array('qty' => $orders_products['products_quantity'],
                                      'name' => str_replace("'", "&#39;", $orders_products['products_name']),
                                      'model' => $orders_products['products_model'],
-                   'character' => $orders_products['products_character'],
+                                     'character' => $orders_products['products_character'],
                                      'tax' => $orders_products['products_tax'],
                                      'price' => $orders_products['products_price'],
                                      'final_price' => $orders_products['final_price'],
@@ -974,7 +974,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
     echo '    <tr class="dataTableRow">' . "\n" .
          '      <td class="' . $RowStyle . '" align="left" valign="top" width="20">' . "<input name='update_products[$orders_products_id][qty]' size='2' value='" . $order->products[$i]['qty'] . "'>&nbsp;x</td>\n" . 
          '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input name='update_products[$orders_products_id][name]' size='64' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
-       '      &nbsp;&nbsp;キャラ名：' . "<input type='hidden' name='dummy' value='あいうえお眉幅'><input name='update_products[$orders_products_id][character]' size='20' value='" . $order->products[$i]['character'] . "'>";
+       '      &nbsp;&nbsp;キャラ名：' . "<input type='hidden' name='dummy' value='あいうえお眉幅'><input name='update_products[$orders_products_id][character]' size='20' value=\"" . htmlspecialchars($order->products[$i]['character']) . "\">";
     // Has Attributes?
     if ($order->products[$i]['attributes'] && sizeof($order->products[$i]['attributes']) > 0) {
       for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {

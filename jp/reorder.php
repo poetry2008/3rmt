@@ -10,26 +10,26 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
 </head>
 <body>
 <div align="center">
-	<?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-	<!-- header_eof //-->
-	<!-- body //-->
-	<table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border" summary="table">
-		<tr>
-			<td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border">
-				<!-- left_navigation //-->
-				<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-				<!-- left_navigation_eof //-->
-			</td>
-			<!-- body_text //-->
-			<td id="contents" valign="top">
-				<h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
+  <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
+  <!-- header_eof //-->
+  <!-- body //-->
+  <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border" summary="table">
+    <tr>
+      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border">
+        <!-- left_navigation //-->
+        <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
+        <!-- left_navigation_eof //-->
+      </td>
+      <!-- body_text //-->
+      <td id="contents" valign="top">
+        <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
 <?php if ($_POST) {
   include(DIR_WS_CLASSES . 'admin_order.php');
 
   if(isset($_POST['order_id'])){
-  	$oID    = tep_db_prepare_input($_POST['order_id']);
+    $oID    = tep_db_prepare_input($_POST['order_id']);
   } else {
-  	$oID    = tep_db_prepare_input($_POST['order_id_1']).'-'.tep_db_prepare_input($_POST['order_id_2']);
+    $oID    = tep_db_prepare_input($_POST['order_id_1']).'-'.tep_db_prepare_input($_POST['order_id_2']);
   }
   
   $cEmail = tep_db_prepare_input($_POST['email']);
@@ -101,7 +101,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
             // ccdd
             tep_db_query("
                 update `".TABLE_ORDERS_PRODUCTS."` 
-                set `products_character`='".$character."' 
+                set `products_character`='".mysql_real_escape_string(addslashes($character))."' 
                 where `orders_id`='".$oID."' 
                   and `products_id`='".$pid."'
             ");
@@ -195,17 +195,17 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   # load the selected shipping module(convenience_store)
   /*if ($_SESSION['payment'] == 'convenience_store') {
     $convenience_sid = str_replace('-', "", $insert_id);
-	
+  
     $pay_comments = '取引コード' . $convenience_sid ."\n";
-	$pay_comments .= '郵便番号:' . $_POST['convenience_store_zip_code'] ."\n";
-	$pay_comments .= '住所1:' . $_POST['convenience_store_address1'] ."\n";
-	$pay_comments .= '住所2:' . $_POST['convenience_store_address2'] ."\n";
-	$pay_comments .= '氏:' . $_POST['convenience_store_l_name'] ."\n";
-	$pay_comments .= '名:' . $_POST['convenience_store_f_name'] ."\n";
-	$pay_comments .= '電話番号:' . $_POST['convenience_store_tel'] ."\n";
-	$pay_comments .= '接続URL:' . tep_href_link('convenience_store_chk.php', 'sid=' . $convenience_sid, 'SSL');
-	
-	$comments = $pay_comments ."\n".$comments;
+  $pay_comments .= '郵便番号:' . $_POST['convenience_store_zip_code'] ."\n";
+  $pay_comments .= '住所1:' . $_POST['convenience_store_address1'] ."\n";
+  $pay_comments .= '住所2:' . $_POST['convenience_store_address2'] ."\n";
+  $pay_comments .= '氏:' . $_POST['convenience_store_l_name'] ."\n";
+  $pay_comments .= '名:' . $_POST['convenience_store_f_name'] ."\n";
+  $pay_comments .= '電話番号:' . $_POST['convenience_store_tel'] ."\n";
+  $pay_comments .= '接続URL:' . tep_href_link('convenience_store_chk.php', 'sid=' . $convenience_sid, 'SSL');
+  
+  $comments = $pay_comments ."\n".$comments;
   }
   */
 
@@ -291,10 +291,10 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
     }
 
     $products_ordered .= '注文商品　　　　　：' . $o->products[$i]['name'];
-	if(tep_not_null($o->products[$i]['model'])) {
-	  $products_ordered .= ' (' . $o->products[$i]['model'] . ')';
-	}
-	
+  if(tep_not_null($o->products[$i]['model'])) {
+    $products_ordered .= ' (' . $o->products[$i]['model'] . ')';
+  }
+  
   // ccdd
   /*
     $_product_info_query = tep_db_query("
@@ -339,14 +339,14 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
     */
     $product_info = tep_get_product_by_id($o->products[$i]['id'], SITE_ID ,$languages_id);
     $data1 = explode("//", $product_info['products_attention_1']);
-	
-	$products_ordered .= $products_ordered_attributes . "\n";
-	$products_ordered .= '個数　　　　　　　：' . $o->products[$i]['qty'] . '個' . tep_get_full_count($o->products[$i]['qty'], $data1[1]) . "\n";
-	if(tep_not_null($o->products[$i]['character'])) {
-	  $products_ordered .= 'キャラクター名　　：' . $o->products[$i]['character'] . "\n";
-	}
+  
+  $products_ordered .= $products_ordered_attributes . "\n";
+  $products_ordered .= '個数　　　　　　　：' . $o->products[$i]['qty'] . '個' . tep_get_full_count($o->products[$i]['qty'], $data1[1]) . "\n";
+  if(tep_not_null($o->products[$i]['character'])) {
+    $products_ordered .= 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($o->products[$i]['character']) : $o->products[$i]['character']) . "\n";
+  }
 
-	$products_ordered .= '------------------------------------------' . "\n";
+  $products_ordered .= '------------------------------------------' . "\n";
   }
   
   # メール本文整形 --------------------------------------
@@ -382,9 +382,9 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
 
   # メール本文整形 --------------------------------------
   // 2003.03.08 Edit Japanese osCommerce
-  tep_mail($o->customer['name'], $o->customer['email_address'], $mail_title, nl2br($email_order), STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
+  tep_mail($o->customer['name'], $o->customer['email_address'], $mail_title, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
-    tep_mail('', SEND_EXTRA_ORDER_EMAILS_TO, $mail_title, nl2br($email_order), $o->customer['name'], $o->customer['email_address'], '');
+    tep_mail('', SEND_EXTRA_ORDER_EMAILS_TO, $mail_title, $email_order, $o->customer['name'], $o->customer['email_address'], '');
   }
       }
     } else if (in_array($order['orders_status'], array(2,5,6,7,8))) {
@@ -450,7 +450,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
 <?php if($value['character']) {?>
  <tr>
   <td bgcolor="#eeeeee">キャラクター名</td>
-  <td><input type='text' id='character_<?php echo $value['id'];?>' name='character[<?php echo $value['id'];?>]' value='<?php echo $value['character']?>' class="input_text" ></td>
+  <td><input type='text' id='character_<?php echo $value['id'];?>' name='character[<?php echo $value['id'];?>]' value="<?php echo htmlspecialchars($value['character'])?>" class="input_text" ></td>
  </tr>
 <?php }?>
 <?php if(isset($value['attributes']) && $value['attributes'])
@@ -529,148 +529,148 @@ foreach ($value['attributes'] as $att) {?>
 </table>
 <br>
 <p align="center">
-	<input type='image' src="includes/languages/japanese/images/buttons/button_submit.gif" alt="確認する" title="確認する" onClick="return orderConfirmPage();" >
+  <input type='image' src="includes/languages/japanese/images/buttons/button_submit.gif" alt="確認する" title="確認する" onClick="return orderConfirmPage();" >
    <input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="クリア" title="クリア" onClick="javascript:document.order.reset();return false;" >
 </p>
 </form>
 </div>
 <div id='confirm' style='display:none; text-align: center;'>
-	<div id='confirm_content'></div>
-	<input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="確定する" title="確定する
+  <div id='confirm_content'></div>
+  <input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="確定する" title="確定する
     " onClick="document.order.submit()" >
-	<input type='image' src="includes/languages/japanese/images/buttons/button_back.gif" alt="前に戻る" title="前に戻る" onClick="document.getElementById('confirm').style.display='none';document.getElementById('form').style.display='block'" >
+  <input type='image' src="includes/languages/japanese/images/buttons/button_back.gif" alt="前に戻る" title="前に戻る" onClick="document.getElementById('confirm').style.display='none';document.getElementById('form').style.display='block'" >
 </div>
 <script type="text/javascript" src='./js/order.js'></script>
 <script type="text/javascript">
 <!---
 function orderConfirmPage(){
-	document.getElementById('form_error').style.display = 'none';
-	document.getElementById('date_error').style.display = 'none';
-	document.getElementById('form_error').innerHTML = '';
-	document.getElementById('date_error').innerHTML = '';
-	// init
-	productName  = new Array();
-	oldCharacter = new Array();
-	oldAttribute = new Array();
-	text         = "";
-	orderChanged = false;
-	now          = new Date();
-	nowMinutes   = now.getHours() * 60 + now.getMinutes();
+  document.getElementById('form_error').style.display = 'none';
+  document.getElementById('date_error').style.display = 'none';
+  document.getElementById('form_error').innerHTML = '';
+  document.getElementById('date_error').innerHTML = '';
+  // init
+  productName  = new Array();
+  oldCharacter = new Array();
+  oldAttribute = new Array();
+  text         = "";
+  orderChanged = false;
+  now          = new Date();
+  nowMinutes   = now.getHours() * 60 + now.getMinutes();
 
-	oldTime = '<?php echo strftime(DATE_FORMAT_LONG, strtotime($order['torihiki_date']));?> <?php echo date('H:i', strtotime($order['torihiki_date']));?>';
-	today   = '<?php echo strftime(DATE_FORMAT_LONG, time());?>';
-	
+  oldTime = '<?php echo strftime(DATE_FORMAT_LONG, strtotime($order['torihiki_date']));?> <?php echo date('H:i', strtotime($order['torihiki_date']));?>';
+  today   = '<?php echo strftime(DATE_FORMAT_LONG, time());?>';
+  
 <?php foreach($o->products as $p){?>
-	productName[<?php echo $p['id'];?>] = '<?php echo $p['name'];?>';
-	oldCharacter[<?php echo $p['id'];?>] = '<?php echo $p['character'];?>';
-	oldAttribute[<?php echo $p['id'];?>] = new Array();
+  productName[<?php echo $p['id'];?>] = '<?php echo $p['name'];?>';
+  oldCharacter[<?php echo $p['id'];?>] = "<?php echo htmlspecialchars(addslashes($p['character']));?>";
+  oldAttribute[<?php echo $p['id'];?>] = new Array();
 <?php   if($p['attributes'])foreach($p['attributes'] as $a){?>
-	oldAttribute[<?php echo $p['id'];?>][<?php echo $a['option_id'];?>] = new Array('<?php echo $a['option'];?>', '<?php echo $a['value'];?>');
+  oldAttribute[<?php echo $p['id'];?>][<?php echo $a['option_id'];?>] = new Array('<?php echo $a['option'];?>', '<?php echo $a['value'];?>');
 <?php   }?>
 <?php }?>
-	text += "<table class='information_table' summary='table'>\n";
-	text += "<tr><td bgcolor='#eeeeee' width='130'>\n";
-	text += "取引日時（変更前）";
-	text += "</td><td>\n";
-	text += oldTime + "\n";
-	text += "</td></tr><tr><td bgcolor='#eeeeee'>\n";
-	
-	dateChanged = (document.getElementById('new_date').options[document.getElementById('new_date').selectedIndex].value != ''
-		&& document.getElementById('new_hour').options[document.getElementById('new_hour').selectedIndex].value != ''
-		&& document.getElementById('new_minute').options[document.getElementById('new_minute').selectedIndex].value != '');
-	
-	orderChanged = orderChanged || dateChanged;
+  text += "<table class='information_table' summary='table'>\n";
+  text += "<tr><td bgcolor='#eeeeee' width='130'>\n";
+  text += "取引日時（変更前）";
+  text += "</td><td>\n";
+  text += oldTime + "\n";
+  text += "</td></tr><tr><td bgcolor='#eeeeee'>\n";
+  
+  dateChanged = (document.getElementById('new_date').options[document.getElementById('new_date').selectedIndex].value != ''
+    && document.getElementById('new_hour').options[document.getElementById('new_hour').selectedIndex].value != ''
+    && document.getElementById('new_minute').options[document.getElementById('new_minute').selectedIndex].value != '');
+  
+  orderChanged = orderChanged || dateChanged;
 
-	text += "取引日時（変更後）</td><td>";
-	
-	if((document.getElementById('new_date').selectedIndex != 0 || document.getElementById('new_hour').selectedIndex != 0 || document.getElementById('new_minute').selectedIndex != 0) && !(document.getElementById('new_date').selectedIndex != 0 && document.getElementById('new_hour').selectedIndex != 0 && document.getElementById('new_minute').selectedIndex != 0)){
-			document.getElementById('date_error').innerHTML = "<br> <font color='red'>【取引日時（変更後）】を選択してください。</font>";
-			document.getElementById('date_error').style.display = 'inline';
-			return false;
-	}
+  text += "取引日時（変更後）</td><td>";
+  
+  if((document.getElementById('new_date').selectedIndex != 0 || document.getElementById('new_hour').selectedIndex != 0 || document.getElementById('new_minute').selectedIndex != 0) && !(document.getElementById('new_date').selectedIndex != 0 && document.getElementById('new_hour').selectedIndex != 0 && document.getElementById('new_minute').selectedIndex != 0)){
+      document.getElementById('date_error').innerHTML = "<br> <font color='red'>【取引日時（変更後）】を選択してください。</font>";
+      document.getElementById('date_error').style.display = 'inline';
+      return false;
+  }
 
-	if(dateChanged){
-		newTime = document.getElementById('new_date').options[document.getElementById('new_date').selectedIndex].innerHTML + " "
-		 + document.getElementById('new_hour').options[document.getElementById('new_hour').selectedIndex].innerHTML + ":"
-		 + document.getElementById('new_minute').options[document.getElementById('new_minute').selectedIndex].innerHTML 
-		 //+ ":00"
+  if(dateChanged){
+    newTime = document.getElementById('new_date').options[document.getElementById('new_date').selectedIndex].innerHTML + " "
+     + document.getElementById('new_hour').options[document.getElementById('new_hour').selectedIndex].innerHTML + ":"
+     + document.getElementById('new_minute').options[document.getElementById('new_minute').selectedIndex].innerHTML 
+     //+ ":00"
 
-		if(document.getElementById('new_date').selectedIndex == 1 
-			&& ((document.getElementById('new_hour').options[document.getElementById('new_hour').selectedIndex].value * 60) + parseInt(document.getElementById('new_minute').options[document.getElementById('new_minute').selectedIndex].value)) < (nowMinutes + <?php echo MINUTES;?>)) 
-		{
-			// time error
-			document.getElementById('date_error').innerHTML = "<br><font color='red'>取引時間は現在時刻より20分後以降を選択してください。</font>";
-			document.getElementById('date_error').style.display = 'inline';
-			return false;
-		}
-		text += newTime + "</td></tr></table><br >\n";
-	} else {
-		text += oldTime + "</td></tr></table><br >\n";
-	}
-	
-	for(i in productName){
-		text += "<table class='information_table' summary='table'>\n";
-		text += "<tr><td width='130' bgcolor='#eeeeee'>商品名</td><td>\n";
-		text += productName[i] + "\n";
-		text += "</td></tr>";
+    if(document.getElementById('new_date').selectedIndex == 1 
+      && ((document.getElementById('new_hour').options[document.getElementById('new_hour').selectedIndex].value * 60) + parseInt(document.getElementById('new_minute').options[document.getElementById('new_minute').selectedIndex].value)) < (nowMinutes + <?php echo MINUTES;?>)) 
+    {
+      // time error
+      document.getElementById('date_error').innerHTML = "<br><font color='red'>取引時間は現在時刻より20分後以降を選択してください。</font>";
+      document.getElementById('date_error').style.display = 'inline';
+      return false;
+    }
+    text += newTime + "</td></tr></table><br >\n";
+  } else {
+    text += oldTime + "</td></tr></table><br >\n";
+  }
+  
+  for(i in productName){
+    text += "<table class='information_table' summary='table'>\n";
+    text += "<tr><td width='130' bgcolor='#eeeeee'>商品名</td><td>\n";
+    text += productName[i] + "\n";
+    text += "</td></tr>";
 
-		if(oldCharacter[i] != ''){
-			text += "<tr><td bgcolor='#eeeeee' width='130'>\n";
-			text += "キャラクター名(変更前)";
-			text += "</td><td>\n";
-			text += oldCharacter[i] + "\n";
-			text += "</td></tr>";
-			text += "<tr><td bgcolor='#eeeeee'>\n";
-			text += "キャラクター名(変更後)";
-			text += "</td><td>\n";
-			text += document.getElementById('character_'+i).value + "\n";
-			text += "</td></tr>";
-			orderChanged = orderChanged || (oldCharacter[i] != document.getElementById('character_'+i).value);
-		}
+    if(oldCharacter[i] != ''){
+      text += "<tr><td bgcolor='#eeeeee' width='130'>\n";
+      text += "キャラクター名(変更前)";
+      text += "</td><td>\n";
+      text += oldCharacter[i] + "\n";
+      text += "</td></tr>";
+      text += "<tr><td bgcolor='#eeeeee'>\n";
+      text += "キャラクター名(変更後)";
+      text += "</td><td>\n";
+      text += document.getElementById('character_'+i).value + "\n";
+      text += "</td></tr>";
+      orderChanged = orderChanged || (oldCharacter[i] != document.getElementById('character_'+i).value);
+    }
 
-		
-		
+    
+    
 
-		for(j in oldAttribute[i]){
-			text += "<tr><td bgcolor='#eeeeee'>\n";
-			text += oldAttribute[i][j][0] + "(変更前)\n"
-			text += "</td><td>\n";
-			text += oldAttribute[i][j][1] + "\n";
-			text += "</td></tr><tr><td bgcolor='#eeeeee'>\n";
-			text += oldAttribute[i][j][0];
-			text += "(変更後)</td><td>\n";
-			if (document.getElementById('id[' + i + '][' + j + ']').selectedIndex != 0) {
-				text += document.getElementById('id[' + i + '][' + j + ']').options[document.getElementById('id[' + i + '][' + j + ']').selectedIndex].innerHTML + "\n";
-			} else {
-				text += oldAttribute[i][j][1] + "\n";
-			}
-			text += "</td></tr>\n";
-			orderChanged = orderChanged || (document.getElementById('id[' + i + '][' + j + ']').selectedIndex != 0);
-		}
-		text += "</table><br >\n";
-	}
+    for(j in oldAttribute[i]){
+      text += "<tr><td bgcolor='#eeeeee'>\n";
+      text += oldAttribute[i][j][0] + "(変更前)\n"
+      text += "</td><td>\n";
+      text += oldAttribute[i][j][1] + "\n";
+      text += "</td></tr><tr><td bgcolor='#eeeeee'>\n";
+      text += oldAttribute[i][j][0];
+      text += "(変更後)</td><td>\n";
+      if (document.getElementById('id[' + i + '][' + j + ']').selectedIndex != 0) {
+        text += document.getElementById('id[' + i + '][' + j + ']').options[document.getElementById('id[' + i + '][' + j + ']').selectedIndex].innerHTML + "\n";
+      } else {
+        text += oldAttribute[i][j][1] + "\n";
+      }
+      text += "</td></tr>\n";
+      orderChanged = orderChanged || (document.getElementById('id[' + i + '][' + j + ']').selectedIndex != 0);
+    }
+    text += "</table><br >\n";
+  }
 
-	text += "<table class='information_table' summary='table'>\n"
-	text += "<tr><td bgcolor='#eeeeee' width='130'>";
-	text += "備考";
-	text += "</td><td>\n";
-	text += document.getElementById('comment').value;
-	text += "</td></tr>\n";
-	text += "</table><br >\n"
-	
-	orderChanged = (orderChanged || document.getElementById('comment').value);
-	
-	// if order unchanged , does not commit
-	if(!orderChanged){
-		//alert('no change');
-		document.getElementById('form_error').innerHTML = "<font color='red'>変更箇所がございません。</font>";
-		document.getElementById('form_error').style.display = 'block';
-		return false;	
-	}
-	document.getElementById('form').style.display = 'none';
-	document.getElementById('confirm').style.display = 'block';
-	document.getElementById('confirm_content').innerHTML = text;
-	return false;
+  text += "<table class='information_table' summary='table'>\n"
+  text += "<tr><td bgcolor='#eeeeee' width='130'>";
+  text += "備考";
+  text += "</td><td>\n";
+  text += document.getElementById('comment').value;
+  text += "</td></tr>\n";
+  text += "</table><br >\n"
+  
+  orderChanged = (orderChanged || document.getElementById('comment').value);
+  
+  // if order unchanged , does not commit
+  if(!orderChanged){
+    //alert('no change');
+    document.getElementById('form_error').innerHTML = "<font color='red'>変更箇所がございません。</font>";
+    document.getElementById('form_error').style.display = 'block';
+    return false; 
+  }
+  document.getElementById('form').style.display = 'none';
+  document.getElementById('confirm').style.display = 'block';
+  document.getElementById('confirm_content').innerHTML = text;
+  return false;
 }
 -->
 </script>
@@ -686,7 +686,7 @@ function orderConfirmPage(){
   ?>
 <div class="comment">
 <form action="reorder.php" method="post" name='order'>
-<input type="hidden" name="dummy" value="あいうえお眉幅">	  
+<input type="hidden" name="dummy" value="あいうえお眉幅">   
 <table class="information_table" summary="table">
  <tr>
   <td align="left" bgcolor='#eeeeee'>注文番号</td>
@@ -710,21 +710,21 @@ function orderConfirmPage(){
 </table>
 </form>
 <?php }?>
-		</div>
+    </div>
         <p class="pageBottom"></p>
-			</td>
-			<!-- body_text_eof //-->
-			<td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>">
-				<!-- right_navigation //-->
-				<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
-				<!-- right_navigation_eof //-->
-			</td>           
-		</tr>
-	</table>
-	<!-- body_eof //-->
-	<!-- footer //-->
-	<?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-	<!-- footer_eof //-->
+      </td>
+      <!-- body_text_eof //-->
+      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>">
+        <!-- right_navigation //-->
+        <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
+        <!-- right_navigation_eof //-->
+      </td>           
+    </tr>
+  </table>
+  <!-- body_eof //-->
+  <!-- footer //-->
+  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
+  <!-- footer_eof //-->
 </div>
 </body>
 </html>

@@ -83,8 +83,9 @@ function forward404Unless($condition)
   function tep_sanitize_string($string) {
     $string = ereg_replace(' +', ' ', trim($string));
 
-    return str_replace(array('<', '>'), array('＜', '＞'), $string);
+    //return str_replace(array('<', '>'), array('＜', '＞'), $string);
     //return preg_replace("/[<>]/", '_', $string);
+    return $string;
   }
 
 ////
@@ -1171,9 +1172,10 @@ function forward404Unless($condition)
     $message = new email(array('X-Mailer: iimy Mailer'));
 
     // Build the text version
-    $text = strip_tags($email_text);
+    //$text = strip_tags($email_text);
+    $text = $email_text;
     if (EMAIL_USE_HTML == 'true') {
-      $message->add_html($email_text, $text);
+      $message->add_html(nl2br($email_text), $text);
     } else {
       $message->add_text($text);
     }

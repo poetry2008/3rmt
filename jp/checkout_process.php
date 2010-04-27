@@ -252,7 +252,6 @@
                 $zaiko_alart = '商品名　　-　　　型番'."\n";
         $zaiko_alart .= tep_get_products_name(tep_get_prid($order->products[$i]['id'])).'('.$order->products[$i]['model'].')'."\n";
         $zaiko_alart .= HTTPS_SERVER.'/admin/categories.php?search='.urlencode(tep_get_products_name(tep_get_prid($order->products[$i]['id'])))."\n\n";
-        //tep_mail('', SEND_EXTRA_ORDER_EMAILS_TO, STORE_OWNER_EMAIL_ADDRESS, ZAIKO_ALART_TITLE, ZAIKO_ARART_BODY.$zaiko_alart, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
                 tep_mail('', SEND_EXTRA_ORDER_EMAILS_TO, ZAIKO_ALART_TITLE, ZAIKO_ARART_BODY.$zaiko_alart, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
       }
     }
@@ -279,7 +278,7 @@
                             'final_price' => $order->products[$i]['final_price'], 
                             'products_tax' => $order->products[$i]['tax'], 
                             'products_quantity' => $order->products[$i]['qty'],
-                            'products_character' => $chara);
+                            'products_character' =>  stripslashes($chara));
     // ccdd
     tep_db_perform(TABLE_ORDERS_PRODUCTS, $sql_data_array);
     $order_products_id = tep_db_insert_id();
@@ -386,7 +385,7 @@
   $products_ordered .= '単価　　　　　　　：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
   $products_ordered .= '小計　　　　　　　：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
   if(tep_not_null($chara)) {
-    $products_ordered .= 'キャラクター名　　：' . $chara . "\n";
+    $products_ordered .= 'キャラクター名　　：' .  (EMAIL_USE_HTML === 'true' ? htmlspecialchars(stripslashes($chara)) : stripslashes($chara)) . "\n";
   }
   $products_ordered .= "------------------------------------------\n";
   if (tep_get_cflag_by_product_id($order->products[$i]['id'])) {
@@ -505,10 +504,10 @@
   # メール本文整形 --------------------------------------
   
   // 2003.03.08 Edit Japanese osCommerce
-  tep_mail(tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], EMAIL_TEXT_SUBJECT, nl2br($email_order), STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
+  tep_mail(tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], EMAIL_TEXT_SUBJECT, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   
   if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
-    tep_mail('', SEND_EXTRA_ORDER_EMAILS_TO, EMAIL_TEXT_SUBJECT2, nl2br($email_order), tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
+    tep_mail('', SEND_EXTRA_ORDER_EMAILS_TO, EMAIL_TEXT_SUBJECT2, $email_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
   }
   
   # 印刷用メール本文 ----------------------------
@@ -663,7 +662,7 @@
 // send emails to other people
 
   if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
-    tep_mail('', 'printing_order@iimy.co.jp', STORE_NAME, nl2br($email_printing_order), tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
+    tep_mail('', 'printing_order@iimy.co.jp', STORE_NAME, $email_printing_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
   }
 
   // Include OSC-AFFILIATE 
