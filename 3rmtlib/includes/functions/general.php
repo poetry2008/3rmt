@@ -2325,4 +2325,14 @@ function tep_unlink_temp_dir($dir)
     }
     return $buying_fee; 
   }
+
+function tep_orders_status_finished($osid){
+    $query = tep_db_query("
+        select * 
+        from  ".TABLE_ORDERS_STATUS."
+        where orders_status_id = '".(int)$osid."'
+        ");
+    $os = tep_db_fetch_array($query);
+    return isset($os['finished']) && $os['finished'];
+}
 ?>

@@ -47,7 +47,8 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
       $datetime = $date.' '.$hour.':'.$minute;
       $time     = strtotime($datetime);
 
-      if (in_array($order['orders_status'], array(2,5,6,7,8))) {
+      //if (in_array($order['orders_status'], array(2,5,6,7,8))) {
+      if (tep_orders_status_finished($order['orders_status'])) {
         // status can not change
         echo '<div class="comment">ご入力いただきました登録情報は、既に発送が完了している、または、ご注文がキャンセルとなっております。 <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="74" height="25" alt="前に戻る" title="前に戻る"></a></div></div>';
       } else if ($date && $hour && $minute && ($time < (time() - MINUTES * 60) or $time > (time() + (7*86400)))) {
