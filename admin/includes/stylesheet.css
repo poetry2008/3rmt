@@ -452,11 +452,11 @@ legend {
 #tep_site_filter{
   /*width:100%;*/
   width: 45%;
-  float: left;
+  /*float: left;*/
 }
 
 #order_icons{
-  float: right;
+  /*float: right;*/
   text-align: right;
   width: 45%;
 }

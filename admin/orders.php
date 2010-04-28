@@ -951,8 +951,12 @@ function mail_text(st,tt,ot){
   }
 ?>
     <?php echo tep_draw_form('sele_act', FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'action=sele_act'); ?>
+    <table width="100%">
+      <tr>
+        <td>
     <?php tep_site_filter(FILENAME_ORDERS);?>
-  
+        </td>
+        <td align="right">
           <div id="order_icons">
           <span<?php if (isset($_GET['type']) && $_GET['type'] == 'sell') {?> class="order_icons_selected"<?php }?>>
             <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'type')) . 'type=sell', 'SSL');?>" title="売"><img src="images/icons/mai4.gif" alt="売" title="売"> </a>
@@ -976,6 +980,9 @@ function mail_text(st,tt,ot){
             <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'payment')) . 'payment=convenience_store','SSL');?>" title="コンビニ決済"><img src="images/icons/ko.gif" alt="コンビニ決済" title="コンビニ決済"> </a>
           </span>
           </div>
+    </td>
+  </tr>
+  </table>
   
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
     <tr class="dataTableHeadingRow">

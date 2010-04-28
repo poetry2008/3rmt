@@ -2103,7 +2103,8 @@ function tep_get_image_document_image($document_id)
       <div id="tep_site_filter">
       <?php
           if (!isset($_GET['site_id']) || !$_GET['site_id']) {?>
-            <span class="site_filter_selected">all</span>
+            <span class="site_filter_selected"><a href="<?php echo tep_href_link($filename);
+            ?>">all</a></span>
           <?php } else { ?>
             <span><a href="<?php 
               //echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'rID')));
