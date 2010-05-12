@@ -1,36 +1,29 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
-
-  //forward 404
-if ($_GET['products_id'])
-{
-  $_404_query = tep_db_query("select * from " . TABLE_PRODUCTS . " where products_id
-      = '" . $_GET['products_id'] . "'");
-  $_404 = tep_db_fetch_array($_404_query);
-
-  forward404Unless($_404);
-}
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRODUCT_INFO);
   
 //begin dynamic meta tags query -->
-$the_product_info_query = tep_db_query("select pd.language_id, p.products_id, pd.products_name, pd.products_attention_1, pd.products_attention_2, pd.products_attention_3, pd.products_attention_4, pd.products_attention_5, pd.products_description, p.products_model, p.products_quantity, p.products_image, pd.products_url, p.products_price, p.products_tax_class_id, p.products_date_added, p.products_date_available, p.manufacturers_id from " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_id = '" . (int)$_GET['products_id'] . "' and pd.products_id = '" .  (int)$_GET['products_id'] . "'" . " and pd.language_id ='" .  (int)$languages_id . "' and pd.site_id = '".SITE_ID."'"); 
-$the_product_info = tep_db_fetch_array($the_product_info_query);
+$the_product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID, $languages_id);
+//forward 404
+forward404Unless($the_product_info);
 $the_product_name = strip_tags ($the_product_info['products_name'], "");
 $the_product_description = mb_substr (strip_tags ($the_product_info['products_description'], ""),0,65);
 $the_product_model = strip_tags ($the_product_info['products_model'], "");
 
-$the_manufacturer_query = tep_db_query("select m.manufacturers_id, m.manufacturers_name from " . TABLE_MANUFACTURERS . " m left join " . TABLE_MANUFACTURERS_INFO . " mi on (m.manufacturers_id = mi.manufacturers_id and mi.languages_id = '" . (int)$languages_id . "'), " . TABLE_PRODUCTS . " p  where p.products_id = '" . (int)$_GET['products_id'] . "' and p.manufacturers_id = m.manufacturers_id"); 
+// ccdd
+$the_manufacturer_query = tep_db_query("
+    SELECT m.manufacturers_id, 
+           m.manufacturers_name 
+    FROM " . TABLE_MANUFACTURERS . " m 
+      LEFT join " . TABLE_MANUFACTURERS_INFO . " mi 
+        ON (m.manufacturers_id = mi.manufacturers_id and mi.languages_id = '" . (int)$languages_id . "'), " . TABLE_PRODUCTS . " p  
+    WHERE p.products_id = '" . (int)$_GET['products_id'] . "' 
+      AND p.manufacturers_id = m.manufacturers_id
+    "); 
 $the_manufacturers = tep_db_fetch_array($the_manufacturer_query);
 // end dynamic meta tags query -->
 ?>
@@ -109,14 +102,21 @@ function change_num(ob, targ, quan,a_quan)
       <td valign="top" id="contents">
           <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_PRODUCT_INFO, tep_get_all_get_params(array('action')) . 'action=add_product')) . "\n"; ?>
 <?php
-  $product_info_query = tep_db_query("select p.products_id, pd.products_name, pd.products_attention_1,pd.products_attention_2,pd.products_attention_3,pd.products_attention_4,pd.products_attention_5,pd.products_description, p.products_model, p.products_quantity, p.products_image,p.products_image2,p.products_image3, pd.products_url, p.products_price, p.products_tax_class_id, p.products_date_added, p.products_date_available, p.manufacturers_id, p.products_bflag, p.products_cflag, p.products_small_sum from " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" . (int)$_GET['products_id'] . "' and pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "' and site_id = '".SITE_ID."'");
-  if (!tep_db_num_rows($product_info_query)) { // product not found in database
+  $product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID, $languages_id);
+  if (!$product_info) { // product not found in database
 ?>
         <P><?php echo TEXT_PRODUCT_NOT_FOUND; ?></P>
         <div align="right"><a href="<?php echo tep_href_link(FILENAME_DEFAULT); ?>"><?php echo tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></a></div>
         <?php
   } else {
-    tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_viewed = products_viewed+1 where products_id = '" .  (int)$_GET['products_id'] . "' and language_id = '" . $languages_id . "' and site_id = '".SITE_ID."'");
+    // ccdd
+    $product_info['site_id'] == SITE_ID && tep_db_query("
+        UPDATE " . TABLE_PRODUCTS_DESCRIPTION . " 
+        SET products_viewed = products_viewed+1 
+        WHERE products_id = '" .  (int)$_GET['products_id'] . "' 
+          AND language_id = '" . $languages_id . "' 
+          AND site_id     = '".SITE_ID."'
+    ");
     $product_info = tep_db_fetch_array($product_info_query);
 
     if ($new_price = tep_get_products_special_price($product_info['products_id'])) {
@@ -283,7 +283,15 @@ function change_num(ob, targ, quan,a_quan)
                           <?php } ?> 
                         <?php 
                           //show products tags 
-                          $tag_query = tep_db_query("select t.tags_id, t.tags_images, t.tags_name from ".TABLE_PRODUCTS_TO_TAGS." pt, ".TABLE_TAGS." t where t.tags_id = pt.tags_id and pt.products_id='".$product_info['products_id']."'"); 
+// ccdd
+$tag_query = tep_db_query("
+    SELECT t.tags_id, 
+           t.tags_images, 
+           t.tags_name 
+    FROM " . TABLE_PRODUCTS_TO_TAGS . " pt, " . TABLE_TAGS . " t 
+    WHERE t.tags_id = pt.tags_id 
+      AND pt.products_id='" . $product_info['products_id'] . "'
+");
                           if (tep_db_num_rows($tag_query)) {
                         ?>
                         <tr class="infoBoxContents"> 
@@ -334,20 +342,46 @@ function change_num(ob, targ, quan,a_quan)
           echo '<br><span class="markProductOutOfStock">在庫切れ<br><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="absmiddle" alt=""><a href=' . tep_href_link(FILENAME_PREORDER, 'products_id=' . $_GET['products_id']) . '>' . $product_info['products_name'] . 'を予約する</a></span>';
         }
       }else{    
-    
-    
-        $products_attributes_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_ATTRIBUTES . " patrib where patrib.products_id='" . (int)$_GET['products_id'] . "' and patrib.options_id = popt.products_options_id and popt.language_id = '" . $languages_id . "'");
+    // ccdd
+    $products_attributes_query = tep_db_query("
+        SELECT count(*) as total 
+        FROM " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_ATTRIBUTES . " patrib 
+        WHERE patrib.products_id = '" . (int)$_GET['products_id'] . "' 
+          AND patrib.options_id  = popt.products_options_id 
+          AND popt.language_id   = '" . $languages_id . "'
+    ");
         $products_attributes = tep_db_fetch_array($products_attributes_query);
         if ($products_attributes['total'] > 0) {
           echo '<!-- 商品オプション -->' ;
           echo '<br>'."\n".'<b>' . TEXT_PRODUCT_OPTIONS . '</b><br>' .
                '<table border="0" cellpadding="2" cellspacing="0" summary="rmt_text">';
-          $products_options_name_query = tep_db_query("select distinct popt.products_options_id, popt.products_options_name from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_ATTRIBUTES . " patrib where patrib.products_id='" . (int)$_GET['products_id'] . "' and patrib.options_id = popt.products_options_id and popt.language_id = '" . $languages_id . "'");
+    // ccdd
+      $products_options_name_query = tep_db_query("
+          SELECT distinct popt.products_options_id, 
+                 popt.products_options_name 
+          FROM " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_ATTRIBUTES . " patrib 
+          WHERE patrib.products_id = '" . (int)$_GET['products_id'] . "' 
+            AND patrib.options_id  = popt.products_options_id 
+            AND popt.language_id   = '" . $languages_id . "'
+      ");
           while ($products_options_name = tep_db_fetch_array($products_options_name_query)) {
             $selected = 0;
             $products_options_array = array();
             echo '<tr><td class="main">' . $products_options_name['products_options_name'] . ':</td><td>' . "\n";
-            $products_options_query = tep_db_query("select pov.products_options_values_id, pov.products_options_values_name, pa.options_values_price, pa.price_prefix, pa.products_at_quantity, pa.products_at_quantity from " . TABLE_PRODUCTS_ATTRIBUTES . " pa, " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov where pa.products_id = '" . (int)$_GET['products_id'] . "' and pa.options_id = '" . $products_options_name['products_options_id'] . "' and pa.options_values_id = pov.products_options_values_id and pov.language_id = '" . $languages_id . "' order by pa.products_attributes_id");
+        // ccdd
+        $products_options_query = tep_db_query("
+            SELECT pov.products_options_values_id, 
+                   pov.products_options_values_name, 
+                   pa.options_values_price, 
+                   pa.price_prefix, 
+                   pa.products_at_quantity, 
+                   pa.products_at_quantity 
+            FROM " . TABLE_PRODUCTS_ATTRIBUTES . " pa, " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov 
+            WHERE pa.products_id = '" . (int)$_GET['products_id'] . "' 
+              AND pa.options_id = '" . $products_options_name['products_options_id'] . "' 
+              AND pa.options_values_id = pov.products_options_values_id and pov.language_id = '" . $languages_id . "' 
+            ORDER BY pa.products_attributes_id");
+
             while ($products_options = tep_db_fetch_array($products_options_query)) {
               //add products_at_quantity - ds-style
               if($products_options['products_at_quantity'] > 0) {
@@ -397,7 +431,14 @@ function change_num(ob, targ, quan,a_quan)
             </table>
             <?php
                     //サブ画像
-                    $sub_colors_query = tep_db_query("select color_image, color_id, color_to_products_name from ".TABLE_COLOR_TO_PRODUCTS." where products_id = '".(int)$_GET['products_id']."'");
+        // ccdd
+        $sub_colors_query = tep_db_query("
+            SELECT color_image, 
+                   color_id, 
+                   color_to_products_name 
+            FROM ".TABLE_COLOR_TO_PRODUCTS." 
+            WHERE products_id = '".(int)$_GET['products_id']."'
+        ");
                     $cnt=0;
                    if(tep_db_num_rows($sub_colors_query) >= 1) {
     ?>
@@ -407,7 +448,12 @@ function change_num(ob, targ, quan,a_quan)
                 <?php
                     while($sub_colors = tep_db_fetch_array($sub_colors_query)) {
                       //色名を取得
-                      $colors_name_query = tep_db_query("select color_name from ".TABLE_COLOR." where color_id = '".$sub_colors['color_id']."'");
+          // ccdd
+          $colors_name_query = tep_db_query("
+              SELECT color_name 
+              FROM ".TABLE_COLOR." 
+              WHERE color_id = '".$sub_colors['color_id']."'
+          ");
                       $colors_name_result = tep_db_fetch_array($colors_name_query);
                       
                       $mcnt++;

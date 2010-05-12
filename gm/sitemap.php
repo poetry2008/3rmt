@@ -1,19 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
-
-  Compatibility with Extra Pages-InfoBox CROSSOVER
-
-	Use if you have installed the contribution Extra pages-info box w/ admin 
-	http://www.oscommerce.com/community/contributions,2021
-
 */
 
   require('includes/application_top.php');
@@ -41,7 +28,7 @@
 <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
  
         
-		 
+     
      <table border="0" width="95%" cellspacing="0" cellpadding="0">
       <tr>
         <td><table border="0" width="100%" cellspacing="1" cellpadding="2">
@@ -71,10 +58,17 @@
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_EMAIL_TROUBLE) . '">' . PAGE_EMAIL_TROUBLE . '</a>'; ?></li>
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_BROWSER_IE6X) . '">' . PAGE_BROWSER_IE6X. '</a>'; ?></li>
                   <li><?php echo BOX_HEADING_INFORMATION; ?></li>
-				<li class="subcategory_tree">
+        <li class="subcategory_tree">
                 <ul>
 <?php
-  $contents_page = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where status = 1 and site_id = ".SITE_ID." order by sort_id ");
+                          // ccdd
+  $contents_page = tep_db_query("
+      select * 
+      from ".TABLE_INFORMATION_PAGE." 
+      where status = 1 
+        and site_id = ".SITE_ID." 
+      order by sort_id
+  ");
    while($result = tep_db_fetch_array($contents_page)){
              //echo '<li><a href="'.tep_href_link(FILENAME_PAGE,'pID='.$result['pID'],NONSSL).'">'.$result['heading_title'].'</a></li>'."\n" ;
      // add info romaji          
@@ -82,7 +76,7 @@
   } 
 // Extra Pages ADDED END
 ?>
-				</ul>
+        </ul>
                 </li>
               </ul>
             </td>

@@ -34,15 +34,34 @@
   $breadcrumb->add(NAVBAR_TITLE_1);
   $breadcrumb->add(NAVBAR_TITLE_2);
 
-  $global_query = tep_db_query("select global_product_notifications from " . TABLE_CUSTOMERS_INFO . " where customers_info_id = '" . $customer_id . "'");
+//ccdd
+  $global_query = tep_db_query("
+      SELECT global_product_notifications 
+      FROM " . TABLE_CUSTOMERS_INFO . " 
+      WHERE customers_info_id = '" . $customer_id . "'
+      ");
   $global = tep_db_fetch_array($global_query);
 
   if ($global['global_product_notifications'] != '1') {
-    $orders_query = tep_db_query("select orders_id from " . TABLE_ORDERS . " where customers_id = '" . $customer_id . "' and site_id = '".SITE_ID."' order by date_purchased desc limit 1");
+//ccdd
+    $orders_query = tep_db_query("
+        SELECT orders_id 
+        FROM " . TABLE_ORDERS . " 
+        WHERE customers_id = '" . $customer_id . "' 
+         AND site_id = '".SITE_ID."' 
+        ORDER BY date_purchased DESC 
+        LIMIT 1
+      ");
     $orders = tep_db_fetch_array($orders_query);
 
     $products_array = array();
-    $products_query = tep_db_query("select products_id, products_name from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . $orders['orders_id'] . "' order by products_name");
+//ccdd
+    $products_query = tep_db_query("
+        SELECT products_id, products_name 
+        FROM " . TABLE_ORDERS_PRODUCTS . " 
+        WHERE orders_id = '" . $orders['orders_id'] . "' 
+        ORDER BY products_name
+      ");
     while ($products = tep_db_fetch_array($products_query)) {
       $products_array[] = array('id' => $products['products_id'],
                                 'text' => $products['products_name']);
@@ -66,27 +85,27 @@
         
         <div class="comment"> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
-		    
-			<?php
-			#convenience_store
+        
+      <?php
+      #convenience_store
       if (!isset($_GET['SID'])) $_GET['SID'] = NULL;//del notice
       if (!isset($_POST['SID'])) $_POST['SID'] = NULL;//del notice
-			if($_GET['SID'] != "" || $_POST['SID'] != ""){
-			  
-			  if($_GET['SID'] != ""){
-			    $pr = '?sid=' . $_GET['SID'];
-			  }
-			  
-			  if($_POST['SID'] != ""){
-			    $pr = '?sid=' . $_POST['SID'];
-			  }
-			  
-			  echo '<tr><td>';
-			  echo '<a href="convenience_store_chk.php' . $pr . '">' . 'コンビニ決済はこちらから！！</a>';
-			  echo '</td></tr>';
-			}
-			?>
-			 
+      if($_GET['SID'] != "" || $_POST['SID'] != ""){
+        
+        if($_GET['SID'] != ""){
+          $pr = '?sid=' . $_GET['SID'];
+        }
+        
+        if($_POST['SID'] != ""){
+          $pr = '?sid=' . $_POST['SID'];
+        }
+        
+        echo '<tr><td>';
+        echo '<a href="convenience_store_chk.php' . $pr . '">' . 'コンビニ決済はこちらから！！</a>';
+        echo '</td></tr>';
+      }
+      ?>
+       
             <tr> 
               <td><table border="0" width="100%" cellspacing="4" cellpadding="2"> 
                   <tr> 

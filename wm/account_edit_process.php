@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
@@ -103,77 +96,7 @@
   } else {
     $entry_email_address_check_error = false;
   }
-/*
-  if (strlen($street_address) < ENTRY_STREET_ADDRESS_MIN_LENGTH) {
-    $error = true;
-    $entry_street_address_error = true;
-  } else {
-    $entry_street_address_error = false;
-  }
-*/
-/*
-  if (strlen($postcode) < ENTRY_POSTCODE_MIN_LENGTH) {
-    $error = true;
-    $entry_post_code_error = true;
-  } else {
-    $entry_post_code_error = false;
-  }
-*/
-/*
-  if (strlen($city) < ENTRY_CITY_MIN_LENGTH) {
-    $error = true;
-    $entry_city_error = true;
-  } else {
-    $entry_city_error = false;
-  }
-*/
-/*
-  if (!is_numeric($country)) {
-    $error = true;
-    $entry_country_error = true;
-  } else {
-    $entry_country_error = false;
-  }
-*/
-/*
-  if (ACCOUNT_STATE == 'true') {
-    if ($entry_country_error) {
-      $entry_state_error = true;
-    } else {
-      $zone_id = 0;
-      $entry_state_error = false;
-      $country_check_query = tep_db_query("select count(*) as total from " . TABLE_ZONES . " where zone_country_id = '" . tep_db_input($country) . "'");
-      $country_check = tep_db_fetch_array($country_check_query);
-      if ($entry_state_has_zones = ($country_check['total'] > 0)) {
-        $match_zone_query = tep_db_query("select zone_id from " . TABLE_ZONES . " where zone_country_id = '" . tep_db_input($country) . "' and zone_name = '" . tep_db_input($state) . "'");
-        if (tep_db_num_rows($match_zone_query) == 1) {
-          $match_zone = tep_db_fetch_array($match_zone_query);
-          $zone_id = $match_zone['zone_id'];
-        } else {
-          $match_zone_query = tep_db_query("select zone_id from " . TABLE_ZONES . " where zone_country_id = '" . tep_db_input($country) . "' and zone_code = '" . tep_db_input($state) . "'");
-          if (tep_db_num_rows($match_zone_query) == 1) {
-            $match_zone = tep_db_fetch_array($match_zone_query);
-            $zone_id = $match_zone['zone_id'];
-          } else {
-            $error = true;
-            $entry_state_error = true;
-          }
-        }
-      } elseif (strlen($state) < ENTRY_STATE_MIN_LENGTH) {
-        $error = true;
-        $entry_state_error = true;
-      }
-    }
-  }
-*/
-/*
-  if (strlen($telephone) < ENTRY_TELEPHONE_MIN_LENGTH) {
-    $error = true;
-    $entry_telephone_error = true;
-  } else {
-    $entry_telephone_error = false;
-  }
-*/
+
   if (strlen($password) < ENTRY_PASSWORD_MIN_LENGTH) {
     $error = true;
     $entry_password_error = true;
@@ -186,6 +109,7 @@
     $entry_password_error = true;
   }
 
+//ccdd
   $check_email_query = tep_db_query("select count(*) as total from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and customers_id != '" .  tep_db_input($customer_id) . "' and site_id = '".SITE_ID."'");
   $check_email = tep_db_fetch_array($check_email_query);
   if ($check_email['total'] > 0) {
@@ -256,8 +180,8 @@
   } else {
     $sql_data_array = array('customers_firstname' => $firstname,
                             'customers_lastname' => $lastname,
-							//add
-							'customers_firstname_f' => $firstname_f,
+              //add
+              'customers_firstname_f' => $firstname_f,
                             'customers_lastname_f' => $lastname_f,
                             'customers_email_address' => $email_address,
                             'customers_telephone' => $telephone,
@@ -268,6 +192,7 @@
     if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
     if (ACCOUNT_DOB == 'true') $sql_data_array['customers_dob'] = tep_date_raw($dob);
 
+    // ccdd
     tep_db_perform(TABLE_CUSTOMERS, $sql_data_array, 'update', "customers_id = '" .  tep_db_input($customer_id) . "' and site_id = '".SITE_ID."'");
 
 // 2003-06-06 add_telephone
@@ -292,8 +217,9 @@
       }
     }
 
+    // ccdd
     tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', "customers_id = '" . tep_db_input($customer_id) . "' and address_book_id = '" . tep_db_input($customer_default_address_id) . "'");
-
+//ccdd
     tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_account_last_modified = now() where customers_info_id = '" . tep_db_input($customer_id) . "'");
 
     $customer_country_id = $country;

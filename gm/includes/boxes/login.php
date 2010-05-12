@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 ?>
 <!-- login //-->
@@ -35,8 +28,8 @@
 </table>
 </form>
 <div class="sep">&nbsp;</div>
-<?php	
-	} else {
+<?php 
+  } else {
 ?>
 <div class="box_titleR">アカウント</div> 
 <ul>
@@ -44,7 +37,7 @@
     <li><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL') . '">' . MYACCOUNT_EDIT . '</a>'; ?></li>
     <li><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_HISTORY, '', 'SSL') . '">' . MYACCOUNT_HISTORY . '</a>'; ?></li>
     <li><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, '', 'SSL') . '">' . MYACCOUNT_NOTIFICATION . '</a>'; ?></li>
-	<li><?php echo '<a href="' . tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL') . '">' . 'ショッピングカート' . '</a>'; ?></li>
+    <li><?php echo '<a href="' . tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL') . '">' . 'ショッピングカート' . '</a>'; ?></li>
     <li><?php echo '<a href="' . tep_href_link(FILENAME_LOGOFF, '', 'SSL') . '">' . HEADER_TITLE_LOGOFF . '</a>'; ?></li>
 </ul>
 <?php 

@@ -1,4 +1,7 @@
 <?php
+/*
+ $Id$
+ */
 // ccdd
 $colors_query = tep_db_query("
     select * 
@@ -20,14 +23,14 @@ if(tep_db_num_rows($colors_query)) {
   <tr> 
     <td height="23" class="menu"><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="3" align="absmiddle" > 
       <?php 
-	 echo '<a href="'.tep_href_link(FILENAME_DEFAULT, 'colors=' . $colors['color_id']).'">';
-	 if($_GET['colors'] && $_GET['colors'] == $colors['color_id']) {
-	   echo '<b>'.$colors['color_name'].'</b>';
-	 } else {
-	   echo $colors['color_name'];
-	 } 
-	 echo '</a>';
-	 ?> </td> 
+   echo '<a href="'.tep_href_link(FILENAME_DEFAULT, 'colors=' . $colors['color_id']).'">';
+   if($_GET['colors'] && $_GET['colors'] == $colors['color_id']) {
+     echo '<b>'.$colors['color_name'].'</b>';
+   } else {
+     echo $colors['color_name'];
+   } 
+   echo '</a>';
+   ?> </td> 
   </tr> 
   <?php
   }

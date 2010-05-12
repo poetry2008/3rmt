@@ -1,5 +1,4 @@
 <?php
-// 3rmt over
 /*
   $Id$
 
@@ -10,8 +9,9 @@
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_LATEST_NEWS);
   
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_LATEST_NEWS));
-  /*
+
   if (isset($_GET['news_id'])) {
+    //ccdd
     $latest_news_query = tep_db_query('
         SELECT * 
         from ' . TABLE_LATEST_NEWS . ' 
@@ -20,7 +20,6 @@
     $latest_news = tep_db_fetch_array($latest_news_query);
     forward404Unless($latest_news);
   }
-  */
 ?>
 <?php page_head();?>
 <script type="text/javascript" src="js/emailProtector.js"></script>
@@ -56,16 +55,6 @@ function popupWindow(url) {
             <td>
 <?php
   if (isset($_GET['news_id']) && intval($_GET['news_id'])) {  
-//ccdd
-    $latest_news_query = tep_db_query('
-        SELECT * 
-        FROM ' . TABLE_LATEST_NEWS . ' 
-        WHERE news_id = ' . (int)$_GET['news_id'] . ' 
-          AND site_id=' . SITE_ID
-    );
-    $latest_news = tep_db_fetch_array($latest_news_query);
-    // forward 404
-    forward404Unless($latest_news);
 ?>
           <table width="100%">
 <?

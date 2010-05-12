@@ -1,4 +1,7 @@
 <?php
+/*
+  $Id$
+*/
   require('includes/application_top.php');
   $breadcrumb->add('フリーメールでメールが受け取れない方へ', tep_href_link('email_trouble.php'));
 ?>

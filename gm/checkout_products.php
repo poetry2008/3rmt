@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
@@ -41,24 +34,24 @@
 
   if (!isset($_POST['act'])) $_POST['act'] = NULL;
   if($_POST['act'] == 'chk'){
-	foreach($_POST as $value){
-	  if($value == ""){
-	    $error = 'T';
-	  }
-	}
-		
-	if($error == 'F'){
-	  unset($_SESSION['character']);
-	  
-	  foreach($cart as $key => $val){
-	    if($key == 'contents'){
-	      foreach($val as $key2 => $val2){
-		    $_SESSION['character'][$key2] = $_POST['cname_' . $key2]; 
-		  }
-	    }
-	  }
-	  tep_redirect(tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL', true, false));	  
-	}
+  foreach($_POST as $value){
+    if($value == ""){
+      $error = 'T';
+    }
+  }
+    
+  if($error == 'F'){
+    unset($_SESSION['character']);
+    
+    foreach($cart as $key => $val){
+      if($key == 'contents'){
+        foreach($val as $key2 => $val2){
+        $_SESSION['character'][$key2] = $_POST['cname_' . $key2]; 
+      }
+      }
+    }
+    tep_redirect(tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL', true, false));    
+  }
   }
 ?>
 <?php page_head();?>
@@ -68,19 +61,19 @@ function chara_mess(){
 foreach($cart as $key => $val){
   if($key == 'contents'){
     foreach($val as $key2 => $val2){
-	  $cp_query = tep_db_query("select p.products_id,p.products_image,p.products_date_added,p.products_price,p.products_cflag,pd.products_name from " . TABLE_PRODUCTS . " p," . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_id = '".$key2."' and p.products_id = pd.products_id and pd.site_id = '".SITE_ID."'");
-	  $cp_result = tep_db_fetch_array($cp_query);
-	  if($cp_result['products_cflag'] == 1){
-	    $cid = 'cname_' . $key2;
-		
-		echo 'if(document.getElementById(\'' . $cid . '\').value == ""){'."\n";
-		echo 'alert("キャラクター名を入力して下さい。");'."\n";
-		echo "document.getElementById('$cid').focus();"."\n";
-		echo 'return false;'."\n";
-		echo '}'."\n";
-		
-	  }
-	}
+    //ccdd
+    $cp_result = tep_get_product_by_id($key2, SITE_ID, $languages_id);
+    if($cp_result['products_cflag'] == 1){
+      $cid = 'cname_' . $key2;
+    
+    echo 'if(document.getElementById(\'' . $cid . '\').value == ""){'."\n";
+    echo 'alert("キャラクター名を入力して下さい。");'."\n";
+    echo "document.getElementById('$cid').focus();"."\n";
+    echo 'return false;'."\n";
+    echo '}'."\n";
+    
+    }
+  }
   }
 }
 ?>
@@ -105,65 +98,65 @@ foreach($cart as $key => $val){
 <div> 
           <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
             <?php
-			  if($error == 'T'){
-			?>
-			<tr>
-			  <td class="main" align="center" style="color:#FF0000">入力漏れがあります。キャラクター名は、全て入力して下さい。</td>
-			</tr>
-			<?php
-			  }
-			?>
-			<tr>
+        if($error == 'T'){
+      ?>
+      <tr>
+        <td class="main" align="center" style="color:#FF0000">入力漏れがあります。キャラクター名は、全て入力して下さい。</td>
+      </tr>
+      <?php
+        }
+      ?>
+      <tr>
               <td><form action="<?php echo tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL'); ?>" method="post" onSubmit="return chara_mess();">
-			    <input type="hidden" name="dummy" value="あいうえお眉幅">
-				<table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
-				<?php
-				  foreach($cart as $key => $val){
-				    if($key == 'contents'){
-					  foreach($val as $key2 => $val2){
-						$cp_query = tep_db_query("select p.products_id,p.products_image,p.products_date_added,p.products_price,p.products_cflag,pd.products_name from " . TABLE_PRODUCTS . " p," . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_id = '".$key2."' and p.products_id = pd.products_id and pd.site_id = '".SITE_ID."'");
-						$cp_result = tep_db_fetch_array($cp_query);
-				?>
-				  <tr>
-				    <td width="<?php echo SMALL_IMAGE_WIDTH + 10; ?>" valign="top" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $key2) . '">' . tep_image(DIR_WS_IMAGES . $cp_result['products_image'], $cp_result['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>'; ?></td>
-					<td class="main">
-					<?php
-					  echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $key2) . '"><b><u>' . $cp_result['products_name'] . '</u></b></a><br>';
-					  if($cp_result['products_cflag'] == 1){
-					    echo TEXT_CHARACTER . tep_draw_input_field('cname_' . $key2,'','id="cname_' . $key2 . '"');
-					  }
-					?>
-					</td>
-				  </tr>
-				  <tr>
-				    <td colspan="2" class="main">&nbsp;</td>
-				  </tr>
-				<?php					
-					  }
-					}
-				  }
-				?>  
-				</table>
-			    
-				<p class="redtext">ご入力されましたキャラクター名にお間違えはございませんか？</p>
-				<h3>よくある間違い</h3>
-				<ul>
-					<li>
-						スペル間違い。記号や数字の有無。
-					</li>
-					<li>
-						-　（ハイフン）と　_　（アンダーバー）の入力間違い。
+          <input type="hidden" name="dummy" value="あいうえお眉幅">
+        <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
+        <?php
+          foreach($cart as $key => $val){
+            if($key == 'contents'){
+            foreach($val as $key2 => $val2){
+            //ccdd
+            $cp_result = tep_get_product_by_id($key2, SITE_ID, $languages_id);
+        ?>
+          <tr>
+            <td width="<?php echo SMALL_IMAGE_WIDTH + 10; ?>" valign="top" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $key2) . '">' . tep_image(DIR_WS_IMAGES . $cp_result['products_image'], $cp_result['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>'; ?></td>
+          <td class="main">
+          <?php
+            echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $key2) . '"><b><u>' . $cp_result['products_name'] . '</u></b></a><br>';
+            if($cp_result['products_cflag'] == 1){
+              echo TEXT_CHARACTER . tep_draw_input_field('cname_' . $key2,'','id="cname_' . $key2 . '"');
+            }
+          ?>
+          </td>
+          </tr>
+          <tr>
+            <td colspan="2" class="main">&nbsp;</td>
+          </tr>
+        <?php         
+            }
+          }
+          }
+        ?>  
+        </table>
+          
+        <p class="redtext">ご入力されましたキャラクター名にお間違えはございませんか？</p>
+        <h3>よくある間違い</h3>
+        <ul>
+          <li>
+            スペル間違い。記号や数字の有無。
+          </li>
+          <li>
+            -　（ハイフン）と　_　（アンダーバー）の入力間違い。
 
-					</li>
-					<li>
-						・　（中点）と　.　（ドット）の入力間違い。
-					</li>
-				</ul>
-				<p>
-					<span class="redtext">※</span>&nbsp;キャラクター名の入力不要な商品が一部ございます。「入力フォーム」が表示されない場合は「次へ進む」をクリックしてください。
-				</p>
-				
-				<table border="0" width="100%" cellspacing="1" class="formArea"> 
+          </li>
+          <li>
+            ・　（中点）と　.　（ドット）の入力間違い。
+          </li>
+        </ul>
+        <p>
+          <span class="redtext">※</span>&nbsp;キャラクター名の入力不要な商品が一部ございます。「入力フォーム」が表示されない場合は「次へ進む」をクリックしてください。
+        </p>
+        
+        <table border="0" width="100%" cellspacing="1" class="formArea"> 
                   <tr> 
                     <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des"> 
                       <tr> 
@@ -174,12 +167,12 @@ foreach($cart as $key => $val){
                     </table></td> 
                   </tr> 
                 </table>
-				
-				<input type="hidden" name="act" value="chk">
- 			  </form></td>
-			</tr>
-		  </table>
-		</div></div>
+        
+        <input type="hidden" name="act" value="chk">
+        </form></td>
+      </tr>
+      </table>
+    </div></div>
       <!-- body_text_eof //--> 
 <!-- right_navigation //--> 
 <div id="r_menu">

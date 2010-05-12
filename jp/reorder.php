@@ -1,4 +1,7 @@
 <?php
+/*
+ $Id$
+*/
 require('includes/application_top.php');
 
 define('HEADING_TITLE', '再配達依頼');
@@ -98,11 +101,11 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
 
         // update character
         if (isset($_POST['character']) && is_array($_POST['character'])){
-          foreach(tep_db_prepare_input($_POST['character']) as $pid=>$character){
+          foreach($_POST['character'] as $pid=>$character){
             // ccdd
             tep_db_query("
                 update `".TABLE_ORDERS_PRODUCTS."` 
-                set `products_character`='".mysql_real_escape_string(addslashes($character))."' 
+                set `products_character`='".mysql_real_escape_string($character)."' 
                 where `orders_id`='".$oID."' 
                   and `products_id`='".$pid."'
             ");
@@ -247,6 +250,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
                                 and pa.options_values_id = poval.products_options_values_id 
                                 and popt.language_id = '" . $languages_id . "' 
                                 and poval.language_id = '" . $languages_id . "'";
+          //ccdd
           $attributes = tep_db_query($attributes_query);
         } else {
           // ccdd
@@ -375,7 +379,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
 
   if ($comment) {
     $email_order .= '▼備考　　　　　　：' . "\n";
-    $email_order .= htmlspecialchars($comment) . "\n";
+    $email_order .= $comment . "\n";
   }
   
   $mail_title = "[" . $order['orders_id'] . "]再配達確認メール【" . STORE_NAME . "】";
@@ -462,7 +466,6 @@ foreach ($value['attributes'] as $att) {?>
  </tr>
 <?php }?>
  <?php
- // 補竃斌瞳奉來和性崇
  // ccdd
         $products_attributes_query = tep_db_query("
             select count(*) as total 
@@ -655,7 +658,7 @@ function orderConfirmPage(){
   text += "<tr><td bgcolor='#eeeeee' width='130'>";
   text += "備考";
   text += "</td><td>\n";
-  text += document.getElementById('comment').value;
+  text += document.getElementById('comment').value.replace(/\</ig,"&lt;").replace(/\>/ig,"&gt;");
   text += "</td></tr>\n";
   text += "</table><br >\n"
   

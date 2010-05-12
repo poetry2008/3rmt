@@ -37,10 +37,10 @@
   switch($_GET['action']) {
     //既会員ログイン
   case 'login':
-      $_POST['email_address'] = tep_an_zen_to_han($_POST['email_address']);
+    $_POST['email_address'] = tep_an_zen_to_han($_POST['email_address']);
 
-      $email_address = tep_db_prepare_input($_POST['email_address']);
-      $password = tep_db_prepare_input($_POST['password']);
+    $email_address = tep_db_prepare_input($_POST['email_address']);
+    $password = tep_db_prepare_input($_POST['password']);
     $goods_id = $_GET['goods_id'];
       
     //check
@@ -475,7 +475,7 @@ function popupWindow(url) {
         where goods_id = '".(int)$_GET['goods_id']."'
           and site_id  = '" . SITE_ID . "'
     ") ;
-  $present = tep_db_fetch_array($present_query) ;
+    $present = tep_db_fetch_array($present_query) ;
   } 
 ?>
                 <table width="100%" cellpadding="1" cellspacing="0" class="infoBox" border="0" summary="table">

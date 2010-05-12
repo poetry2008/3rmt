@@ -1,7 +1,9 @@
 /*
-	JP、GM共通ファイル
+	$Id$
 */
-
+body {
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif;
+}
 /* links */
 /* ---------------------------
 A：リンク（通常）
@@ -10,7 +12,7 @@ a img {
 border: 0;
 }
 a:link {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 color: #000000;                                 /* フォントサイズ */
 font-weight: normal;                            /* フォント太さ */
@@ -20,7 +22,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：リンク（訪問済み）
 --------------------------- */
 a:visited {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 color: #000000;                                 /* フォントカラー */
 font-weight: normal;                            /* フォント太さ */
@@ -30,7 +32,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：リンク（選択している）
 --------------------------- */
 a:active {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 color: #000000;                                 /* フォントカラー */
 font-weight: normal;                            /* フォント太さ */
@@ -40,7 +42,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：リンク（カーソルが上に乗ったとき）
 --------------------------- */
 a:hover {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 color: #000000;                                 /* フォントカラー */
 font-weight: normal;                            /* フォント太さ */
@@ -51,7 +53,7 @@ text-decoration: underline;                     /* テキストの装飾 */
 A：ヘッダリンク（通常）
 --------------------------- */
 a.headerLink:link {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 color: #ffffff;                                 /* フォントカラー */
 font-weight: bold;                              /* フォント太さ */
@@ -61,7 +63,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：ヘッダリンク（訪問済み）
 --------------------------- */
 a.headerLink:visited {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */ 
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */ 
 font-size: 11px;                                /* フォントサイズ */
 color: #ffffff;                                 /* フォントカラー */
 font-weight: bold;                              /* フォント太さ */
@@ -71,7 +73,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：ヘッダリンク（選択している）
 --------------------------- */
 a.headerLink:active {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 color: #ffffff;                                 /* フォントカラー */
 font-weight: bold;                              /* フォント太さ */
@@ -81,7 +83,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：ヘッダリンク（カーソルが上に乗ったとき）
 --------------------------- */
 a.headerLink:hover {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 color: #ffffff;                                 /* フォントカラー */
 font-weight: bold;                              /* フォント太さ */
@@ -129,7 +131,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：メニューボックスコンテンツリンク（通常）
 --------------------------- */
 a.menuBoxContentLink:link {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 color: #616060;                                 /* フォントカラー */
 font-weight: normal;                            /* フォント太さ */
@@ -139,7 +141,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：メニューボックスコンテンツリンク（訪問済み）
 --------------------------- */
 a.menuBoxContentLink:visited {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 color: #616060;                                 /* フォントカラー */
 font-weight: normal;                            /* フォント太さ */
@@ -149,7 +151,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：メニューボックスコンテンツリンク（選択している）
 --------------------------- */
 a.menuBoxContentLink:active {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 color: #616060;                                 /* フォントカラー */
 font-weight: normal;                            /* フォント太さ */
@@ -159,7 +161,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：メニューボックスコンテンツリンク（カーソルが上に乗ったとき）
 --------------------------- */
 a.menuBoxContentLink:hover {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 color: #616060;                                 /* フォントカラー */
 font-weight: normal;                            /* フォント太さ */
@@ -170,7 +172,7 @@ text-decoration: underline;                     /* テキストの装飾 */
 A：ページリンク（通常）
 --------------------------- */
 a.splitPageLink:link {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 color: #0000FF;                                 /* フォントカラー */
 font-weight: normal;                            /* フォント太さ */
@@ -180,7 +182,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：ページリンク（訪問済み）
 --------------------------- */
 a.splitPageLink:visited {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 color: #0000FF;                                 /* フォントカラー */
 font-weight: normal;                            /* フォント太さ */
@@ -190,7 +192,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：ページリンク（選択している）
 --------------------------- */
 a.splitPageLink:active {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 color: #0000FF;                                 /* フォントカラー */
 font-weight: normal;                            /* フォント太さ */
@@ -200,7 +202,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：ページリンク（カーソルが上に乗ったとき）
 --------------------------- */
 a.splitPageLink:hover {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 color: #0000FF;                                 /* フォントカラー */
 font-weight: normal;                            /* フォント太さ */
@@ -213,7 +215,7 @@ background-color: #FFFF33;                      /* 背景色 */
 .[TD]：メニューボックスコンテンツ
 --------------------------- */
 .menuBoxHeading {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 color: #616060;                                 /* フォントカラー */
 background-color: #ffffff;                      /* 背景色 */
@@ -222,7 +224,7 @@ background-color: #ffffff;                      /* 背景色 */
 .[TD]：メニューボックスコンテンツ
 --------------------------- */
 .menuBoxContent {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 color: #616060;                                 /* フォントカラー */
 }
@@ -246,7 +248,7 @@ background-color: #000000;                      /* 背景色 */
 .[TD]：ヘッダ（ナビゲーション）
 --------------------------- */
 .headerBarContent {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 color: #ffffff;                                 /* フォントカラー */
 font-weight: bold;                              /* フォント太さ */
@@ -266,7 +268,7 @@ padding: 2px;                                   /* 境界線と内容との間�
 .[TD]：ページヘッダ
 --------------------------- */
 .pageHeading {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 18px;                                /* フォントサイズ */
 color: #727272;                                 /* フォントカラー */
 font-weight: bold;                              /* フォント太さ */
@@ -283,7 +285,7 @@ background-color: #808080;                      /* 背景色 */
 .[TD]：一覧表の項目名（コンテンツ）
 --------------------------- */
 .dataTableHeadingContent {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 color: #ffffff;                                 /* フォントカラー */
 font-weight: bold;                              /* フォント太さ */
@@ -316,7 +318,7 @@ background-color: #FFCC99;                      /* 背景色 */
 .[TD]：一覧表データ（コンテンツ）
 --------------------------- */
 .dataTableContent {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 color: #000000;                                 /* フォントカラー */
 }
@@ -326,7 +328,7 @@ color: #000000;                                 /* フォントカラー */
 .[TR]：情報ボックス（タイトル） - 右側に表示される、一覧から選んだ項目の情報
 --------------------------- */
 .infoBoxHeading {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 color: #000000;                                 /* フォントカラー */
 background-color: #FFD700;                      /* 背景色 */
@@ -335,7 +337,7 @@ background-color: #FFD700;                      /* 背景色 */
 .[TD]：情報ボックス（コンテンツ） - 右側に表示される、一覧から選んだ項目の情報
 --------------------------- */
 .infoBoxContent {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 color: #000000;                                 /* フォントカラー */
 background-color: #FFD700;                      /* 背景色 */
@@ -346,14 +348,14 @@ background-color: #FFD700;                      /* 背景色 */
 .[TR]：メッセージボックス
 --------------------------- */
 .messageBox {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 }
 /* ---------------------------
 .[TR,TD]：エラー、警告メッセージ
 --------------------------- */
 .messageStackError, .messageStackWarning {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 background-color: #ffb3b5;                      /* 背景色 */
 }
@@ -361,7 +363,7 @@ background-color: #ffb3b5;                      /* 背景色 */
 .[TR,TD]：成功メッセージ
 --------------------------- */
 .messageStackSuccess {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 background-color: #99ff00;                      /* 背景色 */
 }
@@ -371,7 +373,7 @@ background-color: #99ff00;                      /* 背景色 */
 CHECKBOX, INPUT, RADIO, SELECT, TEXTAREA, FILE：FORMの入力・選択項目
 --------------------------- */
 CHECKBOX, INPUT, RADIO, SELECT, TEXTAREA, FILE {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 }
 
@@ -389,7 +391,7 @@ border-width: 1px;                              /* 境界線の幅 */
 .[TD]：フォームエリア（タイトル）
 --------------------------- */
 .formAreaTitle {
-font-family: Osaka, Tahoma, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Tahoma, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 12px;                                /* フォントサイズ */
 font-weight: bold;                              /* フォント太さ */
 }
@@ -425,7 +427,7 @@ text-decoration: line-through;                  /* テキストの装飾 */
 .[SPAN]：「*必須」文字列
 --------------------------- */
 .fieldRequired {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 11px;                                /* フォントサイズ */
 color: #ff0000;                                 /* フォントカラー */
 }
@@ -433,14 +435,14 @@ color: #ff0000;                                 /* フォントカラー */
 .[TD]：小さい文字（メッセージ）
 --------------------------- */
 .smallText {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 10px;                                /* フォントサイズ */
 }
 /* ---------------------------
 .[TD]：メイン
 --------------------------- */
 .main {
-font-family: Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 font-size: 12px;                                /* フォントサイズ */
 }
 legend {

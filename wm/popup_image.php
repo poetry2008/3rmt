@@ -1,20 +1,26 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
 
   $navigation->remove_current_page();
 
-  $products_query = tep_db_query("select pd.products_name, p.products_image,p.products_image2,p.products_image3 from " . TABLE_PRODUCTS .  " p left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id where p.products_status = '1' and p.products_id = '" .  (int)$_GET['pIID'] . "' and pd.language_id = '" . $languages_id . "' and pd.site_id = '".SITE_ID."'");
+//ccdd
+  $products_query = tep_db_query("
+      select pd.products_name, 
+             p.products_image,
+             p.products_image2,
+             p.products_image3 
+      from " . TABLE_PRODUCTS .  " p 
+        left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id 
+      where p.products_status = '1' 
+        and p.products_id = '" .  (int)$_GET['pIID'] . "' 
+        and pd.language_id = '" . $languages_id . "' 
+        and (pd.site_id = '".SITE_ID."' or pd.site = '0')
+      order by site_id DESC
+  ");
   $products_values = tep_db_fetch_array($products_query);
 ?>
 <!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -36,13 +42,13 @@ BODY {
  margin:0;
  }
 TD.pageHeading, DIV.pageHeading, H1.pageHeading {
-	font-family: Tahoma , Osaka, Verdana, Arial, sans-serif;
-	font-size: 20px;
-	font-weight: bold;
-	color: #9a9a9a;
-	margin-top: 20px;
-	margin-left: 20px;
-	margin-bottom: 10px;
+  font-family: Tahoma , Osaka, Verdana, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  color: #9a9a9a;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-bottom: 10px;
 }
 TD.main, P.main {  font-family: Tahoma , Osaka, Verdana, Arial, sans-serif;
 font-size: 11px;
@@ -53,8 +59,8 @@ A {
   text-decoration: none;
 }
 .image_border {
-	padding: 2px;
-	border: 1px solid #E8E8E8;
+  padding: 2px;
+  border: 1px solid #E8E8E8;
 }
 
 </style>
@@ -76,7 +82,7 @@ A {
 <?php 
    if($_GET['image'] && $_GET['image'] != '') {
      echo tep_image(DIR_WS_IMAGES . $_GET['image'], $products_values['products_name']);
-  }else{	 
+  }else{   
     echo tep_image(DIR_WS_IMAGES . $products_values['products_image'], $products_values['products_name'],'','','name="featImage"');
   }
   

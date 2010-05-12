@@ -1,31 +1,19 @@
 <?php
 /*
   $Id$
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-  Copyright (c) 2003 osCommerce
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
-  
-  //forward 404
-if (isset($_GET['products_id'])) {
-  $_404_query = tep_db_query("select * from " . TABLE_PRODUCTS . " where products_id
-      = '" . intval($_GET['products_id'] . "'"));
-  $_404 = tep_db_fetch_array($_404_query);
-
-  forward404Unless($_404);
-}
-  
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CONTACT_US);
   
   $mail_text = '';
   
   //product_idを取得した場合商品名を呼び出す
   if (isset($_GET['products_id'])) {
-    $product_info_query = tep_db_query("select pd.products_name from " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" .  (int)$_GET['products_id'] . "' and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and pd.site_id = '".SITE_ID."'");
-    $product_info = tep_db_fetch_array($product_info_query);
+    //ccdd
+    $product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID, $languages_id);
+    //forward 404
+    forward404Unless($product_info);
   }
   
   //「商品名」についてのお問い合わせ

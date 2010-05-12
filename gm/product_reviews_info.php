@@ -1,30 +1,46 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
-
-  //forward 404
-if (isset($_GET['reviews_id'])) {
-  $_404_query = tep_db_query("select * from " . TABLE_REVIEWS . " where reviews_id = '" . intval($_GET['reviews_id']) . "' and site_id = '".SITE_ID."'");
-  $_404 = tep_db_fetch_array($_404_query);
-
-  forward404Unless($_404);
-}
 
 // lets retrieve all $_GET keys and values..
   $get_params = tep_get_all_get_params(array('reviews_id'));
   $get_params = substr($get_params, 0, -1); //remove trailing &
 
-  $reviews_query = tep_db_query("select rd.reviews_text, r.reviews_rating, r.reviews_id, r.products_id, r.customers_name, r.date_added, r.last_modified, r.reviews_read, p.products_id, pd.products_name, p.products_image from (( " .  TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd ) left join " .  TABLE_PRODUCTS . " p on (r.products_id = p.products_id) )left join " .  TABLE_PRODUCTS_DESCRIPTION . " pd on (p.products_id = pd.products_id and pd.language_id = '". $languages_id . "') where r.reviews_id = '" .  (int)$_GET['reviews_id'] . "' and r.reviews_id = rd.reviews_id and p.products_status = '1' and r.reviews_status = '1' and r.site_id = '".SITE_ID."' and pd.site_id = '".SITE_ID."'");
+  // ccdd
+  $reviews_query = tep_db_query("
+    select *
+    from (
+      SELECT rd.reviews_text, 
+             r.reviews_rating, 
+             r.reviews_id, 
+             r.products_id, 
+             r.customers_name, 
+             r.date_added, 
+             r.last_modified, 
+             r.reviews_read, 
+             pd.products_name, 
+             p.products_image,
+             r.site_id as rsid,
+             pd.site_id as psid
+      FROM (( " .  TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd ) 
+              LEFT JOIN " .  TABLE_PRODUCTS . " p 
+              ON (r.products_id = p.products_id) )
+        LEFT JOIN " .  TABLE_PRODUCTS_DESCRIPTION . " pd 
+        ON (p.products_id = pd.products_id AND pd.language_id = '". $languages_id . "') 
+      WHERE r.reviews_id = '" .  (int)$_GET['reviews_id'] . "' 
+        AND r.reviews_id = rd.reviews_id 
+        AND p.products_status = '1' 
+        AND r.reviews_status = '1' 
+        AND r.site_id  = ".SITE_ID." 
+      order by pd.site_id DESC
+    ) p
+    where psid = '0'
+       or psid = '".SITE_ID."'
+    group by reviews_id
+   ");
   if (!tep_db_num_rows($reviews_query)) tep_redirect(tep_href_link(FILENAME_REVIEWS));
   $reviews = tep_db_fetch_array($reviews_query);
 
@@ -42,7 +58,7 @@ function popupImageWindow(url) {
   window.open(url,'popupImageWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
 }
 function showimage($1) {
-	document.images.lrgproduct.src = $1;
+  document.images.lrgproduct.src = $1;
 }
 //--></script>
 </head>
@@ -59,12 +75,16 @@ function showimage($1) {
 <!-- left_navigation_eof //-->
 <!-- body_text //-->
 <div id="content"><?php
-  tep_db_query("update " . TABLE_REVIEWS . " set reviews_read = reviews_read+1 where reviews_id = '" . $reviews['reviews_id'] . "' and site_id = '".SITE_ID."'");
-
+      // ccdd
+  tep_db_query("
+      UPDATE " . TABLE_REVIEWS . " 
+      SET reviews_read = reviews_read+1 
+      WHERE reviews_id = '" . $reviews['reviews_id'] . "'
+  ");
   $reviews_text = tep_break_string(tep_output_string_protected($reviews['reviews_text']), 60, '-<br>');
 ?> 
         <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-		<h1 class="pageHeading"><?php echo sprintf(HEADING_TITLE, $reviews['products_name']); ?></h1> 
+    <h1 class="pageHeading"><?php echo sprintf(HEADING_TITLE, $reviews['products_name']); ?></h1> 
         
         <div> 
           <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
@@ -73,7 +93,7 @@ function showimage($1) {
                   <tr> 
                     <td class="main"><b><?php echo SUB_TITLE_PRODUCT; ?></b> <?php echo $reviews['products_name']; ?></td> 
                     <td class="smallText" rowspan="3" align="center">
-					<a href="<?php echo DIR_WS_IMAGES . $reviews['products_image']; ?>" rel="lightbox[products]"><?php echo tep_image(DIR_WS_IMAGES . $reviews['products_image'], $reviews['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="center" hspace="5" vspace="5"'); ?><br> </a></td> 
+          <a href="<?php echo DIR_WS_IMAGES . $reviews['products_image']; ?>" rel="lightbox[products]"><?php echo tep_image(DIR_WS_IMAGES . $reviews['products_image'], $reviews['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="center" hspace="5" vspace="5"'); ?><br> </a></td> 
                   </tr> 
                   <tr> 
                     <td class="main"><b><?php echo SUB_TITLE_FROM; ?></b> <?php echo tep_output_string_protected($reviews['customers_name']); ?></td> 

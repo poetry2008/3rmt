@@ -1,6 +1,6 @@
 <?php
 /*
-$Id$
+ $Id$
 */
 require('includes/application_top.php');
 //require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_MANUFAXTURERS);

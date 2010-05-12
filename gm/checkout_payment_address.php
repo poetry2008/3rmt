@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
@@ -34,11 +27,11 @@
       $company = tep_db_prepare_input($_POST['company']);
       $firstname = tep_db_prepare_input($_POST['firstname']);
       $lastname = tep_db_prepare_input($_POST['lastname']);
-	  
-	  //add
-	  $firstname_f = tep_db_prepare_input($_POST['firstname_f']);
+    
+    //add
+    $firstname_f = tep_db_prepare_input($_POST['firstname_f']);
       $lastname_f = tep_db_prepare_input($_POST['lastname_f']);
-	  
+    
       $street_address = tep_db_prepare_input($_POST['street_address']);
       $suburb = tep_db_prepare_input($_POST['suburb']);
       $postcode = tep_db_prepare_input($_POST['postcode']);
@@ -80,8 +73,8 @@
       } else {
         $lasttname_error = false;
       }
-	  
-	  if (strlen($firstname_f) < ENTRY_FIRST_NAME_MIN_LENGTH) {
+    
+    if (strlen($firstname_f) < ENTRY_FIRST_NAME_MIN_LENGTH) {
         $firstname_f_error = true;
         $error = true;
       } else {
@@ -129,10 +122,12 @@
         } else {
           $zone_id = 0;
           $entry_state_error = false;
+//ccdd
           $check_query = tep_db_query("select count(*) as total from " . TABLE_ZONES . " where zone_country_id = '" . tep_db_input($country) . "'");
           $check_value = tep_db_fetch_array($check_query);
           $entry_state_has_zones = ($check_value['total'] > 0);
           if ($entry_state_has_zones == true) {
+//ccdd
             $zone_query = tep_db_query("select zone_id from " . TABLE_ZONES . " where zone_country_id = '" . tep_db_input($country) . "' and zone_name = '" . tep_db_input($state) . "'");
             if (tep_db_num_rows($zone_query) == 1) {
               $zone_values = tep_db_fetch_array($zone_query);
@@ -159,6 +154,7 @@
       }
 
       if ($error == false) {
+//ccdd
         $next_id_query = tep_db_query("select max(address_book_id) as address_book_id from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer_id . "'");
         if (tep_db_num_rows($next_id_query)) {
           $next_id = tep_db_fetch_array($next_id_query);
@@ -172,11 +168,8 @@
                                 'address_book_id' => $entry_id,
                                 'entry_firstname' => $firstname,
                                 'entry_lastname' => $lastname,
-								
-								//add
-								'entry_firstname_f' => $firstname_f,
+                                'entry_firstname_f' => $firstname_f,
                                 'entry_lastname_f' => $lastname_f,
-								
                                 'entry_street_address' => $street_address,
                                 'entry_postcode' => $postcode,
                                 'entry_city' => $city,
@@ -197,7 +190,7 @@
         }
 
         if (!tep_session_is_registered('billto')) tep_session_register('billto');
-
+        // ccdd
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
 
         $billto = $entry_id;
@@ -220,7 +213,7 @@
       }
 
       $billto = $_POST['address'];
-
+//ccdd
       $check_address_query = tep_db_query("select count(*) as total from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer_id . "' and address_book_id = '" . $billto . "'");
       $check_address = tep_db_fetch_array($check_address_query);
 
@@ -458,6 +451,7 @@ function check_form() {
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
             <?php
+//ccdd
     $addresses_count_query = tep_db_query("select count(*) as total from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer_id . "' and address_book_id != '" . $billto . "'");
     $addresses_count = tep_db_fetch_array($addresses_count_query);
 
@@ -484,6 +478,7 @@ function check_form() {
       $radio_buttons = 0;
 
 // 2003-06-06 add_telephone
+//ccdd
       $addresses_query = tep_db_query("select address_book_id, entry_firstname as firstname, entry_lastname as lastname, entry_company as company, entry_street_address as street_address, entry_suburb as suburb, entry_city as city, entry_postcode as postcode, entry_state as state, entry_zone_id as zone_id, entry_country_id as country_id, entry_telephone as telephone from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer_id . "'");
       while ($addresses = tep_db_fetch_array($addresses_query)) {
         $format_id = tep_get_address_format_id($addresses['country_id']);

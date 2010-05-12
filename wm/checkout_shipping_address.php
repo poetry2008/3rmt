@@ -44,11 +44,11 @@
       $company = tep_db_prepare_input($_POST['company']);
       $firstname = tep_db_prepare_input($_POST['firstname']);
       $lastname = tep_db_prepare_input($_POST['lastname']);
-	  
-	  //add
-	  $firstname_f = tep_db_prepare_input($_POST['firstname_f']);
+    
+    //add
+    $firstname_f = tep_db_prepare_input($_POST['firstname_f']);
       $lastname_f = tep_db_prepare_input($_POST['lastname_f']);
-	  
+    
       $street_address = tep_db_prepare_input($_POST['street_address']);
       $suburb = tep_db_prepare_input($_POST['suburb']);
       $postcode = tep_db_prepare_input($_POST['postcode']);
@@ -90,8 +90,8 @@
       } else {
         $lasttname_error = false;
       }
-	  
-	  if (strlen($firstname_f) < ENTRY_FIRST_NAME_MIN_LENGTH) {
+    
+    if (strlen($firstname_f) < ENTRY_FIRST_NAME_MIN_LENGTH) {
         $firstname_f_error = true;
         $error = true;
       } else {
@@ -182,11 +182,11 @@
                                 'address_book_id' => $entry_id,
                                 'entry_firstname' => $firstname,
                                 'entry_lastname' => $lastname,
-								
-								//add
-								'entry_firstname_f' => $firstname_f,
+                
+                //add
+                'entry_firstname_f' => $firstname_f,
                                 'entry_lastname_f' => $lastname_f,
-								
+                
                                 'entry_street_address' => $street_address,
                                 'entry_postcode' => $postcode,
                                 'entry_city' => $city,
@@ -208,6 +208,7 @@
 
         if (!tep_session_is_registered('sendto')) tep_session_register('sendto');
         
+        //ccdd
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
 
         $sendto = $entry_id;

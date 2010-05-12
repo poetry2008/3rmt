@@ -580,7 +580,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       tep_mail(STORE_OWNER, SENTMAIL_ADDRESS, '送信済：注文内容の変更を承りました【' . STORE_NAME . '】', $email, $check_status['customers_name'], $check_status['customers_email_address']);
       $customer_notified = '1';
     }
-    tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . tep_db_input($customer_notified) . "', '" . $notify_comments . "')");
+    tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . tep_db_input($customer_notified) . "', '" . mysql_real_escape_string($notify_comments) . "')");
     $order_updated_2 = true;
   }
 

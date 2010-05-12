@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 ?>
 <img src="images/design/oc/l_menu_end.jpg" alt="FF11 謾ｻ逡･" width="163" height="27">

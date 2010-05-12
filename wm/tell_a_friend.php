@@ -1,28 +1,20 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
 
-  //forward404
-if (isset($_GET['products_id'])) {
-  $_404_query = tep_db_query("select * from " . TABLE_PRODUCTS . " where products_id
-      = '" . intval($_GET['products_id']) . "'");
-  $_404 = tep_db_fetch_array($_404_query);
-
-  forward404Unless($_404);
-}
-
   if (tep_session_is_registered('customer_id')) {
-    $account = tep_db_query("select customers_firstname, customers_lastname, customers_email_address from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "' and site_id = '".SITE_ID."'");
+    // ccdd
+    $account = tep_db_query("
+        select customers_firstname, 
+               customers_lastname, 
+               customers_email_address 
+        from " . TABLE_CUSTOMERS . " 
+        where customers_id = '" . $customer_id . "' 
+        and site_id = '".SITE_ID."'
+    ");
     $account_values = tep_db_fetch_array($account);
   } elseif (ALLOW_GUEST_TO_TELL_A_FRIEND == 'false') {
     $navigation->set_snapshot();
@@ -31,7 +23,18 @@ if (isset($_GET['products_id'])) {
 
   $valid_product = false;
   if (isset($_GET['products_id'])) {
-    $product_info_query = tep_db_query("select pd.products_name from " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" .  (int)$_GET['products_id'] . "' and p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and pd.site_id = '".SITE_ID."'");
+    // ccdd
+    $product_info_query = tep_db_query("
+        select pd.products_name
+        from " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
+        where p.products_status = '1' 
+          and p.products_id = '" .  (int)$_GET['products_id'] . "' 
+          and p.products_id = pd.products_id 
+          and pd.language_id = '" . $languages_id . "' 
+          and (pd.site_id = '".SITE_ID."' or pd.site_id = '0')
+        order by pd.site_id DESC
+        limit 1
+    ");
     $valid_product = (tep_db_num_rows($product_info_query) > 0);
   }
 
@@ -208,11 +211,11 @@ if (isset($_GET['products_id'])) {
       </form> 
 
       <?php
-		}
+    }
 }
 ?>
-		<p class="pageBottom"></p>
-		</td> 
+    <p class="pageBottom"></p>
+    </td> 
       <!-- body_text_eof //--> 
       <td width="<?php echo BOX_WIDTH; ?>" valign="top" class="right_colum_border"><!-- left_navigation //--> 
       <!-- right_navigation //--> 

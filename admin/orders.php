@@ -617,7 +617,7 @@ function mail_text(st,tt,ot){
       }
 
       echo '      </td>' . "\n" .
-     '      <td class="dataTableContent" valign="top">' . $order->products[$i]['character'] . '</td>' . "\n" .
+     '      <td class="dataTableContent" valign="top">' . htmlspecialchars($order->products[$i]['character']) . '</td>' . "\n" .
        '      <td class="dataTableContent" valign="top">' . $order->products[$i]['model'] . '</td>' . "\n" .
      '      <td class="dataTableContent" align="right" valign="top">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n" .
      '      <td class="dataTableContent" align="right" valign="top"><b>' . $currencies->format($order->products[$i]['final_price'], true, $order->info['currency'], $order->info['currency_value']) . '</b></td>' . "\n" .

@@ -1,11 +1,6 @@
 <?php
 /*
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
+ $Id$
 */
 
 // Define the webserver and path parameters
@@ -18,6 +13,7 @@
   define('DIR_WS_IMAGES', 'images/');
   define('DIR_WS_ICONS', DIR_WS_IMAGES . 'icons/');
   define('DIR_WS_INCLUDES', 'includes/');
+  define('DIR_WS_ACTIONS', DIR_WS_INCLUDES.'actions/'); 
   define('DIR_WS_BOXES', DIR_WS_INCLUDES . 'boxes/');
   define('DIR_WS_FUNCTIONS', DIR_WS_INCLUDES . 'functions/');
   define('DIR_WS_CLASSES', DIR_WS_INCLUDES . 'classes/');
@@ -29,6 +25,8 @@
   define('DIR_FS_CATALOG', '/home/maker/project/GM/');
   define('DIR_FS_DOWNLOAD', DIR_FS_CATALOG . 'download/');
   define('DIR_FS_DOWNLOAD_PUBLIC', DIR_FS_CATALOG . 'pub/');
+  
+  define('DIR_FS_3RMTLIB', '/home/maker/project/3rmt/3rmtlib');
 
 // define our database connection
   define('DB_SERVER', 'localhost'); // eg, localhost - should not be empty for productive servers

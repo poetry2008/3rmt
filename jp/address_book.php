@@ -1,7 +1,6 @@
 <?php
 /*
   $Id$
-
 */
 
   require('includes/application_top.php');
@@ -49,7 +48,7 @@
                     <td colspan="3"><?php echo tep_draw_separator(); ?></td> 
                   </tr> 
                   <?php
-									 //ccdd
+                   //ccdd
   $address_book_query = tep_db_query("select address_book_id, entry_firstname, entry_lastname from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer_id . "' and address_book_id > 1 order by address_book_id");
   if (!tep_db_num_rows($address_book_query)) {
 ?> 

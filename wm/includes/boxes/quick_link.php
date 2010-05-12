@@ -1,17 +1,13 @@
 <?php
 /*
-   2009-4-15
-   haomai maker
-
+  $Id$
 */
 ?>
 <!-- quick_link //-->
 <?php if (!(isset($cPath) && tep_not_null($cPath))) {?>
             <?php if (isset($_COOKIE['quick_categories_id'])) {?>
               <?php
-                $sql = "select * from " . TABLE_CATEGORIES . " left join categories_description on categories.categories_id = categories_description.categories_id where categories.categories_id = '" . $_COOKIE['quick_categories_id'] . "' and categories_description.site_id = ".SITE_ID;
-                $quick_category_query = tep_db_query($sql);
-                $quick_category = tep_db_fetch_array($quick_category_query);
+                $quick_category = tep_get_category_by_id($_COOKIE['quick_categories_id'], SITE_ID, $languages_id);
               ?>
             <?php }?>
 <div id='quick_link'>

@@ -31,18 +31,40 @@
     $remove = substr($remove, 0, -1);
 
     if (tep_not_null($remove)) {
-      tep_db_query("delete from " . TABLE_PRODUCTS_NOTIFICATIONS . " where customers_id = '" . $customer_id . "' and products_id in (" . $remove . ")");
+      // ccdd
+      tep_db_query("
+          delete 
+          from " . TABLE_PRODUCTS_NOTIFICATIONS . " 
+          where customers_id = '" . $customer_id . "' 
+            and products_id in (" . $remove . ")
+      ");
     }
 
     tep_redirect(tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, '', 'SSL'));
   } elseif (isset($_GET['action']) && ($_GET['action'] == 'global_notify')) {
     if (isset($_POST['global']) && ($_POST['global'] == 'enable')) {
-      tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set global_product_notifications = '1' where customers_info_id = '" . $customer_id . "'");
+      // ccdd
+      tep_db_query("
+          update " . TABLE_CUSTOMERS_INFO . " 
+          set global_product_notifications = '1' 
+          where customers_info_id = '" . $customer_id . "'
+      ");
     } else {
-      $check_query = tep_db_query("select count(*) as count from " . TABLE_CUSTOMERS_INFO . " where customers_info_id = '" . $customer_id . "' and global_product_notifications = '1'");
+      // ccdd
+      $check_query = tep_db_query("
+          select count(*) as count 
+          from " . TABLE_CUSTOMERS_INFO . " 
+          where customers_info_id = '" . $customer_id . "' 
+            and global_product_notifications = '1'
+      ");
       $check = tep_db_fetch_array($check_query);
       if ($check['count'] > 0) {
-        tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set global_product_notifications = '0' where customers_info_id = '" . $customer_id . "'");
+        // ccdd
+        tep_db_query("
+            update " . TABLE_CUSTOMERS_INFO . " 
+            set global_product_notifications = '0' 
+            where customers_info_id = '" . $customer_id . "'
+        ");
       }
     }
 
@@ -54,7 +76,12 @@
   $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_ACCOUNT, '', 'SSL'));
   $breadcrumb->add(NAVBAR_TITLE_2, tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, '', 'SSL'));
 
-  $global_status_query = tep_db_query("select global_product_notifications from " . TABLE_CUSTOMERS_INFO . " where customers_info_id = '" . $customer_id . "'");
+  //ccdd
+  $global_status_query = tep_db_query("
+      SELECT global_product_notifications 
+      FROM " . TABLE_CUSTOMERS_INFO . " 
+      WHERE customers_info_id = '" . $customer_id . "'
+  ");
   $global_status = tep_db_fetch_array($global_status_query);
 ?>
 <?php page_head();?>
@@ -173,7 +200,25 @@
           <?php echo tep_draw_form('notifications', tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, 'action=update_notifications', 'SSL')); ?>
           <table width="100%">
 <?php
-    $products_query = tep_db_query("select pd.products_id, pd.products_name from " .  TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_NOTIFICATIONS . " pn where pn.customers_id = '" . $customer_id . "' and pn.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and pd.site_id = '".SITE_ID."'order by pd.products_name");
+    // ccdd
+    $products_query = tep_db_query("
+      select *
+      from (
+        select pd.products_id, 
+               pd.products_name ,
+               pd.site_id,
+               pn.customers_id
+        from " .  TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_NOTIFICATIONS . " pn 
+        where pn.customers_id = '" . $customer_id . "' 
+          and pn.products_id = pd.products_id 
+          and pd.language_id = '" . $languages_id . "' 
+        order by site_id DESC
+      ) p
+      where site_id = '0'
+         or site_id = '".SITE_ID."' 
+      group by products_id, customers_id
+      order by products_name
+    ");
     while ($products = tep_db_fetch_array($products_query)) {
       echo '          <tr>' . "\n" .
            '            <td class="main">' . tep_draw_checkbox_field('products[]', $products['products_id']) . '&nbsp;' . $products['products_name'] . '</td>' . "\n" .

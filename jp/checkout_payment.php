@@ -77,8 +77,8 @@
   //Add point
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
 //ccdd
-  $point_query = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
-  $point = tep_db_fetch_array($point_query);
+    $point_query = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
+    $point = tep_db_fetch_array($point_query);
   }
 ?>
 <?php page_head();?>

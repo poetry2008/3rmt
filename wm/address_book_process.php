@@ -29,8 +29,18 @@
   if (isset($_GET['action']) && ($_GET['action'] == 'remove') && tep_not_null($_GET['entry_id']) ) {
     $entry_id = tep_db_prepare_input($_GET['entry_id']);
 
-    tep_db_query("delete from " . TABLE_ADDRESS_BOOK . " where address_book_id = '" . tep_db_input($entry_id) . "' and customers_id = '" . $customer_id . "'");
-    tep_db_query("update " . TABLE_ADDRESS_BOOK . " set address_book_id = address_book_id - 1 where address_book_id > " . tep_db_input($entry_id)  . " and customers_id = '" . $customer_id . "'");
+//ccdd
+    tep_db_query("
+DELETE FROM
+ " . TABLE_ADDRESS_BOOK . " 
+WHERE address_book_id = '" . tep_db_input($entry_id) . "' 
+AND customers_id = '" . $customer_id . "'");
+//ccdd
+    tep_db_query(
+"UPDATE " . TABLE_ADDRESS_BOOK . " 
+SET address_book_id = address_book_id - 1
+WHERE address_book_id > " . tep_db_input($entry_id)  . " AND customers_id = '" . $customer_id . "'"
+);
 
     tep_redirect(tep_href_link(FILENAME_ADDRESS_BOOK, '', 'SSL'));
   }
@@ -48,10 +58,10 @@
     $company = tep_db_prepare_input($_POST['company']);
     $firstname = tep_db_prepare_input($_POST['firstname']);
     $lastname = tep_db_prepare_input($_POST['lastname']);
-	
-	$firstname_f = tep_db_prepare_input($_POST['firstname_f']);
+  
+  $firstname_f = tep_db_prepare_input($_POST['firstname_f']);
     $lastname_f = tep_db_prepare_input($_POST['lastname_f']);
-	
+  
     $street_address = tep_db_prepare_input($_POST['street_address']);
     $suburb = tep_db_prepare_input($_POST['suburb']);
     $postcode = tep_db_prepare_input($_POST['postcode']);
@@ -93,8 +103,8 @@
     } else {
       $lasttname_error = false;
     }
-	
-	if (strlen($firstname_f) < ENTRY_FIRST_NAME_MIN_LENGTH) {
+  
+  if (strlen($firstname_f) < ENTRY_FIRST_NAME_MIN_LENGTH) {
       $firstname_f_error = true;
       $error = true;
     } else {
@@ -150,16 +160,19 @@
       } else {
         $zone_id = 0;
         $entry_state_error = false;
-        $check_query = tep_db_query("select count(*) as total from " . TABLE_ZONES . " where zone_country_id = '" . tep_db_input($country) . "'");
+//ccdd
+        $check_query = tep_db_query("SELECT count(*) as total FROM " . TABLE_ZONES . " WHERE zone_country_id = '" . tep_db_input($country) . "'");
         $check_value = tep_db_fetch_array($check_query);
         $entry_state_has_zones = ($check_value['total'] > 0);
         if ($entry_state_has_zones == true) {
-          $zone_query = tep_db_query("select zone_id from " . TABLE_ZONES . " where zone_country_id = '" . tep_db_input($country) . "' and zone_name = '" . tep_db_input($state) . "'");
+//ccdd
+          $zone_query = tep_db_query("SELECT zone_id FROM " . TABLE_ZONES . " WHERE zone_country_id = '" . tep_db_input($country) . "' AND zone_name = '" . tep_db_input($state) . "'");
           if (tep_db_num_rows($zone_query) == 1) {
             $zone_values = tep_db_fetch_array($zone_query);
             $zone_id = $zone_values['zone_id'];
           } else {
-            $zone_query = tep_db_query("select zone_id from " . TABLE_ZONES . " where zone_country_id = '" . tep_db_input($country) . "' and zone_code = '" . tep_db_input($state) . "'");
+//ccdd
+            $zone_query = tep_db_query("SELECT zone_id FROM " . TABLE_ZONES . " WHERE zone_country_id = '" . tep_db_input($country) . "' AND zone_code = '" . tep_db_input($state) . "'");
             if (tep_db_num_rows($zone_query) == 1) {
               $zone_values = tep_db_fetch_array($zone_query);
               $zone_id = $zone_values['zone_id'];
@@ -181,10 +194,10 @@
 // 2003-06-06 add_telephone
       $sql_data_array = array('entry_firstname' => $firstname,
                               'entry_lastname' => $lastname,
-							  
-							  'entry_firstname_f' => $firstname_f,
+                
+                'entry_firstname_f' => $firstname_f,
                               'entry_lastname_f' => $lastname_f,
-							  
+                
                               'entry_street_address' => $street_address,
                               'entry_postcode' => $postcode,
                               'entry_city' => $city,
@@ -206,10 +219,12 @@
 
       $entry_id = tep_db_prepare_input($_POST['entry_id']);
       if ($_POST['action'] == 'update') {
-        tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', "address_book_id = '" . tep_db_input($entry_id) . "' and customers_id ='" . tep_db_input($customer_id) . "'");
+        // ccdd
+        tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', "address_book_id = '" . tep_db_input($entry_id) . "' AND customers_id ='" . tep_db_input($customer_id) . "'");
       } else {
         $sql_data_array['customers_id'] = $customer_id;
         $sql_data_array['address_book_id'] = $entry_id;
+        // ccdd
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
 
 // Go back to where we came from
@@ -227,7 +242,29 @@
 
   if (isset($_GET['action']) && ($_GET['action'] == 'modify') && tep_not_null($_GET['entry_id'])) {
 // 2003-06-06 add_telephone
-    $entry_query = tep_db_query("select entry_gender, entry_company, entry_firstname, entry_lastname, entry_firstname_f, entry_lastname_f, entry_street_address, entry_suburb, entry_postcode, entry_city, entry_state, entry_zone_id, entry_country_id,entry_telephone from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer_id . "' and address_book_id = '" . $_GET['entry_id'] . "'");
+//ccdd
+    $entry_query = tep_db_query("
+SELECT 
+    entry_gender, 
+    entry_company,
+    entry_firstname, 
+    entry_lastname, 
+    entry_firstname_f, 
+    entry_lastname_f, 
+    entry_street_address, 
+    entry_suburb, 
+    entry_postcode, 
+    entry_city, 
+    entry_state, 
+    entry_zone_id, 
+    entry_country_id,
+    entry_telephone 
+FROM " . TABLE_ADDRESS_BOOK . " 
+WHERE 
+    customers_id = '" . $customer_id . "' 
+AND 
+   address_book_id = '" . $_GET['entry_id'] . "'"
+);
     $entry = tep_db_fetch_array($entry_query);
   } else {
     $entry = array('entry_country_id' => STORE_COUNTRY);

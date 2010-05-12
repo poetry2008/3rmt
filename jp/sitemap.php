@@ -3,7 +3,6 @@
   $Id$
 
   html网站地图
-
 */
 
   require('includes/application_top.php');

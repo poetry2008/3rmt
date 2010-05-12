@@ -521,19 +521,7 @@
             } else {
               $products_ordered_mail .= "※ 当社キャラクター名は、お支払い確認後に電子メールにてお知らせいたします。\n\n";
             }
-                }
-/*
-  $add_character_query = tep_db_query("select products_attention_1,products_attention_2,products_attention_3,products_attention_4,products_attention_5,products_description_".ABBR_SITENAME." from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . $order->products[$i]['id'] . "' and language_id = '" . $languages_id . "'");
-  if(tep_db_num_rows($add_character_query)) {
-    $add_character = tep_db_fetch_array($add_character_query);
-    // edit 2009.5.14 maker
-    //$description = explode("|-#-|", $add_character['products_description_'.ABBR_SITENAME]);//maker
-    if(tep_not_null($add_character['products_attention_5'])) {
-      $products_ordered_mail .= str_replace("\n", "\n", strip_tags($add_character['products_attention_5'])) . "\n"; 
-    }
-  }
-*/
-        //$products_ordered_mail .= '------------------------------------------' . "\n";
+        }
       }
 
 $total_details_mail = '';

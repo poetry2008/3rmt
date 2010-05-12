@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 ?>
 <!-- manufacturers //-->
@@ -21,7 +14,13 @@
 
  // new infoBoxHeading($info_box_contents, false, false);
 
-  $manufacturers_query = tep_db_query("select manufacturers_id, manufacturers_name from " . TABLE_MANUFACTURERS . " order by manufacturers_name");
+// ccdd
+  $manufacturers_query = tep_db_query("
+      select manufacturers_id, 
+             manufacturers_name 
+      from " . TABLE_MANUFACTURERS . " 
+      order by manufacturers_name
+  ");
   if (tep_db_num_rows($manufacturers_query) <= MAX_DISPLAY_MANUFACTURERS_IN_A_LIST) {
 // Display a list
     $manufacturers_list = '';

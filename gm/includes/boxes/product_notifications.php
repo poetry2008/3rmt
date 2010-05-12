@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   if (isset($_GET['products_id'])) {
@@ -22,7 +15,13 @@
     new infoBoxHeading($info_box_contents, false, false, tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, '', 'SSL'));
 
     if (tep_session_is_registered('customer_id')) {
-      $check_query = tep_db_query("select count(*) as count from " . TABLE_PRODUCTS_NOTIFICATIONS . " where products_id = '" . (int)$_GET['products_id'] . "' and customers_id = '" . $customer_id . "'");
+      // ccdd
+      $check_query = tep_db_query("
+          select count(*) as count 
+          from " . TABLE_PRODUCTS_NOTIFICATIONS . " 
+          where products_id = '" . (int)$_GET['products_id'] . "' 
+            and customers_id = '" . $customer_id . "'
+          ");
       $check = tep_db_fetch_array($check_query);
 
       $notification_exists = (($check['count'] > 0) ? true : false);

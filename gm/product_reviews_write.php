@@ -1,49 +1,75 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
 
-  //forward 404
-if (isset($_GET['products_id'])) {
-  $_404_query = tep_db_query("select * from " . TABLE_PRODUCTS . " where products_id
-      = '" . intval($_GET['products_id']) . "'");
-  $_404 = tep_db_fetch_array($_404_query);
-
-  forward404Unless($_404);
-}
-
-/*
-  if (!tep_session_is_registered('customer_id')) {
-    $navigation->set_snapshot();
-    tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
-  }
-*/
-  $product_query = tep_db_query("select pd.products_name, p.products_image from " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_id = '" . (int)$_GET['products_id'] . "' and pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "' and pd.site_id = '".SITE_ID."'");
+// ccdd
+  $product_query = tep_db_query("
+      select pd.products_name, 
+             p.products_image 
+      from " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
+      where p.products_id  = '" . (int)$_GET['products_id'] . "' 
+        and pd.products_id = p.products_id 
+        and pd.language_id = '" . $languages_id . "' 
+        and (pd.site_id = '0' or pd.site_id = '".SITE_ID."')
+      order by pd.site_id DESC
+    ");
   $valid_product = (tep_db_num_rows($product_query) > 0);
+  //forward 404
+  forward404Unless($valid_product);
 
   if (isset($_GET['action']) && $_GET['action'] == 'process') {
     if ($valid_product == true) { // We got to the process but it is an illegal product, don't write
-      $customer = tep_db_query("select customers_firstname, customers_lastname from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "' and site_id = '".SITE_ID."'");
+      // ccdd
+      $customer = tep_db_query("
+          SELECT customers_firstname, 
+                 customers_lastname 
+          FROM " . TABLE_CUSTOMERS . " 
+          WHERE customers_id = '" . $customer_id . "' 
+            AND site_id      = '".SITE_ID."'
+      ");
       $customer_values = tep_db_fetch_array($customer);
       $date_now = date('Ymd');
-	  if($_POST['reviews_name'] && tep_not_null($_POST['reviews_name'])) {
-	    $reviews_name = $_POST['reviews_name'];
-	  } else {
-  		require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRODUCT_REVIEWS_WRITE);
-		$reviews_name = REVIEWS_NO_NAMES;
-	  }
-      tep_db_query("insert into " . TABLE_REVIEWS . " (products_id, customers_id, customers_name, reviews_rating, date_added, reviews_status, site_id) values ('" . $_GET['products_id'] . "', '" . $customer_id . "', '" .  addslashes($reviews_name) . "', '" . $_POST['rating'] . "', now(), '0', '".SITE_ID."')");
+    if($_POST['reviews_name'] && tep_not_null($_POST['reviews_name'])) {
+      $reviews_name = $_POST['reviews_name'];
+    } else {
+      require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRODUCT_REVIEWS_WRITE);
+    $reviews_name = REVIEWS_NO_NAMES;
+    }
+    // ccdd
+      tep_db_query("
+          INSERT INTO " . TABLE_REVIEWS . " (
+            products_id, 
+            customers_id, 
+            customers_name, 
+            reviews_rating, 
+            date_added, 
+            reviews_status, 
+            site_id
+          ) values (
+            '" . $_GET['products_id'] . "', 
+            '" . $customer_id . "', 
+            '" . addslashes($reviews_name) . "', 
+            '" . $_POST['rating'] . "', 
+            now(), 
+            '0', 
+            '".SITE_ID."'
+          )");
       $insert_id = tep_db_insert_id();
-      tep_db_query("insert into " . TABLE_REVIEWS_DESCRIPTION . " (reviews_id, languages_id, reviews_text) values ('" . $insert_id . "', '" . $languages_id . "', '" . $_POST['review'] . "')");
+      // ccdd
+      tep_db_query("
+          insert into " . TABLE_REVIEWS_DESCRIPTION . " (
+            reviews_id, 
+            languages_id, 
+            reviews_text
+          ) values (
+            '" . $insert_id . "', 
+            '" . $languages_id . "', 
+            '" . $_POST['review'] . "'
+          )
+      ");
     }
 
     tep_redirect(tep_href_link(FILENAME_PRODUCT_INFO, $_POST['get_params']));
@@ -63,7 +89,14 @@ if (isset($_GET['products_id'])) {
 
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_PRODUCT_REVIEWS, $get_params));
 
-  $customer_info_query = tep_db_query("select customers_firstname, customers_lastname from " . TABLE_CUSTOMERS . " where customers_id = '" .  $customer_id . "' and site_id = '".SITE_ID."'");
+  // ccdd
+  $customer_info_query = tep_db_query("
+      select customers_firstname, 
+             customers_lastname 
+      from " . TABLE_CUSTOMERS . " 
+      where customers_id = '" .  $customer_id . "' 
+        and site_id = ".SITE_ID
+  );
   $customer_info = tep_db_fetch_array($customer_info_query);
 ?>
 <?php page_head();?>
@@ -160,7 +193,7 @@ function checkForm() {
         </form> 
       </div> 
       <?php
-		}
+    }
 ?></div>
       <!-- body_text_eof //--> 
 <!-- right_navigation //--> 

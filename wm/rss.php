@@ -1,12 +1,7 @@
 <?php
 /*
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 Pave Designs (http://www.pavedesigns.com)
-------------------------------------------------------------------------
-                   end  C h a n g e l o g
-##################################################################### */
+ $Id$
+*/
 
 require('includes/application_top.php');
 
@@ -15,12 +10,23 @@ $connection = mysql_connect(DB_SERVER, DB_SERVER_USERNAME, DB_SERVER_PASSWORD)  
 // select database
 $db = mysql_select_db(DB_DATABASE, $connection) or die(mysql_error());
 
-if (!isset($_GET['language'])) $_GET['language'] = NULL;//del notice
-if ($_GET['language'] == "") {
-  $lang_query = tep_db_query("select languages_id, code from " . TABLE_LANGUAGES . " where directory = '" . $language . "'");
+if (!isset($_GET['language']) || !$_GET['language']) {
+  // ccdd
+  $lang_query = tep_db_query("
+      select languages_id, 
+             code 
+      from " . TABLE_LANGUAGES . " 
+      where directory = '" . $language . "'
+  ");
 } else {
   $cur_language = tep_db_output($_GET['language']);
-  $lang_query = tep_db_query("select languages_id, code from " . TABLE_LANGUAGES . " where code = '" . $cur_language . "'");
+  // ccdd
+  $lang_query = tep_db_query("
+      select languages_id, 
+             code 
+      from " . TABLE_LANGUAGES . "
+      where code = '" . $cur_language . "'
+  ");
 }
 
 
@@ -65,6 +71,7 @@ if ($_GET['cPath'] != "") {
   $sql = "SELECT products_id, products_model, products_image, products_price,  products_tax_class_id FROM products WHERE products_status=1 ORDER BY products_id DESC LIMIT " . MAX_DISPLAY_SEARCH_RESULTS;
 }
 // Execute SQL query and get result
+//ccdd
 $sql_result = mysql_query($sql,$connection) or die("Couldn't execute query.");
 
 // Format results by row
@@ -78,7 +85,7 @@ while ($row = mysql_fetch_array($sql_result)) {
   $image = $row["products_image"];
   $price = $row["products_price"];
   $tax = $row["products_tax_class_id"];
-//	Add VAt if product subject to VAT (might not be perfect if you have different VAT zones)
+//  Add VAt if product subject to VAT (might not be perfect if you have different VAT zones)
   $sql3 = "SELECT tax_rate FROM ".TABLE_TAX_RATES." WHERE  tax_class_id = " . $tax . " LIMIT 1";
   $sql3_result = mysql_query($sql3,$connection) or die("Couldn't execute query.");
   $row3 = mysql_fetch_array($sql3_result);
@@ -87,7 +94,21 @@ while ($row = mysql_fetch_array($sql_result)) {
   if ($price=='$0.00') {$price= 'Many price options availably for this product';}  else {
   $price = $currencies->format($price);}
 
-  $sql2 = "SELECT products_name, products_attention_1, products_attention_2, products_attention_3, products_attention_4, products_attention_5, products_description FROM products_description WHERE products_id = '$id' AND language_id = '$lang_id' and site_id = '".SITE_ID."' LIMIT 1";
+  $sql2 = "SELECT products_name, 
+                  products_attention_1, 
+                  products_attention_2, 
+                  products_attention_3, 
+                  products_attention_4, 
+                  products_attention_5, 
+                  products_description 
+           FROM ".TABLE_PRODUCTS_DESCRIPTION." 
+           WHERE products_id = '$id' 
+             AND language_id = '$lang_id' 
+             AND (site_id = '".SITE_ID."' or site_id ='0')
+           order by site_id DESC
+           LIMIT 1
+   ";
+  //ccdd
   $sql2_result = mysql_query($sql2,$connection) or die("Couldn't execute query.");
   $row2 = mysql_fetch_array($sql2_result);
   
@@ -101,10 +122,10 @@ while ($row = mysql_fetch_array($sql_result)) {
   
 // Replace HTML entities &something; by real characters
 // This should be working but is not on my server
-//		$trans_tbl = get_html_translation_table (HTML_ENTITIES);
-//		$trans_tbl = array_flip ($trans_tbl);
-//		$name = strtr ($name, $trans_tbl);
-//		$desc = strtr ($desc, $trans_tbl);
+//    $trans_tbl = get_html_translation_table (HTML_ENTITIES);
+//    $trans_tbl = array_flip ($trans_tbl);
+//    $name = strtr ($name, $trans_tbl);
+//    $desc = strtr ($desc, $trans_tbl);
 
 // dumb method , but it works
   $name = str_replace ('&amp;','&',$name);

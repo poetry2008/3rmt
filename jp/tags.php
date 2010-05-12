@@ -1,6 +1,6 @@
 <?php
 /*
-$id
+ $Id$
 */
 require('includes/application_top.php');
 require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_TAGS);
@@ -214,18 +214,18 @@ while ($tag = tep_db_fetch_array($tags_query))
   if (tep_db_num_rows($products_query))
   {
 
-		echo '<table width="100%" border="0" cellspacing="0" cellpadding="0">' . "\n";
-		echo '<tr>' . "\n";
-		echo '<td width="120" class="smallText" valign="top"><h3><b>'.$tag['tags_name'].'</b></h3><div class="manufacturer_image">' .  tep_image(DIR_WS_IMAGES.$tag['tags_images'],$tag['tags_name'],100, 100) .  '</div>' . "\n";
+    echo '<table width="100%" border="0" cellspacing="0" cellpadding="0">' . "\n";
+    echo '<tr>' . "\n";
+    echo '<td width="120" class="smallText" valign="top"><h3><b>'.$tag['tags_name'].'</b></h3><div class="manufacturer_image">' .  tep_image(DIR_WS_IMAGES.$tag['tags_images'],$tag['tags_name'],100, 100) .  '</div>' . "\n";
                 //<!-- '.mb_substr(strip_tags($manufacturer['manufacturers_url']),0,100,'utf8') .'... --></td>' . "\n";
-		echo '</td></tr><tr><td valign="bottom">' . "\n";
-	
-		echo '<table width="100%" border="0" cellspacing="2" cellpadding="0">' . "\n";
-		echo '<tr>' . "\n";
-		while($products = tep_db_fetch_array($products_query)) {
-			$products['products_name'] = tep_get_products_name($products['products_id']);
-			$products['products_description'] = tep_get_products_description($products['products_id']);
-			echo '<td align="center" valign="bottom" class="smallText"
+    echo '</td></tr><tr><td valign="bottom">' . "\n";
+  
+    echo '<table width="100%" border="0" cellspacing="2" cellpadding="0">' . "\n";
+    echo '<tr>' . "\n";
+    while($products = tep_db_fetch_array($products_query)) {
+      $products['products_name'] = tep_get_products_name($products['products_id']);
+      $products['products_description'] = tep_get_products_description($products['products_id']);
+      echo '<td align="center" valign="bottom" class="smallText"
                           width="20%" style="padding-bottom:8px;">';
                         echo '<a href="' .
                           tep_href_link(FILENAME_PRODUCT_INFO,'products_id='.  $products['products_id']) . '">';
@@ -247,23 +247,23 @@ while ($tag = tep_db_fetch_array($tags_query))
                             echo $currencies->display_price($products['products_price'], tep_get_tax_rate($products['products_tax_class_id']));
                           }
                           echo '</td>'."\n";
-		}
-		echo '</tr>' . "\n";
-		echo '</table>' . "\n";
-		echo '</td>' . "\n";
-		echo '</tr>' . "\n";
-		echo '<tr>' . "\n";
-		echo '<td colspan="2" align="right" class="smallText"
+    }
+    echo '</tr>' . "\n";
+    echo '</table>' . "\n";
+    echo '</td>' . "\n";
+    echo '</tr>' . "\n";
+    echo '<tr>' . "\n";
+    echo '<td colspan="2" align="right" class="smallText"
                   style="padding-top:5px;border-bottom:#ccc solid 1px;">' . '<a
                   href="'.tags_tep_href_link($tag['tags_id']).'">'.TAGS_TEXT_MORE.'</a></td>'."\n";
-		echo '	</tr>' . "\n";
-		echo '</table><br><div class="dot">&nbsp;</div>' . "\n";
-	}
+    echo '  </tr>' . "\n";
+    echo '</table><br><div class="dot">&nbsp;</div>' . "\n";
+  }
 
 }
 ?>
                                 <?php
-	if (tep_db_num_rows($tags_query)) {
+  if (tep_db_num_rows($tags_query)) {
 ?>
   <table>
                                 <tr>
@@ -275,7 +275,7 @@ while ($tag = tep_db_fetch_array($tags_query))
                                 </tr>
                                 </table>
                                 <?php
-	}
+  }
 ?>
                                <table width="100%">
                                 <tr>

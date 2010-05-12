@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
   if ($random_product = tep_random_select("
       select *
@@ -34,7 +27,6 @@
         order by specials_date_added desc 
         limit " . MAX_RANDOM_SELECT_SPECIALS
         )) {
-*/
 /*
   if ($random_product = tep_random_select("
         select p.products_id, 

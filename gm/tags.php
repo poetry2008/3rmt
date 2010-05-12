@@ -1,5 +1,7 @@
 <?php
-
+/*
+ $Id$
+*/
 require('includes/application_top.php');
 require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_TAGS);
 
@@ -30,8 +32,13 @@ $breadcrumb->add(TAGS_NAVBAR_TITLE, tep_href_link(FILENAME_TAGS));
 <td>
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php 
-$tags_query_string = "select * from " . TABLE_TAGS . " order by tags_order";
+$tags_query_string = "
+    select * 
+    from " . TABLE_TAGS . " 
+    order by tags_order
+";
 $tags_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $tags_query_string, $tags_numrows);
+//ccdd
 $tags_query = tep_db_query($tags_query_string);
 if (($tags_numrows > 0 ) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3')))
 {
@@ -74,29 +81,137 @@ while ($tag = tep_db_fetch_array($tags_query))
 {
   if (tep_session_is_registered('customer_id'))
   {
-    $products_query = tep_db_query("select *,p.products_id from " .  TABLE_PRODUCTS_TO_TAGS . " as p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id where p2t.tags_id = " . $tag['tags_id'] .  " and pd.site_id = '".SITE_ID."' order by p.products_date_added desc limit 5");
+//ccdd
+    $products_query = tep_db_query("
+      select * 
+      from (
+        select p.products_id,
+               p.products_quantity,
+               p.products_model,
+               p.products_image,
+               p.products_image2,
+               p.products_image3,
+               p.products_price,
+               p.products_date_added,
+               p.products_last_modified,
+               p.products_date_available,
+               p.products_weight,
+               p.products_status,
+               p.products_tax_class_id,
+               p.manufacturers_id,
+               p.products_ordered,
+               p.products_bflag,
+               p.products_cflag,
+               p.products_small_sum,
+               p.option_type,
+               p2t.tags_id,
+               pd.language_id,
+               pd.products_name,
+               pd.products_description,
+               pd.site_id,
+               pd.products_attention_1,
+               pd.products_attention_2,
+               pd.products_attention_3,
+               pd.products_attention_4,
+               pd.products_attention_5,
+               pd.products_url,
+               pd.products_viewed,
+               s.specials_new_products_price,
+               s.specials_date_added,
+               s.specials_last_modified,
+               s.expires_date,
+               s.date_status_change,
+               s.status,
+               IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
+        from " . TABLE_PRODUCTS_TO_TAGS . " as p2t 
+          join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id 
+          left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id 
+          left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id 
+        where p2t.tags_id = " . $tag['tags_id'] .  " 
+        order by pd.site_id DESC
+      ) p
+      where site_id  = '0'
+         or site_id = '".SITE_ID."' 
+        group by products_id
+        order by products_date_added desc 
+        limit 5
+    ");
   }
   else
   {
-    $products_query = tep_db_query("select *,p.products_id from " . TABLE_PRODUCTS_TO_TAGS . " as p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id where p2t.tags_id = " . $tag['tags_id'] .  " and pd.site_id = '".SITE_ID."' order by p.products_date_added desc limit 5");
+//ccdd
+    $products_query = tep_db_query("
+      select *
+      from (
+        select p.products_id,
+               p.products_quantity,
+               p.products_model,
+               p.products_image,
+               p.products_image2,
+               p.products_image3,
+               p.products_price,
+               p.products_date_added,
+               p.products_last_modified,
+               p.products_date_available,
+               p.products_weight,
+               p.products_status,
+               p.products_tax_class_id,
+               p.manufacturers_id,
+               p.products_ordered,
+               p.products_bflag,
+               p.products_cflag,
+               p.products_small_sum,
+               p.option_type,
+               p2t.tags_id,
+               pd.language_id,
+               pd.products_name,
+               pd.products_description,
+               pd.site_id,
+               pd.products_attention_1,
+               pd.products_attention_2,
+               pd.products_attention_3,
+               pd.products_attention_4,
+               pd.products_attention_5,
+               pd.products_url,
+               pd.products_viewed,
+               s.specials_new_products_price,
+               s.specials_date_added,
+               s.specials_last_modified,
+               s.expires_date,
+               s.date_status_change,
+               s.status,
+               IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
+        from " . TABLE_PRODUCTS_TO_TAGS . " as p2t 
+          join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id 
+          left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id 
+          left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id 
+        where p2t.tags_id = " . $tag['tags_id'] .  " 
+        order by pd.site_id DESC
+      ) p
+      where site_id = '0'
+         or site_id = '".SITE_ID."' 
+      group by products_id
+      order by products_date_added desc 
+      limit 5
+    ");
   } 
   if (tep_db_num_rows($products_query))
   {
 
-		echo '<table width="100%" border="0" cellspacing="0" cellpadding="0">' . "\n";
-		echo '	<tr>' . "\n";
-		echo '		<td width="120" class="smallText" valign="top"><h3 class="tag_h03"><b>'.$tag['tags_name'].'</b></h3><div class="manufacturer_image01">' .
+    echo '<table width="100%" border="0" cellspacing="0" cellpadding="0">' . "\n";
+    echo '  <tr>' . "\n";
+    echo '    <td width="120" class="smallText" valign="top"><h3 class="tag_h03"><b>'.$tag['tags_name'].'</b></h3><div class="manufacturer_image01">' .
                   tep_image(DIR_WS_IMAGES.$tag['tags_images'],$tag['tags_name']) .
                   '</div>' . "\n";
                 //<!-- '.mb_substr(strip_tags($manufacturer['manufacturers_url']),0,100,'utf8') .'... --></td>' . "\n";
-		echo '		</tr><tr><td valign="bottom">' . "\n";
-	
-		echo '			<table width="100%" border="0" cellspacing="2" cellpadding="0">' . "\n";
-		echo '				<tr>' . "\n";
-		while($products = tep_db_fetch_array($products_query)) {
-			$products['products_name'] = tep_get_products_name($products['products_id']);
-			$products['products_description'] = tep_get_products_description($products['products_id']);
-			echo '<td align="center" valign="bottom" class="smallText"
+    echo '    </tr><tr><td valign="bottom">' . "\n";
+  
+    echo '      <table width="100%" border="0" cellspacing="2" cellpadding="0">' . "\n";
+    echo '        <tr>' . "\n";
+    while($products = tep_db_fetch_array($products_query)) {
+      $products['products_name'] = tep_get_products_name($products['products_id']);
+      $products['products_description'] = tep_get_products_description($products['products_id']);
+      echo '<td align="center" valign="bottom" class="smallText"
                           width="20%" style="padding-bottom:8px;">';
                         echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='.$products['products_id']) . '">';
                         if ($products['products_image'])
@@ -117,16 +232,16 @@ while ($tag = tep_db_fetch_array($tags_query))
                             echo $currencies->display_price($products['products_price'], tep_get_tax_rate($products['products_tax_class_id']));
                           }
                           echo '</td>'."\n";
-		}
-		echo '				</tr>' . "\n";
-		echo '			</table>' . "\n";
-		echo '		</td>' . "\n";
-		echo '	</tr>' . "\n";
-		echo '	<tr>' . "\n";
-		echo '		<td colspan="2" align="right" class="smallText" >' .  '<a href="'.tags_tep_href_link($tag['tags_id']).'">'.TAGS_TEXT_MORE.'</a></td>'."\n";
-		echo '	</tr>' . "\n";
-		echo '</table><br><div class="dot">&nbsp;</div>' . "\n";
-	}
+    }
+    echo '        </tr>' . "\n";
+    echo '      </table>' . "\n";
+    echo '    </td>' . "\n";
+    echo '  </tr>' . "\n";
+    echo '  <tr>' . "\n";
+    echo '    <td colspan="2" align="right" class="smallText" >' .  '<a href="'.tags_tep_href_link($tag['tags_id']).'">'.TAGS_TEXT_MORE.'</a></td>'."\n";
+    echo '  </tr>' . "\n";
+    echo '</table><br><div class="dot">&nbsp;</div>' . "\n";
+  }
 
 }
 ?>
@@ -146,7 +261,7 @@ while ($tag = tep_db_fetch_array($tags_query))
                                   $tags_split->display_links($tags_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
                                 </tr>
                                 <?php
-	}
+  }
 ?>
                                 <tr>
                                   <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>

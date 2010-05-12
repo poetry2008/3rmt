@@ -1,4 +1,7 @@
 <?php
+/*
+ $Id$
+*/
   require('includes/application_top.php');
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_LOGIN);
   
@@ -17,7 +20,7 @@
   'ご不明な点がありましたら、RMTゲームマネーまでお問い合わせください。'."\n".
   'ご連絡・お問い合わせ先━━━━━━━━━━'."\n".
   'RMTゲームマネー'."\n".
-  STORE_NAME_ADDRESS."\n".	  	  
+  STORE_NAME_ADDRESS."\n".        
   HTTP_SERVER."\n".  
   STORE_OWNER_EMAIL_ADDRESS;
   if (isset($_POST['email_address'])) {
@@ -79,7 +82,7 @@
        <?php echo '<br>'.SENDMAIL_READ_TEXT;?> 
        <?php
           echo '<br>'; 
-		  echo '<br>';
+      echo '<br>';
           echo SENDMAIL_TROUBLE_PRE;  
        ?> 
           <a href="<?php echo tep_href_link('email_trouble.php');?>"><?php echo SENDMAIL_TROUBLE_LINK;?></a>  
@@ -87,10 +90,10 @@
           echo SENDMAIL_TROUBLE_END;  
         ?>
         <?php 
-		  if ($success_single == true) {  
- 			   echo '<div style="width:100%;text-align:left;padding:10px 0 0 0;"><a href="'.tep_href_link(FILENAME_DEFAULT).'"><img src="includes/languages/japanese/images/buttons/button_back.gif"></a></div>';
-			   }
-		?>
+      if ($success_single == true) {  
+         echo '<div style="width:100%;text-align:left;padding:10px 0 0 0;"><a href="'.tep_href_link(FILENAME_DEFAULT).'"><img src="includes/languages/japanese/images/buttons/button_back.gif"></a></div>';
+         }
+    ?>
         </div>
 
   </div></div>

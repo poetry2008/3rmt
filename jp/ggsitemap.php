@@ -1,16 +1,7 @@
 <?php
-// 3rmt over
 /*
   $Id$
-
   Google sitemap 网站地图
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
   require('includes/application_top.php');
   header('Content-Type:   text/xml');

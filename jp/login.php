@@ -114,8 +114,8 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
       $point_limit = mktime(0, 0, 0, $p_mon, $p_day+MODULE_ORDER_TOTAL_POINT_LIMIT, $p_year);
         if($now > $point_limit) {
 //ccdd
-        tep_db_query("update ".TABLE_CUSTOMERS." set point = '0' where customers_id = '".$customer_id."' and site_id = '".SITE_ID."'");
-      }
+          tep_db_query("update ".TABLE_CUSTOMERS." set point = '0' where customers_id = '".$customer_id."' and site_id = '".SITE_ID."'");
+        }
       }
     }
 

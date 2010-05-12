@@ -2,12 +2,9 @@
 /*
   $Id$
 */
-
   $GLOBALS['HTTP_GET_VARS']    = $_GET;
   $GLOBALS['HTTP_POST_VARS']   = $_POST;
   $GLOBALS['HTTP_SERVER_VARS'] = $_SERVER;
-
-//$_SERVER= $_SERVER;
 
 //Japan location
   setlocale (LC_ALL, 'ja_JP.UTF-8');
@@ -16,8 +13,7 @@
   define('PAGE_PARSE_START_TIME', microtime());
 
 // set the level of error reporting
-  error_reporting(E_ALL & ~E_DEPRECATED);
-  //error_reporting(E_ALL);
+  error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
   ini_set("display_errors", "On");
 
 // check if register_globals is enabled.
@@ -139,8 +135,6 @@
   define('TABLE_CATEGORIES_DESCRIPTION', 'categories_description');
   define('TABLE_CONFIGURATION', 'configuration');
   define('TABLE_CONFIGURATION_GROUP', 'configuration_group');
-  define('TABLE_COUNTER', 'counter');
-  define('TABLE_COUNTER_HISTORY', 'counter_history');
   define('TABLE_COUNTRIES', 'countries');
   define('TABLE_CURRENCIES', 'currencies');
   define('TABLE_CUSTOMERS', 'customers');
@@ -373,8 +367,7 @@
     }
     switch ($_GET['action']) {
       // customer wants to update the product quantity in their shopping cart
-      case 'update_product' : 
-                              for ($i=0, $n=sizeof($_POST['products_id']); $i<$n; $i++) {
+      case 'update_product' : for ($i=0, $n=sizeof($_POST['products_id']); $i<$n; $i++) {
                                 if (in_array($_POST['products_id'][$i], (is_array($_POST['cart_delete']) ? $_POST['cart_delete'] : array()))) {
                                   $cart->remove($_POST['products_id'][$i]);
                                 } else {
@@ -578,7 +571,6 @@
       }
     }
   } elseif (isset($_GET['manufacturers_id'])) {
-
     // ccdd
     $manufacturers_query = tep_db_query("
         select manufacturers_name 
@@ -609,6 +601,15 @@
     $model = tep_db_fetch_array($model_query);
     $breadcrumb->add($model['products_name'], tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $_GET['products_id']));
   }
+  
+  // add tags
+  if (isset($_GET['tags_id'])) {
+    $tags_query = tep_db_query("select * from ".TABLE_TAGS." where tags_id = '".$_GET['tags_id']."'");
+    $tags_res = tep_db_fetch_array($tags_query);
+    if ($tags_res) {
+      $breadcrumb->add($tags_res['tags_name'], tep_href_link(FILENAME_DEFAULT, 'tags_id='.$_GET['tags_id']));
+    }
+   }
 
   
 // SESSION REGISTER

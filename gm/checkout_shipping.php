@@ -40,6 +40,7 @@
     $sendto = $customer_default_address_id;
   } else {
 // verify the selected shipping address
+//ccdd
     $check_address_query = tep_db_query("select count(*) as total from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer_id . "' and address_book_id = '" . $sendto . "'");
     $check_address = tep_db_fetch_array($check_address_query);
 
@@ -102,56 +103,56 @@
     if (!tep_session_is_registered('comments')) tep_session_register('comments');
 
     if (!tep_session_is_registered('shipping')) tep_session_register('shipping');
-	//$Bahamut = tep_db_prepare_input($_POST['Bahamut']);
-	$torihikihouhou = tep_db_prepare_input($_POST['torihikihouhou']);
-	$date = tep_db_prepare_input($_POST['date']);
-	$hour = tep_db_prepare_input($_POST['hour']);
-	$min = tep_db_prepare_input($_POST['min']);
-	
-	$insert_torihiki_date = $date . ' ' . $hour . ':' . $min . ':00';
-	
-	$error = false;
-	/*
-	if($Bahamut == '') {
-	  $error = true;
-	  $Bahamut_error = TEXT_ERROR_BAHAMUTO;
-	} elseif(!preg_match("/^[a-zA-Z]+$/", $Bahamut)) {
-	  $error = true;
-	  $Bahamut_error = TEXT_ERROR_BAHAMUTO_EIJI;
-	}
-	*/
-	
-	if($torihikihouhou == '') {
-	  $error = true;
-	  $torihikihouhou_error = TEXT_ERROR_TORIHIKIHOUHOU;
-	}
-	
-	if($date == '') {
-	  $error = true;
-	  $date_error = TEXT_ERROR_DATE;
-	}
-	
-	if($hour == '') {
-	  $error = true;
-	  $jikan_error = TEXT_ERROR_JIKAN;
-	}
-	
-	if($min == '') {
-	  $error = true;
-	  $jikan_error = TEXT_ERROR_JIKAN;
-	}
-		
-	
-	if($error == false) {
-	  //tep_session_register('Bahamut');
-	  tep_session_register('torihikihouhou');
-	  tep_session_register('date');
-	  tep_session_register('hour');
-	  tep_session_register('min');
-	  tep_session_register('insert_torihiki_date');
-	
-	  tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL'));
-	}
+  //$Bahamut = tep_db_prepare_input($_POST['Bahamut']);
+  $torihikihouhou = tep_db_prepare_input($_POST['torihikihouhou']);
+  $date = tep_db_prepare_input($_POST['date']);
+  $hour = tep_db_prepare_input($_POST['hour']);
+  $min = tep_db_prepare_input($_POST['min']);
+  
+  $insert_torihiki_date = $date . ' ' . $hour . ':' . $min . ':00';
+  
+  $error = false;
+  /*
+  if($Bahamut == '') {
+    $error = true;
+    $Bahamut_error = TEXT_ERROR_BAHAMUTO;
+  } elseif(!preg_match("/^[a-zA-Z]+$/", $Bahamut)) {
+    $error = true;
+    $Bahamut_error = TEXT_ERROR_BAHAMUTO_EIJI;
+  }
+  */
+  
+  if($torihikihouhou == '') {
+    $error = true;
+    $torihikihouhou_error = TEXT_ERROR_TORIHIKIHOUHOU;
+  }
+  
+  if($date == '') {
+    $error = true;
+    $date_error = TEXT_ERROR_DATE;
+  }
+  
+  if($hour == '') {
+    $error = true;
+    $jikan_error = TEXT_ERROR_JIKAN;
+  }
+  
+  if($min == '') {
+    $error = true;
+    $jikan_error = TEXT_ERROR_JIKAN;
+  }
+    
+  
+  if($error == false) {
+    //tep_session_register('Bahamut');
+    tep_session_register('torihikihouhou');
+    tep_session_register('date');
+    tep_session_register('hour');
+    tep_session_register('min');
+    tep_session_register('insert_torihiki_date');
+  
+    tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL'));
+  }
   }
 
 // get all available shipping quotes
@@ -171,8 +172,8 @@
   $torihiki_list[] = array('id' => '', 'text' => TEXT_PRESE_SELECT);
   for($i=0; $i<sizeof($torihiki_array); $i++) {
     $torihiki_list[] = array('id' => $torihiki_array[$i],
-	                         'text' => $torihiki_array[$i]
-							 );
+                           'text' => $torihiki_array[$i]
+               );
   }
   
   //print_r($_SESSION);
@@ -249,11 +250,11 @@ function rowOutEffect(object) {
             <td><table class="formArea" border="0" width="95%" cellspacing="1"> 
                 <tr> 
                   <td>
-				  
+          
 <table width="100%" border="0" cellspacing="0" cellpadding="2" class="box_des">
   <tr>
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-	<td class="main"><?php echo TEXT_TORIHIKIHOUHOU; ?></td>
+  <td class="main"><?php echo TEXT_TORIHIKIHOUHOU; ?></td>
     <td class="main"><?php echo tep_get_torihiki_select_by_products($product_ids);//tep_draw_pull_down_menu('torihikihouhou', $torihiki_list, $torihikihouhou); ?></td>
   </tr>
 <?php
@@ -263,7 +264,7 @@ if (!isset($torihikihouhou_error)) $torihikihouhou_error=NULL;
 ?>
   <tr>
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-	<td class="main">&nbsp;</td>
+  <td class="main">&nbsp;</td>
     <td class="main"><?php echo $torihikihouhou_error; ?></td>
   </tr>
 <?php
@@ -271,29 +272,29 @@ if (!isset($torihikihouhou_error)) $torihikihouhou_error=NULL;
 ?>
   <tr>
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-	<td class="main" width="30%"><?php echo TEXT_TORIHIKIKIBOUBI; ?></td>
+  <td class="main" width="30%"><?php echo TEXT_TORIHIKIKIBOUBI; ?></td>
     <td class="main" width="70%">
 <?php
-	  $today = getdate();
+    $today = getdate();
       $m_num = $today['mon'];
       $d_num = $today['mday'];
       $year = $today['year'];
-	  
-	  $hours = date('H');
-	  $mimutes = date('i');
+    
+    $hours = date('H');
+    $mimutes = date('i');
 ?>
-	<select name="date" onChange="selectDate('<?php echo $hours; ?>', '<?php echo $mimutes; ?>')">
-	  <option value="">希望日を選択してください</option>
-	  <?php
+  <select name="date" onChange="selectDate('<?php echo $hours; ?>', '<?php echo $mimutes; ?>')">
+    <option value="">希望日を選択してください</option>
+    <?php
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
           $newarr = array('月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日');
-	  for($i=0; $i<7; $i++) {
-	    //echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)).'">'.strftime("%Y年%m月%d日（%a）", mktime(0,0,0,$m_num,$d_num+$i,$year)).'</option>' . "\n";
-	    echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)).'">'.str_replace($oarr, $newarr, date("Y年m月d日（l）", mktime(0,0,0,$m_num,$d_num+$i,$year))).'</option>' . "\n";
-	  }
-	  ?>
-	</select>
-	</td>
+    for($i=0; $i<7; $i++) {
+      //echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)).'">'.strftime("%Y年%m月%d日（%a）", mktime(0,0,0,$m_num,$d_num+$i,$year)).'</option>' . "\n";
+      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)).'">'.str_replace($oarr, $newarr, date("Y年m月d日（l）", mktime(0,0,0,$m_num,$d_num+$i,$year))).'</option>' . "\n";
+    }
+    ?>
+  </select>
+  </td>
   </tr>
 <?php
 if (!isset($date_error)) $date_error=NULL;
@@ -301,7 +302,7 @@ if (!isset($date_error)) $date_error=NULL;
 ?>
   <tr>
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-	<td class="main">&nbsp;</td>
+  <td class="main">&nbsp;</td>
     <td class="main"><?php echo $date_error; ?></td>
   </tr>
 <?php
@@ -309,18 +310,18 @@ if (!isset($date_error)) $date_error=NULL;
 ?>
   <tr>
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-	<td class="main"><?php echo TEXT_TORIHIKIKIBOUJIKAN; ?></td>
+  <td class="main"><?php echo TEXT_TORIHIKIKIBOUJIKAN; ?></td>
     <td class="main">
-	<select name="hour" onChange="selectHour('<?php echo $hours; ?>', '<?php echo $mimutes; ?>')">
-	  <option value="">--</option>
-	</select>
-	&nbsp;時&nbsp;
-	<select name="min">
-	  <option value="">--</option>
-	</select>
-	&nbsp;分&nbsp;
-	<?php echo TEXT_CHECK_24JI; ?>
-	</td>
+  <select name="hour" onChange="selectHour('<?php echo $hours; ?>', '<?php echo $mimutes; ?>')">
+    <option value="">--</option>
+  </select>
+  &nbsp;時&nbsp;
+  <select name="min">
+    <option value="">--</option>
+  </select>
+  &nbsp;分&nbsp;
+  <?php echo TEXT_CHECK_24JI; ?>
+  </td>
   </tr>
 <?php
 if (!isset($jikan_error)) $jikan_error=NULL;
@@ -328,27 +329,27 @@ if (!isset($jikan_error)) $jikan_error=NULL;
 ?>
   <tr>
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-	<td class="main">&nbsp;</td>
+  <td class="main">&nbsp;</td>
     <td class="main"><?php echo $jikan_error; ?></td>
   </tr>
 <?php
   }
 ?>
 </table>
-				  </td> 
+          </td> 
                 </tr> 
               </table></td> 
           </tr> 
           <tr> 
             <td>
-				<?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?>
-				<p class="smalltext">
-					「指定した時間より早くできるなら早く来てほしい」をご指定いただきましたお客様へ<br>
-					ご入金確認後、最短にて目的地へお届けにまいります。<br>
-					お客様がいらっしゃらない場合は、ご指定いただきました日時へ変更させていただきます。
-				</p>
-				<?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?>
-			</td> 
+        <?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?>
+        <p class="smalltext">
+          「指定した時間より早くできるなら早く来てほしい」をご指定いただきましたお客様へ<br>
+          ご入金確認後、最短にて目的地へお届けにまいります。<br>
+          お客様がいらっしゃらない場合は、ご指定いただきました日時へ変更させていただきます。
+        </p>
+        <?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?>
+      </td> 
           </tr>
           <tr> 
             <td><table border="0" width="95%" cellspacing="1" class="formArea"> 

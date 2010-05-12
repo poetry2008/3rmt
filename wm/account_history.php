@@ -45,15 +45,18 @@
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
               <td><?php
-  $history_query_raw = "select o.orders_id, o.date_purchased, o.delivery_name, ot.text as order_total, s.orders_status_name from " . TABLE_ORDERS . " o left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id) left join " .  TABLE_ORDERS_STATUS . " s on (o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "') where o.customers_id = '" . $customer_id . "' and ot.class = 'ot_total' and o.site_id = '".SITE_ID."' order by orders_id DESC";
+  $history_query_raw = "select o.orders_id, o.date_purchased, o.delivery_name, ot.text as order_total, s.orders_status_name from " . TABLE_ORDERS . " o left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id) left join " .  TABLE_ORDERS_STATUS . " s on (o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "') where o.customers_id = '" . $customer_id . "' and ot.class = 'ot_total' and o.site_id = ".SITE_ID." order by orders_id DESC";
   $history_split = new splitPageResults($_GET['page'], MAX_DISPLAY_ORDER_HISTORY, $history_query_raw, $history_numrows);
+// ccdd
   $history_query = tep_db_query($history_query_raw);
 
   $info_box_contents = array();
 
   if (tep_db_num_rows($history_query)) {
     while ($history = tep_db_fetch_array($history_query)) {
-      $products_query = tep_db_query("select count(*) as count from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . $history['orders_id'] . "'");
+//ccdd
+      $products_query = tep_db_query
+("select count(*) as count from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . $history['orders_id'] . "'");
       $products = tep_db_fetch_array($products_query);
 
       $order_heading = '<table border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n" .

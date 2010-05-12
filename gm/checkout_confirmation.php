@@ -50,38 +50,38 @@
 ////
 // check if bank info
   if(isset($_POST['bank_name'])) {
-	$bank_name = tep_db_prepare_input($_POST['bank_name']);
-	$bank_shiten = tep_db_prepare_input($_POST['bank_shiten']);
-	$bank_kamoku = tep_db_prepare_input($_POST['bank_kamoku']);
-	$bank_kouza_num = tep_db_prepare_input($_POST['bank_kouza_num']);
-	$bank_kouza_name = tep_db_prepare_input($_POST['bank_kouza_name']);
-	
-	tep_session_register('bank_name');
-	tep_session_register('bank_shiten');
-	tep_session_register('bank_kamoku');
-	tep_session_register('bank_kouza_num');
-	tep_session_register('bank_kouza_name');
-	
-	if($bank_name == '') {
-	  tep_session_unregister('bank_name');
+  $bank_name = tep_db_prepare_input($_POST['bank_name']);
+  $bank_shiten = tep_db_prepare_input($_POST['bank_shiten']);
+  $bank_kamoku = tep_db_prepare_input($_POST['bank_kamoku']);
+  $bank_kouza_num = tep_db_prepare_input($_POST['bank_kouza_num']);
+  $bank_kouza_name = tep_db_prepare_input($_POST['bank_kouza_name']);
+  
+  tep_session_register('bank_name');
+  tep_session_register('bank_shiten');
+  tep_session_register('bank_kamoku');
+  tep_session_register('bank_kouza_num');
+  tep_session_register('bank_kouza_name');
+  
+  if($bank_name == '') {
+    tep_session_unregister('bank_name');
       tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'bank_error=' . urlencode(TEXT_BANK_ERROR_NAME), 'SSL'));
-	}
-	if($bank_shiten == '') {
-	  tep_session_unregister('bank_shiten');
+  }
+  if($bank_shiten == '') {
+    tep_session_unregister('bank_shiten');
       tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'bank_error=' . urlencode(TEXT_BANK_ERROR_SHITEN), 'SSL'));
-	}
-	if($bank_kouza_num == '') {
-	  tep_session_unregister('bank_kouza_num');
+  }
+  if($bank_kouza_num == '') {
+    tep_session_unregister('bank_kouza_num');
       tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'bank_error=' . urlencode(TEXT_BANK_ERROR_KOUZA_NUM), 'SSL'));
-	}
-	if (!preg_match("/^[0-9]+$/", $bank_kouza_num)) {
-	  tep_session_unregister('bank_kouza_num');
+  }
+  if (!preg_match("/^[0-9]+$/", $bank_kouza_num)) {
+    tep_session_unregister('bank_kouza_num');
       tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'bank_error=' . urlencode(TEXT_BANK_ERROR_KOUZA_NUM2), 'SSL'));
-	}	
-	if($bank_kouza_name == '') {
-	  tep_session_unregister('bank_kouza_name');
+  } 
+  if($bank_kouza_name == '') {
+    tep_session_unregister('bank_kouza_name');
       tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'bank_error=' . urlencode(TEXT_BANK_ERROR_KOUZA_NAME), 'SSL'));
-	}
+  }
   }  
 
 // load the selected payment module
@@ -200,9 +200,8 @@
   }
 
   for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
-    $_product_info_query = tep_db_query("select p.products_id, pd.products_name, pd.products_attention_1,pd.products_attention_2,pd.products_attention_3,pd.products_attention_4,pd.products_attention_5,pd.products_description, p.products_model, p.products_quantity, p.products_image,p.products_image2,p.products_image3, pd.products_url, p.products_price, p.products_tax_class_id, p.products_date_added, p.products_date_available, p.manufacturers_id, p.products_bflag, p.products_cflag, p.products_small_sum from " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_status = '1' and p.products_id = '" . $order->products[$i]['id'] . "' and pd.products_id = p.products_id and pd.language_id = '" . $languages_id . "' and pd.site_id = '".SITE_ID."'");
-    tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_viewed = products_viewed+1 where products_id = '" .  (int)$_GET['products_id'] . "' and language_id = '" . $languages_id . "' and site_id = '".SITE_ID."'");
-    $product_info = tep_db_fetch_array($_product_info_query);
+    //ccdd
+    $product_info = tep_get_product_by_id($order->products[$i]['id'], SITE_ID, $languages_id);
     $data1 = explode("//", $product_info['products_attention_1']);
     
     echo '          <tr>' . "\n" .
@@ -349,10 +348,10 @@
                   <?php
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
     if($_POST['point'] < $order->info['subtotal']) {
-	  $point = $_POST['point'];
-	} else {
-	  $point = $order->info['subtotal'];
-	}
+    $point = $_POST['point'];
+  } else {
+    $point = $order->info['subtotal'];
+  }
     tep_session_register('point');
   }
   
@@ -361,61 +360,62 @@
     echo $order_total_modules->output();
   }
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
-	// ここからカスタマーレベルに応じたポイント還元率算出============================================================
-	// 2005.11.17 K.Kaneko
-	if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
-	  //設定した期間内の注文合計金額を算出------------
-	  $ptoday = date("Y-m-d H:i:s", time());
-	  $pstday_array = getdate();
-	  $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
-	  
-	  $total_buyed_date = 0;
-	  $customer_level_total_query = tep_db_query("select * from orders where customers_id = '".$customer_id."' and date_purchased >= '".$pstday."' and site_id = '".SITE_ID."'");
-	  if(tep_db_num_rows($customer_level_total_query)) {
-	    while($customer_level_total = tep_db_fetch_array($customer_level_total_query)) {
-	      $cltotal_subtotal_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_subtotal'");
-		  $cltotal_subtotal = tep_db_fetch_array($cltotal_subtotal_query);
-		
-	      $cltotal_point_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_point'");
-		  $cltotal_point = tep_db_fetch_array($cltotal_subtotal_query);
-	     
-		  $total_buyed_date += ($cltotal_subtotal['value'] - $cltotal_point['value']);
-	    }
-	  }
-	  //----------------------------------------------
-	  
-	  //還元率を計算----------------------------------
-	  if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
-	    $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
-		$back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
-		for($j=0; $j<sizeof($back_rate_array); $j++) {
-		  $back_rate_array2 = explode(",", $back_rate_array[$j]);
-		  if($back_rate_array2[2] <= $total_buyed_date) {
-		    $back_rate = $back_rate_array2[1];
-			$back_rate_name = $back_rate_array2[0];
-		  }
-		}
-	  } else {
-		$back_rate_array = explode(",", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
-		if($back_rate_array[2] <= $total_buyed_date) {
-		  $back_rate = $back_rate_array[1];
-		  $back_rate_name = $back_rate_array[0];
-		}
-	  }
-	  //----------------------------------------------
-	  $point_rate = $back_rate;
-	} else {
-	  $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
-	}
-	// ここまでカスタマーレベルに応じたポイント還元率算出============================================================
-	//$get_point = ($order->info['subtotal'] - (int)$point) * MODULE_ORDER_TOTAL_POINT_FEE;
-	$get_point = ($order->info['subtotal'] - (int)$point) * $point_rate;
-	
-	tep_session_register('get_point');
-	echo '<tr>' . "\n";
-	echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
-	echo '<td align="right" class="main"><br>'.(int)$get_point.'&nbsp;P</td>' . "\n";
-	echo '</tr>' . "\n";
+  // ここからカスタマーレベルに応じたポイント還元率算出============================================================
+  // 2005.11.17 K.Kaneko
+  if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
+    //設定した期間内の注文合計金額を算出------------
+    $ptoday = date("Y-m-d H:i:s", time());
+    $pstday_array = getdate();
+    $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
+    
+    $total_buyed_date = 0;
+    // ccdd
+    $customer_level_total_query = tep_db_query("select * from orders where customers_id = '".$customer_id."' and date_purchased >= '".$pstday."' and site_id = ".SITE_ID);
+    if(tep_db_num_rows($customer_level_total_query)) {
+      while($customer_level_total = tep_db_fetch_array($customer_level_total_query)) {
+        $cltotal_subtotal_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_subtotal'");
+      $cltotal_subtotal = tep_db_fetch_array($cltotal_subtotal_query);
+    
+        $cltotal_point_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_point'");
+      $cltotal_point = tep_db_fetch_array($cltotal_subtotal_query);
+       
+      $total_buyed_date += ($cltotal_subtotal['value'] - $cltotal_point['value']);
+      }
+    }
+    //----------------------------------------------
+    
+    //還元率を計算----------------------------------
+    if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
+      $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
+    $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
+    for($j=0; $j<sizeof($back_rate_array); $j++) {
+      $back_rate_array2 = explode(",", $back_rate_array[$j]);
+      if($back_rate_array2[2] <= $total_buyed_date) {
+        $back_rate = $back_rate_array2[1];
+      $back_rate_name = $back_rate_array2[0];
+      }
+    }
+    } else {
+    $back_rate_array = explode(",", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
+    if($back_rate_array[2] <= $total_buyed_date) {
+      $back_rate = $back_rate_array[1];
+      $back_rate_name = $back_rate_array[0];
+    }
+    }
+    //----------------------------------------------
+    $point_rate = $back_rate;
+  } else {
+    $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
+  }
+  // ここまでカスタマーレベルに応じたポイント還元率算出============================================================
+  //$get_point = ($order->info['subtotal'] - (int)$point) * MODULE_ORDER_TOTAL_POINT_FEE;
+  $get_point = ($order->info['subtotal'] - (int)$point) * $point_rate;
+  
+  tep_session_register('get_point');
+  echo '<tr>' . "\n";
+  echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
+  echo '<td align="right" class="main"><br>'.(int)$get_point.'&nbsp;P</td>' . "\n";
+  echo '</tr>' . "\n";
   }
 ?>
                 </table>
@@ -523,8 +523,8 @@
   //character  
   if(isset($_SESSION['character'])){
     foreach($_SESSION['character'] as $ck => $cv){
-	  echo tep_draw_hidden_field("character[$ck]", $cv);
-	}
+    echo tep_draw_hidden_field("character[$ck]", $cv);
+  }
   }
   
   echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER) . '</form>' . "\n";

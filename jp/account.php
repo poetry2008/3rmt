@@ -54,16 +54,16 @@
           </td>
         </tr>
         <?php 
-	  //Point
-	  if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { 
+    //Point
+    if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { 
 //ccdd
-	  $point_query = tep_db_query("
+    $point_query = tep_db_query("
         select point 
         from " . TABLE_CUSTOMERS . " 
         where customers_id = '" . $customer_id . "'
     ");
-	  $point = tep_db_fetch_array($point_query);
-	  ?>
+    $point = tep_db_fetch_array($point_query);
+    ?>
         <tr>
           <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
         </tr>
@@ -96,7 +96,7 @@
             <tr>
 <!--
               <td align="center" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_ADDRESS_BOOK, '', 'SSL') . '">' . tep_image_button('button_address_book.gif', IMAGE_BUTTON_ADDRESS_BOOK) . '</a>'; ?></td>
--->			  
+-->       
               <td align="center" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_HISTORY, '', 'SSL') . '">' . tep_image_button('button_history.gif', IMAGE_BUTTON_HISTORY) . '</a>'; ?></td>
               <td align="center" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, '', 'SSL') . '">' . tep_image_button('button_notifications.gif', IMAGE_BUTTON_NOTIFICATIONS) . '</a>'; ?></td>
               <td align="center" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL') . '">' . tep_image_button('button_edit_account.gif', IMAGE_BUTTON_EDIT_ACCOUNT) . '</a>'; ?></td>

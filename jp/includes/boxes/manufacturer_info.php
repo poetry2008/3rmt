@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   if (isset($_GET['products_id'])) {
@@ -34,7 +27,7 @@
 <!-- manufacturer_info_eof //-->
 <?php
     } else {
-	  echo '---';
-	}
+    echo '---';
+  }
   }
 ?>

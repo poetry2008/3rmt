@@ -1,36 +1,32 @@
 <?php
 /*
   $Id$
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-  Copyright (c) 2003 osCommerce
-  Released under the GNU General Public License
 */
 ?>
 <!-- login //-->
 <script type="text/javascript" src="js/logincheck.js"></script>
 <?php
-	if (!tep_session_is_registered('customer_id')) {
+  if (!tep_session_is_registered('customer_id')) {
 ?>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" summary="login">
-	<tr>
-		<td height="100" align="center"><a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT,'','SSL'); ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/box/signup.gif',HEADER_TITLE_CREATE_ACCOUNT,'164','150'); ?></a></td>
-	</tr>
+  <tr>
+    <td height="100" align="center"><a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT,'','SSL'); ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/box/signup.gif',HEADER_TITLE_CREATE_ACCOUNT,'164','150'); ?></a></td>
+  </tr>
 </table>
 <?php 
    }
 ?>
 <?php
-	if (!tep_session_is_registered('customer_id')) {
+  if (!tep_session_is_registered('customer_id')) {
 ?>
 <?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process', 'SSL'), 'post', 'onSubmit="return msg();"') . "\n"; ?>
-	<table border="0" width="162" cellpadding="0" cellspacing="0" style="margin: 5px 5px 10px 5px;" summary="login box">
-		<tr>
-        	<td><img src="images/design/box/login_top_bg.gif" width="162" height="15" alt="" ></td>
+  <table border="0" width="162" cellpadding="0" cellspacing="0" style="margin: 5px 5px 10px 5px;" summary="login box">
+    <tr>
+          <td><img src="images/design/box/login_top_bg.gif" width="162" height="15" alt="" ></td>
         </tr>
         <tr>
-        	<td id="login_form">
-            	<table width="152" summary="login">
+          <td id="login_form">
+              <table width="152" summary="login">
                     <tr>
                         <td width="35" style="padding-left: 5px;"><?php echo tep_image(DIR_WS_IMAGES.'design/box/id.gif','メールアドレス','10','8','class="middle"');?></td>
                         <td><div class="login_text_box"><input type="text" name="email_address" class="login_text" value=""></div></td>
@@ -45,66 +41,34 @@
                                 <img class="middle" src="images/design/box/login_arrow.gif" width="5" height="6" alt="">
                                 PW忘れた?
                             </a>
-                        	<input type="image" align="middle" class="login_submit" name="image" alt="<?php echo HEADER_TITLE_LOGIN ; ?>" src="images/design/button/login.gif">
+                          <input type="image" align="middle" class="login_submit" name="image" alt="<?php echo HEADER_TITLE_LOGIN ; ?>" src="images/design/button/login.gif">
                         </td>
                     </tr>
                 </table>
             </td>
         </tr>
         <tr>
-        	<td height="15" style="background: url(images/design/box/login_bottom_bg.gif) top no-repeat;"></td>
+          <td height="15" style="background: url(images/design/box/login_bottom_bg.gif) top no-repeat;"></td>
         </tr>
-	</table>
+  </table>
 </form>
 <?php 
-	} else { 
-		if($guestchk == '1') {
+  } else { 
+    if($guestchk == '1') {
 ?>
 <?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process', 'SSL'), 'post', 'onSubmit="return msg();"') . "\n"; ?>
-	<!--
-    <table border="0" align="center" cellpadding="0" cellspacing="0" style="margin-top:5px; ">
-		<tr>
-			<td width="25" height="25"><?php echo tep_image(DIR_WS_IMAGES.'design/box/id.gif','メールアドレス','10','8');?></td>
-			<td><input type="text" name="email_address" size="20"></td>
-		</tr>
-		<tr>
-			<td height="25"><?php echo tep_image(DIR_WS_IMAGES.'design/box/pw.gif','パスワード','17','8');?></td>
-			<td><input type="password" name="password" size="20"></td>
-		</tr>
-	</table>
-	<table width="100%" border="0" cellspacing="0" cellpadding="0">
-		<tr>
-			<td height="35" class="smallText" style="padding-left:5px; ">
-				<a href="<?php echo tep_href_link(FILENAME_PASSWORD_FORGOTTEN,'',SSL);?>" class="back_password">
-					<img class="middle" src="images/design/box/arrow_1.gif" width="5" height="5" hspace="2" alt="">
-					PW忘れた?
-				</a>
-			</td>
-			<td align="right" style="padding-right:5px; "><input type="image" name="image" alt="<?php echo HEADER_TITLE_LOGIN ; ?>" src="images/design/button/login.gif"></td>
-		</tr>
-		<tr>
-			<td height="1" colspan="2" bgcolor="#CCCCCC"></td>
-		</tr>
-	</table>
-</form>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-	<tr>
-		<td height="100" align="center"><a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT,'',SSL); ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/box/signup.gif',HEADER_TITLE_CREATE_ACCOUNT,'158','90'); ?></a></td>
-	</tr>
-</table>
--->
 <table width="100%" border="0" cellspacing="0" cellpadding="0" summary="login">
-	<tr>
-		<td height="100" align="center"><a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT,'',SSL); ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/box/signup.gif',HEADER_TITLE_CREATE_ACCOUNT,'164','150'); ?></a></td>
-	</tr>
+  <tr>
+    <td height="100" align="center"><a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT,'',SSL); ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/box/signup.gif',HEADER_TITLE_CREATE_ACCOUNT,'164','150'); ?></a></td>
+  </tr>
 </table>
-	<table border="0" width="162" cellpadding="0" cellspacing="0" style="margin: 5px 5px 10px 5px;" summary="login box">
-		<tr>
-        	<td><img src="images/design/box/login_top_bg.gif" width="162" height="15" alt="" ></td>
+  <table border="0" width="162" cellpadding="0" cellspacing="0" style="margin: 5px 5px 10px 5px;" summary="login box">
+    <tr>
+          <td><img src="images/design/box/login_top_bg.gif" width="162" height="15" alt="" ></td>
         </tr>
         <tr>
-        	<td id="login_form">
-            	<table width="152" summary="login">
+          <td id="login_form">
+              <table width="152" summary="login">
                     <tr>
                         <td width="35" style="padding-left: 5px;"><?php echo tep_image(DIR_WS_IMAGES.'design/box/id.gif','メールアドレス','10','8','class="middle"');?></td>
                         <td><div class="login_text_box"><input type="text" name="email_address" class="login_text"></div></td>
@@ -119,19 +83,19 @@
                                 <img class="middle" src="images/design/box/login_arrow.gif" width="5" height="6" alt="">
                                 PW忘れた?
                             </a>
-                        	<input type="image" align="middle" class="login_submit" name="image" alt="<?php echo HEADER_TITLE_LOGIN ; ?>" src="images/design/button/login.gif">
+                          <input type="image" align="middle" class="login_submit" name="image" alt="<?php echo HEADER_TITLE_LOGIN ; ?>" src="images/design/button/login.gif">
                         </td>
                     </tr>
                 </table>
             </td>
         </tr>
         <tr>
-        	<td height="15" style="background: url(images/design/box/login_bottom_bg.gif) top no-repeat;"></td>
+          <td height="15" style="background: url(images/design/box/login_bottom_bg.gif) top no-repeat;"></td>
         </tr>
-	</table>
+  </table>
 </form>
-<?php	
-		} else {
+<?php 
+    } else {
 ?>
 <table border="0" width="162" cellpadding="0" cellspacing="0" style="margin: 5px 5px 10px 5px;" summary="login box">
     <tr>
@@ -173,7 +137,7 @@
     </tr>
 </table>
 <?php 
-		}
- 	} 
+    }
+  } 
 ?>
 <!-- login_eof //-->

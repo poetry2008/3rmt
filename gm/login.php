@@ -24,7 +24,18 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
     $password = tep_db_prepare_input($_POST['password']);
 
 // Check if email exists
-    $check_customer_query = tep_db_query("select customers_id, customers_firstname, customers_lastname, customers_password, customers_email_address, customers_default_address_id, customers_guest_chk from " . TABLE_CUSTOMERS .  " where customers_email_address = '" . tep_db_input($email_address) . "' and site_id = '".SITE_ID."'");
+//ccdd
+    $check_customer_query = tep_db_query("
+        SELECT customers_id, 
+               customers_firstname, 
+               customers_lastname, 
+               customers_password, 
+               customers_email_address, 
+               customers_default_address_id, 
+               customers_guest_chk 
+        FROM " . TABLE_CUSTOMERS .  " 
+        WHERE customers_email_address = '" . tep_db_input($email_address) . "' 
+          AND site_id = ".SITE_ID);
     if (!tep_db_num_rows($check_customer_query)) {
       $_GET['login'] = 'fail';
     } else {
@@ -37,7 +48,14 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
           tep_session_recreate();
         }
 
-        $check_country_query = tep_db_query("select entry_country_id, entry_zone_id from " . TABLE_ADDRESS_BOOK . " where customers_id = '" .  $check_customer['customers_id'] . "' and address_book_id = '1'");
+//ccdd
+        $check_country_query = tep_db_query("
+            SELECT entry_country_id, 
+                   entry_zone_id 
+            FROM " . TABLE_ADDRESS_BOOK . " 
+            WHERE customers_id = '" . $check_customer['customers_id'] . "' 
+              AND address_book_id = '1'
+        ");
         $check_country = tep_db_fetch_array($check_country_query);
 
         $customer_id = $check_customer['customers_id'];
@@ -53,31 +71,52 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
         tep_session_register('customer_country_id');
         tep_session_register('customer_zone_id');
 
-		$guestchk = $check_customer['customers_guest_chk'];
-		tep_session_register('guestchk');
+        $guestchk = $check_customer['customers_guest_chk'];
+        tep_session_register('guestchk');
 
         $date_now = date('Ymd');
-        tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_of_last_logon = now(), customers_info_number_of_logons = customers_info_number_of_logons+1 where customers_info_id = '" . $customer_id . "'");
-		
-		//POINT_LIMIT CHECK ポイントの有効期限チェック ds-style
-		if(MODULE_ORDER_TOTAL_POINT_LIMIT != '0') {
-		  $plimit_count_query = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS." where  customers_id = '".$customer_id."'");
-		  $plimit_count = tep_db_fetch_array($plimit_count_query);
-		  
-		  if($plimit_count['cnt'] > 0) {
-		  $plimit_query = tep_db_query("select date_purchased from ".TABLE_ORDERS." where customers_id = '".$customer_id."' order by date_purchased desc limit 1");
-		  $plimit = tep_db_fetch_array($plimit_query);
-		  $p_year = substr($plimit['date_purchased'], 0, 4);
-		  $p_mon = substr($plimit['date_purchased'], 5, 2);
-		  $p_day = substr($plimit['date_purchased'], 8, 2);
+//ccdd
+        tep_db_query("
+            UPDATE " . TABLE_CUSTOMERS_INFO . " 
+            SET customers_info_date_of_last_logon = now(), 
+                customers_info_number_of_logons   = customers_info_number_of_logons+1 
+            WHERE customers_info_id = '" . $customer_id . "'
+        ");
+            
+    //POINT_LIMIT CHECK ポイントの有効期限チェック ds-style
+    if(MODULE_ORDER_TOTAL_POINT_LIMIT != '0') {
+//ccdd
+      $plimit_count_query = tep_db_query("
+          SELECT count(*) as cnt 
+          FROM ".TABLE_ORDERS." 
+          WHERE customers_id = '".$customer_id."' 
+            AND site_id = '".SITE_ID."'
+      ");
+      $plimit_count = tep_db_fetch_array($plimit_count_query);
+      
+      if($plimit_count['cnt'] > 0) {
+//ccdd
+      $plimit_query = tep_db_query("
+          SELECT date_purchased 
+          FROM ".TABLE_ORDERS." 
+          WHERE customers_id = '".$customer_id."' 
+            AND site_id = '".SITE_ID."' 
+          ORDER BY date_purchased DESC 
+          LIMIT 1
+      ");
+      $plimit = tep_db_fetch_array($plimit_query);
+      $p_year = substr($plimit['date_purchased'], 0, 4);
+      $p_mon = substr($plimit['date_purchased'], 5, 2);
+      $p_day = substr($plimit['date_purchased'], 8, 2);
 
-		  $now = time();
-		  $point_limit = mktime(0, 0, 0, $p_mon, $p_day+MODULE_ORDER_TOTAL_POINT_LIMIT, $p_year);
-		    if($now > $point_limit) {
-			  tep_db_query("update ".TABLE_CUSTOMERS." set point = '0' where customers_id = '".$customer_id."'");
-			}
-		  }
-		}
+      $now = time();
+      $point_limit = mktime(0, 0, 0, $p_mon, $p_day+MODULE_ORDER_TOTAL_POINT_LIMIT, $p_year);
+        if($now > $point_limit) {
+//ccdd
+          tep_db_query("update ".TABLE_CUSTOMERS." set point = '0' where customers_id = '".$customer_id."' and site_id = '".SITE_ID."'");
+        }
+      }
+    }
 
 // restore cart contents
         $cart->restore_contents();
@@ -179,9 +218,9 @@ function session_win() {
                 </tr>
               </table></td>
             </tr>
-			<tr>
-			  <td colspan="2"><div class="sep">&nbsp;</div></td>
-			</tr>
+      <tr>
+        <td colspan="2"><div class="sep">&nbsp;</div></td>
+      </tr>
             <tr>
               <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
             </tr>
@@ -231,17 +270,17 @@ function session_win() {
           </td>
         </tr>
       </table>
-	<p class="box_des" style="margin-right:5px;">
-		<i><strong>SSL認証</strong></i><br>
-		当サイトでは、実在性の証明とプライバシー保護のため、日本ジオトラストのSSLサーバ証明書を使用し、SSL暗号化通信を実現しています。
-		ブラウザのURLが「<?php echo HTTPS_SERVER;?>〜」で始まるURLであることを確認ください。
-		以下に掲載するジオトラスト発行済み スマートシールのクリックにより、サーバ証明書の検証結果をご確認ください。
-	</p>
-	<p align="center">
-		<!-- GeoTrust Smart Icon tag. Do not edit. -->
-		<script type="text/javascript" src="//smarticon.geotrust.com/si.js"></script>
-		<!-- END of GeoTrust Smart Icon tag -->
-	</p>
+  <p class="box_des" style="margin-right:5px;">
+    <i><strong>SSL認証</strong></i><br>
+    当サイトでは、実在性の証明とプライバシー保護のため、日本ジオトラストのSSLサーバ証明書を使用し、SSL暗号化通信を実現しています。
+    ブラウザのURLが「<?php echo HTTPS_SERVER;?>〜」で始まるURLであることを確認ください。
+    以下に掲載するジオトラスト発行済み スマートシールのクリックにより、サーバ証明書の検証結果をご確認ください。
+  </p>
+  <p align="center">
+    <!-- GeoTrust Smart Icon tag. Do not edit. -->
+    <script type="text/javascript" src="//smarticon.geotrust.com/si.js"></script>
+    <!-- END of GeoTrust Smart Icon tag -->
+  </p>
 <div class="sep" style="margin-right:20px;">&nbsp;</div>
 <?php echo TEXT_POINT ; ?>
       </form></div></div>

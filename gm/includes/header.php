@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
 // check if the 'install' directory exists, and warn of its existence
@@ -105,7 +98,7 @@ if (fflag==0)
     <li>
     <?php
       // add info romaji 
-      $co_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where pID = '26'"); 
+      $co_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where pID = '26' and site_id = '".SITE_ID."'"); 
       $co_res = tep_db_fetch_array($co_query); 
       if ($co_res) { 
     ?>
@@ -117,7 +110,7 @@ if (fflag==0)
     <li>
     <?php
       // add info romaji 
-      $gu_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where pID = '25'"); 
+      $gu_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where pID = '25' and site_id = '".SITE_ID."'"); 
       $gu_res = tep_db_fetch_array($gu_query); 
       if ($gu_res) { 
     ?>

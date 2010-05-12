@@ -148,7 +148,6 @@
                           'site_id' => SITE_ID,
                           'torihiki_date' => $insert_torihiki_date
                 );
-  // ccdd
   if (isset($_POST['codt_fee'])) {
     $sql_data_array['code_fee'] =  intval($_POST['codt_fee']);
   } else if (isset($_POST['money_order_fee'])) {
@@ -167,6 +166,7 @@
     $sql_data_array['code_fee'] = $orign_hand_fee + $buy_handle_fee; 
     $new_handle_fee = $sql_data_array['code_fee'];
   }
+  // ccdd
   tep_db_perform(TABLE_ORDERS, $sql_data_array);
   //$insert_id = tep_db_insert_id();
   for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
@@ -197,7 +197,7 @@
     $bbbank .= TEXT_BANK_KOUZA_NUM . '：' . $bank_kouza_num . "\n";
     $bbbank .= TEXT_BANK_KOUZA_NAME . '：' . $bank_kouza_name;
 
-  $sql_data_array = array('orders_id' => $insert_id, 
+    $sql_data_array = array('orders_id' => $insert_id, 
                             'orders_status_id' => $order->info['order_status'], 
                             'date_added' => 'now()', 
                             'customer_notified' => $customer_notification,
@@ -445,7 +445,7 @@
   $email_order .= '▼お支払金額　　　：' . strip_tags($ot['text']) . "\n";
   if (is_object($$payment)) {
     $payment_class = $$payment;
-  $email_order .= '▼お支払方法　　　：' . $payment_class->title . "\n";
+    $email_order .= '▼お支払方法　　　：' . $payment_class->title . "\n";
   }
   if ($payment == 'moneyorder') {
     $email_order .= C_BANK."\n"; 
@@ -460,12 +460,12 @@
   
   if(tep_not_null($bbbank)) {
     $email_order .= '▼お支払先金融機関' . "\n";
-  $email_order .= $bbbank . "\n";
-  $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
-  //$email_order .= '・本メールに記載された当社キャラクター宛に商品をトレードしてください。' . "\n";
-  $email_order .= '・当社にて商品の受領確認がとれましたら代金お支払い手続きに入ります。' . "\n";
-  $email_order .= '・本メール送信後7日以内に取引が完了できない場合、' . "\n";
-  $email_order .= '　当社は、お客様がご注文を取り消されたものとして取り扱います。' . "\n\n";
+    $email_order .= $bbbank . "\n";
+    $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
+    //$email_order .= '・本メールに記載された当社キャラクター宛に商品をトレードしてください。' . "\n";
+    $email_order .= '・当社にて商品の受領確認がとれましたら代金お支払い手続きに入ります。' . "\n";
+    $email_order .= '・本メール送信後7日以内に取引が完了できない場合、' . "\n";
+    $email_order .= '　当社は、お客様がご注文を取り消されたものとして取り扱います。' . "\n\n";
   }
   
   //$email_order .= '------------------------------------------' . "\n";
@@ -480,7 +480,7 @@
   
   $email_order .= '▼備考　　　　　　：' . "\n";
   if (trim($order->info['comments'])) {
-    $email_order .= tep_db_output($order->info['comments']) . "\n";
+    $email_order .= $order->info['comments'] . "\n";
   }
   //$email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
   
@@ -527,17 +527,17 @@
   $email_printing_order .= 'メールアドレス　：' . $order->customer['email_address'] . "\n";
   $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
   if ($point > 0) {
-  $email_printing_order .= '□ポイント割引　　：' . $point . '円' . "\n";
+    $email_printing_order .= '□ポイント割引　　：' . $point . '円' . "\n";
   }
   $email_printing_order .= 'お支払金額　　　：' . strip_tags($ot['text']) . "\n";
   if (is_object($$payment)) {
     $payment_class = $$payment;
-  $email_printing_order .= 'お支払方法　　　：' . $payment_class->title . "\n";
+    $email_printing_order .= 'お支払方法　　　：' . $payment_class->title . "\n";
   }
   
   if(tep_not_null($bbbank)) {
     $email_printing_order .= 'お支払先金融機関' . "\n";
-  $email_printing_order .= $bbbank . "\n";
+    $email_printing_order .= $bbbank . "\n";
   }
   
   $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
@@ -545,7 +545,7 @@
 
   $email_printing_order .= '備考　　　　　　：' . "\n";
   if ($order->info['comments']) {
-    $email_printing_order .= tep_db_output($order->info['comments']) . "\n";
+    $email_printing_order .= $order->info['comments'] . "\n";
   }
 
   /*
@@ -566,7 +566,7 @@
   $email_printing_order .= '信用調査' . "\n";
 //ccdd
   $credit_inquiry_query = tep_db_query("select customers_fax, customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
-    $credit_inquiry = tep_db_fetch_array($credit_inquiry_query);
+  $credit_inquiry       = tep_db_fetch_array($credit_inquiry_query);
   
   $email_printing_order .= $credit_inquiry['customers_fax'] . "\n";
   $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
@@ -682,11 +682,11 @@
   if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
     if(MODULE_ORDER_TOTAL_POINT_ADD_STATUS == '0') {
 //ccdd
-    tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . intval($get_point - $point) . " where customers_id = " . $customer_id );
+      tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . intval($get_point - $point) . " where customers_id = " . $customer_id );
     } else {
 //ccdd
-    tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point - " . intval($point) . " where customers_id = " . $customer_id );
-  }
+      tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point - " . intval($point) . " where customers_id = " . $customer_id );
+    }
   }
   
   
@@ -705,8 +705,8 @@
   tep_session_unregister('payment');
   tep_session_unregister('comments');
   if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
-  tep_session_unregister('point');
-  tep_session_unregister('get_point');
+    tep_session_unregister('point');
+    tep_session_unregister('get_point');
   }
   
   tep_session_unregister('torihikihouhou');

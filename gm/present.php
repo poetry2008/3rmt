@@ -12,19 +12,13 @@
 
   require('includes/application_top.php');
   
-  //forward 404
-if (isset($_GET['goods_id'])) {
-  $_404_query = tep_db_query("select * from " . TABLE_PRESENT_GOODS. " where
-      goods_id = '" . intval($_GET['goods_id']) . "'");
-  $_404 = tep_db_fetch_array($_404_query);
-
-  forward404Unless($_404);
-}
-	
-  if($_GET['goods_id']) {
-    $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$_GET['goods_id']."'") ;
-	$present = tep_db_fetch_array($present_query) ;
-  }	
+  if(isset($_GET['goods_id']) && $_GET['goods_id']) {
+//ccdd
+    $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$_GET['goods_id']."' and site_id = '" . SITE_ID . "'") ;
+    $present = tep_db_fetch_array($present_query) ;
+    //forward 404
+    forward404Unless($present);
+  } 
   
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRESENT);
 
@@ -55,19 +49,26 @@ function popupWindow(url) {
       <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0">
         <tr>
           <td><?php
-		  ######################
-		  ##    詳細ページ    ##
-		  ######################
-		  if($_GET['goods_id'] && !empty($_GET['goods_id'])) {
-		  $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$_GET['goods_id']."'") ;
-		  $present = tep_db_fetch_array($present_query) ;
-		  ?>
+      ######################
+      ##    詳細ページ    ##
+      ######################
+      if($_GET['goods_id'] && !empty($_GET['goods_id'])) {
+//ccdd
+      $present_query = tep_db_query("
+          select * 
+          from ".TABLE_PRESENT_GOODS." 
+          where goods_id = '".(int)$_GET['goods_id']."' 
+            and site_id  = '" . SITE_ID . "'
+      ") ;
+      $present = tep_db_fetch_array($present_query) ;
+      forward404Unless($present);
+      ?>
           <p align="right" class="box_des">応募期間 <?php echo tep_date_long($present['start_date']) . '&nbsp;&nbsp;&nbsp;〜&nbsp;&nbsp;&nbsp;' . tep_date_long($present['limit_date']) ; ?></p>
           <table class="box_des" border="0" cellspacing="0" cellpadding="2" align="right">
             <tr>
               <td align="center" class="smallText"><script type="text/javascript"><!--
-			document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link('present_popup_image.php', 'pID=' . (int)$_GET['goods_id']) . '\\\')">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '<br>イメージを拡大</a>'; ?>');
-			//--></script>
+      document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link('present_popup_image.php', 'pID=' . (int)$_GET['goods_id']) . '\\\')">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '<br>イメージを拡大</a>'; ?>');
+      //--></script>
               <noscript>
               <?php echo tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right"'); ?>
               </noscript>
@@ -76,12 +77,12 @@ function popupWindow(url) {
           </table>
           <p class="box_des">
             <?php 
-				  if($present['html_check'] == '1') {
-				    echo stripslashes($present['text']); 
+          if($present['html_check'] == '1') {
+            echo stripslashes($present['text']); 
                   }else{
-				    echo nl2br($present['text']); 
-			      }
-				 ?>
+            echo nl2br($present['text']); 
+            }
+         ?>
           </p>
           <br>
           <table class="box_des" width="100%" border="0" cellpadding="2" cellspacing="0">
@@ -91,17 +92,22 @@ function popupWindow(url) {
             </tr>
           </table>
           <?php
-		  ######################
-		  ##    一覧ページ    ##
-		  ######################
-		  } else {
-		  ?>
+      ######################
+      ##    一覧ページ    ##
+      ######################
+      } else {
+      ?>
           <?php
-			  $today = date("Y-m-d", time());
-			  $present_query_raw = "select * from ".TABLE_PRESENT_GOODS." order by start_date DESC";
-			  $present_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $present_query_raw, $present_numrows);
-			  $present_query = tep_db_query($present_query_raw);
-	?>
+        $today = date("Y-m-d", time());
+        $present_query_raw = "
+              select * from ".TABLE_PRESENT_GOODS."  
+              where site_id = '" . SITE_ID . "'
+              order by start_date DESC
+        ";
+        $present_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $present_query_raw, $present_numrows);
+//ccdd
+        $present_query = tep_db_query($present_query_raw);
+  ?>
           <br>
           <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
             <tr>
@@ -112,16 +118,16 @@ function popupWindow(url) {
           <div class="underline">&nbsp;</div>
           <table class="box_des" border="0" width="100%" cellspacing="1" cellpadding="2">
             <?php 
-	 
-			  while($present = tep_db_fetch_array($present_query)){
-			    $row ++ ;
-			  /*  if (($row/2) == floor($row/2)) {
-				  $_class = "productListing-even";
-			    } else {
-				  $_class = "productListing-odd" ;
-			    }
-			  */	
-			  ?>
+   
+        while($present = tep_db_fetch_array($present_query)){
+          $row ++ ;
+        /*  if (($row/2) == floor($row/2)) {
+          $_class = "productListing-even";
+          } else {
+          $_class = "productListing-odd" ;
+          }
+        */  
+        ?>
             <tr class="<?php //echo $_class ; ?>">
               <td class="main" width="<?php echo SMALL_IMAGE_WIDTH ; ?>"><?php echo '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],NONSSL).'">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"') . '</a>'; ?></td>
               <td class="main"><b><?php echo '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],NONSSL).'">'. $present['title'].'</a>' ; ?></b> <br>
@@ -129,17 +135,17 @@ function popupWindow(url) {
               <p class="smallText"><?php echo substr(strip_tags($present['text']),0,100) ; ?>..</p></td>
             </tr>
             <?php
-			  }
-			  ?>
+        }
+        ?>
           </table>
           <?php
-		  }
-		  ?>
+      }
+      ?>
           </td>
         </tr>
         <?php
-		if (!$_GET['goods_id'] && ($present_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '2') || (PREV_NEXT_BAR_LOCATION == '3'))) {
-		?>
+    if (!$_GET['goods_id'] && ($present_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '2') || (PREV_NEXT_BAR_LOCATION == '3'))) {
+    ?>
         <tr>
           <td><div class="underline">&nbsp;</div>
           <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -150,8 +156,8 @@ function popupWindow(url) {
           </table></td>
         </tr>
         <?php
-		}
-		?>
+    }
+    ?>
       </table></div>
       <!-- body_text_eof //--> 
 <!-- right_navigation //--> 

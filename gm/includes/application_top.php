@@ -1,28 +1,19 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
   $GLOBALS['HTTP_GET_VARS']    = $_GET;
-
   $GLOBALS['HTTP_POST_VARS']   = $_POST;
-
   $GLOBALS['HTTP_SERVER_VARS'] = $_SERVER;
 
 //Japan location
-  setlocale (LC_ALL, 'ja_JP.eucJP');
+  setlocale (LC_ALL, 'ja_JP.UTF-8');
 
 // start the timer for the page parse time log
   define('PAGE_PARSE_START_TIME', microtime());
 
 // set the level of error reporting
-  error_reporting(E_ALL & ~E_DEPRECATED);
+  error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
   ini_set("display_errors", "On");
 
 // check if register_globals is enabled.
@@ -39,6 +30,9 @@
 
 // include server parameters
   require('includes/configure.php');
+
+// Set lib path
+  ini_set('include_path',ini_get('include_path').':'.DIR_FS_3RMTLIB);
 
 // define the project version
   define('PROJECT_VERSION', 'osCommerce 2.2-MS1');
@@ -134,8 +128,6 @@
   define('TABLE_CATEGORIES_DESCRIPTION', 'categories_description');
   define('TABLE_CONFIGURATION', 'configuration');
   define('TABLE_CONFIGURATION_GROUP', 'configuration_group');
-  define('TABLE_COUNTER', 'counter');
-  define('TABLE_COUNTER_HISTORY', 'counter_history');
   define('TABLE_COUNTRIES', 'countries');
   define('TABLE_CURRENCIES', 'currencies');
   define('TABLE_CUSTOMERS', 'customers');
@@ -208,11 +200,18 @@
   tep_db_connect() or die('Unable to connect to database server!');
 
 // set the application parameters (can be modified through the administration tool)
+  // ccdd
   $configuration_query = mysql_query('select configuration_key as cfgKey, configuration_value as cfgValue from ' . TABLE_CONFIGURATION . ' where site_id = ' . SITE_ID);
   while ($configuration = mysql_fetch_array($configuration_query)) {
     define($configuration['cfgKey'], $configuration['cfgValue']);
   }
-  
+// 将其它设置加入到本站，即主站的信息
+  $configuration_query = mysql_query('select configuration_key as cfgKey, configuration_value as cfgValue from ' . TABLE_CONFIGURATION . ' where site_id = 0' );
+  while ($configuration = mysql_fetch_array($configuration_query)) {
+      if (!defined($configuration['cfgKey'])) {
+    define($configuration['cfgKey'], $configuration['cfgValue']);
+      }
+  } 
 // if gzip_compression is enabled, start to buffer the output
   if ( (GZIP_COMPRESSION == 'true') && ($ext_zlib_loaded = extension_loaded('zlib')) && (PHP_VERSION >= '4') ) {
     if (($ini_zlib_output_compression = (int)ini_get('zlib.output_compression')) < 1) {
@@ -274,7 +273,7 @@
 
    if (function_exists('session_set_cookie_params')) {
     //session_set_cookie_params(0, substr(DIR_WS_CATALOG, 0, -1));
-	session_set_cookie_params(0, '/');
+  session_set_cookie_params(0, '/');
   }
 
   tep_session_start();
@@ -307,6 +306,7 @@
     }
 
     include(DIR_WS_CLASSES . 'language.php');
+    
     if (isset($_GET['language'])) {
       $lng = new language($_GET['language']);
     } else {
@@ -431,10 +431,27 @@
                                 }
                                 if (!is_array($notify)) $notify = array($notify);
                                 for ($i=0, $n=sizeof($notify); $i<$n; $i++) {
-                                  $check_query = tep_db_query("select count(*) as count from " . TABLE_PRODUCTS_NOTIFICATIONS . " where products_id = '" . $notify[$i] . "' and customers_id = '" . $customer_id . "'");
+                                  // ccdd
+                                  $check_query = tep_db_query("
+                                      select count(*) as count 
+                                      from " . TABLE_PRODUCTS_NOTIFICATIONS . " 
+                                      where products_id = '" . $notify[$i] . "' 
+                                        and customers_id = '" . $customer_id . "'
+                                  ");
                                   $check = tep_db_fetch_array($check_query);
                                   if ($check['count'] < 1) {
-                                    tep_db_query("insert into " . TABLE_PRODUCTS_NOTIFICATIONS . " (products_id, customers_id, date_added) values ('" . $notify[$i] . "', '" . $customer_id . "', now())");
+                                    // ccdd
+                                    tep_db_query("
+                                        insert into " . TABLE_PRODUCTS_NOTIFICATIONS . " (
+                                          products_id, 
+                                          customers_id, 
+                                          date_added
+                                        ) values (
+                                          '" . $notify[$i] . "', 
+                                          '" . $customer_id . "', 
+                                          now()
+                                        )
+                                    ");
                                   }
                                 }
                                 tep_redirect(tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('action', 'notify'))));
@@ -444,10 +461,21 @@
                               }
                               break;
       case 'notify_remove' :  if (tep_session_is_registered('customer_id') && isset($_GET['products_id'])) {
-                                $check_query = tep_db_query("select count(*) as count from " . TABLE_PRODUCTS_NOTIFICATIONS . " where products_id = '" . $_GET['products_id'] . "' and customers_id = '" . $customer_id . "'");
+                                // ccdd
+                                $check_query = tep_db_query("
+                                    select count(*) as count 
+                                    from " . TABLE_PRODUCTS_NOTIFICATIONS . " 
+                                    where products_id = '" . $_GET['products_id'] . "' 
+                                      and customers_id = '" . $customer_id . "'
+                                ");
                                 $check = tep_db_fetch_array($check_query);
                                 if ($check['count'] > 0) {
-                                  tep_db_query("delete from " . TABLE_PRODUCTS_NOTIFICATIONS . " where products_id = '" . $_GET['products_id'] . "' and customers_id = '" . $customer_id . "'");
+                                  // ccdd
+                                  tep_db_query("
+                                      delete from " . TABLE_PRODUCTS_NOTIFICATIONS . " 
+                                      where products_id = '" . $_GET['products_id'] . "' 
+                                        and customers_id = '" . $customer_id . "'
+                                  ");
                                 }
                                 tep_redirect(tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('action'))));
                               } else {
@@ -519,7 +547,16 @@
 // add category names or the manufacturer name to the breadcrumb trail
   if (isset($cPath_array)) {
     for ($i=0, $n=sizeof($cPath_array); $i<$n; $i++) {
-      $categories_query = tep_db_query("select categories_name from " .  TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" .  $cPath_array[$i] . "' and language_id='" . $languages_id . "' and site_id = '".SITE_ID."'");
+      // ccdd
+      $categories_query = tep_db_query("
+          select categories_name 
+          from " .  TABLE_CATEGORIES_DESCRIPTION . " 
+          where categories_id = '" .  $cPath_array[$i] . "' 
+            and language_id='" . $languages_id . "' 
+            and (site_id = ".SITE_ID." or site_id = 0)
+          order by site_id DESC
+          limit 1" 
+      );
       if (tep_db_num_rows($categories_query) > 0) {
         $categories = tep_db_fetch_array($categories_query);
         $breadcrumb->add($categories['categories_name'], tep_href_link(FILENAME_DEFAULT, 'cPath=' . implode('_', array_slice($cPath_array, 0, ($i+1)))));
@@ -528,7 +565,12 @@
       }
     }
   } elseif (isset($_GET['manufacturers_id'])) {
-    $manufacturers_query = tep_db_query("select manufacturers_name from " . TABLE_MANUFACTURERS . " where manufacturers_id = '" . $_GET['manufacturers_id'] . "'");
+    // ccdd
+    $manufacturers_query = tep_db_query("
+        select manufacturers_name 
+        from " . TABLE_MANUFACTURERS . " 
+        where manufacturers_id = '" . $_GET['manufacturers_id'] . "'
+    ");
     $manufacturers = tep_db_fetch_array($manufacturers_query);
     $breadcrumb->add($manufacturers['manufacturers_name'], tep_href_link(FILENAME_DEFAULT, 'manufacturers_id=' . $_GET['manufacturers_id']));
   } elseif (isset($_GET['action']) && $_GET['action'] == 'select') {
@@ -537,13 +579,17 @@
 
 // add the products model to the breadcrumb trail
   if (isset($_GET['products_id'])) {
-    /*$model_query = tep_db_query("select products_model from " . TABLE_PRODUCTS . " where products_id = '" . $_GET['products_id'] . "'");
+  // ccdd
+    $model_query = tep_db_query("
+        select products_name 
+        from " .  TABLE_PRODUCTS_DESCRIPTION . " 
+        where products_id = '" .  $_GET['products_id'] . "' 
+          and language_id ='" . $languages_id . "' 
+          and (site_id     = ".SITE_ID." or site_id = 0)
+        order by site_id DESC
+        limit 1
+        ");
     $model = tep_db_fetch_array($model_query);
-    $breadcrumb->add($model['products_model'], tep_href_link(FILENAME_PRODUCT_INFO, 'cPath=' . $cPath . '&products_id=' . $_GET['products_id']));
-*/
-    $model_query = tep_db_query("select products_name from " .  TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" .  $_GET['products_id'] . "' and language_id='" . $languages_id . "' and site_id = '".SITE_ID."'");
-    $model = tep_db_fetch_array($model_query);
-    //$breadcrumb->add($model['products_name'], tep_href_link(FILENAME_PRODUCT_INFO, 'cPath=' . $cPath . '&products_id=' . $_GET['products_id']));
     $breadcrumb->add($model['products_name'], tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $_GET['products_id']));
   }
   // add tags
@@ -563,13 +609,27 @@
   define('WARN_SESSION_AUTO_START', 'true');
   define('WARN_DOWNLOAD_DIRECTORY_NOT_READABLE', 'true');
 
-// Include OSC-AFFILIATE
-  //require(DIR_WS_INCLUDES . 'affiliate_application_top.php');
-  
-// Include edit application_top.php
-  require(DIR_WS_INCLUDES . 'add_apprication_top.php');
   //for sql_log
   $testArray = array();
   $logNumber = 1;
   //end for sql_log
-?>
+
+// SESSION REGISTER
+if (!isset($_GET['ajax'])) $_GET['ajax']= NULL;
+switch($_GET['ajax']){
+  case 'on' :
+    $ajax = 'on' ;
+    break;
+  case 'off' :
+    $ajax = 'off' ;
+    break;
+}
+
+tep_session_register('ajax');
+
+# 注文上限金額設定
+  if(substr(basename($PHP_SELF),0,9) == 'checkout_') {
+    if(DS_LIMIT_PRICE < $cart->show_total()) {
+      tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, 'limit_error=true'));
+    }
+  }

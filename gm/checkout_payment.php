@@ -52,6 +52,7 @@
     $billto = $customer_default_address_id;
   } else {
 // verify the selected billing address
+//ccdd
     $check_address_query = tep_db_query("select count(*) as total from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . (int)$customer_id . "' and address_book_id = '" . (int)$billto . "'");
     $check_address = tep_db_fetch_array($check_address_query);
 
@@ -82,8 +83,9 @@
   
   //Add point
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
-  $point_query = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "' and site_id = '".SITE_ID."'");
-  $point = tep_db_fetch_array($point_query);
+//ccdd
+    $point_query = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
+    $point = tep_db_fetch_array($point_query);
   }
 ?>
 <?php page_head();?>
@@ -144,9 +146,9 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
   $hanbai_sale = $cart->get_products();
   $cnt=0;
   for ($i=0, $n=sizeof($hanbai_sale); $i<$n; $i++) {
-	if($hanbai_sale[$i]['bflag'] == '0') {
-	  $cnt++;
-	}
+  if($hanbai_sale[$i]['bflag'] == '0') {
+    $cnt++;
+  }
   }
 
   if($cnt > 0) {
@@ -216,8 +218,8 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
   $radio_buttons = 0;
   for ($i=0, $n=sizeof($selection); $i<$n; $i++) {
     if($selection[$i]['id'] == 'buying') {
-	  //buying not view
-	} else {
+    //buying not view
+  } else {
 ?> 
                         <tr> 
                           <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
@@ -277,7 +279,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
                         </tr> 
                         <?php
     $radio_buttons++;
-	}//buying not view
+  }//buying not view
   }
 ?> 
                       </table></td> 
@@ -287,18 +289,18 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
             <tr> 
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
-			
+      
 <?php
   }//販売終了
   else {
     # 強制的に買い取りモジュールを選択済みにする
-	echo '<input type="hidden" name="payment" value="buying">';
+  echo '<input type="hidden" name="payment" value="buying">';
   }
 
   $bflag_cnt = ds_count_bflag();
   if($bflag_cnt == 'View') {
 ?>
-			
+      
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des"> 
                   <tr> 
@@ -318,16 +320,16 @@ if (!isset($bank_kamoku)) $bank_kamoku=NULL;
 
   switch($bank_kamoku) {
     case TEXT_BANK_SELECT_KAMOKU_F:
-	default:
-	  $bank_sele_f = true;
-	  $bank_sele_t = false;
-	  break;
-	case TEXT_BANK_SELECT_KAMOKU_T:
-	  $bank_sele_f = false;
-	  $bank_sele_t = true;
-	  break;
+  default:
+    $bank_sele_f = true;
+    $bank_sele_t = false;
+    break;
+  case TEXT_BANK_SELECT_KAMOKU_T:
+    $bank_sele_f = false;
+    $bank_sele_t = true;
+    break;
   }
-?>						  
+?>              
 <table width="100%" border="0" cellspacing="0" cellpadding="2" class="box_des">
 <?php
   if (isset($_GET['bank_error']) && tep_not_null($_GET['bank_error'])) {
@@ -337,14 +339,14 @@ if (!isset($bank_kamoku)) $bank_kamoku=NULL;
     <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice"> 
       <tr class="infoBoxNoticeContents"> 
         <td>
-	    <table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des"> 
+      <table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des"> 
           <tr> 
             <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
             <td class="main" width="100%" valign="top"><font color="red"><?php echo urldecode($_GET['bank_error']); ?></font></td> 
             <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
           </tr> 
         </table>
-	    </td>
+      </td>
       </tr>
     </table>
     </td>
@@ -357,36 +359,36 @@ if (!isset($bank_kamoku)) $bank_kamoku=NULL;
 ?>
   <tr>
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-	<td class="main" width="30%"><?php echo TEXT_BANK_NAME; ?></td>
+  <td class="main" width="30%"><?php echo TEXT_BANK_NAME; ?></td>
     <td class="main" width="70%"><?php echo tep_draw_input_field('bank_name', ''); ?></td>
   </tr>
   <tr>
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-	<td class="main"><?php echo TEXT_BANK_SHITEN; ?></td>
+  <td class="main"><?php echo TEXT_BANK_SHITEN; ?></td>
     <td class="main"><?php echo tep_draw_input_field('bank_shiten', ''); ?></td>
   </tr>
   <tr>
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-	<td class="main"><?php echo TEXT_BANK_KAMOKU; ?></td>
+  <td class="main"><?php echo TEXT_BANK_KAMOKU; ?></td>
     <td class="main">
-	<?php echo tep_draw_radio_field('bank_kamoku',TEXT_BANK_SELECT_KAMOKU_F ,$bank_sele_f) . '&nbsp;' . TEXT_BANK_SELECT_KAMOKU_F; ?>
-	&nbsp;&nbsp;
-	<?php echo tep_draw_radio_field('bank_kamoku',TEXT_BANK_SELECT_KAMOKU_T ,$bank_sele_t) . '&nbsp;' . TEXT_BANK_SELECT_KAMOKU_T; ?>
-	</td>
+  <?php echo tep_draw_radio_field('bank_kamoku',TEXT_BANK_SELECT_KAMOKU_F ,$bank_sele_f) . '&nbsp;' . TEXT_BANK_SELECT_KAMOKU_F; ?>
+  &nbsp;&nbsp;
+  <?php echo tep_draw_radio_field('bank_kamoku',TEXT_BANK_SELECT_KAMOKU_T ,$bank_sele_t) . '&nbsp;' . TEXT_BANK_SELECT_KAMOKU_T; ?>
+  </td>
   </tr>
   <tr>
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-	<td class="main"><?php echo TEXT_BANK_KOUZA_NUM; ?></td>
+  <td class="main"><?php echo TEXT_BANK_KOUZA_NUM; ?></td>
     <td class="main"><?php echo tep_draw_input_field('bank_kouza_num', ''); ?></td>
   </tr>
   <tr>
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-	<td class="main"><?php echo TEXT_BANK_KOUZA_NAME; ?></td>
+  <td class="main"><?php echo TEXT_BANK_KOUZA_NAME; ?></td>
     <td class="main"><?php echo tep_draw_input_field('bank_kouza_name', ''); ?></td>
   </tr>
-</table>						  
-						  
-						  </td> 
+</table>              
+              
+              </td> 
                         </tr> 
                       </table></td> 
                   </tr> 
@@ -398,14 +400,14 @@ if (!isset($bank_kamoku)) $bank_kamoku=NULL;
 <?php
   } else {
     # 買い取り商品が無かった場合
-	tep_session_unregister('bank_name');
-	tep_session_unregister('bank_shiten');
-	tep_session_unregister('bank_kamoku');
-	tep_session_unregister('bank_kouza_num');
-	tep_session_unregister('bank_kouza_name');
+  tep_session_unregister('bank_name');
+  tep_session_unregister('bank_shiten');
+  tep_session_unregister('bank_kamoku');
+  tep_session_unregister('bank_kouza_num');
+  tep_session_unregister('bank_kouza_name');
   }
 ?>
-			
+      
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des"> 
                   <tr> 
@@ -428,11 +430,11 @@ if (!isset($bank_kamoku)) $bank_kamoku=NULL;
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
             <?php
-			if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {//point --  
-			  if($guestchk == '1') {
-			    echo '<input type="hidden" name="point" value="0">';
-			  } else {
-			?> 
+      if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {//point --  
+        if($guestchk == '1') {
+          echo '<input type="hidden" name="point" value="0">';
+        } else {
+      ?> 
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des"> 
                   <tr> 
@@ -456,9 +458,9 @@ if (!isset($bank_kamoku)) $bank_kamoku=NULL;
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
             <?php 
-			  }
-			}//point eof// 
-			?> 
+        }
+      }//point eof// 
+      ?> 
             <tr> 
               <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="box_des"> 
                   <tr> 

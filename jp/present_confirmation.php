@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
@@ -27,7 +20,7 @@
         where goods_id = '".(int)$_GET['goods_id']."' 
           and site_id  = '".SITE_ID."'
     ") ;
-  $present = tep_db_fetch_array($present_query) ;
+    $present = tep_db_fetch_array($present_query) ;
   }else{
     tep_redirect(tep_href_link(FILENAME_PRESENT, 'error_message='.urlencode(TEXT_PRESENT_ERROR_NOT_SELECTED), 'SSL'));  
   }
@@ -70,16 +63,16 @@ if (isset($_GET['action'])) {
     
       $cmcnt = $cmcnt_result['cnt'];
 
-    //update mail_mag
-    if($cmcnt != 0) {
-    //ccdd
-      tep_db_query("
-          update ".TABLE_CUSTOMERS." 
-          set customers_newsletter = '1' 
-          where customers_email_address = '".tep_db_prepare_input($email_address)."' 
-            and site_id ='".SITE_ID."'
-      ");
-    }
+      //update mail_mag
+      if($cmcnt != 0) {
+      //ccdd
+        tep_db_query("
+            update ".TABLE_CUSTOMERS." 
+            set customers_newsletter = '1' 
+            where customers_email_address = '".tep_db_prepare_input($email_address)."' 
+              and site_id ='".SITE_ID."'
+        ");
+      }
     } else {
       $cmcnt = 0;
     }
@@ -104,7 +97,6 @@ if (isset($_GET['action'])) {
       // ccdd
       tep_db_perform(TABLE_MAIL_MAGAZINE, $sql_data_array2);
     }
-    
     
     tep_redirect(tep_href_link(FILENAME_PRESENT_SUCCESS,'goods_id='.$_GET['goods_id']));
     break;
@@ -228,15 +220,15 @@ if (isset($_GET['action'])) {
           $telephone      = $account['customers_telephone'];
           $suburb         = $account['entry_suburb'];
           
-        tep_session_register('firstname');
-        tep_session_register('lastname');
-        tep_session_register('email_address');
-        tep_session_register('telephone');
-        tep_session_register('street_address');
-        tep_session_register('suburb');
-        tep_session_register('postcode');
-        tep_session_register('city');
-        tep_session_register('zone_id');
+          tep_session_register('firstname');
+          tep_session_register('lastname');
+          tep_session_register('email_address');
+          tep_session_register('telephone');
+          tep_session_register('street_address');
+          tep_session_register('suburb');
+          tep_session_register('postcode');
+          tep_session_register('city');
+          tep_session_register('zone_id');
           }
   }
 }

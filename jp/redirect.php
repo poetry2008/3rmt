@@ -3,7 +3,6 @@
   $Id$
 
   跳转
-
 */
 
   require('includes/application_top.php');
@@ -87,4 +86,3 @@
     default:       tep_redirect(tep_href_link(FILENAME_DEFAULT));
                    break;
   }
-?>

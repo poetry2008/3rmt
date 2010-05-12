@@ -1,7 +1,6 @@
 <?php
 /*
   $Id$
-
 */
 
   require('includes/application_top.php');
@@ -51,10 +50,10 @@ WHERE address_book_id > " . tep_db_input($entry_id)  . " AND customers_id = '" .
     $company = tep_db_prepare_input($_POST['company']);
     $firstname = tep_db_prepare_input($_POST['firstname']);
     $lastname = tep_db_prepare_input($_POST['lastname']);
-	
-	$firstname_f = tep_db_prepare_input($_POST['firstname_f']);
+  
+  $firstname_f = tep_db_prepare_input($_POST['firstname_f']);
     $lastname_f = tep_db_prepare_input($_POST['lastname_f']);
-	
+  
     $street_address = tep_db_prepare_input($_POST['street_address']);
     $suburb = tep_db_prepare_input($_POST['suburb']);
     $postcode = tep_db_prepare_input($_POST['postcode']);
@@ -96,8 +95,8 @@ WHERE address_book_id > " . tep_db_input($entry_id)  . " AND customers_id = '" .
     } else {
       $lasttname_error = false;
     }
-	
-	if (strlen($firstname_f) < ENTRY_FIRST_NAME_MIN_LENGTH) {
+  
+  if (strlen($firstname_f) < ENTRY_FIRST_NAME_MIN_LENGTH) {
       $firstname_f_error = true;
       $error = true;
     } else {
@@ -187,10 +186,10 @@ WHERE address_book_id > " . tep_db_input($entry_id)  . " AND customers_id = '" .
 // 2003-06-06 add_telephone
       $sql_data_array = array('entry_firstname' => $firstname,
                               'entry_lastname' => $lastname,
-							  
-							  'entry_firstname_f' => $firstname_f,
+                
+                'entry_firstname_f' => $firstname_f,
                               'entry_lastname_f' => $lastname_f,
-							  
+                
                               'entry_street_address' => $street_address,
                               'entry_postcode' => $postcode,
                               'entry_city' => $city,
