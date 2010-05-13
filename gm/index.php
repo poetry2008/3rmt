@@ -4,7 +4,7 @@
 */
 
   require('includes/application_top.php');
-  require(DIR_WS_ACTIONS.'index_nested.php');
+  require(DIR_WS_ACTIONS.'index_top.php');
 
 ?>
 <?php page_head();?>

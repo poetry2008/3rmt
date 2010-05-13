@@ -1,23 +1,23 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 Will Mays
-
-  Released under the GNU General Public License
 */
 ?>
 <!-- latest_news //-->
 <p class="pageHeading">RMTジャックポットからのお知らせ</p>
+<div class="comment">
 <div id="news">
     <ul class="news_ul">
 
 <?php
 //ccdd
-    $latest_news_query = tep_db_query('SELECT * from ' . TABLE_LATEST_NEWS . ' WHERE status = 1 and site_id = '.SITE_ID.' ORDER BY isfirst DESC, date_added DESC LIMIT 5');
+    $latest_news_query = tep_db_query('
+      SELECT * 
+      from ' . TABLE_LATEST_NEWS . ' 
+      WHERE status = 1 
+        and site_id = '.SITE_ID.' 
+      ORDER BY isfirst DESC, date_added DESC LIMIT 5
+    ');
     if (!tep_db_num_rows($latest_news_query)) { // there is no news
       echo '<!-- ' . TEXT_NO_LATEST_NEWS . ' -->';
     } else {
@@ -39,18 +39,11 @@
                 } else {
                     $latest_news_new = '';
                 }
-    /*
-                $info_box_contents[$row] = array('align' => 'left',
-                                                            'params' => 'class="smallText" valign="top"',
-                                                            'text' =>
-                                                            tep_date_short($latest_news['date_added']) . '&nbsp;&nbsp;&nbsp;&nbsp;<a href="' . FILENAME_LATEST_NEWS . '?news_id=' . $latest_news['news_id'] . '">' . $latest_news['headline'] . '&nbsp;&nbsp;' . $latest_news_image . '</a><br>');
-    */
                 echo '        <li class="news_list">
                 ' . tep_date_short($latest_news['date_added']) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'news_id=' . $latest_news['news_id']) . '">' . $latest_news['headline'] . $latest_news_new .'</a>
             </li>'."\n";          
                 $row++;
             }
-            // new contentBox($info_box_contents);
         }
     ?>
         </ul>
@@ -59,4 +52,5 @@
         <a href='<?php echo tep_href_link('latest_news.php');?>'>more</a>
         <?php //<img src="includes/languages/japanese/images/buttons/button_more.gif" width="56" height="25" alt="more" title="more" >?>
     </div>
+</div>
 <!-- latest_news_eof //-->

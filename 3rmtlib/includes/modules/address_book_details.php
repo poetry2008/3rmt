@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   if (!isset($process)) $process = false;
@@ -186,14 +179,14 @@
   $address_form->setFormLine('telephone',ENTRY_TELEPHONE_NUMBER,$a_value);
 
 ?>
-<table border="0" width="100%" cellspacing="0" cellpadding="2">
+<table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
   <tr>
     <td class="formAreaTitle"><?php echo CATEGORY_PERSONAL; ?></td>
   </tr>
   <tr>
-    <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
+    <td><table border="0" width="100%" cellspacing="0" cellpadding="2"  class="box_des">
       <tr>
-        <td><table border="0" cellspacing="0" cellpadding="2">
+        <td><table class="box_des" border="0" cellspacing="0" cellpadding="2">
 <?php
   $address_form->printCategoryPersonal();
 ?>
@@ -208,9 +201,9 @@
     <td class="formAreaTitle"><br><?php echo CATEGORY_COMPANY; ?></td>
   </tr>
   <tr>
-    <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
+    <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des">
       <tr>
-        <td class="main"><table border="0" cellspacing="0" cellpadding="2">
+        <td class="main"><table class="box_des" border="0" cellspacing="0" cellpadding="2">
 <?php
   $address_form->printCategoryCompany();
 ?>
@@ -225,7 +218,7 @@
     <td class="formAreaTitle"><br><?php echo CATEGORY_ADDRESS; ?></td>
   </tr>
   <tr>
-    <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
+    <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des formArea">
       <tr>
         <td class="main"><table border="0" cellspacing="0" cellpadding="2">
 <?php
