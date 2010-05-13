@@ -407,14 +407,12 @@
     return tep_draw_pull_down_menu($name, $zones_array, $selected, $parameters);
   }
   function thumbimage ($image, $x, $y, $aspectratio, $resize, $cachedir){
-
-
      $types = array (1 => "gif", "jpeg", "png", "swf", "psd", "wbmp");
      $not_supported_formats = array ("GIF"); 
      umask(0);
      !is_dir ($cachedir)
          ? mkdir ($cachedir, 0777)
-         : system ("chmod 0777 ".$cachedir);
+         : chmod($cachedir, 0777);
 
        (!isset ($x) || ereg ('^[0-9]{1,}$', $x, $regs)) &&
        (!isset ($y) || ereg ('^[0-9]{1,}$', $y, $regs)) &&
@@ -514,7 +512,7 @@
      umask(0);
      !is_dir ($cachedir)
          ? mkdir ($cachedir, 0777)
-         : system ("chmod 0777 ".$cachedir);
+         : chmod($cachedir, 0777);
 
        (!isset ($x) || ereg ('^[0-9]{1,}$', $x, $regs)) &&
        (!isset ($y) || ereg ('^[0-9]{1,}$', $y, $regs)) &&
@@ -616,7 +614,7 @@ return $image;
      umask(0);
      !is_dir ($cachedir)
          ? mkdir ($cachedir, 0777)
-         : system ("chmod 0777 ".$cachedir);
+         : chmod($cachedir, 0777);
 
        (!isset ($x) || ereg ('^[0-9]{1,}$', $x, $regs)) &&
        (!isset ($y) || ereg ('^[0-9]{1,}$', $y, $regs)) &&

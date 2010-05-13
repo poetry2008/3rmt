@@ -1,0 +1,13 @@
+﻿<a href="http://www.hotgame.co.jp/" class="blank">オンラインゲーム</a>
+<a href="http://www.hotgame.co.jp/" class="blank">ネットゲーム</a>
+<a href="http://www.hotgame.co.jp/Action/member.php?ACTION=ChatSelectForm&amp;SUBJECT=Bbs" class="blank">オンラインゲーム掲示板</a>
+<a href="http://www.hotgame.co.jp/Action/member.php?ACTION=ItemTradeSelectForm&amp;SUBJECT=Bbs" class="blank">MMORPG アイテムトレード</a>
+<a href="http://www.hotgame.co.jp/Action/member.php?ACTION=MemberSearchForm&amp;SUBJECT=Search" class="blank">オンラインゲーム フレンドサーチ</a>
+<a href="http://www.hotgame.co.jp/Action/member.php?ACTION=FanSiteSearchForm&amp;SUBJECT=Search" class="blank">オンラインゲーム ファンサイト</a>
+<a href="http://www.hotgame.co.jp/Action/member.php?ACTION=AskSelectForm&amp;SUBJECT=Bbs" class="blank">オンラインゲーム 質問掲示板</a>
+<a href="http://www.hotgame.co.jp/Action/member.php?ACTION=ChatForm&amp;SUBJECT=Bbs&amp;GameID=1&amp;ChatID=51" class="blank">FF11 攻略</a>
+<a href="http://www.hotgame.co.jp/Action/member.php?ACTION=ChatForm&amp;SUBJECT=Bbs&amp;GameID=2&amp;ChatID=36" class="blank">ラグナロク 攻略</a>
+<a href="http://www.hotgame.co.jp/Action/member.php?ACTION=ChatForm&amp;SUBJECT=Bbs&amp;GameID=3&amp;ChatID=37" class="blank">リネージュ2 攻略</a>
+<a href="http://www.hotgame.co.jp/Action/member.php?ACTION=AskForm&amp;SUBJECT=Bbs&amp;GameID=1" class="blank">FF11 攻略</a>
+<a href="http://www.hotgame.co.jp/Action/member.php?ACTION=AskForm&amp;SUBJECT=Bbs&amp;GameID=2" class="blank">ラグナロク 攻略</a>
+<a href="http://www.hotgame.co.jp/Action/member.php?ACTION=AskForm&amp;SUBJECT=Bbs&amp;GameID=3" class="blank">リネージュ2 攻略</a>
