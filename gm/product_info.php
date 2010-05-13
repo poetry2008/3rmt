@@ -119,7 +119,6 @@ function change_num(ob, targ, quan,a_quan)
           AND language_id = '" . $languages_id . "' 
           AND site_id     = '".SITE_ID."'
     ");
-    $product_info = tep_db_fetch_array($product_info_query);
 
     if ($new_price = tep_get_products_special_price($product_info['products_id'])) {
       $pricedef = $new_price;
