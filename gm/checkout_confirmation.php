@@ -447,7 +447,6 @@
                     <td class="main" colspan="4"><?php echo str_replace(' />','>',$confirmation['title']); ?></td>
                   </tr>
                   <?php
-                  if (!isset($confirmation['fields'])) $confirmation['fields']=NULL;
       for ($i=0, $n=sizeof($confirmation['fields']); $i<$n; $i++) {
 ?>
                   <tr>
@@ -459,6 +458,23 @@
                   <?php
       }
 ?>
+                <?php
+                  if ($bflag_cnt == 'View' && false) {
+                    $con_show_fee = calc_buy_handle($order->info['total']); 
+                    if ($con_show_fee != 0) { 
+                ?>
+                    <tr> 
+                      <td class="main" colspan="4"><?php echo CONFIRMATION_BUYING_TEXT_TITLE; ?></td> </tr> 
+                    <tr> 
+                      <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                      <td class="main"><?php echo CONFIRMATION_BUYING_TEXT_FEE.$currencies->format($con_show_fee); ?></td> 
+                      <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                      <td class="main">&nbsp;</td> 
+                    </tr> 
+                <?php
+                    }
+                  }
+                ?>
                 </table>
               </td>
             </tr>

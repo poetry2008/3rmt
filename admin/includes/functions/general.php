@@ -2107,8 +2107,7 @@ function tep_get_image_document_image($document_id)
             ?>">all</a></span>
           <?php } else { ?>
             <span><a href="<?php 
-              //echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'rID')));
-              echo tep_href_link($filename);
+              echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'oID', 'rID', 'cID')));
             ?>">all</a></span> 
             <?php } ?>
           <?php foreach (tep_get_sites() as $site) {?>
@@ -2116,8 +2115,7 @@ function tep_get_image_document_image($document_id)
 <span class="site_filter_selected"><?php echo $site['romaji'];?></span>
             <?php } else {?>
 <span><a href="<?php 
-  //echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'rID')) . 'site_id=' . $site['id']);
-  echo tep_href_link($filename, 'site_id=' . $site['id']);
+  echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'oID', 'rID', 'cID', 'pID')) . 'site_id=' . $site['id']);
 ?>"><?php echo $site['romaji'];?></a></span>
             <?php }
            }

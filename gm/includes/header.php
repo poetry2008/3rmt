@@ -93,12 +93,12 @@ if (fflag==0)
 <div id="h_menubar">
   <ul>
     <li><a href="<?php echo tep_href_link(FILENAME_SITEMAP,'','NONSSL');?>">サイトマップ</a>|</li>
-    <li><a href="<?php echo tep_href_link(FILENAME_LATEST_NEWS,'','NONSSL');?>">お知らせ</a>|</li>
+    <!-- <li><a href="<?php echo tep_href_link(FILENAME_LATEST_NEWS,'','NONSSL');?>">お知らせ</a>|</li> -->
     <li><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'','NONSSL');?>">ショッピングカート</a>|</li>
     <li>
     <?php
       // add info romaji 
-      $co_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where pID = '26' and site_id = '".SITE_ID."'"); 
+      $co_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where pID = '16' and site_id = '".SITE_ID."'"); 
       $co_res = tep_db_fetch_array($co_query); 
       if ($co_res) { 
     ?>
@@ -110,7 +110,7 @@ if (fflag==0)
     <li>
     <?php
       // add info romaji 
-      $gu_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where pID = '25' and site_id = '".SITE_ID."'"); 
+      $gu_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where pID = '15' and site_id = '".SITE_ID."'"); 
       $gu_res = tep_db_fetch_array($gu_query); 
       if ($gu_res) { 
     ?>

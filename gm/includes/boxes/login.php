@@ -9,7 +9,8 @@
    if (!tep_session_is_registered('customer_id')) {
 ?>
 <?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process', 'SSL'), 'post', 'onSubmit="return msg();"')."\n"; ?>
-<div class="box_des">ログイン</div> 
+<div class="login_right01">
+<div class="box_des01">ログイン</div> 
 <table  border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
     <td width="25" height="25">Email:</td>
@@ -26,11 +27,14 @@
     <td align="right" style="padding-right:5px; "><input name="image" type="image" alt="img" title="<?php echo HEADER_TITLE_LOGIN ; ?>" src="images/design/button/login.gif"></td>
   </tr>
 </table>
+<div class="login_right_bottom01">
+</div>
+</div>
 </form>
-<div class="sep">&nbsp;</div>
 <?php 
   } else {
 ?>
+<div class="login_online01">
 <div class="box_titleR">アカウント</div> 
 <ul>
     <li><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . HEADER_TITLE_MY_ACCOUNT . '</a>'; ?></li>
@@ -40,6 +44,7 @@
     <li><?php echo '<a href="' . tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL') . '">' . 'ショッピングカート' . '</a>'; ?></li>
     <li><?php echo '<a href="' . tep_href_link(FILENAME_LOGOFF, '', 'SSL') . '">' . HEADER_TITLE_LOGOFF . '</a>'; ?></li>
 </ul>
+</div>
 <?php 
  //   }
   } 

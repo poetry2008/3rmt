@@ -23,7 +23,7 @@ if(basename($PHP_SELF) == FILENAME_DEFAULT) {
    if (PRODUCT_LIST_FILTER > 0 && !empty($filterlist_sql)) {
       $filterlist_query = tep_db_query($filterlist_sql);
       if (tep_db_num_rows($filterlist_query) > 1) {
-        echo '            <td class="smallText" align="right">' . TEXT_SHOW . '<select size="1" onChange="if(options[selectedIndex].value) window.location.href=(options[selectedIndex].value)">';
+        echo '            <td class="smallText" align="left">' . TEXT_SHOW . '<select size="1" onChange="if(options[selectedIndex].value) window.location.href=(options[selectedIndex].value)">';
         if (isset($_GET['manufacturers_id'])) {
           $arguments = 'manufacturers_id=' . $_GET['manufacturers_id'];
         } else {
@@ -53,7 +53,7 @@ if(basename($PHP_SELF) == FILENAME_DEFAULT) {
     }
  }
 ?>
-      <td class="smallText"><b><?php echo LISTING_SORT_BY ; ?></b>
+      <td class="smallText" align="right"><b><?php echo LISTING_SORT_BY ; ?></b>
         <select name="select" onChange="if(options[selectedIndex].value) window.location.href=(options[selectedIndex].value)">
           <option value="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=5a') ; ?>"  <?php if($_GET['sort'] == '5a') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_PRICE_LOW ; ?></option>
           <option value="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=5d') ; ?>"  <?php if($_GET['sort'] == '5d') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_PRICE_HIGHT ; ?></option>

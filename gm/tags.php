@@ -25,7 +25,7 @@ $breadcrumb->add(TAGS_NAVBAR_TITLE, tep_href_link(FILENAME_TAGS));
 <!-- body_text //-->
 <div id="content">
 <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo TAGS_HEADING_TITLE; ?></h1>
+<h2 class="pageHeading"><?php echo TAGS_HEADING_TITLE; ?></h2>
 <div class="tag_list01">
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
 <tr>

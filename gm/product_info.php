@@ -143,6 +143,9 @@ function change_num(ob, targ, quan,a_quan)
       <div class="headerNavigation">
         <?php echo $breadcrumb->trail(' &raquo; '); ?>
       </div>
+    <?php if ($product_info['products_status'] == 2) {
+      echo '<div class="waring_product">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
+    } ?>
       <h1 class="pageHeading"><?php echo ds_tep_get_categories((int)$_GET['products_id'],1) ; ?></h1>
       <div class="line">
         <?php echo ds_tep_get_categories((int)$_GET['products_id'],2) ; ?>
@@ -338,7 +341,9 @@ $tag_query = tep_db_query("
               <tr class="header">
                 <td height="30" class="main" style="padding-bottom:4px; ">
                   <?php
-      if($product_info['products_quantity'] < 1) {
+      if($product_info['products_status'] == '2'){
+        echo '<br><span class="markProductOutOfStock"><a href=' . tep_href_link(FILENAME_PREORDER, 'products_id=' . $HTTP_GET_VARS['products_id']) . '>予約する</a></span>';
+      } else if($product_info['products_quantity'] < 1) {
         if($product_info['products_bflag'] == '1') {
           # 買い取り商品
           echo '<br><span class="markProductOutOfStock">一時停止</span>';

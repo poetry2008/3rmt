@@ -78,7 +78,7 @@
       } else {
     ?>
 <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo PAGE_HEADING_TITLE ; ?></h1> 
+<h2 class="pageHeading"><?php echo PAGE_HEADING_TITLE ; ?></h2> 
         
         <div id="contents"> 
           <?php echo PAGE_TEXT_INFORMATION; ?>

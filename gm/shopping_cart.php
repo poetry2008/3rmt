@@ -145,7 +145,7 @@ function change_num(ob,targ, quan,a_quan)
 <!-- body_text //-->
 <div id="content">
 <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
+<h2 class="pageHeading"><?php echo HEADING_TITLE; ?></h2>
 <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
         <?php
   if ($cart->count_contents() > 0) {

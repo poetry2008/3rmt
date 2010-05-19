@@ -164,6 +164,7 @@
   define('TABLE_WHOS_ONLINE', 'whos_online');
   define('TABLE_ZONES', 'zones');
   define('TABLE_CL', 'calendar'); //add calendar
+  define('TABLE_CATEGORIES_RSS', 'categories_rss');
   
   define('TABLE_PRESENT_GOODS', 'present_goods');
   define('TABLE_PRESENT_APPLICANT', 'present_applicant');

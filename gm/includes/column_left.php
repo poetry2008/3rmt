@@ -18,7 +18,7 @@
   
 
   //require(DIR_WS_BOXES . 'information.php');
-  require(DIR_WS_BOXES . 'banners.php');
+  //require(DIR_WS_BOXES . 'banners.php');
   //require(DIR_WS_BOXES . 'cl.php');
 
 /*s

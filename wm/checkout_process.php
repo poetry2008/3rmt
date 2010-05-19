@@ -69,16 +69,19 @@
   # load the selected shipping module(convenience_store)
   if ($_SESSION['payment'] == 'convenience_store') {
     $convenience_sid = str_replace('-', "", $insert_id);
-  
+  /*
     $pay_comments = '取引コード' . $convenience_sid ."\n";
-  $pay_comments .= '郵便番号:' . $_POST['convenience_store_zip_code'] ."\n";
-  $pay_comments .= '住所1:' . $_POST['convenience_store_address1'] ."\n";
-  $pay_comments .= '住所2:' . $_POST['convenience_store_address2'] ."\n";
-  $pay_comments .= '氏:' . $_POST['convenience_store_l_name'] ."\n";
-  $pay_comments .= '名:' . $_POST['convenience_store_f_name'] ."\n";
-  $pay_comments .= '電話番号:' . $_POST['convenience_store_tel'] ."\n";
-  $pay_comments .= '接続URL:' . tep_href_link('convenience_store_chk.php', 'sid=' . $convenience_sid, 'SSL');
-  $comments = $pay_comments ."\n".$comments;
+    $pay_comments .= '郵便番号:' . $_POST['convenience_store_zip_code'] ."\n";
+    $pay_comments .= '住所1:' . $_POST['convenience_store_address1'] ."\n";
+    $pay_comments .= '住所2:' . $_POST['convenience_store_address2'] ."\n";
+    $pay_comments .= '氏:' . $_POST['convenience_store_l_name'] ."\n";
+    $pay_comments .= '名:' . $_POST['convenience_store_f_name'] ."\n";
+    $pay_comments .= '電話番号:' . $_POST['convenience_store_tel'] ."\n";
+    $pay_comments .= '接続URL:' . tep_href_link('convenience_store_chk.php', 'sid=' . $convenience_sid, 'SSL');
+    $comments = $pay_comments ."\n".$comments;
+    */
+     $pay_comments = 'PCメ〖ルアドレス:'.$HTTP_POST_VARS['convenience_email'];    
+     $comments = $pay_comments ."\n".$comments;
   }
   
   require(DIR_WS_CLASSES . 'order.php');
@@ -146,6 +149,25 @@
                           'site_id' => SITE_ID,
                           'torihiki_date' => $insert_torihiki_date
               );
+  if (isset($HTTP_POST_VARS['codt_fee'])) {
+    $sql_data_array['code_fee'] =  intval($HTTP_POST_VARS['codt_fee']);
+  } else if (isset($HTTP_POST_VARS['money_order_fee'])) {
+    $sql_data_array['code_fee'] =  intval($HTTP_POST_VARS['money_order_fee']);
+  } else if (isset($HTTP_POST_VARS['postal_money_order_fee'])) {
+    $sql_data_array['code_fee'] =  intval($HTTP_POST_VARS['postal_money_order_fee']);
+  } else if (isset($HTTP_POST_VARS['telecom_order_fee'])) {
+    $sql_data_array['code_fee'] =  intval($HTTP_POST_VARS['telecom_order_fee']);
+  } else {
+    $sql_data_array['code_fee'] =  0;
+  }
+  
+  $bflag_single = ds_count_bflag();
+  if ($bflag_single == 'View') {
+    $orign_hand_fee = $sql_data_array['code_fee'];
+    $buy_handle_fee = calc_buy_handle($order->info['total']); 
+    $sql_data_array['code_fee'] = $orign_hand_fee + $buy_handle_fee; 
+    $new_handle_fee = $sql_data_array['code_fee'];
+  }
 //ccdd
   tep_db_perform(TABLE_ORDERS, $sql_data_array);
   //$insert_id = tep_db_insert_id();
@@ -406,6 +428,34 @@
   if ($point > 0) {
     $email_order .= '▼ポイント割引　　：' . $point . '円' . "\n";
   }
+  $mail_fee = 0; 
+  if (isset($HTTP_POST_VARS['codt_fee'])) {
+    //$email_order .= '▼手数料　　　　　：'.intval($HTTP_POST_VARS['codt_fee']).'円'."\n";
+    $mail_fee = intval($HTTP_POST_VARS['codt_fee']);
+  } else if (isset($HTTP_POST_VARS['money_order_fee'])) {
+    //$email_order .= '▼手数料　　　　　：'.intval($HTTP_POST_VARS['money_order_fee']).'円'."\n";
+    $mail_fee = intval($HTTP_POST_VARS['money_order_fee']);
+  } else if (isset($HTTP_POST_VARS['postal_money_order_fee'])) {
+    //$email_order .= '▼手数料　　　　　：'.intval($HTTP_POST_VARS['postal_money_order_fee']).'円'."\n";
+    $mail_fee = intval($HTTP_POST_VARS['postal_money_order_fee']);
+  } else if (isset($HTTP_POST_VARS['telecom_order_fee'])) {
+    //$email_order .= '▼手数料　　　　　：'.intval($HTTP_POST_VARS['telecom_order_fee']).'円'."\n";
+    $mail_fee = intval($HTTP_POST_VARS['telecom_order_fee']);
+  } else {
+    //$email_order .=  '▼決済手数料　　　：0円'."\n";
+  }
+  $buy_mail_fee = 0;
+
+  if ($bflag_single == 'View') {
+    if (!empty($new_handle_fee)) {
+      $buy_mail_fee = $new_handle_fee; 
+    }
+  }
+  
+  $total_mail_fee = $mail_fee + $buy_mail_fee;
+  if (!empty($total_mail_fee)) {
+    $email_order .= '▼手数料　　　　　：'.$total_mail_fee.'円'."\n"; 
+  }
   $email_order .= '▼お支払金額　　　：' . strip_tags($ot['text']) . "\n";
   if (is_object($$payment)) {
     $payment_class = $$payment;
@@ -491,6 +541,9 @@
   $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
   if ($point > 0) {
     $email_printing_order .= '□ポイント割引　　：' . $point . '円' . "\n";
+  }
+  if (!empty($total_mail_fee)) {
+    $email_printing_order .= '手数料　　　　　：'.$total_mail_fee.'円'."\n"; 
   }
   $email_printing_order .= 'お支払金額　　　：' . strip_tags($ot['text']) . "\n";
   if (is_object($$payment)) {

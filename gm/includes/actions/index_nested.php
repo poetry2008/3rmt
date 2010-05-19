@@ -7,10 +7,18 @@
 <div id="content">
       <?php  
   if (isset($cPath_array)) {
-       echo '<div class="headerNavigation">'.$breadcrumb->trail(' &raquo; ').'</div><h1 class="pageHeading">'.$seo_category['categories_name'].'</h1>'; 
-    } elseif ($_GET['manufacturers_id']) {
-       echo '<div class="headerNavigation">'.$breadcrumb->trail(' &raquo; ').'</div><h1 class="pageHeading">'.$seo_manufacturers['manufacturers_name'].'</h1>';
+       echo '<div class="headerNavigation">'.$breadcrumb->trail(' &raquo; ').'</div>'; 
+      if ($category['categories_status'] == 2) {
+        echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
       }
+       echo '<h1 class="pageHeading">'.$seo_category['categories_name'].'</h1>'; 
+    } elseif ($_GET['manufacturers_id']) {
+       echo '<div class="headerNavigation">'.$breadcrumb->trail(' &raquo; ').'</div>';
+      if ($category['categories_status'] == 2) {
+        echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
+      }
+      echo '<h1 class="pageHeading">'.$seo_manufacturers['manufacturers_name'].'</h1>';
+    }
 ?> 
       <!-- heading title eof//-->
     <p><?php echo $seo_category['categories_header_text']; //seoフレーズ ?></p>
@@ -97,6 +105,39 @@
     <br>
     <p><?php echo $seo_category['seo_description']; //seoフレーズ ?></p>
     <br>
+      <?php
+      if (isset($cPath) && !ereg('_', $cPath)) { 
+      $all_game_news = tep_get_categories_rss($current_category_id);
+      if ($all_game_news) {
+      ?>
+<div class="background_news01" style="margin-top:10px;">
+<table width="95%" style="border-top:#444 dotted 3px;" class="news_title_03">
+<tr>
+  <td>
+    <h3 style="border-bottom:none; font-size:14px; color:#fff; padding-left:10px; margin-top:2px;font-weight:bold;">ONLINE GAME NEWS for 4Gamer.net</h3>
+  </td>
+  <td align="left" width="70">
+  </td>
+</tr>
+</table>
+    <div class="game_news_index01">
+    <ul> 
+      <?php
+        foreach ($all_game_news as $cgmkey => $cgame_news_rss) {
+          if ($cgmkey == CATEGORIES_GAME_NEWS_MAX_DISPLAY)  break;
+          echo '<li class="news_list">';
+          echo '<a  class="latest_news_link01" href="'.$cgame_news_rss['url'].'" rel="nofollow" target="_blank">'.mb_strimwidth($cgame_news_rss['headline'],0,95,'...').'</a>'; 
+          echo '</li>'; 
+        }
+      ?>
+      </ul> 
+      </div>
+      <?php
+      echo '</div>'; 
+      } 
+      }
+      ?>
+</div>
 </div> 
 <div id="r_menu">
       <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 

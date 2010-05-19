@@ -102,7 +102,7 @@
       }
       
       echo '<tr><td>';
-      echo '<a href="convenience_store_chk.php' . $pr . '">' . 'コンビニ決済はこちらから！！</a>';
+      //echo '<a href="convenience_store_chk.php' . $pr . '">' . 'コンビニ決済はこちらから！！</a>';
       echo '</td></tr>';
       }
         ?>

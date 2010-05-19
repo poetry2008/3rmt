@@ -113,3 +113,12 @@ RMTの利用により効率的に遊ぶことができるため、ゲーム通�
 <br>
 RMTワールドマネーは、多数のお客様に支持していただけるショッピングサイトを目指して日々進化し続けております。 
 </p><p class="pageBottom"></p>', 'トップページのフッター内容 ', '901', '16', NULL, '0000-00-00 00:00:00', NULL, 'tep_cfg_textarea(', '3');
+
+-- GM RSS url
+
+INSERT INTO `configuration` (`configuration_id`, `configuration_title`, `configuration_key`, `configuration_value`, `configuration_description`, `configuration_group_id`, `sort_order`, `last_modified`, `date_added`, `use_function`, `set_function`, `site_id`) VALUES
+(NULL, '全てのゲームのRSSアドレス', 'ALL_GAME_RSS', 'http://www.4gamer.net/rss/all_onlinegame.xml', '全てのゲームのRSSアドレス', 1, NULL, '2010-03-09 16:39:07', '0000-00-00 00:00:00', NULL, NULL, 0);
+INSERT INTO `configuration` (`configuration_id`, `configuration_title`, `configuration_key`, `configuration_value`, `configuration_description`, `configuration_group_id`, `sort_order`, `last_modified`, `date_added`, `use_function`, `set_function`, `site_id`) VALUES
+(NULL, 'トップページのゲームニュースの表示数　', 'GAME_NEWS_MAX_DISPLAY', '5', 'トップページのゲームニュースの表示数　', 3, NULL, '2010-03-09 16:42:29', '0000-00-00 00:00:00', NULL, NULL, 0);
+INSERT INTO `configuration` (`configuration_id`, `configuration_title`, `configuration_key`, `configuration_value`, `configuration_description`, `configuration_group_id`, `sort_order`, `last_modified`, `date_added`, `use_function`, `set_function`, `site_id`) VALUES
+(NULL, 'カテゴリのゲームニュース表示数', 'CATEGORIES_GAME_NEWS_MAX_DISPLAY', '25', 'カテゴリのゲームニュース表示数', 3, NULL, '2010-03-09 16:42:32', '0000-00-00 00:00:00', NULL, NULL, 0);

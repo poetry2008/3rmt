@@ -2335,4 +2335,54 @@ function tep_orders_status_finished($osid){
     $os = tep_db_fetch_array($query);
     return isset($os['finished']) && $os['finished'];
 }
-?>
+
+
+  function tep_get_rss($url){
+    //寡鹿議方怏
+    $input_arr = array();
+    $i = 0; 
+    //貫rss嶄寡鹿仟療議url
+    /*
+    $cache_file = '/tmp/' . base64_encode($url);
+    if(file_exists($cache_file) && time() - filemtime($cache_file) > ){
+      file_get_contents($cache_file);
+    } else {
+      $rss_str = file_get_contents($url);
+      file_put_contents($cache_file, $rss_str);
+    }
+    */
+    $rss_str = @file_get_contents($url);
+    preg_match_all("/\<item rdf:about=\"([^\"]*)\"\>(.*?)\<\/item\>/s", $rss_str, $gamearr);
+    //rss嶄頁倦嗤仟療方象
+    if (!empty($gamearr[2])) {
+      foreach ($gamearr[2] as $gkey => $game)
+      {
+        preg_match_all("/\<title\>(.*?)\<\/title\>/", $game, $title);
+        preg_match_all("/\<link\>(.*?)\<\/link\>/", $game, $link);
+        preg_match_all("/\<dc:date\>(.*?)\<\/dc:date\>/", $game, $date_added);
+        //仟療議銭俊頁倦贋壓 
+        if (isset($link[1][0])) {
+          //仟療議url 
+          $input_arr[$i]['url'] =  $link[1][0]; 
+          //仟療議炎籾 
+          if (isset($title[1][0])) {
+            $input_arr[$i]['headline'] =  $title[1][0]; 
+          } else {
+            $input_arr[$i]['headline'] =  ''; 
+          }
+          $input_arr[$i]['date_added'] = date('Y-m-d H:i:s', strtotime($date_added[1][0]));
+        }
+        $i++;
+      }
+    }
+    return $input_arr;
+  }
+  
+  function tep_get_categories_rss($cid){
+    $rss = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CATEGORIES_RSS." where categories_id='".$cid."'"));
+    if($rss && isset($rss['categories_rss']) && $rss['categories_rss']){
+      return tep_get_rss($rss['categories_rss']);
+    } else {
+      return null;
+    }
+  }

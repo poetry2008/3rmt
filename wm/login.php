@@ -70,6 +70,8 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
         tep_session_register('customer_last_name'); // 2003.03.08 Add Japanese osCommerce
         tep_session_register('customer_country_id');
         tep_session_register('customer_zone_id');
+        $customer_emailaddress = $email_address;
+        tep_session_register('customer_emailaddress');
 
         $guestchk = $check_customer['customers_guest_chk'];
         tep_session_register('guestchk');

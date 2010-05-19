@@ -26,7 +26,7 @@
   }
 
   if (!isset($_GET['order_id'])) {
-    tep_redirect(tep_href_link(FILENAME_HISTORY, '', 'SSL'));
+    tep_redirect(tep_href_link(FILENAME_ACCOUNT_HISTORY, '', 'SSL'));
   }
   
 //ccdd
@@ -137,7 +137,7 @@
 
     if ( (isset($order->products[$i]['attributes'])) && (sizeof($order->products[$i]['attributes']) > 0) ) {
       for ($j=0, $n2=sizeof($order->products[$i]['attributes']); $j<$n2; $j++) {
-        echo '<br><nobr><small>&nbsp;<i> - ' . $order->products[$i]['attributes'][$j]['option'] . ': ' . $order->products[$i]['attributes'][$j]['value'] . '</i></small></nobr>';
+        echo '<br><small>&nbsp;<i> - ' . $order->products[$i]['attributes'][$j]['option'] . ': ' . $order->products[$i]['attributes'][$j]['value'] . '</i></small>';
       }
     }
 
@@ -189,6 +189,13 @@
          '                <td class="main" align="right" width="100%">' . $order->totals[$i]['title'] . '</td>' . "\n" .
          '                <td class="main" align="right" nowrap>' . $order->totals[$i]['text'] . '</td>' . "\n" .
          '              </tr>' . "\n";
+    if ($i == 0) {
+      echo '              <tr>' . "\n" .
+           '                <td class="main" align="right" width="100%">' . TEXT_FEE_HANDLE . '</td>' . "\n" .
+           '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['code_fee'])  . '</td>' . "\n" .
+           '              </tr>' . "\n";
+    
+    }
   }
 ?> 
                       </table></td></tr></table></td> 

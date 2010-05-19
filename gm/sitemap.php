@@ -25,7 +25,7 @@
 <!-- body_text //-->
 <div id="content">
 <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
+<h2 class="pageHeading"><?php echo HEADING_TITLE; ?></h2>
  
         
      

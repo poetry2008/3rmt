@@ -70,7 +70,8 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
         tep_session_register('customer_last_name'); // 2003.03.08 Add Japanese osCommerce
         tep_session_register('customer_country_id');
         tep_session_register('customer_zone_id');
-
+        $customer_emailaddress = $email_address;
+        tep_session_register('customer_emailaddress');
         $guestchk = $check_customer['customers_guest_chk'];
         tep_session_register('guestchk');
 
@@ -157,7 +158,7 @@ function session_win() {
 <!-- body_text //-->
 <div id="content">
 <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
+<h2 class="pageHeading"><?php echo HEADING_TITLE; ?></h2>
 <div class="box">
 <?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process', 'SSL')); ?>
       <table class="box_des" width="95%" border="0" align="center" cellpadding="0" cellspacing="0">

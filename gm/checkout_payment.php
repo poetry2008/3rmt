@@ -89,6 +89,36 @@
   }
 ?>
 <?php page_head();?>
+<script type="text/javascript" src="./js/jquery-1.3.2.min.js"></script>
+
+<script type="text/javascript"><!--
+$(document).ready(function(){
+$("input:radio").each(function(){
+  if ($(this).attr("checked") == true) {
+    if ($(this).attr('name') != 'bank_kamoku') { 
+      if ($(this).val() == 'convenience_store') {
+        $("#cemail").css("display", "block");
+        $("#caemail").css("display", "block");
+      } else {
+        $("#cemail").css("display", "none");
+        $("#caemail").css("display", "none");
+      }
+    }
+  }
+})
+$("input:radio").click(function(){
+  if ($(this).val() == 'convenience_store') {
+    $("#cemail").css("display", "block");
+    $("#caemail").css("display", "block");
+  } else {
+    if ($(this).attr('name') != 'bank_kamoku') { 
+      $("#cemail").css("display", "none");
+      $("#caemail").css("display", "none");
+    } 
+  }
+});
+});
+--></script>
 <script type="text/javascript"><!--
 var selected;
 
@@ -220,6 +250,23 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
     if($selection[$i]['id'] == 'buying') {
     //buying not view
   } else {
+    if ($selection[$i]['id'] == 'convenience_store') {
+      if (check_money_limit(MODULE_PAYMENT_CONVENIENCE_STORE_MONEY_LIMIT, $order->info['total'])) {
+        continue; 
+      }
+    } else if($selection[$i]['id'] == 'moneyorder') {
+      if (check_money_limit(MODULE_PAYMENT_MONEYORDER_MONEY_LIMIT, $order->info['total'])) {
+        continue; 
+      }
+    } else if ($selection[$i]['id'] == 'postalmoneyorder') {
+      if (check_money_limit(MODULE_PAYMENT_POSTALMONEYORDER_MONEY_LIMIT, $order->info['total'])) {
+        continue; 
+      }
+    } else if ($selection[$i]['id'] == 'telecom') {
+      if (check_money_limit(MODULE_PAYMENT_TELECOM_MONEY_LIMIT, $order->info['total'])) {
+        continue; 
+      }
+    }
 ?> 
                         <tr> 
                           <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
@@ -261,9 +308,9 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
                                     <tr> 
                                       <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                                       <td class="main"><?php echo $selection[$i]['fields'][$j]['title']; ?></td> 
-                                      <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                                      <td></td> 
                                       <td class="main"><?php echo $selection[$i]['fields'][$j]['field']; ?></td> 
-                                      <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                                      <td width="10"></td> 
                                     </tr> 
                                     <?php
       }

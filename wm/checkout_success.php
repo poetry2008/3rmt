@@ -88,8 +88,6 @@
         
       <?php
       #convenience_store
-      if (!isset($_GET['SID'])) $_GET['SID'] = NULL;//del notice
-      if (!isset($_POST['SID'])) $_POST['SID'] = NULL;//del notice
       if($_GET['SID'] != "" || $_POST['SID'] != ""){
         
         if($_GET['SID'] != ""){
@@ -101,7 +99,7 @@
         }
         
         echo '<tr><td>';
-        echo '<a href="convenience_store_chk.php' . $pr . '">' . 'コンビニ決済はこちらから！！</a>';
+        //echo '<a href="convenience_store_chk.php' . $pr . '">' . 'コンビニ決済はこちらから！！</a>';
         echo '</td></tr>';
       }
       ?>

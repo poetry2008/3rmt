@@ -4,26 +4,31 @@
 */
 ?>
 <!-- latest_news //-->
- <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0"> 
-  <tr> 
-     <td width="79"><img src="images/design/contents/title_news_left.jpg" width="79"
-     height="23" title="<?php echo TABLE_HEADING_LATEST_NEWS;?>"></td> 
-     <td background="images/design/contents/title_bg.jpg">&nbsp;</td> 
-     <td width="47"><img src="images/design/contents/title_news_right.jpg"
-     width="47" height="23" title="<?php echo TABLE_HEADING_LATEST_NEWS;?>"></td> 
-   </tr> 
-</table> 
-<div id="news"> 
-  <table width=""  border="0" cellpadding="2" cellspacing="0"> 
+<script type="text/javascript">
+function rowNewsEffect(object) {
+ if (object.className == 'news_list') object.className = "outnews01";
+}
+function outNewsEffect(object) {
+ if (object.className == 'outnews01') object.className = "news_list";
+}
+</script>
+<div class="background_news01">
+<table class="news_title_01">
+  <tr>
+    <td><div style="border-bottom:none; font-size:14px; color:#fff; padding-left:10px; margin-top:2px;
+    font-weight:bold;">RMTゲームマネーからのお知らせ</div></td> 
+    <td align="left" width="70"></td>
+  </tr>
+</table>
+<div id="news" class="news_title_02"> 
+  <ul> 
     <?php
-//ccdd
-    $latest_news_query = tep_db_query('
+    $latest_news_query = tep_db_query("
       SELECT * 
-      from ' . TABLE_LATEST_NEWS . ' 
+      from " . TABLE_LATEST_NEWS . " 
       WHERE status = 1 
-        and site_id = '.SITE_ID.' 
-      ORDER BY isfirst DESC, date_added DESC LIMIT 5
-    ');
+        AND site_id = '".SITE_ID."'
+      ORDER BY isfirst DESC, date_added DESC LIMIT 5");
     if (!tep_db_num_rows($latest_news_query)) { // there is no news
       echo '<!-- ' . TEXT_NO_LATEST_NEWS . ' -->';
     } else {
@@ -50,18 +55,21 @@ $info_box_contents[$row] = array('align' => 'left',
 'params' => 'class="smallText" valign="top"',
 'text' =>
 tep_date_short($latest_news['date_added']) . '&nbsp;&nbsp;&nbsp;&nbsp;<a href="' . FILENAME_LATEST_NEWS . '?news_id=' . $latest_news['news_id'] . '">' . $latest_news['headline'] . '&nbsp;&nbsp;' . $latest_news_image . '</a><br>');
-
 echo'   
-          <tr> 
-            <td class="news_list"><span class="smallText">'.tep_date_short($latest_news['date_added']).'</span><br> 
-            <img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="3" align="absmiddle"><a href="' . FILENAME_LATEST_NEWS . '?news_id=' . $latest_news['news_id'] . '">' . $latest_news['headline'] . '&nbsp;&nbsp;' . $latest_news_image . $latest_news_new . '</a></td> 
-          </tr>
+          <li class="news_list" onmouseover="rowNewsEffect(this)" onmouseout="outNewsEffect(this)"> 
+            <span class="news_date01">'.tep_date_short($latest_news['date_added']).'</span> 
+            <a class="latest_news_link" href="' . FILENAME_LATEST_NEWS . '?news_id=' . $latest_news['news_id'] . '">' . $latest_news['headline'] . '&nbsp;&nbsp;' . $latest_news_image . $latest_news_new . '</a> 
+          </li>
 ';      
+}
 $row++;
 }
-// new contentBox($info_box_contents);
-}
+//new contentBox($info_box_contents);
 ?> 
-  </table> 
+  </ul> 
+<div class="link_more_news01">
+<a class="news_more01" href="<?php echo tep_href_link(FILENAME_LATEST_NEWS);?>">過去のRMTニュースを見る</a>
+</div>
 </div> 
+</div>
 <!-- latest_news_eof //--> 

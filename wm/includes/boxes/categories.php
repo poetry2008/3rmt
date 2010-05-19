@@ -166,12 +166,15 @@ if($cPath){
       <?php }?>
     <?php }?>
 
+
+        </ul>
+  <img src="images/design/box/box_bottom_bg_01.gif" width="172" height="14" alt="" >
+</div>
+<div>
+<ul class="l_m_category_ul">
+        <img src="images/design/box/new_title01.gif" width="172" height="51" alt="こだわり検索" >
+
     <li class="l_m_category_li">
-      
-      <a href="<?php echo tep_href_link('manufacturers.php'); ?>"><?php echo MENU_MU; ?></a>
-    </li>
-    <li class="l_m_category_li">
-      
       <a href="<?php echo tep_href_link(FILENAME_SPECIALS); ?>"><?php echo BOX_HEADING_SPECIALS; ?></a>
     </li>
 <?php
@@ -189,7 +192,9 @@ if($cPath){
     </li>' . "\n";
   }
 ?>
-
+    <li class="l_m_category_li">
+      <a href="<?php echo tep_href_link('manufacturers.php'); ?>"><?php echo MENU_MU; ?></a>
+    </li>
     <li class="l_m_category_li">
       <a class='l_m_category_a' href="<?php echo tep_href_link('tags.php');?>">タグ一覧</a>
     </li>
