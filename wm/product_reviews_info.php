@@ -90,7 +90,7 @@ function showimage($1) {
                   <tr> 
                     <td class="main"><b><?php echo SUB_TITLE_PRODUCT; ?></b> <?php echo $reviews['products_name']; ?></td> 
                     <td class="smallText" rowspan="3" align="center">
-          <a href="<?php echo DIR_WS_IMAGES . $reviews['products_image']; ?>" rel="lightbox[products]"><?php echo tep_image(DIR_WS_IMAGES . $reviews['products_image'], $reviews['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="center" hspace="5" vspace="5"'); ?><br> </a></td> 
+          <a href="<?php echo DIR_WS_IMAGES . 'products/' . $reviews['products_image']; ?>" rel="lightbox[products]"><?php echo tep_image(DIR_WS_IMAGES . $reviews['products_image'], $reviews['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="center" hspace="5" vspace="5"'); ?><br> </a></td> 
                   </tr> 
                   <tr> 
                     <td class="main"><b><?php echo SUB_TITLE_FROM; ?></b> <?php echo tep_output_string_protected($reviews['customers_name']); ?></td> 

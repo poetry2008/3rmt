@@ -5,7 +5,6 @@
 ?>
 <!-- information //-->
 <div id="information">
-  <?php //echo tep_image(DIR_WS_IMAGES.'design/box/information.gif',BOX_HEADING_INFORMATION,172,39) . "\n"; ?>
   <img width="172" height="39" alt="RMT情報" src="images/design/box/information.gif">
   <ul class="l_m_category_ul">
 <?php

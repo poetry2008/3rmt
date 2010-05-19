@@ -14,11 +14,9 @@
   echo DEFAULT_PAGE_TOP_CONTENTS;
   include(DIR_WS_MODULES . 'categories_banner_text.php');
 ?>
-  <p class="pageBottom"></p>
 <?php
   include(DIR_WS_MODULES . FILENAME_LATEST_NEWS);
 ?>
-  <p class="pageBottom"></p>
 <?php
   echo DEFAULT_PAGE_BOTTOM_CONTENTS;
 ?>

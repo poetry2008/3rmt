@@ -21,8 +21,8 @@
   define('DIR_WS_LANGUAGES', DIR_WS_INCLUDES . 'languages/');
 
   define('DIR_WS_DOWNLOAD_PUBLIC', DIR_WS_CATALOG . 'pub/');
-  define('DIR_FS_DOCUMENT_ROOT', '/home/maker/project/GM/');
-  define('DIR_FS_CATALOG', '/home/maker/project/GM/');
+  define('DIR_FS_DOCUMENT_ROOT', '/home/maker/project/3rmt/gm/');
+  define('DIR_FS_CATALOG', '/home/maker/project/3rmt/gm/');
   define('DIR_FS_DOWNLOAD', DIR_FS_CATALOG . 'download/');
   define('DIR_FS_DOWNLOAD_PUBLIC', DIR_FS_CATALOG . 'pub/');
   
@@ -43,4 +43,4 @@
   define('SITE_ID', '2'); 
   //control sql_log
   define('SQL_LOG', false);
-?>
+

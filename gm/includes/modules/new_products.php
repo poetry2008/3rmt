@@ -39,7 +39,7 @@
 
     $row = 0;
     $col = 0;
-	$info_box_contents = array();
+  $info_box_contents = array();
 ?>
 <!-- new_products //-->
 <h2 class="pageHeading"><?php echo sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B')) ; ?></h2>
@@ -48,7 +48,7 @@
       $new_products['products_name'] = tep_get_products_name($new_products['products_id']);
       $info_box_contents[$row][$col] = array('align' => 'center',
                                              'params' => 'class="smallText" width="33%" valign="top"',
-                                             'text' => '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES . $new_products['products_image'], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a><br><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">' . $new_products['products_name'] . '</a><br>残り&nbsp;' . $new_products['products_quantity'] . '個<br>' . $currencies->display_price($new_products['products_price'], tep_get_tax_rate($new_products['products_tax_class_id'])));
+                                             'text' => '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/' . $new_products['products_image'], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a><br><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">' . $new_products['products_name'] . '</a><br>残り&nbsp;' . $new_products['products_quantity'] . '個<br>' . $currencies->display_price($new_products['products_price'], tep_get_tax_rate($new_products['products_tax_class_id'])));
 
       $col ++;
       if ($col > 2) {

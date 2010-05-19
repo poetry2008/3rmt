@@ -115,7 +115,7 @@ foreach($cart as $key => $val){
               $cp_result = tep_get_product_by_id($key2, SITE_ID, $languages_id);
         ?>
           <tr>
-            <td width="<?php echo SMALL_IMAGE_WIDTH + 10; ?>" valign="top" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $key2) . '">' . tep_image(DIR_WS_IMAGES . $cp_result['products_image'], $cp_result['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>'; ?></td>
+            <td width="<?php echo SMALL_IMAGE_WIDTH + 10; ?>" valign="top" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $key2) . '">' . tep_image(DIR_WS_IMAGES . 'products/' . $cp_result['products_image'], $cp_result['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>'; ?></td>
             <td class="main">
           <?php
             echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $key2) . '"><b><u>' . $cp_result['products_name'] . '</u></b></a><br>';

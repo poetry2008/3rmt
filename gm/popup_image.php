@@ -82,9 +82,9 @@ A {
 <div align="center">
 <?php 
    if($_GET['image'] && $_GET['image'] != '') {
-     echo tep_image(DIR_WS_IMAGES . $_GET['image'], $products_values['products_name']);
+     echo tep_image(DIR_WS_IMAGES . 'products/' . $_GET['image'], $products_values['products_name']);
   }else{   
-    echo tep_image(DIR_WS_IMAGES . $products_values['products_image'], $products_values['products_name'],'','','name="featImage"');
+    echo tep_image(DIR_WS_IMAGES . 'products/' . $products_values['products_image'], $products_values['products_name'],'','','name="featImage"');
   }
   
   ?></div>

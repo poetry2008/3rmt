@@ -81,7 +81,7 @@
     $row = 0;
     while ($specials = tep_db_fetch_array($specials_query)) {
         $row++;
-        echo '<td align="center" width="33%" class="smallText"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $specials['products_id']) . '">' . tep_image(DIR_WS_IMAGES . $specials['products_image'], $specials['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"') . '</a><br><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $specials['products_id']) . '">' . $specials['products_name'] . '</a><br>';
+        echo '<td align="center" width="33%" class="smallText"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $specials['products_id']) . '">' . tep_image(DIR_WS_IMAGES .  'products/' .$specials['products_image'], $specials['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"') . '</a><br><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $specials['products_id']) . '">' . $specials['products_name'] . '</a><br>';
         
         echo '<span id="' . $specials['products_id'] . '"><a href="'.tep_href_link(FILENAME_PRODUCT_INFO,'products_id='.$specials['products_id'].'&action=buy_now').'" onClick="sendData(\'' . tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('action')) . 'action=buy_now&products_id=' . $specials['products_id']) . '\',\'' . displaychange . '\',\'' . $specials['products_id'] . '\'); return false;"><img src="images/design/button/button_order.gif" border="0"></a></span><br>';
         

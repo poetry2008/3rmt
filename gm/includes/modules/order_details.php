@@ -87,7 +87,7 @@
 
     if ($pimage_res) {
       if (!empty($pimage_res['products_image'])) {
-        echo tep_image(DIR_WS_IMAGES . $pimage_res['products_image'], $products[$i]['name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT); 
+        echo tep_image(DIR_WS_IMAGES . 'products/' . $pimage_res['products_image'], $products[$i]['name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT); 
       }
     }
     echo '</td>';

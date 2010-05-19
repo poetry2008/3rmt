@@ -95,9 +95,6 @@ if($cPath){
                 <?php if (in_array($subcategory['categories_id'], $id)) {?>
                   </strong>
                 <?php }?>
-
-
-
         <?php
             $_subcategories = array();
             $_subcategories_query = tep_db_query("
@@ -148,7 +145,6 @@ if($cPath){
             </ul>
             <?php }?>
           </li>
-
             <?php } else {?>
               <li class='l_m_categories_tree'>
                 <?php if($skey == (count($subcategories)-1)){?>
@@ -165,15 +161,12 @@ if($cPath){
         <li class='l_m_category_li'><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>"><?php echo str_replace(' RMT', '', $category['categories_name']);?></a></li>
       <?php }?>
     <?php }?>
-
-
         </ul>
   <img src="images/design/box/box_bottom_bg_01.gif" width="172" height="14" alt="" >
 </div>
 <div>
+<img src="images/design/box/new_title01.gif" width="172" height="51" alt="こだわり検索" >
 <ul class="l_m_category_ul">
-        <img src="images/design/box/new_title01.gif" width="172" height="51" alt="こだわり検索" >
-
     <li class="l_m_category_li">
       <a href="<?php echo tep_href_link(FILENAME_SPECIALS); ?>"><?php echo BOX_HEADING_SPECIALS; ?></a>
     </li>
@@ -201,5 +194,4 @@ if($cPath){
   </ul>
   <img src="images/design/box/box_bottom_bg_01.gif" width="172" height="14" alt="" >
 </div>
-
 <!-- categories_eof //-->

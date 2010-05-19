@@ -65,7 +65,7 @@
 echo '
 <table class="box_des" width="100%" border="0" cellspacing="0" cellpadding="0">'."\n".
   '<tr>'."\n".
-  '<td width="120" class="smallText" valign="top">'.tep_image(DIR_WS_IMAGES.$manufacturer['manufacturers_image'],$manufacturer['manufacturers_name']).'</b><br><b style="text-align:center">'.$manufacturer['manufacturers_name'].'</b><!--<br>'.substr(strip_tags($manufacturer['manufacturers_url']),0,100) .'...--></td>'."\n".
+  '<td width="120" class="smallText" valign="top">'.tep_image(DIR_WS_IMAGES . $manufacturer['manufacturers_image'],$manufacturer['manufacturers_name']).'</b><br><b style="text-align:center">'.$manufacturer['manufacturers_name'].'</b><!--<br>'.substr(strip_tags($manufacturer['manufacturers_url']),0,100) .'...--></td>'."\n".
     '<td>'."\n"
   ;
      echo '<table class="box_des" width="100%" border="0" cellspacing="2" cellpadding="0">'."\n".'<tr>'."\n";
