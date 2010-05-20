@@ -18,10 +18,10 @@
       return false;
     }
 
-    function selection() {
+    function selection() { 
       return array('id' => $this->code,
                    'module' => $this->title,
-				   'fields' => array(array('title' => $this->explain,'field' => '')));
+                   'fields' => array(array('title' => $this->explain,'field' => '')));
     }
 
     function pre_confirmation_check() {
@@ -66,7 +66,7 @@
     }
 
     function remove() {
-      var_dump('ok');
+      #var_dump('ok');
       tep_db_query("delete from " . TABLE_CONFIGURATION . " where configuration_key in ('" . implode("', '", $this->keys()) . "')");
     }
 

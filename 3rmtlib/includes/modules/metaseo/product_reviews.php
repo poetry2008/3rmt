@@ -9,7 +9,7 @@
       $this->code = 'product_reviews';
       $this->title = MODULE_METASEO_PRODUCT_REVIEWS_TEXT_TITLE;
       $this->description = MODULE_METASEO_PRODUCT_REVIEWS_TEXT_DESCRIPTION;
-	  $this->explain = MODULE_METASEO_PRODUCT_REVIEWS_TEXT_EXPLAIN;
+    $this->explain = MODULE_METASEO_PRODUCT_REVIEWS_TEXT_EXPLAIN;
       $this->sort_order = MODULE_METASEO_PRODUCT_REVIEWS_SORT_ORDER;
     }
 
@@ -21,7 +21,7 @@
     function selection() {
       return array('id' => $this->code,
                    'module' => $this->title,
-				   'fields' => array(array('title' => $this->explain,'field' => '')));
+           'fields' => array(array('title' => $this->explain,'field' => '')));
     }
 
     function pre_confirmation_check() {
@@ -58,7 +58,6 @@
 
     function install() {
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('表示の整列順', 'MODULE_METASEO_PRODUCT_REVIEWS_SORT_ORDER', '0', '表示の整列順を設定できます。数字が小さいほど上位に表示されます.', '6', '0', now())");
-
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, set_function) values ('タイトル',   'MODULE_METASEO_PRODUCT_REVIEWS_TITLE',       '', '商品のレビューのタイトル<br>#STORE_NAME#<br>#BREADCRUMB#',   '6', '0', now(), NULL)");
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, set_function) values ('キーワード', 'MODULE_METASEO_PRODUCT_REVIEWS_KEYWORDS',    '', '商品のレビューのキーワード<br>#STORE_NAME#<br>#BREADCRUMB#', '6', '0', now(), \"tep_draw_textarea_field('configuration[MODULE_METASEO_PRODUCT_REVIEWS_KEYWORDS]', false, 35, 5,\")");
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, set_function) values ('説明',       'MODULE_METASEO_PRODUCT_REVIEWS_DESCRIPTION', '', '商品のレビューの説明<br>#STORE_NAME#<br>#BREADCRUMB#',       '6', '0', now(), \"tep_draw_textarea_field('configuration[MODULE_METASEO_PRODUCT_REVIEWS_DESCRIPTION]', false, 35, 5,\")");

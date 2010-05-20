@@ -24,14 +24,14 @@
     //if (!$question or $g_id != $question['g_id']) {
       // 404
     //}
-    $breadcrumb->add($question['question'], tep_href_link('faq.php', 'g_id='.$g_id.'&q_id='.$q_id));
+    $breadcrumb->add($question['question'], 'faq'.$g_id.'/'.$q_id.'.html');
   } elseif ($g_id) { 
     $page = 'index';
     $g_categories = tep_get_category_by_id($g_id, SITE_ID, $languages_id);
     $all_faq_categories = tep_get_faq_categories_by_g_id($g_id);
     
     print_r($sub_categories);
-    $breadcrumb->add($g_categories['categories_name'] . 'のよくある質問', tep_href_link('faq.php', 'g_id='.$g_id));
+    $breadcrumb->add($g_categories['categories_name'] . 'のよくある質問', 'faq'.$g_id.'/');
   } else {
     // 404
     forward404();
@@ -58,6 +58,7 @@
 <!-- left_navigation_eof //-->
 <!-- body_text //-->
 <div id="content">
+  <a name="top"></a> 
   <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
 <?php if($page == 'question') {?>
         <h2 class="pageHeading"><?php echo $g_categories['categories_name']; ?></h2>
@@ -65,7 +66,7 @@
         <h3 class="redtext"><img src='images/q.gif'><?php echo $question['question']; ?></h3>
         <p><img src='images/a.gif'><?php echo $question['answer'];?></p>
 
-        <p><a href="<?php echo tep_href_link('faq.php', 'g_id='.$g_id)?>"><?php echo $g_categories['seo_name']; ?>のよくある質問一覧へ戻る</a></p>
+        <p><a href="<?php echo 'faq'.$g_id.'/';?>"><?php echo $g_categories['seo_name']; ?>のよくある質問一覧へ戻る</a></p>
         <p>このページは<?php
     foreach($sub_categories as $g_sub_categories) {
       echo '「<a href="' . tep_href_link(FILENAME_DEFAULT, 'cPath=' . (int)$g_id . '_' . $g_sub_categories['categories_id']) . '"><em class="bold">' . $g_sub_categories['categories_name'] . '</em></a>」';
@@ -80,7 +81,7 @@
         <ul>
         <?php
     foreach($questions as $q){ ?>
-      <li><a href='<?php echo tep_href_link('faq.php', 'g_id='.$faq_categories['g_id'].'&q_id='.$q['q_id']);?>'><?php echo $q['question'];?></a></li>
+      <li><a href='<?php echo 'faq'.$faq_categories['g_id'].'/'.$q['q_id'].'.html';?>'><?php echo $q['question'];?></a></li>
     <?php
     }
     ?>
@@ -100,13 +101,12 @@
               <ul>
               <?php
           foreach($questions as $q){ ?>
-            <li><a href='<?php echo tep_href_link('faq.php', 'g_id='.$faq_categories['g_id'].'&q_id='.$q['q_id']);?>'><?php echo $q['question'];?></a></li>
+            <li><a href='<?php echo 'faq'.$faq_categories['g_id'].'/'.$q['q_id'].'.html';?>'><?php echo $q['question'];?></a></li>
           <?php
           }
           ?>
               </ul>
-              <p class="page_top"><a href="#top">▲このページのトップへ</a></p>
-
+              <p class="page_top"><a href="<?php echo 'faq'.$g_id.'/';?>#top">▲このページのトップへ</a></p>
               <?php
           }
           ?>
