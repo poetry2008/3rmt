@@ -158,6 +158,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 ?>
                 <td class="dataTableContent"><?php 
                     echo '<a href="' . tep_href_link(FILENAME_FAQ, 'c_id=' . $category['c_id']) . '">' . tep_image(DIR_WS_ICONS . 'folder.gif', ICON_FOLDER) . '</a>&nbsp;' .  $category['category']; ?></td>
+                <td></td>
                 <td class="dataTableContent" align="right"><?php if ( isset($cInfo) && (is_object($cInfo)) && ($category['c_id'] == $cInfo->c_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_FAQ, '&cID=' . $category['c_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
               </tr>
 <?php

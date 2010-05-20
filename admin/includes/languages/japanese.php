@@ -323,6 +323,9 @@ define('TEXT_DISPLAY_NUMBER_OF_CONTENS', '<b>%d</b> &sim; <b>%d</b> 番目を表
 //latest news
 define('BOX_TOOLS_LATEST_NEWS', '新着情報管理');
 
+//faq
+define('BOX_TOOLS_FAQ', 'FAQ Manager');
+
 //leftbox
 define('BOX_CATALOG_PRODUCTS_UP', '商品データアップロード');
 define('BOX_CATALOG_PRODUCTS_DL', '商品データダウンロード');

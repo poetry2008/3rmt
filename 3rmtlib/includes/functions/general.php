@@ -2386,3 +2386,27 @@ function tep_orders_status_finished($osid){
       return null;
     }
   }
+
+  function tep_get_categories_by_parent_id($parent_id, $languages_id = 4) {
+    $categories = array();
+
+    $query = tep_db_query("
+      select *
+      from (
+        select c.categories_id, cd.categories_name ,c.sort_order, cd.site_id
+        from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
+        where parent_id = '" . tep_db_input($parent_id) . "' 
+          and c.categories_id = cd.categories_id 
+          and cd.language_id = '" . (int)$languages_id . "' 
+        order by cd.site_id DESC
+      ) c
+      where site_id = '0'
+         or site_id = ".SITE_ID." 
+      group by categories_id
+      order by sort_order, categories_name");
+    
+    while($c = tep_db_fetch_array($query)){
+      $categories[] = $c;
+    }
+    return $categories;
+  }
