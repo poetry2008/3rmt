@@ -222,7 +222,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
 
   
   # Select
-  $cnt = strlen($NewOid);
+  # $cnt = strlen($NewOid);
 
   // initialized for the email confirmation
   $products_ordered = '';
