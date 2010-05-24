@@ -27,7 +27,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
 // Disable use_trans_sid as tep_href_link() does this manually
   if (function_exists('ini_set')) {
-	  //edit by bobhero start  add @ at ini_set
+    //edit by bobhero start  add @ at ini_set
     @ini_set('session.use_trans_sid', 0);
     //ini_set('session.use_trans_sid', 0);
     //edit by bobhero end 
@@ -92,6 +92,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('FILENAME_TAX_RATES', 'tax_rates.php');
   define('FILENAME_WHOS_ONLINE', 'whos_online.php');
   define('FILENAME_ZONES', 'zones.php');
+  define('FILENAME_FAQ', 'zones.php');
   
   //add files
   define('FILENAME_CONTENTS', 'contents.php');//Add filenames
@@ -165,7 +166,9 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('TABLE_MAIL_MAGAZINE', 'mail_magazine');
   define('TABLE_ORDERS_MAIL', 'orders_mail');
   define('TABLE_CALENDER', 'calendar');
-
+  define('TABLE_FAQ_CATEGORIES', 'faq_categories');
+  define('TABLE_FAQ_QUESTIONS',  'faq_questions');
+  
 // customization for the design layout
   define('BOX_WIDTH', 125); // how wide the boxes should be in pixels (default: 125)
 
@@ -264,7 +267,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   }
 
 //exit($PHP_SELF);
-	if ($ocertify->npermission == 0 && $PHP_SELF != '/'.FILENAME_ORDERS) {
+  if ($ocertify->npermission == 0 && $PHP_SELF != '/'.FILENAME_ORDERS) {
     tep_redirect(FILENAME_ORDERS);
   }
 

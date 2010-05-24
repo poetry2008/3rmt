@@ -1,7 +1,7 @@
 <?php
   require('includes/application_top.php');
 
-  define('FILENAME_FAQ', 'faq.php');
+  //define('FILENAME_FAQ', 'faq.php');
   define('TABLE_FAQ_CATEGORIES', 'faq_categories');
   define('TABLE_FAQ_QUESTIONS',  'faq_questions');
 

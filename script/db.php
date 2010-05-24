@@ -221,14 +221,14 @@ while ($c = mysql_fetch_array($query)) {
       NULL,
       '".$c['configuration_title']."',
       '".$c['configuration_key']."',
-      '".$c['configuration_value']."',
-      '".$c['configuration_description']."',
+      '".mysql_real_escape_string($c['configuration_value'])."',
+      '".mysql_real_escape_string($c['configuration_description'])."',
       '".$c['configuration_group_id']."',
       '".$c['sort_order']."',
       '".$c['last_modified']."',
       '".$c['date_added']."',
       '".$c['use_function']."',
-      '".$c['set_function']."',
+      '".mysql_real_escape_string($c['set_function'])."',
       '0'
       )
     ";
@@ -301,9 +301,9 @@ foreach($sites as $s){
       ) values (
         NULL,
         '" . $pg['html_check'] . "',
-        '" . $pg['title'] . "',
+        '" . mysql_real_escape_string($pg['title']) . "',
         '" . $pg['image'] . "',
-        '" . $pg['text'] . "',
+        '" . mysql_real_escape_string($pg['text']) . "',
         '" . site_id($s) . "',
         '" . $pg['start_date'] . "',
         '" . $pg['limit_date'] . "'
@@ -593,13 +593,13 @@ foreach($sites as $s){
              NULL,
              '".$o['orders_id']."',
              '".$op['products_id']."',
-             '".$op['products_model']."',
-             '".$op['products_name']."',
+             '".mysql_real_escape_string($op['products_model'])."',
+             '".mysql_real_escape_string($op['products_name'])."',
              '".$op['products_price']."',
              '".$op['final_price']."',
              '".$op['products_tax']."',
              '".$op['products_quantity']."',
-             '".$op['products_character']."'
+             '".mysql_real_escape_string($op['products_character'])."'
         )";
         r3q($sql);
         //orders_products_attributes
@@ -619,8 +619,8 @@ foreach($sites as $s){
               NULL,
               '".$o['orders_id']."',
               '".$orders_products_id."',
-              '".$opa['products_options']."',
-              '".$opa['products_options_values']."',
+              '".mysql_real_escape_string($opa['products_options'])."',
+              '".mysql_real_escape_string($opa['products_options_values'])."',
               '".$opa['options_values_price']."',
               '".$opa['price_prefix']."',
               '".$opa['attributes_id']."'
@@ -668,7 +668,7 @@ foreach($sites as $s){
             '".$osh['orders_status_id']."',
             '".$osh['date_added']."',
             '".$osh['customer_notified']."',
-            '".$osh['comments']."'
+            '".mysql_real_escape_string($osh['comments'])."'
           )";
         r3q($sql);
       }
@@ -686,9 +686,9 @@ foreach($sites as $s){
           ) values (
             NULL,
             '".$o['orders_id']."',
-            '".$ot['title']."',
-            '".$ot['text']."',
-            '".$ot['value']."',
+            '".mysql_real_escape_string($ot['title'])."',
+            '".mysql_real_escape_string($ot['text'])."',
+            '".mysql_real_escape_string($ot['value'])."',
             '".$ot['class']."',
             '".$ot['sort_order']."'
           )";
@@ -718,13 +718,13 @@ foreach($sites as $s){
           NULL,
           '" . $pg2pg[$s][$pa['goods_id']] . "',
           '" . $customer_id . "',
-          '" . $pa['family_name'] . "',
+          '" . mysql_real_escape_string($pa['family_name']) . "',
           '" . $pa['mail'] . "',
           '" . $pa['postcode'] . "',
           '" . $pa['prefectures'] . "',
-          '" . $pa['cities'] . "',
-          '" . $pa['address1'] . "',
-          '" . $pa['address2'] . "',
+          '" . mysql_real_escape_string($pa['cities']) . "',
+          '" . mysql_real_escape_string($pa['address1']) . "',
+          '" . mysql_real_escape_string($pa['address2']) . "',
           '" . $pa['phone'] . "',
           '" . $pa['tourokubi'] . "'
         )";
@@ -749,7 +749,7 @@ foreach($faq as $f){
         NULL,
         '".$f."',
         '".$faqc['c_order']."',
-        '".$faqc['category']."'
+        '".mysql_real_escape_string($faqc['category'])."'
       )";
     r3q($sql);
     $fid = mysql_insert_id();
@@ -764,8 +764,8 @@ foreach($faq as $f){
           NULL,
           '".$fid."',
           '".$faqq['q_order']."',
-          '".$faqq['question']."',
-          '".$faqq['answer']."'
+          '".mysql_real_escape_string($faqq['question'])."',
+          '".mysql_real_escape_string($faqq['answer'])."'
         )";
       r3q($sql);
     }
@@ -969,7 +969,7 @@ foreach($sites as $s){
         ) values (
           '" . $rid . "',
           '" . $rd['languages_id'] . "',
-          '" . $rd['reviews_text'] . "'
+          '" . mysql_real_escape_string($rd['reviews_text']) . "'
         )";
       r3q($sql);
     }
@@ -995,10 +995,12 @@ cptable('users');
 cptable('wm_geo_zones', 'geo_zones');
 cptable('wm_zones', 'zones');
 cptable('wm_zones_to_geo_zones', 'zones_to_geo_zones');
+// categories_rss
+cptable('categories_rss');
 
 // clear configuration
 foreach($delete_configuration as $c){
-  r3q("delete form configuration where configuration_key='".$c."'");
+  r3q("delete from configuration where configuration_key='".$c."'");
 }
 
 
