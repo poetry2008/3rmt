@@ -190,6 +190,9 @@ function showimage($1) {
   $data3 = explode("//", $product_info['products_attention_3']);
   $data4 = explode("//", $product_info['products_attention_4']);
 ?>
+    <?php if ($product_info['products_status'] == 2) {
+      echo '<div class="waring_product">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
+    } ?>
         <h1 class="pageHeading_long"><?php echo $product_info['products_name']; ?></h1>
         <h2 class="line"><?php echo ds_tep_get_categories((int)$_GET['products_id'],1); ?> <?php echo ds_tep_get_categories((int)$_GET['products_id'],2); ?></h2>
         <table width="689"  border="0" cellpadding="0" cellspacing="0">

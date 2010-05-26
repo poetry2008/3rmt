@@ -19,8 +19,7 @@
   HTTP_SERVER.'/create_account.php' ."\n".
   'ご不明な点がありましたら、RMTゲームマネーまでお問い合わせください。'."\n\n\n".
   'ご連絡・お問い合わせ先━━━━━━━━━━'."\n".
-  'RMTゲームマネー'."\n".
-  STORE_NAME_ADDRESS."\n".        
+  '株式会社 iimy'."\n".
   HTTP_SERVER."\n".  
   STORE_OWNER_EMAIL_ADDRESS."\n"."━━━━━━━━━━━━━━━━━━━━━━━";
   if (isset($_POST['email_address'])) {

@@ -432,8 +432,8 @@
   
   $buy_mail_fee = 0;
   if ($bflag_single == 'View') {
-    if (!empty($new_handle_fee)) {
-      $buy_mail_fee = $new_handle_fee; 
+    if (!empty($buy_handle_fee)) {
+      $buy_mail_fee = $buy_handle_fee; 
     }
   }
   $total_mail_fee = $mail_fee + $buy_mail_fee;

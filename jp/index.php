@@ -43,6 +43,12 @@ if ($category_depth == 'nested') {
   require(DIR_WS_ACTIONS.'index_products.php');
 ?>
   <td valign="top" id="contents">
+<?php
+  $current_category    = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CATEGORIES." where categories_id='".$current_category_id."'"));
+  if ($current_category['categories_status'] == '2') {
+    echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
+  }
+?>
     <h1 class="pageHeading_long"><?php
   if (isset($cPath_array)) {
     echo $seo_category['categories_name'];

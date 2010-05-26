@@ -396,31 +396,31 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
                             </tr> 
                             <tr> 
                               <td class="main">姓</td> 
-                              <td class="main"><?php echo tep_draw_input_field('lastname', $lastname,'class="input_text"'); ?></td> 
+                              <td class="main"><?php echo tep_draw_input_field('lastname', $lastname,'class="input_text"'); ?> <?php if(!$lastname) {?><font color="red">* 必須</font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td class="main">名</td> 
-                              <td class="main"><?php echo tep_draw_input_field('firstname', $firstname,'class="input_text"'); ?></td> 
+                              <td class="main"><?php echo tep_draw_input_field('firstname', $firstname,'class="input_text"'); ?> <?php if(!$firstname) {?><font color="red">* 必須</font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td>メールアドレス</td> 
-                              <td><?php echo tep_draw_input_field('email_address', $email_address,'class="input_text"'); ?></td> 
+                              <td><?php echo tep_draw_input_field('email_address', $email_address,'class="input_text"'); ?> <?php if(!$email_address) {?><font color="red">* 必須</font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td class="main">郵便番号</td> 
-                              <td class="main"><?php echo tep_draw_input_field('postcode', $postcode, 'class="input_text"'); ?></td> 
+                              <td class="main"><?php echo tep_draw_input_field('postcode', $postcode, 'class="input_text"'); ?> <?php if(!$postcode) {?><font color="red">* 必須</font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td class="main">都道府県</td> 
-                              <td class="main"><?php echo tep_get_zone_list2('zone_id', $zone_id); ?></td> 
+                              <td class="main"><?php echo tep_get_zone_list2('zone_id', $zone_id); ?> <?php if(!$zone_id) {?><font color="red">* 必須</font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td class="main">市区町村</td> 
-                              <td class="main"><?php echo tep_draw_input_field('city', $city, 'class="input_text"'); ?></td> 
+                              <td class="main"><?php echo tep_draw_input_field('city', $city, 'class="input_text"'); ?> <?php if(!$city) {?><font color="red">* 必須</font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td class="main">住所1</td> 
-                              <td class="main"><?php echo tep_draw_input_field('street_address', $street_address, 'class="input_text"'); ?></td> 
+                              <td class="main"><?php echo tep_draw_input_field('street_address', $street_address, 'class="input_text"'); ?> <?php if(!$street_address) {?><font color="red">* 必須</font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td class="main">住所2</td> 
@@ -428,7 +428,7 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
                             </tr> 
                             <tr> 
                               <td class="main">電話番号</td> 
-                              <td class="main"><?php echo tep_draw_input_field('telephone', $telephone, 'class="input_text"'); ?></td> 
+                              <td class="main"><?php echo tep_draw_input_field('telephone', $telephone, 'class="input_text"'); ?> <?php if(!$telephone) {?><font color="red">* 必須</font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 

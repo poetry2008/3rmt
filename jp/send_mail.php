@@ -19,8 +19,7 @@
   HTTP_SERVER.'/create_account.php' ."\n\n".
   'ご不明な点がありましたら、RMTジャックポットまでお問い合わせください。'."\n\n\n".
   '[ご連絡・お問い合わせ先]━━━━━━━━━━━━'."\n".
-  'RMTジャックポット'."\n".
-  STORE_NAME_ADDRESS."\n".        
+  '株式会社 iimy'."\n".
   HTTP_SERVER."\n".  
   STORE_OWNER_EMAIL_ADDRESS."\n"."━━━━━━━━━━━━━━━━━━━━━━━";
   

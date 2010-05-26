@@ -345,7 +345,6 @@ if (isset($_GET['action'])) {
                             </tr> 
                             <tr> 
                               <td class="main">都道府県</td> 
-                              <?php if(!isset($zone)) $zone=NULL;?>
                               <td class="main"><?php echo tep_get_zone_name('107',$state, $zone); ?></td> 
                             </tr> 
                             <tr> 
@@ -396,31 +395,31 @@ if (isset($_GET['action'])) {
                             </tr> 
                             <tr> 
                               <td class="main">姓</td> 
-                              <td class="main"><?php echo tep_draw_input_field('lastname', $lastname); ?></td> 
+                              <td class="main"><?php echo tep_draw_input_field('lastname', $lastname); ?> <?php if(!$lastname) {?><font color="red">* 必須</font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td class="main">名</td> 
-                              <td class="main"><?php echo tep_draw_input_field('firstname', $firstname); ?></td> 
+                              <td class="main"><?php echo tep_draw_input_field('firstname', $firstname); ?> <?php if(!$firstname) {?><font color="red">* 必須</font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td>メールアドレス</td> 
-                              <td><?php echo tep_draw_input_field('email_address', $email_address); ?></td> 
+                              <td><?php echo tep_draw_input_field('email_address', $email_address); ?> <?php if(!$email_address) {?><font color="red">* 必須</font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td class="main">郵便番号</td> 
-                              <td class="main"><?php echo tep_draw_input_field('postcode', $postcode); ?></td> 
+                              <td class="main"><?php echo tep_draw_input_field('postcode', $postcode); ?> <?php if(!$postcode) {?><font color="red">* 必須</font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td class="main">都道府県</td> 
-                              <td class="main"><?php echo tep_get_zone_list2('zone_id', $zone_id); ?></td> 
+                              <td class="main"><?php echo tep_get_zone_list2('zone_id', $zone_id); ?> <?php if(!$zone_id) {?><font color="red">* 必須</font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td class="main">市区町村</td> 
-                              <td class="main"><?php echo tep_draw_input_field('city', $city); ?></td> 
+                              <td class="main"><?php echo tep_draw_input_field('city', $city); ?> <?php if(!$city) {?><font color="red">* 必須</font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td class="main">住所1</td> 
-                              <td class="main"><?php echo tep_draw_input_field('street_address', $street_address); ?></td> 
+                              <td class="main"><?php echo tep_draw_input_field('street_address', $street_address); ?> <?php if(!$street_address) {?><font color="red">* 必須</font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td class="main">住所2</td> 
@@ -428,7 +427,7 @@ if (isset($_GET['action'])) {
                             </tr> 
                             <tr> 
                               <td class="main">電話番号</td> 
-                              <td class="main"><?php echo tep_draw_input_field('telephone', $telephone); ?></td> 
+                              <td class="main"><?php echo tep_draw_input_field('telephone', $telephone); ?> <?php if(!$telephone) {?><font color="red">* 必須</font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 

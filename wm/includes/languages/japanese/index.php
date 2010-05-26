@@ -33,7 +33,7 @@ if ( ($category_depth == 'products') || ($_GET['manufacturers_id']) ||  ($_GET['
   define('TEXT_NUMBER_OF_PRODUCTS', '在庫数: ');
   define('TEXT_SHOW', '<b>絞込み:</b> ');
   define('TEXT_BUY', '今すぐ ');
-  define('TEXT_NOW', ' を購入する');	
+  define('TEXT_NOW', ' を購入する');  
   define('TEXT_ALL', '全て');
   define('TEXT_NO_COLORS', 'このカラーの商品はありません...');
 } elseif ($category_depth == 'top') {
@@ -41,4 +41,4 @@ if ( ($category_depth == 'products') || ($_GET['manufacturers_id']) ||  ($_GET['
 } elseif ($category_depth == 'nested') {
   define('HEADING_TITLE', 'カテゴリー');
 }
-?>
+  define('WARN_PRODUCT_STATUS_TEXT', '本情報は過去の掲載情報を元に生成された参考情報であり、その存在や情報の信憑性を保証するものではありません。<br>また、本情報を基に発生した損害等について、弊社は一切の責任を負いかねますので、ご理解の上ご利用ください。');

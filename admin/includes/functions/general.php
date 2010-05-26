@@ -2385,3 +2385,36 @@ function calc_fee_final($fee_set, $total_cost)
   }
   return $return_fee;
 }
+
+function tep_set_categories_status($categories_id, $status)
+{
+  // c 0 => g 1 => r 2 => b
+  // p 0 => r 1 => g 2 => b
+  if ($status == 1) {
+    $products_status = 0;
+  } else if ($status == 0) {
+    $products_status = 1;
+  } else {
+    $products_status = 2;
+  }
+  
+  $categories_query = tep_db_query("SELECT * FROM ".TABLE_CATEGORIES." WHERE parent_id = '".$categories_id."'");
+  while ( $categories = tep_db_fetch_array($categories_query) ) {
+    tep_set_categories_status($categories['categories_id'], $status);
+  }
+  
+  tep_db_query("UPDATE `".TABLE_CATEGORIES."` SET `categories_status` = '".intval($status)."' WHERE `categories_id` =".$categories_id." LIMIT 1 ;");
+  tep_db_query("UPDATE ".TABLE_PRODUCTS." SET products_status = '".$products_status."' WHERE products_id IN (select products_id from ".TABLE_PRODUCTS_TO_CATEGORIES." where categories_id = '".$categories_id."')");
+  return true;
+}
+
+function tep_get_categories_status($categories_id)
+{
+  $categories_query = tep_db_query("select * from " . TABLE_CATEGORIES . " where categories_id='" . $categories_id . "' LIMIT 1");
+  $categories = tep_db_fetch_array($categories_query);
+  if ($categories) {
+    return $categories['categories_status'];
+  } else {
+    return null;
+  }
+}
