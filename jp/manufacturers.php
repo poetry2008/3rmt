@@ -70,7 +70,7 @@ while ($manufacturer = tep_db_fetch_array($manufacturer_query)){
   $products_query = tep_db_query("
       select p.products_id, p.products_image, p.products_tax_class_id, if(s.status, s.specials_new_products_price, p.products_price) as products_price 
       from " . TABLE_PRODUCTS . " p left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id 
-      where  p.products_id not in".tep_not_in_disabled_products()." and products_status = '1' and manufacturers_id = '".$manufacturer['manufacturers_id']."' 
+      where  p.products_id not in".tep_not_in_disabled_products()." and products_status != '0' and manufacturers_id = '".$manufacturer['manufacturers_id']."' 
       order by p.products_date_added desc 
       limit 5
   ");

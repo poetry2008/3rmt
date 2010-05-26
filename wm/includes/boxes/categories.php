@@ -15,7 +15,7 @@ $categories_query = tep_db_query("
              cd.site_id,
              c.sort_order
       from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
-      where c.categories_status = '0' 
+      where c.categories_status != '1' 
         and c.parent_id = '0' 
         and c.categories_id = cd.categories_id 
         and cd.language_id='" . $languages_id ."' 
@@ -62,7 +62,7 @@ if($cPath){
                        cd.site_id,
                        c.sort_order
                 from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
-                where c.categories_status = '0' 
+                where c.categories_status != '1' 
                   and c.parent_id = '".$category['categories_id']."' 
                   and c.categories_id = cd.categories_id 
                   and cd.language_id='" . $languages_id ."' 
@@ -107,7 +107,7 @@ if($cPath){
                          cd.site_id,
                          c.sort_order
                   from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
-                  where c.categories_status = '0' 
+                  where c.categories_status != '1' 
                     and c.parent_id = '".$subcategory['categories_id']."' 
                     and c.categories_id = cd.categories_id 
                     and cd.language_id='" . $languages_id ."' 

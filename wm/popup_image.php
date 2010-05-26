@@ -15,7 +15,7 @@
              p.products_image3 
       from " . TABLE_PRODUCTS .  " p 
         left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id 
-      where p.products_status = '1' 
+      where p.products_status != '0' 
         and p.products_id = '" .  (int)$_GET['pIID'] . "' 
         and pd.language_id = '" . $languages_id . "' 
         and (pd.site_id = '".SITE_ID."' or pd.site = '0')

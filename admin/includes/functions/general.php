@@ -703,7 +703,7 @@
     if ($include_deactivated) {
       $products_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c where p.products_id = p2c.products_id and p2c.categories_id = '" . $categories_id . "'");
     } else {
-      $products_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c where p.products_id = p2c.products_id and p.products_status = '1' and p2c.categories_id = '" . $categories_id . "'");
+      $products_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c where p.products_id = p2c.products_id and p.products_status != '0' and p2c.categories_id = '" . $categories_id . "'");
     }
 
     $products = tep_db_fetch_array($products_query);
@@ -838,6 +838,8 @@
   function tep_set_product_status($products_id, $status) {
     if ($status == '1') {
       return tep_db_query("update " . TABLE_PRODUCTS . " set products_status = '1', products_last_modified = now() where products_id = '" . $products_id . "'");
+    } elseif ($status == '2') {
+      return tep_db_query("update " . TABLE_PRODUCTS . " set products_status = '2', products_last_modified = now() where products_id = '" . $products_id . "'");
     } elseif ($status == '0') {
       return tep_db_query("update " . TABLE_PRODUCTS . " set products_status = '0', products_last_modified = now() where products_id = '" . $products_id . "'");
     } else {
@@ -2311,7 +2313,7 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
                pd.products_viewed
         FROM " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
         WHERE p.products_id = '" . $pid . "' 
-          AND p.products_status = '1' 
+          AND p.products_status != '0' 
           AND pd.products_id = '" .  $pid . "'" . " 
           AND pd.language_id ='" . $lid . "' 
           "; 

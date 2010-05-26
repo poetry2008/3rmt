@@ -65,9 +65,9 @@ echo "<!-- RSS for " . STORE_NAME . ", generated on " . date('r') . " -->\n";
 <?php
 // Create SQL statement
 if ($_GET['cPath'] != "") {
-  $sql = "SELECT p.products_id, products_model, products_image, products_price, products_tax_class_id FROM products p, products_to_categories pc WHERE p.products_id = pc.products_id AND pc.categories_id = '" . $_GET['cPath'] . "' AND products_status=1 ORDER BY products_id DESC LIMIT " . MAX_DISPLAY_SEARCH_RESULTS;
+  $sql = "SELECT p.products_id, products_model, products_image, products_price, products_tax_class_id FROM products p, products_to_categories pc WHERE p.products_id = pc.products_id AND pc.categories_id = '" . $_GET['cPath'] . "' AND products_status != '0' ORDER BY products_id DESC LIMIT " . MAX_DISPLAY_SEARCH_RESULTS;
 } else {
-  $sql = "SELECT products_id, products_model, products_image, products_price,  products_tax_class_id FROM products WHERE products_status=1 ORDER BY products_id DESC LIMIT " . MAX_DISPLAY_SEARCH_RESULTS;
+  $sql = "SELECT products_id, products_model, products_image, products_price,  products_tax_class_id FROM products WHERE products_status != '0' ORDER BY products_id DESC LIMIT " . MAX_DISPLAY_SEARCH_RESULTS;
 }
 // Execute SQL query and get result
 //ccdd

@@ -82,7 +82,7 @@
               pd, " . TABLE_MANUFACTURERS . " m, " .
               TABLE_PRODUCTS_TO_CATEGORIES . " p2c) left join " .
               TABLE_SPECIALS . " s on p.products_id = s.products_id 
-          where p.products_status = '1' 
+          where p.products_status != '0' 
             and p.manufacturers_id = m.manufacturers_id 
             and m.manufacturers_id = '" .  $_GET['manufacturers_id'] . "' 
             and p.products_id = p2c.products_id 
@@ -103,7 +103,7 @@
               IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, 
               IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
         from (" . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_MANUFACTURERS . " m ) left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id 
-        where p.products_status = '1' 
+        where p.products_status != '0' 
           and pd.products_id = p.products_id 
           and pd.language_id = '" . $languages_id . "' 
           and p.manufacturers_id = m.manufacturers_id 
@@ -120,7 +120,7 @@
               IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, 
               IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
         from (" . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_MANUFACTURERS . " m ) left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id 
-        where p.products_status = '1' 
+        where p.products_status != '0' 
           and pd.products_id = p.products_id 
           and pd.language_id = '" . $languages_id . "' 
           and p.manufacturers_id = m.manufacturers_id 
@@ -136,7 +136,7 @@
                           cd.categories_name as name,
                           cd.site_id
           from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
-          where p.products_status = '1' 
+          where p.products_status != '0' 
             and p.products_id = p2c.products_id 
             and p2c.categories_id = c.categories_id 
             and p2c.categories_id = cd.categories_id 
@@ -154,7 +154,7 @@
         select distinct c.categories_id as id, 
                         cd.categories_name as name 
         from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
-        where p.products_status = '1' 
+        where p.products_status != '0' 
           and p.products_id = p2c.products_id 
           and p2c.categories_id = c.categories_id 
           and p2c.categories_id = cd.categories_id 
@@ -177,7 +177,7 @@
                  IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, 
                  IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
           from ( " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_MANUFACTURERS . " m, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c  ) left join " .  TABLE_SPECIALS . " s on p.products_id = s.products_id 
-          where p.products_status = '1' 
+          where p.products_status != '0' 
             and p.manufacturers_id = m.manufacturers_id 
             and m.manufacturers_id = '" .  $_GET['filter_id'] . "' 
             and p.products_id = p2c.products_id 
@@ -196,7 +196,7 @@
                  IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, 
                  IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
           from ( " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_MANUFACTURERS . " m, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c  ) left join " .  TABLE_SPECIALS . " s on p.products_id = s.products_id 
-          where p.products_status = '1' 
+          where p.products_status != '0' 
             and p.manufacturers_id = m.manufacturers_id 
             and m.manufacturers_id = '" .  $_GET['filter_id'] . "' 
             and p.products_id = p2c.products_id 
@@ -219,7 +219,7 @@
                  IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, 
                  IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
           from ((" . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS . " p )left join " . TABLE_MANUFACTURERS . " m on p.manufacturers_id = m.manufacturers_id, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c ) left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id 
-          where p.products_status = '1' 
+          where p.products_status != '0' 
             and p.products_id = p2c.products_id 
             and pd.products_id = p2c.products_id 
             and pd.language_id = '" . $languages_id . "' 
@@ -238,7 +238,7 @@
                  IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, 
                  IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
           from ((" . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS . " p )left join " . TABLE_MANUFACTURERS . " m on p.manufacturers_id = m.manufacturers_id, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c ) left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id 
-          where p.products_status = '1' 
+          where p.products_status != '0' 
             and p.products_id = p2c.products_id 
             and pd.products_id = p2c.products_id 
             and pd.language_id = '" . $languages_id . "' 
@@ -251,7 +251,7 @@
         select distinct m.manufacturers_id as id, 
                         m.manufacturers_name as name
         from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " . TABLE_MANUFACTURERS . " m 
-        where p.products_status = '1' 
+        where p.products_status != '0' 
           and p.manufacturers_id = m.manufacturers_id 
           and p.products_id = p2c.products_id 
           and p2c.categories_id = '" . $current_category_id . "' 

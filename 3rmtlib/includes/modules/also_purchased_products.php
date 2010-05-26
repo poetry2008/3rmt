@@ -14,7 +14,7 @@
           and opb.products_id != '" . (int)$_GET['products_id'] . "' 
           and opb.products_id = p.products_id 
           and opb.orders_id = o.orders_id 
-          and p.products_status = '1' 
+          and p.products_status != '0' 
           and o.site_id = '".SITE_ID."' 
         group by p.products_id 
         order by o.date_purchased desc 

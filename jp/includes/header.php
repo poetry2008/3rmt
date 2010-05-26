@@ -85,7 +85,7 @@ if (!isset($cat0[0])) $cat0[0] = NULL;
                cd.site_id
         from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
         where c.parent_id = '0' 
-        and c.categories_status = '0' 
+        and c.categories_status != '1' 
         and c.categories_id = cd.categories_id 
         and cd.language_id = '" . (int)$languages_id . "' 
         order by sort_order, cd.categories_name, cd.site_id DESC

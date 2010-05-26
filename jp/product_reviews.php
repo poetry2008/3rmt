@@ -26,7 +26,7 @@
       FROM " .  TABLE_PRODUCTS_DESCRIPTION . " pd 
         LEFT JOIN " . TABLE_PRODUCTS . " p ON pd.products_id = p.products_id 
       WHERE pd.language_id = '" . $languages_id . "' 
-        AND p.products_status = '1' 
+        AND p.products_status != '0' 
         AND pd.products_id = '" .  (int)$_GET['products_id'] . "' 
         AND pd.site_id = " . SITE_ID
       );

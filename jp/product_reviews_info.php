@@ -34,7 +34,7 @@
         ON (p.products_id = pd.products_id AND pd.language_id = '". $languages_id . "') 
       WHERE r.reviews_id = '" .  (int)$_GET['reviews_id'] . "' 
         AND r.reviews_id = rd.reviews_id 
-        AND p.products_status = '1' 
+        AND p.products_status != '0' 
         AND r.reviews_status = '1' 
         AND r.site_id  = ".SITE_ID." 
       order by pd.site_id DESC
@@ -61,7 +61,7 @@ function popupImageWindow(url) {
   window.open(url,'popupImageWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
 }
 function showimage($1) {
-	document.images.lrgproduct.src = $1;
+  document.images.lrgproduct.src = $1;
 }
 //--></script>
 </head>
@@ -95,7 +95,7 @@ function showimage($1) {
                   <tr> 
                     <td class="main"><b><?php echo SUB_TITLE_PRODUCT; ?></b> <?php echo $reviews['products_name']; ?></td> 
                     <td class="smallText" rowspan="3" align="center">
-					<a href="<?php echo DIR_WS_IMAGES . 'products/' . $reviews['products_image']; ?>" rel="lightbox[products]"><?php echo tep_image(DIR_WS_IMAGES .'products/'. $reviews['products_image'], $reviews['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, ' hspace="5" vspace="5"'); ?><br> </a></td> 
+          <a href="<?php echo DIR_WS_IMAGES . 'products/' . $reviews['products_image']; ?>" rel="lightbox[products]"><?php echo tep_image(DIR_WS_IMAGES .'products/'. $reviews['products_image'], $reviews['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, ' hspace="5" vspace="5"'); ?><br> </a></td> 
                   </tr> 
                   <tr> 
                     <td class="main"><b><?php echo SUB_TITLE_FROM; ?></b> <?php echo tep_output_string_protected($reviews['customers_name']); ?></td> 

@@ -32,7 +32,7 @@
         ON (p.products_id = pd.products_id AND pd.language_id = '". $languages_id . "') 
       WHERE r.reviews_id = '" .  (int)$_GET['reviews_id'] . "' 
         AND r.reviews_id = rd.reviews_id 
-        AND p.products_status = '1' 
+        AND p.products_status != '0' 
         AND r.reviews_status = '1' 
         AND r.site_id  = ".SITE_ID." 
       order by pd.site_id DESC

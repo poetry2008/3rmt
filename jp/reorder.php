@@ -326,7 +326,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
              p.products_cflag, 
              p.products_small_sum 
       from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
-      where p.products_status = '1' 
+      where p.products_status != '0' 
         and pd.site_id = '" . SITE_ID . "' 
         and p.products_id = '" . $o->products[$i]['id'] . "' 
         and pd.products_id = p.products_id 

@@ -516,7 +516,7 @@ function forward404Unless($condition)
       ");
     } else {
 //ccdd
-      $products_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c where p.products_id = p2c.products_id and p.products_status = '1' and p2c.categories_id = '" . (int)$category_id . "'");
+      $products_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c where p.products_id = p2c.products_id and p.products_status != '0' and p2c.categories_id = '" . (int)$category_id . "'");
     }
     $products = tep_db_fetch_array($products_query);
     $products_count += $products['total'];
@@ -1838,7 +1838,7 @@ function forward404Unless($condition)
         $metaQuery .= "AND categories.categories_id = categories_description.categories_id ";
         $metaQuery .= "AND categories_description.language_id = ".TABLE_LANGUAGES.".languages_id ";
         $metaQuery .= "AND products.manufacturers_id = manufacturers.manufacturers_id ";
-        $metaQuery .= "AND products.products_status = 1 ";
+        $metaQuery .= "AND products.products_status != '0' ";
         $metaQuery .= "AND ".TABLE_CONFIGURATION.".configuration_key = 'DEFAULT_LANGUAGE' ";
         $metaQuery .= "AND ".TABLE_LANGUAGES.".code = ".TABLE_CONFIGURATION.".configuration_value ";
         $metaQuery .= "AND ".TABLE_CONFIGURATION.".site_id= '".SITE_ID."' ";
@@ -1939,7 +1939,7 @@ function forward404Unless($condition)
   function str_string($string='') {
     if(ereg("-", $string)) {
     $string_array = explode("-", $string);
-    return $string_array[0] . '&nbsp;年&nbsp;' . $string_array[1] . '&nbsp;月&nbsp;' . $string_array[2] . '&nbsp;日';
+    return $string_array[0] . ' 年 ' . $string_array[1] . ' 月 ' . $string_array[2] . ' 日';
   }
   }
   // checkout_process.php
@@ -2218,7 +2218,7 @@ function tep_unlink_temp_dir($dir)
                pd.products_viewed
         FROM " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
         WHERE p.products_id = '" . $pid . "' 
-          AND p.products_status = '1' 
+          AND p.products_status != '0' 
           AND pd.products_id = '" .  $pid . "'" . " 
           AND pd.language_id ='" . $lid . "' 
           "; 

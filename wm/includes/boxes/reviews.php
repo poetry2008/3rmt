@@ -55,7 +55,7 @@
            r.site_id as rsid,
            pd.site_id as psid
     from " . TABLE_REVIEWS . " r, " .  TABLE_REVIEWS_DESCRIPTION . " rd, " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd 
-    where p.products_status = '1' 
+    where p.products_status != '0' 
       and p.products_id = r.products_id 
       and r.reviews_id = rd.reviews_id 
       and rd.languages_id = '" . $languages_id . "' 

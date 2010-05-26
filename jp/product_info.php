@@ -151,7 +151,7 @@ function showimage($1) {
              p.products_cflag, 
              p.products_small_sum 
       FROM " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd 
-      WHERE p.products_status = '1' 
+      WHERE p.products_status != '0' 
         AND p.products_id = '" . (int)$_GET['products_id'] . "' 
         AND pd.products_id = p.products_id 
         AND pd.language_id = '" . $languages_id . "' 

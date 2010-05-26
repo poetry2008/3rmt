@@ -27,7 +27,7 @@
     $product_info_query = tep_db_query("
         select pd.products_name
         from " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
-        where p.products_status = '1' 
+        where p.products_status != '0' 
           and p.products_id = '" .  (int)$_GET['products_id'] . "' 
           and p.products_id = pd.products_id 
           and pd.language_id = '" . $languages_id . "' 

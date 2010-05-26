@@ -12,7 +12,7 @@
         where o.customers_id = '" . $customer_id . "' 
           and o.orders_id = op.orders_id 
           and op.products_id = p.products_id 
-          and p.products_status = '1' 
+          and p.products_status != '0' 
           and o.site_id = '".SITE_ID."'
         group by products_id 
         order by o.date_purchased desc 

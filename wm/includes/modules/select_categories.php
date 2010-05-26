@@ -14,7 +14,7 @@ $categories_tab_query1 = tep_db_query("
            cd.categories_meta_text, 
            cd.categories_image2 
     from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd 
-    where c.categories_status='0' 
+    where c.categories_status!='1' 
       and c.categories_id = cd.categories_id 
       and c.parent_id = '0' 
       and  cd.language_id='" .  (int)$languages_id ."' 

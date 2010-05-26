@@ -16,7 +16,7 @@
         SELECT pd.products_name 
         FROM " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
         WHERE pd.site_id = '" . SITE_ID . "' 
-          AND p.products_status = '1' 
+          AND p.products_status != '0' 
           AND p.products_id = '" . (int)$_GET['products_id'] . "' 
           AND p.products_id = pd.products_id 
           AND pd.language_id = '" . $languages_id . "'

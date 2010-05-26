@@ -18,7 +18,7 @@ $categories_tab_query1 = tep_db_query("
     from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd 
     where c.categories_id = cd.categories_id 
       and c.parent_id = '0' 
-      and c.categories_status='0' 
+      and c.categories_status!='1' 
       and cd.language_id='" . (int)$languages_id ."' 
     order by cd.site_id DESC
     ) p

@@ -35,7 +35,7 @@
                if(s.status, s.specials_new_products_price, p.products_price) as products_price 
         from " . TABLE_PRODUCTS . " p 
           left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id 
-        where products_status = '1' 
+        where products_status != '0' 
         order by p.products_date_added desc 
         limit " . MAX_DISPLAY_NEW_PRODUCTS
     );
@@ -51,7 +51,7 @@
       where p.products_id = p2c.products_id 
         and p2c.categories_id = c.categories_id 
         and c.parent_id = '" . $new_products_category_id . "' 
-        and p.products_status = '1' 
+        and p.products_status != '0' 
       order by p.products_date_added desc 
       limit " . MAX_DISPLAY_NEW_PRODUCTS
     );
@@ -62,13 +62,13 @@
     $info_box_contents = array();
     $info_box_contents[] = array('text' => sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B')));
      echo '
-	 <table width="100%"  border="0" cellspacing="0" cellpadding="0" align="center"> 
+   <table width="100%"  border="0" cellspacing="0" cellpadding="0" align="center"> 
           <tr>';
  //   new contentBoxHeading($info_box_contents);
 
     $row = 0;
     $col = 0;
-	$info_box_contents = array();
+  $info_box_contents = array();
     while ($new_products = tep_db_fetch_array($new_products_query)) {
       $row ++;
       // ccdd
@@ -87,17 +87,17 @@
     $product_details = tep_get_product_by_id($new_products['products_id'], SITE_ID, $languages_id);
   
     $new_products['products_name'] = $product_details['products_name'];
-	
-	  if(mb_strlen($new_products['products_name']) > 17) {
-	     $products_name = mb_substr($new_products['products_name'],0,17);
-		  $ten = '..';
-	    }else{
+  
+    if(mb_strlen($new_products['products_name']) > 17) {
+       $products_name = mb_substr($new_products['products_name'],0,17);
+      $ten = '..';
+      }else{
           $products_name = $new_products['products_name'];
-		  $ten = '';
-	  }
-	$description_array = explode("|-#-|", $product_details['products_description']);
-	$description_view = strip_tags(mb_substr($description_array[0],0,63));
-//	$description = strip_tags(mb_substr ($description_array[0],0,50));
+      $ten = '';
+    }
+  $description_array = explode("|-#-|", $product_details['products_description']);
+  $description_view = strip_tags(mb_substr($description_array[0],0,63));
+//  $description = strip_tags(mb_substr ($description_array[0],0,50));
 ?>
             <td width="250"><!-- products_id <?php echo $new_products['products_id'];?>--><table width="250"  border="0" cellspacing="0" cellpadding="0"> 
               <tr> 
@@ -110,11 +110,11 @@
             <br> 
             <div class="dot">&nbsp;</div></td> 
 <?php      
-		 if (($row/2) == floor($row/2)) {
+     if (($row/2) == floor($row/2)) {
            echo '</tr>'."\n".'<tr>' ;
          } else {
-		   echo '<td>'.tep_draw_separator('pixel_trans.gif', '10', '1').'</td>'."\n";
-		 }  
+       echo '<td>'.tep_draw_separator('pixel_trans.gif', '10', '1').'</td>'."\n";
+     }  
     }
 
     //new contentBox($info_box_contents);

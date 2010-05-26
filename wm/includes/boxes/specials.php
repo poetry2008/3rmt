@@ -15,7 +15,7 @@
                s.specials_date_added,
                s.specials_new_products_price 
         from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_SPECIALS . " s 
-        where p.products_status = '1' 
+        where p.products_status != '0' 
           and p.products_id = s.products_id 
           and pd.products_id = s.products_id 
           and pd.language_id = '" . $languages_id . "' 

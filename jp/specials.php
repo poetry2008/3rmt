@@ -38,7 +38,7 @@
            s.specials_date_added
     from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_SPECIALS . " s 
     where p.products_id not in".tep_not_in_disabled_products()." 
-      and p.products_status = '1' 
+      and p.products_status != '0' 
       and s.products_id = p.products_id 
       and p.products_id = pd.products_id 
       and pd.language_id = '" . $languages_id . "' 

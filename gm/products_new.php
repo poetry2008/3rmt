@@ -46,7 +46,7 @@ from (
          p.products_date_added, 
          m.manufacturers_name 
   from " . TABLE_PRODUCTS . " p left join " . TABLE_MANUFACTURERS . " m on p.manufacturers_id = m.manufacturers_id left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id 
-  where p.products_status = '1' 
+  where p.products_status != '0' 
   order by pd.site_id DESC
   ) p
 where site_id = '0'

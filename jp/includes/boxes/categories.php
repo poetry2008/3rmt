@@ -15,7 +15,7 @@ $categories_query = tep_db_query("
              cd.site_id,
              c.sort_order
       from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
-      where c.categories_status = '0' 
+      where c.categories_status != '1' 
         and c.parent_id = '0' 
         and c.categories_id = cd.categories_id 
         and cd.language_id='" . $languages_id ."' 
@@ -34,7 +34,7 @@ $categories_query = tep_db_query("
            c.parent_id 
     from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
     where site_id = '" . SITE_ID . "' 
-      and c.categories_status = '0' 
+      and c.categories_status != '1' 
       and c.parent_id = '0' 
       and c.categories_id = cd.categories_id 
       and cd.language_id='" . $languages_id ."' 
@@ -77,7 +77,7 @@ if($cPath){
                        cd.site_id,
                        c.sort_order
                 from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
-                where c.categories_status = '0' 
+                where c.categories_status != '1' 
                   and c.parent_id = '".$category['categories_id']."' 
                   and c.categories_id = cd.categories_id 
                   and cd.language_id='" . $languages_id ."' 
@@ -96,7 +96,7 @@ if($cPath){
                      c.parent_id 
               from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
               where cd.site_id = '" . SITE_ID . "' 
-                and c.categories_status = '0' 
+                and c.categories_status != '1' 
                 and c.parent_id = '".$category['categories_id']."' 
                 and c.categories_id = cd.categories_id 
                 and cd.language_id='" . $languages_id ."' 
@@ -139,7 +139,7 @@ if($cPath){
                          cd.site_id,
                          c.sort_order
                   from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
-                  where c.categories_status = '0' 
+                  where c.categories_status != '1' 
                     and c.parent_id = '".$subcategory['categories_id']."' 
                     and c.categories_id = cd.categories_id 
                     and cd.language_id='" . $languages_id ."' 
@@ -158,7 +158,7 @@ if($cPath){
                        c.parent_id 
                 from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
                 where cd.site_id = '" . SITE_ID . "' 
-                  and c.categories_status = '0' 
+                  and c.categories_status != '1' 
                   and c.parent_id = '".$subcategory['categories_id']."' 
                   and c.categories_id = cd.categories_id 
                   and cd.language_id='" . $languages_id ."' 
@@ -210,28 +210,28 @@ if($cPath){
       <?php }?>
     <?php }?>
 
-		<li class="l_m_category_li">
-			<img width="5" hspace="3" height="5" alt="" src="images/design/box/arrow_2.gif" class="middle" >
-			<a href="<?php echo tep_href_link('manufacturers.php'); ?>"><?php echo MENU_MU; ?></a>
-		</li>
-		<li class="l_m_category_li">
-			<img width="5" hspace="3" height="5" alt="" src="images/design/box/arrow_2.gif" class="middle" >
-			<a href="<?php echo tep_href_link(FILENAME_SPECIALS); ?>"><?php echo BOX_HEADING_SPECIALS; ?></a>
-		</li>
+    <li class="l_m_category_li">
+      <img width="5" hspace="3" height="5" alt="" src="images/design/box/arrow_2.gif" class="middle" >
+      <a href="<?php echo tep_href_link('manufacturers.php'); ?>"><?php echo MENU_MU; ?></a>
+    </li>
+    <li class="l_m_category_li">
+      <img width="5" hspace="3" height="5" alt="" src="images/design/box/arrow_2.gif" class="middle" >
+      <a href="<?php echo tep_href_link(FILENAME_SPECIALS); ?>"><?php echo BOX_HEADING_SPECIALS; ?></a>
+    </li>
 <?php
 // ccdd
-	$present_query = tep_db_query("
+  $present_query = tep_db_query("
       select count(*) as cnt 
       from " . TABLE_PRESENT_GOODS . "
       where site_id = '".SITE_ID."'
   ");
-	$present_result = tep_db_fetch_array($present_query);
-	if($present_result['cnt'] > 0) {
-		echo '		<li class="l_m_category_li">
-			<img width="5" hspace="3" height="5" alt="" src="images/design/box/arrow_2.gif" class="middle" >
-			<a href="' . tep_href_link(FILENAME_PRESENT) . '">' . BOX_HEADING_PRESENT . '</a>
-		</li>' . "\n";
-	}
+  $present_result = tep_db_fetch_array($present_query);
+  if($present_result['cnt'] > 0) {
+    echo '    <li class="l_m_category_li">
+      <img width="5" hspace="3" height="5" alt="" src="images/design/box/arrow_2.gif" class="middle" >
+      <a href="' . tep_href_link(FILENAME_PRESENT) . '">' . BOX_HEADING_PRESENT . '</a>
+    </li>' . "\n";
+  }
 ?>
 
 <li class="l_m_category_li">
