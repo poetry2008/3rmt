@@ -1939,7 +1939,7 @@ function forward404Unless($condition)
   function str_string($string='') {
     if(ereg("-", $string)) {
     $string_array = explode("-", $string);
-    return $string_array[0] . ' 年 ' . $string_array[1] . ' 月 ' . $string_array[2] . ' 日';
+    return $string_array[0] . '年' . $string_array[1] . '月' . $string_array[2] . '日';
   }
   }
   // checkout_process.php

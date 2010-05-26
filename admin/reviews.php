@@ -19,8 +19,8 @@
         if ( ($_GET['flag'] == '0') || ($_GET['flag'] == '1') ) {
           if ($_GET['pID']) {
             $pID = (int)$_GET['pID'];
-			$flag = (int)$_GET['flag'];
-			tep_db_query("UPDATE ".TABLE_REVIEWS." SET reviews_status = '".$flag."' WHERE reviews_id = '".$pID."'");
+      $flag = (int)$_GET['flag'];
+      tep_db_query("UPDATE ".TABLE_REVIEWS." SET reviews_status = '".$flag."' WHERE reviews_id = '".$pID."'");
           }
         }
 
@@ -106,6 +106,7 @@
                r.reviews_rating, 
                r.reviews_status,
                s.romaji,
+               s.name as site_name,
                r.site_id
         from " . TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd , ".TABLE_SITES." s
         where r.reviews_id = '" . tep_db_input($rID) . "' 
@@ -128,7 +129,7 @@
 
     $rInfo_array = tep_array_merge($reviews, $products, $products_name);
     $rInfo = new objectInfo($rInfo_array);
-	
+  
     switch ($rInfo->reviews_status) {
       case '0': $in_status = false; $out_status = true; break;
       case '1':
@@ -139,13 +140,13 @@
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td class="main" valign="top">
-			<b><?php echo ENTRY_SITE; ?>:</b> <?php echo $reviews['romaji']; ?><br>
-			<b><?php echo ENTRY_PRODUCT; ?></b> <?php echo $rInfo->products_name; ?><br>
-			<b><?php echo ENTRY_FROM; ?></b> <?php echo tep_output_string_protected($rInfo->customers_name); ?><br>
-			<b><?php echo ENTRY_DATE; ?></b> <?php echo tep_date_short($rInfo->date_added); ?><br>
-			<b><?php echo TEXT_PRODUCTS_STATUS; ?></b> <?php echo tep_draw_radio_field('reviews_status', '1', $in_status) . '&nbsp;' . TEXT_PRODUCT_AVAILABLE . '&nbsp;' . tep_draw_radio_field('reviews_status', '0', $out_status) . '&nbsp;' . TEXT_PRODUCT_NOT_AVAILABLE; ?>
+      <b><?php echo ENTRY_SITE; ?>:</b> <?php echo $reviews['site_name']; ?><br>
+      <b><?php echo ENTRY_PRODUCT; ?></b> <?php echo $rInfo->products_name; ?><br>
+      <b><?php echo ENTRY_FROM; ?></b> <?php echo tep_output_string_protected($rInfo->customers_name); ?><br>
+      <b><?php echo ENTRY_DATE; ?></b> <?php echo tep_date_short($rInfo->date_added); ?><br>
+      <b><?php echo TEXT_PRODUCTS_STATUS; ?></b> <?php echo tep_draw_radio_field('reviews_status', '1', $in_status) . '&nbsp;' . TEXT_PRODUCT_AVAILABLE . '&nbsp;' . tep_draw_radio_field('reviews_status', '0', $out_status) . '&nbsp;' . TEXT_PRODUCT_NOT_AVAILABLE; ?>
 
-			</td>
+      </td>
             <td class="main" align="right" valign="top"><?php echo tep_image(HTTP_CATALOG_SERVER . DIR_WS_CATALOG_IMAGES . $rInfo->products_image, $rInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"'); ?></td>
           </tr>
         </table></td>
@@ -284,6 +285,7 @@
              r.reviews_rating, 
              r.reviews_status ,
              s.romaji,
+             s.name as site_name,
              pd.products_name
      from " . TABLE_REVIEWS . " r, ".TABLE_SITES." s, ".TABLE_PRODUCTS_DESCRIPTION." pd
      where r.site_id = s.id
@@ -339,9 +341,9 @@
         echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' . $reviews['reviews_id']. '&site_id=' . (isset($_GET['site_id'])?$_GET['site_id']:'')) . '\'">' . "\n";
       }
 ?>
-                <td class="dataTableContent"><?php echo $reviews['romaji'];?></td>
+                <td class="dataTableContent"><?php echo $reviews['site_name'];?></td>
                 <td class="dataTableContent"><?php echo '<a href="' . tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' . $reviews['reviews_id'] . '&action=preview') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;' . $reviews['products_name']; ?></td>
-				<td class="dataTableContent" align="center">
+        <td class="dataTableContent" align="center">
 <?php
       if ($reviews['reviews_status'] == '1') {
         echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_REVIEWS, 'action=setflag&flag=0'.(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&page=' . (isset($_GET['page'])?$_GET['page']:'') . '&pID=' . $reviews['reviews_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>';
@@ -350,7 +352,7 @@
       }
 ?>
                 </td>
-				<td class="dataTableContent" align="right"><?php echo tep_image(HTTP_CATALOG_SERVER . DIR_WS_CATALOG_IMAGES . 'stars_' . $reviews['reviews_rating'] . '.gif'); ?></td>
+        <td class="dataTableContent" align="right"><?php echo tep_image(HTTP_CATALOG_SERVER . DIR_WS_CATALOG_IMAGES . 'stars_' . $reviews['reviews_rating'] . '.gif'); ?></td>
                 <td class="dataTableContent" align="right"><?php echo tep_date_short($reviews['date_added']); ?></td>
                 <td class="dataTableContent" align="right"><?php if ( (isset($rInfo) && is_object($rInfo)) && ($reviews['reviews_id'] == $rInfo->reviews_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif'); } else { echo '<a href="' . tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' . $reviews['reviews_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
               </tr>

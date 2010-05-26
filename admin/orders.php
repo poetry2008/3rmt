@@ -492,7 +492,7 @@ function mail_text(st,tt,ot){
     <tr>
       <td class="main" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="2">
     <tr>
-    <td class="main" valign="top" width="30%"><b>注文書サイト<?php //echo ENTRY_SITE;?></b></td> <td class="main" width="70%"><b style=" color:#FF0000"><?php echo tep_get_site_romaji_by_order_id($oID);?></b></td>
+    <td class="main" valign="top" width="30%"><b>注文書サイト<?php //echo ENTRY_SITE;?></b></td> <td class="main" width="70%"><b style=" color:#FF0000"><?php echo tep_get_site_name_by_order_id($oID);?></b></td>
     </tr>
     <tr>
     <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '5'); ?></td>

@@ -370,7 +370,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
     tep_mail('', SEND_EXTRA_ORDER_EMAILS_TO, $mail_title, $email_order, $o->customer['name'], $o->customer['email_address'], '');
   }
       }
-    } else if (in_array($order['orders_status'], array(2,5,6,7,8))) {
+    } else if (tep_orders_status_finished($order['orders_status'])) {
         // status can not change
         echo '<div class="comment">ご指定の注文番号は受付できません。 <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="74" height="25" alt="前に戻る" title="前に戻る"></a></div></div><div>';
     } else {

@@ -135,7 +135,8 @@
           select n.title, 
                  n.content, 
                  n.module, 
-                 s.romaji
+                 s.romaji,
+                 s.name as site_name
           from " . TABLE_NEWSLETTERS . " n, ".TABLE_SITES." s
           where newsletters_id = '" . tep_db_input($nID) . "'
             and s.id = n.site_id
@@ -153,7 +154,7 @@
     $directory_array = array();
     if (!$dir = dir($libpath.'includes/modules/'. 'newsletters/')) $dir =  dir($libpath.'includes/modules/'.'newsletters/'); 
     if($dir)
-	{
+  {
 //    if ($dir = dir(DIR_WS_MODULES . 'newsletters/') or dir($libpath.'includes/modules/'.'newsletters/')) {
     
       while ($file = $dir->read()) {
@@ -178,7 +179,7 @@
         <td><table border="0" cellspacing="0" cellpadding="2">
           <tr>
             <td class="main"><?php echo ENTRY_SITE; ?></td>
-            <td class="main"><?php echo isset($_GET['nID']) && $_GET['nID']?$newsletter['romaji']:tep_site_pull_down_menu(); ?></td>
+            <td class="main"><?php echo isset($_GET['nID']) && $_GET['nID']?$newsletter['site_name']:tep_site_pull_down_menu(); ?></td>
           </tr>
           <tr>
             <td class="main"><?php echo TEXT_NEWSLETTER_MODULE; ?></td>
@@ -389,7 +390,7 @@
       $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_delete.gif', IMAGE_DELETE) . ' <a href="' . tep_href_link(FILENAME_NEWSLETTERS, 'page=' . $_GET['page'] . '&nID=' . $_GET['nID'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
     default:
-	if (isset($nInfo) && is_object($nInfo)) {
+  if (isset($nInfo) && is_object($nInfo)) {
         $heading[] = array('text' => '<b>' . $nInfo->title . '</b>');
 
         if ($nInfo->locked > 0) {

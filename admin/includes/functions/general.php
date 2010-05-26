@@ -2130,7 +2130,7 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
     $site_array = array();
     $sites = tep_get_sites();
     foreach($sites as $site){
-      $sites_array[] = array('id' => $site['url'], 'text' => $site['romaji']);
+      $sites_array[] = array('id' => $site['url'], 'text' => $site['name']);
     }
     return tep_draw_pull_down_menu('site_url_id', $sites_array, $default, $params = 'onChange="window.open(this.value)"', $require);
 
@@ -2140,7 +2140,7 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
     $sites_array = array();
     $sites = tep_get_sites();
     foreach($sites as $site){
-      $sites_array[] = array('id' => $site['id'], 'text' => $site['romaji']);
+      $sites_array[] = array('id' => $site['id'], 'text' => $site['name']);
     }
     return tep_draw_pull_down_menu('site_id', $sites_array, $default, $params = '', $require);
   }
@@ -2150,7 +2150,7 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
     $sites = tep_get_sites();
     $sites_array[] = array('id' => '', 'text' => 'all');
     foreach($sites as $site){
-      $sites_array[] = array('id' => $site['id'], 'text' => $site['romaji']);
+      $sites_array[] = array('id' => $site['id'], 'text' => $site['name']);
     }
     return tep_draw_pull_down_menu('site_id', $sites_array, $default, $params = '', $require);
   }
@@ -2168,6 +2168,22 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
     return isset($site['romaji'])?$site['romaji']:'';
   }
   
+  function tep_get_site_name_by_id($id){
+    $site_query = tep_db_query("
+        select * 
+        from " . TABLE_SITES . "
+        where id = '".intval($id)."'
+    ");
+    $site = tep_db_fetch_array($site_query);
+    if (isset($site['name']) && $site['name']) {
+      return $site['name'];
+    } else if (isset($site['romaji']) && $site['romaji']) {
+      return $site['romaji'];
+    } else {
+      return '';
+    }
+  }
+  
   function tep_get_site_romaji_by_order_id($id){
     $order_query = tep_db_query("
         select s.romaji
@@ -2177,6 +2193,17 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
     ");
     $order = tep_db_fetch_array($order_query);
     return isset($order['romaji'])?$order['romaji']:'';
+  }
+  
+  function tep_get_site_name_by_order_id($id){
+    $order_query = tep_db_query("
+        select s.name
+        from " . TABLE_ORDERS . " o, ".TABLE_SITES." s
+        where o.orders_id = '".$id."'
+          and s.id = o.site_id
+    ");
+    $order = tep_db_fetch_array($order_query);
+    return isset($order['name'])?$order['name']:'';
   }
 
 ////

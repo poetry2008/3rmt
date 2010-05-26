@@ -69,7 +69,7 @@
           tep_db_perform(TABLE_LATEST_NEWS, $sql_data_array);
           $news_id = tep_db_insert_id(); //not actually used ATM -- just there in case
         }
-		
+    
         $news_image = tep_get_uploaded_file('news_image');
         if (!empty($news_image['name'])) {
           $pic_rpos = strrpos($news_image['name'], ".");
@@ -81,18 +81,18 @@
         }
         //$image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES . 'news/');
         $image_directory = tep_get_local_path(tep_get_upload_dir($sql_data_array['site_id']) . 'news/');
-		$path = 'news/';
-		
-		if (is_uploaded_file($news_image['tmp_name'])) {
+    $path = 'news/';
+    
+    if (is_uploaded_file($news_image['tmp_name'])) {
           tep_db_query("update " . TABLE_LATEST_NEWS . " set news_image = '" . $path . $news_image_name . "' where news_id = '" . $news_id . "'");
           tep_copy_uploaded_file($news_image, $image_directory);
         }
-				
+        
         tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, isset($_GET['lsite_id'])?('site_id='.$_GET['lsite_id']):''));
         break;
 
       case 'update_latest_news': //user wants to modify a news article.
-	  
+    
         if($_GET['latest_news_id']) {
           $latest_news = tep_get_latest_news_by_id($_GET['latest_news_id']);
           $sql_data_array = array('headline' => tep_db_prepare_input($_POST['headline']),
@@ -112,10 +112,10 @@
         }
         //$image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES . 'news/');
         $image_directory = tep_get_local_path(tep_get_upload_dir($latest_news['site_id']) . 'news/');
-		$path = 'news/';
-		
-		if (is_uploaded_file($news_image['tmp_name'])) {
-		  tep_db_query("
+    $path = 'news/';
+    
+    if (is_uploaded_file($news_image['tmp_name'])) {
+      tep_db_query("
           update " . TABLE_LATEST_NEWS . " 
           set news_image = '" . $path . $news_image_name . "' 
           where news_id = '" . $_GET['latest_news_id'] . "'");
@@ -163,8 +163,8 @@
           from " . TABLE_LATEST_NEWS . " 
           where news_id = '" . (int)$_GET['latest_news_id'] . "'");
       $latest_news = tep_db_fetch_array($latest_news_query);
-	  
-	  $nInfo = new objectInfo($latest_news);
+    
+    $nInfo = new objectInfo($latest_news);
     } else { //adding new news item
       $latest_news = array();
     }
@@ -183,8 +183,8 @@
       <tr><?php echo tep_draw_form('new_latest_news', FILENAME_LATEST_NEWS, (isset($_GET['latest_news_id']) ? ('latest_news_id=' . $_GET['latest_news_id'] . '&action=update_latest_news') : 'action=insert_latest_news').(isset($_GET['lsite_id'])?('&lsite_id='.$_GET['lsite_id']):''), 'post', 'enctype="multipart/form-data"'); ?>
         <td><table border="0" cellspacing="0" cellpadding="2">
           <tr>
-            <td class="main"><?php echo TEXT_LATEST_NEWS_SITE; ?></td>
-            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . (isset($_GET['latest_news_id']) && $_GET['latest_news_id'] && $latest_news?tep_get_site_romaji_by_id($latest_news['site_id']):tep_site_pull_down_menu(isset($latest_news['site_id'])?$latest_news['site_id']:'')); ?></td>
+            <td class="main"><?php echo ENTRY_SITE; ?></td>
+            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . (isset($_GET['latest_news_id']) && $_GET['latest_news_id'] && $latest_news?tep_get_site_name_by_id($latest_news['site_id']):tep_site_pull_down_menu(isset($latest_news['site_id'])?$latest_news['site_id']:'')); ?></td>
           </tr>
           <tr>
             <td class="main"><?php echo TEXT_LATEST_NEWS_HEADLINE; ?></td>
@@ -203,14 +203,14 @@
           <tr>
             <td class="main"><?php echo TEXT_LATEST_NEWS_IMAGE; ?></td>
             <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_file_field('news_image') . '<br>' . tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . (isset($latest_news['news_image'])?$latest_news['news_image']:'') . tep_draw_hidden_field('news_image',isset($latest_news['news_image'])? $latest_news['news_image']:''); ?></td>
-          </tr>		  
+          </tr>     
           <tr>
             <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
           <tr>
             <td class="main"><?php echo TEXT_LATEST_NEWS_IMAGE_DESCRIPTION; ?></td>
             <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_textarea_field('news_image_description', 'soft', '70', '7', isset($latest_news['news_image_description'])?stripslashes($latest_news['news_image_description']):''); ?></td>
-          </tr>		  
+          </tr>     
         </table></td>
       </tr>
       <tr>
@@ -223,7 +223,7 @@
             echo tep_image_submit('button_insert.gif', IMAGE_INSERT) . $cancel_button;
           ?>
         </td>
-		
+    
       </form></tr>
 <?php
 

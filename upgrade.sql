@@ -1,3 +1,4 @@
+-- 先执行db.php 再执行upgrade.sql
 -- 隐藏设置 営業日カレンダー & 追加画像設置 & 画像設置
 UPDATE  `configuration_group` SET  `visible` =  '0' WHERE  `configuration_group`.`configuration_group_id` =902;
 UPDATE  `configuration_group` SET  `visible` =  '0' WHERE  `configuration_group`.`configuration_group_id` =2028;
@@ -122,3 +123,7 @@ INSERT INTO `configuration` (`configuration_id`, `configuration_title`, `configu
 (NULL, 'トップページのゲームニュースの表示数　', 'GAME_NEWS_MAX_DISPLAY', '5', 'トップページのゲームニュースの表示数　', 3, NULL, '2010-03-09 16:42:29', '0000-00-00 00:00:00', NULL, NULL, 0);
 INSERT INTO `configuration` (`configuration_id`, `configuration_title`, `configuration_key`, `configuration_value`, `configuration_description`, `configuration_group_id`, `sort_order`, `last_modified`, `date_added`, `use_function`, `set_function`, `site_id`) VALUES
 (NULL, 'カテゴリのゲームニュース表示数', 'CATEGORIES_GAME_NEWS_MAX_DISPLAY', '25', 'カテゴリのゲームニュース表示数', 3, NULL, '2010-03-09 16:42:32', '0000-00-00 00:00:00', NULL, NULL, 0);
+ALTER TABLE  `sites` ADD  `name` VARCHAR( 255 ) NOT NULL AFTER  `romaji`;
+UPDATE  `sites` SET  `name` =  'RMTジャックポット' WHERE  `sites`.`id` =1;
+UPDATE  `sites` SET  `name` =  'RMT ゲームマネー' WHERE  `sites`.`id` =2;
+UPDATE  `sites` SET  `name` =  'RMTワールドマネー' WHERE  `sites`.`id` =3;

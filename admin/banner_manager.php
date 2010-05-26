@@ -273,7 +273,8 @@ function popupImageWindow(url) {
                  b.expires_impressions, 
                  b.date_status_change,
                  b.site_id,
-                 s.romaji
+                 s.romaji,
+                 s.name as site_name
           from " . TABLE_BANNERS . " b, ".TABLE_SITES." s
           where banners_id = '" . tep_db_input($bID) . "'
             and s.id = b.site_id
@@ -309,7 +310,7 @@ function popupImageWindow(url) {
         <td><table border="0" cellspacing="0" cellpadding="2">
           <tr>
             <td class="main"><?php echo ENTRY_SITE; ?></td>
-            <td class="main"><?php echo (isset($_GET['bID']) && $_GET['bID'])?$banner['romaji']:tep_site_pull_down_menu(); ?></td>
+            <td class="main"><?php echo (isset($_GET['bID']) && $_GET['bID'])?$banner['site_name']:tep_site_pull_down_menu(); ?></td>
           </tr>
           <tr>
             <td class="main"><?php echo TEXT_BANNERS_TITLE; ?></td>
@@ -403,7 +404,8 @@ function popupImageWindow(url) {
              b.date_status_change, 
              b.date_scheduled, 
              b.date_added,
-             s.romaji
+             s.romaji,
+             s.name as site_name
       from " . TABLE_BANNERS . " b, ".TABLE_SITES." s
       where s.id = b.site_id
         " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and s.id = '" . intval($_GET['site_id']) . "' " : '') . "

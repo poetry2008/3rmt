@@ -91,9 +91,9 @@ require('includes/application_top.php');
     $up_period2 = tep_db_prepare_input($_POST['limit_y']).tep_db_prepare_input($_POST['limit_m']).tep_db_prepare_input($_POST['limit_d']);
 
       if($filepath2 == ""){
-	    $up = "update ".TABLE_PRESENT_GOODS." set title='".$up_title."', html_check='".$up_ht."', text='".$up_text."',start_date='".$up_period1."',limit_date='".$up_period2."' where goods_id='".$up_id."'";
+      $up = "update ".TABLE_PRESENT_GOODS." set title='".$up_title."', html_check='".$up_ht."', text='".$up_text."',start_date='".$up_period1."',limit_date='".$up_period2."' where goods_id='".$up_id."'";
       }else{
-	    $up = "update ".TABLE_PRESENT_GOODS." set title='".$up_title."', html_check='".$up_ht."', image='".$filepath2."',text='".$up_text."',start_date='".$up_period1."',limit_date='".$up_period2."' where goods_id='".$up_id."'";
+      $up = "update ".TABLE_PRESENT_GOODS." set title='".$up_title."', html_check='".$up_ht."', image='".$filepath2."',text='".$up_text."',start_date='".$up_period1."',limit_date='".$up_period2."' where goods_id='".$up_id."'";
       }
     $mess = mysql_query($up) or die("データ追加エラー");
       if($mess == true){
@@ -125,39 +125,39 @@ require('includes/application_top.php');
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onLoad="SetFocus();">
 <script language="javascript">
 function msg(){
-	if(document.apply.title.value == ""){
-		alert("タイトルを入力して下さい");
-		document.apply.title.focus();
-		return false;
-	}
-	if(document.apply.text.value == ""){
-		alert("本文を入力して下さい");
-		document.apply.text.focus();
-		return false;
-	}
-	if((document.apply.start_y.value + document.apply.start_m.value + document.apply.start_d.value) > (document.apply.limit_y.value + document.apply.limit_m.value +document.apply.limit_d.value)){
-		alert("開始日＞終了日になっています");
-		document.apply.start_y.focus();
-		return false;
-	}
+  if(document.apply.title.value == ""){
+    alert("タイトルを入力して下さい");
+    document.apply.title.focus();
+    return false;
+  }
+  if(document.apply.text.value == ""){
+    alert("本文を入力して下さい");
+    document.apply.text.focus();
+    return false;
+  }
+  if((document.apply.start_y.value + document.apply.start_m.value + document.apply.start_d.value) > (document.apply.limit_y.value + document.apply.limit_m.value +document.apply.limit_d.value)){
+    alert("開始日＞終了日になっています");
+    document.apply.start_y.focus();
+    return false;
+  }
 }
 
 function msg2(){
-	if(document.view.title.value == ""){
-		alert("タイトルを入力して下さい");
-		document.view.title.focus();
-		return false;
-	}
-	if(document.view.text.value == ""){
-		alert("本文を入力して下さい");
-		document.view.text.focus();
-		return false;
-	}
-	if((document.view.start_y.value + document.view.start_m.value + document.view.start_d.value) > (document.view.limit_y.value + document.view.limit_m.value +document.view.limit_d.value)){
-		alert("開始日＞終了日になっています");
-		document.view.start_y.focus();
-		return false;
-	}
+  if(document.view.title.value == ""){
+    alert("タイトルを入力して下さい");
+    document.view.title.focus();
+    return false;
+  }
+  if(document.view.text.value == ""){
+    alert("本文を入力して下さい");
+    document.view.text.focus();
+    return false;
+  }
+  if((document.view.start_y.value + document.view.start_m.value + document.view.start_d.value) > (document.view.limit_y.value + document.view.limit_m.value +document.view.limit_d.value)){
+    alert("開始日＞終了日になっています");
+    document.view.start_y.focus();
+    return false;
+  }
 }
 </script>
 </head>
@@ -206,7 +206,7 @@ case 'input' :
                             <tr>
                               <td class="main" valign="top" bgcolor="#FFFFFF">本文</td>
                               <td class="main" bgcolor="#FFFFFF">
-							  <input type="checkbox" name="ht" value="1">HTMLを許可する
+                <input type="checkbox" name="ht" value="1">HTMLを許可する
                                 <textarea name="text" style="width:95%; height:100px;"></textarea></td>
                             </tr>
                             <tr>
@@ -214,105 +214,105 @@ case 'input' :
                               <td class="main" bgcolor="#FFFFFF">開始日：
                                 <select name="start_y">
                                   <?php 
-					for($y=0;$y<=5;$y++){
-						$nen = $yyyy + $y;
-						if($yyyy == $nen){
-							echo "<option value=\"$nen\" selected>$nen</option>"."\n";
-						}else{
-							echo "<option value=\"$nen\">$nen</option>"."\n";
-						}
-					}
-					?>
+          for($y=0;$y<=5;$y++){
+            $nen = $yyyy + $y;
+            if($yyyy == $nen){
+              echo "<option value=\"$nen\" selected>$nen</option>"."\n";
+            }else{
+              echo "<option value=\"$nen\">$nen</option>"."\n";
+            }
+          }
+          ?>
                                 </select>
                                 年
                                 <select name="start_m">
                                   <?php
-					for($m=1;$m<=9;$m++){
-						if($mm == $m){
-							echo "<option value=\"0$m\" selected>$m</option>"."\n";
-						}else{
-							echo "<option value=\"0$m\">$m</option>"."\n";
-						}
-					}
-					for($m=10;$m<=12;$m++){
-						if($mm == $m){
-							echo "<option value=\"$m\" selected>$m</option>"."\n";
-						}else{
-							echo "<option value=\"$m\">$m</option>"."\n";
-						}
-					}
-					?>
+          for($m=1;$m<=9;$m++){
+            if($mm == $m){
+              echo "<option value=\"0$m\" selected>$m</option>"."\n";
+            }else{
+              echo "<option value=\"0$m\">$m</option>"."\n";
+            }
+          }
+          for($m=10;$m<=12;$m++){
+            if($mm == $m){
+              echo "<option value=\"$m\" selected>$m</option>"."\n";
+            }else{
+              echo "<option value=\"$m\">$m</option>"."\n";
+            }
+          }
+          ?>
                                 </select>
                                 月
                                 <select name="start_d">
                                   <?php
-					for($d=1;$d<=9;$d++){
-						if($dd == $d){
-							echo "<option value=\"0$d\" selected>$d</option>"."\n";
-						}else{
-							echo "<option value=\"0$d\">$d</option>"."\n";
-						}
-					}
-					for($d=10;$d<=31;$d++){
-						if($dd == $d){
-							echo "<option value=\"$d\" selected>$d</option>"."\n";
-						}else{
-							echo "<option value=\"$d\">$d</option>"."\n";
-						}
-					}
-					?>
+          for($d=1;$d<=9;$d++){
+            if($dd == $d){
+              echo "<option value=\"0$d\" selected>$d</option>"."\n";
+            }else{
+              echo "<option value=\"0$d\">$d</option>"."\n";
+            }
+          }
+          for($d=10;$d<=31;$d++){
+            if($dd == $d){
+              echo "<option value=\"$d\" selected>$d</option>"."\n";
+            }else{
+              echo "<option value=\"$d\">$d</option>"."\n";
+            }
+          }
+          ?>
                                 </select>
                                 日<br>
                                 終了日：
                                 <select name="limit_y">
                                   <?php
-					for($y=0;$y<=5;$y++){
-						$nen = $yyyy + $y;
-						if($yyyy == $nen){
-							echo "<option value=\"$nen\" selected>$nen</option>"."\n";
-						}else{
-							echo "<option value=\"$nen\">$nen</option>"."\n";
-						}
-					}
-					?>
+          for($y=0;$y<=5;$y++){
+            $nen = $yyyy + $y;
+            if($yyyy == $nen){
+              echo "<option value=\"$nen\" selected>$nen</option>"."\n";
+            }else{
+              echo "<option value=\"$nen\">$nen</option>"."\n";
+            }
+          }
+          ?>
                                 </select>
                                 年
                                 <select name="limit_m">
                                   <?php
-					for($m=1;$m<=9;$m++){
-						if($mm == $m){
-							echo "<option value=\"0$m\" selected>$m</option>"."\n";
-						}else{
-							echo "<option value=\"0$m\">$m</option>"."\n";
-						}
-					}
-					for($m=10;$m<=12;$m++){
-						if($mm == $m){
-							echo "<option value=\"$m\" selected>$m</option>"."\n";
-						}else{
-							echo "<option value=\"$m\">$m</option>"."\n";
-						}
-					}
-					?>
+          for($m=1;$m<=9;$m++){
+            if($mm == $m){
+              echo "<option value=\"0$m\" selected>$m</option>"."\n";
+            }else{
+              echo "<option value=\"0$m\">$m</option>"."\n";
+            }
+          }
+          for($m=10;$m<=12;$m++){
+            if($mm == $m){
+              echo "<option value=\"$m\" selected>$m</option>"."\n";
+            }else{
+              echo "<option value=\"$m\">$m</option>"."\n";
+            }
+          }
+          ?>
                                 </select>
                                 月
                                 <select name="limit_d">
                                   <?php
-					for($d=1;$d<=9;$d++){
-						if($pd == $d){
-							echo "<option value=\"0$d\" selected>$d</option>"."\n";
-						}else{
-							echo "<option value=\"0$d\">$d</option>"."\n";
-						}
-					}
-					for($d=10;$d<=31;$d++){
-						if($pd == $d){
-							echo "<option value=\"$d\" selected>$d</option>"."\n";
-						}else{
-							echo "<option value=\"$d\">$d</option>"."\n";
-						}
-					}
-					?>
+          for($d=1;$d<=9;$d++){
+            if($pd == $d){
+              echo "<option value=\"0$d\" selected>$d</option>"."\n";
+            }else{
+              echo "<option value=\"0$d\">$d</option>"."\n";
+            }
+          }
+          for($d=10;$d<=31;$d++){
+            if($pd == $d){
+              echo "<option value=\"$d\" selected>$d</option>"."\n";
+            }else{
+              echo "<option value=\"$d\">$d</option>"."\n";
+            }
+          }
+          ?>
                                 </select>
                                 日 </td>
                             </tr>
@@ -320,10 +320,10 @@ case 'input' :
                       </tr>
                     </table>
                     <div align="right">
-					  <a href=
-					  <?php echo tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))); ?>
-					  ><?php echo tep_image_button('button_back.gif', '戻る'); ?></a>
-					  <?php echo tep_image_submit('button_save.gif', '保存'); ?>
+            <a href=
+            <?php echo tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))); ?>
+            ><?php echo tep_image_button('button_back.gif', '戻る'); ?></a>
+            <?php echo tep_image_submit('button_save.gif', '保存'); ?>
                     </div></td>
                 </tr>
               </table>
@@ -341,7 +341,8 @@ $sele1 = tep_db_query("
            g.start_date,
            g.limit_date,
            g.site_id,
-           s.romaji
+           s.romaji,
+           s.name as site_name
     from ".TABLE_PRESENT_GOODS." g, ".TABLE_SITES." s
     where g.goods_id = '".$sele1_id."'
       and g.site_id = s.id
@@ -372,7 +373,7 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                         <td><table width="100%"  border="0" cellspacing="1" cellpadding="3">
                             <tr>
                               <td class="main" width="150" bgcolor="#FFFFFF"><?php echo ENTRY_SITE;?></td>
-                              <td class="main" width="630" bgcolor="#FFFFFF"><?php echo $sql1['romaji'] ;?></td>
+                              <td class="main" width="630" bgcolor="#FFFFFF"><?php echo $sql1['site_name'] ;?></td>
                             </tr>
                             <tr>
                               <td class="main" width="150" bgcolor="#FFFFFF">タイトル</td>
@@ -381,135 +382,135 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                             <tr>
                               <td class="main" width="150" bgcolor="#FFFFFF">画像</td>
                               <td class="main" width="630" bgcolor="#FFFFFF">
-							  <?php 
-							  if($sql1['image']){
-							  ?>
-							    <?php echo tep_info_image('present/'.$sql1['image'], $sql1['title'],'','',$sql1['site_id']) ; ?> <br>
-							  <?php
-							  }
-							  ?>
+                <?php 
+                if($sql1['image']){
+                ?>
+                  <?php echo tep_info_image('present/'.$sql1['image'], $sql1['title'],'','',$sql1['site_id']) ; ?> <br>
+                <?php
+                }
+                ?>
                                 <input type="file" name="file"></td>
                             </tr>
                             <tr>
                               <td class="main" valign="top" bgcolor="#FFFFFF">本文</td>
                               <td class="main" bgcolor="#FFFFFF">
-							  <?php
-							  if($sql1['html_check'] == 1){
-							  	echo '<input type="checkbox" name="ht" value="1" checked>HTMLを許可する'."\n";
-							  	echo '<textarea name="text" style="width:95%; height:300px;">'.stripslashes($sql1['text']).'</textarea>'."\n";
-							  }else{
-							  	echo '<input type="checkbox" name="ht" value="1">HTMLを許可する'."\n";
-							  	echo '<textarea name="text" style="width:95%; height:300px;">'.stripslashes($sql1['text']).'</textarea>'."\n";
-							  }
-							  ?>
-							  </td>
+                <?php
+                if($sql1['html_check'] == 1){
+                  echo '<input type="checkbox" name="ht" value="1" checked>HTMLを許可する'."\n";
+                  echo '<textarea name="text" style="width:95%; height:300px;">'.stripslashes($sql1['text']).'</textarea>'."\n";
+                }else{
+                  echo '<input type="checkbox" name="ht" value="1">HTMLを許可する'."\n";
+                  echo '<textarea name="text" style="width:95%; height:300px;">'.stripslashes($sql1['text']).'</textarea>'."\n";
+                }
+                ?>
+                </td>
                             </tr>
                             <tr>
                               <td class="main" valign="top" bgcolor="#FFFFFF">期間</td>
                               <td class="main" bgcolor="#FFFFFF">
-							  開始日：
+                開始日：
                                 <select name="start_y">
                                   <?php
-					for($y=0;$y<=5;$y++){
-						$nen = $yyyy + $y;
-						if($sele_sty == $nen){
-							echo "<option value=\"$nen\" selected>$nen</option>"."\n";
-						}else{
-							echo "<option value=\"$nen\">$nen</option>"."\n";
-						}
-					}
-					?>
+          for($y=0;$y<=5;$y++){
+            $nen = $yyyy + $y;
+            if($sele_sty == $nen){
+              echo "<option value=\"$nen\" selected>$nen</option>"."\n";
+            }else{
+              echo "<option value=\"$nen\">$nen</option>"."\n";
+            }
+          }
+          ?>
                                 </select>
                                 年
                                 <select name="start_m">
                                   <?php
-					for($m=1;$m<=9;$m++){
-						if($sele_stm == $m){
-							echo "<option value=\"0$m\" selected>$m</option>"."\n";
-						}else{
-							echo "<option value=\"0$m\">$m</option>"."\n";
-						}
-					}
-					for($m=10;$m<=12;$m++){
-						if($sele_stm == $m){
-							echo "<option value=\"$m\" selected>$m</option>"."\n";
-						}else{
-							echo "<option value=\"$m\">$m</option>"."\n";
-						}
-					}
-					?>
+          for($m=1;$m<=9;$m++){
+            if($sele_stm == $m){
+              echo "<option value=\"0$m\" selected>$m</option>"."\n";
+            }else{
+              echo "<option value=\"0$m\">$m</option>"."\n";
+            }
+          }
+          for($m=10;$m<=12;$m++){
+            if($sele_stm == $m){
+              echo "<option value=\"$m\" selected>$m</option>"."\n";
+            }else{
+              echo "<option value=\"$m\">$m</option>"."\n";
+            }
+          }
+          ?>
                                 </select>
                                 月
                                 <select name="start_d">
                                   <?php
-					for($d=1;$d<=9;$d++){
-						if($sele_std == $d){
-							echo "<option value=\"0$d\" selected>$d</option>"."\n";
-						}else{
-							echo "<option value=\"0$d\">$d</option>"."\n";
-						}
-					}
-					for($d=10;$d<=31;$d++){
-						if($sele_std == $d){
-							echo "<option value=\"$d\" selected>$d</option>"."\n";
-						}else{
-							echo "<option value=\"$d\">$d</option>"."\n";
-						}
-					}
-					?>
+          for($d=1;$d<=9;$d++){
+            if($sele_std == $d){
+              echo "<option value=\"0$d\" selected>$d</option>"."\n";
+            }else{
+              echo "<option value=\"0$d\">$d</option>"."\n";
+            }
+          }
+          for($d=10;$d<=31;$d++){
+            if($sele_std == $d){
+              echo "<option value=\"$d\" selected>$d</option>"."\n";
+            }else{
+              echo "<option value=\"$d\">$d</option>"."\n";
+            }
+          }
+          ?>
                                 </select>
                                 日
-								<br>
+                <br>
                                 終了日：
                                 <select name="limit_y">
                                   <?php
-					for($y=0;$y<=5;$y++){
-						$nen = $yyyy + $y;
-						if($sele_liy == $nen){
-							echo "<option value=\"$nen\" selected>$nen</option>"."\n";
-						}else{
-							echo "<option value=\"$nen\">$nen</option>"."\n";
-						}
-					}
-					?>
+          for($y=0;$y<=5;$y++){
+            $nen = $yyyy + $y;
+            if($sele_liy == $nen){
+              echo "<option value=\"$nen\" selected>$nen</option>"."\n";
+            }else{
+              echo "<option value=\"$nen\">$nen</option>"."\n";
+            }
+          }
+          ?>
                                 </select>
                                 年
                                 <select name="limit_m">
                                   <?php
-					for($m=1;$m<=9;$m++){
-						if($sele_lim == $m){
-							echo "<option value=\"0$m\" selected>$m</option>"."\n";
-						}else{
-							echo "<option value=\"0$m\">$m</option>"."\n";
-						}
-					}
-					for($m=10;$m<=12;$m++){
-						if($sele_lim == $m){
-							echo "<option value=\"$m\" selected>$m</option>"."\n";
-						}else{
-							echo "<option value=\"$m\">$m</option>"."\n";
-						}
-					}
-					?>
+          for($m=1;$m<=9;$m++){
+            if($sele_lim == $m){
+              echo "<option value=\"0$m\" selected>$m</option>"."\n";
+            }else{
+              echo "<option value=\"0$m\">$m</option>"."\n";
+            }
+          }
+          for($m=10;$m<=12;$m++){
+            if($sele_lim == $m){
+              echo "<option value=\"$m\" selected>$m</option>"."\n";
+            }else{
+              echo "<option value=\"$m\">$m</option>"."\n";
+            }
+          }
+          ?>
                                 </select>
                                 月
                                 <select name="limit_d">
                                   <?php
-					for($d=1;$d<=9;$d++){
-						if($sele_lid == $d){
-							echo "<option value=\"0$d\" selected>$d</option>"."\n";
-						}else{
-							echo "<option value=\"0$d\">$d</option>"."\n";
-						}
-					}
-					for($d=10;$d<=31;$d++){
-						if($sele_lid == $d){
-							echo "<option value=\"$d\" selected>$d</option>"."\n";
-						}else{
-							echo "<option value=\"$d\">$d</option>"."\n";
-						}
-					}
-					?>
+          for($d=1;$d<=9;$d++){
+            if($sele_lid == $d){
+              echo "<option value=\"0$d\" selected>$d</option>"."\n";
+            }else{
+              echo "<option value=\"0$d\">$d</option>"."\n";
+            }
+          }
+          for($d=10;$d<=31;$d++){
+            if($sele_lid == $d){
+              echo "<option value=\"$d\" selected>$d</option>"."\n";
+            }else{
+              echo "<option value=\"$d\">$d</option>"."\n";
+            }
+          }
+          ?>
                                 </select>
                                 日 </td>
                             </tr>
@@ -517,10 +518,10 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                       </tr>
                     </table>
                     <div align="right">
-					  <a href=
-					  <?php echo tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))); ?>
-					  ><?php echo tep_image_button('button_back.gif', '戻る'); ?></a>
-					  <?php echo tep_image_submit('button_update.gif', '更新'); ?>
+            <a href=
+            <?php echo tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))); ?>
+            ><?php echo tep_image_button('button_back.gif', '戻る'); ?></a>
+            <?php echo tep_image_submit('button_update.gif', '更新'); ?>
                     </div></td>
                 </tr>
               </table>
@@ -575,15 +576,15 @@ $sql2 = tep_db_fetch_array($sele2);
                               <td class="main" width="630" bgcolor="#FFFFFF"><?php echo $sql2['tourokubi'] ;?></td>
                             </tr>
                           </table>
-						  </td>
+              </td>
                       </tr>
                     </table>
-					<div align="right">
-					  <a href=
-					  <?php echo tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action')). '&action=list'); ?>
-					  ><?php echo tep_image_button('button_back.gif', '戻る'); ?></a>
+          <div align="right">
+            <a href=
+            <?php echo tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action')). '&action=list'); ?>
+            ><?php echo tep_image_button('button_back.gif', '戻る'); ?></a>
                     </div>
-					</td>
+          </td>
                 </tr>
               </table>
             </form>
@@ -611,9 +612,9 @@ $c_id = tep_db_prepare_input($_GET['cID']);
                       <td class="dataTableHeadingContent" align="center">操作</td>
                     </tr>
                     <?php
-		$search = '';
-		$count = 0;
-		$list_query_raw = "
+    $search = '';
+    $count = 0;
+    $list_query_raw = "
       select p.id ,
              p.goods_id, 
              p.customer_id, 
@@ -633,20 +634,20 @@ $c_id = tep_db_prepare_input($_GET['cID']);
         and g.goods_id = p.goods_id
         and s.id = g.site_id
       order by id";
-		$list_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $list_query_raw, $list_query_numrows);
-		$list_query = tep_db_query($list_query_raw);
-		while ($list = tep_db_fetch_array($list_query)) {
-		  $count++;
-		  if ( ((isset($_GET['list_id']) && $list['id'] == $_GET['list_id']) || ((!isset($_GET['list_id']) || !$_GET['list_id']) && $count == 1)) ) {
-			echo '          <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('list_id', 'action')) . 'list_id=' . $list['id'] . '&action=listview') . '\'">' . "\n";
-			if(!isset($_GET['list_id']) || !$_GET['list_id']) {
+    $list_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $list_query_raw, $list_query_numrows);
+    $list_query = tep_db_query($list_query_raw);
+    while ($list = tep_db_fetch_array($list_query)) {
+      $count++;
+      if ( ((isset($_GET['list_id']) && $list['id'] == $_GET['list_id']) || ((!isset($_GET['list_id']) || !$_GET['list_id']) && $count == 1)) ) {
+      echo '          <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('list_id', 'action')) . 'list_id=' . $list['id'] . '&action=listview') . '\'">' . "\n";
+      if(!isset($_GET['list_id']) || !$_GET['list_id']) {
 
-			  $list_id = $list['id'];
-			}
-		  } else {
-			echo '          <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('list_id')) . 'list_id=' . $list['id']) . '\'">' . "\n";
-		  }
-	?>
+        $list_id = $list['id'];
+      }
+      } else {
+      echo '          <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('list_id')) . 'list_id=' . $list['id']) . '\'">' . "\n";
+      }
+  ?>
                     <td class="dataTableContent" align="center"><?php echo htmlspecialchars($list['family_name']); ?></td>
                       <td class="dataTableContent" align="center"><?php echo htmlspecialchars($list['first_name']); ?> </td>
                       <td class="dataTableContent" align="center"><?php echo htmlspecialchars($list['tourokubi']); ?> </td>
@@ -654,9 +655,9 @@ $c_id = tep_db_prepare_input($_GET['cID']);
 &nbsp;</td>
                     </tr>
                     <?php
-		}
-	//While終了
-	?>
+    }
+  //While終了
+  ?>
                     <tr>
                       <td colspan="4"><table border="0" width="100%" cellspacing="0" cellpadding="2">
                           <tr>
@@ -667,37 +668,37 @@ $c_id = tep_db_prepare_input($_GET['cID']);
                     </tr>
                   </table></td>
                 <?php
-				  if(isset($list_id) && $list_id && tep_not_null($list_id)) {
-					$cquery = tep_db_query("
+          if(isset($list_id) && $list_id && tep_not_null($list_id)) {
+          $cquery = tep_db_query("
               select * 
               from ".TABLE_PRESENT_APPLICANT." 
               where id = '".$list_id."'");
-					$cresult = tep_db_fetch_array($cquery);
-					$c_title = $cresult['family_name'].$cresult['first_name'];
-				  } else {
-					$c_title = '&nbsp;';
-				  }
-					
-				  $heading = array();
-				  $present = array();
-				  switch ($_GET['action']) {
-					default:
-					  if (isset($list_id) && $list_id && tep_not_null($list_id)) {
-						$heading[] = array('text' => '<b>' . $c_title . '</b>');
-				
-						$present[] = array('align' => 'center', 'text' => '<br><br><a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action','list_id')) . 'list_id=' . $list_id  .'&action=listview') . '">' . tep_image_button('button_list_indication.gif', '表示') .'</a> <a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))) . '">' . tep_image_button('button_back.gif', '戻る') . '</a>');
-					  }
-					  break;
-				  }
-				
-				  if ( (tep_not_null($heading)) && (tep_not_null($present)) ) {
-					echo '            <td width="25%" valign="top">' . "\n";
-				
-					$box = new box;
-					echo $box->infoBox($heading, $present);
-				
-					echo '            </td>' . "\n";
-				  }
+          $cresult = tep_db_fetch_array($cquery);
+          $c_title = $cresult['family_name'].$cresult['first_name'];
+          } else {
+          $c_title = '&nbsp;';
+          }
+          
+          $heading = array();
+          $present = array();
+          switch ($_GET['action']) {
+          default:
+            if (isset($list_id) && $list_id && tep_not_null($list_id)) {
+            $heading[] = array('text' => '<b>' . $c_title . '</b>');
+        
+            $present[] = array('align' => 'center', 'text' => '<br><br><a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action','list_id')) . 'list_id=' . $list_id  .'&action=listview') . '">' . tep_image_button('button_list_indication.gif', '表示') .'</a> <a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))) . '">' . tep_image_button('button_back.gif', '戻る') . '</a>');
+            }
+            break;
+          }
+        
+          if ( (tep_not_null($heading)) && (tep_not_null($present)) ) {
+          echo '            <td width="25%" valign="top">' . "\n";
+        
+          $box = new box;
+          echo $box->infoBox($heading, $present);
+        
+          echo '            </td>' . "\n";
+          }
 ?>
                 <?php
 break;
@@ -759,13 +760,13 @@ default:
                           <td class="dataTableContent"><?php echo $present['romaji']; ?></td>
                           <td class="dataTableContent"><?php echo htmlspecialchars($present['title']); ?></td>
                             <td class="dataTableContent" align="center"><?php
-					  $st_date = htmlspecialchars($present['start_date']);
-					  $st_ymd = substr($st_date,0,4)."/".substr($st_date,5,2)."/".substr($st_date,8,2);
-					  $li_date = htmlspecialchars($present['limit_date']);
-					  $li_ymd = substr($li_date,0,4)."/".substr($li_date,5,2)."/".substr($li_date,8,2);
-					  
-					  echo "$st_ymd - $li_ymd"; 
-					  ?>
+            $st_date = htmlspecialchars($present['start_date']);
+            $st_ymd = substr($st_date,0,4)."/".substr($st_date,5,2)."/".substr($st_date,8,2);
+            $li_date = htmlspecialchars($present['limit_date']);
+            $li_ymd = substr($li_date,0,4)."/".substr($li_date,5,2)."/".substr($li_date,8,2);
+            
+            echo "$st_ymd - $li_ymd"; 
+            ?>
                             </td>
                             <td class="dataTableContent" align="right"><?php if ($present['goods_id'] == $cID) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_PRESENT, 'cID=' . $present['goods_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>                              &nbsp;</td>
                           </tr>
@@ -786,42 +787,42 @@ default:
                           </tr>
                         </table></td>
                       <?php
-				  if(isset($cID) && $cID && tep_not_null($cID)) {
-					$cquery = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".$cID."'");
-					$cresult = tep_db_fetch_array($cquery);
-					$c_title = $cresult['title'];
-				  } else {
-					$c_title = '&nbsp;';
-				  }
-					
-				  $heading = array();
-				  $present = array();
-				  switch (isset($_GET['action'])?$_GET['action']:'') {
-					case 'deleform':
-					  $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_PRESENT . '</b>');
-				
-					  $present = array('form' => tep_draw_form('present', FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=delete'));
-					  $present[] = array('text' => TEXT_DELETE_INTRO . '<br><br><b>' . $c_title . '</b>');
-					  $present[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_delete.gif', IMAGE_DELETE) . ' <a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
-					  break;
-					default:
-					  if (isset($cID) && $cID && tep_not_null($cID)) {
-						$heading[] = array('text' => '<b>' . $c_title . '</b>');
-				
-						$present[] = array('align' => 'center', 'text' => '<br><br><a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=view') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=deleform') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a> <a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action','page')) . 'cID=' . $cID . '&action=list') . '">' . tep_image_button('button_list.gif', 'リスト') . '</a>' );
-					  }
-					  break;
-				  }
-				
-				  if ( (tep_not_null($heading)) && (tep_not_null($present)) ) {
-					echo '            <td width="25%" valign="top">' . "\n";
-				
-					$box = new box;
-					echo $box->infoBox($heading, $present);
-				
-					echo '            </td>' . "\n";
-				  }
-				?>
+          if(isset($cID) && $cID && tep_not_null($cID)) {
+          $cquery = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".$cID."'");
+          $cresult = tep_db_fetch_array($cquery);
+          $c_title = $cresult['title'];
+          } else {
+          $c_title = '&nbsp;';
+          }
+          
+          $heading = array();
+          $present = array();
+          switch (isset($_GET['action'])?$_GET['action']:'') {
+          case 'deleform':
+            $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_PRESENT . '</b>');
+        
+            $present = array('form' => tep_draw_form('present', FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=delete'));
+            $present[] = array('text' => TEXT_DELETE_INTRO . '<br><br><b>' . $c_title . '</b>');
+            $present[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_delete.gif', IMAGE_DELETE) . ' <a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+            break;
+          default:
+            if (isset($cID) && $cID && tep_not_null($cID)) {
+            $heading[] = array('text' => '<b>' . $c_title . '</b>');
+        
+            $present[] = array('align' => 'center', 'text' => '<br><br><a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=view') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=deleform') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a> <a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action','page')) . 'cID=' . $cID . '&action=list') . '">' . tep_image_button('button_list.gif', 'リスト') . '</a>' );
+            }
+            break;
+          }
+        
+          if ( (tep_not_null($heading)) && (tep_not_null($present)) ) {
+          echo '            <td width="25%" valign="top">' . "\n";
+        
+          $box = new box;
+          echo $box->infoBox($heading, $present);
+        
+          echo '            </td>' . "\n";
+          }
+        ?>
                     </tr>
                   </table></td>
               </tr>

@@ -91,7 +91,7 @@
 
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', "customers_id = '" . tep_db_input($customers_id) . "' and address_book_id = '" . tep_db_input($default_address_id) . "'");
 
-		tep_redirect(tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $customers_id));
+    tep_redirect(tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $customers_id));
         break;
       case 'deleteconfirm':
         $customers_id = tep_db_prepare_input($_GET['cID']);
@@ -277,7 +277,8 @@ function check_form() {
                c.customers_fax, 
                c.customers_newsletter, 
                c.customers_default_address_id,
-               s.romaji
+               s.romaji,
+               s.name as site_name
         from " . TABLE_CUSTOMERS . " c 
           left join " . TABLE_ADDRESS_BOOK . " a on c.customers_default_address_id = a.address_book_id ,".TABLE_SITES." s
         where a.customers_id = c.customers_id 
@@ -305,8 +306,8 @@ function check_form() {
     // lastname
     $a_value = tep_draw_input_field('customers_lastname', $cInfo->customers_lastname, 'maxlength="32"', false);
     $address_form->setFormLine('lastname',ENTRY_LAST_NAME,$a_value);
-	
-	// firstname_f
+  
+  // firstname_f
     $a_value = tep_draw_input_field('customers_firstname_f', $cInfo->customers_firstname_f, 'maxlength="32"', false);
     $address_form->setFormLine('firstname_f',ENTRY_FIRST_NAME_F,$a_value);
 
@@ -366,8 +367,8 @@ function check_form() {
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>
       <tr>
-	    <?php echo tep_draw_form('customers', FILENAME_CUSTOMERS, tep_get_all_get_params(array('action')) . 'action=update', 'post', 'onSubmit="return check_form();"') . tep_draw_hidden_field('default_address_id', $cInfo->customers_default_address_id) . "\n"; ?>
-	    <input type="hidden" name="dummy" value="あいうえお眉幅">
+      <?php echo tep_draw_form('customers', FILENAME_CUSTOMERS, tep_get_all_get_params(array('action')) . 'action=update', 'post', 'onSubmit="return check_form();"') . tep_draw_hidden_field('default_address_id', $cInfo->customers_default_address_id) . "\n"; ?>
+      <input type="hidden" name="dummy" value="あいうえお眉幅">
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>
       <tr>
@@ -377,7 +378,7 @@ function check_form() {
         <td class="formArea"><table border="0" cellspacing="2" cellpadding="2">
           <tr>
             <td class="main"><?php echo ENTRY_SITE;?>:</td>
-            <td class="main">&nbsp;<?php echo $customers['romaji'];?></td>
+            <td class="main">&nbsp;<?php echo $customers['site_name'];?></td>
           </tr>
         </table></td>
       </tr>
@@ -438,7 +439,7 @@ function check_form() {
           </tr>
         </table></td>
       </tr> -->
-	  <tr>
+    <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>
       <tr>
@@ -450,10 +451,10 @@ function check_form() {
             <td class="main">信用調査:</td>
             <td class="main"><?php echo tep_draw_input_field('customers_fax', $cInfo->customers_fax, 'size="60" maxlength="255"'); ?>&nbsp;&nbsp;常連客【HQ】&nbsp;&nbsp;注意【WA】&nbsp;&nbsp;発送禁止【BK】</td>
           </tr>
-		  <tr>
+      <tr>
             <td class="main" colspan="2">クレカ初回決済日：C2007/01/01&nbsp;&nbsp;&nbsp;&nbsp;エリア一致：Aok&nbsp;&nbsp;&nbsp;&nbsp;本人確認済：Hok&nbsp;&nbsp;&nbsp;&nbsp;YahooID更新日：Y2007/01/01&nbsp;&nbsp;&nbsp;&nbsp;リファラー：R</td>
           </tr>
-		  <tr>
+      <tr>
             <td class="main" colspan="2"><b>記入例：WA-Aok-C2007/01/01-Hok-RグーグルFF11 RMT</b></td>
           </tr>
         </table></td>
@@ -475,10 +476,10 @@ function check_form() {
       <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>
-	  <?php if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {//Add Point System 
-	  $cpoint_query = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '".$_GET['cID']."'");
-	  $cpoint = tep_db_fetch_array($cpoint_query);
-	  ?>
+    <?php if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {//Add Point System 
+    $cpoint_query = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '".$_GET['cID']."'");
+    $cpoint = tep_db_fetch_array($cpoint_query);
+    ?>
       <tr>
         <td class="formAreaTitle"><?php echo CATEGORY_POINT; ?></td>
       </tr>
@@ -492,8 +493,8 @@ function check_form() {
       </tr>
       <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-      </tr>	  
-	  <?php } ?>
+      </tr>   
+    <?php } ?>
       <tr>
         <td align="right" class="main"><?php echo tep_image_submit('button_update.gif', IMAGE_UPDATE) . ' <a href="' . tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action'))) .'">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; ?></td>
       </tr></form>
@@ -506,8 +507,8 @@ function check_form() {
             <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
             <td class="smallText" align="right"><?php //echo tep_draw_hidden_field('d', '龠');?><?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search'); ?><br>※検索対象：「顧客名（姓/名/）」「ふりがな（姓/名）」「メールアドレス」
-			
-			</td>
+      
+      </td>
           </form></tr>
         </table></td>
       </tr>
@@ -585,17 +586,17 @@ function check_form() {
         $cInfo = new objectInfo($cInfo_array);
       }
 
-	  if($customers['customers_guest_chk'] == 1) {
-	    $type = TABLE_HEADING_MEMBER_TYPE_GUEST;
-	  } else {
-	    $type = TABLE_HEADING_MEMBER_TYPE_MEMBER;
-	  }
+    if($customers['customers_guest_chk'] == 1) {
+      $type = TABLE_HEADING_MEMBER_TYPE_GUEST;
+    } else {
+      $type = TABLE_HEADING_MEMBER_TYPE_MEMBER;
+    }
 
       if ( (isset($cInfo) && is_object($cInfo)) && ($customers['customers_id'] == $cInfo->customers_id) ) {
         echo '          <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cInfo->customers_id . '&action=edit') . '\'">' . "\n";
       } else {
         echo '          <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID')) . 'cID=' . $customers['customers_id']) . '\'">' . "\n";
-	  }
+    }
 ?>
                 <td class="dataTableContent"><?php echo $customers['romaji']; ?></td>
                 <td class="dataTableContent"><?php echo $type; ?></td>
@@ -614,7 +615,7 @@ function check_form() {
                     <td class="smallText" align="right"><?php echo $customers_split->display_links($customers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'cID'))); ?></td>
                   </tr>
 <?php
-																																		  if (isset($_GET['search']) and tep_not_null($_GET['search'])) {
+                                                                      if (isset($_GET['search']) and tep_not_null($_GET['search'])) {
 ?>
                   <tr>
                     <td align="right" colspan="2"><?php echo '<a href="' . tep_href_link(FILENAME_CUSTOMERS) . '">' . tep_image_button('button_reset.gif', IMAGE_RESET) . '</a>'; ?></td>
