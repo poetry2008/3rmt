@@ -26,9 +26,7 @@
     $error = 1;
   }
 
-  $notice_dfrom = (isset($_GET['dfrom']))?$_GET['dfrom']:NULL; //del notice
   $dfrom_to_check = (($notice_dfrom == DOB_FORMAT_STRING) ? '' : $notice_dfrom);
-  $notice_dto = (isset($_GET['dto']))?$_GET['dto']:NULL; //del notice
   $dto_to_check = (($notice_dto == DOB_FORMAT_STRING) ? '' : $notice_dto);
 
   if (strlen($dfrom_to_check) > 0) {
@@ -52,7 +50,6 @@
     }
   }
 
-if (!isset($_GET['pfrom'])) $_GET['pfrom'] = NULL;
   if (strlen($_GET['pfrom']) > 0) {
     $pfrom_to_check = $_GET['pfrom'];
     if (!settype($pfrom_to_check, "double")) {
@@ -61,7 +58,6 @@ if (!isset($_GET['pfrom'])) $_GET['pfrom'] = NULL;
     }
   }
 
-if (!isset($_GET['pto'])) $_GET['pto'] = NULL;
   if (strlen($_GET['pto']) > 0) {
     $pto_to_check = $_GET['pto'];
     if (!settype($pto_to_check, "double")) {
@@ -117,6 +113,7 @@ if (!isset($_GET['pto'])) $_GET['pto'] = NULL;
               <td>
 
 <?php
+
   // create column list
   $define_list = array('PRODUCT_LIST_MODEL' => PRODUCT_LIST_MODEL,
                        'PRODUCT_LIST_NAME' => PRODUCT_LIST_NAME,
@@ -327,6 +324,7 @@ if (!isset($_GET['pto'])) $_GET['pto'] = NULL;
   $listing_sql = $select_str . ' from ' . $from_str . $where_str . $order_str;
 
   require(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING);
+
 ?>
 <br>
 <br>

@@ -166,8 +166,18 @@
     $select_column_list .= ', ';
   }
 
-  $select_str = "select distinct " . $select_column_list . " m.manufacturers_id, p.products_id, pd.products_name, p.products_price, p.products_tax_class_id, IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, IF(s.status, s.specials_new_products_price, p.products_price) as final_price ";
-
+  $select_str = "
+    select * 
+    from (
+    select distinct " . $select_column_list . " 
+                    m.manufacturers_id, 
+                    p.products_id, 
+                    pd.products_name, 
+                    p.products_price, 
+                    p.products_tax_class_id, 
+                    pd.site_id,
+                    IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, 
+                    IF(s.status, s.specials_new_products_price, p.products_price) as final_price"; 
   if(isset($_GET['colors']) && !empty($_GET['colors'])) {
     $select_str .= ", cp.color_image ";
   }
@@ -183,7 +193,6 @@
       $customer_country_id = STORE_COUNTRY;
       $customer_zone_id = STORE_ZONE;
     }
-    // maker
     $from_str = '(('.$from_str.") left join " . TABLE_TAX_RATES . " tr on p.products_tax_class_id = tr.tax_class_id) left join " . TABLE_ZONES_TO_GEO_ZONES . " gz on tr.tax_zone_id = gz.geo_zone_id and (gz.zone_country_id is null or gz.zone_country_id = '0' or gz.zone_country_id = '" . $customer_country_id . "') and (gz.zone_id is null or gz.zone_id = '0' or gz.zone_id = '" . $customer_zone_id . "')";
   }
 
@@ -255,15 +264,23 @@
     if ($pto)   $where_str .= " and (IF(s.status, s.specials_new_products_price, p.products_price) <= " . $pto . ")";
   }
 
-  $where_str .= " and pd.site_id = '".SITE_ID."'";
+  //$where_str .= " and pd.site_id = '".SITE_ID."'";
+  
   if ( (DISPLAY_PRICE_WITH_TAX == 'true') && ((isset($_GET['pfrom']) && tep_not_null($_GET['pfrom'])) || (isset($_GET['pto']) && tep_not_null($_GET['pto']))) ) {
-    $where_str .= " group by p.products_id, tr.tax_priority";
+    $where_str .= " group by p.products_id, tr.tax_priority
+      order by pd.site_id DESC";
   }
+  $where_str .= "
+    ) p 
+    where site_id = 0
+       or site_id = ".SITE_ID."
+    group by products_id
+    ";
   if ( (!isset($_GET['sort'])) || (!ereg('[1-8][ad]', $_GET['sort'])) || (substr($_GET['sort'], 0 , 1) > sizeof($column_list)) ) {
     for ($col=0, $n=sizeof($column_list); $col<$n; $col++) {
       if ($column_list[$col] == 'PRODUCT_LIST_NAME') {
         $_GET['sort'] = $col+1 . 'a';
-        $order_str = ' order by pd.products_name';
+        $order_str = ' order by products_name';
         break;
       }
     }
@@ -273,25 +290,25 @@
     $order_str = ' order by ';
     switch ($column_list[$sort_col-1]) {
       case 'PRODUCT_LIST_MODEL':
-        $order_str .= "p.products_model " . ($sort_order == 'd' ? "desc" : "") . ", pd.products_name";
+        $order_str .= "products_model " . ($sort_order == 'd' ? "desc" : "") . ", products_name";
         break;
       case 'PRODUCT_LIST_NAME':
-        $order_str .= "pd.products_name " . ($sort_order == 'd' ? "desc" : "");
+        $order_str .= "products_name " . ($sort_order == 'd' ? "desc" : "");
         break;
       case 'PRODUCT_LIST_MANUFACTURER':
-        $order_str .= "m.manufacturers_name " . ($sort_order == 'd' ? "desc" : "") . ", pd.products_name";
+        $order_str .= "manufacturers_name " . ($sort_order == 'd' ? "desc" : "") . ", products_name";
         break;
       case 'PRODUCT_LIST_QUANTITY':
-        $order_str .= "p.products_quantity " . ($sort_order == 'd' ? "desc" : "") . ", pd.products_name";
+        $order_str .= "products_quantity " . ($sort_order == 'd' ? "desc" : "") . ", products_name";
         break;
       case 'PRODUCT_LIST_IMAGE':
-        $order_str .= "pd.products_name";
+        $order_str .= "products_name";
         break;
       case 'PRODUCT_LIST_WEIGHT':
-        $order_str .= "p.products_weight " . ($sort_order == 'd' ? "desc" : "") . ", pd.products_name";
+        $order_str .= "products_weight " . ($sort_order == 'd' ? "desc" : "") . ", products_name";
         break;
       case 'PRODUCT_LIST_PRICE':
-        $order_str .= "final_price " . ($sort_order == 'd' ? "desc" : "") . ", pd.products_name";
+        $order_str .= "final_price " . ($sort_order == 'd' ? "desc" : "") . ", products_name";
         break;
     }
   }

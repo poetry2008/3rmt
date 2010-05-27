@@ -30,7 +30,7 @@
   // fix counted products
   $listing_numrows = tep_db_query($listing_numrows_sql);
   $listing_numrows = tep_db_num_rows($listing_numrows);
-  
+
   if ( ($listing_numrows > 0) && ( (PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3') ) ) {
 ?>
 <table border="0" width="689" cellspacing="0" cellpadding="2">

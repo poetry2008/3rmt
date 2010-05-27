@@ -37,7 +37,7 @@
       //$reviews_count = tep_db_fetch_array($reviews_count_query);
       //$query_num_rows = $reviews_count['total'];
     }
-	
+  
 
 /* class functions */
 
