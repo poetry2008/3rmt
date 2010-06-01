@@ -40,4 +40,4 @@ if ( ($category_depth == 'products') || (isset($_GET['manufacturers_id']) && $_G
 } elseif ($category_depth == 'nested') {
   define('HEADING_TITLE', 'カテゴリー');
 }
-  define('WARN_PRODUCT_STATUS_TEXT', '本情報は過去の掲載情報を元に生成された参考情報であり、その存在や情報の信憑性を保証するものではありません。<br>また、本情報を基に発生した損害等について、弊社は一切の責任を負いかねますので、ご理解の上ご利用ください。');
+define('WARN_PRODUCT_STATUS_TEXT', '当商品は、当サイトの都合または運営会社のサービス終了などの理由により現在取り扱いを行っておりません。<br>取り扱いの再開、その他ご意見ご要望などありましたら、お気軽にお問い合わせください。');

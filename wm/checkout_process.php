@@ -461,7 +461,13 @@
     $payment_class = $$payment;
     $email_order .= '▼お支払方法　　　：' . $payment_class->title . "\n";
   }
-  
+  if ($payment == 'moneyorder') {
+    $email_order .= C_BANK."\n"; 
+  } else if ($payment == 'postalmoneyorder') {
+    $email_order .= C_POSTAL."\n"; 
+  } else if ($payment == 'telecom') {
+    $email_order .= C_CC."\n"; 
+  }
   if ($payment_class->email_footer) { 
     $email_order .= $payment_class->email_footer . "\n";
   }

@@ -6,8 +6,8 @@
 define('RMT_DB_HOST', 'localhost');
 define('RMT_DB_USER', 'root');
 define('RMT_DB_PASS', '123456');
-define('RMT_DB_NAME', 'maker_rmt');
-define('R3MT_DB_NAME', 'test_3rmt');
+define('RMT_DB_NAME', 'test_iimycatalog_utf8');
+define('R3MT_DB_NAME', 'test_iimycatalog_final2');
 
 $sites =  array('jp', 'gm', 'wm');
 $faq = array('168', '169', '170', '171', '177', '178', '179', '190', '195');
@@ -777,7 +777,7 @@ cptable('wm_image_document_types', 'image_document_types');
 //information_page*
 cp3table('information_page');
 //languages%
-//cptable('wm_languages', 'languages');
+cptable('wm_languages', 'languages');
 //latest_news*
 cp3table('latest_news');
 //login+
@@ -792,7 +792,7 @@ cptable('manufacturers_info');
 cp3table('newsletters');
 //orders_mail
 r3q("truncate orders_mail");
-$osquery = rq("select * from jp_orders_mail");
+$osquery = rq("select * from iimy_orders_mail");
 while($os = mysql_fetch_array($osquery)){
   $sql = "insert into orders_mail (
     orders_status_id,

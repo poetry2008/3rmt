@@ -1054,7 +1054,7 @@ function mail_text(st,tt,ot){
                ot.text as order_total,
                si.romaji
         from " . TABLE_ORDERS . " o 
-          left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id)  left join " . TABLE_ORDERS_STATUS_HISTORY . " h on (o.orders_id = h.orders_id), " . TABLE_ORDERS_STATUS . " s, ".TABLE_SITES." si
+          left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s, ".TABLE_SITES." si
         where o.customers_id = '" . tep_db_input($cID) . "' 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and si.id = '" . intval($_GET['site_id']) . "' " : '') . "
           and si.id = o.site_id
@@ -1064,8 +1064,56 @@ function mail_text(st,tt,ot){
           " . $where_payment . $where_type . "
         group by o.orders_id
         order by o.torihiki_date DESC";
+      /*$orders_query_raw = "
+        select o.orders_id, 
+               o.torihiki_date, 
+               o.customers_name, 
+               o.customers_id, 
+               o.payment_method, 
+               o.date_purchased, 
+               o.last_modified, 
+               o.currency, 
+               o.currency_value, 
+               s.orders_status_name, 
+               ot.text as order_total,
+               si.romaji
+        from " . TABLE_ORDERS . " o 
+          left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id)  left join " . TABLE_ORDERS_STATUS_HISTORY . " h on (o.orders_id = h.orders_id), " . TABLE_ORDERS_STATUS . " s, ".TABLE_SITES." si
+        where o.customers_id = '" . tep_db_input($cID) . "' 
+          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and si.id = '" . intval($_GET['site_id']) . "' " : '') . "
+          and si.id = o.site_id
+          and o.orders_status = s.orders_status_id 
+          and s.language_id = '" . $languages_id . "' 
+          and ot.class = 'ot_total' 
+          " . $where_payment . $where_type . "
+        group by o.orders_id
+        order by o.torihiki_date DESC";*/
     } elseif (isset($_GET['status']) && $_GET['status']) {
       $status = tep_db_prepare_input($_GET['status']);
+      $orders_query_raw = "
+        select o.orders_id, 
+               o.torihiki_date, 
+               o.customers_id, 
+               o.customers_name, 
+               o.payment_method, 
+               o.date_purchased, 
+               o.last_modified, 
+               o.currency, 
+               o.currency_value, 
+               s.orders_status_name, 
+               ot.text as order_total,
+               si.romaji
+        from " . TABLE_ORDERS . " o 
+          left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s, ".TABLE_SITES." si
+        where o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "' 
+          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and si.id = '" . intval($_GET['site_id']) . "' " : '') . "
+          and s.orders_status_id = '" . tep_db_input($status) . "' 
+          and ot.class = 'ot_total' 
+          and si.id = o.site_id
+          " . $where_payment . $where_type . "
+        group by o.orders_id
+        order by o.torihiki_date DESC";
+/*
       $orders_query_raw = "
         select o.orders_id, 
                o.torihiki_date, 
@@ -1089,8 +1137,31 @@ function mail_text(st,tt,ot){
           " . $where_payment . $where_type . "
         group by o.orders_id
         order by o.torihiki_date DESC";
+*/
     } elseif (isset($_GET['keywords']) && $_GET['keywords']) {
-      
+      $orders_query_raw = "
+        select distinct(o.orders_id), 
+               o.torihiki_date, 
+               o.customers_id, 
+               o.customers_name, 
+               o.payment_method, 
+               o.date_purchased, 
+               o.last_modified, 
+               o.currency, 
+               o.currency_value, 
+               s.orders_status_name, 
+               ot.text as order_total,
+               si.romaji
+        from " . TABLE_ORDERS . " o, " . TABLE_ORDERS_TOTAL . " ot, " . TABLE_ORDERS_STATUS . " s, " . TABLE_ORDERS_PRODUCTS . " op , ".TABLE_SITES." si 
+        where o.orders_id = ot.orders_id 
+          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and si.id = '" . intval($_GET['site_id']) . "' " : '') . "
+          and si.id = o.site_id
+          and o.orders_status = s.orders_status_id 
+          and s.language_id = '" . $languages_id . "' 
+          and ot.class = 'ot_total' 
+          " . $where_payment . $where_type . "
+          and o.orders_id = op.orders_id";
+      /*
       $orders_query_raw = "
         select distinct(o.orders_id), 
                o.torihiki_date, 
@@ -1113,6 +1184,7 @@ function mail_text(st,tt,ot){
           and ot.class = 'ot_total' 
           " . $where_payment . $where_type . "
           and o.orders_id = op.orders_id";
+          */
     $keywords = str_replace('　', ' ', $_GET['keywords']);
     tep_parse_search_string($keywords, $search_keywords);
     if (isset($search_keywords) && (sizeof($search_keywords) > 0)) {
@@ -1158,6 +1230,34 @@ function mail_text(st,tt,ot){
                ot.text as order_total,
                si.romaji
          from " . TABLE_ORDERS . " o 
+           left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s , ".TABLE_SITES." si
+         where o.orders_status = s.orders_status_id 
+          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and si.id = '" . intval($_GET['site_id']) . "' " : '') . "
+           and si.id=o.site_id
+           and s.language_id = '" . $languages_id . "' 
+           and ot.class = 'ot_total' 
+           and s.finished = '0'
+           " . $where_payment . $where_type . "
+         group by o.orders_id
+         order by o.torihiki_date DESC
+      ";
+      /*
+      $orders_query_raw = "
+        select s.orders_status_id, 
+               o.orders_id, 
+               o.torihiki_date, 
+               o.customers_id, 
+               o.customers_name, 
+               o.payment_method, 
+               o.date_purchased, 
+               o.last_modified, 
+               o.currency, 
+               o.currency_value, 
+               s.orders_status_name, 
+               s.orders_status_image, 
+               ot.text as order_total,
+               si.romaji
+         from " . TABLE_ORDERS . " o 
            left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id) left join " . TABLE_ORDERS_STATUS_HISTORY . " h on (o.orders_id = h.orders_id), " . TABLE_ORDERS_STATUS . " s , ".TABLE_SITES." si
          where o.orders_status = s.orders_status_id 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and si.id = '" . intval($_GET['site_id']) . "' " : '') . "
@@ -1169,6 +1269,7 @@ function mail_text(st,tt,ot){
          group by o.orders_id
          order by o.torihiki_date DESC
       ";
+      */
     }
 
     $orders_split = new splitPageResults($_GET['page'], MAX_DISPLAY_ORDERS_RESULTS, $orders_query_raw, $orders_query_numrows);

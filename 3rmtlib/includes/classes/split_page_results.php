@@ -7,7 +7,8 @@
 /* class constructor */
 
     function splitPageResults(&$current_page_number, $max_rows_per_page, &$sql_query, &$query_num_rows) {
-
+      //exit($sql_query);
+      $sql_query = strtolower($sql_query);
       if (empty($current_page_number)) $current_page_number = 1;
 
       $pos_to = strlen($sql_query);
@@ -29,7 +30,14 @@
       if (($pos_procedure < $pos_to) && ($pos_procedure != false)) $pos_to = $pos_procedure;
 
       $offset = ($max_rows_per_page * ($current_page_number - 1));
-      $query_num_rows = tep_db_num_rows(tep_db_query($sql_query));
+      
+      //exit("select count(*) as total " . substr($sql_query, $pos_from, ($pos_to - $pos_from)));
+      $reviews_count_query = tep_db_query("select count(*) as total " . substr($sql_query, $pos_from, ($pos_to - $pos_from)));
+      $reviews_count = tep_db_fetch_array($reviews_count_query);
+      $query_num_rows = $reviews_count['total'];
+      
+      
+      //$query_num_rows = tep_db_num_rows(tep_db_query($sql_query));
       $sql_query .= " limit " . $offset . ", " . $max_rows_per_page;
 
       // ccdd

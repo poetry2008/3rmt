@@ -51,12 +51,10 @@ Final Fantasy XIをはじめとした大人気MMORPGであるAION、REDSTONE、L
            </div>
 	<p class="page_top"><a href="#top">▲このページのトップへ</a></p>
 </div>', ' トップページのヘッダー内容', '901', '15', NULL, '0000-00-00 00:00:00', NULL, 'tep_cfg_textarea(', '2'), (NULL, ' トップページのヘッダー内容', 'DEFAULT_PAGE_TOP_CONTENTS', '<h1 class="pageHeading">
-<span class="game_im">
-<img width="26" height="26" src="images/design/title_img21.gif" alt=""/>
-</span>
+
 <span class="game_t">Welcome to <strong>RMT</strong>ワールドマネー</span>
 </h1>
-<p class="comment"><span style="float:left;"><img alt="" src="images/design/box_middle_img.gif"/></span>
+<p class="comment">
 RMTワールドマネーは株式会社iimyが運営するRMT(リアルマネートレード)総合ショッピングサイトです。
 FF11、Lineage2、RedStone、TalesWeaver、CABAL、信長の野望Online、RAGNAROKなどの人気オンラインゲームをはじめ、
 ATLANTICA、SUN、CRONOUS、LucentHeart、RFonlineZ、ROSE、AION、女神転生、大航海時代、ラテールなど多数のプレイヤーに当RMTサイトをご利用いただけるよう、様々なMMORPGのゲーム通貨・アカウント・アイテム・装備などを売買をしております。
@@ -64,7 +62,7 @@ RMTワールドマネーは、新作オンラインゲームの動向の調査�
 激安価格・高価買取を実現し、充実したサポート体制のRMTワールドマネーをこの機会に是非ご利用ください。
 
 <br>
-<b>表示された在庫以上の大口売買も可能ですので、お気軽にお問い合わせください。</b></p>', ' トップページのヘッダー内容', '901', '15', NULL, '0000-00-00 00:00:00', NULL, 'tep_cfg_textarea(', '3'), (NULL, 'トップページのフッター内容 ', 'DEFAULT_PAGE_BOTTOM_CONTENTS', '', 'トップページのフッター内容 ', '901', '16', NULL, '0000-00-00 00:00:00', NULL, 'tep_cfg_textarea(', '0'), (NULL, 'トップページのフッター内容 ', 'DEFAULT_PAGE_BOTTOM_CONTENTS', '<div class="pageHeading">ゲーム通貨の販売について</div>
+<b>表示された在庫以上の大口売買も可能ですので、お気軽にお問い合わせください。</b></p><p class="pageBottom"></p>', ' トップページのヘッダー内容', '901', '15', NULL, '0000-00-00 00:00:00', NULL, 'tep_cfg_textarea(', '3'), (NULL, 'トップページのフッター内容 ', 'DEFAULT_PAGE_BOTTOM_CONTENTS', '', 'トップページのフッター内容 ', '901', '16', NULL, '0000-00-00 00:00:00', NULL, 'tep_cfg_textarea(', '0'), (NULL, 'トップページのフッター内容 ', 'DEFAULT_PAGE_BOTTOM_CONTENTS', '<div class="pageHeading">ゲーム通貨の販売について</div>
 <p class="comment">
 	オンラインゲーム通貨やアイテム、アカウントを現金にて購入(RMT)できます。ゲームによって1個あたりの個数が異なりますのでご注意ください。
 	クレジットカード決済、コンビニ決済(近日導入予定)、銀行振込などの多種多様な決済方法を導入しており、土・日曜日、祝日も即時取引が可能です。
@@ -85,12 +83,10 @@ RMTワールドマネーは、新作オンラインゲームの動向の調査�
 	近年RMTがより盛んに行われるようになりました。
 	プレイヤーは、RMTジャックポットのゲーム通貨を購入することにより、膨大な時間をかけて狩をしなくても必要な武器や防具、
 	アイテムを購入することができます。時間の足りないプレイヤーは、ゲームをより満喫するためにRMTジャックポットを利用する機会が増えています。
-</p>', 'トップページのフッター内容 ', '901', '16', NULL, '0000-00-00 00:00:00', NULL, 'tep_cfg_textarea(', '1'), (NULL, 'トップページのフッター内容 ', 'DEFAULT_PAGE_BOTTOM_CONTENTS', '', 'トップページのフッター内容 ', '901', '16', NULL, '0000-00-00 00:00:00', NULL, 'tep_cfg_textarea(', '2'), (NULL, 'トップページのフッター内容 ', 'DEFAULT_PAGE_BOTTOM_CONTENTS', '<h1 class="pageHeading"><span class="game_im">
-<img width="26" height="26" src="images/design/title_img08.gif" alt=""/>
-</span>
+</p>', 'トップページのフッター内容 ', '901', '16', NULL, '0000-00-00 00:00:00', NULL, 'tep_cfg_textarea(', '1'), (NULL, 'トップページのフッター内容 ', 'DEFAULT_PAGE_BOTTOM_CONTENTS', '', 'トップページのフッター内容 ', '901', '16', NULL, '0000-00-00 00:00:00', NULL, 'tep_cfg_textarea(', '2'), (NULL, 'トップページのフッター内容 ', 'DEFAULT_PAGE_BOTTOM_CONTENTS', '<h1 class="pageHeading">
 <span class="game_t">RMTワールドマネーのゲーム通貨 販売の特徴</span></h1>
 <div class="comment">
-<p><span style="float:right;"><img alt="" src="images/design/box_middle_img02.gif"/></span>
+<p>
 <div class="service_text">販売の特徴</div>
 VISAやMasterなど全てのクレジットカード決済、ジャパンネット銀行やイーバンク銀行などの銀行振込、ローソンやセブンイレブンなどでお支払いができるコンビニ決済(近日導入予定)などの様々な決済方法を導入しており、土・日曜日、祝日も即時ゲームマネーを激安価格で購入いただけます。<br>
 また、充実した品揃えのゲームマネーはもちろんのこと、取引場所や取引方法も豊富にあり、お客様のアカウントに対し、安心で速やかなお取引を選択することができます。
@@ -99,12 +95,9 @@ VISAやMasterなど全てのクレジットカード決済、ジャパンネッ�
 <div class="service_text">買取の特徴</div>
 オンラインゲームの引退や解約、サーバー移動などの理由により不要となりましたゲームマネーやアイテム、アカウントをRMT業界最高水準の価格にて高価買取しております。
 </p></div><p class="pageBottom"></p>
-<h1 class="pageHeading"><span class="game_im">
-<img width="26" height="26" src="images/design/title_img08.gif" alt=""/>
-</span>
+<h1 class="pageHeading">
 <span class="game_t">RMT(リアルマネートレード)とは</span></h1>
 <p class="comment">
-<span style="float:left;"><img align="left" alt="" src="images/design/box_middle_img04.gif"/></span>
 Real Money Trade(リアルマネートレード)の略称。一部のマスメディアではアールエムティーと呼ぶ場合もあります。ネットゲーム内で得られた架空財産を現金で売り買いする行為の総称を指します。
 世界中のユーザーがネットワークを通じて同時にプレイするネットゲームにおいて、ゲーム内の通貨やアイテム、アカウントを現実世界の現金で取引する行為です。<br>
 ゲーム達成の優劣が個人の技量よりも、単純な累積プレイ時間とキャラクターのレベル値、そして装備の特殊能力や高級消耗アイテムなどのゲーム内総資産量に左右されがちな特性をもつオンラインゲームにおいて活発です。<br>
@@ -123,7 +116,10 @@ INSERT INTO `configuration` (`configuration_id`, `configuration_title`, `configu
 (NULL, 'トップページのゲームニュースの表示数　', 'GAME_NEWS_MAX_DISPLAY', '5', 'トップページのゲームニュースの表示数　', 3, NULL, '2010-03-09 16:42:29', '0000-00-00 00:00:00', NULL, NULL, 0);
 INSERT INTO `configuration` (`configuration_id`, `configuration_title`, `configuration_key`, `configuration_value`, `configuration_description`, `configuration_group_id`, `sort_order`, `last_modified`, `date_added`, `use_function`, `set_function`, `site_id`) VALUES
 (NULL, 'カテゴリのゲームニュース表示数', 'CATEGORIES_GAME_NEWS_MAX_DISPLAY', '25', 'カテゴリのゲームニュース表示数', 3, NULL, '2010-03-09 16:42:32', '0000-00-00 00:00:00', NULL, NULL, 0);
-ALTER TABLE  `sites` ADD  `name` VARCHAR( 255 ) NOT NULL AFTER  `romaji`;
+
 UPDATE  `sites` SET  `name` =  'RMTジャックポット' WHERE  `sites`.`id` =1;
-UPDATE  `sites` SET  `name` =  'RMT ゲームマネー' WHERE  `sites`.`id` =2;
+UPDATE  `sites` SET  `name` =  'RMTゲームマネー' WHERE  `sites`.`id` =2;
 UPDATE  `sites` SET  `name` =  'RMTワールドマネー' WHERE  `sites`.`id` =3;
+UPDATE  `sites` SET  `url` =  'http://www.iimy.co.jp' WHERE  `sites`.`id` =1;
+UPDATE  `sites` SET  `url` =  'http://www.gamemoney.cc' WHERE  `sites`.`id` =2;
+UPDATE  `sites` SET  `url` =  'http://rmt.worldmoney.jp' WHERE  `sites`.`id` =3;

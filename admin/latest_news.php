@@ -1,15 +1,6 @@
 <?php
 /*
   $Id$
-
-  3rmt over
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 Will Mays
-
-  Released under the GNU General Public License
 */
   require('includes/application_top.php');
 
@@ -32,18 +23,21 @@
           }
         }
         if ($_GET['isfirst'] == '1') {
+          /*
           $listAllQuery = tep_db_query("select * from " . TABLE_LATEST_NEWS . " where isfirst = '1' and site_id = '".$latest_news['site_id']."'");
           $listAllRes = tep_db_fetch_array($listAllQuery);
+
           if (!$listAllRes) {
             if ($_GET['latest_news_id']) {
               tep_db_query("update " . TABLE_LATEST_NEWS . " set isfirst = '" . $_GET['isfirst'] . "' where news_id = '" . $_GET['latest_news_id'] . "'");
             }
           } else {
             tep_db_query("update " . TABLE_LATEST_NEWS . " set isfirst = '0' where news_id = '" . $listAllRes['news_id'] . "'");
+            */
             if ($_GET['latest_news_id']) {
               tep_db_query("update " . TABLE_LATEST_NEWS . " set isfirst = '" . $_GET['isfirst'] . "' where news_id = '" . $_GET['latest_news_id'] . "'");
             }
-          }
+          //}
         }
         tep_redirect(tep_href_link(FILENAME_LATEST_NEWS), isset($_GET['site_id'])?('site_id='.$_GET['site_id']):'');
         break;

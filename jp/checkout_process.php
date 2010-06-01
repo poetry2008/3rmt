@@ -449,9 +449,10 @@
   }
   if ($payment == 'moneyorder') {
     $email_order .= C_BANK."\n"; 
-  }
-  if ($payment == 'postalmoneyorder') {
+  } else if ($payment == 'postalmoneyorder') {
     $email_order .= C_POSTAL."\n"; 
+  } else if ($payment == 'telecom') {
+    $email_order .= C_CC."\n"; 
   }
   
   if ($payment_class->email_footer) { 

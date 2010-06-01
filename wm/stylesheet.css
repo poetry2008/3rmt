@@ -592,3 +592,17 @@ padding:0;
 border:0;
 background-image: url(./includes/languages/japanese/images/buttons/button_checkout.gif);
 }
+.waring_category {
+color:#000;
+margin:5px 10px 2px 0;
+overflow:hidden;
+padding:5px 7px;
+border:2px solid #FF8080;
+}
+.waring_product{
+color:#000;
+margin:5px 0 5px 0;
+overflow:hidden;
+padding:5px 7px;
+border:2px solid #FF8080;
+}
