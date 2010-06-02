@@ -1227,8 +1227,7 @@ function mail_text(st,tt,ot){
                s.orders_status_name, 
                s.orders_status_image,
                o.site_id
-         from " . TABLE_ORDERS . " o 
-           left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s , ".TABLE_SITES." si
+         from " . TABLE_ORDERS . " o , " . TABLE_ORDERS_STATUS . " s 
          where o.orders_status = s.orders_status_id 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
            and s.language_id = '" . $languages_id . "' 
