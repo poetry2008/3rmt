@@ -2159,13 +2159,23 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
   }
 
   function tep_get_site_romaji_by_id($id){
+    static $arr;
+    if (isset($arr[$id])) {
+      return $arr[$id];
+    }
     $site_query = tep_db_query("
         select * 
         from " . TABLE_SITES . "
         where id = '".intval($id)."'
     ");
     $site = tep_db_fetch_array($site_query);
-    return isset($site['romaji'])?$site['romaji']:'';
+    if (isset($site['romaji'])) {
+      $arr[$id] = $site['romaji'];
+      return $site['romaji'];
+    } else {
+      return '';
+    }
+    #return isset($site['romaji'])?$site['romaji']:'';
   }
   
   function tep_get_site_name_by_id($id){
