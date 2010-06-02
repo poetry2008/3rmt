@@ -1268,7 +1268,7 @@ function mail_text(st,tt,ot){
 
 // tep_get_site_romaji_by_id(
 function tep_get_ot_total_by_orders_id($orders_id) {
-  $query = tep_db_query("select text from " . TABLE_ORDERS_TOTAL . " where class='ot_total'");
+  $query = tep_db_query("select text from " . TABLE_ORDERS_TOTAL . " where class='ot_total' and orders_id='".$orders_id."'");
   $result = tep_db_fetch_array($query);
   return $result['text'];
 }
