@@ -1063,7 +1063,6 @@ function mail_text(st,tt,ot){
           and s.language_id = '" . $languages_id . "' 
           and ot.class = 'ot_total' 
           " . $where_payment . $where_type . "
-        group by o.orders_id
         order by o.torihiki_date DESC";
       /*$orders_query_raw = "
         select o.orders_id, 
@@ -1112,7 +1111,6 @@ function mail_text(st,tt,ot){
           and ot.class = 'ot_total' 
           and si.id = o.site_id
           " . $where_payment . $where_type . "
-        group by o.orders_id
         order by o.torihiki_date DESC";
 /*
       $orders_query_raw = "
@@ -1213,7 +1211,7 @@ function mail_text(st,tt,ot){
     $orders_query_raw .= ")";  
     }
     
-    $orders_query_raw .= "group by o.orders_id order by o.torihiki_date DESC";
+    $orders_query_raw .= "order by o.torihiki_date DESC";
   } else {
       $orders_query_raw = "
         select s.orders_status_id, 
@@ -1239,7 +1237,6 @@ function mail_text(st,tt,ot){
            and ot.class = 'ot_total' 
            and s.finished = '0'
            " . $where_payment . $where_type . "
-         group by o.orders_id
          order by o.torihiki_date DESC
       ";
       /*

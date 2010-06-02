@@ -8,9 +8,9 @@
 
     function OrdersSplitPageResults(&$current_page_number, $max_rows_per_page, &$sql_query, &$query_num_rows) {
       //exit($sql_query);
-      $sql_query = strtolower($sql_query);
+      //$sql_query = strtolower($sql_query);
       if (empty($current_page_number)) $current_page_number = 1;
-
+/*
       $pos_to = strlen($sql_query);
       $pos_from = strpos($sql_query, ' from', 0);
 
@@ -28,11 +28,13 @@
 
       $pos_procedure = strpos($sql_query, ' procedure', $pos_from);
       if (($pos_procedure < $pos_to) && ($pos_procedure != false)) $pos_to = $pos_procedure;
-
+*/
       $offset = ($max_rows_per_page * ($current_page_number - 1));
       
       //exit("select count(*) as total " . substr($sql_query, $pos_from, ($pos_to - $pos_from)));
-      $reviews_count_query = tep_db_query("select count(*) as total " . substr($sql_query, $pos_from, ($pos_to - $pos_from)));
+      //exit("select count(*) as total " . substr($sql_query, $pos_from, ($pos_to - $pos_from)));
+      //$reviews_count_query = tep_db_query("select count(*) as total " . substr($sql_query, $pos_from, ($pos_to - $pos_from)));
+      $reviews_count_query = tep_db_query("select count('orders_id') as total from orders");
       $reviews_count = tep_db_fetch_array($reviews_count_query);
       $query_num_rows = $reviews_count['total'];
       
