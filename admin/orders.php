@@ -1271,7 +1271,7 @@ function mail_text(st,tt,ot){
 function tep_get_ot_total_by_orders_id($orders_id) {
   $query = tep_db_query("select text from " . ORDERS_TOTAL . " where ot.class='ot_total'");
   $result = tep_db_fetch_array($query);
-  return $result['text']
+  return $result['text'];
 }
 
     $orders_split = new OrdersSplitPageResults($_GET['page'], MAX_DISPLAY_ORDERS_RESULTS, $orders_query_raw, $orders_query_numrows);
