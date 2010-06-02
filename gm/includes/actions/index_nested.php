@@ -133,12 +133,12 @@
       </ul> 
       </div>
       <?php
-      echo '</div>'; 
+      #echo '</div>'; 
       } 
       }
       ?>
 </div>
-</div> 
+</div>
 <div id="r_menu">
       <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
 </div>
