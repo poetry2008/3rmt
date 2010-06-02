@@ -1052,16 +1052,12 @@ function mail_text(st,tt,ot){
                o.currency, 
                o.currency_value, 
                s.orders_status_name, 
-               ot.text as order_total,
-               si.romaji
-        from " . TABLE_ORDERS . " o 
-          left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s, ".TABLE_SITES." si
+               o.site_id
+        from " . TABLE_ORDERS . " o , " . TABLE_ORDERS_STATUS . " s
         where o.customers_id = '" . tep_db_input($cID) . "' 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-          and si.id = o.site_id
           and o.orders_status = s.orders_status_id 
           and s.language_id = '" . $languages_id . "' 
-          and ot.class = 'ot_total' 
           " . $where_payment . $where_type . "
         order by o.torihiki_date DESC";
       /*$orders_query_raw = "
@@ -1101,15 +1097,11 @@ function mail_text(st,tt,ot){
                o.currency, 
                o.currency_value, 
                s.orders_status_name, 
-               ot.text as order_total,
-               si.romaji
-        from " . TABLE_ORDERS . " o 
-          left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s, ".TABLE_SITES." si
+               o.site_id
+        from " . TABLE_ORDERS . " o, " . TABLE_ORDERS_STATUS . " s
         where o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "' 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
           and s.orders_status_id = '" . tep_db_input($status) . "' 
-          and ot.class = 'ot_total' 
-          and si.id = o.site_id
           " . $where_payment . $where_type . "
         order by o.torihiki_date DESC";
 /*
@@ -1148,16 +1140,13 @@ function mail_text(st,tt,ot){
                o.last_modified, 
                o.currency, 
                o.currency_value, 
-               s.orders_status_name, 
-               ot.text as order_total,
-               si.romaji
-        from " . TABLE_ORDERS . " o, " . TABLE_ORDERS_TOTAL . " ot, " . TABLE_ORDERS_STATUS . " s, " . TABLE_ORDERS_PRODUCTS . " op , ".TABLE_SITES." si 
+               s.orders_status_name,
+               o.site_id
+        from " . TABLE_ORDERS . " o, " . TABLE_ORDERS_STATUS . " s, " . TABLE_ORDERS_PRODUCTS . " op 
         where o.orders_id = ot.orders_id 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-          and si.id = o.site_id
           and o.orders_status = s.orders_status_id 
           and s.language_id = '" . $languages_id . "' 
-          and ot.class = 'ot_total' 
           " . $where_payment . $where_type . "
           and o.orders_id = op.orders_id";
       /*
@@ -1265,13 +1254,6 @@ function mail_text(st,tt,ot){
       ";
       */
     }
-
-// tep_get_site_romaji_by_id(
-function tep_get_ot_total_by_orders_id($orders_id) {
-  $query = tep_db_query("select text from " . TABLE_ORDERS_TOTAL . " where class='ot_total' and orders_id='".$orders_id."'");
-  $result = tep_db_fetch_array($query);
-  return $result['text'];
-}
 
     $orders_split = new OrdersSplitPageResults($_GET['page'], MAX_DISPLAY_ORDERS_RESULTS, $orders_query_raw, $orders_query_numrows);
     $orders_query = tep_db_query($orders_query_raw);

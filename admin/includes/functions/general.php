@@ -2457,3 +2457,9 @@ function tep_get_categories_status($categories_id)
     return null;
   }
 }
+
+function tep_get_ot_total_by_orders_id($orders_id) {
+  $query = tep_db_query("select text from " . TABLE_ORDERS_TOTAL . " where class='ot_total' and orders_id='".$orders_id."'");
+  $result = tep_db_fetch_array($query);
+  return $result['text'];
+}
