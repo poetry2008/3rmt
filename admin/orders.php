@@ -1057,7 +1057,7 @@ function mail_text(st,tt,ot){
         from " . TABLE_ORDERS . " o 
           left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s, ".TABLE_SITES." si
         where o.customers_id = '" . tep_db_input($cID) . "' 
-          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and si.id = '" . intval($_GET['site_id']) . "' " : '') . "
+          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
           and si.id = o.site_id
           and o.orders_status = s.orders_status_id 
           and s.language_id = '" . $languages_id . "' 
@@ -1106,7 +1106,7 @@ function mail_text(st,tt,ot){
         from " . TABLE_ORDERS . " o 
           left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s, ".TABLE_SITES." si
         where o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "' 
-          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and si.id = '" . intval($_GET['site_id']) . "' " : '') . "
+          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
           and s.orders_status_id = '" . tep_db_input($status) . "' 
           and ot.class = 'ot_total' 
           and si.id = o.site_id
@@ -1153,7 +1153,7 @@ function mail_text(st,tt,ot){
                si.romaji
         from " . TABLE_ORDERS . " o, " . TABLE_ORDERS_TOTAL . " ot, " . TABLE_ORDERS_STATUS . " s, " . TABLE_ORDERS_PRODUCTS . " op , ".TABLE_SITES." si 
         where o.orders_id = ot.orders_id 
-          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and si.id = '" . intval($_GET['site_id']) . "' " : '') . "
+          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
           and si.id = o.site_id
           and o.orders_status = s.orders_status_id 
           and s.language_id = '" . $languages_id . "' 
@@ -1225,16 +1225,13 @@ function mail_text(st,tt,ot){
                o.currency, 
                o.currency_value, 
                s.orders_status_name, 
-               s.orders_status_image, 
-               ot.text as order_total,
-               si.romaji
+               s.orders_status_image,
+               o.site_id
          from " . TABLE_ORDERS . " o 
            left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s , ".TABLE_SITES." si
          where o.orders_status = s.orders_status_id 
-          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and si.id = '" . intval($_GET['site_id']) . "' " : '') . "
-           and si.id=o.site_id
+          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
            and s.language_id = '" . $languages_id . "' 
-           and ot.class = 'ot_total' 
            and s.finished = '0'
            " . $where_payment . $where_type . "
          order by o.torihiki_date DESC
@@ -1269,6 +1266,13 @@ function mail_text(st,tt,ot){
       ";
       */
     }
+
+// tep_get_site_romaji_by_id(
+function tep_get_ot_total_by_orders_id($orders_id) {
+  $query = tep_db_query("select text from " . ORDERS_TOTAL . " where ot.class='ot_total'");
+  $result = tep_db_fetch_array($query);
+  return $result['text']
+}
 
     $orders_split = new OrdersSplitPageResults($_GET['page'], MAX_DISPLAY_ORDERS_RESULTS, $orders_query_raw, $orders_query_numrows);
     $orders_query = tep_db_query($orders_query_raw);
@@ -1313,7 +1317,7 @@ function mail_text(st,tt,ot){
 <?php 
   }
 ?>
-        <td style="border-bottom:1px solid #000000;" class="dataTableContent" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><?php echo $orders['romaji'];?></td>
+        <td style="border-bottom:1px solid #000000;" class="dataTableContent" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><?php echo tep_get_site_romaji_by_id($orders['site_id']);?></td>
         <td style="border-bottom:1px solid #000000;" class="dataTableContent" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)">
           <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $orders['orders_id'] . '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);?></a>&nbsp;
           <a href="<?php echo tep_href_link('orders.php', 'cID=' . tep_output_string_protected($orders['customers_id']));?>"><?php echo tep_image(DIR_WS_ICONS . 'search.gif', '過去の注文');?></a>
@@ -1332,7 +1336,8 @@ function mail_text(st,tt,ot){
   <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
   <font color="#999">
   <?php }?>
-          <?php echo strip_tags($orders['order_total']); ?>
+          <?php //echo strip_tags($orders['order_total']); ?>
+          <?php echo strip_tags(tep_get_ot_total_by_orders_id($orders['orders_id']));?>
   <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
   </font>
   <?php }?>
