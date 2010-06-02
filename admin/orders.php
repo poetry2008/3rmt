@@ -5,7 +5,6 @@
   require('includes/application_top.php');
 
   require(DIR_WS_CLASSES . 'currencies.php');
-  require(DIR_WS_CLASSES . 'orders_split_page_results.php');
 
   $currencies          = new currencies();
   $orders_statuses     = array();
@@ -1255,7 +1254,7 @@ function mail_text(st,tt,ot){
       */
     }
 
-    $orders_split = new OrdersSplitPageResults($_GET['page'], MAX_DISPLAY_ORDERS_RESULTS, $orders_query_raw, $orders_query_numrows);
+    $orders_split = new splitPageResults($_GET['page'], MAX_DISPLAY_ORDERS_RESULTS, $orders_query_raw, $orders_query_numrows);
     $orders_query = tep_db_query($orders_query_raw);
     $allorders    = $allorders_ids = array();
     while ($orders = tep_db_fetch_array($orders_query)) {
