@@ -1,5 +1,6 @@
 -- 先执行db.php 再执行upgrade.sql
 -- 隐藏设置 営業日カレンダー & 追加画像設置 & 画像設置
+UPDATE  `configuration_group` SET  `visible` =  '0' WHERE  `configuration_group`.`configuration_group_id` =4;
 UPDATE  `configuration_group` SET  `visible` =  '0' WHERE  `configuration_group`.`configuration_group_id` =902;
 UPDATE  `configuration_group` SET  `visible` =  '0' WHERE  `configuration_group`.`configuration_group_id` =2028;
 UPDATE  `configuration_group` SET  `visible` =  '0' WHERE  `configuration_group`.`configuration_group_id` =2029;
