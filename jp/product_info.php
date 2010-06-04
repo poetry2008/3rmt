@@ -190,7 +190,7 @@ function showimage($1) {
   $data3 = explode("//", $product_info['products_attention_3']);
   $data4 = explode("//", $product_info['products_attention_4']);
 ?>
-    <?php if ($product_info['products_status'] == 2) {
+    <?php if (tep_show_warning(tep_get_products_categories_id($product_info['products_id']))) {
       echo '<div class="waring_product">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
     } ?>
         <h1 class="pageHeading_long"><?php echo $product_info['products_name']; ?></h1>

@@ -86,6 +86,7 @@ width:370px;
 --------------------------- */
 img.middle {
 	vertical-align: middle;
+	height:6px;
 }
 .dot {
 	height: 1px;

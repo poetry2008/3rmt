@@ -145,7 +145,7 @@ function change_num(ob, targ, quan,a_quan)
             //    echo '' ;
             //  }
              ?>
-    <?php if ($product_info['products_status'] == 2) {
+    <?php if (tep_show_warning(tep_get_products_categories_id($product_info['products_id']))) {
       echo '<div class="waring_product">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
     } ?>
          <h1 class="pageHeading_long"><?php echo $product_info['products_name']; ?></h1>

@@ -2427,6 +2427,7 @@ function calc_fee_final($fee_set, $total_cost)
 
 function tep_set_categories_status($categories_id, $status)
 {
+  /*
   // c 0 => g 1 => r 2 => b
   // p 0 => r 1 => g 2 => b
   if ($status == 1) {
@@ -2441,9 +2442,9 @@ function tep_set_categories_status($categories_id, $status)
   while ( $categories = tep_db_fetch_array($categories_query) ) {
     tep_set_categories_status($categories['categories_id'], $status);
   }
-  
+  */
   tep_db_query("UPDATE `".TABLE_CATEGORIES."` SET `categories_status` = '".intval($status)."' WHERE `categories_id` =".$categories_id." LIMIT 1 ;");
-  tep_db_query("UPDATE ".TABLE_PRODUCTS." SET products_status = '".$products_status."' WHERE products_id IN (select products_id from ".TABLE_PRODUCTS_TO_CATEGORIES." where categories_id = '".$categories_id."')");
+  //tep_db_query("UPDATE ".TABLE_PRODUCTS." SET products_status = '".$products_status."' WHERE products_id IN (select products_id from ".TABLE_PRODUCTS_TO_CATEGORIES." where categories_id = '".$categories_id."')");
   return true;
 }
 

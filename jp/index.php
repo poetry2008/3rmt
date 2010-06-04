@@ -44,8 +44,8 @@ if ($category_depth == 'nested') {
 ?>
   <td valign="top" id="contents">
 <?php
-  $current_category    = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CATEGORIES." where categories_id='".$current_category_id."'"));
-  if ($current_category['categories_status'] == '2') {
+  #$current_category    = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CATEGORIES." where categories_id='".$current_category_id."'"));
+  if (tep_show_warning($current_category_id)) {
     echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
   }
 ?>

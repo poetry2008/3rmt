@@ -143,7 +143,7 @@ function change_num(ob, targ, quan,a_quan)
       <div class="headerNavigation">
         <?php echo $breadcrumb->trail(' &raquo; '); ?>
       </div>
-    <?php if ($product_info['products_status'] == 2) {
+    <?php if (tep_show_warning(tep_get_products_categories_id($product_info['products_id']))) {
       echo '<div class="waring_product">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
     } ?>
       <h1 class="pageHeading"><?php echo ds_tep_get_categories((int)$_GET['products_id'],1) ; ?></h1>

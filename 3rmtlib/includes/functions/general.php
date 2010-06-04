@@ -2410,3 +2410,24 @@ function tep_orders_status_finished($osid){
     }
     return $categories;
   }
+function tep_show_warning($categories_id) {
+  $categories_query = tep_db_query("select * from " . TABLE_CATEGORIES . " where categories_id='" . $categories_id . "' LIMIT 1");
+  $categories = tep_db_fetch_array($categories_query);
+  if ($categories) {
+    if ($categories['categories_status'] == '2') {
+      return true;
+    } else if ($categories['parent_id'] != '0') {
+      return tep_show_warning($categories['parent_id']);
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+}
+
+function tep_get_products_categories_id($products_id) {
+  $query = tep_db_query("select * from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . $products_id . "'");
+  $c = tep_db_fetch_array($query);
+  return $c['categories_id'];
+}

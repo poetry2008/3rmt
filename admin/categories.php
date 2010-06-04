@@ -1472,11 +1472,6 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
         <?php
     }
   } else {
-    if (isset($HTTP_GET_VARS['cPath']) && intval($HTTP_GET_VARS['cPath']) && tep_get_categories_status(intval($HTTP_GET_VARS['cPath'])) != '0') {
-      $statusable = false;
-    } else {
-      $statusable = true;
-    }
 ?>
         <tr>
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -1597,7 +1592,6 @@ if (isset($nowColor) && $nowColor == $odd) {
                     <b>' . $categories['categories_name'] . '</b>'; ?></td>
             <td class="dataTableContent" align="right">
 <?php if ($ocertify->npermission == 15 or $ocertify->npermission == 10) {?>
-              <?php if($statusable) {?>
                 <?php if($categories['categories_status'] == '1'){?>
                   <a href="<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=0&cPath='.$HTTP_GET_VARS['cPath']);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', '');?></a> <a href="<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=2&cPath='.$HTTP_GET_VARS['cPath']);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', '');?></a> <?php echo tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '');?> 
                 <?php } else if($categories['categories_status'] == '2'){?>
@@ -1605,15 +1599,6 @@ if (isset($nowColor) && $nowColor == $odd) {
                 <?php } else {?>
                   <?php echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', '');?> <a href="<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=2&cPath='.$_GET['cPath']);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', '');?></a> <a href="<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=1&cPath='.$_GET['cPath']);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', '');?></a> 
                 <?php }?>
-              <?php }else{ ?>
-                <?php if($categories['categories_status'] == '1'){?>
-                  <?php echo tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '');?> 
-                <?php } else if($categories['categories_status'] == '2'){?>
-                  <?php echo tep_image(DIR_WS_IMAGES . 'icon_status_blue.gif', '');?> 
-                <?php } else {?>
-                  <?php echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', '');?> 
-                <?php }?>
-              <?php }?>
 <?php }?>
             </td>
             <td class="dataTableContent" align="right">&nbsp;</td>
@@ -1724,7 +1709,6 @@ if (empty($products['products_quantity'])) {
 } ?></td>
             <td class="dataTableContent" align="center"><?php
 if ($ocertify->npermission >= 10) { //表示制限
-    if ($statusable) {
       if ($products['products_status'] == '1') {
         echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=2&pID=' . $products['products_id'] . '&cPath=' . $cPath) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=0&pID=' . $products['products_id'] . '&cPath=' . $cPath) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>';
       } else if ($products['products_status'] == '2') {
@@ -1732,15 +1716,6 @@ if ($ocertify->npermission >= 10) { //表示制限
       } else {
         echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=1&pID=' . $products['products_id'] . '&cPath=' . $cPath) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=2&pID=' . $products['products_id'] . '&cPath=' . $cPath) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
       }
-    } else {
-      if ($products['products_status'] == '1') {
-        echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10);
-      } else if ($products['products_status'] == '2') {
-        echo tep_image(DIR_WS_IMAGES . 'icon_status_blue.gif', IMAGE_ICON_STATUS_GREEN, 10, 10);
-      } else {
-        echo tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
-      }
-    }
 } else {
   // 価格更新警告
   $last_modified_array = getdate(strtotime(tep_datetime_short($products['products_last_modified'])));
