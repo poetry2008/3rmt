@@ -1037,6 +1037,8 @@ function mail_text(st,tt,ot){
       break;
   }
   }
+  $from_payment = isset($_GET['payment']) or isset($_GET['payment'])?("left join " . TABLE_ORDERS_STATUS_HISTORY . " h on (o.orders_id = h.orders_id)"):'';
+
 
   if (isset($_GET['cID']) && $_GET['cID']) {
       $cID = tep_db_prepare_input($_GET['cID']);
@@ -1052,7 +1054,7 @@ function mail_text(st,tt,ot){
                o.currency_value, 
                s.orders_status_name, 
                o.site_id
-        from " . TABLE_ORDERS . " o , " . TABLE_ORDERS_STATUS . " s
+        from " . TABLE_ORDERS . " o " . $from_payment . ", " . TABLE_ORDERS_STATUS . " s
         where o.customers_id = '" . tep_db_input($cID) . "' 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
           and o.orders_status = s.orders_status_id 
@@ -1097,7 +1099,7 @@ function mail_text(st,tt,ot){
                o.currency_value, 
                s.orders_status_name, 
                o.site_id
-        from " . TABLE_ORDERS . " o, " . TABLE_ORDERS_STATUS . " s
+        from " . TABLE_ORDERS . " o " . $from_payment . ", " . TABLE_ORDERS_STATUS . " s
         where o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "' 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
           and s.orders_status_id = '" . tep_db_input($status) . "' 
@@ -1141,7 +1143,7 @@ function mail_text(st,tt,ot){
                o.currency_value, 
                s.orders_status_name,
                o.site_id
-        from " . TABLE_ORDERS . " o, " . TABLE_ORDERS_STATUS . " s, " . TABLE_ORDERS_PRODUCTS . " op 
+        from " . TABLE_ORDERS . " o " . $from_payment . ", " . TABLE_ORDERS_STATUS . " s, " . TABLE_ORDERS_PRODUCTS . " op 
         where o.orders_id = ot.orders_id 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
           and o.orders_status = s.orders_status_id 
@@ -1215,7 +1217,7 @@ function mail_text(st,tt,ot){
                s.orders_status_name, 
                s.orders_status_image,
                o.site_id
-         from " . TABLE_ORDERS . " o , " . TABLE_ORDERS_STATUS . " s 
+         from " . TABLE_ORDERS . " o " . $from_payment . ", " . TABLE_ORDERS_STATUS . " s 
          where o.orders_status = s.orders_status_id 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
            and s.language_id = '" . $languages_id . "' 
