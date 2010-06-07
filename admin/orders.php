@@ -1037,7 +1037,7 @@ function mail_text(st,tt,ot){
       break;
   }
   }
-  $from_payment = isset($_GET['payment']) or isset($_GET['payment'])?("left join " . TABLE_ORDERS_STATUS_HISTORY . " h on (o.orders_id = h.orders_id)"):'';
+  $from_payment = isset($_GET['payment']) or isset($_GET['type'])?("left join " . TABLE_ORDERS_STATUS_HISTORY . " h on (o.orders_id = h.orders_id)"):'';
 
 
   if (isset($_GET['cID']) && $_GET['cID']) {
