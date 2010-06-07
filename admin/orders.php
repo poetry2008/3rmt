@@ -1039,6 +1039,7 @@ function mail_text(st,tt,ot){
   }
   $from_payment = isset($_GET['payment']) or isset($_GET['type'])?("left join " . TABLE_ORDERS_STATUS_HISTORY . " h on (o.orders_id = h.orders_id)"):'';
 
+echo $from_payment;
 
   if (isset($_GET['cID']) && $_GET['cID']) {
       $cID = tep_db_prepare_input($_GET['cID']);
