@@ -1,0 +1,79 @@
+address_format 
+banners 
+calendar 
+categories 
+categories_rss 
+jp:select * from configuration where  configuration_title = '注文件数（最小）'  and  configuration_key = 'AFFILIATE_PAYMENT_ORDER_MIN_STATUS'  and  configuration_value = '1'  and  configuration_description = 'ユーザーに払い戻しをするために必要な最低販売件数を設定します'  and  configuration_group_id = '900'  and  sort_order = '6'  and  use_function = ''  and  set_function = ''  and  site_id = '1' 
+jp:configuration:144
+jp:select * from configuration where  configuration_title = 'アフィリエイトプログラムの使用'  and  configuration_key = 'AFFILIATE_VALUE'  and  configuration_value = 'true'  and  configuration_description = 'アフィリエイトプログラムを使用を有効にしますか？trueにした場合、ヘッダーにリンクが表示されます。'  and  configuration_group_id = '900'  and  sort_order = '0'  and  use_function = ''  and  set_function = 'tep_cfg_select_option(array(\'true\', \'false\'),'  and  site_id = '1' 
+jp:configuration:509
+gm:select * from configuration where  configuration_title = '注文件数（最小）'  and  configuration_key = 'AFFILIATE_PAYMENT_ORDER_MIN_STATUS'  and  configuration_value = '1'  and  configuration_description = 'ユーザーに払い戻しをするために必要な最低販売件数を設定します'  and  configuration_group_id = '900'  and  sort_order = '6'  and  use_function = ''  and  set_function = ''  and  site_id = '2' 
+gm:configuration:144
+gm:select * from configuration where  configuration_title = 'アフィリエイトプログラムの使用'  and  configuration_key = 'AFFILIATE_VALUE'  and  configuration_value = 'false'  and  configuration_description = 'アフィリエイトプログラムを使用を有効にしますか？trueにした場合、ヘッダーにリンクが表示されます。'  and  configuration_group_id = '900'  and  sort_order = '0'  and  use_function = ''  and  set_function = 'tep_cfg_select_option(array(\'true\', \'false\'),'  and  site_id = '2' 
+gm:configuration:509
+wm:select * from configuration where  configuration_title = '注文件数（最小）'  and  configuration_key = 'AFFILIATE_PAYMENT_ORDER_MIN_STATUS'  and  configuration_value = '1'  and  configuration_description = 'ユーザーに払い戻しをするために必要な最低販売件数を設定します'  and  configuration_group_id = '900'  and  sort_order = '6'  and  use_function = ''  and  set_function = ''  and  site_id = '3' 
+wm:configuration:144
+wm:select * from configuration where  configuration_title = 'アフィリエイトプログラムの使用'  and  configuration_key = 'AFFILIATE_VALUE'  and  configuration_value = 'false'  and  configuration_description = 'アフィリエイトプログラムを使用を有効にしますか？trueにした場合、ヘッダーにリンクが表示されます。'  and  configuration_group_id = '900'  and  sort_order = '0'  and  use_function = ''  and  set_function = 'tep_cfg_select_option(array(\'true\', \'false\'),'  and  site_id = '3' 
+wm:configuration:509
+configuration 
+configuration_group 
+jp:select * from contents where  contents_title = 'タイトルタグ'  and  type = '0'  and  description = 'ブラウザに表示されるタイトルタグを設定します。'  and  default_contents = 'オンラインショップ○○'  and  fixed_contents = ''  and  lastupdate = '0000-00-00 00:00:00'  and  site_id = '1' 
+jp:contents:1
+gm:select * from contents where  contents_title = 'タイトルタグ'  and  type = '0'  and  description = 'ブラウザに表示されるタイトルタグを設定します。'  and  default_contents = 'オンラインショップ○○'  and  fixed_contents = ''  and  lastupdate = '0000-00-00 00:00:00'  and  site_id = '2' 
+gm:contents:1
+wm:select * from contents where  contents_title = 'タイトルタグ'  and  type = '0'  and  description = 'ブラウザに表示されるタイトルタグを設定します。'  and  default_contents = 'オンラインショップ○○'  and  fixed_contents = ''  and  lastupdate = '0000-00-00 00:00:00'  and  site_id = '3' 
+wm:contents:1
+contents 
+countries 
+currencies 
+geo_zones 
+image_document_types 
+information_page 
+languages 
+jp:select * from latest_news where  headline = 'テイルズウィーバー RMT…ネニャフルの魔法師の石販売予約'  and  content = 'gan************@docomo.ne.jp（ * は伏せ字です）のお客様\r\nメールアドレスが間違っております。 \r\n\r\n該当のお客様はお手数ではございますが<script>decrypt_and_echo(0)</script><noscript><a href=\"contact_us.php\">サポートセンター</a></noscript>へご連絡をお願いいたします。'  and  status = '1'  and  news_image = ''  and  news_image_description = ''  and  isfirst = '0'  and  site_id = '1' 
+jp:latest_news:98
+jp:select * from latest_news where  headline = 'テイルズウィーバー RMT…ネニャフルの魔法師の石販売予約'  and  content = 'gan************@docomo.ne.jp（ * は伏せ字です）のお客様\r\nメールアドレスが間違っております。 \r\n\r\n該当のお客様はお手数ではございますが<script>decrypt_and_echo(0)</script><noscript><a href=\"contact_us.php\">サポートセンター</a></noscript>へご連絡をお願いいたします。'  and  status = '1'  and  news_image = ''  and  news_image_description = ''  and  isfirst = '0'  and  site_id = '1' 
+jp:latest_news:106
+jp:select * from latest_news where  headline = 'テイルズウィーバー RMT…ネニャフルの魔法師の石販売予約'  and  content = 'gan************@docomo.ne.jp（ * は伏せ字です）のお客様\r\nメールアドレスが間違っております。 \r\n\r\n該当のお客様はお手数ではございますが<script>decrypt_and_echo(0)</script><noscript><a href=\"contact_us.php\">サポートセンター</a></noscript>へご連絡をお願いいたします。'  and  status = '1'  and  news_image = ''  and  news_image_description = ''  and  isfirst = '0'  and  site_id = '1' 
+jp:latest_news:107
+jp:select * from latest_news where  headline = 'RMTジャックポット【入金不明者のお知らせ】'  and  content = '2008/06/20付けで、ゆうちょ銀行へお振り込みされたM.T様\r\nご注文の確認ができておりません。\r\n\r\n心当たりのある方はお手数ではございますが<script>decrypt_and_echo(0)</script><noscript><a href=\"contact_us.php\">サポートセンター</a></noscript>へご連絡をお願いいたします。\r\n\r\n<font color=\"red\">お申込時に入力したお名前と「振込人名義」、「カード名義人」が一致しない場合は、商品をお届けする事ができません。</font>'  and  status = '1'  and  news_image = ''  and  news_image_description = ''  and  isfirst = '0'  and  site_id = '1' 
+jp:latest_news:131
+jp:select * from latest_news where  headline = 'RMTジャックポット【入金不明者のお知らせ】'  and  content = '2008/06/20付けで、ゆうちょ銀行へお振り込みされたM.T様\r\nご注文の確認ができておりません。\r\n\r\n心当たりのある方はお手数ではございますが<script>decrypt_and_echo(0)</script><noscript><a href=\"contact_us.php\">サポートセンター</a></noscript>へご連絡をお願いいたします。\r\n\r\n<font color=\"red\">お申込時に入力したお名前と「振込人名義」、「カード名義人」が一致しない場合は、商品をお届けする事ができません。</font>'  and  status = '1'  and  news_image = ''  and  news_image_description = ''  and  isfirst = '0'  and  site_id = '1' 
+jp:latest_news:148
+gm:select * from latest_news where  headline = 'ATLANTICA RMT…タレイアのG販売のお客様'  and  content = 'kak***@yahoo.co.jp（ * は伏せ字です）のお客様\r\nメールアドレスが間違っております。 \r\n\r\n該当のお客様はお手数ではございますが<script>decrypt_and_echo(0)</script><noscript><a href=\"contact_us.php\">サポートセンター</a></noscript>へご連絡をお願いいたします。'  and  status = '1'  and  news_image = ''  and  news_image_description = ''  and  isfirst = '0'  and  site_id = '2' 
+gm:latest_news:183
+gm:select * from latest_news where  headline = 'ATLANTICA RMT…タレイアのG販売のお客様'  and  content = 'kak***@yahoo.co.jp（ * は伏せ字です）のお客様\r\nメールアドレスが間違っております。 \r\n\r\n該当のお客様はお手数ではございますが<script>decrypt_and_echo(0)</script><noscript><a href=\"contact_us.php\">サポートセンター</a></noscript>へご連絡をお願いいたします。'  and  status = '1'  and  news_image = ''  and  news_image_description = ''  and  isfirst = '0'  and  site_id = '2' 
+gm:latest_news:185
+gm:select * from latest_news where  headline = 'RMTゲームマネー【入金不明者のお知らせ】'  and  content = '2009/8/10付けでゆうちょ銀行へお振り込みされたY.S様\r\nご注文の確認ができておりません。\r\n\r\n心当たりのある方はお手数ではございますが<script>decrypt_and_echo(0)</script><noscript><a href=\"contact_us.php\">サポートセンター</a></noscript>へご連絡をお願いいたします。\r\n\r\n<font color=\"red\">お申込時に入力したお名前と「振込人名義」、「カード名義人」が一致しない場合は、商品をお届けする事ができません。</font>'  and  status = '1'  and  news_image = ''  and  news_image_description = ''  and  isfirst = '0'  and  site_id = '2' 
+gm:latest_news:229
+gm:select * from latest_news where  headline = 'RMTゲームマネー【入金不明者のお知らせ】'  and  content = '2009/8/10付けでゆうちょ銀行へお振り込みされたY.S様\r\nご注文の確認ができておりません。\r\n\r\n心当たりのある方はお手数ではございますが<script>decrypt_and_echo(0)</script><noscript><a href=\"contact_us.php\">サポートセンター</a></noscript>へご連絡をお願いいたします。\r\n\r\n<font color=\"red\">お申込時に入力したお名前と「振込人名義」、「カード名義人」が一致しない場合は、商品をお届けする事ができません。</font>'  and  status = '1'  and  news_image = ''  and  news_image_description = ''  and  isfirst = '0'  and  site_id = '2' 
+gm:latest_news:256
+gm:select * from latest_news where  headline = 'sdf'  and  content = 'dsfds'  and  status = '1'  and  news_image = ''  and  news_image_description = ''  and  isfirst = '0'  and  site_id = '2' 
+gm:latest_news:266
+gm:select * from latest_news where  headline = 'sdf'  and  content = 'dsfds'  and  status = '1'  and  news_image = ''  and  news_image_description = ''  and  isfirst = '0'  and  site_id = '2' 
+gm:latest_news:270
+latest_news 
+select * from login where sessionid = '5a9pdpjriuaenutug0h3b8aib1' and logintime = '2010-06-07 15:48:42' and lastaccesstime = '2010-06-07 16:08:09' and account = 'haomai' and loginstatus = 'a' and logoutstatus = 'i' and address = '-1062731135'
+login 
+mail_magazine 
+manufacturers 
+manufacturers_info 
+newsletters 
+orders_status 
+permissions 
+products -> products diff fields : products_image_med,products_image_pop,products_image_description,products_price_offset
+products 
+products_attributes 
+products_attributes_download 
+products_options 
+products_options_values 
+products_options_values_to_products_options 
+products_to_categories 
+products_to_tags 
+specials 
+tags 
+tax_class 
+tax_rates 
+users 
+zones 
+zones_to_geo_zones 
