@@ -1143,8 +1143,8 @@ function mail_text(st,tt,ot){
                s.orders_status_name,
                o.site_id
         from " . TABLE_ORDERS . " o " . $from_payment . ", " . TABLE_ORDERS_STATUS . " s, " . TABLE_ORDERS_PRODUCTS . " op 
-        where " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-          and o.orders_status = s.orders_status_id 
+        where o.orders_status = s.orders_status_id 
+          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
           and s.language_id = '" . $languages_id . "' 
           " . $where_payment . $where_type . "
           and o.orders_id = op.orders_id";
