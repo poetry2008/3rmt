@@ -176,8 +176,7 @@
                     p.products_price, 
                     p.products_tax_class_id, 
                     pd.site_id,
-                    IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, 
-                    IF(s.status, s.specials_new_products_price, p.products_price) as final_price"; 
+                    p.products_price, p.products_price_offset, p.products_small_sum"; 
   /*
   if(isset($_GET['colors']) && !empty($_GET['colors'])) {
     $select_str .= ", cp.color_image ";
@@ -189,7 +188,7 @@
   }
   
   #$from_str = "(( " . TABLE_PRODUCTS . " p ) left join " . TABLE_MANUFACTURERS . " m using(manufacturers_id), " . TABLE_PRODUCTS_DESCRIPTION . " pd )left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id, " . TABLE_CATEGORIES . " c, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, ".TABLE_COLOR_TO_PRODUCTS." cp";
-  $from_str = "(( " . TABLE_PRODUCTS . " p ) left join " . TABLE_MANUFACTURERS . " m using(manufacturers_id), " . TABLE_PRODUCTS_DESCRIPTION . " pd )left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id, " . TABLE_CATEGORIES . " c, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c ";
+  $from_str = "( " . TABLE_PRODUCTS . " p ) left join " . TABLE_MANUFACTURERS . " m using(manufacturers_id), " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_CATEGORIES . " c, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c ";
 
   if ( (DISPLAY_PRICE_WITH_TAX == 'true') && ( (isset($_GET['pfrom']) && tep_not_null($_GET['pfrom'])) || (isset($_GET['pto']) && tep_not_null($_GET['pto']))) ) {
     if (!tep_session_is_registered('customer_country_id')) {

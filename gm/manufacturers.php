@@ -58,7 +58,13 @@
 <?php
   while($manufacturer = tep_db_fetch_array($manufacturer_query)){
     //ccdd
-    $products_query = tep_db_query("select p.products_id, p.products_image, p.products_tax_class_id, if(s.status, s.specials_new_products_price, p.products_price) as products_price from " . TABLE_PRODUCTS . " p left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id where products_status != '0' and manufacturers_id = '".$manufacturer['manufacturers_id']."' order by p.products_date_added desc limit 5");
+  $products_query = tep_db_query("
+      select p.products_id, p.products_image, p.products_tax_class_id, p.products_price, p.products_price_offset, p.products_small_sum
+      from " . TABLE_PRODUCTS . " p 
+      where  p.products_id not in".tep_not_in_disabled_products()." and products_status != '0' and manufacturers_id = '".$manufacturer['manufacturers_id']."' 
+      order by p.products_date_added desc 
+      limit 5
+  ");
     if(tep_db_num_rows($products_query)) {
 
 
@@ -72,7 +78,12 @@ echo '
      while($products = tep_db_fetch_array($products_query)) {
        $products['products_name'] = tep_get_products_name($products['products_id']);
        $products['products_description'] = tep_get_products_description($products['products_id']);
-     echo '<td align="center" valign="top" class="smallText" width="20%"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products['products_id']) . '">'.tep_image2(DIR_WS_IMAGES.$products['products_image'],$products['products_name'],60, 60,'class="image_border"').'<br>' .$products['products_name'] . '</a><br>'.$currencies->display_price($products['products_price'], tep_get_tax_rate($products['products_tax_class_id'])).'<!--<div class="s_smallText">'.strip_tags(substr($products['products_description'],0,50)).'</div>--></td>'."\n";
+       if (tep_get_special_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'])) {
+         $products_price = '<s>' . $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'])) . '</s> <span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'])) . '</span>';
+       } else {
+         $products_price = $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']));
+       }
+     echo '<td align="center" valign="top" class="smallText" width="20%"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products['products_id']) . '">'.tep_image2(DIR_WS_IMAGES.$products['products_image'],$products['products_name'],60, 60,'class="image_border"').'<br>' .$products['products_name'] . '</a><br>'.$products_price.'<!--<div class="s_smallText">'.strip_tags(substr($products['products_description'],0,50)).'</div>--></td>'."\n";
          //$col ++;
      /*     if ($col > 2) {
          echo '</tr>'."\n".'<tr>';

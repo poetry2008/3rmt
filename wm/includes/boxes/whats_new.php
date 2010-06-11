@@ -4,7 +4,7 @@
 */
 
   //ccdd
-  if ($random_product = tep_random_select("select products_id, products_image, products_tax_class_id, products_price from " . TABLE_PRODUCTS . " where products_status != '0' order by products_date_added desc limit " . MAX_RANDOM_SELECT_NEW)) {
+  if ($random_product = tep_random_select("select products_id, products_image, products_tax_class_id, products_price, products_price_offset, products_small_sum from " . TABLE_PRODUCTS . " where products_status != '0' order by products_date_added desc limit " . MAX_RANDOM_SELECT_NEW)) {
 ?>
 <!-- whats_new //-->
           <tr>
@@ -18,11 +18,16 @@
 
     new infoBoxHeading($info_box_contents, false, false, tep_href_link(FILENAME_PRODUCTS_NEW));
 
-    if (tep_not_null($random_product['specials_new_products_price'])) {
+    /*if (tep_not_null($random_product['specials_new_products_price'])) {
       $whats_new_price = '<s>' . $currencies->display_price($random_product['products_price'], tep_get_tax_rate($random_product['products_tax_class_id'])) . '</s><br>';
       $whats_new_price .= '<span class="productSpecialPrice">' . $currencies->display_price($random_product['specials_new_products_price'], tep_get_tax_rate($random_product['products_tax_class_id'])) . '</span>';
     } else {
       $whats_new_price = $currencies->display_price($random_product['products_price'], tep_get_tax_rate($random_product['products_tax_class_id']));
+    }*/
+    if (tep_get_special_price($random_product['products_price'], $random_product['products_price_offset'], $random_product['products_small_sum'])) {
+      $whats_new_price = '<s>' . $currencies->display_price(tep_get_price($random_product['products_price'], $random_product['products_price_offset'], $random_product['products_small_sum'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($random_product['products_price'], $random_product['products_price_offset'], $random_product['products_small_sum'])) . '</span>&nbsp;';
+    } else {
+      $whats_new_price = $currencies->display_price(tep_get_price($random_product['products_price'], $random_product['products_price_offset'], $random_product['products_small_sum']));
     }
 
     $info_box_contents = array();

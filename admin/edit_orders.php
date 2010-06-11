@@ -641,6 +641,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       extract($row, EXTR_PREFIX_ALL, "p");
       
       // 特価を適用
+      /*
       $specials_query = tep_db_query("select specials_new_products_price from " . TABLE_SPECIALS . " where products_id = '" . $add_product_products_id . "' and status = '1'");
       if (tep_db_num_rows ($specials_query)) {
         $specials = tep_db_fetch_array($specials_query);
@@ -664,7 +665,8 @@ while ($totals = tep_db_fetch_array($totals_query)) {
           $p_products_price = round($p_products_price + $val);
         }
         $mae = $key;
-      }
+      }*/
+      $p_products_price = tep_get_final_price($p_products_price, $p_products_price_offset, $p_products_small_sum, (int)$add_product_quantity);
       
       // Following functions are defined at the bottom of this file
       $CountryID = tep_get_country_id($order->delivery["country"]);

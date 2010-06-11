@@ -21,8 +21,10 @@
                p.products_quantity, 
                p.products_image, 
                p.products_tax_class_id, 
-               if(s.status, s.specials_new_products_price, p.products_price) as products_price 
-        from " . TABLE_PRODUCTS . " p left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id 
+               p.products_price, 
+               p.products_price_offset, 
+               p.products_small_sum
+        from " . TABLE_PRODUCTS . " p 
         where products_status != '0' 
         order by p.products_date_added desc 
         limit " . MAX_DISPLAY_NEW_PRODUCTS
@@ -34,8 +36,10 @@
                         p.products_quantity, 
                         p.products_image, 
                         p.products_tax_class_id, 
-                        if(s.status, s.specials_new_products_price, p.products_price) as products_price 
-        from " . TABLE_PRODUCTS . " p left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " . TABLE_CATEGORIES . " c 
+                        p.products_price, 
+                        p.products_price_offset, 
+                        p.products_small_sum
+        from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " . TABLE_CATEGORIES . " c 
         where p.products_id = p2c.products_id 
           and p2c.categories_id = c.categories_id 
           and c.parent_id = '" . $new_products_category_id . "' 
@@ -64,9 +68,10 @@
                           p.products_quantity, 
                           p.products_image, 
                           p.products_tax_class_id, 
-                          if(s.status, s.specials_new_products_price, p.products_price) as products_price 
-          from " . TABLE_PRODUCTS . " p 
-            left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " . TABLE_CATEGORIES . " c 
+                          p.products_price, 
+                          p.products_price_offset, 
+                          p.products_small_sum
+          from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " . TABLE_CATEGORIES . " c 
           where p.products_id = p2c.products_id 
             and p2c.categories_id = c.categories_id 
             and c.parent_id in (" . join(',', $subcategories) . ") 
@@ -123,7 +128,13 @@
             <p class="main">
               <?php echo '残り&nbsp;' . number_format($new_products['products_quantity']) . '個'; ?>
               &nbsp;&nbsp;&nbsp;
-              <span class="red"><?php echo $currencies->display_price($new_products['products_price'], tep_get_tax_rate($new_products['products_tax_class_id'])) ; ?></span>
+<?php
+      if (tep_get_special_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum'])) {
+        echo '<s>' . $currencies->display_price(tep_get_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum'])) . '</span>&nbsp;';
+      } else {
+        echo $currencies->display_price(tep_get_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum']));
+      }
+?>
             </p>
           </td>
           <td align="right">

@@ -224,41 +224,43 @@
 
 // products price
 //ccdd
-        $product_query = tep_db_query("select products_id, products_price, products_tax_class_id, products_weight, products_small_sum from " . TABLE_PRODUCTS . " where products_id='" . tep_get_prid($products_id) . "'");
+        $product_query = tep_db_query("select products_id, products_price, products_price_offset, products_tax_class_id, products_weight, products_small_sum from " . TABLE_PRODUCTS . " where products_id='" . tep_get_prid($products_id) . "'");
         if ($product = tep_db_fetch_array($product_query)) {
           $prid = $product['products_id'];
           $products_tax = tep_get_tax_rate($product['products_tax_class_id']);
           $products_price = $product['products_price'];
           $products_weight = $product['products_weight'];
+/*
 //ccdd
           $specials_query = tep_db_query("select specials_new_products_price from " . TABLE_SPECIALS . " where products_id = '" . $prid . "' and status = '1'");
           if (tep_db_num_rows ($specials_query)) {
             $specials = tep_db_fetch_array($specials_query);
             $products_price = $specials['specials_new_products_price'];
           }
-		  
-		  # 追加スタート ---------------------------------------
-		  $wari_array = array();
-		  if(tep_not_null($product['products_small_sum'])) {
-		    $parray = explode(",", $product['products_small_sum']);
-			for($i=0; $i<sizeof($parray); $i++) {
-			  $tt = explode(':', $parray[$i]);
-			  $wari_array[$tt[0]] = $tt[1];
-			}
-		  }
-		  
-		  @krsort($wari_array);
-		  
-		  $mae = 99999;
-		  $qty = $this->contents[$products_id]['qty'];
-		  foreach($wari_array as $key => $val) {
-		    if($mae > $qty && $qty >= $key) {
-			  $products_price = round($products_price + $val);
-			}
-			
-			$mae = $key;
-		  }
-		  # 追加エンド -------------------------------------------
+      
+      # 追加スタート ---------------------------------------
+      $wari_array = array();
+      if(tep_not_null($product['products_small_sum'])) {
+        $parray = explode(",", $product['products_small_sum']);
+      for($i=0; $i<sizeof($parray); $i++) {
+        $tt = explode(':', $parray[$i]);
+        $wari_array[$tt[0]] = $tt[1];
+      }
+      }
+      
+      @krsort($wari_array);
+      
+      $mae = 99999;
+      $qty = $this->contents[$products_id]['qty'];
+      foreach($wari_array as $key => $val) {
+        if($mae > $qty && $qty >= $key) {
+        $products_price = round($products_price + $val);
+      }
+      
+      $mae = $key;
+      }*/
+      $products_price = tep_get_final_price($product['products_price'], $product['products_price_offset'], $product['products_small_sum'], $qty);
+      # 追加エンド -------------------------------------------
 
           $this->total += tep_add_tax($products_price, $products_tax) * $qty;
           $this->weight += ($qty * $products_weight);
@@ -314,34 +316,36 @@
           $prid = $products['products_id'];
           $products_price = $products['products_price'];
 //ccdd
+/*
           $specials_query = tep_db_query("select specials_new_products_price from " . TABLE_SPECIALS . " where products_id = '" . $prid . "' and status = '1'");
           if (tep_db_num_rows($specials_query)) {
             $specials = tep_db_fetch_array($specials_query);
             $products_price = $specials['specials_new_products_price'];
           }
-		  
-		  # 追加スタート ---------------------------------------
-		  $wari_array = array();
-		  if(tep_not_null($products['products_small_sum'])) {
-		    $parray = explode(",", $products['products_small_sum']);
-			for($i=0; $i<sizeof($parray); $i++) {
-			  $tt = explode(':', $parray[$i]);
-			  $wari_array[$tt[0]] = $tt[1];
-			}
-		  }
-		  
-		  krsort($wari_array);
-		  
-		  $mae = 99999;
-		  $qty = $this->contents[$products_id]['qty'];
-		  foreach($wari_array as $key => $val) {
-		    if($mae > $qty && $qty >= $key) {
-			  $products_price = round($products_price + $val);
-			}
-			
-			$mae = $key;
-		  }
-		  # 追加エンド -------------------------------------------
+      
+      # 追加スタート ---------------------------------------
+      $wari_array = array();
+      if(tep_not_null($products['products_small_sum'])) {
+        $parray = explode(",", $products['products_small_sum']);
+      for($i=0; $i<sizeof($parray); $i++) {
+        $tt = explode(':', $parray[$i]);
+        $wari_array[$tt[0]] = $tt[1];
+      }
+      }
+      
+      krsort($wari_array);
+      
+      $mae = 99999;
+      $qty = $this->contents[$products_id]['qty'];
+      foreach($wari_array as $key => $val) {
+        if($mae > $qty && $qty >= $key) {
+        $products_price = round($products_price + $val);
+      }
+      
+      $mae = $key;
+      }*/
+      $products_price = tep_get_final_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'], $this->contents[$products_id]['qty']);
+      # 追加エンド -------------------------------------------
 
       if(!isset($this->contents[$products_id]['attributes'])) $this->contents[$products_id]['attributes']= NULL;
           $products_array[] = array('id' => $products_id,

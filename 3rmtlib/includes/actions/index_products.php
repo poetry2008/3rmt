@@ -74,14 +74,13 @@
                  p.products_id, 
                  p.manufacturers_id, 
                  p.products_price, 
+                 p.products_price_offset, 
+                 p.products_small_sum,
                  p.products_tax_class_id, 
-                 pd.site_id,
-                 IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, 
-                 IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
-          from (" . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . "
+                 pd.site_id
+          from " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . "
               pd, " . TABLE_MANUFACTURERS . " m, " .
-              TABLE_PRODUCTS_TO_CATEGORIES . " p2c) left join " .
-              TABLE_SPECIALS . " s on p.products_id = s.products_id 
+              TABLE_PRODUCTS_TO_CATEGORIES . " p2c
           where p.products_status != '0' 
             and p.manufacturers_id = m.manufacturers_id 
             and m.manufacturers_id = '" .  $_GET['manufacturers_id'] . "' 
@@ -98,11 +97,11 @@
               p.products_id, 
               p.manufacturers_id, 
               p.products_price, 
+              p.products_price_offset, 
+              p.products_small_sum,
               p.products_tax_class_id, 
-              pd.site_id,
-              IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, 
-              IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
-        from (" . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_MANUFACTURERS . " m ) left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id 
+              pd.site_id
+        from " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_MANUFACTURERS . " m 
         where p.products_status != '0' 
           and pd.products_id = p.products_id 
           and pd.language_id = '" . $languages_id . "' 

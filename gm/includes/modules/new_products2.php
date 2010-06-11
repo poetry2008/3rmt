@@ -37,8 +37,10 @@
                p.products_quantity, 
                p.products_image, 
                p.products_tax_class_id, 
-               if(s.status, s.specials_new_products_price, p.products_price) as products_price 
-        from " . TABLE_PRODUCTS . " p left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id 
+               p.products_price, 
+               p.products_price_offset, 
+               p.products_small_sum
+        from " . TABLE_PRODUCTS . " p 
         where products_status != '0' 
         order by p.products_date_added desc 
         limit " . MAX_DISPLAY_NEW_PRODUCTS
@@ -50,8 +52,10 @@
                         p.products_quantity, 
                         p.products_image, 
                         p.products_tax_class_id, 
-                        if(s.status, s.specials_new_products_price, p.products_price) as products_price 
-        from " . TABLE_PRODUCTS . " p left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " . TABLE_CATEGORIES . " c 
+                        p.products_price, 
+                        p.products_price_offset, 
+                        p.products_small_sum
+        from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " . TABLE_CATEGORIES . " c 
         where p.products_id = p2c.products_id 
           and p2c.categories_id = c.categories_id 
           and c.parent_id = '" . $new_products_category_id . "' 
@@ -88,7 +92,14 @@
                     <span class="smallText"><?php echo $description_view; ?>..</span></p></td>
               </tr>
               <tr>
-                <td class="main" style="padding-left:5px; "><span class="red"><?php echo $currencies->display_price($new_products['products_price'], tep_get_tax_rate($new_products['products_tax_class_id'])) ; ?></span></td>
+                <td class="main" style="padding-left:5px; ">
+<?php
+      if (tep_get_special_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum'])) {
+        echo '<s>' . $currencies->display_price(tep_get_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum'])) . '</span>&nbsp;';
+      } else {
+        echo $currencies->display_price(tep_get_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum']));
+      }
+?>                </td>
                 <td align="right">
         <?php echo '<span id="' . $new_products['products_id'] . '"><a href="'.tep_href_link(FILENAME_PRODUCT_INFO,'products_id='.$new_products['products_id'].'&action=buy_now').'" onClick="sendData(\'' . tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('action')) . 'action=buy_now&products_id=' . $new_products['products_id']) . '\',\'' . displaychange . '\',\'' . $new_products['products_id'] . '\'); return false;"><img src="images/design/button/button_in_cart.jpg" border="0"></a></span>'; ?>        
         &nbsp;&nbsp;&nbsp;<a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_description.jpg',IMAGE_BUTTON_DEC);?></a></td>

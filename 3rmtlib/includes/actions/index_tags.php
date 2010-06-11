@@ -30,6 +30,7 @@
                p.products_image2,
                p.products_image3,
                p.products_price,
+               p.products_price_offset,
                p.products_date_added,
                p.products_last_modified,
                p.products_date_available,
@@ -53,15 +54,8 @@
                pd.products_attention_4,
                pd.products_attention_5,
                pd.products_url,
-               pd.products_viewed,
-               s.specials_new_products_price,
-               s.specials_date_added,
-               s.specials_last_modified,
-               s.expires_date,
-               s.date_status_change,
-               s.status,
-               IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
-      from " . TABLE_PRODUCTS_TO_TAGS . " as p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id 
+               pd.products_viewed
+      from " . TABLE_PRODUCTS_TO_TAGS . " as p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id
       where p2t.tags_id = " .  (int)$_GET['tags_id']."
       order by pd.site_id DESC
       ";
@@ -75,6 +69,7 @@
                p.products_image2,
                p.products_image3,
                p.products_price,
+               p.products_price_offset,
                p.products_date_added,
                p.products_last_modified,
                p.products_date_available,
@@ -98,15 +93,8 @@
                pd.products_attention_4,
                pd.products_attention_5,
                pd.products_url,
-               pd.products_viewed,
-               s.specials_new_products_price,
-               s.specials_date_added,
-               s.specials_last_modified,
-               s.expires_date,
-               s.date_status_change,
-               s.status,
-               IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
-      from " . TABLE_PRODUCTS_TO_TAGS . " as p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id 
+               pd.products_viewed
+      from " . TABLE_PRODUCTS_TO_TAGS . " as p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id 
       where p2t.tags_id = " .  (int)$_GET['tags_id']." 
       order by pd.site_id DESC";
   } 

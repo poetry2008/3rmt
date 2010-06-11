@@ -43,12 +43,19 @@
       case 'simple_update': // 価格と数量の簡易アップデート
         $products_id = tep_db_prepare_input($_GET['pID']);
         $site_id     = tep_db_prepare_input($_POST['pID']);
+        //％指定の場合は価格を算出
+        $HTTP_POST_VARS['products_price_offset'] = SBC2DBC($HTTP_POST_VARS['products_price_offset']);
+        if (substr($HTTP_POST_VARS['products_price_offset'], -1) == '%') {
+          $HTTP_POST_VARS['products_price_offset'] = (($HTTP_POST_VARS['products_price_offset'] / 100) * $HTTP_POST_VARS['products_price']);
+        } 
         $update_sql_data = array('products_last_modified' => 'now()',
                                  'products_quantity' => tep_db_prepare_input($_POST['products_quantity']),
+                                 'products_price_offset' => tep_db_prepare_input($HTTP_POST_VARS['products_price_offset']),
                                  'products_price' => tep_db_prepare_input($_POST['products_price']));
         tep_db_perform(TABLE_PRODUCTS, $update_sql_data, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
 
         // 特価商品インサート
+        /*
         if(!empty($_POST['products_special_price'])) {
         //％指定の場合は価格を算出
             if (substr($_POST['products_special_price'], -1) == '%') {
@@ -75,7 +82,9 @@
           tep_db_query("delete from " . TABLE_SPECIALS . " where products_id = '" . tep_db_prepare_input($products_id) . "'");
         }
       }
+      
       // 特価商品インサート終了
+      */
 
       /*
       // キャラクター名インサート
@@ -362,13 +371,18 @@
       if(isset($_POST['products_image3_del']) && $_POST['products_image3_del'] == 'none') {
         $_POST['products_image3'] = 'none';
       }
-
+      //％指定の場合は価格を算出
+      $HTTP_POST_VARS['products_price_offset'] = SBC2DBC($HTTP_POST_VARS['products_price_offset']);
+      if (substr($HTTP_POST_VARS['products_price_offset'], -1) == '%') {
+        $HTTP_POST_VARS['products_price_offset'] = (($HTTP_POST_VARS['products_price_offset'] / 100) * $HTTP_POST_VARS['products_price']);
+      } 
       $sql_data_array = array('products_quantity' => tep_db_prepare_input($_POST['products_quantity']),
                                   'products_model' => tep_db_prepare_input($_POST['products_model']),
                                   'products_image' => (($_POST['products_image'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image'])),
                                   'products_image2' => (($_POST['products_image2'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image2'])),
                                   'products_image3' => (($_POST['products_image3'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image3'])),
                                   'products_price' => tep_db_prepare_input($_POST['products_price']),
+                                  'products_price_offset' => tep_db_prepare_input($HTTP_POST_VARS['products_price_offset']),
                                   'products_date_available' => $products_date_available,
                                   'products_weight' => tep_db_prepare_input($_POST['products_weight']),
                                   'products_status' => tep_db_prepare_input($_POST['products_status']),
@@ -553,6 +567,7 @@
       //-----------------------------------------
       // 特価商品インサート
       //-----------------------------------------
+      /*
           if(!empty($_POST['products_special_price'])) {
       //％指定の場合は価格を算出
             if (substr($_POST['products_special_price'], -1) == '%') {
@@ -579,7 +594,7 @@
               tep_db_query("delete from " . TABLE_SPECIALS . " where products_id = '" . tep_db_prepare_input($products_id) . "'");
         }
       }
-      
+      */
       //-----------------------------------------
       // 特価商品インサート終了
       //-----------------------------------------
@@ -712,6 +727,7 @@ function mess(){
                  p.products_image2,
                  p.products_image3, 
                  p.products_price, 
+                 p.products_price_offset,
                  p.products_weight, 
                  p.products_date_added, 
                  p.products_last_modified, 
@@ -897,12 +913,12 @@ function mess(){
                       <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                     </tr>
                     <tr bgcolor="#CCCCCC">
-                      <td class="main"><?php echo '<font color="blue"><b>特別価格:</b></font>'; ?></td>
-                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_special_price', tep_get_products_special_price(isset($pInfo->products_id)?$pInfo->products_id:'')); ?></td>
+                      <td class="main"><?php echo '<font color="blue"><b>増減の値:</b></font>'; ?></td>
+                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_price_offset', $pInfo->products_price_offset); ?></td>
                     </tr>
                     <tr>
                       <td class="main">&nbsp;</td>
-            <td colspan="2" class="smallText"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;# 割り引くパーセンテージを "特別価格" 欄に入力することができます。例: 20%'; ?><br>
+            <td colspan="2" class="smallText"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;# 割り引くパーセンテージを "増減の値" 欄に入力することができます。例: 20%'; ?><br>
             <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;# 新しい価格を入力する場合には、新しい価格を入力してください。例: 1980'; ?><br>
             <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;# 登録されている情報を消去する場合は、値を空白にしてください。'; ?></td>
                     </tr>
@@ -1317,6 +1333,7 @@ function mess(){
       }
 
     //特価がある場合の処理
+    /*
       $special_price_check = tep_get_products_special_price(isset($pInfo->products_id)?$pInfo->products_id:'');
       if (!empty($pInfo->products_special_price)) {
       //％指定の場合は価格を算出
@@ -1330,6 +1347,11 @@ function mess(){
         $products_price_preview = '<s>' . $currencies->format($pInfo->products_price) . '</s> <span class="specialPrice">' . $currencies->format($special_price_check) . '</span>';
     } else {
         $products_price_preview = $currencies->format($pInfo->products_price);
+      }*/
+      if (tep_get_special_price($pInfo->products_price, $pInfo->products_price_offset, $pInfo->products_small_sum)) {
+        $products_price_preview = '<s>' . $currencies->format(tep_get_price($pInfo->products_price, $pInfo->products_price_offset, $pInfo->products_small_sum)) . '</s> <span class="specialPrice">' . $currencies->format(tep_get_special_price($pInfo->products_price, $pInfo->products_price_offset, $pInfo->products_small_sum)) . '</span>';
+      } else {
+        $products_price_preview = $currencies->format(tep_get_price($pInfo->products_price, $pInfo->products_price_offset, $pInfo->products_small_sum));
       }
 ?>
         <tr>
@@ -1341,7 +1363,7 @@ function mess(){
       <td><hr size="2" noshade><b><?php //価格数量変更機能
 if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) || !$_GET['origin'])) {
   echo '価格：&nbsp;' . tep_draw_input_field('products_price', (int)$pInfo->products_price,'id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;円' . '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price . '円<br><hr size="2" noshade>' . "\n";
-  echo '特価：&nbsp;' . tep_draw_input_field('products_special_price', (int)tep_get_products_special_price($pInfo->products_id),'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;color: red;"') . '&nbsp;円' . '&nbsp;&nbsp;←&nbsp;' . (int)tep_get_products_special_price($pInfo->products_id) . '円<br><hr size="2" noshade>' . "\n";
+  echo '増減：&nbsp;' . tep_draw_input_field('products_price_offset', (int)$pInfo->products_price_offset,'id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;円' . '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price_offset . '円<br><hr size="2" noshade>' . "\n";
   echo '数量：&nbsp;' . tep_draw_input_field('products_quantity', $pInfo->products_quantity,'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;個' . '&nbsp;&nbsp;←&nbsp;' . $pInfo->products_quantity . '個<br><hr size="2" noshade>' . "\n";
   //商品説明を分割
   /*
@@ -1620,6 +1642,7 @@ if (isset($nowColor) && $nowColor == $odd) {
                p.products_image2,
                p.products_image3, 
                p.products_price, 
+               p.products_price_offset,
                p.products_date_added, 
                p.products_last_modified, 
                p.products_date_available, 
@@ -1641,6 +1664,7 @@ if (isset($nowColor) && $nowColor == $odd) {
                p.products_image2,
                p.products_image3, 
                p.products_price, 
+               p.products_price_offset,
                p.products_date_added, 
                p.products_last_modified, 
                p.products_date_available, 
@@ -1694,13 +1718,20 @@ if (isset($nowColor) && $nowColor == $odd) {
                     <td class="dataTableContent"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;&nbsp;<a href="orders.php?keywords=' . urlencode($products['products_name']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;' . $products['products_name']; ?></td>
             
                       <td class="dataTableContent" align="right"><?php
-
+/*
 $special_price_check = tep_get_products_special_price($products['products_id']);
 if (!empty($special_price_check)) {
   echo '<s>' . $currencies->format($products['products_price']) . '</s> <span class="specialPrice">' . $currencies->format($special_price_check) . '</span>';
 } else {
   echo $currencies->format($products['products_price']);
-} ?></td>
+}*/
+      $product_price = tep_get_products_price($products['products_id']);
+      if ($product_price['sprice']) {
+        echo '<s>' . $currencies->format($product_price['price']) . '</s> <span class="specialPrice">' . $currencies->format($product_price['sprice']) . '</span>';
+      } else {
+        echo $currencies->format($product_price['price']);
+      }
+  ?></td>
             <td class="dataTableContent" align="right"><?php
 if (empty($products['products_quantity'])) {
   echo '<b>在庫切れ</b>';

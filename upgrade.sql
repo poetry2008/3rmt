@@ -124,3 +124,8 @@ UPDATE  `sites` SET  `name` =  'RMTワールドマネー' WHERE  `sites`.`id` =3
 UPDATE  `sites` SET  `url` =  'http://www.iimy.co.jp' WHERE  `sites`.`id` =1;
 UPDATE  `sites` SET  `url` =  'http://www.gamemoney.cc' WHERE  `sites`.`id` =2;
 UPDATE  `sites` SET  `url` =  'http://rmt.worldmoney.jp' WHERE  `sites`.`id` =3;
+
+
+-- 这个可能需要删除
+ALTER TABLE  `products` ADD  `products_price_offset` INT NULL AFTER  `products_price`;
+ALTER TABLE  `products` CHANGE  `products_price_offset`  `products_price_offset` decimal(15,4) NOT NULL DEFAULT '0.0000';

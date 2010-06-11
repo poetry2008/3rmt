@@ -21,7 +21,7 @@ cmptable('wm_address_format', 'address_format');
 //banners
 cmp3table('banners');
 //banners_history
-//cache
+//#cache
 //calendar
 cmp3table('calendar');
 //categories

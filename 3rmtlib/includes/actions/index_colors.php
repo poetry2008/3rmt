@@ -14,12 +14,12 @@
            p.manufacturers_id, 
            p.products_price, 
            p.products_tax_class_id, 
-           IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, 
-           IF(s.status, s.specials_new_products_price, p.products_price) as final_price, 
+           p.products_price_offset,
+           p.products_small_sum,
            p.products_quantity, 
            pd.products_description ,
            pd.site_id
-    from " .  TABLE_PRODUCTS_DESCRIPTION . " pd, ".TABLE_COLOR_TO_PRODUCTS." cp, " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id 
+    from " .  TABLE_PRODUCTS_DESCRIPTION . " pd, ".TABLE_COLOR_TO_PRODUCTS." cp, " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c
     where p.products_status != '0' 
       and p.products_id = p2c.products_id 
       and pd.products_id = p2c.products_id 

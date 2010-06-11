@@ -39,11 +39,12 @@ from (
          pd.site_id,
          p.products_image, 
          p.products_price, 
+         p.products_price_offset, 
+         p.products_small_sum, 
          p.products_tax_class_id, 
-         IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, 
          p.products_date_added, 
          m.manufacturers_name 
-  from " . TABLE_PRODUCTS . " p left join " . TABLE_MANUFACTURERS . " m on p.manufacturers_id = m.manufacturers_id left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id 
+  from " . TABLE_PRODUCTS . " p left join " . TABLE_MANUFACTURERS . " m on p.manufacturers_id = m.manufacturers_id left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "'
   where p.products_status != '0' 
   order by pd.site_id DESC
   ) p
@@ -61,7 +62,8 @@ order by products_date_added DESC, products_name
                                   'name' => $products_new['products_name'],
                                   'image' => $products_new['products_image'],
                                   'price' => $products_new['products_price'],
-                                  'specials_price' => $products_new['specials_new_products_price'],
+                                  'price_offset' => $products_new['products_price_offset'],
+                                  'small_sum' => $products_new['products_small_sum'],
                                   'tax_class_id' => $products_new['products_tax_class_id'],
                                   'date_added' => tep_date_long($products_new['products_date_added']),
                                   'manufacturer' => $products_new['manufacturers_name']);

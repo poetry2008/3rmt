@@ -84,6 +84,7 @@ while ($tag = tep_db_fetch_array($tags_query))
                p.products_image2,
                p.products_image3,
                p.products_price,
+               p.products_price_offset,
                p.products_date_added,
                p.products_last_modified,
                p.products_date_available,
@@ -107,18 +108,10 @@ while ($tag = tep_db_fetch_array($tags_query))
                pd.products_attention_4,
                pd.products_attention_5,
                pd.products_url,
-               pd.products_viewed,
-               s.specials_new_products_price,
-               s.specials_date_added,
-               s.specials_last_modified,
-               s.expires_date,
-               s.date_status_change,
-               s.status,
-               IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
+               pd.products_viewed
         from " . TABLE_PRODUCTS_TO_TAGS . " as p2t 
           join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id 
           left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id 
-          left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id 
         where p2t.tags_id = " . $tag['tags_id'] .  " 
         order by pd.site_id DESC
       ) p
@@ -153,6 +146,7 @@ while ($tag = tep_db_fetch_array($tags_query))
                p.products_image2,
                p.products_image3,
                p.products_price,
+               p.products_price_offset,
                p.products_date_added,
                p.products_last_modified,
                p.products_date_available,
@@ -176,18 +170,10 @@ while ($tag = tep_db_fetch_array($tags_query))
                pd.products_attention_4,
                pd.products_attention_5,
                pd.products_url,
-               pd.products_viewed,
-               s.specials_new_products_price,
-               s.specials_date_added,
-               s.specials_last_modified,
-               s.expires_date,
-               s.date_status_change,
-               s.status,
-               IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
+               pd.products_viewed
         from " . TABLE_PRODUCTS_TO_TAGS . " as p2t 
           join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id 
           left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id 
-          left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id 
         where p2t.tags_id = " . $tag['tags_id'] .  " 
         order by pd.site_id DESC
       ) p
@@ -238,14 +224,19 @@ while ($tag = tep_db_fetch_array($tags_query))
                           echo tep_image2(DIR_WS_IMAGES.'new_products_blank_small.gif',$products['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"');
                         }
                           echo '<br>' .$products['products_name'] . '</a><br>';
-                          if ($products['specials_new_products_price'])
+      if (tep_get_special_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'])) {
+        echo '<s>' . $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'])) . '</span>&nbsp;';
+      } else {
+        echo $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']));
+      }
+                          /*if ($products['specials_new_products_price'])
                           {
                             echo $currencies->display_price($products['specials_new_products_price'], tep_get_tax_rate($products['products_tax_class_id']));
                           }
                           else
                           {
                             echo $currencies->display_price($products['products_price'], tep_get_tax_rate($products['products_tax_class_id']));
-                          }
+                          }*/
                           echo '</td>'."\n";
     }
     echo '</tr>' . "\n";

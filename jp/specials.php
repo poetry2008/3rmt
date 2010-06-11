@@ -31,24 +31,25 @@
     select p.products_id, 
            pd.products_name, 
            p.products_price, 
+           p.products_price_offset, 
+           p.products_small_sum, 
            p.products_tax_class_id, 
            p.products_image, 
-           pd.site_id,
-           s.specials_new_products_price ,
-           s.specials_date_added
-    from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_SPECIALS . " s 
-    where p.products_id not in".tep_not_in_disabled_products()." 
+           p.products_date_added,
+           pd.site_id
+    from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
+    where 
+      (p.products_price_offset != 0 and not isnull(p.products_price_offset) or p.products_small_sum != '') 
+      and p.products_id not in".tep_not_in_disabled_products()." 
       and p.products_status != '0' 
-      and s.products_id = p.products_id 
       and p.products_id = pd.products_id 
       and pd.language_id = '" . $languages_id . "' 
-      and s.status = '1' 
     ORDER by pd.site_id DESC
     ) p
   where site_id = '0'
      or site_id = '".SITE_ID."'
   group by products_id
-  order by specials_date_added DESC
+  order by products_date_added DESC
   ";
   $specials_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SPECIAL_PRODUCTS, $specials_query_raw, $specials_numrows);
   // ccdd
@@ -82,7 +83,7 @@
     
     echo '<img src="images/design/button/button_order.gif" width="81" height="24" alt="注文する"></a><br>';
     
-    echo '<s>' . $currencies->display_price($specials['products_price'], tep_get_tax_rate($specials['products_tax_class_id'])) . '</s><br><span class="productSpecialPrice">' . $currencies->display_price($specials['specials_new_products_price'], tep_get_tax_rate($specials['products_tax_class_id'])) . '</span></td>' . "\n";
+    echo '<s>' . $currencies->display_price(tep_get_price($specials['products_price'], $specials['products_price_offset'], $specials['products_small_sum']), tep_get_tax_rate($specials['products_tax_class_id'])) . '</s><br><span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($specials['products_price'], $specials['products_price_offset'], $specials['products_small_sum']), tep_get_tax_rate($specials['products_tax_class_id'])) . '</span></td>' . "\n";
     if ((($row / 3) == floor($row / 3))) {
 ?>
                 </tr>

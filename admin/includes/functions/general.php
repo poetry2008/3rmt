@@ -849,6 +849,7 @@
 
 ////
 // Sets the status of a product on special
+/*
   function tep_set_specials_status($specials_id, $status) {
     if ($status == '1') {
       return tep_db_query("update " . TABLE_SPECIALS . " set status = '1', expires_date = NULL, date_status_change = NULL where specials_id = '" . $specials_id . "'");
@@ -858,7 +859,7 @@
       return -1;
     }
   }
-
+*/
 ////
 // Sets timeout for the current script.
 // Cant be used in safe mode.
@@ -1079,7 +1080,7 @@
       //}
     //}
 
-    tep_db_query("delete from " . TABLE_SPECIALS . " where products_id = '" . tep_db_input($product_id) . "'");
+    //tep_db_query("delete from " . TABLE_SPECIALS . " where products_id = '" . tep_db_input($product_id) . "'");
     tep_db_query("delete from " . TABLE_PRODUCTS . " where products_id = '" . tep_db_input($product_id) . "'");
     tep_db_query("delete from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($product_id) . "'");
     tep_db_query("delete from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . tep_db_input($product_id) . "'");
@@ -2220,12 +2221,13 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
 // categories.php
 // Return a product's special price (returns nothing if there is no offer)
 // TABLES: products
+/*
   function tep_get_products_special_price($product_id) {
     $product_query = tep_db_query("select specials_new_products_price from " . TABLE_SPECIALS . " where products_id = '" . (int)$product_id . "' and status");
     $product = tep_db_fetch_array($product_query);
 
     return $product['specials_new_products_price'];
-  }
+  }*/
   
     //オプション名取得
     function tep_get_add_options_name($id, $languages='4') {
@@ -2326,6 +2328,7 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
                p.products_image2, 
                p.products_image3, 
                p.products_price, 
+               p.products_price_offset, 
                p.products_date_added, 
                p.products_date_available, 
                p.products_weight,
@@ -2463,4 +2466,94 @@ function tep_get_ot_total_by_orders_id($orders_id) {
   $query = tep_db_query("select text from " . TABLE_ORDERS_TOTAL . " where class='ot_total' and orders_id='".$orders_id."'");
   $result = tep_db_fetch_array($query);
   return $result['text'];
+}
+
+function tep_get_wari_array_by_sum($small_sum) {
+  $wari_array = array();
+  if(tep_not_null($small_sum)) {
+    $parray = explode(",", $small_sum);
+    for($i=0; $i<sizeof($parray); $i++) {
+      $tt = explode(':', $parray[$i]);
+      $wari_array[$tt[0]] = $tt[1];
+    }
+  }
+  @krsort($wari_array);
+  return $wari_array;
+}
+
+function tep_get_products_special_price($product_id) {
+  $product_query = tep_db_query("select * from " . TABLE_PRODUCTS . " where products_id = '" . (int)$product_id . "'");
+  $product = tep_db_fetch_array($product_query);
+
+  return tep_get_special_price($product['products_price'], $product['products_price_offset'], $product['products_small_sum']);
+}
+
+function tep_get_special_price($price, $offset, $sum = '') {
+  if ($price && $sum) {
+    $lprice = $price;
+    foreach (tep_get_wari_array_by_sum($sum) as $p) {
+      if ($p + $price < $lprice) {
+        $lprice = $p + $price;
+      }
+    }
+    return $lprice;
+  } else if ($price && $offset) {
+    return $price;
+  } else {
+    return false;
+  }
+}
+
+function tep_get_price ($price, $offset, $sum = '') {
+  if ($price && $sum) {
+    $hprice = $price;
+    foreach (tep_get_wari_array_by_sum($sum) as $p) {
+      if ($p + $price > $hprice) {
+        $hprice = $p + $price;
+      }
+    }
+    return $hprice;
+  } else if ($price && $offset) {
+    return $price + $offset;
+  } else {
+    return $price;
+  }
+}
+
+function tep_get_final_price($price, $offset, $sum, $quantity) {
+  if ($price && $sum) {
+    //$hprice = $price;
+    $lprice = $price;
+    $lq = 1;
+    foreach (tep_get_wari_array_by_sum($sum) as $q => $p) {
+      if ($q < $lq && $q >= $quantity) {
+        $lq = $q;
+        $lprice = $p;
+      }
+    }
+    return $lprice;
+  } else if ($price && $offset) {
+    return $price + $offset;
+  } else {
+    return $price;
+  }
+}
+
+function tep_get_products_price ($products_id) {
+  $product_query = tep_db_query("select * from " . TABLE_PRODUCTS . " where products_id = '" . (int)$products_id . "'");
+  $product = tep_db_fetch_array($product_query);
+  return array(
+    'price' => tep_get_price($product['products_price'], $product['products_price_offset'], $product['products_small_sum']),
+    'sprice' => tep_get_special_price($product['products_price'], $product['products_price_offset'], $product['products_small_sum'])
+  );
+}
+
+function SBC2DBC($str) {
+  $arr = array(
+    '１','２','３','４','５','６','７','８','９','０','＋','－','％'
+  );
+  $arr2 = array(
+    '1','2','3','4','5','6','7','8','9','0','+','-','%'
+  );
+  return str_replace($arr, $arr2, $str);
 }
