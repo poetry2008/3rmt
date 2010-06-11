@@ -12,12 +12,12 @@ if (isset($_GET['action']) and $_GET['action']) {
           $messageStack->add_session(TEXT_TAGS_NAME_EXISTS, 'error');
           tep_redirect(tep_href_link(FILENAME_TAGS, 'cPath=&action=new'));
         }
-		
-		$tags_images = tep_get_uploaded_file('tags_images');
+    
+    $tags_images = tep_get_uploaded_file('tags_images');
 
         //$image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES) . DIRECTORY_SEPARATOR . 'tags' . DIRECTORY_SEPARATOR;
         $image_directory = tep_get_local_path(tep_get_upload_dir().'tags/');
-		if (is_uploaded_file($tags_images['tmp_name'])) {
+    if (is_uploaded_file($tags_images['tmp_name'])) {
           tep_copy_uploaded_file($tags_images, $image_directory);
         }
 
@@ -130,7 +130,7 @@ if (isset($_GET['action']) and $_GET['action']) {
                     <td class="smallText" align="right"><?php echo $tags_split->display_links($tags_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']); ?></td>
                   </tr>
 <?php
-		    if (!isset($_GET['action'])) {
+        if (!isset($_GET['action'])) {
 //  if (!$_GET['action']) {
 ?>
                   <tr>
@@ -166,8 +166,8 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       
       //if(!is_dir(DIR_FS_CATALOG_IMAGES.$cInfo->tags_images) && file_exists(DIR_FS_CATALOG_IMAGES.$cInfo->tags_images)) {
       if(!is_dir(tep_get_upload_dir().$cInfo->tags_images) && file_exists(tep_get_upload_dir().$cInfo->tags_images)) {
-      	$contents[] = array('text' => '<br>' . tep_image(DIR_WS_CATALOG_IMAGES . $cInfo->tags_images, $cInfo->tags_name));
-      	$contents[] = array('text' => '<br><input type="checkbox" name="delete_image" value="1" >'.TEXT_CONFIRM_DELETE_TAG);
+        $contents[] = array('text' => '<br>' . tep_image(DIR_WS_CATALOG_IMAGES . $cInfo->tags_images, $cInfo->tags_name));
+        $contents[] = array('text' => '<br><input type="checkbox" name="delete_image" value="1" >'.TEXT_CONFIRM_DELETE_TAG);
       }
       
       //$contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_IMAGE . '<br>' . tep_image(DIR_WS_CATALOG_IMAGES . $cInfo->tags_images)) ;
@@ -185,7 +185,10 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       if (is_object($cInfo)) {
         $heading[] = array('text' => '<b>' . $cInfo->tags_name . '</b>');
 
-        $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->tags_id . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->tags_id . '&action=delete') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>');
+        $contents[] = array('align' => 'center', 'text' => 
+          '<a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->tags_id . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>' 
+          . ($ocertify->npermission == 15 ? (' <a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->tags_id . '&action=delete') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>'):'')
+        );
         $contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_NAME . '<br>' . $cInfo->tags_name . '<br>');
         if ($cInfo->tags_images) {
           $contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_IMAGE . '<br>' . tep_image(tep_get_web_upload_dir(). $cInfo->tags_images) . '<br>');

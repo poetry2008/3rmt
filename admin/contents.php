@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
@@ -119,7 +112,7 @@
           tep_db_perform(TABLE_INFORMATION_PAGE, $sql_data_array);
           tep_redirect(tep_href_link(FILENAME_CONTENTS));
         }
-        break;	  
+        break;    
     case 'setflag':
       $status = tep_db_prepare_input($_GET['flag']);
       $cID    = tep_db_prepare_input($_GET['cID']);
@@ -130,8 +123,8 @@
           where pID = '".tep_db_input($cID)."'
       ");
       tep_redirect(tep_href_link(FILENAME_CONTENTS, 'cID=' . $cID . '&page='.$page));
-	    break;
-	  case 'deleteconfirm':
+      break;
+    case 'deleteconfirm':
         $cID = tep_db_prepare_input($_GET['cID']);
 
         tep_db_query("delete from " . TABLE_INFORMATION_PAGE . " where pID = '" . tep_db_input($cID) . "'");
@@ -190,16 +183,16 @@
             <table border="0" cellspacing="0" cellpadding="5"> 
               <tr> 
                 <td class="main"><?php echo ENTRY_SITE; ?></td> 
-            	<td class="main"><?php echo tep_site_pull_down_menu($detail['site_id'])?></td>
+              <td class="main"><?php echo tep_site_pull_down_menu($detail['site_id'])?></td>
               </tr> 
               <tr> 
                 <td class="main"><?php echo TEXT_DETAIL_STATUS; ?></td> 
-            	<td class="main"><?php echo tep_draw_radio_field('status', '1', $in_status) . '&nbsp;' . TEXT_PRODUCT_AVAILABLE . '&nbsp;' . tep_draw_radio_field('status', '0', $out_status) . '&nbsp;' . TEXT_PRODUCT_NOT_AVAILABLE; ?></td>
+              <td class="main"><?php echo tep_draw_radio_field('status', '1', $in_status) . '&nbsp;' . TEXT_PRODUCT_AVAILABLE . '&nbsp;' . tep_draw_radio_field('status', '0', $out_status) . '&nbsp;' . TEXT_PRODUCT_NOT_AVAILABLE; ?></td>
               </tr> 
               <tr> 
                 <td class="main"><?php echo TEXT_DETAIL_SORT; ?></td> 
                 <td><?php echo tep_draw_input_field('sort_id', $detail['sort_id']); ?></td> 
-              </tr> 			  
+              </tr>         
               <tr>
                 <td class="main"><?php echo TEXT_DETAIL_ROMAJI; ?></td>
                 <td>
@@ -211,7 +204,7 @@
                 ?>
                 </td>
               </tr>
-			  <tr> 
+        <tr> 
                 <td class="main"><?php echo TEXT_DETAIL_NAVBAR_TITLE; ?></td> 
                 <td><?php echo tep_draw_input_field('navbar_title', $detail['navbar_title']); ?></td> 
               </tr> 
@@ -228,7 +221,7 @@
               </tr> 
             </table> 
             <?php echo tep_draw_hidden_field('cID', $cID); ?> 
-			<?php echo tep_draw_hidden_field('page', htmlspecialchars($_GET['page'])); ?>
+      <?php echo tep_draw_hidden_field('page', htmlspecialchars($_GET['page'])); ?>
             </form> </td> 
         </tr> 
 <?php
@@ -247,16 +240,16 @@
             <table border="0" cellspacing="0" cellpadding="5"> 
               <tr> 
                 <td class="main"><?php echo ENTRY_SITE; ?></td> 
-            	<td class="main"><?php echo tep_site_pull_down_menu();?></td>
+              <td class="main"><?php echo tep_site_pull_down_menu();?></td>
               </tr> 
               <tr> 
                 <td class="main"><?php echo TEXT_DETAIL_STATUS; ?></td> 
-            	<td class="main"><?php echo tep_draw_radio_field('status', '1', true) . '&nbsp;' . TEXT_PRODUCT_AVAILABLE . '&nbsp;' . tep_draw_radio_field('status', '0', false) . '&nbsp;' . TEXT_PRODUCT_NOT_AVAILABLE; ?></td>
+              <td class="main"><?php echo tep_draw_radio_field('status', '1', true) . '&nbsp;' . TEXT_PRODUCT_AVAILABLE . '&nbsp;' . tep_draw_radio_field('status', '0', false) . '&nbsp;' . TEXT_PRODUCT_NOT_AVAILABLE; ?></td>
               </tr> 
               <tr> 
                 <td class="main"><?php echo TEXT_DETAIL_SORT; ?></td> 
                 <td><?php echo tep_draw_input_field('sort_id', ''); ?></td> 
-              </tr> 			  			
+              </tr>               
               <tr> 
                 <td class="main"><?php echo TEXT_DETAIL_ROMAJI; ?></td> 
                 <td>
@@ -267,7 +260,7 @@
                 }
                 ?>
                 </td> 
-              </tr> 			  			
+              </tr>               
               <tr> 
                 <td class="main"><?php echo TEXT_DETAIL_NAVBAR_TITLE; ?></td> 
                 <td><?php echo tep_draw_input_field('navbar_title', ''); ?></td> 
@@ -288,7 +281,7 @@
         </tr> 
 <?php
   } else {
-  	  $cID = trim(isset($_GET['cID'])?$_GET['cID']:'');
+      $cID = trim(isset($_GET['cID'])?$_GET['cID']:'');
 ?> 
         <tr> 
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
@@ -332,8 +325,8 @@
     $contents_query = tep_db_query($contents_query_raw);
     while ($contents = tep_db_fetch_array($contents_query)) {
 
-	  $count++;
-	  if ( ((isset($cID) && $contents['pID'] == $cID) || ((!isset($_GET['cID']) || !$_GET['cID']) && $count == 1)) ) {
+    $count++;
+    if ( ((isset($cID) && $contents['pID'] == $cID) || ((!isset($_GET['cID']) || !$_GET['cID']) && $count == 1)) ) {
         echo '          <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $contents['pID'] . '&action=edit') . '\'">' . "\n";
         if(!isset($_GET['cID']) || !$_GET['cID']) {
           $cID = $contents['pID'];
@@ -345,14 +338,14 @@
                     <td class="dataTableContent"><?php echo $contents['sromaji']; ?></td> 
                     <td class="dataTableContent"><?php echo htmlspecialchars($contents['heading_title']); ?></td> 
                       <td class="dataTableContent" align="center">
-					  <?php
-						  if ($contents['status'] == '1') {
-							echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_CONTENTS, 'act=setflag&flag=0&cID=' . $contents['pID']) . '&page='.$_GET['page'].'">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>';
-						  } else {
-							echo '<a href="' . tep_href_link(FILENAME_CONTENTS, 'act=setflag&flag=1&cID=' . $contents['pID']) . '&page='.$_GET['page'].'">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
-						  }
-					  ?></td>
-					  <td class="dataTableContent" align="right"><?php echo htmlspecialchars($contents['sort_id']); ?></td> 
+            <?php
+              if ($contents['status'] == '1') {
+              echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_CONTENTS, 'act=setflag&flag=0&cID=' . $contents['pID']) . '&page='.$_GET['page'].'">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>';
+              } else {
+              echo '<a href="' . tep_href_link(FILENAME_CONTENTS, 'act=setflag&flag=1&cID=' . $contents['pID']) . '&page='.$_GET['page'].'">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
+              }
+            ?></td>
+            <td class="dataTableContent" align="right"><?php echo htmlspecialchars($contents['sort_id']); ?></td> 
                       <td class="dataTableContent" align="right"><?php if ( ($contents['pID'] == $cID) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID')) . 'cID=' . $contents['pID']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?> 
 &nbsp;</td> 
                     </tr> <?php
@@ -366,23 +359,23 @@
                           </tr> 
                         </table></td> 
                     </tr> 
-					<tr>
-					  <td><a href="<?php echo tep_href_link(FILENAME_CONTENTS, 'action=insert'); ?>"><?php echo tep_image_button('button_insert.gif', IMAGE_INSERT); ?></a></td>
-					</tr>
+          <tr>
+            <td><a href="<?php echo tep_href_link(FILENAME_CONTENTS, 'action=insert'); ?>"><?php echo tep_image_button('button_insert.gif', IMAGE_INSERT); ?></a></td>
+          </tr>
                   </table></td> 
                 <?php
   if($cID && tep_not_null($cID)) {
-	$cquery = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where pID = '".$cID."'");
-	$cresult = tep_db_fetch_array($cquery);
-	$c_title = $cresult['heading_title'];
+  $cquery = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where pID = '".$cID."'");
+  $cresult = tep_db_fetch_array($cquery);
+  $c_title = $cresult['heading_title'];
   } else {
-	$c_title = '&nbsp;';
+  $c_title = '&nbsp;';
   }
     
   $heading = array();
   $contents = array();
   switch (isset($_GET['action']) ? $_GET['action'] : null) {
-	case 'confirm':
+  case 'confirm':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_CONTENTS . '</b>');
 
       $contents = array('form' => tep_draw_form('contents', FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&act=deleteconfirm'));
@@ -391,9 +384,9 @@
       break;
     default:
       if ($cID && tep_not_null($cID)) {
-		$heading[] = array('text' => '<b>' . $c_title . '</b>');
+    $heading[] = array('text' => '<b>' . $c_title . '</b>');
 
-        $contents[] = array('align' => 'center', 'text' => '<br>このページのリンクを表示させるには以下のソースコードを表示したい箇所にコピーしてください。<br>'.tep_draw_textarea_field('link','soft',30,5,'<a href="'.tep_catalog_href_link('page.php','pID='.(isset($_GET['cID'])?$_GET['cID']:'')).'">'.$c_title.'</a>').'<br><a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=confirm') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>');
+        $contents[] = array('align' => 'center', 'text' => '<br>このページのリンクを表示させるには以下のソースコードを表示したい箇所にコピーしてください。<br>'.tep_draw_textarea_field('link','soft',30,5,'<a href="'.tep_catalog_href_link('page.php','pID='.(isset($_GET['cID'])?$_GET['cID']:'')).'">'.$c_title.'</a>').'<br><a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>' . ($ocertify->npermission == 15 ? ( ' <a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=confirm') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>'):''));
       }
       break;
   }

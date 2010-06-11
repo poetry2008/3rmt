@@ -290,7 +290,9 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
 
         $contents[] = array(
             'align' => 'center', 
-            'text' => '<a href="' . tep_href_link(FILENAME_FAQ, 'g_id='.$_GET['g_id'].'&cID=' . $cInfo->c_id. '&action=edit_category') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_FAQ, 'g_id='.$_GET['g_id'].'&cID=' . $cInfo->c_id. '&action=delete_category') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>');
+            'text' => '<a href="' . tep_href_link(FILENAME_FAQ, 'g_id='.$_GET['g_id'].'&cID=' . $cInfo->c_id. '&action=edit_category') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>'
+                    . ($ocertify->npermission == 15 ? ( ' <a href="' . tep_href_link(FILENAME_FAQ, 'g_id='.$_GET['g_id'].'&cID=' . $cInfo->c_id. '&action=delete_category') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>'):'')
+        );
         $contents[] = array('text' => '<br>' . TEXT_INFO_CATEGORY_CATEGORY . '<br>' . $cInfo->category. '<br>');
         $contents[] = array('text' => '<br>' . TEXT_INFO_CATEGORY_ORDER . '<br>' . $cInfo->c_order. '<br>');
       } else if (isset($qInfo) && is_object($qInfo)) {
@@ -298,7 +300,9 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
 
         $contents[] = array(
             'align' => 'center', 
-            'text' => '<a href="' . tep_href_link(FILENAME_FAQ, 'c_id=' . $_GET['c_id'] . '&q_id=' . $qInfo->q_id. '&action=edit_question') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_FAQ, 'c_id='.$_GET['c_id'].'&q_id=' . $qInfo->q_id. '&action=delete_question') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>');
+            'text' => '<a href="' . tep_href_link(FILENAME_FAQ, 'c_id=' . $_GET['c_id'] . '&q_id=' . $qInfo->q_id. '&action=edit_question') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>' 
+                    . ($ocertify->npermission == 15 ? ( ' <a href="' . tep_href_link(FILENAME_FAQ, 'c_id='.$_GET['c_id'].'&q_id=' . $qInfo->q_id. '&action=delete_question') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>'):'')
+        );
         $contents[] = array('text' => '<br>' . TEXT_INFO_QUESTION_QUESTION . '<br>' . $qInfo->question. '<br>');
         $contents[] = array('text' => '<br>' . TEXT_INFO_QUESTION_ORDER . '<br>' . $qInfo->q_order. '<br>');
       }

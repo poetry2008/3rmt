@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
@@ -143,8 +136,8 @@
       $contents = array('form' => tep_draw_form('color', FILENAME_COLOR, 'action=insert', 'post', 'enctype="multipart/form-data"'));
       $contents[] = array('text' => TEXT_NEW_INTRO);
       $contents[] = array('text' => '<br>' . TEXT_COLORS_NAME . '<br>' . tep_draw_input_field('color_name'));
-	  $contents[] = array('text' => '<br>' . TEXT_COLORS_TAG . '<br>' . tep_draw_input_field('color_tag'));
-	  $contents[] = array('text' => '<br>ソート順<br>' . tep_draw_input_field('sort_id'));
+    $contents[] = array('text' => '<br>' . TEXT_COLORS_TAG . '<br>' . tep_draw_input_field('color_tag'));
+    $contents[] = array('text' => '<br>ソート順<br>' . tep_draw_input_field('sort_id'));
 
       $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_save.gif', IMAGE_SAVE) . ' <a href="' . tep_href_link(FILENAME_COLOR, 'page=' . $_GET['page'] . '&mID=' . $_GET['mID']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
@@ -154,8 +147,8 @@
       $contents = array('form' => tep_draw_form('color', FILENAME_COLOR, 'page=' . $_GET['page'] . '&mID=' . $mInfo->color_id . '&action=save', 'post', 'enctype="multipart/form-data"'));
       $contents[] = array('text' => TEXT_EDIT_INTRO);
       $contents[] = array('text' => '<br>' . TEXT_COLORS_NAME . '<br>' . tep_draw_input_field('color_name', $mInfo->color_name));
-	  $contents[] = array('text' => '<br>' . TEXT_COLORS_TAG . '<br>' . tep_draw_input_field('color_tag', $mInfo->color_tag));
-	  $contents[] = array('text' => '<br>ソート順<br>' . tep_draw_input_field('sort_id', $mInfo->sort_id));
+    $contents[] = array('text' => '<br>' . TEXT_COLORS_TAG . '<br>' . tep_draw_input_field('color_tag', $mInfo->color_tag));
+    $contents[] = array('text' => '<br>ソート順<br>' . tep_draw_input_field('sort_id', $mInfo->sort_id));
 
       $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_save.gif', IMAGE_SAVE) . ' <a href="' . tep_href_link(FILENAME_COLOR, 'page=' . $_GET['page'] . '&mID=' . $mInfo->color_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
@@ -174,9 +167,12 @@
         $heading[] = array('text' => '<b>' . $mInfo->color_name . '</b>');
 
         $contents[] = array('text' => '<br>' . TEXT_COLORS_NAME . $mInfo->color_name);
-		$contents[] = array('text' => '<br>' . TEXT_COLORS_TAG2 . $mInfo->color_tag);
-		$contents[] = array('text' => '<br><br>');
-		$contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_COLOR, 'page=' . $_GET['page'] . '&mID=' . $mInfo->color_id . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_COLOR, 'page=' . $_GET['page'] . '&mID=' . $mInfo->color_id . '&action=delete') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>');
+        $contents[] = array('text' => '<br>' . TEXT_COLORS_TAG2 . $mInfo->color_tag);
+        $contents[] = array('text' => '<br><br>');
+        $contents[] = array('align' => 'center', 'text' => 
+          '<a href="' . tep_href_link(FILENAME_COLOR, 'page=' . $_GET['page'] . '&mID=' . $mInfo->color_id . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>'
+        . ($ocertify->npermission == 15 ? ( ' <a href="' . tep_href_link(FILENAME_COLOR, 'page=' . $_GET['page'] . '&mID=' . $mInfo->color_id . '&action=delete') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>'):'')
+        );
       }
       break;
   }

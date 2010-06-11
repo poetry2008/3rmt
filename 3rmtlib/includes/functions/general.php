@@ -2468,7 +2468,7 @@ function tep_get_price ($price, $offset, $sum = '') {
     }
     return $hprice;
   } else if ($price && $offset) {
-    return $price + $offset;
+    return calculate_special_price($price, $offset);
   } else {
     return $price;
   }
@@ -2476,20 +2476,17 @@ function tep_get_price ($price, $offset, $sum = '') {
 
 function tep_get_final_price($price, $offset, $sum, $quantity) {
   if ($price && $sum) {
-    //$hprice = $price;
     $lprice = $price;
     $lq = null;
     foreach (tep_get_wari_array_by_sum($sum) as $q => $p) {
-      //echo $q.':'.$p;
       if ($lq === null or ($q < $lq && $q >= $quantity)) {
-        //echo $q.':'.$p;
         $lq = $q;
         $lprice = $p;
       }
     }
     return $price + $lprice;
   } else if ($price && $offset) {
-    return $price + $offset;
+    return calculate_special_price($price, $offset);
   } else {
     return $price;
   }
@@ -2516,4 +2513,19 @@ function tep_get_wari_array_by_sum($small_sum) {
   }
   @krsort($wari_array);
   return $wari_array;
+}
+
+function calculate_special_price($price, $offset) {
+  $price = (float) $price;
+  $offset = trim($offset);
+  
+  $special = $price;
+  
+  if (substr($offset, -1) == '%') {
+    $special = $price +(($offset / 100) * $price);
+  } else {
+    $offset = (float) $offset;
+    $special = $price + $offset;
+  }
+  return $special;
 }

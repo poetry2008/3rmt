@@ -67,7 +67,7 @@
   }
   
   # load the selected shipping module(convenience_store)
-  if ($_SESSION['payment'] == 'convenience_store') {
+  if ($payment == 'convenience_store') {
     $convenience_sid = str_replace('-', "", $insert_id);
   
     //$pay_comments = '取引コード' . $convenience_sid ."\n";
@@ -486,7 +486,7 @@
   //$email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
   
   /*
-  if ($_SESSION['payment'] == 'convenience_store') {
+  if ($payment == 'convenience_store') {
     $email_order .= '■コンビニ決済情報' . "\n";
     $email_order .= '郵便番号:' . $_POST['convenience_store_zip_code'] ."\n";
     $email_order .= '住所    :' . $_POST['convenience_store_address1'] . " " . $_POST['convenience_store_address2'] ."\n";
@@ -550,7 +550,7 @@
   }
 
   /*
-  if ($_SESSION['payment'] == 'convenience_store') {
+  if ($payment == 'convenience_store') {
     $email_printing_order .= '■コンビニ決済情報' . "\n";
     $email_printing_order .= '郵便番号:' . $_POST['convenience_store_zip_code'] ."\n";
     $email_printing_order .= '住所    :' . $_POST['convenience_store_address1'] . " " . $_POST['convenience_store_address2'] ."\n";

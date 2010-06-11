@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
@@ -56,44 +49,44 @@
           //unlink();
         }
       }
-	  
-	  //mail本文 add
-	  if ($_GET['action'] == 'insert') {
-	    $sql_os_array = array('orders_status_id' => $orders_status_id,
+    
+    //mail本文 add
+    if ($_GET['action'] == 'insert') {
+      $sql_os_array = array('orders_status_id' => $orders_status_id,
                             'language_id' => $languages_id,
                             'orders_status_title' => tep_db_prepare_input($os_title),
                             'orders_status_mail' => tep_db_prepare_input($os_mail),
                             'site_id' => $site_id
                             );
         tep_db_perform(TABLE_ORDERS_MAIL, $sql_os_array);
-		
-	  } elseif ($_GET['action'] == 'save') {    
-		
-		$om_check_query = tep_db_query("
+    
+    } elseif ($_GET['action'] == 'save') {    
+    
+    $om_check_query = tep_db_query("
         select count(*) 
         from ".TABLE_ORDERS_MAIL." 
         where orders_status_id = " . tep_db_input($orders_status_id) . " 
           and site_id = '".$site_id."'
           and language_id = " . $languages_id);
-		$om_check_result = tep_db_fetch_array($om_check_query);
-		$om_count = $om_check_result['count(*)'];
-		
-		if($om_count == 0){
-		  $sql_os_array = array('orders_status_id' => $orders_status_id,
+    $om_check_result = tep_db_fetch_array($om_check_query);
+    $om_count = $om_check_result['count(*)'];
+    
+    if($om_count == 0){
+      $sql_os_array = array('orders_status_id' => $orders_status_id,
                             'language_id' => $languages_id,
                             'orders_status_title' => tep_db_prepare_input($os_title),
                             'orders_status_mail' => tep_db_prepare_input($os_mail), 
                             'site_id' => $site_id
                             );
           tep_db_perform(TABLE_ORDERS_MAIL, $sql_os_array);
-		}else{
-		  $sql_os_array = array('orders_status_mail' => tep_db_prepare_input($os_mail),
-		                        'orders_status_title' => tep_db_prepare_input($os_title));
-		  tep_db_perform(TABLE_ORDERS_MAIL, $sql_os_array, 'update', "orders_status_id = '" . tep_db_input($orders_status_id) . "' and language_id = '" . $languages_id . "' and site_id = '".$site_id."'");
-	    }
-		
-	  }
-	  //mail本文 add end
+    }else{
+      $sql_os_array = array('orders_status_mail' => tep_db_prepare_input($os_mail),
+                            'orders_status_title' => tep_db_prepare_input($os_title));
+      tep_db_perform(TABLE_ORDERS_MAIL, $sql_os_array, 'update', "orders_status_id = '" . tep_db_input($orders_status_id) . "' and language_id = '" . $languages_id . "' and site_id = '".$site_id."'");
+      }
+    
+    }
+    //mail本文 add end
 
       if ($_POST['default'] == 'on') {
         tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . tep_db_input($orders_status_id) . "' where configuration_key = 'DEFAULT_ORDERS_STATUS_ID'");
@@ -243,14 +236,14 @@
       for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
         $orders_status_inputs_string .= '<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('orders_status_name[' . $languages[$i]['id'] . ']');
       }
-	  
-	  //mailタイトル add
-	  $orders_status_inputs_string .= '<br><br>' . TEXT_INFO_ORDERS_STATUS_TITLE . '<br>' . tep_draw_input_field('os_title');
-	  //mailタイトル add end
-	  
-	  //mail本文 add
-	  $orders_status_inputs_string .= '<br><br>' . TEXT_INFO_ORDERS_STATUS_MAIL . '<br>' . tep_draw_textarea_field('os_mail', 'soft', '25', '5').'<br>'.$explanation ;
-	  //mail本文 add end
+    
+    //mailタイトル add
+    $orders_status_inputs_string .= '<br><br>' . TEXT_INFO_ORDERS_STATUS_TITLE . '<br>' . tep_draw_input_field('os_title');
+    //mailタイトル add end
+    
+    //mail本文 add
+    $orders_status_inputs_string .= '<br><br>' . TEXT_INFO_ORDERS_STATUS_MAIL . '<br>' . tep_draw_textarea_field('os_mail', 'soft', '25', '5').'<br>'.$explanation ;
+    //mail本文 add end
 
       $contents[] = array('text' => '<br>' . TEXT_INFO_ORDERS_STATUS_NAME . $orders_status_inputs_string);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('default') . ' ' . TEXT_SET_DEFAULT);
@@ -271,27 +264,27 @@
       for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
         $orders_status_inputs_string .= '<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('orders_status_name[' . $languages[$i]['id'] . ']', tep_get_orders_status_name($oInfo->orders_status_id, $languages[$i]['id']));
       }
-	  
+    
     $site_id = isset($_GET['site_id']) ? (int) $_GET['site_id']: 0;
-	  $os_query = tep_db_query("
+    $os_query = tep_db_query("
         select * 
         from ".TABLE_ORDERS_MAIL." 
         where orders_status_id = '".$oID."' 
           and language_id = '".$languages_id."'
           and site_id = '".$site_id."'
     ");
-	  $os_result = tep_db_fetch_array($os_query);
-	  $os_mail = $os_result['orders_status_mail'];
-	  $os_title = $os_result['orders_status_title'];
+    $os_result = tep_db_fetch_array($os_query);
+    $os_mail = $os_result['orders_status_mail'];
+    $os_title = $os_result['orders_status_title'];
     $contents[] = array('text' => '<input type="hidden" name="site_id" value="'.($os_result?$os_result['site_id']:$site_id).'">');
-	  
-	  //mailタイトル add
-	  $orders_status_inputs_string .= '<br><br>' . TEXT_INFO_ORDERS_STATUS_TITLE . '<br>' . tep_draw_input_field('os_title', $os_title);
-	  //mailタイトル add end
+    
+    //mailタイトル add
+    $orders_status_inputs_string .= '<br><br>' . TEXT_INFO_ORDERS_STATUS_TITLE . '<br>' . tep_draw_input_field('os_title', $os_title);
+    //mailタイトル add end
 
-	  //mail本文 add
-	  $orders_status_inputs_string .= '<br><br>' . TEXT_INFO_ORDERS_STATUS_MAIL . '<br>' . tep_draw_textarea_field('os_mail', 'soft', '25', '5', $os_mail) . '<br>' . $explanation;
-	  //mail本文 add end
+    //mail本文 add
+    $orders_status_inputs_string .= '<br><br>' . TEXT_INFO_ORDERS_STATUS_MAIL . '<br>' . tep_draw_textarea_field('os_mail', 'soft', '25', '5', $os_mail) . '<br>' . $explanation;
+    //mail本文 add end
 
       $contents[] = array('text' => '<br>' . TEXT_INFO_ORDERS_STATUS_NAME . $orders_status_inputs_string);
       if (DEFAULT_ORDERS_STATUS_ID != $oInfo->orders_status_id) $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('default') . ' ' . TEXT_SET_DEFAULT);
@@ -315,10 +308,13 @@
       if ($remove_status) $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_delete.gif', IMAGE_DELETE) . ' <a href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page'] . '&oID=' . $oInfo->orders_status_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
     default:
-	if (isset($oInfo) and is_object($oInfo)) {
+  if (isset($oInfo) and is_object($oInfo)) {
         $heading[] = array('text' => '<b>' . $oInfo->orders_status_name . '</b>');
 
-        $contents[] = array('align' => 'ledt', 'text' => '<a href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page'] . '&oID=' . $oInfo->orders_status_id . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page'] . '&oID=' . $oInfo->orders_status_id . '&action=delete') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>');
+        $contents[] = array('align' => 'ledt', 'text' => 
+          '<a href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page'] . '&oID=' . $oInfo->orders_status_id . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>' 
+        . ($ocertify->npermission == 15 ? (' <a href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page'] . '&oID=' . $oInfo->orders_status_id . '&action=delete') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>'):'')
+        );
 
         foreach(tep_get_sites() as $s){
           $contents[] = array('text' => '<b>' . $s['romaji'] . '</b>');
