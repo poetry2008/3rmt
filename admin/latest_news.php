@@ -249,8 +249,8 @@
 <?php
     $rows = 0;
 
-    $latest_news_count = 0;
-    $latest_news_query = tep_db_query('
+    //$latest_news_count = 0;
+    $latest_news_query_raw = '
         select n.news_id, 
                n.headline, 
                n.content, 
@@ -263,10 +263,12 @@
         where n.site_id = s.id
         ' . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and s.id = '" . intval($_GET['site_id']) . "' " : '') . '
         order by date_added desc
-    ');
+    ';
+    $latest_news_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $latest_news_query_raw, $latest_news_query_numrows);
+    $latest_news_query = tep_db_query($latest_news_query_raw);
     
     while ($latest_news = tep_db_fetch_array($latest_news_query)) {
-      $latest_news_count++;
+      //$latest_news_count++;
       $rows++;
       
       if ( ((!isset($_GET['latest_news_id']) || !$_GET['latest_news_id']) || ($_GET['latest_news_id'] == $latest_news['news_id'])) && (!isset($selected_item) || !$selected_item) && (!isset($_GET['action']) || substr($_GET['action'], 0, 4) != 'new_') ) {
@@ -311,8 +313,11 @@ if (isset($_GET['latest_news_id']) and $latest_news['news_id'] == $_GET['latest_
               <tr>
                 <td colspan="3"><table border="0" width="100%" cellspacing="0" cellpadding="2">
                   <tr>
-                    <td class="smallText"><?php echo '<br>' . TEXT_NEWS_ITEMS . '&nbsp;' . $latest_news_count; ?></td>
-                    <td align="right" class="smallText"><?php echo '&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'action=new_latest_news'.(isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'')) . '">' . tep_image_button('button_new_news_item.gif', IMAGE_NEW_NEWS_ITEM) . '</a>'; ?>&nbsp;</td>
+                    <td class="smallText" valign="top"><?php echo $latest_news_split->display_count($latest_news_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
+                    <td class="smallText" align="right"><?php echo $latest_news_split->display_links($latest_news_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'latest_news_id'))); ?></td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" align="right" class="smallText"><?php echo '&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'action=new_latest_news'.(isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'')) . '">' . tep_image_button('button_new_news_item.gif', IMAGE_NEW_NEWS_ITEM) . '</a>'; ?>&nbsp;</td>
                   </tr>
                 </table></td>
               </tr>
