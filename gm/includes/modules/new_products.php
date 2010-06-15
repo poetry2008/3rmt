@@ -1,12 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
   Released under the GNU General Public License
 */
   $categories_path = explode('_', $_GET['cPath']);
@@ -37,7 +31,7 @@
                         p.products_price, 
                         p.products_price_offset, 
                         p.products_small_sum
-      from " . TABLE_PRODUCTS . " p 
+      from " . TABLE_PRODUCTS . " p ," . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " . TABLE_CATEGORIES . " c
       where p.products_id = p2c.products_id 
         and p2c.categories_id = c.categories_id 
         and c.parent_id = '" . $new_products_category_id . "' 

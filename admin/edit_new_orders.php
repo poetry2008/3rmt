@@ -1414,6 +1414,7 @@ if (tep_db_num_rows($orders_history_query)) {
         FROM " . TABLE_PRODUCTS . " p LEFT JOIN " . TABLE_PRODUCTS_DESCRIPTION . " pd ON pd.products_id=p.products_id LEFT JOIN " . TABLE_PRODUCTS_TO_CATEGORIES . " ptc ON ptc.products_id=p.products_id LEFT JOIN " . TABLE_CATEGORIES_DESCRIPTION . " cd ON cd.categories_id=ptc.categories_id 
         where pd.language_id = '" . (int)$languages_id . "' 
           and cd.site_id = '0'
+          and pd.site_id = '0'
         ORDER BY categories_name");
     while($row = tep_db_fetch_array($result))
     {

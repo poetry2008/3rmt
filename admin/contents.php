@@ -352,7 +352,7 @@
     }
 ?> 
                     <tr> 
-                      <td colspan="4"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+                      <td colspan="5"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                           <tr> 
                             <td class="smallText" valign="top"><?php echo $contents_split->display_count($contents_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CONTENS); ?></td> 
                             <td class="smallText" align="right"><?php echo $contents_split->display_links($contents_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'cID'))); ?></td> 

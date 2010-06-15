@@ -589,7 +589,7 @@
     } // while
 ?>
               <tr>
-                <td colspan=6><table border="0" width="100%" cellspacing="0" cellpadding="2">
+                <td colspan="8"><table border="0" width="100%" cellspacing="0" cellpadding="2">
                   <tr>
                     <td class="smallText" valign="top"><?php echo $documents_split->display_count($documents_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_DOCUMENTS); ?></td>
                     <td class="smallText" align="right"><?php echo $documents_split->display_links($documents_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params (array ('page','did') ) ); ?></td>

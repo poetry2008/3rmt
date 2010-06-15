@@ -42,7 +42,43 @@ cptable('wm_address_format', 'address_format');
 cptable('iimy_countries', 'countries');
 //exit;
 //banners*
-cp3table('banners');
+//cp3table('banners');
+
+foreach($sites as $s) {
+  $bquery = rq("select * from ".prefix($s)."banners");
+  while($banner =  mysql_fetch_array($bquery)) {
+    r3q("
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            ".mysql_real_escape_string($banners['banners_title']).",
+            ".mysql_real_escape_string($banners['banners_url']).",
+            ".mysql_real_escape_string($banners['banners_image']).",
+            ".mysql_real_escape_string($banners['banners_group']).",
+            ".mysql_real_escape_string($banners['banners_html_text']).",
+            ".mysql_real_escape_string($banners['expires_impressions']).",
+            ".mysql_real_escape_string($banners['expires_date']).",
+            ".mysql_real_escape_string($banners['date_scheduled']).",
+            ".mysql_real_escape_string($banners['date_added']).",
+            ".mysql_real_escape_string($banners['date_status_change']).",
+            ".mysql_real_escape_string($banners['status']).",
+          )
+        ");
+  }
+}
+
 //calendar*
 cp3table('calendar');
 /*

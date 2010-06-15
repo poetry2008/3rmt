@@ -447,7 +447,7 @@ function mail_text(st,tt,ot){
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
 <?php
-  if ($ocertify->npermission == 15) {
+  if ($ocertify->npermission >= 10) {
     echo '<td width="' . BOX_WIDTH . '" valign="top">';
     echo '<table border="0" width="' . BOX_WIDTH . '" cellspacing="1" cellpadding="1" class="columnLeft">';
     echo '<!-- left_navigation //-->';
@@ -1042,7 +1042,7 @@ function mail_text(st,tt,ot){
   if (isset($_GET['cID']) && $_GET['cID']) {
       $cID = tep_db_prepare_input($_GET['cID']);
       $orders_query_raw = "
-        select o.orders_id, 
+        select distinct o.orders_id, 
                o.torihiki_date, 
                o.customers_name, 
                o.customers_id, 
@@ -1087,7 +1087,7 @@ function mail_text(st,tt,ot){
     } elseif (isset($_GET['status']) && $_GET['status']) {
       $status = tep_db_prepare_input($_GET['status']);
       $orders_query_raw = "
-        select o.orders_id, 
+        select distinct o.orders_id, 
                o.torihiki_date, 
                o.customers_id, 
                o.customers_name, 
@@ -1202,7 +1202,7 @@ function mail_text(st,tt,ot){
     $orders_query_raw .= "order by o.torihiki_date DESC";
   } else {
       $orders_query_raw = "
-        select s.orders_status_id, 
+        select distinct s.orders_status_id, 
                o.orders_id, 
                o.torihiki_date, 
                o.customers_id, 
