@@ -1265,6 +1265,8 @@ function mail_text(st,tt,ot){
 
   //今日の取引なら赤色
   $trade_array = getdate(strtotime(tep_datetime_short($orders['torihiki_date'])));
+  //print_r($trade_array);
+  //print_r($today_array);
   $today_array = getdate();
   if ($trade_array["year"] == $today_array["year"] && $trade_array["mon"] == $today_array["mon"] && $trade_array["mday"] == $today_array["mday"]) {
     $today_color = 'red';
@@ -1324,7 +1326,7 @@ function mail_text(st,tt,ot){
     </td>
           
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><?php echo $next_mark; ?>
-    <font color="<?php !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>"><?php echo tep_datetime_short($orders['torihiki_date']); ?></font>
+    <font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>"><?php echo tep_datetime_short($orders['torihiki_date']); ?></font>
     </td>
 
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="center" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><span style="color:#999999;"><?php echo tep_datetime_short($orders['date_purchased']); ?></span></td>

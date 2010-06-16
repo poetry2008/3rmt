@@ -420,7 +420,7 @@
   $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
   //$email_order .= '▼お支払金額　　　：' . strip_tags($ot['text']) . "\n\n";
   $email_order .= '▼注文番号　　　　：' . $insert_id . "\n";
-  $email_order .= '▼注文日　　　　　：' . strftime(DATE_FORMAT_LONG) . "\n";
+  $email_order .= '▼注文日　　　　　：' . tep_date_long(DATE_FORMAT_LONG) . "\n";
   $email_order .= '▼お名前　　　　　：' . tep_get_fullname($order->customer['firstname'],$order->customer['lastname']) . "\n";
   $email_order .= '▼メールアドレス　：' . $order->customer['email_address'] . "\n";
   $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
@@ -535,7 +535,7 @@
   $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
   $email_printing_order .= '注文者名　　　　：' . tep_get_fullname($order->customer['firstname'],$order->customer['lastname']) . '様' . "\n";
   $email_printing_order .= '注文番号　　　　：' . $insert_id . "\n";
-  $email_printing_order .= '注文日　　　　　：' . strftime(DATE_FORMAT_LONG) . "\n";
+  $email_printing_order .= '注文日　　　　　：' . tep_date_long(DATE_FORMAT_LONG) . "\n";
   $email_printing_order .= 'メールアドレス　：' . $order->customer['email_address'] . "\n";
   $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
   if ($point > 0) {

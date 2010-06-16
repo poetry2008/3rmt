@@ -326,7 +326,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
 
   $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
   $email_order .= '▼注文番号　　　　：' . $insert_id . "\n";
-  $email_order .= '▼注文日　　　　　：' . strftime(DATE_FORMAT_LONG) . "\n";
+  $email_order .= '▼注文日　　　　　：' . tep_date_long(DATE_FORMAT_LONG) . "\n";
   $email_order .= '▼お名前　　　　　：' . $o->customer['name'] . "\n";
   $email_order .= '▼メールアドレス　：' . $o->customer['email_address'] . "\n";
   $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
@@ -399,7 +399,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
           </tr>
           <tr>
             <td>取引日時（変更前）</td>
-            <td id='old_time'><?php echo strftime(DATE_FORMAT_LONG, strtotime($order['torihiki_date']))?>
+            <td id='old_time'><?php echo tep_date_long(DATE_FORMAT_LONG, strtotime($order['torihiki_date']))?>
               <?php echo date('H:i', strtotime($order['torihiki_date']));?></td>
           </tr>
           <tr>
@@ -408,7 +408,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
               <select name='date' id='new_date' onChange="selectDate('<?php echo date('H');?>', '<?php echo date('i');?>')">
                 <option value=''>--</option>
                 <?php for($i=0;$i<7;$i++){?>
-                <option value='<?php echo date('Y-m-d', time()+($i*86400));?>'><?php echo strftime(DATE_FORMAT_LONG, time()+($i*86400));?></option>
+                <option value='<?php echo date('Y-m-d', time()+($i*86400));?>'><?php echo tep_date_long(DATE_FORMAT_LONG, time()+($i*86400));?></option>
                 <?php }?>
               </select>
               <select name='hour' id='new_hour' onChange="selectHour('<?php echo date('H');?>', '<?php echo date('i');?>')">
@@ -543,8 +543,8 @@ function orderConfirmPage(){
   now          = new Date();
   nowMinutes   = now.getHours() * 60 + now.getMinutes();
 
-  oldTime = '<?php echo strftime(DATE_FORMAT_LONG, strtotime($order['torihiki_date']));?> <?php echo date('H:i', strtotime($order['torihiki_date']));?>';
-  today   = '<?php echo strftime(DATE_FORMAT_LONG, time());?>';
+  oldTime = '<?php echo tep_date_long(DATE_FORMAT_LONG, strtotime($order['torihiki_date']));?> <?php echo date('H:i', strtotime($order['torihiki_date']));?>';
+  today   = '<?php echo tep_date_long(DATE_FORMAT_LONG, time());?>';
   
 <?php foreach($o->products as $p){?>
   productName[<?php echo $p['id'];?>] = '<?php echo $p['name'];?>';

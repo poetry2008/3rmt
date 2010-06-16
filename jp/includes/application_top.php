@@ -7,6 +7,7 @@
   $GLOBALS['HTTP_SERVER_VARS'] = $_SERVER;
 
 //Japan location
+  //setlocale (LC_ALL, 'ja_JP.eucJP');
   setlocale (LC_ALL, 'ja_JP.UTF-8');
 
 // start the timer for the page parse time log

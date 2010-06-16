@@ -114,7 +114,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
    <select name='date' id='new_date' onChange="selectDate('<?php echo date('H');?>', '<?php echo date('i');?>')">
     <option value=''>--</option>
 <?php for($i=0;$i<7;$i++){?>
-    <option value='<?php echo date('Y-m-d', time()+($i*86400));?>'><?php echo strftime(DATE_FORMAT_LONG, time()+($i*86400));?></option>
+    <option value='<?php echo date('Y-m-d', time()+($i*86400));?>'><?php echo tep_date_long(DATE_FORMAT_LONG, time()+($i*86400));?></option>
 <?php }?>
    </select>
    <select name='hour' id='new_hour' onChange="selectHour('<?php echo date('H');?>', '<?php echo date('i');?>')">

@@ -25,7 +25,7 @@ $categories_tab_query1 = tep_db_query("
     where site_id = '0'
        or site_id = '" . SITE_ID . "' 
     group by categories_id 
-    order by sort_order
+    order by sort_order, categories_name
     ");
 ?>
 <!-- categories_banner_text //-->

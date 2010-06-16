@@ -174,7 +174,7 @@
     # ユーザー情報----------------------------
     $mail_body .= '━━━━━━━━━━━━━━━━━━━━━'."\n";
     $mail_body .= '▼注文番号　　　　：2007****-********'."\n";
-    $mail_body .= '▼注文日　　　　　：' . strftime(DATE_FORMAT_LONG)."\n";
+    $mail_body .= '▼注文日　　　　　：' . tep_date_long(DATE_FORMAT_LONG)."\n";
     $mail_body .= '▼お名前　　　　　：' . $order->customer["lastname"] . ' ' . $order->customer["firstname"]."\n";
     $mail_body .= '▼メールアドレス　：' . $order->customer["email_address"]."\n";
     $mail_body .= '━━━━━━━━━━━━━━━━━━━━━'."\n";
