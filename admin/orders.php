@@ -131,7 +131,8 @@
           '${TRADING}',
           '${ORDER_S}',
           '${SITE_NAME}',
-          '${SITE_URL}',
+          '${SITE_URL}'
+          
         ),array(
           $check_status['customers_name'],
           $check_status['customers_email_address'],
@@ -305,6 +306,32 @@
       $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
       $os_result = tep_db_fetch_array($os_query);
 
+      $title = str_replace(array(
+        '${NAME}',
+        '${MAIL}',
+        '${ORDER_D}',
+        '${ORDER_N}',
+        '${PAY}',
+        '${ORDER_M}',
+        '${TRADING}',
+        '${ORDER_S}',
+          '${SITE_NAME}',
+          '${SITE_URL}',
+          '${SUPPORT_EMAIL}'
+      ),array(
+        $check_status['customers_name'],
+        $check_status['customers_email_address'],
+        tep_date_long($check_status['date_purchased']),
+        $oID,
+        $check_status['payment_method'],
+        $otm,
+        tep_torihiki($check_status['torihiki_date']),
+        $os_result['orders_status_name'],
+          get_configuration_by_site_id('STORE_NAME', $site_id),
+          get_url_by_site_id($site_id),
+          get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id)
+      ),$title);
+
       $comments = str_replace(array(
         '${NAME}',
         '${MAIL}',
@@ -330,8 +357,8 @@
           get_url_by_site_id($site_id),
           get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id)
       ),$comments);
-      tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-      tep_mail(STORE_OWNER, SENTMAIL_ADDRESS, '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address']);
+      tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id));
+      tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address']);
       $customer_notified = '1';
     }
     
@@ -1260,11 +1287,10 @@ function mail_text(st,tt,ot){
                o.orders_status_name,
                o.site_id
         from " . TABLE_ORDERS . " o " . $from_payment . ", " . TABLE_ORDERS_PRODUCTS . " op 
-        where
+        where o.orders_id = op.orders_id
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
           and o.language_id = '" . $languages_id . "' 
-          " . $where_payment . $where_type . "
-          and o.orders_id = op.orders_id";
+          " . $where_payment . $where_type ;
       /*
       $orders_query_raw = "
         select distinct(o.orders_id), 
@@ -1334,9 +1360,9 @@ function mail_text(st,tt,ot){
                o.site_id
          from " . TABLE_ORDERS . " o " . $from_payment . " 
          where 
+          o.finished = '0'
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
            and o.language_id = '" . $languages_id . "' 
-           and o.finished = '0'
            " . $where_payment . $where_type . "
          order by o.torihiki_date DESC
       ";
