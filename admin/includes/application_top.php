@@ -92,7 +92,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('FILENAME_TAX_RATES', 'tax_rates.php');
   define('FILENAME_WHOS_ONLINE', 'whos_online.php');
   define('FILENAME_ZONES', 'zones.php');
-  define('FILENAME_FAQ', 'zones.php');
+  define('FILENAME_FAQ', 'faq.php');
   
   //add files
   define('FILENAME_CONTENTS', 'contents.php');//Add filenames

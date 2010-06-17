@@ -543,20 +543,15 @@ while ($totals = tep_db_fetch_array($totals_query)) {
   }
 }
 
-  function str_string($string='') {
-    if(ereg("-", $string)) {
-    $string_array = explode("-", $string);
-    return $string_array[0] . '年' . $string_array[1] . '月' . $string_array[2] . '日';
-  }
-  }
+
 
       $email = '';
       $email .= $order->customer['name'] . '様' . "\n\n";
-      $email .= 'この度は、' . STORE_NAME . 'をご利用いただき、誠にありが' . "\n";
+      $email .= 'この度は、' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . 'をご利用いただき、誠にありが' . "\n";
       $email .= 'とうございます。' . "\n";
       $email .= '下記の内容にてご注文を承りましたので、ご確認ください。' . "\n";
       $email .= 'ご不明な点がございましたら、ご注文番号をご確認の上、' . "\n";
-      $email .= '「' . STORE_NAME . '」までお問い合わせください。' . "\n\n";
+      $email .= '「' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '」までお問い合わせください。' . "\n\n";
       $email .= $notify_comments_mail;
       $email .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
       $email .= '▼注文番号　　　　：' . $oID . "\n";
@@ -567,12 +562,12 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       $email .= $total_details_mail;
       $email .= '▼お支払方法　　　：' . $order->info['payment_method'] . "\n";
       if ($order->info['payment_method'] == 'ゆうちょ銀行（郵便局）') {
-         $email .= C_POSTAL; 
+         $email .= get_configuration_by_site_id('C_POSTAL',$order->info['site_id']); 
       }
       if ($order->info['payment_method'] === '銀行振込') {
-            $email .= C_BANK;
+            $email .= get_configuration_by_site_id('C_BANK',$order->info['site_id']);
       } elseif ($order->info['payment_method'] === 'クレジットカード決済') {
-            $email .= C_CC;
+            $email .= get_configuration_by_site_id('C_CC',$order->info['site_id']);
       } elseif ($order->info['payment_method'] === '銀行振込(買い取り)') {
         $orders_bank_account_query = tep_db_query("select comments from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($oID) . "' and orders_status_id = '1' and customer_notified = '1' order by date_added");
         if (tep_db_num_rows($orders_bank_account_query)) {
@@ -582,7 +577,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
             }
           }
         } else {
-          $bbbank = 'エラーが発生しました。' . "\n" . STORE_NAME . 'へお問い合わせくだい。' . "\n";
+          $bbbank = 'エラーが発生しました。' . "\n" . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . 'へお問い合わせくだい。' . "\n";
         }
         $email .= '▼お支払先金融機関' . "\n";
       $email .= $bbbank . "\n";
@@ -592,7 +587,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       $email .= '・本メール送信後7日以内に取引が完了できない場合、' . "\n";
       $email .= '　当社は、お客様がご注文を取り消されたものとして取り扱います。';
 } elseif ($order->info['payment_method'] === 'コンビニ決済') {
-      $email .= C_CONVENIENCE_STORE;
+      $email .= get_configuration_by_site_id('C_CONVENIENCE_STORE',$order->info['site_id']);
 } else {
       $email .= '別途取り決めた方法に準じて行います。';
 }
@@ -629,18 +624,18 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       $email .= "\n\n\n";
       $email .= '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n";
       $email .= '株式会社 iimy' . "\n";
-      $email .= SUPPORT_EMAIL_ADDRESS . "\n";
-      $email .= HTTP_CATALOG_SERVER . "\n";
+      $email .= get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS',$order->info['site_id']) . "\n";
+      $email .= get_url_by_site_id($order->info['site_id']) . "\n";
       $email .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-      tep_mail($check_status['customers_name'], $check_status['customers_email_address'], 'ご注文ありがとうございます【' . STORE_NAME . '】', $email, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-      tep_mail(STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, 'ご注文ありがとうございます【' . STORE_NAME . '】', $email, $check_status['customers_name'], $check_status['customers_email_address']);
+      tep_mail($check_status['customers_name'], $check_status['customers_email_address'], 'ご注文ありがとうございます【' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']));
+      tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']), 'ご注文ありがとうございます【' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address']);
       $customer_notified = '1';
       
 // 支払方法がクレジットなら決済URLを送る
 if ($order->info['payment_method'] === 'クレジットカード決済') {
       $email_credit = '';
       $email_credit .= $order->customer['name'] . '様' . "\n\n";
-      $email_credit .= 'この度は、' . STORE_NAME . 'をご利用いただき、誠にありがとうございます。' . "\n\n";
+      $email_credit .= 'この度は、' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . 'をご利用いただき、誠にありがとうございます。' . "\n\n";
       $email_credit .= '注文番号' . $oID . 'の決済URLをお知らせいたします。' . "\n";
       $email_credit .= '下記URLをクリックし、クレジットカード決済を完了してください。' . "\n";
       $email_credit .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
@@ -654,11 +649,11 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
       $email_credit .= '「' . STORE_NAME . '」までお問い合わせください。' . "\n\n";
       $email_credit .= '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n";
       $email_credit .= '株式会社 iimy' . "\n";
-      $email_credit .= SUPPORT_EMAIL_ADDRESS . "\n";
-      $email_credit .= HTTP_CATALOG_SERVER . "\n";
+      $email_credit .= get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS',$order->info['site_id']) . "\n";
+      $email_credit .= get_url_by_site_id($order->info['site_id']) . "\n";
       $email_credit .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-      tep_mail($check_status['customers_name'], $check_status['customers_email_address'], 'クレジットカード決済について【' . STORE_NAME . '】', $email_credit, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-      tep_mail(STORE_OWNER, SENTMAIL_ADDRESS, '送信済：クレジットカード決済について【' . STORE_NAME . '】', $email_credit, $check_status['customers_name'], $check_status['customers_email_address']);
+      tep_mail($check_status['customers_name'], $check_status['customers_email_address'], 'クレジットカード決済について【' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email_credit, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']));
+      tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), '送信済：クレジットカード決済について【' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email_credit, $check_status['customers_name'], $check_status['customers_email_address']);
 }
 
     }
@@ -1656,6 +1651,13 @@ if (tep_db_num_rows($orders_history_query)) {
   // Description : Function to change HTML equivalents back to quotes
   function tep_html_unquote($string) {
     return str_replace("&#39;", "'", $string);
+  }
+
+  function str_string($string='') {
+    if(ereg("-", $string)) {
+    $string_array = explode("-", $string);
+    return $string_array[0] . '年' . $string_array[1] . '月' . $string_array[2] . '日';
+  }
   }
 
 require(DIR_WS_INCLUDES . 'application_bottom.php');

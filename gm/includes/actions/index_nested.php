@@ -5,7 +5,7 @@
   $category = tep_get_category_by_id($current_category_id, SITE_ID, $languages_id);
 ?> 
 <div id="content">
-      <?php  
+<?php  
   if (isset($cPath_array)) {
        echo '<div class="headerNavigation">'.$breadcrumb->trail(' &raquo; ').'</div>'; 
       if ($category['categories_status'] == 2) {
@@ -135,10 +135,13 @@
       <?php
       #echo '</div>'; 
       } 
+?>
+</div>
+<?php
       }
       ?>
+
 </div>
-<!--</div>-->
 <div id="r_menu">
       <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
 </div>

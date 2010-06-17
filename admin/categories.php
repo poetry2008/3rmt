@@ -611,7 +611,7 @@
         break;
       case 'copy_to_confirm':
         if ( (tep_not_null($_POST['products_id'])) && (tep_not_null($_POST['categories_id'])) ) {
-          $products_id = tep_db_prepare_input($_POST['products_id']);
+          $products_id   = tep_db_prepare_input($_POST['products_id']);
           $categories_id = tep_db_prepare_input($_POST['categories_id']);
 
           if ($_POST['copy_as'] == 'link') {
@@ -625,15 +625,86 @@
               $messageStack->add_session(ERROR_CANNOT_LINK_TO_SAME_CATEGORY, 'error');
             }
           } elseif ($_POST['copy_as'] == 'duplicate') {
-            $product_query = tep_db_query("select products_quantity, products_model, products_image,products_image2,products_image3, products_price, products_date_available, products_weight, products_tax_class_id, manufacturers_id from " . TABLE_PRODUCTS . " where products_id = '" . tep_db_input($products_id) . "'");
+            $product_query = tep_db_query("
+              select *
+              from " . TABLE_PRODUCTS . " 
+              where products_id = '" . tep_db_input($products_id) . "'
+            ");
             $product = tep_db_fetch_array($product_query);
 
-            tep_db_query("insert into " . TABLE_PRODUCTS . " (products_quantity, products_model,products_image,products_image2,products_image3, products_price, products_date_added, products_date_available, products_weight, products_status, products_tax_class_id, manufacturers_id) values ('" . $product['products_quantity'] . "', '" . $product['products_model'] . "', '" . $product['products_image'] . "', '" . $product['products_image2'] . "', '" . $product['products_image3'] . "','" . $product['products_price'] . "',  now(), '" . $product['products_date_available'] . "', '" . $product['products_weight'] . "', '0', '" . $product['products_tax_class_id'] . "', '" . $product['manufacturers_id'] . "')");
+            tep_db_query("
+              insert into " . TABLE_PRODUCTS . " (
+                products_quantity, 
+                products_model,
+                products_image,
+                products_image2,
+                products_image3, 
+                products_price, 
+                products_price_offset,
+                products_date_added, 
+                products_date_available, 
+                products_weight, 
+                products_status, 
+                products_tax_class_id, 
+                manufacturers_id,
+                products_bflag,
+                products_cflag,
+                products_small_sum,
+                option_type
+              ) values (
+              '" . $product['products_quantity'] . "', 
+              '" . $product['products_model'] . "', 
+              '" . $product['products_image'] . "', 
+              '" . $product['products_image2'] . "', 
+              '" . $product['products_image3'] . "',
+              '" . $product['products_price'] . "',  
+              '" . $product['products_price_offset'] . "',  
+              now(), 
+              '" . $product['products_date_available'] . "', 
+              '" . $product['products_weight'] . "', 
+              '0', 
+              '" . $product['products_tax_class_id'] . "', 
+              '" . $product['manufacturers_id'] . "',
+              '" . $product['products_bflag'] . "',
+              '" . $product['products_cflag'] . "',
+              '" . $product['products_small_sum'] . "',
+              '" . $product['option_type'] . "',
+            )");
             $dup_products_id = tep_db_insert_id();
       
-            $description_query = tep_db_query("select language_id, products_name, products_description, products_attention_1, products_attention_2, products_attention_3, products_attention_4, products_attention_5, products_url from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . tep_db_input($products_id) . "'");
+            $description_query = tep_db_query("
+              select *
+              from " . TABLE_PRODUCTS_DESCRIPTION . " 
+              where products_id = '" . tep_db_input($products_id) . "'");
             while ($description = tep_db_fetch_array($description_query)) {
-              tep_db_query("insert into " . TABLE_PRODUCTS_DESCRIPTION . " (products_id, language_id, products_name, products_description,products_attention_1, products_attention_2, products_attention_3, products_attention_4,products_attention_5,products_url, products_viewed) values ('" . $dup_products_id . "', '" . $description['language_id'] . "', '" . addslashes($description['products_name']) . "', '" . addslashes($description['products_description']) . "', '". addslashes($description['products_attention_1']) . "', '". addslashes($description['products_attention_2']) . "', '". addslashes($description['products_attention_3']) . "', '". addslashes($description['products_attention_4']) . "', '". addslashes($description['products_attention_5']) . "', '" . $description['products_url'] . "', '0')");
+              tep_db_query("
+                insert into " . TABLE_PRODUCTS_DESCRIPTION . " (
+                  products_id, 
+                  language_id, 
+                  products_name, 
+                  products_description,
+                  products_attention_1, 
+                  products_attention_2, 
+                  products_attention_3, 
+                  products_attention_4,
+                  products_attention_5,
+                  products_url, 
+                  products_viewed,
+                  site_id
+                ) values (
+                  '" . $dup_products_id . "', 
+                  '" . $description['language_id'] . "', 
+                  '" . addslashes($description['products_name']) . "', 
+                  '" . addslashes($description['products_description']) . "', 
+                  '" . addslashes($description['products_attention_1']) . "', 
+                  '" . addslashes($description['products_attention_2']) . "', 
+                  '" . addslashes($description['products_attention_3']) . "', 
+                  '" . addslashes($description['products_attention_4']) . "', 
+                  '" . addslashes($description['products_attention_5']) . "', 
+                  '" . $description['products_url'] . "', 
+                  '0',
+                  '" . $description['site_id'] . "'
+                )");
             }
 
             tep_db_query("insert into " . TABLE_PRODUCTS_TO_CATEGORIES . " (products_id, categories_id) values ('" . $dup_products_id . "', '" . tep_db_input($categories_id) . "')");
@@ -846,17 +917,17 @@ function mess(){
                   <table>
           <tr>
                       <td class="main"><?php echo TEXT_PRODUCTS_STATUS; ?></td>
-                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_radio_field('products_status', '1', $in_status) . '&nbsp;' . TEXT_PRODUCT_AVAILABLE . '&nbsp;' . tep_draw_radio_field('products_status', '0', $out_status) . '&nbsp;' . TEXT_PRODUCT_NOT_AVAILABLE; ?></td>
+                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_radio_field('products_status', '1', $in_status, '', ($site_id?'onclick="return false;"':'')) . '&nbsp;' . TEXT_PRODUCT_AVAILABLE . '&nbsp;' . tep_draw_radio_field('products_status', '0', $out_status, '', ($site_id?'onclick="return false;"':'')) . '&nbsp;' . TEXT_PRODUCT_NOT_AVAILABLE; ?></td>
                       <td class="main">&nbsp;</td>
           </tr>
           <tr>
                       <td class="main"><?php echo TEXT_PRODUCTS_BUY_AND_SELL; ?></td>
-                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_radio_field('products_bflag', '0', $in_bflag) . '&nbsp;' . TEXT_PRODUCT_USUALLY . '&nbsp;' . tep_draw_radio_field('products_bflag', '1', $out_bflag) . '&nbsp;' . TEXT_PRODUCT_PURCHASE; ?></td>
+                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_radio_field('products_bflag', '0', $in_bflag, '', ($site_id?'onclick="return false;"':'')) . '&nbsp;' . TEXT_PRODUCT_USUALLY . '&nbsp;' . tep_draw_radio_field('products_bflag', '1', $out_bflag, '', ($site_id?'onclick="return false;"':'')) . '&nbsp;' . TEXT_PRODUCT_PURCHASE; ?></td>
                       <td class="main">&nbsp;</td>
           </tr>
           <tr>
                       <td class="main"><?php echo TEXT_PRODUCTS_CHARACTER; ?></td>
-                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_radio_field('products_cflag', '0', $in_cflag) . '&nbsp;' . TEXT_PRODUCT_NOT_INDISPENSABILITY . '&nbsp;' . tep_draw_radio_field('products_cflag', '1', $out_cflag) . '&nbsp;' . TEXT_PRODUCT_INDISPENSABILITY; ?></td>
+                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_radio_field('products_cflag', '0', $in_cflag, '', ($site_id?'onclick="return false;"':'')) . '&nbsp;' . TEXT_PRODUCT_NOT_INDISPENSABILITY . '&nbsp;' . tep_draw_radio_field('products_cflag', '1', $out_cflag, '', ($site_id?'onclick="return false;"':'')) . '&nbsp;' . TEXT_PRODUCT_INDISPENSABILITY; ?></td>
                       <td class="main">&nbsp;</td>
           </tr>   
                   <tr>
@@ -874,7 +945,7 @@ function mess(){
                     </tr>
                   <tr>
                       <td class="main"><?php echo TEXT_PRODUCTS_MANUFACTURER; ?></td>
-                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_pull_down_menu('manufacturers_id', $manufacturers_array, isset($pInfo->manufacturers_id)?$pInfo->manufacturers_id:''); ?></td>
+                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_pull_down_menu('manufacturers_id', $manufacturers_array, isset($pInfo->manufacturers_id)?$pInfo->manufacturers_id:'', ($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '')); ?></td>
                       <td class="main">&nbsp;</td>
                   </tr>
                   <tr>
@@ -882,7 +953,7 @@ function mess(){
                     </tr>
                   <tr>
                       <td class="main"><?php echo TEXT_PRODUCTS_OPTION; ?></td>
-                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_pull_down_menu('option_type', tep_get_option_array(), isset($pInfo->option_type)?$pInfo->option_type:''); ?></td>
+                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_pull_down_menu('option_type', tep_get_option_array(), isset($pInfo->option_type)?$pInfo->option_type:'', ($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '')); ?></td>
                       <td class="main">&nbsp;</td>
                   </tr>
               <tr>
@@ -893,7 +964,7 @@ function mess(){
 ?>
               <tr>
                 <td class="main"><?php if ($i == 0) echo TEXT_PRODUCTS_NAME; ?></td>
-                <td class="main"><?php echo tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('products_name[' . $languages[$i]['id'] . ']', (isset($products_name[$languages[$i]['id']]) ? stripslashes($products_name[$languages[$i]['id']]) : (isset($pInfo->products_id)?tep_get_products_name($pInfo->products_id, $languages[$i]['id'], $site_id):''))); ?></td>
+                <td class="main"><?php echo tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('products_name[' . $languages[$i]['id'] . ']', (isset($products_name[$languages[$i]['id']]) ? stripslashes($products_name[$languages[$i]['id']]) : (isset($pInfo->products_id)?tep_get_products_name($pInfo->products_id, $languages[$i]['id'], $site_id):'')), ($site_id ? 'class="readonly" readonly' : '')); ?></td>
                 <td class="fieldRequired">検索キー</td>
               </tr>
               <?php
@@ -909,14 +980,14 @@ function mess(){
                     </tr>
           <tr bgcolor="#CCCCCC">
                       <td class="main"><?php echo '<font color="blue"><b>' . TEXT_PRODUCTS_PRICE . '</b></font>'; ?></td>
-                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_price', isset($pInfo->products_price)?$pInfo->products_price:'','id="pp"'); ?></td>
+                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_price', isset($pInfo->products_price)?$pInfo->products_price:'','id="pp"' . ($site_id ? 'class="readonly" readonly' : '')); ?></td>
                     </tr>
                     <tr>
                       <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                     </tr>
                     <tr bgcolor="#CCCCCC">
                       <td class="main"><?php echo '<font color="blue"><b>増減の値:</b></font>'; ?></td>
-                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_price_offset', $pInfo->products_price_offset); ?></td>
+                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_price_offset', $pInfo->products_price_offset, ($site_id ? 'class="readonly" readonly' : '')); ?></td>
                     </tr>
                     <tr>
                       <td class="main">&nbsp;</td>
@@ -929,7 +1000,7 @@ function mess(){
                     </tr>
           <tr>
             <td class="main" valign="top"><?php echo TEXT_PRODUCTS_SMALL_SUM; ?></td>
-            <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_textarea_field('products_small_sum', 'soft', '70', '5', isset($pInfo->products_small_sum)?$pInfo->products_small_sum:''); ?></td>
+            <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_textarea_field('products_small_sum', 'soft', '70', '5', isset($pInfo->products_small_sum)?$pInfo->products_small_sum:'', ($site_id ? 'class="readonly" readonly' : '')); ?></td>
           </tr>
           <tr>
                       <td class="main">&nbsp;</td>
@@ -946,7 +1017,7 @@ function mess(){
                     </tr>
                     <tr>
                       <td class="main"><?php echo TEXT_PRODUCTS_TAX_CLASS; ?></td>
-                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_pull_down_menu('products_tax_class_id', $tax_class_array, isset($pInfo->products_tax_class_id)?$pInfo->products_tax_class_id:''); ?></td>
+                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_pull_down_menu('products_tax_class_id', $tax_class_array, isset($pInfo->products_tax_class_id)?$pInfo->products_tax_class_id:'', ($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '')); ?></td>
                     </tr>
         
         <tr>
@@ -954,7 +1025,7 @@ function mess(){
               </tr>
         <tr bgcolor="#CCCCCC">
                 <td class="main"><?php echo '<font color="blue"><b>' . TEXT_PRODUCTS_QUANTITY . '</b></font>'; ?></td>
-                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_quantity', isset($pInfo->products_quantity)?$pInfo->products_quantity:''); ?></td>
+                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_quantity', isset($pInfo->products_quantity)?$pInfo->products_quantity:'', ($site_id ? 'class="readonly" readonly' : '')); ?></td>
               </tr>
         <tr>
           <td>&nbsp;</td>
@@ -965,7 +1036,7 @@ function mess(){
               </tr>
               <tr>
                 <td class="main"><?php echo TEXT_PRODUCTS_MODEL; ?></td>
-                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_model', isset($pInfo->products_model)?$pInfo->products_model:''); ?></td>
+                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_model', isset($pInfo->products_model)?$pInfo->products_model:'', ($site_id ? 'class="readonly" readonly' : '')); ?></td>
                 <td class="fieldRequired">検索キー</td>
               </tr>
 
@@ -1045,7 +1116,7 @@ function mess(){
               </tr>
               <tr>
                 <td class="main" valign="top">オプション登録</td>
-                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_textarea_field('products_options', 'soft', '70', '15', $options_array); ?></td>
+                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_textarea_field('products_options', 'soft', '70', '15', $options_array, ($site_id ? 'class="readonly" readonly' : '')); ?></td>
               </tr>
               <tr>
                 <td></td>
@@ -1074,6 +1145,7 @@ function mess(){
               </tr>
                 <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
+<?php if (!$site_id) {?>
               <tr>
                 <td colspan="2"><fieldset>
                   <legend style="color:#009900 ">商品の画像</legend>
@@ -1150,6 +1222,7 @@ function mess(){
          ?>
                   </fieldset></td>
               </tr>
+<?php }?>
               <tr>
                 <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
@@ -1160,7 +1233,7 @@ function mess(){
                     <td><?php echo TEXT_PRODUCTS_TAGS;?></td> 
                   </tr>
                   <tr>
-                    <td> 
+                    <td<?php if($site_id){echo ' class="readonly"';}?>> 
                     <?php
                       //show tags 
                       $checked_tags = array();
@@ -1184,7 +1257,7 @@ function mess(){
                         } else if (isset($_POST['tags']) && in_array($tag['tags_id'], $_POST['tags'])) {
                           echo 'checked'; 
                         }
-                       ?>  
+                       ?><?php if ($site_id) {echo ' onclick="return false;"';}?>
                        ><?php echo $tag['tags_name'];?> 
                       <?php 
                       }
@@ -1480,8 +1553,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
         }
       }
       echo tep_draw_hidden_field('products_image', stripslashes($products_image_name));
-    echo tep_draw_hidden_field('products_image2', stripslashes($products_image_name2));
-    echo tep_draw_hidden_field('products_image3', stripslashes($products_image_name3));
+      echo tep_draw_hidden_field('products_image2', stripslashes($products_image_name2));
+      echo tep_draw_hidden_field('products_image3', stripslashes($products_image_name3));
       echo tep_image_submit('button_back.gif', IMAGE_BACK, 'name="edit"') . '&nbsp;&nbsp;';
 
       if ($_GET['pID']) {
@@ -1853,7 +1926,7 @@ if ($ocertify->npermission >= 10) { //表示制限
         $category_inputs_string = '';
         $languages = tep_get_languages();
         for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
-          $category_inputs_string .= '<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('categories_name[' . $languages[$i]['id'] . ']', tep_get_category_name($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).'<br>'."\n".
+          $category_inputs_string .= '<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('categories_name[' . $languages[$i]['id'] . ']', tep_get_category_name($cInfo->categories_id, $languages[$i]['id'], $site_id, true), ($site_id ? 'class="readonly" readonly' : '')).'<br>'."\n".
          '<br>'.tep_image(tep_get_web_upload_dir($site_id) .'categories/'. $cInfo->categories_image2, $cInfo->categories_name).'<br>' . tep_get_upload_dir($site_id) . 'categories/<br><b>' . $cInfo->categories_image2 . '</b><br><br>トップページカテゴリバナー画像<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;'.tep_draw_file_field('categories_image2').'<br>'."\n".
          '<br>'.tep_image(tep_get_web_upload_dir($site_id) . 'categories/'. $cInfo->categories_image3, $cInfo->categories_name).'<br>' . tep_get_upload_dir($site_id). 'categories/<br><b>' . $cInfo->categories_image3 . '</b><br><br>カテゴリタイトル画像<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;'.tep_draw_file_field('categories_image3').'<br>'."\n".
          '<br>METAタグ（この説明文はトップページのカテゴリバナーの下に表示される文章としても使用されます。2行にするにはカンマ「,」区切りで文章を記述してください。)<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_meta_text[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_category_meta_text($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).

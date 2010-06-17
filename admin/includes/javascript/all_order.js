@@ -39,19 +39,49 @@ function all_check(){
 }
 
 function chg_tr_color(aaa){
+  // 保持邮件发送框显示
   field_on();
   var c_flag = aaa.checked;
   var tr_id = 'tr_' + aaa.value;
   
-  if (document.getElementById(tr_id).className != 'dataTableRowSelected') 
+  // 如果选中
   if(c_flag == true){
-    old_color = document.getElementById(tr_id).style.backgroundColor
-    document.getElementById(tr_id).style.backgroundColor = "#FFCC99";
+    
+    if (document.getElementById(tr_id).className != 'dataTableRowSelected') {
+        old_color = document.getElementById(tr_id).style.backgroundColor
+    }
+
+    // 清空checkbox
+    /*
+    for(i = 0; i < document.sele_act.elements["chk[]"].length; i++){
+      document.sele_act.elements["chk[]"][i].checked = false;
+      if (document.getElementById('tr_' + document.sele_act.elements["chk[]"][i].value).className != 'dataTableRowSelected') 
+        document.getElementById('tr_' + document.sele_act.elements["chk[]"][i].value).style.backgroundColor = "#F0F1F1";
+    }*/
+
+    if (document.getElementById(tr_id).className != 'dataTableRowSelected') {
+        document.getElementById(tr_id).style.backgroundColor = "#FFCC99";
+    }
+
+    // 选中当前checkbox
+    //aaa.checked = true;
+    
+    // 重置订单状态和邮件内容
+    //document.sele_act.elements['status'].selectedIndex = 0;
+    //mail_text('status','comments','os_title')
+  // 如果未选中
   }else{
-    document.getElementById(tr_id).style.backgroundColor = old_color;
-    //document.getElementById(tr_id).style.backgroundColor = "#F0F1F1";
-    //old_color = document.getElementById(tr_id).style.backgroundColor
+    if (document.getElementById(tr_id).className != 'dataTableRowSelected') {
+        document.getElementById(tr_id).style.backgroundColor = old_color;
+    }
+    
+    //取消当前checkbox
+    //aaa.checked = false;
+    
+    //隐藏邮件框
+    //field_off();
   }
+
 }
 
 function chg_td_color(bbb){
@@ -92,10 +122,18 @@ function chg_td_color(bbb){
   */
 }
 
+// 打开邮件框
 function field_on(){
   if(f_flag == 'off'){
     f_flag = 'on';
     document.getElementById("select_send").style.display = "block";
+  }
+}
+// 关闭邮件框
+function field_off(){
+  if(f_flag == 'on'){
+    f_flag = 'off';
+    document.getElementById("select_send").style.display = "none";
   }
 }
 

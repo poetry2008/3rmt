@@ -197,7 +197,7 @@
 
 ////
 // Output a selection field - alias function for tep_draw_checkbox_field() and tep_draw_radio_field()
-  function tep_draw_selection_field($name, $type, $value = '', $checked = false, $compare = '') {
+  function tep_draw_selection_field($name, $type, $value = '', $checked = false, $compare = '', $parameters = '') {
     $selection = '<input type="' . $type . '" name="' . $name . '"';
     if ($value != '') {
       $selection .= ' value="' . $value . '"';
@@ -210,21 +210,21 @@
       ) {
       $selection .= ' CHECKED';
     }
-    $selection .= '>';
+    $selection .= ' ' . $parameters . '>';
 
     return $selection;
   }
 
 ////
 // Output a form checkbox field
-  function tep_draw_checkbox_field($name, $value = '', $checked = false, $compare = '') {
-    return tep_draw_selection_field($name, 'checkbox', $value, $checked, $compare);
+  function tep_draw_checkbox_field($name, $value = '', $checked = false, $compare = '', $parameters = '') {
+    return tep_draw_selection_field($name, 'checkbox', $value, $checked, $compare, $parameters);
   }
 
 ////
 // Output a form radio field
-  function tep_draw_radio_field($name, $value = '', $checked = false, $compare = '') {
-    return tep_draw_selection_field($name, 'radio', $value, $checked, $compare);
+  function tep_draw_radio_field($name, $value = '', $checked = false, $compare = '', $parameters='') {
+    return tep_draw_selection_field($name, 'radio', $value, $checked, $compare, $parameters);
   }
 
 ////

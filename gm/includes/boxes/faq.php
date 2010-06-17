@@ -25,14 +25,18 @@ if($HTTP_GET_VARS['cPath']) {
   $faq_c_name = $_categories['categories_name'];
 } else {
   
-  //$faq_c_url ='info-7.html';
+  $faq_c_url ='/info/faq.html';
   //ccdd
+  /*
   $information_raw_query = tep_db_query("
     select * from ".TABLE_INFORMATION_PAGE." where pID = '7' and site_id='".SITE_ID."'"); 
   $information_raw_res = tep_db_fetch_array($information_raw_query); 
-  $faq_single = true; 
+  
   $information_romaji = $information_raw_res['romaji']; 
+  */
+  $faq_single = true; 
   $faq_c_name = 'RMT';
+
 }
 ?>
 <!-- faq //-->
@@ -43,7 +47,7 @@ if (!$faq_single) {
 <?php
 } else {
 ?>
-<a href="<?php echo info_tep_href_link($information_romaji); ?>"><img src="images/banners/r_banner_faq.jpg" width="131" height="134" border="0" alt="<?php echo $faq_c_name; ?>のよくある質問"></a>
+<a href="<?php echo $faq_c_url;?><?php //echo info_tep_href_link($information_romaji); ?>"><img src="images/banners/r_banner_faq.jpg" width="131" height="134" border="0" alt="<?php echo $faq_c_name; ?>のよくある質問"></a>
 <?php
 }
 ?>

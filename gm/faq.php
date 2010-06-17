@@ -11,7 +11,8 @@
 
   define('FAQ_CATEGORIES_LIST', 'よくある質問');
 
-  $breadcrumb->add(FAQ_CATEGORIES_LIST, tep_href_link(FILENAME_PAGE, 'pID=7'));
+  //$breadcrumb->add(FAQ_CATEGORIES_LIST, tep_href_link(FILENAME_PAGE, 'pID=7'));
+  $breadcrumb->add(FAQ_CATEGORIES_LIST, '/info/faq.html');
 
   $g_id = $_GET['g_id'];
   $q_id = @$_GET['q_id'];
@@ -92,7 +93,7 @@
   <!-- index //-->
         <h2 class="pageHeading"><?php echo $g_categories['categories_name']; ?>のよくある質問（FAQ)</h2>
         <h2 align="right"><?php echo $g_categories['seo_name']; ?>のFAQ一覧</h2>
-        <p>このページでは、お客様から寄せられる<strong><?php echo $g_categories['seo_name']; ?></strong>のよくある質問にお答えしています。<?php echo $g_categories['seo_name']; ?>以外のFAQを閲覧する場合は<a href="/info-7.html">コチラ</a>をクリックしてください。記載のないご質問は、お手数ではございますがサポートセンターへお問い合わせください。</p> 
+        <p>このページでは、お客様から寄せられる<strong><?php echo $g_categories['seo_name']; ?></strong>のよくある質問にお答えしています。<?php echo $g_categories['seo_name']; ?>以外のFAQを閲覧する場合は<a href="/info/faq.html">コチラ</a>をクリックしてください。記載のないご質問は、お手数ではございますがサポートセンターへお問い合わせください。</p> 
         <?php foreach($all_faq_categories as $faq_categories){?>
           <?php
           $questions = tep_get_questions_by_c_id($faq_categories['c_id']);

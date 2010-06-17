@@ -543,16 +543,9 @@ while ($totals = tep_db_fetch_array($totals_query)) {
   }
 }
 
-  function str_string($string='') {
-    if(ereg("-", $string)) {
-    $string_array = explode("-", $string);
-    return $string_array[0] . '年' . $string_array[1] . '月' . $string_array[2] . '日';
-  }
-  }
-
       $email = '';
       $email .= $order->customer['name'] . '様' . "\n\n";
-      $email .= 'いつも' . STORE_NAME . 'をご利用いただき、誠にありがとうございます。' . "\n";
+      $email .= 'いつも' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . 'をご利用いただき、誠にありがとうございます。' . "\n";
       $email .= '下記の内容にて変更を承りましたので、ご確認ください。' . "\n\n";
       $email .= $notify_comments_mail;
       $email .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
@@ -570,14 +563,14 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       $email .= "\n\n\n\n";
 //      $email .= '会員のお客様は' . EMAIL_TEXT_INVOICE_URL . ' ' . tep_catalog_href_link(FILENAME_CATALOG_ACCOUNT_HISTORY_INFO, 'order_id=' . $oID, 'SSL') . "\n\n\n\n";
       $email .= 'ご不明な点がございましたら、注文番号をご確認の上、' . "\n";
-      $email .= '「' . STORE_NAME . '」までお問い合わせください。' . "\n\n";
+      $email .= '「' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '」までお問い合わせください。' . "\n\n";
       $email .= '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n";
       $email .= '株式会社 iimy' . "\n";
-      $email .= SUPPORT_EMAIL_ADDRESS . "\n";
-      $email .= HTTP_CATALOG_SERVER . "\n";
+      $email .= get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $order->info['site_id']) . "\n";
+      $email .= get_url_by_site_id($order->info['site_id']) . "\n";
       $email .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-      tep_mail($check_status['customers_name'], $check_status['customers_email_address'], '注文内容の変更を承りました【' . STORE_NAME . '】', $email, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-      tep_mail(STORE_OWNER, SENTMAIL_ADDRESS, '送信済：注文内容の変更を承りました【' . STORE_NAME . '】', $email, $check_status['customers_name'], $check_status['customers_email_address']);
+      tep_mail($check_status['customers_name'], $check_status['customers_email_address'], '注文内容の変更を承りました【' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']));
+      tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), '送信済：注文内容の変更を承りました【' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address']);
       $customer_notified = '1';
     }
     tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . tep_db_input($customer_notified) . "', '" . mysql_real_escape_string($notify_comments) . "')");
@@ -1609,6 +1602,14 @@ if($action == "add_product")
   function tep_html_unquote($string) {
     return str_replace("&#39;", "'", $string);
   }
+
+  function str_string($string='') {
+    if(ereg("-", $string)) {
+      $string_array = explode("-", $string);
+      return $string_array[0] . '年' . $string_array[1] . '月' . $string_array[2] . '日';
+    }
+  }
+
 
 require(DIR_WS_INCLUDES . 'application_bottom.php');
 ?>

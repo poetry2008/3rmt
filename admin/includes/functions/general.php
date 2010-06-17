@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
 ////
@@ -2574,4 +2567,31 @@ function calculate_special_price($price, $offset) {
     $special = $price + $offset;
   }
   return $special;
+}
+
+function tep_get_site_id_by_orders_id($orders_id) {
+  $order = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$orders_id."'"));
+  if ($order) {
+    return $order['site_id'];
+  } else {
+    return false;
+  }
+}
+
+function get_configuration_by_site_id($key, $site_id = '0') {
+  $config = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$key."' and site_id='".$site_id."'"));
+  if ($config) {
+    return $config['configuration_value'];
+  } else {
+    return false;
+  }
+}
+
+function get_url_by_site_id($site_id) {
+  $site = tep_db_fetch_array(tep_db_query("select * from ".TABLE_SITES." where id='".$site_id."'"));
+  if ($site) {
+    return $site['url'];
+  } else {
+    return false;
+  }
 }

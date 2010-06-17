@@ -75,10 +75,8 @@ if (file_exists(DIR_WS_LANGUAGES . $language . '/user_certify.php')) {
 /* -------------------------------------
 	ログイン画面表示
  ------------------------------------ */
-
 // エラーメッセージ
-$msg = (isset($erg) && $erg ? '<div align="center"><font color="#FF0000">'.TEXT_ERRINFO_LOGIN.'</font></div>' : '');
-
+$msg = (isset($erf) && $erf ? '<div align="center"><font color="#FF0000">'.TEXT_ERRINFO_LOGIN.'</font></div>' : '');
 echo '<!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">' . "\n";
 echo '<html ' . HTML_PARAMS . '>' . "\n";
 echo '<head>' . "\n";

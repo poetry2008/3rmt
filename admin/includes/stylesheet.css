@@ -484,3 +484,7 @@ legend {
   font-weight: bold;
   background: #808080;
 }
+
+.readonly{
+  background: #ccc;
+}

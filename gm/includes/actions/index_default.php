@@ -15,6 +15,8 @@
 <?php
   echo DEFAULT_PAGE_TOP_CONTENTS;
 ?>
+
+<?php /*
 <div class="background_news01" style="margin-top:10px;">
 <table width="95%" class="news_title_03">
 <tr>
@@ -24,6 +26,7 @@
   <td align="left" width="70">
   </td>
 </table>
+
 <div class="game_news_index01">
   <ul>
    <?php
@@ -42,15 +45,19 @@
    }
    ?>
   </ul>
-<div class="link_more_news02">
-<a class="news_more01" href="<?php echo tep_href_link('game_news.php');?>">過去のオンラインゲームニュースを見る</a>
+  <div class="link_more_news02">
+  <a class="news_more01" href="<?php echo tep_href_link('game_news.php');?>">過去のオンラインゲームニュースを見る</a>
+  </div>
 </div>
 </div>
-</div>
-</div>     
+*/ ?>
+</div>   
 <!-- body_text_eof //--> 
 <!--column_right -->
 <div id="r_menu">
-      <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
+<?php 
+  $index_default = true;
+  require(DIR_WS_INCLUDES . 'column_right.php'); 
+?> 
 </div>
 <?php
