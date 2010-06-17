@@ -110,7 +110,7 @@
     
     if ($check_status['orders_status'] != $status || $comments != '') {
       tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
-      tep_db_query("call ps_order_updated(".tep_db_input($oID).")");
+      tep_db_query("call ps_order_updated('".tep_db_input($oID)."')");
 
       $customer_notified = '0';
       
@@ -220,7 +220,6 @@
                  torihiki_date 
           from " . TABLE_ORDERS . " 
           where orders_id = '" . tep_db_input($oID) . "'");
-      tep_db_query("call ps_order_updated(".tep_db_input($oID).")");
       $check_status = tep_db_fetch_array($check_status_query);
     
     //Add Point System
@@ -297,7 +296,7 @@
     
     if ($check_status['orders_status'] != $status || $comments != '') {
       tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
-      tep_db_query("call ps_order_updated(".tep_db_input($oID).")");
+      tep_db_query("call ps_order_updated('".tep_db_input($oID)."')");
       $customer_notified = '0';
     
     if ($_POST['notify'] == 'on') {

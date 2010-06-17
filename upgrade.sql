@@ -131,8 +131,12 @@ ALTER TABLE  `products` ADD  `products_price_offset` INT NULL AFTER  `products_p
 ALTER TABLE  `products` CHANGE  `products_price_offset`  `products_price_offset` decimal(15,4) NOT NULL DEFAULT '0.0000';
 
 
-update orders,orders_status set orders.finished = orders_status.finished where orders.orders_status = orders_status.orders_status_id;
-update orders,orders_status set orders.orders_status_name = orders_status.orders_status_name where orders.orders_status = orders_status.orders_status_id;
-update orders,orders_status set orders.orders_status_image = orders_status.orders_status_image where orders.orders_status = orders_status.orders_status_id;
-update orders,orders_status set orders.language_id = orders_status.language_id where orders.orders_status = orders_status.orders_status_id;
+--update orders,orders_status set orders.finished = orders_status.finished where orders.orders_status = orders_status.orders_status_id;
+update orders set finished = (select orders_status.finished from orders_status where orders_status.orders_status_id = orders.orders_status);
+update orders set orders_status_name = (select orders_status.orders_status_name from orders_status where orders_status.orders_status_id = orders.orders_status);
+update orders set orders_status_image = (select orders_status.orders_status_image from orders_status where orders_status.orders_status_id = orders.orders_status);
+update orders set language_id = (select orders_status.language_id from orders_status where orders_status.orders_status_id = orders.orders_status);
+
+--update orders,orders_status set orders.orders_status_image = orders_status.orders_status_image where orders.orders_status = orders_status.orders_status_id;
+--update orders,orders_status set orders.language_id = orders_status.language_id where orders.orders_status = orders_status.orders_status_id;
 

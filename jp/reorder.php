@@ -77,7 +77,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
               WHERE `orders_id`='".$order_id."' 
                 and site_id = '" . SITE_ID . "'
           ");
-          tep_db_query('call ps_order_updated('.$order_id.')');
+          tep_db_query("call ps_order_updated('".$order_id."')");
           // insert a history
           $sql = "
             INSERT INTO `".TABLE_ORDERS_STATUS_HISTORY."` (
