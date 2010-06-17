@@ -174,6 +174,8 @@
     $UpdateOrders .= " where orders_id = '" . tep_db_input($oID) . "';";
 
     tep_db_query($UpdateOrders);
+    tep_db_query('call ps_order_updated('.$oID.')');
+    
     $order_updated = true;
 
     $check_status_query = tep_db_query("select customers_name, customers_email_address, orders_status, date_purchased from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
@@ -454,6 +456,7 @@
   // 最終処理（更新およびメール送信）
   if ($products_delete == false) {
     tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
+    tep_db_query('call ps_order_updated('.tep_db_input($oID).')');
     $notify_comments = '';
     $notify_comments_mail = $comments;
     $customer_notified = '0';

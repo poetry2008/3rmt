@@ -168,6 +168,7 @@
   }
   //ccdd
   tep_db_perform(TABLE_ORDERS, $sql_data_array);
+  tep_db_query("call ps_order_updated(".$insert_id.")");
   //$insert_id = tep_db_insert_id();
   for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
     $sql_data_array = array('orders_id' => $insert_id,
