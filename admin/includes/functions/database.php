@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2001 osCommerce
-
-  Released under the GNU General Public License
 */
   function tep_db_connect($server = DB_SERVER, $username = DB_SERVER_USERNAME, $password = DB_SERVER_PASSWORD, $database = DB_DATABASE, $link = 'db_link') {
     global $$link;
@@ -44,13 +37,15 @@
       if (!is_object($logger)) $logger = new logger;
       $logger->write($query, 'QUERY');
     }
-
+    $runtime= new runtime;
+    $runtime->start();
     $result = mysql_query($query, $$link) or tep_db_error($query, mysql_errno(), mysql_error());
 
     if (STORE_DB_TRANSACTIONS == 'true') {
       if (mysql_error()) $logger->write(mysql_error(), 'ERROR');
     }
-
+    $runtime->stop();
+    $logger->times[] = $runtime->spent();
     //sql log
     if (defined(SQL_LOG) && SQL_LOG) {
       global $logNumber;
@@ -184,4 +179,31 @@
       return $string;
     }
   }
-?>
+
+
+class runtime
+{ 
+    var $StartTime = 0; 
+    var $StopTime = 0; 
+ 
+    function get_microtime() 
+    { 
+        list($usec, $sec) = explode(' ', microtime()); 
+        return ((float)$usec + (float)$sec); 
+    } 
+ 
+    function start() 
+    { 
+        $this->StartTime = $this->get_microtime(); 
+    } 
+ 
+    function stop() 
+    { 
+        $this->StopTime = $this->get_microtime(); 
+    } 
+ 
+    function spent() 
+    { 
+        return round(($this->StopTime - $this->StartTime) * 1000, 1); 
+    } 
+}

@@ -440,6 +440,7 @@ while($os = mysql_fetch_array($osquery)){
     )";
   r3q($sql);
 }
+/*
 foreach($sites as $s){
   $osquery = rq("select * from ".table_prefix($s)."orders_mail");
   while($os = mysql_fetch_array($osquery)){
@@ -459,6 +460,7 @@ foreach($sites as $s){
     r3q($sql);
   }
 }
+*/
 print("orders_mail\n");
 //orders_status
 cptable('wm_orders_status', 'orders_status');

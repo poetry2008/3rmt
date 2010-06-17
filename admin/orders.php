@@ -168,7 +168,7 @@
           $os_result['orders_status_name'],
           get_configuration_by_site_id('STORE_NAME', $site_id),
           get_url_by_site_id($site_id),
-          get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
+          get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id)
         ),$comments
         );
         
@@ -205,6 +205,7 @@
       $status   = tep_db_prepare_input($_POST['status']);
       $title    = tep_db_prepare_input($_POST['title']);
       $comments = tep_db_prepare_input($_POST['comments']);
+      $site_id  = tep_get_site_id_by_orders_id($oID);
 
       $order_updated = false;
       $check_status_query = tep_db_query("
@@ -304,7 +305,31 @@
       $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
       $os_result = tep_db_fetch_array($os_query);
 
-      $comments = str_replace(array('${NAME}','${MAIL}','${ORDER_D}','${ORDER_N}','${PAY}','${ORDER_M}','${TRADING}','${ORDER_S}'),array($check_status['customers_name'],$check_status['customers_email_address'],tep_date_long($check_status['date_purchased']),$oID,$check_status['payment_method'],$otm,tep_torihiki($check_status['torihiki_date']),$os_result['orders_status_name']),$comments);
+      $comments = str_replace(array(
+        '${NAME}',
+        '${MAIL}',
+        '${ORDER_D}',
+        '${ORDER_N}',
+        '${PAY}',
+        '${ORDER_M}',
+        '${TRADING}',
+        '${ORDER_S}',
+          '${SITE_NAME}',
+          '${SITE_URL}',
+          '${SUPPORT_EMAIL}'
+      ),array(
+        $check_status['customers_name'],
+        $check_status['customers_email_address'],
+        tep_date_long($check_status['date_purchased']),
+        $oID,
+        $check_status['payment_method'],
+        $otm,
+        tep_torihiki($check_status['torihiki_date']),
+        $os_result['orders_status_name'],
+          get_configuration_by_site_id('STORE_NAME', $site_id),
+          get_url_by_site_id($site_id),
+          get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id)
+      ),$comments);
       tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
       tep_mail(STORE_OWNER, SENTMAIL_ADDRESS, '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address']);
       $customer_notified = '1';
@@ -833,7 +858,8 @@ function mail_text(st,tt,ot){
         $ma_se .= " orders_status_id = '".$_GET['status']."' ";
         echo '<input type="hidden" name="status" value="' .$_GET['status'].'">';
       }
-      $ma_se .= "and site_id='".tep_get_site_id_by_orders_id($order->info['orders_id'])."'";
+      //$ma_se .= "and site_id='".tep_get_site_id_by_orders_id($order->info['orders_id'])."'";
+      $ma_se .= "and site_id='0'";
       //echo $ma_se;
       $mail_sele = tep_db_query($ma_se);
       $mail_sql  = tep_db_fetch_array($mail_sele);

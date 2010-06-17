@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 ?>
 <br>
@@ -54,7 +47,14 @@ $testArray = array();
 if (STORE_DB_TRANSACTIONS) {?>
 <div id="debug_info">
   <pre>
-  <?php isset($logger) && print_r($logger->queries);?>
+<?php if(isset($logger)){
+    foreach ($logger->queries as $qk => $qv) {
+      echo '[' . $logger->times[$qk] . ']' . $qk . "\t=>\t" . $qv."\n";
+    }
+  }
+   //&& print_r($logger->queries);
+  ?>
+  <?php //print_r($logger->times);?>
   </pre>
 </div>
 <?php }?>
