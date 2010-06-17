@@ -1169,13 +1169,12 @@ function mail_text(st,tt,ot){
                o.last_modified, 
                o.currency, 
                o.currency_value, 
-               s.orders_status_name, 
+               o.orders_status_name, 
                o.site_id
-        from " . TABLE_ORDERS . " o " . $from_payment . ", " . TABLE_ORDERS_STATUS . " s
+        from " . TABLE_ORDERS . " o " . $from_payment . "
         where o.customers_id = '" . tep_db_input($cID) . "' 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-          and o.orders_status = s.orders_status_id 
-          and s.language_id = '" . $languages_id . "' 
+          and o.language_id = '" . $languages_id . "' 
           " . $where_payment . $where_type . "
         order by o.torihiki_date DESC";
       /*$orders_query_raw = "
@@ -1214,12 +1213,12 @@ function mail_text(st,tt,ot){
                o.last_modified, 
                o.currency, 
                o.currency_value, 
-               s.orders_status_name, 
+               o.orders_status_name, 
                o.site_id
-        from " . TABLE_ORDERS . " o " . $from_payment . ", " . TABLE_ORDERS_STATUS . " s
-        where o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "' 
+        from " . TABLE_ORDERS . " o " . $from_payment . "
+        where o.language_id = '" . $languages_id . "' 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-          and s.orders_status_id = '" . tep_db_input($status) . "' 
+          and o.orders_status = '" . tep_db_input($status) . "' 
           " . $where_payment . $where_type . "
         order by o.torihiki_date DESC";
 /*
@@ -1258,12 +1257,12 @@ function mail_text(st,tt,ot){
                o.last_modified, 
                o.currency, 
                o.currency_value, 
-               s.orders_status_name,
+               o.orders_status_name,
                o.site_id
-        from " . TABLE_ORDERS . " o " . $from_payment . ", " . TABLE_ORDERS_STATUS . " s, " . TABLE_ORDERS_PRODUCTS . " op 
-        where o.orders_status = s.orders_status_id 
+        from " . TABLE_ORDERS . " o " . $from_payment . ", " . TABLE_ORDERS_PRODUCTS . " op 
+        where
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-          and s.language_id = '" . $languages_id . "' 
+          and o.language_id = '" . $languages_id . "' 
           " . $where_payment . $where_type . "
           and o.orders_id = op.orders_id";
       /*
@@ -1320,7 +1319,7 @@ function mail_text(st,tt,ot){
     $orders_query_raw .= "order by o.torihiki_date DESC";
   } else {
       $orders_query_raw = "
-        select distinct s.orders_status_id, 
+        select distinct o.orders_status as orders_status_id, 
                o.orders_id, 
                o.torihiki_date, 
                o.customers_id, 
@@ -1330,14 +1329,14 @@ function mail_text(st,tt,ot){
                o.last_modified, 
                o.currency, 
                o.currency_value, 
-               s.orders_status_name, 
-               s.orders_status_image,
+               o.orders_status_name, 
+               o.orders_status_image,
                o.site_id
-         from " . TABLE_ORDERS . " o " . $from_payment . ", " . TABLE_ORDERS_STATUS . " s 
-         where o.orders_status = s.orders_status_id 
+         from " . TABLE_ORDERS . " o " . $from_payment . " 
+         where 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-           and s.language_id = '" . $languages_id . "' 
-           and s.finished = '0'
+           and o.language_id = '" . $languages_id . "' 
+           and o.finished = '0'
            " . $where_payment . $where_type . "
          order by o.torihiki_date DESC
       ";
