@@ -6,11 +6,137 @@
   require(DIR_WS_CLASSES . 'currencies.php');
   $currencies = new currencies();
   
+  function tep_get_specials_special_price($product_id) {
+    $product_query = tep_db_query("select specials_new_products_price from " . TABLE_SPECIALS . " where products_id = '" . (int)$product_id . "' and status");
+    $product = tep_db_fetch_array($product_query);
+
+    return $product['specials_new_products_price'];
+  }
+
   $action = (isset($_GET['action']) ? $_GET['action'] : '');
   if ( eregi("(insert|update|setflag)", $action) ) include_once('includes/reset_seo_cache.php');
 
   if (isset($_GET['action']) && $_GET['action']) {
     switch ($_GET['action']) {
+//add by bobhero{{
+
+	case 'all_update': //一括更新　　//tep_db_prepare_input＝変数か文字列の判定 //更新するもの・・・特別価格と同業者の価格＋radioのチェック
+		$products_id = tep_db_prepare_input($HTTP_GET_VARS['pID']);
+		$cID=$_POST['cID_list'];
+		if($_POST[flg_up]==1){
+			$psrice_datas = $_POST['price'];//特価価格の情報が配列で手に入る
+			$proid = $_POST['proid'];//products_idがすべて配列で手に入る
+			$products_prise=$_POST['pprice'];//通常価格
+			$products_quantity=$_POST['zaiko'];//実在庫
+			
+			$cnt = count($psrice_datas);
+			$dougyousya=$_POST['TARGET_INPUT'];//同業者価格
+
+			$dou_id=$_POST['d_id'];//同業者ID
+			$d_cnt=count($dougyousya);//同業者フォームの数
+			
+			$radio_chk=$_POST['radiochk'];
+			
+			/*
+			$r_cnt=count($radio_chk);//radioボタンのチェック数＝行数
+			$loop_cnt=$d_cnt / $r_cnt;//同じプロダクトIDを持つ同業者の数　　　
+			*/
+			
+			$loop_cnt=count($dou_id);
+			//同業者データを行ごとに分割する
+			$rajio_a=0;
+			$num=0;
+			for($j=0;$j < $d_cnt;$j++){
+				if($rajio_a != $loop_cnt){
+					$d_datas[$num][$rajio_a]=$dougyousya[$j];
+					$rajio_a++;
+				}else{
+					$rajio_a=0;
+					$num++;
+					$d_datas[$num][$rajio_a]=$dougyousya[$j];
+					$rajio_a++;
+				}
+			}
+			//radioボタンチェックフラグ
+			$rajio_a=0;
+			$num=0;
+			for($j=0;$j < $d_cnt;$j++){
+				if($rajio_a != $loop_cnt){
+					$radio_chk_data[$num][$rajio_a]=$radio_chk[$j];
+					$rajio_a++;
+				}else{
+					$rajio_a=0;
+					$num++;
+					$radio_chk_data[$num][$rajio_a]=$radio_chk[$j];
+					$rajio_a++;
+				}
+			}
+			$res_cnt=tep_db_query("select count(*) as cnt_d from set_dougyousya_history where categories_id = '".tep_db_prepare_input($cID)."' AND products_id	= '".tep_db_prepare_input($proid[0])."'");
+			$col_cnt=tep_db_fetch_array($res_cnt);
+			$cnt_d=$d_cnt*20;//カテゴリー20件保存(5日分)
+			/*for($i=0;$i < $cnt;$i++){//同業者の価格情報保存
+				//echo $d_history[$i];
+				$radio_query2 = tep_db_query("select history_id from set_dougyousya_history where categories_id = '".tep_db_prepare_input($cID)."' AND products_id='".$proid[$i]."' ORDER BY history_id ASC");
+					while($col_radio2=tep_db_fetch_array($radio_query2)){
+						$d_history[$i][]=$col_radio2['history_id'];
+					}
+				for($j=0;$j < $loop_cnt;$j++){
+
+				$radio_query = tep_db_query("select count(*) as cnt from set_dougyousya_history where categories_id = '".tep_db_prepare_input($cID)."' AND history_id= '".$d_history[$i][$j]."'");
+    			$col_radio[$j] = tep_db_fetch_array($radio_query);
+			 		 if($col_radio[$j]['cnt'] > 0 && $cnt_d == $col_cnt['cnt_d'] ) {
+	  				//20件以上なのでアップデート
+					tep_db_query("update set_dougyousya_history set dougyosya_kakaku = '".$d_datas[$i][$j]."' ,dougyousya_id='".$dou_id[$j]."',radio_chk='".$radio_chk_data[$i][$j]."', last_date=now() where  history_id = '".$d_history[$i][$j]."'");
+      				}else{
+	  	 			//20件未満なのでインサート
+					tep_db_query("insert into set_dougyousya_history(categories_id, products_id,dougyosya_kakaku, radio_chk,last_date,dougyousya_id) values ('".tep_db_prepare_input($cID)."', '".tep_db_prepare_input($proid[$i])."','".$d_datas[$i][$j]."','".$radio_chk_data[$i][$j]."',now(),'".$dou_id[$j]."')");
+	  				}
+				}
+			}*/
+
+			for($n=0;$n < $cnt;$n++ ){
+			
+			   $update_sql_data = array('products_last_modified' => 'now()',
+                                 'products_quantity' => tep_db_prepare_input($products_quantity[$n]),
+                                 'products_price' => tep_db_prepare_input($products_prise[$n]));
+        //$sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
+        tep_db_perform(TABLE_PRODUCTS, $update_sql_data, 'update', 'products_id = \'' . tep_db_prepare_input($proid[$n]) . '\'');
+
+      // 特価商品インサート
+    if(!empty($psrice_datas[$n])) {
+      //％指定の場合は価格を算出
+            if (substr($psrice_datas[$n], -1) == '%') {
+              $new_special_insert_query = tep_db_query("select products_id, products_price from " . TABLE_PRODUCTS . " where products_id = '" . tep_db_prepare_input($proid[$n]) . "'");
+              $new_special_insert = tep_db_fetch_array($new_special_insert_query);
+              $products_prise[$n] = $new_special_insert[$products_prise[$n]];
+              $psrice_datas[$n] = ($products_prise[$n] - (($psrice_datas[$n] / 100) * $products_prise[$n]));
+            } 
+      
+        $spcnt_query = tep_db_query("select count(*) as cnt from " . TABLE_SPECIALS . " where products_id = '".tep_db_prepare_input($proid[$n])."'");
+      $spcnt = tep_db_fetch_array($spcnt_query);
+			
+			     if($spcnt['cnt'] > 0) {
+	  	//登録済みなのでアップデート
+			tep_db_query("update " . TABLE_SPECIALS . " set specials_new_products_price = '".$psrice_datas[$n]."', specials_last_modified = now(), status = '1' where  products_id = '".tep_db_prepare_input($proid[$n])."'");
+      }else{
+	  	 //未登録なのでインサート
+        tep_db_query("insert into " . TABLE_SPECIALS . "(specials_id, products_id, specials_new_products_price, specials_date_added, status) values ('', '".tep_db_prepare_input($proid[$n])."', '".tep_db_prepare_input($psrice_datas[$n])."', now(), '1')");
+	  }
+	 }else{
+	 	$spcnt_query = tep_db_query("select count(*) as cnt from " . TABLE_SPECIALS . " where products_id = '".tep_db_prepare_input($proid[$n])."'");
+     	 $spcnt = tep_db_fetch_array($spcnt_query);
+    	  if($spcnt['cnt'] > 0) {
+       	 //データを削除
+              tep_db_query("delete from " . TABLE_SPECIALS . " where products_id = '" . tep_db_prepare_input($proid[$n]) . "'");
+        	}
+				//tep_db_query("update " . TABLE_SPECIALS . " set specials_new_products_price = '".$psrice_datas[$n]."', specials_last_modified = now(), status = '1' where  products_id = '".tep_db_prepare_input($proid[$n])."'");
+	}
+		}
+	}
+	tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $HTTP_GET_VARS['cPath'] . '&pID=' .$products_id));
+        break;
+		
+//}}
       case 'toggle':
           if ($_GET['cID']) {
             $cID = intval($_GET['cID']);
@@ -767,6 +893,352 @@ function mess(){
   //return false;
   //}
 }
+
+var zaiko_input_obj=document.getElementsByName("zaiko[]");//架空
+var trader_input_obj=document.getElementsByName("TRADER_INPUT[]");//業者
+var increase_input_obj=document.getElementsByName("INCREASE_INPUT");//倍率
+var target_input_obj=document.getElementsByName("TARGET_INPUT[]");//同業者
+var price_obj=document.getElementsByName("price[]");//特別価格
+
+function ctrl_keydown(id_val,num,i,j){ //id_ver=ID　num＝現在の番号　i＝同業者番号 j=同業者数
+
+		var n=parseInt(num)-1;
+		var n2=parseInt(trader_input_obj.length);//フォームの数
+		var a=parseInt(1);
+		var b=parseInt(2);//特価フォーム専用
+		var id=id_val;
+		switch(event.keyCode) {	
+		 case 13://enter
+			n2 -=a;//フォームの数-１
+			 	if((id == "TRADER_INPUT")&&(n < n2)){
+				
+					n +=a;
+					
+					trader_input_obj[n].focus();
+					
+				}else if((id == "zaiko")&&(n < n2)){
+					
+					n += a;
+					zaiko_input_obj[n].focus();
+					
+				}else if((id == "INCREASE_INPUT")&&(n < n2)){
+					
+					n += a;
+					increase_input_obj[n].focus();	
+				
+				}else if((id == "TARGET_INPUT")&&(n < n2)){
+				
+					n += a;
+					document.getElementById("target_"+n+"_"+i).focus();
+					
+				}else if((id == "price_input_")&&(n < n2)){
+					n += a;
+					price_obj[n].focus();
+					//document.getElementById("price_input_"+n).focus();
+				}
+				
+	 		break;
+			
+		 case 37:　//キーボードの十字キーの←
+			
+				if(id == "TRADER_INPUT"){
+					zaiko_input_obj[n].focus();
+					
+				}else if(id == "INCREASE_INPUT"){
+				
+					trader_input_obj[n].focus();
+						
+				}else if(id == "TARGET_INPUT"){
+					var k= j-1;
+					if(j != 0 && 0 != k && i !=0 ){
+						i--;
+						document.getElementById("target_"+n+"_"+i).focus();
+					}else{
+						increase_input_obj[n].focus();
+					}
+					
+				}else if(id == "price_input_"){
+					i--;
+					document.getElementById("target_"+n+"_"+i).focus();
+				}
+				
+			 break;
+         case 38:　//キーボードの十字キーの↑
+
+				if((id == "TRADER_INPUT")&&(n != 0)){
+				
+					n -= a;
+					trader_input_obj[n].focus();
+					
+				}else if((id == "zaiko")&&(n != 0)){
+					
+					n -= a;
+					zaiko_input_obj[n].focus();
+					
+				}else if((id == "INCREASE_INPUT")&&(n != 0)){
+					
+					n -= a;
+					increase_input_obj[n].focus();	
+				
+				}else if((id == "TARGET_INPUT")&&(n != 0)){
+				
+					n -= a;
+					document.getElementById("target_"+n+"_"+i).focus();
+				
+				}else if((id == "price_input_")&&(n != 0)){
+					//document.getElementById("price_input_"+n).focus();
+					n -= a;
+					price_obj[n].focus();
+				}
+			 
+		 	break;
+         case 39:　//キーボードの十字キーの→
+
+			 	if(id == "zaiko"){
+				
+					trader_input_obj[n].focus();
+			  
+			 	}else if(id == "TRADER_INPUT"){
+				
+					increase_input_obj[n].focus();	
+							
+				}else if(id == "INCREASE_INPUT"){
+				
+					document.getElementById("target_"+n+"_0").focus();
+						
+				}else if(id == "TARGET_INPUT"){
+					var k= j-1;
+					if(j != 0 && i != k){
+						i++;
+						document.getElementById("target_"+n+"_"+i).focus();
+					}else{
+					
+					price_obj[n].focus();
+						//document.getElementById("price_input_"+n).focus();
+					}
+					
+					
+				}
+	 		 break;
+         case 40: 　//キーボードの十字キーの↓
+		 	n2 -=a;//フォームの数-１
+			 	if((id == "TRADER_INPUT")&&(n < n2)){
+				
+					n +=a;
+					
+					trader_input_obj[n].focus();
+					
+				}else if((id == "zaiko")&&(n < n2)){
+					
+					n += a;
+					zaiko_input_obj[n].focus();
+					
+				}else if((id == "INCREASE_INPUT")&&(n < n2)){
+					
+					n += a;
+					increase_input_obj[n].focus();	
+				
+				}else if((id == "TARGET_INPUT")&&(n < n2)){
+				
+					n += a;
+					document.getElementById("target_"+n+"_"+i).focus();
+					
+				}else if((id == "price_input_")&&(n < n2)){
+					n +=a;
+					price_obj[n].focus();
+					//document.getElementById("price_input_"+n).focus();
+				}
+	 		break;
+		}
+			
+	}
+
+
+//個別特価価格更新処理
+/*
+function single_update(cPath,pID,products_price,cnt,d_cnt){
+var n=cnt;
+var d_n=cnt-1;
+var p_price=products_price;
+	//var price_obj=document.getElementById("price_input_"+n).value;
+		var s_price=document.getElementById("price_input_"+n).value;
+		var zaiko=document.getElementById("zaiko_"+n).value;
+		if(zaiko =="在庫切れ" || zaiko==""){
+			zaiko=0;
+		}
+		var flg=confirm("特価価格を更新します");
+		if(flg){
+			location.href="categories.php?cPath="+cPath+"&pID="+pID+"&action=single_update&products_special_price="+s_price+"&products_price="+p_price+"&products_quantity="+zaiko;
+		}else{
+			alert("更新をキャンセルしました");
+		}
+}
+*/
+function all_update(){
+		var flg=confirm("特価価格を更新します");
+		if(flg){
+			document.myForm1.flg_up.value=1;
+			window.document.myForm1.submit();
+		}else{
+			document.myForm1.flg_up.value=0;
+			alert("更新をキャンセルしました");
+		}
+}
+
+
+
+
+
+function chek_radio(cnt){
+var radio_cnt=document.getElementsByName("chk_"+cnt+"[]");
+
+	for(var i=0;i < radio_cnt.length;i++){
+		if(radio_cnt[i].checked == true){
+			document.getElementById("radiochk"+cnt+"_"+i).value = 1;
+			//document.getElementById("target_"+cnt+"_"+i).disabled = false;
+			if(document.getElementById("target_"+cnt+"_"+i).value != null){
+				set_money(cnt);//特価価格設定
+			}
+		}else{
+			document.getElementById("radiochk"+cnt+"_"+i).value = 0;
+			//document.getElementById("target_"+cnt+"_"+i).disabled =true;
+		}
+	}		
+}
+
+
+function cleat_set(url,w,h){
+
+	var set_url=url;
+	var set_width=w;
+	var set_height=h;
+	window.open(set_url,'aaa',"width="+set_width+",height="+set_height);
+	//window.open(url,'aaa','width=100%,height=100%');
+	window.document.myForm1.action = set_url;
+	window.document.myForm1.target = "aaa"; 
+	window.document.myForm1.method = "POST"; 
+	window.document.myForm1.submit();
+	}
+
+function list_display(path,cid){
+
+	var set_url="list_display.php?cpath="+path+"&cid="+cid;
+	window.open(set_url,'bbbb',"width=1000,height=500");
+
+//location.href="list_display.php?cpath="+path+"&cid="+cid;
+}
+	
+function event_onblur(num){		
+		var n=num-1;													//フォーム識別番号
+		var trader_price=var_calc(trader_input_obj[n].value);
+		increase_input_obj[n].value=trader_price;
+		set_money(n);//特価価格設定
+		
+}
+
+function onload_keisan(){
+
+	for(var i=0;i<trader_input_obj.length;i++){
+		var trader_price=var_calc(trader_input_obj[i].value);
+		increase_input_obj[i].value=trader_price;
+		set_money(i);//特価価格設定
+	}
+}
+
+function var_calc(val){
+//val=業者/価格の値
+
+	var bai = calc[0].getAttribute("bai");//倍率
+	var price=val*bai;											
+
+	var anser=Math.floor(price);	//切捨て
+	
+		
+	return anser;
+}
+
+
+//計算設定読み込み
+
+
+function set_money(num){
+		var n=num;
+		var radio_cnt=document.getElementsByName("chk_"+n+"[]");
+	if(radio_cnt.length == 0){
+		var tar_ipt = document.getElementById("target_"+n+"_0").value;//同業者
+	}else{
+		
+		for(var i=0;i < radio_cnt.length;i++){
+			if(radio_cnt[i].checked == true){
+				var tar_ipt = document.getElementById("target_"+n+"_"+i).value;//同業者
+			}
+		}	
+	}	
+		var ins_ipt=increase_input_obj[n].value;//倍率
+		var set_m="";												//サイト入力フォームに値を設置変数初期化
+		if(parseInt(ins_ipt) <= parseInt(tar_ipt)){
+
+			var ins_anser = ( parseInt(ins_ipt) / parseInt(tar_ipt) ) * 100;
+			ins_anser = 100 - ins_anser;
+			if(parseInt(ins_anser) >= 20){
+				alert("20%の差額があります。再設定してください");
+			}
+			var kei = calc[0].getAttribute("kei");//数字
+			var shisoku = calc[0].getAttribute("shisoku");//演算子
+			if(shisoku == "+"){
+				set_m = parseInt(tar_ipt) + parseInt(kei);
+			}else{
+				set_m = parseInt(tar_ipt) - parseInt(kei);
+			}
+			
+			
+		}else{
+			var ins_anser = ( parseInt(tar_ipt) / parseInt(ins_ipt)) * 100;
+			ins_anser = 100 - ins_anser;
+			if(parseInt(ins_anser) >= 20){
+				alert("20%の差額があります。再設定してください");
+			}
+			set_m=ins_ipt;
+			set_m=Math.ceil(set_m);
+		}
+		var price_n = n + 1;
+		//var price_obj=document.getElementById("price_input_"+ price_n);//サイトインプット
+		var this_price=document.getElementsByName("this_price[]");
+
+		price_obj[n].value=String(set_m);
+		
+		//価格の判定
+		//現在の価格と更新予定の価格を比較
+		//一致しているなら文字の色を青、不一致なら赤にする
+		if(parseInt(this_price[n].value)==parseInt(set_m)){
+			price_obj[n].style.color="blue";
+		}else{
+			price_obj[n].style.color="red";
+		}
+}
+
+var calc;
+function ajaxLoad(path){
+	var request = new XMLHttpRequest();
+	var send_url="set_ajax.php?action=ajax&cPath="+path;//url=action=hoge&cpath=    まで
+
+	request.open("GET",send_url, false); //同期通信
+	request.onreadystatechange = function() {
+    	if (request.readyState == 4) {
+        	var xmlDoc = request.responseXML;
+			calc = xmlDoc.getElementsByTagName("calc");
+		}
+	}
+	request.send(null);
+	
+}
+var spprice=document.getElementsByName("pprice[]");
+
+function history(url,cpath,cid,action){
+	var url=url+"?cpath="+cpath+"&cid="+cid+"&action="+action;
+	window.open(url,'ccc',"width=1000,height=800");
+}
+
 </script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onLoad="SetFocus();">
@@ -1589,6 +2061,9 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
             </table></td>
         </tr>
         <tr>
+			  <form name="myForm1" action="categories_admin.php?<?php echo "cPath=".$cPath."&pID=".$products['products_id']."&action=all_update"; ?>" method="POST" onSubmit="return false">
+	 	<input type="hidden" name="flg_up" value="" />
+
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>
                 <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -1600,11 +2075,39 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
             <td class="dataTableHeadingContent" align="right">表示</td>
             <?php }?>
             <?php }?>
-  
-            <td class="dataTableHeadingContent" align="right">価格</td>
-            <td class="dataTableHeadingContent" align="right">数量</td>
-                      <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_STATUS; ?></td>
-                      <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
+
+            <td class="dataTableHeadingContent"  width="7px" align="center">個数/架空</td>
+            <td class="dataTableHeadingContent"  width="7px" align="center">数量</td>
+             <td class="dataTableHeadingContent"  width="7px" align="center"><a
+             href="#" onClick="history('history.php',' <?php echo $cPath_yobi;?>','<?php echo $current_category_id; ?>','oroshi')">価格/業者</a></td>
+             <?php  
+             $res=tep_db_query("select bairitu from set_auto_calc where
+                 parent_id='".$current_category_id."'"); 
+             $col=tep_db_fetch_array($res);
+             ?>
+             <td class="dataTableHeadingContent"  width="7px" align="center"><?php echo $col['bairitu']?>倍</td>
+             <?php
+               $res=tep_db_query("select count(*) as cnt from set_dougyousya_names where parent_id='".$cPath_yobi."'ORDER BY dougyousya_id ASC");
+               $count_dougyousya=tep_db_fetch_array($res);
+               if($count_dougyousya['cnt'] > 0) {
+                 $res=tep_db_query("select * from set_dougyousya_names where parent_id='".$cPath_yobi."' ORDER      BY dougyousya_id ASC");
+                 while($col_dougyousya=tep_db_fetch_array($res)){
+                   echo "<td class='dataTableHeadingContent'  width='7px'
+                     align='center'><a href='#' onClick=history('history.php',".$cPath_yobi.",".$current_category_id.",'dougyousya')>".$col_dougyousya['dougyousya_name']."</a></td>";
+                   echo "<input type='hidden' name='d_id[]' value='".$col_dougyousya['dougyousya_id']."'>";
+                 }
+                } else {
+                  echo "<td class='dataTableHeadingContent'  width='7px'
+                    align='center'>同業者未設定</td>";
+                }
+             ?>
+               <td class="dataTableHeadingContent" align="right">価格</td>
+               <td class="dataTableHeadingContent" align="right">特価価格設定</td>
+               <td class="dataTableHeadingContent" align="center">
+               <?php echo  TABLE_HEADING_STATUS; ?></td>
+	       <td class="dataTableHeadingContetn" align="right"></td>
+               <td class="dataTableHeadingContent" align="right">
+               <?php echo TABLE_HEADING_ACTION; ?></td>
                     </tr>
                     <?php
     $categories_count = 0;
@@ -1678,11 +2181,12 @@ if (isset($nowColor) && $nowColor == $odd) {
 }
 
       if ( (isset($cInfo) && is_object($cInfo)) && ($categories['categories_id'] == $cInfo->categories_id) ) {
-        echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id'])) . '\'">' . "\n";
+        echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" ' . ' onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id'])) . '\'">' . "\n";
       } else {
-        echo '              <tr class="' . $nowColor . '" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . (isset($_GET['page'])&&$_GET['page'] ? ('&page=' . $_GET['page']) : '' ) . '&cID=' . $categories['categories_id']) . '\'">' . "\n";
+        echo '              <tr class="' . $nowColor . '" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($HTTP_GET_VARS['page'] ? ('&page=' . $HTTP_GET_VARS['page']) : '' ) . '&cID=' . $categories['categories_id']) . '\'">' . "\n"; 
       }
 ?>
+
                     <td class="dataTableContent">
                     <?php 
                     echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id'])) . '">' . tep_image(DIR_WS_ICONS . 'folder.gif', ICON_FOLDER) . '</a>&nbsp;
@@ -1785,36 +2289,92 @@ if (isset($nowColor) && $nowColor == $odd) {
 }
 
       if ( (isset($pInfo) && is_object($pInfo)) && ($products['products_id'] == $pInfo->products_id) ) {
-        echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '\'">' . "\n";
+        echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" ' . '\'">' . "\n";
       } else {
-        echo '              <tr class="' . $nowColor . '" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) . '&pID=' . $products['products_id']) . '\'">' . "\n";
+        echo '              <tr class="' . $nowColor . '" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'" ' . "\n";
       }
 ?>
-                    <td class="dataTableContent"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;&nbsp;<a href="orders.php?keywords=' . urlencode($products['products_name']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;' . $products['products_name']; ?></td>
-            
-                      <td class="dataTableContent" align="right"><?php
-/*
-$special_price_check = tep_get_products_special_price($products['products_id']);
-if (!empty($special_price_check)) {
-  echo '<s>' . $currencies->format($products['products_price']) . '</s> <span class="specialPrice">' . $currencies->format($special_price_check) . '</span>';
-} else {
-  echo $currencies->format($products['products_price']);
-}*/
-      $product_price = tep_get_products_price($products['products_id']);
-      if ($product_price['sprice']) {
-        echo '<s>' . $currencies->format($product_price['price']) . '</s> <span class="specialPrice">' . $currencies->format($product_price['sprice']) . '</span>';
-      } else {
-        echo $currencies->format($product_price['price']);
-      }
-  ?></td>
-            <td class="dataTableContent" align="right"><?php
-if (empty($products['products_quantity'])) {
-  echo '<b>在庫切れ</b>';
-} else {
-  echo $products['products_quantity'] . '個';
+	<?php
+$res_kaku=tep_db_query("select * from set_menu_list where categories_id='".$current_category_id."' ORDER BY set_list_id ASC");
+$i_cnt=0;
+while($col_kaku=tep_db_fetch_array($res_kaku)){
+	$menu_datas[$i_cnt][0]=$col_kaku['products_id'];
+	$menu_datas[$i_cnt][1]=$col_kaku['kakuukosuu'];
+	$menu_datas[$i_cnt][2]=$col_kaku['kakaku'];
+	$i_cnt++;
+}
+?>	           <td class="dataTableContent"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;&nbsp;<a href="orders.php?keywords=' . urlencode($products['products_name']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;' . $products['products_name']; ?></td>
+                            <?php
+for($i=0;$i<$i_cnt;$i++){
+	if($products['products_id']==$menu_datas[$i][0]){
+		$imaginary=$menu_datas[$i][1];
+		$kakaku_treder=$menu_datas[$i][2];
+		break;
+	}else{
+		$imaginary=0;
+		$kakaku_treder=0;
+	}
+}
+
+?>
+	<td class="dataTableContent"><?php echo $imaginary; ?></td><?php ////個数架空	?>		
+	<td class="dataTableContent" ><?php
+if (empty($products['products_quantity'])) {//数量・・・在庫がない場合
+  echo "<input type='text' size='7px' value='在庫切れ' name='zaiko[]' id='zaiko_".$products_count."' onKeyDown=ctrl_keydown('zaiko',".$products_count.")>".'個';
+} else {//在庫がある場合
+  echo "<input type='text' size='7px' value='".$products['products_quantity']."' name='zaiko[]' id='zaiko_".$products_count."' onKeyDown=ctrl_keydown('zaiko',".$products_count.")>".'個';
 } ?></td>
+
+	<td class="dataTableContent" ><input type="text" size='7px' value="<?php echo $kakaku_treder; ?>" name="TRADER_INPUT[]"  id="TRADER_"<?php echo $products['products_id']; ?> onKeyDown="ctrl_keydown('TRADER_INPUT','<?php echo $products_count; ?>' )" onBlur="event_onblur('<?php echo $products_count; ?>')" readonly></td>	<?php //価格業者	?>		
+	<td class="dataTableContent" ><input type="text" size='7px' name="INCREASE_INPUT" onKeyDown="ctrl_keydown('INCREASE_INPUT','<?php echo $products_count; ?>')"readonly ></td>	<?php //価格倍率	?>
+	<?php
+
+	if($products_count==1){
+		$res=tep_db_query("select count(*) as cnt from set_dougyousya_names where parent_id='".$cPath_yobi."'");
+		$count=tep_db_fetch_array($res);
+	
+		$radio_res=tep_db_query("select * from set_dougyousya_history where categories_id='".$current_category_id."' order by history_id asc");
+		$radio_col=tep_db_fetch_array($radio_res);
+	}
+	$target_cnt=$products_count-1;//同業者専用
+/*同業者価格を文字列で表示させる必要あり
+現在は代変でreadonlyと書いている
+取得方法はまだ書いていない
+history.phpのaction=dougyousyaに方法は書いてある
+*/
+	if($count['cnt'] > 0){
+		
+		for($i=0;$i<$count['cnt'];$i++){
+			if($i==0){ //初期チェック$radio_col['products_id']== $products['products_id'] && $radio_col['radio_chk']==1
+				echo "<td class='dataTableContent' ><input type='radio' value='1' name='chk_".$target_cnt."[]' onClick='chek_radio(".$target_cnt.")' checked>
+								<input type='text' size='7px' name='TARGET_INPUT[]'   id='target_".$target_cnt."_".$i."' onBlur='event_onblur(".$products_count.")' onkeydown=ctrl_keydown('TARGET_INPUT',".$products_count.",".$i.",".$count['cnt'].") readonly></td>";//価格同業者
+				echo "<input type='hidden' name='radiochk[]' id='radiochk".$target_cnt."_".$i."' value='1' >";
+			}else{
+				echo "<td class='dataTableContent' ><input type='radio' value='0' name='chk_".$target_cnt."[]' onClick='chek_radio(".$target_cnt.")' >
+								<input type='text' size='7px' name='TARGET_INPUT[]'   id='target_".$target_cnt."_".$i."' onBlur='event_onblur(".$products_count.")' onkeydown=ctrl_keydown('TARGET_INPUT',".$products_count.",".$i.",".$count['cnt'].") readonly></td>";//価格同業者	
+				echo "<input type='hidden' name='radiochk[]' id='radiochk".$target_cnt."_".$i."' value='0' >";
+			}
+				
+		}
+	}else{
+			echo "<td class='dataTableContent' ><input type='text' size='7px'  name='TARGET_INPUT[]' id='target_".$target_cnt."_0' onBlur='event_onblur(".$products_count.")' onkeydown=ctrl_keydown('TARGET_INPUT',".$products_count.",'0','0') readonly></td>";//価格同業者	
+			echo "<input type='hidden' name='radiochk[]' id='radiochk".$target_cnt."_".$i."' value='1' >";
+	}
+	?>
+	<td class="dataTableContent" align="right"><?php
+
+$special_price_check = tep_get_specials_special_price($products['products_id']);
+if (!empty($special_price_check)) {//特価がある場合
+  echo '<s>' . $currencies->format($products['products_price']) . '</s> <span class="specialPrice">' . $currencies->format($special_price_check) . '</span>';
+} else {//特価がない場合
+  echo $currencies->format($products['products_price']);
+} ?></td>
+
+	<td class="dataTableContent" align="right"><input type="text" size='7px' value="" name="price[]" id="<?php echo "price_input_".$products_count; ?>" onKeyDown="ctrl_keydown('price_input_','<?php echo $products_count; ?>','<?php echo $count['cnt'];?>')" ></td>	<?php //サイト入力	?>
+		
             <td class="dataTableContent" align="center"><?php
 if ($ocertify->npermission >= 10) { //表示制限
+    if ($statusable) {
       if ($products['products_status'] == '1') {
         echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=2&pID=' . $products['products_id'] . '&cPath=' . $cPath) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=0&pID=' . $products['products_id'] . '&cPath=' . $cPath) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>';
       } else if ($products['products_status'] == '2') {
@@ -1822,9 +2382,18 @@ if ($ocertify->npermission >= 10) { //表示制限
       } else {
         echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=1&pID=' . $products['products_id'] . '&cPath=' . $cPath) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=2&pID=' . $products['products_id'] . '&cPath=' . $cPath) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
       }
+    } else {
+      if ($products['products_status'] == '1') {
+        echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10);
+      } else if ($products['products_status'] == '2') {
+        echo tep_image(DIR_WS_IMAGES . 'icon_status_blue.gif', IMAGE_ICON_STATUS_GREEN, 10, 10);
+      } else {
+        echo tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
+      }
+    }
 } else {
   // 価格更新警告
-  $last_modified_array = getdate(strtotime(tep_datetime_short($products['products_last_modified'])));
+  /*$last_modified_array = getdate(strtotime(tep_datetime_short($products['products_last_modified'])));
   $today_array = getdate();
   if ($last_modified_array["year"] == $today_array["year"] && $last_modified_array["mon"] == $today_array["mon"] && $last_modified_array["mday"] == $today_array["mday"]) {
     if ($last_modified_array["hours"] >= ($today_array["hours"]-2)) {
@@ -1839,15 +2408,38 @@ if ($ocertify->npermission >= 10) { //表示制限
   }
   
   echo '&nbsp;&nbsp;' . tep_image(DIR_WS_ICONS . 'battery_0.gif', '数量異常');
-  
+  */
 }
 ?></td>
-                      <td class="dataTableContent" align="right"><?php if ( isset($pInfo) && (is_object($pInfo)) && ($products['products_id'] == $pInfo->products_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>
+<td>
+<?php 
+$last_modified_array = getdate(strtotime(tep_datetime_short($products['products_last_modified'])));
+  $today_array = getdate();
+  if ($last_modified_array["year"] == $today_array["year"] && $last_modified_array["mon"] == $today_array["mon"] && $last_modified_array["mday"] == $today_array["mday"]) {
+    if ($last_modified_array["hours"] >= ($today_array["hours"]-2)) {
+      echo tep_image(DIR_WS_ICONS . 'signal_blue.gif', '更新正常');
+    } elseif ($last_modified_array["hours"] >= ($today_array["hours"]-5)) {
+      echo tep_image(DIR_WS_ICONS . 'signal_yellow.gif', '更新注意');
+    } else {
+      echo tep_image(DIR_WS_ICONS . 'signal_red.gif', '更新警告');
+    }
+  } else {
+    echo tep_image(DIR_WS_ICONS . 'signal_blink.gif', '更新異常');
+  }
+  
+  echo '&nbsp;&nbsp;' . tep_image(DIR_WS_ICONS . 'battery_0.gif', '数量異常');
+  ?>
+<input type="hidden" name="this_price[]" value="<?php echo $currencies->format($special_price_check);?>" >
+<input type="hidden" name="proid[]" value="<?php echo $products['products_id']; ?>" >
+<input type="hidden" name="pprice[]" value="<?php echo $products['products_price']; ?>" >
+</td>
+                      <td class="dataTableContent" align="right"><?php if ( (is_object($pInfo)) && ($products['products_id'] == $pInfo->products_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>
 &nbsp;</td>
                     </tr>
                     <?php
     }
-
+?>
+<?php
     if ($cPath_array) {
       $cPath_back = '';
       for($i = 0, $n = sizeof($cPath_array) - 1; $i < $n; $i++) {
@@ -1859,8 +2451,29 @@ if ($ocertify->npermission >= 10) { //表示制限
       }
     }
 
+$cPath_yobi=$cPath_back;
+		/* リスト表示に必要な情報を得る */
+	if(empty($cPath_back)&&empty($cID)&&isset($cPath)){	
+		$res_list=tep_db_query("select parent_id from categories where categories_id =".tep_db_prepare_input($cPath));
+		$col_list=tep_db_fetch_array($res_list);
+		$cPath_yobi=$col_list['parent_id'];
+	}
+
     $cPath_back = isset($cPath_back) && $cPath_back ? 'cPath=' . $cPath_back : '';
 ?>
+		    <tr>
+		    				<input type="hidden" value="<?php echo $cPath; ?>" name="cpath">
+				<input type="hidden" value="<?php echo $cPath_yobi; ?>" name="cpath_yobi">
+				<input type="hidden" value="<?php echo $current_category_id; ?>" name="cID_list" ><?php //予備　?>
+				<?php
+					
+					echo "<td align='right' colspan='9'><input type='button' value='計算設定' name='b[]' onClick=cleat_set('set_bairitu.php','300','450')></td>";//追加
+				?>
+				<td align="right" ><?php echo "<input type='button' value='リスト表示' name='d[]' onClick=list_display(".$cPath_yobi.",".$current_category_id.")>";//追加?></td>
+				<td align="right" ><input type="button" name="x" value="一括更新" onClick="all_update()"></td>
+		    </tr>
+</form>
+
   <tr>
     <td class="smallText" valign="top"><?php echo $products_split->display_count($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
     <td class="smallText" align="right" colspan="4">
