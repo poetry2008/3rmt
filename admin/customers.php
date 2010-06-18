@@ -543,7 +543,7 @@ function check_form() {
              ci.customers_info_date_account_last_modified as date_account_last_modified, 
              ci.customers_info_date_of_last_logon as date_last_logon, 
              ci.customers_info_number_of_logons as number_of_logons 
-      from " . TABLE_CUSTOMERS . " c left join " . TABLE_ADDRESS_BOOK . " a on c.customers_id = a.customers_id and c.customers_default_address_id = a.address_book_id, " . TABLE_SITES . " s, ".TABLE_CUSTOMERS_INFO." ci
+      from " . TABLE_CUSTOMERS . " c left join " . TABLE_ADDRESS_BOOK . " a on c.customers_id = a.customers_id and c.customers_default_address_id = a.address_book_id, ".TABLE_CUSTOMERS_INFO." ci
         where c.customers_id = ci.customers_info_id
         " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and c.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
         " . $search . " 
