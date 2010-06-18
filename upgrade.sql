@@ -137,9 +137,29 @@ update orders set orders_status_image = (select orders_status.orders_status_imag
 update orders set language_id = (select orders_status.language_id from orders_status where orders_status.orders_status_id = orders.orders_status);
 
 -- drop procedure if exists ps_order_updated;
-delimiter // create procedure ps_order_updated(oid varchar(32)) begin declare sl_id int(5); declare sosname varchar(60); declare sosimg varchar(60); declare sosfinish int(2); select s.language_id,s.orders_status_name,s.orders_status_image ,s.finished into sl_id ,sosname,sosimg,sosfinish from orders o ,orders_status AS s where o.orders_id = oid and o.orders_status = s.orders_status_id ; update orders set language_id =  sl_id,orders_status_image = sosimg,finished = sosfinish ,orders_status_name = sosname where orders.orders_id = oid; end;  //
+-- delimiter // create procedure ps_order_updated(oid varchar(32)) begin declare sl_id int(5); declare sosname varchar(60); declare sosimg varchar(60); declare sosfinish int(2); select s.language_id,s.orders_status_name,s.orders_status_image ,s.finished into sl_id ,sosname,sosimg,sosfinish from orders o ,orders_status AS s where o.orders_id = oid and o.orders_status = s.orders_status_id ; update orders set language_id =  sl_id,orders_status_image = sosimg,finished = sosfinish ,orders_status_name = sosname where orders.orders_id = oid; end;  //
 -----------
 -- drop procedure if exists ps_piliang;
-delimiter // 
+-- delimiter // create procedure ps_piliang() begin declare done int(1) default 0 ;declare sl_id int(5); declare sosname varchar(60); declare sosimg varchar(60); declare sosfinish int(2); declare oid varchar(60) ; declare cur1 cursor for select orders_id from orders; declare continue handler for sqlstate '02000' set done=1;open cur1; Repeat fetch cur1 into oid; if not done then select s.language_id,s.orders_status_name,s.orders_status_image ,s.finished into sl_id ,sosname,sosimg,sosfinish from orders o ,orders_status AS s where o.orders_id = oid and o.orders_status = s.orders_status_id ; update orders set language_id =  sl_id,orders_status_image = sosimg,finished = sosfinish ,orders_status_name = sosname where orders.orders_id = oid;end if ; until done end REPEAT ; close cur1; end;  //
 
 -- routines MYSQLDUMP 加上这个参数可能会导出 过程
+
+--DROP TRIGGER ps_ordersstatus_updated;  
+--delimiter //  
+--CREATE TRIGGER ps_ordersstatus_updated AFTER UPDATE ON orders_status
+--FOR EACH ROW  
+--begin 
+--declare sl_id int;
+--declare sosname varchar(60);
+--declare sosimg varchar(60);
+--declare sosfinish int;
+--select s.language_id,s.orders_status_name,s.orders_status_image ,s.finished into sl_id ,sosname,sosimg,sosfinish 
+--from 
+--orders_status AS s 
+--where s.orders_status_id = OLD.orders_status_id; 
+--update orders set language_id = sl_id,orders_status_image = sosimg,finished = sosfinish ,orders_status_name = sosname
+--where orders_status = OLD.orders_status_id;
+--end; // 
+--delimiter; 
+
+update information_page set romaji=IF(convert(romaji,SIGNED),pID,romaji);

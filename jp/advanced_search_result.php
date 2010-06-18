@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
@@ -180,7 +173,7 @@
                     p.products_price, 
                     p.products_tax_class_id, 
                     pd.site_id,
-                    p.products_price, p.products_price_offset, p.products_small_sum"; 
+                    p.products_price_offset, p.products_small_sum"; 
   /*
   if(isset($_GET['colors']) && !empty($_GET['colors'])) {
     $select_str .= ", cp.color_image ";
@@ -265,11 +258,11 @@
   }
 
   if (DISPLAY_PRICE_WITH_TAX == 'true') {
-    if ($pfrom) $where_str .= " and (IF(s.status, s.specials_new_products_price, p.products_price) * if(gz.geo_zone_id is null, 1, 1 + (tr.tax_rate / 100) ) >= " . $pfrom . ")";
-    if ($pto)   $where_str .= " and (IF(s.status, s.specials_new_products_price, p.products_price) * if(gz.geo_zone_id is null, 1, 1 + (tr.tax_rate / 100) ) <= " . $pto . ")";
+    if ($pfrom) $where_str .= " and (IF(p.products_price_offset, p.products_price + p.products_price_offset, p.products_price) * if(gz.geo_zone_id is null, 1, 1 + (tr.tax_rate / 100) ) >= " . $pfrom . ")";
+    if ($pto)   $where_str .= " and (IF(p.products_price_offset, p.products_price + p.products_price_offset, p.products_price) * if(gz.geo_zone_id is null, 1, 1 + (tr.tax_rate / 100) ) <= " . $pto . ")";
   } else {
-    if ($pfrom) $where_str .= " and (IF(s.status, s.specials_new_products_price, p.products_price) >= " . $pfrom . ")";
-    if ($pto)   $where_str .= " and (IF(s.status, s.specials_new_products_price, p.products_price) <= " . $pto . ")";
+    if ($pfrom) $where_str .= " and (IF(p.products_price_offset, p.products_price + p.products_price_offset, p.products_price) >= " . $pfrom . ")";
+    if ($pto)   $where_str .= " and (IF(p.products_price_offset, p.products_price + p.products_price_offset, p.products_price) <= " . $pto . ")";
   }
 
   //$where_str .= " and pd.site_id = ".SITE_ID;
