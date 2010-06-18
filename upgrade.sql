@@ -131,12 +131,15 @@ ALTER TABLE  `products` ADD  `products_price_offset` INT NULL AFTER  `products_p
 ALTER TABLE  `products` CHANGE  `products_price_offset`  `products_price_offset` decimal(15,4) NOT NULL DEFAULT '0.0000';
 
 
---update orders,orders_status set orders.finished = orders_status.finished where orders.orders_status = orders_status.orders_status_id;
 update orders set finished = (select orders_status.finished from orders_status where orders_status.orders_status_id = orders.orders_status);
 update orders set orders_status_name = (select orders_status.orders_status_name from orders_status where orders_status.orders_status_id = orders.orders_status);
 update orders set orders_status_image = (select orders_status.orders_status_image from orders_status where orders_status.orders_status_id = orders.orders_status);
 update orders set language_id = (select orders_status.language_id from orders_status where orders_status.orders_status_id = orders.orders_status);
 
---update orders,orders_status set orders.orders_status_image = orders_status.orders_status_image where orders.orders_status = orders_status.orders_status_id;
---update orders,orders_status set orders.language_id = orders_status.language_id where orders.orders_status = orders_status.orders_status_id;
+-- drop procedure if exists ps_order_updated;
+delimiter // create procedure ps_order_updated(oid varchar(32)) begin declare sl_id int(5); declare sosname varchar(60); declare sosimg varchar(60); declare sosfinish int(2); select s.language_id,s.orders_status_name,s.orders_status_image ,s.finished into sl_id ,sosname,sosimg,sosfinish from orders o ,orders_status AS s where o.orders_id = oid and o.orders_status = s.orders_status_id ; update orders set language_id =  sl_id,orders_status_image = sosimg,finished = sosfinish ,orders_status_name = sosname where orders.orders_id = oid; end;  //
+-----------
+-- drop procedure if exists ps_piliang;
+delimiter // 
 
+-- routines MYSQLDUMP 加上这个参数可能会导出 过程
