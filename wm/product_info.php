@@ -162,7 +162,7 @@ function change_num(ob, targ, quan,a_quan)
                 <td align="center" class="smallText">
                       <script language="javascript" type="text/javascript">
                       <!--
-    document.write('<?php echo '<a href="images/'.$product_info['products_image'].'" rel="lightbox[products]">' . tep_image3(DIR_WS_IMAGES . $product_info['products_image'], addslashes($product_info['products_name']), PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'name="lrgproduct" id="lrgproduct"') . '<br>' . TEXT_CLICK_TO_ENLARGE . '<';?>' + '/a>');
+document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_info['products_image'].'" rel="lightbox[products]">' . tep_image3(DIR_WS_IMAGES . 'products/'. $product_info['products_image'], addslashes($product_info['products_name']), PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'name="lrgproduct" id="lrgproduct"') . '<br>' . TEXT_CLICK_TO_ENLARGE . '<\'+\'/a>'; ?>');
                         //-->
                         </script>
                         <noscript>
