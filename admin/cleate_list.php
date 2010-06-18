@@ -52,9 +52,18 @@
 <meta http-equiv="Content-Type" content="text/html; 
 charset=<?php echo CHARSET; ?>">
 <title>リスト作成</title>
+<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 </head>
 
-<body>
+<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onLoad="SetFocus();">
+<div id="spiffycalendar" class="text"></div>
+<?php require(DIR_WS_INCLUDES . 'header.php'); ?>
+<table border="0" width="100%" cellspacing="2" cellpadding="2">
+  <tr><td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
+    <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
+    </table></td>
+    <td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <table><tr><td class = "pageHeading">卸業者のデータ登録</td></tr><tr><td>
 <table border="0"class="list">
 			<tr>
 				<?php 
@@ -153,6 +162,11 @@ for($i=0;$i < $count[0];$i++){
 }
 	
 ?>
+</table></td></tr></table></td>
+</tr>
 </table>
+ <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
+ <br>
 </body>
 </html>
+<?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

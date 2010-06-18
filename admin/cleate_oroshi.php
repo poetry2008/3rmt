@@ -43,6 +43,7 @@
 <html>
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
+        <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 	<script type="text/javascript">
 	var html = new Array();
 	var i=0;
@@ -50,6 +51,7 @@
 			
 			html[i] = "追加:<input type='text' name='set_oroshi[]'><br />"; 
 			document.getElementById("o_input").innerHTML=html;
+                        t
 			i++;
 		}
 
@@ -70,7 +72,15 @@
 		}
 	</script>
 	</head>
-	<body>
+<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onLoad="SetFocus();">
+<div id="spiffycalendar" class="text"></div>
+<?php require(DIR_WS_INCLUDES . 'header.php'); ?>
+<table border="0" width="100%" cellspacing="2" cellpadding="2">
+  <tr><td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
+    <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
+    </table></td>
+    <td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <table><tr><td class = "pageHeading">卸業者の名前設定</td></tr><tr><td>
 		<form method="post" action="cleate_oroshi.php?action=set_oroshi" onSubmit="w_close()">
 			<input type="button" value="入力フォーム追加"　name='b1' onClick="input_add()"><br />
 			<input type="hidden" value="<?php echo $cPath ?>" name="cpath">
@@ -86,5 +96,12 @@
 			?><div id="o_input"></div>
 			<input type="submit" value="卸業者登録">
 		</form>
+                </td></tr></table>
+                </td>
+                </tr>
+                </table>
+<?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
+<br>
 	</body>
 </html>
+<?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
