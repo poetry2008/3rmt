@@ -102,6 +102,7 @@
   }
 
   function tep_date_long($raw_date) {
+    if (is_numeric($raw_date)) $raw_date = date('Y-m-d H:i:s', $raw_date);
     if ( ($raw_date == '0000-00-00 00:00:00') || ($raw_date == '') ) return false;
 
     $year = (int)substr($raw_date, 0, 4);
