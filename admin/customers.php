@@ -533,20 +533,19 @@ function check_form() {
     }
     $customers_query_raw = "
       select c.customers_id, 
+             c.site_id,
              c.customers_lastname, 
              c.customers_firstname, 
              c.customers_email_address, 
              a.entry_country_id, 
              c.customers_guest_chk,
-             s.romaji,
              ci.customers_info_date_account_created as date_account_created, 
              ci.customers_info_date_account_last_modified as date_account_last_modified, 
              ci.customers_info_date_of_last_logon as date_last_logon, 
              ci.customers_info_number_of_logons as number_of_logons 
-      from " . TABLE_CUSTOMERS . " c left join " . TABLE_ADDRESS_BOOK . " a on c.customers_id = a.customers_id and c.customers_default_address_id = a.address_book_id, " . TABLE_SITES . " s, ".TABLE_CUSTOMERS_INFO." ci
-        where c.site_id = s.id
-          and c.customers_id = ci.customers_info_id
-        " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and s.id = '" . intval($_GET['site_id']) . "' " : '') . "
+      from " . TABLE_CUSTOMERS . " c left join " . TABLE_ADDRESS_BOOK . " a on c.customers_id = a.customers_id and c.customers_default_address_id = a.address_book_id, ".TABLE_CUSTOMERS_INFO." ci
+        where c.customers_id = ci.customers_info_id
+        " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and c.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
         " . $search . " 
       order by c.customers_lastname, c.customers_firstname
     ";
@@ -598,7 +597,7 @@ function check_form() {
         echo '          <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID')) . 'cID=' . $customers['customers_id']) . '\'">' . "\n";
     }
 ?>
-                <td class="dataTableContent"><?php echo $customers['romaji']; ?></td>
+                <td class="dataTableContent"><?php echo tep_get_site_romaji_by_id($customers['site_id']); ?></td>
                 <td class="dataTableContent"><?php echo $type; ?></td>
                 <td class="dataTableContent"><?php echo htmlspecialchars($customers['customers_lastname']); ?></td>
                 <td class="dataTableContent"><?php echo htmlspecialchars($customers['customers_firstname']); ?></td>
