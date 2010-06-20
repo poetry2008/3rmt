@@ -1,430 +1,1269 @@
-select * from iimy_reviews where customers_id='1'
-select * from iimy_reviews where customers_id='2'
-select * from iimy_reviews where customers_id='3'
-Array
-(
-    [0] => 1037
-    [reviews_id] => 1037
-    [1] => 33447
-    [products_id] => 33447
-    [2] => 3
-    [customers_id] => 3
-    [3] => fdf
-    [customers_name] => fdf
-    [4] => 3
-    [reviews_rating] => 3
-    [5] => 2009-09-09 13:50:54
-    [date_added] => 2009-09-09 13:50:54
-    [6] => 
-    [last_modified] => 
-    [7] => 0
-    [reviews_read] => 0
-    [8] => 0
-    [reviews_status] => 0
-)
-insert into `reviews` (
-      `reviews_id`,
-      `products_id`,
-      `customers_id`,
-      `customers_name`,
-      `reviews_rating`,
-      `date_added`,
-      `last_modified`,
-      `reviews_read`,
-      `site_id`,
-      `reviews_status`
-      ) values (
-        NULL,
-        '33447',
-        '3',
-        'fdf',
-        '3',
-        '2009-09-09 13:50:54',
-        '',
-        '0',
-        '1',
-        '0'
-      )
-select * from iimy_reviews_description where reviews_id=1037
-Array
-(
-    [0] => 1037
-    [reviews_id] => 1037
-    [1] => 4
-    [languages_id] => 4
-    [2] => haolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwe
-    [reviews_text] => haolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwe
-)
-insert into `reviews_description` (
-        `reviews_id`,
-        `languages_id`,
-        `reviews_text`
-        ) values (
-          '1135',
-          '4',
-          'haolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwehaolvfrfewrwe'
-        )
-select * from iimy_reviews where customers_id='4'
-select * from iimy_reviews where customers_id='5'
-select * from iimy_reviews where customers_id='6'
-select * from iimy_reviews where customers_id='45'
-select * from iimy_reviews where customers_id='8'
-select * from iimy_reviews where customers_id='9'
-select * from iimy_reviews where customers_id='10'
-select * from iimy_reviews where customers_id='11'
-select * from iimy_reviews where customers_id='12'
-select * from iimy_reviews where customers_id='13'
-select * from iimy_reviews where customers_id='14'
-select * from iimy_reviews where customers_id='15'
-select * from iimy_reviews where customers_id='16'
-select * from iimy_reviews where customers_id='17'
-Array
-(
-    [0] => 1042
-    [reviews_id] => 1042
-    [1] => 33474
-    [products_id] => 33474
-    [2] => 17
-    [customers_id] => 17
-    [3] => aaaaaaaaaa
-    [customers_name] => aaaaaaaaaa
-    [4] => 3
-    [reviews_rating] => 3
-    [5] => 2009-12-16 08:43:49
-    [date_added] => 2009-12-16 08:43:49
-    [6] => 2009-12-16 08:45:06
-    [last_modified] => 2009-12-16 08:45:06
-    [7] => 10
-    [reviews_read] => 10
-    [8] => 1
-    [reviews_status] => 1
-)
-insert into `reviews` (
-      `reviews_id`,
-      `products_id`,
-      `customers_id`,
-      `customers_name`,
-      `reviews_rating`,
-      `date_added`,
-      `last_modified`,
-      `reviews_read`,
-      `site_id`,
-      `reviews_status`
-      ) values (
-        NULL,
-        '33474',
-        '17',
-        'aaaaaaaaaa',
-        '3',
-        '2009-12-16 08:43:49',
-        '2009-12-16 08:45:06',
-        '10',
-        '1',
-        '1'
-      )
-select * from iimy_reviews_description where reviews_id=1042
-Array
-(
-    [0] => 1042
-    [reviews_id] => 1042
-    [1] => 4
-    [languages_id] => 4
-    [2] => aaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaa
-    [reviews_text] => aaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaa
-)
-insert into `reviews_description` (
-        `reviews_id`,
-        `languages_id`,
-        `reviews_text`
-        ) values (
-          '1136',
-          '4',
-          'aaaaaaaaaaaaaaa\r\naaaaaaaaaaaaaaa\r\naaaaaaaaaaaaaaa\r\naaaaaaaaaaaaaaa'
-        )
-Array
-(
-    [0] => 1049
-    [reviews_id] => 1049
-    [1] => 33481
-    [products_id] => 33481
-    [2] => 17
-    [customers_id] => 17
-    [3] => abc@abc.com
-    [customers_name] => abc@abc.com
-    [4] => 3
-    [reviews_rating] => 3
-    [5] => 2010-02-25 10:27:11
-    [date_added] => 2010-02-25 10:27:11
-    [6] => 
-    [last_modified] => 
-    [7] => 0
-    [reviews_read] => 0
-    [8] => 0
-    [reviews_status] => 0
-)
-insert into `reviews` (
-      `reviews_id`,
-      `products_id`,
-      `customers_id`,
-      `customers_name`,
-      `reviews_rating`,
-      `date_added`,
-      `last_modified`,
-      `reviews_read`,
-      `site_id`,
-      `reviews_status`
-      ) values (
-        NULL,
-        '33481',
-        '17',
-        'abc@abc.com',
-        '3',
-        '2010-02-25 10:27:11',
-        '',
-        '0',
-        '1',
-        '0'
-      )
-select * from iimy_reviews_description where reviews_id=1049
-Array
-(
-    [0] => 1049
-    [reviews_id] => 1049
-    [1] => 4
-    [languages_id] => 4
-    [2] => a;faafafniafiafiafajkljlijoiajflaijfliajflijialfjaljflajfilajfliajiljaifdjlafaifjdlafaffafafa
-    [reviews_text] => a;faafafniafiafiafajkljlijoiajflaijfliajflijialfjaljflajfilajfliajiljaifdjlafaifjdlafaffafafa
-)
-insert into `reviews_description` (
-        `reviews_id`,
-        `languages_id`,
-        `reviews_text`
-        ) values (
-          '1137',
-          '4',
-          'a;faafafniafiafiafajkljlijoiajflaijfliajflijialfjaljflajfilajfliajiljaifdjlafaifjdlafaffafafa'
-        )
-select * from iimy_reviews where customers_id='18'
-select * from iimy_reviews where customers_id='19'
-Array
-(
-    [0] => 1047
-    [reviews_id] => 1047
-    [1] => 31700
-    [products_id] => 31700
-    [2] => 19
-    [customers_id] => 19
-    [3] => afafa
-    [customers_name] => afafa
-    [4] => 3
-    [reviews_rating] => 3
-    [5] => 2009-12-31 09:25:45
-    [date_added] => 2009-12-31 09:25:45
-    [6] => 
-    [last_modified] => 
-    [7] => 0
-    [reviews_read] => 0
-    [8] => 0
-    [reviews_status] => 0
-)
-insert into `reviews` (
-      `reviews_id`,
-      `products_id`,
-      `customers_id`,
-      `customers_name`,
-      `reviews_rating`,
-      `date_added`,
-      `last_modified`,
-      `reviews_read`,
-      `site_id`,
-      `reviews_status`
-      ) values (
-        NULL,
-        '31700',
-        '19',
-        'afafa',
-        '3',
-        '2009-12-31 09:25:45',
-        '',
-        '0',
-        '1',
-        '0'
-      )
-select * from iimy_reviews_description where reviews_id=1047
-Array
-(
-    [0] => 1047
-    [reviews_id] => 1047
-    [1] => 4
-    [languages_id] => 4
-    [2] => fafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaf
-    [reviews_text] => fafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaf
-)
-insert into `reviews_description` (
-        `reviews_id`,
-        `languages_id`,
-        `reviews_text`
-        ) values (
-          '1138',
-          '4',
-          'fafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaffafafaf'
-        )
-select * from iimy_reviews where customers_id='20'
-select * from iimy_reviews where customers_id='37'
-select * from iimy_reviews where customers_id='21'
-select * from iimy_reviews where customers_id='22'
-select * from iimy_reviews where customers_id='23'
-select * from iimy_reviews where customers_id='24'
-select * from iimy_reviews where customers_id='25'
-select * from iimy_reviews where customers_id='26'
-select * from iimy_reviews where customers_id='27'
-Array
-(
-    [0] => 1046
-    [reviews_id] => 1046
-    [1] => 32819
-    [products_id] => 32819
-    [2] => 27
-    [customers_id] => 27
-    [3] => : Lupinusのゴールド買取
-    [customers_name] => : Lupinusのゴールド買取
-    [4] => 4
-    [reviews_rating] => 4
-    [5] => 2009-12-30 16:37:32
-    [date_added] => 2009-12-30 16:37:32
-    [6] => 
-    [last_modified] => 
-    [7] => 0
-    [reviews_read] => 0
-    [8] => 0
-    [reviews_status] => 0
-)
-insert into `reviews` (
-      `reviews_id`,
-      `products_id`,
-      `customers_id`,
-      `customers_name`,
-      `reviews_rating`,
-      `date_added`,
-      `last_modified`,
-      `reviews_read`,
-      `site_id`,
-      `reviews_status`
-      ) values (
-        NULL,
-        '32819',
-        '28',
-        ': Lupinusのゴールド買取',
-        '4',
-        '2009-12-30 16:37:32',
-        '',
-        '0',
-        '1',
-        '0'
-      )
-select * from iimy_reviews_description where reviews_id=1046
-Array
-(
-    [0] => 1046
-    [reviews_id] => 1046
-    [1] => 4
-    [languages_id] => 4
-    [2] => : Lupinusのゴールド買取: Lupinusのゴールド買取: Lupinusのゴールド買取: Lupinusのゴールド買取: Lupinusのゴールド買取: Lupinusのゴールド買取: Lupinusのゴールド買取: Lupinusのゴールド買取
-    [reviews_text] => : Lupinusのゴールド買取: Lupinusのゴールド買取: Lupinusのゴールド買取: Lupinusのゴールド買取: Lupinusのゴールド買取: Lupinusのゴールド買取: Lupinusのゴールド買取: Lupinusのゴールド買取
-)
-insert into `reviews_description` (
-        `reviews_id`,
-        `languages_id`,
-        `reviews_text`
-        ) values (
-          '1139',
-          '4',
-          ': Lupinusのゴールド買取: Lupinusのゴールド買取: Lupinusのゴールド買取: Lupinusのゴールド買取: Lupinusのゴールド買取: Lupinusのゴールド買取: Lupinusのゴールド買取: Lupinusのゴールド買取'
-        )
-select * from iimy_reviews where customers_id='28'
-Array
-(
-    [0] => 1048
-    [reviews_id] => 1048
-    [1] => 31700
-    [products_id] => 31700
-    [2] => 28
-    [customers_id] => 28
-    [3] => Fairyのギル販売
-    [customers_name] => Fairyのギル販売
-    [4] => 4
-    [reviews_rating] => 4
-    [5] => 2009-12-31 09:29:01
-    [date_added] => 2009-12-31 09:29:01
-    [6] => 
-    [last_modified] => 
-    [7] => 0
-    [reviews_read] => 0
-    [8] => 0
-    [reviews_status] => 0
-)
-insert into `reviews` (
-      `reviews_id`,
-      `products_id`,
-      `customers_id`,
-      `customers_name`,
-      `reviews_rating`,
-      `date_added`,
-      `last_modified`,
-      `reviews_read`,
-      `site_id`,
-      `reviews_status`
-      ) values (
-        NULL,
-        '31700',
-        '29',
-        'Fairyのギル販売',
-        '4',
-        '2009-12-31 09:29:01',
-        '',
-        '0',
-        '1',
-        '0'
-      )
-select * from iimy_reviews_description where reviews_id=1048
-Array
-(
-    [0] => 1048
-    [reviews_id] => 1048
-    [1] => 4
-    [languages_id] => 4
-    [2] => Fairyのギル販売Fairyのギル販売Fairyのギル販売Fairyのギル販売Fairyのギル販売Fairyのギル販売Fairyのギル販売Fairyのギル販売Fairyのギル販売Fairyのギル販売
-    [reviews_text] => Fairyのギル販売Fairyのギル販売Fairyのギル販売Fairyのギル販売Fairyのギル販売Fairyのギル販売Fairyのギル販売Fairyのギル販売Fairyのギル販売Fairyのギル販売
-)
-insert into `reviews_description` (
-        `reviews_id`,
-        `languages_id`,
-        `reviews_text`
-        ) values (
-          '1140',
-          '4',
-          'Fairyのギル販売Fairyのギル販売Fairyのギル販売Fairyのギル販売Fairyのギル販売Fairyのギル販売Fairyのギル販売Fairyのギル販売Fairyのギル販売Fairyのギル販売'
-        )
-select * from iimy_reviews where customers_id='29'
-select * from iimy_reviews where customers_id='30'
-select * from iimy_reviews where customers_id='31'
-select * from iimy_reviews where customers_id='32'
-select * from iimy_reviews where customers_id='33'
-select * from iimy_reviews where customers_id='34'
-select * from iimy_reviews where customers_id='35'
-select * from iimy_reviews where customers_id='36'
-select * from iimy_reviews where customers_id='38'
-select * from iimy_reviews where customers_id='39'
-select * from iimy_reviews where customers_id='40'
-select * from iimy_reviews where customers_id='41'
-select * from iimy_reviews where customers_id='42'
-select * from iimy_reviews where customers_id='43'
-select * from iimy_reviews where customers_id='44'
-select * from iimy_reviews where customers_id='46'
-jp customers
+present_goods 
+address_format 
+countries 
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            クレジットカード（VISA MASTER JCB）、銀行振込,
+            ,
+            jp2_f.gif,
+            left1,
+            ,
+            ,
+            ,
+            ,
+            2005-06-17 00:49:10,
+            ,
+            1,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'MASTER JCB）、銀行振込,
+            ,
+            jp2_f.gif,
+            l' at line 16
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            SSL,
+            ,
+            ,
+            right3,
+            <!-- GeoTrust Smart Icon tag. Do not edit. -->\r\n          <SCRIPT LANGUAGE=\"JavaScript\" TYPE=\"text/javascript\" SRC=\"//smarticon.geotrust.com/si.js\"></SCRIPT>\r\n          <!-- END of GeoTrust Smart Icon tag -->,
+            ,
+            ,
+            ,
+            2005-06-25 19:28:21,
+            2007-01-05 16:37:59,
+            0,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SSL,
+            ,
+            ,
+            right3,
+            <!-- GeoTrust S' at line 16
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            FF11-営業時間,
+            ,
+            banners/businesshours.gif,
+            left2,
+            ,
+            ,
+            ,
+            ,
+            2005-06-17 00:50:22,
+            ,
+            1,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            banners/businesshours.gif,
+            left2,
+            ,
+       ' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            左4段目,
+            g.cn,
+            GW-00476.jpg,
+            left4,
+            ,
+            ,
+            ,
+            ,
+            2005-06-26 23:12:10,
+            2009-12-24 13:09:43,
+            0,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'jpg,
+            left4,
+            ,
+            ,
+            ,
+            ,
+' at line 18
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            メールマガジン,
+            ,
+            banners/banner_1.gif,
+            left2,
+            ,
+            ,
+            ,
+            ,
+            2005-06-17 10:10:49,
+            2006-12-16 07:40:59,
+            0,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            banners/banner_1.gif,
+            left2,
+            ,
+            ' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            特価商品,
+            ,
+            banners/banner_2.gif,
+            right5,
+            ,
+            ,
+            ,
+            ,
+            2005-06-17 10:11:40,
+            2009-12-24 12:58:17,
+            0,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            banners/banner_2.gif,
+            right5,
+            ,
+           ' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            リンク集,
+            ,
+            ,
+            right4,
+            <img src=\"images/design/box/bestlinks.gif\" border=\"0\" alt=\"リンク集\" width=\"171\" height=\"25\">\r\n<div class=\"boxText\">\r\n<a href=\"http://www.playonline.com/home/polnews/list_mnt.shtml\" target=\"_blank\">FFXI メンテナンス情報</a>\r\n<a href=\"http://www5.plala.or.jp/SQR/ff11/\" target=\"_blank\">FF11 攻略 eLeMeN</a>\r\n<a href=\"http://ff11wiki.rdy.jp/-1450975598.html\" target=\"_blank\">FF11 Wiki</a>\r\n<a href=\"http://agardens.fc2web.com/\" target=\"_blank\">FF11 合成 職人の庭</a>\r\n<a href=\"http://www.hotgame.co.jp/\" target=\"_blank\">FF11 コミュニティ ホットゲーム</a>\r\nデータベース\r\n<hr>\r\n<a href=\"http://www.lineage2.jp/bbs/list.aspx?bid=3\" target=\"_blank\">リネージュ2 メンテナンス情報</a>\r\n<a href=\"http://hrb.finito.fc2.com/\" target=\"_blank\">リネージュII いもづる〜LINEAGE2 Links〜</a>\r\n<a href=\"http://l2quest.web2.jp/\" target=\"_blank\">LINEAGE2 クエスト攻略</a>\r\n<a href=\"http://www.geocities.jp/flttsr_q3p2u/\" target=\"_blank\">LINEAGE2 攻略通信</a>\r\n<a href=\"http://l2mpt.net/\" target=\"_blank\">LINEAGE2相場情報 Lineage MarketPriceTurbo</a>\r\n<a href=\"http://ammonite.pya.jp/totsugeki/\" target=\"_blank\">LINEAGE2血盟情報局</a>\r\n<hr>\r\n<a href=\"http://www.lineage.jp/news/news_list.aspx?ct=1\" target=\"_blank\">リネージュ メンテナンス情報</a>\r\n<a href=\"http://www.lineinfo.jp/\" target=\"_blank\">LINEAGE 攻略通信</a>\r\n<a href=\"http://lin1.l2mpt.net/\" target=\"_blank\">リネージュ相場情報 Lineage MarketPriceTurbo</a>\r\n<a href=\"http://f61.aaa.livedoor.jp/~syaka/\" target=\"_blank\">LINEAGEシュミレータ Effective Lineage </a>\r\n<a href=\"http://www.jias.jp/line/\" target=\"_blank\">リネージュ情報 リネしながら見るページ</a>\r\n</div>,
+            ,
+            ,
+            ,
+            2005-06-25 19:32:31,
+            2009-12-24 12:57:32,
+            0,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            ,
+            right4,
+            <img src=\"images/design/box/best' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            右5段目,
+            ,
+            banners/banner158-50.gif,
+            right5,
+            ,
+            ,
+            ,
+            ,
+            2005-06-25 19:33:46,
+            2006-12-02 21:28:05,
+            0,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            banners/banner158-50.gif,
+            right5,
+            ,
+       ' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            RMTメールマガジン,
+            http://www.iimy.co.jp/mail_magazine.php,
+            banners/banner_1.gif,
+            left3,
+            ,
+            ,
+            ,
+            ,
+            2005-07-15 16:06:41,
+            2009-12-24 12:55:19,
+            0,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '://www.iimy.co.jp/mail_magazine.php,
+            banners/banner_1.gif,
+         ' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            RMTゲームマネー,
+            ,
+            ,
+            footer,
+            <a href=\"http://www.gamemoney.cc/\" class=\"blank\"><strong>RMT</strong></a> | \r\n<a href=\"http://www.gamemoney.cc/rmt/c-168.html\" class=\"blank\">FF11 RMT</a> | \r\n<a href=\"http://www.gamemoney.cc/rmt/c-169.html\" class=\"blank\">リネージュ2 RMT</a> | \r\n<a href=\"http://www.gamemoney.cc/rmt/c-195.html\" class=\"blank\">REDSTONE RMT</a> | \r\n<a href=\"http://www.gamemoney.cc/rmt/c-190.html\" class=\"blank\">TW RMT</a> | \r\n<a href=\"http://www.gamemoney.cc/rmt/c-200.html\" class=\"blank\">CABAL RMT</a> | \r\n<a href=\"http://www.gamemoney.cc/rmt/c-178.html\" class=\"blank\">信長の野望 RMT</a> | \r\n<a href=\"http://www.gamemoney.cc/rmt/c-278.html\" class=\"blank\">アトランティカ RMT</a> | \r\n<a href=\"http://www.gamemoney.cc/rmt/c-231.html\" class=\"blank\">SUN RMT</a> | \r\n<a href=\"http://www.gamemoney.cc/rmt/c-396.html\" class=\"blank\">AION RMT</a> | \r\n<a href=\"http://www.gamemoney.cc/rmt/c-325.html\" class=\"blank\">ラテール RMT</a> | \r\n<a href=\"http://37109.jp/pc/\" class=\"blank\">香川 クーポン</a>,
+            ,
+            ,
+            ,
+            2005-08-08 19:11:41,
+            ,
+            1,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            ,
+            footer,
+            <a href=\"http://www.gamemoney.cc' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            フッター１,
+            ,
+            ,
+            footer1,
+            ,
+            ,
+            ,
+            ,
+            2006-07-02 03:00:01,
+            2006-12-03 19:39:28,
+            0,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            ,
+            footer1,
+            ,
+            ,
+            ,
+  ' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            フッター2,
+            ,
+            ,
+            footer2,
+            ,
+            ,
+            ,
+            ,
+            2006-07-02 03:00:42,
+            2006-12-03 19:39:30,
+            0,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            ,
+            footer2,
+            ,
+            ,
+            ,
+  ' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            フッター3,
+            ,
+            ,
+            footer3,
+            ,
+            ,
+            ,
+            ,
+            2006-07-02 03:01:03,
+            2006-12-03 19:39:31,
+            0,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            ,
+            footer3,
+            ,
+            ,
+            ,
+  ' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            rmt,
+            ,
+            banners/r_banner.jpg,
+            right3,
+            ,
+            ,
+            ,
+            ,
+            2005-06-25 19:28:21,
+            ,
+            1,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            banners/r_banner.jpg,
+            right3,
+            ,
+           ' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            FF11RMT,
+            ,
+            banners/r_banner.jpg,
+            right2,
+            ,
+            ,
+            ,
+            ,
+            2005-06-17 10:11:40,
+            ,
+            1,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            banners/r_banner.jpg,
+            right2,
+            ,
+           ' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            rmt,
+            ,
+            banners/r_banner.jpg,
+            right4,
+            ,
+            ,
+            ,
+            ,
+            2005-06-25 19:32:31,
+            ,
+            1,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            banners/r_banner.jpg,
+            right4,
+            ,
+           ' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            FF11RMT,
+            ,
+            banners/r_banner_ffxi.jpg,
+            right1,
+            ,
+            ,
+            ,
+            ,
+            2006-11-12 21:19:07,
+            2007-07-06 01:32:45,
+            0,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            banners/r_banner_ffxi.jpg,
+            right1,
+            ,
+      ' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            ゲームマネーの営業時間,
+            ,
+            banners/l_menu_time.jpg,
+            left2,
+            ,
+            ,
+            ,
+            ,
+            2005-07-15 16:06:41,
+            ,
+            1,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            banners/l_menu_time.jpg,
+            left2,
+            ,
+         ' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            クレジットカード・銀行振込,
+            ,
+            l_menu_payment.jpg,
+            left1,
+            <img src=\"./images/banners/l_menu_payment.jpg\" width=\"131\" height=\"385\" alt=\"クレジットカード・VISA・MASTER・JCB・銀行振込\">,
+            ,
+            ,
+            ,
+            2006-11-12 21:28:52,
+            ,
+            1,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            l_menu_payment.jpg,
+            left1,
+            <img src=\"./ima' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            お役立ちリンク上段,
+            ,
+            ,
+            right5,
+            <div id=\"r_links\">\r\n<div class=\"link_title_right\">お役立ちリンク</div>\r\n<p><a href=\"http://www.playonline.com/home/polnews/list_mnt.shtml\" rel=\"nofollow\" target=\"_blank\">FFXI<br>メンテナンス情報</a></p>\r\n<p>FF11 攻略<br><a href=\"http://www5.plala.or.jp/SQR/ff11/\" rel=\"nofollow\" target=\"_blank\">eLeMeN</a></p>\r\n<p><a href=\"http://ff11wiki.rdy.jp/-1450975598.html\" rel=\"nofollow\" target=\"_blank\">FF11 Wiki</a></p>\r\n<p><a href=\"http://agardens.fc2web.com/\" rel=\"nofollow\" target=\"_blank\">FF11 合成<br>職人の庭</a></p>,
+            ,
+            ,
+            ,
+            2006-12-19 21:30:18,
+            ,
+            1,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            ,
+            right5,
+            <div id=\"r_links\">\r\n<div clas' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            お役立ちリンク下段,
+            ,
+            ,
+            right6,
+            <p><a href=\"http://ff11flashlink.fc2web.com/\" target=\"_blank\">FF11フラッシュ倉庫</a></p>\r\n</div>,
+            ,
+            ,
+            ,
+            2006-12-19 21:46:11,
+            ,
+            1,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            ,
+            right6,
+            <p><a href=\"http://ff11flashlink' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            RMTジャックポット,
+            ,
+            ,
+            footer,
+            <a href=\"http://www.iimy.co.jp/\" target=\"_blank\"><strong>RMT</strong></a> : \r\n<a href=\"http://www.iimy.co.jp/rmt/c-168.html\" target=\"_blank\">FFXI RMT</a> | \r\n<a href=\"http://www.iimy.co.jp/rmt/c-195.html\" target=\"_blank\">レッドストーン RMT</a> | \r\n<a href=\"http://www.iimy.co.jp/rmt/c-231.html\" target=\"_blank\">SUN RMT</a> | \r\n<a href=\"http://www.iimy.co.jp/rmt/c-169.html\" target=\"_blank\">リネージュ2 RMT</a> | \r\n<a href=\"http://www.iimy.co.jp/rmt/c-200.html\" target=\"_blank\">CABAL RMT</a> | \r\n<a href=\"http://www.iimy.co.jp/rmt/c-278.html\" target=\"_blank\">アトランティカ RMT</a> | \r\n<a href=\"http://www.iimy.co.jp/rmt/c-190.html\" target=\"_blank\">テイルズウィーバー RMT</a> | \r\n<a href=\"http://www.iimy.co.jp/rmt/c-396.html\" target=\"_blank\">アイオン RMT</a> | \r\n<a href=\"http://www.iimy.co.jp/rmt/c-178.html\" target=\"_blank\">信長の野望 RMT</a> | \r\n<a href=\"http://www.iimy.co.jp/rmt/c-325.html\" target=\"_blank\">ラテール RMT</a> | \r\n<a href=\"http://www.iimy.co.jp/rmt/c-319.html\" target=\"_blank\">女神転生 RMT</a> | \r\n<a href=\"http://www.iimy.co.jp/rmt/c-253.html\" target=\"_blank\">大航海時代 RMT</a> | \r\n<a href=\"http://www.iimy.co.jp/rmt/c-247.html\" target=\"_blank\">ウェブマネー RMT</a> | \r\n<a href=\"http://37109.jp/pc/\" class=\"blank\">香川 クーポン</a>,
+            ,
+            ,
+            ,
+            2006-12-23 20:12:54,
+            ,
+            1,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            ,
+            footer,
+            <a href=\"http://www.iimy.co.jp/\' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            クレジットカード・銀行振込,
+            ,
+            gm03.gif,
+            left1,
+            <img src=\"./images/banners/l_menu_payment.jpg\" width=\"131\" height=\"385\" alt=\"クレジットカード・VISA・MASTER・JCB・銀行振込\">,
+            0,
+            ,
+            ,
+            2010-06-01 09:33:03,
+            2010-06-01 09:58:20,
+            0,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            gm03.gif,
+            left1,
+            <img src=\"./images/banner' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            クレジットカード（VISA MASTER JCB AMEX Diners）、銀行振込,
+            ,
+            payment_wm02.gif,
+            left1,
+            ,
+            ,
+            ,
+            ,
+            2005-06-17 00:49:10,
+            ,
+            1,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'MASTER JCB AMEX Diners）、銀行振込,
+            ,
+            payment_wm02' at line 16
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            SSL,
+            ,
+            ,
+            right3,
+            <!-- GeoTrust Smart Icon tag. Do not edit. -->\r\n          <SCRIPT LANGUAGE=\"JavaScript\" TYPE=\"text/javascript\" SRC=\"//smarticon.geotrust.com/si.js\"></SCRIPT>\r\n          <!-- END of GeoTrust Smart Icon tag -->,
+            ,
+            ,
+            ,
+            2005-06-25 19:28:21,
+            2007-01-05 16:37:59,
+            0,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SSL,
+            ,
+            ,
+            right3,
+            <!-- GeoTrust S' at line 16
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            株式会社iimy-営業時間,
+            ,
+            banners/businesshours.gif,
+            left2,
+            ,
+            ,
+            ,
+            ,
+            2005-06-17 00:50:22,
+            ,
+            1,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            banners/businesshours.gif,
+            left2,
+            ,
+       ' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            左4段目,
+            ,
+            ,
+            left4,
+            ,
+            ,
+            ,
+            ,
+            2005-06-26 23:12:10,
+            2006-12-03 19:46:07,
+            0,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            ,
+            left4,
+            ,
+            ,
+            ,
+    ' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            メールマガジン,
+            ,
+            banners/banner_1.gif,
+            left2,
+            ,
+            ,
+            ,
+            ,
+            2005-06-17 10:10:49,
+            2006-12-16 07:40:59,
+            0,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            banners/banner_1.gif,
+            left2,
+            ,
+            ' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            特価商品,
+            ,
+            banners/banner_2.gif,
+            right2,
+            ,
+            ,
+            ,
+            ,
+            2005-06-17 10:11:40,
+            2006-12-16 07:40:57,
+            0,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            banners/banner_2.gif,
+            right2,
+            ,
+           ' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            リンク集,
+            ,
+            ,
+            right4,
+            <img src=\"images/design/box/bestlinks.gif\" border=\"0\" alt=\"リンク集\" width=\"171\" height=\"25\">\r\n<div class=\"boxText\">\r\n<a href=\"http://www.playonline.com/home/polnews/list_mnt.shtml\" target=\"_blank\">FFXI メンテナンス情報</a>\r\n<a href=\"http://www5.plala.or.jp/SQR/ff11/\" target=\"_blank\">FF11 攻略 eLeMeN</a>\r\n<a href=\"http://ff11wiki.rdy.jp/-1450975598.html\" target=\"_blank\">FF11 Wiki</a>\r\n<a href=\"http://agardens.fc2web.com/\" target=\"_blank\">FF11 合成 職人の庭</a>\r\n<a href=\"http://www.hotgame.co.jp/\" target=\"_blank\">FF11 コミュニティ ホットゲーム</a>\r\nデータベース\r\n<hr>\r\n<a href=\"http://www.lineage2.jp/bbs/list.aspx?bid=3\" target=\"_blank\">リネージュ2 メンテナンス情報</a>\r\n<a href=\"http://hrb.finito.fc2.com/\" target=\"_blank\">リネージュII いもづる〜LINEAGE2 Links〜</a>\r\n<a href=\"http://l2quest.web2.jp/\" target=\"_blank\">LINEAGE2 クエスト攻略</a>\r\n<a href=\"http://www.geocities.jp/flttsr_q3p2u/\" target=\"_blank\">LINEAGE2 攻略通信</a>\r\n<a href=\"http://l2mpt.net/\" target=\"_blank\">LINEAGE2相場情報 Lineage MarketPriceTurbo</a>\r\n<a href=\"http://ammonite.pya.jp/totsugeki/\" target=\"_blank\">LINEAGE2血盟情報局</a>\r\n<hr>\r\n<a href=\"http://www.lineage.jp/news/news_list.aspx?ct=1\" target=\"_blank\">リネージュ メンテナンス情報</a>\r\n<a href=\"http://www.lineinfo.jp/\" target=\"_blank\">LINEAGE 攻略通信</a>\r\n<a href=\"http://lin1.l2mpt.net/\" target=\"_blank\">リネージュ相場情報 Lineage MarketPriceTurbo</a>\r\n<a href=\"http://f61.aaa.livedoor.jp/~syaka/\" target=\"_blank\">LINEAGEシュミレータ Effective Lineage </a>\r\n<a href=\"http://www.jias.jp/line/\" target=\"_blank\">リネージュ情報 リネしながら見るページ</a>\r\n</div>,
+            ,
+            ,
+            ,
+            2005-06-25 19:32:31,
+            ,
+            1,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            ,
+            right4,
+            <img src=\"images/design/box/best' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            右5段目,
+            ,
+            banners/banner158-50.gif,
+            right5,
+            ,
+            ,
+            ,
+            ,
+            2005-06-25 19:33:46,
+            2006-12-02 21:28:05,
+            0,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            banners/banner158-50.gif,
+            right5,
+            ,
+       ' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            RMT激安情報メールマガジン,
+            http://rmt.worldmoney.jp/mail_magazine.php,
+            banners/banner_1.gif,
+            left3,
+            ,
+            ,
+            ,
+            ,
+            2005-07-15 16:06:41,
+            ,
+            1,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '://rmt.worldmoney.jp/mail_magazine.php,
+            banners/banner_1.gif,
+      ' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            RMTゲームマネー,
+            ,
+            ,
+            footer,
+            <br><br><br>,
+            ,
+            ,
+            ,
+            2005-08-08 19:11:41,
+            ,
+            1,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            ,
+            footer,
+            <br><br><br>,
+            ,
+     ' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            フッター１,
+            ,
+            ,
+            footer1,
+            ,
+            ,
+            ,
+            ,
+            2006-07-02 03:00:01,
+            2006-12-03 19:39:28,
+            0,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            ,
+            footer1,
+            ,
+            ,
+            ,
+  ' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            フッター2,
+            ,
+            ,
+            footer2,
+            ,
+            ,
+            ,
+            ,
+            2006-07-02 03:00:42,
+            2006-12-03 19:39:30,
+            0,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            ,
+            footer2,
+            ,
+            ,
+            ,
+  ' at line 17
+
+        insert into banners (
+          banners_id,
+          banners_title,
+          banners_url,
+          banners_image,
+          banners_group,
+          banners_html_text,
+          expires_impressions,
+          expires_date,
+          date_scheduled,
+          date_added,
+          date_status_change,
+          status
+          ) values (
+            NULL,
+            フッター3,
+            ,
+            ,
+            footer3,
+            ,
+            ,
+            ,
+            ,
+            2006-07-02 03:01:03,
+            2006-12-03 19:39:31,
+            0,
+          )
+        
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '
+            ,
+            footer3,
+            ,
+            ,
+            ,
+  ' at line 17
+calendar 
+categories 
+categories_description
+configuration 
+configuration_group 
+contents 
+currencies 
+color
+color_to_products
+image_document_types 
+information_page 
+languages 
+latest_news 
+login 
+mail_magazine 
+manufacturers 
+manufacturers_info 
+newsletters 
+orders_mail
+orders_status 
+permissions 
+products -> products diff fields : products_image_med,products_image_pop,products_image_description,products_price_offset
+products 
+products_description
+products_attributes 
+products_attributes_download 
+products_options 
+products_options_values 
+products_options_values_to_products_options 
+products_to_categories 
+tags 
+products_to_tags 
+specials 
+tax_class 
+tax_rates 
+users 
+geo_zones 
+zones 
+zones_to_geo_zones 
+categories_rss 

@@ -679,6 +679,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         products_price = '$p_products_price',
         final_price = '" . ($p_products_price + $AddedOptionsPrice) . "',
         products_tax = '$ProductsTax',
+		site_id = '".tep_get_site_id_by_orders_id($oID)."',
         products_quantity = '" . (int)$add_product_quantity . "';";
       tep_db_query($Query);
       $new_product_id = tep_db_insert_id();

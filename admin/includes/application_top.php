@@ -59,6 +59,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('FILENAME_CACHE', 'cache.php');
   define('FILENAME_CATALOG_ACCOUNT_HISTORY_INFO', 'account_history_info.php');
   define('FILENAME_CATEGORIES', 'categories.php');
+  define('FILENAME_CATEGORIES_ADMIN', 'categories_admin.php');
   define('FILENAME_CONFIGURATION', 'configuration.php');
   define('FILENAME_COUNTRIES', 'countries.php');
   define('FILENAME_CURRENCIES', 'currencies.php');
@@ -190,6 +191,18 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
   //Language define
   define('BOX_CATALOG_COLORS', '商品カラー登録');
+  define('BOX_CATALOG_CATEGORIES_ADMIN', '商品卸価格管理');
+  define('BOX_CATALOG_COLORS', '商品カラー登録');
+define('HEADING_TITLE','商品卸価格管理');
+define('HEADING_TITLE_SEARCH','検索');
+define('HEADING_TITLE_GOTO','ジャンプ');
+define('TABLE_HEADING_ACTION','操作');
+define('TABLE_HEADING_STATUS','ステータス');
+define('TABLE_HEADING_CATEGORIES_PRODUCTS','カテゴリー / 商品');
+define('OROSHI_DATA_MANAGE','データ');
+
+
+
   //=======================================================  
 
 // initialize the logger class

@@ -172,7 +172,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
               select * 
               from ".TABLE_ORDERS_MAIL." 
               where orders_status_id=17 
-                and (site_id='0' or site_id = '" . SITE_ID . ")'
+                and (site_id='0' or site_id = '" . SITE_ID . "')
               order by site_id DESC
         "));
         // $mail_title = "注文内容の変更を承りました";
@@ -370,7 +370,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
 
   $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
   $email_order .= '▼注文番号　　　　：' . $insert_id . "\n";
-  $email_order .= '▼注文日　　　　　：' . tep_date_long(DATE_FORMAT_LONG) . "\n";
+  $email_order .= '▼注文日　　　　　：' . tep_date_long(time()) . "\n";
   $email_order .= '▼お名前　　　　　：' . $o->customer['name'] . "\n";
   $email_order .= '▼メールアドレス　：' . $o->customer['email_address'] . "\n";
   $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
@@ -385,7 +385,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   }
   
   $mail_title = "[" . $order['orders_id'] . "]再配達確認メール【" . STORE_NAME . "】";
-  $email_order = str_replace(array('${NAME}', '${TIME}', '${CONTENT}'), array($o->customer['name'], date('Y-m-d H:i:s'), $email_order), $mail_content);
+  $email_order = str_replace(array('${NAME}', '${TIME}', '${CONTENT}', '${SITE_NAME}', '${SITE_URL}', '${SUPPORT_EMAIL}'), array($o->customer['name'], date('Y-m-d H:i:s'), $email_order, STORE_NAME, HTTP_SERVER, SUPPORT_EMAIL_ADDRESS), $mail_content);
 
   # メール本文整形 --------------------------------------
   // 2003.03.08 Edit Japanese osCommerce

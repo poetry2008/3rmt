@@ -21,7 +21,19 @@ $sites =  array('jp', 'gm', 'wm');
 $faq = array('168', '169', '170', '171', '177', '178', '179', '190', '195');
 $delete_configuration = array(
     'AFFILIATE_PAYMENT_ORDER_MIN_STATUS',
-    'AFFILIATE_VALUE');
+    'AFFILIATE_VALUE',
+    'AFFILIATE_BILLING_TIME',
+    'AFFILIATE_COOKIE_LIFETIME',
+    'AFFILIATE_EMAIL_ADDREDD',
+    'AFFILIATE_PERCENT',
+    'AFFILIATE_THRESHOLD',
+    'AFFILIATE_TIER_LEVELS',
+    'AFFILIATE_TIER_PERCENTAGE',
+    'AFFILIATE_USE_BANK',
+    'AFFILIATE_USE_CHECK',
+    'AFFILIATE_USE_PAYPAL',
+    'MAX_DISPLAY_AFFILIATE_NEWS'
+    );
 
 define('R3MT_JP_ID', '1');
 define('R3MT_GM_ID', '2');

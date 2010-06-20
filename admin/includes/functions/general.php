@@ -2494,7 +2494,7 @@ function tep_get_special_price($price, $offset, $sum = '') {
       }
     }
     return $lprice;
-  } else if ($price && $offset) {
+  } else if ($price && $offset && $offset != 0) {
     return $price;
   } else {
     return false;
@@ -2510,7 +2510,7 @@ function tep_get_price ($price, $offset, $sum = '') {
       }
     }
     return $hprice;
-  } else if ($price && $offset) {
+  } else if ($price && $offset && $offset != 0) {
     return calculate_special_price($price, $offset);
   } else {
     return $price;
@@ -2529,7 +2529,7 @@ function tep_get_final_price($price, $offset, $sum, $quantity) {
       }
     }
     return $lprice;
-  } else if ($price && $offset) {
+  } else if ($price && $offset && $offset != 0) {
     return calculate_special_price($price, $offset);
   } else {
     return $price;
@@ -2611,4 +2611,61 @@ function orders_updated($orders_id) {
   tep_db_query("update ".TABLE_ORDERS." set finished = ( select finished from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
   tep_db_query("update ".TABLE_ORDERS." set orders_status_name = ( select orders_status_name from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
   tep_db_query("update ".TABLE_ORDERS." set orders_status_image = ( select orders_status_image from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
+}
+
+
+
+
+
+//为创建下拉列表
+  function countSubcategories($cid)
+  {
+     $res = tep_db_query("select count(c.categories_id) cnt from categories_description cd,categories c where cd.site_id =0 and  c.categories_id = cd.categories_id and c.parent_id =".$cid);
+     $col = tep_db_fetch_array($res);
+     return $col['cnt']>0;
+     
+  }
+  function getSubcatergories($cid)
+  {
+    $res = tep_db_query("select c.categories_id cid,cd.categories_name cname from categories_description cd,categories c where c.categories_id = cd.categories_id and cd.site_id = 0 and c.parent_id =".$cid );
+    while ( $col = @tep_db_fetch_array($res))
+      {
+
+        if (countSubcategories($col['cid'])) {
+           $col['sub'] =  getSubcatergories($col['cid']);
+          }
+        $result[] =$col;
+      }
+    return $result;
+  }
+function makeSelectOption($arrCategories,$selectValue = Fales,$startName='')
+{
+  //echo $selectValue;
+  $result = '';
+
+  foreach ($arrCategories as $cate1 ) {
+    //如果有子，则本条记录为 grop
+    if (count($cate1['sub'])) {
+        $result .= '<optgroup label = "'.$cate1['cname'].'">';
+        $result .= makeSelectOption($cate1['sub'],$selectValue,$cate1['cname'].'_');
+        $result .= '</optgroup>';
+      }else{
+      $result .= '<option ';
+      if ($cate1['cid']==$selectValue) 
+        {
+          $result .='selected = "true"';
+        }
+      $result .= 'value ="'.$cate1['cid'].'">'.$startName.$cate1['cname'].'</option>';
+      }
+  }
+  return $result;
+}
+//分离cpath
+function cpathPart($cpath) {
+  $a = $cpath;
+  if (strpos($a ,'_')){;
+    $b = substr($a,strpos($a,'_')+1);
+    return $b;
+  }
+  return $a;
 }

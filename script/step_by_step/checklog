@@ -17,11 +17,11 @@ wm:select * from configuration where  configuration_title = 'アフィリエイ�
 wm:configuration:509
 configuration 
 configuration_group 
-jp:select * from contents where  contents_title = 'タイトルタグ'  and  type = '0'  and  description = 'ブラウザに表示されるタイトルタグを設定します。'  and  default_contents = 'オンラインショップ○○'  and  fixed_contents = ''  and  lastupdate = '0000-00-00 00:00:00'  and  site_id = '1' 
+jp:select * from contents where  contents_title = 'タイトルタグ'  and  type = '0'  and  description = 'ブラウザに表示されるタイトルタグを設定します。'  and  default_contents = 'オンラインショップ○○'  and  fixed_contents = ''  and  site_id = '1' 
 jp:contents:1
-gm:select * from contents where  contents_title = 'タイトルタグ'  and  type = '0'  and  description = 'ブラウザに表示されるタイトルタグを設定します。'  and  default_contents = 'オンラインショップ○○'  and  fixed_contents = ''  and  lastupdate = '0000-00-00 00:00:00'  and  site_id = '2' 
+gm:select * from contents where  contents_title = 'タイトルタグ'  and  type = '0'  and  description = 'ブラウザに表示されるタイトルタグを設定します。'  and  default_contents = 'オンラインショップ○○'  and  fixed_contents = ''  and  site_id = '2' 
 gm:contents:1
-wm:select * from contents where  contents_title = 'タイトルタグ'  and  type = '0'  and  description = 'ブラウザに表示されるタイトルタグを設定します。'  and  default_contents = 'オンラインショップ○○'  and  fixed_contents = ''  and  lastupdate = '0000-00-00 00:00:00'  and  site_id = '3' 
+wm:select * from contents where  contents_title = 'タイトルタグ'  and  type = '0'  and  description = 'ブラウザに表示されるタイトルタグを設定します。'  and  default_contents = 'オンラインショップ○○'  and  fixed_contents = ''  and  site_id = '3' 
 wm:contents:1
 contents 
 countries 
@@ -53,7 +53,24 @@ gm:latest_news:266
 gm:select * from latest_news where  headline = 'sdf'  and  content = 'dsfds'  and  status = '1'  and  news_image = ''  and  news_image_description = ''  and  isfirst = '0'  and  site_id = '2' 
 gm:latest_news:270
 latest_news 
-select * from login where sessionid = '5a9pdpjriuaenutug0h3b8aib1' and logintime = '2010-06-07 15:48:42' and lastaccesstime = '2010-06-07 16:08:09' and account = 'haomai' and loginstatus = 'a' and logoutstatus = 'i' and address = '-1062731135'
+not found:	select * from login where sessionid = 'vthctfs4mpd1r95fvhcaiugag3' and logintime = '2010-06-07 08:59:46' and lastaccesstime = '2010-06-07 17:59:42' and account = 'haomai' and loginstatus = 'a' and logoutstatus = 'o' and address = '-1062731160'
+not found:	select * from login where sessionid = '5a9pdpjriuaenutug0h3b8aib1' and logintime = '2010-06-07 15:48:42' and lastaccesstime = '2010-06-07 17:34:36' and account = 'haomai' and loginstatus = 'a' and logoutstatus = 'o' and address = '-1062731135'
+not found:	select * from login where sessionid = 'e6j10c54la8fn7ob3tuvobn923' and logintime = '2010-06-07 17:42:59' and lastaccesstime = '2010-06-07 17:45:20' and account = 'haomai' and loginstatus = 'a' and logoutstatus = 'o' and address = '-1062731160'
+not found:	select * from login where sessionid = 'v3ogod8o9ogf88enm2p3ammm60' and logintime = '2010-06-08 13:28:37' and lastaccesstime = '2010-06-08 16:40:10' and account = 'haomai' and loginstatus = 'a' and logoutstatus = 'o' and address = '-1062731135'
+not found:	select * from login where sessionid = 'i1j1daaicip6u2j2o0scu0e6a5' and logintime = '2010-06-08 13:31:33' and lastaccesstime = '2010-06-08 15:57:33' and account = 'haomai' and loginstatus = 'a' and logoutstatus = 'o' and address = '-1062731160'
+not found:	select * from login where sessionid = 'ga2bqdqfuonff0fcsuq10jrhb7' and logintime = '2010-06-16 12:55:55' and lastaccesstime = '2010-06-16 12:55:55' and account = 'haomai' and loginstatus = 'a' and logoutstatus = 'i' and address = '-1062731162'
+not found:	select * from login where sessionid = '71gl4mttnqe8oadch5dsb7l8n7' and logintime = '2010-06-10 10:41:48' and lastaccesstime = '2010-06-10 12:37:01' and account = 'iimy_chief' and loginstatus = 'a' and logoutstatus = 'o' and address = '-1062731160'
+not found:	select * from login where sessionid = '1ti7lg7ds8sq634el0u9g8r3b7' and logintime = '2010-06-10 10:23:40' and lastaccesstime = '2010-06-10 10:41:11' and account = 'haomai2' and loginstatus = 'a' and logoutstatus = 'o' and address = '-1062731160'
+not found:	select * from login where sessionid = 'd1okcm7u19m2c3no10ohbc7n02' and logintime = '2010-06-10 10:03:54' and lastaccesstime = '2010-06-10 10:23:19' and account = 'haomai' and loginstatus = 'a' and logoutstatus = 'o' and address = '-1062731160'
+not found:	select * from login where sessionid = 'hscqeshgounnef5vgasl7vlr61' and logintime = '2010-06-11 09:59:05' and lastaccesstime = '2010-06-11 10:08:00' and account = 'haomai' and loginstatus = 'a' and logoutstatus = 'o' and address = '-1062731160'
+not found:	select * from login where sessionid = '3uq1mgukv9qcabk23og9ok04l7' and logintime = '2010-06-11 10:20:41' and lastaccesstime = '2010-06-11 13:37:26' and account = 'haomai' and loginstatus = 'a' and logoutstatus = 'o' and address = '-1062731135'
+not found:	select * from login where sessionid = 'l67tl6661aje1dab6cr4v4gca2' and logintime = '2010-06-16 12:48:10' and lastaccesstime = '2010-06-16 12:57:55' and account = 'haomai' and loginstatus = 'a' and logoutstatus = 'i' and address = '-1062731098'
+not found:	select * from login where sessionid = 'vnn20c49mll5uictrhthdrrrn0' and logintime = '2010-06-16 09:01:25' and lastaccesstime = '2010-06-16 09:03:39' and account = 'haomai' and loginstatus = 'a' and logoutstatus = 'i' and address = '-1062731160'
+not found:	select * from login where sessionid = 'i7rgs0k8ljpb7e52ab0d310095' and logintime = '2010-06-15 16:04:54' and lastaccesstime = '2010-06-15 16:07:38' and account = 'haomai' and loginstatus = 'a' and logoutstatus = 'i' and address = '-1062731160'
+not found:	select * from login where sessionid = 'ihf8pu873ld7vufhg7jln5brr6' and logintime = '2010-06-11 10:37:02' and lastaccesstime = '2010-06-11 10:38:12' and account = 'haomai' and loginstatus = 'a' and logoutstatus = 'o' and address = '-1062731135'
+not found:	select * from login where sessionid = 'chl6p95dt9sflbtrfvche290i7' and logintime = '2010-06-11 12:44:46' and lastaccesstime = '2010-06-11 12:44:46' and account = 'haomai' and loginstatus = 'a' and logoutstatus = 'o' and address = '-1062731160'
+not found:	select * from login where sessionid = 'a71g7q9afpgj399im31qs489n4' and logintime = '2010-06-11 14:53:21' and lastaccesstime = '2010-06-11 14:54:05' and account = 'haomai' and loginstatus = 'a' and logoutstatus = 'o' and address = '-1062731160'
+not found:	select * from login where sessionid = 'hlm4d4jgkc1ih0tifg1afkj9f6' and logintime = '2010-06-11 10:33:10' and lastaccesstime = '2010-06-11 10:34:28' and account = 'haomai' and loginstatus = 'a' and logoutstatus = 'o' and address = '-1062731135'
 login 
 mail_magazine 
 manufacturers 
@@ -62,6 +79,12 @@ newsletters
 orders_status 
 permissions 
 products -> products diff fields : products_image_med,products_image_pop,products_image_description,products_price_offset
+not found:	select * from products where products_id = '31781' and products_quantity = '592' and products_model = 'LINEAGE2-RMT-B044' and products_image = 'stock.gif' and products_image2 = '' and products_image3 = '' and products_price = '500.0000' and products_date_added = '2006-12-08 16:46:52' and products_last_modified = '2010-06-11 10:34:24' and products_date_available = '' and products_weight = '0.00' and products_status = '1' and products_tax_class_id = '0' and manufacturers_id = '13' and products_ordered = '182296' and products_bflag = '0' and products_cflag = '1' and products_small_sum = '' and option_type = ''
+not found:	select * from products where products_id = '31784' and products_quantity = '257' and products_model = 'LINEAGE2-RMT-B072' and products_image = 'stock.gif' and products_image2 = '' and products_image3 = '' and products_price = '400.0000' and products_date_added = '2006-12-08 16:53:49' and products_last_modified = '2009-09-01 11:29:39' and products_date_available = '' and products_weight = '0.00' and products_status = '1' and products_tax_class_id = '0' and manufacturers_id = '13' and products_ordered = '221504' and products_bflag = '0' and products_cflag = '1' and products_small_sum = '1:100,10:20,20:2,30:0' and option_type = ''
+not found:	select * from products where products_id = '31786' and products_quantity = '315' and products_model = 'LINEAGE2-RMT-B092' and products_image = 'stock.gif' and products_image2 = '' and products_image3 = '' and products_price = '400.0000' and products_date_added = '2006-12-08 16:57:49' and products_last_modified = '2009-09-01 18:13:03' and products_date_available = '' and products_weight = '0.00' and products_status = '1' and products_tax_class_id = '0' and manufacturers_id = '13' and products_ordered = '231157' and products_bflag = '0' and products_cflag = '1' and products_small_sum = '1:100,10:20,20:2,30:0' and option_type = ''
+not found:	select * from products where products_id = '31861' and products_quantity = '143' and products_model = 'NOL-RMT-B03' and products_image = 'stock.gif' and products_image2 = '' and products_image3 = '' and products_price = '100.0000' and products_date_added = '2007-02-06 16:59:48' and products_last_modified = '2010-06-07 12:12:38' and products_date_available = '' and products_weight = '0.00' and products_status = '1' and products_tax_class_id = '0' and manufacturers_id = '18' and products_ordered = '27493' and products_bflag = '0' and products_cflag = '1' and products_small_sum = '1:50,5:20,10:0' and option_type = ''
+not found:	select * from products where products_id = '31946' and products_quantity = '918' and products_model = 'RS-RMT-B095' and products_image = 'stock.gif' and products_image2 = '' and products_image3 = '' and products_price = '300.0000' and products_date_added = '2007-04-13 16:12:46' and products_last_modified = '2010-06-11 13:37:22' and products_date_available = '' and products_weight = '0.00' and products_status = '1' and products_tax_class_id = '0' and manufacturers_id = '19' and products_ordered = '64414' and products_bflag = '0' and products_cflag = '1' and products_small_sum = '1:20,30:10,50:5,100:0' and option_type = ''
+not found:	select * from products where products_id = '33394' and products_quantity = '153' and products_model = 'AION-RMT-B027A' and products_image = 'stock.gif' and products_image2 = '' and products_image3 = '' and products_price = '1000.0000' and products_date_added = '2009-07-10 16:30:34' and products_last_modified = '2010-06-11 10:07:56' and products_date_available = '' and products_weight = '0.00' and products_status = '1' and products_tax_class_id = '0' and manufacturers_id = '13' and products_ordered = '1' and products_bflag = '0' and products_cflag = '1' and products_small_sum = '' and option_type = ''
 products 
 products_attributes 
 products_attributes_download 
@@ -70,10 +93,13 @@ products_options_values
 products_options_values_to_products_options 
 products_to_categories 
 products_to_tags 
+not found:	select * from specials where specials_id = '31362' and products_id = '33394' and specials_new_products_price = '160.0000' and specials_date_added = '2009-07-31 15:17:02' and specials_last_modified = '2010-06-07 17:44:25' and expires_date = '' and date_status_change = '' and status = '1'
 specials 
 tags 
 tax_class 
 tax_rates 
+not found:	select * from users where userid = 'iimy_chief' and password = '$1$Rm64v3WB$8MlcpaEky1csvxPVBxeGL0' and name = '主任' and email = ''
+not found:	select * from users where userid = 'haomai2' and password = '$1$Rm64v3WB$8MlcpaEky1csvxPVBxeGL0' and name = 'haomai_staff' and email = ''
 users 
 zones 
 zones_to_geo_zones 

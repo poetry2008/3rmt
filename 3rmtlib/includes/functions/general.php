@@ -2453,7 +2453,7 @@ function tep_get_special_price($price, $offset, $sum = '') {
       }
     }
     return $lprice;
-  } else if ($price && $offset) {
+  } else if ($price && $offset && $offset != 0) {
     return $price;
   } else {
     return false;
@@ -2469,7 +2469,7 @@ function tep_get_price ($price, $offset, $sum = '') {
       }
     }
     return $hprice;
-  } else if ($price && $offset) {
+  } else if ($price && $offset && $offset != 0) {
     return calculate_special_price($price, $offset);
   } else {
     return $price;
@@ -2487,7 +2487,7 @@ function tep_get_final_price($price, $offset, $sum, $quantity) {
       }
     }
     return $price + $lprice;
-  } else if ($price && $offset) {
+  } else if ($price && $offset && $offset != 0) {
     return calculate_special_price($price, $offset);
   } else {
     return $price;
@@ -2530,4 +2530,20 @@ function calculate_special_price($price, $offset) {
     $special = $price + $offset;
   }
   return $special;
+}
+
+// 代替触发器
+function orders_status_updated($orders_status_id) {
+  $orders_status = tep_db_fetch_array(tep_db_query("select * from orders_status where orders_status_id='".$orders_status_id."'"));
+  tep_db_query("
+    update ".TABLE_ORDERS." set language_id='".$orders_status['language_id']."',orders_status_name='".$orders_status['orders_status_name']."',orders_status_image='".$orders_status['orders_status_image']."',finished='".$orders_status['finished']."'
+  ");
+}
+
+// 代替存储过程
+function orders_updated($orders_id) {
+  tep_db_query("update ".TABLE_ORDERS." set language_id = ( select language_id from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
+  tep_db_query("update ".TABLE_ORDERS." set finished = ( select finished from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
+  tep_db_query("update ".TABLE_ORDERS." set orders_status_name = ( select orders_status_name from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
+  tep_db_query("update ".TABLE_ORDERS." set orders_status_image = ( select orders_status_image from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
 }

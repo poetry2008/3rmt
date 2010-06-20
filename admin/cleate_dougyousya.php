@@ -5,6 +5,15 @@
   $currencies = new currencies();
  $cPath=$_POST['cpath'];
   switch ($HTTP_GET_VARS['action']){
+  case 'edit_oroshi':
+      $cpath = $HTTP_GET_VARS['cpath'];
+  $orrshi_id = $HTTP_GET_VARS['id'];
+  $name = $HTTP_GET_VARS['name'];
+  
+  $sql = 'update set_dougyousya_names set dougyousya_name = "'.$name.'", parent_id = '.$cpath .' where dougyousya_id = '.$orrshi_id;
+  tep_db_query($sql);
+
+    break;
   	case 'set_oroshi':
 		$updata=$_POST['up_oroshi'];
 		$res=tep_db_query("select * from set_dougyousya_names where parent_id='".$cPath."'");
@@ -33,7 +42,7 @@
 	
 	case 'delete':
 		$dougyousya_id=$_GET['id'];
-		$cPath=$_GET['cpath'];
+        //	$cPath=$_GET['cpath'];
 		tep_db_query("delete from  set_dougyousya_names  where dougyousya_id = '".$dougyousya_id. "'");
 	break;  
   }
@@ -57,19 +66,31 @@
 		
 			//	window.close();	
 		}
+function edit_oroshi(id){
+
+   var flg=confirm('修改しますか？');
+  var selectName = 'parent_id_'+id;
+  var oroName = 'name_'+id;
+  var path = document.getElementById(selectName).value;
+  var name = document.getElementById(oroName).value;
+  if (flg) {
+    location.href= 'cleate_dougyousya.php?action=edit_oroshi&id='+id+"&cpath="+path+"&name="+name; 
+  }
+
+}
 		
-		function del_oroshi(id,path){
+    function del_oroshi(id){
 			
 			var flg=confirm('削除しますか？');
 			if(flg){
-				location.href="cleate_dougyousya.php?action=delete&id="+id+"&cpath="+path;
+				location.href="cleate_dougyousya.php?action=delete&id="+id;
 			}else{
 			
 			}
 		}
 	</script>
 	</head>
-<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onLoad="SetFocus();">
+<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
 <div id="spiffycalendar" class="text"></div>
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
@@ -82,10 +103,21 @@
 			<input type="button" value="入力フォーム追加"　name='b1' onClick="input_add()"><br />
 			<input type="hidden" value="<?php echo $cPath ?>" name="cpath">
 			<?php 
-			$res=tep_db_query("select * from set_dougyousya_names where parent_id='".$cPath."' ORDER BY dougyousya_id ASC");
+  $start = 0;
+  $categories_subtree = getSubcatergories($start);
+
+			$res=tep_db_query("select * from set_dougyousya_names ORDER BY dougyousya_id ASC");
 			
 			while($col=tep_db_fetch_array($res)){
-					echo "同業者：<input type='text' name='up_oroshi[]' value='".$col['dougyousya_name']."'><input type='button' value='削除' name='b[]' onclick='del_oroshi(".$col['dougyousya_id'].",".$cPath.")'><br>";
+              echo "同業者：<input type='text' id='name_".$col['dougyousya_id']."' name='up_oroshi[]' value='".$col['dougyousya_name']."'>";
+                    $selectText  = '<select id ="parent_id_'.$col['dougyousya_id'].'" >';
+                    $selectText.=   '<option value = "0" >'.PLEASE_SELECT.'</option>';
+                    $selectText.=makeSelectOption($categories_subtree,$col['parent_id']).'</select>';
+  echo $selectText;
+  echo "<input type='button' value='编辑' name='b[]' onclick='edit_oroshi(".$col['dougyousya_id'].")'>";
+  echo "<input type='button' value='削除' name='b[]' onclick='del_oroshi(".$col['dougyousya_id'].")'>";
+  echo "<input type='button' value='履歴' name='b[]' onclick='show_history(".$col['dougyousya_id'].")'></br>";
+
 			}
 			
 			?><div id="o_input"></div>

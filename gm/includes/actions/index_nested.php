@@ -111,16 +111,16 @@
       if ($all_game_news) {
       ?>
 <div class="background_news01" style="margin-top:10px;">
-<table width="95%" style="border-top:#444 dotted 3px;" class="news_title_03">
-<tr>
-  <td>
-    <h3 style="border-bottom:none; font-size:14px; color:#fff; padding-left:10px; margin-top:2px;font-weight:bold;">ONLINE GAME NEWS for 4Gamer.net</h3>
-  </td>
-  <td align="left" width="70">
-  </td>
-</tr>
-</table>
-    <div class="game_news_index01">
+  <table width="95%" style="border-top:#444 dotted 3px;" class="news_title_03">
+  <tr>
+    <td>
+      <h3 style="border-bottom:none; font-size:14px; color:#fff; padding-left:10px; margin-top:2px;font-weight:bold;">ONLINE GAME NEWS for 4Gamer.net</h3>
+    </td>
+    <td align="left" width="70">
+    </td>
+  </tr>
+  </table>
+  <div class="game_news_index01">
     <ul> 
       <?php
         foreach ($all_game_news as $cgmkey => $cgame_news_rss) {
@@ -130,17 +130,15 @@
           echo '</li>'; 
         }
       ?>
-      </ul> 
-      </div>
+    </ul> 
+  </div>
+</div>
       <?php
       #echo '</div>'; 
       } 
 ?>
-</div>
-<?php
-      }
-      ?>
-
+<!--</div>-->
+<?php } ?>
 </div>
 <div id="r_menu">
       <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 

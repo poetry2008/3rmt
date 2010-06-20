@@ -226,7 +226,7 @@ while ($tag = tep_db_fetch_array($tags_query))
                         echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='.$products['products_id']) . '">';
                         if ($products['products_image'])
                         {
-                          echo tep_image2(DIR_WS_IMAGES.$products['products_image'],$products['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"');
+                          echo tep_image2(DIR_WS_IMAGES.'products/'.$products['products_image'],$products['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"');
                         }
                         else
                         {

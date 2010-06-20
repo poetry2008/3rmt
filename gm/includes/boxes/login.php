@@ -14,11 +14,11 @@
 <table  border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
     <td width="25" height="25">Email:</td>
-    <td><input type="text" name="email_address" style="width:90px; height:22px;"></td>
+    <td><input type="text" name="email_address" style="width:80px; height:22px;"></td>
   </tr>
   <tr>
     <td height="25">PW:</td>
-    <td><input type="password" name="password" style="width:90px; height:22px;"></td>
+    <td><input type="password" name="password" style="width:80px; height:22px;"></td>
   </tr>
 </table>
 <table  border="0" align="center" cellpadding="0" cellspacing="3">

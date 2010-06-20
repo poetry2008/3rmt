@@ -162,4 +162,7 @@ update orders set language_id = (select orders_status.language_id from orders_st
 --end; // 
 --delimiter; 
 
+-- ALTER TABLE `orders_products` ADD `site_id` INT NOT NULL;
+update orders_products set site_id=(select site_id from orders where orders.orders_id = orders_products.orders_id);
+
 update information_page set romaji=IF(convert(romaji,SIGNED),pID,romaji);

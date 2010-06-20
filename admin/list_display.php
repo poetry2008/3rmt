@@ -95,14 +95,14 @@ charset=<?php echo CHARSET; ?>">
 	var trader_input_obj=document.getElementsByName("kakaku[]");
 		var imaginary_input_obj=document.getElementsByName("kakuu[]");
 		var select_obj=document.getElementsByName("select_data[]");
-function ctrl_keydown(id_var,num){ //id_ver=ID　num＝現在の番号
-alert("");
+function ctrl_keydown(evt,id_var,num){ //id_ver=ID　num＝現在の番号
 		var n=parseInt(num);
 		var n2=parseInt(trader_input_obj.length);//フォームの数
 		var a=parseInt(1);
 		var id=id_var;
-
-		switch(event.keyCode) {	
+                var e = (evt)?evt:((window.event)?window.event:'');
+                var  keychar = e.keyCode?e.keyCode:e.which;
+		switch(keychar) {	
 		 case 13:
 			n2 -=a;//フォームの数-１
 			 	if((id == "TRADER")&&(n < n2)){
@@ -372,14 +372,14 @@ for($i=0;$i < $count[0];$i++){
 		$flg=0;
 		for($n=0;$n<$i_cnt;$n++){
 			if($menu_datas[$i][0] == $col_list[$n]['products_id']){
-				$html = "<input type='text' size='10px' value='".$menu_datas[$i][1]."' name='kakuu[]' id='imaginary_".$i."'  onkeydown=ctrl_keydown('IMAGINARY_INPUT','".$i."')　/>";
+$html = "<input type='text' size='10px' value='".$menu_datas[$i][1]."' name='kakuu[]' id='imaginary_".$i."'  onkeydown=\"ctrl_keydown(event,'IMAGINARY_INPUT','".$i."')\" />";
 				$flg=1;
 				//onBlur=event_onblur('IMAGINARY_INPUT','".$i."')
 			}
 		}		 
 		
 		if($flg != 1){
-			$html ="<input type='text' size='10px' value='' name='kakuu[]' id='imaginary_".$i."' onkeydown=ctrl_keydown('IMAGINARY_INPUT','".$i."')　/>";
+			$html ="<input type='text' size='10px' value='' name='kakuu[]' id='imaginary_".$i."' onkeydown=\"ctrl_keydown(event,'IMAGINARY_INPUT','".$i."')\"　/>";
 
 		}
 		
@@ -389,13 +389,13 @@ for($i=0;$i < $count[0];$i++){
 		$fig_kakaku=0;
 		for($n=0;$n<$i_cnt;$n++){
 			if($menu_datas[$i][0] == $col_list[$n]['products_id']){
-				$html_kakaku = "<input type='text' size='10px' value='".$menu_datas[$i][2]."' name='kakaku[]'  id='trader_".$i."'  onkeydown=ctrl_keydown('TRADER','".$i."')　/>";
+				$html_kakaku = "<input type='text' size='10px' value='".$menu_datas[$i][2]."' name='kakaku[]'  id='trader_".$i."'  onkeydown=\"ctrl_keydown(event,'TRADER','".$i."')\"　/>";
 				$fig_kakaku=1;
 			}
 		}		 
 		
 		if($fig_kakaku != 1){
-			$html_kakaku ="<input type='text' size='10px' value='' name='kakaku[]'  id='trader_".$i."'  onkeydown=ctrl_keydown('TRADER','".$i."')　/>";
+			$html_kakaku ="<input type='text' size='10px' value='' name='kakaku[]'  id='trader_".$i."'  onkeydown=\"ctrl_keydown(event,'TRADER','".$i."')\"　/>";
 		}
 		echo $html_kakaku;
 		echo "</td></tr>";

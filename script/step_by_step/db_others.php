@@ -45,7 +45,7 @@ cptable('iimy_countries', 'countries');
 //cp3table('banners');
 
 foreach($sites as $s) {
-  $bquery = rq("select * from ".prefix($s)."banners");
+  $bquery = rq("select * from ".table_prefix($s)."banners");
   while($banner =  mysql_fetch_array($bquery)) {
     r3q("
         insert into banners (
@@ -63,17 +63,17 @@ foreach($sites as $s) {
           status
           ) values (
             NULL,
-            ".mysql_real_escape_string($banners['banners_title']).",
-            ".mysql_real_escape_string($banners['banners_url']).",
-            ".mysql_real_escape_string($banners['banners_image']).",
-            ".mysql_real_escape_string($banners['banners_group']).",
-            ".mysql_real_escape_string($banners['banners_html_text']).",
-            ".mysql_real_escape_string($banners['expires_impressions']).",
-            ".mysql_real_escape_string($banners['expires_date']).",
-            ".mysql_real_escape_string($banners['date_scheduled']).",
-            ".mysql_real_escape_string($banners['date_added']).",
-            ".mysql_real_escape_string($banners['date_status_change']).",
-            ".mysql_real_escape_string($banners['status']).",
+            '".mysql_real_escape_string($banner['banners_title'])."',
+            '".mysql_real_escape_string($banner['banners_url'])."',
+            '".mysql_real_escape_string($banner['banners_image'])."',
+            '".mysql_real_escape_string($banner['banners_group'])."',
+            '".mysql_real_escape_string($banner['banners_html_text'])."',
+            '".mysql_real_escape_string($banner['expires_impressions'])."',
+            '".mysql_real_escape_string($banner['expires_date'])."',
+            '".mysql_real_escape_string($banner['date_scheduled'])."',
+            '".mysql_real_escape_string($banner['date_added'])."',
+            '".mysql_real_escape_string($banner['date_status_change'])."',
+            '".mysql_real_escape_string($banner['status'])."'
           )
         ");
   }

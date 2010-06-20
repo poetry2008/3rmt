@@ -170,7 +170,7 @@ function cmptable($rtable, $r3table = null) {
     }
     $sql .= join(" and ", $values);
     if(mysql_num_rows(r3q($sql)) != 1){
-      echo $sql . "\n";
+      echo "not found:\t" . $sql . "\n";
     }
   }
   print("$r3table \n");
@@ -193,8 +193,9 @@ function cmp3table($table){
         if($k === 0){
           //$values[] = null;
         } else if (
-            //$f == 'last_modified'
+            $f == 'last_modified'
             or $f == 'date_added' 
+            or $f == 'lastupdate' 
             or $f == 'expires_date'
             or $f == 'date_scheduled'
             or $f == 'date_status_change'
@@ -222,4 +223,7 @@ function table_prefix($s){
 }
 function site_id($s){
   return constant(strtoupper('r3mt_'.$s.'_id'));
+}
+
+function slog($log) {
 }
