@@ -1,186 +1,187 @@
-/* 全体構造
+﻿/* 全体構造
 ---------------------------------------------------- */
 body {
-	font-family:Arial, sans-serif;
-	font-size:12px;
-	color:#ffffff;
-	margin:0px;
-	padding:0px;
-	background:#333333;
+    font-family:Arial, sans-serif;
+    font-size:12px;
+    color:#ffffff;
+    margin:0px;
+    padding:0px;
+    background:#333333;
 }
 div {
 }
 img {
-	border:none;
+    border:none;
 }
 /*a:link {
-	color:#339966;
+    color:#339966;
 }
 a:visited {
-	color:#339966;
+    color:#339966;
 }
 a:hover {
-	color:#66CC99;
+    color:#66CC99;
 }
 a:active {
-	color:#ff0000;
+    color:#ff0000;
 }*/
 h1 {
-	font-weight:normal;
-	font-size:10px;
-	margin-bottom:0px;
-	padding-left:10px;
-	color:#ffffff;
+    font-weight:normal;
+    font-size:10px;
+    margin-bottom:0px;
+    padding-left:10px;
+    color:#ffffff;
 }
 h2 {
-	font-size:14px;
-	margin:0px;
-	padding:0px;
-	color:#99CC00;
+    font-size:14px;
+    margin:0px;
+    padding:0px;
+    color:#99CC00;
 }
 h3 {
-	width:95%;
-	font-weight:bold;
-	font-size:14px;
-	border-color:#444444;
-	border-bottom-style:dotted;
-	margin:0px;
-	padding:5px;
-	color:#ffffff;
+    width:95%;
+    font-weight:bold;
+    font-size:14px;
+    border-color:#444444;
+    border-bottom-style:dotted;
+    margin:0px;
+    padding:5px;
+    color:#ffffff;
 }
 h4 {
-	font-weight:normal;
-	font-size:14px;
-	margin:0px;
-	padding:0px;
-	color:#ffffff;
+    font-weight:normal;
+    font-size:14px;
+    margin:0px;
+    padding:0px;
+    color:#ffffff;
 }
 p {
-	font-size:14px;
-	color:#ffffff;
-	line-height:120%;
-	margin:0px;
-	padding:10px;
+    font-size:14px;
+    color:#ffffff;
+    line-height:120%;
+    margin:0px;
+    padding:10px;
 }
 strong {
-	font-style:normal;
-	font-weight:normal;
+    font-style:normal;
+    font-weight:normal;
 }
 em {
-	font-style:normal;
+    font-style:normal;
 }
 li {
 /*margin-bottom:1em;*/
-	line-height:120%;
+    line-height:120%;
 }
 dt {
-	font-weight:bold;
+    font-weight:bold;
 }
 dd {
-	border-bottom:1px dashed #cccccc;
-	margin-bottom:1em;
-	padding-bottom:5px;
-	line-height:120%;
+    border-bottom:1px dashed #cccccc;
+    margin-bottom:1em;
+    padding-bottom:5px;
+    line-height:120%;
 }
 .bold {
-	font-weight:bold;
+    font-weight:bold;
 }
 .redtext {
-	color:#ff4500;
+    color:#ff4500;
 }
 .border {
-	border:2px dashed #cccccc;
-	font-size:14px;
-	margin:0px;
-	padding:0px;
+    border:2px dashed #cccccc;
+    font-size:14px;
+    margin:0px;
+    padding:0px;
 }
 /* ヘッダ
 ---------------------------------------------------- */
 #header {
-	width:790px;
-	height:185px;/*background-image:url(images/design/oc/header.jpg);background-repeat:no-repeat;*/
-	margin:0px;
-	padding:0px;
-	position:relative;
+    width:790px;
+    height:185px;/*background-image:url(images/design/oc/header.jpg);background-repeat:no-repeat;*/
+    margin:0px;
+    padding:0px;
+    position:relative;
 }
 #header .header_div01{
 position:absolute;
 font-size:10px;
 }
 .header1 {
-	font-weight:normal;
-	font-size:10px;
-	margin:0px 0px 15px 0px;
-	padding:0px 0px 0px 10px;
-	color:#ffffff;
+    font-weight:normal;
+    font-size:10px;
+    margin:0px 0px 15px 0px;
+    padding:0px 0px 0px 10px;
+    *padding:1px 0 0 10px;
+    color:#ffffff;
 }
 .header2 {
-	text-indent:-10000!important;
+    text-indent:-10000!important;
 }
 /* ヘッダメニュー
 ---------------------------------------------------- */
 #h_menubar {
-	width:790px;
-	height:65px;
-	background-image:url("images/design/oc/h_menubar.jpg");
-	background-repeat:no-repeat;
-	margin:0px;
-	padding:0 0 0 210px;
+    width:790px;
+    height:65px;
+    background-image:url("images/design/oc/h_menubar.jpg");
+    background-repeat:no-repeat;
+    margin:0px;
+    padding:0 0 0 210px;
 }
 .box_title {
-	font-size: 12px;
-	font-weight: bold;
-	color: #CAFFCA;
-	background-image: url(images/design/oc/l_menuupper_f.jpg);
-	background-repeat: no-repeat;
-	height: 29px;
-	width: 153px;
-	padding-top: 5px;
-	padding-left: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #CAFFCA;
+    background-image: url(images/design/oc/l_menuupper_f.jpg);
+    background-repeat: no-repeat;
+    height: 29px;
+    width: 153px;
+    padding-top: 5px;
+    padding-left: 10px;
 }
 #l_menu #box .categories_tree {
-	font-size: 10px;
-	color: #FFFFFF;
-	margin:0px;
-	padding-left:6px;
+    font-size: 10px;
+    color: #FFFFFF;
+    margin:0px;
+    padding-left:6px;
 }
 #l_menu #box .categories_tree a:hover {
-	color: #FFFFFF;
+    color: #FFFFFF;
 }
 .l_m_category_a {
-	display:block;
-	overflow:hidden;
-	width:123px;
+    display:block;
+    overflow:hidden;
+    width:123px;
  *+width:141px;
-	line-height:34px;
-	height: 34px;
-	text-decoration:none;
-	background-image: url(images/design/oc/box_text2.jpg);
-	font-size: 12px;
-	padding-left: 18px;
+    line-height:34px;
+    height: 34px;
+    text-decoration:none;
+    background-image: url(images/design/oc/box_text2.jpg);
+    font-size: 12px;
+    padding-left: 18px;
 }
 .l_m_category_a:link {
-	color: #FFFFFF;
+    color: #FFFFFF;
 }
 .l_m_category_a:visited {
-	color: #FFFFFF;
+    color: #FFFFFF;
 }
 .l_m_category_a:hover {
-	background-image: url(images/design/oc/box_text1.jpg);
+    background-image: url(images/design/oc/box_text1.jpg);
 }
 #h_menubar ul {
 display:block;
 height:30px;
-	padding:0px;
-	margin:0px;
-	list-style-type:none;
-	list-style-image:none;
+    padding:0px;
+    margin:0px;
+    list-style-type:none;
+    list-style-image:none;
 }
 #h_menubar li {
 display:block;
-	float:left;
-	line-height:30px;
-	height:30px;
+    float:left;
+    line-height:30px;
+    height:30px;
 }
 #h_menubar ul li a{
 color:#fff;
@@ -192,205 +193,205 @@ text-decoration:none;
 /* メイン
 ---------------------------------------------------- */
 #main {
-	width:790px;
-	background-image:url("images/design/oc/main.jpg");
-	background-repeat:repeat-y;
-	text-align:left;
-	margin:0px;
-	padding:0px;
+    width:790px;
+    background-image:url("images/design/oc/main.jpg");
+    background-repeat:repeat-y;
+    text-align:left;
+    margin:0px;
+    padding:0px;
 }
 /* ---------------------------
 TABLE：フォームエリア（境界線）
 --------------------------- */
 TABLE.formArea {                           /* 背景色 */
-	border-color: #CCCCCC;                           /* 境界線の色 */
-	border-style: solid;                             /* 境界線のスタイル */
-	border-width: 1px;                               /* 境界線の幅 */
+    border-color: #CCCCCC;                           /* 境界線の色 */
+    border-style: solid;                             /* 境界線のスタイル */
+    border-width: 1px;                               /* 境界線の幅 */
 }
 /* ---------------------------
 TD：フォームエリア（タイトル）
 --------------------------- */
 TD.formAreaTitle {
-	font-size: 12px;                                 /* フォントサイズ */
-	font-weight: bold;                               /* フォント太さ */
+    font-size: 12px;                                 /* フォントサイズ */
+    font-weight: bold;                               /* フォント太さ */
 }
 /* ---------------------------
 TD：メイン
 --------------------------- */
 P.main {
-	font-size: 14px;                                 /* フォントサイズ */
-	line-height: 1.5;                                /* 行の高さ */
-	padding: 0px;
+    font-size: 14px;                                 /* フォントサイズ */
+    line-height: 1.5;                                /* 行の高さ */
+    padding: 0px;
 }
 /* ---------------------------
 
 TD,SPAN：小さい文字（メッセージ）
 --------------------------- */
 SPAN.smallText, P.smallText {
-	font-size: 10px;
-	line-height: 1.5;
-	padding: 0px;
+    font-size: 10px;
+    line-height: 1.5;
+    padding: 0px;
 }
 .smallText {
-	font-size: 10px;
-	line-height: 1.5;
+    font-size: 10px;
+    line-height: 1.5;
 }
 div.headerNavigation {
-	margin-top: 10px;
-	font-size: 10px;                                 /* フォントサイズ */
-	color: #339966;                              /* フォント太さ */
+    margin-top: 10px;
+    font-size: 10px;                                 /* フォントサイズ */
+    color: #339966;                              /* フォント太さ */
 }
 /* ---------------------------
 TABLE：情報ボックス
 --------------------------- */
 .infoBox {
-	background: #CCCCCC;/* 背景色 */
+    background: #CCCCCC;/* 背景色 */
 }
 /* ---------------------------
 TABLE：情報ボックス（コンテンツ）
 --------------------------- */
 .infoBoxContents {
-	background:#000000;
-	font-size: 12px;/* フォントサイズ */
+    background:#000000;
+    font-size: 12px;/* フォントサイズ */
 }
 /* ---------------------------
 調査中
 --------------------------- */
 .infoBoxNotice {
-	background: #FF8E90;                             /* 背景色 */
-	color: #ff4500;
+    background: #FF8E90;                             /* 背景色 */
+    color: #ff4500;
 }
 /* ---------------------------
 調査中
 --------------------------- */
 .infoBoxNoticeContents {
-	background: #FFE6E6;                             /* 背景色 */
-	font-size: 10px;                                 /* フォントサイズ */
-	color:#000000;
+    background: #FFE6E6;                             /* 背景色 */
+    font-size: 10px;                                 /* フォントサイズ */
+    color:#000000;
 }
 /* ---------------------------
 TD：情報ボックス（タイトル）
 --------------------------- */
 TD.infoBoxHeading {
-	font-size: 11px;                                 /* フォントサイズ */
-	font-weight: bold;                               /* フォント太さ */
-	background: #bbc3d3;                             /* 背景色 */
-	color: #ffffff;                                  /* フォントカラー */
+    font-size: 11px;                                 /* フォントサイズ */
+    font-weight: bold;                               /* フォント太さ */
+    background: #bbc3d3;                             /* 背景色 */
+    color: #ffffff;                                  /* フォントカラー */
 }
 /* ---------------------------
 SPAN：特価カタログ価格
 --------------------------- */
 SPAN.productSpecialPrice {
-	color: #ff0000;
+    color: #ff0000;
 }
 /* ---------------------------
 SPAN：エラー
 --------------------------- */
 SPAN.errorText {
-	color: #ff0000;
+    color: #ff0000;
 }
 /* 左メニュー
 ---------------------------------------------------- */
 #l_menu {
-	font-size:10px;
-	width:163px;
-	margin:0px;
-	padding:0px;
-	float:left;
+    font-size:10px;
+    width:163px;
+    margin:0px;
+    padding:0px;
+    float:left;
 }
 #l_menu ul {
-	padding:0px;
-	margin:-3px 0px 0px 0px;
-	list-style-type:none;
+    padding:0px;
+    margin:-3px 0px 0px 0px;
+    list-style-type:none;
 }
 #l_menu li {
-	padding:0px;
-	margin:0px 0px 0px 0px;
+    padding:0px;
+    margin:0px 0px 0px 0px;
 }
 /*#l_menu li a {
-	display:block;
-	width:141px;
-	height:34px;
-	text-decoration:none;
-	background-repeat:no-repeat;
+    display:block;
+    width:141px;
+    height:34px;
+    text-decoration:none;
+    background-repeat:no-repeat;
 }
 #l_menu li a:hover {
-	background-color:transparent;
+    background-color:transparent;
 }*/
 #l_menu li a:hover img {
-	visibility:hidden;
+    visibility:hidden;
 }/* 右メニュー
 ---------------------------------------------------- */
 #r_menu {
-	width:143px;
-	margin:0px 0px 0px 0px;
-	padding:0px 0px 0px 0px;
-	float:left;
-	overflow: hidden;
+    width:143px;
+    margin:0px 0px 0px 0px;
+    padding:0px 0px 0px 0px;
+    float:left;
+    overflow: hidden;
 }
 #r_menu a {
-	color:#FFFFFF;
+    color:#FFFFFF;
 }
 #r_menu td, #r_menu ol {
-	font-size:10px;
+    font-size:10px;
 }
 #r_menu img {
-	margin:3px 0px 0px 7px;
+    margin:3px 0px 0px 7px;
 }
 #r_links {
-	width:131px;
-	background-image:url("images/design/oc/r_links.jpg");
-	background-repeat:no-repeat;
-	margin:3px 0px 0px 7px;
-	padding:25px 0px 6px 0px;
+    width:131px;
+    background-image:url("images/design/oc/r_links.jpg");
+    background-repeat:no-repeat;
+    margin:3px 0px 0px 7px;
+    padding:25px 0px 6px 0px;
 }
 .best_link_bottom01 {
-	background:url("images/design/oc/r_links.jpg") no-repeat left bottom;
+    background:url("images/design/oc/r_links.jpg") no-repeat left bottom;
         height:42px;
-	margin:0px 0px 0px 7px;
+    margin:0px 0px 0px 7px;
 }
 #r_links p {
-	width:115px;
-	font-size:13px;
-	color:#ffffff;
-	line-height:120%;
-	margin:0px 0px 5px 7px;
-	padding:0px;
+    width:115px;
+    font-size:13px;
+    color:#ffffff;
+    line-height:120%;
+    margin:0px 0px 5px 7px;
+    padding:0px;
 }
 #r_links a {
-	text-decoration:none;
+    text-decoration:none;
 }
 #r_links a:link {
-	color:#ffffff;
+    color:#ffffff;
 }
 #r_links a:visited {
-	color:#ffffff;
+    color:#ffffff;
 }
 #r_links a:hover {
-	color:#ff6633;
+    color:#ff6633;
 }
 #r_links a:active {
-	color:#ff6633;
+    color:#ff6633;
 }
 .sep {
-	border-top-width: 1px;
-	border-top-style: solid;
-	border-top-color: #5E5E5E;
-	margin-top: 5px;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: #5E5E5E;
+    margin-top: 5px;
 }
 /* コンテンツ
 ---------------------------------------------------- */
 #content {
-	font-size:14px;
-	width:474px;
-	color:#ffffff;
-	margin:0px;
-	padding-right:0px;
-	float:left;
+    font-size:14px;
+    width:474px;
+    color:#ffffff;
+    margin:0px;
+    padding-right:0px;
+    float:left;
 }
 #body_text {
-	padding-left:5px;
-	padding-right:5px;
+    padding-left:5px;
+    padding-right:5px;
 }
 #body_text h2{
 padding-right:10px;
@@ -404,70 +405,70 @@ width:100%;
 *+width:99%;
 }*/
 #information {
-	width:460px;
-	height:220px;
-	background-image:url("images/design/oc/content_info.jpg");
-	background-repeat:no-repeat;
-	margin:0px;
-	padding:0px;
+    width:460px;
+    height:220px;
+    background-image:url("images/design/oc/content_info.jpg");
+    background-repeat:no-repeat;
+    margin:0px;
+    padding:0px;
 }
 #information p {
-	font-size:14px;
-	color:#ffffff;
-	line-height:120%;
-	margin:0px;
-	padding-left:40px;
-	padding-right:40px;
-	padding-top:45px;
-	padding-bottom:30px
+    font-size:14px;
+    color:#ffffff;
+    line-height:120%;
+    margin:0px;
+    padding-left:40px;
+    padding-right:40px;
+    padding-top:45px;
+    padding-bottom:30px
 }
 .box {
-	font-size:14px;
-	color:#ffffff;
-	width:450px;
-	margin:10px 0px 0px 0px;
-	padding:0px 0px 0px 15px;
+    font-size:14px;
+    color:#ffffff;
+    width:450px;
+    margin:10px 0px 0px 0px;
+    padding:0px 0px 0px 15px;
 }
 .box ul {
 padding:0 15px 0 35px;
 *padding:0 15px 0 0;
 }
 .sub_menu {
-	font-size:14px;
-	color:#ffffff;
-	width:435px;
-	margin:10px 0px 10px 0px;
-	padding:0px 0px 0px 0px;
-	line-height:120%;
+    font-size:14px;
+    color:#ffffff;
+    width:435px;
+    margin:10px 0px 10px 0px;
+    padding:0px 0px 0px 0px;
+    line-height:120%;
 }
 .sub_menu h4 {
-	padding:0px 0px 0px 10px;
+    padding:0px 0px 0px 10px;
 }
 .sub_menu p {
 padding-left:21px;
 }
 .page_top {
-	text-align:right;
+    text-align:right;
 }
 .p_list {
-	margin:0px;
-	padding:10px 0px 10px 0px;
-	font-size:10px;
-	text-align:left;
+    margin:0px;
+    padding:10px 0px 10px 0px;
+    font-size:10px;
+    text-align:left;
 }
 .box_des {
-	font-size:14px;
-	color: #FFFFFF;
-	padding-bottom: 5px;
-	padding-left: 10px;
-	padding-top: 5px;
+    font-size:14px;
+    color: #FFFFFF;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-top: 5px;
 }
 .box_des01 {
-	font-size:12px;
-	color: #FFFFFF;
-	padding-bottom: 5px;
-	padding-left: 37px;
-	padding-top: 5px;
+    font-size:12px;
+    color: #FFFFFF;
+    padding-bottom: 5px;
+    padding-left: 37px;
+    padding-top: 5px;
         font-weight:bold;
 }
 p.box_des{
@@ -477,45 +478,45 @@ p.box_des{
 *+padding-left:20px;
 }*/ 
 .form {
-	margin: 0px;
-	padding:0px;
+    margin: 0px;
+    padding:0px;
 }
 .underline {
-	border-top: 1px solid #5E5E5E;
-	margin-top: 15px;
+    border-top: 1px solid #5E5E5E;
+    margin-top: 15px;
 }
 /* フッター
 ---------------------------------------------------- */
 #f_menu {
-	clear:both;
-	font-size:10px;
-	width:790px;
-	text-align:center;
-	margin:0px;
-	padding:0px;
+    clear:both;
+    font-size:10px;
+    width:790px;
+    text-align:center;
+    margin:0px;
+    padding:0px;
 }
 #footer {
-	clear:both;
-	font-size:10px;
-	width:790px;
-	height:95px;
-	background-image:url("images/design/oc/footer.jpg");
-	background-repeat:no-repeat;
-	text-align:center;
-	margin:0px;
-	padding:0px;
+    clear:both;
+    font-size:10px;
+    width:790px;
+    height:95px;
+    background-image:url("images/design/oc/footer.jpg");
+    background-repeat:no-repeat;
+    text-align:center;
+    margin:0px;
+    padding:0px;
 }
 #footer a {
-	color:#000000;
-	text-decoration:none;
+    color:#000000;
+    text-decoration:none;
 }
 .copyright {
-	color:#000000;
-	font-style:normal;
-	padding-left:0px;
-	padding-right:0px;
-	padding-top:45px;
-	padding-bottom:0px
+    color:#000000;
+    font-style:normal;
+    padding-left:0px;
+    padding-right:0px;
+    padding-top:45px;
+    padding-bottom:0px
 }
 /* CGI
 ---------------------------------------------------- */
@@ -538,113 +539,113 @@ text-align:left;
 width:600px;
 }
 /*#cgi {
-	text-align:left;
-	overflow:hidden;
-	width:600px;
-	float:left;
-	margin:0px;
-	padding:0px;
-	background-image: url(images/design/oc/wide_bg.gif);
-	background-repeat: repeat-y;
+    text-align:left;
+    overflow:hidden;
+    width:600px;
+    float:left;
+    margin:0px;
+    padding:0px;
+    background-image: url(images/design/oc/wide_bg.gif);
+    background-repeat: repeat-y;
 }*/
 /* サイトマップ
 ---------------------------------------------------- */
 .box_titleR {
-	font-size: 12px;
-	color: #FFFFFF;
-	padding-bottom: 5px;
-	padding-left: 30px;
-	font-weight: bold;
+    font-size: 12px;
+    color: #FFFFFF;
+    padding-bottom: 5px;
+    padding-left: 30px;
+    font-weight: bold;
 }
 form {
-	margin: 0px;
-	padding:0px;
+    margin: 0px;
+    padding:0px;
 }
 /* FAQ
 ---------------------------------------------------- */
 .faq {
-	list-style-image:url("images/design/oc/q.gif");
+    list-style-image:url("images/design/oc/q.gif");
 }
 /* メールマガジン
 ---------------------------------------------------- */
 .magazine {
-	font-family:monospace;
-	font-size:10px;
+    font-family:monospace;
+    font-size:10px;
 }
 .pageHeading {
-	font-size: 20px;
-	color: #FFFFFF;
-	font-weight:bold;
-	margin-top:10px;
-	width: 90%;
-	padding-left: 10px;
-	border-left-width: 8px;
-	border-left-style: inset;
-	border-left-color: #FFFFFF;
+    font-size: 20px;
+    color: #FFFFFF;
+    font-weight:bold;
+    margin-top:10px;
+    width: 90%;
+    padding-left: 10px;
+    border-left-width: 8px;
+    border-left-style: inset;
+    border-left-color: #FFFFFF;
 }
 .pageHeading01 {
-	font-size: 20px;
-	color: #FFFFFF;
-	font-weight:bold;
-	margin-top:10px;
-	width: 90%;
-	padding-left: 10px;
-	border-left-width: 8px;
-	border-left-style: inset;
-	border-left-color: #FFFFFF;
+    font-size: 20px;
+    color: #FFFFFF;
+    font-weight:bold;
+    margin-top:10px;
+    width: 90%;
+    padding-left: 10px;
+    border-left-width: 8px;
+    border-left-style: inset;
+    border-left-color: #FFFFFF;
 }
 .dot {
-	background-image: url(images/design/box/dot.gif);
-	background-repeat: repeat-x;
+    background-image: url(images/design/box/dot.gif);
+    background-repeat: repeat-x;
 }
 .smallText a {
-	color:#fff;
+    color:#fff;
 }
 .product_listing_content {
-	width:100%;
+    width:100%;
 }
 /*.l_m_categories_tree {
-	padding-left:5px!important;
+    padding-left:5px!important;
 }*/
 .l_m_categories_tree img {
 }
 .l_m_categories_tree a {
-	color:#fff;
-	background:url(images/design/oc/box_text2.jpg) no-repeat;
-	display:block;
-	font-size:12px;
-	line-height:14px;
-	height:29px;
+    color:#fff;
+    background:url(images/design/oc/box_text2.jpg) no-repeat;
+    display:block;
+    font-size:12px;
+    line-height:14px;
+    height:29px;
 *+height:34px;
-	margin-left:5px;
-	padding-left:18px;
-	padding-top:5px;
-	text-decoration:none;
-	width:123px;
+    margin-left:5px;
+    padding-left:18px;
+    padding-top:5px;
+    text-decoration:none;
+    width:123px;
  *+width:141px;
 }
 .l_m_categories_tree a:active {
-	color:#fff;
+    color:#fff;
 }
 .l_m_categories_tree a:visited {
-	color:#fff;
+    color:#fff;
 }
 .l_m_categories_tree a:hover {
-	background-image:url(images/design/oc/box_text1.jpg);
+    background-image:url(images/design/oc/box_text1.jpg);
 }
 .l_m_categories_tree a a {
-	margin-left:0px;
+    margin-left:0px;
 }
 .l_m_categories_tree3 {
-	padding-left:5px !important;
+    padding-left:5px !important;
 }
 .comment {
-	width:90%;
+    width:90%;
 }
 .main h3 {
-	height:12px;
+    height:12px;
 *+height:26px;
-	overflow:hidden;
+    overflow:hidden;
 }
 .news_title_02 .news_list {
 display:block;
@@ -676,86 +677,86 @@ width:290px;
 line-height:20px;
 }
 .outnews01 a {
-	display:block;
+    display:block;
 }
 /*.news_title_02 li:hover {*/
 /*background:url(images/design/oc/redarrow01.gif) no-repeat left 5px;*/
 /*}*/
 .news_list a {
-	display:block;
-	/*overflow:hidden;*/
+    display:block;
+    /*overflow:hidden;*/
 }
 #content a {
-	color:#339966;
+    color:#339966;
 }
 #content a:hover {
-	color:#66CC99;
+    color:#66CC99;
 }
 #content a:active {
-	color:#ff0000;
+    color:#ff0000;
 }
 #cgi a {
-	color:#339966;
+    color:#339966;
 }
 #cgi a:hover {
-	color:#66CC99;
+    color:#66CC99;
 }
 #f_menu a {
-	color:#339966;
+    color:#339966;
 }
 #f_menu a:hover {
-	color:#66CC99;
+    color:#66CC99;
 }
 #content .smallText a {
-	color:#339966;
+    color:#339966;
 }
 #content .smallText a:hover {
-	color:#66CC99;
+    color:#66CC99;
 }
 #content .smallText a:active {
-	color:#ff0000;
+    color:#ff0000;
 }
 #content .smallText .Tlist a {
-	color:#339966;
+    color:#339966;
 }
 #content .smallText .Tlist a:hover {
-	color:#66CC99;
+    color:#66CC99;
 }
 #content .smallText .Tlist a:active {
-	color: #ff0000
+    color: #ff0000
 }
 .footer_links a {
-	color:#339966;
+    color:#339966;
 }
 .footer_links a:hover {
-	color:#66CC99;
+    color:#66CC99;
 }
 .footer_links a:active {
-	color: #ff0000;
+    color: #ff0000;
 }
 #content .tell_msg {
-	width:90%;
+    width:90%;
 }
 /*#content p{
 font-size:12px;
 }*/
 #content p a:active{
-	color: #ff0000 !important;
+    color: #ff0000 !important;
 }
 a.headerNavigation:active{
-	color: #ff0000 !important;
+    color: #ff0000 !important;
 }
 a.pageResults:active{
-	color: #ff0000 !important;
+    color: #ff0000 !important;
 }
 p.main a:active{
-	color: #ff0000 !important;
+    color: #ff0000 !important;
 }
 p.smallText a:active{
-	color: #ff0000 !important;
+    color: #ff0000 !important;
 }
 #f_menu a:active{
-	color: #ff0000;
+    color: #ff0000;
 }
 .payment_comment{
 width:400px;
@@ -797,11 +798,11 @@ height:40px;
 width:95%;
 }
 .send_box01{
-	font-size:12px;
-	color:#ffffff;
-	width:450px;
-	margin:10px 0px 0px 0px;
-	padding:0px 0px 0px 15px;
+    font-size:12px;
+    color:#ffffff;
+    width:450px;
+    margin:10px 0px 0px 0px;
+    padding:0px 0px 0px 15px;
 }
 .tag_h03{
 border:0;

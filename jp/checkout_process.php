@@ -280,7 +280,7 @@
                             'products_tax' => $order->products[$i]['tax'], 
                             'products_quantity' => $order->products[$i]['qty'],
                             'products_character' =>  stripslashes($chara),
-      						'site_id' => SITE_ID
+                  'site_id' => SITE_ID
   );
     // ccdd
     tep_db_perform(TABLE_ORDERS_PRODUCTS, $sql_data_array);
@@ -473,6 +473,7 @@
   }
   
   //$email_order .= '------------------------------------------' . "\n";
+  $email_order .= "\n\n";
   $email_order .= '▼注文商品' . "\n";
   $email_order .= '------------------------------------------' . "\n";
   $email_order .= $products_ordered . "\n";
@@ -489,7 +490,7 @@
   //$email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
   
   /*
-  if ($payment == 'convenience_store') {
+  if ($payment == 'convenience_store') { 
     $email_order .= '■コンビニ決済情報' . "\n";
     $email_order .= '郵便番号:' . $_POST['convenience_store_zip_code'] ."\n";
     $email_order .= '住所    :' . $_POST['convenience_store_address1'] . " " . $_POST['convenience_store_address2'] ."\n";
@@ -522,8 +523,8 @@
   $email_printing_order .= '取引日時　　　　：' . str_string($date) . $hour . '時' . $min . '分　（24時間表記）' . "\n";
   $email_printing_order .= 'オプション　　　：' . $torihikihouhou . "\n";
   $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '日時変更　　　　：200 年  月  日  時  分' . "\n";
-  $email_printing_order .= '日時変更　　　　：200 年  月  日  時  分' . "\n";
+  $email_printing_order .= '日時変更　　　　：' . date('Y') . ' 年  月  日  時  分' . "\n";
+  $email_printing_order .= '日時変更　　　　：' . date('Y') . ' 年  月  日  時  分' . "\n";
   $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
   $email_printing_order .= '注文者名　　　　：' . tep_get_fullname($order->customer['firstname'],$order->customer['lastname']) . '様' . "\n";
   $email_printing_order .= '注文番号　　　　：' . $insert_id . "\n";

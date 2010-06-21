@@ -70,16 +70,17 @@
   if ($payment == 'convenience_store') {
     $convenience_sid = str_replace('-', "", $insert_id);
   
-    $pay_comments = '取引コード' . $convenience_sid ."\n";
-  $pay_comments .= '郵便番号:' . $_POST['convenience_store_zip_code'] ."\n";
-  $pay_comments .= '住所1:' . $_POST['convenience_store_address1'] ."\n";
-  $pay_comments .= '住所2:' . $_POST['convenience_store_address2'] ."\n";
-  $pay_comments .= '氏:' . $_POST['convenience_store_l_name'] ."\n";
-  $pay_comments .= '名:' . $_POST['convenience_store_f_name'] ."\n";
-  $pay_comments .= '電話番号:' . $_POST['convenience_store_tel'] ."\n";
-  $pay_comments .= '接続URL:' . tep_href_link('convenience_store_chk.php', 'sid=' . $convenience_sid, 'SSL');
-  
-  $comments = $pay_comments ."\n".$comments;
+    //$pay_comments = '取引コード' . $convenience_sid ."\n";
+    //$pay_comments .= '郵便番号:' . $_POST['convenience_store_zip_code'] ."\n";
+    //$pay_comments .= '住所1:' . $_POST['convenience_store_address1'] ."\n";
+    //$pay_comments .= '住所2:' . $_POST['convenience_store_address2'] ."\n";
+    //$pay_comments .= '氏:' . $_POST['convenience_store_l_name'] ."\n";
+    //$pay_comments .= '名:' . $_POST['convenience_store_f_name'] ."\n";
+    //$pay_comments .= '電話番号:' . $_POST['convenience_store_tel'] ."\n";
+    //$pay_comments .= '接続URL:' . tep_href_link('convenience_store_chk.php', 'sid=' . $convenience_sid, 'SSL');
+
+    $pay_comments = 'PCメールアドレス:'.$_POST['convenience_email']; 
+    $comments = $pay_comments ."\n".$comments;
   }
   
   require(DIR_WS_CLASSES . 'order.php');
@@ -290,7 +291,7 @@
                             'products_tax' => $order->products[$i]['tax'], 
                             'products_quantity' => $order->products[$i]['qty'],
                             'products_character' =>  stripslashes($chara),
-      						'site_id' => SITE_ID
+                  'site_id' => SITE_ID
   );
   //ccdd
     tep_db_perform(TABLE_ORDERS_PRODUCTS, $sql_data_array);
@@ -476,15 +477,16 @@
   
   if(tep_not_null($bbbank)) {
     $email_order .= '▼お支払先金融機関' . "\n";
-  $email_order .= $bbbank . "\n";
-  $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
-  //$email_order .= '・本メールに記載された当社キャラクター宛に商品をトレードしてください。' . "\n";
-  $email_order .= '・当社にて商品の受領確認がとれましたら代金お支払い手続きに入ります。' . "\n";
-  $email_order .= '・本メール送信後7日以内に取引が完了できない場合、' . "\n";
-  $email_order .= '　当社は、お客様がご注文を取り消されたものとして取り扱います。' . "\n\n";
+    $email_order .= $bbbank . "\n";
+    $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
+    //$email_order .= '・本メールに記載された当社キャラクター宛に商品をトレードしてください。' . "\n";
+    $email_order .= '・当社にて商品の受領確認がとれましたら代金お支払い手続きに入ります。' . "\n";
+    $email_order .= '・本メール送信後7日以内に取引が完了できない場合、' . "\n";
+    $email_order .= '　当社は、お客様がご注文を取り消されたものとして取り扱います。' . "\n\n";
   }
   
   //$email_order .= '------------------------------------------' . "\n";
+  $email_order .= "\n\n";
   $email_order .= '▼注文商品' . "\n";
   $email_order .= '------------------------------------------' . "\n";
   $email_order .= $products_ordered . "\n";
@@ -500,14 +502,14 @@
   }
   //$email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
   
-  
+  /*
   if ($payment == 'convenience_store') {
     $email_order .= '■コンビニ決済情報' . "\n";
   $email_order .= '郵便番号:' . $_POST['convenience_store_zip_code'] ."\n";
   $email_order .= '住所    :' . $_POST['convenience_store_address1'] . " " . $_POST['convenience_store_address2'] ."\n";
   $email_order .= 'お名前  :' . $_POST['convenience_store_l_name'] . " " . $_POST['convenience_store_f_name'] ."\n";
   $email_order .= '電話番号:' . $_POST['convenience_store_tel'] . "\n\n";
-  }
+  }*/
   
   $email_order .= "\n\n\n";
   $email_order .= '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n";
@@ -533,8 +535,8 @@
   $email_printing_order .= '取引日時　　　　：' . str_string($date) . $hour . '時' . $min . '分　（24時間表記）' . "\n";
   $email_printing_order .= 'オプション　　　：' . $torihikihouhou . "\n";
   $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '日時変更　　　　：200 年  月  日  時  分' . "\n";
-  $email_printing_order .= '日時変更　　　　：200 年  月  日  時  分' . "\n";
+  $email_printing_order .= '日時変更　　　　：' . date('Y') . ' 年  月  日  時  分' . "\n";
+  $email_printing_order .= '日時変更　　　　：' . date('Y') . ' 年  月  日  時  分' . "\n";
   $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
   $email_printing_order .= '注文者名　　　　：' . tep_get_fullname($order->customer['firstname'],$order->customer['lastname']) . '様' . "\n";
   $email_printing_order .= '注文番号　　　　：' . $insert_id . "\n";
@@ -566,6 +568,7 @@
     $email_printing_order .= $order->info['comments'] . "\n";
   }
 
+/*
   if ($payment == 'convenience_store') {
     $email_printing_order .= '■コンビニ決済情報' . "\n";
     $email_printing_order .= '郵便番号:' . $_POST['convenience_store_zip_code'] ."\n";
@@ -573,7 +576,7 @@
     $email_printing_order .= 'お名前  :' . $_POST['convenience_store_l_name'] . " " . $_POST['convenience_store_f_name'] ."\n";
     $email_printing_order .= '電話番号:' . $_POST['convenience_store_tel'] . "\n";
   }
-
+*/
   $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
   $email_printing_order .= 'IPアドレス　　　　　　：' . $_SERVER["REMOTE_ADDR"] . "\n";
   $email_printing_order .= 'ホスト名　　　　　　　：' . @gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";

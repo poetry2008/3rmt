@@ -4,27 +4,10 @@
 */
 ?>
 <div id="f_menu">
-<?php
-  // add info romaji 
-  $fo_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where pID = '3'"); 
-  $fo_res = tep_db_fetch_array($fo_query); 
-  if ($fo_res) { 
-?>
-<a href="<?php echo info_tep_href_link($fo_res['romaji']); ?>">はじめてのRMT</a>
-<?php
-  }
-?>
+
+<a href="/info/starting_rmt.html">はじめてのRMT</a>
 &nbsp;|&nbsp;
-<?php
-  // add info romaji 
-  $so_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where pID = '1'"); 
-  $so_res = tep_db_fetch_array($so_query); 
-  if ($so_res) { 
-?>
-<a href="<?php echo info_tep_href_link($so_res['romaji']); ?>">特定商取引に基づく表記</a>
-<?php
-  }
-?>
+<a href="/info/salespolicies.html">特定商取引に基づく表記</a>
 &nbsp;|&nbsp;
 <a href="<?php echo tep_href_link('rss.php'); ?>">RSS</a>
 </div>

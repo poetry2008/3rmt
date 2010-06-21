@@ -105,7 +105,7 @@
     $entry_password_error = false;
   }
 
-  if ($password != $confirmation) {
+  if ($password !== $confirmation) {
     $error = true;
     $entry_password_error = true;
   }

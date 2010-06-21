@@ -120,10 +120,13 @@ function change_num(ob, targ, quan,a_quan)
           AND site_id     = '".SITE_ID."'
     ");
 
-    if ($new_price = tep_get_special_price($product_info['products_id'])) {
-      $pricedef = $new_price;
-      $products_price = '<s>' . $currencies->display_price(tep_get_price($product_info['products_price'], $product_info['products_price_offset'], tep_get_price($product_info['products_small_sum'])), tep_get_tax_rate($product_info['products_tax_class_id'])) . '</s> <span class="productSpecialPrice">' . $currencies->display_price($new_price, tep_get_tax_rate($product_info['products_tax_class_id'])) . '</span>';
+    if (tep_get_special_price($product_info['products_price'], $product_info['products_price_offset'], $product_info['products_small_sum'])) {
+      $pricedef = $product_info['products_price'];
+      $products_price = '<s>' . $currencies->display_price(tep_get_price($product_info['products_price'], $product_info['products_price_offset'], $product_info['products_small_sum']), tep_get_tax_rate($product_info['products_tax_class_id'])) . '</s> 
+      
+      <span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($product_info['products_price'], $product_info['products_price_offset'], $product_info['products_small_sum']), tep_get_tax_rate($product_info['products_tax_class_id'])) . '</span>';
     } else {
+      
       $pricedef = $product_info['products_price'];
       $products_price = $currencies->display_price(tep_get_price($product_info['products_price'], $product_info['products_price_offset'], tep_get_price($product_info['products_small_sum'])), tep_get_tax_rate($product_info['products_tax_class_id']));
     }

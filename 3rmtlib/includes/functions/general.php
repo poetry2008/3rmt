@@ -2488,7 +2488,8 @@ function tep_get_final_price($price, $offset, $sum, $quantity) {
     }
     return $price + $lprice;
   } else if ($price && $offset && $offset != 0) {
-    return calculate_special_price($price, $offset);
+    //return calculate_special_price($price, $offset);
+    return $price;
   } else {
     return $price;
   }
@@ -2516,6 +2517,21 @@ function tep_get_wari_array_by_sum($small_sum) {
   @krsort($wari_array);
   return $wari_array;
 }
+/*
+function calculate_special_price($price, $offset) {
+  $price = (float) $price;
+  $offset = trim($offset);
+  
+  $special = $price;
+  
+  if (substr($offset, -1) == '%') {
+    $special = $price +(($offset / 100) * $price);
+  } else {
+    $offset = (float) $offset;
+    $special = $price + $offset;
+  }
+  return $special;
+}*/
 
 function calculate_special_price($price, $offset) {
   $price = (float) $price;
