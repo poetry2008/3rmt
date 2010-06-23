@@ -5,7 +5,8 @@ require('includes/application_top.php');
 require(DIR_WS_CLASSES . 'currencies.php');
 $currencies = new currencies();
 
-$cID=$_POST['cID_list'];
+//$cID=$_POST['cID_list'];
+$cID=$_POST['cpath_yobi'];
 switch ($HTTP_GET_VARS['action']){
   		case 'set_bai':
 		$bai=$_POST['bai'];
@@ -50,7 +51,7 @@ charset=<?php echo CHARSET; ?>">
 
 </select>
 <input type="txte" value="<?php echo $col['keisan']?>" name="kei" ></p>
-<input type="hidden" value="<?php echo $cID ?>" name="cID_list">
+<input type="hidden" value="<?php echo $cID ?>" name="cpath_yobi">
 <input type="submit" value="計算設定">
 </form>
 </body>

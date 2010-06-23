@@ -130,12 +130,12 @@ while($desc = mysql_fetch_array($query)){
       '" . $desc['categories_image2'] . "',
       '" . $desc['categories_image3'] . "',
       '" . mysql_real_escape_string($desc['categories_meta_text']) . "',
-      '" . mysql_real_escape_string($desc['seo_description']) . "',
-      '" . mysql_real_escape_string($desc['categories_header_text_jp']) . "',
-      '" . mysql_real_escape_string($desc['categories_footer_text_jp']) . "',
-      '" . mysql_real_escape_string($desc['text_information']) . "',
-      '" . mysql_real_escape_string($desc['meta_keywords_jp']) . "',
-      '" . mysql_real_escape_string($desc['meta_description_jp']) . "'
+      '',
+      '',
+      '',
+      '',
+      '',
+      ''
       ),(
       '" . $desc['categories_id'] . "',
       '" . R3MT_JP_ID . "',
@@ -490,7 +490,7 @@ while($pd = mysql_fetch_array($query)){
         '" . $pd['products_id'] . "',
         '" . $pd['language_id'] . "',
         '" . mysql_real_escape_string($pd['products_name']) . "',
-        '" . mysql_real_escape_string($pd['products_description']) . "',
+        '',
         '0',
         '" . mysql_real_escape_string($pd['products_attention_1']) . "',
         '" . mysql_real_escape_string($pd['products_attention_2']) . "',

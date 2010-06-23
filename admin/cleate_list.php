@@ -1,41 +1,32 @@
 <?php
 require('includes/application_top.php');
-  require(DIR_WS_CLASSES . 'currencies.php');
-  $currencies = new currencies();
+require(DIR_WS_CLASSES . 'currencies.php');
+$currencies = new currencies();
 //  $cPath=cpathPart($_POST['cpath']);
-  $cPath=cpathPart($_GET['cpath']);
-$oid = $_GET['oid'];
+$cPath=cpathPart($_GET['cpath']);
+$oid = $_GET['o_id'];
+$action = $HTTP_GET_VARS['action'];
+
 switch ($HTTP_GET_VARS['action']){
-case 'list_cleate':
+case 'data_cleate':
   $cPath=cpathPart($_POST['cpath']);
-  $oroshi_name=$_POST['oroshi_name'];
-  $oroshi_id = $_POST['oroshi_id'];
   $setdata=$_POST['set_list'];
   $date=date("Y-m-d H:i:s");
-		
-  $list_cnt=count($oroshi_name);
-		
-  /*for($i=0;$i < $list_cnt;$i++){
-    $res=tep_db_query("select parent_id,oroshi_name from set_oroshi_names where parent_id='".$cPath."' && oroshi_name='".$oroshi_name[$i]."' ORDER BY oroshi_id ASC");
-    echo mysql_num_rows($res);
-			
-    DB各卸業者のデータが何件あるか調べる20件なら一番古いデータを削除後追加
-    }*/
-  for($i=0;$i < $list_cnt;$i++){
-    $res_cnt=tep_db_query("select count(*) as data_cnt from set_oroshi_datas where parent_id='".$cPath."' AND oroshi_id='".$oroshi_id[$i]."' ORDER BY list_id ASC " );
-    $col_cnt[]=tep_db_fetch_array($res_cnt);
-			
-    $res_id=tep_db_query("select * from set_oroshi_datas where parent_id='".$cPath."' AND oroshi_id='".$oroshi_id[$i]."' ORDER BY list_id ASC " );
-    $col_id[]=tep_db_fetch_array($res_id);
+  $cid = $_POST['cid'];
+  foreach ($setdata as $key=>$value){
+    tep_db_query('delete from set_oroshi_datas where oroshi_id = '.$key.' and parent_id ='.$cid);
+    $oroid = $key;
+    $sql = 'insert into set_oroshi_datas (oroshi_id ,parent_id,datas,set_date) values(';
+    $sql.= $key.',';
+    $sql.= $cid.',';
+    $sql.= '"'.$value.'",';
+    $sql.= 'now()';
+    $sql.= ')';
+    tep_db_query($sql);
   }
-  for($i=0;$i < $list_cnt;$i++){
-    if($setdata[$i] != "" && $col_cnt[$i]['data_cnt'] != 20){
-      tep_db_query("insert into set_oroshi_datas (oroshi_id,oroshi_name,parent_id,datas,set_date) values ('".$oroshi_id[$i]."','".$oroshi_name[$i]."','".$cPath."','".$setdata[$i]."','".$date."')");
-    }else if($setdata[$i] != ""){
-      tep_db_query("update set_oroshi_datas set datas='".$setdata[$i]."',set_date='".$date."' where list_id='".$col_id[$i]['list_id']."' ");
-    }
-  }
-  break;
+    tep_redirect('cleate_list.php?action=prelist&cid=' . $cid );
+    break;
+
 }
 /*
   危険　24時間　価格更新なし
@@ -55,19 +46,19 @@ case 'list_cleate':
 charset=<?php echo CHARSET; ?>">
   <title>リスト作成</title>
   <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-<script language="javascript" src="includes/general.js"></script>
-<script language="javascript" src="includes/javascript/jquery.js"></script>
-<?php 
+  <script language="javascript" src="includes/general.js"></script>
+  <script language="javascript" src="includes/javascript/jquery.js"></script>
+  <?php 
   if($oid){
-?>
-<script language="javascript" >
-  $(document).ready(function(){
-      $("#textarea_<?php echo $oid;?>").focus()
-        })
-</script>
+    ?>
+    <script language="javascript" >
+    $(document).ready(function(){
+        $("#textarea_<?php echo $oid;?>").focus()
+          })
+    </script>
     <?php } ?>
 
-  </head>
+</head>
 
   <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
   <div id="spiffycalendar" class="text"></div>
@@ -81,105 +72,120 @@ charset=<?php echo CHARSET; ?>">
   <table border="0"class="list">
   <tr>
   <?php 
-$res=tep_db_query("select * from set_oroshi_names where parent_id='".$cPath."' ORDER BY oroshi_id ASC");
-$cnt=0;
-$html2 = '';
-while($col=tep_db_fetch_array($res)){
-  $html.= "<th align='center'>".$col['oroshi_name']."</th>";
-  $o_name[]=$col['oroshi_name'];
-  $o_id[]=$col['oroshi_id'];
-  $html2.= '';
-  $html2.="<td><textarea rows='5' cols='30' id='textarea_".$col['oroshi_id']."' name='set_list[]' ></textarea></td>";
-  $html2.="<input type='hidden' value='".$o_name[$cnt]."' name='oroshi_name[]'>";					
-  $html2.="<input type='hidden' value='".$o_id[$cnt]."' name='oroshi_id[]'>";					
-  $cnt++;
+  //根据 oid 取出当前 oid 关系了哪些个分类
+  if ($action == 'oroshi'){
+  $getMyCate = 'select cd.categories_name,soc.categories_id  from set_oroshi_categories soc ,categories_description cd where cd.site_id =0 and soc.categories_id = cd.categories_id and soc.oroshi_id = '.$oid;
+$res = tep_db_query($getMyCate);
+while ($col = tep_db_fetch_array($res)){
+  $cate_id = $col['categories_id'];
+  $cate_name = $col['categories_name'];
+  
+  $colmunLimit = 2;//分几行
+  $colmunLimit_add_1 = $colmunLimit+1;
+  echo "<table border=1>";
+  echo "<th>";
+  //        echo "<td colspan = ".$colmunLimit_add_1 .">";
+  echo "<td>";
+  echo $cate_name;
+  echo "</td>";
+  echo "</th>";
+  echo "<tbody>";
+  $getSubCategories = 'select cd.categories_name,cd.categories_id from categories_description cd, categories c where c.categories_id=cd.categories_id and cd.site_id = 0 and c.parent_id ='.$cate_id;
+  $subRes = tep_db_query($getSubCategories);
 
+  $rowCount = $colmunLimit;
+  while($subCol = tep_db_fetch_array($subRes)){
+    $sub_cate_id = $subCol['categories_id'];
+    $sub_cate_name = $subCol['categories_name'];
+    if($rowCount == $colmunLimit){
+
+      echo "</tr>";
+    }
+
+    //    echo "<td><a href= 'cleate_list.php?action=prelist&cid=".$sub_cate_id."&cPath=".$cate_id."' >".$sub_cate_name.'</a></td>';
+    echo "<td><a href= 'cleate_list.php?action=prelist&cid=".$sub_cate_id."' >".$sub_cate_name.'</a></td>';
+    if($rowCount>0)
+      {
+        $rowCount--;
+      }else {
+      echo "</tr>";
+      $rowCount =$colmunLimit;
+    }
+  }
+  echo "</tbody>";
+}
+
+  }
+if ($action =='prelist'){
+  $cid = $_GET['cid'];
+  //  $res = tep_db_query("select * from set_oroshi_categories soc,set_oroshi_names son where son.oroshi_id = soc.oroshi_id and soc.categories
+  $res =tep_db_query('select * from set_oroshi_names son, categories c ,set_oroshi_categories soc where c.categories_id = '.$cid.' and c.parent_id = soc.categories_id and son.oroshi_id = soc.oroshi_id order by soc.oroshi_id desc');
+      $html2 = '';
+    while($col = tep_db_fetch_array($res)){
+      $oroname = $col['oroshi_name'];
+      $oroid = $col['oroshi_id'];
+      //$cnt=0;
+
+      //while($col=tep_db_fetch_array($res)){
+      $html.= "<th align='center'>".$col['oroshi_name']."</th>";
+      $html2.= '';
+      $html2.="<td><textarea rows='5' cols='30' id='textarea_".$col['oroshi_id']."' name='set_list[".$oroid."]' ></textarea></td>";
 
 }
 echo $html;
 ?>
 </tr>
-<form method="post" action="cleate_list.php?action=list_cleate" >
-  <input type="hidden" value="<?php echo $cPath ?>" name="cpath">
+<form method="post" action="cleate_list.php?action=data_cleate" >
   <tr>
   <?php
+
   echo $html2;
 				
 ?>
 </tr>
+<td><input type="hidden" value="<?php echo $cid;?>" name='cid' /></td>
 <td><input type="submit" value="リスト登録"></td>
+
   </form>
   </table>
 
   <table border="1">
 
-  <tr>
-  <?php
-  /*$today[]=date("Y-m-d H:i:s",strtotime("-1 day"));
-    $today[]=date("Y-m-d H:i:s",strtotime("-24 hours"));
-    $today[]=date("Y-m-d H:i:s",strtotime("-7 hours"));
-    $today[]=date("Y-m-d H:i:s",strtotime("-4 hours"));
-    for($i=0;$i<$cnt;$i++){
-    $res=tep_db_query("select set_date from set_oroshi_datas where parent_id='".$cPath."' && oroshi_name='".$o_name[$i]."' ORDER BY list_id DESC");
-    $col=tep_db_fetch_array($res);
-
-
-    if(strtotime($col['set_date']) < strtotime($today[0])){
-    echo "24時間以上更新がありません";
-    }else if(strtotime($col['set_date']) <= strtotime($today[1])){
-    echo "24時間未満更新がありません";
-    }else if(strtotime($col['set_date']) <= strtotime($today[2])){
-    echo "7時間未満更新がありません";
-    }else if(strtotime($col['set_date']) <= strtotime($today[3])){
-    echo "4時間未満更新がありません";
-    }else{
-    echo "異常なし";
-    }
-	
-    echo "<td align='center'>".$col['set_date']."</td>";
-    }
-    テストのために作成*/
-  ?>
-
-  </tr>
-
-  <tr>
-  <?php
-  for($i=0;$i<$cnt;$i++){
-    $res=tep_db_query("select oroshi_name from set_oroshi_datas where parent_id='".$cPath."' && oroshi_name='".$o_name[$i]."' ORDER BY list_id DESC");
-    $col=tep_db_fetch_array($res);
-    echo "<th align='center'>".$col['oroshi_name']."</th>";
-  }
-?>
-</tr>
-
 <?php
+    $lines_arr = array();
+$oroname = array();
 $cr = array("\r\n", "\r");   // 改行コード置換用配
-for($i=0;$i<=$cnt;$i++){
-  $res = tep_db_query("select * from set_oroshi_datas where parent_id='".$cPath."' && oroshi_name='".$o_name[$i]."' ORDER BY list_id DESC");
-  $col[] = tep_db_fetch_array($res);
-
-
-	
-  $col[$i]['datas'] = trim($col[$i]['datas']);         // 文頭文末の空白を削除
-  $col[$i]['datas'] = str_replace($cr, "\n",$col[$i]['datas']);  // 改行コードを統一
-  $lines[] = explode("\n", $col[$i]['datas']);
-  $count[]=count($lines[$i]);
+  $res = tep_db_query("select * from set_oroshi_names son, set_oroshi_datas sod where sod.oroshi_id = son.oroshi_id and  parent_id='".$cid."' ORDER BY list_id ");
+  //  var_dump("select * from set_oroshi_datas where parent_id='".$cid."' ORDER BY list_id DESC");
+  while($col = tep_db_fetch_array($res)){
+    $oroname[] = $col['oroshi_name'];
+    $col['datas'] = trim($col['datas']);         // 文頭文末の空白を削除
+    $col['datas'] = str_replace($cr, "\n",$col['datas']);  // 改行コードを統一
+    $lines= explode("\n", $col['datas']);
+    $count[]=count($lines);
+    $lines_arr[]=$lines;
 }	
+                                
+  $cnt = count($count);
+
 for($n=0;$n<$cnt;$n++){
   if($count[0]<=$count[$n]){
     $count[0]=$count[$n];
   }
 }
-	
+echo "<tr>";	
+foreach ($oroname as $value){
+  echo "<td>$value</td>";
+}
+echo "</tr>";
 for($i=0;$i < $count[0];$i++){
   echo "<tr id=color>";
   for($j=0;$j<$cnt;$j++){
-    echo "<td>".$lines[$j][$i]."</td>";
+    echo "<td>".$lines_arr[$j][$i]."</td>";
   }
   echo "</tr>";
 }
-	
+}	
 ?>
 </table></td></tr></table></td>
 </tr>

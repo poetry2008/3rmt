@@ -710,7 +710,7 @@ default:
                 <table border="0" width="100%" cellspacing="0" cellpadding="0">
                     <tr>
                       <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
-                          <tr class="dataTableHeadingRow">
+                          <tr class="dataTableHeadingRow"  width="30">
                             <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_SITE;?></td>
                             <td class="dataTableHeadingContent">TITLE</td>
                             <td class="dataTableHeadingContent" align="center">期間</td>

@@ -43,7 +43,6 @@ A：リンク（カーソルが上に乗ったとき）
 --------------------------- */
 a:hover {
 font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;                                /* フォントサイズ */
 color: #000000;                                 /* フォントカラー */
 font-weight: normal;                            /* フォント太さ */
 text-decoration: underline;                     /* テキストの装飾 */
@@ -487,4 +486,26 @@ legend {
 
 .readonly{
   background: #ccc;
+}
+.cleate_add{
+width:120px;
+padding:5px;
+background:#E0E0E0;
+
+}
+.cleate_main{
+padding:5px;
+background:#F0F1F1;
+
+}
+.change_one_list{
+display:block;
+margin:10px 0;
+padding:0;
+overflow:hidden;
+}
+.change_one_list_main{
+display:block;
+float:left;
+width:240px;
 }

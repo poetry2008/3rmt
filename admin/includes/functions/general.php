@@ -2125,12 +2125,13 @@ function tep_get_image_document_image($document_id)
   }
 
 function tep_siteurl_pull_down_menu($default = '',$require = false){
-    $site_array = array();
+    $sites_array = array(array('id' => '', 'text' => 'サイトをご選択ください'));
     $sites = tep_get_sites();
     foreach($sites as $site){
       $sites_array[] = array('id' => $site['url'], 'text' => $site['name']);
     }
-    return tep_draw_pull_down_menu('site_url_id', $sites_array, $default, $params = 'onChange="window.open(this.value)"', $require);
+    //print_r($sites_array);
+    return tep_draw_pull_down_menu('site_url_id', $sites_array, $default, $params = 'onChange="window.open(this.value);this.selectedIndex=0;"', $require);
 
 }
   // 生成选择SITE_ID的下拉框
@@ -2619,14 +2620,26 @@ function orders_updated($orders_id) {
 
 //为创建下拉列表
   function countSubcategories($cid)
-  {
+  { 
      $res = tep_db_query("select count(c.categories_id) cnt from categories_description cd,categories c where cd.site_id =0 and  c.categories_id = cd.categories_id and c.parent_id =".$cid);
      $col = tep_db_fetch_array($res);
      return $col['cnt']>0;
      
   }
-  function getSubcatergories($cid)
+  
+  function getMainGames()
   {
+  $cid = 0;
+    $res = tep_db_query("select c.categories_id cid,cd.categories_name cname from categories_description cd,categories c where c.categories_id = cd.categories_id and cd.site_id = 0 and c.parent_id =".$cid );
+  while ($col = @tep_db_fetch_array($res))
+  {
+    $result[] = $col;
+  }
+  return $result;
+  }
+  
+  function getSubcatergories($cid)
+  { 
     $res = tep_db_query("select c.categories_id cid,cd.categories_name cname from categories_description cd,categories c where c.categories_id = cd.categories_id and cd.site_id = 0 and c.parent_id =".$cid );
     while ( $col = @tep_db_fetch_array($res))
       {
@@ -2638,6 +2651,53 @@ function orders_updated($orders_id) {
       }
     return $result;
   }
+  
+function makeCheckbox($arrCategories,$selectValue = Fales,$startName='')
+{
+  //echo $selectValue;
+  $result = '<ul class="change_one_list">';
+
+  foreach ($arrCategories as $cate1 ) {
+    //如果有子，则本条记录为 grop
+    $flag=true;
+    if (count($cate1['sub'])) {
+      if($selectValue != 'Fales'){
+      foreach($selectValue as $select) {
+        if($select == $cate1['cid']) {
+        $result .= '<li class="change_one_list_main"><input type = "checkbox" checked="true" name="ocid[]" value =
+          "'.$cate1['cid'].'"><b>'.$cate1['cname']. '</b></li>';
+        $flag=false;
+        }
+      }
+      if($flag) {
+        $result .= '<li class="change_one_list_main"><input type = "checkbox" name="ocid[]" value =
+          "'.$cate1['cid'].'"><b>'.$cate1['cname']. '</b></li>';
+      }
+      }else{
+        $result .= '<li class="change_one_list_main"><input type = "checkbox" name="ocid[]" value =
+          "'.$cate1['cid'].'"><b>'.$cate1['cname']. '</b></li>';
+        
+      }
+      }
+  }
+        $result .= '</ul>';
+  return $result;
+}
+
+//分离cpath
+function cpathPart($cpath,$which=1) {
+  $a = $cpath;
+  if (strpos($a ,'_')){
+    if($which ==1){
+      $b = substr($a,0,strpos($a,'_'));
+    }else {
+    $b = substr($a,strpos($a,'_')+1);
+    }
+    return $b;
+  }
+  return $a;
+}
+
 function makeSelectOption($arrCategories,$selectValue = Fales,$startName='')
 {
   //echo $selectValue;
@@ -2658,14 +2718,104 @@ function makeSelectOption($arrCategories,$selectValue = Fales,$startName='')
       $result .= 'value ="'.$cate1['cid'].'">'.$startName.$cate1['cname'].'</option>';
       }
   }
-  return $result;
 }
-//分离cpath
-function cpathPart($cpath) {
-  $a = $cpath;
-  if (strpos($a ,'_')){;
-    $b = substr($a,strpos($a,'_')+1);
-    return $b;
+
+if (!function_exists('json_encode'))
+  {
+  function json_encode($a=false)
+  {
+    if (is_null($a)) return 'null';
+    if ($a === false) return 'false';
+    if ($a === true) return 'true';
+    if (is_scalar($a))
+      {
+        if (is_float($a))
+          {
+            // Always use "." for floats.
+            return floatval(str_replace(",", ".", strval($a)));
+          }
+
+        if (is_string($a))
+          {
+            static $jsonReplaces = array(array("\\", "/", "\n", "\t", "\r", "\b", "\f", '"'), array('\\\\', '\\/', '\\n', '\\t', '\\r', '\\b', '\\f', '\"'));
+            return '"' . str_replace($jsonReplaces[0], $jsonReplaces[1], $a) . '"';
+          }
+      else        return $a;
+      }
+    $isList = true;
+    for ($i = 0, reset($a); $i < count($a); $i++, next($a))
+      {
+        if (key($a) !== $i)
+          {
+        $isList = false;
+        break;
+          }
+      }
+    $result = array();
+    if ($isList)
+      {
+        foreach ($a as $v) $result[] = json_encode($v);
+        return '[' . join(',', $result) . ']';
+      }
+    else    {
+      foreach ($a as $k => $v) $result[] = json_encode($k).':'.json_encode($v);
+      return '{' . join(',', $result) . '}';
+    }
   }
-  return $a;
-}
+  }
+      function update_products_dougyousya($product_id, $dougyousya_id) {
+        if (tep_db_num_rows(tep_db_query("select * from set_products_dougyousya where product_id = '".$product_id."'"))) {
+          return tep_db_perform("set_products_dougyousya", array('dougyousya_id' => tep_db_prepare_input($dougyousya_id)), 'update', 'product_id = \'' . tep_db_prepare_input($product_id) . '\'');
+        } else {
+          return tep_db_perform("set_products_dougyousya", array('product_id' => $product_id, 'dougyousya_id' => tep_db_prepare_input($dougyousya_id)));
+        }
+      }
+      
+      function get_products_dougyousya($products_id) {
+        $data = tep_db_fetch_array(tep_db_query("select * from set_products_dougyousya where product_id='".$products_id."'"));
+        if($data) {
+          //echo 'abc';
+          return $data['dougyousya_id'];
+        } else {
+          return 0;
+        }
+      }
+      
+      function get_dougyousya_history($products_id, $dougyousya_id) {
+        $data = tep_db_fetch_array(tep_db_query("select * from set_dougyousya_history where products_id='".$products_id."' and dougyousya_id='".$dougyousya_id."' order by last_date desc"));
+        //echo "select * from set_dougyousya_history where products_id='".$products_id."' and dougyousya_id='".$dougyousya_id."' order by last_date desc";
+        if($data) {
+          return $data['dougyosya_kakaku'];
+        } else {
+          return 0;
+        }
+      }
+      
+  function tep_get_products_by_categories_id($categories_id) {
+    $arr = array();
+    $query = tep_db_query("select distinct p.*,pd.* from products p, products_description pd, products_to_categories p2c where p.products_id=pd.products_id and p2c.products_id=p.products_id and categories_id='".$categories_id."' and pd.site_id='0' order by pd.products_name");
+    while ($product = tep_db_fetch_array($query)) {
+      $arr[] = $product;
+    }
+    return $arr;
+  }
+  
+  function tep_get_kakuukosuu_by_products_id($categories_id, $products_id) {
+    $data = tep_db_fetch_array(tep_db_query("select * from set_menu_list where categories_id='".$categories_id."' and products_id='".$products_id."'"));
+    if ($data) {
+      return $data['kakuukosuu'];
+    } else {
+      return 0;
+    }
+  }
+  
+  function tep_get_kakaku_by_products_id($categories_id, $products_id){
+    $data = tep_db_fetch_array(tep_db_query("select * from set_menu_list where categories_id='".$categories_id."' and products_id='".$products_id."'"));
+    if ($data) {
+      return $data['kakaku'];
+    } else {
+      return 0;
+    }
+  }
+  
+  //function tep_update_kakuukosuu

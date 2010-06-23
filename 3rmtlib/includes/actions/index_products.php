@@ -295,7 +295,7 @@
           $listing_sql .= "products_weight " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
           break;
         case 'PRODUCT_LIST_PRICE':
-          $listing_sql .= "final_price " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
+          $listing_sql .= "products_price " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
           break;
         case 'PRODUCT_LIST_ORDERED':
           $listing_sql .= "products_ordered " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";

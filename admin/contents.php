@@ -92,7 +92,7 @@
         $exists_romaji_query = tep_db_query("
             select * 
             from ".TABLE_INFORMATION_PAGE." 
-            where romaji = '".$romaji."'"); 
+            where romaji = '".$romaji."' and site_id='".$site_id."'"); 
         $exists_romaji_num = tep_db_num_rows($exists_romaji_query); 
         if ($exists_romaji_num > 0) {
           $error_message = ROMAJI_EXISTS; 

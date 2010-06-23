@@ -44,7 +44,7 @@ $testArray = array();
 ?>
 <?php 
 // 显示SQL执行记录
-if (STORE_DB_TRANSACTIONS) {?>
+if (STORE_DB_TRANSACTIONS == 'true') {?>
 <div id="debug_info">
   <pre>
 <?php if(isset($logger)){

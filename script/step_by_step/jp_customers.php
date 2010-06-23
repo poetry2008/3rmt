@@ -248,7 +248,8 @@ foreach(array('jp') as $s){
         currency_value,
         torihiki_Bahamut,
         torihiki_houhou,
-        torihiki_date
+        torihiki_date,
+        code_fee
         )values(
         '".$o['orders_id']."',
         '".site_id($s)."',
@@ -300,7 +301,8 @@ foreach(array('jp') as $s){
         '".$o['currency_value']."',
         '".$o['torihiki_Bahamut']."',
         '".$o['torihiki_houhou']."',
-        '".$o['torihiki_date']."'
+        '".$o['torihiki_date']."',
+        '".$o['code_fee']."'
         )";
       r3q($sql);
       $orders_id = mysql_insert_id();
