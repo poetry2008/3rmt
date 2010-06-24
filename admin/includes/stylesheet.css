@@ -499,6 +499,7 @@ background:#F0F1F1;
 
 }
 .change_one_list{
+font-size:12px;
 display:block;
 margin:10px 0;
 padding:0;
@@ -507,5 +508,5 @@ overflow:hidden;
 .change_one_list_main{
 display:block;
 float:left;
-width:240px;
+width:210px;
 }

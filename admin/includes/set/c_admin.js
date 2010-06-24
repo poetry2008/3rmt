@@ -239,12 +239,12 @@ function event_onblur(num){
     
 }
 
-function onload_keisan(){
+function onload_keisan(warning){
 
   for(var i=0;i<trader_input_obj.length;i++){
     var trader_price=var_calc(trader_input_obj[i].value);
     increase_input_obj[i].value=trader_price;
-    set_money(i);//特価価格設定
+      set_money(i,warning);//特価価格設定
   }
 }
 
@@ -265,7 +265,11 @@ function var_calc(val){
 //計算設定読み込み
 
 
-function set_money(num){
+function set_money(num,warning){
+    if (warning ==undefined)
+    {
+        warning = true;
+    }
   var n=num;
   var radio_cnt=document.getElementsByName("chk["+n+"]");
     
@@ -294,7 +298,9 @@ function set_money(num){
     var ins_anser = ( parseInt(ins_ipt) / parseInt(tar_ipt) ) * 100;
     ins_anser = 100 - ins_anser;
     if(parseInt(ins_anser) >= 20){
+        if (warning){
       alert("20%の差額があります。再設定してください");
+        }
     }
     var kei = calc.keisan;//数字
     var shisoku = calc.shisoku;//演算子
@@ -308,7 +314,9 @@ function set_money(num){
     var ins_anser = ( parseInt(tar_ipt) / parseInt(ins_ipt)) * 100;
     ins_anser = 100 - ins_anser;
     if(parseInt(ins_anser) >= 20){
+        if (warning){
       alert("20%の差額があります。再設定してください");
+        }
     }
     set_m=ins_ipt;
     set_m=Math.ceil(set_m);
@@ -335,7 +343,7 @@ function ajaxLoad(path){
     url: send_url,
         success: function(data) {
         calc = eval('('+data+')');
-            onload_keisan();
+            onload_keisan(false);
       }
     });
 }

@@ -96,38 +96,45 @@ $cfg_group = tep_db_fetch_array($cfg_group_query);
 
     </script>
     </head>
-    <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="SetFocus();">
+    <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onLoad="SetFocus();">
     <!-- header //-->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
     <!-- header_eof //-->
 
     <!-- body //-->
     <table border="0" width="100%" cellspacing="2" cellpadding="2">
-    <tr>
-    <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
+       <tr>
+          <td width="<?php echo BOX_WIDTH; ?>" valign="top">
+             <table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
     <!-- left_navigation //-->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
     <!-- left_navigation_eof //-->
-    </table></td>
+             </table>
+          </td>
     <!-- body_text //-->
-    <td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
-    <tr>
-    <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
-    <tr>
-    <td class="pageHeading"><?php echo $cfg_group ['configuration_group_title']; ?></td>
-    <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
-    </tr>
-    </table></td>
-    </tr>
-    <tr>
-    <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
-    <tr>
-    <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
-    <tr class="dataTableHeadingRow">
-    <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CONFIGURATION_TITLE; ?></td>
-    <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CONFIGURATION_VALUE; ?></td>
-    <td class="dataTableHeadingContent" align="right" nowrap><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
-    </tr>
+          <td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"></td>
+       </tr>
+       <tr>
+          <td>
+             <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                <tr>
+                   <td class="pageHeading"><?php echo $cfg_group ['configuration_group_title']; ?></td>
+                   <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
+                </tr>
+             </table>
+          </td>
+       </tr>
+       <tr>
+          <td>
+             <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                <tr>
+                   <td valign="top">
+                      <table border="0" width="100%" cellspacing="0" cellpadding="2">
+                         <tr class="dataTableHeadingRow">
+                            <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CONFIGURATION_TITLE; ?></td>
+                            <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CONFIGURATION_VALUE; ?></td>
+                            <td class="dataTableHeadingContent" align="right" nowrap><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
+                         </tr>
 <?php
                           //ccdd  只先默认的值 
     $configuration_query = tep_db_query("

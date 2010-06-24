@@ -156,7 +156,7 @@ function w_close(){
     for (i=0 ;i<o_name.length; i++){
       o_cid = document.getElementsByName('ocid['+i+'][]');
       if(o_name[i].value == null||o_name[i].value == ''){
-        alert((i+1)+'name is null');
+        alert('業者名はご記入ください');
         return false;
       }else {
         test=0;
@@ -166,7 +166,7 @@ function w_close(){
           }
         }
         if (test == j) {
-          alert((i+1)+'please check more then one');
+          alert('ゲームタイトルを一つ選択してください');
           return false;
         }
       }
@@ -177,7 +177,7 @@ function w_close(){
     var ocid = document.getElementsByName('ocid[]');
     var test = 0;
     if (o_name == ''||o_name == null){
-      alert('mame is null edit');
+      alert('業者名はご記入ください');
       return false;
     }
     for(i=0;i<ocid.length;i++){
@@ -186,27 +186,16 @@ function w_close(){
       }
     }
     if (test == i){
-       alert('please check more then one edit');
+       alert('ゲームタイトルを一つ選択してください');
        return false;
     }
   }
   if(!document.getElementsByName('set_oroshi[]')[0]&&!document.getElementById("orrshi_id")){
-    alert('no form');
+    alert('まず、入力フォーム追加してください');
     return false;
   }
   return true;
   //	window.close();	
-}
-function edit_oroshi(id){
-
-  var selectName = 'parent_id_'+id;
-  var oroName = 'name_'+id;
-  //var path = document.getElementById(selectName).value;
-  //var name = document.getElementById(oroName).value;
- location.href= 'cleate_dougyousya.php?action=edit_oroshi&id='+id; 
-//    var html = document.getElementById("oo_input").innerHTML;
-//    document.getElementById("o_input").innerHTML=html;
-
 }
 
 function show_history(id){
@@ -253,6 +242,8 @@ function del_oroshi(id){
         <td class="cleate_add" valign="top">
   <input type="button" value="入力フォーム追加"　name='b1' onClick="input_add()">
         </td>
+     </tr>
+     <tr>
         <td class="cleate_main">
   <input type="hidden" value="<?php echo $cPath ?>" name="cpath">
   <?php if(isset($orrshi_id)){
@@ -268,10 +259,10 @@ echo "<table>";
 while($col=tep_db_fetch_array($res)){
   echo "<tr>";
   echo "<td width='150'>同業者：".$col['dougyousya_name']."</td>";
-  echo "<td width='50'><input type='button' value='编辑' name='b[]'
-    onclick='edit_oroshi(".$col['dougyousya_id'].")'></td>";
-  echo "<td width='50'><input type='button' value='削除' name='b[]'
-    onclick='del_oroshi(".$col['dougyousya_id'].")'></td>";
+  echo "<td width='50'><a href=
+    'cleate_dougyousya.php?action=edit_oroshi&id=".$col['dougyousya_id']."'>编辑</a></td>";
+  echo "<td width='50'><a
+    href='' onclick='del_oroshi(".$col['dougyousya_id'].")'>削除</a></td>";
   //  echo "<td><input type='button' value='履歴' name='b[]'
   //   onclick='show_history(".$col['parent_id'].")'></td>";
   echo "<td><a href='history.php?action=dougyousya&dougyousya_id=".$col['dougyousya_id']."'>履歴</a>";
@@ -283,7 +274,7 @@ while($col=tep_db_fetch_array($res)){
       id='name_".$col['dougyousya_id']."'name='up_oroshi[".$col['dougyousya_id']."]'
       value='".$col['dougyousya_name']."'><br>";
     echo makeCheckbox($categories_subtree,$ckstr);
-    echo '<input type="submit" value="修改"><input type = "button" value = "res"
+    echo '<input type="submit" value="更新"><input type = "button" value = "取り消し"
       onclick="resset_cb()"><br /><br />';
     echo '</div>';
     echo "</td></tr>";

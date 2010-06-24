@@ -71,7 +71,7 @@
           }
           
           $update_sql_data = array('products_last_modified' => 'now()',
-                                   //'products_quantity' => tep_db_prepare_input($products_quantity[$n]),
+                                   'products_quantity' => tep_db_prepare_input($products_quantity[$n]),
                                    'products_price' => tep_db_prepare_input($products_prise[$n]));
           tep_db_perform(TABLE_PRODUCTS, $update_sql_data, 'update', 'products_id = \'' . tep_db_prepare_input($proid[$n]) . '\'');
 

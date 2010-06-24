@@ -442,6 +442,7 @@ while ($products = tep_db_fetch_array($products_query)) {
       <?php
       for($i=0;$i<$i_cnt;$i++){
         if($products['products_id']==$menu_datas[$i][0]){
+
           $imaginary=$menu_datas[$i][1];
           $kakaku_treder=$menu_datas[$i][2];
           break;
@@ -454,13 +455,16 @@ while ($products = tep_db_fetch_array($products_query)) {
   ?>
   <?php ////個数架空 ?>
   <td class="dataTableContent" align='center'>
-    <input type="text" size="5" value="<?php  echo $imaginary; ?>" name='imaginary[<?php echo $products_count-1;?>]' />
+     <!--    <input type="text" size="5" value="<?php  echo $imaginary; ?>" name='imaginary[<?php echo $products_count-1;?>]' /> -->
+     <span align='center' > <?php echo $imaginary;?></span>
   </td>
-      <?php ////数量 ?>
+      <?php
+     ////数量 
+     ?>
       <td class="dataTableContent" align='center'>
-        <span name='zaiko[]' align='center'  id='zaiko_<?php echo $products_count;?>' onKeyDown="ctrl_keydown(event,'zaiko','<?php echo $products_count;?>'")>
-          <!--<input type='text' name='quantity[<?php echo $target_cnt;?>]' value='<?php echo $products['products_quantity'];?>' size="5">--><?php echo $products['products_quantity'];?>
-        </span>
+     <!--        <span name='zaiko[]' align='center'  id='zaiko_<?php echo $products_count;?>' onKeyDown="ctrl_keydown(event,'zaiko','<?php  echo $products_count;?>'")> -->
+          <input type='text' name='quantity[<?php echo $target_cnt;?>]' value='<?php echo $products['products_quantity'];?>' size="5"><?php //echo $products['products_quantity'];?>
+<!--        </span> -->
     <?php
     /*
       if (empty($products['products_quantity'])) {//数量・・・在庫がない場合
@@ -662,7 +666,8 @@ if(empty($cPath_back)&&empty($cID)&&isset($cPath)){
   <td colspan="11">
   <table border="0" width="100%" cellspacing="0" cellpadding="2">
   <tr>
-  <td class="smallText"><?php echo TEXT_CATEGORIES . '&nbsp;' . $categories_count . '<br>' . TEXT_PRODUCTS . '&nbsp;' . $products_query_numrows; ?></td>
+  <td class="smallText"><?php echo 'カテゴリー:' . '&nbsp;' . $categories_count .
+  '<br>' . '商品数:' . '&nbsp;' . $products_query_numrows; ?></td>
   <td align="right" class="smallText">
   <?php
   if ($cPath) {
@@ -864,9 +869,9 @@ default:
       if (!empty($special_price_check)) {
         $contents[] = array('text' => '<br><b>' . TEXT_PRODUCTS_PRICE_INFO . ' <s>' . $currencies->format($pInfo->products_price) . '</s> <span class="specialPrice">' . $currencies->format($special_price_check) . '</span></b>');
       } else {
-        $contents[] = array('text' => '<br><b>' . TEXT_PRODUCTS_PRICE_INFO . ' ' . $currencies->format($pInfo->products_price) . '</b>');
+        $contents[] = array('text' => '<br><b>' .TEXT_PRODUCTS_PRICE_INFO.' ' . $currencies->format($pInfo->products_price) . '</b>');
       }
-      $contents[] = array('text' => '<br><b>' . TEXT_PRODUCTS_QUANTITY_INFO . ' ' . $pInfo->products_quantity . '個</b>');
+      $contents[] = array('text' => '<br><b>' .TEXT_PRODUCTS_QUANTITY_INFO.' ' . $pInfo->products_quantity . '個</b>');
       $contents[] = array('text' => '<br>' . TEXT_PRODUCTS_AVERAGE_RATING . ' ' . number_format($pInfo->average_rating, 2) . '%');
     }
   } else { // create category/product info

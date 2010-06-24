@@ -150,7 +150,7 @@ function w_close(){
     for (i=0 ;i<o_name.length; i++){
       o_cid = document.getElementsByName('ocid['+i+'][]');
       if(o_name[i].value == null||o_name[i].value == ''){
-        alert((i+1)+'name is null');
+        alert('業者名はご記入ください');
         return false;
       }else {
         test=0;
@@ -160,7 +160,7 @@ function w_close(){
           }
         }
         if (test == j) {
-          alert((i+1)+'please check more then one');
+          alert('ゲームタイトルを一つ選択してください');
           return false;
         }
       }
@@ -171,7 +171,7 @@ function w_close(){
     var ocid = document.getElementsByName('ocid[]');
     var test = 0;
     if (o_name == ''||o_name == null){
-      alert('mame is null edit');
+      alert('業者名はご記入ください');
       return false;
     }
     for(i=0;i<ocid.length;i++){
@@ -180,12 +180,12 @@ function w_close(){
       }
     }
     if (test == i){
-       alert('please check more then one edit');
+       alert('ゲームタイトルを一つ選択してください');
        return false;
     }
   }
   if(!document.getElementsByName('set_oroshi[]')[0]&&!document.getElementById("orrshi_id")){
-    alert('no form');
+    alert('まず、入力フォーム追加してください');
     return false;
   }
   return true;
@@ -231,7 +231,7 @@ function edit_oroshi(id){
         <td width="100%" valign="top">
            <table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr>
-                 <td class="pageHeading">卸業者の名前設定</td>
+                 <td class="pageHeading" height="40">卸業者の名前設定</td>
               </tr>
               <tr>
                  <td>
@@ -241,6 +241,8 @@ function edit_oroshi(id){
                           <td valign="top" class="cleate_add">
   <input type="button" value="入力フォーム追加"　name='b1' onClick="input_add()">
                           </td>
+                       </tr>
+                       <tr>
                           <td class="cleate_main"> 
   <input type="hidden" value="<?php echo $cPath ?>" name="cpath">
   <?php if(isset($orrshi_id)){
@@ -266,13 +268,13 @@ while($col=tep_db_fetch_array($res)){
 
   // show drop down list
 
-  echo "<td width='50'><input type='button' value='编辑' name='b[]'
-    onclick='edit_oroshi(".$col['oroshi_id'].")'></td>";
-  echo "<td width='50'><input type='button' value='削除' name='b[]'
-    onclick='del_oroshi(".$col['oroshi_id'].")'></td>";
+  echo "<td width='50'><a href=
+    'cleate_oroshi.php?action=edit_oroshi&id=".$col['oroshi_id']."'>编辑</a></td>";
+  echo "<td width='50'><a href='' onclick='del_oroshi(".$col['oroshi_id'].")'>削除</a></td>";
   //  echo "<td><input type='button' value='".OROSHI_DATA_MANAGE."' name='b[]'
   //    onclick='jump_oroshi_data(".$col['parent_id'].",".$col['oroshi_id'].")'></td>";
   echo "<td><a href='cleate_list.php?action=oroshi&o_id=".$col['oroshi_id']."'>".OROSHI_DATA_MANAGE."</a>";
+  echo "<td><a href='history.php?action=oroshi&o_id=".$col['oroshi_id']."'>"."履歴"."</a>";
   echo '</tr>';
    if(isset($ckstr)&&$orrshi_id == $col['oroshi_id']){
     echo '<tr><td colspan="4">';
@@ -280,7 +282,7 @@ while($col=tep_db_fetch_array($res)){
     echo "<input type='text' name='up_oroshi[".$col['oroshi_id']."]' id
       ='name_".$col['oroshi_id']."' value='".$col['oroshi_name']."' / ><br>";
     echo makeCheckbox($categories_subtree,$ckstr);
-    echo '<input type="submit" value="修改"><input type = "button" value = "res"
+    echo '<input type="submit" value="更新"><input type = "button" value = "取り消し"
       onclick="resset_cb()"><br />';
     echo '</div>';
     echo '</td></tr>';

@@ -310,7 +310,7 @@
         $order_str .= "products_weight " . ($sort_order == 'd' ? "desc" : "") . ", products_name";
         break;
       case 'PRODUCT_LIST_PRICE':
-        $order_str .= "final_price " . ($sort_order == 'd' ? "desc" : "") . ", products_name";
+        $order_str .= "products_price " . ($sort_order == 'd' ? "desc" : "") . ", products_name";
         break;
       case 'PRODUCT_LIST_ORDERED':
         $order_str .= "products_ordered " . ($sort_order == 'd' ? "desc" : "") . ", products_name";

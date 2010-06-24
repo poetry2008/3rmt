@@ -2803,7 +2803,7 @@ if (!function_exists('json_encode'))
   function tep_get_kakuukosuu_by_products_id($categories_id, $products_id) {
     $data = tep_db_fetch_array(tep_db_query("select * from set_menu_list where categories_id='".$categories_id."' and products_id='".$products_id."'"));
     if ($data) {
-      return $data['kakuukosuu'];
+      return (int)$data['kakuukosuu'];
     } else {
       return 0;
     }
@@ -2812,7 +2812,7 @@ if (!function_exists('json_encode'))
   function tep_get_kakaku_by_products_id($categories_id, $products_id){
     $data = tep_db_fetch_array(tep_db_query("select * from set_menu_list where categories_id='".$categories_id."' and products_id='".$products_id."'"));
     if ($data) {
-      return $data['kakaku'];
+      return (int)$data['kakaku'];
     } else {
       return 0;
     }
