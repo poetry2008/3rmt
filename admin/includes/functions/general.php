@@ -2774,14 +2774,24 @@ if (!function_exists('json_encode'))
       function get_products_dougyousya($products_id) {
         $data = tep_db_fetch_array(tep_db_query("select * from set_products_dougyousya where product_id='".$products_id."'"));
         if($data) {
-          //echo 'abc';
           return $data['dougyousya_id'];
         } else {
           return 0;
         }
       }
       
+      function get_all_products_dougyousya($categories_id,$products_id) {
+        $arr = array();
+        $query = tep_db_query("select distinct(dougyousya_id) from set_dougyousya_history where categories_id='".$categories_id."' and products_id='".$products_id."'");
+        while($data = tep_db_fetch_array($query))
+        {
+          $arr[] = $data;
+        }
+        return $arr;
+      }
+      
       function get_dougyousya_history($products_id, $dougyousya_id) {
+        //echo "select * from set_dougyousya_history where products_id='".$products_id."' and dougyousya_id='".$dougyousya_id."' order by last_date desc";
         $data = tep_db_fetch_array(tep_db_query("select * from set_dougyousya_history where products_id='".$products_id."' and dougyousya_id='".$dougyousya_id."' order by last_date desc"));
         //echo "select * from set_dougyousya_history where products_id='".$products_id."' and dougyousya_id='".$dougyousya_id."' order by last_date desc";
         if($data) {
@@ -2817,5 +2827,40 @@ if (!function_exists('json_encode'))
       return 0;
     }
   }
-  
+
+  // for categories_admin jumper
+  function tep_get_category_tree_cpath($parent_id = '0', $spacing = '', $exclude = '', $category_tree_array = '', $include_itself = false) {
+    global $languages_id;
+
+    if (!is_array($category_tree_array)) $category_tree_array = array();
+    if ( (sizeof($category_tree_array) < 1) && ($exclude != '0') ) $category_tree_array[] = array('id' => '0', 'text' => TEXT_TOP);
+
+    if ($include_itself) {
+      $category_query = tep_db_query("select cd.categories_name from " . TABLE_CATEGORIES_DESCRIPTION . " cd where cd.language_id = '" . $languages_id . "' and cd.categories_id = '" . $parent_id . "' and cd.site_id='0'");
+      $category = tep_db_fetch_array($category_query);
+      $category_tree_array[] = array('id' => $parent_id, 'text' => $category['categories_name']);
+    }
+
+    $categories_query = tep_db_query("select c.categories_id, cd.categories_name, c.parent_id from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where c.categories_id = cd.categories_id and cd.language_id = '" . $languages_id . "' and c.parent_id = '" . $parent_id . "' and site_id ='0' order by c.sort_order, cd.categories_name");
+    while ($categories = tep_db_fetch_array($categories_query)) {
+      if ($exclude != $categories['categories_id']) $category_tree_array[] = array('id' => ($parent_id != 0 ? ($parent_id . '_') : '') . $categories['categories_id'], 'text' => $spacing . $categories['categories_name']);
+      $category_tree_array = tep_get_category_tree_cpath($categories['categories_id'], $spacing . '&nbsp;&nbsp;&nbsp;', $exclude, $category_tree_array);
+    }
+
+    return $category_tree_array;
+  }
   //function tep_update_kakuukosuu
+  
+
+function spliteOroData($orodata){
+    $cr = array("\r\n", "\r");   // 改行コード置換用配
+    $data = trim($orodata);
+    $data = str_replace($cr, "\n",$data);  // 改行コードを統一
+    $lines = explode("\n", $data);
+    //var_dump($lines);
+    foreach($lines as $key => $line) {
+      $lines[$key] = trim($line);
+      if($line === '')unset($lines[$key]);
+    }
+    return $lines;
+}

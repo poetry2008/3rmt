@@ -297,6 +297,15 @@ function logout_user($erf='',$s_status='') {
         $s_sid = session_id();
         $result = tep_db_query("update login set logoutstatus='$s_status' where sessionid='$s_sid'");
     }
+    if (!isset($_SESSION['snapshot']))
+    {
+      $snapshot = substr($_SERVER['SCRIPT_NAME'], 1);
+      //var_dump($snapshot);
+      $_SESSION['snapshot'] = $snapshot;
+      $_SESSION['q_string'] = $_SERVER['QUERY_STRING'];
+
+    }
+
     tep_redirect('users_login.php' . ($erf ? ('?erf='.$erf) : ''));
 }
 

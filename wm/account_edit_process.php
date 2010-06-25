@@ -107,6 +107,7 @@
   if ($password !== $confirmation) {
     $error = true;
     $entry_password_error = true;
+    $entry_password_confirmation_error = true;
   }
 
 //ccdd

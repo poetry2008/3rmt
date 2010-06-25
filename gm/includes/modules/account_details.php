@@ -169,7 +169,9 @@
                 <td class="main">&nbsp;
                   <?php
     if ($error == true) {
-      if ($entry_password_error == true) {
+      if ($entry_password_confirmation_error == true) { 
+        echo tep_draw_password_field('password') . '&nbsp;' . '<font color="red">ご入力した二つパスワードが一致ではありません</font>';
+      } else if($entry_password_error == true) {
         echo tep_draw_password_field('password') . '&nbsp;' . ENTRY_PASSWORD_ERROR;
       } else {
         echo PASSWORD_HIDDEN . tep_draw_hidden_field('password') . tep_draw_hidden_field('confirmation');

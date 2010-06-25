@@ -82,9 +82,11 @@
     <td class="formAreaTitle"><br><?php echo CATEGORY_OPTIONS; ?></td>
   </tr>
   <tr>
-    <td class="main"><table border="0" width="100%" summary="table" cellspacing="0" cellpadding="2" class="formArea">
+    <td class="main">
+    <table border="0" width="100%" summary="table" cellspacing="0" cellpadding="2" class="formArea">
       <tr>
-        <td class="main"><table border="0" cellspacing="0" cellpadding="2" summary="table">
+        <td class="main">
+        <table border="0" cellspacing="0" cellpadding="2" summary="table">
           <tr>
             <td class="main">&nbsp;<?php echo ENTRY_NEWSLETTER; ?></td>
             <td class="main">&nbsp;
@@ -127,8 +129,6 @@
   }
   }
 ?>
-</td>
-</tr>
 </table>
 </td>
 </tr>
@@ -159,7 +159,9 @@ if (!isset($guestchk)) $guestchk = NULL;
             <td class="main">&nbsp;
 <?php
     if ($error == true) {
-      if ($entry_password_error == true) {
+      if ($entry_password_confirmation_error == true) { 
+        echo tep_draw_password_field('password') . '&nbsp;' . '<font color="red">ご入力した二つパスワードが一致ではありません</font>';
+      } else if($entry_password_error == true) {
         echo tep_draw_password_field('password') . '&nbsp;' . ENTRY_PASSWORD_ERROR;
       } else {
         echo PASSWORD_HIDDEN . tep_draw_hidden_field('password') . tep_draw_hidden_field('confirmation');

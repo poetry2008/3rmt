@@ -19,6 +19,33 @@ charset=<?php echo CHARSET; ?>">
       var link = document.getElementById('back_link').href;
       location.href=link;
     }
+    function delete_one_data(){
+      return confirm('削除しますか？');
+    }
+$(function() {
+    var key_sum=0;
+    // 给文本框加个keypress，即键盘按下的时候判断
+    $(".input_number").keypress(); 
+    $(".input_number").keypress(function(event) {
+        if (!$.browser.mozilla) {
+            if (event.keyCode && ((event.keyCode < 45 || event.keyCode > 57) && event.keyCode != 47)) {
+                // ie6,7,8,opera,chrome管用
+                event.preventDefault();
+                key_sum++;
+            }
+        } else {
+            if (event.charCode && ((event.charCode < 45 || event.charCode > 57) && event.charCode != 47)) {
+                // firefox管用
+                event.preventDefault();
+                key_sum++;
+            }
+        }
+        if(key_sum>4){
+           key_sum=0;
+          alert('please input number or .');
+        }
+    });
+});
   </script>
   <title>履歴表示</title>
   </head>
@@ -26,46 +53,71 @@ charset=<?php echo CHARSET; ?>">
   <div id="spiffycalendar" class="text"></div>
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
   <table border="0" width="100%" cellspacing="2" cellpadding="2">
-  <tr><td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-  <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-  </table></td>
-  <td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
-  <table><tr><td class = "pageHeading">同業者の履歴登録
+     <tr>
+        <td width="<?php echo BOX_WIDTH; ?>" valign="top">
+           <table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
+              <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
+           </table>
+        </td>
+        <td width="100%" valign="top">
+           <table border="0" width="100%" cellspacing="0" cellpadding="2">
+              <tr>
+                 <td class = "pageHeading">
+  <?php
+  echo $HTTP_GET_VARS['action']=='oroshi'?'卸業者の履歴登録':'同業者の履歴登録';
+  ?>
   <input type="button" onClick = "goto()" value='戻る'>
-  </td></tr><tr><td>
-  <table border ="0"><tr>
+                 </td>
+              </tr>
+              <tr>
+                 <td>
+                    <table width="100%" cellspacing="0" cellpadding="2" border="0">
+                       <tr>
   <?php
   $back_url = 'cleate_dougyousya.php'; 
 switch ($HTTP_GET_VARS['action']){
 case 'oroshi':
   $back_url = 'cleate_oroshi.php'; 
   $oid = $_GET['o_id'];
-
-  $res = tep_db_query("select sod.datas,sod.set_date,cd.categories_name,son.oroshi_name ,son.oroshi_id, cd.categories_id  from set_oroshi_names son,set_oroshi_datas sod ,categories_description cd where sod.oroshi_id = son.oroshi_id and  sod.parent_id = cd.categories_id  and cd.site_id = 0 and  sod.oroshi_id = '".$oid."'");
+  if(isset($_GET['list_id'])){
+    $list_id = $_GET['list_id'];
+    $res = tep_db_query("select * from set_oroshi_datas where list_id='".$list_id."'");
+    if(tep_db_fetch_array($res)) {
+      tep_db_query("delete from set_oroshi_datas where list_id='".$list_id."'");
+    }
+  }
+  $res = tep_db_query("select sod.list_id,sod.datas,sod.set_date,cd.categories_name,son.oroshi_name ,son.oroshi_id, cd.categories_id  from set_oroshi_names son,set_oroshi_datas sod ,categories_description cd where sod.oroshi_id = son.oroshi_id and  sod.parent_id = cd.categories_id  and cd.site_id = 0 and  sod.oroshi_id = '".$oid."'");
   while($col =tep_db_fetch_array($res)){
     //    var_dump($col);
     $games[$col['categories_id']][] = $col;
   }
+  if($games){
   foreach ($games as $gid=>$game){
 
-      echo "<table><tr><td>";
+      echo "<table width='100%' cellspacing='1' cellpadding='2' border='0'><tr class='dataTableHeadingRow'><td width='160' height='30' class='dataTableHeadingContent'>";
       echo $game[0]['categories_name'];
       echo "</td>";
-      echo "<td><a href=
+      echo "<td width='300' class='dataTableHeadingContent'><a href=
         'history.php?action=oroshi_c&cPath=".$gid."&oid=".$oid."'>履歴詳細</a></td>";
-      echo "<td><a href=
+      echo "<td class='dataTableHeadingContent'><a href=
         'cleate_list.php?action=prelist&cid=".$game[0]['categories_id']."&oid=".$oid."&src_id=his'
         >データ作成</a></td>";
       echo "</tr>";
     foreach ($game as $key=>$value){
-      echo "<tr>";
-      echo "<td>".$value['set_date']."</td>";
-      echo "<td>".$value['datas']."</td>";
+      echo "<tr class='dataTableRow'>";
+      echo "<td class='dataTableContent'>".$value['set_date']."</td>";
+      echo "<td class='dataTableContent'>";
+      foreach(spliteOroData($value['datas']) as $line){
+        echo $line . '<br>';
+      }
+      echo "</td>";
+      echo "<td class='dataTableContent'><a onClick='return delete_one_data()'
+        href='history.php?action=oroshi&o_id=".$oid."&list_id=".$value['list_id']."'>消除</a></td>";
       echo "</tr>";
     }
     echo "</table>";
 
-
+  }
   }
   break;
 case 'oroshi_c':
@@ -85,10 +137,19 @@ case 'oroshi_c':
   $cnt_data=$col['cnt_data'];
   $a=0;
   for($k=0;$k<20;$k++){//過去20件
+    $arr = array();
+    for($i=0;$i<$cnt;$i++){
+      $res=tep_db_query("select * from set_oroshi_datas where parent_id='".$cPath."' && oroshi_id='".$o_id[$i]."' ORDER BY list_id DESC  limit ".$a.",1 ");
+      $col=tep_db_fetch_array($res);
+      if ($col) {
+        $arr[] = $col;
+      }
+    }
+    if (!$arr) break;
     ?>
     <table border="1">
       <tr>
-      <?php	
+      <?php 
       for($i=0;$i<$cnt;$i++){
         $res=tep_db_query("select set_date from set_oroshi_datas where parent_id='".$cPath."' && oroshi_id='".$o_id[$i]."' ORDER BY list_id DESC  limit ".$a.",1 ");
         $col=tep_db_fetch_array($res);
@@ -96,8 +157,7 @@ case 'oroshi_c':
       }
     ?>
     </tr>
-
-		<tr>
+    <tr>
         <?php
         for($i=0;$i<$cnt;$i++){
           $res=tep_db_query("select son.oroshi_name from set_oroshi_names son,set_oroshi_datas sod  where sod.oroshi_id = son.oroshi_id and sod.parent_id='".$cPath."' && sod.oroshi_id='".$o_id[$i]."' ORDER BY list_id DESC");
@@ -106,18 +166,22 @@ case 'oroshi_c':
         }
     ?>
     </tr>
-              
-        <?php
-        $cr = array("\r\n", "\r");   // 改行コード置換用配
+
+<?php
+    $cr = array("\r\n", "\r");   // 改行コード置換用配
     for($i=0;$i<=$cnt;$i++){
       $res = tep_db_query("select * from set_oroshi_datas where parent_id='".$cPath."' && oroshi_id='".$o_id[$i]."' ORDER BY list_id DESC limit ".$a.",1 ");
       $col[$i] = tep_db_fetch_array($res);
+      
+      /*
       $col[$i]['datas'] = trim($col[$i]['datas']);         // 文頭文末の空白を削除
       $col[$i]['datas'] = str_replace($cr, "\n",$col[$i]['datas']);  // 改行コードを統一
       $lines[$i] = explode("\n", $col[$i]['datas']);
-      $count[$i]=count($lines[$i]);
+      */
+      $lines[$i] = spliteOroData($col[$i]['datas']);
+      $count[$i] = count($lines[$i]);
     }
-		
+    
     for($n=0;$n<$cnt;$n++){//取得したデータでどれが一番件数が大きいか
       if($count[0]<=$count[$n]){
         $count[0]=$count[$n];
@@ -177,7 +241,7 @@ case 'd_submit':
             $res = tep_db_query($sql);
             while($colx = tep_db_fetch_array($res))
               {
-                tep_db_query('delete from set_dougyousya_history where history = '.$colx['history_id']);
+                tep_db_query('delete from set_dougyousya_history where history ="'.$colx['history_id'].'"');
               }
           }
         }
@@ -189,7 +253,9 @@ case 'dougyousya':
   //要先把游戏找出来再进行操作
 
   $did = $_GET['dougyousya_id'];
-  $sql = 'select sdc.categories_id,cd.categories_name  from categories_description cd,set_dougyousya_categories sdc where cd.site_id = 0 and sdc.categories_id = cd.categories_id and  sdc.dougyousya_id =' .$did;
+  $sql = 'select sdc.categories_id,cd.categories_name  from categories_description
+    cd,set_dougyousya_categories sdc where cd.site_id = 0 and sdc.categories_id =
+    cd.categories_id and  sdc.dougyousya_id ="' .$did.'"';
   $res = tep_db_query($sql);
   while($testcol  = tep_db_fetch_array($res))
     {
@@ -205,7 +271,9 @@ case 'dougyousya':
       echo "</td>";
       echo "</th>";
       echo "<tbody>";
-      $getSubCategories = 'select cd.categories_name,cd.categories_id from categories_description cd, categories c where c.categories_id=cd.categories_id and cd.site_id = 0 and c.parent_id ='.$cate_id;
+      $getSubCategories = 'select cd.categories_name,cd.categories_id from
+        categories_description cd, categories c where
+        c.categories_id=cd.categories_id and cd.site_id = 0 and c.parent_id ="'.$cate_id.'"';
       $subRes = tep_db_query($getSubCategories);
 
       $rowCount = $colmunLimit;
@@ -235,7 +303,8 @@ case 'deletePoint':
   $cid = $_GET['cid'];
   $back_url_params =
     'action=deletePoint'.'&cPath='.$cPath.'&cid='.$cid.'&pointid='.$_GET['pointid'];
-  tep_db_query('delete from set_dougyousya_history where history_id = '.$_GET['pointid']);
+  tep_db_query('delete from set_dougyousya_history where history_id =
+      "'.$_GET['pointid'].'"');
   tep_redirect("history.php?action=dougyousya_categories&cid=".$cid."&cPath=".$cPath);
   break;
 case 'dougyousya_categories':
@@ -282,36 +351,36 @@ case 'dougyousya_categories':
   ?>
   </tr>
       <?php 
-      $res=tep_db_query("select count(*) as cnt from set_dougyousya_names sdn ,set_dougyousya_categories sdc  where sdn.dougyousya_id = sdc.dougyousya_id and sdc.categories_id=".$cPath);
+      $res=tep_db_query("select count(*) as cnt from set_dougyousya_names sdn
+          ,set_dougyousya_categories sdc  where sdn.dougyousya_id =
+          sdc.dougyousya_id and sdc.categories_id='".$cPath."'");
   $count=tep_db_fetch_array($res);
   $target_cnt=1;//同業者専用
   $products_count=0;
   //登録フォーム作成
   for($i=0;$i<$cnt2;$i++){
     $res=tep_db_query("select * from products_description where site_id=0 and  products_id='".$cid_list[$i]."'");
-    $col=tep_db_fetch_array($res);	
+    $col=tep_db_fetch_array($res);  
     echo "<input type='hidden' name='proid[]' value='".$cid_list[$i]."' >";//products_id
     echo "<input type='hidden' name='d_id[]' value='".$dougyousya_id[$i]."'>";//同業者ID
     echo "<tr><td>".$col['products_name']."</td>";
     if($count['cnt'] > 0){
       for($j=0;$j<$count['cnt'];$j++){
-        //				<input type='text' size='7px' name='TARGET_INPUT[]' onkeydown=ctrl_keydown('TARGET_INPUT',".$i.",".$j.",".$count['cnt'].")></td>";//価格同業者
+        //        <input type='text' size='7px' name='TARGET_INPUT[]' onkeydown=ctrl_keydown('TARGET_INPUT',".$i.",".$j.",".$count['cnt'].")></td>";//価格同業者
         echo "<td class='dataTableContent' >
-				<input type='text' size='7px' name='TARGET_INPUT[]' >";//価格同業者
+        <input type='text' size='7px' name='TARGET_INPUT[]' class='input_number' >";//価格同業者
       }
     }else{
-      //            echo "<td class='dataTableContent' ><input type='text' size='7px'  name='TARGET_INPUT[]' onkeydown=ctrl_keydown('TARGET_INPUT',".$i.",'0','0')></td>";//価格同業者	
-      echo "<td class='dataTableContent' ><input type='text' size='7px'  name='TARGET_INPUT[]' ></td>";//価格同業者	
+      //            echo "<td class='dataTableContent' ><input type='text' size='7px'  name='TARGET_INPUT[]' onkeydown=ctrl_keydown('TARGET_INPUT',".$i.",'0','0')></td>";//価格同業者  
+      echo "<td class='dataTableContent' ><input type='text' size='7px'
+        name='TARGET_INPUT[]' class='input_number' ></td>";//価格同業者 
     }
     echo "</tr>";
   }
   ?>
   <td><input type="submit" name="b1" value="登録"></td>
-    
      </form>
      </table>
-
-
      <!-- data start -->
      <br>
      <br>
@@ -331,7 +400,8 @@ case 'dougyousya_categories':
 
       $imgstr = '';
       $product_id = $key;
-      $res_for_productname = tep_db_query('select products_name from products_description where site_id = 0 and  products_id = '.$key);
+      $res_for_productname = tep_db_query('select products_name from
+          products_description where site_id = 0 and  products_id = "'.$key.'"');
            
       $productname = tep_db_fetch_array($res_for_productname);
       $productname = $productname['products_name'];

@@ -10,7 +10,8 @@ case 'edit_oroshi':
   $orrshi_id = $HTTP_GET_VARS['id'];
   $name = $HTTP_GET_VARS['name'];
   //通过传递的orrshi_id 查找对应的categories_id 插入到数组 skstr
-  $sql = 'select * from set_dougyousya_categories where dougyousya_id='.$orrshi_id;
+  $sql = "select * from set_dougyousya_categories where
+    dougyousya_id='".$orrshi_id."'";
   $res = tep_db_query($sql);
   $ckstr = array();
   while($col = tep_db_fetch_array($res)){
@@ -46,7 +47,7 @@ case 'set_oroshi':
   while ( $i < $cnt ) {
        $i++;
     $sql = 'insert into set_dougyousya_categories (dougyousya_id,categories_id) values
-      ('.$col['dougyousya_id'].','.$ocid[$i-1].')';
+      ("'.$col['dougyousya_id'].'","'.$ocid[$i-1].'")';
        tep_db_query($sql);
   }
     $j++;
@@ -58,7 +59,7 @@ case 'set_oroshi':
   $i = 0;
   $flag = false;
   $res = tep_db_query("select categories_id from
-    set_dougyousya_categories where dougyousya_id=".$orrshi_id);
+    set_dougyousya_categories where dougyousya_id='".$orrshi_id."'");
   $douno = array();
   //douno 是以选定的 checkbox(数据库中以存在数据)
   $j = 0; 
@@ -66,16 +67,17 @@ case 'set_oroshi':
     $douno[$j] = $col['categories_id'];
     $j++;
   }
-    $sql = 'delete FROM set_dougyousya_categories WHERE dougyousya_id='.$orrshi_id;
+    $sql = 'delete FROM set_dougyousya_categories WHERE
+      dougyousya_id="'.$orrshi_id.'"';
     tep_db_query($sql);
   foreach ($ocid as $diffval) {
     $sql = 'insert into set_dougyousya_categories (dougyousya_id,categories_id) values
-      ('.$orrshi_id.','.$diffval.')';
+      ("'.$orrshi_id.'","'.$diffval.'")';
        tep_db_query($sql);
   }
   $name = $_POST['up_oroshi'];
   $sql = 'update set_dougyousya_names set dougyousya_name="'.$name[$orrshi_id].'"
-  where dougyousya_id='.$orrshi_id;
+  where dougyousya_id="'.$orrshi_id.'"';
   tep_db_query($sql);
   }
   

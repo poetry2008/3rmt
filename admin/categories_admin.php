@@ -26,6 +26,9 @@ if ( eregi("(insert|update|setflag)", $action) ) include_once('includes/reset_se
 if (isset($_GET['action']) && $_GET['action']) {
   switch ($_GET['action']) 
     {
+    case 'goto': //一括更新　　
+      //tep_redirect(tep_href_link(FILENAME_CATEGORIES_ADMIN, 'cPath=' . $HTTP_GET_VARS['cPath'] . '&pID=' .$products_id));
+      break;
       //tep_db_prepare_input＝変数か文字列の判定 //更新するもの・・・特別価格と同業者の価格＋radioのチェック
     case 'all_update': //一括更新　　
       require('includes/set/all_update.php');
@@ -140,7 +143,8 @@ $(document).ready(function(){
   <td class="smallText" align="right"><?php echo tep_draw_form('search', FILENAME_CATEGORIES_ADMIN, '', 'get') . "\n"; ?> <?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search', isset($_GET['search'])?$_GET['search']:'') . "\n"; ?>
   </form>
   </td>
-  <td class="smallText" align="right"><?php echo tep_draw_form('goto', FILENAME_CATEGORIES_ADMIN, '', 'get') . "\n"; ?> <?php echo HEADING_TITLE_GOTO . ' ' . tep_draw_pull_down_menu('cPath', tep_get_category_tree(), $current_category_id, 'onChange="this.form.submit();"') . "\n"; ?>
+  <td class="smallText" align="right">
+    <?php echo tep_draw_form('goto', FILENAME_CATEGORIES_ADMIN, '', 'get') . "\n"; ?> <?php echo HEADING_TITLE_GOTO . ' ' . tep_draw_pull_down_menu('cPath', tep_get_category_tree_cpath(), $current_category_id, 'onChange="this.form.submit();"') . "\n"; ?>
   </form></td>
   </tr>
   </table>
@@ -167,16 +171,20 @@ $(document).ready(function(){
   </td>
   <?php  
   //读取当前的计算公式  
-  $res=tep_db_query("select bairitu from set_auto_calc where parent_id='".$cPath_yobi."'"); 
-$col=tep_db_fetch_array($res);
+  $res=tep_db_query("select bairitu from set_auto_calc where parent_id='".$current_category_id."'"); 
+  $col=tep_db_fetch_array($res);
 ?>
 <td class="dataTableHeadingContent" align="center"><?php echo $col['bairitu']?>倍</td>
   <?php
   if ($cPath_yobi){
-    $res=tep_db_query("select count(*) as cnt from set_dougyousya_names sdn  ,set_dougyousya_categories sdc  where sdn.dougyousya_id = sdc.dougyousya_id and sdc.categories_id = ".$cPath_yobi." ");
+    $res=tep_db_query("select count(*) as cnt from set_dougyousya_names sdn
+        ,set_dougyousya_categories sdc  where sdn.dougyousya_id = sdc.dougyousya_id
+        and sdc.categories_id = '".$cPath_yobi."'");
     $count_dougyousya=tep_db_fetch_array($res);
     if($count_dougyousya['cnt'] > 0) {
-      $res=tep_db_query("select * from set_dougyousya_names sdn ,set_dougyousya_categories sdc  where sdn.dougyousya_id = sdc.dougyousya_id and sdc.categories_id = ".$cPath_yobi. " ORDER BY sdc.dougyousya_id ASC");
+      $res=tep_db_query("select * from set_dougyousya_names sdn
+          ,set_dougyousya_categories sdc  where sdn.dougyousya_id =
+          sdc.dougyousya_id and sdc.categories_id = '".$cPath_yobi. "' ORDER BY sdc.dougyousya_id ASC");
       while($col_dougyousya=tep_db_fetch_array($res)){
         $i++;
         echo "<td class='dataTableHeadingContent' align='center'><a href='#' onClick=history('history.php',".$cPath_yobi.",".$current_category_id.",'dougyousya')>".$col_dougyousya['dougyousya_name']."</a>";
@@ -419,7 +427,7 @@ while ($products = tep_db_fetch_array($products_query)) {
   }
 
   if ( (isset($pInfo) && is_object($pInfo)) && ($products['products_id'] == $pInfo->products_id) ) {
-    echo ' <!--dataTableRowSelected--> <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" ' . '\'">' . "\n";
+    echo ' <!--dataTableRowSelected--> <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand' . '\'">' . "\n";
   } else {
     echo '              <tr class="' . $nowColor . '" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'"> ' . "\n";
   }
@@ -492,6 +500,7 @@ while ($products = tep_db_fetch_array($products_query)) {
                     $count     = tep_db_fetch_array($res);
                     $radio_res = tep_db_query("select * from set_dougyousya_history where categories_id='".$current_category_id."' order by history_id asc");
                     $radio_col = tep_db_fetch_array($radio_res);
+                    
                   }
               
               /*同業者価格を文字列で表示させる必要あり
@@ -501,11 +510,12 @@ while ($products = tep_db_fetch_array($products_query)) {
               */
               if($count['cnt'] > 0){
                 $dougyousya = get_products_dougyousya($products['products_id']);
+                $all_dougyousya = get_all_products_dougyousya($current_category_id, $products['products_id']);
                 for($i=0;$i<$count['cnt'];$i++) {
                   echo "
                     <td class='dataTableContent' >
-                    <input type='radio' value='".($i+1)."' name='chk[".$target_cnt."]' onClick='chek_radio(".$target_cnt.")'".(($i+1) == $dougyousya?' checked':'').">
-                    <span name='TARGET_INPUT[]' id='target_".$target_cnt."_".$i."' >".get_dougyousya_history($products['products_id'], $i+1)."</span>
+                    <input type='radio' value='".$all_dougyousya[$i]['dougyousya_id']."' name='chk[".$target_cnt."]' onClick='chek_radio(".$target_cnt.")'".($all_dougyousya[$i]['dougyousya_id'] == $dougyousya?' checked':'').">
+                    <span name='TARGET_INPUT[]' id='target_".$target_cnt."_".$i."' >".get_dougyousya_history($products['products_id'], $all_dougyousya[$i]['dougyousya_id'])."</span>
                     <!--<input type='text' size='7' value='".get_dougyousya_history($products['products_id'], $i+1)."' name='TARGET_INPUT[]' id='target_".$target_cnt."_".$i."' onBlur='event_onblur(".$products_count.")' onkeydown=ctrl_keydown(event,'TARGET_INPUT',".$products_count.",".$i.",".$count['cnt'].") readonly>-->
                     </td>";//価格同業者
                 }
@@ -636,7 +646,8 @@ if ($cPath_array) {
 
 /* リスト表示に必要な情報を得る */
 if(empty($cPath_back)&&empty($cID)&&isset($cPath)){ 
-  $res_list=tep_db_query("select parent_id from categories where categories_id =".tep_db_prepare_input($cPath));
+  $res_list=tep_db_query("select parent_id from categories where categories_id
+      ='".tep_db_prepare_input($cPath)."'");
   $col_list=tep_db_fetch_array($res_list);
   $cPath_yobi=$col_list['parent_id'];
 }

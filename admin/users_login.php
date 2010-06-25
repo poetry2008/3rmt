@@ -84,9 +84,17 @@ echo '<meta http-equiv="Content-Type" content="text/html; charset=' . CHARSET . 
 echo '<title>' . TITLE . '</title>' . "\n";
 echo '<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">' . "\n";
 echo '</head>' . "\n";
-echo '<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">' . "\n";
-
-echo tep_draw_form('defaultpage', FILENAME_DEFAULT . "?SID=" . session_id());		// <form>タグの出力
+echo '<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0"
+leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">' . "\n";
+$snapshot = $_SESSION['snapshot'];
+if (empty($snapshot) || $snapshot == 'users_login.php')
+{
+  $snapshot = FILENAME_DEFAULT;
+}
+$q_string = $_SESSION['q_string'];
+unset($_SESSION['snapshot']);
+unset($_SESSION['q_string']);
+echo tep_draw_form('defaultpage', $snapshot .  "?SID=".session_id().($q_string?'&'.$q_string:''));		// <form>タグの出力
 
 echo '<!-- body_text //-->' . "\n";
 echo '<table border="0" cellspacing="0" cellpadding="2">' . "\n";

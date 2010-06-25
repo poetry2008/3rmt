@@ -20,23 +20,29 @@ case 'data_cleate':
     if(trim($value)){
     $oroid = $key;
     $sql = 'insert into set_oroshi_datas (oroshi_id ,parent_id,datas,set_date) values(';
-    $sql.= $key.',';
-    $sql.= $cid.',';
+    $sql.= '"'.$key.'",';
+    $sql.= '"'.$cid.'",';
     $sql.= '"'.$value.'",';
     $sql.= 'now()';
     $sql.= ')';
     tep_db_query($sql);
     }
   }
-    tep_redirect('cleate_list.php?action=prelist&cid=' . $cid .'&oid='.$o_id);
+  var_dump($_GET['src_id']);
+  if(isset($_GET['src_id'])&&$_GET['src_id']!=null){
+    $jump_url = 'cleate_list.php?action=prelist&cid='. $cid  .'&oid='.$o_id.'&src_id=his';
+  }else{
+    $jump_url = 'cleate_list.php?action=prelist&cid=' . $cid .'&oid='.$o_id;
+  }
+  tep_redirect($jump_url);
     break;
 
 }
 /*
   危険　24時間　価格更新なし
   警告　4時間未満　7時間未満　24時間　価格更新なし
-*/		//DBに保存するのは最大20
-		
+*/    //DBに保存するのは最大20
+    
 //DBの記録に必要なもの
 /*
   卸業者名、$cPath、時間、データ
@@ -96,7 +102,9 @@ function goto(){
   //根据 oid 取出当前 oid 关系了哪些个分类
   if ($action == 'oroshi'){
     $back_url = 'cleate_oroshi.php';
-  $getMyCate = 'select cd.categories_name,soc.categories_id  from set_oroshi_categories soc ,categories_description cd where cd.site_id =0 and soc.categories_id = cd.categories_id and soc.oroshi_id = '.$oid;
+  $getMyCate = 'select cd.categories_name,soc.categories_id  from
+    set_oroshi_categories soc ,categories_description cd where cd.site_id =0 and
+    soc.categories_id = cd.categories_id and soc.oroshi_id = "'.$oid.'"';
 $res = tep_db_query($getMyCate);
 while ($col = tep_db_fetch_array($res)){
   $cate_id = $col['categories_id'];
@@ -118,13 +126,16 @@ if ($action =='prelist'){
   $oid = $_GET['oid'];
   $back_url = 'cleate_list.php';
   $back_url_params = 'action=oroshi&o_id='.$oid;
+  $form_action = 'cleate_list.php?action=data_cleate';
   if (isset($_GET['src_id'])&&$_GET['src_id']!=null){
     $src_id=$_GET['src_id'];
     $back_url_params = 'action=oroshi&cid='.$cid.'&o_id='.$oid.'&src_id='.$src_id;
     $back_url = 'history.php';
+    $form_action = 'cleate_list.php?action=data_cleate&src_id='.$src_id;
   }
   //  $res = tep_db_query("select * from set_oroshi_categories soc,set_oroshi_names son where son.oroshi_id = soc.oroshi_id and soc.categories
-  $res =tep_db_query('select * from set_oroshi_names son, categories c ,set_oroshi_categories soc where c.categories_id = '.$cid.' and c.categories_id = soc.categories_id and son.oroshi_id = soc.oroshi_id order by soc.oroshi_id ');
+  $res =tep_db_query('select * from set_oroshi_names son, categories c
+      ,set_oroshi_categories soc where c.categories_id = "'.$cid.'" and c.categories_id = soc.categories_id and son.oroshi_id = soc.oroshi_id order by soc.oroshi_id ');
   //var_dump('select * from set_oroshi_names son, categories c ,set_oroshi_categories soc where c.categories_id = '.$cid.' and c.categories__id = soc.categories_id and son.oroshi_id = soc.oroshi_id order by soc.oroshi_id desc');
       $html2 = '';
     while($col = tep_db_fetch_array($res)){
@@ -140,7 +151,7 @@ if ($action =='prelist'){
 }
 echo $html;
 ?>
-          <form method="post" action="cleate_list.php?action=data_cleate" >
+          <form method="post" action="<?php echo $form_action;?>">
                      <tr bgcolor='#F0F1F1'>
             <?php
   echo $html2;
@@ -156,26 +167,30 @@ echo $html;
     $lines_arr = array();
 $oroname = array();
 $cr = array("\r\n", "\r");   // 改行コード置換用配
-$orocnt = tep_db_query('select distinct(oroshi_id) from set_oroshi_datas where parent_id = '.$cid." order by oroshi_id");
+$orocnt = tep_db_query('select distinct(oroshi_id) from set_oroshi_datas where parent_id = "'.$cid.'" order by oroshi_id');
 while($testcol = tep_db_fetch_array($orocnt)){
   $oroids[] = $testcol['oroshi_id'];
 }
+if($oroids){
 foreach($oroids as $key=>$value){
-  $res = tep_db_query("select * from set_oroshi_names son, set_oroshi_datas sod where sod.oroshi_id =". $value." and sod.oroshi_id = son.oroshi_id and  parent_id='".$cid."' ORDER BY sod.list_id desc limit 1");
+  $res = tep_db_query("select * from set_oroshi_names son, set_oroshi_datas sod where sod.oroshi_id ='". $value."' and sod.oroshi_id = son.oroshi_id and  parent_id='".$cid."' ORDER BY sod.list_id desc limit 1");
   $col = tep_db_fetch_array($res);
   $cols[]=$col;
 }
 
-
-
 foreach($cols as $col){
     $oroname[] = $col['oroshi_name'];
+    /**
     $col['datas'] = trim($col['datas']);         // 文頭文末の空白を削除
     $col['datas'] = str_replace($cr, "\n",$col['datas']);  // 改行コードを統一
     $lines= explode("\n", $col['datas']);
     $count[]=count($lines);
     $lines_arr[]=$lines;
-}	
+    /**/
+    $lines = spliteOroData($col['datas']);
+    $count[]=count($lines);
+    $lines_arr[]=$lines;
+} 
                                 
   $cnt = count($count);
 
@@ -184,9 +199,10 @@ for($n=0;$n<$cnt;$n++){
     $count[0]=$count[$n];
   }
 }
-echo "<tr>";	
+echo "<tr>";  
 foreach ($oroname as $value){
   echo "<td>$value</td>";
+}
 }
 echo "</tr>";
 for($i=0;$i < $count[0];$i++){
@@ -196,7 +212,7 @@ for($i=0;$i < $count[0];$i++){
   }
   echo "</tr>";
 }
-}	
+} 
 ?>
         </table>
                </td>

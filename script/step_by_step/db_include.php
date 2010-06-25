@@ -10,6 +10,8 @@ wm
 
    */
 // @todo configuration default value
+ini_set('display_errors', 'On');
+error_reporting(E_ALL);
 
 define('RMT_DB_HOST', 'localhost');
 define('RMT_DB_USER', 'root');
@@ -60,9 +62,12 @@ $_link  = mysql_connect(RMT_DB_HOST, RMT_DB_USER, RMT_DB_PASS) or die('3');
 mysql_query('set names utf8');
 
 function rq($sql){
-  //echo RMT_DB_NAME;
+  $runtime= new runtime;
+  $runtime->start();
   mysql_select_db(RMT_DB_NAME);
   $q = mysql_query($sql);
+  $runtime->stop();
+  sql_log(RMT_DB_NAME . ':' . $sql, $runtime->spent());
   $e = mysql_error();
   if($e){
     echo $sql . "#\n";
@@ -72,14 +77,23 @@ function rq($sql){
 }
 
 function r3q($sql){
+  $runtime= new runtime;
+  $runtime->start();
   mysql_select_db(R3MT_DB_NAME);
   $q = mysql_query($sql);
+  $runtime->stop();
+  sql_log(R3MT_DB_NAME . ':' . $sql, $runtime->spent());
   $e = mysql_error();
   if($e){
     echo $sql . "\n";
     echo $e . "\n";
   }
   return $q;
+}
+
+function sql_log($sql,$times) {
+  if ($times>1) 
+  file_put_contents('sql_log', '['.$times.']['.date('Y-m-d H:i:s').']'.str_replace(array("\n"),array(''),$sql)."\n", FILE_APPEND);
 }
 
 /**
@@ -161,7 +175,13 @@ function site_id($s){
 }
 
 function cp($s,$t) {
-  return copy($s, $t);
+  if(file_exists($s)){
+    if (file_exists($t)) {
+      unlink($t);
+    }
+    return copy($s, $t);
+  }
+  return true;
 }
 
 function fs($s){
@@ -236,4 +256,31 @@ function cmp3table($table){
 
 function m($str) {
   return mysql_real_escape_string($str);
+}
+
+class runtime
+{ 
+    var $StartTime = 0; 
+    var $StopTime = 0; 
+ 
+    function get_microtime() 
+    { 
+        list($usec, $sec) = explode(' ', microtime()); 
+        return ((float)$usec + (float)$sec); 
+    } 
+ 
+    function start() 
+    { 
+        $this->StartTime = $this->get_microtime(); 
+    } 
+ 
+    function stop() 
+    { 
+        $this->StopTime = $this->get_microtime(); 
+    } 
+ 
+    function spent() 
+    { 
+        return round(($this->StopTime - $this->StartTime) * 1000, 1); 
+    } 
 }

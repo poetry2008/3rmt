@@ -17,10 +17,13 @@
             if (isset($_GET['status']) && ($_GET['status'] == 0 || $_GET['status'] == 1 || $_GET['status'] == 2)){
               tep_set_categories_status($cID, intval($_GET['status']));
             } else {
-              $c_query = tep_db_query("select * from `".TABLE_CATEGORIES."` where `categories_id`=".$cID);
+              $c_query = tep_db_query("select * from `".TABLE_CATEGORIES."` where
+                  `categories_id`='".$cID."'");
               $c = tep_db_fetch_array($c_query);
               if($c){
-                $update_query = tep_db_query("UPDATE `".TABLE_CATEGORIES."` SET `categories_status` = '".($c['categories_status']?'0':'1')."' WHERE `categories_id` =".$cID." LIMIT 1 ;");
+                $update_query = tep_db_query("UPDATE `".TABLE_CATEGORIES."` SET
+                    `categories_status` = '".($c['categories_status']?'0':'1')."'
+                    WHERE `categories_id` ='".$cID."' LIMIT 1 ;");
               }
             }
           }
@@ -1573,7 +1576,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
         <tr>
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>
-                <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
+                <td class="pageHeading"><?php echo BOX_CATALOG_CATEGORIES_PRODUCTS; ?></td>
         <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
         <?php echo tep_draw_form('search', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
           <td class="smallText" align="right">

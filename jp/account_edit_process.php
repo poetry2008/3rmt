@@ -108,6 +108,7 @@
   if ($password !== $confirmation) {
     $error = true;
     $entry_password_error = true;
+    $entry_password_confirmation_error = true;
   }
 //ccdd
   $check_email_query = tep_db_query("select count(*) as total from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and customers_id != '" .  tep_db_input($customer_id) . "' and site_id = '".SITE_ID."'");

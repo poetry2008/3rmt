@@ -11,7 +11,7 @@ case 'edit_oroshi':
   $cpath = $HTTP_GET_VARS['cpath'];
   $orrshi_id = $HTTP_GET_VARS['id'];
   $name = $HTTP_GET_VARS['name'];
-  $sql = 'select * from set_oroshi_categories where oroshi_id='.$orrshi_id;
+  $sql = 'select * from set_oroshi_categories where oroshi_id="'.$orrshi_id.'"';
   $res = tep_db_query($sql);
   $ckstr = array();
   while($col = tep_db_fetch_array($res)){
@@ -44,7 +44,7 @@ case 'set_oroshi':
   while ( $i < $cnt ) {
        $i++;
     $sql = 'insert into set_oroshi_categories (oroshi_id,categories_id) values
-      ('.$col['oroshi_id'].','.$ocid[$i-1].')';
+      ("'.$col['oroshi_id'].'","'.$ocid[$i-1].'")';
        tep_db_query($sql);
   }
     $j++;
@@ -55,23 +55,23 @@ case 'set_oroshi':
   $i = 0;
   $flag = false;
   $res = tep_db_query("select categories_id from
-    set_oroshi_categories where oroshi_id=".$orrshi_id);
+    set_oroshi_categories where oroshi_id='".$orrshi_id."'");
   $douno = array();
   $j = 0; 
   while($col = tep_db_fetch_array($res)){
     $douno[$j] = $col['categories_id'];
     $j++;
   }
-    $sql = 'delete from set_oroshi_categories where oroshi_id='.$orrshi_id;
+    $sql = 'delete from set_oroshi_categories where oroshi_id="'.$orrshi_id.'"';
     tep_db_query($sql);
   foreach ($ocid as $diffval) {
     $sql = 'insert into set_oroshi_categories (oroshi_id,categories_id) values
-      ('.$orrshi_id.','.$diffval.')';
+      ("'.$orrshi_id.'","'.$diffval.'")';
        tep_db_query($sql);
   }
     $name = $_POST['up_oroshi'];
     $sql = 'update set_oroshi_names set oroshi_name="'.$name[$orrshi_id].'"
-    where oroshi_id='.$orrshi_id;
+    where oroshi_id="'.$orrshi_id.'"';
     tep_db_query($sql);
   }
   /*
@@ -273,11 +273,11 @@ while($col=tep_db_fetch_array($res)){
   echo "<td width='50'><a href='' onclick='del_oroshi(".$col['oroshi_id'].")'>削除</a></td>";
   //  echo "<td><input type='button' value='".OROSHI_DATA_MANAGE."' name='b[]'
   //    onclick='jump_oroshi_data(".$col['parent_id'].",".$col['oroshi_id'].")'></td>";
-  echo "<td><a href='cleate_list.php?action=oroshi&o_id=".$col['oroshi_id']."'>".OROSHI_DATA_MANAGE."</a>";
+  echo "<td width='50'><a href='cleate_list.php?action=oroshi&o_id=".$col['oroshi_id']."'>".OROSHI_DATA_MANAGE."</a>";
   echo "<td><a href='history.php?action=oroshi&o_id=".$col['oroshi_id']."'>"."履歴"."</a>";
   echo '</tr>';
    if(isset($ckstr)&&$orrshi_id == $col['oroshi_id']){
-    echo '<tr><td colspan="4">';
+    echo '<tr><td colspan="5">';
     echo '<div id="change_one">';
     echo "<input type='text' name='up_oroshi[".$col['oroshi_id']."]' id
       ='name_".$col['oroshi_id']."' value='".$col['oroshi_name']."' / ><br>";
