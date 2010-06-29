@@ -1,21 +1,11 @@
-  function confirmg(question,url) {
+﻿  function confirmg(question,url) {
   var x = confirm(question);
   if (x) {
     window.location = url;
   }
 }
-  
-function mess(){
-  //if(document.getElementById('pp').value == "" || document.getElementById('pp').value < 1){
-  //alert("価格情報を入力して下さい");
-  //document.getElementById('pp').focus();
-  //return false;
-  //}
-}
 
 var zaiko_input_obj=document.getElementsByName("zaiko[]");//架空
-var trader_input_obj=document.getElementsByName("TRADER_INPUT[]");//業者
-var increase_input_obj=document.getElementsByName("INCREASE_INPUT");//倍率
 var target_input_obj=document.getElementsByName("TARGET_INPUT[]");//同業者
 var price_obj=document.getElementsByName("price[]");//特別価格
 
@@ -154,27 +144,6 @@ function ctrl_keydown(evt,id_val,num,i,j){ //id_ver=ID　num＝現在の番号�
       
 }
 
-
-//個別特価価格更新処理
-/*
-  function single_update(cPath,pID,products_price,cnt,d_cnt){
-  var n=cnt;
-  var d_n=cnt-1;
-  var p_price=products_price;
-  //var price_obj=document.getElementById("price_input_"+n).value;
-  var s_price=document.getElementById("price_input_"+n).value;
-  var zaiko=document.getElementById("zaiko_"+n).value;
-  if(zaiko =="在庫切れ" || zaiko==""){
-  zaiko=0;
-  }
-  var flg=confirm("特価価格を更新します");
-  if(flg){
-  location.href="categories.php?cPath="+cPath+"&pID="+pID+"&action=single_update&products_special_price="+s_price+"&products_price="+p_price+"&products_quantity="+zaiko;
-  }else{
-  alert("更新をキャンセルしました");
-  }
-  }
-*/
 function all_update(){
   var flg=confirm("特価価格を更新します");
   if(flg){
@@ -186,14 +155,9 @@ function all_update(){
   }
 }
 
-
-
-
-
 function chek_radio(cnt){
   //var radio_cnt=document.getElementsByName("chk_"+cnt+"[]");
   var radio_cnt=document.getElementsByName("chk["+cnt+"]");
-
   for(var i=0;i < radio_cnt.length;i++){
     if(radio_cnt[i].checked == true){
       //document.getElementById("radiochk"+cnt+"_"+i).value = 1;
@@ -208,9 +172,7 @@ function chek_radio(cnt){
   }   
 }
 
-
 function cleat_set(url,w,h){
-
   var set_url=url;
   var set_width=w;
   var set_height=h;
@@ -225,7 +187,7 @@ function cleat_set(url,w,h){
 function list_display(path,cid){
 
   var set_url="list_display.php?cpath="+path+"&cid="+cid;
-  window.open(set_url,'bbbb',"width=1000,height=500");
+  window.open(set_url,'bbbb',"width=1000,height=500,scrollbars=yes");
 
   //location.href="list_display.php?cpath="+path+"&cid="+cid;
 }
@@ -234,25 +196,17 @@ function event_onblur(num){
   var n=num-1;                          //フォーム識別番号
     
   var trader_price=var_calc(trader_input_obj[n].value);
+  var increase_input_obj=$(".INCREASE_INPUT");//業者
   increase_input_obj[n].value=trader_price;
   set_money(n);//特価価格設定
     
-}
-
-function onload_keisan(warning){
-
-  for(var i=0;i<trader_input_obj.length;i++){
-    var trader_price=var_calc(trader_input_obj[i].value);
-    increase_input_obj[i].value=trader_price;
-      set_money(i,warning);//特価価格設定
-  }
 }
 
 function var_calc(val){
   //val=業者/価格の値
 
   var bai = calc.bairitu
-    var price=val*bai;                      
+  var price=val*bai;                      
 
 
   var anser=Math.floor(price);  //切捨て
@@ -282,19 +236,17 @@ function set_money(num,warning){
       if(radio_cnt[i].checked == true){
         var tar_ipt = document.getElementById("target_"+n+"_"+i).innerHTML;//同業者
 
-
-//        var tar_ipt = document.getElementById("target_"+n+"_"+i).innerHTML;//同業者
-
       }
     } 
   } 
-//  var ins_ipt=increase_input_obj[n].value;//倍率
-    var ins_ipt=increase_input_obj[n].innerHTML;//倍率
+  var increase_input_obj=$(".INCREASE_INPUT");//業者
+var ins_ipt=increase_input_obj[n].innerHTML;
 
 
-  var set_m="";                       //サイト入力フォームに値を設置変数初期化
+  var set_m=0;                       //サイト入力フォームに値を設置変数初期化
 
   if(parseInt(ins_ipt) <= parseInt(tar_ipt)){
+      
     var ins_anser = ( parseInt(ins_ipt) / parseInt(tar_ipt) ) * 100;
     ins_anser = 100 - ins_anser;
     if(parseInt(ins_anser) >= 20){
@@ -304,6 +256,7 @@ function set_money(num,warning){
     }
     var kei = calc.keisan;//数字
     var shisoku = calc.shisoku;//演算子
+
     if(shisoku == "+"){
       set_m = parseInt(tar_ipt) + parseInt(kei);
     }else{
@@ -321,10 +274,12 @@ function set_money(num,warning){
     set_m=ins_ipt;
     set_m=Math.ceil(set_m);
   }
+
   var price_n = n + 1;
   //var price_obj=document.getElementById("price_input_"+ price_n);//サイトインプット
   var this_price=document.getElementsByName("this_price[]");
-  price_obj[n].value=String(set_m);
+
+  price_obj[n].value=parseInt(set_m);
     
   //価格の判定
   //現在の価格と更新予定の価格を比較
@@ -353,3 +308,21 @@ function history(url,cpath,cid,action){
   var url=url+"?cpath="+cpath+"&cid="+cid+"&action="+action;
   window.open(url,'ccc',"width=1000,height=800");
 }
+
+function dougyousya_history(url,cpath,cid,action,did){
+  var url=url+"?cPath="+cpath+"&cid="+cid+"&did="+did+"&action="+action;
+  window.open(url,'ccc',"width=1000,height=800");
+}
+
+function onload_keisan(warning){
+
+  var trader_input_obj=$(".TRADER_INPUT");//業者
+  var increase_input_obj=$(".INCREASE_INPUT");//業者
+  for(var i=0;i< trader_input_obj.length;i++){
+//    var trader_price=var_calc(trader_input_obj[i].innerHTML);
+  //    alert(trader_price);
+    //increase_input_obj[i].innerHTML=trader_price;
+      set_money(i,warning);//特価価格設定
+  }
+}
+

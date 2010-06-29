@@ -74,6 +74,8 @@
                                    'products_quantity' => tep_db_prepare_input($products_quantity[$n]),
                                    'products_price' => tep_db_prepare_input($products_prise[$n]));
           tep_db_perform(TABLE_PRODUCTS, $update_sql_data, 'update', 'products_id = \'' . tep_db_prepare_input($proid[$n]) . '\'');
+          // 商品价格
+          tep_db_query("update " . TABLE_PRODUCTS . " set products_price = '".$_POST['_price'][$n]."' where  products_id = '".tep_db_prepare_input($proid[$n])."'");
 
           // 特価商品インサート
           if(!empty($psrice_datas[$n])) {

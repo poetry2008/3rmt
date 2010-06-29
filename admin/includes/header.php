@@ -39,6 +39,8 @@
     &nbsp;&nbsp;|&nbsp;&nbsp;
       <a href="' . tep_href_link(FILENAME_ORDERS, '', 'NONSSL') . '" class="headerLink">' . BOX_CUSTOMERS_ORDERS . '</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;
+      <a href="' . tep_href_link(FILENAME_CATEGORIES_ADMIN, '', 'NONSSL') . '" class="headerLink">商品卸価格管理</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;
       <a href="' . tep_href_link(FILENAME_CUSTOMERS, '', 'NONSSL') . '" class="headerLink">' . BOX_CUSTOMERS_CUSTOMERS . '</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;
       <a href="' . tep_href_link(FILENAME_CATEGORIES, '', 'NONSSL') . '" class="headerLink">商品登録</a>

@@ -44,7 +44,7 @@
                         class="menuBoxContentLink">卸業者の名前設定</a><br>'.
                         '<a href="'.tep_href_link('cleate_dougyousya.php', '', 'NONSSL').
                         '"class="menuBoxContentLink">同業者の名前設定</a><br>'.
-                        '<a href="'.tep_href_link(FILENAME_CATEGORIES_ADMIN,'','NONSSL').'" class="menuBoxContentLink">'.BOX_CATALOG_CATEGORIES_ADMIN. '</a><br>'.
+                        '<a href="'.tep_href_link(FILENAME_CATEGORIES_ADMIN,'','NONSSL').'" class="menuBoxContentLink">'.'商品卸価格管理'. '</a><br>'.
                    '<!--<hr>' . 
                    '<a href="' . tep_href_link(FILENAME_PRODUCTS_UP, '', 'NONSSL') . '" class="menuBoxContentLink">' . BOX_CATALOG_PRODUCTS_UP . '</a><br>' . 
                    '<a href="' . tep_href_link(FILENAME_PRODUCTS_DL, '', 'NONSSL') . '" class="menuBoxContentLink">' . BOX_CATALOG_PRODUCTS_DL . '</a>-->');

@@ -5,6 +5,12 @@ require('includes/application_top.php');
 require(DIR_WS_CLASSES . 'currencies.php');
 $currencies = new currencies();
 
+/**
+echo "<pre>";
+print_r($_GET);
+print_r($_POST);
+echo "</pre>";
+/**/
 $cID=$_POST['cID_list'];
 //$cID=$_POST['cpath_yobi'];
 switch ($HTTP_GET_VARS['action']){
@@ -17,6 +23,7 @@ switch ($HTTP_GET_VARS['action']){
       if($count['cnt'] > 0){
         tep_db_query("update  set_auto_calc set bairitu='".$bai."',keisan='".$keisan."',shisoku='".$shisoku."' where  parent_id='".$cID."'");
       }else{
+        //echo "insert into set_auto_calc (parent_id,bairitu,keisan,shisoku) values ('".$cID."','".$bai."','".$keisan."','".$shisoku."')";
         tep_db_query("insert into set_auto_calc (parent_id,bairitu,keisan,shisoku) values ('".$cID."','".$bai."','".$keisan."','".$shisoku."')");
       }
     break;
@@ -35,7 +42,7 @@ charset=<?php echo CHARSET; ?>">
 ?>
 <body>
 <form method="post" action="set_bairitu.php?action=set_bai"  onsubmit="alert('更新されました。')">
-<p>倍率設定：<input type="txte" value="<?php echo $col['bairitu']?>" name="bai" ></p>
+<p>倍率設定：<input type="text" value="<?php echo $col['bairitu']?>" name="bai" ></p>
 <p>特別価格設定の計算</p>
 <p>計算：<select  name="shisoku">
 <?php 
@@ -51,7 +58,7 @@ charset=<?php echo CHARSET; ?>">
 
 </select>
 <input type="txte" value="<?php echo $col['keisan']?>" name="kei" ></p>
-<input type="hidden" value="<?php echo $cID ?>" name="cpath_yobi">
+<input type="hidden" value="<?php echo $cID ?>" name="cID_list">
 <input type="submit" value="計算設定">
 </form>
 </body>

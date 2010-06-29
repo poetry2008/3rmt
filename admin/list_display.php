@@ -67,7 +67,7 @@ case update:
     var last_val = 0;
     var kakaku = new Array();
     var kakuukosuu = new Array();
-    var products_order = new Array(31703,31697,31681)
+    //var products_order = new Array(31703,31697,31681)
     var products_order = new Array(<?php
     $set_menu_list_query = tep_db_query("select * from set_menu_list where categories_id='".$cID."' order by set_list_id asc");
     $i = 0;
@@ -206,6 +206,39 @@ case update:
       bindActions();
       setDefault();
     });
+    function reset_page(){
+       products = new Array();
+      $('.kakuukosuu_input').attr('disabled', true);
+      $('.kakaku_input').attr('disabled', true);
+      setDefault();
+      for(i in default_value){
+        if(default_value[i].length) {
+          for(j in default_value[i]){
+            $('#data_'+i+'_'+j).html(default_value[i][j]);
+            $('#oroshi_datas_'+i+'_'+j).val(default_value[i][j]);
+          }
+        }
+      }
+    }
+    function clear_page(){
+       products = new Array();
+      $('.kakuukosuu_input').attr('disabled', true);
+      $('.kakaku_input').attr('disabled', true);
+
+      $('.productSelect').each(function(){
+        this.selectedIndex = 0;
+        $(this).trigger('change');
+      });
+
+      for(i in default_value){
+        if(default_value[i].length) {
+          for(j in default_value[i]){
+            $('#data_'+i+'_'+j).html(default_value[i][j]);
+            $('#oroshi_datas_'+i+'_'+j).val(default_value[i][j]);
+          }
+        }
+      }
+    }
   </script>
 </head>
 <body  onload="">
@@ -258,6 +291,17 @@ for($n=0;$n<$cnt;$n++){
 $rows = count($set_menu_list)>$count[0]?count($set_menu_list):$count[0];
 ?>
 </table>
+<script>
+  default_value=new Array();
+<?php for($k = 0; $k < $rows; $k++) {
+  echo "default_value[".$k."]=new Array();\n";
+  for($j=0;$j<$cnt;$j++){
+    if (isset($lines_arr[$j][$k])) {
+      echo "default_value[".$k."][".$j."]='".$lines_arr[$j][$k]."';\n";
+    }
+  }
+  }?>
+</script>
 <!--------------------->
 <form name='listform' method='POST' action="?action=update&cid=<?php echo $cID; ?>&cpath=<?php echo $cPath; ?>">
   <table border="1">
@@ -282,7 +326,7 @@ $rows = count($set_menu_list)>$count[0]?count($set_menu_list):$count[0];
   for($j=0;$j<$cnt;$j++){
     echo "<td>";
     if (isset($lines_arr[$j][$k])) {
-      echo "<span style='float:left' id='data_".$k."_".$j."'>".$lines_arr[$j][$k]."</span>";
+      echo "<span style='float:left' class='oroshi_data' id='data_".$k."_".$j."'>".$lines_arr[$j][$k]."</span>";
     }
     if ($k != 0 && isset($lines_arr[$j][$k])) {
       echo "<span style='float:right'><a href=\"javascript:void(0)\" onclick=\"exchange(".$k.",".$j.")\" >↑</a></span>";
@@ -303,12 +347,12 @@ $rows = count($set_menu_list)>$count[0]?count($set_menu_list):$count[0];
     </td>
     <td id="td_kakuukosuu_<?php echo $k;?>">
 <?php //if($k<count($products)) {?>
-      <input type="text" size='10' name="kakuukosuu[<?php echo $k;?>]" id="kakuukosuu_<?php echo $k;?>" value="" disabled>
+      <input type="text" class="kakuukosuu_input" size='10' name="kakuukosuu[<?php echo $k;?>]" id="kakuukosuu_<?php echo $k;?>" value="" disabled>
 <?php //}?>
       </td>
     <td id="td_kakaku_<?php echo $k;?>">
 <?php //if($k<count($products)) {?>
-      <input type="text" size='10' name="kakaku[<?php echo $k;?>]" id="kakaku_<?php echo $k;?>" value="" disabled>
+      <input type="text" class="kakaku_input" size='10' name="kakaku[<?php echo $k;?>]" id="kakaku_<?php echo $k;?>" value="" disabled>
 <?php //}?>
       </td>
     <!--<td>
@@ -319,7 +363,9 @@ $rows = count($set_menu_list)>$count[0]?count($set_menu_list):$count[0];
   </tr>
 <?php }?>
   </table>
-  <input type="submit" value="決定">
+    <input type="submit" value="決定">
+    <input type="button" value="リセット" onclick="clear_page()">
+    <!--<input type="button" value="リセット" onclick="reset_page()">-->
   </form>
 </body>
 </html>

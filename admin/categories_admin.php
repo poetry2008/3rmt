@@ -108,7 +108,10 @@ if (is_dir(tep_get_upload_root())) {
   <script type="text/javascript" src="includes/javascript/jquery.js"></script>
   <script type="text/javascript" src="includes/set/c_admin.js"></script>
   <script type="text/javascript">
+
+
 $(document).ready(function(){
+
     ajaxLoad('<?php echo $cPath;?>');
   })
 
@@ -187,7 +190,8 @@ $(document).ready(function(){
           sdc.dougyousya_id and sdc.categories_id = '".$cPath_yobi. "' ORDER BY sdc.dougyousya_id ASC");
       while($col_dougyousya=tep_db_fetch_array($res)){
         $i++;
-        echo "<td class='dataTableHeadingContent' align='center'><a href='#' onClick=history('history.php',".$cPath_yobi.",".$current_category_id.",'dougyousya')>".$col_dougyousya['dougyousya_name']."</a>";
+        echo "<td class='dataTableHeadingContent' align='center'>
+        <a href='javascript:void(0);' onClick=dougyousya_history('history.php',".$cPath_yobi.",".$current_category_id.",'dougyousya_categories','".$col_dougyousya['dougyousya_id']."')>".$col_dougyousya['dougyousya_name']."</a>";
         echo "<input type='hidden' name='d_id[]' value='".$col_dougyousya['dougyousya_id']."'>";
         echo "</td>";
       }
@@ -202,7 +206,6 @@ $(document).ready(function(){
   <td class="dataTableHeadingContent" align="right">価格設定</td>
   <td class="dataTableHeadingContent" align="center"><?php echo  TABLE_HEADING_STATUS; ?></td>
   <td class="dataTableHeadingContetn" align="right"></td>
-  <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?></td>
   </tr>
   <!--dataTableHeadingRow end-->
 <?php
@@ -332,18 +335,10 @@ while ($categories = tep_db_fetch_array($categories_query)) {
 
 ?>
 </td>
-<td class="dataTableContent" align="right">&nbsp;  </td>
-<td class="dataTableContent" align="right">
-  <?php
-
-  if ( (isset($cInfo) && is_object($cInfo)) && ($categories['categories_id'] == $cInfo->categories_id) )     {
-    echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); 
-  } else { 
-    echo '<a href="' . tep_href_link(FILENAME_CATEGORIES_ADMIN, 'cPath=' . $cPath . '&cID=' . $categories['categories_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
-    }
-?>
-  &nbsp;</td>
-            </tr>
+<?php if (!$_GET['cPath']) {?>
+<td class="dataTableContent" align="right">&nbsp;</td>
+<?php }?>
+</tr>
   <!--dataTableRowSelected end-->
 
 <?php
@@ -444,7 +439,7 @@ while ($products = tep_db_fetch_array($products_query)) {
   ?>
   <td class="dataTableContent">
      <?php 
-     echo '<a href="' . tep_href_link(FILENAME_CATEGORIES_ADMIN, 'cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;&nbsp;<a href="orders.php?keywords=' . urlencode($products['products_name']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;' . $products['products_name']; 
+     echo '<!--<a href="' . tep_href_link(FILENAME_CATEGORIES_ADMIN, 'cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;&nbsp;--><a href="orders.php?keywords=' . urlencode($products['products_name']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;' . $products['products_name']; 
   ?>
   </td>
       <?php
@@ -482,14 +477,14 @@ while ($products = tep_db_fetch_array($products_query)) {
         echo "<span name='zaiko[]' align = 'center'  id='zaiko_".$products_count."' onKeyDown=ctrl_keydown(event,'zaiko',".$products_count.")><input type='text' name='quantity[".$products['products_id']."]' value='".$products['products_quantity']."'></span>";
       }*/ ?></td>
   <td align='center' class="dataTableContent" >
-              <span  name="TRADER_INPUT[]"  id="TRADER_<?php echo $products['products_id'].'"'; ?> 
+              <span class = 'TRADER_INPUT'  name="TRADER_INPUT[]"  id="TRADER_<?php echo $products['products_id'].'"'; ?> 
               onKeyDown="ctrl_keydown(event,'TRADER_INPUT','<?php echo $products_count; ?>' )" onBlur="event_onblur('<?php echo $products_count; ?>')" >
                 <?php echo $kakaku_treder;?>
                 </span>
                 </td>
                 <?php //価格業者  ?>
                 <td align='center' class="dataTableContent" >
-                <span name="INCREASE_INPUT" onKeyDown="ctrl_keydown(event,'INCREASE_INPUT','<?php echo $products_count; ?>')" >
+                <span name="INCREASE_INPUT" class = 'INCREASE_INPUT' onKeyDown="ctrl_keydown(event,'INCREASE_INPUT','<?php echo $products_count; ?>')" >
                 <?php echo floor($kakaku_treder*$col['bairitu']);?>
                 </span></td>
                 <?php //価格倍率  ?>
@@ -541,7 +536,7 @@ while ($products = tep_db_fetch_array($products_query)) {
                 echo "
                   <td class='dataTableContent' >
                   <input type='radio' value='0' name='chk[".$target_cnt."]' onClick='chek_radio(".$target_cnt.")' checked>
-                  <input type='text' size='7' name='TARGET_INPUT[]' id='target_".$target_cnt."_".$i."' onBlur='event_onblur(".$products_count.")' onkeydown=ctrl_keydown(event,'TARGET_INPUT',".$products_count.",".$i.",".$count['cnt'].") >
+                  <input type='text' size='7' name='TARGET_INPUT[]' id='target_".$target_cnt."_".$i."' onBlur='event_onblur(".$products_count.")' onkeydown=\"ctrl_keydown(event,'TARGET_INPUT',".$products_count.",".$i.",".$count['cnt'].")\" >
                   </td>";//価格同業者
                 //echo "<td class='dataTableContent' ><span   name='TARGET_INPUT[]' id='target_".$target_cnt."_0' onBlur='event_onblur(".$products_count.")' onkeydown=ctrl_keydown(event,'TARGET_INPUT',".$products_count.",'0','0') ></span></td>";//価格同業者 
                 //echo "<input type='hidden' name='radiochk[]' id='radiochk".$target_cnt."_".$i."' value='1' >";
@@ -554,7 +549,10 @@ while ($products = tep_db_fetch_array($products_query)) {
               } else {//特価がない場合
                 echo $currencies->format($products['products_price']);
               } ?></td>
-              <td class="dataTableContent" align="right"><input type="text" size='6' value="" name="price[]" id="<?php echo "price_input_".$products_count; ?>" onKeyDown="ctrl_keydown('price_input_','<?php echo $products_count; ?>','<?php echo $count['cnt'];?>')" ></td>
+              <td class="dataTableContent" align="right">
+                <input type="text" size='12' value="<?php echo $products['products_price'];?>" name="_price[]" id="<?php echo "_price_input_".$products_count; ?>">
+                <input type="text" size='6' value="" name="price[]" id="<?php echo "price_input_".$products_count; ?>">
+              </td>
                       <?php //サイト入力  ?>
                       <td class="dataTableContent" align="center"><?php
                       if ($ocertify->npermission >= 10) { //表示制限
@@ -616,15 +614,6 @@ while ($products = tep_db_fetch_array($products_query)) {
                  <input type="hidden" name="proid[]" value="<?php echo $products['products_id']; ?>" >
                  <input type="hidden" name="pprice[]" value="<?php echo $products['products_price']; ?>" >
                  </td>
-                 <td class="dataTableContent" align="right">
-                 <?php 
-                 if ( (is_object($pInfo)) && ($products['products_id'] == $pInfo->products_id) ) { 
-                   echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); 
-                 } else { 
-                   echo '<a href="' . tep_href_link(FILENAME_CATEGORIES_ADMIN, 'cPath=' . $cPath . '&pID=' . $products['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
-                 } 
-              ?>
-              &nbsp;</td>
                         </tr>
                         <!--dataTableRowSelected end-->
                         <?php
@@ -663,9 +652,10 @@ if(empty($cPath_back)&&empty($cID)&&isset($cPath)){
   <?php //予備　?>
   <?php
           
-  echo "<td align='right' colspan='9'><input type='button' value='計算設定' name='b[]' onClick=cleat_set('set_bairitu.php','300','450')></td>";//追加
+  echo "<td align='right' colspan='8'><input type='button' value='計算設定' name='b[]' onClick=\"cleat_set('set_bairitu.php','300','450')\"></td>";//追加
 ?>
-<td align="right" ><?php echo "<input type='button' value='リスト表示' name='d[]' onClick=list_display(".$cPath_yobi.",".$current_category_id.")>";//追加?></td>
+
+<td align="right" ><?php echo "<input type='button' value='リスト表示' name='d[]' onClick=\"list_display(".($cPath_yobi?$cPath_yobi:0).",".$current_category_id.")\">";//追加?></td>
 <td align="right" ><input type="button" name="x" value="一括更新" onClick="all_update()"></td>
   </tr>
   <!--dataTableRowSelected end-->

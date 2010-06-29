@@ -42,7 +42,7 @@ $(function() {
         }
         if(key_sum>4){
            key_sum=0;
-          alert('please input number or .');
+          alert('数字とドット「.」でご入力ください');
         }
     });
 });
@@ -64,7 +64,7 @@ $(function() {
               <tr>
                  <td class = "pageHeading">
   <?php
-  echo $HTTP_GET_VARS['action']=='oroshi'?'卸業者の履歴登録':'同業者の履歴登録';
+  echo ($HTTP_GET_VARS['action']=='oroshi'||$HTTP_GET_VARS['action']=='oroshi_c')?'卸業者の履歴登録':'同業者の履歴登録';
   ?>
   <input type="button" onClick = "goto()" value='戻る'>
                  </td>
@@ -241,7 +241,7 @@ case 'd_submit':
             $res = tep_db_query($sql);
             while($colx = tep_db_fetch_array($res))
               {
-                tep_db_query('delete from set_dougyousya_history where history ="'.$colx['history_id'].'"');
+                tep_db_query('delete from set_dougyousya_history where history_id ="'.$colx['history_id'].'"');
               }
           }
         }
@@ -263,13 +263,13 @@ case 'dougyousya':
       $cate_name= $testcol['categories_name'];
       $colmunLimit = 2;//分几行
       $colmunLimit_add_1 = $colmunLimit+1;
-      echo "<table border=1>";
-      echo "<th>";
+      echo "<table>";
+      echo "<tr class='dataTableHeadingRow'>";
       //        echo "<td colspan = ".$colmunLimit_add_1 .">";
-      echo "<td>";
+      echo "<td colspan='3' width='600' ><b>";
       echo $cate_name;
       echo "</td>";
-      echo "</th>";
+      echo "</tr>";
       echo "<tbody>";
       $getSubCategories = 'select cd.categories_name,cd.categories_id from
         categories_description cd, categories c where
@@ -281,21 +281,18 @@ case 'dougyousya':
         $sub_cate_id = $subCol['categories_id'];
         $sub_cate_name = $subCol['categories_name'];
         if($rowCount == $colmunLimit){
-
-          echo "</tr>";
+          echo "<tr class='dataTableRow'>\n";
         }
-
-        echo "<td><a href=
+        echo "<td class='dataTableContent'><a href=
           'history.php?action=dougyousya_categories&cid=".$sub_cate_id."&cPath=".$cate_id."&did=".$did."' >".$sub_cate_name.'</a></td>';
-        if($rowCount>0)
-          {
-            $rowCount--;
-          }else {
-          echo "</tr>";
+        if($rowCount>0) { 
+          $rowCount--;
+        }else {
+          echo "</tr>\n";
           $rowCount =$colmunLimit;
         }
       }
-      echo "</tbody>";
+      echo "</tbody></table><br><br>\n";
     }
   break;
 case 'deletePoint':
@@ -326,7 +323,7 @@ case 'dougyousya_categories':
   $res=tep_db_query("select count(*) as cnt from set_dougyousya_history where categories_id='".$cID."' ORDER BY history_id DESC ");
   $col=tep_db_fetch_array($res);
   $pro_name_cnt=$col['cnt'];
-  $res=tep_db_query("select * from products_to_categories where categories_id='".$cID."'");
+   $res=tep_db_query("select * from products_to_categories p2c, products_description pd where p2c.products_id=pd.products_id and p2c.categories_id='".$cID."' and pd.site_id='0' order by pd.products_name");
   $cnt2=0;
   while($col=tep_db_fetch_array($res)){
     $cid_list[]=$col['products_id'];
@@ -358,17 +355,23 @@ case 'dougyousya_categories':
   $target_cnt=1;//同業者専用
   $products_count=0;
   //登録フォーム作成
+  if($count['cnt'] > 0){
+    for($j=0;$j<$count['cnt'];$j++){
+      echo "<input type='hidden' name='d_id[]' value='".$dougyousya_id[$j]."'>";//同業者ID
+    }
+  }
   for($i=0;$i<$cnt2;$i++){
-    $res=tep_db_query("select * from products_description where site_id=0 and  products_id='".$cid_list[$i]."'");
+    $res=tep_db_query("select * from products_description where site_id=0 and  products_id='".$cid_list[$i]."' order by products_description.products_name asc");
     $col=tep_db_fetch_array($res);  
     echo "<input type='hidden' name='proid[]' value='".$cid_list[$i]."' >";//products_id
-    echo "<input type='hidden' name='d_id[]' value='".$dougyousya_id[$i]."'>";//同業者ID
+  
     echo "<tr><td>".$col['products_name']."</td>";
     if($count['cnt'] > 0){
       for($j=0;$j<$count['cnt'];$j++){
+      
         //        <input type='text' size='7px' name='TARGET_INPUT[]' onkeydown=ctrl_keydown('TARGET_INPUT',".$i.",".$j.",".$count['cnt'].")></td>";//価格同業者
         echo "<td class='dataTableContent' >
-        <input type='text' size='7px' name='TARGET_INPUT[]' class='input_number' >";//価格同業者
+        <input type='text' size='7px' name='TARGET_INPUT[]' class='input_number' onpaste=\"return !clipboardData.getData('text').match(/\D/)\" ondragenter=\"return false\" style=\"ime-mode:Disabled\">";//価格同業者
       }
     }else{
       //            echo "<td class='dataTableContent' ><input type='text' size='7px'  name='TARGET_INPUT[]' onkeydown=ctrl_keydown('TARGET_INPUT',".$i.",'0','0')></td>";//価格同業者  
@@ -394,7 +397,7 @@ case 'dougyousya_categories':
   }
   $color_arr = array('FF0000','000000','0000FF','FF00ff','ffff00');
   //每个产品一个图
-  ksort($products_arr);
+  //ksort($products_arr);
   foreach ($products_arr as $key=>$value)
     {
 
@@ -476,14 +479,14 @@ case 'dougyousya_categories':
       foreach ($dys_arr as $did=>$rowRecord)
         {
           echo "<table style='float:left;' border=1>";
-          echo "<tr><td colspan=3>".$rowRecord[0]['dougyousya_name']."____".$productname."</td></tr>";
+          echo "<tr><td colspan=2>".$rowRecord[0]['dougyousya_name']."____".$productname."</td></tr>";
                   
-          foreach($rowRecord as $key8=>$value8){
-
+          //foreach($rowRecord as $key8=>$value8){
+          for($key8 = count($rowRecord)-1;$key8>=0;$key8--){
             echo "<tr>";
-            echo "<td>"."<a href='history.php?action=deletePoint&cPath=".$cPath."&cid=".$cid."&pointid=".$value8['history_id']."'>" .$value8['dougyosya_kakaku']."</a></td>";
-            echo "<td>".$value8['last_date']."</td>";
-            echo "<td>".$value8['dougyousya_id']."</td>";
+            echo "<td>"."<a href='history.php?action=deletePoint&cPath=".$cPath."&cid=".$cid."&pointid=".$rowRecord[$key8]['history_id']."'>" .$rowRecord[$key8]['dougyosya_kakaku']."</a></td>";
+            echo "<td>".$rowRecord[$key8]['last_date']."</td>";
+            //echo "<td>".$value8['dougyousya_id']."</td>";
             echo "</tr>";
 
           }

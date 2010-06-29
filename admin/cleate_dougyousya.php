@@ -76,9 +76,11 @@ case 'set_oroshi':
        tep_db_query($sql);
   }
   $name = $_POST['up_oroshi'];
+  $sql = 'delete from set_dougyousya_history where dougyousya_id = "'.$orrshi_id.'"and categories_id not in (select sdc.categories_id from set_dougyousya_categories sdc where dougyousya_id ="'.$orrshi_id.'")';
+  tep_db_query($sql);
   $sql = 'update set_dougyousya_names set dougyousya_name="'.$name[$orrshi_id].'"
   where dougyousya_id="'.$orrshi_id.'"';
-  tep_db_query($sql);
+   tep_db_query($sql);
   }
   
   /*
@@ -90,27 +92,27 @@ case 'set_oroshi':
     if(($updata[$i] != $col['dougyousya_name'])&&($_POST['cpath'] == $col['parent_id'] ) || $updata[$i] != ""){
       if($updata[$i] != ""){
         tep_db_query("update set_dougyousya_names set dougyousya_name = '".$updata[$i]."' where  dougyousya_id = '".$col['dougyousya_id']."'");
-      }					
+      }         
     }else{
       tep_db_query("delete from set_dougyousya_names where dougyousya_id = '".$col['dougyousya_id']. "'");
     }
     $i++;
   }
-	
+  
   $setdata=$_POST['set_oroshi'];
   if(isset($setdata)){
     foreach($setdata as $val){
       if($val != ""){
         tep_db_query("insert into set_dougyousya_names (parent_id,dougyousya_name) values ('".$cPath."','".$val."')");
       }
-    }	
+    } 
   }
   */
   break;
-	
+  
 case 'delete':
   $dougyousya_id=$_GET['id'];
-  //	$cPath=$_GET['cpath'];
+  //  $cPath=$_GET['cpath'];
   $sql = "delete from  set_dougyousya_names  where dougyousya_id ='".$dougyousya_id.
     "'";
   tep_db_query($sql);
@@ -118,9 +120,11 @@ case 'delete':
   tep_db_query($sql);
   $sql = "delete from set_dougyousya_history where dougyousya_id='".$dougyousya_id."'";
   tep_db_query($sql);
+  tep_redirect('cleate_dougyousya.php');
   break;  
 }
 ?>
+<!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
@@ -129,7 +133,7 @@ case 'delete':
   var html = new Array();
 var i=0;
 function input_add(){
-			
+      
   var cbox_head  = "追加:<input type='text' name='set_oroshi[]'><br />"; 
   var cbox = document.getElementById("oo_input").innerHTML;
   //使用replace 方法替换checkbox name 为2维数组
@@ -147,7 +151,7 @@ function input_add(){
 function resset_cb(){
   location.href= 'cleate_dougyousya.php'; 
 }
-		
+    
 function w_close(){
   var i;
   if(!document.getElementById("orrshi_id")||document.getElementsByName('set_oroshi[]')[0]){
@@ -197,7 +201,7 @@ function w_close(){
     return false;
   }
   return true;
-  //	window.close();	
+  //  window.close(); 
 }
 
 function show_history(id){
@@ -205,17 +209,18 @@ function show_history(id){
 
 }
 
-		
+    
 function del_oroshi(id){
-			
+      
   var flg=confirm('削除しますか？');
   if(flg){
     location.href="cleate_dougyousya.php?action=delete&id="+id;
   }else{
-			
+      
   }
 }
 </script>
+<title>同業者の名前設定</title>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
   <div id="spiffycalendar" class="text"></div>
@@ -224,11 +229,7 @@ function del_oroshi(id){
      <tr>
         <td width="<?php echo BOX_WIDTH; ?>" valign="top">
            <table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-              <tr>
-                 <td>
                     <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-                 </td>
-              </tr>
            </table>
         </td>
         <td width="100%" valign="top">
@@ -242,7 +243,7 @@ function del_oroshi(id){
   <table width="100%" cellspacing="0" cellpadding="0">
      <tr>
         <td class="cleate_add" valign="top">
-  <input type="button" value="入力フォーム追加"　name='b1' onClick="input_add()">
+  <input type="button" value="入力フォーム追加" name='b1' onClick="input_add()">
         </td>
      </tr>
      <tr>
@@ -256,15 +257,15 @@ function del_oroshi(id){
 $categories_subtree = getSubcatergories($start);
 
 $res=tep_db_query("select * from set_dougyousya_names ORDER BY dougyousya_id ASC");
-			
+      
 echo "<table>";
 while($col=tep_db_fetch_array($res)){
   echo "<tr>";
   echo "<td width='150'>同業者：".$col['dougyousya_name']."</td>";
   echo "<td width='50'><a href=
-    'cleate_dougyousya.php?action=edit_oroshi&id=".$col['dougyousya_id']."'>编辑</a></td>";
+    'cleate_dougyousya.php?action=edit_oroshi&id=".$col['dougyousya_id']."'>編集</a></td>";
   echo "<td width='50'><a
-    href='' onclick='del_oroshi(".$col['dougyousya_id'].")'>削除</a></td>";
+    href='javascript:void(0);' onclick='del_oroshi(".$col['dougyousya_id'].")'>削除</a></td>";
   //  echo "<td><input type='button' value='履歴' name='b[]'
   //   onclick='show_history(".$col['parent_id'].")'></td>";
   echo "<td><a href='history.php?action=dougyousya&dougyousya_id=".$col['dougyousya_id']."'>履歴</a>";
@@ -277,18 +278,18 @@ while($col=tep_db_fetch_array($res)){
       value='".$col['dougyousya_name']."'><br>";
     echo makeCheckbox($categories_subtree,$ckstr);
     echo '<input type="submit" value="更新"><input type = "button" value = "取り消し"
-      onclick="resset_cb()"><br /><br />';
+      onclick="resset_cb()"><br><br>';
     echo '</div>';
     echo "</td></tr>";
   }
 }
-			
+      
 ?>
 <tr>
 <td  colspan ='4'>
 <div id="o_input"></div>
 </td>
-</td>
+</tr>
 </table>
 <div id="oo_input" style="display:none">
 <?php

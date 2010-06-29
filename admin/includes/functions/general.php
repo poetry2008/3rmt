@@ -2664,7 +2664,8 @@ function makeCheckbox($arrCategories,$selectValue = Fales,$startName='')
       if($selectValue != 'Fales'){
       foreach($selectValue as $select) {
         if($select == $cate1['cid']) {
-        $result .= '<li class="change_one_list_main"><input type = "checkbox" checked="true" name="ocid[]" value =
+        $result .= '<li class="change_one_list_main"><input type = "checkbox"
+          checked="checked" name="ocid[]" value =
           "'.$cate1['cid'].'"><b>'.$cate1['cname']. '</b></li>';
         $flag=false;
         }
@@ -2782,8 +2783,8 @@ if (!function_exists('json_encode'))
       
       function get_all_products_dougyousya($categories_id,$products_id) {
         $arr = array();
-        $query = tep_db_query("select distinct(dougyousya_id) from set_dougyousya_history where categories_id='".$categories_id."' and products_id='".$products_id."'");
-        while($data = tep_db_fetch_array($query))
+        $query = tep_db_query("SELECT sdc.dougyousya_id FROM  `set_dougyousya_categories` sdc ,categories c where sdc.categories_id= c.parent_id and c.categories_id = '".$categories_id."'");
+       while($data = tep_db_fetch_array($query))
         {
           $arr[] = $data;
         }
@@ -2853,14 +2854,17 @@ if (!function_exists('json_encode'))
   
 
 function spliteOroData($orodata){
+    $new_lines = array();
     $cr = array("\r\n", "\r");   // 改行コード置換用配
     $data = trim($orodata);
     $data = str_replace($cr, "\n",$data);  // 改行コードを統一
     $lines = explode("\n", $data);
-    //var_dump($lines);
     foreach($lines as $key => $line) {
       $lines[$key] = trim($line);
-      if($line === '')unset($lines[$key]);
+      if(strlen(trim($line)) == 0)unset($lines[$key]);
     }
-    return $lines;
+    foreach($lines as $l){
+      $new_lines[] = $l;
+    }
+    return $new_lines;
 }

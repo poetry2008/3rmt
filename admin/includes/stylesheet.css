@@ -510,3 +510,6 @@ display:block;
 float:left;
 width:210px;
 }
+.dataTableHeadingRow b{
+font-size:17px;
+}
