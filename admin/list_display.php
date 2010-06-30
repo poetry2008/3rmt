@@ -50,6 +50,7 @@ case update:
       //}
     }
   }
+  tep_redirect(tep_href_link('list_display.php','cid='.$cid.'&cpath='.$cpath));
   break;
 }
 
@@ -61,6 +62,7 @@ case update:
   <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
   <title>リスト表示</title>
   <script type="text/javascript" src="includes/javascript/jquery.js"></script>
+  <script type="text/javascript" src="includes/javascript/udlr.js"></script>
   <script type="text/javascript">
     // true = disabled, false = enabled
     var products = new Array();
@@ -74,6 +76,8 @@ case update:
     while($list = tep_db_fetch_array($set_menu_list_query)) {
       if ($i != 0){
         echo ',';
+      }else{
+        echo '"",';
       }
       echo $list['products_id'];
       $set_menu_list[] = $list;
@@ -95,7 +99,7 @@ case update:
       });
     }*/
     function setDefault () {
-      i = 0;
+      i = 1;
       $('.productSelect').each(function(){
         if (typeof(products_order[i]) != 'undefined') {
           $(this).val(products_order[i]);
@@ -203,6 +207,7 @@ case update:
       });
     }
     $(function(){
+      $(".udlr").udlr();
       bindActions();
       setDefault();
     });
@@ -347,12 +352,12 @@ $rows = count($set_menu_list)>$count[0]?count($set_menu_list):$count[0];
     </td>
     <td id="td_kakuukosuu_<?php echo $k;?>">
 <?php //if($k<count($products)) {?>
-      <input type="text" class="kakuukosuu_input" size='10' name="kakuukosuu[<?php echo $k;?>]" id="kakuukosuu_<?php echo $k;?>" value="" disabled>
+      <input pos="<?php echo $k;?>_0" class="udlr" type="text" class="kakuukosuu_input" size='10' name="kakuukosuu[<?php echo $k;?>]" id="kakuukosuu_<?php echo $k;?>" value="" disabled>
 <?php //}?>
       </td>
     <td id="td_kakaku_<?php echo $k;?>">
 <?php //if($k<count($products)) {?>
-      <input type="text" class="kakaku_input" size='10' name="kakaku[<?php echo $k;?>]" id="kakaku_<?php echo $k;?>" value="" disabled>
+      <input pos="<?php echo $k;?>_1" class="udlr" type="text" class="kakaku_input" size='10' name="kakaku[<?php echo $k;?>]" id="kakaku_<?php echo $k;?>" value="" disabled>
 <?php //}?>
       </td>
     <!--<td>

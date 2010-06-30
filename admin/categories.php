@@ -1308,8 +1308,8 @@ function mess(){
       if (is_uploaded_file($products_image['tmp_name'])) {
         tep_copy_uploaded_file($products_image, $image_directory);
         $products_image_name = $products_image['name'];
-        $products_image_name2 = $products_image2['name'];//add
-        $products_image_name3 = @$products_image3['name'];//add
+        $products_image_name2 = $products_image2['name'];
+        $products_image_name3 = $products_image3['name'];
     } else {
         $products_image_name = $_POST['products_previous_image'];
         $products_image_name2 = $_POST['products_previous_image2'];

@@ -22,7 +22,6 @@ case 'edit_oroshi':
 //  $sql.=', parent_id = '.$cpath;
 //  $sql.=' where oroshi_id = '.$orrshi_id;
 //  tep_db_query($sql);
-
   break;
 case 'set_oroshi':
   $orrshi_id = $_POST['orrshi_id'];
@@ -69,7 +68,7 @@ case 'set_oroshi':
       ("'.$orrshi_id.'","'.$diffval.'")';
        tep_db_query($sql);
   }
-  $sql = 'delete from set_oroshi_datas where oroshi_id = "'.$orrshi_id.'" and parent_id not in (select soc.categories_id from set_oroshi_categories so c where oroshi_id ="'.$orrshi_id.'")';
+  $sql = 'delete from set_oroshi_datas where oroshi_id = "'.$orrshi_id.'" and parent_id not in (select soc.categories_id from set_oroshi_categories soc where oroshi_id ="'.$orrshi_id.'")';
   tep_db_query($sql);
     $name = $_POST['up_oroshi'];
     $sql = 'update set_oroshi_names set oroshi_name="'.$name[$orrshi_id].'"
@@ -101,7 +100,7 @@ case 'set_oroshi':
     }
   }*/
   //拡張配列で作っていく
-    
+  tep_redirect('cleate_oroshi.php');
   break;
   
 case 'delete':
@@ -292,7 +291,7 @@ while($col=tep_db_fetch_array($res)){
       
 ?>
 <tr>
-<td colspan='4'>
+<td colspan='5'>
 <div id="o_input"></div>
 </td>
 </tr>

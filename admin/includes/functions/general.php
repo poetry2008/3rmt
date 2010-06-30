@@ -2783,7 +2783,7 @@ if (!function_exists('json_encode'))
       
       function get_all_products_dougyousya($categories_id,$products_id) {
         $arr = array();
-        $query = tep_db_query("SELECT sdc.dougyousya_id FROM  `set_dougyousya_categories` sdc ,categories c where sdc.categories_id= c.parent_id and c.categories_id = '".$categories_id."'");
+        $query = tep_db_query("SELECT sdc.dougyousya_id FROM  `set_dougyousya_categories` sdc ,categories c where sdc.categories_id= c.parent_id and c.categories_id = '".$categories_id."' order by sdc.dougyousya_id asc");
        while($data = tep_db_fetch_array($query))
         {
           $arr[] = $data;

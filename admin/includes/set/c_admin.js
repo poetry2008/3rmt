@@ -1,157 +1,32 @@
-﻿  function confirmg(question,url) {
+﻿
+
+var zaiko_input_obj=document.getElementsByName("zaiko[]");//架空
+var target_input_obj=document.getElementsByName("TARGET_INPUT[]");//同業者
+var price_obj=document.getElementsByName("price[]");//特別価格
+var error_msg='';
+//var old_color='';
+
+function confirmg(question,url) {
   var x = confirm(question);
   if (x) {
     window.location = url;
   }
 }
 
-var zaiko_input_obj=document.getElementsByName("zaiko[]");//架空
-var target_input_obj=document.getElementsByName("TARGET_INPUT[]");//同業者
-var price_obj=document.getElementsByName("price[]");//特別価格
-
-function ctrl_keydown(evt,id_val,num,i,j){ //id_ver=ID　num＝現在の番号　i＝同業者番号 j=同業者数
-
-  var n=parseInt(num)-1;
-  var n2=parseInt(trader_input_obj.length);//フォームの数
-  var a=parseInt(1);
-  var b=parseInt(2);//特価フォーム専用
-  var id=id_val;
-  e = (evt)?evt:((window.event)?window.event:'');
-  keychar = e.keyCode?e.keyCode:e.which;
-  switch(keychar) { 
-  case 13://enter
-    n2 -=a;//フォームの数-１
-    if((id == "TRADER_INPUT")&&(n < n2)){
-      n +=a;
-      trader_input_obj[n].focus();
-    }else if((id == "zaiko")&&(n < n2)){
-      n += a;
-      zaiko_input_obj[n].focus();
-    }else if((id == "INCREASE_INPUT")&&(n < n2)){
-      n += a;
-      increase_input_obj[n].focus();  
-    }else if((id == "TARGET_INPUT")&&(n < n2)){
-      n += a;
-      document.getElementById("target_"+n+"_"+i).focus();
-    }else if((id == "price_input_")&&(n < n2)){
-      n += a;
-      price_obj[n].focus();
-      //document.getElementById("price_input_"+n).focus();
-    }
-        
-    break;
-  case 37:　//キーボードの十字キーの←
-      if(id == "TRADER_INPUT"){
-        zaiko_input_obj[n].focus();
-      }else if(id == "INCREASE_INPUT"){
-        trader_input_obj[n].focus();
-      }else if(id == "TARGET_INPUT"){
-        var k= j-1;
-        if(j != 0 && 0 != k && i !=0 ){
-          i--;
-          document.getElementById("target_"+n+"_"+i).focus();
-        }else{
-          increase_input_obj[n].focus();
-        }
-      }else if(id == "price_input_"){
-        i--;
-        document.getElementById("target_"+n+"_"+i).focus();
-      }
-    break;
-  case 38:　//キーボードの十字キーの↑
-      if((id == "TRADER_INPUT")&&(n != 0)){
-        n -= a;
-      }else if((id == "zaiko")&&(n != 0)){
-          
-        n -= a;
-        zaiko_input_obj[n].focus();
-          
-      }else if((id == "INCREASE_INPUT")&&(n != 0)){
-          
-        n -= a;
-        increase_input_obj[n].focus();  
-        
-      }else if((id == "TARGET_INPUT")&&(n != 0)){
-        
-        n -= a;
-        document.getElementById("target_"+n+"_"+i).focus();
-        
-      }else if((id == "price_input_")&&(n != 0)){
-        //document.getElementById("price_input_"+n).focus();
-        n -= a;
-        price_obj[n].focus();
-      }
-       
-    break;
-  case 39:　//キーボードの十字キーの→
-
-      if(id == "zaiko"){
-        
-        trader_input_obj[n].focus();
-        
-      }else if(id == "TRADER_INPUT"){
-        
-        increase_input_obj[n].focus();  
-              
-      }else if(id == "INCREASE_INPUT"){
-        
-        document.getElementById("target_"+n+"_0").focus();
-            
-      }else if(id == "TARGET_INPUT"){
-        var k= j-1;
-        if(j != 0 && i != k){
-          i++;
-          document.getElementById("target_"+n+"_"+i).focus();
-        }else{
-          
-          price_obj[n].focus();
-          //document.getElementById("price_input_"+n).focus();
-        }
-          
-          
-      }
-    break;
-  case 40: 　//キーボードの十字キーの↓
-      n2 -=a;//フォームの数-１
-    if((id == "TRADER_INPUT")&&(n < n2)){
-        
-      n +=a;
-          
-      trader_input_obj[n].focus();
-          
-    }else if((id == "zaiko")&&(n < n2)){
-          
-      n += a;
-      zaiko_input_obj[n].focus();
-          
-    }else if((id == "INCREASE_INPUT")&&(n < n2)){
-          
-      n += a;
-      increase_input_obj[n].focus();  
-        
-    }else if((id == "TARGET_INPUT")&&(n < n2)){
-        
-      n += a;
-      document.getElementById("target_"+n+"_"+i).focus();
-          
-    }else if((id == "price_input_")&&(n < n2)){
-      n +=a;
-      price_obj[n].focus();
-      //document.getElementById("price_input_"+n).focus();
-    }
-    break;
-  }
-      
-}
-
 function all_update(){
-  var flg=confirm("特価価格を更新します");
-  if(flg){
-    document.myForm1.flg_up.value=1;
-    window.document.myForm1.submit();
-  }else{
-    document.myForm1.flg_up.value=0;
-    alert("更新をキャンセルしました");
+  check_error();
+  if (error_msg != '') {
+    alert(error_msg);
+    error_msg = '';
+  } else {
+      var flg=confirm("特価価格を更新します");
+      if(flg){
+        document.myForm1.flg_up.value=1;
+        window.document.myForm1.submit();
+      }else{
+        document.myForm1.flg_up.value=0;
+        alert("更新をキャンセルしました");
+      }
   }
 }
 
@@ -191,34 +66,40 @@ function list_display(path,cid){
 
   //location.href="list_display.php?cpath="+path+"&cid="+cid;
 }
-  
-function event_onblur(num){   
-  var n=num-1;                          //フォーム識別番号
-    
-  var trader_price=var_calc(trader_input_obj[n].value);
-  var increase_input_obj=$(".INCREASE_INPUT");//業者
-  increase_input_obj[n].value=trader_price;
-  set_money(n);//特価価格設定
-    
+
+function event_onblur(i){
+  var this_price=document.getElementsByName("this_price[]");
+
+  $('#price_input_'+i).css('border-color','');
+  var old_price = this_price[i-1].value;
+  var new_price = $('#price_input_'+i).val();
+  if (calc.percent != '' && calc.percent != 0 && calc.percent != null) {
+      if (new_price > old_price) {
+        if( ((new_price - old_price) / old_price) * 100 >= calc.percent ) {
+            $('#price_input_'+i).css('border-color','red');
+            if( confirm(calc.percent+"%の差額があります。再設定してください") ) {
+                setTimeout(function(){$('#price_input_'+i).focus()}, 100);
+            }
+        }
+      }
+  }
+  /*if (old_price != new_price) {
+    $('#price_input_'+i).css('color','red');
+  }*/
 }
 
-function var_calc(val){
-  //val=業者/価格の値
-
-  var bai = calc.bairitu
-  var price=val*bai;                      
-
-
-  var anser=Math.floor(price);  //切捨て
-  
-    
-  return anser;
+function event_onchange(i){
+  var this_price=document.getElementsByName("this_price[]");
+  var old_price = this_price[i-1].value;
+  var new_price = $('#price_input_'+i).val();
+  if (old_price != new_price) {
+    $('#price_input_'+i).css('color','red');
+  }else {
+    $('#price_input_'+i).css('color','blue');
+  }
 }
-
 
 //計算設定読み込み
-
-
 function set_money(num,warning){
     if (warning ==undefined)
     {
@@ -239,8 +120,8 @@ function set_money(num,warning){
       }
     } 
   } 
-  var increase_input_obj=$(".INCREASE_INPUT");//業者
-var ins_ipt=increase_input_obj[n].innerHTML;
+  var increase_input_obj=$(".INCREASE_INPUT");//業者 x 倍数
+  var ins_ipt=increase_input_obj[n].innerHTML; //
 
 
   var set_m=0;                       //サイト入力フォームに値を設置変数初期化
@@ -249,9 +130,9 @@ var ins_ipt=increase_input_obj[n].innerHTML;
       
     var ins_anser = ( parseInt(ins_ipt) / parseInt(tar_ipt) ) * 100;
     ins_anser = 100 - ins_anser;
-    if(parseInt(ins_anser) >= 20){
+    if(calc.percent != '' && parseInt(ins_anser) >= calc.percent){
         if (warning){
-      alert("20%の差額があります。再設定してください");
+          error_msg += calc.percent+"%の差額があります。再設定してください\n";
         }
     }
     var kei = calc.keisan;//数字
@@ -263,21 +144,20 @@ var ins_ipt=increase_input_obj[n].innerHTML;
       set_m = parseInt(tar_ipt) - parseInt(kei);
     }
   }else{
-
     var ins_anser = ( parseInt(tar_ipt) / parseInt(ins_ipt)) * 100;
     ins_anser = 100 - ins_anser;
-    if(parseInt(ins_anser) >= 20){
+    if(calc.percent != '' && parseInt(ins_anser) >= calc.percent){
         if (warning){
-      alert("20%の差額があります。再設定してください");
+          error_msg += calc.percent+"%の差額があります。再設定してください\n";
         }
     }
     set_m=ins_ipt;
     set_m=Math.ceil(set_m);
   }
-
-  var price_n = n + 1;
+  if(typeof(tar_ipt) == 'undefined' || ins_ipt == 0)return;
+  //var price_n = n + 1;
   //var price_obj=document.getElementById("price_input_"+ price_n);//サイトインプット
-  var this_price=document.getElementsByName("this_price[]");
+  var this_price=document.getElementsByName("pprice[]");
 
   price_obj[n].value=parseInt(set_m);
     
@@ -302,11 +182,16 @@ function ajaxLoad(path){
       }
     });
 }
-var spprice=document.getElementsByName("pprice[]");
+//var spprice=document.getElementsByName("pprice[]");
 
 function history(url,cpath,cid,action){
   var url=url+"?cpath="+cpath+"&cid="+cid+"&action="+action;
   window.open(url,'ccc',"width=1000,height=800");
+}
+
+function oro_history(url,cid,action){
+  var url=url+"?cid="+cid+"&action="+action;
+  window.open(url,'ccc',"width=1000,height=800,scrollbars=yes");
 }
 
 function dougyousya_history(url,cpath,cid,action,did){
@@ -326,3 +211,23 @@ function onload_keisan(warning){
   }
 }
 
+function check_error(){
+  if (calc.percent != '' && calc.percent != 0 && calc.percent != null) {
+      var trader_input_obj=$(".TRADER_INPUT");//業者
+      var this_price=document.getElementsByName("this_price[]");
+
+      for(var i=0;i< trader_input_obj.length;i++){
+          $('#price_input_'+(i+1)).css('border-color','');
+          var old_price = this_price[i].value;
+          var new_price = $('#price_input_'+(i+1)).val();
+          if (new_price > old_price) {
+            if( ((new_price - old_price) / old_price) * 100 >= calc.percent ) {
+                error_msg = calc.percent+"%の差額があります。再設定してください\n";
+                $('#price_input_'+(i+1)).css('border-color','red');
+            }
+          }
+      }
+  } else {
+    return ;
+  }
+}

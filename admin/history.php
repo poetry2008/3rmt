@@ -14,6 +14,7 @@ charset=<?php echo CHARSET; ?>">
   <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
   <script language="javascript" src="includes/general.js"></script>
   <script language="javascript" src="includes/javascript/jquery.js"></script>
+  <script type="text/javascript" src="includes/javascript/udlr.js"></script>
   <script language="javascript" >
     function goto(){
       var link = document.getElementById('back_link').href;
@@ -23,6 +24,7 @@ charset=<?php echo CHARSET; ?>">
       return confirm('削除しますか？');
     }
 $(function() {
+    $(".udlr").udlr();
     var key_sum=0;
     // 给文本框加个keypress，即键盘按下的时候判断
     $(".input_number").keypress(); 
@@ -371,12 +373,12 @@ case 'dougyousya_categories':
       
         //        <input type='text' size='7px' name='TARGET_INPUT[]' onkeydown=ctrl_keydown('TARGET_INPUT',".$i.",".$j.",".$count['cnt'].")></td>";//価格同業者
         echo "<td class='dataTableContent' >
-        <input type='text' size='7px' name='TARGET_INPUT[]' class='input_number' onpaste=\"return !clipboardData.getData('text').match(/\D/)\" ondragenter=\"return false\" style=\"ime-mode:Disabled\">";//価格同業者
+        <input pos='".$i."_".$j."' class='udlr input_number'  type='text' size='7px' name='TARGET_INPUT[]' onpaste=\"return !clipboardData.getData('text').match(/\D/)\" ondragenter=\"return false\" style=\"ime-mode:Disabled\">";//価格同業者
       }
     }else{
       //            echo "<td class='dataTableContent' ><input type='text' size='7px'  name='TARGET_INPUT[]' onkeydown=ctrl_keydown('TARGET_INPUT',".$i.",'0','0')></td>";//価格同業者  
-      echo "<td class='dataTableContent' ><input type='text' size='7px'
-        name='TARGET_INPUT[]' class='input_number' ></td>";//価格同業者 
+      echo "<td class='dataTableContent' ><input pos='".$i."_".$j."' class='udlr input_number' type='text' size='7px'
+        name='TARGET_INPUT[]' ></td>";//価格同業者 
     }
     echo "</tr>";
   }
@@ -478,7 +480,7 @@ case 'dougyousya_categories':
 
       foreach ($dys_arr as $did=>$rowRecord)
         {
-          echo "<table style='float:left;' border=1>";
+          echo "<table style='float:left;' border=1 class='history_img'>";
           echo "<tr><td colspan=2>".$rowRecord[0]['dougyousya_name']."____".$productname."</td></tr>";
                   
           //foreach($rowRecord as $key8=>$value8){

@@ -19,7 +19,6 @@ case 'edit_oroshi':
   }
 //  $sql = 'update set_dougyousya_names set dougyousya_name = "'.$name.'", parent_id = '.$cpath .' where dougyousya_id = '.$orrshi_id;
 //  tep_db_query($sql);
-
   break;
 case 'set_oroshi':
   //orrshi_id是一个隐藏域 只有通过修改给该变量设置值
@@ -108,6 +107,7 @@ case 'set_oroshi':
     } 
   }
   */
+  tep_redirect('cleate_dougyousya.php');
   break;
   
 case 'delete':
