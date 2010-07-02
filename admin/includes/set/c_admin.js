@@ -1,6 +1,4 @@
-﻿
-
-var zaiko_input_obj=document.getElementsByName("zaiko[]");//架空
+﻿var zaiko_input_obj=document.getElementsByName("zaiko[]");//架空
 var target_input_obj=document.getElementsByName("TARGET_INPUT[]");//同業者
 var price_obj=document.getElementsByName("price[]");//特別価格
 var error_msg='';
@@ -18,7 +16,7 @@ function all_update(){
   if (error_msg != '') {
     alert(error_msg);
     error_msg = '';
-  } else {
+  } //else {
       var flg=confirm("特価価格を更新します");
       if(flg){
         document.myForm1.flg_up.value=1;
@@ -27,7 +25,7 @@ function all_update(){
         document.myForm1.flg_up.value=0;
         alert("更新をキャンセルしました");
       }
-  }
+  //}
 }
 
 function chek_radio(cnt){
@@ -68,6 +66,7 @@ function list_display(path,cid){
 }
 
 function event_onblur(i){
+  /*
   var this_price=document.getElementsByName("this_price[]");
 
   $('#price_input_'+i).css('border-color','');
@@ -82,7 +81,7 @@ function event_onblur(i){
             }
         }
       }
-  }
+  }*/
   /*if (old_price != new_price) {
     $('#price_input_'+i).css('color','red');
   }*/
@@ -154,6 +153,9 @@ function set_money(num,warning){
     set_m=ins_ipt;
     set_m=Math.ceil(set_m);
   }
+  if (set_m < 0) {
+    set_m = 0;
+  }
   if(typeof(tar_ipt) == 'undefined' || ins_ipt == 0)return;
   //var price_n = n + 1;
   //var price_obj=document.getElementById("price_input_"+ price_n);//サイトインプット
@@ -210,24 +212,69 @@ function onload_keisan(warning){
       set_money(i,warning);//特価価格設定
   }
 }
-
 function check_error(){
-  if (calc.percent != '' && calc.percent != 0 && calc.percent != null) {
+
       var trader_input_obj=$(".TRADER_INPUT");//業者
-      var this_price=document.getElementsByName("this_price[]");
+      var this_price=document.getElementsByName("pprice[]");
+      var bflag=document.getElementsByName("bflag[]");
+      var focus_id = '';
+      var price_error = '価格設定はエラーが出ます。再設定してください。';
 
       for(var i=0;i< trader_input_obj.length;i++){
           $('#price_input_'+(i+1)).css('border-color','');
+          $('#price_error_'+(i+1)).html('');
+          $('#offset_input_'+(i+1)).css('border-color','');
+          $('#offset_error_'+(i+1)).html('');
+          
           var old_price = this_price[i].value;
           var new_price = $('#price_input_'+(i+1)).val();
+          //alert(old_price + '|' + new_price);
+          if (calc.percent != '' && calc.percent != 0 && calc.percent != null) {
           if (new_price > old_price) {
             if( ((new_price - old_price) / old_price) * 100 >= calc.percent ) {
                 error_msg = calc.percent+"%の差額があります。再設定してください\n";
+                //error_msg = price_error;
                 $('#price_input_'+(i+1)).css('border-color','red');
+                //$('#price_error_'+(i+1)).html('<img src="images/icons/error_1.gif" title="'+calc.percent+'%の差額があります。再設定してください">');
+                if (focus_id == '') {
+                    focus_id = '#price_input_'+(i+1);
+                }
+            }
+          } else {
+            if( ((old_price - new_price) / new_price) * 100 >= calc.percent ) {
+                error_msg = calc.percent+"%の差額があります。再設定してください\n";
+                //error_msg = price_error;
+                $('#price_input_'+(i+1)).css('border-color','red');
+                //$('#price_error_'+(i+1)).html('<img src="images/icons/error_1.gif" title="'+calc.percent+'%の差額があります。再設定してください">');
+                if (focus_id == '') {
+                    focus_id = '#price_input_'+(i+1);
+                }
             }
           }
+          }
+          /*
+          if (bflag[i].value == 1) {
+            if (parseFloat($('#offset_input_' + (i+1)).val()) > 0) {
+              error_msg = price_error;
+              $('#offset_input_'+(i+1)).css('border-color','red');
+              $('#offset_error_'+(i+1)).append('<img src="images/icons/error_2.gif" title="特別価格が通常価格より低くなりました">');
+              if (focus_id == '') {
+                  focus_id = '#price_input_'+(i+1);
+              }
+            }
+          } else {
+            //alert(parseFloat($('#offset_input_' + (i+1)).val()));
+            if (parseFloat($('#offset_input_' + (i+1)).val()) < 0) {
+              error_msg = price_error;
+              $('#offset_input_'+(i+1)).css('border-color','red');
+              $('#offset_error_'+(i+1)).append('<img src="images/icons/error_3.gif" title="特別価格が通常価格より高くなりました">');
+              if (focus_id == '') {
+                  focus_id = '#price_input_'+(i+1);
+              }
+            }
+          }*/
       }
-  } else {
-    return ;
-  }
+      if (focus_id != '') {
+        $(focus_id).focus();
+      }
 }

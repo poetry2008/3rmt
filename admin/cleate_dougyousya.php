@@ -37,6 +37,10 @@ case 'set_oroshi':
   $ocid = $ocid_arr[$j];
   $sql = 'insert into set_dougyousya_names (dougyousya_name) values
     ("'.$oro_name[$j].'")';
+    $j++;
+  if(!$oro_name[$j-1]||!$ocid){
+    continue;
+  }
   tep_db_query($sql);
   $res = tep_db_query("select max(dougyousya_id) dougyousya_id from set_dougyousya_names");
   $col = tep_db_fetch_array($res);
@@ -49,7 +53,6 @@ case 'set_oroshi':
       ("'.$col['dougyousya_id'].'","'.$ocid[$i-1].'")';
        tep_db_query($sql);
   }
-    $j++;
   }
   }else if (isset($orrshi_id)){
   //这个是修改的方法
@@ -142,7 +145,7 @@ function input_add(){
   
   document.getElementById("o_input").innerHTML=html;
   if(document.getElementById("change_one")){
-    document.getElementById("change_one").innerHTML=null;
+    document.getElementById("change_one").innerHTML='';
     document.getElementById("orrshi_id").value='';
   }
   i++;
@@ -153,15 +156,13 @@ function resset_cb(){
 }
     
 function w_close(){
-  var i;
-  if(!document.getElementById("orrshi_id")||document.getElementsByName('set_oroshi[]')[0]){
+  if((!document.getElementById("orrshi_id")||document.getElementsByName('set_oroshi[]')[0])&&html.length==1){
     var j;
     var o_cid;
     var test;
     var o_name = document.getElementsByName('set_oroshi[]');
-    for (i=0 ;i<o_name.length; i++){
-      o_cid = document.getElementsByName('ocid['+i+'][]');
-      if(o_name[i].value == null||o_name[i].value == ''){
+      o_cid = document.getElementsByName('ocid[0][]');
+      if(o_name[0].value == null||o_name[0].value == ''){
         alert('業者名はご記入ください');
         return false;
       }else {
@@ -171,31 +172,78 @@ function w_close(){
             test++;
           }
         }
+        var ex_name =  document.getElementsByName('exist_name[]');
+        var z;
+        for(z=0;z<ex_name.length;z++){
+          if(ex_name[z].value==o_name[0].value){
+            alert(o_name[0].value+'はもう存在しています');
+            return false;
+          }
+        }
         if (test == j) {
           alert('ゲームタイトルを一つ選択してください');
           return false;
         }
       }
-    }
-  }else{
+  }else if(document.getElementById("orrshi_id")){
     var o_cid = document.getElementById("orrshi_id").value;
+    if(document.getElementById("name_"+o_cid)){
     var o_name = document.getElementById("name_"+o_cid).value;
+    var s_name = document.getElementById("src_name_"+o_cid).value;
     var ocid = document.getElementsByName('ocid[]');
     var test = 0;
     if (o_name == ''||o_name == null){
       alert('業者名はご記入ください');
       return false;
-    }
-    for(i=0;i<ocid.length;i++){
-      if(!ocid[i].checked){
+    }else{
+        var ex_name =  document.getElementsByName('exist_name[]');
+        var z;
+        for(z=0;z<ex_name.length;z++){
+          if(ex_name[z].value==s_name){
+            continue;
+          }
+          if(ex_name[z].value==o_name){
+            alert(o_name+'はもう存在しています');
+            return false;
+          }
+        }
+    for(x=0;x<ocid.length;x++){
+      if(!ocid[x].checked){
         test++;
       }
     }
-    if (test == i){
+    if (test == x){
        alert('ゲームタイトルを一つ選択してください');
        return false;
     }
+    }
+    }
   }
+        if(html.length>1){
+          var o_name = document.getElementsByName('set_oroshi[]');
+          var ex_name =  document.getElementsByName('exist_name[]');
+          var le;
+          var z;
+          var set_name_arr = new Array();
+          for(le=0;le<o_name.length;le++){
+            if(o_name[le].value != null&&o_name[le].value != ''){
+               for(z=0;z<ex_name.length;z++){
+                if(ex_name[z].value==o_name[le].value){
+                  alert(o_name[le].value+'はもう存在しています');
+                  return false;
+                }
+               }
+            }
+            set_name_arr[le] = o_name[le].value;
+          }
+          var nary=set_name_arr.sort();
+          for(var ii=1;ii<nary.length;ii++){
+            if (nary[ii-1]==nary[ii]){
+              alert("入力された内容は同じになってはいけません");
+              return false;
+            }
+          }
+        }
   if(!document.getElementsByName('set_oroshi[]')[0]&&!document.getElementById("orrshi_id")){
     alert('まず、入力フォーム追加してください');
     return false;
@@ -262,6 +310,7 @@ echo "<table>";
 while($col=tep_db_fetch_array($res)){
   echo "<tr>";
   echo "<td width='150'>同業者：".$col['dougyousya_name']."</td>";
+  echo '<input type="hidden" name="exist_name[]" value='.$col['dougyousya_name'].'>';
   echo "<td width='50'><a href=
     'cleate_dougyousya.php?action=edit_oroshi&id=".$col['dougyousya_id']."'>編集</a></td>";
   echo "<td width='50'><a
@@ -276,6 +325,7 @@ while($col=tep_db_fetch_array($res)){
     echo "<input type='text'
       id='name_".$col['dougyousya_id']."'name='up_oroshi[".$col['dougyousya_id']."]'
       value='".$col['dougyousya_name']."'><br>";
+  echo '<input type="hidden" id="src_name_'.$col['dougyousya_id'].'" value='.$col['dougyousya_name'].'>';
     echo makeCheckbox($categories_subtree,$ckstr);
     echo '<input type="submit" value="更新"><input type = "button" value = "取り消し"
       onclick="resset_cb()"><br><br>';

@@ -61,6 +61,36 @@ case update:
   <head>
   <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
   <title>リスト表示</title>
+  <style>
+.dataTableHeadingRow {
+background-color: #808080;
+}
+
+.dataTableHeadingContent {
+color: #ffffff;
+font-weight: bold;
+}
+
+.dataTableRow {
+background-color: #F0F1F1;
+
+}
+
+.dataTableSecondRow {
+background-color: #E0E0E0;
+
+}
+.dataTableRowOver {
+background-color: #FFCC99;
+
+}
+
+.dataTableContent {
+color: #000000;
+/*font-size:11px;*/
+/*white-space:nowrap;*/
+}
+  </style>
   <script type="text/javascript" src="includes/javascript/jquery.js"></script>
   <script type="text/javascript" src="includes/javascript/udlr.js"></script>
   <script type="text/javascript">
@@ -255,9 +285,7 @@ case update:
       $oroname = $col['oroshi_name'];
       $oroid = $col['oroshi_id'];
     }
-?>
-<table border="1">
-<?php
+
 $lines_arr = array();
 $oroname = array();
 $cr = array("\r\n", "\r");   // 改行コード置換用配
@@ -295,7 +323,6 @@ for($n=0;$n<$cnt;$n++){
 }
 $rows = count($set_menu_list)>$count[0]?count($set_menu_list):$count[0];
 ?>
-</table>
 <script>
   default_value=new Array();
 <?php for($k = 0; $k < $rows; $k++) {
@@ -309,27 +336,27 @@ $rows = count($set_menu_list)>$count[0]?count($set_menu_list):$count[0];
 </script>
 <!--------------------->
 <form name='listform' method='POST' action="?action=update&cid=<?php echo $cID; ?>&cpath=<?php echo $cPath; ?>">
-  <table border="1">
-  <tr>
+  <table border="0" cellspacing="1" cellpadding="2">
+  <tr class="dataTableRow">
 <?php if($orotime)foreach ($orotime as $k => $value){?>
-    <td><?php echo $value;?></td>
+    <td class="dataTableContent"><?php echo $value;?></td>
 <?php } ?>
-    <td colspan="3"></td>
+    <td colspan="3" class="dataTableContent"></td>
   </tr>
-  <tr>
+  <tr class="dataTableHeadingRow">
 <?php foreach ($oroname as $k => $value){?>
-    <th><?php echo $value;?></th>
+    <th class="dataTableHeadingContent"><?php echo $value;?></th>
 <?php } ?>
-    <th>商品選択</th>
-    <th>個数/架空</th>
-    <th>価格/業者</th>
+    <th class="dataTableHeadingContent" >商品選択</th>
+    <th class="dataTableHeadingContent" >個数/架空</th>
+    <th class="dataTableHeadingContent" >価格/業者</th>
     <!--<th></th>-->
   </tr>
 <?php for($k = 0; $k < $rows; $k++) {?>
-  <tr>
+  <tr class="<?php echo $k%2==1?'dataTableRow':'dataTableSecondRow';?>" onmouseover="this.className='dataTableRowOver'" onmouseout="this.className='<?php echo $k%2==1?'dataTableRow':'dataTableSecondRow';?>'">
 <?php
   for($j=0;$j<$cnt;$j++){
-    echo "<td>";
+    echo "<td class=\"dataTableContent\" valign='top'>";
     if (isset($lines_arr[$j][$k])) {
       echo "<span style='float:left' class='oroshi_data' id='data_".$k."_".$j."'>".$lines_arr[$j][$k]."</span>";
     }
@@ -340,7 +367,7 @@ $rows = count($set_menu_list)>$count[0]?count($set_menu_list):$count[0];
     echo "</td>";
   }
 ?>
-    <td id="td_product_<?php echo $k;?>">
+    <td class="dataTableContent" id="td_product_<?php echo $k;?>">
 <?php //if($k<count($products)) {?>
       <select class="productSelect" name="product[<?php echo $k;?>]" id="product_<?php echo $k;?>">
         <option value='0'>--選択してください--</option>
@@ -350,12 +377,12 @@ $rows = count($set_menu_list)>$count[0]?count($set_menu_list):$count[0];
       </select>
 <?php //}?>
     </td>
-    <td id="td_kakuukosuu_<?php echo $k;?>">
+    <td class="dataTableContent" id="td_kakuukosuu_<?php echo $k;?>">
 <?php //if($k<count($products)) {?>
       <input pos="<?php echo $k;?>_0" class="udlr" type="text" class="kakuukosuu_input" size='10' name="kakuukosuu[<?php echo $k;?>]" id="kakuukosuu_<?php echo $k;?>" value="" disabled>
 <?php //}?>
       </td>
-    <td id="td_kakaku_<?php echo $k;?>">
+    <td class="dataTableContent" id="td_kakaku_<?php echo $k;?>">
 <?php //if($k<count($products)) {?>
       <input pos="<?php echo $k;?>_1" class="udlr" type="text" class="kakaku_input" size='10' name="kakaku[<?php echo $k;?>]" id="kakaku_<?php echo $k;?>" value="" disabled>
 <?php //}?>

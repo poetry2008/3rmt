@@ -138,13 +138,15 @@ if ($action =='prelist'){
       ,set_oroshi_categories soc where c.categories_id = "'.$cid.'" and c.categories_id = soc.categories_id and son.oroshi_id = soc.oroshi_id order by soc.oroshi_id ');
   //var_dump('select * from set_oroshi_names son, categories c ,set_oroshi_categories soc where c.categories_id = '.$cid.' and c.categories__id = soc.categories_id and son.oroshi_id = soc.oroshi_id order by soc.oroshi_id desc');
       $html2 = '';
+      $c=0;
     while($col = tep_db_fetch_array($res)){
+      $c++;
       $oroname = $col['oroshi_name'];
       $oroid = $col['oroshi_id'];
       //$cnt=0;
 
       //while($col=tep_db_fetch_array($res)){
-      $html.= "<td>".$col['oroshi_name']."</td>";
+      $html.= "<td><a href='history.php?action=oroshi_c&cPath=".$_GET['cid']."&oid=".$col['oroshi_id']."' title='履歴を見る'>".$col['oroshi_name']."</a>&nbsp;&nbsp;&nbsp;<a href='history.php?action=oroshi_c&cPath=".$_GET['cid']."&oid=".$col['oroshi_id']."' title='履歴を見る'>履歴を見る</a></td>";
       $html2.= '';
       $html2.="<td><textarea rows='5' cols='30' id='textarea_".$col['oroshi_id']."' name='set_list[".$oroid."]' ></textarea></td>";
 
@@ -160,8 +162,11 @@ echo $html;
                         <input type="hidden" value="<?php echo $cid;?>" name='cid' />
                         <input type="hidden" value="<?php echo $oid;?>" name='oid' />
                         </td>
-                        <td><input type="submit" value="リスト登録"></td>
-                     </tr>   
+                        <td></td>
+                     </tr>
+        <tr>
+          <td colspan="<?php echo count($c)+2;?>"><input type="submit" value="リスト登録"></td>
+        </tr>
           </form>
           <?php
     $lines_arr = array();
@@ -180,6 +185,7 @@ foreach($oroids as $key=>$value){
 
 foreach($cols as $col){
     $oroname[] = $col['oroshi_name'];
+    $orotime[] = $col['set_date'];
     /**
     $col['datas'] = trim($col['datas']);         // 文頭文末の空白を削除
     $col['datas'] = str_replace($cr, "\n",$col['datas']);  // 改行コードを統一
@@ -199,12 +205,20 @@ for($n=0;$n<$cnt;$n++){
     $count[0]=$count[$n];
   }
 }
+
 echo "<tr>";  
-foreach ($oroname as $value){
-  echo "<td>$value</td>";
-}
-}
+  foreach ($orotime as $value){
+    echo "<td>$value</td>";
+  }
 echo "</tr>";
+echo "<tr>";  
+  foreach ($oroname as $value){
+    echo "<th align='left'>$value</th>";
+  }
+
+echo "</tr>";
+
+}
 for($i=0;$i < $count[0];$i++){
   echo "<tr id=color>";
   for($j=0;$j<$cnt;$j++){

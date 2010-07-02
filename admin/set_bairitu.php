@@ -43,6 +43,7 @@ charset=<?php echo CHARSET; ?>">
 <body>
 <form method="post" action="set_bairitu.php?action=set_bai"  onsubmit="alert('更新されました。')">
 <p>倍率設定：<input type="text" value="<?php echo $col['bairitu']?>" name="bai" ></p>
+<p><b>単価の差額</b></p>
 <p>パーセント：<input type="text" value="<?php echo $col['percent']?>" name="percent" size="10">%</p>
 <p><b>特別価格設定の計算</b></p>
 <p>計算：<select  name="shisoku">

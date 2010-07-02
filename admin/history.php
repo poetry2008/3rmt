@@ -66,7 +66,14 @@ $(function() {
               <tr>
                  <td class = "pageHeading">
   <?php
-  echo ($HTTP_GET_VARS['action']=='oroshi'||$HTTP_GET_VARS['action']=='oroshi_c')?'卸業者の履歴登録':'同業者の履歴登録';
+  
+  if ($HTTP_GET_VARS['action'] == 'oroshi') {
+    echo '卸業者の履歴登録';
+  } else if ($HTTP_GET_VARS['action'] == 'oroshi_c') {
+    echo '卸業者の履歴表示';
+  } else {
+    echo '同業者の履歴登録';
+  }
   ?>
   <input type="button" onClick = "goto()" value='戻る'>
                  </td>
@@ -481,7 +488,7 @@ case 'dougyousya_categories':
       foreach ($dys_arr as $did=>$rowRecord)
         {
           echo "<table style='float:left;' border=1 class='history_img'>";
-          echo "<tr><td colspan=2>".$rowRecord[0]['dougyousya_name']."____".$productname."</td></tr>";
+          echo "<tr><td colspan=2>".$rowRecord[0]['dougyousya_name']."</td></tr>";
                   
           //foreach($rowRecord as $key8=>$value8){
           for($key8 = count($rowRecord)-1;$key8>=0;$key8--){

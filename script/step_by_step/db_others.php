@@ -631,6 +631,16 @@ cptable('wm_zones_to_geo_zones', 'zones_to_geo_zones');
 // categories_rss
 cptable('categories_rss');
 
+cptable('set_auto_calc');
+cptable('set_dougyousya_categories');
+cptable('set_dougyousya_history');
+cptable('set_dougyousya_names');
+cptable('set_menu_list');
+cptable('set_oroshi_categories');
+cptable('set_oroshi_datas');
+cptable('set_oroshi_names');
+cptable('set_products_dougyousya');
+
 // clear configuration
 foreach($delete_configuration as $c){
   r3q("delete from configuration where configuration_key='".$c."'");
