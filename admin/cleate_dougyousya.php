@@ -137,13 +137,22 @@ case 'delete':
 var i=0;
 function input_add(){
       
-  var cbox_head  = "追加:<input type='text' name='set_oroshi[]'><br />"; 
+  var cbox_head  = "<div class='add_link'>追加:<input type='text' name='set_oroshi[]'></div>"; 
   var cbox = document.getElementById("oo_input").innerHTML;
   //使用replace 方法替换checkbox name 为2维数组
   cbox =  cbox.replace(/ocid/g,'ocid['+i+']');
   html[i] = cbox_head+cbox; 
+  var html_text='';
+  var o;
+  if(i>0){
+    for(o=0;o<html.length;o++){
+      html_text+=html[o];
+    }
+  }else{
+    html_text=html[0]
+  }
+  document.getElementById("o_input").innerHTML=html_text;
   
-  document.getElementById("o_input").innerHTML=html;
   if(document.getElementById("change_one")){
     document.getElementById("change_one").innerHTML='';
     document.getElementById("orrshi_id").value='';

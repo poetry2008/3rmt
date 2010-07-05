@@ -17,7 +17,7 @@ function all_update(){
     alert(error_msg);
     error_msg = '';
   } //else {
-      var flg=confirm("特価価格を更新します");
+      var flg=confirm("更新しますか？");
       if(flg){
         document.myForm1.flg_up.value=1;
         window.document.myForm1.submit();

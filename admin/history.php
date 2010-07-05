@@ -246,7 +246,7 @@ case 'd_submit':
             $sql.= 'values ('.$cID.','.$proid[$j].','.$kankan.','.$dou_id[$i].',now())';
 
             tep_db_query($sql);
-            $sql = 'select history_id from  set_dougyousya_history where categories_id='.$cid.' and products_id = '.$proid[$j]. ' and dougyousya_id = '.$dou_id[$i].' order by last_date asc  limit 20,100';
+            $sql = 'select history_id from  set_dougyousya_history where categories_id='.$cid.' and products_id = '.$proid[$j]. ' and dougyousya_id = '.$dou_id[$i].' order by last_date desc  limit 20,100';
             $res = tep_db_query($sql);
             while($colx = tep_db_fetch_array($res))
               {
