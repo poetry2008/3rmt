@@ -532,7 +532,7 @@
   $email_printing_order .= 'メールアドレス　：' . $order->customer['email_address'] . "\n";
   $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
   if ($point > 0) {
-    $email_printing_order .= '□ポイント割引　　：' . $point . '円' . "\n";
+    $email_printing_order .= '□ポイント割引　　：' . (int)$point . '円' . "\n";
   }
   $email_printing_order .= 'お支払金額　　　：' . strip_tags($ot['text']) . "\n";
   if (is_object($$payment)) {

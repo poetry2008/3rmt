@@ -550,7 +550,7 @@
   $email_printing_order .= 'メールアドレス　：' . $order->customer['email_address'] . "\n";
   $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
   if ($point > 0) {
-    $email_printing_order .= '□ポイント割引　　：' . $point . '円' . "\n";
+    $email_printing_order .= '□ポイント割引　　：' . (int)$point . '円' . "\n";
   }
   if (!empty($total_mail_fee)) {
     $email_printing_order .= '手数料　　　　　：'.$total_mail_fee.'円'."\n"; 

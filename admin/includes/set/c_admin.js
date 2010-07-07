@@ -45,24 +45,24 @@ function chek_radio(cnt){
   }   
 }
 
-function cleat_set(url,w,h){
-  var set_url=url;
-  var set_width=w;
-  var set_height=h;
-  window.open(set_url,'aaa',"width="+set_width+",height="+set_height);
+function cleat_set(url){
+  //var set_url=url;
+  //var set_width=w;
+  //var set_height=h;
+  //window.open(set_url,'aaa',"width="+set_width+",height="+set_height);
   //window.open(url,'aaa','width=100%,height=100%');
-  window.document.myForm1.action = set_url;
-  window.document.myForm1.target = "aaa"; 
+  window.document.myForm1.action = url;
+  //window.document.myForm1.target = "aaa"; 
   window.document.myForm1.method = "POST"; 
   window.document.myForm1.submit();
 }
 
-function list_display(path,cid){
+function list_display(path,cid,fullpath){
 
-  var set_url="list_display.php?cpath="+path+"&cid="+cid;
-  window.open(set_url,'bbbb',"width=1000,height=500,scrollbars=yes");
+  //var set_url="list_display.php?cpath="+path+"&cid="+cid;
+  //window.open(set_url,'bbbb',"width=1000,height=500,scrollbars=yes");
 
-  //location.href="list_display.php?cpath="+path+"&cid="+cid;
+  location.href="list_display.php?cpath="+path+"&cid="+cid+'&fullpath='+fullpath;
 }
 
 function event_onblur(i){
@@ -88,7 +88,7 @@ function event_onblur(i){
 }
 
 function event_onchange(i){
-  var this_price=document.getElementsByName("this_price[]");
+  var this_price=document.getElementsByName("pprice[]");
   var old_price = this_price[i-1].value;
   var new_price = $('#price_input_'+i).val();
   if (old_price != new_price) {

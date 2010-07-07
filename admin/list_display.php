@@ -50,7 +50,8 @@ case update:
       //}
     }
   }
-  tep_redirect(tep_href_link('list_display.php','cid='.$cid.'&cpath='.$cpath));
+  //tep_redirect(tep_href_link('list_display.php','cid='.$cid.'&cpath='.$cpath));
+  tep_redirect('categories_admin.php?cPath='.$_POST['fullpath']);
   break;
 }
 
@@ -321,7 +322,8 @@ for($n=0;$n<$cnt;$n++){
     $count[0]=$count[$n];
   }
 }
-$rows = count($set_menu_list)>$count[0]?count($set_menu_list):$count[0];
+//$rows = count($set_menu_list)>$count[0]?count($set_menu_list):$count[0];
+$rows = count($set_menu_list)>count($products)?count($set_menu_list):count($products);
 ?>
 <script>
   default_value=new Array();
@@ -379,12 +381,13 @@ $rows = count($set_menu_list)>$count[0]?count($set_menu_list):$count[0];
     </td>
     <td class="dataTableContent" id="td_kakuukosuu_<?php echo $k;?>">
 <?php //if($k<count($products)) {?>
-      <input pos="<?php echo $k;?>_0" class="udlr" type="text" class="kakuukosuu_input" size='10' name="kakuukosuu[<?php echo $k;?>]" id="kakuukosuu_<?php echo $k;?>" value="" disabled>
+      <input pos="<?php echo $k;?>_0" class="udlr kakuukosuu_input" type="text" size='10' name="kakuukosuu[<?php echo $k;?>]" id="kakuukosuu_<?php echo $k;?>" value="" disabled>
 <?php //}?>
+      <!--<a href="javascript:void(0)" onclick="$('.kakuukosuu_input').val($('#kakuukosuu_<?php echo $k;?>').val())">統一</a>-->
       </td>
     <td class="dataTableContent" id="td_kakaku_<?php echo $k;?>">
 <?php //if($k<count($products)) {?>
-      <input pos="<?php echo $k;?>_1" class="udlr" type="text" class="kakaku_input" size='10' name="kakaku[<?php echo $k;?>]" id="kakaku_<?php echo $k;?>" value="" disabled>
+      <input pos="<?php echo $k;?>_1" class="udlr kakaku_input" type="text" size='10' name="kakaku[<?php echo $k;?>]" id="kakaku_<?php echo $k;?>" value="" disabled>
 <?php //}?>
       </td>
     <!--<td>
@@ -395,6 +398,7 @@ $rows = count($set_menu_list)>$count[0]?count($set_menu_list):$count[0];
   </tr>
 <?php }?>
   </table>
+    <input type="hidden" name="fullpath" value="<?php echo $_GET['fullpath']?>">
     <input type="submit" value="決定">
     <input type="button" value="リセット" onclick="clear_page()">
     <!--<input type="button" value="リセット" onclick="reset_page()">-->

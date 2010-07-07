@@ -9,7 +9,6 @@ case 'edit_oroshi':
   $cpath = $HTTP_GET_VARS['cpath'];
   $orrshi_id = $HTTP_GET_VARS['id'];
   $name = $HTTP_GET_VARS['name'];
-  //通过传递的orrshi_id 查找对应的categories_id 插入到数组 skstr
   $sql = "select * from set_dougyousya_categories where
     dougyousya_id='".$orrshi_id."'";
   $res = tep_db_query($sql);
@@ -21,14 +20,19 @@ case 'edit_oroshi':
 //  tep_db_query($sql);
   break;
 case 'set_oroshi':
-  //orrshi_id是一个隐藏域 只有通过修改给该变量设置值
   $orrshi_id = $_POST['orrshi_id'];
-  //只有通过追加生成的文本存在值时执行该条件语句
-  if(isset($_POST['set_oroshi'])){
-  /*
-   ocid_arr是对应 set_oroshi的2维数组 、
-   例如 ocid_arr[0] 保存了 set——oroshi[0]对应的值
-  */
+
+  if (isset($_POST['sort'])) {
+    /**
+    echo "<pre>";
+    print_r($_POST);
+    echo "</pre>";
+    exit;
+    /**/
+    foreach($_POST['sort_order'] as $oid => $sort_order) {
+      tep_db_perform('set_dougyousya_names', array('sort_order' => (int)$sort_order), 'update', "dougyousya_id='".$oid."'");
+    }
+  } else if(isset($_POST['set_oroshi'])){
   $ocid_arr = $_POST['ocid'];
   $oro_name = $_POST['set_oroshi'];
   $cot = count($oro_name);
@@ -55,7 +59,6 @@ case 'set_oroshi':
   }
   }
   }else if (isset($orrshi_id)){
-  //这个是修改的方法
   $ocid = $_POST['ocid'];
   $cnt = count($ocid);
   $i = 0;
@@ -63,7 +66,6 @@ case 'set_oroshi':
   $res = tep_db_query("select categories_id from
     set_dougyousya_categories where dougyousya_id='".$orrshi_id."'");
   $douno = array();
-  //douno 是以选定的 checkbox(数据库中以存在数据)
   $j = 0; 
   while($col = tep_db_fetch_array($res)){
     $douno[$j] = $col['categories_id'];
@@ -82,7 +84,7 @@ case 'set_oroshi':
   tep_db_query($sql);
   $sql = 'update set_dougyousya_names set dougyousya_name="'.$name[$orrshi_id].'"
   where dougyousya_id="'.$orrshi_id.'"';
-   tep_db_query($sql);
+  tep_db_query($sql);
   }
   
   /*
@@ -110,7 +112,7 @@ case 'set_oroshi':
     } 
   }
   */
-  tep_redirect('cleate_dougyousya.php');
+  tep_redirect(tep_href_link('cleate_dougyousya.php'));
   break;
   
 case 'delete':
@@ -127,11 +129,11 @@ case 'delete':
   break;  
 }
 ?>
-<!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
   <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
+  <script type="text/javascript" src="includes/javascript/jquery.js"></script>
   <script type="text/javascript">
   var html = new Array();
 var i=0;
@@ -139,7 +141,6 @@ function input_add(){
       
   var cbox_head  = "<div class='add_link'>追加:<input type='text' name='set_oroshi[]'></div>"; 
   var cbox = document.getElementById("oo_input").innerHTML;
-  //使用replace 方法替换checkbox name 为2维数组
   cbox =  cbox.replace(/ocid/g,'ocid['+i+']');
   html[i] = cbox_head+cbox; 
   var html_text='';
@@ -149,7 +150,7 @@ function input_add(){
       html_text+=html[o];
     }
   }else{
-    html_text=html[0]
+    html_text=html[0];
   }
   document.getElementById("o_input").innerHTML=html_text;
   
@@ -163,8 +164,13 @@ function input_add(){
 function resset_cb(){
   location.href= 'cleate_dougyousya.php'; 
 }
+var valmethod = true;
+function notval(){
+  valmethod = false;
+}
     
 function w_close(){
+  if (valmethod){
   if((!document.getElementById("orrshi_id")||document.getElementsByName('set_oroshi[]')[0])&&html.length==1){
     var j;
     var o_cid;
@@ -175,18 +181,18 @@ function w_close(){
         alert('業者名はご記入ください');
         return false;
       }else {
-        test=0;
-        for (j=0 ;j<o_cid.length; j++){
-          if(!o_cid[j].checked){
-            test++;
-          }
-        }
         var ex_name =  document.getElementsByName('exist_name[]');
         var z;
         for(z=0;z<ex_name.length;z++){
           if(ex_name[z].value==o_name[0].value){
             alert(o_name[0].value+'はもう存在しています');
             return false;
+          }
+        }
+        test=0;
+        for (j=0 ;j<o_cid.length; j++){
+          if(!o_cid[j].checked){
+            test++;
           }
         }
         if (test == j) {
@@ -216,17 +222,17 @@ function w_close(){
             return false;
           }
         }
-    for(x=0;x<ocid.length;x++){
-      if(!ocid[x].checked){
-        test++;
-      }
+       for(x=0;x<ocid.length;x++){
+         if(!ocid[x].checked){
+           test++;
+         }
+       }
+       if (test == x){
+          alert('ゲームタイトルを一つ選択してください');
+          return false;
+       }
     }
-    if (test == x){
-       alert('ゲームタイトルを一つ選択してください');
-       return false;
-    }
-    }
-    }
+   }
   }
         if(html.length>1){
           var o_name = document.getElementsByName('set_oroshi[]');
@@ -257,18 +263,16 @@ function w_close(){
     alert('まず、入力フォーム追加してください');
     return false;
   }
+  }
   return true;
   //  window.close(); 
 }
 
 function show_history(id){
   location.href= 'history.php?action=dougyousya&cid='+id;
-
 }
 
-    
 function del_oroshi(id){
-      
   var flg=confirm('削除しますか？');
   if(flg){
     location.href="cleate_dougyousya.php?action=delete&id="+id;
@@ -276,8 +280,19 @@ function del_oroshi(id){
       
   }
 }
+
+function ex(id){
+  //alert(document.getElementsByName['sort_order[]']);
+  for(exi=1;exi<5;exi++){
+    tmp = document.getElementById('tr_'+id+'_'+exi).innerHTML;
+    document.getElementById('tr_'+id+'_'+exi).innerHTML =
+      document.getElementById('tr_'+(id-1)+'_'+exi).innerHTML;
+    document.getElementById('tr_'+(id-1)+'_'+exi).innerHTML = tmp;
+  }
+  $('#tr_'+id+'_1>.sort_order_input').val(id);
+  $('#tr_'+(id-1)+'_1>.sort_order_input').val(id-1);
+}
 </script>
-<title>同業者の名前設定</title>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
   <div id="spiffycalendar" class="text"></div>
@@ -286,7 +301,11 @@ function del_oroshi(id){
      <tr>
         <td width="<?php echo BOX_WIDTH; ?>" valign="top">
            <table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
+              <tr>
+                 <td>
                     <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
+                 </td>
+              </tr>
            </table>
         </td>
         <td width="100%" valign="top">
@@ -300,55 +319,54 @@ function del_oroshi(id){
   <table width="100%" cellspacing="0" cellpadding="0">
      <tr>
         <td class="cleate_add" valign="top">
-  <input type="button" value="入力フォーム追加" name='b1' onClick="input_add()">
+  <input type="button" value="入力フォーム追加"　name='b1' onClick="input_add()">
         </td>
      </tr>
      <tr>
         <td class="cleate_main">
   <input type="hidden" value="<?php echo $cPath ?>" name="cpath">
-  <?php if(isset($orrshi_id)){
-  echo '<input type="hidden" value="'.$orrshi_id .'"
-    name="orrshi_id" id="orrshi_id">';
-  }
+  <?php if(isset($orrshi_id)){?>
+    <input type="hidden" value="<?php echo $orrshi_id;?>" name="orrshi_id" id="orrshi_id">
+  <?php }
   $start = 0;
-$categories_subtree = getSubcatergories($start);
-
-$res=tep_db_query("select * from set_dougyousya_names ORDER BY dougyousya_id ASC");
-      
-echo "<table>";
-while($col=tep_db_fetch_array($res)){
-  echo "<tr>";
-  echo "<td width='150'>同業者：".$col['dougyousya_name']."</td>";
-  echo '<input type="hidden" name="exist_name[]" value='.$col['dougyousya_name'].'>';
-  echo "<td width='50'><a href=
-    'cleate_dougyousya.php?action=edit_oroshi&id=".$col['dougyousya_id']."'>編集</a></td>";
-  echo "<td width='50'><a
-    href='javascript:void(0);' onclick='del_oroshi(".$col['dougyousya_id'].")'>削除</a></td>";
-  //  echo "<td><input type='button' value='履歴' name='b[]'
-  //   onclick='show_history(".$col['parent_id'].")'></td>";
-  echo "<td><a href='history.php?action=dougyousya&dougyousya_id=".$col['dougyousya_id']."'>履歴</a>";
-  echo "</tr>";
-  if(isset($ckstr)&&$orrshi_id == $col['dougyousya_id']){
-    echo "<tr><td colspan ='4'>";
-    echo '<div id="change_one">';
-    echo "<input type='text'
-      id='name_".$col['dougyousya_id']."'name='up_oroshi[".$col['dougyousya_id']."]'
-      value='".$col['dougyousya_name']."'><br>";
-  echo '<input type="hidden" id="src_name_'.$col['dougyousya_id'].'" value='.$col['dougyousya_name'].'>';
-    echo makeCheckbox($categories_subtree,$ckstr);
-    echo '<input type="submit" value="更新"><input type = "button" value = "取り消し"
-      onclick="resset_cb()"><br><br>';
-    echo '</div>';
-    echo "</td></tr>";
+  $categories_subtree = getSubcatergories($start);
+  $res=tep_db_query("select * from set_dougyousya_names ORDER BY sort_order ASC");
+  $i = 0;
+?>
+<table>
+<?php while($col=tep_db_fetch_array($res)){?>
+  <tr>
+    <td width="10"><?php if ($i) {?><a href="javascript:void(0);" onclick="ex(<?php echo $i;?>)">↑</a><?php }?></td>
+    <td id="tr_<?php echo $i;?>_1">
+      <input type="hidden" name="sort_order[<?php echo $col['dougyousya_id'];?>]" value="<?php echo $i;?>" class="sort_order_input">
+      同業者：<?php echo $col['dougyousya_name'];?>
+      <input type="hidden" name="exist_name[]" value='<?php echo $col['dougyousya_name'];?>'>
+    </td>
+    <td id="tr_<?php echo $i;?>_2" width='50'><a href='cleate_dougyousya.php?action=edit_oroshi&id=<?php echo $col['dougyousya_id'];?>'>編集</a></td>
+    <td id="tr_<?php echo $i;?>_3" width='50'><a href='javascript:void(0);' onclick='del_oroshi(<?php echo $col['dougyousya_id'];?>)'>削除</a></td>
+    <td id="tr_<?php echo $i;?>_4" width='50'><a href='history.php?action=dougyousya&dougyousya_id=<?php echo $col['dougyousya_id'];?>'>履歴</a>
+  </tr>
+<?php if(isset($ckstr)&&$orrshi_id == $col['dougyousya_id']){?>
+  <tr>
+    <td colspan ='5'>
+      <div id="change_one">
+      <input type='text' id='name_<?php echo $col['dougyousya_id'];?>'name='up_oroshi[<?php echo $col['dougyousya_id'];?>]' value='<?php echo $col['dougyousya_name'];?>'>
+      <input type="hidden" id="src_name_<?php echo $col['dougyousya_id'];?>" value='<?php echo $col['dougyousya_name'];?>'><br>
+      <?php echo makeCheckbox($categories_subtree,$ckstr);?>
+      <input type="submit" value="更新"><input type = "button" value = "取り消し" onclick="resset_cb()"><br /><br />
+      </div>
+    </td>
+  </tr>
+<?php 
   }
+  $i++;
 }
-      
 ?>
 <tr>
-<td  colspan ='4'>
-<div id="o_input"></div>
+<td  colspan ='5'>
+ <div id="o_input"></div> 
 </td>
-</tr>
+</td>
 </table>
 <div id="oo_input" style="display:none">
 <?php
@@ -356,10 +374,11 @@ while($col=tep_db_fetch_array($res)){
 ?>
 </div>
 <input type="submit" value="同業者登録">
+<input type="submit" onClick="notval()" value="順序を更新する" name="sort">
 </td>
 </tr>
 </table>
-  </form>
+</form>
                  </td>
               </tr>
            </table>

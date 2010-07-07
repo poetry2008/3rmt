@@ -11,7 +11,18 @@ switch ($_GET['action']){
       $res=tep_db_query("select * from set_auto_calc where parent_id='".$cPath."'");
       
       $col=tep_db_fetch_array($res);
-      echo json_encode($col);
+      if ($col) {
+        echo json_encode($col);
+      } else {
+        echo json_encode(array(
+          'parent_id' => $cPath,
+          'bairitu'   => 1.1,
+          'keisan'    => 0,
+          'hikaku'    => '',
+          'shisoku'   => '',
+          'percent'   => ''
+        ));
+      }
       
       //    $xmlbody .= "<data>";
       //    $xmlbody .= "<calc bai=\"".$col['bairitu']."\" kei=\"".$col['keisan']."\"  shisoku=\"".$col['shisoku']."\"></calc>";

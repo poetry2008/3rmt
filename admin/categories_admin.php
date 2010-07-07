@@ -108,6 +108,7 @@ if (isset($_GET['action']) && $_GET['action']) {
   //读取当前的计算公式  
   $res=tep_db_query("select bairitu from set_auto_calc where parent_id='".$current_category_id."'"); 
   $col=tep_db_fetch_array($res);
+  if (!$col) $col['bairitu'] = 1.1;
 ?>
 <td class="dataTableHeadingContent" align="center"><?php echo $col['bairitu']?>倍</td>
   <?php
@@ -129,7 +130,7 @@ if (isset($_GET['action']) && $_GET['action']) {
       }
     } else {
       $count_dougyousya['cnt'] = 1;
-      echo "<td class='dataTableHeadingContent' align='center'>同業者未設定</td>";
+      echo "<td class='dataTableHeadingContent' align='center'><a href='cleate_dougyousya.php'>同業者未設定</a></td>";
     }
   }
 ?>
@@ -481,10 +482,10 @@ if(empty($cPath_back)&&empty($cID)&&isset($cPath)){
     <input type="hidden" value="<?php echo $cPath_yobi; ?>"          name="cpath_yobi">
     <input type="hidden" value="<?php echo $current_category_id; ?>" name="cID_list" >
   <?php if ($ocertify->npermission > 7) { ?>
-    <input type='button' value='計算設定' name='b[]' onClick="cleat_set('set_bairitu.php','300','450')">
+    <input type='button' value='計算設定' name='b[]' onClick="cleat_set('set_bairitu.php')">
   <?php }?>
   </td>
-  <td align="right" ><?php echo "<input type='button' value='卸業者設定' name='d[]' onClick=\"list_display(".($cPath_yobi?$cPath_yobi:0).",".$current_category_id.")\">";//追加?></td>
+  <td align="right" ><?php echo "<input type='button' value='卸業者設定' name='d[]' onClick=\"list_display(".($cPath_yobi?$cPath_yobi:0).",".$current_category_id.",'".$_GET['cPath']."')\">";//追加?></td>
   <td align="right" ><input type="button" name="x" value="一括更新" onClick="all_update()"></td>
 </tr>
 <!--dataTableRowSelected end-->

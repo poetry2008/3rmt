@@ -121,7 +121,7 @@ case 'oroshi':
       }
       echo "</td>";
       echo "<td class='dataTableContent'><a onClick='return delete_one_data()'
-        href='history.php?action=oroshi&o_id=".$oid."&list_id=".$value['list_id']."'>消除</a></td>";
+        href='history.php?action=oroshi&o_id=".$oid."&list_id=".$value['list_id']."'>削除</a></td>";
       echo "</tr>";
     }
     echo "</table>";
@@ -307,11 +307,12 @@ case 'dougyousya':
 case 'deletePoint':
   $cPath = $_GET['cPath'];
   $cid = $_GET['cid'];
+  $did = $_GET['did'];
   $back_url_params =
-    'action=deletePoint'.'&cPath='.$cPath.'&cid='.$cid.'&pointid='.$_GET['pointid'];
+  'action=deletePoint'.'&cPath='.$cPath.'&cid='.$cid.'&pointid='.$_GET ['pointid'];
   tep_db_query('delete from set_dougyousya_history where history_id =
-      "'.$_GET['pointid'].'"');
-  tep_redirect("history.php?action=dougyousya_categories&cid=".$cid."&cPath=".$cPath);
+  "'.$_GET['pointid'].'"');
+  tep_redirect("history.php?action=dougyousya_categories&cid=".$cid."&cP ath=".$cPath."&did=".$did);
   break;
 case 'dougyousya_categories':
   $cPath = cpathPart($_GET['cPath']);
@@ -373,14 +374,12 @@ case 'dougyousya_categories':
     $res=tep_db_query("select * from products_description where site_id=0 and  products_id='".$cid_list[$i]."' order by products_description.products_name asc");
     $col=tep_db_fetch_array($res);  
     echo "<input type='hidden' name='proid[]' value='".$cid_list[$i]."' >";//products_id
-  
     echo "<tr><td>".$col['products_name']."</td>";
     if($count['cnt'] > 0){
       for($j=0;$j<$count['cnt'];$j++){
-      
         //        <input type='text' size='7px' name='TARGET_INPUT[]' onkeydown=ctrl_keydown('TARGET_INPUT',".$i.",".$j.",".$count['cnt'].")></td>";//価格同業者
         echo "<td class='dataTableContent' >
-        <input pos='".$i."_".$j."' class='udlr input_number'  type='text' size='7px' name='TARGET_INPUT[]' onpaste=\"return !clipboardData.getData('text').match(/\D/)\" ondragenter=\"return false\" style=\"ime-mode:Disabled\">";//価格同業者
+        <input pos='".$i."_".$j."' id=\"ti_".$i."_".$j."\" class='udlr input_number col_".$j."'  type='text' size='7px' name='TARGET_INPUT[]' onpaste=\"return !clipboardData.getData('text').match(/\D/)\" ondragenter=\"return false\" style=\"ime-mode:Disabled\"><a href=\"javascript:void(0)\" onclick=\"$('.col_".$j."').val($('#ti_".$i."_".$j."').val())\">統一</a>";//価格同業者
       }
     }else{
       //            echo "<td class='dataTableContent' ><input type='text' size='7px'  name='TARGET_INPUT[]' onkeydown=ctrl_keydown('TARGET_INPUT',".$i.",'0','0')></td>";//価格同業者  

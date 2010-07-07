@@ -2640,7 +2640,7 @@ function orders_updated($orders_id) {
   
   function getSubcatergories($cid)
   { 
-    $res = tep_db_query("select c.categories_id cid,cd.categories_name cname from categories_description cd,categories c where c.categories_id = cd.categories_id and cd.site_id = 0 and c.parent_id =".$cid );
+    $res = tep_db_query("select c.categories_id cid,cd.categories_name cname from categories_description cd,categories c where c.categories_id = cd.categories_id and cd.site_id = 0 and c.parent_id =".$cid." order by c.sort_order,cd.categories_name" );
     while ( $col = @tep_db_fetch_array($res))
       {
 

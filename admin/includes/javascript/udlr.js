@@ -30,7 +30,9 @@ $.fn.extend({
         $(this).bind('keydown',function(e){
 		    e = (e) ? e : ((window.event) ? window.event : "") //兼容IE和Firefox获得keyBoardEvent对象
 		    var key = e.keyCode?e.keyCode:e.which; //兼容IE和Firefox获得keyBoardEvent对象的键值
+            //
             var  pos = $(this).attr('pos');
+            //
             var  posx = getPos(pos,'x');
             var  posy = getPos(pos,'y');
             switch(key) {

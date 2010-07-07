@@ -6,7 +6,6 @@ require(DIR_WS_CLASSES . 'currencies.php');
 $currencies = new currencies();
 $cPath=$_POST['cpath'];
 switch ($HTTP_GET_VARS['action']){
-
 case 'edit_oroshi':
   $cpath = $HTTP_GET_VARS['cpath'];
   $orrshi_id = $HTTP_GET_VARS['id'];
@@ -25,7 +24,17 @@ case 'edit_oroshi':
   break;
 case 'set_oroshi':
   $orrshi_id = $_POST['orrshi_id'];
-  if(isset($_POST['set_oroshi'])){
+  if (isset($_POST['sort'])) {
+    /**
+    echo "<pre>";
+    print_r($_POST);
+    echo "</pre>";
+    exit;
+    /**/
+    foreach($_POST['sort_order'] as $oid => $sort_order) {
+      tep_db_perform('set_oroshi_names', array('sort_order' => (int)$sort_order), 'update', "oroshi_id='".$oid."'");
+    }
+  } else if(isset($_POST['set_oroshi'])){
   $ocid_arr = $_POST['ocid'];
   $oro_name = $_POST['set_oroshi'];
   $cot = count($oro_name);
@@ -50,6 +59,7 @@ case 'set_oroshi':
       ("'.$col['oroshi_id'].'","'.$ocid[$i-1].'")';
        tep_db_query($sql);
   }
+    $j++;
   }
   }else if (isset($orrshi_id)){
   $ocid = $_POST['ocid'];
@@ -62,8 +72,8 @@ case 'set_oroshi':
   $j = 0; 
   while($col = tep_db_fetch_array($res)){
     $douno[$j] = $col['categories_id'];
-    $j++;
   }
+
   $sql = 'delete from set_oroshi_categories where oroshi_id="'.$orrshi_id.'"';
   tep_db_query($sql);
   foreach ($ocid as $diffval) {
@@ -73,6 +83,7 @@ case 'set_oroshi':
   }
   $sql = 'delete from set_oroshi_datas where oroshi_id = "'.$orrshi_id.'" and parent_id not in (select soc.categories_id from set_oroshi_categories soc where oroshi_id ="'.$orrshi_id.'")';
   tep_db_query($sql);
+  
     $name = $_POST['up_oroshi'];
     $sql = 'update set_oroshi_names set oroshi_name="'.$name[$orrshi_id].'"
     where oroshi_id="'.$orrshi_id.'"';
@@ -103,7 +114,7 @@ case 'set_oroshi':
     }
   }*/
   //拡張配列で作っていく
-  tep_redirect('cleate_oroshi.php');
+  tep_redirect(tep_href_link('cleate_oroshi.php'));
   break;
   
 case 'delete':
@@ -118,11 +129,11 @@ case 'delete':
   break;  
 }
 ?>
-<!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html >
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
   <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
+  <script type="text/javascript" src="includes/javascript/jquery.js"></script>
   <script type="text/javascript">
   var html = new Array();
 var i=0;
@@ -154,8 +165,13 @@ function jump_oroshi_data(id,oid){
 function resset_cb(){
   location.href="cleate_oroshi.php";
 }
+var valmethod = true;
+function notval(){
+  valmethod = false;
+}
     
 function w_close(){
+  if(valmethod){
   if((!document.getElementById("orrshi_id")||document.getElementsByName('set_oroshi[]')[0])&&html.length==1){
     var j;
     var o_cid;
@@ -166,18 +182,18 @@ function w_close(){
         alert('業者名はご記入ください');
         return false;
       }else {
-        test=0;
-        for (j=0 ;j<o_cid.length; j++){
-          if(!o_cid[j].checked){
-            test++;
-          }
-        }
         var ex_name =  document.getElementsByName('exist_name[]');
         var z;
         for(z=0;z<ex_name.length;z++){
           if(ex_name[z].value==o_name[0].value){
             alert(o_name[0].value+'はもう存在しています');
             return false;
+          }
+        }
+        test=0;
+        for (j=0 ;j<o_cid.length; j++){
+          if(!o_cid[j].checked){
+            test++;
           }
         }
         if (test == j) {
@@ -216,10 +232,10 @@ function w_close(){
        alert('ゲームタイトルを一つ選択してください');
        return false;
     }
-   }
-   }
+    }
   }
-        if(html.length>1){
+  }
+          if(html.length>1){
           var o_name = document.getElementsByName('set_oroshi[]');
           var ex_name =  document.getElementsByName('exist_name[]');
           var le;
@@ -248,12 +264,12 @@ function w_close(){
     alert('まず、入力フォーム追加してください');
     return false;
   }
+  }
   return true;
   //  window.close(); 
 }
     
 function del_oroshi(id){
-      
   var flg=confirm('削除しますか？');
   if(flg){
     location.href="cleate_oroshi.php?action=delete&id="+id;
@@ -264,7 +280,6 @@ function del_oroshi(id){
 }
 
 function edit_oroshi(id){
-
   var selectName = 'parent_id_'+id;
   var oroName = 'name_'+id;
 //  var path = document.getElementById(selectName).value;
@@ -272,8 +287,17 @@ function edit_oroshi(id){
   location.href= 'cleate_oroshi.php?action=edit_oroshi&id='+id; 
 
 }
+//var sort_changed = false;
+function ex(id){
+  for(exi=1;exi<6;exi++){
+    tmp = document.getElementById('tr_'+id+'_'+exi).innerHTML;
+    document.getElementById('tr_'+id+'_'+exi).innerHTML = document.getElementById('tr_'+(id-1)+'_'+exi).innerHTML;
+    document.getElementById('tr_'+(id-1)+'_'+exi).innerHTML = tmp;
+  }
+  $('#tr_'+id+'_1>.sort_order_input').val(id);
+  $('#tr_'+(id-1)+'_1>.sort_order_input').val(id-1);
+}
 </script>
-<title>卸業者の名前設定</title>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
 <?php  //<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onLoad="SetFocus();">
@@ -284,7 +308,9 @@ function edit_oroshi(id){
      <tr>
         <td width="<?php echo BOX_WIDTH; ?>" valign="top">
            <table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-                 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
+              <tr>
+                 <td><?php require(DIR_WS_INCLUDES . 'column_left.php'); ?></td>
+              </tr> 
            </table>
         </td>
         <td width="100%" valign="top">
@@ -304,54 +330,50 @@ function edit_oroshi(id){
                        <tr>
                           <td class="cleate_main"> 
   <input type="hidden" value="<?php echo $cPath ?>" name="cpath">
-  <?php if(isset($orrshi_id)){
-    echo '<input type="hidden" value="'.$orrshi_id.'" id = "orrshi_id" name="orrshi_id">';
-  }
-
+  <?php if(isset($orrshi_id)){?>
+    <input type="hidden" value="<?php echo $orrshi_id;?>" id = "orrshi_id" name="orrshi_id">
+  <?php }
   //get categorie_tree
   $start = 0;
   $categories_subtree = getSubcatergories($start);
-
-  $res=tep_db_query("select * from set_oroshi_names ORDER BY oroshi_id ASC");
-      
-echo '<table>';
-while($col=tep_db_fetch_array($res)){
-  echo '<tr>';
-  
-  //  echo "卸業者：<input type='text' name='up_oroshi[]' value='".$col['oroshi_name']."'><input type='button' value='削除' name='b[]' onclick='del_oroshi(".$col['oroshi_id'].",".$cPath.")'><br>";
-  echo "<td width='150'>卸業者：".$col['oroshi_name'].'<input type="hidden" name="exist_name[]" value='.$col['oroshi_name'].'></td>';
-
-  // show drop down list
-
-  echo "<td width='50'><a href=
-    'cleate_oroshi.php?action=edit_oroshi&id=".$col['oroshi_id']."'>編集</a></td>";
-  echo "<td width='50'><a href='javascript:void(0);' onclick='del_oroshi(".$col['oroshi_id'].")'>削除</a></td>";
-  //  echo "<td><input type='button' value='".OROSHI_DATA_MANAGE."' name='b[]'
-  //    onclick='jump_oroshi_data(".$col['parent_id'].",".$col['oroshi_id'].")'></td>";
-  echo "<td width='50'><a href='cleate_list.php?action=oroshi&o_id=".$col['oroshi_id']."'>".OROSHI_DATA_MANAGE."</a>";
-  echo "<td><a href='history.php?action=oroshi&o_id=".$col['oroshi_id']."'>"."履歴"."</a>";
-  echo '</tr>';
-   if(isset($ckstr)&&$orrshi_id == $col['oroshi_id']){
-    echo '<tr><td colspan="5">';
-    echo '<div id="change_one">';
-    echo "<input type='text' name='up_oroshi[".$col['oroshi_id']."]' id
-      ='name_".$col['oroshi_id']."' value='".$col['oroshi_name']."' / ><br>";
-    echo '<input type="hidden" id="src_name_'.$col['oroshi_id'].'" value='.$col['oroshi_name'].'>';
-    echo makeCheckbox($categories_subtree,$ckstr);
-    echo '<input type="submit" value="更新"><input type = "button" value = "取り消し"
-      onclick="resset_cb()"><br />';
-    echo '</div>';
-    echo '</td></tr>';
-   }
-
-        
+  $res=tep_db_query("select * from set_oroshi_names ORDER BY sort_order ASC");
+  $i = 0;
+?>
+<table>
+<?php while($col=tep_db_fetch_array($res)){?>
+  <tr>
+  <!--卸業者：<input type='text' name='up_oroshi[]' value='<?php echo $col['oroshi_name'];?>'>
+  <input type='button' value='削除' name='b[]' onclick='del_oroshi(<?php echo $col['oroshi_id'];?>, <?php echo $cPath;?>)'><br>-->
+  <td width="10"><?php if ($i) {?><a href="javascript:void(0);" onclick="ex(<?php echo $i;?>)">↑</a><?php }?></td>
+  <td id="tr_<?php echo $i;?>_1">
+    <input type="hidden" name="sort_order[<?php echo $col['oroshi_id'];?>]" value="<?php echo $i;?>" class="sort_order_input">
+    卸業者：<?php echo $col['oroshi_name'];?><input type="hidden" name="exist_name[]" value='<?php echo $col['oroshi_name'];?>'>
+  </td>
+  <td id="tr_<?php echo $i;?>_2" width='50'><a href='cleate_oroshi.php?action=edit_oroshi&id=<?php echo $col['oroshi_id'];?>'>編集</a></td>
+  <td id="tr_<?php echo $i;?>_3" width='50'><a href='javascript:void(0);' onclick='del_oroshi(<?php echo $col['oroshi_id'];?>)'>削除</a></td>
+  <td id="tr_<?php echo $i;?>_4" width='50'><a href='cleate_list.php?action=oroshi&o_id=<?php echo $col['oroshi_id'];?>'>データ</a></td>
+  <td id="tr_<?php echo $i;?>_5" width='50'><a href='history.php?action=oroshi&o_id=<?php echo $col['oroshi_id'];?>'>履歴</a>
+  </tr>
+<?php if(isset($ckstr)&&$orrshi_id == $col['oroshi_id']){?>
+  <tr>
+    <td colspan="6">
+      <div id="change_one">
+        <input type='text' name='up_oroshi[<?php echo $col['oroshi_id'];?>]' id='name_<?php echo $col['oroshi_id'];?>' value='<?php echo $col['oroshi_name'];?>' />
+        <input type="hidden" id="src_name_<?php echo $col['oroshi_id'];?>" value='<?php echo $col['oroshi_name'];?>'><br>
+        <?php echo makeCheckbox($categories_subtree,$ckstr);?>
+        <input type="submit" value="更新"><input type = "button" value = "取り消し" onclick="resset_cb()"><br />
+      </div>
+    </td>
+  </tr>
+<?php
+  }
+  $i++;
 }
-      
 ?>
 <tr>
-<td colspan='5'>
-<div id="o_input"></div>
-</td>
+  <td colspan='6'>
+    <div id="o_input"></div>
+  </td>
 </tr>
 </table>
 <div id="oo_input" style="display:none">
@@ -359,11 +381,13 @@ while($col=tep_db_fetch_array($res)){
    echo makeCheckbox($categories_subtree);
 ?>
 </div>
-<input type="submit" value="卸業者登録">
+<input type="submit" value="卸業者登録"        name="add">
+<input type="submit" onClick="notval()" value="順序を更新する" name="sort">
+</form>
                           </td>
                        </tr>
                     </table>      
-  </form>
+
                  </td>
               </tr>
            </table>

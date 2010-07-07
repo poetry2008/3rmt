@@ -6,6 +6,18 @@ include 'db_include.php';
 // @ => customer_id
 // + => truncate
 
+// ADD INDEX
+foreach($sites as $s){
+  rq("ALTER TABLE  `".table_prefix($s)."_address_book` ADD INDEX (  `customers_id` ) ;");
+  rq("ALTER TABLE  `".table_prefix($s)."_customers_basket` ADD INDEX ( `customers_id` ) ;");
+  rq("ALTER TABLE  `".table_prefix($s)."_customers_basket_attributes` ADD INDEX ( `customers_id` ) ;");
+  rq("ALTER TABLE  `".table_prefix($s)."_orders` ADD INDEX (  `customers_id` ) ;");
+  rq("ALTER TABLE  `".table_prefix($s)."_orders_products` ADD INDEX (  `orders_id` ) ;");
+  rq("ALTER TABLE  `".table_prefix($s)."_orders_products_attributes` ADD INDEX ( `orders_id` ,  `orders_products_id` ) ;");
+  rq("ALTER TABLE  `".table_prefix($s)."_orders_status_history` ADD INDEX (  `orders_id` ) ;");
+  rq("ALTER TABLE  `".table_prefix($s)."_orders_total` ADD INDEX (  `orders_id` ) ;");
+}
+
 //present_goods*
 r3q("truncate present_goods");
 foreach($sites as $s){
