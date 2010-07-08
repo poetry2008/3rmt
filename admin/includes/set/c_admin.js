@@ -131,7 +131,7 @@ function set_money(num,warning){
     ins_anser = 100 - ins_anser;
     if(calc.percent != '' && parseInt(ins_anser) >= calc.percent){
         if (warning){
-          error_msg += calc.percent+"%の差額があります。再設定してください\n";
+          error_msg = calc.percent+"%の差額があります。再設定してください\n";
         }
     }
     var kei = calc.keisan;//数字
@@ -147,7 +147,7 @@ function set_money(num,warning){
     ins_anser = 100 - ins_anser;
     if(calc.percent != '' && parseInt(ins_anser) >= calc.percent){
         if (warning){
-          error_msg += calc.percent+"%の差額があります。再設定してください\n";
+          error_msg = calc.percent+"%の差額があります。再設定してください\n";
         }
     }
     set_m=ins_ipt;
@@ -226,8 +226,8 @@ function check_error(){
           $('#offset_input_'+(i+1)).css('border-color','');
           $('#offset_error_'+(i+1)).html('');
           
-          var old_price = this_price[i].value;
-          var new_price = $('#price_input_'+(i+1)).val();
+          var old_price = parseInt(this_price[i].value);
+          var new_price = parseInt($('#price_input_'+(i+1)).val());
           //alert(old_price + '|' + new_price);
           if (calc.percent != '' && calc.percent != 0 && calc.percent != null) {
           if (new_price > old_price) {

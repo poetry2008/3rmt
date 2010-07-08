@@ -45,7 +45,8 @@ case update:
           'products_id'   => $_POST['product'][$i],
           'kakuukosuu'    => $_POST['kakuukosuu'][$i],
           'kakaku'        => $_POST['kakaku'][$i],
-          'categories_id' => $cID
+          'categories_id' => $cID,
+          'last_modified' => 'now()'
         ));
       //}
     }
@@ -323,7 +324,7 @@ for($n=0;$n<$cnt;$n++){
   }
 }
 //$rows = count($set_menu_list)>$count[0]?count($set_menu_list):$count[0];
-$rows = count($set_menu_list)>count($products)?count($set_menu_list):count($products);
+$rows = $count[0]>count($products)?$count[0]:count($products);
 ?>
 <script>
   default_value=new Array();

@@ -254,6 +254,9 @@ function w_close(){
           }
           var nary=set_name_arr.sort();
           for(var ii=1;ii<nary.length;ii++){
+            if (nary[ii-1]!=null||nary[ii-1]!=''){
+              continue;
+            }
             if (nary[ii-1]==nary[ii]){
               alert("入力された内容は同じになってはいけません");
               return false;

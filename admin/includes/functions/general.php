@@ -2692,7 +2692,9 @@ function cpathPart($cpath,$which=1) {
     if($which ==1){
       $b = substr($a,0,strpos($a,'_'));
     }else {
-    $b = substr($a,strpos($a,'_')+1);
+      //$b = substr($a,strpos($a,'_')+1);
+      $arr = explode('_',$a);
+      return $arr[count($arr)-1];
     }
     return $b;
   }
@@ -2783,11 +2785,17 @@ if (!function_exists('json_encode'))
       
       function get_all_products_dougyousya($categories_id,$products_id) {
         $arr = array();
-        $query = tep_db_query("SELECT sdc.dougyousya_id FROM  `set_dougyousya_categories` sdc ,categories c where sdc.categories_id= c.parent_id and c.categories_id = '".$categories_id."' order by sdc.dougyousya_id asc");
-       while($data = tep_db_fetch_array($query))
+        //$query = tep_db_query("SELECT sdc.dougyousya_id FROM  `set_dougyousya_categories` sdc ,categories c where sdc.categories_id= c.parent_id and c.categories_id = '".$categories_id."' order by sdc.dougyousya_id asc");
+        $query = tep_db_query("select dougyousya_id from set_dougyousya_categories where categories_id = '".$categories_id."'");
+        while($data = tep_db_fetch_array($query))
         {
           $arr[] = $data;
         }
+        /**
+        echo "<pre>";
+        print_r($arr);
+        echo "</pre>";
+        /**/
         return $arr;
       }
       
@@ -2844,12 +2852,26 @@ if (!function_exists('json_encode'))
 
     $categories_query = tep_db_query("select c.categories_id, cd.categories_name, c.parent_id from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where c.categories_id = cd.categories_id and cd.language_id = '" . $languages_id . "' and c.parent_id = '" . $parent_id . "' and site_id ='0' order by c.sort_order, cd.categories_name");
     while ($categories = tep_db_fetch_array($categories_query)) {
-      if ($exclude != $categories['categories_id']) $category_tree_array[] = array('id' => ($parent_id != 0 ? ($parent_id . '_') : '') . $categories['categories_id'], 'text' => $spacing . $categories['categories_name']);
+      if ($exclude != $categories['categories_id']) $category_tree_array[] = array('id' => ($parent_id != 0 ? (tep_get_parent_cpath($parent_id) . '_') : '') . $categories['categories_id'], 'text' => $spacing . $categories['categories_name']);
       $category_tree_array = tep_get_category_tree_cpath($categories['categories_id'], $spacing . '&nbsp;&nbsp;&nbsp;', $exclude, $category_tree_array);
     }
 
     return $category_tree_array;
   }
+  function tep_get_parent_cpath($cid){
+    $p = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CATEGORIES." where categories_id='".$cid."'"));
+    if ($p) {
+      if ($p['parent_id'] != '0') {
+        return $p['parent_id'] . '_'. $cid;
+      } else {
+        return $cid;
+      }
+    } else {
+      return $cid;
+    }
+  }
+  
+  
   //function tep_update_kakuukosuu
   
 

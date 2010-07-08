@@ -97,13 +97,21 @@ if (isset($_GET['action']) && $_GET['action']) {
   <td>
   <form name="myForm1" action="categories_admin.php?<?php echo "cPath=".$cPath."&pID=".$products['products_id']."&action=all_update"; ?>" method="POST" onSubmit="return false">
   <input type="hidden" name="flg_up" value="" />
+  <?php
+    // 取得価格/業者更新时间
+    $set_menu_list  = tep_db_fetch_array(tep_db_query("select * from set_menu_list where categories_id='".$current_category_id."'"));
+    $kakaku_updated = $set_menu_list?date('n-j G:i',strtotime($set_menu_list['last_modified'])):'';
+    ?>
   <table border="0" width="100%" cellspacing="0" cellpadding="2">
   <!--dataTableHeadingRow-->
-  <tr class="dataTableHeadingRow">
+  <tr class="dataTableHeadingRow" valign="top">
   <td class="dataTableHeadingContent" height="30"><?php echo TABLE_HEADING_CATEGORIES_PRODUCTS; ?></td>
   <td class="dataTableHeadingContent" align="center">個数/架空</td>
   <td class="dataTableHeadingContent" align="center">数量</td>
-  <td class="dataTableHeadingContent" align="center"><a href="javascript:void(0)" onClick="oro_history('cleate_list.php','<?php echo $cPath_yobi;?>','prelist')">価格/業者</a></td>
+  <td class="dataTableHeadingContent" align="center">
+      <a style="font-weight:bold;" href="javascript:void(0)" onClick="oro_history('cleate_list.php','<?php echo $cPath_yobi;?>','prelist')">価格/業者</a>
+      <small style="font-weight:normal;"><?php echo $kakaku_updated;?></small>
+  </td>
   <?php  
   //读取当前的计算公式  
   $res=tep_db_query("select bairitu from set_auto_calc where parent_id='".$current_category_id."'"); 
@@ -123,10 +131,15 @@ if (isset($_GET['action']) && $_GET['action']) {
           sdc.dougyousya_id and sdc.categories_id = '".$cPath_yobi. "' ORDER BY sdc.dougyousya_id ASC");
       while($col_dougyousya=tep_db_fetch_array($res)){
         $i++;
-        echo "<td class='dataTableHeadingContent' align='center'>
-        <a href='javascript:void(0);' onClick=dougyousya_history('history.php',".$cPath_yobi.",".$current_category_id.",'dougyousya_categories','".$col_dougyousya['dougyousya_id']."')>".$col_dougyousya['dougyousya_name']."</a>";
-        echo "<input type='hidden' name='d_id[]' value='".$col_dougyousya['dougyousya_id']."'>";
-        echo "</td>";
+        $dougyousya_history = tep_db_fetch_array(tep_db_query("select * from set_dougyousya_history where categories_id='".$current_category_id."' and dougyousya_id='".$col_dougyousya['dougyousya_id']."'"));
+        $dougyousya_updated = $dougyousya_history?date('n-j G:i',strtotime($dougyousya_history['last_date'])):'';
+        ?>
+        <td class='dataTableHeadingContent' align='center'>
+          <a style="font-weight:bold;" href='javascript:void(0);' onClick=dougyousya_history('history.php',<?php echo $cPath_yobi;?>,<?php echo $current_category_id;?>,'dougyousya_categories','<?php echo $col_dougyousya['dougyousya_id'];?>')><?php echo $col_dougyousya['dougyousya_name'];?></a>
+          <input type='hidden' name='d_id[]' value='<?php echo $col_dougyousya['dougyousya_id'];?>'><br>
+          <br><small style="font-weight:normal;"><?php echo $dougyousya_updated;?></small>
+        </td>
+        <?php
       }
     } else {
       $count_dougyousya['cnt'] = 1;
@@ -379,7 +392,7 @@ if ($cPath_yobi){
               */
               if($count['cnt'] > 0){
                 $dougyousya = get_products_dougyousya($products['products_id']);
-                $all_dougyousya = get_all_products_dougyousya($current_category_id, $products['products_id']);
+                $all_dougyousya = get_all_products_dougyousya($cPath_yobi, $products['products_id']);
                 for($i=0;$i<$count['cnt'];$i++) {
                   echo "
                     <td class='dataTableContent' >

@@ -8,14 +8,14 @@ include 'db_include.php';
 
 // ADD INDEX
 foreach($sites as $s){
-  rq("ALTER TABLE  `".table_prefix($s)."_address_book` ADD INDEX (  `customers_id` ) ;");
-  rq("ALTER TABLE  `".table_prefix($s)."_customers_basket` ADD INDEX ( `customers_id` ) ;");
-  rq("ALTER TABLE  `".table_prefix($s)."_customers_basket_attributes` ADD INDEX ( `customers_id` ) ;");
-  rq("ALTER TABLE  `".table_prefix($s)."_orders` ADD INDEX (  `customers_id` ) ;");
-  rq("ALTER TABLE  `".table_prefix($s)."_orders_products` ADD INDEX (  `orders_id` ) ;");
-  rq("ALTER TABLE  `".table_prefix($s)."_orders_products_attributes` ADD INDEX ( `orders_id` ,  `orders_products_id` ) ;");
-  rq("ALTER TABLE  `".table_prefix($s)."_orders_status_history` ADD INDEX (  `orders_id` ) ;");
-  rq("ALTER TABLE  `".table_prefix($s)."_orders_total` ADD INDEX (  `orders_id` ) ;");
+  rq("ALTER TABLE  `".table_prefix($s)."address_book` ADD INDEX (  `customers_id` ) ;");
+  rq("ALTER TABLE  `".table_prefix($s)."customers_basket` ADD INDEX ( `customers_id` ) ;");
+  rq("ALTER TABLE  `".table_prefix($s)."customers_basket_attributes` ADD INDEX ( `customers_id` ) ;");
+  rq("ALTER TABLE  `".table_prefix($s)."orders` ADD INDEX (  `customers_id` ) ;");
+  rq("ALTER TABLE  `".table_prefix($s)."orders_products` ADD INDEX (  `orders_id` ) ;");
+  rq("ALTER TABLE  `".table_prefix($s)."orders_products_attributes` ADD INDEX ( `orders_id` ,  `orders_products_id` ) ;");
+  rq("ALTER TABLE  `".table_prefix($s)."orders_status_history` ADD INDEX (  `orders_id` ) ;");
+  rq("ALTER TABLE  `".table_prefix($s)."orders_total` ADD INDEX (  `orders_id` ) ;");
 }
 
 //present_goods*

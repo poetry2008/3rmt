@@ -80,8 +80,20 @@ case 'set_oroshi':
        tep_db_query($sql);
   }
   $name = $_POST['up_oroshi'];
+  $sql = 'select * FROM set_dougyousya_history 
+          WHERE dougyousya_id = "'.$orrshi_id.'" AND categories_id
+          NOT IN 
+          (select c.categories_id 
+           from categories c 
+           where c.parent_id in
+          (SELECT sdc.categories_id
+          FROM set_dougyousya_categories sdc
+          WHERE dougyousya_id = "'.$orrshi_id.'"
+          ))';
+/*
   $sql = 'delete from set_dougyousya_history where dougyousya_id = "'.$orrshi_id.'"and categories_id not in (select sdc.categories_id from set_dougyousya_categories sdc where dougyousya_id ="'.$orrshi_id.'")';
   tep_db_query($sql);
+*/
   $sql = 'update set_dougyousya_names set dougyousya_name="'.$name[$orrshi_id].'"
   where dougyousya_id="'.$orrshi_id.'"';
   tep_db_query($sql);
@@ -253,6 +265,9 @@ function w_close(){
           }
           var nary=set_name_arr.sort();
           for(var ii=1;ii<nary.length;ii++){
+            if (nary[ii-1]!=null||nary[ii-1]!=''){
+              continue;
+            }
             if (nary[ii-1]==nary[ii]){
               alert("入力された内容は同じになってはいけません");
               return false;
