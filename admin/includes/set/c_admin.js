@@ -188,7 +188,7 @@ function ajaxLoad(path){
 
 function history(url,cpath,cid,action){
   var url=url+"?cpath="+cpath+"&cid="+cid+"&action="+action;
-  window.open(url,'ccc',"width=1000,height=800");
+  window.open(url,'ccc',"width=1000,height=800,scrollbars=yes");
 }
 
 function oro_history(url,cid,action){
@@ -198,7 +198,8 @@ function oro_history(url,cid,action){
 
 function dougyousya_history(url,cpath,cid,action,did){
   var url=url+"?cPath="+cpath+"&cid="+cid+"&did="+did+"&action="+action;
-  window.open(url,'ccc',"width=1000,height=800");
+  location.href=url;
+  //window.open(url,'ccc',"width=1000,height=800,scrollbars=yes");
 }
 
 function onload_keisan(warning){

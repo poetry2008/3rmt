@@ -43,8 +43,8 @@ case update:
       } else {*/
         tep_db_perform('set_menu_list', array(
           'products_id'   => $_POST['product'][$i],
-          'kakuukosuu'    => $_POST['kakuukosuu'][$i],
-          'kakaku'        => $_POST['kakaku'][$i],
+          'kakuukosuu'    => SBC2DBC($_POST['kakuukosuu'][$i]),
+          'kakaku'        => SBC2DBC($_POST['kakaku'][$i]),
           'categories_id' => $cID,
           'last_modified' => 'now()'
         ));

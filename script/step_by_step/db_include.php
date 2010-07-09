@@ -119,7 +119,7 @@ function cptable($rtable, $r3table = null){
     $sql = "insert into $r3table (`" . join('`,`', $r3fields) . "`) values ('";
     foreach($r3fields as $f){
       //if ($r[f]) 
-        $values[] = mysql_real_escape_string($r[$f]);
+        $values[] = mysql_real_escape_string(isset($r[$f])?$r[$f]:'');
       //else 
         //$values[] = 'Null';
     }
@@ -205,7 +205,7 @@ function cmptable($rtable, $r3table = null) {
     $values = array();
     $sql = "select * from $r3table where ";
     foreach($r3fields as $f){
-      $values[] = $f . " = '" . mysql_real_escape_string($r[$f]) . "'";
+      $values[] = $f . " = '" . mysql_real_escape_string(isset($r[$f])?$r[$f]:'') . "'";
     }
     $sql .= join(" and ", $values);
     if(mysql_num_rows(r3q($sql)) != 1){

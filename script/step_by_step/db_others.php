@@ -88,6 +88,26 @@ foreach($sites as $s) {
             '".mysql_real_escape_string($banner['status'])."'
           )
         ");
+    $bid = mysql_insert_id();
+    $bhquery = rq("select * from ".table_prefix($s)."banners_history where banners_id='".$banner['banners_id']."'");
+    while($bh = mysql_fetch_array($bhquery)){
+      $sql = "
+        insert into banners_history (
+            banners_history_id,
+            banners_id,
+            banners_shown,
+            banners_clicked,
+            banners_history_date
+            ) values (
+              null,
+              '".$bid."',
+              '".$bh['banners_shown']."',
+              '".$bh['banners_clicked']."',
+              '".$bh['banners_history_date']."'
+            )
+        ";
+      r3q($sql);
+    }
   }
 }
 

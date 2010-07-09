@@ -127,11 +127,16 @@ if ($action =='prelist'){
   $back_url = 'cleate_list.php';
   $back_url_params = 'action=oroshi&o_id='.$oid;
   $form_action = 'cleate_list.php?action=data_cleate';
+
   if (isset($_GET['src_id'])&&$_GET['src_id']!=null){
     $src_id=$_GET['src_id'];
     $back_url_params = 'action=oroshi&cid='.$cid.'&o_id='.$oid.'&src_id='.$src_id;
     $back_url = 'history.php';
     $form_action = 'cleate_list.php?action=data_cleate&src_id='.$src_id;
+  }else if (isset($_GET['cPath'])) {
+    
+    $back_url = "categories_admin.php";
+    $back_url_params = "cPath=".$_GET['cPath'];
   }
   //  $res = tep_db_query("select * from set_oroshi_categories soc,set_oroshi_names son where son.oroshi_id = soc.oroshi_id and soc.categories
   $res =tep_db_query('select * from set_oroshi_names son, categories c

@@ -235,23 +235,49 @@ case 'd_submit':
     }
   $count_product = count($proid);//一共几行
   $limit = 20;        
+  
+  // get last history
+  $last_history_arr = array();
+  $last_history_date = tep_db_fetch_array(tep_db_query("select * from set_dougyousya_history where categories_id='".$cID."' order by last_date desc"));
+  if ($last_history_date) {
+    $last_history_date = $last_history_date['last_date'];
+    for ($i = 0;$i<$count_product;$i++)
+    {
+      for ($j=0;$j<$count_tontye;$j++)
+      {
+        $last_history = tep_db_fetch_array(tep_db_query("
+          select * 
+          from set_dougyousya_history 
+          where categories_id='".$cID."'
+            and products_id='".$proid[$i]."'
+            and dougyousya_id='".$dou_id[$j]."'
+            and last_date='".$last_history_date."'
+        "));
+        $last_history_arr[] = $last_history['dougyosya_kakaku'];
+      }
+    }
+  }
+  
   for ($i = 0;$i<$count_tontye;$i++)
     {
       for ($j=0;$j<$count_product;$j++)
         {
-          $kankan =  $dougyousya[$j*$count_tontye+$i];
+          $kankan =  SBC2DBC($dougyousya[$j*$count_tontye+$i]);
           if ($kankan){
-            $sql = 'insert into set_dougyousya_history ( `categories_id`,`products_id`,`dougyosya_kakaku`,`dougyousya_id`,`last_date`)';
-                  
-            $sql.= 'values ('.$cID.','.$proid[$j].','.$kankan.','.$dou_id[$i].',now())';
+            if (!array_diff_assoc($_POST['TARGET_INPUT'], $last_history_arr)){
+              tep_db_perform("set_dougyousya_history", array('last_date' => 'now()'), 'update', "categories_id='".$cID."' and products_id='".$proid[$j]."' and dougyousya_id='".$dou_id[$i]."' and last_date='".$last_history_date."'");
+            } else {
+              $sql = 'insert into set_dougyousya_history ( `categories_id`,`products_id`,`dougyosya_kakaku`,`dougyousya_id`,`last_date`)';
+                    
+              $sql.= 'values ('.$cID.','.$proid[$j].',\''.$kankan.'\','.$dou_id[$i].',now())';
 
-            tep_db_query($sql);
-            $sql = 'select history_id from  set_dougyousya_history where categories_id='.$cid.' and products_id = '.$proid[$j]. ' and dougyousya_id = '.$dou_id[$i].' order by last_date desc  limit 20,100';
-            $res = tep_db_query($sql);
-            while($colx = tep_db_fetch_array($res))
-              {
+              tep_db_query($sql);
+              $sql = 'select history_id from  set_dougyousya_history where categories_id='.$cid.' and products_id = '.$proid[$j]. ' and dougyousya_id = '.$dou_id[$i].' order by last_date desc  limit 20,100';
+              $res = tep_db_query($sql);
+              while($colx = tep_db_fetch_array($res)){
                 tep_db_query('delete from set_dougyousya_history where history_id ="'.$colx['history_id'].'"');
               }
+            }
           }
         }
     }
@@ -340,10 +366,21 @@ case 'dougyousya_categories':
     $cnt2++;
   }
   $pro_name_cnt=$cnt*$cnt2;
-  ?>
-  <?php 
   echo   ' <form method="post"
   action="history.php?action=d_submit&cPath='.$cPath.'&cid='.$cID.'&did='.$did.'" >';
+
+
+  // get last history
+  $last_history_arr = $last_history_arr2 = array();
+  $last_history_date = tep_db_fetch_array(tep_db_query("select * from set_dougyousya_history where categories_id='".$cID."' order by last_date desc"));
+  if ($last_history_date) {
+    $last_history_date = $last_history_date['last_date'];
+    $last_history_query = tep_db_query("select * from set_dougyousya_history where categories_id='".$cID."' and last_date='".$last_history_date."'");
+    while($last_history = tep_db_fetch_array($last_history_query)){
+      $last_history_arr[$last_history['products_id']][$last_history['dougyousya_id']] = $last_history;
+    }
+  }
+  
   ?>
 
   <table border="1">
@@ -378,8 +415,9 @@ case 'dougyousya_categories':
     if($count['cnt'] > 0){
       for($j=0;$j<$count['cnt'];$j++){
         //        <input type='text' size='7px' name='TARGET_INPUT[]' onkeydown=ctrl_keydown('TARGET_INPUT',".$i.",".$j.",".$count['cnt'].")></td>";//価格同業者
+        $last_history_arr2[$i][$j] = isset($last_history_arr[$cid_list[$i]][$dougyousya_id[$j]])?$last_history_arr[$cid_list[$i]][$dougyousya_id[$j]]['dougyosya_kakaku']:'';
         echo "<td class='dataTableContent' >
-        <input pos='".$i."_".$j."' id=\"ti_".$i."_".$j."\" class='udlr input_number col_".$j."'  type='text' size='7px' name='TARGET_INPUT[]' onpaste=\"return !clipboardData.getData('text').match(/\D/)\" ondragenter=\"return false\" style=\"ime-mode:Disabled\"><a href=\"javascript:void(0)\" onclick=\"$('.col_".$j."').val($('#ti_".$i."_".$j."').val())\">統一</a>";//価格同業者
+        <input value='' pos='".$i."_".$j."' id=\"ti_".$i."_".$j."\" class='udlr input_number col_".$j."'  type='text' size='7px' name='TARGET_INPUT[]' onpaste=\"return !clipboardData.getData('text').match(/\D/)\" ondragenter=\"return false\" style=\"ime-mode:Disabled\"><a href=\"javascript:void(0)\" onclick=\"$('.col_".$j."').val($('#ti_".$i."_".$j."').val())\">統一</a>";//価格同業者
       }
     }else{
       //            echo "<td class='dataTableContent' ><input type='text' size='7px'  name='TARGET_INPUT[]' onkeydown=ctrl_keydown('TARGET_INPUT',".$i.",'0','0')></td>";//価格同業者  
@@ -389,14 +427,56 @@ case 'dougyousya_categories':
     echo "</tr>";
   }
   ?>
-  <td><input type="submit" name="b1" value="登録"></td>
+  <tr>
+    <td colspan='<?php echo $count['cnt']+1;?>'>
+      <input type="submit" name="b1" value="登録">
+      <input type="button" onclick="get_last_date()" value="LAST DATA">
+      <input type="button" onclick="$('.udlr').val('')" value="RESET">
+    </td>
+  </tr>
      </form>
      </table>
+    <script>
+    var last_history = new Array();
+    <?php
+    foreach($last_history_arr2 as $lkey => $lvalue){
+    ?>
+    last_history[<?php echo $lkey;?>] = new Array();
+      <?php
+      foreach($lvalue as $hkey => $hvalue){
+    ?>
+    last_history[<?php echo $lkey;?>][<?php echo $hkey;?>] = '<?php echo $hvalue;?>';
+    <?php
+      }
+    }
+    ?>
+    function get_last_date() {
+      for(i in last_history){
+        for(j in last_history[i]){
+          $('#ti_'+i+'_'+j).val(last_history[i][j]);
+        }
+      }
+    }
+    </script>
      <!-- data start -->
      <br>
      <br>
      <?php 
-     $res=tep_db_query("select sdh.* ,sdn.dougyousya_name from set_dougyousya_history sdh ,set_dougyousya_names sdn where sdh.dougyousya_id = sdn.dougyousya_id and categories_id='".$cID."' order by last_date" );
+  /*$res=tep_db_query("
+    select sdh.* ,sdn.dougyousya_name 
+    from set_dougyousya_history sdh ,set_dougyousya_names sdn 
+    where sdh.dougyousya_id = sdn.dougyousya_id 
+      and categories_id='".$cID."' 
+    order by sdn.dougyousya_id,pd.products_name,last_date
+  " );*/
+  $res=tep_db_query("
+  select sdh.* ,sdn.dougyousya_name 
+  from set_dougyousya_history sdh ,set_dougyousya_names sdn, products_description pd 
+  where pd.products_id=sdh.products_id 
+    and sdh.dougyousya_id = sdn.dougyousya_id 
+    and categories_id='".$cID."' 
+  order by sdn.dougyousya_id,pd.products_name,last_date" );
+  
     
   $products_arr = array();
   //        $dgs_array = array();
@@ -500,7 +580,6 @@ case 'dougyousya_categories':
           }
           echo '</table>';                  
         }
-
       echo '<hr style="clear:both">';
     }
         

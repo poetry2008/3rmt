@@ -109,7 +109,7 @@ if (isset($_GET['action']) && $_GET['action']) {
   <td class="dataTableHeadingContent" align="center">個数/架空</td>
   <td class="dataTableHeadingContent" align="center">数量</td>
   <td class="dataTableHeadingContent" align="center">
-      <a style="font-weight:bold;" href="javascript:void(0)" onClick="oro_history('cleate_list.php','<?php echo $cPath_yobi;?>','prelist')">価格/業者</a>
+      <a style="font-weight:bold;" href="cleate_list.php?cid=<?php echo $cPath_yobi;?>&action=prelist&cPath=<?php echo $_GET['cPath'];?>">価格/業者</a>
       <small style="font-weight:normal;"><?php echo $kakaku_updated;?></small>
   </td>
   <?php  
@@ -131,7 +131,7 @@ if (isset($_GET['action']) && $_GET['action']) {
           sdc.dougyousya_id and sdc.categories_id = '".$cPath_yobi. "' ORDER BY sdc.dougyousya_id ASC");
       while($col_dougyousya=tep_db_fetch_array($res)){
         $i++;
-        $dougyousya_history = tep_db_fetch_array(tep_db_query("select * from set_dougyousya_history where categories_id='".$current_category_id."' and dougyousya_id='".$col_dougyousya['dougyousya_id']."'"));
+        $dougyousya_history = tep_db_fetch_array(tep_db_query("select * from set_dougyousya_history where categories_id='".$current_category_id."' and dougyousya_id='".$col_dougyousya['dougyousya_id']."' order by last_date desc"));
         $dougyousya_updated = $dougyousya_history?date('n-j G:i',strtotime($dougyousya_history['last_date'])):'';
         ?>
         <td class='dataTableHeadingContent' align='center'>
@@ -150,7 +150,11 @@ if (isset($_GET['action']) && $_GET['action']) {
   <td class="dataTableHeadingContent" align="center">価格</td>
   <td class="dataTableHeadingContent" align="center">価格設定</td>
   <td class="dataTableHeadingContent" align="center">増減</td>
-  <td class="dataTableHeadingContent" align="center"><?php echo  TABLE_HEADING_STATUS; ?></td>
+  <td class="dataTableHeadingContent" align="center"><?php
+  if ($ocertify->npermission >7) {
+    echo  TABLE_HEADING_STATUS; 
+  }
+  ?></td>
   <td class="dataTableHeadingContetn" align="right"></td>
   </tr>
   <!--dataTableHeadingRow end-->
@@ -490,16 +494,15 @@ if(empty($cPath_back)&&empty($cID)&&isset($cPath)){
 ?>
 <!--dataTableRowSelected-->
 <tr>
-  <td align='right' colspan='<?php echo 8 + $count_dougyousya['cnt'];?>'>
+  <td align='right' colspan='<?php echo 10 + $count_dougyousya['cnt'];?>'>
     <input type="hidden" value="<?php echo $cPath; ?>"               name="cpath">
     <input type="hidden" value="<?php echo $cPath_yobi; ?>"          name="cpath_yobi">
     <input type="hidden" value="<?php echo $current_category_id; ?>" name="cID_list" >
   <?php if ($ocertify->npermission > 7) { ?>
     <input type='button' value='計算設定' name='b[]' onClick="cleat_set('set_bairitu.php')">
   <?php }?>
-  </td>
-  <td align="right" ><?php echo "<input type='button' value='卸業者設定' name='d[]' onClick=\"list_display(".($cPath_yobi?$cPath_yobi:0).",".$current_category_id.",'".$_GET['cPath']."')\">";//追加?></td>
-  <td align="right" ><input type="button" name="x" value="一括更新" onClick="all_update()"></td>
+  &nbsp;&nbsp;&nbsp;&nbsp;<input type='button' value='卸業者設定' name='d[]' onClick="list_display('<?php echo $cPath_yobi?$cPath_yobi:0;?>','<?php echo $current_category_id;?>','<?php echo $_GET['cPath'];?>')">
+  &nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="x" value="一括更新" onClick="all_update()"></td>
 </tr>
 <!--dataTableRowSelected end-->
 <tr>

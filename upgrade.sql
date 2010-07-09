@@ -126,17 +126,13 @@ UPDATE  `sites` SET  `url` =  'http://www.gamemoney.cc' WHERE  `sites`.`id` =2;
 UPDATE  `sites` SET  `url` =  'http://rmt.worldmoney.jp' WHERE  `sites`.`id` =3;
 
 
--- 这个可能需要删除
---ALTER TABLE  `products` ADD  `products_price_offset` INT NULL AFTER  `products_price`;
---ALTER TABLE  `products` CHANGE  `products_price_offset`  `products_price_offset` decimal(15,4) NOT NULL DEFAULT '0.0000';
-
 
 update orders set finished = (select orders_status.finished from orders_status where orders_status.orders_status_id = orders.orders_status);
 update orders set orders_status_name = (select orders_status.orders_status_name from orders_status where orders_status.orders_status_id = orders.orders_status);
 update orders set orders_status_image = (select orders_status.orders_status_image from orders_status where orders_status.orders_status_id = orders.orders_status);
 update orders set language_id = (select orders_status.language_id from orders_status where orders_status.orders_status_id = orders.orders_status);
 
--- ALTER TABLE `orders_products` ADD `site_id` INT NOT NULL;
+
 update orders_products set site_id=(select site_id from orders where orders.orders_id = orders_products.orders_id);
 
 update information_page set romaji=IF(convert(romaji,SIGNED),pID,romaji);
