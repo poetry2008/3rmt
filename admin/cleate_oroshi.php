@@ -114,7 +114,7 @@ case 'set_oroshi':
     }
   }*/
   //拡張配列で作っていく
-  tep_redirect(tep_href_link('cleate_oroshi.php'));
+  tep_redirect(tep_href_link('cleate_oroshi.php','action=edit_oroshi&id='.$_POST['orrshi_id']));
   break;
   
 case 'delete':

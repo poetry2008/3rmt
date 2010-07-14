@@ -135,7 +135,7 @@ if (isset($_GET['action']) && $_GET['action']) {
         $dougyousya_updated = $dougyousya_history?date('n-j G:i',strtotime($dougyousya_history['last_date'])):'';
         ?>
         <td class='dataTableHeadingContent' align='center'>
-          <a style="font-weight:bold;" href='javascript:void(0);' onClick=dougyousya_history('history.php',<?php echo $cPath_yobi;?>,<?php echo $current_category_id;?>,'dougyousya_categories','<?php echo $col_dougyousya['dougyousya_id'];?>')><?php echo $col_dougyousya['dougyousya_name'];?></a>
+          <a style="font-weight:bold;" href='javascript:void(0);' onClick=dougyousya_history('history.php',<?php echo $cPath_yobi;?>,<?php echo $current_category_id;?>,'dougyousya_categories','<?php echo $col_dougyousya['dougyousya_id'];?>','<?php echo $_GET['cPath'];?>')><?php echo $col_dougyousya['dougyousya_name'];?></a>
           <input type='hidden' name='d_id[]' value='<?php echo $col_dougyousya['dougyousya_id'];?>'><br>
           <br><small style="font-weight:normal;"><?php echo $dougyousya_updated;?></small>
         </td>
@@ -279,6 +279,7 @@ if (isset($_GET['search']) && $_GET['search']) {
           and p.products_id = p2c.products_id 
           and pd.products_name like '%" . $_GET['search'] . "%' 
           and pd.site_id='0'
+          ".($ocertify->npermission>7?'':" and p.products_status='1' ")."
         order by pd.products_name";
 } else {
   $products_query_raw = "
@@ -301,6 +302,7 @@ if (isset($_GET['search']) && $_GET['search']) {
           and p.products_id = p2c.products_id 
           and p2c.categories_id = '" . $current_category_id . "' 
           and pd.site_id='0'
+          ".($ocertify->npermission>7?'':" and p.products_status='1' ")."
         order by pd.products_name";
 }
 $products_split = new splitPageResults($_GET['page'], MAX_DISPLAY_PRODUCTS_ADMIN, $products_query_raw, $products_query_numrows);
@@ -335,11 +337,8 @@ while ($products = tep_db_fetch_array($products_query)) {
     $nowColor = $odd;
   }
 
-  //if ( (isset($pInfo) && is_object($pInfo)) && ($products['products_id'] == $pInfo->products_id) ) {
-  //  echo ' <!--dataTableRowSelected--> <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand' . '\'">' . "\n";
-  //} else {
-    echo '              <tr class="' . $nowColor . '" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'"> ' . "\n";
-  //}
+  echo '              <tr class="' . $nowColor . '" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'"> ' . "\n";
+
   $res_kaku=tep_db_query("select * from set_menu_list where categories_id='".$current_category_id."' ORDER BY set_list_id ASC");
   $i_cnt=0;
   while($col_kaku=tep_db_fetch_array($res_kaku)){
@@ -400,7 +399,7 @@ if ($cPath_yobi){
                 for($i=0;$i<$count['cnt'];$i++) {
                   echo "
                     <td class='dataTableContent' >
-                    <input type='radio' value='".$all_dougyousya[$i]['dougyousya_id']."' name='chk[".$target_cnt."]' onClick='chek_radio(".$target_cnt.")'".(in_dougyousya($dougyousya, $all_dougyousya) ? ($all_dougyousya[$i]['dougyousya_id'] == $dougyousya?' checked':'') : ($i == 0 ? ' checked':'')).">
+                    <input type='radio' id='radio_".$target_cnt."_".$i."' value='".$all_dougyousya[$i]['dougyousya_id']."' name='chk[".$target_cnt."]' onClick='chek_radio(".$target_cnt.")'".(in_dougyousya($dougyousya, $all_dougyousya) ? ($all_dougyousya[$i]['dougyousya_id'] == $dougyousya?' checked':'') : ($i == 0 ? ' checked':'')).">
                     <span name='TARGET_INPUT[]' id='target_".$target_cnt."_".$i."' >".get_dougyousya_history($products['products_id'], $all_dougyousya[$i]['dougyousya_id'])."</span>
                     </td>";//価格同業者
                   /*echo "

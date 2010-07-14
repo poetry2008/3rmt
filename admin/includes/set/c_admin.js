@@ -16,52 +16,39 @@ function all_update(){
   if (error_msg != '') {
     alert(error_msg);
     error_msg = '';
-  } //else {
-      var flg=confirm("更新しますか？");
-      if(flg){
-        document.myForm1.flg_up.value=1;
-        window.document.myForm1.submit();
-      }else{
-        document.myForm1.flg_up.value=0;
-        alert("更新をキャンセルしました");
-      }
-  //}
+  }
+  var flg=confirm("更新しますか？");
+  if(flg){
+    document.myForm1.flg_up.value=1;
+    window.document.myForm1.submit();
+  }else{
+    document.myForm1.flg_up.value=0;
+    alert("更新をキャンセルしました");
+  }
 }
 
 function chek_radio(cnt){
-  //var radio_cnt=document.getElementsByName("chk_"+cnt+"[]");
   var radio_cnt=document.getElementsByName("chk["+cnt+"]");
+  var proid = document.getElementsByName("proid[]");
   for(var i=0;i < radio_cnt.length;i++){
     if(radio_cnt[i].checked == true){
-      //document.getElementById("radiochk"+cnt+"_"+i).value = 1;
-      //document.getElementById("target_"+cnt+"_"+i).disabled = false;
       if(document.getElementById("target_"+cnt+"_"+i).innerHTML != ''){
         set_money(cnt);//特価価格設定
+        $.ajax({
+          url: 'set_ajax_dougyousya.php?products_id='+proid[cnt].value+'&dougyousya_id='+$('#radio_'+cnt+"_"+i).val()
+        });
       }
-    }else{
-      //document.getElementById("radiochk"+cnt+"_"+i).value = 0;
-      //document.getElementById("target_"+cnt+"_"+i).disabled =true;
     }
   }   
 }
 
 function cleat_set(url){
-  //var set_url=url;
-  //var set_width=w;
-  //var set_height=h;
-  //window.open(set_url,'aaa',"width="+set_width+",height="+set_height);
-  //window.open(url,'aaa','width=100%,height=100%');
   window.document.myForm1.action = url;
-  //window.document.myForm1.target = "aaa"; 
   window.document.myForm1.method = "POST"; 
   window.document.myForm1.submit();
 }
 
 function list_display(path,cid,fullpath){
-
-  //var set_url="list_display.php?cpath="+path+"&cid="+cid;
-  //window.open(set_url,'bbbb',"width=1000,height=500,scrollbars=yes");
-
   location.href="list_display.php?cpath="+path+"&cid="+cid+'&fullpath='+fullpath;
 }
 
@@ -196,8 +183,8 @@ function oro_history(url,cid,action){
   window.open(url,'ccc',"width=1000,height=800,scrollbars=yes");
 }
 
-function dougyousya_history(url,cpath,cid,action,did){
-  var url=url+"?cPath="+cpath+"&cid="+cid+"&did="+did+"&action="+action;
+function dougyousya_history(url,cpath,cid,action,did,fullpath){
+  var url=url+"?cPath="+cpath+"&cid="+cid+"&did="+did+"&action="+action+"&fullpath="+fullpath;
   location.href=url;
   //window.open(url,'ccc',"width=1000,height=800,scrollbars=yes");
 }

@@ -6,7 +6,11 @@ $currencies = new currencies();
 $cPath = $_GET['cpath'];
 $cID   = $_GET['cid'];  
 
-$products = tep_get_products_by_categories_id($cID);
+if ($ocertify->npermission>7) {
+  $products = tep_get_products_by_categories_id($cID);
+} else {
+  $products = tep_get_products_by_categories_id($cID, 1);
+}
 
 switch ($_GET['action']){
 case update:
@@ -186,6 +190,15 @@ color: #000000;
       $('#data_'+(x-1)+'_'+y).html(tmp);
       $('#oroshi_datas_'+(x-1)+'_'+y).val(tmp_value);
     }
+    function deleteHistory(x,y){
+      $('#data_'+x+'_'+y).html(' ');
+      $('#oroshi_datas_'+x+'_'+y).val(' ');
+      dhi = 1;
+      while($('#data_'+(x+dhi)+'_'+y).length){
+        exchange(x+dhi,y);
+        dhi++;
+      }
+    }
     function selectProduct(index, value) {
       if (value == 0) {
         $('#kakaku_'+index).attr('disabled', true).val('');
@@ -363,9 +376,14 @@ $rows = $count[0]>count($products)?$count[0]:count($products);
     if (isset($lines_arr[$j][$k])) {
       echo "<span style='float:left' class='oroshi_data' id='data_".$k."_".$j."'>".$lines_arr[$j][$k]."</span>";
     }
+    echo "<span style='float:right'>";
     if ($k != 0 && isset($lines_arr[$j][$k])) {
-      echo "<span style='float:right'><a href=\"javascript:void(0)\" onclick=\"exchange(".$k.",".$j.")\" >↑</a></span>";
+      echo "<a href=\"javascript:void(0)\" onclick=\"exchange(".$k.",".$j.")\" >↑</a>";
     }
+    if (isset($lines_arr[$j][$k])) {
+      echo "  <a href=\"javascript:void(0)\" onclick=\"deleteHistory(".$k.",".$j.")\" >X</a>";
+    }
+    echo "</span>";
     echo "<input type='hidden' name='oroshi_datas[".$datas_id[$j]."][]' id='oroshi_datas_".$k."_".$j."' value='".$lines_arr[$j][$k]."'>\n";
     echo "</td>";
   }

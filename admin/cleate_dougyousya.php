@@ -124,7 +124,7 @@ case 'set_oroshi':
     } 
   }
   */
-  tep_redirect(tep_href_link('cleate_dougyousya.php'));
+  tep_redirect(tep_href_link('cleate_dougyousya.php','action=edit_oroshi&id='.$_POST['orrshi_id']));
   break;
   
 case 'delete':

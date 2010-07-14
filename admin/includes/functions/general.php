@@ -2810,9 +2810,9 @@ if (!function_exists('json_encode'))
         }
       }
       
-  function tep_get_products_by_categories_id($categories_id) {
+  function tep_get_products_by_categories_id($categories_id,$status=null) {
     $arr = array();
-    $query = tep_db_query("select distinct p.*,pd.* from products p, products_description pd, products_to_categories p2c where p.products_id=pd.products_id and p2c.products_id=p.products_id and categories_id='".$categories_id."' and pd.site_id='0' order by pd.products_name");
+    $query = tep_db_query("select distinct p.*,pd.* from products p, products_description pd, products_to_categories p2c where p.products_id=pd.products_id and p2c.products_id=p.products_id and categories_id='".$categories_id."' and pd.site_id='0' ".($status===null?'':" and p.products_status='1'")." order by pd.products_name");
     while ($product = tep_db_fetch_array($query)) {
       $arr[] = $product;
     }
