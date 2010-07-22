@@ -2,7 +2,6 @@
 var target_input_obj=document.getElementsByName("TARGET_INPUT[]");//同業者
 var price_obj=document.getElementsByName("price[]");//特別価格
 var error_msg='';
-//var old_color='';
 
 function confirmg(question,url) {
   var x = confirm(question);
@@ -112,7 +111,7 @@ function set_money(num,warning){
 
   var set_m=0;                       //サイト入力フォームに値を設置変数初期化
 
-  if(parseInt(ins_ipt) <= parseInt(tar_ipt)){
+  if(parseInt(ins_ipt) < parseInt(tar_ipt)){
       
     var ins_anser = ( parseInt(ins_ipt) / parseInt(tar_ipt) ) * 100;
     ins_anser = 100 - ins_anser;
@@ -143,7 +142,11 @@ function set_money(num,warning){
   if (set_m < 0) {
     set_m = 0;
   }
-  if(typeof(tar_ipt) == 'undefined' || ins_ipt == 0)return;
+  if(typeof(tar_ipt) == 'undefined' || ins_ipt == 0) {
+    price_obj[n].style.color="red";
+    return;
+  }
+  //if(typeof(tar_ipt) == 'undefined')return;
   //var price_n = n + 1;
   //var price_obj=document.getElementById("price_input_"+ price_n);//サイトインプット
   var this_price=document.getElementsByName("pprice[]");
@@ -194,9 +197,6 @@ function onload_keisan(warning){
   var trader_input_obj=$(".TRADER_INPUT");//業者
   var increase_input_obj=$(".INCREASE_INPUT");//業者
   for(var i=0;i< trader_input_obj.length;i++){
-//    var trader_price=var_calc(trader_input_obj[i].innerHTML);
-  //    alert(trader_price);
-    //increase_input_obj[i].innerHTML=trader_price;
       set_money(i,warning);//特価価格設定
   }
 }

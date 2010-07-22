@@ -36,7 +36,7 @@ if (isset($_GET['action']) && $_GET['action']) {
       break;
     case 'toggle':
       require('includes/set/toggle.php');
-      tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $HTTP_GET_VARS['cPath']));
+      tep_redirect(tep_href_link(FILENAME_CATEGORIES_ADMIN, 'cPath=' . $HTTP_GET_VARS['cPath']));
       break;
     case 'setflag':
       require('includes/set/setflag.php');
@@ -100,16 +100,29 @@ if (isset($_GET['action']) && $_GET['action']) {
   <?php
     // 取得価格/業者更新时间
     $set_menu_list  = tep_db_fetch_array(tep_db_query("select * from set_menu_list where categories_id='".$current_category_id."'"));
-    $kakaku_updated = $set_menu_list?date('n-j G:i',strtotime($set_menu_list['last_modified'])):'';
+    $kakaku_updated = $set_menu_list?date('n/j G:i',strtotime($set_menu_list['last_modified'])):'';
     ?>
+  <?php
+  $comment = tep_db_fetch_array(tep_db_query("select * from set_comments where categories_id='".$current_category_id."'"));
+  if ($comment) {
+    ?>
+    <table>
+      <tr>
+      <td  class="dataTableContent"><b>単価ルール:</b> </td>
+      <td  class="dataTableContent"><?php echo nl2br($comment['rule']);?></td>
+      </tr>
+    </table>
+  <?
+  }
+  ?>
   <table border="0" width="100%" cellspacing="0" cellpadding="2">
   <!--dataTableHeadingRow-->
   <tr class="dataTableHeadingRow" valign="top">
   <td class="dataTableHeadingContent" height="30"><?php echo TABLE_HEADING_CATEGORIES_PRODUCTS; ?></td>
-  <td class="dataTableHeadingContent" align="center">個数/架空</td>
-  <td class="dataTableHeadingContent" align="center">数量</td>
-  <td class="dataTableHeadingContent" align="center">
-      <a style="font-weight:bold;" href="cleate_list.php?cid=<?php echo $cPath_yobi;?>&action=prelist&cPath=<?php echo $_GET['cPath'];?>">価格/業者</a>
+  <td class="dataTableHeadingContent" align="right">架空</td>
+  <td class="dataTableHeadingContent" align="right">数量</td>
+  <td class="dataTableHeadingContent" align="right">
+      <a style="font-weight:bold;" href="cleate_list.php?cid=<?php echo $cPath_yobi;?>&action=prelist&cPath=<?php echo $_GET['cPath'];?>">業者</a>
       <small style="font-weight:normal;"><?php echo $kakaku_updated;?></small>
   </td>
   <?php  
@@ -118,7 +131,7 @@ if (isset($_GET['action']) && $_GET['action']) {
   $col=tep_db_fetch_array($res);
   if (!$col) $col['bairitu'] = 1.1;
 ?>
-<td class="dataTableHeadingContent" align="center"><?php echo $col['bairitu']?>倍</td>
+<td class="dataTableHeadingContent" align="right"><?php echo $col['bairitu']?>倍</td>
   <?php
   if ($cPath_yobi){
     $res=tep_db_query("select count(*) as cnt from set_dougyousya_names sdn
@@ -132,7 +145,7 @@ if (isset($_GET['action']) && $_GET['action']) {
       while($col_dougyousya=tep_db_fetch_array($res)){
         $i++;
         $dougyousya_history = tep_db_fetch_array(tep_db_query("select * from set_dougyousya_history where categories_id='".$current_category_id."' and dougyousya_id='".$col_dougyousya['dougyousya_id']."' order by last_date desc"));
-        $dougyousya_updated = $dougyousya_history?date('n-j G:i',strtotime($dougyousya_history['last_date'])):'';
+        $dougyousya_updated = $dougyousya_history?date('n/j G:i',strtotime($dougyousya_history['last_date'])):'';
         ?>
         <td class='dataTableHeadingContent' align='center'>
           <a style="font-weight:bold;" href='javascript:void(0);' onClick=dougyousya_history('history.php',<?php echo $cPath_yobi;?>,<?php echo $current_category_id;?>,'dougyousya_categories','<?php echo $col_dougyousya['dougyousya_id'];?>','<?php echo $_GET['cPath'];?>')><?php echo $col_dougyousya['dougyousya_name'];?></a>
@@ -147,9 +160,9 @@ if (isset($_GET['action']) && $_GET['action']) {
     }
   }
 ?>
-  <td class="dataTableHeadingContent" align="center">価格</td>
-  <td class="dataTableHeadingContent" align="center">価格設定</td>
-  <td class="dataTableHeadingContent" align="center">増減</td>
+  <td class="dataTableHeadingContent" align="right">現在単価</td>
+  <td class="dataTableHeadingContent" align="right">単価設定</td>
+  <td class="dataTableHeadingContent" align="right">増減</td>
   <td class="dataTableHeadingContent" align="center"><?php
   if ($ocertify->npermission >7) {
     echo  TABLE_HEADING_STATUS; 
@@ -243,11 +256,11 @@ while ($categories = tep_db_fetch_array($categories_query)) {
 <?php if ($ocertify->npermission == 15 or $ocertify->npermission == 10) {?>
 <?php if (!isset($_GET['cPath']) or !$_GET['cPath']){?>
                 <?php if($categories['categories_status'] == '1'){?>
-                  <a href="<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=0&cPath='.$HTTP_GET_VARS['cPath']);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', '');?></a> <a href="<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=2&cPath='.$HTTP_GET_VARS['cPath']);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', '');?></a> <?php echo tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '');?> 
+                  <a href="<?php echo tep_href_link(FILENAME_CATEGORIES_ADMIN, 'action=toggle&cID='.$categories['categories_id'].'&status=0&cPath='.$HTTP_GET_VARS['cPath']);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', '');?></a> <a href="<?php echo tep_href_link(FILENAME_CATEGORIES_ADMIN, 'action=toggle&cID='.$categories['categories_id'].'&status=2&cPath='.$HTTP_GET_VARS['cPath']);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', '');?></a> <?php echo tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '');?> 
                 <?php } else if($categories['categories_status'] == '2'){?>
-                  <a href="<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=0&cPath='.$HTTP_GET_VARS['cPath']);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', '');?></a> <?php echo tep_image(DIR_WS_IMAGES . 'icon_status_blue.gif', '');?> <a href="<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=1&cPath='.$HTTP_GET_VARS['cPath']);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', '');?></a>
+                  <a href="<?php echo tep_href_link(FILENAME_CATEGORIES_ADMIN, 'action=toggle&cID='.$categories['categories_id'].'&status=0&cPath='.$HTTP_GET_VARS['cPath']);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', '');?></a> <?php echo tep_image(DIR_WS_IMAGES . 'icon_status_blue.gif', '');?> <a href="<?php echo tep_href_link(FILENAME_CATEGORIES_ADMIN, 'action=toggle&cID='.$categories['categories_id'].'&status=1&cPath='.$HTTP_GET_VARS['cPath']);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', '');?></a>
                 <?php } else {?>
-                  <?php echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', '');?> <a href="<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=2&cPath='.$_GET['cPath']);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', '');?></a> <a href="<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=1&cPath='.$_GET['cPath']);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', '');?></a> 
+                  <?php echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', '');?> <a href="<?php echo tep_href_link(FILENAME_CATEGORIES_ADMIN, 'action=toggle&cID='.$categories['categories_id'].'&status=2&cPath='.$_GET['cPath']);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', '');?></a> <a href="<?php echo tep_href_link(FILENAME_CATEGORIES_ADMIN, 'action=toggle&cID='.$categories['categories_id'].'&status=1&cPath='.$_GET['cPath']);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', '');?></a> 
                 <?php }?>
             <?php }?>
 <?php }?>
@@ -367,15 +380,25 @@ while ($products = tep_db_fetch_array($products_query)) {
       $target_cnt=$products_count-1;//同業者専用
   ?>
   <?php ////個数架空 ?>
-  <td class="dataTableContent" align='center'>
+  <td class="dataTableContent" align='right'>
      <!--    <input type="text" size="5" value="<?php  echo $imaginary; ?>" name='imaginary[<?php echo $products_count-1;?>]' /> -->
      <span align='center' > <?php echo $imaginary;?></span>
   </td>
 <?php ////数量 ?>
-  <td class="dataTableContent" align='center'><input type='text' pos="<?php echo $products_count;?>_0" class="udlr" name='quantity[<?php echo $target_cnt;?>]' value='<?php echo $products['products_quantity'];?>' size="5"></td>
-  <td align='center' class="dataTableContent" ><span class = 'TRADER_INPUT'  name="TRADER_INPUT[]"  id="TRADER_<?php echo $products['products_id']; ?>"><?php echo $kakaku_treder;?></span></td>
+  <td class="dataTableContent" align='right' style="font-weight:bold"><?php echo $products['products_quantity'];?></td>
+  <td align='center' class="dataTableContent" ><span class = 'TRADER_INPUT'  name="TRADER_INPUT[]"  id="TRADER_<?php echo $products['products_id']; ?>"><?php echo $kakaku_treder?$kakaku_treder:0;?></span></td>
 <?php //価格業者  ?>
-  <td align='center' class="dataTableContent" ><span name="INCREASE_INPUT" class = 'INCREASE_INPUT'><?php echo ceil($kakaku_treder*$col['bairitu']);?></span></td>
+  <td align='center' class="dataTableContent" ><span name="INCREASE_INPUT" class = 'INCREASE_INPUT'>
+    <?php //echo ceil($kakaku_treder*$col['bairitu']);?>
+<?php
+  if (strpos($col['bairitu'], '.') !== false) {
+    $float_number = strlen(substr($col['bairitu'], strpos($col['bairitu'], '.')));
+  } else {
+    $float_number = 0;
+  }
+  echo ceil(number_format($col['bairitu']*$kakaku_treder,$float_number,'.',''));
+?>
+  </span></td>
                 <?php //価格倍率  ?>
                 <?php
 if ($cPath_yobi){
@@ -398,7 +421,7 @@ if ($cPath_yobi){
                 $all_dougyousya = get_all_products_dougyousya($cPath_yobi, $products['products_id']);
                 for($i=0;$i<$count['cnt'];$i++) {
                   echo "
-                    <td class='dataTableContent' >
+                    <td class='dataTableContent' align='center'>
                     <input type='radio' id='radio_".$target_cnt."_".$i."' value='".$all_dougyousya[$i]['dougyousya_id']."' name='chk[".$target_cnt."]' onClick='chek_radio(".$target_cnt.")'".(in_dougyousya($dougyousya, $all_dougyousya) ? ($all_dougyousya[$i]['dougyousya_id'] == $dougyousya?' checked':'') : ($i == 0 ? ' checked':'')).">
                     <span name='TARGET_INPUT[]' id='target_".$target_cnt."_".$i."' >".get_dougyousya_history($products['products_id'], $all_dougyousya[$i]['dougyousya_id'])."</span>
                     </td>";//価格同業者
@@ -417,7 +440,7 @@ if ($cPath_yobi){
               }
   }
               ?>
-<td class="dataTableContent" align="right"><?php
+<td class="dataTableContent" align="right" style="font-weight:bold"><?php
       $product_price = tep_get_products_price($products['products_id']);
       if ($product_price['sprice']) {
         echo '<s>' . $currencies->format($product_price['price']) . '</s> <span class="specialPrice">' . $currencies->format($product_price['sprice']) . '</span>';
@@ -500,7 +523,8 @@ if(empty($cPath_back)&&empty($cID)&&isset($cPath)){
   <?php if ($ocertify->npermission > 7) { ?>
     <input type='button' value='計算設定' name='b[]' onClick="cleat_set('set_bairitu.php')">
   <?php }?>
-  &nbsp;&nbsp;&nbsp;&nbsp;<input type='button' value='卸業者設定' name='d[]' onClick="list_display('<?php echo $cPath_yobi?$cPath_yobi:0;?>','<?php echo $current_category_id;?>','<?php echo $_GET['cPath'];?>')">
+  &nbsp;&nbsp;&nbsp;&nbsp;<input type='button' value='担当者登録' name='e[]' onClick="location.href='set_comment.php?cID=<?php echo $current_category_id;?>&cPath=<?php echo $_GET['cPath'];?>'">
+  &nbsp;&nbsp;&nbsp;&nbsp;<input type='button' value='卸業者単価設定' name='d[]' onClick="list_display('<?php echo $cPath_yobi?$cPath_yobi:0;?>','<?php echo $current_category_id;?>','<?php echo $_GET['cPath'];?>')">
   &nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="x" value="一括更新" onClick="all_update()"></td>
 </tr>
 <!--dataTableRowSelected end-->
@@ -526,6 +550,28 @@ if(empty($cPath_back)&&empty($cID)&&isset($cPath)){
 </tr>
 </table>
 </form>
+  <?php
+  if ($comment) {
+?>
+<table>
+  <tr>
+    <td class="dataTableContent" align='right'><b>更新日の日付:</b></td>
+    <td class="dataTableContent"><?php echo date('Y/m/d H:i:s', strtotime($comment['last_modified']));?></td>
+  </tr>
+  <tr>
+    <td class="dataTableContent" align='right'><b>担当者:</b></td>
+    <td class="dataTableContent"><?php echo $comment['author'];?></td>
+  </tr>
+  <tr>
+    <td class="dataTableContent" align='right'><b>コメント:</b></td>
+    <td class="dataTableContent">
+<?php echo nl2br($comment['comment']);?>
+    </td>
+   </tr>
+</table>
+<?php
+  }
+  ?>
 </td>
 </tr>
 </table>

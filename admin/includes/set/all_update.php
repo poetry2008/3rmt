@@ -13,7 +13,7 @@ if($_POST[flg_up]==1){
   $psrice_datas = $_POST['price'];//特价
   $proid = $_POST['proid'];//pid
   //$products_prise=$_POST['pprice'];//正常价格
-  $products_quantity=$_POST['quantity'];//在库数
+  //$products_quantity=$_POST['quantity'];//在库数
 
   $cnt = count($psrice_datas);
   $dougyousya=$_POST['TARGET_INPUT'];//同業者価格
@@ -71,7 +71,7 @@ if($_POST[flg_up]==1){
     }*/
     
     $update_sql_data = array('products_last_modified' => 'now()',
-                             'products_quantity' => tep_db_prepare_input($products_quantity[$n]),
+                             //'products_quantity' => tep_db_prepare_input($products_quantity[$n]),
                              'products_price' => tep_db_prepare_input($psrice_datas[$n]),
                              'products_price_offset' => tep_db_prepare_input($_POST['offset'][$n]),
     );

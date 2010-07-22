@@ -52,6 +52,7 @@ $(function() {
   <title>履歴表示</title>
   </head>
   <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
+  <a name="top"></a>
   <div id="spiffycalendar" class="text"></div>
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
   <table border="0" width="100%" cellspacing="2" cellpadding="2">
@@ -113,7 +114,7 @@ case 'oroshi':
       echo "</tr>";
     foreach ($game as $key=>$value){
       echo "<tr class='dataTableRow'>";
-      echo "<td class='dataTableContent'>".$value['set_date']."</td>";
+      echo "<td class='dataTableContent'>".date('Y/m/d H:i:s',strtotime($value['set_date']))."</td>";
       echo "<td class='dataTableContent'>";
       foreach(spliteOroData($value['datas']) as $line){
         echo $line . '<br>';
@@ -161,7 +162,7 @@ case 'oroshi_c':
       for($i=0;$i<$cnt;$i++){
         $res=tep_db_query("select set_date from set_oroshi_datas where parent_id='".$cPath."' && oroshi_id='".$o_id[$i]."' ORDER BY list_id DESC  limit ".$a.",1 ");
         $col=tep_db_fetch_array($res);
-        echo "<td align='center'>".$col['set_date']."</td>";
+        echo "<td align='center'>".date('Y/m/d H:i:s', strtotime($col['set_date']))."</td>";
       }
     ?>
     </tr>
@@ -263,7 +264,7 @@ case 'd_submit':
       for ($j=0;$j<$count_product;$j++)
         {
           $kankan =  SBC2DBC($dougyousya[$j*$count_tontye+$i]);
-          if ($kankan){
+          if ($kankan !== ''){
             /*
             $last_history_date = tep_db_fetch_array(tep_db_query("select * from set_dougyousya_history where categories_id='".$cID."' and products_id='".$proid[$j]."' and dougyousya_id='".$dou_id[$i]."' order by last_date desc"));
             if ($last_history_date && $kankan == $last_history_date['dougyosya_kakaku']){
@@ -422,7 +423,7 @@ case 'dougyousya_categories':
     $res=tep_db_query("select * from products_description where site_id=0 and  products_id='".$cid_list[$i]."' order by products_description.products_name asc");
     $col=tep_db_fetch_array($res);  
     echo "<input type='hidden' name='proid[]' value='".$cid_list[$i]."' >";//products_id
-    echo "<tr><td>".$col['products_name']."</td>";
+    echo "<tr><td><a href='#".$col['products_name']."'>".$col['products_name']."</a></td>";
     if($count['cnt'] > 0){
       for($j=0;$j<$count['cnt'];$j++){
         //        <input type='text' size='7px' name='TARGET_INPUT[]' onkeydown=ctrl_keydown('TARGET_INPUT',".$i.",".$j.",".$count['cnt'].")></td>";//価格同業者
@@ -483,20 +484,24 @@ case 'dougyousya_categories':
   if ($ocertify->npermission>7) {
     $res=tep_db_query("
     select sdh.* ,sdn.dougyousya_name 
-    from set_dougyousya_history sdh ,set_dougyousya_names sdn, products_description pd 
+    from set_dougyousya_history sdh ,set_dougyousya_names sdn, products_description pd,set_dougyousya_categories sdc
     where pd.products_id=sdh.products_id 
+      and sdn.dougyousya_id = sdc.dougyousya_id 
+      and sdc.categories_id='".$cPath."'
       and sdh.dougyousya_id = sdn.dougyousya_id 
-      and categories_id='".$cID."' 
+      and sdh.categories_id='".$cID."' 
       and pd.site_id=0
     order by sdn.dougyousya_id,pd.products_name,last_date" );
   } else {
     $res=tep_db_query("
     select sdh.* ,sdn.dougyousya_name 
-    from products p,set_dougyousya_history sdh ,set_dougyousya_names sdn, products_description pd 
+    from products p,set_dougyousya_history sdh ,set_dougyousya_names sdn, products_description pd,set_dougyousya_categories sdc
     where p.products_id = pd.products_id
+      and sdn.dougyousya_id = sdc.dougyousya_id 
+      and sdc.categories_id='".$cPath."'
       and pd.products_id=sdh.products_id 
       and sdh.dougyousya_id = sdn.dougyousya_id 
-      and categories_id='".$cID."' 
+      and sdh.categories_id='".$cID."' 
       and p.products_status = '1'
       and pd.site_id=0
     order by sdn.dougyousya_id,pd.products_name,last_date" );
@@ -518,6 +523,7 @@ case 'dougyousya_categories':
       
       $productname = tep_db_fetch_array($res_for_productname);
       $productname = $productname['products_name'];
+      echo "<a name='".$productname."'></a>";
       //echo $productname;
       $dys_arr = array();
       $time_arr = array();
@@ -527,16 +533,17 @@ case 'dougyousya_categories':
       {
         $dys_arr[$record['dougyousya_id']][] = $record;
         //echo $record['dougyousya_name'];
-        if (!in_array(urlencode(mb_convert_encoding($record['dougyousya_name'], "UTF-8", "EUC-JP")), $tuli_arr)){
-          $tuli_arr[]  = urlencode(mb_convert_encoding($record['dougyousya_name'], "UTF-8", "EUC-JP"));
+        if (!in_array($record['dougyousya_name'], $tuli_arr)){
+          $tuli_arr[]  = $record['dougyousya_name'];
         }
       }
-      $imgstr = "<img width='800' height='200' alt='".$productname."' src = 'http://chart.apis.google.com/chart?cht=lxy&chs=800x200&";
+      $imgstr = "<img width='720' height='300' alt='".$productname."' onclick='$(\"#history_table_".$value[0]['products_id']."\").toggle()' src = 'http://chart.apis.google.com/chart?cht=lxy&chs=720x300&";
       $imgstr.= "chd=t:";
       $style = array();
       $key2count = 0;
       $chco = array();                
       $tuli = array();
+      $chls = array();
             
       
       $time_arr = array();
@@ -563,9 +570,9 @@ case 'dougyousya_categories':
       $len = $lenmax - $lenmin;
       $lenkaku = $lenkakumax - $lenkakumin;
       
-      $lenkakumax += $lenkaku*.2;
-      $lenkakumin -= $lenkaku*.2;
-      $lenkaku *= 1.4;
+      $lenkakumax += $lenkaku*.1;
+      $lenkakumin -= $lenkaku*.1;
+      $lenkaku *= 1.2;
 
       $dys_arr_count = 0;
       foreach($dys_arr as $key2=>$value2)
@@ -585,8 +592,10 @@ case 'dougyousya_categories':
           if (isset($value2[$key3+1])){
             $y.=',';
           }
-          $style[]='s,'.$color_arr[$dys_arr_count].','.$key2count.','.$key3.',5';
+          //$style[]='o,'.$color_arr[$dys_arr_count].','.$key2count.','.$key3.',5';
+          $chls[] = 3;
         }
+        $style[]='o,'.$color_arr[$dys_arr_count].','.$key2count.',,10';
 
         $imgstr.=$x.'|'.$y;
         $dys_arr_count ++; 
@@ -597,22 +606,35 @@ case 'dougyousya_categories':
         $key2count++;
         
       }
-      
-      $imgstr.='&chm='.join('|',$style);
-      $imgstr.='&chco='.join(',',$chco);
-      $imgstr.='&chg=5,20';
-      $imgstr.='&chdl='.join('|',$tuli);
-      $imgstr.='&chtt='.urlencode(mb_convert_encoding($productname, "UTF-8", "EUC-JP"))."|".date('m-d H:i',$lenmin).'+---+'.date('m-d H:i',$lenmax);
-      $imgstr.='&chxt='.'x,y';
-      $imgstr.='&chxr=1,'.$lenkakumin.','.$lenkakumax;
-      $imgstr.='&chxl=0:|'.date('n-j G:i',$lenmin).'|';
+      $imgstr.='&chf=bg,s,ffffff|c,ls,90,BBBBBB,0.25,999999,0.25,777777,0.25,444444,0.25'
+             //. '&chds='.$xmin.','.$xmax.'|'.$min.','.$max
+             . '&chm='.join('|',$style)
+             //. '&chem='.join('|',$chem)
+             . '&chco='.join(',',$chco)
+             . '&chdl='.join('|',$tuli)
+             . '&chls='.join('|',$chls)
+             . '&chg=5,25'
+             . '&chdlp=t|l'
+             . '&chma=30,30,0,30'
+             
+               
+             . '&chtt='.urlencode($productname)." ".urlencode(date('n月j日 H:i',$lenmin)).'+---+'.urlencode(date('n月j日 H:i',$lenmax))
+             . '&chts=000000,14'
+               
+             . '&chxt='.'x,y'
+             . '&chxs=0,000000,12|1,000000,12'
+             . '&chxr=1,'.$lenkakumin.','.$lenkakumax
+             . '&chxl=0:|'.date('n/j G:i',$lenmin).'|';
       for($leni = 1; $leni<10; $leni++){
-        $imgstr .= date('n-j G:i', $lenmin+(($lenmax-$lenmin)/10*$leni))."|";
+        $imgstr .= date('n/j G:i', $lenmin+(($lenmax-$lenmin)/10*$leni))."|";
       }
-      $imgstr .= date('n-j G:i',$lenmax);
+      $imgstr .= date('n/j G:i',$lenmax);
       $imgstr.="' /><br><div>";
       echo $imgstr;
       unset($lenmax,$lenmin,$lenkakumax,$lenkakumin);
+?>
+<div id='history_table_<?php echo $value[0]['products_id'];?>' style='display:none;'>
+<?php
       foreach ($dys_arr as $did=>$rowRecord)
         {
           echo "<table bgcolor='#999' cellspacing='1' style='float:left;' class='history_img' style='border:1px solid #999;font-size:11px;'>";
@@ -621,13 +643,17 @@ case 'dougyousya_categories':
           for($key8 = count($rowRecord)-1;$key8>=0;$key8--){
             echo "<tr>";
             echo "<td bgcolor='white' width='40' align='right'>"."<a href='history.php?action=deletePoint&cPath=".$cPath."&cid=".$cid."&pointid=".$rowRecord[$key8]['history_id']."'><b>" .$rowRecord[$key8]['dougyosya_kakaku']."</b></a></td>";
-            echo "<td bgcolor='white' align='right' style='color:#999'>".date('n-j G:i', strtotime($rowRecord[$key8]['last_date']))."</td>";
+            echo "<td bgcolor='white' align='right' style='color:#999'>".date('n/j G:i', strtotime($rowRecord[$key8]['last_date']))."</td>";
             echo "</tr>";
           }
           echo '</table>';                  
         }
-
-      echo '</div><hr style="clear:both">';
+?>
+</div>
+<?php
+      echo '</div>
+      <div style="clear:both;text-align:right;"><a href="#top">▲</a></div>
+      <hr>';
     }
         
   break;

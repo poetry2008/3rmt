@@ -39,7 +39,8 @@
                    cd.site_id,
                    c.sort_order
             from " .  TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
-            where c.parent_id = '" . $category_links[$i] . "' 
+            where  c.categories_status != '1' 
+              and c.parent_id = '" . $category_links[$i] . "' 
               and c.categories_id = cd.categories_id 
               and cd.language_id = '" . $languages_id . "'  
             order by sort_order, cd.categories_name, cd.site_id DESC
@@ -67,7 +68,8 @@
                    cd.site_id,
                    c.sort_order
             from " .  TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
-            where c.parent_id = '" . $current_category_id . "' 
+            where  c.categories_status != '1' 
+              and c.parent_id = '" . $current_category_id . "' 
               and c.categories_id = cd.categories_id 
               and cd.language_id = '" . $languages_id . "'  
             order by sort_order, cd.categories_name, cd.site_id DESC

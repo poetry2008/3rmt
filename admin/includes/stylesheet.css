@@ -3,6 +3,7 @@
 */
 body {
 font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif;
+font-size: 12px;
 }
 /* links */
 /* ---------------------------
@@ -12,8 +13,7 @@ a img {
 border: 0;
 }
 a:link {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;                                /* フォントサイズ */
+
 color: #000000;                                 /* フォントサイズ */
 font-weight: normal;                            /* フォント太さ */
 text-decoration: none;                          /* テキストの装飾 */
@@ -22,8 +22,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：リンク（訪問済み）
 --------------------------- */
 a:visited {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;                                /* フォントサイズ */
+
 color: #000000;                                 /* フォントカラー */
 font-weight: normal;                            /* フォント太さ */
 text-decoration: none;                          /* テキストの装飾 */
@@ -32,8 +31,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：リンク（選択している）
 --------------------------- */
 a:active {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;                                /* フォントサイズ */
+
 color: #000000;                                 /* フォントカラー */
 font-weight: normal;                            /* フォント太さ */
 text-decoration: none;                          /* テキストの装飾 */
@@ -42,7 +40,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：リンク（カーソルが上に乗ったとき）
 --------------------------- */
 a:hover {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+
 color: #000000;                                 /* フォントカラー */
 font-weight: normal;                            /* フォント太さ */
 text-decoration: underline;                     /* テキストの装飾 */
@@ -52,8 +50,7 @@ text-decoration: underline;                     /* テキストの装飾 */
 A：ヘッダリンク（通常）
 --------------------------- */
 a.headerLink:link {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;                                /* フォントサイズ */
+
 color: #ffffff;                                 /* フォントカラー */
 font-weight: bold;                              /* フォント太さ */
 text-decoration: none;                          /* テキストの装飾 */
@@ -62,8 +59,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：ヘッダリンク（訪問済み）
 --------------------------- */
 a.headerLink:visited {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */ 
-font-size: 11px;                                /* フォントサイズ */
+
 color: #ffffff;                                 /* フォントカラー */
 font-weight: bold;                              /* フォント太さ */
 text-decoration: none;                          /* テキストの装飾 */
@@ -72,8 +68,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：ヘッダリンク（選択している）
 --------------------------- */
 a.headerLink:active {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;                                /* フォントサイズ */
+
 color: #ffffff;                                 /* フォントカラー */
 font-weight: bold;                              /* フォント太さ */
 text-decoration: none;                          /* テキストの装飾 */
@@ -82,8 +77,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：ヘッダリンク（カーソルが上に乗ったとき）
 --------------------------- */
 a.headerLink:hover {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;                                /* フォントサイズ */
+
 color: #ffffff;                                 /* フォントカラー */
 font-weight: bold;                              /* フォント太さ */
 text-decoration: underline;                     /* テキストの装飾 */
@@ -93,7 +87,7 @@ text-decoration: underline;                     /* テキストの装飾 */
 A：メニューボックスヘッダリンク（通常）
 --------------------------- */
 a.menuBoxHeadingLink:link {
-font-size: 11px;                                /* フォントサイズ */
+font-size: 11px;   
 color: #616060;                                 /* フォントカラー */
 font-weight: bold;                              /* フォント太さ */
 text-decoration: none;                          /* テキストの装飾 */
@@ -102,7 +96,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：メニューボックスヘッダリンク（訪問済み）
 --------------------------- */
 a.menuBoxHeadingLink:visited {
-font-size: 11px;                                /* フォントサイズ */
+font-size: 11px;   
 color: #616060;                                 /* フォントカラー */
 font-weight: bold;                              /* フォント太さ */
 text-decoration: none;                          /* テキストの装飾 */
@@ -111,7 +105,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：メニューボックスヘッダリンク（選択している）
 --------------------------- */
 a.menuBoxHeadingLink:active {
-font-size: 11px;                                /* フォントサイズ */
+font-size: 11px;   
 color: #616060;                                 /* フォントカラー */
 font-weight: bold;                              /* フォント太さ */
 text-decoration: none;                          /* テキストの装飾 */
@@ -120,7 +114,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：メニューボックスヘッダリンク（カーソルが上に乗ったとき）
 --------------------------- */
 a.menuBoxHeadingLink:hover {
-font-size: 11px;                                /* フォントサイズ */
+font-size: 11px;   
 color: #616060;                                 /* フォントカラー */
 font-weight: bold;                              /* フォント太さ */
 text-decoration: none;                          /* テキストの装飾 */
@@ -130,7 +124,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：メニューボックスコンテンツリンク（通常）
 --------------------------- */
 a.menuBoxContentLink:link {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+
 font-size: 11px;                                /* フォントサイズ */
 color: #616060;                                 /* フォントカラー */
 font-weight: normal;                            /* フォント太さ */
@@ -140,8 +134,8 @@ text-decoration: none;                          /* テキストの装飾 */
 A：メニューボックスコンテンツリンク（訪問済み）
 --------------------------- */
 a.menuBoxContentLink:visited {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;                                /* フォントサイズ */
+
+font-size: 11px;  
 color: #616060;                                 /* フォントカラー */
 font-weight: normal;                            /* フォント太さ */
 text-decoration: none;                          /* テキストの装飾 */
@@ -150,8 +144,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：メニューボックスコンテンツリンク（選択している）
 --------------------------- */
 a.menuBoxContentLink:active {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;                                /* フォントサイズ */
+font-size: 11px; 
 color: #616060;                                 /* フォントカラー */
 font-weight: normal;                            /* フォント太さ */
 text-decoration: none;                          /* テキストの装飾 */
@@ -160,8 +153,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：メニューボックスコンテンツリンク（カーソルが上に乗ったとき）
 --------------------------- */
 a.menuBoxContentLink:hover {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;                                /* フォントサイズ */
+font-size: 11px; 
 color: #616060;                                 /* フォントカラー */
 font-weight: normal;                            /* フォント太さ */
 text-decoration: underline;                     /* テキストの装飾 */
@@ -171,8 +163,7 @@ text-decoration: underline;                     /* テキストの装飾 */
 A：ページリンク（通常）
 --------------------------- */
 a.splitPageLink:link {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;                                /* フォントサイズ */
+
 color: #0000FF;                                 /* フォントカラー */
 font-weight: normal;                            /* フォント太さ */
 text-decoration: none;                          /* テキストの装飾 */
@@ -181,8 +172,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：ページリンク（訪問済み）
 --------------------------- */
 a.splitPageLink:visited {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;                                /* フォントサイズ */
+
 color: #0000FF;                                 /* フォントカラー */
 font-weight: normal;                            /* フォント太さ */
 text-decoration: none;                          /* テキストの装飾 */
@@ -191,8 +181,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：ページリンク（選択している）
 --------------------------- */
 a.splitPageLink:active {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;                                /* フォントサイズ */
+
 color: #0000FF;                                 /* フォントカラー */
 font-weight: normal;                            /* フォント太さ */
 text-decoration: none;                          /* テキストの装飾 */
@@ -201,8 +190,7 @@ text-decoration: none;                          /* テキストの装飾 */
 A：ページリンク（カーソルが上に乗ったとき）
 --------------------------- */
 a.splitPageLink:hover {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;                                /* フォントサイズ */
+
 color: #0000FF;                                 /* フォントカラー */
 font-weight: normal;                            /* フォント太さ */
 text-decoration: underline;                     /* テキストの装飾 */
@@ -214,8 +202,7 @@ background-color: #FFFF33;                      /* 背景色 */
 .[TD]：メニューボックスコンテンツ
 --------------------------- */
 .menuBoxHeading {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;                                /* フォントサイズ */
+
 color: #616060;                                 /* フォントカラー */
 background-color: #ffffff;                      /* 背景色 */
 }
@@ -223,8 +210,7 @@ background-color: #ffffff;                      /* 背景色 */
 .[TD]：メニューボックスコンテンツ
 --------------------------- */
 .menuBoxContent {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;                                /* フォントサイズ */
+
 color: #616060;                                 /* フォントカラー */
 }
 
@@ -285,7 +271,7 @@ background-color: #808080;                      /* 背景色 */
 --------------------------- */
 .dataTableHeadingContent {
 font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;                                /* フォントサイズ */
+font-size: 11px; 
 color: #ffffff;                                 /* フォントカラー */
 font-weight: bold;                              /* フォント太さ */
 }
@@ -318,7 +304,7 @@ background-color: #FFCC99;                      /* 背景色 */
 --------------------------- */
 .dataTableContent {
 font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;                                /* フォントサイズ */
+font-size: 12px; 
 color: #000000;                                 /* フォントカラー */
 }
 
@@ -328,7 +314,7 @@ color: #000000;                                 /* フォントカラー */
 --------------------------- */
 .infoBoxHeading {
 font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;                                /* フォントサイズ */
+font-size: 12px;                                /* フォントサイズ */
 color: #000000;                                 /* フォントカラー */
 background-color: #FFD700;                      /* 背景色 */
 }
@@ -337,7 +323,7 @@ background-color: #FFD700;                      /* 背景色 */
 --------------------------- */
 .infoBoxContent {
 font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;                                /* フォントサイズ */
+font-size: 12px;                                /* フォントサイズ */
 color: #000000;                                 /* フォントカラー */
 background-color: #FFD700;                      /* 背景色 */
 }
@@ -348,22 +334,20 @@ background-color: #FFD700;                      /* 背景色 */
 --------------------------- */
 .messageBox {
 font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;                                /* フォントサイズ */
+font-size: 12px;  
 }
 /* ---------------------------
 .[TR,TD]：エラー、警告メッセージ
 --------------------------- */
 .messageStackError, .messageStackWarning {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;                                /* フォントサイズ */
+
 background-color: #ffb3b5;                      /* 背景色 */
 }
 /* ---------------------------
 .[TR,TD]：成功メッセージ
 --------------------------- */
 .messageStackSuccess {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;                                /* フォントサイズ */
+
 background-color: #99ff00;                      /* 背景色 */
 }
 
@@ -373,7 +357,7 @@ CHECKBOX, INPUT, RADIO, SELECT, TEXTAREA, FILE：FORMの入力・選択項目
 --------------------------- */
 CHECKBOX, INPUT, RADIO, SELECT, TEXTAREA, FILE {
 font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;                                /* フォントサイズ */
+font-size: 11px;
 }
 
 /* account */
@@ -390,7 +374,7 @@ border-width: 1px;                              /* 境界線の幅 */
 .[TD]：フォームエリア（タイトル）
 --------------------------- */
 .formAreaTitle {
-font-family: "ＭＳ Ｐゴシック", Osaka, Tahoma, Verdana, Arial, sans-serif; /* フォントファミリ */
+
 font-size: 12px;                                /* フォントサイズ */
 font-weight: bold;                              /* フォント太さ */
 }
@@ -426,15 +410,14 @@ text-decoration: line-through;                  /* テキストの装飾 */
 .[SPAN]：「*必須」文字列
 --------------------------- */
 .fieldRequired {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;                                /* フォントサイズ */
+
 color: #ff0000;                                 /* フォントカラー */
 }
 /* ---------------------------
 .[TD]：小さい文字（メッセージ）
 --------------------------- */
 .smallText {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+
 font-size: 10px;                                /* フォントサイズ */
 }
 /* ---------------------------
@@ -445,9 +428,9 @@ font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フ
 font-size: 12px;                                /* フォントサイズ */
 }
 legend {
-	font-size: 12px;
-	font-weight: bold;
-	color: #000000;
+    font-size: 12px;
+    font-weight: bold;
+    color: #000000;
 }
 
 #tep_site_filter{

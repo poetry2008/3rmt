@@ -322,7 +322,7 @@ foreach($oroids as $key=>$value){
 if($cols)
 foreach($cols as $col){
     $oroname[] = $col['oroshi_name'];
-    $orotime[] = $col['set_date'];
+    $orotime[] = date('Y/m/d H:i:s',strtotime($col['set_date']));
     $datas_id[] = $col['list_id'];
     $lines = spliteOroData($col['datas']);
     $count[]=count($lines);
@@ -364,8 +364,8 @@ $rows = $count[0]>count($products)?$count[0]:count($products);
     <th class="dataTableHeadingContent"><?php echo $value;?></th>
 <?php } ?>
     <th class="dataTableHeadingContent" >商品選択</th>
-    <th class="dataTableHeadingContent" >個数/架空</th>
-    <th class="dataTableHeadingContent" >価格/業者</th>
+    <th class="dataTableHeadingContent" >架空数量</th>
+    <th class="dataTableHeadingContent" >業者単価</th>
     <!--<th></th>-->
   </tr>
 <?php for($k = 0; $k < $rows; $k++) {?>

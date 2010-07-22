@@ -81,8 +81,9 @@ case 'set_oroshi':
       ("'.$orrshi_id.'","'.$diffval.'")';
        tep_db_query($sql);
   }
-  $sql = 'delete from set_oroshi_datas where oroshi_id = "'.$orrshi_id.'" and parent_id not in (select soc.categories_id from set_oroshi_categories soc where oroshi_id ="'.$orrshi_id.'")';
-  tep_db_query($sql);
+
+//  $sql = 'delete from set_oroshi_datas where oroshi_id = "'.$orrshi_id.'" and parent_id not in (select soc.categories_id from set_oroshi_categories soc where oroshi_id ="'.$orrshi_id.'")';
+//  tep_db_query($sql);
   
     $name = $_POST['up_oroshi'];
     $sql = 'update set_oroshi_names set oroshi_name="'.$name[$orrshi_id].'"

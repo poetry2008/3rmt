@@ -72,7 +72,8 @@ foreach($sites as $s) {
           date_scheduled,
           date_added,
           date_status_change,
-          status
+          status,
+          site_id
           ) values (
             NULL,
             '".mysql_real_escape_string($banner['banners_title'])."',
@@ -85,7 +86,8 @@ foreach($sites as $s) {
             '".mysql_real_escape_string($banner['date_scheduled'])."',
             '".mysql_real_escape_string($banner['date_added'])."',
             '".mysql_real_escape_string($banner['date_status_change'])."',
-            '".mysql_real_escape_string($banner['status'])."'
+            '".mysql_real_escape_string($banner['status'])."',
+            '" . site_id($s) . "'
           )
         ");
     $bid = mysql_insert_id();
