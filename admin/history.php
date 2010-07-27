@@ -537,7 +537,7 @@ case 'dougyousya_categories':
           $tuli_arr[]  = $record['dougyousya_name'];
         }
       }
-      $imgstr = "<img width='720' height='300' alt='".$productname."' onclick='$(\"#history_table_".$value[0]['products_id']."\").toggle()' src = 'http://chart.apis.google.com/chart?cht=lxy&chs=720x300&";
+      $imgstr = "<img width='720' height='300' alt='".$productname."' onclick='$(\"#history_table_".$value[0]['products_id']."\").toggle()' src = 'chart.php?cht=lxy&chs=720x300&";
       $imgstr.= "chd=t:";
       $style = array();
       $key2count = 0;

@@ -70,8 +70,8 @@ if (isset($_GET['action']) && $_GET['action']) {
   <!-- body //-->
   <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
-  <td width="<?php echo BOX_WIDTH; ?>" valign="top">
-  <table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
+  <td <?php if ($ocertify->npermission < 10) {?>width='1'<?php } else {?> width="<?php echo BOX_WIDTH; ?>"<?php }?> valign="top">
+  <table border="0" <?php if ($ocertify->npermission <10) {?>width='1'<?php } else {?> width="<?php echo BOX_WIDTH; ?>"<?php }?> cellspacing="1" cellpadding="1" class="columnLeft">
   <!-- left_navigation //-->
   <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
   <!-- left_navigation_eof //-->
@@ -119,9 +119,9 @@ if (isset($_GET['action']) && $_GET['action']) {
   <!--dataTableHeadingRow-->
   <tr class="dataTableHeadingRow" valign="top">
   <td class="dataTableHeadingContent" height="30"><?php echo TABLE_HEADING_CATEGORIES_PRODUCTS; ?></td>
-  <td class="dataTableHeadingContent" align="right">架空</td>
-  <td class="dataTableHeadingContent" align="right">数量</td>
-  <td class="dataTableHeadingContent" align="right">
+  <td class="dataTableHeadingContent" align="right" width="50">架空</td>
+  <td class="dataTableHeadingContent" align="right" width="50">数量</td>
+  <td class="dataTableHeadingContent" align="right" width="50">
       <a style="font-weight:bold;" href="cleate_list.php?cid=<?php echo $cPath_yobi;?>&action=prelist&cPath=<?php echo $_GET['cPath'];?>">業者</a>
       <small style="font-weight:normal;"><?php echo $kakaku_updated;?></small>
   </td>
@@ -131,7 +131,7 @@ if (isset($_GET['action']) && $_GET['action']) {
   $col=tep_db_fetch_array($res);
   if (!$col) $col['bairitu'] = 1.1;
 ?>
-<td class="dataTableHeadingContent" align="right"><?php echo $col['bairitu']?>倍</td>
+<td class="dataTableHeadingContent" align="right" width="50"><?php echo $col['bairitu']?>倍</td>
   <?php
   if ($cPath_yobi){
     $res=tep_db_query("select count(*) as cnt from set_dougyousya_names sdn
@@ -156,19 +156,20 @@ if (isset($_GET['action']) && $_GET['action']) {
       }
     } else {
       $count_dougyousya['cnt'] = 1;
-      echo "<td class='dataTableHeadingContent' align='center'><a href='cleate_dougyousya.php'>同業者未設定</a></td>";
+      //echo "<td class='dataTableHeadingContent' align='center' width='100'><a href='cleate_dougyousya.php'>同業者未設定</a></td>";
+      echo "<td class='dataTableHeadingContent' align='center' width='100'>同業者未設定</td>";
     }
   }
 ?>
-  <td class="dataTableHeadingContent" align="right">現在単価</td>
-  <td class="dataTableHeadingContent" align="right">単価設定</td>
-  <td class="dataTableHeadingContent" align="right">増減</td>
-  <td class="dataTableHeadingContent" align="center"><?php
+  <td class="dataTableHeadingContent" align="center" width='100'>現在単価</td>
+  <td class="dataTableHeadingContent" align="center" width='50'>単価設定</td>
+  <td class="dataTableHeadingContent" align="center" width='50'>増減</td>
+  <td class="dataTableHeadingContent" align="center" <?php if ($ocertify->npermission < 10) {?>width='1'<?php } else {?>width='80'<?php }?>><?php
   if ($ocertify->npermission >7) {
     echo  TABLE_HEADING_STATUS; 
   }
   ?></td>
-  <td class="dataTableHeadingContetn" align="right"></td>
+  <td class="dataTableHeadingContetn" align="center" width='80'></td>
   </tr>
   <!--dataTableHeadingRow end-->
 <?php
@@ -449,7 +450,7 @@ if ($cPath_yobi){
       }
 ?></td>
 <td class="dataTableContent" align="left"><input pos="<?php echo $products_count;?>_1" class="udlr" type="text" size='6' value="<?php echo (int)$products['products_price'];?>" name="price[]" id="<?php echo "price_input_".$products_count; ?>" onblur="event_onblur(<?php echo $products_count; ?>)" onchange="event_onchange(<?php echo $products_count; ?>)"><span id="price_error_<?php echo $products_count; ?>"></span></td>
-<td class="dataTableContent" align="left"><input pos="<?php echo $products_count;?>_2" class="udlr" type="text" size='6' value="<?php echo $products['products_price_offset'];?>" name="offset[]" id="<?php echo "offset_input_".$products_count; ?>"><span id="offset_error_<?php echo $products_count; ?>"></span></td>
+<td class="dataTableContent" align="left"><input pos="<?php echo $products_count;?>_2" class="udlr" type="text" size='6' value="<?php echo $products['products_price_offset'];?>" name="offset[]" id="<?php echo "offset_input_".$products_count; ?>"><span id="offset_error_<?php echo $products_count; ?>" onchange="this.value=SBC2DBC(this.value)"></span></td>
 <?php //サイト入力  ?>
 <td class="dataTableContent" align="center"><?php
 if ($ocertify->npermission >= 10) { //表示制限

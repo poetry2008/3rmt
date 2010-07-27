@@ -89,7 +89,9 @@ function goto(){
             <tr>
                <td class = "pageHeading">卸業者のデータ登録
                <input type="button" onClick = "goto()" value='戻る'>
+  <?php if ($ocertify->npermission >7){?>
                <input type="button" onClick="location.href='cleate_oroshi.php'" value="卸業者の名前設定">
+  <?php }?>
                </td>
             </tr>
             <tr>

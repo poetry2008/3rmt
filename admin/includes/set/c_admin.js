@@ -75,6 +75,7 @@ function event_onblur(i){
 
 function event_onchange(i){
   var this_price=document.getElementsByName("pprice[]");
+  $('#price_input_'+i).val(SBC2DBC($('#price_input_'+i).val()));
   var old_price = this_price[i-1].value;
   var new_price = $('#price_input_'+i).val();
   if (old_price != new_price) {
@@ -83,7 +84,14 @@ function event_onchange(i){
     $('#price_input_'+i).css('color','blue');
   }
 }
-
+function SBC2DBC(str) {
+  var arr = new Array('０','１','２','３','４','５','６','７','８','９');
+  for(i in arr) {
+    str = str.replace(eval("/"+arr[i]+"/g"),i);
+  }
+  str = str.replace(/[^\d\.]/gi,'');
+  return str;
+}
 //計算設定読み込み
 function set_money(num,warning){
     if (warning ==undefined)
