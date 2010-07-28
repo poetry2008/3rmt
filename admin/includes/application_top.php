@@ -189,18 +189,6 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('TABLE_COLOR', 'color');//Color setting
   define('TABLE_COLOR_TO_PRODUCTS', 'color_to_products');//products_id <-> color_id
 
-  //Language define
-  define('BOX_CATALOG_COLORS', '商品カラー登録');
-  define('BOX_CATALOG_CATEGORIES_ADMIN', '商品卸価格管理');
-  define('BOX_CATALOG_COLORS', '商品カラー登録');
-define('HEADING_TITLE','商品卸価格管理');
-define('HEADING_TITLE_SEARCH','検索');
-define('HEADING_TITLE_GOTO','ジャンプ');
-define('TABLE_HEADING_ACTION','操作');
-define('TABLE_HEADING_STATUS','ステータス');
-define('TABLE_HEADING_CATEGORIES_PRODUCTS','カテゴリー / 商品');
-define('OROSHI_DATA_MANAGE','データ');
-
 
 
   //=======================================================  
@@ -238,7 +226,7 @@ define('OROSHI_DATA_MANAGE','データ');
 
 // define how the session functions will be used
   require(DIR_WS_FUNCTIONS . 'sessions.php');
-  tep_session_name('osCAdminsID');
+  tep_session_name('SID');
 
 // lets start our session
   tep_session_start();

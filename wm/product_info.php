@@ -126,9 +126,9 @@ function change_num(ob, targ, quan,a_quan)
     } else {
       
       $pricedef = $product_info['products_price'];
-      $products_price = $currencies->display_price(tep_get_price($product_info['products_price'], $product_info['products_price_offset'], tep_get_price($product_info['products_small_sum'])), tep_get_tax_rate($product_info['products_tax_class_id']));
+      $products_price = $currencies->display_price(tep_get_price($product_info['products_price'], $product_info['products_price_offset'], tep_get_price($product_info['products_price'],$product_info['products_small_sum'])), tep_get_tax_rate($product_info['products_tax_class_id']));
     }
-    
+     
     $description = $product_info['products_description'];
     //data1
     $data1 = explode("//", $product_info['products_attention_1']);

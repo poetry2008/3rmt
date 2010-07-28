@@ -167,7 +167,7 @@ function showimage($1) {
         <div align="right"><a href="<?php echo tep_href_link(FILENAME_DEFAULT); ?>"><?php echo tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></a></div>
         <?php
   } else {
-    // ccdd
+    // ccdd 
     $product_info['site_id'] == SITE_ID && tep_db_query("
         UPDATE " . TABLE_PRODUCTS_DESCRIPTION . " 
         SET products_viewed = products_viewed+1 
@@ -184,7 +184,7 @@ function showimage($1) {
     } else {
       
       $pricedef = $product_info['products_price'];
-      $products_price = $currencies->display_price(tep_get_price($product_info['products_price'], $product_info['products_price_offset'], tep_get_price($product_info['products_small_sum'])), tep_get_tax_rate($product_info['products_tax_class_id']));
+      $products_price = $currencies->display_price(tep_get_price($product_info['products_price'], $product_info['products_price_offset'], tep_get_price($product_info['products_price'],$product_info['products_small_sum'])), tep_get_tax_rate($product_info['products_tax_class_id']));
     }
   
   $description = $product_info['products_description'];

@@ -84,7 +84,7 @@ if (isset($_GET['action']) && $_GET['action']) {
   <td>
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
-      <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
+      <td class="pageHeading">商品卸価格管理</td>
       <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
       <td class="smallText" align="right"><?php echo tep_draw_form('search', FILENAME_CATEGORIES_ADMIN, '', 'get') . "\n"; ?> <?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search', isset($_GET['search'])?$_GET['search']:'') . "\n"; ?></form></td>
       <td class="smallText" align="right"><?php echo tep_draw_form('goto', FILENAME_CATEGORIES_ADMIN, '', 'get') . "\n"; ?> <?php echo HEADING_TITLE_GOTO . ' ' . tep_draw_pull_down_menu('cPath', tep_get_category_tree_cpath(), $current_category_id, 'onChange="this.form.submit();"') . "\n"; ?></form></td>
