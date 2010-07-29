@@ -186,7 +186,7 @@
 
 // check if sessions are supported, otherwise use the php3 compatible session class
   if (!function_exists('session_start')) {
-    define('PHP_SESSION_NAME', 'sID');
+    define('PHP_SESSION_NAME', 'SID');
     define('PHP_SESSION_SAVE_PATH', '/tmp/');
 
     include(DIR_WS_CLASSES . 'sessions.php');

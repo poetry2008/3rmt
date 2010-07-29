@@ -218,7 +218,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
 // check to see if php implemented session management functions - if not, include php3/php4 compatible session class
   if (!function_exists('session_start')) {
-    define('PHP_SESSION_NAME', 'sID');
+    define('PHP_SESSION_NAME', 'SID');
     define('PHP_SESSION_SAVE_PATH', '/tmp');
 
     include(DIR_WS_CLASSES . 'sessions.php');
