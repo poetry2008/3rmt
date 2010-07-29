@@ -18,4 +18,7 @@ chmod 604 wm/.htaccess wm/documents/.htaccess wm/includes/languages/japanese/.ht
 find ./admin/upload_images/ -type d -exec chmod 0777 {} \;
 
 chmod 666 -R jp/images/imagecach* gm/images/imagecach* wm/images/imagecach*
-chmod 777 jp/images/imagecach* gm/images/imagecach* wm/images/imagecach*
+chmod 777 jp/images/imagecach* gm/images/imagecach* wm/images/imagecach* 
+chmod 777 admin/images admin/images/graphs
+
+chmod 777 admin/includes/languages/*

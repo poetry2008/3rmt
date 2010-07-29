@@ -15,7 +15,7 @@ foreach ($sites as $s) {
     if ($product['products_image3']) 
     cp(fs($s).'images/'.$product['products_image3'], fs('3rmt').'admin/upload_images/0/products/'.$product['products_image3']);
   }
-  cp(fs($s).'images/stock.gif', fs('3rmt').'admin/upload_images/0/products/stock.gif']);
+  cp(fs($s).'images/stock.gif', fs('3rmt').'admin/upload_images/'.site_id($s).'/products/stock.gif');
 }
 
 // categories

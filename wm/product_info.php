@@ -176,17 +176,17 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                     <tr>
                       <td align="center">
                       <table border="0" cellspacing="6" cellpadding="0" summary="rmt_info">
-                          <tr>
-                            <?php if (tep_not_null($product_info['products_image'])) { ?>
-                            <td width="60" height="60" align="center" class="image_border"><a href="images/<?php echo $product_info['products_image'] ; ?>" rel="lightbox[products]"><?php echo tep_image2(DIR_WS_IMAGES . $product_info['products_image'], $product_info['products_name'], 50, 50, 'name="prod_thum_1"') ;?></a></td>
-                            <?php } ?>
-                            <?php if (tep_not_null($product_info['products_image2'])) { ?>
-                            <td width="60" align="center" class="image_border"><a href="images/<?php echo $product_info['products_image2'] ; ?>" rel="lightbox[products]"><?php echo tep_image2(DIR_WS_IMAGES . $product_info['products_image2'], $product_info['products_name'], 50, 50, 'name="prod_thum_1"') ;?></a></td>
-                            <?php } ?>
-                            <?php if (tep_not_null($product_info['products_image3'])) { ?>
-                            <td width="60" align="center" class="image_border"><a href="images/<?php echo $product_info['products_image3'] ; ?>" rel="lightbox[products]"><?php echo tep_image2(DIR_WS_IMAGES . $product_info['products_image3'], $product_info['products_name'], 50, 50, 'name="prod_thum_1"') ;?></a></td>
-                            <?php } ?>
-                          </tr>
+                      <tr>
+                        <?php if (tep_not_null($product_info['products_image'])) { ?>
+                        <td width="60" height="60" align="center" class="image_border"><a href="<?php echo DIR_WS_IMAGES .'products/'. $product_info['products_image'] ; ?>" rel="lightbox[products]"><?php echo tep_image2(DIR_WS_IMAGES .'products/'. $product_info['products_image'], $product_info['products_name'], 50, 50, 'name="prod_thum_1"') ;?></a></td>
+                        <?php } ?>
+                        <?php if (tep_not_null($product_info['products_image2'])) { ?>
+                        <td width="60" align="center" class="image_border"><a href="<?php echo DIR_WS_IMAGES . 'products/'.$product_info['products_image2'] ; ?>" rel="lightbox[products]"><?php echo tep_image2(DIR_WS_IMAGES .'products/'. $product_info['products_image2'], $product_info['products_name'], 50, 50, 'name="prod_thum_1"') ;?></a></td>
+                        <?php } ?>
+                        <?php if (tep_not_null($product_info['products_image3'])) { ?>
+                        <td width="60" align="center" class="image_border"><a href="<?php echo DIR_WS_IMAGES.'products/'.$product_info['products_image3'] ; ?>" rel="lightbox[products]"><?php echo tep_image2(DIR_WS_IMAGES .'products/'. $product_info['products_image3'], $product_info['products_name'], 50, 50, 'name="prod_thum_1"') ;?></a></td>
+                        <?php } ?>
+                      </tr>
                         </table>
                         <?php
         }

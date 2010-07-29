@@ -33,7 +33,7 @@
   }
 
   require(DIR_WS_FUNCTIONS . 'sessions.php');
-  tep_session_name('osCAdminsID');
+  tep_session_name('SID');
 
 // lets start our session
   tep_session_start();

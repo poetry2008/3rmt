@@ -2480,8 +2480,11 @@ function tep_get_final_price($price, $offset, $sum, $quantity) {
   if ($price && $sum) {
     $lprice = $price;
     $lq = null;
-    foreach (tep_get_wari_array_by_sum($sum) as $q => $p) {
-      if ($lq === null or ($q < $lq && $q >= $quantity)) {
+    $wari_array = tep_get_wari_array_by_sum($sum);
+    ksort($wari_array);
+    
+    foreach ($wari_array as $q => $p) {
+      if ($lq === null or ($q > $lq && $q <= $quantity)) {
         $lq = $q;
         $lprice = $p;
       }
