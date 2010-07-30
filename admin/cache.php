@@ -5,6 +5,10 @@
 
   require('includes/application_top.php');
 
+  $site_id = isset($_GET['site_id'])?$_GET['site_id']:1;
+  $dir_fs_cache = get_configuration_by_site_id('DIR_FS_CACHE', $site_id);
+
+
   if (isset($_GET['action']) && $_GET['action']) {
     if ($_GET['action'] == 'reset') {
       tep_reset_cache_block($_GET['block']);
@@ -13,10 +17,19 @@
   }
 
 // check if the cache directory exists
-  if (is_dir(DIR_FS_CACHE)) {
-    if (!is_writeable(DIR_FS_CACHE)) $messageStack->add(ERROR_CACHE_DIRECTORY_NOT_WRITEABLE, 'error');
+  if (is_dir($dir_fs_cache)) {
+    if (!is_writeable($dir_fs_cache)) {
+    	@chmod($dir_fs_cache, 0777);
+    	if (!is_writeable($dir_fs_cache)) {
+    		$messageStack->add(ERROR_CACHE_DIRECTORY_NOT_WRITEABLE, 'error');
+    	}
+    }
   } else {
-    $messageStack->add(ERROR_CACHE_DIRECTORY_DOES_NOT_EXIST, 'error');
+  	@mkdir($dir_fs_cache, 0777); 
+  	@chmod($dir_fs_cache, 0777);
+  	if (!is_dir($dir_fs_cache)){
+    	$messageStack->add(ERROR_CACHE_DIRECTORY_DOES_NOT_EXIST, 'error');
+    }
   }
 ?>
 <!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -52,7 +65,15 @@
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+            <td valign="top">
+    
+              <div id="tep_site_filter">
+              	  <?php foreach(tep_get_sites() as $k => $s) {?>
+                        <span <?php if ($site_id == $s['id']) {?>class="site_filter_selected"<?php }?>><a href="cache.php?site_id=<?php echo $s['id'];?>"><?php echo $s['romaji'];?></a></span>
+                  <?php }?>
+              </div>
+
+    <table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr class="dataTableHeadingRow">
                 <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CACHE; ?></td>
                 <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_DATE_CREATED; ?></td>
@@ -68,15 +89,15 @@
     }
     for ($i = 0, $n = sizeof($cache_blocks); $i < $n; $i++) {
       $cached_file = ereg_replace('-language', '-' . $language, $cache_blocks[$i]['file']);
-      if (file_exists(DIR_FS_CACHE . $cached_file)) {
-        $cache_mtime = strftime(DATE_TIME_FORMAT, filemtime(DIR_FS_CACHE . $cached_file));
+      if (file_exists($dir_fs_cache . $cached_file)) {
+        $cache_mtime = strftime(DATE_TIME_FORMAT, filemtime($dir_fs_cache . $cached_file));
       } else {
         $cache_mtime = TEXT_FILE_DOES_NOT_EXIST;
-        $dir = dir(DIR_FS_CACHE);
+        $dir = dir($dir_fs_cache);
         while ($cache_file = $dir->read()) {
           $cached_file = ereg_replace('-language', '-' . $language, $cache_blocks[$i]['file']);
           if (ereg('^' . $cached_file, $cache_file)) {
-            $cache_mtime = strftime(DATE_TIME_FORMAT, filemtime(DIR_FS_CACHE . $cache_file));
+            $cache_mtime = strftime(DATE_TIME_FORMAT, filemtime($dir_fs_cache . $cache_file));
             break;
           }
         }
@@ -93,7 +114,7 @@
   }
 ?>
               <tr>
-                <td class="smallText" colspan="3"><?php echo TEXT_CACHE_DIRECTORY . ' ' . DIR_FS_CACHE; ?></td>
+                <td class="smallText" colspan="3"><?php echo TEXT_CACHE_DIRECTORY . ' ' . $dir_fs_cache; ?></td>
               </tr>
             </table></td>
           </tr>

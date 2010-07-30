@@ -21,4 +21,4 @@ chmod 666 -R jp/images/imagecach* gm/images/imagecach* wm/images/imagecach*
 chmod 777 jp/images/imagecach* gm/images/imagecach* wm/images/imagecach* 
 chmod 777 admin/images admin/images/graphs
 
-chmod 777 admin/includes/languages/*
+chmod 777 -R admin/includes/languages/*

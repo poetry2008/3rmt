@@ -927,7 +927,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
             <table width="100%" border="0" class="dataTableRow" cellpadding="2" cellspacing="0">
               <tr>
                 <td class="main" valign="top" width="30%"><b><?php echo ENTRY_SITE;?>:</b></td>
-                <td class="main" width="70%"><font color='#FF0000'><b><?php echo tep_get_site_romaji_by_order_id($oID)?></b></font></td>
+                <td class="main" width="70%"><font color='#FF0000'><b><?php echo tep_get_site_name_by_order_id($oID)?></b></font></td>
               </tr>
               <tr>
                 <td class="main" valign="top" width="30%"><b>注文番号:</b></td>

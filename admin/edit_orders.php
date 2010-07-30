@@ -844,7 +844,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
             <table width="100%" border="0" class="dataTableRow" cellpadding="2" cellspacing="0">
               <tr>
                 <td class="main" valign="top" width="30%"><b><?php echo ENTRY_SITE;?>:</b></td>
-                <td class="main" width="70%"><?php echo tep_get_site_romaji_by_order_id($oID);?></td>
+                <td class="main" width="70%"><?php echo tep_get_site_name_by_order_id($oID);?></td>
               </tr>
               <tr>
                 <td class="main" valign="top" width="30%"><b>注文番号:</b></td>

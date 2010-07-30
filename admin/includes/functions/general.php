@@ -1116,20 +1116,22 @@
     tep_db_query("delete from " . TABLE_ORDERS_TOTAL . " where orders_id = '" . tep_db_input($order_id) . "'");
   }
 
-  function tep_reset_cache_block($cache_block) {
+  function tep_reset_cache_block($cache_block, $site_id='') {
     global $cache_blocks;
 
+	foreach (tep_get_sites() as $k=>$s){
+	$dir_fs_cache = get_configuration_by_site_id('DIR_FS_CACHE', $s['id']);
     for ($i = 0, $n = sizeof($cache_blocks); $i < $n; $i++) {
       if ($cache_blocks[$i]['code'] == $cache_block) {
         if ($cache_blocks[$i]['multiple']) {
-          if ($dir = @opendir(DIR_FS_CACHE)) {
+          if ($dir = @opendir($dir_fs_cache)) {
             while ($cache_file = readdir($dir)) {
               $cached_file = $cache_blocks[$i]['file'];
               $languages = tep_get_languages();
               for ($j = 0, $k = sizeof($languages); $j < $k; $j++) {
                 $cached_file_unlink = ereg_replace('-language', '-' . $languages[$j]['directory'], $cached_file);
                 if (ereg('^' . $cached_file_unlink, $cache_file)) {
-                  @unlink(DIR_FS_CACHE . $cache_file);
+                  @unlink($dir_fs_cache . $cache_file);
                 }
               }
             }
@@ -1140,11 +1142,12 @@
           $languages = tep_get_languages();
           for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
             $cached_file = ereg_replace('-language', '-' . $languages[$i]['directory'], $cached_file);
-            @unlink(DIR_FS_CACHE . $cached_file);
+            @unlink($dir_fs_cache . $cached_file);
           }
         }
         break;
       }
+    }
     }
   }
 
