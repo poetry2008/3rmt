@@ -361,7 +361,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
                           <td>
 
 <?php
-if (!isset($bank_kamoku)) $bank_kamoku = NULL; //del notice
+//if (!isset($bank_kamoku)) $bank_kamoku = NULL; //del notice
   switch($bank_kamoku) {
     case TEXT_BANK_SELECT_KAMOKU_F:
   default:

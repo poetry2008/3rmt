@@ -118,7 +118,9 @@ UL {
 }
 .r_c_links_ul li a{
 	display: block;
+	line-height:17px;
 	height: 17px;
+	*line-height:19px;
 	*height: 19px;
 	overflow: hidden;
 	background: #fff;
@@ -919,4 +921,7 @@ Information
 }
 .Tlist a:hover{
 	text-decoration:underline;
+}
+.subcategory_tree{
+list-style-type:none;
 }

@@ -158,7 +158,7 @@
       } else if($entry_password_error == true) {
         echo tep_draw_password_field('password') . '&nbsp;' . ENTRY_PASSWORD_ERROR;
       } else {
-        echo PASSWORD_HIDDEN . tep_draw_hidden_field('password') . tep_draw_hidden_field('confirmation');
+        echo PASSWORD_HIDDEN . tep_draw_hidden_field('password', '', "class='input_text'") . tep_draw_hidden_field('confirmation');
       }
     } else {
       echo tep_draw_password_field('password') . '&nbsp;' . ENTRY_PASSWORD_TEXT;

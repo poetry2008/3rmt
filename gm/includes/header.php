@@ -98,7 +98,7 @@ if (fflag==0)
     <li>
     <?php
       // add info romaji 
-      $co_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where pID = '16' and site_id = '".SITE_ID."'"); 
+      $co_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where romaji = 'guide' and site_id = '".SITE_ID."'"); 
       $co_res = tep_db_fetch_array($co_query); 
       if ($co_res) { 
     ?>
@@ -110,7 +110,7 @@ if (fflag==0)
     <li>
     <?php
       // add info romaji 
-      $gu_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where pID = '15' and site_id = '".SITE_ID."'"); 
+      $gu_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where romaji = 'profile' and site_id = '".SITE_ID."'"); 
       $gu_res = tep_db_fetch_array($gu_query); 
       if ($gu_res) { 
     ?>

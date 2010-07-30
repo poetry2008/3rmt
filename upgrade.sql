@@ -16,7 +16,7 @@ Final Fantasy XIをはじめとした大人気MMORPGであるAION、REDSTONE、L
 	<p class="p_info_01" style="padding:10px 43px 0;">
 		数多くのオンラインショップの中から<strong>RMT</strong>ゲームマネーにご来店いただき、誠にありがとうございます。<br>
 		RMTゲームマネーは株式会社iimyが運営するオンラインゲーム通貨の売買(RMT)専門サイトです。左メニューからプレイされているゲームタイトルをクリックし、購入手続きを行ってください。<br>
-		初めてご利用いただきますお客様は<a href="info-3.html">はじめてのRMT</a>をご覧ください。<br>
+		初めてご利用いただきますお客様は<a href="info/starting_rmt.html">はじめてのRMT</a>をご覧ください。<br>
 	</p>
   </div>
 </div>
@@ -40,8 +40,8 @@ Final Fantasy XIをはじめとした大人気MMORPGであるAION、REDSTONE、L
 	</div>
 	<h3 class="index_payment01">RMTゲームマネー ナビ</h3>
            <div style="font-size:14px; padding:0 20px 0 25px;">
-		お支払い方法については<a href="info-8.html">クレジットカード決済について</a>、<a href="info-9.html">銀行振込について</a>、<a href="info/smartpit.html">コンビニ決済について</a>をお読みください。<br>
-		携帯電話メールアドレスにて、各ゲーム通貨のRMTをご注文のお客様は<a href="info-15.html">携帯電話の設定方法</a>をお読みください。<br>
+		お支払い方法については<a href="info/cubit.html">クレジットカード決済について</a>、<a href="info/bank_furikomi.html">銀行振込について</a>、<a href="info/smartpit.html">コンビニ決済について</a>をお読みください。<br>
+		携帯電話メールアドレスにて、各ゲーム通貨のRMTをご注文のお客様は<a href="info/kmail_payment.html">携帯電話の設定方法</a>をお読みください。<br>
            </div>
 	<h3 class="index_payment01">RMTとは?</h3>
            <div style="font-size:14px; padding:0 20px 0 25px;">

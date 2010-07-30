@@ -303,27 +303,22 @@ $tag_query = tep_db_query("
                           <td class="main p_i_b_title">タグ</td> 
                           <td class="main">
                           <ul class="show_tags01"> 
-                          <?php
-                            while ($tag = tep_db_fetch_array($tag_query)) {
-                              if ($tag['tags_images'] && file_exists(DIR_FS_CATALOG .  DIR_WS_IMAGES . $tag['tags_images'])) {
-                          ?>
-                          <li>
-                            <a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'tags_id='.$tag['tags_id']);?>">
-                            <img src="<?php echo DIR_WS_IMAGES.$tag['tags_images'];?>" alt="<?php echo $tag['tags_name'];?>" title="<?php echo $tag['tags_name'];?>"> 
-                            </a>
-                          </li>
-                          <?php
-                              } else {
-                          ?>
-                          <li>
-                            <a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'tags_id='.$tag['tags_id']);?>">
-                            <?php echo $tag['tags_name'];?> 
-                            </a> 
-                          </li>
-                          <?php
-                              }
-                            }
-                          ?>
+                      <?php
+while($tag = tep_db_fetch_array($tag_query)) {
+  ?>
+ <li><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'tags_id=' .  $tag['tags_id']);?>">
+<?php if ((file_exists(DIR_FS_CATALOG . DIR_WS_IMAGES . $tag['tags_images']) || file_exists(DIR_FS_CATALOG . 'default_images/' . $tag['tags_images']))&& $tag['tags_images'])
+ {
+   echo tep_image(DIR_WS_IMAGES . $tag['tags_images'], $tag['tags_name'] , 20, 15);
+ } else { 
+   echo $tag['tags_name'];
+  }
+  ?>
+</a></li>
+ &nbsp;&nbsp;
+ <?php
+}
+?>
                           </ul> 
                           </td> 
                         </tr> 

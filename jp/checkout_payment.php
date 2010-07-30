@@ -365,19 +365,19 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
                           <td>
 
 <?php
-if (isset($bank_kamoku)) {
+
   switch($bank_kamoku) {
-    case TEXT_BANK_SELECT_KAMOKU_F:
-  default:
-    $bank_sele_f = true;
-    $bank_sele_t = false;
-    break;
   case TEXT_BANK_SELECT_KAMOKU_T:
     $bank_sele_f = false;
     $bank_sele_t = true;
     break;
+  case TEXT_BANK_SELECT_KAMOKU_F:
+  default:
+    $bank_sele_f = true;
+    $bank_sele_t = false;
+    break;
   }
-}
+ 
 ?>              
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
 <?php
