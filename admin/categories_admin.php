@@ -122,7 +122,7 @@ if (isset($_GET['action']) && $_GET['action']) {
   <td class="dataTableHeadingContent" align="right" width="50">架空</td>
   <td class="dataTableHeadingContent" align="right" width="50">数量</td>
   <td class="dataTableHeadingContent" align="right" width="50">
-      <a style="font-weight:bold;" href="cleate_list.php?cid=<?php echo $cPath_yobi;?>&action=prelist&cPath=<?php echo $_GET['cPath'];?>">業者</a>
+      <a style="font-weight:bold;" href="cleate_list.php?cid=<?php echo $cPath_yobi;?>&action=prelist&cPath=<?php echo $_GET['cPath'];?>">業者</a><br>
       <small style="font-weight:normal;"><?php echo $kakaku_updated;?></small>
   </td>
   <?php  

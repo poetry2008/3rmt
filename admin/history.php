@@ -24,6 +24,18 @@ charset=<?php echo CHARSET; ?>">
       return confirm('削除しますか？');
     }
 $(function() {
+    $("#saveorder1").bind('click',function(){
+      $("#orderstring").val('');
+      $("input[name='proid[]']").each(function(i){
+      $("#orderstring").val($("#orderstring").val() +','+this.value);
+        });
+      $("#targetstring").val('');
+      $("input[name='TARGET_INPUT[]']").each(function(i){
+      $("#targetstring").val($("#targetstring").val() +','+this.value);
+        });
+      return true;
+      //return false;
+      });
     $(".udlr").udlr();
     var key_sum=0;
     // 给文本框加个keypress，即键盘按下的时候判断
@@ -48,6 +60,26 @@ $(function() {
         }
     });
 });
+function ex(id,tr_len){
+  //alert(document.getElementsByName['sort_order[]']);
+  tr_len = tr_len+1;
+  for(exi=1;exi<tr_len;exi++){
+    id_tmp1 = 'tr_'+id+'_'+exi;
+    id_tmp2 = 'tr_'+(id-1)+'_'+exi;
+    var id_val1 = $("#"+id_tmp1).children('input').val();
+    var id_val2 = $("#"+id_tmp2).children('input').val();
+    tmp = document.getElementById(id_tmp1).innerHTML;
+    document.getElementById(id_tmp1).innerHTML =
+      document.getElementById(id_tmp2).innerHTML;
+    document.getElementById(id_tmp2).innerHTML = tmp;
+    $("#"+id_tmp1).children('input').val(id_val2);
+    $("#"+id_tmp2).children('input').val(id_val1);
+  }
+  /*
+  $('#tr_'+id+'_1>.sort_order_input').val(id);
+  $('#tr_'+(id-1)+'_1>.sort_order_input').val(id-1);
+  */
+}
   </script>
   <title>履歴表示</title>
   </head>
@@ -224,6 +256,32 @@ case 'd_submit':
   $dougyousya=$_POST['TARGET_INPUT'];//同業者価格
   $proid = $_POST['proid'];
   $dou_id=$_POST['d_id'];//同業者ID
+  $submit = $_POST['b1'];
+  $str = $_POST['orderstring'];
+  $proid_arr = explode(',',$str);
+  $str = $_POST['targetstring'];
+  $dougyousya = explode(',',$str);
+  array_shift($proid_arr);
+  array_shift($dougyousya);
+     $con = count($proid_arr);
+     for($z=0;$z<$con;$z++){
+       $sql = 'select order_value from product_dougyousya_order 
+               where product_id ="'.$proid_arr[$z].'"';
+       $res = tep_db_query($sql);
+       if(tep_db_fetch_array($res)){
+         $sql = 'update product_dougyousya_order set order_value="'.$z.'" where
+         product_id = "'.$proid_arr[$z].'"';
+       }else{
+         $sql = 'insert into product_dougyousya_order
+           values("'.$proid_arr[$z].'","'.$z.'")';
+       }
+         tep_db_query($sql);
+       /*
+       tep_db_perform('product_dougyousya_order'
+           ,array('order_value' => (int)$key),
+           'update', "product_id='".$value."'");
+           */
+     }
   $d_cnt = count($dou_id);
   $loop_cnt=count($dou_id);
     
@@ -302,13 +360,13 @@ case 'dougyousya':
       $cate_name= $testcol['categories_name'];
       $colmunLimit = 2;//分几行
       $colmunLimit_add_1 = $colmunLimit+1;
-      echo "<table>";
-      echo "<tr class='dataTableHeadingRow'>";
+      echo "<table border=1>";
+      echo "<th width='200'></th>";
       //        echo "<td colspan = ".$colmunLimit_add_1 .">";
-      echo "<td colspan='3' width='600' ><b>";
+      echo "<th width='200'>";
       echo $cate_name;
-      echo "</td>";
-      echo "</tr>";
+      echo "</th>";
+      echo "<th width='200'></th>";
       echo "<tbody>";
       $getSubCategories = 'select cd.categories_name,cd.categories_id from
         categories_description cd, categories c where
@@ -320,9 +378,9 @@ case 'dougyousya':
         $sub_cate_id = $subCol['categories_id'];
         $sub_cate_name = $subCol['categories_name'];
         if($rowCount == $colmunLimit){
-          echo "<tr class='dataTableRow'>\n";
+          echo "</tr>\n";
         }
-        echo "<td class='dataTableContent'><a href=
+        echo "<td><a href=
           'history.php?action=dougyousya_categories&cid=".$sub_cate_id."&cPath=".$cate_id."&did=".$did."' >".$sub_cate_name.'</a></td>';
         if($rowCount>0) { 
           $rowCount--;
@@ -397,7 +455,7 @@ case 'dougyousya_categories':
 
   <table border="1">
      <tr>
-     <td>カテゴリー / 商品</td>
+     <td <?php if ($ocertify->npermission>7) {?>colspan ='2'<?php }?>>カテゴリー / 商品</td>
      <?php 
      for($i=0;$i<$cnt;$i++){
        $html .= "<td>".$d_name[$i]."</td>";
@@ -419,16 +477,29 @@ case 'dougyousya_categories':
       echo "<input type='hidden' name='d_id[]' value='".$dougyousya_id[$j]."'>";//同業者ID
     }
   }
+  $x = 0;
   for($i=0;$i<$cnt2;$i++){
-    $res=tep_db_query("select * from products_description where site_id=0 and  products_id='".$cid_list[$i]."' order by products_description.products_name asc");
+    echo "<tr>";
+    //$res=tep_db_query("select * from products_description where products_id='".$cid_list[$i]."'");
+    $res=tep_db_query("select * from products_description where products_id='".$cid_list[$i]."' order by products_description.products_name asc");
+
     $col=tep_db_fetch_array($res);  
-    echo "<input type='hidden' name='proid[]' value='".$cid_list[$i]."' >";//products_id
-    echo "<tr><td><a href='#".$col['products_name']."'>".$col['products_name']."</a></td>";
+  if ($ocertify->npermission>7) {
+    if($x){
+      echo "<td><a href='javascript:void(0);' onclick='ex(".$x.",".($count['cnt']+1).")'>↑</a></td>";
+    }else{
+      echo "<td></td>";
+    }
+  }
+    echo "<td id='tr_".$x."_1'>";
+    echo "<input type='hidden' name='proid[]' value='".$cid_list[$i]."' class='sort_order_input' >";//products_id
+    echo "<a href='#".$col['products_name']."'>".$col['products_name']."</a></td>";
     if($count['cnt'] > 0){
       for($j=0;$j<$count['cnt'];$j++){
         //        <input type='text' size='7px' name='TARGET_INPUT[]' onkeydown=ctrl_keydown('TARGET_INPUT',".$i.",".$j.",".$count['cnt'].")></td>";//価格同業者
         $last_history_arr2[$i][$j] = isset($last_history_arr[$cid_list[$i]][$dougyousya_id[$j]])?$last_history_arr[$cid_list[$i]][$dougyousya_id[$j]]['dougyosya_kakaku']:'';
-        echo "<td class='dataTableContent' >
+        //        <input type='text' size='7px' name='TARGET_INPUT[]' onkeydown=ctrl_keydown('TARGET_INPUT',".$i.",".$j.",".$count['cnt'].")></td>";//価格同業者
+        echo "<td id='tr_".$x."_".($j+2)."' class='dataTableContent' >
         <input value='' pos='".$i."_".$j."' id=\"ti_".$i."_".$j."\" class='udlr input_number col_".$j."'  type='text' size='7px' name='TARGET_INPUT[]' onpaste=\"return !clipboardData.getData('text').match(/\D/)\" ondragenter=\"return false\" style=\"ime-mode:Disabled\"><a href=\"javascript:void(0)\" onclick=\"$('.col_".$j."').val($('#ti_".$i."_".$j."').val())\">統一</a>";//価格同業者
       }
     }else{
@@ -441,7 +512,9 @@ case 'dougyousya_categories':
   ?>
   <tr>
     <td colspan='<?php echo $count['cnt']+1;?>'>
-      <input type="submit" name="b1" value="登録">
+      <input type="submit" name="b1" id = 'saveorder1' value="登録">
+      <input type='hidden' id='orderstring' name='orderstring' />
+      <input type='hidden' id='targetstring' name='targetstring' />
       <input type="button" onclick="get_last_date()" value="LAST DATA">
       <input type="button" onclick="$('.udlr').val('')" value="RESET">
     </td>
@@ -660,7 +733,7 @@ case 'dougyousya_categories':
 }
 ?>
 </td></tr></table></td></tr><tr><td>
-<?php echo '<a tyle="display:none" id = "back_link" href="'. tep_href_link($back_url, $back_url_params, 'NONSSL').'"></a>';
+<?php echo '<a style="width:100%;display:none" id = "back_link" href="'. tep_href_link($back_url, $back_url_params, 'NONSSL').'"></a>';
 ?>
 </td></tr></table></td></tr>
 </table>
