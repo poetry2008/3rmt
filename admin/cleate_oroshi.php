@@ -59,7 +59,6 @@ case 'set_oroshi':
       ("'.$col['oroshi_id'].'","'.$ocid[$i-1].'")';
        tep_db_query($sql);
   }
-    $j++;
   }
   }else if (isset($orrshi_id)){
   $ocid = $_POST['ocid'];

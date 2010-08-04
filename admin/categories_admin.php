@@ -149,7 +149,7 @@ if (isset($_GET['action']) && $_GET['action']) {
         ?>
         <td class='dataTableHeadingContent' align='center'>
           <a style="font-weight:bold;" href='javascript:void(0);' onClick=dougyousya_history('history.php',<?php echo $cPath_yobi;?>,<?php echo $current_category_id;?>,'dougyousya_categories','<?php echo $col_dougyousya['dougyousya_id'];?>','<?php echo $_GET['cPath'];?>')><?php echo $col_dougyousya['dougyousya_name'];?></a>
-          <input type='hidden' name='d_id[]' value='<?php echo $col_dougyousya['dougyousya_id'];?>'><br>
+          <input type='hidden' name='d_id[]' value='<?php echo $col_dougyousya['dougyousya_id'];?>'>
           <br><small style="font-weight:normal;"><?php echo $dougyousya_updated;?></small>
         </td>
         <?php
@@ -441,7 +441,7 @@ if ($cPath_yobi){
               }
   }
               ?>
-<td class="dataTableContent" align="right" style="font-weight:bold"><?php
+<td class="dataTableContent" align="center" style="font-weight:bold"><?php
       $product_price = tep_get_products_price($products['products_id']);
       if ($product_price['sprice']) {
         echo '<s>' . $currencies->format($product_price['price']) . '</s> <span class="specialPrice">' . $currencies->format($product_price['sprice']) . '</span>';
@@ -449,8 +449,8 @@ if ($cPath_yobi){
         echo $currencies->format($product_price['price']);
       }
 ?></td>
-<td class="dataTableContent" align="left"><input pos="<?php echo $products_count;?>_1" class="udlr" type="text" size='6' value="<?php echo (int)$products['products_price'];?>" name="price[]" id="<?php echo "price_input_".$products_count; ?>" onblur="event_onblur(<?php echo $products_count; ?>)" onchange="event_onchange(<?php echo $products_count; ?>)"><span id="price_error_<?php echo $products_count; ?>"></span></td>
-<td class="dataTableContent" align="left"><input pos="<?php echo $products_count;?>_2" class="udlr" type="text" size='6' value="<?php echo $products['products_price_offset'];?>" name="offset[]" id="<?php echo "offset_input_".$products_count; ?>"><span id="offset_error_<?php echo $products_count; ?>" onchange="this.value=SBC2DBC(this.value)"></span></td>
+<td class="dataTableContent" align="left"><input style="text-align:right;" pos="<?php echo $products_count;?>_1" class="udlr" type="text" size='6' value="<?php echo (int)$products['products_price'];?>" name="price[]" id="<?php echo "price_input_".$products_count; ?>" onblur="event_onblur(<?php echo $products_count; ?>)" onchange="event_onchange(<?php echo $products_count; ?>)"><span id="price_error_<?php echo $products_count; ?>"></span></td>
+<td class="dataTableContent" align="left"><input style="text-align:right;" pos="<?php echo $products_count;?>_2" class="udlr" type="text" size='6' value="<?php echo $products['products_price_offset'];?>" name="offset[]" id="<?php echo "offset_input_".$products_count; ?>"><span id="offset_error_<?php echo $products_count; ?>" onchange="this.value=SBC2DBC(this.value)"></span></td>
 <?php //サイト入力  ?>
 <td class="dataTableContent" align="center"><?php
 if ($ocertify->npermission >= 10) { //表示制限

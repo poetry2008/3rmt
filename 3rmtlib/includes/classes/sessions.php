@@ -1,16 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
-
-  Original source from Web Application Development with PHP (Tobias Ratschiller, Till Gerken)
-  Copyright (c) 2000, New Riders Publishing
 */
 
   $SID = '';

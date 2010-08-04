@@ -19,8 +19,8 @@
   $valid_product = (tep_db_num_rows($product_query) > 0);
   //forward 404
   forward404Unless($valid_product);
-
   if (isset($_GET['action']) && $_GET['action'] == 'process') {
+    $form_error = false;
     if ($valid_product == true) { // We got to the process but it is an illegal product, don't write
       // ccdd
       $customer = tep_db_query("
@@ -36,9 +36,18 @@
       $reviews_name = $_POST['reviews_name'];
     } else {
       require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRODUCT_REVIEWS_WRITE);
-    $reviews_name = REVIEWS_NO_NAMES;
+      $reviews_name = REVIEWS_NO_NAMES;
+    }
+    if (mb_strlen($_POST['review'], 'UTF-8') < REVIEW_TEXT_MIN_LENGTH) {
+      $form_error = true;
+      $error_message .= JS_REVIEW_TEXT;
+    }
+    if (!in_array($_POST['rating'], array('1','2','3','4','5'))) {
+      $form_error = true;
+      $error_message .= JS_REVIEW_RATING;
     }
     // ccdd
+    if ($form_error === false) {
       tep_db_query("
           INSERT INTO " . TABLE_REVIEWS . " (
             products_id, 
@@ -57,22 +66,24 @@
             '0', 
             '".SITE_ID."'
           )");
-      $insert_id = tep_db_insert_id();
-      // ccdd
-      tep_db_query("
-          insert into " . TABLE_REVIEWS_DESCRIPTION . " (
-            reviews_id, 
-            languages_id, 
-            reviews_text
-          ) values (
-            '" . $insert_id . "', 
-            '" . $languages_id . "', 
-            '" . $_POST['review'] . "'
-          )
-      ");
+        $insert_id = tep_db_insert_id();
+        // ccdd
+        tep_db_query("
+            insert into " . TABLE_REVIEWS_DESCRIPTION . " (
+              reviews_id, 
+              languages_id, 
+              reviews_text
+            ) values (
+              '" . $insert_id . "', 
+              '" . $languages_id . "', 
+              '" . mysql_real_escape_strint($_POST['review']) . "'
+            )
+        ");
+      }
     }
-
+    if ($form_error === false) {
     tep_redirect(tep_href_link(FILENAME_PRODUCT_INFO, $_POST['get_params']));
+    }
   }
 
 // lets retrieve all $_GET keys and values..
@@ -154,7 +165,11 @@ function checkForm() {
       <div><?php echo tep_draw_form('product_reviews_write', tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE, 'action=process&products_id=' . $_GET['products_id']), 'post', 'onSubmit="return checkForm();"'); ?> 
         <table class="box_des" width="95%" cellpadding="0" cellspacing="0" border="0"> 
           <tr> 
-            <td><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0"> 
+            <td>
+  <?php if ($form_error === true) {?>
+  <font color='red' style='font-size:12px'><?php echo str_replace('\n','<br>',$error_message);?></font>
+  <?php }?>
+  <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0"> 
               <tr> 
                 <td class="main"><b><?php echo SUB_TITLE_PRODUCT; ?></b> <?php echo $product_info['products_name']; ?></td> 
                 <td rowspan="2" valign="top" align="right"><br> 
@@ -168,7 +183,7 @@ function checkForm() {
                 <b><?php echo SUB_TITLE_REVIEW; ?></b></td> 
               </tr> 
               <tr> 
-                <td colspan="2"><?php echo tep_draw_textarea_field('review', 'soft', 50, 15);?></td> 
+                <td colspan="2"><?php echo tep_draw_textarea_field('review', 'soft', 50, 15, $_POST['review']);?></td> 
               </tr> 
               <tr> 
                 <td colspan="2" class="smallText"><?php echo TEXT_NO_HTML; ?></td> 
@@ -176,8 +191,8 @@ function checkForm() {
             </table></td> 
           </tr> 
           <tr> 
-            <td colspan="2" class="main"><br> 
-            <b><?php echo SUB_TITLE_RATING; ?></b> <?php echo TEXT_BAD . ' ' . tep_draw_radio_field('rating', '1') . ' ' . tep_draw_radio_field('rating', '2') . ' ' . tep_draw_radio_field('rating', '3') . ' ' . tep_draw_radio_field('rating', '4') . ' ' . tep_draw_radio_field('rating', '5') . ' ' . TEXT_GOOD; ?></td> 
+            <td colspan='2' class="main"><br> 
+            <b><?php echo SUB_TITLE_RATING; ?></b> <?php echo TEXT_BAD . ' ' . tep_draw_radio_field('rating', '1', $_POST['rating'] == '1') . ' ' . tep_draw_radio_field('rating', '2', $_POST['rating'] == '2') . ' ' . tep_draw_radio_field('rating', '3', $_POST['rating'] == '3') . ' ' . tep_draw_radio_field('rating', '4', $_POST['rating'] == '4') . ' ' . tep_draw_radio_field('rating', '5', $_POST['rating'] == '5') . ' ' . TEXT_GOOD; ?></td> 
           </tr> 
           <tr> 
             <td class="main"><br> 

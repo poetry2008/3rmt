@@ -1,4 +1,4 @@
-DROP TABLE `faq_categories`, `faq_questions`, `information_page`, `orders_mail`;
+DROP TABLE `faq_categories`, `faq_questions`, `information_page`, `orders_mail`, `orders_status`;
 -- phpMyAdmin SQL Dump
 -- version 2.11.9.4
 -- http://www.phpmyadmin.net
@@ -21,6 +21,43 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 
 -- --------------------------------------------------------
+
+--
+-- 表的结构 `orders_status`
+--
+
+CREATE TABLE IF NOT EXISTS `orders_status` (
+  `orders_status_id` int(11) NOT NULL default '0',
+  `language_id` int(11) NOT NULL default '1',
+  `orders_status_name` varchar(32) NOT NULL default '',
+  `finished` tinyint(4) NOT NULL default '0',
+  `orders_status_image` varchar(255) default NULL,
+  PRIMARY KEY  (`orders_status_id`,`language_id`),
+  KEY `idx_orders_status_name` (`orders_status_name`),
+  KEY `finished` (`finished`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- 导出表中的数据 `orders_status`
+--
+
+INSERT INTO `orders_status` (`orders_status_id`, `language_id`, `orders_status_name`, `finished`, `orders_status_image`) VALUES
+(1, 4, 'e--', 0, ''),
+(2, 4, '発送完了*', 1, ''),
+(6, 4, 'キャンセル*', 1, ''),
+(5, 4, '支払通知*', 1, ''),
+(7, 4, '----*', 1, ''),
+(8, 4, '注文取消*', 1, ''),
+(9, 4, '支払確認', 0, 'orders_status9.gif'),
+(10, 4, '不在通知', 0, ''),
+(11, 4, 'ワールドパス', 0, ''),
+(13, 4, '受領通知', 0, 'orders_status13.gif'),
+(12, 4, '未入金', 0, ''),
+(14, 4, '遅延通知', 0, ''),
+(15, 4, '承認待ち', 0, ''),
+(16, 4, '注文変更', 0, ''),
+(17, 4, '日時変更', 0, ''),
+(18, 4, 'キャラ名', 0, 'orders_status18.gif');
 
 --
 -- 表的结构 `orders_mail`

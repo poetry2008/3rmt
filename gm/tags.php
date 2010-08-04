@@ -233,7 +233,7 @@ while ($tag = tep_db_fetch_array($tags_query))
                           echo tep_image2(DIR_WS_IMAGES.'new_products_blank_small.gif',$products['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"');
                         }
                           echo '<br>' .$products['products_name'] . '</a><br>';
-      if (tep_get_special_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']))) {
+      if (tep_get_special_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'])) {
         echo '<s>' . $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), tep_get_tax_rate($products['products_tax_class_id'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), tep_get_tax_rate($products['products_tax_class_id'])) . '</span>&nbsp;';
       } else {
         echo $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), tep_get_tax_rate($products['products_tax_class_id']));

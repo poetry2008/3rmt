@@ -400,7 +400,7 @@ case 'deletePoint':
   'action=deletePoint'.'&cPath='.$cPath.'&cid='.$cid.'&pointid='.$_GET ['pointid'];
   tep_db_query('delete from set_dougyousya_history where history_id =
   "'.$_GET['pointid'].'"');
-  tep_redirect("history.php?action=dougyousya_categories&cid=".$cid."&cPath=".$cPath."&did=".$did);
+  tep_redirect("history.php?action=dougyousya_categories&cid=".$cid."&cPath=".$cPath."&did=".$did."&fullpath=".$_GET['fullpath']);
   break;
 case 'dougyousya_categories':
   $cPath = cpathPart($_GET['cPath']);
@@ -508,6 +508,7 @@ case 'dougyousya_categories':
         name='TARGET_INPUT[]' ></td>";//価格同業者 
     }
     echo "</tr>";
+    $x++;
   }
   ?>
   <tr>
@@ -715,7 +716,7 @@ case 'dougyousya_categories':
                   
           for($key8 = count($rowRecord)-1;$key8>=0;$key8--){
             echo "<tr>";
-            echo "<td bgcolor='white' width='40' align='right'>"."<a href='history.php?action=deletePoint&cPath=".$cPath."&cid=".$cid."&pointid=".$rowRecord[$key8]['history_id']."'><b>" .$rowRecord[$key8]['dougyosya_kakaku']."</b></a></td>";
+            echo "<td bgcolor='white' width='40' align='right'>"."<a href='history.php?action=deletePoint&cPath=".$cPath."&cid=".$cid."&pointid=".$rowRecord[$key8]['history_id']."&fullpath=".$_GET['fullpath']."'><b>" .$rowRecord[$key8]['dougyosya_kakaku']."</b></a></td>";
             echo "<td bgcolor='white' align='right' style='color:#999'>".date('n/j G:i', strtotime($rowRecord[$key8]['last_date']))."</td>";
             echo "</tr>";
           }

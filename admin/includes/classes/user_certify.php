@@ -62,7 +62,7 @@ class user_certify {
         if ($nrow == 1) {                    // ログインログが登録されているとき
             $this->flg = TRUE;
             $arec = tep_db_fetch_array($oresult);  // レコードを取得
-			// UIDがログインページで入力されているときテーブルの値と等しいかチェック
+      // UIDがログインページで入力されているときテーブルの値と等しいかチェック
             if ($user && $user != $arec['account']) {
                 $this->putCertifyLog($s_sid,'n',$user);
                 $this->isErr = TRUE;
@@ -81,7 +81,7 @@ class user_certify {
             } else {
                 $user = $arec['account'];
             }
-		}
+    }
 
         if (!$user) {       // 初回ログインのとき処理を抜ける
             $this->isFirstTime = TRUE;

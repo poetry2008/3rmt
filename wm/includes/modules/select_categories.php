@@ -10,9 +10,11 @@ $categories_tab_query1 = tep_db_query("
            c.categories_status,
            c.parent_id, 
            c.categories_image, 
+           c.sort_order,
            cd.categories_name, 
            cd.categories_meta_text, 
-           cd.categories_image2 
+           cd.categories_image2,
+           cd.site_id
     from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd 
     where c.categories_status!='1' 
       and c.categories_id = cd.categories_id 

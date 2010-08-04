@@ -69,49 +69,13 @@ $.fn.extend({
                 if(npos.length > 0)  {
                     npos.focus();
                 }
+                return false;
                 break;
                 
                 
             }
         });
   //  });
-   
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	//  function udlr
 }
 

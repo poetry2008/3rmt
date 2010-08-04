@@ -118,6 +118,17 @@ INSERT INTO `configuration` (`configuration_id`, `configuration_title`, `configu
 INSERT INTO `configuration` (`configuration_id`, `configuration_title`, `configuration_key`, `configuration_value`, `configuration_description`, `configuration_group_id`, `sort_order`, `last_modified`, `date_added`, `use_function`, `set_function`, `site_id`) VALUES
 (NULL, 'カテゴリのゲームニュース表示数', 'CATEGORIES_GAME_NEWS_MAX_DISPLAY', '25', 'カテゴリのゲームニュース表示数', 3, NULL, '2010-03-09 16:42:32', '0000-00-00 00:00:00', NULL, NULL, 0);
 
+
+update orders set finished = (select orders_status.finished from orders_status where orders_status.orders_status_id = orders.orders_status);
+update orders set orders_status_name = (select orders_status.orders_status_name from orders_status where orders_status.orders_status_id = orders.orders_status);
+update orders set orders_status_image = (select orders_status.orders_status_image from orders_status where orders_status.orders_status_id = orders.orders_status);
+update orders set language_id = (select orders_status.language_id from orders_status where orders_status.orders_status_id = orders.orders_status);
+
+update orders_products set site_id=(select site_id from orders where orders.orders_id = orders_products.orders_id);
+
+update information_page set romaji=IF(convert(romaji,SIGNED),pID,romaji);
+
+
 UPDATE  `sites` SET  `name` =  'RMTジャックポット' WHERE  `sites`.`id` =1;
 UPDATE  `sites` SET  `name` =  'RMTゲームマネー' WHERE  `sites`.`id` =2;
 UPDATE  `sites` SET  `name` =  'RMTワールドマネー' WHERE  `sites`.`id` =3;
@@ -126,13 +137,3 @@ UPDATE  `sites` SET  `url` =  'http://www.gamemoney.cc' WHERE  `sites`.`id` =2;
 UPDATE  `sites` SET  `url` =  'http://rmt.worldmoney.jp' WHERE  `sites`.`id` =3;
 
 
-
-update orders set finished = (select orders_status.finished from orders_status where orders_status.orders_status_id = orders.orders_status);
-update orders set orders_status_name = (select orders_status.orders_status_name from orders_status where orders_status.orders_status_id = orders.orders_status);
-update orders set orders_status_image = (select orders_status.orders_status_image from orders_status where orders_status.orders_status_id = orders.orders_status);
-update orders set language_id = (select orders_status.language_id from orders_status where orders_status.orders_status_id = orders.orders_status);
-
-
-update orders_products set site_id=(select site_id from orders where orders.orders_id = orders_products.orders_id);
-
-update information_page set romaji=IF(convert(romaji,SIGNED),pID,romaji);
