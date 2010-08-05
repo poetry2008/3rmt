@@ -166,6 +166,10 @@ case 'oroshi_c':
   $cPath = $_GET['cPath'];
   $oid = $_GET['oid'];
   $back_url_params = 'action=oroshi&o_id='.$oid;
+  if ($_GET['fullpath']){
+    $back_url = 'cleate_list.php'; 
+    $back_url_params = 'action=prelist&cid='.$_GET['cPath'].'&cPath='.$_GET['fullpath'];
+  }
   $res=tep_db_query("select * from set_oroshi_names son,set_oroshi_categories soc  where son.oroshi_id = soc.oroshi_id and soc.categories_id = '".$cPath."' ORDER BY son.oroshi_id ASC");
   $cnt=0;
   while($col=tep_db_fetch_array($res)){

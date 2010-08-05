@@ -73,7 +73,7 @@ if($_POST[flg_up]==1){
     $update_sql_data = array('products_last_modified' => 'now()',
                              //'products_quantity' => tep_db_prepare_input($products_quantity[$n]),
                              'products_price' => tep_db_prepare_input($psrice_datas[$n]),
-                             'products_price_offset' => tep_db_prepare_input($_POST['offset'][$n]),
+                             //'products_price_offset' => tep_db_prepare_input($_POST['offset'][$n]),
     );
     tep_db_perform(TABLE_PRODUCTS, $update_sql_data, 'update', 'products_id = \'' . tep_db_prepare_input($proid[$n]) . '\'');
     // 商品价格
