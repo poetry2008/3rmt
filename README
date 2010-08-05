@@ -1,12 +1,33 @@
 升级流程
 
- # 上传3RMT程序到指定目录,导入数据库结构,设置程序路径和数据库
  # 关闭会员注册&订单
- # 备份数据库,和程序
- # 导入备份数据库,设置导入脚本的源备份数据库和源备份程序
- # 执行导入脚本auto.sh
- # 执行升级脚本upgrade.sql
- # 设置权限
+
+
+
+1.备份rmt数据库
+
+2.将rmt数据库转换成utf-8,ujis => utf8-general-ci
+
+3.导入3rmt数据库结构
+
+4.上传程序+转换脚本
+
+5.配置 db_include.php和 jp,gm,wm,admin的配置文件
+
+6.执行auto.sh运行脚本,待脚本执行完毕检查日志log文件是否有异常
+
+7.执行脚本 data_tables.sql覆盖表  orders_mail,information_page,faq_*  ,执行upgrade.sql升级脚本
+
+### 先执行table_datas,后执行upgrade.sql
+
+8.在根目录下执行权限脚本script/permission
+
+
+jp wm 左下角多了一个支付图标  banner有两个left2 删掉一个メールマガジン
+gm 去掉右侧银行振达banners的高度
+gm 不要右侧的ff11的faq
+
+
  # 快速测试
  # 切换域名
  # 快速测试
