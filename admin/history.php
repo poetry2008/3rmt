@@ -426,9 +426,22 @@ case 'dougyousya_categories':
   $col=tep_db_fetch_array($res);
   $pro_name_cnt=$col['cnt'];
   if ($ocertify->npermission>7) {
-    $res=tep_db_query("select * from products p, products_to_categories p2c, products_description pd where p.products_id=pd.products_id and p2c.products_id=pd.products_id and p2c.categories_id='".$cID."' and pd.site_id='0' order by pd.products_name");
+    $res=tep_db_query("select * from products p, products_to_categories p2c,
+        products_description pd left join product_dougyousya_order pdo
+        on pdo.product_id=pd.products_id
+        where p.products_id=pd.products_id and 
+        p2c.products_id=pd.products_id and 
+        p2c.categories_id='".$cID."' and pd.site_id='0' 
+        order by pdo.order_value asc");
   } else {
-    $res=tep_db_query("select * from products p, products_to_categories p2c, products_description pd where p.products_id=pd.products_id and p2c.products_id=pd.products_id and p2c.categories_id='".$cID."' and pd.site_id='0' and p.products_status='1' order by pd.products_name");
+    $res=tep_db_query("select * from products p, products_to_categories p2c,
+        products_description pd left join  product_dougyousya_order pdo
+        on pdo.product_id=pd.products_id
+        where p.products_id=pd.products_id and
+        p2c.products_id=pd.products_id and 
+        p2c.categories_id='".$cID."' and pd.site_id='0' 
+        and p.products_status='1' \
+        order by pdo.order_value asc");
   }
   $cnt2=0;
   while($col=tep_db_fetch_array($res)){

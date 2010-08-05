@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2010 年 07 月 29 日 10:19
+-- 生成日期: 2010 年 08 月 02 日 15:01
 -- 服务器版本: 5.1.46
 -- PHP 版本: 5.3.2
 
@@ -932,7 +932,6 @@ CREATE TABLE IF NOT EXISTS `products_attributes` (
   `options_values_id` int(11) NOT NULL DEFAULT '0',
   `options_values_price` decimal(15,4) NOT NULL DEFAULT '0.0000',
   `price_prefix` char(1) NOT NULL DEFAULT '',
-  `products_stock` varchar(255) NOT NULL,
   `products_at_quantity` int(5) NOT NULL DEFAULT '0',
   PRIMARY KEY (`products_attributes_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=261374 ;
