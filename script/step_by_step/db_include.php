@@ -13,7 +13,7 @@ wm
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
 
-define('RMT_DB_HOST', 'localhost');
+define('RMT_DB_HOST', 'localhost'); 
 define('RMT_DB_USER', 'root');
 define('RMT_DB_PASS', '123456');
 define('RMT_DB_NAME', 'maker_rmt');

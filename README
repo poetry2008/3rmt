@@ -1,33 +1,52 @@
 升级流程
 
- # 关闭会员注册&订单
-
-
+# 关闭会员注册&订单
 
 1.备份rmt数据库
 
-2.将rmt数据库转换成utf-8,ujis => utf8-general-ci
+2.将备份出来的rmt数据库转换成utf-8编码,ujis => utf8-general-ci
 
-3.导入3rmt数据库结构
+3.在新的数据库中导入3rmt数据库结构 database.sql
 
 4.上传程序+转换脚本
 
 5.配置 db_include.php和 jp,gm,wm,admin的配置文件
 
-6.执行auto.sh运行脚本,待脚本执行完毕检查日志log文件是否有异常
+        //db_include.php
+        define('RMT_DB_HOST', 'localhost'); 
+        define('RMT_DB_USER', 'root'); # 数据库帐号
+        define('RMT_DB_PASS', '123456'); # 数据库密码
+        define('RMT_DB_NAME', 'maker_rmt'); # jp的数据库名
+        define('R3MT_DB_NAME', 'test_3rmt2'); # 3rmt的数据库名
 
-7.执行脚本 data_tables.sql覆盖表  orders_mail,information_page,faq_*  ,执行upgrade.sql升级脚本
+        define('JP_FS', '/home/maker/project/JP/'); # jp的路径
+        define('GM_FS', '/home/maker/project/GM/'); # gm的路径
+        define('WM_FS', '/home/maker/project/WM/'); # wm的路径
+        define('3RMT_FS', '/home/maker/project/3rmt/'); # 3rmt的路径
 
-### 先执行table_datas,后执行upgrade.sql
+        //注意下面这行需要设置,其他和以前的设置方法一致
+        //admin/includes/configure.php
+        $libpath = "/home/maker/project/3rmt/3rmtlib/";
+
+        //注意下面这行需要设置,其他和以前的设置方法一致
+        //jp/includes/configure.php
+        //gm/includes/configure.php
+        //wm/includes/configure.php
+        define('DIR_FS_3RMTLIB', '/home/maker/project/3rmt/3rmtlib');
+        
+
+6.进入script/step_by_step目录,执行auto.sh脚本,待脚本执行完毕检查日志log文件是否有异常
+
+7.先执行脚本 data_tables.sql,再执行upgrade.sql
 
 8.在根目录下执行权限脚本script/permission
 
+以下为手动操作:
+        jp wm 左下角多了一个支付图标  banner有两个left2 删掉一个
+        gm 去掉右侧银行振达banners的高度
+        gm 不要右侧的ff11的faq
 
-jp wm 左下角多了一个支付图标  banner有两个left2 删掉一个メールマガジン
-gm 去掉右侧银行振达banners的高度
-gm 不要右侧的ff11的faq
 
-
- # 快速测试
- # 切换域名
- # 快速测试
+# 快速测试
+# 切换域名
+# 快速测试
