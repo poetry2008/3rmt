@@ -10,6 +10,7 @@
                p.products_image 
         from " .  TABLE_ORDERS_PRODUCTS . " opa, " . TABLE_ORDERS_PRODUCTS . " opb, " .  TABLE_ORDERS . " o, " . TABLE_PRODUCTS . " p 
         where opa.products_id = '" .  (int)$_GET['products_id'] . "' 
+          and o.orders_id = opa.orders_id
           and opa.orders_id = opb.orders_id 
           and opb.products_id != '" . (int)$_GET['products_id'] . "' 
           and opb.products_id = p.products_id 

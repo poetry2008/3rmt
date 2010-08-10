@@ -25,21 +25,21 @@ foreach(array('jp') as $s){
       customers_guest_chk
       ) values(
         NULL,
-        '" . $c['customers_gender'] . "',
-        '" . $c['customers_firstname'] . "',
-        '" . $c['customers_lastname'] . "',
-        '" . $c['customers_firstname_f'] . "',
-        '" . $c['customers_lastname_f'] . "',
-        '" . $c['customers_dob'] . "',
-        '" . $c['customers_email_address'] . "',
-        '" . $c['customers_default_address_id'] . "',
-        '" . $c['customers_telephone'] . "',
-        '" . $c['customers_fax'] . "',
-        '" . $c['customers_password'] . "',
-        '" . $c['customers_newsletter'] . "',
-        '" . $c['point'] . "',
-        '" . site_id($s) . "',
-        '" . $c['customers_guest_chk'] . "'
+        '" .m($c['customers_gender']) . "',
+        '" .m($c['customers_firstname']) . "',
+        '" .m($c['customers_lastname']) . "',
+        '" .m($c['customers_firstname_f']) . "',
+        '" .m($c['customers_lastname_f']) . "',
+        '" .m($c['customers_dob']) . "',
+        '" .m($c['customers_email_address']) . "',
+        '" .m($c['customers_default_address_id']) . "',
+        '" .m($c['customers_telephone']) . "',
+        '" .m($c['customers_fax']) . "',
+        '" .m($c['customers_password']) . "',
+        '" .m($c['customers_newsletter']) . "',
+        '" .m($c['point']) . "',
+        '" .site_id($s) . "',
+        '" .m($c['customers_guest_chk']) . "'
       )";
     r3q($sql);
     $customer_id = mysql_insert_id();

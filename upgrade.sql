@@ -137,3 +137,20 @@ UPDATE  `sites` SET  `url` =  'http://www.gamemoney.cc' WHERE  `sites`.`id` =2;
 UPDATE  `sites` SET  `url` =  'http://rmt.worldmoney.jp' WHERE  `sites`.`id` =3;
 
 
+INSERT INTO `configuration` (
+`configuration_id` ,
+`configuration_title` ,
+`configuration_key` ,
+`configuration_value` ,
+`configuration_description` ,
+`configuration_group_id` ,
+`sort_order` ,
+`last_modified` ,
+`date_added` ,
+`use_function` ,
+`set_function` ,
+`site_id`
+)
+VALUES (
+NULL , 'プリントメール', 'PRINT_EMAIL_ADDRESS', 'printing_order@iimy.co.jp', 'プリントメール', '1', '25' , NULL , '0000-00-00 00:00:00', NULL , NULL , '0'
+);

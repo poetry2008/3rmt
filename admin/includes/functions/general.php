@@ -1119,8 +1119,8 @@
   function tep_reset_cache_block($cache_block, $site_id='') {
     global $cache_blocks;
 
-	foreach (tep_get_sites() as $k=>$s){
-	$dir_fs_cache = get_configuration_by_site_id('DIR_FS_CACHE', $s['id']);
+  foreach (tep_get_sites() as $k=>$s){
+  $dir_fs_cache = get_configuration_by_site_id('DIR_FS_CACHE', $s['id']);
     for ($i = 0, $n = sizeof($cache_blocks); $i < $n; $i++) {
       if ($cache_blocks[$i]['code'] == $cache_block) {
         if ($cache_blocks[$i]['multiple']) {
@@ -2255,7 +2255,7 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
       }
     }
 
-    function tep_categories_description_exist($cid, $sid, $lid){
+    function tep_categories_description_exist($cid, $lid, $sid){
       $query = tep_db_query("select * from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$cid."' and site_id = '".$sid."' and language_id='".$lid."'");
       if(tep_db_num_rows($query)) {
         return true;

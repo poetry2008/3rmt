@@ -427,12 +427,23 @@ class SEO_URL{
  * @return string Formed href link 
  */ 
   function href_link($page = '', $parameters = '', $connection = 'NONSSL', $add_session_id = true){
+    global $request_type;
     $this->start($this->timestamp);
     $this->performance['NUMBER_URLS_GENERATED']++;
     if ( !in_array($page, $this->attributes['SEO_PAGES']) || $this->attributes['SEO_ENABLED'] == 'false' ) {
       return $this->stock_href_link($page, $parameters, $connection, $add_session_id);
     }
-    $link = $connection == 'NONSSL' ? $this->base_url : $this->base_url_ssl;
+    
+    // $link = $connection == 'NONSSL' ? $this->base_url : $this->base_url_ssl;
+    if (ENABLE_SSL) {
+      if ($request_type == 'SSL') {
+        $link = $connection == 'NONSSL' ? $this->base_url : '/';
+      } else {
+        $link = $connection == 'NONSSL' ? '/' : $this->base_url_ssl;
+      }
+    } else {
+      $link = '/';
+    }
     $separator = '?';
     if ($this->not_null($parameters)) { 
       $link .= $this->parse_parameters($page, $parameters, $separator); 
@@ -455,12 +466,22 @@ class SEO_URL{
     }
   if ($page == '/') $page = '';
     if ($connection == 'NONSSL') {
-      $link = HTTP_SERVER . DIR_WS_CATALOG;
-    } elseif ($connection == 'SSL') {
-      if (ENABLE_SSL == true) {
-        $link = HTTPS_SERVER . DIR_WS_CATALOG;
-      } else {
+      //$link = HTTP_SERVER . DIR_WS_CATALOG;
+      if ($request_type == 'SSL') {
         $link = HTTP_SERVER . DIR_WS_CATALOG;
+      } else {
+        $link = DIR_WS_CATALOG;
+      }
+    } elseif ($connection == 'SSL') {
+      if ($request_type == 'SSL') {
+        //$link = HTTPS_SERVER . DIR_WS_CATALOG;
+        $link = DIR_WS_CATALOG;
+      } else {
+        if (ENABLE_SSL) {
+          $link = HTTPS_SERVER . DIR_WS_CATALOG;
+        } else {
+          $link = HTTP_SERVER . DIR_WS_CATALOG;
+        }
       }
     } else {
       die('<font color="#ff0000"><b>Error!</b></font><br><br><b>Unable to determine connection method on a link!<br><br>Known methods: NONSSL SSL</b><br><br>');

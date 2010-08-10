@@ -6,9 +6,9 @@
 // Define the webserver and path parameters
 // * DIR_FS_* = Filesystem directories (local/physical)
 // * DIR_WS_* = Webserver directories (virtual/URL)
-  define('HTTP_SERVER', 'http://3jp.maker.200.com'); // eg, http://localhost - should not be empty for productive servers
-  define('HTTPS_SERVER', 'https://3jp.maker.200.com'); // eg, https://localhost - should not be empty for productive servers
-  define('ENABLE_SSL', false); // secure webserver for checkout procedure?
+  define('HTTP_SERVER', 'http://cchm.vicp.net'); // eg, http://localhost - should not be empty for productive servers
+  define('HTTPS_SERVER', 'https://cchm.vicp.net'); // eg, https://localhost - should not be empty for productive servers
+  define('ENABLE_SSL', true); // secure webserver for checkout procedure?
   define('DIR_WS_CATALOG', '/'); // absolute path required
   define('DIR_WS_IMAGES', 'images/');
   define('DIR_WS_ICONS', DIR_WS_IMAGES . 'icons/');
@@ -34,7 +34,7 @@
   define('DB_SERVER_PASSWORD', '123456');
   define('DB_DATABASE', 'maker_3rmt');
   define('USE_PCONNECT', 'false'); // use persistent connections?
-  define('STORE_SESSIONS', ''); // leave empty '' for default handler or set to 'mysql'
+  define('STORE_SESSIONS', 'mysql'); // leave empty '' for default handler or set to 'mysql'
 
   define('REWRITE_PRODUCTS', 'item/');//Add Ultimate_SEO_URLS
   define('REWRITE_CATEGORIES', 'rmt/');//Add Ultimate_SEO_URLS

@@ -76,7 +76,7 @@
             ) values (
               '" . $insert_id . "', 
               '" . $languages_id . "', 
-              '" . mysql_real_escape_strint($_POST['review']) . "'
+              '" . mysql_real_escape_string($_POST['review']) . "'
             )
         ");
       }

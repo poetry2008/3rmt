@@ -383,9 +383,9 @@
       }*/
       $sql_data_array = array('products_quantity' => tep_db_prepare_input($_POST['products_quantity']),
                                   'products_model' => tep_db_prepare_input($_POST['products_model']),
-                                  'products_image' => (($_POST['products_image'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image'])),
-                                  'products_image2' => (($_POST['products_image2'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image2'])),
-                                  'products_image3' => (($_POST['products_image3'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image3'])),
+                                  //'products_image' => (($_POST['products_image'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image'])),
+                                  //'products_image2' => (($_POST['products_image2'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image2'])),
+                                  //'products_image3' => (($_POST['products_image3'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image3'])),
                                   'products_price' => tep_db_prepare_input($_POST['products_price']),
                                   'products_price_offset' => tep_db_prepare_input($HTTP_POST_VARS['products_price_offset']),
                                   'products_date_available' => $products_date_available,
@@ -397,6 +397,18 @@
                                   'products_cflag' => tep_db_prepare_input($_POST['products_cflag']),
                                   'option_type' => tep_db_prepare_input($_POST['option_type']),
                                   'products_small_sum' => tep_db_prepare_input($_POST['products_small_sum']));
+
+
+          if ($_POST['products_image']) {
+            $sql_data_array['products_image'] = (($_POST['products_image'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image']));
+          }
+          if ($_POST['products_image2']) {
+            $sql_data_array['products_image2'] = (($_POST['products_image2'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image2']));
+          }
+          if ($_POST['products_image3']) {
+            $sql_data_array['products_image3'] = (($_POST['products_image3'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image3']));
+          }
+
 
           if ($_GET['action'] == 'insert_product') {
             $insert_sql_data = array('products_date_added' => 'now()');
@@ -1469,13 +1481,13 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
           <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
         </tr>
         <tr>
-          <td class="main"><?php echo $pInfo->products_description.'<hr size="1" noshade><table width=""><tr><td>'.
-          tep_image(tep_get_web_upload_dir($site_id) . 'products/' . $products_image_name, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="" hspace="5" vspace="5"')
-          .'</td><td>'.
-          tep_image(tep_get_web_upload_dir($site_id) . 'products/' . $products_image_name2, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="right" hspace="5" vspace="5"')
-          .'</td><td align="right">'.
-          tep_image(tep_get_web_upload_dir($site_id) . 'products/' . $products_image_name3, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="right" hspace="5" vspace="5"')
-          .'</td></tr></table>'; ?></td>
+          <td class="main"><?php echo $pInfo->products_description;?><hr size="1" noshade><table width=""><tr><td>
+          <?php if ($products_image_name) echo tep_image(tep_get_web_upload_dir($site_id) . 'products/' . $products_image_name, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="" hspace="5" vspace="5"');?>
+          </td><td>
+          <?php if ($products_image_name2) echo tep_image(tep_get_web_upload_dir($site_id) . 'products/' . $products_image_name2, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="right" hspace="5" vspace="5"');?>
+          </td><td align="right">
+          <?php if ($products_image_name3) echo tep_image(tep_get_web_upload_dir($site_id) . 'products/' . $products_image_name3, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="right" hspace="5" vspace="5"');?>
+          </td></tr></table></td>
         </tr>
         <?php
       if ($pInfo->products_url) {
@@ -1556,8 +1568,11 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
           echo tep_draw_hidden_field('tags[]', $t); 
         }
       }
+      if ($products_image_name)
       echo tep_draw_hidden_field('products_image', stripslashes($products_image_name));
+      if ($products_image_name2)
       echo tep_draw_hidden_field('products_image2', stripslashes($products_image_name2));
+      if ($products_image_name3)
       echo tep_draw_hidden_field('products_image3', stripslashes($products_image_name3));
       echo tep_image_submit('button_back.gif', IMAGE_BACK, 'name="edit"') . '&nbsp;&nbsp;';
 

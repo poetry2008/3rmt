@@ -688,7 +688,7 @@
 // send emails to other people
 
   if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
-    tep_mail('', 'printing_order@worldmoney.jp', STORE_NAME, $email_printing_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
+    tep_mail('', PRINT_EMAIL_ADDRESS, STORE_NAME, $email_printing_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
   }
 
   // Include OSC-AFFILIATE 

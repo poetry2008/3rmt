@@ -708,14 +708,16 @@ return $image;
 
 function info_tep_href_link($romaji)
 {
-  $returnstr = HTTP_SERVER . DIR_WS_CATALOG;
+  //$returnstr = HTTP_SERVER . DIR_WS_CATALOG;
+  $returnstr = DIR_WS_CATALOG;
   $returnstr .= "info/".urlencode($romaji).".html";
   return $returnstr;
 }
 
 function tags_tep_href_link($tags_id)
 {
-  $returnstr = HTTP_SERVER . DIR_WS_CATALOG;
+  //$returnstr = HTTP_SERVER . DIR_WS_CATALOG;
+  $returnstr = DIR_WS_CATALOG;
   $returnstr .= "tags/t-".$tags_id.".html";
   return $returnstr;
 }

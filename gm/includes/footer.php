@@ -27,9 +27,18 @@
 */
 ?>
 <?php 
-//for sql_log
-$logNumber = 0;
-tep_db_query('select * from cache');
-$testArray = array();
-//end for sql_log
-?>
+// 显示SQL执行记录
+if (STORE_DB_TRANSACTIONS) {?>
+<div id="debug_info" style="text-align:left;">
+  <pre>
+<?php if(isset($log_queries)){
+    foreach ($log_queries as $qk => $qv) {
+      echo '[' . $log_times[$qk] . ']' . $qk . "\t=>\t" . $qv."\n";
+    }
+  }
+   //&& print_r($logger->queries);
+  ?>
+  <?php //print_r($logger->times);?>
+  </pre>
+</div>
+<?php }?>

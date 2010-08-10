@@ -13,8 +13,10 @@
   define('PAGE_PARSE_START_TIME', microtime());
 
 // set the level of error reporting
-  error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
+  error_reporting(0);
   ini_set("display_errors", "Off");
+  //error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
+  //ini_set("display_errors", "On");
 
 // check if register_globals is enabled.
 // since this is a temporary measure this message is hardcoded. The requirement will be removed before 2.2 is finalized.
@@ -192,7 +194,7 @@
 
 // define how the session functions will be used
   require(DIR_WS_FUNCTIONS . 'sessions.php');
-  tep_session_name('DS-STYLE');
+  tep_session_name('SID');
 
 // include the database functions
   require(DIR_WS_FUNCTIONS . 'database.php');
