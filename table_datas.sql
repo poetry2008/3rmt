@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `orders_status` (
 --
 
 INSERT INTO `orders_status` (`orders_status_id`, `language_id`, `orders_status_name`, `finished`, `orders_status_image`) VALUES
-(1, 4, 'e--', 0, ''),
+(1, 4, '--', 0, ''),
 (2, 4, '発送完了*', 1, ''),
 (6, 4, 'キャンセル*', 1, ''),
 (5, 4, '支払通知*', 1, ''),
