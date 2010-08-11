@@ -157,7 +157,7 @@
                   'meta_keywords' => tep_db_prepare_input($meta_keywords[$language_id]),
                   'meta_description' => tep_db_prepare_input($meta_description[$language_id]),
                 );
-          if ($_GET['action'] == 'insert_category' || ($_GET['action'] == 'update_category' && !tep_categories_description_exist($categories_id, $site_id, $language_id))) {
+          if ($_GET['action'] == 'insert_category' || ($_GET['action'] == 'update_category' && !tep_categories_description_exist($categories_id, $language_id, $site_id))) {
             $insert_sql_data = array('categories_id' => $categories_id,
                                      'language_id'   => $languages[$i]['id'],
                                      'site_id'       => $site_id
@@ -2063,7 +2063,7 @@ if ($ocertify->npermission >= 10) { //表示制限
               $contents[] = array(
                   'align' => 'left', 
                   'text' => '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id . '&action=edit_category&site_id='.$site['id']) . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>'.
-                  (tep_categories_description_exist($cInfo->categories_id, $site['id'], $languages_id) 
+                  (tep_categories_description_exist($cInfo->categories_id, $languages_id, $site['id']) 
                    ? (' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id . '&action=delete_category_description&site_id='.$site['id']) . '">'.tep_image_button('button_delete.gif', IMAGE_DELETE).'</a>')
                    :''
                    ));

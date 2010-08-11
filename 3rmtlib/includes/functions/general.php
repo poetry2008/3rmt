@@ -2242,7 +2242,7 @@ function tep_unlink_temp_dir($dir)
     $product = tep_db_fetch_array($product_query);
     return $product;
   }
-
+/*
     function tep_categories_description_exist($cid, $sid, $lid){
       $query = tep_db_query("select * from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$cid."' and site_id = '".$sid."' and language_id='".$lid."'");
       if(tep_db_num_rows($query)) {
@@ -2251,7 +2251,7 @@ function tep_unlink_temp_dir($dir)
         return false;
       }
     }
-
+*/
     function tep_products_description_exist($pid, $sid, $lid){
       $query = tep_db_query("
           select * 
