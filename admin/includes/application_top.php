@@ -66,6 +66,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('FILENAME_CURRENCIES', 'currencies.php');
   define('FILENAME_CUSTOMERS', 'customers.php');
   define('FILENAME_DEFAULT', 'index.php');
+  define('FILENAME_LOGIN', 'users_login.php');
   define('FILENAME_DEFINE_LANGUAGE', 'define_language.php');
   define('FILENAME_FILE_MANAGER', 'file_manager.php');
   define('FILENAME_GEO_ZONES', 'geo_zones.php');
@@ -333,3 +334,4 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   $testArray = array();
   $logNumber = 1;
   //end for sql_log
+

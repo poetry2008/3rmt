@@ -344,6 +344,7 @@ class SEO_URL{
                        FILENAME_PRODUCT_INFO, 
                FILENAME_POPUP_IMAGE,
                FILENAME_PAGE,
+               FILENAME_REVIEWS,
                FILENAME_PRODUCT_REVIEWS,
                FILENAME_PRODUCT_REVIEWS_INFO);
     if ( defined('FILENAME_ARTICLES') ) $seo_pages[] = FILENAME_ARTICLES;
@@ -448,7 +449,11 @@ class SEO_URL{
     if ($this->not_null($parameters)) { 
       $link .= $this->parse_parameters($page, $parameters, $separator); 
     } else {
-      $link .= $page;
+      if ($page == FILENAME_REVIEWS) {
+        $link .= 'reviews/';
+      } else {
+        $link .= $page;
+      }
     }
     $link = $this->add_sid($link, $add_session_id, $connection, $separator); 
     $this->stop($this->timestamp, $time);
@@ -490,7 +495,11 @@ class SEO_URL{
       $link .= $page . '?' . $this->output_string($parameters);
       $separator = '&';
     } else {
-      $link .= $page;
+      if ($page == FILENAME_REVIEWS) {
+        $link .= 'reviews/';
+      } else {
+        $link .= $page;
+      }
       $separator = '?';
     }
     while ( (substr($link, -1) == '&') || (substr($link, -1) == '?') ) $link = substr($link, 0, -1);
@@ -565,7 +574,13 @@ class SEO_URL{
     $container = array();
     foreach ($p as $index => $valuepair){
       $p2 = @explode('=', $valuepair); 
-      if ($p2[0] == 'action' && $p2[1] == 'select'){
+      if ($p2[0] == 'reviews_id') {
+        $p3 = @explode('=', $p[0]);
+        $url = $this->make_url($page, REWRITE_PRODUCTS, 'products_id_review_info', $p3[1], '/'.$p2[1].'.html', $separator);
+        break;
+        //print_r($p);
+        //print_r($p2);
+      } else if ($p2[0] == 'action' && $p2[1] == 'select'){
         $url = $this->make_url($page, '', $p2[0], $p2[1], '.html', $separator);
       } else {
       switch ($p2[0]){ 
@@ -575,15 +590,24 @@ class SEO_URL{
               $url = $this->make_url($page, REWRITE_PRODUCTS, $p2[0], $p2[1], '.html', $separator);
               break;
             case ( $page == FILENAME_PRODUCT_REVIEWS ):
-              $url = $this->make_url($page, REWRITE_PRODUCTS, 'products_id_review', $p2[1], '.html', $separator);
+              $url = $this->make_url($page, REWRITE_PRODUCTS, 'products_id_review', $p2[1], '/', $separator);
               break;
-            case ( $page == FILENAME_PRODUCT_REVIEWS_INFO ):              
-              $url = $this->make_url($page, REWRITE_PRODUCTS, 'products_id_review_info', $p2[1], '.html', $separator);
-              break;
+            //case ( $page == FILENAME_PRODUCT_REVIEWS_INFO ):
+              //print_r($p);
+              //print_r($p2);
+              //$url = $this->make_url($page, REWRITE_PRODUCTS, 'products_id_review_info', $p2[1], '/', $separator);
+              //break;
             default:
               $container[$p2[0]] = $p2[1];
               break;
           } # end switch
+          break;
+        case 'page':
+          switch(true){
+            case ( $page == FILENAME_REVIEWS ):
+              $url = $this->make_url($page, 'reviews/page', '', $p2[1], '.html', $separator);
+              break;
+          }
           break;
         case 'cPath':
           switch(true){
@@ -632,7 +656,11 @@ class SEO_URL{
         case 'colors':
           $url = $this->make_url($page, REWRITE_PRODUCTS, $p2[0], $p2[1], '.html', $separator);
           break;
-          
+        //case 'reviews_id':
+          //$container[$p2[1]] = $p2[1];
+          #$container[$p2[0]] = 'test'; 
+          #$container[$p2[1]] = 'ffff'; 
+          //break;
         //===========================================
         default:
           $container[$p2[0]] = isset($p2[1]) ? $p2[1] : ''; 

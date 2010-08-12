@@ -666,6 +666,7 @@ cptable('wm_zones_to_geo_zones', 'zones_to_geo_zones');
 cptable('categories_rss');
 
 cptable('set_auto_calc');
+cptable('set_comments');
 cptable('set_dougyousya_categories');
 cptable('set_dougyousya_history');
 cptable('set_dougyousya_names');

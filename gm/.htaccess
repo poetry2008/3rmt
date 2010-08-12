@@ -36,6 +36,9 @@ RewriteBase /
 
 #RewriteRule ^(.*)select.html$ index.php?action=select&%{QUERY_STRING}
 RewriteRule ^(.*)sitemap.xml$ ggsitemap.php
+RewriteRule ^reviews/?$ reviews.php
+RewriteRule ^reviews/page(\d).html$ reviews.php?page=$1
+
 
 # http://www.gamemoney.cc/item/p-33129.html
 # if romaji RewriteRule ^item/p-([0-9A-Za-z_-]+).html$ product_info.php?products_id=$1&%{QUERY_STRING}
@@ -48,7 +51,8 @@ RewriteRule ^rmt/c-([0-9-_]+).html$ index.php?cPath=$1&%{QUERY_STRING}
 RewriteRule ^game/m-([0-9]+).html$ index.php?manufacturers_id=$1&%{QUERY_STRING}
 # http://www.gamemoney.cc/item/pr-\d.html
 # if romaji RewriteRule ^item/pr-([0-9A-Za-z_-]+).html$ product_reviews.php?products_id=$1&%{QUERY_STRING}
-RewriteRule ^item/pr-([0-9]+).html$ product_reviews.php?products_id=$1&%{QUERY_STRING}
+#RewriteRule ^item/pr-([0-9]+).html$ product_reviews.php?products_id=$1&%{QUERY_STRING}
+RewriteRule ^item/pr-([0-9]+)/?$ product_reviews.php?products_id=$1&%{QUERY_STRING}
 # http://www.gamemoney.cc/faq169
 # http://www.gamemoney.cc/faq169/
 # http://www.gamemoney.cc/faq169/1.html
@@ -66,7 +70,8 @@ RewriteRule ^item/co-([0-9]+).html$ index.php?colors=$1&%{QUERY_STRING}
 # http://www.gamemoney.cc/item/pri-\d.html?reviews_id=\d
 # not find in gm
 # if romaji RewriteRule ^item/pri-([0-9A-Za-z_-]+).html$ product_reviews_info.php?products_id=$1&%{QUERY_STRING}
-RewriteRule ^item/pri-([0-9]+).html$ product_reviews_info.php?products_id=$1&%{QUERY_STRING}
+#RewriteRule ^item/pri-([0-9]+).html$ product_reviews_info.php?products_id=$1&%{QUERY_STRING}
+RewriteRule ^item/pri-([0-9]+)/([0-9]+)\.html$ product_reviews_info.php?products_id=$1&reviews_id=$2&%{QUERY_STRING}
 
 #pl-*.html does not exist
 # not find in gm

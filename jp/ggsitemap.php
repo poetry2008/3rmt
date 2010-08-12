@@ -41,7 +41,7 @@
   <?php echo gg_url(HTTP_SERVER.'/sitemap.php', null, null, 0.3);?>
   <?php echo gg_url(HTTP_SERVER.'/reorder.php', null, null, 0.3);?>
   <?php echo gg_url(HTTP_SERVER.'/reorder2.php', null, null, 0.3);?>
-  <?php echo gg_url(HTTP_SERVER.'/reviews.php', null, null, 0.3);?>
+  <?php echo gg_url(HTTP_SERVER.'/reviews/', null, null, 0.3);?>
   <?php echo gg_url(HTTP_SERVER.'/products_new.php', null, null, 0.3);?>
   <?php echo gg_url(HTTP_SERVER.'/contact_us.php', null, null, 0.3);?>
   <?php echo gg_url(HTTP_SERVER.'/password_forgotten.php', null, null, 0.3);?>
