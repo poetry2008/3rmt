@@ -40,7 +40,7 @@ RewriteBase /
 #RewriteRule ^(.*)select.html$ index.php?action=select&%{QUERY_STRING}
 RewriteRule ^(.*)sitemap.xml$ ggsitemap.php
 RewriteRule ^reviews/?$ reviews.php
-RewriteRule ^reviews/page(\d).html$ reviews.php?page=$1
+RewriteRule ^reviews/page(\d+).html$ reviews.php?page=$1
 
 
 

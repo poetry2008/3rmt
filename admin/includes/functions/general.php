@@ -2527,18 +2527,21 @@ function tep_get_price ($price, $offset, $sum = '') {
 
 function tep_get_final_price($price, $offset, $sum, $quantity) {
   if ($price && $sum) {
-    //$hprice = $price;
     $lprice = $price;
-    $lq = 1;
-    foreach (tep_get_wari_array_by_sum($sum) as $q => $p) {
-      if ($q < $lq && $q >= $quantity) {
+    $lq = null;
+    $wari_array = tep_get_wari_array_by_sum($sum);
+    ksort($wari_array);
+    
+    foreach ($wari_array as $q => $p) {
+      if ($lq === null or ($q > $lq && $q <= $quantity)) {
         $lq = $q;
         $lprice = $p;
       }
     }
-    return $lprice;
+    return $price + $lprice;
   } else if ($price && $offset && $offset != 0) {
-    return calculate_special_price($price, $offset);
+    //return calculate_special_price($price, $offset);
+    return $price;
   } else {
     return $price;
   }

@@ -710,7 +710,8 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
                p.products_price, 
                pd.products_name, 
                p.products_tax_class_id, 
-               p.products_small_sum 
+               p.products_small_sum,
+               p.products_price_offset
         from " . TABLE_PRODUCTS . " p left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on pd.products_id=p.products_id 
         where p.products_id='$add_product_products_id' 
           and pd.site_id = '0'
