@@ -563,6 +563,16 @@
     return $category['seo_name'];
   }
   
+  function tep_get_seo_description($category_id, $language_id, $site_id = 0, $default = false) { 
+    if ($default && $site_id != 0 && !tep_categories_description_exist($category_id, $language_id, $site_id)) {
+      $site_id = 0;
+    }
+    $category_query = tep_db_query("select * from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . $category_id . "' and language_id = '" . $language_id . "' and site_id = '".$site_id."'");
+    $category = tep_db_fetch_array($category_query);
+
+    return $category['seo_description'];
+  }
+  
   function tep_get_categories_header_text($category_id, $language_id, $site_id = 0, $default = false) {
     if ($default && $site_id != 0 && !tep_categories_description_exist($category_id, $language_id, $site_id)) {
       $site_id = 0;

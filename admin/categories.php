@@ -139,11 +139,13 @@
           $categories_name_array = $_POST['categories_name'];
           $categories_meta_text = $_POST['categories_meta_text'];
           $seo_name = $_POST['seo_name'];
+          $seo_description = $_POST['seo_description'];
           $categories_header_text = $_POST['categories_header_text'];
           $categories_footer_text = $_POST['categories_footer_text'];
           $text_information = $_POST['text_information'];
           $meta_keywords = $_POST['meta_keywords'];
           $meta_description = $_POST['meta_description'];
+
 
           
           $language_id = $languages[$i]['id'];
@@ -151,6 +153,7 @@
                   'categories_name' => tep_db_prepare_input($categories_name_array[$language_id]),
                   'categories_meta_text' => tep_db_prepare_input($categories_meta_text[$language_id]),
                   'seo_name' => tep_db_prepare_input($seo_name[$language_id]),
+              	  'seo_description' => tep_db_prepare_input($seo_description[$language_id]),
                   'categories_header_text' => tep_db_prepare_input($categories_header_text[$language_id]),
                   'categories_footer_text' => tep_db_prepare_input($categories_footer_text[$language_id]),
                   'text_information' => tep_db_prepare_input($text_information[$language_id]),
@@ -1031,11 +1034,12 @@ function mess(){
           <tr>
                       <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                     </tr>
+            <!--
                     <tr>
                       <td class="main"><?php echo TEXT_PRODUCTS_TAX_CLASS; ?></td>
                       <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_pull_down_menu('products_tax_class_id', $tax_class_array, isset($pInfo->products_tax_class_id)?$pInfo->products_tax_class_id:'', ($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '')); ?></td>
                     </tr>
-        
+          -->
         <tr>
                 <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
@@ -1954,6 +1958,7 @@ if ($ocertify->npermission >= 10) { //表示制限
          '<br>METAタグ（この説明文はトップページのカテゴリバナーの下に表示される文章としても使用されます。2行にするにはカンマ「,」区切りで文章を記述してください。)<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_meta_text[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_category_meta_text($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).
 
          '<br>SEOネーム:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('seo_name[' . $languages[$i]['id'] . ']', tep_get_seo_name($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).'<br>'."\n".
+         '<br>SEO Description:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('seo_description[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_seo_description($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).
          '<br>カテゴリHeaderのテキスト:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_header_text[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_categories_header_text($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).
          '<br>カテゴリFooterのテキスト:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_footer_text[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_categories_footer_text($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).
          '<br>テキストのインフォメーション:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('text_information[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_text_information($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).
@@ -2101,12 +2106,15 @@ if ($ocertify->npermission >= 10) { //表示制限
             if($pInfo->products_image3) {
               $contents[] = array('text' => '<br>' . tep_info_image('products/'.$pInfo->products_image3, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '<br>' . $pInfo->products_image3, 0);
             }
+            
+            
+            
 //特価がある場合の処理
-$special_price_check = tep_get_products_special_price($pInfo->products_id);
-if (!empty($special_price_check)) {
-  $contents[] = array('text' => '<br><b>' . TEXT_PRODUCTS_PRICE_INFO . ' <s>' . $currencies->format($pInfo->products_price) . '</s> <span class="specialPrice">' . $currencies->format($special_price_check) . '</span></b>');
+$product_price = tep_get_products_price($pInfo->products_id);
+if ($product_price['sprice']) {
+  $contents[] = array('text' => '<br><b>' . TEXT_PRODUCTS_PRICE_INFO . ' <s>' . $currencies->format($product_price['price']) . '</s> <span class="specialPrice">' . $currencies->format($product_price['sprice']) . '</span></b>');
 } else {
-  $contents[] = array('text' => '<br><b>' . TEXT_PRODUCTS_PRICE_INFO . ' ' . $currencies->format($pInfo->products_price) . '</b>');
+  $contents[] = array('text' => '<br><b>' . TEXT_PRODUCTS_PRICE_INFO . ' ' . $currencies->format($product_price['price']) . '</b>');
 }
 $contents[] = array('text' => '<br><b>' . TEXT_PRODUCTS_QUANTITY_INFO . ' ' . $pInfo->products_quantity . '個</b>');
 $contents[] = array('text' => '<br>' . TEXT_PRODUCTS_AVERAGE_RATING . ' ' . number_format($pInfo->average_rating, 2) . '%');
