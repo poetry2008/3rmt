@@ -23,10 +23,10 @@ echo "move upload files -- "$(date)
 php move_file.php                        >> log
 echo "move_file.php over -- "$(date)     >> log
 
-#echo "checkdata.php start -- "$(date)    >> log
-#echo "checkdata.php start -- "$(date) 
-#php checkdata.php                        >> log
-#echo "checkdata.php over -- "$(date)     >> log
-#echo "checkdata.php over -- "$(date)   
+echo "checkdata.php start -- "$(date)    >> log
+echo "checkdata.php start -- "$(date) 
+php checkdata.php                        >> log
+echo "checkdata.php over -- "$(date)     >> log
+echo "checkdata.php over -- "$(date)   
 echo "script over -- "$(date)     >> log
 echo "Done! -- "$(date)   
