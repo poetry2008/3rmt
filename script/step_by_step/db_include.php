@@ -17,7 +17,7 @@ define('RMT_DB_HOST', 'localhost');
 define('RMT_DB_USER', 'root');
 define('RMT_DB_PASS', '123456');
 define('RMT_DB_NAME', 'maker_rmt');
-define('R3MT_DB_NAME', 'test_3rmt2');
+define('R3MT_DB_NAME', 'maker_3rmt');
 
 define('JP_FS', '/home/maker/project/JP/');
 define('GM_FS', '/home/maker/project/GM/');
@@ -190,6 +190,18 @@ function fs($s){
 
 function cmptable($rtable, $r3table = null) {
   if (!$r3table) $r3table = $rtable;
+
+  $date_fields = array();
+
+  //$rtable = 'iimy_customers';
+  $q = rq('select * from '.$rtable);
+  while ($t = mysql_fetch_field($q)){
+    //echo $t->name."\n";
+    //echo $t->type."\n";
+    if ($t->type == 'datetime'){
+      $date_fields[] = $t->name;
+    }
+  }
   $q = r3q('describe '.$r3table);
   while ($f = mysql_fetch_array($q)) {
     $r3fields[] = $f['Field'];
@@ -205,7 +217,9 @@ function cmptable($rtable, $r3table = null) {
     $values = array();
     $sql = "select * from $r3table where ";
     foreach($r3fields as $f){
-      $values[] = $f . " = '" . mysql_real_escape_string(isset($r[$f])?$r[$f]:'') . "'";
+      if (!in_array($f, $date_fields)) {
+        $values[] = $f . " = '" . mysql_real_escape_string(isset($r[$f])?$r[$f]:'') . "'";
+      }
     }
     $sql .= join(" and ", $values);
     if(mysql_num_rows(r3q($sql)) != 1){
@@ -218,7 +232,16 @@ function cmptable($rtable, $r3table = null) {
 function cmp3table($table){
   global $sites;
   foreach($sites as $s){
-    $fields = array();
+    $date_fields = $fields = array();
+    //$rtable = 'iimy_customers';
+    $q = rq('select * from '.table_prefix($s).$table);
+    while ($t = mysql_fetch_field($q)){
+      //echo $t->name."\n";
+      //echo $t->type."\n";
+      if ($t->type == 'datetime'){
+        $date_fields[] = $t->name;
+      }
+    }
     $q = rq('describe '.table_prefix($s).$table);
     while ($f = mysql_fetch_array($q)) {
       $fields[] = $f['Field'];
@@ -240,7 +263,9 @@ function cmp3table($table){
             or $f == 'date_status_change'
           ){
         }else{
-          $values[] = " " . $f . " = '" . mysql_real_escape_string($r[$f]) . "' ";
+          if (!in_array($f, $date_fields)) {
+            $values[] = " " . $f . " = '" . mysql_real_escape_string($r[$f]) . "' ";
+          }
         }
       }
       $values[] = " site_id = '".site_id($s)."' ";
