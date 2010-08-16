@@ -433,4 +433,3 @@ define('TEXT_NO_PRODUCTS', '現在商品は登録されていません...');
 define('SEND_MAIL_HEADING_TITLE', 'メール受信テスト');
 
 define('TEXT_NO_LATEST_NEWS', 'お知らせはありません');
-define('MONEY_UNIT', '円');

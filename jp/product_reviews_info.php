@@ -110,7 +110,7 @@ function showimage($1) {
             </tr> 
             <tr> 
               <td class="main"><br> 
-                <?php echo nl2br($reviews_text); ?></td> 
+                <?php echo str_replace('<br />', '<br>', nl2br($reviews_text)); ?></td>
             </tr> 
             <tr> 
               <td class="main"><br> 

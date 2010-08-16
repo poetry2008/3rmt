@@ -13,7 +13,7 @@ allow from all
     Satisfy All
 </Files>
 
-RedirectPermanent /index.html http://www.gamemoney.cc/index.php
+RedirectPermanent /index.html http://www.gamemoney.cc/
 RedirectMatch permanent /jword/(.*)$ http://www.gamemoney.cc/
 
 <IfModule mod_setenvif.c>

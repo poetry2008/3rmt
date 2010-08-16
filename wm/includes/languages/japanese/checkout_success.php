@@ -39,7 +39,7 @@ worldmoney.jpのメールドメインを受信するように設定をお願い�
 <div class="dot">&nbsp;</div>
 <br>
 <img src="images/preorder.gif" alt="取り寄せアイコン" width="50" height="50"><b>「取り寄せ」商品について</b><br>
-ご注文いただいた商品は、通常１〜５営業日でお届けしております。
+ご注文いただいた商品は、通常１～５営業日でお届けしております。
 <br><br>
 <div class="dot">&nbsp;</div>
 <br>

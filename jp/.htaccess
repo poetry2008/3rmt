@@ -12,7 +12,7 @@ allow from all
     Satisfy All
 </Files>
 
-RedirectPermanent /index.html http://www.iimy.co.jp/index.php
+RedirectPermanent /index.html http://www.iimy.co.jp/
 
 <IfModule mod_setenvif.c>
   <IfDefine SSL>

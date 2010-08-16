@@ -13,7 +13,7 @@ allow from all
     Satisfy All
 </Files>
 
-RedirectPermanent /index.html http://rmt.worldmoney.jp/index.php
+RedirectPermanent /index.html http://rmt.worldmoney.jp/
 
 <IfModule mod_setenvif.c>
   <IfDefine SSL>

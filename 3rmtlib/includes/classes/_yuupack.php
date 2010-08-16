@@ -31,7 +31,7 @@ class _YuuPack {
   // コンストラクタ
   // $id:   module id
   // $titl: module name
-  // $zone: 都道府県コード '01'〜'47'
+  // $zone: 都道府県コード '01'～'47'
   // $country: country code
   function _YuuPack($id, $title, $zone = NULL, $country = NULL) {
     $this->quote = array('id' => $id, 'title' => $title);
@@ -40,7 +40,7 @@ class _YuuPack {
     }
   }
   // 発送元をセットする
-  // $zone: 都道府県コード '01'〜'47'
+  // $zone: 都道府県コード '01'～'47'
   // $country: country code
   function SetOrigin($zone, $country = NULL) {
     $this->OriginZone = $zone;
@@ -68,7 +68,7 @@ class _YuuPack {
       $this->Height = $height;
     }
   }
-  // サイズ区分(0〜4)を返す
+  // サイズ区分(0～4)を返す
   // 規格外の場合は-1を返す
   //
   // 区分 ３辺計    重量
@@ -110,7 +110,7 @@ class _YuuPack {
     }
     return -1;  // 規格外
   }
-  // 送付元と送付先から地帯ランク(1〜4)を取得する
+  // 送付元と送付先から地帯ランク(1～4)を取得する
   //
   function GetDistRank() {
     // 地帯 - 地帯間の価格ランク

@@ -406,7 +406,7 @@ foreach ($sites as $site)
   echo '<table width="100%"><tr valign="top"><td width="50%">' . $b_box->menuBox($b_heading, $b_contents) . '</td><td width="50%">' . $s_box->menuBox($s_heading, $s_contents) . '</td></tr></table>';
   echo '<br>';
 
-  // ゴールドファーマー1〜3
+  // ゴールドファーマー1～3
   $sellprice01file = '';
   $sellprice01 = '';
   $sellprice01file = file("includes/languages/japanese/sellprice01.php");
@@ -456,7 +456,7 @@ foreach ($sites as $site)
   echo '<table width="100%"><tr valign="top"><td width="33%">' . $b_box->menuBox($b_heading, $b_contents) . '</td><td width="33%">' . $s_box->menuBox($s_heading, $s_contents) . '</td><td width="33%">' . $w_box->menuBox($w_heading, $w_contents) . '</td></tr></table>';
   echo '<br>';
 
-  // ゴールドファーマー4〜6
+  // ゴールドファーマー4～6
   $sellprice01file = '';
   $sellprice01 = '';
   $sellprice01file = file("includes/languages/japanese/sellprice04.php");
@@ -506,7 +506,7 @@ foreach ($sites as $site)
   echo '<table width="100%"><tr valign="top"><td width="33%">' . $b_box->menuBox($b_heading, $b_contents) . '</td><td width="33%">' . $s_box->menuBox($s_heading, $s_contents) . '</td><td width="33%">' . $w_box->menuBox($w_heading, $w_contents) . '</td></tr></table>';
   echo '<br>';
 
-  // ゴールドファーマー7〜9
+  // ゴールドファーマー7～9
   $sellprice01file = '';
   $sellprice01 = '';
   $sellprice01file = file("includes/languages/japanese/sellprice07.php");

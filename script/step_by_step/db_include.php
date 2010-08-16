@@ -17,7 +17,7 @@ define('RMT_DB_HOST', 'localhost');
 define('RMT_DB_USER', 'root');
 define('RMT_DB_PASS', '123456');
 define('RMT_DB_NAME', 'maker_rmt');
-define('R3MT_DB_NAME', 'maker_3rmt');
+define('R3MT_DB_NAME', '3rmt_test_10');
 
 define('JP_FS', '/home/maker/project/JP/');
 define('GM_FS', '/home/maker/project/GM/');

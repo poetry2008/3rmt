@@ -1021,7 +1021,7 @@ function mail_text(st,tt,ot){
       ?>    
       </select>
       日 </td>
-      <td width="80" align="center">〜</td>
+      <td width="80" align="center">～</td>
       <td class="smallText">終了日
       <select name="e_y">
       <?php

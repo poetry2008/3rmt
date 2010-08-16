@@ -361,7 +361,7 @@
         }
         $products_ordered_attributes .= "\n" 
         . $attributes_values['products_options_name'] 
-        . str_repeat('　',intval((18-strlen($attributes_values['products_options_name']))/2))
+        . str_repeat('　',intval((27-strlen($attributes_values['products_options_name']))/3))
         . '：' . $attributes_values['products_options_values_name'];
       }
     }
@@ -533,6 +533,9 @@
   $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
   if ($point > 0) {
     $email_printing_order .= '□ポイント割引　　：' . (int)$point . '円' . "\n";
+  }
+  if (!empty($total_mail_fee)) {
+    $email_printing_order .= '手数料　　　　　：'.$total_mail_fee.'円'."\n"; 
   }
   $email_printing_order .= 'お支払金額　　　：' . strip_tags($ot['text']) . "\n";
   if (is_object($$payment)) {

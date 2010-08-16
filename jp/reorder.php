@@ -629,7 +629,7 @@ function orderConfirmPage(){
       text += "<tr><td bgcolor='#eeeeee'>\n";
       text += "キャラクター名(変更後)";
       text += "</td><td>\n";
-      text += document.getElementById('character_'+i).value + "\n";
+      text += document.getElementById('character_'+i).value.replace(/\</ig,"&lt;").replace(/\>/ig,"&gt;") + "\n";
       text += "</td></tr>";
       orderChanged = orderChanged || (oldCharacter[i] != document.getElementById('character_'+i).value);
     }

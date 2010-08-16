@@ -254,18 +254,14 @@ function session_win() {
       </table>
 <p>
 <i><strong>SSL認証</strong></i><br>
-当サイトでは、実在性の証明とプライバシー保護のため、グローバルサインのSSLサーバ証明書を使用し、SSL暗号化通信を実現しています。
-ブラウザのURLが「<?php echo HTTPS_SERVER;?>〜」で始まるURLであることを確認ください。
-以下に掲載するグローバルサイン発行済み サイトシールのクリックにより、サーバ証明書の検証結果をご確認ください。   
+当サイトでは、実在性の証明とプライバシー保護のため、日本ジオトラストのSSLサーバ証明書を使用し、SSL暗号化通信を実現しています。
+ブラウザのURLが「<?=HTTPS_SERVER;?>～」で始まるURLであることを確認ください。
+以下に掲載するジオトラスト発行済み スマートシールのクリックにより、サーバ証明書の検証結果をご確認ください。
 </p>
-         <p align="center"> 
-<!-- GlobalSign SiteSeal tag. Do not edit. -->
-<span id="___sitess__alt_img_wrapper">
-<a href="http://jp.globalsign.com/" class="blank"><img alt="SSL　グローバルサインのサイトシール" border=0 id="___sitess__alt_img"
-src="http://seal.globalsign.com/SiteSeal/images/seal_noscript_jp.gif"></a>
-</span>
-<script type="text/javascript" src="http://seal.globalsign.com/SiteSeal/siteSeal.js" defer></script>
-<!--End of GlobalSign SiteSeal Tag -->
+<p align="center"> 
+<!-- GeoTrust Smart Icon tag. Do not edit. -->
+<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>
+<!-- END of GeoTrust Smart Icon tag -->
         </p>
 <div class="underline"></div>
 <?php echo TEXT_POINT ; ?>

@@ -32,7 +32,7 @@ class _Yamato {
     // コンストラクタ
     // $id:   module id
     // $titl: module name
-    // $zone: 都道府県コード '01'〜'47'
+    // $zone: 都道府県コード '01'～'47'
     // $country: country code
     function _Yamato($id, $title, $zone = NULL, $country = NULL) {
         $this->quote = array('id' => $id, 'title' => $title);
@@ -41,7 +41,7 @@ class _Yamato {
         }
     }
     // 発送元をセットする
-    // $zone: 都道府県コード '01'〜'47'
+    // $zone: 都道府県コード '01'～'47'
     // $country: country code
     function SetOrigin($zone, $country = NULL) {
         $this->OriginZone = $zone;
@@ -69,7 +69,7 @@ class _Yamato {
             $this->Height = $height;
         }
     }
-    // サイズ区分(0〜4)を返す
+    // サイズ区分(0～4)を返す
     // 規格外の場合は9を返す
     //
     // 区分  サイズ名  ３辺計   重量
@@ -119,7 +119,7 @@ class _Yamato {
     // 都道府県コードから地帯コードを取得する
     // $zone: 都道府県コード
     function GetLZone($zone) {
-        // 都道府県コードを地帯コード('A'〜'L')に変換する
+        // 都道府県コードを地帯コード('A'～'L')に変換する
         //  北海道:'A' = 北海道
         //  北東北:'B' = 青森県,岩手県,秋田県
         //  南東北:'C' = 宮城県,山形県,福島県

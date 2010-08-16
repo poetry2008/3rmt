@@ -7,8 +7,8 @@
 // * DIR_FS_* = Filesystem directories (local/physical)
 // * DIR_WS_* = Webserver directories (virtual/URL)
   define('HTTP_SERVER', 'http://3wm.maker.200.com'); // eg, http://localhost - should not be empty for productive servers
-  define('HTTPS_SERVER', 'https://3wm.maker.200.com'); // eg, https://localhost - should not be empty for productive servers
-  define('ENABLE_SSL', false); // secure webserver for checkout procedure?
+  define('HTTPS_SERVER', 'https://cchm.vicp.net'); // eg, https://localhost - should not be empty for productive servers
+  define('ENABLE_SSL', true); // secure webserver for checkout procedure?
   define('DIR_WS_CATALOG', '/'); // absolute path required
   define('DIR_WS_IMAGES', 'images/');
   define('DIR_WS_ICONS', DIR_WS_IMAGES . 'icons/');

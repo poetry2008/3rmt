@@ -1,10 +1,11 @@
 <?php
-include 'db_include.php';
+include './db_include.php';
 // ! => special
 // % => origin
 // * => site_id
 // @ => customer_id
 // + => truncate
+phpinfo();
 
 // ADD INDEX
 foreach($sites as $s){

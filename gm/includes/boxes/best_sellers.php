@@ -130,13 +130,6 @@ if (!empty($best_sellers['products_image'])) {
 <?php
 $special_query = tep_db_query("select * from ".TABLE_SPECIALS." where products_id = '".$best_sellers['products_id']."'");
 $special_res = tep_db_fetch_array($special_query);
-/*
-if ($special_res) {
-  echo '<s>'.floor($best_sellers['products_price']).MONEY_UNIT.'</s><br>'.floor($special_res['specials_new_products_price']).MONEY_UNIT;
-} else {
-  echo floor($best_sellers['products_price']).MONEY_UNIT;
-}
-*/
 ?>
     </td>
   </tr>

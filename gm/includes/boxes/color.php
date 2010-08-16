@@ -11,7 +11,7 @@ $colors_query = tep_db_query("
 if(tep_db_num_rows($colors_query)) {
 ?>
 <!-- by color// -->
-<div class="box_title">繧ｫ繝ｩ繝ｼ讀懃ｴ｢</div>
+<div class="box_title">カラー検索</div>
 <ul id="box">
 
   <?php

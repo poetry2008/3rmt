@@ -1,5 +1,5 @@
 <?php
-include 'db_include.php';
+include './db_include.php';
 $pg2pg = unserialize(file_get_contents('pg2pg'));
 foreach(array('gm') as $s){
   $query = rq('select * from '.table_prefix($s).'customers');

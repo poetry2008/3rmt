@@ -267,7 +267,7 @@ function session_win() {
 <p>
 <i><strong>SSL認証</strong></i><br>
 当サイトでは、実在性の証明とプライバシー保護のため、グローバルサインのSSLサーバ証明書を使用し、SSL暗号化通信を実現しています。
-ブラウザのURLが「<?php echo HTTPS_SERVER;?>〜」で始まるURLであることを確認ください。
+ブラウザのURLが「<?php echo HTTPS_SERVER;?>～」で始まるURLであることを確認ください。
 以下に掲載するグローバルサイン発行済み サイトシールのクリックにより、サーバ証明書の検証結果をご確認ください。   
 </p>
          <p align="center"> 

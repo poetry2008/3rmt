@@ -371,7 +371,7 @@
         }
         $products_ordered_attributes .= "\n" 
         . $attributes_values['products_options_name'] 
-        . str_repeat('　',intval((18-strlen($attributes_values['products_options_name']))/2))
+        . str_repeat('　',intval((27-strlen($attributes_values['products_options_name']))/3))
         . '：' . $attributes_values['products_options_values_name'];
       }
     }

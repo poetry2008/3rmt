@@ -90,7 +90,7 @@
       // 特価商品インサート終了
       */
 
-      /*
+      
       // キャラクター名インサート
       $des_query = tep_db_query("
         select products_attention_1,
@@ -110,7 +110,7 @@
         if(!tep_products_description_exist($products_id, $site_id, 4)){
         }
         tep_db_perform(TABLE_PRODUCTS_DESCRIPTION, $sql_data_array, 'update', 'products_id = \'' . tep_db_input($products_id) . '\' and language_id = \'4\'');
-        */
+        
 // 終
         tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $_GET['cPath'] . '&pID=' . $products_id));
         break;
@@ -153,7 +153,7 @@
                   'categories_name' => tep_db_prepare_input($categories_name_array[$language_id]),
                   'categories_meta_text' => tep_db_prepare_input($categories_meta_text[$language_id]),
                   'seo_name' => tep_db_prepare_input($seo_name[$language_id]),
-              	  'seo_description' => tep_db_prepare_input($seo_description[$language_id]),
+                  'seo_description' => tep_db_prepare_input($seo_description[$language_id]),
                   'categories_header_text' => tep_db_prepare_input($categories_header_text[$language_id]),
                   'categories_footer_text' => tep_db_prepare_input($categories_footer_text[$language_id]),
                   'text_information' => tep_db_prepare_input($text_information[$language_id]),
@@ -1027,7 +1027,7 @@ function mess(){
             <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;(例１：割増)商品単価を100円とした場合'; ?><br>
             <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp; 1:20,50:10,100:0'; ?><br>
             <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp; 1個から49個までの加算値は20→商品単価は120円'; ?><br>
-            <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp; 50個〜99個までの加算値は10→商品単価は110円'; ?><br>
+            <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp; 50個～99個までの加算値は10→商品単価は110円'; ?><br>
             <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp; 割引の場合は、加算値を-20の様なマイナス値にして下さい。'; ?><br>
             <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp; <b>割引は未検証なので入力しないこと！</b>'; ?></td>
                     </tr>
@@ -1461,13 +1461,13 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   //echo '増減：&nbsp;' . tep_draw_input_field('products_price_offset', intval($pInfo->products_price_offset),'id="sp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;円' . '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price_offset . '円<br><hr size="2" noshade>' . "\n";
   echo '数量：&nbsp;' . tep_draw_input_field('products_quantity', $pInfo->products_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;個' . '&nbsp;&nbsp;←&nbsp;' . $pInfo->products_quantity . '個<br><hr size="2" noshade>' . "\n";
   //商品説明を分割
-  /*
+
   $des_query = tep_db_query("select * from products_description where language_id = '4' and products_id = '" . $pInfo->products_id . "'"); 
   $des_result = tep_db_fetch_array($des_query); 
   echo '当社キャラクター名の入力欄：<br>' . tep_draw_textarea_field('products_attention_5', 'soft', '70', '10', $des_result['products_attention_5']) . '<br>' . "\n";
   echo '<table width="100%" cellspacing="0" cellpadding="5" border="0" class="smalltext"><tr><td><b>販売</b></td><td><b>買取</b></td></tr>' . "\n";
   echo '<tr><td>所持金上限や、弊社キャラクターの在庫の都合上、複数のキャラクターにて<br>分割してお届けする場合がございます。ご注文いただきました数量に達する<br>まで受領操作をお願いいたします。<br>【】または【】よりお届けいたします。</td><td>当社キャラクター【】または【】にトレードをお願いいたします。</td></tr></table><hr size="2" noshade>' . "\n";
-  */
+
   echo tep_image_submit('button_update.gif', 'よく確認してから押しなさい') . '</form>' . "\n";
 } else {
   echo '価格：&nbsp;' . $products_price_preview . '<br>数量：&nbsp;' . $pInfo->products_quantity . '個' . "\n";
