@@ -14,10 +14,8 @@
   define('PAGE_PARSE_START_TIME', microtime());
 
 // set the level of error reporting
-  error_reporting(E_ALL& ~E_DEPRECATED& ~E_NOTICE);
-  ini_set("display_errors", "On");
-  //error_reporting(0);
-  //ini_set("display_errors", "Off");
+  error_reporting(0);
+  ini_set("display_errors", "Off");
   //error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
   //ini_set("display_errors", "On");
 

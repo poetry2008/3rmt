@@ -2295,7 +2295,8 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
 
   function tep_get_web_upload_dir($site_id = '0'){
     if (!trim($site_id)) $site_id = '0';
-    return DIR_WS_CATALOG . 'upload_images/' . $site_id . '/';
+    //return DIR_WS_CATALOG . 'upload_images/' . $site_id . '/';
+    return 'upload_images/' . $site_id . '/';
   }
 
   function tep_get_upload_root(){

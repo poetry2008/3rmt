@@ -19,9 +19,9 @@ define('RMT_DB_PASS', '123456');
 define('RMT_DB_NAME', '3rmt_rmt_utf8');
 define('R3MT_DB_NAME', 'maker_3rmt');
 
-define('JP_FS', '/home/maker/project/rmt/jp/');
-define('GM_FS', '/home/maker/project/rmt/gm/');
-define('WM_FS', '/home/maker/project/rmt/wm/');
+define('JP_FS', '/home/maker/project/test3rmt/rmt/jp/');
+define('GM_FS', '/home/maker/project/test3rmt/rmt/gm/');
+define('WM_FS', '/home/maker/project/test3rmt/rmt/wm/');
 define('3RMT_FS', '/home/maker/project/3rmt/');
 
 

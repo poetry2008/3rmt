@@ -14,9 +14,9 @@ ini_set('include_path',ini_get('include_path').':'.$libpath);
 // Define the webserver and path parameters
 // * DIR_FS_* = Filesystem directories (local/physical)
 // * DIR_WS_* = Webserver directories (virtual/URL)
-  define('HTTP_SERVER', 'http://3admin.maker.200.com'); // eg, http://localhost or - https://localhost should not be empty for productive servers
-  define('HTTP_CATALOG_SERVER', 'http://3admin.maker.200.com');
-  define('HTTPS_CATALOG_SERVER', 'https://3admin.maker.200.com');
+  define('HTTP_SERVER', 'http://3admin.maker.200.com/'); // eg, http://localhost or - https://localhost should not be empty for productive servers
+  define('HTTP_CATALOG_SERVER', 'http://jp.maker.200.com');
+  define('HTTPS_CATALOG_SERVER', 'https://3jp.maker.200.com');
   define('ENABLE_SSL_CATALOG', 'false'); // secure webserver for catalog module
   define('DIR_FS_DOCUMENT_ROOT', '/home/maker/project/3rmt/'); // where the pages are located on the server
   define('DIR_WS_ADMIN', '/'); // absolute path required
