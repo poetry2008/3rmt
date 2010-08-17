@@ -578,8 +578,6 @@ class SEO_URL{
         $p3 = @explode('=', $p[0]);
         $url = $this->make_url($page, REWRITE_PRODUCTS, 'products_id_review_info', $p3[1], '/'.$p2[1].'.html', $separator);
         break;
-        //print_r($p);
-        //print_r($p2);
       } else if ($p2[0] == 'action' && $p2[1] == 'select'){
         $url = $this->make_url($page, '', $p2[0], $p2[1], '.html', $separator);
       } else {
@@ -592,11 +590,6 @@ class SEO_URL{
             case ( $page == FILENAME_PRODUCT_REVIEWS ):
               $url = $this->make_url($page, REWRITE_PRODUCTS, 'products_id_review', $p2[1], '/', $separator);
               break;
-            //case ( $page == FILENAME_PRODUCT_REVIEWS_INFO ):
-              //print_r($p);
-              //print_r($p2);
-              //$url = $this->make_url($page, REWRITE_PRODUCTS, 'products_id_review_info', $p2[1], '/', $separator);
-              //break;
             default:
               $container[$p2[0]] = $p2[1];
               break;
@@ -606,6 +599,9 @@ class SEO_URL{
           switch(true){
             case ( $page == FILENAME_REVIEWS ):
               $url = $this->make_url($page, 'reviews/page', '', $p2[1], '.html', $separator);
+              break;
+            default:
+              $container[$p2[0]] = $p2[1];
               break;
           }
           break;

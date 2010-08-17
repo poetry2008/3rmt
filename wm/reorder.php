@@ -27,7 +27,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
       <td id="contents" valign="top">
         <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
 <?php if ($_POST) {
-  include('../admin/includes/classes/order.php');
+  include(DIR_WS_CLASSES . 'admin_order.php');
 
   if(isset($_POST['order_id'])){
     $oID    = tep_db_prepare_input($_POST['order_id']);
