@@ -16,21 +16,13 @@ error_reporting(E_ALL);
 define('RMT_DB_HOST', 'localhost'); 
 define('RMT_DB_USER', 'root');
 define('RMT_DB_PASS', '123456');
-define('RMT_DB_NAME', 'maker_rmt');
-define('R3MT_DB_NAME', '3rmt_test_10');
+define('RMT_DB_NAME', '3rmt_rmt_utf8');
+define('R3MT_DB_NAME', 'maker_3rmt');
 
-define('JP_FS', '/home/maker/project/JP/');
-define('GM_FS', '/home/maker/project/GM/');
-define('WM_FS', '/home/maker/project/WM/');
+define('JP_FS', '/home/maker/project/rmt/jp/');
+define('GM_FS', '/home/maker/project/rmt/gm/');
+define('WM_FS', '/home/maker/project/rmt/wm/');
 define('3RMT_FS', '/home/maker/project/3rmt/');
-
-
-
-
-
-
-
-
 
 
 

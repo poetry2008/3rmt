@@ -25,7 +25,7 @@ echo "move_file.php over -- "$(date)     >> log
 
 echo "checkdata.php start -- "$(date)    >> log
 echo "checkdata.php start -- "$(date) 
-php checkdata.php                        >> log
+#php checkdata.php                        >> log
 echo "checkdata.php over -- "$(date)     >> log
 echo "checkdata.php over -- "$(date)   
 echo "script over -- "$(date)     >> log

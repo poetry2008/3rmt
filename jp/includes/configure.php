@@ -8,7 +8,7 @@
 // * DIR_WS_* = Webserver directories (virtual/URL)
   define('HTTP_SERVER', 'http://cchm.vicp.net'); // eg, http://localhost - should not be empty for productive servers
   define('HTTPS_SERVER', 'https://cchm.vicp.net'); // eg, https://localhost - should not be empty for productive servers
-  define('ENABLE_SSL', true); // secure webserver for checkout procedure?
+  define('ENABLE_SSL', false); // secure webserver for checkout procedure?
   define('DIR_WS_CATALOG', '/'); // absolute path required
   define('DIR_WS_IMAGES', 'images/');
   define('DIR_WS_ICONS', DIR_WS_IMAGES . 'icons/');
