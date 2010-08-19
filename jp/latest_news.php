@@ -16,7 +16,7 @@
         SELECT * 
         from ' . TABLE_LATEST_NEWS . ' 
         WHERE news_id = ' . (int)$_GET['news_id'] . ' 
-          and site_id=' . SITE_ID);
+          and (site_id=' . SITE_ID . ' or site_id=0)');
     $latest_news = tep_db_fetch_array($latest_news_query);
     forward404Unless($latest_news);
   }
@@ -46,7 +46,7 @@ function popupWindow(url) {
       <td valign="top" id="contents">
         <h1 class="pageHeading"><?php 
         if (isset($_GET['news_id']) && $_GET['news_id']) { 
-          echo strip_tags($latest_news['headline']); 
+          echo strip_tags(replace_store_name($latest_news['headline'])); 
         } else { 
           echo HEADING_TITLE; 
         } ?></h1>
@@ -64,7 +64,7 @@ function popupWindow(url) {
           <td  width="60" align="left">
                       <script type="text/javascript">
                         <!--
-                          document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link(FILENAME_POPUP_IMAGE_NEWS, 'nID=' . $latest_news['news_id']) . '\\\')">' . tep_image(DIR_WS_IMAGES . $latest_news['news_image'], addslashes($latest_news['headline']), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?>');
+                          document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link(FILENAME_POPUP_IMAGE_NEWS, 'nID=' . $latest_news['news_id']) . '\\\')">' . tep_image(DIR_WS_IMAGES . $latest_news['news_image'], addslashes(replace_store_name($latest_news['headline'])), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?>');
                         //-->
                       </script>
                       <noscript>
@@ -72,7 +72,7 @@ function popupWindow(url) {
                       </noscript>
                                                                                         </td>
                          <td style="font-size:11px;">
-                      <?php echo $latest_news['news_image_description']; ?>
+                      <?php echo replace_store_name($latest_news['news_image_description']); ?>
                     </td>
   </tr>
 <?php
@@ -80,7 +80,7 @@ function popupWindow(url) {
 ?>
   <tr>
     <td colspan="2">
-      <p class="main" style="font-size:12px;"><?php echo nl2br($latest_news['content']); ?></p>
+      <p class="main" style="font-size:12px;"><?php echo nl2br(replace_store_name($latest_news['content'])); ?></p>
     </td>
   </tr>
 </table>
@@ -90,7 +90,7 @@ function popupWindow(url) {
       SELECT * 
       FROM ' . TABLE_LATEST_NEWS . ' 
       WHERE status = 1 
-        AND site_id = ' . SITE_ID . ' 
+        AND (site_id = ' . SITE_ID . ' or site_id =0 )
       ORDER BY isfirst DESC, date_added DESC
     ';
     $latest_news_split = new splitPageResults($_GET['page'], MAX_DISPLAY_LATEST_NEWS, $latest_news_query_raw, $latest_news_numrows);
@@ -122,7 +122,7 @@ function popupWindow(url) {
         $latest_news_new = '';
       }
     
-    echo '<li class="news_list02"><div class="div01">'.tep_date_short($latest_news['date_added']) . '</div><a class="link01" href="' .tep_href_link(FILENAME_LATEST_NEWS ,'news_id=' . $latest_news['news_id']).'">' . $latest_news['headline'] . '' . $latest_news_image . $latest_news_new .'</a></li>'."\n";
+    echo '<li class="news_list02"><div class="div01">'.tep_date_short($latest_news['date_added']) . '</div><a class="link01" href="' .tep_href_link(FILENAME_LATEST_NEWS ,'news_id=' . $latest_news['news_id']).'">' . replace_store_name($latest_news['headline']) . '' . $latest_news_image . $latest_news_new .'</a></li>'."\n";
     
     }
     echo '</ul>' . "\n";

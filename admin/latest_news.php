@@ -178,7 +178,7 @@
         <td><table border="0" cellspacing="0" cellpadding="2">
           <tr>
             <td class="main"><?php echo ENTRY_SITE; ?></td>
-            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . (isset($_GET['latest_news_id']) && $_GET['latest_news_id'] && $latest_news?tep_get_site_name_by_id($latest_news['site_id']):tep_site_pull_down_menu(isset($latest_news['site_id'])?$latest_news['site_id']:'')); ?></td>
+            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . (isset($_GET['latest_news_id']) && $_GET['latest_news_id'] && $latest_news?tep_get_site_name_by_id($latest_news['site_id']):tep_site_pull_down_menu(isset($latest_news['site_id'])?$latest_news['site_id']:'',true,true)); ?></td>
           </tr>
           <tr>
             <td class="main"><?php echo TEXT_LATEST_NEWS_HEADLINE; ?></td>
@@ -189,7 +189,9 @@
           </tr>
           <tr>
             <td class="main"><?php echo TEXT_LATEST_NEWS_CONTENT; ?></td>
-            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_textarea_field('content', 'soft', '70', '15',isset($latest_news['content'])? stripslashes($latest_news['content']):''); ?></td>
+            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_textarea_field('content', 'soft', '70', '15',isset($latest_news['content'])? stripslashes($latest_news['content']):''); ?>
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#STORE_NAME#
+  </td>
           </tr>
           <tr>
             <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
@@ -257,11 +259,11 @@
                n.status, 
                n.news_image, 
                n.news_image_description, 
-               n.isfirst ,
-               s.romaji
-        from ' . TABLE_LATEST_NEWS . ' n, '.TABLE_SITES.' s
-        where n.site_id = s.id
-        ' . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and s.id = '" . intval($_GET['site_id']) . "' " : '') . '
+               n.isfirst,
+               n.site_id
+        from ' . TABLE_LATEST_NEWS . ' n
+        where 1 
+        ' . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and (n.site_id = '" . intval($_GET['site_id']) . "' or site_id='0') " : '') . '
         order by date_added desc
     ';
     $latest_news_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $latest_news_query_raw, $latest_news_query_numrows);
@@ -275,12 +277,12 @@
         $selected_item = $latest_news;
       }
       if ( (isset($selected_item) && is_array($selected_item)) && ($latest_news['news_id'] == $selected_item['news_id']) ) {
-        echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $latest_news['news_id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '\'">' . "\n";
+        echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_LATEST_NEWS, 'page='.$_GET['page'].'&latest_news_id=' . $latest_news['news_id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '\'">' . "\n";
       } else {
-        echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $latest_news['news_id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '\'">' . "\n";
+        echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_LATEST_NEWS, 'page='.$_GET['page'].'&latest_news_id=' . $latest_news['news_id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '\'">' . "\n";
       }
 ?>
-                <td class="dataTableContent"><?php echo '&nbsp;'.$latest_news['romaji']; ?></td>
+                <td class="dataTableContent"><?php echo '&nbsp;'.tep_get_site_romaji_by_id($latest_news['site_id']); ?></td>
                 <td class="dataTableContent"><?php echo '&nbsp;' . $latest_news['headline']; ?></td>
                 <td class="dataTableContent" align="center">
 <?php

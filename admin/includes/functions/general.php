@@ -2152,9 +2152,12 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
 
 }
   // 生成选择SITE_ID的下拉框
-  function tep_site_pull_down_menu($default = '',$require = true){
+  function tep_site_pull_down_menu($default = '',$require = true,$all = false){
     $sites_array = array();
     $sites = tep_get_sites();
+    if ($all) {
+      $sites_array[] = array('id' => '0', 'text' => '全部サイト');
+    }
     foreach($sites as $site){
       $sites_array[] = array('id' => $site['id'], 'text' => $site['name']);
     }
@@ -2176,6 +2179,9 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
 
   function tep_get_site_romaji_by_id($id){
     static $arr;
+    if ($id == 0){
+      return 'all';
+    }
     if (isset($arr[$id])) {
       return $arr[$id];
     }
@@ -2195,6 +2201,9 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
   }
   
   function tep_get_site_name_by_id($id){
+    if ($id == '0') {
+      return '全部サイト';
+    }
     $site_query = tep_db_query("
         select * 
         from " . TABLE_SITES . "

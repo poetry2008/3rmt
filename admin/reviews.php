@@ -7,16 +7,38 @@
 
   if (isset($_GET['action']) && $_GET['action']) {
     switch ($_GET['action']) {
+      case 'new_preview':
+        $sql_array = array(
+          'reviews_id' => 'null',
+          'products_id' => $_POST['products_id'],
+          'customers_id' => '0',
+          'customers_name' => $_POST['customers_name'],
+          'reviews_rating' => $_POST['reviews_rating'],
+          'date_added' => $_POST['year'].'-'.$_POST['m'].'-'.$_POST['d'].' '.$_POST['h'].':'.$_POST['i'].':'.$_POST['s'],
+          'last_modified' => '',
+          'reviews_read' => '0',
+          'site_id' => $_POST['site_id'],
+          'reviews_status' => $_POST['reviews_status'],
+        );
+        tep_db_perform(TABLE_REVIEWS, $sql_array);
+        $insert_id = tep_db_insert_id();
+        $sql_description_array = array(
+          'reviews_id' => $insert_id,
+          'languages_id' => '4',
+          'reviews_text' => $_POST['reviews_text']
+        );
+        tep_db_perform(TABLE_REVIEWS_DESCRIPTION, $sql_description_array);
+        tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath='.$_POST['cPath']));
+        break;
       case 'setflag':
         $site_id = isset($_GET['site_id']) ? $_GET['site_id'] :0;
         if ( ($_GET['flag'] == '0') || ($_GET['flag'] == '1') ) {
           if ($_GET['pID']) {
             $pID = (int)$_GET['pID'];
-      $flag = (int)$_GET['flag'];
-      tep_db_query("UPDATE ".TABLE_REVIEWS." SET reviews_status = '".$flag."' WHERE reviews_id = '".$pID."'");
+            $flag = (int)$_GET['flag'];
+            tep_db_query("UPDATE ".TABLE_REVIEWS." SET reviews_status = '".$flag."' WHERE reviews_id = '".$pID."'");
           }
         }
-
         tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'].'&site_id='.$site_id));
         break;
       case 'update':
@@ -32,6 +54,7 @@
                 last_modified = now(), 
                 reviews_status = '".$reviews_status."' 
             where reviews_id = '" . tep_db_input($reviews_id) . "'");
+        
         tep_db_query("
             update " . TABLE_REVIEWS_DESCRIPTION . " 
             set reviews_text = '" . tep_db_input($reviews_text) . "' 
@@ -85,7 +108,92 @@
         </table></td>
       </tr>
 <?php
-  if (isset($_GET['action']) && $_GET['action'] == 'edit') {
+  if (isset($_GET['action']) && $_GET['action'] == 'new') {
+    if (!isset($_GET['products_id'])) {
+      tep_redirect('reviews.php');
+    }
+    $products_query = tep_db_query("
+        select products_image 
+        from " . TABLE_PRODUCTS . " 
+        where products_id = '" . $_GET['products_id'] . "'");
+    $products = tep_db_fetch_array($products_query);
+
+    $products_name_query = tep_db_query("
+        select *
+        from " . TABLE_PRODUCTS_DESCRIPTION . " 
+        where products_id = '" . $_GET['products_id'] . "' 
+          and site_id = '0'
+          and language_id = '" . $languages_id . "'");
+    $products_name = tep_db_fetch_array($products_name_query);
+
+    $rInfo_array = tep_array_merge($products, $products_name);
+    $rInfo = new objectInfo($rInfo_array);
+?>
+      <tr><?php echo tep_draw_form('review', FILENAME_REVIEWS, 'action=new_preview'); ?>
+        <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
+          <tr>
+            <td class="main" valign="top">
+      <b><?php echo ENTRY_SITE; ?>:</b> <?php echo tep_site_pull_down_menu();?><br>
+      <b><?php echo ENTRY_PRODUCT; ?></b> <?php echo $rInfo->products_name; ?><br>
+      <b><?php echo ENTRY_FROM; ?></b> <input type="text" name="customers_name" value="" /> <br>
+      <b><?php echo ENTRY_DATE; ?></b> 
+  <select name='year'>
+  <?php for ($i=0;$i<10;$i++) {?>
+    <option value="<?php echo date('Y')-$i;?>" <?php $i==intval(date('Y')) && print('selected');?>><?php echo date('Y')-$i;?></option>
+  <?php }?>
+  </select>/<select name='m'>
+  <?php for ($i=1;$i<13;$i++) {?>
+    <option value="<?php echo $i;?>" <?php $i==intval(date('m')) && print('selected');?>><?php echo $i;?></option>
+  <?php }?>
+  </select>/<select name='d'>
+  <?php for ($i=1;$i<31;$i++) {?>
+    <option value="<?php echo $i;?>" <?php $i==intval(date('d')) && print('selected');?>><?php echo $i;?></option>
+  <?php }?>
+  </select> <select name='h'>
+  <?php for ($i=0;$i<24;$i++) {?>
+    <option value="<?php echo $i;?>" <?php $i==intval(date('H')) && print('selected');?>><?php printf('%02d', $i);?></option>
+  <?php }?>
+  </select>:<select name='i'>
+  <?php for ($i=0;$i<60;$i++) {?>
+    <option value="<?php echo $i;?>" <?php $i==intval(date('i')) && print('selected');?>><?php printf('%02d', $i);?></option>
+  <?php }?>
+  </select>:<select name='s'>
+  <?php for ($i=0;$i<60;$i++) {?>
+    <option value="<?php echo $i;?>" <?php $i==intval(date('s')) && print('selected');?>><?php printf('%02d', $i);?></option>
+  <?php }?>
+  </select>
+  <br>
+      <b><?php echo TEXT_PRODUCTS_STATUS; ?></b> <?php echo tep_draw_radio_field('reviews_status', '1', 1) . '&nbsp;' . TEXT_PRODUCT_AVAILABLE . '&nbsp;' . tep_draw_radio_field('reviews_status', '0') . '&nbsp;' . TEXT_PRODUCT_NOT_AVAILABLE; ?>
+      </td>
+            <td class="main" align="right" valign="top"><?php echo tep_image(HTTP_CATALOG_SERVER . DIR_WS_CATALOG_IMAGES . $rInfo->products_image, $rInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"'); ?></td>
+          </tr>
+        </table></td>
+      </tr>
+      <tr>
+        <td><table witdh="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td class="main" valign="top"><b><?php echo ENTRY_REVIEW; ?></b><br><br><?php echo tep_draw_textarea_field('reviews_text', 'soft', '60', '15'); ?></td>
+          </tr>
+          <tr>
+            <td class="smallText" align="right"><?php echo ENTRY_REVIEW_TEXT; ?></td>
+          </tr>
+        </table></td>
+      </tr>
+      <tr>
+        <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+      </tr>
+      <tr>
+        <td class="main"><b><?php echo ENTRY_RATING; ?></b>&nbsp;<?php echo TEXT_BAD; ?>&nbsp;<?php for ($i=1; $i<=5; $i++) echo tep_draw_radio_field('reviews_rating', $i, '', $i == 5) . '&nbsp;'; echo TEXT_GOOD; ?></td>
+      </tr>
+      <tr>
+        <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+      </tr>
+      <tr>
+        <td align="right" class="main"><?php echo tep_draw_hidden_field('cPath', $_GET['cPath']) . tep_draw_hidden_field('products_id', $rInfo->products_id) . tep_image_submit('button_save.gif', IMAGE_save) . ' <a href="' . tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' . $_GET['rID']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; ?></td>
+      </form></tr>
+<?php
+
+  } elseif (isset($_GET['action']) && $_GET['action'] == 'edit') {
     $rID = tep_db_prepare_input($_GET['rID']);
 
     $reviews_query = tep_db_query("
@@ -346,7 +454,7 @@
 ?>
                 </td>
         <td class="dataTableContent" align="right"><?php echo tep_image(HTTP_CATALOG_SERVER . DIR_WS_CATALOG_IMAGES . 'stars_' . $reviews['reviews_rating'] . '.gif'); ?></td>
-                <td class="dataTableContent" align="right"><?php echo tep_date_short($reviews['date_added']); ?></td>
+                <td class="dataTableContent" align="right"><?php echo tep_date_short($reviews['date_added']) . ' ' .date('H:i:s', strtotime($reviews['date_added'])); ?></td>
                 <td class="dataTableContent" align="right"><?php if ( (isset($rInfo) && is_object($rInfo)) && ($reviews['reviews_id'] == $rInfo->reviews_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif'); } else { echo '<a href="' . tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' . $reviews['reviews_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
               </tr>
 <?php

@@ -27,7 +27,7 @@ function outNewsEffect(object) {
       SELECT * 
       from " . TABLE_LATEST_NEWS . " 
       WHERE status = 1 
-        AND site_id = '".SITE_ID."'
+        AND (site_id = '".SITE_ID."' or site_id='0')
       ORDER BY isfirst DESC, date_added DESC LIMIT 5");
     if (!tep_db_num_rows($latest_news_query)) { // there is no news
       echo '<!-- ' . TEXT_NO_LATEST_NEWS . ' -->';
@@ -41,12 +41,12 @@ function outNewsEffect(object) {
     $row = 0;
     while ($latest_news = tep_db_fetch_array($latest_news_query)) {
       if($latest_news['news_image'] != '') { 
-      $latest_news_image = tep_image(DIR_WS_IMAGES . 'infobox/photo.gif', $latest_news['headline'], '15', '15');
+      $latest_news_image = tep_image(DIR_WS_IMAGES . 'infobox/photo.gif', replace_store_name($latest_news['headline']), '15', '15');
     } else {
       $latest_news_image = '';
     }
                 if(time()-strtotime($latest_news['date_added'])<(defined('DS_LATEST_NEWS_NEW_LIMIT')?DS_LATEST_NEWS_NEW_LIMIT:7)*86400){
-                    $latest_news_new = tep_image(DIR_WS_IMAGES . 'design/latest_news_new.gif', strip_tags($latest_news['headline']), '28', '14');
+                    $latest_news_new = tep_image(DIR_WS_IMAGES . 'design/latest_news_new.gif', strip_tags(replace_store_name($latest_news['headline'])), '28', '14');
                 } else {
                     $latest_news_new = '';
                 }
@@ -54,11 +54,11 @@ function outNewsEffect(object) {
 $info_box_contents[$row] = array('align' => 'left',
 'params' => 'class="smallText" valign="top"',
 'text' =>
-tep_date_short($latest_news['date_added']) . '&nbsp;&nbsp;&nbsp;&nbsp;<a href="' . FILENAME_LATEST_NEWS . '?news_id=' . $latest_news['news_id'] . '">' . $latest_news['headline'] . '&nbsp;&nbsp;' . $latest_news_image . '</a><br>');
+tep_date_short($latest_news['date_added']) . '&nbsp;&nbsp;&nbsp;&nbsp;<a href="' . FILENAME_LATEST_NEWS . '?news_id=' . $latest_news['news_id'] . '">' . replace_store_name($latest_news['headline']) . '&nbsp;&nbsp;' . $latest_news_image . '</a><br>');
 echo'   
           <li class="news_list" onmouseover="rowNewsEffect(this)" onmouseout="outNewsEffect(this)"> 
             <span class="news_date01">'.tep_date_short($latest_news['date_added']).'</span> 
-            <a class="latest_news_link" href="' . FILENAME_LATEST_NEWS . '?news_id=' . $latest_news['news_id'] . '">' . $latest_news['headline'] . '&nbsp;&nbsp;' . $latest_news_image . $latest_news_new . '</a> 
+            <a class="latest_news_link" href="' . FILENAME_LATEST_NEWS . '?news_id=' . $latest_news['news_id'] . '">' . replace_store_name($latest_news['headline']) . '&nbsp;&nbsp;' . $latest_news_image . $latest_news_new . '</a> 
           </li>
 ';      
 }
