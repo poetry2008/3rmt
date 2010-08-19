@@ -98,9 +98,11 @@ function showimage($1) {
                   <tr> 
                     <td class="main"><b><?php echo SUB_TITLE_FROM; ?></b> <?php echo tep_output_string_protected($reviews['customers_name']); ?></td> 
                   </tr> 
+          <?php /*
                   <tr> 
                     <td class="main"><b><?php echo SUB_TITLE_DATE; ?></b> <?php echo tep_date_long($reviews['date_added']); ?></td> 
                   </tr> 
+                  */ ?>
                 </table></td> 
             </tr> 
             <tr> 

@@ -54,6 +54,7 @@
         } */
         $update_sql_data = array('products_last_modified' => 'now()',
                                  'products_quantity' => tep_db_prepare_input($_POST['products_quantity']),
+                                 'products_attention_5' => tep_db_prepare_input($_POST['products_attention_5']),
                                  //'products_price_offset' => tep_db_prepare_input($HTTP_POST_VARS['products_price_offset']),
                                  'products_price' => tep_db_prepare_input($_POST['products_price']));
         tep_db_perform(TABLE_PRODUCTS, $update_sql_data, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
@@ -89,28 +90,6 @@
       
       // 特価商品インサート終了
       */
-
-      
-      // キャラクター名インサート
-      $des_query = tep_db_query("
-        select products_attention_1,
-               products_attention_2,
-               products_attention_3,
-               products_attention_4,
-               products_attention_5,
-               products_description 
-        from products_description 
-        where language_id = '4' 
-          and products_id = '" . tep_db_input($products_id) . "'");
-        $des_result = tep_db_fetch_array($des_query);
-        $sql_data_array = array( 
-          //'products_description' => tep_db_prepare_input($des_result['products_description']),
-          'products_attention_5' => tep_db_prepare_input($_POST['products_attention_5'])
-        );
-        if(!tep_products_description_exist($products_id, $site_id, 4)){
-        }
-        tep_db_perform(TABLE_PRODUCTS_DESCRIPTION, $sql_data_array, 'update', 'products_id = \'' . tep_db_input($products_id) . '\' and language_id = \'4\'');
-        
 // 終
         tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $_GET['cPath'] . '&pID=' . $products_id));
         break;
@@ -384,11 +363,21 @@
       if (substr($HTTP_POST_VARS['products_price_offset'], -1) == '%') {
         $HTTP_POST_VARS['products_price_offset'] = (($HTTP_POST_VARS['products_price_offset'] / 100) * $HTTP_POST_VARS['products_price']);
       }*/
+      $products_attention_1 = tep_db_prepare_input($_POST['products_jan']);
+      $products_attention_2 = tep_db_prepare_input($_POST['products_size']);
+      $products_attention_3 = tep_db_prepare_input($_POST['products_naiyou']);
+      $products_attention_4 = tep_db_prepare_input($_POST['products_zaishitu']);
+      $products_attention_5 = tep_db_prepare_input($_POST['products_attention_5']);
       $sql_data_array = array('products_quantity' => tep_db_prepare_input($_POST['products_quantity']),
                                   'products_model' => tep_db_prepare_input($_POST['products_model']),
                                   //'products_image' => (($_POST['products_image'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image'])),
                                   //'products_image2' => (($_POST['products_image2'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image2'])),
                                   //'products_image3' => (($_POST['products_image3'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image3'])),
+                                  'products_attention_1' => $products_attention_1,
+                                  'products_attention_2' => $products_attention_2,
+                                  'products_attention_3' => $products_attention_3,
+                                  'products_attention_4' => $products_attention_4,
+                                  'products_attention_5' => $products_attention_5,
                                   'products_price' => tep_db_prepare_input($_POST['products_price']),
                                   'products_price_offset' => tep_db_prepare_input($HTTP_POST_VARS['products_price_offset']),
                                   'products_date_available' => $products_date_available,
@@ -476,24 +465,12 @@
           $languages = tep_get_languages();
           for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
             $language_id = $languages[$i]['id'];
-
             //商品説明を結合
             $des = tep_db_prepare_input($_POST['products_description'][$language_id]);
-            $products_attention_1 = tep_db_prepare_input($_POST['products_jan']);
-            $products_attention_2 = tep_db_prepare_input($_POST['products_size']);
-            $products_attention_3 = tep_db_prepare_input($_POST['products_naiyou']);
-            $products_attention_4 = tep_db_prepare_input($_POST['products_zaishitu']);
-            $products_attention_5 = tep_db_prepare_input($_POST['products_attention_5']);
             $sql_data_array = array(
                 'products_name'        => tep_db_prepare_input($_POST['products_name'][$language_id]),
                 'products_description' => $des,
-                'products_attention_1' => $products_attention_1,
-                'products_attention_2' => $products_attention_2,
-                'products_attention_3' => $products_attention_3,
-                'products_attention_4' => $products_attention_4,
-                'products_attention_5' => $products_attention_5,
                 'products_url'         => tep_db_prepare_input($_POST['products_url'][$language_id]));
-
             if (isset($_GET['action']) && ($_GET['action'] == 'insert_product' || ($_GET['action'] == 'update_product' && !tep_products_description_exist($products_id,$site_id,$language_id)))) {
               $insert_sql_data = array('products_id' => $products_id,
                                        'language_id' => $language_id,
@@ -668,7 +645,12 @@
                 products_bflag,
                 products_cflag,
                 products_small_sum,
-                option_type
+                option_type,
+                products_attention_1, 
+                products_attention_2, 
+                products_attention_3, 
+                products_attention_4,
+                products_attention_5
               ) values (
               '" . $product['products_quantity'] . "', 
               '" . $product['products_model'] . "', 
@@ -686,7 +668,12 @@
               '" . $product['products_bflag'] . "',
               '" . $product['products_cflag'] . "',
               '" . $product['products_small_sum'] . "',
-              '" . $product['option_type'] . "'
+              '" . $product['option_type'] . "',
+              '" . addslashes($description['products_attention_1']) . "', 
+              '" . addslashes($description['products_attention_2']) . "', 
+              '" . addslashes($description['products_attention_3']) . "', 
+              '" . addslashes($description['products_attention_4']) . "', 
+              '" . addslashes($description['products_attention_5']) . "'
             )");
             $dup_products_id = tep_db_insert_id();
       
@@ -701,11 +688,6 @@
                   language_id, 
                   products_name, 
                   products_description,
-                  products_attention_1, 
-                  products_attention_2, 
-                  products_attention_3, 
-                  products_attention_4,
-                  products_attention_5,
                   products_url, 
                   products_viewed,
                   site_id
@@ -714,11 +696,6 @@
                   '" . $description['language_id'] . "', 
                   '" . addslashes($description['products_name']) . "', 
                   '" . addslashes($description['products_description']) . "', 
-                  '" . addslashes($description['products_attention_1']) . "', 
-                  '" . addslashes($description['products_attention_2']) . "', 
-                  '" . addslashes($description['products_attention_3']) . "', 
-                  '" . addslashes($description['products_attention_4']) . "', 
-                  '" . addslashes($description['products_attention_5']) . "', 
                   '" . $description['products_url'] . "', 
                   '0',
                   '" . $description['site_id'] . "'
@@ -898,15 +875,16 @@ function mess(){
   //商品説明を分割
   if(isset($pInfo->products_id)){
     $des_query = tep_db_query("
-      select products_attention_1,
-             products_attention_2,
-             products_attention_3,
-             products_attention_4,
-             products_attention_5,
-             products_description 
-      from products_description 
-      where language_id = '4' 
-        and products_id = '".$pInfo->products_id."' 
+      select p.products_attention_1,
+             p.products_attention_2,
+             p.products_attention_3,
+             p.products_attention_4,
+             p.products_attention_5,
+             pd.products_description 
+      from products_description pd,products p
+      where language_id = '4'
+        and p.products_id = pd.products_id 
+        and p.products_id = '".$pInfo->products_id."' 
         and site_id ='".(tep_products_description_exist($pInfo->products_id,$site_id,4)?$site_id:0)."'"); 
     $des_result = tep_db_fetch_array($des_query);
   }
@@ -1062,27 +1040,27 @@ function mess(){
 
           <tr>
                       <td class="main">項目１</td>
-                      <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_jan', isset($des_result['products_attention_1'])?$des_result['products_attention_1']:''); ?><br>
+                      <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_jan', isset($des_result['products_attention_1'])?$des_result['products_attention_1']:'', ($site_id ? 'class="readonly" readonly' : '')); ?><br>
                       <span class="smallText">項目名とデータは「//」スラッシュ2本で区切ってください。例）サイズ//H1000　W560</span></td>
                     </tr>
           <tr>
                       <td class="main">項目２</td>
-                      <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_size', isset($des_result['products_attention_2'])?$des_result['products_attention_2']:''); ?></td>
+                      <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_size', isset($des_result['products_attention_2'])?$des_result['products_attention_2']:'', ($site_id ? 'class="readonly" readonly' : '')); ?></td>
                     </tr>
           <tr>
                       <td class="main">項目３</td>
-                      <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_naiyou', isset($des_result['products_attention_3'])?$des_result['products_attention_3']:''); ?></td>
+                      <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_naiyou', isset($des_result['products_attention_3'])?$des_result['products_attention_3']:'', ($site_id ? 'class="readonly" readonly' : '')); ?></td>
                     </tr>
           <tr>
                       <td class="main">項目４</td>
-                      <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_zaishitu', isset($des_result['products_attention_4'])?$des_result['products_attention_4']:''); ?></td>
+                      <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_zaishitu', isset($des_result['products_attention_4'])?$des_result['products_attention_4']:'', ($site_id ? 'class="readonly" readonly' : '')); ?></td>
           </tr>
               <tr>
                 <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
         <tr>
                 <td class="main" valign="top">キャラクタ名</td>
-                <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_textarea_field('products_attention_5', 'soft', '70', '15', isset($des_result['products_attention_5'])?$des_result['products_attention_5']:''); ?></td>
+                <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_textarea_field('products_attention_5', 'soft', '70', '15', isset($des_result['products_attention_5'])?$des_result['products_attention_5']:'', ($site_id ? 'class="readonly" readonly' : '')); ?></td>
               </tr>
           </table>
                   </fieldset></td>
@@ -1389,6 +1367,7 @@ function mess(){
                  p.products_date_added, 
                  p.products_last_modified, 
                  p.products_date_available, 
+                 p.products_attention_5,
                  p.products_status, 
                  p.manufacturers_id  
           from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
@@ -1462,9 +1441,9 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   echo '数量：&nbsp;' . tep_draw_input_field('products_quantity', $pInfo->products_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;個' . '&nbsp;&nbsp;←&nbsp;' . $pInfo->products_quantity . '個<br><hr size="2" noshade>' . "\n";
   //商品説明を分割
 
-  $des_query = tep_db_query("select * from products_description where language_id = '4' and products_id = '" . $pInfo->products_id . "'"); 
-  $des_result = tep_db_fetch_array($des_query); 
-  echo '当社キャラクター名の入力欄：<br>' . tep_draw_textarea_field('products_attention_5', 'soft', '70', '10', $des_result['products_attention_5']) . '<br>' . "\n";
+  //$des_query = tep_db_query("select * from products_description where language_id = '4' and products_id = '" . $pInfo->products_id . "'"); 
+  //$des_result = tep_db_fetch_array($des_query); 
+  echo '当社キャラクター名の入力欄：<br>' . tep_draw_textarea_field('products_attention_5', 'soft', '70', '10', $pInfo->products_attention_5) . '<br>' . "\n";
   echo '<table width="100%" cellspacing="0" cellpadding="5" border="0" class="smalltext"><tr><td><b>販売</b></td><td><b>買取</b></td></tr>' . "\n";
   echo '<tr><td>所持金上限や、弊社キャラクターの在庫の都合上、複数のキャラクターにて<br>分割してお届けする場合がございます。ご注文いただきました数量に達する<br>まで受領操作をお願いいたします。<br>【】または【】よりお届けいたします。</td><td>当社キャラクター【】または【】にトレードをお願いいたします。</td></tr></table><hr size="2" noshade>' . "\n";
 

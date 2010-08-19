@@ -2062,7 +2062,7 @@ function tep_get_image_document_image($document_id)
         foreach($allorders as $o) {
           $allorders_ids[] = $o['orders_id'];
         }
-        $sql = "select * from ".TABLE_ORDERS_PRODUCTS." op, ".TABLE_PRODUCTS_DESCRIPTION." pd WHERE op.products_id=pd.products_id and `orders_id` IN ('".join("','", $allorders_ids)."') and pd.site_id = '".$site_id."'";
+        $sql = "select pd.products_name,p.products_attention_5,p.products_id from ".TABLE_ORDERS_PRODUCTS." op, ".TABLE_PRODUCTS_DESCRIPTION." pd,".TABLE_PRODUCTS." p WHERE op.products_id=pd.products_id and p.products_id=pd.products_id and `orders_id` IN ('".join("','", $allorders_ids)."') and pd.site_id = '".$site_id."'";
         $orders_products_query = tep_db_query($sql);
         while ($product = tep_db_fetch_array($orders_products_query)) {
           $products[$product['orders_id']][] = $product;
@@ -2077,7 +2077,7 @@ function tep_get_image_document_image($document_id)
           $sql = "select * from `".TABLE_ORDERS_PRODUCTS."` WHERE `orders_id`='".$orders_id."'";
           $orders_products_query = tep_db_query($sql);
           while ($orders_products = tep_db_fetch_array($orders_products_query)){
-              $sql = "select * from `".TABLE_PRODUCTS_DESCRIPTION."` WHERE `products_id`='".$orders_products['products_id']."' and site_id = '".$site_id."'";
+              $sql = "select pd.products_name,p.products_attention_5,p.products_id from `".TABLE_PRODUCTS_DESCRIPTION."` pd,".TABLE_PRODUCTS." p WHERE p.products_id=pd.products_id and p.`products_id`='".$orders_products['products_id']."' and pd.site_id = '".$site_id."'";
               $products_description = tep_db_fetch_array(tep_db_query($sql));
               if ($products_description['products_attention_5']) {
                 $str .= $orders_products['products_name']." 当社のキャラクター名：\n";
@@ -2356,15 +2356,15 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
                p.products_cflag,
                p.products_small_sum,
                p.option_type,
+               p.products_attention_1, 
+               p.products_attention_2, 
+               p.products_attention_3, 
+               p.products_attention_4, 
+               p.products_attention_5, 
                pd.language_id,
                pd.products_name, 
                pd.products_description,
                pd.site_id,
-               pd.products_attention_1, 
-               pd.products_attention_2, 
-               pd.products_attention_3, 
-               pd.products_attention_4, 
-               pd.products_attention_5, 
                pd.products_url,
                pd.products_viewed
         FROM " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 

@@ -96,11 +96,6 @@ while ($row = mysql_fetch_array($sql_result)) {
   $price = $currencies->format($price);}
 
   $sql2 = "SELECT products_name, 
-                  products_attention_1, 
-                  products_attention_2, 
-                  products_attention_3, 
-                  products_attention_4, 
-                  products_attention_5, 
                   products_description 
            FROM ".TABLE_PRODUCTS_DESCRIPTION." 
            WHERE products_id = '$id' 

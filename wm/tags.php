@@ -108,11 +108,11 @@ while ($tag = tep_db_fetch_array($tags_query))
                pd.products_name,
                pd.products_description,
                pd.site_id,
-               pd.products_attention_1,
-               pd.products_attention_2,
-               pd.products_attention_3,
-               pd.products_attention_4,
-               pd.products_attention_5,
+               p.products_attention_1,
+               p.products_attention_2,
+               p.products_attention_3,
+               p.products_attention_4,
+               p.products_attention_5,
                pd.products_url,
                pd.products_viewed
         from " . TABLE_PRODUCTS_TO_TAGS . " as p2t 
@@ -170,11 +170,11 @@ while ($tag = tep_db_fetch_array($tags_query))
                pd.products_name,
                pd.products_description,
                pd.site_id,
-               pd.products_attention_1,
-               pd.products_attention_2,
-               pd.products_attention_3,
-               pd.products_attention_4,
-               pd.products_attention_5,
+               p.products_attention_1,
+               p.products_attention_2,
+               p.products_attention_3,
+               p.products_attention_4,
+               p.products_attention_5,
                pd.products_url,
                pd.products_viewed
         from " . TABLE_PRODUCTS_TO_TAGS . " as p2t 

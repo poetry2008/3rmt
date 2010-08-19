@@ -48,9 +48,19 @@ $.fn.extend({
                 break;
             case 38:   
                 //up
-                var npos =$(selectString+"[pos='"+String(posx-1)+'_'+String(posy)+"']");
-                if(npos.length > 0)  {
+                i = 1;
+                while(1) {
+                  npos =$(selectString+"[pos='"+String(posx-i)+'_'+String(posy)+"']")
+                  if (!npos.length) {
+                    return false;
+                    break;
+                  }
+                  if (!npos.attr('disabled')){
                     npos.focus();
+                    return false;
+                    break;
+                  }
+                  i++;
                 }
 
                 break;
@@ -65,11 +75,20 @@ $.fn.extend({
             case 13:
             case 40:
                 //down
-                var npos =$(selectString+"[pos='"+String(posx+1)+'_'+String(posy)+"']");
-                if(npos.length > 0)  {
+                i = 1;
+                while(1) {
+                  npos =$(selectString+"[pos='"+String(posx+i)+'_'+String(posy)+"']")
+                  if (!npos.length) {
+                    return false;
+                    break;
+                  }
+                  if (!npos.attr('disabled')){
                     npos.focus();
+                    return false;
+                    break;
+                  }
+                  i++;
                 }
-                return false;
                 break;
                 
                 

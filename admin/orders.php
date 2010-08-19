@@ -846,7 +846,7 @@ function mail_text(st,tt,ot){
 
 
       <?php 
-  if ($ocertify->npermission == 15) {
+  //if ($ocertify->npermission == 15) {
   ?>
     <?php echo tep_draw_form('status', FILENAME_ORDERS, tep_get_all_get_params(array('action')) . 'action=update_order'); ?>
     <tr>
@@ -932,7 +932,7 @@ function mail_text(st,tt,ot){
           </tr>
     </form>
       <tr>
-    <?php }?>
+    <?php //}?>
     <td colspan="2" align="right">
     <?php echo '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action','status'))) . '">' . tep_image_button('button_back.gif', IMAGE_BACK) . '</a>'; ?></td>
     </td>

@@ -7,35 +7,6 @@
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRODUCT_INFO);
   
 //begin dynamic meta tags query -->
-  // ccdd
-/*
-$the_product_info_query = tep_db_query("
-    SELECT pd.language_id, 
-           p.products_id, 
-           pd.products_name, 
-           pd.products_attention_1, 
-           pd.products_attention_2, 
-           pd.products_attention_3, 
-           pd.products_attention_4, 
-           pd.products_attention_5, 
-           pd.products_description, 
-           p.products_model, 
-           p.products_quantity, 
-           p.products_image, 
-           pd.products_url, 
-           p.products_price, 
-           p.products_tax_class_id, 
-           p.products_date_added, 
-           p.products_date_available, 
-           p.manufacturers_id 
-    FROM " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
-    WHERE p.products_id = '" . (int)$_GET['products_id'] . "' 
-      AND pd.products_id = '" .  (int)$_GET['products_id'] . "'" . " 
-      AND pd.language_id ='" .  (int)$languages_id . "' 
-      AND pd.site_id = ".SITE_ID
-    ); 
-$the_product_info = tep_db_fetch_array($the_product_info_query);
-*/
 $the_product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID, $languages_id);
 //forward 404
 forward404Unless($the_product_info);
@@ -125,41 +96,6 @@ function showimage($1) {
       <td valign="top" class="contents">
       <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_PRODUCT_INFO, tep_get_all_get_params(array('action')) . 'action=add_product')) . "\n"; ?>
 <?php
-// ccdd
-/*
-  $product_info_query = tep_db_query("
-      SELECT p.products_id, 
-             pd.products_name, 
-             pd.products_attention_1,
-             pd.products_attention_2,
-             pd.products_attention_3,
-             pd.products_attention_4,
-             pd.products_attention_5,
-             pd.products_description, 
-             p.products_model, 
-             p.products_quantity, 
-             p.products_image,
-             p.products_image2,
-             p.products_image3, 
-             pd.products_url, 
-             p.products_price, 
-             p.products_tax_class_id, 
-             p.products_date_added, 
-             p.products_date_available, 
-             p.manufacturers_id, 
-             p.products_bflag, 
-             p.products_cflag, 
-             p.products_small_sum 
-      FROM " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd 
-      WHERE p.products_status != '0' 
-        AND p.products_id = '" . (int)$_GET['products_id'] . "' 
-        AND pd.products_id = p.products_id 
-        AND pd.language_id = '" . $languages_id . "' 
-        AND pd.site_id = ".SITE_ID
-  );
-  if (!tep_db_num_rows($product_info_query)) { // product not found in database
-  */
-  
   $product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID, $languages_id);
   if (!$product_info) { // product not found in database
 ?>

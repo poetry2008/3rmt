@@ -63,7 +63,7 @@
     where psid = '0'
        or psid = '".SITE_ID."'
     group by reviews_id
-    order by reviews_id DESC
+    order by date_added DESC
   ";
   /*
   $reviews_query_raw = "

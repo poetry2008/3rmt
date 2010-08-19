@@ -385,7 +385,7 @@ class SEO_URL{
                    'tPath' => 't-',
                    'articles_id' => 'a-',
                    'products_id_review' => 'pr-',
-                   'products_id_review_info' => 'pri-',
+                   'products_id_review_info' => 'pr-',
                    'info_id' => 'i-',
                    'colors' => 'co-',
                    'pID' => 'info-'
@@ -576,7 +576,7 @@ class SEO_URL{
       $p2 = @explode('=', $valuepair); 
       if ($p2[0] == 'reviews_id') {
         $p3 = @explode('=', $p[0]);
-        $url = $this->make_url($page, REWRITE_PRODUCTS, 'products_id_review_info', $p3[1], '/'.$p2[1].'.html', $separator);
+        $url = $this->make_url($page, 'reviews/', 'products_id_review_info', $p3[1], '/'.$p2[1].'.html', $separator);
         break;
       } else if ($p2[0] == 'action' && $p2[1] == 'select'){
         $url = $this->make_url($page, '', $p2[0], $p2[1], '.html', $separator);
@@ -588,7 +588,7 @@ class SEO_URL{
               $url = $this->make_url($page, REWRITE_PRODUCTS, $p2[0], $p2[1], '.html', $separator);
               break;
             case ( $page == FILENAME_PRODUCT_REVIEWS ):
-              $url = $this->make_url($page, REWRITE_PRODUCTS, 'products_id_review', $p2[1], '/', $separator);
+              $url = $this->make_url($page, 'reviews/', 'products_id_review', $p2[1], '/', $separator);
               break;
             default:
               $container[$p2[0]] = $p2[1];

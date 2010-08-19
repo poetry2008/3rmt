@@ -71,7 +71,7 @@ RewriteRule ^item/co-([0-9]+).html$ index.php?colors=$1&%{QUERY_STRING}
 # not find in wm
 # if romaji RewriteRule ^item/pri-([0-9A-Za-z_-]+).html$ product_reviews_info.php?products_id=$1&%{QUERY_STRING}
 #RewriteRule ^item/pri-([0-9]+).html$ product_reviews_info.php?products_id=$1&%{QUERY_STRING}
-RewriteRule ^item/pri-([0-9]+)/([0-9]+)\.html$ product_reviews_info.php?products_id=$1&reviews_id=$2&%{QUERY_STRING}
+RewriteRule ^item/pr-([0-9]+)/([0-9]+)\.html$ product_reviews_info.php?products_id=$1&reviews_id=$2&%{QUERY_STRING}
 
 
 #pl-*.html does not exist
