@@ -62,10 +62,10 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
       //if (in_array($order['orders_status'], array(2,5,6,7,8))) {
       if (tep_orders_status_finished($order['orders_status'])) {
         // status can not change
-        echo '<div class="comment">ご入力いただきました登録情報は、既に発送が完了している、または、ご注文がキャンセルとなっております。 <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="前に戻る" title="前に戻る"></a></div></div>';
+        echo '<div class="comment">ご入力いただきました登録情報は、既に発送が完了している、または、ご注文がキャンセルとなっております。 <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="前に戻る"></a></div></div>';
       } else if ($date && $hour && $minute && ($time < (time() - MINUTES * 60) or $time > (time() + (7*86400)))) {
         // time error
-        echo '<div class="comment">取引時間は前もって一時間以上に設定してください <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" alt="TOPに戻る" title="TOPに戻る"></a></div></div>';
+        echo '<div class="comment">取引時間は前もって一時間以上に設定してください <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" alt="TOPに戻る"></a></div></div>';
       } else {
         // update time
         if ($date && $hour && $minute) {
@@ -165,7 +165,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
             }
           }
         }
-        echo '<div class="comment">注文内容の変更を承りました。電子メールをご確認ください。 <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" alt="TOPに戻る" title="TOPに戻る"></a></div></div>';
+        echo '<div class="comment">注文内容の変更を承りました。電子メールをご確認ください。 <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" alt="TOPに戻る"></a></div></div>';
         // sent mail to customer
         // ccdd
         $mail    = tep_db_fetch_array(tep_db_query("
@@ -364,7 +364,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
       }
     } else if (tep_orders_status_finished($order['orders_status'])) {
         // status can not change
-        echo '<div class="comment">ご指定の注文番号は受付できません。 <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="前に戻る" title="前に戻る"></a></div></div>';
+        echo '<div class="comment">ご指定の注文番号は受付できません。 <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="前に戻る"></a></div></div>';
     } else {
         // edit order
 ?>
@@ -503,16 +503,15 @@ foreach ($value['attributes'] as $att) {?>
 </table>
 <br>
 <p align="center">
-  <input type='image' src="includes/languages/japanese/images/buttons/button_submit.gif" alt="確認する" title="確認する" onClick="return orderConfirmPage();" >
-   <input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="クリア" title="クリア" onClick="javascript:document.order.reset();return false;" >
+  <input type='image' src="includes/languages/japanese/images/buttons/button_submit.gif" alt="確認する" onClick="return orderConfirmPage();" >
+   <input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="クリア" onClick="javascript:document.order.reset();return false;" >
 </p>
 </form>
 </div>
 <div id='confirm' style='display:none; text-align: center;'>
   <div id='confirm_content'></div>
-  <input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="確定する" title="確定する
-    " onClick="document.order.submit()" >
-  <input type='image' src="includes/languages/japanese/images/buttons/button_back.gif" alt="前に戻る" title="前に戻る" onClick="document.getElementById('confirm').style.display='none';document.getElementById('form').style.display='block'" >
+  <input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="確定する" onClick="document.order.submit()" >
+  <input type='image' src="includes/languages/japanese/images/buttons/button_back.gif" alt="前に戻る" onClick="document.getElementById('confirm').style.display='none';document.getElementById('form').style.display='block'" >
 </div>
 <script type="text/javascript" src='./js/order.js'></script>
 <script type="text/javascript">
@@ -652,7 +651,7 @@ function orderConfirmPage(){
     }
   } else {
     // has no order or info error
-    echo '<div class="comment">"注文番号" または"メールアドレス" が一致しませんでした。<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="前に戻る" title="前に戻る"></a></div></div>';
+    echo '<div class="comment">"注文番号" または"メールアドレス" が一致しませんでした。<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="前に戻る"></a></div></div>';
   }
 ?>
 <?php } else {
@@ -677,8 +676,8 @@ function orderConfirmPage(){
  <tr>
   <td colspan='2' align="center">
    
-   <input type='image' src="includes/languages/japanese/images/buttons/button_continue.gif" alt="次へ進む" title="次へ進む" >
-   <input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="クリア" title="クリア" onClick="javascript:document.order.reset();return false;" >
+   <input type='image' src="includes/languages/japanese/images/buttons/button_continue.gif" alt="次へ進む">
+   <input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="クリア" onClick="javascript:document.order.reset();return false;" >
   </td>
  </tr>
 </table>

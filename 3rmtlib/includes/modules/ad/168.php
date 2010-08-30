@@ -1,6 +1,3 @@
-<?php
-//<meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
-?>
 <ul class="r_c_links_ul">
 <li><a href="http://www.playonline.com/home/polnews/list_mnt.shtml" rel='nofollow' class="blank">FFXI メンテナンス情報</a></li>
 <li><a href="http://www5.plala.or.jp/SQR/ff11/" rel='nofollow' class="blank">FF11の攻略 eLeMeN</a></li>

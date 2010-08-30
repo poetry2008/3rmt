@@ -15,6 +15,7 @@
                p.products_image, 
                p.products_tax_class_id, 
                p.products_price, 
+               p.products_quantity,
                p.products_price_offset, 
                p.products_small_sum
         from " . TABLE_PRODUCTS . " p 
@@ -29,6 +30,7 @@
                         p.products_image, 
                         p.products_tax_class_id, 
                         p.products_price, 
+                        p.products_quantity, 
                         p.products_price_offset, 
                         p.products_small_sum
       from " . TABLE_PRODUCTS . " p ," . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " . TABLE_CATEGORIES . " c

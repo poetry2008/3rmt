@@ -169,7 +169,7 @@ if (isset($_GET['action']) && $_GET['action']) {
     echo  TABLE_HEADING_STATUS; 
   }
   ?></td>
-  <td class="dataTableHeadingContetn" align="center" width='80'></td>
+  <td class="dataTableHeadingContent" align="center" width='80'>&nbsp;</td>
   </tr>
   <!--dataTableHeadingRow end-->
 <?php
@@ -364,7 +364,7 @@ while ($products = tep_db_fetch_array($products_query)) {
   ?>
   <td class="dataTableContent">
      <?php 
-     echo '<a href="orders.php?keywords=' . urlencode($products['products_name']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;' . $products['products_name']; 
+     echo '<a href="orders.php?keywords=' . urlencode($products['products_name']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;<span id="products_name_'.$products['products_id'].'">' . $products['products_name'] . '</span>'; 
   ?>
   </td>
       <?php
@@ -386,7 +386,7 @@ while ($products = tep_db_fetch_array($products_query)) {
      <span align='center' > <?php echo $imaginary;?></span>
   </td>
 <?php ////数量 ?>
-  <td class="dataTableContent" align='right' style="font-weight:bold"><?php echo $products['products_quantity'];?></td>
+  <td class="dataTableContent" align='right' onmouseover='this.style.cursor="pointer"' style="font-weight:bold;" id='quantity_<?php echo $products['products_id']; ?>' onclick="update_quantity(<?php echo $products['products_id']; ?>)"><?php echo $products['products_quantity'];?></td>
   <td align='center' class="dataTableContent" ><span class = 'TRADER_INPUT'  name="TRADER_INPUT[]"  id="TRADER_<?php echo $products['products_id']; ?>"><?php echo $kakaku_treder?$kakaku_treder:0;?></span></td>
 <?php //価格業者  ?>
   <td align='center' class="dataTableContent" ><span name="INCREASE_INPUT" class = 'INCREASE_INPUT'>
@@ -463,27 +463,34 @@ if ($ocertify->npermission >= 10) { //表示制限
     }
 }
 ?></td>
-<td><?php 
+<td class="dataTableContent" align='right'><?php 
+
   $last_modified_array = getdate(strtotime(tep_datetime_short($products['products_last_modified'])));
   $today_array = getdate();
+  $last_modified = date('n/j H:i:s',strtotime(tep_datetime_short($products['products_last_modified'])));
   if ($last_modified_array["year"] == $today_array["year"] && $last_modified_array["mon"] == $today_array["mon"] && $last_modified_array["mday"] == $today_array["mday"]) {
     if ($last_modified_array["hours"] >= ($today_array["hours"]-2)) {
-      echo tep_image(DIR_WS_ICONS . 'signal_blue.gif', '更新正常');
+      //echo tep_image(DIR_WS_ICONS . 'signal_blue.gif', '更新正常');
+      echo tep_image(DIR_WS_ICONS . 'signal_blue.gif', $last_modified);
     } elseif ($last_modified_array["hours"] >= ($today_array["hours"]-5)) {
-      echo tep_image(DIR_WS_ICONS . 'signal_yellow.gif', '更新注意');
+      //echo tep_image(DIR_WS_ICONS . 'signal_yellow.gif', '更新注意');
+      echo tep_image(DIR_WS_ICONS . 'signal_yellow.gif', $last_modified);
     } else {
-      echo tep_image(DIR_WS_ICONS . 'signal_red.gif', '更新警告');
+      //echo tep_image(DIR_WS_ICONS . 'signal_red.gif', '更新警告');
+      echo tep_image(DIR_WS_ICONS . 'signal_red.gif', $last_modified);
     }
   } else {
-    echo tep_image(DIR_WS_ICONS . 'signal_blink.gif', '更新異常');
+    //echo tep_image(DIR_WS_ICONS . 'signal_blink.gif', '更新異常');
+    echo tep_image(DIR_WS_ICONS . 'signal_blink.gif', $last_modified);
   }
-
   echo '&nbsp;&nbsp;' . tep_image(DIR_WS_ICONS . 'battery_0.gif', '数量異常');
   ?>
   <input type="hidden" name="this_price[]" value="<?php echo (int)$special_price_check;?>" >
   <input type="hidden" name="proid[]"      value="<?php echo $products['products_id']; ?>" >
   <input type="hidden" name="pprice[]"     value="<?php echo $products['products_price']; ?>" >
   <input type="hidden" name="bflag[]"      value="<?php echo $products['products_bflag']; ?>" >
+</td>
+<td>
 </td>
 </tr>
 <!--dataTableRowSelected end-->

@@ -55,9 +55,9 @@
 // the image filename as default
     $image = '<img src="' . tep_output_string($src) . '" alt="' . tep_output_string($alt) . '"';
 
-    if (tep_not_null($alt)) {
+    /*if (tep_not_null($alt)) {
       $image .= ' title=" ' . tep_output_string($alt) . ' "';
-    }
+    }*/
 
 
     if (tep_not_null($width) && tep_not_null($height)) {
@@ -112,9 +112,9 @@
 // the image filename as default
     $image = '<img src="' . tep_output_string($src) . '" alt="' . tep_output_string($alt) . '"';
 
-    if (tep_not_null($alt)) {
+    /*if (tep_not_null($alt)) {
       $image .= ' title=" ' . tep_output_string($alt) . ' "';
-    }
+    }*/
 
 
     if (tep_not_null($width) && tep_not_null($height)) {
@@ -171,9 +171,9 @@
 // the image filename as default
     $image = '<img src="' . tep_output_string($src) . '" border="0" alt="' . tep_output_string($alt) . '"';
 
-    if (tep_not_null($alt)) {
+    /*if (tep_not_null($alt)) {
       $image .= ' title=" ' . tep_output_string($alt) . ' "';
-    }
+    }*/
 
 
     if (tep_not_null($width) && tep_not_null($height)) {
@@ -214,7 +214,7 @@
 
     $image_submit = '<input type="image" src="' . tep_parse_input_field_data(DIR_WS_LANGUAGES . $language . '/images/buttons/' . $image, array('"' => '&quot;')) . '" alt="' . tep_parse_input_field_data($alt, array('"' => '&quot;')) . '"';
 
-    if (tep_not_null($alt)) $image_submit .= ' title=" ' . tep_parse_input_field_data($alt, array('"' => '&quot;')) . ' "';
+    //if (tep_not_null($alt)) $image_submit .= ' title=" ' . tep_parse_input_field_data($alt, array('"' => '&quot;')) . ' "';
 
     if (tep_not_null($parameters)) $image_submit .= ' ' . $parameters;
 

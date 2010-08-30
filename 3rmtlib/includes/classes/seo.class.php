@@ -601,6 +601,7 @@ class SEO_URL{
               $url = $this->make_url($page, 'reviews/page', '', $p2[1], '.html', $separator);
               break;
             default:
+              //print_r($p2);
               $container[$p2[0]] = $p2[1];
               break;
           }

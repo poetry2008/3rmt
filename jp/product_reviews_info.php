@@ -123,7 +123,7 @@ function showimage($1) {
                 <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr> 
                     <td class="main"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS, $get_params) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
-                    <td align="right" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_DEFAULT, 'action=buy_now&products_id=' .  $reviews['products_id']) . '">' . tep_image_button('button_in_cart.jpg', IMAGE_BUTTON_IN_CART); ?></a></td> 
+                    <td align="right" class="main"><?php //echo '<a href="' . tep_href_link(FILENAME_DEFAULT, 'action=buy_now&products_id=' .  $reviews['products_id']) . '">' . tep_image_button('button_in_cart.jpg', IMAGE_BUTTON_IN_CART); ?></a></td> 
                   </tr> 
                 </table></td> 
             </tr> 

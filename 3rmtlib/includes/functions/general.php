@@ -1688,18 +1688,32 @@ function forward404Unless($condition)
   }
 
   function page_head(){
-    global $_GET, $request_type;
+    global $_GET, $request_type, $breadcrumb;
     $title       = C_TITLE;
     $keywords    = C_KEYWORDS;
     $description = C_DESCRIPTION;
     $robots      = C_ROBOTS;
     $copyright   = C_AUTHER;
+    
+    $search = $replace = array();
+    
     switch (str_replace('/', '', $_SERVER['SCRIPT_NAME'])) {
       case FILENAME_DEFAULT:
          global $cPath_array, $cPath, $seo_tags, $seo_category, $seo_manufacturers;
          if (isset($cPath_array)) {
             if (isset($cPath) && tep_not_null($cPath)) {
-              $title       = $seo_category['categories_name'] . (tep_not_null($seo_category['categories_meta_text']) ? '-' . $seo_category['categories_meta_text'] . '専門のRMTジャックポット' : C_TITLE);
+              switch(SITE_ID) {
+                case '3':
+                  $title       = $seo_category['categories_name'] . 'と言えばRMTワールドマネー｜' . (tep_not_null($seo_category['categories_meta_text']) ? $seo_category['categories_meta_text'] : C_TITLE); 
+                  break;
+                case '2':
+                  $title       = $seo_category['categories_name'] . (tep_not_null($seo_category['categories_meta_text']) ? '-' . $seo_category['categories_meta_text'] . '｜激安のRMTゲームマネー' : C_TITLE); 
+                  break;
+                case '1':
+                default:
+                  $title       = $seo_category['categories_name'] . (tep_not_null($seo_category['categories_meta_text']) ? '-' . $seo_category['categories_meta_text'] . '専門の' . TITLE : C_TITLE);
+                  break;
+              }
               $keywords    = $seo_category['meta_keywords'];
               $description = $seo_category['meta_description'];
             }
@@ -1708,7 +1722,7 @@ function forward404Unless($condition)
             // meta_tags
             $metas       = tep_get_metas_by_manufacturers_id(intval($_GET['manufacturers_id']));
             $keywords    = "RMT, " . $metas['keywords'];
-            $description = "RMT総合サイト RMTジャックポットへようこそ。" . $metas['description'];
+            $description = "RMT総合サイト " . TITLE . "へようこそ。" . $metas['description'];
          } else if (isset($_GET['tags_id']) && $_GET['tags_id']) {
            global $breadcrumb;
            $breadcrumb->add($seo_tags['tags_name'], tep_href_link(FILENAME_TAGS, 'tags_id=' . $seo_tags['tags_id']));
@@ -1719,10 +1733,11 @@ function forward404Unless($condition)
          }
          else {
            // no change
+           
          }
         break;
       case FILENAME_PRODUCT_INFO:
-        global $the_product_name, $the_manufacturers, $the_product_model, $the_product_description;
+        global $the_product_name, $the_manufacturers, $the_product_model, $the_product_description,$the_product_category;
         if (isset($the_product_name) && tep_not_null($the_product_name)) {
           $title       = $the_product_name .':'. TITLE;
           $keywords    = TITLE . ', ' . $the_product_name . ', ' . $the_product_model . ', ' . $the_manufacturers['manufacturers_name'];
@@ -1740,14 +1755,38 @@ function forward404Unless($condition)
         break;
       case FILENAME_SPECIALS:
         $title       = HEADING_TITLE . ' ' . TITLE;
-        $keywords    = "RMT,激安,安い,特価,販売,買取,MMORPG,アイテム,アカウント,ゲーム通貨";
-        $description = "今日のお買い得ゲーム一覧。RMTのことならRMTジャックポットへ";
+        switch(SITE_ID){
+          case "3":
+            $keywords    = "RMT,激安,安い,特価,販売,買取,MMORPG,アイテム,アカウント,ゲーム通貨";
+            $description = "今日のお買い得ゲーム一覧。RMTのことなら".TITLE."へ";
+            break;
+          case "2":
+            $keywords = "RMT,お買い得,安い,激安," . TITLE;
+            $description = "今がお買い得！" . TITLE . "のお買い得商品一覧。";
+            break;
+          case "1":
+          default:
+            $keywords    = "RMT,激安,安い,特価,販売,買取,MMORPG,アイテム,アカウント,ゲーム通貨";
+            $description = "今日のお買い得ゲーム一覧。RMTのことなら".TITLE."へ";
+            break;
+        }
         break;
       case FILENAME_PREORDER:
         global $po_game_c, $product_info;
-        $title       = $po_game_c . '専門の' . TITLE . ' - ' . $product_info['products_name'] . 'を予約する';
-        $keywords    = $po_game_c . ',' . $product_info['products_name'] . ", RMT,予約,特価,販売";
-        $description = $po_game_c . '専門の' . TITLE . '。' . $product_info['products_name'] . 'を予約するページです。';
+        switch(SITE_ID){
+          case "2":
+            $title       = ds_tep_get_categories((int)$_GET['products_id'],1) . '/' . $product_info['products_name'] . '/' . TITLE;
+            $keywords    = "rmt,激安,販売," . ds_tep_get_categories((int)$_GET['products_id'],1) . ',' . $product_info['products_name'] . ',' . TITLE;
+            $description = ds_tep_get_categories((int)$_GET['products_id'],1) . '-' . $product_info['products_name'] . 'を予約するページです。' . TITLE;
+            break;
+          case "3":
+          case "1":
+          default:
+            $title       = $po_game_c . '専門の' . TITLE . ' - ' . $product_info['products_name'] . 'を予約する';
+            $keywords    = $po_game_c . ',' . $product_info['products_name'] . ", RMT,予約,特価,販売";
+            $description = $po_game_c . '専門の' . TITLE . '。' . $product_info['products_name'] . 'を予約するページです。';
+            break;
+        }
         break;
       case FILENAME_LATEST_NEWS:
         global $breadcrumb, $latest_news;
@@ -1755,9 +1794,24 @@ function forward404Unless($condition)
         break;
       case FILENAME_MANUFACTURERS:
         global $breadcrumb;
-        $title        = $breadcrumb->trail_title(' &raquo; ');
-        $keywords     = "RMT,スクウェア・エニックス,NCJ,ガンホー,NEXON,ゲームオン,コーエー,セガ,販売,買取,アイテム,アカウント";
-        $description  = "ゲームメーカーの一覧です。スクウェア・エニックス、NCJ、ガンホーなど。RMTのことならRMTジャックポットへ";
+        switch(SITE_ID){
+          case "3":
+            $title        = $breadcrumb->trail_title(' &raquo; ');
+            $keywords     = "RMT,スクウェア・エニックス,NCJ,ガンホー,NEXON,ゲームオン,コーエー,セガ,販売,買取,アイテム,アカウント";
+            $description  = "ゲームメーカーの一覧です。スクウェア・エニックス、NCJ、ガンホーなど。RMTのことなら".TITLE."へ";
+            break;
+          case "2":
+            $title        = $breadcrumb->trail_title(' &raquo; ');
+            $keywords     = "RMT,メーカー,一覧";
+            $description  = "オンラインゲームのメーカー一覧ページです。" . TITLE;
+            break;
+          case "1":
+          default:
+            $title        = $breadcrumb->trail_title(' &raquo; ');
+            $keywords     = "RMT,スクウェア・エニックス,NCJ,ガンホー,NEXON,ゲームオン,コーエー,セガ,販売,買取,アイテム,アカウント";
+            $description  = "ゲームメーカーの一覧です。スクウェア・エニックス、NCJ、ガンホーなど。RMTのことなら".TITLE."へ";
+            break;
+        }
         break;
       case FILENAME_REORDER:
       case FILENAME_REORDER2:
@@ -1811,6 +1865,248 @@ function forward404Unless($condition)
         $title = TITLE;
         break;
     }
+    //exit($title);
+    $script_name = tep_get_filename(str_replace('/', '', $_SERVER['SCRIPT_NAME']));
+    
+
+    if ($script_name == 'latest_news' && $_GET['news_id']) {
+      $script_name = 'a_'.$script_name;
+    }
+
+    $title_const_name       = strtoupper('module_metaseo_' . $script_name . '_title');
+    $keywords_const_name    = strtoupper('module_metaseo_' . $script_name . '_keywords');
+    $description_const_name = strtoupper('module_metaseo_' . $script_name . '_description');
+    $robots_const_name      = strtoupper('module_metaseo_' . $script_name . '_robots');
+    $copyright_const_name   = strtoupper('module_metaseo_' . $script_name . '_copyright');
+
+    if (defined($title_const_name) && strlen(tep_get_value_by_const_name($title_const_name))) {
+      $title = tep_get_value_by_const_name($title_const_name);
+    }
+    if (defined($keywords_const_name) && strlen(tep_get_value_by_const_name($keywords_const_name))) {
+      $keywords = tep_get_value_by_const_name($keywords_const_name);
+    }
+    if (defined($description_const_name) && strlen(tep_get_value_by_const_name($description_const_name))) {
+      $description = tep_get_value_by_const_name($description_const_name);
+    }
+    if (defined($robots_const_name) && strlen(tep_get_value_by_const_name($robots_const_name))) {
+      $robots = tep_get_value_by_const_name($robots_const_name);
+    }
+    if (defined($copyright_const_name) && strlen(tep_get_value_by_const_name($copyright_const_name))) {
+      $copyright = tep_get_value_by_const_name($copyright_const_name);
+    }
+    //echo $_SERVER['SCRIPT_NAME'];
+    switch (str_replace('/', '', $_SERVER['SCRIPT_NAME'])) {
+      case FILENAME_CATEGORY:
+      case FILENAME_MANUFACTURER:
+        if (isset($cPath_array)) {
+           if (isset($cPath) && tep_not_null($cPath)) {
+             if (defined('MODULE_METASEO_CATEGORY_TITLE') && strlen(tep_get_value_by_const_name('MODULE_METASEO_CATEGORY_TITLE'))) {
+               $title       = tep_get_value_by_const_name('MODULE_METASEO_CATEGORY_TITLE');
+             }
+             if (defined('MODULE_METASEO_CATEGORY_KEYWORDS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_CATEGORY_KEYWORDS'))) {
+               $keywords    = tep_get_value_by_const_name('MODULE_METASEO_CATEGORY_KEYWORDS');
+             }
+             if (defined('MODULE_METASEO_CATEGORY_DESCRIPTION') && strlen(tep_get_value_by_const_name('MODULE_METASEO_CATEGORY_DESCRIPTION'))) {
+               $description = tep_get_value_by_const_name('MODULE_METASEO_CATEGORY_DESCRIPTION');
+             }
+             if (defined('MODULE_METASEO_CATEGORY_ROBOTS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_CATEGORY_ROBOTS'))) {
+               $robots      = tep_get_value_by_const_name('MODULE_METASEO_CATEGORY_ROBOTS');
+             }
+             if (defined('MODULE_METASEO_CATEGORY_COPYRIGHT') && strlen(tep_get_value_by_const_name('MODULE_METASEO_CATEGORY_COPYRIGHT'))) {
+               $copyright   = tep_get_value_by_const_name('MODULE_METASEO_CATEGORY_COPYRIGHT');
+             }
+             // MAX_DISPLAY_SEARCH_RESULTS
+             //$page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
+             //$search  = array_merge($search,  array('#SEO_PAGE#'));
+             //$replace = array_merge($replace, array($page . 'ページ目'));
+             $search  = array_merge($search, array('#CATEGORIES_NAME#','#SEO_NAME#','#SEO_DESCRIPTION#','#CATEGORIES_META_TEXT#','#CATEGORIES_HEADER_TEXT#','#CATEGORIES_FOOTER_TEXT#','#TEXT_INFORMATION#','#META_KEYWORDS#','#META_DESCRIPTION#','#CATEGORIES_ID#',));
+             $replace = array_merge($replace, array($seo_category['categories_name'],$seo_category['seo_name'],$seo_category['seo_description_' . ABBR_SITENAME],$seo_category['categories_meta_text'],$seo_category['categories_header_text_' . ABBR_SITENAME],$seo_category['categories_footer_text_' . ABBR_SITENAME],$seo_category['text_information_' . ABBR_SITENAME],$seo_category['meta_keywords_' . ABBR_SITENAME],$seo_category['meta_description_' . ABBR_SITENAME],$seo_category['categories_id'],));
+           }
+        } elseif ($_GET['manufacturers_id']) {
+          if (defined('MODULE_METASEO_MANUFACTURER_TITLE') && strlen(MODULE_METASEO_MANUFACTURER_TITLE)) {
+            $title       = tep_get_value_by_const_name('MODULE_METASEO_MANUFACTURER_TITLE');
+          }
+          if (defined('MODULE_METASEO_MANUFACTURER_KEYWORDS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_MANUFACTURER_KEYWORDS'))) {
+            $keywords    = tep_get_value_by_const_name('MODULE_METASEO_MANUFACTURER_KEYWORDS');
+          }
+          if (defined('MODULE_METASEO_MANUFACTURER_DESCRIPTION') && strlen(tep_get_value_by_const_name('MODULE_METASEO_MANUFACTURER_DESCRIPTION'))) {
+            $description = tep_get_value_by_const_name('MODULE_METASEO_MANUFACTURER_DESCRIPTION');
+          }
+          if (defined('MODULE_METASEO_MANUFACTURER_ROBOTS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_MANUFACTURER_ROBOTS'))) {
+            $robots      = tep_get_value_by_const_name('MODULE_METASEO_MANUFACTURER_ROBOTS');
+          }
+          if (defined('MODULE_METASEO_MANUFACTURER_COPYRIGHT') && strlen(tep_get_value_by_const_name('MODULE_METASEO_MANUFACTURER_COPYRIGHT'))) {
+            $copyright   = tep_get_value_by_const_name('MODULE_METASEO_MANUFACTURER_COPYRIGHT');
+          }
+          $page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
+          
+          $search  = array_merge($search, array('#SEO_PAGE#', '#KEYWORDS#', '#DESCRIPTION#',));
+          $replace = array_merge($replace, array($page . 'ページ目', $metas['keywords'], $metas['description'],));
+        } else if ((int)$_GET['tags_id']) {
+          if (defined('MODULE_METASEO_A_TAG_TITLE') && strlen(tep_get_value_by_const_name('MODULE_METASEO_A_TAG_TITLE'))) {
+            $title       = tep_get_value_by_const_name('MODULE_METASEO_A_TAG_TITLE');
+          }
+          if (defined('MODULE_METASEO_A_TAG_KEYWORDS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_A_TAG_KEYWORDS'))) {
+            $keywords    = tep_get_value_by_const_name('MODULE_METASEO_A_TAG_KEYWORDS');
+          }
+          if (defined('MODULE_METASEO_A_TAG_DESCRIPTION') && strlen(tep_get_value_by_const_name('MODULE_METASEO_A_TAG_DESCRIPTION'))) {
+            $description = tep_get_value_by_const_name('MODULE_METASEO_A_TAG_DESCRIPTION');
+          }
+          if (defined('MODULE_METASEO_A_TAG_ROBOTS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_A_TAG_ROBOTS'))) {
+            $robots      = tep_get_value_by_const_name('MODULE_METASEO_A_TAG_ROBOTS');
+          }
+          if (defined('MODULE_METASEO_A_TAG_COPYRIGHT') && strlen(tep_get_value_by_const_name('MODULE_METASEO_A_TAG_COPYRIGHT'))) {
+            $copyright   = tep_get_value_by_const_name('MODULE_METASEO_A_TAG_COPYRIGHT');
+          }
+          $search  = array_merge($search, array('#TITLE#'));
+          $replace = array_merge($replace, array($latest_news['headline']));
+        } else {
+          if (defined('MODULE_METASEO_DEFAULT_PAGE_TITLE') && strlen(tep_get_value_by_const_name('MODULE_METASEO_DEFAULT_PAGE_TITLE'))) {
+            $title       = tep_get_value_by_const_name('MODULE_METASEO_DEFAULT_PAGE_TITLE');
+          }
+          if (defined('MODULE_METASEO_DEFAULT_PAGE_KEYWORDS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_DEFAULT_PAGE_KEYWORDS'))) {
+            $keywords    = tep_get_value_by_const_name('MODULE_METASEO_DEFAULT_PAGE_KEYWORDS');
+          }
+          if (defined('MODULE_METASEO_DEFAULT_PAGE_DESCRIPTION') && strlen(tep_get_value_by_const_name('MODULE_METASEO_DEFAULT_PAGE_DESCRIPTION'))) {
+            $description = tep_get_value_by_const_name('MODULE_METASEO_DEFAULT_PAGE_DESCRIPTION');
+          }
+          if (defined('MODULE_METASEO_DEFAULT_PAGE_ROBOTS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_DEFAULT_PAGE_ROBOTS'))) {
+            $robots      = tep_get_value_by_const_name('MODULE_METASEO_DEFAULT_PAGE_ROBOTS');
+          }
+          if (defined('MODULE_METASEO_DEFAULT_PAGE_COPYRIGHT') && strlen(tep_get_value_by_const_name('MODULE_METASEO_DEFAULT_PAGE_COPYRIGHT'))) {
+            $copyright   = tep_get_value_by_const_name('MODULE_METASEO_DEFAULT_PAGE_COPYRIGHT');
+          }
+        }
+        break;
+      case FILENAME_PRODUCT_INFO:
+        $search  = array_merge($search, array('#PRODUCT_NAME#', '#PRODUCT_MODEL#', '#PRODUCT_DESCRITION#', '#MANUFACTURERS_NAME#','#PRODUCT_CATEGORY#'));
+        $replace = array_merge($replace, array($the_product_name, $the_product_model, $the_product_description, $the_manufacturers['manufacturers_name'],$the_product_category));
+        break;
+      case FILENAME_PREORDER:
+        $search  = array_merge($search, array('#CATEGORIES_NAME#','#PRODUCTS_NAME#'));
+        $replace = array_merge($replace, array($po_game_c, $product_info['products_name']));
+        break;
+      case FILENAME_LATEST_NEWS:
+      case FILENAME_A_LATEST_NEWS:
+        if ((int)$_GET['news_id']) {
+          if (defined('MODULE_METASEO_A_LATEST_NEWS_TITLE') && strlen(tep_get_value_by_const_name('MODULE_METASEO_A_LATEST_NEWS_TITLE'))) {
+            $title       = tep_get_value_by_const_name('MODULE_METASEO_A_LATEST_NEWS_TITLE');
+          }
+          if (defined('MODULE_METASEO_A_LATEST_NEWS_KEYWORDS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_A_LATEST_NEWS_KEYWORDS'))) {
+            $keywords    = tep_get_value_by_const_name('MODULE_METASEO_A_LATEST_NEWS_KEYWORDS');
+          }
+          if (defined('MODULE_METASEO_A_LATEST_NEWS_DESCRIPTION') && strlen(tep_get_value_by_const_name('MODULE_METASEO_A_LATEST_NEWS_DESCRIPTION'))) {
+            $description = tep_get_value_by_const_name('MODULE_METASEO_A_LATEST_NEWS_DESCRIPTION');
+          }
+          if (defined('MODULE_METASEO_A_LATEST_NEWS_ROBOTS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_A_LATEST_NEWS_ROBOTS'))) {
+            $robots      = tep_get_value_by_const_name('MODULE_METASEO_A_LATEST_NEWS_ROBOTS');
+          }
+          if (defined('MODULE_METASEO_A_LATEST_NEWS_COPYRIGHT') && strlen(tep_get_value_by_const_name('MODULE_METASEO_A_LATEST_NEWS_COPYRIGHT'))) {
+            $copyright   = tep_get_value_by_const_name('MODULE_METASEO_A_LATEST_NEWS_COPYRIGHT');
+          }
+          $search  = array_merge($search, array('#TITLE#'));
+          $replace = array_merge($replace, array($latest_news['headline']));
+        } else {
+          if (defined('MODULE_METASEO_LATEST_NEWS_TITLE') && strlen(tep_get_value_by_const_name('MODULE_METASEO_LATEST_NEWS_TITLE'))) {
+            $title       = tep_get_value_by_const_name('MODULE_METASEO_LATEST_NEWS_TITLE');
+          }
+          if (defined('MODULE_METASEO_LATEST_NEWS_KEYWORDS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_LATEST_NEWS_KEYWORDS'))) {
+            $keywords    = tep_get_value_by_const_name('MODULE_METASEO_LATEST_NEWS_KEYWORDS');
+          }
+          if (defined('MODULE_METASEO_LATEST_NEWS_DESCRIPTION') && strlen(tep_get_value_by_const_name('MODULE_METASEO_LATEST_NEWS_DESCRIPTION'))) {
+            $description = tep_get_value_by_const_name('MODULE_METASEO_LATEST_NEWS_DESCRIPTION');
+          }
+          if (defined('MODULE_METASEO_LATEST_NEWS_ROBOTS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_LATEST_NEWS_ROBOTS'))) {
+            $robots      = tep_get_value_by_const_name('MODULE_METASEO_LATEST_NEWS_ROBOTS');
+          }
+          if (defined('MODULE_METASEO_LATEST_NEWS_COPYRIGHT') && strlen(tep_get_value_by_const_name('MODULE_METASEO_LATEST_NEWS_COPYRIGHT'))) {
+            $copyright   = tep_get_value_by_const_name('MODULE_METASEO_LATEST_NEWS_COPYRIGHT');
+          }
+          $page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
+          $search  = array_merge($search,  array('#SEO_PAGE#'));
+          $replace = array_merge($replace, array($page . 'ページ目'));
+        }
+        break;
+      case FILENAME_TAGS:
+          /*
+          if (defined('MODULE_METASEO_TAGS_TITLE') && strlen(tep_get_value_by_const_name('MODULE_METASEO_TAGS_TITLE'))) {
+            $title       = tep_get_value_by_const_name('MODULE_METASEO_TAGS_TITLE');
+          }
+          if (defined('MODULE_METASEO_TAGS_KEYWORDS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_TAGS_KEYWORDS'))) {
+            $keywords    = tep_get_value_by_const_name('MODULE_METASEO_TAGS_KEYWORDS');
+          }
+          if (defined('MODULE_METASEO_TAGS_DESCRIPTION') && strlen(tep_get_value_by_const_name('MODULE_METASEO_TAGS_DESCRIPTION'))) {
+            $description = tep_get_value_by_const_name('MODULE_METASEO_TAGS_DESCRIPTION');
+          }
+          if (defined('MODULE_METASEO_TAGS_ROBOTS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_TAGS_ROBOTS'))) {
+            $robots      = tep_get_value_by_const_name('MODULE_METASEO_TAGS_ROBOTS');
+          }
+          if (defined('MODULE_METASEO_TAGS_COPYRIGHT') && strlen(tep_get_value_by_const_name('MODULE_METASEO_TAGS_COPYRIGHT'))) {
+            $copyright   = tep_get_value_by_const_name('MODULE_METASEO_TAGS_COPYRIGHT');
+          }*/
+          $page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
+          $search  = array_merge($search,  array('#SEO_PAGE#'));
+          $replace = array_merge($replace, array($page . 'ページ目'));
+        
+        break;
+      case FILENAME_MANUFACTURERS:
+        // MAX_DISPLAY_SEARCH_RESULTS
+        $page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
+        $search  = array_merge($search,  array('#SEO_PAGE#'));
+        $replace = array_merge($replace, array($page . 'ページ目'));
+        break;
+      case FILENAME_PRESENT:
+        // MAX_DISPLAY_SEARCH_RESULTS
+        $page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
+        $search  = array_merge($search,  array('#SEO_PAGE#'));
+        $replace = array_merge($replace, array($page . 'ページ目'));
+        break;
+      case FILENAME_PRODUCT_NEW:
+        // MAX_DISPLAY_PRODUCTS_NEW
+        $page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
+        $search  = array_merge($search,  array('#SEO_PAGE#'));
+        $replace = array_merge($replace, array($page . 'ページ目'));
+        break;
+      case FILENAME_SPECIALS:
+        // MAX_DISPLAY_SPECIAL_PRODUCTS
+        $page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
+        $search  = array_merge($search,  array('#SEO_PAGE#'));
+        $replace = array_merge($replace, array($page . 'ページ目'));
+        break;
+      case FILENAME_ADVANCED_SEARCH_RESULT:
+        // MAX_DISPLAY_SEARCH_RESULTS
+        $page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
+        $search  = array_merge($search,  array('#SEO_PAGE#'));
+        $replace = array_merge($replace, array($page . 'ページ目'));
+        break;
+      case FILENAME_REVIEWS:
+        // MAX_DISPLAY_NEW_REVIEWS
+        $page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
+        $search  = array_merge($search,  array('#SEO_PAGE#'));
+        $replace = array_merge($replace, array($page . 'ページ目'));
+        break;
+    }
+    $breadcrumb_str = $breadcrumb->trail_title(' &raquo; ');
+    $breadcrumb_lat = '';
+    $breadcrumb_arr = explode('&raquo;', $breadcrumb_str);
+    if (is_array($breadcrumb_arr)) {
+      $bread_num = count($breadcrumb_arr); 
+      $breadcrumb_lat = trim($breadcrumb_arr[$bread_num-1]);  
+    }
+    $search  = array_merge(array('#STORE_NAME#','#BREADCRUMB#', '#PAGE_TITLE#'), $search);
+    $replace = array_merge(array(STORE_NAME, $breadcrumb_str, $breadcrumb_lat), $replace);
+    if (!in_array('#SEO_PAGE#', $search)) {
+      $c_page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
+      $search = array_merge(array('#SEO_PAGE#'), $search); 
+      $replace = array_merge(array($c_page.'ページ目'), $replace); 
+    }
+    $title       = str_replace($search, $replace, $title);
+    $keywords    = str_replace($search, $replace, $keywords);
+    $description = str_replace($search, $replace, $description);
+    
+    $title = str_replace(' &raquo; ', ' ', $title); 
+    $keywords = str_replace(' &raquo; ', ' ', $keywords); 
+    $description = str_replace(' &raquo; ', ' ', $description); 
   ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html <?php echo HTML_PARAMS; ?>>
@@ -2418,7 +2714,7 @@ function tep_show_warning($categories_id) {
   $categories_query = tep_db_query("select * from " . TABLE_CATEGORIES . " where categories_id='" . $categories_id . "' LIMIT 1");
   $categories = tep_db_fetch_array($categories_query);
   if ($categories) {
-    if ($categories['categories_status'] == '2') {
+    if ($categories['categories_status'] != '0') {
       return true;
     } else if ($categories['parent_id'] != '0') {
       return tep_show_warning($categories['parent_id']);
@@ -2570,3 +2866,12 @@ function orders_updated($orders_id) {
 function replace_store_name($str) {
   return str_replace('#STORE_NAME#', STORE_NAME, $str);
 }
+/*
+function replace_category_seo($input_str, $category_name) 
+{
+    global $_GET, $request_type, $breadcrumb;
+    $page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
+    $search  = array('#STORE_NAME#','#BREADCRUMB#', '#SEO_PAGE#', '#CATEGORY_NAME#');
+    $replace = array(STORE_NAME,$breadcrumb->trail_title(' &raquo; '), $page .  'ページ目', $category_name);
+    return str_replace($search, $replace, $input_str);
+}*/

@@ -30,6 +30,7 @@
       group by products_id
       order by products_ordered desc, products_name 
       limit " . MAX_DISPLAY_BESTSELLERS);
+    
   } else {
     // ccdd
     // del distinct 10.8.2

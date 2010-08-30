@@ -1,16 +1,18 @@
 <?php
   class preorder {
-    var $code, $title, $description;
+    var $site_id, $code, $title, $description;
 
 // class constructor
-    function preorder() {
+    function preorder($site_id = 0) {
       global $order;
 
+      $this->site_id = $site_id;
       $this->code = 'preorder';
       $this->title = MODULE_METASEO_PREORDER_TEXT_TITLE;
       $this->description = MODULE_METASEO_PREORDER_TEXT_DESCRIPTION;
-	  $this->explain = MODULE_METASEO_PREORDER_TEXT_EXPLAIN;
+    $this->explain = MODULE_METASEO_PREORDER_TEXT_EXPLAIN;
       $this->sort_order = MODULE_METASEO_PREORDER_SORT_ORDER;
+      $this->link = 'preorder.php?products_id=31693';
     }
 
 // class methods
@@ -21,7 +23,7 @@
     function selection() {
       return array('id' => $this->code,
                    'module' => $this->title,
-				   'fields' => array(array('title' => $this->explain,'field' => '')));
+           'fields' => array(array('title' => $this->explain,'field' => '')));
     }
 
     function pre_confirmation_check() {
@@ -50,24 +52,24 @@
 
     function check() {
       if (!isset($this->_check)) {
-        $check_query = tep_db_query("select configuration_value from " . TABLE_CONFIGURATION . " where configuration_key = 'MODULE_METASEO_PREORDER_TITLE'");
+        $check_query = tep_db_query("select configuration_value from " . TABLE_CONFIGURATION . " where configuration_key = 'MODULE_METASEO_PREORDER_TITLE' and site_id='".$this->site_id."'");
         $this->_check = tep_db_num_rows($check_query);
       }
       return $this->_check;
     }
 
     function install() {
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('表示の整列順', 'MODULE_METASEO_PREORDER_SORT_ORDER', '0', '表示の整列順を設定できます。数字が小さいほど上位に表示されます.', '6', '0', now())");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added,site_id) values ('表示の整列順', 'MODULE_METASEO_PREORDER_SORT_ORDER', '0', '表示の整列順を設定できます。数字が小さいほど上位に表示されます.', '6', '0', now(), '".$this->site_id."')");
 
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, set_function) values ('タイトル',   'MODULE_METASEO_PREORDER_TITLE',       '', '予約のタイトル<br>#CATEGORIES_NAME#<br>#PRODUCTS_NAME#<br>#STORE_NAME#<br>#BREADCRUMB#',   '6', '0', now(), NULL)");
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, set_function) values ('キーワード', 'MODULE_METASEO_PREORDER_KEYWORDS',    '', '予約のキーワード<br>#CATEGORIES_NAME#<br>#PRODUCTS_NAME#<br>#STORE_NAME#<br>#BREADCRUMB#', '6', '0', now(), \"tep_draw_textarea_field('configuration[MODULE_METASEO_PREORDER_KEYWORDS]', false, 35, 5,\")");
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, set_function) values ('説明',       'MODULE_METASEO_PREORDER_DESCRIPTION', '', '予約の説明<br>#CATEGORIES_NAME#<br>#PRODUCTS_NAME#<br>#STORE_NAME#<br>#BREADCRUMB#',       '6', '0', now(), \"tep_draw_textarea_field('configuration[MODULE_METASEO_PREORDER_DESCRIPTION]', false, 35, 5,\")");
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, set_function) values ('ロボット',   'MODULE_METASEO_PREORDER_ROBOTS',      '', '予約のロボット',               '6', '0', now(), \"tep_cfg_select_option(array('index,follow', 'noindex'),\")");
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, set_function) values ('著作者',     'MODULE_METASEO_PREORDER_COPYRIGHT',   '', '予約の著作者',     '6', '0', now(), NULL)");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, set_function, site_id) values ('タイトル',   'MODULE_METASEO_PREORDER_TITLE',       '', '予約のタイトル<br>#CATEGORIES_NAME#<br>#PRODUCTS_NAME#<br>#STORE_NAME#<br>#BREADCRUMB#<br>#PAGE_TITLE#',   '6', '0', now(), NULL, '".$this->site_id."')");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, set_function, site_id) values ('キーワード', 'MODULE_METASEO_PREORDER_KEYWORDS',    '', '予約のキーワード<br>#CATEGORIES_NAME#<br>#PRODUCTS_NAME#<br>#STORE_NAME#<br>#BREADCRUMB#<br>#PAGE_TITLE#', '6', '0', now(), \"tep_draw_textarea_field('configuration[MODULE_METASEO_PREORDER_KEYWORDS]', false, 35, 5,\", '".$this->site_id."')");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, set_function, site_id) values ('説明',       'MODULE_METASEO_PREORDER_DESCRIPTION', '', '予約の説明<br>#CATEGORIES_NAME#<br>#PRODUCTS_NAME#<br>#STORE_NAME#<br>#BREADCRUMB#<br>#PAGE_TITLE#',       '6', '0', now(), \"tep_draw_textarea_field('configuration[MODULE_METASEO_PREORDER_DESCRIPTION]', false, 35, 5,\", '".$this->site_id."')");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, set_function, site_id) values ('ロボット',   'MODULE_METASEO_PREORDER_ROBOTS',      '', '予約のロボット',               '6', '0', now(), \"tep_cfg_select_option(array('index,follow', 'noindex'),\", '".$this->site_id."')");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, set_function, site_id) values ('著作者',     'MODULE_METASEO_PREORDER_COPYRIGHT',   '', '予約の著作者',     '6', '0', now(), NULL, '".$this->site_id."')");
     }
 
     function remove() {
-      //tep_db_query("delete from " . TABLE_CONFIGURATION . " where configuration_key in ('" . implode("', '", $this->keys()) . "')");
+      //tep_db_query("delete from " . TABLE_CONFIGURATION . " where configuration_key in ('" . implode("', '", $this->keys()) . "', '".$this->site_id."')");
     }
 
     function keys() {

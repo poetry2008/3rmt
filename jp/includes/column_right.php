@@ -37,5 +37,6 @@
 */
 //include(DIR_WS_BOXES . 'pickup.php');
   //include(DIR_WS_BOXES . 'right_banner.php') ;
-  include(DIR_WS_BOXES . 'ad.php') ;
+  echo '<div class="guarant01"><img src="images/h_a14.gif" alt=""></div>'; 
+  //include(DIR_WS_BOXES . 'ad.php') ;
 ?>

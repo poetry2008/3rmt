@@ -396,7 +396,12 @@
                                   }
                                   // tamura 2002/12/30 「全角」英数字を「半角」に変換
                                   $_POST['cart_quantity'][$i] = tep_an_zen_to_han($_POST['cart_quantity'][$i]);                 
-                                  $cart->add_cart($_POST['products_id'][$i], $_POST['cart_quantity'][$i], $attributes, false);
+                                  if ($_POST['cart_quantity'][$i] == 0) {
+                                    $cart->remove($_POST['products_id'][$i]);
+                                    tep_redirect(tep_href_link(FILENAME_SHOPPING_CART)); 
+                                  } else {
+                                    $cart->add_cart($_POST['products_id'][$i], $_POST['cart_quantity'][$i], $attributes, false);
+                                  }
                                 }
                               }
                               if (isset($_POST['continue']) && $_POST['goto']) {

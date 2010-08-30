@@ -8,12 +8,12 @@
       <!-- heading title --> 
 <?php  
   if (isset($cPath_array)) {
-      if ($category['categories_status'] == 2) {
+      if ($category['categories_status'] != '0') {
         echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
       }
       echo '<h1 class="pageHeading">'.$seo_category['categories_name'].'</h1>';
     } elseif ($_GET['manufacturers_id']) {
-      if ($category['categories_status'] == 2) {
+      if ($category['categories_status'] != '0') {
         echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
       }
        echo '<h1 class="pageHeading">'.$seo_manufacturers['manufacturers_name'].'</h1>';

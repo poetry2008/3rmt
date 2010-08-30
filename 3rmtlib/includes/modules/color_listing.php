@@ -64,7 +64,7 @@
           <span class="smallText">'.$description.'...</span></p></td> 
       </tr> 
       <tr> 
-        <td colspan="2" style="padding-top:5px; " align="right"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $listing['products_id'] . $color_link) . '"><img src="images/design/button/button_description.jpg" border="0" alt="詳細はこちら" title=" 詳細はこちら "></a></td> 
+        <td colspan="2" style="padding-top:5px; " align="right"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $listing['products_id'] . $color_link) . '"><img src="images/design/button/button_description.jpg" border="0" alt="詳細はこちら"></a></td> 
       </tr> 
       </table> 
       <br> 

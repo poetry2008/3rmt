@@ -50,7 +50,7 @@
     </div>
     <div align="right" style="padding: 5px 10px 0px 0px;">
         <a href='<?php echo tep_href_link('latest_news.php');?>'>more</a>
-        <?php //<img src="includes/languages/japanese/images/buttons/button_more.gif" width="56" height="25" alt="more" title="more" >?>
+        <?php //<img src="includes/languages/japanese/images/buttons/button_more.gif" width="56" height="25" alt="more" >?>
     </div>
 </div>
 <!-- latest_news_eof //-->

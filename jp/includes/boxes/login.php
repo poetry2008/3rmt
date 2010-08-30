@@ -30,7 +30,7 @@
           PW忘れた?
         </a>
       </td>
-      <td align="right" style="padding-right:5px; "><input type="image" name="image" src="images/design/button/login.gif" alt="Login" title="Login"></td>
+      <td align="right" style="padding-right:5px; "><input type="image" name="image" src="images/design/button/login.gif" alt="Login"></td>
     </tr>
     <tr>
       <td height="1" colspan="2" bgcolor="#CCCCCC"></td>

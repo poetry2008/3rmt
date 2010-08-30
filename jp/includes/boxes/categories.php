@@ -50,7 +50,7 @@ if($cPath){
 ?>
 
 <div id='categories'>
-  <img width="171" height="25" alt="カテゴリー" title="カテゴリー" src="images/design/box/menu.gif">
+  <img width="171" height="25" alt="カテゴリー" src="images/design/box/menu.gif">
   <ul class='l_m_category_ul'>
     <?php foreach($categories as $key => $category) {?>
       <?php if($cPath && in_array($category['categories_id'], $id)) {?>

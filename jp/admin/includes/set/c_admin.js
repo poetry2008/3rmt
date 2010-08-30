@@ -51,6 +51,26 @@ function list_display(path,cid,fullpath){
   location.href="list_display.php?cpath="+path+"&cid="+cid+'&fullpath='+fullpath;
 }
 
+function update_quantity(pid){
+  oquantity = $('#quantity_'+pid).html();
+  pname = $('#products_name_'+pid).html();
+  nquantity = prompt(pname+"\n現在の在庫数 : "+oquantity+"  , 新在庫数", oquantity);
+  //alert(nquantity);
+  if (nquantity && false == /^\d+$/.test(nquantity)) {
+    alert('半角数字で入力してください');
+    return false;
+  }
+  if (nquantity !== '' && nquantity !== null) {
+  var send_url="set_quantity.php?pid="+pid+"&quantity="+nquantity;
+  $.ajax({
+    url: send_url,
+        success: function(data) {
+            $('#quantity_'+pid).html(data)
+      }
+    });
+  }
+}
+
 function event_onblur(i){
   /*
   var this_price=document.getElementsByName("this_price[]");

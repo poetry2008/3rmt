@@ -44,7 +44,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
             // time error
             echo '<div class="comment">取引時間は前もって一時間以上に設定してください <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="70" height="25" alt=""></a></div></div>';
           } else {
-            echo '<div class="comment">注文内容の変更を承りました。電子メールをご確認ください。 <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" alt="TOPに戻る" title="TOPに戻る"></a></div></div>';
+            echo '<div class="comment">注文内容の変更を承りました。電子メールをご確認ください。 <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" alt="TOPに戻る"></a></div></div>';
 
             $email_order = '';
             $email_order .= $name . "様\n";
@@ -134,8 +134,8 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
 </tr>
 <tr>
 <td colspan="2" align="center">
-  <input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="確定する" title="確定する" onClick='return check()' >
-  <input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="クリア" title="クリア" onClick='javascript:document.order.reset();return false;' >
+  <input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="確定する" onClick='return check()' >
+  <input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="クリア" onClick='javascript:document.order.reset();return false;' >
 </td>
 </tr>
 </table>

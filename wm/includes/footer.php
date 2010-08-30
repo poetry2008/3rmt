@@ -27,10 +27,8 @@
         <td class="footer_6"></td>
     </tr>
 </table>
-<?php /*
 <script type="text/javascript" src="js/access.js"></script>
-<noscript><img src="axs/dsw.cgi?pg=RMT&&p=g&&md=nj" alt="" height="1" width="1" ></noscript>
-*/?>
+<noscript><img src="axs/dsw.cgi?pg=RMT&amp;&amp;p=g&amp;&amp;md=nj" alt="" height="1" width="1" ></noscript>
 <?php 
 //for sql_log
 $logNumber = 0;

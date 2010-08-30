@@ -10,11 +10,11 @@
             <tr> 
               <td width="63"><img
               src="images/design/contents/title_newproducts_left.jpg" width="63"
-              height="23" title="<?php echo sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B'));?>"></td> 
+              height="23" alt="<?php echo sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B'));?>"></td> 
               <td background="images/design/contents/title_bg.jpg">&nbsp;</td> 
               <td width="47"><img
               src="images/design/contents/title_newproducts_right.jpg" width="47"
-              height="23" title="<?php echo sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B'));?>"></td> 
+              height="23" alt="<?php echo sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B'));?>"></td> 
             </tr> 
           </table> 
         </h2>

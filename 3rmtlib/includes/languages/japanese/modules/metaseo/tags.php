@@ -1,6 +1,6 @@
 <?php
 /*
-	JP、GM共通ファイル
+  JP、GM共通ファイル
 */
 
   define('MODULE_METASEO_TAGS_TEXT_TITLE', 'タグ一覧');

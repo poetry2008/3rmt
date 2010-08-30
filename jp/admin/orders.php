@@ -944,10 +944,32 @@ function mail_text(st,tt,ot){
     <td width="100%"><table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
       <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
-      <td align="right" class="smallText"><?php echo tep_draw_form('orders', FILENAME_ORDERS, '', 'get'); ?>
+      <td align="right" class="smallText">
+
+
+    <table width=""  border="0" cellspacing="1" cellpadding="0">
+    <tr>
+      <td class="smallText" valign='top'>
+      <?php echo tep_draw_form('orders', FILENAME_ORDERS, '', 'get'); ?>検索 : 
+      <input name="keywords" type="text" id="keywords" size="40" value="<?php if(isset($_GET['keywords'])) echo stripslashes($_GET['keywords']); ?>">
+      <select name="search_type">
+        <option value="customers_name"<?php if (isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name') {?> selected<?php } ?>>名前</option>
+        <option value="email"<?php if (isset($_GET['search_type']) && $_GET['search_type'] == 'email') {?> selected<?php } ?>>メールアドレス</option>
+        <option value="products_name"<?php if (isset($_GET['search_type']) && $_GET['search_type'] == 'products_name') {?> selected<?php } ?>>商品名</option>
+      </select>
+      </td><td valign="top">
+      <?php echo tep_image_submit('button_search.gif', '検索する'); ?>
+      </form>
+      </td>
+      <!--<td class="smallText"><?php echo tep_draw_form('orders', FILENAME_ORDERS, '', 'get'); ?>名前<input name="customers_name" type="text" id="customers_name" size="20" value="<?php if(isset($_GET['customers_name'])) echo stripslashes($_GET['customers_name']); ?>"></form></td>
+        <td class="smallText"><?php echo tep_draw_form('orders', FILENAME_ORDERS, '', 'get'); ?>メールアドレス<input name="email" type="text" id="email" size="20" value="<?php if(isset($_GET['email'])) echo stripslashes($_GET['email']); ?>"></form></td>
+        <td class="smallText"><?php echo tep_draw_form('orders', FILENAME_ORDERS, '', 'get'); ?>商品名<input name="products_name" type="text" id="products_name" size="20" value="<?php if(isset($_GET['products_name'])) echo stripslashes($_GET['products_name']); ?>"></form></td>-->
+    </tr>
+    </table>
+  <!--
+    <?php echo tep_draw_form('orders', FILENAME_ORDERS, '', 'get'); ?>
       <table width=""  border="0" cellspacing="1" cellpadding="0">
     <tr>
-    
         <td class="smallText">検索 : 
         <input name="keywords" type="text" id="keywords" size="40" value="<?php if(isset($_GET['keywords'])) echo stripslashes($_GET['keywords']); ?>"></td>
     <td><?php echo tep_image_submit('button_search.gif', '検索する'); ?></td>
@@ -955,7 +977,11 @@ function mail_text(st,tt,ot){
         <tr>
           <td colspan="2" class="smallText">※検索対象：「顧客名（姓/名/）」「ふりがな（姓/名）」「メールアドレス」「購入商品名」「電話番号」</td>
         </tr>
-      </table></form></td>
+      </table>
+    </form>
+  -->
+  
+          </td>
       <td align="right"><table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr><?php echo tep_draw_form('orders', FILENAME_ORDERS, '', 'get'); ?>
     <td class="smallText" align="right"><?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('oID', '', 'size="12"') . tep_draw_hidden_field('action', 'edit'); ?></td>
@@ -1250,7 +1276,19 @@ function mail_text(st,tt,ot){
           and o.orders_status = '" . tep_db_input($status) . "' 
           " . $where_payment . $where_type . "
         order by o.torihiki_date DESC";
-/*
+    }  elseif (isset($_GET['keywords']) && $_GET['keywords'] && isset($_GET['search_type']) && $_GET['search_type'] == 'products_name' && !$_GET['type'] && !$payment) {
+      $orders_query_raw = "
+        select distinct op.orders_id, op.products_name
+        from " . TABLE_ORDERS_PRODUCTS . " op 
+        where op.products_name like '%".$_GET['keywords']."%'
+        " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " op.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
+        order by op.orders_products_id desc";
+      
+  } elseif (
+    isset($_GET['keywords']) && $_GET['keywords']
+    and ((isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name')
+    or (isset($_GET['search_type']) && $_GET['search_type'] == 'email'))
+  ) {
       $orders_query_raw = "
         select o.orders_id, 
                o.torihiki_date, 
@@ -1261,21 +1299,47 @@ function mail_text(st,tt,ot){
                o.last_modified, 
                o.currency, 
                o.currency_value, 
-               s.orders_status_name, 
-               ot.text as order_total,
-               si.romaji
-        from " . TABLE_ORDERS . " o 
-          left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id)  left join " . TABLE_ORDERS_STATUS_HISTORY . " h on (o.orders_id = h.orders_id), " . TABLE_ORDERS_STATUS . " s, ".TABLE_SITES." si
-        where o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "' 
-          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and si.id = '" . intval($_GET['site_id']) . "' " : '') . "
-          and s.orders_status_id = '" . tep_db_input($status) . "' 
-          and ot.class = 'ot_total' 
-          and si.id = o.site_id
-          " . $where_payment . $where_type . "
-        group by o.orders_id
-        order by o.torihiki_date DESC";
-*/
-    } elseif (isset($_GET['keywords']) && $_GET['keywords']) {
+               o.orders_status_name,
+               o.site_id
+        from " . TABLE_ORDERS . " o " . $from_payment . "
+        where 
+          o.language_id = '" . $languages_id . "' 
+          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
+          " . $where_payment . $where_type ;
+    
+
+    $keywords = str_replace('　', ' ', $_GET['keywords']);
+    
+    tep_parse_search_string($keywords, $search_keywords);
+    
+    if (isset($search_keywords) && (sizeof($search_keywords) > 0)) {
+      $orders_query_raw .= " and ";
+      for ($i=0, $n=sizeof($search_keywords); $i<$n; $i++ ) {
+      switch ($search_keywords[$i]) {
+      case '(':
+      case ')':
+      case 'and':
+      case 'or':
+          $orders_query_raw .= " " . tep_db_prepare_input($search_keywords[$i]) . " ";
+    break;
+      default:
+        $keyword = tep_db_prepare_input($search_keywords[$i]);
+        //$orders_query_raw .= "(";
+        if (isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name') {
+          $orders_query_raw .= "o.customers_name like '%" . tep_db_input($keyword) . "%' or ";
+          $orders_query_raw .= "o.customers_name_f like '%" . tep_db_input($keyword) . "%'";
+        } else if (isset($_GET['search_type']) && $_GET['search_type'] == 'email') {
+          $orders_query_raw .= "o.customers_email_address like '%" . tep_db_input($keyword) . "%'";
+        }
+        //$orders_query_raw .= ")";
+    break;
+    }
+      } 
+    //$orders_query_raw .= ")";  
+    }
+    
+    $orders_query_raw .= " order by o.torihiki_date DESC";
+  } elseif (isset($_GET['keywords']) && $_GET['keywords']) {
       $orders_query_raw = "
         select distinct(o.orders_id), 
                o.torihiki_date, 
@@ -1293,30 +1357,6 @@ function mail_text(st,tt,ot){
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
           and o.language_id = '" . $languages_id . "' 
           " . $where_payment . $where_type ;
-      /*
-      $orders_query_raw = "
-        select distinct(o.orders_id), 
-               o.torihiki_date, 
-               o.customers_id, 
-               o.customers_name, 
-               o.payment_method, 
-               o.date_purchased, 
-               o.last_modified, 
-               o.currency, 
-               o.currency_value, 
-               s.orders_status_name, 
-               ot.text as order_total,
-               si.romaji
-        from " . TABLE_ORDERS . " o left join " . TABLE_ORDERS_STATUS_HISTORY . " h on (o.orders_id = h.orders_id), " . TABLE_ORDERS_TOTAL . " ot, " . TABLE_ORDERS_STATUS . " s, " . TABLE_ORDERS_PRODUCTS . " op , ".TABLE_SITES." si 
-        where o.orders_id = ot.orders_id 
-          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and si.id = '" . intval($_GET['site_id']) . "' " : '') . "
-          and si.id = o.site_id
-          and o.orders_status = s.orders_status_id 
-          and s.language_id = '" . $languages_id . "' 
-          and ot.class = 'ot_total' 
-          " . $where_payment . $where_type . "
-          and o.orders_id = op.orders_id";
-          */
     $keywords = str_replace('　', ' ', $_GET['keywords']);
     tep_parse_search_string($keywords, $search_keywords);
     if (isset($search_keywords) && (sizeof($search_keywords) > 0)) {
@@ -1331,13 +1371,13 @@ function mail_text(st,tt,ot){
     break;
       default:
           $keyword = tep_db_prepare_input($search_keywords[$i]);
-    $orders_query_raw .= "(";
-        $orders_query_raw .= "o.customers_name like '%" . tep_db_input($keyword) . "%' or ";
-        $orders_query_raw .= "o.customers_name_f like '%" . tep_db_input($keyword) . "%' or ";
-        $orders_query_raw .= "o.customers_email_address like '%" . tep_db_input($keyword) . "%' or ";
-        $orders_query_raw .= "o.customers_telephone like '%" . tep_db_input($keyword) . "%' or ";
-        $orders_query_raw .= "op.products_name like '%" . tep_db_input($keyword) . "%'";
-        $orders_query_raw .= ")";
+          $orders_query_raw .= "(";
+          $orders_query_raw .= "o.customers_name like '%" . tep_db_input($keyword) . "%' or ";
+          $orders_query_raw .= "o.customers_name_f like '%" . tep_db_input($keyword) . "%' or ";
+          $orders_query_raw .= "o.customers_email_address like '%" . tep_db_input($keyword) . "%' or ";
+          $orders_query_raw .= "o.customers_telephone like '%" . tep_db_input($keyword) . "%' or ";
+          $orders_query_raw .= "op.products_name like '%" . tep_db_input($keyword) . "%'";
+          $orders_query_raw .= ")";
     break;
     }
       } 
@@ -1403,6 +1443,24 @@ function mail_text(st,tt,ot){
     $orders_query = tep_db_query($orders_query_raw);
     $allorders    = $allorders_ids = array();
     while ($orders = tep_db_fetch_array($orders_query)) {
+      if (!isset($orders['site_id'])) {
+        $orders = tep_db_fetch_array(tep_db_query("
+          select
+               o.orders_id, 
+               o.torihiki_date, 
+               o.customers_name, 
+               o.customers_id, 
+               o.payment_method, 
+               o.date_purchased, 
+               o.last_modified, 
+               o.currency, 
+               o.currency_value, 
+               o.orders_status_name, 
+               o.site_id
+          from ".TABLE_ORDERS." o
+          where orders_id='".$orders['orders_id']."'
+        "));
+      }
       $allorders[] = $orders;
       if (((!isset($_GET['oID']) || !$_GET['oID']) || ($_GET['oID'] == $orders['orders_id'])) && (!isset($oInfo) || !$oInfo)) {
         $oInfo = new objectInfo($orders);

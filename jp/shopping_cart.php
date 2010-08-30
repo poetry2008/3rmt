@@ -148,11 +148,11 @@ function change_num(ob,targ, quan,a_quan)
           $products[$i][$option]['products_options_values_name'] = $attributes_values['products_options_values_name'];
           $products[$i][$option]['options_values_price'] = $attributes_values['options_values_price'];
           $products[$i][$option]['price_prefix'] = $attributes_values['price_prefix'];
-		  $products[$i][$option]['products_at_quantity'] = $attributes_values['products_at_quantity'];
+      $products[$i][$option]['products_at_quantity'] = $attributes_values['products_at_quantity'];
         }
       }
     }
-	?><table border="0" width="100%" cellspacing="0" cellpadding="0"><?php
+  ?><table border="0" width="100%" cellspacing="0" cellpadding="0"><?php
     require(DIR_WS_MODULES. 'order_details.php');
 ?>
               
@@ -166,7 +166,7 @@ function change_num(ob,targ, quan,a_quan)
              <span id="sub_total"> 
              <?php echo $currencies->format($cart->show_total()); ?></span></b></td>
           </tr>
-          <?php		
+          <?php   
     if(isset($_GET['limit_error']) && $_GET['limit_error'] == 'true') {
 ?>
           <tr>
@@ -181,8 +181,8 @@ function change_num(ob,targ, quan,a_quan)
               </table>
             </td>
           </tr>
-          <?php	
-	}
+          <?php 
+  }
 ?>
           <?php
     if ($any_out_of_stock == 1) {
