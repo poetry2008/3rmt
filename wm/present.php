@@ -1,28 +1,22 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
-
+  $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_PRESENT));
+  
   if(isset($_GET['goods_id']) && $_GET['goods_id']) {
 //ccdd
     $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$_GET['goods_id']."' and site_id = '" . SITE_ID . "'") ;
     $present = tep_db_fetch_array($present_query) ;
+    $breadcrumb->add($present['title'], tep_href_link(FILENAME_PRESENT, 'goods_id='.$present['goods_id']));
     //forward 404
     forward404Unless($present);
   } 
   
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRESENT);
 
-  $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_PRESENT));
 ?>
 <?php page_head();?>
 <script language="javascript" type="text/javascript"><!--

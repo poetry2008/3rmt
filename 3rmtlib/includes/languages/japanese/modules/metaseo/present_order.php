@@ -1,0 +1,9 @@
+<?php
+/*
+  JP、GM共通ファイル
+*/
+
+  define('MODULE_METASEO_PRESENT_ORDER_TEXT_TITLE', 'プレゼント応募確認画面');
+  define('MODULE_METASEO_PRESENT_ORDER_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_PRESENT_ORDER_TEXT_DESCRIPTION', 'プレゼント応募確認画面のSEO');
+?>

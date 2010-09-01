@@ -9,13 +9,7 @@
 
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_REVIEWS));
 ?>
-<!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html <?php echo HTML_PARAMS; ?>>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
-<title><?php echo TITLE; ?></title>
-<base href="<?php echo (($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERVER) . DIR_WS_CATALOG; ?>">
-<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<?php page_head();?>
 </head>
 <body>
 <div class="body_shadow" align="center">

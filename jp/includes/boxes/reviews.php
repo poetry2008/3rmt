@@ -21,8 +21,7 @@
           and r.products_id = '" .  (int)$_GET['products_id'] . "' 
           and r.reviews_status = '1' 
           and  r.products_id not in".tep_not_in_disabled_products()." 
-          and r.site_id = ".SITE_ID." 
-        limit " . MAX_RANDOM_SELECT_REVIEWS
+          and r.site_id = ".SITE_ID
         );
     if(tep_db_num_rows($reviews_query)) {
       echo  '<div class="underline">&nbsp;</div><div class="pageHeading_long">この商品のレビュー</div>'."\n" . '<div id="contents">'."\n" ;
@@ -38,6 +37,11 @@
       echo '</div>' . "\n";
     } 
   } else {
+    
+    if (isset($_GET['cPath']) && $cPath_array) {
+      $subcid = tep_get_categories_id_by_parent_id($cPath_array[count($cPath_array) - 1]);
+    }
+    
 ?>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr><td height="25"><a href="<?php echo tep_href_link(FILENAME_REVIEWS); ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/box/reviews.gif',BOX_HEADING_REVIEWS,171,25); ?></a></td></tr>
@@ -54,8 +58,9 @@
            pd.products_name,
            r.site_id as rsid,
            pd.site_id as psid
-    from " . TABLE_REVIEWS . " r, " .  TABLE_REVIEWS_DESCRIPTION . " rd, " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd 
+    from " . TABLE_REVIEWS . " r, " .  TABLE_REVIEWS_DESCRIPTION . " rd, " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c
     where p.products_status != '0' 
+      and p.products_id = p2c.products_id
       and p.products_id = r.products_id 
       and r.reviews_id = rd.reviews_id 
       and rd.languages_id = '" . $languages_id . "' 
@@ -63,6 +68,11 @@
       and pd.language_id = '" . $languages_id . "' 
       and r.reviews_status = '1' 
       and r.site_id = '".SITE_ID."'";
+
+  if (isset($subcid) && $subcid) {
+    $random_select .= " and p2c.categories_id in (".implode(',',$subcid).") ";
+  }
+
       //and pd.site_id = '".SITE_ID."'"; 
   if (isset($_GET['products_id'])) {
     $random_select .= " and p.products_id = '" . (int)$_GET['products_id'] . "'";
@@ -74,7 +84,7 @@
      or psid = '".SITE_ID."'
   group by reviews_id
   ";
-  $random_select .= " order by reviews_id desc limit " . MAX_RANDOM_SELECT_REVIEWS;
+  $random_select .= " order by reviews_id desc";
   $random_product = tep_random_select($random_select);
   
   $info_box_contents = array();

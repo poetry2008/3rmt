@@ -287,6 +287,7 @@ $ex_site = $sites[0];
 
       if (isset($mInfo->status) && $mInfo->status == '1') {
         $keys = '';
+        /* 临时隐藏
         reset($mInfo->keys);
         while (list(, $value) = each($mInfo->keys)) {
           $keys .= '<b>' . $value['title'] . '</b><br>';
@@ -307,20 +308,46 @@ $ex_site = $sites[0];
           }
           $keys .= '<br><br>';
         }
-        $keys = substr($keys, 0, strrpos($keys, '<br><br>'));
+        */
+        
+        foreach(tep_get_sites() as $s){
+          $keys .= "<br>".$s['romaji']."<hr>";
+          reset($mInfo->keys);
+          while (list($k, $value) = each($mInfo->keys)) {
+            $module_item = tep_db_fetch_array(tep_db_query("select * from configuration where configuration_key = '".$k."' and site_id = '".$s['id']."'"));
+            $keys .= '<b>' . $module_item['configuration_title'] . '</b><br>';
+            if ($module_item['use_function']) {
+              $use_function = $module_item['use_function'];
+              if (ereg('->', $use_function)) {
+                $class_method = explode('->', $use_function);
+                if (!is_object(${$class_method[0]})) {
+                  include(DIR_WS_CLASSES . $class_method[0] . '.php');
+                  ${$class_method[0]} = new $class_method[0]();
+                }
+                $keys .= tep_call_function($class_method[1], $module_item['configuration_value'], ${$class_method[0]});
+              } else {
+                $keys .= tep_call_function($use_function, $module_item['configuration_value']);
+              }
+            } else {
+              $keys .= $module_item['configuration_value'];
+            }
+            $keys .= '<br><br>';
+          }
+        }
 
         if (!isset($_GET['module']) || !$_GET['module']) {
           if(isset($directory_array[0])) {
             $_GET['module'] = str_replace('.php', '', $directory_array[0]);
           }
         }
-
-        $contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . @$_GET['module'] . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>');
+        // 临时隐藏
+        //$contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . @$_GET['module'] . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>');
         foreach(tep_get_sites() as $s){
           $contents[] = array('text' => '<b>'.$s['romaji'].'</b>');
           $contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . @$_GET['module'] . '&action=edit&site_id='.$s['id']) . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>');
         }
-        $contents[] = array('text' => '<br>' . $mInfo->description);
+        // 临时隐藏
+        //$contents[] = array('text' => '<br>' . $mInfo->description . "<hr>");
         $contents[] = array('text' => '<div style="word-wrap:break-word;width:200px;overflow:hidden;"><br>' . $keys . '</div>');
       } else {
         $contents[] = array('text' => isset($mInfo->description)?$mInfo->description:'');

@@ -478,6 +478,13 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/all_order.js"></script>
 <script language="javascript">
+
+    function search_type_changed(elem){
+//    if(elem.value != "none"){
+      document.forms.orders1.submit();
+//    }
+  }
+
   window.status_text  = new Array();
   window.status_title = new Array();
   window.last_status  = 0;
@@ -950,15 +957,17 @@ function mail_text(st,tt,ot){
     <table width=""  border="0" cellspacing="1" cellpadding="0">
     <tr>
       <td class="smallText" valign='top'>
-      <?php echo tep_draw_form('orders', FILENAME_ORDERS, '', 'get'); ?>検索 : 
+      <?php echo tep_draw_form('orders1', FILENAME_ORDERS, '', 'get'); ?>検索 : 
       <input name="keywords" type="text" id="keywords" size="40" value="<?php if(isset($_GET['keywords'])) echo stripslashes($_GET['keywords']); ?>">
-      <select name="search_type">
+      <select name="search_type" onChange='search_type_changed(this)'>
+        <option value="none" <?php if (!isset($_GET['search_type']) or (isset($_GET['search_type']) && $_GET['search_type']=='none')) {?> selected<?php } ?>>--選択してください--</option>
+
         <option value="customers_name"<?php if (isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name') {?> selected<?php } ?>>名前</option>
         <option value="email"<?php if (isset($_GET['search_type']) && $_GET['search_type'] == 'email') {?> selected<?php } ?>>メールアドレス</option>
         <option value="products_name"<?php if (isset($_GET['search_type']) && $_GET['search_type'] == 'products_name') {?> selected<?php } ?>>商品名</option>
       </select>
       </td><td valign="top">
-      <?php echo tep_image_submit('button_search.gif', '検索する'); ?>
+      <?php// echo tep_image_submit('button_search.gif', '検索する'); ?>
       </form>
       </td>
       <!--<td class="smallText"><?php echo tep_draw_form('orders', FILENAME_ORDERS, '', 'get'); ?>名前<input name="customers_name" type="text" id="customers_name" size="20" value="<?php if(isset($_GET['customers_name'])) echo stripslashes($_GET['customers_name']); ?>"></form></td>
@@ -1232,30 +1241,6 @@ function mail_text(st,tt,ot){
           and o.language_id = '" . $languages_id . "' 
           " . $where_payment . $where_type . "
         order by o.torihiki_date DESC";
-      /*$orders_query_raw = "
-        select o.orders_id, 
-               o.torihiki_date, 
-               o.customers_name, 
-               o.customers_id, 
-               o.payment_method, 
-               o.date_purchased, 
-               o.last_modified, 
-               o.currency, 
-               o.currency_value, 
-               s.orders_status_name, 
-               ot.text as order_total,
-               si.romaji
-        from " . TABLE_ORDERS . " o 
-          left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id)  left join " . TABLE_ORDERS_STATUS_HISTORY . " h on (o.orders_id = h.orders_id), " . TABLE_ORDERS_STATUS . " s, ".TABLE_SITES." si
-        where o.customers_id = '" . tep_db_input($cID) . "' 
-          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and si.id = '" . intval($_GET['site_id']) . "' " : '') . "
-          and si.id = o.site_id
-          and o.orders_status = s.orders_status_id 
-          and s.language_id = '" . $languages_id . "' 
-          and ot.class = 'ot_total' 
-          " . $where_payment . $where_type . "
-        group by o.orders_id
-        order by o.torihiki_date DESC";*/
     } elseif (isset($_GET['status']) && $_GET['status']) {
       $status = tep_db_prepare_input($_GET['status']);
       $orders_query_raw = "
@@ -1338,7 +1323,7 @@ function mail_text(st,tt,ot){
     //$orders_query_raw .= ")";  
     }
     
-    $orders_query_raw .= " order by o.torihiki_date DESC";
+    $orders_query_raw .= " order by o.date_purchased DESC";
   } elseif (isset($_GET['keywords']) && $_GET['keywords']) {
       $orders_query_raw = "
         select distinct(o.orders_id), 

@@ -16,6 +16,7 @@ if (isset($_GET['news_id'])) {
         WHERE news_id = ' . (int)$_GET['news_id'] . ' 
           and (site_id=' . SITE_ID. ' or site_id=0)');
     $latest_news = tep_db_fetch_array($latest_news_query);
+    $breadcrumb->add(replace_store_name(strip_tags($latest_news['headline'])), tep_href_link(FILENAME_LATEST_NEWS, 'news_id='.$latest_news['news_id']));
     forward404Unless($latest_news);
 }
 ?>

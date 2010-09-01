@@ -65,6 +65,7 @@
               <td>
 <?php
 // --- get categoris list ( parent_id = 0 ) --- //
+ /*
   $cat1 = '';
   if (isset($_GET['cPath']) && $_GET['cPath']) {
     $cat0 = explode('_', $_GET['cPath']);
@@ -110,10 +111,11 @@ if (!isset($cat0[0])) $cat0[0] = NULL;
   }
   $categories_array .= '</select>'."\n";
   echo $categories_array ;
+  */
 // --- end add--- //
 ?>
               </td>
-              <td><?php echo tep_draw_input_field('keywords', 'RMT', 'size="20" maxlength="40"'); ?></td>
+              <td><?php echo tep_draw_input_field('keywords', 'RMT', 'size="30" maxlength="40"'); ?></td>
               <td><input name="imageField" type="image" src="images/design/button/search.jpg" alt="検索"></td>
             </tr>
           </table>

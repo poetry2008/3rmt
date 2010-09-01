@@ -1,5 +1,5 @@
 <?php
-  class mail_magazine {
+  class mail_magazine {  
     var $site_id, $code, $title, $description;
 
 // class constructor

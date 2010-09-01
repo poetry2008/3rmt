@@ -190,6 +190,16 @@ color: #000000;
       $('#data_'+(x-1)+'_'+y).html(tmp);
       $('#oroshi_datas_'+(x-1)+'_'+y).val(tmp_value);
     }
+    function exchange_down (x, y) {
+      tmp = $('#data_'+x+'_'+y).html();
+      tmp_value = $('#oroshi_datas_'+x+'_'+y).val();
+      
+      $('#data_'+x+'_'+y).html($('#data_'+(x+1)+'_'+y).html());
+      $('#oroshi_datas_'+x+'_'+y).val($('#oroshi_datas_'+(x+1)+'_'+y).val());
+      
+      $('#data_'+(x+1)+'_'+y).html(tmp);
+      $('#oroshi_datas_'+(x+1)+'_'+y).val(tmp_value);
+    }
     function deleteHistory(x,y){
       $('#data_'+x+'_'+y).html(' ');
       $('#oroshi_datas_'+x+'_'+y).val(' ');
@@ -379,6 +389,11 @@ $rows = $count[0]>count($products)?$count[0]:count($products);
     echo "<span style='float:right'>";
     if ($k != 0 && isset($lines_arr[$j][$k])) {
       echo "<a href=\"javascript:void(0)\" onclick=\"exchange(".$k.",".$j.")\" >↑</a>";
+    }
+    if ($k != ($count[0]-1) && isset($lines_arr[$j][$k])) {
+      echo "<a href=\"javascript:void(0)\" onclick=\"exchange_down(".$k.",".$j.")\" >↓</a>";
+    } else if ($k == ($count[0]-1) && isset($lines_arr[$j][$k])) {
+      echo "↓";
     }
     if (isset($lines_arr[$j][$k])) {
       echo "  <a href=\"javascript:void(0)\" onclick=\"deleteHistory(".$k.",".$j.")\" >X</a>";

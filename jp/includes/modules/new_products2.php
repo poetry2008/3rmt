@@ -43,7 +43,8 @@
         where p.products_id = p2c.products_id 
           and p2c.categories_id = c.categories_id 
           and c.parent_id = '" . $new_products_category_id . "' 
-          and p.products_status != '0' 
+          and p.products_status != '0'
+      ".(BOX_NEW_PRODUCTS_DAY_LIMIT ? ( " and p.products_date_added > '" . date('Y-m-d H:i:s', time()-(BOX_NEW_PRODUCTS_DAY_LIMIT*86400)) . "'" ) : '')." 
         order by p.products_date_added desc 
         limit " . MAX_DISPLAY_NEW_PRODUCTS
     );
@@ -76,12 +77,13 @@
             and p2c.categories_id = c.categories_id 
             and c.parent_id in (" . join(',', $subcategories) . ") 
             and p.products_status != '0' 
+            ".(BOX_NEW_PRODUCTS_DAY_LIMIT ? ( " and p.products_date_added > '" . date('Y-m-d H:i:s', time()-(BOX_NEW_PRODUCTS_DAY_LIMIT*86400)) . "'" ) : '')." 
           order by p.products_date_added desc 
           limit " . MAX_DISPLAY_NEW_PRODUCTS);
       $num_products       = tep_db_num_rows($new_products_query);
     }
   }
-  if (0 < $num_products) {
+  if (0 < $num_products || BOX_NEW_PRODUCTS_DAY_LIMIT) {
     $info_box_contents = array();
     $info_box_contents[] = array('text' => sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B')));
   
@@ -92,6 +94,9 @@
 ?>
 <!-- new_products //-->
 <h3 class="pageHeading"><?php echo $new_c_name; ?>の新着商品</h3>
+<?php 
+if (0 < $num_products) {
+?>
 <table width="100%"  border="0" cellspacing="0" cellpadding="0">
 <?php
     while ($new_products = tep_db_fetch_array($new_products_query)) {
@@ -101,11 +106,10 @@
       $product_details = tep_db_fetch_array($product_query);
       */
       $product_details = tep_get_product_by_id($new_products['products_id'], SITE_ID, $languages_id);
-  
+
       $new_products['products_name'] = $product_details['products_name'];
       $description_view = strip_tags(mb_substr($product_details['products_description'],0,110));
-  
-  
+
       $row ++;
 ?>
   <tr>
@@ -149,12 +153,19 @@
 <?php      
     }
     echo '</table>' . "\n";
-if($num_products && 0){?>
+} else if (BOX_NEW_PRODUCTS_DAY_LIMIT) {
+  echo "<p style='padding-left:10px;'>".BOX_NEW_PRODUCTS_DAY_LIMIT."日以内に登録された商品はありません。</p>";
+}
+/*
+if($num_products){?>
 <div align="right" style="padding: 5px 10px 0px 0px;">
       <a href="/pl-<?php echo $categories_path[count($categories_path)-1];?>.html">more</a>
 </div>
-<?php }?>
-<p class="pageBottom"></p>
+<?php 
+}
+*/
+?>
+<?php /*<p class="pageBottom"></p>*/ ?>
 <!-- new_products_eof //-->
 <?php
   }

@@ -1,0 +1,9 @@
+<?php
+/*
+  JP、GM共通ファイル
+*/
+
+  define('MODULE_METASEO_PRESENT_SUCCESS_TEXT_TITLE', 'プレゼント応募完了');
+  define('MODULE_METASEO_PRESENT_SUCCESS_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_PRESENT_SUCCESS_TEXT_DESCRIPTION', 'プレゼント応募完了のSEO');
+?>

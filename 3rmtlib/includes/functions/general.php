@@ -1688,7 +1688,7 @@ function forward404Unless($condition)
   }
 
   function page_head(){
-    global $_GET, $request_type, $breadcrumb;
+    global $HTTP_GET_VARS, $request_type, $breadcrumb;
     $title       = C_TITLE;
     $keywords    = C_KEYWORDS;
     $description = C_DESCRIPTION;
@@ -2875,3 +2875,12 @@ function replace_category_seo($input_str, $category_name)
     $replace = array(STORE_NAME,$breadcrumb->trail_title(' &raquo; '), $page .  'ページ目', $category_name);
     return str_replace($search, $replace, $input_str);
 }*/
+
+function tep_get_categories_id_by_parent_id($categories_id, $languages_id = 4) {
+  $arr = array();
+  $categories = tep_get_categories_by_parent_id($categories_id, $languages_id);
+  foreach ($categories as $c){
+    $arr[] = $c['categories_id'];
+  }
+  return $arr;
+}
