@@ -6,44 +6,18 @@
   class splitPageResults {
 /* class constructor */
 
-    function splitPageResults(&$current_page_number, $max_rows_per_page, &$sql_query, &$query_num_rows) {
-      //exit($sql_query);
-      #$sql_query = strtolower($sql_query);
+    function splitPageResults(&$current_page_number, $max_rows_per_page, &$sql_query, &$query_num_rows, $sql_count_query = null) {
       if (empty($current_page_number)) $current_page_number = 1;
-/*
-      $pos_to = strlen($sql_query);
-      $pos_from = strpos($sql_query, ' from', 0);
-
-      $pos_group_by = strpos($sql_query, ' group by', $pos_from);
-      if (($pos_group_by < $pos_to) && ($pos_group_by != false)) $pos_to = $pos_group_by;
-
-      $pos_having = strpos($sql_query, ' having', $pos_from);
-      if (($pos_having < $pos_to) && ($pos_having != false)) $pos_to = $pos_having;
-
-      $pos_order_by = strpos($sql_query, ' order by', $pos_from);
-      if (($pos_order_by < $pos_to) && ($pos_order_by != false)) $pos_to = $pos_order_by;
-
-      $pos_limit = strpos($sql_query, ' limit', $pos_from);
-      if (($pos_limit < $pos_to) && ($pos_limit != false)) $pos_to = $pos_limit;
-
-      $pos_procedure = strpos($sql_query, ' procedure', $pos_from);
-      if (($pos_procedure < $pos_to) && ($pos_procedure != false)) $pos_to = $pos_procedure;
-*/
       $offset = ($max_rows_per_page * ($current_page_number - 1));
-      
-      //exit("select count(*) as total " . substr($sql_query, $pos_from, ($pos_to - $pos_from)));
-      #$reviews_count_query = tep_db_query("select count(*) as total " . substr($sql_query, $pos_from, ($pos_to - $pos_from)));
-      #$reviews_count = tep_db_fetch_array($reviews_count_query);
-      #$query_num_rows = $reviews_count['total'];
-      
-      
-      $query_num_rows = tep_db_num_rows(tep_db_query($sql_query));
+      if ($sql_count_query !== null) {
+        // must use alias named "count"
+        $count_query  = tep_db_query($sql_count_query);
+        $count_result = tep_db_fetch_array($count_query);
+        $query_num_rows = $count_result['count'];
+      } else {
+        $query_num_rows = tep_db_num_rows(tep_db_query($sql_query));
+      }
       $sql_query .= " limit " . $offset . ", " . $max_rows_per_page;
-
-      // ccdd
-      //$reviews_count_query = tep_db_query("select count(*) as total " . substr($sql_query, $pos_from, ($pos_to - $pos_from)));
-      //$reviews_count = tep_db_fetch_array($reviews_count_query);
-      //$query_num_rows = $reviews_count['total'];
     }
   
 
@@ -108,14 +82,6 @@
 
 // display number of total products found
     function display_count($query_numrows, $max_rows_per_page, $current_page_number, $text_output) {
-
-      //echo $query_numrows;
-      //echo '|';
-      //echo $max_rows_per_page;
-      //echo '|';
-      //echo $current_page_number;
-      //echo '|';
-      //echo $text_output;
       $to_num = ($max_rows_per_page * $current_page_number);
       if ($to_num > $query_numrows) $to_num = $query_numrows;
       $from_num = ($max_rows_per_page * ($current_page_number - 1));

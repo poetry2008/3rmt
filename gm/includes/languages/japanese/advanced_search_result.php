@@ -1,16 +1,9 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE1', '検索');
+define('NAVBAR_TITLE1', '詳細検索');
 define('NAVBAR_TITLE2', '検索結果');
 define('HEADING_TITLE', '検索条件に一致する商品');
 define('TABLE_HEADING_IMAGE', '');

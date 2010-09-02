@@ -169,7 +169,7 @@
   }
   //ccdd
   tep_db_perform(TABLE_ORDERS, $sql_data_array);
-  orders_updated($insert_id);
+  
   //$insert_id = tep_db_insert_id();
   for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
     $sql_data_array = array('orders_id' => $insert_id,
@@ -285,7 +285,7 @@
   $sql_data_array = array('orders_id' => $insert_id, 
                             'products_id' => tep_get_prid($order->products[$i]['id']), 
                             'products_model' => $order->products[$i]['model'], 
-                            'products_name' => $order->products[$i]['name'], 
+                            'products_name' => $order->products[$i]['search_name'], 
                             'products_price' => $order->products[$i]['price'], 
                             'final_price' => $order->products[$i]['final_price'], 
                             'products_tax' => $order->products[$i]['tax'], 
@@ -407,6 +407,7 @@
       }
     }
  }
+ orders_updated($insert_id);
 
   # メール本文整形 --------------------------------------
   $email_order = '';

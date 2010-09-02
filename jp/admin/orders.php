@@ -1267,8 +1267,7 @@ function mail_text(st,tt,ot){
         from " . TABLE_ORDERS_PRODUCTS . " op 
         where op.products_name like '%".$_GET['keywords']."%'
         " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " op.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-        order by op.orders_products_id desc";
-      
+        order by op.torihiki_date desc";
   } elseif (
     isset($_GET['keywords']) && $_GET['keywords']
     and ((isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name')
@@ -1323,7 +1322,7 @@ function mail_text(st,tt,ot){
     //$orders_query_raw .= ")";  
     }
     
-    $orders_query_raw .= " order by o.date_purchased DESC";
+    $orders_query_raw .= " order by o.torihiki_date DESC";
   } elseif (isset($_GET['keywords']) && $_GET['keywords']) {
       $orders_query_raw = "
         select distinct(o.orders_id), 

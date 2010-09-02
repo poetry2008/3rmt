@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   class order {
@@ -135,7 +128,7 @@
 // 2003-06-06 add_telephone
       $this->delivery = array('name' => $order['delivery_name'],
                               'name_f' => $order['delivery_name_f'],
-							  'company' => $order['delivery_company'],
+                              'company' => $order['delivery_company'],
                               'street_address' => $order['delivery_street_address'],
                               'suburb' => $order['delivery_suburb'],
                               'city' => $order['delivery_city'],
@@ -152,7 +145,7 @@
 // 2003-06-06 add_telephone
       $this->billing = array('name' => $order['billing_name'],
                              'name_f' => $order['billing_name_f'],
-							 'company' => $order['billing_company'],
+                             'company' => $order['billing_company'],
                              'street_address' => $order['billing_street_address'],
                              'suburb' => $order['billing_suburb'],
                              'city' => $order['billing_city'],
@@ -200,7 +193,25 @@
       $this->content_type = $cart->get_content_type();
 //ccdd
       $customer_address_query = tep_db_query("
-          select c.customers_firstname, c.customers_lastname, c.customers_firstname_f, c.customers_lastname_f, c.customers_telephone, c.customers_email_address, ab.entry_company, ab.entry_street_address, ab.entry_suburb, ab.entry_postcode, ab.entry_city, ab.entry_zone_id, z.zone_name, co.countries_id, co.countries_name, co.countries_iso_code_2, co.countries_iso_code_3, co.address_format_id, ab.entry_state 
+          select c.customers_firstname, 
+                  c.customers_lastname, 
+                  c.customers_firstname_f, 
+                  c.customers_lastname_f, 
+                  c.customers_telephone, 
+                  c.customers_email_address, 
+                  ab.entry_company, 
+                  ab.entry_street_address, 
+                  ab.entry_suburb, 
+                  ab.entry_postcode, 
+                  ab.entry_city, 
+                  ab.entry_zone_id, 
+                  z.zone_name, 
+                  co.countries_id, 
+                  co.countries_name, 
+                  co.countries_iso_code_2, 
+                  co.countries_iso_code_3, 
+                  co.address_format_id, 
+                  ab.entry_state 
           from " . TABLE_CUSTOMERS . " c, " .  TABLE_ADDRESS_BOOK . " ab left join " . TABLE_ZONES . " z on (ab.entry_zone_id = z.zone_id) left join " . TABLE_COUNTRIES . " co on (ab.entry_country_id = co.countries_id) 
           where c.customers_id = '" .  $customer_id . "' 
           and ab.customers_id = '" . $customer_id . "' 
@@ -257,10 +268,10 @@
 
       $this->customer = array('firstname' => $customer_address['customers_firstname'],
                               'lastname' => $customer_address['customers_lastname'],
-							  
-							  'firstname_f' => $customer_address['customers_firstname_f'],
+                              
+                              'firstname_f' => $customer_address['customers_firstname_f'],
                               'lastname_f' => $customer_address['customers_lastname_f'],
-							  
+                              
                               'company' => $customer_address['entry_company'],
                               'street_address' => $customer_address['entry_street_address'],
                               'suburb' => $customer_address['entry_suburb'],
@@ -276,10 +287,10 @@
 // 2003-06-06 add_telephone
       $this->delivery = array('firstname' => $shipping_address['entry_firstname'],
                               'lastname' => $shipping_address['entry_lastname'],
-							  
-							  'firstname_f' => $shipping_address['entry_firstname_f'],
+                              
+                              'firstname_f' => $shipping_address['entry_firstname_f'],
                               'lastname_f' => $shipping_address['entry_lastname_f'],
-							  
+                              
                               'company' => $shipping_address['entry_company'],
                               'street_address' => $shipping_address['entry_street_address'],
                               'suburb' => $shipping_address['entry_suburb'],
@@ -295,10 +306,10 @@
 // 2003-06-06 add_telephone
       $this->billing = array('firstname' => $billing_address['entry_firstname'],
                              'lastname' => $billing_address['entry_lastname'],
-							 
-							 'firstname_f' => $billing_address['entry_firstname_f'],
+                             
+                             'firstname_f' => $billing_address['entry_firstname_f'],
                              'lastname_f' => $billing_address['entry_lastname_f'],
-							 
+                             
                              'company' => $billing_address['entry_company'],
                              'street_address' => $billing_address['entry_street_address'],
                              'suburb' => $billing_address['entry_suburb'],
@@ -316,6 +327,7 @@
       for ($i=0, $n=sizeof($products); $i<$n; $i++) {
         $this->products[$index] = array('qty' => $products[$i]['quantity'],
                                         'name' => $products[$i]['name'],
+                                        'search_name' => $products[$i]['search_name'],
                                         'model' => $products[$i]['model'],
                                         'tax' => tep_get_tax_rate($products[$i]['tax_class_id'], $tax_address['entry_country_id'], $tax_address['entry_zone_id']),
                                         'tax_description' => tep_get_tax_description($products[$i]['tax_class_id'], $tax_address['entry_country_id'], $tax_address['entry_zone_id']),

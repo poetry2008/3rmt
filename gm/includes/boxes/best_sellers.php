@@ -82,8 +82,10 @@
       limit " . MAX_DISPLAY_BESTSELLERS
         );
   }
-
-  if (tep_db_num_rows($best_sellers_query) >= MIN_DISPLAY_BESTSELLERS) {
+  if (
+    tep_db_num_rows($best_sellers_query) >= MIN_DISPLAY_BESTSELLERS 
+    && ((isset($current_category_id) && ($current_category_id > 0)) ? tep_show_warning($current_category_id) != 1 : true)
+  ) {
 ?>
 <!-- best_sellers //-->
 <div class="best_sellers_main">
@@ -95,7 +97,6 @@
   $info_box_contents[] = array('text' => BOX_HEADING_BESTSELLERS);
 
   // new infoBoxHeading($info_box_contents, false, false);
-
   $rows = 0;
   //$bestsellers_list = '<table border="0" width="100%" cellspacing="0" cellpadding="1">';
   while ($best_sellers = tep_db_fetch_array($best_sellers_query)) {

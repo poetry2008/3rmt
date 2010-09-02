@@ -19,28 +19,13 @@ $categories_query = tep_db_query("
         and c.parent_id = '0' 
         and c.categories_id = cd.categories_id 
         and cd.language_id='" . $languages_id ."' 
-      order by sort_order, cd.categories_name, site_id DESC
+      order by site_id DESC
     ) c 
     where site_id = ".SITE_ID."
        or site_id = 0
     group by categories_id
     order by sort_order, categories_name
 ");
-/*
-$categories_query = tep_db_query("
-    select c.categories_id, 
-           cd.categories_name, 
-           c.categories_status, 
-           c.parent_id 
-    from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
-    where site_id = '" . SITE_ID . "' 
-      and c.categories_status != '1' 
-      and c.parent_id = '0' 
-      and c.categories_id = cd.categories_id 
-      and cd.language_id='" . $languages_id ."' 
-    order by sort_order, cd.categories_name
-");
-*/
 while ($category = tep_db_fetch_array($categories_query))  {
   $categories[] = $category;
 }

@@ -83,8 +83,23 @@
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/general.js"></script>
+<script>
+    function word_count(ele)
+    {
+      document.getElementById('count_box').innerHTML = ele.value.length;
+    }
+    function check_review()
+    {
+        if (document.getElementById('reviews_text').value.length < 50) {
+            alert("レビューの文章は少なくても 50 文字以上必要です");
+            return false
+        } else {
+            return true;
+        }
+    }
+</script>
 </head>
-<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onLoad="SetFocus();">
+<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onLoad="SetFocus();word_count(document.getElementById('reviews_text'))">
 <!-- header //-->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof //-->
@@ -129,7 +144,7 @@
     $rInfo_array = tep_array_merge($products, $products_name);
     $rInfo = new objectInfo($rInfo_array);
 ?>
-      <tr><?php echo tep_draw_form('review', FILENAME_REVIEWS, 'action=new_preview'); ?>
+      <tr><?php echo tep_draw_form('review', FILENAME_REVIEWS, 'action=new_preview', 'post', 'onsubmit="return check_review()"'); ?>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td class="main" valign="top">
@@ -163,18 +178,19 @@
   <?php }?>
   </select>
   <br>
-      <b><?php echo TEXT_PRODUCTS_STATUS; ?></b> <?php echo tep_draw_radio_field('reviews_status', '1', 1) . '&nbsp;' . TEXT_PRODUCT_AVAILABLE . '&nbsp;' . tep_draw_radio_field('reviews_status', '0') . '&nbsp;' . TEXT_PRODUCT_NOT_AVAILABLE; ?>
+      <b><?php echo TEXT_PRODUCTS_STATUS; ?></b> <?php echo tep_draw_radio_field('reviews_status', '1') . '&nbsp;' . TEXT_PRODUCT_AVAILABLE . '&nbsp;' . tep_draw_radio_field('reviews_status', '0', 1) . '&nbsp;' . TEXT_PRODUCT_NOT_AVAILABLE; ?>
       </td>
-            <td class="main" align="right" valign="top"><?php echo tep_image(HTTP_CATALOG_SERVER . DIR_WS_CATALOG_IMAGES . $rInfo->products_image, $rInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"'); ?></td>
+            <td class="main" align="right" valign="top"><?php //echo tep_image(HTTP_CATALOG_SERVER . DIR_WS_CATALOG_IMAGES . $rInfo->products_image, $rInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"'); ?></td>
           </tr>
         </table></td>
       </tr>
       <tr>
         <td><table witdh="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td class="main" valign="top"><b><?php echo ENTRY_REVIEW; ?></b><br><br><?php echo tep_draw_textarea_field('reviews_text', 'soft', '60', '15'); ?></td>
+            <td class="main" valign="top" colspan='2'><b><?php echo ENTRY_REVIEW; ?></b><br><br><?php echo tep_draw_textarea_field('reviews_text', 'soft', '60', '15', '', 'id="reviews_text" onkeypress="word_count(this)" onchange="word_count(this)"'); ?></td>
           </tr>
           <tr>
+            <td class="smallText">漢字数:<span id="count_box"></span></td>
             <td class="smallText" align="right"><?php echo ENTRY_REVIEW_TEXT; ?></td>
           </tr>
         </table></td>
@@ -255,9 +271,10 @@
       <tr>
         <td><table witdh="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td class="main" valign="top"><b><?php echo ENTRY_REVIEW; ?></b><br><br><?php echo tep_draw_textarea_field('reviews_text', 'soft', '60', '15', $rInfo->reviews_text); ?></td>
+            <td class="main" valign="top" colspan='2'><b><?php echo ENTRY_REVIEW; ?></b><br><br><?php echo tep_draw_textarea_field('reviews_text', 'soft', '60', '15', $rInfo->reviews_text, 'id="reviews_text" onkeypress="word_count(this)" onchange="word_count(this)"'); ?></td>
           </tr>
           <tr>
+            <td class="smallText">漢字数:<span id="count_box"></span></td>
             <td class="smallText" align="right"><?php echo ENTRY_REVIEW_TEXT; ?></td>
           </tr>
         </table></td>

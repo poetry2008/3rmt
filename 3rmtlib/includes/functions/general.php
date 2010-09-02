@@ -2,10 +2,9 @@
 /*
   $Id$
 
-  公共函数库
+  global functions
   
-  被application_top.php调用
-
+  required by application_top.php
 */
 
 ////
@@ -2093,8 +2092,8 @@ function forward404Unless($condition)
       $bread_num = count($breadcrumb_arr); 
       $breadcrumb_lat = trim($breadcrumb_arr[$bread_num-1]);  
     }
-    $search  = array_merge(array('#STORE_NAME#','#BREADCRUMB#', '#PAGE_TITLE#'), $search);
-    $replace = array_merge(array(STORE_NAME, $breadcrumb_str, $breadcrumb_lat), $replace);
+    $search  = array_merge(array('#STORE_NAME#','#BREADCRUMB#', '#PAGE_TITLE#', '#BREADCRUMB_KEYWORD#'), $search);
+    $replace = array_merge(array(STORE_NAME, $breadcrumb_str, $breadcrumb_lat, str_replace(' &raquo; ', ',', $breadcrumb_str)), $replace);
     if (!in_array('#SEO_PAGE#', $search)) {
       $c_page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
       $search = array_merge(array('#SEO_PAGE#'), $search); 
@@ -2715,7 +2714,7 @@ function tep_show_warning($categories_id) {
   $categories = tep_db_fetch_array($categories_query);
   if ($categories) {
     if ($categories['categories_status'] != '0') {
-      return true;
+      return $categories['categories_status'];
     } else if ($categories['parent_id'] != '0') {
       return tep_show_warning($categories['parent_id']);
     } else {
@@ -2861,6 +2860,7 @@ function orders_updated($orders_id) {
   tep_db_query("update ".TABLE_ORDERS." set finished = ( select finished from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
   tep_db_query("update ".TABLE_ORDERS." set orders_status_name = ( select orders_status_name from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
   tep_db_query("update ".TABLE_ORDERS." set orders_status_image = ( select orders_status_image from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
+  tep_db_query("update ".TABLE_ORDERS_PRODUCTS." set torihiki_date = ( select torihiki_date from ".TABLE_ORDERS." where orders.orders_id=orders_products.orders_id ) where orders_id='".$orders_id."'");
 }
 
 function replace_store_name($str) {
@@ -2883,4 +2883,15 @@ function tep_get_categories_id_by_parent_id($categories_id, $languages_id = 4) {
     $arr[] = $c['categories_id'];
   }
   return $arr;
+}
+
+function tep_get_ot_total($orders_id)
+{
+  $ot = tep_db_fetch_array(tep_db_query("
+    select * 
+    from " . TABLE_ORDERS_TOTAL . " 
+    where orders_id='".intval($orders_id)."' 
+      and class = 'ot_total'
+  "));
+  return $ot['text'];
 }

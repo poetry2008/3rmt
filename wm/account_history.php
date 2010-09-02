@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
@@ -45,9 +38,26 @@
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
               <td><?php
-  $history_query_raw = "select o.orders_id, o.date_purchased, o.delivery_name, ot.text as order_total, s.orders_status_name from " . TABLE_ORDERS . " o left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id) left join " .  TABLE_ORDERS_STATUS . " s on (o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "') where o.customers_id = '" . $customer_id . "' and ot.class = 'ot_total' and o.site_id = ".SITE_ID." order by orders_id DESC";
-  $history_split = new splitPageResults($_GET['page'], MAX_DISPLAY_ORDER_HISTORY, $history_query_raw, $history_numrows);
-// ccdd
+  $history_query_raw = "
+        select o.orders_id, 
+                o.date_purchased, 
+                o.delivery_name, 
+                ot.text as order_total, 
+                o.orders_status_name 
+        from " . TABLE_ORDERS . " o 
+          left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id) 
+        where o.customers_id = '" . $customer_id . "' 
+          and ot.class = 'ot_total' 
+          and o.site_id = ".SITE_ID." order by orders_id DESC
+  ";
+  $history_count_query_raw = "
+        select count(o.orders_id) as count
+        from " . TABLE_ORDERS . " o 
+        where o.customers_id = '" . $customer_id . "' 
+          and o.site_id = ".SITE_ID."
+  ";
+  $history_split = new splitPageResults($_GET['page'], MAX_DISPLAY_ORDER_HISTORY, $history_query_raw, $history_numrows, $history_count_query_raw);
+//ccdd
   $history_query = tep_db_query($history_query_raw);
 
   $info_box_contents = array();

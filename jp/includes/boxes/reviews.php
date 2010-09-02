@@ -58,9 +58,13 @@
            pd.products_name,
            r.site_id as rsid,
            pd.site_id as psid
-    from " . TABLE_REVIEWS . " r, " .  TABLE_REVIEWS_DESCRIPTION . " rd, " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c
+    from " . TABLE_REVIEWS . " r, " .  TABLE_REVIEWS_DESCRIPTION . " rd, " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd
+    ";
+    if (isset($subcid) && $subcid) {
+        $random_select .= (", " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c");
+    }
+    $random_select .= "
     where p.products_status != '0' 
-      and p.products_id = p2c.products_id
       and p.products_id = r.products_id 
       and r.reviews_id = rd.reviews_id 
       and rd.languages_id = '" . $languages_id . "' 
@@ -68,12 +72,9 @@
       and pd.language_id = '" . $languages_id . "' 
       and r.reviews_status = '1' 
       and r.site_id = '".SITE_ID."'";
-
   if (isset($subcid) && $subcid) {
-    $random_select .= " and p2c.categories_id in (".implode(',',$subcid).") ";
+    $random_select .= "and p.products_id = p2c.products_id and p2c.categories_id in (".implode(',',$subcid).") ";
   }
-
-      //and pd.site_id = '".SITE_ID."'"; 
   if (isset($_GET['products_id'])) {
     $random_select .= " and p.products_id = '" . (int)$_GET['products_id'] . "'";
   }

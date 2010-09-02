@@ -10,6 +10,7 @@
       where categories_id = '".$categories_path[0]."' 
         and language_id = '".$languages_id."' 
         and (site_id = '".SITE_ID."' or site_id = '0')
+      order by site_id DESC
       ");
   $_categories = tep_db_fetch_array($_categories_query);
   $new_c_name = $_categories['categories_name'];

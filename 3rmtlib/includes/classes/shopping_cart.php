@@ -312,6 +312,8 @@
       reset($this->contents);
       while (list($products_id, ) = each($this->contents)) {
         $products = tep_get_product_by_id(tep_get_prid($products_id), SITE_ID, $languages_id);
+        // for search
+        $search_products = tep_get_product_by_id(tep_get_prid($products_id), 0, $languages_id);
         if ($products) {
           $prid = $products['products_id'];
           $products_price = $products['products_price'];
@@ -350,6 +352,7 @@
       if(!isset($this->contents[$products_id]['attributes'])) $this->contents[$products_id]['attributes']= NULL;
           $products_array[] = array('id' => $products_id,
                                     'name' => $products['products_name'],
+                                    'search_name' => $search_products['products_name'],
                                     'model' => $products['products_model'],
                                     'price' => $products_price,
                                     'quantity' => $this->contents[$products_id]['qty'],

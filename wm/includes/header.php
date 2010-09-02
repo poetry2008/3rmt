@@ -93,7 +93,7 @@
           <tr>
             <td width="432">
               <div style="width: 432px; height: 43px; overflow:hidden;">
-                <?php echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, '', 'NONSSL', false), 'get')."\n"; ?>
+                <?php echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, '', 'SSL', false), 'get')."\n"; ?>
                 <table style="margin-top: 3px;" cellpadding="2" cellspacing="2" summary="search">
                   <tr>
                     <td><img class="middle" src="images/design/button/search_text.gif" width="76" height="25" alt="RMT検索"></td>

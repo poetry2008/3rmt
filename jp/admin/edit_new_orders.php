@@ -768,6 +768,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
         site_id = '".tep_get_site_id_by_orders_id($oID)."',
         products_quantity = '" . (int)$add_product_quantity . "';";
       tep_db_query($Query);
+      orders_updated($oID);
       $new_product_id = tep_db_insert_id();
       
       // 2.2.1 Update inventory Quantity

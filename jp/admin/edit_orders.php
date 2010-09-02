@@ -206,7 +206,7 @@
       $quantity_difference = ($products_details["qty"] - $order['products_quantity']);
       tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = products_quantity - " . $quantity_difference . ", products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
     }
-  
+
     if($products_details["qty"] > 0) { // a.) quantity found --> add to list & sum
       $Query = "update " . TABLE_ORDERS_PRODUCTS . " set
           products_model = '" . $products_details["model"] . "',
@@ -683,6 +683,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
     site_id = '".tep_get_site_id_by_orders_id($oID)."',
         products_quantity = '" . (int)$add_product_quantity . "';";
       tep_db_query($Query);
+      orders_updated($oID);
       $new_product_id = tep_db_insert_id();
       
       // 2.2.1 Update inventory Quantity
