@@ -2,6 +2,13 @@
 /*
   $Id$
 */
+if (
+  basename($PHP_SELF) != FILENAME_CHECKOUT_PRODUCTS
+  && basename($PHP_SELF) != FILENAME_CHECKOUT_SHIPPING
+  && basename($PHP_SELF) != FILENAME_CHECKOUT_PAYMENT
+  && basename($PHP_SELF) != FILENAME_CHECKOUT_CONFIRMATION
+  && basename($PHP_SELF) != FILENAME_CHECKOUT_SUCCESS
+) {
 ?>
 <!-- reviews //-->
 <?php 
@@ -104,14 +111,13 @@
     $review = htmlspecialchars($review['reviews_text']);
     $review = tep_break_string($review, 15, '-<br>');
   
-    echo '<a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' . $random_product['products_id'] . '&reviews_id=' . $random_product['reviews_id']) . '">' . tep_image(DIR_WS_IMAGES .'products/'. $random_product['products_image'], $random_product['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a><br>
+    echo tep_image(DIR_WS_IMAGES .'products/'. $random_product['products_image'], $random_product['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '<br>
     <a style="display:block;width:169px;word-wrap:break-word;overflow:hidden;" href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' . $random_product['products_id'] . '&reviews_id=' . $random_product['reviews_id']) . '">' . $review . ' ...</a><br>
     ' . tep_image(DIR_WS_IMAGES . 'stars_' . $random_product['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $random_product['reviews_rating'])) . "\n";
   } elseif (isset($_GET['products_id'])) {
     // display 'write a review' box
     echo '<table border="0" cellspacing="2" cellpadding="2" width="100%">
-      <tr><td class="boxText">
-        <a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE, 'products_id=' . $_GET['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'box_write_review.gif', IMAGE_BUTTON_WRITE_REVIEW) . '</a>
+      <tr><td class="boxText">' . tep_image(DIR_WS_IMAGES . 'box_write_review.gif', IMAGE_BUTTON_WRITE_REVIEW) . '
       </td><td class="boxText">
         <a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE, 'products_id=' . $_GET['products_id']) . '">' . BOX_REVIEWS_WRITE_REVIEW .'</a>
       </td></tr>
@@ -125,7 +131,9 @@
   </tr>
   <tr><td height="1" bgcolor="#b6b6b6"></td></tr>
 </table>
+<!-- reviews_eof //--> 
 <?php
   }
+}
 ?>
-<!-- reviews_eof //-->
+

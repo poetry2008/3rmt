@@ -746,9 +746,9 @@
   #convenience_store
   unset($_SESSION['character']);
   
-  $pr = '?SID=' . $convenience_sid;
+  //$pr = '?SID=' . $convenience_sid;
 
-  tep_redirect(FILENAME_CHECKOUT_SUCCESS . $pr,'T');
+  tep_redirect(FILENAME_CHECKOUT_SUCCESS,'T');
     
   require(DIR_WS_INCLUDES . 'application_bottom.php');
 ?>

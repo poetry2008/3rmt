@@ -3,16 +3,7 @@
   $Id$
 */
 
-// Product_listing.php Add
- define('LISTING_DISPLAY_OPTION','表示形式:');
- define('LISTING_SORT_BY','並び替え:');
- define('LISTING_PRICE_LOW','価格が安い');
- define('LISTING_PRICE_HIGHT','価格が高い');
- define('LISTING_TITLE_A_TO_Z','タイトル A - Z');
- define('LISTING_TITLE_Z_TO_A','タイトル Z - A');
- 
- define('SORT_BY_IMAGE_TEXT','タイトルと画像');
- define('SORT_BY_IMAGE','画像のみ');
+  require(DIR_WS_MODULES . 'sort_products.php');
 ?>
 <!--select searach -->
 <table width="100%" border="0" cellpadding="1" cellspacing="0">
@@ -29,7 +20,7 @@ if(basename($PHP_SELF) == FILENAME_DEFAULT) {
         } else {
           $arguments = 'cPath=' . $cPath;
         }
-        $arguments .= '&sort=' . $_GET['sort'];
+        $arguments .= '&sort=' . $_COOKIE['sort'];
 
         $option_url = tep_href_link(FILENAME_DEFAULT, $arguments);
 
@@ -54,19 +45,14 @@ if(basename($PHP_SELF) == FILENAME_DEFAULT) {
  }
 ?>
       <td class="smallText" align="right"><b><?php echo LISTING_SORT_BY ; ?></b>
-        <select name="select" onChange="if(options[selectedIndex].value) window.location.href=(options[selectedIndex].value)">
-          <option value="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=5a') ; ?>"  <?php if($_GET['sort'] == '5a') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_PRICE_LOW ; ?></option>
-          <option value="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=5d') ; ?>"  <?php if($_GET['sort'] == '5d') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_PRICE_HIGHT ; ?></option>
-          <option value="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=4a') ; ?>"  <?php if($_GET['sort'] == '4a') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_TITLE_A_TO_Z ; ?></option>
-          <option value="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('page', 'info', 'sort')) . 'page=1&sort=4d') ; ?>"  <?php if($_GET['sort'] == '4d') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_TITLE_Z_TO_A ; ?></option>
+        <select name="select" onChange="if(options[selectedIndex].value) change_sort_type(options[selectedIndex].value)">
+          <option value="4a"  <?php if($_COOKIE['sort'] == '4a') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_TITLE_A_TO_Z ; ?></option>
+          <option value="4d"  <?php if($_COOKIE['sort'] == '4d') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_TITLE_Z_TO_A ; ?></option>
+          <option value="5a"  <?php if($_COOKIE['sort'] == '5a') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_PRICE_LOW ; ?></option>
+          <option value="5d"  <?php if($_COOKIE['sort'] == '5d') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_PRICE_HIGHT ; ?></option>
         </select></td>
     </tr>
   <?php
-  $listing_numrows_sql = $listing_sql;
-  $listing_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $listing_sql, $listing_numrows);
-  // fix counted products
-  $listing_numrows = tep_db_query($listing_numrows_sql);
-  $listing_numrows = tep_db_num_rows($listing_numrows);
   if ( ($listing_numrows > 0) && ( (PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3') ) ) {
 ?>
   <tr>
@@ -96,12 +82,6 @@ if ($listing_numrows > 0) {
 
   while ($listing = tep_db_fetch_array($listing_query)) {
   //price
-  /*
-      if (tep_not_null($listing['specials_new_products_price'])) {
-        $price = '<s>' .  $currencies->display_price($listing['products_price'], tep_get_tax_rate($listing['products_tax_class_id'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price($listing['specials_new_products_price'], tep_get_tax_rate($listing['products_tax_class_id'])) . '</span>&nbsp;';
-      } else {
-        $price = $currencies->display_price($listing['products_price'], tep_get_tax_rate($listing['products_tax_class_id'])) . '&nbsp;';
-      }*/
       if (tep_get_special_price($listing['products_price'], $listing['products_price_offset'], $listing['products_small_sum'])) {
         $price = '<s>' . $currencies->display_price(tep_get_price($listing['products_price'], $listing['products_price_offset'], $listing['products_small_sum']), tep_get_tax_rate($listing['products_tax_class_id'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($listing['products_price'], $listing['products_price_offset'], $listing['products_small_sum']), tep_get_tax_rate($listing['products_tax_class_id'])) . '</span>&nbsp;';
       } else {
@@ -149,8 +129,6 @@ if ($listing_numrows > 0) {
           <td colspan="2" style="padding-left:5px; ">
             <p class="smallText">
 <?php
-if (!isset($listing['products_bflag'])) $listing['products_bflag'] = NULL;//delnotice
-if (!isset($listing['products_cflag'])) $listing['products_cflag'] = NULL;//delnotice
   if($listing['products_bflag'] == '1') {
     # 買取商品
     echo $description . '..';

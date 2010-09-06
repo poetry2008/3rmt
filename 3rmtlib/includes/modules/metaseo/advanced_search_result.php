@@ -10,9 +10,9 @@
       $this->code = 'advanced_search_result';
       $this->title = MODULE_METASEO_ADVANCED_SEARCH_RESULT_TEXT_TITLE;
       $this->description = MODULE_METASEO_ADVANCED_SEARCH_RESULT_TEXT_DESCRIPTION;
-    $this->explain = MODULE_METASEO_ADVANCED_SEARCH_RESULT_TEXT_EXPLAIN;
+      $this->explain = MODULE_METASEO_ADVANCED_SEARCH_RESULT_TEXT_EXPLAIN;
       $this->sort_order = MODULE_METASEO_ADVANCED_SEARCH_RESULT_SORT_ORDER;
-      $this->link = 'advanced_search_result.php?keywords=RMT&x=40&y=13&categories_id=&inc_subcat=1&manufacturers_id=&pfrom=&pto=&dfrom=&dto=';
+      $this->link = 'advanced_search_result.php?keywords=RMT&x=40&y=13&inc_subcat=1';
     }
 
 // class methods

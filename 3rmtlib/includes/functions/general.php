@@ -2092,8 +2092,8 @@ function forward404Unless($condition)
       $bread_num = count($breadcrumb_arr); 
       $breadcrumb_lat = trim($breadcrumb_arr[$bread_num-1]);  
     }
-    $search  = array_merge(array('#STORE_NAME#','#BREADCRUMB#', '#PAGE_TITLE#', '#BREADCRUMB_KEYWORD#'), $search);
-    $replace = array_merge(array(STORE_NAME, $breadcrumb_str, $breadcrumb_lat, str_replace(' &raquo; ', ',', $breadcrumb_str)), $replace);
+    $search  = array_merge(array('#STORE_NAME#','#BREADCRUMB#', '#PAGE_TITLE#', '#BREADCRUMB_KEYWORD#', '#BREADCRUMB_FIRST#'), $search);
+    $replace = array_merge(array(STORE_NAME, $breadcrumb_str, $breadcrumb_lat, str_replace(' &raquo; ', ',', $breadcrumb_str), trim($breadcrumb_arr[1])), $replace);
     if (!in_array('#SEO_PAGE#', $search)) {
       $c_page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
       $search = array_merge(array('#SEO_PAGE#'), $search); 
@@ -2121,6 +2121,15 @@ function forward404Unless($condition)
 <base href="<?php echo (($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERVER) . DIR_WS_CATALOG; ?>">
 <link rel="stylesheet" type="text/css" href="stylesheet.css"> 
 <?php
+    switch (str_replace('/', '', $_SERVER['SCRIPT_NAME'])) {
+      case FILENAME_CATEGORY:
+        if (isset($cPath) && $cPath || isset($_GET['tags_id']) || isset($_GET['manufacturers_id'])) {
+?>
+<script type="text/javascript" src="js/sort.js"></script>
+<?php
+        }
+        break;
+    }
   }
 
   function tep_get_metas_by_manufacturers_id($manufacturers_id)

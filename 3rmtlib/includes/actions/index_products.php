@@ -109,23 +109,6 @@
           and m.manufacturers_id = '" . $_GET['manufacturers_id'] . "' 
         order by pd.site_id DESC
           ";
-        /*
-        $listing_sql = "
-        select " . $select_column_list . " 
-              p.products_id, 
-              p.manufacturers_id, 
-              p.products_price, 
-              p.products_tax_class_id, 
-              IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, 
-              IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
-        from (" . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_MANUFACTURERS . " m ) left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id 
-        where p.products_status != '0' 
-          and pd.products_id = p.products_id 
-          and pd.language_id = '" . $languages_id . "' 
-          and p.manufacturers_id = m.manufacturers_id 
-          and m.manufacturers_id = '" . $_GET['manufacturers_id'] . "' 
-          and pd.site_id = ".SITE_ID;
-          */
       }
 // We build the categories-dropdown
       $filterlist_sql = "
@@ -148,20 +131,6 @@
         group by id
         order by name
         ";
-      /*
-      $filterlist_sql = "
-        select distinct c.categories_id as id, 
-                        cd.categories_name as name 
-        from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
-        where p.products_status != '0' 
-          and p.products_id = p2c.products_id 
-          and p2c.categories_id = c.categories_id 
-          and p2c.categories_id = cd.categories_id 
-          and cd.language_id = '" . $languages_id . "' 
-          and p.manufacturers_id = '" .  $_GET['manufacturers_id'] . "' 
-          and cd.site_id = ".SITE_ID." 
-        order by cd.categories_name";
-        */
     } else {
 // show the products in a given categorie
       if (isset($_GET['filter_id'])) {
@@ -185,25 +154,6 @@
             and p2c.categories_id = '" . $current_category_id . "' 
           order by pd.site_id DESC
             ";
-        /*
-        $listing_sql = "
-          select " . $select_column_list . " 
-                 p.products_id, 
-                 p.manufacturers_id, 
-                 p.products_price, 
-                 p.products_tax_class_id, 
-                 IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, 
-                 IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
-          from ( " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_MANUFACTURERS . " m, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c  ) left join " .  TABLE_SPECIALS . " s on p.products_id = s.products_id 
-          where p.products_status != '0' 
-            and p.manufacturers_id = m.manufacturers_id 
-            and m.manufacturers_id = '" .  $_GET['filter_id'] . "' 
-            and p.products_id = p2c.products_id 
-            and pd.products_id = p2c.products_id 
-            and pd.language_id = '" . $languages_id . "' 
-            and p2c.categories_id = '" . $current_category_id . "' 
-            and pd.site_id = ".SITE_ID;
-            */
       } else {
 // We show them all
         $listing_sql .= "
@@ -225,25 +175,6 @@
             and p2c.categories_id = '" . $current_category_id . "' 
           order by pd.site_id DESC
             ";
-        /*
-        $listing_sql = "
-          select " . $select_column_list . " 
-                 p.products_id, 
-                 p.manufacturers_id, 
-                 p.products_price, 
-                 p.products_bflag, 
-                 p.products_cflag, 
-                 p.products_tax_class_id, 
-                 IF(s.status, s.specials_new_products_price, NULL) as specials_new_products_price, 
-                 IF(s.status, s.specials_new_products_price, p.products_price) as final_price 
-          from ((" . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS . " p )left join " . TABLE_MANUFACTURERS . " m on p.manufacturers_id = m.manufacturers_id, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c ) left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id 
-          where p.products_status != '0' 
-            and p.products_id = p2c.products_id 
-            and pd.products_id = p2c.products_id 
-            and pd.language_id = '" . $languages_id . "' 
-            and p2c.categories_id = '" . $current_category_id . "' 
-            and pd.site_id = ".SITE_ID;
-            */
       }
 // We build the manufacturers Dropdown
       $filterlist_sql= "
@@ -262,46 +193,3 @@
        or site_id = '".SITE_ID."'
     group by products_id
     ";
-
-    if ( (!$_GET['sort']) || (!ereg('[1-9][ad]', $_GET['sort'])) || (substr($_GET['sort'],0,1) > sizeof($column_list)) ) {
-      for ($col=0, $n=sizeof($column_list); $col<$n; $col++) {
-        if ($column_list[$col] == 'PRODUCT_LIST_NAME') {
-          $_GET['sort'] = $col+1 . 'a';
-          $listing_sql .= " order by products_name";
-          break;
-        }
-      }
-    } else {
-      $sort_col = substr($_GET['sort'], 0 , 1);
-      $sort_order = substr($_GET['sort'], 1);
-      $listing_sql .= ' order by ';
-      switch ($column_list[$sort_col-1]) {
-        case 'PRODUCT_LIST_MODEL':
-          $listing_sql .= "products_model " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
-          break;
-        case 'PRODUCT_LIST_NAME':
-          $listing_sql .= "products_name " . ($sort_order == 'd' ? 'desc' : '');
-          break;
-        case 'PRODUCT_LIST_MANUFACTURER':
-          $listing_sql .= "manufacturers_name " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
-          break;
-        case 'PRODUCT_LIST_QUANTITY':
-          $listing_sql .= "products_quantity " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
-          break;
-        case 'PRODUCT_LIST_IMAGE':
-          $listing_sql .= "products_name";
-          break;
-        case 'PRODUCT_LIST_WEIGHT':
-          $listing_sql .= "products_weight " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
-          break;
-        case 'PRODUCT_LIST_PRICE':
-          $listing_sql .= "products_price " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
-          break;
-        case 'PRODUCT_LIST_ORDERED':
-          $listing_sql .= "products_ordered " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
-          break;
-      }
-    }
-?> 
-
-

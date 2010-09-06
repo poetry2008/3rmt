@@ -146,6 +146,7 @@ $ex_site = $sites[0];
             <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr class="dataTableHeadingRow">
                 <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_MODULES; ?></td>
+                <td class="dataTableHeadingContent" align="right">&nbsp;</td>
                 <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_SORT_ORDER; ?></td>
                 <!--<td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_STATUS; ?></td>-->
                 <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
@@ -165,12 +166,25 @@ $ex_site = $sites[0];
     $dir->close();
   }
 
-  $installed_modules = array();
+  $installed_modules = $directory_array_sorted= array();
+  
   for ($i = 0, $n = sizeof($directory_array); $i < $n; $i++) {
     $file = $directory_array[$i];
     include(DIR_WS_LANGUAGES . $language . '/modules/' . $module_type . '/' . $file);
     include($module_directory . $file);
-
+    $class = substr($file, 0, strrpos($file, '.'));
+    if (tep_class_exists($class)) {
+      $module = new $class;
+      $directory_array_sorted[$module->sort_order][] = $file;
+    }
+  }
+  //print_r($directory_array_sorted);
+  ksort($directory_array_sorted);
+  foreach ($directory_array_sorted as $i => $files) {
+    //$file = $directory_array_sorted[$i];
+    //include(DIR_WS_LANGUAGES . $language . '/modules/' . $module_type . '/' . $file);
+    //include($module_directory . $file);
+  foreach ($files as $j => $file) {
     $class = substr($file, 0, strrpos($file, '.'));
     if (tep_class_exists($class)) {
       $module = new $class;
@@ -219,12 +233,14 @@ $ex_site = $sites[0];
       }
 ?>
                 <td class="dataTableContent"><?php if (isset($module->link) && $module->link) {?><a target='_blank' href="<?php echo $ex_site['url'].'/'.$module->link;?>"><?php echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);?></a><?php } ?><?php echo $module->title; ?></td>
+                <td class="dataTableContent" align="left"><?php echo $module->link ? ($ex_site['url'].'/'.$module->link) : '';?></td>
                 <td class="dataTableContent" align="right"><?php if (is_numeric($module->sort_order)) echo $module->sort_order; ?></td>
                 <!--<td class="dataTableContent" align="right"><?php if ($module->check() > 0) { echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class . '&action=remove') . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>'; } else { echo '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class . '&action=install') . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10); } ?></td>-->
                 <td class="dataTableContent" align="right"><?php if ( (@is_object($mInfo)) && ($class == $mInfo->code) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif'); } else { echo '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
               </tr>
 <?php
     }
+  }
   }
   ksort($installed_modules);
   $check_query = tep_db_query("
@@ -287,7 +303,7 @@ $ex_site = $sites[0];
 
       if (isset($mInfo->status) && $mInfo->status == '1') {
         $keys = '';
-        /* 临时隐藏
+        /* 临时隐藏 */
         reset($mInfo->keys);
         while (list(, $value) = each($mInfo->keys)) {
           $keys .= '<b>' . $value['title'] . '</b><br>';
@@ -308,7 +324,7 @@ $ex_site = $sites[0];
           }
           $keys .= '<br><br>';
         }
-        */
+        /**/
         
         foreach(tep_get_sites() as $s){
           $keys .= "<br>".$s['romaji']."<hr>";
@@ -341,13 +357,13 @@ $ex_site = $sites[0];
           }
         }
         // 临时隐藏
-        //$contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . @$_GET['module'] . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>');
+        $contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . @$_GET['module'] . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>');
         foreach(tep_get_sites() as $s){
           $contents[] = array('text' => '<b>'.$s['romaji'].'</b>');
           $contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . @$_GET['module'] . '&action=edit&site_id='.$s['id']) . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>');
         }
         // 临时隐藏
-        //$contents[] = array('text' => '<br>' . $mInfo->description . "<hr>");
+        $contents[] = array('text' => '<br>' . $mInfo->description . "<hr>");
         $contents[] = array('text' => '<div style="word-wrap:break-word;width:200px;overflow:hidden;"><br>' . $keys . '</div>');
       } else {
         $contents[] = array('text' => isset($mInfo->description)?$mInfo->description:'');

@@ -99,53 +99,12 @@
       order by pd.site_id DESC";
   } 
 
-     $listing_sql = "
-       select *
-       from (
-       ".$products_query."
-       ) p
-       where site_id = '0'
-          or site_id = '".SITE_ID."'
-       group by products_id
-     ";
-
-  if ( (!$_GET['sort']) || (!preg_match('/[1-9][ad]/', $_GET['sort'])) || (substr($_GET['sort'],0,1) > sizeof($column_list)) ) {
-    for ($col=0, $n=sizeof($column_list); $col<$n; $col++) {
-      if ($column_list[$col] == 'PRODUCT_LIST_NAME') {
-        $_GET['sort'] = $col+1 . 'a';
-        $listing_sql .= " order by products_name";
-        break;
-      }
-    }
-  } else {
-    $sort_col = substr($_GET['sort'], 0 , 1);
-    $sort_order = substr($_GET['sort'], 1);
-    $listing_sql .= ' order by ';
-    switch ($column_list[$sort_col-1]) {
-      case 'PRODUCT_LIST_MODEL':
-        $listing_sql .= "products_model " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
-        break;
-      case 'PRODUCT_LIST_NAME':
-       $listing_sql .= "products_name " . ($sort_order == 'd' ? 'desc' : '');
-        break;
-      case 'PRODUCT_LIST_MANUFACTURER':
-        $listing_sql .= "manufacturers_name " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
-        break;
-      case 'PRODUCT_LIST_QUANTITY':
-        $listing_sql .= "products_quantity " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
-        break;
-      case 'PRODUCT_LIST_IMAGE':
-        $listing_sql .= "products_name";
-        break;
-      case 'PRODUCT_LIST_WEIGHT':
-        $listing_sql .= "products_weight " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
-        break;
-      case 'PRODUCT_LIST_PRICE':
-        $listing_sql .= "final_price " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
-        break;
-      case 'PRODUCT_LIST_ORDERED':
-        $listing_sql .= "products_ordered " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
-        break;
-    }
-  }
-
+   $listing_sql = "
+     select *
+     from (
+     ".$products_query."
+     ) p
+     where site_id = '0'
+        or site_id = '".SITE_ID."'
+     group by products_id
+   ";

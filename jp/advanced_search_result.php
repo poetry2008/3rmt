@@ -277,49 +277,8 @@
        or site_id = ".SITE_ID."
     group by products_id
     ";
-
-  if ( (!isset($_GET['sort'])) || (!ereg('[1-9][ad]', $_GET['sort'])) || (substr($_GET['sort'], 0 , 1) > sizeof($column_list)) ) {
-    for ($col=0, $n=sizeof($column_list); $col<$n; $col++) {
-      if ($column_list[$col] == 'PRODUCT_LIST_NAME') {
-        $_GET['sort'] = $col+1 . 'a';
-        $order_str = ' order by products_name';
-        break;
-      }
-    }
-  } else {
-    $sort_col = substr($_GET['sort'], 0 , 1);
-    $sort_order = substr($_GET['sort'], 1);
-    $order_str = ' order by ';
-    switch ($column_list[$sort_col-1]) {
-      case 'PRODUCT_LIST_MODEL':
-        $order_str .= "products_model " . ($sort_order == 'd' ? "desc" : "") . ", products_name";
-        break;
-      case 'PRODUCT_LIST_NAME':
-        $order_str .= "products_name " . ($sort_order == 'd' ? "desc" : "");
-        break;
-      case 'PRODUCT_LIST_MANUFACTURER':
-        $order_str .= "manufacturers_name " . ($sort_order == 'd' ? "desc" : "") . ", products_name";
-        break;
-      case 'PRODUCT_LIST_QUANTITY':
-        $order_str .= "products_quantity " . ($sort_order == 'd' ? "desc" : "") . ", products_name";
-        break;
-      case 'PRODUCT_LIST_IMAGE':
-        $order_str .= "products_name";
-        break;
-      case 'PRODUCT_LIST_WEIGHT':
-        $order_str .= "products_weight " . ($sort_order == 'd' ? "desc" : "") . ", products_name";
-        break;
-      case 'PRODUCT_LIST_PRICE':
-        $order_str .= "products_price " . ($sort_order == 'd' ? "desc" : "") . ", products_name";
-        break;
-      case 'PRODUCT_LIST_ORDERED':
-        $order_str .= "products_ordered " . ($sort_order == 'd' ? "desc" : "") . ", products_name";
-        break;
-    }
-  }
-
-  $listing_sql = $select_str . ' from ' . $from_str . $where_str . $order_str;
-
+  $listing_sql = $select_str . ' from ' . $from_str . $where_str;
+  
   require(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING);
 
 ?>
