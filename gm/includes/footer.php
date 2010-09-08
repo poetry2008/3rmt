@@ -4,12 +4,13 @@
 */
 ?>
 <div id="f_menu">
-
 <a href="/info/starting_rmt.html">はじめてのRMT</a>
 &nbsp;|&nbsp;
 <a href="/info/salespolicies.html">特定商取引に基づく表記</a>
 &nbsp;|&nbsp;
 <a href="<?php echo tep_href_link('rss.php'); ?>">RSS</a>
+&nbsp;|&nbsp;
+<a href="<?php echo tep_href_link('domain.php');?>">相互リンク</a>
 </div>
 <div id="footer">
   <address class="copyright">
@@ -28,7 +29,7 @@
 ?>
 <?php 
 // 显示SQL执行记录
-if (STORE_DB_TRANSACTIONS) {?>
+if (STORE_DB_TRANSACTIONS && false) {?>
 <div id="debug_info" style="text-align:left;">
   <pre>
 <?php if(isset($log_queries)){

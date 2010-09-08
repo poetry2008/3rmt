@@ -246,6 +246,7 @@
       if ($products_details["qty"] != $order['products_quantity']){
         $quantity_difference = ($products_details["qty"] - $order['products_quantity']);
         tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = products_quantity - " . $quantity_difference . ", products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
+        tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = 0 where products_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
       }
   
       $Query = "delete from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where orders_products_id = '$orders_products_id';";
@@ -688,6 +689,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       
       // 2.2.1 Update inventory Quantity
       tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = products_quantity - " . (int)$add_product_quantity . ", products_ordered = products_ordered + " . (int)$add_product_quantity . " where products_id = '" . $add_product_products_id . "'");
+      tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = 0 where products_quantity < 0 and products_id = '" . $add_product_products_id . "'");
 
       if (IsSet($add_product_options)) {
         foreach($add_product_options as $option_id => $option_value_id) {

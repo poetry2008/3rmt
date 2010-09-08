@@ -1120,3 +1120,22 @@ overflow:hidden;
 padding:5px 7px;
 border:2px solid #FF8080;
 }
+/* ---------------------------
+レジチェックボックス・マウスオフ
+--------------------------- */
+.moduleRow {
+	background-color: #333;
+}
+/* ---------------------------
+レジチェックボックス・マウスオーバー
+--------------------------- */
+.moduleRowOver {
+	background-color: #444;
+	cursor: hand;
+}
+/* ---------------------------
+レジチェックボックス選択行
+--------------------------- */
+.moduleRowSelected {
+	background-color: #666;
+}

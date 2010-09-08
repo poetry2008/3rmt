@@ -125,6 +125,7 @@
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
   <!-- header_eof //--> 
   <!-- body //--> 
+  <?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post');?>
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
     <tr> 
       <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
@@ -133,8 +134,10 @@
       <!-- body_text //--> 
       <td valign="top" id="contents"> <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>      <table class="table_ie" border="0" width="100%" cellspacing="0" cellpadding="0"> 
         <tr> 
-          <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
-              <tr class="infoBoxContents"> 
+          <td>
+  <p align='right' style="margin-bottom:10px;"><?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></p>
+  <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+              <tr class="infoBoxContents">
                 <?php
   if ($sendto != false) {
 ?> 
@@ -161,7 +164,8 @@
                 <?php
   }
 ?> 
-                <td width="<?php echo (($sendto != false) ? '70%' : '100%'); ?>" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                <td width="<?php echo (($sendto != false) ? '70%' : '100%'); ?>" valign="top">
+  <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                     <tr> 
                       <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                           <?php
@@ -499,8 +503,6 @@
   } else {
     $form_action_url = tep_href_link(FILENAME_CHECKOUT_PROCESS, '', 'SSL');
   }
-
-  echo tep_draw_form('checkout_confirmation', $form_action_url, 'post');
 
   if (is_array($payment_modules->modules)) {
     echo $payment_modules->process_button();

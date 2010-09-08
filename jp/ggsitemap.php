@@ -34,7 +34,7 @@
   <?php echo gg_url(HTTP_SERVER.'/login.php', null, null, 0.3);?>
   <?php echo gg_url(HTTP_SERVER.'/shopping_cart.php', null, null, 0.3);?>
   <?php echo gg_url(HTTP_SERVER.'/advanced_search.php', null, null, 0.3);?>
-  <?php echo gg_url(HTTP_SERVER.'/latest_news.php', null, null, 0.3);?>
+  <?php echo gg_url(HTTP_SERVER.'/latest_news/', null, null, 0.3);?>
   <?php echo gg_url(HTTP_SERVER.'/specials.php', null, null, 0.3);?>
   <?php echo gg_url(HTTP_SERVER.'/manufacturers.php', null, null, 0.3);?>
   <?php echo gg_url(HTTP_SERVER.'/present.php', null, null, 0.3);?>
@@ -48,19 +48,20 @@
   <?php echo gg_url(HTTP_SERVER.'/send_mail.php', null, null, 0.3);?>
   <?php echo gg_url(HTTP_SERVER.'/email_trouble.php', null, null, 0.3);?>
   <?php echo gg_url(HTTP_SERVER.'/browser_ie6x.php', null, null, 0.3);?>
+  <?php echo gg_url(HTTP_SERVER.'/domain/', null, null, 0.3);?>
 
   <?php //全部分类页面?>
   <?php foreach($categories as $category){?>
-    <?php echo gg_url(tep_href_link(FILENAME_DEFAULT, 'cPath='.get_cPath($category['categories_id'],$categories)), null, null, 0.3);?>
+    <?php echo gg_url(HTTP_SERVER.tep_href_link(FILENAME_DEFAULT, 'cPath='.get_cPath($category['categories_id'],$categories)), null, null, 0.3);?>
   <?php }?>
 
   <?php //全部信息页?>
   <?php if($pages)foreach($pages as $page){?>
-    <?php echo gg_url($page, null, null, 0.5);?>
+    <?php echo gg_url(HTTP_SERVER.$page, null, null, 0.5);?>
   <?php }?>
 
   <?php //全部商品页?>
   <?php if($products)foreach($products as $product){?>
-    <?php echo gg_url($product, null, null, 0.5);?>
+    <?php echo gg_url(HTTP_SERVER.$product, null, null, 0.5);?>
   <?php }?>
 </urlset>

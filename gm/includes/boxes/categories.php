@@ -42,7 +42,7 @@ if($cPath){
           <a class='l_m_category_a' href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>">
             <?php if (in_array($category['categories_id'], $id)) {?>
             <?php }?>
-            <?php echo str_replace(' RMT', '', $category['categories_name']);?>
+            <?php echo $category['categories_name'];?>
             <?php if (in_array($category['categories_id'], $id)) {?>
             <?php }?>
           </a>
@@ -157,7 +157,7 @@ if($cPath){
           <?}?>
           </ul>
       <?php } else {?>
-        <li class='l_m_category_li'><a  class='l_m_category_a' href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>"><?php echo str_replace(' RMT', '', $category['categories_name']);?></a></li>
+        <li class='l_m_category_li'><a  class='l_m_category_a' href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>"><?php echo $category['categories_name'];?></a></li>
       <?php }?>
     <?php }?>
 

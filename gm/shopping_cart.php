@@ -213,7 +213,25 @@ function change_num(ob,targ, quan,a_quan)
         </tr> 
 <?php 
   }
-?>    
+?>
+<?php   
+    if(isset($_GET['limit_min_error']) && $_GET['limit_min_error'] == 'true') {
+?>
+          <tr>
+            <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
+          </tr>
+          <tr>
+            <td align="right" class="main">
+              <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice">
+                <tr class="infoBoxNoticeContents">
+                  <td><?php echo sprintf("%s円未満の注文はできません。合計金額を%s円以上にしてから再度お申し込みください。",$currencies->format(LIMIT_MIN_PRICE),$currencies->format(LIMIT_MIN_PRICE)); ?></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <?php 
+  }
+?>
 <?php
     if ($any_out_of_stock == 1) {
       if (STOCK_ALLOW_CHECKOUT == 'true') {

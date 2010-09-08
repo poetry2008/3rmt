@@ -87,7 +87,7 @@
                         <img src="images/design/box/ranking_<?php echo $rows; ?>.gif" width="21" height="16" alt="<?php echo 'ランキング' . $rows . '位'; ?>">
                     </td>
                     <td class="bestseller_text">
-                        <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']); ?>"><?php echo $best_sellers['products_name']; ?></a>
+                        <nobr><a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']); ?>" title="<?php echo $best_sellers['products_name']; ?>"><?php echo $best_sellers['products_name']; ?></a></nobr>
                     </td>
                 </tr>
             </table>

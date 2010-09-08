@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
@@ -117,6 +110,17 @@ $("input:radio").click(function(){
     } 
   }
 });
+$(".moduleRow").click(function(){
+  if ($(this).find('input:radio').val() == 'convenience_store') {
+    $("#cemail").css("display", "block");
+    $("#caemail").css("display", "block");
+  } else {
+    if ($(this).find('input:radio').attr('name') != 'bank_kamoku') {
+      $("#cemail").css("display", "none");
+      $("#caemail").css("display", "none");
+    }
+  }
+});
 });
 </script>
 <script type="text/javascript"><!--
@@ -195,9 +199,9 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
                   <tr class="infoBoxNoticeContents"> 
                     <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <tr> 
-                          <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                          <td><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                           <td class="main" width="100%" valign="top"><?php echo htmlspecialchars($error['error']); ?></td> 
-                          <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                          <td><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                         </tr> 
                       </table></td> 
                   </tr> 
@@ -226,19 +230,19 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
   if (sizeof($selection) > 1) {
 ?> 
                         <tr> 
-                          <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                          <td><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                           <td class="main" width="50%" valign="top"><?php echo TEXT_SELECT_PAYMENT_METHOD; ?></td> 
                           <td class="main" width="50%" valign="top" align="right"><b><?php echo TITLE_PLEASE_SELECT; ?></b><br> 
                             <?php echo tep_image(DIR_WS_IMAGES . 'arrow_east_south.gif'); ?></td> 
-                          <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                          <td><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                         </tr> 
                         <?php
   } else {
 ?> 
                         <tr> 
-                          <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                          <td><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                           <td class="main" width="100%" colspan="2"><?php echo TEXT_ENTER_PAYMENT_INFORMATION; ?></td> 
-                          <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                          <td><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                         </tr> 
                         <?php
   }
@@ -267,8 +271,8 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
     }
 ?> 
                         <tr> 
-                          <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                          <td colspan="2"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+                          <td><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                          <td colspan="2"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                               <?php
     if ( ($selection[$i]['id'] == $payment) || ($n == 1) ) {
       echo '                  <tr id="defaultSelected" class="moduleRowSelected" onmouseover="rowOverEffect(this)" onmouseout="rowOutEffect(this)" onclick="selectRowEffect(this, ' . $radio_buttons . ')">' . "\n";
@@ -276,7 +280,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
       echo '                  <tr class="moduleRow" onmouseover="rowOverEffect(this)" onmouseout="rowOutEffect(this)" onclick="selectRowEffect(this, ' . $radio_buttons . ')">' . "\n";
     }
 ?> 
-                              <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                              <td width="10"><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                                 <td class="main" colspan="3"><b><?php echo $selection[$i]['module']; ?></b></td> 
                                 <td class="main" align="right"><?php
     if (sizeof($selection) > 1) {
@@ -285,42 +289,42 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
       echo tep_draw_hidden_field('payment', $selection[$i]['id']);
     }
 ?> </td> 
-                                <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                                <td width="10"><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                               </tr> <?php
     if (isset($selection[$i]['error'])) {
 ?> 
                               <tr> 
-                                <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                                <td width="10"><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                                 <td class="main" colspan="4"><?php echo $selection[$i]['error']; ?></td> 
-                                <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                                <td width="10"><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                               </tr> 
                               <?php
     } elseif (isset($selection[$i]['fields']) && is_array($selection[$i]['fields'])) {
 ?> 
                               <tr> 
-                                <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                                <td width="10"><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                                 <td colspan="4"><table border="0" cellspacing="0" cellpadding="2"> 
                                     <?php
       for ($j=0, $n2=sizeof($selection[$i]['fields']); $j<$n2; $j++) {
 ?> 
                                     <tr> 
-                                      <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                                      <td width="10"><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                                       <td class="main"><?php echo $selection[$i]['fields'][$j]['title']; ?></td> 
-                                      <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                                      <td><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                                       <td class="main"><?php echo $selection[$i]['fields'][$j]['field']; ?></td> 
-                                      <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                                      <td width="10"><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                                     </tr> 
                                     <?php
       }
 ?> 
                                   </table></td> 
-                                <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                                <td width="10"><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                               </tr> 
                               <?php
     }
 ?> 
                             </table></td> 
-                          <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                          <td><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                         </tr> 
                         <?php
     $radio_buttons++;
@@ -332,7 +336,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
                 </table></td> 
             </tr> 
             <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+              <td><?php //echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
       
 <?php

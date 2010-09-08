@@ -377,19 +377,20 @@ SPAN.errorText {
 レジチェックボックス・マウスオフ
 --------------------------- */
 .moduleRow {
+	background-color: #E9F4FC;
 }
 /* ---------------------------
 レジチェックボックス・マウスオーバー
 --------------------------- */
 .moduleRowOver {
-	background-color: #D7E9F7;
+	background-color: #C7D9E7;
 	cursor: hand;
 }
 /* ---------------------------
 レジチェックボックス選択行
 --------------------------- */
 .moduleRowSelected {
-	background-color: #E9F4FC;
+	background-color: #C7D9E7;
 }
 /* ---------------------------
 チェックアウト手順

@@ -4,21 +4,8 @@
 */
 
   require('includes/application_top.php');
-  require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_LATEST_NEWS);
-  $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_LATEST_NEWS));
   
-  //forward 404
-if (isset($_GET['news_id'])) {
-  //ccdd
-    $latest_news_query = tep_db_query('
-        SELECT * 
-        from ' . TABLE_LATEST_NEWS . ' 
-        WHERE news_id = ' . (int)$_GET['news_id'] . ' 
-          and (site_id=' . SITE_ID. ' or site_id=0)');
-    $latest_news = tep_db_fetch_array($latest_news_query);
-    $breadcrumb->add(replace_store_name(strip_tags($latest_news['headline'])), tep_href_link(FILENAME_LATEST_NEWS, 'news_id='.$latest_news['news_id']));
-    forward404Unless($latest_news);
-}
+  require(DIR_WS_ACTIONS.'latest_news.php');
 ?>
 <?php page_head();?>
 <script type="text/javascript" src="js/emailProtector.js"></script>
@@ -60,30 +47,19 @@ function popupWindow(url) {
                           document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link(FILENAME_POPUP_IMAGE_NEWS, 'nID=' . $latest_news['news_id']) . '\\\')">' . tep_image(DIR_WS_IMAGES . $latest_news['news_image'], addslashes(replace_store_name($latest_news['headline'])), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?>');
                         //-->
                       </script>
-                      <noscript>
-                        <?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES . $latest_news['news_image']) . '">' . tep_image(DIR_WS_IMAGES . $latest_news['news_image'], replace_store_name($latest_news['headline']), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?>
-                      </noscript>
+                      <noscript><?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES . $latest_news['news_image']) . '">' . tep_image(DIR_WS_IMAGES . $latest_news['news_image'], replace_store_name($latest_news['headline']), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?></noscript>
                       </td>
-                      <td style="font-size:11px;">
-                      <?php echo replace_store_name($latest_news['news_image_description']); ?>
-                    </td>
+                      <td style="font-size:11px;"><?php echo replace_store_name($latest_news['news_image_description']); ?></td>
                   </tr>
 <?php
     }
 ?>
   <tr>
-  <td colspan="2">
-                <p class="main" style="font-size:12px;"><?php echo nl2br(replace_store_name($latest_news['content'])); ?></p>
-                </td>
-                </tr>
-                </table>
+    <td colspan="2"><p class="main" style="font-size:12px;"><?php echo nl2br(replace_store_name($latest_news['content'])); ?></p></td>
+  </tr>
+  </table>
 <?php
   } else {
-    $latest_news_query_raw = 'SELECT * from ' . TABLE_LATEST_NEWS . ' WHERE status = 1 and (site_id = ' . SITE_ID . ' or site_id =0)  ORDER BY isfirst DESC, date_added DESC';
-    $latest_news_split = new splitPageResults($_GET['page'], MAX_DISPLAY_LATEST_NEWS, $latest_news_query_raw, $latest_news_numrows);
-    //ccdd
-    $latest_news_query = tep_db_query($latest_news_query_raw);
-  
     if (($latest_news_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3'))) {
 ?>
                 <table border="0" width="100%" cellspacing="0" cellpadding="2">

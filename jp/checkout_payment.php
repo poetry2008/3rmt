@@ -110,6 +110,17 @@ $("input:radio").click(function(){
     }
   }
 });
+$(".moduleRow").click(function(){
+  if ($(this).find('input:radio').val() == 'convenience_store') {
+    $("#cemail").css("display", "block");
+    $("#caemail").css("display", "block");
+  } else {
+    if ($(this).find('input:radio').attr('name') != 'bank_kamoku') {
+      $("#cemail").css("display", "none");
+      $("#caemail").css("display", "none");
+    }
+  }
+});
 /*
 var valradio = $("input:radio[@checked]").val();
 alert(valradio);
@@ -179,9 +190,9 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
   $hanbai_sale = $cart->get_products();
   $cnt=0;
   for ($i=0, $n=sizeof($hanbai_sale); $i<$n; $i++) {
-  if($hanbai_sale[$i]['bflag'] == '0') {
-    $cnt++;
-  }
+    if($hanbai_sale[$i]['bflag'] == '0') {
+      $cnt++;
+    }
   }
 
   if($cnt > 0) {
@@ -273,7 +284,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
 ?> 
                         <tr> 
                           <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                          <td colspan="2"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+                          <td colspan="2"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                               <?php
     if ( ($selection[$i]['id'] == $payment) || ($n == 1) ) {
       echo '                  <tr id="defaultSelected" class="moduleRowSelected" onmouseover="rowOverEffect(this)" onmouseout="rowOutEffect(this)" onclick="selectRowEffect(this, ' . $radio_buttons . ')">' . "\n";
@@ -319,8 +330,8 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
 ?> 
                                   </table></td> 
                                 <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                              </tr> 
-                              <?php
+                              </tr>
+<?php
     }
 ?> 
                             </table></td> 

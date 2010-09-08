@@ -42,5 +42,5 @@
 */
 //include(DIR_WS_BOXES . 'pickup.php');
   //include(DIR_WS_BOXES . 'right_banner.php') ;
-  include(DIR_WS_BOXES . 'ad.php') ;
+  //include(DIR_WS_BOXES . 'ad.php') ;
 ?>

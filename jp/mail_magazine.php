@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
@@ -18,68 +11,68 @@
   // Process
   //-----------------
   switch($_GET['action']) {
-	case 'regist':
-	  //新規登録
-	  $mag_mail = tep_db_prepare_input(tep_an_zen_to_han($_POST['email']));
-	  $mag_name = tep_db_prepare_input($_POST['name']);
-	  
-	  //session_start
-	  tep_session_register('mag_mail');
-	  tep_session_register('mag_name');
-	  
-	  if(empty($mag_name)) {
-		tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_NAME_ERROR), 'SSL'));
-	  }
-	  if (!tep_validate_email($mag_mail)) {
-		tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_EMAIL_ERROR), 'SSL'));
-	  }
-	  
-	  //ccdd
-	  $regist_query = tep_db_query("select count(*) as cnt from " .  TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."' and site_id = '".SITE_ID."'");
-	  $regist_result = tep_db_fetch_array($regist_query);
-	  if($regist_result['cnt'] == '0') {
-	    //新規登録
+  case 'regist':
+    //新規登録
+    $mag_mail = tep_db_prepare_input(tep_an_zen_to_han($_POST['email']));
+    $mag_name = tep_db_prepare_input($_POST['name']);
+    
+    //session_start
+    tep_session_register('mag_mail');
+    tep_session_register('mag_name');
+    
+    if(empty($mag_name)) {
+    tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_NAME_ERROR), 'SSL'));
+    }
+    if (!tep_validate_email($mag_mail)) {
+    tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_EMAIL_ERROR), 'SSL'));
+    }
+    
+    //ccdd
+    $regist_query = tep_db_query("select count(*) as cnt from " .  TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."' and site_id = '".SITE_ID."'");
+    $regist_result = tep_db_fetch_array($regist_query);
+    if($regist_result['cnt'] == '0') {
+      //新規登録
 //ccdd
-		tep_db_query("insert into " . TABLE_MAIL_MAGAZINE . "(mag_id, mag_email, mag_name, site_id) values ('', '".$mag_mail."', '".$mag_name."', '".SITE_ID."')");
-		
-		tep_session_unregister('mag_mail');
-		tep_session_unregister('mag_name');
-	    tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'info_message='.urlencode(TEXT_MAGAZINE_SUCCESS), 'SSL'));
-	  } else {
-	    //登録済み
-		
-		tep_session_unregister('mag_mail');
-		tep_session_unregister('mag_name');
-		tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_ALREADY), 'SSL'));
-	  }
-	  break;
-	  
+    tep_db_query("insert into " . TABLE_MAIL_MAGAZINE . "(mag_id, mag_email, mag_name, site_id) values ('', '".$mag_mail."', '".$mag_name."', '".SITE_ID."')");
+    
+    tep_session_unregister('mag_mail');
+    tep_session_unregister('mag_name');
+      tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'info_message='.urlencode(TEXT_MAGAZINE_SUCCESS), 'SSL'));
+    } else {
+      //登録済み
+    
+    tep_session_unregister('mag_mail');
+    tep_session_unregister('mag_name');
+    tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_ALREADY), 'SSL'));
+    }
+    break;
+    
     case 'stop':
-	  //登録削除（退会）
-	  $mag_mail = tep_db_prepare_input(tep_an_zen_to_han($_POST['email']));
-	  if (!tep_validate_email($mag_mail)) {
-		tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_EMAIL_ERROR), 'SSL'));
-	  }
+    //登録削除（退会）
+    $mag_mail = tep_db_prepare_input(tep_an_zen_to_han($_POST['email']));
+    if (!tep_validate_email($mag_mail)) {
+    tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_EMAIL_ERROR), 'SSL'));
+    }
 //ccdd
-	  $regist_query = tep_db_query("select count(*) as cnt from " .  TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."' and site_id = '".SITE_ID."'");
-	  $regist_result = tep_db_fetch_array($regist_query);
-	  if($regist_result['cnt'] == '0') {
-	    //登録情報なし：エラー
-		
-		tep_session_unregister('mag_mail');
-		tep_session_unregister('mag_name');
-	    tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_STOP_ERROR), 'SSL'));
-	  } else {
-	    //削除（退会）処理
+    $regist_query = tep_db_query("select count(*) as cnt from " .  TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."' and site_id = '".SITE_ID."'");
+    $regist_result = tep_db_fetch_array($regist_query);
+    if($regist_result['cnt'] == '0') {
+      //登録情報なし：エラー
+    
+    tep_session_unregister('mag_mail');
+    tep_session_unregister('mag_name');
+      tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_STOP_ERROR), 'SSL'));
+    } else {
+      //削除（退会）処理
 //ccdd 
-		tep_db_query("delete from " . TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."' and site_id = '".SITE_ID."'");
-		
-		tep_session_unregister('mag_mail');
-		tep_session_unregister('mag_name');
-		tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'info_message='.urlencode(TEXT_MAGAZINE_STOP), 'SSL'));
-	  }
-	  
-	  break;  
+    tep_db_query("delete from " . TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."' and site_id = '".SITE_ID."'");
+    
+    tep_session_unregister('mag_mail');
+    tep_session_unregister('mag_name');
+    tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'info_message='.urlencode(TEXT_MAGAZINE_STOP), 'SSL'));
+    }
+    
+    break;  
   }
 
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_MAGAZINE));
@@ -166,9 +159,9 @@
                                   </td> 
                               </tr> 
                             </table>
-                      </form> 
+                      
                             </td> 
-                          <td width="150" align="center" valign="top"><?php echo tep_image_submit('button_continue.gif', TEXT_MAGAZINE_BUTTON_REG); ?></td> 
+                          <td width="150" align="center" valign="top"><?php echo tep_image_submit('button_continue.gif', TEXT_MAGAZINE_BUTTON_REG); ?></form> </td> 
                         </tr> 
                       <tr> 
                         <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
@@ -199,19 +192,19 @@
                                       <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
                                     </tr> 
                                   </table>
-                      </form> 
+                      
                                   </td> 
                               </tr> 
                             </table></td> 
-                          <td width="150" align="center" valign="top"><?php echo tep_image_submit('button_delete.gif', TEXT_MAGAZINE_BUTTON_STP); ?></td> 
+                          <td width="150" align="center" valign="top"><?php echo tep_image_submit('button_delete.gif', TEXT_MAGAZINE_BUTTON_STP); ?></form> </td> 
                         </tr> 
                     </table> 
                     <br> 
                     <?php
-				  //session_unregister
-				  tep_session_unregister('mag_mail');
-				  tep_session_unregister('mag_name');
-				  ?></td> 
+          //session_unregister
+          tep_session_unregister('mag_mail');
+          tep_session_unregister('mag_name');
+          ?></td> 
                 </tr> 
               </table></td> 
           </tr> 

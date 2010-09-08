@@ -36,8 +36,15 @@ RewriteBase /
 
 #RewriteRule ^(.*)select.html$ index.php?action=select&%{QUERY_STRING}
 RewriteRule ^(.*)sitemap.xml$ ggsitemap.php
+
 RewriteRule ^reviews/?$ reviews.php
 RewriteRule ^reviews/page(\d+).html$ reviews.php?page=$1
+
+RewriteRule ^latest_news/?$ latest_news.php
+RewriteRule ^latest_news/page(\d+).html$ latest_news.php?page=$1
+RewriteRule ^latest_news/([0-9]+)\.html$ latest_news.php?news_id=$1&%{QUERY_STRING}
+
+RewriteRule ^domain/?$ domain.php
 
 
 # http://www.gamemoney.cc/item/p-33129.html

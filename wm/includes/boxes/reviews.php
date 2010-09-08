@@ -2,6 +2,15 @@
 /*
   $Id$
 */
+if (
+  basename($PHP_SELF) != FILENAME_CHECKOUT_PRODUCTS
+  && basename($PHP_SELF) != FILENAME_CHECKOUT_SHIPPING
+  && basename($PHP_SELF) != FILENAME_CHECKOUT_PAYMENT
+  && basename($PHP_SELF) != FILENAME_CHECKOUT_CONFIRMATION
+  && basename($PHP_SELF) != FILENAME_CHECKOUT_SUCCESS
+  && basename($PHP_SELF) != FILENAME_SHOPPING_CART
+  && basename($PHP_SELF) != FILENAME_LOGIN
+) {
 ?>
 <!-- reviews //-->
 <?php
@@ -24,11 +33,11 @@
           and r.site_id = ".SITE_ID
         );
     if(tep_db_num_rows($reviews_query)) {
-      echo  '<div class="pageHeading_long">この商品のレビュー</div>'."\n" . '<div class="comment_long">'."\n" ;
+      echo  '<div class="pageHeading_long">'.$product_info['products_name'] .'のレビュー</div>'."\n" . '<div class="comment_long">'."\n" ;
       while ($reviews = tep_db_fetch_array($reviews_query)) {
         echo '<div class="reviews_area"><p class="main">
 <b>' . sprintf(TEXT_REVIEW_BY, tep_output_string_protected($reviews['customers_name'])) . '</b>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'stars_' . $reviews['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $reviews['reviews_rating'])) . '[' . sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $reviews['reviews_rating']) . ']
-<br>' . nl2br($reviews['reviews_text']) . "\n" . '</p><div>';
+<br>' . nl2br($reviews['reviews_text']) . "\n" . '</p></div>';
 //<div align="right"><i>' . sprintf(TEXT_REVIEW_DATE_ADDED, tep_date_long($reviews['date_added'])) . '</i></div></div>' . "\n";
       }
       //if(MAX_RANDOM_SELECT_REVIEWS > tep_db_num_rows($reviews_query)){
@@ -126,7 +135,8 @@
         </td>
     </tr>
 </table>
+<!-- reviews_eof //-->
 <?php
   }
+}
 ?>
-<!-- reviews_eof //-->

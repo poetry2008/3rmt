@@ -36,7 +36,9 @@
 function forward404()
 {
   header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
-  throw new Exception();
+  require(DIR_WS_MODULES  . '404.php');
+  exit;
+  //throw new Exception();
 }
 
 //在条件成立的时候，404
@@ -2084,6 +2086,27 @@ function forward404Unless($condition)
         $search  = array_merge($search,  array('#SEO_PAGE#'));
         $replace = array_merge($replace, array($page . 'ページ目'));
         break;
+      case FILENAME_PRODUCT_REVIEWS_INFO:
+        global $reviews;
+        if (preg_match_all('/#(\d*)REVIEWS#/', MODULE_METASEO_PRODUCT_REVIEWS_INFO_TITLE, $out)) {
+          foreach($out[0] as $key => $value){
+            $search  = array_merge($search,  array($out[0][$key]));
+            $replace = array_merge($replace, array(mb_substr(strip_tags($reviews['reviews_text']),0,$out[1][$key],'UTF-8')));
+          }
+        }
+        if (preg_match_all('/#(\d*)REVIEWS#/', MODULE_METASEO_PRODUCT_REVIEWS_INFO_KEYWORDS, $out)) {
+          foreach($out[0] as $key => $value){
+            $search  = array_merge($search,  array($out[0][$key]));
+            $replace = array_merge($replace, array(mb_substr(strip_tags($reviews['reviews_text']),0,$out[1][$key],'UTF-8')));
+          }
+        }
+        if (preg_match_all('/#(\d*)REVIEWS#/', MODULE_METASEO_PRODUCT_REVIEWS_INFO_DESCRIPTION, $out)) {
+          foreach($out[0] as $key => $value){
+            $search  = array_merge($search,  array($out[0][$key]));
+            $replace = array_merge($replace, array(mb_substr(strip_tags($reviews['reviews_text']),0,$out[1][$key],'UTF-8')));
+          }
+        }
+        break;
     }
     $breadcrumb_str = $breadcrumb->trail_title(' &raquo; ');
     $breadcrumb_lat = '';
@@ -2102,7 +2125,11 @@ function forward404Unless($condition)
     $title       = str_replace($search, $replace, $title);
     $keywords    = str_replace($search, $replace, $keywords);
     $description = str_replace($search, $replace, $description);
-    
+    // replace again
+    $title       = str_replace($search, $replace, $title);
+    $keywords    = str_replace($search, $replace, $keywords);
+    $description = str_replace($search, $replace, $description);
+    //
     $title = str_replace(' &raquo; ', ' ', $title); 
     $keywords = str_replace(' &raquo; ', ' ', $keywords); 
     $description = str_replace(' &raquo; ', ' ', $description); 
@@ -2903,4 +2930,22 @@ function tep_get_ot_total($orders_id)
       and class = 'ot_total'
   "));
   return $ot['text'];
+}
+
+function tep_show_quantity($quantity) {
+  return $quantity > 0 ? $quantity : 0;
+}
+
+function tep_add_rmt($name) {
+  if (!strpos($name, 'RMT')){
+    return $name . ' RMT';
+  }
+  return $name;
+}
+
+function check_uri($p) {
+  //print_r($_SERVER['REQUEST_URI']);
+  if (preg_match($p, $_SERVER['REQUEST_URI'])) {
+    forward404();
+  }
 }

@@ -12,7 +12,7 @@
           'reviews_id' => 'null',
           'products_id' => $_POST['products_id'],
           'customers_id' => '0',
-          'customers_name' => $_POST['customers_name'],
+          'customers_name' => $_POST['customers_name'] ? $_POST['customers_name'] : '匿名',
           'reviews_rating' => $_POST['reviews_rating'],
           'date_added' => $_POST['year'].'-'.$_POST['m'].'-'.$_POST['d'].' '.$_POST['h'].':'.$_POST['i'].':'.$_POST['s'],
           'last_modified' => '',

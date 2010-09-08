@@ -44,7 +44,7 @@ if($cPath){
             <?php if (in_array($category['categories_id'], $id)) {?>
               <strong>
             <?php }?>
-            <?php echo $category['categories_name'];?>
+            <?php /* selected */ echo tep_add_rmt($category['categories_name']);?>
             <?php if (in_array($category['categories_id'], $id)) {?>
               </strong>
             <?php }?>
@@ -73,21 +73,6 @@ if($cPath){
               group by categories_id
               order by sort_order, categories_name
               ");
-          /*
-          $subcategories_query = tep_db_query("
-              select c.categories_id, 
-                     c.categories_status, 
-                     cd.categories_name, 
-                     c.parent_id 
-              from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
-              where cd.site_id = '" . SITE_ID . "' 
-                and c.categories_status != '1' 
-                and c.parent_id = '".$category['categories_id']."' 
-                and c.categories_id = cd.categories_id 
-                and cd.language_id='" . $languages_id ."' 
-              order by sort_order, cd.categories_name
-              ");
-              */
           while ($subcategory = tep_db_fetch_array($subcategories_query))  {
             $subcategories[] = $subcategory;
           }
@@ -135,21 +120,6 @@ if($cPath){
                 group by categories_id
                 order by sort_order, categories_name
             ");
-            /*
-            $_subcategories_query = tep_db_query("
-                select c.categories_id, 
-                       c.categories_status, 
-                       cd.categories_name, 
-                       c.parent_id 
-                from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
-                where cd.site_id = '" . SITE_ID . "' 
-                  and c.categories_status != '1' 
-                  and c.parent_id = '".$subcategory['categories_id']."' 
-                  and c.categories_id = cd.categories_id 
-                  and cd.language_id='" . $languages_id ."' 
-                order by sort_order, cd.categories_name
-            ");
-            */
             while ($_subcategory = tep_db_fetch_array($_subcategories_query))  {
               $_subcategories[] = $_subcategory;
             }
@@ -177,7 +147,6 @@ if($cPath){
             </ul>
             <?php }?>
           </li>
-
             <?php } else {?>
               <li class='l_m_categories_tree'>
                 <?php if($skey == (count($subcategories)-1)){?>
@@ -191,7 +160,7 @@ if($cPath){
           <?php }?>
           </ul>
       <?php } else {?>
-        <li class='l_m_category_li'><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>"><?php echo $category['categories_name'];?><?php //echo str_replace(' RMT', '', $category['categories_name']);?></a></li>
+        <li class='l_m_category_li'><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>"><?php echo tep_add_rmt($category['categories_name']);?><?php //echo str_replace(' RMT', '', $category['categories_name']);?></a></li>
       <?php }?>
     <?php }?>
 
@@ -221,11 +190,8 @@ if($cPath){
 
 <li class="l_m_category_li">
 <img width="5" hspace="3" height="5" alt="" src="images/design/box/arrow_2.gif" class="middle" >
-<a href="<?php echo tep_href_link(FILENAME_TAGS);?>">
-<?php echo TEXT_TAGS;?>
-</a>
+<a href="<?php echo tep_href_link(FILENAME_TAGS);?>"><?php echo TEXT_TAGS;?></a>
 </li>
-
   </ul>
 </div>
 

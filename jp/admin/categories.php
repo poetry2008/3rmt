@@ -1811,7 +1811,7 @@ if (!empty($special_price_check)) {
       }
   ?></td>
             <td class="dataTableContent" align="right"><?php
-if (empty($products['products_quantity'])) {
+if (empty($products['products_quantity']) or $products['products_quantity'] < 1) {
   echo '<b>在庫切れ</b>';
 } else {
   echo $products['products_quantity'] . '個';

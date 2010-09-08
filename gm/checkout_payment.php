@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
@@ -115,6 +108,17 @@ $("input:radio").click(function(){
       $("#cemail").css("display", "none");
       $("#caemail").css("display", "none");
     } 
+  }
+});
+$(".moduleRow").click(function(){
+  if ($(this).find('input:radio').val() == 'convenience_store') {
+    $("#cemail").css("display", "block");
+    $("#caemail").css("display", "block");
+  } else {
+    if ($(this).find('input:radio').attr('name') != 'bank_kamoku') {
+      $("#cemail").css("display", "none");
+      $("#caemail").css("display", "none");
+    }
   }
 });
 });
@@ -270,7 +274,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
 ?> 
                         <tr> 
                           <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                          <td colspan="2"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des"> 
+                          <td colspan="2"><table border="0" width="100%" cellspacing="0" cellpadding="0" class="box_des"> 
                               <?php
     if ( ($selection[$i]['id'] == $payment) || ($n == 1) ) {
       echo '                  <tr id="defaultSelected" class="moduleRowSelected" onmouseover="rowOverEffect(this)" onmouseout="rowOutEffect(this)" onclick="selectRowEffect(this, ' . $radio_buttons . ')">' . "\n";
@@ -314,6 +318,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
                                     </tr> 
                                     <?php
       }
+
 ?> 
                                   </table></td> 
                                 <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 

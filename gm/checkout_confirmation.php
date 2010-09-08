@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
@@ -140,6 +133,7 @@
   <!-- left_navigation_eof //-->
   <!-- body_text //-->
   <div id="content">
+    <?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post');?>
     <div class="headerNavigation">
       <?php echo $breadcrumb->trail(' &raquo; '); ?>
     </div>
@@ -147,6 +141,7 @@
     <table border="0" width="95%" cellspacing="0" cellpadding="0" class="box_des">
       <tr>
         <td>
+  <p align='right' style="margin-bottom:15px;padding:0;"><?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></p>
           <table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea">
             <tr>
               <?php
@@ -529,8 +524,6 @@
   } else {
     $form_action_url = tep_href_link(FILENAME_CHECKOUT_PROCESS, '', 'SSL');
   }
-
-  echo tep_draw_form('checkout_confirmation', $form_action_url, 'post');
 
   if (is_array($payment_modules->modules)) {
     echo $payment_modules->process_button();

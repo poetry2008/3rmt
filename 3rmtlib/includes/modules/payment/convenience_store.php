@@ -110,11 +110,12 @@
                             array('title' => '<div id="cemail" style="display:none;">'.MODULE_PAYMENT_CONVENIENCE_INFO_TEXT.MODULE_PAYMENT_CONVENIENCE_EMAIL_TEXT.'<div class="con_email01">'.tep_draw_input_field('convenience_email', $email_default_str, 'onpaste="return false"').MODULE_PAYMENT_CONVENIENCE_MUST_INPUT.'</div></div>', 
                                   'field' => '' 
                                  ), 
-                            array('title' => '<div id="caemail" style="display:none;">'.MODULE_PAYMENT_CONVENIENCE_EMAIL_CONFIRMATION_TEXT.'<div class="con_email02">'.tep_draw_input_field('convenience_email_again', $email_default_str, 'onpaste="return false"').MODULE_PAYMENT_CONVENIENCE_MUST_INPUT.'</div></div>',
+                            array('title' => '<div id="caemail" style="display:none;">'.MODULE_PAYMENT_CONVENIENCE_EMAIL_CONFIRMATION_TEXT.'<div class="con_email02">'.tep_draw_input_field('convenience_email_again', $email_default_str, 'onpaste="return false"').MODULE_PAYMENT_CONVENIENCE_MUST_INPUT.'</div><p>'.MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FOOTER.'</p></div>',
                                   'field' => '' 
                                  ), 
                             array('title' => $s_message,
-                                  'field' => $added_hidden))
+                                  'field' => $added_hidden)
+        )
       );
 
       return $selection;

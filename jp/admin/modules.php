@@ -280,14 +280,19 @@ $ex_site = $sites[0];
           $value['description'] = $_value['configuration_description'];
           $value['use_function'] = $_value['use_function'];
           $value['set_function'] = $_value['set_function'];
-        $keys .= '<b>' . $value['title'] . '</b><br>' . $value['description'] . '<br>';
-
-        if ($value['set_function']) {
-          eval('$keys .= ' . $value['set_function'] . "'" . $value['value'] . "', '" . $key . "');");
+        
+        if ($site_id == 0 && !preg_match('/.*SORT_ORDER$/', $key)) {
+          $keys .= tep_draw_hidden_field('configuration[' . $key . ']', $value['value']);
         } else {
-          $keys .= tep_draw_input_field('configuration[' . $key . ']', $value['value']);
+          $keys .= '<b>' . $value['title'] . '</b><br>' . $value['description'] . '<br>';
+          if ($value['set_function']) {
+            eval('$keys .= ' . $value['set_function'] . "'" . $value['value'] . "', '" . $key . "');");
+          } else {
+            $keys .= tep_draw_input_field('configuration[' . $key . ']', $value['value']);
+          }
+          $keys .= '<br><br>';
         }
-        $keys .= '<br><br>';
+        
       }
       $keys = substr($keys, 0, strrpos($keys, '<br><br>'));
 
@@ -303,7 +308,7 @@ $ex_site = $sites[0];
 
       if (isset($mInfo->status) && $mInfo->status == '1') {
         $keys = '';
-        /* 临时隐藏 */
+        /* 临时隐藏 
         reset($mInfo->keys);
         while (list(, $value) = each($mInfo->keys)) {
           $keys .= '<b>' . $value['title'] . '</b><br>';
@@ -324,7 +329,7 @@ $ex_site = $sites[0];
           }
           $keys .= '<br><br>';
         }
-        /**/
+        */
         
         foreach(tep_get_sites() as $s){
           $keys .= "<br>".$s['romaji']."<hr>";
@@ -363,7 +368,7 @@ $ex_site = $sites[0];
           $contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . @$_GET['module'] . '&action=edit&site_id='.$s['id']) . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>');
         }
         // 临时隐藏
-        $contents[] = array('text' => '<br>' . $mInfo->description . "<hr>");
+        // $contents[] = array('text' => '<br>' . $mInfo->description . "<hr>");
         $contents[] = array('text' => '<div style="word-wrap:break-word;width:200px;overflow:hidden;"><br>' . $keys . '</div>');
       } else {
         $contents[] = array('text' => isset($mInfo->description)?$mInfo->description:'');

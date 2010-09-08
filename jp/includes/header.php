@@ -58,7 +58,7 @@
     <table width="100%" style="height:39px;" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <td>
-          <?php echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, '', 'SSL', false), 'get')."\n"; ?>
+          <?php echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, '', $request_type, false), 'get')."\n"; ?>
           <table>
             <tr>
               <td><img class="middle" src="images/design/button/search_text.jpg" width="53" height="12" alt="RMT検索"></td>
