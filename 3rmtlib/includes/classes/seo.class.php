@@ -454,9 +454,9 @@ class SEO_URL{
         $link .= 'latest_news/';
       } else if ($page == FILENAME_REVIEWS) {
         $link .= 'reviews/';
-      }else if ($page == 'domain.php') {
-        $link .= 'domain/';
-      } else {
+      } /*else if ($page == 'domain.php') {
+        $link .= 'link/';
+      }*/ else {
         $link .= $page;
       }
     }
@@ -506,9 +506,9 @@ class SEO_URL{
         $link .= 'latest_news/';
       } else if ($page == FILENAME_REVIEWS) {
         $link .= 'reviews/';
-      } else if ($page == 'domain.php') {
-        $link .= 'domain/';
-      } else {
+      } /*else if ($page == 'domain.php') {
+        $link .= 'link/';
+      }*/ else {
         $link .= $page;
       }
       $separator = '?';

@@ -631,6 +631,7 @@ tep_session_register('ajax');
     if(DS_LIMIT_PRICE < $cart->show_total()) {
       tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, 'limit_error=true'));
     }
+    if(substr(basename($PHP_SELF),0,16) != 'checkout_success')
     if(LIMIT_MIN_PRICE && LIMIT_MIN_PRICE > $cart->show_total()) {
       tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, 'limit_min_error=true'));
     }

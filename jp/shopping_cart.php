@@ -194,7 +194,7 @@ function change_num(ob,targ, quan,a_quan)
             <td align="right" class="main">
               <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice">
                 <tr class="infoBoxNoticeContents">
-                  <td><?php echo sprintf("%s円未満の注文はできません。合計金額を%s円以上にしてから再度お申し込みください。",$currencies->format(LIMIT_MIN_PRICE),$currencies->format(LIMIT_MIN_PRICE)); ?></td>
+                  <td><?php echo sprintf("%s未満の注文はできません。合計金額を%s以上にしてから再度お申し込みください。",$currencies->format(LIMIT_MIN_PRICE),$currencies->format(LIMIT_MIN_PRICE)); ?></td>
                 </tr>
               </table>
             </td>

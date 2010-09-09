@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
 // コンビニ決済
@@ -15,7 +8,7 @@
   define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_DESCRIPTION', 'コンビニ決済(代金に手数料が連動)');
   define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_PROCESS', 'LAWSON、スリーエフ、MINI STOP、サークルK、SUNKUSがご利用いただけます。<br>30,000円未満の決済の場合200円、30,000円以上の決済の場合は350円の手数料が別途必要となります。');
   define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_PROCESS_CON', 'LAWSON、スリーエフ、MINI STOP、サークルK、SUNKUSがご利用いただけます。');
-  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FOOTER', '※SmartPitシートの送信は、弊社営業時間内に行っております。');
+  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FOOTER', '※ SmartPitシートの送信は、弊社営業時間内に行っております。');
   define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FEE', 'コンビニ決済手数料:');
   define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_OVERFLOW_ERROR', 'お買い上げ金額がコンビニ決済の制限を超えたためお取り扱いできません。');
   define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_MAILFOOTER',C_CONVENIENCE_STORE."\n\n". EMAIL_SIGNATURE);

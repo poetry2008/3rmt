@@ -472,7 +472,7 @@ if (!isset($bank_kamoku)) $bank_kamoku=NULL;
                   <tr> 
                     <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des"> 
                         <tr> 
-                          <td><?php echo tep_draw_textarea_field('comments', 'soft', '50', '5', '','style="width:300px"') . tep_draw_hidden_field('comments_added', 'YES'); ?></td> 
+                          <td><?php echo tep_draw_textarea_field('comments', 'soft', '50', '5', '','style="width:405px"') . tep_draw_hidden_field('comments_added', 'YES'); ?></td> 
                         </tr> 
                       </table></td> 
                   </tr> 

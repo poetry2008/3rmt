@@ -117,6 +117,11 @@
 
   $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
   $breadcrumb->add(NAVBAR_TITLE_2);
+  if (isset($$payment->form_action_url) && $$payment->form_action_url) {
+    $form_action_url = $$payment->form_action_url;
+  } else {
+    $form_action_url = tep_href_link(FILENAME_CHECKOUT_PROCESS, '', 'SSL');
+  }
 ?>
 <?php page_head();?>
 </head>
@@ -498,12 +503,6 @@
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
               <tr> 
                 <td align="right" class="main"> <?php
-  if (isset($$payment->form_action_url) && $$payment->form_action_url) {
-    $form_action_url = $$payment->form_action_url;
-  } else {
-    $form_action_url = tep_href_link(FILENAME_CHECKOUT_PROCESS, '', 'SSL');
-  }
-
   if (is_array($payment_modules->modules)) {
     echo $payment_modules->process_button();
   }

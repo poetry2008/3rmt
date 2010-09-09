@@ -48,7 +48,7 @@ RewriteRule ^latest_news/?$ latest_news.php
 RewriteRule ^latest_news/page(\d+).html$ latest_news.php?page=$1
 RewriteRule ^latest_news/([0-9]+)\.html$ latest_news.php?news_id=$1&%{QUERY_STRING}
 
-RewriteRule ^domain/?$ domain.php
+#RewriteRule ^link/?$ domain.php
 
 # http://www.iimy.co.jp/item/p-33129.html
 # if romaji RewriteRule ^item/p-([0-9A-Za-z_-]+).html$ product_info.php?products_id=$1&%{QUERY_STRING}
