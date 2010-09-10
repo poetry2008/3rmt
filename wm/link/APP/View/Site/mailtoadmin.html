@@ -1,0 +1,100 @@
+<!--{include file='Site/header.html'}-->
+<div id="content">
+<div id="custom">
+<div class="mail_form">
+<form action="<!--{url controller=site action=mailadminsubmit}-->"
+name="mailtoadmin" method="post"  onsubmit="return checkForm()">
+<input type="hidden" value="<!--{$id}-->" name="id" />
+<table>
+<tr><td>
+[<!--{_t key="event_type"}-->]
+</td></tr>
+<tr><td>
+<input type="checkbox" name="no_link" value="<!--{_t key=no_link}-->" />
+<!--{_t key="no_link"}-->
+</td></tr>
+<tr><td>
+<input type="checkbox" name="move" value="<!--{_t key=type_move}-->" />
+<!--{_t key="type_move"}-->
+</td></tr>
+<tr><td>
+<input type="checkbox" name="bana_no_link" value="<!--{_t key=bana_no_link}-->" />
+<!--{_t key="bana_no_link"}-->
+</td></tr>
+<tr><td>
+<input type="checkbox" name="ill" value="<!--{_t key=type_ill}-->" />
+<!--{_t key="type_ill"}-->
+</td></tr>
+<tr><td>
+<input type="checkbox" name="other" value="<!--{_t key=type_other}-->" />
+<!--{_t key="type_other"}-->
+</td></tr>
+<tr><td>
+<!--{_t key="comment_title"}-->
+</td></tr>
+<tr><td>
+<textarea name="com" id="com" rows='4' cols='20'></textarea>
+</td></tr>
+<tr><td>
+<!--{_t key="type_fname"}-->
+</td></tr>
+<tr><td>
+<input type="text" name="fname" />
+</td></tr>
+<tr><td>
+<!--{_t key="type_femail"}-->
+</td></tr>
+<tr><td>
+<input type="text" name="femail" id="to_admin_femail"/>
+</td></tr>
+<tr><td>
+<input type="submit" value="<!--{_t key=send_email}-->" />
+</td></tr>
+</table>
+</form>
+<script type="text/javascript">
+function checkForm()
+{ 
+  var error = false;
+  var error_message = '';
+  //com
+  var com = document.getElementById('com');
+  if (com.value == '')
+  {
+    error = error || true;
+    error_message += '\n<!--{_t key="com_error"}-->';
+  }
+
+  //femail
+  var femail = document.getElementById('to_admin_femail');
+  var email_reg = /[\w\.-]+(\+[\w-]*)?@([\w-]+\.)+[\w-]+/;
+  var email_patt = new RegExp(email_reg);
+
+  if (femail.value != '')
+  {
+    if (femail.value.length>40)
+    {
+      error = error || true;
+      error_message += '\n<!--{_t key="femail_error2"}-->';
+    }
+    else if (!email_patt.exec(femail.value))
+    {
+      error = error || true;
+      error_message += '\n<!--{_t key="femail_error3"}-->';
+    }
+  }
+  if(!error){
+    return true;
+  }else{
+    alert(error_message);
+    return false;
+  }
+}
+</script>
+</div> <!-- end of .mail_form -->
+<a href="<!--{url controller=site action=sitelist}-->" >
+<!--{_t key="table_return"}-->
+</a>
+</div>
+</div>
+<!--{include file=Site/footer.html}-->

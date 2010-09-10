@@ -1,0 +1,132 @@
+<!--{include file='Site/header.html'}-->
+<div id="content">
+<div id="linkcheck">
+<div class="custom-menu">
+<a href='<!--{url controller=site action=index}-->'><img src="public/images/backpic/custom-door.gif" alt="door" width="16" height="16" /> <!--{_t key='custom_close_window'}--></a>
+</div>
+<!--{_t key="siteupdate_title"}-->
+<br />
+<br />
+<!--{_t key="content_attention1"}-->
+<br />
+<br />
+<!--{_t key="content_attention2"}-->
+<form action='<!--{url controller=Site action=siteupdatesubmit}-->'
+method='post' onsubmit="return checkSm('<!--{url controller=Site action=checkurl}-->')">
+<input type="hidden" name="id" value="<!--{$site.id}-->" />
+<input type="hidden" name="c_id" value="<!--{$consumer.consumer_id}-->" />
+<table class="linkcheck-ct">
+
+<tr>
+<td class="left" align="right" valign="top">
+<!--{_t key='seoplink_fname'}-->
+<!--{_t key='require_symbol'}-->:
+</td>
+<td class="right">
+<!--{_t key="fname_attention}-->
+<br />
+<input id="content_fname" name='fname' value='<!--{$consumer.consumer_name}-->' class="input-fname" /></td>
+</tr>
+<tr height="20"><td colspan="2"></td></tr>
+<tr>
+<td class="left" align="right" valign="top">
+<!--{_t key='seoplink_femail'}-->
+<!--{_t key='require_symbol'}-->:
+</td>
+<td class="right">
+<!--{_t key="femail_attention}-->
+<br />
+<input id="content_femail" name='femail' value='<!--{$consumer.consumer_email}-->' class="input-femail" /></td>
+</tr>
+<tr height="20"><td colspan="2"></td></tr>
+<tr height="20"><td colspan="2"></td></tr>
+<tr>
+<td class="left" align="right" valign="top"><!--{_t key='seoplink_site_name'}-->
+<!--{_t key='require_symbol'}-->:
+</td>
+<td class="right">
+<!--{_t key="name_attention}-->
+<br />
+<input id="content_name" name='name' value='<!--{$site.name}-->' class="input-name" /></td>
+</tr>
+<tr height="20"><td colspan="2"></td></tr>
+<tr>
+<td class="left" align="right" valign="top"><!--{_t key='seoplink_site_url'}-->
+<!--{_t key='require_symbol'}-->:
+</td>
+<td class="right">
+<!--{_t key="url_attention}-->
+<br />
+<input name='url' id="content_url" value='<!--{$site.url}-->' class="input-url" /></td>
+</tr>
+<tr height="20"><td colspan="2"></td></tr>
+<tr>
+<td class="left" align="right" valign="top"><!--{_t key='seoplink_site_comment'}-->
+<!--{_t key='require_symbol'}-->:
+</td>
+<td colspan="3" class="right">
+<!--{_t key="comment_attention}-->
+<br />
+<textarea id="content_comment" name='comment' rows="5" cols="20"
+class="input-comment"><!--{$site.comment}--></textarea></td>
+</tr>
+<tr><td colspan="2" height="20"></td></tr>
+<tr>
+<td class="left" align="right" valign="top"><!--{_t key='seoplink_site_category'}-->
+<!--{_t key='require_symbol'}-->:
+</td>
+<td class="right" valign="top">
+<div class="category_selector">
+<!--{_t key="category_attention}-->
+<br />
+<select id="content_class" size="7" name='class'><!--{$classSelector}--></select>
+</div>
+</td>
+</tr>
+<tr><td colspan="2" height="20"></td></tr>
+<tr>
+<td class="left" align="right" valign="top"><!--{_t key='seoplink_site_linkpage_url'}-->
+<!--{_t key='require_symbol'}-->:
+</td>
+<td class="right">
+<!--{_t key="linkpage_url_attention}-->
+<br />
+<input id="content_linkpage_url" name='linkpage_url'
+value='<!--{$site.linkpage_url}-->' class="input-linkpage-url" /></td>
+</tr>
+<tr height="20"><td colspan="2"></td></tr>
+<tr>
+<td colspan="2" class="button">
+<input type='submit' value='<!--{_t key=seoplink_site_submit}-->' class="input-submit" />
+&nbsp;
+<input type='reset' value='<!--{_t key=seoplink_site_reset}-->' class="input-submit" />
+&nbsp;
+<input type='checkbox' checked="checked" value='on' name="preview" /><!--{_t key="site_preview"}-->
+</td>
+</tr>
+
+</table>
+</form>
+
+<hr />
+<form action='<!--{url controller=Site action=passupdatesubmit}-->' method='post' onsubmit="return checkPa()">
+<table><tr>
+<td >
+[<!--{_t key="change_pass"}-->]
+</td></tr>
+<tr>
+<td>
+<!--{_t key="new_pass"}-->:
+<input type="hidden" name="c_id" value="<!--{$consumer.consumer_id}-->" />
+<input type="hidden" name="id" value="<!--{$site.id}-->" />
+<input id="new_pass" type="password" name="pass" value="" />
+<!--{_t key="new_pass2"}-->:
+<input id="new_pass2" type="password" name="pass2" value="" />
+<input type="submit" value="<!--{_t key="pass_submit"}-->" />
+</td>
+</tr></table>
+
+</form>
+</div> 
+</div>
+<!--{include file=Site/footer.html}-->

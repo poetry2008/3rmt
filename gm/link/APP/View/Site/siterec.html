@@ -1,0 +1,79 @@
+<!--{include file='Site/header.html'}-->
+<div id="content">
+<div id="custom">
+
+<div class="site_list">
+<!--{assign var=pager_data value=$pager->getPagerData()}-->
+<div class="custom-menu">
+
+<a href="<!--{url controller=site action=siterec page=$pager_data.prevPage}-->" >
+<!--{_t key="prevPage"}-->
+</a>
+|
+<!--{assign var=pages value=$pager->getNavbarIndexs($pager_data.current_page)}-->
+<!--{section name=page loop=$pages}-->
+<a href="<!--{url controller=site action=siterec page=$pages[page].number}-->" >
+<!--{if $pager_data.currentPage eq $pages[page].index}-->
+<b> <!--{$pages[page].index}--></b>
+<!--{else}-->
+<!--{$pages[page].index}-->
+<!--{/if}-->
+</a>
+|
+<!--{/section}-->
+
+<a href="<!--{url controller=site action=siterec page=$pager_data.nextPage}-->" >
+<!--{_t key="nextPage"}-->
+</a>
+</div> <!--end of .site_page-->
+<!--{assign var="sites" value=$pager->findAll()}-->
+<!--{section name=list loop=$sites}-->
+<div id="sites_add">
+<img width="55" height="15" border="0" alt="<!--{$sites[list].name}-->"
+src="http://cabbage-search.jp/pr/?url=<!--{$sites[list].url}-->"/>
+<a href="<!--{$sites[list].url}-->" target="_blank" >
+<!--{$sites[list].name}-->
+</a>
+<img src="images/rec.gif" alt="rec"/>
+<br /><br />
+<!--{_t key="update_date"}-->:<!--{$sites[list].updated|date_format:"%Y-%m-%d %H:%M:%S"}-->
+[
+<a href="<!--{url controller=site action=editsite id=$sites[list].id}-->" >
+<!--{_t key="edit_or_delete"}-->
+</a>
+]
+&nbsp;
+[
+<a href="<!--{url controller=site action=mailadmin id=$sites[list].id}-->" >
+<!--{_t key="mail_to_admin"}-->
+</a>
+]
+<br />
+<!--{$sites[list].comment}-->
+</div> 
+<!--{/section}-->
+<div class="custom-menu">
+<a href="<!--{url controller=site action=siterec page=$pager_data.prevPage}-->" >
+<!--{_t key="prevPage"}-->
+</a>
+|
+<!--{assign var=pages value=$pager->getNavbarIndexs($pager_data.current_page)}-->
+<!--{section name=page loop=$pages}-->
+<a href="<!--{url controller=site action=siterec page=$pages[page].number}-->" >
+<!--{if $pager_data.currentPage eq $pages[page].index}-->
+<b> <!--{$pages[page].index}--></b>
+<!--{else}-->
+<!--{$pages[page].index}-->
+<!--{/if}-->
+</a>
+|
+<!--{/section}-->
+
+<a href="<!--{url controller=site action=siterec page=$pager_data.nextPage}-->" >
+<!--{_t key="nextPage"}-->
+</a>
+</div> 
+</div> 
+</div> 
+</div>
+<!--{include file=Site/footer.html}-->

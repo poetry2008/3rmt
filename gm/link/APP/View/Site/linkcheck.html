@@ -1,0 +1,168 @@
+<div id="linkcheck">
+<div id="linksite">
+<div class="custom-menu">
+<a href='<!--{url controller=site action=index}-->'><img src="public/images/backpic/custom-door.gif" alt="door" width="16" height="16" /> <!--{_t key='custom_close_window'}--></a>
+</div>
+<h3><!--{_t key='seoplink_submit_title'}--></h3>
+<div class="lc_attention" style="overflow:auto">
+<div class="lc_at_title">
+<!--{_t key="seoplink_attention"}-->
+</div> <!-- end of .lc_at_title -->
+<!--<ol class="lc_at_item">-->
+<ol>
+<li>
+<b>
+<!--{_t key="attention_item1_title"}-->
+</b>
+<br />
+<!--{_t key="attention_item1_content"}-->
+<br />
+<b>
+<!--{_t key="link_tag'}-->
+</b>
+<br />
+<br />
+<textarea rows="2" style="width: 500px;" cols='20'>
+<!--{$link_url}-->
+</textarea>
+<br />
+<br />
+<!--{_t key="attention_item1_warning"}-->
+</li>
+<li>
+<!--{_t key="attention_item2_title"}-->
+<br />
+<!--{_t key="attention_item2_content"}-->
+</li>
+<li>
+<!--{_t key="attention_item3_title"}-->
+</li>
+<li>
+<!--{_t key="attention_item4_title"}-->
+</li>
+</ol>
+</div><!-- end of .lc_attention -->
+
+<div class="lc_content">
+<!--{_t key="content_attention1"}-->
+<br />
+<br />
+<!--{_t key="content_attention2"}-->
+<form action='<!--{url controller=Site action=linkcheck_submit}-->'
+method='post' onsubmit="return checkSm('<!--{url controller=Site action=checkurl}-->')">
+<table class="linkcheck-ct">
+
+<tr>
+<td class="left" align="right" valign="top">
+<!--{_t key='seoplink_fname'}-->
+<!--{_t key='require_symbol'}-->:
+</td>
+<td class="right">
+<!--{_t key="fname_attention}-->
+<br />
+<input id="content_fname" name='fname' value='<!--{$fname}-->' class="input-fname" /></td>
+</tr>
+<tr ><td colspan="2" height="20"></td></tr>
+<tr>
+<td class="left" align="right" valign="top">
+<!--{_t key='seoplink_femail'}-->
+<!--{_t key='require_symbol'}-->:
+</td>
+<td class="right">
+<!--{_t key="femail_attention}-->
+<br />
+<input id="content_femail" name='femail' value='<!--{$femail}-->' class="input-femail" /></td>
+</tr>
+<tr ><td colspan="2" height="20"></td></tr>
+<tr>
+<td class="left" align="right" valign="top">
+<!--{_t key='seoplink_fpass'}-->
+<!--{_t key='require_symbol'}-->:
+</td>
+<td class="right">
+<!--{_t key="fpass_attention}-->
+<br />
+<input id="content_fpass" name='fpass' type="password"
+value='<!--{$fpass}-->' class="input-fpass" />
+<br />
+<input id="content_fpass2" name='fpass2' type="password"
+value='<!--{$fpass}-->' class="input-fpass2" />
+<!--{_t key="fpass2_explanation"}-->
+</td>
+</tr>
+<tr ><td colspan="2" height="20"></td></tr>
+<tr>
+<td class="left" align="right" valign="top"><!--{_t key='seoplink_site_name'}-->
+<!--{_t key='require_symbol'}-->:
+</td>
+<td class="right">
+<!--{_t key="name_attention}-->
+<br />
+<input id="content_name" name='name' value='<!--{$name}-->' class="input-name" /></td>
+</tr>
+<tr ><td colspan="2" height="20"></td></tr>
+<tr>
+<td class="left" align="right" valign="top"><!--{_t key='seoplink_site_url'}-->
+<!--{_t key='require_symbol'}-->:
+</td>
+<td class="right">
+<!--{_t key="url_attention}-->
+<br />
+<input name='url' id="content_url" value='<!--{$url}-->' class="input-url" /></td>
+</tr>
+<tr ><td colspan="2" height="20"></td></tr>
+<tr>
+<td class="left" align="right" valign="top"><!--{_t key='seoplink_site_comment'}-->
+<!--{_t key='require_symbol'}-->:
+</td>
+<td colspan="3" class="right">
+<!--{_t key="comment_attention}-->
+<br />
+<textarea id="content_comment" name='comment'
+class="input-comment" cols="20" rows="5"><!--{$comment}--></textarea></td>
+</tr>
+<tr ><td colspan="2" height="20"></td></tr>
+<tr>
+<td class="left" align="right" valign="top"><!--{_t key='seoplink_site_category'}-->
+<!--{_t key='require_symbol'}-->:
+</td>
+<td class="right" valign="top">
+<div class="category_selector">
+<!--{_t key="category_attention}-->
+<br />
+<select id="content_class" size="7" name='class'><!--{$classSelector}--></select>
+</div>
+</td>
+</tr>
+<tr ><td colspan="2" height="20"></td></tr>
+<tr>
+<td class="left" align="right" valign="top"><!--{_t key='seoplink_site_linkpage_url'}-->
+<!--{_t key='require_symbol'}-->:
+</td>
+<td class="right">
+<!--{_t key="linkpage_url_attention}-->
+<br />
+<input id="content_linkpage_url" name='linkpage_url'
+value='<!--{$linkpage_url}-->' class="input-linkpage-url" /></td>
+</tr>
+<tr><td height="20" ></td><td height="20">
+<img src="<!--{url controller=Admin action=imgCode}-->" alt='imgcode'/>
+<input type="text" id="image_code" size='4' />
+</td></tr>
+<tr ><td colspan="2" height="20"></td></tr>
+<tr>
+<td colspan="2" class="button">
+<input type='submit' value='<!--{_t key=seoplink_site_submit}-->' class="input-submit" />
+&nbsp;
+<input type='reset' value='<!--{_t key=seoplink_site_reset}-->' class="input-submit" />
+&nbsp;
+<input type='checkbox' checked="checked" value='on' name="preview" /><!--{_t key="site_preview"}-->
+</td>
+</tr>
+
+</table>
+</form>
+<input type="hidden" id="url_check" value="1" />
+</div>
+</div> 
+</div>

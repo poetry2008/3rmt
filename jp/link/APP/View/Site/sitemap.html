@@ -1,0 +1,188 @@
+<!--{php}-->
+echo '<?xml version="1.0" encoding="UTF-8"?>';
+include('Fleaphp/FLEA/Helper/Breadcrumb.php');
+$bread = new breadcrumb();
+$bread->add('オレンジ不動産','/');
+$script_name_arr = explode('/',$_SERVER['SCRIPT_NAME']);
+$bread->add('相互リンク集','/'.$script_name_arr[1]);
+$arr = array(
+    'all' => '一覧',
+    'search' => '検索結果',
+    'setlinkchecksite' => '新規登録',
+    'linkcheck_submit' => '新規登録',
+    'sitelist' => '更新サイト',
+    'siteupdate' => '修正サイト',
+    'sitedel' =>'削除サイト',
+    'mailadmin' => '送信',
+    'mailadminsubmit'=> '送信完了',
+    'helppage'=>'ヘルプ',
+    'sitemap'=>'サイトマップ',
+    'detailed'=>'詳細検索'
+    );
+if(isset($_GET['action'])&&$_GET['action']!=''&&$_GET['action']!='class'){
+  if($show = $arr[$_GET['action']]){
+    $bread->add($show,$_SERVER['REQUEST_URI']);
+  }
+}
+<!--{/php}-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<link type="text/css" rel="stylesheet" href="images/class/style.css" />
+<link type="text/css" rel="stylesheet" id='blueStyle' href="images/blue/class/color.css" />
+<script type='text/javascript' src='public/style.js'></script>
+<script type='text/javascript' src='Script/jquery-1.4.2.js'></script>
+<title>相互リンク集</title>
+</head>
+<body id='body'>
+<div id="header">
+  <div id="menu">
+  </div>
+<!--end header-->
+<div id="search-box"> <b class="x1">&nbsp;</b><b class="x2">&nbsp;</b><b class="x3">&nbsp;</b><b class="x4">&nbsp;</b><b class="x5">&nbsp;</b><b class="x6">&nbsp;</b><b class="x7">&nbsp;</b>
+  <div id="top">
+    <div id="top_logo">
+    こだわりの物件から、お値打ちの物件まで多数取り揃え！<br /><font color="white" size="5">オレンジ不動産</font>    </div>
+
+    <table class="adv_index01">
+    <tr>
+      <td class="adv_td01">
+    <a href="http://www.baidu.com"><img src="images/advs/banner.gif" alt="11"/></a>      </td>
+    </tr> 
+  </table>
+    </div>
+    <div class="search">
+      <form name="quick_find" action="/advanced_search_result.php" method="get">            <input class="nav_input" type="text" value="" name="keywords"/>
+            <input name="input"  class="nav_submit" type="image" src="images/design/seacherimg01.gif" alt="検索"/>
+        <input type="hidden" name="search_in_description" value="1"/> 
+        <input type="hidden" name="inc_subcat" value="1"/> 
+             
+          </form>
+          <div class="nav_header_bottom">
+<span>
+
+            <a href="/">HOME</a>
+          </span> 
+          <span>|</span>
+          <span>
+           <a href="/sitemap.html">サイトマップ</a>
+          </span>
+          <span>|</span>
+
+          <span>
+                <a href="/info/privacy.html"> プライバシーポリシー</a>
+           
+          </span>
+          <span>|</span>
+          <span>
+                <a href="/info/profile.html"> 会社概要</a>
+
+           
+          </span>
+          <span>|</span>
+          <span>
+          <a href="/compare_products.html">比較検索</a>          </span>
+          <span>|</span>
+          <span>
+          <a href="/contact_us/">お問い合わせ</a>
+          </span>
+          <span>|</span>
+          <span>
+          <a href="/rss.html">RSS</a>
+          </span>
+          </div>
+    </div>
+  <div id="myweb-all">&nbsp;</div>
+  <div class="myweb">
+  </div>
+  <div id="bread_crumb">
+  <!--{php}-->
+  echo $bread->trail(' &raquo; ');
+  <!--{/php}-->
+<!--{if $classkind.name != ''}-->
+  &raquo;
+<!--{$classkind.name}-->
+<!--{/if}-->
+  <span class="x-bg"><b class="x7">&nbsp;</b><b class="x6">&nbsp;</b><b class="x5">&nbsp;</b><b class="x4">&nbsp;</b><b class="x3">&nbsp;</b><b class="x2">&nbsp;</b><b class="x1">&nbsp;</b></span> 
+</div>
+<div id="content">
+<div id="sitemap">
+<!--{section name=loopClass loop=$class}-->
+<!--{assign var='top' value=$class[loopClass]}-->
+<div class="web-box">
+<span class="web-line"><b class="x1">&nbsp;</b><b class="x2">&nbsp;</b><b class="x3">&nbsp;</b><b class="x4">&nbsp;</b><b class="x5">&nbsp;</b><b class="x6">&nbsp;</b><b class="x7">&nbsp;</b></span>
+<div class="web-tit"><img src="images/backpic/tag.gif" alt="title" width="16"
+height="16" /> <strong><a href='<!--{url controller=site action=class
+  id=$class[loopClass].class_id}-->'><!--{$class[loopClass].name}--></a></strong></div>
+
+
+
+<!--{section name=loopTop loop=$top.children step=5}-->
+<!--{assign var='index' value=$smarty.section.loopTop.index}-->
+<!--{assign var='index2' value=$smarty.section.loopTop.index+1}-->
+<!--{assign var='index3' value=$smarty.section.loopTop.index+2}-->
+<!--{assign var='index4' value=$smarty.section.loopTop.index+3}-->
+<!--{assign var='index5' value=$smarty.section.loopTop.index+4}-->
+<!--{if $smarty.section.loopTop.first}-->
+<table class="web" width="100%">
+<!--{/if}-->
+<tr class="t1">
+<td>
+<!--{if $top.children[$index].name != ''}-->
+<span class="web-ico">&nbsp;</span>
+<a href='<!--{url controller=site action=class id=$top.children[$index].class_id}-->'>
+<!--{$top.children[$index].name}-->
+</a>
+<!--{/if}-->
+</td>
+<td>
+<!--{if $top.children[$index2].name != ''}-->
+<span class="web-ico">&nbsp;</span>
+<a href='<!--{url controller=site action=class id=$top.children[$index2].class_id}-->'>
+<!--{$top.children[$index2].name}-->
+</a>
+<!--{/if}-->
+</td>
+<td>
+<!--{if $top.children[$index3].name != ''}-->
+<span class="web-ico">&nbsp;</span>
+<a href='<!--{url controller=site action=class id=$top.children[$index3].class_id}-->'>
+<!--{$top.children[$index3].name}-->
+</a>
+<!--{/if}-->
+</td>
+<td>
+<!--{if $top.children[$index4].name != ''}-->
+<span class="web-ico">&nbsp;</span>
+<a href='<!--{url controller=site action=class id=$top.children[$index4].class_id}-->'>
+<!--{$top.children[$index4].name}-->
+</a>
+<!--{/if}-->
+</td>
+<td>
+<!--{if $top.children[$index5].name != ''}-->
+<span class="web-ico">&nbsp;</span>
+<a href='<!--{url controller=site action=class id=$top.children[$index5].class_id}-->'>
+<!--{$top.children[$index5].name}-->
+</a>
+<!--{/if}-->
+</td>
+</tr>
+<!--{if $smarty.section.loopTop.last}-->
+</table>
+<br />
+<!--{/if}-->
+<!--{/section}-->
+
+
+</div>
+<!--{/section}-->
+
+</div>
+</div>
+</div>
+</div>
+<!--{include file=Site/footer.html}-->

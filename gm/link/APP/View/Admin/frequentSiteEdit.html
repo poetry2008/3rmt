@@ -1,0 +1,42 @@
+<!--{include file=Admin/header.html}-->
+<div id="left">
+<!--{include file=Admin/menu.html}-->
+</div>
+<div id="right">
+	<div id="content">
+		<ul>
+			<li class="content-bg">
+ 				<div id="title"><h3><!--{_t key='frequentsite_edit'}--></h3></div>
+ 				<form action="<!--{url controller='FrequentSite' action='EditDo'}-->" method='post'>
+ 				<table id="table-line">
+					<tr>
+						<td class="td1"><!--{_t key=site_id}-->:</td>
+						<td class="td2"><!--{$site.site.id}--></td>
+					</tr>
+					<tr>
+						<td class="td1"><!--{_t key='name'}-->:</td>
+						<td class="td2"><!--{$site.site.name}--></td>
+					</tr>
+					<tr>
+						<td class="td1"><!--{_t key='comment'}-->:</td>
+						<td class="td2"><!--{$site.site.comment}--></td>
+					</tr>
+					<tr>
+						<td class="td1"><!--{_t key='url'}-->:</td>
+						<td class="td2"><a href='<!--{$site.site.url}-->' target='_blank'><!--{$site.site.url}--></a></td>
+					</tr>
+					<tr>
+						<td class="td1"><input type='hidden' name='id' value='<!--{$site.id}-->' /><!--{_t key='order'}-->:</td>
+						<td class="td2"><input name='order' maxlength='4' value='<!--{$site.order}-->' /></td>
+					</tr>
+					<tr>
+						<td colspan="2" class="td-submit"><input type='submit' value='<!--{_t key=submit}-->' id="submit" /></td>
+					</tr>
+				</table>
+				</form>
+			</li>
+		</ul>
+	</div>
+</div>
+</body>
+</html>

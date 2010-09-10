@@ -1,0 +1,32 @@
+<div id="class" style="display:none;">
+	<ul>
+		<li class="cs-tit">
+			<ul>
+				<li><img src="images/img/class-big.gif" alt="class" width="60" height="60" /></li>
+				<li class="cs1"><h3>すべてのカテゴリ</h3></li>
+				<li class="cs2">
+					<p><a href="javascript:void(0);"  onclick='return soh("class",$_("show_all_class").childNodes[0])'>閉じる<img src="images/img/exit.gif" alt="exit" width="24" height="22" /></a></p>
+					<p>全部<!--{$total}-->件</p>
+				</li>
+			</ul>
+		</li>
+		<li class="cs-all">
+		<table class="cs-content">
+<!--{section name=loopClassTop loop=$top}-->
+<!--{assign var="classes" value=$top[loopClassTop].children}-->	
+				<tr>			
+					<td class="td1">
+					<strong><a href='<!--{url controller=site action=class id=$top[loopClassTop].class_id}-->'><!--{$top[loopClassTop].name}--></a></strong>:
+					</td>
+					<td class="td2">	
+	<!--{section name=loopClassTopClass loop=$classes max=8}-->
+					<a href='<!--{url controller=site action=class id=$classes[loopClassTopClass].class_id}-->' target='_blank'><!--{$classes[loopClassTopClass].name}--></a>|
+	<!--{/section}-->
+					</td>
+				</tr>
+<!--{/section}-->	
+		</table>
+		</li>
+		<li class="cs-more"><a href="<!--{url controller=site action=all}-->"><img src="images/backpic/more.gif" alt="more" width="16" height="16" /> 一覧</a></li>
+	</ul>
+</div>

@@ -1,0 +1,79 @@
+<!--{include file=Admin/header.html}-->
+<div id="left">
+<!--{include file=Admin/menu.html}-->
+</div>
+<div id="right">
+<div id="content">
+<ul>
+<li class="content-bg">
+<!--
+<table class="global">
+<tr>
+<td colspan="2"><h3><!--{_t key='global_manage'}--></h3></br></td>
+</tr>
+<tr class="g-tr1">
+<td colspan="2"><strong><!--{_t key='global_admin'}--></strong></td>
+</tr>
+<tr class="g-tr2">
+<td><!--{_t key='global_3'}--></td>
+<td>
+</tr>
+<tr class="g-tr2">
+<td><!--{_t key='global_4'}--></td>
+<td>
+</tr>
+<tr class="g-tr2">
+<td><!--{_t key='global_5'}--></td>
+<td>
+<!--{_t key='global_6'}--></td>
+</tr>
+<tr class="g-tr2">
+<td><!--{_t key='global_7'}--></td>
+<td>
+<!--{_t key='global_8'}--></td>
+</tr>
+
+<tr>
+<td colspan="2" class="g-submit">
+<a href="<!--{url controller=setseo action=add}-->">
+add seo
+</a>
+</td>
+</tr>
+</table>
+-->
+<!--{section name=loopName loop=$seo}-->
+<!--{if $smarty.section.loopName.first}-->
+<table class = "global">
+<tr>
+<td>action</td>
+<td>title</td>
+<td>keywords</td>
+<td>description</td>
+<td>robots</td>
+<td>copyright</td>
+<td>option</td>
+</tr>
+<!--{/if}-->
+<tr>
+<td>
+<!--{$seo[loopName].name}-->
+</td>
+<td><!--{$seo[loopName].title}--></td>
+<td><!--{$seo[loopName].keywords}--></td>
+<td><!--{$seo[loopName].description}--></td>
+<td><!--{$seo[loopName].robots}--></td>
+<td><!--{$seo[loopName].copyright}--></td>
+<td>
+<a href="<!--{url controller=setseo action=edit act=$seo[loopName].id}-->">
+edit
+</a>
+</td>
+</tr>
+<!--{/section}-->
+</li>
+</ul>
+</div>
+</div>
+</body>
+</html>
