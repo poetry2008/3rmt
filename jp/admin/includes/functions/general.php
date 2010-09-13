@@ -1303,10 +1303,10 @@
     return $value;
   }
 
-  function tep_mail($to_name, $to_email_address, $email_subject, $email_text, $from_email_name, $from_email_address) {
+  function tep_mail($to_name, $to_email_address, $email_subject, $email_text, $from_email_name, $from_email_address, $site_id = 0) {
     if (SEND_EMAILS != 'true') return false;
     // Instantiate a new mail object
-    $message = new email(array('X-Mailer: osC mailer'));
+    $message = new email(array('X-Mailer: iimy Mailer'), $site_id);
 
     // Build the text version
     //$text = strip_tags($email_text);

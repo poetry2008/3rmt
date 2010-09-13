@@ -19,7 +19,10 @@
     $cateqories_products = tep_db_fetch_array($categories_products_query);
     if ($cateqories_products['total'] > 0) {
       $category_depth = 'products'; // display products
-      //check_uri('/page=(\d+)/');
+      check_uri('/page=(\d+)/');
+      if ($_GET['page'] * MAX_DISPLAY_SEARCH_RESULTS > $cateqories_products['total'] + MAX_DISPLAY_SEARCH_RESULTS) {
+        forward404();
+      }
     } else {
       $category_parent_query = tep_db_query("select count(*) as total from " . TABLE_CATEGORIES . " where parent_id = '" . $current_category_id . "'");
       // ccdd
@@ -29,7 +32,10 @@
       } else {
         $category_depth = 'products'; // category has no products, but display the 'no products' message
         //echo $_SERVER['REQUEST_URI'];
-        //check_uri('/page=(\d+)/');
+        check_uri('/page=(\d+)/');
+        if ($_GET['page'] * MAX_DISPLAY_SEARCH_RESULTS > $cateqories_products['total'] + MAX_DISPLAY_SEARCH_RESULTS) {
+          forward404();
+        }
       }
     }
   }
@@ -39,6 +45,9 @@
   }
   if (isset($_GET['manufacturers_id'])) {
     //check_uri('/page=(\d+)/');
+    if ($_GET['page'] * MAX_DISPLAY_SEARCH_RESULTS > $cateqories_products['total'] + MAX_DISPLAY_SEARCH_RESULTS) {
+      forward404();
+    }
     // ccdd
     $seo_manufacturers_query = tep_db_query("
       select manufacturers_id, manufacturers_name 

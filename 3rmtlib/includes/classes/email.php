@@ -1,20 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
-
-  mail.php - a class to assist in building mime-HTML eMails
-
-  The original class was made by Richard Heyes <richard@phpguru.org>
-  and can be found here: http://www.phpguru.org
-
-  Renamed and Modified by Jan Wildeboer for osCommerce
 */
 
   class email {
@@ -28,8 +14,11 @@
     var $attachments;
     var $headers;
 
-    function email($headers = '') {
+    function email($headers = '', $site_id = null) {
       if ($headers == '') $headers = array();
+      if ($site_id) {
+        $this->site_id = $site_id;
+      }
 
       $this->html_images = array();
       $this->headers = array();
@@ -478,7 +467,7 @@
         $from_name .= $a_regs[1];
         $from_addr = $a_regs[2];
       }
-	  //echo $subject;
+    //echo $subject;
       if ($subject != '') {
         $subject = mb_convert_encoding($subject, 'ISO-2022-JP'); // 追加
       //$subject = mb_convert_encoding($subject, 'UTF-8', 'ECU-JP');
@@ -492,17 +481,17 @@
       }
       //echo '<br>';
       //echo $subject;
-	  
-	  if($to_name != '') {
-	    $to_name = mb_convert_encoding($to_name, 'ISO-2022-JP'); // 追加
+    
+    if($to_name != '') {
+      $to_name = mb_convert_encoding($to_name, 'ISO-2022-JP'); // 追加
         $to_addr = mb_convert_encoding($to_addr, 'ISO-2022-JP'); // 追加
-	  }
-	  
-	  if($from_name != '') {
-	    $from_name = mb_convert_encoding($from_name, 'ISO-2022-JP'); // 追加
+    }
+    
+    if($from_name != '') {
+      $from_name = mb_convert_encoding($from_name, 'ISO-2022-JP'); // 追加
         $from_addr = mb_convert_encoding($from_addr, 'ISO-2022-JP'); // 追加
-	  }
-	  
+    }
+    
       $to    = ($to_name != '')
           ? ('"' . mb_encode_mimeheader(mb_convert_kana($to_name, "KV"), 'ISO-2022-JP') . '" <' . $to_addr . '>')
           : $to_addr;
@@ -532,20 +521,21 @@
         $xtra_headers = array();
       }
 //2006/12/16
-      $bounce_mail_option = '-f' . (defined('BOUNCE_EMAIL_ADDRESS') ? BOUNCE_EMAIL_ADDRESS : STORE_OWNER_EMAIL_ADDRESS);
+      $bounce_mail_option = '-f' . (defined('BOUNCE_EMAIL_ADDRESS') ? BOUNCE_EMAIL_ADDRESS : ($this->site_id?get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $this->site_id):STORE_OWNER_EMAIL_ADDRESS));
       if (EMAIL_TRANSPORT == 'smtp') {
         return mail($to_addr, $subject, $this->output,
           ('From: ' . $from . $this->lf . 'To: ' . $to . $this->lf . implode($this->lf, $this->headers) . $this->lf . implode($this->lf, $xtra_headers)),
           $bounce_mail_option
         );
       } else {
+
         return mail($to, $subject, $this->output,
           ('From: ' . $from . $this->lf . implode($this->lf, $this->headers) . $this->lf . implode($this->lf, $xtra_headers)),
           $bounce_mail_option
         );
       }
 /*
-	  if (EMAIL_TRANSPORT == 'smtp') {
+    if (EMAIL_TRANSPORT == 'smtp') {
         return mail($to_addr, $subject, $this->output, 'From: ' . $from . $this->lf . 'To: ' . $to . $this->lf . implode($this->lf, $this->headers) . $this->lf . implode($this->lf, $xtra_headers));
       } else {
         return mail($to, $subject, $this->output, 'From: '.$from.$this->lf.implode($this->lf, $this->headers).$this->lf.implode($this->lf, $xtra_headers));

@@ -29,9 +29,9 @@
     <li class="l_m_category_li">
       <?php echo '<a href="' . tep_href_link('reorder.php') . '">' . '再配達フォーム' . '</a>' . "\n"; ?>
     </li>
-    <?php /*<li class="l_m_category_li">
+    <li class="l_m_category_li">
       <a class='l_m_category_a' href="<?php echo tep_href_link('domain.php');?>">相互リンク</a>
-    </li>*/ ?>
+    </li>
   </ul>
   <img src="images/design/box/box_bottom_bg_01.gif" width="172" height="14" alt="" >
 </div>
