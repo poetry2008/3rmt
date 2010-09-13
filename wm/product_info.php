@@ -259,7 +259,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                             <td class="main"><?php echo $data4[1] ; ?></td>
                           </tr>
                           <?php } ?>
-                          <?php if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { ?>
+                          <?php if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && !$product_info['products_bflag']) { ?>
                           <tr class="infoBoxContents">
                             <td class="main p_i_b_title">ポイント</td>
                             <td class="main"><?php echo ds_tep_get_point_value($_GET['products_id']) ; ?>&nbsp;ポイント</td>

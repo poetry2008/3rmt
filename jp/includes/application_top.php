@@ -416,7 +416,8 @@
                               tep_redirect(tep_href_link($goto, tep_get_all_get_params($parameters)));
                               break;
       // performed by the 'buy now' button in product listings and review page
-      case 'buy_now' :        if (isset($_GET['products_id'])) {
+      case 'buy_now' :        forward404();
+                              if (isset($_GET['products_id'])) {
                                 if (tep_has_product_attributes($_GET['products_id'])) {
                                   tep_redirect(tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $_GET['products_id']));
                                 } else {
@@ -563,15 +564,6 @@
           order by site_id DESC
           limit 1" 
       );
-      /*
-      $categories_query = tep_db_query("
-          select categories_name 
-          from " .  TABLE_CATEGORIES_DESCRIPTION . " 
-          where categories_id = '" .  $cPath_array[$i] . "' 
-            and language_id='" . $languages_id . "' 
-            and site_id = ".SITE_ID
-      );
-      */
       if (tep_db_num_rows($categories_query) > 0) {
         $categories = tep_db_fetch_array($categories_query);
         $breadcrumb->add($categories['categories_name'], tep_href_link(FILENAME_DEFAULT, 'cPath=' . implode('_', array_slice($cPath_array, 0, ($i+1)))));

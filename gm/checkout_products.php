@@ -96,6 +96,8 @@ foreach($cart as $key => $val){
 <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
 <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 
 <div> 
+  <form action="<?php echo tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL'); ?>" method="post" onSubmit="return chara_mess();">
+    <input type="hidden" name="dummy" value="あいうえお眉幅">
           <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
             <?php
         if($error == 'T'){
@@ -106,9 +108,64 @@ foreach($cart as $key => $val){
       <?php
         }
       ?>
+      <tr> 
+        <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+      </tr> 
       <tr>
-              <td><form action="<?php echo tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL'); ?>" method="post" onSubmit="return chara_mess();">
-          <input type="hidden" name="dummy" value="あいうえお眉幅">
+        <td>
+          <table border="0" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="25%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                  <tr> 
+                    <td width="50%" align="right"><?php echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif'); ?></td> 
+                    <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
+                  </tr> 
+                </table></td> 
+              <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
+              <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
+              <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
+              <td width="20%">
+                <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
+                    <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr class="box_des">
+              <td align="center" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_PRODUCTS; ?></td>
+              <td align="center" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_DELIVERY; ?></td>
+              <td align="center" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_PAYMENT; ?></td>
+              <td align="center" width="20%" class="checkoutBarCurrent"><?php echo CHECKOUT_BAR_CONFIRMATION; ?></td>
+              <td align="center" width="20%" class="checkoutBarTo"><?php echo CHECKOUT_BAR_FINISHED; ?></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr> 
+        <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+      </tr> 
+      <tr>
+        <td>
+        <table border="0" width="100%" cellspacing="1"> 
+          <tr> 
+            <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des"> 
+              <tr> 
+                <td class="main"></td> 
+                <td class="main" align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
+                <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+              </tr> 
+            </table></td> 
+          </tr> 
+        </table>
+        </td>
+      </tr>
+      <tr> 
+        <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+      </tr> 
+      <tr>
+        <td>
         <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
         <?php
           foreach($cart as $key => $val){
@@ -157,21 +214,21 @@ foreach($cart as $key => $val){
         </p>
         
         <table border="0" width="100%" cellspacing="1" class="formArea"> 
-                  <tr> 
-                    <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des"> 
-                      <tr> 
-                        <td class="main">&nbsp;&nbsp;間違いがなければ「次へ進む」をクリックしてください。</td> 
-                        <td class="main" align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
-                        <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                      </tr> 
-                    </table></td> 
-                  </tr> 
-                </table>
-        
-        <input type="hidden" name="act" value="chk">
-        </form></td>
+          <tr> 
+            <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des"> 
+              <tr> 
+                <td class="main">&nbsp;&nbsp;間違いがなければ「次へ進む」をクリックしてください。</td> 
+                <td class="main" align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
+                <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+              </tr> 
+            </table></td> 
+          </tr> 
+        </table>
+        </td>
       </tr>
       </table>
+      <input type="hidden" name="act" value="chk">
+      </form>
     </div></div>
       <!-- body_text_eof //--> 
 <!-- right_navigation //--> 

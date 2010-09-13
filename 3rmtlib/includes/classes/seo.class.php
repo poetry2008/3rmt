@@ -619,8 +619,9 @@ class SEO_URL{
             case ( $page == FILENAME_REVIEWS ):
               $url = $this->make_url($page, 'reviews/page', '', $p2[1], '.html', $separator);
               break;
+            case ($page == FILENAME_DEFAULT && $_GET['cPath']):
+              break;
             default:
-              //print_r($p2);
               $container[$p2[0]] = $p2[1];
               break;
           }
@@ -628,7 +629,11 @@ class SEO_URL{
         case 'cPath':
           switch(true){
             case ($page == FILENAME_DEFAULT):
-              $url = $this->make_url($page, REWRITE_CATEGORIES, $p2[0], $p2[1], '.html', $separator);
+              if (preg_match('/page=(\d+)/', $params, $out)) {
+                $url = $this->make_url($page, REWRITE_CATEGORIES, $p2[0], $p2[1], '_page'.$out[1].'.html', $separator);
+              } else {
+                $url = $this->make_url($page, REWRITE_CATEGORIES, $p2[0], $p2[1], '.html', $separator);
+              }
               break;
             case ( !$this->is_product_string($params) ):
               if ( $this->attributes['SEO_ADD_CPATH_TO_PRODUCT_URLS'] == 'true' ){

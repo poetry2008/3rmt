@@ -19,6 +19,7 @@
     $cateqories_products = tep_db_fetch_array($categories_products_query);
     if ($cateqories_products['total'] > 0) {
       $category_depth = 'products'; // display products
+      //check_uri('/page=(\d+)/');
     } else {
       $category_parent_query = tep_db_query("select count(*) as total from " . TABLE_CATEGORIES . " where parent_id = '" . $current_category_id . "'");
       // ccdd
@@ -27,44 +28,33 @@
         $category_depth = 'nested'; // navigate through the categories
       } else {
         $category_depth = 'products'; // category has no products, but display the 'no products' message
+        //echo $_SERVER['REQUEST_URI'];
+        //check_uri('/page=(\d+)/');
       }
     }
   }
      //------ SEO TUNING  -----//
   if ($current_category_id) {
-    // ccdd
-    /*
-    $seo_category_query = tep_db_query("
-        select categories_name,
-               seo_name,
-               seo_description,
-               categories_image3,
-               categories_meta_text,
-               categories_header_text,
-               categories_footer_text,
-               text_information,
-               meta_keywords,
-               meta_description, 
-               categories_id 
-        from " . TABLE_CATEGORIES_DESCRIPTION . " 
-        where categories_id = '".$current_category_id."' 
-          and language_id='" . $languages_id . "' 
-          and site_id='" . SITE_ID . "'");
-    $seo_category = tep_db_fetch_array($seo_category_query);
-      */
     $seo_category = tep_get_category_by_id($current_category_id, SITE_ID, $languages_id);
   }
-    
   if (isset($_GET['manufacturers_id'])) {
+    //check_uri('/page=(\d+)/');
     // ccdd
-    $seo_manufacturers_query = tep_db_query("select manufacturers_id, manufacturers_name from " . TABLE_MANUFACTURERS . " where manufacturers_id = '".(int)$_GET['manufacturers_id']."'");
+    $seo_manufacturers_query = tep_db_query("
+      select manufacturers_id, manufacturers_name 
+      from " . TABLE_MANUFACTURERS . " 
+      where manufacturers_id = '".(int)$_GET['manufacturers_id']."'");
     $seo_manufacturers = tep_db_fetch_array($seo_manufacturers_query);
   }
 
   if (isset($_GET['tags_id']))
   {
     // ccdd
-    $seo_tags_query = tep_db_query("select * from " . TABLE_TAGS. " where tags_id = '".$_GET['tags_id']."'");
+    $seo_tags_query = tep_db_query("
+      select * 
+      from " . TABLE_TAGS. " 
+      where tags_id = '".$_GET['tags_id']."'
+    ");
     $seo_tags = tep_db_fetch_array($seo_tags_query);
   }
    

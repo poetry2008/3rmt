@@ -161,7 +161,7 @@ if($cPath){
       <?php }?>
     <?php }?>
 
-<!--    <li class="l_m_category_li">
+<?php /*    <li class="l_m_category_li">
       
       <a href="<?php echo tep_href_link('manufacturers.php'); ?>"><?php echo MENU_MU; ?></a>
     </li>
@@ -169,7 +169,7 @@ if($cPath){
       
       <a href="<?php echo tep_href_link(FILENAME_SPECIALS); ?>"><?php echo BOX_HEADING_SPECIALS; ?></a>
     </li>
--->
+*? ?>
 <?php
 /*
 // ccdd

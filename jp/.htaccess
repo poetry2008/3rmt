@@ -53,24 +53,31 @@ RewriteRule ^latest_news/([0-9]+)\.html$ latest_news.php?news_id=$1&%{QUERY_STRI
 # http://www.iimy.co.jp/item/p-33129.html
 # if romaji RewriteRule ^item/p-([0-9A-Za-z_-]+).html$ product_info.php?products_id=$1&%{QUERY_STRING}
 RewriteRule ^item/p-([0-9]+).html$ product_info.php?products_id=$1&%{QUERY_STRING}
+
 # http://www.iimy.co.jp/rmt/c-195_197.html
 # if romaji RewriteRule ^rmt/c-([0-9A-Za-z_--_]+).html$ index.php?cPath=$1&%{QUERY_STRING}
 RewriteRule ^rmt/c-([0-9-_]+).html$ index.php?cPath=$1&%{QUERY_STRING}
+RewriteRule ^rmt/c-([0-9-_]+)_page(\d+).html$ index.php?cPath=$1&page=$2&%{QUERY_STRING}
+
 # http://www.iimy.co.jp/game/m-18.html
 # if romaji RewriteRule ^game/m-([0-9A-Za-z_-]+).html$ index.php?manufacturers_id=$1&%{QUERY_STRING}
 RewriteRule ^game/m-([0-9]+).html$ index.php?manufacturers_id=$1&%{QUERY_STRING}
+
 # http://www.iimy.co.jp/item/pr-\d.html
 # if romaji RewriteRule ^item/pr-([0-9A-Za-z_-]+).html$ product_reviews.php?products_id=$1&%{QUERY_STRING}
 #RewriteRule ^item/pr-([0-9]+).html$ product_reviews.php?products_id=$1&%{QUERY_STRING}
 RewriteRule ^reviews/pr-([0-9]+)/?$ product_reviews.php?products_id=$1&%{QUERY_STRING}
+
 # http://www.iimy.co.jp/tags/t-\d.html
 # not find in jp
 # if romaji RewriteRule ^tags/t-([0-9A-Za-z_-]+).html$ index.php?tags_id=$1&%{QUERY_STRING}
 RewriteRule ^tags/t-([0-9]+).html$ index.php?tags_id=$1&%{QUERY_STRING}
+
 # http://www.iimy.co.jp/item/co-\d.html
 # not find in jp
 # if romaji RewriteRule ^item/co-([0-9A-Za-z_-]+).html$ index.php?colors=$1&%{QUERY_STRING}
 RewriteRule ^item/co-([0-9]+).html$ index.php?colors=$1&%{QUERY_STRING}
+
 # http://www.iimy.co.jp/item/pri-\d.html?reviews_id=\d
 # not find in jp
 # if romaji RewriteRule ^item/pri-([0-9A-Za-z_-]+).html$ product_reviews_info.php?products_id=$1&%{QUERY_STRING}
@@ -80,6 +87,7 @@ RewriteRule ^reviews/pr-([0-9]+)/([0-9]+)\.html$ product_reviews_info.php?produc
 #pl-*.html does not exist
 # not find in jp
 #RewriteRule ^(.*)pl-(.*).html$ product_listing.php?cPath=$2&%{QUERY_STRING}
+
 #pi-*.html does not exist
 # not find in jp
 #RewriteRule ^([A-Za-z0-9-_]+)/pi-([A-Za-z0-9-_]+).html$ popup_image.php?pID=$2&%{QUERY_STRING}

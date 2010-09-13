@@ -22,7 +22,8 @@
       $trail_string = '';
 
       for ($i=0, $n=sizeof($this->_trail); $i<$n; $i++) {
-        if (isset($this->_trail[$i]['link']) && tep_not_null($this->_trail[$i]['link'])) {
+        
+        if (isset($this->_trail[$i]['link']) && tep_not_null($this->_trail[$i]['link']) && $i != sizeof($this->_trail)-1) {
           $trail_string .= '<a href="' . $this->_trail[$i]['link'] . '" class="headerNavigation">' . $this->_trail[$i]['title'] . '</a>';
         } else {
           $trail_string .= $this->_trail[$i]['title'];

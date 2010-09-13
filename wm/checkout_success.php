@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
@@ -103,7 +96,40 @@
         echo '</td></tr>';
       }
       ?>
-       
+            <tr> 
+              <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                  <tr> 
+                    <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                        <tr> 
+                          <td width="50%" align="right"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td> 
+                          <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
+                        </tr> 
+                      </table></td> 
+                    <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
+                    <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
+                    <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
+                    <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                        <tr> 
+                          <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
+                          <td width="50%"><?php echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif'); ?></td> 
+                        </tr> 
+                      </table></td> 
+                  </tr> 
+                  <tr> 
+                    <td align="center" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_PRODUCTS; ?></td> 
+                    <td align="center" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_DELIVERY; ?></td> 
+                    <td align="center" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_PAYMENT; ?></td> 
+                    <td align="center" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_CONFIRMATION; ?></td> 
+                    <td align="center" width="20%" class="checkoutBarCurrent"><?php echo CHECKOUT_BAR_FINISHED; ?></td> 
+                  </tr> 
+                </table></td> 
+            </tr> 
+            <tr> 
+              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+            </tr> 
+            <tr> 
+              <td align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
+            </tr> 
             <tr> 
               <td><table border="0" width="100%" cellspacing="4" cellpadding="2"> 
                   <tr> 
@@ -141,32 +167,6 @@
             </tr> 
             <tr> 
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
-            <tr> 
-              <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                  <tr> 
-                    <td width="25%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                        <tr> 
-                          <td width="50%" align="right"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td> 
-                          <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-                        </tr> 
-                      </table></td> 
-                    <td width="25%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-                    <td width="25%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-                    <td width="25%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                        <tr> 
-                          <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-                          <td width="50%"><?php echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif'); ?></td> 
-                        </tr> 
-                      </table></td> 
-                  </tr> 
-                  <tr> 
-                    <td align="center" width="25%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_DELIVERY; ?></td> 
-                    <td align="center" width="25%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_PAYMENT; ?></td> 
-                    <td align="center" width="25%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_CONFIRMATION; ?></td> 
-                    <td align="center" width="25%" class="checkoutBarCurrent"><?php echo CHECKOUT_BAR_FINISHED; ?></td> 
-                  </tr> 
-                </table></td> 
             </tr> 
             <?php if (DOWNLOAD_ENABLED == 'true') include(DIR_WS_MODULES . 'downloads.php'); ?> 
           </table> 
