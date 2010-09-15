@@ -47,11 +47,11 @@
             <td class="tableHeading"><?php echo TABLE_HEADING_NUMBER; ?></td>
             <td class="tableHeading"><?php echo TABLE_HEADING_AUTHOR; ?></td>
             <td align="center" class="tableHeading"><?php echo TABLE_HEADING_RATING; ?></td>
-            <td align="center" class="tableHeading"><?php echo TABLE_HEADING_READ; ?></td>
+            <?php /*<td align="center" class="tableHeading"><?php echo TABLE_HEADING_READ; ?></td> */ ?>
             <?php /*<td align="right" class="tableHeading"><?php echo TABLE_HEADING_DATE_ADDED; ?></td> */ ?>
           </tr>
           <tr>
-            <td colspan="5" style="line-height: 0px; font-size: 0px;"><?php echo tep_draw_separator(); ?></td>
+            <td colspan="3" style="line-height: 0px; font-size: 0px;"><?php echo tep_draw_separator(); ?></td>
           </tr>
 <?php
 // ccdd
@@ -82,23 +82,23 @@
       echo '            <td class="smallText">' . tep_row_number_format($row) . '.</td>' . "\n" .
            '            <td class="smallText"><a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, $get_params . '&reviews_id=' . $reviews['reviews_id']) . '">' . tep_output_string_protected($reviews['customers_name']) . '</a></td>' . "\n" .
            '            <td align="center" class="smallText">' . tep_image(DIR_WS_IMAGES . 'stars_' . $reviews['reviews_rating'] . '.gif', sprintf(TEXT_OF_5_STARS, $reviews['reviews_rating'])) . '</td>' . "\n" .
-           '            <td align="center" class="smallText">' . $reviews['reviews_read'] . '</td>' . "\n" .
+           //'            <td align="center" class="smallText">' . $reviews['reviews_read'] . '</td>' . "\n" .
            //'            <td align="right" class="smallText">' . tep_date_short($reviews['date_added']) . '</td>' . "\n" .
            '          </tr>' . "\n";
     }
   } else {
 ?>
           <tr class="productReviews-odd">
-            <td colspan="5" class="smallText"><?php echo TEXT_NO_REVIEWS; ?></td>
+            <td colspan="3" class="smallText"><?php echo TEXT_NO_REVIEWS; ?></td>
           </tr>
 <?php
   }
 ?>
           <tr>
-            <td colspan="5" style="line-height: 0px; font-size: 0px;"><?php echo tep_draw_separator(); ?></td>
+            <td colspan="3" style="line-height: 0px; font-size: 0px;"><?php echo tep_draw_separator(); ?></td>
           </tr>
           <tr>
-            <td class="main" colspan="5"><br><table border="0" width="100%" cellspacing="0" cellpadding="2">
+            <td class="main" colspan="3"><br><table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr>
                 <td class="main"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, $get_params_back) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td>
                 <td align="right" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE, $get_params) . '">' . tep_image_button('button_write_review.gif', IMAGE_BUTTON_WRITE_REVIEW) . '</a>'; ?></td>

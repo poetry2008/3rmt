@@ -2,6 +2,7 @@ DirectoryIndex index.php index.html index.htm index.cgi
 Options FollowSymLinks ExecCGI
 Options -Indexes
 AddType application/x-httpd-cgi .cgi
+ErrorDocument 404 /includes/modules/404.html
 
 php_flag register_globals On
 <Limit GET POST>

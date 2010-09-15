@@ -4,6 +4,8 @@
 */
 
   require("includes/application_top.php");
+  
+  check_uri('/page=\d+/');
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_SHOPPING_CART);
 

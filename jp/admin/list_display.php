@@ -304,40 +304,58 @@ color: #000000;
 <body  onload="">
 <?php 
   $cid = $_GET['cpath'];
-  $res =tep_db_query('select * from set_oroshi_names son, categories c
-      ,set_oroshi_categories soc where c.categories_id = "'.$cid.'" and c.categories_id = soc.categories_id and son.oroshi_id = soc.oroshi_id order by soc.oroshi_id desc');
-    while($col = tep_db_fetch_array($res)){
-      $oroname = $col['oroshi_name'];
-      $oroid = $col['oroshi_id'];
-    }
-
+  
+  $res =tep_db_query('
+    select * 
+    from set_oroshi_names son, categories c,set_oroshi_categories soc
+    where c.categories_id = "'.$cid.'" 
+      and c.categories_id = soc.categories_id 
+      and son.oroshi_id = soc.oroshi_id 
+    order by soc.oroshi_id desc
+  ');
+  while($col = tep_db_fetch_array($res)){
+    //$oroname2[] = $col['oroshi_name'];
+    $oroids[]   = $col['oroshi_id'];
+  }
+  
 $lines_arr = array();
-$oroname = array();
-$cr = array("\r\n", "\r");   // 改行コード置換用配
-$orocnt = tep_db_query('select distinct(oroshi_id) from set_oroshi_datas where
-    parent_id = "'.$cid.'" order by oroshi_id');
+$oroname   = array();
+$cr        = array("\r\n", "\r");   // 改行コード置換用配
+/*
+$orocnt = tep_db_query('
+  select distinct(oroshi_id) 
+  from set_oroshi_datas 
+  where parent_id = "'.$cid.'" 
+  order by oroshi_id
+');
 while($testcol = tep_db_fetch_array($orocnt)){
   $oroids[] = $testcol['oroshi_id'];
-}
-//print_r($oroids);
+}*/
 if($oroids)
-foreach($oroids as $key=>$value){
-  $res = tep_db_query("select * from set_oroshi_names son, set_oroshi_datas sod
-      where sod.oroshi_id ='". $value."' and sod.oroshi_id = son.oroshi_id and  parent_id='".$cid."' ORDER BY sod.list_id desc limit 1");
-  $col = tep_db_fetch_array($res);
-  $cols[]=$col;
-  //print_r($col);
-}
+  foreach($oroids as $key=>$value){
+    $res = tep_db_query("
+      select * 
+      from set_oroshi_names son, set_oroshi_datas sod
+      where sod.oroshi_id ='". $value."' 
+        and sod.oroshi_id = son.oroshi_id 
+        and parent_id='".$cid."' 
+      ORDER BY sod.list_id desc 
+      limit 1
+    ");
+    $col    = tep_db_fetch_array($res);
+    $cols[] = $col;
+  }
 
 if($cols)
 foreach($cols as $col){
-    $oroname[] = $col['oroshi_name'];
-    $orotime[] = date('Y/m/d H:i:s',strtotime($col['set_date']));
-    $datas_id[] = $col['list_id'];
-    $lines = spliteOroData($col['datas']);
-    $count[]=count($lines);
-    $lines_arr[]=$lines;
+    $oroname[]   = $col['oroshi_name'];
+    $orotime[]   = date('Y/m/d H:i:s',strtotime($col['set_date']));
+    $datas_id[]  = $col['list_id'];
+    $lines       = spliteOroData($col['datas']);
+    $count[]     = count($lines);
+    $lines_arr[] = $lines;
 } 
+
                                 
   $cnt = count($count);
 

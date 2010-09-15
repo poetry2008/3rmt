@@ -44,8 +44,11 @@
     $seo_category = tep_get_category_by_id($current_category_id, SITE_ID, $languages_id);
   }
   if (isset($_GET['manufacturers_id'])) {
-    //check_uri('/page=(\d+)/');
-    if ($_GET['page'] * MAX_DISPLAY_SEARCH_RESULTS > $cateqories_products['total'] + MAX_DISPLAY_SEARCH_RESULTS) {
+    $m_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS . " where manufacturers_id = '" . $_GET['manufacturers_id'] . "' and products_status != 0");
+    // ccdd
+    $m = tep_db_fetch_array($m_query);
+    check_uri('/sort=(\d+)/');
+    if ($_GET['page'] * MAX_DISPLAY_SEARCH_RESULTS > $m['total'] + MAX_DISPLAY_SEARCH_RESULTS) {
       forward404();
     }
     // ccdd
