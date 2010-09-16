@@ -1,6 +1,6 @@
 <?php
 /*
-	JP、GM共通ファイル
+  JP、GM共通ファイル
 */
 
   class order {
@@ -26,11 +26,11 @@
         $this->totals[] = array('title' => $totals['title'],
                                 'text' => $totals['text']);
       }
-	  
-	  $this->tori = array('Bahamut' => $order['torihiki_Bahamut'],
-	                      'houhou' => $order['torihiki_houhou'],
-						  'date' => $order['torihiki_date']
-						  );
+    
+    $this->tori = array('Bahamut' => $order['torihiki_Bahamut'],
+                        'houhou' => $order['torihiki_houhou'],
+              'date' => $order['torihiki_date']
+              );
 
       $this->info = array('currency' => $order['currency'],
                           'currency_value' => $order['currency_value'],
@@ -41,13 +41,13 @@
                           'cc_expires' => $order['cc_expires'],
                           'date_purchased' => $order['date_purchased'],
                           'orders_status' => $order['orders_status'],
-          'orders_id' => tep_db_input($order_id),
+                          'orders_id' => tep_db_input($order_id),
                           'last_modified' => $order['last_modified']);
 
       $this->customer = array('name' => $order['customers_name'],
                               'id' => $order['customers_id'],
                               'name_f' => $order['customers_name_f'],
-							  'company' => $order['customers_company'],
+                              'company' => $order['customers_company'],
                               'street_address' => $order['customers_street_address'],
                               'suburb' => $order['customers_suburb'],
                               'city' => $order['customers_city'],
@@ -57,12 +57,12 @@
                               'format_id' => $order['customers_address_format_id'],
                               'telephone' => $order['customers_telephone'],
                               'email_address' => $order['customers_email_address'],
-							  'date' => $order['date_purchased']);
+                              'date' => $order['date_purchased']);
 
 // 2003-06-06 add_telephone
       $this->delivery = array('name' => $order['delivery_name'],
                               'name_f' => $order['delivery_name_f'],
-							  'company' => $order['delivery_company'],
+                              'company' => $order['delivery_company'],
                               'street_address' => $order['delivery_street_address'],
                               'suburb' => $order['delivery_suburb'],
                               'city' => $order['delivery_city'],
@@ -71,12 +71,12 @@
                               'country' => $order['delivery_country'],
                               'telephone' => $order['delivery_telephone'],
                               'format_id' => $order['delivery_address_format_id'],
-							  'date' => $order['date_purchased']);
+                              'date' => $order['date_purchased']);
 
 // 2003-06-06 add_telephone
       $this->billing = array('name' => $order['billing_name'],
                              'name_f' => $order['billing_name_f'],
-							 'company' => $order['billing_company'],
+                             'company' => $order['billing_company'],
                              'street_address' => $order['billing_street_address'],
                              'suburb' => $order['billing_suburb'],
                              'city' => $order['billing_city'],
@@ -85,7 +85,7 @@
                              'country' => $order['billing_country'],
                              'telephone' => $order['billing_telephone'],
                              'format_id' => $order['billing_address_format_id'],
-							 'date' => $order['date_purchased']);
+                             'date' => $order['date_purchased']);
 
       $index = 0;
       $orders_products_query = tep_db_query("select products_id, orders_products_id, products_name, products_model, products_price, products_tax, products_quantity, final_price, products_character from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . tep_db_input($order_id) . "'");
@@ -97,23 +97,23 @@
                                         'tax' => $orders_products['products_tax'],
                                         'price' => $orders_products['products_price'],
                                         'final_price' => $orders_products['final_price'],
-										'character' => $orders_products['products_character']);
+                    'character' => $orders_products['products_character']);
 
         $subindex = 0;
         $attributes_query = tep_db_query("select orders_products_attributes_id, attributes_id, products_options, products_options_values, options_values_price, price_prefix from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where orders_id = '" . tep_db_input($order_id) . "' and orders_products_id = '" . $orders_products['orders_products_id'] . "'");
         if (tep_db_num_rows($attributes_query)) {
           while ($attributes = tep_db_fetch_array($attributes_query)) {
-          	// maker 2009-4-14
-          	$option = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS_OPTIONS." where products_options_name='".$attributes['products_options']."'"));
-          	$value  = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS_OPTIONS_VALUES." where products_options_values_name='".$attributes['products_options_values']."'"));
+            // maker 2009-4-14
+            $option = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS_OPTIONS." where products_options_name='".$attributes['products_options']."'"));
+            $value  = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS_OPTIONS_VALUES." where products_options_values_name='".$attributes['products_options_values']."'"));
             
             $this->products[$index]['attributes'][$subindex] = array(
                                                                      'id' => $attributes['orders_products_attributes_id'],
                                                                      'attributes_id' => $attributes['attributes_id'],
                                                                      'option' => $option['products_options_name'],
-                													 'option_id' => $option['products_options_id'],
+                                           'option_id' => $option['products_options_id'],
                                                                      'value' => $attributes['products_options_values'],
-                													 'value_id' => $value['products_options_values_id'],
+                                           'value_id' => $value['products_options_values_id'],
                                                                      'prefix' => $attributes['price_prefix'],
                                                                      'price' => $attributes['options_values_price']);
 

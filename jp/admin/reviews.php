@@ -47,12 +47,16 @@
         $last_modified  = tep_db_prepare_input($_POST['last_modified']);
         $reviews_text   = tep_db_prepare_input($_POST['reviews_text']);
         $reviews_status = tep_db_prepare_input($_POST['reviews_status']);
+        $date_added     = $_POST['year'].'-'.$_POST['m'].'-'.$_POST['d'].' '.$_POST['h'].':'.$_POST['i'].':'.$_POST['s'];
+        $customers_name = $_POST['customers_name'] ? $_POST['customers_name'] : '匿名';
 
         tep_db_query("
             update " . TABLE_REVIEWS . " 
             set reviews_rating = '" . tep_db_input($reviews_rating) . "', 
                 last_modified = now(), 
-                reviews_status = '".$reviews_status."' 
+                reviews_status = '".$reviews_status."',
+                date_added = '".$date_added."',
+                customers_name = '".$customers_name."'
             where reviews_id = '" . tep_db_input($reviews_id) . "'");
         
         tep_db_query("
@@ -253,14 +257,43 @@
       default: $in_status = true; $out_status = false;
     }
 ?>
-      <tr><?php echo tep_draw_form('review', FILENAME_REVIEWS, 'page=' . $_GET['page'] . (isset($_GET['lsite_id'])?('&lsite_id='.$_GET['lsite_id']):'').'&rID=' . $_GET['rID'] . '&action=preview'); ?>
+      <tr><?php echo tep_draw_form('review', FILENAME_REVIEWS, 'page=' . $_GET['page'] . (isset($_GET['lsite_id'])?('&lsite_id='.$_GET['lsite_id']):'').'&rID=' . $_GET['rID'] . '&action=preview', 'post' , 'onsubmit="return check_review()"'); ?>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td class="main" valign="top">
       <b><?php echo ENTRY_SITE; ?>:</b> <?php echo $reviews['site_name']; ?><br>
       <b><?php echo ENTRY_PRODUCT; ?></b> <?php echo $rInfo->products_name; ?><br>
-      <b><?php echo ENTRY_FROM; ?></b> <?php echo tep_output_string_protected($rInfo->customers_name); ?><br>
-      <b><?php echo ENTRY_DATE; ?></b> <?php echo tep_date_short($rInfo->date_added); ?><br>
+      <b><?php echo ENTRY_FROM; ?></b> <input type="text" name="customers_name" value="<?php echo tep_output_string_protected($rInfo->customers_name); ?>" /><br>
+      <b><?php echo ENTRY_DATE; ?></b> <?php //echo tep_date_short($rInfo->date_added); ?>
+
+  <select name='year'>
+  <?php for ($i=0;$i<10;$i++) {?>
+    <option value="<?php echo date('Y')-$i;?>" <?php $i==intval(date('Y', strtotime($rInfo->date_added))) && print('selected');?>><?php echo date('Y')-$i;?></option>
+  <?php }?>
+  </select>/<select name='m'>
+  <?php for ($i=1;$i<13;$i++) {?>
+    <option value="<?php echo $i;?>" <?php $i==intval(date('m', strtotime($rInfo->date_added))) && print('selected');?>><?php echo $i;?></option>
+  <?php }?>
+  </select>/<select name='d'>
+  <?php for ($i=1;$i<31;$i++) {?>
+    <option value="<?php echo $i;?>" <?php $i==intval(date('d', strtotime($rInfo->date_added))) && print('selected');?>><?php echo $i;?></option>
+  <?php }?>
+  </select> <select name='h'>
+  <?php for ($i=0;$i<24;$i++) {?>
+    <option value="<?php echo $i;?>" <?php $i==intval(date('H', strtotime($rInfo->date_added))) && print('selected');?>><?php printf('%02d', $i);?></option>
+  <?php }?>
+  </select>:<select name='i'>
+  <?php for ($i=0;$i<60;$i++) {?>
+    <option value="<?php echo $i;?>" <?php $i==intval(date('i', strtotime($rInfo->date_added))) && print('selected');?>><?php printf('%02d', $i);?></option>
+  <?php }?>
+  </select>:<select name='s'>
+  <?php for ($i=0;$i<60;$i++) {?>
+    <option value="<?php echo $i;?>" <?php $i==intval(date('s', strtotime($rInfo->date_added))) && print('selected');?>><?php printf('%02d', $i);?></option>
+  <?php }?>
+  </select>
+      
+      
+      <br>
       <b><?php echo TEXT_PRODUCTS_STATUS; ?></b> <?php echo tep_draw_radio_field('reviews_status', '1', $in_status) . '&nbsp;' . TEXT_PRODUCT_AVAILABLE . '&nbsp;' . tep_draw_radio_field('reviews_status', '0', $out_status) . '&nbsp;' . TEXT_PRODUCT_NOT_AVAILABLE; ?>
 
       </td>
@@ -289,11 +322,12 @@
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>
       <tr>
-        <td align="right" class="main"><?php echo tep_draw_hidden_field('reviews_id', $rInfo->reviews_id) . tep_draw_hidden_field('products_id', $rInfo->products_id) . tep_draw_hidden_field('customers_name', tep_output_string_protected($rInfo->customers_name)) . tep_draw_hidden_field('products_name', $rInfo->products_name) . tep_draw_hidden_field('products_image', $rInfo->products_image) . tep_draw_hidden_field('date_added', $rInfo->date_added) . tep_image_submit('button_preview.gif', IMAGE_PREVIEW) . ' <a href="' . tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' . $_GET['rID']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; ?></td>
+        <td align="right" class="main"><?php echo tep_draw_hidden_field('reviews_id', $rInfo->reviews_id) . tep_draw_hidden_field('products_id', $rInfo->products_id) . tep_draw_hidden_field('products_name', $rInfo->products_name) . tep_draw_hidden_field('products_image', $rInfo->products_image) . tep_image_submit('button_preview.gif', IMAGE_PREVIEW) . ' <a href="' . tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' . $_GET['rID']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; ?></td>
       </form></tr>
 <?php
   } elseif (isset($_GET['action']) && $_GET['action'] == 'preview') {
     if ($_POST) {
+      //print_r($_POST);
       $rInfo = new objectInfo($_POST);
     } else {
       $reviews_query = tep_db_query("
@@ -333,7 +367,7 @@
       <tr><?php echo tep_draw_form('update', FILENAME_REVIEWS, 'page=' . $_GET['page'] . (isset($_GET['lsite_id'])?('&lsite_id='.$_GET['lsite_id']):'').'&rID=' . $_GET['rID'] . '&action=update', 'post', 'enctype="multipart/form-data"'); ?>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td class="main" valign="top"><b><?php echo ENTRY_PRODUCT; ?></b> <?php echo $rInfo->products_name; ?><br><b><?php echo ENTRY_FROM; ?></b> <?php echo tep_output_string_protected($rInfo->customers_name); ?><br><br><b><?php echo ENTRY_DATE; ?></b> <?php echo tep_date_short($rInfo->date_added); ?></td>
+            <td class="main" valign="top"><b><?php echo ENTRY_PRODUCT; ?></b> <?php echo $rInfo->products_name; ?><br><b><?php echo ENTRY_FROM; ?></b> <?php echo tep_output_string_protected($_POST['customers_name']); ?><br><br><b><?php echo ENTRY_DATE; ?></b> <?php echo tep_date_short(date('Y-m-d H:i:s', strtotime($_POST['year'].'-'.$_POST['m'].'-'.$_POST['d'].' '.$_POST['h'].':'.$_POST['i'].':'.$_POST['s']))); ?></td>
             <td class="main" align="right" valign="top"><?php echo tep_image(HTTP_CATALOG_SERVER . DIR_WS_CATALOG_IMAGES . $rInfo->products_image, $rInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"'); ?></td>
           </tr>
         </table>

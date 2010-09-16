@@ -32,7 +32,7 @@
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <?php echo gg_url(HTTP_SERVER, null, null, 0.8);?>
   <?php echo gg_url(HTTP_SERVER.'/login.php', null, null, 0.3);?>
-  <?php echo gg_url(HTTP_SERVER.'/shopping_cart.php', null, null, 0.3);?>
+  <?php //echo gg_url(HTTP_SERVER.'/shopping_cart.php', null, null, 0.3);?>
   <?php echo gg_url(HTTP_SERVER.'/advanced_search.php', null, null, 0.3);?>
   <?php echo gg_url(HTTP_SERVER.'/latest_news/', null, null, 0.3);?>
   <?php echo gg_url(HTTP_SERVER.'/specials.php', null, null, 0.3);?>

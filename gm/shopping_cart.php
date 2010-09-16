@@ -9,14 +9,14 @@
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_SHOPPING_CART);
 
-  $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_SHOPPING_CART));
+  $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
 ?>
 <?php page_head();?>
 <?php
   if (isset($_GET['action'])) {
     if ($_GET['action'] == 'delete') {
       $cart->remove($_GET['products_id']); 
-      tep_redirect(tep_href_link(FILENAME_SHOPPING_CART)); 
+      tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL')); 
     }
   }
 ?>
@@ -153,7 +153,7 @@ function change_num(ob,targ, quan,a_quan)
   if ($cart->count_contents() > 0) {
 ?> 
         <tr> 
-          <td><?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_SHOPPING_CART, 'action=update_product')); ?> 
+          <td><?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_SHOPPING_CART, 'action=update_product', 'SSL')); ?> 
           <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <?php
     $any_out_of_stock = 0;

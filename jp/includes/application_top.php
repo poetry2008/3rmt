@@ -395,7 +395,7 @@
                                   $_POST['cart_quantity'][$i] = tep_an_zen_to_han($_POST['cart_quantity'][$i]);
                                   if ($_POST['cart_quantity'][$i] == 0) {
                                     $cart->remove($_POST['products_id'][$i]);
-                                    tep_redirect(tep_href_link(FILENAME_SHOPPING_CART)); 
+                                    tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL')); 
                                   } else {
                                     $cart->add_cart($_POST['products_id'][$i], $_POST['cart_quantity'][$i], $attributes, false);
                                   }
@@ -621,10 +621,10 @@ tep_session_register('ajax');
 # 注文上限金額設定
   if(substr(basename($PHP_SELF),0,9) == 'checkout_') {
     if(DS_LIMIT_PRICE < $cart->show_total()) {
-      tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, 'limit_error=true'));
+      tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, 'limit_error=true', 'SSL'));
     }
     if(substr(basename($PHP_SELF),0,16) != 'checkout_success')
     if(LIMIT_MIN_PRICE && LIMIT_MIN_PRICE > $cart->show_total()) {
-      tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, 'limit_min_error=true'));
+      tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, 'limit_min_error=true', 'SSL'));
     }
   }

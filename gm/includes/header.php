@@ -93,7 +93,7 @@ if (fflag==0)
 <div id="h_menubar">
   <ul>
     <li><a href="<?php echo tep_href_link(FILENAME_SITEMAP,'','NONSSL');?>">サイトマップ</a>|</li>
-    <li><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'','NONSSL');?>">ショッピングカート</a>|</li>
+    <li><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'','SSL');?>">ショッピングカート</a>|</li>
     <li>
     <?php
       // add info romaji 

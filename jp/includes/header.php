@@ -130,7 +130,7 @@ if (!isset($cat0[0])) $cat0[0] = NULL;
           <table>
             <tr>
               <td><a href="<?php echo tep_href_link('rss.php') ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/rss.jpg','RSS') ; ?></a></td>
-              <td><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'','NONSSL') ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/shopping_cart.jpg',HEADER_TITLE_CART_CONTENTS);?></a></td>
+              <td><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'','SSL') ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/shopping_cart.jpg',HEADER_TITLE_CART_CONTENTS);?></a></td>
               <td><a href="<?php echo tep_href_link(FILENAME_CHECKOUT_PRODUCTS,'','SSL') ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/checkout.jpg',HEADER_TITLE_CHECKOUT);?></a></td>
               <td width="117"  style="background:url(images/design/button/subtotal.jpg);" align="right"><span id="jk-shoppingcart" style="font-size:12px"><?php echo $currencies->format($cart->show_total());?>&nbsp;&nbsp;&nbsp;</span></td>
             </tr>

@@ -9,14 +9,14 @@
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_SHOPPING_CART);
 
-  $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_SHOPPING_CART));
+  $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
 ?>
 <?php page_head();?>
 <?php
   if (isset($_GET['action'])) {
     if ($_GET['action'] == 'delete') {
       $cart->remove($_GET['products_id']); 
-      tep_redirect(tep_href_link(FILENAME_SHOPPING_CART)); 
+      tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL')); 
     }
   }
 ?>
@@ -148,7 +148,7 @@ function change_num(ob,targ, quan,a_quan)
       <td valign="top" id="contents">
         <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>
         <div class="comment">
-  <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_SHOPPING_CART, 'action=update_product')); ?> 
+  <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_SHOPPING_CART, 'action=update_product', 'SSL')); ?> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="rmt">
             <?php
   if ($cart->count_contents() > 0) {

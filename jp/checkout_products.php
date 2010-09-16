@@ -13,7 +13,7 @@
 
   // if there is nothing in the customers cart, redirect them to the shopping cart page
   if ($cart->count_contents() < 1) {
-    tep_redirect(tep_href_link(FILENAME_SHOPPING_CART));
+    tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
   }
   
 // Stock Check
@@ -21,7 +21,7 @@
     $products = $cart->get_products();
     for ($i=0, $n=sizeof($products); $i<$n; $i++) {
       if (tep_check_stock($products[$i]['id'], $products[$i]['quantity'])) {
-        tep_redirect(tep_href_link(FILENAME_SHOPPING_CART));
+        tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
         break;
       }
     }

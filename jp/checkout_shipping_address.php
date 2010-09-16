@@ -17,7 +17,7 @@
 
 // if there is nothing in the customers cart, redirect them to the shopping cart page
   if ($cart->count_contents() < 1) {
-    tep_redirect(tep_href_link(FILENAME_SHOPPING_CART));
+    tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
   }
 
 // if the order contains only virtual products, forward the customer to the billing page as
@@ -42,10 +42,10 @@
       $company   = tep_db_prepare_input($_POST['company']);
       $firstname = tep_db_prepare_input($_POST['firstname']);
       $lastname  = tep_db_prepare_input($_POST['lastname']);
-	  
+    
       $firstname_f = tep_db_prepare_input($_POST['firstname_f']);
       $lastname_f  = tep_db_prepare_input($_POST['lastname_f']);
-	  
+    
       $street_address = tep_db_prepare_input($_POST['street_address']);
       $suburb   = tep_db_prepare_input($_POST['suburb']);
       $postcode = tep_db_prepare_input($_POST['postcode']);
@@ -86,8 +86,8 @@
       } else {
         $lasttname_error = false;
       }
-	  
-	  if (strlen($firstname_f) < ENTRY_FIRST_NAME_MIN_LENGTH) {
+    
+    if (strlen($firstname_f) < ENTRY_FIRST_NAME_MIN_LENGTH) {
         $firstname_f_error = true;
         $error = true;
       } else {

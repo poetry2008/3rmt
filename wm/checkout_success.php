@@ -7,7 +7,7 @@
 
 // if the customer is not logged on, redirect them to the shopping cart page
   if (!tep_session_is_registered('customer_id')) {
-    tep_redirect(tep_href_link(FILENAME_SHOPPING_CART));
+    tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
   }
 
   if (isset($_GET['action']) && ($_GET['action'] == 'update')) {

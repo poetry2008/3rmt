@@ -15,7 +15,7 @@
 
 // if there is nothing in the customers cart, redirect them to the shopping cart page
   if ($cart->count_contents() < 1) {
-    tep_redirect(tep_href_link(FILENAME_SHOPPING_CART));
+    tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
   }
 
 // avoid hack attempts during the checkout procedure by checking the internal cartID
@@ -111,7 +111,7 @@
     }
     // Out of Stock
     if ( (STOCK_ALLOW_CHECKOUT != 'true') && ($any_out_of_stock == true) ) {
-      tep_redirect(tep_href_link(FILENAME_SHOPPING_CART));
+      tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
     }
   }
 
@@ -217,7 +217,7 @@
   if (sizeof($order->info['tax_groups']) > 1) {
 ?> 
                           <tr> 
-                            <td class="main" colspan="2"><?php echo '<b>' . HEADING_PRODUCTS . '</b> <a href="' . tep_href_link(FILENAME_SHOPPING_CART) . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
+                            <td class="main" colspan="2"><?php echo '<b>' . HEADING_PRODUCTS . '</b> <a href="' . tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
                             <td class="smallText" align="right"><b><?php echo HEADING_TAX; ?></b></td> 
                             <td class="smallText" align="right"><b><?php echo HEADING_TOTAL; ?></b></td> 
                           </tr> 
@@ -225,7 +225,7 @@
   } else {
 ?> 
                           <tr> 
-                            <td class="main" colspan="3"><?php echo '<b>' . HEADING_PRODUCTS . '</b> <a href="' . tep_href_link(FILENAME_SHOPPING_CART) . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
+                            <td class="main" colspan="3"><?php echo '<b>' . HEADING_PRODUCTS . '</b> <a href="' . tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
                           </tr> 
                           <?php
   }

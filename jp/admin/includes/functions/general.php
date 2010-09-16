@@ -2922,3 +2922,10 @@ function spliteOroData($orodata){
     }
     return $new_lines;
 }
+
+function tep_get_customers_fax_by_id($cid)
+{
+  $query = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id='".$cid."'");
+  $customers = tep_db_fetch_array($query);
+  return $customers['customers_fax'];
+}

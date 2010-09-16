@@ -166,7 +166,7 @@
   
     echo '</td>' . "\n"; 
     if (strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
-      echo '<td align="center" style=" background:#dbfdff;"><a class="button_delete02" href="'.tep_href_link(FILENAME_SHOPPING_CART, 'products_id='.$products[$i]['id'].'&action=delete').'">'.TEXT_DEL_LINK.'</a></td>'; 
+      echo '<td align="center" style=" background:#dbfdff;"><a class="button_delete02" href="'.tep_href_link(FILENAME_SHOPPING_CART, 'products_id='.$products[$i]['id'].'&action=delete', 'SSL').'">'.TEXT_DEL_LINK.'</a></td>'; 
     }
     echo '  </tr>' . "\n";
      

@@ -502,3 +502,35 @@ width:120px;
 .add_link{
 clear:both;
 }
+#orders_flag {
+	border: 1px solid #000;
+	display: none;
+}
+#orders_info {
+	border: 1px solid #000;
+	display: none;
+}
+#orders_client {
+	border: 1px solid #000;
+	display: none;
+}
+#orders_reffer {
+	border: 1px solid #000;
+	display: none;
+}
+#orders_history {
+	border: 1px solid #000;
+	display: none;
+}
+#orders_comment {
+	border: 1px solid #000;
+	display: none;
+}
+#orders_answer {
+	border: 1px solid #000;
+	display: none;
+}
+#orders_credit {
+	border: 1px solid #000;
+	display: none;
+}

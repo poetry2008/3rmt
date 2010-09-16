@@ -170,7 +170,7 @@
                       <a href="<?php echo tep_href_link('rss.php') ; ?>" class="header_menu_1">
                       <?php //echo tep_image(DIR_WS_IMAGES.'design/button/rss.gif','RSS') ; ?>
                       </a>
-                      <a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'','NONSSL') ; ?>" class="header_menu_2">
+                      <a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'','SSL') ; ?>" class="header_menu_2">
                       <?php //echo tep_image(DIR_WS_IMAGES.'design/button/shopping_cart.gif',HEADER_TITLE_CART_CONTENTS);?>
                       </a>
                       <a href="<?php echo tep_href_link(FILENAME_CHECKOUT_PRODUCTS,'','SSL') ; ?>" class="header_menu_3">

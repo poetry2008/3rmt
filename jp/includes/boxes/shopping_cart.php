@@ -10,7 +10,7 @@
   $info_box_contents = array();
   $info_box_contents[] = array('text' => BOX_HEADING_SHOPPING_CART);
 
-  new infoBoxHeading($info_box_contents, false, true, tep_href_link(FILENAME_SHOPPING_CART));
+  new infoBoxHeading($info_box_contents, false, true, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
 
   $cart_contents_string = '';
   if ($cart->count_contents() > 0) {
