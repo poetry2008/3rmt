@@ -562,17 +562,6 @@
         <tr> 
           <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
         </tr> 
-  
-  
-  
-  
-  
-  
-
-  
-  
-  
-  
         </table></td> 
       <!-- body_text_eof //--> 
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
@@ -584,6 +573,22 @@
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
   <!-- footer_eof //--> 
 </div> 
+<!-- /visites --> 
+<script type="text/javascript">
+<!--
+var a_vars = Array();
+var pagename='';
+var visitesSite = 1;
+var visitesURL = "<?php echo HTTP_SERVER; ?>/visites.php";
+//-->
+</script>
+<script language="javascript" src="<?php echo HTTP_SERVER; ?>/visites.js" type="text/javascript"></script>
+<object>
+<noscript>
+<img src="visites.php" alt="Statistics" style="border:0" />
+</noscript>
+</object>
+<!-- /visites -->
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

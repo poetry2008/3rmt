@@ -311,7 +311,7 @@ color: #000000;
     where c.categories_id = "'.$cid.'" 
       and c.categories_id = soc.categories_id 
       and son.oroshi_id = soc.oroshi_id 
-    order by soc.oroshi_id desc
+    order by soc.oroshi_id asc
   ');
   while($col = tep_db_fetch_array($res)){
     //$oroname2[] = $col['oroshi_name'];

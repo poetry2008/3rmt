@@ -2929,3 +2929,4 @@ function tep_get_customers_fax_by_id($cid)
   $customers = tep_db_fetch_array($query);
   return $customers['customers_fax'];
 }
+

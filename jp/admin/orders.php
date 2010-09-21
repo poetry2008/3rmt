@@ -4,6 +4,8 @@
 */
   require('includes/application_top.php');
 
+  require(DIR_WS_FUNCTIONS . 'visites.php');
+
   require(DIR_WS_CLASSES . 'currencies.php');
 
   $currencies          = new currencies();
@@ -477,6 +479,8 @@
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/all_order.js"></script>
+<script language="javascript" src="includes/javascript/jquery.js"></script>
+  <script language="javascript" src="includes/javascript/jquery.form.js"></script>
 <script language="javascript">
 
     function search_type_changed(elem){
@@ -580,6 +584,19 @@ function mail_text(st,tt,ot){
     document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr[chk[0]]);
   }
 }
+$(function(){
+$('#form_orders_comment').ajaxForm({
+beforeSubmit:  showRequest,
+success: function(){alert('save success')}}); 
+});
+
+
+function showRequest(formData, jqForm, options) { 
+    var queryString = $.param(formData); 
+    //alert('About to submit: \n\n' + queryString); 
+    return true; 
+} 
+
 
 </script>
 </head>
@@ -636,7 +653,49 @@ function mail_text(st,tt,ot){
       <tr>
         <td width="100%">
           <div id="orders_flag">
-            &nbsp;
+                  <script>
+                    function orders_flag(ele, type) {
+                      if (ele.className == 'orders_flag_checked') {
+ $.ajax({
+  url: 'ajax_orders.php?orders_id=<?php echo $order->info['orders_id']?>&orders_'+type+'_flag=0',
+  success: function(data) {
+    ele.className='orders_flag_unchecked';
+  }
+});
+                      } else {
+ $.ajax({
+  url: 'ajax_orders.php?orders_id=<?php echo $order->info['orders_id']?>&orders_'+type+'_flag=1',
+  success: function(data) {
+    ele.className='orders_flag_checked';
+  }
+});
+                      }
+                    }
+                  </script>
+            <table width="100%" border="0" cellspacing="0" cellpadding="2">
+              <tr>
+                <td width="50%" align="left">
+                  <table width="100%" border="0" cellspacing="0" cellpadding="2">
+                    <tr>
+                      <td width="100" align="center" class='<?php echo $order->info['orders_important_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'important')">重要</td>
+                      <td width="100" align="center" class='<?php echo $order->info['orders_care_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'care')">取り扱い注意</td>
+                      <td width="100" align="center" class='<?php echo $order->info['orders_wait_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'wait')">取引待ち</td>
+                      <td>&nbsp;</td>
+                    <tr>
+                  </table>
+                </td>
+                <td width="50%" align="right">
+                  <table width="100%" border="0" cellspacing="0" cellpadding="2">
+                    <tr>
+                      <td>&nbsp;</td>
+                      <td width="100" align="center">A</td>
+                      <td width="100" align="center">B</td>
+                      <td width="100" align="center">C</td>
+                    <tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
           </div>
         </td>
       </tr>
@@ -648,6 +707,7 @@ function mail_text(st,tt,ot){
             <!-- left -->
             <td width="50%" valign="top">
             <div id="orders_info">
+              <h3>Order Info</h3>
               <table width="100%" border="0" cellspacing="0" cellpadding="2">
                 <tr>
                   <td class="main" valign="top" width="30%"><b>注文書サイト:</b></td>
@@ -710,11 +770,24 @@ function mail_text(st,tt,ot){
               </table>
             </div>
             <div id="orders_client">
+              <h3>Customer Info</h3>
               <table width="100%" border="0" cellspacing="0" cellpadding="2">
                 <tr>
                   <td class="main" valign="top" width="30%"><b>IPアドレス:</b></td>
-                  <td class="main" width="70%"><?php echo $order->info['orders_ip'];?></td>
+                  <td class="main" width="70%"><?php echo $order->info['orders_ip'];?><?php if ($order->info['orders_host_name']) echo '(' . getCountryName(getCountry($order->info['orders_host_name'])) . ')';?></td>
                 </tr>
+              <?php if ($order->info['orders_ip'] && function_exists('geoip_record_by_name')) {
+                $geoinfo = geoip_record_by_name( $order->info['orders_ip'] );
+              ?>
+                <tr>
+                  <td class="main" valign="top" width="30%"><b>国家:</b></td>
+                  <td class="main" width="70%"><?php echo $geoinfo['country_name'];?></td>
+                </tr>
+                <tr>
+                  <td class="main" valign="top" width="30%"><b>地区:</b></td>
+                  <td class="main" width="70%"><?php print_r($geoinfo);?></td>
+                </tr>
+              <?php }?>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>ホスト名:</b></td>
                   <td class="main" width="70%"><?php echo $order->info['orders_host_name'];?></td>
@@ -723,14 +796,103 @@ function mail_text(st,tt,ot){
                   <td class="main" valign="top" width="30%"><b>ユーザーエージェント:</b></td>
                   <td class="main" width="70%"><?php echo $order->info['orders_user_agent'];?></td>
                 </tr>
+                <tr>
+                  <td class="main" valign="top" width="30%"><b>OS:</b></td>
+                  <td class="main" width="70%"><?php echo getOS($order->info['orders_user_agent']);?></td>
+                </tr>
+                <tr>
+                  <td class="main" valign="top" width="30%"><b>ブラウザの種類:</b></td>
+                  <td class="main" width="70%">
+                  <?php $browser_info = getBrowserInfo($order->info['orders_user_agent']);?>
+                  <?php echo $browser_info['longName'] . ' ' . $browser_info['version'];?>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="main" valign="top" width="30%"><b>画面の解像度:</b></td>
+                  <td class="main" width="70%"><?php echo $order->info['orders_screen_resolution'];?></td>
+                </tr>
+                <tr>
+                  <td class="main" valign="top" width="30%"><b>画面の色:</b></td>
+                  <td class="main" width="70%"><?php echo $order->info['orders_color_depth'];?></td>
+                </tr>
+                <tr>
+                  <td class="main" valign="top" width="30%"><b>Flash:</b></td>
+                  <td class="main" width="70%">
+                    <?php echo $order->info['orders_flash_enable'] === '1' ? 'YES' : ($order->info['orders_flash_enable'] === '0' ? 'NO' : 'UNKNOW');?>
+                  </td>
+                </tr>
+                <?php 
+                  if ($order->info['orders_flash_enable']) {
+                ?>
+                <tr>
+                  <td class="main" valign="top" width="30%"><b>Flashのバージョン:</b></td>
+                  <td class="main" width="70%"><?php echo $order->info['orders_flash_version'];?></td>
+                </tr>
+                <?php } ?>
+                <tr>
+                  <td class="main" valign="top" width="30%"><b>Director:</b></td>
+                  <td class="main" width="70%">
+                  <?php //echo $order->info['orders_director_enable'];?>
+                  <?php echo $order->info['orders_director_enable'] === '1' ? 'YES' : ($order->info['orders_director_enable'] === '0' ? 'NO' : 'UNKNOW');?>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="main" valign="top" width="30%"><b>Quick time:</b></td>
+                  <td class="main" width="70%">
+                  <?php //echo $order->info['orders_quicktime_enable'];?>
+                  <?php echo $order->info['orders_quicktime_enable'] === '1' ? 'YES' : ($order->info['orders_quicktime_enable'] === '0' ? 'NO' : 'UNKNOW');?>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="main" valign="top" width="30%"><b>Real player:</b></td>
+                  <td class="main" width="70%">
+                  <?php //echo $order->info['orders_realplayer_enable'];?>
+                  <?php echo $order->info['orders_realplayer_enable'] === '1' ? 'YES' : ($order->info['orders_realplayer_enable'] === '0' ? 'NO' : 'UNKNOW');?>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="main" valign="top" width="30%"><b>Windows media:</b></td>
+                  <td class="main" width="70%">
+                  <?php //echo $order->info['orders_windows_media_enable'];?>
+                  <?php echo $order->info['orders_windows_media_enable'] === '1' ? 'YES' : ($order->info['orders_windows_media_enable'] === '0' ? 'NO' : 'UNKNOW');?>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="main" valign="top" width="30%"><b>Pdf:</b></td>
+                  <td class="main" width="70%">
+                  <?php //echo $order->info['orders_pdf_enable'];?>
+                  <?php echo $order->info['orders_pdf_enable'] === '1' ? 'YES' : ($order->info['orders_pdf_enable'] === '0' ? 'NO' : 'UNKNOW');?>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="main" valign="top" width="30%"><b>Java:</b></td>
+                  <td class="main" width="70%">
+                  <?php //echo $order->info['orders_java_enable'];?>
+                  <?php echo $order->info['orders_java_enable'] === '1' ? 'YES' : ($order->info['orders_java_enable'] === '0' ? 'NO' : 'UNKNOW');?>
+                  </td>
+                </tr>
               </table>
             </div>
             <!-- 访问解析 -->
-            <div id="orders_reffer">
-              &nbsp;
+            <div id="orders_referer">
+              <h3>Referer Info</h3>
+              <table width="100%" border="0" cellspacing="0" cellpadding="2">
+                <tr>
+                  <td class="main" valign="top" width="30%"><b>Referer:</b></td>
+                  <td class="main" width="70%"><?php echo $order->info['orders_ref'];?></td>
+                </tr>
+                <?php $keywords = parseKeyword($order->info['orders_ref']);?>
+                <?php if ($keywords) { ?>
+                <tr>
+                  <td class="main" valign="top" width="30%"><b>Keywords:</b></td>
+                  <td class="main" width="70%"><?php echo parseKeyword($order->info['orders_ref']);?></td>
+                </tr>
+                <?php } ?>
+              </table>
             </div>
             <!-- 注文履历 -->
             <div id="orders_history">
+              <h3>Order History</h3>
               <?php 
                 $order_history_query = tep_db_query("
                   select * 
@@ -771,10 +933,15 @@ function mail_text(st,tt,ot){
             <!-- right -->
             <td width="50%" valign="top">
               <div id="orders_comment">
-                <?php echo $order->info['orders_comment'];?>
-                &nbsp;
+              <h3>Order Comment</h3>
+                <form action="ajax_orders.php" id='form_orders_comment' method="post">
+                <textarea name="orders_comment" cols="100" rows="10"><?php echo $order->info['orders_comment'];?></textarea><br>
+                <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
+                <input type="submit">
+                </form>
               </div>
               <div id="orders_answer">
+                <h3>Order Answer</h3>
                 &nbsp;
               </div>
             </td>
@@ -787,9 +954,10 @@ function mail_text(st,tt,ot){
       <tr>
         <td>
           <div id="orders_credit">
+            <h3>信用調査</h3>
             <table width="100%" border="0" cellspacing="0" cellpadding="2">
               <tr>
-                <td class="main" valign="top" width="30%"><b>信用調査:</b></td>
+                <!--<td class="main" valign="top" width="30%"><b>信用調査:</b></td>-->
                 <td class="main" width="70%"><?php echo tep_get_customers_fax_by_id($order->customer['id']);?></td>
               </tr>
             </table>

@@ -50,8 +50,9 @@ a img {
 	width: 900px;
 	margin: 0px auto;
 }
-#search-box {
-	border-bottom:#E59C01 solid 7px;
+#search-box{
+border-left:1px solid #CCCCCC;
+border-right:1px solid #CCCCCC;
 }
 #top_logo {
 	height:69px;
@@ -651,7 +652,8 @@ width:900px;
 	width: 200px;
 	height: 20px;
 	line-height: 20px;
-	float: left;
+	font-weight:bold;
+	font-size:12px;
 }
 .web-menu {
 	float: right;
@@ -700,6 +702,7 @@ width:900px;
 	float: left;
 	width: 16px;
 	height: 16px;
+	background:url(../images/blue/img/web-ico.gif) no-repeat;
 }
 .t2 p {
 	background: #fff;
@@ -1004,6 +1007,10 @@ padding-right:10px;
 border-top:1px solid #CCCCCC;
 height:21px;
 }
+.sitemap_nav{
+width:900px;
+margin:0 auto;
+}
 .header_navigation_left, .header_navigation_content, .header_navigation_right{
 	height: 31px;
 	float: left;
@@ -1108,9 +1115,6 @@ padding:7px 0 7px 15px;
 overflow:hidden;
 width:900px;
     background:#fff;
-	border-right:1px solid #CCCCCC;
-border-left:1px solid #CCCCCC;
-
 }
 #content .top{
 height:27px;
@@ -1136,7 +1140,10 @@ padding:5px 0 0 10px;
 .menu_table{
 height:39px;
 }
-
+#sitemap{margin-top:10px;
+margin-left:20px;
+margin-right:20px;
+}
 
 
 
