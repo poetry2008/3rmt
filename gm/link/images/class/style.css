@@ -1,2 +1,112 @@
-.header2 a{ color:#fff;}
-#email {display:none;}
+.header2 a {
+	color:#fff;
+}
+#email {
+	display:none;
+}
+body .main {
+	margin:0;
+	padding:0;
+	text-align:left;
+	width:790px;
+	overflow:hidden;
+	background:url(images/main.jpg) repeat-y;
+}
+.h_menubar {
+	background-image:url(images/h_menubar.jpg);
+	background-repeat:no-repeat;
+	height:65px;
+	margin:0;
+	padding:0 0 0 210px;
+	width:790px;
+}
+.h_menubar ul {
+	display:block;
+	height:30px;
+	list-style-image:none;
+	list-style-type:none;
+	margin:0;
+	padding:0;
+}
+.h_menubar li {
+	display:block;
+	float:left;
+	height:30px;
+	line-height:30px;
+}
+.h_menubar ul li a {
+	color:#FFFFFF;
+	font-weight:bold;
+	margin:0 16px;
+	text-decoration:none;
+}
+.h_menubar02 ul li a{
+	margin:0 4px;
+}
+.text_out {
+	padding-left:160px;
+	padding-right:20px;
+	padding-top:10px;
+}
+.content {
+	padding-left:160px;
+	padding-right:20px;
+	padding-top:10px;
+}
+.content a {
+	color:#339966;
+}
+.content a:hover {
+	color:#66CC99;
+}
+.web_title {
+	font-weight:bold;
+}
+#bread_crumb{
+padding-left:170px;
+padding-right:20px;
+padding-top:10px;
+color:#339966;
+}
+#bread_crumb a{
+color:#339966;
+}
+#bread_crumb a:hover{
+color:#66CC99;
+}
+#sitemap{
+padding-left:5px;
+}
+.web-box{
+border-bottom:dotted #444444 2px;
+margin-bottom:5px;
+padding-bottom:5px;
+}
+.web-tit a{ font-weight:bold;
+text-decoration:none;
+}
+.web td{
+width:130px;
+margin:0;
+padding:0;
+
+}
+.web td a{
+text-decoration:none;
+}
+.footer {
+	height:95px;
+	width:790px;
+	background:url(images/footer.jpg) no-repeat;
+}
+.footer_games {
+	text-align:center;
+	padding-top:43px;
+}
+.footer_contacts {
+	text-align:center;
+	padding-top:15px;
+}
+.l_m_category_a{
+*width:123px;
+}

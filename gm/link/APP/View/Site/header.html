@@ -54,20 +54,61 @@ if(isset($_GET['action'])&&$_GET['action']!=''&&$_GET['action']!='class'){
         <p class="header2">
       <a href="javascript:void(0);" style="cursor:hand" onKeyPress="SomeJavaScriptCode" onClick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト ワールドマネーをお気に入りに追加して下さい！</a>
     </p>
-      </div>
-  <object width="790" height="185" data="../images/design/header/header.swf" type="application/x-shockwave-flash">
-        <param value="transparent" name="wmode">
-        <param value="high" name="quality">
-      </object>
-  <a name="top"></a>
+  </div>
+  <script type="text/javascript">
+<!--
+fflag=0;
+if (document.layers || document.all || document.getElementById) {
+ if (!fflag && document.all && !window.opera && navigator.userAgent.indexOf('Win')>-1) {
+ document.write('<scr' + 'ipt type="text/vbscript"\> \n');
+ document.write('on error resume next \n');
+ document.write('fflag=( IsObject(CreateObject("ShockwaveFlash.ShockwaveFlash.6")))\n');
+ document.write('<' + '/scr' + 'ipt> \n');
+ }
+ else if (navigator.plugins['Shockwave Flash']) fflag=1;
+ }
+
+if (fflag==0)
+{
+ document.write('<a href="index.php"><img alt="RMT" src="../images/design/oc/header.jpg" width="790" height="185" border="0"><'+'/a>');
+}else {
+ if (document.all && !window.opera)
+ document.write('<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="https://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="790" height="185">'+
+ '<param name="movie" value="../images/design/header/header.swf" />'+
+ '<param name="wmode" value="transparent" />'+
+ '<param name="quality" value="high" />'+
+ '<'+'/object>'+
+ '');
+ else
+ document.write('<object type="application/x-shockwave-flash" data="../images/design/header/header.swf" width="790" height="185">'+
+ '<param name="wmode" value="transparent" />'+
+ '<param name="quality" value="high" />'+
+ '<'+'/object>'+
+ '');
+ }
+-->
+</script>
 </div>
-    <div id="h_menubar">
+<!--end header-->
+    <div class="h_menubar">
         <ul>
           <li><a href="/sitemap.php">サイトマップ</a>|</li>
-          <li><a href="http://3wm.maker.200.com" class="headerNavigation">RMT</a>|</li>
+          <li><a href="/" class="headerNavigation">RMT</a>|</li>
         </ul>
     </div>
-  
+<div class="main">
+<div id="l_menu">
+<div class="box_title">メニュー</div>
+<div id="box">
+<ul class="l_m_category_ul">
+<li class="l_m_category_li"><a class="l_m_category_a" href="<!--{url controller=site action=index}-->">相互リンク集TOP</a></li>
+<li class="l_m_category_li"><a class="l_m_category_a" href="<!--{url controller=site action=setlinkchecksite}-->">新規登録</a></li>
+<li class="l_m_category_li"><a class="l_m_category_a" href="<!--{url controller=site action=sitelist}-->">更新・削除</a></li>
+<li class="l_m_category_li"><a class="l_m_category_a" href="<!--{url controller=site action=sitenew}-->">新着サイト</a></li>
+<li class="l_m_category_li"><a class="l_m_category_a" href="<!--{url controller=site action=siterec}-->">おすすめサイト</a></li>
+<li class="l_m_category_li"><a class="l_m_category_a" href="<!--{url controller=site action=sitemap}-->">サイトマップ</a></li>
+</div>
+</div>
   <div class="search_head">
         <!--{include file='Site/header_search.html'}-->
 
