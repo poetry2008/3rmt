@@ -2929,3 +2929,15 @@ function tep_get_customers_fax_by_id($cid)
   $customers = tep_db_fetch_array($query);
   return $customers['customers_fax'];
 }
+function tep_get_siteurl_name($siteurl)
+{
+  $sql = "select sitename from ".TABLE_SITENAME." 
+         where siteurl='".$siteurl."'";
+  $query = tep_db_query($sql);
+  if(tep_db_num_rows($query)>0){
+  $res = tep_db_fetch_array($query);
+  return $res['sitename'];
+  }else{
+  return $siteurl;
+  }
+}

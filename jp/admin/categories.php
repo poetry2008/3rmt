@@ -93,6 +93,25 @@
 // 終
         tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $_GET['cPath'] . '&pID=' . $products_id));
         break;
+      case 'upload_keyword':
+        $kWord = $_POST['keyword'];
+        $categories_id = $_POST['categories_id'];
+        $method = $_POST['method'];
+        if($method=='upload'){
+        $sql_data_array = array(
+            'categories_id' => tep_db_prepare_input($categories_id),
+            'keyword' => tep_db_prepare_input($kWord));
+        tep_db_perform(TABLE_CATEGORIES_TO_MISSION, $sql_data_array, 'update',
+            'categories_id='.$categories_id);  
+        }else{
+        $sql_data_array = array(
+            'categories_id' => tep_db_prepare_input($categories_id),
+            'mission_id' => 0,
+            'keyword' => tep_db_prepare_input($kWord));
+        tep_db_perform(TABLE_CATEGORIES_TO_MISSION, $sql_data_array);
+        }
+        tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $categories_id));
+        break;
       case 'insert_category':
       case 'update_category':
         $categories_id = tep_db_prepare_input($_POST['categories_id']);
@@ -1883,6 +1902,93 @@ if ($ocertify->npermission >= 10) { //表示制限
   }
 ?>&nbsp;</td>
                           </tr>
+<?php
+
+if(isset($_GET['cPath'])&&$_GET['cPath']!=''){
+$categories_id = array_pop(explode('_',$_GET['cPath']));
+$record_sql = "select distinct(tr.siteurl) as url 
+              from ".TABLE_RECORD." tr
+              where tr.session_id =(select max(r.session_id) from ".TABLE_RECORD." r left
+                  join ".TABLE_CATEGORIES_TO_MISSION." c2m on c2m.mission_id =
+                  r.mission_id where c2m.categories_id ='".$categories_id."')
+              order by tr.id limit 10";
+$record_query = tep_db_query($record_sql);
+$siturl = '';
+$seach_categoties_sql = "SELECT cd.categories_name as categories_name,
+                         c2m.keyword as keyword
+                         FROM ".TABLE_CATEGORIES_TO_MISSION." c2m
+                         LEFT JOIN ".TABLE_CATEGORIES_DESCRIPTION." cd 
+                         ON c2m.categories_id = cd.categories_id
+                         WHERE c2m.categories_id = '".$categories_id."'
+                         AND cd.site_id = '0'";
+$seach_categoties_query = tep_db_query($seach_categoties_sql);
+echo "<tr><td colspan='4'>";
+echo '<table class="search_class" width="100%" cellspacing="0" cellpadding="2" border="0">';
+if(tep_db_num_rows($seach_categoties_query)>0){
+$seach_categoties_res = tep_db_fetch_array($seach_categoties_query);
+echo "<tr class='dataTableHeadingRow'><td class='dataTableHeadingContent' colspan='3'>";
+echo $seach_categoties_res['categories_name'];
+echo sprintf(TEXT_GOOGLE_SEARCH, $seach_categoties_res['keyword']);
+echo "</td></tr>";
+if(tep_db_num_rows($record_query)>0){
+$i=1;
+while($record_res = tep_db_fetch_array($record_query)){
+  if($i%2==0){
+    echo "<tr class='dataTableSecondRow'>";
+  }else{
+    echo "<tr class='dataTableRow'>";
+  }
+  if(in_array($record_res['url'],$stop_site_url)){
+    $search_message = sprintf(TEXT_FIND_DATA_STOP, $record_res['url']);
+  echo "<td class='dataTableContent search_class_td' style='width:20px'>&nbsp;".$i.":"."</td>";
+  echo "<td class='dataTableContent' ><b>".tep_get_siteurl_name($record_res['url'])."</b></td>";
+  echo "<td class='dataTableContent' >";
+  /*
+  echo "<a href='".tep_href_link(FILENAME_RECORD,
+      'action=unshow&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url).
+      "'>".TEXT_UNSHOW."</a>";
+  */
+  echo "<a href='".tep_href_link(FILENAME_RECORD,
+      'action=rename&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url).
+      "'>".TEXT_RENAME."</a>";
+  echo "</td></tr>";
+    break;
+  }
+  $prama_url = str_replace('.','_',$record_res['url']); 
+  echo "<td class='dataTableContent search_class_td' style='width:20px'>&nbsp;".$i.":"."</td>";
+  echo "<td class='dataTableContent' >".tep_get_siteurl_name($record_res['url'])."</td>";
+  echo "<td class='dataTableContent' >";
+  /*
+  echo "<a href='".tep_href_link(FILENAME_RECORD,
+      'action=unshow&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url).
+      "'>".TEXT_UNSHOW."</a>";
+  */
+  echo "<a href='".tep_href_link(FILENAME_RECORD,
+      'action=rename&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url).
+      "'>".TEXT_RENAME."</a>";
+  echo "</td></tr>";
+  $i++;
+}
+ if(!isset($search_message)){
+  if($i<11){
+  $search_message = sprintf(TEXT_NOT_ENOUGH_DATA, $i-1);
+  }else{
+  $search_message = sprintf(TEXT_LAST_SEARCH_DATA, $i-1);
+  }
+ }
+}else{
+  $search_message = TEXT_NO_DATA;
+}
+}else{
+  $search_message = TEXT_NO_SET_KEYWORD;
+}
+echo "<tr><td class='smalltext' colspan='3'>";
+echo $search_message;
+echo "</td></tr>";
+echo "</table>";
+echo "</td></tr>";
+}
+?>
                         </table></td>
                     </tr>
                   </table></td>
@@ -2030,6 +2136,27 @@ if ($ocertify->npermission >= 10) { //表示制限
         $contents[] = array('text' => '<br>' . TEXT_HOW_TO_COPY . '<br>' . tep_draw_radio_field('copy_as', 'link', true) . ' ' . TEXT_COPY_AS_LINK . '<br>' . tep_draw_radio_field('copy_as', 'duplicate') . ' ' . TEXT_COPY_AS_DUPLICATE);
         $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_copy.gif', IMAGE_COPY) . ' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
         break;
+      case 'edit_keyword':
+        $categories_to_mission_sql = 'select * from '.TABLE_CATEGORIES_TO_MISSION
+          .' where categories_id ="'.$cID.'"';
+        $categories_to_mission_query = tep_db_query($categories_to_mission_sql);
+        $categories_to_mission_res =
+          tep_db_fetch_array($categories_to_mission_query);
+        $heading[] = array('text' => '<b>'. TEXT_INFO_KEYWORD.'</b>');
+        $contents = array('form' => tep_draw_form('categories', FILENAME_CATEGORIES,
+              'action=upload_keyword&cID=' . $_GET['cID'] . '&cPath=' . $cPath .
+              '&site_id=' . $_GET['site_id'], 'post'));
+        $contents[] = array('text' => '<br>' . TEXT_KEYWORD . '<br>' .
+            tep_draw_input_field('keyword',
+              $categories_to_mission_res['keyword']?$categories_to_mission_res['keyword']:'', ''));
+        $contents[] = array('text' => tep_draw_hidden_field('categories_id',$cID));
+        if($categories_to_mission_res){
+        $contents[] = array('text' => tep_draw_hidden_field('method','upload'));
+        }else{
+        $contents[] = array('text' => tep_draw_hidden_field('method','insert'));
+        }
+        $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_save.gif', IMAGE_SAVE) . ' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id). '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+        break;
       default:
         if ($rows > 0) {
           if (isset($cInfo) && is_object($cInfo)) { // category info box contents
@@ -2051,6 +2178,18 @@ if ($ocertify->npermission >= 10) { //表示制限
                    :''
                    ));
             }
+            $keyword_sql = "select keyword from ".TABLE_CATEGORIES_TO_MISSION."
+                            where categories_id='".$cInfo->categories_id."'";
+            $keyword_query = tep_db_query($keyword_sql);
+            $keyword_res = tep_db_fetch_array($keyword_query);
+            $default_keyword = $keyword_res?$keyword_res['keyword']:'';
+            $contents[] = array('text' => '<b>'.TEXT_KEYWORD.$default_keyword.'</b>');
+            $contents[] = array(
+                'align' => 'left',
+                'text' => '<a href="'. tep_href_link(FILENAME_CATEGORIES, 'cPath=' .
+              $cPath . '&cID=' . $cInfo->categories_id . '&action=edit_keyword') .
+                '">'.tep_image_button('button_edit.gif', TEXT_KEYWORD) . '</a> ');
+
 }
 
 //print_r($cInfo);
@@ -2073,6 +2212,17 @@ if ($ocertify->npermission >= 10) { //表示制限
                 : ''
                     ) );
             }
+            $keyword_sql = "select keyword from ".TABLE_CATEGORIES_TO_MISSION."
+                            where categories_id='".$cInfo->categories_id."'";
+            $keyword_query = tep_db_query($keyword_sql);
+            $keyword_res = tep_db_fetch_array($keyword_query);
+            $default_keyword = $keyword_res?$keyword_res['keyword']:'';
+            $contents[] = array('text' => '<b>'.TEXT_KEYWORD.$default_keyword.'</b>');
+            $contents[] = array(
+                'align' => 'left',
+                'text' => '<a href="'. tep_href_link(FILENAME_CATEGORIES, 'cPath=' .
+              $cPath . '&cID=' . $cInfo->categories_id . '&action=edit_keyword') .
+                '">'.tep_image_button('button_edit.gif', TEXT_KEYWORD) . '</a> ');
 }else{
             $contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_REVIEWS, 'cPath=' . $cPath . '&products_id=' . $pInfo->products_id . '&action=new') . '">' . tep_image_button('button_reviews.gif', IMAGE_REVIEWS) . '</a>');
 }

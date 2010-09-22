@@ -534,3 +534,10 @@ clear:both;
 	border: 1px solid #000;
 	display: none;
 }
+.search_class{
+margin-top:10px;
+}
+.search_class_td{
+font-size:12px;
+font-weight:bold;
+}
