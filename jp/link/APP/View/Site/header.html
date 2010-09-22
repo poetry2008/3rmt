@@ -34,17 +34,15 @@ if(isset($_GET['action'])&&$_GET['action']!=''&&$_GET['action']!='class'){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-<link type="text/css" rel="stylesheet" href="images/class/style.css" />
-<link type="text/css" rel="stylesheet" id='blueStyle' href="images/blue/class/color.css" />
-<link type="text/css" rel="stylesheet" id='blueStyle' href="images/blue/class/stylesheet.css" />
-<link type="text/css" rel="stylesheet" id='blueStyle' href="images/blue/class/design.css" />
+<link href="images/class/style.css" type="text/css" rel="stylesheet">
+<base href="http://<!--{php}--> echo $_SERVER['HTTP_HOST']; <!--{/php}-->/" />
 <script type='text/javascript' src='public/cookie.js'></script>
 <script type='text/javascript' src='public/style.js'></script>
 <script type='text/javascript' src='Script/jquery-1.4.2.js'></script>
 <!--{if $seo.title}-->
 <title><!--{$seo.title}--></title>
 <!--{else}-->
-<title>相互リンク集｜RMTワールドマネー</title>
+<title>相互リンク集｜RMTジャックポット</title>
 <!--{/if}-->
 </head>
 <body id='body'>
@@ -52,50 +50,22 @@ if(isset($_GET['action'])&&$_GET['action']!=''&&$_GET['action']!='class'){
     <a href="javascript:void(0);" style="cursor:hand" onKeyPress="SomeJavaScriptCode" onClick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト ワールドマネーをお気に入りに追加して下さい！</a>
   </div>
 <div id="header">
-    <div id="header_flash">
-      <ul>
-        <li class="header_flash_left"></li>
-        <li class="header_flash_content">
-          <table cellpadding="0" cellspacing="0" border="0" summary="logo">
-            <tr>
-              <td><a href="http://rmt.worldmoney.jp/">
-                <img src="../../../images/design/logo.jpg" width="200" height="103" alt="RMT" >
-                </a>
-              </td>
-              <td><object id="FlashID" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="662" height="103">
-                  <param name="movie" value="../../../images/design/header_flash.swf" >
-                  <param name="quality" value="high" >
-                  <param name="wmode" value="opaque" >
-                  <param name="swfversion" value="8.0.35.0" >
-                  <param name="expressinstall" value="Scripts/expressInstall.swf" >
-                </object>
-                <!--[if !IE]>-->
-                <object type="application/x-shockwave-flash" data="../../../images/design/header_flash.swf" width="662" height="103">                  
-                  <param name="quality" value="high" >
+    <script type="text/javascript" src="js/rmt_flash.js"></script>
+    <script type="text/javascript" src="js/images.js"></script>
+    <noscript>
+    <a href="index.php">
+    <img src="images/rmt.gif" width="185" height="65" alt="RMT" >
+    </a>
+    </noscript>
 
-                  <param name="wmode" value="opaque" >
-                  <param name="swfversion" value="8.0.35.0" >
-                  <param name="expressinstall" value="Scripts/expressInstall.swf" >
-                </object>
-                <!--<![endif]-->
-              </td>
-            </tr>
-          </table>
-        </li>
-        <li class="header_flash_right"></li>
-      </ul>
-    </div>
     <div id="header_Menu">
-      <ul>
-        <li class="header_menu_left"></li>
-        <li class="header_menu_content">
-          <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="menu box" style="margin-top: 11px;">
+          <table class="menu_table" width="100%" border="0" cellpadding="0" cellspacing="0" summary="menu box">
             <tr>
-              <td width="432"><div style="width: 432px; height: 43px; overflow:hidden;">
+              <td>
                   <form name="quick_find" action="/advanced_search_result.php" method="get">
-                    <table style="margin-top: 3px;" cellpadding="2" cellspacing="2" summary="search">
+                    <table>
                       <tr>
-                        <td><img class="middle" src="images/design/button/search_text.gif" width="76" height="25" alt="RMT検索"></td>
+                        <td><img class="middle" src="../images/design/button/search_text.jpg" alt="RMT検索"></td>
                         <td><select name="categories_id" class="header_search_select">
                             <option value="" selected>全てのゲーム</option>
                             <option value="168">FF11 RMT</option>
@@ -177,49 +147,34 @@ if(isset($_GET['action'])&&$_GET['action']!=''&&$_GET['action']!='class'){
                             <option value="471">ブライトシャドウ RMT</option>
                             <option value="472">三国志豪傑伝 RMT</option>
                             <option value="247">ウェブマネー RMT</option>
-                          </select>
-                        </td>
+                          </select></td>
                         <td><input type="text" name="keywords" value="RMT" class="header_search_input"></td>
-                        <td><input name="imageField" type="submit" class="header_search_submit" value="" alt="検索">
-                        </td>
+                        <td><input name="imageField" type="submit" class="header_search_submit" value="" alt="検索"></td>
                       </tr>
                     </table>
                     <input type="hidden" name="search_in_description" value="1">
                     <input type="hidden" name="inc_subcat" value="1">
                   </form>
-                </div></td>
-              <td align="right" width="372"><div style=" width:372px; overflow: hidden; height: 43px;">
+              </td>
+              <td align="right">
                   <table summary="menu">
                     <tr>
-                      <td><a href="/rss.php" class="header_menu_1">
-                        </a>
-                        <a href="/shopping_cart.php" class="header_menu_2">
-                        </a>
-                        <a href="http://3wm.maker.200.com/checkout_products.php" class="header_menu_3">
-                        </a>
-                      </td>
-                      <td width="88" align="right" style="background-repeat: no-repeat;"><span id="jk-shoppingcart" style="font-size:12px">0円</span></td>
+                      <td><a href="/rss.php" class="header_menu_1"></a></td>
+                      <td><a href="/shopping_cart.php" class="header_menu_2"></a></td>
+                      <td><a href="/checkout_products.php" class="header_menu_3"></a></td>
+                      <td class="jk-shoppingcart" align="right"><span id="jk-shoppingcart">0円</span></td>
                     </tr>
                   </table>
-                </div></td>
+              </td>
             </tr>
           </table>
-        </li>
-        <li class="header_menu_right"></li>
-      </ul>
     </div>
     <div class="header_Navigation">
-      <ul>
-        <li class="header_navigation_left"></li>
-        <li class="header_navigation_content">
           <p class="header_Navigation_p">
             <a href="/sitemap.php">サイトマップ</a>
             &nbsp;&nbsp;
-            <a href="http://3wm.maker.200.com" class="headerNavigation">RMT</a>
+            <a href="/" class="headerNavigation">RMT</a>
           </p>
-        </li>
-        <li class="header_navigation_right"></li>
-      </ul>
     </div>
 
 <div class="search_head">

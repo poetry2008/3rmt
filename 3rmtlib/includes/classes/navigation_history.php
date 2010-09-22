@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   class navigationHistory {
@@ -80,12 +73,12 @@
       if (is_array($page)) {
         $this->snapshot = array('page' => $page['page'],
                                 'mode' => $page['mode'],
-                                'get' => $page['get'],
+                                'get'  => $page['get'],
                                 'post' => $page['post']);
       } else {
         $this->snapshot = array('page' => basename($PHP_SELF),
                                 'mode' => (($_SERVER['HTTPS'] == 'on') ? 'SSL' : 'NONSSL'),
-                                'get' => $_GET,
+                                'get'  => $_GET,
                                 'post' => $_POST);
       }
     }

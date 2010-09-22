@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
@@ -26,10 +19,10 @@ function pass_hidd(){
   
   if(CI == '0'){
     document.getElementById('trpass1').style.display = "";
-	document.getElementById('trpass2').style.display = "";
+  document.getElementById('trpass2').style.display = "";
   }else{
     document.getElementById('trpass1').style.display = "none";
-	document.getElementById('trpass2').style.display = "none";
+  document.getElementById('trpass2').style.display = "none";
   }
 }
 -->

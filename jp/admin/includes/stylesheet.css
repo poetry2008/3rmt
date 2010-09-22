@@ -502,21 +502,34 @@ width:120px;
 .add_link{
 clear:both;
 }
+.search_class{
+margin-top:10px;
+}
+.search_class_td{
+font-size:12px;
+font-weight:bold;
 #orders_flag {
 	border: 1px solid #000;
 	display: none;
 }
+.orders_flag_checked {
+	color: #ff0000;
+	font-size:12px;
+	cursor:pointer;
+}
+.orders_flag_unchecked {
+	color: #999;
+	font-size:12px;
+	cursor:pointer;
+}
 #orders_info {
 	border: 1px solid #000;
-	display: none;
 }
 #orders_client {
 	border: 1px solid #000;
-	display: none;
 }
-#orders_reffer {
+#orders_referer {
 	border: 1px solid #000;
-	display: none;
 }
 #orders_history {
 	border: 1px solid #000;
@@ -532,12 +545,13 @@ clear:both;
 }
 #orders_credit {
 	border: 1px solid #000;
-	display: none;
 }
-.search_class{
-margin-top:10px;
-}
-.search_class_td{
-font-size:12px;
-font-weight:bold;
+h3 {
+	height:15px;
+	background:#888;
+	font-size:11px;
+	color:#fff;
+	margin:0;
+	line-height:15px;
+	padding-left:2px;
 }

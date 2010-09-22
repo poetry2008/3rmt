@@ -54,10 +54,27 @@
                           'orders_ip'             => $order['orders_ip'],
                           'orders_host_name'      => $order['orders_host_name'],
                           'orders_user_agent'     => $order['orders_user_agent'],
+                          'orders_ref'            => $order['orders_ref'],
                           'orders_comment'        => $order['orders_comment'],
                           'orders_important_flag' => $order['orders_important_flag'],
                           'orders_care_flag'      => $order['orders_care_flag'],
                           'orders_wait_flag'      => $order['orders_wait_flag'],
+        
+        
+        
+                          'orders_screen_resolution'    => $order['orders_screen_resolution'],
+                          'orders_color_depth'          => $order['orders_color_depth'],
+                          'orders_flash_enable'         => $order['orders_flash_enable'],
+                          'orders_flash_version'        => $order['orders_flash_version'],
+                          'orders_director_enable'      => $order['orders_director_enable'],
+                          'orders_quicktime_enable'     => $order['orders_quicktime_enable'],
+                          'orders_realplayer_enable'    => $order['orders_realplayer_enable'],
+                          'orders_windows_media_enable' => $order['orders_windows_media_enable'],
+                          'orders_pdf_enable'           => $order['orders_pdf_enable'],
+                          'orders_java_enable'          => $order['orders_java_enable'],
+        
+        
+        
                           'last_modified'         => $order['last_modified']);
 
       $this->customer = array('name'           => $order['customers_name'],
