@@ -16,7 +16,7 @@
   error_reporting(0);
   ini_set("display_errors", "Off");
   //error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
-  //ini_set("display_errors", "On");
+//  ini_set("display_errors", "On");
 
 // check if register_globals is enabled.
 // since this is a temporary measure this message is hardcoded. The requirement will be removed before 2.2 is finalized.
@@ -34,7 +34,7 @@
   //require('includes/configure.php');
 
 // Set lib path
-  //ini_set('include_path',ini_get('include_path').':'.DIR_FS_3RMTLIB);
+  ini_set('include_path',ini_get('include_path').':'.DIR_FS_3RMTLIB);
 
 // define the project version
   define('PROJECT_VERSION', 'osCommerce 2.2-MS1');
@@ -302,7 +302,7 @@
 
 // include the mail classes
   require(DIR_WS_CLASSES . 'mime.php');
-  require(DIR_WS_CLASSES . 'email.php');
+if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
 
 // language
   if (!tep_session_is_registered('language') || isset($_GET['language'])) {
@@ -357,7 +357,7 @@
     }
   } else {
     tep_session_register('navigation');
-    $navigation = new navigationHistory;
+    $navigation = new navigationHistory();
   }
   $navigation->add_current_page();
 

@@ -18,9 +18,9 @@ ini_set('include_path',ini_get('include_path').':'.$libpath);
   define('HTTP_CATALOG_SERVER', 'http://aionbunsin.3322.org/admin');
   define('HTTPS_CATALOG_SERVER', 'https://aionbunsin.3322.org/admin');
   define('ENABLE_SSL_CATALOG', 'false'); // secure webserver for catalog module
-  define('DIR_FS_DOCUMENT_ROOT', '/home/szn/project/3rmt/jp/admin/'); // where the pages are located on the server
+  define('DIR_FS_DOCUMENT_ROOT', '/home/bobhero/project/ost/OSC_3RMT/jp/admin/'); // where the pages are located on the server
   define('DIR_WS_ADMIN', '/'); // absolute path required
-  define('DIR_FS_ADMIN', '/home/szn/project/3rmt/jp/admin/'); // absolute pate required
+  define('DIR_FS_ADMIN', '/home/bobhero/project/work/ost/OSC_3RMT/jp/admin/'); // absolute pate required
   define('DIR_WS_CATALOG', '/'); // absolute path required
   define('DIR_FS_CATALOG', '/home/szn/project/3rmt/jp/admin/'); // absolute path required
   define('DIR_WS_IMAGES', 'images/');
@@ -63,3 +63,5 @@ ini_set('include_path',ini_get('include_path').':'.$libpath);
       "www.iimy.co.jp",
       );
 
+// osticket start 
+  define('DIR_OST',DIR_FS_ADMIN.'../includes/ost');
