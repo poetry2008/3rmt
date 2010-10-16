@@ -3,6 +3,8 @@
   $Id$
 */
   check_uri('/^\/latest_news\.php/');
+  check_uri('/page0/');
+  check_uri('/page1\.html/');
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_LATEST_NEWS);
   

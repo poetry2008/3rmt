@@ -12,9 +12,6 @@
 .x-bg b,.gameweb,.sw2-more li{
 	background: #ECF5FA;
 }
-#color,.sw1,.sw2,.sw3,.gameweb,#class,.cs-all,.sw1-more li,.sw2-more li,.web,#custom,#sites li,#submit,#linkcheck{	
-	border: 1px #F9D984 solid;
-}
 .mainweb{
 border:1px solid #F9D984;
 }
@@ -44,8 +41,6 @@ border:1px solid #F9D984;
 	background:#C06000;
 }
 #class,#custom,#submit,#linkcheck {
-	/*background: url(../img/classmore-bg.gif);*/
-	background:#FDF0CD;
 }
 .cs-content .td1 a{
 	color: #01293D;

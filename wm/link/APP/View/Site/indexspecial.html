@@ -5,7 +5,7 @@
 		<!--{assign var="sites" value=$frequentSpecial[loopFrequentSpecial].sites }-->
 		<!--{assign var="show"  value=$frequentSpecial[loopFrequentSpecial].show  }-->
 		<!--{if $frequentSpecial[loopFrequentSpecial].class.name}-->
-		<li class="o1"><strong><!--{$frequentSpecial[loopFrequentSpecial].class.name}-->:</strong></li>
+		<li class="o1"><div class="web_3_title"><!--{$frequentSpecial[loopFrequentSpecial].class.name}-->:</div></li>
 		<li class="o2">
 			<!--{section name=loopFrequentSpecialSite loop=$sites max=$show}-->
 			<a href='<!--{$sites[loopFrequentSpecialSite].url}-->' target='_blank'><!--{$sites[loopFrequentSpecialSite].name}--></a>

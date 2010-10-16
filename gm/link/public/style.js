@@ -56,7 +56,7 @@ function getElementsByName_iefix(tag, name) {
 	}
 	return arr;
 }
-function checkSm(search_url)
+function checkSm(search_url,site_id)
 {
   var error = false;
   var error_message = '記入ミス' + ':';
@@ -217,17 +217,16 @@ function checkSm(search_url)
   }
 }
 
-function checkUrl(_search_url)
+function checkUrl(_search_url,site_id)
 {
   var urlstate = '';
   var a_url = _search_url;
-  alert(_search_url);
   var new_url = document.getElementById('content_url');
   if(document.getElementById('image_code')){
   var imgcode = document.getElementById('image_code');
   data_val = "url="+new_url.value+"&image_code="+imgcode.value;
   }else{
-  data_val = "url="+new_url.value;
+  data_val = "url="+new_url.value+"&site_id="+site_id;
   }
   new_url = encodeURI(new_url.value);
   var urlCheck = $.ajax({
@@ -240,7 +239,6 @@ beforeSend: function(){},
 error: function (XMLHttpRequest, textStatus, errorThrown){},
 success: function (msg){}
 });
-alert(urlCheck.responseText);
 return urlCheck.responseText;
 }
 

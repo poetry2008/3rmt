@@ -1,15 +1,183 @@
 <?php
 require('includes/application_top.php');
-
 if ($_POST['orders_id'] && $_POST['orders_comment']) {
+  // update orders_comment
   tep_db_perform('orders', array('orders_comment' => $_POST['orders_comment']), 'update', "orders_id='".$_POST['orders_id']."'");
   echo $_POST['orders_comment'];
 } else if ($_GET['orders_id'] && isset($_GET['orders_important_flag'])) {
+  // 重要
   tep_db_perform('orders', array('orders_important_flag' => $_GET['orders_important_flag']), 'update', "orders_id='".$_GET['orders_id']."'");
-
 } else if ($_GET['orders_id'] && isset($_GET['orders_care_flag'])) {
+  // 取り扱い注意
   tep_db_perform('orders', array('orders_care_flag' => $_GET['orders_care_flag']), 'update', "orders_id='".$_GET['orders_id']."'");
-
 } else if ($_GET['orders_id'] && isset($_GET['orders_wait_flag'])) {
+  // 取引待ち
   tep_db_perform('orders', array('orders_wait_flag' => $_GET['orders_wait_flag']), 'update', "orders_id='".$_GET['orders_id']."'");
+}  else if ($_GET['orders_id'] && isset($_GET['orders_inputed_flag'])) {
+  // 入力済み
+  tep_db_perform('orders', array('orders_inputed_flag' => $_GET['orders_inputed_flag']), 'update', "orders_id='".$_GET['orders_id']."'");
+} else if ($_GET['action'] == 'delete' && $_GET['orders_id'] && $_GET['computers_id']) {
+  tep_db_query("delete from ".TABLE_ORDERS_TO_COMPUTERS." where orders_id='".$_GET['orders_id']."' and computers_id='".(int)$_GET['computers_id']."'");
+} else if ($_GET['action'] == 'insert' && $_GET['orders_id'] && $_GET['computers_id']) {
+  tep_db_query("insert into ".TABLE_ORDERS_TO_COMPUTERS." (`orders_id`,`computers_id`) VALUES('".$_GET['orders_id']."','".(int)$_GET['computers_id']."')");
+} else if ($_GET['action'] == 'last_customer_action') {
+  echo LAST_CUSTOMER_ACTION;
+} else if (isset($_GET['orders_id']) && isset($_GET['work'])) {
+  // A, B, C
+  tep_db_perform('orders', array('orders_work' => $_GET['work']), 'update', "orders_id='".$_GET['orders_id']."'") && print('success');
+} else if ($_GET['action'] == 'get_new_orders' && $_GET['prev_customer_action']) {
+  $orders_query = tep_db_query("
+    select * from ".TABLE_ORDERS."
+    where date_purchased > '".$_GET['prev_customer_action']."'
+  ");
+
+  while ($orders = tep_db_fetch_array($orders_query)) {
+      if (!isset($orders['site_id'])) {
+        $orders = tep_db_fetch_array(tep_db_query("
+          select *
+          from ".TABLE_ORDERS." o
+          where orders_id='".$orders['orders_id']."'
+        "));
+      }
+      $allorders[] = $orders;
+      //if (((!isset($_GET['oID']) || !$_GET['oID']) || ($_GET['oID'] == $orders['orders_id'])) && (!isset($oInfo) || !$oInfo)) {
+      //  $oInfo = new objectInfo($orders);
+      //}
+
+  //今日の取引なら赤色
+  $trade_array = getdate(strtotime(tep_datetime_short($orders['torihiki_date'])));
+  $today_array = getdate();
+  if ($trade_array["year"] == $today_array["year"] && $trade_array["mon"] == $today_array["mon"] && $trade_array["mday"] == $today_array["mday"]) {
+    $today_color = 'red';
+    if ($trade_array["hours"] >= $today_array["hours"]) {
+      $next_mark = tep_image(DIR_WS_ICONS . 'arrow_blinking.gif', '次の注文'); //次の注文に目印をつける
+    } else {
+      $next_mark = '';
+    }
+  } else {
+    #if ($ocertify->npermission) {
+      $today_color = 'black';
+    #} else {
+      #$today_color = '#999';
+    #}
+    $next_mark = '';
+  }
+  
+
+  echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="showOrdersInfo(\''.tep_get_orders_products_string($orders).'\');this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="hideOrdersInfo();this.className=\'dataTableRow\'" ondblclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'page')) . 'oID='.$orders['orders_id']).'\'">' . "\n";
+  if ($ocertify->npermission) {
+    ?>
+        <td style="border-bottom:1px solid #000000;background-color: darkred;" class="dataTableContent">
+          <input type="checkbox" name="chk[]" value="<?php echo $orders['orders_id']; ?>" onClick="chg_tr_color(this)">
+        </td>
+<?php 
+  }
+?>
+        <td style="border-bottom:1px solid #000000;background-color: darkred;" class="dataTableContent" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><?php echo tep_get_site_romaji_by_id($orders['site_id']);?></td>
+        <td style="border-bottom:1px solid #000000;background-color: darkred;" class="dataTableContent" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)">
+          <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $orders['orders_id'] . '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);?></a>&nbsp;
+          <a href="<?php echo tep_href_link('orders.php', 'cEmail=' . tep_output_string_protected($orders['customers_email_address']));?>"><?php echo tep_image(DIR_WS_ICONS . 'search.gif', '過去の注文');?></a>
+<?php if ($ocertify->npermission) {?>
+          &nbsp;<a href="<?php echo tep_href_link('customers.php', 'page=1&cID=' . tep_output_string_protected($orders['customers_id']) . '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS . 'arrow_r_red.gif', '顧客情報');?></a>&nbsp;&nbsp;
+<?php }?>
+  <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
+  <font color="#999">
+  <?php }?>
+          <b><?php echo tep_output_string_protected($orders['customers_name']);?></b>
+  <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
+  </font>
+  <?php }?>
+    </td>
+    <td style="border-bottom:1px solid #000000;background-color: darkred;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)">
+      <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
+      <font color="#999"><?php echo strip_tags(tep_get_ot_total_by_orders_id($orders['orders_id']));?></font>
+      <?php } else { ?>
+      <?php echo strip_tags(tep_get_ot_total_by_orders_id($orders['orders_id']));?>
+      <?php }?>
+    </td>
+    <td style="border-bottom:1px solid #000000;background-color: darkred;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><?php echo $next_mark; ?><font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>"><?php echo tep_datetime_short($orders['torihiki_date']); ?></font></td>
+    <td style="border-bottom:1px solid #000000;background-color: darkred;" class="dataTableContent" align="left" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><?php if ($orders['orders_wait_flag']) { echo tep_image(DIR_WS_IMAGES . 'icon_hand.gif', '取引待ち'); } else { echo '&nbsp;'; } ?></td>
+    <td style="border-bottom:1px solid #000000;background-color: darkred;" class="dataTableContent" align="left" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><?php echo $orders['orders_work']?strtoupper($orders['orders_work']):'&nbsp;';?></td>
+    <td style="border-bottom:1px solid #000000;background-color: darkred;" class="dataTableContent" align="center" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><span style="color:#999999;"><?php echo tep_datetime_short($orders['date_purchased']); ?></span></td>
+    <td style="border-bottom:1px solid #000000;background-color: darkred;" class="dataTableContent" align="center" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)">　</td>
+    <td style="border-bottom:1px solid #000000;background-color: darkred;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><font color="<?php echo $today_color; ?>"><?php echo $orders['orders_status_name']; ?></font></td>
+    <td style="border-bottom:1px solid #000000;background-color: darkred;" class="dataTableContent" align="right"><?php 
+      echo '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID','page')) . 'oID=' . $orders['orders_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
+    ?>&nbsp;</td>
+    </tr>
+<?php 
+  }
+} else if ($_GET['action'] == 'save_questions' && $_GET['orders_id']) {
+  print_r($_POST);
+  isset($_POST['q_1_1']) && $questions_arr['q_1_1'] = intval($_POST['q_1_1']);
+  isset($_POST['q_1_2']) && $questions_arr['q_1_2'] = intval($_POST['q_1_2']);
+  isset($_POST['q_2_1']) && $questions_arr['q_2_1'] = intval($_POST['q_2_1']);
+  isset($_POST['q_2_2']) && $questions_arr['q_2_2'] = intval($_POST['q_2_2']);
+  isset($_POST['q_3_1']) && $questions_arr['q_3_1'] = intval($_POST['q_3_1']);
+  ($_POST['q_3_2_m'] && $_POST['q_3_2_d']) && $questions_arr['q_3_2'] = date('y') . '-' . intval($_POST['q_3_2_m']) . '-' . intval($_POST['q_3_2_d']);
+  isset($_POST['q_3_3']) && $questions_arr['q_3_3'] = intval($_POST['q_3_3']);
+  isset($_POST['q_3_4']) && $questions_arr['q_3_4'] = intval($_POST['q_3_4']);
+  isset($_POST['q_4_1']) && $questions_arr['q_4_1'] = $_POST['q_4_1'];
+  isset($_POST['q_4_2']) && $questions_arr['q_4_2'] = intval($_POST['q_4_2']);
+  isset($_POST['q_5_1']) && $questions_arr['q_5_1'] = intval($_POST['q_5_1']);
+  ($_POST['q_5_2_m'] && $_POST['q_5_2_d']) && $questions_arr['q_5_2'] = date('y') . '-' . intval($_POST['q_5_2_m']) . '-' . intval($_POST['q_5_2_d']);
+  isset($_POST['q_6_1']) && $questions_arr['q_6_1'] = intval($_POST['q_6_1']);
+  isset($_POST['q_6_2']) && $questions_arr['q_6_2'] = intval($_POST['q_6_2']);
+  isset($_POST['q_7_1']) && $questions_arr['q_7_1'] = $_POST['q_7_1'];
+  isset($_POST['q_7_2']) && $questions_arr['q_7_2'] = intval($_POST['q_7_2']);
+  isset($_POST['q_8_1']) && $questions_arr['q_8_1'] = $_POST['q_8_1'];
+  isset($_POST['q_9_1']) && $questions_arr['q_9_1'] = intval($_POST['q_9_1']);
+  ($_POST['q_9_2_m'] && $_POST['q_9_2_d']) && $questions_arr['q_9_2'] = date('y') . '-' . intval($_POST['q_9_2_m']) . '-' . intval($_POST['q_9_2_d']);
+  isset($_POST['q_10_1']) && $questions_arr['q_10_1'] = intval($_POST['q_10_1']);
+  isset($_POST['q_10_2']) && $questions_arr['q_10_2'] = intval($_POST['q_10_2']);
+  isset($_POST['q_11_1']) && $questions_arr['q_11_1'] = intval($_POST['q_11_1']);
+  isset($_POST['q_11_2']) && $questions_arr['q_11_2'] = $_POST['q_11_2'];
+  isset($_POST['q_11_3']) && $questions_arr['q_11_3'] = intval($_POST['q_11_3']);
+  isset($_POST['q_11_4']) && $questions_arr['q_11_4'] = intval($_POST['q_11_4']);
+  isset($_POST['q_11_5']) && $questions_arr['q_11_5'] = intval($_POST['q_11_5']);
+  isset($_POST['q_11_6']) && $questions_arr['q_11_6'] = intval($_POST['q_11_6']);
+  isset($_POST['q_11_7']) && $questions_arr['q_11_7'] = intval($_POST['q_11_7']);
+  isset($_POST['q_11_8']) && $questions_arr['q_11_8'] = intval($_POST['q_11_8']);
+  isset($_POST['q_11_9']) && $questions_arr['q_11_9']   = $_POST['q_11_9'];
+  isset($_POST['q_11_10']) && $questions_arr['q_11_10'] = $_POST['q_11_10'];
+  isset($_POST['q_11_11']) && $questions_arr['q_11_11'] = intval($_POST['q_11_11']);
+  isset($_POST['q_11_12']) && $questions_arr['q_11_12'] = intval($_POST['q_11_12']);
+  ($_POST['q_11_13_m'] && $_POST['q_11_13_d']) && $questions_arr['q_11_13'] = date('y') . '-' . intval($_POST['q_11_13_m']) . '-' . intval($_POST['q_11_13_d']);
+  isset($_POST['q_11_14']) && $questions_arr['q_11_14'] = intval($_POST['q_11_14']);
+  isset($_POST['q_11_15']) && $questions_arr['q_11_15'] = $_POST['q_11_15'];
+  isset($_POST['q_11_16']) && $questions_arr['q_11_16'] = intval($_POST['q_11_16']);
+  isset($_POST['q_12_1']) && $questions_arr['q_12_1'] = intval($_POST['q_12_1']);
+  isset($_POST['q_12_2']) && $questions_arr['q_12_2'] = intval($_POST['q_12_2']);
+  isset($_POST['q_13_1']) && $questions_arr['q_13_1'] = intval($_POST['q_13_1']);
+  ($_POST['q_13_2_m'] && $_POST['q_13_2_d']) && $questions_arr['q_13_2'] = date('y') . '-' . intval($_POST['q_13_2_m']) . '-' . intval($_POST['q_13_2_d']);
+  isset($_POST['q_14_1']) && $questions_arr['q_14_1'] = intval($_POST['q_14_1']);
+  isset($_POST['q_14_2']) && $questions_arr['q_14_2'] = $_POST['q_14_2'];
+  isset($_POST['q_15_1']) && $questions_arr['q_15_1'] = intval($_POST['q_15_1']);
+  ($_POST['q_15_2_m'] && $_POST['q_15_2_d']) && $questions_arr['q_15_2'] = date('y') . '-' . intval($_POST['q_15_2_m']) . '-' . intval($_POST['q_15_2_d']);
+  isset($_POST['q_15_3']) && $questions_arr['q_15_3'] = intval($_POST['q_15_3']);
+  isset($_POST['q_15_4']) && $questions_arr['q_15_4'] = intval($_POST['q_15_4']);
+  isset($_POST['q_15_5']) && $questions_arr['q_15_5'] = intval($_POST['q_15_5']);
+  ($_POST['q_15_6_m'] && $_POST['q_15_6_d']) && $questions_arr['q_15_6'] = date('y') . '-' . intval($_POST['q_15_6_m']) . '-' . intval($_POST['q_15_6_d']);
+  isset($_POST['q_15_7']) && $questions_arr['q_15_7'] = $_POST['q_15_7'];
+  isset($_POST['q_15_8']) && $questions_arr['q_15_8'] = intval($_POST['q_15_8']);
+  isset($_POST['q_16_1']) && $questions_arr['q_16_1'] = $_POST['q_16_1'];
+  isset($_POST['q_16_2']) && $questions_arr['q_16_2'] = intval($_POST['q_16_2']);
+  isset($_POST['questions_type']) && $questions_arr['orders_questions_type'] = intval($_POST['questions_type']);
+  
+  print_r($questions_arr);
+  if (tep_db_num_rows(tep_db_query("select orders_id from orders_questions where orders_id='".$_GET['orders_id']."'"))) {
+    tep_db_perform('orders_questions', $questions_arr, 'update', "orders_id='".$_GET['orders_id']."'");
+  } else {
+    $questions_arr['orders_id'] = $_GET['orders_id'];
+    tep_db_perform('orders_questions', $questions_arr);
+  }
+  if (isset($questions_arr['q_8_1']) && $questions_arr['q_8_1']) {
+    $orders = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS." where orders_id='".$_GET['orders_id']."'"));
+    if ($orders['orders_status'] != 19) {
+      tep_db_perform('orders', array('q_8_1'=>$_POST['q_8_1'],'orders_status' => '19'), 'update', "orders_id='".$_GET['orders_id']."'");
+      tep_db_perform('orders_status_history', array('orders_id' => $_GET['orders_id'], 'orders_status_id' => '19', 'date_added'=> 'now()'));
+      orders_updated($_GET['orders_id']);
+      orders_wait_flag($_GET['orders_id']);
+    }
+  }
 }

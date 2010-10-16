@@ -72,7 +72,8 @@
             time_entry, 
             time_last_click, 
             last_page_url,
-            site_id
+            site_id,
+            referer
           ) values (
             '" . (int)$wo_customer_id . "', 
             '" . tep_db_input($wo_full_name) . "', 
@@ -81,7 +82,8 @@
             '" . tep_db_input($current_time) . "', 
             '" . tep_db_input($current_time) . "', 
             '" . tep_db_input($wo_last_page_url) . "',
-            '" . SITE_ID . "'
+            '" . SITE_ID . "',
+            '" . tep_get_domain($_SESSION['referer']) . "'
           )
       ");
     }

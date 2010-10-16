@@ -24,8 +24,8 @@ gUrl = location.href;
 
 <!--{include file=return_add.tpl}-->
 
-<!--{assign var=ascImgPath value='/images/backpic/asc.gif'}-->
-<!--{assign	var=descImgPath value='/Images/backpic/desc.gif'}-->
+<!--{assign var=ascImgPath value='images/backpic/asc.gif'}-->
+<!--{assign	var=descImgPath value='images/backpic/desc.gif'}-->
 
 
 <!--{include file=category.tpl}-->	
@@ -65,31 +65,44 @@ gUrl = location.href;
 </td>
 <!--{/foreach}-->
 <td>
-<!--{if $d.is_custom eq '1'}-->
 <!--{if $d.state eq '1'}-->
-<img src="/images/img/success.png" alt="search">
+<img src="images/img/success.png" alt="search">
 <!--{else}-->
-<img src="/images/img/fail.png" alt="search">
-<!--{/if}-->
+<img src="images/img/fail.png" alt="search">
 <!--{/if}-->
 </td>
 <td align="center">
-<!--{if $d.is_custom eq '1'}-->
 <!--{if $d.show_state eq '1'}-->
-<img src="/images/icon_status_green.gif">
+<img src="images/icon_status_green.gif">
 <a href="<!--{url controller=seoplink
 action=linkcheckupdate id=$d.id show=0 
 }-->" >
-<img src="/images/icon_status_red_light.gif">
+<img src="images/icon_status_red_light.gif">
 </a>
 <!--{else}-->
 <a href="<!--{url controller=seoplink
 action=linkcheckupdate id=$d.id show=1 
 }-->" >
-<img src="/images/icon_status_green_light.gif">
+<img src="images/icon_status_green_light.gif">
 </a>
-<img src="/images/icon_status_red.gif">
+<img src="images/icon_status_red.gif">
 <!--{/if}-->
+</td>
+<td align="center">
+<!--{if $d.is_king eq '1'}-->
+<img src="images/icon_status_green.gif">
+<a href="<!--{url controller=seoplink
+action=linkcheckupdate id=$d.id king=0 
+}-->" >
+<img src="images/icon_status_red_light.gif">
+</a>
+<!--{else}-->
+<a href="<!--{url controller=seoplink
+action=linkcheckupdate id=$d.id king=1 
+}-->" >
+<img src="images/icon_status_green_light.gif">
+</a>
+<img src="images/icon_status_red.gif">
 <!--{/if}-->
 </td>
 

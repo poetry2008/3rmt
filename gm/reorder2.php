@@ -87,6 +87,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
             if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
               tep_mail('', SEND_EXTRA_ORDER_EMAILS_TO, $mail_title, $email_order, $o->customer['name'], $o->customer['email_address'], '');
             }
+            last_customer_action();
           }
          }else{?>
     <div class="comment">

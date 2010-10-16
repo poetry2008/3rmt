@@ -1,9 +1,8 @@
-<div id="linkcheck">
+<div class="top"><h3 class="linkcheck_h3"><!--{_t key='seoplink_submit_title'}--></h3></div>
+<div class="middle">
 <div id="linksite">
 <div class="custom-menu">
-<a href='<!--{url controller=site action=index}-->'><img src="public/images/backpic/custom-door.gif" alt="door" width="16" height="16" /> <!--{_t key='custom_close_window'}--></a>
 </div>
-<h3><!--{_t key='seoplink_submit_title'}--></h3>
 <div class="lc_attention" style="overflow:auto">
 <div class="lc_at_title">
 <!--{_t key="seoplink_attention"}-->
@@ -38,7 +37,9 @@
 <!--{_t key="attention_item3_title"}-->
 </li>
 <li>
-<!--{_t key="attention_item4_title"}-->
+<!--{_t key="attention_item4_title1"}-->
+<img src="images/isrec.gif" alt='recommend '/>
+<!--{_t key="attention_item4_title2"}-->
 </li>
 </ol>
 </div><!-- end of .lc_attention -->
@@ -49,7 +50,8 @@
 <br />
 <!--{_t key="content_attention2"}-->
 <form action='<!--{url controller=Site action=linkcheck_submit}-->'
-method='post' onsubmit="return checkSm('<!--{url controller=Site action=checkurl}-->')">
+method='post' onsubmit="return checkSm('<!--{url controller=Site
+action=checkurl}-->','')">
 <table class="linkcheck-ct">
 
 <tr>
@@ -166,3 +168,4 @@ value='<!--{$linkpage_url}-->' class="input-linkpage-url" /></td>
 </div>
 </div> 
 </div>
+<div class="bottom"></div>

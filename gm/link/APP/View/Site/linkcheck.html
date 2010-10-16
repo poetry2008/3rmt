@@ -1,10 +1,9 @@
-<div id="linkcheck">
+<div id="linkcheck_regist">
 <div id="linksite">
 <div class="custom-menu">
-<a href='<!--{url controller=site action=index}-->'><img src="public/images/backpic/custom-door.gif" alt="door" width="16" height="16" /> <!--{_t key='custom_close_window'}--></a>
 </div>
 <h3><!--{_t key='seoplink_submit_title'}--></h3>
-<div class="lc_attention" style="overflow:auto">
+<div class="lc_attention">
 <div class="lc_at_title">
 <!--{_t key="seoplink_attention"}-->
 </div> <!-- end of .lc_at_title -->
@@ -38,7 +37,9 @@
 <!--{_t key="attention_item3_title"}-->
 </li>
 <li>
-<!--{_t key="attention_item4_title"}-->
+<!--{_t key="attention_item4_title1"}-->
+<img src="images/isrec.gif" alt='recommend '/>
+<!--{_t key="attention_item4_title2"}-->
 </li>
 </ol>
 </div><!-- end of .lc_attention -->
@@ -49,7 +50,8 @@
 <br />
 <!--{_t key="content_attention2"}-->
 <form action='<!--{url controller=Site action=linkcheck_submit}-->'
-method='post' onsubmit="return checkSm('<!--{url controller=Site action=checkurl}-->')">
+method='post' onsubmit="return checkSm('<!--{url controller=Site
+action=checkurl}-->','')">
 <table class="linkcheck-ct">
 
 <tr>
@@ -87,6 +89,7 @@ value='<!--{$fpass}-->' class="input-fpass" />
 <br />
 <input id="content_fpass2" name='fpass2' type="password"
 value='<!--{$fpass}-->' class="input-fpass2" />
+<br />
 <!--{_t key="fpass2_explanation"}-->
 </td>
 </tr>

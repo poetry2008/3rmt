@@ -3,34 +3,38 @@ FLEA::loadClass("Controller_Base");
 class Controller_Site extends Controller_Base
 {
   /*
-  var $method_arr = array('すべての語を含む'=>'and'
-                          ,'いずれかの語を含む'=>'or');
-  var $engine_arr = array('オレンジ不動産リンク集' => 'Nezumy',
-                     'Yahoo!で' => 'Yahoo',
-                     'Googleで' => 'Google',
-                     'Infoseekで' => 'InfoSeek',
-                     'gooで' => 'Goo',
-                     'Exciteで' => 'Excite Japan',
-                     'フレッシュアイで' => 'FRESHEYE',
-                     '-----------------' => '',
-                     '楽天市場で' => '楽天市場',
-                     'bk1で' => 'BK1',
-                     'amazon.co.jp(ISBN検索)で' => 'amazon'
-                          );
-  var $day_arr = array('指定しない' => '',
-                  '本日'=> 'today',
-                  '1日以内' => '1',
-                  '3日以内' => '3',
-                  '7日以内' => '7',
-                  '14日以内' => '14',
-                  '30日以内' => '30'
-                       );
-  var $type_arr = array('次ページで開く' => '0','別窓で開く' => '1'
-                        );
-  */
+     var $method_arr = array('すべての語を含む'=>'and'
+     ,'いずれかの語を含む'=>'or');
+     var $engine_arr = array('オレンジ不動産リンク集' => 'Nezumy',
+     'Yahoo!で' => 'Yahoo',
+     'Googleで' => 'Google',
+     'Infoseekで' => 'InfoSeek',
+     'gooで' => 'Goo',
+     'Exciteで' => 'Excite Japan',
+     'フレッシュアイで' => 'FRESHEYE',
+     '-----------------' => '',
+     '楽天市場で' => '楽天市場',
+     'bk1で' => 'BK1',
+     'amazon.co.jp(ISBN検索)で' => 'amazon'
+     );
+     var $day_arr = array('指定しない' => '',
+     '本日'=> 'today',
+     '1日以内' => '1',
+     '3日以内' => '3',
+     '7日以内' => '7',
+     '14日以内' => '14',
+     '30日以内' => '30'
+     );
+     var $type_arr = array('次ページで開く' => '0','別窓で開く' => '1'
+     );
+   */
   var $seo = array();
+  var $bread;
   function __construct(){
     parent::__construct();
+    $global = &FLEA::getSingleton('Model_Global');
+    $dir = $global->find('name = "set_new_dir"');
+    $this->host_dir = $dir['value'];
   }
 
   /**
@@ -61,7 +65,7 @@ class Controller_Site extends Controller_Base
     //dump($frequentSpecial2,'frequentSpecial');
     $total = $model_Class->findCount();
 
-    $viewData = array(
+    $viewData = array( 'hostlink' => $this->host_dir,
     'top' => $topClass,
     'classSelector' => $classSelector,
     'frequentClass' => $frequentClass,
@@ -94,8 +98,17 @@ class Controller_Site extends Controller_Base
       $str = substr($str,0,-1);
       $class_str[$k] = array('string'=>$str);
     }
-    $viewData = array(
-        'seo' => $this->seo,
+    $model_Setseo = FLEA::getSingleton('Model_Setseo');
+    $seo = $model_Setseo->find("action ='".$_GET['action']."'");
+    if(!$seo){
+      $seo = $model_Setseo->find("action ='index'");
+    }
+    $this->getBreadcrumb();
+    $bread =  $this->bread->trail(' &raquo; ');
+    $seo = $this->replace_seo($this->bread,$seo);
+    $viewData = array( 'hostlink' => $this->host_dir,
+        'bread' => $bread,
+        'seo' => $seo,
         'kind' => '一覧',
         'class' => $topClass,
         'str' => $class_str,
@@ -125,16 +138,21 @@ class Controller_Site extends Controller_Base
     $page       = (isset($_GET['page']))?(int)$_GET['page']:1;
     $pageSize   = '20'; 
     $conditions = "class_id='".$classId."' and 
-                  ((is_custom='1' and show_state='1') or 
-                   is_custom <> '1')";
-    $sort       = "`order` DESC";
+      ((is_custom='1' and show_state='1') or 
+       is_custom <> '1')";
+    $sort = "created,is_recommend desc";
     $pager = & new FLEA_Helper_Pager($model_Site, $page, $pageSize, $conditions, $sort);
     $pager->setBasePageIndex(1);  // 起始页码设为1
 
-//    $pager->_conditions = array_merge($pager->_conditions,array('state'=>'1'));
+    //    $pager->_conditions = array_merge($pager->_conditions,array('state'=>'1'));
     $sites = $pager->findAll();
     $model_Class = &FLEA::getSingleton('Model_Class');
     $class = $model_Class->find($classId);
+    if(!$class||(isset($class)&&$class['class_id']==1)){
+      header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
+      require(dirname(__FILE__) . '/../../404.html');
+      exit;
+    }
     //dump($class);
     $path = $model_Class->getPath($class);
     //dump($path);
@@ -174,7 +192,7 @@ class Controller_Site extends Controller_Base
        $model_Frequent_Special2 = &FLEA::getSingleton('Model_FrequentSpecial2');
        $frequentSpecial2 = $model_Frequent_Special2->findAll(null,'`order` DESC');
     //        dump($class);
-    $viewData = array(
+    $viewData = array( 'hostlink' => $this->host_dir,
     'class' => $class,
     'classAdd' => $classAdd,
     'sitesAdd' => $sitesAdd,
@@ -197,8 +215,25 @@ class Controller_Site extends Controller_Base
     if($classkind['parent_id']>0){
       $classkind_f = $model_Class->find($classkind['parent_id']);
     }
-    $viewData = array(
-        'seo' => $this->seo,
+    $model_Setseo = FLEA::getSingleton('Model_Setseo');
+    $seo = $model_Setseo->find("action ='".$_GET['action']."'");
+    if(!$seo){
+      $seo = $model_Setseo->find("action ='index'");
+    }
+    $this->getBreadcrumb();
+    $global = &FLEA::getSingleton('Model_Global');
+    $dir = $global->find('name = "set_new_dir"');
+    if($classkind['parent_id']>0){
+      $this->bread->add($classkind_f['name'],'/'.$dir['value'].
+          '/class_id='.$classkind_f['class_id'].'.html');
+    }
+    $this->bread->add($classkind['name'],'/'.$dir['value'].
+        '/class_id='.$classkind['class_id'].'.html');
+    $bread =  $this->bread->trail(' &raquo; ');
+    $seo = $this->replace_seo($this->bread,$seo);
+    $viewData = array( 'hostlink' => $this->host_dir,
+        'seo' => $seo,
+        'bread' => $bread,
         'classkind_f'=> $classkind_f,
         'classkind' => $classkind,
         'classAdd' => $classAdd,
@@ -218,6 +253,7 @@ class Controller_Site extends Controller_Base
     $this->executeView("Site/class.html",$viewData);
   }
 
+  /*
   function actionAll()
   {
     $model_Class = &FLEA::getSingleton('Model_Class');
@@ -226,16 +262,25 @@ class Controller_Site extends Controller_Base
     //全部主题
     $model_Frequent_Special2 = &FLEA::getSingleton('Model_FrequentSpecial2');
     $frequentSpecial2 = $model_Frequent_Special2->findAll(null,'`order` DESC');
+    $model_Setseo = FLEA::getSingleton('Model_Setseo');
+    $seo = $model_Setseo->find("action ='".$_GET['action']."'");
+    if(!$seo){
+      $seo = $model_Setseo->find("action ='index'");
+    }
     //dump($topClass);
-    $viewData = array(
-        'seo' => $this->seo,
+    $this->getBreadcrumb();
+    $bread =  $this->bread->trail(' &raquo; ');
+    $seo = $this->replace_seo($this->bread,$seo);
+    $viewData = array( 'hostlink' => $this->host_dir,
+        'bread' => $bread,
+        'seo' => $seo,
         'kind' => '一覧',
         'class' => $topClass,
         'frequentSpecial2' => $frequentSpecial2,
         );
     $this->executeView("Site/all.html",$viewData);
   }
-
+  */
   /**
    *
    */
@@ -250,7 +295,7 @@ class Controller_Site extends Controller_Base
     $site = $model_Site->find($id);
     //dump($site);
     $site['comment'] = nl2br($site['comment']);
-    $viewData = array(
+    $viewData = array( 'hostlink' => $this->host_dir,
         'seo' => $this->seo,
         'site' => $site,
         );
@@ -306,7 +351,7 @@ class Controller_Site extends Controller_Base
     $path = $model_Class->getPath($class);
     //dump($path);
     //dump($sites);
-    $viewData = array(
+    $viewData = array( 'hostlink' => $this->host_dir,
         'class'=>$class,
         'path'=>$path,
         'sites'=>$sites,
@@ -375,7 +420,7 @@ class Controller_Site extends Controller_Base
     $right[] = $class['right_value'];
     $str_classes .= '<option value="'.$class['class_id'].'"'.($class['class_id']==$site['class_id']?'selected':'').'>'.$className."</option>\n";
     endforeach;
-    $viewData = array(
+    $viewData = array( 'hostlink' => $this->host_dir,
         'str_classes'=>$str_classes,
         'site'=>$site,
         );
@@ -410,24 +455,36 @@ class Controller_Site extends Controller_Base
   function actionlinkchecksubmit()
   { 
     $week_arr = array('1'=>'月','2'=>'火','3'=>'水',
-                      '4'=>'木','5'=>'金','6'=>'土',
-                      '7'=>'日');
+        '4'=>'木','5'=>'金','6'=>'土',
+        '7'=>'日');
     $preview = $_POST['preview'];
     if ($preview == 'on')
     {
       $model_Class = &FLEA::getSingleton('Model_Class');
       $class = $model_Class->find($_POST['class']);
-      $viewData = array(
-          'seo' => $this->seo,
+      $model_Setseo = FLEA::getSingleton('Model_Setseo');
+      $seo = $model_Setseo->find("action ='".$_GET['action']."_confirm'");
+      if(!$seo){
+        $seo = $model_Setseo->find("action ='index'");
+      }
+    $this->getBreadcrumb();
+    $bread =  $this->bread->trail(' &raquo; ');
+    $seo = $this->replace_seo($this->bread,$seo);
+    $top_info['h1'] = 'regist_h1';
+    $top_info['text'] = 'regist_text';
+      $viewData = array( 'hostlink' => $this->host_dir,
+          'top_info' => $top_info,
+          'bread' => $bread,
+          'seo' => $seo,
           'fname'=>h($_POST['fname']),
           'femail'=>h($_POST['femail']),
           'fpass' =>h($_POST['fpass']),
           'name' => h($_POST['name']),
-          'url'=> h($_POST['url']),
+          'url'=> h(trim($_POST['url'])),
           'comment'=>h($_POST['comment']),
           'class' => h($_POST['class']),
           'class_name' => $class['name'],
-          'linkpage_url' => h($_POST['linkpage_url']),
+          'linkpage_url' => h(trim($_POST['linkpage_url'])),
           'to_admin' => h($_POST['to_admin']),
           );
 
@@ -436,23 +493,26 @@ class Controller_Site extends Controller_Base
     else
     {
 
-      $bln = $this->linkcheck($_POST['url'], $_POST['linkpage_url']);
+      $bln = $this->linkcheck(trim($_POST['url']), trim($_POST['linkpage_url']));
       $bln['state']?$state='1':$state='0';
+      $bln['is_recommend']?$is_recommend='1':$is_recommend='0';
       $data = array(
           'id'       => (int)$_POST['id'],
           'name'     => h($_POST['name']),
-          'url'      => h($_POST['url']),
+          'url'      => h(trim($_POST['url'])),
           'comment'  => h($_POST['comment']),
           'class_id' => (int)$_POST['class'],
-          'linkpage_url' => $_POST['linkpage_url'],
+          'linkpage_url' => trim($_POST['linkpage_url']),
           'is_custom' => '1',
           'state' => $state,
+          'is_recommend' => $is_recommend,
           'to_admin' => h($_POST['to_admin']),
           'order'    => (int)$_POST['order'],
           );
 
       $model_Site = &FLEA::getSingleton('Model_Site');
-      if($new_site=$model_Site->save($data)){
+      if($data['url']!=''){
+        $new_site=$model_Site->save($data);
 
         $model_Consumer = &FLEA::getSingleton('Model_Consumer');
         $c_data = array( 
@@ -463,11 +523,26 @@ class Controller_Site extends Controller_Base
             );
         $model_Consumer->save($c_data);
 
+    $global = &FLEA::getSingleton('Model_Global');
+    $email_foot = $global->find('name = "email_foot"');
+    $email_foot_str = str_replace("\r\n","<br>",$email_foot['value']);
         $this->addMsg(_T($data['id']?'site_edit_success':'site_create_success')); 
         $model_Class = &FLEA::getSingleton('Model_Class');
         $class = $model_Class->find($_POST['class']);
-        $viewData = array(
-            'seo' => $this->seo,
+        $model_Setseo = FLEA::getSingleton('Model_Setseo');
+        $seo = $model_Setseo->find("action ='".$_GET['action']."_success'");
+        if(!$seo){
+          $seo = $model_Setseo->find("action ='index'");
+        }
+    $this->getBreadcrumb();
+    $bread =  $this->bread->trail(' &raquo; ');
+    $seo = $this->replace_seo($this->bread,$seo);
+    $top_info['h1'] = 'regist_h1';
+    $top_info['text'] = 'regist_text';
+        $viewData = array( 'hostlink' => $this->host_dir,
+            'top_info' => $top_info,
+            'bread' => $bread,
+            'seo' => $seo,
             'id' => $new_site,
             'fname' => h($_POST['fname']),
             'femail' => h($_POST['femail']),
@@ -484,7 +559,7 @@ class Controller_Site extends Controller_Base
         $subject = "=?UTF-8?B?".
           base64_encode('情報交換サイト！相互リンク集').
           "?=";
-//        $subject = '情報交換サイト！ 新規登録完了通知';
+        //        $subject = '情報交換サイト！ 新規登録完了通知';
         $message .= "このたびは、";
         $message .= "相互リンク集";
         $message .= "へのご登録ありがとうございます。<br>";
@@ -498,7 +573,7 @@ class Controller_Site extends Controller_Base
         $message .= '・登録者のIPアドレス：'.$_SERVER['REMOTE_ADDR']."<br>";
         $hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
         $message .= '・登録者のホスト名：'.$hostname."<br>";
-        $message .= '・参照元：'.url('site','setlinkchecksite')."<br>";
+        $message .= '・参照元：'.url('site','regist')."<br>";
         $message .= '*************************************************'."<br>";
         $message .= "<br>";
         $message .= '■ID'."<br>";
@@ -531,8 +606,7 @@ class Controller_Site extends Controller_Base
         $message .= "<br>";
         $message .= 'これからもどうぞよろしくお願いします。'."<br>";
         $message .= '+-------------------------------------+'."<br>";
-        $message .= "相互リンク集 管理人 オレンジ不動産<br>";
-        $message .= "株式会社iimy 不動産事業部<br>";
+        $message .= $email_foot_str."<br>";
         $message .= '+-------------------------------------+'."<br>";
 
         $message = wordwrap($message, 70);
@@ -557,7 +631,7 @@ class Controller_Site extends Controller_Base
 
       }else{
         $this->addMsg(_T($data['id']?'site_edit_failed':'site_create_failed')); 
-        redirect(url('site','setlinkchecksite'));
+        redirect(url('site','regist'));
       }
     }
   }
@@ -594,7 +668,7 @@ class Controller_Site extends Controller_Base
     }
     //    	dump($result);
     $class = array("name"=>_T("search_result"),"sites"=>$result);
-    $viewData = array(
+    $viewData = array( 'hostlink' => $this->host_dir,
         'seo' => $this->seo,
         "class"=>$class,
         );
@@ -629,7 +703,7 @@ class Controller_Site extends Controller_Base
   /**
    * 设置链接站点
    */
-  function actionSetlinkchecksite()
+  function actionRegist()
   {
 
     $model_Class = &FLEA::getSingleton('Model_Class');
@@ -671,9 +745,21 @@ class Controller_Site extends Controller_Base
     }
 
     endforeach;
-    $link_url = '&lt;a href="http://www.orangehousing.jp"&gt; 香川県高松市の不動産 &lt;/a&gt;';
-    $viewData = array(
-        'seo' => $this->seo,
+    $link_url = '&lt;a href="'.FLEA::getAppInf('site_url').'"&gt; '.FLEA::getAppInf('host_word').' &lt;/a&gt;';
+    $model_Setseo = FLEA::getSingleton('Model_Setseo');
+    $seo = $model_Setseo->find("action ='".$_GET['action']."'");
+    if(!$seo){
+      $seo = $model_Setseo->find("action ='index'");
+    }
+    $this->getBreadcrumb();
+    $bread =  $this->bread->trail(' &raquo; ');
+    $seo = $this->replace_seo($this->bread,$seo);
+    $top_info['h1'] = 'regist_h1';
+    $top_info['text'] = 'regist_text';
+    $viewData = array( 'hostlink' => $this->host_dir,
+        'top_info' => $top_info,
+        'bread' => $bread,
+        'seo' => $seo,
         'classSelector' => $str_classes,
         'link_url' => $link_url,
         'fname' => $_POST['fname']?$_POST['fname']:'',
@@ -686,7 +772,7 @@ class Controller_Site extends Controller_Base
         'class' => $_POST['class']?$_POST['class']:'',
         'to_admin' => $_POST['to_admin']?$_POST['to_admin']:'',
         );
-    $this->executeView("Site".DS."setlinkchecksite.html", $viewData); 
+    $this->executeView("Site".DS."regist.html", $viewData); 
   }
 
   /**
@@ -694,7 +780,7 @@ class Controller_Site extends Controller_Base
    */
   function actionDeletesite()
   {
-    $viewData = array(
+    $viewData = array( 'hostlink' => $this->host_dir,
         'seo' => $this->seo,
         'state' => '1',
         'email' => '',
@@ -709,6 +795,14 @@ class Controller_Site extends Controller_Base
   function actionSitedel()
   {
     $site_id = h($_POST['id']);
+    $model_Setseo = FLEA::getSingleton('Model_Setseo');
+    $seo = $model_Setseo->find("action ='".$_GET['action']."'");
+    $this->getBreadcrumb();
+    $bread =  $this->bread->trail(' &raquo; ');
+    $seo = $this->replace_seo($this->bread,$seo);
+    if(!$seo){
+      $seo = $model_Setseo->find("action ='index'");
+    }
     if(isset($_POST['del_check']) && $_POST['del_check'] == '1')
     {
       $model_Consumer = &FLEA::getSingleton('Model_Consumer');
@@ -722,8 +816,9 @@ class Controller_Site extends Controller_Base
         $s_cond = "id='".$consumer['site_id']."'";
         $model_Site->removeByConditions($s_cond);
         $model_Consumer->removeByPkv($consumer['consumer_id']);
-        $viewData = array(
-            'seo' => $this->seo,
+        $viewData = array( 'hostlink' => $this->host_dir,
+            'bread' => $bread,
+            'seo' => $seo,
             'id' => $site_id,
             'state' => '1',
             );
@@ -731,8 +826,9 @@ class Controller_Site extends Controller_Base
       }
       else
       {
-        $viewData = array(
-            'seo' => $this->seo,
+        $viewData = array( 'hostlink' => $this->host_dir,
+            'bread' => $bread,
+            'seo' => $seo,
             'id' => $site_id,
             'state' => '2',
             );
@@ -741,8 +837,9 @@ class Controller_Site extends Controller_Base
     }
     else
     {
-      $viewData = array(
-          'seo' => $this->seo,
+      $viewData = array( 'hostlink' => $this->host_dir,
+          'bread' => $bread,
+          'seo' => $seo,
           'id' => $site_id,
           'state' => '3',
           );
@@ -757,26 +854,50 @@ class Controller_Site extends Controller_Base
   /**
    * 站点列表
    */
-  function actionSitelist()
+  function actionRenew()
   {
     FLEA::loadHelper('Pager');
 
     $model_Site = &FLEA::getSingleton('Model_Site');
     $cond = "is_custom = '1' and show_state='1'";
-    $sort = "id";
+    $sort = "created,is_recommend desc";
+    if (isset($_GET['page'])&&$_GET['page']<2){
+      header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
+      require(dirname(__FILE__) . '/../../404.html');
+      exit;
+    }
 
     $page = $_GET['page']?$_GET['page']:1;
     $pager = & new FLEA_Helper_Pager($model_Site, $page, 10, $cond, $sort,'1');
-    $viewData = array(
-        'seo' => $this->seo,
+    $model_Setseo = FLEA::getSingleton('Model_Setseo');
+    $seo = $model_Setseo->find("action ='".$_GET['action']."'");
+    if(!$seo){
+      $seo = $model_Setseo->find("action ='index'");
+    }
+    $this->getBreadcrumb();
+    $bread =  $this->bread->trail(' &raquo; ');
+    $seo = $this->replace_seo($this->bread,$seo);
+    $page_info = $pager->getPagerData();
+    $last_page = array_pop($page_info['pagesNumber']);
+    if (isset($last_page)&&$page > $last_page){
+      header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
+      require(dirname(__FILE__) . '/../../404.html');
+      exit;
+    }
+    $top_info['h1'] = 'renew_h1';
+    $top_info['text'] = 'renew_text';
+    $viewData = array( 'hostlink' => $this->host_dir,
+        'top_info' => $top_info,
+        'bread' => $bread,
+        'seo' => $seo,
         'pager' => $pager,
         );
 
-    $this->executeView("Site".DS."sitelist.html", $viewData); 
+    $this->executeView("Site".DS."renew.html", $viewData); 
 
   }
   /*
-   互相连接的网站列表
+     互相连接的网站列表
    */
   function actionSitestate()
   {
@@ -784,11 +905,11 @@ class Controller_Site extends Controller_Base
 
     $model_Site = &FLEA::getSingleton('Model_Site');
     $cond = "is_custom = '1' and show_state='1'";
-    $sort = "id";
+    $sort = "created,is_recommend desc";
 
     $page = $_GET['page']?$_GET['page']:1;
     $pager = & new FLEA_Helper_Pager($model_Site, $page, 10, $cond, $sort,'1');
-    $viewData = array(
+    $viewData = array( 'hostlink' => $this->host_dir,
         'seo' => $this->seo,
         'pager' => $pager,
         );
@@ -799,7 +920,7 @@ class Controller_Site extends Controller_Base
   /*
    * 新添加的网站
    */
-  function actionSitenew()
+  function actionNew()
   {
     FLEA::loadHelper('Pager');
 
@@ -809,45 +930,92 @@ class Controller_Site extends Controller_Base
         date('m'),date('d'),date('Y'));
     $model_Site = &FLEA::getSingleton('Model_Site');
     $cond = "show_state = '1' and created > '".$time."'";
-    $sort = "created";
+    $sort = "created,is_recommend desc";
+    if (isset($_GET['page'])&&$_GET['page']<2){
+      header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
+      require(dirname(__FILE__) . '/../../404.html');
+      exit;
+    }
 
     $page = $_GET['page']?$_GET['page']:1;
     $pager = & new FLEA_Helper_Pager($model_Site, $page, 10, $cond, $sort,'1');
-    $viewData = array(
-        'seo' => $this->seo,
+    $model_Setseo = FLEA::getSingleton('Model_Setseo');
+    $seo = $model_Setseo->find("action ='".$_GET['action']."'");
+    if(!$seo){
+      $seo = $model_Setseo->find("action ='index'");
+    }
+    $this->getBreadcrumb();
+    $bread =  $this->bread->trail(' &raquo; ');
+    $seo = $this->replace_seo($this->bread,$seo);
+    $page_info = $pager->getPagerData();
+    $last_page = array_pop($page_info['pagesNumber']);
+    if (isset($last_page)&&$page > $last_page){
+      header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
+      require(dirname(__FILE__) . '/../../404.html');
+      exit;
+    }
+    $top_info['h1'] = 'new_h1';
+    $top_info['text'] = 'new_text';
+    $viewData = array( 'hostlink' => $this->host_dir,
+        'top_info' => $top_info,
+        'bread' => $bread,
+        'seo' => $seo,
         'pager' => $pager,
         );
 
-    $this->executeView("Site".DS."sitenew.html", $viewData); 
+    $this->executeView("Site".DS."new.html", $viewData); 
 
   }
   /*
    *推荐网站
    */
-  function actionSiterec(){
-   FLEA::loadHelper('Pager');
-   $model_frequentsite = &FLEA::getSingleton('Model_FrequentSite');
-   $arr = $model_frequentsite->findAll(null,'`order` DESC');
-   $site_id = '';
-   foreach($arr as $v){
-     $site_id .= $v['site_id'].',';
-   }
-   $site_id = substr($site_id,0,-1);
-   $model_Site = &FLEA::getSingleton('Model_Site');
-   //$cond = "is_custom = '1' and id in (".$site_id.")";
-   $cond = "((is_custom = '1' and show_state ='1') or (is_custom <> '1'))
-            and id in (".$site_id.")";
-   $sort = "id";
-   $page = $_GET['page']?$_GET['page']:1;
-   $pager = & new FLEA_Helper_Pager($model_Site, $page, 10, $cond, $sort,'1');
-    $viewData = array(
-        'seo' => $this->seo,
+  function actionRecommend(){
+    FLEA::loadHelper('Pager');
+    $model_frequentsite = &FLEA::getSingleton('Model_FrequentSite');
+    $arr = $model_frequentsite->findAll(null,'`order` DESC');
+    $site_id = '';
+    foreach($arr as $v){
+      $site_id .= $v['site_id'].',';
+    }
+    $site_id = substr($site_id,0,-1);
+    $model_Site = &FLEA::getSingleton('Model_Site');
+    //$cond = "is_custom = '1' and id in (".$site_id.")";
+    $cond = "(is_recommend = '1')"; 
+    $sort = "created,is_recommend desc";
+    if (isset($_GET['page'])&&$_GET['page']<2){
+      header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
+      require(dirname(__FILE__) . '/../../404.html');
+      exit;
+    }
+    $page = $_GET['page']?$_GET['page']:1;
+    $pager = & new FLEA_Helper_Pager($model_Site, $page, 10, $cond, $sort,'1');
+    $model_Setseo = FLEA::getSingleton('Model_Setseo');
+    $seo = $model_Setseo->find("action ='".$_GET['action']."'");
+    if(!$seo){
+      $seo = $model_Setseo->find("action ='index'");
+    }
+    $this->getBreadcrumb();
+    $bread =  $this->bread->trail(' &raquo; ');
+    $seo = $this->replace_seo($this->bread,$seo);
+    $page_info = $pager->getPagerData();
+    $last_page = array_pop($page_info['pagesNumber']);
+    if (isset($last_page)&&$page > $last_page){
+      header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
+      require(dirname(__FILE__) . '/../../404.html');
+      exit;
+    }
+    $top_info['h1'] = 'recommend_h1';
+    $top_info['text'] = 'recommend_text';
+    $viewData = array( 'hostlink' => $this->host_dir,
+        'top_info' => $top_info,
+        'bread' => $bread,
+        'seo' => $seo,
         'pager' => $pager,
         );
 
-    $this->executeView("Site".DS."siterec.html", $viewData); 
+    $this->executeView("Site".DS."recommend.html", $viewData); 
 
-  
+
   }
 
   /**
@@ -859,15 +1027,24 @@ class Controller_Site extends Controller_Base
     {
       $model_Site = &FLEA::getSingleton('Model_Site'); 
       $site = $model_Site->find($id);
-      $viewData = array(
-          'seo' => $this->seo,
+      $model_Setseo = FLEA::getSingleton('Model_Setseo');
+      $seo = $model_Setseo->find("action ='".$_GET['action']."'");
+      if(!$seo){
+        $seo = $model_Setseo->find("action ='index'");
+      }
+    $this->getBreadcrumb();
+    $bread =  $this->bread->trail(' &raquo; ');
+    $seo = $this->replace_seo($this->bread,$seo);
+      $viewData = array( 'hostlink' => $this->host_dir,
+          'bread' => $bread,
+          'seo' => $seo,
           'site' => $site,
           );
       $this->executeView("Site".DS."siteedit.html", $viewData); 
     }
     else
     {
-      redirect(url('site', 'sitelist'));
+      redirect(url('site', 'renew'));
     }
   }
 
@@ -880,6 +1057,14 @@ class Controller_Site extends Controller_Base
     $pass = hash('md5', h($_POST['pass']));
     $model_Consumer = &FLEA::getSingleton('Model_Consumer'); 
     $cond = "site_id='".$site_id."' and consumer_pass='".$pass."'";
+    $model_Setseo = FLEA::getSingleton('Model_Setseo');
+    $seo = $model_Setseo->find("action ='".$_GET['action']."'");
+    if(!$seo){
+      $seo = $model_Setseo->find("action ='index'");
+    }
+    $this->getBreadcrumb();
+    $bread =  $this->bread->trail(' &raquo; ');
+    $seo = $this->replace_seo($this->bread,$seo);
 
     if($consumer = $model_Consumer->find($cond))
     { 
@@ -913,8 +1098,9 @@ class Controller_Site extends Controller_Base
 
       endforeach;
 
-      $viewData = array(
-          'seo' => $this->seo,
+      $viewData = array( 'hostlink' => $this->host_dir,
+          'bread' => $bread,
+          'seo' => $seo,
           'consumer' => $consumer,
           'site' => $site,
           'classSelector' => $str_classes,
@@ -924,8 +1110,8 @@ class Controller_Site extends Controller_Base
     }
     else
     {
-      $viewData = array(
-          'seo' => $this->seo,
+      $viewData = array( 'hostlink' => $this->host_dir,
+          'seo' => $seo,
           'id' => $site_id,
           'state' => '1',
           );
@@ -946,17 +1132,26 @@ class Controller_Site extends Controller_Base
     $s_data = array(
         'id' => h($_POST['id']), 
         'name' => h($_POST['name']), 
-        'url' => h($_POST['url']), 
+        'url' => h(trim($_POST['url'])), 
         'comment' => h($_POST['comment']), 
-        'linkpage_url' => h($_POST['linkpage_url']), 
+        'linkpage_url' => h(trim($_POST['linkpage_url'])), 
         'to_admin' => h($_POST['to_admin']), 
         'class_id' => h($_POST['class']), 
         );
 
     $model_Site = &FLEA::getSingleton('Model_Site');
     if($model_Site->save($s_data)){
-      $viewData = array(
-          'seo' => $this->seo,
+      $model_Setseo = FLEA::getSingleton('Model_Setseo');
+      $seo = $model_Setseo->find("action ='".$_GET['action']."'");
+      if(!$seo){
+        $seo = $model_Setseo->find("action ='index'");
+      }
+    $this->getBreadcrumb();
+    $bread =  $this->bread->trail(' &raquo; ');
+    $seo = $this->replace_seo($this->bread,$seo);
+      $viewData = array( 'hostlink' => $this->host_dir,
+          'bread' => $bread,
+          'seo' => $seo,
           'state' => '2',
           'id' => h($_POST['id']),
           );
@@ -980,7 +1175,7 @@ class Controller_Site extends Controller_Base
     $site_id = h($_POST['id']);
     if($model_Consumer->save($c_data))
     {
-      $viewData = array(
+      $viewData = array( 'hostlink' => $this->host_dir,
           'seo' => $this->seo,
           'state' => '1',
           'id' => $site_id,
@@ -989,7 +1184,7 @@ class Controller_Site extends Controller_Base
     }
     else
     {
-      $viewData = array(
+      $viewData = array( 'hostlink' => $this->host_dir,
           'seo' => $this->seo,
           'state' => '2',
           'id' => $site_id,
@@ -1006,7 +1201,11 @@ class Controller_Site extends Controller_Base
     $cond = "url='".$url."'";
     if($site = $model_Site->find($cond))
     {
+      if(isset($_POST['site_id'])&&$_POST['site_id']!=$site['id']){
       echo '2';
+      }else if(!isset($_POST['site_id'])){
+      echo '2';
+      }
     }
     else if(isset($_POST['image_code'])){
       $imgcode =& FLEA::getSingleton('FLEA_Helper_ImgCode');
@@ -1015,8 +1214,6 @@ class Controller_Site extends Controller_Base
       }else{
         echo '1';
       }
-    }else {
-      echo '1';
     }
   }
 
@@ -1059,22 +1256,48 @@ class Controller_Site extends Controller_Base
     if($cond){
       $_SESSION['cond'] = $cond;
       $cond .= " and show_state='1'";
+      /*
     }else if(isset($_GET['page'])&&$_GET['page']!=''){
+      */
+    }else{
       $cond = $_SESSION['cond'];
       $cond .= " and show_state='1'";
+      /*
     }else{
       unset($_SESSION['cond']);
       $cond = 'false';
+      */
     }
 
     $model_Site = &FLEA::getSingleton('Model_Site');
     FLEA::loadHelper('Pager');
-    $sort = "id";
+    $sort = "created,is_recommend desc";
+    if (isset($_GET['page'])&&$_GET['page']<2){
+      header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
+      require(dirname(__FILE__) . '/../../404.html');
+      exit;
+    }
     $page = $_GET['page']?$_GET['page']:1;
     $show = $_POST['hyouji']?$_POST['hyouji']:10;
     $pager = & new FLEA_Helper_Pager($model_Site, $page, $show, $cond, $sort,'1');
-    $viewData = array(
-        'seo' => $this->seo,
+    $model_Setseo = FLEA::getSingleton('Model_Setseo');
+    $seo = $model_Setseo->find("action ='".$_GET['action']."'");
+    if(!$seo){
+      $seo = $model_Setseo->find("action ='index'");
+    }
+    $this->getBreadcrumb();
+    $bread =  $this->bread->trail(' &raquo; ');
+    $seo = $this->replace_seo($this->bread,$seo);
+    $page_info = $pager->getPagerData();
+    $last_page = array_pop($page_info['pagesNumber']);
+    if (isset($last_page)&&$page > $last_page){
+      header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
+      require(dirname(__FILE__) . '/../../404.html');
+      exit;
+    }
+    $viewData = array( 'hostlink' => $this->host_dir,
+        'bread' => $bread,
+        'seo' => $seo,
         'pager' => $pager,
         'word' => $word,
         'method' => $method,
@@ -1091,8 +1314,17 @@ class Controller_Site extends Controller_Base
    */
   function actionMailadmin()
   {
-    $viewData = array(
-        'seo' => $this->seo,
+    $model_Setseo = FLEA::getSingleton('Model_Setseo');
+    $seo = $model_Setseo->find("action ='".$_GET['action']."'");
+    if(!$seo){
+      $seo = $model_Setseo->find("action ='index'");
+    }
+    $this->getBreadcrumb();
+    $bread =  $this->bread->trail(' &raquo; ');
+    $seo = $this->replace_seo($this->bread,$seo);
+    $viewData = array( 'hostlink' => $this->host_dir,
+        'bread' => $bread,
+        'seo' => $seo,
         'id' => $_GET['id'],
         );
     $this->executeView("Site".DS."mailtoadmin.html", $viewData); 
@@ -1142,17 +1374,26 @@ class Controller_Site extends Controller_Base
     }
     $headers = 'Content-type: text/html; charset=utf-8' . "\r\n";
     $headers .= 'From: '.$From_Mail. "\r\n";
+    $model_Setseo = FLEA::getSingleton('Model_Setseo');
+    $seo = $model_Setseo->find("action ='".$_GET['action']."'");
+    if(!$seo){
+      $seo = $model_Setseo->find("action ='index'");
+    }
+    $this->getBreadcrumb();
+    $bread =  $this->bread->trail(' &raquo; ');
+    $seo = $this->replace_seo($this->bread,$seo);
     if (mail($to, $subject, $message, $headers))
     {
-      $viewData = array(
-        'seo' => $this->seo,
+      $viewData = array( 'hostlink' => $this->host_dir,
+          'bread' => $bread,
+          'seo' => $seo,
           'state' => 1,
           );
     }
     else
     {
-      $viewData = array(
-        'seo' => $this->seo,
+      $viewData = array( 'hostlink' => $this->host_dir,
+          'seo' => $seo,
           'state' => 2,
           );
     }
@@ -1164,277 +1405,321 @@ class Controller_Site extends Controller_Base
     $this->executeView("Site".DS."helppage.html", array()); 
   }
   /*
-  function actionDetailed()
-  {
-    session_start;
-    if(!$_SESSION['post_save']){
-      $model_Class = &FLEA::getSingleton('Model_Class');
-      $model_Class->enableLink('children');
-      $topClass = $model_Class->getAllTopClassesOrder();
-      //全部主题
-      $model_Frequent_Special2 = &FLEA::getSingleton('Model_FrequentSpecial2');
-      $frequentSpecial2 = $model_Frequent_Special2->findAll(null,'`order` DESC');
-      $str = '';
-      $str .= '<option value="" selected>指定しない</option>';
-      foreach($topClass  as $k => $v){
-        $value = $v['children'];
-        $count = count($value);
-        $str .="<option value='".$v['class_id']."'>";
-        $str .=$v['name'];
-        $str .="</option>";
-        for($i=0;$i<$count;$i++){
-          $str.="<option value='".$value[$i]['class_id']."'>";
-          $str.=$v['name']."・".$value[$i]['name'];
-          $str.="</option>";
-        }
-      }
-      $method_str = $this->mkoptionstr($this->method_arr);
-      $engine_str = $this->mkoptionstr($this->engine_arr);
-      $day_str = $this->mkoptionstr($this->day_arr);
-      $type_str = $this->mkoptionstr($this->type_arr);
-    }else{
-      $model_Class = &FLEA::getSingleton('Model_Class');
-      $model_Class->enableLink('children');
-      $topClass = $model_Class->getAllTopClassesOrder();
-      //全部主题
-      $model_Frequent_Special2 = &FLEA::getSingleton('Model_FrequentSpecial2');
-      $frequentSpecial2 = $model_Frequent_Special2->findAll(null,'`order` DESC');
-      $str = '';
-      if($_SESSION['save_post']['search_kt']==''){
-      $str .= '<option selected="selected" value="" >指定しない</option>';
-      }else{
-      $str .= '<option value="" >指定しない</option>';
-      }
-      foreach($topClass  as $k => $v){
-        $value = $v['children'];
-        $count = count($value);
-        $str .="<option value='".$v['class_id']."'>";
-        $str .=$v['name'];
-        $str .="</option>";
-        for($i=0;$i<$count;$i++){
-          if($value[$i]==$_SESSION['save_post']['search_kt']){
-          $str.="<option selected='selected' value='".$value[$i]['class_id']."'>";
-          }else{
-          $str.="<option value='".$value[$i]['class_id']."'>";
-          }
-          $str.=$v['name']."・".$value[$i]['name'];
-          $str.="</option>";
-        }
-      }
-      $method_str = $this->mkoptionstr($this->method_arr,
-            $_SESSION['post_save']['method']);
-      $engine_str = $this->mkoptionstr($this->engine_arr,
-            $_SESSION['post_save']['engine']);
-      $day_str = $this->mkoptionstr($this->day_arr,
-            $_SESSION['post_save']['search_day']);
-      $type_str = $this->mkoptionstr($this->type_arr,
-            $_SESSION['post_save']['open_type']);
-    }
-    $blank = isset($_GET['window'])?"_blank":"";
-    $this->executeView("Site".DS."detail.html", 
-        array('blank' =>$blank,
-          'option_str' => $str,
-          'method_str' => $method_str,
-          'engine_str' => $engine_str,
-          'day_str' => $day_str,
-          'type_str' => $type_str,
-          'his' => isset($_SESSION['post_save'])?$_SESSION['post_save']:''
-          )); 
+     function actionDetailed()
+     {
+     session_start;
+     if(!$_SESSION['post_save']){
+     $model_Class = &FLEA::getSingleton('Model_Class');
+     $model_Class->enableLink('children');
+     $topClass = $model_Class->getAllTopClassesOrder();
+//全部主题
+$model_Frequent_Special2 = &FLEA::getSingleton('Model_FrequentSpecial2');
+$frequentSpecial2 = $model_Frequent_Special2->findAll(null,'`order` DESC');
+$str = '';
+$str .= '<option value="" selected>指定しない</option>';
+foreach($topClass  as $k => $v){
+$value = $v['children'];
+$count = count($value);
+$str .="<option value='".$v['class_id']."'>";
+$str .=$v['name'];
+$str .="</option>";
+for($i=0;$i<$count;$i++){
+$str.="<option value='".$value[$i]['class_id']."'>";
+$str.=$v['name']."・".$value[$i]['name'];
+$str.="</option>";
+}
+}
+$method_str = $this->mkoptionstr($this->method_arr);
+$engine_str = $this->mkoptionstr($this->engine_arr);
+$day_str = $this->mkoptionstr($this->day_arr);
+$type_str = $this->mkoptionstr($this->type_arr);
+}else{
+$model_Class = &FLEA::getSingleton('Model_Class');
+$model_Class->enableLink('children');
+$topClass = $model_Class->getAllTopClassesOrder();
+  //全部主题
+  $model_Frequent_Special2 = &FLEA::getSingleton('Model_FrequentSpecial2');
+  $frequentSpecial2 = $model_Frequent_Special2->findAll(null,'`order` DESC');
+  $str = '';
+  if($_SESSION['save_post']['search_kt']==''){
+  $str .= '<option selected="selected" value="" >指定しない</option>';
+  }else{
+  $str .= '<option value="" >指定しない</option>';
+  }
+  foreach($topClass  as $k => $v){
+  $value = $v['children'];
+  $count = count($value);
+  $str .="<option value='".$v['class_id']."'>";
+  $str .=$v['name'];
+  $str .="</option>";
+  for($i=0;$i<$count;$i++){
+  if($value[$i]==$_SESSION['save_post']['search_kt']){
+  $str.="<option selected='selected' value='".$value[$i]['class_id']."'>";
+  }else{
+  $str.="<option value='".$value[$i]['class_id']."'>";
+  }
+  $str.=$v['name']."・".$value[$i]['name'];
+  $str.="</option>";
+  }
+  }
+  $method_str = $this->mkoptionstr($this->method_arr,
+  $_SESSION['post_save']['method']);
+  $engine_str = $this->mkoptionstr($this->engine_arr,
+  $_SESSION['post_save']['engine']);
+  $day_str = $this->mkoptionstr($this->day_arr,
+  $_SESSION['post_save']['search_day']);
+  $type_str = $this->mkoptionstr($this->type_arr,
+  $_SESSION['post_save']['open_type']);
+  }
+  $blank = isset($_GET['window'])?"_blank":"";
+  $this->executeView("Site".DS."detail.html", 
+  array('blank' =>$blank,
+  'option_str' => $str,
+'method_str' => $method_str,
+  'engine_str' => $engine_str,
+  'day_str' => $day_str,
+  'type_str' => $type_str,
+  'his' => isset($_SESSION['post_save'])?$_SESSION['post_save']:''
+  )); 
   }
   */
-  function actionSitemap()
-  {
-    $model_Class = &FLEA::getSingleton('Model_Class');
-    $model_Class->enableLink('children');
-    $topClass = $model_Class->getAllTopClassesOrder();
-    //全部主题
-    $model_Frequent_Special2 = &FLEA::getSingleton('Model_FrequentSpecial2');
-    $frequentSpecial2 = $model_Frequent_Special2->findAll(null,'`order` DESC');
-    //dump($topClass);
-    $viewData = array(
-        'seo' => $this->seo,
-        'class' => $topClass,
-        'frequentSpecial2' => $frequentSpecial2,
-        );
-    $this->executeView("Site".DS."sitemap.html",$viewData);
+function actionSitemap()
+{
+  $model_Class = &FLEA::getSingleton('Model_Class');
+  $model_Class->enableLink('children');
+  $topClass = $model_Class->getAllTopClassesOrder();
+  //全部主题
+  $model_Frequent_Special2 = &FLEA::getSingleton('Model_FrequentSpecial2');
+  $frequentSpecial2 = $model_Frequent_Special2->findAll(null,'`order` DESC');
+  //dump($topClass);
+  $model_Setseo = FLEA::getSingleton('Model_Setseo');
+  $seo = $model_Setseo->find("action ='".$_GET['action']."'");
+  if(!$seo){
+    $seo = $model_Setseo->find("action ='index'");
   }
-  function mkoptionstr($arr ,$sel=null)
-  {
-    $str = '';
-    $flag = true;
-    foreach($arr as $k => $v){
-      if($sel == null && $flag){
-        $falg=false;
-        $str .= "<option selected='selected' value='";
-        $str .=$v."'>";
-        $str .=$k."</option>";
-      }else if($v==$sel && $flag){
-        $falg=false;
-        $str .= "<option selected='selected' value='";
-        $str .=$v."'>";
-        $str .=$k."</option>";
-      }else{
-        $str .= "<option value='";
-        $str .=$v."'>";
-        $str .=$k."</option>";
-      }
+    $this->getBreadcrumb();
+    $bread =  $this->bread->trail(' &raquo; ');
+    $seo = $this->replace_seo($this->bread,$seo);
+  $viewData = array( 'hostlink' => $this->host_dir,
+      'bread' => $bread,
+      'seo' => $seo,
+      'class' => $topClass,
+      'frequentSpecial2' => $frequentSpecial2,
+      );
+  $this->executeView("Site".DS."sitemap.html",$viewData);
+}
+function mkoptionstr($arr ,$sel=null)
+{
+  $str = '';
+  $flag = true;
+  foreach($arr as $k => $v){
+    if($sel == null && $flag){
+      $falg=false;
+      $str .= "<option selected='selected' value='";
+      $str .=$v."'>";
+      $str .=$k."</option>";
+    }else if($v==$sel && $flag){
+      $falg=false;
+      $str .= "<option selected='selected' value='";
+      $str .=$v."'>";
+      $str .=$k."</option>";
+    }else{
+      $str .= "<option value='";
+      $str .=$v."'>";
+      $str .=$k."</option>";
     }
-     return $str;
+  }
+  return $str;
+}
+
+
+/**
+ *检测url
+ */
+function linkcheck($url,$linkpage_url,$admin_mode = true){
+  if(substr($url,-1,1)!='/'){
+    $url.='/';
+  }
+  if(substr($linkpage_url,-1,1)!='/'){
+    $linkpage_url.='/';
+  }
+  $bln = array();
+  $bln[error_message] = "";
+  $my_site_url = FLEA::getAppInf('site_url');
+
+  //临时修改为http://orangehousing.jp
+  $global = &FLEA::getSingleton('Model_Global');
+  $dir = $global->find('name = "set_new_dir"');
+  $anchor = $dir['value'];
+  //临时设置anchor为空
+  $anchor = '';
+  $linktag = '&lt;a href=&quot;'.$my_site_url.'&quot; target=&quot;_blank&quot;&gt;'.$anchor.'&lt;/a&gt;';
+  $UnixSockString = "";
+
+  // 相互リンク設置URLのhttp://を削除
+  $ChkrelinkURL = str_replace("http://", "", $linkpage_url);
+
+  // 相互リンク設置URLのHostをゲット
+  $Host = substr($ChkrelinkURL, 0, strpos($ChkrelinkURL, "/"));
+
+  // 相互リンク設置URLのPathをゲット
+  $Path = substr($ChkrelinkURL, strpos($ChkrelinkURL, "/"));
+
+  if(strpos($Path, "/") == "0"){
+    $Path_check = substr($Path, 1);
+  } else{
+    $Path_check = $Path;
+  }
+    $tmp_path_arr = explode('/',$Path);
+    if($Path!='/'&&array_pop($tmp_path_arr)==''){
+     $Path = substr($Path,0,-1);
+    }
+
+
+  // サイトURLのhttp://を削除
+  $site_url_nonhttp = str_replace("http://", "", $url);
+
+  // サイトURLのHostをゲット
+  $site_url_host = substr($site_url_nonhttp, 0, strpos($site_url_nonhttp, "/"));
+
+  // サイトURLURLのPathをゲット
+  $site_url_path = substr($site_url_nonhttp, strpos($site_url_nonhttp, "/"));
+
+  //自サイトURL
+  $my_site_url = str_replace("http://", "", $my_site_url);
+  $my_site_url = substr($my_site_url, 0, strpos($my_site_url, "/"));
+
+  // 登録URLとリンク設置URLが同じか確認
+  if ($Host != $site_url_host) {
+    $bln[state] = false;
+    if(!$admin_mode){
+      $bln[error_message] .= "<li>サイトURLと相互リンク設置URLのドメインが違います。</li>";
+      $bln[err_flag] = true;
+    }
+    return $bln;
+    exit;
   }
 
-
-  /**
-   *检测url
-   */
-  function linkcheck($url,$linkpage_url,$admin_mode = true){
-    if(substr($url,-1,1)!='/'){
-      $url.='/';
+  //80接続
+  @$fp = fsockopen($Host, 80, $ErrNo, $ErrStr, 10);
+  if (!$fp) {
+    $bln[state] = false;
+    if(!$admin_mode){
+      $bln[error_message] .= "<li>相互リンク先が見つかりません。</li>";
+      $bln[err_flag] = true;
     }
-    if(substr($linkpage_url,-1,1)!='/'){
-      $linkpage_url.='/';
-    }
-    $bln = array();
-    $bln[error_message] = "";
-    $my_site_url = FLEA::getAppInf('site_url');
-
-    //临时修改为http://orangehousing.jp
-    $global = &FLEA::getSingleton('Model_Global');
-    $dir = $global->find('name = "set_new_dir"');
-    $my_site_url = 'http://orangehousing.jp/';
-    $anchor = $dir['value'];
-    //临时设置anchor为空
-    $anchor = '';
-    $linktag = '&lt;a href=&quot;'.$my_site_url.'&quot; target=&quot;_blank&quot;&gt;'.$anchor.'&lt;/a&gt;';
-    $UnixSockString = "";
-
-    // 相互リンク設置URLのhttp://を削除
-    $ChkrelinkURL = str_replace("http://", "", $linkpage_url);
-
-    // 相互リンク設置URLのHostをゲット
-    $Host = substr($ChkrelinkURL, 0, strpos($ChkrelinkURL, "/"));
-
-    // 相互リンク設置URLのPathをゲット
-    $Path = substr($ChkrelinkURL, strpos($ChkrelinkURL, "/"));
-
-    if(strpos($Path, "/") == "0"){
-      $Path_check = substr($Path, 1);
-    } else{
-      $Path_check = $Path;
-    }
-
-
-    // サイトURLのhttp://を削除
-    $site_url_nonhttp = str_replace("http://", "", $url);
-
-    // サイトURLのHostをゲット
-    $site_url_host = substr($site_url_nonhttp, 0, strpos($site_url_nonhttp, "/"));
-
-    // サイトURLURLのPathをゲット
-    $site_url_path = substr($site_url_nonhttp, strpos($site_url_nonhttp, "/"));
-
-    //自サイトURL
-    $my_site_url = str_replace("http://", "", $my_site_url);
-    $my_site_url = substr($my_site_url, 0, strpos($my_site_url, "/"));
-
-    // 登録URLとリンク設置URLが同じか確認
-    if ($Host != $site_url_host) {
+  }
+  else {
+    // 読み込みのタイムアウト設定
+    socket_set_timeout($fp, 2);
+    fputs($fp, "GET ". $Path . " HTTP/1.0\r\nHost:" . $Host .
+        "\r\nReferer:".url('site','linkcheck_submit')."\r\n\r\n");
+    while(!feof($fp))
+      $UnixSockString.=fgets($fp, 128);
+    // タイムアウトしたか調べる
+    $stat = socket_get_status($fp);
+    if ($stat["timed_out"]) {
       $bln[state] = false;
       if(!$admin_mode){
-        $bln[error_message] .= "<li>サイトURLと相互リンク設置URLのドメインが違います。</li>";
-        $bln[err_flag] = true;
-      }
-      return $bln;
-      exit;
-    }
-
-    //80接続
-    @$fp = fsockopen($Host, 80, $ErrNo, $ErrStr, 10);
-    if (!$fp) {
-      $bln[state] = false;
-      if(!$admin_mode){
-        $bln[error_message] .= "<li>相互リンク先が見つかりません。</li>";
+        $bln[error_message] .= "<li>相互リンク設置先がタイムアウトしました。</li>";
         $bln[err_flag] = true;
       }
     }
-    else {
-      // 読み込みのタイムアウト設定
-      socket_set_timeout($fp, 2);
-      fputs($fp, "GET ". $Path . " HTTP/1.0\r\nHost:" . $Host .
-          "\r\nReferer:".url('site','linkcheck_submit')."\r\n\r\n");
-      while(!feof($fp))
-        $UnixSockString.=fgets($fp, 128);
-      // タイムアウトしたか調べる
-      $stat = socket_get_status($fp);
-      if ($stat["timed_out"]) {
-        $bln[state] = false;
-        if(!$admin_mode){
-          $bln[error_message] .= "<li>相互リンク設置先がタイムアウトしました。</li>";
-          $bln[err_flag] = true;
-        }
-      }
-    }
-    @fclose($fp);
-    //@$pos = strpos($UnixSockString, $my_site_url);
-    @$pos =
-      preg_match('/<a\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}\s{0,}href\s{0,}=\s{0,}"http:(\/\/){0,1}www\.orangehousing\.jp\/{0,1}"\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}>/'
+  }
+  @fclose($fp);
+  //@$pos = strpos($UnixSockString, $my_site_url);
+  $preg_str = '/<a [^>]*href=[\"\']{0,1}http:(\/\/){0,1}';
+  $url_sub_arr = explode('.',$my_site_url);
+  foreach($url_sub_arr as $value){
+    $preg_str .= $value.'\.';
+  }
+  $preg_str = substr($preg_str,0,-2);
+  $preg_str_start = $preg_str;
+  $preg_str .= '[\/]{0,1}[\"\']{0,1}[^>]*/i';
+  @$pos = preg_match($preg_str
+//    preg_match('/<a\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}\s{0,}href\s{0,}=\s{0,}"http:(\/\/){0,1}www\.iimy\.co\.jp\/{0,1}"\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}>/i'
         ,$UnixSockString);
-    //リンク済みの場合True
-    if ($pos > 0) {
-      $bln[state] = true;
-    } else {
+  //リンク済みの場合True
+  if ($pos > 0) {
+    $bln[state] = true;
+  } else {
+    $bln[state] = false;
+    if(!$admin_mode){
+      $bln[error_message] .= "<li>相互リンクが完了していません。<br />あなた様のサイトへ下記のリンクタグ<br />"."$linktag"."<br />をそのまま貼り付けてください。<br />タグを改変するとリンクされません。</li>";
+      $bln[err_flag] = true;
+    }
+  }
+
+  if($bln[state] == false){
+
+    $tmp_path_arr = explode('/',$Path);
+    if($Path!='/'&&array_pop($tmp_path_arr)==''){
+     $Path = substr($Path,0,-1);
+    }
+  // 登録URLとリンク設置URLが同じか確認
+  if ($Host != $site_url_host) {
+    $bln[state] = false;
+    if(!$admin_mode){
+      $bln[error_message] .= "<li>サイトURLと相互リンク設置URLのドメインが違います。</li>";
+      $bln[err_flag] = true;
+    }
+    return $bln;
+    exit;
+  }
+   $UnixSockString ='';
+  //80接続
+  @$fp = fsockopen($Host, 80, $ErrNo, $ErrStr, 10);
+  if (!$fp) {
+    $bln[state] = false;
+    if(!$admin_mode){
+      $bln[error_message] .= "<li>相互リンク先が見つかりません。</li>";
+      $bln[err_flag] = true;
+    }
+  }
+  else {
+    // 読み込みのタイムアウト設定
+    socket_set_timeout($fp, 2);
+    fputs($fp, "GET ". $Path . " HTTP/1.0\r\nHost:" . $Host .
+        "\r\nReferer:".url('site','linkcheck_submit')."\r\n\r\n");
+    while(!feof($fp))
+      $UnixSockString.=fgets($fp, 128);
+    // タイムアウトしたか調べる
+    $stat = socket_get_status($fp);
+    if ($stat["timed_out"]) {
       $bln[state] = false;
       if(!$admin_mode){
-        $bln[error_message] .= "<li>相互リンクが完了していません。<br />あなた様のサイトへ下記のリンクタグ<br />"."$linktag"."<br />をそのまま貼り付けてください。<br />タグを改変するとリンクされません。</li>";
+        $bln[error_message] .= "<li>相互リンク設置先がタイムアウトしました。</li>";
         $bln[err_flag] = true;
       }
     }
+  }
+  @fclose($fp);
+  //@$pos = strpos($UnixSockString, $my_site_url);
+  @$pos = preg_match($preg_str
+//    preg_match('/<a\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}\s{0,}href\s{0,}=\s{0,}"http:(\/\/){0,1}www\.iimy\.co\.jp\/{0,1}"\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}>/i'
+        ,$UnixSockString);
+  //リンク済みの場合True
+  if ($pos > 0) {
+    $bln[state] = true;
+  } else {
+    $bln[state] = false;
+    if(!$admin_mode){
+      $bln[error_message] .= "<li>相互リンクが完了していません。<br />あなた様のサイトへ下記のリンクタグ<br />"."$linktag"."<br />をそのまま貼り付けてください。<br />タグを改変するとリンクされません。</li>";
+      $bln[err_flag] = true;
+    }
+  }
+  }
 
-    $UnixSockString2 = "";
-
-
-    //リンク済みの場合True
-    if($bln[state] == true && $url != $linkpage_url){
-
-      //80接続
-      $fp2 = fsockopen($site_url_host, 80, $ErrNo, $ErrStr, 10);
-      if (!$fp2) {
-        $bln[state] = false;
-        if(!$admin_mode){
-          $bln[error_message] .= "<li>登録サイトが見つかりません。</li>";
-          $bln[err_flag] = true;
-        }
-        return $bln;
-        exit;
-      }
-      else {
-        // 読み込みのタイムアウト設定
-        socket_set_timeout($fp2, 2);
-        while(!feof($fp))
-          fputs($fp2, "GET ".$site_url_path ." HTTP/1.0\r\nHost:".$site_url_host."\r\nReferer:".url('site','index')."\r\n\r\n");
-        while(!feof($fp2))
-          $UnixSockString2.=fgets($fp2, 128);
-        // タイムアウトしたか調べる
-        $stat = socket_get_status($fp2);
-        if ($stat["timed_out"]) {
-          $bln[state] = false;
-          if(!$admin_mode){
-            $bln[error_message] .= "<li>登録サイトがタイムアウトしました。</li>";
-            $bln[err_flag] = true;
-          }
-          exit;
-        }
-      }
-      fclose($fp2);
-    $pos2 =
-      preg_match('/<a\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}\s{0,}href\s{0,}=\s{0,}"http:(\/\/){0,1}www\.orangehousing\.jp\/{0,1}"\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}>/'
-        ,$UnixSockString2);
-    //  $pos2 = strpos($UnixSockString2, $Path_check);
-
-      //リンク済みの場合True
-      if ($pos2 > 0) {
-        $bln[state] = true;
+  $UnixSockString2 = "";
+    $site_url_host = trim($site_url_host);
+    $UnixSockString2 = file_get_contents('http://'.$site_url_host,false,$header);
+    $regExp = $preg_str_start.'[^>]*>/i';
+    //  '/<a\s{0,}(class=(\'|")\w+(\'|")){0,}\s+(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}\s{0,}href\s{0,}=\s{0,}"http:(\/\/){0,1}www\.orangehousing\.jp(\/\w+){0,}(\.(html|php)){0,1}"\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}>/i';
+    $pos2 = preg_match($regExp,$UnixSockString2);
+      if ($pos2>0) {
+        $bln[is_recommend] = true;
       } else {
-        $bln[state] = false;
+        $bln[is_recommend] = false;
         if(!$admin_mode){
           $bln[error_message] .= $Path_check."<li>登録サイトURLに相互リンク設置URLへのリンクがありません。</li>";
           $bln[err_flag] = true;
@@ -1442,14 +1727,194 @@ class Controller_Site extends Controller_Base
 
       }
 
+
+  //リンク済みの場合True
+  /*
+  if($bln[state] == true && $url != $linkpage_url){
+
+    //80接続
+    $fp2 = fsockopen($site_url_host, 80, $ErrNo, $ErrStr, 10);
+    if (!$fp2) {
+      $bln[state] = false;
+      if(!$admin_mode){
+        $bln[error_message] .= "<li>登録サイトが見つかりません。</li>";
+        $bln[err_flag] = true;
+      }
+      return $bln;
+      exit;
     }
-    return $bln;
+    else {
+      // 読み込みのタイムアウト設定
+      socket_set_timeout($fp2, 2);
+      while(!feof($fp))
+        fputs($fp2, "GET ".$site_url_path ." HTTP/1.0\r\nHost:".$site_url_host."\r\nReferer:".url('site','index')."\r\n\r\n");
+      while(!feof($fp2))
+        $UnixSockString2.=fgets($fp2, 128);
+      // タイムアウトしたか調べる
+      $stat = socket_get_status($fp2);
+      if ($stat["timed_out"]) {
+        $bln[state] = false;
+        if(!$admin_mode){
+          $bln[error_message] .= "<li>登録サイトがタイムアウトしました。</li>";
+          $bln[err_flag] = true;
+        }
+        exit;
+      }
+    }
+    fclose($fp2);
+    $pos2 =
+      preg_match('/<a\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}\s{0,}href\s{0,}=\s{0,}"http:(\/\/){0,1}www\.orangehousing\.jp\/{0,1}"\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}>/i'
+          ,$UnixSockString2);
+    //  $pos2 = strpos($UnixSockString2, $Path_check);
+
+    //リンク済みの場合True
+    if ($pos2 > 0) {
+      $bln[state] = true;
+    } else {
+      $bln[state] = false;
+      if(!$admin_mode){
+        $bln[error_message] .= $Path_check."<li>登録サイトURLに相互リンク設置URLへのリンクがありません。</li>";
+        $bln[err_flag] = true;
+      }
+
+    }
+
   }
-  function getSEO($action=''){
-   
+  */
+  return $bln;
+}
+function getSEO($action=''){
 
-
+}
+function getBreadcrumb()
+{
+  $bread = new breadcrumb();
+  $bread->add(FLEA::getAppInf('p_name'),'/');
+  $script_name_arr = explode('/',$_SERVER['SCRIPT_NAME']);
+  $bread->add('相互リンク集','/'.$script_name_arr[1]);
+  $arr = array(
+      'all' => '一覧',
+      'search' => '検索結果',
+      'regist' => '新規登録',
+      'linkcheck_submit' => '新規登録完了',
+      'renew' => '更新されたサイト',
+      'siteupdate' => '修正サイト',
+      'sitedel' =>'削除サイト',
+      'mailadmin' => '送信',
+      'mailadminsubmit'=> '送信完了',
+      'helppage'=>'ヘルプ',
+      'sitemap'=>'サイトマップ',
+      'detailed'=>'詳細検索',
+      'new'=>'新着サイト',
+      'recommend'=>'おすすめサイト',
+      'editsite'=>"修正・削除",
+      'sitesearch' => "検索結果",
+      );
+  if(isset($_POST['preview'])&&$_POST['preview']=='on'){
+    $arr['linkcheck_submit'] = '新規登録確認';
+  }
+  if(isset($_GET['action'])&&$_GET['action']!=''&&$_GET['action']!='class'){
+    if($show = $arr[$_GET['action']]){
+      $bread->add($show,$_SERVER['REQUEST_URI']);
+    }
+  }
+  $this->bread = $bread;
+}
+  function replace_seo($bread,$seo){
+    $replace = $search = array();
+    $breadcrumb_str = $bread->trail_title(' &raquo; ');
+    $breadcrumb_lat = '';
+    $breadcrumb_second = ''; 
+    $breadcrumb_arr = explode('&raquo;', $breadcrumb_str);
+    if (is_array($breadcrumb_arr)) {
+      $bread_num = count($breadcrumb_arr); 
+      $breadcrumb_lat = trim($breadcrumb_arr[$bread_num-1]);  
+      if (isset($breadcrumb_arr[1])) {
+        $breadcrumb_second = trim($breadcrumb_arr[1]); 
+      }
+    }
     
+    array_shift($breadcrumb_arr);
+    if(count($breadcrumb_arr)>2){
+    array_shift($breadcrumb_arr);
+    }
+    $breadcrumb_str = implode(' &raquo; ',$breadcrumb_arr);
+    $breadcrumb_keywords = str_replace(' &raquo; ', ',', trim($breadcrumb_str)); 
+    
+    $search  = array_merge(array('#STORE_NAME#','#BREADCRUMB#', '#PAGE_TITLE#', '#BREADCRUMB_KEYWORDS#', '#BREADCRUMB_FIRST#'), $search);
+    $replace = array_merge(array(FLEA::getAppInf('p_name'), $breadcrumb_str, $breadcrumb_lat, $breadcrumb_keywords, $breadcrumb_second), $replace);
+    if (!in_array('#SEO_PAGE#', $search)) {
+      $c_page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
+      $search = array_merge(array('#SEO_PAGE#'), $search); 
+      $replace = array_merge(array($c_page.'ページ目'), $replace); 
+    }
+    $seo['title']       = str_replace($search, $replace, $seo['title']);
+    $seo['keywords']    = str_replace($search, $replace, $seo['keywords']);
+    $seo['description'] = str_replace($search, $replace, $seo['description']);
+    
+    $seo['title'] = str_replace(' &raquo; ', ' ', $seo['title']); 
+    $seo['keywords'] = str_replace(' &raquo; ', ' ', $seo['keywords']); 
+    $seo['description'] = str_replace(' &raquo; ', ' ', $seo['description']); 
+
+    return $seo; 
   }
 
+}
+
+class breadcrumb {
+  var $_trail;
+  function breadcrumb() {
+    $this->reset();
+  }
+
+  function reset() {
+    $this->_trail = array();
+  }
+
+  function add($title, $link = '') {
+    $this->_trail[] = array('title' => $title, 'link' => $link);
+  }
+
+  function trail($separator = ' - ') {
+    $trail_string = '';
+
+    for ($i=0, $n=sizeof($this->_trail); $i<$n; $i++) {
+      if (isset($this->_trail[$i]['link']) && $this->tep_not_null($this->_trail[$i]['link'])&&$i<$n-1) {
+        $trail_string .= '<a href="' . $this->_trail[$i]['link'] . '" class="headerNavigation">' . $this->_trail[$i]['title'] . '</a>';
+      } else {
+        $trail_string .= $this->_trail[$i]['title'];
+      }
+
+      if (($i+1) < $n) $trail_string .= $separator;
+    }
+
+    return $trail_string;
+  }
+
+  function trail_title($separator = ' - ') {
+    $trail_string = '';
+
+    for ($i=0, $n=sizeof($this->_trail); $i<$n; $i++) {
+      $trail_string .= $this->_trail[$i]['title'];
+
+      if (($i+1) < $n) $trail_string .= $separator;
+    }
+
+    return $trail_string;
+  }
+  function tep_not_null($value) {
+    if (is_array($value)) {
+      if (sizeof($value) > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      if (($value != '') && ($value != 'NULL') && (strlen(trim($value)) > 0)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
 }

@@ -13,9 +13,9 @@ $menu = array();
 
 $menu[] = array(_T("menu_Class"), 'Class', 'Index');
 $menu[] = array(_T("menu_frequentsite"), 'frequentsite', 'Index');
-$menu[] = array(_T("menu_frequentclass"), 'frequentclass', 'Index');
-$menu[] = array(_T("menu_frequentspecial2"), 'frequentspecial2', 'Index');
-$menu[] = array(_T("menu_frequentspecial"), 'frequentspecial', 'Index');
+//$menu[] = array(_T("menu_frequentclass"), 'frequentclass', 'Index');
+//$menu[] = array(_T("menu_frequentspecial2"), 'frequentspecial2', 'Index');
+//$menu[] = array(_T("menu_frequentspecial"), 'frequentspecial', 'Index');
 //$menu[] = array(_T("menu_submit"), 'submit', 'list');
 //$menu[] = array(_T("menu_UserManager"), 'UserManager', 'Index');
 $menu[] = array(_T("menu_UpdatePassword"), 'Admin', 'UpdatePassword');

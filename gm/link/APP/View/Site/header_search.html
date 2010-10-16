@@ -1,17 +1,29 @@
-<div class="top"></div>
+<div class="top">
+<!--{$bread}-->
+</div>
+<!--{if $top_info}-->
+<h1 class="link_h1"><!--{_t key=$top_info.h1}--></h1>
+<div class="middle">
+<div class="text_out">
+<!--{_t key=$top_info.text}-->
+</div>
+</div>
+<!--{else}-->
+<h1 class="link_h1"><!--{_t key=text_out_h1}--></h1>
 <div class="middle">
 <div class="text_out">
 <p>
-相互リンク集はSEO対策・アクセスアップが目的のサイトです。各ページは静的HTMLで出力していますので検索エンジンに好まれる作りになっております。
+<!--{_t key=text_out_p1}-->
 </p>
 <p>
-貴サイトからのリンクを確認後、当サイトに掲載させていただきます。また、当サイトは定期的に巡回を行い、リンクチェックを行っております。デッドリンクまたは、リンク削除の場合は、当サイトからのリンクも削除いたしますので、ご理解ご了承ください。
+<!--{_t key=text_out_p2}-->
 </p>
 <p>
-※貴サイトのプログラムの仕様上、掲載URLが変更になる場合は、恐れ入りますが変更の無いURLをご登録いただくか、登録内容の変更を行ってください。
+<!--{_t key=text_out_p3}-->
 </p>
 </div>
 </div>
+<!--{/if}-->
 <div class="bottom"></div>
 
 <div class = 'search_header'>

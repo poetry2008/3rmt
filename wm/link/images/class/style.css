@@ -6,13 +6,28 @@
 	padding: 0px;
 }
 body {
+font-size:12px;
 background-color:#FFFFFF;
 color:#656565;}
 ul {
 	list-style: none;
 }
-h3 {
-	font-size: 1.4em;
+.web_3_title h2 {
+	display:inline;
+	font-size:12px;
+}
+.linkcheck_h3{
+	font-size:12px;
+	padding:5px 23px;
+	color:#000;
+}
+.category_h2 h2{
+	font-size:12px;
+	padding:5px 23px;
+	color:#000;
+}
+#linksite h3 {
+padding-bottom:10px;
 }
 div, li, b {
 	overflow: hidden;
@@ -625,15 +640,14 @@ a img {
 
 #web-box {
 	margin-top: 10px;
+	width:100%;
 }
 .web-box {
 	margin-top: 10px;
 	margin:0 auto;
-width:890px;
 }
 #web-box img {
 	vertical-align: middle;
-	margin-left: 10px;
 }
 .web-line {
 	width: 202px;
@@ -645,6 +659,12 @@ width:890px;
 	line-height: 20px;
 	float: left;
 	margin-left:25px;
+}
+.web-tit_classbox{
+	width: 200px;
+	height: 20px;
+	line-height: 20px;
+	float: left;
 }
 .web-menu {
 	float: right;
@@ -659,6 +679,8 @@ width:890px;
 	clear: both;
 	line-height: 18px;
 	background: #fff;
+	overflow:hidden;
+	width:98%;
 }
 .web td {
 	width: 180px;
@@ -715,6 +737,9 @@ width:890px;
 }
 #custom h3, #submit h3 {
 	margin: 5px 0px;
+	font-size:12px;
+	display:inline;
+	font-weight:400;
 }
 #custom-bg {
 	top: 0px;
@@ -814,7 +839,7 @@ width:890px;
 	padding-left:11px;
 }
 #linksite {
-	padding-left:60px;
+	margin:0 20px;
 }
 #linkpreview {
 	padding-left:60px;
@@ -836,12 +861,12 @@ width:890px;
 	color:#fff;
 }
 .web_page_table{
-width:100%;
-border-top:1px solid #F9D984;
-border-bottom:1px solid #F9D984;
+width:98%;
+margin:0 auto;
+border:1px solid #dddddd;
 }
 .web_page_table tr:hover{
-background:#FDF0CD;
+background:#e3e3e3;
 }
 .web_page_table .web_table_td1{
 height:24px;
@@ -887,7 +912,7 @@ text-align:center;
 line-height:90px;
 }
 .sites_add{
-border:1px solid #F26200;
+border:2px solid #ddd;
 font-weight:bold;
 margin:10px;
 padding:5px;
@@ -919,7 +944,7 @@ margin:0 auto 10px;
 width:900px;
 }
 #header02{
-margin:10px;
+margin:10px 0;
 }
 #header_flash {
 height:103px;
@@ -1144,8 +1169,13 @@ width:100%;
 padding:5px 0 0 10px;
 width:150px;
 }
-
-
+.web_3_top{
+margin:0 10px;
+width:100%;
+}
+.web_3_top td{
+padding:5px 0 0 10px;
+}
 
 
 
@@ -1210,5 +1240,19 @@ margin:0 auto;
 .footer_contacts a{
 	color: #003639;
 }
-
-
+.linkcheck-ct img{
+vertical-align:middle;
+}
+.input-fpass{
+margin-bottom:3px;
+}
+.linkcheck-ct td{
+padding-right:10px;
+}
+.link_h1{ font-size:12px; text-decoration: none; color:#000; padding:5px 23px;}
+.link_sitmap_h1{ font-size:12px; text-decoration: none; padding:5px 23px; color:#000;}
+.site_update_message{ padding:10px;}
+.web_3_title{ padding-left:10px;}
+.siteupdate_list{
+padding-left:10px;
+}

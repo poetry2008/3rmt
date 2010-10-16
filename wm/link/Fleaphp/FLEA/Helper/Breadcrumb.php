@@ -1,7 +1,6 @@
 <?php
   class breadcrumb {
     var $_trail;
-
     function breadcrumb() {
       $this->reset();
     }

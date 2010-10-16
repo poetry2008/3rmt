@@ -1,32 +1,5 @@
 <!--{php}-->
 echo '<?xml version="1.0" encoding="UTF-8"?>';
-include('Fleaphp/FLEA/Helper/Breadcrumb.php');
-$bread = new breadcrumb();
-$bread->add('オレンジ不動産','/');
-$script_name_arr = explode('/',$_SERVER['SCRIPT_NAME']);
-$bread->add('相互リンク集','/'.$script_name_arr[1]);
-$arr = array(
-    'all' => '一覧',
-    'search' => '検索結果',
-    'setlinkchecksite' => '新規登録',
-    'linkcheck_submit' => '新規登録',
-    'sitelist' => '更新・削除',
-    'siteupdate' => '修正サイト',
-    'sitedel' =>'削除サイト',
-    'mailadmin' => '送信',
-    'mailadminsubmit'=> '送信完了',
-    'helppage'=>'ヘルプ',
-    'sitemap'=>'サイトマップ',
-    'detailed'=>'詳細検索',
-    'sitenew'=>'新着サイト',
-    'siterec'=>'おすすめサイト',
-    'editsite'=>"修正・削除"
-    );
-if(isset($_GET['action'])&&$_GET['action']!=''&&$_GET['action']!='class'){
-  if($show = $arr[$_GET['action']]){
-    $bread->add($show,$_SERVER['REQUEST_URI']);
-  }
-}
 <!--{/php}-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -37,11 +10,15 @@ if(isset($_GET['action'])&&$_GET['action']!=''&&$_GET['action']!='class'){
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <link type="text/css" rel="stylesheet" href="images/class/style.css" />
-<link type="text/css" rel="stylesheet" id='blueStyle01' href="images/blue/class/color.css" />
+<link type="text/css" rel="stylesheet" id='blueStyle' href="images/blue/class/color.css" />
 <script type='text/javascript' src='public/style.js'></script>
 <script type='text/javascript' src='Script/jquery-1.4.2.js'></script>
-<!--{if $seo.title}-->
+<!--{if $seo}-->
 <title><!--{$seo.title}--></title>
+<meta name="keywords" content="<!--{$seo.keywords}-->" />
+<meta name="description" content="<!--{$seo.description}-->" />
+<meta name="robots" content="<!--{$seo.robots}-->" />
+<meta name="copyright" content="<!--{$seo.copyright}-->" />
 <!--{else}-->
 <title>相互リンク集｜RMTワールドマネー</title>
 <!--{/if}-->
@@ -194,7 +171,7 @@ if(isset($_GET['action'])&&$_GET['action']!=''&&$_GET['action']!='class'){
                         </a>
                         <a href="/shopping_cart.php" class="header_menu_2">
                         </a>
-                        <a href="http://3wm.maker.200.com/checkout_products.php" class="header_menu_3">
+                        <a href="/checkout_products.php" class="header_menu_3">
                         </a>
                       </td>
                       <td width="88" align="right" style="background-repeat: no-repeat;"><span id="jk-shoppingcart" style="font-size:12px">0円</span></td>
@@ -215,7 +192,7 @@ if(isset($_GET['action'])&&$_GET['action']!=''&&$_GET['action']!='class'){
           <p class="header_Navigation_p">
             <a href="/sitemap.php">サイトマップ</a>
             &nbsp;&nbsp;
-            <a href="http://3wm.maker.200.com" class="headerNavigation">RMT</a>
+            <!--{$bread}-->
           </p>
         </li>
         <li class="header_navigation_right"></li>

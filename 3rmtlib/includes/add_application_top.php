@@ -506,6 +506,10 @@
                               break;
     }
   }
+  
+  if (!isset($_SESSION['referer']) && $_SERVER["HTTP_REFERER"]) {
+    $_SESSION['referer'] = $_SERVER["HTTP_REFERER"];
+  }
 
 // include the who's online functions
   require(DIR_WS_FUNCTIONS . 'whos_online.php');
@@ -624,10 +628,6 @@
   }
 
   tep_session_register('ajax');
-
-  if (!isset($_SESSION['referer']) && $_SERVER["HTTP_REFERER"]) {
-    $_SESSION['referer'] = $_SERVER["HTTP_REFERER"];
-  }
 
 # 注文上限金額設定
   if(substr(basename($PHP_SELF),0,9) == 'checkout_') {

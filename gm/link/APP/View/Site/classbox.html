@@ -5,7 +5,6 @@
 <img src="images/backpic/tag.gif" alt="title" width="16" height="16" /> <strong><!--{$classkind.name}--></strong>
 </div>
 <div class="web-menu">
-<a href="<!--{url controller=site action=all}-->"><img src="images/backpic/class-more.gif" alt="all" width="16" height="16" /> 全カテゴリ</a>
 </div>
 <!--{section name=loopClass loop=$classkind.children}-->
 <!--{if $smarty.section.loopClass.first}-->
@@ -61,10 +60,6 @@
 <img src="images/backpic/tag.gif" alt="title" width="16" height="16" /> <strong><!--{$class.name}--></strong>
 </div>
 <div class="web-menu">
-<!--
-<a href="<!--{url}-->"><img src="images/backpic/home.gif" alt="home" width="16" height="16" /> トップページ</a> 
--->
-<a href="<!--{url controller=site action=all}-->"><img src="images/backpic/class-more.gif" alt="all" width="16" height="16" /> 全カテゴリ</a>
 </div>
 
 <!--{section name=loopSite loop=$class.sites}-->
@@ -90,7 +85,7 @@
 </div>
 <!--{/if}-->
 <!--{if !$classkind.sites && !$classkind.children}-->
-<div id="no_datas">
-<!--{_t key=no_datas_msg}-->
+<div id="no_datas_msg">
+「<!--{$classkind.name}-->」<!--{_t key=no_datas_msg}-->
 </div>
 <!--{/if}-->

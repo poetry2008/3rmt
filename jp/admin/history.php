@@ -499,16 +499,16 @@ case 'dougyousya_categories':
   for($i=0;$i<$cnt2;$i++){
     echo "<tr>";
     //$res=tep_db_query("select * from products_description where products_id='".$cid_list[$i]."'");
-    $res=tep_db_query("select * from products_description where products_id='".$cid_list[$i]."' order by products_description.products_name asc");
+    $res=tep_db_query("select * from products_description where products_id='".$cid_list[$i]."' and site_id='0' order by products_description.products_name asc");
 
     $col=tep_db_fetch_array($res);  
-  if ($ocertify->npermission>7) {
-    if($x){
-      echo "<td><a href='javascript:void(0);' onclick='ex(".$x.",".($count['cnt']+1).")'>↑</a></td>";
-    }else{
-      echo "<td></td>";
+    if ($ocertify->npermission>7) {
+      if($x){
+        echo "<td><a href='javascript:void(0);' onclick='ex(".$x.",".($count['cnt']+1).")'>↑</a></td>";
+      }else{
+        echo "<td>&nbsp;</td>";
+      }
     }
-  }
     echo "<td id='tr_".$x."_1'>";
     echo "<input type='hidden' name='proid[]' value='".$cid_list[$i]."' class='sort_order_input' >";//products_id
     echo "<a href='#".$col['products_name']."'>".$col['products_name']."</a></td>";

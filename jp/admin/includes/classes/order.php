@@ -59,6 +59,11 @@
                           'orders_important_flag' => $order['orders_important_flag'],
                           'orders_care_flag'      => $order['orders_care_flag'],
                           'orders_wait_flag'      => $order['orders_wait_flag'],
+                          'orders_inputed_flag'   => $order['orders_inputed_flag'],
+                          'orders_http_accept_language' => $order['orders_http_accept_language'],
+                          'orders_system_language'      => $order['orders_system_language'],
+                          'orders_user_language'        => $order['orders_user_language'],
+                          'orders_work'                 => $order['orders_work'],
         
         
         
@@ -72,6 +77,11 @@
                           'orders_windows_media_enable' => $order['orders_windows_media_enable'],
                           'orders_pdf_enable'           => $order['orders_pdf_enable'],
                           'orders_java_enable'          => $order['orders_java_enable'],
+                            
+                          'telecom_name'    => $order['telecom_name'],
+                          'telecom_tel'    => $order['telecom_tel'],
+                          'telecom_email'    => $order['telecom_email'],
+                          'telecom_money'    => $order['telecom_money'],
         
         
         

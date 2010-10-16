@@ -1,11 +1,11 @@
 <!--{if $classkind.children}-->
 <div id="web-box">
 <span class="web-line"><b class="x1">&nbsp;</b><b class="x2">&nbsp;</b><b class="x3">&nbsp;</b><b class="x4">&nbsp;</b><b class="x5">&nbsp;</b><b class="x6">&nbsp;</b><b class="x7">&nbsp;</b></span>
-<div class="web-tit">
-<img src="images/backpic/tag.gif" alt="title" width="16" height="16" /> <strong><!--{$classkind.name}--></strong>
+<div class="web-tit_classbox"><div class="web_3_title">
+<img src="images/backpic/tag.gif" alt="title" width="16" height="16"
+/><strong><!--{$classkind.name}--></strong></div>
 </div>
 <div class="web-menu">
-<a href="<!--{url controller=site action=all}-->"><img src="images/backpic/class-more.gif" alt="all" width="16" height="16" /> 全カテゴリ</a>
 </div>
 <!--{section name=loopClass loop=$classkind.children}-->
 <!--{if $smarty.section.loopClass.first}-->
@@ -13,7 +13,8 @@
 <!--{/if}-->
   <tr class="t1">
     <td>
-    <span class="web-ico">&nbsp;</span><a class = "web-ico-a" href='<!--{url controller=site action=class id=$classkind.children[loopClass].class_id}-->'><!--{$classkind.children[loopClass].name}-->
+    <span class="web-ico">&nbsp;</span>
+    <a class = "web-ico-a" href='<!--{url controller=site action=class id=$classkind.children[loopClass].class_id}-->'><!--{$classkind.children[loopClass].name}-->
     </a>
     </td>
   </tr>
@@ -26,8 +27,10 @@
 <!--{if $sites}-->
 <div class="web-box">
 <span class="web-line"><b class="x1">&nbsp;</b><b class="x2">&nbsp;</b><b class="x3">&nbsp;</b><b class="x4">&nbsp;</b><b class="x5">&nbsp;</b><b class="x6">&nbsp;</b><b class="x7">&nbsp;</b></span>
-<div class="web-tit">
-<img src="images/backpic/tag.gif" alt="title" width="16" height="16" /> <strong><!--{$class.name}--></strong>
+<div class="web-tit_classbox">
+<div class="web_3_title">
+<img src="images/backpic/tag.gif" alt="title" width="16" height="16"
+/><strong><!--{$class.name}--></strong></div>
 </div>
 <div class="web-menu">
 </div>
@@ -38,8 +41,8 @@
 <table class="web_page_table">
 <!--{/if}-->
 <tr>
-<td class="web_table_td1"><a target="_blank" href="<!--{$sites[loopSite].url}-->">
-<!--{$sites[loopSite].name}--></a></td>
+<td class="web_table_td1"><strong><a target="_blank" href="<!--{$sites[loopSite].url}-->">
+<!--{$sites[loopSite].name}--></a></strong></td>
 <td class="web_table_td2"><!--{$sites[loopSite].comment}--></td>
 </tr>
 <!--{if $smarty.section.loopSite.last}-->
@@ -57,14 +60,11 @@
 <!--{if $class.sites}-->
 <div class="web-box">
 <span class="web-line"><b class="x1">&nbsp;</b><b class="x2">&nbsp;</b><b class="x3">&nbsp;</b><b class="x4">&nbsp;</b><b class="x5">&nbsp;</b><b class="x6">&nbsp;</b><b class="x7">&nbsp;</b></span>
-<div class="web-tit">
-<img src="images/backpic/tag.gif" alt="title" width="16" height="16" /> <strong><!--{$class.name}--></strong>
+<div class="web-tit"> <div class="web_3_title">
+<img src="images/backpic/tag.gif" alt="title" width="16" height="16"
+/><h2><!--{$class.name}--></h2></div>
 </div>
 <div class="web-menu">
-<!--
-<a href="<!--{url}-->"><img src="images/backpic/home.gif" alt="home" width="16" height="16" /> トップページ</a> 
--->
-<a href="<!--{url controller=site action=all}-->"><img src="images/backpic/class-more.gif" alt="all" width="16" height="16" /> 全カテゴリ</a>
 </div>
 
 <!--{section name=loopSite loop=$class.sites}-->
@@ -73,9 +73,12 @@
 <!--{/if}-->
 	<tr class="t1">
 		<td>
-		<span class="web-ico">&nbsp;</span><a class = "web-ico-a" href='<!--{$class.sites[loopSite].url}-->' target='_blank'><!--{$class.sites[loopSite].name}--></a>
+		<span class="web-ico">&nbsp;</span><h3><a class = "web-ico-a"
+                href='<!--{$class.sites[loopSite].url}-->'
+                target='_blank'><!--{$class.sites[loopSite].name}--></a><h3>
 		<!--{if $class.sites[loopSite].comment}-->
-		<p><a href='<!--{url controller=site action=detail id=$class.sites[loopSite].id}-->'><!--{$class.sites[loopSite].comment|truncate:36:"..."}--></a></p>
+		<p><h3><a href='<!--{url controller=site action=detail
+                  id=$class.sites[loopSite].id}-->'><!--{$class.sites[loopSite].comment|truncate:36:"..."}--></a></h3></p>
 		<!--{/if}-->
 		</td>
 	</tr>
@@ -91,6 +94,6 @@
 <!--{/if}-->
 <!--{if !$classkind.sites && !$classkind.children}-->
 <div id="no_datas">
-<!--{_t key=no_datas_msg}-->
+「<!--{$classkind.name}-->」<!--{_t key=no_datas_msg}-->
 </div>
 <!--{/if}-->

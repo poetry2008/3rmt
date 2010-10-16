@@ -5,15 +5,16 @@ class Controller_FrequentSite extends Controller_Base{
 	function __construct(){
 		parent::__construct();
 
-		$this->model_FrequentSite = FLEA::getSingleton('Model_FrequentSite');
+		$this->model_FrequentSite = FLEA::getSingleton('Model_Site');
 	}
 
     /**
      * 后台
-     * 列出全部常用站点
+     * 列出全部推荐站点
      */
 	function actionIndex(){
-        $sites = $this->model_FrequentSite->findAll(null,'`order` DESC');
+        $coud = "(is_recommend=1)";
+        $sites = $this->model_FrequentSite->findAll($coud,'`created` DESC');
         //dump($sites);
         $viewData = array(
             'sites'=>$sites,
@@ -86,6 +87,7 @@ class Controller_FrequentSite extends Controller_Base{
         $data = array(
             'id'=>$id,
             'order'=>(int)$_POST['order'],
+            'is_recommend' => (int)$_POST['is_recommend'],
         );
         if($this->model_FrequentSite->update($data)){
             $this->addMsg(_T('frequentsite_edit_success'));

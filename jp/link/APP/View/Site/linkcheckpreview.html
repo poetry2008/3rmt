@@ -3,13 +3,11 @@
 <div id="linkcheck">
 <div id="linkpreview">
 <div class="custom-menu">
-		<a href='<!--{url controller=site action=index}-->'><img
-                src="public/images/backpic/custom-door.gif" alt="door" width="16" height="16" /> <!--{_t key='custom_close_window'}--></a>
 	</div>
 
         <div class="return_form_div">
         <form name="reture_form" action="<!--{url controller=site
-        action=setlinkchecksite}-->" method="post">
+        action=regist}-->" method="post">
         <input type="hidden" name="fname" value="<!--{$fname}-->" />
         <input type="hidden" name="femail" value="<!--{$femail}-->" />
         <input type="hidden" name="fpass" value="<!--{$fpass}-->" />
@@ -29,7 +27,7 @@
         <!--{_t key="site_preview_attention"}-->
         </div> <!-- end of .return_form_div -->
 
-        <div class="submit_form_div">
+        <div class="submit_form_div_review">
         <!--{_t key='submit_form_attention'}-->
         <br />
 	<form name="submit_form" action='<!--{url controller=Site
@@ -43,8 +41,7 @@
                 </td>
     		<td class="right">
                 <!--{$fname}-->
-                <input type="hidden" id="content_fname" name='fname'
-                value="<!--{$fname}-->" class="input-fname" />
+                <input type="hidden" id="content_fname" name='fname' value="<!--{$fname}-->" class="input-fname" />
                 </td>
         </tr>
         <tr><td colspan="2" height="20"></td></tr>
@@ -120,8 +117,7 @@
                 </td>
     		<td class="right">
                 <!--{$linkpage_url}-->
-                <input id="content_linkpage_url" type="hidden" name='linkpage_url'
-                value='<!--{$linkpage_url}-->' class="input-linkpage-url"/></td>
+                <input id="content_linkpage_url" type="hidden" name='linkpage_url' value='<!--{$linkpage_url}-->' class="input-linkpage-url"/></td>
     	</tr>
         <tr><td colspan="2" height="20"></td></tr>
         <tr>

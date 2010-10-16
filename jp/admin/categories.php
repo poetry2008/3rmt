@@ -959,7 +959,27 @@ function mess(){
 ?>
               <tr>
                 <td class="main"><?php if ($i == 0) echo TEXT_PRODUCTS_NAME; ?></td>
-                <td class="main"><?php echo tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('products_name[' . $languages[$i]['id'] . ']', (isset($products_name[$languages[$i]['id']]) ? stripslashes($products_name[$languages[$i]['id']]) : (isset($pInfo->products_id)?tep_get_products_name($pInfo->products_id, $languages[$i]['id'], $site_id):''))); ?></td>
+                <td class="main">
+                <?php 
+                echo tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;'
+                . tep_draw_input_field(
+                    'products_name[' . $languages[$i]['id'] . ']', 
+                    (isset($products_name[$languages[$i]['id']]) ? 
+                      stripslashes($products_name[$languages[$i]['id']]) 
+                        : (isset($pInfo->products_id)?
+
+                          (
+                           //如果为空,则取默认值
+                          tep_get_products_name($pInfo->products_id, $languages[$i]['id'], $site_id)!=''?
+                          tep_get_products_name($pInfo->products_id, $languages[$i]['id'], $site_id):
+                          tep_get_products_name($pInfo->products_id, $languages[$i]['id'], 0)
+                          )
+
+                          :'')
+                        )
+                    ); 
+                ?>
+                </td>
                 <td class="fieldRequired">検索キー</td>
               </tr>
               <?php

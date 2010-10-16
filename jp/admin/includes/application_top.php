@@ -96,6 +96,8 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('FILENAME_WHOS_ONLINE', 'whos_online.php');
   define('FILENAME_ZONES', 'zones.php');
   define('FILENAME_FAQ', 'faq.php');
+  define('FILENAME_REFERER', 'referer.php');
+  define('FILENAME_COMPUTERS', 'computers.php');
   
   //add files
   define('FILENAME_CONTENTS', 'contents.php');//Add filenames
@@ -171,6 +173,8 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('TABLE_CALENDER', 'calendar');
   define('TABLE_FAQ_CATEGORIES', 'faq_categories');
   define('TABLE_FAQ_QUESTIONS',  'faq_questions');
+  define('TABLE_COMPUTERS',  'computers');
+  define('TABLE_ORDERS_TO_COMPUTERS',  'orders_to_computers');
   
 // customization for the design layout
   define('BOX_WIDTH', 125); // how wide the boxes should be in pixels (default: 125)

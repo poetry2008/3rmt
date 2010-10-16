@@ -63,16 +63,30 @@ class Controller_Seoplink extends Controller_Base{
     $site = $model_Site->find($siteId);
     $blt = $this->linkcheck($site['url'], $site['linkpage_url']);
     $state = $blt['state']?'1':'0';
+    $is_recommend = $blt['is_recommend']?'1':'0';
     if(isset($_GET['show'])){
     $data = array(
         'id' => $site['id'],
         'state' => $state,
         'show_state' => $_GET['show'],
         );
-    }else{
+    }else if(isset($_GET['king'])){
     $data = array(
         'id' => $site['id'],
         'state' => $state,
+        'is_king' => $_GET['king'],
+        );
+    }else if(isset($_GET['recommend'])){
+    $data = array(
+        'id' => $site['id'],
+        'state' => $state,
+        'is_recommend' => $_GET['recommend'],
+        );
+    }else {
+    $data = array(
+        'id' => $site['id'],
+        'state' => $state,
+        'is_recommend' => $is_recommend,
         );
     }
     $model_Site->save($data);
@@ -132,6 +146,57 @@ class Controller_Seoplink extends Controller_Base{
     $this->executeView("seoplinkcheckshow.html",$viewData);
   }
 
+
+  //修改也 回显数据
+  function actionLinkcheckedit()
+  {
+    $siteId = (int)$_GET['id'];
+    $model_Site = &FLEA::getSingleton('Model_Site');
+    $site = $model_Site->find($siteId);
+    $model_Class = &FLEA::getSingleton('Model_Class');
+    $class = $model_Class->find($site['class_id']);
+    $classes = $model_Class->getAllClasses();
+
+    if (count($classes) == 0) {
+      //如果无分类提示添加分类
+      //js_alert(_T('ui_p_create_class_first'), '', url('BoProductClasses'));
+    }
+    $str_classes = '';
+    $right = array();
+    foreach ($classes as $class_row):
+      $c = count($right);
+    if ($c > 0) {
+      while ($c > 0 && $right[$c - 1] < $class_row['right_value'])
+      {
+        array_pop($right);
+        $c = count($right);
+      }
+    }
+    $className = t(str_repeat('  ', $c) . $class_row['name'] . '      ');
+    $right[] = $class_row['right_value'];
+    $str_classes .= '<option
+      value="'.$class_row['class_id'].'"'.($class_row['class_id']==$site['class_id']?' selected="selected"':'').'>'.$className."</option>\n";
+    endforeach;
+
+    $global = &FLEA::getSingleton('Model_Global');
+    $date = $global->find('name = "set_new_date"');
+    $model_Consumer = &FLEA::getSingleton('Model_Consumer');
+    $consumer = $model_Consumer->find("site_id = ".$site['id']);
+    $created = date("Y-m-d H:i",$site['created']);
+    $flag_new = false;
+    if(time()-intval($site['created']) < intval($date['value'])*60*60){
+      $flag_new = true;
+    }
+    $viewData = array(
+        'site' => $site,
+        'class' => $class,
+        'str_classes' => $str_classes,
+        'consumer'=> $consumer,
+        'created'=>$created,
+        'flag_new'=>$flag_new,
+        );
+    $this->executeView("seoplinkcheckedit.html",$viewData);
+  }
   /*
      *check link all
      */
@@ -144,15 +209,35 @@ class Controller_Seoplink extends Controller_Base{
     {
       $blt = $this->linkcheck($site['url'], $site['linkpage_url']);
       $state = $blt['state']?'1':'0';
+      $is_recommend = $blt['is_recommend']?'1':'0';
       $data = array(
           'id' => $site['id'],
           'state' => $state,
+          'is_recommend' => $is_recommend,
           );
       $this->model_Site->save($data);
     }
     redirect(url('seoplink','admintop'));
   }
 
+  function actionEditDo(){
+    $post = $_POST;
+    $date_time_arr = explode(' ',trim($post['created']));
+    $date_arr = explode('-',$date_time_arr[0]);
+    $time_arr = explode(':',$date_time_arr[1]);
+    $new_timestamp = mktime($time_arr[0],$time_arr[1],0,$date_arr[1],$date_arr[2],$date_arr[0]);
+    $data = array(
+          'id' => $post['id'],
+          'name' => trim($post['name']),
+          'url' => trim($post['url']),
+          'comment' => trim($post['comment']),
+          'class_id' => $post['class'],
+          'linkpage_url' => trim($post['linkpage_url']),
+          'created' => $new_timestamp,
+        );
+    $this->model_Site->save($data);
+    redirect(url('seoplink','admintop'));
+  }
   /**
     *batch
     */
@@ -215,7 +300,6 @@ class Controller_Seoplink extends Controller_Base{
     $bln = array();
     $bln[error_message] = "";
     $my_site_url = FLEA::getAppInf('site_url');
-    $my_site_url = 'http://orangehousing.jp/';
     $global = &FLEA::getSingleton('Model_Global');
     $dir = $global->find('name = "set_new_dir"');
     $anchor = $dir['value'];
@@ -295,8 +379,16 @@ class Controller_Seoplink extends Controller_Base{
     $pos = preg_match('/<a\s{0,}href\s{0,}=\s{0,}"http:(\/\/){0,1}www\.orangehousing\.jp\/(\w+\/){0,}(\w+\.html){0,1}"\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}")>/'
         ,$UnixSockString);
     */
-    $pos =
-      preg_match('/<a\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}\s{0,}href\s{0,}=\s{0,}"http:(\/\/){0,1}www\.orangehousing\.jp\/{0,1}"\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}>/'
+  $preg_str = '/<a [^>]*href=[\"\']{0,1}http:(\/\/){0,1}';
+  $url_sub_arr = explode('.',$my_site_url);
+  foreach($url_sub_arr as $value){
+    $preg_str .= $value.'\.';
+  }
+  $preg_str = substr($preg_str,0,-2);
+  $preg_str_start = $preg_str;
+  $preg_str .= '[\/]{0,1}[\"\']{0,1}[^>]*>/i';
+    $pos = preg_match($preg_str
+  //   preg_match('/<a\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}\s{0,}href\s{0,}=\s{0,}"http:(\/\/){0,1}www\.orangehousing\.jp\/{0,1}"\s{0,}(target\s{0,}=\s{0,}"\w+"){0,}>/i'
         ,$UnixSockString);
     //$pos = strpos($UnixSockString, $my_site_url);
 
@@ -310,11 +402,95 @@ class Controller_Seoplink extends Controller_Base{
         $bln[err_flag] = true;
       }
     }
-
-    $UnixSockString2 = "";
-
+    if($bln[state] == false){
+    $tmp_path_arr = explode('/',$Path);
+    if($Path!='/'&&array_pop($tmp_path_arr)==''){
+     $Path = substr($Path,0,-1);
+    }
+    // 登録URLとリンク設置URLが同じか確認
+    if ($Host != $site_url_host) {
+      $bln[state] = false;
+      if(!$admin_mode){
+        $bln[error_message] .= "<li>サイトURLと相互リンク設置URLのドメインが違います。</li>";
+        $bln[err_flag] = true;
+      }
+      return $bln;
+      exit;
+    }
+    $UnixSockString = '';
+    //80接続
+    @$fp = fsockopen($Host, 80, $ErrNo, $ErrStr, 10);
+    if (!$fp) {
+      $bln[state] = false;
+      if(!$admin_mode){
+        $bln[error_message] .= "<li>相互リンク先が見つかりません。</li>";
+        $bln[err_flag] = true;
+      }
+    }
+    else {
+      // 読み込みのタイムアウト設定
+      socket_set_timeout($fp, 2);
+      fputs($fp, "GET ". $Path . " HTTP/1.0\r\nHost:" . $Host .  "\r\n".
+          "\r\nReferer:".url('site','index')."\r\n\r\n");
+      while(!feof($fp))
+        $UnixSockString.=fgets($fp, 128);
+      // タイムアウトしたか調べる
+      $stat = socket_get_status($fp);
+      if ($stat["timed_out"]) {
+        $bln[state] = false;
+        if(!$admin_mode){
+          $bln[error_message] .= "<li>相互リンク設置先がタイムアウトしました。</li>";
+          $bln[err_flag] = true;
+        }
+      }
+    }
+    @fclose($fp);
+    /*
+    $pos = preg_match('/<a\s{0,}href\s{0,}=\s{0,}"http:(\/\/){0,1}www\.orangehousing\.jp\/(\w+\/){0,}(\w+\.html){0,1}"\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}")>/'
+        ,$UnixSockString);
+    */
+    $pos = preg_match($preg_str
+//      preg_match('/<a\s{0,}(target\s{0,}=\s{0,}"\w+"){0,}\s{0,}href\s{0,}=\s{0,}"http:(\/\/){0,1}www\.orangehousing\.jp\/{0,1}"\s{0,}(target\s{0,}=\s{0,}"\w+"){0,}>/i'
+        ,$UnixSockString);
+    //$pos = strpos($UnixSockString, $my_site_url);
 
     //リンク済みの場合True
+    if ($pos > 0) {
+      $bln[state] = true;
+    } else {
+      $bln[state] = false;
+      if(!$admin_mode){
+        $bln[error_message] .= "<li>相互リンクが完了していません。<br />あなた様のサイトへ下記のリンクタグ<br />"."$linktag"."<br />をそのまま貼り付けてください。<br />タグを改変するとリンクされません。</li>";
+        $bln[err_flag] = true;
+      }
+    }
+    }
+    $UnixSockString2 = "";
+
+    $opts = array(
+      'http'=>array(
+        'method'=>"GET",
+        'header'=>"User-Agent:Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)", 
+        'Referer' =>  url('site','index'),
+      )
+    );
+    $site_url_host = trim($site_url_host);
+    $UnixSockString2 = file_get_contents('http://'.$site_url_host,false,$header);
+    $regExp = $preg_str_start.'[^>]*>/i';
+    //  '/<a\s{0,}(class=(\'|")\w+(\'|")){0,}\s+(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}\s{0,}href\s{0,}=\s{0,}"http:(\/\/){0,1}www\.orangehousing\.jp(\/\w+){0,}(\.(html|php)){0,1}"\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}>/i';
+    $pos2 = preg_match($regExp,$UnixSockString2);
+      if ($pos2>0) {
+        $bln[is_recommend] = true;
+      } else {
+        $bln[is_recommend] = false;
+        if(!$admin_mode){
+          $bln[error_message] .= $Path_check."<li>登録サイトURLに相互リンク設置URLへのリンクがありません。</li>";
+          $bln[err_flag] = true;
+        }
+
+      }
+    //リンク済みの場合True
+    /*
     if($bln[state] == true && $url != $linkpage_url){
 
       //80接続
@@ -348,7 +524,7 @@ class Controller_Seoplink extends Controller_Base{
       }
       @fclose($fp2);
     $pos2 =
-      preg_match('/<a\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}\s{0,}href\s{0,}=\s{0,}"http:(\/\/){0,1}www\.orangehousing\.jp\/{0,1}"\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}>/'
+      preg_match('/<a\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}\s{0,}href\s{0,}=\s{0,}"http:(\/\/){0,1}www\.orangehousing\.jp\/{0,1}"\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}>/i'
         ,$UnixSockString2);
       //$pos2 = strpos($UnixSockString2, $my_site_url);
 
@@ -365,6 +541,7 @@ class Controller_Seoplink extends Controller_Base{
       }
 
     }
+    */
     return $bln;
   }
 

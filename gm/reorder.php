@@ -70,11 +70,13 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
           tep_db_query("
               update `".TABLE_ORDERS."` 
               set `orders_status`='17' ,
-                  `torihiki_date` = '".$datetime."' 
+                  `torihiki_date` = '".$datetime."' ,
+                  `last_modified` = now()
               WHERE `orders_id`='".$order_id."' 
                 and site_id = '" . SITE_ID . "'
           ");
           orders_updated($order_id);
+          last_customer_action();
           // insert a history
           $sql = "
             INSERT INTO `".TABLE_ORDERS_STATUS_HISTORY."` (

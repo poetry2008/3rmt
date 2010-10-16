@@ -11,11 +11,11 @@
   #$contents2 = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where pID = '11' and site_id = '" . SITE_ID . "'");  //top2
   #$result2   = tep_db_fetch_array($contents2) ;
   
-  echo DEFAULT_PAGE_TOP_CONTENTS;
+  include(DIR_WS_MODULES . FILENAME_LATEST_NEWS);
   include(DIR_WS_MODULES . 'categories_banner_text.php');
 ?>
 <?php
-  include(DIR_WS_MODULES . FILENAME_LATEST_NEWS);
+  echo DEFAULT_PAGE_TOP_CONTENTS;
 ?>
 <?php
   echo DEFAULT_PAGE_BOTTOM_CONTENTS;

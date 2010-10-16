@@ -1,6 +1,6 @@
 <!--{include file='Site/header.html'}-->
 <div id="content">
-<div id="linkcheck">
+<div id="linkcheck_site">
 <div class="custom-menu">
 <a href='<!--{url controller=site action=index}-->'><img src="public/images/backpic/custom-door.gif" alt="door" width="16" height="16" /> <!--{_t key='custom_close_window'}--></a>
 </div>
@@ -12,7 +12,8 @@
 <br />
 <!--{_t key="content_attention2"}-->
 <form action='<!--{url controller=Site action=siteupdatesubmit}-->'
-method='post' onsubmit="return checkSm('<!--{url controller=Site action=checkurl}-->')">
+method='post' onsubmit="return checkSm('<!--{url controller=Site
+action=checkurl}-->','<!--{$site.id}-->')">
 <input type="hidden" name="id" value="<!--{$site.id}-->" />
 <input type="hidden" name="c_id" value="<!--{$consumer.consumer_id}-->" />
 <table class="linkcheck-ct">

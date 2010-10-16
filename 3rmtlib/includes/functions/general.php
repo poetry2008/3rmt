@@ -2949,3 +2949,17 @@ function check_uri($p) {
     forward404();
   }
 }
+
+function tep_get_domain($url)
+{
+  if (preg_match('/https?:\/\/([^\/?]*)/', $url, $out)) {
+    return $out[1];
+  } else {
+    return false;
+  }
+}
+
+//LAST_CUSTOMER_ACTION
+function last_customer_action() {
+  tep_db_query("update ".TABLE_CONFIGURATION." set configuration_value=now() where configuration_key='LAST_CUSTOMER_ACTION'");
+}

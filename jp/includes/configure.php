@@ -34,7 +34,7 @@
   define('DB_SERVER_PASSWORD', '123456');
   define('DB_DATABASE', 'maker_3rmt');
   define('USE_PCONNECT', 'false'); // use persistent connections?
-  define('STORE_SESSIONS', 'mysql'); // leave empty '' for default handler or set to 'mysql'
+  define('STORE_SESSIONS', ''); // leave empty '' for default handler or set to 'mysql'
 
   define('REWRITE_PRODUCTS', 'item/');//Add Ultimate_SEO_URLS
   define('REWRITE_CATEGORIES', 'rmt/');//Add Ultimate_SEO_URLS

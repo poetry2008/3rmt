@@ -146,9 +146,11 @@
                           'site_id'           => SITE_ID,
                           'torihiki_date'     => $insert_torihiki_date,
                           'orders_ref'        => $_SESSION['referer'],
+                          'orders_ref_site'   => tep_get_domain($_SESSION['referer']),
                           'orders_ip'         => $_SERVER['REMOTE_ADDR'],
                           'orders_host_name'  => trim(strtolower(@gethostbyaddr($_SERVER['REMOTE_ADDR']))),
                           'orders_user_agent' => $_SERVER['HTTP_USER_AGENT'],
+                          'orders_wait_flag' => 1,
 
                           'orders_screen_resolution'    => $_SESSION['screenResolution'],
                           'orders_color_depth'          => $_SESSION['colorDepth'],
@@ -159,7 +161,14 @@
                           'orders_realplayer_enable'    => $_SESSION['realPlayerEnable'],
                           'orders_windows_media_enable' => $_SESSION['windowsMediaEnable'],
                           'orders_pdf_enable'           => $_SESSION['pdfEnable'],
-                          'orders_java_enable'          => $_SESSION['javaEnable']
+                          'orders_java_enable'          => $_SESSION['javaEnable'],
+                          'orders_system_language'      => $_SESSION['systemLanguage'],
+                          'orders_user_language'        => $_SESSION['userLanguage'],
+                          'orders_http_accept_language' => $_SERVER['HTTP_ACCEPT_LANGUAGE'],
+                          'telecom_name'   => $_GET['username'],
+                          'telecom_tel'    => $_GET['telno'],
+                          'telecom_money'  => $_GET['money'],
+                          'telecom_email'  => $_GET['email'],
 
                 );
   if (isset($_POST['codt_fee'])) {
@@ -517,6 +526,8 @@
   if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
     tep_mail('', SEND_EXTRA_ORDER_EMAILS_TO, EMAIL_TEXT_SUBJECT2, $email_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
   }
+  
+  last_customer_action();
   
   # 印刷用メール本文 ----------------------------
   $email_printing_order = '';

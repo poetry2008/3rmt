@@ -1,5 +1,3 @@
-// http://www.phpmyvisites.net/ 
-// License GNU/GPL (http://www.gnu.org/copyleft/gpl.html)
 function pmv_plugMoz(pmv_pl) {
 	if (pmv_tm.indexOf(pmv_pl) != -1 && (navigator.mimeTypes[pmv_pl].enabledPlugin != null))
 		return '1';
@@ -31,6 +29,28 @@ function getFlashVer() {
  }
  return f;
 }
+
+//ユーザーの言語環境
+function getUserLanguage(){
+	if (objChk(navigator.userLanguage))
+		return navigator.userLanguage;
+	else{return '';}
+} 
+
+//パソコンの言語環境
+function getSystemLanguage(){
+	if (objChk(navigator.systemLanguage))
+		return navigator.systemLanguage;
+	else{return '';}
+} 
+
+function objChk(pObj){
+	if (pObj==null){return false;}
+	if (pObj=="undefined"){return false;}
+	if (pObj==""){return false;}
+	return true;
+} 
+
 var pmv_jav='0'; if(navigator.javaEnabled()) pmv_jav='1';
 var pmv_agent = navigator.userAgent.toLowerCase();
 var pmv_moz = (navigator.appName.indexOf("Netscape") != -1);
@@ -111,10 +131,11 @@ function pmv_getUrlStat(pmv_urlPmv, pmv_site, pmv_urlDoc, pmv_pname, pmv_typeCli
 	pmv_src += '&h='+pmv_da.getHours()+'&m='+pmv_da.getMinutes()+'&s='+pmv_da.getSeconds();
 	pmv_src += '&flash='+pmv_fla+'&director='+pmv_dir+'&quicktime='+pmv_qt+'&realplayer='+pmv_rea;
 	pmv_src += '&pdf='+pmv_pdf+'&windowsmedia='+pmv_wma+'&java='+pmv_jav+'&cookie='+pmv_cookie;
+	pmv_src += '&systemlanguage='+getSystemLanguage()+'&userlanguage='+getUserLanguage();
 	if ((pmv_typeClick) && (pmv_typeClick != "")) pmv_src += '&type='+escape(pmv_typeClick);
 	//pmv_src += '&ref='+escape(pmv_rtu);
 	pmv_src += '&flashversion='+pmv_fla_ver;
-	
+
 	return pmv_src;
 }
 // log action : pmv_typeClick = empty like a page, FILE ans in the futur RSS, PODCAST
