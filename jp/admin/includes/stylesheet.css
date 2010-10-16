@@ -502,6 +502,12 @@ width:120px;
 .add_link{
 clear:both;
 }
+.search_class{
+margin-top:10px;
+}
+.search_class_td{
+font-size:12px;
+font-weight:bold;
 #orders_flag {
 	border-top: 1px solid #000;
 	/*margin-bottom: 5px;*/

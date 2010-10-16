@@ -51,6 +51,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('LOCAL_EXE_UNZIP', '/usr/local/bin/unzip');
 
 // define the filenames used in the project
+  define('FILENAME_RECORD', 'record.php');
   define('FILENAME_IMAGE_DOCUMENT', 'image_documents.php');
   define('FILENAME_IMAGE_DOCUMENTS', 'image_documents.php');
   define('FILENAME_TAGS', 'tags.php');
@@ -111,6 +112,11 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
 
 // define the database table names used in the project
+  define('TABLE_SITENAME','sitename');
+  define('TABLE_CATEGORIES_TO_MISSION', 'categories_to_mission');
+  define('TABLE_SESSION_LOG', 'session_log');
+  define('TABLE_RECORD', 'record');
+  define('TABLE_MISSION', 'mission');
   define('TABLE_IMAGE_DOCUMENTS', 'image_documents');
   define('TABLE_IMAGE_DOCUMENT_TYPES', 'image_document_types');
   define('TABLE_PRODUCTS_TO_IMAGE_DOCUMENTS', 'products_to_image_documents');

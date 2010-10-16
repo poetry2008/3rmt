@@ -3061,3 +3061,15 @@ function tep_get_customers_fax_by_id($cid)
     $order_status = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$order['orders_status']."'"));
     return $order_status['finished'];
   }
+function tep_get_siteurl_name($siteurl)
+{
+  $sql = "select sitename from ".TABLE_SITENAME." 
+         where siteurl='".$siteurl."'";
+  $query = tep_db_query($sql);
+  if(tep_db_num_rows($query)>0){
+  $res = tep_db_fetch_array($query);
+  return $res['sitename'];
+  }else{
+  return $siteurl;
+  }
+}
