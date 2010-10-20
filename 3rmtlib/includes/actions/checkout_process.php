@@ -169,6 +169,10 @@
                           'telecom_tel'    => $_GET['telno'],
                           'telecom_money'  => $_GET['money'],
                           'telecom_email'  => $_GET['email'],
+                          'telecom_clientip'  => $_GET['clientip'],
+                          'telecom_option'  => $_GET['option'],
+                          'telecom_cont'  => $_GET['cont'],
+                          'telecom_sendid'  => $_GET['sendid'],
 
                 );
   if (isset($_POST['codt_fee'])) {

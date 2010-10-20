@@ -4,6 +4,7 @@
 			includes # 后台使用的库
 				functions
 				classes
+			seg	# 
 	gm
 	wm
 	3rmtlib # 三个前台和后台共用的库

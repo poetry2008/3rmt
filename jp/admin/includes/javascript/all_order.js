@@ -60,7 +60,7 @@ function chg_tr_color(aaa){
     }*/
 
     if (document.getElementById(tr_id).className != 'dataTableRowSelected') {
-        document.getElementById(tr_id).style.backgroundColor = "#FFCC99";
+        document.getElementById(tr_id).style.backgroundColor = "#F08080";
     }
 
     // 选中当前checkbox

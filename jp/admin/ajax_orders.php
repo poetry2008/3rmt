@@ -4,6 +4,9 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   // update orders_comment
   tep_db_perform('orders', array('orders_comment' => $_POST['orders_comment']), 'update', "orders_id='".$_POST['orders_id']."'");
   echo $_POST['orders_comment'];
+} else if ($_GET['orders_id'] && $_POST['orders_credit']) {
+  $order = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS." where orders_id='".$_GET['orders_id']."'"));
+  tep_db_perform('customers', array('customers_fax' => $_POST['orders_credit']), 'update', "customers_id='".$order['customers_id']."'");
 } else if ($_GET['orders_id'] && isset($_GET['orders_important_flag'])) {
   // 重要
   tep_db_perform('orders', array('orders_important_flag' => $_GET['orders_important_flag']), 'update', "orders_id='".$_GET['orders_id']."'");
@@ -26,6 +29,7 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   // A, B, C
   tep_db_perform('orders', array('orders_work' => $_GET['work']), 'update', "orders_id='".$_GET['orders_id']."'") && print('success');
 } else if ($_GET['action'] == 'get_new_orders' && $_GET['prev_customer_action']) {
+  // ajax在订单列表的顶部插入新订单，如果订单结构发生改变此处需要和orders.php同步修改
   $orders_query = tep_db_query("
     select * from ".TABLE_ORDERS."
     where date_purchased > '".$_GET['prev_customer_action']."'
@@ -108,7 +112,8 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
 <?php 
   }
 } else if ($_GET['action'] == 'save_questions' && $_GET['orders_id']) {
-  print_r($_POST);
+  // 保存订单问答
+  //print_r($_POST);
   isset($_POST['q_1_1']) && $questions_arr['q_1_1'] = intval($_POST['q_1_1']);
   isset($_POST['q_1_2']) && $questions_arr['q_1_2'] = intval($_POST['q_1_2']);
   isset($_POST['q_2_1']) && $questions_arr['q_2_1'] = intval($_POST['q_2_1']);
@@ -144,8 +149,6 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   isset($_POST['q_11_12']) && $questions_arr['q_11_12'] = intval($_POST['q_11_12']);
   ($_POST['q_11_13_m'] && $_POST['q_11_13_d']) && $questions_arr['q_11_13'] = date('y') . '-' . intval($_POST['q_11_13_m']) . '-' . intval($_POST['q_11_13_d']);
   isset($_POST['q_11_14']) && $questions_arr['q_11_14'] = intval($_POST['q_11_14']);
-  isset($_POST['q_11_15']) && $questions_arr['q_11_15'] = $_POST['q_11_15'];
-  isset($_POST['q_11_16']) && $questions_arr['q_11_16'] = intval($_POST['q_11_16']);
   isset($_POST['q_12_1']) && $questions_arr['q_12_1'] = intval($_POST['q_12_1']);
   isset($_POST['q_12_2']) && $questions_arr['q_12_2'] = intval($_POST['q_12_2']);
   isset($_POST['q_13_1']) && $questions_arr['q_13_1'] = intval($_POST['q_13_1']);
@@ -162,9 +165,11 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   isset($_POST['q_15_8']) && $questions_arr['q_15_8'] = intval($_POST['q_15_8']);
   isset($_POST['q_16_1']) && $questions_arr['q_16_1'] = $_POST['q_16_1'];
   isset($_POST['q_16_2']) && $questions_arr['q_16_2'] = intval($_POST['q_16_2']);
+  isset($_POST['q_17_1']) && $questions_arr['q_17_1'] = $_POST['q_17_1'];
+  isset($_POST['q_17_2']) && $questions_arr['q_17_2'] = intval($_POST['q_17_2']);
   isset($_POST['questions_type']) && $questions_arr['orders_questions_type'] = intval($_POST['questions_type']);
   
-  print_r($questions_arr);
+  //print_r($questions_arr);
   if (tep_db_num_rows(tep_db_query("select orders_id from orders_questions where orders_id='".$_GET['orders_id']."'"))) {
     tep_db_perform('orders_questions', $questions_arr, 'update', "orders_id='".$_GET['orders_id']."'");
   } else {
@@ -180,4 +185,70 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
       orders_wait_flag($_GET['orders_id']);
     }
   }
+} else if ($_GET['action'] == 'clean_option' && $_GET['questions_no'] && $_GET['orders_id']) {
+  // 清空选项
+  switch ($_GET['questions_no']) {
+    case 1:
+    case 2:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 9:
+    case 10:
+    case 12:
+    case 13:
+    case 14:
+    case 16:
+    case 17:
+      $arr = array(
+        'q_'.$_GET['questions_no'].'_1' => 'null',
+        'q_'.$_GET['questions_no'].'_2' => 'null'
+      );
+      break;
+    case 3:
+      $arr = array(
+        'q_3_1' => 'null',
+        'q_3_2' => 'null',
+        'q_3_3' => 'null'
+      );
+      break;
+    case 8:
+      $arr = array(
+        'q_8_1' => 'null'
+      );
+      break;
+    case 11:
+      $arr = array(
+        'q_11_1' => 'null',
+        'q_11_2' => 'null',
+        'q_11_3' => 'null',
+        'q_11_4' => 'null',
+        'q_11_5' => 'null',
+        'q_11_6' => 'null',
+        'q_11_7' => 'null',
+        'q_11_8' => 'null',
+        'q_11_9' => 'null',
+        'q_11_10' => 'null',
+        'q_11_11' => 'null',
+        'q_11_12' => 'null',
+        'q_11_13' => 'null',
+        'q_11_14' => 'null'
+      );
+      break;
+    case 15:
+      $arr = array(
+        'q_15_1' => 'null',
+        'q_15_2' => 'null',
+        'q_15_3' => 'null',
+        'q_15_4' => 'null',
+        'q_15_5' => 'null',
+        'q_15_6' => 'null',
+        'q_15_7' => 'null',
+        'q_15_8' => 'null'
+      );
+      break;
+  }
+  print_r($arr);
+  tep_db_perform('orders_questions', $arr, 'update', "orders_id='".$_GET['orders_id']."'");
 }

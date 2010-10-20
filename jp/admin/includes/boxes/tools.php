@@ -27,11 +27,13 @@
                    '<a href="' . tep_href_link(FILENAME_WHOS_ONLINE) . '" class="menuBoxContentLink">' . BOX_TOOLS_WHOS_ONLINE . '</a><br>' . 
                    '<a href="' . tep_href_link('referer.php') . '" class="menuBoxContentLink">アクセスランキング</a><br>' . 
                    '<a href="' . tep_href_link(FILENAME_COMPUTERS) . '" class="menuBoxContentLink">PC管理</a><br>' . 
+                   
                    '<a href="' . tep_href_link(FILENAME_LATEST_NEWS) . '" class="menuBoxContentLink">' . BOX_TOOLS_LATEST_NEWS . '</a><br>' . 
                    //'<a href="' . tep_href_link(FILENAME_CONTENTS) . '" class="menuBoxContentLink">' . BOX_TOOLS_CONTENTS . '</a>');
                    '<a href="' . tep_href_link(FILENAME_CONTENTS) . '" class="menuBoxContentLink">' . BOX_TOOLS_CONTENTS . '</a><br>' .
                    '<a href="' . tep_href_link(FILENAME_PRESENT) . '" class="menuBoxContentLink">' . BOX_TOOLS_PRESENT . '</a><br>' . 
                    '<a href="' . tep_href_link(FILENAME_FAQ) . '" class="menuBoxContentLink">' . BOX_TOOLS_FAQ . '</a>' . 
+                     
                    '<hr size="1">' . 
                    '<a href="' . tep_href_link('mag_up.php', '', 'NONSSL') . '" class="menuBoxContentLink">メールマガジン一括登録</a><br>' . 
                    '<a href="' . tep_href_link('mag_dl.php', '', 'NONSSL') . '" class="menuBoxContentLink">メールマガジンデータDL</a>');

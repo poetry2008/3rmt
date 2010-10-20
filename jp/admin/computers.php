@@ -1,10 +1,16 @@
 <?php
+  /**
+   * $Id$
+   *
+   * PC管理
+   */
   require('includes/application_top.php');
 
 if (isset($_GET['action']) and $_GET['action']) {
     switch ($_GET['action']) {
       case 'insert':
         $computers_name = tep_db_prepare_input($_POST['computers_name']);
+        $sort_order = tep_db_prepare_input($_POST['sort_order']);
 
         $t_query = tep_db_query("select * from ". TABLE_COMPUTERS . " where computers_name = '" . $computers_name . "'");
         $t_res = tep_db_fetch_array($t_query);
@@ -12,21 +18,14 @@ if (isset($_GET['action']) and $_GET['action']) {
           $messageStack->add_session(TEXT_COMPUTERS_NAME_EXISTS, 'error');
           tep_redirect(tep_href_link(FILENAME_COMPUTERS, 'cPath=&action=new'));
         }
-    
-    $computers_images = tep_get_uploaded_file('computers_images');
 
-        //$image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES) . DIRECTORY_SEPARATOR . 'computers' . DIRECTORY_SEPARATOR;
-        $image_directory = tep_get_local_path(tep_get_upload_dir().'computers/');
-    if (is_uploaded_file($computers_images['tmp_name'])) {
-          tep_copy_uploaded_file($computers_images, $image_directory);
-        }
-
-        tep_db_query("insert into " . TABLE_COMPUTERS . " (computers_name) values ('" . tep_db_input($computers_name) . "')");
+        tep_db_query("insert into " . TABLE_COMPUTERS . " (computers_name, sort_order) values ('" . tep_db_input($computers_name) . "','" . tep_db_input($sort_order) . "')");
         tep_redirect(tep_href_link(FILENAME_COMPUTERS));
         break;
       case 'save':
         $computers_id = tep_db_prepare_input($_GET['cID']);
         $computers_name = tep_db_prepare_input($_POST['computers_name']);
+        $sort_order = tep_db_prepare_input($_POST['sort_order']);
         
         $t_query = tep_db_query("select * from ". TABLE_COMPUTERS . " where computers_name = '" . $computers_name . "'");
         $t_res = tep_db_fetch_array($t_query);
@@ -35,21 +34,7 @@ if (isset($_GET['action']) and $_GET['action']) {
           tep_redirect(tep_href_link(FILENAME_COMPUTERS, 'cPath=&action=new'));
         }
 
-        if(isset($_POST['delete_image']) && $_POST['delete_image']){
-          //unlink(DIR_FS_CATALOG_IMAGES . $t_res['computers_images']);
-          unlink(tep_get_upload_dir(). $t_res['computers_images']);
-          tep_db_query("update " . TABLE_COMPUTERS . " set computers_images = '' where computers_id = '" . tep_db_input($computers_id) . "'");
-        }
-
-        $computers_image = tep_get_uploaded_file('computers_images');
-
-        //$image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES) . DIRECTORY_SEPARATOR . 'computers' . DIRECTORY_SEPARATOR;
-        $image_directory = tep_get_local_path(tep_get_upload_dir().'computers/');
-        if (is_uploaded_file($computers_image['tmp_name'])) {
-          tep_copy_uploaded_file($computers_image, $image_directory);
-        }
-
-        tep_db_query("update " . TABLE_COMPUTERS . " set " . (isset($computers_image['name']) && $computers_image['name'] ? "computers_images = 'computers/" . tep_db_input($computers_image['name'])."', " : '') . " computers_name = '" . tep_db_input($computers_name) . "' where computers_id = '" . tep_db_input($computers_id) . "'");
+        tep_db_query("update " . TABLE_COMPUTERS . " set computers_name = '" . tep_db_input($computers_name) . "',sort_order = '" . tep_db_input($sort_order) . "' where computers_id = '" . tep_db_input($computers_id) . "'");
         tep_redirect(tep_href_link(FILENAME_COMPUTERS, 'page=' . $_GET['page'] . '&cID=' . $computers_id));
         break;
       case 'deleteconfirm':
@@ -99,11 +84,12 @@ if (isset($_GET['action']) and $_GET['action']) {
             <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr class="dataTableHeadingRow">
                 <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_COMPUTERS_NAME; ?></td>
+                <td class="dataTableHeadingContent">整列順</td>
                 <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
               </tr>
 <?php
   //echo MAX_DISPLAY_SEARCH_RESULTS;
-  $computers_query_raw = "select computers_id, computers_name from " . TABLE_COMPUTERS . " order by computers_id";
+  $computers_query_raw = "select * from " . TABLE_COMPUTERS . " order by sort_order desc";
   $computers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $computers_query_raw, $computers_query_numrows);
   $computers_query = tep_db_query($computers_query_raw);
   while ($computers = tep_db_fetch_array($computers_query)) {
@@ -118,6 +104,7 @@ if (isset($_GET['action']) and $_GET['action']) {
     }
 ?>
                 <td class="dataTableContent"><?php echo $computers['computers_name']; ?></td>
+                <td class="dataTableContent"><?php echo $computers['sort_order']; ?></td>
                 <td class="dataTableContent" align="right"><?php if ( isset($cInfo) && (is_object($cInfo)) && ($computers['computers_id'] == $cInfo->computers_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_COMPUTERS, 'page=' . $_GET['page'] . '&cID=' . $computers['computers_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
               </tr>
 <?php
@@ -152,6 +139,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents = array('form' => tep_draw_form('computers', FILENAME_COMPUTERS, 'page=' . $_GET['page'] . '&action=insert', 'post', 'enctype="multipart/form-data"'));
       $contents[] = array('text' => TEXT_INFO_INSERT_INTRO);
       $contents[] = array('text' => '<br>' . TEXT_INFO_COMPUTERS_NAME . '<br>' . tep_draw_input_field('computers_name'));
+      $contents[] = array('text' => '<br>整列順<br>' . tep_draw_input_field('sort_order'));
       $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_insert.gif', IMAGE_INSERT) . '&nbsp;<a href="' . tep_href_link(FILENAME_COMPUTERS, 'page=' . $_GET['page']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
     case 'edit':
@@ -160,6 +148,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents = array('form' => tep_draw_form('computers', FILENAME_COMPUTERS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->computers_id . '&action=save', 'post', 'enctype="multipart/form-data"'));
       $contents[] = array('text' => TEXT_INFO_EDIT_INTRO);
       $contents[] = array('text' => '<br>' . TEXT_INFO_COMPUTERS_NAME . '<br>' . tep_draw_input_field('computers_name', $cInfo->computers_name));
+      $contents[] = array('text' => '<br>整列順<br>' . tep_draw_input_field('sort_order', $cInfo->sort_order));
       $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_update.gif', IMAGE_UPDATE) . '&nbsp;<a href="' . tep_href_link(FILENAME_COMPUTERS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->computers_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
     case 'delete':

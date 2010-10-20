@@ -124,6 +124,17 @@
   }
 ?>
 <?php page_head();?>
+<script type="text/javascript">
+<!--
+var a_vars = Array();
+var pagename='';
+var visitesSite = 1;
+var visitesURL = "<?php echo HTTP_SERVER; ?>/visites.php";
+<?php
+  require(DIR_WS_ACTIONS.'visites.js');
+?>
+//-->
+</script>
 </head>
 <body> 
 <div class="body_shadow" align="center"> 
@@ -574,15 +585,6 @@
   <!-- footer_eof //--> 
 </div> 
 <!-- /visites --> 
-<script type="text/javascript">
-<!--
-var a_vars = Array();
-var pagename='';
-var visitesSite = 1;
-var visitesURL = "<?php echo HTTP_SERVER; ?>/visites.php";
-//-->
-</script>
-<script language="javascript" src="<?php echo HTTP_SERVER; ?>/visites.js" type="text/javascript"></script>
 <object>
 <noscript>
 <img src="visites.php" alt="Statistics" style="border:0" />

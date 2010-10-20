@@ -233,7 +233,9 @@ case 'edit':
     // configuration admin page only
     if(!in_array($cInfo->configuration_key, array(
             'ADMINPAGE_LOGO_IMAGE',
-            'MAX_DISPLAY_ORDERS_RESULTS'
+            'MAX_DISPLAY_ORDERS_RESULTS',
+            'USER_AGENT_LIGHT_KEYWORDS',
+            'HOST_NAME_LIGHT_KEYWORDS'
             ))) 
     while($site = tep_db_fetch_array($select_site_configure)) {
   $site_romaji[] = $site['romaji'];

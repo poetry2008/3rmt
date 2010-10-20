@@ -2977,7 +2977,7 @@ function tep_get_customers_fax_by_id($cid)
       $str .= '<p class="main" align="center"><font color="red"><b>入力済み</b></font></p>';
     }
     if ($orders['orders_comment']) {
-      $str .= '<p class="main" align="center"><font><b>メモ有り</b></font></p>';
+      $str .= '<p class="main" align="center"><font color="blue"><b>メモ有り</b></font></p>';
     }
     $str .= '<table border="0">';
     $orders_products_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." where orders_id = '".$orders['orders_id']."'");
@@ -2993,7 +2993,7 @@ function tep_get_customers_fax_by_id($cid)
       while($pa = tep_db_fetch_array($products_attributes_query)){
         $str .= '<tr><td class="main"><b>'.$pa['products_options'].'：</b></td><td class="main">'.$pa['products_options_values'].'</td></tr>';
       }
-      $str .= '<tr><td class="main"><b>キャラ名：</b></td><td style="font-size:20px;color:red;"><b>'.$p['products_character'].'</b></td></tr>';
+      $str .= '<tr><td class="main"><b>キャラ名：</b></td><td style="font-size:20px;color:lightgreen;"><b>'.$p['products_character'].'</b></td></tr>';
       $names = tep_get_computers_names_by_orders_id($orders['orders_id']);
       if ($names) {
         $str .= '<tr><td class="main"><b>PC：</b></td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
@@ -3020,7 +3020,7 @@ function tep_get_customers_fax_by_id($cid)
   function tep_get_computers()
   {
     $computers = array();
-    $computers_query = tep_db_query("select * from ".TABLE_COMPUTERS);
+    $computers_query = tep_db_query("select * from ".TABLE_COMPUTERS." order by sort_order desc");
     while ($c = tep_db_fetch_array($computers_query)) {
       $computers[] = $c;
     }
@@ -3037,7 +3037,7 @@ function tep_get_customers_fax_by_id($cid)
     }
     return $c;
   }
-
+// orders.php
   function tep_get_orders_changed($orders_id, $language_id = '') {
     global $languages_id;
 
@@ -3046,12 +3046,12 @@ function tep_get_customers_fax_by_id($cid)
     $orders = tep_db_fetch_array($orders_query);
     return $orders['orders_status'] . $orders['last_modified'];
   }
-  
+  // orders.php
   function tep_get_orders_status_history_time($orders_id, $orders_status_id){
     $history = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS_STATUS_HISTORY." where orders_id='".$orders_id."' and orders_status_id='".$orders_status_id."' order by date_added desc"));
     return $history['date_added'];
   }
-
+// orders.php
   function tep_orders_finished($orders_id, $language_id = '') {
     global $languages_id;
 
@@ -3067,9 +3067,33 @@ function tep_get_siteurl_name($siteurl)
          where siteurl='".$siteurl."'";
   $query = tep_db_query($sql);
   if(tep_db_num_rows($query)>0){
-  $res = tep_db_fetch_array($query);
-  return $res['sitename'];
+    $res = tep_db_fetch_array($query);
+    return $res['sitename'];
   }else{
-  return $siteurl;
+    return $siteurl;
   }
+}
+
+// orders.php
+function get_guest_chk($customers_id)
+{
+  $customers = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id='".$customers_id."'"));
+  return $customers['customers_guest_chk'];
+}
+
+// orders.php
+function tep_high_light_by_keywords($str, $keywords)
+{
+  $k = $rk= explode('|',$keywords);
+  foreach($k as $key => $value){
+    $rk[$key] = '<font style="background:red;">'.$value.'</font>';
+  }
+  return str_replace($k, $rk, $str);
+}
+
+// telecom_unknow.php
+function tep_get_first_products_name_by_orders_id($orders_id)
+{
+  $p = tep_db_fetch_array(tep_db_query("select * from " . TABLE_ORDERS_PRODUCTS . " where orders_id='".$orders_id."'"));
+  return $p['products_name'];
 }
