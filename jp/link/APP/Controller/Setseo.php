@@ -15,20 +15,27 @@ class Controller_Setseo extends Controller_Base{
     */
         function actionIndex()
         {
-        $arr = $this->db2Arr();
-        var_dump($arr);
+        $seo = $this->db2Arr();
+        $global = &FLEA::getSingleton('Model_Global');
+        $dir = $global->find('name = "set_new_dir"');
         $viewData = array(
-            'seo' => $arr,
+            'seo' => $seo,
+            'host_url' => $_SERVER['HTTP_HOST'].'/'.$dir['value'].'/',
         );
         $this->executeView("Admin/setseoIndex.html",$viewData);
 	}
+
+    /* 这个是添加方法 使用的模板和 edit基本一样
     function actionAdd(){
       $this->executeView("Admin".DS."setseoAdd.html",$viewData);
     }
+    */
 
     function actionEdit(){
-      $setseos = $this->model_Setseo->findAll("action ='".$_GET['act']."'");
-
+      $setseos = $this->model_Setseo->find("id ='".$_GET['id']."'");
+        $viewData = array(
+            'seo' => $setseos,
+        );
       $this->executeView("Admin".DS."setseoEdit.html",$viewData);
     }
 

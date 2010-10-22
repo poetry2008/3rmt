@@ -1,5 +1,3 @@
-// http://www.phpmyvisites.net/ 
-// License GNU/GPL (http://www.gnu.org/copyleft/gpl.html)
 function pmv_plugMoz(pmv_pl) {
 	if (pmv_tm.indexOf(pmv_pl) != -1 && (navigator.mimeTypes[pmv_pl].enabledPlugin != null))
 		return '1';
@@ -31,6 +29,64 @@ function getFlashVer() {
  }
  return f;
 }
+
+//ユーザーの言語環境
+function getUserLanguage(){
+	if (objChk(navigator.userLanguage))
+		return navigator.userLanguage;
+	else{return '';}
+} 
+
+//パソコンの言語環境
+function getSystemLanguage(){
+	if (objChk(navigator.systemLanguage))
+		return navigator.systemLanguage;
+	else{return '';}
+} 
+
+function objChk(pObj){
+	if (pObj==null){return false;}
+	if (pObj=="undefined"){return false;}
+	if (pObj==""){return false;}
+	return true;
+} 
+
+//check pdf install
+function pdfChk(){
+  //if ff
+  if (navigator.plugins && navigator.plugins.length) {
+    for (x=0; x<navigator.plugins.length;x++) {
+      if (navigator.plugins[x].name== 'Adobe Acrobat')
+        return true;
+    }
+  } else if (window.ActiveXObject) {
+    for (x=2; x<10; x++)
+    {
+      try
+      {
+        oAcro=eval("new ActiveXObject('PDF.PdfCtrl."+x+"');");
+        if (oAcro)
+        return true;
+      }
+      catch(e) {}
+    }
+    try
+    {
+      oAcro4=new ActiveXObject('PDF.PdfCtrl.1');
+      if (oAcro4)
+        return true;
+    }
+    catch(e) {}
+    try
+    {
+      oAcro7=new ActiveXObject('AcroPDF.PDF.1');
+      if (oAcro7)
+        return true;
+    }
+    catch(e) {}
+  }
+}
+
 var pmv_jav='0'; if(navigator.javaEnabled()) pmv_jav='1';
 var pmv_agent = navigator.userAgent.toLowerCase();
 var pmv_moz = (navigator.appName.indexOf("Netscape") != -1);
@@ -66,8 +122,9 @@ if (!pmv_win || pmv_moz){
 } else if (pmv_win && pmv_ie){
 	pmv_dir = pmv_plugIE("SWCtl.SWCtl.1");
 	pmv_fla = pmv_plugIE("ShockwaveFlash.ShockwaveFlash.1");
-	if (pmv_plugIE("PDF.PdfCtrl.1") == '1' || pmv_plugIE('PDF.PdfCtrl.5') == '1' || pmv_plugIE('PDF.PdfCtrl.6') == '1') 
-		pmv_pdf = '1';
+	//if (pmv_plugIE("PDF.PdfCtrl.1") == '1' || pmv_plugIE('PDF.PdfCtrl.5') == '1' || pmv_plugIE('PDF.PdfCtrl.6') == '1' || pmv_plugIE('PDF.PdfCtrl.7') == '1') 
+	//	pmv_pdf = '1';
+	if (pdfChk()) pmv_pdf = '1';
 	pmv_qt = pmv_plugIE("Quicktime.Quicktime"); // Old : "QuickTimeCheckObject.QuickTimeCheck.1"
 	pmv_rea = pmv_plugIE("rmocx.RealPlayer G2 Control.1");
 	pmv_wma = pmv_plugIE("wmplayer.ocx"); // Old : "MediaPlayer.MediaPlayer.1"
@@ -111,10 +168,11 @@ function pmv_getUrlStat(pmv_urlPmv, pmv_site, pmv_urlDoc, pmv_pname, pmv_typeCli
 	pmv_src += '&h='+pmv_da.getHours()+'&m='+pmv_da.getMinutes()+'&s='+pmv_da.getSeconds();
 	pmv_src += '&flash='+pmv_fla+'&director='+pmv_dir+'&quicktime='+pmv_qt+'&realplayer='+pmv_rea;
 	pmv_src += '&pdf='+pmv_pdf+'&windowsmedia='+pmv_wma+'&java='+pmv_jav+'&cookie='+pmv_cookie;
+	pmv_src += '&systemlanguage='+getSystemLanguage()+'&userlanguage='+getUserLanguage();
 	if ((pmv_typeClick) && (pmv_typeClick != "")) pmv_src += '&type='+escape(pmv_typeClick);
 	//pmv_src += '&ref='+escape(pmv_rtu);
 	pmv_src += '&flashversion='+pmv_fla_ver;
-	
+
 	return pmv_src;
 }
 // log action : pmv_typeClick = empty like a page, FILE ans in the futur RSS, PODCAST

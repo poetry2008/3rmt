@@ -61,6 +61,7 @@
                 <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_ENTRY_TIME; ?></td>
                 <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_LAST_CLICK; ?></td>
                 <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_LAST_PAGE_URL; ?>&nbsp;</td>
+                <td class="dataTableHeadingContent">アクセス来たソース</td>
               </tr>
 <?php
   $whos_online_query = tep_db_query("
@@ -71,6 +72,7 @@
              w.time_last_click, 
              w.last_page_url, 
              w.session_id,
+             w.referer,
              s.romaji
       from " . TABLE_WHOS_ONLINE . " w, ".TABLE_SITES." s
       where s.id = w.site_id
@@ -92,9 +94,10 @@
                 <td class="dataTableContent" align="center"><?php echo $whos_online['customer_id']; ?></td>
                 <td class="dataTableContent"><?php echo $whos_online['full_name']; ?></td>
                 <td class="dataTableContent" align="center"><?php echo $whos_online['ip_address']; ?></td>
-                <td class="dataTableContent"><?php echo date('H:i:s', $whos_online['time_entry']); ?></td>
+                <td class="dataTableContent"><?php echo date('Y/m/d H:i:s', $whos_online['time_entry']); ?></td>
                 <td class="dataTableContent" align="center"><?php echo date('H:i:s', $whos_online['time_last_click']); ?></td>
                 <td class="dataTableContent"><?php if (eregi('^(.*)' . tep_session_name() . '=[a-f,0-9]+[&]*(.*)', $whos_online['last_page_url'], $array)) { echo $array[1] . $array[2]; } else { echo $whos_online['last_page_url']; } ?>&nbsp;</td>
+                <td class="dataTableContent" align="left"><?php echo $whos_online['referer']; ?></td>
               </tr>
 <?php
   }
@@ -140,6 +143,7 @@ if (isset($info)) {
         $start_zone     = strpos($session_data, 'customer_zone_id|s');
       }
 
+      // long time
       for ($i=$start_cart; $i<$length; $i++) {
         if ($session_data[$i] == '{') {
           if (isset($tag)) {

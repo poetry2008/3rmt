@@ -5,6 +5,11 @@
 // the following cPath references come from application_top.php
   $category_depth = 'top';
   if (isset($cPath) && tep_not_null($cPath)) {
+    //rmt/c-168_198_page0.html => 404
+    //rmt/c-168_198_page0*.html => 404
+    check_uri('/page0/');
+    //rmt/c-168_198_page1.html => 404
+    check_uri('/page1\.html/');
 
     $sql = "select * from " . TABLE_CATEGORIES . " where categories.categories_id = '" . $cPath . "'";
     // ccdd

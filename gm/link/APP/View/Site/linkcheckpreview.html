@@ -1,15 +1,13 @@
 <!--{include file='Site/header.html'}-->
-<div id="content">
+<div class="content_regist">
 <div id="linkcheck">
 <div id="linkpreview">
 <div class="custom-menu">
-		<a href='<!--{url controller=site action=index}-->'><img
-                src="public/images/backpic/custom-door.gif" alt="door" width="16" height="16" /> <!--{_t key='custom_close_window'}--></a>
 	</div>
 
         <div class="return_form_div">
         <form name="reture_form" action="<!--{url controller=site
-        action=setlinkchecksite}-->" method="post">
+        action=regist}-->" method="post">
         <input type="hidden" name="fname" value="<!--{$fname}-->" />
         <input type="hidden" name="femail" value="<!--{$femail}-->" />
         <input type="hidden" name="fpass" value="<!--{$fpass}-->" />

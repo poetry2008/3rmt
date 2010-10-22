@@ -9,9 +9,8 @@
 <a href="/info/salespolicies.html">特定商取引に基づく表記</a>
 &nbsp;|&nbsp;
 <a href="<?php echo tep_href_link('rss.php'); ?>">RSS</a>
-<?php /*
 &nbsp;|&nbsp;
-<a href="<?php echo tep_href_link('domain.php');?>">相互リンク</a> */ ?>
+<a href="/link/">相互リンク</a>
 </div>
 <div id="footer">
   <address class="copyright">

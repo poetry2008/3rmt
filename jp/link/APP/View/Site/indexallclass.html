@@ -1,14 +1,14 @@
+<div class="category_h2"><h2>相互リンク集のカテゴリ</h2></div>
 <!--{section name=loopClass loop=$class}-->
 <!--{if $smarty.section.loopClass.first}-->
 <table class="web_3">
 <tr>
 <!--{/if}-->
 <td>
-<strong><a href='<!--{url controller=site action=class
+<div class="web_3_title"><h3><a href='<!--{url controller=site action=class
   id=$class[loopClass].class_id}-->'>
 <!--{$class[loopClass].name}-->
-</a></strong>
-<br />
+</a></h3></div>
 <!--{$str[loopClass].string}-->
 </td>
 <!--{assign var ='dex' value=$smarty.section.loopClass.index+1}-->

@@ -34,10 +34,10 @@
       <img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="3" alt="">
       <?php echo '<a href="' . tep_href_link('reorder.php') . '">' . '再配達フォーム' . '</a>' . "\n"; ?>
     </li>
-    <?php /*<li class="l_m_category_li">
+    <li class="l_m_category_li">
       <img width="5" hspace="3" height="5" alt="" src="images/design/box/arrow_2.gif" class="middle" >
-      <a href="<?php echo tep_href_link('domain.php');?>">相互リンク</a>
-    </li>*/ ?>
+      <a href="link/">相互リンク</a>
+    </li>
   </ul>
 </div>
 <!-- information_eof //-->

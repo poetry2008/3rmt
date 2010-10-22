@@ -1,18 +1,24 @@
 <!--{include file='Site/header.html'}-->
 <div id="content">
 <div id="custom">
-
 <div class="site_list">
 <!--{assign var=pager_data value=$pager->getPagerData()}-->
-<div class="custom-menu">
-
-<a href="<!--{url controller=site action=sitenew page=$pager_data.prevPage}-->" >
+<div class="site_page">
+<!--{if $pager_data.firstPage eq $pager_data.currentPage}-->
+<!--{_t key="prevPage"}-->
+<!--{else}-->
+<!--{if $pager_data.prevPage eq 1}-->
+<a href="<!--{url controller=site action=sitesearch }-->" >
+<!--{else}-->
+<a href="<!--{url controller=site action=sitesearch page=$pager_data.prevPage}-->" >
+<!--{/if}-->
 <!--{_t key="prevPage"}-->
 </a>
+<!--{/if}-->
 |
 <!--{assign var=pages value=$pager->getNavbarIndexs($pager_data.current_page)}-->
 <!--{section name=page loop=$pages}-->
-<a href="<!--{url controller=site action=sitenew page=$pages[page].number}-->" >
+<a href="<!--{url controller=site action=sitesearch page=$pages[page].number}-->" >
 <!--{if $pager_data.currentPage eq $pages[page].index}-->
 <b> <!--{$pages[page].index}--></b>
 <!--{else}-->
@@ -22,44 +28,44 @@
 |
 <!--{/section}-->
 
-<a href="<!--{url controller=site action=sitenew page=$pager_data.nextPage}-->" >
+<a href="<!--{url controller=site action=sitesearch page=$pager_data.nextPage}-->" >
 <!--{_t key="nextPage"}-->
 </a>
 </div> <!--end of .site_page-->
 <!--{assign var="sites" value=$pager->findAll()}-->
 <!--{section name=list loop=$sites}-->
-<div id="sites_add">
-<img width="55" height="15" border="0" alt="<!--{$sites[list].name}-->"
-src="http://cabbage-search.jp/pr/?url=<!--{$sites[list].url}-->" />
-<a href="<!--{$sites[list].url}-->" target="_blank" >
+<div class="site_item">
+<img width="55" height="15" border="0" alt="<!--{$sites[list].name}-->" src="http://cabbage-search.jp/pr/?url=<!--{$sites[list].url}-->">
+<a href="<!--{$sites[list].url}-->" target="_blank">
 <!--{$sites[list].name}-->
 </a>
-<img src="images/new.gif" alt="new"/>
-<br /><br />
+<!--{if $sites[list].is_recommend  eq '1'}-->
+<img src="images/isrec.gif" alt='recommend '/>
+<!--{/if}-->
+<!--{if $sites[list].is_king eq '1'}-->
+<img src="images/rec.gif" alt='king'/>
+<!--{/if}-->
+<br />
 <!--{_t key="update_date"}-->:<!--{$sites[list].updated|date_format:"%Y-%m-%d %H:%M:%S"}-->
-[
 <a href="<!--{url controller=site action=editsite id=$sites[list].id}-->" >
-<!--{_t key="edit_or_delete"}-->
+[<!--{_t key="edit_or_delete"}-->]
 </a>
-]
 &nbsp;
-[
 <a href="<!--{url controller=site action=mailadmin id=$sites[list].id}-->" >
-<!--{_t key="mail_to_admin"}-->
+[<!--{_t key="mail_to_admin"}-->]
 </a>
-]
 <br />
 <!--{$sites[list].comment}-->
 </div> 
 <!--{/section}-->
-<div class="custom-menu">
-<a href="<!--{url controller=site action=sitenew page=$pager_data.prevPage}-->" >
+<div class="site_page">
+<a href="<!--{url controller=site action=sitesearch page=$pager_data.prevPage}-->" >
 <!--{_t key="prevPage"}-->
 </a>
 |
 <!--{assign var=pages value=$pager->getNavbarIndexs($pager_data.current_page)}-->
 <!--{section name=page loop=$pages}-->
-<a href="<!--{url controller=site action=sitenew page=$pages[page].number}-->" >
+<a href="<!--{url controller=site action=sitesearch page=$pages[page].number}-->" >
 <!--{if $pager_data.currentPage eq $pages[page].index}-->
 <b> <!--{$pages[page].index}--></b>
 <!--{else}-->
@@ -69,7 +75,7 @@ src="http://cabbage-search.jp/pr/?url=<!--{$sites[list].url}-->" />
 |
 <!--{/section}-->
 
-<a href="<!--{url controller=site action=sitenew page=$pager_data.nextPage}-->" >
+<a href="<!--{url controller=site action=sitesearch page=$pager_data.nextPage}-->" >
 <!--{_t key="nextPage"}-->
 </a>
 </div> 

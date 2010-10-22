@@ -580,10 +580,43 @@ return array(
                             "deny" => RBAC_NULL,
                         ),
 
+                    "UpdatePassword" => array
+                        (
+                            "deny" => RBAC_NO_ROLE,
+                            "allow" => 'setseo,admin',
+                        ),
+
                 ),
 
             "deny" => RBAC_NULL,
             "allow" => RBAC_EVERYONE,
+        ),
+    "SETSEO" => array
+        (
+            "actions" => array
+                (
+                    "Index" => array
+                        (
+                            "allow" => RBAC_EVERYONE,
+                            "deny" => RBAC_NULL,
+                        ),
+
+                    "Edit" => array
+                        (
+                            "allow" => RBAC_EVERYONE,
+                            "deny" => RBAC_NULL,
+                        ),
+
+                    "AddDo" => array
+                        (
+                            "allow" => RBAC_EVERYONE,
+                            "deny" => RBAC_NULL,
+                        ),
+
+                ),
+
+            "deny" => RBAC_NO_ROLE,
+            "allow" => 'setseo,admin',
         ),
 
 );

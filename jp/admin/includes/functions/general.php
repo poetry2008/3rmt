@@ -633,7 +633,17 @@
 
     return $orders_status['orders_status_name'];
   }
+  
+  function tep_get_orders_status_id($orders_id, $language_id = '') {
+    global $languages_id;
 
+    if (!$language_id) $language_id = $languages_id;
+    $orders_query = tep_db_query("select * from ".TABLE_ORDERS." where orders_id='".$orders_id."'");
+    $orders = tep_db_fetch_array($orders_query);
+    return $orders['orders_status'];
+  }
+
+  // get all orders status
   function tep_get_orders_status() {
     global $languages_id;
 
@@ -649,6 +659,7 @@
   }
 
   function tep_get_products_name($product_id, $language_id = 0, $site_id = 0) {
+    //echo $product_id,$language_id,$site_id;
     global $languages_id;
 
     if ($language_id == 0) $language_id = $languages_id;
@@ -1124,6 +1135,7 @@
     tep_db_query("delete from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where orders_id = '" . tep_db_input($order_id) . "'");
     tep_db_query("delete from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($order_id) . "'");
     tep_db_query("delete from " . TABLE_ORDERS_TOTAL . " where orders_id = '" . tep_db_input($order_id) . "'");
+    tep_db_query("delete from " . TABLE_ORDERS_TO_COMPUTERS . " where orders_id = '" . tep_db_input($order_id) . "'");
   }
 
   function tep_reset_cache_block($cache_block, $site_id='') {
@@ -1547,7 +1559,7 @@
   }
 
 ////
-// Get comment from orders_staatus 
+// Get comment from orders_status 
   function tep_get_orders_status_comment($orders_status_id, $language_id = '') {
     global $languages_id;
 
@@ -2494,6 +2506,12 @@ function tep_get_ot_total_by_orders_id($orders_id) {
   return $result['text'];
 }
 
+// order.php
+function tep_get_ot_total_num_by_text($text) {
+  return str_replace(array("," , "<b>" , "</b>" , "円") , array("" , "" , "" , "") , $text);
+}
+  
+
 function tep_get_wari_array_by_sum($small_sum) {
   $wari_array = array();
   if(tep_not_null($small_sum)) {
@@ -2635,6 +2653,7 @@ function orders_status_updated($orders_status_id) {
   tep_db_query("
     update ".TABLE_ORDERS." set language_id='".$orders_status['language_id']."',orders_status_name='".$orders_status['orders_status_name']."',orders_status_image='".$orders_status['orders_status_image']."',finished='".$orders_status['finished']."'
   ");
+  
 }
 
 // 代替存储过程
@@ -2643,12 +2662,24 @@ function orders_updated($orders_id) {
   tep_db_query("update ".TABLE_ORDERS." set finished = ( select finished from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
   tep_db_query("update ".TABLE_ORDERS." set orders_status_name = ( select orders_status_name from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
   tep_db_query("update ".TABLE_ORDERS." set orders_status_image = ( select orders_status_image from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
+  //tep_db_query("update ".TABLE_ORDERS." o set q_8_1 = ( select q_8_1 from ".TABLE_ORDERS_QUESTIONS." oq where oq.orders_id=o.orders_id ) where orders_id='".$orders_id."'");
   tep_db_query("update ".TABLE_ORDERS_PRODUCTS." set torihiki_date = ( select torihiki_date from ".TABLE_ORDERS." where orders.orders_id=orders_products.orders_id ) where orders_id='".$orders_id."'");
 }
 
 
-
-
+// 如果订单finished则取消orders_wait_flag
+function orders_wait_flag($orders_id) {
+  $orders_query = tep_db_query("select * from " . TABLE_ORDERS . " where orders_id = '".$orders_id."'");
+  $orders       = tep_db_fetch_array($orders_query);
+  if ($orders['orders_wait_flag']) {
+    $orders_status_query = tep_db_query("select * from " . TABLE_ORDERS_STATUS . " where orders_status_id='".$orders['orders_status']."'");
+    $orders_status       = tep_db_fetch_array($orders_status_query);
+    if ($orders_status['finished']) {
+      tep_db_query("update ".TABLE_ORDERS." set orders_wait_flag = '0' where orders_id='".$orders_id."'");
+    }
+  }
+  //exit;
+}
 
 //为创建下拉列表
   function countSubcategories($cid)
@@ -2929,15 +2960,140 @@ function tep_get_customers_fax_by_id($cid)
   $customers = tep_db_fetch_array($query);
   return $customers['customers_fax'];
 }
+  // orders.php
+  function tep_get_orders_products_names($orders_id) {
+    $str = '';
+    $orders_products_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." where orders_id = '".$orders_id."'");
+    while ($p = tep_db_fetch_array($orders_products_query)) {
+      $str .= $p['products_name'].' ';
+    }
+    return $str;
+  }
+  // orders.php
+  function tep_get_orders_products_string($orders) {
+    //print_r($orders);
+    $str = '';
+    if ($orders['orders_inputed_flag']) {
+      $str .= '<p class="main" align="center"><font color="red"><b>入力済み</b></font></p>';
+    }
+    if ($orders['orders_comment']) {
+      $str .= '<p class="main" align="center"><font color="blue"><b>メモ有り</b></font></p>';
+    }
+    $str .= '<table border="0">';
+    $orders_products_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." where orders_id = '".$orders['orders_id']."'");
+    while ($p = tep_db_fetch_array($orders_products_query)) {
+      $products_attributes_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." where orders_products_id='".$p['orders_products_id']."'");
+      $products_rate_query = tep_db_query("select products_attention_1 from ".TABLE_PRODUCTS." where products_id = '".$p['products_id']."'");
+      $products = tep_db_fetch_array($products_rate_query);
+      $tmp = explode('//', $products['products_attention_1']);
+      $p_rate = $tmp[1];
+      $str .= '<tr><td class="main"><b>商品：</b></td><td class="main">'.$p['products_name'].'</td></tr>';
+      //$str .= '<tr><td class="main"><b>型番：</b></td><td class="main">'.$p['products_model'].'</td></tr>';
+      $str .= '<tr><td class="main"><b>個数：</b></td><td class="main">'.$p['products_quantity'].'個'.tep_get_full_count($p['products_quantity'], $p_rate).'</td></tr>';
+      while($pa = tep_db_fetch_array($products_attributes_query)){
+        $str .= '<tr><td class="main"><b>'.$pa['products_options'].'：</b></td><td class="main">'.$pa['products_options_values'].'</td></tr>';
+      }
+      $str .= '<tr><td class="main"><b>キャラ名：</b></td><td style="font-size:20px;color:lightgreen;"><b>'.$p['products_character'].'</b></td></tr>';
+      $names = tep_get_computers_names_by_orders_id($orders['orders_id']);
+      if ($names) {
+        $str .= '<tr><td class="main"><b>PC：</b></td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
+      }
+      $str .= '<tr><td class="main"></td><td class="main"></td></tr>';
+      //tep_get_full_count($cnt, $rate)
+    }
+    $str .= '</table>';
+    return htmlspecialchars($str);
+  }
+  
+  // orders.php
+  function tep_get_computers_names_by_orders_id($orders_id)
+  {
+    $names = array();
+    $o2c_query = tep_db_query("select * from ".TABLE_ORDERS_TO_COMPUTERS." o2c, ".TABLE_COMPUTERS." c where c.computers_id=o2c.computers_id and o2c.orders_id = '".$orders_id."'");
+    while($o = tep_db_fetch_array($o2c_query)) {
+      $names[] = $o['computers_name'];
+    }
+    return $names;
+  }
+  
+  // orders.php
+  function tep_get_computers()
+  {
+    $computers = array();
+    $computers_query = tep_db_query("select * from ".TABLE_COMPUTERS." order by sort_order desc");
+    while ($c = tep_db_fetch_array($computers_query)) {
+      $computers[] = $c;
+    }
+    return $computers;
+  }
+  
+  // orders.php
+  function tep_get_computers_by_orders_id($oid)
+  {
+    $c = array();
+    $o2c_query = tep_db_query("select * from ".TABLE_ORDERS_TO_COMPUTERS." where orders_id = '".$oid."'");
+    while ($o2c = tep_db_fetch_array($o2c_query)) {
+      $c[] = $o2c['computers_id'];
+    }
+    return $c;
+  }
+// orders.php
+  function tep_get_orders_changed($orders_id, $language_id = '') {
+    global $languages_id;
+
+    if (!$language_id) $language_id = $languages_id;
+    $orders_query = tep_db_query("select * from ".TABLE_ORDERS." where orders_id='".$orders_id."'");
+    $orders = tep_db_fetch_array($orders_query);
+    return $orders['orders_status'] . $orders['last_modified'];
+  }
+  // orders.php
+  function tep_get_orders_status_history_time($orders_id, $orders_status_id){
+    $history = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS_STATUS_HISTORY." where orders_id='".$orders_id."' and orders_status_id='".$orders_status_id."' order by date_added desc"));
+    return $history['date_added'];
+  }
+// orders.php
+  function tep_orders_finished($orders_id, $language_id = '') {
+    global $languages_id;
+
+    if (!$language_id) $language_id = $languages_id;
+    
+    $order = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS." where orders_id='".$orders_id."'"));
+    $order_status = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$order['orders_status']."'"));
+    return $order_status['finished'];
+  }
 function tep_get_siteurl_name($siteurl)
 {
   $sql = "select sitename from ".TABLE_SITENAME." 
          where siteurl='".$siteurl."'";
   $query = tep_db_query($sql);
   if(tep_db_num_rows($query)>0){
-  $res = tep_db_fetch_array($query);
-  return $res['sitename'];
+    $res = tep_db_fetch_array($query);
+    return $res['sitename'];
   }else{
-  return $siteurl;
+    return $siteurl;
   }
+}
+
+// orders.php
+function get_guest_chk($customers_id)
+{
+  $customers = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id='".$customers_id."'"));
+  return $customers['customers_guest_chk'];
+}
+
+// orders.php
+function tep_high_light_by_keywords($str, $keywords)
+{
+  $k = $rk= explode('|',$keywords);
+  foreach($k as $key => $value){
+    $rk[$key] = '<font style="background:red;">'.$value.'</font>';
+  }
+  return str_replace($k, $rk, $str);
+}
+
+// telecom_unknow.php
+function tep_get_first_products_name_by_orders_id($orders_id)
+{
+  $p = tep_db_fetch_array(tep_db_query("select * from " . TABLE_ORDERS_PRODUCTS . " where orders_id='".$orders_id."'"));
+  return $p['products_name'];
 }

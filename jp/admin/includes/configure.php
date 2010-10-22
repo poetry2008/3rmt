@@ -8,21 +8,27 @@
   Released under the GNU General Public License
 */
 
-$libpath = "/home/szn/project/3rmt/3rmtlib/";
+$libpath = "/home/maker/project/3rmt/3rmtlib/";
 ini_set('include_path',ini_get('include_path').':'.$libpath);
 
 // Define the webserver and path parameters
 // * DIR_FS_* = Filesystem directories (local/physical)
 // * DIR_WS_* = Webserver directories (virtual/URL)
-  define('HTTP_SERVER', 'http://aionbunsin.3322.org/admin'); // eg, http://localhost or - https://localhost should not be empty for productive servers
-  define('HTTP_CATALOG_SERVER', 'http://aionbunsin.3322.org/admin');
-  define('HTTPS_CATALOG_SERVER', 'https://aionbunsin.3322.org/admin');
+  define('HTTP_SERVER', 'http://3jp.maker.200.com/admin'); // eg, http://localhost or - https://localhost should not be empty for productive servers
+  define('HTTP_CATALOG_SERVER', 'http://3jp.maker.200.com/admin');
+  define('HTTPS_CATALOG_SERVER', 'https://3jp.maker.200.com/admin');
   define('ENABLE_SSL_CATALOG', 'false'); // secure webserver for catalog module
+<<<<<<< HEAD
   define('DIR_FS_DOCUMENT_ROOT', '/home/bobhero/project/ost/OSC_3RMT/jp/admin/'); // where the pages are located on the server
   define('DIR_WS_ADMIN', '/'); // absolute path required
   define('DIR_FS_ADMIN', '/home/bobhero/project/work/ost/OSC_3RMT/jp/admin/'); // absolute pate required
+=======
+  define('DIR_FS_DOCUMENT_ROOT', '/home/maker/project/3rmt/jp/admin/'); // where the pages are located on the server
+  define('DIR_WS_ADMIN', '/'); // absolute path required
+  define('DIR_FS_ADMIN', '/home/maker/project/3rmt/jp/admin/'); // absolute pate required
+>>>>>>> 5544e0ea953dd5f70bf1ea09ac959870f2c0691a
   define('DIR_WS_CATALOG', '/'); // absolute path required
-  define('DIR_FS_CATALOG', '/home/szn/project/3rmt/jp/admin/'); // absolute path required
+  define('DIR_FS_CATALOG', '/home/maker/project/3rmt/jp/admin/'); // absolute path required
   define('DIR_WS_IMAGES', 'images/');
   define('DIR_WS_ICONS', DIR_WS_IMAGES . 'icons/');
 

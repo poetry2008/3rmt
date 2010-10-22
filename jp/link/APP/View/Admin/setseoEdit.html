@@ -3,57 +3,72 @@
 <!--{include file=Admin/menu.html}-->
 </div>
 <div id="right"> <div id="content">
-<ul>
-<li class="content-bg">
-<div id="title"><h3><!--{_t key='site_edit'}--></h3></div>
-<form action='<!--{url controller=Setseo action=addDo}-->' method='post'>
-<!--{if $site.id}-->
-<input type='hidden' name='id' value='<!--{$site.id}-->' />
+<div id="title"><h3><!--{_t key='seo_edit'}--></h3></div>
+<form action='<!--{url controller=Setseo action=addDo act=edit}-->' method='post'>
+<!--{if $seo.id}-->
+<input type='hidden' name='id' value='<!--{$seo.id}-->' />
+<!--{/if}-->
+<!--{if $seo.action}-->
+<input maxlength='50' name='action' value='<!--{$seo.action}-->' type="hidden"/>
 <!--{/if}-->
 <table id="table-line">
 <tr>
-<td class="td1">action_name:</td>
-<td class="td2"><input maxlength='50' name='name' value='<!--{$site.name}-->' /></td>
+<td class="td1"><!--{_t key=seo_action_name}-->:</td>
+<td class="td2" width="400"><strong><!--{$seo.name}--></strong></td>
+<td class="td3"></td>
 </tr>
 <tr>
-<td class="td1">action:</td>
-<td class="td2"><input maxlength='50' name='action' value='<!--{$site.name}-->' /></td>
-</tr>
-
-<tr>
-<td class="td1">title:</td>
-<td class="td2"><input maxlength='50' name='title' value='<!--{$site.name}-->' /></td>
+<td class="td1"><!--{_t key=seo_title}-->:</td>
+<td class="td2"><input size = "47"name='title' value='<!--{$seo.title}-->' /></td>
+<td class="td3">#STORE_NAME#</td>
 </tr>
 <tr>
-<td class="td1">keywords:</td>
-<td class="td2"><input maxlength='999' name='keywords' value='<!--{$site.url}-->' /></td>
+<td class="td1"><!--{_t key=seo_keywords}-->:</td>
+<td class="td2"><textarea cols = '40' rows='5' name='keywords'><!--{$seo.keywords}--></textarea></td>
+<td class="td3">
+#BREADCRUMB#<br />
+#PAGE_TITLE#
+</td>
 </tr>
 <tr>
-<td class="td1">description:</td>
-<td class="td2"><textarea name='description'><!--{$site.comment}--></textarea></td>
+<td class="td1"><!--{_t key=seo_description}-->:</td>
+<td class="td2"><textarea cols = '40' rows='5'name='description'><!--{$seo.description}--></textarea></td>
+<td class="td3">
+#BREADCRUMB_KEYWORDS#<br />
+#BREADCRUMB_FIRST# 
+</td>
 </tr>
 <tr>
-<td class="td1">robots:</td>
+<td class="td1"><!--{_t key=seo_robots}-->:</td>
 <td class="td2">
+<!--{ if $seo.robots eq 'index,follow'}-->
 <input type="radio" name="robots" value="index,follow"
 checked="checked">
 index,follow
 <br>
 <input type="radio" name="robots" value="noindex"> 
 noindex
+<!--{else}-->
+<input type="radio" name="robots" value="index,follow">
+index,follow
+<br>
+<input type="radio" name="robots" value="noindex" checked="checked"> 
+noindex
+<!--{/if}-->
 </td>
+<td class="td3"></td>
 </tr>
 <tr>
-<td class="td1">copyright:</td>
-<td class="td2"><input maxlength='50' name='copyright' value='<!--{$site.order}-->' /></td>
+<td class="td1"><!--{_t key=seo_copyright}-->:</td>
+<td class="td2"><input size='24' name='copyright' value='<!--{$seo.copyright}-->' /></td>
+<td class="td3"></td>
 </tr>
 <tr>
-<td class="td-submit" colspan="2"><input type='submit' value="<!--{_t key='submit'}-->" id="submit" /></td>
+<td class="td-submit" colspan="3" height="40" align="left">
+<input type='submit' value="<!--{_t key='submit'}-->" id="submit" /></td>
 </tr>
 </table>
 </form>
-</li>
-</ul>
 </div>
 </div>
 </body>

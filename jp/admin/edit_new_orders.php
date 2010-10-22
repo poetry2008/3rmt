@@ -687,6 +687,9 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
       $oID = tep_db_prepare_input($_GET['oID']);
       $order = new order($oID);
 
+      if (isset($_POST['add_product_options'])) {
+        $add_product_options = $_POST['add_product_options'];
+      }
       $AddedOptionsPrice = 0;
 
       // 2.1.1 Get Product Attribute Info
@@ -769,8 +772,9 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
         site_id = '".tep_get_site_id_by_orders_id($oID)."',
         products_quantity = '" . (int)$add_product_quantity . "';";
       tep_db_query($Query);
-      orders_updated($oID);
       $new_product_id = tep_db_insert_id();
+      orders_updated($oID);
+      
       
       // 2.2.1 Update inventory Quantity
       tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = products_quantity - " . (int)$add_product_quantity . ", products_ordered = products_ordered + " . (int)$add_product_quantity . " where products_id = '" . $add_product_products_id . "'");

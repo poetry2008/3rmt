@@ -1,32 +1,5 @@
 <!--{php}-->
 echo '<?xml version="1.0" encoding="UTF-8"?>';
-include('Fleaphp/FLEA/Helper/Breadcrumb.php');
-$bread = new breadcrumb();
-$bread->add('オレンジ不動産','/');
-$script_name_arr = explode('/',$_SERVER['SCRIPT_NAME']);
-$bread->add('相互リンク集','/'.$script_name_arr[1]);
-$arr = array(
-    'all' => '一覧',
-    'search' => '検索結果',
-    'setlinkchecksite' => '新規登録',
-    'linkcheck_submit' => '新規登録',
-    'sitelist' => '更新・削除',
-    'siteupdate' => '修正サイト',
-    'sitedel' =>'削除サイト',
-    'mailadmin' => '送信',
-    'mailadminsubmit'=> '送信完了',
-    'helppage'=>'ヘルプ',
-    'sitemap'=>'サイトマップ',
-    'detailed'=>'詳細検索',
-    'sitenew'=>'新着サイト',
-    'siterec'=>'おすすめサイト',
-    'editsite'=>"修正・削除"
-    );
-if(isset($_GET['action'])&&$_GET['action']!=''&&$_GET['action']!='class'){
-  if($show = $arr[$_GET['action']]){
-    $bread->add($show,$_SERVER['REQUEST_URI']);
-  }
-}
     <!--{/php}-->
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -34,27 +7,28 @@ if(isset($_GET['action'])&&$_GET['action']!=''&&$_GET['action']!='class'){
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-    <link type="text/css" rel="stylesheet" id='blueStyle' href="../stylesheet.css" />
-    <link type="text/css" rel="stylesheet" id='blueStyle' href="images/class/style.css" />
+    <link type="text/css" rel="stylesheet" href="../stylesheet.css" />
+    <link type="text/css" rel="stylesheet" href="images/class/style.css" />
     <script type='text/javascript' src='public/cookie.js'></script>
     <script type='text/javascript' src='public/style.js'></script>
     <script type='text/javascript' src='Script/jquery-1.4.2.js'></script>
-    <!--{if $seo.title}-->
-    <title>
-<!--{$seo.title}-->
-</title>
+<!--{if $seo}-->
+<title><!--{$seo.title}--></title>
+<meta name="keywords" content="<!--{$seo.keywords}-->" />
+<meta name="description" content="<!--{$seo.description}-->" />
+<meta name="robots" content="<!--{$seo.robots}-->" />
+<meta name="copyright" content="<!--{$seo.copyright}-->" />
     <!--{else}-->
-    <title>相互リンク集｜RMTワールドマネー</title>
+    <title>相互リンク集｜RMTゲームマネー</title>
     <!--{/if}-->
     </head>
 <body id='body'>
     <div id="header">
-  <div class="header_div01">
-        <h1 class="header1">RMT</h1>
-        <p class="header2">
-      <a href="javascript:void(0);" style="cursor:hand" onKeyPress="SomeJavaScriptCode" onClick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト ワールドマネーをお気に入りに追加して下さい！</a>
-    </p>
-  </div>
+<div class="header_div01">
+<h1 class="header1">RMT 最安値-アイテムの激安販売</h1>
+<p class="header2">FF11、リネージュ2、レッドストーン、AIONを激安販売 - RMTゲームマネー</p>
+</div>
+
   <script type="text/javascript">
 <!--
 fflag=0;
@@ -89,7 +63,6 @@ if (fflag==0)
 -->
 </script>
 </div>
-<!--end header-->
     <div class="h_menubar">
         <ul>
           <li><a href="/sitemap.php">サイトマップ</a>|</li>
@@ -101,12 +74,13 @@ if (fflag==0)
 <div class="box_title">メニュー</div>
 <div id="box">
 <ul class="l_m_category_ul">
-<li class="l_m_category_li"><a class="l_m_category_a" href="<!--{url controller=site action=index}-->">相互リンク集TOP</a></li>
-<li class="l_m_category_li"><a class="l_m_category_a" href="<!--{url controller=site action=setlinkchecksite}-->">新規登録</a></li>
-<li class="l_m_category_li"><a class="l_m_category_a" href="<!--{url controller=site action=sitelist}-->">更新・削除</a></li>
-<li class="l_m_category_li"><a class="l_m_category_a" href="<!--{url controller=site action=sitenew}-->">新着サイト</a></li>
-<li class="l_m_category_li"><a class="l_m_category_a" href="<!--{url controller=site action=siterec}-->">おすすめサイト</a></li>
+<li class="l_m_category_li"><a class="l_m_category_a" href="/<!--{$hostlink}-->/">相互リンク集TOP</a></li>
+<li class="l_m_category_li"><a class="l_m_category_a" href="<!--{url controller=site action=regist}-->">新規登録</a></li>
+<li class="l_m_category_li"><a class="l_m_category_a" href="<!--{url controller=site action=renew}-->">更新されたサイト</a></li>
+<li class="l_m_category_li"><a class="l_m_category_a" href="<!--{url controller=site action=new}-->">新着サイト</a></li>
+<li class="l_m_category_li"><a class="l_m_category_a" href="<!--{url controller=site action=recommend}-->">おすすめサイト</a></li>
 <li class="l_m_category_li"><a class="l_m_category_a" href="<!--{url controller=site action=sitemap}-->">サイトマップ</a></li>
+</ul>
 </div>
 </div>
   <div class="search_head">

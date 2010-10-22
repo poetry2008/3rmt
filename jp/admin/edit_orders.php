@@ -598,10 +598,20 @@ while ($totals = tep_db_fetch_array($totals_query)) {
     if($step == 5)
     {
       // 2.1 GET ORDER INFO #####
+      /**
+      echo "<pre>";
+      print_r($_GET);
+      print_r($_POST);
+      echo "</pre>";
+      exit;
+      /**/
       
       $oID = tep_db_prepare_input($_GET['oID']);
       $order = new order($oID);
-
+      
+      if (isset($_POST['add_product_options'])) {
+        $add_product_options = $_POST['add_product_options'];
+      }
       $AddedOptionsPrice = 0;
 
       // 2.1.1 Get Product Attribute Info
@@ -609,6 +619,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       {
         foreach($add_product_options as $option_id => $option_value_id)
         {
+          //echo 'a';
           $result = tep_db_query("SELECT * FROM " . TABLE_PRODUCTS_ATTRIBUTES . " pa LEFT JOIN " . TABLE_PRODUCTS_OPTIONS . " po ON po.products_options_id=pa.options_id LEFT JOIN " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov ON pov.products_options_values_id=pa.options_values_id WHERE products_id='$add_product_products_id' and options_id=$option_id and options_values_id=$option_value_id and po.language_id = '" . (int)$languages_id . "' and pov.language_id = '" . (int)$languages_id . "'");
           $row = tep_db_fetch_array($result);
           extract($row, EXTR_PREFIX_ALL, "opt");
@@ -684,15 +695,18 @@ while ($totals = tep_db_fetch_array($totals_query)) {
     site_id = '".tep_get_site_id_by_orders_id($oID)."',
         products_quantity = '" . (int)$add_product_quantity . "';";
       tep_db_query($Query);
-      orders_updated($oID);
       $new_product_id = tep_db_insert_id();
+      orders_updated($oID);
+      
       
       // 2.2.1 Update inventory Quantity
       tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = products_quantity - " . (int)$add_product_quantity . ", products_ordered = products_ordered + " . (int)$add_product_quantity . " where products_id = '" . $add_product_products_id . "'");
       tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = 0 where products_quantity < 0 and products_id = '" . $add_product_products_id . "'");
 
       if (IsSet($add_product_options)) {
+      
         foreach($add_product_options as $option_id => $option_value_id) {
+          //echo 'b';
           $Query = "insert into " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set
             orders_id = '$oID',
             orders_products_id = $new_product_id,
@@ -701,6 +715,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
             options_values_price = '" . $option_value_details[$option_id][$option_value_id]["options_values_price"] . "',
             attributes_id = '" . $option_attributes_id[$option_value_id] . "',
             price_prefix = '+';";
+          //echo $Query;
           tep_db_query($Query);
         }
       }
@@ -755,7 +770,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       
       $update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
       tep_db_query($update_orders_sql);
-      
+      //exit;
       tep_redirect(tep_href_link("edit_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
 
     }
