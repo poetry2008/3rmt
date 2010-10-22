@@ -389,3 +389,41 @@ list-style-type:none;
 	border-top-style: solid;
 	border-top-color: #325082;
 }
+.contact_us_warpper{ clear:both;}
+.tcol{ clear:both;}
+.lcol{height:100%;clear:both; padding:5px; border:1px solid #E0E0E0; overflow:hidden; background-color:#F2F2F2;}
+.rcol{height:100%;clear:both; padding:5px; margin-top:5px; border:1px solid #ccc; overflow:hidden; background-color:#F2F2F2;}
+.contact_left{ float:left;}
+.contact_right{ float:left; padding-left:5px; width:420px;}
+.contact_right h3{
+	font-weight: bold;
+}
+.contact_right input{ float:right;}
+.status_form{ clear:both;}
+.status_warpper02{ clear:both;}
+.status_warpper{height:100%; overflow:hidden;clear:both;padding:5px 10px;}
+.status_warpper label{width:110px;float:left; padding:3px;}
+.status_warpper input{ float:left;}
+.button2{ float:right;}
+.open_title{
+	font-weight: bold;
+	clear:both;
+}
+.open_users{ background-color:#E0E0E0;}
+.open_users td{ background-color:#F2F2F2;}
+.open_users th{ background-color:#F2F2F2; text-align:left; font-size:12px; }
+.open_tele{ color: #3399CC;}
+.error{ color:#FF0000;}
+#infomessage{
+	font-weight: bold;
+}
+.login_inc{ background-color:#F2F2F2; border:1px solid #E0E0E0; padding:5px;}
+#errormessage{ font-weight: bold; background-color:#F2F2F2; border:1px solid #E0E0E0; }
+.open_login{background-color:#E0E0E0;}
+.open_login td{ background-color:#F2F2F2; padding:2px;}
+.open_login th{ background-color:#F2F2F2; text-align:left; font-size:12px; }
+.tickets_lout{font-size:12px; margin-bottom:5px;}
+.tickets,.infotable{background-color:#E0E0E0; font-size:12px; margin-bottom:5px;}
+.tickets td,.infotable td{ background-color:#F2F2F2; padding:2px;}
+.tickets th,.infotable th{ background-color:#F2F2F2; text-align:left; font-size:12px; text-align:center;}
+#ticketthread{background-color:#F2F2F2; border:1px solid #E0E0E0; margin-bottom:10px;}

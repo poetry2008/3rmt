@@ -1,179 +1,76 @@
 <?php
-/*
-  $Id$
-*/
+/*********************************************************************
+    index.php
 
+    Helpdesk landing page. Please customize it to fit your needs.
+
+    Peter Rotich <peter@osticket.com>
+    Copyright (c)  2006-2010 osTicket
+    http://www.osticket.com
+
+    Released under the GNU General Public License WITHOUT ANY WARRANTY.
+    See LICENSE.TXT for details.
+
+    vim: expandtab sw=4 ts=4 sts=4:
+    $Id$
+**********************************************************************/
+$_noemailclass = true;
   require('includes/application_top.php');
-  require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CONTACT_US);
-  
-  $mail_text = '';
-  
-  //product_idを取得した場合商品名を呼び出す
-  if (isset($_GET['products_id'])) {
-//ccdd
-    /*
-    $product_info_query = tep_db_query("
-        SELECT pd.products_name 
-        FROM " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
-        WHERE pd.site_id = '" . SITE_ID . "' 
-          AND p.products_status != '0' 
-          AND p.products_id = '" . (int)$_GET['products_id'] . "' 
-          AND p.products_id = pd.products_id 
-          AND pd.language_id = '" . $languages_id . "'
-    ");
-    $product_info = tep_db_fetch_array($product_info_query);
-    */
-    $product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID, $languages_id);
-    //forward 404
-    forward404Unless($product_info);
-  }
-  
-  //「商品名」についてのお問い合わせ
-  define('HEADING_TITLE_CONTACT', 'についてのお問い合わせ');
-  define('TITLE_CONTACT_END', 'について');
-  define('EMAIL_SEPARATOR', '---------------------------------------------------------------------------' . "\n\n");
-  
-  
-  $error = false;
-  if (isset($_GET['action']) && ($_GET['action'] == 'send')) {
-    if (tep_validate_email(trim($_POST['email']))) {
-      $mail_text .= $_POST['name'] . ' 様からお問い合わせを承りました。' . "\n";
-      $mail_text .= 'メールアドレス：' . $_POST['email'] . "\n\n";
-      $mail_text .= $_POST['enquiry'];
-      tep_mail(STORE_OWNER, SUPPORT_EMAIL_ADDRESS, EMAIL_SUBJECT, $mail_text, $_POST['name'], $_POST['email']);
-      tep_redirect(tep_href_link(FILENAME_CONTACT_US, 'action=success'));
-    } else {
-      $error = true;
-    }
-  }
-  
-  //prouct_idを取得した場合の処理（題名を商品名についてのお問い合わせに変更）
-  if (isset($_GET['action']) && ($_GET['action'] == 'send_p')) {
-    if (tep_validate_email(trim($_POST['email']))) {
-      $mail_text .= $_POST['name'] . ' 様からお問い合わせを承りました。' . "\n";
-      $mail_text .= 'メールアドレス：' . $_POST['email'] . "\n\n";
-      $mail_text .= $_POST['enquiry'];
-      tep_mail(STORE_OWNER, SUPPORT_EMAIL_ADDRESS, $_POST['email_title'] . HEADING_TITLE_CONTACT, $mail_text, $_POST['name'], $_POST['email']);
-      tep_redirect(tep_href_link(FILENAME_CONTACT_US, 'action=success'));
-    } else {
-      $error = true;
-    }
-  }
-  
-  $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_CONTACT_US));
+  $breadcrumb->add('お問い合わせ', tep_href_link(FILENAME_CONTACT_US));
+//require('includes/configure.php');
+require('includes/ost/client.inc.php');
+
+//We are only showing landing page to users who are not logged in.
+if($thisclient && is_object($thisclient) && $thisclient->isValid()) {
+    require('tickets.php');
+
+    exit;
+}
+
+require(CLIENTINC_DIR.'header.inc.php');
 ?>
-<?php page_head();?>
-</head>
-<body>
-<div align="center">
-  <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-  <!-- header_eof //-->
-  <!-- body //-->
-  <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border">
-    <tr>
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border">
-        <!-- left_navigation //-->
-        <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-        <!-- left_navigation_eof //-->
-      </td>
-      <!-- body_text //-->
-      <td valign="top" id="contents">
-        <h1 class="pageHeading">
-          <?php
-  if (isset($_GET['products_id'])) {
-    echo $product_info['products_name'] . HEADING_TITLE_CONTACT;
-  }else{
-    echo HEADING_TITLE;
-  }
-?>
-        </h1>
-        <div>
-          <table border="0" width="100%" cellspacing="0" cellpadding="0">
-            <?php
-  if (isset($_GET['action']) && ($_GET['action'] == 'success')) {
-?>
-            <tr>
-              <td>
-                <table border="0" width="95%" cellspacing="0" cellpadding="2" align="center">
-                  <tr>
-                    <td class="main"><?php echo tep_image(DIR_WS_IMAGES . 'table_background_man_on_board.gif', HEADING_TITLE, '0', '0', 'align="left"') . TEXT_SUCCESS; ?></td>
-                  </tr>
-                  <tr>
-                    <td align="right"><br>
-                      <a href="<?php echo tep_href_link(FILENAME_DEFAULT); ?>"><?php echo tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></a>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-            <?php
-  } else {
-?>
-            <tr>
-              <td>
-                <?php 
-  if (isset($_GET['products_id'])) {
-    //product_idを取得した場合のフォームのアクション先
-    echo tep_draw_form('contact_us', tep_href_link(FILENAME_CONTACT_US, 'action=send_p'));
-  } else {
-    //通常
-    echo tep_draw_form('contact_us', tep_href_link(FILENAME_CONTACT_US, 'action=send'));
-  }
-?>
-                <table border="0" width="100%" cellspacing="0" cellpadding="2">
-                  <tr>
-                    <td class="main"><?php echo ENTRY_NAME; ?><br>
-                    <?php if (!isset($last_name)) $last_name = NULL;?>
-                    <?php if (!isset($first_name)) $first_name = NULL;?>
-                      <?php echo tep_draw_input_field('name', ($error ? $_POST['name'] : (($language == 'japanese') ? ($last_name . ' ' . $first_name) : ($first_name . ' ' . $last_name)))); // 2003.03.10 Edit Japanese osCommerce ?></td>
-                  </tr>
-                  <tr>
-                    <td class="main"><?php echo ENTRY_EMAIL; ?><br>
-                    <?php if (!isset($email_address)) $email_address= NULL;?>
-                      <?php echo tep_draw_input_field('email', ($error ? $_POST['email'] : $email_address), 'size="30"'); if ($error) echo ENTRY_EMAIL_ADDRESS_CHECK_ERROR; ?></td>
-                  </tr>
-                  <tr>
-                    <td class="main">
-          <?php echo ENTRY_ENQUIRY; ?>
-                      <?php 
-  if (isset($_GET['products_id'])) {
-    $product_name = $product_info['products_name']; //変数に商品名を格納
-    //product_idを取得した場合
-    echo tep_draw_hidden_field('email_title', $product_name , ''); 
-  } 
-?>
-                    </td>
-                  </tr>
-                  <tr>
-                    <?php if (!isset($product_name)) $product_name= NULL;?>
-                    <td><?php echo tep_draw_textarea_field('enquiry', 'soft', 50, 15, '■　' . $product_name . TITLE_CONTACT_END . "\n" . EMAIL_SEPARATOR); ?></td>
-                  </tr>
-                  <tr>
-                    <td class="main" align="right"><br>
-                      <?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td>
-                  </tr>
-                </table>
-                </form>
-              </td>
-            </tr>
-            <?php
-  }
-?>
-          </table>
-        </div>
-      </td>
-      <!-- body_text_eof //-->
-      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>">
-        <!-- right_navigation //-->
-        <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
-        <!-- right_navigation_eof //-->
-      </td>
-    </tr>
-  </table>
-  <!-- body_eof //-->
-  <!-- footer //-->
-  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-  <!-- footer_eof //-->
+<div id="contact_us_warpper">
+<div class="tcol">
+<h1></h1>
+<p>
+</p>
 </div>
-</body>
-</html><?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
+<div class="lcol">
+  <div class="contact_left"><img src="./images/new_ticket_icon.jpg" width="60" height="60"></div>
+  <div class="contact_right">
+  <h3>新規お問い合わせ</h3>
+  
+  <br>
+  <form method="link" action="open.php">
+  <input type="submit" class="button2" value="お問い合わせ">
+  </form>
+  </div>
+</div>
+<div class="rcol">
+  <div class="contact_left"><img src="./images/ticket_status_icon.jpg" width="60" height="60"></div>
+  <div class="contact_right">
+  <h3>過去のお問い合わせへの返事を確認</h3>
+  
+  <br>
+    <form class="status_form" action="contact_us_login.php" method="post">
+    <div class="status_warpper">
+      <label>メールアドレス：</label>
+      <input type="text" name="lemail">
+      </div>
+      <div class="status_warpper">
+     <label>お問い合わせ番号:</label>
+     <input type="text" name="lticket">
+     </div>
+     <div class="status_warpper02">
+        <label>&nbsp;</label>
+         <input type="submit" class="button2" value="送信">
+     </div>
+
+  </form>
+</div>
+</div>
+<div class="clear"></div>
+<br />
+</div>
+<br />
+<?require(CLIENTINC_DIR.'footer.inc.php'); ?>
