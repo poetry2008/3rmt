@@ -165,15 +165,14 @@
                           'orders_system_language'      => $_SESSION['systemLanguage'],
                           'orders_user_language'        => $_SESSION['userLanguage'],
                           'orders_http_accept_language' => $_SERVER['HTTP_ACCEPT_LANGUAGE'],
-                          'telecom_name'   => $_GET['username'],
-                          'telecom_tel'    => $_GET['telno'],
-                          'telecom_money'  => $_GET['money'],
-                          'telecom_email'  => $_GET['email'],
-                          'telecom_clientip'  => $_GET['clientip'],
-                          'telecom_option'  => $_GET['option'],
-                          'telecom_cont'  => $_GET['cont'],
-                          'telecom_sendid'  => $_GET['sendid'],
-
+                          'telecom_name'      => $_SESSION['telecom_name'],
+                          'telecom_tel'       => $_SESSION['telecom_tel'],
+                          'telecom_money'     => $_SESSION['telecom_money'],
+                          'telecom_email'     => $_SESSION['telecom_email'],
+                          'telecom_clientip'  => $_SESSION['telecom_clientip'],
+                          'telecom_option'    => $_SESSION['telecom_option'],
+                          'telecom_cont'      => $_SESSION['telecom_cont'],
+                          'telecom_sendid'    => $_SESSION['telecom_sendid'],
                 );
   if (isset($_POST['codt_fee'])) {
     $sql_data_array['code_fee'] =  intval($_POST['codt_fee']);

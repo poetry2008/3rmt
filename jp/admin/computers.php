@@ -89,7 +89,7 @@ if (isset($_GET['action']) and $_GET['action']) {
               </tr>
 <?php
   //echo MAX_DISPLAY_SEARCH_RESULTS;
-  $computers_query_raw = "select * from " . TABLE_COMPUTERS . " order by sort_order desc";
+  $computers_query_raw = "select * from " . TABLE_COMPUTERS . " order by sort_order asc";
   $computers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $computers_query_raw, $computers_query_numrows);
   $computers_query = tep_db_query($computers_query_raw);
   while ($computers = tep_db_fetch_array($computers_query)) {

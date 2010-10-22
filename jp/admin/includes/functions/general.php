@@ -599,8 +599,6 @@
     }
     $category_query = tep_db_query("select * from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . $category_id . "' and language_id = '" . $language_id . "' and site_id = '".$site_id."'");
     $category = tep_db_fetch_array($category_query);
-
-    //print_r($category);
     return $category['text_information'];
   }
   
@@ -1772,7 +1770,6 @@ function tep_reset_cache_data_seo_urls($action){
     $types = $return = array();
     //DS_TORIHIKI_HOUHOU
     $types = explode("\n", DS_TORIHIKI_HOUHOU);
-    //print_r($types);
     if ($types) {
       foreach($types as $type){
         $atype = explode('//', $type);
@@ -1781,7 +1778,6 @@ function tep_reset_cache_data_seo_urls($action){
         }
       }
     }
-    //print_r($return);
     return $return;
   }
   
@@ -1816,7 +1812,6 @@ function tep_reset_cache_data_seo_urls($action){
             'text' => $torihiki,
           );
       }
-      //print_r($return);
       return $return;
   }
   
@@ -1844,11 +1839,9 @@ function tep_reset_cache_data_seo_urls($action){
     }
     $rate = str_replace(array('万','億'), array('0000','00000000'), $rate);
     if (preg_match('/^(\d+)(.*)（\d+.*）$/', $rate, $out)) {
-      //print_r($out);
       return '(' . number_format($out[1] * $cnt) . $out[2] . ')';
     }
     if (preg_match('/^(\d+)(.*)\(\d+.*\)$/', $rate, $out)) {
-      //print_r($out);
       return '(' . number_format($out[1] * $cnt) . $out[2] . ')';
     }
     if (preg_match('/^(\d+)(.*)$/', $rate, $out)) {
@@ -2159,7 +2152,6 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
     foreach($sites as $site){
       $sites_array[] = array('id' => $site['url'], 'text' => $site['name']);
     }
-    //print_r($sites_array);
     return tep_draw_pull_down_menu('site_url_id', $sites_array, $default, $params = 'onChange="window.open(this.value);this.selectedIndex=0;"', $require);
 
 }
@@ -2848,25 +2840,17 @@ if (!function_exists('json_encode'))
       
       function get_all_products_dougyousya($categories_id,$products_id) {
         $arr = array();
-        //$query = tep_db_query("SELECT sdc.dougyousya_id FROM  `set_dougyousya_categories` sdc ,categories c where sdc.categories_id= c.parent_id and c.categories_id = '".$categories_id."' order by sdc.dougyousya_id asc");
         $query = tep_db_query("select dougyousya_id from set_dougyousya_categories where categories_id = '".$categories_id."'");
         while($data = tep_db_fetch_array($query))
         {
           $arr[] = $data;
         }
-        /**
-        echo "<pre>";
-        print_r($arr);
-        echo "</pre>";
-        /**/
         return $arr;
       }
       
       function get_dougyousya_history($products_id, $dougyousya_id) {
-        //echo "select * from set_dougyousya_history where products_id='".$products_id."' and dougyousya_id='".$dougyousya_id."' order by last_date desc";
         $data = tep_db_fetch_array(tep_db_query("select * from set_dougyousya_history where products_id='".$products_id."' and dougyousya_id='".$dougyousya_id."' order by last_date desc"));
-        //echo "select * from set_dougyousya_history where products_id='".$products_id."' and dougyousya_id='".$dougyousya_id."' order by last_date desc";
-        if($data) {
+         if($data) {
           return $data['dougyosya_kakaku'];
         } else {
           return 0;
@@ -2971,15 +2955,40 @@ function tep_get_customers_fax_by_id($cid)
   }
   // orders.php
   function tep_get_orders_products_string($orders) {
-    //print_r($orders);
     $str = '';
-    if ($orders['orders_inputed_flag']) {
-      $str .= '<p class="main" align="center"><font color="red"><b>入力済み</b></font></p>';
-    }
-    if ($orders['orders_comment']) {
-      $str .= '<p class="main" align="center"><font color="blue"><b>メモ有り</b></font></p>';
-    }
+
+
     $str .= '<table border="0">';
+    
+    /*
+    $str .= '<tr><td class="mian" align="center" colspan="2"><table width="100%"><tr><td class="main" width="50%" align="left">';
+    if ($orders['orders_inputed_flag']) {
+      $str .= '<font color="red"><b>入力済み</b></font>';
+    }
+    $str .= '</td><td class="mian" align="right" width="50%">';
+    if ($orders['orders_comment']) {
+      $str .= '<font color="blue"><b>メモ有り</b></font>';
+    }
+    */
+    $str .= '<tr><td class="mian" align="left" colspan="2">';
+    if ($orders['orders_inputed_flag']) {
+      $str .= '<font color="red"><b>入力済み</b></font>';
+    }
+    $str .= '</td></tr><tr><td class="mian" align="left"colspan="2">';
+    if ($orders['orders_comment']) {
+      $str .= '<font color="blue"><b>メモ有り</b></font>';
+    }
+    
+    $pay_time = tep_get_orders_status_history_time($orders['orders_id'], 9);
+    $str .= '</td></tr>';
+    $str .= '<tr><td colspan="2">&nbsp;</td></tr>';
+    $str .= '<tr><td class="main" width="60"><b>支払方法：</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
+    if ($orders['payment_method'] != '銀行振込(買い取り)') {
+      $str .= '<tr><td class="main"><b>入金日：</b></td><td class="main" style="color:red;"><b>'.($pay_time?date('m月d日',strtotime($pay_time)):'入金まだ').'</b></td></tr>';
+    }
+    $str .= '<tr><td colspan="2">&nbsp;</td></tr>';
+    
+    
     $orders_products_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." where orders_id = '".$orders['orders_id']."'");
     while ($p = tep_db_fetch_array($orders_products_query)) {
       $products_attributes_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." where orders_products_id='".$p['orders_products_id']."'");
@@ -2987,19 +2996,18 @@ function tep_get_customers_fax_by_id($cid)
       $products = tep_db_fetch_array($products_rate_query);
       $tmp = explode('//', $products['products_attention_1']);
       $p_rate = $tmp[1];
+
       $str .= '<tr><td class="main"><b>商品：</b></td><td class="main">'.$p['products_name'].'</td></tr>';
-      //$str .= '<tr><td class="main"><b>型番：</b></td><td class="main">'.$p['products_model'].'</td></tr>';
       $str .= '<tr><td class="main"><b>個数：</b></td><td class="main">'.$p['products_quantity'].'個'.tep_get_full_count($p['products_quantity'], $p_rate).'</td></tr>';
       while($pa = tep_db_fetch_array($products_attributes_query)){
         $str .= '<tr><td class="main"><b>'.$pa['products_options'].'：</b></td><td class="main">'.$pa['products_options_values'].'</td></tr>';
       }
-      $str .= '<tr><td class="main"><b>キャラ名：</b></td><td style="font-size:20px;color:lightgreen;"><b>'.$p['products_character'].'</b></td></tr>';
+      $str .= '<tr><td class="main"><b>キャラ名：</b></td><td style="font-size:20px;color:#407416;"><b>'.$p['products_character'].'</b></td></tr>';
       $names = tep_get_computers_names_by_orders_id($orders['orders_id']);
       if ($names) {
         $str .= '<tr><td class="main"><b>PC：</b></td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
       }
       $str .= '<tr><td class="main"></td><td class="main"></td></tr>';
-      //tep_get_full_count($cnt, $rate)
     }
     $str .= '</table>';
     return htmlspecialchars($str);
@@ -3009,7 +3017,7 @@ function tep_get_customers_fax_by_id($cid)
   function tep_get_computers_names_by_orders_id($orders_id)
   {
     $names = array();
-    $o2c_query = tep_db_query("select * from ".TABLE_ORDERS_TO_COMPUTERS." o2c, ".TABLE_COMPUTERS." c where c.computers_id=o2c.computers_id and o2c.orders_id = '".$orders_id."'");
+    $o2c_query = tep_db_query("select * from ".TABLE_ORDERS_TO_COMPUTERS." o2c, ".TABLE_COMPUTERS." c where c.computers_id=o2c.computers_id and o2c.orders_id = '".$orders_id."' order by sort_order asc");
     while($o = tep_db_fetch_array($o2c_query)) {
       $names[] = $o['computers_name'];
     }
@@ -3020,7 +3028,7 @@ function tep_get_customers_fax_by_id($cid)
   function tep_get_computers()
   {
     $computers = array();
-    $computers_query = tep_db_query("select * from ".TABLE_COMPUTERS." order by sort_order desc");
+    $computers_query = tep_db_query("select * from ".TABLE_COMPUTERS." order by sort_order asc");
     while ($c = tep_db_fetch_array($computers_query)) {
       $computers[] = $c;
     }

@@ -302,7 +302,8 @@
               'payment_method'              => $payment_method,
               'torihiki_houhou'             => $torihikihouhou,
               'torihiki_date'               => tep_db_input($date . ' ' . $hour . ':' . $min . ':00'),
-              'site_id'                     => $site_id
+              'site_id'                     => $site_id,
+              'orders_wait_flag'            => '1'
               ); 
 
   tep_db_perform(TABLE_ORDERS, $sql_data_array);

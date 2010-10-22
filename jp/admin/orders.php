@@ -9,13 +9,15 @@
   require(DIR_WS_CLASSES . 'currencies.php');
 
   $currencies          = new currencies();
-  $orders_statuses     = $orders_status_array = array();
+  $orders_statuses     = $all_orders_statuses = $orders_status_array = array();
 
   $orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_ORDERS_STATUS . " where language_id = '" . $languages_id . "'");
 
   while ($orders_status = tep_db_fetch_array($orders_status_query)) {
-    $orders_statuses[] = array('id' => $orders_status['orders_status_id'],
-      'text' => $orders_status['orders_status_name']);
+    if ($orders_status['orders_status_id'] != 17 && $orders_status['orders_status_id'] != 19)
+      $orders_statuses[] = array('id' => $orders_status['orders_status_id'],'text' => $orders_status['orders_status_name']);
+    
+    $all_orders_statuses[] = array('id' => $orders_status['orders_status_id'], 'text' => $orders_status['orders_status_name']);
     $orders_status_array[$orders_status['orders_status_id']] = $orders_status['orders_status_name'];
   }
 
@@ -207,7 +209,7 @@
     //------------------------------------------
   case 'update_order':
       $oID      = tep_db_prepare_input($_GET['oID']);
-      $status   = tep_db_prepare_input($_POST['status']);
+      $status   = tep_db_prepare_input($_POST['s_status']);
       $title    = tep_db_prepare_input($_POST['title']);
       $comments = tep_db_prepare_input($_POST['comments']);
       $site_id  = tep_get_site_id_by_orders_id($oID);
@@ -384,8 +386,11 @@
       } else {
         $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
       }
-
-      tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action')) . 'action=edit'));
+      if ($status == 6 or $status == 8) {
+        tep_redirect(tep_href_link(FILENAME_ORDERS));
+      } else {
+        tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action')) . 'action=edit'));
+      }
       break;
     case 'deleteconfirm':
       $oID = tep_db_prepare_input($_GET['oID']);
@@ -487,7 +492,7 @@
   }
   }
 ?>
-<!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
@@ -579,20 +584,17 @@ function mail_text(st,tt,ot){
   // 选中值
   var CI  = document.sele_act.elements[st].options[idx].value;
   // 选中的checkbox值
-  chk = getCheckboxValue('chk[]');
+  if (st == 'status') {
+    // 列表页
+    chk = getCheckboxValue('chk[]');
+  } else {
+    // 详细页
+    chk = new Array();
+    chk[0] = 0;
+  }
   
-  // 不允许多选
-  /*
-  if(chk.length > 1){
-    alert('複数の選択はできません。');
-    document.sele_act.elements[st].options[window.last_status].selected = true;
-    return false;
-  } else if (chk.length < 0) {
-    alert('注文書はまだ選択していません。');
-    document.sele_act.elements[st].options[window.last_status].selected = true;
-    return false;
-  }*/
   // 如果有了游戏人物名则不允许多选
+  
   if((chk.length > 1)  && window.status_text[CI][0].indexOf('${ORDER_A}') != -1){
     alert('複数の選択はできません。');
     document.sele_act.elements[st].options[window.last_status].selected = true;
@@ -607,21 +609,30 @@ function mail_text(st,tt,ot){
   window.last_status = idx;
   
   // 更换表单内容
-  if (typeof(window.status_title[CI]) != 'undefined' && typeof(window.status_title[CI][window.orderSite[chk[0]]]) != 'undefined') {
-    document.sele_act.elements[ot].value = window.status_title[CI][window.orderSite[chk[0]]];
-    document.sele_act.elements[tt].value = window.status_text[CI][window.orderSite[chk[0]]].replace('${ORDER_A}', window.orderStr[chk[0]]);
-  } else if (typeof(window.status_title[CI]) != 'undefined'){
-    document.sele_act.elements[ot].value = window.status_title[CI][0];
-    document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr[chk[0]]);
+  if (st == 'status') {
+    // 列表页
+    if (typeof(window.status_title[CI]) != 'undefined' && typeof(window.status_title[CI][window.orderSite[chk[0]]]) != 'undefined') {
+      document.sele_act.elements[ot].value = window.status_title[CI][window.orderSite[chk[0]]];
+      document.sele_act.elements[tt].value = window.status_text[CI][window.orderSite[chk[0]]].replace('${ORDER_A}', window.orderStr[chk[0]]);
+    } else if (typeof(window.status_title[CI]) != 'undefined'){
+      document.sele_act.elements[ot].value = window.status_title[CI][0];
+      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr[chk[0]]);
+    }
+  } else {
+    // 详细页
+    if (typeof(window.status_title[CI]) != 'undefined') {
+      document.sele_act.elements[ot].value = window.status_title[CI][0];
+      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr);
+    } else if (typeof(window.status_title[CI]) != 'undefined'){
+      document.sele_act.elements[ot].value = window.status_title[CI][0];
+      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr);
+    }
   }
-  //alert(CI);
   
   if (nomail[CI] == '1') {
-    //alert(nomail[CI]);
     $('#notify_comments').attr('checked','');
     $('#notify').attr('checked','');
   } else {
-    //alert(nomail[CI]);
     $('#notify_comments').attr('checked',true);
     $('#notify').attr('checked',true);
   }
@@ -699,10 +710,18 @@ function showRequest(formData, jqForm, options) {
     return true; 
 } 
 
+
+ // document.body.clientHeight
+
 // 列表右侧的订单信息显示
-function showOrdersInfo(text){
+function showOrdersInfo(text,ele){
   $('#orders_info_box').html(text);
-  $('#orders_info_box').show();
+  
+  offset = $(ele).offset().top + $('#orders_info_box').height() > $(document).height() 
+    ? $(document).height() - $('#orders_info_box').height() 
+    : $(ele).offset().top;
+  //offset = 
+  $('#orders_info_box').css('top',offset).show();
 }
 // 列表右侧的订单信息隐藏
 function hideOrdersInfo(){
@@ -825,7 +844,7 @@ function playSound()
         && $('#q_9_1').attr('checked')
         && ($('#q_10_1_0').attr('checked') || $('#q_10_1_1').attr('checked'))
         && ($('#q_11_3_0').attr('checked') || $('#q_11_3_1').attr('checked'))
-        && ($('#q_17_1_0').attr('checked') || $('#q_17_2_1').attr('checked'))
+        && ($('#q_17_2_0').attr('checked') || $('#q_17_2_1').attr('checked'))
         && ($('#q_6_1_0').attr('checked') || $('#q_6_1_1').attr('checked'))
         && $('#q_4_2').attr('checked')
         && $('#q_5_1').attr('checked')
@@ -899,7 +918,7 @@ $(function(){
 });
 </script>
 </head>
-<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
+<body>
 <!-- header //-->
 <?php
   require(DIR_WS_INCLUDES . 'header.php');
@@ -928,6 +947,10 @@ $(function(){
     // edit start
     $order = new order($oID);
 ?>
+<script>
+  // 游戏人物名，订单详细页用来替换邮件内容
+  window.orderStr = '<?php echo  str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'), orders_a($order->info['orders_id'], array(array('orders_id' => $order->info['orders_id']))));?>';
+</script>
 <tr>
   <td width="100%">
     <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -1244,6 +1267,7 @@ $(function(){
       $orders_questions_type = 0;
     }
   }
+
 ?>
                 <h3>Order Answer</h3>
                 <!-- ajax submit -->
@@ -1310,7 +1334,7 @@ $(function(){
   </tr>
   <tr>
     <td class="main">受領メール送信：</td>
-    <td class="main"><?php echo tep_draw_checkbox_field('q_14_1', '1', isset($oq['q_14_1']) ? $oq['q_14_1'] === '1' : $end_time,'','id="q_14_1" onchange="change_option(this)"');?><?php echo tep_draw_hidden_field('q_14_2', $oq['q_14_2'] ? $oq['q_14_2'] : $order->customer['email_address'], 'size="20" class="readonly" readonly');?>済</td>
+    <td class="main"><?php echo tep_draw_checkbox_field('q_14_1', '1', isset($oq['q_14_1']) ? $oq['q_14_1'] === '1' : $pay_time,'','id="q_14_1" onchange="change_option(this)"');?><?php echo tep_draw_hidden_field('q_14_2', $oq['q_14_2'] ? $oq['q_14_2'] : $order->customer['email_address'], 'size="20" class="readonly" readonly');?>済</td>
 <?php if (!$oq['q_8_1']) { ?>
     <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_14_1').attr('checked','');$('#q_14_3').attr('checked','');clean_option(14);"></td>
 <?php } ?>
@@ -1688,31 +1712,11 @@ $(function(){
 <table border="0" width="100%">
   <tr>
     <td width="50%">
-      <?php echo tep_draw_form('status', FILENAME_ORDERS, tep_get_all_get_params(array('action')) . 'action=update_order'); ?>
+      <?php echo tep_draw_form('sele_act', FILENAME_ORDERS, tep_get_all_get_params(array('action')) . 'action=update_order'); ?>
       <table width="100%" border="0">
       <tr>
         <td class="main"><b><?php echo ENTRY_STATUS; ?></b>
-          <select onChange="if(options[selectedIndex].value) window.location.href=(options[selectedIndex].value)">
-      <?php
-        //without reorder
-        $status_query = tep_db_query("select * from " . TABLE_ORDERS_STATUS . " where orders_status_id != '17' order by orders_status_id ");
-        while ($pull_status = tep_db_fetch_array($status_query)) {
-        echo '<option value="' . tep_href_link('orders.php',tep_get_all_get_params(array('status')).'status='.$pull_status['orders_status_id']) . '"';
-            
-        if($_GET['status'] == ''){
-          if($order->info['orders_status'] == $pull_status['orders_status_id']){
-            echo 'selected' ;
-          }
-        }else{
-          if($_GET['status'] == $pull_status['orders_status_id']) {
-            echo 'selected' ;
-          }
-        }
-        
-        echo '>' . $pull_status['orders_status_name'] . '</option>'."\n";
-        }
-      ?>
-          </select>
+          <?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_select,  'onChange="mail_text(\'s_status\',\'comments\',\'title\')"'); ?>
         </td>
       </tr>
       <?php
@@ -1720,13 +1724,13 @@ $(function(){
         $ma_se = "select * from ".TABLE_ORDERS_MAIL." where ";
         if(!isset($_GET['status']) || $_GET['status'] == ""){
           $ma_se .= " orders_status_id = '".$order->info['orders_status']."' ";
-          echo '<input type="hidden" name="status" value="' .$order->info['orders_status'].'">';
+          //echo '<input type="hidden" name="status" value="' .$order->info['orders_status'].'">';
           
           // 用来判断是否选中 送信&通知，如果nomail==1则不选中
           $ma_s = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$order->info['orders_status']."'"));
         }else{
           $ma_se .= " orders_status_id = '".$_GET['status']."' ";
-          echo '<input type="hidden" name="status" value="' .$_GET['status'].'">';
+          //echo '<input type="hidden" name="status" value="' .$_GET['status'].'">';
           
           // 用来判断是否选中 送信&通知，如果nomail==1则不选中
           $ma_s = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$_GET['status']."'"));
@@ -1754,8 +1758,8 @@ $(function(){
         <td>
           <table width="100%" border="0" cellspacing="0" cellpadding="2">
             <tr>
-              <td class="main"><?php echo tep_draw_checkbox_field('notify', '', true && $ma_s['nomail'] != '1'); ?><b>メール送信</b></td>
-              <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', true && $ma_s['nomail'] != '1'); ?><b>ステータス通知</b></td>
+              <td class="main"><?php echo tep_draw_checkbox_field('notify', '', true && $ma_s['nomail'] != '1', '', 'id="notify"'); ?><b>メール送信</b></td>
+              <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', true && $ma_s['nomail'] != '1', '', 'id="notify_comments"'); ?><b>ステータス通知</b></td>
             </tr>
             <tr>
               <td class="main" colspan="2"><br><b style="color:#FF0000;">間違い探しはしましたか？</b><br><br><?php echo tep_image_submit('button_update.gif', IMAGE_UPDATE); ?></td>
@@ -1835,7 +1839,7 @@ $(function(){
           <tr>
             <td class="smallText" align="right">
               <?php echo tep_draw_form('status', FILENAME_ORDERS, '', 'get'); ?>
-              <?php echo HEADING_TITLE_STATUS . ' ' . tep_draw_pull_down_menu('status', tep_array_merge(array(array('id' => '', 'text' => TEXT_ALL_ORDERS)), $orders_statuses), '', 'onChange="this.form.submit();"'); ?>
+              <?php echo HEADING_TITLE_STATUS . ' ' . tep_draw_pull_down_menu('status', tep_array_merge(array(array('id' => '', 'text' => TEXT_ALL_ORDERS)), $all_orders_statuses), '', 'onChange="this.form.submit();"'); ?>
               </form>
             </td>
           </tr>      
@@ -1921,7 +1925,7 @@ $(function(){
       ?>    
       </select>
       日 </td>
-       <td class="smallText"><?php echo HEADING_TITLE_STATUS . ' ' . tep_draw_pull_down_menu('status', tep_array_merge(array(array('id' => '', 'text' => TEXT_ALL_ORDERS)), $orders_statuses), '', ''); ?></td>
+       <td class="smallText"><?php echo HEADING_TITLE_STATUS . ' ' . tep_draw_pull_down_menu('status', tep_array_merge(array(array('id' => '', 'text' => TEXT_ALL_ORDERS)), $all_orders_statuses), '', ''); ?></td>
       <td>&nbsp;</td>
     <td><input type="image" src="includes/languages/japanese/images/buttons/button_csv_exe.gif" alt="CSVエクスポート" width="105" height="22" border="0"></td>
       </tr>
@@ -2244,6 +2248,7 @@ $(function(){
     
     $orders_query_raw .= "order by o.torihiki_date DESC";
   } else {
+      // 隐藏 「キャンセル」と「注文取消」
       $orders_query_raw = "
         select distinct o.orders_status as orders_status_id, 
                o.orders_id, 
@@ -2266,6 +2271,9 @@ $(function(){
          from " . TABLE_ORDERS . " o " . $from_payment . "
          where 
           (o.q_8_1 IS NULL or o.q_8_1 = '')
+          -- and o.orders_status != '19'
+          and o.orders_status != '6'
+          and o.orders_status != '8'
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
           and o.language_id = '" . $languages_id . "' 
           " . $where_payment . $where_type . "
@@ -2310,9 +2318,9 @@ $(function(){
   }
   
   if ( (isset($oInfo) && is_object($oInfo)) && ($orders['orders_id'] == $oInfo->orders_id) ) {
-    echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRowSelected" onmouseover="showOrdersInfo(\''.tep_get_orders_products_string($orders).'\');this.style.cursor=\'hand\'" onmouseout="hideOrdersInfo()" ondblclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']).'\'">' . "\n";
+    echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRowSelected" onmouseover="showOrdersInfo(\''.tep_get_orders_products_string($orders).'\',this);this.style.cursor=\'hand\'" onmouseout="hideOrdersInfo()" ondblclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']).'\'">' . "\n";
   } else {
-    echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="showOrdersInfo(\''.tep_get_orders_products_string($orders).'\');this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="hideOrdersInfo();this.className=\'dataTableRow\'" ondblclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']).'\'">' . "\n";
+    echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="showOrdersInfo(\''.tep_get_orders_products_string($orders).'\',this);this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="hideOrdersInfo();this.className=\'dataTableRow\'" ondblclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']).'\'">' . "\n";
   }
 ?>
   <?php 
@@ -2388,6 +2396,7 @@ $(function(){
 <?php }?>
   </table>
 <script language="javascript">
+  // 游戏人物名字符串，订单列表页用来替换邮件内容
   window.orderStr = new Array();
   window.orderSite = new Array();
 <?php foreach($allorders as $key=>$orders){?>
@@ -2484,17 +2493,17 @@ function submit_confirm()
       break;
     default:
       if (isset($oInfo) && is_object($oInfo)) {
-    $heading[] = array('text' => '<b>[' . $oInfo->orders_id . ']<br>' . tep_datetime_short($oInfo->date_purchased) . '</b>');
+        $heading[] = array('text' => '<b>[' . $oInfo->orders_id . ']<br>' . tep_datetime_short($oInfo->date_purchased) . '</b>');
 
-    if ($ocertify->npermission == 15) {
-      $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $oInfo->orders_id . '&action=edit') . '">' . tep_image_button('button_details.gif', IMAGE_DETAILS) . '</a> <a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $oInfo->orders_id . '&action=delete') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>');
-    } else {
-      $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $oInfo->orders_id . '&action=edit') . '">' . tep_image_button('button_details.gif', IMAGE_DETAILS) . '</a>');
-    }
-    $contents[] = array('text' => '<br>' . TEXT_DATE_ORDER_CREATED . ' ' . tep_date_short($oInfo->date_purchased));
-    if (tep_not_null($oInfo->last_modified)) $contents[] = array('text' => TEXT_DATE_ORDER_LAST_MODIFIED . ' ' . tep_date_short($oInfo->last_modified));
-      $contents[] = array('text' => '<br>' . TEXT_INFO_PAYMENT_METHOD . ' '  . $oInfo->payment_method);
-    }
+        if ($ocertify->npermission == 15) {
+          $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $oInfo->orders_id . '&action=edit') . '">' . tep_image_button('button_details.gif', IMAGE_DETAILS) . '</a> <a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $oInfo->orders_id . '&action=delete') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>');
+        } else {
+          $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $oInfo->orders_id . '&action=edit') . '">' . tep_image_button('button_details.gif', IMAGE_DETAILS) . '</a>');
+        }
+        $contents[] = array('text' => '<br>' . TEXT_DATE_ORDER_CREATED . ' ' . tep_date_short($oInfo->date_purchased));
+        if (tep_not_null($oInfo->last_modified)) $contents[] = array('text' => TEXT_DATE_ORDER_LAST_MODIFIED . ' ' . tep_date_short($oInfo->last_modified));
+          $contents[] = array('text' => '<br>' . TEXT_INFO_PAYMENT_METHOD . ' '  . $oInfo->payment_method);
+      }
       break;
   }
 
@@ -2505,7 +2514,8 @@ function submit_confirm()
     echo $box->infoBox($heading, $contents);
   }
   ?>
-    <div id="orders_info_box" style="display:none;margin-top:40px;">&nbsp;</div>
+    <!-- 订单信息预览，配合javascript，永远浮动在屏幕右下角 -->
+    <div id="orders_info_box" style="display:none;position:absolute;background:#FFF;padding-top:5px;/*bottom:0;margin-top:40px;right:0;width:200px;*/">&nbsp;</div>
   <?php
     echo '      </td>' . "\n";
 
@@ -2514,9 +2524,7 @@ function submit_confirm()
   </table>
       </td>
     </tr>
-<?php
-  }
-?>
+<?php } ?>
 
     </table></td>
 <!-- body_text_eof //-->

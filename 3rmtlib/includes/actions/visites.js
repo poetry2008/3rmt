@@ -191,6 +191,6 @@ function pmv_log(pmv_urlPmv, pmv_site, pmv_pname, pmv_vars)
 		pmv_urlCur = pmv_urlCur.substr(pmv_pos);
 	}
 	var pmv_src = pmv_getUrlStat(pmv_urlPmv, pmv_site, pmv_urlCur, pmv_pname, "", pmv_vars);
-	pmv_do.writeln('<img src="'+pmv_src+'" alt="visites" style="border:0" />');
+	pmv_do.writeln('<img src="'+pmv_src+'" alt="visites" style="display:none;border:0" />');
 }
 pmv_log(visitesURL, visitesSite, pagename, a_vars);

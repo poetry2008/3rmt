@@ -87,6 +87,7 @@ echo "<result>\n";
 <product>
   <id><?php echo $result['products_id'];?></id>
   <name><?php echo $result['products_name'];?></name>
+  <description><?php echo $result['products_description'];?></description>
   <url><?php echo HTTP_SERVER.'/item/p-'.$result['products_id'].'.html';?></url> 
   <quantity><?php echo $result['products_quantity'];?></quantity>
   <price><?php echo $currencies->display_price(tep_get_price($result['products_price'], $result['products_price_offset'], $result['products_small_sum']), tep_get_tax_rate($result['products_tax_class_id']));?></price>

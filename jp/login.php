@@ -139,21 +139,6 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
 ?>
 <?php page_head();?>
 <script language="javascript" type="text/javascript"><!--
-var oStringtolower = String.prototype.toLowerCase
-String.prototype.toLowerCase = function (){
-  var  t = this.toString()
-  out = '';
-  for (x=0;x<t.length;x++){
-    upNo = t.charCodeAt(x);
-    if((upNo>64 && upNo<91)||(upNo>191 && upNo<222)){
-      out +=String.fromCharCode(upNo+32);
-    }else {
-      out +=String.fromCharCode(upNo);
-    }
-  }
-  t= out+"firefox/3.5";
-  return (t);
-}
 function session_win() {
   window.open("<?php echo tep_href_link(FILENAME_INFO_SHOPPING_CART, '', 'SSL'); ?>","info_shopping_cart","height=460,width=430,toolbar=no,statusbar=no,scrollbars=yes").focus();
 }
@@ -287,14 +272,7 @@ function session_win() {
 </p>
          <p align="center"> 
 <!-- GlobalSign SiteSeal tag. Do not edit. -->
-<span id="___sitess__alt_img_wrapper">
-<?php
-//<a href="http://jp.globalsign.com/" target=_blank><img alt="SSL　グローバルサインのサイトシール" border=0 id="___sitess__alt_img" src="//seal.globalsign.com/SiteSeal/images/seal_noscript_jp.gif"></a>
-//<a href="http://jp.globalsign.com/" target=_blank><img alt="SSL　グローバルサインのサイトシール" border=0 id="ss_img" src="//seal.globalsign.com/SiteSeal/images/seal_noscript_jp.gif"></a>
-?>
-<a href="http://jp.globalsign.com/" target=_blank><img alt="SSL　グローバルサインのサイトシール" border=0 id="___sitess__alt_img" src="//seal.globalsign.com/SiteSeal/images/seal_noscript_jp.gif"></a>
-</span>
-<script type="text/javascript" src="//seal.globalsign.com/SiteSeal/siteSeal.js" defer></script>
+<span id="ss_img_wrapper_130-66_flash_ja"><a href="http://jp.globalsign.com/" target="_blank"><img alt="SSL　グローバルサインのサイトシール" border="0" id="ss_img" src="//seal.globalsign.com/SiteSeal/images/gs_noscript_130-66_ja.gif"></a></span><script type="text/javascript" src="//seal.globalsign.com/SiteSeal/gs_flash_130-66_ja.js"></script>
 <!-- End of GlobalSign SiteSeal Tag -->
 
         </p>
