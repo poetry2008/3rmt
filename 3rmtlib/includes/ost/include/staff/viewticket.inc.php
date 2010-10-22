@@ -40,19 +40,19 @@ if($ticket->isOverdue())
      <td width=50%>	
 		<table align="center" class="ticketinfo" cellspacing="1" cellpadding="3" width="100%" border=0>
 			<tr>
-				<th>Status:</th>
+				<th>ステータス:</th>
 				<td><?=$ticket->getStatus()?></td>
 			</tr>
 			<tr>
-        		<th>Priority:</th>
+        		<th>重要度:</th>
         		<td><?=$ticket->getPriority()?></td>
    	 		</tr>
             <tr>
-                <th>Department:</th>
+                <th>サイト名:</th>
                 <td><?=Format::htmlchars($ticket->getDeptName())?></td>
             </tr>
 			<tr>
-                <th>Create Date:</th>
+                <th>作成時間:</th>
                 <td><?=Format::db_datetime($ticket->getCreateDate())?></td>
             </tr>
 		</table>
@@ -60,11 +60,11 @@ if($ticket->isOverdue())
      <td width=50% valign="top">
         <table align="center" class="ticketinfo" cellspacing="1" cellpadding="3" width="100%" border=0>
             <tr>
-                <th>Name:</th>
+                <th>タイトル:</th>
                 <td><?=Format::htmlchars($ticket->getName())?></td>
             </tr>
             <tr>
-                <th>Email:</th>
+                <th>Eメール:</th>
                 <td><?php 
                     echo $ticket->getEmail();
                     if(($related=$ticket->getRelatedTicketsCount())) {
@@ -75,17 +75,17 @@ if($ticket->isOverdue())
                 </td>
             </tr>
             <tr>
-                <th>Phone:</th>
+                <th>電話番号:</th>
                 <td><?=Format::phone($ticket->getPhoneNumber())?></td>
             </tr>
             <tr>
-                <th>Source:</th>
+                <th>ソース:</th>
                 <td><?=$ticket->getSource()?></td>
             </tr>
         </table>
      </td>
     </tr>
-    <tr><td colspan=2 class="msg">Subject: <?=Format::htmlchars($ticket->getSubject())?></td></tr>
+    <tr><td colspan=2 class="msg">タイトル: <?=Format::htmlchars($ticket->getSubject())?></td></tr>
     <tr>
      <td valign="top" width=50%>
         <table align="center" class="ticketinfo" cellspacing="1" cellpadding="3" width="100%" border=0>
@@ -94,19 +94,19 @@ if($ticket->isOverdue())
                 <td><?=$staff?Format::htmlchars($staff->getName()):'- unassigned -'?></td>
             </tr>
             <tr>
-                <th nowrap>Last Response:</th>
+                <th nowrap>最終返答時間:</th>
                 <td><?=Format::db_datetime($ticket->getLastResponseDate())?></td>
             </tr>
             <?php
             if($ticket->isOpen()){ ?>
             <tr>
-                <th>Due Date:</th>
+                <th>期限切れ日付:</th>
                 <td><?=Format::db_datetime($ticket->getDueDate())?></td>
             </tr>
             <?php
             }else { ?>
             <tr>
-                <th>Close Date:</th>
+                <th>閉じる時間:</th>
                 <td><?=Format::db_datetime($ticket->getCloseDate())?></td>
             </tr>
             <?php
@@ -116,7 +116,7 @@ if($ticket->isOverdue())
      </td>
      <td width=50% valign="top">
         <table align="center" class="ticketinfo" cellspacing="1" cellpadding="3" width="100%" border=0>
-            <tr><th>Help Topic:</th>
+            <tr><th>ご質問:</th>
                 <td><?
                     $ht=$ticket->getHelpTopic();
                     echo Format::htmlchars($ht?$ht:'N/A');
@@ -124,10 +124,10 @@ if($ticket->isOverdue())
                 </td>
             </tr>
             <tr>
-                <th>IP Address:</th>
+                <th>IPアドレス:</th>
                 <td><?=$ticket->getIP()?></td>
             </tr>
-            <tr><th nowrap>Last Message:</th>
+            <tr><th nowrap>最終メッセージの時間:</th>
                 <td><?=Format::db_datetime($ticket->getLastMessageDate())?></td>
             </tr>
         </table>
@@ -151,13 +151,13 @@ if($thisuser->canManageTickets() || $thisuser->isManager()){ ?>
         <form name=action action='tickets.php?id=<?=$id?>' method=post class="inline" >
             <input type='hidden' name='ticket_id' value="<?=$id?>"/>
              <input type='hidden' name='a' value="process"/>
-            <span for="do"> &nbsp;<b>Action:</b></span>
+            <span for="do"> &nbsp;<b>操作:</b></span>
             <select id="do" name="do" 
               onChange="this.form.ticket_priority.disabled=strcmp(this.options[this.selectedIndex].value,'change_priority','reopen','overdue')?false:true;">
-                <option value="">Select Action</option>
-                <option value="change_priority" <?=$info['do']=='change_priority'?'selected':''?> >Change Priority</option>
+                <option value="">選択してください</option>
+                <option value="change_priority" <?=$info['do']=='change_priority'?'selected':''?> >重要度変更</option>
                 <?if(!$ticket->isoverdue()){ ?>
-                <option value="overdue" <?=$info['do']=='overdue'?'selected':''?> >Mark Overdue</option>
+                <option value="overdue" <?=$info['do']=='overdue'?'selected':''?> >期限をつける</option>
                 <?}?>
                 <?if($ticket->isAssigned()){ ?>
                 <option value="release" <?=$info['do']=='release'?'selected':''?> >Release (unassign)</option>
@@ -166,27 +166,27 @@ if($thisuser->canManageTickets() || $thisuser->isManager()){ ?>
                 <?if($thisuser->canCloseTickets()){
                     //if you can close a ticket...reopening it is given.
                     if($ticket->isOpen()){?>
-                     <option value="close" <?=$info['do']=='close'?'selected':''?> >Close Ticket</option>
+                     <option value="close" <?=$info['do']=='close'?'selected':''?> >Ticketを閉じる</option>
                     <?}else{?>
-                        <option value="reopen" <?=$info['do']=='reopen'?'selected':''?> >Reopen Ticket</option>
+                        <option value="reopen" <?=$info['do']=='reopen'?'selected':''?> >Ticketを再開</option>
                     <?}
                 }?>
                 <?php
                  if($thisuser->canManageBanList()) {
                     if(!$emailBanned) {?>    
-                        <option value="banemail" >Ban Email <?=$ticket->isOpen()?'&amp; Close':''?></option>
+                        <option value="banemail" >バンされたEメール <?=$ticket->isOpen()?'&amp; Close':''?></option>
                     <?}else{?>
-                        <option value="unbanemail">Un-Ban Email</option>
+                        <option value="unbanemail">バンされていないEメール</option>
                     <?}
                  }?>
                 
                 <?if($thisuser->canDeleteTickets()){ //oooh...fear the deleters! ?>
-                <option value="delete" >Delete Ticket</option>
+                <option value="delete" >Ticketを削除</option>
                 <?}?>
             </select>
-            <span for="ticket_priority">Priority:</span>
+            <span for="ticket_priority">重要度:</span>
             <select id="ticket_priority" name="ticket_priority" <?=!$info['do']?'disabled':''?> >
-                <option value="0" selected="selected">-Unchanged-</option>
+                <option value="0" selected="selected">-変更なし-</option>
                 <?
                 $priorityId=$ticket->getPriorityId();
                 $resp=db_query('SELECT priority_id,priority_desc FROM '.TICKET_PRIORITY_TABLE);
@@ -225,7 +225,7 @@ if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
 </div>
 <?} ?>
 <div align="left">
-    <a class="Icon thread" href="#" onClick="toggleLayer('ticketthread'); return false;">Ticket Thread</a>
+    <a class="Icon thread" href="#" onClick="toggleLayer('ticketthread'); return false;">問合スレッド</a>
     <div id="ticketthread">
 	<?
 	    //get messages
@@ -369,13 +369,13 @@ if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
                         if(!$ticket->isAssigned() || $thisuser->isadmin()  || $thisuser->isManager() || $thisuser->getId()==$ticket->getStaffId()) {
                          ?>
                         <div style="margin-top: 3px;">
-                            <b>Ticket Status:</b>
+                            <b>Ticketステータス:</b>
                             <?
                             $checked=($info && isset($info['ticket_status']))?'checked':''; //not selected by default.
                             if($ticket->isOpen()){?>
-                            <label><input type="checkbox" name="ticket_status" id="ticket_status" value="Close" <?=$checked?> > Close Ticket</label>
+                            <label><input type="checkbox" name="ticket_status" id="ticket_status" value="Close" <?=$checked?> > Ticketを閉じる</label>
                             <?}else{ ?>
-                            <label><input type="checkbox" name="ticket_status" id="ticket_status" value="Reopen" <?=$checked?> > Reopen Ticket</label>
+                            <label><input type="checkbox" name="ticket_status" id="ticket_status" value="Reopen" <?=$checked?> > Ticketを再開</label>
                             <?}?>
                         </div>
                         <?}?>
@@ -393,27 +393,27 @@ if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
             if($thisuser->canTransferTickets()) { 
                 ?>
             <div id="transfer" class="tabbertab"  align="left">
-                <h2>Dept. Transfer</h2>
+                <h2>サイト移動</h2>
                 <p>
 
                     <form action="tickets.php?id=<?=$id?>#transfer" name="notes" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="ticket_id" value="<?=$id?>">
                         <input type="hidden" name="a" value="transfer">
                         <div>
-                            <span for="dept_id">Department:</span>
+                            <span for="dept_id">サイト:</span>
                             <select id="dept_id" name="dept_id">
-                                <option value="" selected="selected">-Select Target Dept.-</option>
+                                <option value="" selected="selected">-サイトを選択してください-</option>
                                 <?
                                 $depts= db_query('SELECT dept_id,dept_name FROM '.DEPT_TABLE.' WHERE dept_id!='.db_input($ticket->getDeptId()));
                                 while (list($deptId,$deptName) = db_fetch_row($depts)){
                                     $selected = ($info['dept_id']==$deptId)?'selected':''; ?>
-                                    <option value="<?=$deptId?>"<?=$selected?>><?=$deptName?> Department </option>
+                                    <option value="<?=$deptId?>"<?=$selected?>><?=$deptName?> サイト </option>
                                 <?
                                 }?>
                             </select><font class='error'>&nbsp;*<?=$errors['dept_id']?></font>
                         </div>
                         <div>
-                            <span >Comments/Reasons for the transfer. &nbsp;(<i>Internal note</i>)
+                            <span >コメント/移動された理由. &nbsp;(<i>Internal note</i>)
                                 <font class='error'>&nbsp;*<?=$errors['message']?></font></span>
                             <textarea name="message" id="message" cols="80" rows="7" wrap="soft" style="width:90%;"><?=$info['message']?></textarea>
                         </div>
@@ -440,9 +440,9 @@ if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
                         <input type="hidden" name="ticket_id" value="<?=$id?>">
                         <input type="hidden" name="a" value="assign">
                         <div>
-                            <span for="staffId">Staff Member:</span>
+                            <span for="staffId">スタッフ:</span>
                             <select id="staffId" name="staffId">
-                                <option value="0" selected="selected">-Select Staff Member.-</option>
+                                <option value="0" selected="selected">-スタッフを選択してください-</option>
                                 <?
                                 //TODO: make sure the user's group is also active....DO a join.
                                 $sql=' SELECT staff_id,CONCAT_WS(", ",lastname,firstname) as name FROM '.STAFF_TABLE.
@@ -459,7 +459,7 @@ if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
                             </select><font class='error'>&nbsp;*<?=$errors['staffId']?></font>
                         </div>
                         <div>
-                            <span >Comments/message for assignee. &nbsp;(<i>Saved as internal note</i>)
+                            <span >コメント/message for assignee. &nbsp;(<i>Saved as internal note</i>)
                                 <font class='error'>&nbsp;*<?=$errors['assign_message']?></font></span>
                             <textarea name="assign_message" id="assign_message" cols="80" rows="7" 
                                 wrap="soft" style="width:90%;"><?=$info['assign_message']?></textarea>

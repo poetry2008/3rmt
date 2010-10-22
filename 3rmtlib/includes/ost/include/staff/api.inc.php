@@ -42,11 +42,11 @@ $deletable=0;
    <tr><td>
     <table border="0" cellspacing=0 cellpadding=2 class="dtable" align="center" width="100%">
         <tr>
-	        <th width="7px">&nbsp;</th>
-	        <th>API Key</th>
+          <th width="7px">&nbsp;</th>
+          <th>API Key</th>
             <th width="10" nowrap>Active</th>
             <th width="100" nowrap>&nbsp;&nbsp;IP Address</th>
-	        <th width="150" nowrap>&nbsp;&nbsp;
+          <th width="150" nowrap>&nbsp;&nbsp;
                 <a href="admin.php?t=api&sort=date&order=<?=$negorder?><?=$qstr?>" title="Sort By Create Date <?=$negorder?>">Created</a></th>
         </tr>
         <?

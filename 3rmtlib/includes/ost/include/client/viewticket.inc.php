@@ -17,15 +17,15 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
        <td width=50%>	
         <table align="center" class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
 	        <tr>
-				<th width="100" >Ticket Status:</th>
+				<th width="100" >お問合せステータス:</th>
 				<td><?=$ticket->getStatus()?></td>
 			</tr>
             <tr>
-                <th>Department:</th>
+                <th>サイト:</th>
                 <td><?=Format::htmlchars($dept->getName())?></td>
             </tr>
 			<tr>
-                <th>Create Date:</th>
+                <th>作成日時:</th>
                 <td><?=Format::db_datetime($ticket->getCreateDate())?></td>
             </tr>
 		</table>
@@ -33,22 +33,22 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
 	   <td width=50% valign="top">
         <table align="center" class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
             <tr>
-                <th width="100">Name:</th>
+                <th width="100">お名前:</th>
                 <td><?=Format::htmlchars($ticket->getName())?></td>
             </tr>
             <tr>
-                <th width="100">Email:</th>
+                <th width="100">メールアドレス:</th>
                 <td><?=$ticket->getEmail()?></td>
             </tr>
             <tr>
-                <th>Phone:</th>
+                <th>電話番号:</th>
                 <td><?=Format::phone($ticket->getPhoneNumber())?></td>
             </tr>
         </table>
        </td>
     </tr>
 </table>
-<div class="msg">Subject: <?=Format::htmlchars($ticket->getSubject())?></div>
+<div class="msg">タイトル: <?=Format::htmlchars($ticket->getSubject())?></div>
 <div>
     <?if($errors['err']) {?>
         <p align="center" id="errormessage"><?=$errors['err']?></p>
@@ -58,7 +58,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
 </div>
 <br>
 <div align="left">
-    <span class="Icon thread">Ticket Thread</span>
+    <span class="Icon thread">問合スレッド</span>
     <div id="ticketthread">
         <?
 	    //get messages
@@ -124,12 +124,12 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
             <input type="hidden" name="respid" value="<?=$respID?>">
             <input type="hidden" name="a" value="postmessage">
             <div align="left">
-                Enter Message <font class="error">*&nbsp;<?=$errors['message']?></font><br/>
+                本文 <font class="error">*&nbsp;<?=$errors['message']?></font><br/>
                 <textarea name="message" id="message" cols="60" rows="7" wrap="soft"><?=$info['message']?></textarea>
             </div>
             <? if($cfg->allowOnlineAttachments()) {?>
             <div align="left">
-                Attach File<br><input type="file" name="attachment" id="attachment" size=30px value="<?=$info['attachment']?>" /> 
+                添付ファイル<br><input type="file" name="attachment" id="attachment" size=30px value="<?=$info['attachment']?>" /> 
                     <font class="error">&nbsp;<?=$errors['attachment']?></font>
             </div>
             <?}?>

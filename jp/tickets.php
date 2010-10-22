@@ -20,8 +20,8 @@ $_noemailclass = true;
 
 require_once('includes/application_top.php');
 
+$breadcrumb->add('お問い合わせ', tep_href_link(FILENAME_CONTACT_US));
 require_once('includes/ost/secure.inc.php');
-
 if(!is_object($thisclient) || !$thisclient->isValid()) die('Access denied'); //Double check again.
 
 require_once(INCLUDE_DIR.'class.ticket.php');
@@ -29,6 +29,7 @@ require_once(INCLUDE_DIR.'class.ticket.php');
 $ticket=null;
 $inc='tickets.inc.php'; //Default page...show all tickets.
 //Check if any id is given...
+
 if(($id=$_REQUEST['id']?$_REQUEST['id']:$_POST['ticket_id']) && is_numeric($id)) {
     //id given fetch the ticket info and check perm.
 
@@ -56,7 +57,7 @@ if($_POST && is_object($ticket) && $ticket->getId()):
         }
 
         if(!$_POST['message'])
-            $errors['message']='Message required';
+            $errors['message']='必須';
         //check attachment..if any is set
         if($_FILES['attachment']['name']) {
             if(!$cfg->allowOnlineAttachments()) //Something wrong with the form...user shouldn't have an option to attach
@@ -73,12 +74,12 @@ if($_POST && is_object($ticket) && $ticket->getId()):
                 if($_FILES['attachment']['name'] && $cfg->canUploadFiles() && $cfg->allowOnlineAttachments())
                     $ticket->uploadAttachment($_FILES['attachment'],$msgid,'M');
                     
-                $msg='Message Posted Successfully';
+                $msg='送信完了';
             }else{
                 $errors['err']='Unable to post the message. Try again';
             }
         }else{
-            $errors['err']=$errors['err']?$errors['err']:'Error(s) occured. Please try again';
+            $errors['err']=$errors['err']?$errors['err']:'送信エラー。問合内容を再入力してください';
         }
         break;
     default:
@@ -86,6 +87,7 @@ if($_POST && is_object($ticket) && $ticket->getId()):
     }
     $ticket->reload();
 endif;
+
 include(CLIENTINC_DIR.'header.inc.php');
 include(CLIENTINC_DIR.$inc);
 include(CLIENTINC_DIR.'footer.inc.php');

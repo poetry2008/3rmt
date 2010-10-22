@@ -19,11 +19,13 @@ $_noemailclass = true;
   require('includes/application_top.php');
 //require('includes/configure.php');
 require(DIR_OST.'client.inc.php');
+error_reporting(E_ALL);
 define('SOURCE','Web'); //Ticket source.
 $inc='open.inc.php';    //default include.
 $errors=array();
 if($_POST):
-    $_POST['deptId']=$_POST['emailId']=0; //Just Making sure we don't accept crap...only topicId is expected.
+    //$_POST['deptId']=$_POST['emailId']=0; //Just Making sure we don't accept crap...only topicId is expected.
+    $_POST['emailId']=0; //Just Making sure we don't accept crap...only topicId is expected.
     if(!$thisuser && $cfg->enableCaptcha()){
         if(!$_POST['captcha'])
             $errors['captcha']='Enter text shown on the image';
@@ -32,19 +34,18 @@ if($_POST):
     }
     //Ticket::create...checks for errors..
     if(($ticket=Ticket::create($_POST,$errors,SOURCE))){
-        $msg='Support ticket request created';
+        $msg='お客様のご質問は RMTゲームマネー へ送信されました。';
         if($thisclient && $thisclient->isValid()) //Logged in...simply view the newly created ticket.
             @header('Location: tickets.php?id='.$ticket->getExtId());
         //Thank the user and promise speedy resolution!
         $inc='thankyou.inc.php';
     }else{
-        $errors['err']=$errors['err']?$errors['err']:'Unable to create a ticket. Please correct errors below and try again!';
+        $errors['err']=$errors['err']?$errors['err']:'必要な情報を正しくご入力ください';
     }
 endif;
 
 //page
 
-  define('HEADING_TITLE', 'Internet Explorer6の設定について');
   define('NAVBAR_TITLE', 'ブラウザの設定');
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_BROWSER_IE6X));
 require(CLIENTINC_DIR.'header.inc.php');

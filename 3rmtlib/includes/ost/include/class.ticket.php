@@ -1167,10 +1167,10 @@ class Ticket{
 
         $id=0;
         $fields=array();
-        $fields['name']     = array('type'=>'string',   'required'=>1, 'error'=>'Name required');
-        $fields['email']    = array('type'=>'email',    'required'=>1, 'error'=>'Valid email required');
-        $fields['subject']  = array('type'=>'string',   'required'=>1, 'error'=>'Subject required');
-        $fields['message']  = array('type'=>'text',     'required'=>1, 'error'=>'Message required');
+        $fields['name']     = array('type'=>'string',   'required'=>1, 'error'=>'必須');
+        $fields['email']    = array('type'=>'email',    'required'=>1, 'error'=>'必須');
+        $fields['subject']  = array('type'=>'string',   'required'=>1, 'error'=>'必須');
+        $fields['message']  = array('type'=>'text',     'required'=>1, 'error'=>'必須');
         if(strcasecmp($origin,'web')==0) { //Help topic only applicable on web tickets.
             $fields['topicId']  = array('type'=>'int',      'required'=>0, 'error'=>'Select help topic');
 //            $fields['topicId']  = array('type'=>'int',      'required'=>1, 'error'=>'Select help topic');

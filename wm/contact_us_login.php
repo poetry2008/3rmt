@@ -14,8 +14,10 @@
     vim: expandtab sw=4 ts=4 sts=4:
     $Id$
 **********************************************************************/
-require('includes/configure.php');
-require('includes/ost/client.inc.php');
+$_noemailclass = true;
+require_once('includes/application_top.php');
+$breadcrumb->add('お問い合わせ', tep_href_link(FILENAME_CONTACT_US));
+require_once('includes/ost/client.inc.php');
 if(!defined('INCLUDE_DIR')) die('Fatal Error');
 define('CLIENTINC_DIR',INCLUDE_DIR.'client/');
 define('OSTCLIENTINC',TRUE); //make includes happy
@@ -23,7 +25,7 @@ define('OSTCLIENTINC',TRUE); //make includes happy
 require_once(INCLUDE_DIR.'class.client.php');
 require_once(INCLUDE_DIR.'class.ticket.php');
 //We are ready baby
-$loginmsg='Authentication Required';
+$loginmsg='アクセスエラー';
 if($_POST && (!empty($_POST['lemail']) && !empty($_POST['lticket']))):
     $loginmsg='Authentication Required';
     $email=trim($_POST['lemail']);
@@ -31,7 +33,7 @@ if($_POST && (!empty($_POST['lemail']) && !empty($_POST['lticket']))):
     //$_SESSION['_client']=array(); #Uncomment to disable login strikes.
     
     //Check time for last max failed login attempt strike.
-    $loginmsg='Invalid login';
+    $loginmsg='"メールアドレス" または "問合番号" が一致しませんでした。';
     if($_SESSION['_client']['laststrike']) {
         if((time()-$_SESSION['_client']['laststrike'])<$cfg->getClientLoginTimeout()) {
             $loginmsg='Excessive failed login attempts';

@@ -1142,3 +1142,81 @@ border:2px solid #FF8080;
 .bold {
 	font-weight:bold;
 }
+
+.contact_us_warpper{ clear:both;}
+.tcol{ clear:both; border-bottom:1px dotted #444; width:96%;}
+.lcol{ clear:both; padding:10px 0; overflow:hidden; border-bottom:1px dotted #444; width:96%;}
+.rcol{ clear:both; padding:10px 0; margin-top:5px;  overflow:hidden;border-bottom:1px dotted #444; width:96%}
+.contact_left{ float:left;}
+.contact_right{ float:left; padding:0 0 5px 8px; width:399px;}
+.contact_right h3{
+	font-weight: bold;
+	background-color:#333;
+	border:1px solid #444;
+	padding-left:13px;
+	width:399px;
+}
+.contact_right input{ float:right;}
+.status_form{padding-top:7px;*padding-top:0;clear:both;}
+.status_warpper02{ clear:both;}
+.status_warpper{ 
+	clear:both;
+	overflow:hidden;
+	height:100%;
+	padding:5px 10px; 
+	background-color:#333;
+	border:1px solid #444;
+	margin-left:1px;
+	font-size:14px;
+}
+.button2{ margin-top:14px;}
+.status_warpper label{width:120px;float:left; padding:3px;}
+.status_warpper input{ float:left;}
+.button2{ float:right;}
+.open_title{
+	font-weight: bold;
+	clear:both;
+}
+.open_users{ 
+background-color:#E0E0E0;
+}
+.open_users td{ 
+	background-color:#F2F2F2;
+}
+.open_users th{ 
+	background-color:#F2F2F2; 
+	text-align:left; 
+	font-size:12px; 
+}
+.open_tele{ 
+	color: #3399CC;
+}
+.error{ 
+	color:#FF0000;
+}
+#infomessage{
+	font-weight: bold;
+}
+.login_inc{ 
+	background-color:#333; 
+	border:1px solid #444; 
+	padding:5px; 
+	margin:10px 0; 
+	width:93%;
+}
+#errormessage{ font-weight: bold; background-color:#333; border:1px solid #444; width:91%; margin:10px 0;}
+.open_login{background-color:#444; width:95%;}
+.open_login td{ background-color:#333; padding:2px;}
+.open_login th{ background-color:#333; text-align:left; font-size:12px; }
+.tickets_lout{font-size:12px; margin-bottom:5px; clear:both; width:98%;}
+.tickets,.infotable{
+	background-color:#444; 
+	font-size:12px; 
+	margin-bottom:5px;
+}
+.tickets td,.infotable td{ background-color:#333; padding:2px;}
+.tickets th,.infotable th{ background-color:#333; text-align:left; font-size:12px; text-align:center;}
+#ticketthread{background-color:#333; border:1px solid #444; margin-bottom:10px; width:452px;}
+.tickets_contents{ clear:both; width:96%;}
+#message{width:452px;}
+.view_contents{width:452px;}

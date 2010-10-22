@@ -88,14 +88,14 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
      <table border="0" cellspacing=0 cellpadding=2 class="tgrid" align="center">
         <tr>
 	        <th width="70" nowrap>
-                <a href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="Sort By Ticket ID <?=$negorder?>">Ticket #</a></th>
+                <a href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="Sort By Ticket ID <?=$negorder?>">お問合せ #</a></th>
 	        <th width="100">
-                <a href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="Sort By Date <?=$negorder?>">Create Date</a></th>
-            <th width="60">Status</th>
-            <th width="240">Subject</th>
+                <a href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="Sort By Date <?=$negorder?>">作成日時</a></th>
+            <th width="60">ステータス</th>
+            <th width="240">タイトル</th>
             <th width="150">
-                <a href="view.php?sort=dept&order=<?=$negorder?><?=$qstr?>" title="Sort By Category <?=$negorder?>">Department</a></th>
-            <th width="150">Email</th>
+                <a href="view.php?sort=dept&order=<?=$negorder?><?=$qstr?>" title="Sort By Category <?=$negorder?>">サイト</a></th>
+            <th width="150">メールアドレス</th>
         </tr>
         <?
         $class = "row1";
@@ -126,7 +126,7 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
             $class = ($class =='row2') ?'row1':'row2';
             } //end of while.
         else: //not tickets found!! ?> 
-            <tr class="<?=$class?>"><td colspan=7><b>NO tickets found.</b></td></tr>
+            <tr class="<?=$class?>"><td colspan=7><b>お問合せはありません.</b></td></tr>
         <?
         endif; ?>
      </table>
@@ -134,7 +134,7 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
     <tr><td>
     <?
     if($num>0 && $pageNav->getNumPages()>1){ //if we actually had any tickets returned?>
-     <tr><td style="text-align:left;padding-left:20px">page:<?=$pageNav->getPageLinks()?>&nbsp;</td></tr>
+     <tr><td style="text-align:left;padding-left:20px">ページ:<?=$pageNav->getPageLinks()?>&nbsp;</td></tr>
     <?}?>
  </table>
 </div>

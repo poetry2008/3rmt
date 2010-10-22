@@ -14,7 +14,11 @@
     vim: expandtab sw=4 ts=4 sts=4:
     $Id$
 **********************************************************************/
-require('includes/configure.php');
+$_noemailclass = true;
+  require('includes/application_top.php');
+$breadcrumb->add('お問い合わせ', tep_href_link(FILENAME_CONTACT_US));
+
+
 require('includes/ost/client.inc.php');
 if(!defined('INCLUDE_DIR')) die('Fatal Error');
 define('CLIENTINC_DIR',INCLUDE_DIR.'client/');
@@ -23,7 +27,7 @@ define('OSTCLIENTINC',TRUE); //make includes happy
 require_once(INCLUDE_DIR.'class.client.php');
 require_once(INCLUDE_DIR.'class.ticket.php');
 //We are ready baby
-$loginmsg='Authentication Required';
+$loginmsg='アクセスエラー';
 if($_POST && (!empty($_POST['lemail']) && !empty($_POST['lticket']))):
     $loginmsg='Authentication Required';
     $email=trim($_POST['lemail']);
@@ -31,7 +35,7 @@ if($_POST && (!empty($_POST['lemail']) && !empty($_POST['lticket']))):
     //$_SESSION['_client']=array(); #Uncomment to disable login strikes.
     
     //Check time for last max failed login attempt strike.
-    $loginmsg='Invalid login';
+    $loginmsg='"メールアドレス" または "問合番号" が一致しませんでした。';
     if($_SESSION['_client']['laststrike']) {
         if((time()-$_SESSION['_client']['laststrike'])<$cfg->getClientLoginTimeout()) {
             $loginmsg='Excessive failed login attempts';
@@ -43,7 +47,7 @@ if($_POST && (!empty($_POST['lemail']) && !empty($_POST['lticket']))):
         }
     }
     //See if we can fetch local ticket id associated with the ID given
-    if(!$errors && is_numeric($ticketID) && Validator::is_email($email) && ($tid=Ticket::getIdByExtId($ticketID))) {
+if(!$errors && is_numeric($ticketID) && Validator::is_email($email) && ($tid=Ticket::getIdByExtId($ticketID,true))) {
         //At this point we know the ticket is valid.
         $ticket= new Ticket($tid);
         //TODO: 1) Check how old the ticket is...3 months max?? 2) Must be the latest 5 tickets?? 

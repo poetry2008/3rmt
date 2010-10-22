@@ -6,8 +6,8 @@
 // Define the webserver and path parameters
 // * DIR_FS_* = Filesystem directories (local/physical)
 // * DIR_WS_* = Webserver directories (virtual/URL)
-  define('HTTP_SERVER', 'http://3gm.maker.200.com'); // eg, http://localhost - should not be empty for productive servers
-  define('HTTPS_SERVER', 'https://3gm.maker.200.com'); // eg, https://localhost - should not be empty for productive servers
+  define('HTTP_SERVER', 'http://osgm.bobhero.200.com'); // eg, http://localhost - should not be empty for productive servers
+  define('HTTPS_SERVER', 'https://osgm.bobhero.200.com'); // eg, https://localhost - should not be empty for productive servers
   define('ENABLE_SSL', false); // secure webserver for checkout procedure?
   define('DIR_WS_CATALOG', '/'); // absolute path required
   define('DIR_WS_IMAGES', 'images/');
@@ -21,12 +21,12 @@
   define('DIR_WS_LANGUAGES', DIR_WS_INCLUDES . 'languages/');
 
   define('DIR_WS_DOWNLOAD_PUBLIC', DIR_WS_CATALOG . 'pub/');
-  define('DIR_FS_DOCUMENT_ROOT', '/home/maker/project/3rmt/gm/');
-  define('DIR_FS_CATALOG', '/home/maker/project/3rmt/gm/');
+  define('DIR_FS_DOCUMENT_ROOT', '/home/bobhero/project/work/ost/OSC_3RMT/gm/');
+  define('DIR_FS_CATALOG', '/home/bobhero/project/work/ost/OSC_3RMT/gm/');
   define('DIR_FS_DOWNLOAD', DIR_FS_CATALOG . 'download/');
   define('DIR_FS_DOWNLOAD_PUBLIC', DIR_FS_CATALOG . 'pub/');
   
-  define('DIR_FS_3RMTLIB', '/home/maker/project/3rmt/3rmtlib');
+  define('DIR_FS_3RMTLIB', '/home/bobhero/project/work/ost/OSC_3RMT/3rmtlib');
 
 // define our database connection
   define('DB_SERVER', 'localhost'); // eg, localhost - should not be empty for productive servers
@@ -43,4 +43,11 @@
   define('SITE_ID', '2'); 
   //control sql_log
   define('SQL_LOG', false);
+
+  ini_set('include_path',ini_get('include_path').':'.DIR_FS_3RMTLIB);
+//osticket start
+  //define('DIR_OST',DIR_FS_DOCUMENT_ROOT.DIR_WS_INCLUDES.'ost/');
+  define('DIR_OST','includes/ost/');
+  ini_set('include_path',ini_get('include_path').':'.DIR_FS_3RMTLIB.'includes/ost/include/pear');
+  define('SITE_TOPIC_ID',5); 
 

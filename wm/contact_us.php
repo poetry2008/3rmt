@@ -16,6 +16,7 @@
 **********************************************************************/
 $_noemailclass = true;
   require('includes/application_top.php');
+$breadcrumb->add('お問い合わせ', tep_href_link(FILENAME_CONTACT_US));
 //require('includes/configure.php');
 require('includes/ost/client.inc.php');
 //We are only showing landing page to users who are not logged in.
@@ -26,38 +27,43 @@ if($thisclient && is_object($thisclient) && $thisclient->isValid()) {
 
 require(CLIENTINC_DIR.'header.inc.php');
 ?>
-<div id="index">
-<h1>Welcome to the support center</h1>
-<p class="big">In order to streamline support requests and better serve you, we utilize a support ticket system. Every support request is assigned a unique ticket number which you can use to track the progress and responses online. For your reference we provide complete archives and history of all your support requests. A valid email address is required.</p>
-<hr />
-<br />
+<div id="contact_us_warpper">
+<div class="tcol">
+<h1>　</h1>
+<p class="big">　　　</p>
+</div>
 <div class="lcol">
-  <img src="./images/new_ticket_icon.jpg" width="48" height="48" align="left" style="padding-bottom:150px;">
-  <h3>Open A New Ticket</h3>
-  Please provide as much detail as possible so we can best assist you. To update a previously submitted ticket, please use the form to the right.
-  <br /><br />
+  <div class="contact_left"><img src="./images/new_ticket_icon.jpg" width="60" height="60"></div>
+  <div class="contact_right">
+  <h3>新規お問い合わせ</h3>
+  　<br>
   <form method="link" action="open.php">
-  <input type="submit" class="button2" value="Open New Ticket">
+  <input type="submit" class="button2" value="お問い合わせ">
   </form>
+    </div>
 </div>
 <div class="rcol">
-  <img src="./images/ticket_status_icon.jpg" width="48" height="48" align="left" style="padding-bottom:150px;">
-  <h3>Check Ticket Status</h3>We provide archives and history of all your support requests complete with responses.
-  <br /><br />
-  <form class="status_form" action="contact_us_login.php" method="post">
-    <fieldset>
-      <label>Email:</label>
+  <div class="contact_left"><img src="./images/ticket_status_icon.jpg" width="60" height="60"></div>
+  <div class="contact_right">
+  <h3>過去のお問い合わせへの返事を確認</h3>
+ 
+  <br>
+    <form class="status_form" action="contact_us_login.php" method="post">
+    <div class="status_warpper">
+      <label>メールアドレス：</label>
       <input type="text" name="lemail">
-    </fieldset>
-    <fieldset>
-     <label>Ticket#:</label>
+      </div>
+      <div class="status_warpper">
+     <label>お問い合わせ番号:</label>
      <input type="text" name="lticket">
-    </fieldset>
-    <fieldset>
+     </div>
+     <div class="status_warpper02">
         <label>&nbsp;</label>
-         <input type="submit" class="button2" value="Check Status">
-    </fieldset>
+         <input type="submit" class="button2" value="送信">
+     </div>
+
   </form>
+</div>
 </div>
 <div class="clear"></div>
 <br />

@@ -3,31 +3,25 @@ if(!defined('OSTCLIENTINC') || !is_object($ticket)) die('Kwaheri rafiki!'); //Sa
 
 //Please customize the message below to fit your organization speak!
 ?>
-<div>
+<div style="padding:0 0 0 24px;">
     <?if($errors['err']) {?>
         <p align="center" id="errormessage"><?=$errors['err']?></p>
     <?}elseif($msg) {?>
-        <p align="center" id="infomessage"><?=$msg?></p>
+        <p align="left" id="infomessage"><?=$msg?></p>
     <?}elseif($warn) {?>
         <p id="warnmessage"><?=$warn?></p>
     <?}?>
 </div>
-<div style="margin:5px 100px 100px 0;">
-    <?=Format::htmlchars($ticket->getName())?>,<br>
-    <p>
-     Thank you for contacting us.<br>
-     A support ticket request has been created and a representative will be getting back to you shortly if necessary.</p>
-          
-    <?if($cfg->autoRespONNewTicket()){ ?>
-    <p>An email with the ticket number has been sent to <b><?=$ticket->getEmail()?></b>.
-        You'll need the ticket number along with your email to view status and progress online. 
-    </p>
-    <p>
-     If you wish to send additional comments or information regarding same issue, please follow the instructions on the email.
-    </p>
-    <?}?>
-    <p>Support Team </p>
+<div style="padding:0 16px 0 34px;font-size:14px;">
+24時間経過しても返答が届かない場合は、以下のことを必ずご確認ください。<br><br>
+＜迷惑メールフォルダの確認＞<br>
+弊社のメールが 「迷惑メールフォルダ」や「ゴミ箱」に振り分けされ見落としていませんか？<br><br>
+＜メールドメインの受信制限を設定している＞<br>
+gamemoney.ccのメールドメインを受信するように設定をお願いいたします。<br><br>
+＜それでも届かないときは、メールアドレス変更＞<br>
+別のメールアドレスをご入力いただき、お問い合わせをお願いいたします。
 </div>
+<div style="text-align:right;padding-right:14px;"><a href="/index.php"><img alt="次に進む" src="includes/languages/japanese/images/buttons/button_continue.gif"></a></div>
 <?
 unset($_POST); //clear to avoid re-posting on back button??
 ?>

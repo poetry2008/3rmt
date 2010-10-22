@@ -67,9 +67,9 @@ if($stats) {
 
 $qwhere ='';
 /* DEPTS
-   STRICT DEPARTMENTS BASED (a.k.a Categories) PERM. starts the where 
+   STRICT サイトS BASED (a.k.a Categories) PERM. starts the where 
    if dept returns nothing...show only tickets without dept which could mean..none?
-   Note that dept selected on search has nothing to do with departments allowed.
+   Note that dept selected on search has nothing to do with サイトs allowed.
    User can also see tickets assigned to them regardless of the ticket's dept.
 */
 $depts=$thisuser->getDepts(); //if dept returns nothing...show only tickets without dept which could mean..none...and display an error. huh?
@@ -77,7 +77,7 @@ if(!$depts or !is_array($depts) or !count($depts)){
     //if dept returns nothing...show only orphaned tickets (without dept) which could mean..none...and display an error.
     $qwhere =' WHERE ticket.dept_id IN ( 0 ) ';
 }else if($thisuser->isadmin()){
-    //user allowed acess to all departments.
+    //user allowed acess to all サイトs.
     $qwhere =' WHERE 1'; // Brain fart...can not thing of a better way other than selecting all depts + 0 ..wasted query in my book?
 }else{
     //limited depts....user can access tickets assigned to them regardless of the dept.
@@ -151,7 +151,7 @@ if($search):
             }
         }
     }
-    //department
+    //サイト
     if($_REQUEST['dept'] && ($thisuser->isadmin() || in_array($_REQUEST['dept'],$thisuser->getDepts()))) {
     //This is dept based search..perm taken care above..put the sucker in.
         $qwhere.=' AND ticket.dept_id='.db_input($_REQUEST['dept']);
@@ -263,10 +263,10 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
     <input type="hidden" name="a" value="search">
     <table>
         <tr>
-            <td>Query: </td>
+            <td>クエリー: </td>
             <td><input type="text" id="query" name="query" size=30 value="<?=Format::htmlchars($_REQUEST['query'])?>"></td>
             <td><input type="submit" name="basic_search" class="button" value="Search">
-             &nbsp;[<a href="#" onClick="showHide('basic','advance'); return false;">Advanced</a> ] </td>
+             &nbsp;[<a href="#" onClick="showHide('basic','advance'); return false;"> こだわり設定</a> ] </td>
         </tr>
     </table>
     </form>
@@ -278,9 +278,9 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
     <tr>
         <td>Query: </td><td><input type="text" id="query" name="query" value="<?=Format::htmlchars($_REQUEST['query'])?>"></td>
         <td>Dept:</td>
-        <td><select name="dept"><option value=0>All Departments</option>
+        <td><select name="dept"><option value=0>All サイト</option>
             <?
-                //Showing only departments the user has access to...
+                //Showing only サイトs the user has access to...
                 $sql='SELECT dept_id,dept_name FROM '.DEPT_TABLE;
                 if(!$thisuser->isadmin())
                     $sql.=' WHERE dept_id IN ('.implode(',',$thisuser->getDepts()).')';
@@ -293,19 +293,19 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
             }?>
             </select>
         </td>
-        <td>Status is:</td><td>
+        <td>ステータス:</td><td>
     
         <select name="status">
-            <option value='any' selected >Any status</option>
-            <option value="open" <?=!strcasecmp($_REQUEST['status'],'Open')?'selected':''?>>Open</option>
-            <option value="overdue" <?=!strcasecmp($_REQUEST['status'],'overdue')?'selected':''?>>Overdue</option>
-            <option value="closed" <?=!strcasecmp($_REQUEST['status'],'Closed')?'selected':''?>>Closed</option>
+            <option value='any' selected >全ステータス</option>
+            <option value="open" <?=!strcasecmp($_REQUEST['status'],'Open')?'selected':''?>>オープン</option>
+            <option value="overdue" <?=!strcasecmp($_REQUEST['status'],'overdue')?'selected':''?>>期限切り</option>
+            <option value="closed" <?=!strcasecmp($_REQUEST['status'],'Closed')?'selected':''?>>クローズド</option>
         </select>
         </td>
      </tr>
     </table>
     <div>
-        Date Span:
+        日付:
         &nbsp;From&nbsp;<input id="sd" name="startDate" value="<?=Format::htmlchars($_REQUEST['startDate'])?>" 
                 onclick="event.cancelBubble=true;calendar(this);" autocomplete=OFF>
             <a href="#" onclick="event.cancelBubble=true;calendar(getObj('sd')); return false;"><img src='images/cal.png'border=0 alt=""></a>
@@ -320,21 +320,21 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
        <td>Type:</td>
        <td>       
         <select name="stype">
-            <option value="LIKE" <?=(!$_REQUEST['stype'] || $_REQUEST['stype'] == 'LIKE') ?'selected':''?>>Scan (%)</option>
+            <option value="LIKE" <?=(!$_REQUEST['stype'] || $_REQUEST['stype'] == 'LIKE') ?'selected':''?>>検索中 (%)</option>
             <option value="FT"<?= $_REQUEST['stype'] == 'FT'?'selected':''?>>Fulltext</option>
         </select>
  
 
        </td>
-       <td>Sort by:</td><td>
+       <td>種類:</td><td>
         <? 
          $sort=$_GET['sort']?$_GET['sort']:'date';
         ?>
         <select name="sort">
-    	    <option value="ID" <?= $sort== 'ID' ?'selected':''?>>Ticket #</option>
-            <option value="pri" <?= $sort == 'pri' ?'selected':''?>>Priority</option>
-            <option value="date" <?= $sort == 'date' ?'selected':''?>>Date</option>
-            <option value="dept" <?= $sort == 'dept' ?'selected':''?>>Dept.</option>
+    	    <option value="ID" <?= $sort== 'ID' ?'selected':''?>>問合番号 #</option>
+            <option value="pri" <?= $sort == 'pri' ?'selected':''?>>重要度</option>
+            <option value="date" <?= $sort == 'date' ?'selected':''?>>日付</option>
+            <option value="dept" <?= $sort == 'dept' ?'selected':''?>>サイト</option>
         </select>
         <select name="order">
             <option value="DESC"<?= $_REQUEST['order'] == 'DESC' ?'selected':''?>>Descending</option>
@@ -375,7 +375,7 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
     <tr>
         <td width="80%" class="msg" >&nbsp;<b><?=$showing?>&nbsp;&nbsp;&nbsp;<?=$results_type?></b></td>
         <td nowrap style="text-align:right;padding-right:20px;">
-            <a href=""><img src="images/refresh.gif" alt="Refresh" border=0></a>
+            <a href=""><img src="images/refresh.gif" alt="最新情報に更新" border=0></a>
         </td>
     </tr>
  </table>
@@ -390,15 +390,15 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
 	        <th width="8px">&nbsp;</th>
             <?}?>
 	        <th width="70" >
-                <a href="tickets.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="Sort By Ticket ID <?=$negorder?>">Ticket</a></th>
+                <a href="tickets.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="Sort By Ticket ID <?=$negorder?>">問合番号</a></th>
 	        <th width="70">
-                <a href="tickets.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="Sort By Date <?=$negorder?>">Date</a></th>
-	        <th width="280">Subject</th>
+                <a href="tickets.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="Sort By Date <?=$negorder?>">日付</a></th>
+	        <th width="280">タイトル</th>
 	        <th width="120">
-                <a href="tickets.php?sort=dept&order=<?=$negorder?><?=$qstr?>" title="Sort By Category <?=$negorder?>">Department</a></th>
+                <a href="tickets.php?sort=dept&order=<?=$negorder?><?=$qstr?>" title="Sort By Category <?=$negorder?>">サイト</a></th>
 	        <th width="70">
-                <a href="tickets.php?sort=pri&order=<?=$negorder?><?=$qstr?>" title="Sort By Priority <?=$negorder?>">Priority</a></th>
-            <th width="180" >From</th>
+                <a href="tickets.php?sort=pri&order=<?=$negorder?><?=$qstr?>" title="Sort By Priority <?=$negorder?>">重要度</a></th>
+            <th width="180" >差出人</th>
         </tr>
         <?
         $class = "row1";
@@ -432,10 +432,10 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
                    $_SESSION['play_email_sound'] = true;
                    }
                    $_SESSION['t'.$row['ticket_id']] = $row['source'];?>
-                  <a class="Icon <?=strtolower($row['source'])?>Ticket" title="<?=$row['source']?> Ticket: <?=$row['email']?>" 
+                  <a class="Icon <?=strtolower($row['source'])?>Ticket" title="<?=$row['source']?> 問合番号: <?=$row['email']?>" 
                     href="tickets.php?id=<?=$row['ticket_id']?>"><?=$tid?></a></td>
                 <td align="center" nowrap><?=Format::db_date($row['created'])?></td>
-                <td><a <?if($flag) { ?> class="Icon <?=$flag?>Ticket" title="<?=ucfirst($flag)?> Ticket" <?}?> 
+                <td><a <?if($flag) { ?> class="Icon <?=$flag?>問合番号" title="<?=ucfirst($flag)?> 問合番号" <?}?> 
                     href="tickets.php?id=<?=$row['ticket_id']?>"><?=$subject?></a>
                     &nbsp;<?=$row['attachments']?"<span class='Icon file'>&nbsp;</span>":''?></td>
                 <td nowrap><?=Format::truncate($row['dept_name'],30)?></td>
@@ -446,7 +446,7 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
             $class = ($class =='row2') ?'row1':'row2';
             } //end of while.
         else: //not tickets found!! ?> 
-            <tr class="<?=$class?>"><td colspan=8><b>Query returned 0 results.</b></td></tr>
+            <tr class="<?=$class?>"><td colspan=8><b>該当するものはありません.</b></td></tr>
         <?
         endif; ?>
        </table>
@@ -457,8 +457,8 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
         <tr><td style="padding-left:20px">
             <?if($canDelete || $canClose) { ?>
             Select:
-                <a href="#" onclick="return select_all(document.forms['tickets'],true)">All</a>&nbsp;
-                <a href="#" onclick="return reset_all(document.forms['tickets'])">None</a>&nbsp;
+                <a href="#" onclick="return select_all(document.forms['tickets'],true)">全部</a>&nbsp;
+                <a href="#" onclick="return reset_all(document.forms['tickets'])">なし</a>&nbsp;
                 <a href="#" onclick="return toogle_all(document.forms['tickets'],true)">Toggle</a>&nbsp;
             <?}?>
             page:<?=$pageNav->getPageLinks()?>
@@ -480,22 +480,22 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
                 case 'answered':
                 case 'assigned':
                     ?>
-                    <input class="button" type="submit" name="overdue" value="Overdue"
+                    <input class="button" type="submit" name="overdue" value="期限切れ"
                         onClick=' return confirm("Are you sure you want to mark selected tickets overdue/stale?");'>
-                    <input class="button" type="submit" name="close" value="Close"
+                    <input class="button" type="submit" name="close" value="閉じる"
                         onClick=' return confirm("Are you sure you want to close selected tickets?");'>
                     <?
                     break;
                 default: //search??
                     ?>
-                    <input class="button" type="submit" name="close" value="Close"
+                    <input class="button" type="submit" name="close" value="閉じる"
                         onClick=' return confirm("Are you sure you want to close selected tickets?");'>
                     <input class="button" type="submit" name="reopen" value="Reopen"
                         onClick=' return confirm("Are you sure you want to reopen selected tickets?");'>
             <?
             }
             if($canDelete) {?>
-                <input class="button" type="submit" name="delete" value="Delete" 
+                <input class="button" type="submit" name="delete" value="削除" 
                     onClick=' return confirm("Are you sure you want to DELETE selected tickets?");'>
             <?}?>
         </td></tr>

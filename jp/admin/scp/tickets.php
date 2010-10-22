@@ -141,7 +141,7 @@ if($_POST && !$errors):
         case 'assign':
             $fields=array();
             $fields['staffId']          = array('type'=>'int',  'required'=>1, 'error'=>'Select assignee');
-            $fields['assign_message']   = array('type'=>'text',  'required'=>1, 'error'=>'Message required');
+            $fields['assign_message']   = array('type'=>'text',  'required'=>1, 'error'=>'必須');
             $params = new Validator($fields);
             if(!$params->validate($_POST)){
                 $errors=array_merge($errors,$params->errors());

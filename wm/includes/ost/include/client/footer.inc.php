@@ -1,7 +1,7 @@
                 </td>
               </tr>
             </table>
-          </div>
+          </div>    <p class="pageBottom"></p>
         </td>
         <!-- body_text_eof //-->
         <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>">

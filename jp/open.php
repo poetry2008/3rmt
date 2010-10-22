@@ -33,19 +33,20 @@ if($_POST):
     }
     //Ticket::create...checks for errors..
     if(($ticket=Ticket::create($_POST,$errors,SOURCE))){
-        $msg='Support ticket request created';
+        $msg='お客様のご質問は RMTジャックポット へ送信されました。';
         if($thisclient && $thisclient->isValid()) //Logged in...simply view the newly created ticket.
             @header('Location: tickets.php?id='.$ticket->getExtId());
         //Thank the user and promise speedy resolution!
         $inc='thankyou.inc.php';
     }else{
-        $errors['err']=$errors['err']?$errors['err']:'Unable to create a ticket. Please correct errors below and try again!';
+        $errors['err']=$errors['err']?$errors['err']:'必要な情報を正しくご入力ください';
     }
 endif;
 
 //page
+define('NAVBAR_TITLE','お問い合わせ');
 
-  $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_BROWSER_IE6X));
+$breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_BROWSER_IE6X));
 require(CLIENTINC_DIR.'header.inc.php');
 require(CLIENTINC_DIR.$inc);
 require(CLIENTINC_DIR.'footer.inc.php');

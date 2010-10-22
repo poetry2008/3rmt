@@ -18,7 +18,7 @@ if($_REQUEST['status']) { //Query string status has nothing to do with the real 
 }
 
 //Restrict based on email of the user...STRICT!
-$qwhere =' WHERE email='.db_input($thisclient->getEmail());
+$qwhere =' WHERE topic_id = '.SITE_TOPIC_ID.' and email='.db_input($thisclient->getEmail());
 
 //STATUS
 if($status){
@@ -60,7 +60,12 @@ $query="$qselect $qfrom $qwhere $qgroup ORDER BY $order_by $order LIMIT ".$pageN
 //echo $query;
 $tickets_res = db_query($query);
 $showing=db_num_rows($tickets_res)?$pageNav->showing():"";
-$results_type=($status)?ucfirst($status).' Tickets':' All Tickets';
+//start 
+$_status = '_'.$status;
+$_open = 'オープン';
+$_closed = 'クローズ';
+$results_type=($status)?($$_status).' 問合番号':' 全部';
+//end
 $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
 ?>
 <div>
@@ -72,28 +77,30 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
         <p id="warnmessage"><?=$warn?></p>
     <?}?>
 </div>
-<div style="margin: 10px 0 60px 0;">
- <table width="100%" border="0" cellspacing=0 cellpadding=0 align="center">
+<div>
+ <table width="100%" border="0" cellspacing="1" cellpadding="0" align="center"class="tickets_lout">
     <tr>
         <td width="60%" class="msg"><?=$showing?>&nbsp;&nbsp;<?=$results_type?></td>
         <td nowrap >
-            <a href="view.php?status=open"><img src="images/view_open_btn.gif" alt="View Open" border=0></a>            
-            <a href="view.php?status=closed"><img src="images/view_closed_btn.gif" alt="View Closed" border=0></a>            
-            <a href=""><img src="images/refresh_btn.gif" alt="Refresh" border=0></a>
+            <a href="view.php?status=open"><img src="images/view_open_btn.gif" alt="View Open" border=0></a> |           
+            <a href="view.php?status=closed"><img src="images/view_closed_btn.gif" alt="View Closed" border=0></a> |           
+           
+            <a class="log_out" href="logout.php">ログアウト</a>
         </td>
     </tr>
  </table>
- <table width="100%" border="0" cellspacing=0 cellpadding=2>
+ <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr><td>
-     <table border="0" cellspacing=0 cellpadding=2 class="tgrid" align="center">
+     <table border="0" cellspacing="1" cellpadding="0" class="tickets" width="100%">
         <tr>
-	        <th width="70" nowrap>
-                <a href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="Sort By Ticket ID <?=$negorder?>">Ticket #</a></th>
+	        <th width="70">
+                <a href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="番語順に表示 <?=$negorder?>">問合番号</a></th>
 	        <th width="100">
-                <a href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="Sort By Date <?=$negorder?>">Create Date</a></th>
-            <th width="60">Status</th>
-            <th width="240">Subject</th>
-            <th width="150">Email</th>
+                <a href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="作成日時順に表示 <?=$negorder?>">作成日時</a></th>
+            <th width="60">ステータス</th>
+            <th width="240">タイトル</th>
+            	
+            <th width="150">メールアドレス</th>
         </tr>
         <?php
         $class = "row1";
@@ -101,6 +108,11 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
         if($tickets_res && ($num=db_num_rows($tickets_res))):
             $defaultDept=Dept::getDefaultDeptName();
             while ($row = db_fetch_array($tickets_res)) {
+
+            	
+            	
+            	
+            	
               if($row['topic_id']!=SITE_TOPIC_ID){
                 continue;
               }
@@ -117,7 +129,13 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
                     <a class="Icon <?=strtolower($row['source'])?>Ticket" title="<?=$row['email']?>" href="view.php?id=<?=$row['ticketID']?>">
                         <?=$ticketID?></a></td>
                 <td nowrap>&nbsp;<?=Format::db_date($row['created'])?></td>
-                <td>&nbsp;<?=ucfirst($row['status'])?></td>
+
+                	<?php 
+                	  	$_status = '_'.$row['status'];
+						$_open = 'オープン';
+						$_closed = 'クローズ';
+                	?>
+                	 <td>&nbsp;<?=$$_status?></td>
                 <td>&nbsp;<a href="view.php?id=<?=$row['ticketID']?>"><?=$subject?></a>
                     &nbsp;<?=$row['attachments']?"<span class='Icon file'>&nbsp;</span>":''?></td>
                                <?php //                <td nowrap>&nbsp;<?=Format::truncate($dept,30)</td> ?>
@@ -127,7 +145,7 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
             $class = ($class =='row2') ?'row1':'row2';
             } //end of while.
         else: //not tickets found!! ?> 
-            <tr class="<?=$class?>"><td colspan=7><b>NO tickets found.</b></td></tr>
+            <tr class="<?=$class?>"><td colspan=7><b>該当するものはありません.</b></td></tr>
         <?
         endif; ?>
      </table>
@@ -135,7 +153,7 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
     <tr><td>
     <?
     if($num>0 && $pageNav->getNumPages()>1){ //if we actually had any tickets returned?>
-     <tr><td style="text-align:left;padding-left:20px">page:<?=$pageNav->getPageLinks()?>&nbsp;</td></tr>
+     <tr><td style="text-align:left;padding-left:20px">ページ:<?=$pageNav->getPageLinks()?>&nbsp;</td></tr>
     <?}?>
  </table>
 </div>

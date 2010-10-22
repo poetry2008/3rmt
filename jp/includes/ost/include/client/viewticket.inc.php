@@ -11,44 +11,41 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
 //We roll like that...
 ?>
 <table width="100%" cellpadding="1" cellspacing="0" border="0">
-    <tr><td colspan=2 width=100% class="msg">Ticket #<?=$ticket->getExtId()?> 
+    <tr><td colspan=2 width=100% class="msg">問合番号 <?=$ticket->getExtId()?> 
         &nbsp;<a href="view.php?id=<?=$ticket->getExtId()?>" title="Reload"><span class="Icon refresh">&nbsp;</span></a></td></tr> 
     <tr>
        <td width=50%>	
         <table align="center" class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
 	        <tr>
-				<th width="100" >Ticket Status:</th>
-				<td><?=$ticket->getStatus()?></td>
+				<th width="100" >問合ステータス:</th>
+				<td><?php
+						$_status = '_'.$ticket->getStatus();
+						$_open = 'オープン';
+						$_close = 'クローズ';	
+						echo $$_status;
+				?></td>
 			</tr>
-            <tr>
-                <th>Department:</th>
-                <td><?=Format::htmlchars($dept->getName())?></td>
-            </tr>
 			<tr>
-                <th>Create Date:</th>
-                <td><?=Format::db_datetime($ticket->getCreateDate())?></td>
+                <th>作成日時:</th>
+                <td><?=$ticket->getCreateDate()?></td>
             </tr>
 		</table>
 	   </td>
 	   <td width=50% valign="top">
         <table align="center" class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
             <tr>
-                <th width="100">Name:</th>
+                <th width="100">お名前:</th>
                 <td><?=Format::htmlchars($ticket->getName())?></td>
             </tr>
             <tr>
-                <th width="100">Email:</th>
+                <th width="100">メールアドレス:</th>
                 <td><?=$ticket->getEmail()?></td>
-            </tr>
-            <tr>
-                <th>Phone:</th>
-                <td><?=Format::phone($ticket->getPhoneNumber())?></td>
             </tr>
         </table>
        </td>
     </tr>
 </table>
-<div class="msg">Subject: <?=Format::htmlchars($ticket->getSubject())?></div>
+<div class="msg">タイトル: <?=Format::htmlchars($ticket->getSubject())?></div>
 <div>
     <?if($errors['err']) {?>
         <p align="center" id="errormessage"><?=$errors['err']?></p>
@@ -58,7 +55,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
 </div>
 <br>
 <div align="left">
-    <span class="Icon thread">Ticket Thread</span>
+    <span class="Icon thread">問合スレッド</span>
     <div id="ticketthread">
         <?
 	    //get messages
@@ -70,7 +67,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
 	    while ($msg_row = db_fetch_array($msgres)):
 		    ?>
 		    <table align="center" class="message" cellspacing="0" cellpadding="1" width="100%" border=0>
-		        <tr><th><?=Format::db_daydatetime($msg_row['created'])?></th></tr>
+		        <tr><th><?=$msg_row['created']?></th></tr>
                 <?if($msg_row['attachments']>0){ ?>
                 <tr class="header"><td><?=$ticket->getAttachmentStr($msg_row['msg_id'],'M')?></td></tr> 
                 <?}?>
@@ -91,7 +88,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
                 ?>
     		    <table align="center" class="response" cellspacing="0" cellpadding="1" width="100%" border=0>
     		        <tr>
-    			        <th><?=Format::db_daydatetime($resp_row['created'])?>&nbsp;-&nbsp;<?=$name?></th></tr>
+    			        <th><?=$resp_row['created']?>&nbsp;-&nbsp;<?=$name?></th></tr>
                     <?if($resp_row['attachments']>0){ ?>
                     <tr class="header">
                         <td><?=$ticket->getAttachmentStr($respID,'R')?></td></tr>
@@ -115,28 +112,28 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
             <p align="center" id="infomessage"><?=$msg?></p>
         <?}?>
     </div> 
-    <div id="reply" style="padding:10px 0 20px 40px;">
+    <div id="reply">
         <?if($ticket->isClosed()) {?>
-        <div class="msg">Ticket will be reopened on message post</div>
+        <div class="msg">お問合せ内容を、メールでご返答いたします</div>
         <?}?>
         <form action="view.php?id=<?=$id?>#reply" name="reply" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?=$ticket->getExtId()?>">
             <input type="hidden" name="respid" value="<?=$respID?>">
             <input type="hidden" name="a" value="postmessage">
             <div align="left">
-                Enter Message <font class="error">*&nbsp;<?=$errors['message']?></font><br/>
+                内容をご入力ください <font class="error">*&nbsp;<?=$errors['message']?></font><br/>
                 <textarea name="message" id="message" cols="60" rows="7" wrap="soft"><?=$info['message']?></textarea>
             </div>
             <? if($cfg->allowOnlineAttachments()) {?>
             <div align="left">
-                Attach File<br><input type="file" name="attachment" id="attachment" size=30px value="<?=$info['attachment']?>" /> 
+                添付ファイル<br><input type="file" name="attachment" id="attachment" size=30px value="<?=$info['attachment']?>" /> 
                     <font class="error">&nbsp;<?=$errors['attachment']?></font>
             </div>
             <?}?>
             <div align="left"  style="padding:10px 0 10px 0;">
-                <input class="button" type='submit' value='Post Reply' />
-                <input class="button" type='reset' value='Reset' />
-                <input class="button" type='button' value='Cancel' onClick='window.location.href="view.php"' />
+                <input class="button" type='submit' value='送信' />
+                <input class="button" type='reset' value='リセット' />
+                <input class="button" type='button' value='キャンセル' onClick='window.location.href="view.php"' />
             </div>
         </form>
     </div>

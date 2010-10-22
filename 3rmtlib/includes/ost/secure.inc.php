@@ -18,9 +18,11 @@ if(!strcasecmp(basename($_SERVER['SCRIPT_NAME']),basename(__FILE__))) die('Kwahe
 //if(!file_exists(DIR_OST.'client.inc.php')) die('Fatal Error.');
 require_once(DIR_OST.'client.inc.php');
 //User must be logged in!
+
+
 if(!$thisclient || !$thisclient->getId() || !$thisclient->isValid()){
-    require('./contact_us_login.php');
-    exit;
+  require_once('./contact_us_login.php');
+  exit;
 }
 $thisclient->refreshSession();
 ?>
