@@ -2,6 +2,7 @@
 /*
    $Id$
 */
+  require(DIR_WS_FUNCTIONS . 'visites.php');
 
 // if the customer is not logged on, redirect them to the login page
   if (!tep_session_is_registered('customer_id')) {
@@ -147,10 +148,11 @@
                           'torihiki_date'     => $insert_torihiki_date,
                           'orders_ref'        => $_SESSION['referer'],
                           'orders_ref_site'   => tep_get_domain($_SESSION['referer']),
+                          'orders_ref_keywords' => strtolower(SBC2DBC(parseKeyword($_SESSION['referer']))),
                           'orders_ip'         => $_SERVER['REMOTE_ADDR'],
                           'orders_host_name'  => trim(strtolower(@gethostbyaddr($_SERVER['REMOTE_ADDR']))),
                           'orders_user_agent' => $_SERVER['HTTP_USER_AGENT'],
-                          'orders_wait_flag' => 1,
+                          'orders_wait_flag'  => 1,
 
                           'orders_screen_resolution'    => $_SESSION['screenResolution'],
                           'orders_color_depth'          => $_SESSION['colorDepth'],
@@ -175,15 +177,15 @@
                           'telecom_sendid'    => $_SESSION['telecom_sendid'],
                 );
   if (isset($_POST['codt_fee'])) {
-    $sql_data_array['code_fee'] =  intval($_POST['codt_fee']);
+    $sql_data_array['code_fee'] = intval($_POST['codt_fee']);
   } else if (isset($_POST['money_order_fee'])) {
-    $sql_data_array['code_fee'] =  intval($_POST['money_order_fee']);
+    $sql_data_array['code_fee'] = intval($_POST['money_order_fee']);
   } else if (isset($_POST['postal_money_order_fee'])) {
-    $sql_data_array['code_fee'] =  intval($_POST['postal_money_order_fee']);
+    $sql_data_array['code_fee'] = intval($_POST['postal_money_order_fee']);
   } else if (isset($_POST['telecom_order_fee'])) {
-    $sql_data_array['code_fee'] =  intval($_POST['telecom_order_fee']);
+    $sql_data_array['code_fee'] = intval($_POST['telecom_order_fee']);
   } else {
-    $sql_data_array['code_fee'] =  0;
+    $sql_data_array['code_fee'] = 0;
   }
   
   $bflag_single = ds_count_bflag();
@@ -750,6 +752,14 @@
   unset($_SESSION['character']);
   
   //$pr = '?SID=' . $convenience_sid;
+  
+  /*
+  echo '<pre>';
+  foreach ($log_queries as $qk => $qv) {
+    echo '[' . $log_times[$qk] . ']' . $qk . "\t=>\t" . $qv."\n";
+  }
+  exit;
+  */
 
   tep_redirect(FILENAME_CHECKOUT_SUCCESS,'T');
     

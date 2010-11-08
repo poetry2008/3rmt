@@ -3,6 +3,8 @@
   $Id$
 */
 
+
+
 $GLOBALS['HTTP_GET_VARS']  = $_GET;
 $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
@@ -106,7 +108,8 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('FILENAME_PRODUCTS_UP', 'products_up.php'); //Add products_up
   define('FILENAME_PRODUCTS_DL', 'products_dl.php'); //Add products_dl
   define('FILENAME_STATS_SALES_REPORT2', 'stats_sales_report2.php');// sales report
-  define('FILENAME_CL', 'cl.php');
+  //define('FILENAME_CL', 'cl.php');
+  define('FILENAME_BANK_CL', 'bank_cl.php');
   define('FILENAME_OPTIONS_UP', 'options_up.php');
   define('FILENAME_OPTIONS_DL', 'options_dl.php');
 
@@ -168,6 +171,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('TABLE_WHOS_ONLINE', 'whos_online');
   define('TABLE_ZONES', 'zones');
   define('TABLE_CALENDAR', 'calendar'); //add calendar
+  define('TABLE_BANK_CALENDAR', 'bank_calendar'); //add calendar
   //Add DB - ds-style
   define('TABLE_INFORMATION_PAGE', 'information_page');//information box
   define('TABLE_LATEST_NEWS', 'latest_news'); //latest_news
@@ -230,7 +234,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
 // check to see if php implemented session management functions - if not, include php3/php4 compatible session class
   if (!function_exists('session_start')) {
-    define('PHP_SESSION_NAME', 'SID');
+    define('PHP_SESSION_NAME', 'XSID');
     define('PHP_SESSION_SAVE_PATH', '/tmp');
 
     include(DIR_WS_CLASSES . 'sessions.php');
@@ -238,7 +242,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
 // define how the session functions will be used
   require(DIR_WS_FUNCTIONS . 'sessions.php');
-  tep_session_name('SID');
+  tep_session_name('XSID');
 
 // lets start our session
   tep_session_start();
@@ -344,3 +348,13 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   $logNumber = 1;
   //end for sql_log
 
+
+
+  header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+  # 永远是改动过的
+  header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
+  # HTTP/1.1
+  header("Cache-Control: no-store, no-cache, must-revalidate");
+  header("Cache-Control: post-check=0, pre-check=0", false);
+  # HTTP/1.0
+  header("Pragma: no-cache");

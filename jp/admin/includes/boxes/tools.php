@@ -18,6 +18,7 @@
                    //'<a href="' . tep_href_link(FILENAME_BACKUP) . '" class="menuBoxContentLink">' . BOX_TOOLS_BACKUP . '</a><br>' .
                    '<a href="' . tep_href_link(FILENAME_BANNER_MANAGER) . '" class="menuBoxContentLink">' . BOX_TOOLS_BANNER_MANAGER . '</a><br>' .
                    //'<a href="' . tep_href_link(FILENAME_CL) . '" class="menuBoxContentLink">' . BOX_TOOLS_CL . '</a><br>' .
+                   '<a href="' . tep_href_link('bank_cl.php') . '" class="menuBoxContentLink">銀行営業日</a><br>' .
                    '<a href="' . tep_href_link(FILENAME_CACHE) . '" class="menuBoxContentLink">' . BOX_TOOLS_CACHE . '</a><br>' .
                    '<a href="' . tep_href_link(FILENAME_DEFINE_LANGUAGE) . '" class="menuBoxContentLink">' . BOX_TOOLS_DEFINE_LANGUAGE . '</a><br>' .
                    // '<a href="' . tep_href_link(FILENAME_FILE_MANAGER) . '" class="menuBoxContentLink">' . BOX_TOOLS_FILE_MANAGER . '</a><br>' .
@@ -26,6 +27,7 @@
                    //'<a href="' . tep_href_link(FILENAME_SERVER_INFO) . '" class="menuBoxContentLink">' . BOX_TOOLS_SERVER_INFO . '</a><br>' .
                    '<a href="' . tep_href_link(FILENAME_WHOS_ONLINE) . '" class="menuBoxContentLink">' . BOX_TOOLS_WHOS_ONLINE . '</a><br>' . 
                    '<a href="' . tep_href_link('referer.php') . '" class="menuBoxContentLink">アクセスランキング</a><br>' . 
+                   '<a href="' . tep_href_link('keywords.php') . '" class="menuBoxContentLink">キーワードランキング</a><br>' . 
                    '<a href="' . tep_href_link(FILENAME_COMPUTERS) . '" class="menuBoxContentLink">PC管理</a><br>' . 
                    
                    '<a href="' . tep_href_link(FILENAME_LATEST_NEWS) . '" class="menuBoxContentLink">' . BOX_TOOLS_LATEST_NEWS . '</a><br>' . 

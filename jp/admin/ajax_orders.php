@@ -4,6 +4,8 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   // update orders_comment
   tep_db_perform('orders', array('orders_comment' => $_POST['orders_comment']), 'update', "orders_id='".$_POST['orders_id']."'");
   echo $_POST['orders_comment'];
+} else if ($_GET['action'] == 'paydate') {
+  echo date('Y年n月j日',strtotime(tep_get_pay_day()));
 } else if ($_GET['orders_id'] && $_POST['orders_credit']) {
   $order = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS." where orders_id='".$_GET['orders_id']."'"));
   tep_db_perform('customers', array('customers_fax' => $_POST['orders_credit']), 'update', "customers_id='".$order['customers_id']."'");
@@ -113,6 +115,7 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   }
 } else if ($_GET['action'] == 'save_questions' && $_GET['orders_id']) {
   // 保存订单问答
+  
   //print_r($_POST);
   isset($_POST['q_1_1']) && $questions_arr['q_1_1'] = intval($_POST['q_1_1']);
   isset($_POST['q_1_2']) && $questions_arr['q_1_2'] = intval($_POST['q_1_2']);
@@ -170,20 +173,25 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   isset($_POST['questions_type']) && $questions_arr['orders_questions_type'] = intval($_POST['questions_type']);
   
   //print_r($questions_arr);
+  $q = tep_db_fetch_array(tep_db_query("select * from orders_questions where orders_id='".$_GET['orders_id']."'"));
   if (tep_db_num_rows(tep_db_query("select orders_id from orders_questions where orders_id='".$_GET['orders_id']."'"))) {
+    // q_8_1只能输入一次
+    if ($q['q_8_1']) {
+      unset($questions_arr['q_8_1']);
+    }
     tep_db_perform('orders_questions', $questions_arr, 'update', "orders_id='".$_GET['orders_id']."'");
   } else {
     $questions_arr['orders_id'] = $_GET['orders_id'];
     tep_db_perform('orders_questions', $questions_arr);
   }
   if (isset($questions_arr['q_8_1']) && $questions_arr['q_8_1']) {
-    $orders = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS." where orders_id='".$_GET['orders_id']."'"));
-    if ($orders['orders_status'] != 19) {
-      tep_db_perform('orders', array('q_8_1'=>$_POST['q_8_1'],'orders_status' => '19'), 'update', "orders_id='".$_GET['orders_id']."'");
-      tep_db_perform('orders_status_history', array('orders_id' => $_GET['orders_id'], 'orders_status_id' => '19', 'date_added'=> 'now()'));
+    //$orders = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS." where orders_id='".$_GET['orders_id']."'"));
+    //if ($orders['orders_status'] != 19) {
+      //tep_db_perform('orders', array('q_8_1'=>$_POST['q_8_1'],'orders_status' => '19'), 'update', "orders_id='".$_GET['orders_id']."'");
+      //tep_db_perform('orders_status_history', array('orders_id' => $_GET['orders_id'], 'orders_status_id' => '19', 'date_added'=> 'now()'));
       orders_updated($_GET['orders_id']);
       orders_wait_flag($_GET['orders_id']);
-    }
+    //}
   }
 } else if ($_GET['action'] == 'clean_option' && $_GET['questions_no'] && $_GET['orders_id']) {
   // 清空选项

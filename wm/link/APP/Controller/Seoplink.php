@@ -475,7 +475,7 @@ class Controller_Seoplink extends Controller_Base{
       )
     );
     $site_url_host = trim($site_url_host);
-    $UnixSockString2 = file_get_contents('http://'.$site_url_host,false,$header);
+    $UnixSockString2 = @file_get_contents('http://'.$site_url_host,false,$header);
     $regExp = $preg_str_start.'[^>]*>/i';
     //  '/<a\s{0,}(class=(\'|")\w+(\'|")){0,}\s+(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}\s{0,}href\s{0,}=\s{0,}"http:(\/\/){0,1}www\.orangehousing\.jp(\/\w+){0,}(\.(html|php)){0,1}"\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}>/i';
     $pos2 = preg_match($regExp,$UnixSockString2);

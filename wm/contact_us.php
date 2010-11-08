@@ -15,13 +15,13 @@
     $Id$
 **********************************************************************/
 $_noemailclass = true;
-  require('includes/application_top.php');
+  require_once('includes/application_top.php');
 $breadcrumb->add('お問い合わせ', tep_href_link(FILENAME_CONTACT_US));
 //require('includes/configure.php');
-require('includes/ost/client.inc.php');
+require_once('includes/ost/client.inc.php');
 //We are only showing landing page to users who are not logged in.
 if($thisclient && is_object($thisclient) && $thisclient->isValid()) {
-    require('tickets.php');
+    require_once('tickets.php');
     exit;
 }
 

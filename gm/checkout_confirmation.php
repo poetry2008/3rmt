@@ -130,7 +130,7 @@
 var a_vars = Array();
 var pagename='';
 var visitesSite = 1;
-var visitesURL = "<?php echo HTTPS_SERVER; ?>/visites.php";
+var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERVER; ?>/visites.php";
 <?php
   require(DIR_WS_ACTIONS.'visites.js');
 ?>

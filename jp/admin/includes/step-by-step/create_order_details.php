@@ -14,14 +14,8 @@ function hidden_payment(){
   
   if(CI == '銀行振込(買い取り)'){
     document.getElementById('trpass1').style.display = "";
-    //document.getElementById('trpass2').style.display = "";
-    //document.getElementById('trpass3').style.display = "";
-    //document.getElementById('trpass4').style.display = "";
   }else{
     document.getElementById('trpass1').style.display = "none";
-    //document.getElementById('trpass2').style.display = "none";
-    //document.getElementById('trpass3').style.display = "none";
-    //document.getElementById('trpass4').style.display = "none";
   }
   if (CI == 'コンビニ決済') {
     document.getElementById('copass1').style.display = "";
@@ -97,63 +91,6 @@ function hidden_payment(){
   }
 ?>
 
-<!--
-
-  <tr>
-    <td class="formAreaTitle"><br>
-      <?php echo CATEGORY_ADDRESS; ?></td>
-  </tr>
-  <tr>
-    <td class="main">
-  <table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
-        <tr>
-          <td class="main"><table border="0" cellspacing="0" cellpadding="2">
-              <tr>
-                <td class="main">&nbsp;<?php echo ENTRY_POST_CODE; ?></td>
-                <td class="main">&nbsp;<?php echo tep_draw_input_field('postcode', $postcode) . '&nbsp;' . ENTRY_POST_CODE_TEXT; ?></td>
-              </tr>     
-              <?php
-  if (ACCOUNT_STATE == 'true') {
-              ?>
-              <tr>
-                <td class="main">&nbsp;<?php echo ENTRY_STATE; ?></td>
-                <td class="main">&nbsp;<?php echo tep_draw_input_field('state', $state) . '&nbsp;' . ENTRY_STATE_TEXT; ?></td>
-              </tr>
-              <?php
-   }
-   
-   tep_draw_hidden_field('step', '3')
-              ?>
-              <tr>
-                <td class="main">&nbsp;<?php echo ENTRY_CITY; ?></td>
-                <td class="main">&nbsp;<?php echo tep_draw_input_field('city', $city) . '&nbsp;' . ENTRY_CITY_TEXT; ?></td>
-              </tr>
-              <tr>
-                <td class="main">&nbsp;<?php echo ENTRY_STREET_ADDRESS; ?></td>
-                <td class="main">&nbsp;<?php echo tep_draw_input_field('street_address', $street_address) . '&nbsp;' . ENTRY_STREET_ADDRESS_TEXT; ?></td>
-              </tr>
-              <?php
-  if (ACCOUNT_SUBURB == 'true') {
-              ?>
-              <tr>
-                <td class="main">&nbsp;<?php echo ENTRY_SUBURB; ?></td>
-                <td class="main">&nbsp;<?php echo tep_draw_input_field('suburb', $suburb) . '&nbsp;' . ENTRY_SUBURB_TEXT; ?></td>
-              </tr>
-              <?php
-  }
-              ?>
-              <tr>
-                <td class="main">&nbsp;<?php echo ENTRY_COUNTRY; ?></td>
-                <td class="main">&nbsp;<?php echo tep_draw_input_field('country', tep_get_country_name($country)) . '&nbsp;' . ENTRY_COUNTRY_TEXT; ?></td>
-              </tr>
-            </table></td>
-        </tr>
-      </table> 
-    </td>
-  </tr>
-  
--->
-
 <?php
   // オプションのリスト作成
   $torihiki_array = explode("\n", DS_TORIHIKI_HOUHOU);
@@ -187,7 +124,7 @@ function hidden_payment(){
               'text' => $min_num);
   }
   // 支払方法のリスト作成
-  $payment_text = "銀行振込\nクレジットカード決済\n銀行振込(買い取り)\nコンビニ決済\nゆうちょ銀行（郵便局）\nその他";
+  $payment_text = "銀行振込\nクレジットカード決済\n銀行振込(買い取り)\nコンビニ決済\nゆうちょ銀行（郵便局）\nその他の支払い";
   $payment_array = explode("\n", $payment_text);
   $payment_list[] = array('id' => '', 'text' => '支払方法を選択してください');
   for($i=0; $i<sizeof($payment_array); $i++) {

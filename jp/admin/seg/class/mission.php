@@ -89,22 +89,22 @@ class mission {
     $this->engine = new $this->engine;
 
     $this->engine->init($this->keyword,$this->page_limit);
-    $this::msg($this->keyword);
-    $this::msg('mission start');
+    self::msg($this->keyword);
+    self::msg('mission start');
     
-    $this::msg('presearcing');
+    self::msg('presearcing');
     
     $this->engine->preSearch();
 
-    $this::msg('there is about '.$this->engine->pageCountNumber.' page in result');
+    self::msg('there is about '.$this->engine->pageCountNumber.' page in result');
 
-    $this::msg('presearcing end');
-    $this::msg('start searching');
+    self::msg('presearcing end');
+    self::msg('start searching');
     
     $result = 0; 
     while(!$err_code = $this->shouldStop()){
-      //      $this::msg('searching '.$this->engine->currentPageNumber.'pager'.'<a target="_blank" href = "'.$this->engine->currentUrl.'" >link</a>');
-      $this::msg('searching '.$this->engine->currentPageNumber.' page');
+      //      self::msg('searching '.$this->engine->currentPageNumber.'pager'.'<a target="_blank" href = "'.$this->engine->currentUrl.'" >link</a>');
+      self::msg('searching '.$this->engine->currentPageNumber.' page');
       $currentResult  = $this->engine->getCurrentPageResult();
       $this->engine->currentPageNumber++;
       $result += $this->save($currentResult,$this->filters);
@@ -113,9 +113,16 @@ class mission {
         break;
       }
     }
-    $this::msg('end searcing');
-    $this::msg($err_code);
+    self::msg('end searcing');
+    self::msg($err_code);
 
+    //删除一起的 session  和 record 
+    $sql = "delete from record where mission_id ='".$this->id."'
+           and session_id <> '".$this->session_id."'";
+    $this->conn->query($sql);
+    $sql = "delete from session_log where mission_id ='".$this->id."'
+           and id <> '".$this->session_id."'";
+    $this->conn->query($sql);
     //结束后需要标记结束
     $sql = 'update session_log set end_at ='.time()
            .',stopation="'.$err_code.'" where id =

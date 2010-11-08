@@ -21,7 +21,7 @@
   define('DIR_WS_LANGUAGES', DIR_WS_INCLUDES . 'languages/');
 
   define('DIR_WS_DOWNLOAD_PUBLIC', DIR_WS_CATALOG . 'pub/');
-  define('DIR_FS_DOCUMENT_ROOT', '/home/maker/project/work/ost/OSC_3RMT/wm/');
+  define('DIR_FS_DOCUMENT_ROOT', '/home/maker/project/3rmt/wm/');
   define('DIR_FS_CATALOG', DIR_FS_DOCUMENT_ROOT);
   define('DIR_FS_DOWNLOAD', DIR_FS_CATALOG . 'download/');
   define('DIR_FS_DOWNLOAD_PUBLIC', DIR_FS_CATALOG . 'pub/');

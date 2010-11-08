@@ -3,8 +3,8 @@ gConfirm='<!--{_t key=table_del_confirm}-->';
 //gUrl='<!--{url controller=$config->controller action=$config->action}-->';
 gUrl = location.href;
 </script>
-<script type="text/javascript" src="/Script/listing.js"></script>
-<script type="text/javascript" src="/Script/manager.js"></script>
+<script type="text/javascript" src="Script/listing.js"></script>
+<script type="text/javascript" src="Script/manager.js"></script>
 <!--{if $config->title}-->
 <div id="title"><h3><!--{$config->title}--></h3></div>
 <!--{/if}-->

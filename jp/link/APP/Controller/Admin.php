@@ -18,6 +18,7 @@ class Controller_Admin extends Controller_Base{
 			$count_class = $model_Class->findCount();
 			$model_Site = FLEA::getSingleton("Model_Site");
 			$count_site = $model_Site->findCount();
+			$count_each_site = $model_Site->findCount("state='1' or is_recommend ='1'");
 			$model_Submit = FLEA::getSingleton('Model_Submit');
 			/* @var $model_Submit Model_Submit */
 			$count_Submit = $model_Submit->findCount();
@@ -25,6 +26,7 @@ class Controller_Admin extends Controller_Base{
 			$viewData = array(
 			"count_class"=>$count_class,
 			"count_site"=>$count_site,
+      "count_each_site"=>$count_each_site,
 			"count_submit"=>$count_Submit,
 			'username'=>$_SESSION['CMS']['USERNAME'],
 			);

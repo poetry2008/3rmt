@@ -33,7 +33,7 @@
   }
 
   require(DIR_WS_FUNCTIONS . 'sessions.php');
-  tep_session_name('SID');
+  tep_session_name('XSID');
 
 // lets start our session
   tep_session_start();
@@ -70,10 +70,10 @@
   require(DIR_WS_FUNCTIONS . 'html_output.php');
 
 if (file_exists(DIR_WS_LANGUAGES . $language . '/user_certify.php')) {
-	include(DIR_WS_LANGUAGES . $language . '/user_certify.php');
+  include(DIR_WS_LANGUAGES . $language . '/user_certify.php');
 }
 /* -------------------------------------
-	ログイン画面表示
+  ログイン画面表示
  ------------------------------------ */
 // エラーメッセージ
 $msg = (isset($erf) && $erf ? '<div align="center"><font color="#FF0000">'.TEXT_ERRINFO_LOGIN.'</font></div>' : '');
@@ -86,7 +86,7 @@ echo '<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">' . 
 echo '</head>' . "\n";
 echo '<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">' . "\n";
 
-echo tep_draw_form('defaultpage', FILENAME_DEFAULT . "?SID=" . session_id());		// <form>タグの出力
+echo tep_draw_form('defaultpage', FILENAME_DEFAULT . "?SID=" . session_id());   // <form>タグの出力
 
 echo '<!-- body_text //-->' . "\n";
 echo '<table border="0" cellspacing="0" cellpadding="2">' . "\n";
@@ -122,7 +122,7 @@ echo '</tr>' . "\n";
 echo '<tr>';
 echo '<td>&nbsp;</td>' . "\n";
 echo '<td align="left"><br>';
-echo tep_draw_input_field("execute_login", BUTTON_LOGIN, "", FALSE, "submit", FALSE);	// ログイン
+echo tep_draw_input_field("execute_login", BUTTON_LOGIN, "", FALSE, "submit", FALSE); // ログイン
 echo '</td>' . "\n";
 echo '</tr>' . "\n";
 echo '</table>' . "\n";
@@ -133,7 +133,7 @@ echo '</td>' . "\n";
 echo '</tr>' . "\n";
 echo '</table>' . "\n";
 
-echo "</form>\n";						// フォームのフッター
+echo "</form>\n";           // フォームのフッター
 
 echo "</body>\n";
 echo "</html>\n";

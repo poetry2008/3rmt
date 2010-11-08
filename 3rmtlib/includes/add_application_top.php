@@ -16,7 +16,7 @@
   error_reporting(0);
   ini_set("display_errors", "Off");
   //error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
-//  ini_set("display_errors", "On");
+  //ini_set("display_errors", "On");
 
 // check if register_globals is enabled.
 // since this is a temporary measure this message is hardcoded. The requirement will be removed before 2.2 is finalized.

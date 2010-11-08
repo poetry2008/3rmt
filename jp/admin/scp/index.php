@@ -15,6 +15,6 @@
     $Id$
 **********************************************************************/
 //Nothing for now...simply redirect to tickets page.
-  require('../../includes/configure.php');
+  require_once('../../includes/configure.php');
 require('tickets.php');
 ?>

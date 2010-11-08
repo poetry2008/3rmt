@@ -2,7 +2,7 @@
   require('includes/application_top.php');
   switch($_GET['action']){
     case 'rename':
-     $siteurl = str_replace('_','.',$_GET['url']);
+     $siteurl = str_replace('_','.',$_GET['url']); 
      $site_sql = "select * from ".TABLE_SITENAME."
                   where siteurl='".$siteurl."'";
      $site_query = tep_db_query($site_sql);

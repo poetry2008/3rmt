@@ -36,7 +36,7 @@
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td class="pageHeading">アクセスランキング</td>
+            <td class="pageHeading">キーワードランキング</td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
           </tr>
         </table></td>
@@ -47,16 +47,16 @@
 
 
 
-    <form action="<?php echo tep_href_link('referer.php','site_id='.$_GET['site_id']) ; ?>" method="get">
+    <form action="<?php echo tep_href_link('keywords.php','site_id='.$_GET['site_id']) ; ?>" method="get">
     <fieldset><!--<legend class="smallText"><b>xxxxx</b></legend>-->
     <table  border="0" align="center" cellpadding="0" cellspacing="2">
     <tr>
       <td class="smallText">
       開始日:
-      <select name="sy">
+      <select name="s_y">
       <?php 
       for($i=2007; $i<2011; $i++) { 
-        if ((isset($_GET['sy']) && $i == $_GET['sy']) or (!isset($_GET['sy']) && $i == date('Y'))) {
+        if ((isset($_GET['s_y']) && $i == $_GET['s_y']) or (!isset($_GET['s_y']) && $i == date('Y'))) {
           echo '<option value="'.$i.'" selected>'.$i.'</option>'."\n" ; 
         } else {
           echo '<option value="'.$i.'">'.$i.'</option>'."\n" ;
@@ -64,14 +64,14 @@
       } ?>
       </select>
       年
-      <select name="sm">
-      <?php for($i=1; $i<13; $i++) { if((isset($_GET['sm']) && $i == $_GET['sm']) or (!isset($_GET['sm']) && $i == date('m')-1)){ echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n"; }else{ echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n"; }  } ?>    
+      <select name="s_m">
+      <?php for($i=1; $i<13; $i++) { if((isset($_GET['s_m']) && $i == $_GET['s_m']) or (!isset($_GET['s_m']) && $i == date('m')-1)){ echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n"; }else{ echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n"; }  } ?>    
       </select>
       月
-      <select name="sd">
+      <select name="s_d">
       <?php
       for($i=1; $i<32; $i++) {
-        if((isset($_GET['sd']) && $i == $_GET['sd']) or (!isset($_GET['sd']) && $i == date('d'))){
+        if((isset($_GET['s_d']) && $i == $_GET['s_d']) or (!isset($_GET['s_d']) && $i == date('d'))){
           echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
         }else{
           echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
@@ -82,10 +82,10 @@
       日 </td>
       <td width="80" align="center">～</td>
       <td class="smallText">終了日
-      <select name="ey">
+      <select name="e_y">
       <?php
       for($i=2002; $i<2011; $i++) {
-        if((isset($_GET['ey']) && $i == $_GET['ey']) or (!isset($_GET['ey']) && $i == date('Y'))){
+        if((isset($_GET['e_y']) && $i == $_GET['e_y']) or (!isset($_GET['e_y']) && $i == date('Y'))){
           echo '<option value="'.$i.'" selected>'.$i.'</option>'."\n" ;
         }else{
           echo '<option value="'.$i.'">'.$i.'</option>'."\n" ;
@@ -94,10 +94,10 @@
       ?>    
       </select>
       年
-      <select name="em">
+      <select name="e_m">
       <?php
       for($i=1; $i<13; $i++) {
-        if((isset($_GET['em']) && $i == $_GET['em']) or (!isset($_GET['em']) && $i == date('m'))){
+        if((isset($_GET['e_m']) && $i == $_GET['e_m']) or (!isset($_GET['e_m']) && $i == date('m'))){
           echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
         }else{
           echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
@@ -106,10 +106,10 @@
       ?>    
       </select>
       月
-      <select name="ed">
+      <select name="e_d">
       <?php
       for($i=1; $i<32; $i++) {
-        if((isset($_GET['ed']) && $i == $_GET['ed']) or (!isset($_GET['ed']) && $i == date('d'))){
+        if((isset($_GET['e_d']) && $i == $_GET['e_d']) or (!isset($_GET['e_d']) && $i == date('d'))){
           echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
         }else{
           echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
@@ -126,26 +126,27 @@
 
 
         </div>
-        <?php tep_site_filter('referer.php');?>
+        <?php tep_site_filter('keywords.php');?>
         <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr class="dataTableHeadingRow">
-                <td class="dataTableHeadingContent">アクセス来たソース</td>
+                <td class="dataTableHeadingContent">キーワード</td>
                 <td class="dataTableHeadingContent">件数</td>
                 <td class="dataTableHeadingContent">順位</td>
               </tr>
 <?php
   $ref_site_query = tep_db_query("
     select * from (
-      select count(orders_id) as cnt,orders_ref_site
+      select count(orders_id) as cnt,orders_ref_keywords
       from " . TABLE_ORDERS . " o, ".TABLE_SITES." s
       where s.id = o.site_id
-        and orders_ref_site IS NOT NULL
+        and orders_ref_keywords IS NOT NULL
+        and orders_ref_keywords != ''
         " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and s.id = '" . intval($_GET['site_id']) . "' " : '') . 
-        (isset($_GET['sy']) && isset($_GET['sm']) && isset($_GET['sd']) ? " and o.date_purchased > '".$_GET['sy'].'-'.$_GET['sm'].'-'.$_GET['sd'] ."'" : " and o.date_purchased > '".date('Y-m-d H:i:s', time()-(86400*30)) . "' ") . 
-        (isset($_GET['ey']) && isset($_GET['em']) && isset($_GET['ed']) ? " and o.date_purchased < '".$_GET['ey'].'-'.$_GET['em'].'-'.$_GET['ed'] ." 23:59:59'" : '') . "
-      group by orders_ref_site
+        (isset($_GET['s_y']) && isset($_GET['s_m']) && isset($_GET['s_d']) ? " and o.date_purchased > '".$_GET['s_y'].'-'.$_GET['s_m'].'-'.$_GET['s_d'] ."'" : " and o.date_purchased > '".date('Y-m-d H:i:s', time()-(86400*30)) . "' ") . 
+        (isset($_GET['e_y']) && isset($_GET['e_m']) && isset($_GET['e_d']) ? " and o.date_purchased < '".$_GET['e_y'].'-'.$_GET['e_m'].'-'.$_GET['e_d'] ." 23:59:59'" : '') . "
+      group by orders_ref_keywords
     ) s
     order by cnt desc
       ");
@@ -163,7 +164,7 @@
     //echo '              <tr class="dataTableRow">' . "\n";
 ?>
               <tr class="dataTableRow">
-                <td class="dataTableContent"><?php echo $ref_site['orders_ref_site'];?></td>
+                <td class="dataTableContent"><?php echo $ref_site['orders_ref_keywords'];?></td>
                 <td class="dataTableContent"><?php echo $ref_site['cnt'];?></td>
                 <td class="dataTableContent"><?php echo $i;?></td>
               </tr>

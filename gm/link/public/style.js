@@ -156,7 +156,7 @@ function checkSm(search_url,site_id)
   }
   else 
   {
-    url_duplicate = checkUrl(search_url);
+    url_duplicate = checkUrl(search_url,site_id);
 
    if (url_duplicate == '2')
    { 
@@ -204,6 +204,12 @@ function checkSm(search_url,site_id)
       error = error || true;
       error_message += '\nリンクURLの入力が正しくありません';
     }
+  }
+  var p_linkurl = new RegUrl.URLParser(linkpage_url.value);
+  var p_url = new RegUrl.URLParser(url.value);
+  if(p_linkurl.getHost() != p_url.getHost()){
+    error = error || true;
+    error_message += '\nURLとリンクしたURLのドメインが違います'
   }
 
   if (error)
@@ -475,3 +481,61 @@ function check_pre_Sm()
     return true;
   }
 }
+if (typeof RegUrl == 'undefined')  
+{  
+    var RegUrl = {};  
+}  
+RegUrl.URLParser = function(url) {  
+
+    this._fields = {  
+        'Username' : 4,   
+        'Password' : 5,   
+        'Port' : 7,   
+        'Protocol' : 2,   
+        'Host' : 6,   
+        'Pathname' : 8,   
+        'URL' : 0,   
+        'Querystring' : 9,   
+        'Fragment' : 10  
+    };  
+
+    this._values = {};  
+    this._regex = null;  
+    this.version = 0.1;  
+    this._regex = /^((\w+):\/\/)?((\w+):?(\w+)?@)?([^\/\?:]+):?(\d+)?(\/?[^\?#]+)?\??([^#]+)?#?(\w*)/;  
+    for(var f in this._fields)  
+    {  
+        this['get' + f] = this._makeGetter(f);  
+    }  
+
+    if (typeof url != 'undefined')  
+    {  
+        this._parse(url);  
+    }  
+}  
+RegUrl.URLParser.prototype.setURL = function(url) {  
+    this._parse(url);  
+}  
+
+RegUrl.URLParser.prototype._initValues = function() {  
+    for(var f in this._fields)  
+    {  
+        this._values[f] = '';  
+    }  
+}  
+
+RegUrl.URLParser.prototype._parse = function(url) {  
+    this._initValues();  
+    var r = this._regex.exec(url);  
+    if (!r) throw "DPURLParser::_parse -> Invalid URL";  
+
+    for(var f in this._fields) if (typeof r[this._fields[f]] != 'undefined')  
+    {  
+        this._values[f] = r[this._fields[f]];  
+    }  
+}  
+RegUrl.URLParser.prototype._makeGetter = function(field) {  
+    return function() {  
+        return this._values[field];  
+    }  
+}  

@@ -1,4 +1,4 @@
 <?php
 define('SITEURL','URL');
-define('SITEURL_NAME','URL名称');
+define('SITEURL_NAME','URL名称'); 
 ?>

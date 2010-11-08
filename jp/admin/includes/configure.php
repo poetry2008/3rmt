@@ -7,7 +7,6 @@
 
   Released under the GNU General Public License
 */
-
 $libpath = "/home/maker/project/3rmt/3rmtlib/";
 ini_set('include_path',ini_get('include_path').':'.$libpath);
 
@@ -60,10 +59,6 @@ ini_set('include_path',ini_get('include_path').':'.$libpath);
   define('DIR_WS_IMAGE_DOCUMENTS', 'imageDocuments/');
   define('DIR_FS_CATALOG_IMAGE_DOCUMENTS', DIR_FS_CATALOG.'upload_images/0/imageDocuments/');
   //define('DIR_FS_CACHE', '/tep/jp');
-  $stop_site_url = array(
-      "iimy.co.jp",
-      "www.iimy.co.jp",
-      );
 
 // osticket start 
   define('DIR_OST',DIR_FS_ADMIN.'../includes/ost');

@@ -41,8 +41,17 @@ class google implements engine {
     // http://search.yahoo.co.jp/search?p=link%3Ahttp%3A%2F%2Frmt.gvx.co.jp+リンク&search.x=1&fr=top_ga1_sa&tid=top_ga1_sa&ei=UTF-8&aq=&oq=
     // http://search.yahoo.co.jp/search?p=link%3Ahttp%3A%2F%2Frmt.gvx.co.jp+%E3%83%AA%E3%83%B3%E3%82%AF&aq=-1&ei=UTF-8&pstart=1&fr=top_ga1_sa&dups=1&b=251
 //    $nextpage = "http://search.yahoo.co.jp/search?p={{keyword}}&aq=-1&ei=UTF-8&pstart=1&fr=top_ga1_sa&dups=1&b={{pager}}1";
+    if($page >=1){
+    $page = $page-1;
+    }else {
+    $page = 0;
+    }
+    //$nextpage =
+    //  "http://www.google.co.jp/search?as_oq={{keyword}}&aq=f&ie=utf-8&pstart=1&fr=top_ga1_sa&start={{pager}}&hl=ja&num=10";
     $nextpage =
-      "http://www.google.co.jp/search?as_oq={{keyword}}&aq=f&ie=utf-8&pstart=1&fr=top_ga1_sa&start={{pager}}&hl=ja&num=10";
+      "http://www.google.co.jp/search?q={{keyword}}&aq=f&ie=utf-8&pstart=1&fr=top_ga1_sa&start={{pager}}&hl=ja&num=10";
+    //$nextpage = 
+    //  "http://www.google.co.jp/search?q=FF14+RMT&hl=ja&newwindow=1&ei=EGvPTIWsK4yKuAOpuo3VBg&start=10&sa=N";
       //      return str_replace('{{keyword}}',urlencode($this->keywordi),$this->searchEnter);
     $url = str_replace('{{keyword}}',$this->keywordi,$nextpage);
     $url = str_replace('{{pager}}',$page,$url);

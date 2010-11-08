@@ -140,7 +140,7 @@ class Controller_Site extends Controller_Base
     $conditions = "class_id='".$classId."' and 
       ((is_custom='1' and show_state='1') or 
        is_custom <> '1')";
-    $sort = "created,is_recommend desc";
+    $sort = "updated,is_recommend desc";
     $pager = & new FLEA_Helper_Pager($model_Site, $page, $pageSize, $conditions, $sort);
     $pager->setBasePageIndex(1);  // 起始页码设为1
 
@@ -860,7 +860,7 @@ class Controller_Site extends Controller_Base
 
     $model_Site = &FLEA::getSingleton('Model_Site');
     $cond = "is_custom = '1' and show_state='1'";
-    $sort = "created,is_recommend desc";
+    $sort = "is_recommend desc,updated desc";
     if (isset($_GET['page'])&&$_GET['page']<2){
       header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
       require(dirname(__FILE__) . '/../../404.html');
@@ -905,7 +905,7 @@ class Controller_Site extends Controller_Base
 
     $model_Site = &FLEA::getSingleton('Model_Site');
     $cond = "is_custom = '1' and show_state='1'";
-    $sort = "created,is_recommend desc";
+    $sort = "updated,is_recommend desc";
 
     $page = $_GET['page']?$_GET['page']:1;
     $pager = & new FLEA_Helper_Pager($model_Site, $page, 10, $cond, $sort,'1');
@@ -930,7 +930,7 @@ class Controller_Site extends Controller_Base
         date('m'),date('d'),date('Y'));
     $model_Site = &FLEA::getSingleton('Model_Site');
     $cond = "show_state = '1' and created > '".$time."'";
-    $sort = "created,is_recommend desc";
+    $sort = "is_recommend,updated desc";
     if (isset($_GET['page'])&&$_GET['page']<2){
       header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
       require(dirname(__FILE__) . '/../../404.html');
@@ -981,7 +981,7 @@ class Controller_Site extends Controller_Base
     $model_Site = &FLEA::getSingleton('Model_Site');
     //$cond = "is_custom = '1' and id in (".$site_id.")";
     $cond = "(is_recommend = '1')"; 
-    $sort = "created,is_recommend desc";
+    $sort = "updated desc";
     if (isset($_GET['page'])&&$_GET['page']<2){
       header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
       require(dirname(__FILE__) . '/../../404.html');
@@ -1199,6 +1199,9 @@ class Controller_Site extends Controller_Base
     $url = trim($_POST['url']);
     $model_Site = &FLEA::getSingleton('Model_Site');
     $cond = "url='".$url."'";
+    if(isset($_POST['site_id'])){
+      $cond .= " and id <> ".$_POST['site_id'];
+    }
     if($site = $model_Site->find($cond))
     {
       if(isset($_POST['site_id'])&&$_POST['site_id']!=$site['id']){
@@ -1222,15 +1225,22 @@ class Controller_Site extends Controller_Base
    */
   function actionSitesearch()
   {
+    session_start;
+    header("Cache-control: private");
+    session_cache_limiter('private');
     if('POST' == $_SERVER['REQUEST_METHOD'])
     {
       $word = h($_POST['word']);
+      $word = $this->make_semiangle($word);
+      $word = mb_convert_kana($word);
       $method = h($_POST['method']); 
       $words = explode(' ' ,$word);
     }
     else
     {
       $word = h($_GET['word']);
+      $word = $this->make_semiangle($word);
+      $word = mb_convert_kana($word);
       $method = h($_GET['method']); 
       $words = explode('+' ,$word);
     }
@@ -1271,7 +1281,7 @@ class Controller_Site extends Controller_Base
 
     $model_Site = &FLEA::getSingleton('Model_Site');
     FLEA::loadHelper('Pager');
-    $sort = "created,is_recommend desc";
+    $sort = "updated,is_recommend desc";
     if (isset($_GET['page'])&&$_GET['page']<2){
       header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
       require(dirname(__FILE__) . '/../../404.html');
@@ -1712,7 +1722,7 @@ function linkcheck($url,$linkpage_url,$admin_mode = true){
 
   $UnixSockString2 = "";
     $site_url_host = trim($site_url_host);
-    $UnixSockString2 = file_get_contents('http://'.$site_url_host,false,$header);
+    $UnixSockString2 = @file_get_contents('http://'.$site_url_host,false,$header);
     $regExp = $preg_str_start.'[^>]*>/i';
     //  '/<a\s{0,}(class=(\'|")\w+(\'|")){0,}\s+(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}\s{0,}href\s{0,}=\s{0,}"http:(\/\/){0,1}www\.orangehousing\.jp(\/\w+){0,}(\.(html|php)){0,1}"\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}>/i';
     $pos2 = preg_match($regExp,$UnixSockString2);
@@ -1859,6 +1869,32 @@ function getBreadcrumb()
     return $seo; 
   }
 
+function make_semiangle($str)  
+ {  
+     $arr = array('０' => '0', '１' => '1', '２' => '2', '３' => '3', '４' => '4',  
+                  '５' => '5', '６' => '6', '７' => '7', '８' => '8', '９' => '9',  
+                  'Ａ' => 'A', 'Ｂ' => 'B', 'Ｃ' => 'C', 'Ｄ' => 'D', 'Ｅ' => 'E',  
+                  'Ｆ' => 'F', 'Ｇ' => 'G', 'Ｈ' => 'H', 'Ｉ' => 'I', 'Ｊ' => 'J',  
+                  'Ｋ' => 'K', 'Ｌ' => 'L', 'Ｍ' => 'M', 'Ｎ' => 'N', 'Ｏ' => 'O',  
+                  'Ｐ' => 'P', 'Ｑ' => 'Q', 'Ｒ' => 'R', 'Ｓ' => 'S', 'Ｔ' => 'T',  
+                  'Ｕ' => 'U', 'Ｖ' => 'V', 'Ｗ' => 'W', 'Ｘ' => 'X', 'Ｙ' => 'Y',  
+                  'Ｚ' => 'Z', 'ａ' => 'a', 'ｂ' => 'b', 'ｃ' => 'c', 'ｄ' => 'd',  
+                  'ｅ' => 'e', 'ｆ' => 'f', 'ｇ' => 'g', 'ｈ' => 'h', 'ｉ' => 'i',  
+                  'ｊ' => 'j', 'ｋ' => 'k', 'ｌ' => 'l', 'ｍ' => 'm', 'ｎ' => 'n',  
+                  'ｏ' => 'o', 'ｐ' => 'p', 'ｑ' => 'q', 'ｒ' => 'r', 'ｓ' => 's',  
+                  'ｔ' => 't', 'ｕ' => 'u', 'ｖ' => 'v', 'ｗ' => 'w', 'ｘ' => 'x',  
+                  'ｙ' => 'y', 'ｚ' => 'z',  
+                  '（' => '(', '）' => ')', '〔' => '[', '〕' => ']', '【' => '[',  
+                  '】' => ']', '〖' => '[', '〗' => ']', '“' => '[', '”' => ']',  
+                  '‘' => '[', '’' => ']', '｛' => '{', '｝' => '}', '《' => '<',  
+                  '》' => '>',  
+                  '％' => '%', '＋' => '+', '—' => '-', '－' => '-', '～' => '-',  
+                  '：' => ':', '。' => '.', '、' => ',', '，' => '.', '、' => '.',  
+                  '；' => ',', '？' => '?', '！' => '!', '…' => '-', '‖' => '|',  
+                  '”' => '"', '’' => '`', '‘' => '`', '｜' => '|', '〃' => '"',  
+                  '　' => ' ');  
+    return strtr($str, $arr);  
+ }
 }
 
 class breadcrumb {

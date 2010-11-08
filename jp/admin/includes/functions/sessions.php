@@ -64,6 +64,9 @@
   }
 
   function tep_session_start() {
+    //if(strpos($_SERVER['HTTP_USER_AGENT'],"MSIE")) {
+      session_cache_limiter('public');
+    //}
     return session_start();
   }
 

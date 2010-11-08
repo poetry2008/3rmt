@@ -16,7 +16,9 @@
                         pd.products_description,
                         pd.site_id
         from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION .  " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " .  TABLE_CATEGORIES . " c 
-        where p.products_status != '0' 
+        where (pd.site_id = '0'
+          or pd.site_id = '".SITE_ID."' )
+          and p.products_status != '0' 
           and p.products_ordered > 0 
           and p.products_id = pd.products_id 
           and pd.language_id = '" . $languages_id . "' 
@@ -24,6 +26,7 @@
           and p2c.categories_id = c.categories_id 
           and '" .  $current_category_id . "' in (c.categories_id, c.parent_id) 
         order by pd.site_id DESC
+        limit 100
         ) p
       where site_id = '0'
          or site_id = '".SITE_ID."' 
@@ -44,12 +47,15 @@
                         pd.products_description,
                         pd.site_id
         from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION .  " pd 
-        where p.products_status != '0' 
+        where (pd.site_id = '0'
+          or pd.site_id = '".SITE_ID."' )
+          and p.products_status != '0' 
           and p.products_ordered > 0 
           and p.products_id = pd.products_id 
           and pd.language_id = '" .  $languages_id . "' 
           and p.products_id not in".tep_not_in_disabled_products()." 
         order by pd.site_id DESC
+        limit 100
       ) p
       where site_id = '0'
          or site_id = '".SITE_ID."' 

@@ -3,6 +3,7 @@
    $Id$
 */
   require('includes/application_top.php');
+  
 
   require(DIR_WS_FUNCTIONS . 'visites.php');
   
@@ -14,7 +15,7 @@
   $orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_ORDERS_STATUS . " where language_id = '" . $languages_id . "'");
 
   while ($orders_status = tep_db_fetch_array($orders_status_query)) {
-    if ($orders_status['orders_status_id'] != 17 && $orders_status['orders_status_id'] != 19)
+    if ($orders_status['orders_status_id'] != 17)
       $orders_statuses[] = array('id' => $orders_status['orders_status_id'],'text' => $orders_status['orders_status_name']);
     
     $all_orders_statuses[] = array('id' => $orders_status['orders_status_id'], 'text' => $orders_status['orders_status_name']);
@@ -137,7 +138,8 @@
           '${TRADING}',
           '${ORDER_S}',
           '${SITE_NAME}',
-          '${SITE_URL}'
+          '${SITE_URL}',
+          '${PAY_DATE}'
           
         ),array(
           $check_status['customers_name'],
@@ -149,7 +151,8 @@
           tep_torihiki($check_status['torihiki_date']),
           $os_result['orders_status_name'],
           get_configuration_by_site_id('STORE_NAME', $site_id),
-          get_url_by_site_id($site_id)
+          get_url_by_site_id($site_id),
+          date('Y年n月j日',strtotime(tep_get_pay_day()))
         ),$title
         );
         $comments = str_replace(array(
@@ -163,7 +166,8 @@
           '${ORDER_S}',
           '${SITE_NAME}',
           '${SITE_URL}',
-          '${SUPPORT_EMAIL}'
+          '${SUPPORT_EMAIL}',
+          '${PAY_DATE}'
         ),array(
           $check_status['customers_name'],
           $check_status['customers_email_address'],
@@ -175,7 +179,8 @@
           $os_result['orders_status_name'],
           get_configuration_by_site_id('STORE_NAME', $site_id),
           get_url_by_site_id($site_id),
-          get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id)
+          get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
+          date('Y年n月j日',strtotime(tep_get_pay_day()))
         ),$comments
         );
         
@@ -325,7 +330,8 @@
         '${ORDER_S}',
         '${SITE_NAME}',
         '${SITE_URL}',
-        '${SUPPORT_EMAIL}'
+        '${SUPPORT_EMAIL}',
+        '${PAY_DATE}'
       ),array(
         $check_status['customers_name'],
         $check_status['customers_email_address'],
@@ -337,7 +343,8 @@
         $os_result['orders_status_name'],
         get_configuration_by_site_id('STORE_NAME', $site_id),
         get_url_by_site_id($site_id),
-        get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id)
+        get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
+        date('Y年n月j日',strtotime(tep_get_pay_day()))
       ),$title);
 
       $comments = str_replace(array(
@@ -351,7 +358,8 @@
         '${ORDER_S}',
         '${SITE_NAME}',
         '${SITE_URL}',
-        '${SUPPORT_EMAIL}'
+        '${SUPPORT_EMAIL}',
+        '${PAY_DATE}'
       ),array(
         $check_status['customers_name'],
         $check_status['customers_email_address'],
@@ -363,7 +371,8 @@
         $os_result['orders_status_name'],
         get_configuration_by_site_id('STORE_NAME', $site_id),
         get_url_by_site_id($site_id),
-        get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id)
+        get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
+        date('Y年n月j日',strtotime(tep_get_pay_day()))
       ),$comments);
       tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
       tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
@@ -386,11 +395,11 @@
       } else {
         $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
       }
-      if ($status == 6 or $status == 8) {
-        tep_redirect(tep_href_link(FILENAME_ORDERS));
-      } else {
+      //if ($status == 6 or $status == 8) {
+      //  tep_redirect(tep_href_link(FILENAME_ORDERS));
+      //} else {
         tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action')) . 'action=edit'));
-      }
+      //}
       break;
     case 'deleteconfirm':
       $oID = tep_db_prepare_input($_GET['oID']);
@@ -491,6 +500,10 @@
     $reload = 'yes';
   }
   }
+
+
+
+
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
@@ -504,25 +517,20 @@
 <title><?php echo TITLE; ?></title>
 <?php }?>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-<script language="javascript" src="includes/javascript/all_order.js"></script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
+<script language="javascript" src="includes/javascript/all_order.js"></script>
 <script language="javascript">
-
-function search_type_changed(elem){
-      document.forms.orders1.submit();
-}
-
-  window.status_text  = new Array();
-  window.status_title = new Array();
-  window.last_status  = 0;
   // 用作跳转
   var base_url = '<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('questions_type')));?>';
-  var auto_submit_able = true;
+  
   // 非完成状态的订单不显示最终确认
   var show_q_8_1_able  = <?php echo tep_orders_finished($_GET['oID'])?'true':'false';?>;
+  
+  var cfg_last_customer_action = '<?php echo LAST_CUSTOMER_ACTION;?>';
 
 <?php 
+  // 输出订单邮件
   // title
   foreach ($mo as $oskey => $value){
     echo 'window.status_title['.$oskey.'] = new Array();'."\n";
@@ -539,383 +547,23 @@ function search_type_changed(elem){
     }
   }
 
-  //nomail
+  //no mail
   echo 'var nomail = new Array();'."\n";
   foreach ($nomail as $oskey => $value){
-  
     echo 'nomail['.$oskey.'] = "' . $value . '";' . "\n";
   }
 ?>
-
 <?php
+/*
 if($reload == 'yes') {
   if((int)DS_ADMIN_ORDER_RELOAD < 1) {
     $reloadcnt = '60';
   } else {
     $reloadcnt = DS_ADMIN_ORDER_RELOAD;
   }
+}
+*/
 ?>
-//function auto_reload(){
-  //window.location.reload();
-//}
-
-//timerID = setInterval("auto_reload()",<?php echo (int)$reloadcnt * 1000; ?>); //1秒：1000
-<?php }?>
-  
-function getCheckboxValue(ccName)
-{
-  var aa     =   document.getElementsByName(ccName);
-  var values = new Array();
-  for   (var   i=0;   i<aa.length;   i++){
-    if(aa[i].checked){
-      values[values.length] = aa[i].value;
-    }
-  }
-  return values;
-}
-
-//st => form中select的name
-//tt => form中textarea的name  邮件内容
-//ot => form中input的name 邮件标题
-function mail_text(st,tt,ot){
-  
-  // 选中的索引
-  var idx = document.sele_act.elements[st].selectedIndex;
-  // 选中值
-  var CI  = document.sele_act.elements[st].options[idx].value;
-  // 选中的checkbox值
-  if (st == 'status') {
-    // 列表页
-    chk = getCheckboxValue('chk[]');
-  } else {
-    // 详细页
-    chk = new Array();
-    chk[0] = 0;
-  }
-  
-  // 如果有了游戏人物名则不允许多选
-  
-  if((chk.length > 1)  && window.status_text[CI][0].indexOf('${ORDER_A}') != -1){
-    alert('複数の選択はできません。');
-    document.sele_act.elements[st].options[window.last_status].selected = true;
-    return false;
-  }
-  if(chk.length < 1){
-    alert('注文書はまだ選択していません。');
-    document.sele_act.elements[st].options[window.last_status].selected = true;
-    return false;
-  }
-  // 记录上一个状态
-  window.last_status = idx;
-  
-  // 更换表单内容
-  if (st == 'status') {
-    // 列表页
-    if (typeof(window.status_title[CI]) != 'undefined' && typeof(window.status_title[CI][window.orderSite[chk[0]]]) != 'undefined') {
-      document.sele_act.elements[ot].value = window.status_title[CI][window.orderSite[chk[0]]];
-      document.sele_act.elements[tt].value = window.status_text[CI][window.orderSite[chk[0]]].replace('${ORDER_A}', window.orderStr[chk[0]]);
-    } else if (typeof(window.status_title[CI]) != 'undefined'){
-      document.sele_act.elements[ot].value = window.status_title[CI][0];
-      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr[chk[0]]);
-    }
-  } else {
-    // 详细页
-    if (typeof(window.status_title[CI]) != 'undefined') {
-      document.sele_act.elements[ot].value = window.status_title[CI][0];
-      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr);
-    } else if (typeof(window.status_title[CI]) != 'undefined'){
-      document.sele_act.elements[ot].value = window.status_title[CI][0];
-      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr);
-    }
-  }
-  
-  if (nomail[CI] == '1') {
-    $('#notify_comments').attr('checked','');
-    $('#notify').attr('checked','');
-  } else {
-    $('#notify_comments').attr('checked',true);
-    $('#notify').attr('checked',true);
-  }
-}
-
-
-
-// 自动更新 关闭
-window.onunload=function(){
-  if (auto_submit_able) 
-  $('#form_orders_questions').ajaxSubmit({
-    beforeSubmit: function(){return true;},
-    success: function(){
-      if ($('#q_8_1').val())
-        auto_submit_able = false;
-    }
-  });
-}; 
-
-
-// 自动保存
-function auto_save_questions() {
-  if (auto_submit_able) 
-  $('#form_orders_questions').ajaxSubmit({
-    beforeSubmit: function(){return true;},
-    success: function(){
-      if ($('#q_8_1').val())
-        auto_submit_able = false;
-    }
-  });
-}
-
-// 最后检查时间
-var prev_customer_action = '';
-// 每分钟自动检查最新订单和修改
-function checkChange(){
-   $.ajax({
-    dataType: 'text',
-    url: 'ajax_orders.php?action=last_customer_action',
-    success: function(last_customer_action) {
-      if (
-        last_customer_action != '<?php echo LAST_CUSTOMER_ACTION;?>' 
-        && prev_customer_action != last_customer_action
-      ){
-        // 如果有新订单和修改
-        // 改变背景颜色
-        $('body').css('background-color', 'ffcc99');// rgb(255, 204, 153)
-        // 播放提示音
-        playSound();
-        // 在列表插入新订单
-        newOrders(prev_customer_action != '' ? prev_customer_action : '<?php echo LAST_CUSTOMER_ACTION;?>');
-        // 修改最后检查时间
-        prev_customer_action = last_customer_action;
-      }
-    }
-  });
-  setTimeout(function(){checkChange()}, 60000);
-}
-
-// 当有新订单自动在列表顶部插入一行
-function newOrders(t)
-{
-   $.ajax({
-    dataType: 'text',
-    url: 'ajax_orders.php?action=get_new_orders&prev_customer_action='+t,
-    success: function(text) {
-      $(text).insertAfter('#orders_list_table tr:eq(0)');
-    }
-  });
-}
-
-// 验证order comment ajax提交
-function showRequest(formData, jqForm, options) { 
-    //var queryString = $.param(formData); 
-    return true; 
-} 
-
-
- // document.body.clientHeight
-
-// 列表右侧的订单信息显示
-function showOrdersInfo(text,ele){
-  $('#orders_info_box').html(text);
-  
-  offset = $(ele).offset().top + $('#orders_info_box').height() > $(document).height() 
-    ? $(document).height() - $('#orders_info_box').height() 
-    : $(ele).offset().top;
-  //offset = 
-  $('#orders_info_box').css('top',offset).show();
-}
-// 列表右侧的订单信息隐藏
-function hideOrdersInfo(){
-  $('#orders_info_box').hide();
-}
-
-// 点击按钮
-function orders_flag(ele, type) {
-  if (ele.className == 'orders_flag_checked') {
-   $.ajax({
-    url: 'ajax_orders.php?orders_id=<?php echo $_GET['oID'];?>&orders_'+type+'_flag=0',
-    success: function(data) {
-      ele.className='orders_flag_unchecked';
-    }
-  });
-  } else {
-   $.ajax({
-    url: 'ajax_orders.php?orders_id=<?php echo $_GET['oID'];?>&orders_'+type+'_flag=1',
-    success: function(data) {
-      ele.className='orders_flag_checked';
-    }
-  });
-  }
-}
-
-// 点击A,B,C
-function orders_work(ele, work) {
-  document.getElementById('work_a').className = 'orders_flag_unchecked';
-  document.getElementById('work_b').className = 'orders_flag_unchecked';
-  document.getElementById('work_c').className = 'orders_flag_unchecked';
-   $.ajax({
-    dataType: 'text',
-    url: 'ajax_orders.php?orders_id=<?php echo $_GET['oID']?>&work='+work,
-    success: function(data) {
-      if (data == 'success') {
-        if (ele.className == 'orders_flag_checked') {
-          ele.className='orders_flag_unchecked';
-        } else {
-          ele.className='orders_flag_checked';
-        }
-      }
-    }
-  });
-}
-
-// 点击PC号码
-function orders_computers(ele, cid) {
-  if (ele.className == 'orders_computer_checked') {
-   $.ajax({
-    url: 'ajax_orders.php?action=delete&orders_id=<?php echo $_GET['oID']?>&computers_id='+cid,
-    success: function(data) {
-      ele.className='orders_computer_unchecked';
-    }
-  });
-  } else {
-   $.ajax({
-    url: 'ajax_orders.php?action=insert&orders_id=<?php echo $_GET['oID']?>&computers_id='+cid,
-    success: function(data) {
-      ele.className='orders_computer_checked';
-    }
-  });
-  }
-}
-//播放提示音，需要warn_sound
-function playSound()  
-{  
-  var node=document.getElementById('warn_sound');  
-  if(node!=null)  
-  {  
-     node.Play();  
-  }
-}
-  // 当ele选中，则id必须同时被选中
-  function auto_radio(ele, id){
-    if (ele.checked)
-      document.getElementById(id).checked = true;
-  }
-  // 当ele被选中，则id取消选择
-  function exclude(ele, id){
-    if (ele.checked)
-      document.getElementById(id).checked = false;
-  }
-  function change_option(ele){
-    // 自动保存
-    auto_save_questions();
-    // 是否显示按钮
-    show_submit_button();
-  }
-
-  function clean_option(n){
-    // 自动保存
-    // auto_save_questions();
-    $.ajax({ url: "ajax_orders.php?orders_id=<?php echo $_GET['oID'];?>&action=clean_option&questions_no="+n, success: function(){}});
-    
-    // 是否显示按钮
-    show_submit_button();
-  }
-  function show_submit_button(){
-    // 当必要选项全部不为空的时候显示确认按钮
-    if ($('#questions_type').val() == 1) {
-      if (
-        ($('#q_1_1_0').attr('checked') || $('#q_1_1_1').attr('checked')) 
-        && ($('#q_12_1_0').attr('checked') || $('#q_12_1_1').attr('checked'))
-        && $('#q_13_1').attr('checked')
-        && ($('#q_6_1_0').attr('checked') || $('#q_6_1_1').attr('checked'))
-        && $('#q_14_1').attr('checked')
-        && $('#q_15_1').attr('checked')
-        && $('#q_16_2').attr('checked')
-        && show_q_8_1_able
-      ) {
-        $('#tr_q_8_1').show();
-        $('#orders_questions_submit_div').show();
-      } else {
-        $('#tr_q_8_1').hide();
-        $('#orders_questions_submit_div').hide();
-      }
-    } else if ($('#questions_type').val() == 2) {
-      if (
-        ($('#q_1_1_0').attr('checked') || $('#q_1_1_1').attr('checked')) 
-        && $('#q_9_1').attr('checked')
-        && ($('#q_10_1_0').attr('checked') || $('#q_10_1_1').attr('checked'))
-        && ($('#q_11_3_0').attr('checked') || $('#q_11_3_1').attr('checked'))
-        && ($('#q_17_2_0').attr('checked') || $('#q_17_2_1').attr('checked'))
-        && ($('#q_6_1_0').attr('checked') || $('#q_6_1_1').attr('checked'))
-        && $('#q_4_2').attr('checked')
-        && $('#q_5_1').attr('checked')
-        && $('#q_7_2').attr('checked')
-        && show_q_8_1_able
-      ) {
-        $('#tr_q_8_1').show();
-        $('#orders_questions_submit_div').show();
-      } else {
-        $('#tr_q_8_1').hide();
-        $('#orders_questions_submit_div').hide();
-      }
-    } else {
-      if (
-        ($('#q_1_1_0').attr('checked') || $('#q_1_1_1').attr('checked'))
-        && ($('#q_2_1_0').attr('checked') || $('#q_2_1_1').attr('checked'))
-        && $('#q_3_1').attr('checked') && $('#q_3_4').attr('checked')
-        && $('#q_4_2').attr('checked')
-        && $('#q_5_1').attr('checked')
-        && $('#q_7_2').attr('checked')
-        && ($('#q_6_1_0').attr('checked') || $('#q_6_1_1').attr('checked'))
-        && show_q_8_1_able
-      ) {
-        $('#tr_q_8_1').show();
-        $('#orders_questions_submit_div').show();
-      } else {
-        $('#tr_q_8_1').hide();
-        $('#orders_questions_submit_div').hide();
-      }
-    }
-  }
-
-$(function(){
-  
-  // ajax保存订单备注
-  $('#form_orders_comment').ajaxForm({
-    beforeSubmit:  showRequest,
-    success: function(){alert('save success')}
-  }); 
-  
-  // ajax保存信用调查
-  $('#form_orders_credit').ajaxForm({
-    //beforeSubmit:  showRequest,
-    success: function(){alert('save success')}
-  }); 
-  
-  
-  // 每分钟检查状态是否有修改
-  setTimeout(function(){checkChange()}, 60000);
-  
-  // ajax保存订单问答
-  $('#form_orders_questions').ajaxForm({
-    beforeSubmit: function () {return true;},
-    success: function(){
-      if ($('#q_8_1').val()) {
-        //保存成功自动跳转到列表
-        window.location.href=$('#back_link').attr('href');
-      }
-    }
-  });
-  
-  show_submit_button();
-  
-  $('#form_orders_questions input').attr('disabled', $('#orders_questions_submit').attr('disabled'));
-  $('#form_orders_questions select').attr('disabled', $('#orders_questions_submit').attr('disabled'));
-  if ($('#orders_questions_submit').attr('disabled')) {
-    $('#form_orders_questions input[type=text]').attr('readonly', true);
-    $('#q_8_1').attr('class', 'readonly');
-  }
-  
-});
 </script>
 </head>
 <body>
@@ -949,6 +597,7 @@ $(function(){
 ?>
 <script>
   // 游戏人物名，订单详细页用来替换邮件内容
+  var orders_status_id = <?php echo $order->info['orders_status'];?>;
   window.orderStr = '<?php echo  str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'), orders_a($order->info['orders_id'], array(array('orders_id' => $order->info['orders_id']))));?>';
 </script>
 <tr>
@@ -979,10 +628,10 @@ $(function(){
                 <td width="50%" align="left">
                   <table width="100%" border="0" cellspacing="2" cellpadding="2">
                     <tr>
-                      <td width="100" align="center" class='<?php echo $order->info['orders_important_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'important')">重要</td>
-                      <td width="100" align="center" class='<?php echo $order->info['orders_care_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'care')">取り扱い注意</td>
-                      <td width="100" align="center" class='<?php echo $order->info['orders_wait_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'wait')">取引待ち</td>
-                      <td width="100" align="center" class='<?php echo $order->info['orders_inputed_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'inputed')">入力済み</td>
+                      <?php /* <!--<td width="100" align="center" class='<?php echo $order->info['orders_important_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'important')">重要</td>--> */ ?>
+                      <td width="100" align="center" class='<?php echo $order->info['orders_care_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'care', '<?php echo $order->info['orders_id'];?>')">取り扱い注意</td>
+                      <td width="100" align="center" class='<?php echo $order->info['orders_wait_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'wait', '<?php echo $order->info['orders_id'];?>')">取引待ち</td>
+                      <td width="100" align="center" class='<?php echo $order->info['orders_inputed_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'inputed', '<?php echo $order->info['orders_id'];?>')">入力済み</td>
                       <td>&nbsp;</td>
                     <tr>
                   </table>
@@ -991,9 +640,9 @@ $(function(){
                   <table width="100%" border="0" cellspacing="2" cellpadding="2">
                     <tr>
                       <td>&nbsp;</td>
-                      <td width="100" align="center" id="work_a" class='<?php echo $order->info['orders_work'] == 'a' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_work(this, 'a')">A</td>
-                      <td width="100" align="center" id="work_b" class='<?php echo $order->info['orders_work'] == 'b' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_work(this, 'b')">B</td>
-                      <td width="100" align="center" id="work_c" class='<?php echo $order->info['orders_work'] == 'c' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_work(this, 'c')">C</td>
+                      <td width="100" align="center" id="work_a" class='<?php echo $order->info['orders_work'] == 'a' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_work(this, 'a', '<?php echo $order->info['orders_id'];?>')">A</td>
+                      <td width="100" align="center" id="work_b" class='<?php echo $order->info['orders_work'] == 'b' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_work(this, 'b', '<?php echo $order->info['orders_id'];?>')">B</td>
+                      <td width="100" align="center" id="work_c" class='<?php echo $order->info['orders_work'] == 'c' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_work(this, 'c', '<?php echo $order->info['orders_id'];?>')">C</td>
                     <tr>
                   </table>
                 </td>
@@ -1182,7 +831,7 @@ $(function(){
               <table width="100%" border="0" cellspacing="0" cellpadding="2">
                 <tr>
                   <td class="main" valign="top" width="30%"><b>Referer:</b></td>
-                  <td class="main" width="70%"><?php echo $order->info['orders_ref'];?></td>
+                  <td class="main" width="70%"><p style="word-break:break-all;width:300px;"><?php echo urldecode($order->info['orders_ref']);?></p></td>
                 </tr>
                 <?php $keywords = parseKeyword($order->info['orders_ref']);?>
                 <?php if ($keywords) { ?>
@@ -1251,7 +900,8 @@ $(function(){
   // 取得问答的答案
   $orders_questions_query = tep_db_query("select * from orders_questions where orders_id = '".$order->info['orders_id']."'");
   $oq = tep_db_fetch_array($orders_questions_query);
-
+  //echo "<pre>";
+  //print_r($oq);
   // 自动或者手动判断问答种类
   // 0=>贩卖, 1=>买取, 2=>信用卡
   if (isset($_GET['questions_type'])) {
@@ -1267,7 +917,7 @@ $(function(){
       $orders_questions_type = 0;
     }
   }
-
+  //echo "</pre>";
 ?>
                 <h3>Order Answer</h3>
                 <!-- ajax submit -->
@@ -1298,7 +948,7 @@ $(function(){
       <?php echo tep_draw_radio_field('q_1_1', '0', $oq['q_1_1'] === '0', '', 'id="q_1_1_0" onclick="exclude(this,\'q_1_2\')" onchange="change_option(this)"');?>無｜<?php echo tep_draw_radio_field('q_1_1', '1', $oq['q_1_1'] === '1', '', 'id="q_1_1_1" onchange="change_option(this)"');?>有 → <?php echo tep_draw_checkbox_field('q_1_2', '1', $oq['q_1_2'] === '1', '', 'id="q_1_2" onclick="auto_radio(this,\'q_1_1_1\')" onchange="change_option(this)"');?>返答済
     </td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_1_1_0').attr('checked', '');$('#q_1_1_1').attr('checked', '');$('#q_1_2').attr('checked', '');clean_option(1);"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_1_1_0').attr('checked', '');$('#q_1_1_1').attr('checked', '');$('#q_1_2').attr('checked', '');clean_option(1,'<?php echo $order->info['orders_id'];?>');"></td>
 <?php } ?>
   </tr>
 <?php
@@ -1306,21 +956,25 @@ $(function(){
     //買取
     //受领通知
     $pay_time = tep_get_orders_status_history_time($order->info['orders_id'], 13);
+    $pay_email = tep_get_orders_status_history_notified($order->info['orders_id'], 13);
     //支付通知
+    //$end_time = tep_get_orders_status_history_time($order->info['orders_id'], 5)?tep_get_pay_day(tep_get_orders_status_history_time($order->info['orders_id'], 5)):'';
     $end_time = tep_get_orders_status_history_time($order->info['orders_id'], 5);
+    $end_email = tep_get_orders_status_history_notified($order->info['orders_id'], 5);
+//echo $end_time;
 ?>
   <tr>
     <td class="main">キャラクターの有無：</td>
     <td class="main"><?php echo tep_draw_radio_field('q_12_1', '1', $oq['q_12_1'] === '1', '', 'id="q_12_1_1" onclick="exclude(this,\'q_12_2\')" onchange="change_option(this)"');?>有｜<?php echo tep_draw_radio_field('q_12_1', '0', $oq['q_12_1'] === '0', '', 'id="q_12_1_0" onchange="change_option(this)"');?>無 → <?php echo tep_draw_checkbox_field('q_12_2', '1', $oq['q_12_2'] === '1', '', 'id="q_12_2" onclick="auto_radio(this,\'q_12_1_0\')" onchange="change_option(this)"');?>新規作成してお客様へ連絡</td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_12_1_0').attr('checked','');$('#q_12_1_1').attr('checked','');$('#q_12_2').attr('checked','');clean_option(12);"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_12_1_0').attr('checked','');$('#q_12_1_1').attr('checked','');$('#q_12_2').attr('checked','');clean_option(12,'<?php echo $order->info['orders_id'];?>');"></td>
 <?php } ?>
   </tr>
   <tr>
     <td class="main">受領 <font color="red">※注意※</font>：</td>
     <td class="main"><?php echo tep_draw_checkbox_field('q_13_1', '1', isset($oq['q_13_1']) ? $oq['q_13_1'] === '1' : $pay_time,'', 'id="q_13_1" onchange="change_option(this)"');?><?php echo tep_draw_input_field('q_13_2_m', $oq['q_13_2'] && $oq['q_13_2'] != '0000-00-00' ? date('m', strtotime($oq['q_13_2'])) : ($pay_time?date('m', strtotime($pay_time)):''), 'size="2" class="questions_date" readonly');?>月<?php echo tep_draw_input_field('q_13_2_d', $oq['q_13_2'] && $oq['q_13_2'] != '0000-00-00' ? date('d', strtotime($oq['q_13_2'])) : ($pay_time?date('d', strtotime($pay_time)):''), 'size="2" class="questions_date" readonly');?>日</td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_13_1').attr('checked','');clean_option(13);"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_13_1').attr('checked','');clean_option(13,'<?php echo $order->info['orders_id'];?>');"></td>
 <?php } ?>
   </tr>
   <tr>
@@ -1329,14 +983,14 @@ $(function(){
       <?php echo tep_draw_radio_field('q_6_1', '0', $oq['q_6_1'] === '0', '', 'id="q_6_1_0" onclick="exclude(this,\'q_6_2\')" onchange="change_option(this)"');?>無｜<?php echo tep_draw_radio_field('q_6_1', '1', $oq['q_6_1'] === '1', '', 'id="q_6_1_1" onchange="change_option(this)"');?>有 → <?php echo tep_draw_checkbox_field('q_6_2', '1', $oq['q_6_2'] === '1', '', 'id="q_6_2" onclick="auto_radio(this,\'q_6_1_1\')" onchange="change_option(this)"');?>報告
     </td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_6_1_0').attr('checked','');$('#q_6_1_1').attr('checked','');$('#q_6_2').attr('checked','');clean_option(6);"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_6_1_0').attr('checked','');$('#q_6_1_1').attr('checked','');$('#q_6_2').attr('checked','');clean_option(6,'<?php echo $order->info['orders_id'];?>');"></td>
 <?php } ?>
   </tr>
   <tr>
     <td class="main">受領メール送信：</td>
-    <td class="main"><?php echo tep_draw_checkbox_field('q_14_1', '1', isset($oq['q_14_1']) ? $oq['q_14_1'] === '1' : $pay_time,'','id="q_14_1" onchange="change_option(this)"');?><?php echo tep_draw_hidden_field('q_14_2', $oq['q_14_2'] ? $oq['q_14_2'] : $order->customer['email_address'], 'size="20" class="readonly" readonly');?>済</td>
+    <td class="main"><?php echo tep_draw_checkbox_field('q_14_1', '1', isset($oq['q_14_1']) ? $oq['q_14_1'] === '1' : $pay_email,'','id="q_14_1" onchange="change_option(this)"');?><?php echo tep_draw_hidden_field('q_14_2', $oq['q_14_2'] ? $oq['q_14_2'] : $order->customer['email_address'], 'size="20" class="readonly" readonly');?>済</td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_14_1').attr('checked','');$('#q_14_3').attr('checked','');clean_option(14);"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_14_1').attr('checked','');$('#q_14_3').attr('checked','');clean_option(14,'<?php echo $order->info['orders_id'];?>');"></td>
 <?php } ?>
   </tr>
   <tr>
@@ -1350,33 +1004,36 @@ $(function(){
     <td class="main"><?php echo tep_draw_checkbox_field('q_15_3', '1', isset($oq['q_15_3']) ? $oq['q_15_3'] === '1' : '','','id="q_15_3" onchange="change_option(this)"');?>JNB <?php echo tep_draw_checkbox_field('q_15_4', '1', isset($oq['q_15_4']) ? $oq['q_15_4'] === '1' : '','','id="q_15_4" onchange="change_option(this)"');?>eBank <?php echo tep_draw_checkbox_field('q_15_5', '1', isset($oq['q_15_5']) ? $oq['q_15_5'] === '1' : '','','id="q_15_5" onchange="change_option(this)"');?>ゆうちょ</td>
   </tr>
   <tr>
-    <td class="main"><?php echo tep_draw_checkbox_field('q_15_8', '1', isset($oq['q_15_8']) ? $oq['q_15_8'] === '1' : '','','id="q_15_8" onchange="change_option(this)" onclick=""');?>入金予定日 <?php echo tep_draw_input_field('q_15_6_m', $oq['q_15_6'] && $oq['q_15_6'] != '0000-00-00' ? date('m', strtotime($oq['q_15_6'])) : ($end_time?date('m', strtotime($end_time)):''), 'size="2" id="q_15_6_m"');?>月<?php echo tep_draw_input_field('q_15_6_d', $oq['q_15_6'] && $oq['q_15_6'] != '0000-00-00' ? date('d', strtotime($oq['q_15_6'])) : ($end_time?date('d', strtotime($end_time)):''), 'size="2" id="q_15_6_d"');?>日 受付番号<?php echo tep_draw_input_field('q_15_7', $oq['q_15_7'], 'size="15" id="q_15_7" onchange="change_option(this)"');?> </td>
+    <td class="main"><?php echo tep_draw_checkbox_field('q_15_8', '1', isset($oq['q_15_8']) ? $oq['q_15_8'] === '1' : '','','id="q_15_8" onchange="change_option(this)" onclick=""');?>済 <!-- 入金予定日 <?php echo tep_draw_input_field('q_15_6_m', $oq['q_15_6'] && $oq['q_15_6'] != '0000-00-00' ? date('m', strtotime($oq['q_15_6'])) : ($end_time?date('m', strtotime($end_time)):''), 'size="2" id="q_15_6_m"');?>月<?php echo tep_draw_input_field('q_15_6_d', $oq['q_15_6'] && $oq['q_15_6'] != '0000-00-00' ? date('d', strtotime($oq['q_15_6'])) : ($end_time?date('d', strtotime($end_time)):''), 'size="2" id="q_15_6_d"');?>日 -->受付番号<?php echo tep_draw_input_field('q_15_7', $oq['q_15_7'], 'size="20" id="q_15_7" onchange="change_option(this)"');?> </td>
   </tr>
 </table>
     </td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#td_q_15 input[type=checkbox]').attr('checked','');$('#td_q_15_6_m').val('');$('#td_q_15_6_d').val('');$('#td_q_15_7').val('');clean_option(15);"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#td_q_15 input[type=checkbox]').attr('checked','');$('#td_q_15_6_m').val('');$('#td_q_15_6_d').val('');$('#td_q_15_7').val('');clean_option(15,'<?php echo $order->info['orders_id'];?>');"></td>
 <?php } ?>
   </tr>
     
   <tr>
     <td class="main">支払完了メール送信：</td>
-    <td class="main"><?php echo tep_draw_hidden_field('q_16_1', $oq['q_16_1'] ? $oq['q_16_1'] : $order->customer['email_address'], 'size="20" class="readonly" readonly');?><?php echo tep_draw_checkbox_field('q_16_2', '1', isset($oq['q_16_2']) ? $oq['q_16_2'] === '1' : $end_time,'','id="q_16_2" onchange="change_option(this)"');?>済</td>
+    <td class="main"><?php echo tep_draw_hidden_field('q_16_1', $oq['q_16_1'] ? $oq['q_16_1'] : $order->customer['email_address'], 'size="20" class="readonly" readonly');?><?php echo tep_draw_checkbox_field('q_16_2', '1', isset($oq['q_16_2']) ? $oq['q_16_2'] === '1' : $end_email,'','id="q_16_2" onchange="change_option(this)"');?>済</td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_16_2').attr('checked', '');clean_option(16)"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_16_2').attr('checked', '');clean_option(16,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
 <?php
   } else if ($orders_questions_type == 2) {
     //信用卡
     $pay_time = tep_get_orders_status_history_time($order->info['orders_id'], 9);
+    $pay_email = tep_get_orders_status_history_notified($order->info['orders_id'], 9);
+    
     $end_time = tep_get_orders_status_history_time($order->info['orders_id'], 2);
+    $end_email = tep_get_orders_status_history_notified($order->info['orders_id'], 2);
 ?>
   <tr>
     <td class="main">決算確認：</td>
     <td class="main"><?php echo tep_draw_checkbox_field('q_9_1', '1', $oq['q_9_1'], '', 'id="q_9_1" onclick="if(this.checked){$(\'#q_9_2_m\').val(new Date().getMonth()+1);$(\'#q_9_2_d\').val(new Date().getDate());}else{$(\'#q_9_2_m\').val(\'\');$(\'#q_9_2_d\').val(\'\');}" onchange="change_option(this)"');?><?php echo tep_draw_input_field('q_9_2_m', $oq['q_9_2'] && $oq['q_9_2'] != '0000-00-00' ? date('m', strtotime($oq['q_9_2'])) : '', 'size="2" id="q_9_2_m" class="questions_date" readonly');?>月<?php echo tep_draw_input_field('q_9_2_d', $oq['q_9_2'] && $oq['q_9_2'] != '0000-00-00' ? date('d', strtotime($oq['q_9_2'])) : '', 'size="2" id="q_9_2_d" class="questions_date" readonly');?>日</td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_9_1').attr('checked','');clean_option(9)"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_9_1').attr('checked','');clean_option(9,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
@@ -1385,7 +1042,7 @@ $(function(){
       <?php echo tep_draw_radio_field('q_10_1', '1', $oq['q_10_1'] === '1', '', 'id="q_10_1_1" onclick="exclude(this,\'q_10_2\')" onchange="change_option(this)"');?>有｜<?php echo tep_draw_radio_field('q_10_1', '0', $oq['q_10_1'] === '0', '', 'id="q_10_1_0" onchange="change_option(this)"');?>無 → <?php echo tep_draw_checkbox_field('q_10_2', '1', $oq['q_10_2'] === '1', '', 'id="q_10_2" onclick="auto_radio(this,\'q_10_1_0\')" onchange="change_option(this)"');?>入手困難ならお客様へ電話
     </td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_10_1_0').attr('checked','');$('#q_10_1_1').attr('checked','');$('#q_10_2').attr('checked','');clean_option(10)"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_10_1_0').attr('checked','');$('#q_10_1_1').attr('checked','');$('#q_10_2').attr('checked','');clean_option(10,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
@@ -1429,35 +1086,35 @@ $(function(){
       </table>
     </td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_11_15').val('');$('#td_q_11 input').attr('checked','');$('#td_q_11_first').hide();$('#td_q_11_second').hide();clean_option(11)"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_11_15').val('');$('#td_q_11 input').attr('checked','');$('#td_q_11_first').hide();$('#td_q_11_second').hide();clean_option(11,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
     <td class="main">信用判定：</td>
     <td class="main"><?php echo tep_draw_radio_field('q_17_2', '0', $oq['q_17_2'] === '0', '', 'id="q_17_2_0" onchange="change_option(this)"');?>正常 ｜ <?php echo tep_draw_radio_field('q_17_2', '1', $oq['q_17_2'] === '1', '', 'id="q_17_2_1" onchange="change_option(this)"');?>異常 → 担当者<?php echo tep_draw_input_field('q_17_1', $oq['q_17_1'], 'size="10" id="q_17_1"');?>の承諾を得た</td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_17_2_0').attr('checked','');$('#q_17_2_1').attr('checked','');$('#q_17_1').val('');clean_option(17)"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_17_2_0').attr('checked','');$('#q_17_2_1').attr('checked','');$('#q_17_1').val('');clean_option(17,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
     <td class="main">入金確認メール送信：</td>
-    <td class="main"><?php echo tep_draw_hidden_field('q_4_1', $oq['q_4_1'] ? $oq['q_4_1'] : $order->customer['email_address'], 'size="20" class="questions_date" readonly');?><?php echo tep_draw_checkbox_field('q_4_2', '1', isset($oq['q_4_2'])?$oq['q_4_2'] === '1':$pay_time,'','id="q_4_2" onchange="change_option(this)"');?>済</td>
+    <td class="main"><?php echo tep_draw_hidden_field('q_4_1', $oq['q_4_1'] ? $oq['q_4_1'] : $order->customer['email_address'], 'size="20" class="questions_date" readonly');?><?php echo tep_draw_checkbox_field('q_4_2', '1', isset($oq['q_4_2'])?$oq['q_4_2'] === '1':$pay_email,'','id="q_4_2" onchange="change_option(this)"');?>済</td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_4_2').attr('checked','');clean_option(4)"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_4_2').attr('checked','');clean_option(4,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
     <td class="main">発送：</td>
     <td class="main"><?php echo tep_draw_checkbox_field('q_5_1', '1', isset($oq['q_5_1']) ? $oq['q_5_1'] === '1' : $end_time, '', 'id="q_5_1" onchange="change_option(this)"');?><?php echo tep_draw_input_field('q_5_2_m', $oq['q_5_2'] && $oq['q_5_2'] != '0000-00-00' ? date('m', strtotime($oq['q_5_2'])) : ($end_time?date('m', strtotime($end_time)):''), 'size="2" class="questions_date" readonly');?>月<?php echo tep_draw_input_field('q_5_2_d', $oq['q_5_2'] && $oq['q_5_2'] != '0000-00-00' ? date('d', strtotime($oq['q_5_2'])) : ($end_time?date('d', strtotime($end_time)):''), 'size="2" class="questions_date" readonly');?>日</td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_5_1').attr('checked','');clean_option(5)"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_5_1').attr('checked','');clean_option(5,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
     <td class="main">発送完了メール送信：</td>
     <td class="main"><?php echo tep_draw_hidden_field('q_7_1', $oq['q_7_1'] ? $oq['q_7_1'] : $order->customer['email_address'], 'size="20" class="readonly" class="questions_date" readonly');?><?php echo tep_draw_checkbox_field('q_7_2', '1', isset($oq['q_7_2']) ? $oq['q_7_2'] === '1' : $end_time, '', 'id="q_7_2" onchange="change_option(this)"');?>済</td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_7_2').attr('checked','');clean_option(7)"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_7_2').attr('checked','');clean_option(7,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
@@ -1466,7 +1123,7 @@ $(function(){
       <?php echo tep_draw_radio_field('q_6_1', '0', $oq['q_6_1'] === '0', '', 'id="q_6_1_0" onclick="exclude(this,\'q_6_2\')" onchange="change_option(this)"');?>無｜<?php echo tep_draw_radio_field('q_6_1', '1', $oq['q_6_1'] === '1', '', 'id="q_6_1_1"');?>有 → <?php echo tep_draw_checkbox_field('q_6_2', '1', $oq['q_6_2'] === '1', '', 'id="q_6_2" onclick="auto_radio(this,\'q_6_1_1\')" onchange="change_option(this)"');?>報告
     </td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_6_1_0').attr('checked','');$('#q_6_1_1').attr('checked','');$('#q_6_2').attr('checked','');clean_option(6)"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_6_1_0').attr('checked','');$('#q_6_1_1').attr('checked','');$('#q_6_2').attr('checked','');clean_option(6,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
 
@@ -1475,7 +1132,14 @@ $(function(){
   } else {
     //販売
     $pay_time = tep_get_orders_status_history_time($order->info['orders_id'], 9);
+    $pay_email = tep_get_orders_status_history_notified($order->info['orders_id'], 9);
+    
     $end_time = tep_get_orders_status_history_time($order->info['orders_id'], 2);
+    $end_email = tep_get_orders_status_history_notified($order->info['orders_id'], 2);
+    
+    $new_price = tep_get_ot_total_num_by_text(tep_get_ot_total_by_orders_id($order->info['orders_id']));
+    
+    //echo $new_price;echo '+';echo $oq['q_3_3'];
 ?>
   <tr>
     <td class="main">在庫確認：</td>
@@ -1483,35 +1147,35 @@ $(function(){
       <?php echo tep_draw_radio_field('q_2_1', '1', $oq['q_2_1'] === '1', '', 'id="q_2_1_1" onclick="exclude(this,\'q_2_2\')" onchange="change_option(this)"');?>有｜<?php echo tep_draw_radio_field('q_2_1', '0', $oq['q_2_1'] === '0', '', 'id="q_2_1_0" onchange="change_option(this)"');?>無 → <?php echo tep_draw_checkbox_field('q_2_2', '1', $oq['q_2_2'] === '1', '', 'id="q_2_2" onclick="auto_radio(this,\'q_2_1_0\')" onchange="change_option(this)"');?>入金確認後仕入
     </td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_2_1_0').attr('checked','');$('#q_2_1_1').attr('checked','');$('#q_2_2').attr('checked','');clean_option(2)"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_2_1_0').attr('checked','');$('#q_2_1_1').attr('checked','');$('#q_2_2').attr('checked','');clean_option(2,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
     <td class="main">入金確認：</td>
-    <td class="main"><?php echo tep_draw_checkbox_field('q_3_1', '1', isset($oq['q_3_1']) ? $oq['q_3_1'] === '1' : $pay_time, '', 'id="q_3_1" onchange="change_option(this)"');?><?php echo tep_draw_input_field('q_3_2_m', $oq['q_3_2'] && $oq['q_3_2'] != '0000-00-00' ? date('m', strtotime($oq['q_3_2'])) : ($pay_time?date('m', strtotime($pay_time)):''), 'size="2" class="questions_date" readonly');?>月<?php echo tep_draw_input_field('q_3_2_d', $oq['q_3_2'] && $oq['q_3_2'] != '0000-00-00' ? date('d', strtotime($oq['q_3_2'])) : ($pay_time?date('d', strtotime($pay_time)):''), 'size="2" class="questions_date" readonly');?>日 → 金額は<b><?php echo $oq['q_3_3']?$oq['q_3_3']:tep_get_ot_total_num_by_text(tep_get_ot_total_by_orders_id($order->info['orders_id']));echo tep_draw_hidden_field('q_3_3', $oq['q_3_3']?$oq['q_3_3']:tep_get_ot_total_num_by_text(tep_get_ot_total_by_orders_id($order->info['orders_id'])), 'size="10" class="questions_date" readonly style="text-align:right;font-weight:bold;font-size:12px"');?></b>円ですか？→<?php echo tep_draw_checkbox_field('q_3_4', '1', isset($oq['q_3_4']) ? $oq['q_3_4'] === '1': $pay_time, '','id="q_3_4"');?>はい</td>
+    <td class="main"><?php echo tep_draw_checkbox_field('q_3_1', '1', isset($oq['q_3_1']) ? ($oq['q_3_3'] != $new_price ? false : $oq['q_3_1'] === '1') : $pay_time, '', 'id="q_3_1" onchange="change_option(this)"');?><?php echo tep_draw_input_field('q_3_2_m', $oq['q_3_2'] && $oq['q_3_2'] != '0000-00-00' ? date('m', strtotime($oq['q_3_2'])) : ($pay_time?date('m', strtotime($pay_time)):''), 'size="2" class="questions_date" readonly');?>月<?php echo tep_draw_input_field('q_3_2_d', $oq['q_3_2'] && $oq['q_3_2'] != '0000-00-00' ? date('d', strtotime($oq['q_3_2'])) : ($pay_time?date('d', strtotime($pay_time)):''), 'size="2" class="questions_date" readonly');?>日 → 金額は<b><?php echo $new_price;?><?php echo tep_draw_hidden_field('q_3_3', $oq['q_3_3']?($oq['q_3_3'] != $new_price ? $new_price : $oq['q_3_3']):$new_price, 'size="10" class="questions_date" readonly style="text-align:right;font-weight:bold;font-size:12px"');?></b>円ですか？→<?php echo tep_draw_checkbox_field('q_3_4', '1', isset($oq['q_3_4']) ? ($oq['q_3_3'] != $new_price ? false : $oq['q_3_4'] === '1'): $pay_time, '','id="q_3_4"');?>はい</td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_3_1').attr('checked','');$('#q_3_4').attr('checked','');clean_option(3)"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_3_1').attr('checked','');$('#q_3_4').attr('checked','');clean_option(3,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
     <td class="main">入金確認メール送信：</td>
-    <td class="main"><?php echo tep_draw_hidden_field('q_4_1', $oq['q_4_1'] ? $oq['q_4_1'] : $order->customer['email_address'], 'size="20" class="questions_date" readonly');?><?php echo tep_draw_checkbox_field('q_4_2', '1', isset($oq['q_4_2'])?$oq['q_4_2'] === '1':$pay_time, '', 'id="q_4_2" onchange="change_option(this)"');?>済</td>
+    <td class="main"><?php echo tep_draw_hidden_field('q_4_1', $oq['q_4_1'] ? $oq['q_4_1'] : $order->customer['email_address'], 'size="20" class="questions_date" readonly');?><?php echo tep_draw_checkbox_field('q_4_2', '1', isset($oq['q_4_2'])?$oq['q_4_2'] === '1':$pay_email, '', 'id="q_4_2" onchange="change_option(this)"');?>済</td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_4_2').attr('checked','');clean_option(4)"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_4_2').attr('checked','');clean_option(4,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
     <td class="main">発送：</td>
     <td class="main"><?php echo tep_draw_checkbox_field('q_5_1', '1', isset($oq['q_5_1']) ? $oq['q_5_1'] === '1' : $end_time, '', 'id="q_5_1" onchange="change_option(this)"');?><?php echo tep_draw_input_field('q_5_2_m', $oq['q_5_2'] && $oq['q_5_2'] != '0000-00-00' ? date('m', strtotime($oq['q_5_2'])) : ($end_time?date('m', strtotime($end_time)):''), 'size="2" class="questions_date" readonly');?>月<?php echo tep_draw_input_field('q_5_2_d', $oq['q_5_2'] && $oq['q_5_2'] != '0000-00-00' ? date('d', strtotime($oq['q_5_2'])) : ($end_time?date('d', strtotime($end_time)):''), 'size="2" class="questions_date" readonly');?>日</td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_5_1').attr('checked','');clean_option(5)"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_5_1').attr('checked','');clean_option(5,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
     <td class="main">発送完了メール送信：</td>
-    <td class="main"><?php echo tep_draw_hidden_field('q_7_1', $oq['q_7_1'] ? $oq['q_7_1'] : $order->customer['email_address'], 'size="20" class="questions_date" readonly');?><?php echo tep_draw_checkbox_field('q_7_2', '1', isset($oq['q_7_2']) ? $oq['q_7_2'] === '1' : $end_time, '', 'id="q_7_2" onchange="change_option(this)"');?>済</td>
+    <td class="main"><?php echo tep_draw_hidden_field('q_7_1', $oq['q_7_1'] ? $oq['q_7_1'] : $order->customer['email_address'], 'size="20" class="questions_date" readonly');?><?php echo tep_draw_checkbox_field('q_7_2', '1', isset($oq['q_7_2']) ? $oq['q_7_2'] === '1' : $end_email, '', 'id="q_7_2" onchange="change_option(this)"');?>済</td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_7_2').attr('checked','');clean_option(7)"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_7_2').attr('checked','');clean_option(7,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
@@ -1522,7 +1186,7 @@ $(function(){
 <?php if (!$oq['q_8_1']) { ?>
     <td class="main" align="right">
     <!--<button type="button" onclick="$('#q_6_1_0').attr('checked','');$('#q_6_1_1').attr('checked','');$('#q_6_2').attr('checked','');">X</button>-->
-    <img onclick="$('#q_6_1_0').attr('checked','');$('#q_6_1_1').attr('checked','');$('#q_6_2').attr('checked','');clean_option(6)" src="images/icons/icon_cancel.gif"> 
+    <img onclick="$('#q_6_1_0').attr('checked','');$('#q_6_1_1').attr('checked','');$('#q_6_2').attr('checked','');clean_option(6,'<?php echo $order->info['orders_id'];?>')" src="images/icons/icon_cancel.gif"> 
     </td>
 <?php } ?>
   </tr>
@@ -1534,7 +1198,7 @@ $(function(){
     <td class="main">最終確認：</td>
     <td class="main">確認者名<?php echo tep_draw_input_field('q_8_1', $oq['q_8_1'], 'size="10" id="q_8_1"');?></td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_8_1').val('');clean_option(8)"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_8_1').val('');clean_option(8,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php }?>
   </tr>
 
@@ -1582,15 +1246,17 @@ $(function(){
         <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CHARACTER; ?></td>
         <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCTS_MODEL; ?></td>
         <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TAX; ?></td>
-        <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_EXCLUDING_TAX; ?></td>
+        <!--<td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_EXCLUDING_TAX; ?></td>-->
         <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_INCLUDING_TAX; ?></td>
-        <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_EXCLUDING_TAX; ?></td>
+        <!--<td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_EXCLUDING_TAX; ?></td>-->
         <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_INCLUDING_TAX; ?></td>
       </tr>
   <?php
       for ($i = 0, $n = sizeof($order->products); $i < $n; $i++) {
-        echo '    <tr class="dataTableRow">' . "\n" .
-       '      <td class="dataTableContent" valign="top" align="right">' . $order->products[$i]['qty'] . '&nbsp;x</td>' . "\n" .
+        $pinfo = tep_get_product_by_id($order->products[$i]['id'],0,4);
+        $r = explode('//',$pinfo['products_attention_1']);
+        echo '    <tr class="dataTableRow">' . "\n" . 
+       '      <td class="dataTableContent" valign="top" align="right">' . $order->products[$i]['qty']. tep_get_full_count($order->products[$i]['qty'], $r[1]) . '&nbsp;x</td>' . "\n" .
        '      <td class="dataTableContent" valign="top">' . $order->products[$i]['name'];
 
         if (isset($order->products[$i]['attributes']) && $order->products[$i]['attributes'] && ($k = sizeof($order->products[$i]['attributes'])) > 0) {
@@ -1619,9 +1285,9 @@ $(function(){
        '      <td class="dataTableContent" valign="top" style="font-size:20px">' . htmlspecialchars($order->products[$i]['character']) . '</td>' . "\n" .
        '      <td class="dataTableContent" valign="top">' . $order->products[$i]['model'] . '</td>' . "\n" .
        '      <td class="dataTableContent" align="right" valign="top">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n" .
-       '      <td class="dataTableContent" align="right" valign="top"><b>' . $currencies->format($order->products[$i]['final_price'], true, $order->info['currency'], $order->info['currency_value']) . '</b></td>' . "\n" .
+       '      <!--<td class="dataTableContent" align="right" valign="top"><b>' . $currencies->format($order->products[$i]['final_price'], true, $order->info['currency'], $order->info['currency_value']) . '</b></td>-->' . "\n" .
        '      <td class="dataTableContent" align="right" valign="top"><b>' . $price_with_tax . '</b></td>' . "\n" .
-       '      <td class="dataTableContent" align="right" valign="top"><b>' . $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'],true,$order->info['currency'],$order->info['currency_value']) . '</b></td>' . "\n" .
+       '      <!--<td class="dataTableContent" align="right" valign="top"><b>' . $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'],true,$order->info['currency'],$order->info['currency_value']) . '</b></td>-->' . "\n" .
        '      <td class="dataTableContent" align="right" valign="top"><b>' . $tprice_with_tax . '</b></td>' . "\n";
         echo '    </tr>' . "\n";
       }
@@ -1781,7 +1447,7 @@ $(function(){
         </tr>
         <?php foreach ($computers as $computer) { ?>
         <tr>
-          <td onclick="orders_computers(this, <?php echo $computer['computers_id'];?>)" class="<?php echo in_array($computer['computers_id'], $o2c) ? 'orders_computer_checked' : 'orders_computer_unchecked' ;?>" style="font-size:20px;padding:5px 10px;"><?php echo $computer['computers_name'];?></td>
+          <td onclick="orders_computers(this, <?php echo $computer['computers_id'];?>, '<?php echo $order->info['orders_id'];?>')" class="<?php echo in_array($computer['computers_id'], $o2c) ? 'orders_computer_checked' : 'orders_computer_unchecked' ;?>" style="font-size:20px;padding:5px 10px;"><?php echo $computer['computers_name'];?></td>
         </tr>
         <?php } ?>
       </table>
@@ -1813,7 +1479,7 @@ $(function(){
         <table width=""  border="0" cellspacing="1" cellpadding="0">
           <tr>
             <td class="smallText" valign='top'>
-              <?php echo tep_draw_form('orders1', FILENAME_ORDERS, '', 'get'); ?>検索 : 
+              <?php echo tep_draw_form('orders1', FILENAME_ORDERS, '', 'get','id="orders1" onsubmit="return false"'); ?>検索 : 
               <input name="keywords" type="text" id="keywords" size="40" value="<?php if(isset($_GET['keywords'])) echo stripslashes($_GET['keywords']); ?>">
               <select name="search_type" onChange='search_type_changed(this)'>
                 <option value="none" <?php if (!isset($_GET['search_type']) or (isset($_GET['search_type']) && $_GET['search_type']=='none')) {?> selected<?php } ?>>--選択してください--</option>
@@ -2068,11 +1734,14 @@ $(function(){
                o.currency, 
                o.currency_value, 
                o.orders_status_name, 
+               o.orders_important_flag,
+               o.orders_care_flag,
                o.orders_wait_flag,
                o.orders_inputed_flag,
                o.orders_work,
                o.customers_email_address,
                o.orders_comment,
+               o.torihiki_houhou,
                o.site_id
         from " . TABLE_ORDERS . " o " . $from_payment . "
         where o.customers_email_address = '" . tep_db_input($cEmail) . "' 
@@ -2093,10 +1762,13 @@ $(function(){
                o.currency, 
                o.currency_value, 
                o.orders_status_name, 
+               o.orders_important_flag,
+               o.orders_care_flag,
                o.orders_wait_flag,
                o.orders_inputed_flag,
                o.orders_work,
                o.customers_email_address,
+               o.torihiki_houhou,
                o.orders_comment,
                o.site_id
         from " . TABLE_ORDERS . " o " . $from_payment . "
@@ -2118,9 +1790,12 @@ $(function(){
                o.currency, 
                o.currency_value, 
                o.orders_status_name, 
+               o.orders_important_flag,
+               o.orders_care_flag,
                o.orders_wait_flag,
                o.orders_inputed_flag,
                o.orders_work,
+               o.torihiki_houhou,
                o.customers_email_address,
                o.orders_comment,
                o.site_id
@@ -2153,10 +1828,13 @@ $(function(){
                o.currency, 
                o.currency_value, 
                o.orders_status_name,
+               o.orders_important_flag,
+               o.orders_care_flag,
                o.orders_wait_flag,
                o.orders_inputed_flag,
                o.orders_work,
                o.customers_email_address,
+               o.torihiki_houhou,
                o.orders_comment,
                o.site_id
         from " . TABLE_ORDERS . " o " . $from_payment . "
@@ -2208,10 +1886,13 @@ $(function(){
                o.currency, 
                o.currency_value, 
                o.orders_status_name,
+               o.orders_important_flag,
+               o.orders_care_flag,
                o.orders_wait_flag,
                o.orders_inputed_flag,
                o.orders_work,
                o.customers_email_address,
+               o.torihiki_houhou,
                o.orders_comment,
                o.site_id
         from " . TABLE_ORDERS . " o " . $from_payment . ", " . TABLE_ORDERS_PRODUCTS . " op 
@@ -2262,18 +1943,20 @@ $(function(){
                o.currency_value, 
                o.orders_status_name, 
                o.orders_status_image,
+               o.orders_important_flag,
+               o.orders_care_flag,
                o.orders_wait_flag,
                o.orders_inputed_flag,
                o.orders_work,
                o.customers_email_address,
                o.orders_comment,
+               o.torihiki_houhou,
                o.site_id
          from " . TABLE_ORDERS . " o " . $from_payment . "
          where 
           (o.q_8_1 IS NULL or o.q_8_1 = '')
-          -- and o.orders_status != '19'
-          and o.orders_status != '6'
-          and o.orders_status != '8'
+          -- and o.orders_status != '6'
+          -- and o.orders_status != '8'
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
           and o.language_id = '" . $languages_id . "' 
           " . $where_payment . $where_type . "
@@ -2341,11 +2024,15 @@ $(function(){
 <?php }?>
   <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
   <font color="#999">
-  <?php }?>
+  <?php } else { ?>
+  <font color="#000">
+  <?php } ?>
           <b><?php echo tep_output_string_protected($orders['customers_name']);?></b>
-  <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
   </font>
+  <?php if ($orders['orders_care_flag']) { ?>
+  <?php echo tep_image(DIR_WS_ICONS . 'care.gif', '取り扱い注意');?>
   <?php }?>
+
     </td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)">
       <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
@@ -2424,7 +2111,7 @@ function submit_confirm()
       <table width="100%" id="select_send" style="display:none">
         <tr>
           <td class="main"><b><?php echo ENTRY_STATUS; ?></b></td>
-        <td class="main"><?php echo tep_draw_pull_down_menu('status', $orders_statuses, $select_select,  'onChange="mail_text(\'status\',\'comments\',\'os_title\')"'); ?> &nbsp;<a href="<?php echo tep_href_link(FILENAME_ORDERS_STATUS,'',SSL);?>">メール本文編集</a></td>
+        <td class="main"><?php echo tep_draw_pull_down_menu('status', $orders_statuses, $select_select,  'onChange="mail_text(\'status\',\'comments\',\'os_title\')"'); ?> <?php if($ocertify->npermission > 7 ) { ?>&nbsp;<a href="<?php echo tep_href_link(FILENAME_ORDERS_STATUS,'',SSL);?>">メール本文編集</a><?php } ?></td>
         </tr>
         <tr>
           <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>

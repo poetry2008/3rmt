@@ -16,9 +16,9 @@
 **********************************************************************/
 //require('client.inc.php');
 $_noemailclass = true;
-  require('includes/application_top.php');
+  require_once('includes/application_top.php');
 //require('includes/configure.php');
-require(DIR_OST.'client.inc.php');
+require_once(DIR_OST.'client.inc.php');
 define('SOURCE','Web'); //Ticket source.
 $inc='open.inc.php';    //default include.
 $errors=array();

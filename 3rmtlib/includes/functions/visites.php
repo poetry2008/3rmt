@@ -1236,7 +1236,8 @@ $searchEngines = array(
   //$searchEngines
   $url_info = parse_url($referer);
   if (isset($searchEngines[$url_info['host']])) {
-    if (preg_match_all('/&?'.$searchEngines[$url_info['host']][1].'=([^&]*)&?/', $url_info['query'], $out)) {
+    //if (preg_match_all('/&?'.$searchEngines[$url_info['host']][1].'=([^&]*)&?/', $url_info['query'], $out)) {
+    if (preg_match_all('/[&?]'.$searchEngines[$url_info['host']][1].'=([^&]*)&?/', $url_info['query'], $out)) {
       //print_r($out[1][0]);
       return urldecode($out[1][0]);
     }

@@ -2654,7 +2654,7 @@ function orders_updated($orders_id) {
   tep_db_query("update ".TABLE_ORDERS." set finished = ( select finished from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
   tep_db_query("update ".TABLE_ORDERS." set orders_status_name = ( select orders_status_name from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
   tep_db_query("update ".TABLE_ORDERS." set orders_status_image = ( select orders_status_image from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
-  //tep_db_query("update ".TABLE_ORDERS." o set q_8_1 = ( select q_8_1 from ".TABLE_ORDERS_QUESTIONS." oq where oq.orders_id=o.orders_id ) where orders_id='".$orders_id."'");
+  tep_db_query("update ".TABLE_ORDERS." o set q_8_1 = ( select q_8_1 from orders_questions oq where oq.orders_id=o.orders_id ) where orders_id='".$orders_id."'");
   tep_db_query("update ".TABLE_ORDERS_PRODUCTS." set torihiki_date = ( select torihiki_date from ".TABLE_ORDERS." where orders.orders_id=orders_products.orders_id ) where orders_id='".$orders_id."'");
 }
 
@@ -2974,6 +2974,16 @@ function tep_get_customers_fax_by_id($cid)
     if ($orders['orders_inputed_flag']) {
       $str .= '<font color="red"><b>入力済み</b></font>';
     }
+    /*
+    $str .= '</td></tr><tr><td class="mian" align="left"colspan="2">';
+    if ($orders['orders_important_flag']) {
+      $str .= '<font color="red"><b>重要</b></font>';
+    }
+    */
+    $str .= '</td></tr><tr><td class="mian" align="left"colspan="2">';
+    if ($orders['orders_care_flag']) {
+      $str .= '<font color="red"><b>取扱注意</b></font>';
+    }
     $str .= '</td></tr><tr><td class="mian" align="left"colspan="2">';
     if ($orders['orders_comment']) {
       $str .= '<font color="blue"><b>メモ有り</b></font>';
@@ -2987,7 +2997,7 @@ function tep_get_customers_fax_by_id($cid)
       $str .= '<tr><td class="main"><b>入金日：</b></td><td class="main" style="color:red;"><b>'.($pay_time?date('m月d日',strtotime($pay_time)):'入金まだ').'</b></td></tr>';
     }
     $str .= '<tr><td colspan="2">&nbsp;</td></tr>';
-    
+    $str .= '<tr><td class="main"><b>オプション：</b></td><td class="main" style="color:blue;"><b>'.$orders['torihiki_houhou'].'</b></td></tr>';
     
     $orders_products_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." where orders_id = '".$orders['orders_id']."'");
     while ($p = tep_db_fetch_array($orders_products_query)) {
@@ -3010,6 +3020,8 @@ function tep_get_customers_fax_by_id($cid)
       $str .= '<tr><td class="main"></td><td class="main"></td></tr>';
     }
     $str .= '</table>';
+    $str=str_replace("\n","",$str);
+    $str=str_replace("\r","",$str);
     return htmlspecialchars($str);
   }
   
@@ -3059,6 +3071,11 @@ function tep_get_customers_fax_by_id($cid)
     $history = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS_STATUS_HISTORY." where orders_id='".$orders_id."' and orders_status_id='".$orders_status_id."' order by date_added desc"));
     return $history['date_added'];
   }
+  // orders.php
+  function tep_get_orders_status_history_notified($orders_id, $orders_status_id){
+    $history = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS_STATUS_HISTORY." where orders_id='".$orders_id."' and orders_status_id='".$orders_status_id."' order by date_added desc"));
+    return $history['customer_notified'];
+  }
 // orders.php
   function tep_orders_finished($orders_id, $language_id = '') {
     global $languages_id;
@@ -3104,4 +3121,45 @@ function tep_get_first_products_name_by_orders_id($orders_id)
 {
   $p = tep_db_fetch_array(tep_db_query("select * from " . TABLE_ORDERS_PRODUCTS . " where orders_id='".$orders_id."'"));
   return $p['products_name'];
+}
+
+// 取得支付时间，当天或者下一个工作日。
+// orders.php
+function tep_get_pay_day($time = null){
+  //echo strtotime(date('Y-m-d H:00:00', strtotime($time)));
+  //echo strtotime(date('Y-m-d H:00:00'));
+  if ($time === null) {
+    $time = date('Y-m-d H:i:s');
+  }
+  if (strtotime(date('Y-m-d 00:00:00', strtotime($time))) == strtotime(date('Y-m-d 00:00:00'))) {
+    $c = tep_db_fetch_array(tep_db_query("select * from " . TABLE_BANK_CALENDAR . " where cl_ym = '".date('Ym',strtotime($time))."'"));
+    for($i=date('d')-1;$i<strlen($c['cl_value']);$i++){
+      // 如果是当天
+      if (date('d')-1 == $i) {
+        // 如果当天营业
+        if ($c['cl_value'][$i] == '0') {
+          if (date('H',strtotime($time)) < 15) {
+            return date('Y-m',strtotime($time)).'-'.date('d');
+          }
+        }
+      } else {
+        // 如果下一天营业
+        if ($c['cl_value'][$i] == '0') {
+          return date('Y-m',strtotime($time)).'-'.($i+1);
+        }
+      }
+    }
+    
+    return tep_get_pay_day(strtotime($time.' + 1 month'));
+  } else {
+    $c = tep_db_fetch_array(tep_db_query("select * from " . TABLE_BANK_CALENDAR . " where cl_ym = '".date('Ym',strtotime($time))."'"));
+    for($i=0;$i<strlen($c['cl_value']);$i++){
+        if ($c['cl_value'][$i] == '0') {
+          return date('Y-m',strtotime($time)).'-'.($i+1);
+        }
+    }
+    
+    return tep_get_pay_day(strtotime($time.' + 1 month'));
+  }
+  //echo $c['cl_value'];
 }

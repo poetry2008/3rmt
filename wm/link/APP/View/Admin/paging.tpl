@@ -40,7 +40,7 @@
 		<a href="<!--{url controller=$config->controller action=$config->action  table=$config->name}-->" onkeypress="return fnChangePage('<!--{$config->name}-->',<!--{$config->pageNo}-->+1)" onclick="return fnChangePage('<!--{$config->name}-->',<!--{$config->pageNo}-->+1)">
 			<!--{_t key=table_next_page}-->
 		</a>|
-		<a href="<!--{url controller=$config->controller action=$config->action  table=$config->name}-->" onkeypress="return fnChangePage('<!--{$config->name}-->',<!--{$config->pageCount}-->-1)" onclick="return fnChangePage('<!--{$config->name}-->',<!--{$config->pageCount}-->-1)">
+		<a href="<!--{url controller=$config->controller action=$config->action  table=$config->name}-->" onkeypress="return fnChangePage('<!--{$config->name}-->',<!--{$pageCount}-->-1)" onclick="return fnChangePage('<!--{$config->name}-->',<!--{$pageCount}-->-1)">
 			<!--{_t key=table_last_page}-->
 		</a>
 

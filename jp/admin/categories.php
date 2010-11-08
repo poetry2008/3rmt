@@ -3,8 +3,15 @@
    $Id$
 */
   require('includes/application_top.php');
-  require(DIR_WS_CLASSES . 'currencies.php');
+  require(DIR_WS_CLASSES . 'currencies.php');  
   $currencies = new currencies();
+  
+  // 谷歌关键字结果显示停止条件
+  $stop_site_url = array(
+      //"iimy.co.jp",
+      //"www.iimy.co.jp",
+      );
+
   
   $action = (isset($_GET['action']) ? $_GET['action'] : '');
   if ( eregi("(insert|update|setflag)", $action) ) include_once('includes/reset_seo_cache.php');
@@ -620,7 +627,7 @@
             tep_reset_cache_block('also_purchased');
           }
 
-          tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products_id));
+          tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&page='.$_GET['page'].'&pID=' . $products_id));
         }
         break;
       case 'copy_to_confirm':
@@ -922,7 +929,7 @@ function mess(){
         <tr>
           <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
         </tr>
-        <tr><?php echo tep_draw_form('new_product', FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . (isset($_GET['pID'])?$_GET['pID']:'') . '&action=new_product_preview', 'post', 'enctype="multipart/form-data" onSubmit="return mess();"'); ?>
+        <tr><?php echo tep_draw_form('new_product', FILENAME_CATEGORIES, 'cPath=' . $cPath . '&page='.$_GET['page'].'&pID=' . (isset($_GET['pID'])?$_GET['pID']:'') . '&action=new_product_preview', 'post', 'enctype="multipart/form-data" onSubmit="return mess();"'); ?>
         <input type="hidden" name="site_id" value="<?php echo $site_id;?>">
           <td><table border="0" cellspacing="0" cellpadding="2">
               <tr>
@@ -1300,7 +1307,7 @@ function mess(){
           <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
         </tr>
         <tr>
-          <td class="main" align="right"><?php echo tep_draw_hidden_field('products_date_added', (isset($pInfo->products_date_added) ? $pInfo->products_date_added : date('Y-m-d'))) . tep_image_submit('button_preview.gif', IMAGE_PREVIEW) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . (isset($_GET['pID'])?$_GET['pID']:'')) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; ?></td>
+          <td class="main" align="right"><?php echo tep_draw_hidden_field('products_date_added', (isset($pInfo->products_date_added) ? $pInfo->products_date_added : date('Y-m-d'))) . tep_image_submit('button_preview.gif', IMAGE_PREVIEW) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&page='.$_GET['page'].'&pID=' . (isset($_GET['pID'])?$_GET['pID']:'')) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; ?></td>
           </form>
         </tr>
         <?php
@@ -1407,7 +1414,7 @@ function mess(){
     $form_action = 'insert_product';
   }
 
-    echo tep_draw_form($form_action, FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $_GET['pID'] . '&action=' . $form_action, 'post', 'enctype="multipart/form-data" onSubmit="return mess();"');
+    echo tep_draw_form($form_action, FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $_GET['pID'] . '&page='.$_GET['page'].'&action=' . $form_action, 'post', 'enctype="multipart/form-data" onSubmit="return mess();"');
     echo '<input type="hidden" name="site_id" value="'.strval($site_id).'">';
 
     echo isset($color_image_hedden) ? $color_image_hidden : '';
@@ -2201,14 +2208,14 @@ if ($ocertify->npermission >= 10) { //表示制限
             $heading[] = array('text' => '<b>' . tep_get_products_name($pInfo->products_id, $languages_id) . '</b>');
 
 if ($ocertify->npermission >= 10) { //表示制限
-            $contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=new_product') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>' 
-                . ($ocertify->npermission == 15 ? (' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=delete_product') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>'):'')
-                . ' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=move_product') . '">' . tep_image_button('button_move.gif', IMAGE_MOVE) . '</a> <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=copy_to') . '">' . tep_image_button('button_copy_to.gif', IMAGE_COPY_TO) . '</a>'
+            $contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=new_product'.'&page='.$_GET['page']) . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>' 
+                . ($ocertify->npermission == 15 ? (' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=delete_product'.'&page='.$_GET['page']) . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>'):'')
+                . ' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=move_product'.'&page='.$_GET['page']) . '">' . tep_image_button('button_move.gif', IMAGE_MOVE) . '</a> <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=copy_to') . '">' . tep_image_button('button_copy_to.gif', IMAGE_COPY_TO) . '</a>'
                 . ' <a href="' . tep_href_link(FILENAME_REVIEWS, 'cPath=' . $cPath . '&products_id=' . $pInfo->products_id . '&action=new') . '">' . tep_image_button('button_reviews.gif', IMAGE_REVIEWS) . '</a>');
             foreach(tep_get_sites() as $site){
               $contents[] = array('text' => '<b>' . $site['romaji'] . '</b>');
-              $contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=new_product') . '&site_id='. $site['id'] .'">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>' . (
-                tep_products_description_exist($pInfo->products_id, $site['id'], $languages_id) ? ' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=delete_product_description&site_id='.$site['id']) . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>'
+              $contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=new_product'. '&site_id='. $site['id'].'&page='.$_GET['page'])  .'">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>' . (
+                tep_products_description_exist($pInfo->products_id, $site['id'], $languages_id) ? ' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=delete_product_description&site_id='.$site['id'].'&page='.$_GET['page']) . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>'
                 : ''
                     ) );
             }

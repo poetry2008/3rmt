@@ -52,6 +52,8 @@
       &nbsp;|&nbsp;
       <a href="' . tep_href_link('create_order.php', '', 'NONSSL') . '" class="headerLink">注文作成</a>
       &nbsp;|&nbsp;
+      <a href="' . tep_href_link('micro_log.php', '', 'NONSSL') . '" class="headerLink">引継ぎメモ</a>
+      &nbsp;|&nbsp;
       <a href="' . tep_href_link(basename($GLOBALS['PHP_SELF']), '', 'NONSSL') . '?execute_logout_user=1" class="headerLink">ログアウト</a>';
     } else {
     echo '|&nbsp;

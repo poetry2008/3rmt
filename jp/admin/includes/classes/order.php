@@ -65,8 +65,6 @@
                           'orders_user_language'        => $order['orders_user_language'],
                           'orders_work'                 => $order['orders_work'],
         
-        
-        
                           'orders_screen_resolution'    => $order['orders_screen_resolution'],
                           'orders_color_depth'          => $order['orders_color_depth'],
                           'orders_flash_enable'         => $order['orders_flash_enable'],
