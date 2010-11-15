@@ -87,7 +87,10 @@ if($_POST && is_object($ticket) && $ticket->getId()):
     }
     $ticket->reload();
 endif;
+
+mysql_select_db(DB_DATABASE);
 include(CLIENTINC_DIR.'header.inc.php');
+mysql_select_db(DBNAME);
 include(CLIENTINC_DIR.$inc);
+mysql_select_db(DB_DATABASE);
 include(CLIENTINC_DIR.'footer.inc.php');
-?>

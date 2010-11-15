@@ -24,7 +24,7 @@ if($thisclient && is_object($thisclient) && $thisclient->isValid()) {
     require_once('tickets.php');
     exit;
 }
-
+mysql_select_db(DB_DATABASE);
 require(CLIENTINC_DIR.'header.inc.php');
 ?>
 <div id="contact_us_warpper">

@@ -53,33 +53,37 @@ class google implements engine {
     //$nextpage = 
     //  "http://www.google.co.jp/search?q=FF14+RMT&hl=ja&newwindow=1&ei=EGvPTIWsK4yKuAOpuo3VBg&start=10&sa=N";
       //      return str_replace('{{keyword}}',urlencode($this->keywordi),$this->searchEnter);
-    $url = str_replace('{{keyword}}',$this->keywordi,$nextpage);
+    $url = str_replace('{{keyword}}',urlencode($this->keywordi),$nextpage);
     $url = str_replace('{{pager}}',$page,$url);
     $this->currentUrl = $url;
     return $url;
   }
   //找出有多少结果,算出有多少页
   function preSearch(){
-    $this->currentHtml = file_get_contents($this->makeUrl());
+    $this->currentHtml = @iconv("SHIFT-JIS","UTF-8//TRANSLIT//IGNORE",file_get_contents($this->makeUrl()));
     $this->currentPageNumber = 1;
     $this->getPageCount();
-
   }
   
 
   function getPageCount(){
     //    <div id="bd"><div id="inf"><strong>bobhero</strong> で検索した結果　1～10件目 / 約452件 - 0.38秒</div>
     //    preg_match("(.*)",$this->currentHtml,$match);
-    preg_match($this->countPreg,$this->currentHtml,$match);
+    if(preg_match($this->countPreg,$this->currentHtml,$match)){
     preg_match("/(\d+,{0,})+/",$match[0],$match1);
     $this->resultCountNumber = str_replace(',','',$match1[0]);
     $this->pageCountNumber = ceil($this->resultCountNumber/10);
+    }else{
+    $this->resultCountNumber = '';
+    $this->pageCountNumber = 0;
+    }
 
     //    return $match;
   }
   function parseResult($html){
     $cutStart  = "<ol>";
     $cutEnd  = '</ol></div>';
+    $html = @iconv("SHIFT-JIS","UTF-8//TRANSLIT//IGNORE",$html);
     $html = getMiddle($cutStart,$cutEnd,$html);
     $resultArray = explode('<li class=g',$html);
 //    $parsePreg = "/<a\shref=\"(.*)\">(.*)<\/a><div>(.*)<\/div>.*/";
@@ -88,9 +92,12 @@ class google implements engine {
     $recordArray = array();
     $count = 1;
     unset($resultArray[0]);
+    $i=0;
     foreach ($resultArray as $result ){
-
-      $result = iconv("SHIFT-JIS","UTF-8",$result);
+      $i++;
+      if($i > 10){
+        break;
+      }
       preg_match($parsePreg,$result,$match);
       preg_match("/>(.*)$/",$match[2],$title);
       $recordArray[] = array(

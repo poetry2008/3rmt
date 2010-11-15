@@ -37,11 +37,11 @@ define('ADMIN_EMAIL','bobhero.chen+test@gmail.com');
 #Mysql Login info
 define('DBTYPE','mysql');
 define('DBHOST',DB_SERVER); 
-define('DBNAME',DB_DATABASE);
+//define('DBNAME',DB_DATABASE);
+define('DBNAME','tmposc');
 define('DBUSER',DB_SERVER_USERNAME);
 define('DBPASS',DB_SERVER_PASSWORD);
 
 #Table prefix
 define('TABLE_PREFIX','ost_');
 
-?>

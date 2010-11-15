@@ -92,8 +92,7 @@ define('TEXT_COPY_AS_DUPLICATE', '重複コピー（同一カテゴリー可）'
 define('ERROR_CANNOT_LINK_TO_SAME_CATEGORY', 'エラー: 同じカテゴリー内にはリンクできません。');
 define('ERROR_CATALOG_IMAGE_DIRECTORY_NOT_WRITEABLE', 'エラー: カテゴリー画像のディレクトリに書き込みできません: ' . DIR_FS_CATALOG_IMAGES);
 define('ERROR_CATALOG_IMAGE_DIRECTORY_DOES_NOT_EXIST', 'エラー: カテゴリー画像のディレクトリが存在しません: ' . DIR_FS_CATALOG_IMAGES);
-//define('ERROR_CATALOG_IMAGE_DIRECTORY_NOT_WRITEABLE', 'エラー: カテゴリー画像のディレクトリに書き込みできません: ' . tep_get_upload_root());
-//define('ERROR_CATALOG_IMAGE_DIRECTORY_DOES_NOT_EXIST', 'エラー: カテゴリー画像のディレクトリが存在しません: ' . tep_get_upload_root());
+
 define('TEXT_PRODUCTS_TAGS', '商品タグ:');
 define('TEXT_KEYWORD','キーワード');
 define('TEXT_GOOGLE_SEARCH','はGOOGLEで%sがキーワードとしての検索結果');
@@ -103,5 +102,4 @@ define('TEXT_NO_SET_KEYWORD','キーワードを設置しない');
 define('TEXT_NO_DATA','該当の情報は見つかりませんでした');
 define('TEXT_LAST_SEARCH_DATA','最後から&nbsp;%s&nbsp;つの検索結果');
 define('TEXT_FIND_DATA_STOP','%sをさがしましたが、表示を停止します。');
-define('TEXT_NOT_ENOUGH_DATA','前からの&nbsp;50&nbsp;件検索結果に不重複な結果は&nbsp;%s&nbsp;件があります')
-?>
+define('TEXT_NOT_ENOUGH_DATA','前からの&nbsp;50&nbsp;件検索結果に不重複な結果は&nbsp;%s&nbsp;件があります');

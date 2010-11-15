@@ -55,6 +55,7 @@
                           'orders_host_name'      => $order['orders_host_name'],
                           'orders_user_agent'     => $order['orders_user_agent'],
                           'orders_ref'            => $order['orders_ref'],
+                          'orders_ref_keywords'            => $order['orders_ref_keywords'],
                           'orders_comment'        => $order['orders_comment'],
                           'orders_important_flag' => $order['orders_important_flag'],
                           'orders_care_flag'      => $order['orders_care_flag'],

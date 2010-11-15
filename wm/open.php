@@ -47,8 +47,9 @@ endif;
   define('HEADING_TITLE', 'Internet Explorer6の設定について');
 define('NAVBAR_TITLE','お問い合わせ');
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_BROWSER_IE6X));
+  
+mysql_select_db(DB_DATABASE);
 require(CLIENTINC_DIR.'header.inc.php');
 require(CLIENTINC_DIR.$inc);
 require(CLIENTINC_DIR.'footer.inc.php');
 
-?>

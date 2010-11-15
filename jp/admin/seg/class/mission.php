@@ -123,6 +123,13 @@ class mission {
     $sql = "delete from session_log where mission_id ='".$this->id."'
            and id <> '".$this->session_id."'";
     $this->conn->query($sql);
+    $sql = "delete FROM `session_log`
+      WHERE `mission_id`
+      not in (
+          SELECT mission_id
+          FROM `categories_to_mission`
+         )";
+    $this->conn->query($sql);
     //结束后需要标记结束
     $sql = 'update session_log set end_at ='.time()
            .',stopation="'.$err_code.'" where id =

@@ -99,6 +99,7 @@ function fax_over_color(ele){
 
 // 订单搜索
 function search_type_changed(elem){
+	if ($('#keywords').val() && elem.selectedIndex != 0) 
       document.forms.orders1.submit();
 }
 
@@ -275,6 +276,7 @@ function playSound()
   
   function show_submit_button(){
     // 当必要选项全部不为空的时候显示确认按钮
+    
     if ($('#questions_type').val() == 1) {
       if (
         ($('#q_1_1_0').attr('checked') || $('#q_1_1_1').attr('checked')) 
@@ -282,7 +284,9 @@ function playSound()
         && $('#q_13_1').attr('checked')
         && ($('#q_6_1_0').attr('checked') || $('#q_6_1_1').attr('checked'))
         && $('#q_14_1').attr('checked')
+        && ($('#q_15_3').attr('checked') || $('#q_15_4').attr('checked') || $('#q_15_5').attr('checked'))
         && $('#q_15_1').attr('checked')
+        && $('#q_15_8').attr('checked')
         && $('#q_16_2').attr('checked')
         && show_q_8_1_able
       ) {
@@ -329,6 +333,11 @@ function playSound()
         $('#orders_questions_submit_div').hide();
       }
     }
+    
+    /*
+    $('#tr_q_8_1').show();
+    $('#orders_questions_submit_div').show();
+    */
   }
 $(function(){
   
@@ -354,7 +363,8 @@ $(function(){
     success: function(){
       if ($('#q_8_1').val()) {
         //保存成功自动跳转到列表
-        window.location.href=$('#back_link').attr('href');
+        //window.location.href=$('#back_link').attr('href');
+        window.location.href='orders.php';
       }
     }
   });
@@ -384,6 +394,8 @@ $(function(){
     $('#tr_q_8_1').show();
     $('#orders_questions_submit_div').show();
   }
+  
+  
   
 });
 
@@ -477,4 +489,119 @@ function orders_computers(ele, cid, oid) {
     $.ajax({ url: "ajax_orders.php?orders_id="+oid+"&action=clean_option&questions_no="+n, success: function(){}});
     // 是否显示按钮
     show_submit_button();
+  }
+  
+  // 是否显示批量问答框
+  function show_questions(ele){
+    /*if(document.sele_act.elements["chk[]"].length == null){
+      document.sele_act.elements["chk[]"].checked = true;
+      // 支付通知5 && can_show && ID && 买取
+      if (
+      	$('#orders_status_' + ele.value).val() == 5
+      	&& questionShow[ele.value] 
+      	) {
+      }
+    }else{
+    */
+      show = true;
+      total = 0;
+      msg = '';
+      for(i = 0; i < document.sele_act.elements["chk[]"].length; i++){
+        if(document.sele_act.elements["chk[]"][i].checked){
+          total++;
+          // 支付通知5 && can_show && ID && 买取
+          if ($('#orders_status_'+document.sele_act.elements["chk[]"][i].value).val() == 5) {
+            show = show && true;
+          } else {
+            show = false;
+            //alert($('#select_question').css('display'));
+            //alert('1');
+          }
+          
+          if (questionShow[document.sele_act.elements["chk[]"][i].value] == "1") {
+            show = show && true;
+          } else {
+            show = false;
+            msg += "\nチェックがされてない箇所あり\n";
+            //if ($('#select_question').css('display') == 'table' || $('#select_question').css('display') == 'block')
+            //  alert('チェックがされてない箇所あり');
+          }
+          
+          if (typeof(cid)=='undefined') {
+            cid = $('#cid_'+document.sele_act.elements["chk[]"][i].value).val();
+          } else {
+            if (cid != $('#cid_'+document.sele_act.elements["chk[]"][i].value).val()) {
+              show = false;
+              msg += "\n顧客IDが違います\n";
+              //if ($('#select_question').css('display') == 'table' || $('#select_question').css('display') == 'block')
+              //  alert('顧客IDが違います');
+            } else {
+              show = show && true;
+            }
+          }
+          
+          if (orderType[document.sele_act.elements["chk[]"][i].value] == 1) {
+            show = show && true;
+          } else {
+            show = false;
+            msg += "\n取引一括完了は買取の場合のみ有効です\n";
+            //if ($('#select_question').css('display') == 'table' || $('#select_question').css('display') == 'block')
+            //  alert('取引一括完了は買取の場合のみ有効です');
+          }
+        }
+      }
+      //alert(show);
+      if (show && total > 1) {
+        $('#select_question').show();
+      } else {
+        if (($('#select_question').css('display') == 'table' || $('#select_question').css('display') == 'block') && total > 1)
+          alert(msg);
+        $('#select_question').hide();
+      }
+  	//}
+  }
+  
+  // 为空的时候不让提交
+  function check_question_form(){
+    if (
+      (document.getElementById('q_15_3').checked || document.getElementById('q_15_4').checked || document.getElementById('q_15_5').checked)
+      && document.getElementById('q_15_8').checked 
+      && $('#q_15_7').val()
+      && $('#q_8_1').val()
+    ) {
+      return true;
+    } else {
+      alert('必要な項目を記入してください');
+      return false;
+    }
+  }
+  function click_relate(pid){
+    if ($('#checkbox_'+pid).attr('checked')) {
+      $('#offset_'+pid).attr('readonly', true);
+	  $.ajax({
+	    url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count='+($('#quantity_'+pid).html()-$('#offset_'+pid).val()),
+	    success: function(data) {
+	    }
+	  });
+    } else {
+      $('#offset_'+pid).attr('readonly', false);
+	  $.ajax({
+	    url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count=-'+($('#quantity_'+pid).html()-$('#offset_'+pid).val()),
+	    success: function(data) {
+	    }
+	  });
+    }
+  }
+  function clear_quantity(){
+
+    $('#relate_products_box input[type=checkbox]').each(function(){
+      if ($(this).attr('checked')) {
+        $(this).attr('checked', '');
+        $(this).click();
+        $(this).attr('checked', '');
+      }
+    });
+  }
+  function print_quantity(pid){
+    $('#relate_product_'+pid).html($('#quantity_'+pid).html()-$('#offset_'+pid).val())
   }

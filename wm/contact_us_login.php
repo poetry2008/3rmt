@@ -5,7 +5,7 @@
     Client Login 
 
     Peter Rotich <peter@osticket.com>
-    Copyright (c)  2006-2010 osTicket
+    Copyright (c)  2006-2010 osTicket  
     http://www.osticket.com
 
     Released under the GNU General Public License WITHOUT ANY WARRANTY.
@@ -87,7 +87,7 @@ if($_POST && (!empty($_POST['lemail']) && !empty($_POST['lticket']))):
         Sys::log(LOG_WARNING,'Failed login attempt (client)',$alert);
     }
 endif;
+mysql_select_db(DB_DATABASE);
 require(CLIENTINC_DIR.'header.inc.php');
 require(CLIENTINC_DIR.'login.inc.php');
 require(CLIENTINC_DIR.'footer.inc.php');
-?>

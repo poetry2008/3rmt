@@ -1,12 +1,12 @@
 #!/usr/bin/env php
 <?php
-define('PRO_ROOT_DIR','/home/szn/project/3rmt/jp/admin/seg/');
+define('PRO_ROOT_DIR','/home/maker/project/3rmt/jp/admin/seg');
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
 //加载公用库页面
-require_once(PRO_ROOT_DIR."config/db.config.php");
-require_once(PRO_ROOT_DIR."class/db.php");
-require_once(PRO_ROOT_DIR."class/mission.php");
+require_once(PRO_ROOT_DIR."/config/db.config.php");
+require_once(PRO_ROOT_DIR."/class/db.php");
+require_once(PRO_ROOT_DIR."/class/mission.php");
 define('LOG_FILE_NAME',LOG_DIR.date('Y-m-d_H_i_s',time()).'.log');
 define('LOG_FILE_NAME_LAST',LOG_DIR.'last.log');
 function cron_log($message){
@@ -119,8 +119,8 @@ function addMission($ctm,$rebuild=false){
   $defaultMission = array(
       "name"=>'category '.$ctm['cid'],
       "keyword"=>$ctm['cmkey'],
-      "page_limit"=>"5",
-      "result_limit"=>"50",
+      "page_limit"=>"2",
+      "result_limit"=>"20",
       "enabled"=>1,
       "engine"=>"google",
       );
@@ -155,6 +155,7 @@ function updateMission($ctm){
   $db->query('update mission set keyword="'.$ctm['cmkey'].'" where id ='.$ctm['id']);
   if($db->error){
     echo $db->error;
+    var_dump('error');
     cron_log($db->error);
   }
 }

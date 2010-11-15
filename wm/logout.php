@@ -24,4 +24,4 @@ session_unset();
 session_destroy();
 header('Location: contact_us.php');
 require('contact_us.php');
-?>
+

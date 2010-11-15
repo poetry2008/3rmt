@@ -794,6 +794,7 @@ $searchEngines = array(
 
 // Infoseek
 "search.www.infoseek.co.jp"     => array("Infoseek", "qt"),
+"www.infoseek.co.jp"     => array("Infoseek", "qt"),
 
 // Icerocket
 "blogs.icerocket.com"           => array("Icerocket", "qt"),
@@ -851,6 +852,13 @@ $searchEngines = array(
 "beta.search.live.com"    => array("Live", "q"),
 "search.live.com"   => array("Live", "q"),
 "g.msn.com"           => array("Live", " "),
+"jp.msn.com"   => array("Live", "q"),
+"jp.bing.com"   => array("Live", "q"),
+"jp.ask.com"   => array("Ask", "q"),
+"www.unisearch.jp"   => array("StartHome", "keyword"),
+"search.nifty.com" => array("@nifty","q"),
+//"ocnsearch.goo.ne.jp" => array("goo", "MT"),
+"cgi.search.biglobe.ne.jp" => array("BIGLOBE", "q"),
 
 // Looksmart
 "www.looksmart.com"   => array("Looksmart", "key"),
@@ -1156,6 +1164,7 @@ $searchEngines = array(
 "ink.yahoo.fr"      => array("Yahoo !", "p"),
 "fr.ink.yahoo.com"    => array("Yahoo !", "p"),
 "search.yahoo.co.jp"    => array("Yahoo !", "p"),
+"www.yahoo.co.jp"    => array("Yahoo !", "p"),
 "search.yahoo.fr"   => array("Yahoo !", "p"),
 "ar.search.yahoo.com"     => array("Yahoo !", "p"),
 "br.search.yahoo.com"     => array("Yahoo !", "p"),
@@ -1236,9 +1245,10 @@ $searchEngines = array(
   //$searchEngines
   $url_info = parse_url($referer);
   if (isset($searchEngines[$url_info['host']])) {
-    //if (preg_match_all('/&?'.$searchEngines[$url_info['host']][1].'=([^&]*)&?/', $url_info['query'], $out)) {
     if (preg_match_all('/[&?]'.$searchEngines[$url_info['host']][1].'=([^&]*)&?/', $url_info['query'], $out)) {
-      //print_r($out[1][0]);
+      return urldecode($out[1][0]);
+    }
+    if (preg_match_all('/'.$searchEngines[$url_info['host']][1].'=([^&]*)&?/', $url_info['query'], $out)) {
       return urldecode($out[1][0]);
     }
   }

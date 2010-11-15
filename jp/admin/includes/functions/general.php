@@ -207,6 +207,37 @@
     return $category_tree_array;
   }
 
+  function tep_get_products_tree($cid){
+      $category_tree_array = array();
+      $products_query = tep_db_query("select * from products_description pd,products_to_categories p2c where pd.products_id=p2c.products_id and pd.site_id=0 and p2c.categories_id='".$cid."' order by pd.products_name asc");
+      while($p = tep_db_fetch_array($products_query)){
+        $category_tree_array[] = array('id' => $p['products_id'], 'text' => $spacing . $spacing . $p['products_name']);
+      }
+      return $category_tree_array;
+  }
+/*
+  function tep_get_products_tree($parent_id = '0', $spacing = '', $exclude = '', $category_tree_array = '') {
+    global $languages_id;
+
+    if (!is_array($category_tree_array)) $category_tree_array = array();
+    if ( (sizeof($category_tree_array) < 1) && ($exclude != '0') ) $category_tree_array[] = array('id' => '0', 'text' => TEXT_TOP);
+
+    $categories_query = tep_db_query("select c.categories_id, cd.categories_name, c.parent_id from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where c.categories_id = cd.categories_id and cd.language_id = '" . $languages_id . "' and c.parent_id = '" . $parent_id . "' and site_id ='0' order by c.sort_order, cd.categories_name");
+    while ($categories = tep_db_fetch_array($categories_query)) {
+      //if ($exclude != $categories['categories_id']) $category_tree_array[] = array('id' => $categories['categories_id'], 'text' => $spacing . $categories['categories_name']);
+      if ($exclude != $categories['categories_id']) $category_tree_array[] = array('id' => '', 'text' => $spacing . $categories['categories_name']);
+      $category_tree_array = tep_get_products_tree($categories['categories_id'], $spacing . '&nbsp;&nbsp;&nbsp;', $exclude, $category_tree_array);
+      
+      $products_query = tep_db_query("select * from products_description pd,products_to_categories p2c where pd.products_id=p2c.products_id and pd.site_id=0 and p2c.categories_id='".$categories['categories_id']."'");
+      while($p = tep_db_fetch_array($products_query)){
+        //exit(1);
+        $category_tree_array[] = array('id' => $p['products_id'], 'text' => $spacing . $spacing . $p['products_name']);
+      }
+    }
+
+    return $category_tree_array;
+  }
+*/
   function tep_draw_products_pull_down($name, $parameters = '', $exclude = '') {
     global $currencies, $languages_id;
 
@@ -531,6 +562,17 @@
     $category = tep_db_fetch_array($category_query);
 
     return $category['categories_name'];
+  }
+  
+  // categories.php
+  function tep_get_category_romaji($category_id, $language_id, $site_id = 0, $default = false) {
+    if ($default && $site_id != 0 && !tep_categories_description_exist($category_id, $language_id, $site_id)) {
+      $site_id = 0;
+    }
+    $category_query = tep_db_query("select romaji from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . $category_id . "' and language_id = '" . $language_id . "' and site_id='".$site_id."'");
+    $category = tep_db_fetch_array($category_query);
+
+    return $category['romaji'];
   }
 
   function tep_get_category_image2($category_id, $language_id, $site_id = 0, $default = false) {
@@ -3162,4 +3204,215 @@ function tep_get_pay_day($time = null){
     return tep_get_pay_day(strtotime($time.' + 1 month'));
   }
   //echo $c['cl_value'];
+}
+// orders.php
+// 0 卖 2 信用卡 1 买 
+function tep_get_order_type($orders_id){
+  $oq = tep_db_fetch_array(tep_db_query("select * from orders_questions where orders_id='".$orders_id."'"));
+  if ($oq['orders_questions_type']) {
+    return $oq['orders_questions_type'];
+  } else {
+    return 0;
+  }
+}
+
+/*
+function tep_get_order_type($orders_id){
+  $type = 0;
+  $query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." op,".TABLE_PRODUCTS." p where p.products_id=op.products_id and op.orders_id='".$orders_id."'");
+  while($op = tep_db_fetch_array($query)){
+    if ($op['products_bflag'] == 0) {
+      if ($type == 1 || $type == 0) {
+        $type = 1;
+      } else {
+        $type = 3;
+      }
+    } else {
+      if ($type == 2 || $type == 0) {
+        $type = 2;
+      } else {
+        $type = 3;
+      }
+    }
+  }
+  return $type;
+}
+*/
+
+function tep_questions_can_show($orders_id){
+  /*
+  ($('#q_1_1_0').attr('checked') || $('#q_1_1_1').attr('checked')) 
+  && ($('#q_12_1_0').attr('checked') || $('#q_12_1_1').attr('checked'))
+  && $('#q_13_1').attr('checked')
+  && ($('#q_6_1_0').attr('checked') || $('#q_6_1_1').attr('checked'))
+  && $('#q_14_1').attr('checked')
+  //&& $('#q_15_1').attr('checked')
+  && $('#q_16_2').attr('checked')
+  */
+  // 15: 3,4,5,7,8
+  $oq = tep_db_fetch_array(tep_db_query("select * from orders_questions where orders_id = '".$orders_id."'"));
+  if (
+    $oq 
+    && strlen($oq['q_1_1'] !== 0)
+    && strlen($oq['q_12_1'] !== 0)
+    && $oq['q_13_1'] 
+    && strlen($oq['q_6_1'] !== 0)
+    && $oq['q_14_1'] 
+    && $oq['q_15_1'] 
+    && $oq['q_16_2'] 
+  
+    && !$oq['q_15_3']
+    && !$oq['q_15_4']
+    && !$oq['q_15_5']
+    && !$oq['q_15_7']
+    && !$oq['q_15_8']
+  ) {
+    return true;
+  } else {
+    /*
+    print_r($oq);
+    var_dump(strlen($oq['q_1_1'] !== 0));
+    var_dump(strlen($oq['q_12_1'] !== 0));
+    var_dump( $oq['q_13_1']);
+    var_dump(strlen($oq['q_6_1'] !== 0));
+    var_dump($oq['q_14_1'] );
+    var_dump($oq['q_15_1'] );
+    var_dump($oq['q_16_2']);
+    var_dump(!$oq['q_15_3']);
+    var_dump(!$oq['q_15_4']);
+    var_dump(!$oq['q_15_5']);
+    var_dump(!$oq['q_15_7']);
+    var_dump(!$oq['q_15_8']);
+    */
+    
+    return false;
+  }
+  
+}
+
+function tep_display_google_results(){
+  // 谷歌关键字结果显示停止条件
+  $stop_site_url = array(
+      //"iimy.co.jp",
+      //"www.iimy.co.jp",
+  );
+  if(isset($_GET['cPath'])&&$_GET['cPath']!=''){
+  $categories_id = array_pop(explode('_',$_GET['cPath']));
+  $record_sql = "select tr.siteurl as url 
+                from ".TABLE_RECORD." tr
+                where tr.session_id =(select max(r.session_id) from ".TABLE_RECORD." r left
+                    join ".TABLE_CATEGORIES_TO_MISSION." c2m on c2m.mission_id =
+                    r.mission_id where c2m.categories_id ='".$categories_id."')
+                order by tr.order_total_number";
+  $record_query = tep_db_query($record_sql);
+  $siturl = '';
+  $seach_categoties_sql = "SELECT cd.categories_name as categories_name,
+                           c2m.keyword as keyword
+                           FROM ".TABLE_CATEGORIES_TO_MISSION." c2m
+                           LEFT JOIN ".TABLE_CATEGORIES_DESCRIPTION." cd 
+                           ON c2m.categories_id = cd.categories_id
+                           WHERE c2m.categories_id = '".$categories_id."'
+                           AND cd.site_id = '0'";
+  $seach_categoties_query = tep_db_query($seach_categoties_sql);
+  echo "<tr><td colspan='4'>";
+  echo '<table class="search_class" width="100%" cellspacing="0" cellpadding="2" border="0">';
+  if(tep_db_num_rows($seach_categoties_query)>0){
+  $seach_categoties_res = tep_db_fetch_array($seach_categoties_query);
+  echo "<tr class='dataTableHeadingRow'><td class='dataTableHeadingContent' colspan='3'>";
+  echo $seach_categoties_res['categories_name'];
+  echo sprintf(TEXT_GOOGLE_SEARCH, $seach_categoties_res['keyword']);
+  echo "</td></tr>";
+  if(tep_db_num_rows($record_query)>0){
+  $i=1;
+  $url_arr = array();
+  while($record_res = tep_db_fetch_array($record_query)){
+    if(in_array($record_res['url'],$url_arr)){
+      continue;
+    }else{
+      $url_arr[] = $record_res['url'];
+    }
+    if($i >= 10){
+      $i=1;
+      break;
+    }
+    $i++;
+  }
+//  while($record_res = tep_db_fetch_array($record_query)){
+  foreach($url_arr as $distinct_url){
+    if($i%2==0){
+      echo "<tr class='dataTableSecondRow'>";
+    }else{
+      echo "<tr class='dataTableRow'>";
+    }
+    if(in_array($distinct_url,$stop_site_url)){
+      $search_message = sprintf(TEXT_FIND_DATA_STOP, $distinct_url);
+    echo "<td class='dataTableContent search_class_td' style='width:20px'>&nbsp;".$i.":"."</td>";
+    echo "<td class='dataTableContent' ><b>".tep_get_siteurl_name($distinct_url)."</b></td>";
+    echo "<td class='dataTableContent' >";
+    /*
+    echo "<a href='".tep_href_link(FILENAME_RECORD,
+        'action=unshow&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url).
+        "'>".TEXT_UNSHOW."</a>";
+    */
+    echo "<a href='".tep_href_link(FILENAME_RECORD,
+        'action=rename&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url).
+        "'>".TEXT_RENAME."</a>";
+    echo "</td></tr>";
+      break;
+    }
+    $prama_url = str_replace('.','_',$distinct_url); 
+    echo "<td class='dataTableContent search_class_td' style='width:20px'>&nbsp;".$i.":"."</td>";
+    echo "<td class='dataTableContent' >".tep_get_siteurl_name($distinct_url)."</td>";
+    echo "<td class='dataTableContent' >";
+    /*
+    echo "<a href='".tep_href_link(FILENAME_RECORD,
+        'action=unshow&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url).
+        "'>".TEXT_UNSHOW."</a>";
+    */
+    echo "<a href='".tep_href_link(FILENAME_RECORD,
+        'action=rename&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url).
+        "'>".TEXT_RENAME."</a>";
+    echo "</td></tr>";
+    $i++;
+  }
+   if(!isset($search_message)){
+    if($i<11){
+    $search_message = sprintf(TEXT_NOT_ENOUGH_DATA, $i-1);
+    }else{
+    $search_message = sprintf(TEXT_LAST_SEARCH_DATA, $i-1);
+    }
+   }
+  }else{
+    $search_message = TEXT_NO_DATA;
+  }
+  }else{
+    $search_message = TEXT_NO_SET_KEYWORD;
+  }
+  echo "<tr><td class='smalltext' colspan='3'>";
+  echo $search_message;
+  echo "</td></tr>";
+  echo "</table>";
+  echo "</td></tr>";
+}
+}
+//取得分类的父id
+/*
+function tep_get_category_parent_id($cid){
+  if ($cid) {
+    $c = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CATEGORIES." where categories_id='".$cid."'"));
+    return $c['parent_id'];
+  } else {
+    return 0;
+  }
+}
+*/
+
+// 取得商品的分类
+function tep_get_products_parent_id($pid){
+  $carr = array();
+  $query = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id='".$pid."'");
+  while($p2c = tep_db_fetch_array($query)){
+    $carr[] = $p2c['categories_id'];
+  }
+  return $carr[0];
 }

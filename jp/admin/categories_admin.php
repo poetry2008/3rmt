@@ -553,6 +553,20 @@ if(empty($cPath_back)&&empty($cID)&&isset($cPath)){
 ?>
 &nbsp;</td>
 </tr>
+<?php
+// google start
+define('TEXT_KEYWORD','キーワード');
+define('TEXT_GOOGLE_SEARCH','はGOOGLEで%sがキーワードとしての検索結果');
+define('TEXT_RENAME','リネーム');
+define('TEXT_INFO_KEYWORD','キーワードを変更する');
+define('TEXT_NO_SET_KEYWORD','キーワードを設置しない');
+define('TEXT_NO_DATA','該当の情報は見つかりませんでした');
+define('TEXT_LAST_SEARCH_DATA','最後から&nbsp;%s&nbsp;つの検索結果');
+define('TEXT_FIND_DATA_STOP','%sをさがしましたが、表示を停止します。');
+define('TEXT_NOT_ENOUGH_DATA','前からの&nbsp;50&nbsp;件検索結果に不重複な結果は&nbsp;%s&nbsp;件があります');
+tep_display_google_results();
+// google end
+?>
 </table>
 </td>
 </tr>

@@ -30,7 +30,8 @@
           $logs[] = $l;
         exit(json_encode($logs));
       case 'delete': 
-        tep_db_perform('micro_logs',array('deleted' => 1),'update','log_id='.$_GET['id']);
+      	tep_db_query("delete from micro_logs where log_id ='".$_GET['id']."'");
+        //tep_db_perform('micro_logs',array('deleted' => 1),'update','log_id='.$_GET['id']);
         exit($_GET['id']);
         break;
       case 'new': 
@@ -95,13 +96,13 @@ left:-95px;
 left:-163px;
 }
 .number{
-font-size:30px;
+font-size:24px;
 font-weight:bold;
 width:20px;
 text-align:center;
 }
 form{
-margin:0 0 5px 0;
+margin:0;
 padding:0;
 }
 .alarm_input{
@@ -113,7 +114,8 @@ width:80px;
   clear: both;
 }
 .log .content{
-  padding:5px;
+  padding:3px;
+  font-size:12px;
 }
 .log .alarm{
   display:none;
@@ -170,7 +172,8 @@ textarea{
 .clr{
 clear:both;
 width:100%;
-height:1px;
+height:5px;
+overflow:hidden;
 }
 .popup-calendar-wrapper{
 float:left;
@@ -194,7 +197,7 @@ float:left;
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td class="pageHeading">引継ぎメモ</td>
+            <td class="pageHeading">引継メモ</td>
             <td class="pageHeading" align="right"></td>
           </tr>
         </table></td>
@@ -268,8 +271,18 @@ function log_html(text){
   $str  = '<form action="?action=update&id='+text['log_id']+'" id="log_form_'+text['log_id']+'" method="post">';
   $str += '  <table cellpadding="0" cellspacing="0" class="log '+c+'" id="log_'+text['log_id']+'" width="100%" border="0">';
   $str += '    <tr>';
-  $str += '      <td class="number">'+(parseInt(text['level'])+1)+'</td>';
-  $str += '      <td><div style="position:relative; background:#fff;"><div class="content" style="font-size:'+(14+3*text['level'])+'px">'+text['content'].replace(/\n/g,'<br>')+'</div><div class="info">'+t2.getFullYear() + '/' + (t2.getMonth()+1) + '/' + t2.getDate()+ ' ' + t2.getHours()+ ':' + t2.getMinutes()+'</div></div></td>';
+  $str += '      <td class="number" style="color:'+(text['level']!='0'?(text['level']=='2'?'red':'orange'):'black')+'">'+(parseInt(text['level'])+1)+'</td>';
+  if(t2.getHours()<10){
+     var hour = '0'+t2.getHours();
+  }else{
+     var hour = t2.getHours();
+  }
+  if(t2.getMinutes()<10){
+     var minutes = '0'+t2.getMinutes();
+  }else{
+     var minutes = t2.getMinutes();
+  }
+  $str += '      <td style="background:#fff;"><div style="background:#fff;"><div class="content">'+text['content'].replace(/\n/g,'<br>')+'</div><div class="info">'+t2.getFullYear() + '/' + (t2.getMonth()+1) + '/' + t2.getDate()+ ' ' + hour + ':' + minutes+'</div></div></td>';
   $str += '      <td class="info02">';
   $str += '           <div class="level">'+parseInt(text['level'])+'</div>';
   $str += '           <div class="alarm">'+text['alarm']+'</div>';
@@ -396,7 +409,9 @@ function more_log(){
 </script>
 
           <div id="div_logs"></div>
+          	  <!--
           <div id="div_more"><button onClick="more_log()">さらに表示</button></div>
+              -->
         </td>
       </tr>
     </table>

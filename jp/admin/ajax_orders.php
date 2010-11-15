@@ -1,11 +1,26 @@
 <?php
 require('includes/application_top.php');
+
+  header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+  # 永远是改动过的
+  header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
+  # HTTP/1.1
+  header("Cache-Control: no-store, no-cache, must-revalidate");
+  header("Cache-Control: post-check=0, pre-check=0", false);
+  # HTTP/1.0
+  header("Pragma: no-cache");
 if ($_POST['orders_id'] && $_POST['orders_comment']) {
   // update orders_comment
   tep_db_perform('orders', array('orders_comment' => $_POST['orders_comment']), 'update', "orders_id='".$_POST['orders_id']."'");
   echo $_POST['orders_comment'];
 } else if ($_GET['action'] == 'paydate') {
   echo date('Y年n月j日',strtotime(tep_get_pay_day()));
+} else if ($_GET['action'] == 'set_quantity' && $_GET['products_id'] && $_GET['count']) {
+  //print_r($_GET);
+  $p = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$_GET['products_id']."'"));
+  $q = $p['products_quantity'] + $_GET['count'];
+  tep_db_query("update ".TABLE_PRODUCTS." set products_quantity='".$q."' where products_id='".$_GET['products_id']."'");
+  //print("update ".TABLE_PRODUCTS." set products_quantity='".$q."' where products_id='".$_GET['products_id']."'");
 } else if ($_GET['orders_id'] && $_POST['orders_credit']) {
   $order = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS." where orders_id='".$_GET['orders_id']."'"));
   tep_db_perform('customers', array('customers_fax' => $_POST['orders_credit']), 'update', "customers_id='".$order['customers_id']."'");
@@ -184,6 +199,18 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
     $questions_arr['orders_id'] = $_GET['orders_id'];
     tep_db_perform('orders_questions', $questions_arr);
   }
+  //relate_product[<?php echo $op['products_id'];
+  if ($_POST['relate_product'] || $_POST['offset']) {
+    foreach($_POST['offset'] as $pid => $of){
+      if (tep_db_num_rows(tep_db_query("select * from orders_questions_products where orders_id='".$_GET['orders_id']."' and products_id='".$pid."'"))) {
+        //echo 'abc';
+        tep_db_perform('orders_questions_products',array('checked'=>$_POST['relate_product'][$pid], 'offset' => $_POST['offset'][$pid]), 'update', "orders_id='".$_GET['orders_id']."' and products_id='".$pid."'");
+      } else {
+        //echo 'def';
+        tep_db_perform('orders_questions_products',array('orders_id'=>$_GET['orders_id'], 'products_id'=>$pid, 'checked'=>$_POST['relate_product'][$pid], 'offset' => $_POST['offset'][$pid]));
+      }
+    }
+  }
   if (isset($questions_arr['q_8_1']) && $questions_arr['q_8_1']) {
     //$orders = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS." where orders_id='".$_GET['orders_id']."'"));
     //if ($orders['orders_status'] != 19) {
@@ -191,8 +218,26 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
       //tep_db_perform('orders_status_history', array('orders_id' => $_GET['orders_id'], 'orders_status_id' => '19', 'date_added'=> 'now()'));
       orders_updated($_GET['orders_id']);
       orders_wait_flag($_GET['orders_id']);
+      // relate
+      /*
+      $orders_products_query = tep_db_query("select p.products_id,op.products_quantity,op.products_name,p.relate_products_id from ".TABLE_ORDERS_PRODUCTS." op, ".TABLE_PRODUCTS." p where op.products_id=p.products_id and op.orders_id='".$_GET['orders_id']."' order by op.products_name asc");
+      while ($opp = tep_db_fetch_array($orders_products_query)) {
+        $op = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." p, ".TABLE_PRODUCTS_DESCRIPTION." pd where p.products_id=pd.products_id and pd.site_id='0' and p.products_id='".$opp['relate_products_id']."'"));
+        if (!$op) {
+          continue;
+        }
+        $oqp = tep_db_fetch_array(tep_db_query("select * from orders_questions_products where orders_id='".$_GET['orders_id']."' and products_id='".$opp['products_id']."'"));
+        //print_r($op);
+        //print_r($opp);
+        echo "update ".TABLE_PRODUCTS." set products_quantity='".($op['products_quantity']+($opp['products_quantity']-$oqp['offset']))."' where products_id='".$op['products_id']."'";
+        tep_db_query("update ".TABLE_PRODUCTS." set products_quantity='".($op['products_quantity']+($opp['products_quantity']-$oqp['offset']))."' where products_id='".$op['products_id']."'");
+      }
+      */
     //}
+    
+    
   }
+  
 } else if ($_GET['action'] == 'clean_option' && $_GET['questions_no'] && $_GET['orders_id']) {
   // 清空选项
   switch ($_GET['questions_no']) {
@@ -258,5 +303,6 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
       break;
   }
   print_r($arr);
+  print_r($orders_id);
   tep_db_perform('orders_questions', $arr, 'update', "orders_id='".$_GET['orders_id']."'");
 }

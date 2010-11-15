@@ -2,19 +2,82 @@
 include("includes/application_top.php");
 
 if($_POST['updata'] == 'on') {
+  /*
+  echo "<pre>";
+  print_r($_POST);
+  exit;
+  /**/
+  /*
   $mm_1 = "";
   for($i=1; $i<32; $i++) {
     $mm_1 .= $_POST[$i];
   }
-  tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_1."' where cl_ym = '".$_POST['ymd']."'");
-  
+  tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_1."' where cl_ym = '".$_POST['ymd1']."'");
+  print("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_1."' where cl_ym = '".$_POST['ymd1']."'");
+  */
+
   $mm_2 = "";
-  for($j=101; $j<132; $j++) {
+  for($j=201; $j<232; $j++) {
     $mm_2 .= $_POST[$j];
   }
-  tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_2."' where cl_ym = '".$_POST['ymd2']."'");
   
-  tep_redirect(tep_href_link(FILENAME_BANK_CL, 'action=success'));
+  if (tep_db_num_rows("select * from ".TABLE_BANK_CALENDAR." where cl_ym = '".$_POST['ymd2']."'")) {
+    tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_2."' where cl_ym = '".$_POST['ymd2']."'");
+  } else {
+    tep_db_query("insert into  ".TABLE_BANK_CALENDAR." (cl_ym,cl_value) values ('".$_POST['ymd2']."','".$mm_2."')");
+  }
+  
+  $mm_3 = "";
+  for($j=301; $j<332; $j++) {
+    $mm_3 .= $_POST[$j];
+  }
+  if (tep_db_num_rows("select * from ".TABLE_BANK_CALENDAR." where cl_ym = '".$_POST['ymd3']."'")) {
+    tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_3."' where cl_ym = '".$_POST['ymd3']."'");
+  } else {
+    tep_db_query("insert into  ".TABLE_BANK_CALENDAR." (cl_ym,cl_value) values ('".$_POST['ymd3']."','".$mm_3."')");
+  }
+    
+  $mm_4 = "";
+  for($j=401; $j<432; $j++) {
+    $mm_4 .= $_POST[$j];
+  }
+  if (tep_db_num_rows("select * from ".TABLE_BANK_CALENDAR." where cl_ym = '".$_POST['ymd4']."'")) {
+    tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_4."' where cl_ym = '".$_POST['ymd4']."'");
+  } else {
+    tep_db_query("insert into  ".TABLE_BANK_CALENDAR." (cl_ym,cl_value) values ('".$_POST['ymd4']."','".$mm_4."')");
+  }
+  
+  $mm_5 = "";
+  for($j=501; $j<532; $j++) {
+    $mm_5 .= $_POST[$j];
+  }
+  if (tep_db_num_rows("select * from ".TABLE_BANK_CALENDAR." where cl_ym = '".$_POST['ymd5']."'")) {
+    tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_5."' where cl_ym = '".$_POST['ymd5']."'");
+  } else {
+    tep_db_query("insert into  ".TABLE_BANK_CALENDAR." (cl_ym,cl_value) values ('".$_POST['ymd5']."','".$mm_5."')");
+  }
+  
+  $mm_6 = "";
+  for($j=601; $j<632; $j++) {
+    $mm_6 .= $_POST[$j];
+  }
+  if (tep_db_num_rows("select * from ".TABLE_BANK_CALENDAR." where cl_ym = '".$_POST['ymd6']."'")) {
+    tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_6."' where cl_ym = '".$_POST['ymd6']."'");
+  } else {
+    tep_db_query("insert into  ".TABLE_BANK_CALENDAR." (cl_ym,cl_value) values ('".$_POST['ymd6']."','".$mm_6."')");
+  }
+  
+  $mm_7 = "";
+  for($j=701; $j<732; $j++) {
+    $mm_7 .= $_POST[$j];
+  }
+  if (tep_db_num_rows("select * from ".TABLE_BANK_CALENDAR." where cl_ym = '".$_POST['ymd7']."'")) {
+    tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_7."' where cl_ym = '".$_POST['ymd7']."'");
+  } else {
+    tep_db_query("insert into  ".TABLE_BANK_CALENDAR." (cl_ym,cl_value) values ('".$_POST['ymd7']."','".$mm_7."')");
+  }
+  
+  tep_redirect(tep_href_link(FILENAME_BANK_CL, 'action=success&date='.$_POST['date']));
 }
 ?>
 <?php
@@ -63,128 +126,20 @@ if($_GET['action'] == 'success') {
 
     <form action="<?php echo $PHP_SELF; ?>" method="post">
     <input type="hidden" name="updata" value="on">
+    <input type="hidden" name="date" value="<?php echo $_GET['date'];?>">
     <?php
     //今日
-    $today = getdate();
     
-    $m_num = $today[mon];
-    $d_num = $today[mday];
-    $year = $today[year];
-    // 1日目の曜日
-    $f_today = getdate(mktime(0,0,0,$m_num,1,$year));
-    $wday = $f_today[wday];
-    // 月表示
-    $m_name = "$year ".substr($today[month],0,3);
-    
-    //前のつきの最終日（月の日数）
-    $test = date("d", mktime(0,0,0,$m_num+2,0,$year));
-    
-    //月のデータ取得
-    $ymd = date("Ym", time());
-    $calen_query = tep_db_query("select cl_value from ".TABLE_BANK_CALENDAR." where cl_ym = '".$ymd."'");
-    $calen = tep_db_fetch_array($calen_query);
-    
-    $array = array("1"=>substr($calen['cl_value'], 0, 1), "2"=>substr($calen['cl_value'], 1, 1), "3"=>substr($calen['cl_value'], 2, 1), "4"=>substr($calen['cl_value'], 3, 1), "5"=>substr($calen['cl_value'], 4, 1), "6"=>substr($calen['cl_value'], 5, 1), "7"=>substr($calen['cl_value'], 6, 1), "8"=>substr($calen['cl_value'], 7, 1), "9"=>substr($calen['cl_value'], 8, 1), "10"=>substr($calen['cl_value'], 9, 1), "11"=>substr($calen['cl_value'], 10, 1), "12"=>substr($calen['cl_value'], 11, 1), "13"=>substr($calen['cl_value'], 12, 1), "14"=>substr($calen['cl_value'], 13, 1), "15"=>substr($calen['cl_value'], 14, 1), "16"=>substr($calen['cl_value'], 15, 1), "17"=>substr($calen['cl_value'], 16, 1), "18"=>substr($calen['cl_value'], 17, 1), "19"=>substr($calen['cl_value'], 18, 1), "20"=>substr($calen['cl_value'], 19, 1), "21"=>substr($calen['cl_value'], 20, 1), "22"=>substr($calen['cl_value'], 21, 1), "23"=>substr($calen['cl_value'], 22, 1), "24"=>substr($calen['cl_value'], 23, 1), "25"=>substr($calen['cl_value'], 24, 1), "26"=>substr($calen['cl_value'], 25, 1), "27"=>substr($calen['cl_value'], 26, 1), "28"=>substr($calen['cl_value'], 27, 1), "29"=>substr($calen['cl_value'], 28, 1), "30"=>substr($calen['cl_value'], 29, 1), "31"=>substr($calen['cl_value'], 30, 1));
-    
-    echo '
-      <table border=1 cellspacing=0 cellpadding=2 width="100%">
-      <tr bgcolor=#000000>
-      <td nowrap colspan=3>&nbsp;&nbsp;<font size=2 color=#FFFFFF>'.$year.'年'.$m_num.'月</font></td>
-      <td nowrap colspan=4 align=right>&nbsp;&nbsp;<font size=2 color=#FFFFFF>&nbsp;&nbsp;■&raquo;通常営業&nbsp;&nbsp;<font color="'.CL_COLOR_01.'">■</font>&raquo;銀行休業&nbsp;&nbsp;<font color="'.CL_COLOR_02.'">■</font>&raquo;メール返信休業&nbsp;&nbsp;</td>
-      </tr>
-      <tr bgcolor=ffffff>
-        <td align=middle height=15><font size="2" color="#cc0000">日</font></td>
-        <td align=middle height=15><font size="2">月</font></td>
-        <td align=middle height=15><font size="2">火</font></td>
-        <td align=middle height=15><font size="2">水</font></td>
-        <td align=middle height=15><font size="2">木</font></td>
-        <td align=middle height=15><font size="2">金</font></td>
-        <td align=middle height=15><font size="2" color="#0000cc">土</font></td>
-      </tr>
-      <tr bgcolor=#ffffff>
-    ';
-    
-    for ($i=0; $i<$wday; $i++) { // Blank
-      echo "<td align=center>　</td>\n"; 
-    }
-    
-    $day = 1;
-    while(checkdate($m_num,$day,$year)){
-      //select form
-      if($array[$day] == '1') {
-        $option = '<table border="1" cellspacing="0" cellpadding="2"><tr>';
-      $option .= '<td bgcolor="#FFFFFF"><input type="radio" name="'.$day.'" value="0"></td>' . "\n";
-      $option .= '<td bgcolor="'.CL_COLOR_01.'"><input type="radio" name="'.$day.'" value="1" checked></td>' . "\n";
-      $option .= '<td bgcolor="'.CL_COLOR_02.'"><input type="radio" name="'.$day.'" value="2"></td>' . "\n";
-      $option .= '</tr></table>' . "\n";
-      } elseif($array[$day] == '2') {
-        $option = '<table border="1" cellspacing="0" cellpadding="2"><tr>';
-      $option .= '<td bgcolor="#FFFFFF"><input type="radio" name="'.$day.'" value="0"></td>' . "\n";
-      $option .= '<td bgcolor="'.CL_COLOR_01.'"><input type="radio" name="'.$day.'" value="1"></td>' . "\n";
-      $option .= '<td bgcolor="'.CL_COLOR_02.'"><input type="radio" name="'.$day.'" value="2" checked></td>' . "\n";
-      $option .= '</tr></table>' . "\n";
-      } else {
-        $option = '<table border="1" cellspacing="0" cellpadding="2"><tr>';
-      $option .= '<td bgcolor="#FFFFFF"><input type="radio" name="'.$day.'" value="0" checked></td>' . "\n";
-      $option .= '<td bgcolor="'.CL_COLOR_01.'"><input type="radio" name="'.$day.'" value="1"></td>' . "\n";
-      $option .= '<td bgcolor="'.CL_COLOR_02.'"><input type="radio" name="'.$day.'" value="2"></td>' . "\n";
-      $option .= '</tr></table>' . "\n";
-      }
-      
-      
-      if(($day == $today[mday]) && ($m_num == $today[mon]) && ($year == $today[year])){ 
-      //  Today 
-      if($array[$day] == '1'){
-      
-      echo "<td align=center bgcolor=".CL_COLOR_01."><font size=2><b>$day</b><br>".$option."</font></td>\n"; 
-      }elseif($array[$day] == '2'){
-      echo "<td align=center bgcolor=".CL_COLOR_02."><font size=2><b>$day</b><br>".$option."</font></td>\n"; 
-      } else {
-      echo "<td align=center><font size=2><b>$day</b><br>".$option."</font></td>\n"; 
-      }
-      }
-      elseif($array[$day] == '1'){
-      //お店の休業日
-      echo "<td align=center bgcolor=".CL_COLOR_01."><font size=2>$day<br>".$option."</font></td>\n";
-      }
-      elseif($array[$day] == '2'){
-      //メール返信休業日
-      echo "<td align=center bgcolor=".CL_COLOR_02."><font size=2>$day<br>".$option."</font></td>\n";  
-      }  
-      elseif($wday == 0){ 
-      //  Sunday
-      echo "<td align=center bgcolor=><font size=2 color=#cc0000>$day<br>".$option."</font></td>\n";
-      }
-      elseif($wday == 6){ 
-      //  Saturday
-      echo "<td align=center><font size=2 color=#0000cc>$day<br>".$option."</font></td>\n";
-      }
-      else{ 
-      // Weekday
-      echo "<td align=center><font size=2>$day<br>".$option."</font></td>\n";
-      }
-      // 改行
-      if($wday == 6) echo "</tr><tr bgcolor=#ffffff>";
-      $day++;
-      $wday++;
-      $wday = $wday % 7;
-    }
-    if($wday > 0){
-      while($wday < 7) { // Blank
-      echo "<td align=center>　</td>\n";
-      $wday++;
-      }
-    } else {
-      echo "<td colspan=7></td>\n";
-    }
-    echo '</tr></table>' . "\n";
-    
+    $now = $_GET['date']?$_GET['date']:date('Y-m-d');
+    $m_num = date('m',strtotime($now)) - 1;
+    $year = date('Y',strtotime($now));
+
     //----------------------------------------------------
+    for($ii = 1;$ii<7;$ii++){
     echo '<br><br>';
-    //次月
     //----------------------------------------------------
     
-    $today2 = getdate(mktime(0,0,0,$m_num+1,1,$year));
+    $today2 = getdate(mktime(0,0,0,$m_num+$ii,1,$year));
     
     $m_num2 = $today2[mon];
     $d_num2 = $today2[mday];
@@ -198,10 +153,42 @@ if($_GET['action'] == 'success') {
     //月のデータ取得
     $ymd2 = date("Ym", mktime(0,0,0,$m_num2,1,$year2));
     $calen_query2 = tep_db_query("select cl_value from ".TABLE_BANK_CALENDAR." where cl_ym = '".$ymd2."'");
+    //echo("select cl_value from ".TABLE_BANK_CALENDAR." where cl_ym = '".$ymd2."'");
     $calen2 = tep_db_fetch_array($calen_query2);
     
-    $array2 = array("101"=>substr($calen2['cl_value'], 0, 1), "102"=>substr($calen2['cl_value'], 1, 1), "103"=>substr($calen2['cl_value'], 2, 1), "104"=>substr($calen2['cl_value'], 3, 1), "105"=>substr($calen2['cl_value'], 4, 1), "106"=>substr($calen2['cl_value'], 5, 1), "107"=>substr($calen2['cl_value'], 6, 1), "108"=>substr($calen2['cl_value'], 7, 1), "109"=>substr($calen2['cl_value'], 8, 1), "110"=>substr($calen2['cl_value'], 9, 1), "111"=>substr($calen2['cl_value'], 10, 1), "112"=>substr($calen2['cl_value'], 11, 1), "113"=>substr($calen2['cl_value'], 12, 1), "114"=>substr($calen2['cl_value'], 13, 1), "115"=>substr($calen2['cl_value'], 14, 1), "116"=>substr($calen2['cl_value'], 15, 1), "117"=>substr($calen2['cl_value'], 16, 1), "118"=>substr($calen2['cl_value'], 17, 1), "119"=>substr($calen2['cl_value'], 18, 1), "120"=>substr($calen2['cl_value'], 19, 1), "121"=>substr($calen2['cl_value'], 20, 1), "122"=>substr($calen2['cl_value'], 21, 1), "123"=>substr($calen2['cl_value'], 22, 1), "124"=>substr($calen2['cl_value'], 23, 1), "125"=>substr($calen2['cl_value'], 24, 1), "126"=>substr($calen2['cl_value'], 25, 1), "127"=>substr($calen2['cl_value'], 26, 1), "128"=>substr($calen2['cl_value'], 27, 1), "129"=>substr($calen2['cl_value'], 28, 1), "130"=>substr($calen2['cl_value'], 29, 1), "131"=>substr($calen2['cl_value'], 30, 1));
-    
+    $array2 = array(
+    ($ii+1)."01"=>substr($calen2['cl_value'], 0, 1), 
+    ($ii+1)."02"=>substr($calen2['cl_value'], 1, 1), 
+    ($ii+1)."03"=>substr($calen2['cl_value'], 2, 1), 
+    ($ii+1)."04"=>substr($calen2['cl_value'], 3, 1), 
+    ($ii+1)."05"=>substr($calen2['cl_value'], 4, 1), 
+    ($ii+1)."06"=>substr($calen2['cl_value'], 5, 1), 
+    ($ii+1)."07"=>substr($calen2['cl_value'], 6, 1), 
+    ($ii+1)."08"=>substr($calen2['cl_value'], 7, 1), 
+    ($ii+1)."09"=>substr($calen2['cl_value'], 8, 1), 
+    ($ii+1)."10"=>substr($calen2['cl_value'], 9, 1), 
+    ($ii+1)."11"=>substr($calen2['cl_value'], 10, 1), 
+    ($ii+1)."12"=>substr($calen2['cl_value'], 11, 1), 
+    ($ii+1)."13"=>substr($calen2['cl_value'], 12, 1), 
+    ($ii+1)."14"=>substr($calen2['cl_value'], 13, 1), 
+    ($ii+1)."15"=>substr($calen2['cl_value'], 14, 1), 
+    ($ii+1)."16"=>substr($calen2['cl_value'], 15, 1), 
+    ($ii+1)."17"=>substr($calen2['cl_value'], 16, 1), 
+    ($ii+1)."18"=>substr($calen2['cl_value'], 17, 1), 
+    ($ii+1)."19"=>substr($calen2['cl_value'], 18, 1), 
+    ($ii+1)."20"=>substr($calen2['cl_value'], 19, 1), 
+    ($ii+1)."21"=>substr($calen2['cl_value'], 20, 1), 
+    ($ii+1)."22"=>substr($calen2['cl_value'], 21, 1), 
+    ($ii+1)."23"=>substr($calen2['cl_value'], 22, 1), 
+    ($ii+1)."24"=>substr($calen2['cl_value'], 23, 1), 
+    ($ii+1)."25"=>substr($calen2['cl_value'], 24, 1), 
+    ($ii+1)."26"=>substr($calen2['cl_value'], 25, 1), 
+    ($ii+1)."27"=>substr($calen2['cl_value'], 26, 1), 
+    ($ii+1)."28"=>substr($calen2['cl_value'], 27, 1), 
+    ($ii+1)."29"=>substr($calen2['cl_value'], 28, 1), 
+    ($ii+1)."30"=>substr($calen2['cl_value'], 29, 1), 
+    ($ii+1)."31"=>substr($calen2['cl_value'], 30, 1));
+    //print_r($array2);
     echo '
       <table border=1 cellspacing=0 cellpadding=2 width=100%>
       <tr bgcolor=#000000>
@@ -227,32 +214,32 @@ if($_GET['action'] == 'success') {
     $day2 = 1;
     while(checkdate($m_num2,$day2,$year2)){
       //select form
-      if($array2['1'.str_pad($day2, 2, 0, STR_PAD_LEFT)] == '1') {
+      if($array2[(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT)] == '1') {
         $option2 = '<table border="1" cellspacing="0" cellpadding="2"><tr>';
-      $option2 .= '<td bgcolor="#FFFFFF"><input type="radio" name="1'.str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="0"></td>' . "\n";
-      $option2 .= '<td bgcolor="'.CL_COLOR_01.'"><input type="radio" name="1'.str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="1" checked></td>' . "\n";
-      $option2 .= '<td bgcolor="'.CL_COLOR_02.'"><input type="radio" name="1'.str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="2"></td>' . "\n";
+      $option2 .= '<td bgcolor="#FFFFFF"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="0"></td>' . "\n";
+      $option2 .= '<td bgcolor="'.CL_COLOR_01.'"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="1" checked></td>' . "\n";
+      $option2 .= '<td bgcolor="'.CL_COLOR_02.'"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="2"></td>' . "\n";
       $option2 .= '</tr></table>' . "\n";
-      } elseif($array2['1'.str_pad($day2, 2, 0, STR_PAD_LEFT)] == '2') {
+      } elseif($array2[(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT)] == '2') {
         $option2 = '<table border="1" cellspacing="0" cellpadding="2"><tr>';
-      $option2 .= '<td bgcolor="#FFFFFF"><input type="radio" name="1'.str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="0"></td>' . "\n";
-      $option2 .= '<td bgcolor="'.CL_COLOR_01.'"><input type="radio" name="1'.str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="1"></td>' . "\n";
-      $option2 .= '<td bgcolor="'.CL_COLOR_02.'"><input type="radio" name="1'.str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="2" checked></td>' . "\n";
+      $option2 .= '<td bgcolor="#FFFFFF"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="0"></td>' . "\n";
+      $option2 .= '<td bgcolor="'.CL_COLOR_01.'"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="1"></td>' . "\n";
+      $option2 .= '<td bgcolor="'.CL_COLOR_02.'"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="2" checked></td>' . "\n";
       $option2 .= '</tr></table>' . "\n";
       } else {
         $option2 = '<table border="1" cellspacing="0" cellpadding="2"><tr>';
-      $option2 .= '<td bgcolor="#FFFFFF"><input type="radio" name="1'.str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="0" checked></td>' . "\n";
-      $option2 .= '<td bgcolor="'.CL_COLOR_01.'"><input type="radio" name="1'.str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="1"></td>' . "\n";
-      $option2 .= '<td bgcolor="'.CL_COLOR_02.'"><input type="radio" name="1'.str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="2"></td>' . "\n";
+      $option2 .= '<td bgcolor="#FFFFFF"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="0" checked></td>' . "\n";
+      $option2 .= '<td bgcolor="'.CL_COLOR_01.'"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="1"></td>' . "\n";
+      $option2 .= '<td bgcolor="'.CL_COLOR_02.'"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="2"></td>' . "\n";
       $option2 .= '</tr></table>' . "\n";
       }
       
       
-      if($array2['1'.str_pad($day2, 2, 0, STR_PAD_LEFT)] == '1'){
+      if($array2[(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT)] == '1'){
       //お店の休業日
       echo "<td align=center bgcolor=".CL_COLOR_01."><font size=2>$day2<br>".$option2."</font></td>\n";
       }
-      elseif($array2['1'.str_pad($day2, 2, 0, STR_PAD_LEFT)] == '2'){
+      elseif($array2[(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT)] == '2'){
       //メール返信休業日
       echo "<td align=center bgcolor=".CL_COLOR_02."><font size=2>$day2<br>".$option2."</font></td>\n";  
       }  
@@ -283,16 +270,36 @@ if($_GET['action'] == 'success') {
       echo "<td colspan=7></td>\n";
     }
     echo '</tr></table>' . "\n";
-    
+    echo '<input type="hidden" name="ymd'.($ii+1).'" value="'.$ymd2.'">';
+    }
     echo '<P>'.tep_image_submit('button_update.gif', IMAGE_UPDATE).'</P>'
-
-
     ?>
-    <input type="hidden" name="ymd" value="<?php echo $ymd; ?>">
-    <input type="hidden" name="ymd2" value="<?php echo $ymd2; ?>">
     </form>
     </td>
       </tr>
+    <tr>
+      <td align="right">
+        <table border="0">
+          <tr>
+            <td><a href="<?php echo tep_href_link('bank_cl.php', 'date='.date('Y-m',mktime(0,0,0,$m_num-1,1,$year)));?>">前へ</a></td>
+            <td><a href="<?php echo tep_href_link('bank_cl.php', 'date='.date('Y-m',mktime(0,0,0,$m_num+7,1,$year)));?>">次へ</a></td>
+            <td>
+              <select name="year" id="year">
+              <?php for($i=date('Y');$i<date('Y')+20;$i++) { ?>
+                <option value="<?php echo $i;?>"><?php echo $i;?></option>
+              <?php } ?>
+              </select>
+              <select name="month" id="month" onchange="if(this.value){window.location.href='bank_cl.php?date='+document.getElementById('year').value+'-'+document.getElementById('month').value}">
+                <option value="0"> -- </option>
+              <?php for($i=1;$i<13;$i++) { ?>
+                <option value="<?php echo $i;?>"><?php echo $i;?></option>
+              <?php } ?>
+              </select>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
   </table></td>
 <!-- body_text_eof //-->
   </tr>
