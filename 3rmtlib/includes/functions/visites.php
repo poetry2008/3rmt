@@ -857,7 +857,6 @@ $searchEngines = array(
 "jp.ask.com"   => array("Ask", "q"),
 "www.unisearch.jp"   => array("StartHome", "keyword"),
 "search.nifty.com" => array("@nifty","q"),
-//"ocnsearch.goo.ne.jp" => array("goo", "MT"),
 "cgi.search.biglobe.ne.jp" => array("BIGLOBE", "q"),
 
 // Looksmart

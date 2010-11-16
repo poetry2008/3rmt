@@ -57,7 +57,22 @@ class mission {
    $r =  $this->conn->query($sql);
    // 如果大于一行 ,说明可以开始
    if($r->num_rows > 0){
+   	 $sql = 'select * from session_log s ,mission m 
+      where m.enabled = 1 
+      and s.end_at <> 0 
+      and s.forced = 0 
+      and s.mission_id = m.id 
+      and s.mission_id ="'.$this->id.'"
+      order by id desc';
+     $r2 = $this->conn->query($sql);
+     $res1 = $r->fetch_Object();
+     $res2 = $r2->fetch_Object();
+     if($res1->created_at > $res2->created_at){
      return false;
+     }else{
+     $this->session = $res1;
+     return true;
+     }
    }else {
      $this->session = $r->fetch_Object();
      return true;
@@ -81,8 +96,25 @@ class mission {
       
     }else {
       //标记开始
+        $this->conn->query('delete from session_log where `mission_id` = "'.$this->id.'"');
         $this->conn->query('insert into session_log  (`mission_id`,`start_at`) values ( "'.$this->id.'" ,"'.time().'" )');
         $this->session_id = $this->conn->insert_id;
+            //删除一起的 session  和 record 
+            var_dump($this->session_id);
+            var_dump($this->id);
+    $sql = "delete from record where mission_id ='".$this->id."'
+           and session_id <> '".$this->session_id."'";
+    $this->conn->query($sql);
+    $sql = "delete from session_log where mission_id ='".$this->id."'
+           and id <> '".$this->session_id."'";
+    $this->conn->query($sql);
+    $sql = "delete FROM `session_log`
+      WHERE `mission_id`
+      not in (
+          SELECT mission_id
+          FROM `categories_to_mission`
+         )";
+    $this->conn->query($sql);
     }
 
     $this->dbdriver = new  $this->dbdriver;
@@ -116,20 +148,7 @@ class mission {
     self::msg('end searcing');
     self::msg($err_code);
 
-    //删除一起的 session  和 record 
-    $sql = "delete from record where mission_id ='".$this->id."'
-           and session_id <> '".$this->session_id."'";
-    $this->conn->query($sql);
-    $sql = "delete from session_log where mission_id ='".$this->id."'
-           and id <> '".$this->session_id."'";
-    $this->conn->query($sql);
-    $sql = "delete FROM `session_log`
-      WHERE `mission_id`
-      not in (
-          SELECT mission_id
-          FROM `categories_to_mission`
-         )";
-    $this->conn->query($sql);
+
     //结束后需要标记结束
     $sql = 'update session_log set end_at ='.time()
            .',stopation="'.$err_code.'" where id =

@@ -3416,3 +3416,10 @@ function tep_get_products_parent_id($pid){
   }
   return $carr[0];
 }
+
+// 取得关联商品名
+function tep_get_relate_products_name($pid) {
+  $p = tep_db_fetch_array(tep_db_query("select relate_products_id from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
+  $r = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where products_id='".$p['relate_products_id']."'"));
+  return $r['products_name'];
+}
