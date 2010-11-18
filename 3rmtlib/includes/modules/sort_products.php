@@ -3,23 +3,24 @@
   $Id$
 */
 
-  if ( (!$_COOKIE['sort']) || (!ereg('[1-9][ad]', $_COOKIE['sort'])) || (substr($_COOKIE['sort'],0,1) > sizeof($column_list)) ) {
-    for ($col=0, $n=sizeof($column_list); $col<$n; $col++) {
+
+  if ( (!$_COOKIE['sort']) || (!ereg('1?[0-9][ad]', $_COOKIE['sort'])) || (substr($_COOKIE['sort'],0,1) > sizeof($column_list)) ) {
+    /*for ($col=0, $n=sizeof($column_list); $col<$n; $col++) {
       if ($column_list[$col] == 'PRODUCT_LIST_NAME') {
         $_COOKIE['sort'] = $col+1 . 'a';
         $listing_sql .= " order by products_name";
         break;
       }
-    }
+    }*/
+    $listing_sql .= "order by order_pickup " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
   } else {
-    $sort_col = substr($_COOKIE['sort'], 0 , 1);
-    $sort_order = substr($_COOKIE['sort'], 1);
+    $sort_col = substr($_COOKIE['sort'], 0 , -1);
+    $sort_order = substr($_COOKIE['sort'], -1);
     $listing_sql .= ' order by ';
     switch ($column_list[$sort_col-1]) {
       case 'PRODUCT_LIST_MODEL':
         $listing_sql .= "products_model " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
         break;
-      default:
       case 'PRODUCT_LIST_NAME':
         $listing_sql .= "products_name " . ($sort_order == 'd' ? 'desc' : '');
         break;
@@ -40,6 +41,9 @@
         break;
       case 'PRODUCT_LIST_ORDERED':
         $listing_sql .= "products_ordered " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
+        break;
+      default:
+        $listing_sql .= "order_pickup " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
         break;
     }
   }

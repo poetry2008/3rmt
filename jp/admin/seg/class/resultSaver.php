@@ -4,12 +4,13 @@ class resultSaver {
   private static $conn;
   function save($resultArray,$Filters){
     $this->conn =  self::getConn();
+//`fullurl`,`title` ,`description` , 删除了这三个列
     $smtm =  $this->conn->prepare('insert into record 
         (`mission_id` ,`mission_name` ,`keyword` ,
          `order_number` ,`page_number` ,`order_total_number`,
-         `siteurl` ,`fullurl`,`title` ,`description` ,
+         `siteurl` ,
          `created_at`,`session_id`,`show`)
-         values(?,?,?,?,?,?,?,?,?,?,?,?,?)');
+         values(?,?,?,?,?,?,?,?,?,?)');
   $sum = 0;
   foreach($resultArray as $result){
     $flag = 1;
@@ -47,7 +48,8 @@ var_dump($flag);
 var_dump($result['siteurl']);
 echo "<br>--------------------<br>";
 */
-      $smtm->bind_param("dssdddssssddd",$result['mission_id'],$result['mission_name'],$result['keyword'],$result['order_number'],$result['page_number'],$result['order_total_number'],$result['siteurl'],$result['fullurl'],$result['title'],$result['description'],$result['created_at'],$result['session_id'],$flag);
+      //$smtm->bind_param("dssdddssssddd",$result['mission_id'],$result['mission_name'],$result['keyword'],$result['order_number'],$result['page_number'],$result['order_total_number'],$result['siteurl'],$result['fullurl'],$result['title'],$result['description'],$result['created_at'],$result['session_id'],$flag);
+      $smtm->bind_param("dssdddsddd",$result['mission_id'],$result['mission_name'],$result['keyword'],$result['order_number'],$result['page_number'],$result['order_total_number'],$result['siteurl'],$result['created_at'],$result['session_id'],$flag);
       $sum ++;
     if($flag){
       $smtm->execute();

@@ -2981,3 +2981,149 @@ function SBC2DBC($str) {
   );
   return str_replace($arr, $arr2, $str);
 }
+
+function tep_parseURI()
+{
+
+  if(substr($_SERVER['HTTP_HOST'],0,3)=='www'){
+    return true;
+  }
+  $subSiteUri = $_SERVER['REQUEST_URI'];
+  $router = 'x';
+  $rewriteRule = array(
+                       "firstFolder"  => "/[^\/]+\/?$/",        //   /abc(/)
+                       "secondFolder" => '/[^\/]+\/[^\/]+\/?$/',              //   /asb/xcv(/)
+                       "thirdFolder"  => '/[^\/]+\/[^\/]+\/[^\/]+\/?$/',              //   /asb/xcv(/)
+                       "product"      => '/\.html$/'                    //   /asd/xcv/xcv.html  /zxv.html /xcv/xcv/xc.html
+                       );
+  foreach ($rewriteRule as $ruler=>$value){
+    //if (preg_match($value, $rewriteRule)) {
+    if (preg_match($value, $subSiteUri)) {
+      $router = $ruler;
+    }
+  }
+  if(isset($_GET['cName'])){
+  $firstId = tep_get_cpath_by_cname($_GET['cName']);
+  $_GET['cPath'] = $firstId;
+  }
+  switch($router){
+  case 'firstFolder':
+    $firstFolder = substr($subSiteUri,1);
+    if(substr($firstFolder,-1)=='/'){
+      $firstFolder = substr($firstFolder,0,-1);
+    }
+    $secondId = tep_get_cpath_by_cname($firstFolder);
+    $_GET['cPath'] = join('_',array($firstId,$secondId));
+    break;
+  case 'product':
+    $tmpArray = explode('/',$subSiteUri);
+    $pid = $tmpArray[count($tmpArray)-1];
+    $pid = substr($pid,0,-5);
+    $_GET['products_id'] = $pid;
+
+  }
+
+    /*
+if (isset($_GET['cName'])){
+
+  $_GET['cPath'] = tep_get_cpath_by_cname($_GET['cName']);
+  if($_GET['cPath']==false){//如果没有 则404
+    
+  }
+}
+    */
+
+
+}
+
+function tep_get_romaji_cpath($cpath)
+{
+    global $languages_id;
+
+    if (empty($language)) $language = $languages_id;
+    //ccdd
+    $queryString = "
+        select `romaji` 
+        from " .  TABLE_CATEGORIES_DESCRIPTION . "
+        where categories_id = '" . (int)$cpath .  "' 
+          and language_id = '" . (int)$language . "' 
+          and (site_id = '".SITE_ID."' or site_id = '0')
+        order by site_id DESC"
+    ;
+    $category_query = tep_db_query($queryString);
+    $category = tep_db_fetch_array($category_query);
+    return $category['romaji'];
+
+}
+function tep_get_cpath_by_cname($cname)
+{
+    global $languages_id;
+    if (empty($language)){
+      $language = $languages_id;
+    }
+    //ccdd
+    $queryString = "
+        select `categories_id` 
+        from " .  TABLE_CATEGORIES_DESCRIPTION . "
+        where romaji = '" . $cname .  "' 
+          and language_id = '" . (int)$language . "' 
+          and (site_id = '".SITE_ID."' or site_id = '0')
+        order by site_id DESC" ;
+    $category_query = tep_db_query($queryString);
+    $category = tep_db_fetch_array($category_query);
+    return $category['categories_id'];
+
+}
+function tep_get_categories_by_pid($pid,$romaji=true)
+{
+  static $romaji_arr = array();
+  $arr = array();
+  $p_parent = tep_get_categories_by_products_id($pid);
+  if (!$p_parent) {
+    exit('no categories');
+  }
+  //如果同一商品属于多个分类默认返回第一个 
+  $categories[] = $p_parent[0];
+  tep_get_parent_categories($categories, $p_parent[0]);
+  if ($romaji) {
+    $query = false;
+    foreach($categories as $k => $v){
+      if (!array_key_exists($v,$romaji_arr)) {
+        $query = true || $query;
+      }
+    }
+    if ($query) {
+      $rquery = tep_db_query("
+          select * from (
+            select categories_id,romaji,site_id
+            from ".TABLE_CATEGORIES_DESCRIPTION." 
+            where categories_id in ('".implode("','", $categories)."') 
+            order by site_id desc
+          ) c
+          where site_id='".SITE_ID."' or site_id='0'
+          group by categories_id
+      ");
+      while($c = tep_db_fetch_array($rquery)){
+        $romaji_arr[$c['categories_id']] = $c['romaji'];
+      }
+    }
+    foreach($categories as $k => $v){
+      $categories[$k] = $romaji_arr[$v];
+    }
+  }
+  return array_reverse($categories);
+}
+// 根据产品id返回分类id
+function tep_get_categories_by_products_id($pid){
+  $carr = array();
+  $query = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id='".$pid."'");
+  while($p2c = tep_db_fetch_array($query)){
+    $carr[] = $p2c['categories_id'];
+  }
+  return $carr;
+}
+//返回该产品的romaji
+function tep_get_romaji_by_pid($id)
+{
+  return $id;
+}

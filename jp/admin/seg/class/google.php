@@ -41,11 +41,13 @@ class google implements engine {
     // http://search.yahoo.co.jp/search?p=link%3Ahttp%3A%2F%2Frmt.gvx.co.jp+リンク&search.x=1&fr=top_ga1_sa&tid=top_ga1_sa&ei=UTF-8&aq=&oq=
     // http://search.yahoo.co.jp/search?p=link%3Ahttp%3A%2F%2Frmt.gvx.co.jp+%E3%83%AA%E3%83%B3%E3%82%AF&aq=-1&ei=UTF-8&pstart=1&fr=top_ga1_sa&dups=1&b=251
 //    $nextpage = "http://search.yahoo.co.jp/search?p={{keyword}}&aq=-1&ei=UTF-8&pstart=1&fr=top_ga1_sa&dups=1&b={{pager}}1";
+    //由于GOOGLE 采用的是 查询开始 所以每个页面要 乘以 10 首条记录为0
     if($page >=1){
     $page = $page-1;
     }else {
     $page = 0;
     }
+    $page = intval($page) * 10;
     //$nextpage =
     //  "http://www.google.co.jp/search?as_oq={{keyword}}&aq=f&ie=utf-8&pstart=1&fr=top_ga1_sa&start={{pager}}&hl=ja&num=10";
     $nextpage =
@@ -81,24 +83,27 @@ class google implements engine {
     //    return $match;
   }
   function parseResult($html){
+  	//截取 搜索 结果列表
     $cutStart  = "<ol>";
     $cutEnd  = '</ol></div>';
     $html = @iconv("SHIFT-JIS","UTF-8//TRANSLIT//IGNORE",$html);
     $html = getMiddle($cutStart,$cutEnd,$html);
+    //分割 
     $resultArray = explode('<li class=g',$html);
 //    $parsePreg = "/<a\shref=\"(.*)\">(.*)<\/a><div>(.*)<\/div>.*/";
     $parsePreg =
-      '/<h3\s+class="r\s{0,}[0-9a-zA-Z_]{0,}"><a\s.*href=\"(.*)\"(.*)<\/a><\/h3>.*<div\s+class="s\s{0,}[0-9a-zA-Z_]{0,}">(.*)<\/div>.*/';
+      '/<h3[^>]*><a\s.*href=\"([^"]*)\"(.*)<\/a><\/h3>.*<div\s+class="s\s{0,}[0-9a-zA-Z_]{0,}">(.*)<\/div>.*/';
     $recordArray = array();
     $count = 1;
     unset($resultArray[0]);
-    $i=0;
+    $i_res=1;
     foreach ($resultArray as $result ){
-      $i++;
-      if($i > 10){
+      
+      if($i_res > 10){
         break;
       }
-      preg_match($parsePreg,$result,$match);
+      if(preg_match($parsePreg,$result,$match)){
+      //根据正则判断 该记录是否 有效搜索结果
       preg_match("/>(.*)$/",$match[2],$title);
       $recordArray[] = array(
                              'keyword'=>$this->keyword,
@@ -111,6 +116,10 @@ class google implements engine {
                              'created_at'=>time(),
                              'siteurl'=>getSiteUrl($match[1]),
                              );
+      }else{
+        continue;
+      }
+      $i_res++;
       $count ++;
     }
     return $recordArray;
@@ -118,6 +127,7 @@ class google implements engine {
   
 
   function getCurrentPageResult(){
+  	//读取每个页面
     $this->currentHtml = file_get_contents($this->makeUrl($this->currentPageNumber));
     return $this->parseResult($this->currentHtml);
   }
@@ -127,9 +137,9 @@ class google implements engine {
 
 function getMiddle($start,$end,$html)
 {
-  $first =  explode($start,$html);
-  $first = $first[1];
-  $first = explode($end,$first);
+  $first = @explode($start,$html);
+  $first = @$first[1];
+  $first = @explode($end,$first);
   return $first[0];
 
 }

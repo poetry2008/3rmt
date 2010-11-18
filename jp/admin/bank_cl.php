@@ -21,7 +21,7 @@ if($_POST['updata'] == 'on') {
     $mm_2 .= $_POST[$j];
   }
   
-  if (tep_db_num_rows("select * from ".TABLE_BANK_CALENDAR." where cl_ym = '".$_POST['ymd2']."'")) {
+  if (tep_db_num_rows(tep_db_query("select * from ".TABLE_BANK_CALENDAR." where cl_ym = '".$_POST['ymd2']."'"))) {
     tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_2."' where cl_ym = '".$_POST['ymd2']."'");
   } else {
     tep_db_query("insert into  ".TABLE_BANK_CALENDAR." (cl_ym,cl_value) values ('".$_POST['ymd2']."','".$mm_2."')");
@@ -31,7 +31,7 @@ if($_POST['updata'] == 'on') {
   for($j=301; $j<332; $j++) {
     $mm_3 .= $_POST[$j];
   }
-  if (tep_db_num_rows("select * from ".TABLE_BANK_CALENDAR." where cl_ym = '".$_POST['ymd3']."'")) {
+  if (tep_db_num_rows(tep_db_query("select * from ".TABLE_BANK_CALENDAR." where cl_ym = '".$_POST['ymd3']."'"))) {
     tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_3."' where cl_ym = '".$_POST['ymd3']."'");
   } else {
     tep_db_query("insert into  ".TABLE_BANK_CALENDAR." (cl_ym,cl_value) values ('".$_POST['ymd3']."','".$mm_3."')");
@@ -41,7 +41,7 @@ if($_POST['updata'] == 'on') {
   for($j=401; $j<432; $j++) {
     $mm_4 .= $_POST[$j];
   }
-  if (tep_db_num_rows("select * from ".TABLE_BANK_CALENDAR." where cl_ym = '".$_POST['ymd4']."'")) {
+  if (tep_db_num_rows(tep_db_query("select * from ".TABLE_BANK_CALENDAR." where cl_ym = '".$_POST['ymd4']."'"))) {
     tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_4."' where cl_ym = '".$_POST['ymd4']."'");
   } else {
     tep_db_query("insert into  ".TABLE_BANK_CALENDAR." (cl_ym,cl_value) values ('".$_POST['ymd4']."','".$mm_4."')");
@@ -51,7 +51,7 @@ if($_POST['updata'] == 'on') {
   for($j=501; $j<532; $j++) {
     $mm_5 .= $_POST[$j];
   }
-  if (tep_db_num_rows("select * from ".TABLE_BANK_CALENDAR." where cl_ym = '".$_POST['ymd5']."'")) {
+  if (tep_db_num_rows(tep_db_query("select * from ".TABLE_BANK_CALENDAR." where cl_ym = '".$_POST['ymd5']."'"))) {
     tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_5."' where cl_ym = '".$_POST['ymd5']."'");
   } else {
     tep_db_query("insert into  ".TABLE_BANK_CALENDAR." (cl_ym,cl_value) values ('".$_POST['ymd5']."','".$mm_5."')");
@@ -61,7 +61,7 @@ if($_POST['updata'] == 'on') {
   for($j=601; $j<632; $j++) {
     $mm_6 .= $_POST[$j];
   }
-  if (tep_db_num_rows("select * from ".TABLE_BANK_CALENDAR." where cl_ym = '".$_POST['ymd6']."'")) {
+  if (tep_db_num_rows(tep_db_query("select * from ".TABLE_BANK_CALENDAR." where cl_ym = '".$_POST['ymd6']."'"))) {
     tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_6."' where cl_ym = '".$_POST['ymd6']."'");
   } else {
     tep_db_query("insert into  ".TABLE_BANK_CALENDAR." (cl_ym,cl_value) values ('".$_POST['ymd6']."','".$mm_6."')");
@@ -71,7 +71,7 @@ if($_POST['updata'] == 'on') {
   for($j=701; $j<732; $j++) {
     $mm_7 .= $_POST[$j];
   }
-  if (tep_db_num_rows("select * from ".TABLE_BANK_CALENDAR." where cl_ym = '".$_POST['ymd7']."'")) {
+  if (tep_db_num_rows(tep_db_query("select * from ".TABLE_BANK_CALENDAR." where cl_ym = '".$_POST['ymd7']."'"))) {
     tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_7."' where cl_ym = '".$_POST['ymd7']."'");
   } else {
     tep_db_query("insert into  ".TABLE_BANK_CALENDAR." (cl_ym,cl_value) values ('".$_POST['ymd7']."','".$mm_7."')");

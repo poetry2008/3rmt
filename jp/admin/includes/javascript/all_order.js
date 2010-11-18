@@ -190,6 +190,7 @@ function mail_text(st,tt,ot){
 }
 
 // 自动更新 关闭
+/*
 window.onunload=function(){
   if (auto_submit_able) 
   $('#form_orders_questions').ajaxSubmit({
@@ -200,18 +201,26 @@ window.onunload=function(){
     }
   });
 }; 
-
+*/
 
 // 自动保存
 function auto_save_questions() {
-  if (auto_submit_able) 
+  if (auto_submit_able) {
+  $('body').css('cursor','wait');
+  $('#wait').show();
+  //css('top','45%').css('left','45%').css('position','absolute');
   $('#form_orders_questions').ajaxSubmit({
     beforeSubmit: function(){return true;},
     success: function(){
-      if ($('#q_8_1').val())
+      $('body').css('cursor','default');
+      $('#wait').hide();
+      //css('position','none');
+      if ($('#q_8_1').val()) {
         auto_submit_able = false;
+      }
     }
   });
+  }
 }
 
 // 当有新订单自动在列表顶部插入一行
@@ -267,17 +276,27 @@ function playSound()
     if (ele.checked)
       document.getElementById(id).checked = false;
   }
+  var change_option_enable = true;
   function change_option(ele){
+    if (change_option_enable) {
+      // 自动保存
+      auto_save_questions();
+      // 是否显示按钮
+      show_submit_button();
+    }
+  }
+  function propertychange_option(ele){
+    change_option_enable = false;
     // 自动保存
     auto_save_questions();
     // 是否显示按钮
     show_submit_button();
   }
-  
   function show_submit_button(){
     // 当必要选项全部不为空的时候显示确认按钮
     
     if ($('#questions_type').val() == 1) {
+      // 买
       if (
         ($('#q_1_1_0').attr('checked') || $('#q_1_1_1').attr('checked')) 
         && ($('#q_12_1_0').attr('checked') || $('#q_12_1_1').attr('checked'))
@@ -290,13 +309,24 @@ function playSound()
         && $('#q_16_2').attr('checked')
         && show_q_8_1_able
       ) {
-        $('#tr_q_8_1').show();
-        $('#orders_questions_submit_div').show();
+        show = true;
+        $('.relate_chk').each(function(){
+          // 关联商品必须全部选中
+          show = show && this.checked && true;
+        });
+        if(show){
+          $('#tr_q_8_1').show();
+          $('#orders_questions_submit_div').show();
+        } else {
+          $('#tr_q_8_1').hide();
+          $('#orders_questions_submit_div').hide();
+        }
       } else {
-        $('#tr_q_8_1').hide();
-        $('#orders_questions_submit_div').hide();
+          $('#tr_q_8_1').hide();
+          $('#orders_questions_submit_div').hide();
       }
     } else if ($('#questions_type').val() == 2) {
+      // 信用卡
       if (
         ($('#q_1_1_0').attr('checked') || $('#q_1_1_1').attr('checked')) 
         && $('#q_9_1').attr('checked')
@@ -394,9 +424,6 @@ $(function(){
     $('#tr_q_8_1').show();
     $('#orders_questions_submit_div').show();
   }
-  
-  
-  
 });
 
 // 每分钟自动检查最新订单和修改
@@ -514,8 +541,6 @@ function orders_computers(ele, cid, oid) {
             show = show && true;
           } else {
             show = false;
-            //alert($('#select_question').css('display'));
-            //alert('1');
           }
           
           if (questionShow[document.sele_act.elements["chk[]"][i].value] == "1") {
@@ -523,8 +548,6 @@ function orders_computers(ele, cid, oid) {
           } else {
             show = false;
             msg += "\nチェックがされてない箇所あり\n";
-            //if ($('#select_question').css('display') == 'table' || $('#select_question').css('display') == 'block')
-            //  alert('チェックがされてない箇所あり');
           }
           
           if (typeof(cid)=='undefined') {
@@ -533,8 +556,6 @@ function orders_computers(ele, cid, oid) {
             if (cid != $('#cid_'+document.sele_act.elements["chk[]"][i].value).val()) {
               show = false;
               msg += "\n顧客IDが違います\n";
-              //if ($('#select_question').css('display') == 'table' || $('#select_question').css('display') == 'block')
-              //  alert('顧客IDが違います');
             } else {
               show = show && true;
             }
@@ -545,12 +566,9 @@ function orders_computers(ele, cid, oid) {
           } else {
             show = false;
             msg += "\n取引一括完了は買取の場合のみ有効です\n";
-            //if ($('#select_question').css('display') == 'table' || $('#select_question').css('display') == 'block')
-            //  alert('取引一括完了は買取の場合のみ有効です');
           }
         }
       }
-      //alert(show);
       if (show && total > 1) {
         $('#select_question').show();
       } else {
@@ -575,25 +593,30 @@ function orders_computers(ele, cid, oid) {
       return false;
     }
   }
+  
+  // 点击关联商品前的checkbox
   function click_relate(pid){
+    // 增加库存
     if ($('#checkbox_'+pid).attr('checked')) {
       $('#offset_'+pid).attr('readonly', true);
-	  $.ajax({
-	    url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count='+($('#quantity_'+pid).html()-$('#offset_'+pid).val()),
-	    success: function(data) {
-	    }
-	  });
+      $.ajax({
+        url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count='+($('#quantity_'+pid).html()-$('#offset_'+pid).val()),
+        success: function(data) {
+        }
+      });
     } else {
+    // 减库存
       $('#offset_'+pid).attr('readonly', false);
-	  $.ajax({
-	    url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count=-'+($('#quantity_'+pid).html()-$('#offset_'+pid).val()),
-	    success: function(data) {
-	    }
-	  });
+      $.ajax({
+        url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count=-'+($('#quantity_'+pid).html()-$('#offset_'+pid).val()),
+        success: function(data) {
+        }
+      });
     }
   }
+  
+  // 清空库存输入框
   function clear_quantity(){
-
     $('#relate_products_box input[type=checkbox]').each(function(){
       if ($(this).attr('checked')) {
         $(this).attr('checked', '');
@@ -602,6 +625,8 @@ function orders_computers(ele, cid, oid) {
       }
     });
   }
+  
+  // 计算增加的库存数并实时显示
   function print_quantity(pid){
     $('#relate_product_'+pid).html($('#quantity_'+pid).html()-$('#offset_'+pid).val())
   }

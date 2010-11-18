@@ -58,13 +58,17 @@ needrebuild
 FROM categories_to_mission cm
 LEFT JOIN mission m ON cm.mission_id = m.id
 ';
+$sql = 'SELECT * from mission';
 $ctms = getResult($sql);
 
 cron_log('There is '.count($ctms).'  missions to process');
 $needinsert=0;
 $needupdate=0;
 $needrebuild=0;
-
+////////////?************************///////////
+//不再需要更新,重建,直接结果
+/////////////////////////////////////////////////
+/*
 foreach($ctms as $key=> $ctm){
 //需要插入新mission
   if ($ctm['needinsert'] ){
@@ -85,10 +89,10 @@ foreach($ctms as $key=> $ctm){
       cron_log('rebuilded mission category'.$ctm['cid']);
   }
 }
-
-cron_log('INSERTED: '.$needinsert);
-cron_log('UPDATED: '.$needupdate);
-cron_log('REBUILD: '.$needrebuild);
+*/
+//cron_log('INSERTED: '.$needinsert);
+//cron_log('UPDATED: '.$needupdate);
+//cron_log('REBUILD: '.$needrebuild);
 //执行任务
 cron_log('');
 cron_log('MISSIONS  START');
@@ -98,6 +102,7 @@ foreach ($ctms as $ctm){
   $m = mission::getObj($ctm['id']);
   cron_log('SUBMISSION '.$ctm['id'] .' starting');
 cron_log('');
+cron_log($m->name);
   if(trim($m->keyword)!=''){
   $end =  $m->start();
   }else{

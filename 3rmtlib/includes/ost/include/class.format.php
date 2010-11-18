@@ -48,13 +48,13 @@ class Format {
 	}
 
     function truncate($string,$len,$hard=false) {
-        
-        if(!$len || $len>strlen($string))
+        mb_internal_encoding("UTF-8");
+        if(!$len || $len>mb_strlen($string))
             return $string;
         
-        $string = substr($string,0,$len);
+        $string = mb_substr($string,0,$len);
 
-        return $hard?$string:(substr($string,0,strrpos($string,' ')).' ...');
+        return $hard?$string:(mb_substr($string,0,mb_strrpos($string,' ')).' ...');
     }
 
     function strip_slashes($var){

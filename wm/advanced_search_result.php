@@ -165,6 +165,7 @@
     select distinct " . $select_column_list . " 
                     m.manufacturers_id, 
                     p.products_id, 
+                    p.order_pickup,
                     pd.products_name, 
                     p.products_price, 
                     p.products_tax_class_id, 
@@ -206,12 +207,6 @@
       $where_str .= " and p2c.products_id = p.products_id and p2c.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and p2c.categories_id = '" . $_GET['categories_id'] . "'";
     }
   }
-
-/*
-  if(isset($_GET['colors']) && !empty($_GET['colors'])) {
-    $where_str .= " and p.products_id = cp.products_id and cp.color_id = '".$_GET['colors']."'";
-  }
-  */
 
   if (isset($_GET['manufacturers_id']) && tep_not_null($_GET['manufacturers_id'])) {
     $where_str .= " and m.manufacturers_id = '" . $_GET['manufacturers_id'] . "'";
@@ -264,11 +259,10 @@
   //$where_str .= " and pd.site_id = '".SITE_ID."'";
   
   if ( (DISPLAY_PRICE_WITH_TAX == 'true') && ((isset($_GET['pfrom']) && tep_not_null($_GET['pfrom'])) || (isset($_GET['pto']) && tep_not_null($_GET['pto']))) ) {
-    $where_str .= " group by p.products_id, tr.tax_priority
-      order by pd.site_id DESC";
+    $where_str .= " group by p.products_id, tr.tax_priority";
   }
   $where_str .= "
-    ) p 
+    order by pd.site_id DESC ) p 
     where site_id = 0
        or site_id = ".SITE_ID."
     group by products_id

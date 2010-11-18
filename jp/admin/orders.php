@@ -971,7 +971,7 @@ if($reload == 'yes') {
   <tr>
     <td class="main">備考の有無：</td>
     <td class="main">
-      <?php echo tep_draw_radio_field('q_1_1', '0', $oq['q_1_1'] === '0', '', 'id="q_1_1_0" onclick="exclude(this,\'q_1_2\')" onchange="change_option(this)"');?>無｜<?php echo tep_draw_radio_field('q_1_1', '1', $oq['q_1_1'] === '1', '', 'id="q_1_1_1" onchange="change_option(this)"');?>有 → <?php echo tep_draw_checkbox_field('q_1_2', '1', $oq['q_1_2'] === '1', '', 'id="q_1_2" onclick="auto_radio(this,\'q_1_1_1\')" onchange="change_option(this)"');?>返答済
+      <?php echo tep_draw_radio_field('q_1_1', '0', $oq['q_1_1'] === '0', '', 'id="q_1_1_0" onclick="exclude(this,\'q_1_2\')" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>無｜<?php echo tep_draw_radio_field('q_1_1', '1', $oq['q_1_1'] === '1', '', 'id="q_1_1_1" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>有 → <?php echo tep_draw_checkbox_field('q_1_2', '1', $oq['q_1_2'] === '1', '', 'id="q_1_2" onclick="auto_radio(this,\'q_1_1_1\')" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>返答済
     </td>
 <?php if (!$oq['q_8_1']) { ?>
     <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_1_1_0').attr('checked', '');$('#q_1_1_1').attr('checked', '');$('#q_1_2').attr('checked', '');clean_option(1,'<?php echo $order->info['orders_id'];?>');"></td>
@@ -998,7 +998,7 @@ if($reload == 'yes') {
   </tr>
   <tr>
     <td class="main">受領 <font color="red">※注意※</font>：</td>
-    <td class="main"><?php echo tep_draw_checkbox_field('q_13_1', '1', isset($oq['q_13_1']) ? $oq['q_13_1'] === '1' : $pay_time,'', 'id="q_13_1" onchange="change_option(this)"');?><?php echo tep_draw_input_field('q_13_2_m', $oq['q_13_2'] && $oq['q_13_2'] != '0000-00-00' ? date('m', strtotime($oq['q_13_2'])) : ($pay_time?date('m', strtotime($pay_time)):''), 'size="2" class="questions_date" readonly');?>月<?php echo tep_draw_input_field('q_13_2_d', $oq['q_13_2'] && $oq['q_13_2'] != '0000-00-00' ? date('d', strtotime($oq['q_13_2'])) : ($pay_time?date('d', strtotime($pay_time)):''), 'size="2" class="questions_date" readonly');?>日</td>
+    <td class="main"><?php echo tep_draw_checkbox_field('q_13_1', '1', isset($oq['q_13_1']) ? $oq['q_13_1'] === '1' : $pay_time,'', 'id="q_13_1" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?><?php echo tep_draw_input_field('q_13_2_m', $oq['q_13_2'] && $oq['q_13_2'] != '0000-00-00' ? date('m', strtotime($oq['q_13_2'])) : ($pay_time?date('m', strtotime($pay_time)):''), 'size="2" class="questions_date" readonly');?>月<?php echo tep_draw_input_field('q_13_2_d', $oq['q_13_2'] && $oq['q_13_2'] != '0000-00-00' ? date('d', strtotime($oq['q_13_2'])) : ($pay_time?date('d', strtotime($pay_time)):''), 'size="2" class="questions_date" readonly');?>日</td>
 <?php if (!$oq['q_8_1']) { ?>
     <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_13_1').attr('checked','');clean_option(13,'<?php echo $order->info['orders_id'];?>');"></td>
 <?php } ?>
@@ -1018,16 +1018,17 @@ if($reload == 'yes') {
     if ($op) {
       //continue;
     
-    $oqp = tep_db_fetch_array(tep_db_query("select * from orders_questions_products where orders_id='".$order->info['orders_id']."' and products_id='".$opp['products_id']."'"));
+    $oqp = tep_db_fetch_array(tep_db_query("select * from orders_questions_products where orders_id='".$order->info['orders_id']."' and products_id='".$op['products_id']."'"));
 ?>
 <tr>
-<td><input type="checkbox" class="relate_chk" id="checkbox_<?php echo $op['products_id'];?>" name="relate_product[<?php echo $opp['products_id'];?>]" value="1" onclick="click_relate(<?php echo $op['products_id'];?>)" onchange="change_option(this)"<?php if($oqp['checked']) { ?> checked<?php } ?>> <?php echo $op['products_name'];?></td>
-<td><span id="quantity_<?php echo $op['products_id'];?>"><?php echo $opp['products_quantity'];?></span>-<input type="text" id="offset_<?php echo $op['products_id'];?>" name="offset[<?php echo $opp['products_id'];?>]]" value="<?php echo $oqp['offset'] ? $oqp['offset'] : 0;?>" onchange="if(document.getElementById('quantity_<?php echo $op['products_id'];?>').innerHTML-this.value<0){this.value=0;}change_option(this);print_quantity(<?php echo $op['products_id'];?>);" onmouseout="if(document.getElementById('quantity_<?php echo $op['products_id'];?>').innerHTML-this.value<0){this.value=0;}change_option(this);print_quantity(<?php echo $op['products_id'];?>);"<?php if($oqp['checked']){ ?> readonly<?php } ?>>=<span id="relate_product_<?php echo $op['products_id'];?>"><?php echo $opp['products_quantity']-$oqp['offset'];?></span></td>
+<td><input type="checkbox" class="relate_chk" id="checkbox_<?php echo $opp['products_id'];?>" name="relate_product[<?php echo $op['products_id'];?>]" value="1" onclick="click_relate(<?php echo $opp['products_id'];?>)" onchange="change_option(this)" onpropertychange="propertychange_option(this)"<?php if($oqp['checked']) { ?> checked<?php } ?>> <?php echo $op['products_name'];?></td>
+<td><span id="quantity_<?php echo $opp['products_id'];?>"><?php echo $opp['products_quantity'];?></span>-<input type="text" id="offset_<?php echo $opp['products_id'];?>" name="offset[<?php echo $op['products_id'];?>]]" value="<?php echo $oqp['offset'] ? $oqp['offset'] : 0;?>" onchange="if(document.getElementById('quantity_<?php echo $opp['products_id'];?>').innerHTML-this.value<0){this.value=0;}change_option(this);print_quantity(<?php echo $opp['products_id'];?>);" onpropertychange="propertychange_option(this)" onmouseout="if(document.getElementById('quantity_<?php echo $opp['products_id'];?>').innerHTML-this.value<0){this.value=0;}change_option(this);print_quantity(<?php echo $opp['products_id'];?>);"<?php if($oqp['checked']){ ?> readonly<?php } ?>>=<span id="relate_product_<?php echo $opp['products_id'];?>"><?php echo $opp['products_quantity']-$oqp['offset'];?></span></td>
 </tr>
 <?php
     } else {
+    $oqp = tep_db_fetch_array(tep_db_query("select * from orders_questions_products where orders_id='".$order->info['orders_id']."' and products_id='".$op['products_id']."'"));
 ?>
-<tr><td><?php echo $opp['products_name'];?></td><td> 関連付け商品がないので手動入力してください</td></tr>
+<tr><td><input type="checkbox" class="relate_chk" id="checkbox_<?php echo $opp['products_id'];?>" name="relate_product[<?php echo $op['products_id'];?>]" value="1" onclick="click_relate(<?php echo $opp['products_id'];?>)" onchange="change_option(this)" onpropertychange="propertychange_option(this)"<?php if($oqp['checked']) { ?> checked<?php } ?>> <?php echo $opp['products_name'];?></td><td> 関連付け商品がないので手動入力してください</td></tr>
 <?php
     }
   }
@@ -1035,13 +1036,13 @@ if($reload == 'yes') {
 </table>
     </td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="clear_quantity();$('#relate_products_box input[type=text]').val('0');$('#relate_products_box input[type=text]').attr('readonly',false);clean_option('','<?php echo $order->info['orders_id'];?>');print_quantity(<?php echo $op['products_id'];?>);"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="clear_quantity();$('#relate_products_box input[type=text]').val('0');$('#relate_products_box input[type=text]').attr('readonly',false);clean_option('','<?php echo $order->info['orders_id'];?>');print_quantity(<?php echo $op['products_id'];?>);clean_option('relate','<?php echo $order->info['orders_id'];?>');"></td>
 <?php } ?>
   </tr>
   <tr>
     <td class="main">残量入力→誤差有無：</td>
     <td class="main">
-      <?php echo tep_draw_radio_field('q_6_1', '0', $oq['q_6_1'] === '0', '', 'id="q_6_1_0" onclick="exclude(this,\'q_6_2\')" onchange="change_option(this)"');?>無｜<?php echo tep_draw_radio_field('q_6_1', '1', $oq['q_6_1'] === '1', '', 'id="q_6_1_1" onchange="change_option(this)"');?>有 → <?php echo tep_draw_checkbox_field('q_6_2', '1', $oq['q_6_2'] === '1', '', 'id="q_6_2" onclick="auto_radio(this,\'q_6_1_1\')" onchange="change_option(this)"');?>報告
+      <?php echo tep_draw_radio_field('q_6_1', '0', $oq['q_6_1'] === '0', '', 'id="q_6_1_0" onclick="exclude(this,\'q_6_2\')" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>無｜<?php echo tep_draw_radio_field('q_6_1', '1', $oq['q_6_1'] === '1', '', 'id="q_6_1_1" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>有 → <?php echo tep_draw_checkbox_field('q_6_2', '1', $oq['q_6_2'] === '1', '', 'id="q_6_2" onclick="auto_radio(this,\'q_6_1_1\')" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>報告
     </td>
 <?php if (!$oq['q_8_1']) { ?>
     <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_6_1_0').attr('checked','');$('#q_6_1_1').attr('checked','');$('#q_6_2').attr('checked','');clean_option(6,'<?php echo $order->info['orders_id'];?>');"></td>
@@ -1049,7 +1050,7 @@ if($reload == 'yes') {
   </tr>
   <tr>
     <td class="main">受領メール送信：</td>
-    <td class="main"><?php echo tep_draw_checkbox_field('q_14_1', '1', isset($oq['q_14_1']) ? $oq['q_14_1'] === '1' : $pay_email,'','id="q_14_1" onchange="change_option(this)"');?><?php echo tep_draw_hidden_field('q_14_2', $oq['q_14_2'] ? $oq['q_14_2'] : $order->customer['email_address'], 'size="20" class="readonly" readonly');?>済</td>
+    <td class="main"><?php echo tep_draw_checkbox_field('q_14_1', '1', isset($oq['q_14_1']) ? $oq['q_14_1'] === '1' : $pay_email,'','id="q_14_1" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?><?php echo tep_draw_hidden_field('q_14_2', $oq['q_14_2'] ? $oq['q_14_2'] : $order->customer['email_address'], 'size="20" class="readonly" readonly');?>済</td>
 <?php if (!$oq['q_8_1']) { ?>
     <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_14_1').attr('checked','');$('#q_14_3').attr('checked','');clean_option(14,'<?php echo $order->info['orders_id'];?>');"></td>
 <?php } ?>
@@ -1059,13 +1060,13 @@ if($reload == 'yes') {
     <td class="main" id='td_q_15'>
 <table>
   <tr>
-    <td class="main"><?php echo tep_draw_checkbox_field('q_15_1', '1', isset($oq['q_15_1']) ? $oq['q_15_1'] === '1' : $end_time,'','id="q_15_1" onchange="change_option(this)"');?><?php echo tep_draw_input_field('q_15_2_m', $oq['q_15_2'] && $oq['q_15_2'] != '0000-00-00' ? date('m', strtotime($oq['q_15_2'])) : ($end_time?date('m', strtotime($end_time)):''), 'size="2" class="questions_date" readonly');?>月<?php echo tep_draw_input_field('q_15_2_d', $oq['q_15_2'] && $oq['q_15_2'] != '0000-00-00' ? date('d', strtotime($oq['q_15_2'])) : ($end_time?date('d', strtotime($end_time)):''), 'size="2" class="questions_date" readonly');?>日 ＊総額5.000円未満は168円引く＊</td>
+    <td class="main"><?php echo tep_draw_checkbox_field('q_15_1', '1', isset($oq['q_15_1']) ? $oq['q_15_1'] === '1' : $end_time,'','id="q_15_1" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?><?php echo tep_draw_input_field('q_15_2_m', $oq['q_15_2'] && $oq['q_15_2'] != '0000-00-00' ? date('m', strtotime($oq['q_15_2'])) : ($end_time?date('m', strtotime($end_time)):''), 'size="2" class="questions_date" readonly');?>月<?php echo tep_draw_input_field('q_15_2_d', $oq['q_15_2'] && $oq['q_15_2'] != '0000-00-00' ? date('d', strtotime($oq['q_15_2'])) : ($end_time?date('d', strtotime($end_time)):''), 'size="2" class="questions_date" readonly');?>日 ＊総額5.000円未満は168円引く＊</td>
   </tr>
   <tr>
-    <td class="main"><?php echo tep_draw_checkbox_field('q_15_3', '1', isset($oq['q_15_3']) ? $oq['q_15_3'] === '1' : '','','id="q_15_3" onchange="change_option(this)"');?>JNB <?php echo tep_draw_checkbox_field('q_15_4', '1', isset($oq['q_15_4']) ? $oq['q_15_4'] === '1' : '','','id="q_15_4" onchange="change_option(this)"');?>eBank <?php echo tep_draw_checkbox_field('q_15_5', '1', isset($oq['q_15_5']) ? $oq['q_15_5'] === '1' : '','','id="q_15_5" onchange="change_option(this)"');?>ゆうちょ</td>
+    <td class="main"><?php echo tep_draw_checkbox_field('q_15_3', '1', isset($oq['q_15_3']) ? $oq['q_15_3'] === '1' : '','','id="q_15_3" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>JNB <?php echo tep_draw_checkbox_field('q_15_4', '1', isset($oq['q_15_4']) ? $oq['q_15_4'] === '1' : '','','id="q_15_4" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>eBank <?php echo tep_draw_checkbox_field('q_15_5', '1', isset($oq['q_15_5']) ? $oq['q_15_5'] === '1' : '','','id="q_15_5" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>ゆうちょ</td>
   </tr>
   <tr>
-    <td class="main"><?php echo tep_draw_checkbox_field('q_15_8', '1', isset($oq['q_15_8']) ? $oq['q_15_8'] === '1' : '','','id="q_15_8" onchange="change_option(this)" onclick=""');?>済 <!-- 入金予定日 <?php echo tep_draw_input_field('q_15_6_m', $oq['q_15_6'] && $oq['q_15_6'] != '0000-00-00' ? date('m', strtotime($oq['q_15_6'])) : ($end_time?date('m', strtotime($end_time)):''), 'size="2" id="q_15_6_m"');?>月<?php echo tep_draw_input_field('q_15_6_d', $oq['q_15_6'] && $oq['q_15_6'] != '0000-00-00' ? date('d', strtotime($oq['q_15_6'])) : ($end_time?date('d', strtotime($end_time)):''), 'size="2" id="q_15_6_d"');?>日 -->受付番号<?php echo tep_draw_input_field('q_15_7', $oq['q_15_7'], 'size="20" id="q_15_7" onchange="change_option(this)"');?> </td>
+    <td class="main"><?php echo tep_draw_checkbox_field('q_15_8', '1', isset($oq['q_15_8']) ? $oq['q_15_8'] === '1' : '','','id="q_15_8" onchange="change_option(this) onpropertychange="propertychange_option(this)"" onclick=""');?>済 <!-- 入金予定日 <?php echo tep_draw_input_field('q_15_6_m', $oq['q_15_6'] && $oq['q_15_6'] != '0000-00-00' ? date('m', strtotime($oq['q_15_6'])) : ($end_time?date('m', strtotime($end_time)):''), 'size="2" id="q_15_6_m"');?>月<?php echo tep_draw_input_field('q_15_6_d', $oq['q_15_6'] && $oq['q_15_6'] != '0000-00-00' ? date('d', strtotime($oq['q_15_6'])) : ($end_time?date('d', strtotime($end_time)):''), 'size="2" id="q_15_6_d"');?>日 -->受付番号<?php echo tep_draw_input_field('q_15_7', $oq['q_15_7'], 'size="20" id="q_15_7" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?> </td>
   </tr>
 </table>
     </td>
@@ -1076,7 +1077,7 @@ if($reload == 'yes') {
     
   <tr>
     <td class="main">支払完了メール送信：</td>
-    <td class="main"><?php echo tep_draw_hidden_field('q_16_1', $oq['q_16_1'] ? $oq['q_16_1'] : $order->customer['email_address'], 'size="20" class="readonly" readonly');?><?php echo tep_draw_checkbox_field('q_16_2', '1', isset($oq['q_16_2']) ? $oq['q_16_2'] === '1' : $end_email,'','id="q_16_2" onchange="change_option(this)"');?>済</td>
+    <td class="main"><?php echo tep_draw_hidden_field('q_16_1', $oq['q_16_1'] ? $oq['q_16_1'] : $order->customer['email_address'], 'size="20" class="readonly" readonly');?><?php echo tep_draw_checkbox_field('q_16_2', '1', isset($oq['q_16_2']) ? $oq['q_16_2'] === '1' : $end_email,'','id="q_16_2" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>済</td>
 <?php if (!$oq['q_8_1']) { ?>
     <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_16_2').attr('checked', '');clean_option(16,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
@@ -1092,7 +1093,7 @@ if($reload == 'yes') {
 ?>
   <tr>
     <td class="main">決算確認：</td>
-    <td class="main"><?php echo tep_draw_checkbox_field('q_9_1', '1', $oq['q_9_1'], '', 'id="q_9_1" onclick="if(this.checked){$(\'#q_9_2_m\').val(new Date().getMonth()+1);$(\'#q_9_2_d\').val(new Date().getDate());}else{$(\'#q_9_2_m\').val(\'\');$(\'#q_9_2_d\').val(\'\');}" onchange="change_option(this)"');?><?php echo tep_draw_input_field('q_9_2_m', $oq['q_9_2'] && $oq['q_9_2'] != '0000-00-00' ? date('m', strtotime($oq['q_9_2'])) : '', 'size="2" id="q_9_2_m" class="questions_date" readonly');?>月<?php echo tep_draw_input_field('q_9_2_d', $oq['q_9_2'] && $oq['q_9_2'] != '0000-00-00' ? date('d', strtotime($oq['q_9_2'])) : '', 'size="2" id="q_9_2_d" class="questions_date" readonly');?>日</td>
+    <td class="main"><?php echo tep_draw_checkbox_field('q_9_1', '1', $oq['q_9_1'], '', 'id="q_9_1" onclick="if(this.checked){$(\'#q_9_2_m\').val(new Date().getMonth()+1);$(\'#q_9_2_d\').val(new Date().getDate());}else{$(\'#q_9_2_m\').val(\'\');$(\'#q_9_2_d\').val(\'\');}" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?><?php echo tep_draw_input_field('q_9_2_m', $oq['q_9_2'] && $oq['q_9_2'] != '0000-00-00' ? date('m', strtotime($oq['q_9_2'])) : '', 'size="2" id="q_9_2_m" class="questions_date" readonly');?>月<?php echo tep_draw_input_field('q_9_2_d', $oq['q_9_2'] && $oq['q_9_2'] != '0000-00-00' ? date('d', strtotime($oq['q_9_2'])) : '', 'size="2" id="q_9_2_d" class="questions_date" readonly');?>日</td>
 <?php if (!$oq['q_8_1']) { ?>
     <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_9_1').attr('checked','');clean_option(9,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
@@ -1100,7 +1101,7 @@ if($reload == 'yes') {
   <tr>
     <td class="main">在庫確認：</td>
     <td class="main">
-      <?php echo tep_draw_radio_field('q_10_1', '1', $oq['q_10_1'] === '1', '', 'id="q_10_1_1" onclick="exclude(this,\'q_10_2\')" onchange="change_option(this)"');?>有｜<?php echo tep_draw_radio_field('q_10_1', '0', $oq['q_10_1'] === '0', '', 'id="q_10_1_0" onchange="change_option(this)"');?>無 → <?php echo tep_draw_checkbox_field('q_10_2', '1', $oq['q_10_2'] === '1', '', 'id="q_10_2" onclick="auto_radio(this,\'q_10_1_0\')" onchange="change_option(this)"');?>入手困難ならお客様へ電話
+      <?php echo tep_draw_radio_field('q_10_1', '1', $oq['q_10_1'] === '1', '', 'id="q_10_1_1" onclick="exclude(this,\'q_10_2\')" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>有｜<?php echo tep_draw_radio_field('q_10_1', '0', $oq['q_10_1'] === '0', '', 'id="q_10_1_0" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>無 → <?php echo tep_draw_checkbox_field('q_10_2', '1', $oq['q_10_2'] === '1', '', 'id="q_10_2" onclick="auto_radio(this,\'q_10_1_0\')" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>入手困難ならお客様へ電話
     </td>
 <?php if (!$oq['q_8_1']) { ?>
     <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_10_1_0').attr('checked','');$('#q_10_1_1').attr('checked','');$('#q_10_2').attr('checked','');clean_option(10,'<?php echo $order->info['orders_id'];?>')"></td>
@@ -1117,28 +1118,28 @@ if($reload == 'yes') {
           <td class="main">決算時のメールアドレス<?php echo tep_draw_input_field('q_11_2', $oq['q_11_2'] ? $oq['q_11_2'] : $order->info['telecom_email'], 'size="20" class="questions_date" readonly');?><?php if(!$order->info['telecom_email'] && !$oq['q_11_1']){?> <font color="red">取得エラー</font><?php }?></td>
         </tr>
         <tr>
-          <td class="main"><?php echo tep_draw_radio_field('q_11_3', '0', $oq['q_11_3'] === '0', '', 'id="q_11_3_0" onclick="$(\'#td_q_11_first\').hide();$(\'#td_q_11_second\').show();" onchange="change_option(this)"');?>２回目以降</td>
+          <td class="main"><?php echo tep_draw_radio_field('q_11_3', '0', $oq['q_11_3'] === '0', '', 'id="q_11_3_0" onclick="$(\'#td_q_11_first\').hide();$(\'#td_q_11_second\').show();" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>２回目以降</td>
         </tr>
         <tr>
           <td class="main" id='td_q_11_second'<?php if ($oq['q_11_3'] === '1' or !isset($oq['q_11_3'])) echo ' style="display:none"';?>>
-&nbsp;&nbsp;&nbsp;&nbsp;<?php echo tep_draw_checkbox_field('q_11_4', '1', $oq['q_11_4'] === '1','','onchange="change_option(this)"');?>常連（以下のチェック必要無）<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<?php echo tep_draw_checkbox_field('q_11_5', '1', $oq['q_11_5'] === '1','','onchange="change_option(this)"');?> 1.過去に本人確認をしている<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<?php echo tep_draw_checkbox_field('q_11_6', '1', $oq['q_11_6'] === '1','','onchange="change_option(this)"');?> 2.決算内容に変更がない<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<?php echo tep_draw_checkbox_field('q_11_7', '1', $oq['q_11_7'] === '1','','onchange="change_option(this)"');?> 3.短期間に高額決算がない
+&nbsp;&nbsp;&nbsp;&nbsp;<?php echo tep_draw_checkbox_field('q_11_4', '1', $oq['q_11_4'] === '1','','onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>常連（以下のチェック必要無）<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<?php echo tep_draw_checkbox_field('q_11_5', '1', $oq['q_11_5'] === '1','','onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?> 1.過去に本人確認をしている<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<?php echo tep_draw_checkbox_field('q_11_6', '1', $oq['q_11_6'] === '1','','onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?> 2.決算内容に変更がない<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<?php echo tep_draw_checkbox_field('q_11_7', '1', $oq['q_11_7'] === '1','','onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?> 3.短期間に高額決算がない
           </td>
         </tr>
         <tr>
-          <td class="main"><?php echo tep_draw_radio_field('q_11_3', '1', $oq['q_11_3'] === '1', '', 'id="q_11_3_1" onclick="$(\'#td_q_11_second\').hide();$(\'#td_q_11_first\').show();" onchange="change_option(this)"');?>初回<td>
+          <td class="main"><?php echo tep_draw_radio_field('q_11_3', '1', $oq['q_11_3'] === '1', '', 'id="q_11_3_1" onclick="$(\'#td_q_11_second\').hide();$(\'#td_q_11_first\').show();" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>初回<td>
         </tr>
         <tr>
           <td class="main" id='td_q_11_first' <?php if ($oq['q_11_3'] === '0'or !isset($oq['q_11_3'])) echo ' style="display:none"';?>>
-&nbsp;&nbsp;&nbsp;&nbsp;<?php echo tep_draw_checkbox_field('q_11_8', '1', $oq['q_11_8'] === '1', '', 'onchange="change_option(this)"');?>IP・ホストのチェック<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<?php echo tep_draw_checkbox_field('q_11_8', '1', $oq['q_11_8'] === '1', '', 'onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>IP・ホストのチェック<br>
 &nbsp;&nbsp;&nbsp;&nbsp;電話確認をする<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;カード名義（カタカナ）<?php echo tep_draw_input_field('q_11_9', $oq['q_11_9'] ? $oq['q_11_9'] : $order->info['telecom_name'], 'size="20" onchange="change_option(this)"');?><?php if(!$order->info['telecom_email'] && !$oq['q_11_1']){?> <font color="red">取得エラー</font><?php }?><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;電話番号<?php echo tep_draw_input_field('q_11_10', $oq['q_11_10'] ? $oq['q_11_10'] : $order->info['telecom_tel'], 'size="20" onchange="change_option(this)"');?><?php if(!$order->info['telecom_email'] && !$oq['q_11_1']){?> <font color="red">取得エラー</font><?php }?><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<?php echo tep_draw_checkbox_field('q_11_11', '1', $oq['q_11_11'] === '1', '', 'onchange="change_option(this)"');?>カード名義・商品名・キャラ名一致<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<?php echo tep_draw_checkbox_field('q_11_12', '1', $oq['q_11_12'] === '1', '', 'onclick="if(this.checked){$(\'#q_11_13_m\').val(new Date().getMonth()+1);$(\'#q_11_13_d\').val(new Date().getDate());}else{$(\'#q_11_13_m\').val(\'\');$(\'#q_11_13_d\').val(\'\');}" onchange="change_option(this)"');?>本人確認日：<?php echo tep_draw_input_field('q_11_13_m', $oq['q_11_13'] && $oq['q_11_13'] != '0000-00-00' ? date('m', strtotime($oq['q_11_13'])) : '', 'size="2" id="q_11_13_m"');?>月<?php echo tep_draw_input_field('q_11_13_d', $oq['q_11_13'] && $oq['q_11_13'] != '0000-00-00' ? date('d', strtotime($oq['q_11_13'])) : '', 'size="2" id="q_11_13_d"');?>日<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<?php echo tep_draw_checkbox_field('q_11_14', '1', $oq['q_11_14'] === '1', '', 'onchange="change_option(this)"');?>信用調査入力
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;カード名義（カタカナ）<?php echo tep_draw_input_field('q_11_9', $oq['q_11_9'] ? $oq['q_11_9'] : $order->info['telecom_name'], 'size="20" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?><?php if(!$order->info['telecom_email'] && !$oq['q_11_1']){?> <font color="red">取得エラー</font><?php }?><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;電話番号<?php echo tep_draw_input_field('q_11_10', $oq['q_11_10'] ? $oq['q_11_10'] : $order->info['telecom_tel'], 'size="20" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?><?php if(!$order->info['telecom_email'] && !$oq['q_11_1']){?> <font color="red">取得エラー</font><?php }?><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<?php echo tep_draw_checkbox_field('q_11_11', '1', $oq['q_11_11'] === '1', '', 'onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>カード名義・商品名・キャラ名一致<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<?php echo tep_draw_checkbox_field('q_11_12', '1', $oq['q_11_12'] === '1', '', 'onclick="if(this.checked){$(\'#q_11_13_m\').val(new Date().getMonth()+1);$(\'#q_11_13_d\').val(new Date().getDate());}else{$(\'#q_11_13_m\').val(\'\');$(\'#q_11_13_d\').val(\'\');}" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>本人確認日：<?php echo tep_draw_input_field('q_11_13_m', $oq['q_11_13'] && $oq['q_11_13'] != '0000-00-00' ? date('m', strtotime($oq['q_11_13'])) : '', 'size="2" id="q_11_13_m"');?>月<?php echo tep_draw_input_field('q_11_13_d', $oq['q_11_13'] && $oq['q_11_13'] != '0000-00-00' ? date('d', strtotime($oq['q_11_13'])) : '', 'size="2" id="q_11_13_d"');?>日<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<?php echo tep_draw_checkbox_field('q_11_14', '1', $oq['q_11_14'] === '1', '', 'onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>信用調査入力
           </td>
         </tr>
         <tr>
@@ -1152,28 +1153,28 @@ if($reload == 'yes') {
   </tr>
   <tr>
     <td class="main">信用判定：</td>
-    <td class="main"><?php echo tep_draw_radio_field('q_17_2', '0', $oq['q_17_2'] === '0', '', 'id="q_17_2_0" onchange="change_option(this)"');?>正常 ｜ <?php echo tep_draw_radio_field('q_17_2', '1', $oq['q_17_2'] === '1', '', 'id="q_17_2_1" onchange="change_option(this)"');?>異常 → 担当者<?php echo tep_draw_input_field('q_17_1', $oq['q_17_1'], 'size="10" id="q_17_1"');?>の承諾を得た</td>
+    <td class="main"><?php echo tep_draw_radio_field('q_17_2', '0', $oq['q_17_2'] === '0', '', 'id="q_17_2_0" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>正常 ｜ <?php echo tep_draw_radio_field('q_17_2', '1', $oq['q_17_2'] === '1', '', 'id="q_17_2_1" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>異常 → 担当者<?php echo tep_draw_input_field('q_17_1', $oq['q_17_1'], 'size="10" id="q_17_1"');?>の承諾を得た</td>
 <?php if (!$oq['q_8_1']) { ?>
     <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_17_2_0').attr('checked','');$('#q_17_2_1').attr('checked','');$('#q_17_1').val('');clean_option(17,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
     <td class="main">入金確認メール送信：</td>
-    <td class="main"><?php echo tep_draw_hidden_field('q_4_1', $oq['q_4_1'] ? $oq['q_4_1'] : $order->customer['email_address'], 'size="20" class="questions_date" readonly');?><?php echo tep_draw_checkbox_field('q_4_2', '1', isset($oq['q_4_2'])?$oq['q_4_2'] === '1':$pay_email,'','id="q_4_2" onchange="change_option(this)"');?>済</td>
+    <td class="main"><?php echo tep_draw_hidden_field('q_4_1', $oq['q_4_1'] ? $oq['q_4_1'] : $order->customer['email_address'], 'size="20" class="questions_date" readonly');?><?php echo tep_draw_checkbox_field('q_4_2', '1', isset($oq['q_4_2'])?$oq['q_4_2'] === '1':$pay_email,'','id="q_4_2" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>済</td>
 <?php if (!$oq['q_8_1']) { ?>
     <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_4_2').attr('checked','');clean_option(4,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
     <td class="main">発送：</td>
-    <td class="main"><?php echo tep_draw_checkbox_field('q_5_1', '1', isset($oq['q_5_1']) ? $oq['q_5_1'] === '1' : $end_time, '', 'id="q_5_1" onchange="change_option(this)"');?><?php echo tep_draw_input_field('q_5_2_m', $oq['q_5_2'] && $oq['q_5_2'] != '0000-00-00' ? date('m', strtotime($oq['q_5_2'])) : ($end_time?date('m', strtotime($end_time)):''), 'size="2" class="questions_date" readonly');?>月<?php echo tep_draw_input_field('q_5_2_d', $oq['q_5_2'] && $oq['q_5_2'] != '0000-00-00' ? date('d', strtotime($oq['q_5_2'])) : ($end_time?date('d', strtotime($end_time)):''), 'size="2" class="questions_date" readonly');?>日</td>
+    <td class="main"><?php echo tep_draw_checkbox_field('q_5_1', '1', isset($oq['q_5_1']) ? $oq['q_5_1'] === '1' : $end_time, '', 'id="q_5_1" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?><?php echo tep_draw_input_field('q_5_2_m', $oq['q_5_2'] && $oq['q_5_2'] != '0000-00-00' ? date('m', strtotime($oq['q_5_2'])) : ($end_time?date('m', strtotime($end_time)):''), 'size="2" class="questions_date" readonly');?>月<?php echo tep_draw_input_field('q_5_2_d', $oq['q_5_2'] && $oq['q_5_2'] != '0000-00-00' ? date('d', strtotime($oq['q_5_2'])) : ($end_time?date('d', strtotime($end_time)):''), 'size="2" class="questions_date" readonly');?>日</td>
 <?php if (!$oq['q_8_1']) { ?>
     <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_5_1').attr('checked','');clean_option(5,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
     <td class="main">発送完了メール送信：</td>
-    <td class="main"><?php echo tep_draw_hidden_field('q_7_1', $oq['q_7_1'] ? $oq['q_7_1'] : $order->customer['email_address'], 'size="20" class="readonly" class="questions_date" readonly');?><?php echo tep_draw_checkbox_field('q_7_2', '1', isset($oq['q_7_2']) ? $oq['q_7_2'] === '1' : $end_time, '', 'id="q_7_2" onchange="change_option(this)"');?>済</td>
+    <td class="main"><?php echo tep_draw_hidden_field('q_7_1', $oq['q_7_1'] ? $oq['q_7_1'] : $order->customer['email_address'], 'size="20" class="readonly" class="questions_date" readonly');?><?php echo tep_draw_checkbox_field('q_7_2', '1', isset($oq['q_7_2']) ? $oq['q_7_2'] === '1' : $end_time, '', 'id="q_7_2" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>済</td>
 <?php if (!$oq['q_8_1']) { ?>
     <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_7_2').attr('checked','');clean_option(7,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
@@ -1181,7 +1182,7 @@ if($reload == 'yes') {
   <tr>
     <td class="main">残量入力→誤差有無：</td>
     <td class="main">
-      <?php echo tep_draw_radio_field('q_6_1', '0', $oq['q_6_1'] === '0', '', 'id="q_6_1_0" onclick="exclude(this,\'q_6_2\')" onchange="change_option(this)"');?>無｜<?php echo tep_draw_radio_field('q_6_1', '1', $oq['q_6_1'] === '1', '', 'id="q_6_1_1"');?>有 → <?php echo tep_draw_checkbox_field('q_6_2', '1', $oq['q_6_2'] === '1', '', 'id="q_6_2" onclick="auto_radio(this,\'q_6_1_1\')" onchange="change_option(this)"');?>報告
+      <?php echo tep_draw_radio_field('q_6_1', '0', $oq['q_6_1'] === '0', '', 'id="q_6_1_0" onclick="exclude(this,\'q_6_2\')" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>無｜<?php echo tep_draw_radio_field('q_6_1', '1', $oq['q_6_1'] === '1', '', 'id="q_6_1_1"');?>有 → <?php echo tep_draw_checkbox_field('q_6_2', '1', $oq['q_6_2'] === '1', '', 'id="q_6_2" onclick="auto_radio(this,\'q_6_1_1\')" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>報告
     </td>
 <?php if (!$oq['q_8_1']) { ?>
     <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_6_1_0').attr('checked','');$('#q_6_1_1').attr('checked','');$('#q_6_2').attr('checked','');clean_option(6,'<?php echo $order->info['orders_id'];?>')"></td>
@@ -1203,7 +1204,7 @@ if($reload == 'yes') {
   <tr>
     <td class="main">在庫確認：</td>
     <td class="main">
-      <?php echo tep_draw_radio_field('q_2_1', '1', $oq['q_2_1'] === '1', '', 'id="q_2_1_1" onclick="exclude(this,\'q_2_2\')" onchange="change_option(this)"');?>有｜<?php echo tep_draw_radio_field('q_2_1', '0', $oq['q_2_1'] === '0', '', 'id="q_2_1_0" onchange="change_option(this)"');?>無 → <?php echo tep_draw_checkbox_field('q_2_2', '1', $oq['q_2_2'] === '1', '', 'id="q_2_2" onclick="auto_radio(this,\'q_2_1_0\')" onchange="change_option(this)"');?>入金確認後仕入
+      <?php echo tep_draw_radio_field('q_2_1', '1', $oq['q_2_1'] === '1', '', 'id="q_2_1_1" onclick="exclude(this,\'q_2_2\')" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>有｜<?php echo tep_draw_radio_field('q_2_1', '0', $oq['q_2_1'] === '0', '', 'id="q_2_1_0" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>無 → <?php echo tep_draw_checkbox_field('q_2_2', '1', $oq['q_2_2'] === '1', '', 'id="q_2_2" onclick="auto_radio(this,\'q_2_1_0\')" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>入金確認後仕入
     </td>
 <?php if (!$oq['q_8_1']) { ?>
     <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_2_1_0').attr('checked','');$('#q_2_1_1').attr('checked','');$('#q_2_2').attr('checked','');clean_option(2,'<?php echo $order->info['orders_id'];?>')"></td>
@@ -1211,28 +1212,28 @@ if($reload == 'yes') {
   </tr>
   <tr>
     <td class="main">入金確認：</td>
-    <td class="main"><?php echo tep_draw_checkbox_field('q_3_1', '1', isset($oq['q_3_1']) ? ($oq['q_3_3'] != $new_price ? false : $oq['q_3_1'] === '1') : $pay_time, '', 'id="q_3_1" onchange="change_option(this)"');?><?php echo tep_draw_input_field('q_3_2_m', $oq['q_3_2'] && $oq['q_3_2'] != '0000-00-00' ? date('m', strtotime($oq['q_3_2'])) : ($pay_time?date('m', strtotime($pay_time)):''), 'size="2" class="questions_date" readonly');?>月<?php echo tep_draw_input_field('q_3_2_d', $oq['q_3_2'] && $oq['q_3_2'] != '0000-00-00' ? date('d', strtotime($oq['q_3_2'])) : ($pay_time?date('d', strtotime($pay_time)):''), 'size="2" class="questions_date" readonly');?>日 → 金額は<b><?php echo $new_price;?><?php echo tep_draw_hidden_field('q_3_3', $oq['q_3_3']?($oq['q_3_3'] != $new_price ? $new_price : $oq['q_3_3']):$new_price, 'size="10" class="questions_date" readonly style="text-align:right;font-weight:bold;font-size:12px"');?></b>円ですか？→<?php echo tep_draw_checkbox_field('q_3_4', '1', isset($oq['q_3_4']) ? ($oq['q_3_3'] != $new_price ? false : $oq['q_3_4'] === '1'): $pay_time, '','id="q_3_4"');?>はい</td>
+    <td class="main"><?php echo tep_draw_checkbox_field('q_3_1', '1', isset($oq['q_3_1']) ? ($oq['q_3_3'] != $new_price ? false : $oq['q_3_1'] === '1') : $pay_time, '', 'id="q_3_1" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?><?php echo tep_draw_input_field('q_3_2_m', $oq['q_3_2'] && $oq['q_3_2'] != '0000-00-00' ? date('m', strtotime($oq['q_3_2'])) : ($pay_time?date('m', strtotime($pay_time)):''), 'size="2" class="questions_date" readonly');?>月<?php echo tep_draw_input_field('q_3_2_d', $oq['q_3_2'] && $oq['q_3_2'] != '0000-00-00' ? date('d', strtotime($oq['q_3_2'])) : ($pay_time?date('d', strtotime($pay_time)):''), 'size="2" class="questions_date" readonly');?>日 → 金額は<b><?php echo $new_price;?><?php echo tep_draw_hidden_field('q_3_3', $oq['q_3_3']?($oq['q_3_3'] != $new_price ? $new_price : $oq['q_3_3']):$new_price, 'size="10" class="questions_date" readonly style="text-align:right;font-weight:bold;font-size:12px"');?></b>円ですか？→<?php echo tep_draw_checkbox_field('q_3_4', '1', isset($oq['q_3_4']) ? ($oq['q_3_3'] != $new_price ? false : $oq['q_3_4'] === '1'): $pay_time, '','id="q_3_4"');?>はい</td>
 <?php if (!$oq['q_8_1']) { ?>
     <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_3_1').attr('checked','');$('#q_3_4').attr('checked','');clean_option(3,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
     <td class="main">入金確認メール送信：</td>
-    <td class="main"><?php echo tep_draw_hidden_field('q_4_1', $oq['q_4_1'] ? $oq['q_4_1'] : $order->customer['email_address'], 'size="20" class="questions_date" readonly');?><?php echo tep_draw_checkbox_field('q_4_2', '1', isset($oq['q_4_2'])?$oq['q_4_2'] === '1':$pay_email, '', 'id="q_4_2" onchange="change_option(this)"');?>済</td>
+    <td class="main"><?php echo tep_draw_hidden_field('q_4_1', $oq['q_4_1'] ? $oq['q_4_1'] : $order->customer['email_address'], 'size="20" class="questions_date" readonly');?><?php echo tep_draw_checkbox_field('q_4_2', '1', isset($oq['q_4_2'])?$oq['q_4_2'] === '1':$pay_email, '', 'id="q_4_2" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>済</td>
 <?php if (!$oq['q_8_1']) { ?>
     <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_4_2').attr('checked','');clean_option(4,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
     <td class="main">発送：</td>
-    <td class="main"><?php echo tep_draw_checkbox_field('q_5_1', '1', isset($oq['q_5_1']) ? $oq['q_5_1'] === '1' : $end_time, '', 'id="q_5_1" onchange="change_option(this)"');?><?php echo tep_draw_input_field('q_5_2_m', $oq['q_5_2'] && $oq['q_5_2'] != '0000-00-00' ? date('m', strtotime($oq['q_5_2'])) : ($end_time?date('m', strtotime($end_time)):''), 'size="2" class="questions_date" readonly');?>月<?php echo tep_draw_input_field('q_5_2_d', $oq['q_5_2'] && $oq['q_5_2'] != '0000-00-00' ? date('d', strtotime($oq['q_5_2'])) : ($end_time?date('d', strtotime($end_time)):''), 'size="2" class="questions_date" readonly');?>日</td>
+    <td class="main"><?php echo tep_draw_checkbox_field('q_5_1', '1', isset($oq['q_5_1']) ? $oq['q_5_1'] === '1' : $end_time, '', 'id="q_5_1" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?><?php echo tep_draw_input_field('q_5_2_m', $oq['q_5_2'] && $oq['q_5_2'] != '0000-00-00' ? date('m', strtotime($oq['q_5_2'])) : ($end_time?date('m', strtotime($end_time)):''), 'size="2" class="questions_date" readonly');?>月<?php echo tep_draw_input_field('q_5_2_d', $oq['q_5_2'] && $oq['q_5_2'] != '0000-00-00' ? date('d', strtotime($oq['q_5_2'])) : ($end_time?date('d', strtotime($end_time)):''), 'size="2" class="questions_date" readonly');?>日</td>
 <?php if (!$oq['q_8_1']) { ?>
     <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_5_1').attr('checked','');clean_option(5,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
     <td class="main">発送完了メール送信：</td>
-    <td class="main"><?php echo tep_draw_hidden_field('q_7_1', $oq['q_7_1'] ? $oq['q_7_1'] : $order->customer['email_address'], 'size="20" class="questions_date" readonly');?><?php echo tep_draw_checkbox_field('q_7_2', '1', isset($oq['q_7_2']) ? $oq['q_7_2'] === '1' : $end_email, '', 'id="q_7_2" onchange="change_option(this)"');?>済</td>
+    <td class="main"><?php echo tep_draw_hidden_field('q_7_1', $oq['q_7_1'] ? $oq['q_7_1'] : $order->customer['email_address'], 'size="20" class="questions_date" readonly');?><?php echo tep_draw_checkbox_field('q_7_2', '1', isset($oq['q_7_2']) ? $oq['q_7_2'] === '1' : $end_email, '', 'id="q_7_2" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>済</td>
 <?php if (!$oq['q_8_1']) { ?>
     <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_7_2').attr('checked','');clean_option(7,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
@@ -1240,7 +1241,7 @@ if($reload == 'yes') {
   <tr>
     <td class="main">残量入力→誤差有無：</td>
     <td class="main">
-      <?php echo tep_draw_radio_field('q_6_1', '0', $oq['q_6_1'] === '0', '', 'id="q_6_1_0" onclick="exclude(this,\'q_6_2\')" onchange="change_option(this)"');?>無｜<?php echo tep_draw_radio_field('q_6_1', '1', $oq['q_6_1'] === '1', '', 'id="q_6_1_1" onchange="change_option(this)"');?>有 → <?php echo tep_draw_checkbox_field('q_6_2', '1', $oq['q_6_2'] === '1', '', 'id="q_6_2" onclick="auto_radio(this,\'q_6_1_1\')" onchange="change_option(this)"');?>報告
+      <?php echo tep_draw_radio_field('q_6_1', '0', $oq['q_6_1'] === '0', '', 'id="q_6_1_0" onclick="exclude(this,\'q_6_2\')" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>無｜<?php echo tep_draw_radio_field('q_6_1', '1', $oq['q_6_1'] === '1', '', 'id="q_6_1_1" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>有 → <?php echo tep_draw_checkbox_field('q_6_2', '1', $oq['q_6_2'] === '1', '', 'id="q_6_2" onclick="auto_radio(this,\'q_6_1_1\')" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>報告
     </td>
 <?php if (!$oq['q_8_1']) { ?>
     <td class="main" align="right">
@@ -1391,7 +1392,7 @@ if($reload == 'yes') {
     <!-- orders status history -->
       <tr>
         <td class="main">
-
+<table width="100%"><tr><td width="50%">
     <table border="1" cellspacing="0" cellpadding="5">
       <tr>
         <td class="smallText" align="center"><b><?php echo TABLE_HEADING_DATE_ADDED; ?></b></td>
@@ -1426,7 +1427,21 @@ if($reload == 'yes') {
       }
   ?>
     </table>
-    
+</td>
+    <?php /*<td id="same_orders" bgcolor="yellow">
+  <table>
+    <tr>
+      <td colspan="4">商品名</td>
+    </tr>
+    <tr>
+      <td>顾客名</td>
+      <td>取引时间</td>
+      <td>注文个数</td>
+      <td>AS人物名</td>
+    </tr>
+  </table>
+</td> */ ?>
+    </tr></table>
         </td>
       </tr>
       <!-- /orders status history -->
@@ -1495,6 +1510,8 @@ if($reload == 'yes') {
       <!-- /mail -->
     </td>
     <td width="50%" align="left" valign="top">
+<table width="100%">
+  <tr><td width="30%">
     <?php $computers = tep_get_computers();
           $o2c       = tep_get_computers_by_orders_id($order->info['orders_id']);
           if ($computers) {?>
@@ -1509,6 +1526,25 @@ if($reload == 'yes') {
         <?php } ?>
       </table>
     <?php } ?>
+  </td>
+  <?php /*
+  <td id="orders_actors" bgcolor="gray">
+    <table>
+      <tr>
+        <td colspan="5">商品名</td>
+      </tr>
+      <tr>
+        <td>AS人物名</td>
+        <td>AS库存1</td>
+        <td>AS库存2</td>
+        <td>AS库存3</td>
+        <td>注文数</td>
+      </tr>
+    </table>
+  </td>
+  */ ?>
+  </tr>
+</table>
     </td>
   </tr>
 </table>
@@ -1539,10 +1575,10 @@ if($reload == 'yes') {
               <?php echo tep_draw_form('orders1', FILENAME_ORDERS, '', 'get','id="orders1" onsubmit="return false"'); ?>検索 : 
               <input name="keywords" type="text" id="keywords" size="40" value="<?php if(isset($_GET['keywords'])) echo stripslashes($_GET['keywords']); ?>">
               <select name="search_type" onChange='search_type_changed(this)'>
-                <option value="none" <?php if (!isset($_GET['search_type']) or (isset($_GET['search_type']) && $_GET['search_type']=='none')) {?> selected<?php } ?>>--選択してください--</option>
-                <option value="customers_name"<?php if (isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name') {?> selected<?php } ?>>名前</option>
-                <option value="email"<?php if (isset($_GET['search_type']) && $_GET['search_type'] == 'email') {?> selected<?php } ?>>メールアドレス</option>
-                <option value="products_name"<?php if (isset($_GET['search_type']) && $_GET['search_type'] == 'products_name') {?> selected<?php } ?>>商品名</option>
+                <option value="none">--選択してください--</option>
+                <option value="customers_name">名前</option>
+                <option value="email">メールアドレス</option>
+                <option value="products_name">商品名</option>
               </select>
               </form>
             </td>
@@ -2329,6 +2365,7 @@ function submit_confirm()
 <embed id="warn_sound" src="images/warn.mp3" width="0" height="0" loop="false" autostart="false"></embed>
 <!-- footer_eof //-->
 <br>
+<div id="wait" style="position:fixed; left:45%; top:45%; display:none;"><img src="images/load.gif" alt="img"></div>
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

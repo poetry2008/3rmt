@@ -13,9 +13,9 @@
   define('PAGE_PARSE_START_TIME', microtime());
 
 // set the level of error reporting
-  error_reporting(0);
-  ini_set("display_errors", "Off");
-  //error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
+  //error_reporting(0);
+  //ini_set("display_errors", "On");
+  //error_reporting(E_ALL);
   //ini_set("display_errors", "On");
 
 // check if register_globals is enabled.
@@ -536,6 +536,9 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   require(DIR_WS_FUNCTIONS . 'specials.php');
   tep_expire_specials();
 
+  if (defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED) {
+    tep_parseURI(); 
+  }
 // calculate category path
   if (isset($_GET['cPath'])) {
     $cPath = $_GET['cPath'];

@@ -57,7 +57,7 @@ class mission {
    $r =  $this->conn->query($sql);
    // 如果大于一行 ,说明可以开始
    if($r->num_rows > 0){
-   	 $sql = 'select * from session_log s ,mission m 
+      $sql = 'select * from session_log s ,mission m 
       where m.enabled = 1 
       and s.end_at <> 0 
       and s.forced = 0 
@@ -100,8 +100,8 @@ class mission {
         $this->conn->query('insert into session_log  (`mission_id`,`start_at`) values ( "'.$this->id.'" ,"'.time().'" )');
         $this->session_id = $this->conn->insert_id;
             //删除一起的 session  和 record 
-            var_dump($this->session_id);
-            var_dump($this->id);
+//            var_dump($this->session_id);
+ //           var_dump($this->id);
     $sql = "delete from record where mission_id ='".$this->id."'
            and session_id <> '".$this->session_id."'";
     $this->conn->query($sql);

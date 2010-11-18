@@ -62,10 +62,7 @@
         $site_id     = tep_db_prepare_input($_POST['pID']);
         //％指定の場合は価格を算出
         $HTTP_POST_VARS['products_price_offset'] = SBC2DBC($HTTP_POST_VARS['products_price_offset']);
-        /*
-        if (substr($HTTP_POST_VARS['products_price_offset'], -1) == '%') {
-          $HTTP_POST_VARS['products_price_offset'] = (($HTTP_POST_VARS['products_price_offset'] / 100) * $HTTP_POST_VARS['products_price']);
-        } */
+
         $update_sql_data = array('products_last_modified' => 'now()',
                                  'products_quantity' => tep_db_prepare_input($_POST['products_quantity']),
                                  'products_attention_5' => tep_db_prepare_input($_POST['products_attention_5']),
@@ -73,58 +70,80 @@
                                  'products_price' => tep_db_prepare_input($_POST['products_price']));
         tep_db_perform(TABLE_PRODUCTS, $update_sql_data, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
 
-        // 特価商品インサート
-        /*
-        if(!empty($_POST['products_special_price'])) {
-        //％指定の場合は価格を算出
-            if (substr($_POST['products_special_price'], -1) == '%') {
-              $new_special_insert_query = tep_db_query("select products_id, products_price from " . TABLE_PRODUCTS . " where products_id = '" . tep_db_prepare_input($products_id) . "'");
-              $new_special_insert = tep_db_fetch_array($new_special_insert_query);
-              $_POST['products_price'] = $new_special_insert['products_price'];
-              $_POST['products_special_price'] = ($_POST['products_price'] - (($_POST['products_special_price'] / 100) * $_POST['products_price']));
-            }
-
-        $spcnt_query = tep_db_query("select count(*) as cnt from " . TABLE_SPECIALS . " where products_id = '".tep_db_prepare_input($products_id)."'");
-        $spcnt = tep_db_fetch_array($spcnt_query);
-        if($spcnt['cnt'] > 0) {
-          //登録済みなのでアップデート
-          tep_db_query("update " . TABLE_SPECIALS . " set specials_new_products_price = '".tep_db_prepare_input($_POST['products_special_price'])."', specials_last_modified = now(), status = '1' where  products_id = '".tep_db_prepare_input($products_id)."'");
-        } else {
-          //未登録なのでインサート
-          tep_db_query("insert into " . TABLE_SPECIALS . "(specials_id, products_id, specials_new_products_price, specials_date_added, status) values ('', '".tep_db_prepare_input($products_id)."', '".tep_db_prepare_input($_POST['products_special_price'])."', now(), '1')");
-        }
-      } else {
-        $spcnt_query = tep_db_query("select count(*) as cnt from " . TABLE_SPECIALS . " where products_id = '".tep_db_prepare_input($products_id)."'");
-        $spcnt = tep_db_fetch_array($spcnt_query);
-        if($spcnt['cnt'] > 0) {
-          //データを削除
-          tep_db_query("delete from " . TABLE_SPECIALS . " where products_id = '" . tep_db_prepare_input($products_id) . "'");
-        }
-      }
-      
-      // 特価商品インサート終了
-      */
-// 終
         tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $_GET['cPath'] . '&pID=' . $products_id));
         break;
       case 'upload_keyword':
-        $kWord = $_POST['keyword'];
+        //删除没有关系的mission 
+        $sql_del_no_categories_mission = 'DELETE FROM '.TABLE_MISSION.' WHERE id NOT IN (SELECT mission_id FROM '.TABLE_CATEGORIES_TO_MISSION.')';
+
+        $kWord = trim($_POST['keyword']);
         $categories_id = $_POST['categories_id'];
         $method = $_POST['method'];
-        if($method=='upload'){
-        $sql_data_array = array(
-            'categories_id' => tep_db_prepare_input($categories_id),
-            'keyword' => tep_db_prepare_input($kWord));
-        tep_db_perform(TABLE_CATEGORIES_TO_MISSION, $sql_data_array, 'update',
-            'categories_id='.$categories_id);  
-        }else{
-        $sql_data_array = array(
-            'categories_id' => tep_db_prepare_input($categories_id),
-            'mission_id' => 0,
-            'keyword' => tep_db_prepare_input($kWord));
-        tep_db_perform(TABLE_CATEGORIES_TO_MISSION, $sql_data_array);
+        if($method){
+          //如果关键字为空 删除当前关系 
+          if($kWord==''){
+          tep_db_query("DELETE FROM ".TABLE_CATEGORIES_TO_MISSION. " WHERE categories_id = ".$categories_id);
+          break;
+
+          }
+          // 修改  只存在唯一一个mission即同名mission为同一mission
+          // 1.判断 keyword是否在 mission 中存在,如果存在,则关联,如果不存在,则新建,并关联
+        $mission_to_categories_whith_keyword_exist = "SELECT c2m.categories_id ,c2m.mission_id from "
+                                                    .TABLE_CATEGORIES_TO_MISSION.' c2m, '
+                                                    .TABLE_MISSION .' m '
+                                                    ."WHERE m.keyword='".$kWord."' "
+                                                    ."AND c2m.mission_id = m.id "
+                                                    ."AND c2m.categories_id = ".$categories_id;
+                                                        
+       while(mysql_num_rows($exist_res = tep_db_query($mission_to_categories_whith_keyword_exist))==0){
+         $sql_exist_mission_named = "SELECT id from ".TABLE_MISSION." where keyword='".$kWord."'";
+         while(mysql_num_rows(tep_db_query($sql_exist_mission_named))==0){
+          tep_db_perform(TABLE_MISSION, array(
+                'name' => 'category '.$categories_id,
+                'keyword' => $kWord,
+                'page_limit' => '2',
+                'result_limit' => '20',
+                'enabled' => '1',
+                'engine' => 'google',
+                ));
+         }
+         $single_mission_sql = 'UPDATE '
+              .TABLE_CATEGORIES_TO_MISSION .' c2m'
+              .','.TABLE_MISSION.' m'
+              ." SET mission_id = m.id"
+              ." WHERE m.keyword = '".$kWord."'" 
+              ." and c2m.categories_id = ".$categories_id;
+         tep_db_query($single_mission_sql); 
+         while(mysql_affected_rows()==0){
+          tep_db_perform(TABLE_CATEGORIES_TO_MISSION, array(
+                'mission_id' =>'0',
+                'categories_id'=>$categories_id,
+                ));
+          
+         tep_db_query($single_mission_sql); 
+         }
         }
+       //删除不存在关系的mission 
+        tep_db_query($sql_del_no_categories_mission);
+
+        $tmpVar =  tep_db_fetch_array($exist_res);
+        $currentMissionId = $tmpVar['mission_id'];
+        unset($tmpVar);
+        //更新mission 姓名
+        $sql_get_mission_with_categories= 'select c2m.categories_id from '.TABLE_CATEGORIES_TO_MISSION.' c2m where c2m.mission_id = '.$currentMissionId;
+        $tmpArray = array();
+        $tmpRes = tep_db_query($sql_get_mission_with_categories);
+        while($tmpResultArray= tep_db_fetch_array($tmpRes)){
+          $tmpArray[] = $tmpResultArray['categories_id'];
+        }
+        tep_db_query('update '.TABLE_MISSION.' set name = "'.'categoriy_'.join('_',$tmpArray).'" where id='.$currentMissionId);
+
+        unset($tmpArray);
+        unset($tmpResultArray);
+
         tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $categories_id));
+
+        }
         break;
       case 'insert_category':
       case 'update_category':
@@ -245,12 +264,9 @@
       }
 
         $categories_image = tep_get_uploaded_file('categories_image');
-        //$image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES);
         $image_directory = tep_get_local_path(tep_get_upload_dir($site_id) . 'categories/');
 
         if (is_uploaded_file($categories_image['tmp_name'])) {
-          //print($categories_image.' '.$image_directory);
-          //exit;
           tep_db_query("update " . TABLE_CATEGORIES . " set categories_image = '" . $categories_image['name'] . "' where categories_id = '" . tep_db_input($categories_id) . "'");
           tep_copy_uploaded_file($categories_image, $image_directory);
         }
@@ -263,8 +279,6 @@
         tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $categories_id));
         break;
       case 'delete_product_description_confirm':
-        //print_r($_GET);
-        //exit();
         if ($_GET['pID'] && $_GET['site_id']) {
           tep_db_query("delete from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$_GET['pID']."' && site_id = '".(int)$_GET['site_id']."'");
         }
@@ -404,10 +418,7 @@
       }
       //％指定の場合は価格を算出
       $HTTP_POST_VARS['products_price_offset'] = SBC2DBC($HTTP_POST_VARS['products_price_offset']);
-      /*
-      if (substr($HTTP_POST_VARS['products_price_offset'], -1) == '%') {
-        $HTTP_POST_VARS['products_price_offset'] = (($HTTP_POST_VARS['products_price_offset'] / 100) * $HTTP_POST_VARS['products_price']);
-      }*/
+
       $products_attention_1 = tep_db_prepare_input($_POST['products_jan']);
       $products_attention_2 = tep_db_prepare_input($_POST['products_size']);
       $products_attention_3 = tep_db_prepare_input($_POST['products_naiyou']);
@@ -433,6 +444,7 @@
                                   'products_bflag' => tep_db_prepare_input($_POST['products_bflag']),
                                   'products_cflag' => tep_db_prepare_input($_POST['products_cflag']),
                                   'option_type' => tep_db_prepare_input($_POST['option_type']),
+                                  'order_pickup' => tep_db_prepare_input($_POST['order_pickup']),
                                   'relate_products_id' => tep_db_prepare_input($_POST['relate_products_id']),
                                   'products_small_sum' => tep_db_prepare_input($_POST['products_small_sum']));
           
@@ -611,41 +623,6 @@
       
       //-----------------------------------------
       // オプション値インサート終了
-      //-----------------------------------------
-      
-      //-----------------------------------------
-      // 特価商品インサート
-      //-----------------------------------------
-      /*
-          if(!empty($_POST['products_special_price'])) {
-      //％指定の場合は価格を算出
-            if (substr($_POST['products_special_price'], -1) == '%') {
-              $new_special_insert_query = tep_db_query("select products_id, products_price from " . TABLE_PRODUCTS . " where products_id = '" . tep_db_prepare_input($products_id) . "'");
-              $new_special_insert = tep_db_fetch_array($new_special_insert_query);
-              $_POST['products_price'] = $new_special_insert['products_price'];
-              $_POST['products_special_price'] = ($_POST['products_price'] - (($_POST['products_special_price'] / 100) * $_POST['products_price']));
-            } 
-      
-        $spcnt_query = tep_db_query("select count(*) as cnt from " . TABLE_SPECIALS . " where products_id = '".tep_db_prepare_input($products_id)."'");
-      $spcnt = tep_db_fetch_array($spcnt_query);
-      if($spcnt['cnt'] > 0) {
-        //登録済みなのでアップデート
-        tep_db_query("update " . TABLE_SPECIALS . " set specials_new_products_price = '".tep_db_prepare_input($_POST['products_special_price'])."', specials_last_modified = now(), status = '1' where  products_id = '".tep_db_prepare_input($products_id)."'");
-      } else {
-        //未登録なのでインサート
-        tep_db_query("insert into " . TABLE_SPECIALS . "(specials_id, products_id, specials_new_products_price, specials_date_added, status) values ('', '".tep_db_prepare_input($products_id)."', '".tep_db_prepare_input($_POST['products_special_price'])."', now(), '1')");
-      }
-      } else {
-        $spcnt_query = tep_db_query("select count(*) as cnt from " . TABLE_SPECIALS . " where products_id = '".tep_db_prepare_input($products_id)."'");
-      $spcnt = tep_db_fetch_array($spcnt_query);
-      if($spcnt['cnt'] > 0) {
-        //データを削除
-              tep_db_query("delete from " . TABLE_SPECIALS . " where products_id = '" . tep_db_prepare_input($products_id) . "'");
-        }
-      }
-      */
-      //-----------------------------------------
-      // 特価商品インサート終了
       //-----------------------------------------
       
           if (USE_CACHE == 'true') {
@@ -865,7 +842,8 @@ function mess(){
                  p.manufacturers_id, 
                  p.products_bflag, 
                  p.products_cflag, 
-                 p.relate_products_id, 
+                 p.relate_products_id,
+                 p.order_pickup,
                  p.products_small_sum 
           from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
           where p.products_id = '" . $_GET['pID'] . "' 
@@ -902,16 +880,6 @@ function mess(){
     }
 
     $languages = tep_get_languages();
-/*
-    if(isset($pInfo->products_status)){
-    switch ($pInfo->products_status) {
-      case '0': $in_status = false; $out_status = true; break;
-      case '1':
-      default: $in_status = true; $out_status = false;
-    }
-    } else{
-      $in_status = true; $out_status = false;
-    }*/
     
   if(isset($pInfo->products_cflag)){
   switch ($pInfo->products_cflag) {
@@ -963,12 +931,12 @@ function mess(){
               </tr>
             </table></td>
         </tr>
-        <tr>
-          <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-        </tr>
         <tr><?php echo tep_draw_form('new_product', FILENAME_CATEGORIES, 'cPath=' . $cPath . '&page='.$_GET['page'].'&pID=' . (isset($_GET['pID'])?$_GET['pID']:'') . '&action=new_product_preview', 'post', 'enctype="multipart/form-data" onSubmit="return mess();"'); ?>
         <input type="hidden" name="site_id" value="<?php echo $site_id;?>">
           <td><table border="0" cellspacing="0" cellpadding="2">
+              <tr>
+                <td colspan="2" class="main" align="right"><?php echo  tep_image_submit('button_preview.gif', IMAGE_PREVIEW) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&page='.$_GET['page'].'&pID=' . (isset($_GET['pID'])?$_GET['pID']:'')) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; ?></td>
+              </tr>
               <tr>
                 <td colspan="2"><fieldset>
                   <legend style="color:#FF0000 ">商品の基本情報</legend>
@@ -978,6 +946,7 @@ function mess(){
                       <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_radio_field('products_status', '1', $pInfo->products_status == '1' or !isset($pInfo->products_status)) . '&nbsp;' . TEXT_PRODUCT_AVAILABLE . '&nbsp;' . tep_draw_radio_field('products_status', '2', $pInfo->products_status == '2') . '&nbsp;' . '過去ログ'. '&nbsp;' . tep_draw_radio_field('products_status', '0', $pInfo->products_status == '0') . '&nbsp;' . TEXT_PRODUCT_NOT_AVAILABLE; ?></td>
                       <td class="main">&nbsp;</td>
           </tr>
+  
           <tr>
                       <td class="main"><?php echo TEXT_PRODUCTS_BUY_AND_SELL; ?></td>
                       <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_radio_field('products_bflag', '0', $in_bflag, '', ($site_id?'onclick="return false;"':'')) . '&nbsp;' . TEXT_PRODUCT_USUALLY . '&nbsp;' . tep_draw_radio_field('products_bflag', '1', $out_bflag, '', ($site_id?'onclick="return false;"':'')) . '&nbsp;' . TEXT_PRODUCT_PURCHASE; ?></td>
@@ -988,6 +957,8 @@ function mess(){
                       <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_radio_field('products_cflag', '0', $in_cflag, '', ($site_id?'onclick="return false;"':'')) . '&nbsp;' . TEXT_PRODUCT_NOT_INDISPENSABILITY . '&nbsp;' . tep_draw_radio_field('products_cflag', '1', $out_cflag, '', ($site_id?'onclick="return false;"':'')) . '&nbsp;' . TEXT_PRODUCT_INDISPENSABILITY; ?></td>
                       <td class="main">&nbsp;</td>
           </tr>   
+            
+
                   <tr>
                       <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                     </tr>
@@ -1006,6 +977,11 @@ function mess(){
                       <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_pull_down_menu('manufacturers_id', $manufacturers_array, isset($pInfo->manufacturers_id)?$pInfo->manufacturers_id:'', ($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '')); ?></td>
                       <td class="main">&nbsp;</td>
                   </tr>
+          <tr>
+                      <td class="main">オススメ商品並び順:</td>
+                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('order_pickup', isset($pInfo->order_pickup)?$pInfo->order_pickup:'','id="op"' . ($site_id ? 'class="readonly" readonly' : '')); ?></td>
+                      <td class="main">&nbsp;</td>
+          </tr>
                   <tr>
                       <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                     </tr>
@@ -1022,7 +998,7 @@ function mess(){
 ?>
               <tr>
                 <td class="main"><?php if ($i == 0) echo TEXT_PRODUCTS_NAME; ?></td>
-                <td class="main"><?php echo tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('products_name[' . $languages[$i]['id'] . ']', (isset($products_name[$languages[$i]['id']]) ? stripslashes($products_name[$languages[$i]['id']]) : (isset($pInfo->products_id)?tep_get_products_name($pInfo->products_id, $languages[$i]['id'], $site_id):''))); ?></td>
+                <td class="main"><?php echo tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('products_name[' . $languages[$i]['id'] . ']', (isset($products_name[$languages[$i]['id']]) ? stripslashes($products_name[$languages[$i]['id']]) : (isset($pInfo->products_id)?tep_get_products_name($pInfo->products_id, $languages[$i]['id'], $site_id, true):''))); ?></td>
                 <td class="fieldRequired">検索キー</td>
               </tr>
               <?php
@@ -1032,9 +1008,9 @@ function mess(){
                 <td class="main">関連付け商品:<?php // echo $pInfo->relate_products_id;?></td>
                 <td class="main" colspan="2">
   <?php echo tep_draw_separator('pixel_trans.gif', '24', '15');?>
-  <?php echo tep_draw_pull_down_menu('relate_categories', tep_get_category_tree('&npsp;'), ($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id), 'onchange="relate_products1(this.options[this.selectedIndex].value, \''.$pInfo->relate_products_id.'\')"');?>
+  <?php echo tep_draw_pull_down_menu('relate_categories', tep_get_category_tree('&npsp;'), ($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id), ($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').' onchange="relate_products1(this.options[this.selectedIndex].value, \''.$pInfo->relate_products_id.'\')"');?>
   <span id="relate_products">
-  <?php echo tep_draw_pull_down_menu('relate_products', array_merge(array(array('id' => '0','text' => '関連付けなし')),tep_get_products_tree($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id)),$pInfo->relate_products_id,'onchange="$(\'#relate_products_id\').val(this.options[this.selectedIndex].value)"');?>
+  <?php echo tep_draw_pull_down_menu('relate_products', array_merge(array(array('id' => '0','text' => '関連付けなし')),tep_get_products_tree($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id)),$pInfo->relate_products_id,($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').'onchange="$(\'#relate_products_id\').val(this.options[this.selectedIndex].value)"');?>
   </span>
   <input type="hidden" name="relate_products_id" id="relate_products_id" value="<?php echo $pInfo->relate_products_id;?>">
   </td>
@@ -1153,7 +1129,7 @@ function mess(){
                 <td class="main"><table border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td class="main" valign="top"><?php echo tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']); ?>&nbsp;</td>
-                      <td class="main"><?php echo tep_draw_textarea_field('products_description[' . $languages[$i]['id'] . ']', 'soft', '70', '15', (isset($products_description[$languages[$i]['id']]) ? stripslashes($products_description[$languages[$i]['id']]) : (isset($pInfo->products_id)?tep_get_products_description($pInfo->products_id, $languages[$i]['id'], $site_id):''))); ?></td>
+                      <td class="main"><?php echo tep_draw_textarea_field('products_description[' . $languages[$i]['id'] . ']', 'soft', '70', '15', (isset($products_description[$languages[$i]['id']]) ? stripslashes($products_description[$languages[$i]['id']]) : (isset($pInfo->products_id)?tep_get_products_description($pInfo->products_id, $languages[$i]['id'], $site_id, true):''))); ?></td>
                     </tr>
                   </table>
                   HTMLによる入力可<br>
@@ -1350,13 +1326,18 @@ function mess(){
         <input type="hidden" name="site_id" value="<?php echo $site_id;?>">
             </table></td>
         </tr>
+
         <tr>
           <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
         </tr>
         <tr>
-          <td class="main" align="right"><?php echo tep_draw_hidden_field('products_date_added', (isset($pInfo->products_date_added) ? $pInfo->products_date_added : date('Y-m-d'))) . tep_image_submit('button_preview.gif', IMAGE_PREVIEW) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&page='.$_GET['page'].'&pID=' . (isset($_GET['pID'])?$_GET['pID']:'')) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; ?></td>
-          </form>
+          <td class="main" align="right"><?php echo  tep_image_submit('button_preview.gif', IMAGE_PREVIEW) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&page='.$_GET['page'].'&pID=' . (isset($_GET['pID'])?$_GET['pID']:'')) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; ?></td>
         </tr>
+
+
+          <?php echo tep_draw_hidden_field('products_date_added', (isset($pInfo->products_date_added) ? $pInfo->products_date_added : date('Y-m-d')));?>
+          </form>
+
         <?php
   } elseif (isset($_GET['action']) && $_GET['action'] == 'new_product_preview') {
 
@@ -1807,7 +1788,7 @@ if (isset($nowColor) && $nowColor == $odd) {
           and p.products_id = p2c.products_id 
           and pd.products_name like '%" . $_GET['search'] . "%' 
           and pd.site_id='0'
-        order by pd.products_name";
+        order by p.order_pick,pd.products_name";
     } else {
       $products_query_raw = "
         select p.products_id, 
@@ -1828,7 +1809,7 @@ if (isset($nowColor) && $nowColor == $odd) {
           and p.products_id = p2c.products_id 
           and p2c.categories_id = '" . $current_category_id . "' 
           and pd.site_id='0'
-        order by pd.products_name";
+        order by p.order_pickup,pd.products_name";
     }
     $products_split = new splitPageResults($_GET['page'], MAX_DISPLAY_PRODUCTS_ADMIN, $products_query_raw, $products_query_numrows);
     $products_query = tep_db_query($products_query_raw);
@@ -2113,8 +2094,10 @@ tep_display_google_results()
         $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_copy.gif', IMAGE_COPY) . ' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
         break;
       case 'edit_keyword':
-        $categories_to_mission_sql = 'select * from '.TABLE_CATEGORIES_TO_MISSION
-          .' where categories_id ="'.$cID.'"';
+        $categories_to_mission_sql = 'SELECT c2m.*,m.keyword from '
+                                      .TABLE_CATEGORIES_TO_MISSION.' c2m ,'
+                                      .TABLE_MISSION.' m'
+                                      .' where c2m.mission_id = m.id and c2m.categories_id  ="'.$cID.'"';
         $categories_to_mission_query = tep_db_query($categories_to_mission_sql);
         $categories_to_mission_res =
           tep_db_fetch_array($categories_to_mission_query);
@@ -2138,12 +2121,16 @@ tep_display_google_results()
           if (isset($cInfo) && is_object($cInfo)) { // category info box contents
             $heading[] = array('text' => '<b>' . $cInfo->categories_name . '</b>');
 
-if ($ocertify->npermission >= 10) { //表示制限
+
+
+          if ($ocertify->npermission >= 10) { //表示制限
+
             $contents[] = array(
                 'align' => 'left', 
                 'text' => '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id . '&action=edit_category') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> '  
                 . ($ocertify->npermission == 15 ? ( '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id . '&action=delete_category') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a> '):'')
                 . '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id . '&action=move_category') . '">' . tep_image_button('button_move.gif', IMAGE_MOVE) . '</a>');
+
             foreach(tep_get_sites() as $site){
               $contents[] = array('text' => '<b>' . $site['romaji'] . '</b>');
               $contents[] = array(
@@ -2154,8 +2141,8 @@ if ($ocertify->npermission >= 10) { //表示制限
                    :''
                    ));
             }
-            $keyword_sql = "select keyword from ".TABLE_CATEGORIES_TO_MISSION."
-                            where categories_id='".$cInfo->categories_id."'";
+            $keyword_sql = "select m.keyword from ".TABLE_CATEGORIES_TO_MISSION." c2m,".TABLE_MISSION." m
+                            where c2m.categories_id='".$cInfo->categories_id."' and c2m.mission_id = m.id  ";
             $keyword_query = tep_db_query($keyword_sql);
             $keyword_res = tep_db_fetch_array($keyword_query);
             $default_keyword = $keyword_res?$keyword_res['keyword']:'';
@@ -2175,9 +2162,10 @@ if ($ocertify->npermission >= 10) { //表示制限
             $contents[] = array('text' => '<br>' . TEXT_SUBCATEGORIES . ' ' . $cInfo->childs_count . '<br>' . TEXT_PRODUCTS . ' ' . $cInfo->products_count);
           } elseif (isset($pInfo) && is_object($pInfo)) { // product info box contents
             $heading[] = array('text' => '<b>' . tep_get_products_name($pInfo->products_id, $languages_id) . '</b>');
-
-if ($ocertify->npermission >= 10) { //表示制限
-		    $contents[] = array('align' => 'left', 'text' => '関連付け: '.tep_get_relate_products_name($pInfo->products_id));
+            
+            // 关联商品
+            $contents[] = array('align' => 'left', 'text' => '関連付け: '.tep_get_relate_products_name($pInfo->products_id));
+          if ($ocertify->npermission >= 10) { //表示制限
             $contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=new_product'.'&page='.$_GET['page']) . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>' 
                 . ($ocertify->npermission == 15 ? (' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=delete_product'.'&page='.$_GET['page']) . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>'):'')
                 . ' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=move_product'.'&page='.$_GET['page']) . '">' . tep_image_button('button_move.gif', IMAGE_MOVE) . '</a> <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=copy_to') . '">' . tep_image_button('button_copy_to.gif', IMAGE_COPY_TO) . '</a>'
@@ -2189,8 +2177,8 @@ if ($ocertify->npermission >= 10) { //表示制限
                 : ''
                     ) );
             }
-            $keyword_sql = "select keyword from ".TABLE_CATEGORIES_TO_MISSION."
-                            where categories_id='".$cInfo->categories_id."'";
+            $keyword_sql = "select m.keyword from ".TABLE_CATEGORIES_TO_MISSION." c2m,".TABLE_MISSION." m
+                            where m.id=c2m.mission_id and categories_id='".$cInfo->categories_id."'";
             $keyword_query = tep_db_query($keyword_sql);
             $keyword_res = tep_db_fetch_array($keyword_query);
             $default_keyword = $keyword_res?$keyword_res['keyword']:'';

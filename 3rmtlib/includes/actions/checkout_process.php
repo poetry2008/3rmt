@@ -4,6 +4,34 @@
 */
   require(DIR_WS_FUNCTIONS . 'visites.php');
 
+  // 取得信用卡返回值
+  /*
+  if (isset($_GET['username'])) {
+    $_SESSION['telecom_name'] = $_GET['username'];
+  }
+  if (isset($_GET['telno'])) {
+    $_SESSION['telecom_tel'] = $_GET['telno'];
+  }
+  if (isset($_GET['money'])) {
+    $_SESSION['telecom_money'] = $_GET['money'];
+  }
+  if (isset($_GET['email'])) {
+    $_SESSION['telecom_email'] = $_GET['email'];
+  }
+  if (isset($_GET['clientip'])) {
+    $_SESSION['telecom_clientip'] = $_GET['clientip'];
+  }
+  if (isset($_GET['option'])) {
+    $_SESSION['telecom_option'] = $_GET['option'];
+  }
+  if (isset($_GET['cont'])) {
+    $_SESSION['telecom_cont'] = $_GET['cont'];
+  }
+  if (isset($_GET['sendid'])) {
+    $_SESSION['telecom_sendid'] = $_GET['sendid'];
+  }
+  */
+
 // if the customer is not logged on, redirect them to the login page
   if (!tep_session_is_registered('customer_id')) {
     $navigation->set_snapshot(array('mode' => 'SSL', 'page' => FILENAME_CHECKOUT_PAYMENT));
@@ -167,6 +195,7 @@
                           'orders_system_language'      => $_SESSION['systemLanguage'],
                           'orders_user_language'        => $_SESSION['userLanguage'],
                           'orders_http_accept_language' => $_SERVER['HTTP_ACCEPT_LANGUAGE'],
+/*
                           'telecom_name'      => $_SESSION['telecom_name'],
                           'telecom_tel'       => $_SESSION['telecom_tel'],
                           'telecom_money'     => $_SESSION['telecom_money'],
@@ -175,6 +204,7 @@
                           'telecom_option'    => $_SESSION['telecom_option'],
                           'telecom_cont'      => $_SESSION['telecom_cont'],
                           'telecom_sendid'    => $_SESSION['telecom_sendid'],
+*/
                 );
   if (isset($_POST['codt_fee'])) {
     $sql_data_array['code_fee'] = intval($_POST['codt_fee']);

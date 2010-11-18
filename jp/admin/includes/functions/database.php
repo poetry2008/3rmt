@@ -27,6 +27,7 @@
   }
 
   function tep_db_error($query, $errno, $error) { 
+    var_dump(debug_backtrace());
     die('<font color="#000000"><b>' . $errno . ' - ' . $error . '<br><br>' . $query . '<br><br><small><font color="#ff0000">[TEP STOP]</font></small><br><br></b></font>');
   }
 

@@ -1,4 +1,6 @@
 <?php
+define('URL_TYPE_CPATH',1);
+define('URL_TYPE_PRODUCT',2);
 /**
  * Ultimate SEO URLs Contribution - osCommerce MS-2.2
  *
@@ -437,22 +439,15 @@ class SEO_URL{
     }
     
     // $link = $connection == 'NONSSL' ? $this->base_url : $this->base_url_ssl;
-    if (ENABLE_SSL) {
-      if ($request_type == 'SSL') {
-        $link = $connection == 'NONSSL' ? $this->base_url : '/';
-      } else {
-        $link = $connection == 'NONSSL' ? '/' : $this->base_url_ssl;
-      }
-    } else {
-      $link = '/';
-    }
+    $link = '';
     $separator = '?';
     if ($this->not_null($parameters)) { 
       $link .= $this->parse_parameters($page, $parameters, $separator); 
     } else {
       if ($page == FILENAME_LATEST_NEWS) {
         $link .= 'latest_news/';
-      } else if ($page == FILENAME_REVIEWS) {
+        //      }else if($page == FILENAME_DEFAULT ){ //如果是index 且参数像Cpath =''
+      }else if ($page == FILENAME_REVIEWS) {
         $link .= 'reviews/';
       } /*else if ($page == 'domain.php') {
         $link .= 'link/';
@@ -460,10 +455,27 @@ class SEO_URL{
         $link .= $page;
       }
     }
+
+    if (ENABLE_SSL) {
+      if ($request_type == 'SSL') {
+        $prelink = $connection == 'NONSSL' ? $this->base_url : '/';
+      } else {
+        $prelink = $connection == 'NONSSL' ? '/' : $this->base_url_ssl;
+      }
+    } else {
+      $prelink = '/';
+    }
+    if(false===strpos($link,'http://')){
+    $link = $prelink .$link;
+    }
+
     $link = $this->add_sid($link, $add_session_id, $connection, $separator); 
     $this->stop($this->timestamp, $time);
     $this->performance['TOTAL_TIME'] += $time;
-    return htmlspecialchars(utf8_encode($link));
+
+    $urlString =  htmlspecialchars(utf8_encode($link));
+    return $urlString;
+
   } # end function
 
 /**
@@ -496,7 +508,7 @@ class SEO_URL{
         }
       }
     } else {
-      die('<font color="#ff0000"><b>Error!</b></font><br><br><b>Unable to determine connection method on a link!<br><br>Known methods: NONSSL SSL</b><br><br>');
+       die('<font color="#ff0000"><b>Error!</b></font><br><br><b>Unable to determine connection method on a link!<br><br>Known methods: NONSSL SSL</b><br><br>');
     }
     if ($this->not_null($parameters)) {
       $link .= $page . '?' . $this->output_string($parameters);
@@ -601,10 +613,10 @@ class SEO_URL{
         case 'products_id':
           switch(true){
             case ( $page == FILENAME_PRODUCT_INFO && !$this->is_attribute_string($p2[1]) ):
-              $url = $this->make_url($page, REWRITE_PRODUCTS, $p2[0], $p2[1], '.html', $separator);
+              $url = $this->make_url($page, REWRITE_PRODUCTS, $p2[0], $p2[1], '.html', $separator,URL_TYPE_PRODUCT);
               break;
             case ( $page == FILENAME_PRODUCT_REVIEWS ):
-              $url = $this->make_url($page, 'reviews/', 'products_id_review', $p2[1], '/', $separator);
+              $url = $this->make_url($page, 'reviews/', 'products_id_review', $p2[1], '/', $separator,URL_TYPE_PRODUCT);
               break;
             default:
               $container[$p2[0]] = $p2[1];
@@ -630,9 +642,9 @@ class SEO_URL{
           switch(true){
             case ($page == FILENAME_DEFAULT):
               if (preg_match('/page=(\d+)/', $params, $out)) {
-                $url = $this->make_url($page, REWRITE_CATEGORIES, $p2[0], $p2[1], '_page'.$out[1].'.html', $separator);
+                $url = $this->make_url($page, REWRITE_CATEGORIES, $p2[0], $p2[1], '_page'.$out[1].'.html', $separator,URL_TYPE_CPATH);
               } else {
-                $url = $this->make_url($page, REWRITE_CATEGORIES, $p2[0], $p2[1], '.html', $separator);
+                $url = $this->make_url($page, REWRITE_CATEGORIES, $p2[0], $p2[1], '.html', $separator,URL_TYPE_CPATH);
               }
               break;
             case ( !$this->is_product_string($params) ):
@@ -711,9 +723,42 @@ class SEO_URL{
  * @param string $separator NOTE: passed by reference
  * @return string
  */ 
-  function make_url($page, $string, $anchor_type, $id, $extension = '.html', &$separator){
+      function make_url($page, $string, $anchor_type, $id, $extension = '.html', &$separator,$urlType=null){
     // Right now there is but one rewrite method since cName was dropped
     // In the future there will be additional methods here in the switch
+    if(defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED){
+    switch($urlType){
+    case URL_TYPE_CPATH:
+      $id_array = explode("_",$id);
+      $id= $id_array[0];
+      $romaji = tep_get_romaji_cpath($id); 
+      $romajiSub =array();
+      unset($id_array[0]);
+      if (count($id_array))//如果有多个id 则说明....
+        {
+          foreach ($id_array as $category_id){
+          $romajiSub[] = tep_get_romaji_cpath($category_id);
+          }
+        }
+      return $string = 'http://'.$romaji.'.'.URL_SUB_SITE.'/'.join('/',$romajiSub);
+      break;
+    case URL_TYPE_PRODUCT:
+      $categories = tep_get_categories_by_pid($id);
+      $mainID = $categories[0];
+      $romaji = $mainID;
+      //tep_get_romaji_cpath($mainID);
+      unset($categories[0]);
+      $categoriesToString ='';
+      if(count($categories)){
+        $categoriesToString = @join('/',$categories).'/';
+      }
+      $productRomaji = tep_get_romaji_by_pid($id);
+
+      return $string = 'http://'.$romaji.'.'.URL_SUB_SITE.'/'.$categoriesToString.$productRomaji.'.html';
+    }
+    }
+
+
     switch ( $this->attributes['SEO_REWRITE_TYPE'] ){
       case 'Rewrite':
         return $string . $this->reg_anchors[$anchor_type] . $id . $extension;

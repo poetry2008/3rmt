@@ -169,6 +169,7 @@
                     p.products_price, 
                     p.products_tax_class_id, 
                     pd.site_id,
+                    p.order_pickup,
                     p.products_price_offset, p.products_small_sum"; 
   /*
   if(isset($_GET['colors']) && !empty($_GET['colors'])) {
@@ -266,10 +267,10 @@
   
   if ( (DISPLAY_PRICE_WITH_TAX == 'true') && ((isset($_GET['pfrom']) && tep_not_null($_GET['pfrom'])) || (isset($_GET['pto']) && tep_not_null($_GET['pto']))) ) {
     $where_str .= " group by p.products_id, tr.tax_priority
-      order by pd.site_id DESC";
+      ";
   }
   $where_str .= "
-    ) p 
+    order by pd.site_id DESC ) p 
     where site_id = 0
        or site_id = ".SITE_ID."
     group by products_id

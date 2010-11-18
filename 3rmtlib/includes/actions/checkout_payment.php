@@ -75,6 +75,8 @@
     $point = tep_db_fetch_array($point_query);
   }
   
+  // 取得信用卡返回值
+  /*
   if (isset($_GET['username'])) {
     $_SESSION['telecom_name'] = $_GET['username'];
   }
@@ -99,3 +101,4 @@
   if (isset($_GET['sendid'])) {
     $_SESSION['telecom_sendid'] = $_GET['sendid'];
   }
+  */

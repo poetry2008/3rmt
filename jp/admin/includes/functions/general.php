@@ -698,19 +698,34 @@
     return $orders_status_array;
   }
 
-  function tep_get_products_name($product_id, $language_id = 0, $site_id = 0) {
+  function tep_get_products_name($product_id, $language_id = 0, $site_id = 0, $default = false) {
     //echo $product_id,$language_id,$site_id;
     global $languages_id;
 
     if ($language_id == 0) $language_id = $languages_id;
-    $product_query = tep_db_query("select products_name from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . $product_id . "' and language_id = '" . $language_id . "' and site_id ='".$site_id."'");
+    if ($default){
+      $product_query = tep_db_query("
+      select products_name 
+      from " . TABLE_PRODUCTS_DESCRIPTION . " 
+      where products_id = '" . $product_id . "' 
+        and language_id = '" . $language_id . "'
+        and (site_id ='".$site_id."' or site_id = '0')
+      order by site_id desc
+      ");
+    } else {
+      $product_query = tep_db_query("select products_name from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . $product_id . "' and language_id = '" . $language_id . "' and site_id ='".$site_id."'");
+    }
     $product = tep_db_fetch_array($product_query);
 
     return $product['products_name'];
   }
 
-  function tep_get_products_description($product_id, $language_id, $site_id = 0) {
-    $product_query = tep_db_query("select products_description from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . $product_id . "' and language_id = '" . $language_id . "' and site_id ='".$site_id."'");
+  function tep_get_products_description($product_id, $language_id, $site_id = 0, $default = false) {
+    if ($default) {
+      $product_query = tep_db_query("select products_description from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . $product_id . "' and language_id = '" . $language_id . "' and (site_id ='".$site_id."' or site_id='0') order by site_id desc");
+    } else {
+      $product_query = tep_db_query("select products_description from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . $product_id . "' and language_id = '" . $language_id . "' and site_id ='".$site_id."'");
+    }
     $product = tep_db_fetch_array($product_query);
   
     return $product['products_description'];
@@ -3307,12 +3322,14 @@ function tep_display_google_results(){
   $record_query = tep_db_query($record_sql);
   $siturl = '';
   $seach_categoties_sql = "SELECT cd.categories_name as categories_name,
-                           c2m.keyword as keyword
-                           FROM ".TABLE_CATEGORIES_TO_MISSION." c2m
-                           LEFT JOIN ".TABLE_CATEGORIES_DESCRIPTION." cd 
-                           ON c2m.categories_id = cd.categories_id
-                           WHERE c2m.categories_id = '".$categories_id."'
-                           AND cd.site_id = '0'";
+                                  m.keyword
+                           FROM ".TABLE_CATEGORIES_TO_MISSION." c2m,
+                                ".TABLE_CATEGORIES_DESCRIPTION." cd ,
+                                ".TABLE_MISSION." m
+                           WHERE cd.categories_id = c2m.categories_id 
+                             AND m.id = c2m.mission_id
+                             AND c2m.categories_id = '".$categories_id."'
+                             AND cd.site_id = '0'";
   $seach_categoties_query = tep_db_query($seach_categoties_sql);
   echo "<tr><td colspan='4'>";
   echo '<table class="search_class" width="100%" cellspacing="0" cellpadding="2" border="0">';
@@ -3338,15 +3355,16 @@ function tep_display_google_results(){
     $i++;
   }
 //  while($record_res = tep_db_fetch_array($record_query)){
+ $icount = 1; //序号
   foreach($url_arr as $distinct_url){
-    if($i%2==0){
+    if($icount%2==0){
       echo "<tr class='dataTableSecondRow'>";
     }else{
       echo "<tr class='dataTableRow'>";
     }
     if(in_array($distinct_url,$stop_site_url)){
       $search_message = sprintf(TEXT_FIND_DATA_STOP, $distinct_url);
-    echo "<td class='dataTableContent search_class_td' style='width:20px'>&nbsp;".$i.":"."</td>";
+    echo "<td class='dataTableContent search_class_td' style='width:20px'>&nbsp;".$icount++.":"."</td>";
     echo "<td class='dataTableContent' ><b>".tep_get_siteurl_name($distinct_url)."</b></td>";
     echo "<td class='dataTableContent' >";
     /*
@@ -3361,7 +3379,7 @@ function tep_display_google_results(){
       break;
     }
     $prama_url = str_replace('.','_',$distinct_url); 
-    echo "<td class='dataTableContent search_class_td' style='width:20px'>&nbsp;".$i.":"."</td>";
+    echo "<td class='dataTableContent search_class_td' style='width:20px'>&nbsp;".$icount++.":"."</td>";
     echo "<td class='dataTableContent' >".tep_get_siteurl_name($distinct_url)."</td>";
     echo "<td class='dataTableContent' >";
     /*
