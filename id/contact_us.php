@@ -1,0 +1,165 @@
+<?php
+/*
+  $Id$
+*/
+
+  require('includes/application_top.php');
+  require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CONTACT_US);
+  
+  $mail_text = '';
+  
+  //product_idを取得した場合商品名を呼び出す
+  if (isset($_GET['products_id'])) {
+    //ccdd
+    $product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID, $languages_id);
+    //forward 404
+    forward404Unless($product_info);
+  }
+  
+  //「商品名」についてのお問い合わせ
+  define('HEADING_TITLE_CONTACT', 'についてのお問い合わせ');
+  define('TITLE_CONTACT_END', 'について');
+  define('EMAIL_SEPARATOR', '---------------------------------------------------------------------------' . "\n\n");
+  
+  
+  $error = false;
+  if (isset($_GET['action']) && ($_GET['action'] == 'send')) {
+    if (tep_validate_email(trim($_POST['email']))) {
+      $mail_text .= $_POST['name'] . ' 様からお問い合わせを承りました。' . "\n";
+      $mail_text .= 'メールアドレス：' . $_POST['email'] . "\n\n";
+      $mail_text .= $_POST['enquiry'];
+      tep_mail(STORE_OWNER, SUPPORT_EMAIL_ADDRESS, EMAIL_SUBJECT, $mail_text, $_POST['name'], $_POST['email']);
+      tep_redirect(tep_href_link(FILENAME_CONTACT_US, 'action=success'));
+    } else {
+      $error = true;
+    }
+  }
+  
+  //prouct_idを取得した場合の処理（題名を商品名についてのお問い合わせに変更）
+  if (isset($_GET['action']) && ($_GET['action'] == 'send_p')) {
+    if (tep_validate_email(trim($_POST['email']))) {
+      $mail_text .= $_POST['name'] . ' 様からお問い合わせを承りました。' . "\n";
+      $mail_text .= 'メールアドレス：' . $_POST['email'] . "\n\n";
+      $mail_text .= $_POST['enquiry'];
+      tep_mail(STORE_OWNER, SUPPORT_EMAIL_ADDRESS, $_POST['email_title'] . HEADING_TITLE_CONTACT, $mail_text, $_POST['name'], $_POST['email']);
+      tep_redirect(tep_href_link(FILENAME_CONTACT_US, 'action=success'));
+    } else {
+      $error = true;
+    }
+  }
+  
+  $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_CONTACT_US));
+?>
+<?php page_head();?>
+</head>
+<body> 
+<div align="center"> 
+  <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
+  <!-- header_eof //--> 
+  <!-- body //--> 
+  <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
+    <tr> 
+      <!-- body_text //--> 
+      <td valign="top" id="contents">
+        <h1 class="pageHeading">
+        <span class="game_im">
+          <img width="26" height="26" alt="" src="images/design/title_img08.gif"> 
+        </span>
+        <span class="game_t">
+        <?php
+  if (isset($_GET['products_id'])) {
+    echo $product_info['products_name'] . HEADING_TITLE_CONTACT;
+  }else{
+    echo HEADING_TITLE;
+  }
+?>
+        </span>
+</h1> 
+        <div class="comment"> 
+          <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+<?php
+  if (isset($_GET['action']) && ($_GET['action'] == 'success')) {
+?> 
+            <tr> 
+              <td>
+                <table border="0" width="95%" cellspacing="0" cellpadding="2" align="center"> 
+                  <tr> 
+                    <td class="main"><?php echo tep_image(DIR_WS_IMAGES . 'table_background_man_on_board.gif', HEADING_TITLE, '0', '0', 'align="left"') . TEXT_SUCCESS; ?></td> 
+                  </tr> 
+                  <tr> 
+                    <td align="right"><br> 
+                    <a href="<?php echo tep_href_link(FILENAME_DEFAULT); ?>"><?php echo tep_image_button('button_send_mail_ok.gif', '完了'); ?></a></td> 
+                  </tr> 
+                </table>
+              </td> 
+            </tr> 
+<?php
+  } else {
+?> 
+            <tr> 
+              <td>
+<?php 
+  if (isset($_GET['products_id'])) {
+    //product_idを取得した場合のフォームのアクション先
+    echo tep_draw_form('contact_us', tep_href_link(FILENAME_CONTACT_US, 'action=send_p'));
+  } else {
+    //通常
+    echo tep_draw_form('contact_us', tep_href_link(FILENAME_CONTACT_US, 'action=send'));
+  }
+?> 
+                <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+                  <tr> 
+                    <td class="main"><strong><?php echo ENTRY_NAME; ?></strong><br><?php 
+                    if (!isset($first_name)) $first_name = NULL;
+                    if (!isset($last_name)) $last_name = NULL;
+                    echo tep_draw_input_field('name', ($error ? $_POST['name'] : (($language == 'japanese') ? ($last_name . ' ' . $first_name) : ($first_name . ' ' . $last_name))), 'class="input_text"'); // 2003.03.10 Edit Japanese osCommerce ?></td> 
+                  </tr> 
+                  <tr> 
+                    <td class="main"><strong><?php echo ENTRY_EMAIL; ?></strong><br><?php
+                    if (!isset($email_address)) $email_address = NULL;
+                    echo tep_draw_input_field('email', ($error ? $_POST['email'] : $email_address), 'class="input_text"'); if ($error) echo ENTRY_EMAIL_ADDRESS_CHECK_ERROR; ?></td> 
+                  </tr> 
+                  <tr> 
+                    <td class="main"><strong><?php echo ENTRY_ENQUIRY; ?></strong><?php 
+  if (isset($_GET['products_id'])) {
+    $product_name = $product_info['products_name']; //変数に商品名を格納
+    //product_idを取得した場合
+    echo tep_draw_hidden_field('email_title', $product_name); 
+  } 
+?> </td> 
+                  </tr> 
+
+                  <tr> 
+                    <td><?php 
+                    if (!isset($product_name)) $product_name= NULL;
+                    echo tep_draw_textarea_field('enquiry', 'soft', 50, 15, '■　' . $product_name . TITLE_CONTACT_END . "\n" . EMAIL_SEPARATOR); ?></td> 
+                  </tr> 
+                  <tr> 
+                    <td class="main" align="right"><br><?php echo tep_image_submit('button_send_mail.gif', '送信'); ?></td> 
+                  </tr> 
+                </table> 
+                </form>
+              </td> 
+            </tr> 
+<?php
+  }
+?> 
+          </table> 
+        </div>
+      </td> 
+      <!-- body_text_eof //--> 
+      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>">
+        <!-- right_navigation //--> 
+        <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
+        <!-- right_navigation_eof //-->
+      </td>
+    </tr> 
+  </table> 
+  <!-- body_eof //--> 
+  <!-- footer //--> 
+  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
+  <!-- footer_eof //--> 
+</div> 
+</body>
+</html>
+<?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
