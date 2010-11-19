@@ -107,7 +107,7 @@ class MailFetcher {
     //Convert text to desired encoding..defaults to utf8
     function mime_encode($text,$charset=null,$enc='utf-8') { //Thank in part to afterburner  
                 
-        $encodings=array('UTF-8','WINDOWS-1251', 'ISO-8859-5', 'ISO-8859-1','KOI8-R');
+        $encodings=array('UTF-8','WINDOWS-1251', 'ISO-2022-JP','ISO-8859-5', 'ISO-8859-1','KOI8-R');
         if(function_exists("iconv") and $text) {
             if($charset)
                 return iconv($charset,$enc.'//IGNORE',$text);

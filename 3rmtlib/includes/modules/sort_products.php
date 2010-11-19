@@ -12,7 +12,7 @@
         break;
       }
     }*/
-    $listing_sql .= "order by order_pickup " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
+    $listing_sql .= "order by sort_order " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
   } else {
     $sort_col = substr($_COOKIE['sort'], 0 , -1);
     $sort_order = substr($_COOKIE['sort'], -1);
@@ -43,7 +43,7 @@
         $listing_sql .= "products_ordered " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
         break;
       default:
-        $listing_sql .= "order_pickup " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
+        $listing_sql .= "sort_order " . ($sort_order == 'd' ? 'desc' : '') . ", products_name";
         break;
     }
   }

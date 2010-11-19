@@ -77,7 +77,7 @@
                  p.products_price_offset, 
                  p.products_small_sum,
                  p.products_tax_class_id, 
-                 p.order_pickup,
+                 p.sort_order,
                  pd.site_id
           from " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . "
               pd, " . TABLE_MANUFACTURERS . " m, " .
@@ -101,7 +101,7 @@
               p.products_price_offset, 
               p.products_small_sum,
               p.products_tax_class_id, 
-              p.order_pickup,
+              p.sort_order,
               pd.site_id
         from " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_MANUFACTURERS . " m 
         where p.products_status != '0' 
@@ -144,7 +144,7 @@
                  p.products_price, 
                  p.products_price_offset,
                  p.products_small_sum, 
-                 p.order_pickup,
+                 p.sort_order,
                  p.products_tax_class_id, 
                  pd.site_id
           from ( " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_MANUFACTURERS . " m, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c  )
@@ -164,7 +164,7 @@
                  p.products_id, 
                  p.manufacturers_id, 
                  p.products_price, 
-                 p.order_pickup,
+                 p.sort_order,
                  p.products_price_offset,
                  p.products_small_sum, 
                  p.products_bflag, 

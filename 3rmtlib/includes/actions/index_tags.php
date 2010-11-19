@@ -54,7 +54,7 @@
                p.products_attention_4,
                p.products_attention_5,
                pd.products_url,
-               p.order_pickup,
+               p.sort_order,
                pd.products_viewed
       from " . TABLE_PRODUCTS_TO_TAGS . " as p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id
       where p2t.tags_id = " .  (int)$_GET['tags_id']."
@@ -94,7 +94,7 @@
                p.products_attention_4,
                p.products_attention_5,
                pd.products_url,
-               p.order_pickup,
+               p.sort_order,
                pd.products_viewed
       from " . TABLE_PRODUCTS_TO_TAGS . " as p2t join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id 
       where p2t.tags_id = " .  (int)$_GET['tags_id']." 

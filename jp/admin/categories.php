@@ -7,12 +7,14 @@
   
 
   $currencies = new currencies();
+
     /*
     echo "<pre>";
     print_r($_POST);
     echo "</pre>";
     exit;
     */
+
   $action = (isset($_GET['action']) ? $_GET['action'] : '');
   if ( eregi("(insert|update|setflag)", $action) ) include_once('includes/reset_seo_cache.php');
 
@@ -444,7 +446,7 @@
                                   'products_bflag' => tep_db_prepare_input($_POST['products_bflag']),
                                   'products_cflag' => tep_db_prepare_input($_POST['products_cflag']),
                                   'option_type' => tep_db_prepare_input($_POST['option_type']),
-                                  'order_pickup' => tep_db_prepare_input($_POST['order_pickup']),
+                                  'sort_order' => tep_db_prepare_input($_POST['sort_order']),
                                   'relate_products_id' => tep_db_prepare_input($_POST['relate_products_id']),
                                   'products_small_sum' => tep_db_prepare_input($_POST['products_small_sum']));
           
@@ -843,7 +845,7 @@ function mess(){
                  p.products_bflag, 
                  p.products_cflag, 
                  p.relate_products_id,
-                 p.order_pickup,
+                 p.sort_order,
                  p.products_small_sum 
           from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
           where p.products_id = '" . $_GET['pID'] . "' 
@@ -979,7 +981,7 @@ function mess(){
                   </tr>
           <tr>
                       <td class="main">オススメ商品並び順:</td>
-                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('order_pickup', isset($pInfo->order_pickup)?$pInfo->order_pickup:'','id="op"' . ($site_id ? 'class="readonly" readonly' : '')); ?></td>
+                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('sort_order', isset($pInfo->sort_order)?$pInfo->sort_order:'','id="op"' . ($site_id ? 'class="readonly" readonly' : '')); ?></td>
                       <td class="main">&nbsp;</td>
           </tr>
                   <tr>
@@ -1788,7 +1790,7 @@ if (isset($nowColor) && $nowColor == $odd) {
           and p.products_id = p2c.products_id 
           and pd.products_name like '%" . $_GET['search'] . "%' 
           and pd.site_id='0'
-        order by p.order_pick,pd.products_name";
+        order by p.sort_order,pd.products_name";
     } else {
       $products_query_raw = "
         select p.products_id, 
@@ -1809,7 +1811,7 @@ if (isset($nowColor) && $nowColor == $odd) {
           and p.products_id = p2c.products_id 
           and p2c.categories_id = '" . $current_category_id . "' 
           and pd.site_id='0'
-        order by p.order_pickup,pd.products_name";
+        order by p.sort_order,pd.products_name";
     }
     $products_split = new splitPageResults($_GET['page'], MAX_DISPLAY_PRODUCTS_ADMIN, $products_query_raw, $products_query_numrows);
     $products_query = tep_db_query($products_query_raw);
@@ -2152,9 +2154,7 @@ tep_display_google_results()
                 'text' => '<a href="'. tep_href_link(FILENAME_CATEGORIES, 'cPath=' .
               $cPath . '&cID=' . $cInfo->categories_id . '&action=edit_keyword') .
                 '">'.tep_image_button('button_edit.gif', TEXT_KEYWORD) . '</a> ');
-
 }
-
 //print_r($cInfo);
             $contents[] = array('text' => '<br>' . TEXT_DATE_ADDED . ' ' . tep_date_short($cInfo->date_added));
             if (tep_not_null($cInfo->last_modified)) $contents[] = array('text' => TEXT_LAST_MODIFIED . ' ' . tep_date_short($cInfo->last_modified));

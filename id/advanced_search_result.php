@@ -176,7 +176,7 @@
                     p.products_price, 
                     p.products_tax_class_id, 
                     pd.site_id,
-                    p.order_pickup,
+                    p.sort_order,
                     p.products_price_offset, p.products_small_sum"; 
   /*
   if(isset($_GET['colors']) && !empty($_GET['colors'])) {

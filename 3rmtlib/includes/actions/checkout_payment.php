@@ -75,30 +75,3 @@
     $point = tep_db_fetch_array($point_query);
   }
   
-  // 取得信用卡返回值
-  /*
-  if (isset($_GET['username'])) {
-    $_SESSION['telecom_name'] = $_GET['username'];
-  }
-  if (isset($_GET['telno'])) {
-    $_SESSION['telecom_tel'] = $_GET['telno'];
-  }
-  if (isset($_GET['money'])) {
-    $_SESSION['telecom_money'] = $_GET['money'];
-  }
-  if (isset($_GET['email'])) {
-    $_SESSION['telecom_email'] = $_GET['email'];
-  }
-  if (isset($_GET['clientip'])) {
-    $_SESSION['telecom_clientip'] = $_GET['clientip'];
-  }
-  if (isset($_GET['option'])) {
-    $_SESSION['telecom_option'] = $_GET['option'];
-  }
-  if (isset($_GET['cont'])) {
-    $_SESSION['telecom_cont'] = $_GET['cont'];
-  }
-  if (isset($_GET['sendid'])) {
-    $_SESSION['telecom_sendid'] = $_GET['sendid'];
-  }
-  */

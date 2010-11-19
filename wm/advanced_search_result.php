@@ -165,7 +165,7 @@
     select distinct " . $select_column_list . " 
                     m.manufacturers_id, 
                     p.products_id, 
-                    p.order_pickup,
+                    p.sort_order,
                     pd.products_name, 
                     p.products_price, 
                     p.products_tax_class_id, 
