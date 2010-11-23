@@ -167,7 +167,7 @@ class Email {
                           'Subject' => $subject,
                           'Date'=>date('D, d M Y H:i:s O'),
                           'Message-ID' =>'<'.Misc::randCode(6).''.time().'-'.$this->getEmail().'>',
-                          'X-Mailer' =>'osTicket v 1.6',
+                          'X-Mailer' =>'iimy Mailer',
                           'Content-Type' => 'text/html; charset="UTF-8"'
                           );
         $mime = new Mail_mime();
@@ -225,7 +225,7 @@ class Email {
                           'To' => $to,
                           'Subject' => $subject,
                           'Message-ID' =>'<'.Misc::randCode(10).''.time().'@osTicket>',
-                          'X-Mailer' =>'osTicket v 1.6',
+                          'X-Mailer' =>'iimy Mailer',
                           'Content-Type' => 'text/html; charset="UTF-8"'
                           );
         $mime = new Mail_mime();

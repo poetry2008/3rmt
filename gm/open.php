@@ -16,9 +16,9 @@
 **********************************************************************/
 //require('client.inc.php');
 $_noemailclass = true;
-  require('includes/application_top.php');
+  require_once('includes/application_top.php');
 //require('includes/configure.php');
-require(DIR_OST.'client.inc.php');
+require_once(DIR_OST.'client.inc.php');
 error_reporting(E_ALL);
 define('SOURCE','Web'); //Ticket source.
 $inc='open.inc.php';    //default include.
@@ -48,8 +48,9 @@ endif;
 
   define('NAVBAR_TITLE', 'ブラウザの設定');
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_BROWSER_IE6X));
+  
+mysql_select_db(DB_DATABASE);
 require(CLIENTINC_DIR.'header.inc.php');
 require(CLIENTINC_DIR.$inc);
 require(CLIENTINC_DIR.'footer.inc.php');
 
-?>

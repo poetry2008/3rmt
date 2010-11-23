@@ -2,7 +2,7 @@
 /*********************************************************************
     index.php
 
-    Client Login 
+    Client Login  
 
     Peter Rotich <peter@osticket.com>
     Copyright (c)  2006-2010 osTicket
@@ -88,7 +88,8 @@ if(!$errors && is_numeric($ticketID) && Validator::is_email($email) && ($tid=Tic
         Sys::log(LOG_WARNING,'Failed login attempt (client)',$alert);
     }
 endif;
+
+mysql_select_db(DB_DATABASE);
 require(CLIENTINC_DIR.'header.inc.php');
 require(CLIENTINC_DIR.'login.inc.php');
 require(CLIENTINC_DIR.'footer.inc.php');
-?>

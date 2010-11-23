@@ -4,7 +4,7 @@
 
     Client Login 
 
-    Peter Rotich <peter@osticket.com>
+    Peter Rotich <peter@osticket.com> 
     Copyright (c)  2006-2010 osTicket
     http://www.osticket.com
 
@@ -15,11 +15,11 @@
     $Id$
 **********************************************************************/
 $_noemailclass = true;
-  require('includes/application_top.php');
+  require_once('includes/application_top.php');
 $breadcrumb->add('お問い合わせ', tep_href_link(FILENAME_CONTACT_US));
 
 
-require('includes/ost/client.inc.php');
+require_once('includes/ost/client.inc.php');
 if(!defined('INCLUDE_DIR')) die('Fatal Error');
 define('CLIENTINC_DIR',INCLUDE_DIR.'client/');
 define('OSTCLIENTINC',TRUE); //make includes happy
@@ -89,7 +89,8 @@ if(!$errors && is_numeric($ticketID) && Validator::is_email($email) && ($tid=Tic
         Sys::log(LOG_WARNING,'Failed login attempt (client)',$alert);
     }
 endif;
+
+mysql_select_db(DB_DATABASE);
 require(CLIENTINC_DIR.'header.inc.php');
 require(CLIENTINC_DIR.'login.inc.php');
 require(CLIENTINC_DIR.'footer.inc.php');
-?>
