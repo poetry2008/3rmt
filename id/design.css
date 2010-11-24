@@ -48,6 +48,10 @@ H4 {
 	margin-bottom: 10px;
 	color:#CC0000;
 }
+.box_warpper{
+	margin:0 auto;
+	width:900px;
+}
 .comment {
 	clear:both;
 	width: 689px;
@@ -260,9 +264,6 @@ UL {
 #login_form table {
 	border-collapse: collapse;
 	border-spacing: 0px;
-	border-left: solid 3px #C9C9C9;
-	border-right: solid 3px #C9C9C9;
-	border-top: solid 3px #C9C9C9;
 	background:url(images/design/box/login_content_bg.gif) repeat-x;
 	height: 70px;
 	padding-bottom:5px;
@@ -442,7 +443,8 @@ select {
 }
 #header {
 	width: 900px;
-	margin-bottom: 5px;
+	padding-bottom: 5px;
+	background-color: #d6d6d6;
 }
 #header_flash {
 	width: 900px;
@@ -732,7 +734,7 @@ sitemap
 	border: solid 1px #ddd;
 	background: #fff;
 	padding: 1px 2px;
-	margin: 2px;
+	margin: 2px 0 2px 2px;
 }
 #contents, #contents_long {
 	padding-bottom: -2px;/*padding-top: 17px;*/
@@ -795,7 +797,7 @@ product listing
 	line-height:25px;
 	height:25px;
 	padding-left:25px;
-	background: url(images/design/box/product_listing_sort_01.gif);
+	background: url(images/design/box/product_listing_sort_02.gif);
 }
 .product_listing_link:hover {
 	display:block;
@@ -1025,7 +1027,6 @@ Information
 --------------------------- */
 #footer {
 	border: none;
-	margin-top:5px;
 	width: 900px;
 	font-size: 10px;
 	text-align: center;
@@ -1180,10 +1181,10 @@ Information
 /*side_border*/
 .side_border {
 	width:900px;
+	background-color: #D6D6D6;
 }
 /*info_foot01*/
 .info_foot01 {
-	height:20px;
 	padding-left:10px;
  *padding-left:2px;
 	margin-left:10px;
@@ -1192,7 +1193,7 @@ Information
 	font-size:11px;
 }
 .info_foot01 a {
-	margin:15px 18px;
+	margin:5px 18px 0 18px;
 	color:#AE0E30;
 }
 /*info_index05*/
@@ -1229,7 +1230,7 @@ Information
 }
 .news_reviews05 {
 	overflow:hidden;
-	width:731px;
+	width:720px;
 	clear:both;
 	margin-bottom:5px;
 }

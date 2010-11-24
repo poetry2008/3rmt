@@ -125,7 +125,7 @@
       echo '<p class="comment">' . $seo_category['seo_description'] . '</p>' . "\n"; //seoフレーズ
     }
     if (!empty($seo_category['text_information'])) {
-      echo $seo_category['text_information'];
+      echo '<p class="comment">'.$seo_category['text_information'].'</p>';
     }
   }
 ?>

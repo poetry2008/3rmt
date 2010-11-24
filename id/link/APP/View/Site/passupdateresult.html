@@ -1,0 +1,24 @@
+<!--{include file='Site/header.html'}-->
+<div id="content">
+<div class="top"></div>
+<div class="middle">
+<div class="site_update_message">
+<!--{if $state eq '1'}-->
+<!--{_t key="pass_update_success"}-->
+<!--{elseif $state eq '2'}-->
+<!--{_t key="site_update_field"}-->
+<!--{/if}-->
+<br>
+<!--{if $state eq '1'}-->
+<a href="<!--{url controller=site action=editsite id=$id}-->" >
+<!--{elseif $state eq '2'}-->
+<a href="<!--{url controller=site action=editsite id=$id}-->" >
+<!--{/if}-->
+<br>
+<!--{_t key="site_update_return"}-->
+</a>
+</div>
+</div>
+<div class="bottom"></div>
+</div>
+<!--{include file=Site/footer.html}-->

@@ -47,7 +47,7 @@
   <?php echo gg_url(HTTP_SERVER.'/send_mail.php', null, null, 0.3);?>
   <?php echo gg_url(HTTP_SERVER.'/email_trouble.php', null, null, 0.3);?>
   <?php echo gg_url(HTTP_SERVER.'/browser_ie6x.php', null, null, 0.3);?>
-  <?php //echo gg_url(HTTP_SERVER.'/domain/', null, null, 0.3);?>
+  <?php echo gg_url(HTTP_SERVER.'/link/', null, null, 0.3);?>
 
   <?php //全部分类页面?>
   <?php foreach($categories as $category){?>

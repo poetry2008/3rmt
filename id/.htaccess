@@ -1,6 +1,7 @@
 DirectoryIndex index.php index.html index.htm index.cgi
 Options FollowSymLinks ExecCGI
 AddType application/x-httpd-cgi .cgi
+AddType image/x-icon .ico
 ErrorDocument 404 /includes/modules/404.html
 
 php_flag register_globals On
@@ -52,8 +53,9 @@ RewriteRule ^latest_news/([0-9]+)\.html$ latest_news.php?news_id=$1&%{QUERY_STRI
 RewriteCond %{HTTP_HOST} ^[a-z0-9\-]+\.3id\.maker\.200\.com$
 RewriteCond %{HTTP_HOST} !^www\.3id\.maker\.200\.com$
 RewriteCond %{REQUEST_FILENAME} !product_info.php
+RewriteCond %{REQUEST_FILENAME} !shopping_cart.php
 RewriteRule ^(.*)$ /%{HTTP_HOST}/$1 [C]
-RewriteRule ^/([a-z0-9\-]+)\.3id\.maker\.200\.com/([a-z0-9]+)/([a-z0-9]+)\.html product_info.php?products_id=$3 
+RewriteRule ^/([a-z0-9\-]+)\.3id\.maker\.200\.com/([a-z0-9]+)/([a-z0-9]+)\.html product_info.php?products_id=$3 [QSA,L]
 RewriteRule ^/([a-z0-9\-]+)\.3id\.maker\.200\.com/(.*) index.php?cName=$1 [PT,L]
 #Rewriterule ^/([a-z0-9\-]+)\.3wm\.bobhero\.200\.com/([a-z0-9]+)/([a-z0-9]+)\.html product_info.php?products_id=$3 
 #Rewriterule ^/([a-z0-9\-]+)\.3wm\.bobhero\.200\.com/(.*) index.php?cName=$1 [PT,L]

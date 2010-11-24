@@ -19,7 +19,7 @@
 <?php
   }
 ?>
-<div align="center">
+<div  align="center">
   <!-- header //-->
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
   <!-- header_eof //-->
@@ -68,7 +68,7 @@ if ($category_depth == 'nested') {
     echo HEADING_TITLE;
   }
 ?></h1>
-    <div class="comment_long"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?>
+    <div class="comment"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?>
     <h2 class="line"><?php
   if($_GET['cPath']) {
     $categories_path = explode('_', $_GET['cPath']);

@@ -1,0 +1,125 @@
+#title, #header, #email, #content, #footer {
+	margin:0 auto;
+}
+#header {
+	background:#E9E9E9;
+	overflow:hidden;
+}
+#email {
+	display:none;
+	width:880px;
+	background:#E9E9E9;
+	padding:5px 10px;
+}
+.search_head {
+	width:730px;
+	float:left;
+	margin-top:6px;
+}
+.search_head .middle {
+	padding-left:10px;
+}
+#content .middle {
+	padding-left:10px;
+}
+#content {
+	clear:both;
+	width:900px;
+	background:#E9E9E9;
+}
+.tools {
+	float:right;
+	margin-top:6px;
+	width:161px;
+}
+.tools h2 {
+	background:url("images/h.gif") no-repeat scroll 0 0 transparent;
+	color:#AE0E30;
+	font-family:Osaka, Verdana, Arial, sans-serif;
+	font-size:12px;
+	font-weight:bold;
+	height:27px;
+	line-height:27px;
+	padding-left:54px;
+	margin-bottom:5px;
+}
+.tools .middle a {
+	display:block;
+	padding:3px 0;
+}
+.link_sitmap_h1 {
+	background:url("images/h.gif") no-repeat scroll 0 0 transparent;
+	color:#AE0E30;
+	font-family:Osaka, Verdana, Arial, sans-serif;
+	font-size:12px;
+	font-weight:bold;
+	height:27px;
+	line-height:27px;
+	padding-left:54px;
+	width:826px;
+	margin-bottom:5px;
+}
+.pageHeading02 {
+	background:url("images/h.gif") no-repeat scroll 0 0 transparent;
+	color:#AE0E30;
+	font-family:Osaka, Verdana, Arial, sans-serif;
+	font-size:12px;
+	font-weight:bold;
+	height:27px;
+	line-height:27px;
+	padding-left:54px;
+}
+.link_h1 {
+	background:url("images/h.gif") no-repeat scroll 0 0 transparent;
+	color:#AE0E30;
+	font-family:Osaka, Verdana, Arial, sans-serif;
+	font-size:12px;
+	font-weight:bold;
+	height:27px;
+	line-height:27px;
+	padding-left:54px;
+}
+.web_3_top {
+	margin:5px 10px;
+}
+.web_3 td {
+	width:160px;
+}
+#sites_add {
+	background:none repeat scroll 0 0 #fff;
+	border:1px solid #DDDDDD;
+	margin:10px 11px;
+	padding:5px;
+}
+#content_class {
+	height:130px;
+	font-size:12px;
+}
+#content_linkpage_url {
+	width:190px;
+	font-size:12px;
+}
+#image_code {
+	width:100px;
+}
+.linkcheck-ct {
+	font-size:12px;
+}
+#content_fname, #content_femail, .input-fpass, .input-fpass2, .input-name, .input-url {
+	width:190px;
+	font-size:12px;
+}
+.input-comment {
+	font-size:12px;
+}
+.web-ico {
+	width:7px;
+	display:inline-block;
+	background:url("../../../images/design/boxmiddle_ico01.gif") no-repeat left 7px;
+}
+.footer {
+	clear:both;
+}
+.linkcheck_h3 {
+	padding-left:10px;
+}

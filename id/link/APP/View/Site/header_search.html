@@ -1,0 +1,58 @@
+<!--{if $top_info}-->
+<div class="top"><h1 class="link_h1"><!--{_t key=$top_info.h1}--></h1></div>
+<div class="middle">
+<div class="text_out">
+<!--{_t key=$top_info.text}-->
+</div>
+</div>
+<!--{else}-->
+<div class="top">
+<h1 class="link_h1"><!--{_t key=text_out_h1}--></h1>
+</div>
+<div class="middle">
+<div class="text_out">
+<p>
+<!--{_t key=text_out_p1}-->
+</p>
+<p>
+<!--{_t key=text_out_p2}-->
+</p>
+<p>
+<!--{_t key=text_out_p3}-->
+</p>
+</div>
+</div>
+<div class="bottom"></div>
+<!--{/if}-->
+
+<div class = 'search_header'>
+<form action="<!--{url controller=site action=sitesearch}-->" method="post" 
+onsubmit="return valsearch()" name="form1" id="form1">
+<table><tr><td align="center">
+▼ホームページ検索 
+<input type="text" id="search_txt" class="sh-txt" name='word' />
+
+  <select name="method">
+    <option value="and" selected="selected">AND</option>
+    <option value="or">OR</option>
+  </select>
+   <input type="submit" value=" 検 索 " /> 
+</td></tr>
+</table>
+</form>
+</div>
+</div>
+<div class='tools'>
+<h2>メニュー</h2>
+<div class="middle">
+<a href="/<!--{$hostlink}-->/">相互リンク集TOP</a></li>
+<a href="<!--{url controller=site action=regist}-->">新規登録</a></li>
+<a href="<!--{url controller=site action=renew}-->">更新されたサイト</a></li>
+<a href="<!--{url controller=site action=new}-->">新着サイト</a></li>
+<a href="<!--{url controller=site action=recommend}-->">おすすめサイト</a></li>
+<a href="<!--{url controller=site action=sitemap}-->">サイトマップ</a></li>
+</div>
+<div class="bottom"></div>
+</div>
+
+

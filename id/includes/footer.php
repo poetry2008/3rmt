@@ -22,15 +22,15 @@
           }
         ?>
           <?php echo '<a href="'.tep_href_link(FILENAME_CONTACT_US).'">'.BOX_INFORMATION_CONTACT.'</a>';?>
-
+          <a href="link/">相互リンク</a>
          </div>
       </td>
     </tr>
     <tr>
         <td>
           <address class="footer_contacts">
-            
-        <?php echo FOOTER_TEXT_BODY . "\n"; ?><br>
+            <font color="#333333">当ウェブサイトに記載されている会社名·製品名·システム名などは、各社の登録商標、もしくは商標です。</font>
+        <?php //echo FOOTER_TEXT_BODY . "\n"; ?><br><br>
               Copyright&nbsp;&copy;&nbsp;2010&nbsp;&nbsp;<a class="bold" href="<?php echo HTTP_SERVER;?>"><strong><?php echo TITLE;?></strong></a>
             </address>
         </td>

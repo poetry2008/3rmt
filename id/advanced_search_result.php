@@ -89,6 +89,7 @@
     echo '<script language="javascript" src="./ajax/js/in-cart.js"></script>'."\n";
   }
 ?>
+<script type="text/javascript" src="js/sort.js"></script>
 </head>
 <body><div class="body_shadow" align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 

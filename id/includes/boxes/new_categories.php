@@ -30,12 +30,12 @@ while ($category = tep_db_fetch_array($categories_query))  {
   echo '<span class="img">';
   if (!empty($category['categories_image2'])) {
     if (file_exists(DIR_FS_CATALOG."/".DIR_WS_IMAGES.'categories/'.substr($category['categories_image2'], 0, -4).".ico")) {  
-      echo '<img src="/images/categories/'.substr($category['categories_image2'], 0, -4).'.ico'.'" width="27" height="27" alt="'.$category['categories_name'].'">';
+      echo '<img src="./images/categories/'.substr($category['categories_image2'], 0, -4).'.ico'.'" width="27" height="27" alt="'.$category['categories_name'].'">';
     } else {
-      echo '<img src="/images/design/tt2.ico" alt="'.$category['categories_name'].'">';
+      echo '<img src="./images/design/tt2.ico" alt="'.$category['categories_name'].'">';
     }
   } else {
-    echo '<img src="/images/design/tt2.ico" alt="'.$category['categories_name'].'">';
+    echo '<img src="./images/design/tt2.ico" alt="'.$category['categories_name'].'">';
   }
   echo '</span>'; 
   echo '<div class="text_warp"><div class="text_info_warp" ><span class="text">'.str_replace('RMT', '', $category['categories_name']).'</span></div></div>'; 
