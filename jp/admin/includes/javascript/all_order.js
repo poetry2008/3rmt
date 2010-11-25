@@ -332,8 +332,9 @@ function playSound()
         && $('#q_9_1').attr('checked')
         && ($('#q_10_1_0').attr('checked') || $('#q_10_1_1').attr('checked'))
         && ($('#q_11_3_0').attr('checked') || $('#q_11_3_1').attr('checked'))
+        && ($('#q_11_15_0').attr('checked') || $('#q_11_15_1').attr('checked'))
         && ($('#q_17_2_0').attr('checked') || $('#q_17_2_1').attr('checked'))
-        && ($('#q_6_1_0').attr('checked') || $('#q_6_1_1').attr('checked'))
+        && ($('#q_6_1_0').attr('checked')  || $('#q_6_1_1').attr('checked'))
         && $('#q_4_2').attr('checked')
         && $('#q_5_1').attr('checked')
         && $('#q_7_2').attr('checked')
@@ -537,12 +538,14 @@ function orders_computers(ele, cid, oid) {
         if(document.sele_act.elements["chk[]"][i].checked){
           total++;
           // 支付通知5 && can_show && ID && 买取
+          /*
           if ($('#orders_status_'+document.sele_act.elements["chk[]"][i].value).val() == 5) {
             show = show && true;
           } else {
             show = false;
           }
-          
+          */
+          //alert(document.sele_act.elements["chk[]"][i].value);
           if (questionShow[document.sele_act.elements["chk[]"][i].value] == "1") {
             show = show && true;
           } else {
@@ -569,10 +572,10 @@ function orders_computers(ele, cid, oid) {
           }
         }
       }
-      if (show && total > 1) {
+      if (show && total > 0) {
         $('#select_question').show();
       } else {
-        if (($('#select_question').css('display') == 'table' || $('#select_question').css('display') == 'block') && total > 1)
+        if (($('#select_question').css('display') == 'table' || $('#select_question').css('display') == 'block') && total > 0)
           alert(msg);
         $('#select_question').hide();
       }
@@ -581,6 +584,7 @@ function orders_computers(ele, cid, oid) {
   
   // 为空的时候不让提交
   function check_question_form(){
+    if ($('#select_question').css('display') != 'none' && document.sele_act.elements['status'].options[document.sele_act.elements['status'].selectedIndex].value == 5) {
     if (
       (document.getElementById('q_15_3').checked || document.getElementById('q_15_4').checked || document.getElementById('q_15_5').checked)
       && document.getElementById('q_15_8').checked 
@@ -591,6 +595,9 @@ function orders_computers(ele, cid, oid) {
     } else {
       alert('必要な項目を記入してください');
       return false;
+    }
+    } else {
+        return true;
     }
   }
   

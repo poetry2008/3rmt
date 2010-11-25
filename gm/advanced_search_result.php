@@ -86,6 +86,7 @@
     echo '<script type="text/javascript" src="./ajax/js/in-cart.js"></script>'."\n";
   }
 ?>
+<script type="text/javascript" src="js/sort.js"></script>
 </head>
 <body>
 <!-- header //--> 

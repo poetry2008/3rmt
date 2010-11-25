@@ -200,8 +200,16 @@
   // 1.3.1 Update orders_products Table
   $products_delete = false;
   foreach ($update_products as $orders_products_id => $products_details) {
+    $op_query = tep_db_query("
+    select products_id, 
+           products_quantity 
+    from " . TABLE_ORDERS_PRODUCTS . " 
+    where orders_id = '" . tep_db_input($oID) . "' 
+      and orders_products_id = '".$orders_products_id."'");
+
     // 1.3.1.1 Update Inventory Quantity
-    $order = tep_db_fetch_array($order_query);
+    $order = tep_db_fetch_array($op_query);
+    //print_r($order);
     if ($products_details["qty"] != $order['products_quantity']) {
       $quantity_difference = ($products_details["qty"] - $order['products_quantity']);
       tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = products_quantity - " . $quantity_difference . ", products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
@@ -239,22 +247,22 @@
         }
       }
     } else { // b.) null quantity found --> delete
-      $Query = "delete from " . TABLE_ORDERS_PRODUCTS . " where orders_products_id = '$orders_products_id';";
-      tep_db_query($Query);
-      $order = tep_db_fetch_array($order_query);
-  
+      /*
       if ($products_details["qty"] != $order['products_quantity']){
         $quantity_difference = ($products_details["qty"] - $order['products_quantity']);
         tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = products_quantity - " . $quantity_difference . ", products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
+        echo("update " . TABLE_PRODUCTS . " set products_quantity = products_quantity - " . $quantity_difference . ", products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
         tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = 0 where products_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
       }
-  
+      */
+      $Query = "delete from " . TABLE_ORDERS_PRODUCTS . " where orders_products_id = '$orders_products_id';";
+      tep_db_query($Query);
       $Query = "delete from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where orders_products_id = '$orders_products_id';";
       tep_db_query($Query);
       $products_delete = true;
     }
   }
-  
+  //exit;
   // 1.4. UPDATE SHIPPING, DISCOUNT & CUSTOM TAXES #####
 
   foreach($update_totals as $total_index => $total_details) {
@@ -692,10 +700,13 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         products_price = '$p_products_price',
         final_price = '" . ($p_products_price + $AddedOptionsPrice) . "',
         products_tax = '$ProductsTax',
-    site_id = '".tep_get_site_id_by_orders_id($oID)."',
+        site_id = '".tep_get_site_id_by_orders_id($oID)."',
+        products_rate = '".tep_get_products_rate($add_product_products_id)."',
         products_quantity = '" . (int)$add_product_quantity . "';";
       tep_db_query($Query);
       $new_product_id = tep_db_insert_id();
+      
+      
       orders_updated($oID);
       
       

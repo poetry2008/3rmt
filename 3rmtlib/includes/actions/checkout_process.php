@@ -3,6 +3,25 @@
    $Id$
 */
   require(DIR_WS_FUNCTIONS . 'visites.php');
+  
+  // 取得信用卡返回值
+  /*
+  if ($_SESSION['option'] && $_SESSION['option'] == $_GET['option']) {
+    if (isset($_GET['username'])) {
+      $_SESSION['telecom_name'] = $_GET['username'];
+    }
+    if (isset($_GET['telno'])) {
+      $_SESSION['telecom_tel'] = $_GET['telno'];
+    }
+    if (isset($_GET['money'])) {
+      $_SESSION['telecom_money'] = $_GET['money'];
+    }
+    if (isset($_GET['email'])) {
+      $_SESSION['telecom_email'] = $_GET['email'];
+    }
+    $telecom_option_ok = true;
+  }
+  */
 
 // if the customer is not logged on, redirect them to the login page
   if (!tep_session_is_registered('customer_id')) {
@@ -167,7 +186,12 @@
                           'orders_system_language'      => $_SESSION['systemLanguage'],
                           'orders_user_language'        => $_SESSION['userLanguage'],
                           'orders_http_accept_language' => $_SERVER['HTTP_ACCEPT_LANGUAGE'],
+                          //'telecom_name'                => $_SESSION['telecom_name'],
+                          //'telecom_tel'                 => $_SESSION['telecom_tel'],
+                          //'telecom_money'               => $_SESSION['telecom_money'],
+                          //'telecom_email'               => $_SESSION['telecom_email'],
                 );
+
   if (isset($_POST['codt_fee'])) {
     $sql_data_array['code_fee'] = intval($_POST['codt_fee']);
   } else if (isset($_POST['money_order_fee'])) {
@@ -225,6 +249,18 @@
                             'comments' => $bbbank);
     // ccdd
     tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
+  }
+  
+  if ($telecom_option_ok) {
+    tep_db_perform(TABLE_ORDERS, array('orders_status' => '30'), 'update', "orders_id='".$insert_id."'");
+    $sql_data_array = array('orders_id' => $insert_id, 
+                          'orders_status_id' => '30', 
+                          'date_added' => 'now()', 
+                          'customer_notified' => '0',
+                          'comments' => '');
+    // ccdd
+    tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
+    orders_updated($insert_id);
   }
 
 // initialized for the email confirmation
@@ -299,6 +335,7 @@
                             'final_price' => $order->products[$i]['final_price'], 
                             'products_tax' => $order->products[$i]['tax'], 
                             'products_quantity' => $order->products[$i]['qty'],
+                            'products_rate' => tep_get_products_rate(tep_get_prid($order->products[$i]['id'])),
                             'products_character' =>  stripslashes($chara),
                   'site_id' => SITE_ID
   );
@@ -404,7 +441,7 @@
     $products_ordered .= 'キャラクター名　　：' .  (EMAIL_USE_HTML === 'true' ? htmlspecialchars(stripslashes($chara)) : stripslashes($chara)) . "\n";
   }
   $products_ordered .= "------------------------------------------\n";
-  if (tep_get_cflag_by_product_id($order->products[$i]['id'])) {
+    if (tep_get_cflag_by_product_id($order->products[$i]['id'])) {
       if (tep_get_bflag_by_product_id($order->products[$i]['id'])) {
         $products_ordered .= "※ 当社キャラクター名は、お取引10分前までに電子メールにてお知らせいたします。\n\n";
       } else {
@@ -412,6 +449,7 @@
       }
     }
  }
+
  orders_updated($insert_id);
 
   # メール本文整形 --------------------------------------
@@ -742,6 +780,17 @@
   
   #convenience_store
   unset($_SESSION['character']);
+  /*
+  unset($_SESSION['telecom_name']);
+  unset($_SESSION['telecom_tel']);
+  unset($_SESSION['telecom_money']);
+  unset($_SESSION['telecom_email']);
+  unset($_SESSION['telecom_clientip']);
+  unset($_SESSION['telecom_option']);
+  unset($_SESSION['telecom_cont']);
+  unset($_SESSION['telecom_sendid']);
+  */
+
   
   //$pr = '?SID=' . $convenience_sid;
   
@@ -756,4 +805,4 @@
   tep_redirect(FILENAME_CHECKOUT_SUCCESS,'T');
     
   require(DIR_WS_INCLUDES . 'application_bottom.php');
-?>
+

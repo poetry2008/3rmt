@@ -246,8 +246,16 @@
     tep_mail('管理者', SEND_EXTRA_ORDER_EMAILS_TO, '仮クレカ注文', $mail_body, '', '');
     
     $today = date("YmdHis");
-    $process_button_string = tep_draw_hidden_field('clientip', MODULE_PAYMENT_TELECOM_KID) .
+    // telecom_option 文档中的$ID
+    if (!isset($_SESSION['option'])) {
+      $_SESSION['option'] = date('Ymd-His'). ds_makeRandStr(2);
+    }
+    $process_button_string = tep_draw_hidden_field('option', $_SESSION['option']) .
+                 tep_draw_hidden_field('clientip', MODULE_PAYMENT_TELECOM_KID) .
                  tep_draw_hidden_field('money', $total) .
+                 //tep_draw_hidden_field('redirect_url', tep_href_link(MODULE_PAYMENT_OK_URL, '', 'SSL')) .
+                 //tep_draw_hidden_field('redirect_back_url', tep_href_link(MODULE_PAYMENT_NO_URL, '', 'SSL'));
+    
                  tep_draw_hidden_field('redirect_url', HTTPS_SERVER . tep_href_link(MODULE_PAYMENT_OK_URL, '', 'SSL')) .
                  tep_draw_hidden_field('redirect_back_url', HTTPS_SERVER . tep_href_link(MODULE_PAYMENT_NO_URL, '', 'SSL'));
    

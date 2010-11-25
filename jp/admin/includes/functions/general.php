@@ -1880,7 +1880,34 @@ function tep_reset_cache_data_seo_urls($action){
     return $product['products_bflag'];
   }
   
-  function tep_get_full_count($cnt, $rate){
+  function tep_get_full_count($cnt, $rate, $prate = ''){
+  if ($prate) {
+    if (trim($rate) == '天空の羽毛5個・インクリスクロール5個のセット'){
+      return '(天空の羽毛'.number_format(strval(5*$cnt)).'個・インクリスクロール'.number_format(strval(5*$cnt)).'個のセット)';
+    }
+    if (trim($rate) == 'ネットカフェ1DAYチケット5枚セット'){
+      return '(ネットカフェ1DAYチケット'.number_format(strval(5*$cnt)).'枚セット)';
+    }
+    $rate = str_replace(array(','), array(''), $rate);
+    if (preg_match('/^(.*)億(.*)万(.*)$/', $rate, $out)) {
+      $rate = (($prate * 100000000) + ($out[2] * 10000)) . $out[3];
+    }
+    $rate = str_replace(array('万','億'), array('0000','00000000'), $rate);
+    if (preg_match('/^(\d+)(.*)（\d+.*）$/', $rate, $out)) {
+      return '(' . number_format($prate * $cnt) . $out[2] . ')';
+    }
+    if (preg_match('/^(\d+)(.*)\(\d+.*\)$/', $rate, $out)) {
+      return '(' . number_format($prate * $cnt) . $out[2] . ')';
+    }
+    if (preg_match('/^(\d+)(.*)$/', $rate, $out)) {
+      return '(' . number_format($prate * $cnt) . $out[2] . ')';
+    }
+    if (preg_match('/^([^\d]*)(\d+)([^\d]*)$/', $rate, $out)) {
+      return '(' . $prate . number_format($out[2] * $cnt) . $out[3] . ')';
+    }
+    return '';
+  } else {
+    /*
     if (strlen($rate) > 50 or strlen(trim($rate)) < 2) {
       return '';
     }
@@ -1906,6 +1933,39 @@ function tep_reset_cache_data_seo_urls($action){
     }
     if (preg_match('/^([^\d]*)(\d+)([^\d]*)$/', $rate, $out)) {
       return '(' . $out[1] . number_format($out[2] * $cnt) . $out[3] . ')';
+    }
+    return '';
+    */
+  }
+  }
+
+  function tep_get_full_count_in_order($cnt, $rate){
+    if (strlen($rate) > 50 or strlen(trim($rate)) < 2) {
+      return '';
+    }
+    if (trim($rate) == '天空の羽毛5個・インクリスクロール5個のセット'){
+      return '天空の羽毛'.number_format(strval(5*$cnt)).'個・インクリスクロール'.number_format(strval(5*$cnt)).'個のセット';
+    }
+    if (trim($rate) == 'ネットカフェ1DAYチケット5枚セット'){
+      return 'ネットカフェ1DAYチケット'.number_format(strval(5*$cnt)).'枚セット';
+    }
+    
+    $rate = str_replace(array(','), array(''), $rate);
+    if (preg_match('/^(.*)億(.*)万(.*)$/', $rate, $out)) {
+      $rate = (($out[1] * 100000000) + ($out[2] * 10000)) . $out[3];
+    }
+    $rate = str_replace(array('万','億'), array('0000','00000000'), $rate);
+    if (preg_match('/^(\d+)(.*)（\d+.*）$/', $rate, $out)) {
+      return number_format($out[1] * $cnt) . $out[2];
+    }
+    if (preg_match('/^(\d+)(.*)\(\d+.*\)$/', $rate, $out)) {
+      return number_format($out[1] * $cnt) . $out[2];
+    }
+    if (preg_match('/^(\d+)(.*)$/', $rate, $out)) {
+      return number_format($out[1] * $cnt) . $out[2];
+    }
+    if (preg_match('/^([^\d]*)(\d+)([^\d]*)$/', $rate, $out)) {
+      return $out[1] . number_format($out[2] * $cnt) . $out[3];
     }
     return '';
   }
@@ -2715,6 +2775,56 @@ function orders_updated($orders_id) {
   tep_db_query("update ".TABLE_ORDERS_PRODUCTS." set torihiki_date = ( select torihiki_date from ".TABLE_ORDERS." where orders.orders_id=orders_products.orders_id ) where orders_id='".$orders_id."'");
 }
 
+// 如果订单的状态发生改动则同步问答
+function orders_status_updated_for_question($orders_id, $orders_status_id, $notify = true) {
+  switch($orders_status_id){
+    case 13:
+      // 14_1 13_1 13_2(y-m-d)
+      $arr = array(
+        'q_13_1' => '1',
+        'q_13_2' => date('Y-m-d')
+      );
+      if ($notify) {
+        $arr['q_14_1'] = '1';
+      }
+      break;
+    case 5:
+      // 15_1 15_2(y-m-d) 16_1
+      $arr = array(
+        'q_15_1' => '1',
+        'q_15_2' => date('Y-m-d')
+      );
+      if ($notify) {
+        $arr['q_16_1'] = '1';
+      }
+      break;
+    case 9:
+      // 4_1  
+      $arr = array(
+        'q_4_1' => '1'
+      );
+      break;
+    case 2:
+      // 5_1 5_2(y-m-d) 7_1
+      $arr = array(
+        'q_5_1' => '1',
+        'q_5_2' => date('Y-m-d')
+      );
+      if ($notify) {
+        $arr['q_7_1'] = '1';
+      }
+      break;
+  }
+  if ($arr ) {
+    if (tep_db_num_rows(tep_db_query("select * from orders_questions where orders_id='".$orders_id."'"))) {
+      tep_db_perform('orders_questions',$arr,'update',"orders_id='".$orders_id."'");
+    } else {
+      $arr['orders_id'] = $orders_id;
+      tep_db_perform('orders_questions',$arr);
+    }
+  }
+}
+
 
 // 如果订单finished则取消orders_wait_flag
 function orders_wait_flag($orders_id) {
@@ -3065,7 +3175,7 @@ function tep_get_customers_fax_by_id($cid)
       $p_rate = $tmp[1];
 
       $str .= '<tr><td class="main"><b>商品：</b></td><td class="main">'.$p['products_name'].'</td></tr>';
-      $str .= '<tr><td class="main"><b>個数：</b></td><td class="main">'.$p['products_quantity'].'個'.tep_get_full_count($p['products_quantity'], $p_rate).'</td></tr>';
+      $str .= '<tr><td class="main"><b>個数：</b></td><td class="main">'.$p['products_quantity'].'個'.tep_get_full_count($p['products_quantity'], $p_rate, $p['products_rate']).'</td></tr>';
       while($pa = tep_db_fetch_array($products_attributes_query)){
         $str .= '<tr><td class="main"><b>'.$pa['products_options'].'：</b></td><td class="main">'.$pa['products_options_values'].'</td></tr>';
       }
@@ -3265,6 +3375,7 @@ function tep_questions_can_show($orders_id){
   && $('#q_16_2').attr('checked')
   */
   // 15: 3,4,5,7,8
+  // 有过受领通知（13）状态的
   $oq = tep_db_fetch_array(tep_db_query("select * from orders_questions where orders_id = '".$orders_id."'"));
   if (
     $oq 
@@ -3273,32 +3384,38 @@ function tep_questions_can_show($orders_id){
     && $oq['q_13_1'] 
     && strlen($oq['q_6_1'] !== 0)
     && $oq['q_14_1'] 
-    && $oq['q_15_1'] 
-    && $oq['q_16_2'] 
-  
+    
+    && !$oq['q_15_1'] 
+    && !$oq['q_16_2'] 
     && !$oq['q_15_3']
     && !$oq['q_15_4']
     && !$oq['q_15_5']
     && !$oq['q_15_7']
     && !$oq['q_15_8']
   ) {
-    return true;
+    //return true;
+    
+    if (tep_db_num_rows(tep_db_query("select * from ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id='13' and orders_id='".$orders_id."'"))) {
+      return true;
+    } else {
+      return false;
+    }
   } else {
-    /*
+/*
     print_r($oq);
     var_dump(strlen($oq['q_1_1'] !== 0));
     var_dump(strlen($oq['q_12_1'] !== 0));
     var_dump( $oq['q_13_1']);
     var_dump(strlen($oq['q_6_1'] !== 0));
     var_dump($oq['q_14_1'] );
-    var_dump($oq['q_15_1'] );
-    var_dump($oq['q_16_2']);
+    var_dump(!$oq['q_15_1'] );
+    var_dump(!$oq['q_16_2']);
     var_dump(!$oq['q_15_3']);
     var_dump(!$oq['q_15_4']);
     var_dump(!$oq['q_15_5']);
     var_dump(!$oq['q_15_7']);
     var_dump(!$oq['q_15_8']);
-    */
+*/
     
     return false;
   }
@@ -3440,4 +3557,13 @@ function tep_get_relate_products_name($pid) {
   $p = tep_db_fetch_array(tep_db_query("select relate_products_id from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
   $r = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where products_id='".$p['relate_products_id']."'"));
   return $r['products_name'];
+}
+
+function tep_get_products_rate($pid) {
+  $p =  tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
+  $t = explode('//',$p['products_attention_1']);
+  $n = str_replace(',','',tep_get_full_count_in_order(1, $t[1]));
+  preg_match_all('/(\d+)/',$n,$out);
+  //print_r($out);
+  return $out[1][0];
 }

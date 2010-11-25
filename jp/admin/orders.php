@@ -34,24 +34,32 @@
       $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
       tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action'))));
     }
-    if ($_POST['submit']) {
-      //取引完了
-      foreach($_POST['chk'] as $value) {
-        $oID = $value;
-        $arr = array(
-          'q_15_3' => $_POST['q_15_3'],
-          'q_15_4' => $_POST['q_15_4'],
-          'q_15_5' => $_POST['q_15_5'],
-          'q_15_7' => $_POST['q_15_7'],
-          'q_15_8' => $_POST['q_15_8'],
-          'q_8_1'  => $_POST['q_8_1']
-        );
-        tep_db_perform('orders_questions',$arr,'update',"orders_id='".$oID."'");
-        orders_updated($oID);
-        orders_wait_flag($oID);
+
+      //批量问答
+      if(
+        ($_POST['q_15_3'] || $_POST['q_15_4'] || $_POST['q_15_5'])
+        && $_POST['q_15_7']
+        && $_POST['q_15_8']
+        && $_POST['q_8_1']
+        && $_POST['status'] == 5
+      ){
+        foreach($_POST['chk'] as $value) {
+          $oID = $value;
+          $arr = array(
+            'q_15_3' => $_POST['q_15_3'],
+            'q_15_4' => $_POST['q_15_4'],
+            'q_15_5' => $_POST['q_15_5'],
+            'q_15_7' => $_POST['q_15_7'],
+            'q_15_8' => $_POST['q_15_8'],
+            'q_8_1'  => $_POST['q_8_1']
+          );
+          tep_db_perform('orders_questions',$arr,'update',"orders_id='".$oID."'");
+          orders_updated($oID);
+          orders_wait_flag($oID);
+        }
       }
-      tep_redirect(tep_href_link(FILENAME_ORDERS));
-    } else {
+      //tep_redirect(tep_href_link(FILENAME_ORDERS));
+
       foreach($_POST['chk'] as $value){
       $oID      = $value;
       $status   = tep_db_prepare_input($_POST['status']);
@@ -220,6 +228,9 @@
       tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '')");
 
       $order_updated = true;
+      
+      // 同步问答
+      orders_status_updated_for_question($oID,tep_db_input($status),$_POST['notify_comments'] == 'on');
     }
 
       if ($order_updated) {
@@ -230,7 +241,7 @@
     }
 
       tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action'))));
-    }
+
     
     break;
     //------------------------------------------
@@ -408,7 +419,8 @@
       $customer_notified = '0';
     }
     tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '')");
-
+    // 同步问答
+    orders_status_updated_for_question($oID,tep_db_input($status),$_POST['notify_comments'] == 'on');
     $order_updated = true;
   }
 
@@ -868,6 +880,29 @@ if($reload == 'yes') {
                 <?php } ?>
               </table>
             </div>
+                
+            <?php if ($order->info['payment_method'] == 'クレジットカード決済') { ?>
+            <!-- 信用卡信息 -->
+            <!--
+            <div id="orders_telecom">
+              <h3>クレジットカード情報</h3>
+              <table width="100%" border="0" cellspacing="0" cellpadding="2">
+                <tr>
+                  <td class="main" valign="top" width="20%"><b>カード名義:</b></td>
+                  <td class="main" width="30%"><?php echo $order->info['telecom_name'];?></td>
+                  <td class="main" valign="top"><b>電話番号:</b></td>
+                  <td class="main"><?php echo $order->info['telecom_tel'];?></td>
+                </tr>
+                <tr>
+                  <td class="main" valign="top"><b>メールアドレス:</b></td>
+                  <td class="main"><?php echo $order->info['telecom_email'];?></td>
+                  <td class="main" valign="top"><b>金額:</b></td>
+                  <td class="main"><?php echo $order->info['telecom_money'];?></td>
+                </tr>
+              </table>
+            </div>
+            -->
+            <?php } ?>
             <!-- 注文履历 -->
             <?php // 订单历史5条 ?>
             <div id="orders_history">
@@ -916,6 +951,22 @@ if($reload == 'yes') {
               <div id="orders_comment">
               <h3>Order Comment</h3>
                 <form action="ajax_orders.php" id='form_orders_comment' method="post">
+                <!--
+<table>
+<?php
+      for ($i = 0, $n = sizeof($order->products); $i < $n; $i++) {
+        $pinfo = tep_get_product_by_id($order->products[$i]['id'],0,4);
+        $pcate = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id='".$order->products[$i]['id']."'"));
+        //if ($pcate['categories_id'] == '182' || $pcate['categories_id'] == '183') { // RO Only
+          //１個＝100M
+          $t = explode('//',$pinfo['products_attention_1']);
+          echo '<tr><td>'.$pinfo['products_name'].'</td><td>１個＝'.tep_get_full_count_in_order(1,$t[1]).'</td></tr>';
+          //echo '<tr><td>'.$pinfo['products_name'].'</td><td>１個＝100M</td></tr>';
+        //}
+      }
+?>
+</table>
+                -->
                 <textarea name="orders_comment" cols="100" rows="10" style="width:100%"><?php echo $order->info['orders_comment'];?></textarea><br>
                 <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
                 <div align="right"><input type="Submit" value="保存"></div>
@@ -1066,7 +1117,7 @@ if($reload == 'yes') {
     <td class="main"><?php echo tep_draw_checkbox_field('q_15_3', '1', isset($oq['q_15_3']) ? $oq['q_15_3'] === '1' : '','','id="q_15_3" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>JNB <?php echo tep_draw_checkbox_field('q_15_4', '1', isset($oq['q_15_4']) ? $oq['q_15_4'] === '1' : '','','id="q_15_4" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>eBank <?php echo tep_draw_checkbox_field('q_15_5', '1', isset($oq['q_15_5']) ? $oq['q_15_5'] === '1' : '','','id="q_15_5" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>ゆうちょ</td>
   </tr>
   <tr>
-    <td class="main"><?php echo tep_draw_checkbox_field('q_15_8', '1', isset($oq['q_15_8']) ? $oq['q_15_8'] === '1' : '','','id="q_15_8" onchange="change_option(this) onpropertychange="propertychange_option(this)"" onclick=""');?>済 <!-- 入金予定日 <?php echo tep_draw_input_field('q_15_6_m', $oq['q_15_6'] && $oq['q_15_6'] != '0000-00-00' ? date('m', strtotime($oq['q_15_6'])) : ($end_time?date('m', strtotime($end_time)):''), 'size="2" id="q_15_6_m"');?>月<?php echo tep_draw_input_field('q_15_6_d', $oq['q_15_6'] && $oq['q_15_6'] != '0000-00-00' ? date('d', strtotime($oq['q_15_6'])) : ($end_time?date('d', strtotime($end_time)):''), 'size="2" id="q_15_6_d"');?>日 -->受付番号<?php echo tep_draw_input_field('q_15_7', $oq['q_15_7'], 'size="20" id="q_15_7" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?> </td>
+    <td class="main"><?php echo tep_draw_checkbox_field('q_15_8', '1', isset($oq['q_15_8']) ? $oq['q_15_8'] === '1' : '','','id="q_15_8" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>済 <!-- 入金予定日 <?php echo tep_draw_input_field('q_15_6_m', $oq['q_15_6'] && $oq['q_15_6'] != '0000-00-00' ? date('m', strtotime($oq['q_15_6'])) : ($end_time?date('m', strtotime($end_time)):''), 'size="2" id="q_15_6_m"');?>月<?php echo tep_draw_input_field('q_15_6_d', $oq['q_15_6'] && $oq['q_15_6'] != '0000-00-00' ? date('d', strtotime($oq['q_15_6'])) : ($end_time?date('d', strtotime($end_time)):''), 'size="2" id="q_15_6_d"');?>日 -->受付番号<?php echo tep_draw_input_field('q_15_7', $oq['q_15_7'], 'size="20" id="q_15_7" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?> </td>
   </tr>
 </table>
     </td>
@@ -1112,10 +1163,9 @@ if($reload == 'yes') {
     <td class="main" id="td_q_11">
       <table>
         <tr>
-          <td class="main">金額<b><?php echo $oq['q_11_1']?$oq['q_11_1']:$order->info['telecom_money']; echo tep_draw_hidden_field('q_11_1', $oq['q_11_1']?$oq['q_11_1']:tep_get_ot_total_num_by_text(tep_get_ot_total_by_orders_id($order->info['orders_id'])), 'size="10" class="questions_date" readonly style="text-align:right;font-weight:bold;font-size:12px"');?></b>円<?php if(!$order->info['telecom_money'] && !$oq['q_11_1']){?> <font color="red">取得エラー</font><?php }?></td>
-        </tr>
-        <tr>
-          <td class="main">決算時のメールアドレス<?php echo tep_draw_input_field('q_11_2', $oq['q_11_2'] ? $oq['q_11_2'] : $order->info['telecom_email'], 'size="20" class="questions_date" readonly');?><?php if(!$order->info['telecom_email'] && !$oq['q_11_1']){?> <font color="red">取得エラー</font><?php }?></td>
+          <td class="main">
+            金額は一致していますか？<?php echo tep_draw_radio_field('q_11_15', '1', $oq['q_11_15'] === '1', '', 'id="q_11_15_1" onclick="exclude(this,\'q_11_16\')" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>Y｜<?php echo tep_draw_radio_field('q_11_15', '0', $oq['q_11_15'] === '0', '', 'id="q_11_15_0" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>N → <?php echo tep_draw_checkbox_field('q_11_16', '1', $oq['q_11_16'] === '1', '', 'id="q_11_16" onclick="auto_radio(this,\'q_11_15_0\')" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>お客様へ電話
+          </td>
         </tr>
         <tr>
           <td class="main"><?php echo tep_draw_radio_field('q_11_3', '0', $oq['q_11_3'] === '0', '', 'id="q_11_3_0" onclick="$(\'#td_q_11_first\').hide();$(\'#td_q_11_second\').show();" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>２回目以降</td>
@@ -1134,9 +1184,6 @@ if($reload == 'yes') {
         <tr>
           <td class="main" id='td_q_11_first' <?php if ($oq['q_11_3'] === '0'or !isset($oq['q_11_3'])) echo ' style="display:none"';?>>
 &nbsp;&nbsp;&nbsp;&nbsp;<?php echo tep_draw_checkbox_field('q_11_8', '1', $oq['q_11_8'] === '1', '', 'onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>IP・ホストのチェック<br>
-&nbsp;&nbsp;&nbsp;&nbsp;電話確認をする<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;カード名義（カタカナ）<?php echo tep_draw_input_field('q_11_9', $oq['q_11_9'] ? $oq['q_11_9'] : $order->info['telecom_name'], 'size="20" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?><?php if(!$order->info['telecom_email'] && !$oq['q_11_1']){?> <font color="red">取得エラー</font><?php }?><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;電話番号<?php echo tep_draw_input_field('q_11_10', $oq['q_11_10'] ? $oq['q_11_10'] : $order->info['telecom_tel'], 'size="20" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?><?php if(!$order->info['telecom_email'] && !$oq['q_11_1']){?> <font color="red">取得エラー</font><?php }?><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<?php echo tep_draw_checkbox_field('q_11_11', '1', $oq['q_11_11'] === '1', '', 'onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>カード名義・商品名・キャラ名一致<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<?php echo tep_draw_checkbox_field('q_11_12', '1', $oq['q_11_12'] === '1', '', 'onclick="if(this.checked){$(\'#q_11_13_m\').val(new Date().getMonth()+1);$(\'#q_11_13_d\').val(new Date().getDate());}else{$(\'#q_11_13_m\').val(\'\');$(\'#q_11_13_d\').val(\'\');}" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>本人確認日：<?php echo tep_draw_input_field('q_11_13_m', $oq['q_11_13'] && $oq['q_11_13'] != '0000-00-00' ? date('m', strtotime($oq['q_11_13'])) : '', 'size="2" id="q_11_13_m"');?>月<?php echo tep_draw_input_field('q_11_13_d', $oq['q_11_13'] && $oq['q_11_13'] != '0000-00-00' ? date('d', strtotime($oq['q_11_13'])) : '', 'size="2" id="q_11_13_d"');?>日<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<?php echo tep_draw_checkbox_field('q_11_14', '1', $oq['q_11_14'] === '1', '', 'onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>信用調査入力
@@ -1198,8 +1245,6 @@ if($reload == 'yes') {
     $end_email = tep_get_orders_status_history_notified($order->info['orders_id'], 2);
     
     $new_price = tep_get_ot_total_num_by_text(tep_get_ot_total_by_orders_id($order->info['orders_id']));
-    
-    //echo $new_price;echo '+';echo $oq['q_3_3'];
 ?>
   <tr>
     <td class="main">在庫確認：</td>
@@ -1314,7 +1359,7 @@ if($reload == 'yes') {
         $pinfo = tep_get_product_by_id($order->products[$i]['id'],0,4);
         $r = explode('//',$pinfo['products_attention_1']);
         echo '    <tr class="dataTableRow">' . "\n" . 
-       '      <td class="dataTableContent" valign="top" align="right">' . $order->products[$i]['qty']. tep_get_full_count($order->products[$i]['qty'], $r[1]) . '&nbsp;x</td>' . "\n" .
+       '      <td class="dataTableContent" valign="top" align="right">' . $order->products[$i]['qty']. tep_get_full_count($order->products[$i]['qty'], $r[1], $order->products[$i]['rate']) . '&nbsp;x</td>' . "\n" .
        '      <td class="dataTableContent" valign="top">' . $order->products[$i]['name'];
 
         if (isset($order->products[$i]['attributes']) && $order->products[$i]['attributes'] && ($k = sizeof($order->products[$i]['attributes'])) > 0) {
@@ -2251,7 +2296,7 @@ function submit_confirm()
                 <td class="main" align="right"><?php echo tep_draw_checkbox_field('notify_comments', '', !$select_nomail, '', 'id="notify_comments"'); ?><b>ステータス通知</b></td>
               </tr>
               <tr>
-                <td class="main" colspan="2"><br><b style="color:#FF0000;">間違い探しはしましたか？</b><br><br><?php echo tep_image_submit('button_update.gif', IMAGE_UPDATE, 'onclick="return submit_confirm();"'); ?></td>
+                <td class="main" colspan="2"><br><b style="color:#FF0000;">間違い探しはしましたか？</b><br><br><?php echo tep_image_submit('button_update.gif', IMAGE_UPDATE, 'onclick="return submit_confirm()&&check_question_form();"'); ?></td>
               </tr>
             </table>
           </td>
@@ -2284,9 +2329,11 @@ function submit_confirm()
         <tr>
           <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
         </tr>
+        <!--
         <tr>
           <td colspan="2" align="right"><input type="submit" name="submit" value="取引完了" onclick="return check_question_form()"></td>
         </tr>
+        -->
       </table>
 </td></tr></table>
       </form>

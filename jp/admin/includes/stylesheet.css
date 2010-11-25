@@ -511,7 +511,6 @@ font-weight:bold;
 }
 #orders_flag {
 	border-top: 1px solid #000;
-	/*margin-bottom: 5px;*/
 }
 .orders_flag_checked {
 	color: #fff;
@@ -534,27 +533,22 @@ font-weight:bold;
 	font-weight:bold;
 }
 #orders_info {
-	/*border: 1px solid #000;*/
 	margin-bottom: 10px;
 	background: #f0f1f1;
 }
 #orders_client {
-	/*border: 1px solid #000;*/
 	margin-bottom: 10px;
 	background: #f0f1f1;
 }
 #orders_referer {
-	/*border: 1px solid #000;*/
 	margin-bottom: 10px;
 	background: #f0f1f1;
 }
 #orders_history {
-	/*border: 1px solid #000;*/
 	margin-bottom: 10px;
 	background: #f0f1f1;
 }
 #orders_comment {
-	/*border: 1px solid #000;*/
 	margin-bottom: 10px;
 	text-align:center;
 	background: #f0f1f1;
@@ -562,10 +556,12 @@ font-weight:bold;
 #orders_answer {
 	margin-bottom: 10px;
 	background: #f0f1f1;
-	/*display:none;*/
 }
 #orders_credit {
-	/*border: 1px solid #000;*/
+	margin-bottom: 10px;
+	background: #f0f1f1;
+}
+#orders_telecom {
 	margin-bottom: 10px;
 	background: #f0f1f1;
 }

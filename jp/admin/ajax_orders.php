@@ -171,6 +171,8 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   isset($_POST['q_11_12']) && $questions_arr['q_11_12'] = intval($_POST['q_11_12']);
   ($_POST['q_11_13_m'] && $_POST['q_11_13_d']) && $questions_arr['q_11_13'] = date('y') . '-' . intval($_POST['q_11_13_m']) . '-' . intval($_POST['q_11_13_d']);
   isset($_POST['q_11_14']) && $questions_arr['q_11_14'] = intval($_POST['q_11_14']);
+  isset($_POST['q_11_15']) && $questions_arr['q_11_15'] = intval($_POST['q_11_15']);
+  isset($_POST['q_11_16']) && $questions_arr['q_11_16'] = intval($_POST['q_11_16']);
   isset($_POST['q_12_1']) && $questions_arr['q_12_1'] = intval($_POST['q_12_1']);
   isset($_POST['q_12_2']) && $questions_arr['q_12_2'] = intval($_POST['q_12_2']);
   isset($_POST['q_13_1']) && $questions_arr['q_13_1'] = intval($_POST['q_13_1']);
@@ -200,7 +202,7 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
     }
     tep_db_perform('orders_questions', $questions_arr, 'update', "orders_id='".$_GET['orders_id']."'");
   } else {
-    echo 2;
+    //echo 2;
     $questions_arr['orders_id'] = $_GET['orders_id'];
     tep_db_perform('orders_questions', $questions_arr);
   }
@@ -221,30 +223,8 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
     }
   }
   if (isset($questions_arr['q_8_1']) && $questions_arr['q_8_1']) {
-    //$orders = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS." where orders_id='".$_GET['orders_id']."'"));
-    //if ($orders['orders_status'] != 19) {
-      //tep_db_perform('orders', array('q_8_1'=>$_POST['q_8_1'],'orders_status' => '19'), 'update', "orders_id='".$_GET['orders_id']."'");
-      //tep_db_perform('orders_status_history', array('orders_id' => $_GET['orders_id'], 'orders_status_id' => '19', 'date_added'=> 'now()'));
       orders_updated($_GET['orders_id']);
       orders_wait_flag($_GET['orders_id']);
-      // relate
-      /*
-      $orders_products_query = tep_db_query("select p.products_id,op.products_quantity,op.products_name,p.relate_products_id from ".TABLE_ORDERS_PRODUCTS." op, ".TABLE_PRODUCTS." p where op.products_id=p.products_id and op.orders_id='".$_GET['orders_id']."' order by op.products_name asc");
-      while ($opp = tep_db_fetch_array($orders_products_query)) {
-        $op = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." p, ".TABLE_PRODUCTS_DESCRIPTION." pd where p.products_id=pd.products_id and pd.site_id='0' and p.products_id='".$opp['relate_products_id']."'"));
-        if (!$op) {
-          continue;
-        }
-        $oqp = tep_db_fetch_array(tep_db_query("select * from orders_questions_products where orders_id='".$_GET['orders_id']."' and products_id='".$opp['products_id']."'"));
-        //print_r($op);
-        //print_r($opp);
-        echo "update ".TABLE_PRODUCTS." set products_quantity='".($op['products_quantity']+($opp['products_quantity']-$oqp['offset']))."' where products_id='".$op['products_id']."'";
-        tep_db_query("update ".TABLE_PRODUCTS." set products_quantity='".($op['products_quantity']+($opp['products_quantity']-$oqp['offset']))."' where products_id='".$op['products_id']."'");
-      }
-      */
-    //}
-    
-    
   }
   
 } else if ($_GET['action'] == 'clean_option' && $_GET['questions_no'] && $_GET['orders_id']) {
@@ -295,7 +275,9 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
         'q_11_11' => 'null',
         'q_11_12' => 'null',
         'q_11_13' => 'null',
-        'q_11_14' => 'null'
+        'q_11_14' => 'null',
+        'q_11_15' => 'null',
+        'q_11_16' => 'null'
       );
       break;
     case 15:
@@ -311,12 +293,12 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
       );
       break;
     case 'relate':
-      echo 1;
+      //echo 1;
       tep_db_query("update orders_questions_products set checked='0' where orders_id='".$_GET['orders_id']."'");
       exit;
       break;
   }
-  print_r($arr);
-  print_r($orders_id);
+  //print_r($arr);
+  //print_r($orders_id);
   tep_db_perform('orders_questions', $arr, 'update', "orders_id='".$_GET['orders_id']."'");
 }

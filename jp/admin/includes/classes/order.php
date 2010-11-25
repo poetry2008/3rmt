@@ -77,14 +77,16 @@
                           'orders_pdf_enable'           => $order['orders_pdf_enable'],
                           'orders_java_enable'          => $order['orders_java_enable'],
                             
-                          'telecom_name'    => $order['telecom_name'],
-                          'telecom_tel'    => $order['telecom_tel'],
-                          'telecom_email'    => $order['telecom_email'],
-                          'telecom_money'    => $order['telecom_money'],
-        
-        
-        
-                          'last_modified'         => $order['last_modified']);
+                          'telecom_name'      => $order['telecom_name'],
+                          'telecom_tel'       => $order['telecom_tel'],
+                          'telecom_email'     => $order['telecom_email'],
+                          'telecom_money'     => $order['telecom_money'],
+                          'telecom_clientip'  => $order['telecom_clientip'],
+                          'telecom_option'    => $order['telecom_option'],
+                          'telecom_cont'      => $order['telecom_cont'],
+                          'telecom_sendid'    => $order['telecom_sendid'],
+
+                          'last_modified'     => $order['last_modified']);
 
       $this->customer = array('name'           => $order['customers_name'],
                               'id'             => $order['customers_id'],
@@ -144,6 +146,7 @@
                                         'tax'         => $orders_products['products_tax'],
                                         'price'       => $orders_products['products_price'],
                                         'final_price' => $orders_products['final_price'],
+                                        'rate'        => $orders_products['products_rate'],
                                         'character'   => $orders_products['products_character']);
 
         $subindex = 0;

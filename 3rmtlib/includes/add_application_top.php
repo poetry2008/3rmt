@@ -162,9 +162,11 @@
   define('TABLE_PRODUCTS_OPTIONS_VALUES', 'products_options_values');
   define('TABLE_PRODUCTS_OPTIONS_VALUES_TO_PRODUCTS_OPTIONS', 'products_options_values_to_products_options');
   define('TABLE_PRODUCTS_TO_CATEGORIES', 'products_to_categories');
+  define('TABLE_RECORD', 'record');
   define('TABLE_REVIEWS', 'reviews');
   define('TABLE_REVIEWS_DESCRIPTION', 'reviews_description');
   define('TABLE_SESSIONS', 'sessions');
+  define('TABLE_SESSIONS_LOG', 'sessions_log');
   define('TABLE_SPECIALS', 'specials');
   define('TABLE_TAX_CLASS', 'tax_class');
   define('TABLE_TAX_RATES', 'tax_rates');

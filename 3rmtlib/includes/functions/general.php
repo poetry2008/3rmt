@@ -2984,6 +2984,14 @@ function SBC2DBC($str) {
 
 function tep_parseURI()
 {
+  //如果是https的链接不解析{
+  $tmpArr = parse_url(HTTPS_SERVER);
+  $tmpHttphost = $tmpArr['host'];
+  unset($tmpArr);
+  if($tmpHttphost == $_SERVER['HTTP_HOST']){
+    return true;
+  }
+  //}
 
   if(substr($_SERVER['HTTP_HOST'],0,3)=='www'){
     return true;
@@ -3126,4 +3134,13 @@ function tep_get_categories_by_products_id($pid){
 function tep_get_romaji_by_pid($id)
 {
   return $id;
+}
+
+function tep_get_products_rate($pid) {
+  $p =  tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
+  $t = explode('//',$p['products_attention_1']);
+  $n = str_replace(',','',tep_get_full_count_in_order(1, $t[1]));
+  preg_match_all('/(\d+)/',$n,$out);
+  //print_r($out);
+  return $out[1][0];
 }
