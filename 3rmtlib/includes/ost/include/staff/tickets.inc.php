@@ -263,10 +263,10 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
     <input type="hidden" name="a" value="search">
     <table>
         <tr>
-            <td>クエリー: </td>
+            <td>検索: </td>
             <td><input type="text" id="query" name="query" size=30 value="<?=Format::htmlchars($_REQUEST['query'])?>"></td>
             <td><input type="submit" name="basic_search" class="button" value="Search">
-             &nbsp;[<a href="#" onClick="showHide('basic','advance'); return false;"> こだわり設定</a> ] </td>
+             &nbsp;[<a href="#" onClick="showHide('basic','advance'); return false;"> 詳細検索</a> ] </td>
         </tr>
     </table>
     </form>
@@ -393,7 +393,7 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
                 <a href="tickets.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="Sort By Ticket ID <?=$negorder?>">問合番号</a></th>
 	        <th width="70">
                 <a href="tickets.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="Sort By Date <?=$negorder?>">日付</a></th>
-	        <th width="280">タイトル</th>
+	        <th width="280">件名</th>
 	        <th width="120">
                 <a href="tickets.php?sort=dept&order=<?=$negorder?><?=$qstr?>" title="Sort By Category <?=$negorder?>">サイト</a></th>
 	        <th width="70">
@@ -435,7 +435,7 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
                   <a class="Icon <?=strtolower($row['source'])?>Ticket" title="<?=$row['source']?> 問合番号: <?=$row['email']?>" 
                     href="tickets.php?id=<?=$row['ticket_id']?>"><?=$tid?></a></td>
                 <td align="center" nowrap><?=Format::db_date($row['created'])?></td>
-                <td><a <?if($flag) { ?> class="Icon <?=$flag?>問合番号" title="<?=ucfirst($flag)?> 問合番号" <?}?> 
+                <td><a <?if($flag) { ?> class="Icon <?=$flag?>Ticket" title="<?=ucfirst($flag)?> 問合番号" <?}?> 
                     href="tickets.php?id=<?=$row['ticket_id']?>"><?=$subject?></a>
                     &nbsp;<?=$row['attachments']?"<span class='Icon file'>&nbsp;</span>":''?></td>
                 <td nowrap><?=Format::truncate($row['dept_name'],30)?></td>
@@ -459,7 +459,7 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
             Select:
                 <a href="#" onclick="return select_all(document.forms['tickets'],true)">全部</a>&nbsp;
                 <a href="#" onclick="return reset_all(document.forms['tickets'])">なし</a>&nbsp;
-                <a href="#" onclick="return toogle_all(document.forms['tickets'],true)">Toggle</a>&nbsp;
+                <a href="#" onclick="return toogle_all(document.forms['tickets'],true)">反転</a>&nbsp;
             <?}?>
             page:<?=$pageNav->getPageLinks()?>
         </td></tr>
@@ -472,7 +472,7 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
             //If they can delete tickets...they are allowed to close--reopen..etc.
             switch (strtolower($status)) {
                 case 'closed': ?>
-                    <input class="button" type="submit" name="reopen" value="Reopen"
+                    <input class="button" type="submit" name="reopen" value="再開"
                         onClick=' return confirm("Are you sure you want to reopen selected tickets?");'>
                     <?
                     break;
@@ -482,15 +482,15 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
                     ?>
                     <input class="button" type="submit" name="overdue" value="期限切れ"
                         onClick=' return confirm("Are you sure you want to mark selected tickets overdue/stale?");'>
-                    <input class="button" type="submit" name="close" value="閉じる"
+                    <input class="button" type="submit" name="close" value="終了"
                         onClick=' return confirm("Are you sure you want to close selected tickets?");'>
                     <?
                     break;
                 default: //search??
                     ?>
-                    <input class="button" type="submit" name="close" value="閉じる"
+                    <input class="button" type="submit" name="close" value="終了"
                         onClick=' return confirm("Are you sure you want to close selected tickets?");'>
-                    <input class="button" type="submit" name="reopen" value="Reopen"
+                    <input class="button" type="submit" name="reopen" value="再開"
                         onClick=' return confirm("Are you sure you want to reopen selected tickets?");'>
             <?
             }

@@ -316,7 +316,7 @@ $templates=db_query('SELECT tpl_id,name FROM '.EMAIL_TEMPLATE_TABLE.' WHERE cfg_
             <td>
                 <?php
                    if($config['enable_captcha'] && !$errors['enable_captcha']) {?>
-                        <img src="../captcha.php" border="0" align="left">&nbsp;
+                        <img src="./captcha.php" border="0" align="left">&nbsp;
                 <?}?>
               <input type="checkbox" name="enable_captcha" <?=$config['enable_captcha']?'checked':''?>>
                 Enable captcha on new web tickets.&nbsp;<font class="error">&nbsp;<?=$errors['enable_captcha']?></font><br/>

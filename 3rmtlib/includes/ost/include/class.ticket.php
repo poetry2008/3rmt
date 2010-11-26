@@ -65,6 +65,7 @@ class Ticket{
               ' LEFT JOIN '.TICKET_LOCK_TABLE.' tlock ON ticket.ticket_id=tlock.ticket_id AND tlock.expire>NOW() '.
               ' WHERE ticket.ticket_id='.db_input($id); 
         //echo $sql;
+        
         if(($res=db_query($sql)) && db_num_rows($res)):
             $row=db_fetch_array($res);
             $this->id       =$row['ticket_id'];
@@ -84,7 +85,6 @@ class Ticket{
             $this->staff_id =$row['staff_id'];
             $this->dept_id  =$row['dept_id'];
             $this->topic_id  =$row['topicId']; //Note that we're actually joining the topic table to make the topic is not deleted (long story!).
-            //$this->topic_id  = SITE_TOPIC_ID;
             $this->dept_name    =$row['dept_name'];
             $this->subject =$row['subject'];
             $this->helptopic =$row['helptopic'];
@@ -1172,6 +1172,7 @@ class Ticket{
         $fields['subject']  = array('type'=>'string',   'required'=>1, 'error'=>'必須');
         $fields['message']  = array('type'=>'text',     'required'=>1, 'error'=>'必須');
         if(strcasecmp($origin,'web')==0) { //Help topic only applicable on web tickets.
+            $var['topicId'] = SITE_TOPIC_ID;
             $fields['topicId']  = array('type'=>'int',      'required'=>0, 'error'=>'Select help topic');
 //            $fields['topicId']  = array('type'=>'int',      'required'=>1, 'error'=>'Select help topic');
         }elseif(strcasecmp($origin,'staff')==0){ //tickets created by staff...e.g on callins.
@@ -1189,8 +1190,6 @@ class Ticket{
             $errors=array_merge($errors,$validate->errors());
         }
         
-//bobhero  
-	$var['topicId'] = SITE_TOPIC_ID;
         //Make sure the email is not banned
         if(!$errors && BanList::isbanned($var['email'])) {
             $errors['err']='Ticket denied. Error #403'; //We don't want to tell the user the real reason...Psssst.

@@ -45,7 +45,7 @@ class Captcha {
         $img= imagecreatefrompng($this->bgimg);
         imagestring($img,$this->font, $x, $y,$this->hash,imagecolorallocate($img,0, 0, 0));
 
-        Header ("(captcha-content-type:) image/png");
+        Header ("content-type: image/png");
         imagepng($img);
         imagedestroy($img);
         $_SESSION['captcha'] = md5($this->hash);

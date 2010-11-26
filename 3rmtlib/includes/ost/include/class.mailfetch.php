@@ -33,7 +33,6 @@ class MailFetcher {
     var $charset= 'UTF-8';
     
     function MailFetcher($username,$password,$hostname,$port,$protocol,$encryption='') {
-
         if(!strcasecmp($protocol,'pop')) //force pop3
             $protocol='pop3';
 
@@ -125,6 +124,12 @@ class MailFetcher {
         $str = '';
         foreach ($a as $k => $part)
             $str.= $part->text;
+        //add by bobhero {{
+$explodeStr = explode("?",$text);
+if(strlen($explodeStr[1])){
+$str  =  iconv($explodeStr[1],'UTF-8',$str);
+}
+//add by bobhero }}
         
         return $str?$str:imap_utf8($text);
     }

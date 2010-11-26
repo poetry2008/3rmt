@@ -190,15 +190,20 @@
 
 // check if sessions are supported, otherwise use the php3 compatible session class
   if (!function_exists('session_start')) {
-    define('PHP_SESSION_NAME', 'SID');
-    define('PHP_SESSION_SAVE_PATH', '/tmp/');
-
+    //define('PHP_SESSION_NAME', 'SID');
+    
+    define('PHP_SESSION_NAME', 'cmd');
+    
+    define('PHP_SESSION_SAVE_PATH', '/tmp/'); 
     include(DIR_WS_CLASSES . 'sessions.php');
   }
 
 // define how the session functions will be used
   require(DIR_WS_FUNCTIONS . 'sessions.php');
-  tep_session_name('SID');
+  //tep_session_name('SID');
+  
+  tep_session_name('cmd');
+  tep_session_save_path('/tmp/');
 
 // include the database functions
   require(DIR_WS_FUNCTIONS . 'database.php');
@@ -273,9 +278,19 @@
   require(DIR_WS_FUNCTIONS . 'compatibility.php');
 
 // lets start our session
+   /* 
    if (isset($_POST[tep_session_name()])) {
      tep_session_id($_POST[tep_session_name()]);
    } elseif ( (getenv('HTTPS') == 'on') && isset($_GET[tep_session_name()]) ) {
+     tep_session_id($_GET[tep_session_name()]);
+   }
+   */ 
+   //add new panduan 
+   if (isset($_POST[tep_session_name()])) {
+     tep_session_id($_POST[tep_session_name()]);
+   } elseif ((SESSION_RECREATE == 'False') && (getenv('HTTPS') == 'on') && isset($_GET[tep_session_name()]) ) {
+     tep_session_id($_GET[tep_session_name()]);
+   } elseif (ENABLE_SSL == true && (SESSION_RECREATE == 'True') && isset($_GET[tep_session_name()])) {
      tep_session_id($_GET[tep_session_name()]);
    }
 
@@ -285,6 +300,10 @@
   }
 
   tep_session_start();
+  //add variable new 
+  $session_started = true;
+  $SID = (defined('SID') ? SID : ''); 
+
 
 // Create the cart & Fix the cart if necesary
   if (tep_session_is_registered('cart') && is_object($cart)) {
