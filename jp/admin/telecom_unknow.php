@@ -54,7 +54,7 @@
   
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
-      <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
+      <td class="pageHeading">不明クレジットカードリスト</td>
       <td align="right" class="smallText"></td>
       <td align="right"></td>
     </tr>
@@ -76,70 +76,29 @@
     </tr>
 <?php
       $orders_query_raw = "
-        select distinct o.orders_status as orders_status_id, 
-               o.orders_id, 
-               o.torihiki_date, 
-               o.customers_id, 
-               o.customers_name, 
-               o.payment_method, 
-               o.date_purchased, 
-               o.last_modified, 
-               o.currency, 
-               o.currency_value, 
-               o.orders_status_name, 
-               o.orders_status_image,
-               o.orders_wait_flag,
-               o.orders_inputed_flag,
-               o.orders_work,
-               o.customers_email_address,
-               o.orders_comment,
-              o.telecom_name,
-              o.telecom_tel,
-              o.telecom_email,
-              o.telecom_money,
-              o.site_id
-         from " . TABLE_ORDERS . " o
-         where 
-          o.language_id = '" . $languages_id . "' 
-          and (
-               (o.telecom_name = '' or o.telecom_name is null)
-            or (o.telecom_tel = '' or o.telecom_tel is null)
-            or (o.telecom_money = '' or o.telecom_money is null)
-            or (o.telecom_email = '' or o.telecom_email is null)
-          )
-          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-          and o.payment_method = 'クレジットカード決済'
-          and o.torihiki_date > '2010-11-24 21:00:00'
-         order by o.torihiki_date DESC
+        select *
+        from telecom_unknow
+        order by date_added DESC
       ";
 
     $orders_split = new splitPageResults($_GET['page'], MAX_DISPLAY_ORDERS_RESULTS, $orders_query_raw, $orders_query_numrows);
     //echo $orders_query_raw;
     $orders_query = tep_db_query($orders_query_raw);
-    $allorders    = $allorders_ids = array();
+
     while ($orders = tep_db_fetch_array($orders_query)) {
-      if (!isset($orders['site_id'])) {
-        $orders = tep_db_fetch_array(tep_db_query("
-          select *
-          from ".TABLE_ORDERS." o
-          where orders_id='".$orders['orders_id']."'
-        "));
-      }
-      $allorders[] = $orders;
-      if (((!isset($_GET['oID']) || !$_GET['oID']) || ($_GET['oID'] == $orders['orders_id'])) && (!isset($oInfo) || !$oInfo)) {
-        $oInfo = new objectInfo($orders);
-      }
+
   
-    echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" >' . "\n";
+    echo '    <tr class="dataTableRow" >' . "\n";
 
 ?>
     
-
-    <td style="border-bottom:1px solid #000000;" class="dataTableContent" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><?php echo tep_datetime_short($orders['date_purchased']); ?></td>
-    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><font color="<?php echo $today_color; ?>"><?php echo $orders['telecom_name']; ?></font></td>
-    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><font color="<?php echo $today_color; ?>"><?php echo $orders['telecom_tel']; ?></font></td>
-    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><font color="<?php echo $today_color; ?>"><?php echo $orders['telecom_email']; ?></font></td>
-    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><font color="<?php echo $today_color; ?>"><?php echo $orders['telecom_money']; ?></font></td>
+    
+    <td style="border-bottom:1px solid #000000;" class="dataTableContent"><?php echo tep_datetime_short($orders['date_added']); ?></td>
+    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['username']; ?></td>
+    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['telno']; ?></td>
+    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['email']; ?></td>
+    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['money']; ?></td>
+    
     </tr>
 <?php }?>
   </table>
