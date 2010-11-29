@@ -21,12 +21,9 @@
   if (isset($_GET['action']) && $_GET['action']) {
     switch ($_GET['action']) {
       case 'get_products':
-        
-
         echo tep_draw_pull_down_menu('xxx',array_merge(array(array('id' => '0','text' => '関連付けなし')),tep_get_products_tree($_GET['cid'])),$_GET['rid'],'onchange=\'$("#relate_products_id").val(this.options[this.selectedIndex].value)\'');
         exit;
         break;
-
       case 'toggle':
           if ($_GET['cID']) {
             $cID = intval($_GET['cID']);
@@ -50,13 +47,11 @@
           if ($_GET['pID']) {
             tep_set_product_status($_GET['pID'], $_GET['flag']);
           }
-
           if (USE_CACHE == 'true') {
             tep_reset_cache_block('categories');
             tep_reset_cache_block('also_purchased');
           }
         }
-
         tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $_GET['cPath']));
         break;
       case 'simple_update': // 価格と数量の簡易アップデート
@@ -64,19 +59,19 @@
         $site_id     = tep_db_prepare_input($_POST['pID']);
         //％指定の場合は価格を算出
         $HTTP_POST_VARS['products_price_offset'] = SBC2DBC($HTTP_POST_VARS['products_price_offset']);
-
         $update_sql_data = array('products_last_modified' => 'now()',
                                  'products_quantity' => tep_db_prepare_input($_POST['products_quantity']),
                                  'products_attention_5' => tep_db_prepare_input($_POST['products_attention_5']),
                                  //'products_price_offset' => tep_db_prepare_input($HTTP_POST_VARS['products_price_offset']),
                                  'products_price' => tep_db_prepare_input($_POST['products_price']));
         tep_db_perform(TABLE_PRODUCTS, $update_sql_data, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
-
         tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $_GET['cPath'] . '&pID=' . $products_id));
         break;
       case 'upload_keyword':
         //删除没有关系的mission 
         $sql_del_no_categories_mission = 'DELETE FROM '.TABLE_MISSION.' WHERE id NOT IN (SELECT mission_id FROM '.TABLE_CATEGORIES_TO_MISSION.')';
+        $sql_del_no_mission_session = 'delete from '.TABLE_SESSION_LOG.'  WHERE mission_id NOT IN (SELECT mission_id FROM '.TABLE_CATEGORIES_TO_MISSION.')';
+        $sql_del_no_mission_record = 'delete from '.TABLE_RECORD.'  WHERE mission_id NOT IN (SELECT mission_id FROM '.TABLE_CATEGORIES_TO_MISSION.')';
 
         $kWord = trim($_POST['keyword']);
         $categories_id = $_POST['categories_id'];
@@ -85,6 +80,9 @@
           //如果关键字为空 删除当前关系 
           if($kWord==''){
           tep_db_query("DELETE FROM ".TABLE_CATEGORIES_TO_MISSION. " WHERE categories_id = ".$categories_id);
+          tep_db_query($sql_del_no_categories_mission);
+          tep_db_query($sql_del_no_mission_session);
+          tep_db_query($sql_del_no_mission_record);
           break;
 
           }
@@ -1007,7 +1005,7 @@ function mess(){
     }
 ?>
               <tr>
-                <td class="main">関連付け商品:<?php // echo $pInfo->relate_products_id;?></td>
+                <td class="main">関連付け商品:</td>
                 <td class="main" colspan="2">
   <?php echo tep_draw_separator('pixel_trans.gif', '24', '15');?>
   <?php echo tep_draw_pull_down_menu('relate_categories', tep_get_category_tree('&npsp;'), ($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id), ($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').' onchange="relate_products1(this.options[this.selectedIndex].value, \''.$pInfo->relate_products_id.'\')"');?>
@@ -1017,6 +1015,9 @@ function mess(){
   <input type="hidden" name="relate_products_id" id="relate_products_id" value="<?php echo $pInfo->relate_products_id;?>">
   </td>
               </tr>
+  
+  
+  
               <tr>
                 <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
