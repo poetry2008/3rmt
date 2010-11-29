@@ -30,7 +30,7 @@
           $logs[] = $l;
         exit(json_encode($logs));
       case 'delete': 
-      	tep_db_query("delete from micro_logs where log_id ='".$_GET['id']."'");
+        tep_db_query("delete from micro_logs where log_id ='".$_GET['id']."'");
         //tep_db_perform('micro_logs',array('deleted' => 1),'update','log_id='.$_GET['id']);
         exit($_GET['id']);
         break;
@@ -298,13 +298,19 @@ function log_html(text){
 
 function add_log(text){
   $('#div_logs').prepend(log_html(text));
-  $('#log_form_'+text['log_id']).ajaxForm({
+  band_form(text['log_id']);
+}
+
+function band_form(log_id){
+
+  $('#log_form_'+log_id).ajaxForm({
     dataType:'json',
     success: function(j){
-      
-      $('#log_form_'+j['log_id']).html(log_html(j));
+      $('#log_form_'+j['log_id']).replaceWith(log_html(j));
+      band_form(j['log_id']);
     }
   });
+
 }
 
 function append_log(text){
@@ -319,7 +325,7 @@ function append_log(text){
 
 function edit_log(id)
 {
-  $('#log_'+id+' .content').html('<textarea name="content" style="height:'+ ($('#log_'+id+' .content').height()+ 20) +'px">'+$('#log_'+id+' .content').html().replace(/<br>/g,'\n')+'</textarea>');
+  $('#log_'+id+' .content').html('<textarea name="content" style="height:'+ ($('#log_'+id+' .content').height()+ 20) +'px">'+$('#log_'+id+' .content').html().replace(/<br>/ig,'\n')+'</textarea>');
   $('#log_'+id+' .alarm').html('<input class="alarm_input" type="text" name="alarm" value="'+$('#log_'+id+' .alarm').html()+'">');
   $('#log_'+id+' .alarm input').datePicker();
   l = $('#log_'+id+' .level').html();
@@ -409,7 +415,7 @@ function more_log(){
 </script>
 
           <div id="div_logs"></div>
-          	  <!--
+              <!--
           <div id="div_more"><button onClick="more_log()">さらに表示</button></div>
               -->
         </td>
