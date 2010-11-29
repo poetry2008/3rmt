@@ -1,3 +1,12 @@
 *.swp
 *~
 *.log
+
+jp/admin/upload_images/3/
+jp/admin/upload_images/4/
+id/link/APP/View/View_c/
+id/link/APP/_Cache/
+jp/admin/upload_images/1/
+jp/admin/upload_images/2/
+jp/admin/upload_images/3/
+jp/admin/upload_images/4/
