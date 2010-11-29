@@ -187,7 +187,8 @@
           </tr>
         </table>
   </div>
-  <?php if ($_SERVER['REQUEST_URI'] == "/" || $_SERVER['REQUEST_URI'] == "/index.php") {?>  
+  <?php 
+  if ($_SERVER['REQUEST_URI'] == "/" ||$_SERVER['REQUEST_URI'] == substr(HTTP_SERVER,6).'/'|| $_SERVER['REQUEST_URI'] == "/index.php" || strpos($_SERVER['REQUEST_URI'], 'index.php?cmd=')) {?>  
   <div id="nav">
     <ul>
     <?php include(DIR_WS_BOXES . 'new_categories.php');?>

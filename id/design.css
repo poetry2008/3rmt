@@ -597,7 +597,7 @@ select {
 	padding-bottom:1px;
  *padding-bottom:0px;
 	border:2px #FEDF6B solid;
-	background: bottom url(../images/design/menu03.gif);
+	background: bottom url(./images/design/menu03.gif);
 }
 #nav :after {
 	content: ".";
@@ -616,32 +616,32 @@ select {
 	width:128px;
 	height:31px;
  *height:33px;
-	background: url(../images/design/menu01.gif) no-repeat;
+	background: url(images/design/menu01.gif) no-repeat;
 }
 .head_category01 a {
 	display:block;
 	color:#000;
-	background: url(../images/design/menu01.gif) no-repeat 0 -1px;
+	background: url(images/design/menu01.gif) no-repeat 0 -1px;
 	height:31px;
 	width:128px;
 }
 .head_category01 a:hover {
 	height:31px;
 	color:#FFF;
-	background: url(../images/design/menu02.gif) no-repeat 0 -1px;
+	background: url(images/design/menu02.gif) no-repeat 0 -1px;
 	text-decoration: none;
 }
 .header_category02 a {
 	display:block;
 	color:#000;
-	background: url(../images/design/menu01_shen.gif) no-repeat 0 -1px;
+	background: url(images/design/menu01_shen.gif) no-repeat 0 -1px;
 	height:31px;
 	width:128px;
 }
 .header_category02 a:hover {
 	height:31px;
 	color:#FFF;
-	background: url(../images/design/menu02.gif) no-repeat 0 -1px;
+	background: url(images/design/menu02.gif) no-repeat 0 -1px;
 	text-decoration: none;
 }
 #nav .img {
