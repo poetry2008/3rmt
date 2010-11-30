@@ -1870,10 +1870,11 @@ if (!empty($special_price_check)) {
       }
   ?></td>
             <td class="dataTableContent" align="right"><?php
-if (empty($products['products_quantity']) or $products['products_quantity'] < 1) {
+//if (empty($products['products_quantity']) or $products['products_quantity'] < 1) {
+if (empty($products['products_quantity']) or $products['products_quantity'] == 0) {
   echo '<b>在庫切れ</b>';
 } else {
-  echo $products['products_quantity'] . '個';
+  echo intval($products['products_quantity']) . '個';
 } ?></td>
             <td class="dataTableContent" align="center"><?php
 if ($ocertify->npermission >= 10) { //表示制限

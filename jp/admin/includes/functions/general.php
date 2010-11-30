@@ -1903,7 +1903,8 @@ function tep_reset_cache_data_seo_urls($action){
       return '(' . number_format($prate * $cnt) . $out[2] . ')';
     }
     if (preg_match('/^([^\d]*)(\d+)([^\d]*)$/', $rate, $out)) {
-      return '(' . $prate . number_format($out[2] * $cnt) . $out[3] . ')';
+      return '(' . $out[1] . number_format($prate * $cnt) . $out[3] . ')';
+      //return '(' . $prate . number_format($out[2] * $cnt) . $out[3] . ')';
     }
     return '';
   } else {
@@ -3316,8 +3317,8 @@ function tep_get_pay_day($time = null){
         }
       }
     }
-    
-    return tep_get_pay_day(strtotime($time.' + 1 month'));
+    //exit(date('Y-m-d H:i:s', $time));
+    return tep_get_pay_day(date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s', strtotime($time)).' + 1 month')));
   } else {
     $c = tep_db_fetch_array(tep_db_query("select * from " . TABLE_BANK_CALENDAR . " where cl_ym = '".date('Ym',strtotime($time))."'"));
     for($i=0;$i<strlen($c['cl_value']);$i++){
@@ -3326,7 +3327,7 @@ function tep_get_pay_day($time = null){
         }
     }
     
-    return tep_get_pay_day(strtotime($time.' + 1 month'));
+    return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 month')));
   }
   //echo $c['cl_value'];
 }

@@ -93,11 +93,11 @@
 ?>
     
     
-    <td style="border-bottom:1px solid #000000;" class="dataTableContent"><?php echo tep_datetime_short($orders['date_added']); ?></td>
-    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['username']; ?></td>
-    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['telno']; ?></td>
-    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['email']; ?></td>
-    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['money']; ?></td>
+    <td style="border-bottom:1px solid #000000;<?php if($orders['rel'] != 'yes') echo 'color:#999';?>" class="dataTableContent"><?php echo tep_datetime_short($orders['date_added']); ?></td>
+    <td style="border-bottom:1px solid #000000;<?php if($orders['rel'] != 'yes') echo 'color:#999';?>" class="dataTableContent" align="right"><?php echo $orders['username']; ?></td>
+    <td style="border-bottom:1px solid #000000;<?php if($orders['rel'] != 'yes') echo 'color:#999';?>" class="dataTableContent" align="right"><?php echo $orders['telno']; ?></td>
+    <td style="border-bottom:1px solid #000000;<?php if($orders['rel'] != 'yes') echo 'color:#999';?>" class="dataTableContent" align="right"><?php echo $orders['email']; ?></td>
+    <td style="border-bottom:1px solid #000000;<?php if($orders['rel'] != 'yes') echo 'color:#999';?>" class="dataTableContent" align="right"><?php echo $orders['money']; ?></td>
     
     </tr>
 <?php }?>
