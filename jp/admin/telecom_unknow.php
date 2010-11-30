@@ -91,14 +91,11 @@
     echo '    <tr class="dataTableRow" >' . "\n";
 
 ?>
-    
-    
-    <td style="border-bottom:1px solid #000000;<?php if($orders['rel'] != 'yes') echo 'color:#999';?>" class="dataTableContent"><?php echo tep_datetime_short($orders['date_added']); ?></td>
-    <td style="border-bottom:1px solid #000000;<?php if($orders['rel'] != 'yes') echo 'color:#999';?>" class="dataTableContent" align="right"><?php echo $orders['username']; ?></td>
-    <td style="border-bottom:1px solid #000000;<?php if($orders['rel'] != 'yes') echo 'color:#999';?>" class="dataTableContent" align="right"><?php echo $orders['telno']; ?></td>
-    <td style="border-bottom:1px solid #000000;<?php if($orders['rel'] != 'yes') echo 'color:#999';?>" class="dataTableContent" align="right"><?php echo $orders['email']; ?></td>
-    <td style="border-bottom:1px solid #000000;<?php if($orders['rel'] != 'yes') echo 'color:#999';?>" class="dataTableContent" align="right"><?php echo $orders['money']; ?></td>
-    
+      <td style="border-bottom:1px solid #000000;<?php if($orders['rel'] == 'no') echo 'background:#ccc'; else echo 'background:#fff';?>" class="dataTableContent"><?php echo tep_datetime_short($orders['date_added']); ?>&nbsp;</td>
+      <td style="border-bottom:1px solid #000000;<?php if($orders['rel'] == 'no') echo 'background:#ccc'; else echo 'background:#fff';?>" class="dataTableContent" align="right"><?php echo $orders['username']; ?>&nbsp;</td>
+      <td style="border-bottom:1px solid #000000;<?php if($orders['rel'] == 'no') echo 'background:#ccc'; else echo 'background:#fff';?>" class="dataTableContent" align="right"><?php echo $orders['telno']; ?>&nbsp;</td>
+      <td style="border-bottom:1px solid #000000;<?php if($orders['rel'] == 'no') echo 'background:#ccc'; else echo 'background:#fff';?>" class="dataTableContent" align="right"><?php echo $orders['email']; ?>&nbsp;</td>
+      <td style="border-bottom:1px solid #000000;<?php if($orders['rel'] == 'no') echo 'background:#ccc'; else echo 'background:#fff';?>" class="dataTableContent" align="right"><?php echo $orders['money']; ?>&nbsp;</td>
     </tr>
 <?php }?>
   </table>
