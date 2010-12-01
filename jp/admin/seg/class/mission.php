@@ -47,38 +47,6 @@ class mission {
 
     }
   }
-  function couldStart(){
-    $sql = 'select * from session_log s ,mission m 
-      where m.enabled = 1 
-      and s.end_at = 0 
-      and s.forced = 0 
-      and s.mission_id = m.id 
-      and s.mission_id ="'.$this->id.'"';
-   $r =  $this->conn->query($sql);
-   // 如果大于一行 ,说明可以开始
-   if($r->num_rows > 0){
-      $sql = 'select * from session_log s ,mission m 
-      where m.enabled = 1 
-      and s.end_at <> 0 
-      and s.forced = 0 
-      and s.mission_id = m.id 
-      and s.mission_id ="'.$this->id.'"
-      order by id desc';
-     $r2 = $this->conn->query($sql);
-     $res1 = $r->fetch_Object();
-     $res2 = $r2->fetch_Object();
-     if($res1->created_at > $res2->created_at){
-     return false;
-     }else{
-     $this->session = $res1;
-     return true;
-     }
-   }else {
-     $this->session = $r->fetch_Object();
-     return true;
-   }
-
-  }
 
   function start(){
     //判断是否有进程正在进行,如果有则先不开始,询问后再做处理
@@ -86,36 +54,15 @@ class mission {
     require_once CLASS_DIR.$this->engine.'.php';
     require_once CLASS_DIR.$this->dbdriver.'.php';
 
-    if (!$this->couldStart()){
-      if(CLI){
-        $this->msg('there is a process running');
-        return 0;
-      }else {
-      die('there is a process loading ');
-      }
-      
-    }else {
+
       //标记开始
-        $this->conn->query('delete from session_log where `mission_id` = "'.$this->id.'"');
-        $this->conn->query('insert into session_log  (`mission_id`,`start_at`) values ( "'.$this->id.'" ,"'.time().'" )');
         $this->session_id = $this->conn->insert_id;
             //删除一起的 session  和 record 
-//            var_dump($this->session_id);
- //           var_dump($this->id);
+
     $sql = "delete from record where mission_id ='".$this->id."'
            and session_id <> '".$this->session_id."'";
     $this->conn->query($sql);
-    $sql = "delete from session_log where mission_id ='".$this->id."'
-           and id <> '".$this->session_id."'";
-    $this->conn->query($sql);
-    $sql = "delete FROM `session_log`
-      WHERE `mission_id`
-      not in (
-          SELECT mission_id
-          FROM `categories_to_mission`
-         )";
-    $this->conn->query($sql);
-    }
+
 
     $this->dbdriver = new  $this->dbdriver;
     $this->engine = new $this->engine;
@@ -149,11 +96,6 @@ class mission {
     self::msg($err_code);
 
 
-    //结束后需要标记结束
-    $sql = 'update session_log set end_at ='.time()
-           .',stopation="'.$err_code.'" where id =
-           '.$this->session_id;
-    $this->conn->query($sql);
 
     return 1;
   } 
@@ -172,13 +114,7 @@ class mission {
     }else if($this->page_limit == 0){
       $stop_condiction_2 = false;
     }
-    $sql = 'select count(id) sum from session_log where  forced=1 
-           and end_at <> 0 and id = '.$this->session_id;
-    $res = $this->conn->query($sql);
-    $row = $res->fetch_object();
-    if($row->sum >= 1){
-      return 3;
-    }
+
     if($stop_condiction_2){
       return $stop_condiction_2;
     }else if($stop_condiction_1){
@@ -197,40 +133,7 @@ class mission {
     }
     return $this->dbdriver->save($newarray,$Filters);
   }
-  //取得当前任务状态
-  function getStatus($id){
-    $conn = db::getConn();
-    $sql = "select * from session_log where
-           mission_id='".$id."' 
-           and end_at=0
-           and forced=0
-           order by id desc";
-    $res = $conn->query($sql);
-    $row = $res->fetch_object();
-    if($row){
-      return 'run';
-    }
-    return false;
-  }
-  
-  function stop(){
-    $sql = "select id from session_log where forced=0 and end_at=0
-           and
-           mission_id='".$this->id."'
-           order by id desc";
-    $res = $this->conn->query($sql);
-    $str = '';
-    while($row = $res->fetch_object()){
-      $str .= "'".$row->id."',";
-    }
-    $str = substr($str,0,-1);
-    $sql = "update session_log set
-           end_at='".time()."',
-           stopation=3,
-           forced=1 where
-           id in (".$str.")";
-    $this->conn->query($sql);
-  }
+
   function insert($arr){
     $sql = "insert into mission 
            (`id`,`name`,`keyword`,`page_limit`,
