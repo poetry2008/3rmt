@@ -59,7 +59,9 @@ if ($category_depth == 'nested') {
     echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
   }
 ?>
-    <h1 class="pageHeading_long"><?php
+    <h1 class="pageHeading_long">
+    <span class="game_im"><img width="26" height="26" alt="" src="images/design/title_img08.gif"></span><span class="game_t"> 
+    <?php
   if (isset($cPath_array)) {
     echo $seo_category['categories_name'];
   } elseif ($_GET['manufacturers_id']) {
@@ -67,7 +69,7 @@ if ($category_depth == 'nested') {
   } else {
     echo HEADING_TITLE;
   }
-?></h1>
+?></span></h1>
     <div class="comment"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?>
     <h2 class="line"><?php
   if($_GET['cPath']) {

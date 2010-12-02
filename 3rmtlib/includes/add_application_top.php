@@ -293,8 +293,8 @@
    } elseif (ENABLE_SSL == true && (SESSION_RECREATE == 'True') && isset($_GET[tep_session_name()])) {
      tep_session_id($_GET[tep_session_name()]);
    }
-
-   if (function_exists('session_set_cookie_params')) {
+  
+  if (function_exists('session_set_cookie_params')) {
     //session_set_cookie_params(0, substr(DIR_WS_CATALOG, 0, -1));
   session_set_cookie_params(0, '/');
   }
@@ -303,8 +303,6 @@
   //add variable new 
   $session_started = true;
   $SID = (defined('SID') ? SID : ''); 
-
-
 // Create the cart & Fix the cart if necesary
   if (tep_session_is_registered('cart') && is_object($cart)) {
     if (PHP_VERSION < 4) {
@@ -381,7 +379,6 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
     $navigation = new navigationHistory();
   }
   $navigation->add_current_page();
-
 // Shopping cart actions
   if (isset($_GET['action'])) {
     if (DISPLAY_CART == 'true') {
@@ -581,8 +578,10 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   require(DIR_WS_CLASSES . 'breadcrumb.php');
   $breadcrumb = new breadcrumb;
 
-  $breadcrumb->add(HEADER_TITLE_TOP, HTTP_SERVER);
-  //$breadcrumb->add(HEADER_TITLE_CATALOG, tep_href_link(FILENAME_DEFAULT));
+  //$breadcrumb->add(HEADER_TITLE_TOP, HTTP_SERVER);
+  
+  //add new variable 
+  $breadcrumb->add(HEADER_TITLE_TOP, tep_href_link(FILENAME_DEFAULT));
 
 // add category names or the manufacturer name to the breadcrumb trail
   if (isset($cPath_array)) {

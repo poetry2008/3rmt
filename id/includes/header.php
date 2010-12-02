@@ -187,13 +187,22 @@
           </tr>
         </table>
   </div>
-  <?php if ($_SERVER['REQUEST_URI'] == "/" || $_SERVER['REQUEST_URI'] == "/index.php") {?>  
+  <?php 
+  $index_pos = strpos($_SERVER['PHP_SELF'], '/index.php'); 
+  if ($index_pos !== false) {
+    if ($category_depth == 'nested') {
+    } elseif ($category_depth == 'products' || $_GET['manufacturers_id']) {
+    } elseif ($_GET['colors'] && !empty($_GET['colors'])) {
+    } elseif ($_GET['action'] && $_GET['action'] == 'select') {
+    } else {
+  ?>
   <div id="nav">
     <ul>
     <?php include(DIR_WS_BOXES . 'new_categories.php');?>
     </ul>
   </div>
   <?php
+    }
   }
   ?>
 </div>

@@ -1697,7 +1697,12 @@ function forward404Unless($condition)
     $copyright   = C_AUTHER;
     
     $search = $replace = array();
-    
+   
+    //id add script name
+    $ssl_pos = strrpos($_SERVER['SCRIPT_NAME'], '/');
+    $script_name = substr($_SERVER['SCRIPT_NAME'], $ssl_pos);
+    $_SERVER['SCRIPT_NAME'] = $script_name;
+
     switch (str_replace('/', '', $_SERVER['SCRIPT_NAME'])) {
       case FILENAME_DEFAULT:
          global $cPath_array, $cPath, $seo_tags, $seo_category, $seo_manufacturers;
@@ -2992,11 +2997,14 @@ function tep_parseURI()
     return true;
   }
   //}
-
   if(substr($_SERVER['HTTP_HOST'],0,3)=='www'){
     return true;
   }
   $subSiteUri = $_SERVER['REQUEST_URI'];
+  $g_pos = strpos($_SERVER['REQUEST_URI'], '?'); 
+  if ($g_pos !== false) {
+    $subSiteUri = substr($_SERVER['REQUEST_URI'], 0, $g_pos);
+  }
   $router = 'x';
   $rewriteRule = array(
                        "firstFolder"  => "/[^\/]+\/?$/",        //   /abc(/)
@@ -3009,6 +3017,10 @@ function tep_parseURI()
     if (preg_match($value, $subSiteUri)) {
       $router = $ruler;
     }
+  }
+  $i_pos = strpos($_SERVER['REQUEST_URI'], '/?cmd=');
+  if ($i_pos !== false) {
+    $router = 'x'; 
   }
   if(isset($_GET['cName'])){
   $firstId = tep_get_cpath_by_cname($_GET['cName']);
@@ -3023,6 +3035,13 @@ function tep_parseURI()
     $secondId = tep_get_cpath_by_cname($firstFolder);
     $_GET['cPath'] = join('_',array($firstId,$secondId));
     break;
+  case 'secondFolder':
+    $secondFolder = substr($subSiteUri,1);
+    $folder_arr = explode('/', $secondFolder); 
+    $secondId = tep_get_cpath_by_cname($folder_arr[0]);
+    $thirdId  = tep_get_cpath_by_cname($folder_arr[1]); 
+    $_GET['cPath'] = join('_',array($firstId,$secondId,$thirdId));
+    $break;
   case 'product':
     $tmpArray = explode('/',$subSiteUri);
     $pid = $tmpArray[count($tmpArray)-1];
@@ -3088,7 +3107,7 @@ function tep_get_categories_by_pid($pid,$romaji=true)
   $arr = array();
   $p_parent = tep_get_categories_by_products_id($pid);
   if (!$p_parent) {
-    exit('no categories');
+    //exit('no categories');
   }
   //如果同一商品属于多个分类默认返回第一个 
   $categories[] = $p_parent[0];

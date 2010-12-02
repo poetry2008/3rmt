@@ -169,7 +169,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
             }
           }
         }
-        echo '<div class="comment">注文内容の変更を承りました。電子メールをご確認ください。 <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" width="62" height="21" alt="TOPに戻る" title="TOPに戻る"></a></div></div>';
+        echo '<div class="comment">注文内容の変更を承りました。電子メールをご確認ください。 <div align="right"><a href="'.tep_href_link(FILENAME_DEFAULT).'"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" width="62" height="21" alt="TOPに戻る" title="TOPに戻る"></a></div></div>';
         // sent mail to customer
         // ccdd
         $mail    = tep_db_fetch_array(tep_db_query("
@@ -396,7 +396,10 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
 ?>
 <div class="comment">
 <div id='form'>
-<form action="reorder.php" method="post" name="order">
+<!--<form action="reorder.php" method="post" name="order">-->
+<?php 
+echo tep_draw_form('order', tep_href_link('reorder.php'));
+?>
 <input type="hidden" name="dummy" value="あいうえお眉幅">
 <input type='hidden' name='order_id' value='<?php echo $order['orders_id']?>' >
 <input type='hidden' name='email' value='<?php echo $order['customers_email_address']?>' >
@@ -682,13 +685,16 @@ function orderConfirmPage(){
   // enter basic order info
   ?>
 <div class="comment">
-<form action="reorder.php" method="post" name='order'>
+<?php
+echo tep_draw_form('order', tep_href_link('reorder.php'));
+?>
+<!--<form action="reorder.php" method="post" name='order'>-->
 <input type="hidden" name="dummy" value="あいうえお眉幅">   
 <table class="information_table" summary="table">
  <tr>
   <td align="left" bgcolor='#eeeeee'>注文番号</td>
   <td><input type='text' name='order_id_1' class="input_text" maxlength='8' style='width:80px' >-<input type='text' name='order_id_2' class="input_text" maxlength='8' style='width:80px' >
-  <a href="/reorder2.php">注文番号忘れた?</a><br >
+  <a href="<?php echo tep_href_link('reorder2.php');?>">注文番号忘れた?</a><br >
   <font color='red' style='font-size:12px'>例：20******-********<br >
 注文書に記載された20から始まる8桁の数字-8桁の数字をご入力ください。</font>
   </td>

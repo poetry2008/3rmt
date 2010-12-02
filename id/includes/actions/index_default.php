@@ -25,7 +25,7 @@
 <div id="game_news">
   <ul>
   <?php 
-    $all_game_news = tep_get_rss(ALL_GAME_RSS);
+    $all_game_news = tep_get_rss(ALL_GAME_RSS); 
     if ($all_game_news) {
       foreach($all_game_news as $key => $game_news){
         if($key == GAME_NEWS_MAX_DISPLAY)break;
