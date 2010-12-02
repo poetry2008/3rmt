@@ -883,7 +883,7 @@ if($reload == 'yes') {
                 
             <?php if ($order->info['payment_method'] == 'クレジットカード決済') { ?>
             <!-- 信用卡信息 -->
-            <!--
+
             <div id="orders_telecom">
               <h3>クレジットカード情報</h3>
               <table width="100%" border="0" cellspacing="0" cellpadding="2">
@@ -901,7 +901,7 @@ if($reload == 'yes') {
                 </tr>
               </table>
             </div>
-            -->
+     
             <?php } ?>
             <!-- 注文履历 -->
             <?php // 订单历史5条 ?>
@@ -951,22 +951,7 @@ if($reload == 'yes') {
               <div id="orders_comment">
               <h3>Order Comment</h3>
                 <form action="ajax_orders.php" id='form_orders_comment' method="post">
-                <!--
-<table>
-<?php
-      for ($i = 0, $n = sizeof($order->products); $i < $n; $i++) {
-        $pinfo = tep_get_product_by_id($order->products[$i]['id'],0,4);
-        $pcate = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id='".$order->products[$i]['id']."'"));
-        //if ($pcate['categories_id'] == '182' || $pcate['categories_id'] == '183') { // RO Only
-          //１個＝100M
-          $t = explode('//',$pinfo['products_attention_1']);
-          echo '<tr><td>'.$pinfo['products_name'].'</td><td>１個＝'.tep_get_full_count_in_order(1,$t[1]).'</td></tr>';
-          //echo '<tr><td>'.$pinfo['products_name'].'</td><td>１個＝100M</td></tr>';
-        //}
-      }
-?>
-</table>
-                -->
+
                 <textarea name="orders_comment" cols="100" rows="10" style="width:100%"><?php echo $order->info['orders_comment'];?></textarea><br>
                 <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
                 <div align="right"><input type="Submit" value="保存"></div>
@@ -1072,7 +1057,7 @@ if($reload == 'yes') {
     $oqp = tep_db_fetch_array(tep_db_query("select * from orders_questions_products where orders_id='".$order->info['orders_id']."' and products_id='".$op['products_id']."'"));
 ?>
 <tr>
-<td><input type="checkbox" class="relate_chk" id="checkbox_<?php echo $opp['products_id'];?>" name="relate_product[<?php echo $op['products_id'];?>]" value="1" onclick="click_relate(<?php echo $opp['products_id'];?>)" onchange="change_option(this)" onpropertychange="propertychange_option(this)"<?php if($oqp['checked']) { ?> checked<?php } ?>> <?php echo $op['products_name'];?></td>
+<td><input type="checkbox" class="relate_chk" id="checkbox_<?php echo $opp['products_id'];?>" name="relate_product[<?php echo $op['products_id'];?>]" value="1" onclick="click_relate(<?php echo $opp['products_id'];?>,this)" onchange="change_option(this)" onpropertychange="propertychange_option(this)"<?php if($oqp['checked']) { ?> checked<?php } ?>> <?php echo $op['products_name'];?></td>
 <td><span id="quantity_<?php echo $opp['products_id'];?>"><?php echo $opp['products_quantity'];?></span>-<input type="text" id="offset_<?php echo $opp['products_id'];?>" name="offset[<?php echo $op['products_id'];?>]]" value="<?php echo $oqp['offset'] ? $oqp['offset'] : 0;?>" onchange="if(document.getElementById('quantity_<?php echo $opp['products_id'];?>').innerHTML-this.value<0){this.value=0;}change_option(this);print_quantity(<?php echo $opp['products_id'];?>);" onpropertychange="propertychange_option(this)" onmouseout="if(document.getElementById('quantity_<?php echo $opp['products_id'];?>').innerHTML-this.value<0){this.value=0;}change_option(this);print_quantity(<?php echo $opp['products_id'];?>);"<?php if($oqp['checked']){ ?> readonly<?php } ?>>=<span id="relate_product_<?php echo $opp['products_id'];?>"><?php echo $opp['products_quantity']-$oqp['offset'];?></span></td>
 </tr>
 <?php
@@ -2305,7 +2290,7 @@ function submit_confirm()
 </td><td valign="top" align="right">
       <table id="select_question" style="display:none">
         <tr>
-          <td>银行:</td>
+          <td>銀行:</td>
           <td>
             <input type="checkbox" name="q_15_3" id="q_15_3" value="1">JNB 
             <input type="checkbox" name="q_15_4" id="q_15_4" value="1">eBank 

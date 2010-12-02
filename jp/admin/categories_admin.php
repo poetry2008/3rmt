@@ -317,7 +317,7 @@ if (isset($_GET['search']) && $_GET['search']) {
           and p2c.categories_id = '" . $current_category_id . "' 
           and pd.site_id='0'
           ".($ocertify->npermission>7?'':" and p.products_status='1' ")."
-        order by pd.products_name";
+        order by p.sort_order,pd.products_name";
 }
 $products_split = new splitPageResults($_GET['page'], MAX_DISPLAY_PRODUCTS_ADMIN, $products_query_raw, $products_query_numrows);
 $products_query = tep_db_query($products_query_raw);

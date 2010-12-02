@@ -14,7 +14,7 @@
 .search_head {
 	width:730px;
 	float:left;
-	margin-top:6px;
+	margin-top:6px;	font-size:12px;
 }
 .search_head .middle {
 	padding-left:10px;
@@ -26,11 +26,18 @@
 	clear:both;
 	width:900px;
 	background:#E9E9E9;
+	font-size:12px;
+}
+#content a{
+	font-size:12px;
+color:#AE0E30;
 }
 .tools {
 	float:right;
 	margin-top:6px;
 	width:161px;
+	font-size:12px;
+color:#AE0E30;
 }
 .tools h2 {
 	background:url("images/h.gif") no-repeat scroll 0 0 transparent;
@@ -45,7 +52,9 @@
 }
 .tools .middle a {
 	display:block;
-	padding:3px 0;
+	padding:3px 0;	font-size:12px;
+color:#AE0E30;
+
 }
 .link_sitmap_h1 {
 	background:url("images/h.gif") no-repeat scroll 0 0 transparent;

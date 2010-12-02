@@ -168,6 +168,18 @@
                           'orders_http_accept_language' => $_SERVER['HTTP_ACCEPT_LANGUAGE'],
                           'telecom_option'              => $_SESSION['option'],
                 );
+                          
+  if ($_SESSION['option']) {
+    $telecom_unknow = tep_db_fetch_array(tep_db_query("select * from telecom_unknow where `option`='".$_SESSION['option']."' and rel='yes'"));
+    if ($telecom_unknow) {
+      $sql_data_array['telecom_name']  = $telecom_unknow['username'];
+      $sql_data_array['telecom_tel']   = $telecom_unknow['telno'];
+      $sql_data_array['telecom_email'] = $telecom_unknow['email'];
+      $sql_data_array['telecom_money'] = $telecom_unknow['money'];
+      tep_db_query("delete from telecom_unknow where `option`='".$_SESSION['option']."' and rel='yes'");
+      $telecom_option_ok = true;
+    }
+  }
 
   if (isset($_POST['codt_fee'])) {
     $sql_data_array['code_fee'] = intval($_POST['codt_fee']);
@@ -227,6 +239,21 @@
     // ccdd
     tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
   }
+  
+
+  if ($telecom_option_ok) {
+    tep_db_perform(TABLE_ORDERS, array('orders_status' => '30'), 'update', "orders_id='".$insert_id."'");
+    $sql_data_array = array('orders_id' => $insert_id, 
+                          'orders_status_id' => '30', 
+                          'date_added' => 'now()', 
+                          'customer_notified' => '0',
+                          'comments' => '');
+    // ccdd
+    tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
+    orders_updated($insert_id);
+  }
+
+  
   
   /*
   if ($telecom_option_ok) {
