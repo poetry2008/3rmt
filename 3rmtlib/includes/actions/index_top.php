@@ -26,7 +26,7 @@
       $category_depth = 'products'; // display products
       
       if (!defined('URL_SUB_SITE_ENABLED')) {
-        check_uri('/page=(\d+)/');
+        //check_uri('/page=(\d+)/');
       }
       
       if ($_GET['page'] * MAX_DISPLAY_SEARCH_RESULTS > $cateqories_products['total'] + MAX_DISPLAY_SEARCH_RESULTS) {
