@@ -24,7 +24,11 @@
     $cateqories_products = tep_db_fetch_array($categories_products_query);
     if ($cateqories_products['total'] > 0) {
       $category_depth = 'products'; // display products
-      check_uri('/page=(\d+)/');
+      
+      if (!defined('URL_SUB_SITE_ENABLED')) {
+        //check_uri('/page=(\d+)/');
+      }
+      
       if ($_GET['page'] * MAX_DISPLAY_SEARCH_RESULTS > $cateqories_products['total'] + MAX_DISPLAY_SEARCH_RESULTS) {
         forward404();
       }

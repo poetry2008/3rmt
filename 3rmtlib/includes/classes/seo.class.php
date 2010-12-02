@@ -437,9 +437,17 @@ class SEO_URL{
     if ( !in_array($page, $this->attributes['SEO_PAGES']) || $this->attributes['SEO_ENABLED'] == 'false' ) {
       return $this->stock_href_link($page, $parameters, $connection, $add_session_id);
     }
-    
-    // $link = $connection == 'NONSSL' ? $this->base_url : $this->base_url_ssl;
-    $link = '';
+    //$link = $connection == 'NONSSL' ? $this->base_url : $this->base_url_ssl;
+    //$link = '';  
+    if (defined('URL_SUB_SITE_ENABLED')) {
+      if (URL_SUB_SITE_ENABLED) {
+        $link = '';
+      } else {
+        $link = $connection == 'NONSSL' ? $this->base_url : $this->base_url_ssl;
+      }
+    } else {
+      $link = $connection == 'NONSSL' ? $this->base_url : $this->base_url_ssl;
+    }
     $separator = '?';
     if ($this->not_null($parameters)) { 
       $link .= $this->parse_parameters($page, $parameters, $separator); 
@@ -455,7 +463,7 @@ class SEO_URL{
         $link .= $page;
       }
     }
-
+  if(defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED){
     if (ENABLE_SSL) {
       if ($request_type == 'SSL') {
         $prelink = $connection == 'NONSSL' ? $this->base_url : '/';
@@ -468,12 +476,14 @@ class SEO_URL{
     if(false===strpos($link,'http://')){
     $link = $prelink .$link;
     }
-
+  }
     $link = $this->add_sid($link, $add_session_id, $connection, $separator); 
+    
     $this->stop($this->timestamp, $time);
     $this->performance['TOTAL_TIME'] += $time;
 
     $urlString =  htmlspecialchars(utf8_encode($link));
+    $urlString = str_replace('&amp;', '&', $urlString);
     return $urlString;
 
   } # end function
@@ -491,6 +501,7 @@ class SEO_URL{
   if ($page == '/') $page = '';
     if ($connection == 'NONSSL') {
       //$link = HTTP_SERVER . DIR_WS_CATALOG;
+      $link = HTTP_SERVER . DIR_WS_CATALOG;
       if ($request_type == 'SSL') {
         $link = HTTP_SERVER . DIR_WS_CATALOG;
       } else {
@@ -498,8 +509,8 @@ class SEO_URL{
       }
     } elseif ($connection == 'SSL') {
       if ($request_type == 'SSL') {
-        //$link = HTTPS_SERVER . DIR_WS_CATALOG;
-        $link = DIR_WS_CATALOG;
+        $link = HTTPS_SERVER . DIR_WS_CATALOG;
+        //$link = DIR_WS_CATALOG;
       } else {
         if (ENABLE_SSL) {
           $link = HTTPS_SERVER . DIR_WS_CATALOG;
@@ -526,14 +537,25 @@ class SEO_URL{
       $separator = '?';
     }
     while ( (substr($link, -1) == '&') || (substr($link, -1) == '?') ) $link = substr($link, 0, -1);
+    $session_started = true; 
     if ( ($add_session_id == true) && ($session_started == true) && (SESSION_FORCE_COOKIE_USE == 'False') ) {
       if ($this->not_null($SID)) {
-        $_sid = $SID;
+        if (SESSION_RECREATE == 'True') {
+          $_sid = tep_session_name().'='.tep_session_id(); 
+        } else {
+          $_sid = $SID;
+        }
       } elseif ( ( ($request_type == 'NONSSL') && ($connection == 'SSL') && (ENABLE_SSL == true) ) || ( ($request_type == 'SSL') && ($connection == 'NONSSL') ) ) {
         if (HTTP_COOKIE_DOMAIN != HTTPS_COOKIE_DOMAIN) {
-          $_sid = $this->SessionName() . '=' . $this->SessionID();
+          if (SESSION_RECREATE == 'True') {
+            $_sid = tep_session_name().'='.tep_session_id(); 
+          } else {
+            $_sid = $this->SessionName() . '=' . $this->SessionID();
+          }
+          //$_sid = $this->SessionName() . '=' . $this->SessionID();
         }
       }
+
     }
     if ( (SEARCH_ENGINE_FRIENDLY_URLS == 'true') && ($search_engine_safe == true) ) {
      //dont exchange '?, &, =' to '/' for redirect.php used in product_info.php
@@ -547,14 +569,22 @@ class SEO_URL{
       }
     }
     if (isset($_sid)) {
-      $link .= $separator . $_sid;
+      if (ENABLE_SSL && ($_SERVER['HTTP_HOST'] == substr(HTTPS_SERVER,8))) {
+      } else {
+        $link .= $separator . $_sid;
+      }
     }
   $this->performance['NUMBER_STANDARD_URLS_GENERATED']++;
   $this->cache['STANDARD_URLS'][] = $link;
   $time = 0;
   $this->stop($this->timestamp, $time);
   $this->performance['TOTAL_TIME'] += $time;
-    return htmlspecialchars($link);
+ 
+  //add new variable
+  $link = str_replace('&amp;', '&', htmlspecialchars($link));
+  return $link;
+
+  //return htmlspecialchars($link);
   } # end default tep_href function
   
 
@@ -571,16 +601,42 @@ class SEO_URL{
   function add_sid( $link, $add_session_id, $connection, $separator ){
     global $request_type; // global variable
     if ( ($add_session_id == true) && ($this->attributes['SESSION_STARTED'] == true) && (SESSION_FORCE_COOKIE_USE == 'False') ) {
-      if ($this->not_null($this->attributes['SID'])) {
-      $_sid = $this->attributes['SID'];
+      //if ($this->not_null($this->attributes['SID'])) {
+      if ($this->not_null($SID)) {
+        //$_sid = $this->attributes['SID'];
+        // add variable 
+        if (SESSION_RECREATE == 'True') {
+          $_sid = tep_session_name().'='.tep_session_id(); 
+        } else {
+          $_sid = $this->attributes['SID'];
+        }
       } elseif ( ( ($request_type == 'NONSSL') && ($connection == 'SSL') && (ENABLE_SSL == true) ) || ( ($request_type == 'SSL') && ($connection == 'NONSSL') ) ) {
       if (HTTP_COOKIE_DOMAIN != HTTPS_COOKIE_DOMAIN) {
-        $_sid = $this->SessionName() . '=' . $this->SessionID();
+        //$_sid = $this->SessionName() . '=' . $this->SessionID();
+        if (SESSION_RECREATE == 'True') {
+          $_sid = tep_session_name().'='.tep_session_id(); 
+        } else {
+          $_sid = $this->SessionName() . '=' . $this->SessionID();
+        }
       }
-      }
+      } 
     }
-    if ( isset($_sid) ) return $link . $separator . $_sid;
-    else return $link;    
+    
+    //if (defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED && ENABLE_SSL) {
+      //if (strpos($_SERVER['REQUEST_URI'], 'index.php?cmd=')) {
+        //return $link; 
+      //}
+    //}
+    if ( isset($_sid) ) {
+      if (ENABLE_SSL && ($_SERVER['HTTP_HOST'] == substr(HTTPS_SERVER,8))) {
+        return $link; 
+      } else {
+        return $link . $separator . $_sid;
+      } 
+    } else {
+      return $link; 
+    }
+
   } # end function
   
 /**
@@ -616,12 +672,16 @@ class SEO_URL{
               $url = $this->make_url($page, REWRITE_PRODUCTS, $p2[0], $p2[1], '.html', $separator,URL_TYPE_PRODUCT);
               break;
             case ( $page == FILENAME_PRODUCT_REVIEWS ):
-              $url = $this->make_url($page, 'reviews/', 'products_id_review', $p2[1], '/', $separator,URL_TYPE_PRODUCT);
+              //$url = $this->make_url($page, 'reviews/', 'products_id_review', $p2[1], '/', $separator,URL_TYPE_PRODUCT);
+              //del URL_TYPE_PRODUCT 
+              $url = $this->make_url($page, 'reviews/', 'products_id_review', $p2[1], '/', $separator);
               break;
             default:
               $container[$p2[0]] = $p2[1];
               break;
           } # end switch
+          break;
+        case 'cName': //add cName filter
           break;
         case 'page':
           switch(true){
@@ -632,7 +692,7 @@ class SEO_URL{
               $url = $this->make_url($page, 'reviews/page', '', $p2[1], '.html', $separator);
               break;
             case ($page == FILENAME_DEFAULT && $_GET['cPath']):
-              break;
+              //break; //zhu shi
             default:
               $container[$p2[0]] = $p2[1];
               break;
@@ -642,9 +702,11 @@ class SEO_URL{
           switch(true){
             case ($page == FILENAME_DEFAULT):
               if (preg_match('/page=(\d+)/', $params, $out)) {
-                $url = $this->make_url($page, REWRITE_CATEGORIES, $p2[0], $p2[1], '_page'.$out[1].'.html', $separator,URL_TYPE_CPATH);
+                //$url = $this->make_url($page, REWRITE_CATEGORIES, $p2[0], $p2[1], '_page'.$out[1].'.html', $separator,URL_TYPE_CPATH);
+                $url = $this->make_url($page, REWRITE_CATEGORIES, $p2[0], $p2[1], '_page'.$out[1].'.html', $separator,'cpath');
               } else {
-                $url = $this->make_url($page, REWRITE_CATEGORIES, $p2[0], $p2[1], '.html', $separator,URL_TYPE_CPATH);
+                //$url = $this->make_url($page, REWRITE_CATEGORIES, $p2[0], $p2[1], '.html', $separator,URL_TYPE_CPATH);
+                $url = $this->make_url($page, REWRITE_CATEGORIES, $p2[0], $p2[1], '.html', $separator,'cpath');
               }
               break;
             case ( !$this->is_product_string($params) ):
@@ -728,12 +790,14 @@ class SEO_URL{
     // In the future there will be additional methods here in the switch
     if(defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED){
     switch($urlType){
+    case 'cpath': 
     case URL_TYPE_CPATH:
       $id_array = explode("_",$id);
       $id= $id_array[0];
       $romaji = tep_get_romaji_cpath($id); 
       $romajiSub =array();
       unset($id_array[0]);
+
       if (count($id_array))//如果有多个id 则说明....
         {
           foreach ($id_array as $category_id){
@@ -1314,7 +1378,11 @@ class SEO_URL{
  * @return string
  */ 
   function SessionID($sessid = '') {
-    return tep_session_id($sessid);
+    if (!empty($sessid)) {
+      return tep_session_id($sessid);
+    } else {
+      return tep_session_id();
+    }
   }
   
 /**
@@ -1325,7 +1393,11 @@ class SEO_URL{
  * @return string
  */ 
   function SessionName($name = '') {
-    return tep_session_name($name);
+    if (!empty($name)) {
+      return tep_session_name($name);
+    } else {
+      return tep_session_name();
+    }
   }
 
 /**

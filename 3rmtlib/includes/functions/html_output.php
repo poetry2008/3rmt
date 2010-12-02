@@ -708,9 +708,17 @@ return $image;
 
 function info_tep_href_link($romaji)
 {
-  //$returnstr = HTTP_SERVER . DIR_WS_CATALOG;
-  $returnstr = DIR_WS_CATALOG;
-  $returnstr .= "info/".urlencode($romaji).".html";
+  $returnstr = HTTP_SERVER . DIR_WS_CATALOG;
+  //$returnstr .= DIR_WS_CATALOG;
+  if (getenv('HTTPS') == 'on') {
+    if ($_SERVER['HTTP_HOST'] == substr(HTTPS_SERVER, 8)) {
+      $returnstr .= "info/".urlencode($romaji).".html";
+    } else {
+      $returnstr .= "info/".urlencode($romaji).".html?".tep_session_name()."=".tep_session_id();
+    }
+  } else {
+    $returnstr .= "info/".urlencode($romaji).".html";
+  }
   return $returnstr;
 }
 
