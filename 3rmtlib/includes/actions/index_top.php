@@ -25,7 +25,7 @@
     if ($cateqories_products['total'] > 0) {
       $category_depth = 'products'; // display products
       
-      if (!defined(URL_SUB_SITE_ENABLED)) {
+      if (!defined('URL_SUB_SITE_ENABLED')) {
         check_uri('/page=(\d+)/');
       }
       
