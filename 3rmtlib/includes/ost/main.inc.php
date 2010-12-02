@@ -47,6 +47,7 @@
 //    ini_set('display_errors',1);
 //  ini_set('display_startup_errors',1);
     //Start the session
+    if (!isset($_noemailclass))
     session_start();
     
     define('ROOT_DIR',DIR_FS_DOCUMENT_ROOT);

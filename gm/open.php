@@ -19,7 +19,6 @@ $_noemailclass = true;
   require_once('includes/application_top.php');
 //require('includes/configure.php');
 require_once(DIR_OST.'client.inc.php');
-error_reporting(E_ALL);
 define('SOURCE','Web'); //Ticket source.
 $inc='open.inc.php';    //default include.
 $errors=array();
@@ -29,12 +28,12 @@ if($_POST):
     if(!$thisuser && $cfg->enableCaptcha()){
         if(!$_POST['captcha'])
             $errors['captcha']='Enter text shown on the image';
-        elseif(strcmp($_SESSION['captcha'],md5($_POST['captcha'])))
+        elseif(strcmp($_SESSION['captcha'],md5(strtolower($_POST['captcha']))))
             $errors['captcha']='Invalid - try again!';
     }
     //Ticket::create...checks for errors..
     if(($ticket=Ticket::create($_POST,$errors,SOURCE))){
-        $msg='お客様のご質問は RMTゲームマネー へ送信されました。';
+        $msg='お客様のご質問は RMTジャックポット へ送信されました。';
         if($thisclient && $thisclient->isValid()) //Logged in...simply view the newly created ticket.
             @header('Location: tickets.php?id='.$ticket->getExtId());
         //Thank the user and promise speedy resolution!
@@ -45,12 +44,11 @@ if($_POST):
 endif;
 
 //page
+define('NAVBAR_TITLE','お問い合わせ');
 
-  define('NAVBAR_TITLE', 'ブラウザの設定');
-  $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_BROWSER_IE6X));
-  
+$breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_BROWSER_IE6X));
+
 mysql_select_db(DB_DATABASE);
-require(CLIENTINC_DIR.'header.inc.php');
-require(CLIENTINC_DIR.$inc);
-require(CLIENTINC_DIR.'footer.inc.php');
-
+require_once(CLIENTINC_DIR.'header.inc.php');
+require_once(CLIENTINC_DIR.$inc);
+require_once(CLIENTINC_DIR.'footer.inc.php');
