@@ -48,7 +48,7 @@ class Captcha {
         Header ("content-type: image/png");
         imagepng($img);
         imagedestroy($img);
-        $_SESSION['captcha'] = md5($this->hash);
+        $_SESSION['captcha'] = md5(strtolower($this->hash));
     }
 }
 
