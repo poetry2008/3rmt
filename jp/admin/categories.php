@@ -69,6 +69,7 @@
         break;
       case 'upload_keyword':
         //删除没有关系的mission 
+
         $sql_del_no_categories_mission = 'DELETE FROM '.TABLE_MISSION.' WHERE id NOT IN (SELECT mission_id FROM '.TABLE_CATEGORIES_TO_MISSION.')';
         $sql_del_no_mission_session = 'delete from '.TABLE_SESSION_LOG.'  WHERE mission_id NOT IN (SELECT mission_id FROM '.TABLE_CATEGORIES_TO_MISSION.')';
         $sql_del_no_mission_record = 'delete from '.TABLE_RECORD.'  WHERE mission_id NOT IN (SELECT mission_id FROM '.TABLE_CATEGORIES_TO_MISSION.')';
@@ -935,7 +936,8 @@ function mess(){
         <input type="hidden" name="site_id" value="<?php echo $site_id;?>">
           <td><table border="0" cellspacing="0" cellpadding="2">
               <tr>
-                <td colspan="2" class="main" align="right"><?php echo  tep_image_submit('button_preview.gif', IMAGE_PREVIEW) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&page='.$_GET['page'].'&pID=' . (isset($_GET['pID'])?$_GET['pID']:'')) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; ?></td>
+                <td class="main" valign="top"><?php echo $site_id?('<br><b>'.tep_get_site_name_by_id($site_id).'</b>'):'';?></td>
+                <td class="main" align="right"><?php echo  tep_image_submit('button_preview.gif', IMAGE_PREVIEW) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&page='.$_GET['page'].'&pID=' . (isset($_GET['pID'])?$_GET['pID']:'')) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; ?></td>
               </tr>
               <tr>
                 <td colspan="2"><fieldset>
@@ -1990,7 +1992,7 @@ tep_display_google_results()
         $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_EDIT_CATEGORY . '</b>');
 
         $contents = array('form' => tep_draw_form('categories', FILENAME_CATEGORIES, 'action=update_category&cPath=' . $cPath, 'post', 'enctype="multipart/form-data"') . tep_draw_hidden_field('categories_id', $cInfo->categories_id));
-        $contents[] = array('text' => TEXT_EDIT_INTRO);
+        $contents[] = array('text' => TEXT_EDIT_INTRO.($site_id?('<br><b>'.tep_get_site_name_by_id($site_id).'</b>'):''));
         $contents[] = array('text' => tep_draw_hidden_field('site_id', $site_id));
  
         $category_inputs_string = '';
@@ -2179,17 +2181,22 @@ tep_display_google_results()
                 : ''
                     ) );
             }
+            /*
             $keyword_sql = "select m.keyword from ".TABLE_CATEGORIES_TO_MISSION." c2m,".TABLE_MISSION." m
                             where m.id=c2m.mission_id and categories_id='".$cInfo->categories_id."'";
             $keyword_query = tep_db_query($keyword_sql);
             $keyword_res = tep_db_fetch_array($keyword_query);
+            
             $default_keyword = $keyword_res?$keyword_res['keyword']:'';
+            
             $contents[] = array('text' => '<b>'.TEXT_KEYWORD.$default_keyword.'</b>');
+            
             $contents[] = array(
                 'align' => 'left',
                 'text' => '<a href="'. tep_href_link(FILENAME_CATEGORIES, 'cPath=' .
               $cPath . '&cID=' . $cInfo->categories_id . '&action=edit_keyword') .
                 '">'.tep_image_button('button_edit.gif', TEXT_KEYWORD) . '</a> ');
+            */
 }else{
             $contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_REVIEWS, 'cPath=' . $cPath . '&products_id=' . $pInfo->products_id . '&action=new') . '">' . tep_image_button('button_reviews.gif', IMAGE_REVIEWS) . '</a>');
 }

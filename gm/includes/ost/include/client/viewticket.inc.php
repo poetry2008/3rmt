@@ -15,24 +15,24 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
     <td colspan=2 width=100% class="msg">問合番号<?=$ticket->getExtId()?>
         &nbsp;<a href="view.php?id=<?=$ticket->getExtId()?>" title="Reload"><span class="Icon refresh">&nbsp;</span></a></td></tr> 
     <tr>
-    <td width=50%>	
+    <td width=50%>  
         <table class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
-	        <tr>
-				<th width="100" >問合ステータス:</th>
-				   <td><?php
-						$_status = '_'.$ticket->getStatus();
-						$_open = 'オープン';
-						$_close = 'クローズ';	
-						echo $$_status;
-				?></td>
-			</tr>
-			<tr>
+          <tr>
+        <th width="100" >ステータス:</th>
+           <td><?php
+            $_status = '_'.$ticket->getStatus();
+            $_open = 'オープン';
+            $_close = 'クローズ'; 
+            echo $$_status;
+        ?></td>
+      </tr>
+      <tr>
                 <th>作成日時:</th>
                 <td><?=$ticket->getCreateDate()?></td>
             </tr>
-		</table>
-	   </td>
-	   <td width=50% valign="top">
+    </table>
+     </td>
+     <td width=50% valign="top">
         <table align="center" class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
             <tr>
                 <th width="100">お名前:</th>
@@ -56,25 +56,25 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
 </div>
 <br>
 <div align="left">
-    <span class="Icon thread">問合スレッド</span>
+    <span class="Icon thread">回答一覧</span>
     <div id="ticketthread">
         <?
-	    //get messages
+      //get messages
         $sql='SELECT msg.*, count(attach_id) as attachments  FROM '.TICKET_MESSAGE_TABLE.' msg '.
             ' LEFT JOIN '.TICKET_ATTACHMENT_TABLE.' attach ON  msg.ticket_id=attach.ticket_id AND msg.msg_id=attach.ref_id AND ref_type=\'M\' '.
             ' WHERE  msg.ticket_id='.db_input($ticket->getId()).
             ' GROUP BY msg.msg_id ORDER BY created';
-	    $msgres =db_query($sql);
-	    while ($msg_row = db_fetch_array($msgres)):
-		    ?>
-		    <table class="message" cellspacing="0" cellpadding="1" width="100%" border=0>
-		        <tr><th><?=$msg_row['created']?></th></tr>
+      $msgres =db_query($sql);
+      while ($msg_row = db_fetch_array($msgres)):
+        ?>
+        <table class="message" cellspacing="0" cellpadding="1" width="100%" border=0>
+            <tr><th><?=$msg_row['created']?></th></tr>
                 <?if($msg_row['attachments']>0){ ?>
                 <tr class="header"><td><?=$ticket->getAttachmentStr($msg_row['msg_id'],'M')?></td></tr> 
                 <?}?>
                 <tr class="info">
                     <td><?=Format::display($msg_row['message'])?></td></tr>
-		    </table>
+        </table>
             <?
             //get answers for messages
             $sql='SELECT resp.*,count(attach_id) as attachments FROM '.TICKET_RESPONSE_TABLE.' resp '.
@@ -82,24 +82,24 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
                 ' WHERE msg_id='.db_input($msg_row['msg_id']).' AND resp.ticket_id='.db_input($ticket->getId()).
                 ' GROUP BY resp.response_id ORDER BY created';
             //echo $sql;
-		    $resp =db_query($sql);
-		    while ($resp_row = db_fetch_array($resp)) {
+        $resp =db_query($sql);
+        while ($resp_row = db_fetch_array($resp)) {
                 $respID=$resp_row['response_id'];
                 $name=$cfg->hideStaffName()?'staff':Format::htmlchars($resp_row['staff_name']);
                 ?>
-    		    <table align="center" class="response" cellspacing="0" cellpadding="1" width="100%" border=0>
-    		        <tr>
-    			        <th><?=$resp_row['created']?>&nbsp;-&nbsp;<?=$name?></th></tr>
+            <table align="center" class="response" cellspacing="0" cellpadding="1" width="100%" border=0>
+                <tr>
+                  <th><?=$resp_row['created']?>&nbsp;-&nbsp;<?=$name?></th></tr>
                     <?if($resp_row['attachments']>0){ ?>
                     <tr class="header">
                         <td><?=$ticket->getAttachmentStr($respID,'R')?></td></tr>
                                     
                     <?}?>
-			        <tr class="info">
-				        <td> <?=Format::display($resp_row['response'])?></td></tr>
-		        </table>
-		    <?
-		    } //endwhile...response loop.
+              <tr class="info">
+                <td> <?=Format::display($resp_row['response'])?></td></tr>
+            </table>
+        <?
+        } //endwhile...response loop.
             $msgid =$msg_row['msg_id'];
         endwhile; //message loop.
      ?>

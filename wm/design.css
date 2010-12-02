@@ -928,8 +928,8 @@ list-style-type:none;
 
 .contact_us_warpper{ clear:both;}
 .tcol{ clear:both;}
-.lcol{height:100%;clear:both; padding:5px; border:1px solid #E0E0E0; overflow:hidden; background-color:#F2F2F2;}
-.rcol{height:100%;font-size:11px;clear:both; padding:5px; margin-top:5px; border:1px solid #ccc; overflow:hidden; background-color:#F2F2F2;}
+.lcol{height:100%;clear:both; padding:5px; border:1px solid #E0E0E0; overflow:hidden;}
+.rcol{height:100%;font-size:11px;clear:both; padding:5px; margin-top:5px; border:1px solid #ccc; overflow:hidden;}
 .contact_left{ float:left;}
 .contact_right{ float:left; padding-left:8px; width:390px;}
 .contact_right h3{
@@ -964,3 +964,4 @@ list-style-type:none;
 .tickets td,.infotable td{ background-color:#F2F2F2; padding:2px;}
 .tickets th,.infotable th{ background-color:#F2F2F2; text-align:left; font-size:12px; text-align:center;}
 #ticketthread{background-color:#F2F2F2; border:1px solid #E0E0E0; margin-bottom:10px;}
+.captcha_comment{ font-size:12px;}

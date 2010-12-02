@@ -427,3 +427,4 @@ list-style-type:none;
 .tickets td,.infotable td{ background-color:#F2F2F2; padding:2px;}
 .tickets th,.infotable th{ background-color:#F2F2F2; text-align:left; font-size:12px; text-align:center;}
 #ticketthread{background-color:#F2F2F2; border:1px solid #E0E0E0; margin-bottom:10px;}
+.captcha_comment{ font-size:12px;}

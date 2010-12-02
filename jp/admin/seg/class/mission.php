@@ -5,7 +5,7 @@ class mission {
                                        'google' => 'google',
                                        );
   var $engineDriver;
-  var $keyword;
+  var $keyword; 
   var $id;
   var $name;
   var $page_limit;

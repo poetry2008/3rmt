@@ -42,12 +42,11 @@ if(!isset($w_option)){
   $w_option=$w_error;
 }
 */
-
 if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
   if ($w_rel == 'yes') {
     $orders = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS." where telecom_option='".$w_option."' and date_purchased > '".(date('Y-m-d H:i:s',time()-86400))."'"));
   }
-  if ($orders) {
+  if ($orders&&!$orders['telecom_name']&&!$orders['telecom_tel']&&!$orders['telecom_money']&&!$orders['telecom_email']) {
     // OK
     tep_db_perform(TABLE_ORDERS, array(
       'telecom_name'  => $w_username,
