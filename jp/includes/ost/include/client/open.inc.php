@@ -16,7 +16,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
 <form action="open.php" method="POST" enctype="multipart/form-data">
 <table cellpadding=2 cellspacing=1 width="100%" class="open_users">
     <tr>
-        <th width="20%">お名前:</th>
+        <th width="23%">お名前:</th>
         <td>
             <?if ($thisclient && ($name=$thisclient->getName())) {
                 ?>

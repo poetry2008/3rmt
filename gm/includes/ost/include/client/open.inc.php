@@ -14,9 +14,9 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
 </div>
 <div>必要な情報をご入力ください.</div><br>
 <form action="open.php" method="POST" enctype="multipart/form-data">
-<table align="left" cellpadding=2 cellspacing=1 width="90%">
+<table align="left" cellpadding=2 cellspacing=1 width="100%">
     <tr>
-        <th width="20%" align="left">お名前:</th>
+        <th width="25%" align="left">お名前:</th>
         <td>
             <?if ($thisclient && ($name=$thisclient->getName())) {
                 ?>

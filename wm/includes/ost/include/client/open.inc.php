@@ -12,11 +12,11 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         <p id="warnmessage"><?=$warn?></p>
     <?}?>
 </div>
-<div class="open_title">必要な情報をご入力ください.</div><br>
+<p class="login_inc">必要な情報をご入力ください.</p>
 <form action="open.php" method="POST" enctype="multipart/form-data">
 <table cellpadding=2 cellspacing=1 width="100%" class="open_users">
     <tr>
-        <th width="20%">お名前:</th>
+        <th width="21%">お名前</th>
         <td>
             <?if ($thisclient && ($name=$thisclient->getName())) {
                 ?>
@@ -28,7 +28,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         </td>
     </tr>
     <tr>
-        <th nowrap >メールアドレス:</th>
+        <th nowrap >メールアドレス</th>
         <td>
             <?if ($thisclient && ($email=$thisclient->getEmail())) {
                 ?>
@@ -40,14 +40,14 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         </td>
     </tr>
     <tr>
-        <th>タイトル:</th>
+        <th>タイトル</th>
         <td>
             <input type="text" name="subject" size="35" value="<?=$info['subject']?>">
             &nbsp;<font class="error">*&nbsp;<?=$errors['subject']?></font>
         </td>
     </tr>
     <tr>
-        <th valign="top">ご質問内容: </th>
+        <th valign="top">ご質問内容</th>
         <td>
             <? if($errors['message']) {?> <font class="error"><b>&nbsp;<?=$errors['message']?></b></font><br/><?}?>
             <textarea name="message" cols="35" rows="8" wrap="soft" style="width:85%"><?=$info['message']?></textarea></td>
@@ -57,7 +57,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
       $sql='SELECT priority_id,priority_desc FROM '.TICKET_PRIORITY_TABLE.' WHERE ispublic=1 ORDER BY priority_urgency DESC';
       if(($priorities=db_query($sql)) && db_num_rows($priorities)){ ?>
       <tr>
-        <td>重要度:</td>
+        <td>重要度</td>
         <td>
             <select name="pri">
               <?
@@ -76,7 +76,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         
         ?>
     <tr>
-        <td>添付ファイル:</td>
+        <td>添付ファイル</td>
         <td>
             <input type="file" name="attachment"><font class="error">&nbsp;<?=$errors['attachment']?></font>
         </td>
@@ -87,20 +87,18 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
             $errors['captcha']='Please re-enter the text again';
         ?>
     <tr>
-        <th valign="top">キャプチャテキスト:</th>
-        <td><img src="captcha.php" border="0" align="left">
-        <span>&nbsp;&nbsp;<input type="text" name="captcha" size="7" value="">&nbsp;<i class="captcha_comment">認証画像の内容をご入力ください.</i></span><br/>
-                <font class="error">&nbsp;<?=$errors['captcha']?></font>
+        <th valign="top">キャプチャテキスト</th>
+        <td>
+          <img src="captcha.php" border="0" align="left">
+          <span>&nbsp;&nbsp;<input type="text" name="captcha" size="7" value="">&nbsp;<i class="captcha_comment">認証画像の内容をご入力ください.</i></span>
+          <font class="error">&nbsp;<?=$errors['captcha']?></font>
         </td>
     </tr>
     <?}?>
-    <tr>
-        <td></td>
-        <td>
-            <input class="button" type="submit" name="submit_x" value="&#36865;&#20449;">
-            <input class="button" type="reset" value="&#12522;&#12475;&#12483;&#12488;">
-            <input class="button" type="button" name="cancel" value="&#12461;&#12515;&#12531;&#12475;&#12523;" onClick='window.location.href="index.php"'>    
-        </td>
-    </tr>
 </table>
+    <div class="login_inc_button">
+      <input class="button" type="image" name="submit_x" value="&#36865;&#20449;" src="includes/languages/japanese/images/buttons/button_send_mail.gif">
+      <input class="button" type="image" value="&#12522;&#12475;&#12483;&#12488;" src="includes/languages/japanese/images/buttons/open_users01.gif">
+      <input class="button" type="image" name="cancel" value="&#12461;&#12515;&#12531;&#12475;&#12523;" onClick='window.location.href="index.php"' src="includes/languages/japanese/images/buttons/open_users02.gif">    
+    </div>
 </form>
