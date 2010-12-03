@@ -17,7 +17,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
        <td width=50%> 
         <table align="center" class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
           <tr>
-        <th width="100" >ステータス:</th>
+        <th width="100" >ステータス</th>
         <td><?php
             $_status = '_'.$ticket->getStatus();
             $_open = 'オープン';
@@ -26,7 +26,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
         ?></td>
       </tr>
       <tr>
-                <th>作成日時:</th>
+                <th>作成日時</th>
                 <td><?=$ticket->getCreateDate()?></td>
             </tr>
     </table>
@@ -34,18 +34,18 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
      <td width=50% valign="top">
         <table align="center" class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
             <tr>
-                <th width="100">お名前:</th>
+                <th width="100">お名前</th>
                 <td><?=Format::htmlchars($ticket->getName())?></td>
             </tr>
             <tr>
-                <th width="100">メールアドレス:</th>
+                <th width="100">メールアドレス</th>
                 <td><?=$ticket->getEmail()?></td>
             </tr>
         </table>
        </td>
     </tr>
 </table>
-<div class="msg">タイトル: <?=Format::htmlchars($ticket->getSubject())?></div>
+<div class="msg">タイトル<?=Format::htmlchars($ticket->getSubject())?></div>
 <div>
     <?if($errors['err']) {?>
         <p align="center" id="errormessage"><?=$errors['err']?></p>
@@ -53,7 +53,6 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
         <p align="center" id="infomessage"><?=$msg?></p>
     <?}?>
 </div>
-<br>
 <div align="left">
     <span class="Icon thread">回答一覧</span>
     <div id="ticketthread">
@@ -131,9 +130,9 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
             </div>
             <?}?>
             <div align="left"  style="padding:10px 0 10px 0;">
-                <input class="button" type='submit' value='送信' />
-                <input class="button" type='reset' value='リセット' />
-                <input class="button" type='button' value='キャンセル' onClick='window.location.href="view.php"' />
+                <input class="button" type='image' value='送信' src="includes/languages/japanese/images/buttons/button_send_mail.gif"/>
+                <input class="button" type='image' value='リセット' src="includes/languages/japanese/images/buttons/open_users01.gif"/>
+                <input class="button" type='image' value='キャンセル' onClick='window.location.href="view.php"' src="includes/languages/japanese/images/buttons/open_users02.gif"/>
             </div>
         </form>
     </div>

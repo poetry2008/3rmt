@@ -42,13 +42,15 @@
     &nbsp;|&nbsp;
       <a href="' . tep_href_link(FILENAME_ORDERS, '', 'NONSSL') . '" class="headerLink">' . BOX_CUSTOMERS_ORDERS . '</a>
       &nbsp;|&nbsp;
-      <a href="' . tep_href_link(FILENAME_CATEGORIES_ADMIN, '', 'NONSSL') . '" class="headerLink">商品卸価格管理</a>
+      <a href="' . tep_href_link('telecom_unknow.php', '', 'NONSSL') . '" class="headerLink">決算管理</a>
+      &nbsp;|&nbsp;
+      <a href="' . tep_href_link(FILENAME_CATEGORIES_ADMIN, '', 'NONSSL') . '" class="headerLink">価格管理</a>
       &nbsp;|&nbsp;
       <a href="' . tep_href_link(FILENAME_CUSTOMERS, '', 'NONSSL') . '" class="headerLink">' . BOX_CUSTOMERS_CUSTOMERS . '</a>
       &nbsp;|&nbsp;
       <a href="' . tep_href_link(FILENAME_CATEGORIES, '', 'NONSSL') . '" class="headerLink">商品登録</a>
       &nbsp;|&nbsp;
-      <a href="' . tep_href_link(FILENAME_LATEST_NEWS, '', 'NONSSL') . '" class="headerLink">' . BOX_TOOLS_LATEST_NEWS . '</a>
+      <a href="' . tep_href_link(FILENAME_LATEST_NEWS, '', 'NONSSL') . '" class="headerLink">新着情報</a>
       &nbsp;|&nbsp;
       <a href="' . tep_href_link('create_order.php', '', 'NONSSL') . '" class="headerLink">注文作成</a>
       &nbsp;|&nbsp;
