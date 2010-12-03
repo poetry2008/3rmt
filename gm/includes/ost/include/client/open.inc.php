@@ -84,7 +84,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <?}?>
     <?if($cfg && $cfg->enableCaptcha() && (!$thisclient || !$thisclient->isValid())) {
         if($_POST && $errors && !$errors['captcha'])
-            $errors['captcha']='Please re-enter the text again';
+            $errors['captcha']='必須項目エラー';
         ?>
     <tr>
         <th valign="top">キャプチャテキスト</th>

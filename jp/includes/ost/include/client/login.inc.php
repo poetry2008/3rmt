@@ -17,7 +17,7 @@ $t=Format::input($_POST['lticket']?$_POST['lticket']:$_GET['t']);
     <table cellspacing="1" cellpadding="0" align="center" width="100%" class="open_login">
         <tr> 
             <th width="20%" bgcolor="#eeeeee">メールアドレス</th>
-            <td><input type="text" name="lemail" size="25" value="<?=$e?>"><span class="error"><?=Format::htmlchars($loginmsg)?></span>
+            <td><input type="text" name="lemail" size="25" value="<?=$e?>"><br><span class="error"><?=Format::htmlchars($loginmsg)?></span>
             </td>
         </tr>
         <tr>

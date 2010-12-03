@@ -12,23 +12,23 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         <p id="warnmessage"><?=$warn?></p>
     <?}?>
 </div>
-<div>ÐÂ¤·¤¤¤ª†–ºÏ¤»¤ò×÷¤ê¤Þ¤¹¤¬¡¢ÏÂÓ›¤ÎÄÚÈÝ¤òÓ›Èë¤·¤Æ¤¯¤À¤µ¤¤.</div><br>
+<div>Â¤Ï¤Þ¤Ó›Ý¤Ó›ë¤·Æ¤.</div><br>
 <form action="open.php" method="POST" enctype="multipart/form-data">
 <table align="left" cellpadding=2 cellspacing=1 width="90%">
     <tr>
-        <th width="20%">¤ªÃûÇ°:</th>
+        <th width="20%">Ç°:</th>
         <td>
             <?if ($thisclient && ($name=$thisclient->getName())) {
                 ?>
                 <input type="hidden" name="name" value="<?=$name?>"><?=$name?>
             <?}else {?>
                 <input type="text" name="name" size="25" value="<?=$info['name']?>">
-	        <?}?>
+          <?}?>
             &nbsp;<font class="error">*&nbsp;<?=$errors['name']?></font>
         </td>
     </tr>
     <tr>
-        <th nowrap >¥á©`¥ë¥¢¥É¥ì¥¹:</th>
+        <th nowrap >`ë¥¢É¥ì¥¹:</th>
         <td>
             <?if ($thisclient && ($email=$thisclient->getEmail())) {
                 ?>
@@ -40,14 +40,14 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         </td>
     </tr>
     <tr>
-        <td>ëŠÔ’·¬ºÅ:</td>
+        <td>Ô’:</td>
         <td><input type="text" name="phone" size="25" value="<?=$info['phone']?>">
              &nbsp;Ext&nbsp;<input type="text" name="phone_ext" size="6" value="<?=$info['phone_ext']?>">
             &nbsp;<font class="error">&nbsp;<?=$errors['phone']?></font></td>
     </tr>
     <tr height=2px><td align="left" colspan=2 >&nbsp;</td</tr>
     <tr>
-        <th>Ù|†–ÄÚÈÝ:</th>
+        <th>|:</th>
         <td>
             <select name="topicId">
                 <option value="" selected >Select One</option>
@@ -60,21 +60,21 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
                         <?
                      }
                  }else{?>
-                    <option value="0" >Í¨³£—ÊË÷</option>
+                    <option value="0" >Í¨</option>
                 <?}?>
             </select>
             &nbsp;<font class="error">*&nbsp;<?=$errors['topicId']?></font>
         </td>
     </tr>
     <tr>
-        <th>¥¿¥¤¥È¥ë:</th>
+        <th>È¥:</th>
         <td>
             <input type="text" name="subject" size="35" value="<?=$info['subject']?>">
             &nbsp;<font class="error">*&nbsp;<?=$errors['subject']?></font>
         </td>
     </tr>
     <tr>
-        <th valign="top">¥á¥Ã¥»©`¥¸:</th>
+        <th valign="top">Ã¥`:</th>
         <td>
             <? if($errors['message']) {?> <font class="error"><b>&nbsp;<?=$errors['message']?></b></font><br/><?}?>
             <textarea name="message" cols="35" rows="8" wrap="soft" style="width:85%"><?=$info['message']?></textarea></td>
@@ -84,7 +84,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
       $sql='SELECT priority_id,priority_desc FROM '.TICKET_PRIORITY_TABLE.' WHERE ispublic=1 ORDER BY priority_urgency DESC';
       if(($priorities=db_query($sql)) && db_num_rows($priorities)){ ?>
       <tr>
-        <td>ÖØÒª¶È:</td>
+        <td>Òª:</td>
         <td>
             <select name="pri">
               <?
@@ -103,7 +103,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         
         ?>
     <tr>
-        <td>Ìí¸¶¥Õ¥¡¥¤¥ë:</td>
+        <td>í¸¶Õ¥:</td>
         <td>
             <input type="file" name="attachment"><font class="error">&nbsp;<?=$errors['attachment']?></font>
         </td>
@@ -111,10 +111,10 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <?}?>
     <?if($cfg && $cfg->enableCaptcha() && (!$thisclient || !$thisclient->isValid())) {
         if($_POST && $errors && !$errors['captcha'])
-            $errors['captcha']='Please re-enter the text again';
+            $errors['captcha']='å¿…é ˆé …ç›®ã‚¨ãƒ©ãƒ¼';
         ?>
     <tr>
-        <th valign="top">¥­¥ã¥×¥Á¥ã¥Æ¥­¥¹¥È:</th>
+        <th valign="top">×¥Æ¥:</th>
         <td><img src="captcha.php" border="0" align="left">
         <span>&nbsp;&nbsp;<input type="text" name="captcha" size="7" value="">&nbsp;<i>Enter the text shown on the image.</i></span><br/>
                 <font class="error">&nbsp;<?=$errors['captcha']?></font>

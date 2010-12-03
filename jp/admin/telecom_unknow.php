@@ -114,7 +114,7 @@ function check_one(ele){
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
       <td valign="top">
-    <form action="?action=hide_more" method="post">
+    <form action="?action=hide_more" method="post" onsubmit="return confirm('選択した行を非表示にしますか？')">
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
     <tr class="dataTableHeadingRow">
       <td class="dataTableHeadingContent" align="left" width="20"><input type="checkbox" onclick="all_check(this)"></td>
@@ -188,7 +188,7 @@ function check_one(ele){
       <td align="left"   style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['telno']; ?>&nbsp;</td>
       <td align="left"   style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['email']; ?>&nbsp;</td>
       <td align="right"  style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['money']; ?>&nbsp;</td>
-      <td align="right"  style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><input type="hidden" id="rel_<?php echo $orders['id'];?>" value="<?php echo $orders['rel'];?>"><a href="javascript:void(0);" onclick="hide(<?php echo $orders['id'];?>, this)"><img src="images/icons/cross.gif" ></a></td>
+      <td align="right"  style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><input type="hidden" id="rel_<?php echo $orders['id'];?>" value="<?php echo $orders['rel'];?>"><a href="javascript:void(0);" onclick="return confirm('非表示にしますか？') && hide(<?php echo $orders['id'];?>, this)"><img src="images/icons/cross.gif" ></a></td>
     </tr>
 <?php }?>
   </table>
@@ -199,7 +199,7 @@ function check_one(ele){
       <td colspan="5">
         <table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
-            <td class="smallText" valign="top"><input type="submit" value="選択されたものを隠す"><?php echo $orders_split->display_count($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_ORDERS); ?></td>
+            <td class="smallText" valign="top"><input type="submit" value="一括非表示"><?php echo $orders_split->display_count($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_ORDERS); ?></td>
             <td class="smallText" align="right"><?php echo $orders_split->display_links($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'oID', 'action'))); ?></td>
           </tr>
         </table>
