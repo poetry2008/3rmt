@@ -94,7 +94,7 @@ $info=($errors && $_POST)?Format::input($_POST):Format::htmlchars($info);
             </td>
         </tr>
         <tr>
-            <th valign="top"><br/>Not Good :</th>
+            <th valign="top"><br/>NGキーワード :</th>
             <td>
                 <textarea name="dept_ng" cols="21" rows="5" style="width: 60%;"><?=$info['dept_ng']?></textarea>
             </td>
