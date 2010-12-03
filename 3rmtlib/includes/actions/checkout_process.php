@@ -176,7 +176,8 @@
       $sql_data_array['telecom_tel']   = $telecom_unknow['telno'];
       $sql_data_array['telecom_email'] = $telecom_unknow['email'];
       $sql_data_array['telecom_money'] = $telecom_unknow['money'];
-      tep_db_query("delete from telecom_unknow where `option`='".$_SESSION['option']."' and rel='yes'");
+      //tep_db_query("delete from telecom_unknow where `option`='".$_SESSION['option']."' and rel='yes'");
+      tep_db_perform('telecom_unknow',array('type' => 'success'),'update',"`option`='".$_SESSION['option']."' and rel='yes'");
       $telecom_option_ok = true;
     }
   }

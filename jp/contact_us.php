@@ -43,7 +43,7 @@ require_once(CLIENTINC_DIR.'header.inc.php');
   
   <br>
   <form method="link" action="open.php">
-  <input type="submit" class="button2" value="お問い合わせ">
+  <input type="image" class="button2" value="お問い合わせ" src="includes/languages/japanese/images/buttons/lemail.gif">
   </form>
   </div>
 </div>
@@ -55,16 +55,16 @@ require_once(CLIENTINC_DIR.'header.inc.php');
   <br>
     <form class="status_form" action="contact_us_login.php" method="post">
     <div class="status_warpper">
-      <label>メールアドレス：</label>
+      <label>メールアドレス</label>
       <input type="text" name="lemail">
       </div>
       <div class="status_warpper">
-     <label>お問い合わせ番号:</label>
+     <label>お問い合わせ番号</label>
      <input type="text" name="lticket">
      </div>
      <div class="status_warpper02">
         <label>&nbsp;</label>
-         <input type="submit" class="button2" value="送信">
+         <input type="image" class="button2" value="送信" src="includes/languages/japanese/images/buttons/button_send_mail.gif">
      </div>
 
   </form>
