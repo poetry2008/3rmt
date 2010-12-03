@@ -105,7 +105,8 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         <td>
             <input class="button" type="submit" name="submit_x" value="送信">
             <input class="button" type="reset" value="リセット">
-            <input class="button" type="button" name="cancel" value="キャンセル" onClick='window.location.href="index.php"'>    
+            <input class="button" type="button" name="cancel" value="キャンセル"
+            onClick='window.location.href="<?php echo FILENAME_CONTACT_US ?>"'>    
         </td>
     </tr>
 </table>
