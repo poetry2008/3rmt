@@ -57,7 +57,6 @@ $qselect.=' ,count(attach_id) as attachments ';
 $qfrom.=' LEFT JOIN '.TICKET_ATTACHMENT_TABLE.' attach ON  ticket.ticket_id=attach.ticket_id ';
 $qgroup=' GROUP BY ticket.ticket_id';
 $query="$qselect $qfrom $qwhere $qgroup ORDER BY $order_by $order LIMIT ".$pageNav->getStart().",".$pageNav->getLimit();
-//echo $query;
 $tickets_res = db_query($query);
 $showing=db_num_rows($tickets_res)?$pageNav->showing():"";
 $results_type=($status)?ucfirst($status).' Tickets':' All Tickets';
