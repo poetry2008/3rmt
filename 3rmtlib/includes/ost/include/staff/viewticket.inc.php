@@ -11,6 +11,14 @@ if($cfg->getLockTime() && !$ticket->acquireLock())
 
 //We are ready baby...lets roll. Akon rocks! 
 $dept  = $ticket->getDept();  //Dept
+//ng{
+$ng = $dept->getNg();
+$ngArr = explode(',',$ng);
+foreach ($ngArr as $k=>$v){
+  $ngArr[$k] = "'".$v."'";
+}
+$ngArrString = join(",",$ngArr);
+//ng}
 $staff = $ticket->getStaff(); //Assiged staff.
 $lock  = $ticket->getLock();  //Ticket lock obj
 $id=$ticket->getId(); //Ticket ID.
@@ -25,6 +33,28 @@ if($ticket->isOverdue())
     $warn.='&nbsp;&nbsp;<span class="Icon overdueTicket">Marked overdue!</span>';
     
 ?>
+<script type='text/javascript'>
+function checkNg(){
+<?php 
+echo "var ngArr = new Array(".$ngArrString.");";
+?>
+var response = document.getElementById('response');
+var response_content = response.value;
+var findkeyword = new Array()
+var keyword;
+var result = false;
+for (keyword in ngArr){
+  if(response_content.indexOf(ngArr[keyword])>=0){
+    findkeyword.push(ngArr[keyword])
+  }
+}
+if(findkeyword.length<=0){
+ return true;
+}else{
+ return  confirm('NGキーワード '+findkeyword.toString()+' 返信内容にNGキーワードが有ります。このまま返信しますか？');
+}
+}
+</script>
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
     <tr>
         <td class="msg" width=50%>
@@ -148,7 +178,7 @@ if($ticket->isOverdue())
 if($thisuser->canManageTickets() || $thisuser->isManager()){ ?> 
 <table cellpadding="0" cellspacing="2" border="0" width="100%" class="ticketoptions">
     <tr><td>
-        <form name=action action='tickets.php?id=<?=$id?>' method=post class="inline" >
+        <form name='action'  action='tickets.php?id=<?=$id?>' method='post'  class="inline" >
             <input type='hidden' name='ticket_id' value="<?=$id?>"/>
              <input type='hidden' name='a' value="process"/>
             <span for="do"> &nbsp;<b>操作:</b></span>
@@ -280,8 +310,18 @@ if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
         <div class="tabber">
             <div id="reply" class="tabbertab" align="left">
                 <h2>返信</h2>
+
                 <p>
-                    <form action="tickets.php?id=<?=$id?>#reply" name="reply" id="replyform" method="post" enctype="multipart/form-data">
+<?php 
+if (strspn("MSIE",$_SERVER["HTTP_USER_AGENT"])==4){
+?>
+                    <form action="tickets.php?id=<?=$id?>#reply" name="reply" id="replyform" method="post">
+<?php }else { 
+?>
+                    <form onsubmit = 'return checkNg();' action="tickets.php?id=<?=$id?>#reply" name="reply" id="replyform" method="post">
+<?php
+}
+?>
                         <input type="hidden" name="ticket_id" value="<?=$id?>">
                         <input type="hidden" name="msg_id" value="<?=$msgid?>">
                         <input type="hidden" name="a" value="reply">
@@ -479,3 +519,11 @@ if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
     </td>
  </tr>
 </table>
+<?php 
+if (strspn("MSIE",$_SERVER["HTTP_USER_AGENT"])==4){
+?>
+<script>
+var e = document.getElementById("replyform");
+e.attachEvent('onsubmit',checkNg);
+</script>
+<?php } ?>

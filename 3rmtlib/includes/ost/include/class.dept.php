@@ -28,6 +28,7 @@ class Dept {
     
     var $managerId;
     var $manager;
+    var $ng;
     
     var $row;
   
@@ -41,6 +42,7 @@ class Dept {
             $this->managerId=$info['manager_id'];
             $this->deptname=$info['dept_name'];
             $this->signature=$info['dept_signature'];
+            $this->ng=$info['dept_ng'];
             $this->getEmail(); //Auto load email struct.
         }
     }
@@ -89,6 +91,9 @@ class Dept {
         return $this->signature;
     }
 
+    function getNg(){
+        return $this->ng;
+    }
     function canAppendSignature() {
         return ($this->signature && $this->row['can_append_signature'])?true:false;
     }
@@ -225,6 +230,19 @@ class Dept {
             if(db_num_rows(db_query($sql)))
                 $errors['dept_name']='Department already exist';
         }
+        //do something with dept_ng;
+        if($_POST['dept_ng']){
+          $tmpArr = explode(',',$_POST['dept_ng']);
+          $newTmpArr = array();
+          foreach ($tmpArr as $key=>$value){
+            $trimedValue =trim($value);
+            if(!in_array($trimedValue,$newTmpArr) and strlen($trimedValue)){
+              $newTmpArr[] = $trimedValue;
+            }
+          }
+          $_POST['dept_ng'] = join(',',$newTmpArr);
+        }
+
 
         if($_POST['ispublic'] && !$_POST['dept_signature'])
             $errors['dept_signature']='Signature required';
@@ -238,6 +256,7 @@ class Dept {
                  ',ispublic='.db_input($_POST['ispublic']).
                  ',email_id='.db_input($_POST['email_id']).
                  ',tpl_id='.db_input($_POST['tpl_id']).
+                 ',dept_ng='.db_input($_POST['dept_ng']).
                  ',autoresp_email_id='.db_input($_POST['autoresp_email_id']).
                  ',manager_id='.db_input($_POST['manager_id']?$_POST['manager_id']:0).
                  ',dept_name='.db_input(Format::striptags($_POST['dept_name'])).
@@ -250,12 +269,15 @@ class Dept {
                 $sql='UPDATE '.DEPT_TABLE.' '.$sql.' WHERE dept_id='.db_input($id);
                 if(!db_query($sql) || !db_affected_rows())
                     $errors['err']='Unable to update '.Format::input($_POST['dept_name']).' Dept. Error occured';
+
             }else{
                 $sql='INSERT INTO '.DEPT_TABLE.' '.$sql.',created=NOW()';
+
                 if(db_query($sql) && ($deptID=db_insert_id()))
                     return $deptID;
 
                 $errors['err']='Unable to create department. Internal error';
+
             }
         }
 
