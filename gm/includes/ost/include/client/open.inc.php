@@ -12,11 +12,11 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         <p id="warnmessage"><?=$warn?></p>
     <?}?>
 </div>
-<div>必要な情報をご入力ください.</div><br>
+<div>必要な情報をご入力ください.</div>
 <form action="open.php" method="POST" enctype="multipart/form-data">
-<table align="left" cellpadding=2 cellspacing=1 width="100%">
+<table class="open_table" align="left" cellpadding=2 cellspacing=1 width="100%">
     <tr>
-        <th width="25%" align="left">お名前:</th>
+        <th width="27%" align="left">お名前</th>
         <td>
             <?if ($thisclient && ($name=$thisclient->getName())) {
                 ?>
@@ -28,7 +28,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         </td>
     </tr>
     <tr>
-        <th align="left" >メールアドレス:</th>
+        <th align="left" >メールアドレス</th>
         <td>
             <?if ($thisclient && ($email=$thisclient->getEmail())) {
                 ?>
@@ -40,14 +40,14 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         </td>
     </tr>
     <tr>
-        <th align="left">タイトル:</th>
+        <th align="left">タイトル</th>
         <td>
             <input type="text" name="subject" size="35" value="<?=$info['subject']?>">
             &nbsp;<font class="error">*&nbsp;<?=$errors['subject']?></font>
         </td>
     </tr>
     <tr>
-        <th align="left" valign="top">ご質問内容: </th>
+        <th align="left" valign="top">ご質問内容</th>
         <td>
             <? if($errors['message']) {?> <font class="error"><b>&nbsp;<?=$errors['message']?></b></font><br/><?}?>
             <textarea name="message" cols="35" rows="8" wrap="soft" style="width:85%"><?=$info['message']?></textarea></td>
@@ -57,7 +57,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
       $sql='SELECT priority_id,priority_desc FROM '.TICKET_PRIORITY_TABLE.' WHERE ispublic=1 ORDER BY priority_urgency DESC';
       if(($priorities=db_query($sql)) && db_num_rows($priorities)){ ?>
       <tr>
-        <td>重要度:</td>
+        <td>重要度</td>
         <td>
             <select name="pri">
               <?
@@ -76,7 +76,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         
         ?>
     <tr>
-        <td>添付ファイル:</td>
+        <td>添付ファイル</td>
         <td>
             <input type="file" name="attachment"><font class="error">&nbsp;<?=$errors['attachment']?></font>
         </td>
@@ -87,7 +87,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
             $errors['captcha']='Please re-enter the text again';
         ?>
     <tr>
-        <th valign="top">キャプチャテキスト:</th>
+        <th valign="top">キャプチャテキスト</th>
         <td><img src="captcha.php" border="0" align="left">
         <span>&nbsp;&nbsp;<input type="text" name="captcha" size="7" value="">&nbsp;<i class="captcha_comment">認証画像の内容をご入力ください.</i></span>
         <?php if($errors['captcha']){ ?>
@@ -100,9 +100,15 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <tr>
         <td></td>
         <td>
-            <input class="button" type="submit" name="submit_x" value="送信">
-            <input class="button" type="reset" value="リセット">
-            <input class="button" type="button" name="cancel" value="キャンセル"  onClick='window.location.href="<?php echo FILENAME_CONTACT_US ?>"'> 
+      <?php /*
+            <input class="button" type="image" name="submit_x" value="送信" src="includes/languages/japanese/images/buttons/button_send_mail.gif">
+            <input class="button" type="image" value="リセット" src="includes/languages/japanese/images/buttons/open_users01.gif">
+            <input class="button" type="image" name="cancel" value="キャンセル"  onClick='window.location.href="<?php echo FILENAME_CONTACT_US ?>"' src="includes/languages/japanese/images/buttons/open_users02.gif"> 
+      */ ?>
+            <button type="submit" class="button" style="padding:0;background:none;border:none;" value="送信"><img src="includes/languages/japanese/images/buttons/button_send_mail.gif" /></button>
+            <button type="reset"  class="button" style="padding:0;background:none;border:none;" value="リセット"><img src="includes/languages/japanese/images/buttons/open_users01.gif" /></button>
+            <button type="button" class="button" style="padding:0;background:none;border:none;" value="キャンセル" onClick='window.location.href="<?php echo FILENAME_CONTACT_US;?>";'><img src="includes/languages/japanese/images/buttons/open_users02.gif" /></button>
+      
         </td>
     </tr>
 </table>

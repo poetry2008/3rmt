@@ -34,7 +34,7 @@ require(CLIENTINC_DIR.'header.inc.php');
   <h3>新規お問い合わせ</h3>
   　<br>
   <form method="link" action="open.php">
-  <input type="submit" class="button2" value="お問い合わせ">
+  <input type="image" class="button2" value="お問い合わせ" src="includes/languages/japanese/images/buttons/lemail.gif">
   </form>
     </div>
 </div>
@@ -55,7 +55,7 @@ require(CLIENTINC_DIR.'header.inc.php');
      </div>
      <div class="status_warpper02">
         <label>&nbsp;</label>
-         <input type="submit" class="button2" value="送信">
+         <input type="image" class="button2" value="送信" src="includes/languages/japanese/images/buttons/button_send_mail.gif">
      </div>
 
   </form>

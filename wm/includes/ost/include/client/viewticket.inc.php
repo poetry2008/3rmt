@@ -10,9 +10,10 @@ $dept = $ticket->getDept();
 $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
 //We roll like that...
 ?>
+<p class="login_inc">
+	問合番号<?=$ticket->getExtId()?>&nbsp;<a href="view.php?id=<?=$ticket->getExtId()?>" title="Reload"><span class="Icon refresh">&nbsp;</span></a>
+</p>
 <table width="100%" cellpadding="1" cellspacing="0" border="0">
-    <tr><td colspan=2 width=100% class="msg">問合番号<?=$ticket->getExtId()?> 
-        &nbsp;<a href="view.php?id=<?=$ticket->getExtId()?>" title="Reload"><span class="Icon refresh">&nbsp;</span></a></td></tr> 
     <tr>
        <td width=50%> 
         <table align="center" class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
@@ -120,7 +121,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
             <input type="hidden" name="id" value="<?=$ticket->getExtId()?>">
             <input type="hidden" name="respid" value="<?=$respID?>">
             <input type="hidden" name="a" value="postmessage">
-            <div align="left">
+            <div style="font-size:11px;">
                 内容をご入力ください <font class="error">*&nbsp;<?=$errors['message']?></font><br/>
                 <textarea name="message" id="message" cols="60" rows="7" wrap="soft"><?=$info['message']?></textarea>
             </div>
@@ -131,9 +132,9 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
             </div>
             <?}?>
             <div align="left"  style="padding:10px 0 10px 0;">
-                <input class="button" type='submit' value='送信' />
-                <input class="button" type='reset' value='リセット' />
-                <input class="button" type='button' value='キャンセル' onClick='window.location.href="view.php"' />
+                <input class="button" type='image' value='送信' src="includes/languages/japanese/images/buttons/button_send_mail.gif"/>
+                <input class="button" type='image' value='リセット' src="includes/languages/japanese/images/buttons/open_users01.gif"/>
+                <input class="button" type='image' value='キャンセル' onClick='window.location.href="view.php"' src="includes/languages/japanese/images/buttons/open_users02.gif"/>
             </div>
         </form>
     </div>

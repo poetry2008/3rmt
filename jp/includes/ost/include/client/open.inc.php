@@ -13,7 +13,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <?}?>
 </div>
 <div class="open_title">必要な情報をご入力ください.</div>
-<form action="open.php" method="POST" enctype="multipart/form-data">
+<form action="open.php" method="POST" enctype="multipart/form-data" name="open_form">
 <table cellpadding=2 cellspacing=1 width="100%" class="open_users">
     <tr>
         <th width="23%" bgcolor="#eeeeee">お名前</th>
@@ -99,9 +99,14 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <?}?>
     <tr>
         <td colspan="2" align="center">
+            <?php /*
             <input class="button" type="image" name="submit_x" value="送信" src="includes/languages/japanese/images/buttons/button_send_mail.gif">
-            <input class="button" type="image" value="リセット" src="includes/languages/japanese/images/buttons/open_users01.gif">
-            <input class="button" type="image" name="cancel" value="キャンセル" onClick='window.location.href="<?php echo FILENAME_CONTACT_US;?>"' src="includes/languages/japanese/images/buttons/open_users02.gif">    
+            <input class="button" type="image" value="リセット" onclick="document.open_form.reset();return false;" src="includes/languages/japanese/images/buttons/open_users01.gif">
+            <input class="button" type="image" name="cancel" value="キャンセル" onClick='return false && window.location.href="<?php echo FILENAME_CONTACT_US;?>";' src="includes/languages/japanese/images/buttons/open_users02.gif">    
+            */ ?>
+            <button type="submit" class="button" style="padding:0;background:none;border:none;" value="送信"><img src="includes/languages/japanese/images/buttons/button_send_mail.gif" /></button>
+            <button type="reset"  class="button" style="padding:0;background:none;border:none;" value="リセット"><img src="includes/languages/japanese/images/buttons/open_users01.gif" /></button>
+            <button type="button" class="button" style="padding:0;background:none;border:none;" value="キャンセル" onClick='window.location.href="<?php echo FILENAME_CONTACT_US;?>";'><img src="includes/languages/japanese/images/buttons/open_users02.gif" /></button>
         </td>
     </tr>
 </table>
