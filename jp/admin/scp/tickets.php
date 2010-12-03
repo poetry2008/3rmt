@@ -45,7 +45,12 @@ if(!$errors && ($id=$_REQUEST['id']?$_REQUEST['id']:$_POST['ticket_id']) && is_n
 }elseif($_REQUEST['a']=='open') {
     //TODO: Check perm here..
     $page='newticket.inc.php';
+}elseif($_REQUEST['a']=='open2') {
+    //TODO: Check perm here..
+
+    $page='newticket2.inc.php';
 }
+
 //At this stage we know the access status. we can process the post.
 if($_POST && !$errors):
 
@@ -380,6 +385,16 @@ if($_POST && !$errors):
                                 }
                         }
                         $msg="$i of $count selected tickets marked overdue";
+                    }elseif(isset($_POST['gomi'])){
+                      $i=0;
+                      $note='Ticket move to gomi by '.$thisuser->getName();
+                      foreach ($_POST['tids'] as $k=>$v) {
+                        $t = new Ticket($v);
+                        if ($t){
+                          $t->moveToGomi();
+                          $t->logActivity('Ticket Moveed To Gomi',$note,false,'System');
+                        }
+                      }
                     }elseif(isset($_POST['delete'])){
                         $i=0;
                         foreach($_POST['tids'] as $k=>$v) {
@@ -390,19 +405,25 @@ if($_POST && !$errors):
                     }
                 }
                 break;
+            case 'open2':
             case 'open':
                 $ticket=null;
                 //TODO: check if the user is allowed to create a ticet.
                 if(($ticket=Ticket::create_by_staff($_POST,$errors))) {
                     $ticket->reload();
-                    $msg='Ticket created successfully';
+                    $msg='問合番号を新規作成しました';
                     if($thisuser->canAccessDept($ticket->getDeptId()) || $ticket->getStaffId()==$thisuser->getId()) {
+                      //如果来自 open2 则关闭当前页面
+                      if($_POST['close']=='yes'){
+                        $page = 'close.inc.php';
+                      }else{
                         //View the sucker
                         $page='viewticket.inc.php';
+                      }
                     }else {
                         //Staff doesn't have access to the newly created ticket's department.
-                        $page='tickets.inc.php';
-                        $ticket=null;
+                      $page='tickets.inc.php';
+                      $ticket=null;
                     }
                 }elseif(!$errors['err']) {
                     $errors['err']='Unable to create the ticket. Correct the error(s) and try again';
@@ -413,6 +434,8 @@ if($_POST && !$errors):
     $crap='';
 endif;
 //Navigation 
+
+
 $submenu=array();
 /*quick stats...*/
 $sql='SELECT count(open.ticket_id) as open, count(answered.ticket_id) as answered '.

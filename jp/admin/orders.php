@@ -729,7 +729,26 @@ if($reload == 'yes') {
                 </tr>
                 <tr>
                   <td class="main"><b><?php echo ENTRY_EMAIL_ADDRESS; ?></b></td>
-                  <td class="main"><?php echo '<a href="mailto:' . tep_output_string_protected($order->customer['email_address']) . '"><u>' . tep_output_string_protected($order->customer['email_address']) . '</u></a>'; ?></td>
+                  <td class="main">
+<?php 
+    //osticket
+    $ostGetPara = array(
+                        "name"=>$order->customer['name'],
+                        "topicid"=>constant("SITE_TOPIC_".$order->info['site_id']),
+                        "source"=>'Email',
+                        "email"=>$order->customer['email_address']);
+    function makeValueUrlencode(&$value,$key){
+      $value = urlencode($value);
+    }
+    array_walk($ostGetPara,'makeValueUrlencode');
+    $parmStr = '';
+    foreach($ostGetPara as $key=>$value){
+      $parmStr.= '&'.$key.'='.$value;
+    }
+    $remoteurl = "'scp/tickets.php?a=open2".$parmStr."'";
+?>
+    <?php echo '<a style="cursor:pointer;" title="問合番号を新規作成します" onclick = "javascript:window.open('.$remoteurl.')" ><u>' . tep_output_string_protected($order->customer['email_address']) . '</u></a> &lt;---ここにクリックして、問合番号を新規作成します'; 
+?></td>
                 </tr>
             <!--
               </table>

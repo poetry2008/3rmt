@@ -1,6 +1,10 @@
 <?php
 if(!defined('OSTCLIENTINC') || !is_object($thisclient) || !$thisclient->isValid()) die('Kwaheri');
 
+$deptIdSql = ' select dept_id from ost_help_topic where topic_id ='. SITE_TOPIC_ID;
+$tmpres= db_query($deptIdSql);
+$row =  db_fetch_array($tmpres);
+define('SITE_DEPT_ID',$row['dept_id']);
 //Get ready for some deep shit.
 $qstr='&'; //Query string collector
 $status=null;
@@ -18,7 +22,7 @@ if($_REQUEST['status']) { //Query string status has nothing to do with the real 
 }
 
 //Restrict based on email of the user...STRICT!
-$qwhere =' WHERE topic_id = '.SITE_TOPIC_ID.' and email='.db_input($thisclient->getEmail());
+$qwhere =' WHERE ticket.dept_id= '.SITE_DEPT_ID.' and email='.db_input($thisclient->getEmail());
 
 //STATUS
 if($status){
@@ -57,7 +61,7 @@ $qselect.=' ,count(attach_id) as attachments ';
 $qfrom.=' LEFT JOIN '.TICKET_ATTACHMENT_TABLE.' attach ON  ticket.ticket_id=attach.ticket_id ';
 $qgroup=' GROUP BY ticket.ticket_id';
 $query="$qselect $qfrom $qwhere $qgroup ORDER BY $order_by $order LIMIT ".$pageNav->getStart().",".$pageNav->getLimit();
-//echo $query;
+
 $tickets_res = db_query($query);
 $showing=db_num_rows($tickets_res)?$pageNav->showing():"";
 //start 
@@ -108,10 +112,6 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
             $defaultDept=Dept::getDefaultDeptName();
             while ($row = db_fetch_array($tickets_res)) {
 
-              
-              
-              
-              
               if($row['topic_id']!=SITE_TOPIC_ID){
                 continue;
               }

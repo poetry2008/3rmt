@@ -93,6 +93,12 @@ $info=($errors && $_POST)?Format::input($_POST):Format::htmlchars($info);
                 can be appended to responses.&nbsp;(available as a choice for public departments)  
             </td>
         </tr>
+        <tr>
+            <th valign="top"><br/>Not Good :</th>
+            <td>
+                <textarea name="dept_ng" cols="21" rows="5" style="width: 60%;"><?=$info['dept_ng']?></textarea>
+            </td>
+        </tr>
         <tr><th>Email Templates:</th>
             <td>
                 <select name="tpl_id">
