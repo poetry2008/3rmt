@@ -11,7 +11,7 @@ class google implements engine {
   //    <div id="bd"><div id="inf"><strong>bobhero</strong> で検索した結果　1～10件目 / 約452件 - 0.38秒</div>
   //  var $countPreg = "/<div\sid=\"bd\"><div\sid=\"inf\"><strong>.*<\/strong>(.*)<\/div>/";
   //var $countPreg = "/<div\s+id=resultStats>約\s+(.*)件中\s+\d+\s+ページ目<nobr>\s+.(.*)秒.&nbsp;<\/nobr><\/div>/";
-  var $countPreg = "/<div id=resultStats>(.*)<nobr>/";
+  var $countPreg = "/<div id=resultStats>[^<]*<nobr>/";
   var $searchEnter = 'http://search.yahoo.co.jp/search?p={{keyword}}&search.x=1&fr=top_ga1_sa&tid=top_ga1_sa&ei=UTF-8&aq=&oq=jg';
   var $currentPageNumber = 1;
   var $pageCountNumber =0;
@@ -51,18 +51,19 @@ class google implements engine {
     //$nextpage =
     //  "http://www.google.co.jp/search?as_oq={{keyword}}&aq=f&ie=utf-8&pstart=1&fr=top_ga1_sa&start={{pager}}&hl=ja&num=10";
     $nextpage =
-      "http://www.google.co.jp/search?q={{keyword}}&aq=f&ie=utf-8&pstart=1&fr=top_ga1_sa&start={{pager}}&hl=ja&num=10";
+      "http://www.google.co.jp/search?q={{keyword}}&ie=utf-8&start={{pager}}&hl=ja&num=10";
     //$nextpage = 
     //  "http://www.google.co.jp/search?q=FF14+RMT&hl=ja&newwindow=1&ei=EGvPTIWsK4yKuAOpuo3VBg&start=10&sa=N";
       //      return str_replace('{{keyword}}',urlencode($this->keywordi),$this->searchEnter);
     $url = str_replace('{{keyword}}',urlencode($this->keywordi),$nextpage);
     $url = str_replace('{{pager}}',$page,$url);
     $this->currentUrl = $url;
+    //var_dump($url);
     return $url;
   }
   //找出有多少结果,算出有多少页
   function preSearch(){
-    $this->currentHtml = @iconv("SHIFT-JIS","UTF-8//TRANSLIT//IGNORE",file_get_contents($this->makeUrl()));
+    $this->currentHtml = file_get_contents($this->makeUrl());
     $this->currentPageNumber = 1;
     $this->getPageCount();
   }
@@ -86,23 +87,32 @@ class google implements engine {
   	//截取 搜索 结果列表
     $cutStart  = "<ol>";
     $cutEnd  = '</ol></div>';
-    $html = @iconv("SHIFT-JIS","UTF-8//TRANSLIT//IGNORE",$html);
     $html = getMiddle($cutStart,$cutEnd,$html);
+    //区分 是否是自己的搜索结果
+    if(preg_match("/.*\<hr[^>]*\>(.*)/",$html,$tmp_html)){
+       $html = $tmp_html[1];
+    }
+    //$html = @iconv("SHIFT-JIS","UTF-8//TRANSLIT//IGNORE",$html);
+    //var_dump($html);
     //分割 
     $resultArray = explode('<li class=g',$html);
 //    $parsePreg = "/<a\shref=\"(.*)\">(.*)<\/a><div>(.*)<\/div>.*/";
     $parsePreg =
-      '/<h3[^>]*><a\s.*href=\"([^"]*)\"(.*)<\/a><\/h3>.*<div\s+class="s\s{0,}[0-9a-zA-Z_]{0,}">(.*)<\/div>.*/';
+      '/<h3[^>]*><a[^>]*href=\"([^"]*)\"(.*)<\/a><\/h3>.*<div[^>]*>(.*)<\/div>.*/';
     $recordArray = array();
     $count = 1;
     unset($resultArray[0]);
     $i_res=1;
     foreach ($resultArray as $result ){
-      
+      if(preg_match('/\<li class/',$result)){
+          $tmp_result = explode('<li class',$result);
+          $result = $tmp_result[0];
+      }
       if($i_res > 10){
         break;
       }
-      if(preg_match($parsePreg,$result,$match)){
+      if(preg_match($parsePreg,$result,$match)&&
+          !preg_match('/(imagebox|videobox)/',$result)){
       //根据正则判断 该记录是否 有效搜索结果
       preg_match("/>(.*)$/",$match[2],$title);
       $recordArray[] = array(
