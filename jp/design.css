@@ -442,3 +442,6 @@ text-align:center;
 .msg{
 font-size:12px;
 }
+.button{
+cursor:pointer;
+}

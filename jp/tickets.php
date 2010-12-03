@@ -75,6 +75,8 @@ if($_POST && is_object($ticket) && $ticket->getId()):
                     $ticket->uploadAttachment($_FILES['attachment'],$msgid,'M');
                     
                 $msg='送信完了';
+                // 跳转之后就不显示信息了
+                tep_redirect($_SERVER['REQUEST_URI']);
             }else{
                 $errors['err']='Unable to post the message. Try again';
             }

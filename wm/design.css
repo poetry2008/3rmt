@@ -979,3 +979,6 @@ font-size:11px;
 #ticketthread{background-color:#F2F2F2; border:1px solid #E0E0E0; margin-bottom:10px;}
 .captcha_comment{ font-size:12px;}
 .login_inc_button{ padding-top:5px; text-align:center;}
+.button{
+cursor:pointer;
+}

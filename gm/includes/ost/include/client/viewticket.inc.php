@@ -134,9 +134,15 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
             </div>
             <?}?>
             <div align="left"  style="padding:10px 0 10px 0;">
+              <?php /*
                 <input class="button" type='image' value='送信' src="includes/languages/japanese/images/buttons/button_send_mail.gif"/>
                 <input class="button" type='image' value='リセット' src="includes/languages/japanese/images/buttons/open_users01.gif"/>
                 <input class="button" type='image' value='キャンセル' onClick='window.location.href="view.php"' src="includes/languages/japanese/images/buttons/open_users02.gif"/>
+                */ ?>
+                <button type="submit" class="button" style="padding:0;background:none;border:none;" value="送信"><img src="includes/languages/japanese/images/buttons/button_send_mail.gif" /></button>
+                <button type="reset"  class="button" style="padding:0;background:none;border:none;" value="リセット"><img src="includes/languages/japanese/images/buttons/open_users01.gif" /></button>
+                <button type="button" class="button" style="padding:0;background:none;border:none;" value="キャンセル" onClick='window.location.href="view.php";'><img src="includes/languages/japanese/images/buttons/open_users02.gif" /></button>
+
             </div>
         </form>
     </div>

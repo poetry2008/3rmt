@@ -331,7 +331,7 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
          $sort=$_GET['sort']?$_GET['sort']:'date';
         ?>
         <select name="sort">
-    	    <option value="ID" <?= $sort== 'ID' ?'selected':''?>>問合番号 #</option>
+          <option value="ID" <?= $sort== 'ID' ?'selected':''?>>問合番号 #</option>
             <option value="pri" <?= $sort == 'pri' ?'selected':''?>>重要度</option>
             <option value="date" <?= $sort == 'date' ?'selected':''?>>日付</option>
             <option value="dept" <?= $sort == 'dept' ?'selected':''?>>サイト</option>
@@ -386,17 +386,17 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
     <tr><td>
        <table width="100%" border="0" cellspacing=0 cellpadding=2 class="dtable" align="center">
         <tr>
-            <?if($canDelete || $canClose) {?>
-	        <th width="8px">&nbsp;</th>
-            <?}?>
-	        <th width="70" >
+            <?//if($canDelete || $canClose) {?>
+          <th width="8px">&nbsp;</th>
+            <?//}?>
+          <th width="70" >
                 <a href="tickets.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="Sort By Ticket ID <?=$negorder?>">問合番号</a></th>
-	        <th width="70">
+          <th width="70">
                 <a href="tickets.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="Sort By Date <?=$negorder?>">日付</a></th>
-	        <th width="280">件名</th>
-	        <th width="120">
+          <th width="280">件名</th>
+          <th width="120">
                 <a href="tickets.php?sort=dept&order=<?=$negorder?><?=$qstr?>" title="Sort By Category <?=$negorder?>">サイト</a></th>
-	        <th width="70">
+          <th width="70">
                 <a href="tickets.php?sort=pri&order=<?=$negorder?><?=$qstr?>" title="Sort By Priority <?=$negorder?>">重要度</a></th>
             <th width="180" >差出人</th>
         </tr>
@@ -422,11 +422,11 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
                 }
                 ?>
             <tr class="<?=$class?> " id="<?=$row['ticket_id']?>">
-                <?if($canDelete || $canClose) {?>
+                <? //if($canDelete || $canClose) {?>
                 <td align="center" class="nohover">
                     <input type="checkbox" name="tids[]" value="<?=$row['ticket_id']?>" onClick="highLight(this.value,this.checked);">
                 </td>
-                <?}?>
+                <? //}?>
                 <td align="center" title="<?=$row['email']?>" nowrap>
                    <?php if(isset($_SESSION['t'.$row['ticket_id']]) and $_SESSION['t'.$row['ticket_id']]!=$row['source']){
                    $_SESSION['play_email_sound'] = true;
@@ -501,7 +501,27 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
                     onClick=' return confirm("Are you sure you want to DELETE selected tickets?");'>
             <?}?>
         </td></tr>
-        <? }
+        <? } else {
+ ?>
+        <tr><td align="center"> <br>
+            <?
+            $status=$_REQUEST['status']?$_REQUEST['status']:$status;
+            //If the user can close the ticket...mass reopen is allowed.
+            //If they can delete tickets...they are allowed to close--reopen..etc.
+            switch (strtolower($status)) {
+                case 'open':
+                case 'answered':
+                case 'assigned':
+                    ?>
+                    <input class="button" type="submit" name="gomi" value="ゴミ箱"
+                        onClick=' return confirm("Are you sure you want to close  selected tickets and move them to  gomi_box?");'>
+                    <?
+                    break;
+            }
+            ?>
+        </td></tr>
+        <? 
+        }
     } ?>
     </form>
  </table>

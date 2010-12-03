@@ -44,7 +44,7 @@ var findkeyword = new Array()
 var keyword;
 var result = false;
 for (keyword in ngArr){
-  if(response_content.indexOf(ngArr[keyword])>=0 and ngArr[keyword]!=''){
+  if(response_content.indexOf(ngArr[keyword])>=0 && ngArr[keyword]!=''){
     findkeyword.push(ngArr[keyword])
   }
 }

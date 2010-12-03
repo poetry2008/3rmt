@@ -162,7 +162,7 @@ function check_one(ele){
       $orders_query_raw = "
         select *
         from telecom_unknow
-        where type is null ".$where_str."
+        where 1 ".(!$_GET['keywords']?"and type is null":'')." ".$where_str."
         order by date_added DESC
       ";
       

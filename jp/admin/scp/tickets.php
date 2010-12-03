@@ -29,13 +29,13 @@ if(!$errors && ($id=$_REQUEST['id']?$_REQUEST['id']:$_POST['ticket_id']) && is_n
     $ticket= new Ticket($id);
     if(!$ticket or !$ticket->getDeptId())
         $errors['err']='Unknown ticket ID#'.$id; //Sucker...invalid id
-    elseif(!$thisuser->isAdmin()  && (!$thisuser->canAccessDept($ticket->getDeptId()) && $thisuser->getId()!=$ticket->getStaffId()))
+    elseif(!$thisuser->isAdmin()  && (!$thisuser->canAccessDept($ticket->getDeptId()) && $thisuser->getId()!=$ticket->getStaffId()) && !isset($_POST['gomi']))
         $errors['err']='Access denied. Contact admin if you believe this is in error';
 
     if(!$errors && $ticket->getId()==$id)
         $page='viewticket.inc.php'; //Default - view
 
-    if(!$errors && $_REQUEST['a']=='edit') { //If it's an edit  check permission.
+    if(!$errors && $_REQUEST['a']=='edit' && !isset($_POST['gomi'])) { //If it's an edit  check permission.
         if($thisuser->canEditTickets() || ($thisuser->isManager() && $ticket->getDeptId()==$thisuser->getDeptId()))
             $page='editticket.inc.php';
         else
@@ -338,7 +338,7 @@ if($_POST && !$errors):
     }elseif($_POST['a']) {
         switch($_POST['a']) {
             case 'mass_process':
-                if(!$thisuser->canManageTickets())
+                if(!$thisuser->canManageTickets() && !isset($_POST['gomi']))
                     $errors['err']='You do not have permission to mass manage tickets. Contact admin for such access';    
                 elseif(!$_POST['tids'] || !is_array($_POST['tids']))
                     $errors['err']='No tickets selected. You must select at least one ticket.';
