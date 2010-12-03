@@ -49,7 +49,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <tr>
         <th valign="top" bgcolor="#eeeeee">ご質問内容</th>
         <td>
-            <? if($errors['message']) {?> <font class="error"><b>&nbsp;<?=$errors['message']?></b></font><br/><?}?>
+            <? if($errors['message']) {?> <font class="error"><?=$errors['message']?></font><br/><?}?>
             <textarea name="message" cols="35" rows="8" wrap="soft" style="width:85%"><?=$info['message']?></textarea></td>
     </tr>
     <?
@@ -101,7 +101,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         <td colspan="2" align="center">
             <input class="button" type="image" name="submit_x" value="送信" src="includes/languages/japanese/images/buttons/button_send_mail.gif">
             <input class="button" type="image" value="リセット" src="includes/languages/japanese/images/buttons/open_users01.gif">
-            <input class="button" type="image" name="cancel" value="キャンセル" onClick='window.location.href="index.php"' src="includes/languages/japanese/images/buttons/open_users02.gif">    
+            <input class="button" type="image" name="cancel" value="キャンセル" onClick='window.location.href="<?php echo FILENAME_CONTACT_US;?>"' src="includes/languages/japanese/images/buttons/open_users02.gif">    
         </td>
     </tr>
 </table>

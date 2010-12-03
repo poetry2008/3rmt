@@ -102,6 +102,6 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <div class="login_inc_button">
       <input class="button" type="image" name="submit_x" value="&#36865;&#20449;" src="includes/languages/japanese/images/buttons/button_send_mail.gif">
       <input class="button" type="image" value="&#12522;&#12475;&#12483;&#12488;" src="includes/languages/japanese/images/buttons/open_users01.gif">
-      <input class="button" type="image" name="cancel" value="&#12461;&#12515;&#12531;&#12475;&#12523;" onClick='window.location.href="index.php"' src="includes/languages/japanese/images/buttons/open_users02.gif">    
+      <input class="button" type="image" name="cancel" value="&#12461;&#12515;&#12531;&#12475;&#12523;" onClick='window.location.href="<?php echo FILENAME_CONTACT_US;?>"' src="includes/languages/japanese/images/buttons/open_users02.gif">    
     </div>
 </form>
