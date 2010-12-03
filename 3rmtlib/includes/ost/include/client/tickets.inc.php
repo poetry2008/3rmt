@@ -87,12 +87,12 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
     <tr><td>
      <table border="0" cellspacing=0 cellpadding=2 class="tgrid" align="center">
         <tr>
-	        <th width="70" nowrap>
+          <th width="70" nowrap>
                 <a href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="Sort By Ticket ID <?=$negorder?>">お問合せ #</a></th>
-	        <th width="100">
+          <th width="100">
                 <a href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="Sort By Date <?=$negorder?>">作成日時</a></th>
             <th width="60">ステータス</th>
-            <th width="240">タイトル</th>
+            <th width="240">件名</th>
             <th width="150">
                 <a href="view.php?sort=dept&order=<?=$negorder?><?=$qstr?>" title="Sort By Category <?=$negorder?>">サイト</a></th>
             <th width="150">メールアドレス</th>

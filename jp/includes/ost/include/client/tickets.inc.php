@@ -93,13 +93,12 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
     <tr><td>
      <table border="0" cellspacing="1" cellpadding="0" class="tickets" width="100%">
         <tr>
-	        <th width="70">
+          <th height="20" width="70">
                 <a href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="番語順に表示 <?=$negorder?>">問合番号</a></th>
-	        <th width="100">
+          <th width="100">
                 <a href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="作成日時順に表示 <?=$negorder?>">作成日時</a></th>
             <th width="60">ステータス</th>
-            <th width="240">タイトル</th>
-            	
+            <th>件名</th>
             <th width="150">メールアドレス</th>
         </tr>
         <?php
@@ -109,10 +108,10 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
             $defaultDept=Dept::getDefaultDeptName();
             while ($row = db_fetch_array($tickets_res)) {
 
-            	
-            	
-            	
-            	
+              
+              
+              
+              
               if($row['topic_id']!=SITE_TOPIC_ID){
                 continue;
               }
@@ -130,12 +129,12 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
                         <?=$ticketID?></a></td>
                 <td nowrap>&nbsp;<?=Format::db_date($row['created'])?></td>
 
-                	<?php 
-                	  	$_status = '_'.$row['status'];
-						$_open = 'オープン';
-						$_closed = 'クローズ';
-                	?>
-                	 <td>&nbsp;<?=$$_status?></td>
+                  <?php 
+                      $_status = '_'.$row['status'];
+            $_open = 'オープン';
+            $_closed = 'クローズ';
+                  ?>
+                   <td>&nbsp;<?=$$_status?></td>
                 <td>&nbsp;<a href="view.php?id=<?=$row['ticketID']?>"><?=$subject?></a>
                     &nbsp;<?=$row['attachments']?"<span class='Icon file'>&nbsp;</span>":''?></td>
                                <?php //                <td nowrap>&nbsp;<?=Format::truncate($dept,30)</td> ?>
@@ -153,7 +152,7 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
     <tr><td>
     <?
     if($num>0 && $pageNav->getNumPages()>1){ //if we actually had any tickets returned?>
-     <tr><td style="text-align:left;padding-left:20px">ページ:<?=$pageNav->getPageLinks()?>&nbsp;</td></tr>
+     <tr><td style="text-align:left;padding-left:20px; font-size:12px;">ページ:<?=$pageNav->getPageLinks()?>&nbsp;</td></tr>
     <?}?>
  </table>
 </div>

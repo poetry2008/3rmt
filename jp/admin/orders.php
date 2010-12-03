@@ -1870,7 +1870,6 @@ if($reload == 'yes') {
         from " . TABLE_ORDERS . " o " . $from_payment . "
         where o.customers_email_address = '" . tep_db_input($cEmail) . "' 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-          and o.language_id = '" . $languages_id . "' 
           " . $where_payment . $where_type . "
         order by o.torihiki_date DESC";
     } else if (isset($_GET['cID']) && $_GET['cID']) {
@@ -1899,7 +1898,6 @@ if($reload == 'yes') {
         from " . TABLE_ORDERS . " o " . $from_payment . "
         where o.customers_id = '" . tep_db_input($cID) . "' 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-          and o.language_id = '" . $languages_id . "' 
           " . $where_payment . $where_type . "
         order by o.torihiki_date DESC";
     } elseif (isset($_GET['status']) && $_GET['status']) {
@@ -1926,9 +1924,9 @@ if($reload == 'yes') {
                o.orders_comment,
                o.site_id
         from " . TABLE_ORDERS . " o " . $from_payment . "
-        where o.language_id = '" . $languages_id . "' 
+        where 
+          o.orders_status = '" . tep_db_input($status) . "' 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-          and o.orders_status = '" . tep_db_input($status) . "' 
           " . $where_payment . $where_type . "
         order by o.torihiki_date DESC";
     }  elseif (isset($_GET['keywords']) && $_GET['keywords'] && isset($_GET['search_type']) && $_GET['search_type'] == 'products_name' && !$_GET['type'] && !$payment) {
@@ -1965,8 +1963,7 @@ if($reload == 'yes') {
                o.orders_comment,
                o.site_id
         from " . TABLE_ORDERS . " o " . $from_payment . "
-        where 
-          o.language_id = '" . $languages_id . "' 
+        where 1=1 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
           " . $where_payment . $where_type ;
 
@@ -2026,7 +2023,6 @@ if($reload == 'yes') {
         from " . TABLE_ORDERS . " o " . $from_payment . ", " . TABLE_ORDERS_PRODUCTS . " op 
         where o.orders_id = op.orders_id
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-          and o.language_id = '" . $languages_id . "' 
           " . $where_payment . $where_type ;
     $keywords = str_replace('　', ' ', $_GET['keywords']);
     tep_parse_search_string($keywords, $search_keywords);
@@ -2087,7 +2083,6 @@ if($reload == 'yes') {
           -- and o.orders_status != '6'
           -- and o.orders_status != '8'
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-          and o.language_id = '" . $languages_id . "' 
           " . $where_payment . $where_type . "
          order by o.torihiki_date DESC
       ";
