@@ -83,6 +83,7 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
       'telno' => $w_telno,
       'money' => $w_money,
       'rel' => $w_rel,
+      'type' => ($w_rel == 'yes' && !$w_option)?'success':'null',
       'date_added' => 'now()',
       'last_modified' => 'now()'
     ));
