@@ -28,7 +28,7 @@ if($_POST):
     if(!$thisuser && $cfg->enableCaptcha()){
         if(!$_POST['captcha'])
             $errors['captcha']='Enter text shown on the image';
-        elseif(strcmp($_SESSION['captcha'],md5($_POST['captcha'])))
+        elseif(strcmp($_SESSION['captcha'],md5(strtolower($_POST['captcha']))))
             $errors['captcha']='Invalid - try again!';
     }
     //Ticket::create...checks for errors..
