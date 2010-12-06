@@ -956,6 +956,8 @@ class Controller_Site extends Controller_Base
     }
     $top_info['h1'] = 'new_h1';
     $top_info['text'] = 'new_text';
+    $top_info['time'] =
+      '<p>'.$date['value'].'時間以内に登録された新着サイトです。</p>';
     $viewData = array( 'hostlink' => $this->host_dir,
         'top_info' => $top_info,
         'bread' => $bread,
