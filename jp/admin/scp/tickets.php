@@ -87,6 +87,9 @@ if($_POST && !$errors):
                 $errors['err']='Email is in banlist. Must be removed to reply';
 
             //If no error...do the do.
+
+            //默认让 signature= none
+            //            $_POST['signature'] = 'none';
             if(!$errors && ($respId=$ticket->postResponse($_POST['msg_id'],$_POST['response'],$_POST['signature'],$_FILES['attachment']))){
                 $msg='Response Posted Successfully';
                 //Set status if any.

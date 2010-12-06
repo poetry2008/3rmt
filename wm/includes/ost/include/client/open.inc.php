@@ -40,7 +40,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         </td>
     </tr>
     <tr>
-        <th>タイトル</th>
+        <th>件名</th>
         <td>
             <input type="text" name="subject" size="35" value="<?=$info['subject']?>">
             &nbsp;<font class="error">*&nbsp;<?=$errors['subject']?></font>
@@ -76,7 +76,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         
         ?>
     <tr>
-        <td>添付ファイル</td>
+        <th valign="top">添付ファイル</th>
         <td>
             <input type="file" name="attachment"><font class="error">&nbsp;<?=$errors['attachment']?></font>
         </td>
@@ -87,7 +87,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
             $errors['captcha']='必須項目エラー';
         ?>
     <tr>
-        <th valign="top">キャプチャテキスト</th>
+        <th valign="top">認証コード</th>
         <td>
           <img src="captcha.php" border="0" align="left">
           <span>&nbsp;&nbsp;<input type="text" name="captcha" size="7" value="">&nbsp;<i class="captcha_comment">認証画像の内容をご入力ください.</i></span>

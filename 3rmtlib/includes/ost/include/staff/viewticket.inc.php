@@ -43,6 +43,7 @@ var response_content = response.value;
 var findkeyword = new Array()
 var keyword;
 var result = false;
+var linechanger ='\n';
 for (keyword in ngArr){
   if(response_content.indexOf(ngArr[keyword])>=0 && ngArr[keyword]!=''){
     findkeyword.push(ngArr[keyword])
@@ -51,7 +52,12 @@ for (keyword in ngArr){
 if(findkeyword.length<=0){
  return true;
 }else{
- return  confirm('NGキーワード '+findkeyword.toString()+' 返信内容にNGキーワードが有ります。このまま返信しますか？');
+
+  var keywordString = linechanger;
+  for (keyword in findkeyword){
+    keywordString+= findkeyword[keyword] + linechanger;
+  }
+  return  confirm('NGキーワード '+keywordString.fontcolor("#FF0000")+' 返信内容にNGキーワードが有ります。このまま返信しますか？');
 }
 }
 </script>
@@ -342,16 +348,17 @@ if (strspn("MSIE",$_SERVER["HTTP_USER_AGENT"])==4){
                                 <?}?>
                                </select>&nbsp;&nbsp;&nbsp;<label><input type='checkbox' value='1' name=append checked="true" />追加</label>
                             <?}?>
-                            <textarea name="response" id="response" cols="90" rows="9" wrap="soft" style="width:90%"><?=$info['response']?></textarea>
+                            <textarea name="response" id="response" cols="90" rows="18" wrap="soft" style="width:90%"><?=$info['response']?></textarea>
                         </div>
                         <?php if($cfg->canUploadFiles()){ //TODO: may be allow anyways and simply email out attachment?? ?>
                         <div style="margin-top: 3px;">
-                            <label for="attachment" >Attach File:</label>
+                            <label for="attachment" >添付ファイル:</label>
                             <input type="file" name="attachment" id="attachment" size=30px value="<?=$info['attachment']?>" /> 
                                 <font class="error">&nbsp;<?=$errors['attachment']?></font>
                         </div>
                         <?php }?>
                         <?
+
                          $appendStaffSig=$thisuser->appendMySignature();
                          $appendDeptSig=$dept->canAppendSignature();
                          $info['signature']=!$info['signature']?'none':$info['signature']; //change 'none' to 'mine' to default to staff signature.
@@ -366,7 +373,9 @@ if (strspn("MSIE",$_SERVER["HTTP_USER_AGENT"])==4){
                                 <label><input type="radio" name="signature" value="dept" <?=$info['signature']=='dept'?'checked':''?> > Dept Signature</label>
                                 <?}?>
                            </div>
-                         <?}?>
+                         <?}
+
+                        ?>
                         <div style="margin-top: 3px;">
                             <b>ステータス:</b>
                             <?
@@ -379,9 +388,9 @@ if (strspn("MSIE",$_SERVER["HTTP_USER_AGENT"])==4){
                         </div>
                         <p>
                             <div  style="margin-left: 50px; margin-top: 30px; margin-bottom: 10px;border: 0px;">
-                                <input class="button" type='submit' value='Post Reply' />
-                                <input class="button" type='reset' value='Reset' />
-                                <input class="button" type='button' value='Cancel' onClick="history.go(-1)" />
+                                <input class="button" type='submit' value='返信' />
+                                <input class="button" type='reset' value='リセット' />
+                                <input class="button" type='button' value='キャンセル' onClick="history.go(-1)" />
                             </div>
                         </p>
                     </form>                
@@ -422,7 +431,7 @@ if (strspn("MSIE",$_SERVER["HTTP_USER_AGENT"])==4){
                         <p>
                             <div  align="left" style="margin-left: 50px;margin-top: 10px; margin-bottom: 10px;border: 0px;">
                                 <input class="button" type='submit' value='Submit' />
-                                <input class="button" type='reset' value='Reset' />
+                                <input class="button" type='reset' value='リセット' />
                                 <input class="button" type='button' value='Cancel' onClick="history.go(-1)" />
                             </div>
                         </p>
@@ -460,8 +469,8 @@ if (strspn("MSIE",$_SERVER["HTTP_USER_AGENT"])==4){
                         <p>
                             <div  style="margin-left: 50px; margin-top: 5px; margin-bottom: 10px;border: 0px;" align="left">
                                 <input class="button" type='submit' value='Transfer' />
-                                <input class="button" type='reset' value='Reset' />
-                                <input class="button" type='button' value='Cancel' onClick="history.go(-1)" />
+                                <input class="button" type='reset' value='リセット' />
+                                <input class="button" type='button' value='キャンセル' onClick="history.go(-1)" />
                             </div>
                         </p>
                     </form>
@@ -507,8 +516,8 @@ if (strspn("MSIE",$_SERVER["HTTP_USER_AGENT"])==4){
                         <p>
                             <div  style="margin-left: 50px; margin-top: 5px; margin-bottom: 10px;border: 0px;" align="left">
                                 <input class="button" type='submit' value='Assign' />
-                                <input class="button" type='reset' value='Reset' />
-                                <input class="button" type='button' value='Cancel' onClick="history.go(-1)" />
+                                <input class="button" type='reset' value='リセット' />
+                                <input class="button" type='button' value='キャンセル' onClick="history.go(-1)" />
                             </div>
                         </p>
                     </form>

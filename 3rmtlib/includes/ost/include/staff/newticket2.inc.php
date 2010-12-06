@@ -46,7 +46,7 @@ else
    <form action="tickets.php" method="post" enctype="multipart/form-data">
     <input type='hidden' name='a' value='open2'>
     <input type='hidden' name='close' value='yes'>
-    <tr><td align="left" colspan=2>新しいお問合せ番号を作成には、下記の項目欄に内容を記入してください.</td></tr>
+    <tr><td align="left" colspan=2>【重要】必須項目だけ入力してください。任意項目は初期値から変更しないように.</td></tr>
     <tr>
         <td align="left" nowrap width="20%"><b>メールアドレス:</b></td>
         <td>
@@ -54,7 +54,7 @@ else
             &nbsp;<font class="error"><b>*</b>&nbsp;<?=$errors['email']?></font>
             <? if($cfg->notifyONNewStaffTicket()) {?>
                &nbsp;&nbsp;&nbsp;
-               <input type="checkbox" name="alertuser" <?=(!$errors || $info['alertuser'])? 'checked': ''?>>Send alert to user.
+               <input type="checkbox" name="alertuser" <?=(!$errors || $info['alertuser'])? 'checked': ''?>>このアドレス宛にメールを送信する.
             <?}?>
         </td>
     </tr>
@@ -68,12 +68,12 @@ else
     <tr>
         <td align="left">電話番号:</td>
         <td><input type="text" name="phone" size="25" value="<?=$info['phone']?>">
-            &nbsp;Ext&nbsp;<input type="text" name="phone_ext" size="6" value="<?=$info['phone_ext']?>">
+            &nbsp;内線番号&nbsp;<input type="text" name="phone_ext" size="6" value="<?=$info['phone_ext']?>">
             <font class="error">&nbsp;<?=$errors['phone']?></font></td>
     </tr>
     <tr height=2px><td align="left" colspan=2 >&nbsp;</td</tr>
     <tr>
-        <td align="left"><b>お問合せソース:</b></td>
+        <td align="left"><b>種別:</b></td>
         <td>
             <select name="source">
                 <option value="" selected >ソースを選択してください</option>
@@ -85,7 +85,7 @@ else
         </td>
     </tr>
     <tr>
-        <td align="left"><b>サイト:</b></td>
+        <td align="left"><b>サイト名:</b></td>
         <td>
             <select name="deptId">
                 <option value="" selected >サイトを選択してください</option>
@@ -101,16 +101,16 @@ else
         </td>
     </tr>
     <tr>
-        <td align="left"><b>タイトル:</b></td>
+        <td align="left"><b>件名:</b></td>
         <td>
                    <input type="text" id = "subject" name="subject" size="35" value="<?=$info['subject']?>">
             &nbsp;<font class="error">*&nbsp;<?=$errors['subject']?></font>
         </td>
     </tr>
     <tr>
-        <td align="left" valign="top"><b>Issue Summary:</b></td>
+        <td align="left" valign="top"><b>メール本文:</b></td>
         <td>
-            <i>登録された顧客/会員.</i><font class="error"><b>*&nbsp;<?=$errors['issue']?></b></font><br/>
+            <i>この内容は顧客に通知されます.</i><font class="error"><b>*&nbsp;<?=$errors['issue']?></b></font><br/>
             <?
             $sql='SELECT premade_id,title FROM '.KB_PREMADE_TABLE.' WHERE isenabled=1';
             $canned=db_query($sql);
@@ -119,18 +119,18 @@ else
              テンプレート:&nbsp;
               <select id="canned" name="canned"
                 onChange="getCannedResponse(this.options[this.selectedIndex].value,this.form,'issue');this.selectedIndex='0';" >
-                <option value="0" selected="selected">テンプレートを選択 </option>
+                <option value="0" selected="selected">選択してください </option>
                 <?while(list($cannedId,$title)=db_fetch_row($canned)) { ?>
                 <option value="<?=$cannedId?>" ><?=Format::htmlchars($title)?></option>
                 <?}?>
-              </select>&nbsp;&nbsp;&nbsp;<label><input type='checkbox' value='1' name=append checked="true" />付加</label>
+              </select>&nbsp;&nbsp;&nbsp;<label><input type='checkbox' value='1' name=append checked="true" />追加</label>
             <?}?>
             <textarea name="issue" cols="55" rows="8" wrap="soft"><?=$info['issue']?></textarea></td>
     </tr>
     <?if($cfg->canUploadFiles()) {
         ?>
     <tr>
-        <td>添付:</td>
+        <td>添付ファイル::</td>
         <td>
             <input type="file" name="attachment"><font class="error">&nbsp;<?=$errors['attachment']?></font>
         </td>
@@ -139,14 +139,14 @@ else
     <tr>
         <td align="left" valign="top">内部メモ:</td>
         <td>
-            <i>Optional Internal note(s).</i><font class="error"><b>&nbsp;<?=$errors['note']?></b></font><br/>
+            <i>注意書き（顧客に通知されません）.</i><font class="error"><b>&nbsp;<?=$errors['note']?></b></font><br/>
             <textarea name="note" cols="55" rows="5" wrap="soft"><?=$info['note']?></textarea></td>
     </tr>
 
     <tr>
-        <td align="left" valign="top">締め切れ時間:</td>
+        <td align="left" valign="top">期限設定:</td>
         <td>
-            <i>現在のタイムゾーンに基準としてします(GM <?=$thisuser->getTZoffset()?>)</i>&nbsp;<font class="error">&nbsp;<?=$errors['time']?></font><br>
+            <i>右記のタイムゾーンを基準とします(GM <?=$thisuser->getTZoffset()?>)</i>&nbsp;<font class="error">&nbsp;<?=$errors['time']?></font><br>
             <input id="duedate" name="duedate" value="<?=Format::htmlchars($info['duedate'])?>"
                 onclick="event.cancelBubble=true;calendar(this);" autocomplete=OFF>
             <a href="#" onclick="event.cancelBubble=true;calendar(getObj('duedate')); return false;"><img onload='document.getElementById("subject").focus()' src='images/cal.png'border=0 alt=""></a>
@@ -180,7 +180,7 @@ else
     $services= db_query('SELECT topic_id,topic FROM '.TOPIC_TABLE.' WHERE isactive=1 ORDER BY topic');
     if($services && db_num_rows($services)){ ?>
     <tr>
-        <td align="left" valign="top">お問合せトピック:</td>
+        <td align="left" valign="top">題目:</td>
         <td>
             <select name="topicId">
                 <option value="" selected >選択してください</option>
@@ -197,10 +197,10 @@ else
     <?
     }?>
     <tr>
-        <td>To:</td>
+        <td>担当者:</td>
         <td>
             <select id="staffId" name="staffId">
-                <option value="0" selected="selected">-全スタッフへ送信-</option>
+                <option value="0" selected="selected">-選択してください-</option>
                 <?
                     //TODO: make sure the user's group is also active....DO a join.
                     $sql=' SELECT staff_id,CONCAT_WS(", ",lastname,firstname) as name FROM '.STAFF_TABLE.' WHERE isactive=1 AND onvacation=0 ';
@@ -222,7 +222,7 @@ else
             $info['signature']=!$info['signature']?'none':$info['signature']; //change 'none' to 'mine' to default to staff signature.
             ?>
             <div style="margin-top: 2px;">
-                <label><input type="radio" name="signature" value="none" checked > None</label>
+                <label><input type="radio" name="signature" value="none" checked >なし</label>
                 <?if($appendStaffSig) {?>
                     <label> <input type="radio" name="signature" value="mine" <?=$info['signature']=='mine'?'checked':''?> > 個人の署名</label>
                  <?}?>
