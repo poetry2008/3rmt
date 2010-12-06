@@ -95,7 +95,7 @@ function check_one(ele){
   
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
-      <td class="pageHeading" width="33%"><a href="telecom_unknow.php">決算リスト</a></td>
+      <td class="pageHeading" width="33%"><a href="telecom_unknow.php">決算管理</a></td>
       <td align="center">
         <form action="?" method="get">
           <input type="text" name="keywords" value="<?php echo $_GET['keywords'];?>">

@@ -168,7 +168,7 @@
                           'orders_http_accept_language' => $_SERVER['HTTP_ACCEPT_LANGUAGE'],
                           'telecom_option'              => $_SESSION['option'],
                 );
-                          
+
   if ($_SESSION['option']) {
     $telecom_unknow = tep_db_fetch_array(tep_db_query("select * from telecom_unknow where `option`='".$_SESSION['option']."' and rel='yes'"));
     if ($telecom_unknow) {
@@ -176,8 +176,8 @@
       $sql_data_array['telecom_tel']   = $telecom_unknow['telno'];
       $sql_data_array['telecom_email'] = $telecom_unknow['email'];
       $sql_data_array['telecom_money'] = $telecom_unknow['money'];
-      //tep_db_query("delete from telecom_unknow where `option`='".$_SESSION['option']."' and rel='yes'");
-      tep_db_perform('telecom_unknow',array('type' => 'success'),'update',"`option`='".$_SESSION['option']."' and rel='yes'");
+      
+      tep_db_query("update `telecom_unknow` set type='success' where `option`='".$_SESSION['option']."' and rel='yes' order by date_added limit 1");
       $telecom_option_ok = true;
     }
   }
