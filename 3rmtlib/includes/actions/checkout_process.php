@@ -245,10 +245,10 @@
   if ($telecom_option_ok) {
     tep_db_perform(TABLE_ORDERS, array('orders_status' => '30'), 'update', "orders_id='".$insert_id."'");
     $sql_data_array = array('orders_id' => $insert_id, 
-                          'orders_status_id' => '30', 
-                          'date_added' => 'now()', 
-                          'customer_notified' => '0',
-                          'comments' => '');
+                            'orders_status_id' => '30', 
+                            'date_added' => 'now()', 
+                            'customer_notified' => '0',
+                            'comments' => '');
     // ccdd
     tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
     orders_updated($insert_id);
@@ -335,16 +335,16 @@
   }
   
   $sql_data_array = array('orders_id' => $insert_id, 
-                            'products_id' => tep_get_prid($order->products[$i]['id']), 
-                            'products_model' => $order->products[$i]['model'], 
-                            'products_name' => $order->products[$i]['search_name'], // for search, insert products_name where site_id = 0
-                            'products_price' => $order->products[$i]['price'], 
-                            'final_price' => $order->products[$i]['final_price'], 
-                            'products_tax' => $order->products[$i]['tax'], 
-                            'products_quantity' => $order->products[$i]['qty'],
-                            'products_rate' => tep_get_products_rate(tep_get_prid($order->products[$i]['id'])),
-                            'products_character' =>  stripslashes($chara),
-                  'site_id' => SITE_ID
+                          'products_id' => tep_get_prid($order->products[$i]['id']), 
+                          'products_model' => $order->products[$i]['model'], 
+                          'products_name' => $order->products[$i]['search_name'], // for search, insert products_name where site_id = 0
+                          'products_price' => $order->products[$i]['price'], 
+                          'final_price' => $order->products[$i]['final_price'], 
+                          'products_tax' => $order->products[$i]['tax'], 
+                          'products_quantity' => $order->products[$i]['qty'],
+                          'products_rate' => tep_get_products_rate(tep_get_prid($order->products[$i]['id'])),
+                          'products_character' =>  stripslashes($chara),
+                          'site_id' => SITE_ID
   );
     // ccdd
     tep_db_perform(TABLE_ORDERS_PRODUCTS, $sql_data_array);
