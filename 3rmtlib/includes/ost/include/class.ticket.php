@@ -455,7 +455,7 @@ class Ticket{
     //移动到垃圾箱 就是移动到第六号dep
     function moveToGomi(){
       global $cfg;
-      $this->close();
+      //      $this->close();
       return $this->transfer(6);
     }
     function markOverdue($bitch=false) {

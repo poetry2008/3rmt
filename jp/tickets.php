@@ -19,9 +19,9 @@
 $_noemailclass = true;
 
 require_once('includes/application_top.php');
-
-$breadcrumb->add('お問い合わせ', tep_href_link(FILENAME_CONTACT_US));
 require_once('includes/ost/secure.inc.php');
+$breadcrumb->add('お問い合わせ', tep_href_link(FILENAME_CONTACT_US));
+
 if(!is_object($thisclient) || !$thisclient->isValid()) die('Access denied'); //Double check again.
 
 require_once(INCLUDE_DIR.'class.ticket.php');
@@ -73,7 +73,6 @@ if($_POST && is_object($ticket) && $ticket->getId()):
             if(($msgid=$ticket->postMessage($_POST['message'],'Web'))) {
                 if($_FILES['attachment']['name'] && $cfg->canUploadFiles() && $cfg->allowOnlineAttachments())
                     $ticket->uploadAttachment($_FILES['attachment'],$msgid,'M');
-                    
                 $msg='送信完了';
                 // 跳转之后就不显示信息了
                 tep_redirect($_SERVER['REQUEST_URI']);

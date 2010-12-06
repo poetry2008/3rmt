@@ -17,7 +17,7 @@
 $_noemailclass = true;
 require_once('includes/application_top.php');
 
-
+$breadcrumb->add('お問い合わせ', tep_href_link(FILENAME_CONTACT_US));
 require_once('includes/ost/client.inc.php');
 if(!defined('INCLUDE_DIR')) die('Fatal Error');
 define('CLIENTINC_DIR',INCLUDE_DIR.'client/');

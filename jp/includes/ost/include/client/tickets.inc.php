@@ -112,7 +112,7 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
             $defaultDept=Dept::getDefaultDeptName();
             while ($row = db_fetch_array($tickets_res)) {
 
-              if($row['topic_id']!=SITE_TOPIC_ID){
+              if($row['dept_id']!=SITE_DEPT_ID){
                 continue;
               }
                 $dept=$row['ispublic']?$row['dept_name']:$defaultDept; //Don't show hidden/non-public depts.

@@ -16,10 +16,11 @@ $t=Format::input($_POST['lticket']?$_POST['lticket']:$_GET['t']);
         問い合わせが初めてのお客様、または問合番号を忘れた場合は、<a href="open.php">新規お問い合わせ</a>をクリックしてください。
     </p>
     <form action="contact_us_login.php" method="post">
+           <div style="font-size:11px;text-align:center;color:red;"><?=Format::htmlchars($loginmsg)?></span>
     <table cellspacing="1" cellpadding="0" align="center" width="100%" class="open_login">
          <tr> 
             <td width="75" bgcolor="#eeeeee" valign="top">メールアドレス</td>
-            <td><input type="text" name="lemail" size="25" value="<?=$e?>"><br /><span class="error"><?=Format::htmlchars($loginmsg)?></span></td>
+            <td><input type="text" name="lemail" size="25" value="<?=$e?>"><br /></td>
          </tr>
          <tr>   
             <td bgcolor="#eeeeee">問合番号</td>
