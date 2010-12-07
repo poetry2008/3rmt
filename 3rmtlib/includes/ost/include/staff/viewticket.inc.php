@@ -11,6 +11,14 @@ if($cfg->getLockTime() && !$ticket->acquireLock())
 
 //We are ready baby...lets roll. Akon rocks! 
 $dept  = $ticket->getDept();  //Dept
+//ng{
+$ng = $dept->getNg();
+$ngArr = explode(',',$ng);
+foreach ($ngArr as $k=>$v){
+  $ngArr[$k] = "'".$v."'";
+}
+$ngArrString = join(",",$ngArr);
+//ng}
 $staff = $ticket->getStaff(); //Assiged staff.
 $lock  = $ticket->getLock();  //Ticket lock obj
 $id=$ticket->getId(); //Ticket ID.
@@ -25,6 +33,34 @@ if($ticket->isOverdue())
     $warn.='&nbsp;&nbsp;<span class="Icon overdueTicket">Marked overdue!</span>';
     
 ?>
+<script type='text/javascript'>
+function checkNg(){
+<?php 
+echo "var ngArr = new Array(".$ngArrString.");";
+?>
+var response = document.getElementById('response');
+var response_content = response.value;
+var findkeyword = new Array()
+var keyword;
+var result = false;
+var linechanger ='\n';
+for (keyword in ngArr){
+  if(response_content.indexOf(ngArr[keyword])>=0 && ngArr[keyword]!=''){
+    findkeyword.push(ngArr[keyword])
+  }
+}
+if(findkeyword.length<=0){
+ return true;
+}else{
+
+  var keywordString = linechanger;
+  for (keyword in findkeyword){
+    keywordString+= findkeyword[keyword] + linechanger;
+  }
+  return  confirm('NGキーワード '+keywordString+'返信内容にNGキーワードが有ります。このまま返信しますか？');
+}
+}
+</script>
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
     <tr>
         <td class="msg" width=50%>
@@ -148,7 +184,7 @@ if($ticket->isOverdue())
 if($thisuser->canManageTickets() || $thisuser->isManager()){ ?> 
 <table cellpadding="0" cellspacing="2" border="0" width="100%" class="ticketoptions">
     <tr><td>
-        <form name=action action='tickets.php?id=<?=$id?>' method=post class="inline" >
+        <form name='action'  action='tickets.php?id=<?=$id?>' method='post'  class="inline" >
             <input type='hidden' name='ticket_id' value="<?=$id?>"/>
              <input type='hidden' name='a' value="process"/>
             <span for="do"> &nbsp;<b>操作:</b></span>
@@ -280,8 +316,18 @@ if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
         <div class="tabber">
             <div id="reply" class="tabbertab" align="left">
                 <h2>返信</h2>
+
                 <p>
-                    <form action="tickets.php?id=<?=$id?>#reply" name="reply" id="replyform" method="post" enctype="multipart/form-data">
+<?php 
+if (strspn("MSIE",$_SERVER["HTTP_USER_AGENT"])==4){
+?>
+                    <form action="tickets.php?id=<?=$id?>#reply" name="reply" id="replyform" method="post">
+<?php }else { 
+?>
+                    <form onsubmit = 'return checkNg();' action="tickets.php?id=<?=$id?>#reply" name="reply" id="replyform" method="post">
+<?php
+}
+?>
                         <input type="hidden" name="ticket_id" value="<?=$id?>">
                         <input type="hidden" name="msg_id" value="<?=$msgid?>">
                         <input type="hidden" name="a" value="reply">
@@ -302,16 +348,17 @@ if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
                                 <?}?>
                                </select>&nbsp;&nbsp;&nbsp;<label><input type='checkbox' value='1' name=append checked="true" />追加</label>
                             <?}?>
-                            <textarea name="response" id="response" cols="90" rows="9" wrap="soft" style="width:90%"><?=$info['response']?></textarea>
+                            <textarea name="response" id="response" cols="90" rows="16" wrap="soft" style="width:90%"><?=$info['response']?></textarea>
                         </div>
                         <?php if($cfg->canUploadFiles()){ //TODO: may be allow anyways and simply email out attachment?? ?>
                         <div style="margin-top: 3px;">
-                            <label for="attachment" >Attach File:</label>
+                            <label for="attachment" >添付ファイル:</label>
                             <input type="file" name="attachment" id="attachment" size=30px value="<?=$info['attachment']?>" /> 
                                 <font class="error">&nbsp;<?=$errors['attachment']?></font>
                         </div>
                         <?php }?>
                         <?
+
                          $appendStaffSig=$thisuser->appendMySignature();
                          $appendDeptSig=$dept->canAppendSignature();
                          $info['signature']=!$info['signature']?'none':$info['signature']; //change 'none' to 'mine' to default to staff signature.
@@ -326,7 +373,9 @@ if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
                                 <label><input type="radio" name="signature" value="dept" <?=$info['signature']=='dept'?'checked':''?> > Dept Signature</label>
                                 <?}?>
                            </div>
-                         <?}?>
+                         <?}
+
+                        ?>
                         <div style="margin-top: 3px;">
                             <b>ステータス:</b>
                             <?
@@ -339,9 +388,9 @@ if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
                         </div>
                         <p>
                             <div  style="margin-left: 50px; margin-top: 30px; margin-bottom: 10px;border: 0px;">
-                                <input class="button" type='submit' value='Post Reply' />
-                                <input class="button" type='reset' value='Reset' />
-                                <input class="button" type='button' value='Cancel' onClick="history.go(-1)" />
+                                <input class="button" type='submit' value='返信' />
+                                <input class="button" type='reset' value='リセット' />
+                                <input class="button" type='button' value='キャンセル' onClick="history.go(-1)" />
                             </div>
                         </p>
                     </form>                
@@ -382,7 +431,7 @@ if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
                         <p>
                             <div  align="left" style="margin-left: 50px;margin-top: 10px; margin-bottom: 10px;border: 0px;">
                                 <input class="button" type='submit' value='Submit' />
-                                <input class="button" type='reset' value='Reset' />
+                                <input class="button" type='reset' value='リセット' />
                                 <input class="button" type='button' value='Cancel' onClick="history.go(-1)" />
                             </div>
                         </p>
@@ -420,8 +469,8 @@ if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
                         <p>
                             <div  style="margin-left: 50px; margin-top: 5px; margin-bottom: 10px;border: 0px;" align="left">
                                 <input class="button" type='submit' value='Transfer' />
-                                <input class="button" type='reset' value='Reset' />
-                                <input class="button" type='button' value='Cancel' onClick="history.go(-1)" />
+                                <input class="button" type='reset' value='リセット' />
+                                <input class="button" type='button' value='キャンセル' onClick="history.go(-1)" />
                             </div>
                         </p>
                     </form>
@@ -467,8 +516,8 @@ if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
                         <p>
                             <div  style="margin-left: 50px; margin-top: 5px; margin-bottom: 10px;border: 0px;" align="left">
                                 <input class="button" type='submit' value='Assign' />
-                                <input class="button" type='reset' value='Reset' />
-                                <input class="button" type='button' value='Cancel' onClick="history.go(-1)" />
+                                <input class="button" type='reset' value='リセット' />
+                                <input class="button" type='button' value='キャンセル' onClick="history.go(-1)" />
                             </div>
                         </p>
                     </form>
@@ -479,3 +528,11 @@ if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
     </td>
  </tr>
 </table>
+<?php 
+if (strspn("MSIE",$_SERVER["HTTP_USER_AGENT"])==4){
+?>
+<script>
+var e = document.getElementById("replyform");
+e.attachEvent('onsubmit',checkNg);
+</script>
+<?php } ?>

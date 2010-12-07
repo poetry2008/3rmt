@@ -27,13 +27,14 @@ if($_POST):
     $_POST['emailId']=0; //Just Making sure we don't accept crap...only topicId is expected.
     if(!$thisuser && $cfg->enableCaptcha()){
         if(!$_POST['captcha'])
-            $errors['captcha']='Enter text shown on the image';
-        elseif(strcmp($_SESSION['captcha'],md5($_POST['captcha'])))
-            $errors['captcha']='Invalid - try again!';
+            $errors['captcha']='認証コードを入力してください';
+        elseif(strcmp($_SESSION['captcha'],md5(strtolower($_POST['captcha']))))
+            $errors['captcha']='認証コードを入力しなおしてください!';
     }
     //Ticket::create...checks for errors..
     if(($ticket=Ticket::create($_POST,$errors,SOURCE))){
-        $msg='お客様のご質問は RMTジャックポット へ送信されました。';
+              $msg='お客様のご質問は RMTジャックポット へ送信されました。';
+      //       $msg = 'お客様のご質問は RMTワールドマネー へ送信されました。 ';
         if($thisclient && $thisclient->isValid()) //Logged in...simply view the newly created ticket.
             @header('Location: tickets.php?id='.$ticket->getExtId());
         //Thank the user and promise speedy resolution!

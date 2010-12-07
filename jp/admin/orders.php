@@ -729,7 +729,26 @@ if($reload == 'yes') {
                 </tr>
                 <tr>
                   <td class="main"><b><?php echo ENTRY_EMAIL_ADDRESS; ?></b></td>
-                  <td class="main"><?php echo '<a href="mailto:' . tep_output_string_protected($order->customer['email_address']) . '"><u>' . tep_output_string_protected($order->customer['email_address']) . '</u></a>'; ?></td>
+                  <td class="main">
+<?php 
+    //osticket
+    $ostGetPara = array(
+                        "name"=>$order->customer['name'],
+                        "topicid"=>constant("SITE_TOPIC_".$order->info['site_id']),
+                        "source"=>'Email',
+                        "email"=>$order->customer['email_address']);
+    function makeValueUrlencode(&$value,$key){
+      $value = urlencode($value);
+    }
+    array_walk($ostGetPara,'makeValueUrlencode');
+    $parmStr = '';
+    foreach($ostGetPara as $key=>$value){
+      $parmStr.= '&'.$key.'='.$value;
+    }
+    $remoteurl = "'scp/tickets.php?a=open2".$parmStr."'";
+?>
+    <?php echo '<a style="cursor:pointer;" title="問合番号を新規作成します" onclick = "javascript:window.open('.$remoteurl.')" ><u>' . tep_output_string_protected($order->customer['email_address']) . '</u></a>'; 
+?></td>
                 </tr>
             <!--
               </table>
@@ -1870,7 +1889,6 @@ if($reload == 'yes') {
         from " . TABLE_ORDERS . " o " . $from_payment . "
         where o.customers_email_address = '" . tep_db_input($cEmail) . "' 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-          and o.language_id = '" . $languages_id . "' 
           " . $where_payment . $where_type . "
         order by o.torihiki_date DESC";
     } else if (isset($_GET['cID']) && $_GET['cID']) {
@@ -1899,7 +1917,6 @@ if($reload == 'yes') {
         from " . TABLE_ORDERS . " o " . $from_payment . "
         where o.customers_id = '" . tep_db_input($cID) . "' 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-          and o.language_id = '" . $languages_id . "' 
           " . $where_payment . $where_type . "
         order by o.torihiki_date DESC";
     } elseif (isset($_GET['status']) && $_GET['status']) {
@@ -1926,9 +1943,9 @@ if($reload == 'yes') {
                o.orders_comment,
                o.site_id
         from " . TABLE_ORDERS . " o " . $from_payment . "
-        where o.language_id = '" . $languages_id . "' 
+        where 
+          o.orders_status = '" . tep_db_input($status) . "' 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-          and o.orders_status = '" . tep_db_input($status) . "' 
           " . $where_payment . $where_type . "
         order by o.torihiki_date DESC";
     }  elseif (isset($_GET['keywords']) && $_GET['keywords'] && isset($_GET['search_type']) && $_GET['search_type'] == 'products_name' && !$_GET['type'] && !$payment) {
@@ -1965,8 +1982,7 @@ if($reload == 'yes') {
                o.orders_comment,
                o.site_id
         from " . TABLE_ORDERS . " o " . $from_payment . "
-        where 
-          o.language_id = '" . $languages_id . "' 
+        where 1=1 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
           " . $where_payment . $where_type ;
 
@@ -2026,7 +2042,6 @@ if($reload == 'yes') {
         from " . TABLE_ORDERS . " o " . $from_payment . ", " . TABLE_ORDERS_PRODUCTS . " op 
         where o.orders_id = op.orders_id
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-          and o.language_id = '" . $languages_id . "' 
           " . $where_payment . $where_type ;
     $keywords = str_replace('　', ' ', $_GET['keywords']);
     tep_parse_search_string($keywords, $search_keywords);
@@ -2087,7 +2102,6 @@ if($reload == 'yes') {
           -- and o.orders_status != '6'
           -- and o.orders_status != '8'
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-          and o.language_id = '" . $languages_id . "' 
           " . $where_payment . $where_type . "
          order by o.torihiki_date DESC
       ";

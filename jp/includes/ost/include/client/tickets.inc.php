@@ -1,6 +1,10 @@
 <?php
 if(!defined('OSTCLIENTINC') || !is_object($thisclient) || !$thisclient->isValid()) die('Kwaheri');
 
+$deptIdSql = ' select dept_id from ost_help_topic where topic_id ='. SITE_TOPIC_ID;
+$tmpres= db_query($deptIdSql);
+$row =  db_fetch_array($tmpres);
+define('SITE_DEPT_ID',$row['dept_id']);
 //Get ready for some deep shit.
 $qstr='&'; //Query string collector
 $status=null;
@@ -18,7 +22,7 @@ if($_REQUEST['status']) { //Query string status has nothing to do with the real 
 }
 
 //Restrict based on email of the user...STRICT!
-$qwhere =' WHERE topic_id = '.SITE_TOPIC_ID.' and email='.db_input($thisclient->getEmail());
+$qwhere =' WHERE ticket.dept_id= '.SITE_DEPT_ID.' and email='.db_input($thisclient->getEmail());
 
 //STATUS
 if($status){
@@ -57,14 +61,14 @@ $qselect.=' ,count(attach_id) as attachments ';
 $qfrom.=' LEFT JOIN '.TICKET_ATTACHMENT_TABLE.' attach ON  ticket.ticket_id=attach.ticket_id ';
 $qgroup=' GROUP BY ticket.ticket_id';
 $query="$qselect $qfrom $qwhere $qgroup ORDER BY $order_by $order LIMIT ".$pageNav->getStart().",".$pageNav->getLimit();
-//echo $query;
+
 $tickets_res = db_query($query);
 $showing=db_num_rows($tickets_res)?$pageNav->showing():"";
 //start 
 $_status = '_'.$status;
 $_open = 'オープン';
 $_closed = 'クローズ';
-$results_type=($status)?($$_status).' 問合番号':' 全部';
+$results_type=($status)?($$_status).'':' 全部';
 //end
 $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
 ?>
@@ -93,13 +97,12 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
     <tr><td>
      <table border="0" cellspacing="1" cellpadding="0" class="tickets" width="100%">
         <tr>
-	        <th width="70">
+          <th height="20" width="70">
                 <a href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="番語順に表示 <?=$negorder?>">問合番号</a></th>
-	        <th width="100">
+          <th width="100">
                 <a href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="作成日時順に表示 <?=$negorder?>">作成日時</a></th>
             <th width="60">ステータス</th>
-            <th width="240">タイトル</th>
-            	
+            <th>件名</th>
             <th width="150">メールアドレス</th>
         </tr>
         <?php
@@ -109,11 +112,7 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
             $defaultDept=Dept::getDefaultDeptName();
             while ($row = db_fetch_array($tickets_res)) {
 
-            	
-            	
-            	
-            	
-              if($row['topic_id']!=SITE_TOPIC_ID){
+              if($row['dept_id']!=SITE_DEPT_ID){
                 continue;
               }
                 $dept=$row['ispublic']?$row['dept_name']:$defaultDept; //Don't show hidden/non-public depts.
@@ -130,12 +129,12 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
                         <?=$ticketID?></a></td>
                 <td nowrap>&nbsp;<?=Format::db_date($row['created'])?></td>
 
-                	<?php 
-                	  	$_status = '_'.$row['status'];
-						$_open = 'オープン';
-						$_closed = 'クローズ';
-                	?>
-                	 <td>&nbsp;<?=$$_status?></td>
+                  <?php 
+                      $_status = '_'.$row['status'];
+            $_open = 'オープン';
+            $_closed = 'クローズ';
+                  ?>
+                   <td>&nbsp;<?=$$_status?></td>
                 <td>&nbsp;<a href="view.php?id=<?=$row['ticketID']?>"><?=$subject?></a>
                     &nbsp;<?=$row['attachments']?"<span class='Icon file'>&nbsp;</span>":''?></td>
                                <?php //                <td nowrap>&nbsp;<?=Format::truncate($dept,30)</td> ?>
@@ -153,7 +152,7 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
     <tr><td>
     <?
     if($num>0 && $pageNav->getNumPages()>1){ //if we actually had any tickets returned?>
-     <tr><td style="text-align:left;padding-left:20px">ページ:<?=$pageNav->getPageLinks()?>&nbsp;</td></tr>
+     <tr><td style="text-align:left;padding-left:20px; font-size:12px;">ページ:<?=$pageNav->getPageLinks()?>&nbsp;</td></tr>
     <?}?>
  </table>
 </div>

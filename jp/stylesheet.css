@@ -616,3 +616,34 @@ text-align:center;
 .bold {
 font-weight: bold;
 }
+a.Icon { }
+   
+a.Icon:hover {
+    text-decoration: underline;    
+}
+
+    
+.Icon.Ticket { background:url(images/icons/ticket.gif) 0 0 no-repeat; }
+.Icon.webTicket { background:url(images/icons/ticket_source_web.gif) 0 0 no-repeat; }
+.emailTicket{
+padding-left:20px;
+}
+
+.Icon.emailTicket { background:url(images/icons/ticket_source_email.gif) 0 0 no-repeat; }
+.Icon.phoneTicket { background:url(images/icons/ticket_source_phone.gif) 0 0 no-repeat; }                
+.Icon.otherTicket { background:url(images/icons/ticket_source_other.gif) 0 0 no-repeat; }
+
+
+.Icon.attachment { background-image: url(images/icons/attachment.gif); }
+.Icon.file { background-image: url(images/icons/attachment.gif); }
+.Icon.refresh { background-image: url(images/icons/refresh.gif); }   
+.thread {
+    font-weight: bold;
+    font-size: 1em;
+    background: url(images/icons/thread.gif) no-repeat;
+	padding-left:20px;
+}
+#errormessage{
+color:#ff0000;
+}
+

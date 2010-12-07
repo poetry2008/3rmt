@@ -17,7 +17,7 @@
 $_noemailclass = true;
 require_once('includes/application_top.php');
 
-
+$breadcrumb->add('お問い合わせ', tep_href_link(FILENAME_CONTACT_US));
 require_once('includes/ost/client.inc.php');
 if(!defined('INCLUDE_DIR')) die('Fatal Error');
 define('CLIENTINC_DIR',INCLUDE_DIR.'client/');
@@ -26,7 +26,7 @@ define('OSTCLIENTINC',TRUE); //make includes happy
 require_once(INCLUDE_DIR.'class.client.php');
 require_once(INCLUDE_DIR.'class.ticket.php');
 //We are ready baby
-$loginmsg='アクセスエラー';
+$loginmsg='情報を入力し「送信」ボタンをクリックしてください。';
 if($_POST && (!empty($_POST['lemail']) && !empty($_POST['lticket']))):
     $loginmsg='Authentication Required';
     $email=trim($_POST['lemail']);

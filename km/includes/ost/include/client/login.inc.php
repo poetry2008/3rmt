@@ -13,11 +13,7 @@ $t=Format::input($_POST['lticket']?$_POST['lticket']:$_GET['t']);
 </div>
 <div>
     <p class="login_inc">
-        
-         <a href="open.php">新規お問い合わせ　</a>をクリックして、新しく
-    お問い合わせを作成するか、
-    <br/>
-下記の欄で再ログインしてください。
+        問い合わせが初めてのお客様、または問合番号を忘れた場合は、<a href="open.php">新規お問い合わせ</a>をクリックしてください。
     </p>
     <span class="error"><?=Format::htmlchars($loginmsg)?></span>
     <form action="contact_us_login.php" method="post">

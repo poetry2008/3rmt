@@ -29,13 +29,13 @@ if(!$errors && ($id=$_REQUEST['id']?$_REQUEST['id']:$_POST['ticket_id']) && is_n
     $ticket= new Ticket($id);
     if(!$ticket or !$ticket->getDeptId())
         $errors['err']='Unknown ticket ID#'.$id; //Sucker...invalid id
-    elseif(!$thisuser->isAdmin()  && (!$thisuser->canAccessDept($ticket->getDeptId()) && $thisuser->getId()!=$ticket->getStaffId()))
+    elseif(!$thisuser->isAdmin()  && (!$thisuser->canAccessDept($ticket->getDeptId()) && $thisuser->getId()!=$ticket->getStaffId()) && !isset($_POST['gomi']))
         $errors['err']='Access denied. Contact admin if you believe this is in error';
 
     if(!$errors && $ticket->getId()==$id)
         $page='viewticket.inc.php'; //Default - view
 
-    if(!$errors && $_REQUEST['a']=='edit') { //If it's an edit  check permission.
+    if(!$errors && $_REQUEST['a']=='edit' && !isset($_POST['gomi'])) { //If it's an edit  check permission.
         if($thisuser->canEditTickets() || ($thisuser->isManager() && $ticket->getDeptId()==$thisuser->getDeptId()))
             $page='editticket.inc.php';
         else
@@ -45,7 +45,12 @@ if(!$errors && ($id=$_REQUEST['id']?$_REQUEST['id']:$_POST['ticket_id']) && is_n
 }elseif($_REQUEST['a']=='open') {
     //TODO: Check perm here..
     $page='newticket.inc.php';
+}elseif($_REQUEST['a']=='open2') {
+    //TODO: Check perm here..
+
+    $page='newticket2.inc.php';
 }
+
 //At this stage we know the access status. we can process the post.
 if($_POST && !$errors):
 
@@ -66,7 +71,7 @@ if($_POST && !$errors):
             //Use locks to avoid double replies
             if($lock && $lock->getStaffId()!=$thisuser->getId())
                 $errors['err']='Action Denied. Ticket is locked by someone else!';
-
+            /*
             //Check attachments restrictions.
             if($_FILES['attachment'] && $_FILES['attachment']['size']) {
                 if(!$_FILES['attachment']['name'] || !$_FILES['attachment']['tmp_name'])
@@ -76,12 +81,25 @@ if($_POST && !$errors):
                 elseif(!$cfg->canUploadFileType($_FILES['attachment']['name']))
                     $errors['attachment']='Invalid file type';
             }
+            */
+             //Check attachments restrictions.
+            if($_FILES['attachment'] && $_FILES['attachment']['size']){
+              if(!$_FILES['attachment']['name'] ||!$_FILES['attachment']['tmp_name'])
+                $errors['attachment']='無効な添付ファイルです';
+              elseif(!$cfg->canUploadFiles()) //TODO: saved vs emailed attachments...admin config??
+                $errors['attachment']='アップロードディレクトリが無効です。管理者に連絡してください。';
+              elseif(!$cfg->canUploadFileType($_FILES['attachment']['name']))
+                $errors['attachment']='無効なファイル形式です';
+            }
 
             //Make sure the email is not banned
             if(!$errors && BanList::isbanned($ticket->getEmail()))
                 $errors['err']='Email is in banlist. Must be removed to reply';
 
             //If no error...do the do.
+
+            //默认让 signature= none
+            //            $_POST['signature'] = 'none';
             if(!$errors && ($respId=$ticket->postResponse($_POST['msg_id'],$_POST['response'],$_POST['signature'],$_FILES['attachment']))){
                 $msg='Response Posted Successfully';
                 //Set status if any.
@@ -333,7 +351,7 @@ if($_POST && !$errors):
     }elseif($_POST['a']) {
         switch($_POST['a']) {
             case 'mass_process':
-                if(!$thisuser->canManageTickets())
+                if(!$thisuser->canManageTickets() && !isset($_POST['gomi']))
                     $errors['err']='You do not have permission to mass manage tickets. Contact admin for such access';    
                 elseif(!$_POST['tids'] || !is_array($_POST['tids']))
                     $errors['err']='No tickets selected. You must select at least one ticket.';
@@ -380,6 +398,16 @@ if($_POST && !$errors):
                                 }
                         }
                         $msg="$i of $count selected tickets marked overdue";
+                    }elseif(isset($_POST['gomi'])){
+                      $i=0;
+                      $note='Ticket move to gomi by '.$thisuser->getName();
+                      foreach ($_POST['tids'] as $k=>$v) {
+                        $t = new Ticket($v);
+                        if ($t){
+                          $t->moveToGomi();
+                          $t->logActivity('Ticket Moveed To Gomi',$note,false,'System');
+                        }
+                      }
                     }elseif(isset($_POST['delete'])){
                         $i=0;
                         foreach($_POST['tids'] as $k=>$v) {
@@ -390,19 +418,25 @@ if($_POST && !$errors):
                     }
                 }
                 break;
+            case 'open2':
             case 'open':
                 $ticket=null;
                 //TODO: check if the user is allowed to create a ticet.
                 if(($ticket=Ticket::create_by_staff($_POST,$errors))) {
                     $ticket->reload();
-                    $msg='Ticket created successfully';
+                    $msg='問合番号を新規作成しました';
                     if($thisuser->canAccessDept($ticket->getDeptId()) || $ticket->getStaffId()==$thisuser->getId()) {
+                      //如果来自 open2 则关闭当前页面
+                      if($_POST['close']=='yes'){
+                        $page = 'close.inc.php';
+                      }else{
                         //View the sucker
                         $page='viewticket.inc.php';
+                      }
                     }else {
                         //Staff doesn't have access to the newly created ticket's department.
-                        $page='tickets.inc.php';
-                        $ticket=null;
+                      $page='tickets.inc.php';
+                      $ticket=null;
                     }
                 }elseif(!$errors['err']) {
                     $errors['err']='Unable to create the ticket. Correct the error(s) and try again';
@@ -413,6 +447,8 @@ if($_POST && !$errors):
     $crap='';
 endif;
 //Navigation 
+
+
 $submenu=array();
 /*quick stats...*/
 $sql='SELECT count(open.ticket_id) as open, count(answered.ticket_id) as answered '.

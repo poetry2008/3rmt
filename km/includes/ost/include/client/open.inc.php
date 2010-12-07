@@ -84,13 +84,16 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <?}?>
     <?if($cfg && $cfg->enableCaptcha() && (!$thisclient || !$thisclient->isValid())) {
         if($_POST && $errors && !$errors['captcha'])
-            $errors['captcha']='Please re-enter the text again';
+            $errors['captcha']='必須項目エラー';
         ?>
     <tr>
         <th valign="top">キャプチャテキスト:</th>
         <td><img src="captcha.php" border="0" align="left">
-        <span>&nbsp;&nbsp;<input type="text" name="captcha" size="7" value="">&nbsp;<i class="captcha_comment">認証画像の内容をご入力ください.</i></span><br/>
+        <span>&nbsp;&nbsp;<input type="text" name="captcha" size="7" value="">&nbsp;<i class="captcha_comment">認証画像の内容をご入力ください.</i></span>
+        <?php if($errors['captcha']){?>
+        <br/>
                 <font class="error">&nbsp;<?=$errors['captcha']?></font>
+        <?php }?>
         </td>
     </tr>
     <?}?>
@@ -99,7 +102,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         <td>
             <input class="button" type="submit" name="submit_x" value="&#36865;&#20449;">
             <input class="button" type="reset" value="&#12522;&#12475;&#12483;&#12488;">
-            <input class="button" type="button" name="cancel" value="&#12461;&#12515;&#12531;&#12475;&#12523;" onClick='window.location.href="index.php"'>    
+            <input class="button" type="button" name="cancel" value="&#12461;&#12515;&#12531;&#12475;&#12523;" onClick='window.location.href="<?php echo FILENAME_CONTACT_US ?>"'>
         </td>
     </tr>
 </table>

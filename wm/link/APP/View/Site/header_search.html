@@ -2,7 +2,12 @@
 <div class="top"><h1 class="link_h1"><!--{_t key=$top_info.h1}--></h1></div>
 <div class="middle">
 <div class="text_out">
+<!--{if $top_info.time}-->
+<!--{$top_info.time}-->
 <!--{_t key=$top_info.text}-->
+<!--{else}-->
+<!--{_t key=$top_info.text}-->
+<!--{/if}-->
 </div>
 </div>
 <div class="bottom"></div>

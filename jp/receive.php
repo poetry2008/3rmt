@@ -62,6 +62,18 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
                           'comments' => '');
     tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
     orders_updated($orders['orders_id']);
+    // success
+    tep_db_perform('telecom_unknow', array(
+      '`option`'      => $w_option,
+      'username'      => $w_username,
+      'email'         => $w_email,
+      'telno'         => $w_telno,
+      'money'         => $w_money,
+      'rel'           => $w_rel,
+      'type'          => 'success',
+      'date_added'    => 'now()',
+      'last_modified' => 'now()'
+    ));
   } else {
     // 不明
     tep_db_perform('telecom_unknow', array(
@@ -71,6 +83,7 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
       'telno' => $w_telno,
       'money' => $w_money,
       'rel' => $w_rel,
+      'type' => ($w_rel == 'yes' && !$w_option)?'success':'null',
       'date_added' => 'now()',
       'last_modified' => 'now()'
     ));

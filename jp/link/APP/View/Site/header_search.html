@@ -3,7 +3,12 @@
 <!--{if $top_info}-->
 <h1 class="link_h1"><!--{_t key=$top_info.h1}--></h1>
 <div class="text_out">
+<!--{if $top_info.time}-->
+<!--{$top_info.time}-->
 <!--{_t key=$top_info.text}-->
+<!--{else}-->
+<!--{_t key=$top_info.text}-->
+<!--{/if}-->
 </div>
 <!--{else}-->
 <h1 class="link_h1"><!--{_t key=text_out_h1}--></h1>

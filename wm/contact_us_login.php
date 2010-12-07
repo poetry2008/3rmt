@@ -25,7 +25,7 @@ define('OSTCLIENTINC',TRUE); //make includes happy
 require_once(INCLUDE_DIR.'class.client.php');
 require_once(INCLUDE_DIR.'class.ticket.php');
 //We are ready baby
-$loginmsg='アクセスエラー';
+$loginmsg='情報を入力し「送信」ボタンをクリックしてください。';
 if($_POST && (!empty($_POST['lemail']) && !empty($_POST['lticket']))):
     $loginmsg='Authentication Required';
     $email=trim($_POST['lemail']);

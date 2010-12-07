@@ -452,7 +452,12 @@ class Ticket{
     function markAnswered(){
         $this->setAnswerState(1);
     }
-
+    //移动到垃圾箱 就是移动到第六号dep
+    function moveToGomi(){
+      global $cfg;
+      //      $this->close();
+      return $this->transfer(6);
+    }
     function markOverdue($bitch=false) {
         global $cfg;
 
@@ -1026,11 +1031,8 @@ class Ticket{
     }
 
    /*============== Functions below do not require an instance of the class to be used. To call it use Ticket::function(params); ==================*/
-    function getIdByExtId($extid,$useSiteTopic=false) {
+    function getIdByExtId($extid) {
         $sql ='SELECT  ticket_id FROM '.TICKET_TABLE.' ticket WHERE ticketID='.db_input($extid);
-        if($useSiteTopic){
-          $sql .= ' and topic_id = '.SITE_TOPIC_ID;
-        }
 
         $res=db_query($sql);
         if($res && db_num_rows($res))

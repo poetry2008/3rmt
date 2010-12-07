@@ -194,7 +194,7 @@ UL {
 	height: 11px;
 	font-size: 12px!important;
 	line-height: 11px;
-	padding: 7px 15px;
+	padding: 7px 0 7px 15px;
 	display: block;
 }
 .l_m_category_li2 a:hover{
@@ -943,25 +943,45 @@ list-style-type:none;
 .status_warpper input{ float:left;}
 .button2{ float:right;}
 .open_title{
-	font-weight: bold;
-	clear:both;
+font-size:11px;
+  	clear:both;
 }
-.open_users{ background-color:#E0E0E0;}
-.open_users td{ background-color:#F2F2F2;}
-.open_users th{ background-color:#F2F2F2; text-align:left; font-size:12px; }
+.open_users{border-spacing:0;font-size:11px;}
+.open_users td{ text-align:left;}
+.open_users th{text-align:left; font-weight:400; background:#eeeeee;}
 .open_tele{ color: #3399CC;}
 .error{ color:#FF0000;}
 #infomessage{
 	font-weight: bold;
 }
-.login_inc{ background-color:#F2F2F2; border:1px solid #E0E0E0; padding:5px;}
-#errormessage{ font-weight: bold; background-color:#F2F2F2; border:1px solid #E0E0E0; }
-.open_login{background-color:#E0E0E0;}
-.open_login td{ background-color:#F2F2F2; padding:2px;}
-.open_login th{ background-color:#F2F2F2; text-align:left; font-size:12px; }
+.login_inc{padding:5px; margin:0; font-size:11px;}
+#errormessage{ font-weight: bold; font-size:11px; margin:0;}
+.open_login{border-spacing:0; font-size:11px;}
+.open_login td{padding:3px 5px;}
+.open_login th{text-align:left; font-size:12px; }
 .tickets_lout{font-size:12px; margin-bottom:5px;}
-.tickets,.infotable{background-color:#E0E0E0; font-size:12px; margin-bottom:5px;}
-.tickets td,.infotable td{ background-color:#F2F2F2; padding:2px;}
-.tickets th,.infotable th{ background-color:#F2F2F2; text-align:left; font-size:12px; text-align:center;}
+.tickets,.infotable{font-size:11px; margin-bottom:5px;border-spacing:0;}
+.tickets td,.infotable td{padding:2px;}
+.tickets th,.infotable th{ background-color:#F2F2F2; text-align:left; font-weight:400;}
+.msg{
+font-size:11px;
+margin:0;
+padding:5px;
+}
+.Icon{
+font-size:11px;
+margin:0;
+padding:5px;
+}
+.message{
+font-size:11px;
+}
 #ticketthread{background-color:#F2F2F2; border:1px solid #E0E0E0; margin-bottom:10px;}
 .captcha_comment{ font-size:12px;}
+.login_inc_button{ padding-top:5px; text-align:center;}
+.button{
+cursor:pointer;
+}
+#errormessage{
+color:#ff0000;
+}

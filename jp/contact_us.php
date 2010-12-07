@@ -1,5 +1,5 @@
 <?php
-/*********************************************************************
+ /*********************************************************************
     index.php
 
     Helpdesk landing page. Please customize it to fit your needs.
@@ -43,28 +43,28 @@ require_once(CLIENTINC_DIR.'header.inc.php');
   
   <br>
   <form method="link" action="open.php">
-  <input type="submit" class="button2" value="お問い合わせ">
+  <input type="image" class="button2" value="お問い合わせ" src="includes/languages/japanese/images/buttons/lemail.gif">
   </form>
   </div>
 </div>
 <div class="rcol">
   <div class="contact_left"><img src="./images/ticket_status_icon.jpg" width="60" height="60"></div>
   <div class="contact_right">
-  <h3>過去のお問い合わせへの返事を確認</h3>
-  
+  <h3>お問い合わせへの返事を確認</h3>
+
   <br>
     <form class="status_form" action="contact_us_login.php" method="post">
     <div class="status_warpper">
-      <label>メールアドレス：</label>
+      <label>メールアドレス</label>
       <input type="text" name="lemail">
       </div>
       <div class="status_warpper">
-     <label>お問い合わせ番号:</label>
+     <label>お問い合わせ番号</label>
      <input type="text" name="lticket">
      </div>
      <div class="status_warpper02">
         <label>&nbsp;</label>
-         <input type="submit" class="button2" value="送信">
+         <input type="image" class="button2" value="送信" src="includes/languages/japanese/images/buttons/button_send_mail.gif">
      </div>
 
   </form>

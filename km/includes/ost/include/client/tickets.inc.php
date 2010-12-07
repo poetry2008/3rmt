@@ -64,7 +64,7 @@ $_status = '_'.$status;
 $_open = 'オープン';
 $_closed = 'クローズ';
 
-$results_type=($status)?($$_status).' 問合番号':' 全部';
+$results_type=($status)?($$_status).'':' 全部';
 //$results_type=($status)?ucfirst($status).' 問合番号':' 全部';
 $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
 ?>
@@ -93,12 +93,12 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
     <tr><td>
      <table border="0" cellspacing="1" cellpadding="2" class="tickets" align="center">
         <tr>
-	        <th width="70" nowrap>
+          <th width="70" nowrap>
                 <a href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="番語順に表示 <?=$negorder?>">問合番号</a></th>
-	        <th width="100">
+          <th width="100">
                 <a href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="作成日時順に表示 <?=$negorder?>">作成日時</a></th>
             <th width="60">ステータス</th>
-            <th width="240">タイトル</th>
+            <th width="240">件名</th>
             <th width="150">メールアドレス</th>
         </tr>
         <?
@@ -120,12 +120,12 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
                     <a class="Icon <?=strtolower($row['source'])?>Ticket" title="<?=$row['email']?>" href="view.php?id=<?=$row['ticketID']?>">
                         <?=$ticketID?></a></td>
                 <td nowrap>&nbsp;<?=Format::db_date($row['created'])?></td>
-                              	<?php 
-                	  	$_status = '_'.$row['status'];
-						$_open = 'オープン';
-						$_closed = 'クローズ';
-                	?>
-                	 <td>&nbsp;<?=$$_status?></td>
+                                <?php 
+                      $_status = '_'.$row['status'];
+            $_open = 'オープン';
+            $_closed = 'クローズ';
+                  ?>
+                   <td>&nbsp;<?=$$_status?></td>
                 <td>&nbsp;<a href="view.php?id=<?=$row['ticketID']?>"><?=$subject?></a>
                     &nbsp;<?=$row['attachments']?"<span class='Icon file'>&nbsp;</span>":''?></td>
                 <td>&nbsp;<?=Format::truncate($row['email'],40)?></td>
