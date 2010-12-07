@@ -18,7 +18,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
        <td width=50%> 
         <table align="center" class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
           <tr>
-        <th width="100" >ステータス:</th>
+        <th width="80" >ステータス:</th>
         <td><?php
             $_status = '_'.$ticket->getStatus();
             $_open = 'オープン';

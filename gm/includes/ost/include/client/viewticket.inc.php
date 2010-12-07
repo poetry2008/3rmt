@@ -12,13 +12,13 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
 ?>
 <table  class="view_contents" cellpadding="1" cellspacing="0" border="0">
   <tr>
-    <td class="msg">問合番号<?=$ticket->getExtId()?>&nbsp;<a href="view.php?id=<?=$ticket->getExtId()?>" title="Reload"><span class="Icon refresh">&nbsp;</span></a></td>
+    <td class="msg">問合番号<?=$ticket->getExtId()?>&nbsp;<a href="view.php?id=<?=$ticket->getExtId()?>" title="Reload"><img style="vertical-align:middle;" src="images/icons/refresh.gif" /></a></td>
   </tr> 
   <tr>
     <td>  
         <table class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
           <tr>
-            <th width="100" >ステータス</th>
+            <th width="150" >ステータス</th>
             <td><?php
             $_status = '_'.$ticket->getStatus();
             $_open = 'オープン';
@@ -38,18 +38,26 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
     <td>
         <table align="center" class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
             <tr>
-                <th width="100">お名前</th>
+                <th width="150">お名前</th>
                 <td><?=Format::htmlchars($ticket->getName())?></td>
             </tr>
             <tr>
-                <th width="100">メールアドレス</th>
+                <th width="150">メールアドレス</th>
                 <td><?=$ticket->getEmail()?></td>
             </tr>
         </table>
     </td>
   </tr>
+  <tr>
+    <td>
+    	<table class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
+          <tr>
+             <td width="150">件名</td><td><?=Format::htmlchars($ticket->getSubject())?></td>
+          </tr>
+        </table>
+    </td>
+  </tr>
 </table>
-<div class="msg">件名<?=Format::htmlchars($ticket->getSubject())?></div>
 <div>
     <?if($errors['err']) {?>
         <p align="center" id="errormessage"><?=$errors['err']?></p>
