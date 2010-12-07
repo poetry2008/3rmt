@@ -12,12 +12,12 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
 ?>
 <table width="100%" cellpadding="1" cellspacing="0" border="0">
     <tr><td colspan=2 width=100% class="msg">問合番号 <?=$ticket->getExtId()?> 
-        &nbsp;<a href="view.php?id=<?=$ticket->getExtId()?>" title="Reload"><span class="Icon refresh">&nbsp;</span></a></td></tr> 
+        &nbsp;<a href="view.php?id=<?=$ticket->getExtId()?>" title="Reload"><img style="vertical-align:middle;" src="images/icons/refresh.gif" /></a></td></tr> 
     <tr>
        <td width=50%> 
         <table align="center" class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
           <tr>
-        <th width="100" >ステータス</th>
+        <th width="80" >ステータス</th>
         <td><?php
             $_status = '_'.$ticket->getStatus();
             $_open = 'オープン';
