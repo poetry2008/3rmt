@@ -64,7 +64,7 @@ $_status = '_'.$status;
 $_open = 'オープン';
 $_closed = 'クローズ';
 
-$results_type=($status)?($$_status).' 問合番号':' 全部';
+$results_type=($status)?($$_status).'':' 全部';
 //$results_type=($status)?ucfirst($status).' 問合番号':' 全部';
 $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
 ?>

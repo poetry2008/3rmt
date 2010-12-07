@@ -194,7 +194,7 @@ UL {
 	height: 11px;
 	font-size: 12px!important;
 	line-height: 11px;
-	padding: 7px 15px;
+	padding: 7px 0 7px 15px;
 	display: block;
 }
 .l_m_category_li2 a:hover{
@@ -981,4 +981,7 @@ font-size:11px;
 .login_inc_button{ padding-top:5px; text-align:center;}
 .button{
 cursor:pointer;
+}
+#errormessage{
+color:#ff0000;
 }

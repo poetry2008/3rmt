@@ -747,7 +747,7 @@ if($reload == 'yes') {
     }
     $remoteurl = "'scp/tickets.php?a=open2".$parmStr."'";
 ?>
-    <?php echo '<a style="cursor:pointer;" title="問合番号を新規作成します" onclick = "javascript:window.open('.$remoteurl.')" ><u>' . tep_output_string_protected($order->customer['email_address']) . '</u></a> &lt;---ここにクリックして、問合番号を新規作成します'; 
+    <?php echo '<a style="cursor:pointer;" title="問合番号を新規作成します" onclick = "javascript:window.open('.$remoteurl.')" ><u>' . tep_output_string_protected($order->customer['email_address']) . '</u></a>'; 
 ?></td>
                 </tr>
             <!--

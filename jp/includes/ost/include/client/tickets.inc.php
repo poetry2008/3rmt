@@ -68,7 +68,7 @@ $showing=db_num_rows($tickets_res)?$pageNav->showing():"";
 $_status = '_'.$status;
 $_open = 'オープン';
 $_closed = 'クローズ';
-$results_type=($status)?($$_status).' 問合番号':' 全部';
+$results_type=($status)?($$_status).'':' 全部';
 //end
 $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
 ?>
