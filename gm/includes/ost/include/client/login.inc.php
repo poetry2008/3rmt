@@ -12,9 +12,8 @@ $t=Format::input($_POST['lticket']?$_POST['lticket']:$_GET['t']);
     <?}?>
 </div>
 <div>
-    <p class="login_inc">
-      問い合わせが初めてのお客様、または問合番号を忘れた場合は、<a href="open.php">新規お問い合わせ</a>をクリックしてください。
-    </p>
+
+    <p class="login_inc">お問い合わせが初めてのお客様、または問合番号を忘れた場合は、<a href="open.php">新規お問い合わせ</a>をクリックしてください。</p>
     <span class="error"><?=Format::htmlchars($loginmsg)?></span>
     <form action="contact_us_login.php" method="post">
     <table cellspacing="1" cellpadding="0" border="0" class="open_login">
@@ -23,7 +22,7 @@ $t=Format::input($_POST['lticket']?$_POST['lticket']:$_GET['t']);
             <td><input type="text" name="lemail" size="25" value="<?=$e?>"></td>
         </tr>
         <tr>
-            <th>問合番号</th>
+            <th>お問い合わせ番号</th>
             <td><input type="text" name="lticket" size="10" value="<?=$t?>"></td>
         </tr>
         <tr>
