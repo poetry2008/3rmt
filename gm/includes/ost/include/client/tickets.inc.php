@@ -1,6 +1,11 @@
 <?php
 if(!defined('OSTCLIENTINC') || !is_object($thisclient) || !$thisclient->isValid()) die('Kwaheri');
 
+$deptIdSql = ' select dept_id from ost_help_topic where topic_id ='. SITE_TOPIC_ID;
+$tmpres= db_query($deptIdSql);
+$row =  db_fetch_array($tmpres);
+define('SITE_DEPT_ID',$row['dept_id']);
+
 //Get ready for some deep shit.
 $qstr='&'; //Query string collector
 $status=null;
@@ -18,8 +23,7 @@ if($_REQUEST['status']) { //Query string status has nothing to do with the real 
 }
 
 //Restrict based on email of the user...STRICT!
-$qwhere =' WHERE topic_id = '.SITE_TOPIC_ID.' and email='.db_input($thisclient->getEmail());
-
+$qwhere =' WHERE ticket.dept_id= '.SITE_DEPT_ID.' and email='.db_input($thisclient->getEmail());
 //STATUS
 if($status){
     $qwhere.=' AND status='.db_input($status);    

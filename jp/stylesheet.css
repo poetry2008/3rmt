@@ -623,8 +623,8 @@ a.Icon:hover {
 }
 
     
-.Icon.Ticket { background:url(images/icons/ticket.gif) 0 0 no-repeat; }
-.Icon.webTicket { background:url(images/icons/ticket_source_web.gif) 0 0 no-repeat; }
+.Ticket { background:url(images/icons/ticket.gif) 0 0 no-repeat; }
+.webTicket { background:url(images/icons/ticket_source_web.gif) 0 0 no-repeat; padding-left:20px; }
 .emailTicket{
 padding-left:20px;
 }
