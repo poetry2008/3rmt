@@ -23,8 +23,7 @@ $t=Format::input($_POST['lticket']?$_POST['lticket']:$_GET['t']);
         </tr>
         <tr>
             <th bgcolor="#eeeeee">お問い合わせ番号</th>
-            <input type="text" name="lticket" size="10" value="<?=$t?>">
-            </td>
+            <td><input type="text" name="lticket" size="10" value="<?=$t?>"></td>
         </tr>
         <tr>
             <td colspan="2" align="center"><input class="button" type="image" value="送信" src="includes/languages/japanese/images/buttons/button_send_mail.gif"></td>

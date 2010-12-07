@@ -71,6 +71,7 @@ $_closed = 'クローズ';
 $results_type=($status)?($$_status).'':' 全部';
 //$results_type=($status)?ucfirst($status).' 問合番号':' 全部';
 $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
+$_negorder=$negorder=="DESC"?'昇順':'降順';
 ?>
 <div>
     <?if($errors['err']) {?>
@@ -96,10 +97,10 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
     <tr><td>
      <table width="100%" border="0" cellspacing="1" cellpadding="0" class="tickets" align="center">
         <tr>
-          <th align="left"><a href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="番号順に表示 <?=$negorder?>">問合番号</a></th>
-          <th width="70"><a href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="作成日順に表示 <?=$negorder?>">作成日</a></th>
+          <th align="left"><a href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="番号順に表示 <?=$_negorder?>">問合番号</a></th>
+          <th width="70"><a href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="作成日順に表示 <?=$_negorder?>">作成日</a></th>
           <th width="60">ステータス</th>
-          <th align="center">件名</th>
+          <th align="center" width="100">件名</th>
           <th>メールアドレス</th>
         </tr>
         <?

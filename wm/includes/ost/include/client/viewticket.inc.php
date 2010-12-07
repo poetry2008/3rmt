@@ -126,12 +126,12 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
                 <textarea name="message" id="message" cols="60" rows="7" wrap="soft"><?=$info['message']?></textarea>
             </div>
             <? if($cfg->allowOnlineAttachments()) {?>
-            <div align="left">
+            <div align="left" style=" font-size:11px;">
                 添付ファイル<br><input type="file" name="attachment" id="attachment" size=30px value="<?=$info['attachment']?>" /> 
                     <font class="error">&nbsp;<?=$errors['attachment']?></font>
             </div>
             <?}?>
-            <div align="left"  style="padding:10px 0 10px 0;">
+            <div style="padding:10px 0 10px 0; text-align:left;">
               <?php /*
                 <input class="button" type='image' value='送信' src="includes/languages/japanese/images/buttons/button_send_mail.gif"/>
                 <input class="button" type='image' value='リセット' src="includes/languages/japanese/images/buttons/open_users01.gif"/>

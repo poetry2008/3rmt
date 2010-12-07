@@ -18,7 +18,7 @@ $t=Format::input($_POST['lticket']?$_POST['lticket']:$_GET['t']);
     <form action="contact_us_login.php" method="post">
     <table cellspacing="1" cellpadding="0" border="0" class="open_login">
         <tr> 
-            <th width="25%">メールアドレス</th>
+            <th width="35%">メールアドレス</th>
             <td><input type="text" name="lemail" size="25" value="<?=$e?>"></td>
         </tr>
         <tr>
