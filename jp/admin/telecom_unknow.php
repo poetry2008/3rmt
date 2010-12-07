@@ -159,13 +159,13 @@ function check_one(ele){
       $where_str .= " and rel='no'";
     }
 
+      // 默认显示不明和后台创建的信用卡
       $orders_query_raw = "
         select *
         from telecom_unknow
-        where 1 ".(!$_GET['keywords']?"and type is null":'')." ".$where_str."
+        where 1 ".(!$_GET['keywords']?"and (type is null or (type = 'success' and (`option` is null or `option` = '')))":'')." ".$where_str."
         order by date_added DESC
       ";
-      
       
       $orders_query_numrows_raw = "
         select count(id) as count

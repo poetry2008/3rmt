@@ -125,7 +125,7 @@ else
                 <?}?>
               </select>&nbsp;&nbsp;&nbsp;<label><input type='checkbox' value='1' name=append checked="true" />追加</label>
             <?}?>
-            <textarea name="issue" cols="55" rows="8" wrap="soft"><?=$info['issue']?></textarea></td>
+            <textarea name="issue" cols="55" rows="16" wrap="soft"><?=$info['issue']?></textarea></td>
     </tr>
     <?if($cfg->canUploadFiles()) {
         ?>

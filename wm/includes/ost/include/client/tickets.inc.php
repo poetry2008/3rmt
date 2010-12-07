@@ -64,7 +64,7 @@ $_status = '_'.$status;
 $_open = 'オープン';
 $_closed = 'クローズ';
 
-$results_type=($status)?($$_status).' 問合番号':' 全部';
+$results_type=($status)?($$_status).'':' 全部';
 //$results_type=($status)?ucfirst($status).' 問合番号':' 全部';
 $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
 ?>
@@ -81,17 +81,16 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
  <table width="100%" border="0" cellspacing="1" cellpadding="0" align="center"class="tickets_lout">
     <tr>
         <td width="60%" class="msg"><?=$showing?>&nbsp;&nbsp;<?=$results_type?></td>
-        <td nowrap >
+        <td nowrap="nowrap" valign="middle">
             <a href="view.php?status=open"><img src="images/view_open_btn.gif" alt="View Open" border=0></a> |           
             <a href="view.php?status=closed"><img src="images/view_closed_btn.gif" alt="View Closed" border=0></a> |           
-            
-            <a class="log_out" href="logout.php">ログアウト</a>
+            <a class="log_out" href="logout.php"><img src="includes/languages/japanese/images/buttons/out.gif" alt="img"></a>
         </td>
     </tr>
  </table>
  <table border="0" cellspacing="1" cellpadding="0" width="100%">
     <tr><td>
-     <table border="0" cellspacing="1" cellpadding="2" class="tickets" align="center">
+     <table width="100%" border="0" cellspacing="1" cellpadding="2" class="tickets" align="center">
         <tr>
           <th nowrap>
                 <a href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="番語順に表示 <?=$negorder?>">問合番号</a></th>
