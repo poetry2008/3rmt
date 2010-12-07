@@ -45,7 +45,7 @@ require_once(CLIENTINC_DIR.'header.inc.php');
 <div class="rcol">
   <div class="contact_left"><img src="./images/ticket_status_icon.gif" width="48" height="48"></div>
   <div class="contact_right">
-  <h3>&#36942;&#21435;&#12398;&#12362;&#21839;&#12356;&#21512;&#12431;&#12379;&#12408;&#12398;&#36820;&#20107;&#12434;&#30906;&#35469;</h3>
+  <h3>お問い合わせへの返事を確認</h3> 
   </div>
   <form class="status_form" action="contact_us_login.php" method="post">
     <div class="status_warpper">

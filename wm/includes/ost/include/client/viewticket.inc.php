@@ -22,7 +22,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
         <td><?php
             $_status = '_'.$ticket->getStatus();
             $_open = 'オープン';
-            $_close = 'クローズ'; 
+            $_closed = 'クローズ'; 
             echo $$_status;
         ?></td>
       </tr>

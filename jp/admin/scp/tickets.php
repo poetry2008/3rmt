@@ -71,7 +71,7 @@ if($_POST && !$errors):
             //Use locks to avoid double replies
             if($lock && $lock->getStaffId()!=$thisuser->getId())
                 $errors['err']='Action Denied. Ticket is locked by someone else!';
-
+            /*
             //Check attachments restrictions.
             if($_FILES['attachment'] && $_FILES['attachment']['size']) {
                 if(!$_FILES['attachment']['name'] || !$_FILES['attachment']['tmp_name'])
@@ -80,6 +80,16 @@ if($_POST && !$errors):
                     $errors['attachment']='upload dir invalid. Contact admin.';
                 elseif(!$cfg->canUploadFileType($_FILES['attachment']['name']))
                     $errors['attachment']='Invalid file type';
+            }
+            */
+             //Check attachments restrictions.
+            if($_FILES['attachment'] && $_FILES['attachment']['size']){
+              if(!$_FILES['attachment']['name'] ||!$_FILES['attachment']['tmp_name'])
+                $errors['attachment']='無効な添付ファイルです';
+              elseif(!$cfg->canUploadFiles()) //TODO: saved vs emailed attachments...admin config??
+                $errors['attachment']='アップロードディレクトリが無効です。管理者に連絡してください。';
+              elseif(!$cfg->canUploadFileType($_FILES['attachment']['name']))
+                $errors['attachment']='無効なファイル形式です';
             }
 
             //Make sure the email is not banned

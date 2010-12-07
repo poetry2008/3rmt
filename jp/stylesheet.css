@@ -625,6 +625,10 @@ a.Icon:hover {
     
 .Icon.Ticket { background:url(images/icons/ticket.gif) 0 0 no-repeat; }
 .Icon.webTicket { background:url(images/icons/ticket_source_web.gif) 0 0 no-repeat; }
+.emailTicket{
+padding-left:20px;
+}
+
 .Icon.emailTicket { background:url(images/icons/ticket_source_email.gif) 0 0 no-repeat; }
 .Icon.phoneTicket { background:url(images/icons/ticket_source_phone.gif) 0 0 no-repeat; }                
 .Icon.otherTicket { background:url(images/icons/ticket_source_other.gif) 0 0 no-repeat; }
