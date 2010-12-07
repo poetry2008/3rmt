@@ -80,7 +80,7 @@ if($_POST && is_object($ticket) && $ticket->getId()):
                 $errors['err']='Unable to post the message. Try again';
             }
         }else{
-            $errors['err']=$errors['err']?$errors['err']:'送信エラー。問合内容を再入力してください';
+            $errors['err']=$errors['err']?$errors['err']:'内容を入力しもう一度送信してください';
         }
         break;
     default:

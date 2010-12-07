@@ -426,7 +426,10 @@ list-style-type:none;
 .tickets_lout{font-size:12px; margin-bottom:5px;}
 .tickets,.infotable{font-size:12px; margin-bottom:5px;border:1px solid #CCCCCC;}
 .tickets td,.infotable td{padding:2px;}
-.tickets th,.infotable th{ background-color:#F2F2F2; text-align:left; font-size:12px;}
+.tickets th,.infotable th{ background-color:#F2F2F2; font-size:12px;}
+.tickets th{
+padding-left:3px;
+}
 #ticketthread{padding:5px; font-size:12px;border:1px solid #E0E0E0; margin-bottom:10px;margin-top:3px;}
 .message{
 font-size:12px;

@@ -1202,7 +1202,7 @@ background-color:#E0E0E0;
 .open_login th{text-align:left; font-weight:400;}
 .tickets_lout{font-size:12px; margin-bottom:5px; clear:both; width:98%;}
 .tickets td{padding:2px; font-size:12px;}
-.tickets th{text-align:left; font-weight:400;font-size:12px;}
+.tickets th{font-weight:400;font-size:12px;}
 .infotable th{
 text-align:left; font-weight:400;
 }
@@ -1221,7 +1221,7 @@ font-weight:400;
 cursor:pointer;
 }
 
-a.Icon { }
+a.Icon {padding-left:20px;}
    
 a.Icon:hover {
     text-decoration: underline;    
