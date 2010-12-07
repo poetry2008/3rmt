@@ -57,7 +57,9 @@ if(findkeyword.length<=0){
   for (keyword in findkeyword){
     keywordString+= findkeyword[keyword] + linechanger;
   }
-  return  confirm('NGキーワード '+keywordString.fontcolor("#FF0000")+' 返信内容にNGキーワードが有ります。このまま返信しますか？');
+  //return  confirm('NGキーワード '+keywordString.fontcolor("#FF0000")+' 返信内容にNGキーワードが有ります。このまま返信しますか？');
+  return confirm('NGキーワード '+keywordString+'返信内容にNGキーワードが有ります。このまま返信しますか？');
+
 }
 }
 </script>

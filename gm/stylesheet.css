@@ -1243,5 +1243,7 @@ a.Icon:hover {
     font-size: 1em;
     background-image: url(images/icons/thread.gif);
 }
-
+#errormessage{
+color:#ff0000;
+}
 
