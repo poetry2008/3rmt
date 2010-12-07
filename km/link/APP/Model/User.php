@@ -2,7 +2,7 @@
 FLEA::loadClass('FLEA_Rbac_UsersManager');
 class Model_User extends FLEA_Rbac_UsersManager
 {
-  var $tableName = 'wm_users';
+  var $tableName = 'km_users';
   var $primaryKey = 'user_id';
   var $rolesFields = 'roles';
   var $usernameField = 'username';
@@ -10,7 +10,7 @@ class Model_User extends FLEA_Rbac_UsersManager
   var $manyToMany = array(
   'tableClass' => 'Model_Role',
   'mappingName' => 'roles',
-  'joinTable' => 'wm_roles_users',
+  'joinTable' => 'km_roles_users',
   );
   /**
    * 创建用户
