@@ -74,7 +74,7 @@
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents"><?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_SUCCESS, 'action=update', 'SSL')); ?> 
-        <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 
+        <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif">&nbsp<?php echo HEADING_TITLE ; ?></h1> 
         
         <div class="comment"> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0">

@@ -56,7 +56,7 @@
       $product_price_after_tax = tep_add_tax($products[$i]['price'], tep_get_tax_rate($products[$i]['tax_class_id'])); 
       echo tep_draw_hidden_field($products[$i]['id'].'_unit_price', $product_price_after_tax, 'id="unit_price_'.$products[$i]['id'].'"');
       echo tep_draw_hidden_field('final_price', tep_add_tax($products[$i]['final_price'], tep_get_tax_rate($products[$i]['tax_class_id'])), 'id="id_'.$products[$i]['id'].'"');
-      echo '    <td align="center" style=" background:#dbfdff;padding-left:10px;padding-right:20px;">';
+      echo '<td align="center" style=" background:#e2e2e2;padding-left:10px;padding-right:20px;">';
       echo '<table>'; 
       echo '<tr>'; 
       echo '<td>'; 
@@ -79,10 +79,10 @@
       echo (!empty($data1[0]) && strlen($data1[1])<=50 && tep_get_full_count_in_order($products[$i]['quantity'], $data1[1]) ? '<span style="font-size:10px">'. tep_get_full_count_in_order($products[$i]['quantity'], $data1[1]) .'</span>': '') . '</td>' . "\n";
     } else {
       //echo '    <td align="center" class ="main" style=" background:#dbfdff">' . $products[$i]['quantity'] . (!empty($data1[0]) && strlen($data1[1])<=30 ? '<span style="font-size:10px">x'. $data1[1] .'</span>' : '') . '</td>' . "\n";
-      echo '    <td align="center" class ="main" style=" background:#dbfdff;padding-left:10px;padding-right:20px;">' . $products[$i]['quantity'] . '個' . (!empty($data1[0]) && strlen($data1[1])<=50 && tep_get_full_count_in_order($products[$i]['quantity'], $data1[1]) ? '<span style="font-size:10px">'. $data1[1] .'</span>' : '') . '</td>' . "\n";
+      echo '    <td align="center" class ="main" style=" background:#e2e2e2;padding-left:10px;padding-right:20px;">' . $products[$i]['quantity'] . '個' . (!empty($data1[0]) && strlen($data1[1])<=50 && tep_get_full_count_in_order($products[$i]['quantity'], $data1[1]) ? '<span style="font-size:10px">'. $data1[1] .'</span>' : '') . '</td>' . "\n";
     }
     //add products image 
-    echo '<td align="center" class="main" style=" background:#dbfdff;padding-left:10px;padding-right:20px;">';
+    echo '<td align="center" class="main" style=" background:#e2e2e2;padding-left:10px;padding-right:20px;">';
     $pimage_query = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".intval($products[$i]['id'])."'"); 
     $pimage_res = tep_db_fetch_array($pimage_query); 
 
@@ -99,9 +99,9 @@
   
 // Product name, with or without link
     if (strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
-      echo '    <td class="main" style=" background:#dbfdff">'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART))?'<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . tep_get_prid($products[$i]['id'])) . '">' . $products[$i]['model'] . '</a><br>':'').'<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . tep_get_prid($products[$i]['id'])) . '"><b>' . $products[$i]['name'] . '</b></a>';
+      echo '    <td class="main" style=" background:#e2e2e2">'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART))?'<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . tep_get_prid($products[$i]['id'])) . '">' . $products[$i]['model'] . '</a><br>':'').'<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . tep_get_prid($products[$i]['id'])) . '"><b>' . $products[$i]['name'] . '</b></a>';
     } else {
-      echo '    <td class="main" style=" background:#dbfdff">'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART))?'<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . tep_get_prid($products[$i]['id'])) . '">' . $products[$i]['model'] . '</a><br>':'').'<b>' . $products[$i]['name'] . '</b>';
+      echo '    <td class="main" style=" background:#e2e2e2">'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART))?'<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . tep_get_prid($products[$i]['id'])) . '">' . $products[$i]['model'] . '</a><br>':'').'<b>' . $products[$i]['name'] . '</b>';
     }
 
 // Display marker if stock quantity insufficient
@@ -126,16 +126,16 @@
 
 // Tax (not in shopping cart, tax rate may be unknown)
     if (!strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
-      echo '    <td align="center" class="main" style=" background:#dbfdff">' . number_format($products[$i]['tax'], TAX_DECIMAL_PLACES) . '%</td>' . "\n";
+      echo '    <td align="center" class="main" style=" background:#e2e2e2">' . number_format($products[$i]['tax'], TAX_DECIMAL_PLACES) . '%</td>' . "\n";
     }
 
 // Product price  
     if (!strstr($PHP_SELF, FILENAME_ACCOUNT_HISTORY_INFO)) {
       //echo '    <td align="right" class="main" style=" background:#dbfdff"><span id="pri_'.$products[$i]['id'] .'"><b>' .  $currencies->display_price($products[$i]['price'], tep_get_tax_rate($products[$i]['tax_class_id']), $products[$i]['quantity']) . '</b></span>';
       // edit total 
-      echo '    <td align="right" class="main" style="background:#dbfdff"><span id="pri_'.$products[$i]['id'] .'">'.  $currencies->display_price($products[$i]['price'], tep_get_tax_rate($products[$i]['tax_class_id']), $products[$i]['quantity']) . '</span>';
+      echo '    <td align="right" class="main" style="background:#e2e2e2"><span id="pri_'.$products[$i]['id'] .'">'.  $currencies->display_price($products[$i]['price'], tep_get_tax_rate($products[$i]['tax_class_id']), $products[$i]['quantity']) . '</span>';
     } else {
-      echo '    <td align="right" class="main" style=" background:#dbfdff"><b>' . $currencies->display_price($products[$i]['price'], $products[$i]['tax'], $products[$i]['quantity']) . '</b>';
+      echo '    <td align="right" class="main" style=" background:#e2e2e2"><b>' . $currencies->display_price($products[$i]['price'], $products[$i]['tax'], $products[$i]['quantity']) . '</b>';
     }
 
 // Product options prices
@@ -166,7 +166,7 @@
   
     echo '</td>' . "\n"; 
     if (strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
-      echo '<td align="center" style=" background:#dbfdff;"><a class="button_delete02" href="'.tep_href_link(FILENAME_SHOPPING_CART, 'products_id='.$products[$i]['id'].'&action=delete', 'SSL').'">'.TEXT_DEL_LINK.'</a></td>'; 
+      echo '<td align="center" style=" background:#e2e2e2;"><a class="button_delete02" href="'.tep_href_link(FILENAME_SHOPPING_CART, 'products_id='.$products[$i]['id'].'&action=delete', 'SSL').'">'.TEXT_DEL_LINK.'</a></td>'; 
     }
     echo '  </tr>' . "\n";
      

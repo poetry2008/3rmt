@@ -27,7 +27,7 @@
 調査中
 --------------------------- */
 .productsNotifications {
-	background: #f2fff7;
+	background: #e2e2e2;
 }
 /* ---------------------------
 「ご注文の最終確認」ページ「変更」文字
@@ -101,7 +101,8 @@ TD.headerNavigation {
 A：ヘッダー（ナビゲーションのリンク）
 --------------------------- */
 A.headerNavigation { 
-	color: #000;
+	color: #555;
+	font-size:10px;
 }
 /* ---------------------------
 A：ヘッダー（ナビゲーション・カーソルが上に乗ったとき）
@@ -174,10 +175,10 @@ TABLE：情報ボックス
 }
 .product_info_box .small_table td{
 	border: none;
-	background: #f5ffff url(images/design/box/dot.gif) bottom repeat-x!important;
+	background: #F6F6F5 url(images/design/box/dot.gif) bottom repeat-x!important;
 }
 .product_info_box .p_i_b_title{
-	color: #00474b;
+	color: #336600;
 	font-weight: bold;
 	background: #fff url(images/design/box/product_info_box_td.gif) bottom repeat-x;
 }
@@ -199,7 +200,7 @@ TABLE：情報ボックス（コンテンツ）
 	background: #fff;
 }
 .infoBoxContents td a{
-	color: #06727d;
+	color: #336600;
 }
 /* ---------------------------
 調査中
@@ -235,7 +236,7 @@ TD.infoBox, SPAN.infoBox {
 TR：奇数行
 --------------------------- */
 TR.accountHistory-odd, TR.addressBook-odd, TR.alsoPurchased-odd, TR.payment-odd, TR.productListing-odd, TR.productReviews-odd, TR.upcomingProducts-odd, TR.shippingOptions-odd {
-	background: #F5FFFF;
+	background: #F6F5F5;
 }
 /* ---------------------------
 TR：偶数行
@@ -534,7 +535,7 @@ P.description{
 .formAreaTitle {
 	font-size: 11px;
 	font-weight: bold;
-	color: #003639;
+	color: #666666;
 }
 
 .smallText {
@@ -571,15 +572,15 @@ font-size:11px;
 display:block;
 overflow:hidden;
 text-indent:-2000px;
-width:55px;
-height:25px;
+width:35px;
+height:17px;
 background-image: url(./includes/languages/japanese/images/buttons/button_delete02.gif);
 }
 .shopping_cart_continue{
 display:block;
 cursor:pointer;
-width:80px;
-height:25px;
+width:72px;
+height:17px;
 padding:0;
 border:0;
 background-image: url(./includes/languages/japanese/images/buttons/button_continue_shopping.gif);
@@ -587,23 +588,25 @@ background-image: url(./includes/languages/japanese/images/buttons/button_contin
 .shopping_cart_checkout{
 display:block;
 cursor:pointer;
-width:74px;
-height:25px;
+width:58px;
+height:17px;
 padding:0;
 border:0;
 background-image: url(./includes/languages/japanese/images/buttons/button_checkout.gif);
 }
 .waring_category {
 color:#000;
-margin:5px 10px 2px 0;
+margin:5px 0 2px 0;
 overflow:hidden;
 padding:5px 7px;
-border:2px solid #FF8080;
+background-color:#e2e2e2;
+border:1px solid #CAC6BE;
 }
 .waring_product{
 color:#000;
 margin:5px 0 5px 0;
 overflow:hidden;
 padding:5px 7px;
-border:2px solid #FF8080;
+background-color:#e2e2e2;
+border:1px solid #CAC6BE;
 }

@@ -4,7 +4,16 @@
 */
 ?>
 <!-- latest_news //-->
-<p class="pageHeading">RMTワールドマネーからのお知らせ</p>
+<div class="latest_news_box">
+<div class="pageHeading">
+<div class="pageHeading_left">
+<img src="images/menu_ico.gif" alt="" align="top">&nbsp;RMTワールドマネーからのお知らせ
+</div>
+    <div class="pageHeading_right">
+        <a href='<?php echo tep_href_link('latest_news.php');?>'>>>MORE</a>
+        <?php //<img src="includes/languages/japanese/images/buttons/button_more.gif" width="56" height="25" alt="more" title="more" >?>
+    </div>
+</div>
 <div class="comment">
     <div id="news">
         <ul class="news_ul">
@@ -48,10 +57,7 @@ $row++;
     ?>
         </ul>
     </div>
-    <div align="right" style="padding: 5px 10px 0px 0px;">
-        <a href='<?php echo tep_href_link('latest_news.php');?>'>more</a>
-        <?php //<img src="includes/languages/japanese/images/buttons/button_more.gif" width="56" height="25" alt="more" title="more" >?>
-    </div>
 </div>
-<p class="pageBottom"></p>
+<div class="pageBottom"></div>
+</div>
 <!-- latest_news_eof //-->

@@ -44,7 +44,7 @@ function checkForm() {
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
-      <td valign="top" id="contents"><h1 class="pageHeading"><?php echo HEADING_TITLE ; ?> </h1>  
+      <td valign="top" id="contents"><h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif">&nbsp;<?php echo HEADING_TITLE ; ?> </h1>  
       <?php
   if ($valid_product == false) {
 ?> 
@@ -63,7 +63,7 @@ function checkForm() {
   <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
               <tr> 
                 <td class="main"><b><?php echo SUB_TITLE_PRODUCT; ?></b> <?php echo $product_info['products_name']; ?></td> 
-                <td rowspan="4" valign="top" align="right"><br> 
+                <td rowspan="4" valign="top" align="right"> 
                 <?php echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image'], $product_info['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"'); ?></td> 
               </tr> 
               <tr> 

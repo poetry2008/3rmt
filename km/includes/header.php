@@ -38,8 +38,8 @@
   }
 ?>
 <script src="../Scripts/swfobject_modified.js" type="text/javascript"></script>
-
-<div id="title">
+<div id="header">
+  <div id="title">
   <?php
   if (!isset($_GET['cPath'])) $_GET['cPath'] = NULL; //del notice
   if (!isset($_GET['products_id'])) $_GET['products_id'] = NULL; //del notice
@@ -51,52 +51,16 @@
     echo 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト ワールドマネーをお気に入りに追加して下さい！</a>' . "\n";
   }  
 ?>
-</div>
-<div id="header">
-  <div id="header_flash">
-    <ul>
-      <li class="header_flash_left"></li>
-      <li class="header_flash_content">
-        <table cellpadding="0" cellspacing="0" border="0" summary="logo">
-          <tr>
-            <td>
-              <a href="http://rmt.worldmoney.jp/"><img src="images/design/logo.jpg" width="200" height="103" alt="RMT" ></a>
-            </td>
-            <td>
-                <object id="FlashID" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="662" height="103">
-                  <param name="movie" value="images/design/header_flash.swf" >
-                  <param name="quality" value="high" >
-                  <param name="wmode" value="opaque" >
-                  <param name="swfversion" value="8.0.35.0" >
-                  <param name="expressinstall" value="Scripts/expressInstall.swf" >
-                </object>
-                <!--[if !IE]>-->
-                <object type="application/x-shockwave-flash" data="images/design/header_flash.swf" width="662" height="103">                  
-                  <param name="quality" value="high" >
-                  <param name="wmode" value="opaque" >
-                  <param name="swfversion" value="8.0.35.0" >
-                  <param name="expressinstall" value="Scripts/expressInstall.swf" >
-                </object>
-                <!--<![endif]-->
-            </td>
-          </tr>
-        </table>
-      </li>
-      <li class="header_flash_right"></li>
-    </ul>
   </div>
   <div id="header_Menu">
-    <ul>
-      <li class="header_menu_left"></li>
-      <li class="header_menu_content">
-        <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="menu box" style="margin-top: 11px;">
+      <div class="header_menu_content">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="menu box">
           <tr>
             <td width="432">
-              <div style="width: 432px; height: 43px; overflow:hidden;">
                 <?php echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, '', $request_type, false), 'get')."\n"; ?>
-                <table style="margin-top: 3px;" cellpadding="2" cellspacing="2" summary="search">
+                <table cellpadding="0" cellspacing="0" summary="search">
                   <tr>
-                    <td><img class="middle" src="images/design/button/search_text.gif" width="76" height="25" alt="RMT検索"></td>
+                    <td><img src="images/design/button/search_text.gif" width="85" height="28" alt="RMT検索"></td>
                     <td>
                       <?php
 // --- get categoris list ( parent_id = 0 ) --- //
@@ -160,45 +124,28 @@
             echo tep_hide_session_id(); 
         ?>
                 </form>
-              </div>
             </td>
-            <td align="right" width="372">
-              <div style=" width:372px; overflow: hidden; height: 43px;">
-                <table summary="menu">
-                  <tr>
-                    <td>
-                      <a href="<?php echo tep_href_link('rss.php') ; ?>" class="header_menu_1">
+            <td align="right" class="header_m_login">
+                      <a href="<?php echo tep_href_link('rss.php') ; ?>" class="header_menu_1">RSS
                       <?php //echo tep_image(DIR_WS_IMAGES.'design/button/rss.gif','RSS') ; ?>
                       </a>
-                      <a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'','SSL') ; ?>" class="header_menu_2">
+                      <a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'','SSL') ; ?>" class="header_menu_2">ショッピングカート
                       <?php //echo tep_image(DIR_WS_IMAGES.'design/button/shopping_cart.gif',HEADER_TITLE_CART_CONTENTS);?>
                       </a>
-                      <a href="<?php echo tep_href_link(FILENAME_CHECKOUT_PRODUCTS,'','SSL') ; ?>" class="header_menu_3">
+                      <a href="<?php echo tep_href_link(FILENAME_CHECKOUT_PRODUCTS,'','SSL') ; ?>" class="header_menu_3">レジへ進む
                       <?php //echo tep_image(DIR_WS_IMAGES.'design/button/checkout.gif',HEADER_TITLE_CHECKOUT);?>
                       </a>
-                    </td>
-                    <td width="88" align="right" style="background-repeat: no-repeat;"><span id="jk-shoppingcart" style="font-size:12px"><?php echo $currencies->format($cart->show_total());?></span></td>
-                  </tr>
-                </table>
-              </div>
+                    <div class="header_menu_4">
+                    <span id="jk-shoppingcart" style="font-size:12px"><?php echo $currencies->format($cart->show_total());?></span>
+                    </div>
             </td>
           </tr>
         </table>
-      </li>
-      <li class="header_menu_right"></li>
-    </ul>
+    </div>
   </div>
   <div class="header_Navigation">
-    <ul>
-      <li class="header_navigation_left"></li>
-      <li class="header_navigation_content">
-        <p class="header_Navigation_p">
           <a href="<?php echo tep_href_link(FILENAME_SITEMAP,'','NONSSL');?>"><?php echo HEADER_TITLE_SITEMAP ; ?></a>
-          &nbsp;&nbsp;<?php echo $breadcrumb->trail(' &raquo; '); ?></p>
-      </li>
-      <li class="header_navigation_right"></li>
-    </ul>
-  </div>
+          &nbsp;&nbsp;<?php echo $breadcrumb->trail(' &raquo; '); ?>
 </div>
 <?php
   if (isset($_GET['error_message']) && tep_not_null($_GET['error_message'])) {

@@ -33,7 +33,7 @@ if (
           and r.site_id = ".SITE_ID
         );
     if(tep_db_num_rows($reviews_query)) {
-      echo  '<div class="pageHeading_long">'.$product_info['products_name'] .'のレビュー</div>'."\n" . '<div class="comment_long">'."\n" ;
+      echo  '<div class="pageHeading_long"><img align="top" src="images/menu_ico.gif" alt="">&nbsp;'.$product_info['products_name'] .'のレビュー</div>'."\n" . '<div class="comment_long">'."\n" ;
       while ($reviews = tep_db_fetch_array($reviews_query)) {
         echo '<div class="reviews_area"><p class="main">
 <b>' . sprintf(TEXT_REVIEW_BY, tep_output_string_protected($reviews['customers_name'])) . '</b>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'stars_' . $reviews['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $reviews['reviews_rating'])) . '[' . sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $reviews['reviews_rating']) . ']
@@ -43,17 +43,19 @@ if (
       //if(MAX_RANDOM_SELECT_REVIEWS > tep_db_num_rows($reviews_query)){
       //  echo '<div align="right"><a href="'tep_href_link(FILENAME_PRODUCT_REVIEWS,'products_id='.(int)$_GET['products_id']).'">レビュー一覧へ</a></div>' ;
       //}  
-      echo '</div><p class="pageBottom_long"></p>' . "\n";
+      echo '</div><div class="pageBottom_long"></div>' . "\n";
    } 
 } else {
     if (isset($_GET['cPath']) && $cPath_array) {
       $subcid = tep_get_categories_id_by_parent_id($cPath_array[count($cPath_array) - 1]);
     }
 ?>
-<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 10px;" summary="reviews">
-  <tr><td height="44"><a href="<?php echo tep_href_link(FILENAME_REVIEWS); ?>"><img width="171" height="44" alt="RMTレビュー掲示板" src="images/design/box/reviews.gif" ><?php //echo tep_image(DIR_WS_IMAGES.'design/box/reviews.gif',BOX_HEADING_REVIEWS,171,44); ?></a></td></tr>
-  <tr>
-    <td class="boxText" align="center" style="padding: 3px 14px 0px 14px; background: url(images/design/box/reviews_content_bg.gif) repeat-y;">
+  <div class="reviews_box">
+  <div class="menu_top_reviews">
+  <a href="<?php echo tep_href_link(FILENAME_REVIEWS); ?>"><img src="images/menu_ico.gif" alt="" align="top">&nbsp;レビコー
+  <?php //echo tep_image(DIR_WS_IMAGES.'design/box/reviews.gif',BOX_HEADING_REVIEWS,171,44); ?></a>
+  </div>
+    <div class="boxText" align="center">
     <?php
   $random_select = "
   select *
@@ -127,16 +129,12 @@ if (
     echo BOX_REVIEWS_NO_REVIEWS;
   }
 ?>
-    </td>
-  </tr>
-    <tr>
-      <td>
-          <img src="images/design/box/reviews_bottom_bg.gif" width="171" height="18" alt="" >
-        </td>
-    </tr>
-</table>
+          <div class="reviews_tom"><img height="14" width="170" alt="" src="images/design/box/box_bottom_bg_01.gif"></div>
+</div>
+    </div>
 <!-- reviews_eof //-->
 <?php
   }
 }
 ?>
+

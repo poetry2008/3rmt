@@ -18,10 +18,14 @@
 <?php
   if ( ($listing_numrows > 0) && ( (PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3') ) ) {
 ?>
-<table border="0" width="100%" cellspacing="0" cellpadding="2" style="margin-top:10px;background: url(images/design/box/product_listing_page.gif) repeat-x; height: 23px; color: #005c69;">
+<table border="0" width="100%" cellspacing="0" cellpadding="2" class="product_list_page">
   <tr>
-    <td class="smallText"><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
-    <td align="right" class="smallText">&nbsp;<?php echo TEXT_RESULT_PAGE; ?> <?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('sort', 'page', 'info', 'x', 'y'))); ?>&nbsp;</td>
+    <td align="left">
+	<?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?>
+    </td>
+    <td align="right">
+    &nbsp;<?php echo TEXT_RESULT_PAGE; ?> <?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('sort', 'page', 'info', 'x', 'y'))); ?>&nbsp;
+    </td>
   </tr>
 </table>
 <?php
@@ -29,7 +33,7 @@
 ?>
 <!--select searach_eof// -->
 <!-- <div class="underline">&nbsp;</div> -->
-<table border="0" width="100%" cellspacing="0" cellpadding="0" style="background: #f2f2f2; padding-top: 10px;">
+<table border="0" width="100%" cellspacing="0" cellpadding="0"  class="product_list_info">
   <tr>
     <td>
 <?php
@@ -126,18 +130,15 @@ if (!isset($listing['products_cflag'])) $listing['products_cflag'] = NULL;//del 
 <?php
   if ( ($listing_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '2') || (PREV_NEXT_BAR_LOCATION == '3')) ) {
 ?>
-  <tr>
-    <td>
-      <table border="0" width="100%" cellspacing="0" cellpadding="2" style="background: url(images/design/box/product_listing_page.gif) repeat-x; height: 23px; color: #005c69; margin-top: 10px;">
-        <tr>
-          <td class="smallText"><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
-          <td align="right" class="smallText">&nbsp;<?php echo TEXT_RESULT_PAGE; ?> <?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('sort', 'page', 'info', 'x', 'y'))); ?>&nbsp;</td>
-        </tr>
-      </table>
-    </td>
-  </tr>
+
 <?php
   }
 ?>
 </table>
+      <table border="0" width="100%" cellspacing="0" cellpadding="2" class="product_list_page">
+        <tr>
+          <td align="left"><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
+          <td align="right">&nbsp;<?php echo TEXT_RESULT_PAGE; ?> <?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('sort', 'page', 'info', 'x', 'y'))); ?>&nbsp;</td>
+        </tr>
+      </table>
 <div id="dis_clist"></div>

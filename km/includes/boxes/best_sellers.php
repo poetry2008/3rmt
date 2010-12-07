@@ -68,10 +68,9 @@
   if (tep_db_num_rows($best_sellers_query) >= MIN_DISPLAY_BESTSELLERS) {
 ?>
 <!-- best_sellers //-->
-<table width="100%" border="0" cellspacing="0" cellpadding="0" style="background: url(images/design/box/ranking_content_bg.gif) repeat-y; margin-bottom: 10px;" summary="best sellers box">
-  <tr>
-      <td height="39"><img width="171" height="39" alt="RMTランキング" src="images/design/box/ranking.gif"><?php //echo tep_image(DIR_WS_IMAGES.'design/box/ranking.gif',BOX_HEADING_BESTSELLERS,'171','39'); ?></td>
-    </tr>
+      <div class="ranking_warpper">
+      <div class="menu_top_ranking"><img src="images/menu_ico.gif" alt="" align="top">&nbsp;ランキング</div>
+	  <?php //echo tep_image(DIR_WS_IMAGES.'design/box/ranking.gif',BOX_HEADING_BESTSELLERS,'171','39'); ?>
 <?php
   $info_box_contents = array();
   $info_box_contents[] = array('text' => BOX_HEADING_BESTSELLERS);
@@ -84,14 +83,9 @@
     $rows++;
     // $bestsellers_list .= '<tr><td class="infoBoxContents" valign="top">' . tep_row_number_format($rows) . '.</td><td class="infoBoxContents"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']) . '">' . $best_sellers['products_name'] . '</a></td></tr>';
 ?>
-  <tr>
-      <td>
           <div class="ranking_area">       
             <table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" summary="ranking">
                 <tr>
-                    <td width="21" class="bestseller_img">
-                        <img src="images/design/box/ranking_<?php echo $rows; ?>.gif" width="21" height="16" alt="<?php echo 'ランキング' . $rows . '位'; ?>">
-                    </td>
                     <td class="bestseller_text">
                         <nobr><a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']); ?>" title="<?php echo $best_sellers['products_name']; ?>"><?php echo $best_sellers['products_name']; ?></a></nobr>
                     </td>
@@ -107,15 +101,12 @@
                     </td>
                 </tr>
             </table>
-            </div>
-    </td>
-    </tr>  
+            </div> 
 <?php
     }
-?>  <tr>
-    <td colspan="2"><img src="images/design/box/ranking_bottom_bg.gif" width="171" height="11" alt="" ></td>
-  </tr>
-</table>
+?>  
+    <div class="ranking_bottom"><img src="images/design/box/box_bottom_bg_01.gif" width="170" height="14" alt="" ></div>
+</div>
 <!-- best_sellers_eof //-->
 <?php
   }

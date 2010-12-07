@@ -66,7 +66,7 @@
         <?php
     } else {
     ?>
-    <h1 class="pageHeading"><?php echo PAGE_HEADING_TITLE ; ?></h1> 
+    <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif">&nbsp;<?php echo PAGE_HEADING_TITLE ; ?></h1> 
         <div class="comment">
        <?php echo PAGE_TEXT_INFORMATION; ?>
        </div>
@@ -75,7 +75,7 @@
       }
           } else {
           ?>
-          <h1 class="pageHeading"><?php echo PAGE_NAVBAR_TITLE;?></h1> 
+          <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif">&nbsp;<?php echo PAGE_NAVBAR_TITLE;?></h1> 
           <div class="comment">
           <ul class="comment_page01">
           <?php

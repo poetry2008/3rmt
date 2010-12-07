@@ -26,7 +26,7 @@
   <!-- body //-->
   <table width="900" summary="container" border="0" cellpadding="0" cellspacing="0" class="side_border">
     <tr>
-      <td width="<?php echo BOX_WIDTH; ?>" valign="top" class="left_colum_border">
+      <td valign="top" class="left_colum_border">
         <!-- left_navigation //-->
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
         <!-- left_navigation_eof //-->
@@ -40,6 +40,7 @@ if ($category_depth == 'nested') {
 ?>
   <td valign="top" id="contents_long">
         <h1 class="pageHeading_long">
+        <img align="top" alt="" src="images/menu_ico.gif">&nbsp; 
         <?php
         $sel_tags_query = tep_db_query("select * from ".TABLE_TAGS." where tags_id =
             '".(int)$_GET['tags_id']."'"); 
@@ -51,7 +52,7 @@ if ($category_depth == 'nested') {
         </h1> 
         <div class="comment_long">
         <?php include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); ?></div>
-        <p class="pageBottom_long"></p>
+        <div class="pageBottom_long"></div>
         </td>
 <?php
 } elseif ($category_depth == 'products' || $_GET['manufacturers_id']) {
@@ -64,7 +65,7 @@ if ($category_depth == 'nested') {
     echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
   }
 ?>
-    <h1 class="pageHeading_long"><?php
+    <h1 class="pageHeading_long"><img align="top" alt="" src="images/menu_ico.gif">&nbsp;<?php
   if (isset($cPath_array)) {
     echo $seo_category['categories_name'];
   } elseif ($_GET['manufacturers_id']) {
@@ -85,7 +86,7 @@ if ($category_depth == 'nested') {
  
 ?></h2>
       <?php include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); ?></div>
-      <p class="pageBottom_long"></p>
+      <div class="pageBottom_long"></div>
       </td> 
 <?php
 } elseif($_GET['colors'] && !empty($_GET['colors'])) {

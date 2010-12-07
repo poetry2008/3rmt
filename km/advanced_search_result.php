@@ -101,7 +101,7 @@
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
-      <td valign="top" id="contents"> <h1 class="pageHeading_long"><?php echo HEADING_TITLE ; ?></h1> 
+      <td valign="top" id="contents"> <h1 class="pageHeading_long"><img align="top" alt="" src="images/menu_ico.gif">&nbsp<?php echo HEADING_TITLE ; ?></h1> 
        
         <div class="comment_long"> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
@@ -280,7 +280,7 @@
             </tr> 
           </table> 
         </div>
-        <p class="pageBottom_long"></p>
+        <div class="pageBottom_long"></div>
         </td> 
       <!-- body_text_eof //--> 
 

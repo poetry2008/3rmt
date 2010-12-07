@@ -59,13 +59,13 @@
   if ($valid_product == false) {
 ?> 
       
-      <h1 class="pageHeading"><?php echo HEADING_TITLE_ERROR; ?></h1> 
+      <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif">&nbsp;<?php echo HEADING_TITLE_ERROR; ?></h1> 
       <div class="comment"><?php echo ERROR_INVALID_PRODUCT; ?></div>
       <?php
   } else {
     $product_info = tep_db_fetch_array($product_info_query);
 ?> 
-      <h1 class="pageHeading"><?php echo sprintf(HEADING_TITLE, $product_info['products_name']); ?></h1> 
+      <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif">&nbsp;<?php echo sprintf(HEADING_TITLE, $product_info['products_name']); ?></h1> 
       
       <?php
     $error = false;
@@ -138,7 +138,7 @@
         if ($fromname_error == true) $your_name_prompt .= '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
         if (!isset($_GET['from'])) $_GET['from'] = NULL;
         $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']),'class="input_text"');
-        if ($fromemail_error == true) $your_email_address_prompt .= ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
+        if ($fromemail_error == true) $your_email_address_prompt .= '<br>'.ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
       }
 ?> 
       <?php echo tep_draw_form('email_friend', tep_href_link(FILENAME_TELL_A_FRIEND, 'action=process&products_id=' . $_GET['products_id'])) . tep_draw_hidden_field('products_name', $product_info['products_name']); ?> 

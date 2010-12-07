@@ -3,7 +3,7 @@
   $Id$
 */
 
-  require(DIR_WS_BOXES . 'quick_link.php');
+  //require(DIR_WS_BOXES . 'quick_link.php');
 
   if ( (USE_CACHE == 'true') && !SID ) {
     echo tep_cache_categories_box();
@@ -17,8 +17,8 @@
   }
 */
 
-  require(DIR_WS_BOXES . 'information.php');
-  require(DIR_WS_BOXES . 'banners.php');
+  //require(DIR_WS_BOXES . 'information.php');
+  //require(DIR_WS_BOXES . 'banners.php');
   //require(DIR_WS_BOXES . 'cl.php');
 
 /*s

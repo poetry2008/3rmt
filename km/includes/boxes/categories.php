@@ -13,6 +13,7 @@ $categories_query = tep_db_query("
              c.categories_status, 
              c.parent_id,
              cd.site_id,
+             cd.categories_image2,
              c.sort_order
       from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
       where c.categories_status != '1' 
@@ -35,18 +36,27 @@ if($cPath){
 ?>
 
 <div id='categories'>
-  <img width="172" height="51" alt="RMT 価格" title="RMT 価格" src="images/design/box/menu.gif">
+  <div class="menu_top"><img src="images/menu_ico.gif" alt="" align="top">&nbsp;MENU</div>
   <ul class='l_m_category_ul'>
     <?php foreach($categories as $key => $category) {?>
       <?php if($cPath && in_array($category['categories_id'], $id)) {?>
         <li class='l_m_category_li2'>
           <a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>">
             <?php if (in_array($category['categories_id'], $id)) {?>
-              <strong>
             <?php }?>
-            <?php echo $category['categories_name'];?>
+            <?php //echo $category['categories_name'];?>
+            <?php 
+            if (!empty($category['categories_image2'])) {
+              if (file_exists(DIR_FS_CATALOG.'/'.DIR_WS_IMAGES.'categories/'.$category['categories_image2'])) {
+                echo '<img src="images/categories/'.$category['categories_image2'].'" alt="'.$category['categories_name'].'" width="147" height="33">'; 
+              } else {
+                echo '<img src="images/desingn/category_no_img.gif" alt="'.$category['categories_name'].'" width="147" height="33">'; 
+              }
+            } else {
+              echo '<img src="images/desingn/category_no_img.gif" alt="'.$category['categories_name'].'" width="147" height="33">'; 
+            }
+            ?>
             <?php if (in_array($category['categories_id'], $id)) {?>
-              </strong>
             <?php }?>
           </a>
         <?php
@@ -158,40 +168,22 @@ if($cPath){
           <?}?>
           </ul>
       <?php } else {?>
-        <li class='l_m_category_li'><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>"><?php echo $category['categories_name'];?></a></li>
+        <li class='l_m_category_li'><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>">
+		<?php 
+		if (!empty($category['categories_image2'])) {
+                  if (file_exists(DIR_FS_CATALOG.'/'.DIR_WS_IMAGES.'categories/'.$category['categories_image2'])) {
+                    echo '<img src="images/categories/'.$category['categories_image2'].'" alt="'.$category['categories_name'].'" width="147" height="33">'; 
+                  } else {
+                    echo '<img src="images/desingn/category_no_img.gif" alt="'.$category['categories_name'].'" width="147" height="33">'; 
+                  }
+                } else {
+                  echo '<img src="images/desingn/category_no_img.gif" alt="'.$category['categories_name'].'" width="147" height="33">'; 
+		}
+		?>
+        </a></li>
       <?php }?>
     <?php }?>
         </ul>
-  <img src="images/design/box/box_bottom_bg_01.gif" width="172" height="14" alt="" >
-</div>
-<div>
-<img src="images/design/box/new_title01.gif" width="172" height="51" alt="こだわり検索" >
-<ul class="l_m_category_ul">
-    <li class="l_m_category_li">
-      <a href="<?php echo tep_href_link(FILENAME_SPECIALS); ?>"><?php echo BOX_HEADING_SPECIALS; ?></a>
-    </li>
-<?php
-// ccdd
-  $present_query = tep_db_query("
-      select count(*) as cnt 
-      from " . TABLE_PRESENT_GOODS . "
-      where site_id = '".SITE_ID."'
-  ");
-  $present_result = tep_db_fetch_array($present_query);
-  if($present_result['cnt'] > 0) {
-    echo '    <li class="l_m_category_li">
-      
-      <a href="' . tep_href_link(FILENAME_PRESENT) . '">' . BOX_HEADING_PRESENT . '</a>
-    </li>' . "\n";
-  }
-?>
-    <li class="l_m_category_li">
-      <a href="<?php echo tep_href_link('manufacturers.php'); ?>"><?php echo MENU_MU; ?></a>
-    </li>
-    <li class="l_m_category_li">
-      <a class='l_m_category_a' href="<?php echo tep_href_link('tags.php');?>">タグ一覧</a>
-    </li>
-  </ul>
-  <img src="images/design/box/box_bottom_bg_01.gif" width="172" height="14" alt="" >
+  <div class="categories_bottom"><img src="images/design/box/box_bottom_bg_01.gif" width="170" height="14" alt="" ></div>
 </div>
 <!-- categories_eof //-->

@@ -22,7 +22,7 @@
       </td>
       <!-- body_text //-->
       <td valign="top" id="contents">
-        <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?>RMTワールドマネーの特価商品</h1>
+        <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif">&nbsp;<?php echo HEADING_TITLE ; ?>RMTワールドマネーの特価商品</h1>
         <div class="comment">
                 <table border="0" width="100%" cellspacing="0" cellpadding="0">
 <?php
@@ -82,7 +82,7 @@
     $row++;
     echo '<td align="center" width="33%" class="smallText" style="vertical-align:top;"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $specials['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/' . $specials['products_image'], $specials['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"') . '<br>' . $specials['products_name'] . '<br>';
     
-    echo '<img src="images/design/button/button_order.gif" width="82" height="25" alt="注文する"></a><br>';
+    echo '<img src="images/design/button/button_order.gif" width="69" height="17" alt="注文する"></a><br>';
     
     echo '<s>' . $currencies->display_price(tep_get_price($specials['products_price'], $specials['products_price_offset'], $specials['products_small_sum']), tep_get_tax_rate($specials['products_tax_class_id'])) . '</s><br><span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($specials['products_price'], $specials['products_price_offset'], $specials['products_small_sum']), tep_get_tax_rate($specials['products_tax_class_id'])) . '</span></td>' . "\n";
     if ((($row / 3) == floor($row / 3))) {

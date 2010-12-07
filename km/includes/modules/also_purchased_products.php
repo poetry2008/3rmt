@@ -59,7 +59,7 @@
   echo '</table>' ;
 ?> 
 </div>
-<p class="pageBottom_long"></p>
+<div class="pageBottom_long"></div>
 <!-- also_purchased_products_eof //--> 
 <?php
     }

@@ -92,7 +92,7 @@
     $col = 0;
 ?>
 <!-- new_products //-->
-<h3 class="pageHeading"><?php echo $new_c_name; ?>の新着商品</h3>
+<h3 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif">&nbsp;<?php echo $new_c_name; ?>の新着商品</h3>
 <div class="comment">
 <?php if (0 < $num_products) { ?>
 <table width="100%"  border="0" cellspacing="0" cellpadding="0">

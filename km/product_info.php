@@ -131,7 +131,7 @@ function change_num(ob, targ, quan,a_quan)
     <?php if (tep_show_warning(tep_get_products_categories_id($product_info['products_id'])) or $product_info['products_status'] != '1') {
       echo '<div class="waring_product">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
     } ?>
-         <h1 class="pageHeading_long"><?php echo $product_info['products_name']; ?></h1>
+         <h1 class="pageHeading_long"><img align="top" alt="" src="images/menu_ico.gif">&nbsp;<?php echo $product_info['products_name']; ?></h1>
          <div class="comment_long">
          <h2 class="line"><?php echo ds_tep_get_categories((int)$_GET['products_id'],1); ?> <?php echo ds_tep_get_categories((int)$_GET['products_id'],2); ?></h2>
          <table width="100%"  border="0" cellpadding="0" cellspacing="0" summary="rmt">
@@ -469,9 +469,9 @@ while($tag = tep_db_fetch_array($tag_query)) {
         }
  ?>
  </div>
-        <p class="pageBottom_long"></p>
+        <div class="pageBottom_long"></div>
          <?php if($description){?>
-            <h3 class="pageHeading_long"><?php echo $product_info['products_name']; ?>について</h3>
+            <h3 class="pageHeading_long"><img align="top" alt="" src="images/menu_ico.gif">&nbsp;<?php echo $product_info['products_name']; ?>について</h3>
             <!-- 説明文　-->
             <p class="comment_long">
               <?php 
@@ -480,7 +480,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
             echo $description;
             ?>
             </p>
-         <p class="pageBottom_long"></p>
+         <div class="pageBottom_long"></div>
          <?php }?>
         <?php
 //    $reviews = tep_db_query("select count(*) as count from " . TABLE_REVIEWS . " where products_id = '" . $_GET['products_id'] . "'");
@@ -537,7 +537,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
         <p align="center">実際に表示されるイメージ<br>
          <a href="<?php echo HTTP_SERVER.DIR_WS_CATALOG.FILENAME_PRODUCT_INFO.'?products_id='.(int)$_GET['products_id'].'&ref='.$affiliate_id ; ?>" class="blank"><?php echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image'], $product_info['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"'); ?><br>
           <?php echo $product_info['products_name'] ; ?> </a></p>
-          <p class="pageBottom_long"></p>
+          <div class="pageBottom_long"></div>
         <?php
    }
  ?>
