@@ -57,9 +57,7 @@ if(findkeyword.length<=0){
   for (keyword in findkeyword){
     keywordString+= findkeyword[keyword] + linechanger;
   }
-  //return  confirm('NGキーワード '+keywordString.fontcolor("#FF0000")+' 返信内容にNGキーワードが有ります。このまま返信しますか？');
-  return confirm('NGキーワード '+keywordString+'返信内容にNGキーワードが有ります。このまま返信しますか？');
-
+  return  confirm('NGキーワード '+keywordString+'返信内容にNGキーワードが有ります。このまま返信しますか？');
 }
 }
 </script>
@@ -350,7 +348,7 @@ if (strspn("MSIE",$_SERVER["HTTP_USER_AGENT"])==4){
                                 <?}?>
                                </select>&nbsp;&nbsp;&nbsp;<label><input type='checkbox' value='1' name=append checked="true" />追加</label>
                             <?}?>
-                            <textarea name="response" id="response" cols="90" rows="18" wrap="soft" style="width:90%"><?=$info['response']?></textarea>
+                            <textarea name="response" id="response" cols="90" rows="16" wrap="soft" style="width:90%"><?=$info['response']?></textarea>
                         </div>
                         <?php if($cfg->canUploadFiles()){ //TODO: may be allow anyways and simply email out attachment?? ?>
                         <div style="margin-top: 3px;">

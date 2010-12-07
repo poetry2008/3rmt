@@ -19,11 +19,9 @@
 $_noemailclass = true;
 
 require_once('includes/application_top.php');
-
 require_once('includes/ost/secure.inc.php');
 
 $breadcrumb->add('お問い合わせ', tep_href_link(FILENAME_CONTACT_US));
-
 if(!is_object($thisclient) || !$thisclient->isValid()) die('Access denied'); //Double check again.
 
 require_once(INCLUDE_DIR.'class.ticket.php');

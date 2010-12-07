@@ -1,5 +1,5 @@
 <?php
-/*********************************************************************
+ /*********************************************************************
     index.php
 
     Helpdesk landing page. Please customize it to fit your needs.
@@ -50,8 +50,8 @@ require_once(CLIENTINC_DIR.'header.inc.php');
 <div class="rcol">
   <div class="contact_left"><img src="./images/ticket_status_icon.jpg" width="60" height="60"></div>
   <div class="contact_right">
-  <h3>過去のお問い合わせへの返事を確認</h3>
-  
+  <h3>お問い合わせへの返事を確認</h3>
+
   <br>
     <form class="status_form" action="contact_us_login.php" method="post">
     <div class="status_warpper">
