@@ -637,10 +637,11 @@ padding-left:20px;
 .Icon.attachment { background-image: url(images/icons/attachment.gif); }
 .Icon.file { background-image: url(images/icons/attachment.gif); }
 .Icon.refresh { background-image: url(images/icons/refresh.gif); }   
-.Icon.thread {
+.thread {
     font-weight: bold;
     font-size: 1em;
-    background-image: url(images/icons/thread.gif);
+    background: url(images/icons/thread.gif) no-repeat;
+	padding-left:20px;
 }
 
 
