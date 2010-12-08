@@ -20,6 +20,16 @@ require_once(INCLUDE_DIR.'class.ticket.php');
 require_once(INCLUDE_DIR.'class.dept.php');
 require_once(INCLUDE_DIR.'class.banlist.php');
 
+if(isset($_POST)){
+    if($_SESSION['prepost'] == $_POST){
+      $urlfrom = $_SERVER['REQUEST_URI'];
+      $_SESSION['prepost'] = '';
+      header('Location: '.$urlfrom);
+      exit();
+    }else {
+      $_SESSION['prepost'] =$_POST;
+    }
+}
 
 $page='';
 $ticket=null; //clean start.
@@ -124,7 +134,9 @@ if($_POST && !$errors):
             }elseif(!$errors['err']){
                 $errors['err']='Unable to post the response.';
             }
-            break;
+
+            //            header('Location: http://www.example.com/');
+            break; 
         case 'transfer':
             $fields=array();
             $fields['dept_id']      = array('type'=>'int',  'required'=>1, 'error'=>'Select Department');
@@ -521,4 +533,5 @@ if(!$_POST && $_REQUEST['a']!='search' && !strcmp($inc,'tickets.inc.php') && ($m
 require_once(STAFFINC_DIR.'header.inc.php');
 require_once(STAFFINC_DIR.$inc);
 require_once(STAFFINC_DIR.'footer.inc.php');
+
 ?>

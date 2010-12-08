@@ -53,7 +53,7 @@ require_once(CLIENTINC_DIR.'header.inc.php');
       <input type="text" name="lemail">
     </div>
     <div class="status_warpper">
-     <label>&#12362;&#21839;&#12356;&#21512;&#12431;&#12379;&#30058;&#21495;:</label>
+     <label>&#12362;&#21839;&#12356;&#21512;&#12431;&#12379;&#30058;&#21495;&#65306;</label>
      <input type="text" name="lticket">
     </div>
          <input type="image" class="button2" value="&#36865;&#20449;" src="includes/languages/japanese/images/buttons/button_send_mail.gif">

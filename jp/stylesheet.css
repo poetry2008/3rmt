@@ -616,7 +616,7 @@ text-align:center;
 .bold {
 font-weight: bold;
 }
-a.Icon { }
+a.Icon { background-repeat:no-repeat;padding-left:20px;}
    
 a.Icon:hover {
     text-decoration: underline;    
@@ -634,9 +634,9 @@ padding-left:20px;
 .Icon.otherTicket { background:url(images/icons/ticket_source_other.gif) 0 0 no-repeat; }
 
 
-.Icon.attachment { background-image: url(images/icons/attachment.gif); }
-.Icon.file { background-image: url(images/icons/attachment.gif); }
-.Icon.refresh { background-image: url(images/icons/refresh.gif); }   
+.Icon.attachment { background: url(images/icons/attachment.gif) no-repeat;padding-left:20px; }
+.Icon.file { background: url(images/icons/attachment.gif) no-repeat;padding-left:20px; }
+.Icon.refresh { background: url(images/icons/refresh.gif) no-repeat;padding-left:20px; }   
 .thread {
     font-weight: bold;
     font-size: 1em;
