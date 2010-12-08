@@ -636,7 +636,7 @@ a.Icon:hover {
 
 
 .Icon.attachment { background-image: url(images/icons/attachment.gif); }
-.Icon.file { background-image: url(images/icons/attachment.gif); }
+.Icon.file { background: url(images/icons/attachment.gif) no-repeat left center;}
 .Icon.refresh { background-image: url(images/icons/refresh.gif); }   
 .Icon.thread {
     font-weight: bold;

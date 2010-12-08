@@ -1239,7 +1239,7 @@ padding-left:20px;
 
 
 .Icon.attachment { background-image: url(images/icons/attachment.gif); }
-.Icon.file { background-image: url(images/icons/attachment.gif); }
+.Icon.file { background: url(images/icons/attachment.gif) no-repeat left center; padding:0 0 0 10px; }
 .Icon.refresh { background-image: url(images/icons/refresh.gif); }   
 .thread {
     font-weight: bold;
