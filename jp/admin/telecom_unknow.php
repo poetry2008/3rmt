@@ -170,7 +170,7 @@ function check_one(ele){
       $orders_query_numrows_raw = "
         select count(id) as count
         from telecom_unknow
-        where type is null ".$where_str."
+        where 1 ".(!$_GET['keywords']?"and (type is null or (type = 'success' and (`option` is null or `option` = '')))":'')." ".$where_str."
       ";
       
       //echo $orders_query_raw;
