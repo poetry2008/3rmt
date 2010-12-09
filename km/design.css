@@ -166,7 +166,7 @@ UL {
 	list-style: none;
 	text-align:center;
 	padding: 0px;
-	margin: 0px;
+	margin: 0 0 10px 0;
 	width:170px;
 	background: url(images/design/box/menu_bg.gif) repeat-y;
 }
@@ -174,7 +174,7 @@ UL {
 	font-family: Osaka, Verdana, Arial, sans-serif;
 	list-style: none outside none;
 	padding: 0 0 5px 5px;
-	margin: 10px 10px 0px 10px;
+	margin: 0 5px ;
 	clear:both;
 }
 .l_m_category_ul3 {
@@ -191,10 +191,15 @@ UL {
 	color: #004080;
 	margin-bottom:5px;
 	overflow: hidden;
+	text-align:left;
 }
 
 .l_m_category_li{
 	height: 20px;
+	margin:0px 10px 2px 10px;
+	background-color:#F0EFEF;
+	border-top:1px solid #ddd;
+	overflow:hidden;
 }
 .l_m_category_li a{
 	line-height: 25px;
@@ -207,13 +212,18 @@ UL {
 	font-weight: bold;
 }
 .l_m_category_li2 a{
-	width:147px;
+	width:150px;
 	font-size: 11px;
 	line-height: 11px;
 	margin:0 auto;
 	display: block;
 	clear:both;
 	overflow:hidden;
+}
+.l_m_category_li2_link{
+	padding-top:6px;
+	background-color:#E2F9DE;
+	height:17px;
 }
 .l_m_category_li2 a:hover{
 	text-decoration: none;
