@@ -430,7 +430,8 @@ list-style-type:none;
 .tickets th{
 padding-left:3px;
 }
-#ticketthread{padding:5px; font-size:12px;border:1px solid #E0E0E0; margin-bottom:10px;margin-top:3px;}
+#ticketthread{padding:5px; font-size:12px; margin-bottom:10px;margin-top:3px;}
+#ticketthread table{border:1px solid #E0E0E0; text-align:left; margin-bottom:7px;}
 .message{
 font-size:12px;
 }

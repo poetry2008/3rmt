@@ -1207,6 +1207,10 @@ background-color:#E0E0E0;
 text-align:left; font-weight:400;
 }
 #ticketthread{width:452px;}
+#ticketthread table{
+text-align:left;
+margin-bottom:7px;
+}
 .tickets_contents{ clear:both; width:96%;}
 #message{width:452px;}
 .view_contents{width:452px;}
