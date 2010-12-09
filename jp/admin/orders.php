@@ -747,7 +747,7 @@ if($reload == 'yes') {
     }
     $remoteurl = "scp/tickets.php?a=open2".$parmStr."";
 ?>
-    <?php echo '<a href="javascript:void(0);" onclick="copyToClipboard(\'' . tep_output_string_protected($order->customer['email_address']) . '\')"><u>' . tep_output_string_protected($order->customer['email_address']) . '</u></a> <a title="問合番号を新規作成します" href="'.$remoteurl.'" target="_blank"><img src="images/icons/ost_link.gif" /></a> <a href="telecom_unknow.php?keywords='.tep_output_string_protected($order->customer['email_address']).'"><img src="images/icons/card_link.gif" /></a>'; 
+    <?php echo '<a href="javascript:void(0);" onclick="copyToClipboard(\'' . tep_output_string_protected($order->customer['email_address']) . '\')"><u>' . tep_output_string_protected($order->customer['email_address']) . '</u></a> <a title="問合番号を新規作成します" href="'.$remoteurl.'" target="_blank"><u>メ</u></a> <a href="telecom_unknow.php?keywords='.tep_output_string_protected($order->customer['email_address']).'"><u>ク</u></a>'; 
 ?></td>
                 </tr>
             <!--
@@ -907,20 +907,20 @@ if($reload == 'yes') {
               <h3>クレジットカード情報</h3>
               <table width="100%" border="0" cellspacing="0" cellpadding="2">
                 <tr>
-                  <td class="main" valign="top" width="20%"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_name']);?>">カード名義:</a></b></td>
+                  <td class="main" valign="top" width="20%"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_name']);?>"><u>カード名義:</u></a></b></td>
                   <td class="main" width="30%"><?php echo $order->info['telecom_name'];?></td>
-                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_tel']);?>">電話番号:</a></b></td>
-                  <td class="main"><?php echo $order->info['telecom_tel'];?></a></td>
+                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_tel']);?>"><u>電話番号:</u></a></b></td>
+                  <td class="main"><?php echo tep_high_light_by_keywords($order->info['telecom_tel'],TELNO_KEYWORDS);?></a></td>
                 </tr>
                 <tr>
-                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_email']);?>">メールアドレス:</a></b></td>
+                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_email']);?>"><u>メールアドレス:</u></a></b></td>
                   <td class="main"><?php echo $order->info['telecom_email'];?></a></td>
-                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_money']);?>">金額:</a></b></td>
+                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_money']);?>"><u>金額:</u></a></b></td>
                   <td class="main"><?php echo $order->info['telecom_money'];?></a></td>
                 </tr>
               </table>
             </div>
-     
+
             <?php } ?>
             <!-- 注文履历 -->
             <?php // 订单历史5条 ?>

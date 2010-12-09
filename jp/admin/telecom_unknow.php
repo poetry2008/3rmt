@@ -51,7 +51,7 @@ function check_one(ele){
   if(ele.checked){
     $('#tr_'+ele.value+' td').css('background','#f08080');
   } else {
-    $('#tr_'+ele.value+' td').css('background',$('#rel_'+ele.value).val() == 'yes'?'#fff':'#ccc');
+    $('#tr_'+ele.value+' td').css('background',$('#red_'+ele.value).val()==1 ? 'red' :($('#rel_'+ele.value).val() == 'yes'?'#fff':'#ccc'));
   }
 }
 </script>
@@ -179,20 +179,20 @@ function check_one(ele){
     $orders_query = tep_db_query($orders_query_raw);
 
     while ($orders = tep_db_fetch_array($orders_query)) {
-      echo '    <tr onmouseover="this.style.background=\'#FFCC99\'" onmouseout="this.style.background=\''.($orders['rel'] == 'no'?'#ccc':'#fff').'\'" style="border-bottom:1px solid #000000;'.($orders['rel'] == 'no'?'background:#ccc':'background:#fff').'" class="dataTableRow" id="tr_'.$orders['id'].'">' . "\n";
+      echo '    <tr onmouseover="this.style.background=\'#FFCC99\'" onmouseout="this.style.background=\''.(tep_match_by_keywords($orders['telno'],TELNO_KEYWORDS)?'red':($orders['rel'] == 'no'?'#ccc':'#fff')).'\'" style="border-bottom:1px solid #000000;'.(tep_match_by_keywords($orders['telno'],TELNO_KEYWORDS)?'background:red':($orders['rel'] == 'no'?'background:#ccc':'background:#fff')).'" class="dataTableRow" id="tr_'.$orders['id'].'">' . "\n";
 ?>
       <td align="left"   style="border-bottom:1px solid #000000;" class="dataTableContent"><input type="checkbox" name="ids[]" class="a_checkbox" onclick="check_one(this)" value="<?php echo $orders['id'];?>"></td>
       <td align="center" style="border-bottom:1px solid #000000;" class="dataTableContent"><?php echo tep_datetime_short($orders['date_added']); ?>&nbsp;</td>
       <td align="center" style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['rel'] == 'yes' ? '成功' : '失敗'; ?>&nbsp;</td>
       <td align="left"   style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['username']; ?>&nbsp;</td>
-      <td align="left"   style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['telno']; ?>&nbsp;</td>
+      <td align="left"   style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo tep_high_light_by_keywords($orders['telno'],TELNO_KEYWORDS);?>&nbsp;</td>
       <td align="left"   style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['email']; ?>&nbsp;</td>
       <td align="right"  style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['money']; ?>&nbsp;</td>
-      <td align="right"  style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><input type="hidden" id="rel_<?php echo $orders['id'];?>" value="<?php echo $orders['rel'];?>"><a href="javascript:void(0);" onclick="return confirm('非表示にしますか？') && hide(<?php echo $orders['id'];?>, this)"><img src="images/icons/cross.gif" ></a></td>
+      <td align="right"  style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><input type="hidden" id="rel_<?php echo $orders['id'];?>" value="<?php echo $orders['rel'];?>"><input type="hidden" id="red_<?php echo $orders['id'];?>" value="<?php echo tep_match_by_keywords($orders['telno'],TELNO_KEYWORDS)?1:0;?>"><a href="javascript:void(0);" onclick="return confirm('非表示にしますか？') && hide(<?php echo $orders['id'];?>, this)"><img src="images/icons/cross.gif" ></a></td>
     </tr>
 <?php }?>
   </table>
-  
+   
   <!-- display add end-->
   <table border="0" width="100%" cellspacing="0" cellpadding="2">
     <tr>
