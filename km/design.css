@@ -204,6 +204,7 @@ UL {
 	font-size: 11px;
 	display: block;
 	overflow: hidden;
+	font-weight: bold;
 }
 .l_m_category_li2 a{
 	width:147px;
@@ -221,7 +222,7 @@ UL {
 	line-height: 10px;
 	color: #555;
 	margin: 0px;
-	padding: 5px 0px;
+	padding: 2px 0;*padding:0;
 	overflow: hidden;
 	clear: both;
 	width:150px;
