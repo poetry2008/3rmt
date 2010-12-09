@@ -1222,9 +1222,13 @@ class Ticket{
         //check attachment..if any is set ...only set on webbased tickets..
         if($_FILES['attachment']['name'] && $cfg->allowOnlineAttachments()) {
             if(!$cfg->canUploadFileType($_FILES['attachment']['name']))
-                $errors['attachment']='Invalid file type [ '.Format::htmlchars($_FILES['attachment']['name']).' ]';
+              //                $errors['attachment']='Invalid file type [ '.Format::htmlchars($_FILES['attachment']['name']).' ]';
+                $errors['attachment']='無効なファイル形式です [ '.Format::htmlchars($_FILES['attachment']['name']).' ]';
+
             elseif($_FILES['attachment']['size']>$cfg->getMaxFileSize())
-                $errors['attachment']='File is too big. Max '.$cfg->getMaxFileSize().' bytes allowed';
+              //                $errors['attachment']='File is too big. Max '.$cfg->getMaxFileSize().' bytes allowed';
+                $errors['attachment']='重すぎます. 最も重さは '.$cfg->getMaxFileSize().' bytes です';
+
         }
 
         //check ticket limits..if limit set is >0 

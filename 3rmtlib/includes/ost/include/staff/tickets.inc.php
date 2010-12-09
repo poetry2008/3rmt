@@ -481,24 +481,24 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
                 case 'assigned':
                     ?>
                     <input class="button" type="submit" name="gomi" value="ごみ箱"
-                        onClick=' return confirm("Are you sure you want to move  selected tickets to  gomi_box?");'>
+                        onClick=' return confirm("選択したお問い合わせを、ごみ箱に移動しますか?");'>
                     <input class="button" type="submit" name="overdue" value="期限切れ"
-                        onClick=' return confirm("Are you sure you want to mark selected tickets overdue/stale?");'>
+                        onClick=' return confirm("選択したお問い合わせを、Overdueに移動しますか?");'>
                     <input class="button" type="submit" name="close" value="終了"
-                        onClick=' return confirm("Are you sure you want to close selected tickets?");'>
+                        onClick=' return confirm("選択したお問い合わせを、Closed Ticketsに移動しますか?");'>
                     <?
                     break;
                 default: //search??
                     ?>
                     <input class="button" type="submit" name="close" value="終了"
-                        onClick=' return confirm("Are you sure you want to close selected tickets?");'>
+                        onClick=' return confirm("選択したお問い合わせを、Closed Ticketsに移動しますか?");'>
                     <input class="button" type="submit" name="reopen" value="再開"
                         onClick=' return confirm("Are you sure you want to reopen selected tickets?");'>
             <?
             }
             if($canDelete) {?>
                 <input class="button" type="submit" name="delete" value="削除" 
-                    onClick=' return confirm("Are you sure you want to DELETE selected tickets?");'>
+                    onClick=' return confirm("選択したお問い合わせを、削除しますか?");'>
             <?}?>
         </td></tr>
         <? } else {
@@ -514,7 +514,7 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
                 case 'assigned':
                     ?>
                     <input class="button" type="submit" name="gomi" value="ゴミ箱"
-                        onClick=' return confirm("Are you sure you want to close  selected tickets and move them to  gomi_box?");'>
+                        onClick=' return confirm("選択したお問い合わせを、ごみ箱に移動しますか?");'>
                     <?
                     break;
             }
