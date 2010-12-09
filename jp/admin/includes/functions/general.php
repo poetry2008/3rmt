@@ -3285,6 +3285,18 @@ function tep_high_light_by_keywords($str, $keywords)
 }
 
 // telecom_unknow.php
+function tep_match_by_keywords($str, $keywords)
+{
+  $k = explode('|',$keywords);
+  foreach($k as $key => $value){
+    if (preg_match('/'.$value.'/', $str)) {
+      //exit($value.'+'.$keywords);
+      return true;
+    }
+  }
+}
+
+// telecom_unknow.php
 function tep_get_first_products_name_by_orders_id($orders_id)
 {
   $p = tep_db_fetch_array(tep_db_query("select * from " . TABLE_ORDERS_PRODUCTS . " where orders_id='".$orders_id."'"));

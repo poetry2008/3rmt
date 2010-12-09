@@ -235,7 +235,26 @@ case 'edit':
             'ADMINPAGE_LOGO_IMAGE',
             'MAX_DISPLAY_ORDERS_RESULTS',
             'USER_AGENT_LIGHT_KEYWORDS',
-            'HOST_NAME_LIGHT_KEYWORDS'
+            'HOST_NAME_LIGHT_KEYWORDS',
+            'USER_AGENT_LIGHT_KEYWORDS',
+            'HOST_NAME_LIGHT_KEYWORDS',
+            'IP_LIGHT_KEYWORDS',
+            'OS_LIGHT_KEYWORDS',
+            'BROWSER_LIGHT_KEYWORDS',
+            'HTTP_ACCEPT_LANGUAGE_LIGHT_KEYWORDS',
+            'SYSTEM_LANGUAGE_LIGHT_KEYWORDS',
+            'USER_LANGUAGE_LIGHT_KEYWORDS',
+            'SCREEN_RESOLUTION_LIGHT_KEYWORDS',
+            'COLOR_DEPTH_LIGHT_KEYWORDS',
+            'FLASH_LIGHT_KEYWORDS',
+            'FLASH_VERSION_LIGHT_KEYWORDS',
+            'DIRECTOR_LIGHT_KEYWORDS',
+            'QUICK_TIME_LIGHT_KEYWORDS',
+            'REAL_PLAYER_LIGHT_KEYWORDS',
+            'WINDOWS_MEDIA_LIGHT_KEYWORDS',
+            'PDF_LIGHT_KEYWORDS',
+            'JAVA_LIGHT_KEYWORDS',
+            'TELNO_KEYWORDS', 
             ))) 
     while($site = tep_db_fetch_array($select_site_configure)) {
   $site_romaji[] = $site['romaji'];
