@@ -16,6 +16,7 @@
   echo '</div>';
 ?>
 <!--game news-->
+<?php if (false) {?>
 <h3 class="pageHeading">
 <span class="game_im"><img width="26" height="26" alt="4gamer" src="images/design/title_img09.gif"></span>
 <span class="game_t">ONLINE GAME NEWS for</span>
@@ -43,7 +44,8 @@
   <div class="games_info_more">
     <a href="<?php echo tep_href_link('game_news.php');?>">more</a> 
   </div>
-  </div>
+</div>
+<?php }?> 
        
       </td>
     <!-- body_text_eof //--> 
