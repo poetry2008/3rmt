@@ -43,9 +43,11 @@ if($cPath){
         <li class='l_m_category_li2'>
           <a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>">
             <?php if (in_array($category['categories_id'], $id)) {?>
+              <strong> 
             <?php }?>
-            <?php //echo $category['categories_name'];?>
+            <?php echo $category['categories_name'];?>
             <?php 
+            /* 
             if (!empty($category['categories_image2'])) {
               if (file_exists(DIR_FS_CATALOG.'/'.DIR_WS_IMAGES.'categories/'.$category['categories_image2'])) {
                 echo '<img src="images/categories/'.$category['categories_image2'].'" alt="'.$category['categories_name'].'" width="147" height="33">'; 
@@ -55,8 +57,10 @@ if($cPath){
             } else {
               echo '<img src="images/desingn/category_no_img.gif" alt="'.$category['categories_name'].'" width="147" height="33">'; 
             }
+            */ 
             ?>
             <?php if (in_array($category['categories_id'], $id)) {?>
+              </strong> 
             <?php }?>
           </a>
         <?php
@@ -170,7 +174,8 @@ if($cPath){
       <?php } else {?>
         <li class='l_m_category_li'><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>">
 		<?php 
-		if (!empty($category['categories_image2'])) {
+	        /*	
+                if (!empty($category['categories_image2'])) {
                   if (file_exists(DIR_FS_CATALOG.'/'.DIR_WS_IMAGES.'categories/'.$category['categories_image2'])) {
                     echo '<img src="images/categories/'.$category['categories_image2'].'" alt="'.$category['categories_name'].'" width="147" height="33">'; 
                   } else {
@@ -179,7 +184,9 @@ if($cPath){
                 } else {
                   echo '<img src="images/desingn/category_no_img.gif" alt="'.$category['categories_name'].'" width="147" height="33">'; 
 		}
-		?>
+                */
+                echo $category['categories_name']; 
+                ?>
         </a></li>
       <?php }?>
     <?php }?>

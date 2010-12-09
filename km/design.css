@@ -189,21 +189,22 @@ UL {
 /*}*/
 .l_m_category_li, .l_m_category_li2{
 	color: #004080;
-	margin-bottom:10px;
+	margin-bottom:5px;
 	overflow: hidden;
 }
 
 .l_m_category_li{
-	height: 33px;
+	height: 20px;
 }
 .l_m_category_li a{
 	line-height: 25px;
-	height: 33px;
+	height: 20px;
 	width:147px;
 	margin:0 auto;
 	font-size: 11px;
 	display: block;
 	overflow: hidden;
+	font-weight: bold;
 }
 .l_m_category_li2 a{
 	width:147px;
@@ -221,7 +222,7 @@ UL {
 	line-height: 10px;
 	color: #555;
 	margin: 0px;
-	padding: 5px 0px;
+	padding: 2px 0;*padding:0;
 	overflow: hidden;
 	clear: both;
 	width:150px;
@@ -235,11 +236,11 @@ UL {
 	overflow: hidden;
 	clear: both;
 }
-.l_m_categories_tree img, .l_m_categories_tree3 img{
+.l_m_categories_tree img ,.l_m_categories_tree3 img{
 	float: left;
 	margin: 8px 0 0 3px;
 }
-.l_m_categories_tree a, .l_m_categories_tree3 a{
+.l_m_categories_tree a{
 	font-size: 11px;
 	*font-size: 9px;
 	float: right;
@@ -250,7 +251,20 @@ UL {
 	text-align:left;
 	width:135px;
 	margin-top:-10px;
-	*margin-top:4px;
+	*margin-top:0;
+}
+.l_m_categories_tree3 a{
+	font-size: 11px;
+	*font-size: 9px;
+	float: right;
+	display: block;
+	padding: 2px 2px 2px 15px;
+	line-height: 10px;
+	*line-height: 15px;
+	text-align:left;
+	width:120px;
+	margin-top:-10px;
+	*margin-top:2px;
 }
 .l_m_categories_tree a:hover, .l_m_categories_tree3 a:hover{
 	background: #f8f8f8;
@@ -801,10 +815,20 @@ Information
 	width: 100%;
 	font-family: Osaka, Verdana, Arial, sans-serif;
 	font-size: 11px;
-	border-collapse: separate;
-	border-spacing: 0;
+	background-color:#F2F2F2;
 }
 .information_table td{
+	line-height: 20px;
+	padding: 3px 5px;
+	vertical-align: top;
+}
+.information_table02{
+	width: 100%;
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 11px;
+	background-color:#fff;
+}
+.information_table02 td{
 	line-height: 20px;
 	padding: 3px 5px;
 	vertical-align: top;

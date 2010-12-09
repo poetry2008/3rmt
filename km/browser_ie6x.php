@@ -6,7 +6,7 @@
   require('includes/application_top.php');
 
   //「商品名」についてのお問い合わせ
-  define('HEADING_TITLE', 'Internet Explorer6の設定について');
+  define('HEADING_TITLE', 'IE6の設定について');
   define('NAVBAR_TITLE', 'ブラウザの設定');
   
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_BROWSER_IE6X));
@@ -33,15 +33,15 @@
               <tr>
                 <td valign="top" id="contents">
                   <p>当ショッピングシステムは、ブラウザの初期設定のままで動作するように作られております。<br>
-                  ショッピングができない場合は、以下の手順で設定内容をお確かめください。</p>
+                    ショッピングができない場合は、以下の手順で設定内容をお確かめください。</p>
                   <div class="dot">&nbsp;</div>
                   <img src="images/browser/browser01.gif" width="471" height="190" alt="インターネットオプション">
                   <p>Internet&nbsp;Explorerの上段メニューから［ツール］を選択し、次に［インターネットオプション］を選択してください。</p>
                   <div class="dot">&nbsp;</div>
                   <img src="images/browser/browser02.gif" width="471" height="425" alt="プライバシー設定">
                   <p>インターネットオプション画面が開きますので［プライバシー］をクリックしプライバシー設定画面を開きます。<br>
-                  スライダのつまみを移動して［中］を選択し、［適用］をクリックします。<br>
-                  <span class="red">※</span>&nbsp;青枠内の［既定］ボタンが押せるようでしたらクリックして、［適用］をクリックしてください。</p>
+                    スライダのつまみを移動して［中］を選択し、［適用］をクリックします。<br>
+                    <span class="red">※</span>&nbsp;青枠内の［既定］ボタンが押せるようでしたらクリックして、［適用］をクリックしてください。</p>
                   <div class="dot">&nbsp;</div>
                   <p class="red"><b>上記の設定でも解決しない場合は、続けて下記の設定を行ってください。</b></p>
                   <div class="dot">&nbsp;</div>

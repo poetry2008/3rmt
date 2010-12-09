@@ -4,8 +4,10 @@
 */
 ?>
 <!-- information //-->
-<div id="information">
-  <img width="172" height="39" alt="RMT情報" src="images/design/box/information.gif">
+<div class="reviews_box">
+  <div class="menu_top_reviews">
+  <img src="images/menu_ico.gif" alt="" align="top">&nbsp;INFORMATION 
+  </div>
   <ul class="l_m_category_ul">
 <?php
 // ccdd
@@ -23,16 +25,7 @@
   } 
 // Extra Pages ADDED END
 ?>
-    <li class="l_m_category_li">
-      <?php echo '<a href="' . tep_href_link(FILENAME_CONTACT_US) . '">' . BOX_INFORMATION_CONTACT . '</a>' . "\n"; ?>
-    </li>
-    <li class="l_m_category_li">
-      <?php echo '<a href="' . tep_href_link('reorder.php') . '">' . '再配達フォーム' . '</a>' . "\n"; ?>
-    </li>
-    <li class="l_m_category_li">
-      <a class='l_m_category_a' href="link/">相互リンク</a>
-    </li>
   </ul>
-  <img src="images/design/box/box_bottom_bg_01.gif" width="172" height="14" alt="" >
+  <div class="reviews_tom"><img height="14" width="170" alt="" src="images/design/box/box_bottom_bg_01.gif"></div>
 </div>
 <!-- information_eof //-->
