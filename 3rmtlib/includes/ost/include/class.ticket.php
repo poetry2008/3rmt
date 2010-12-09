@@ -1014,7 +1014,7 @@ class Ticket{
         return FALSE;
     }
     
-    function getAttachmentStr($refid,$type){
+    function getAttachmentStr($refid,$type,$download=1){
         
         $sql ='SELECT attach_id,file_size,file_name FROM '.TICKET_ATTACHMENT_TABLE.
              ' WHERE deleted=0 AND ticket_id='.db_input($this->getId()).' AND ref_id='.db_input($refid).' AND ref_type='.db_input($type);
@@ -1024,8 +1024,16 @@ class Ticket{
                 $hash=MD5($this->getId()*$refid.session_id());
                 $size=Format::file_size($size);
                 $name=Format::htmlchars($name);
-                $attachstr.= "<a class='Icon file' href='attachment.php?id=$id&ref=$hash' target='_blank'><b>$name</b></a>&nbsp;(<i>$size</i>)&nbsp;&nbsp;";
+                if ($download){
+                               $attachstr.= "<a class='Icon file' href='attachment.php?id=$id&ref=$hash' target='_blank'><b>$name</b></a>&nbsp;(<i>$size</i>)&nbsp;&nbsp;";
+                }else{
+                $attachstr.= "<b>$name</b>&nbsp;&nbsp;";
+                }
             }
+        }
+        if(!$download){
+          $attachstr .= "添付ファイルを閲覧する場合は、メールソフトでご確認ください";
+
         }
         return ($attachstr);
     }
