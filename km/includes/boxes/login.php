@@ -83,7 +83,7 @@
     } else {
 ?>
 <div class="login box">
-        <div class="login_top"><img src="images/design/box/login_top_bg.gif" width="170" height="35" alt="" ></div>
+        <div class="menu_top_login"><img src="images/menu_ico.gif" alt="" align="top">&nbsp;会員登録</div>
         <div id="login_form">
         <div class="login_form_warpper">
             <table width="152" summary="login">
