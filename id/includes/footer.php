@@ -22,6 +22,7 @@
           }
         ?>
           <?php echo '<a href="'.tep_href_link(FILENAME_CONTACT_US).'">'.BOX_INFORMATION_CONTACT.'</a>';?>
+          <?php echo '|';?> 
           <a href="link/">相互リンク</a>
          </div>
       </td>
