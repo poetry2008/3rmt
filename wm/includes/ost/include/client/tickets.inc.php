@@ -97,9 +97,7 @@ $_negorder=$negorder=="DESC"?'昇順':'降順';
         <tr>
           <th nowrap width="80"><a href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="番号順に表示 <?=$_negorder?>">問合番号</a></th>
           <th width="80"><a href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="作成日順に表示 <?=$_negorder?>">作成日</a></th>
-          <!--<th width="60">ステータス</th>-->
           <th>件名</th>
-          <!--<th>メールアドレス</th>-->
         </tr>
         <?
         $class = "row1";
@@ -125,9 +123,7 @@ $_negorder=$negorder=="DESC"?'昇順':'降順';
             $_open = 'オープン';
             $_closed = 'クローズ';
                   ?>
-          <!--<td>&nbsp;<?=$$_status?></td>-->
           <td><a href="view.php?id=<?=$row['ticketID']?>"><?=$subject?></a><?=$row['attachments']?"<span class='Icon file'>&nbsp;</span>":''?></td>
-          <!--<td>&nbsp;<?=Format::truncate($row['email'],40)?></td>-->
         </tr>
             <?
             $class = ($class =='row2') ?'row1':'row2';

@@ -165,6 +165,7 @@ class Email {
         $headers = array ('From' => $from,
                           'To' => $to,
                           'Subject' => $subject,
+		          'Return-Path'=>$this->getEmail(),
                           'Date'=>date('D, d M Y H:i:s O'),
                           'Message-ID' =>'<'.Misc::randCode(6).''.time().'-'.$this->getEmail().'>',
                           'X-Mailer' =>'iimy Mailer',
@@ -205,7 +206,7 @@ class Email {
         }
 
         //No SMTP or it failed....use php's native mail function.
-        $mail = mail::factory('mail');
+        $mail = mail::factory('mail','-f'.$this->getEmail());
         return PEAR::isError($mail->send($to, $headers, $body))?false:true;
 
     }
@@ -224,6 +225,7 @@ class Email {
         $headers = array ('From' =>$from,
                           'To' => $to,
                           'Subject' => $subject,
+		          'Return-Path'=>$this->getEmail(),
                           'Message-ID' =>'<'.Misc::randCode(10).''.time().'@osTicket>',
                           'X-Mailer' =>'iimy Mailer',
                           'Content-Type' => 'text/html; charset="UTF-8"'
