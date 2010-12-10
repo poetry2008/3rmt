@@ -70,7 +70,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
         <table align="center" class="message" cellspacing="0" cellpadding="1" width="100%" border=0>
             <tr><th><?=$msg_row['created']?></th></tr>
                 <?if($msg_row['attachments']>0){ ?>
-                <tr class="header"><td><?=$ticket->getAttachmentStr($msg_row['msg_id'],'M')?></td></tr> 
+        <tr class="header"><td><?=$ticket->getAttachmentStr($msg_row['msg_id'],'M',0)?></td></tr> 
                 <?}?>
                 <tr class="info">
                     <td><?=Format::display($msg_row['message'])?></td></tr>
@@ -92,7 +92,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
                   <th><?=$resp_row['created']?>&nbsp;-&nbsp;<?=$name?></th></tr>
                     <?if($resp_row['attachments']>0){ ?>
                     <tr class="header">
-                        <td><?=$ticket->getAttachmentStr($respID,'R')?></td></tr>
+            <td><?=$ticket->getAttachmentStr($respID,'R',0)?></td></tr>
                                     
                     <?}?>
               <tr class="info">
