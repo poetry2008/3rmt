@@ -1211,6 +1211,9 @@ text-align:left; font-weight:400;
 text-align:left;
 margin-bottom:7px;
 }
+#ticketthread table td{
+font-size:12px;
+}
 .tickets_contents{ clear:both; width:96%;}
 #message{width:452px;}
 .view_contents{width:452px;}
