@@ -170,6 +170,14 @@ UL {
 	width:170px;
 	background: url(images/design/box/menu_bg.gif) repeat-y;
 }
+.l_m_category_ul_infomation {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	list-style: none;
+	text-align:center;
+	padding: 0px;
+	margin: 0 0 10px 0;
+	width:170px;
+}
 .l_m_category_ul2 {
 	font-family: Osaka, Verdana, Arial, sans-serif;
 	list-style: none outside none;
@@ -182,7 +190,7 @@ UL {
 	list-style: none outside none;
 	padding: 0px 5px;
 	margin: 16px 0px 0px 5px;
-	*+margin: 6px 0px 0px 5px;
+	*margin: -2px 0px 0px 5px;
 }
 /*.l_m_category_ul2 .l_m_category_ul2 {*/
 	/*background-image: none;*/
@@ -211,19 +219,37 @@ UL {
 	overflow: hidden;
 	font-weight: bold;
 }
+.l_m_category_li_infomation{
+	height: 20px;
+	margin:0px 10px 2px 10px;
+	overflow:hidden;
+}
+.l_m_category_li_infomation a{
+	line-height: 25px;
+	height: 20px;
+	width:147px;
+	margin:0 auto;
+	font-size: 11px;
+	display: block;
+	overflow: hidden;
+	font-weight: bold;
+}
 .l_m_category_li2 a{
 	width:150px;
 	font-size: 11px;
 	line-height: 11px;
 	margin:0 auto;
+		*margin-left:10px;
 	display: block;
 	clear:both;
 	overflow:hidden;
 }
 .l_m_category_li2_link{
 	padding-top:6px;
+	*padding-top:5px;
 	background-color:#E2F9DE;
 	height:17px;
+	*height:19px;
 }
 .l_m_category_li2 a:hover{
 	text-decoration: none;
@@ -249,6 +275,7 @@ UL {
 .l_m_categories_tree img ,.l_m_categories_tree3 img{
 	float: left;
 	margin: 8px 0 0 3px;
+	*margin: 5px 0 0 3px;
 }
 .l_m_categories_tree a{
 	font-size: 11px;
@@ -269,8 +296,8 @@ UL {
 	float: right;
 	display: block;
 	padding: 2px 2px 2px 15px;
+	*padding: 2px 2px 2px 2px;
 	line-height: 10px;
-	*line-height: 15px;
 	text-align:left;
 	width:120px;
 	margin-top:-10px;
@@ -755,6 +782,7 @@ product listing
 .categories{ width:171px;}
 .categories_bottom{
 	margin-top:-10px;
+	*margin-top:-15px;
 }
 .categoryh2{
   font-family: Osaka, Verdana, Arial, sans-serif;
