@@ -86,7 +86,7 @@ $_negorder=$negorder=="DESC"?'昇順':'降順';
  <table border="0" cellspacing="1" cellpadding="0" align="center" class="tickets_lout">
     <tr>
         <td width="60%" class="msg"><?=$showing?>&nbsp;&nbsp;<?=$results_type?></td>
-        <td nowrap >
+        <td nowrap align="right">
             <a href="view.php?status=open">オープン</a>            
             <a href="view.php?status=closed">クローズ</a>            
             <a class="log_out" href="logout.php">ログアウト</a>
@@ -97,11 +97,11 @@ $_negorder=$negorder=="DESC"?'昇順':'降順';
     <tr><td>
      <table width="100%" border="0" cellspacing="1" cellpadding="0" class="tickets" align="center">
         <tr>
-          <th align="left"><a href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="番号順に表示 <?=$_negorder?>">問合番号</a></th>
-          <th width="70"><a href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="作成日順に表示 <?=$_negorder?>">作成日</a></th>
-          <th width="60">ステータス</th>
-          <th align="center" width="100">件名</th>
-          <th>メールアドレス</th>
+          <th align="left" width="80">&nbsp;<a href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="番号順に表示 <?=$_negorder?>">問合番号</a></th>
+          <th width="80" align="left">&nbsp;<a href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="作成日順に表示 <?=$_negorder?>">作成日</a></th>
+          <!--<th width="60">ステータス</th>-->
+          <th align="left">&nbsp;件名</th>
+          <!--<th>メールアドレス</th>-->
         </tr>
         <?
         $class = "row1";
@@ -117,22 +117,19 @@ $_negorder=$negorder=="DESC"?'昇順':'降順';
                     $ticketID="<b>$ticketID</b>";
                 }
                 ?>
-            <tr class="<?=$class?> " id="<?=$row['ticketID']?>">
-                <td align="center" title="<?=$row['email']?>" nowrap>
-                    <a class="Icon <?=strtolower($row['source'])?>Ticket" title="<?=$row['email']?>" href="view.php?id=<?=$row['ticketID']?>">
-                        <?=$ticketID?></a></td>
-                <td nowrap>&nbsp;<?=Format::db_date($row['created'])?></td>
+        <tr class="<?=$class?> " id="<?=$row['ticketID']?>">
+          <td align="left" title="<?=$row['email']?>" nowrap><a class="Icon <?=strtolower($row['source'])?>Ticket" title="<?=$row['email']?>" href="view.php?id=<?=$row['ticketID']?>"><?=$ticketID?></a>
+          </td>
+          <td nowrap><?=Format::db_date($row['created'])?></td>
                                     <?php 
                       $_status = '_'.$row['status'];
             $_open = 'オープン';
             $_closed = 'クローズ';
                   ?>
-                   <td>&nbsp;<?=$$_status?></td>
-
-                <td>&nbsp;<a href="view.php?id=<?=$row['ticketID']?>"><?=$subject?></a>
-                    &nbsp;<?=$row['attachments']?"<span class='Icon file'>&nbsp;</span>":''?></td>
-                <td>&nbsp;<?=Format::truncate($row['email'],40)?></td>
-            </tr>
+          <!--<td>&nbsp;<?=$$_status?></td>-->
+          <td><a href="view.php?id=<?=$row['ticketID']?>"><?=$subject?></a><?=$row['attachments']?"<span class='Icon file'>&nbsp;</span>":''?></td>
+          <!--<td>&nbsp;<?=Format::truncate($row['email'],40)?></td>-->
+        </tr>
             <?
             $class = ($class =='row2') ?'row1':'row2';
             } //end of while.
