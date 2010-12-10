@@ -206,7 +206,7 @@ case 'edit':
     $heading[] = array('text' => '<b>' . $cInfo->configuration_title . '</b>');
 
     if ($cInfo->set_function) {
-  eval('$value_field = ' . $cInfo->set_function . '\'' . htmlspecialchars($cInfo->configuration_value) . '\');');
+  eval('$value_field = ' . $cInfo->set_function . '\'' .  htmlspecialchars(addslashes($cInfo->configuration_value)) . '\');');
   $value_field = htmlspecialchars_decode($value_field);
     } else {
         if($cInfo->configuration_key == 'ADMINPAGE_LOGO_IMAGE') {
@@ -270,7 +270,7 @@ case 'edit':
       //eval('$value_field = ' . $cInfo->set_function . '\'' . htmlspecialchars($cInfo->configuration_value) . '\');');
       //$value_field = htmlspecialchars_decode($value_field);
     
-      eval('$value_field = ' . $fetch_result['set_function'] . '\'' . htmlspecialchars($fetch_result['configuration_value']) . '\');');
+      eval('$value_field = ' . $fetch_result['set_function'] . '\'' .  htmlspecialchars(addslashes($fetch_result['configuration_value'])) . '\');');
   } else {
       if($fetch_result['configuration_key'] == 'ADMINPAGE_LOGO_IMAGE') {
     $value_field = tep_draw_file_field('upfile'). '<br>' . $fetch_result['configuration_value'];
