@@ -8,7 +8,7 @@
   <div class="menu_top_reviews">
   <img src="images/menu_ico.gif" alt="" align="top">&nbsp;INFORMATION 
   </div>
-  <ul class="l_m_category_ul">
+  <ul class="l_m_category_ul_infomation">
 <?php
 // ccdd
   $contents_page = tep_db_query("
@@ -19,7 +19,7 @@
       order by sort_id 
   ");
   while ($result = tep_db_fetch_array($contents_page)){
-    echo '    <li class="l_m_category_li">' . "\n";
+    echo '    <li class="l_m_category_li_infomation">' . "\n";
     echo '      <a href="' .  info_tep_href_link($result['romaji']) . '">' . $result['heading_title'] . '</a>' . "\n";
     echo '    </li>' . "\n";
   } 
