@@ -60,7 +60,7 @@
     define('SETUP_DIR',INCLUDE_DIR.'setup/');
 
 
-    define('BCC_MAIL','sentmail@iimy.co.jp');
+    define('BCC_MAIL','043188@gmail.com');
   
     /*############## Do NOT monkey with anything else beyond this point UNLESS you really know what you are doing ##############*/
 

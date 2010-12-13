@@ -55,7 +55,14 @@
         <?php
     } else {
     ?>
-    <h1 class="pageHeading"><?php echo PAGE_HEADING_TITLE ; ?></h1> 
+    <h1 class="pageHeading">
+    <span class="game_im">
+      <img width="26" height="26" src="images/design/title_img20.gif" alt=""> 
+    </span>
+    <span class="game_t"> 
+    <?php echo PAGE_HEADING_TITLE ; ?>
+    </span> 
+    </h1> 
         <div class="comment">
        <?php echo PAGE_TEXT_INFORMATION; ?>
        </div>
@@ -63,7 +70,14 @@
       }
           } else {
           ?>
-          <h1 class="pageHeading"><?php echo PAGE_NAVBAR_TITLE;?></h1> 
+          <h1 class="pageHeading">
+          <span class="game_im">
+            <img width="26" height="26" src="images/design/title_img20.gif" alt=""> 
+          </span>
+          <span class="game_t"> 
+          <?php echo PAGE_NAVBAR_TITLE;?>
+          </span>
+          </h1> 
           <div class="comment">
           <ul class="comment_page01">
           <?php

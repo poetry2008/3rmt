@@ -43,7 +43,18 @@ else
     <?}?>
 </div>
 <table width="80%" border="0" cellspacing=1 cellpadding=2>
-   <form action="tickets.php" method="post" enctype="multipart/form-data">
+<?php 
+if (strspn("MSIE",$_SERVER["HTTP_USER_AGENT"])==4){
+?>
+   <form id='newtform'  action="tickets.php" method="post" enctype="multipart/form-data">
+<?php }else { 
+?>
+   <form id='newtform' onsubmit = 'return checkNg();' action="tickets.php" method="post" enctype="multipart/form-data">
+<?php
+}
+?>
+
+
     <input type='hidden' name='a' value='open2'>
     <input type='hidden' name='close' value='yes'>
     <tr><td align="left" colspan=2>【重要】必須項目だけ入力してください。任意項目は初期値から変更しないように.</td></tr>
@@ -87,7 +98,7 @@ else
     <tr>
         <td align="left"><b>サイト名:</b></td>
         <td>
-            <select name="deptId">
+            <select id = 'deptId' name="deptId" onChange="getDeptNg(this.value)">
                 <option value="" selected >サイトを選択してください</option>
                 <?
                  $services= db_query('SELECT dept_id,dept_name FROM '.DEPT_TABLE.' ORDER BY dept_name');
@@ -125,7 +136,7 @@ else
                 <?}?>
               </select>&nbsp;&nbsp;&nbsp;<label><input type='checkbox' value='1' name=append checked="true" />追加</label>
             <?}?>
-            <textarea name="issue" cols="55" rows="16" wrap="soft"><?=$info['issue']?></textarea></td>
+            <textarea id='issue' name="issue" cols="55" rows="16" wrap="soft"><?=$info['issue']?></textarea></td>
     </tr>
     <?if($cfg->canUploadFiles()) {
         ?>
@@ -252,4 +263,52 @@ else
         callback: function (obj) { document.getElementById('email').value = obj.id; document.getElementById('name').value = obj.info; return false;}
     };
     var autosug = new bsn.AutoSuggest('email', options);
+function getDeptNg(id){
+var options = {
+  url:"ajax.php?api=dept&f=getng&id="+id,
+  callback:function(rp){
+    //    ngwords = rp.responseText.parseJSON(); 
+    tmpobj= eval('('+rp.responseText+')');
+    ngwords = tmpobj.ng;
+  }
+};
+Http.get(options);
+}
+
+getDeptNg(document.getElementById('deptId').value);
+
+
+function checkNg(){
+ngArr = ngwords.split(',');
+var response = document.getElementById('issue');
+var response_content = response.value;
+var findkeyword = new Array()
+var keyword;
+var result = false;
+var linechanger ='\n';
+for (keyword in ngArr){
+  if(response_content.indexOf(ngArr[keyword])>=0 && ngArr[keyword]!=''){
+    findkeyword.push(ngArr[keyword])
+  }
+}
+if(findkeyword.length<=0){
+ return true;
+}else{
+
+  var keywordString = linechanger;
+  for (keyword in findkeyword){
+    keywordString+= findkeyword[keyword] + linechanger;
+  }
+  return  confirm('NGキーワード '+keywordString+'返信内容にNGキーワードが有ります。このまま返信しますか？');
+}
+}
+
 </script>
+<?php 
+if (strspn("MSIE",$_SERVER["HTTP_USER_AGENT"])==4){
+?>
+<script>
+var e = document.getElementById("newtform");
+e.attachEvent('onsubmit',checkNg);
+</script>
+<?php } ?>
