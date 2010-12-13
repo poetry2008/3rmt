@@ -41,5 +41,5 @@
   }
 
   if ($banner = tep_banner_exists('dynamic', 'left2')) { echo '<div align="center" style="padding-bottom:5px; ">'.tep_display_banner('static', $banner, 171, 113).'</div>'."\n"; }
-  if ($banner = tep_banner_exists('dynamic', 'left3')) { echo '<div align="center" style="padding-bottom:5px; ">'.tep_display_banner('static', $banner, 171, 113).'</div>'."\n"; }
+  //if ($banner = tep_banner_exists('dynamic', 'left3')) { echo '<div align="center" style="padding-bottom:5px; ">'.tep_display_banner('static', $banner, 171, 113).'</div>'."\n"; }
 
