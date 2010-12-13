@@ -1228,7 +1228,7 @@ font-weight:400;
 cursor:pointer;
 }
 
-a.Icon {padding-left:20px;}
+a.Icon {padding-left:20px;padding-bottom:3px;}
    
 a.Icon:hover {
     text-decoration: underline;    
