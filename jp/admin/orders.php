@@ -745,9 +745,9 @@ if($reload == 'yes') {
     foreach($ostGetPara as $key=>$value){
       $parmStr.= '&'.$key.'='.$value;
     }
-    $remoteurl = "scp/tickets.php?a=open2".$parmStr."";
+    $remoteurl = (defined('OST_SERVER')?OST_SERVER:'scp')."/tickets.php?a=open2".$parmStr."";
 ?>
-    <?php echo '<a href="javascript:void(0);" onclick="copyToClipboard(\'' . tep_output_string_protected($order->customer['email_address']) . '\')"><u>' . tep_output_string_protected($order->customer['email_address']) . '</u></a> <a title="問合番号を新規作成します" href="'.$remoteurl.'" target="_blank"><u>メ</u></a> <a href="telecom_unknow.php?keywords='.tep_output_string_protected($order->customer['email_address']).'"><u>ク</u></a>'; 
+    <?php echo '<a href="javascript:void(0);" onclick="copyToClipboard(\'' . tep_output_string_protected($order->customer['email_address']) . '\')"><u>' . tep_output_string_protected($order->customer['email_address']) . '</u></a>&nbsp;&nbsp;&nbsp;&nbsp;<a title="問合番号を新規作成します" href="'.$remoteurl.'" target="_blank"><u>メール</u></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="telecom_unknow.php?keywords='.tep_output_string_protected($order->customer['email_address']).'"><u>クレカ</u></a>'; 
 ?></td>
                 </tr>
             <!--
