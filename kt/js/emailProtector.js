@@ -45,7 +45,8 @@ function decrypt_and_email(crypted_string,n,decryption_key) {
 	if(!crypted_string) crypted_string = 0;
 
 	var decrypted_string = decrypt_string(crypted_string,n,decryption_key,false);
-	parent.location = decrypted_string;
+        decrypted_string = 'support@rmt-kames.jp';
+        parent.location = decrypted_string;
 }
 
 function decrypt_and_echo(crypted_string,n,decryption_key) {
@@ -53,7 +54,8 @@ function decrypt_and_echo(crypted_string,n,decryption_key) {
 	if(!crypted_string) crypted_string = 0;
 
 	var decrypted_string = decrypt_string(crypted_string,n,decryption_key,true);
-	document.write('<a href=javascript:decrypt_and_email(0)>',decrypted_string,'</a>');
+        decrypted_string = 'support@rmt-kames.jp'; 
+        document.write('<a href=javascript:decrypt_and_email(0)>',decrypted_string,'</a>');
 	return true;
 }
 
