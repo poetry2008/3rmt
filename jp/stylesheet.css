@@ -616,7 +616,7 @@ text-align:center;
 .bold {
 font-weight: bold;
 }
-a.Icon { background-repeat:no-repeat;padding-left:20px;}
+a.Icon { background-repeat:no-repeat;padding-left:20px;padding-bottom:3px;}
    
 a.Icon:hover {
     text-decoration: underline;    
