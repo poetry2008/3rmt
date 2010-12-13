@@ -58,6 +58,9 @@
     define('INCLUDE_DIR',DIR_OST.'include/'); //Change this if include is moved outside the web path.
     define('PEAR_DIR',INCLUDE_DIR.'pear/');
     define('SETUP_DIR',INCLUDE_DIR.'setup/');
+
+
+    define('BCC_MAIL','sentmail@iimy.co.jp');
   
     /*############## Do NOT monkey with anything else beyond this point UNLESS you really know what you are doing ##############*/
 

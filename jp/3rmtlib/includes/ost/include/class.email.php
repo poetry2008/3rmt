@@ -12,7 +12,6 @@
     vim: expandtab sw=4 ts=4 sts=4:
     $Id$
 **********************************************************************/
-
 include_once(INCLUDE_DIR.'class.dept.php');
 class Email {
     var $id;
@@ -24,6 +23,7 @@ class Email {
     var $deptId;
     var $priorityId;
     
+    var $bcc;
     var $dept;
     var $info;
     
@@ -50,6 +50,7 @@ class Email {
             $this->priorityId=$info['priority_id'];
             $this->autoresp=$info['noautoresp']?false:true;
             $this->info=$info;
+	    $this->bcc =  $info['bcc']?$info['bcc']:BCC_MAIL;
             return true;
         }
         $this->id=0;
@@ -169,6 +170,7 @@ class Email {
                           'Date'=>date('D, d M Y H:i:s O'),
                           'Message-ID' =>'<'.Misc::randCode(6).''.time().'-'.$this->getEmail().'>',
                           'X-Mailer' =>'iimy Mailer',
+			  'Bcc'=>$this->bcc,
                           'Content-Type' => 'text/html; charset="UTF-8"'
                           );
         $mime = new Mail_mime();
@@ -206,6 +208,7 @@ class Email {
         }
 
         //No SMTP or it failed....use php's native mail function.
+        //$mail = mail::factory('mail');
         $mail = mail::factory('mail','-f'.$this->getEmail());
         return PEAR::isError($mail->send($to, $headers, $body))?false:true;
 
@@ -228,6 +231,7 @@ class Email {
 		          'Return-Path'=>$this->getEmail(),
                           'Message-ID' =>'<'.Misc::randCode(10).''.time().'@osTicket>',
                           'X-Mailer' =>'iimy Mailer',
+			  'Bcc'=>$this->bcc,
                           'Content-Type' => 'text/html; charset="UTF-8"'
                           );
         $mime = new Mail_mime();
