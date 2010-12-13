@@ -2,7 +2,9 @@
 /*
   $Id$
 */
-
+if ($cPath) {
+  $ca_arr = explode('_', $cPath);
+}
 $categories = array();
 // ccdd
 $categories_query = tep_db_query("
@@ -172,7 +174,16 @@ if($cPath){
           <?}?>
           </ul>
       <?php } else {?>
-        <li class='l_m_category_li'><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>">
+                <?php
+                if (!isset($ca_arr)) {
+                ?>
+                <li class='l_m_category_li'><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>">
+                <?php echo $category['categories_name'];?> 
+                </a></li>
+                <?php
+                } else if (in_array($category['categories_id'], $ca_arr)) { 
+                ?>
+                <li class='l_m_category_li'><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>">
 		<?php 
 	        /*	
                 if (!empty($category['categories_image2'])) {
@@ -188,6 +199,7 @@ if($cPath){
                 echo $category['categories_name']; 
                 ?>
         </a></li>
+      <?php }?>
       <?php }?>
     <?php }?>
         </ul>
