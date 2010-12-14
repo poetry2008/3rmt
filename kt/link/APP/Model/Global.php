@@ -6,7 +6,7 @@ class Model_Global extends FLEA_Db_TableDataGateway
     parent::FLEA_Db_TableDataGateway();
     $this->disableLinks();
   }
-  var $tableName = 'km_global';
+  var $tableName = 'kt_global';
   var $primaryKey = 'name';
 
     /**
