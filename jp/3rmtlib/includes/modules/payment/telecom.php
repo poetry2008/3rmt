@@ -243,7 +243,7 @@
     $mail_body .= '■ホスト名　　　　　　　：' . @gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";
     $mail_body .= '■ユーザーエージェント　：' . $_SERVER["HTTP_USER_AGENT"] . "\n";
     
-    tep_mail('管理者', SEND_EXTRA_ORDER_EMAILS_TO, '仮クレカ注文', $mail_body, '', '');
+    tep_mail('管理者', SENTMAIL_ADDRESS, '仮クレカ注文', $mail_body, '', '');
     
     $today = date("YmdHis");
     // telecom_option 文档中的$ID

@@ -81,7 +81,7 @@ if (strspn("MSIE",$_SERVER["HTTP_USER_AGENT"])==4){
     <tr>
         <td align="left"><b>件名:</b></td>
         <td>
-            <input type="text" name="subject" size="35" value="<?=$info['subject']?>">
+            <input type="text" name="subject" size="35" value="<?=$info['subject']?>" id="subject">
             &nbsp;<font class="error">*&nbsp;<?=$errors['subject']?></font>
         </td>
     </tr>
@@ -103,7 +103,7 @@ if (strspn("MSIE",$_SERVER["HTTP_USER_AGENT"])==4){
                 <?}?>
               </select>&nbsp;&nbsp;&nbsp;<label><input type='checkbox' value='1' name=append checked="true" />追加</label>
             <?}?>
-            <textarea id="issue" name="issue" cols="55" rows="16" wrap="soft"><?=$info['issue']?></textarea></td>
+            <textarea id="issue" name="issue" cols="85" rows="16" wrap="soft"><?=$info['issue']?></textarea></td>
     </tr>
     <?if($cfg->canUploadFiles()) {
         ?>
@@ -250,24 +250,39 @@ function checkNg(){
 ngArr = ngwords.split(',');
 var response = document.getElementById('issue');
 var response_content = response.value;
-var findkeyword = new Array()
+var subject  = document.getElementById('subject');
+var subject_content = subject.value;
+var subject_findkeyword = new Array();
+var issue_findkeyword   = new Array();
 var keyword;
 var result = false;
 var linechanger ='\n';
 for (keyword in ngArr){
   if(response_content.indexOf(ngArr[keyword])>=0 && ngArr[keyword]!=''){
-    findkeyword.push(ngArr[keyword])
+    issue_findkeyword.push(ngArr[keyword])
+  }
+  if(subject_content.indexOf(ngArr[keyword])>=0 && ngArr[keyword]!=''){
+    subject_findkeyword.push(ngArr[keyword])
   }
 }
-if(findkeyword.length<=0){
+if(issue_findkeyword.length<=0 && subject_findkeyword.length<=0){
  return true;
 }else{
-
   var keywordString = linechanger;
-  for (keyword in findkeyword){
-    keywordString+= findkeyword[keyword] + linechanger;
+  for (keyword in issue_findkeyword){
+    keywordString+= issue_findkeyword[keyword] + linechanger;
   }
-  return  confirm('NGキーワード '+keywordString+'返信内容にNGキーワードが有ります。このまま返信しますか？');
+  for (keyword in subject_findkeyword){
+    keywordString+= subject_findkeyword[keyword] + linechanger;
+  }
+  if (issue_findkeyword.length>0 && subject_findkeyword.length>0) {
+    return  confirm('NGキーワード '+keywordString+'件名と本文にがあります。このまま返信しますか?');
+  } else if (issue_findkeyword.length>0) {
+    return  confirm('NGキーワード '+keywordString+'本文にがあります。このまま返信しますか?');
+  } else if (subject_findkeyword.length>0) {
+    return  confirm('NGキーワード '+keywordString+'件名にがあります。このまま返信しますか?');
+  }
+  //return  confirm('NGキーワード '+keywordString+'返信内容にNGキーワードが有ります。このまま返信しますか？');
 }
 }
 </script>

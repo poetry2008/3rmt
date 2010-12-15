@@ -3,13 +3,11 @@
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <?php
-
-   if($_SERVER['SCRIPT_NAME']=='/admin/scp/tickets.php' and !count($_GET)){
-?>
+/*
+   if(($_SERVER['SCRIPT_NAME']=='/admin/scp/tickets.php' || $_SERVER['SCRIPT_NAME']=='/admin/scp/index.php') and !count($_GET)){
 <meta http-equiv="refresh" content="180;tickets.php">
-<?php
-
    }
+*/
 if(defined('AUTO_REFRESH') && is_numeric(AUTO_REFRESH_RATE) && AUTO_REFRESH_RATE>0){ //Refresh rate
 echo '<meta http-equiv="refresh" content="'.AUTO_REFRESH_RATE.'" />';
 }
