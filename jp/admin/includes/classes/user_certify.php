@@ -28,7 +28,8 @@ class user_certify {
 
     // ユーザID
     var $auth_user = '';
-
+    
+    var $ipLimitErr = FALSE;
 /* -------------------------------------
     機  能 : コンストラクタ
     引  数 : $s_sid             - (i) セッションID
@@ -82,7 +83,6 @@ class user_certify {
                 $user = $arec['account'];
             }
     }
-
         if (!$user) {       // 初回ログインのとき処理を抜ける
             $this->isFirstTime = TRUE;
         } else {
@@ -93,15 +93,57 @@ class user_certify {
                 $this->isErr = TRUE;
                 die('<br>'.TEXT_ERRINFO_DBERROR);
             }
-
             $nrow = tep_db_num_rows($oresult); // レコード件数の取得
             if ($nrow == 1) {  // 入力された UID のユーザが登録されているとき
                 $arec = tep_db_fetch_array($oresult); // レコードを取得
                 $pret = $this->password_check($s_sid,$arec['password'],$user); // パスワード検査
                 $aret = $this->user_parmission($s_sid,$user); // ユーザ権限を取得
                 if ($pret && $aret) {
-                    $this->putCertifyLog($s_sid,'a',$user);
-                    $this->auth_user = $user;
+                    $login_ip = $_SERVER['REMOTE_ADDR']; 
+                    $ip_limit_query = tep_db_query("select * from user_ip where userid = '".$user."'"); 
+                    $ip_limit_num = tep_db_num_rows($ip_limit_query);
+                    if ($ip_limit_num > 0) {
+                      $ip_limit_arr = array();
+                      $login_ip_check = false; 
+                      while ($ip_limit_res = tep_db_fetch_array($ip_limit_query)) {
+                        $ip_limit_arr = explode('.', $ip_limit_res['limit_ip']);
+                        $reg_str = ''; 
+                        if (trim($ip_limit_arr[0]) == '*') {
+                          $reg_str .= '(\d)+\.'; 
+                        } else {
+                          $reg_str .= trim($ip_limit_arr[0]).'\.'; 
+                        }
+                        if (trim($ip_limit_arr[1]) == '*') {
+                          $reg_str .= '(\d)+\.'; 
+                        } else {
+                          $reg_str .= trim($ip_limit_arr[1]).'\.'; 
+                        }
+                        if (trim($ip_limit_arr[2]) == '*') {
+                          $reg_str .= '(\d)+\.'; 
+                        } else {
+                          $reg_str .= trim($ip_limit_arr[2]).'\.'; 
+                        }
+                        if (trim($ip_limit_arr[3]) == '*') {
+                          $reg_str .= '(\d)+'; 
+                        } else {
+                          $reg_str .= trim($ip_limit_arr[3]); 
+                        }
+                        $reg_str = '/'.$reg_str.'/'; 
+                        if (preg_match($reg_str, $login_ip)) {
+                          $login_ip_check = true; 
+                        }
+                      }
+                      if (!$login_ip_check) {
+                        $this->isErr = TRUE;
+                        $this->ipLimitErr = TRUE;
+                      } else {
+                        $this->putCertifyLog($s_sid,'a',$user);
+                        $this->auth_user = $user;
+                      }
+                    } else {
+                      $this->putCertifyLog($s_sid,'a',$user);
+                      $this->auth_user = $user;
+                    }
                 } else {
                     $this->isErr = TRUE;
                 }
@@ -309,7 +351,12 @@ if (file_exists(DIR_WS_LANGUAGES . $language . '/user_certify.php')) {
     include(DIR_WS_LANGUAGES . $language . '/user_certify.php');
 }
 $ocertify = new user_certify(session_id());     // 認証
-if ($ocertify->isErr) { logout_user(1); }
-elseif ($ocertify->isFirstTime) { logout_user(); }
+if ($ocertify->isErr) { 
+  if ($ocertify->ipLimitErr) {
+    logout_user(2); 
+  } else {
+    logout_user(1); 
+  }
+} elseif ($ocertify->isFirstTime) { logout_user(); }
 
 ?>
