@@ -15,6 +15,7 @@ define('HEADING_TITLE_', 'ユーザ認証');
 // テーブルアクセスエラーメッセージ
 define('TEXT_ERRINFO_DBERROR', 'DBエラーが発生しました');
 
+define('TEXT_ERRINFO_IP', 'ｉｐを制限されていますので、ログインできません');
 // メッセージ
 define('TEXT_ADMIN_USER', 'システム管理者');
 define('TEXT_ERRINFO_LOGIN', '!!!!! ログインエラー !!!!!');
