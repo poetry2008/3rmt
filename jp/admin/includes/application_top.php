@@ -284,7 +284,8 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
 //exit($PHP_SELF);
   if ($ocertify->npermission == 0 && $PHP_SELF != '/'.FILENAME_ORDERS) {
-    tep_redirect(FILENAME_ORDERS);
+    //tep_redirect(FILENAME_ORDERS);
+    tep_redirect(FILENAME_LOGIN);
   }
 
 // define our localization functions

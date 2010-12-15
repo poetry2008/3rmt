@@ -72,7 +72,7 @@ class user_certify {
                 $this->isFirstTime = TRUE;
                 return;
             } elseif ($arec['logoutstatus'] != 'i') {// エラー,ログアウト,タイムアウト?
-                $this->isFirstTime = TRUE;
+                //$this->isFirstTime = TRUE;
                 return;
             } elseif (strcmp($arec['lastaccesstime'], $actime) < 0) {// タイムアウト?
                 //error_log('USER ' . date($this->date_format) . ' timeout lastaccesstime[' . $arec['lastaccesstime'] . '] limit=[' . $actime . "]\n", 3, STORE_PAGE_PARSE_TIME_LOG);// DEBUG
