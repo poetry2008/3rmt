@@ -553,18 +553,22 @@ font-weight:bold;
 	text-align:center;
 	background: #f0f1f1;
 }
+
 #orders_answer {
 	margin-bottom: 10px;
 	background: #f0f1f1;
 }
+
 #orders_credit {
 	margin-bottom: 10px;
 	background: #f0f1f1;
 }
+
 #orders_telecom {
 	margin-bottom: 10px;
 	background: #f0f1f1;
 }
+
 h3 {
 	height:15px;
 	background:#888;
@@ -575,6 +579,7 @@ h3 {
 	padding-left:2px;
 	text-align:left;
 }
+
 .orders_computer_checked {
 	color: #fff;
 	background: #ff0000;
@@ -586,6 +591,7 @@ h3 {
 	font-weight:bold;
 	text-align:center;
 }
+
 .orders_computer_unchecked {
 	color: #000;
 	background: #fff;
@@ -597,7 +603,20 @@ h3 {
 	font-weight:bold;
 	text-align:center;
 }
+
 .questions_date{
 	border: 0;
 	background: #f0f1f1;
+}
+
+.list_type span{
+  padding: 0 5px;
+  background: #ddd;
+  color: #000;
+}
+
+.list_type .site_filter_selected{
+  color: #fff;
+  font-weight: bold;
+  background: #808080;
 }

@@ -788,6 +788,7 @@
   #convenience_store
   unset($_SESSION['character']);
   unset($_SESSION['option']);
+  unset($_SESSION['adurl']);
 
   
   //$pr = '?SID=' . $convenience_sid;
