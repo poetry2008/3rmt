@@ -610,7 +610,8 @@ class Ticket{
         $sql='INSERT INTO '.TICKET_MESSAGE_TABLE.' SET created=NOW() '.
              ',ticket_id='.db_input($this->getId()).
              ',messageId='.db_input($msgid).
-             ',message='.db_input(Format::striptags($msg)). //Tags/code stripped...meaning client can not send in code..etc
+             //',message='.db_input(Format::striptags($msg)). //Tags/code stripped...meaning client can not send in code..etc
+             ',message='.db_input(stripslashes($msg)). //Tags/code stripped...meaning client can not send in code..etc
              ',headers='.db_input($headers). //Raw header.
              ',source='.db_input($source).
              ',ip_address='.db_input($_SERVER['REMOTE_ADDR']);
@@ -735,7 +736,9 @@ class Ticket{
         $sql= 'INSERT INTO '.TICKET_RESPONSE_TABLE.' SET created=NOW() '.
                 ',ticket_id='.db_input($this->getId()).
                 ',msg_id='.db_input($msgid).
-                ',response='.db_input(Format::striptags($response)).
+                //',response='.db_input(Format::striptags($response)).
+                //',response='.db_input(Format::htmlchars($response)).
+                ',response='.db_input($response).
                 ',staff_id='.db_input($thisuser->getId()).
                 ',staff_name='.db_input($thisuser->getName()).
                 ',ip_address='.db_input($thisuser->getIP());

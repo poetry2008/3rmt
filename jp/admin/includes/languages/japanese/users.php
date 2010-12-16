@@ -88,4 +88,5 @@ define('JAVA_SCRIPT_INFO_DELETE', 'ユーザ管理情報を削除します。\n�
 define('JAVA_SCRIPT_INFO_PASSWORD', 'パスワードを変更します。\nよろしいですか？');
 define('JAVA_SCRIPT_INFO_GRANT', '管理者権限を与えます。\nよろしいですか？');
 define('JAVA_SCRIPT_INFO_REVOKE', '管理者権限を取り消します。\nよろしいですか？');
+define('TABLE_HEADING_IP_LIMIT', 'IP制限設置');
 ?>

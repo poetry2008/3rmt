@@ -308,17 +308,17 @@
         }
 //ccdd
         tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = '" . $stock_left . "' where products_id = '" . tep_get_prid($order->products[$i]['id']) . "'");
+        /*
         if ($stock_left < 1) {
-      // 在庫切れでも商品は表示
-      //tep_db_query("update " . TABLE_PRODUCTS . " set products_status = '0' where products_id = '" . tep_get_prid($order->products[$i]['id']) . "'");
         ########## 在庫切れのメール通知　##############
         if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
                 $zaiko_alart = '商品名　　-　　　型番'."\n";
-        $zaiko_alart .= tep_get_products_name(tep_get_prid($order->products[$i]['id'])).'('.$order->products[$i]['model'].')'."\n";
-        $zaiko_alart .= HTTPS_SERVER.'/admin/categories.php?search='.urlencode(tep_get_products_name(tep_get_prid($order->products[$i]['id'])))."\n\n";
+                $zaiko_alart .= tep_get_products_name(tep_get_prid($order->products[$i]['id'])).'('.$order->products[$i]['model'].')'."\n";
+                $zaiko_alart .= HTTPS_SERVER.'/admin/categories.php?search='.urlencode(tep_get_products_name(tep_get_prid($order->products[$i]['id'])))."\n\n";
                 tep_mail('', SEND_EXTRA_ORDER_EMAILS_TO, ZAIKO_ALART_TITLE, ZAIKO_ARART_BODY.$zaiko_alart, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
+        }
       }
-    }
+      */
       }
     }
 
@@ -565,8 +565,8 @@
   // 2003.03.08 Edit Japanese osCommerce
   tep_mail(tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], EMAIL_TEXT_SUBJECT, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   
-  if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
-    tep_mail('', SEND_EXTRA_ORDER_EMAILS_TO, EMAIL_TEXT_SUBJECT2, $email_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
+  if (SENTMAIL_ADDRESS != '') {
+    tep_mail('', SENTMAIL_ADDRESS, EMAIL_TEXT_SUBJECT2, $email_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
   }
   
   last_customer_action();
@@ -788,6 +788,7 @@
   #convenience_store
   unset($_SESSION['character']);
   unset($_SESSION['option']);
+  unset($_SESSION['adurl']);
 
   
   //$pr = '?SID=' . $convenience_sid;

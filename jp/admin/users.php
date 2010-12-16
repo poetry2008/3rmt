@@ -405,6 +405,12 @@ function UserInsert_preview() {
   echo tep_draw_input_field("aval[email]", '', 'size="32" maxlength="96"', FALSE, 'text', FALSE);
   echo '</td>';
   echo "</tr>\n";
+  echo "<tr>\n";
+  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' .  TABLE_HEADING_IP_LIMIT . '</td>';
+  echo '<td>';
+  echo tep_draw_textarea_field('ip_limit', false, 20, 5); 
+  echo '</td>';
+  echo "</tr>\n";
 
   echo "</table>\n";
 
@@ -488,7 +494,20 @@ function UserInfo_preview() {
   echo tep_draw_input_field("aval[email]", $arec['email'], 'size="32" maxlength="96"', FALSE, 'text', FALSE);
   echo '</td>';
   echo "</tr>\n";
-
+  $ip_limit_query = tep_db_query("select * from user_ip where userid = '".$GLOBALS['userslist']."'"); 
+  $ip_limit_num = tep_db_num_rows($ip_limit_query);
+  $ip_limit_str = ''; 
+  if ($ip_limit_num > 0) {
+    while ($ip_limit_res = tep_db_fetch_array($ip_limit_query)) {
+      $ip_limit_str .= $ip_limit_res['limit_ip']."\n"; 
+    }
+  }
+  echo "<tr>\n";
+  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' .  TABLE_HEADING_IP_LIMIT . '</td>'; 
+  echo '<td>';
+  echo tep_draw_textarea_field('ip_limit', false, 20, 5, $ip_limit_str); 
+  echo '</td>';
+  echo "</tr>\n";
   echo "</table>\n";
 
   echo tep_draw_hidden_field("execute_user");           // 処理モードを隠し項目にセットする
@@ -793,7 +812,28 @@ function UserInsert_execute() {
     if ($oresult) @tep_db_free_result($oresult);      // 結果オブジェクトを開放する
     return FALSE;
   }
-
+  //var_dump($GLOBALS['ip_limit']);
+  //var_dump(!empty($GLOBALS['ip_limit']));
+  //var_dump(explode("\n", $GLOBALS['ip_limit']));
+  if (!empty($GLOBALS['ip_limit'])) {
+    $ip_limit_arr = explode("\n", $GLOBALS['ip_limit']); 
+    foreach ($ip_limit_arr as $ip_key => $ip_value) {
+      $split_ip = explode('.', $ip_value);
+      $split_error = false; 
+      if (count($split_ip) != 4) {
+        continue; 
+      }
+      if ((is_numeric(trim($split_ip[0])) || trim($split_ip[0]) == '*') && (is_numeric(trim($split_ip[1])) || trim($split_ip[1]) == '*') && (is_numeric(trim($split_ip[2])) || trim($split_ip[2]) == '*') && (is_numeric(trim($split_ip[3])) || trim($split_ip[3]) == '*')) {
+      } else {
+        $split_error = true; 
+      }
+      if ($split_error) {
+        continue; 
+      }
+      $ip_insert_sql = "insert user_ip values('".$GLOBALS['aval']['userid']."', '".$ip_value."')"; 
+      tep_db_query($ip_insert_sql);
+    }
+  }
   echo "<br>\n";
   echo TEXT_SUCCESSINFO_INSERT_USER;    // 完了メッセージ
   echo '<br><br>';
@@ -839,7 +879,27 @@ function UserInfor_execute() {
     if ($oresult) @tep_db_free_result($oresult);      // 結果オブジェクトを開放する
     return FALSE;
   }
-
+  
+  tep_db_query("delete from user_ip where userid = '".$GLOBALS['userid']."'");
+  if (!empty($GLOBALS['ip_limit'])) {
+    $ip_limit_arr = explode("\n", $GLOBALS['ip_limit']); 
+    foreach ($ip_limit_arr as $ip_key => $ip_value) {
+      $split_ip = explode('.', $ip_value);
+      $split_error = false; 
+      if (count($split_ip) != 4) {
+        continue; 
+      }
+      if ((is_numeric(trim($split_ip[0])) || trim($split_ip[0]) == '*') && (is_numeric(trim($split_ip[1])) || trim($split_ip[1]) == '*') && (is_numeric(trim($split_ip[2])) || trim($split_ip[2]) == '*') && (is_numeric(trim($split_ip[3])) || trim($split_ip[3]) == '*')) {
+      } else {
+        $split_error = true; 
+      }
+      if ($split_error) {
+        continue; 
+      }
+      $ip_insert_sql = "insert user_ip values('".$GLOBALS['userid']."', '".$ip_value."')"; 
+      tep_db_query($ip_insert_sql);
+    }
+  }
   echo "<br>\n";
   echo TEXT_SUCCESSINFO_UPDATE_USER;    // 完了メッセージ
   echo "<br><br>\n";
@@ -897,6 +957,7 @@ function UserDelete_execute() {
     if ($oresult) @tep_db_free_result($oresult);  // 結果オブジェクトを開放する
     return FALSE;
   }
+  tep_db_query("delete from user_ip where userid = '".$GLOBALS['userid']."'");
 
   echo "<br>\n";
   echo TEXT_SUCCESSINFO_DELETE_USER;          // 完了メッセージ
