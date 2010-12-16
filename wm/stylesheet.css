@@ -621,7 +621,10 @@ border:2px solid #FF8080;
     text-decoration: none;
 }
 
-a.Icon { }
+a.Icon{
+padding-top:3px;
+padding-bottom:3px;
+}
    
 a.Icon:hover {
     text-decoration: underline;    

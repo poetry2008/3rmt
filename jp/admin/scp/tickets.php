@@ -69,6 +69,10 @@ if($_POST && !$errors):
         $errors=array();
         $lock=$ticket->getLock(); //Ticket lock if any
         $statusKeys=array('open'=>'Open','Reopen'=>'Open','Close'=>'Closed');
+        if($_POST['gomi']){
+          $ticket->moveToGomi();
+          $ticket->logActivity('Ticket Moveed To Gomi',$note,false,'System');
+        } else { //gomi
         switch(strtolower($_POST['a'])):
         case 'reply':
             $fields=array();
@@ -358,6 +362,7 @@ if($_POST && !$errors):
         default:
             $errors['err']='Unknown action';
         endswitch;
+        }
         if($ticket && is_object($ticket))
             $ticket->reload();//Reload ticket info following post processing
     }elseif($_POST['a']) {
@@ -482,7 +487,7 @@ $nav->setTabActive('tickets');
 $_SESSION['pre_opencount'] = $_SESSION['opencount'];
 $opencount = (int)$stats['open']; //转成数字的OPEN的数量 
 $_SESSION['opencount'] = $opencount;
-if($_SESSION['pre_opencount']<$opencount){
+if(!empty ($_SESSON['pre_opencount']) && $_SESSION['pre_opencount']<$opencount){
   $_SESSION['play_new_sound'] = true;
 }
 

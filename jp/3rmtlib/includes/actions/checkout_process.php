@@ -565,7 +565,7 @@
   // 2003.03.08 Edit Japanese osCommerce
   tep_mail(tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], EMAIL_TEXT_SUBJECT, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   
-  if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
+  if (SENTMAIL_ADDRESS != '') {
     tep_mail('', SENTMAIL_ADDRESS, EMAIL_TEXT_SUBJECT2, $email_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
   }
   
@@ -788,6 +788,7 @@
   #convenience_store
   unset($_SESSION['character']);
   unset($_SESSION['option']);
+  unset($_SESSION['adurl']);
 
   
   //$pr = '?SID=' . $convenience_sid;

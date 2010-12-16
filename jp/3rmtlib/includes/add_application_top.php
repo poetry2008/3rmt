@@ -525,9 +525,18 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
     }
   }
   
+  // 统计 REFERER
   if (!isset($_SESSION['referer']) && $_SERVER["HTTP_REFERER"]) {
     $_SESSION['referer'] = $_SERVER["HTTP_REFERER"];
+    // 统计 Google Adsense
+    //if ($_GET["sa"] && $_GET["ai"] && $_GET["adurl"]) {
+    $adurl = tep_get_google_adsense_adurl($_SERVER['HTTP_REFERER']);
+    if ($adurl) {
+      $_SESSION['referer_adurl'] = tep_get_domain($_GET["adurl"]);
+    }
+    //}
   }
+
 
 // include the who's online functions
   require(DIR_WS_FUNCTIONS . 'whos_online.php');
