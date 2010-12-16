@@ -122,16 +122,30 @@ class MailFetcher {
         
         $a = imap_mime_header_decode($text);
         $str = '';
+/*
         foreach ($a as $k => $part)
+            $str.= $part->text;
+        //add by bobhero {{
+foreach ($a as $k => $part){
+          if(!$part->charset){
+             $str.= $part->text;
+          }else{
+             $str.= mb_convert_encoding($part->text,'UTF-8', $part->charset);
+          }
+        }
+
+*/
+
+
+ foreach ($a as $k => $part)
             $str.= $part->text;
         //add by bobhero {{
 $explodeStr = explode("?",$text);
 if(strlen($explodeStr[1])){
 $str  =  iconv($explodeStr[1],'UTF-8',$str);
 }
-//add by bobhero }}
-        
-        return $str?$str:imap_utf8($text);
+
+     return $str?$str:imap_utf8($text);
     }
 
     function getLastError(){
@@ -161,24 +175,34 @@ $str  =  iconv($explodeStr[1],'UTF-8',$str);
 
     //search for specific mime type parts....encoding is the desired encoding.
     function getPart($mid,$mimeType,$encoding=false,$struct=null,$partNumber=false){
-          
         if(!$struct && $mid)
             $struct=@imap_fetchstructure($this->mbox, $mid);
         //Match the mime type.
         if($struct && !$struct->ifdparameters && strcasecmp($mimeType,$this->getMimeType($struct))==0){
             $partNumber=$partNumber?$partNumber:1;
             if(($text=imap_fetchbody($this->mbox, $mid, $partNumber))){
+
                 if($struct->encoding==3 or $struct->encoding==4) //base64 and qp decode.
                     $text=$this->decode($struct->encoding,$text);
 
                 $charset=null;
+                
                 if($encoding) { //Convert text to desired mime encoding...
                     if($struct->ifparameters){
-                        if(!strcasecmp($struct->parameters[0]->attribute,'CHARSET') && strcasecmp($struct->parameters[0]->value,'US-ASCII'))
-                            $charset=trim($struct->parameters[0]->value);
+                      $charsetkey=0;
+                      foreach ($struct->parameters as $key=>$value){
+                        if(!strcasecmp($value->attribute,'CHARSET')){
+                          $charsetkey = $key;
+                          break;
+                        }
+                      }
+                        if(!strcasecmp($struct->parameters[$charsetkey]->attribute,'CHARSET') && strcasecmp($struct->parameters[$charsetkey]->value,'US-ASCII'))
+                            $charset=trim($struct->parameters[$charsetkey]->value);
                     }
                     $text=$this->mime_encode($text,$charset,$encoding);
+
                 }
+
                 return $text;
             }
         }
@@ -205,8 +229,8 @@ $str  =  iconv($explodeStr[1],'UTF-8',$str);
     }
 
     function getBody($mid) {
-        
         $body ='';
+
         if(!($body = $this->getpart($mid,'TEXT/PLAIN',$this->charset))) {
             if(($body = $this->getPart($mid,'TEXT/HTML',$this->charset))) {
                 //Convert tags of interest before we striptags
@@ -225,10 +249,9 @@ $str  =  iconv($explodeStr[1],'UTF-8',$str);
 
         //Make sure the email is NOT one of the undeleted emails.
         if($mailinfo['mid'] && ($id=Ticket::getIdByMessageId(trim($mailinfo['mid']),$mailinfo['from']['email']))){
-            //TODO: Move emails to a fetched folder when delete is false?? 
-            return false;
+          //TODO: Move emails to a fetched folder when delete is false?? 
+          return false;
         }
-
         $var['name']=$this->mime_decode($mailinfo['from']['name']);
         $var['email']=$mailinfo['from']['email'];
         $var['subject']=$mailinfo['subject']?$this->mime_decode($mailinfo['subject']):'[No Subject]';
@@ -237,7 +260,6 @@ $str  =  iconv($explodeStr[1],'UTF-8',$str);
         $var['emailId']=$emailid?$emailid:$cfg->getDefaultEmailId(); //ok to default?
         $var['name']=$var['name']?$var['name']:$var['email']; //No name? use email
         $var['mid']=$mailinfo['mid'];
-
         if($cfg->useEmailPriority())
             $var['pri']=$this->getPriority($mid);
        
@@ -301,7 +323,6 @@ $str  =  iconv($explodeStr[1],'UTF-8',$str);
     }
 
     function fetchTickets($emailid,$max=20,$deletemsgs=false){
-
         $nummsgs=imap_num_msg($this->mbox);
         //echo "New Emails:  $nummsgs\n";
         $msgs=$errors=0;
@@ -325,10 +346,9 @@ $str  =  iconv($explodeStr[1],'UTF-8',$str);
 
     function fetchMail(){
         global $cfg;
-      
+
         if(!$cfg->canFetchMail())
             return;
-
         //We require imap ext to fetch emails via IMAP/POP3
         if(!function_exists('imap_open')) {
             $msg='PHP must be compiled with IMAP extension enabled for IMAP/POP3 fetch to work!';
