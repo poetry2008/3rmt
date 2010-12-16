@@ -391,7 +391,7 @@ if (strspn("MSIE",$_SERVER["HTTP_USER_AGENT"])==4){
                                 <input class="button" type='submit' value='返信' />
                                 <input class="button" type='reset' value='リセット' />
                                 <input class="button" type='button' value='キャンセル' onClick="history.go(-1)" />
-                                <input name='gomi' class="button" type='submit' value='ごみ箱' />
+                                <input name='gomi' class="button" type='submit' value='ごみ箱'               onClick=' return confirm("選択したお問い合わせを、ごみ箱に移動しますか?");'/>
                             </div>
                         </p>
                     </form>                
@@ -434,7 +434,8 @@ if (strspn("MSIE",$_SERVER["HTTP_USER_AGENT"])==4){
                                 <input class="button" type='submit' value='Submit' />
                                 <input class="button" type='reset' value='リセット' />
                                 <input class="button" type='button' value='Cancel' onClick="history.go(-1)" />
-                                <input name='gomi' class="button" type='submit' value='ごみ箱' />
+                                <input name='gomi' class="button" type='submit' value='ごみ箱'               onClick=' return confirm("選択したお問い合わせを、ごみ箱に移動しますか?");'/>
+
                             </div>
                         </p>
                     </form>
@@ -473,7 +474,8 @@ if (strspn("MSIE",$_SERVER["HTTP_USER_AGENT"])==4){
                                 <input class="button" type='submit' value='Transfer' />
                                 <input class="button" type='reset' value='リセット' />
                                 <input class="button" type='button' value='キャンセル' onClick="history.go(-1)" />
-                                <input name='gomi' class="button" type='submit' value='ごみ箱' />
+                                <input name='gomi' class="button" type='submit' value='ごみ箱'               onClick=' return confirm("選択したお問い合わせを、ごみ箱に移動しますか?");'/>
+
                             </div>
                         </p>
                     </form>
@@ -521,7 +523,8 @@ if (strspn("MSIE",$_SERVER["HTTP_USER_AGENT"])==4){
                                 <input class="button" type='submit' value='Assign' />
                                 <input class="button" type='reset' value='リセット' />
                                 <input class="button" type='button' value='キャンセル' onClick="history.go(-1)" />
-                                <input name='gomi' class="button" type='submit' value='ごみ箱' />
+                                <input name='gomi' class="button" type='submit' value='ごみ箱'               onClick=' return confirm("選択したお問い合わせを、ごみ箱に移動しますか?");'/>
+
                             </div>
                         </p>
                     </form>
