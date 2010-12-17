@@ -7,8 +7,8 @@
 
   require('includes/application_top.php');
 
-  require(DIR_WS_CLASSES . 'currencies.php');
-  $currencies = new currencies();
+  //require(DIR_WS_CLASSES . 'currencies.php');
+  //$currencies = new currencies();
 
 ?>
 <!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -43,12 +43,18 @@
       </tr>
       <tr>
         <td>
+          <div class="list_type">
+            <span<?php if($_GET['type'] != 'adsense'){?> class="site_filter_selected"<?php }?>><a href="<?php echo tep_href_link('referer.php','type=referer'); ?>">Referer</a></span>
+            <span<?php if($_GET['type'] == 'adsense'){?> class="site_filter_selected"<?php }?>><a href="<?php echo tep_href_link('referer.php','type=adsense'); ?>">Adsense</a></span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
         <div align="center">
 
-
-
-    <form action="<?php echo tep_href_link('referer.php','site_id='.$_GET['site_id']) ; ?>" method="get">
-    <fieldset><!--<legend class="smallText"><b>xxxxx</b></legend>-->
+    <form action="<?php echo tep_href_link('referer.php','site_id='.$_GET['site_id'].'&type='.$_GET['type']) ; ?>" method="get">
+    <fieldset>
     <table  border="0" align="center" cellpadding="0" cellspacing="2">
     <tr>
       <td class="smallText">
@@ -136,6 +142,22 @@
                 <td class="dataTableHeadingContent">順位</td>
               </tr>
 <?php
+  if ($_GET['type'] == 'adsense') {
+  $ref_site_query = tep_db_query("
+    select * from (
+      select count(orders_id) as cnt,orders_adurl
+      from " . TABLE_ORDERS . " o, ".TABLE_SITES." s
+      where s.id = o.site_id
+        and orders_adurl IS NOT NULL
+        and orders_adurl != ''
+        " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and s.id = '" . intval($_GET['site_id']) . "' " : '') . 
+        (isset($_GET['s_y']) && isset($_GET['s_m']) && isset($_GET['s_d']) ? " and o.date_purchased > '".$_GET['s_y'].'-'.$_GET['s_m'].'-'.$_GET['s_d'] ."'" : " and o.date_purchased > '".date('Y-m-d H:i:s', time()-(86400*30)) . "' ") . 
+        (isset($_GET['e_y']) && isset($_GET['e_m']) && isset($_GET['e_d']) ? " and o.date_purchased < '".$_GET['e_y'].'-'.$_GET['e_m'].'-'.$_GET['e_d'] ." 23:59:59'" : '') . "
+      group by orders_adurl
+    ) s
+    order by cnt desc
+      ");
+  } else {
   $ref_site_query = tep_db_query("
     select * from (
       select count(orders_id) as cnt,orders_ref_site
@@ -149,21 +171,12 @@
     ) s
     order by cnt desc
       ");
+  }
   $i = 1;
   while ($ref_site = tep_db_fetch_array($ref_site_query)) {
-    //$time_online = (time() - $whos_online['time_entry']);
-    /*if ( ((!isset($_GET['info']) || !$_GET['info']) || ($_GET['info'] == $whos_online['session_id'])) && (!isset($info) || !$info) ) {
-      $info = $whos_online['session_id'];
-    }*/
-    /*if ($whos_online['session_id'] == $info) {
-      echo '              <tr class="dataTableRowSelected">' . "\n";
-    } else {
-      echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_WHOS_ONLINE, tep_get_all_get_params(array('info', 'action')) . 'info=' . $whos_online['session_id'], 'NONSSL') . '\'">' . "\n";
-    }*/
-    //echo '              <tr class="dataTableRow">' . "\n";
 ?>
               <tr class="dataTableRow">
-                <td class="dataTableContent"><?php echo $ref_site['orders_ref_site'];?></td>
+                <td class="dataTableContent"><?php echo $_GET['type'] == 'adsense'?$ref_site['adurl']:$ref_site['orders_ref_site'];?></td>
                 <td class="dataTableContent"><?php echo $ref_site['cnt'];?></td>
                 <td class="dataTableContent"><?php echo $i;?></td>
               </tr>

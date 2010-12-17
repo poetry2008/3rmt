@@ -28,7 +28,6 @@
                    '<a href="' . tep_href_link(FILENAME_WHOS_ONLINE) . '" class="menuBoxContentLink">' . BOX_TOOLS_WHOS_ONLINE . '</a><br>' . 
                    '<a href="' . tep_href_link('referer.php') . '" class="menuBoxContentLink">アクセスランキング</a><br>' . 
                    '<a href="' . tep_href_link('keywords.php') . '" class="menuBoxContentLink">キーワードランキング</a><br>' . 
-                   '<a href="' . tep_href_link('adsense.php') . '" class="menuBoxContentLink">Adsense Logs</a><br>' . 
                    '<a href="' . tep_href_link(FILENAME_COMPUTERS) . '" class="menuBoxContentLink">PC管理</a><br>' . 
                    
                    '<a href="' . tep_href_link(FILENAME_LATEST_NEWS) . '" class="menuBoxContentLink">' . BOX_TOOLS_LATEST_NEWS . '</a><br>' . 
