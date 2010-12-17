@@ -27,9 +27,9 @@ define('EMAIL_TEXT',
 . 'ユーザーID：　お客様のメールアドレスがIDとなります。' . "\n"
 . 'パスワード：　*****' . "\n\n"
 . 'ログインページ：' . "\n"
-. '→ http://rmt.worldmoney.jp/login.php' . "\n\n"
+. '→ http://www.itemdepot.jp/login.php' . "\n\n"
 . 'パスワードの再発行は、コチラからできます。' . "\n"
-. '→ http://rmt.worldmoney.jp/password_forgotten.php' . "\n\n"
+. '→ http://www.itemdepot.jp/password_forgotten.php' . "\n\n"
 . 'セキュリティ上、ご登録時のパスワードを記載しておりません。' . "\n"
 . 'パスワードを忘れた場合は、上記URLから再発行してください。' . "\n\n"
 . '-----------------------------------------------------------------------' . "\n"
@@ -52,7 +52,7 @@ define('EMAIL_CONTACT',
 define('EMAIL_WARNING',
 '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n"
 . '株式会社iimy' . "\n"
-. 'support@worldmoney.jp'."\n"
-. 'http://rmt.worldmoney.jp/' . "\n"
+. 'support@itemdepot.jp'."\n"
+. 'http://www.itemdepot.jp/' . "\n"
 . '━━━━━━━━━━━━━━━━━━━━━━━' . "\n");
 ?>
