@@ -8,7 +8,7 @@
 <h3 class="pageHeading_05">
 <span class="game_im"><img width="26" height="26" alt="" src="images/design/title_img20.gif"></span>
 <span class="game_t">
-<?php echo TITLE;?>からのお知らせ</span></h3>
+RMTアイテムデポからのお知らせ</span></h3>
 <div class="comment_05">
     <div id="news">
         <ul class="news_ul">
