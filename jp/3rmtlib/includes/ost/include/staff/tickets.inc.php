@@ -526,30 +526,44 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
     </form>
  </table>
 </div>
-<embed id="new_sound" src="/admin/images/new_sound.mp3" width="0" height="0" loop="false" autostart="false"></embed>
-<embed id="email_sound" src="/admin/images/email_sound.mp3" width="0" height="0" loop="false" autostart="false"></embed>
+      <?php echo OST_SERVER;?>
+<embed id="new_sound" src="../images/new_sound.mp3" width="0" height="0" loop="false" autostart="false"></embed>
+<embed id="email_sound" src="../images/email_sound.mp3" width="0" height="0" loop="false" autostart="false"></embed>
 <script type= 'text/javascript'>
 function playSound(soundname)
 {
-
-var node=document.getElementById(soundname);
-if(node!=null)
-{
-  node.Play();
-}
+  
+  if (soundname=='new_sound'){
+    newsound.Play();
+  }
+  if (soundname=='email_sound'){
+    emailsound.Play();
+  }
 }
 function playLoad(){
+newsound=document.getElementById('new_sound');
+emailsound=document.getElementById('email_sound');
 <?php 
+
 if ($_SESSION['play_new_sound']){
   $_SESSION['play_new_sound'] = false;
-  echo 'playSound(\'new_sound\')';
+?>
+  setTimeout('playSound("new_sound")',2000);
+<?
+  //  echo 'playSound("new_sound");';
 }
 if ($_SESSION['play_email_sound']){
   $_SESSION['play_email_sound'] = false;
-  echo 'playSound("email_sound")';
+?>
+  setTimeout('playSound("new_sound")',2000);
+<?
+  //  echo 'playSound("email_sound");';
 }
 ?>
+
 }
 window.onload = playLoad;
+
 </script>
 <?
+

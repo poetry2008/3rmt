@@ -487,7 +487,8 @@ $nav->setTabActive('tickets');
 $_SESSION['pre_opencount'] = $_SESSION['opencount'];
 $opencount = (int)$stats['open']; //转成数字的OPEN的数量 
 $_SESSION['opencount'] = $opencount;
-if(is_numeric($_SESSION['pre_opencount']) and $_SESSION['pre_opencount']<$opencount){
+if(is_numeric($_SESSION['pre_opencount']) and (int)$_SESSION['pre_opencount']<(int)$opencount){
+
   $_SESSION['play_new_sound'] = true;
 }
 

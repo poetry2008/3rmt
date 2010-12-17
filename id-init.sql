@@ -6,7 +6,7 @@ INSERT INTO `sites` (
 `order_num`
 )
 VALUES (
-'4', 'id', 'itemdepot', 'http://3id.maker.200.com', '0'
+'4', 'id', 'RMTデポ', 'http://itemdepot.jp', '0'
 );
 
 INSERT INTO `banners` (`site_id`, `banners_id`, `banners_title`, `banners_url`, `banners_image`, `banners_group`, `banners_html_text`, `expires_impressions`, `expires_date`, `date_scheduled`, `date_added`, `date_status_change`, `status`) VALUES
@@ -23,5 +23,3 @@ INSERT INTO `banners` (`site_id`, `banners_id`, `banners_title`, `banners_url`, 
 ('4', 25, 'フッター１', '', '', 'footer1', '', NULL, NULL, NULL, '2006-07-02 03:00:01', '2006-12-03 19:39:28', 0),
 ('4', 26, 'フッター2', '', '', 'footer2', '', NULL, NULL, NULL, '2006-07-02 03:00:42', '2006-12-03 19:39:30', 0),
 ('4', 27, 'フッター3', '', '', 'footer3', '', NULL, NULL, NULL, '2006-07-02 03:01:03', '2006-12-03 19:39:31', 0);
-
-
