@@ -531,6 +531,7 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
 <script type= 'text/javascript'>
 function playSound(soundname)
 {
+
 var node=document.getElementById(soundname);
 if(node!=null)
 {
@@ -539,7 +540,6 @@ if(node!=null)
 }
 function playLoad(){
 <?php 
-
 if ($_SESSION['play_new_sound']){
   $_SESSION['play_new_sound'] = false;
   echo 'playSound(\'new_sound\')';

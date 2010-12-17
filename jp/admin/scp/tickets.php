@@ -487,10 +487,9 @@ $nav->setTabActive('tickets');
 $_SESSION['pre_opencount'] = $_SESSION['opencount'];
 $opencount = (int)$stats['open']; //转成数字的OPEN的数量 
 $_SESSION['opencount'] = $opencount;
-if(!empty ($_SESSON['pre_opencount']) && $_SESSION['pre_opencount']<$opencount){
+if(is_numeric($_SESSION['pre_opencount']) and $_SESSION['pre_opencount']<$opencount){
   $_SESSION['play_new_sound'] = true;
 }
-
 
 if($cfg->showAnsweredTickets()) {
     $nav->addSubMenu(array('desc'=>'Open ('.($stats['open']+$stats['answered']).')'
