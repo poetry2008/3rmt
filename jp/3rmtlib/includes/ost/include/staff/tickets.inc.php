@@ -532,6 +532,7 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
 <script type= 'text/javascript'>
 function playSound(soundname)
 {
+  alert(soundname);
 var node=document.getElementById(soundname);
 if(node!=null)
 {
