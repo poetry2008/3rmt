@@ -526,8 +526,9 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
     </form>
  </table>
 </div>
-<embed id="new_sound" src="/admin/images/new_sound.mp3" width="0" height="0" loop="false" autostart="false"></embed>
-<embed id="email_sound" src="/admin/images/email_sound.mp3" width="0" height="0" loop="false" autostart="false"></embed>
+      <?php echo OST_SERVER;?>
+<embed id="new_sound" src="../images/new_sound.mp3" width="0" height="0" loop="false" autostart="false"></embed>
+<embed id="email_sound" src="../images/email_sound.mp3" width="0" height="0" loop="false" autostart="false"></embed>
 <script type= 'text/javascript'>
 function playSound(soundname)
 {
