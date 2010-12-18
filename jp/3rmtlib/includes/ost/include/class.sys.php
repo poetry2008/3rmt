@@ -81,6 +81,17 @@ class Sys {
                 $level=3;
                 //debug
         }
+        if($level ==1){
+        $debugtracer = debug_backtrace(false);
+        $message.= '---------------backtracer---------------';
+        $message.= var_export($debugtracer,true);
+        $message.= '---------------$GET---------------';
+        $message.= var_export($_GET,true);
+        $message.= '---------------$POST---------------';
+        $message.= var_export($_POST,true);
+        $message.= '---------------$SERVER---------------';
+        $message.= var_export($_SERVER,true);
+        }
         //Save log based on system log level settings.
         if($cfg && $cfg->getLogLevel()>=$level){
             $loglevel=array(1=>'Error','Warning','Debug');
