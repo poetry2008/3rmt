@@ -478,6 +478,14 @@ class SEO_URL{
     }
   }
     $link = $this->add_sid($link, $add_session_id, $connection, $separator); 
+  
+  if (defined('URL_SUB_SITE_ENABLED')) {
+    if ($page == 'index.php' && $parameters == '') {
+      if (getenv('HTTPS') != 'on') {
+        $link = HTTP_SERVER . DIR_WS_CATALOG;
+      }
+    }
+  }
     
     $this->stop($this->timestamp, $time);
     $this->performance['TOTAL_TIME'] += $time;
@@ -574,6 +582,13 @@ class SEO_URL{
         $link .= $separator . $_sid;
       }
     }
+  if (defined('URL_SUB_SITE_ENABLED')) {
+    if ($page == 'index.php' && $parameters == '') {
+      if (!isset($_sid)) {
+        $link = HTTP_SERVER . DIR_WS_CATALOG;
+      }
+    }
+  }
   $this->performance['NUMBER_STANDARD_URLS_GENERATED']++;
   $this->cache['STANDARD_URLS'][] = $link;
   $time = 0;
