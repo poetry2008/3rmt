@@ -1516,11 +1516,12 @@ function change_qt(ele){
     <tr>
       <td>
 
-<hr size="2" noshade><b><?php //価格数量変更機能
+<!--<hr size="2" noshade>--><b><?php //価格数量変更機能
 if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) || !$_GET['origin'])) {
-  echo '<table width="100%"><tr><td>';
+  echo '<table width="100%"><tr><td align="left">';
   
-  echo '<table width="100%" cellpadding="0" cellspacing="0">';
+  echo '<table width="95%" cellpadding="0" cellspacing="0">';
+  echo '  <tr><td><hr size="2" noshade></td></tr><tr>';
   echo '  <tr>';
   echo '  <td height="30">';
   echo '価格：&nbsp;' . tep_draw_input_field('products_price', number_format($pInfo->products_price,0,'.',''),'id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;円' . '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price . '円' . "\n";
@@ -1535,8 +1536,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   echo '当社キャラクター名の入力欄：<br>' . tep_draw_textarea_field('products_attention_5', 'soft', '70', '10', $pInfo->products_attention_5) . '<br>' . "\n";
   echo '</td>';
   if (tep_get_bflag_by_product_id($pInfo->products_id)) { // 如果买取
-    echo '<td width="50%" valign="top">';
-    echo '<table width="100%" cellpadding="0" cellspacing="0" border="1">';
+    echo '<td width="50%" valign="top" align="right">';
+    echo '<table width="95%" cellpadding="0" cellspacing="0" border="1">';
     echo '  <tr>';
     echo '  <td height="30"><button  type="button" onclick="calculate_price()">計算する</button></td>';
     echo '  <td>ズバリかつ小数点切り上げ</td>';
