@@ -800,6 +800,29 @@ function mess(){
   //return false;
   //}
 }
+function calculate_price(){
+  $('#a_1').html(Math.ceil(5000/$('#pp').val()));
+  if ($('#a_1').html()%10 < 5) {
+    $('#a_2').html(Math.floor($('#a_1').html()/10)*10+5);
+  } else {
+    $('#a_2').html('');
+  }
+  $('#a_3').html(Math.floor($('#a_1').html()/10)*10+10);
+  $('#b_1').html(Math.ceil(10000/$('#pp').val()));
+  if ($('#b_1').html()%10 < 5) {
+    $('#b_2').html(Math.floor($('#b_1').html()/10)*10+5);
+  } else {
+    $('#b_2').html('');
+  }
+  $('#b_3').html(Math.floor($('#b_1').html()/10)*10+10);
+}
+
+function change_qt(ele){
+  qt = ele.innerHTML;
+  if (qt) {
+    $('#qt').val(qt);
+  }
+}
 </script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onLoad="SetFocus();">
@@ -1491,25 +1514,69 @@ function mess(){
       </td>
     </tr>
     <tr>
-      <td><hr size="2" noshade><b><?php //価格数量変更機能
-if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) || !$_GET['origin'])) {
-  echo '価格：&nbsp;' . tep_draw_input_field('products_price', number_format($pInfo->products_price,0,'.',''),'id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;円' . '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price . '円<br><hr size="2" noshade>' . "\n";
-  //echo '増減：&nbsp;' . tep_draw_input_field('products_price_offset', intval($pInfo->products_price_offset),'id="sp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;円' . '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price_offset . '円<br><hr size="2" noshade>' . "\n";
-  echo '数量：&nbsp;' . tep_draw_input_field('products_quantity', $pInfo->products_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;個' . '&nbsp;&nbsp;←&nbsp;' . $pInfo->products_quantity . '個<br><hr size="2" noshade>' . "\n";
-  //商品説明を分割
+      <td>
 
-  //$des_query = tep_db_query("select * from products_description where language_id = '4' and products_id = '" . $pInfo->products_id . "'"); 
-  //$des_result = tep_db_fetch_array($des_query); 
+<hr size="2" noshade><b><?php //価格数量変更機能
+if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) || !$_GET['origin'])) {
+  echo '<table width="100%"><tr><td>';
+  
+  echo '<table width="100%" cellpadding="0" cellspacing="0">';
+  echo '  <tr>';
+  echo '  <td height="30">';
+  echo '価格：&nbsp;' . tep_draw_input_field('products_price', number_format($pInfo->products_price,0,'.',''),'id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;円' . '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price . '円' . "\n";
+  echo '  </td>';
+  echo '  </tr><tr><td><hr size="2" noshade></td></tr><tr>';
+  echo '  <td height="30">';
+  echo '数量：&nbsp;' . tep_draw_input_field('products_quantity', $pInfo->products_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;個' . '&nbsp;&nbsp;←&nbsp;' . $pInfo->products_quantity . '個' . "\n";
+  echo '  </td>';
+  echo '  </tr><tr><td><hr size="2" noshade></td></tr>';
+  echo '</table>';
+
   echo '当社キャラクター名の入力欄：<br>' . tep_draw_textarea_field('products_attention_5', 'soft', '70', '10', $pInfo->products_attention_5) . '<br>' . "\n";
+  echo '</td>';
+  if (tep_get_bflag_by_product_id($pInfo->products_id)) { // 如果买取
+    echo '<td width="50%" valign="top">';
+    echo '<table width="100%" cellpadding="0" cellspacing="0">';
+    echo '  <tr>';
+    echo '  <td height="30"><button  type="button" onclick="calculate_price()">計算する</button></td>';
+    echo '  <td>ズバリかつ小数点切り上げ</td>';
+    echo '  <td>下一桁5</td>';
+    echo '  <td>下一桁0</td>';
+    echo '  </tr>';
+    echo '  <tr>';
+    echo '  <td colspan="4" valign="top"><hr size="2" noshade style=""></td>';
+    echo '  </tr>';
+    echo '  <tr>';
+    echo '  <td height="30">5000</td>';
+    echo '  <td id="a_1" onclick="change_qt(this)"></td>';
+    echo '  <td id="a_2" onclick="change_qt(this)"></td>';
+    echo '  <td id="a_3" onclick="change_qt(this)"></td>';
+    echo '  </tr>';
+    echo '  <tr>';
+    echo '  <td colspan="4"><hr size="2" noshade></td>';
+    echo '  </tr>';
+    echo '  <tr>';
+    echo '  <td height="30">10000</td>';
+    echo '  <td id="b_1" onclick="change_qt(this)"></td>';
+    echo '  <td id="b_2" onclick="change_qt(this)"></td>';
+    echo '  <td id="b_3" onclick="change_qt(this)"></td>';
+    echo '  </tr>';
+    echo '</table>';
+    echo '</td>';
+  }
+  echo '</tr></table>';
   echo '<table width="100%" cellspacing="0" cellpadding="5" border="0" class="smalltext"><tr><td><b>販売</b></td><td><b>買取</b></td></tr>' . "\n";
   echo '<tr><td>所持金上限や、弊社キャラクターの在庫の都合上、複数のキャラクターにて<br>分割してお届けする場合がございます。ご注文いただきました数量に達する<br>まで受領操作をお願いいたします。<br>【】または【】よりお届けいたします。</td><td>当社キャラクター【】または【】にトレードをお願いいたします。</td></tr></table><hr size="2" noshade>' . "\n";
-
+  echo '</td>';
   echo tep_image_submit('button_update.gif', 'よく確認してから押しなさい') . '</form>' . "\n";
 } else {
   echo '価格：&nbsp;' . $products_price_preview . '<br>数量：&nbsp;' . $pInfo->products_quantity . '個' . "\n";
 }
 ?>
         </b>
+
+
+
       </td>
         </tr>
     <?php
