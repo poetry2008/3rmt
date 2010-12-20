@@ -940,20 +940,21 @@ Information
 /* reorder */
 .information_table {
 	width: 100%;
-	font-family: Osaka, Verdana, Arial, sans-serif;
 	font-size: 11px;
-	border-collapse: separate;
-	border-spacing: 0;
-	background-color:#DEDBDB;
-	border-left:1px #999999 solid;
-	border-right:1px #999999 solid;
-	border-top:1px #999999 solid;
+	background-color:#ccc;
+	border:#ccc;
 }
 .information_table td {
 	line-height: 20px;
-	padding: 3px 5px;
+	padding: 8px;
 	vertical-align: top;
-	border-bottom:1px solid #ABA8A8;
+	background-color:#fff;
+}
+.information_table th {
+	line-height: 20px;
+	padding: 8px;
+	vertical-align: top;
+	background-color:#DEDEDD;
 }
 /* ---------------------------
 ページタイトル
@@ -1268,3 +1269,154 @@ font-weight:400;
 margin:10px 0 0 0;
 }
 .subcategory_tree{ list-style-type:none;}
+/*ost*/
+.login_inc_warpper{
+	border:1px solid #ccc;
+	padding:5px;
+	background-color:#fff;
+	overflow:hidden;
+}
+.login_inc{
+	font-size:12px;
+	background-color:#CCCBCB;
+	padding:5px 2px;
+	margin-bottom:5px;
+}
+.login_inc a{
+	font-size:12px;
+}
+.open_login{
+	clear:both;
+	margin:5px auto;
+	font-size:12px;
+	background-color:#E7E6E4;
+	padding:4px 7px;
+	border-bottom:1px solid #ccc;
+}
+.open_login td{
+	padding:10px;
+	border-top:1px solid #ccc;
+	background-color:#FFFFFF;
+}
+.open_login_info span{float:left; width:100px; margin-top:2px;}
+.open_login_info input{ float:left; height:20px;}
+.login_inc_button{
+	float:right;
+}
+.msg{
+	font-size:12px;
+}
+.msg_list{
+	font-size:12px;
+}
+.tickets{
+	background-color:#ccc;
+} 
+.tickets th{
+	font-weight: bold;
+	background-color:#ccc;
+	padding:4px;
+	font-size:12px;
+}
+.tickets a{
+	font-size:12px;
+}
+.tickets td{
+	text-align:center;
+	background-color:#fff;
+	font-size:12px;
+	padding:4px;
+}
+#contact_us_warpper{
+	margin:8px auto;
+	width:600px;
+}
+.lcol {
+	border:1px solid #ccc;
+	background-color:#fff;
+	clear:both;
+	height:100%;
+	overflow:hidden;
+	padding:5px;
+	margin-bottom:8px;
+}
+.rcol {
+	border:1px solid #ccc;
+	background-color:#fff;
+	clear:both;
+	height:100%;
+	overflow:hidden;
+	padding:5px;
+	margin-bottom:8px;
+}
+.contact_left {
+	float:left;
+}
+.contact_right {
+	float:left;
+	padding-left:15px;
+	width:500px;
+}
+.contact_right h3{
+	font-weight: bold;	
+}
+.button2{ float:right;}
+.status_warpper {
+float:left;
+padding:5px 10px;
+font-size:12px;
+clear:both;
+}
+.status_warpper label {
+float:left;
+padding:3px;
+width:110px;
+}
+.status_warpper02{ clear:both;}
+.tickets, .infotable {
+	border-spacing:0;
+	font-size:11px;
+	margin-bottom:5px;
+	background-color:#ccc;
+}
+.tickets, .infotable td,.tickets, .infotable th{
+	background-color:#FFFFFF;
+}
+.login_inc02{
+	font-size:12px;
+	margin-bottom:5px;
+	padding:5px;
+}
+.Icon {
+	background-position:left center;
+	background-repeat:no-repeat;
+	color:#006699;
+	font-size:12px;
+	font-weight: bold;
+	width:100%;
+	padding:4px;
+}
+.message ,.response{
+	font-size:12px;
+	background-color:#fff;
+	border:1px solid #ccc;
+	margin-bottom:8px;
+}
+.open_users{
+	font-size:12px;
+	background-color:#ccc;
+}
+.open_users td{
+	background-color:#FFFFFF;
+	padding:5px;
+}
+.open_users th{
+	background-color:#D9D9D8;
+	padding:5px;
+	text-align:left;
+}
+.captcha_comment{
+	font-size:10px;
+	color:#FF0000;
+}
+.row1 td,.row2 td{ border-bottom:1px solid #ccc;}

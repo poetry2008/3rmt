@@ -404,7 +404,7 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
 <input type='hidden' name='order_id' value='<?php echo $order['orders_id']?>' >
 <input type='hidden' name='email' value='<?php echo $order['customers_email_address']?>' >
 <div id="form_error" style="display:none"></div>
-<table class="information_table" summary="table">
+<table class="information_table" summary="table" border="0">
  <tr>
   <td width="130" bgcolor="#eeeeee">注文番号</td>
   <td><?php echo $order['orders_id']?></td>
@@ -690,9 +690,9 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
 ?>
 <!--<form action="reorder.php" method="post" name='order'>-->
 <input type="hidden" name="dummy" value="あいうえお眉幅">   
-<table class="information_table" summary="table">
+<table class="information_table" summary="table" cellpadding="0" cellspacing="1">
  <tr>
-  <td align="left" bgcolor='#eeeeee'>注文番号</td>
+  <th align="left"><b>注文番号</b></th>
   <td><input type='text' name='order_id_1' class="input_text" maxlength='8' style='width:80px' >-<input type='text' name='order_id_2' class="input_text" maxlength='8' style='width:80px' >
   <a href="<?php echo tep_href_link('reorder2.php');?>">注文番号忘れた?</a><br >
   <font color='red' style='font-size:12px'>例：20******-********<br >
@@ -700,17 +700,18 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
   </td>
  </tr>
  <tr>
-  <td align="left" bgcolor='#eeeeee'>メールアドレス</td>
+  <th align="left"><b>メールアドレス</b></th>
   <td><input type='text' name='email' class="input_text" ></td>
  </tr>
+</table>
+<table width="100%">
  <tr>
-  <td colspan='2' align="center">
-   
+  <td colspan='2' align="right">
    <input type='image' src="includes/languages/japanese/images/buttons/button_continue.gif" alt="次へ進む" title="次へ進む" >
    <input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="クリア" title="クリア" onClick="javascript:document.order.reset();return false;" >
   </td>
  </tr>
-</table>
+ </table>
 </form>
 <?php }?>
     </div>
