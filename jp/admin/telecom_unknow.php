@@ -183,14 +183,14 @@ function check_one(ele){
       $orders_query_raw = "
         select *
         from telecom_unknow
-        where 1 ".(!$_GET['keywords']?" and type != 'success'":'')." ".$where_str."
+        where 1 ".(!$_GET['keywords']?" and (type <> 'success' or type is null)":'')." ".$where_str."
         order by date_added DESC
       ";
       
       $orders_query_numrows_raw = "
         select count(id) as count
         from telecom_unknow
-        where 1 ".(!$_GET['keywords']?" and type != 'success'":'')." ".$where_str."
+        where 1 ".(!$_GET['keywords']?" and (type <> 'success' or type is null)":'')." ".$where_str."
       ";
       
       //echo $orders_query_raw;
