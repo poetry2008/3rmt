@@ -65,10 +65,10 @@ ini_set('include_path',ini_get('include_path').':'.$libpath);
       //"www.iimy.co.jp",
       );
 
-// osticket start 
   define('DIR_OST','/home/.sites/22/site13/vhosts/jp/3rmtlib/includes/ost/');
   define('SITE_TOPIC_1',3);
   define('SITE_TOPIC_2',5);
   define('SITE_TOPIC_3',4);
-    define('SITE_TOPIC_4',6);
-      define('SITE_TOPIC_5',7);
+define('SITE_TOPIC_4',6);
+define('SITE_TOPIC_5',7);
+  define('DIR_OST',DIR_FS_ADMIN.'../includes/ost');
