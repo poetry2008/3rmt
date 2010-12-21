@@ -38,16 +38,35 @@
   }
 // 全选
 function all_check(ele){
+  var error = false;
   if (ele.checked) {
+
+    $('.a_checkbox').each(function(){
+      if (this.value == 'false') {
+        error = error || true;
+      }
+    });
+    if (error) {
+      alert('引当が「済」になっているものは、非表示には出来ません');
+      ele.checked = false;
+      return false;
+    }
+
     $('.a_checkbox').attr('checked',true).parent().parent().find('td').css('background','#f08080');
   } else {
     $('.a_checkbox').each(function(){
       this.checked=false;
       check_one(this);
     });
+
   }
 }
 function check_one(ele){
+  if(ele.value=='false') {
+    alert('引当が「済」になっているものは、非表示には出来ません');
+    ele.checked = false;
+    return false;
+  }
   if(ele.checked){
     $('#tr_'+ele.value+' td').css('background','#f08080');
   } else {
@@ -120,6 +139,7 @@ function check_one(ele){
       <td class="dataTableHeadingContent" align="left" width="20"><input type="checkbox" onclick="all_check(this)"></td>
       <td class="dataTableHeadingContent" align="center" width="150">時間</td>
       <td class="dataTableHeadingContent" align="center">決算</td>
+      <td class="dataTableHeadingContent" align="center">引当</td>
       <td class="dataTableHeadingContent" align="center">氏名</td>
       <td class="dataTableHeadingContent" align="center">電話</td>
       <td class="dataTableHeadingContent" align="center">メールアドレス</td>
@@ -181,14 +201,15 @@ function check_one(ele){
     while ($orders = tep_db_fetch_array($orders_query)) {
       echo '    <tr onmouseover="this.style.background=\'#FFCC99\'" onmouseout="this.style.background=\''.(tep_match_by_keywords($orders['telno'],TELNO_KEYWORDS)?'red':($orders['rel'] == 'no'?'#ccc':'#fff')).'\'" style="border-bottom:1px solid #000000;'.(tep_match_by_keywords($orders['telno'],TELNO_KEYWORDS)?'background:red':($orders['rel'] == 'no'?'background:#ccc':'background:#fff')).'" class="dataTableRow" id="tr_'.$orders['id'].'">' . "\n";
 ?>
-      <td align="left"   style="border-bottom:1px solid #000000;" class="dataTableContent"><input type="checkbox" name="ids[]" class="a_checkbox" onclick="check_one(this)" value="<?php echo $orders['id'];?>"></td>
+      <td align="left"   style="border-bottom:1px solid #000000;" class="dataTableContent"><input type="checkbox" name="ids[]" class="a_checkbox" onclick="check_one(this)" value="<?php echo $orders['type'] == 'success' && $orders['option'] ? 'false' : $orders['id'];?>"></td>
       <td align="center" style="border-bottom:1px solid #000000;" class="dataTableContent"><?php echo tep_datetime_short($orders['date_added']); ?>&nbsp;</td>
       <td align="center" style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['rel'] == 'yes' ? '成功' : '失敗'; ?>&nbsp;</td>
+      <td align="center" style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['type'] == 'success' && $orders['option'] ? '済' : '<font color="darkred">未</font>'; ?>&nbsp;</td>
       <td align="left"   style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['username']; ?>&nbsp;</td>
       <td align="left"   style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo tep_high_light_by_keywords($orders['telno'],TELNO_KEYWORDS);?>&nbsp;</td>
       <td align="left"   style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['email']; ?>&nbsp;</td>
       <td align="right"  style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['money']; ?>&nbsp;</td>
-      <td align="right"  style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><input type="hidden" id="rel_<?php echo $orders['id'];?>" value="<?php echo $orders['rel'];?>"><input type="hidden" id="red_<?php echo $orders['id'];?>" value="<?php echo tep_match_by_keywords($orders['telno'],TELNO_KEYWORDS)?1:0;?>"><a href="javascript:void(0);" onclick="return confirm('非表示にしますか？') && hide(<?php echo $orders['id'];?>, this)"><img src="images/icons/cross.gif" ></a></td>
+      <td align="right"  style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><input type="hidden" id="rel_<?php echo $orders['id'];?>" value="<?php echo $orders['rel'];?>"><input type="hidden" id="red_<?php echo $orders['id'];?>" value="<?php echo tep_match_by_keywords($orders['telno'],TELNO_KEYWORDS)?1:0;?>"><?php if (!($orders['type'] == 'success' && $orders['option'])) {?><a href="javascript:void(0);" onclick="return confirm('非表示にしますか？') && hide(<?php echo $orders['id'];?>, this)"><img src="images/icons/cross.gif" ></a><?php } else { echo '&nbsp;'; } ?></td>
     </tr>
 <?php }?>
   </table>
