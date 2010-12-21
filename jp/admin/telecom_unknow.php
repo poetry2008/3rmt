@@ -190,7 +190,7 @@ function check_one(ele){
       <td align="left"   style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo tep_high_light_by_keywords($orders['telno'],TELNO_KEYWORDS);?>&nbsp;</td>
       <td align="left"   style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['email']; ?>&nbsp;</td>
       <td align="right"  style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['money']; ?>&nbsp;</td>
-      <td align="right"  style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><input type="hidden" id="rel_<?php echo $orders['id'];?>" value="<?php echo $orders['rel'];?>"><input type="hidden" id="red_<?php echo $orders['id'];?>" value="<?php echo tep_match_by_keywords($orders['telno'],TELNO_KEYWORDS)?1:0;?>"><?php if ($orders['type'] != 'success' || $orders['option']) {?><a href="javascript:void(0);" onclick="return confirm('非表示にしますか？') && hide(<?php echo $orders['id'];?>, this)"><img src="images/icons/cross.gif" ></a><?php } else { echo '&nbsp;'; } ?></td>
+      <td align="right"  style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><input type="hidden" id="rel_<?php echo $orders['id'];?>" value="<?php echo $orders['rel'];?>"><input type="hidden" id="red_<?php echo $orders['id'];?>" value="<?php echo tep_match_by_keywords($orders['telno'],TELNO_KEYWORDS)?1:0;?>"><?php if (!($orders['type'] == 'success' && $orders['option'])) {?><a href="javascript:void(0);" onclick="return confirm('非表示にしますか？') && hide(<?php echo $orders['id'];?>, this)"><img src="images/icons/cross.gif" ></a><?php } else { echo '&nbsp;'; } ?></td>
     </tr>
 <?php }?>
   </table>
