@@ -1,2 +1,0 @@
-find ./ -type f -exec sed -i 's/HTTP_POST_VARS/_POST/g' {};
-find ./ -type f -exec sed -i 's/HTTP_GET_VARS/_GET/g' {};
