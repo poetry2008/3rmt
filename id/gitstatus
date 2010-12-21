@@ -1,0 +1,49 @@
+# On branch master
+# Changed but not updated:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#	modified:   ../.gitignore
+#	modified:   ../gm/includes/configure.php
+#	modified:   contact_us.php
+#	modified:   css/design.css
+#	modified:   design.css
+#	modified:   includes/configure.php
+#	modified:   reorder.php
+#	modified:   ../jp/admin/includes/configure.php
+#	modified:   ../jp/includes/configure.php
+#	modified:   ../kt/includes/configure.php
+#	modified:   ../wm/includes/configure.php
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	../gitstatus
+#	attachment.php
+#	captcha.php
+#	contact_us_login.php
+#	gitstatus
+#	includes/languages/japanese/images/buttons/lemail.gif
+#	includes/languages/japanese/images/buttons/open_users01.gif
+#	includes/languages/japanese/images/buttons/open_users02.gif
+#	includes/languages/japanese/images/buttons/out.gif
+#	includes/ost/
+#	logout.php
+#	open.php
+#	staff.inc.php
+#	tickets.php
+#	view.php
+#	../jp/admin/__autoinsert.php
+#	../jp/admin/getmail.php
+#	../jp/admin/insert_account.php
+#	../jp/admin/mailutf8.txt
+#	../jp/admin/upload_images/5.tgz
+#	"../jp/admin/\343\202\257\343\203\254\343\202\253.txt"
+#	../jp/telecom_test.php
+#	../jp/test.html
+#	../jp/test.php
+#	../kt/includes/languages/japanese/images/buttons/lemail.gif
+#	../kt/includes/languages/japanese/images/buttons/open_users01.gif
+#	../kt/includes/languages/japanese/images/buttons/open_users02.gif
+#	../kt/includes/languages/japanese/images/buttons/out.gif
+no changes added to commit (use "git add" and/or "git commit -a")
