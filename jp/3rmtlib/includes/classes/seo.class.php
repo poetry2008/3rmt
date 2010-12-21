@@ -579,7 +579,10 @@ class SEO_URL{
     if (isset($_sid)) {
       if (ENABLE_SSL && ($_SERVER['HTTP_HOST'] == substr(HTTPS_SERVER,8))) {
       } else {
-        $link .= $separator . $_sid;
+        //cancel ssl to nossl session 
+        if ($request_type == 'NONSSL') {
+          $link .= $separator . $_sid;
+        }
       }
     }
   if (defined('URL_SUB_SITE_ENABLED')) {
@@ -646,7 +649,12 @@ class SEO_URL{
       if (ENABLE_SSL && ($_SERVER['HTTP_HOST'] == substr(HTTPS_SERVER,8))) {
         return $link; 
       } else {
-        return $link . $separator . $_sid;
+        //cancel ssl to nossl session 
+        if ($request_type == 'NONSSL') {
+          return $link . $separator . $_sid;
+        } else {
+          return $link; 
+        }
       } 
     } else {
       return $link; 
