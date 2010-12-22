@@ -296,7 +296,11 @@
   
   if (function_exists('session_set_cookie_params')) {
     //session_set_cookie_params(0, substr(DIR_WS_CATALOG, 0, -1));
-  session_set_cookie_params(0, '/');
+    if ($request_type == 'SSL'){
+      session_set_cookie_params(0, '/', $_SERVER['HTTP_SERVER']);
+    } else {
+      session_set_cookie_params(0, '/');
+    }
   }
 
   tep_session_start();

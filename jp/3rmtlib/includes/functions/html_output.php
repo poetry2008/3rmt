@@ -714,7 +714,10 @@ function info_tep_href_link($romaji)
     if ($_SERVER['HTTP_HOST'] == substr(HTTPS_SERVER, 8)) {
       $returnstr .= "info/".urlencode($romaji).".html";
     } else {
-      $returnstr .= "info/".urlencode($romaji).".html?".tep_session_name()."=".tep_session_id();
+      //cancel ssl to nossl session 
+      if ($request_type=='NOSSL') {
+        $returnstr .= "info/".urlencode($romaji).".html?".tep_session_name()."=".tep_session_id();
+      }
     }
   } else {
     $returnstr .= "info/".urlencode($romaji).".html";
