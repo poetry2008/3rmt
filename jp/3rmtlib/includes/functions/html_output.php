@@ -717,6 +717,8 @@ function info_tep_href_link($romaji)
       //cancel ssl to nossl session 
       if ($request_type=='NOSSL') {
         $returnstr .= "info/".urlencode($romaji).".html?".tep_session_name()."=".tep_session_id();
+      } else {
+        $returnstr .= "info/".urlencode($romaji).".html";
       }
     }
   } else {
