@@ -32,17 +32,15 @@ require(CLIENTINC_DIR.'header.inc.php');
   <div class="contact_left"><img src="./images/new_ticket_icon.jpg" width="60" height="60"></div>
   <div class="contact_right">
   <h3>新規お問い合わせ</h3>
-  　<br>
-  <form method="link" action="open.php">
+    </div>
+<form method="link" action="open.php">
   <input type="image" class="button2" value="お問い合わせ" src="includes/languages/japanese/images/buttons/lemail.gif">
   </form>
-    </div>
 </div>
 <div class="rcol">
   <div class="contact_left"><img src="./images/ticket_status_icon.jpg" width="60" height="60"></div>
   <div class="contact_right">
   <h3>お問い合わせへの返事を確認</h3> 
-  <br>
     <form class="status_form" action="contact_us_login.php" method="post">
     <div class="status_warpper">
       <label>メールアドレス：</label>
@@ -53,7 +51,6 @@ require(CLIENTINC_DIR.'header.inc.php');
      <input type="text" name="lticket">
      </div>
      <div class="status_warpper02">
-        <label>&nbsp;</label>
          <input type="image" class="button2" value="送信" src="includes/languages/japanese/images/buttons/button_send_mail.gif">
      </div>
 
