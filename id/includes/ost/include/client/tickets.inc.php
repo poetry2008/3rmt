@@ -91,8 +91,8 @@ $_negorder=$negorder=="DESC"?'昇順':'降順';
         </td>
     </tr>
  </table>
- <table border="0" cellspacing="1" cellpadding="0" width="100%">
-    <tr><td>
+<!-- <table border="0" cellspacing="1" cellpadding="0" width="100%">
+    <tr><td>-->
      <table width="100%" border="0" cellspacing="1" cellpadding="0" class="tickets" align="center">
         <tr>
           <th><a href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="番号順に表示 <?=$_negorder?>">問合番号</a></th>
@@ -115,8 +115,7 @@ $_negorder=$negorder=="DESC"?'昇順':'降順';
                 ?>
         <tr class="<?=$class?> " id="<?=$row['ticketID']?>">
           <td align="left" title="<?=$row['email']?>" nowrap>
-          	<a class="Icon <?=strtolower($row['source'])?>Ticket" title="<?=$row['email']?>" href="view.php?id=<?=$row['ticketID']?>"><?=$ticketID?></a>
-          </td>
+          	<a class="Icon <?=strtolower($row['source'])?>Ticket" title="<?=$row['email']?>" href="view.php?id=<?=$row['ticketID']?>"><?=$ticketID?></a>          </td>
           <td nowrap><?=Format::db_date($row['created'])?></td>
                                 <?php 
                       $_status = '_'.$row['status'];
@@ -133,12 +132,12 @@ $_negorder=$negorder=="DESC"?'昇順':'降順';
         <?
         endif; ?>
      </table>
-    </td></tr>
+<!--    </td></tr>
     <tr><td>
     <?
     if($num>0 && $pageNav->getNumPages()>1){ //if we actually had any tickets returned?>
      <tr><td style="text-align:left;padding-left:20px">page:<?=$pageNav->getPageLinks()?>&nbsp;</td></tr>
     <?}?>
- </table>
+ </table>-->
 </div>
 <?

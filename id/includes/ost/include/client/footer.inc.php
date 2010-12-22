@@ -1,6 +1,4 @@
-                </td>
-              </tr>
-            </table>
+
           </div>
         </td>
         <!-- body_text_eof //-->
