@@ -7,12 +7,17 @@
 
   Released under the GNU General Public License
 */
+<<<<<<< HEAD
 $libpath = "/home/.sites/22/site13/vhosts/jp/3rmtlib/";
+=======
+$libpath = "/home/bobhero/3rmt/jp/3rmtlib/";
+>>>>>>> c29c76084bcb85bf3327209acafb64a997a3f97d
 ini_set('include_path',ini_get('include_path').':'.$libpath);
 
 // Define the webserver and path parameters
 // * DIR_FS_* = Filesystem directories (local/physical) 
 // * DIR_WS_* = Webserver directories (virtual/URL)
+<<<<<<< HEAD
   define('HTTP_SERVER', 'http://jp.gamelife.jp/admin'); // eg, http://localhost or - https://localhost should not be empty for productive servers
   define('HTTP_CATALOG_SERVER', 'http://jp.gamelife.jp/admin');
   define('HTTPS_CATALOG_SERVER', 'https://jp.gamelife.jp/admin');
@@ -24,6 +29,20 @@ ini_set('include_path',ini_get('include_path').':'.$libpath);
   //define('DIR_FS_CATALOG', ''); // absolute path required
   define('DIR_WS_CATALOG', '/'); // absolute path required
   define('DIR_FS_CATALOG', '/home/.sites/22/site13/vhosts/jp/admin/'); // absolute path required
+=======
+  define('HTTP_SERVER', 'http://3jp.bobhero.200.com'); // eg, http://localhost or - https://localhost should not be empty for productive servers
+  define('HTTP_CATALOG_SERVER', 'http://3jp.bobhero.200.com');
+  define('HTTPS_CATALOG_SERVER', 'https://3jp.bobhero.200.com');
+  define('BACKEND_LAN_URL_ENABLED',false);
+  define('ENABLE_SSL_CATALOG', 'false'); // secure webserver for catalog module
+
+  define('DIR_FS_DOCUMENT_ROOT', '/home/bobhero/3rmt/jp/admin/'); // where the pages are located on the server
+  define('DIR_WS_ADMIN', '/admin/'); // absolute path required
+  define('DIR_FS_ADMIN', '/home/bobhero/3rmt/jp/admin/'); // absolute pate required
+
+  define('DIR_WS_CATALOG', '/'); // absolute path required
+  define('DIR_FS_CATALOG', '/home/bobhero/3rmt/jp/admin/'); // absolute path required
+>>>>>>> c29c76084bcb85bf3327209acafb64a997a3f97d
   define('DIR_WS_IMAGES', 'images/');
   define('DIR_WS_ICONS', DIR_WS_IMAGES . 'icons/');
 
@@ -46,6 +65,7 @@ ini_set('include_path',ini_get('include_path').':'.$libpath);
   //define('DIR_FS_BACKUP', DIR_FS_ADMIN . 'backups/');
 
 // define our database connection
+<<<<<<< HEAD
   define('DB_SERVER', 'localhost'); // eg, localhost - should not be empty for productive servers
   define('DB_SERVER_USERNAME', 'jp_gamelife_jp');
   define('DB_SERVER_PASSWORD', 'kWSoiSiE');
@@ -53,6 +73,14 @@ ini_set('include_path',ini_get('include_path').':'.$libpath);
   define('USE_PCONNECT',       'false'); // use persisstent connections?
   define('STORE_SESSIONS',     ''); // leave empty '' for default handler or set to 'mysql'
   define('SESSION_NAME_OSC','oscsid');
+=======
+define('DB_SERVER', 'localhost'); // eg, localhost - should not be empty for productive servers
+  define('DB_SERVER_USERNAME', 'root');
+  define('DB_SERVER_PASSWORD', '123456');
+  define('DB_DATABASE', 'maker_3rmt');
+  define('USE_PCONNECT', 'false'); // use persisstent connections?
+  define('STORE_SESSIONS', ''); // leave empty '' for default handler or set to 'mysql'
+>>>>>>> c29c76084bcb85bf3327209acafb64a997a3f97d
 
   //control sql_log
   define('SQL_LOG', false);
