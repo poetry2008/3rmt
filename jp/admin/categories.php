@@ -1540,7 +1540,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
     echo '<table width="95%" cellpadding="0" cellspacing="0" border="1">';
     echo '  <tr>';
     echo '  <td height="30"><button  type="button" onclick="calculate_price()">計算する</button></td>';
-    echo '  <td>ズバリかつ小数点切り上げ</td>';
+    echo '  <td>ズバリ</td>';
     echo '  <td>下一桁5</td>';
     echo '  <td>下一桁0</td>';
     echo '  </tr>';

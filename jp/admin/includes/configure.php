@@ -62,3 +62,9 @@ ini_set('include_path',ini_get('include_path').':'.$libpath);
 
 // osticket start 
   define('DIR_OST',DIR_FS_ADMIN.'../includes/ost');
+
+  define('SITE_TOPIC_1',3);
+  define('SITE_TOPIC_2',5);
+  define('SITE_TOPIC_3',4);
+
+  define('OST_SERVER', 'http://192.168.88.200/jp/admin/');
