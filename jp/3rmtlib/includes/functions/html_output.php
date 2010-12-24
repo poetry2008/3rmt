@@ -716,7 +716,7 @@ function info_tep_href_link($romaji)
     } else {
       //cancel ssl to nossl session 
       //if ($request_type=='NOSSL') {
-      if (isset('SITE_ID') && SITE_ID == 4) {
+      if (defined('SITE_ID') && SITE_ID == 4) {
         $returnstr .= "info/".urlencode($romaji).".html?".tep_session_name()."=".tep_session_id();
       }
       //} else {

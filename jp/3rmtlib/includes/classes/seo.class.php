@@ -581,7 +581,7 @@ class SEO_URL{
       } else {
         //cancel ssl to nossl session 
         //if ($request_type == 'NONSSL') {
-        if (isset('SITE_ID') && SITE_ID == 4) {
+        if (defined('SITE_ID') && SITE_ID == 4) {
           $link .= $separator . $_sid;
         }
         //}
@@ -653,7 +653,7 @@ class SEO_URL{
       } else {
         //cancel ssl to nossl session 
         //if ($request_type == 'NONSSL') {
-        if (isset('SITE_ID') && SITE_ID == 4) {
+        if (defined('SITE_ID') && SITE_ID == 4) {
           return $link . $separator . $_sid;
         }
         //} else {
