@@ -81,9 +81,9 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
  <table width="100%" border="0" cellspacing="1" cellpadding="0" align="center"class="tickets_lout">
     <tr>
         <td width="60%" class="msg"><?=$showing?>&nbsp;&nbsp;<?=$results_type?></td>
-        <td nowrap >
-            <a href="view.php?status=open"><img src="images/view_open_btn.gif" alt="View Open" border=0></a> |           
-            <a href="view.php?status=closed"><img src="images/view_closed_btn.gif" alt="View Closed" border=0></a> |           
+        <td nowrap align="right">
+            <a href="view.php?status=open">オープン</a> |           
+            <a href="view.php?status=closed">クローズ</a> |           
             
             <a class="log_out" href="logout.php">ログアウト</a>
         </td>
@@ -97,7 +97,7 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
                 <a href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="番語順に表示 <?=$negorder?>">問合番号</a></th>
           <th width="100">
                 <a href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="作成日時順に表示 <?=$negorder?>">作成日時</a></th>
-            <th width="60">ステータス</th>
+            <th width="154">ステータス</th>
             <th width="240">件名</th>
             <th width="150">メールアドレス</th>
         </tr>
