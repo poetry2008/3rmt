@@ -10,13 +10,13 @@ $dept = $ticket->getDept();
 $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
 //We roll like that...
 ?>
-<p class="login_inc02">
-  問合番号<?=$ticket->getExtId()?>&nbsp;<a href="view.php?id=<?=$ticket->getExtId()?>" title="Reload"><span class="Icon refresh">&nbsp;</span></a>
-</p>
+<div class="login_inc02">
+  <span>問合番号<?=$ticket->getExtId()?></span><a href="view.php?id=<?=$ticket->getExtId()?>" title="Reload"><span class="Icon refresh">&nbsp;</span></a>
+</div>
 <table width="100%" cellpadding="1" cellspacing="0" border="0">
     <tr>
        <td width=50%> 
-        <table class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
+        <table class="infotable" cellspacing="0" cellpadding="0" width="50%" border="0" align="left">
           <tr>
         <th width="80"  align="left">ステータス:</th>
         <td><?php
@@ -31,15 +31,13 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
                 <td><?=$ticket->getCreateDate()?></td>
             </tr>
     </table>
-     </td>
-     <td width=50% valign="top">
-        <table align="center" class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
+        <table class="infotable" cellspacing="0" cellpadding="0" width="50%" border="0" align="left">
             <tr>
-                <th width="100">お名前:</th>
+                <th width="100" align="left">お名前:</th>
                 <td><?=Format::htmlchars($ticket->getName())?></td>
             </tr>
             <tr>
-                <th width="100">メールアドレス:</th>
+                <th width="100" align="left">メールアドレス:</th>
                 <td><?=$ticket->getEmail()?></td>
             </tr>
         </table>

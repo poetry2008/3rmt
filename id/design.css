@@ -63,6 +63,18 @@ H4 {
  *margin-top:0px;
 	font-size:11px;
 }
+.comment_inc {
+	clear:both;
+	padding:5px 15px;
+	width: 689px;
+	*width: 719px!important;
+	overflow: hidden;
+	background-color:#E9E9E9;
+	margin:1px 0 5px 1px;
+ *margin-top:0px;
+	font-size:11px;
+	text-align:center;
+}
 .comment_05 {
 	overflow: hidden;
 	height:140px;
@@ -1275,32 +1287,54 @@ margin:10px 0 0 0;
 	padding:5px;
 	background-color:#fff;
 	overflow:hidden;
+	height:180px;
 }
 .login_inc{
+	font-size:12px;
+	background-color:#C53B3B;
+	padding:5px 2px;
+	margin-bottom:5px;
+	color:#fff;
+}
+.login_inc03{
 	font-size:12px;
 	background-color:#CCCBCB;
 	padding:5px 2px;
 	margin-bottom:5px;
+	color:#fff;
+}
+.login_inc03 a{
+	font-size:12px;
+}
+.login_linc03_form{
+	overflow:hidden;
 }
 .login_inc a{
 	font-size:12px;
+}
+.login_linc_form{
+	overflow:hidden;
 }
 .open_login{
 	clear:both;
 	margin:5px auto;
 	font-size:12px;
 	background-color:#E7E6E4;
-	padding:4px 7px;
-	border-bottom:1px solid #ccc;
+	padding:5px;
+	width:270px;
+	*border:5px solid #E7E6E4;
 }
 .open_login td{
 	padding:10px;
 	border-top:1px solid #ccc;
 	background-color:#FFFFFF;
 }
-.open_login_info span{float:left; width:100px; margin-top:2px;}
-.open_login_info input{ float:left; height:20px;}
+.open_login_info span{float:left; width:100px; margin-top:2px; text-align:left;}
+.open_login_info input{ float:left; height:20px; width:140px;}
 .login_inc_button{
+	overflow:hidden;
+}
+.login_inc_button input{
 	float:right;
 }
 .msg{
@@ -1335,10 +1369,10 @@ margin:10px 0 0 0;
 	border:1px solid #ccc;
 	background-color:#fff;
 	clear:both;
-	height:100%;
 	overflow:hidden;
 	padding:5px;
-	margin-bottom:8px;
+	height:65px;
+	
 }
 .rcol {
 	border:1px solid #ccc;
@@ -1355,29 +1389,39 @@ margin:10px 0 0 0;
 .contact_right {
 	float:left;
 	padding-left:15px;
-	width:500px;
+	width:513px;
+	overflow:hidden;
+	margin-top:10px;
 }
 .contact_right h3{
-	font-weight: bold;	
+	font-weight: bold;
+	text-align:left;
 }
 .button2{ float:right;}
 .status_warpper {
-float:left;
-padding:5px 10px;
-font-size:12px;
-clear:both;
+	padding:5px 10px;
+	font-size:12px;
+	clear:both;
+	text-align:left;
 }
 .status_warpper label {
 float:left;
 padding:3px;
 width:110px;
 }
-.status_warpper02{ clear:both;}
+.status_warpper02{ clear:both; overflow:hidden; height:21px;}
 .tickets, .infotable {
 	border-spacing:0;
 	font-size:11px;
 	margin-bottom:5px;
-	background-color:#ccc;
+}
+.infotable{
+	border:1px solid #ccc;
+}
+.infotable td,.infotable th{
+	background-color:#FFFFFF;
+	padding:5px;
+	text-align:left;
 }
 .tickets, .infotable td,.tickets, .infotable th{
 	background-color:#FFFFFF;
@@ -1386,6 +1430,13 @@ width:110px;
 	font-size:12px;
 	margin-bottom:5px;
 	padding:5px;
+}
+.login_inc02 span{
+	float:left;
+}
+.login_inc02 a{ float:left; *margin:-3px 0 0 2px;}
+.Icon.refresh {
+	background:url(images/icons/refresh.gif) no-repeat;
 }
 .Icon {
 	background-position:left center;
@@ -1420,3 +1471,33 @@ width:110px;
 	color:#FF0000;
 }
 .row1 td,.row2 td{ border-bottom:1px solid #ccc;}
+
+.Icon.webTicket {
+background:url(images/icons/ticket_source_web.gif) no-repeat 0 0;
+margin:2px 0 0 10px;
+*margin:2px 0 0 100px;
+}
+.Icon.emailTicket {
+background:url(images/icons/ticket_source_email.gif) no-repeat 0 0;
+margin:2px 0 0 10px;
+*margin:2px 0 0 100px;
+}
+a.Icon {
+padding:3px 3px 3px 18px;
+text-align:left;
+}
+.Icon.thread {
+background:url(images/icons/thread.gif) no-repeat;
+font-size:14px;
+font-weight:bold;
+padding:0 0 0 20px;
+}
+
+.right_colum_border{
+	float:right;
+	width:171px;
+}
+.left_colum_border{
+	float:left;
+	width:720px;
+}

@@ -715,9 +715,13 @@ function info_tep_href_link($romaji)
       $returnstr .= "info/".urlencode($romaji).".html";
     } else {
       //cancel ssl to nossl session 
-      if ($request_type=='NOSSL') {
+      //if ($request_type=='NOSSL') {
+      if (isset('SITE_ID') && SITE_ID == 4) {
         $returnstr .= "info/".urlencode($romaji).".html?".tep_session_name()."=".tep_session_id();
       }
+      //} else {
+        //$returnstr .= "info/".urlencode($romaji).".html";
+      //}
     }
   } else {
     $returnstr .= "info/".urlencode($romaji).".html";

@@ -9,13 +9,24 @@
     if ($page == '') {
       die('</td></tr></table></td></tr></table><br><br><font color="#ff0000"><b>Error!</b></font><br><br><b>Unable to determine the page link!<br><br>Function used:<br><br>tep_href_link(\'' . $page . '\', \'' . $parameters . '\', \'' . $connection . '\')</b>');
     }
+
+    if(defined('BACKEND_LAN_URL_ENABLED') and BACKEND_LAN_URL_ENABLED){
+	$absolute = 1;
+    }else {
+        $absolute = 0;
+    }
+
+    $request_type = (getenv('HTTPS') == 'on') ? 'SSL' : 'NONSSL';
+    $needabs = $request_type == $connection;
+
     if ($connection == 'NONSSL') {
-      $link = HTTP_SERVER . DIR_WS_ADMIN;
-    } elseif ($connection == 'SSL') {
+      $link = ($absolute==0 or $needabs)?HTTP_SERVER . DIR_WS_ADMIN:DIR_WS_ADMIN;
+    } 
+    elseif ($connection == 'SSL') {
       if (defined('ENABLE_SSL') && ENABLE_SSL == 'true') {
-        $link = HTTPS_SERVER . DIR_WS_ADMIN;
+        $link = ($absolute==0 or $needabs)?HTTPS_SERVER . DIR_WS_ADMIN:DIR_WS_ADMIN;
       } else {
-        $link = HTTP_SERVER . DIR_WS_ADMIN;
+        $link =($absolute==0 or $needabs)?HTTP_SERVER . DIR_WS_ADMIN:DIR_WS_ADMIN;
       }
     } else {
       die('</td></tr></table></td></tr></table><br><br><font color="#ff0000"><b>Error!</b></font><br><br><b>Unable to determine connection method on a link!<br><br>Known methods: NONSSL SSL<br><br>Function used:<br><br>tep_href_link(\'' . $page . '\', \'' . $parameters . '\', \'' . $connection . '\')</b>');
@@ -27,8 +38,8 @@
     }
 
     while ( (substr($link, -1) == '&') || (substr($link, -1) == '?') ) $link = substr($link, 0, -1);
-
     return $link;
+
   }
 
   function tep_catalog_href_link($page = '', $parameters = '', $connection = 'NONSSL') {

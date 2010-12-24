@@ -7,23 +7,24 @@
 
   Released under the GNU General Public License
 */
-$libpath = "/home/kthiz/project/OSC_3RMT/jp/3rmtlib/";
+$libpath = "/home/bobhero/3rmt/jp/3rmtlib/";
 ini_set('include_path',ini_get('include_path').':'.$libpath);
 
 // Define the webserver and path parameters
 // * DIR_FS_* = Filesystem directories (local/physical)
 // * DIR_WS_* = Webserver directories (virtual/URL)
-  define('HTTP_SERVER', 'http://3jp.kthiz.200.com/admin'); // eg, http://localhost or - https://localhost should not be empty for productive servers
-  define('HTTP_CATALOG_SERVER', 'http://3jp.kthiz.200.com/admin');
-  define('HTTPS_CATALOG_SERVER', 'https://3jp.kthiz.200.com/admin');
+  define('HTTP_SERVER', 'http://3jp.bobhero.200.com'); // eg, http://localhost or - https://localhost should not be empty for productive servers
+  define('HTTP_CATALOG_SERVER', 'http://3jp.bobhero.200.com');
+  define('HTTPS_CATALOG_SERVER', 'https://3jp.bobhero.200.com');
+  define('BACKEND_LAN_URL_ENABLED',false);
   define('ENABLE_SSL_CATALOG', 'false'); // secure webserver for catalog module
 
-  define('DIR_FS_DOCUMENT_ROOT', '/home/kthiz/project/OSC_3RMT/jp/admin/'); // where the pages are located on the server
-  define('DIR_WS_ADMIN', '/'); // absolute path required
-  define('DIR_FS_ADMIN', '/home/kthiz/project/OSC_3RMT/jp/admin/'); // absolute pate required
+  define('DIR_FS_DOCUMENT_ROOT', '/home/bobhero/3rmt/jp/admin/'); // where the pages are located on the server
+  define('DIR_WS_ADMIN', '/admin/'); // absolute path required
+  define('DIR_FS_ADMIN', '/home/bobhero/3rmt/jp/admin/'); // absolute pate required
 
   define('DIR_WS_CATALOG', '/'); // absolute path required
-  define('DIR_FS_CATALOG', '/home/kthiz/project/OSC_3RMT/jp/admin/'); // absolute path required
+  define('DIR_FS_CATALOG', '/home/bobhero/3rmt/jp/admin/'); // absolute path required
   define('DIR_WS_IMAGES', 'images/');
   define('DIR_WS_ICONS', DIR_WS_IMAGES . 'icons/');
 
@@ -46,7 +47,7 @@ ini_set('include_path',ini_get('include_path').':'.$libpath);
   //define('DIR_FS_BACKUP', DIR_FS_ADMIN . 'backups/');
 
 // define our database connection
-  define('DB_SERVER', 'localhost'); // eg, localhost - should not be empty for productive servers
+define('DB_SERVER', 'localhost'); // eg, localhost - should not be empty for productive servers
   define('DB_SERVER_USERNAME', 'root');
   define('DB_SERVER_PASSWORD', '123456');
   define('DB_DATABASE', 'maker_3rmt');
