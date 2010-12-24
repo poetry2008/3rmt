@@ -580,9 +580,11 @@ class SEO_URL{
       if (ENABLE_SSL && ($_SERVER['HTTP_HOST'] == substr(HTTPS_SERVER,8))) {
       } else {
         //cancel ssl to nossl session 
-        if ($request_type == 'NONSSL') {
+        //if ($request_type == 'NONSSL') {
+        if (isset('SITE_ID') && SITE_ID == 4) {
           $link .= $separator . $_sid;
         }
+        //}
       }
     }
   if (defined('URL_SUB_SITE_ENABLED')) {
@@ -650,11 +652,13 @@ class SEO_URL{
         return $link; 
       } else {
         //cancel ssl to nossl session 
-        if ($request_type == 'NONSSL') {
+        //if ($request_type == 'NONSSL') {
+        if (isset('SITE_ID') && SITE_ID == 4) {
           return $link . $separator . $_sid;
-        } else {
-          return $link; 
         }
+        //} else {
+          //return $link; 
+        //}
       } 
     } else {
       return $link; 
