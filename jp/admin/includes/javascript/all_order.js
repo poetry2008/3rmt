@@ -439,7 +439,7 @@ function checkChange(){
       ){
         // 如果有新订单和修改
         // 改变背景颜色
-        $('body').css('background-color', 'ffcc99');// rgb(255, 204, 153)
+        $('body').css('background-color', '#ffcc99');// rgb(255, 204, 153)
         // 播放提示音
         playSound();
         // 在列表插入新订单
