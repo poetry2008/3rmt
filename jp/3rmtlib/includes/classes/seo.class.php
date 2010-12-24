@@ -581,7 +581,7 @@ class SEO_URL{
       } else {
         //cancel ssl to nossl session 
         //if ($request_type == 'NONSSL') {
-        if (defined('SITE_ID') && SITE_ID == 4) {
+        if (defined('SITE_ID') && SITE_ID == 4 && tep_session_is_registered('customer_id')) {
           $link .= $separator . $_sid;
         } else {
           $link .= $separator;
@@ -655,7 +655,7 @@ class SEO_URL{
       } else {
         //cancel ssl to nossl session 
         //if ($request_type == 'NONSSL') {
-        if (defined('SITE_ID') && SITE_ID == 4) {
+        if (defined('SITE_ID') && SITE_ID == 4 && tep_session_is_registered('customer_id')) {
           return $link . $separator . $_sid;
         } else {
           return $link . $separator;
