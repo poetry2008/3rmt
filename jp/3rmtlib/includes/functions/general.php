@@ -3033,6 +3033,9 @@ function tep_parseURI()
       $firstFolder = substr($firstFolder,0,-1);
     }
     $secondId = tep_get_cpath_by_cname($firstFolder);
+    if ($secondId == 0) {
+      forward404();
+    }
     $_GET['cPath'] = join('_',array($firstId,$secondId));
     break;
   case 'secondFolder':
@@ -3040,6 +3043,9 @@ function tep_parseURI()
     $folder_arr = explode('/', $secondFolder); 
     $secondId = tep_get_cpath_by_cname($folder_arr[0]);
     $thirdId  = tep_get_cpath_by_cname($folder_arr[1]); 
+    if ($thirdId == 0) {
+      forward404();
+    }
     $_GET['cPath'] = join('_',array($firstId,$secondId,$thirdId));
     $break;
   case 'product':
