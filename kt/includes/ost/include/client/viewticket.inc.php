@@ -10,7 +10,7 @@ $dept = $ticket->getDept();
 $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
 //We roll like that...
 ?>
-<table width="100%" cellpadding="1" cellspacing="0" border="0">
+<table width="100%" cellpadding="1" cellspacing="0" border="0" class="viewticket_warpper">
     <tr><td colspan=2 width=100% class="msg">問合番号<?=$ticket->getExtId()?> 
         &nbsp;<a href="view.php?id=<?=$ticket->getExtId()?>" title="Reload"><span class="Icon refresh">&nbsp;</span></a></td></tr> 
     <tr>
@@ -120,12 +120,12 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
             <input type="hidden" name="id" value="<?=$ticket->getExtId()?>">
             <input type="hidden" name="respid" value="<?=$respID?>">
             <input type="hidden" name="a" value="postmessage">
-            <div align="left">
+            <div align="left" style="font-size:12px;">
                 内容をご入力ください <font class="error">*&nbsp;<?=$errors['message']?></font><br/>
                 <textarea name="message" id="message" cols="60" rows="7" wrap="soft"><?=$info['message']?></textarea>
             </div>
             <? if($cfg->allowOnlineAttachments()) {?>
-            <div align="left">
+            <div align="left" style="font-size:12px;">
                 添付ファイル<br><input type="file" name="attachment" id="attachment" size=30px value="<?=$info['attachment']?>" /> 
                     <font class="error">&nbsp;<?=$errors['attachment']?></font>
             </div>
