@@ -481,9 +481,9 @@ class SEO_URL{
   
   if (defined('URL_SUB_SITE_ENABLED')) {
     if ($page == 'index.php' && $parameters == '') {
-      if (getenv('HTTPS') != 'on') {
+      //if (getenv('HTTPS') != 'on') {
         $link = HTTP_SERVER . DIR_WS_CATALOG;
-      }
+      //}
     }
   }
     
