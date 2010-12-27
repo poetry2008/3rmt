@@ -990,3 +990,12 @@ cursor:pointer;
 #errormessage{
 color:#ff0000;
 }
+.new_products03{
+	background: url(images/design/contents/new_products03.gif) no-repeat;
+	width:auto;
+}
+.comment_products03{
+background:none;
+	width:640px;
+	*width:670px;
+}
