@@ -182,7 +182,7 @@
           $language_id = $languages[$i]['id'];
           $sql_data_array = array(
                   'categories_name' => tep_db_prepare_input($categories_name_array[$language_id]),
-                  'romaji' => tep_db_prepare_input($romaji[$language_id]),
+                  'romaji' => str_replace('_', '-', tep_db_prepare_input($romaji[$language_id])),
                   'categories_meta_text' => tep_db_prepare_input($categories_meta_text[$language_id]),
                   'seo_name' => tep_db_prepare_input($seo_name[$language_id]),
                   'seo_description' => tep_db_prepare_input($seo_description[$language_id]),
@@ -227,9 +227,7 @@
       
       
       } elseif ($_GET['action'] == 'update_category') {
-        //print_r($sql_data_array);
-        //echo('categories_id = \'' . $categories_id . '\' and language_id = \'' . $languages[$i]['id'] . '\' and site_id = \''.$site_id.'\'');
-        //exit;
+
         if (tep_db_num_rows(tep_db_query("select * from ".TABLE_CATEGORIES_DESCRIPTION." where romaji='".$sql_data_array['romaji']."' and site_id='".$site_id."' and categories_id!='".$categories_id."'"))) {
               $messageStack->add_session(TEXT_ROMAJI_EXISTS, 'error');
               tep_redirect(tep_href_link(FILENAME_CATEGORIES));

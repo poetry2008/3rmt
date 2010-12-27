@@ -62,10 +62,10 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
       //if (in_array($order['orders_status'], array(2,5,6,7,8))) {
       if (tep_orders_status_finished($order['orders_status'])) {
         // status can not change
-        echo '<div class="comment">ご入力いただきました登録情報は、既に発送が完了している、または、ご注文がキャンセルとなっております。 <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="74" height="25" alt="前に戻る" title="前に戻る"></a></div></div>';
+        echo '<div class="comment">ご入力いただきました登録情報は、既に発送が完了している、または、ご注文がキャンセルとなっております。 <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="47" height="17" alt="前に戻る" title="前に戻る"></a></div></div>';
       } else if ($date && $hour && $minute && ($time < (time() - MINUTES * 60) or $time > (time() + (7*86400)))) {
         // time error
-        echo '<div class="comment">取引時間は前もって一時間以上に設定してください <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" width="74" height="25" alt="TOPに戻る" title="TOPに戻る"></a></div></div>';
+        echo '<div class="comment">取引時間は前もって一時間以上に設定してください <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" width="63" height="18" alt="TOPに戻る" title="TOPに戻る"></a></div></div>';
       } else {
         // update time
         if ($date && $hour && $minute) {
@@ -167,7 +167,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
             }
           }
         }
-        echo '<div class="comment">注文内容の変更を承りました。電子メールをご確認ください。 <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" width="74" height="25" alt="TOPに戻る" title="TOPに戻る"></a></div></div>';
+        echo '<div class="comment">注文内容の変更を承りました。電子メールをご確認ください。 <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" width="63" height="18" alt="TOPに戻る" title="TOPに戻る"></a></div></div>';
         // sent mail to customer
         // ccdd
         $mail    = tep_db_fetch_array(tep_db_query("
@@ -388,13 +388,16 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
       }
     } else if (tep_orders_status_finished($order['orders_status'])) {
         // status can not change
-        echo '<div class="comment">ご指定の注文番号は受付できません。 <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="74" height="25" alt="前に戻る" title="前に戻る"></a></div></div>';
+        echo '<div class="comment">ご指定の注文番号は受付できません。 <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="47" height="17" alt="前に戻る" title="前に戻る"></a></div></div>';
     } else {
         // edit order
 ?>
 <div class="comment">
 <div id='form'>
-<form action="reorder.php" method="post" name="order">
+<!--<form action="reorder.php" method="post" name="order">-->
+<?php
+echo tep_draw_form('order', tep_href_link('reorder.php'));
+?>
 <input type="hidden" name="dummy" value="あいうえお眉幅">
 <input type='hidden' name='order_id' value='<?php echo $order['orders_id']?>' >
 <input type='hidden' name='email' value='<?php echo $order['customers_email_address']?>' >
@@ -673,18 +676,21 @@ function orderConfirmPage(){
     }
   } else {
     // has no order or info error
-    echo '<div class="comment">"注文番号" または"メールアドレス" が一致しませんでした。<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="74" height="25" alt="前に戻る" title="前に戻る"></a></div></div>';
+    echo '<div class="comment">"注文番号" または"メールアドレス" が一致しませんでした。<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="47" height="17" alt="前に戻る" title="前に戻る"></a></div></div>';
   }
 ?>
 <?php } else {
   // enter basic order info
   ?>
 <div class="comment">
-<form action="reorder.php" method="post" name='order'>
+<!--<form action="reorder.php" method="post" name='order'>-->
+<?php
+echo tep_draw_form('order', tep_href_link('reorder.php'));
+?>
 <input type="hidden" name="dummy" value="あいうえお眉幅">   
-<table class="information_table" summary="table">
+<table class="information_table03" summary="table" border="0" cellpadding="0" cellspacing="1">
  <tr>
-  <td align="left" bgcolor='#eeeeee'>注文番号</td>
+  <th align="left">注文番号</th>
   <td><input type='text' name='order_id_1' class="input_text" maxlength='8' style='width:80px' >-<input type='text' name='order_id_2' class="input_text" maxlength='8' style='width:80px' >
   <a href="/reorder2.php">注文番号忘れた?</a><br >
   <font color='red' style='font-size:12px'>例：20******-********<br >
@@ -692,11 +698,13 @@ function orderConfirmPage(){
   </td>
  </tr>
  <tr>
-  <td align="left" bgcolor='#eeeeee'>メールアドレス</td>
+  <th align="left">メールアドレス</th>
   <td><input type='text' name='email' class="input_text" ></td>
  </tr>
+ </table>
+ <table width="100%">
  <tr>
-  <td colspan='2' align="center">
+  <td colspan='2' align="right">
    
    <input type='image' src="includes/languages/japanese/images/buttons/button_continue.gif" alt="次へ進む" title="次へ進む" >
    <input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="クリア" title="クリア" onClick="javascript:document.order.reset();return false;" >

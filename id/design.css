@@ -1296,6 +1296,19 @@ margin:10px 0 0 0;
 	margin-bottom:5px;
 	color:#fff;
 }
+.login_inc03{
+	font-size:12px;
+	background-color:#CCCBCB;
+	padding:5px 2px;
+	margin-bottom:5px;
+	color:#fff;
+}
+.login_inc03 a{
+	font-size:12px;
+}
+.login_linc03_form{
+	overflow:hidden;
+}
 .login_inc a{
 	font-size:12px;
 }

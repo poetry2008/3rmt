@@ -715,11 +715,15 @@ function info_tep_href_link($romaji)
       $returnstr .= "info/".urlencode($romaji).".html";
     } else {
       //cancel ssl to nossl session 
-      if ($request_type=='NOSSL') {
+      //if ($request_type=='NOSSL') {
+      if (defined('SITE_ID') && SITE_ID == 4 && ($request_type=='NOSSL' || tep_session_is_registered('customer_id'))) {
         $returnstr .= "info/".urlencode($romaji).".html?".tep_session_name()."=".tep_session_id();
       } else {
         $returnstr .= "info/".urlencode($romaji).".html";
       }
+      //} else {
+        //$returnstr .= "info/".urlencode($romaji).".html";
+      //}
     }
   } else {
     $returnstr .= "info/".urlencode($romaji).".html";

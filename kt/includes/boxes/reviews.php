@@ -52,7 +52,7 @@ if (
 ?>
   <div class="reviews_box">
   <div class="menu_top_reviews">
-  <a href="<?php echo tep_href_link(FILENAME_REVIEWS); ?>"><img src="images/menu_ico.gif" alt="" align="top">&nbsp;レビコー
+  <a href="<?php echo tep_href_link(FILENAME_REVIEWS); ?>"><img src="images/menu_ico.gif" alt="" align="top">&nbsp;レビュー
   <?php //echo tep_image(DIR_WS_IMAGES.'design/box/reviews.gif',BOX_HEADING_REVIEWS,171,44); ?></a>
   </div>
     <div class="boxText" align="center">

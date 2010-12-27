@@ -55,12 +55,10 @@ RewriteCond %{HTTP_HOST} !^www\.3id\.kthiz\.200\.com$
 RewriteCond %{REQUEST_FILENAME} !product_info.php
 RewriteCond %{REQUEST_FILENAME} !shopping_cart.php
 RewriteRule ^(.*)$ /%{HTTP_HOST}/$1 [C]
-RewriteRule ^/([a-z0-9\-]+)\.3id\.kthiz\.200\.com/([a-z0-9]+)/([a-z0-9]+)\.html product_info.php?products_id=$3 [QSA,L]
-RewriteRule ^/([a-z0-9\-]+)\.3id\.kthiz\.200\.com/([a-z0-9]+)/([a-z0-9]+)/([a-z0-9]+)\.html product_info.php?products_id=$4 [QSA,L]
+RewriteRule ^/([a-z0-9\-]+)\.3id\.kthiz\.200\.com/([a-z0-9\_\-]+)\.html product_info.php?products_id=$2 [QSA,L]
+RewriteRule ^/([a-z0-9\-]+)\.3id\.kthiz\.200\.com/([a-z0-9\-]+)/([a-z0-9\-]+)\.html product_info.php?products_id=$3 [QSA,L]
+RewriteRule ^/([a-z0-9\-]+)\.3id\.kthiz\.200\.com/([a-z0-9\-]+)/([a-z0-9\-]+)/([a-z0-9\-]+)\.html product_info.php?products_id=$4 [QSA,L]
 RewriteRule ^/([a-z0-9\-]+)\.3id\.kthiz\.200\.com/(.*) index.php?cName=$1 [QSA,PT,L]
-#Rewriterule ^/([a-z0-9\-]+)\.3wm\.bobhero\.200\.com/([a-z0-9]+)/([a-z0-9]+)\.html product_info.php?products_id=$3 
-#Rewriterule ^/([a-z0-9\-]+)\.3wm\.bobhero\.200\.com/(.*) index.php?cName=$1 [PT,L]
-#RewriteRule ^link/?$ domain.php
 
 # http://rmt.worldmoney.jp/item/p-33129.html
 # if romaji RewriteRule ^item/p-([0-9A-Za-z_-]+).html$ product_info.php?products_id=$1&%{QUERY_STRING}
