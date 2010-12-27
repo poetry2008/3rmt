@@ -1093,6 +1093,29 @@ list-style-type:none;
 	font-size:12px;
 }
 .message{ font-size:12px; text-align:left; clear:both;margin-bottom:5px;background-color:#F2F2F2; border:1px solid #E0E0E0;}
+.Icon {
+    width: auto;
+    padding-left:20px;
+    background-position: left center;
+    background-repeat: no-repeat;
+    color:#006699; 
+    text-decoration: none;
+}
+a.Icon{
+padding-top:3px;
+padding-bottom:3px;
+}
+a.Icon:hover {
+    text-decoration: underline;    
+}
+.Icon.Ticket { background:url(images/icons/ticket.gif) 0 0 no-repeat; }
+.Icon.webTicket { background:url(images/icons/ticket_source_web.gif) 0 0 no-repeat; }
+.Icon.emailTicket { background:url(images/icons/ticket_source_email.gif) 0 0 no-repeat; }
+.Icon.phoneTicket { background:url(images/icons/ticket_source_phone.gif) 0 0 no-repeat; }                
+.Icon.otherTicket { background:url(images/icons/ticket_source_other.gif) 0 0 no-repeat; }
+.Icon.attachment { background-image: url(images/icons/attachment.gif); }
+.Icon.file { background: url(images/icons/attachment.gif) no-repeat left center;}
+.Icon.refresh { background-image: url(images/icons/refresh.gif); }   
 .Icon.thread {
 	background:url(images/icons/thread.gif) no-repeat;
 	font-size:12px;

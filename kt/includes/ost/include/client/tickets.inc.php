@@ -116,7 +116,7 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
                 }
                 ?>
             <tr class="<?=$class?> " id="<?=$row['ticketID']?>">
-                <td align="center" title="<?=$row['email']?>" nowrap>
+                <td align="left" title="<?=$row['email']?>" nowrap>
                     <a class="Icon <?=strtolower($row['source'])?>Ticket" title="<?=$row['email']?>" href="view.php?id=<?=$row['ticketID']?>">
                         <?=$ticketID?></a></td>
                 <td nowrap>&nbsp;<?=Format::db_date($row['created'])?></td>
