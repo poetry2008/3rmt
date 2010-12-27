@@ -76,7 +76,7 @@ if ($category_depth == 'nested') {
               and c.parent_id = '" . $current_category_id . "' 
               and c.categories_id = cd.categories_id 
               and cd.language_id = '" . $languages_id . "'  
-            order by sort_order, cd.categories_name, cd.site_id DESC
+            order by cd.site_id DESC
           ) c
           where site_id = 0 
              or site_id = ".SITE_ID."
