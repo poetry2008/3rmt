@@ -25,6 +25,10 @@
     </b>&nbsp;でログインしています。&nbsp;
   </td>
   </tr>
+<?php
+   echo tep_minitor_info();
+?>
+
   <tr class="headerBar">
     <td colspan='2'>
     <table width="100%">
