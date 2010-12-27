@@ -49,15 +49,6 @@ RewriteRule ^latest_news/?$ latest_news.php
 RewriteRule ^latest_news/page(\d+).html$ latest_news.php?page=$1
 RewriteRule ^latest_news/([0-9]+)\.html$ latest_news.php?news_id=$1&%{QUERY_STRING}
 
-RewriteCond %{HTTP_HOST} ^[a-z0-9\-]+\.3kt\.kthiz\.200\.com$
-RewriteCond %{HTTP_HOST} !^www\.3kt\.kthiz\.200\.com$
-RewriteCond %{REQUEST_FILENAME} !product_info.php
-RewriteCond %{REQUEST_FILENAME} !shopping_cart.php
-RewriteRule ^(.*)$ /%{HTTP_HOST}/$1 [C]
-RewriteRule ^/([a-z0-9\-]+)\.3kt\.kthiz\.200\.com/([a-z0-9]+)/([a-z0-9]+)\.html product_info.php?products_id=$3 [QSA,L]
-RewriteRule ^/([a-z0-9\-]+)\.3kt\.kthiz\.200\.com/([a-z0-9]+)/([a-z0-9]+)/([a-z0-9]+)\.html product_info.php?products_id=$4 [QSA,L]
-RewriteRule ^/([a-z0-9\-]+)\.3kt\.kthiz\.200\.com/(.*) index.php?cName=$1 [QSA,PT,L]
-
 #RewriteRule ^link/?$ domain.php
 
 # http://rmt.worldmoney.jp/item/p-33129.html
