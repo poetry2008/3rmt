@@ -153,26 +153,28 @@ if (isset($cPath_array)) {
       $all_game_news = tep_get_categories_rss($current_category_id);
       if ($all_game_news) {
       ?>
-<table width="95%" style="border-top:#444 dotted 3px;">
+<div style="margin-top: 10px;" class="background_news01 background_news02"> 
+<table width="95%" class="news_title_03 news_title_04" style="border-top: 3px dotted rgb(68, 68, 68);">
 <tr>
   <td>
-    <h1 style="font-size:20px; color:#fff; border-left:#ccc solid 7px; padding-left:10px; margin-top:8px;"><?php echo $_categories['categories_name'];?> NEWS for 4Gamer.net 
+    <h3 h3 style="border-bottom: medium none; font-size: 14px; color: rgb(255, 255, 255); padding-left: 10px; margin-top: 2px; font-weight: bold;"><?php echo $_categories['categories_name'];?> NEWS for 4Gamer.net </h3>
     </td>
 </tr>
 </table>
-      <div class="game_news_index01 list_rss01"> 
+      <div class="game_news_index01 game_news_index02">
       <ul> 
       <?php
         foreach ($all_game_news as $cgmkey => $cgame_news_rss) {
           if ($cgmkey == CATEGORIES_GAME_NEWS_MAX_DISPLAY)  break;
-          echo '<li class="news_list03">';
+          echo '<li class="news_list">';
           //echo '<span>'.tep_date_short($cgame_news_rss['date_added']).'</span>'; 
-          echo '<a href="'.$cgame_news_rss['url'].'" rel="nofollow" target="_blank">'.mb_strimwidth($cgame_news_rss['headline'],0,95,'...').'</a>'; 
+          echo '<a href="'.$cgame_news_rss['url'].'" class="latest_news_link01" rel="nofollow" target="_blank">'.mb_strimwidth($cgame_news_rss['headline'],0,95,'...').'</a>'; 
           echo '</li>'; 
         }
       ?>
       </ul> 
-      </div> 
+      </div>
+</div>
       <?php
       }
       }
