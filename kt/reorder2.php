@@ -94,7 +94,10 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
           }
          }else{?>
 <div class="comment">
-<form action="reorder2.php" method="post" name="order">
+<!--<form action="reorder2.php" method="post" name="order">-->
+<?php
+echo tep_draw_form('order', tep_href_link('reorder2.php'));
+?>
 <input type="hidden" name="dummy" value="あいうえお眉幅">
 <table class="information_table">
  <tr>
