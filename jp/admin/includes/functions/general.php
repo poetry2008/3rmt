@@ -3,6 +3,44 @@
   $Id$
 */
 
+//取得minitor 的信息
+function tep_minitor_info(){
+  $errorString = array();
+  $monitors  = tep_db_query("select id ,name,url from monitor m where m.enable='on'");
+  while($monitor= tep_db_fetch_array($monitors)){
+    $fiftheenbefore = date('Y-m-d H:i:s',time()-60*15);
+    $logIn15 = tep_db_query("select * from monitor_log where ng = 1 and m_id =".$monitor['id'].' and created_at > "'.$fiftheenbefore.'"');
+    $tmpRow = tep_db_fetch_array($logIn15);
+    if(mysql_num_rows($logIn15)>=2){ //十五分钟内多于两件
+
+      $tmpString  = '<font color="red">'.$tmpRow['name'].':'.date('m月d日H時i分s秒',strtotime($tmpRow['created_at'])).'に回線障害がありました</br><a id="moni_'.$tmpRow['name'].'"class="monitor" href="'.$monitor['url'].'" target="_blank">こちら</a>をクリックして状況を確認してください。</font>';
+      $tmpString2 = "<div style='display:none;' id='minitor_".$monitor['name']."'>";
+      $tmpString2.= '<table><tr><td>'.$tmpRow['created_at']."</td><td>".nl2br($tmpRow['log'])."</td></tr>";
+      while($tmpRow2 = tep_db_fetch_array($logIn15)){
+      $tmpString2.= '<tr><td>'.$tmpRow2['created_at']."</td><td>".nl2br($tmpRow2['log'])."</td></tr>";
+      }
+      $tmpString2.= "</table></div>";
+      $errorString[] = $tmpString.$tmpString2;
+    }else {
+      $log = "select name,log, created_at from monitor_log where ng =1 and m_id = ".$monitor['id']. " order by id  desc limit 1";
+      $logsResult = tep_db_fetch_array(tep_db_query($log));
+      if ($logsResult){
+        $aString = $logsResult['name'].':'.'回線障害の最終日： <a class="monitor" id="moni_'.$logsResult['name'].'" href="'.$monitor['url'].'"  target="_blank">'.date('m月d日H時i分s秒。',strtotime($logsResult['created_at'])).'</a>';
+        $aString.= '<div style="display:none;" id ="minitor_'.$logsResult['name'].'">';
+        $aString.= '<table><tr><td>'.$logsResult['created_at']."</td><td>".nl2br($logsResult['log'])."</td></tr>";
+        $aString.= '</table></div>';
+        $errorString[] = $aString;
+      }
+    }
+  }
+  $returnString = '';
+  foreach ($errorString as $error){
+    $returnString .= '<tr><td></td><td align="right">'.$error.'</td></tr>';
+  }
+  return $returnString;
+
+}
+
 ////
 // Redirect to another page or site
   function tep_redirect($url) {
