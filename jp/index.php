@@ -101,14 +101,6 @@ if ($category_depth == 'nested') {
       </tr>
     </table>
     <p class="comment"><?php echo $seo_category['categories_footer_text']; //seoフレーズ ?></p>
-    <?php
-      if (isset($_GET['cPath'])) {
-    ?>
-    <?php
-        $new_products_category_id = $current_category_id; 
-    include(DIR_WS_MODULES . 'new_products3.php'); 
-      }
-    ?>
     <h2 class="line"><?php
   if(isset($_GET['cPath']) && $_GET['cPath']) {
     $categories_path = explode('_', $_GET['cPath']);
@@ -137,6 +129,14 @@ if ($category_depth == 'nested') {
         include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); 
       } 
     ?> 
+    <?php
+      if (isset($_GET['cPath'])) {
+    ?>
+    <?php
+        $new_products_category_id = $current_category_id; 
+    include(DIR_WS_MODULES . 'new_products3.php'); 
+      }
+    ?>
   <?php
     if (isset($cPath_array)) {
       if ($seo_category['seo_description']) {
