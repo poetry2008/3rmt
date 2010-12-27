@@ -82,7 +82,7 @@ if($cPath){
                   and c.parent_id = '".$category['categories_id']."' 
                   and c.categories_id = cd.categories_id 
                   and cd.language_id='" . $languages_id ."' 
-                order by sort_order, cd.categories_name, cd.site_id DESC
+                order by cd.site_id DESC
                 ) c
               where site_id = 0
                  or site_id = ".SITE_ID."
@@ -127,7 +127,7 @@ if($cPath){
                     and c.parent_id = '".$subcategory['categories_id']."' 
                     and c.categories_id = cd.categories_id 
                     and cd.language_id='" . $languages_id ."' 
-                  order by sort_order, cd.categories_name, cd.site_id DESC
+                  order by cd.site_id DESC
                 ) c
                 where site_id = 0
                    or site_id = ".SITE_ID."
@@ -184,8 +184,8 @@ if($cPath){
                 } else if (in_array($category['categories_id'], $ca_arr)) { 
                 ?>
                 <li class='l_m_category_li'><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>">
-		<?php 
-	        /*	
+    <?php 
+          /*  
                 if (!empty($category['categories_image2'])) {
                   if (file_exists(DIR_FS_CATALOG.'/'.DIR_WS_IMAGES.'categories/'.$category['categories_image2'])) {
                     echo '<img src="images/categories/'.$category['categories_image2'].'" alt="'.$category['categories_name'].'" width="147" height="33">'; 
@@ -194,7 +194,7 @@ if($cPath){
                   }
                 } else {
                   echo '<img src="images/desingn/category_no_img.gif" alt="'.$category['categories_name'].'" width="147" height="33">'; 
-		}
+    }
                 */
                 echo $category['categories_name']; 
                 ?>
