@@ -79,10 +79,12 @@
   $info_box_contents = array();
 ?>
 <!-- new_products //-->
-<h2 class="pageHeading"><?php echo sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B')) ; ?></h2>
 <?php 
 if (0 < $num_products) {
-    while ($new_products = tep_db_fetch_array($new_products_query)) {
+?>
+<h2 class="pageHeading"><?php echo sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B')) ; ?></h2>
+<?php
+  while ($new_products = tep_db_fetch_array($new_products_query)) {
       $new_products['products_name'] = tep_get_products_name($new_products['products_id']);
       if (tep_get_special_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum'])) {
         $p =  '<s>' . $currencies->display_price(tep_get_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum']), tep_get_tax_rate($new_products['products_tax_class_id'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum']), tep_get_tax_rate($new_products['products_tax_class_id'])) . '</span>&nbsp;';
@@ -108,7 +110,7 @@ if (0 < $num_products) {
 <?php 
     }*/
   } else if (BOX_NEW_PRODUCTS_DAY_LIMIT) {
-    echo "<p style='padding-left:10px;'>".BOX_NEW_PRODUCTS_DAY_LIMIT."日以内に登録された商品はありません。</p>";
+    //echo "<p style='padding-left:10px;'>".BOX_NEW_PRODUCTS_DAY_LIMIT."日以内に登録された商品はありません。</p>";
   }
   }
 ?>

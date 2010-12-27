@@ -881,11 +881,19 @@ padding-left:10px;
 padding-bottom:60px;
 background:url(images/design/oc/news_bottom.gif) no-repeat left bottom;
 }
+.game_news_index02 {
+background:url(images/design/oc/game_news_index02.gif) no-repeat left bottom;
+}
 .list_rss01{
 background:none;
 }
 .game_news_index01 ul{
 padding:0 50px 0 0;
+*margin:0 0 15px 10px;
+}
+.game_news_index02 ul{
+padding:0 50px 0 0;
+*padding:0 30px 0 0;
 *margin:0 0 15px 10px;
 }
 .game_news_index01 ul li{
@@ -903,6 +911,9 @@ color:#fff;
 .background_news01 {
 background:url(images/design/oc/news_middle.gif) repeat-y;
 overflow:hidden;
+}
+.background_news02 {
+background:url(images/design/oc/background_news02.gif) repeat-y;
 }
 .news_title_01 {
 background:url(images/design/oc/news_top.gif) no-repeat;
@@ -930,6 +941,9 @@ list-style-type:none;
 .news_title_03 {
 background:url(images/design/oc/news_top02.gif) no-repeat;
 width:100%;
+}
+.news_title_04{
+background:url(images/design/oc/news_title_04.gif) no-repeat;
 }
 .news_title_03 td {
 height:40px;
