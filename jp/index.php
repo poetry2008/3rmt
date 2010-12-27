@@ -59,6 +59,48 @@ if ($category_depth == 'nested') {
   }
 ?></h1>
     <p class="comment"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?></p>
+    <table border="0" width="100%" cellspacing="3" cellpadding=l3"">
+      <tr align="center">
+<?php
+        $categories_query = tep_db_query("
+          select * 
+          from (
+            select c.categories_id, 
+                   cd.categories_name, 
+                   c.categories_image, 
+                   c.parent_id,
+                   cd.site_id,
+                   c.sort_order
+            from " .  TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
+            where  c.categories_status != '1' 
+              and c.parent_id = '" . $current_category_id . "' 
+              and c.categories_id = cd.categories_id 
+              and cd.language_id = '" . $languages_id . "'  
+            order by sort_order, cd.categories_name, cd.site_id DESC
+          ) c
+          where site_id = 0 
+             or site_id = ".SITE_ID."
+          group by categories_id
+          order by sort_order, categories_name
+        ");
+
+    $rows = 0;
+    while ($categories = tep_db_fetch_array($categories_query)) {
+    $rows++;
+      $cPath_new = tep_get_path($categories['categories_id']);
+      $width = (int)(100 / MAX_DISPLAY_CATEGORIES_PER_ROW) . '%';
+      echo '<td class="smallText"><h2 class="Tlist"><a href="' . tep_href_link(FILENAME_DEFAULT, $cPath_new) . '">' . tep_image(DIR_WS_IMAGES .'categories/'. $categories['categories_image'], $categories['categories_name'], SUBCATEGORY_IMAGE_WIDTH, SUBCATEGORY_IMAGE_HEIGHT) ;
+                             if(tep_not_null($categories['categories_image'])) { echo '<br>' ; } 
+                   echo $categories['categories_name'] . '</a></h2></td>' . "\n";
+      if ((($rows / MAX_DISPLAY_CATEGORIES_PER_ROW) == floor($rows / MAX_DISPLAY_CATEGORIES_PER_ROW)) && ($rows != tep_db_num_rows($categories_query))) {
+        echo '        </tr>' . "\n";
+        echo '        <tr align="center">' . "\n";
+      }
+  }
+?> 
+      </tr>
+    </table>
+    <p class="comment"><?php echo $seo_category['categories_footer_text']; //seoフレーズ ?></p>
     <h2 class="line"><?php
   if(isset($_GET['cPath']) && $_GET['cPath']) {
     $categories_path = explode('_', $_GET['cPath']);
@@ -70,7 +112,31 @@ if ($category_depth == 'nested') {
     echo 'RMT：ゲーム通貨・アイテム・アカウント';
   }
 ?></h2>
-      <?php include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); ?> </td> 
+    <?php 
+      if (isset($_GET['cPath'])) {
+        $listing_tmp_sql = $listing_sql;
+        $list_tmp_query = tep_db_query($listing_tmp_sql);
+        if (tep_db_num_rows($list_tmp_query)) {
+          include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); 
+        }
+      } else {
+        include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); 
+      }
+    ?> 
+  <?php
+    if (isset($cPath_array)) {
+      if ($seo_category['seo_description']) {
+        echo '<h3 class="pageHeading_long">'.$seo_category['seo_name'].'について</h3>'; 
+        echo '<p class="comment">'.$seo_category['seo_description'].'</p>'; 
+        echo '<p class="pageBottom"></p>'; 
+      }
+      if (!empty($seo_category['text_information'])) {
+        echo str_replace('class="pageHeading"', 'class="pageHeading_long"', $seo_category['text_information']); 
+        echo '<p class="pageBottom"></p>'; 
+      }
+    }
+  ?>
+</td> 
 <?php
 } elseif(isset($_GET['colors']) && !empty($_GET['colors'])) {
   // 根绝颜色color_id取得商品列表
