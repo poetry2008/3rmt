@@ -581,9 +581,15 @@ class SEO_URL{
       } else {
         //cancel ssl to nossl session 
         //if ($request_type == 'NONSSL') {
-        if (defined('SITE_ID') && SITE_ID == 4) {
-          $link .= $separator . $_sid;
-        }
+        //if () {
+          if (defined('SITE_ID') && SITE_ID == 4 && ($request_type == 'NONSSL' || tep_session_is_registered('customer_id'))) {
+            $link .= $separator . $_sid;
+          } else {
+            $link .= '';
+          }
+        //} else {
+        //  $link .= $separator;
+        //}
         //}
       }
     }
@@ -653,8 +659,10 @@ class SEO_URL{
       } else {
         //cancel ssl to nossl session 
         //if ($request_type == 'NONSSL') {
-        if (defined('SITE_ID') && SITE_ID == 4) {
+        if (defined('SITE_ID') && SITE_ID == 4 && (tep_session_is_registered('customer_id') || $request_type == 'NONSSL')) {
           return $link . $separator . $_sid;
+        } else {
+          return $link;
         }
         //} else {
           //return $link; 
