@@ -54,6 +54,8 @@
         <div align="center">
 
     <form action="<?php echo tep_href_link('referer.php','site_id='.$_GET['site_id'].'&type='.$_GET['type']) ; ?>" method="get">
+      <input type="hidden" name="" value="">
+      <input type="hidden" name="" vlaue="">
     <fieldset>
     <table  border="0" align="center" cellpadding="0" cellspacing="2">
     <tr>
@@ -157,31 +159,43 @@
     ) s
     order by cnt desc
       ");
+  $i = 1;
+  while ($ref_site = tep_db_fetch_array($ref_site_query)) {
+?>
+              <tr class="dataTableRow">
+                <td class="dataTableContent"><?php echo $ref_site['orders_adurl'];?></td>
+                <td class="dataTableContent"><?php echo $ref_site['cnt'];?></td>
+                <td class="dataTableContent"><?php echo $i;?></td>
+              </tr>
+<?php
+    $i++;
+  }
   } else {
   $ref_site_query = tep_db_query("
     select * from (
-      select count(orders_id) as cnt,orders_ref_site
+      select count(orders_id) as cnt , concat( ifnull( orders_ref_site, '' ) , if( orders_adurl is null, '', '(Adsense)' ) ) AS orders_ref_site2
       from " . TABLE_ORDERS . " o, ".TABLE_SITES." s
       where s.id = o.site_id
         and orders_ref_site IS NOT NULL
         " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and s.id = '" . intval($_GET['site_id']) . "' " : '') . 
         (isset($_GET['sy']) && isset($_GET['sm']) && isset($_GET['sd']) ? " and o.date_purchased > '".$_GET['sy'].'-'.$_GET['sm'].'-'.$_GET['sd'] ."'" : " and o.date_purchased > '".date('Y-m-d H:i:s', time()-(86400*30)) . "' ") . 
         (isset($_GET['ey']) && isset($_GET['em']) && isset($_GET['ed']) ? " and o.date_purchased < '".$_GET['ey'].'-'.$_GET['em'].'-'.$_GET['ed'] ." 23:59:59'" : '') . "
-      group by orders_ref_site
+      group by orders_ref_site2
     ) s
     order by cnt desc
       ");
-  }
-  $i = 1;
-  while ($ref_site = tep_db_fetch_array($ref_site_query)) {
-?>
-              <tr class="dataTableRow">
-                <td class="dataTableContent"><?php echo $_GET['type'] == 'adsense'?$ref_site['adurl']:$ref_site['orders_ref_site'];?></td>
-                <td class="dataTableContent"><?php echo $ref_site['cnt'];?></td>
-                <td class="dataTableContent"><?php echo $i;?></td>
-              </tr>
-<?php
-    $i++;
+    $i = 1;
+    while ($ref_site = tep_db_fetch_array($ref_site_query)) {
+      $ad_cnt = tep_db_fetch_array(tep_db_query("select count(orders_id) as cnt from orders where orders_adurl='".$ref_site['orders_ref_site']."'"));
+  ?>
+                <tr class="dataTableRow">
+                  <td class="dataTableContent"><?php echo $ref_site['orders_ref_site2'];?></td>
+                  <td class="dataTableContent"><?php echo $ref_site['cnt'];?><?php //echo $ad_cnt['cnt']?'('.$ad_cnt['cnt'].')':'';?></td>
+                  <td class="dataTableContent"><?php echo $i;?></td>
+                </tr>
+  <?php
+      $i++;
+    }
   }
 ?>
               <tr>
