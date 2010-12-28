@@ -3006,7 +3006,6 @@ function tep_parseURI()
     $subSiteUri = substr($_SERVER['REQUEST_URI'], 0, $g_pos);
   }
   $router = 'x';
-  echo $subSiteUri;
   $rewriteRule = array(
                        "firstFolder"  => "/^\/[a-zA-Z0-9\-]+\/?$/",        //   /abc(/)
                        "secondFolder" => '/^\/[a-zA-Z0-9\-]+\/[a-zA-Z0-9\-]+\/?$/',              //   /asb/xcv(/)
