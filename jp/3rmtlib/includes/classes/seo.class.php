@@ -482,7 +482,11 @@ class SEO_URL{
   if (defined('URL_SUB_SITE_ENABLED')) {
     if ($page == 'index.php' && $parameters == '') {
       //if (getenv('HTTPS') != 'on') {
+      if (defined('SITE_ID') && SITE_ID == 4 && $request_type == 'SSL' && !tep_session_is_registered('customer_id')) {
         $link = HTTP_SERVER . DIR_WS_CATALOG;
+      } else {
+        
+      }
       //}
     }
   }
