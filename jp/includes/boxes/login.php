@@ -8,10 +8,18 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr><td height="25"><?php echo tep_image(DIR_WS_IMAGES.'design/box/login.gif',HEADER_TITLE_LOGIN,'171','25'); ?></td></tr>
 </table>
+<table border="0" align="center" cellpadding="0" cellspacing="0" style="margin-top:5px; ">
+	<tr>
+    	<td>
+			<a href="<?php echo tep_href_link(FILENAME_LOGIN, '', 'SSL');?>"><img class="middle" src="images/design/box/login02.gif" width="158" alt="ログイン"></a>
+		</td>
+	</tr>
+</table>
 <?php
   if (!tep_session_is_registered('customer_id')) {
 ?>
 <?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process', 'SSL'), 'post', 'onSubmit="return msg();"') . "\n"; ?>
+<!--
   <table border="0" align="center" cellpadding="0" cellspacing="0" style="margin-top:5px; ">
     <tr>
       <td width="25" height="25"><?php echo tep_image(DIR_WS_IMAGES.'design/box/id.gif','メールアドレス','10','8','class="middle"');?></td>
@@ -36,6 +44,7 @@
       <td height="1" colspan="2" bgcolor="#CCCCCC"></td>
     </tr>
   </table>
+-->
 </form>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>

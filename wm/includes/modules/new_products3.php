@@ -107,7 +107,7 @@
 ?>
   <tr>
     <td>
-      <table width="480" border="0" cellspacing="0" cellpadding="0" style="margin: 10px;">
+      <table cellspacing="0" cellpadding="0" border="0" class="product_listing_content02">
         <tr>
           <td width="<?php echo SMALL_IMAGE_WIDTH;?>" rowspan="2" style="padding-right:8px; " align="center">
             <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/' . $new_products['products_image'], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>'; ?>

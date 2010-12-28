@@ -13,6 +13,11 @@
     <td height="100" align="center"><a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT,'','SSL'); ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/box/signup.gif',HEADER_TITLE_CREATE_ACCOUNT,'164','150'); ?></a></td>
   </tr>
 </table>
+<table border="0" width="162" cellpadding="0" cellspacing="0" style="margin: 0 5px 0 5px;" summary="login box">
+	<tr>
+    	<td><a href="<?php echo tep_href_link(FILENAME_LOGIN,'','SSL'); ?>"><img class="middle" src="images/design/box/login02.gif" width="158" alt="ログイン"></a></td>
+    </tr>
+</table>
 <?php 
    }
 ?>
@@ -20,6 +25,7 @@
   if (!tep_session_is_registered('customer_id')) {
 ?>
 <?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process', 'SSL'), 'post', 'onSubmit="return msg();"') . "\n"; ?>
+<!--  
   <table border="0" width="162" cellpadding="0" cellspacing="0" style="margin: 5px 5px 10px 5px;" summary="login box">
     <tr>
           <td><img src="images/design/box/login_top_bg.gif" width="162" height="15" alt="" ></td>
@@ -51,6 +57,7 @@
           <td height="15" style="background: url(images/design/box/login_bottom_bg.gif) top no-repeat;"></td>
         </tr>
   </table>
+ --> 
 </form>
 <?php 
   } else { 

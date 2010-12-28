@@ -5,10 +5,14 @@
 ?>
 <!-- login //-->
 <script type="text/javascript" src="js/logincheck.js"></script>
+<div class="login02">
+	<a href="<?php echo tep_href_link(FILENAME_LOGIN,'','SSL'); ?>"><img class="middle" src="images/banners/login02.gif" alt="ログイン"></a>
+</div>
 <?php
    if (!tep_session_is_registered('customer_id')) {
 ?>
 <?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process', 'SSL'), 'post', 'onSubmit="return msg();"')."\n"; ?>
+<!--
 <div class="login_right01">
 <div class="box_des01">ログイン</div> 
 <table  border="0" align="center" cellpadding="0" cellspacing="0">
@@ -30,6 +34,7 @@
 <div class="login_right_bottom01">
 </div>
 </div>
+-->
 </form>
 <?php 
   } else {
