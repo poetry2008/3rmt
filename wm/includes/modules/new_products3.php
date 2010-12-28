@@ -95,7 +95,7 @@
 <?php if (0 < $num_products) { ?>
 <h3 class="pageHeading new_products03"><?php echo $new_c_name; ?>の新着商品</h3>
 <div class="comment comment_products03">
-<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+<table width="100%" cellspacing="0" cellpadding="0" border="0" style="background: none repeat scroll 0% 0% rgb(242, 242, 242); padding-top: 10px;">
 <?php
     while ($new_products = tep_db_fetch_array($new_products_query)) {
       $product_details = tep_get_product_by_id($new_products['products_id'], SITE_ID, $languages_id);
@@ -107,33 +107,31 @@
 ?>
   <tr>
     <td>
-      <table cellspacing="0" cellpadding="0" border="0" class="product_listing_content02">
+      <table cellspacing="0" cellpadding="0" border="0" class="product_listing_content">
         <tr>
-          <td width="<?php echo SMALL_IMAGE_WIDTH;?>" rowspan="2" style="padding-right:8px; " align="center">
+          <td width="<?php echo SMALL_IMAGE_WIDTH;?>" rowspan="2" style="padding-right:5px; " align="center">
             <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/' . $new_products['products_image'], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>'; ?>
           </td>
-          <td height="40" colspan="2" valign="top" style="padding-left:5px; ">
+          <td class="main" valign="top" style="padding-left:5px;">
             <p class="main">
               <img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" alt="">
               <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">'.$new_products['products_name'].'</a>'; ?><br>
-              <span class="smallText"><?php echo $description_view; ?>...</span>
             </p>
           </td>
-        </tr>
-        <tr>
-          <td class="main" style="padding-left:5px; ">
-            <p class="main">
-              <?php echo '残り&nbsp;' . number_format(tep_show_quantity($new_products['products_quantity'])) . '個'; ?>
-              &nbsp;&nbsp;&nbsp;
+          <td class="main" align="right" width="140">
 <?php
       if (tep_get_special_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum'])) {
         echo '<s>' . $currencies->display_price(tep_get_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum']), tep_get_tax_rate($new_products['products_tax_class_id'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum']), tep_get_tax_rate($new_products['products_tax_class_id'])) . '</span>&nbsp;';
       } else {
         echo $currencies->display_price(tep_get_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum']), tep_get_tax_rate($new_products['products_tax_class_id']));
       }
-?>            </p>
+?>
           </td>
-          <td align="right">
+          <td class="main" align="right"><p><?php echo '残り&nbsp;<b>' . number_format(tep_show_quantity($new_products['products_quantity'])) . '</b>&nbsp;個'; ?></p></td>
+        </tr>
+        <tr>
+          <td><span class="smallText"><?php echo $description_view; ?>...</span></td>
+          <td align="right" colspan="3">
             <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) ; ?>" class="button_description"></a>
           </td>
         </tr>
