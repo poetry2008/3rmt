@@ -91,8 +91,8 @@
     $row = 0;
     $col = 0;
 ?>
-<?php if (0 < $num_products) { ?>
 <!-- new_products //-->
+<?php if (0 < $num_products) { ?>
 <h1 class="pageHeading">
 <span class="game_im">
 <img width="26" height="26" alt="" src="images/design/title_img08.gif">

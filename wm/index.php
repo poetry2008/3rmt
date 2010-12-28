@@ -74,6 +74,7 @@ if ($category_depth == 'nested') {
   }
 ?></h1>
     <div class="comment_long"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?>
+        <?php if (isset($_GET['cPath'])) { ?> 
         <table border="0" width="100%" cellspacing="3" cellpadding="3" summary=""> 
           <tr align="center">
 <?php
@@ -115,6 +116,9 @@ if ($category_depth == 'nested') {
 ?> 
           </tr>
         </table>
+    <?php
+    } 
+    ?>
     <h2 class="line"><?php
   if($_GET['cPath']) {
     $categories_path = explode('_', $_GET['cPath']);
