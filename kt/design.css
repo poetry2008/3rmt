@@ -1120,4 +1120,18 @@ a.Icon:hover {
 	background:url(images/icons/thread.gif) no-repeat;
 	font-size:12px;
 	font-weight:bold;
-	padding-left:20px;
+	padding-left:20px;}
+.products03{
+	height:12px;
+	background-color:#E1E1E1;
+	padding:6px;
+	*width:690px;
+}
+.comment03{
+	background-color:#F2F2F2;
+	border-bottom:1px solid #DDD;
+	border-left:1px solid #DDD;
+	border-right:1px solid #DDD;
+	padding:2px;
+	margin-bottom:5px;
+}

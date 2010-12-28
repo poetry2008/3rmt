@@ -59,10 +59,11 @@ if ($category_depth == 'nested') {
   }
 ?></h1>
     <p class="comment"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?></p>
+        <?php if (isset($_GET['cPath'])) { ?> 
     <table border="0" width="100%" cellspacing="3" cellpadding=l3"">
       <tr align="center">
 <?php
-        $categories_query = tep_db_query("
+       $categories_query = tep_db_query("
           select * 
           from (
             select c.categories_id, 
@@ -100,6 +101,9 @@ if ($category_depth == 'nested') {
 ?> 
       </tr>
     </table>
+    <?php
+    } 
+    ?>
     <h2 class="line"><?php
   if(isset($_GET['cPath']) && $_GET['cPath']) {
     $categories_path = explode('_', $_GET['cPath']);

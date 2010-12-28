@@ -69,6 +69,7 @@ if ($category_depth == 'nested') {
 ?>      
 </h1>
 <p><?php echo $seo_category['categories_header_text'];?></p>
+      <?php if (isset($_GET['cPath'])) { ?> 
       <table border="0" width="95%" cellspacing="3" cellpadding="3"> 
         <tr> 
           <?php
@@ -109,6 +110,7 @@ if ($category_depth == 'nested') {
 ?> 
         </tr> 
       </table>
+     <?php }?>
 <h2 align="right">
 <?php
   if (isset($cPath_array)) {
