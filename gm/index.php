@@ -159,7 +159,7 @@ if (isset($cPath_array)) {
 <table width="95%" class="news_title_03 news_title_04" style="border-top: 3px dotted rgb(68, 68, 68);">
 <tr>
   <td>
-    <h3 h3 style="border-bottom: medium none; font-size: 14px; color: rgb(255, 255, 255); padding-left: 10px; margin-top: 2px; font-weight: bold;"><?php echo $_categories['categories_name'];?> NEWS for 4Gamer.net </h3>
+    <h3 style="border-bottom: medium none; font-size: 14px; color: rgb(255, 255, 255); padding-left: 10px; margin-top: 2px; font-weight: bold;"><?php echo $_categories['categories_name'];?> NEWS for 4Gamer.net </h3>
     </td>
 </tr>
 </table>
