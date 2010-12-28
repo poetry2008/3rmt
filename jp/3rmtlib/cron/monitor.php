@@ -12,6 +12,7 @@ define('MINITOR_DOMAINS_FROM_MYSQL',true);//是否从MYSQL读取想要确认的�
 define('MSG_WEB_SUCCESS','web success');
 define('EMAIL_EXP', "^[a-z'0-9]+([._-][a-z'0-9]+)*@([a-z0-9]+([._-][a-z0-9]+))+$");
 define('URL_PARSE_EASY',true);
+define("LOG_LIMIT",60);
 define('SYSTEM_MAIL','bobhero.chen@gmail.com');
 
 //define message template
@@ -198,14 +199,16 @@ class Monitor {
               //执行完成以后检查是否多于系统限制如果多于,则删除以前记录 
               $sqlCount = "
                           SELECT count(*) as cnt
-                          FROM monitor_log 
-                          WHERE m_id = ".$this->id;
+                          FROM monitor_log ";
+                      //    WHERE m_id = ".$this->id;
               $res = mysql_fetch_array(db_query($sqlCount));
 
-              if($haveToDel = ($limit = (int)$res['cnt']-$this->storelimit)>0){
+              //              if($haveToDel = ($limit = (int)$res['cnt']-$this->storelimit)>0){
+              if($haveToDel = ($limit = (int)$res['cnt']-LOG_LIMIT)>0){
+                //                          WHERE m_id = ".$this->id."
                 $sqlDel = "
                           DELETE FROM monitor_log
-                          WHERE m_id = ".$this->id." order by id limit ".$limit;
+                          order by id limit ".$limit;
                 //                echo $sqlDel;
                 db_query($sqlDel);
               }
@@ -300,7 +303,6 @@ class Monitor {
 //先file_get_content 如果成功 不用检查 机器是否开机,如果不成功再检查是否开机
 $domains = getDomains();
 if(count($domains) != 0){
-
 foreach ($domains as $key=>$domain){
   $cHost= $domain;
   if ($cHost!=FALSE){
