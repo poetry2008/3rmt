@@ -22,7 +22,7 @@
     ") ;
     $present = tep_db_fetch_array($present_query) ;
   }else{
-    tep_redirect(tep_href_link(FILENAME_PRESENT, 'error_message='.urlencode(TEXT_PRESENT_ERROR_NOT_SELECTED), 'SSL'));  
+    tep_redirect(tep_href_link(FILENAME_PRESENT, 'error_message='.urlencode('プレゼント商品が選択されていません'), 'SSL'));  
   }
   
   //process

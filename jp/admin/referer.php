@@ -41,6 +41,7 @@
           </tr>
         </table></td>
       </tr>
+  <?php /*
       <tr>
         <td>
           <div class="list_type">
@@ -49,6 +50,7 @@
           </div>
         </td>
       </tr>
+  */ ?>
       <tr>
         <td>
         <div align="center">
