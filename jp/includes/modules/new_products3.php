@@ -93,10 +93,10 @@
     $col = 0;
 ?>
 <!-- new_products //-->
-<h3 class="pageHeading_long"><?php echo $new_c_name; ?>の新着商品</h3>
 <?php 
 if (0 < $num_products) {
 ?>
+<h3 class="pageHeading_long"><?php echo $new_c_name; ?>の新着商品</h3>
 <table width="689"  border="0" cellspacing="0" cellpadding="0">
 <?php
     while ($new_products = tep_db_fetch_array($new_products_query)) {
@@ -151,7 +151,7 @@ if (0 < $num_products) {
     }
     echo '</table>' . "\n";
 } else if (BOX_NEW_PRODUCTS_DAY_LIMIT) {
-  echo "<p style='padding-left:10px;'>".BOX_NEW_PRODUCTS_DAY_LIMIT."日以内に登録された商品はありません。</p>";
+  //echo "<p style='padding-left:10px;'>".BOX_NEW_PRODUCTS_DAY_LIMIT."日以内に登録された商品はありません。</p>";
 }
 ?>
 <!-- new_products_eof //-->
