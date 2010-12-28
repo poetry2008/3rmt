@@ -1,5 +1,7 @@
-#!/usr/bin/php
 <?php
+//error_reporting(E_ALL);
+//ini_set('display_errors','On');
+
 //这个程序由crontab调用 ,监视各种服务是否正常运行 
 //设置常量
 //MYSQL_GROUP
@@ -43,8 +45,8 @@ function sql_injection($content)
 }
 
 function sMail($message){
-  echo 'SYSTEM MAIL ';
-  mail(SYSTEM_MAIL,date('Y-m-d H:i:s'),$message);
+  //  echo 'SYSTEM MAIL ';
+  @mail(SYSTEM_MAIL,date('Y-m-d H:i:s'),$message);
 }
 function db_query($sql)
 {
@@ -76,7 +78,7 @@ function getDomains(){
     while($domain = mysql_fetch_object($res,'Monitor')){
       $domains[] = $domain;
     }
-    mysql_close($conn);
+    //    mysql_close($conn);
   }
   return $domains;
 }
@@ -102,7 +104,6 @@ class Monitor {
   }
   function __construct(){
     if(strpos($this->reportmethod,'log')>-1){//如果用到了log方法
-      echo '--------------------log';
       if(trim($this->logfile) ==''){
         sMail('logfile is null '.$this);
         $this->logfile = '/dev/null';
@@ -251,12 +252,13 @@ class Monitor {
         $this->log($type.'faild');
       }
     }
+    return !$this->shouldreport;
   }
   
   function log($message,$type=self::MSG_TYPE_LOG){
     $this->emailMsg .= $message ."\r\n";
-        echo $this->name .' ' .$this->url. 'is '.$message;
-    echo "\r\n";
+    //    echo $this->name .' ' .$this->url. 'is '.$message;
+    //    echo "\r\n";
   }
   function isAlivePage(){
     if (file_get_contents($this->getUrl())){
@@ -278,7 +280,6 @@ class Monitor {
     }
   }
   function isAliveHttps(){
-    echo $this->getHostUrl(true);
     if (file_get_contents($this->getHostUrl(true))){
       return true;
     }else {
@@ -299,14 +300,18 @@ class Monitor {
     }
   }
 }
-
 //先file_get_content 如果成功 不用检查 机器是否开机,如果不成功再检查是否开机
 $domains = getDomains();
+$alivelist = array();
 if(count($domains) != 0){
 foreach ($domains as $key=>$domain){
   $cHost= $domain;
   if ($cHost!=FALSE){
-    echo $cHost->isAlive();
+    if ($cHost->isAlive()){
+      $alivelist[] = $cHost->name;
+    }else {
+      $loglist[$cHost->name]= $cHost->emailMsg;
+    }
     $cHost->report();
   }
   unset($cHost);
@@ -315,3 +320,31 @@ foreach ($domains as $key=>$domain){
   sMail('There is no process to go');
 }
 
+if (count($alivelist)){
+  echo "We are alive:";
+  echo "</br>";
+  ?>
+<table>
+<?php
+  foreach ($alivelist as $value){
+    echo "<tr><td>$value</td></tr>"; 
+  }
+?>
+</table>
+<?php 
+}
+
+if (count($loglist)){
+  echo "We have problem:";
+  echo "</br>";
+  ?>
+  <table>
+<?php      
+  foreach($loglist as $key=>$value){
+     echo "<tr><td>$key</td><td>$value</td></tr>";
+  }
+?>
+</table>
+    </br>
+<?php
+}
