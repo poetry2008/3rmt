@@ -68,6 +68,49 @@ if ($category_depth == 'nested') {
   }
 ?>      
 </h1>
+<p><?php echo $seo_category['categories_header_text'];?></p>
+      <?php if (isset($_GET['cPath'])) { ?> 
+      <table border="0" width="95%" cellspacing="3" cellpadding="3"> 
+        <tr> 
+          <?php
+        $categories_query = tep_db_query("
+          select * 
+          from (
+            select c.categories_id, 
+                   cd.categories_name, 
+                   c.categories_image, 
+                   c.parent_id,
+                   cd.site_id,
+                   c.sort_order
+            from " .  TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
+            where  c.categories_status != '1' 
+              and c.parent_id = '" . $current_category_id . "' 
+              and c.categories_id = cd.categories_id 
+              and cd.language_id = '" . $languages_id . "'  
+            order by cd.site_id DESC
+          ) c
+          where site_id = 0 
+             or site_id = ".SITE_ID."
+          group by categories_id
+          order by sort_order, categories_name
+        ");
+    $rows = 0;
+    while ($categories = tep_db_fetch_array($categories_query)) {
+      $rows++;
+      $cPath_new = tep_get_path($categories['categories_id']);
+      $width = (int)(100 / MAX_DISPLAY_CATEGORIES_PER_ROW) . '%';
+      echo '                <td class="smallText" style="width:'.$width.'" align="center"><h3 class="Tlist"><a href="' . tep_href_link(FILENAME_DEFAULT, $cPath_new) . '">' . tep_image(DIR_WS_IMAGES . 'categories/' . $categories['categories_image'], $categories['categories_name'], SUBCATEGORY_IMAGE_WIDTH, SUBCATEGORY_IMAGE_HEIGHT) ;
+                           if(tep_not_null($categories['categories_image'])) { echo '<br>' ; } 
+                 echo $categories['categories_name'] . '</a></h3></td>' . "\n";
+      if ((($rows / MAX_DISPLAY_CATEGORIES_PER_ROW) == floor($rows / MAX_DISPLAY_CATEGORIES_PER_ROW)) && ($rows != tep_db_num_rows($categories_query))) {
+        echo '              </tr>' . "\n";
+        echo '              <tr>' . "\n";
+      }
+  }
+?> 
+        </tr> 
+      </table>
+     <?php }?>
 <h2 align="right">
 <?php
   if (isset($cPath_array)) {
@@ -78,32 +121,62 @@ if ($category_depth == 'nested') {
     echo HEADING_TITLE ;
   }
 ?></h2>
-<?php include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); ?>
+<?php
+   if (isset($_GET['cPath'])) {
+     $listing_tmp_sql = $listing_sql;
+     $list_tmp_query = tep_db_query($listing_tmp_sql);
+     if (tep_db_num_rows($list_tmp_query)) {
+       include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); 
+     }
+   } else {
+     include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); 
+   }
+?>
+<p><?php echo $seo_category['categories_footer_text'];?></p>
+<?php
+  if (isset($_GET['cPath'])) {
+    $new_products_category_id = $current_category_id;
+    include(DIR_WS_MODULES.'new_products3.php');
+  }
+?>
+<?php 
+if (isset($cPath_array)) {
+  if ($seo_category['seo_description']) {
+    echo '<p>'.$seo_category['seo_name'].'について</p>'; 
+    echo '<p>'.$seo_category['seo_description'].'</p>'; 
+  }
+  if (!empty($seo_category['text_information'])) {
+    echo $seo_category['text_information']; 
+  }
+}
+?>
       <?php
       if (isset($cPath) && !ereg('_', $cPath)) { 
       $all_game_news = tep_get_categories_rss($current_category_id);
       if ($all_game_news) {
       ?>
-<table width="95%" style="border-top:#444 dotted 3px;">
+<div style="margin-top: 10px;" class="background_news01 background_news02"> 
+<table width="95%" class="news_title_03 news_title_04" style="border-top: 3px dotted rgb(68, 68, 68);">
 <tr>
   <td>
-    <h1 style="font-size:20px; color:#fff; border-left:#ccc solid 7px; padding-left:10px; margin-top:8px;"><?php echo $_categories['categories_name'];?> NEWS for 4Gamer.net 
+    <h3 style="border-bottom: medium none; font-size: 14px; color: rgb(255, 255, 255); padding-left: 10px; margin-top: 2px; font-weight: bold;"><?php echo $_categories['categories_name'];?> NEWS for 4Gamer.net </h3>
     </td>
 </tr>
 </table>
-      <div class="game_news_index01 list_rss01"> 
+      <div class="game_news_index01 game_news_index02">
       <ul> 
       <?php
         foreach ($all_game_news as $cgmkey => $cgame_news_rss) {
           if ($cgmkey == CATEGORIES_GAME_NEWS_MAX_DISPLAY)  break;
-          echo '<li class="news_list03">';
+          echo '<li class="news_list">';
           //echo '<span>'.tep_date_short($cgame_news_rss['date_added']).'</span>'; 
-          echo '<a href="'.$cgame_news_rss['url'].'" rel="nofollow" target="_blank">'.mb_strimwidth($cgame_news_rss['headline'],0,95,'...').'</a>'; 
+          echo '<a href="'.$cgame_news_rss['url'].'" class="latest_news_link01" rel="nofollow" target="_blank">'.mb_strimwidth($cgame_news_rss['headline'],0,95,'...').'</a>'; 
           echo '</li>'; 
         }
       ?>
       </ul> 
-      </div> 
+      </div>
+</div>
       <?php
       }
       }

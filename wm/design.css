@@ -684,6 +684,12 @@ product listing
 	margin: 10px 11px;
 	padding: 5px;
 }
+.product_listing_content02{
+	width: 650px;
+	border: solid 1px #ddd;
+	background: #fff;
+	padding: 5px;
+}
 /* ---------------------------
 お知らせ
 --------------------------- */
@@ -989,4 +995,13 @@ cursor:pointer;
 }
 #errormessage{
 color:#ff0000;
+}
+.new_products03{
+	background: url(images/design/contents/new_products03.gif) no-repeat;
+	width:auto;
+}
+.comment_products03{
+background:#f2f2f2;
+	width:auto;
+	padding:0;
 }
