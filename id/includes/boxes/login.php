@@ -5,10 +5,20 @@
 ?>
 <!-- login //-->
 <script type="text/javascript" src="js/logincheck.js"></script>
+<table border="0" width="171" cellpadding="0" cellspacing="0" summary="login box">
+	<tr>
+		<td><h3><img width="171" height="27" alt="RMTアイテムデポ 会員登録" src="images/design/title_img01.gif"></h3></td>
+	</tr>
+	<tr>
+    	<td><a href="<?php echo tep_href_link(FILENAME_LOGIN,'','SSL'); ?>"><img class="middle" src="images/design/login02.gif" alt="ログイン"></a></td>
+    </tr>
+</table>
+
 <?php
   if (!tep_session_is_registered('customer_id')) {
 ?>
 <?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process', 'SSL'), 'post', 'onSubmit="return msg();"') . "\n"; ?>
+<!--
   <table border="0" width="171" cellpadding="0" cellspacing="0" summary="login box">
     <tr>
           <td><h3><img width="171" height="27" alt="RMTアイテムデポ 会員登録" src="images/design/title_img01.gif"></h3></td>
@@ -37,6 +47,7 @@
             </td>
         </tr>
   </table>
+-->
 </form>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" summary="login">
   <tr>

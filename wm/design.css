@@ -684,6 +684,12 @@ product listing
 	margin: 10px 11px;
 	padding: 5px;
 }
+.product_listing_content02{
+	width: 650px;
+	border: solid 1px #ddd;
+	background: #fff;
+	padding: 5px;
+}
 /* ---------------------------
 お知らせ
 --------------------------- */
@@ -995,7 +1001,8 @@ color:#ff0000;
 	width:auto;
 }
 .comment_products03{
-background:none;
-	width:640px;
+background:#f2f2f2;
+	width:650px;
 	*width:670px;
+	padding:5px 11px 0;
 }

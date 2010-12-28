@@ -14,6 +14,7 @@
           <div id="login_form">
           <div class="login_form_warpper">
               <table border="0">
+              <!--
                     <tr>
                         <td width="23" align="right" style="padding-right: 5px;"><?php echo tep_image(DIR_WS_IMAGES.'design/box/id.gif','メールアドレス','10','8','class="middle"');?></td>
                         <td><div class="login_text_box"><input type="text" name="email_address" class="login_text" value=""></div></td>
@@ -30,6 +31,10 @@
                             </a>
                           <input type="image" align="middle" class="login_submit" name="image" alt="<?php echo HEADER_TITLE_LOGIN ; ?>" src="images/design/button/login.gif">
                         </td>
+                    </tr>
+              -->
+                    <tr>
+                    	<td align="center"><a href="<?php echo tep_href_link(FILENAME_LOGIN,'','SSL'); ?>"><img class="middle" style="margin-left:1px;" src="images/design/login02.gif" alt="ログイン"></a></td>
                     </tr>
                     <tr><td colspan="2" align="center"><?php
   if (!tep_session_is_registered('customer_id')) {
