@@ -114,27 +114,29 @@ if (0 < $num_products) {
           <td width="<?php echo SMALL_IMAGE_WIDTH;?>" rowspan="2" style="padding-right:8px; " align="center">
             <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/' . $new_products['products_image'], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>'; ?>
           </td>
-          <td height="40" colspan="2" valign="top" style="padding-left:5px; ">
+          <td style="padding-left: 5px;" class="main">
             <p class="main">
               <img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" alt="">
-              <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">'.$new_products['products_name'].'</a>'; ?><br>
-              <span class="smallText"><?php echo $description_view; ?>...</span>
+              <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '"><b>'.$new_products['products_name'].'</b></a>'; ?><br>
             </p>
           </td>
-        </tr>
-        <tr>
-          <td class="main" style="padding-left:5px; ">
+          <td align="right" class="main" width="140">
             <p class="main">
-              <?php echo '残り&nbsp;' . number_format(tep_show_quantity($new_products['products_quantity'])) . '個'; ?>
-              &nbsp;&nbsp;&nbsp;
 <?php
       if (tep_get_special_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum'])) {
         echo '<s>' . $currencies->display_price(tep_get_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum']), tep_get_tax_rate($new_products['products_tax_class_id'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum']), tep_get_tax_rate($new_products['products_tax_class_id'])) . '</span>&nbsp;';
       } else {
         echo $currencies->display_price(tep_get_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum']), tep_get_tax_rate($new_products['products_tax_class_id']));
       }
-?>
-            </p>
+?></p>
+          </td>
+          <td align="right" class="main">
+		  	<?php echo '残り&nbsp;<b>' . number_format(tep_show_quantity($new_products['products_quantity'])) . '</b>&nbsp;個'; ?>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-left: 5px;" colspan="2">
+          <span class="smallText"><?php echo $description_view; ?>...</span>
           </td>
           <td align="right">
             <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_description.jpg',IMAGE_BUTTON_DEC,'81','24'); ?></a>
