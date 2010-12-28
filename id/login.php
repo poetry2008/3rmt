@@ -121,7 +121,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
           $navigation->clear_snapshot();
           tep_redirect($origin_href);
         } else {
-          tep_redirect(tep_href_link(FILENAME_DEFAULT));
+          tep_redirect(tep_href_link(FILENAME_DEFAULT, '', 'NOSSL'));
         }
       }
     }
