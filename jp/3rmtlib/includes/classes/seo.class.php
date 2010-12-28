@@ -484,8 +484,9 @@ class SEO_URL{
       //if (getenv('HTTPS') != 'on') {
       if (defined('SITE_ID') && SITE_ID == 4 && $request_type == 'SSL' && !tep_session_is_registered('customer_id')) {
         $link = HTTP_SERVER . DIR_WS_CATALOG;
+        $link = $this->add_sid($link, $add_session_id, $connection, $separator); 
       } else {
-        
+        $link = HTTP_SERVER . DIR_WS_CATALOG;
       }
       //}
     }
