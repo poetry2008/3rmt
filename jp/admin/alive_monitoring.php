@@ -15,7 +15,10 @@ define('MSG_WEB_SUCCESS','web success');
 define('EMAIL_EXP', "^[a-z'0-9]+([._-][a-z'0-9]+)*@([a-z0-9]+([._-][a-z0-9]+))+$");
 define('URL_PARSE_EASY',true);
 define("LOG_LIMIT",60);
-define('SYSTEM_MAIL','bobhero.chen@gmail.com');
+define('SYSTEM_MAIL','sznforwork@gmail.com');
+define('MAIL_FROM','sai-szn@163.com');
+define('HTTP_MAIL_FROM','szn-sai@163.com');
+define('MAX_LOG','1');//单位M
 
 //define message template
 define("MSG_HTTP_SUCCESS","HTTP OK");
@@ -46,7 +49,12 @@ function sql_injection($content)
 
 function sMail($message){
   //  echo 'SYSTEM MAIL ';
-  @mail(SYSTEM_MAIL,date('Y-m-d H:i:s'),$message);
+  if($_SERVER["HTTP_USER_AGENT"]){
+  $header = "From: ".HTTP_MAIL_FROM."\r\n"."Reply-To: ".HTTP_MAIL_FROM. "\r\n";
+  }else{
+  $header = "From: ".MAIL_FROM."\r\n"."Reply-To: ".MAIL_FROM. "\r\n";
+  }
+  @mail(SYSTEM_MAIL,date('Y-m-d H:i:s'),$message,$header,MAIL_FROM);
 }
 function db_query($sql)
 {
@@ -58,7 +66,7 @@ function db_query($sql)
       die('db error');
     }
     mysql_select_db(MYSQL_DATABASE);
-    mysql_query("set names utf-8");
+    mysql_query("set names 'utf8'");
   }
   return mysql_query($sql);
 }
@@ -73,12 +81,28 @@ function getDomains(){
                      'http://www.iimy.co.jp',
                      );
   }else{
-    $res = db_query('select * from monitor where enable="on"');
     $domains = array();
+    if($_SERVER["HTTP_USER_AGENT"]){
+    $res = db_query('select * from monitor where enable="on"');
     while($domain = mysql_fetch_object($res,'Monitor')){
       $domains[] = $domain;
     }
+    }else{
+    $res = db_query('select * from monitor where enable="on" and next="1"');
+    if($domain = mysql_fetch_object($res,'Monitor')){
+      $domains[] = $domain;
+      $run_id = $domain->id;
+    }else{
+      $res = db_query('select * from monitor where enable="on" limit 1');
+      if($domain = mysql_fetch_object($res,'Monitor')){
+        $domains[] = $domain;
+        $run_id = $domain->id;
+      }
+    }
+    db_query('update monitor set next="0" where enable="on" and id="'.$run_id.'"');
+    db_query('update monitor set next="1" where enable="on" and id>"'.$run_id.'" limit 1');
     //    mysql_close($conn);
+    }
   }
   return $domains;
 }
@@ -215,7 +239,11 @@ class Monitor {
               }
               break;
             case 'log':
+              if(filesize($this->logfile)>intval(MAX_LOG)*1024*1024){
+              $file = fopen($this->logfile,'w');
+              }else{
               $file = fopen($this->logfile,'a');
+              }
               fwrite($file,'['.date("Y-m-d H:i:s").']    '."\r\n");
               fwrite($file,'obj:'."{{{{{\r\n");
               fwrite($file,$this);
@@ -312,7 +340,9 @@ foreach ($domains as $key=>$domain){
     }else {
       $loglist[$cHost->name]= $cHost->emailMsg;
     }
-    $cHost->report();
+    if(!$_SERVER["HTTP_USER_AGENT"]){
+      $cHost->report();
+    }
   }
   unset($cHost);
 }
@@ -320,6 +350,15 @@ foreach ($domains as $key=>$domain){
   sMail('There is no process to go');
 }
 
+//判断是否 是由WEB 执行 $_SERVER["HTTP_USER_AGENT"] 有值为WEB执行
+if($_SERVER["HTTP_USER_AGENT"]){
+?>
+  <html lang="ja" dir="ltr">
+  <head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  </head>
+  <body>
+<?
 if (count($alivelist)){
   echo "We are alive:";
   echo "</br>";
@@ -346,5 +385,12 @@ if (count($loglist)){
 ?>
 </table>
     </br>
+    This page not make log
+    </br>
+<?php
+}
+?>
+</body>
+</html>
 <?php
 }
