@@ -99,9 +99,15 @@
         </tr> 
       </table>
     <br>
+    <?php
+    if (!empty($seo_category['categories_footer_text'])) { 
+    ?>
     <div id="information">
     <p><?php echo $seo_category['categories_footer_text']; //seoフレーズ ?></p>
     </div>
+    <?php
+    } 
+    ?>
     <br>
       <?php $new_products_category_id = $current_category_id; include(DIR_WS_MODULES .'new_products.php'); ?>
     <br>

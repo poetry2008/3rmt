@@ -449,3 +449,9 @@ font-size:12px;
 .button{
 cursor:pointer;
 }
+.product_listing_content{
+	margin:10px 5px;
+	padding:5px;
+	width:520px;
+	
+}
