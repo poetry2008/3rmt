@@ -479,10 +479,15 @@ class SEO_URL{
   }
     $link = $this->add_sid($link, $add_session_id, $connection, $separator); 
   
-  if (defined('URL_SUB_SITE_ENABLED')) {
+  if (defined('URL_SUB_SITE_ENABLED' && URL_SUB_SITE_ENABLED && ENABLE_SSL)) {
     if ($page == 'index.php' && $parameters == '') {
       //if (getenv('HTTPS') != 'on') {
+      if (defined('SITE_ID') && SITE_ID == 4 && $request_type == 'SSL' && !tep_session_is_registered('customer_id')) {
+        $link = HTTP_SERVER . DIR_WS_CATALOG .'?' . tep_session_name().'='.tep_session_id(); ;
+        //$link = $this->add_sid($link, $add_session_id, $connection, $separator);
+      } else {
         $link = HTTP_SERVER . DIR_WS_CATALOG;
+      }
       //}
     }
   }
