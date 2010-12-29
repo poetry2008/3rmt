@@ -587,7 +587,7 @@ class SEO_URL{
         //cancel ssl to nossl session 
         //if ($request_type == 'NONSSL') {
         //if () {
-          if (defined('SITE_ID') && SITE_ID == 4 && ($request_type == 'NONSSL' || tep_session_is_registered('customer_id'))) {
+          if (defined('SITE_ID') && SITE_ID == 4 && (($request_type == 'NONSSL' && connection == 'SSL') || ($request_type == 'SSL' && tep_session_is_registered('customer_id')))) {
             $link .= $separator . $_sid;
           } else {
             $link .= '';
