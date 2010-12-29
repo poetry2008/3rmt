@@ -479,11 +479,11 @@ class SEO_URL{
   }
     $link = $this->add_sid($link, $add_session_id, $connection, $separator); 
   
-  if (defined('URL_SUB_SITE_ENABLED' && URL_SUB_SITE_ENABLED && ENABLE_SSL)) {
+  if (defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED && ENABLE_SSL) {
     if ($page == 'index.php' && $parameters == '') {
       //if (getenv('HTTPS') != 'on') {
       if (defined('SITE_ID') && SITE_ID == 4 && $request_type == 'SSL' && !tep_session_is_registered('customer_id')) {
-        $link = HTTP_SERVER . DIR_WS_CATALOG .'?' . tep_session_name().'='.tep_session_id(); ;
+        $link = HTTP_SERVER . DIR_WS_CATALOG .'?' . tep_session_name().'='.tep_session_id();
         //$link = $this->add_sid($link, $add_session_id, $connection, $separator);
       } else {
         $link = HTTP_SERVER . DIR_WS_CATALOG;
@@ -596,6 +596,15 @@ class SEO_URL{
         //  $link .= $separator;
         //}
         //}
+        if (SITE_ID == 5) {
+          if ($request_type == 'SSL' && $connection == 'SSL') {
+            $link .= '';
+          } else if ($request_type == 'NONSSL' && $connection == 'NONSSL') {
+            $link .= '';
+          } else {
+            $link .= $separator . $_sid;
+          }
+        }
       }
     }
   if (defined('URL_SUB_SITE_ENABLED')) {
@@ -667,7 +676,18 @@ class SEO_URL{
         if (defined('SITE_ID') && SITE_ID == 4 && (tep_session_is_registered('customer_id') || $request_type == 'NONSSL')) {
           return $link . $separator . $_sid;
         } else {
-          return $link;
+          if (SITE_ID == 5) {
+            if ($request_type == 'SSL' && $connection == 'SSL') {
+              return $link; 
+            } else if ($request_type == 'NONSSL' && $connection == 'NONSSL') {
+              return $link; 
+            } else {
+              return $link . $separator . $_sid;
+            }
+          } else {
+            return $link;
+          }
+          //return $link;
         }
         //} else {
           //return $link; 
