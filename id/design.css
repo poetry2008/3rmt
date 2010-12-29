@@ -63,6 +63,16 @@ H4 {
  *margin-top:0px;
 	font-size:11px;
 }
+.comment03 {
+	clear:both;
+	width: 689px;
+ *width: 719px!important;
+	overflow: hidden;
+	background-color:#E9E9E9;
+	margin:1px 0 5px 1px;
+ *margin-top:0px;
+	font-size:11px;
+}
 .comment_inc {
 	clear:both;
 	padding:5px 15px;
@@ -1024,6 +1034,16 @@ Information
 	height: 27px;
 	line-height: 24px;/*padding-top: 3px;*/
 }
+.pageHeading_long_info03 {
+	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-size: 10px;
+	color:#555;
+ *width: 720px;
+	height: 27px;
+	line-height: 24px;/*padding-top: 3px;*/
+	font-weight: normal;
+}
+.pageHeading_long_info03 span{ padding:0;}
 .pageHeading_long02 {
 	font-family: Osaka, Verdana, Arial, sans-serif;
 	font-size: 12px;
