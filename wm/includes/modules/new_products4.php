@@ -125,7 +125,7 @@
           </td>
         </tr>
         <tr>
-          <td colspan="3" width="200"><span class="smallText"><?php echo $description_view; ?>...</span></td>
+          <td colspan="3"><span class="smallText"><?php echo $description_view; ?>...</span></td>
         </tr>
       </table>
       <div class="dot">&nbsp;</div>
