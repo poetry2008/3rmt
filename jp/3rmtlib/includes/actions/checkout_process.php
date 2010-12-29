@@ -168,7 +168,13 @@
                           'orders_http_accept_language' => $_SERVER['HTTP_ACCEPT_LANGUAGE'],
                           'telecom_option'              => $_SESSION['option'],
                 );
+  
+  // 统计Google Adsense来源
+  if (isset($_SESSION['referer_adurl']) && $_SESSION['referer_adurl']) {
+    $sql_data_array['orders_adurl'] = $_SESSION['referer_adurl'];
+  }
 
+  // 验证不明信用卡
   if ($_SESSION['option']) {
     $telecom_unknow = tep_db_fetch_array(tep_db_query("select * from telecom_unknow where `option`='".$_SESSION['option']."' and rel='yes'"));
     if ($telecom_unknow) {
@@ -788,7 +794,7 @@
   #convenience_store
   unset($_SESSION['character']);
   unset($_SESSION['option']);
-  unset($_SESSION['adurl']);
+  unset($_SESSION['referer_adurl']);
 
   
   //$pr = '?SID=' . $convenience_sid;
