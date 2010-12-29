@@ -127,7 +127,7 @@ if (0 < $num_products) {
           </td>
         </tr>
         <tr>
-          <td style="padding-left: 5px;" colspan="3" width="200">
+          <td style="padding-left: 5px;" colspan="3">
           <span class="smallText"><?php echo $description_view; ?>...</span>
           </td>
         </tr>
