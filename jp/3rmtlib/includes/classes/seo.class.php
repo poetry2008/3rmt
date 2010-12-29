@@ -673,7 +673,7 @@ class SEO_URL{
       } else {
         //cancel ssl to nossl session 
         //if ($request_type == 'NONSSL') {
-        if (defined('SITE_ID') && SITE_ID == 4 && (tep_session_is_registered('customer_id') || $request_type == 'NONSSL')) {
+        if (defined('SITE_ID') && SITE_ID == 4 && (($request_type == 'NONSSL' && connection == 'SSL') || ($request_type == 'SSL' && tep_session_is_registered('customer_id')))) {
           return $link . $separator . $_sid;
         } else {
           if (SITE_ID == 5) {
