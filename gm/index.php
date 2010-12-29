@@ -69,6 +69,9 @@ if ($category_depth == 'nested') {
 ?>      
 </h1>
 <p><?php echo $seo_category['categories_header_text'];?></p>
+      <?php
+      $has_ca_single = false; 
+      ?>
       <?php if (isset($_GET['cPath'])) { ?> 
       <table border="0" width="95%" cellspacing="3" cellpadding="3"> 
         <tr> 
@@ -96,6 +99,7 @@ if ($category_depth == 'nested') {
         ");
     $rows = 0;
     while ($categories = tep_db_fetch_array($categories_query)) {
+      $has_ca_single = true; 
       $rows++;
       $cPath_new = tep_get_path($categories['categories_id']);
       $width = (int)(100 / MAX_DISPLAY_CATEGORIES_PER_ROW) . '%';
@@ -136,7 +140,11 @@ if ($category_depth == 'nested') {
 <?php
   if (isset($_GET['cPath'])) {
     $new_products_category_id = $current_category_id;
-    include(DIR_WS_MODULES.'new_products3.php');
+    if (!$has_ca_single) {
+      include(DIR_WS_MODULES.'new_products3.php');
+    } else {
+      include(DIR_WS_MODULES.'new_products4.php');
+    }
   }
 ?>
 <?php 

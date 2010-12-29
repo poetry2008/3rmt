@@ -119,7 +119,19 @@ if ($listing_numrows > 0) {
           <td style="padding-left:5px; "><p class="main"><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="middle" alt="img"><?php echo '<a class="bold" href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $listing['products_id']) . '">'.$products_name.$ten.'</a>';?></p>
           </td>
           <td align="right">
+            <?php
+              if (isset($has_ca_single)) {
+                if (!$has_ca_single) {
+            ?>
             <p class="main">1個<?php echo $price; ?>から</p>
+            <?php
+                }
+              } else {
+            ?>
+            <p class="main">1個<?php echo $price; ?>から</p>
+            <?php
+              }
+            ?>
           </td>
           <td width="90" align="right">
             <p class="main"><?php echo '残り&nbsp;<b>' . tep_show_quantity($listing['products_quantity']) . '</b>&nbsp;個'; ?></p>
