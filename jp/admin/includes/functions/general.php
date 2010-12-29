@@ -23,7 +23,8 @@ function tep_minitor_info(){
       }
       $tmpString .=  'id="moni_'.$tmpRow['name'].'"class="monitor" href="'.$monitor['url'].'" target="_blank">こちら</a>をクリックして状況を確認してください。</font>';
       $tmpString2 = "<div class='monitor_error' style='display:none;' id='minitor_".$monitor['name']."'>";
-      $tmpString2.= '<table width="100%"><tr><td>'.$tmpRow['created_at']."</td><td>".nl2br($tmpRow['log'])."</td></tr>";
+      $tmpString2.= '<table width="100%"><tr><td>'.$tmpRow['created_at']."</td><td
+        width='50%'>".nl2br($tmpRow['log'])."</td></tr>";
       while($tmpRow2 = tep_db_fetch_array($logIn15)){
       $tmpString2.= '<tr><td colspan="2"><hr></td></tr>';
       $tmpString2.= '<tr><td>'.$tmpRow2['created_at']."</td><td>".nl2br($tmpRow2['log'])."</td></tr>";
@@ -41,7 +42,8 @@ function tep_minitor_info(){
         }
         $aString.=  'class="monitor" id="moni_'.$logsResult['name'].'" href="'.$monitor['url'].'"  target="_blank">'.date('m月d日H時i分s秒。',strtotime($logsResult['created_at'])).'</a>';
         $aString.= '<div class="monitor_error" style="display:none;" id ="minitor_'.$logsResult['name'].'">';
-        $aString.= '<table width="100%"><tr><td>'.$logsResult['created_at']."</td><td>".nl2br($logsResult['log'])."</td></tr>";
+        $aString.= '<table
+          width="100%"><tr><td>'.$logsResult['created_at']."</td><td width='50%'>".nl2br($logsResult['log'])."</td></tr>";
         $aString.= '</table></div>';
         $errorString[] = $aString;
       }
