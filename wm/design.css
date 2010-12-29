@@ -690,6 +690,12 @@ product listing
 	background: #fff;
 	padding: 5px;
 }
+.product_listing_content03{
+	width: 490px;
+	margin: 10px 11px;
+	border-bottom:1px dashed #ccc;
+	padding: 5px;
+}
 /* ---------------------------
 お知らせ
 --------------------------- */
