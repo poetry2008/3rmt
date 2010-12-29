@@ -188,7 +188,7 @@
       ");
     $i = 1;
     while ($ref_site = tep_db_fetch_array($ref_site_query)) {
-      $ad_cnt = tep_db_fetch_array(tep_db_query("select count(orders_id) as cnt from orders where orders_adurl='".$ref_site['orders_ref_site']."'"));
+      //$ad_cnt = tep_db_fetch_array(tep_db_query("select count(orders_id) as cnt from orders where orders_adurl='".$ref_site['orders_ref_site']."'"));
   ?>
                 <tr class="dataTableRow">
                   <td class="dataTableContent"><?php echo $ref_site['orders_ref_site2'];?></td>
