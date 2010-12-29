@@ -29,7 +29,7 @@
           </span>
         </h1>
         <div class="comment">
-          <table border="0" width="100%" cellspacing="0" cellpadding="0">
+          <table border="0" width="100%" cellspacing="0" cellpadding="0" style="background-color:#f2f2f2;">
             <tr>
               <td>
                 <?php
