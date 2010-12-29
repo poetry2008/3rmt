@@ -5,6 +5,7 @@
 
 //取得minitor 的信息
 function tep_minitor_info(){
+  $show_div = true;
   $errorString = array();
   $monitors  = tep_db_query("select id ,name,url from monitor m where m.enable='on'");
   while($monitor= tep_db_fetch_array($monitors)){
@@ -13,10 +14,18 @@ function tep_minitor_info(){
     $tmpRow = tep_db_fetch_array($logIn15);
     if(mysql_num_rows($logIn15)>=2){ //十五分钟内多于两件
 
-      $tmpString  = '<font color="red">'.$tmpRow['name'].':'.date('m月d日H時i分s秒',strtotime($tmpRow['created_at'])).'に回線障害がありました</br><a id="moni_'.$tmpRow['name'].'"class="monitor" href="'.$monitor['url'].'" target="_blank">こちら</a>をクリックして状況を確認してください。</font>';
-      $tmpString2 = "<div style='display:none;' id='minitor_".$monitor['name']."'>";
-      $tmpString2.= '<table><tr><td>'.$tmpRow['created_at']."</td><td>".nl2br($tmpRow['log'])."</td></tr>";
+      $tmpString  = '<font
+        color="red">'.$tmpRow['name'].':'.date('m月d日H時i分s秒',strtotime($tmpRow['created_at'])).'に回線障害がありました</br><a ';
+      if($show_div){
+      $tmpString .='
+        onMouseOver="show_monitor_error(\'minitor_'.$monitor['name'].'\',1,this)" 
+        onMouseOut="show_monitor_error(\'minitor_'.$monitor['name'].'\',0,this)"';
+      }
+      $tmpString .=  'id="moni_'.$tmpRow['name'].'"class="monitor" href="'.$monitor['url'].'" target="_blank">こちら</a>をクリックして状況を確認してください。</font>';
+      $tmpString2 = "<div class='monitor_error' style='display:none;' id='minitor_".$monitor['name']."'>";
+      $tmpString2.= '<table width="100%"><tr><td>'.$tmpRow['created_at']."</td><td>".nl2br($tmpRow['log'])."</td></tr>";
       while($tmpRow2 = tep_db_fetch_array($logIn15)){
+      $tmpString2.= '<tr><td colspan="2"><hr></td></tr>';
       $tmpString2.= '<tr><td>'.$tmpRow2['created_at']."</td><td>".nl2br($tmpRow2['log'])."</td></tr>";
       }
       $tmpString2.= "</table></div>";
@@ -25,17 +34,29 @@ function tep_minitor_info(){
       $log = "select name,log, created_at from monitor_log where ng =1 and m_id = ".$monitor['id']. " order by id  desc limit 1";
       $logsResult = tep_db_fetch_array(tep_db_query($log));
       if ($logsResult){
-        $aString = $logsResult['name'].':'.'回線障害の最終日： <a class="monitor" id="moni_'.$logsResult['name'].'" href="'.$monitor['url'].'"  target="_blank">'.date('m月d日H時i分s秒。',strtotime($logsResult['created_at'])).'</a>';
-        $aString.= '<div style="display:none;" id ="minitor_'.$logsResult['name'].'">';
-        $aString.= '<table><tr><td>'.$logsResult['created_at']."</td><td>".nl2br($logsResult['log'])."</td></tr>";
+        $aString = $logsResult['name'].':'.'回線障害の最終日： <a ';
+        if($show_div){
+        $aString.=  'onMouseOver="show_monitor_error(\'minitor_'.$logsResult['name'].'\',1,this)"
+          onMouseOut="show_monitor_error(\'minitor_'.$logsResult['name'].'\',0,this)"';
+        }
+        $aString.=  'class="monitor" id="moni_'.$logsResult['name'].'" href="'.$monitor['url'].'"  target="_blank">'.date('m月d日H時i分s秒。',strtotime($logsResult['created_at'])).'</a>';
+        $aString.= '<div class="monitor_error" style="display:none;" id ="minitor_'.$logsResult['name'].'">';
+        $aString.= '<table width="100%"><tr><td>'.$logsResult['created_at']."</td><td>".nl2br($logsResult['log'])."</td></tr>";
         $aString.= '</table></div>';
         $errorString[] = $aString;
       }
     }
   }
+  if(count($errorString)<1){
+        $no_error_string = '<tr><td></td><td align="right"><font
+          color="green">線路が全部正常です</font></td></tr>';
+  }
   $returnString = '';
   foreach ($errorString as $error){
     $returnString .= '<tr><td></td><td align="right">'.$error.'</td></tr>';
+  }
+  if($no_error_string!=""){
+    return $no_error_string;
   }
   return $returnString;
 
