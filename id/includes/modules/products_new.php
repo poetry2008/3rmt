@@ -30,11 +30,11 @@
     <td valign="top" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products_new_array[$i]['id']) . '"><b><u>' . $products_new_array[$i]['name'] . '</u></b></a>';?>
 	</td>
 	<td class="main" align="right"><?php echo TEXT_DATE_ADDED . ' ' . $products_new_array[$i]['date_added'];?></td>
-    <td class="main" align="right" width="150"><?php echo TEXT_PRICE . ' ' . $products_price; ?></td>
     <!--<td align="right" valign="middle" class="main"><?php //echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_NEW, tep_get_all_get_params(array('action')) . 'action=buy_now&products_id=' . $products_new_array[$i]['id']) . '">' . tep_image_button('button_in_cart.gif', IMAGE_BUTTON_IN_CART) . '</a>'; ?></td>-->
   </tr>
   <tr>
   <td class="main"><?php echo TEXT_MANUFACTURER . ' ' . $products_new_array[$i]['manufacturer'];?></td>
+  <td class="main" align="right"><?php echo TEXT_PRICE . ' ' . $products_price; ?></td>
   </tr>
  </table>
 <?php
