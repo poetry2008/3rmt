@@ -620,3 +620,10 @@ h3 {
   font-weight: bold;
   background: #808080;
 }
+.monitor_error{
+  opacity:0.8;
+  position:absolute;
+  background:#F1F1F1;
+  border:1px solid #999999;
+  filter:alpha(opacity=80);
+}

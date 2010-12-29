@@ -114,14 +114,17 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
 
 // restore cart contents
         $cart->restore_contents();
-
         if (sizeof($navigation->snapshot) > 0) {
           //$origin_href = tep_href_link($navigation->snapshot['page'], tep_array_to_string($navigation->snapshot['get'], array(tep_session_name())), $navigation->snapshot['mode']);
-          $origin_href = tep_href_link($navigation->snapshot['page'], tep_array_to_string($navigation->snapshot['get'], array(tep_session_name())), 'NOSSL');
+          $origin_href = tep_href_link($navigation->snapshot['page'], tep_array_to_string($navigation->snapshot['get'], array(tep_session_name())), 'NONSSL');
           $navigation->clear_snapshot();
           tep_redirect($origin_href);
         } else {
-          tep_redirect(tep_href_link(FILENAME_DEFAULT, '', 'NOSSL'));
+          if (ENABLE_SSL && $request_type == 'SSL') {
+            tep_redirect(tep_href_link(FILENAME_DEFAULT, '', 'NONSSL').'?' . tep_session_name().'='.tep_session_id());
+          } else {
+            tep_redirect(tep_href_link(FILENAME_DEFAULT, '', 'NONSSL'));
+          }
         }
       }
     }
