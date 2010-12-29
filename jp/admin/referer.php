@@ -179,6 +179,7 @@
       from " . TABLE_ORDERS . " o, ".TABLE_SITES." s
       where s.id = o.site_id
         and orders_ref_site IS NOT NULL
+        and orders_ref_site != ''
         " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and s.id = '" . intval($_GET['site_id']) . "' " : '') . 
         (isset($_GET['sy']) && isset($_GET['sm']) && isset($_GET['sd']) ? " and o.date_purchased > '".$_GET['sy'].'-'.$_GET['sm'].'-'.$_GET['sd'] ."'" : " and o.date_purchased > '".date('Y-m-d H:i:s', time()-(86400*30)) . "' ") . 
         (isset($_GET['ey']) && isset($_GET['em']) && isset($_GET['ed']) ? " and o.date_purchased < '".$_GET['ey'].'-'.$_GET['em'].'-'.$_GET['ed'] ." 23:59:59'" : '') . "
