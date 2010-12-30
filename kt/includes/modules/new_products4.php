@@ -91,17 +91,10 @@
     $row = 0;
     $col = 0;
 ?>
-<?php if (0 < $num_products) { ?>
 <!-- new_products //-->
-<h1 class="pageHeading">
-<span class="game_im">
-<img width="26" height="26" alt="" src="images/design/title_img08.gif">
-</span>
-<span class="game_t">
-<?php echo $new_c_name; ?>の新着商品
-</span>
-</h1>
-<div class="comment">
+<?php if (0 < $num_products) { ?>
+<h3 class="products03"><img align="top" alt="" src="images/menu_ico.gif">&nbsp;<?php echo $new_c_name; ?>の新着商品</h3>
+<div class="comment03">
 <table width="100%"  border="0" cellspacing="0" cellpadding="0">
 <?php
     while ($new_products = tep_db_fetch_array($new_products_query)) {
@@ -114,25 +107,23 @@
 ?>
   <tr>
     <td>
-      <table width="670" border="0" cellspacing="0" cellpadding="0" style="margin: 10px;">
+      <table border="0" cellspacing="0" cellpadding="0" class="product_listing_content">
         <tr>
-          <td width="<?php echo SMALL_IMAGE_WIDTH;?>" rowspan="2" " align="center">
+          <td width="<?php echo SMALL_IMAGE_WIDTH;?>" rowspan="2" style="padding-right:8px; " align="center">
             <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/' . $new_products['products_image'], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>'; ?>
           </td>
-          <td valign="top" style="padding-left:5px; ">
+          <td valign="top">
             <p class="main">
               <img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" alt="">
               <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">'.$new_products['products_name'].'</a>'; ?><br>
             </p>
           </td>
-          <td align="right">
-            <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) ; ?>" class="button_description"></a>
+          <td class="main" align="right" width="140">
           </td>
-        </tr>
-        <tr>
-          <td class="main" colspan="3"> <p><span class="smallText"><?php echo $description_view; ?>...</span></p>
-          </td>
-        </tr>
+<td align="right" style="padding-right:16px;"><a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) ; ?>" class="button_description"></a></td>
+<tr>
+    <td style="padding-left: 5px;" colspan="3" ><span class="smallText"><?php echo $description_view; ?>...</span></td>
+</tr>
       </table>
       <div class="dot">&nbsp;</div>
     </td>

@@ -71,6 +71,9 @@ if ($category_depth == 'nested') {
   }
 ?></span></h1>
     <div class="comment"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?>
+        <?php
+        $has_ca_single = false; 
+        ?>
         <?php if (isset($_GET['cPath'])) { ?> 
         <table border="0" width="100%" cellspacing="3" cellpadding="3" summary=""> 
           <tr align="center">
@@ -98,7 +101,8 @@ if ($category_depth == 'nested') {
         ");
     $rows = 0;
     while ($categories = tep_db_fetch_array($categories_query)) {
-    $rows++;
+      $has_ca_single = true; 
+      $rows++;
       $cPath_new = tep_get_path($categories['categories_id']);
       $width = (int)(100 / MAX_DISPLAY_CATEGORIES_PER_ROW) . '%';
       echo '<td class="smallText"><h2 class="Tlist"><a href="' . tep_href_link(FILENAME_DEFAULT, $cPath_new) . '">' . tep_image(DIR_WS_IMAGES . 'categories/' . $categories['categories_image'], $categories['categories_name'], SUBCATEGORY_IMAGE_WIDTH, SUBCATEGORY_IMAGE_HEIGHT) ;
@@ -140,7 +144,11 @@ if ($category_depth == 'nested') {
   <?php
     if (isset($_GET['cPath'])) {
       $new_products_category_id = $current_category_id;
-      include(DIR_WS_MODULES.'new_products3.php');
+      if (!$has_ca_single) {
+        include(DIR_WS_MODULES.'new_products3.php');
+      } else {
+        include(DIR_WS_MODULES.'new_products4.php');
+      }
     }
     
     if (isset($_GET['cPath'])) {
