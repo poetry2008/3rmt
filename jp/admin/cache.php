@@ -19,20 +19,20 @@
 // check if the cache directory exists
   if (is_dir($dir_fs_cache)) {
     if (!is_writeable($dir_fs_cache)) {
-    	@chmod($dir_fs_cache, 0777);
-    	if (!is_writeable($dir_fs_cache)) {
-    		$messageStack->add(ERROR_CACHE_DIRECTORY_NOT_WRITEABLE, 'error');
-    	}
+      @chmod($dir_fs_cache, 0777);
+      if (!is_writeable($dir_fs_cache)) {
+        $messageStack->add(ERROR_CACHE_DIRECTORY_NOT_WRITEABLE, 'error');
+      }
     }
   } else {
-  	@mkdir($dir_fs_cache, 0777); 
-  	@chmod($dir_fs_cache, 0777);
-  	if (!is_dir($dir_fs_cache)){
-    	$messageStack->add(ERROR_CACHE_DIRECTORY_DOES_NOT_EXIST, 'error');
+    @mkdir($dir_fs_cache, 0777); 
+    @chmod($dir_fs_cache, 0777);
+    if (!is_dir($dir_fs_cache)){
+      $messageStack->add(ERROR_CACHE_DIRECTORY_DOES_NOT_EXIST, 'error');
     }
   }
 ?>
-<!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
@@ -68,7 +68,7 @@
             <td valign="top">
     
               <div id="tep_site_filter">
-              	  <?php foreach(tep_get_sites() as $k => $s) {?>
+                  <?php foreach(tep_get_sites() as $k => $s) {?>
                         <span <?php if ($site_id == $s['id']) {?>class="site_filter_selected"<?php }?>><a href="cache.php?site_id=<?php echo $s['id'];?>"><?php echo $s['romaji'];?></a></span>
                   <?php }?>
               </div>

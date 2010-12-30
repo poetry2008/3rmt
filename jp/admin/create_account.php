@@ -9,7 +9,7 @@
   require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ACCOUNT);
 
 ?>
-<!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
@@ -34,11 +34,11 @@
     </table></td>
 <!-- body_text //-->
     <td width="100%" valign="top">
-	<br>
-	<?php echo tep_draw_form('account_edit', FILENAME_CREATE_ACCOUNT_PROCESS, 'onSubmit="return check_form();"') . tep_draw_hidden_field('action', 'process'); ?>
-	<table border="0" width="100%" cellspacing="0" cellpadding="0">
+  <br>
+  <?php echo tep_draw_form('account_edit', FILENAME_CREATE_ACCOUNT_PROCESS, 'onSubmit="return check_form();"') . tep_draw_hidden_field('action', 'process'); ?>
+  <table border="0" width="100%" cellspacing="0" cellpadding="0">
       <tr>
-		<td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
+    <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
       </tr>
       <tr>
         <td class="main"><br>ゲストユーザーを作成します。会員はお客様自身でなければ作れません。<br><br></td>

@@ -748,4 +748,3 @@ function check_money_limit($limit_set, $total)
   }
   return false;
 }
-?>
