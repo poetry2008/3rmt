@@ -17,6 +17,7 @@
 ////
 // Redirect to another page or site
   function tep_redirect($url,$suc='') {
+    // id 要求登录后自动跳转到非ssl首页，所以需要让此代码在id下失效
     if ( (ENABLE_SSL == true) && (getenv('HTTPS') == 'on') && SITE_ID != 4) { // We are loading an SSL page // 要求id登陆跳回非SSL页面 2010.12.28 18:00 - maker
       if (substr($url, 0, strlen(HTTP_SERVER)) == HTTP_SERVER) { // NONSSL url
         $url = HTTPS_SERVER . substr($url, strlen(HTTP_SERVER)); // Change it to SSL
@@ -29,7 +30,7 @@
     echo 'SuccessOK';
     }
   
-  tep_exit();
+    tep_exit();
   }
 
 
@@ -1697,12 +1698,15 @@ function forward404Unless($condition)
     $copyright   = C_AUTHER;
     
     $search = $replace = array();
-   
-    //id add script name
-    $ssl_pos = strrpos($_SERVER['SCRIPT_NAME'], '/');
-    $script_name = substr($_SERVER['SCRIPT_NAME'], $ssl_pos);
-    $_SERVER['SCRIPT_NAME'] = $script_name;
-
+    
+    
+    if (SITE_ID > 3) {
+      // 这段代码为了兼容id和kt的ssl链接
+      //id add script name
+      $ssl_pos = strrpos($_SERVER['SCRIPT_NAME'], '/');
+      $script_name = substr($_SERVER['SCRIPT_NAME'], $ssl_pos);
+      $_SERVER['SCRIPT_NAME'] = $script_name;
+    }
     switch (str_replace('/', '', $_SERVER['SCRIPT_NAME'])) {
       case FILENAME_DEFAULT:
          global $cPath_array, $cPath, $seo_tags, $seo_category, $seo_manufacturers;
@@ -2987,6 +2991,129 @@ function SBC2DBC($str) {
   return str_replace($arr, $arr2, $str);
 }
 
+
+
+function tep_get_romaji_cpath($cpath)
+{
+    global $languages_id;
+
+    if (empty($language)) $language = $languages_id;
+    //ccdd
+    $queryString = "
+        select `romaji` 
+        from " .  TABLE_CATEGORIES_DESCRIPTION . "
+        where categories_id = '" . (int)$cpath .  "' 
+          and language_id = '" . (int)$language . "' 
+          and (site_id = '".SITE_ID."' or site_id = '0')
+        order by site_id DESC"
+    ;
+    $category_query = tep_db_query($queryString);
+    $category = tep_db_fetch_array($category_query);
+    return $category['romaji'];
+}
+
+function tep_get_cpath_by_cname($cname)
+{
+    global $languages_id;
+    if (empty($language)){
+      $language = $languages_id;
+    }
+    //ccdd
+    $queryString = "
+        select `categories_id` 
+        from " .  TABLE_CATEGORIES_DESCRIPTION . "
+        where romaji = '" . $cname .  "' 
+          and language_id = '" . (int)$language . "' 
+          and (site_id = '".SITE_ID."' or site_id = '0')
+        order by site_id DESC" ;
+    $category_query = tep_db_query($queryString);
+    $category = tep_db_fetch_array($category_query);
+    return $category['categories_id'];
+
+}
+function tep_get_categories_by_pid($pid,$romaji=true)
+{
+  static $romaji_arr = array();
+  $arr = array();
+  $p_parent = tep_get_categories_by_products_id($pid);
+  if (!$p_parent) {
+    exit('no categories');
+  }
+  //如果同一商品属于多个分类默认返回第一个 
+  $categories[] = $p_parent[0];
+  tep_get_parent_categories($categories, $p_parent[0]);
+  if ($romaji) {
+    $query = false;
+    foreach($categories as $k => $v){
+      if (!array_key_exists($v,$romaji_arr)) {
+        $query = true || $query;
+      }
+    }
+    if ($query) {
+      $rquery = tep_db_query("
+          select * from (
+            select categories_id,romaji,site_id
+            from ".TABLE_CATEGORIES_DESCRIPTION." 
+            where categories_id in ('".implode("','", $categories)."') 
+            order by site_id desc
+          ) c
+          where site_id='".SITE_ID."' or site_id='0'
+          group by categories_id
+      ");
+      while($c = tep_db_fetch_array($rquery)){
+        $romaji_arr[$c['categories_id']] = $c['romaji'];
+      }
+    }
+    foreach($categories as $k => $v){
+      $categories[$k] = $romaji_arr[$v];
+    }
+  }
+  return array_reverse($categories);
+}
+// 根据产品id返回分类id
+function tep_get_categories_by_products_id($pid){
+  $carr = array();
+  $query = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id='".$pid."'");
+  while($p2c = tep_db_fetch_array($query)){
+    $carr[] = $p2c['categories_id'];
+  }
+  return $carr;
+}
+//返回该产品的romaji
+function tep_get_romaji_by_pid($id)
+{
+  return $id;
+}
+
+function tep_get_products_rate($pid) {
+  $p =  tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
+  $t = explode('//',$p['products_attention_1']);
+  $n = str_replace(',','',tep_get_full_count_in_order(1, $t[1]));
+  preg_match_all('/(\d+)/',$n,$out);
+  //print_r($out);
+  return $out[1][0];
+}
+  
+
+function tep_get_google_adsense_adurl($url) {
+  $arr = parse_url($url);
+  $q_arr = array();
+  if ($arr['query']) {
+    $queries = explode("&",$arr['query']);
+    foreach($queries as $q) {
+      $tmp = explode('=',$q);
+      $q_arr[$tmp[0]] = $tmp[1];
+    }
+    if ($q_arr['sa'] && $q_arr['ai'] && $q_arr['adurl']) {
+      return $q_arr['adurl'];
+    }
+    return false;
+  } else {
+    return false;
+  }
+}
+
+// id 子域名解析专用
 function tep_parseURI()
 {
   //如果是https的链接不解析{
@@ -3055,134 +3182,4 @@ function tep_parseURI()
     $_GET['products_id'] = $pid;
 
   }
-
-    /*
-if (isset($_GET['cName'])){
-
-  $_GET['cPath'] = tep_get_cpath_by_cname($_GET['cName']);
-  if($_GET['cPath']==false){//如果没有 则404
-    
-  }
-}
-    */
-
-
-}
-
-function tep_get_romaji_cpath($cpath)
-{
-    global $languages_id;
-
-    if (empty($language)) $language = $languages_id;
-    //ccdd
-    $queryString = "
-        select `romaji` 
-        from " .  TABLE_CATEGORIES_DESCRIPTION . "
-        where categories_id = '" . (int)$cpath .  "' 
-          and language_id = '" . (int)$language . "' 
-          and (site_id = '".SITE_ID."' or site_id = '0')
-        order by site_id DESC"
-    ;
-    $category_query = tep_db_query($queryString);
-    $category = tep_db_fetch_array($category_query);
-    return $category['romaji'];
-
-}
-function tep_get_cpath_by_cname($cname)
-{
-    global $languages_id;
-    if (empty($language)){
-      $language = $languages_id;
-    }
-    //ccdd
-    $queryString = "
-        select `categories_id` 
-        from " .  TABLE_CATEGORIES_DESCRIPTION . "
-        where romaji = '" . $cname .  "' 
-          and language_id = '" . (int)$language . "' 
-          and (site_id = '".SITE_ID."' or site_id = '0')
-        order by site_id DESC" ;
-    $category_query = tep_db_query($queryString);
-    $category = tep_db_fetch_array($category_query);
-    return $category['categories_id'];
-
-}
-function tep_get_categories_by_pid($pid,$romaji=true)
-{
-  static $romaji_arr = array();
-  $arr = array();
-  $p_parent = tep_get_categories_by_products_id($pid);
-  if (!$p_parent) {
-    //exit('no categories');
-  }
-  //如果同一商品属于多个分类默认返回第一个 
-  $categories[] = $p_parent[0];
-  tep_get_parent_categories($categories, $p_parent[0]);
-  if ($romaji) {
-    $query = false;
-    foreach($categories as $k => $v){
-      if (!array_key_exists($v,$romaji_arr)) {
-        $query = true || $query;
-      }
-    }
-    if ($query) {
-      $rquery = tep_db_query("
-          select * from (
-            select categories_id,romaji,site_id
-            from ".TABLE_CATEGORIES_DESCRIPTION." 
-            where categories_id in ('".implode("','", $categories)."') 
-            order by site_id desc
-          ) c
-          where site_id='".SITE_ID."' or site_id='0'
-          group by categories_id
-      ");
-      while($c = tep_db_fetch_array($rquery)){
-        $romaji_arr[$c['categories_id']] = $c['romaji'];
-      }
-    }
-    foreach($categories as $k => $v){
-      $categories[$k] = $romaji_arr[$v];
-    }
-  }
-  return array_reverse($categories);
-}
-// 根据产品id返回分类id
-function tep_get_categories_by_products_id($pid){
-  $carr = array();
-  $query = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id='".$pid."'");
-  while($p2c = tep_db_fetch_array($query)){
-    $carr[] = $p2c['categories_id'];
-  }
-  return $carr;
-}
-//返回该产品的romaji
-function tep_get_romaji_by_pid($id)
-{
-  return $id;
-}
-
-function tep_get_products_rate($pid) {
-  $p =  tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
-  $t = explode('//',$p['products_attention_1']);
-  $n = str_replace(',','',tep_get_full_count_in_order(1, $t[1]));
-  preg_match_all('/(\d+)/',$n,$out);
-  //print_r($out);
-  return $out[1][0];
-}
-function tep_get_google_adsense_adurl($url) {
-  $arr = parse_url($url);
-  $q_arr = array();
-  if ($arr['query']) {
-    $queries = explode("&",$arr['query']);
-    foreach($queries as $q) {
-      $tmp = explode('=',$q);
-      $q_arr[$tmp[0]] = $tmp[1];
-    }
-    if ($q_arr['sa'] && $q_arr['ai'] && $q_arr['adurl']) {
-      return $q_arr['adurl'];
-    }
-    return false;
-  } else {
-    return false;
-  } 
 }

@@ -187,25 +187,6 @@
     return $image;
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ////
 // The HTML form submit button wrapper function
 // Outputs a button in the selected language
@@ -708,26 +689,28 @@ return $image;
 
 function info_tep_href_link($romaji)
 {
+  global $request_type;
   $returnstr = HTTP_SERVER . DIR_WS_CATALOG;
-  //$returnstr .= DIR_WS_CATALOG;
-  if (getenv('HTTPS') == 'on') {
+    // 为了适应不同域名的ssl
     if ($_SERVER['HTTP_HOST'] == substr(HTTPS_SERVER, 8)) {
       $returnstr .= "info/".urlencode($romaji).".html";
     } else {
-      //cancel ssl to nossl session 
-      //if ($request_type=='NOSSL') {
-      if (defined('SITE_ID') && SITE_ID == 4 && ($request_type=='NOSSL' || tep_session_is_registered('customer_id'))) {
+      // id 要求登陆之前不传sid
+      if (defined('SITE_ID') && SITE_ID == 4 && (($request_type == 'NONSSL' && connection == 'SSL') || ($request_type == 'SSL' && tep_session_is_registered('customer_id')))) {
         $returnstr .= "info/".urlencode($romaji).".html?".tep_session_name()."=".tep_session_id();
       } else {
-        $returnstr .= "info/".urlencode($romaji).".html";
-      }
-      //} else {
         //$returnstr .= "info/".urlencode($romaji).".html";
-      //}
+        if ($request_type == 'SSL' && $connection == 'SSL') {
+          // 不同域名间ssl间跳转不加sid
+          $returnstr .= "info/".urlencode($romaji).".html";
+        } else if ($request_type == 'NONSSL' && $connection == 'NONSSL') {
+          $returnstr .= "info/".urlencode($romaji).".html";
+        } else {
+          // 不同域名间ssl和非ssl互相跳转增加sid
+          $returnstr .= "info/".urlencode($romaji).".html?".tep_session_name()."=".tep_session_id();
+        }
+      }
     }
-  } else {
-    $returnstr .= "info/".urlencode($romaji).".html";
-  }
   return $returnstr;
 }
 
