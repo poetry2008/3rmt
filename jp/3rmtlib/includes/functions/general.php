@@ -3174,7 +3174,7 @@ function tep_parseURI()
       forward404();
     }
     $_GET['cPath'] = join('_',array($firstId,$secondId,$thirdId));
-    $break;
+    break;
   case 'product':
     $tmpArray = explode('/',$subSiteUri);
     $pid = $tmpArray[count($tmpArray)-1];
