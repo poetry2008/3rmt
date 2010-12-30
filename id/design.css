@@ -402,6 +402,7 @@ button
 	width: 82px;
 	height: 25px;
 	font-size: 0px;
+	background: url(images/design/button/button_order.gif) no-repeat;
 }
 .button_order img{ float:right; *margin-right:-70px;}
 /*.button_order:hover{
