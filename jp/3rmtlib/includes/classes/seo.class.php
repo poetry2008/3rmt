@@ -574,9 +574,11 @@ class SEO_URL{
       if (ENABLE_SSL && ($_SERVER['HTTP_HOST'] == substr(HTTPS_SERVER,8))) {
       } else {
         //cancel ssl to nossl session 
-        if (defined('SITE_ID') && SITE_ID == 4 && (($request_type == 'NONSSL' && connection == 'SSL') || ($request_type == 'SSL' && tep_session_is_registered('customer_id')))) {
+        if (defined('SITE_ID') && SITE_ID == 4) {
+          if (($request_type == 'NONSSL' && connection == 'SSL') || ($request_type == 'SSL' && tep_session_is_registered('customer_id'))){
           // id 特殊处理，未登录丢弃sid
-          $link .= $separator . $_sid;
+            $link .= $separator . $_sid;
+          }
         } else {
           if ($request_type == 'SSL' && $connection == 'SSL') {
             $link .= '';
@@ -647,9 +649,13 @@ class SEO_URL{
         return $link; 
       } else {
         //cancel ssl to nossl session 
-        if (defined('SITE_ID') && SITE_ID == 4 && (($request_type == 'NONSSL' && connection == 'SSL') || ($request_type == 'SSL' && tep_session_is_registered('customer_id')))) {
-          // id 特殊处理，未登录丢弃sid
-          return $link . $separator . $_sid;
+        if (defined('SITE_ID') && SITE_ID == 4) {
+          if (($request_type == 'NONSSL' && connection == 'SSL') || ($request_type == 'SSL' && tep_session_is_registered('customer_id'))) {
+            // id 特殊处理，未登录丢弃sid
+            return $link . $separator . $_sid;
+          } else {
+            return $link;
+          }
         } else {
           if ($request_type == 'SSL' && $connection == 'SSL') {
             // 不同域名间ssl间跳转不加sid
