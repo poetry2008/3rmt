@@ -15,9 +15,9 @@ define('MSG_WEB_SUCCESS','web success');
 define('EMAIL_EXP', "^[a-z'0-9]+([._-][a-z'0-9]+)*@([a-z0-9]+([._-][a-z0-9]+))+$");
 define('URL_PARSE_EASY',true);
 define("LOG_LIMIT",60);
-define('SYSTEM_MAIL','sznforwork@gmail.com');
-define('MAIL_FROM','sai-szn@163.com');
-define('HTTP_MAIL_FROM','szn-sai@163.com');
+define('SYSTEM_MAIL','sznforwork@gmail.com');//管理员邮箱 (收件人邮箱)
+define('MAIL_FROM','sai-szn@163.com');//自动执行的邮件发件人
+define('HTTP_MAIL_FROM','szn-sai@163.com');//WEV执行的邮件发件人
 define('MAX_LOG','1');//单位M
 
 //define message template
@@ -83,23 +83,28 @@ function getDomains(){
   }else{
     $domains = array();
     if($_SERVER["HTTP_USER_AGENT"]){
+    //如果是从页面执行文件 查询所有
     $res = db_query('select * from monitor where enable="on"');
     while($domain = mysql_fetch_object($res,'Monitor')){
       $domains[] = $domain;
     }
     }else{
+    //不从页面执行的时候 查找 next=1 的 也就是有标记的
     $res = db_query('select * from monitor where enable="on" and next="1"');
     if($domain = mysql_fetch_object($res,'Monitor')){
       $domains[] = $domain;
       $run_id = $domain->id;
     }else{
+      //如果没有标记 查找第一个
       $res = db_query('select * from monitor where enable="on" limit 1');
       if($domain = mysql_fetch_object($res,'Monitor')){
         $domains[] = $domain;
         $run_id = $domain->id;
       }
     }
+    //把当前标记去除
     db_query('update monitor set next="0" where enable="on" and id="'.$run_id.'"');
+    //给下一个有效记录标记
     db_query('update monitor set next="1" where enable="on" and id>"'.$run_id.'" limit 1');
     //    mysql_close($conn);
     }
@@ -341,6 +346,7 @@ foreach ($domains as $key=>$domain){
       $loglist[$cHost->name]= $cHost->emailMsg;
     }
     if(!$_SERVER["HTTP_USER_AGENT"]){
+      //如果页面执行 值显示记录不 生成日志
       $cHost->report();
     }
   }
