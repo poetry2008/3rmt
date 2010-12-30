@@ -134,19 +134,7 @@ if ($listing_numrows > 0) {
             ?>
           </td>
           <td width="90" align="right">
-            <?php
-              if (isset($has_ca_single)) {
-                if (!$has_ca_single) {
-            ?>
               <p class="main"><?php echo '残り&nbsp;<b>' . tep_show_quantity($listing['products_quantity']) . '</b>&nbsp;個'; ?></p>
-            <?php
-                }
-              } else {
-            ?>
-              <p class="main"><?php echo '残り&nbsp;<b>' . tep_show_quantity($listing['products_quantity']) . '</b>&nbsp;個'; ?></p>
-            <?php
-              }
-            ?>
           </td>
         </tr>
         <tr>
