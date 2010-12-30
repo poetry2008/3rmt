@@ -10,7 +10,7 @@
   
   $customer_id = $_GET['customer_id'];
 ?>
-<!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
@@ -36,7 +36,7 @@
     </table></td>
 <!-- body_text //-->
     <td width="100%" valign="top">
-	<table border="0" width="100%" cellspacing="0" cellpadding="0">
+  <table border="0" width="100%" cellspacing="0" cellpadding="0">
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
@@ -50,7 +50,7 @@
       </tr>
       <tr>
         <td>
-		<?php echo TEXT_ACCOUNT_CREATED; ?>
+    <?php echo TEXT_ACCOUNT_CREATED; ?>
         </td>
       </tr>
       <tr>

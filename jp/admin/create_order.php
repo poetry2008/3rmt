@@ -32,7 +32,7 @@
   }
 // #### Generate Page
 ?>
-<!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
@@ -56,29 +56,29 @@
     </table></td>
 <!-- body_text //-->
     <td width="100%" valign="top">
-	<table border='0' bgcolor='#7c6bce' width='100%'>
+  <table border='0' bgcolor='#7c6bce' width='100%'>
       <tr>
         <td class="main"><font color="#ffffff"><b>ステップ 1 - 顧客を検索します</b></font></td>
       </tr>
     </table>
-	<p class="pageHeading">登録データの有無を確認:</p>
+  <p class="pageHeading">登録データの有無を確認:</p>
 <?php
-	echo '<form action="' . $PHP_SELF . '" method="GET">' . "\n";
-	echo '<p class=main>メールアドレスを入力し「検索」ボタンをクリックしてください。<br>メールアドレス:&nbsp;<input type="text" name="Customer_mail" size="40">'.tep_site_pull_down_menu('', false).'&nbsp;&nbsp;<input type="submit" value="  検索  "></p>' . "\n";
-	echo '</form>' . "\n";
+  echo '<form action="' . $PHP_SELF . '" method="GET">' . "\n";
+  echo '<p class=main>メールアドレスを入力し「検索」ボタンをクリックしてください。<br>メールアドレス:&nbsp;<input type="text" name="Customer_mail" size="40">'.tep_site_pull_down_menu('', false).'&nbsp;&nbsp;<input type="submit" value="  検索  "></p>' . "\n";
+  echo '</form>' . "\n";
 ?>
-	<br>
-	<?php echo tep_draw_form('create_order', FILENAME_CREATE_ORDER_PROCESS, '', 'post', '', '') . tep_draw_hidden_field('customers_id', isset($account['customers_id'])?$account['customers_id']:''); ?>
-	<table border="0" width="100%" cellspacing="0" cellpadding="0">
-	  <tr>
-	    <td class="pageHeading"><?php echo HEADING_CREATE; ?></td>
-	  </tr>
-	  <tr>
-	    <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-	  </tr>
-	</table>
+  <br>
+  <?php echo tep_draw_form('create_order', FILENAME_CREATE_ORDER_PROCESS, '', 'post', '', '') . tep_draw_hidden_field('customers_id', isset($account['customers_id'])?$account['customers_id']:''); ?>
+  <table border="0" width="100%" cellspacing="0" cellpadding="0">
+    <tr>
+      <td class="pageHeading"><?php echo HEADING_CREATE; ?></td>
+    </tr>
+    <tr>
+      <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
+    </tr>
+  </table>
 <?php
-	//変数挿入
+  //変数挿入
     $customer_id    = isset($account['customers_id'])           ? $account['customers_id']:'';
     $firstname      = isset($account['customers_firstname'])    ? $account['customers_firstname']:'';
     $lastname       = isset($account['customers_lastname'])     ? $account['customers_lastname']:'';
@@ -97,15 +97,15 @@
     $country        = isset($address['entry_country_id'])       ? tep_get_country_name($address['entry_country_id']):'';
     require(DIR_WS_INCLUDES . 'step-by-step/create_order_details.php');
 ?>
-	<br>
-	<table border="0" width="100%" cellspacing="0" cellpadding="2">
+  <br>
+  <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td class="main"><?php echo '<a href="' . tep_href_link(FILENAME_DEFAULT, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td>
         <td class="main" align="right"><?php echo tep_image_submit('button_confirm.gif', IMAGE_BUTTON_CONFIRM); ?></td>
       </tr>
     </table>
-	</form>
-	</td>
+  </form>
+  </td>
   </tr>
 </table>
 <!-- body_eof //-->
