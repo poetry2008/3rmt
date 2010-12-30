@@ -6,9 +6,9 @@
 //设置常量
 //MYSQL_GROUP
 define('MYSQL_HOST','localhost');
-define('MYSQL_USER','root');
-define('MYSQL_PASSWORD','123456');
-define('MYSQL_DATABASE','maker_3rmt');
+define('MYSQL_USER','jp_gamelife_jp');
+define('MYSQL_PASSWORD','kWSoiSiE');
+define('MYSQL_DATABASE','jp_gamelife_jp');
 define('MYSQL_DNS','mysql:host='.MYSQL_HOST.';dbname:'.MYSQL_DATABASE);
 define('MINITOR_DOMAINS_FROM_MYSQL',true);//是否从MYSQL读取想要确认的数据
 define('MSG_WEB_SUCCESS','web success');
@@ -133,6 +133,7 @@ class Monitor {
   }
   function __construct(){
     if(strpos($this->reportmethod,'log')>-1){//如果用到了log方法
+      if(!$_SERVER["HTTP_USER_AGENT"]){
       if(trim($this->logfile) ==''){
         sMail('logfile is null '.$this);
         $this->logfile = '/dev/null';
@@ -149,6 +150,7 @@ class Monitor {
             }
           }
         }
+      }
       }
       
     }
@@ -393,9 +395,9 @@ if (count($loglist)){
 <?php
 }
 ?>
-</br>
-  This page not make log
-</br>
+    </br>
+    This page not make log
+    </br>
 </body>
 </html>
 <?php
