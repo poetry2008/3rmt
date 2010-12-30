@@ -150,7 +150,11 @@ if (isset($_GET['cPath'])) {
   include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); 
 }
 ?>
-<?php echo $seo_category['categories_footer_text'];?>  
+<?php
+if (!empty($seo_category['categories_footer_text'])) {
+echo '<div class="footer_text01">'.$seo_category['categories_footer_text'].'</div>';
+}
+?>  
 <?php
   if (isset($_GET['cPath'])) {
     $new_products_category_id = $current_category_id;
