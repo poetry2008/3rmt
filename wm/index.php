@@ -150,7 +150,11 @@ if (isset($_GET['cPath'])) {
   include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); 
 }
 ?>
-<?php echo $seo_category['categories_footer_text'];?>  
+<?php
+if (!empty($seo_category['categories_footer_text'])) {
+echo '<div class="footer_text01">'.$seo_category['categories_footer_text'].'</div>';
+}
+?>  
 <?php
   if (isset($_GET['cPath'])) {
     $new_products_category_id = $current_category_id;
@@ -162,8 +166,11 @@ if (isset($_GET['cPath'])) {
   }
   if (isset($cPath_array)) {
     if ($seo_category['seo_description']) {
-      echo $seo_category['seo_name'].'について'.'<br>'; 
-      echo $seo_category['seo_description']; 
+      echo '<div class="seo01">'; 
+      echo '<div class="seo_title_04">'.$seo_category['seo_name'].'について'.'</div>'; 
+      echo '<p>'.$seo_category['seo_description'].'</p>'; 
+      echo '<div class="seo_bottom_01"></div>'; 
+      echo '</div>'; 
     }
     if (!empty($seo_category['text_information'])) {
       echo $seo_category['text_information']; 
