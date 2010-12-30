@@ -109,9 +109,34 @@
     } 
     ?>
     <br>
-      <?php $new_products_category_id = $current_category_id; include(DIR_WS_MODULES .'new_products.php'); ?>
+      <?php 
+      $new_products_category_id = $current_category_id; 
+      $exone_single = false; 
+      $exone_query = tep_db_query("select * from categories where categories_id = '".$current_category_id."' and parent_id = '0'"); 
+      if (tep_db_num_rows($exone_query)) {
+        $exone_single = true; 
+      }
+      if (!$exone_single) {
+        include(DIR_WS_MODULES .'new_products5.php'); 
+      } else {
+        include(DIR_WS_MODULES .'new_products.php'); 
+      }
+      ?>
     <br>
-    <p><?php echo $seo_category['seo_description']; //seoフレーズ ?></p>
+    <?php
+      if (!empty($seo_category['seo_description'])) {
+    ?>
+    <div id="information02"> 
+    <div class="seo_small_top"></div>
+    <p> 
+    <?php echo $seo_category['seo_description']; 
+    ?>
+    </p> 
+    <div class="seo_small_bottom"></div>
+    </div> 
+    <?php
+      }
+    ?>
     <br>
       <?php
       if (isset($cPath) && !ereg('_', $cPath)) { 

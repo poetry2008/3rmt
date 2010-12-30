@@ -413,7 +413,7 @@ width:100%;
 #information {
     width:460px;
     height:220px;
-    background-image:url("images/design/oc/content_info.jpg");
+    background-image:url(images/design/oc/content_info.jpg);
     background-repeat:no-repeat;
     margin:0px;
     padding:0px;
@@ -427,6 +427,31 @@ width:100%;
     padding-right:40px;
     padding-top:45px;
     padding-bottom:30px
+}
+.seo_small_top{
+	background:url(images/design/oc/content_info02_top.jpg) no-repeat;
+	width:460px;
+	height:35px;
+}
+.seo_small_bottom{
+	background:url(images/design/oc/content_info02_bottom.jpg) no-repeat;
+	width:460px;
+	height:54px;
+}
+#information02 {
+    width:460px;
+    background:url(images/design/oc/content_info02_middle.jpg) repeat-y;
+    margin:0px;
+    padding:0px;
+	
+}
+#information02 p {
+    font-size:14px;
+    color:#ffffff;
+    line-height:120%;
+    margin:0px;
+    padding-left:40px;
+    padding-right:40px;
 }
 .box {
     font-size:14px;
@@ -888,6 +913,11 @@ background:url(images/design/oc/news_bottom.gif) no-repeat left bottom;
 .game_news_index02 {
 background:url(images/design/oc/game_news_index02.gif) no-repeat left bottom;
 }
+.seo_news_index02 {
+background:url(images/design/oc/game_news_index02.gif) no-repeat left bottom;
+height:59px;
+width:599px;
+}
 .list_rss01{
 background:none;
 }
@@ -919,6 +949,9 @@ overflow:hidden;
 .background_news02 {
 background:url(images/design/oc/background_news02.gif) repeat-y;
 }
+.seo01{
+	background:url(images/design/oc/background_news02.gif) repeat-y;
+}
 .news_title_01 {
 background:url(images/design/oc/news_top.gif) no-repeat;
 width:100%;
@@ -948,6 +981,14 @@ width:100%;
 }
 .news_title_04{
 background:url(images/design/oc/news_title_04.gif) no-repeat;
+}
+.seo_title_04{
+	background:url(images/design/oc/news_title_04.gif) no-repeat;
+	height:40px;
+	width:599px;
+	padding:15px 0 0 20px;
+	font-weight: bold;
+	font-size:14px;
 }
 .news_title_03 td {
 height:40px;
