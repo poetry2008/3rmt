@@ -130,6 +130,12 @@ if ($category_depth == 'nested') {
      $listing_tmp_sql = $listing_sql;
      $list_tmp_query = tep_db_query($listing_tmp_sql);
      if (tep_db_num_rows($list_tmp_query)) {
+        $isone_ca_query = tep_db_query("select * from categories where categories_id = '".$current_category_id."' and parent_id = '0'"); 
+        if (tep_db_num_rows($isone_ca_query)) {
+          $has_ca_single = true; 
+        } else {
+          $has_ca_single = false; 
+        }
        include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); 
      }
    } else {
@@ -150,8 +156,10 @@ if ($category_depth == 'nested') {
 <?php 
 if (isset($cPath_array)) {
   if ($seo_category['seo_description']) {
-    echo '<p>'.$seo_category['seo_name'].'について</p>'; 
+    echo '<div class="seo01"><div class="seo_title_04">'.$seo_category['seo_name'].'について</div>'; 
     echo '<p>'.$seo_category['seo_description'].'</p>'; 
+	echo '<div class="seo_news_index02"></div>';
+	echo '</div>';
   }
   if (!empty($seo_category['text_information'])) {
     echo $seo_category['text_information']; 
