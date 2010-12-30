@@ -71,7 +71,6 @@
       order by sort_id
   ");
    while($result = tep_db_fetch_array($contents_page)){
-             //echo '<li><a href="'.tep_href_link(FILENAME_PAGE,'pID='.$result['pID'],NONSSL).'">'.$result['heading_title'].'</a></li>'."\n" ;
      // add info romaji          
      echo '<li><a href="'.info_tep_href_link($result['romaji']).'">'.$result['heading_title'].'</a></li>'."\n" ;
   } 

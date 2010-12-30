@@ -86,7 +86,7 @@
   <div class="header_Navigation">
     <ul>
       <li class="header_navigation_content">
-          <a href="<?php echo tep_href_link(FILENAME_SITEMAP,'',NONSSL);?>"><?php echo HEADER_TITLE_SITEMAP ; ?></a>
+          <a href="<?php echo tep_href_link(FILENAME_SITEMAP,'','NONSSL');?>"><?php echo HEADER_TITLE_SITEMAP ; ?></a>
           &nbsp;&nbsp;<?php echo $breadcrumb->trail(' &raquo; '); ?>
       </li>
     </ul>
