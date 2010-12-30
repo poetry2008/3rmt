@@ -6,9 +6,9 @@
 //设置常量
 //MYSQL_GROUP
 define('MYSQL_HOST','localhost');
-define('MYSQL_USER','root');
-define('MYSQL_PASSWORD','123456');
-define('MYSQL_DATABASE','maker_3rmt');
+define('MYSQL_USER','jp_gamelife_jp');
+define('MYSQL_PASSWORD','kWSoiSiE');
+define('MYSQL_DATABASE','jp_gamelife_jp');
 define('MYSQL_DNS','mysql:host='.MYSQL_HOST.';dbname:'.MYSQL_DATABASE);
 define('MINITOR_DOMAINS_FROM_MYSQL',true);//是否从MYSQL读取想要确认的数据
 define('MSG_WEB_SUCCESS','web success');
@@ -49,7 +49,7 @@ function sql_injection($content)
 
 function sMail($message){
   //  echo 'SYSTEM MAIL ';
-  if($_SERVER["HTTP_USER_AGENT"]){
+  if(isset($_SERVER["HTTP_USER_AGENT"])){
   $header = "From: ".HTTP_MAIL_FROM."\r\n"."Reply-To: ".HTTP_MAIL_FROM. "\r\n";
   }else{
   $header = "From: ".MAIL_FROM."\r\n"."Reply-To: ".MAIL_FROM. "\r\n";
@@ -82,7 +82,7 @@ function getDomains(){
                      );
   }else{
     $domains = array();
-    if($_SERVER["HTTP_USER_AGENT"]){
+    if(isset($_SERVER["HTTP_USER_AGENT"])){
     //如果是从页面执行文件 查询所有
     $res = db_query('select * from monitor where enable="on"');
     while($domain = mysql_fetch_object($res,'Monitor')){
@@ -133,6 +133,7 @@ class Monitor {
   }
   function __construct(){
     if(strpos($this->reportmethod,'log')>-1){//如果用到了log方法
+      if(!isset($_SERVER["HTTP_USER_AGENT"])){
       if(trim($this->logfile) ==''){
         sMail('logfile is null '.$this);
         $this->logfile = '/dev/null';
@@ -143,12 +144,13 @@ class Monitor {
           $this->logfile = '/dev/null';
         }else {
           if(!is_dir($pathinfo['dirname']) or !is_writeable($this->logfile)){
-            if (file_put_contents($this->logfile,'')===false){
+            if (@file_put_contents($this->logfile,'')===false){
               sMail('logfile not writeable'.$this);
               $this->logfile = '/dev/null';
             }
           }
         }
+      }
       }
       
     }
@@ -345,7 +347,7 @@ foreach ($domains as $key=>$domain){
     }else {
       $loglist[$cHost->name]= $cHost->emailMsg;
     }
-    if(!$_SERVER["HTTP_USER_AGENT"]){
+    if(!isset($_SERVER["HTTP_USER_AGENT"])){
       //如果页面执行 值显示记录不 生成日志
       $cHost->report();
     }
@@ -357,7 +359,7 @@ foreach ($domains as $key=>$domain){
 }
 
 //判断是否 是由WEB 执行 $_SERVER["HTTP_USER_AGENT"] 有值为WEB执行
-if($_SERVER["HTTP_USER_AGENT"]){
+if(isset($_SERVER["HTTP_USER_AGENT"])){
 ?>
   <html lang="ja" dir="ltr">
   <head>
@@ -390,12 +392,12 @@ if (count($loglist)){
   }
 ?>
 </table>
-    </br>
-    This page not make log
-    </br>
 <?php
 }
 ?>
+    </br>
+    This page not make log
+    </br>
 </body>
 </html>
 <?php
