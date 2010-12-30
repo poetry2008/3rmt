@@ -144,7 +144,7 @@ class Monitor {
           $this->logfile = '/dev/null';
         }else {
           if(!is_dir($pathinfo['dirname']) or !is_writeable($this->logfile)){
-            if (file_put_contents($this->logfile,'')===false){
+            if (@file_put_contents($this->logfile,'')===false){
               sMail('logfile not writeable'.$this);
               $this->logfile = '/dev/null';
             }
