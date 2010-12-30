@@ -713,6 +713,13 @@ product listing
 	margin: 10px 11px;
 	padding: 5px;
 }
+.product_listing_content02{
+	width: 480px;
+	border: solid 1px #ddd;
+	background: #fff;
+	margin: 10px 11px;
+	padding: 5px;
+}
 /* ---------------------------
 お知らせ
 --------------------------- */
