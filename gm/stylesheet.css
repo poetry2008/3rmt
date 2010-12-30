@@ -990,6 +990,9 @@ background:url(images/design/oc/news_title_04.gif) no-repeat;
 	font-weight: bold;
 	font-size:14px;
 }
+.seo01 p{
+	padding:0 45px;
+}
 .news_title_03 td {
 height:40px;
 }
