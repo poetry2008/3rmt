@@ -49,7 +49,7 @@ function sql_injection($content)
 
 function sMail($message){
   //  echo 'SYSTEM MAIL ';
-  if($_SERVER["HTTP_USER_AGENT"]){
+  if(isset($_SERVER["HTTP_USER_AGENT"])){
   $header = "From: ".HTTP_MAIL_FROM."\r\n"."Reply-To: ".HTTP_MAIL_FROM. "\r\n";
   }else{
   $header = "From: ".MAIL_FROM."\r\n"."Reply-To: ".MAIL_FROM. "\r\n";
@@ -82,7 +82,7 @@ function getDomains(){
                      );
   }else{
     $domains = array();
-    if($_SERVER["HTTP_USER_AGENT"]){
+    if(isset($_SERVER["HTTP_USER_AGENT"])){
     //如果是从页面执行文件 查询所有
     $res = db_query('select * from monitor where enable="on"');
     while($domain = mysql_fetch_object($res,'Monitor')){
@@ -133,7 +133,7 @@ class Monitor {
   }
   function __construct(){
     if(strpos($this->reportmethod,'log')>-1){//如果用到了log方法
-      if(!$_SERVER["HTTP_USER_AGENT"]){
+      if(!isset($_SERVER["HTTP_USER_AGENT"])){
       if(trim($this->logfile) ==''){
         sMail('logfile is null '.$this);
         $this->logfile = '/dev/null';
@@ -347,7 +347,7 @@ foreach ($domains as $key=>$domain){
     }else {
       $loglist[$cHost->name]= $cHost->emailMsg;
     }
-    if(!$_SERVER["HTTP_USER_AGENT"]){
+    if(!isset($_SERVER["HTTP_USER_AGENT"])){
       //如果页面执行 值显示记录不 生成日志
       $cHost->report();
     }
@@ -359,7 +359,7 @@ foreach ($domains as $key=>$domain){
 }
 
 //判断是否 是由WEB 执行 $_SERVER["HTTP_USER_AGENT"] 有值为WEB执行
-if($_SERVER["HTTP_USER_AGENT"]){
+if(isset($_SERVER["HTTP_USER_AGENT"])){
 ?>
   <html lang="ja" dir="ltr">
   <head>
