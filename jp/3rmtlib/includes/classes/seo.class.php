@@ -454,12 +454,9 @@ class SEO_URL{
     } else {
       if ($page == FILENAME_LATEST_NEWS) {
         $link .= 'latest_news/';
-        //      }else if($page == FILENAME_DEFAULT ){ //如果是index 且参数像Cpath =''
       }else if ($page == FILENAME_REVIEWS) {
         $link .= 'reviews/';
-      } /*else if ($page == 'domain.php') {
-        $link .= 'link/';
-      }*/ else {
+      } else {
         $link .= $page;
       }
     }
@@ -479,18 +476,10 @@ class SEO_URL{
   }
     $link = $this->add_sid($link, $add_session_id, $connection, $separator); 
   
-  //if (defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED && ENABLE_SSL) {
-    if ($page == 'index.php' && $parameters == '') {
-      //if (getenv('HTTPS') != 'on') {
-      if (defined('SITE_ID') && SITE_ID == 4) {
-        //$link = HTTP_SERVER . DIR_WS_CATALOG .'?' . tep_session_name().'='.tep_session_id();
-        //$link = $this->add_sid($link, $add_session_id, $connection, $separator);
-      //} else {
-        $link = HTTP_SERVER . DIR_WS_CATALOG;
-      }
-      //}
+    // id 不显示 index.php
+    if ($page == 'index.php' && $parameters == '' && defined('SITE_ID') && SITE_ID == 4 && !isset($_sid)) {
+      $link = HTTP_SERVER . DIR_WS_CATALOG;
     }
-  //}
     
     $this->stop($this->timestamp, $time);
     $this->performance['TOTAL_TIME'] += $time;
@@ -565,7 +554,6 @@ class SEO_URL{
           } else {
             $_sid = $this->SessionName() . '=' . $this->SessionID();
           }
-          //$_sid = $this->SessionName() . '=' . $this->SessionID();
         }
       }
 
@@ -582,21 +570,14 @@ class SEO_URL{
       }
     }
     if (isset($_sid)) {
+      // 兼容同域名和不同域名的ssl跳转
       if (ENABLE_SSL && ($_SERVER['HTTP_HOST'] == substr(HTTPS_SERVER,8))) {
       } else {
         //cancel ssl to nossl session 
-        //if ($request_type == 'NONSSL') {
-        //if () {
-          if (defined('SITE_ID') && SITE_ID == 4 && (($request_type == 'NONSSL' && connection == 'SSL') || ($request_type == 'SSL' && tep_session_is_registered('customer_id')))) {
-            $link .= $separator . $_sid;
-          } else {
-            $link .= '';
-          }
-        //} else {
-        //  $link .= $separator;
-        //}
-        //}
-        if (SITE_ID == 5) {
+        if (defined('SITE_ID') && SITE_ID == 4 && (($request_type == 'NONSSL' && connection == 'SSL') || ($request_type == 'SSL' && tep_session_is_registered('customer_id')))) {
+          // id 特殊处理，未登录丢弃sid
+          $link .= $separator . $_sid;
+        } else {
           if ($request_type == 'SSL' && $connection == 'SSL') {
             $link .= '';
           } else if ($request_type == 'NONSSL' && $connection == 'NONSSL') {
@@ -607,12 +588,9 @@ class SEO_URL{
         }
       }
     }
-  if (defined('URL_SUB_SITE_ENABLED')) {
-    if ($page == 'index.php' && $parameters == '') {
-      if (!isset($_sid)) {
-        $link = HTTP_SERVER . DIR_WS_CATALOG;
-      }
-    }
+  // id 不显示 index.php
+  if ($page == 'index.php' && $parameters == '' && defined('SITE_ID') && SITE_ID == 4 && !isset($_sid)) {
+    $link = HTTP_SERVER . DIR_WS_CATALOG;
   }
   $this->performance['NUMBER_STANDARD_URLS_GENERATED']++;
   $this->cache['STANDARD_URLS'][] = $link;
@@ -662,41 +640,31 @@ class SEO_URL{
       } 
     }
     
-    //if (defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED && ENABLE_SSL) {
-      //if (strpos($_SERVER['REQUEST_URI'], 'index.php?cmd=')) {
-        //return $link; 
-      //}
-    //}
     if ( isset($_sid) ) {
+      // 兼容同域名和不同域名的ssl跳转
       if (ENABLE_SSL && ($_SERVER['HTTP_HOST'] == substr(HTTPS_SERVER,8))) {
+        // 同域名不加sid
         return $link; 
       } else {
         //cancel ssl to nossl session 
-        //if ($request_type == 'NONSSL') {
         if (defined('SITE_ID') && SITE_ID == 4 && (($request_type == 'NONSSL' && connection == 'SSL') || ($request_type == 'SSL' && tep_session_is_registered('customer_id')))) {
+          // id 特殊处理，未登录丢弃sid
           return $link . $separator . $_sid;
         } else {
-          if (SITE_ID == 5) {
-            if ($request_type == 'SSL' && $connection == 'SSL') {
-              return $link; 
-            } else if ($request_type == 'NONSSL' && $connection == 'NONSSL') {
-              return $link; 
-            } else {
-              return $link . $separator . $_sid;
-            }
+          if ($request_type == 'SSL' && $connection == 'SSL') {
+            // 不同域名间ssl间跳转不加sid
+            return $link; 
+          } else if ($request_type == 'NONSSL' && $connection == 'NONSSL') {
+            return $link; 
           } else {
-            return $link;
+            // 不同域名间ssl和非ssl互相跳转增加sid
+            return $link . $separator . $_sid;
           }
-          //return $link;
         }
-        //} else {
-          //return $link; 
-        //}
-      } 
+      }
     } else {
       return $link; 
     }
-
   } # end function
   
 /**
@@ -764,6 +732,7 @@ class SEO_URL{
               if (preg_match('/page=(\d+)/', $params, $out)) {
                 //$url = $this->make_url($page, REWRITE_CATEGORIES, $p2[0], $p2[1], '_page'.$out[1].'.html', $separator,URL_TYPE_CPATH);
                 $url = $this->make_url($page, REWRITE_CATEGORIES, $p2[0], $p2[1], '_page'.$out[1].'.html', $separator,'cpath');
+                unset($container['page']);
               } else {
                 //$url = $this->make_url($page, REWRITE_CATEGORIES, $p2[0], $p2[1], '.html', $separator,URL_TYPE_CPATH);
                 $url = $this->make_url($page, REWRITE_CATEGORIES, $p2[0], $p2[1], '.html', $separator,'cpath');
