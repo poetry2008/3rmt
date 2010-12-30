@@ -162,8 +162,11 @@ if (isset($_GET['cPath'])) {
   }
   if (isset($cPath_array)) {
     if ($seo_category['seo_description']) {
-      echo $seo_category['seo_name'].'について'.'<br>'; 
-      echo $seo_category['seo_description']; 
+      echo '<div class="seo01">'; 
+      echo '<div class="seo_title_04">'.$seo_category['seo_name'].'について'.'</div>'; 
+      echo '<p>'.$seo_category['seo_description'].'</p>'; 
+      echo '<div class="seo_bottom_01"></div>'; 
+      echo '</div>'; 
     }
     if (!empty($seo_category['text_information'])) {
       echo $seo_category['text_information']; 
