@@ -390,12 +390,12 @@ if (count($loglist)){
   }
 ?>
 </table>
-    </br>
-    This page not make log
-    </br>
 <?php
 }
 ?>
+</br>
+  This page not make log
+</br>
 </body>
 </html>
 <?php
