@@ -477,7 +477,7 @@ class SEO_URL{
     $link = $this->add_sid($link, $add_session_id, $connection, $separator); 
   
     // id 不显示 index.php
-    if ($page == 'index.php' && $parameters == '' && defined('SITE_ID') && SITE_ID == 4 && !isset($_sid)) {
+    if ($page == 'index.php' && $parameters == '' && defined('SITE_ID') && (SITE_ID == 4 || SITE_ID == 5) && !isset($_sid)) {
       $link = HTTP_SERVER . DIR_WS_CATALOG;
     }
     
@@ -574,7 +574,7 @@ class SEO_URL{
       if (ENABLE_SSL && ($_SERVER['HTTP_HOST'] == substr(HTTPS_SERVER,8))) {
       } else {
         //cancel ssl to nossl session 
-        if (defined('SITE_ID') && SITE_ID == 4) {
+        if (defined('SITE_ID') && (SITE_ID == 4 || SITE_ID == 5)) {
           if (($request_type == 'NONSSL' && connection == 'SSL') || ($request_type == 'SSL' && tep_session_is_registered('customer_id'))){
           // id 特殊处理，未登录丢弃sid
             $link .= $separator . $_sid;
@@ -591,7 +591,7 @@ class SEO_URL{
       }
     }
   // id 不显示 index.php
-  if ($page == 'index.php' && $parameters == '' && defined('SITE_ID') && SITE_ID == 4 && !isset($_sid)) {
+  if ($page == 'index.php' && $parameters == '' && defined('SITE_ID') && (SITE_ID == 4  || SITE_ID == 5) && !isset($_sid)) {
     $link = HTTP_SERVER . DIR_WS_CATALOG;
   }
   $this->performance['NUMBER_STANDARD_URLS_GENERATED']++;
@@ -649,7 +649,7 @@ class SEO_URL{
         return $link; 
       } else {
         //cancel ssl to nossl session 
-        if (defined('SITE_ID') && SITE_ID == 4) {
+        if (defined('SITE_ID') && (SITE_ID == 4 || SITE_ID == 5)) {
           if (($request_type == 'NONSSL' && connection == 'SSL') || ($request_type == 'SSL' && tep_session_is_registered('customer_id'))) {
             // id 特殊处理，未登录丢弃sid
             return $link . $separator . $_sid;
