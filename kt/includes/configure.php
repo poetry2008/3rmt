@@ -6,9 +6,11 @@
 // Define the webserver and path parameters
 // * DIR_FS_* = Filesystem directories (local/physical)
 // * DIR_WS_* = Webserver directories (virtual/URL)
-  define('HTTP_SERVER', 'http://kt.gamelife.jp'); // eg, http://localhost - should not be empty for productive servers
-  define('HTTPS_SERVER', 'https://kt.gamelife.jp'); // eg, https://localhost - should not be empty for productive servers
-  define('ENABLE_SSL', false); // secure webserver for checkout procedure?
+  define('URL_SUB_SITE', 'haomai.cc');
+  define('URL_SUB_SITE_ENABLED', 0);
+  define('HTTP_SERVER', 'http://wwww.haomai.cc'); // eg, http://localhost - should not be empty for productive servers
+  define('HTTPS_SERVER', 'https://www.gamelife.jp/wwww.haomai.cc'); // eg, https://localhost - should not be empty for productive servers
+  define('ENABLE_SSL', true); // secure webserver for checkout procedure?
   define('DIR_WS_CATALOG', '/'); // absolute path required
   define('DIR_WS_IMAGES', 'images/');
   define('DIR_WS_ICONS', DIR_WS_IMAGES . 'icons/');
