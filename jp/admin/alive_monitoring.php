@@ -6,9 +6,9 @@
 //设置常量
 //MYSQL_GROUP
 define('MYSQL_HOST','localhost');
-define('MYSQL_USER','jp_gamelife_jp');
-define('MYSQL_PASSWORD','kWSoiSiE');
-define('MYSQL_DATABASE','jp_gamelife_jp');
+define('MYSQL_USER','root');
+define('MYSQL_PASSWORD','123456');
+define('MYSQL_DATABASE','maker_3rmt');
 define('MYSQL_DNS','mysql:host='.MYSQL_HOST.';dbname:'.MYSQL_DATABASE);
 define('MINITOR_DOMAINS_FROM_MYSQL',true);//是否从MYSQL读取想要确认的数据
 define('MSG_WEB_SUCCESS','web success');
@@ -90,13 +90,13 @@ function getDomains(){
     }
     }else{
     //不从页面执行的时候 查找 next=1 的 也就是有标记的
-    $res = db_query('select * from monitor where enable="on" and next="1"');
+    $res = db_query('select * from monitor where enable="on" and next="1" order by id');
     if($domain = mysql_fetch_object($res,'Monitor')){
       $domains[] = $domain;
       $run_id = $domain->id;
     }else{
       //如果没有标记 查找第一个
-      $res = db_query('select * from monitor where enable="on" limit 1');
+      $res = db_query('select * from monitor where enable="on" order by id limit 1');
       if($domain = mysql_fetch_object($res,'Monitor')){
         $domains[] = $domain;
         $run_id = $domain->id;
@@ -105,7 +105,7 @@ function getDomains(){
     //把当前标记去除
     db_query('update monitor set next="0" where enable="on" and id="'.$run_id.'"');
     //给下一个有效记录标记
-    db_query('update monitor set next="1" where enable="on" and id>"'.$run_id.'" limit 1');
+    db_query('update monitor set next="1" where enable="on" and id>"'.$run_id.'" order by id limit 1');
     //    mysql_close($conn);
     }
   }
@@ -296,7 +296,7 @@ class Monitor {
     //    echo "\r\n";
   }
   function isAlivePage(){
-    if (file_get_contents($this->getUrl())){
+    if (@file_get_contents($this->getUrl())){
       return true;
     }else {
       return false;
@@ -308,14 +308,14 @@ class Monitor {
     return true;
   }
   function isAliveHttp(){
-    if (file_get_contents($this->getHostUrl())){
+    if (@file_get_contents($this->getHostUrl())){
       return true;
     }else {
       return false;
     }
   }
   function isAliveHttps(){
-    if (file_get_contents($this->getHostUrl(true))){
+    if (@file_get_contents($this->getHostUrl(true))){
       return true;
     }else {
       return false;
@@ -325,14 +325,16 @@ class Monitor {
   function isAliveMysql(){
     return true;
   }
-
   function isAliveHost(){
+    /*
     $ping_command_str = "ping -c 3 -w 5 ".$this->parsedurl['host'];
     if (!strstr(`$ping_command_str`, '100% packet loss')){
       return true;
     }else {
       return false;
     }
+    */
+    return true;
   }
 }
 //先file_get_content 如果成功 不用检查 机器是否开机,如果不成功再检查是否开机
