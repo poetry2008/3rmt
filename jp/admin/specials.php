@@ -28,7 +28,7 @@
         $new_special_insert = tep_db_fetch_array($new_special_insert_query);
         $_POST['products_price'] = $new_special_insert['products_price'];
         $_POST['specials_price'] = ($_POST['products_price'] - (($_POST['specials_price'] / 100) * $_POST['products_price']));
-      }	
+      } 
 
       $expires_date = '';
       if ($_POST['day'] && $_POST['month'] && $_POST['year']) {
@@ -63,7 +63,7 @@
       break;
   }
 ?>
-<!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
@@ -107,7 +107,7 @@
   if ( isset($_GET['action']) && (($_GET['action'] == 'new') || ($_GET['action'] == 'edit')) ) {
     $form_action = 'insert';
     if ( ($_GET['action'] == 'edit') && ($_GET['sID']) ) {
-	  $form_action = 'update';
+    $form_action = 'update';
 
       $product_query = tep_db_query("
           select p.products_id, 

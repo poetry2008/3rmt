@@ -1,26 +1,16 @@
 <?php
 /*
   $Id$
-
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-
-  Copyright (c) 2002 osCommerce
-
-
-  Released under the GNU General Public License
 */
   require('includes/application_top.php');
   //require("includes/jcode.phps");
   $msg = "";
   if (isset($_GET['action']) && $_GET['action'] == 'download'){
-	    header("Content-Type: application/force-download");
-	    header('Pragma: public');
-	    header("Content-Disposition: attachment; filename=mag_list.csv");
+      header("Content-Type: application/force-download");
+      header('Pragma: public');
+      header("Content-Disposition: attachment; filename=mag_list.csv");
       print chr(0xEF).chr(0xBB).chr(0xBF);
- 	    $query = tep_db_query("
+      $query = tep_db_query("
           select mag_id,
                  mag_email,
                  mag_name
@@ -29,35 +19,35 @@
           order by mag_id");
 
 
-	    $CsvFields = array("ＩＤ","メールアドレス","姓名");
-		for($i=0;$i<count($CsvFields);$i++){
-			print $CsvFields[$i] . ",";
-		}
-		print "\n";
-		
-		while($result = tep_db_fetch_array($query)) {
-		  //ID
-		  print $result['mag_id'] . ",";
-		
-		  //メールアドレス
-		  print $result['mag_email'] . ",";
-		
-		  //姓名
-		  print $result['mag_name'];
-		  
-		  print "\n";
-		}
-		
-		//header("Location: ". $_SERVER['PHP_SELF']);
-		$msg = MSG_UPLOAD_IMG;
-		
+      $CsvFields = array("ＩＤ","メールアドレス","姓名");
+    for($i=0;$i<count($CsvFields);$i++){
+      print $CsvFields[$i] . ",";
+    }
+    print "\n";
+    
+    while($result = tep_db_fetch_array($query)) {
+      //ID
+      print $result['mag_id'] . ",";
+    
+      //メールアドレス
+      print $result['mag_email'] . ",";
+    
+      //姓名
+      print $result['mag_name'];
+      
+      print "\n";
+    }
+    
+    //header("Location: ". $_SERVER['PHP_SELF']);
+    $msg = MSG_UPLOAD_IMG;
+    
 
 
  }else{
 
 
 ?>
-<!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET;?>">
