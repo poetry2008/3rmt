@@ -26,7 +26,9 @@
   </td>
   </tr>
 <?php
+if(preg_match("/".FILENAME_ORDERS."/",$PHP_SELF)){
    echo tep_minitor_info();
+   }
 ?>
 
   <tr class="headerBar">
