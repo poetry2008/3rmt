@@ -168,16 +168,16 @@
 
         $languages = tep_get_languages();
         for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
-          $categories_name_array = $_POST['categories_name'];
-          $categories_meta_text = $_POST['categories_meta_text'];
-          $seo_name = $_POST['seo_name'];
-          $seo_description = $_POST['seo_description'];
+          $categories_name_array  = $_POST['categories_name'];
+          $categories_meta_text   = $_POST['categories_meta_text'];
+          $seo_name               = $_POST['seo_name'];
+          $seo_description        = $_POST['seo_description'];
           $categories_header_text = $_POST['categories_header_text'];
           $categories_footer_text = $_POST['categories_footer_text'];
-          $text_information = $_POST['text_information'];
-          $meta_keywords = $_POST['meta_keywords'];
-          $meta_description = $_POST['meta_description'];
-          $romaji = $_POST['romaji'];
+          $text_information       = $_POST['text_information'];
+          $meta_keywords          = $_POST['meta_keywords'];
+          $meta_description       = $_POST['meta_description'];
+          $romaji                 = $_POST['romaji'];
 
           $language_id = $languages[$i]['id'];
           $sql_data_array = array(
@@ -198,8 +198,9 @@
                                      'language_id'   => $languages[$i]['id'],
                                      'site_id'       => $site_id
                                      );
-            
-            if (tep_db_num_rows(tep_db_query("select * from ".TABLE_CATEGORIES_DESCRIPTION." where romaji='".$sql_data_array['romaji']."' and site_id='".$site_id."'"))) {
+            //$current_category_id
+            //exit("select * from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id=cd.categories_id and c.parent_id='".$current_category_id."' and cd.romaji='".$sql_data_array['romaji']."' and cd.site_id='".$site_id."'");
+            if (tep_db_num_rows(tep_db_query("select * from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id=cd.categories_id and c.parent_id='".$current_category_id."' and cd.romaji='".$sql_data_array['romaji']."' and cd.site_id='".$site_id."'"))) {
               $messageStack->add_session(TEXT_ROMAJI_EXISTS, 'error');
               tep_redirect(tep_href_link(FILENAME_CATEGORIES));
             }
@@ -228,7 +229,7 @@
       
       } elseif ($_GET['action'] == 'update_category') {
 
-        if (tep_db_num_rows(tep_db_query("select * from ".TABLE_CATEGORIES_DESCRIPTION." where romaji='".$sql_data_array['romaji']."' and site_id='".$site_id."' and categories_id!='".$categories_id."'"))) {
+        if (tep_db_num_rows(tep_db_query("select * from ".TABLE_CATEGORIES_DESCRIPTION." cd,".TABLE_CATEGORIES." c where cd.categories_id=c.categories_id and c.parent_id='".$current_category_id."' and cd.romaji='".$sql_data_array['romaji']."' and cd.site_id='".$site_id."' and c.categories_id!='".$categories_id."'"))) {
               $messageStack->add_session(TEXT_ROMAJI_EXISTS, 'error');
               tep_redirect(tep_href_link(FILENAME_CATEGORIES));
         }
