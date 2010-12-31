@@ -138,6 +138,12 @@ if ($category_depth == 'nested') {
         $listing_tmp_sql = $listing_sql;
         $list_tmp_query = tep_db_query($listing_tmp_sql);
         if (tep_db_num_rows($list_tmp_query)) {
+          $isone_ca_query = tep_db_query("select * from categories where categories_id = '".$current_category_id."' and parent_id = '0'"); 
+          if (tep_db_num_rows($isone_ca_query)) {
+            $has_ca_single = true; 
+          } else {
+            $has_ca_single = false; 
+          }
           include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); 
         }
       } else {
