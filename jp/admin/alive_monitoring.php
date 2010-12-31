@@ -369,37 +369,16 @@ if(isset($_SERVER["HTTP_USER_AGENT"])){
   </head>
   <body>
 <?
-if (count($alivelist)){
-  echo "We are alive:";
-  echo "</br>";
-  ?>
-<table>
-<?php
-  foreach ($alivelist as $value){
-    echo "<tr><td>$value</td></tr>"; 
+if (!count($loglist)){
+  $sql = "select configuration_value from configuration where 
+    configuration_group_id = '1' and 
+    configuration_key = 'WE_ARE_ALIVE'";
+  $res = db_query($sql);
+  if($row = mysql_fetch_array($res)){
+    echo $row['configuration_value'];
   }
-?>
-</table>
-<?php 
-}
-
-if (count($loglist)){
-  echo "We have problem:";
-  echo "</br>";
-  ?>
-  <table>
-<?php      
-  foreach($loglist as $key=>$value){
-     echo "<tr><td>$key</td><td>$value</td></tr>";
-  }
-?>
-</table>
-<?php
 }
 ?>
-    </br>
-    This page not make log
-    </br>
 </body>
 </html>
 <?php
