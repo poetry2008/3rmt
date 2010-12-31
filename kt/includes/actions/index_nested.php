@@ -100,7 +100,19 @@
             </div>
       <p class="comment"><?php echo $seo_category['categories_footer_text']; //seoフレーズ ?></p>
             <p class="pageBottom"></p>
-      <?php $new_products_category_id = $current_category_id; include(DIR_WS_MODULES .'new_products2.php'); ?>
+      <?php 
+      $new_products_category_id = $current_category_id; 
+      $exone_single = false; 
+      $exone_query = tep_db_query("select * from categories where categories_id = '".$current_category_id."' and parent_id = '0'"); 
+      if (tep_db_num_rows($exone_query)) {
+        $exone_single = true; 
+      }
+      if (!$exone_single) {
+        include(DIR_WS_MODULES .'new_products5.php'); 
+      } else {
+        include(DIR_WS_MODULES .'new_products2.php'); 
+      }
+      ?>
 <?php  
   if (isset($cPath_array)) {
     if ($seo_category['seo_description']) {
