@@ -127,7 +127,11 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
           $navigation->clear_snapshot();
           tep_redirect($origin_href);
         } else {
-          tep_redirect(tep_href_link(FILENAME_DEFAULT));
+          if (ENABLE_SSL && $request_type == 'SSL') {
+            tep_redirect(tep_href_link(FILENAME_DEFAULT, '', 'NONSSL').'?'.tep_session_name().'='.tep_session_id());
+          } else {
+            tep_redirect(tep_href_link(FILENAME_DEFAULT, '', 'NONSSL'));
+          }
         }
       }
     }
