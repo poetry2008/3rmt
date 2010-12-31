@@ -3098,6 +3098,7 @@ function tep_get_products_rate($pid) {
   
 
 function tep_get_google_adsense_adurl($url) {
+  /*
   $arr = parse_url($url);
   $q_arr = array();
   if ($arr['query']) {
@@ -3110,6 +3111,12 @@ function tep_get_google_adsense_adurl($url) {
       return $q_arr['adurl'];
     }
     return false;
+  } else {
+    return false;
+  }
+  */
+  if (preg_match('/affr=adwords/',$url)) {
+    return '1';
   } else {
     return false;
   }
