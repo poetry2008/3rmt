@@ -168,16 +168,16 @@
 
         $languages = tep_get_languages();
         for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
-          $categories_name_array = $_POST['categories_name'];
-          $categories_meta_text = $_POST['categories_meta_text'];
-          $seo_name = $_POST['seo_name'];
-          $seo_description = $_POST['seo_description'];
+          $categories_name_array  = $_POST['categories_name'];
+          $categories_meta_text   = $_POST['categories_meta_text'];
+          $seo_name               = $_POST['seo_name'];
+          $seo_description        = $_POST['seo_description'];
           $categories_header_text = $_POST['categories_header_text'];
           $categories_footer_text = $_POST['categories_footer_text'];
-          $text_information = $_POST['text_information'];
-          $meta_keywords = $_POST['meta_keywords'];
-          $meta_description = $_POST['meta_description'];
-          $romaji = $_POST['romaji'];
+          $text_information       = $_POST['text_information'];
+          $meta_keywords          = $_POST['meta_keywords'];
+          $meta_description       = $_POST['meta_description'];
+          $romaji                 = $_POST['romaji'];
 
           $language_id = $languages[$i]['id'];
           $sql_data_array = array(
@@ -198,8 +198,9 @@
                                      'language_id'   => $languages[$i]['id'],
                                      'site_id'       => $site_id
                                      );
-            
-            if (tep_db_num_rows(tep_db_query("select * from ".TABLE_CATEGORIES_DESCRIPTION." where romaji='".$sql_data_array['romaji']."' and site_id='".$site_id."'"))) {
+            //$current_category_id
+            //exit("select * from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id=cd.categories_id and c.parent_id='".$current_category_id."' and cd.romaji='".$sql_data_array['romaji']."' and cd.site_id='".$site_id."'");
+            if (tep_db_num_rows(tep_db_query("select * from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id=cd.categories_id and c.parent_id='".$current_category_id."' and cd.romaji='".$sql_data_array['romaji']."' and cd.site_id='".$site_id."'"))) {
               $messageStack->add_session(TEXT_ROMAJI_EXISTS, 'error');
               tep_redirect(tep_href_link(FILENAME_CATEGORIES));
             }
@@ -228,7 +229,7 @@
       
       } elseif ($_GET['action'] == 'update_category') {
 
-        if (tep_db_num_rows(tep_db_query("select * from ".TABLE_CATEGORIES_DESCRIPTION." where romaji='".$sql_data_array['romaji']."' and site_id='".$site_id."' and categories_id!='".$categories_id."'"))) {
+        if (tep_db_num_rows(tep_db_query("select * from ".TABLE_CATEGORIES_DESCRIPTION." cd,".TABLE_CATEGORIES." c where cd.categories_id=c.categories_id and c.parent_id='".$current_category_id."' and cd.romaji='".$sql_data_array['romaji']."' and cd.site_id='".$site_id."' and c.categories_id!='".$categories_id."'"))) {
               $messageStack->add_session(TEXT_ROMAJI_EXISTS, 'error');
               tep_redirect(tep_href_link(FILENAME_CATEGORIES));
         }
@@ -1820,7 +1821,7 @@ if (isset($nowColor) && $nowColor == $odd) {
             <td class="dataTableContent" align="right">&nbsp;</td>
             <td class="dataTableContent" align="center">
 <?php if ($ocertify->npermission == 15 or $ocertify->npermission == 10) {?>
-<?php if (!isset($_GET['cPath']) or !$_GET['cPath']){?>
+<?php //if (!isset($_GET['cPath']) or !$_GET['cPath']){?>
                 <?php if($categories['categories_status'] == '1'){?>
                   <a href="<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=0&cPath='.$HTTP_GET_VARS['cPath']);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', '');?></a> <a href="<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=2&cPath='.$HTTP_GET_VARS['cPath']);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', '');?></a> <?php echo tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '');?> 
                 <?php } else if($categories['categories_status'] == '2'){?>
@@ -1829,7 +1830,7 @@ if (isset($nowColor) && $nowColor == $odd) {
                   <?php echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', '');?> <a href="<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=2&cPath='.$_GET['cPath']);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', '');?></a> <a href="<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=1&cPath='.$_GET['cPath']);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', '');?></a> 
                 <?php }?>
             <?php }?>
-<?php }?>
+<?php //}?>
             </td>
             <td class="dataTableContent" align="right"><?php if ( (isset($cInfo) && is_object($cInfo)) && ($categories['categories_id'] == $cInfo->categories_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $categories['categories_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>
 &nbsp;</td>
@@ -1923,13 +1924,6 @@ if (isset($nowColor) && $nowColor == $odd) {
                     <td class="dataTableContent"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;&nbsp;<a href="orders.php?search_type=products_name&keywords=' . urlencode($products['products_name']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;' . $products['products_name']; ?></td>
 
                       <td class="dataTableContent" align="right"><?php
-/*
-$special_price_check = tep_get_products_special_price($products['products_id']);
-if (!empty($special_price_check)) {
-  echo '<s>' . $currencies->format($products['products_price']) . '</s> <span class="specialPrice">' . $currencies->format($special_price_check) . '</span>';
-} else {
-  echo $currencies->format($products['products_price']);
-}*/
       $product_price = tep_get_products_price($products['products_id']);
       if ($product_price['sprice']) {
         echo '<s>' . $currencies->format($product_price['price']) . '</s> <span class="specialPrice">' . $currencies->format($product_price['sprice']) . '</span>';

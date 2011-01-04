@@ -3012,23 +3012,25 @@ function tep_get_romaji_cpath($cpath)
     return $category['romaji'];
 }
 
-function tep_get_cpath_by_cname($cname)
+function tep_get_cpath_by_cname($cname, $parent_id = 0)
 {
-    global $languages_id;
-    if (empty($language)){
-      $language = $languages_id;
-    }
-    //ccdd
-    $queryString = "
-        select `categories_id` 
-        from " .  TABLE_CATEGORIES_DESCRIPTION . "
-        where romaji = '" . $cname .  "' 
-          and language_id = '" . (int)$language . "' 
-          and (site_id = '".SITE_ID."' or site_id = '0')
-        order by site_id DESC" ;
-    $category_query = tep_db_query($queryString);
-    $category = tep_db_fetch_array($category_query);
-    return $category['categories_id'];
+  global $languages_id;
+  if (empty($language)){
+    $language = $languages_id;
+  }
+  //ccdd
+  $queryString = "
+      select cd.`categories_id` 
+      from " .  TABLE_CATEGORIES . " c, " .  TABLE_CATEGORIES_DESCRIPTION . " cd
+      where c.categories_id = cd.categories_id
+        and c.parent_id = '".$parent_id."'
+        and cd.romaji = '" . $cname .  "' 
+        and cd.language_id = '" . (int)$language . "' 
+        and (cd.site_id = '".SITE_ID."' or cd.site_id = '0')
+      order by cd.site_id DESC" ;
+  $category_query = tep_db_query($queryString);
+  $category = tep_db_fetch_array($category_query);
+  return $category['categories_id'];
 
 }
 function tep_get_categories_by_pid($pid,$romaji=true)
@@ -3096,6 +3098,7 @@ function tep_get_products_rate($pid) {
   
 
 function tep_get_google_adsense_adurl($url) {
+  /*
   $arr = parse_url($url);
   $q_arr = array();
   if ($arr['query']) {
@@ -3108,6 +3111,12 @@ function tep_get_google_adsense_adurl($url) {
       return $q_arr['adurl'];
     }
     return false;
+  } else {
+    return false;
+  }
+  */
+  if (preg_match('/affr=adwords/',$url)) {
+    return '1';
   } else {
     return false;
   }
@@ -3150,8 +3159,8 @@ function tep_parseURI()
     $router = 'x'; 
   }
   if(isset($_GET['cName'])){
-  $firstId = tep_get_cpath_by_cname($_GET['cName']);
-  $_GET['cPath'] = $firstId;
+    $firstId = tep_get_cpath_by_cname($_GET['cName']);
+    $_GET['cPath'] = $firstId;
   }
   switch($router){
   case 'firstFolder':
@@ -3159,7 +3168,7 @@ function tep_parseURI()
     if(substr($firstFolder,-1)=='/'){
       $firstFolder = substr($firstFolder,0,-1);
     }
-    $secondId = tep_get_cpath_by_cname($firstFolder);
+    $secondId = tep_get_cpath_by_cname($firstFolder, $firstId);
     if ($secondId == 0) {
       forward404();
     }
@@ -3168,8 +3177,8 @@ function tep_parseURI()
   case 'secondFolder':
     $secondFolder = substr($subSiteUri,1);
     $folder_arr = explode('/', $secondFolder); 
-    $secondId = tep_get_cpath_by_cname($folder_arr[0]);
-    $thirdId  = tep_get_cpath_by_cname($folder_arr[1]); 
+    $secondId = tep_get_cpath_by_cname($folder_arr[0], $firstId);
+    $thirdId  = tep_get_cpath_by_cname($folder_arr[1], $firstId); 
     if ($thirdId == 0) {
       forward404();
     }
