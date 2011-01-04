@@ -39,7 +39,7 @@
 </table>
 <?php 
 // 显示SQL执行记录
-if (STORE_DB_TRANSACTIONS or 1) {?>
+if (STORE_DB_TRANSACTIONS) {?>
 <div id="debug_info" style="text-align:left;">
   <pre>
 <?php if(isset($log_queries)){

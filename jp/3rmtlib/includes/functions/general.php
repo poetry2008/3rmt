@@ -3125,70 +3125,126 @@ function tep_get_google_adsense_adurl($url) {
 // id 子域名解析专用
 function tep_parseURI()
 {
-  //如果是https的链接不解析{
-  $tmpArr = parse_url(HTTPS_SERVER);
-  $tmpHttphost = $tmpArr['host'];
-  unset($tmpArr);
-  if($tmpHttphost == $_SERVER['HTTP_HOST']){
-    return true;
-  }
-  //}
-  if(substr($_SERVER['HTTP_HOST'],0,3)=='www'){
-    return true;
-  }
-  $subSiteUri = $_SERVER['REQUEST_URI'];
-  $g_pos = strpos($_SERVER['REQUEST_URI'], '?'); 
-  if ($g_pos !== false) {
-    $subSiteUri = substr($_SERVER['REQUEST_URI'], 0, $g_pos);
-  }
-  $router = 'x';
-  $rewriteRule = array(
-                       "firstFolder"  => "/^\/[a-zA-Z0-9\-]+\/?$/",        //   /abc(/)
-                       "secondFolder" => '/^\/[a-zA-Z0-9\-]+\/[a-zA-Z0-9\-]+\/?$/',              //   /asb/xcv(/)
-                       "thirdFolder"  => '/^\/[a-zA-Z0-9\-]+\/[a-zA-Z0-9\-]+\/[a-zA-Z0-9\-]+\/?$/',              //   /asb/xcv(/)
-                       "product"      => '/\.html$/'                    //   /asd/xcv/xcv.html  /zxv.html /xcv/xcv/xc.html
-                       );
-  foreach ($rewriteRule as $ruler=>$value){
-    //if (preg_match($value, $rewriteRule)) {
-    if (preg_match($value, $subSiteUri)) {
-      $router = $ruler;
+  if (defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED) {
+    //如果是https的链接不解析{
+    $tmpArr = parse_url(HTTPS_SERVER);
+    $tmpHttphost = $tmpArr['host'];
+    unset($tmpArr);
+    if($tmpHttphost == $_SERVER['HTTP_HOST']){
+      return true;
     }
-  }
-  $i_pos = strpos($_SERVER['REQUEST_URI'], '/?cmd=');
-  if ($i_pos !== false) {
-    $router = 'x'; 
-  }
-  if(isset($_GET['cName'])){
-    $firstId = tep_get_cpath_by_cname($_GET['cName']);
-    $_GET['cPath'] = $firstId;
-  }
-  switch($router){
-  case 'firstFolder':
-    $firstFolder = substr($subSiteUri,1);
-    if(substr($firstFolder,-1)=='/'){
-      $firstFolder = substr($firstFolder,0,-1);
+    //}
+    if(substr($_SERVER['HTTP_HOST'],0,3)=='www'){
+      return true;
     }
-    $secondId = tep_get_cpath_by_cname($firstFolder, $firstId);
-    if ($secondId == 0) {
-      forward404();
+    $subSiteUri = $_SERVER['REQUEST_URI'];
+    $g_pos = strpos($_SERVER['REQUEST_URI'], '?'); 
+    if ($g_pos !== false) {
+      $subSiteUri = substr($_SERVER['REQUEST_URI'], 0, $g_pos);
     }
-    $_GET['cPath'] = join('_',array($firstId,$secondId));
-    break;
-  case 'secondFolder':
-    $secondFolder = substr($subSiteUri,1);
-    $folder_arr = explode('/', $secondFolder); 
-    $secondId = tep_get_cpath_by_cname($folder_arr[0], $firstId);
-    $thirdId  = tep_get_cpath_by_cname($folder_arr[1], $firstId); 
-    if ($thirdId == 0) {
-      forward404();
+    $router = 'x';
+    $rewriteRule = array(
+                         "firstFolder"  => "/^\/[a-zA-Z0-9\-]+\/?$/",        //   /abc(/)
+                         "secondFolder" => '/^\/[a-zA-Z0-9\-]+\/[a-zA-Z0-9\-]+\/?$/',              //   /asb/xcv(/)
+                         "thirdFolder"  => '/^\/[a-zA-Z0-9\-]+\/[a-zA-Z0-9\-]+\/[a-zA-Z0-9\-]+\/?$/',              //   /asb/xcv(/)
+                         "product"      => '/\.html$/'                    //   /asd/xcv/xcv.html  /zxv.html /xcv/xcv/xc.html
+                         );
+    foreach ($rewriteRule as $ruler=>$value){
+      //if (preg_match($value, $rewriteRule)) {
+      if (preg_match($value, $subSiteUri)) {
+        $router = $ruler;
+      }
     }
-    $_GET['cPath'] = join('_',array($firstId,$secondId,$thirdId));
-    break;
-  case 'product':
-    $tmpArray = explode('/',$subSiteUri);
-    $pid = $tmpArray[count($tmpArray)-1];
-    $pid = substr($pid,0,-5);
-    $_GET['products_id'] = $pid;
+    $i_pos = strpos($_SERVER['REQUEST_URI'], '/?cmd=');
+    if ($i_pos !== false) {
+      $router = 'x'; 
+    }
+    if(isset($_GET['cName'])){
+      $firstId = tep_get_cpath_by_cname($_GET['cName']);
+      $_GET['cPath'] = $firstId;
+    }
+    switch($router){
+    case 'firstFolder':
+      $firstFolder = substr($subSiteUri,1);
+      if(substr($firstFolder,-1)=='/'){
+        $firstFolder = substr($firstFolder,0,-1);
+      }
+      $secondId = tep_get_cpath_by_cname($firstFolder, $firstId);
+      if ($secondId == 0) {
+        forward404();
+      }
+      $_GET['cPath'] = join('_',array($firstId,$secondId));
+      break;
+    case 'secondFolder':
+      $secondFolder = substr($subSiteUri,1);
+      $folder_arr = explode('/', $secondFolder); 
+      $secondId = tep_get_cpath_by_cname($folder_arr[0], $firstId);
+      $thirdId  = tep_get_cpath_by_cname($folder_arr[1], $firstId); 
+      if ($thirdId == 0) {
+        forward404();
+      }
+      $_GET['cPath'] = join('_',array($firstId,$secondId,$thirdId));
+      break;
+    case 'product':
+      $tmpArray = explode('/',$subSiteUri);
+      $pid = $tmpArray[count($tmpArray)-1];
+      $pid = substr($pid,0,-5);
+      $_GET['products_id'] = $pid;
+    }
+  } else {
+    
+    $subSiteUri = $_SERVER['REQUEST_URI'];
+    $g_pos = strpos($_SERVER['REQUEST_URI'], '?'); 
+    if ($g_pos !== false) {
+      $subSiteUri = substr($_SERVER['REQUEST_URI'], 0, $g_pos);
+    }
+    $router = 'x';
+    $rewriteRule = array(
+                         "firstFolder"  => "/^\/[a-zA-Z0-9\-]+\/?$/",
+                         "secondFolder" => '/^\/[a-zA-Z0-9\-]+\/[a-zA-Z0-9\-]+\/?$/',
+                         "thirdFolder"  => '/^\/[a-zA-Z0-9\-]+\/[a-zA-Z0-9\-]+\/[a-zA-Z0-9\-]+\/?$/',
+                         "product"      => '/\.html$/'
+                         );
+    foreach ($rewriteRule as $ruler=>$value){
+      if (preg_match($value, $subSiteUri)) {
+        $router = $ruler;
+      }
+    }
+    $i_pos = strpos($_SERVER['REQUEST_URI'], '/?cmd=');
+    if ($i_pos !== false) {
+      $router = 'x'; 
+    }
+    /*
+    if(isset($_GET['cName'])){
+      $firstId = tep_get_cpath_by_cname($_GET['cName']);
+      $_GET['cPath'] = $firstId;
+    }
+    */
+    switch($router){
+    case 'firstFolder':
+    case 'secondFolder':
+    case 'thirdFolder':
+      $tmpArray = explode('/',$subSiteUri);
+      $tmpArray2 = array();
 
+      foreach ($tmpArray as $v) {
+        if ($v) {
+          $cid = tep_get_cpath_by_cname($v,$tmpArray2[count($tmpArray2)-1]);
+          if ($cid) {
+            $tmpArray2[] = $cid;
+          } else {
+            forward404();
+          }
+        }
+      }
+
+      $_GET['cPath'] = implode('_', $tmpArray2);
+      break;
+    case 'product':
+      $tmpArray = explode('/',$subSiteUri);
+      $pid = $tmpArray[count($tmpArray)-1];
+      $pid = substr($pid,0,-5);
+      $_GET['products_id'] = $pid;
+    }
   }
 }

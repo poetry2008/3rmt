@@ -486,7 +486,6 @@ select {
 .header_flash_content {
 	width: 862px;
 	text-align: left;
-	background: url(images/design/header/header_flash_content_bg.gif) repeat-x;
 }
 .header_flash_content td {
 	vertical-align:top;
@@ -1324,7 +1323,7 @@ margin:10px 0 0 0;
 	background-color:#CCCBCB;
 	padding:5px 2px;
 	margin-bottom:5px;
-	color:#fff;
+	color:#444;
 }
 .login_inc03 a{
 	font-size:12px;

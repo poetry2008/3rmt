@@ -610,11 +610,11 @@
         
         //products_attributes
         $op_sql_date_array = array('products_id' => tep_db_prepare_input($products_id),
-                           'options_id' => tep_db_prepare_input($op1),
-                       'options_values_id' => tep_db_prepare_input($op2),
-                       'options_values_price' => tep_db_prepare_input($options_price),
-                       'price_prefix' => tep_db_prepare_input($options_prefix),
-                     'products_at_quantity' => tep_db_prepare_input($products_at_quantity)
+                                  'options_id' => tep_db_prepare_input($op1),
+                                  'options_values_id' => tep_db_prepare_input($op2),
+                                  'options_values_price' => tep_db_prepare_input($options_price),
+                                  'price_prefix' => tep_db_prepare_input($options_prefix),
+                                  'products_at_quantity' => tep_db_prepare_input($products_at_quantity)
                      );
         
         tep_db_perform('products_attributes', $op_sql_date_array);
@@ -800,20 +800,40 @@ function mess(){
   //}
 }
 function calculate_price(){
-  $('#a_1').html(Math.ceil(5000/$('#pp').val()));
-  if ($('#a_1').html()%10 < 5) {
-    $('#a_2').html(Math.floor($('#a_1').html()/10)*10+5);
+  if (parseInt($('#pp').val()) != 0) {
+    $('#a_1').html(Math.ceil(5000/$('#pp').val()));
+    if ($('#a_1').html()%10 != 0) {
+    if ($('#a_1').html()%10 < 5) {
+      $('#a_2').html(Math.floor($('#a_1').html()/10)*10+5);
+    } else {
+      $('#a_2').html('');
+    }
+    $('#a_3').html(Math.floor($('#a_1').html()/10)*10+10);
+    } else {
+      $('#a_2').html('');
+      $('#a_3').html('');
+    }
+
+    $('#b_1').html(Math.ceil(10000/$('#pp').val()));
+    if ($('#b_1').html()%10 != 0) {
+    if ($('#b_1').html()%10 < 5) {
+      $('#b_2').html(Math.floor($('#b_1').html()/10)*10+5);
+    } else {
+      $('#b_2').html('');
+    }
+    $('#b_3').html(Math.floor($('#b_1').html()/10)*10+10);
+    } else {
+      $('#b_2').html('');
+      $('#b_3').html('');
+    }
   } else {
+    $('#a_1').html('');
     $('#a_2').html('');
-  }
-  $('#a_3').html(Math.floor($('#a_1').html()/10)*10+10);
-  $('#b_1').html(Math.ceil(10000/$('#pp').val()));
-  if ($('#b_1').html()%10 < 5) {
-    $('#b_2').html(Math.floor($('#b_1').html()/10)*10+5);
-  } else {
+    $('#a_3').html('');
+    $('#b_1').html('');
     $('#b_2').html('');
+    $('#b_3').html('');
   }
-  $('#b_3').html(Math.floor($('#b_1').html()/10)*10+10);
 }
 
 function change_qt(ele){

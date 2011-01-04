@@ -47,7 +47,7 @@ class Model_Nodes extends FLEA_Db_TableDataGateway
      *
      * @var string
      */
-    var $tableName = 'kt_nodes';
+    var $tableName = 'rk_nodes';
 
     /**
      * 主键字段名，在继承类中可能会被覆盖
