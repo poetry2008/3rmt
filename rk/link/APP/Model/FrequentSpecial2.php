@@ -6,7 +6,7 @@ class Model_FrequentSpecial2 extends FLEA_Db_TableDataGateway
     parent::FLEA_Db_TableDataGateway();
     //$this->disableLinks();
   }
-  var $tableName = 'kt_frequent_special2';
+  var $tableName = 'rk_frequent_special2';
   var $primaryKey = 'class_id';
     var $belongsTo = array(
         //关联相对应分类
