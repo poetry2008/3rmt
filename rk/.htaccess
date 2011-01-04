@@ -49,7 +49,12 @@ RewriteRule ^latest_news/?$ latest_news.php
 RewriteRule ^latest_news/page(\d+).html$ latest_news.php?page=$1
 RewriteRule ^latest_news/([0-9]+)\.html$ latest_news.php?news_id=$1&%{QUERY_STRING}
 
-#RewriteRule ^link/?$ domain.php
+# romaji
+RewriteRule ^([a-z0-9\-]+)/([a-z0-9\-]+)\.html product_info.php?products_id=$2 [QSA,L]
+RewriteRule ^([a-z0-9\-]+)/([a-z0-9\-]+)/([a-z0-9\-]+)\.html product_info.php?products_id=$3 [QSA,L]
+RewriteRule ^([a-z0-9\-]+)/([a-z0-9\-]+)/([a-z0-9\-]+)/([a-z0-9\-]+)\.html product_info.php?products_id=$4 [QSA,L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*) index.php?cName=$1 [QSA,PT,L]
 
 # http://rmt.worldmoney.jp/item/p-33129.html
 # if romaji RewriteRule ^item/p-([0-9A-Za-z_-]+).html$ product_info.php?products_id=$1&%{QUERY_STRING}
