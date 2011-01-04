@@ -485,7 +485,6 @@ select {
 .header_flash_content {
 	width: 862px;
 	text-align: left;
-	background: url(images/design/header/header_flash_content_bg.gif) repeat-x;
 }
 .header_flash_content td {
 	vertical-align:top;
