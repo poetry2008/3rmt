@@ -36,13 +36,12 @@
       tep_output_warning(WARNING_DOWNLOAD_DIRECTORY_NON_EXISTENT);
     }
   }
-//<script src="../Scripts/swfobject_modified.js" type="text/javascript"></script>
-//<script src="../Scripts/swfobject_modified.js" type="text/javascript"></script>
-    //<script src="DWConfiguration/ActiveContent/IncludeFiles/AC_RunActiveContent.js" type="text/javascript"></script>
-    //
 ?>
 
+<script src="../Scripts/swfobject_modified.js" type="text/javascript"></script>
 
+<script src="../Scripts/swfobject_modified.js" type="text/javascript"></script>
+<script src="DWConfiguration/ActiveContent/IncludeFiles/AC_RunActiveContent.js" type="text/javascript"></script>
 
 
 <div id="title">
@@ -63,7 +62,6 @@
       <table cellpadding="0"cellspacing="0" border="0" summary="logo">
           <tr>
             <td>
-               <!--[if IE]>
                <object id="FlashID" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="900" height="120">
                   <param name="movie" value="images/design/header_flash.swf?url_1=<?php echo HTTP_SERVER?>" >
                   <param name="quality" value="high" >
@@ -71,8 +69,7 @@
                   <param name="swfversion" value="8.0.35.0" >
                   <param name="expressinstall" value="Scripts/expressInstall.swf" >
                 </object>
-               <![endif]-->
-                <!--[if !IE]><!-->
+                <!--[if !IE]>-->
                 <object type="application/x-shockwave-flash" data="images/design/header_flash.swf?url_1=<?php echo HTTP_SERVER;?>" width="900" height="120">                  
                   <param name="quality" value="high" >
                   <param name="wmode" value="opaque" >
@@ -167,13 +164,9 @@
               </div>
             </td>
             <td width="400">
-              <div style="width:432px; height: 30px; overflow:hidden;">
-                <table style="margin-top:2px; *margin-top:2px;" cellpadding="0" cellspacing="1" summary="search">
+                <table class="header_botton" cellpadding="0" cellspacing="1" summary="search">
                   <tr>
                     <td>
-                      <a href="<?php echo tep_href_link('rss.php') ; ?>" class="header_menu_1">
-                      <?php //echo tep_image(DIR_WS_IMAGES.'design/button/rss.gif','RSS') ; ?>
-                      </a>
                       <a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'', 'SSL') ; ?>" class="header_menu_2">
                       <?php //echo tep_image(DIR_WS_IMAGES.'design/button/shopping_cart.gif',HEADER_TITLE_CART_CONTENTS);?>
                       </a>
@@ -182,10 +175,10 @@
                       </a>
                     </td>
                     <td width="104" align="right" class="top_subto">
-                    <span id="jk-shoppingcart"><?php echo $currencies->format($cart->show_total());?></span></td>
+                    <span id="jk-shoppingcart"><?php echo $currencies->format($cart->show_total());?></span>
+                    </td>
                   </tr>
                 </table>
-              </div>
             </td>
           </tr>
         </table>

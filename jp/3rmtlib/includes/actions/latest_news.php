@@ -21,13 +21,24 @@
     $breadcrumb->add(replace_store_name(strip_tags($latest_news['headline'])), tep_href_link(FILENAME_LATEST_NEWS, 'news_id='.$latest_news['news_id']));
     forward404Unless($latest_news);
   } else {
-    $latest_news_query_raw = '
-      SELECT * 
-      FROM ' . TABLE_LATEST_NEWS . ' 
-      WHERE status = 1 
-        AND (site_id = ' . SITE_ID . ' or site_id =0 )
-      ORDER BY isfirst DESC, date_added DESC
-    ';
+    if (SITE_ID > 3) {
+      $latest_news_query_raw = '
+        SELECT * 
+        FROM ' . TABLE_LATEST_NEWS . ' 
+        WHERE status = 1 
+          AND (site_id = ' . SITE_ID . ' or site_id =0 )
+          AND date_added >= "'.date("Y").'-01-01 00:00:00" 
+        ORDER BY isfirst DESC, date_added DESC
+      ';
+    } else {
+      $latest_news_query_raw = '
+        SELECT * 
+        FROM ' . TABLE_LATEST_NEWS . ' 
+        WHERE status = 1 
+          AND (site_id = ' . SITE_ID . ' or site_id =0 )
+        ORDER BY isfirst DESC, date_added DESC
+      ';
+    }
     $latest_news_split = new splitPageResults($_GET['page'], MAX_DISPLAY_LATEST_NEWS, $latest_news_query_raw, $latest_news_numrows);
     $latest_news_query = tep_db_query($latest_news_query_raw);
     forward404Unless(tep_db_num_rows($latest_news_query));

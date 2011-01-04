@@ -469,6 +469,7 @@ select {
 	padding-bottom: 5px;
 	background-color: #d6d6d6;
 }
+.header_botton{width:432px; height: 30px; overflow:hidden; float:right; margin-right:10px;}
 #header_flash {
 	width: 900px;
 	height: 120px;
@@ -537,9 +538,9 @@ select {
 }
 .header_menu_1, .header_menu_2, .header_menu_3 {
 	display: block;
-	float: left;
+	float: right;
 	height: 20px;
-	margin-right:5px;
+	margin-right:15px;
 }
 .header_menu_1 {
 	width: 71px;
@@ -564,6 +565,7 @@ select {
 	height:20px;
 	background: url(images/design/button/shoppingcart.gif) no-repeat 0 8px;
 	font-size:12px;
+	margin-right:15px;
 	color:#fff;
 }
 .top_subto span {
@@ -1359,6 +1361,7 @@ margin:10px 0 0 0;
 }
 .msg{
 	font-size:12px;
+	text-align:left;
 }
 .msg_list{
 	font-size:12px;

@@ -120,7 +120,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
             <input type="hidden" name="id" value="<?=$ticket->getExtId()?>">
             <input type="hidden" name="respid" value="<?=$respID?>">
             <input type="hidden" name="a" value="postmessage">
-            <div style="font-size:11px;">
+            <div style="font-size:11px;text-align:left;">
                 内容をご入力ください <font class="error">*&nbsp;<?=$errors['message']?></font><br/>
                 <textarea name="message" id="message" cols="60" rows="7" wrap="soft"><?=$info['message']?></textarea>
             </div>
