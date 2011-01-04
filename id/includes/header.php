@@ -36,12 +36,13 @@
       tep_output_warning(WARNING_DOWNLOAD_DIRECTORY_NON_EXISTENT);
     }
   }
+//<script src="../Scripts/swfobject_modified.js" type="text/javascript"></script>
+//<script src="../Scripts/swfobject_modified.js" type="text/javascript"></script>
+    //<script src="DWConfiguration/ActiveContent/IncludeFiles/AC_RunActiveContent.js" type="text/javascript"></script>
+    //
 ?>
 
-<script src="../Scripts/swfobject_modified.js" type="text/javascript"></script>
 
-<script src="../Scripts/swfobject_modified.js" type="text/javascript"></script>
-<script src="DWConfiguration/ActiveContent/IncludeFiles/AC_RunActiveContent.js" type="text/javascript"></script>
 
 
 <div id="title">
@@ -62,6 +63,7 @@
       <table cellpadding="0"cellspacing="0" border="0" summary="logo">
           <tr>
             <td>
+               <!--[if IE]>
                <object id="FlashID" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="900" height="120">
                   <param name="movie" value="images/design/header_flash.swf?url_1=<?php echo HTTP_SERVER?>" >
                   <param name="quality" value="high" >
@@ -69,7 +71,8 @@
                   <param name="swfversion" value="8.0.35.0" >
                   <param name="expressinstall" value="Scripts/expressInstall.swf" >
                 </object>
-                <!--[if !IE]>-->
+               <![endif]-->
+                <!--[if !IE]><!-->
                 <object type="application/x-shockwave-flash" data="images/design/header_flash.swf?url_1=<?php echo HTTP_SERVER;?>" width="900" height="120">                  
                   <param name="quality" value="high" >
                   <param name="wmode" value="opaque" >
