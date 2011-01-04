@@ -6,7 +6,7 @@ class Model_Class extends FLEA_Db_TableDataGateway
     parent::FLEA_Db_TableDataGateway();
     $this->disableLinks();
   }
-  var $tableName = 'kt_style';
+  var $tableName = 'rk_style';
   var $primaryKey = 'id';
 
 }
