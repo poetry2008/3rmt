@@ -565,7 +565,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   require(DIR_WS_FUNCTIONS . 'specials.php');
   tep_expire_specials();
 
-  if (defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED) {
+  if ((defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED) || (defined('URL_ROMAJI_ENABLED') && URL_ROMAJI_ENABLED)) {
     tep_parseURI(); 
   }
 // calculate category path
