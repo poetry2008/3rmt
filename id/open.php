@@ -40,7 +40,7 @@ if($_POST):
         //Thank the user and promise speedy resolution!
         $inc='thankyou.inc.php';
     }else{
-        $errors['err']=$errors['err']?$errors['err']:'必要な情報を正しくご入力ください';
+        $errors['err']=$errors['err']?$errors['err']:'';
     }
 endif;
 
