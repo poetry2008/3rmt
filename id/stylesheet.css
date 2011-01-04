@@ -333,6 +333,7 @@ TD.main, P.main {
 	line-height: 1.5;
 }
 .main select{ font-size:12px;}
+.main a{ font-size:12px;}
 /* ---------------------------
 TD,SPAN：小さい文字（メッセージ）
 --------------------------- */
@@ -616,7 +617,7 @@ border:0;
 background-image: url(./includes/languages/japanese/images/buttons/button_checkout.gif);
 }
 .waring_product{
-	font-size:11px;
+	font-size:12px;
 	color:#FF0000;
 	border:#ccc 2px solid;
 	background-color:#E9E9E9;

@@ -12,6 +12,7 @@ select c.categories_id,
   cd.site_id
 from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
   where c.parent_id = '0' 
+  and c.categories_status != '1' 
   and c.categories_id = cd.categories_id 
   and cd.language_id='" . $languages_id ."' 
   order by cd.site_id desc

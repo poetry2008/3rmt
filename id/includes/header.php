@@ -164,13 +164,9 @@
               </div>
             </td>
             <td width="400">
-              <div style="width:432px; height: 30px; overflow:hidden;">
-                <table style="margin-top:2px; *margin-top:2px;" cellpadding="0" cellspacing="1" summary="search">
+                <table class="header_botton" cellpadding="0" cellspacing="1" summary="search">
                   <tr>
                     <td>
-                      <a href="<?php echo tep_href_link('rss.php') ; ?>" class="header_menu_1">
-                      <?php //echo tep_image(DIR_WS_IMAGES.'design/button/rss.gif','RSS') ; ?>
-                      </a>
                       <a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'', 'SSL') ; ?>" class="header_menu_2">
                       <?php //echo tep_image(DIR_WS_IMAGES.'design/button/shopping_cart.gif',HEADER_TITLE_CART_CONTENTS);?>
                       </a>
@@ -179,10 +175,10 @@
                       </a>
                     </td>
                     <td width="104" align="right" class="top_subto">
-                    <span id="jk-shoppingcart"><?php echo $currencies->format($cart->show_total());?></span></td>
+                    <span id="jk-shoppingcart"><?php echo $currencies->format($cart->show_total());?></span>
+                    </td>
                   </tr>
                 </table>
-              </div>
             </td>
           </tr>
         </table>

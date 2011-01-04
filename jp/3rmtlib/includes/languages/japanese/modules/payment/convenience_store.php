@@ -26,5 +26,5 @@
   define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE_NOM', 'ご入力されたメールアドレスは登録できません。PCメールをご入力ください。');
   define('MODULE_PAYMENT_CONVENIENCE_EMAIL_TEXT', 'PCメールアドレス:');
   define('MODULE_PAYMENT_CONVENIENCE_EMAIL_CONFIRMATION_TEXT', 'PCメールアドレス(確認用):');
-  define('MODULE_PAYMENT_CONVENIENCE_MUST_INPUT', '<small><font color="#AABBDD">(必須)</font></small>');
+  define('MODULE_PAYMENT_CONVENIENCE_MUST_INPUT', '<small><font color="#AE0E30">(必須)</font></small>');
   define('MODULE_PAYMENT_CONVENIENCE_INFO_TEXT', '携帯メールアドレスはご利用いただけません。下記入力欄にPCメールアドレスをご記入ください。<br>');

@@ -126,18 +126,18 @@
                 </form>
             </td>
             <td align="right" class="header_m_login">
-                      <a href="<?php echo tep_href_link('rss.php') ; ?>" class="header_menu_1">RSS
+                                <div class="header_menu_4">
+                    <span id="jk-shoppingcart" style="font-size:12px"><?php echo $currencies->format($cart->show_total());?></span>
+                    </div>
+<!--                      <a href="<?php //echo tep_href_link('rss.php') ; ?>" class="header_menu_1">RSS
                       <?php //echo tep_image(DIR_WS_IMAGES.'design/button/rss.gif','RSS') ; ?>
-                      </a>
+                      </a>-->
                       <a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'','SSL') ; ?>" class="header_menu_2">ショッピングカート
                       <?php //echo tep_image(DIR_WS_IMAGES.'design/button/shopping_cart.gif',HEADER_TITLE_CART_CONTENTS);?>
                       </a>
                       <a href="<?php echo tep_href_link(FILENAME_CHECKOUT_PRODUCTS,'','SSL') ; ?>" class="header_menu_3">レジへ進む
                       <?php //echo tep_image(DIR_WS_IMAGES.'design/button/checkout.gif',HEADER_TITLE_CHECKOUT);?>
                       </a>
-                    <div class="header_menu_4">
-                    <span id="jk-shoppingcart" style="font-size:12px"><?php echo $currencies->format($cart->show_total());?></span>
-                    </div>
             </td>
           </tr>
         </table>

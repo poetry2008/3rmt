@@ -19,6 +19,7 @@ RMTアイテムデポからのお知らせ</span></h3>
       from ' . TABLE_LATEST_NEWS . ' 
       WHERE status = 1 
         and (site_id = '.SITE_ID.' or site_id=0)
+        AND date_added >= "'.date("Y").'-01-01 00:00:00" 
       ORDER BY isfirst DESC, date_added DESC LIMIT 5
     ');
     if (!tep_db_num_rows($latest_news_query)) { // there is no news
