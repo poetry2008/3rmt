@@ -172,19 +172,22 @@ if ($category_depth == 'nested') {
         include(DIR_WS_MODULES.'new_products4.php');
       }
     }
-    
-    if (isset($_GET['cPath'])) {
+  ?>
+  </div>
+  <?php
+   if (isset($_GET['cPath'])) {
       if ($seo_category['seo_description']) {
-        echo $seo_category['seo_name'].'について<br>'; 
-        echo '<p>'.$seo_category['seo_description'].'</p>'; 
+	    echo '<h1 class="pageHeading_long">';
+		echo '<span class="game_im"><img height="26" width="26" src="images/design/title_img08.gif" alt=""></span>';
+		echo '<span class="game_t">'.$seo_category['seo_name'].'について'.'</span>';
+		echo '</h1>';
+        echo '<div class="comment">'.$seo_category['seo_description'].'</div>'; 
       }
       if (!empty($seo_category['text_information'])) {
-        echo $seo_category['text_information']; 
+        echo '<div class="comment">'.$seo_category['text_information'].'</div>'; 
       }
     }
   ?>
-  </div>
-      
      <?php
         if (isset($cPath) && !ereg('_', $cPath)) {
           //$cgame_news_query = tep_db_query("select ns.headline, ns.date_added, ns.url from ". TABLE_CATEGORIES_ALIAS." a, ".TABLE_CATEGORIES_NEWS." ns where a.categories_id = '".$current_category_id."' and a.alias = ns.categories_name"); 

@@ -56,6 +56,9 @@ RewriteRule ^latest_news/?$ latest_news.php
 RewriteRule ^latest_news/page(\d+).html$ latest_news.php?page=$1
 RewriteRule ^latest_news/([0-9]+)\.html$ latest_news.php?news_id=$1&%{QUERY_STRING}
 
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteRule ^images/(.*)$ default_images/$1
+
 # romaji
 RewriteRule ^([a-z0-9\-]+)/([a-z0-9\-]+)\.html product_info.php?products_id=$2 [QSA,L]
 RewriteRule ^([a-z0-9\-]+)/([a-z0-9\-]+)/([a-z0-9\-]+)\.html product_info.php?products_id=$3 [QSA,L]
@@ -119,7 +122,5 @@ RewriteRule ^info/([A-Za-z0-9_]+).html$ page.php?pID=$1&%{QUERY_STRING}
 RewriteRule ^info-([A-Za-z0-9_]+).html$ page.php?pID=$1&%{QUERY_STRING}
 #}}}
 
-RewriteCond %{REQUEST_FILENAME} !-f 
-RewriteRule ^images/(.*)$ default_images/$1
 
 </IfModule>
