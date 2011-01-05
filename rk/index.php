@@ -164,7 +164,7 @@ if ($category_depth == 'nested') {
           echo '<p>'.$seo_category['seo_description'].'</p>'; 
         }
         if (!empty($seo_category['text_information'])) {
-          echo $seo_category['text_information']; 
+          echo str_replace('pageHeading', 'pageHeading_long', $seo_category['text_information']); 
         }
       }
       ?>
