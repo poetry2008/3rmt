@@ -177,10 +177,10 @@ if ($category_depth == 'nested') {
   <?php
    if (isset($_GET['cPath'])) {
       if ($seo_category['seo_description']) {
-	    echo '<h1 class="pageHeading_long">';
+	    echo '<h2 class="pageHeading_long">';
 		echo '<span class="game_im"><img height="26" width="26" src="images/design/title_img08.gif" alt=""></span>';
 		echo '<span class="game_t">'.$seo_category['seo_name'].'について'.'</span>';
-		echo '</h1>';
+		echo '</h2>';
         echo '<div class="comment">'.$seo_category['seo_description'].'</div>'; 
       }
       if (!empty($seo_category['text_information'])) {
