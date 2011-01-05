@@ -91,15 +91,15 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
  </table>
  <table border="0" cellspacing="1" cellpadding="0" width="100%">
     <tr><td>
-     <table border="0" cellspacing="1" cellpadding="2" class="tickets" align="center">
+     <table border="0" cellspacing="1" cellpadding="2" class="tickets" align="center" width="100%">
         <tr>
           <th width="70" nowrap>
                 <a href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="番語順に表示 <?=$negorder?>">問合番号</a></th>
           <th width="100">
                 <a href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="作成日時順に表示 <?=$negorder?>">作成日時</a></th>
-            <th width="154">ステータス</th>
-            <th width="240">件名</th>
-            <th width="150">メールアドレス</th>
+            <?php /* <th width="154">ステータス</th> */ ?>
+            <th>件名</th>
+            <?php /* <th width="150">メールアドレス</th> */ ?>
         </tr>
         <?
         $class = "row1";
@@ -125,10 +125,10 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
             $_open = 'オープン';
             $_closed = 'クローズ';
                   ?>
-                   <td>&nbsp;<?=$$_status?></td>
+                   <?php /* <td>&nbsp;<?=$$_status?></td> */ ?>
                 <td>&nbsp;<a href="view.php?id=<?=$row['ticketID']?>"><?=$subject?></a>
                     &nbsp;<?=$row['attachments']?"<span class='Icon file'>&nbsp;</span>":''?></td>
-                <td>&nbsp;<?=Format::truncate($row['email'],40)?></td>
+                <?php /* <td>&nbsp;<?=Format::truncate($row['email'],40)?></td> */ ?>
             </tr>
             <?
             $class = ($class =='row2') ?'row1':'row2';
