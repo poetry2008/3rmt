@@ -575,17 +575,18 @@ select {
 	padding-right:5px;
 }
 .top_subto_link {
-	width:104px;
 	height:20px;
-	background: url(images/design/button/shoppingcart.gif) no-repeat 0 8px;
+	background: url(images/design/button/shoppingcart.gif) no-repeat 0 0;
 	font-size:12px;
-	margin-right:15px;
+	float:right;
+	margin:7px 15px 0 0;
+	*margin:7px 0 0 0;
+	text-align:right;
 	color:#fff;
+	width:104px;
 }
 .top_subto_link span {
-	padding-top:5px;
 	display:block;
-	padding-right:5px;
 }
 .header_Navigation {
 	height: 22px;
