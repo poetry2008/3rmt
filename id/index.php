@@ -7,6 +7,22 @@
   require(DIR_WS_ACTIONS.'index_top.php');
 ?>
 <?php page_head();?>
+<?php 
+$index_i_pos = strpos($_SERVER['PHP_SELF'], '/index.php'); 
+if ($index_i_pos !== false) {
+  if ($category_depth == 'nested') {
+  } elseif ($category_depth == 'products' || $_GET['manufacturers_id']) {
+  } elseif ($_GET['colors'] && !empty($_GET['colors'])) {
+  } elseif ($_GET['action'] && $_GET['action'] == 'select') {
+  } else {
+?>
+<script type="text/javascript">
+ if(window.addEventListener) window.addEventListener('beforeunload', function(){}, false);
+</script>
+  <?php
+  }
+}
+?>
 </head>
 <?php
   if (isset($body_option)) {
