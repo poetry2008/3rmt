@@ -3039,6 +3039,7 @@ function tep_get_categories_by_pid($pid,$romaji=true)
   $arr = array();
   $p_parent = tep_get_categories_by_products_id($pid);
   if (!$p_parent) {
+    forward404();
     exit('no categories');
   }
   //如果同一商品属于多个分类默认返回第一个 
