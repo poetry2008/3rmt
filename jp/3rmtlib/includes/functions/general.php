@@ -3166,6 +3166,7 @@ function tep_parseURI()
     }
     switch($router){
     case 'firstFolder':
+      
       $firstFolder = substr($subSiteUri,1);
       if(substr($firstFolder,-1)=='/'){
         $firstFolder = substr($firstFolder,0,-1);
@@ -3180,7 +3181,7 @@ function tep_parseURI()
       $secondFolder = substr($subSiteUri,1);
       $folder_arr = explode('/', $secondFolder); 
       $secondId = tep_get_cpath_by_cname($folder_arr[0], $firstId);
-      $thirdId  = tep_get_cpath_by_cname($folder_arr[1], $firstId); 
+      $thirdId  = tep_get_cpath_by_cname($folder_arr[1], $secondId); 
       if ($thirdId == 0) {
         forward404();
       }
