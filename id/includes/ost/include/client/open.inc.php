@@ -24,7 +24,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
             <?}else {?>
                 <input type="text" name="name" size="25" value="<?=$info['name']?>">
           <?}?>
-            &nbsp;<font class="error"><font color="#AE0E30">*必須</font>&nbsp;<?=$errors['name']?></font>
+            &nbsp;<font class="error" color="#AE0E30">*&nbsp;<?=$errors['name']?></font>
         </td>
     </tr>
     <tr>
@@ -36,14 +36,14 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
             <?}else {?>             
                 <input type="text" name="email" size="25" value="<?=$info['email']?>">
             <?}?>
-            &nbsp;<font class="error"><font color="#AE0E30">*必須</font>&nbsp;<?=$errors['email']?></font>
+            &nbsp;<font class="error" color="#AE0E30">*&nbsp;<?=$errors['email']?></font>
         </td>
     </tr>
     <tr>
         <th>件名</th>
         <td>
             <input type="text" name="subject" size="35" value="<?=$info['subject']?>">
-            &nbsp;<font class="error"><font color="#AE0E30">*必須</font>&nbsp;<?=$errors['subject']?></font>
+            &nbsp;<font class="error" color="#AE0E30">*&nbsp;<?=$errors['subject']?></font>
         </td>
     </tr>
     <tr>

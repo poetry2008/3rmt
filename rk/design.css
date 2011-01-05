@@ -905,15 +905,15 @@ Information
 	font-size: 12px;
 	font-weight: bold;
 	color: #000;
-	padding:0 0 0 15px;
-	height: 23px;
+	padding:5px 0 0 8px;
+	height: 30px;
 	line-height: 24px;
 	/*padding-top: 3px;*/
 	color:#676565;
 }
 .pageHeading {
 	background: url(images/design/contents/headding_title.gif) no-repeat;
-	width:528px;
+	width:522px;
 	overflow:hidden;
 	*height:35px;
 	*width:530px;
@@ -939,7 +939,7 @@ Information
 .pageBottom{
 	width: 530px;
 	height: 15px;
-	margin: 0px;
+	margin: 0 0 5px 0;
 	background: url(images/design/contents/headding_bottom.gif) no-repeat;
 }
 .pageHeading_long {
