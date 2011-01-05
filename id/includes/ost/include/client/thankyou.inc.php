@@ -7,7 +7,7 @@ if(!defined('OSTCLIENTINC') || !is_object($ticket)) die('Kwaheri rafiki!'); //Sa
     <?if($errors['err']) {?>
         <p align="center" id="errormessage"><?=$errors['err']?></p>
     <?}elseif($msg) {?>
-        <b style="font-size:11px;" id="infomessage"><?=str_replace('RMTワールドマネー', 'RMTアイテムデポ', $msg);?></b>
+        <b style="font-size:11px;" id="infomessage"><?=str_replace('RMTアイテムデポ', 'RMTアイテムデポ', $msg);?></b>
     <?}elseif($warn) {?>
         <p id="warnmessage"><?=$warn?></p>
     <?}?>

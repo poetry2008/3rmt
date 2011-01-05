@@ -37,7 +37,7 @@
     }
   }
 ?>
-<script src="../Scripts/swfobject_modified.js" type="text/javascript"></script>
+<!--<script src="../Scripts/swfobject_modified.js" type="text/javascript"></script>-->
 <div id="header">
   <div id="title">
   <?php

@@ -47,7 +47,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
 <div class="msg">件名: <?=Format::htmlchars($ticket->getSubject())?></div>
 <div>
     <?if($errors['err']) {?>
-        <p align="center" id="errormessage"><?=$errors['err']?></p>
+        <p align="center" id="errormessage"><font color="red"><?=$errors['err']?></font></p>
     <?}elseif($msg) {?>
         <p align="center" id="infomessage"><?=$msg?></p>
     <?}?>
@@ -107,7 +107,8 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
 <div>
     <div align="center">
         <?if($_POST && $errors['err']) {?>
-            <p align="center" id="errormessage"><?=$errors['err']?></p>
+            <p align="center" id="errormessage"><font
+              color="red"><?=$errors['err']?></font></p>
         <?}elseif($msg) {?>
             <p align="center" id="infomessage"><?=$msg?></p>
         <?}?>
