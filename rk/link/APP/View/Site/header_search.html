@@ -1,6 +1,6 @@
 <!--{if $top_info}-->
 <div class="top"><h1 class="link_h1"><!--{_t key=$top_info.h1}--></h1></div>
-<div class="middle">
+<div class="product_list_info">
 <div class="text_out">
 <!--{if $top_info.time}-->
 <!--{$top_info.time}-->
@@ -32,7 +32,7 @@
 <div class = 'search_header'>
 <form action="<!--{url controller=site action=sitesearch}-->" method="post" 
 onsubmit="return valsearch()" name="form1" id="form1">
-<table><tr><td align="center">
+<table width="100%"><tr><td align="center">
 ▼ホームページ検索 
 <input type="text" id="search_txt" class="sh-txt" name='word' />
 
@@ -46,7 +46,7 @@ onsubmit="return valsearch()" name="form1" id="form1">
 </form>
 </div>
 </div>
-<div class='tools'>
+<div class='tools boxes'>
 <h2>メニュー</h2>
 <div class="middle">
 <a href="/<!--{$hostlink}-->/">相互リンク集TOP</a></li>

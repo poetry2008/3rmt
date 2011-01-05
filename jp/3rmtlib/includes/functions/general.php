@@ -3145,9 +3145,9 @@ function tep_parseURI()
     }
     $router = 'x';
     $rewriteRule = array(
-                         "firstFolder"  => "/^\/[a-zA-Z0-9\-]+\/?$/",        //   /abc(/)
-                         "secondFolder" => '/^\/[a-zA-Z0-9\-]+\/[a-zA-Z0-9\-]+\/?$/',              //   /asb/xcv(/)
-                         "thirdFolder"  => '/^\/[a-zA-Z0-9\-]+\/[a-zA-Z0-9\-]+\/[a-zA-Z0-9\-]+\/?$/',              //   /asb/xcv(/)
+                         "firstFolder"  => "/^\/[^\/]+\/?$/",        //   /abc(/)
+                         "secondFolder" => '/^\/[^\/]+\/[^\/]+\/?$/',              //   /asb/xcv(/)
+                         "thirdFolder"  => '/^\/[^\/]+\/[^\/]+\/[^\/]+\/?$/',              //   /asb/xcv(/)
                          "product"      => '/\.html$/'                    //   /asd/xcv/xcv.html  /zxv.html /xcv/xcv/xc.html
                          );
     foreach ($rewriteRule as $ruler=>$value){
@@ -3193,7 +3193,11 @@ function tep_parseURI()
       $_GET['products_id'] = $pid;
     }
   } else {
-    
+    /*
+    echo "<pre>";
+    print_r($_SERVER);
+    exit;
+    */
     $subSiteUri = $_SERVER['REQUEST_URI'];
     $g_pos = strpos($_SERVER['REQUEST_URI'], '?'); 
     if ($g_pos !== false) {
@@ -3201,9 +3205,9 @@ function tep_parseURI()
     }
     $router = 'x';
     $rewriteRule = array(
-                         "firstFolder"  => "/^\/[a-zA-Z0-9\-]+\/?$/",
-                         "secondFolder" => '/^\/[a-zA-Z0-9\-]+\/[a-zA-Z0-9\-]+\/?$/',
-                         "thirdFolder"  => '/^\/[a-zA-Z0-9\-]+\/[a-zA-Z0-9\-]+\/[a-zA-Z0-9\-]+\/?$/',
+                         "firstFolder"  => "/^\/[^\.\/]+\/?$/",
+                         "secondFolder" => '/^\/[^\.\/]+\/[^\/]+\/?$/',
+                         "thirdFolder"  => '/^\/[^\.\/]+\/[^\/]+\/[^\/]+\/?$/',
                          "product"      => '/\.html$/'
                          );
     foreach ($rewriteRule as $ruler=>$value){
@@ -3221,6 +3225,7 @@ function tep_parseURI()
       $_GET['cPath'] = $firstId;
     }
     */
+          
     switch($router){
     case 'firstFolder':
     case 'secondFolder':
@@ -3246,6 +3251,11 @@ function tep_parseURI()
       $pid = $tmpArray[count($tmpArray)-1];
       $pid = substr($pid,0,-5);
       $_GET['products_id'] = $pid;
+      break;
+    case 'x':
+      // 首页
+      //forward404();
+      break;
     }
   }
 }
