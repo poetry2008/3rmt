@@ -3,6 +3,7 @@
  $Id$
 */
 require('includes/application_top.php');
+forward404();
 require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_TAGS);
 
 $breadcrumb->add(TAGS_NAVBAR_TITLE, tep_href_link(FILENAME_TAGS));
