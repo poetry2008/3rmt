@@ -196,11 +196,11 @@ if ($category_depth == 'nested') {
     if ($all_game_news) {
         
             ?>
-          <h1 class="pageHeading">
+          <h2 class="pageHeading">
           <span class="game_im"><img width="26" height="26" src="images/design/title_img08.gif"></span> 
           <span class="game_t"><?php echo $_categories['categories_name'];?> NEWS for</span> 
           <span class="game_im02"><img width="113" height="21" alt="" src="images/design/box_middle_listimg.gif"></span>
-          </h1>
+          </h2>
           <div class="comment"> 
             <div id="game_news">
               <ul>
