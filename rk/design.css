@@ -13,7 +13,11 @@ H1 {
 	margin: 0px;
 	padding: 0px;
 }
-body{ font-size:12px;font-family: "MS PGothic", "Osaka", Arial, sans-serif;}
+body{
+	font-size:29px;/*font-family: "MS PGothic", "Osaka", Arial, sans-serif;*/
+	font-family:"黑体";
+	font-weight: bolder;
+} 
 H2 {
 	font-family: Osaka, Verdana, Arial, sans-serif;
 	font-size: 10px;
