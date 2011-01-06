@@ -2,6 +2,12 @@
 	margin:0 auto;
 	width:900px;
 }
+.web_3{
+width:100%;
+}
+.web_3 td{
+width:20%;
+}
 .web_3_top {
 	width:100%;
 }
@@ -12,10 +18,28 @@
 	color:#237023;
 	background:url(../../../images/design/box/arrow_2.gif) no-repeat left center;
 }
+.search_and_tools{
+overflow:hidden;
+	background:#F2F2F2 url(../../../images/design/link.gif) no-repeat;
+}
 .boxes {
 	background:#F2F2F2 url(../../../images/design/link.gif) no-repeat;
 	padding:5px 10px;
 	margin-bottom:5px;
+}
+#content{
+clear:both;
+}
+.search_head{
+float:right;
+width:700px;
+padding-left:0;
+	background:#F2F2F2 url(../../../images/design/link.gif) no-repeat right top;
+
+}
+.tools{
+float:left;
+width:170px;
 }
 .boxes h1 {
 	background:url(../../../images/menu_ico.gif) no-repeat 20px center;
@@ -48,7 +72,19 @@
 	color:#237023;
 	background:url(../../../images/design/box/arrow_2.gif) no-repeat left center;
 }
-.link a{
+.search_head_text{
+height:150px;
+padding-bottom:0;
+}
+.tools_links{
+height:150px;
+}
+.tools_link a{
 display:block;
-line-height:14px;
+line-height:24px;
+background:url("../../../images/design/box/arrow_2.gif") no-repeat scroll left center transparent;
+color:#237023;
+font-size:12px;
+font-weight:bold;
+padding-left:10px;
 }
