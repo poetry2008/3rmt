@@ -104,3 +104,4 @@ define('TEXT_LAST_SEARCH_DATA','最後から&nbsp;%s&nbsp;つの検索結果');
 define('TEXT_FIND_DATA_STOP','%sをさがしましたが、表示を停止します。');
 define('TEXT_NOT_ENOUGH_DATA','前からの&nbsp;50&nbsp;件検索結果に不重複な結果は&nbsp;%s&nbsp;件があります');
 define('TEXT_ROMAJI_EXISTS', ' ローマ字が存在しています');
+define('TEXT_PRODUCTS_ROMAJI', 'Romaji:');

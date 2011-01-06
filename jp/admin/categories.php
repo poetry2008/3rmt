@@ -397,9 +397,49 @@
         break;
       case 'insert_product':
       case 'update_product':
-
+        
         $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
-
+        
+        if ($_GET['action'] == 'insert_product') {
+          if (trim($_POST['romaji']) == '') {
+            $messageStack->add_session(TEXT_ROMAJI_EXISTS, 'error');
+            tep_redirect(tep_href_link(FILENAME_CATEGORIES));
+          }
+          if (isset($_GET['cPath'])) {
+            $ca_arr = explode('_', $_GET['cPath']); 
+            $belong_ca = $ca_arr[count($ca_arr)-1];
+            $exist_ro_query = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." pd, ".TABLE_PRODUCTS_TO_CATEGORIES." p2c where pd.products_id = p2c.products_id and pd.site_id = '".$site_id."' and pd.romaji = '".$_POST['romaji']."' and p2c.categories_id = '".$belong_ca."'"); 
+            if (tep_db_num_rows($exist_ro_query)) {
+              $messageStack->add_session(TEXT_ROMAJI_EXISTS, 'error');
+              tep_redirect(tep_href_link(FILENAME_CATEGORIES));
+            }
+          } else {
+            if (tep_db_num_rows(tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where romaji = '".$_POST['romaji']."' and site_id = '".$site_id."'"))) {
+              $messageStack->add_session(TEXT_ROMAJI_EXISTS, 'error');
+              tep_redirect(tep_href_link(FILENAME_CATEGORIES));
+            }
+          }
+        } else if ($_GET['action'] == 'update_product') {
+          if (trim($_POST['romaji']) == '') {
+            $messageStack->add_session(TEXT_ROMAJI_EXISTS, 'error');
+            tep_redirect(tep_href_link(FILENAME_CATEGORIES));
+          }
+          if (isset($_GET['cPath'])) {
+            $ca_arr = explode('_', $_GET['cPath']); 
+            $belong_ca = $ca_arr[count($ca_arr)-1];
+            $exist_ro_query = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." pd, ".TABLE_PRODUCTS_TO_CATEGORIES." p2c where pd.products_id = p2c.products_id and pd.site_id = '".$site_id."' and pd.romaji = '".$_POST['romaji']."' and p2c.categories_id = '".$belong_ca."' and pd.products_id != '".$_GET['pID']."'"); 
+            if (tep_db_num_rows($exist_ro_query)) {
+              $messageStack->add_session(TEXT_ROMAJI_EXISTS, 'error');
+              tep_redirect(tep_href_link(FILENAME_CATEGORIES));
+            }
+          } else {
+            if (tep_db_num_rows(tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where romaji = '".$_POST['romaji']."' and site_id = '".$site_id."' and products_id != '".$_GET['pID']."'"))) {
+              $messageStack->add_session(TEXT_ROMAJI_EXISTS, 'error');
+              tep_redirect(tep_href_link(FILENAME_CATEGORIES));
+            }
+          }
+        }
+        
         if ( (isset($_POST['edit_x']) && $_POST['edit_x']) || (isset($_POST['edit_y']) && $_POST['edit_y']) ) {
           $_GET['action'] = 'new_product';
         } else {
@@ -533,6 +573,7 @@
             $des = tep_db_prepare_input($_POST['products_description'][$language_id]);
             $sql_data_array = array(
                 'products_name'        => tep_db_prepare_input($_POST['products_name'][$language_id]),
+                'romaji' => tep_db_prepare_input(str_replace('_', '-', $_POST['romaji'])),
                 'products_description' => $des,
                 'products_url'         => tep_db_prepare_input($_POST['products_url'][$language_id]));
             if (isset($_GET['action']) && ($_GET['action'] == 'insert_product' || ($_GET['action'] == 'update_product' && !tep_products_description_exist($products_id,$site_id,$language_id)))) {
@@ -719,7 +760,8 @@
                   products_description,
                   products_url, 
                   products_viewed,
-                  site_id
+                  site_id,
+                  romaji
                 ) values (
                   '" . $dup_products_id . "', 
                   '" . $description['language_id'] . "', 
@@ -727,7 +769,8 @@
                   '" . addslashes($description['products_description']) . "', 
                   '" . $description['products_url'] . "', 
                   '0',
-                  '" . $description['site_id'] . "'
+                  '" . $description['site_id'] . "', 
+                  '" . $description['romaji']."'
                 )");
             }
 
@@ -867,6 +910,7 @@ function change_qt(ele){
           select pd.products_name, 
                  pd.products_description, 
                  pd.products_url, 
+                 pd.romaji, 
                  p.products_id,
                  p.option_type, 
                  p.products_quantity, 
@@ -1048,6 +1092,14 @@ function change_qt(ele){
               <?php
     }
 ?>
+              <tr>
+                <td class="main"><?php echo TEXT_PRODUCTS_ROMAJI;?></td> 
+                <td class="main">
+                <?php
+                echo tep_draw_input_field('romaji', $pInfo->romaji); 
+                ?>
+                </td> 
+              </tr>
               <tr>
                 <td class="main">関連付け商品:</td>
                 <td class="main" colspan="2">
@@ -1456,6 +1508,7 @@ function change_qt(ele){
                  pd.products_name, 
                  pd.products_description, 
                  pd.products_url, 
+                 pd.romaji, 
                  p.products_quantity, 
                  p.products_model, 
                  p.products_image,
