@@ -13,7 +13,7 @@
 <div class="bottom"></div>
 <!--{else}-->
 <div class="top"><h1 class="link_h1"><!--{_t key=text_out_h1}--></h1></div>
-<div class="middle">
+<div class="middle search_head_text">
 <div class="text_out">
 <p>
 <!--{_t key=text_out_p1}-->
@@ -29,7 +29,7 @@
 <div class="bottom"></div>
 <!--{/if}-->
 
-<div class = 'search_header'>
+<div class='search_header'>
 <form action="<!--{url controller=site action=sitesearch}-->" method="post" 
 onsubmit="return valsearch()" name="form1" id="form1">
 <table width="100%"><tr><td align="center">
@@ -48,7 +48,7 @@ onsubmit="return valsearch()" name="form1" id="form1">
 </div>
 <div class='tools boxes'>
 <h2>メニュー</h2>
-<div class="middle link">
+<div class="middle tools_link">
 <a href="/<!--{$hostlink}-->/">相互リンク集TOP</a></li>
 <a href="<!--{url controller=site action=regist}-->">新規登録</a></li>
 <a href="<!--{url controller=site action=renew}-->">更新されたサイト</a></li>
@@ -58,5 +58,5 @@ onsubmit="return valsearch()" name="form1" id="form1">
 </div>
 <div class="bottom"></div>
 </div>
-
+</div><!-- search_and_tools end -->
 
