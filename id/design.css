@@ -446,7 +446,6 @@ select {
 ヘッダー
 --------------------------- */
 #title {
-	font-family: Osaka, Verdana;
 	font-size: 10px;
 	text-align: left;
 	color: #920003;
@@ -612,7 +611,6 @@ select {
 	background: url(images/design/header/header_navigation_right_bg.gif) no-repeat;
 }
 .header_Navigation_p {
-	font-family: Osaka, Verdana;
 	font-size: 11px;
 	color: #A81331;
 	margin: 1px 0px;
@@ -623,7 +621,6 @@ select {
 !important;
 }
 .category_menu {
-	font-family: Osaka, Verdana, Arial, sans-serif;
 	font-size: 11px;
 	background-color: #E5EBF2;
 	border: 1px solid #B0BFCF;
@@ -747,7 +744,6 @@ sitemap
 ランキング
 --------------------------- */
 .bestseller_text {
-	font-family: Osaka, Verdana, Arial, sans-serif;
 	font-size: 10px;
 	padding-left: 5px;
 	border-bottom: 1px solid #ccc;
@@ -768,7 +764,6 @@ sitemap
 	font-size: 0px;
 }
 .bestseller_description {
-	font-family: Osaka, Verdana, Arial, sans-serif;
 	font-size: 10px;
 }
 .bestseller_description p {
@@ -848,7 +843,6 @@ product listing
 	background: url(images/design/box/product_listing_sort_02.gif) !important;
 }
 .product_listing_sort_1, .product_listing_sort_2 {
-	font-family: Osaka, Verdana, Arial, sans-serif;
 	font-size: 11px;
 	line-height: 1.5;
 }
@@ -918,7 +912,6 @@ padding-left:8px;
 }
 */
 .categoryh2 {
-	font-family: Osaka, Verdana, Arial, sans-serif;
 	font-size: 11px;
 	font-weight: normal;
 	color: #004080;
@@ -928,7 +921,6 @@ padding-left:8px;
 	margin-bottom: 0px;
 }
 .categories_tree {
-	font-family: Osaka, Verdana, Arial, sans-serif;
 	font-size: 10px;
 	color:#004080;
 	background-color: #ECF0F4;
@@ -1003,7 +995,6 @@ Information
 ページタイトル
 --------------------------- */
 .pageHeading, .pageHeading_gameList {
-	font-family: Osaka, Verdana, Arial, sans-serif;
 	font-size: 12px;
 	font-weight: bold;
 	color: #000;
@@ -1014,7 +1005,6 @@ Information
 	line-height: 24px;/*padding-top: 3px;*/
 }
 .pageHeading {
-	font-family: Osaka, Verdana, Arial, sans-serif;
 	font-size: 12px;
 	font-weight: bold;
 	color:#AE0E30;
@@ -1026,7 +1016,6 @@ Information
 }
 .pageHeading_05 {
 	overflow:hidden;
-	font-family: Osaka, Verdana, Arial, sans-serif;
 	font-size: 12px;
 	font-weight: bold;
 	color:#AE0E30;
@@ -1045,7 +1034,6 @@ Information
 	background: url(images/design/contents/headding_bottom.gif) no-repeat;
 }
 .pageHeading_long {
-	font-family: Osaka, Verdana, Arial, sans-serif;
 	font-size: 12px;
 	font-weight: bold;
 	color:#AE0E30;
@@ -1056,7 +1044,6 @@ Information
 	line-height: 24px;/*padding-top: 3px;*/
 }
 .pageHeading_long_info03 {
-	font-family: Osaka, Verdana, Arial, sans-serif;
 	font-size: 10px;
 	color:#555;
  *width: 720px;
@@ -1066,7 +1053,6 @@ Information
 }
 .pageHeading_long_info03 span{ padding:0;}
 .pageHeading_long02 {
-	font-family: Osaka, Verdana, Arial, sans-serif;
 	font-size: 12px;
 	font-weight: bold;
 	color:#AE0E30;
@@ -1185,7 +1171,6 @@ Information
 #game_news li {
 	background:transparent url(../images/design/boxmiddle_ico.gif) no-repeat scroll 0 5px;
 	border-bottom:1px dashed #CCCCCC;
-	font-family:Osaka, Verdana, Arial, sans-serif;
 	font-size:12px;
 	margin:0;
 	padding:5px 0 3px 30px;
