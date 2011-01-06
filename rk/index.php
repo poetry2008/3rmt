@@ -158,18 +158,21 @@ if ($category_depth == 'nested') {
           include(DIR_WS_MODULES . 'new_products4.php'); 
         }
       }
+  ?>
+  </div>
+      <div class="pageBottom_long"></div>
+  <?php
       if (isset($cPath_array)) {
         if ($seo_category['seo_description']) {
-          echo $seo_category['seo_name'].'について<br>'; 
-          echo '<p>'.$seo_category['seo_description'].'</p>'; 
+          echo '<h1 class="pageHeading_long">'.$seo_category['seo_name'].'について</h1>'; 
+          echo '<div class="comment_long"><p>'.$seo_category['seo_description'].'</p></div>'; 
+          echo '<div class="pageBottom_long"></div>';
         }
         if (!empty($seo_category['text_information'])) {
           echo str_replace('pageHeading', 'pageHeading_long', $seo_category['text_information']); 
         }
       }
       ?>
-  </div>
-      <div class="pageBottom_long"></div>
       </td> 
 <?php
 } elseif($_GET['colors'] && !empty($_GET['colors'])) {
