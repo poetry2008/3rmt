@@ -202,7 +202,7 @@ class Controller_Seoplink extends Controller_Base{
      */
   function actionLinkcheckupdateall()
   {
-    $cond = 'is_custom = "1"';
+    //$cond = 'is_custom = "1"';
     $sites = $this->model_Site->findAll($cond,'`order` DESC');
 
     foreach ($sites as $site)
