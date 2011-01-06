@@ -8,6 +8,7 @@
 // * DIR_WS_* = Webserver directories (virtual/URL)
   define('HTTP_SERVER', 'http://3kt.kthiz.200.com'); // eg, http://localhost - should not be empty for productive servers
   define('HTTPS_SERVER', 'https://cchm.vicp.net'); // eg, https://localhost - should not be empty for productive servers
+  define('URL_ROMAJI_ENABLED', true); 
   define('ENABLE_SSL', false); // secure webserver for checkout procedure?
   define('DIR_WS_CATALOG', '/'); // absolute path required
   define('DIR_WS_IMAGES', 'images/');
@@ -21,7 +22,7 @@
   define('DIR_WS_LANGUAGES', DIR_WS_INCLUDES . 'languages/');
 
   define('DIR_WS_DOWNLOAD_PUBLIC', DIR_WS_CATALOG . 'pub/');
-  define('DIR_FS_DOCUMENT_ROOT', '/home/kthiz/project/OSC_3RMT/kt/');
+  define('DIR_FS_DOCUMENT_ROOT', '/home/kthiz/project/OSC_3RMT/rk/');
   define('DIR_FS_CATALOG', DIR_FS_DOCUMENT_ROOT);
   define('DIR_FS_DOWNLOAD', DIR_FS_CATALOG . 'download/');
   define('DIR_FS_DOWNLOAD_PUBLIC', DIR_FS_CATALOG . 'pub/');

@@ -3,14 +3,14 @@
 左右のボックス：通常
 --------------------------- */
 .boxText {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 11px;
 }
 /* ---------------------------
 左右のボックス：エラー
 --------------------------- */
 .errorBox {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size : 10px;
 	background: #ffb3b5;
 	font-weight: bold;
@@ -19,7 +19,7 @@
 「カートには何が入っている?」ページでカタログの在庫が無い時に表示するメッセージ
 --------------------------- */
 .stockWarning {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size : 12px;
 	color: #cc0033;
 }
@@ -33,7 +33,7 @@
 「ご注文の最終確認」ページ「変更」文字
 --------------------------- */
 .orderEdit {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size : 11px;
 	color: #70d250;
 	text-decoration: underline;
@@ -92,7 +92,7 @@ TR.headerNavigation {
 TD：ヘッダー（ナビゲーション）
 --------------------------- */
 TD.headerNavigation {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 10px;
 	background: #FFFFFF;
 	color: #029DBB;
@@ -120,7 +120,7 @@ TR.headerError {
 TD：ヘッダー（エラー）
 --------------------------- */
 TD.headerError {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 12px;
 	background: #ff0000;
 	color: #ffffff;
@@ -138,7 +138,7 @@ TR.headerInfo {
 TD：ヘッダー（メッセージ）
 --------------------------- */
 TD.headerInfo {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 12px;
 	background: #00ff00;
 	color: #ffffff;
@@ -188,7 +188,7 @@ TABLE：情報ボックス（コンテンツ）
 .infoBoxContents{
 	width: 100%;
 	background: #eee;
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 11px;
 	border: solid 1px #ddd;
 	border-collapse: separate;
@@ -213,14 +213,14 @@ TABLE：情報ボックス（コンテンツ）
 --------------------------- */
 .infoBoxNoticeContents {
 	background: #FFE6E6;
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 10px;
 }
 /* ---------------------------
 TD：情報ボックス（タイトル）
 --------------------------- */
 TD.infoBoxHeading {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 12px;
 	font-weight: bold;
 	color: #000;
@@ -229,7 +229,7 @@ TD.infoBoxHeading {
 TD,SPAN：情報ボックス（情報・メッセージ）
 --------------------------- */
 TD.infoBox, SPAN.infoBox {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 11px;
 }
 /* ---------------------------
@@ -254,7 +254,7 @@ TR.productListing-heading {
 TD：カタログ一覧（タイトル）
 --------------------------- */
 TD.productListing-heading {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 11px;
 	background: #d2e9fb;
 	color: #656565;
@@ -265,7 +265,7 @@ TD.productListing-heading {
 TD：カタログ一覧（データ）
 --------------------------- */
 TD.productListing-data {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 11px;
 }
 /* ---------------------------
@@ -290,7 +290,7 @@ TR.subBar {
 TD：サブバー（未使用）
 --------------------------- */
 TD.subBar {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 10px;
 	color: #000000;
 }
@@ -298,7 +298,7 @@ TD.subBar {
 TD：メイン
 --------------------------- */
 TD.main, P.main {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 11px;
 	*+font-size: 10px;
 	line-height: 1.5;
@@ -307,7 +307,7 @@ TD.main, P.main {
 TD,SPAN：小さい文字（メッセージ）
 --------------------------- */
 TD.smallText, SPAN.smallText, P.smallText {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 10px;
 	line-height: 1.5;
 	letter-spacing:-0.3mm;
@@ -316,7 +316,7 @@ TD.smallText, SPAN.smallText, P.smallText {
 TD：アカウントカテゴリー
 --------------------------- */
 TD.accountCategory {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 13px;
 	color: #aabbdd;
 }
@@ -324,7 +324,7 @@ TD.accountCategory {
 TD：フィールド（キー）
 --------------------------- */
 TD.fieldKey {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 12px;
 	font-weight: bold;
 }
@@ -332,14 +332,14 @@ TD.fieldKey {
 TD：フィールド（値）
 --------------------------- */
 TD.fieldValue {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 12px;
 }
 /* ---------------------------
 TD：一覧表の項目名
 --------------------------- */
 TD.tableHeading {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 12px;
 	font-weight: bold;
 }
@@ -347,7 +347,7 @@ TD.tableHeading {
 SPAN：情報ボックス（新しくカートに入れたカタログ）
 --------------------------- */
 SPAN.newItemInCart {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 11px;
 	color: #ff0000;
 }
@@ -355,7 +355,7 @@ SPAN.newItemInCart {
 CHECKBOX, INPUT, RADIO, SELECT：FORMの入力・選択項目
 --------------------------- */
 CHECKBOX, INPUT, RADIO, SELECT {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 11px;
 }
 
@@ -364,14 +364,14 @@ TEXTAREA：FORMの入力項目
 --------------------------- */
 TEXTAREA {
 	width: 100%;
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 11px;
 }
 /* ---------------------------
 SPAN：トップページのメッセージ（こんにちは、○○さん～）
 --------------------------- */
 SPAN.greetUser {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 12px;
 	color: #0000a0;
 	font-weight: bold;
@@ -390,7 +390,7 @@ TD：フォームエリア（タイトル）
 --------------------------- */
 TD.formAreaTitle {
 
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 12px;
 	font-weight: bold;
 }
@@ -398,7 +398,7 @@ TD.formAreaTitle {
 SPAN：マーク（在庫切れ）
 --------------------------- */
 SPAN.markProductOutOfStock {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 12px;
 	color: #c76170;
 	font-weight: bold;
@@ -407,14 +407,14 @@ SPAN.markProductOutOfStock {
 SPAN：特価カタログ価格
 --------------------------- */
 SPAN.productSpecialPrice {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	color: #ff0000;
 }
 /* ---------------------------
 SPAN：エラー
 --------------------------- */
 SPAN.errorText {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	color: #ff0000;
 }
 /* ---------------------------
@@ -440,7 +440,7 @@ SPAN.errorText {
 チェックアウト手順
 --------------------------- */
 .checkoutBarFrom, .checkoutBarTo {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 11px;
 	color: #8c8c8c;
 }
@@ -448,7 +448,7 @@ SPAN.errorText {
 チェックアウト手順（現在の手順）
 --------------------------- */
 .checkoutBarCurrent {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 11px;
 	color: #000000;
 }
@@ -491,7 +491,7 @@ SPAN.errorText {
 	float: none;
 }
 address {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-style: normal;
 	font-size: 10px;
 }
@@ -526,7 +526,7 @@ P.description{
 	height : 63px;
 	scrollbar : yes;
 	overflow:auto;
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 10px;
 	color: #666666;
 	padding-left: 10px;
