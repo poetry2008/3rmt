@@ -1393,6 +1393,7 @@ margin:10px 0 0 0;
 	background-color:#ccc;
 	padding:4px;
 	font-size:12px;
+	text-align:left;
 }
 .tickets a{
 	font-size:12px;
@@ -1512,7 +1513,7 @@ width:110px;
 	font-size:10px;
 	color:#FF0000;
 }
-.row1 td,.row2 td{ border-bottom:1px solid #ccc;}
+.row1 td,.row2 td{ border-bottom:1px solid #ccc; text-align:left;}
 
 .Icon.webTicket {
 background:url(images/icons/ticket_source_web.gif) no-repeat 0 0;
