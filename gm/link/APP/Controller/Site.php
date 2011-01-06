@@ -422,7 +422,9 @@ class Controller_Site extends Controller_Base
     $right[] = $class['right_value'];
     $str_classes .= '<option value="'.$class['class_id'].'"'.($class['class_id']==$site['class_id']?'selected':'').'>'.$className."</option>\n";
     endforeach;
+    $site_url = FLEA::getAppInf('site_url');
     $viewData = array( 'hostlink' => $this->host_dir,
+        'site_url'=>$site_url,
         'str_classes'=>$str_classes,
         'site'=>$site,
         );
