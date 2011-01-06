@@ -34,7 +34,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
      <td width=57% valign="top">
         <table align="center" class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
             <tr>
-                <th width="90">お名前:</th>
+                <th width="100">お名前:</th>
                 <td><?=Format::htmlchars($ticket->getName())?></td>
             </tr>
             <tr>
