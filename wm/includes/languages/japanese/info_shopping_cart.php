@@ -3,7 +3,7 @@
   $Id$
 */
 
-//define('HEADING_TITLE', 'ショッピングカートとメンバーズ・ショッピングカート');
+!defined('HEADING_TITLE') && define('HEADING_TITLE', 'ショッピングカートとメンバーズ・ショッピングカート');
 define('SUB_HEADING_TITLE_1', 'ショッピングカート');
 define('SUB_HEADING_TITLE_2', 'メンバーズ・ショッピングカート');
 define('SUB_HEADING_TITLE_3', '補足');
