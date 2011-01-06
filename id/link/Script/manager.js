@@ -46,7 +46,7 @@ function checklink(){
   if(!linkpage_url){
     linkpage_url = url;
   }
-  $.post("back.php?controller=Seoplink&action=linkcheckstate",
+  $.post("linkcheck.php?controller=Seoplink&action=linkcheckstate",
       { url:url,linkpage_url:linkpage_url},
       function(data){
         if(data!=0){
