@@ -8,18 +8,14 @@ a{
 	font-size: 12px;
 }
 H1 {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 14px;
 	margin: 0px;
 	padding: 0px;
 }
-body{
-	font-size:29px;/*font-family: "MS PGothic", "Osaka", Arial, sans-serif;*/
-	font-family:"黑体";
-	font-weight: bolder;
-} 
+body{ font-size:12px;font-family: "MS PGothic", "Osaka", Arial, sans-serif;}
 H2 {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 10px;
 	margin: 0px;
 	padding: 0px;
@@ -28,14 +24,14 @@ h2 a{
 	font-size: 10px;
 }
 H3 {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 11px;
 	font-weight: normal;
 	margin: 0px;
 	padding: 0px;
 }
 H4 {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 12px;
 	margin: 0px;
 	padding: 0px;
@@ -168,7 +164,7 @@ UL {
 	margin: 0px;
 }
 .l_m_category_ul {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	list-style: none;
 	text-align:center;
 	padding: 0px;
@@ -177,7 +173,7 @@ UL {
 	background: url(images/design/box/menu_bg.gif) repeat-y;
 }
 .l_m_category_ul_infomation {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	list-style: none;
 	text-align:left;
 	padding: 0px;
@@ -185,14 +181,14 @@ UL {
 	width:170px;
 }
 .l_m_category_ul2 {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	list-style: none outside none;
 	padding: 0 0 5px 5px;
 	margin: 0 5px ;
 	clear:both;
 }
 .l_m_category_ul3 {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	list-style: none outside none;
 	padding: 0px 5px;
 	margin: 16px 0px 0px 5px;
@@ -255,7 +251,7 @@ UL {
 	*padding-top:5px;
 	background-color:#E2F9DE;
 	height:17px;
-	*height:19px;
+	*height:18px;
 }
 .l_m_category_li2 a:hover{
 	text-decoration: none;
@@ -568,7 +564,7 @@ select{
 	color: #444;
 }
 .category_menu {
-    font-family: Osaka, Verdana, Arial, sans-serif;
+    font-family: "MS PGothic", "Osaka", Arial, sans-serif;
     font-size: 11px;
 	background-color: #E5EBF2;
 	border: 1px solid #B0BFCF;
@@ -621,7 +617,7 @@ sitemap
 	font-size: 0px;
 }
 .bestseller_description {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 10px;
 }
 .bestseller_description p{
@@ -631,7 +627,7 @@ sitemap
 	margin: 2px;
 }
 #contents, #contents_long{
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 11px;
 	/*padding-top: 17px;*/
 	padding-left: 13px;
@@ -700,7 +696,7 @@ product listing
 	background: url(images/design/box/product_listing_sort_02.gif) !important;
 }
 .product_listing_sort_1, .product_listing_sort_2{
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 11px;
 	line-height: 1.5;
 }
@@ -735,7 +731,7 @@ product listing
 	margin: 0px 10px;
 }
 .news_list {
-    font-family: Osaka, Verdana, Arial, sans-serif;
+    font-family: "MS PGothic", "Osaka", Arial, sans-serif;
     font-size: 11px;
 	background-image: url(images/design/box/dot.gif);
 	background-repeat: repeat-x;
@@ -798,7 +794,7 @@ product listing
 	*margin-top:-15px;
 }
 .categoryh2{
-  font-family: Osaka, Verdana, Arial, sans-serif;
+  font-family: "MS PGothic", "Osaka", Arial, sans-serif;
   font-size: 11px;
   font-weight: normal;
   color: #004080;
@@ -808,7 +804,7 @@ product listing
   margin-bottom: 0px;
 }
 .categories_tree {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 10px;
 	color:#004080;
 	background-color: #ECF0F4;
@@ -864,7 +860,7 @@ Information
 /* reorder */
 .information_table{
 	width: 100%;
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 11px;
 	background-color:#F2F2F2;
 }
@@ -875,7 +871,7 @@ Information
 }
 .information_table02{
 	width: 100%;
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 11px;
 	background-color:#ccc;
 }
@@ -886,7 +882,7 @@ Information
 }
 .information_table03{
 	width: 100%;
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	font-size: 11px;
 	background-color:#ccc;
 }
