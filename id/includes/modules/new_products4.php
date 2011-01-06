@@ -93,11 +93,11 @@
 ?>
 <!-- new_products //-->
 <?php if (0 < $num_products) { ?>
-<h1 class="pageHeading_long_info03">
+<h2 class="pageHeading_long_info03">
 <span>
 <?php echo $new_c_name; ?>の新着商品
 </span>
-</h1>
+</h2>
 <div class="comment03">
 <table width="100%"  border="0" cellspacing="0" cellpadding="0" style="background-color:#F2F2F2">
 <?php
