@@ -209,3 +209,19 @@ padding-right:0;
 .site_del_return a,.site_update_message a{color:#339966;}
 .custom-menu{ padding-bottom:10px;}
 .img_pk{background:#fff;}
+.send_mail{
+display:block;
+width:52px;
+height:24px;
+margin-left:3px;
+background:url(images/button_send_mail.gif) no-repeat;
+}
+.button02{
+cursor:pointer;
+text-indent:-2500px;
+border:none;
+display:block;
+width:68px;
+height:24px;
+background:url(images/button02.gif) no-repeat;
+}
