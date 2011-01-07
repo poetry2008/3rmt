@@ -156,3 +156,19 @@ width:100%;
 .web_page_table tr:hover{
 background:#eee;
 }
+.send_mail{
+display:block;
+width:38px;
+height:21px;
+margin-left:3px;
+background:url(images/button_send_mail.gif) no-repeat;
+}
+.button02{
+cursor:pointer;
+text-indent:-2500px;
+border:none;
+display:block;
+width:57px;
+height:21px;
+background:url(images/button02.gif) no-repeat;
+}
