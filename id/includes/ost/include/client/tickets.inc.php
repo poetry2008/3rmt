@@ -93,10 +93,10 @@ $_negorder=$negorder=="DESC"?'昇順':'降順';
  </table>
 <!-- <table border="0" cellspacing="1" cellpadding="0" width="100%">
     <tr><td>-->
-     <table width="100%" border="0" cellspacing="1" cellpadding="0" class="tickets" align="center">
+     <table width="100%" border="0" cellspacing="1" cellpadding="0" class="tickets">
         <tr>
-          <th><a href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="番号順に表示 <?=$_negorder?>">問合番号</a></th>
-          <th><a href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="作成日順に表示 <?=$_negorder?>">作成日</a></th>
+          <th class="tickets_list" align="left"><a href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="番号順に表示 <?=$_negorder?>">問合番号</a></th>
+          <th class="tickets_list" align="left"><a href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="作成日順に表示 <?=$_negorder?>">作成日</a></th>
           <th>件名</th>
         </tr>
         <?
@@ -114,9 +114,9 @@ $_negorder=$negorder=="DESC"?'昇順':'降順';
                 }
                 ?>
         <tr class="<?=$class?> " id="<?=$row['ticketID']?>">
-          <td align="left" title="<?=$row['email']?>" nowrap>
+          <td class="tickets_list" title="<?=$row['email']?>" nowrap>
           	<a class="Icon <?=strtolower($row['source'])?>Ticket" title="<?=$row['email']?>" href="view.php?id=<?=$row['ticketID']?>"><?=$ticketID?></a>          </td>
-          <td nowrap><?=Format::db_date($row['created'])?></td>
+          <td class="tickets_list" nowrap><?=Format::db_date($row['created'])?></td>
                                 <?php 
                       $_status = '_'.$row['status'];
             $_open = 'オープン';
