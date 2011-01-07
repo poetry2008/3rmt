@@ -1383,7 +1383,7 @@ margin:10px 0 0 0;
 	font-size:12px;
 }
 .tickets td{
-	text-align:center;
+	text-align:left;
 	background-color:#fff;
 	font-size:12px;
 	padding:4px;
@@ -1502,12 +1502,10 @@ width:110px;
 .Icon.webTicket {
 background:url(images/icons/ticket_source_web.gif) no-repeat 0 0;
 margin:2px 0 0 10px;
-*margin:2px 0 0 100px;
 }
 .Icon.emailTicket {
 background:url(images/icons/ticket_source_email.gif) no-repeat 0 0;
 margin:2px 0 0 10px;
-*margin:2px 0 0 100px;
 }
 a.Icon {
 padding:3px 3px 3px 18px;
@@ -1530,3 +1528,4 @@ padding:0 0 0 20px;
 }
 .game_content01{ float:left;}
 .game_content02{ float:left; width:350px; font-size:12px; *line-height:14px;}
+.tickets_list{ width:80px;}
