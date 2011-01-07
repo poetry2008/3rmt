@@ -483,9 +483,10 @@ class SEO_URL{
     
     $this->stop($this->timestamp, $time);
     $this->performance['TOTAL_TIME'] += $time;
-
-    $urlString =  htmlspecialchars(utf8_encode($link));
+    
+    $urlString =  htmlspecialchars($link);
     $urlString = str_replace('&amp;', '&', $urlString);
+
     return $urlString;
 
   } # end function
