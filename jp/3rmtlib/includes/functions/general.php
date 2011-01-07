@@ -3197,7 +3197,7 @@ function tep_parseURI()
       $router = 'x'; 
     }
     if(isset($_GET['cName'])){
-      $firstId = tep_get_cpath_by_cname($_GET['cName']);
+      $firstId = tep_get_cpath_by_cname(urldecode($_GET['cName']));
       $_GET['cPath'] = $firstId;
     }
     switch($router){
@@ -3207,7 +3207,7 @@ function tep_parseURI()
       if(substr($firstFolder,-1)=='/'){
         $firstFolder = substr($firstFolder,0,-1);
       }
-      $secondId = tep_get_cpath_by_cname($firstFolder, $firstId);
+      $secondId = tep_get_cpath_by_cname(urldecode($firstFolder), $firstId);
       if ($secondId == 0) {
         forward404();
       }
@@ -3216,8 +3216,8 @@ function tep_parseURI()
     case 'secondFolder':
       $secondFolder = substr($subSiteUri,1);
       $folder_arr = explode('/', $secondFolder); 
-      $secondId = tep_get_cpath_by_cname($folder_arr[0], $firstId);
-      $thirdId  = tep_get_cpath_by_cname($folder_arr[1], $secondId); 
+      $secondId = tep_get_cpath_by_cname(urldecode($folder_arr[0]), $firstId);
+      $thirdId  = tep_get_cpath_by_cname(urldecode($folder_arr[1]), $secondId); 
       if ($thirdId == 0) {
         forward404();
       }
@@ -3227,14 +3227,14 @@ function tep_parseURI()
       $tmpArray = explode('/',$subSiteUri);
       $tmpArray2 = array();
       $tmpArray3 = explode('.',$_SERVER['HTTP_HOST']);
-      $firstId = tep_get_cpath_by_cname($tmpArray3[0]);
+      $firstId = tep_get_cpath_by_cname(urldecode($tmpArray3[0]));
 
       foreach ($tmpArray as $k => $v) {
         if ($v) {
           if ($k == count($tmpArray)-1) {
-            $pid = tep_get_pid_by_romaji( substr($v,0,-5), $tmpArray2[count($tmpArray2)-1]?$tmpArray2[count($tmpArray2)-1]:0);
+            $pid = tep_get_pid_by_romaji( urldecode(substr($v,0,-5)), $tmpArray2[count($tmpArray2)-1]?$tmpArray2[count($tmpArray2)-1]:0);
           } else {
-            $cid = tep_get_cpath_by_cname($v,
+            $cid = tep_get_cpath_by_cname(urldecode($v),
                 $tmpArray2[count($tmpArray2)-1]?$tmpArray2[count($tmpArray2)-1]:$firstId
                 );
             if ($cid) {
@@ -3294,7 +3294,7 @@ function tep_parseURI()
 
       foreach ($tmpArray as $v) {
         if ($v) {
-          $cid = tep_get_cpath_by_cname($v,$tmpArray2[count($tmpArray2)-1]);
+          $cid = tep_get_cpath_by_cname(urldecode($v),$tmpArray2[count($tmpArray2)-1]);
           if ($cid) {
             $tmpArray2[] = $cid;
           } else {
@@ -3312,9 +3312,9 @@ function tep_parseURI()
       foreach ($tmpArray as $k => $v) {
         if ($v) {
           if ($k == count($tmpArray)-1) {
-            $pid = tep_get_pid_by_romaji( substr($v,0,-5), $tmpArray2[count($tmpArray2)-1]?$tmpArray2[count($tmpArray2)-1]:0);
+            $pid = tep_get_pid_by_romaji( urldecode(substr($v,0,-5)), $tmpArray2[count($tmpArray2)-1]?$tmpArray2[count($tmpArray2)-1]:0);
           } else {
-            $cid = tep_get_cpath_by_cname($v,$tmpArray2[count($tmpArray2)-1]);
+            $cid = tep_get_cpath_by_cname(urldecode($v),$tmpArray2[count($tmpArray2)-1]);
             if ($cid) {
               $tmpArray2[] = $cid;
             } else {
