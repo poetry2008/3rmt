@@ -163,3 +163,19 @@ width:400px;
 #image_code{
 width:50px;
 }
+.send_mail{
+display:block;
+width:35px;
+height:17px;
+margin-left:3px;
+background:url(images/button_send_mail.gif) no-repeat;
+}
+.button02{
+cursor:pointer;
+text-indent:-2500px;
+border:none;
+display:block;
+width:47px;
+height:17px;
+background:url(images/button02.gif) no-repeat;
+}

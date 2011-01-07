@@ -50,7 +50,7 @@ name="mailtoadmin" method="post"  onsubmit="return checkForm()">
 <input type="text" name="femail" id="to_admin_femail"/>
 </td></tr>
 <tr><td>
-<input type="submit" value="<!--{_t key=send_email}-->" />
+<input class="button02" type="submit" value="<!--{_t key=send_email}-->" />
 </td></tr>
 </table>
 </form>
@@ -94,8 +94,7 @@ function checkForm()
 }
 </script>
 </div> <!-- end of .mail_form -->
-<a href="<!--{url controller=site action=sitelist}-->" >
-<!--{_t key="table_return"}-->
+<a class="send_mail" href="<!--{url controller=site action=sitelist}-->" >
 </a>
 </div>
 </div>
