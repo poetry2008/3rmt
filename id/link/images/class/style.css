@@ -18,6 +18,7 @@
 }
 .search_head .middle {
 	padding-left:10px;
+	*line-height:14px;
 }
 #content .middle {
 	padding-left:10px;
@@ -66,6 +67,7 @@ color:#AE0E30;
 	display:block;
 	padding:3px 0;	font-size:12px;
 color:#AE0E30;
+	*margin:2px 0;
 
 }
 .link_sitmap_h1 {
@@ -106,6 +108,7 @@ color:#AE0E30;
 .web_3 td {
 	width:160px;
 }
+.web_3_top td { line-height:14px;}
 #sites_add {
 	background:none repeat scroll 0 0 #fff;
 	border:1px solid #DDDDDD;
