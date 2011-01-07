@@ -3,7 +3,7 @@
 左右のボックス：通常
 --------------------------- */
 .boxText {
-	font-size: 11px;
+	font-size: 12px;
 	padding: 3px 0;
 /*	background-color:#E9E9E9;*/
 /*	width:165px;*/
@@ -31,7 +31,7 @@
 	padding:5px 0;
 }
 .boxText_ad{
-	font-size: 11px;
+	font-size: 12px;
 	padding: 3px 0;
 	background-color:#E9E9E9;
 	width:171px;
@@ -39,7 +39,7 @@
 	margin:0 auto;
 }
 .boxText02 {
-	font-size: 11px;
+	font-size: 12px;
 	padding: 3px 0;
 	background-color:#E9E9E9;
 	width:165px;
@@ -70,7 +70,7 @@
 「ご注文の最終確認」ページ「変更」文字
 --------------------------- */
 .orderEdit {
-	font-size : 11px;
+	font-size: 12px;
 	color: #a85e5e;
 	text-decoration: underline;
 }
@@ -228,7 +228,7 @@ TABLE：情報ボックス（コンテンツ）
 .infoBoxContents{
 	width: 100%;
 	background: #D0CFCF;
-	font-size: 11px;
+	font-size: 12px;
 	border: solid 1px #B1B1B1;
 	border-collapse: separate;
 	border-spacing: 1px;
@@ -264,7 +264,7 @@ TD.infoBoxHeading {
 TD,SPAN：情報ボックス（情報・メッセージ）
 --------------------------- */
 TD.infoBox, SPAN.infoBox {
-	font-size: 11px;
+	font-size: 12px;
 }
 /* ---------------------------
 TR：奇数行
@@ -288,7 +288,7 @@ TR.productListing-heading {
 TD：カタログ一覧（タイトル）
 --------------------------- */
 TD.productListing-heading {
-	font-size: 11px;
+	font-size: 12px;
 	background: #d2e9fb;
 	color: #656565;
 	font-weight: bold;
@@ -298,7 +298,7 @@ TD.productListing-heading {
 TD：カタログ一覧（データ）
 --------------------------- */
 TD.productListing-data {
-	font-size: 11px;
+	font-size: 12px;
 }
 /* ---------------------------
 A：ページリンク（通常）
@@ -372,7 +372,7 @@ TD.tableHeading {
 SPAN：情報ボックス（新しくカートに入れたカタログ）
 --------------------------- */
 SPAN.newItemInCart {
-	font-size: 11px;
+	font-size: 12px;
 	color: #ff0000;
 }
 /* ---------------------------
@@ -387,7 +387,7 @@ TEXTAREA：FORMの入力項目
 --------------------------- */
 TEXTAREA {
 	width: 100%;
-	font-size: 11px;
+	font-size: 12px;
 }
 /* ---------------------------
 SPAN：トップページのメッセージ（こんにちは、○○さん～）
@@ -544,7 +544,7 @@ P.description{
 }
 
 .formAreaTitle {
-	font-size: 11px;
+	font-size: 12px;
 	font-weight: bold;
 	color: #003639;
 }
