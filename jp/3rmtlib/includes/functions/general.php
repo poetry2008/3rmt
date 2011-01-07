@@ -3222,6 +3222,8 @@ function tep_parseURI()
     case 'product':
       $tmpArray = explode('/',$subSiteUri);
       $tmpArray2 = array();
+      $tmpArray3 = explode('.',$_SERVER['HTTP_HOST']);
+      $firstId = tep_get_cpath_by_cname($tmpArray3[0]);
 
       foreach ($tmpArray as $k => $v) {
         if ($v) {
