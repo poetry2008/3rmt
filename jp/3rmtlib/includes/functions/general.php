@@ -3177,9 +3177,9 @@ function tep_parseURI()
     }
     $router = 'x';
     $rewriteRule = array(
-                         "firstFolder"  => "/^\/[^\/]+\/?$/",        //   /abc(/)
-                         "secondFolder" => '/^\/[^\/]+\/[^\/]+\/?$/',              //   /asb/xcv(/)
-                         "thirdFolder"  => '/^\/[^\/]+\/[^\/]+\/[^\/]+\/?$/',              //   /asb/xcv(/)
+                         "firstFolder"  => "/^\/[^\.\/]+\/?$/",        //   /abc(/)
+                         "secondFolder" => '/^\/[^\.\/]+\/[^\.\/]+\/?$/',              //   /asb/xcv(/)
+                         "thirdFolder"  => '/^\/[^\.\/]+\/[^\.\/]+\/[^\.\/]+\/?$/',              //   /asb/xcv(/)
                          "product"      => '/\.html$/'                    //   /asd/xcv/xcv.html  /zxv.html /xcv/xcv/xc.html
                          );
     foreach ($rewriteRule as $ruler=>$value){
