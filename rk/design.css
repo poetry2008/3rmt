@@ -517,15 +517,15 @@ select{
 }
 .header_menu_1, .header_menu_2, .header_menu_3{
 	display:block;
-	height:16px;
-	text-align:right;
+	line-height:20px;
+	height:20px;
 }
 .header_menu_1{
 	width: 38px;
 	background: url(images/design/button/rss.gif) no-repeat;
 }
 .header_menu_2{
-	width: 90px;
+	width:114px;
 	background: url(images/design/button/shopping_cart.gif) no-repeat;
 }
 .header_menu_3{
