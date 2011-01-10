@@ -3232,7 +3232,7 @@ function tep_parseURI()
       foreach ($tmpArray as $k => $v) {
         if ($v) {
           if ($k == count($tmpArray)-1) {
-            $pid = tep_get_pid_by_romaji( urldecode(substr($v,0,-5)), $tmpArray2[count($tmpArray2)-1]?$tmpArray2[count($tmpArray2)-1]:0);
+            $pid = tep_get_pid_by_romaji( urldecode(substr($v,0,-5)), $tmpArray2[count($tmpArray2)-1]?$tmpArray2[count($tmpArray2)-1]:$firstId);
           } else {
             $cid = tep_get_cpath_by_cname(urldecode($v),
                 $tmpArray2[count($tmpArray2)-1]?$tmpArray2[count($tmpArray2)-1]:$firstId
