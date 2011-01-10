@@ -5,6 +5,7 @@
 
 //取得minitor 的信息
 function tep_minitor_info(){
+  /*
   $show_div = true;
   $errorString = array();
   $monitors  = tep_db_query("select id ,name,url from monitor m where m.enable='on'");
@@ -62,6 +63,7 @@ function tep_minitor_info(){
   }
   return $returnString;
 
+*/
 }
 
 ////

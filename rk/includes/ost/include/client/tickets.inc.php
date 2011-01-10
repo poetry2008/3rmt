@@ -93,9 +93,9 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
     <tr><td>
      <table border="0" cellspacing="1" cellpadding="2" class="tickets" align="center" width="100%">
         <tr>
-          <th width="70" nowrap>
+          <th width="60" nowrap>
                 <a href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="番語順に表示 <?=$negorder?>">問合番号</a></th>
-          <th width="100">
+          <th width="70">
                 <a href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="作成日時順に表示 <?=$negorder?>">作成日時</a></th>
             <?php /* <th width="154">ステータス</th> */ ?>
             <th>件名</th>
