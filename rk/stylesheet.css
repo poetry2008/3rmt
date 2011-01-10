@@ -356,7 +356,6 @@ CHECKBOX, INPUT, RADIO, SELECT：FORMの入力・選択項目
 --------------------------- */
 CHECKBOX, INPUT, RADIO, SELECT {
 	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
-	font-size: 11px;
 }
 
 /* ---------------------------
