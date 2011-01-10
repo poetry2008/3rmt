@@ -517,26 +517,36 @@ select{
 }
 .header_menu_1, .header_menu_2, .header_menu_3{
 	display:block;
-	line-height:20px;
-	height:20px;
+	line-height:19px;
+	height:19px;
 }
 .header_menu_1{
 	width: 38px;
 	background: url(images/design/button/rss.gif) no-repeat;
 }
 .header_menu_2{
-	width:114px;
+text-align:left;
+padding-left:23px;
+	width:98px;
+	*width:114px;
+	*margin-right:5px;
 	background: url(images/design/button/shopping_cart.gif) no-repeat;
 }
 .header_menu_3{
-	width: 65px;
+	padding-left:25px;
+	width:70px;
+	*width:89px;
+	*margin-right:5px;
 	background: url(images/design/button/checkout.gif) no-repeat;
 }
 .header_menu_4{
 	margin-right:8px;
-	width: 106px;
-	padding:4px 2px 0 0;
+	width: 108px;
+	height:19px;
 	background: url(images/design/button/header_menu_bg.gif) no-repeat;
+}
+.header_menu_4 span{
+line-height:19px;
 }
 .header_Navigation {
 	font-size: 10px;
