@@ -65,7 +65,9 @@
   } else {
     //$product_info = tep_db_fetch_array($product_info_query);
 ?>
-      <h1 class="pageHeading"><?php echo $po_game_c . '&nbsp;' . $product_info['products_name']; ?>を予約する</h1>
+      <h1 class="pageHeading">
+      <span class="game_im"><img height="26" width="26" src="images/design/title_img08.gif" alt=""></span>
+      <span class="game_t"> <?php echo $po_game_c . '&nbsp;' . $product_info['products_name']; ?>を予約する</span></h1>
             <div class="comment">
       <p>
         RMTアイテムデポでは、<?php echo $po_game_c; ?>の予約サービスを行っております。<br>
