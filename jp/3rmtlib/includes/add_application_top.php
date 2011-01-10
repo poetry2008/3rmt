@@ -371,7 +371,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
     }
   }
 
-if (!isset($_GET['action'])) {
+
   if (defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED) {
     if (
          basename($_SERVER['SCRIPT_NAME']) != FILENAME_LATEST_NEWS
@@ -395,7 +395,7 @@ if (!isset($_GET['action'])) {
       tep_parseURI();
     }
   }
-}
+
 
 // navigation history
   if (tep_session_is_registered('navigation')) {
