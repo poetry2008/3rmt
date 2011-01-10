@@ -103,6 +103,10 @@ width:370px;
 	overflow: hidden;
 	background: url(images/design/contents/headding_content_long.gif) repeat-y;
 }
+p.pageBottom_long{
+margin:0;
+padding:0;
+}
 /* ---------------------------
 画像
 --------------------------- */
