@@ -3064,7 +3064,7 @@ function tep_get_categories_by_pid($pid,$romaji=true)
   $p_parent = tep_get_categories_by_products_id($pid);
 
 
-  if (!is_set($p_parent[0])) {
+  if (!isset($p_parent[0])) {
     forward404();
     exit('no categories');
   }
