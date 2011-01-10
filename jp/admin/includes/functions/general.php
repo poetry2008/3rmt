@@ -3516,14 +3516,12 @@ function tep_display_google_results(){
                     r.mission_id where c2m.categories_id ='".$categories_id."')
                 order by tr.order_total_number";
   */
-  $record_sql = "select tr.siteurl as url 
-              from ".TABLE_RECORD." tr where tr.mission_id =
-              (SELECT s.mission_id FROM "
-               .TABLE_SESSION_LOG." s left join
-              ".TABLE_CATEGORIES_TO_MISSION." c2m on
-              s.mission_id = c2m.mission_id WHERE 
-              c2m.categories_id = '".$categories_id."' 
-              limit 1) order by tr.order_total_number";
+  $record_sql = "select tr.siteurl as url
+              from ".TABLE_RECORD." tr left join "
+              .TABLE_CATEGORIES_TO_MISSION." c2m
+              on tr.mission_id = c2m.mission_id 
+              where c2m.categories_id = '".$categories_id."'
+              order by tr.order_total_number";
   $record_query = tep_db_query($record_sql);
   $siturl = '';
   $seach_categoties_sql = "SELECT cd.categories_name as categories_name,

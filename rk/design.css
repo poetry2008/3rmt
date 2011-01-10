@@ -1026,7 +1026,7 @@ list-style-type:none;
 .contact_right input{ float:right;}
 .status_form{ clear:both;}
 .status_warpper02{ clear:both;}
-.status_warpper{ float:left; padding:5px 10px;}
+.status_warpper{ clear:both; padding:5px 10px; width:350px; display:block;overflow:hidden;}
 .status_warpper label{ float:left; padding:3px;width:110px;}
 .status_warpper input{ float:left;}
 .button2{ float:right;}
