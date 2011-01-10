@@ -36,6 +36,8 @@
 
 function forward404()
 {
+  print_r(debug_backtrace());
+  exit;
   header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
   require(DIR_WS_MODULES  . '404.html');
   exit;
@@ -3061,12 +3063,11 @@ function tep_get_categories_by_pid($pid,$romaji=true)
 {
   static $romaji_arr = array();
   $arr = array();
+  
   $p_parent = tep_get_categories_by_products_id($pid);
-
-
   if (!isset($p_parent[0])) {
-    forward404();
-    exit('no categories');
+    //forward404();
+    //exit('no categories');
   }
 
   //如果同一商品属于多个分类默认返回第一个 

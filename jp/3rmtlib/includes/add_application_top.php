@@ -371,6 +371,32 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
     }
   }
 
+if (!isset($_GET['action'])) {
+  if (defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED) {
+    if (
+         basename($_SERVER['SCRIPT_NAME']) != FILENAME_LATEST_NEWS
+      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_REVIEWS
+      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS
+      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS_INFO
+      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PAGE
+      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_SHOPPING_CART
+    ) {
+      tep_parseURI();
+    }
+  } elseif ((defined('URL_ROMAJI_ENABLED') && URL_ROMAJI_ENABLED)) {
+    //if (basename($_SERVER['SCRIPT_NAME']) == FILENAME_DEFAULT) {
+    if (
+         basename($_SERVER['SCRIPT_NAME']) != FILENAME_LATEST_NEWS
+      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_REVIEWS
+      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS
+      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS_INFO
+      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PAGE
+    ) {
+      tep_parseURI();
+    }
+  }
+}
+
 // navigation history
   if (tep_session_is_registered('navigation')) {
     if (PHP_VERSION < 4) {
@@ -564,20 +590,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
 // auto expire special products
   require(DIR_WS_FUNCTIONS . 'specials.php');
   tep_expire_specials();
-  if (defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED) {
-    tep_parseURI();
-  } elseif ((defined('URL_ROMAJI_ENABLED') && URL_ROMAJI_ENABLED)) {
-    //if (basename($_SERVER['SCRIPT_NAME']) == FILENAME_DEFAULT) {
-    if (
-         basename($_SERVER['SCRIPT_NAME']) != FILENAME_LATEST_NEWS
-      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_REVIEWS
-      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS
-      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS_INFO
-      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PAGE
-    ) {
-      tep_parseURI();
-    }
-  }
+
 // calculate category path
   if (isset($_GET['cPath'])) {
     $cPath = $_GET['cPath'];
