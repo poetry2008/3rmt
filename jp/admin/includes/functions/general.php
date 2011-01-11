@@ -3655,3 +3655,21 @@ function tep_get_products_rate($pid) {
   //print_r($out);
   return $out[1][0];
 }
+
+function tep_check_romaji($romaji){
+  if (!preg_match('/^[a-zA-Z0-9\-]+$/', $romaji)) {
+    return false;
+  }
+  $keywords = array(
+    'page_',
+    'page-',
+    'reviews',
+    'latest_news'
+  );
+  foreach($keywords as $k){
+    if (strpos($romaji,$k) !== false) {
+      return false;
+    }
+  }
+  return true;
+}

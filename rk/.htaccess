@@ -98,8 +98,11 @@ RewriteRule ^info-([A-Za-z0-9_]+).html$ page.php?pID=$1&%{QUERY_STRING}
 #}}}
 
 # romaji
+RewriteCond %{REQUEST_URI} !page-\d+.html
 RewriteRule ^([^\/\.]+)/([^\/\.]+)\.html product_info.php?products_id=$2 [QSA,L]
-RewriteRule ^([^\/\.]+)/([^\/\.]+)/([^\/\.]+)\.html product_info.php?products_id=$3 [QSA,L]
+RewriteCond %{REQUEST_URI} !page-\d+.html
+RewriteRule ^([^\/\.]+)/([^\/\.]+)/([^\/\.]+)\.html product_info.php?%{REQUEST_FILENAME}&products_id=$3 [QSA,L]
+RewriteCond %{REQUEST_URI} !page-\d+.html
 RewriteRule ^([^\/\.]+)/([^\/\.]+)/([^\/\.]+)/([^\/\.]+)\.html product_info.php?products_id=$4 [QSA,L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*) index.php?cName=$1 [QSA,PT,L]

@@ -36,6 +36,9 @@
 
 function forward404()
 {
+  print_r(debug_backtrace());
+  print_r($_SERVER);
+  exit;
   header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
   require(DIR_WS_MODULES  . '404.html');
   exit;
@@ -3165,6 +3168,11 @@ function tep_get_google_adsense_adurl($url) {
 function tep_parseURI()
 {
   if (defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED) {
+    //处理分页,先把分页参数从参数中除去
+    if (preg_match("/page-(\d+)/",$_SERVER["REQUEST_URI"],$pagenum)){
+      $_SERVER["REQUEST_URI"] = substr($_SERVER["REQUEST_URI"],0,strpos($_SERVER["REQUEST_URI"],"page-"));
+      $_GET['page'] = $pagenum[1];
+    }
     //如果是https的链接不解析{
     $tmpArr = parse_url(HTTPS_SERVER);
     $tmpHttphost = $tmpArr['host'];
@@ -3204,7 +3212,6 @@ function tep_parseURI()
     }
     switch($router){
     case 'firstFolder':
-      
       $firstFolder = substr($subSiteUri,1);
       if(substr($firstFolder,-1)=='/'){
         $firstFolder = substr($firstFolder,0,-1);
@@ -3248,17 +3255,12 @@ function tep_parseURI()
         }
       }
       $_GET['products_id'] = $pid;
-      //$tmpArray = explode('/',$subSiteUri);
-      //$pid = $tmpArray[count($tmpArray)-1];
-      //$pid = substr($pid,0,-5);
-      //$_GET['products_id'] = tep_get_pid_by_romaji($pid);
     }
   } else {
-    /*
-    echo "<pre>";
-    print_r($_SERVER);
-    exit;
-    */
+    if (preg_match("/page-(\d+)/",$_SERVER["REQUEST_URI"],$pagenum)){
+      $_SERVER["REQUEST_URI"] = substr($_SERVER["REQUEST_URI"],0,strpos($_SERVER["REQUEST_URI"],"page-"));
+      $_GET['page'] = $pagenum[1];
+    }
     $subSiteUri = $_SERVER['REQUEST_URI'];
     $g_pos = strpos($_SERVER['REQUEST_URI'], '?'); 
     if ($g_pos !== false) {
