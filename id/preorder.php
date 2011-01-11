@@ -117,7 +117,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
         $email_body .= '▼ご要望' . "\n" . $_POST['yourmessage'] . "\n\n";
       }
     
-      $email_body .= sprintf(TEXT_EMAIL_LINK, HTTP_SERVER . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . intval($_GET['products_id']))) . "\n\n" .
+      $email_body .= sprintf(TEXT_EMAIL_LINK, tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . intval($_GET['products_id']))) . "\n\n" .
       sprintf(TEXT_EMAIL_SIGNATURE, STORE_NAME . "\n" . HTTP_SERVER . DIR_WS_CATALOG . "\n");
     
       tep_mail('', SEND_EXTRA_ORDER_EMAILS_TO, $email_subject, stripslashes($email_body), $from_name, $from_email_address);
