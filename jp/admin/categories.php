@@ -198,8 +198,11 @@
                                      'language_id'   => $languages[$i]['id'],
                                      'site_id'       => $site_id
                                      );
-            //$current_category_id
-            //exit("select * from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id=cd.categories_id and c.parent_id='".$current_category_id."' and cd.romaji='".$sql_data_array['romaji']."' and cd.site_id='".$site_id."'");
+            
+            if(!tep_check_romaji($sql_data_array['romaji'])){
+              $messageStack->add_session(TEXT_ROMAJI_ERROR, 'error');
+              tep_redirect(tep_href_link(FILENAME_CATEGORIES));
+            }
             if (tep_db_num_rows(tep_db_query("select * from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id=cd.categories_id and c.parent_id='".$current_category_id."' and cd.romaji='".$sql_data_array['romaji']."' and cd.site_id='".$site_id."'"))) {
               $messageStack->add_session(TEXT_ROMAJI_EXISTS, 'error');
               tep_redirect(tep_href_link(FILENAME_CATEGORIES));
@@ -228,7 +231,10 @@
       
       
       } elseif ($_GET['action'] == 'update_category') {
-
+        if(!tep_check_romaji($sql_data_array['romaji'])){
+          $messageStack->add_session(TEXT_ROMAJI_ERROR, 'error');
+          tep_redirect(tep_href_link(FILENAME_CATEGORIES));
+        }
         if (tep_db_num_rows(tep_db_query("select * from ".TABLE_CATEGORIES_DESCRIPTION." cd,".TABLE_CATEGORIES." c where cd.categories_id=c.categories_id and c.parent_id='".$current_category_id."' and cd.romaji='".$sql_data_array['romaji']."' and cd.site_id='".$site_id."' and c.categories_id!='".$categories_id."'"))) {
               $messageStack->add_session(TEXT_ROMAJI_EXISTS, 'error');
               tep_redirect(tep_href_link(FILENAME_CATEGORIES));
@@ -401,8 +407,13 @@
         $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
         
         if ($_GET['action'] == 'insert_product') {
+
           if (trim($_POST['romaji']) == '') {
-            $messageStack->add_session(TEXT_ROMAJI_EXISTS, 'error');
+            $messageStack->add_session(TEXT_ROMAJI_NOT_NULL, 'error');
+            tep_redirect(tep_href_link(FILENAME_CATEGORIES));
+          }
+          if(!tep_check_romaji($_POST['romaji'])){
+            $messageStack->add_session(TEXT_ROMAJI_ERROR, 'error');
             tep_redirect(tep_href_link(FILENAME_CATEGORIES));
           }
           if (isset($_GET['cPath'])) {
@@ -421,7 +432,11 @@
           }
         } else if ($_GET['action'] == 'update_product') {
           if (trim($_POST['romaji']) == '') {
-            $messageStack->add_session(TEXT_ROMAJI_EXISTS, 'error');
+            $messageStack->add_session(TEXT_ROMAJI_NOT_NULL, 'error');
+            tep_redirect(tep_href_link(FILENAME_CATEGORIES));
+          }
+          if(!tep_check_romaji($_POST['romaji'])){
+            $messageStack->add_session(TEXT_ROMAJI_ERROR, 'error');
             tep_redirect(tep_href_link(FILENAME_CATEGORIES));
           }
           if (isset($_GET['cPath'])) {

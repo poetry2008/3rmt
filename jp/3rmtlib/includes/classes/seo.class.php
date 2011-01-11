@@ -841,10 +841,14 @@ class SEO_URL{
             }
           }
         if (defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED) {
-          return $string = 'http://'.$romaji.'.'.URL_SUB_SITE.'/'.join('/',$romajiSub);
+           $string = 'http://'.$romaji.'.'.URL_SUB_SITE.'/'.join('/',$romajiSub);
         } else {
-          return $string = $romaji.'/'.join('/',$romajiSub);
+           $string = $romaji.'/'.join('/',$romajiSub);
         }
+        if(preg_match("/^_page(\d+)/",$extension,$pagenumber)){
+          $string .='/page-'.$pagenumber[1].'.html';
+        }
+        return $string;
         break;
       case URL_TYPE_PRODUCT:
         $categories = tep_get_categories_by_pid($id);

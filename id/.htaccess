@@ -69,8 +69,11 @@ RewriteCond %{HTTP_HOST} !^www\.3id\.maker\.200\.com$
 RewriteCond %{REQUEST_FILENAME} !product_info.php
 RewriteCond %{REQUEST_FILENAME} !shopping_cart.php
 RewriteRule ^(.*)$ /%{HTTP_HOST}/$1 [C]
+RewriteCond %{REQUEST_URI} !page-\d+.html
 RewriteRule ^/([a-z0-9\-]+)\.3id\.maker\.200\.com/([^\/\.]+)\.html product_info.php?products_id=$2 [QSA,L]
+RewriteCond %{REQUEST_URI} !page-\d+.html
 RewriteRule ^/([a-z0-9\-]+)\.3id\.maker\.200\.com/([^\/\.]+)/([^\/\.]+)\.html product_info.php?products_id=$3 [QSA,L]
+RewriteCond %{REQUEST_URI} !page-\d+.html
 RewriteRule ^/([a-z0-9\-]+)\.3id\.maker\.200\.com/([^\/\.]+)/([^\/\.]+)/([^\/\.]+)\.html product_info.php?products_id=$4 [QSA,L]
 RewriteRule ^/([a-z0-9\-]+)\.3id\.maker\.200\.com/(.*) index.php?cName=$1 [QSA,PT,L]
 
@@ -130,7 +133,7 @@ RewriteRule ^info/([A-Za-z0-9_]+).html$ page.php?pID=$1&%{QUERY_STRING}
 RewriteRule ^info-([A-Za-z0-9_]+).html$ page.php?pID=$1&%{QUERY_STRING}
 #}}}
 
-#RewriteCond %{REQUEST_FILENAME} !-f 
-#RewriteRule ^images/(.*)$ default_images/$1
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteRule ^images/(.*)$ default_images/$1
 
 </IfModule>

@@ -24,7 +24,7 @@
            r.customers_name,
            pd.site_id as psid
     from " . TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd, " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
-    where pd.site_id        = '" . SITE_ID . "' 
+    where (pd.site_id        = '" . SITE_ID . "' or pd.site_id = 0)
       and p.products_status != '0' 
       and p.products_id     = r.products_id 
       and r.reviews_id      = rd.reviews_id 
