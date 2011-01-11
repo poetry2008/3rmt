@@ -3657,9 +3657,10 @@ function tep_get_products_rate($pid) {
 }
 
 function tep_check_romaji($romaji){
+  /*
   if (!preg_match('/^[a-zA-Z0-9\-]+$/', $romaji)) {
     return false;
-  }
+  }*/
   $keywords = array(
     'page_',
     'page-',
