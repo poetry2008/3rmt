@@ -1,3 +1,6 @@
+
+
+
 /*
 	$Id$
 */
@@ -280,6 +283,9 @@ font-weight: bold;                              /* フォント太さ */
 --------------------------- */
 .dataTableRow {
 background-color: #F0F1F1;                      /* 背景色 */
+}
+.inv{
+background-color:#fff;
 }
 /* ---------------------------
 .[TR]：一覧表データ（色違行）
