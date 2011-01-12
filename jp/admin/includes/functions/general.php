@@ -3619,7 +3619,6 @@ function tep_display_google_results(){
 }
 }
 //取得分类的父id
-/*
 function tep_get_category_parent_id($cid){
   if ($cid) {
     $c = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CATEGORIES." where categories_id='".$cid."'"));
@@ -3628,7 +3627,6 @@ function tep_get_category_parent_id($cid){
     return 0;
   }
 }
-*/
 
 // 取得商品的分类
 function tep_get_products_parent_id($pid){
@@ -3673,4 +3671,38 @@ function tep_check_romaji($romaji){
     }
   }
   return true;
+}
+function tep_get_category_inventory($cid) {
+  $inventory_sql = "select max_inventory as `max`,min_inventory as `min` 
+    from ".TABLE_CATEGORIES." WHERE categories_id='".$cid."'";
+  $inventory_res = tep_db_query($inventory_sql);
+  return tep_db_fetch_array($inventory_res);
+}
+function tep_upload_products_to_inventory($pid,$status){
+  $sql = "select products_id from ".TABLE_PRODUCTS_TO_INVENTORY
+    ." where products_id ='".$pid."'";
+  $res = tep_db_query($sql);
+  if(tep_db_fetch_array($res)){
+     $method = 'update';    
+  }else{
+     $method = 'insert';
+  }
+  $inventory_data_arr = array(
+      'products_id' => $pid,
+      'inventory_status' => $status,
+      'last_date' => 'now()'
+      );
+  tep_db_perform(TABLE_PRODUCTS_TO_INVENTORY,$inventory_data_arr,$method,
+      "products_id='".$pid."'");
+
+}
+function tep_get_inventory($pid){
+    $categories_id = tep_get_products_parent_id($pid);
+    $parent_id = $categories_id;
+    while($parent_id != 0){
+      $categories_id = $parent_id;
+      $parent_id = tep_get_category_parent_id($categories_id);
+    }
+    $inventory_arr = tep_get_category_inventory($categories_id);
+    return $inventory_arr;
 }
