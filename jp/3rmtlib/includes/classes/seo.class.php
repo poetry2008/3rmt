@@ -837,13 +837,13 @@ class SEO_URL{
         if (count($id_array))//如果有多个id 则说明....
           {
             foreach ($id_array as $category_id){
-            $romajiSub[] = tep_get_romaji_cpath($category_id);
+            $romajiSub[] = urlencode(tep_get_romaji_cpath($category_id));
             }
           }
         if (defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED) {
-           $string = 'http://'.$romaji.'.'.URL_SUB_SITE.'/'.join('/',$romajiSub);
+           $string = 'http://'.urlencode($romaji).'.'.URL_SUB_SITE.'/'.join('/',$romajiSub);
         } else {
-           $string = $romaji.'/'.join('/',$romajiSub);
+           $string = urlencode($romaji).'/'.join('/',$romajiSub);
         }
         if(preg_match("/^_page(\d+)/",$extension,$pagenumber)){
           $string .='/page-'.$pagenumber[1].'.html';
@@ -857,13 +857,16 @@ class SEO_URL{
         unset($categories[0]);
         $categoriesToString ='';
         if(count($categories)){
+          foreach($categories as $k => $v) {
+            $categories[$k] = urlencode($v);
+          }
           $categoriesToString = @join('/',$categories).'/';
         }
-        $productRomaji = tep_get_romaji_by_pid($id);
+        $productRomaji = urlencode(tep_get_romaji_by_pid($id));
         if (defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED) {
-          return $string = 'http://'.$romaji.'.'.URL_SUB_SITE.'/'.$categoriesToString.$productRomaji.'.html';
+          return $string = 'http://'.urlencode($romaji).'.'.URL_SUB_SITE.'/'.$categoriesToString.$productRomaji.'.html';
         } else {
-          return $string = $romaji.'/'.$categoriesToString.$productRomaji.'.html';
+          return $string = urlencode($romaji).'/'.$categoriesToString.$productRomaji.'.html';
         }
       }
     }
