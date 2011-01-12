@@ -107,3 +107,7 @@ define('TEXT_ROMAJI_EXISTS', ' ローマ字が存在しています');
 define('TEXT_PRODUCTS_ROMAJI', 'ローマ字:');
 define('TEXT_ROMAJI_ERROR', 'ローマ字の格式が正しくないです!');
 define('TEXT_ROMAJI_NOT_NULL', 'ローマ字を書いてください!');
+define('TEXT_MAX','在庫最大');
+define('TEXT_MIN','在庫最小');
+define('TEXT_INFO_INVENTORY','在庫設置');
+define('TEXT_INVENTORY_ERROR'.'入力データーをご確認ください');
