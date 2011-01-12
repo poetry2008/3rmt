@@ -123,7 +123,7 @@
          while($products = tep_db_fetch_array($products_query)){
            if($products['products_bflag']){
              //买取
-             echo "<tr class='dataTableRow' 
+             echo "<tr class='dataTableRow inv' 
                onmouseover='this.className=\"dataTableRowOver\";this.style.cursor=\"hand\"'
                onmouseout='this.className=\"dataTableRow\"'>";
            }else{
