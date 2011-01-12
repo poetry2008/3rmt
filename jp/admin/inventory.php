@@ -96,8 +96,8 @@
         <table border="0" width="100%" cellspacing="0" cellpadding="0">
         <tr class="dataTableHeadingRow" valign="top">
         <td class="dataTableHeadingContent" colspan='2'><?php echo TEXT_PRODUCT_NAME;?></td>
-        <td class="dataTableHeadingContent"><?php echo TEXT_IMAGINARY;?></td>
         <td class="dataTableHeadingContent"><?php echo TEXT_PRODUCT_PRICE;?></td>
+        <td class="dataTableHeadingContent"><?php echo TEXT_IMAGINARY;?></td>
         <td class="dataTableHeadingContent"><?php echo TEXT_PRODUCT_QUANTITY;?></td>
         <td class="dataTableHeadingContent"><?php echo TEXT_MAX_INVENTORY;?></td>
         <td class="dataTableHeadingContent"><?php echo TEXT_MIN_INVENTORY;?></td>
@@ -122,14 +122,14 @@
          $products_query = tep_db_query($products_query_rows);
          while($products = tep_db_fetch_array($products_query)){
            if($products['products_bflag']){
+             echo "<tr class='dataTableSecondRow'
+               onmouseover='this.className=\"dataTableRowOver\";this.style.cursor=\"hand\"'
+               onmouseout='this.className=\"dataTableSecondRow\"'>";
+           }else{
              //买取
              echo "<tr class='dataTableRow inv' 
                onmouseover='this.className=\"dataTableRowOver\";this.style.cursor=\"hand\"'
                onmouseout='this.className=\"dataTableRow\"'>";
-           }else{
-             echo "<tr class='dataTableSecondRow'
-               onmouseover='this.className=\"dataTableRowOver\";this.style.cursor=\"hand\"'
-               onmouseout='this.className=\"dataTableSecondRow\"'>";
            }
          ?>
           <td style="border-bottom:1px solid #000000">
@@ -140,11 +140,18 @@
             echo "<img src='images/icons/down.gif'>";
           }
           ?>
+          <?php $inv = tep_get_inventory($products['products_id']); ?>
           </td>
           <td style="border-bottom:1px solid #000000">
-          <a href="orders.php?search_type=products_name&keywords=<?php echo
-          urlencode($products['products_name']);?>"><?php echo
-          $products['products_name'];?></a>
+          <?php
+          krsort($inv['cpath']);
+          $link_cpath = implode('_',$inv['cpath']);
+          $link_product_id = $products['products_id'];
+          ?>
+          <a
+          href="categories.php?cPath=<?php echo $link_cpath;?>&pID=<?php
+          echo $link_product_id;?>&action=new_product_preview&read=only">
+          <?php echo $products['products_name'];?></a>
           </td>
           <?php
   //架空
@@ -168,10 +175,9 @@
     }
   }
           ?>
-          <td style="border-bottom:1px solid #000000"><?php echo $imaginary;?></td>
           <td style="border-bottom:1px solid #000000"><?php echo $products['products_price'];?></td>
+          <td style="border-bottom:1px solid #000000"><?php echo $imaginary;?></td>
           <td style="border-bottom:1px solid #000000"><?php echo $products['products_quantity'];?></td>
-          <?php $inv = tep_get_inventory($products['products_id']); ?>
           <td style="border-bottom:1px solid #000000"><?php echo $inv['max']?$inv['max']:0;?></td>
           <td style="border-bottom:1px solid #000000"><?php echo $inv['min']?$inv['min']:0;?></td>
         </tr>
