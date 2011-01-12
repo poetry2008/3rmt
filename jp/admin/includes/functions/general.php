@@ -3699,10 +3699,13 @@ function tep_upload_products_to_inventory($pid,$status){
 function tep_get_inventory($pid){
     $categories_id = tep_get_products_parent_id($pid);
     $parent_id = $categories_id;
+    $cpath = array();
     while($parent_id != 0){
       $categories_id = $parent_id;
+      $cpath[] = $categories_id;
       $parent_id = tep_get_category_parent_id($categories_id);
     }
     $inventory_arr = tep_get_category_inventory($categories_id);
+    $inventory_arr['cpath'] = $cpath;
     return $inventory_arr;
 }
