@@ -32,6 +32,7 @@
          }
          break;
      }
+     tep_redirect(tep_href_link(FILENAME_INVENTORY));
   
   }
   //查找 最后修改时间
@@ -114,6 +115,7 @@
            on p.products_id=p2i.products_id left join 
            ".TABLE_PRODUCTS_DESCRIPTION." pd on
            pd.products_id = p.products_id 
+           where p2i.inventory_status not in ('ok','error') 
            order by pd.products_name ASC";
          $products_split = new splitPageResults($_GET['page'],
              MAX_DISPLAY_PRODUCTS,$products_query_rows,$products_query_numrows);
