@@ -3652,7 +3652,6 @@ function tep_get_products_rate($pid) {
   $t = explode('//',$p['products_attention_1']);
   $n = str_replace(',','',tep_get_full_count_in_order(1, $t[1]));
   preg_match_all('/(\d+)/',$n,$out);
-  //print_r($out);
   return $out[1][0];
 }
 
@@ -3662,10 +3661,11 @@ function tep_check_romaji($romaji){
     return false;
   }*/
   $keywords = array(
-    'page_',
-    'page-',
+    'page',
     'reviews',
-    'latest_news'
+    'info',
+    'latest_news',
+    '=','?','&'
   );
   foreach($keywords as $k){
     if (strpos($romaji,$k) !== false) {

@@ -3199,7 +3199,11 @@ function tep_parseURI()
         $router = $ruler;
       }
     }
-    $i_pos = strpos($_SERVER['REQUEST_URI'], '/?cmd=');
+    if (SITE_ID==5) {
+      $i_pos = strpos($_SERVER['REQUEST_URI'], '/?sid=');
+    } else {
+      $i_pos = strpos($_SERVER['REQUEST_URI'], '/?cmd=');
+    }
     if ($i_pos !== false) {
       $router = 'x'; 
     }
@@ -3275,16 +3279,14 @@ function tep_parseURI()
         $router = $ruler;
       }
     }
-    $i_pos = strpos($_SERVER['REQUEST_URI'], '/?cmd=');
+    if (SITE_ID==5) {
+      $i_pos = strpos($_SERVER['REQUEST_URI'], '/?sid=');
+    } else {
+      $i_pos = strpos($_SERVER['REQUEST_URI'], '/?cmd=');
+    }
     if ($i_pos !== false) {
       $router = 'x'; 
     }
-    /*
-    if(isset($_GET['cName'])){
-      $firstId = tep_get_cpath_by_cname($_GET['cName']);
-      $_GET['cPath'] = $firstId;
-    }
-    */
           
     switch($router){
     case 'firstFolder':
@@ -3325,10 +3327,6 @@ function tep_parseURI()
         }
       }
       $_GET['products_id'] = $pid;
-      //$tmpArray = explode('/',$subSiteUri);
-      //$pid = $tmpArray[count($tmpArray)-1];
-      //$pid = substr($pid,0,-5);
-      //$_GET['products_id'] = tep_get_pid_by_romaji($pid);
       break;
     case 'x':
       break;
