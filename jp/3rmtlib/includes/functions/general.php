@@ -3201,7 +3201,7 @@ function tep_parseURI()
     }
     if (SITE_ID==5) {
       $i_pos = strpos($_SERVER['REQUEST_URI'], '/?sid=');
-    } elsel{
+    } else {
       $i_pos = strpos($_SERVER['REQUEST_URI'], '/?cmd=');
     }
     if ($i_pos !== false) {
@@ -3281,7 +3281,7 @@ function tep_parseURI()
     }
     if (SITE_ID==5) {
       $i_pos = strpos($_SERVER['REQUEST_URI'], '/?sid=');
-    } elsel{
+    } else {
       $i_pos = strpos($_SERVER['REQUEST_URI'], '/?cmd=');
     }
     if ($i_pos !== false) {
