@@ -110,4 +110,4 @@ define('TEXT_ROMAJI_NOT_NULL', 'ローマ字を書いてください!');
 define('TEXT_MAX','在庫最大');
 define('TEXT_MIN','在庫最小');
 define('TEXT_INFO_INVENTORY','在庫設置');
-define('TEXT_INVENTORY_ERROR'.'入力データーをご確認ください');
+define('TEXT_INVENTORY_ERROR','入力データーをご確認ください');
