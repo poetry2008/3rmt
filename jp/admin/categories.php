@@ -146,6 +146,29 @@
 
         }
         break;
+      case 'upload_inventory':
+        $error = false;
+        $categories_id = $_POST['categories_id'];
+        $max_inventory = $_POST['max_inventory'];
+        $min_inventory = $_POST['min_inventory'];
+        if(!(!$max_inventory == !$min_inventory)||
+            $max_inventory<$min_inventory){
+          $error = true;
+        }
+        if($error){
+        tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID='
+              . $categories_id.'&action=edit_inventory&msg=error'));
+        }else{
+        $upload_inventory_sql = 'update '.TABLE_CATEGORIES.'
+          set 
+          max_inventory="'.$max_inventory.'",
+          min_inventory="'.$min_inventory.'"
+          where categories_id="'.$categories_id.'" 
+          and parent_id = "0"';
+        tep_db_query($upload_inventory_sql);
+        tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $categories_id));
+        }
+        break;
       case 'insert_category':
       case 'update_category':
         $categories_id = tep_db_prepare_input($_POST['categories_id']);
@@ -1821,6 +1844,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                c.categories_image, 
                c.parent_id, 
                c.sort_order, 
+               c.max_inventory,
+               c.min_inventory,
                c.date_added, 
                c.last_modified 
         from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
@@ -1840,6 +1865,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                c.categories_image, 
                c.parent_id, 
                c.sort_order, 
+               c.max_inventory,
+               c.min_inventory,
                c.date_added, 
                c.last_modified 
         from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
@@ -2255,6 +2282,26 @@ tep_display_google_results()
         }
         $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_save.gif', IMAGE_SAVE) . ' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id). '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
         break;
+        //min max edit
+      case 'edit_inventory':
+        $heading[] = array('text' => '<b>'. TEXT_INFO_INVENTORY.'</b>');
+        $contents = array('form' => tep_draw_form('categories', FILENAME_CATEGORIES,
+              'action=upload_inventory&cID=' . $_GET['cID'] . '&cPath=' . $cPath .
+              '&site_id=' . $_GET['site_id'], 'post'));
+        $contents[] = array('text' => '<br>' . TEXT_MAX . '<br>' .
+            tep_draw_input_field('max_inventory',
+              $cInfo->max_inventory?$cInfo->max_inventory:'', ''));
+        $contents[] = array('text' => '<br>' . TEXT_MIN . '<br>' .
+            tep_draw_input_field('min_inventory',
+              $cInfo->min_inventory?$cInfo->min_inventory:'', ''));
+        $contents[] = array('text' => tep_draw_hidden_field('categories_id',$cID));
+        $inv_msg = $HTTP_GET_VARS['msg'];
+        if(isset($inv_msg)&&$inv_msg=='error'){
+        $contents[] = array('align' => 'center',
+            'text' => TEXT_INVENTORY_ERROR);
+        }
+        $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_save.gif', IMAGE_SAVE) . ' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id). '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+        break;
       default:
         if ($rows > 0) {
           if (isset($cInfo) && is_object($cInfo)) { // category info box contents
@@ -2291,6 +2338,18 @@ tep_display_google_results()
                 'text' => '<a href="'. tep_href_link(FILENAME_CATEGORIES, 'cPath=' .
               $cPath . '&cID=' . $cInfo->categories_id . '&action=edit_keyword') .
                 '">'.tep_image_button('button_edit.gif', TEXT_KEYWORD) . '</a> ');
+            // max and nim
+            if($cInfo->parent_id == 0){
+            $contents[] = array('text' =>
+                '<b>'.TEXT_MAX.'&nbsp;:&nbsp;&nbsp;'.$cInfo->max_inventory.'</b>');
+            $contents[] = array('text' =>
+                '<b>'.TEXT_MIN.'&nbsp;:&nbsp;&nbsp;'.$cInfo->min_inventory.'</b>');
+            $contents[] = array(
+                'align' => 'left',
+                'text' => '<a href="'. tep_href_link(FILENAME_CATEGORIES, 'cPath=' .
+              $cPath . '&cID=' . $cInfo->categories_id . '&action=edit_inventory') .
+                '">'.tep_image_button('button_edit.gif', TEXT_INVENTORY) . '</a> ');
+            }
 }
 //print_r($cInfo);
             $contents[] = array('text' => '<br>' . TEXT_DATE_ADDED . ' ' . tep_date_short($cInfo->date_added));

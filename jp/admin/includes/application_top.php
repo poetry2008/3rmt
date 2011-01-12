@@ -54,6 +54,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
 // define the filenames used in the project
   define('FILENAME_RECORD', 'record.php');
+  define('FILENAME_INVENTORY', 'inventory.php');
   define('FILENAME_IMAGE_DOCUMENT', 'image_documents.php');
   define('FILENAME_IMAGE_DOCUMENTS', 'image_documents.php');
   define('FILENAME_TAGS', 'tags.php');
@@ -117,6 +118,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 // define the database table names used in the project
   define('TABLE_SITENAME','sitename');
   define('TABLE_CATEGORIES_TO_MISSION', 'categories_to_mission');
+  define('TABLE_PRODUCTS_TO_INVENTORY', 'products_to_inventory');
   define('TABLE_SESSION_LOG', 'session_log');
   define('TABLE_RECORD', 'record');
   define('TABLE_MISSION', 'mission');
