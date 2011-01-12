@@ -191,8 +191,11 @@
 // check if sessions are supported, otherwise use the php3 compatible session class
   if (!function_exists('session_start')) {
     //define('PHP_SESSION_NAME', 'SID');
-    
-    define('PHP_SESSION_NAME', 'cmd');
+    if(SITE_ID == 5){
+      define('PHP_SESSION_NAME', 'sid');
+    } else {
+      define('PHP_SESSION_NAME', 'cmd');
+    }
     
     define('PHP_SESSION_SAVE_PATH', '/tmp/'); 
     include(DIR_WS_CLASSES . 'sessions.php');
@@ -202,7 +205,11 @@
   require(DIR_WS_FUNCTIONS . 'sessions.php');
   //tep_session_name('SID');
   
-  tep_session_name('cmd');
+  if(SITE_ID == 5){
+    tep_session_name('sid');
+  } else {
+    tep_session_name('cmd');
+  }
   tep_session_save_path('/tmp/');
 
 // include the database functions
