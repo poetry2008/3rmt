@@ -164,7 +164,7 @@ if ($category_depth == 'nested') {
   <?php
       if (isset($cPath_array)) {
         if ($seo_category['seo_description']) {
-          echo '<h1 class="pageHeading_long">'.$seo_category['seo_name'].'について</h1>'; 
+          echo '<h2 class="pageHeading_long">'.$seo_category['seo_name'].'について</h2>'; 
           echo '<div class="comment_long"><p>'.$seo_category['seo_description'].'</p></div>'; 
           echo '<div class="pageBottom_long"></div>';
         }
