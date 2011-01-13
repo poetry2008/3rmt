@@ -293,6 +293,9 @@ background-color:#fff;
 .dataTableSecondRow {
 background-color: #E0E0E0;                      /* 背景色 */
 }
+.inv_second{
+background-color:#ccc;
+}
 /* ---------------------------
 .[TR]：一覧表データ（選択行）
 --------------------------- */
