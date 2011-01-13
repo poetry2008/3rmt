@@ -18,10 +18,11 @@
   '以下のURLにアクセスして会員登録を行ってください。'."\n".
   HTTP_SERVER.'/create_account.php' ."\n\n".
   'ご不明な点がありましたら、RMTワールドマネーまでお問い合わせください。'."\n\n\n".
-  'ご連絡・お問い合わせ先━━━━━━━━━━'."\n".
+  '[ご連絡・お問い合わせ先]━━━━━━━━━━━━'."\n".
   '株式会社 iimy'."\n".
   HTTP_SERVER."\n".  
   STORE_OWNER_EMAIL_ADDRESS."\n"."━━━━━━━━━━━━━━━━━━━━━━━";
+  
   if (isset($_POST['email_address'])) {
     if (empty($_POST['email_address'])) {
       $error_single = true;
