@@ -3672,9 +3672,9 @@ function tep_check_romaji($romaji){
   }
   return true;
 }
-function tep_get_category_inventory($cid) {
+function tep_get_product_inventory($pid) {
   $inventory_sql = "select max_inventory as `max`,min_inventory as `min` 
-    from ".TABLE_CATEGORIES." WHERE categories_id='".$cid."'";
+    from ".TABLE_PRODUCTS." WHERE products_id='".$pid."'";
   $inventory_res = tep_db_query($inventory_sql);
   return tep_db_fetch_array($inventory_res);
 }
@@ -3705,7 +3705,7 @@ function tep_get_inventory($pid){
       $cpath[] = $categories_id;
       $parent_id = tep_get_category_parent_id($categories_id);
     }
-    $inventory_arr = tep_get_category_inventory($categories_id);
+    $inventory_arr = tep_get_product_inventory($pid);
     $inventory_arr['cpath'] = $cpath;
     return $inventory_arr;
 }
