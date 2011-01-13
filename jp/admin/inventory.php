@@ -116,6 +116,7 @@
            ".TABLE_PRODUCTS_DESCRIPTION." pd on
            pd.products_id = p.products_id 
            where p2i.inventory_status not in ('ok','error') 
+           and pd.site_id = '0' 
            order by pd.products_name ASC";
          $products_split = new splitPageResults($_GET['page'],
              MAX_DISPLAY_PRODUCTS,$products_query_rows,$products_query_numrows);
