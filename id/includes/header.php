@@ -104,10 +104,10 @@
                       <?php
 // --- get categoris list ( parent_id = 0 ) --- //
   $cat1 = '';
-  if ($HTTP_GET_VARS['cPath']) {
-    $cat0 = explode('_', $HTTP_GET_VARS['cPath']);
-  } elseif ($HTTP_GET_VARS['products_id']) {
-    $cat_products = tep_get_product_path($HTTP_GET_VARS['products_id']);
+  if ($_GET['cPath']) {
+    $cat0 = explode('_', $_GET['cPath']);
+  } elseif ($_GET['products_id']) {
+    $cat_products = tep_get_product_path($_GET['products_id']);
     $cat0 = explode('_', $cat_products);
   }
   $cat1 = $cat0[0];
