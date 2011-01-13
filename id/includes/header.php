@@ -47,11 +47,11 @@
 <div id="title">
   <?php
   if ($HTTP_GET_VARS['cPath']) {
-    echo $seo_category['seo_name'] . ' RMT <a href="javascript:void(0);" onkeypress="SomeJavaScriptCode" style="cursor:hand" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト アイテムデポをお気に入りに追加して下さい！</a>' . "\n";
+    echo $seo_category['seo_name'] . ' <strong style="font-weight:400;">RMT</strong> <a href="javascript:void(0);" onkeypress="SomeJavaScriptCode" style="cursor:hand" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト アイテムデポをお気に入りに追加して下さい！</a>' . "\n";
   } elseif ($HTTP_GET_VARS['products_id']) {
-    echo ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1) . 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">総合サイト アイテムデポをお気に入りに追加して下さい！</a>' . "\n";
+    echo ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1) . '<strong style="font-weight:400;">RMT</strong> <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">総合サイト アイテムデポをお気に入りに追加して下さい！</a>' . "\n";
   } else {
-    echo 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト アイテムデポをお気に入りに追加して下さい！</a>' . "\n";
+    echo '<strong style="font-weight:400;">RMT</strong> <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト アイテムデポをお気に入りに追加して下さい！</a>' . "\n";
   }  
 ?>
 </div>

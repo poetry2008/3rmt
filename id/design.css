@@ -1142,6 +1142,7 @@ Information
 }
 .comment a {
 	color:#A85E5E;
+	font-size:12px;
 }
 .comment .main ul li a {
 	color:#A85E5E;
@@ -1199,6 +1200,9 @@ Information
 	float:left;
 	padding-left:18px;
 	padding-top:2px;
+}
+.game_t strong{
+font-weight:400;
 }
 .game_im {
 	float:left;
