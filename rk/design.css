@@ -1045,6 +1045,7 @@ list-style-type:none;
 }
 .login_form_warpper{
 	*margin-left:10px;
+	*padding-bottom:5px;
 }
 .product_list_page{ margin:5px 0; font-size:10px;}
 .product_list_info{background: #f2f2f2; padding-top: 10px; border:1px #ddd solid;}
