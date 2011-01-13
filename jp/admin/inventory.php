@@ -20,8 +20,13 @@
              $status = "ok";
            }else{
              if($products_quantity > $inventory_arr['max']){
+               if($inventory_arr['max']){
                $status = "up";
-             }else if($products_quantity < $inventory_arr['min']){
+               }else{
+               $statue = "ok";
+               }
+             }else if($products_quantity <
+                 ($inventory_arr['min']?$inventory_arr['min']:0)){
                $status = "down";
              }else{
                $status = "error";

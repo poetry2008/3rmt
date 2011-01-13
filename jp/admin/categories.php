@@ -151,7 +151,7 @@
         $products_id = $_POST['products_id'];
         $max_inventory = $_POST['max_inventory'];
         $min_inventory = $_POST['min_inventory'];
-        if(!(!$max_inventory == !$min_inventory)||
+        if($max_inventory&&
             $max_inventory<$min_inventory){
           $error = true;
         }
