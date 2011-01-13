@@ -20,8 +20,13 @@
              $status = "ok";
            }else{
              if($products_quantity > $inventory_arr['max']){
+               if($inventory_arr['max']){
                $status = "up";
-             }else if($products_quantity < $inventory_arr['min']){
+               }else{
+               $statue = "ok";
+               }
+             }else if($products_quantity <
+                 ($inventory_arr['min']?$inventory_arr['min']:0)){
                $status = "down";
              }else{
                $status = "error";
@@ -116,6 +121,7 @@
            ".TABLE_PRODUCTS_DESCRIPTION." pd on
            pd.products_id = p.products_id 
            where p2i.inventory_status not in ('ok','error') 
+           and pd.site_id = '0' 
            order by pd.products_name ASC";
          $products_split = new splitPageResults($_GET['page'],
              MAX_DISPLAY_PRODUCTS,$products_query_rows,$products_query_numrows);
@@ -151,7 +157,7 @@
           <a
           href="categories.php?cPath=<?php echo $link_cpath;?>&pID=<?php
           echo $link_product_id;?>&action=new_product_preview&read=only">
-          <?php echo $products['products_name'];?></a>
+          <?php echo $products['products_name'];?></a>&nbsp;
           </td>
           <?php
   //架空
@@ -175,11 +181,15 @@
     }
   }
           ?>
-          <td style="border-bottom:1px solid #000000"><?php echo $products['products_price'];?></td>
-          <td style="border-bottom:1px solid #000000"><?php echo $imaginary;?></td>
-          <td style="border-bottom:1px solid #000000"><?php echo $products['products_quantity'];?></td>
-          <td style="border-bottom:1px solid #000000"><?php echo $inv['max']?$inv['max']:0;?></td>
-          <td style="border-bottom:1px solid #000000"><?php echo $inv['min']?$inv['min']:0;?></td>
+          <td style="border-bottom:1px solid #000000"><?php echo
+          $products['products_price'];?>&nbsp;</td>
+          <td style="border-bottom:1px solid #000000"><?php echo $imaginary;?>&nbsp;</td>
+          <td style="border-bottom:1px solid #000000"><?php echo
+          $products['products_quantity'];?>&nbsp;</td>
+          <td style="border-bottom:1px solid #000000"><?php echo
+          $inv['max']?$inv['max']:0;?>&nbsp;</td>
+          <td style="border-bottom:1px solid #000000"><?php echo
+          $inv['min']?$inv['min']:0;?>&nbsp;</td>
         </tr>
         <?php
          }
