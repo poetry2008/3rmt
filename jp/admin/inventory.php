@@ -122,14 +122,14 @@
          $products_query = tep_db_query($products_query_rows);
          while($products = tep_db_fetch_array($products_query)){
            if($products['products_bflag']){
-             echo "<tr class='dataTableSecondRow'
+             echo "<tr class='dataTableSecondRow inv_second'
                onmouseover='this.className=\"dataTableRowOver\";this.style.cursor=\"hand\"'
-               onmouseout='this.className=\"dataTableSecondRow\"'>";
+               onmouseout='this.className=\"dataTableSecondRow inv_second\"'>";
            }else{
              //买取
              echo "<tr class='dataTableRow inv' 
                onmouseover='this.className=\"dataTableRowOver\";this.style.cursor=\"hand\"'
-               onmouseout='this.className=\"dataTableRow\"'>";
+               onmouseout='this.className=\"dataTableRow inv\"'>";
            }
          ?>
           <td style="border-bottom:1px solid #000000">
