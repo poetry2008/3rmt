@@ -119,8 +119,8 @@
 <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']) ; ?>">
 <?php
 if (!empty($best_sellers['products_image'])) {
-  if (file_exists(DIR_FS_CATALOG.DIR_WS_IMAGES.$best_sellers['products_image'])) {
-    echo tep_image2(DIR_WS_IMAGES.$best_sellers['products_image'], $best_sellers['products_name'], 71, 71);
+  if (file_exists(DIR_FS_CATALOG.DIR_WS_IMAGES.'products/'.$best_sellers['products_image'])) {
+    echo tep_image2(DIR_WS_IMAGES.'products/'.$best_sellers['products_image'], $best_sellers['products_name'], 71, 71);
   } else {
     echo tep_image2(DIR_WS_IMAGES.'new_products_blank_small.gif', $best_sellers['products_name'], 71, 71);
   }

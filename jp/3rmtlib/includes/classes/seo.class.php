@@ -847,6 +847,10 @@ class SEO_URL{
         }
         if(preg_match("/^_page(\d+)/",$extension,$pagenumber)){
           $string .='/page-'.$pagenumber[1].'.html';
+        } else {
+          if ($romajiSub) {
+            $string .='/';
+          }
         }
         return $string;
         break;
