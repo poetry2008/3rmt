@@ -181,8 +181,10 @@
     }
   }
           ?>
-          <td style="border-bottom:1px solid #000000"><?php echo
-          $products['products_price'];?>&nbsp;</td>
+          <td style="border-bottom:1px solid #000000"><?php 
+          $price = explode('.', $products['products_price']);
+          echo $price[0];
+          ;?>&nbsp;</td>
           <td style="border-bottom:1px solid #000000"><?php echo $imaginary;?>&nbsp;</td>
           <td style="border-bottom:1px solid #000000"><?php echo
           $products['products_quantity'];?>&nbsp;</td>
