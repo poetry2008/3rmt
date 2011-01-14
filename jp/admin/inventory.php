@@ -167,15 +167,15 @@
             krsort($relate_inv['cpath']);
             $link_relate = implode('_',$relate_inv['cpath']);
           ?>
-          <a
+          <a class="relate_product_link"
           href="categories.php?cPath=<?php echo $link_relate;?>&pID=<?php
           echo $relate_products_id;?>&action=new_product_preview&read=only">
-            <img src="images/icons/arrow_r_red.gif"/>
+            <img src="images/icons/arrow_right.gif"/>
           </a>&nbsp;&nbsp;
           <?php
             }else{
             ?>
-            <img src="images/icons/arrow_r_red.gif"/>
+            <img src="images/icons/arrow_right.gif"/>
             <?php }?>
           </td>
           <?php
