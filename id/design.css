@@ -90,6 +90,7 @@ H4 {
 	*height:170px;
 	background-color:#E9E9E9;
 }
+.comment_05 a{ font-size:12px;}
 table.comment {
 	width:auto;
 	margin: 0px;
@@ -1142,6 +1143,7 @@ Information
 }
 .comment a {
 	color:#A85E5E;
+	font-size:12px;
 }
 .comment .main ul li a {
 	color:#A85E5E;

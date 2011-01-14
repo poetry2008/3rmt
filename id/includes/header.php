@@ -46,12 +46,12 @@
 
 <div id="title">
   <?php
-  if ($HTTP_GET_VARS['cPath']) {
-    echo $seo_category['seo_name'] . ' RMT <a href="javascript:void(0);" onkeypress="SomeJavaScriptCode" style="cursor:hand" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト アイテムデポをお気に入りに追加して下さい！</a>' . "\n";
-  } elseif ($HTTP_GET_VARS['products_id']) {
-    echo ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1) . 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">総合サイト アイテムデポをお気に入りに追加して下さい！</a>' . "\n";
+  if ($_GET['cPath']) {
+    echo $seo_category['seo_name'] . ' <strong style="font-weight:400;">RMT</strong> <a href="javascript:void(0);" onkeypress="SomeJavaScriptCode" style="cursor:hand" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト アイテムデポをお気に入りに追加して下さい！</a>' . "\n";
+  } elseif ($_GET['products_id']) {
+    echo ds_tep_get_categories((int)$_GET['products_id'],1) . '<strong style="font-weight:400;">RMT</strong> <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">総合サイト アイテムデポをお気に入りに追加して下さい！</a>' . "\n";
   } else {
-    echo 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト アイテムデポをお気に入りに追加して下さい！</a>' . "\n";
+    echo '<strong style="font-weight:400;">RMT</strong> <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト アイテムデポをお気に入りに追加して下さい！</a>' . "\n";
   }  
 ?>
 </div>
@@ -104,10 +104,10 @@
                       <?php
 // --- get categoris list ( parent_id = 0 ) --- //
   $cat1 = '';
-  if ($HTTP_GET_VARS['cPath']) {
-    $cat0 = explode('_', $HTTP_GET_VARS['cPath']);
-  } elseif ($HTTP_GET_VARS['products_id']) {
-    $cat_products = tep_get_product_path($HTTP_GET_VARS['products_id']);
+  if ($_GET['cPath']) {
+    $cat0 = explode('_', $_GET['cPath']);
+  } elseif ($_GET['products_id']) {
+    $cat_products = tep_get_product_path($_GET['products_id']);
     $cat0 = explode('_', $cat_products);
   }
   $cat1 = $cat0[0];
