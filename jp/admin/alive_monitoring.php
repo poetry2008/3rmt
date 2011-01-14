@@ -199,6 +199,7 @@ class Monitor {
         foreach($methods as $key=>$method)
           {
             switch($method){
+            /*
             case 'email':
               //检查是否有非法email
               $emails = explode(';',$this->reportemails.';');
@@ -217,6 +218,7 @@ class Monitor {
               $mailContent.= $this;
               mail($emailsString,$this->name.' Minitor Result '.date('Y-m-d H:i:s'),$mailContent);
               break;
+            */
             case 'db':
               $sql = "
                       INSERT INTO monitor_log (

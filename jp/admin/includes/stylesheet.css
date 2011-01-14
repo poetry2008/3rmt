@@ -636,3 +636,15 @@ h3 {
   border:1px solid #999999;
   filter:alpha(opacity=80);
 }
+.monitor:link{
+color:#ff0000;
+font-weight:bold;
+}
+.monitor:visited{
+color:#ff0000;
+font-weight:bold;
+}
+.error_monitor{
+color:#ff0000;
+font-weight:bold;
+}
