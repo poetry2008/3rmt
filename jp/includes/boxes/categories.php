@@ -190,7 +190,7 @@ if($cPath){
 
 <li class="l_m_category_li">
 <img width="5" hspace="3" height="5" alt="" src="images/design/box/arrow_2.gif" class="middle" >
-<a href="<?php echo tep_href_link(FILENAME_TAGS);?>"><?php echo TEXT_TAGS;?></a>
+<a href="/tags/"><?php echo TEXT_TAGS;?></a>
 </li>
   </ul>
 </div>

@@ -7,6 +7,22 @@
   require(DIR_WS_ACTIONS.'index_top.php');
 ?>
 <?php page_head();?>
+<?php 
+$index_i_pos = strpos($_SERVER['PHP_SELF'], '/index.php'); 
+if ($index_i_pos !== false) {
+  if ($category_depth == 'nested') {
+  } elseif ($category_depth == 'products' || $_GET['manufacturers_id']) {
+  } elseif ($_GET['colors'] && !empty($_GET['colors'])) {
+  } elseif ($_GET['action'] && $_GET['action'] == 'select') {
+  } else {
+?>
+<script type="text/javascript">
+ if(window.addEventListener) window.addEventListener('beforeunload', function(){}, false);
+</script>
+  <?php
+  }
+}
+?>
 </head>
 <?php
   if (isset($body_option)) {
@@ -156,19 +172,22 @@ if ($category_depth == 'nested') {
         include(DIR_WS_MODULES.'new_products4.php');
       }
     }
-    
-    if (isset($_GET['cPath'])) {
+  ?>
+  </div>
+  <?php
+   if (isset($_GET['cPath'])) {
       if ($seo_category['seo_description']) {
-        echo $seo_category['seo_name'].'について<br>'; 
-        echo '<p>'.$seo_category['seo_description'].'</p>'; 
+	    echo '<h2 class="pageHeading_long">';
+		echo '<span class="game_im"><img height="26" width="26" src="images/design/title_img08.gif" alt=""></span>';
+		echo '<span class="game_t">'.$seo_category['seo_name'].'について'.'</span>';
+		echo '</h2>';
+        echo '<div class="comment">'.$seo_category['seo_description'].'</div>'; 
       }
       if (!empty($seo_category['text_information'])) {
-        echo $seo_category['text_information']; 
+        echo '<div class="comment">'.$seo_category['text_information'].'</div>'; 
       }
     }
   ?>
-  </div>
-      
      <?php
         if (isset($cPath) && !ereg('_', $cPath)) {
           //$cgame_news_query = tep_db_query("select ns.headline, ns.date_added, ns.url from ". TABLE_CATEGORIES_ALIAS." a, ".TABLE_CATEGORIES_NEWS." ns where a.categories_id = '".$current_category_id."' and a.alias = ns.categories_name"); 
@@ -177,11 +196,11 @@ if ($category_depth == 'nested') {
     if ($all_game_news) {
         
             ?>
-          <h1 class="pageHeading">
+          <h2 class="pageHeading">
           <span class="game_im"><img width="26" height="26" src="images/design/title_img08.gif"></span> 
           <span class="game_t"><?php echo $_categories['categories_name'];?> NEWS for</span> 
           <span class="game_im02"><img width="113" height="21" alt="" src="images/design/box_middle_listimg.gif"></span>
-          </h1>
+          </h2>
           <div class="comment"> 
             <div id="game_news">
               <ul>

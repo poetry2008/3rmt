@@ -47,7 +47,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
 <div class="msg">件名: <?=Format::htmlchars($ticket->getSubject())?></div>
 <div>
     <?if($errors['err']) {?>
-        <p align="center" id="errormessage"><?=$errors['err']?></p>
+        <p align="center" id="errormessage"><font color="red"><?=$errors['err']?></font></p>
     <?}elseif($msg) {?>
         <p align="center" id="infomessage"><?=$msg?></p>
     <?}?>
@@ -107,7 +107,8 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
 <div>
     <div align="center">
         <?if($_POST && $errors['err']) {?>
-            <p align="center" id="errormessage"><?=$errors['err']?></p>
+            <p align="center" id="errormessage"><font
+              color="red"><?=$errors['err']?></font></p>
         <?}elseif($msg) {?>
             <p align="center" id="infomessage"><?=$msg?></p>
         <?}?>
@@ -120,7 +121,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
             <input type="hidden" name="id" value="<?=$ticket->getExtId()?>">
             <input type="hidden" name="respid" value="<?=$respID?>">
             <input type="hidden" name="a" value="postmessage">
-            <div style="font-size:11px;">
+            <div style="font-size:11px;text-align:left;">
                 内容をご入力ください <font class="error">*&nbsp;<?=$errors['message']?></font><br/>
                 <textarea name="message" id="message" cols="60" rows="7" wrap="soft"><?=$info['message']?></textarea>
             </div>

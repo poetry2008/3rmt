@@ -191,8 +191,11 @@
 // check if sessions are supported, otherwise use the php3 compatible session class
   if (!function_exists('session_start')) {
     //define('PHP_SESSION_NAME', 'SID');
-    
-    define('PHP_SESSION_NAME', 'cmd');
+    if(SITE_ID == 5){
+      define('PHP_SESSION_NAME', 'sid');
+    } else {
+      define('PHP_SESSION_NAME', 'cmd');
+    }
     
     define('PHP_SESSION_SAVE_PATH', '/tmp/'); 
     include(DIR_WS_CLASSES . 'sessions.php');
@@ -202,7 +205,11 @@
   require(DIR_WS_FUNCTIONS . 'sessions.php');
   //tep_session_name('SID');
   
-  tep_session_name('cmd');
+  if(SITE_ID == 5){
+    tep_session_name('sid');
+  } else {
+    tep_session_name('cmd');
+  }
   tep_session_save_path('/tmp/');
 
 // include the database functions
@@ -370,6 +377,32 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
       $currency = (USE_DEFAULT_LANGUAGE_CURRENCY == 'true') ? LANGUAGE_CURRENCY : DEFAULT_CURRENCY;
     }
   }
+
+
+  if (defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED) {
+    if (
+         basename($_SERVER['SCRIPT_NAME']) != FILENAME_LATEST_NEWS
+      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_REVIEWS
+      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS
+      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS_INFO
+      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PAGE
+      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_SHOPPING_CART
+    ) {
+      tep_parseURI();
+    }
+  } elseif ((defined('URL_ROMAJI_ENABLED') && URL_ROMAJI_ENABLED)) {
+    //if (basename($_SERVER['SCRIPT_NAME']) == FILENAME_DEFAULT) {
+    if (
+         basename($_SERVER['SCRIPT_NAME']) != FILENAME_LATEST_NEWS
+      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_REVIEWS
+      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS
+      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS_INFO
+      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PAGE
+    ) {
+      tep_parseURI();
+    }
+  }
+
 
 // navigation history
   if (tep_session_is_registered('navigation')) {
@@ -565,9 +598,6 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   require(DIR_WS_FUNCTIONS . 'specials.php');
   tep_expire_specials();
 
-  if (defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED) {
-    tep_parseURI(); 
-  }
 // calculate category path
   if (isset($_GET['cPath'])) {
     $cPath = $_GET['cPath'];

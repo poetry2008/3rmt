@@ -32,14 +32,14 @@
           <address class="footer_contacts">
             <font color="#333333">当ウェブサイトに記載されている会社名·製品名·システム名などは、各社の登録商標、もしくは商標です。</font>
         <?php //echo FOOTER_TEXT_BODY . "\n"; ?><br><br>
-              Copyright&nbsp;&copy;&nbsp;2010&nbsp;&nbsp;<a class="bold" href="<?php echo tep_href_link(FILENAME_DEFAULT);?>"><strong><?php echo TITLE;?></strong></a>
+              Copyright&nbsp;&copy;&nbsp;2011&nbsp;&nbsp;<a class="bold" href="<?php echo tep_href_link(FILENAME_DEFAULT);?>"><?php echo TITLE;?></a>
             </address>
         </td>
     </tr>
 </table>
 <?php 
 // 显示SQL执行记录
-if (STORE_DB_TRANSACTIONS or 1) {?>
+if (STORE_DB_TRANSACTIONS) {?>
 <div id="debug_info" style="text-align:left;">
   <pre>
 <?php if(isset($log_queries)){

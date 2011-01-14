@@ -42,6 +42,7 @@ RewriteBase /
 
 
 #RewriteRule ^(.*)select.html$ index.php?action=select&%{QUERY_STRING}
+RewriteRule ^tags/$ tags.php
 RewriteRule ^(.*)sitemap.xml$ ggsitemap.php
 RewriteRule ^credit/receive.php$ receive.php [QSA,L]
 

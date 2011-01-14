@@ -10,7 +10,19 @@
     check_uri('/page0/');
     //rmt/c-168_198_page1.html => 404
     check_uri('/page1\.html/');
-
+    
+    if (SITE_ID <= 3) {
+      if (!empty($cPath_array)) {
+        foreach ($cPath_array as $cpkey => $cpvalue) {
+          $ex_ca_query = tep_db_query("select * from ".TABLE_CATEGORIES." where categories.categories_id = '".$cpvalue."'"); 
+          if (!tep_db_num_rows($ex_ca_query)) {
+            forward404();
+            break; 
+          }
+        }
+      }
+    }
+    
     $sql = "select * from " . TABLE_CATEGORIES . " where categories.categories_id = '" . $cPath . "'";
     // ccdd
     $category_query = tep_db_query($sql);

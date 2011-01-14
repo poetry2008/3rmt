@@ -1,0 +1,123 @@
+DirectoryIndex index.php index.html index.htm index.cgi
+Options FollowSymLinks ExecCGI
+AddType application/x-httpd-cgi .cgi
+ErrorDocument 404 /includes/modules/404.html
+
+php_flag register_globals On
+<Limit GET POST>
+allow from all
+</Limit>
+<Files ~ "^.ht">
+    Order allow,deny
+    Deny from all
+    Satisfy All
+</Files>
+
+RedirectPermanent /index.html http://rmt.worldmoney.jp/
+
+<IfModule mod_setenvif.c>
+  <IfDefine SSL>
+    SetEnvIf User-Agent ".*MSIE.*" \
+             nokeepalive ssl-unclean-shutdown \
+             downgrade-1.0 force-response-1.0
+  </IfDefine>
+#</IfModule>
+
+<Files 403.shtml>
+order allow,deny
+allow from all
+</Files>
+
+<FilesMatch "\.php$">
+SetHandler application/x-httpd-php
+AcceptPathInfo On
+</FilesMatch>
+
+#Add Ultimate_SEO_URLS
+Options +FollowSymLinks
+RewriteEngine On 
+RewriteBase /
+
+# www.itemdepot.jp/ff11 => www.itemdepot.jp/ff11/
+RewriteRule ^([^/./?=]+)$ $1/ [L,R=301]
+
+RewriteRule ^select.html$ index.php?action=select&%{QUERY_STRING}
+RewriteRule ^sitemap.xml$ ggsitemap.php
+
+RewriteRule ^reviews/?$ reviews.php
+RewriteRule ^reviews/page(\d+).html$ reviews.php?page=$1
+
+RewriteRule ^latest_news/?$ latest_news.php
+RewriteRule ^latest_news/page(\d+).html$ latest_news.php?page=$1
+RewriteRule ^latest_news/([0-9]+)\.html$ latest_news.php?news_id=$1&%{QUERY_STRING} [QSA,L]
+
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteRule ^images/(.*) default_images/$1 [QSA,L]
+
+
+# http://rmt.worldmoney.jp/game/m-18.html
+# if romaji RewriteRule ^game/m-([0-9A-Za-z_-]+).html$ index.php?manufacturers_id=$1&%{QUERY_STRING}
+RewriteRule ^game/m-([0-9]+).html$ index.php?manufacturers_id=$1&%{QUERY_STRING}
+
+# http://rmt.worldmoney.jp/item/pr-\d.html
+# if romaji RewriteRule ^item/pr-([0-9A-Za-z_-]+).html$ product_reviews.php?products_id=$1&%{QUERY_STRING}
+#RewriteRule ^item/pr-([0-9]+).html$ product_reviews.php?products_id=$1&%{QUERY_STRING}
+RewriteRule ^reviews/pr-([0-9]+)/?$ product_reviews.php?products_id=$1&%{QUERY_STRING}
+
+# http://rmt.worldmoney.jp/tags/t-\d.html
+# not find in wm
+# if romaji RewriteRule ^tags/t-([0-9A-Za-z_-]+).html$ index.php?tags_id=$1&%{QUERY_STRING}
+RewriteRule ^tags/t-([0-9]+).html$ index.php?tags_id=$1&%{QUERY_STRING}
+
+# http://rmt.worldmoney.jp/item/co-\d.html
+# not find in wm
+# if romaji RewriteRule ^item/co-([0-9A-Za-z_-]+).html$ index.php?colors=$1&%{QUERY_STRING}
+RewriteRule ^item/co-([0-9]+).html$ index.php?colors=$1&%{QUERY_STRING}
+
+# http://rmt.worldmoney.jp/item/pri-\d.html?reviews_id=\d
+RewriteRule ^reviews/pr-([0-9]+)/([0-9]+)\.html$ product_reviews_info.php?products_id=$1&reviews_id=$2&%{QUERY_STRING}
+
+
+#pl-*.html does not exist
+# not find in wm
+#RewriteRule ^(.*)pl-(.*).html$ product_listing.php?cPath=$2&%{QUERY_STRING}
+
+#pi-*.html does not exist
+# not find in wm
+#RewriteRule ^([A-Za-z0-9-_]+)/pi-([A-Za-z0-9-_]+).html$ popup_image.php?pID=$2&%{QUERY_STRING}
+
+
+#info {{{
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteRule ^info$ /info/ 
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteRule ^info/index.html$ /info/ [R,L] 
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteRule ^info/$ page.php
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteRule ^info/([A-Za-z0-9_]+).html$ page.php?pID=$1&%{QUERY_STRING}
+RewriteRule ^info-([A-Za-z0-9_]+).html$ page.php?pID=$1&%{QUERY_STRING}
+#}}}
+
+# romaji
+RewriteCond %{REQUEST_URI} !page-\d+.html
+RewriteRule ^([^\/\.]+)/([^\/\.]+)\.html product_info.php?products_id=$2 [QSA,L]
+RewriteCond %{REQUEST_URI} !page-\d+.html
+RewriteRule ^([^\/\.]+)/([^\/\.]+)/([^\/\.]+)\.html product_info.php?%{REQUEST_FILENAME}&products_id=$3 [QSA,L]
+RewriteCond %{REQUEST_URI} !page-\d+.html
+RewriteRule ^([^\/\.]+)/([^\/\.]+)/([^\/\.]+)/([^\/\.]+)\.html product_info.php?products_id=$4 [QSA,L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*) index.php?cName=$1 [QSA,PT,L]
+
+# http://rmt.worldmoney.jp/item/p-33129.html
+# if romaji RewriteRule ^item/p-([0-9A-Za-z_-]+).html$ product_info.php?products_id=$1&%{QUERY_STRING}
+#RewriteRule ^item/p-([0-9]+).html$ product_info.php?products_id=$1&%{QUERY_STRING}
+
+# http://rmt.worldmoney.jp/rmt/c-195_197.html
+# if romaji RewriteRule ^rmt/c-([0-9A-Za-z_--_]+).html$ index.php?cPath=$1&%{QUERY_STRING}
+RewriteRule ^rmt/c-([0-9-_]+).html$ index.php?cPath=$1&%{QUERY_STRING}
+RewriteRule ^rmt/c-([0-9-_]+)_page(\d+).html$ index.php?cPath=$1&page=$2&%{QUERY_STRING}
+
+
+</IfModule>
+

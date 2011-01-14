@@ -133,7 +133,7 @@
 <?php  
   if (isset($cPath_array)) {
     if ($seo_category['seo_description']) {
-      echo '<h3 class="pageHeading">' . $seo_category['seo_name'] . 'について</h3>' . "\n";
+      echo '<h2 class="pageHeading"><span class="game_im"><img width="26" height="26" alt="" src="images/design/title_img08.gif"></span><span class="game_t">' . $seo_category['seo_name'] . 'について</span></h2>' . "\n";
       echo '<p class="comment">' . $seo_category['seo_description'] . '</p>' . "\n"; //seoフレーズ
     }
     if (!empty($seo_category['text_information'])) {

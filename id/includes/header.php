@@ -46,12 +46,12 @@
 
 <div id="title">
   <?php
-  if ($HTTP_GET_VARS['cPath']) {
-    echo $seo_category['seo_name'] . ' RMT <a href="javascript:void(0);" onkeypress="SomeJavaScriptCode" style="cursor:hand" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト アイテムデポをお気に入りに追加して下さい！</a>' . "\n";
-  } elseif ($HTTP_GET_VARS['products_id']) {
-    echo ds_tep_get_categories((int)$HTTP_GET_VARS['products_id'],1) . 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">総合サイト アイテムデポをお気に入りに追加して下さい！</a>' . "\n";
+  if ($_GET['cPath']) {
+    echo $seo_category['seo_name'] . ' <strong style="font-weight:400;">RMT</strong> <a href="javascript:void(0);" onkeypress="SomeJavaScriptCode" style="cursor:hand" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト アイテムデポをお気に入りに追加して下さい！</a>' . "\n";
+  } elseif ($_GET['products_id']) {
+    echo ds_tep_get_categories((int)$_GET['products_id'],1) . '<strong style="font-weight:400;">RMT</strong> <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">総合サイト アイテムデポをお気に入りに追加して下さい！</a>' . "\n";
   } else {
-    echo 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト アイテムデポをお気に入りに追加して下さい！</a>' . "\n";
+    echo '<strong style="font-weight:400;">RMT</strong> <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト アイテムデポをお気に入りに追加して下さい！</a>' . "\n";
   }  
 ?>
 </div>
@@ -62,21 +62,7 @@
       <table cellpadding="0"cellspacing="0" border="0" summary="logo">
           <tr>
             <td>
-               <object id="FlashID" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="900" height="120">
-                  <param name="movie" value="images/design/header_flash.swf?url_1=<?php echo HTTP_SERVER?>" >
-                  <param name="quality" value="high" >
-                  <param name="wmode" value="opaque" >
-                  <param name="swfversion" value="8.0.35.0" >
-                  <param name="expressinstall" value="Scripts/expressInstall.swf" >
-                </object>
-                <!--[if !IE]>-->
-                <object type="application/x-shockwave-flash" data="images/design/header_flash.swf?url_1=<?php echo HTTP_SERVER;?>" width="900" height="120">                  
-                  <param name="quality" value="high" >
-                  <param name="wmode" value="opaque" >
-                  <param name="swfversion" value="8.0.35.0" >
-                  <param name="expressinstall" value="Scripts/expressInstall.swf" >
-                </object>
-                <!--<![endif]-->
+              <embed src="images/design/header_flash.swf?url_1=<?php echo HTTP_SERVER?>" quality=high  width="900" height="120" ></embed>
             </td>
           </tr>
         </table>
@@ -104,10 +90,10 @@
                       <?php
 // --- get categoris list ( parent_id = 0 ) --- //
   $cat1 = '';
-  if ($HTTP_GET_VARS['cPath']) {
-    $cat0 = explode('_', $HTTP_GET_VARS['cPath']);
-  } elseif ($HTTP_GET_VARS['products_id']) {
-    $cat_products = tep_get_product_path($HTTP_GET_VARS['products_id']);
+  if ($_GET['cPath']) {
+    $cat0 = explode('_', $_GET['cPath']);
+  } elseif ($_GET['products_id']) {
+    $cat_products = tep_get_product_path($_GET['products_id']);
     $cat0 = explode('_', $cat_products);
   }
   $cat1 = $cat0[0];
@@ -164,13 +150,9 @@
               </div>
             </td>
             <td width="400">
-              <div style="width:432px; height: 30px; overflow:hidden;">
-                <table style="margin-top:2px; *margin-top:2px;" cellpadding="0" cellspacing="1" summary="search">
+                <table class="header_botton" cellpadding="0" cellspacing="1" summary="search">
                   <tr>
                     <td>
-                      <a href="<?php echo tep_href_link('rss.php') ; ?>" class="header_menu_1">
-                      <?php //echo tep_image(DIR_WS_IMAGES.'design/button/rss.gif','RSS') ; ?>
-                      </a>
                       <a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'', 'SSL') ; ?>" class="header_menu_2">
                       <?php //echo tep_image(DIR_WS_IMAGES.'design/button/shopping_cart.gif',HEADER_TITLE_CART_CONTENTS);?>
                       </a>
@@ -179,10 +161,10 @@
                       </a>
                     </td>
                     <td width="104" align="right" class="top_subto">
-                    <span id="jk-shoppingcart"><?php echo $currencies->format($cart->show_total());?></span></td>
+                    <span id="jk-shoppingcart"><?php echo $currencies->format($cart->show_total());?></span>
+                    </td>
                   </tr>
                 </table>
-              </div>
             </td>
           </tr>
         </table>

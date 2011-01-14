@@ -11,17 +11,18 @@
   $success_single = false; 
   $subject = 'RMTワールドマネー';
   $body_text = ''; 
-  $body_text = 'RMTワールドマネーが、会員登録をご利用予定のメールアドレスへ、'."\n".' 
-  受信確認のためにお送りしています。'."\n".
+  $body_text = 'RMTワールドマネーが、会員登録をご利用予定のメールアドレスへ、'."\n".
+  '受信確認のためにお送りしています。'."\n\n".
   'このメールを、無事に受信ボックスで確認できましたら、'."\n".
   'こちらのメールアドレスはRMTワールドマネーで問題なくご利用いただけます。'."\n\n".
   '以下のURLにアクセスして会員登録を行ってください。'."\n".
   HTTP_SERVER.'/create_account.php' ."\n\n".
   'ご不明な点がありましたら、RMTワールドマネーまでお問い合わせください。'."\n\n\n".
-  'ご連絡・お問い合わせ先━━━━━━━━━━'."\n".
+  '[ご連絡・お問い合わせ先]━━━━━━━━━━━━'."\n".
   '株式会社 iimy'."\n".
   HTTP_SERVER."\n".  
   STORE_OWNER_EMAIL_ADDRESS."\n"."━━━━━━━━━━━━━━━━━━━━━━━";
+  
   if (isset($_POST['email_address'])) {
     if (empty($_POST['email_address'])) {
       $error_single = true;
