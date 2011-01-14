@@ -662,6 +662,8 @@ select {
 	background: url(images/design/menu01.gif) no-repeat 0 -1px;
 	height:31px;
 	width:128px;
+	text-align:left;
+	font-size:10px;
 }
 .head_category01 a:hover {
 	height:31px;
@@ -675,6 +677,8 @@ select {
 	background: url(images/design/menu01_shen.gif) no-repeat 0 -1px;
 	height:31px;
 	width:128px;
+	text-align:left;
+	font-size:10px;
 }
 .header_category02 a:hover {
 	height:31px;
@@ -691,7 +695,7 @@ select {
 }
 #nav .text_warp {
 	display:table;
-	width:78px;
+	width:75px;
 	float:left;
 	margin-left:10px;
 	text-align:left;
