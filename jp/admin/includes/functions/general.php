@@ -14,8 +14,8 @@ function tep_minitor_info(){
     $tmpRow = tep_db_fetch_array($logIn15);
     if(mysql_num_rows($logIn15)>=2){ //十五分钟内多于两件
 
-      $tmpString  = '<div
-        class = "error_monitor">'.$tmpRow['name'].':'.date('m月d日H時i分s秒',strtotime($tmpRow['created_at'])).'に回線障害がありました</br><a ';
+      $tmpString  = $tmpRow['name'].':<font
+        class="error_monitor">'.date('m月d日H時i分s秒',strtotime($tmpRow['created_at'])).'に回線障害がありました</font><br/><a ';
       if($show_div){
       $tmpString .='
         onMouseOver="show_monitor_error(\'minitor_'.$monitor['name'].'\',1,this)" 
@@ -31,7 +31,7 @@ function tep_minitor_info(){
     $tmpString2.= '<tr><td colspan="2"><hr></td></tr>';
     $tmpString2.= '<tr><td>'.$tmpRow2['created_at']."</td><td>".nl2br($tmpRow2['log'])."</td></tr>";
     }
-    $tmpString2.= "</table></div>";
+    $tmpString2.= "</table>";
     $errorString[] = $tmpString.$tmpString2;
   }else {
     $log = "select name,log, created_at from monitor_log where ng =1 and m_id = ".$monitor['id']. " order by id  desc limit 1";
