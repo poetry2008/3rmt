@@ -45,6 +45,8 @@ Options +FollowSymLinks
 RewriteEngine On 
 RewriteBase /
 
+# www.itemdepot.jp/ff11 => www.itemdepot.jp/ff11/
+RewriteRule ^([^/./?=]+)$ $1/ [L,R=301]
 
 RewriteRule ^select.html$ index.php?action=select&%{QUERY_STRING}
 RewriteRule ^sitemap.xml$ ggsitemap.php
