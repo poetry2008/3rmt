@@ -338,7 +338,6 @@ if(isset($_SERVER["HTTP_USER_AGENT"])){
 <?
 if (!count($loglist)){
   $sql = "select configuration_value from configuration where 
-    configuration_group_id = '1' and 
     configuration_key = 'WE_ARE_ALIVE'";
   $res = db_query($sql);
   if($row = mysql_fetch_array($res)){
