@@ -90,6 +90,7 @@ H4 {
 	*height:170px;
 	background-color:#E9E9E9;
 }
+.comment_05 a{ font-size:12px;}
 table.comment {
 	width:auto;
 	margin: 0px;
@@ -1200,9 +1201,6 @@ Information
 	float:left;
 	padding-left:18px;
 	padding-top:2px;
-}
-.game_t strong{
-font-weight:400;
 }
 .game_im {
 	float:left;
