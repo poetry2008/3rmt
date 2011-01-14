@@ -205,7 +205,7 @@
           $language_id = $languages[$i]['id'];
           $sql_data_array = array(
                   'categories_name' => tep_db_prepare_input($categories_name_array[$language_id]),
-                  'romaji' => str_replace('_', '-', tep_db_prepare_input($romaji[$language_id])),
+                  'romaji' => str_replace(array('_','/'), '-', tep_db_prepare_input($romaji[$language_id])),
                   'categories_meta_text' => tep_db_prepare_input($categories_meta_text[$language_id]),
                   'seo_name' => tep_db_prepare_input($seo_name[$language_id]),
                   'seo_description' => tep_db_prepare_input($seo_description[$language_id]),
@@ -611,7 +611,7 @@
             $des = tep_db_prepare_input($_POST['products_description'][$language_id]);
             $sql_data_array = array(
                 'products_name'        => tep_db_prepare_input($_POST['products_name'][$language_id]),
-                'romaji' => tep_db_prepare_input(str_replace('_', '-', $_POST['romaji'])),
+                'romaji' => tep_db_prepare_input(str_replace(array('_','/'), '-', $_POST['romaji'])),
                 'products_description' => $des,
                 'products_url'         => tep_db_prepare_input($_POST['products_url'][$language_id]));
             if (isset($_GET['action']) && ($_GET['action'] == 'insert_product' || ($_GET['action'] == 'update_product' && !tep_products_description_exist($products_id,$site_id,$language_id)))) {
