@@ -162,7 +162,7 @@
           <?php
   //架空
   $res_kaku=tep_db_query("select * from set_menu_list where
-      categories_id='".$categories_id."' ORDER BY set_list_id ASC");
+      products_id='".$products['products_id']."' ORDER BY set_list_id ASC");
   $i_cnt=0;
   while($col_kaku=tep_db_fetch_array($res_kaku)){
     $menu_datas[$i_cnt][0]=$col_kaku['products_id'];
