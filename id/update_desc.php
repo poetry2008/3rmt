@@ -42,7 +42,7 @@ foreach ($products_arr as $pkey => $pvalue) {
     $jp_pro_query = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$pvalue."' and site_id = '1'");
     $jp_pro_res = tep_db_fetch_array($jp_pro_query);
     if ($jp_pro_res) {
-      $update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_description = '".$jp_pro_res['products_description']."' where products_id = '".$pvalue."' and site_id = '".SITE_ID."';"; 
+      $update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_description = '".mysql_real_escape_string($jp_pro_res['products_description'])."' where products_id = '".$pvalue."' and site_id = '".SITE_ID."';"; 
       tep_db_query($update_sql); 
       //echo $update_sql."\n";
       print_r(mysql_error());
@@ -57,7 +57,7 @@ foreach ($products_arr as $pkey => $pvalue) {
       if ($jp_pro_res['products_description']) {
         $jp_des = $jp_pro_res['products_description']; 
       }
-      $insert_sql = "insert into ".TABLE_PRODUCTS_DESCRIPTION." values('".$pvalue."', '4', '".$zero_pro_res['products_name']."', '".$jp_des."', '".SITE_ID."', '".$zero_pro_res['products_url']."', '".$zero_pro_res['products_viewed']."', '".$zero_pro_res['romaji']."');"; 
+      $insert_sql = "insert into ".TABLE_PRODUCTS_DESCRIPTION." values('".$pvalue."', '4', '".mysql_real_escape_string($zero_pro_res['products_name'])."', '".$jp_des."', '".SITE_ID."', '".$zero_pro_res['products_url']."', '".$zero_pro_res['products_viewed']."', '".mysql_real_escape_string($zero_pro_res['romaji'])."');"; 
       tep_db_query($insert_sql); 
       print_r(mysql_error());
       //echo $insert_sql."\n";
