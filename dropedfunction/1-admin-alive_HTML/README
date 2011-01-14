@@ -1,0 +1,6 @@
+浮动DIV
+修改文件 jp/admin/includes/function/general.php
+设置方法 tep_minitor_info 
+的变量 $show_div 
+如果为真(true)显示浮动div
+如果为假(false)不显示浮动div

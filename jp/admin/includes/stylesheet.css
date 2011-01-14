@@ -14,9 +14,12 @@ A：リンク（通常）
 --------------------------- */
 a img {
 border: 0;
+vertical-align:middle;
+}
+img{
+vertical-align:middle;
 }
 a:link {
-
 color: #000000;                                 /* フォントサイズ */
 font-weight: normal;                            /* フォント太さ */
 text-decoration: none;                          /* テキストの装飾 */
@@ -635,4 +638,11 @@ h3 {
   background:#F1F1F1;
   border:1px solid #999999;
   filter:alpha(opacity=80);
+}
+.error_monitor{
+color:#ff0000;
+font-weight:bold;
+}
+.relate_product_link:hover{
+text-decoration:none;
 }

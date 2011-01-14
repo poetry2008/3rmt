@@ -21,7 +21,7 @@
 <table border="0" width="100%" cellspacing="0" cellpadding="2" class="product_list_page">
   <tr>
     <td align="left">
-	<?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?>
+  <?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?>
     </td>
     <td align="right">
     &nbsp;<?php echo TEXT_RESULT_PAGE; ?> <?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('sort', 'page', 'info', 'x', 'y'))); ?>&nbsp;
@@ -66,7 +66,7 @@
         $products_name = $listing['products_name'];
         $ten = '';
       }
-      $description = strip_tags(mb_substr ($listing['products_description'],0,60));//maker
+      $description = strip_tags(mb_substr ($listing['products_description'],0,120));//maker
     
       $row++;
       $col++;
