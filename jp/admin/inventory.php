@@ -16,18 +16,18 @@
            $products_quantity = $all_products_row['products_quantity'];
            $inventory_arr = tep_get_inventory($products_id);
            //判断 是否 属于范围 
+           $status = "ok";
            if(!$inventory_arr['max']&&!$inventory_arr['min']){
              $status = "ok";
            }else{
-             if($products_quantity > $inventory_arr['max']){
+             if($products_quantity < $inventory_arr['min']){
+               $status = "down";
+             }else if($products_quantity > $inventory_arr['max']){
                if($inventory_arr['max']){
                $status = "up";
                }else{
                $statue = "ok";
                }
-             }else if($products_quantity <
-                 ($inventory_arr['min']?$inventory_arr['min']:0)){
-               $status = "down";
              }else{
                $status = "error";
              }
