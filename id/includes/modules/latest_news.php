@@ -51,7 +51,7 @@ $row++;
         </ul>
     </div>
     <div align="right" style="padding: 0 10px 0px 0px;">
-        <a href='<?php echo tep_href_link('latest_news.php');?>'>more</a>
+        <a class="more_news" href='<?php echo tep_href_link('latest_news.php');?>'>more</a>
         <?php //<img src="includes/languages/japanese/images/buttons/button_more.gif" width="56" height="25" alt="more" title="more" >?>
     </div>
 </div><!-- latest_news_eof //-->

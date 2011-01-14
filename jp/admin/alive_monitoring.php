@@ -15,9 +15,11 @@ define('MSG_WEB_SUCCESS','web success');
 define('EMAIL_EXP', "^[a-z'0-9]+([._-][a-z'0-9]+)*@([a-z0-9]+([._-][a-z0-9]+))+$");
 define('URL_PARSE_EASY',true);
 define("LOG_LIMIT",60);
+/*
 define('SYSTEM_MAIL','sznforwork@gmail.com');//管理员邮箱 (收件人邮箱)
 define('MAIL_FROM','sai-szn@163.com');//自动执行的邮件发件人
 define('HTTP_MAIL_FROM','szn-sai@163.com');//WEV执行的邮件发件人
+*/
 define('MAX_LOG','1');//单位M
 
 //define message template
@@ -47,6 +49,7 @@ function sql_injection($content)
   return $content;
 }
 
+/*
 function sMail($message){
   //  echo 'SYSTEM MAIL ';
   if(isset($_SERVER["HTTP_USER_AGENT"])){
@@ -56,13 +59,14 @@ function sMail($message){
   }
   @mail(SYSTEM_MAIL,date('Y-m-d H:i:s'),$message,$header,MAIL_FROM);
 }
+*/
 function db_query($sql)
 {
   global $conn;
   if (!$conn){
     $conn =  mysql_connect(MYSQL_HOST,MYSQL_USER,MYSQL_PASSWORD);
     if (!$conn){
-      sMail('db connect error');
+      //sMail('db connect error');
       die('db error');
     }
     mysql_select_db(MYSQL_DATABASE);
@@ -135,17 +139,17 @@ class Monitor {
     if(strpos($this->reportmethod,'log')>-1){//如果用到了log方法
       if(!isset($_SERVER["HTTP_USER_AGENT"])){
       if(trim($this->logfile) ==''){
-        sMail('logfile is null '.$this);
+        //sMail('logfile is null '.$this);
         $this->logfile = '/dev/null';
       }else {
         $pathinfo = pathinfo($this->logfile);
         if($pathinfo['dirname']=='.'){
-          sMail('logfile is not base /'.$this);
+          //sMail('logfile is not base /'.$this);
           $this->logfile = '/dev/null';
         }else {
           if(!is_dir($pathinfo['dirname']) or !is_writeable($this->logfile)){
             if (@file_put_contents($this->logfile,'')===false){
-              sMail('logfile not writeable'.$this);
+              //sMail('logfile not writeable'.$this);
               $this->logfile = '/dev/null';
             }
           }
@@ -358,9 +362,12 @@ foreach ($domains as $key=>$domain){
   }
   unset($cHost);
 }
-}else{
+}
+/*
+else{
   sMail('There is no process to go');
 }
+*/
 
 //判断是否 是由WEB 执行 $_SERVER["HTTP_USER_AGENT"] 有值为WEB执行
 if(isset($_SERVER["HTTP_USER_AGENT"])){
