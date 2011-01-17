@@ -2448,7 +2448,7 @@ $contents[] = array('text' => '<br>' . TEXT_PRODUCTS_AVERAGE_RATING . ' ' . numb
     }
 
     if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
-      echo '            <td width="25%" valign="top">' . "\n";
+      echo '            <td style="padding-left:15px;" width="25%" valign="top">' . "\n";
 
       $box = new box;
       echo $box->infoBox($heading, $contents);
