@@ -39,7 +39,7 @@ function db_query($sql)
 function getDomains(){
 	//如果不从MYSQL里读取数据
 	$domains = array();
-	if(isset($_SERVER["HTTP_USER_AGENT"])){
+	if(0 and isset($_SERVER["HTTP_USER_AGENT"])){
 		//如果是从页面执行文件 查询所有
 		$res = db_query('select * from monitor where enable="on"');
 		while($domain = mysql_fetch_object($res,'Monitor')){
@@ -78,9 +78,9 @@ class Monitor {
 	function report(){
 		$sql = "
 			INSERT INTO monitor_log (
-					`id` ,`m_id` ,`name` ,`obj` ,`ng`,`log` ,`created_at` 
+					`id` ,`m_id` ,`name` ,`obj` ,`ng`,`created_at` 
 					)VALUES (
-						NULL ,".$this->id.',\''.$this->name.'\',\''.sql_injection($this).'\','.'1'.',"'.$this->emailMsg.'","'.date('Y-m-d H:i:s')."\"
+						NULL ,".$this->id.',\''.$this->name.'\',\''.sql_injection($this).'\','.'1'.',"'.date('Y-m-d H:i:s')."\"
 						);
 		";
 		//              echo $sql;
