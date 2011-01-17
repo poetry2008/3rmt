@@ -205,7 +205,7 @@
           $language_id = $languages[$i]['id'];
           $sql_data_array = array(
                   'categories_name' => tep_db_prepare_input($categories_name_array[$language_id]),
-                  'romaji' => str_replace('_', '-', tep_db_prepare_input($romaji[$language_id])),
+                  'romaji' => str_replace(array('/','_'), '-', tep_db_prepare_input($romaji[$language_id])),
                   'categories_meta_text' => tep_db_prepare_input($categories_meta_text[$language_id]),
                   'seo_name' => tep_db_prepare_input($seo_name[$language_id]),
                   'seo_description' => tep_db_prepare_input($seo_description[$language_id]),
@@ -435,6 +435,7 @@
             $messageStack->add_session(TEXT_ROMAJI_NOT_NULL, 'error');
             tep_redirect(tep_href_link(FILENAME_CATEGORIES));
           }
+          $_POST['romaji'] = str_replace(array('/','_'),'-',$_POST['romaji']);
           if(!tep_check_romaji($_POST['romaji'])){
             $messageStack->add_session(TEXT_ROMAJI_ERROR, 'error');
             tep_redirect(tep_href_link(FILENAME_CATEGORIES));
