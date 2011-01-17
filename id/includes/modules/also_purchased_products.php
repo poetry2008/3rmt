@@ -24,14 +24,14 @@
     if ($num_products_ordered >= MIN_DISPLAY_ALSO_PURCHASED) {
 ?>
 <!-- also_purchased_products //-->
-<h1 class="pageHeading_long02">
+<h2 class="pageHeading_long02">
 <span class="game_im">
 <img width="26" height="26" src="images/design/title_img08.gif" alt="">
 </span>
 <span class="game_t">
 </span>
 <?php echo $product_info['products_name'];?><?php  echo TEXT_ALSO_PURCHASED_PRODUCTS ; ?> 
-</h1>
+</h2>
 <div class="comment_long02">
 <?php
       $row = 0;

@@ -79,6 +79,12 @@ if ($category_depth == 'nested') {
     <span class="game_im"><img width="26" height="26" alt="" src="images/design/title_img08.gif"></span><span class="game_t"> 
     <?php
   if (isset($cPath_array)) {
+    if (count($cPath_array) > 1) {
+      $top_c = tep_get_top_category_by_cpath($cPath_array); 
+      if ($top_c) {
+        echo $top_c['categories_name'].'&nbsp;&nbsp;'; 
+      }
+    }
     echo $seo_category['categories_name'];
   } elseif ($_GET['manufacturers_id']) {
     echo $seo_manufacturers['manufacturers_name'];
