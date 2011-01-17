@@ -14,7 +14,7 @@ return array(
        */
      //'site_url' => 'http://portal.h.200.com/',
   //'site_url' => 'http://' . $_SERVER['SERVER_NAME'] . '/',
-  'site_url' => 'http://rmt-kames.jp/',
+  'site_url' => 'http://www.rmt-kames.jp/',
   'host_word' => 'RMTカメズ',
   'p_name' => 'RMTカメズ',
 );
