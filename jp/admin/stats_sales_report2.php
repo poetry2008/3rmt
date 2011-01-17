@@ -46,7 +46,7 @@
   // default detail no detail
   $srDefaultDetail = 0;
   // default view (daily)
-  $srDefaultView = 2;
+  $srDefaultView = 4;
   // default export
   $srDefaultExp = 0;
   // default sort
@@ -94,6 +94,7 @@
 
   require(DIR_WS_CLASSES . 'currencies.php');
   $currencies = new currencies();
+
 
   // report views (1: yearly 2: monthly 3: weekly 4: daily)
   if ( isset($_GET['report']) && ($_GET['report']) && (tep_not_null($_GET['report'])) ) 
@@ -189,7 +190,7 @@
   if ($startDateG) {
     $startDate = mktime(0, 0, 0, $sMon, $sDay, $sYear);
   } else {
-    $startDate = mktime(0, 0, 0, date("m"), 1, date("Y"));
+    $startDate = mktime(0, 0, 0, date("m"), date("d"), date("Y"));
   }
     
   $endDate = "";
@@ -219,6 +220,7 @@
   }
   
   require(DIR_WS_CLASSES . 'sales_report2.php');
+  
   $sr = new sales_report($srView, $startDate, $endDate, $srSort, $srStatus, isset($srFilter)?$srFilter:'');
   if ($srCompare > SR_COMPARE_NO) {
     if ($srCompare == SR_COMPARE_DAY) {

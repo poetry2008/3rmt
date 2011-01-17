@@ -44,6 +44,10 @@
               <input type="radio" name="report" value="4" <?php if ($srView == 4) echo "checked"; ?>>
               <?php echo SR_REPORT_TYPE_DAILY; ?><br>
               </td>
+              <td align="left" class="menuBoxHeading">
+  サイト<br>
+                <?php echo tep_site_pull_down_menu_with_all($_GET['site_id'], false);?><br>
+              </td>
               <td class="menuBoxHeading"><?php echo SR_REPORT_START_DATE; ?><br>
               <table>
                 <tr>
@@ -120,6 +124,14 @@
               </td>
             </tr>
             <tr>
+              <td class="menuBoxHeading">
+  カテゴリー<br>
+  <select name="bflag">
+    <option value="0"<?php if(!$_GET['bflag']){?> selected<?php }?>>全部</option>
+    <option value="1"<?php if($_GET['bflag'] == '1'){?> selected<?php }?>>販売</option>
+    <option value="2"<?php if($_GET['bflag'] == '2'){?> selected<?php }?>>買取</option>
+  </select>
+              </td>
               <td class="menuBoxHeading"><?php echo SR_REPORT_END_DATE; ?><br>
               <table>
                 <tr>
@@ -210,9 +222,13 @@ date("Y") - $i; ?></option>
         </form></td>
       </tr>
       <tr>
-        <td width=100% valign=top><table border="0" width="100%" cellspacing="0" cellpadding="2">
+        <td width=100% valign=top>
+
+  <?php if ($_GET or true){ ?>
+  
+  <table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
-            <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+            <td valign="top"><?php tep_site_filter(FILENAME_STATS_SALES_REPORT2);?><table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr class="dataTableHeadingRow">
                 <td class="dataTableHeadingContent" align="right"><?php echo  SR_TABLE_HEADING_DATE; ?></td>
                 <td class="dataTableHeadingContent" align="right"><?php echo  SR_TABLE_HEADING_ORDERS;?></td>
@@ -405,7 +421,11 @@ if ($srCompare > SR_COMPARE_NO) {
   }
 }
 ?>
-            </table></td>
+            </table>
+
+
+  <?php } ?>
+  </td>
           </tr>
         </table></td>
       </tr>
