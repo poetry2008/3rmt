@@ -26,15 +26,15 @@ function tep_minitor_info(){
         target="_blank">こちら</a>をクリックして状況を確認してください。</div>';
       $tmpString2 = "<div class='monitor_error' style='display:none;' id='minitor_".$monitor['name']."'>";
       $tmpString2.= '<table width="100%"><tr><td>'.$tmpRow['created_at']."</td><td
-      width='50%'>".nl2br($tmpRow['log'])."</td></tr>";
+      width='50%'>".nl2br($tmpRow['obj'])."</td></tr>";
     while($tmpRow2 = tep_db_fetch_array($logIn15)){
     $tmpString2.= '<tr><td colspan="2"><hr></td></tr>';
-    $tmpString2.= '<tr><td>'.$tmpRow2['created_at']."</td><td>".nl2br($tmpRow2['log'])."</td></tr>";
+    $tmpString2.= '<tr><td>'.$tmpRow2['created_at']."</td><td>".nl2br($tmpRow2['obj'])."</td></tr>";
     }
     $tmpString2.= "</table>";
     $errorString[] = $tmpString.$tmpString2;
   }else {
-    $log = "select name,log, created_at from monitor_log where ng =1 and m_id = ".$monitor['id']. " order by id  desc limit 1";
+    $log = "select name,obj, created_at from monitor_log where ng =1 and m_id = ".$monitor['id']. " order by id  desc limit 1";
     $logsResult = tep_db_fetch_array(tep_db_query($log));
     if ($logsResult){
       $aString = $logsResult['name'].':'.'回線障害の最終日： <a ';
@@ -45,7 +45,8 @@ function tep_minitor_info(){
       $aString.=  'class="monitor_right" id="moni_'.$logsResult['name'].'" href="'.$monitor['url'].'"  target="_blank">'.date('m月d日H時i分s秒。',strtotime($logsResult['created_at'])).'</a>';
         $aString.= '<div class="monitor_error" style="display:none;" id ="minitor_'.$logsResult['name'].'">';
         $aString.= '<table
-          width="100%"><tr><td>'.$logsResult['created_at']."</td><td width='50%'>".nl2br($logsResult['log'])."</td></tr>";
+          width="100%"><tr><td>'.$logsResult['created_at']."</td><td
+          width='50%'>".nl2br($logsResult['obj'])."</td></tr>";
         $aString.= '</table></div>';
         $errorString[] = $aString;
       }
