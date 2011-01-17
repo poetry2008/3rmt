@@ -63,21 +63,7 @@
               <a href="http://rmt.worldmoney.jp/"><img src="images/design/logo.jpg" width="200" height="103" alt="RMT" ></a>
             </td>
             <td>
-                <object id="FlashID" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="662" height="103">
-                  <param name="movie" value="images/design/header_flash.swf" >
-                  <param name="quality" value="high" >
-                  <param name="wmode" value="opaque" >
-                  <param name="swfversion" value="8.0.35.0" >
-                  <param name="expressinstall" value="Scripts/expressInstall.swf" >
-                </object>
-                <!--[if !IE]>-->
-                <object type="application/x-shockwave-flash" data="images/design/header_flash.swf" width="662" height="103">                  
-                  <param name="quality" value="high" >
-                  <param name="wmode" value="opaque" >
-                  <param name="swfversion" value="8.0.35.0" >
-                  <param name="expressinstall" value="Scripts/expressInstall.swf" >
-                </object>
-                <!--<![endif]-->
+            	<embed src="images/design/header_flash.swf" quality=high  width="662" height="103" ></embed>
             </td>
           </tr>
         </table>

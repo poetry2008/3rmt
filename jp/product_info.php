@@ -234,7 +234,14 @@ if(tep_db_num_rows($tag_query)){
 while($tag = tep_db_fetch_array($tag_query)) {
   ?>
  <a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'tags_id=' .  $tag['tags_id']);?>">
-<?php if ((file_exists(DIR_FS_CATALOG . DIR_WS_IMAGES . $tag['tags_images']) || file_exists(DIR_FS_CATALOG . 'default_images/' . $tag['tags_images']))&& $tag['tags_images'])
+<?php if (
+    (
+    (file_exists(DIR_FS_CATALOG . DIR_WS_IMAGES . $tag['tags_images']) && !is_dir(DIR_FS_CATALOG . DIR_WS_IMAGES . $tag['tags_images'])) 
+    || 
+    (file_exists(DIR_FS_CATALOG . 'default_images/' . $tag['tags_images']) && !is_dir(DIR_FS_CATALOG . 'default_images/' . $tag['tags_images']))
+    )
+    && $tag['tags_images']
+    )
  {
    echo tep_image(DIR_WS_IMAGES . $tag['tags_images'], $tag['tags_name'] , 20, 15);
  } else { 

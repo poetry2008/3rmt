@@ -5,7 +5,7 @@
 
 //取得minitor 的信息
 function tep_minitor_info(){
-  $show_div = true;
+  $show_div = false;
   $errorString = array();
   $monitors  = tep_db_query("select id ,name,url from monitor m where m.enable='on'");
   while($monitor= tep_db_fetch_array($monitors)){
@@ -14,33 +14,35 @@ function tep_minitor_info(){
     $tmpRow = tep_db_fetch_array($logIn15);
     if(mysql_num_rows($logIn15)>=2){ //十五分钟内多于两件
 
-      $tmpString  = '<font
-        color="red">'.$tmpRow['name'].':'.date('m月d日H時i分s秒',strtotime($tmpRow['created_at'])).'に回線障害がありました</br><a ';
+      $tmpString  = $tmpRow['name'].':<font
+        class="error_monitor">'.date('m月d日H時i分s秒',strtotime($tmpRow['created_at'])).'に回線障害がありました</font><br/><a ';
       if($show_div){
       $tmpString .='
         onMouseOver="show_monitor_error(\'minitor_'.$monitor['name'].'\',1,this)" 
         onMouseOut="show_monitor_error(\'minitor_'.$monitor['name'].'\',0,this)"';
       }
-      $tmpString .=  'id="moni_'.$tmpRow['name'].'"class="monitor" href="'.$monitor['url'].'" target="_blank">こちら</a>をクリックして状況を確認してください。</font>';
+      $tmpString .=  'id="moni_'.$tmpRow['name'].'" class="monitor"
+        href="'.$monitor['url'].'"
+        target="_blank">こちら</a>をクリックして状況を確認してください。</div>';
       $tmpString2 = "<div class='monitor_error' style='display:none;' id='minitor_".$monitor['name']."'>";
       $tmpString2.= '<table width="100%"><tr><td>'.$tmpRow['created_at']."</td><td
-        width='50%'>".nl2br($tmpRow['log'])."</td></tr>";
-      while($tmpRow2 = tep_db_fetch_array($logIn15)){
-      $tmpString2.= '<tr><td colspan="2"><hr></td></tr>';
-      $tmpString2.= '<tr><td>'.$tmpRow2['created_at']."</td><td>".nl2br($tmpRow2['log'])."</td></tr>";
+      width='50%'>".nl2br($tmpRow['log'])."</td></tr>";
+    while($tmpRow2 = tep_db_fetch_array($logIn15)){
+    $tmpString2.= '<tr><td colspan="2"><hr></td></tr>';
+    $tmpString2.= '<tr><td>'.$tmpRow2['created_at']."</td><td>".nl2br($tmpRow2['log'])."</td></tr>";
+    }
+    $tmpString2.= "</table>";
+    $errorString[] = $tmpString.$tmpString2;
+  }else {
+    $log = "select name,log, created_at from monitor_log where ng =1 and m_id = ".$monitor['id']. " order by id  desc limit 1";
+    $logsResult = tep_db_fetch_array(tep_db_query($log));
+    if ($logsResult){
+      $aString = $logsResult['name'].':'.'回線障害の最終日： <a ';
+      if($show_div){
+      $aString.=  'onMouseOver="show_monitor_error(\'minitor_'.$logsResult['name'].'\',1,this)"
+        onMouseOut="show_monitor_error(\'minitor_'.$logsResult['name'].'\',0,this)"';
       }
-      $tmpString2.= "</table></div>";
-      $errorString[] = $tmpString.$tmpString2;
-    }else {
-      $log = "select name,log, created_at from monitor_log where ng =1 and m_id = ".$monitor['id']. " order by id  desc limit 1";
-      $logsResult = tep_db_fetch_array(tep_db_query($log));
-      if ($logsResult){
-        $aString = $logsResult['name'].':'.'回線障害の最終日： <a ';
-        if($show_div){
-        $aString.=  'onMouseOver="show_monitor_error(\'minitor_'.$logsResult['name'].'\',1,this)"
-          onMouseOut="show_monitor_error(\'minitor_'.$logsResult['name'].'\',0,this)"';
-        }
-        $aString.=  'class="monitor" id="moni_'.$logsResult['name'].'" href="'.$monitor['url'].'"  target="_blank">'.date('m月d日H時i分s秒。',strtotime($logsResult['created_at'])).'</a>';
+      $aString.=  'class="monitor_right" id="moni_'.$logsResult['name'].'" href="'.$monitor['url'].'"  target="_blank">'.date('m月d日H時i分s秒。',strtotime($logsResult['created_at'])).'</a>';
         $aString.= '<div class="monitor_error" style="display:none;" id ="minitor_'.$logsResult['name'].'">';
         $aString.= '<table
           width="100%"><tr><td>'.$logsResult['created_at']."</td><td width='50%'>".nl2br($logsResult['log'])."</td></tr>";
@@ -1950,9 +1952,11 @@ function tep_reset_cache_data_seo_urls($action){
       return '(ネットカフェ1DAYチケット'.number_format(strval(5*$cnt)).'枚セット)';
     }
     $rate = str_replace(array(','), array(''), $rate);
+    /*
     if (preg_match('/^(.*)億(.*)万(.*)$/', $rate, $out)) {
       $rate = (($prate * 100000000) + ($out[2] * 10000)) . $out[3];
     }
+    */
     $rate = str_replace(array('万','億'), array('0000','00000000'), $rate);
     if (preg_match('/^(\d+)(.*)（\d+.*）$/', $rate, $out)) {
       return '(' . number_format($prate * $cnt) . $out[2] . ')';
@@ -2013,9 +2017,11 @@ function tep_reset_cache_data_seo_urls($action){
     }
     
     $rate = str_replace(array(','), array(''), $rate);
+    /*
     if (preg_match('/^(.*)億(.*)万(.*)$/', $rate, $out)) {
       $rate = (($out[1] * 100000000) + ($out[2] * 10000)) . $out[3];
     }
+    */
     $rate = str_replace(array('万','億'), array('0000','00000000'), $rate);
     if (preg_match('/^(\d+)(.*)（\d+.*）$/', $rate, $out)) {
       return number_format($out[1] * $cnt) . $out[2];
@@ -3512,14 +3518,12 @@ function tep_display_google_results(){
                     r.mission_id where c2m.categories_id ='".$categories_id."')
                 order by tr.order_total_number";
   */
-  $record_sql = "select tr.siteurl as url 
-              from ".TABLE_RECORD." tr where tr.mission_id =
-              (SELECT s.mission_id FROM "
-               .TABLE_SESSION_LOG." s left join
-              ".TABLE_CATEGORIES_TO_MISSION." c2m on
-              s.mission_id = c2m.mission_id WHERE 
-              c2m.categories_id = '".$categories_id."' 
-              limit 1) order by tr.order_total_number";
+  $record_sql = "select tr.siteurl as url
+              from ".TABLE_RECORD." tr left join "
+              .TABLE_CATEGORIES_TO_MISSION." c2m
+              on tr.mission_id = c2m.mission_id 
+              where c2m.categories_id = '".$categories_id."'
+              order by tr.order_total_number";
   $record_query = tep_db_query($record_sql);
   $siturl = '';
   $seach_categoties_sql = "SELECT cd.categories_name as categories_name,
@@ -3615,7 +3619,6 @@ function tep_display_google_results(){
 }
 }
 //取得分类的父id
-/*
 function tep_get_category_parent_id($cid){
   if ($cid) {
     $c = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CATEGORIES." where categories_id='".$cid."'"));
@@ -3624,7 +3627,6 @@ function tep_get_category_parent_id($cid){
     return 0;
   }
 }
-*/
 
 // 取得商品的分类
 function tep_get_products_parent_id($pid){
@@ -3648,6 +3650,62 @@ function tep_get_products_rate($pid) {
   $t = explode('//',$p['products_attention_1']);
   $n = str_replace(',','',tep_get_full_count_in_order(1, $t[1]));
   preg_match_all('/(\d+)/',$n,$out);
-  //print_r($out);
   return $out[1][0];
+}
+
+function tep_check_romaji($romaji){
+  /*
+  if (!preg_match('/^[a-zA-Z0-9\-]+$/', $romaji)) {
+    return false;
+  }*/
+  $keywords = array(
+    'page',
+    'reviews',
+    'info',
+    'latest_news',
+    '=','?','&'
+  );
+  foreach($keywords as $k){
+    if (strpos($romaji,$k) !== false) {
+      return false;
+    }
+  }
+  return true;
+}
+function tep_get_product_inventory($pid) {
+  $inventory_sql = "select max_inventory as `max`,min_inventory as `min` 
+    from ".TABLE_PRODUCTS." WHERE products_id='".$pid."'";
+  $inventory_res = tep_db_query($inventory_sql);
+  return tep_db_fetch_array($inventory_res);
+}
+function tep_upload_products_to_inventory($pid,$status){
+  $sql = "select products_id from ".TABLE_PRODUCTS_TO_INVENTORY
+    ." where products_id ='".$pid."'";
+  $res = tep_db_query($sql);
+  if(tep_db_fetch_array($res)){
+     $method = 'update';    
+  }else{
+     $method = 'insert';
+  }
+  $inventory_data_arr = array(
+      'products_id' => $pid,
+      'inventory_status' => $status,
+      'last_date' => 'now()'
+      );
+  tep_db_perform(TABLE_PRODUCTS_TO_INVENTORY,$inventory_data_arr,$method,
+      "products_id='".$pid."'");
+
+}
+function tep_get_inventory($pid){
+    $categories_id = tep_get_products_parent_id($pid);
+    $parent_id = $categories_id;
+    $cpath = array();
+    while($parent_id != 0){
+      $categories_id = $parent_id;
+      $cpath[] = $categories_id;
+      $parent_id = tep_get_category_parent_id($categories_id);
+    }
+    $inventory_arr = tep_get_product_inventory($pid);
+    $inventory_arr['cpath'] = $cpath;
+    return $inventory_arr;
 }

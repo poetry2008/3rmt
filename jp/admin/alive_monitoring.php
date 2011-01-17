@@ -6,18 +6,15 @@
 //设置常量
 //MYSQL_GROUP
 define('MYSQL_HOST','localhost');
-define('MYSQL_USER','jp_gamelife_jp');
-define('MYSQL_PASSWORD','kWSoiSiE');
-define('MYSQL_DATABASE','jp_gamelife_jp');
+define('MYSQL_USER','root');
+define('MYSQL_PASSWORD','123456');
+define('MYSQL_DATABASE','maker_3rmt');
 define('MYSQL_DNS','mysql:host='.MYSQL_HOST.';dbname:'.MYSQL_DATABASE);
 define('MINITOR_DOMAINS_FROM_MYSQL',true);//是否从MYSQL读取想要确认的数据
 define('MSG_WEB_SUCCESS','web success');
 define('EMAIL_EXP', "^[a-z'0-9]+([._-][a-z'0-9]+)*@([a-z0-9]+([._-][a-z0-9]+))+$");
 define('URL_PARSE_EASY',true);
 define("LOG_LIMIT",60);
-define('SYSTEM_MAIL','sznforwork@gmail.com');//管理员邮箱 (收件人邮箱)
-define('MAIL_FROM','sai-szn@163.com');//自动执行的邮件发件人
-define('HTTP_MAIL_FROM','szn-sai@163.com');//WEV执行的邮件发件人
 define('MAX_LOG','1');//单位M
 
 //define message template
@@ -47,22 +44,12 @@ function sql_injection($content)
   return $content;
 }
 
-function sMail($message){
-  //  echo 'SYSTEM MAIL ';
-  if(isset($_SERVER["HTTP_USER_AGENT"])){
-  $header = "From: ".HTTP_MAIL_FROM."\r\n"."Reply-To: ".HTTP_MAIL_FROM. "\r\n";
-  }else{
-  $header = "From: ".MAIL_FROM."\r\n"."Reply-To: ".MAIL_FROM. "\r\n";
-  }
-  @mail(SYSTEM_MAIL,date('Y-m-d H:i:s'),$message,$header,MAIL_FROM);
-}
 function db_query($sql)
 {
   global $conn;
   if (!$conn){
     $conn =  mysql_connect(MYSQL_HOST,MYSQL_USER,MYSQL_PASSWORD);
     if (!$conn){
-      sMail('db connect error');
       die('db error');
     }
     mysql_select_db(MYSQL_DATABASE);
@@ -90,13 +77,13 @@ function getDomains(){
     }
     }else{
     //不从页面执行的时候 查找 next=1 的 也就是有标记的
-    $res = db_query('select * from monitor where enable="on" and next="1"');
+    $res = db_query('select * from monitor where enable="on" and next="1" order by id');
     if($domain = mysql_fetch_object($res,'Monitor')){
       $domains[] = $domain;
       $run_id = $domain->id;
     }else{
       //如果没有标记 查找第一个
-      $res = db_query('select * from monitor where enable="on" limit 1');
+      $res = db_query('select * from monitor where enable="on" order by id limit 1');
       if($domain = mysql_fetch_object($res,'Monitor')){
         $domains[] = $domain;
         $run_id = $domain->id;
@@ -105,7 +92,7 @@ function getDomains(){
     //把当前标记去除
     db_query('update monitor set next="0" where enable="on" and id="'.$run_id.'"');
     //给下一个有效记录标记
-    db_query('update monitor set next="1" where enable="on" and id>"'.$run_id.'" limit 1');
+    db_query('update monitor set next="1" where enable="on" and id>"'.$run_id.'" order by id limit 1');
     //    mysql_close($conn);
     }
   }
@@ -135,17 +122,14 @@ class Monitor {
     if(strpos($this->reportmethod,'log')>-1){//如果用到了log方法
       if(!isset($_SERVER["HTTP_USER_AGENT"])){
       if(trim($this->logfile) ==''){
-        sMail('logfile is null '.$this);
         $this->logfile = '/dev/null';
       }else {
         $pathinfo = pathinfo($this->logfile);
         if($pathinfo['dirname']=='.'){
-          sMail('logfile is not base /'.$this);
           $this->logfile = '/dev/null';
         }else {
           if(!is_dir($pathinfo['dirname']) or !is_writeable($this->logfile)){
             if (@file_put_contents($this->logfile,'')===false){
-              sMail('logfile not writeable'.$this);
               $this->logfile = '/dev/null';
             }
           }
@@ -199,24 +183,6 @@ class Monitor {
         foreach($methods as $key=>$method)
           {
             switch($method){
-            case 'email':
-              //检查是否有非法email
-              $emails = explode(';',$this->reportemails.';');
-              $emailsString = '';
-              foreach($emails as $email){
-                if ($email !=''){
-                  if(!eregi(EMAIL_EXP,$email)){
-                    sMail('invalid email found '.$email);
-                  }else{
-                    $emailsString.= $email.';';
-                  }
-                }
-              }
-              $mailContent = $this->emailMsg;
-              $mailContent.= '----------------PG USE --------------'."\r\n";
-              $mailContent.= $this;
-              mail($emailsString,$this->name.' Minitor Result '.date('Y-m-d H:i:s'),$mailContent);
-              break;
             case 'db':
               $sql = "
                       INSERT INTO monitor_log (
@@ -266,6 +232,9 @@ class Monitor {
 
   function isAlive(){
     $types = explode(',',$this->checkparm);
+    if(!$this->checkparm){
+      return 0;
+    }
     if (!is_array($types)){
       $types = $this->checkparm;
     }
@@ -296,7 +265,7 @@ class Monitor {
     //    echo "\r\n";
   }
   function isAlivePage(){
-    if (file_get_contents($this->getUrl())){
+    if (@file_get_contents($this->getUrl())){
       return true;
     }else {
       return false;
@@ -308,14 +277,14 @@ class Monitor {
     return true;
   }
   function isAliveHttp(){
-    if (file_get_contents($this->getHostUrl())){
+    if (@file_get_contents($this->getHostUrl())){
       return true;
     }else {
       return false;
     }
   }
   function isAliveHttps(){
-    if (file_get_contents($this->getHostUrl(true))){
+    if (@file_get_contents($this->getHostUrl(true))){
       return true;
     }else {
       return false;
@@ -325,14 +294,16 @@ class Monitor {
   function isAliveMysql(){
     return true;
   }
-
   function isAliveHost(){
+    /*
     $ping_command_str = "ping -c 3 -w 5 ".$this->parsedurl['host'];
     if (!strstr(`$ping_command_str`, '100% packet loss')){
       return true;
     }else {
       return false;
     }
+    */
+    return true;
   }
 }
 //先file_get_content 如果成功 不用检查 机器是否开机,如果不成功再检查是否开机
@@ -354,8 +325,6 @@ foreach ($domains as $key=>$domain){
   }
   unset($cHost);
 }
-}else{
-  sMail('There is no process to go');
 }
 
 //判断是否 是由WEB 执行 $_SERVER["HTTP_USER_AGENT"] 有值为WEB执行
@@ -367,37 +336,15 @@ if(isset($_SERVER["HTTP_USER_AGENT"])){
   </head>
   <body>
 <?
-if (count($alivelist)){
-  echo "We are alive:";
-  echo "</br>";
-  ?>
-<table>
-<?php
-  foreach ($alivelist as $value){
-    echo "<tr><td>$value</td></tr>"; 
+if (!count($loglist)){
+  $sql = "select configuration_value from configuration where 
+    configuration_key = 'WE_ARE_ALIVE'";
+  $res = db_query($sql);
+  if($row = mysql_fetch_array($res)){
+    echo $row['configuration_value'];
   }
-?>
-</table>
-<?php 
-}
-
-if (count($loglist)){
-  echo "We have problem:";
-  echo "</br>";
-  ?>
-  <table>
-<?php      
-  foreach($loglist as $key=>$value){
-     echo "<tr><td>$key</td><td>$value</td></tr>";
-  }
-?>
-</table>
-<?php
 }
 ?>
-    </br>
-    This page not make log
-    </br>
 </body>
 </html>
 <?php

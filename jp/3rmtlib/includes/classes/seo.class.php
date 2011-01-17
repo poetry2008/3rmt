@@ -483,9 +483,10 @@ class SEO_URL{
     
     $this->stop($this->timestamp, $time);
     $this->performance['TOTAL_TIME'] += $time;
-
-    $urlString =  htmlspecialchars(utf8_encode($link));
+    
+    $urlString =  htmlspecialchars($link);
     $urlString = str_replace('&amp;', '&', $urlString);
+
     return $urlString;
 
   } # end function
@@ -823,38 +824,55 @@ class SEO_URL{
       function make_url($page, $string, $anchor_type, $id, $extension = '.html', &$separator,$urlType=null){
     // Right now there is but one rewrite method since cName was dropped
     // In the future there will be additional methods here in the switch
-    if(defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED){
-    switch($urlType){
-    case 'cpath': 
-    case URL_TYPE_CPATH:
-      $id_array = explode("_",$id);
-      $id= $id_array[0];
-      $romaji = tep_get_romaji_cpath($id); 
-      $romajiSub =array();
-      unset($id_array[0]);
+    if((defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED) || (defined('URL_ROMAJI_ENABLED') && URL_ROMAJI_ENABLED)){
+      switch($urlType){
+      case 'cpath': 
+      case URL_TYPE_CPATH:
+        $id_array = explode("_",$id);
+        $id= $id_array[0];
+        $romaji = tep_get_romaji_cpath($id); 
+        $romajiSub =array();
+        unset($id_array[0]);
 
-      if (count($id_array))//如果有多个id 则说明....
-        {
-          foreach ($id_array as $category_id){
-          $romajiSub[] = tep_get_romaji_cpath($category_id);
+        if (count($id_array))//如果有多个id 则说明....
+          {
+            foreach ($id_array as $category_id){
+            $romajiSub[] = urlencode(tep_get_romaji_cpath($category_id));
+            }
+          }
+        if (defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED) {
+           $string = 'http://'.urlencode($romaji).'.'.URL_SUB_SITE.'/'.join('/',$romajiSub);
+        } else {
+           $string = urlencode($romaji).'/'.join('/',$romajiSub);
+        }
+        if(preg_match("/^_page(\d+)/",$extension,$pagenumber)){
+          $string .='/page-'.$pagenumber[1].'.html';
+        } else {
+          if ($romajiSub) {
+            $string .='/';
           }
         }
-      return $string = 'http://'.$romaji.'.'.URL_SUB_SITE.'/'.join('/',$romajiSub);
-      break;
-    case URL_TYPE_PRODUCT:
-      $categories = tep_get_categories_by_pid($id);
-      $mainID = $categories[0];
-      $romaji = $mainID;
-      //tep_get_romaji_cpath($mainID);
-      unset($categories[0]);
-      $categoriesToString ='';
-      if(count($categories)){
-        $categoriesToString = @join('/',$categories).'/';
+        return $string;
+        break;
+      case URL_TYPE_PRODUCT:
+        $categories = tep_get_categories_by_pid($id);
+        $mainID = $categories[0];
+        $romaji = $mainID;
+        unset($categories[0]);
+        $categoriesToString ='';
+        if(count($categories)){
+          foreach($categories as $k => $v) {
+            $categories[$k] = urlencode($v);
+          }
+          $categoriesToString = @join('/',$categories).'/';
+        }
+        $productRomaji = urlencode(tep_get_romaji_by_pid($id));
+        if (defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED) {
+          return $string = 'http://'.urlencode($romaji).'.'.URL_SUB_SITE.'/'.$categoriesToString.$productRomaji.'.html';
+        } else {
+          return $string = urlencode($romaji).'/'.$categoriesToString.$productRomaji.'.html';
+        }
       }
-      $productRomaji = tep_get_romaji_by_pid($id);
-
-      return $string = 'http://'.$romaji.'.'.URL_SUB_SITE.'/'.$categoriesToString.$productRomaji.'.html';
-    }
     }
 
 

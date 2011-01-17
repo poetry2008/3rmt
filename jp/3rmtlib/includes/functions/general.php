@@ -35,7 +35,7 @@
 
 
 function forward404()
-{
+{ 
   header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
   require(DIR_WS_MODULES  . '404.html');
   exit;
@@ -1470,9 +1470,11 @@ function forward404Unless($condition)
       return '(ネットカフェ1DAYチケット'.number_format(strval(5*$cnt)).'枚セット)';
     }
     $rate = str_replace(array(','), array(''), $rate);
+    /*
     if (preg_match('/^(.*)億(.*)万(.*)$/', $rate, $out)) {
       $rate = (($out[1] * 100000000) + ($out[2] * 10000)) . $out[3];
     }
+    */
     $rate = str_replace(array('万','億'), array('0000','00000000'), $rate);
     if (preg_match('/^(\d+)(.*)（\d+.*）$/', $rate, $out)) {
       return '(' . number_format($out[1] * $cnt) . $out[2] . ')';
@@ -1501,9 +1503,11 @@ function forward404Unless($condition)
     }
     
     $rate = str_replace(array(','), array(''), $rate);
+    /*
     if (preg_match('/^(.*)億(.*)万(.*)$/', $rate, $out)) {
       $rate = (($out[1] * 100000000) + ($out[2] * 10000)) . $out[3];
     }
+    */
     $rate = str_replace(array('万','億'), array('0000','00000000'), $rate);
     if (preg_match('/^(\d+)(.*)（\d+.*）$/', $rate, $out)) {
       return number_format($out[1] * $cnt) . $out[2];
@@ -3011,34 +3015,59 @@ function tep_get_romaji_cpath($cpath)
     $category = tep_db_fetch_array($category_query);
     return $category['romaji'];
 }
-
-function tep_get_cpath_by_cname($cname)
+function tep_get_pid_by_romaji($romaji, $categories_id = 0) {
+  global $languages_id;
+  if (empty($language)){
+    $language = $languages_id;
+  }
+  $queryString = "
+      select pd.`products_id` 
+      from " . TABLE_PRODUCTS . " p, 
+           " . TABLE_PRODUCTS_DESCRIPTION . " pd,
+           " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c
+      where p.products_id = pd.products_id
+        and p.products_id = p2c.products_id
+        and p2c.categories_id = '" . $categories_id. "'
+        and pd.romaji = '" . $romaji . "' 
+        and pd.language_id = '" . (int)$language . "' 
+        and (pd.site_id = '" . SITE_ID . "' or pd.site_id = '0')
+      order by pd.site_id DESC" ;
+        //and p2c.categories_id = '" . $categories_id. "'
+  $product_query = tep_db_query($queryString);
+  $product       = tep_db_fetch_array($product_query);
+  return $product['products_id'];
+}
+function tep_get_cpath_by_cname($cname, $parent_id = 0)
 {
-    global $languages_id;
-    if (empty($language)){
-      $language = $languages_id;
-    }
-    //ccdd
-    $queryString = "
-        select `categories_id` 
-        from " .  TABLE_CATEGORIES_DESCRIPTION . "
-        where romaji = '" . $cname .  "' 
-          and language_id = '" . (int)$language . "' 
-          and (site_id = '".SITE_ID."' or site_id = '0')
-        order by site_id DESC" ;
-    $category_query = tep_db_query($queryString);
-    $category = tep_db_fetch_array($category_query);
-    return $category['categories_id'];
-
+  global $languages_id;
+  if (empty($language)){
+    $language = $languages_id;
+  }
+  //ccdd
+  $queryString = "
+      select cd.`categories_id` 
+      from " .  TABLE_CATEGORIES . " c, " .  TABLE_CATEGORIES_DESCRIPTION . " cd
+      where c.categories_id = cd.categories_id
+        and c.parent_id = '".$parent_id."'
+        and cd.romaji = '" . $cname .  "' 
+        and cd.language_id = '" . (int)$language . "' 
+        and (cd.site_id = '".SITE_ID."' or cd.site_id = '0')
+      order by cd.site_id DESC" ;
+  $category_query = tep_db_query($queryString);
+  $category = tep_db_fetch_array($category_query);
+  return $category['categories_id'];
 }
 function tep_get_categories_by_pid($pid,$romaji=true)
 {
   static $romaji_arr = array();
   $arr = array();
+  
   $p_parent = tep_get_categories_by_products_id($pid);
-  if (!$p_parent) {
+  if (!isset($p_parent[0])) {
+    forward404();
     exit('no categories');
   }
+
   //如果同一商品属于多个分类默认返回第一个 
   $categories[] = $p_parent[0];
   tep_get_parent_categories($categories, $p_parent[0]);
@@ -3082,7 +3111,19 @@ function tep_get_categories_by_products_id($pid){
 //返回该产品的romaji
 function tep_get_romaji_by_pid($id)
 {
-  return $id;
+  //return $id;
+  $p = tep_db_fetch_array(tep_db_query("
+        select * 
+        from ".TABLE_PRODUCTS_DESCRIPTION." 
+        where products_id='".$id."'
+          and (site_id='".SITE_ID."' or site_id='0')
+        order by site_id desc
+  "));
+  if ($p['romaji']) {
+    return $p['romaji'];
+  } else {
+    return $id;
+  }
 }
 
 function tep_get_products_rate($pid) {
@@ -3096,6 +3137,7 @@ function tep_get_products_rate($pid) {
   
 
 function tep_get_google_adsense_adurl($url) {
+  /*
   $arr = parse_url($url);
   $q_arr = array();
   if ($arr['query']) {
@@ -3111,75 +3153,183 @@ function tep_get_google_adsense_adurl($url) {
   } else {
     return false;
   }
+  */
+  if (preg_match('/affr=adwords/',$url)) {
+    return '1';
+  } else {
+    return false;
+  }
 }
 
 // id 子域名解析专用
 function tep_parseURI()
 {
-  //如果是https的链接不解析{
-  $tmpArr = parse_url(HTTPS_SERVER);
-  $tmpHttphost = $tmpArr['host'];
-  unset($tmpArr);
-  if($tmpHttphost == $_SERVER['HTTP_HOST']){
-    return true;
-  }
-  //}
-  if(substr($_SERVER['HTTP_HOST'],0,3)=='www'){
-    return true;
-  }
-  $subSiteUri = $_SERVER['REQUEST_URI'];
-  $g_pos = strpos($_SERVER['REQUEST_URI'], '?'); 
-  if ($g_pos !== false) {
-    $subSiteUri = substr($_SERVER['REQUEST_URI'], 0, $g_pos);
-  }
-  $router = 'x';
-  $rewriteRule = array(
-                       "firstFolder"  => "/^\/[a-zA-Z0-9\-]+\/?$/",        //   /abc(/)
-                       "secondFolder" => '/^\/[a-zA-Z0-9\-]+\/[a-zA-Z0-9\-]+\/?$/',              //   /asb/xcv(/)
-                       "thirdFolder"  => '/^\/[a-zA-Z0-9\-]+\/[a-zA-Z0-9\-]+\/[a-zA-Z0-9\-]+\/?$/',              //   /asb/xcv(/)
-                       "product"      => '/\.html$/'                    //   /asd/xcv/xcv.html  /zxv.html /xcv/xcv/xc.html
-                       );
-  foreach ($rewriteRule as $ruler=>$value){
-    //if (preg_match($value, $rewriteRule)) {
-    if (preg_match($value, $subSiteUri)) {
-      $router = $ruler;
+  if (defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED) {
+    //处理分页,先把分页参数从参数中除去
+    if (preg_match("/page-(\d+)/",$_SERVER["REQUEST_URI"],$pagenum)){
+      $_SERVER["REQUEST_URI"] = substr($_SERVER["REQUEST_URI"],0,strpos($_SERVER["REQUEST_URI"],"page-"));
+      $_GET['page'] = $pagenum[1];
     }
-  }
-  $i_pos = strpos($_SERVER['REQUEST_URI'], '/?cmd=');
-  if ($i_pos !== false) {
-    $router = 'x'; 
-  }
-  if(isset($_GET['cName'])){
-  $firstId = tep_get_cpath_by_cname($_GET['cName']);
-  $_GET['cPath'] = $firstId;
-  }
-  switch($router){
-  case 'firstFolder':
-    $firstFolder = substr($subSiteUri,1);
-    if(substr($firstFolder,-1)=='/'){
-      $firstFolder = substr($firstFolder,0,-1);
+    //如果是https的链接不解析{
+    $tmpArr = parse_url(HTTPS_SERVER);
+    $tmpHttphost = $tmpArr['host'];
+    unset($tmpArr);
+    if($tmpHttphost == $_SERVER['HTTP_HOST']){
+      return true;
     }
-    $secondId = tep_get_cpath_by_cname($firstFolder);
-    if ($secondId == 0) {
-      forward404();
+    //}
+    if(substr($_SERVER['HTTP_HOST'],0,3)=='www'){
+      return true;
     }
-    $_GET['cPath'] = join('_',array($firstId,$secondId));
-    break;
-  case 'secondFolder':
-    $secondFolder = substr($subSiteUri,1);
-    $folder_arr = explode('/', $secondFolder); 
-    $secondId = tep_get_cpath_by_cname($folder_arr[0]);
-    $thirdId  = tep_get_cpath_by_cname($folder_arr[1]); 
-    if ($thirdId == 0) {
-      forward404();
+    $subSiteUri = $_SERVER['REQUEST_URI'];
+    $g_pos = strpos($_SERVER['REQUEST_URI'], '?'); 
+    if ($g_pos !== false) {
+      $subSiteUri = substr($_SERVER['REQUEST_URI'], 0, $g_pos);
     }
-    $_GET['cPath'] = join('_',array($firstId,$secondId,$thirdId));
-    break;
-  case 'product':
-    $tmpArray = explode('/',$subSiteUri);
-    $pid = $tmpArray[count($tmpArray)-1];
-    $pid = substr($pid,0,-5);
-    $_GET['products_id'] = $pid;
+    $router = 'x';
+    $rewriteRule = array(
+                         "firstFolder"  => "/^\/[^\.\/]+\/?$/",        //   /abc(/)
+                         "secondFolder" => '/^\/[^\.\/]+\/[^\.\/]+\/?$/',              //   /asb/xcv(/)
+                         "thirdFolder"  => '/^\/[^\.\/]+\/[^\.\/]+\/[^\.\/]+\/?$/',              //   /asb/xcv(/)
+                         "product"      => '/\.html$/'                    //   /asd/xcv/xcv.html  /zxv.html /xcv/xcv/xc.html
+                         );
+    foreach ($rewriteRule as $ruler=>$value){
+      //if (preg_match($value, $rewriteRule)) {
+      if (preg_match($value, $subSiteUri)) {
+        $router = $ruler;
+      }
+    }
+    if (SITE_ID==5) {
+      $i_pos = strpos($_SERVER['REQUEST_URI'], '/?sid=');
+    } else {
+      $i_pos = strpos($_SERVER['REQUEST_URI'], '/?cmd=');
+    }
+    if ($i_pos !== false) {
+      $router = 'x'; 
+    }
+    if(isset($_GET['cName'])){
+      $firstId = tep_get_cpath_by_cname(urldecode($_GET['cName']));
+      $_GET['cPath'] = $firstId;
+    }
+    switch($router){
+    case 'firstFolder':
+      $firstFolder = substr($subSiteUri,1);
+      if(substr($firstFolder,-1)=='/'){
+        $firstFolder = substr($firstFolder,0,-1);
+      }
+      $secondId = tep_get_cpath_by_cname(urldecode($firstFolder), $firstId);
+      if ($secondId == 0) {
+        forward404();
+      }
+      $_GET['cPath'] = join('_',array($firstId,$secondId));
+      break;
+    case 'secondFolder':
+      $secondFolder = substr($subSiteUri,1);
+      $folder_arr = explode('/', $secondFolder); 
+      $secondId = tep_get_cpath_by_cname(urldecode($folder_arr[0]), $firstId);
+      $thirdId  = tep_get_cpath_by_cname(urldecode($folder_arr[1]), $secondId); 
+      if ($thirdId == 0) {
+        forward404();
+      }
+      $_GET['cPath'] = join('_',array($firstId,$secondId,$thirdId));
+      break;
+    case 'product':
+      $tmpArray = explode('/',$subSiteUri);
+      $tmpArray2 = array();
+      $tmpArray3 = explode('.',$_SERVER['HTTP_HOST']);
+      $firstId = tep_get_cpath_by_cname(urldecode($tmpArray3[0]));
 
+      foreach ($tmpArray as $k => $v) {
+        if ($v) {
+          if ($k == count($tmpArray)-1) {
+            $pid = tep_get_pid_by_romaji( urldecode(substr($v,0,-5)), $tmpArray2[count($tmpArray2)-1]?$tmpArray2[count($tmpArray2)-1]:$firstId);
+          } else {
+            $cid = tep_get_cpath_by_cname(urldecode($v),
+                $tmpArray2[count($tmpArray2)-1]?$tmpArray2[count($tmpArray2)-1]:$firstId
+                );
+            if ($cid) {
+              $tmpArray2[] = $cid;
+            } else {
+              forward404();
+            }
+          }
+        }
+      }
+      $_GET['products_id'] = $pid;
+    }
+  } else {
+    if (preg_match("/page-(\d+)/",$_SERVER["REQUEST_URI"],$pagenum)){
+      $_SERVER["REQUEST_URI"] = substr($_SERVER["REQUEST_URI"],0,strpos($_SERVER["REQUEST_URI"],"page-"));
+      $_GET['page'] = $pagenum[1];
+    }
+    $subSiteUri = $_SERVER['REQUEST_URI'];
+    $g_pos = strpos($_SERVER['REQUEST_URI'], '?'); 
+    if ($g_pos !== false) {
+      $subSiteUri = substr($_SERVER['REQUEST_URI'], 0, $g_pos);
+    }
+    $router = 'x';
+    $rewriteRule = array(
+                         "firstFolder"  => "/^\/[^\.\/]+\/?$/",
+                         "secondFolder" => '/^\/[^\.\/]+\/[^\/]+\/?$/',
+                         "thirdFolder"  => '/^\/[^\.\/]+\/[^\/]+\/[^\/]+\/?$/',
+                         "product"      => '/\.html$/'
+                         );
+    foreach ($rewriteRule as $ruler=>$value){
+      if (preg_match($value, $subSiteUri)) {
+        $router = $ruler;
+      }
+    }
+    if (SITE_ID==5) {
+      $i_pos = strpos($_SERVER['REQUEST_URI'], '/?sid=');
+    } else {
+      $i_pos = strpos($_SERVER['REQUEST_URI'], '/?cmd=');
+    }
+    if ($i_pos !== false) {
+      $router = 'x'; 
+    }
+          
+    switch($router){
+    case 'firstFolder':
+    case 'secondFolder':
+    case 'thirdFolder':
+      $tmpArray = explode('/',$subSiteUri);
+      $tmpArray2 = array();
+
+      foreach ($tmpArray as $v) {
+        if ($v) {
+          $cid = tep_get_cpath_by_cname(urldecode($v),$tmpArray2[count($tmpArray2)-1]);
+          if ($cid) {
+            $tmpArray2[] = $cid;
+          } else {
+            forward404();
+          }
+        }
+      }
+
+      $_GET['cPath'] = implode('_', $tmpArray2);
+      break;
+    case 'product':
+      $tmpArray = explode('/',$subSiteUri);
+      $tmpArray2 = array();
+
+      foreach ($tmpArray as $k => $v) {
+        if ($v) {
+          if ($k == count($tmpArray)-1) {
+            $pid = tep_get_pid_by_romaji( urldecode(substr($v,0,-5)), $tmpArray2[count($tmpArray2)-1]?$tmpArray2[count($tmpArray2)-1]:0);
+          } else {
+            $cid = tep_get_cpath_by_cname(urldecode($v),$tmpArray2[count($tmpArray2)-1]);
+            if ($cid) {
+              $tmpArray2[] = $cid;
+            } else {
+              forward404();
+            }
+          }
+        }
+      }
+      $_GET['products_id'] = $pid;
+      break;
+    case 'x':
+      break;
+    }
   }
 }

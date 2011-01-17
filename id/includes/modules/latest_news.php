@@ -19,6 +19,7 @@ RMTアイテムデポからのお知らせ</span></h3>
       from ' . TABLE_LATEST_NEWS . ' 
       WHERE status = 1 
         and (site_id = '.SITE_ID.' or site_id=0)
+        AND date_added >= "'.date("Y").'-01-01 00:00:00" 
       ORDER BY isfirst DESC, date_added DESC LIMIT 5
     ');
     if (!tep_db_num_rows($latest_news_query)) { // there is no news
@@ -50,7 +51,7 @@ $row++;
         </ul>
     </div>
     <div align="right" style="padding: 0 10px 0px 0px;">
-        <a href='<?php echo tep_href_link('latest_news.php');?>'>more</a>
+        <a class="more_news" href='<?php echo tep_href_link('latest_news.php');?>'>more</a>
         <?php //<img src="includes/languages/japanese/images/buttons/button_more.gif" width="56" height="25" alt="more" title="more" >?>
     </div>
 </div><!-- latest_news_eof //-->

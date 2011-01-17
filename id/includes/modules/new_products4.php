@@ -93,11 +93,11 @@
 ?>
 <!-- new_products //-->
 <?php if (0 < $num_products) { ?>
-<h1 class="pageHeading_long_info03">
+<h2 class="pageHeading_long_info03">
 <span>
 <?php echo $new_c_name; ?>の新着商品
 </span>
-</h1>
+</h2>
 <div class="comment03">
 <table width="100%"  border="0" cellspacing="0" cellpadding="0" style="background-color:#F2F2F2">
 <?php
@@ -105,7 +105,7 @@
       $product_details = tep_get_product_by_id($new_products['products_id'], SITE_ID, $languages_id);
       
       $new_products['products_name'] = $product_details['products_name'];
-      $description_view = strip_tags(mb_substr($product_details['products_description'],0,110));
+      $description_view = strip_tags(mb_substr($product_details['products_description'],0,210));
   
       $row ++;
 ?>
@@ -156,4 +156,4 @@
 <?php
   }
 ?>
-<!-- new_products_eof //-->
+<!-- new_products4_eof //-->

@@ -4,7 +4,7 @@
 */
 
 require('includes/application_top.php');
-
+forward404();
 
 $connection = mysql_connect(DB_SERVER, DB_SERVER_USERNAME, DB_SERVER_PASSWORD)    or die("Couldn't make connection.");
 // select database

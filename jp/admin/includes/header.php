@@ -26,7 +26,9 @@
   </td>
   </tr>
 <?php
+if(preg_match("/".FILENAME_ORDERS."/",$PHP_SELF)){
    echo tep_minitor_info();
+   }
 ?>
 
   <tr class="headerBar">
@@ -49,6 +51,9 @@
       <a href="' . tep_href_link('telecom_unknow.php', '', 'NONSSL') . '" class="headerLink">決算管理</a>
       &nbsp;|&nbsp;
       <a href="' . tep_href_link(FILENAME_CATEGORIES_ADMIN, '', 'NONSSL') . '" class="headerLink">価格管理</a>
+      &nbsp;|&nbsp;
+      <a href="' . tep_href_link(FILENAME_INVENTORY, '', 'NONSSL') . '"
+        class="headerLink">在庫水準</a>
       &nbsp;|&nbsp;
       <a href="' . tep_href_link(FILENAME_CUSTOMERS, '', 'NONSSL') . '" class="headerLink">' . BOX_CUSTOMERS_CUSTOMERS . '</a>
       &nbsp;|&nbsp;

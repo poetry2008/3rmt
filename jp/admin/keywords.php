@@ -138,7 +138,7 @@
 <?php
   $ref_site_query = tep_db_query("
     select * from (
-      select count(orders_id) as cnt,orders_ref_keywords
+      select count(orders_id) as cnt , concat( ifnull( orders_ref_keywords, '' ) , if( orders_adurl is null, '', '(Adsense)' ) ) AS orders_ref_keywords2
       from " . TABLE_ORDERS . " o, ".TABLE_SITES." s
       where s.id = o.site_id
         and orders_ref_keywords IS NOT NULL
@@ -146,25 +146,15 @@
         " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and s.id = '" . intval($_GET['site_id']) . "' " : '') . 
         (isset($_GET['s_y']) && isset($_GET['s_m']) && isset($_GET['s_d']) ? " and o.date_purchased > '".$_GET['s_y'].'-'.$_GET['s_m'].'-'.$_GET['s_d'] ."'" : " and o.date_purchased > '".date('Y-m-d H:i:s', time()-(86400*30)) . "' ") . 
         (isset($_GET['e_y']) && isset($_GET['e_m']) && isset($_GET['e_d']) ? " and o.date_purchased < '".$_GET['e_y'].'-'.$_GET['e_m'].'-'.$_GET['e_d'] ." 23:59:59'" : '') . "
-      group by orders_ref_keywords
+      group by orders_ref_keywords2
     ) s
     order by cnt desc
       ");
   $i = 1;
   while ($ref_site = tep_db_fetch_array($ref_site_query)) {
-    //$time_online = (time() - $whos_online['time_entry']);
-    /*if ( ((!isset($_GET['info']) || !$_GET['info']) || ($_GET['info'] == $whos_online['session_id'])) && (!isset($info) || !$info) ) {
-      $info = $whos_online['session_id'];
-    }*/
-    /*if ($whos_online['session_id'] == $info) {
-      echo '              <tr class="dataTableRowSelected">' . "\n";
-    } else {
-      echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_WHOS_ONLINE, tep_get_all_get_params(array('info', 'action')) . 'info=' . $whos_online['session_id'], 'NONSSL') . '\'">' . "\n";
-    }*/
-    //echo '              <tr class="dataTableRow">' . "\n";
 ?>
               <tr class="dataTableRow">
-                <td class="dataTableContent"><?php echo $ref_site['orders_ref_keywords'];?></td>
+                <td class="dataTableContent"><?php echo $ref_site['orders_ref_keywords2'];?></td>
                 <td class="dataTableContent"><?php echo $ref_site['cnt'];?></td>
                 <td class="dataTableContent"><?php echo $i;?></td>
               </tr>

@@ -18,19 +18,32 @@
 }
 .search_head .middle {
 	padding-left:10px;
+	*line-height:14px;
 }
 #content .middle {
 	padding-left:10px;
 }
 #content {
+overflow:hidden;
 	clear:both;
 	width:900px;
 	background:#E9E9E9;
 	font-size:12px;
+	padding-bottom:25px;
+}
+.all_links{
+background:#FFFFFF;
+border:1px solid #DDDDDD;
+margin:10px 11px;
+padding:5px;
+width:700px;
 }
 #content a{
 	font-size:12px;
 color:#AE0E30;
+}
+#content h3 a{
+font-weight:bold;
 }
 .tools {
 	float:right;
@@ -54,6 +67,7 @@ color:#AE0E30;
 	display:block;
 	padding:3px 0;	font-size:12px;
 color:#AE0E30;
+	*margin:2px 0;
 
 }
 .link_sitmap_h1 {
@@ -94,6 +108,7 @@ color:#AE0E30;
 .web_3 td {
 	width:160px;
 }
+.web_3_top td { line-height:14px;}
 #sites_add {
 	background:none repeat scroll 0 0 #fff;
 	border:1px solid #DDDDDD;
@@ -138,4 +153,26 @@ color:#656565;
 	font-size: 10px;
 	margin: 1px 0px;
 	padding-left: 10px;
+}
+.web_page_table{
+width:100%;
+}
+.web_page_table tr:hover{
+background:#eee;
+}
+.send_mail{
+display:block;
+width:38px;
+height:21px;
+margin-left:3px;
+background:url(images/button_send_mail.gif) no-repeat;
+}
+.button02{
+cursor:pointer;
+text-indent:-2500px;
+border:none;
+display:block;
+width:57px;
+height:21px;
+background:url(images/button02.gif) no-repeat;
 }

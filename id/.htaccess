@@ -14,6 +14,20 @@ allow from all
     Satisfy All
 </Files>
 
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresDefault "access plus 1 days"
+ExpiresByType image/gif "access plus 10 days"
+ExpiresByType image/png "access plus 10 days"
+ExpiresByType image/jpeg "access plus 10 days"
+ExpiresByType image/x-icon "access plus 10 days"
+Expiresbytype application/x-shockwave-flash "access plus 10 days"
+Expiresbytype video/x-flv "access plus 10 days"
+expiresbytype text/css "access plus 10 days"
+expiresbytype application/x-javascript "access plus 10 days"
+
+</IfModule>
+
 #RedirectPermanent /index.html http://rmt.worldmoney.jp/
 
 <IfModule mod_setenvif.c>
@@ -39,6 +53,8 @@ Options +FollowSymLinks
 RewriteEngine On 
 RewriteBase /
 
+# www.itemdepot.jp/ff11 => www.itemdepot.jp/ff11/
+RewriteRule ^([^/./?=]+)$ $1/ [L,R=301]
 
 RewriteRule ^select.html$ index.php?action=select&%{QUERY_STRING}
 RewriteRule ^sitemap.xml$ ggsitemap.php
@@ -50,15 +66,18 @@ RewriteRule ^latest_news/?$ latest_news.php
 RewriteRule ^latest_news/page(\d+).html$ latest_news.php?page=$1
 RewriteRule ^latest_news/([0-9]+)\.html$ latest_news.php?news_id=$1&%{QUERY_STRING}
 
-RewriteCond %{HTTP_HOST} ^[a-z0-9\-]+\.3id\.kthiz\.200\.com$
-RewriteCond %{HTTP_HOST} !^www\.3id\.kthiz\.200\.com$
+RewriteCond %{HTTP_HOST} ^[a-z0-9\-]+\.itemdepot\.jp$
+RewriteCond %{HTTP_HOST} !^www\.itemdepot\.jp$
 RewriteCond %{REQUEST_FILENAME} !product_info.php
 RewriteCond %{REQUEST_FILENAME} !shopping_cart.php
 RewriteRule ^(.*)$ /%{HTTP_HOST}/$1 [C]
-RewriteRule ^/([a-z0-9\-]+)\.3id\.kthiz\.200\.com/([a-z0-9\_\-]+)\.html product_info.php?products_id=$2 [QSA,L]
-RewriteRule ^/([a-z0-9\-]+)\.3id\.kthiz\.200\.com/([a-z0-9\-]+)/([a-z0-9\-]+)\.html product_info.php?products_id=$3 [QSA,L]
-RewriteRule ^/([a-z0-9\-]+)\.3id\.kthiz\.200\.com/([a-z0-9\-]+)/([a-z0-9\-]+)/([a-z0-9\-]+)\.html product_info.php?products_id=$4 [QSA,L]
-RewriteRule ^/([a-z0-9\-]+)\.3id\.kthiz\.200\.com/(.*) index.php?cName=$1 [QSA,PT,L]
+RewriteCond %{REQUEST_URI} !page-\d+.html
+RewriteRule ^/([a-z0-9\-]+)\.itemdepot\.jp/([^\/\.]+)\.html product_info.php?products_id=$2 [QSA,L]
+RewriteCond %{REQUEST_URI} !page-\d+.html
+RewriteRule ^/([a-z0-9\-]+)\.itemdepot\.jp/([^\/\.]+)/([^\/\.]+)\.html product_info.php?products_id=$3 [QSA,L]
+RewriteCond %{REQUEST_URI} !page-\d+.html
+RewriteRule ^/([a-z0-9\-]+)\.itemdepot\.jp/([^\/\.]+)/([^\/\.]+)/([^\/\.]+)\.html product_info.php?products_id=$4 [QSA,L]
+RewriteRule ^/([a-z0-9\-]+)\.itemdepot\.jp/(.*) index.php?cName=$1 [QSA,PT,L]
 
 # http://rmt.worldmoney.jp/item/p-33129.html
 # if romaji RewriteRule ^item/p-([0-9A-Za-z_-]+).html$ product_info.php?products_id=$1&%{QUERY_STRING}

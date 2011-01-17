@@ -21,8 +21,7 @@ h2 a {
 	font-size: 10px;
 }
 H3 {
-	font-size: 11px;
-	font-weight: normal;
+	font-size: 12px;
 	margin: 0px;
 	padding: 0px;
 }
@@ -61,7 +60,7 @@ H4 {
 	background-color:#E9E9E9;
 	margin:1px 0 5px 1px;
  *margin-top:0px;
-	font-size:11px;
+	font-size:12px;
 }
 .comment03 {
 	clear:both;
@@ -91,6 +90,7 @@ H4 {
 	*height:170px;
 	background-color:#E9E9E9;
 }
+.comment_05 a{ font-size:12px;}
 table.comment {
 	width:auto;
 	margin: 0px;
@@ -324,7 +324,7 @@ UL {
 	margin: 2px 7px 0px 0px;
 }
 #login_form table .menu {
-	font-size: 11px;
+	font-size: 12px;
 	line-height: 20px;
 	background-image: url(images/design/box/dot.gif);
 	background-repeat: repeat-x;
@@ -446,7 +446,6 @@ select {
 ヘッダー
 --------------------------- */
 #title {
-	font-family: Osaka, Verdana;
 	font-size: 10px;
 	text-align: left;
 	color: #920003;
@@ -469,6 +468,8 @@ select {
 	padding-bottom: 5px;
 	background-color: #d6d6d6;
 }
+.header_botton{width:432px; height: 30px; overflow:hidden; float:right; margin-right:10px;}
+.header_botton_link{height: 30px; overflow:hidden; float:right; margin-right:10px;}
 #header_flash {
 	width: 900px;
 	height: 120px;
@@ -485,7 +486,6 @@ select {
 .header_flash_content {
 	width: 862px;
 	text-align: left;
-	background: url(images/design/header/header_flash_content_bg.gif) repeat-x;
 }
 .header_flash_content td {
 	vertical-align:top;
@@ -538,9 +538,9 @@ select {
 }
 .header_menu_1, .header_menu_2, .header_menu_3 {
 	display: block;
-	float: left;
+	float: right;
 	height: 20px;
-	margin-right:5px;
+	margin-right:15px;
 }
 .header_menu_1 {
 	width: 71px;
@@ -565,12 +565,29 @@ select {
 	height:20px;
 	background: url(images/design/button/shoppingcart.gif) no-repeat 0 8px;
 	font-size:12px;
+	margin-right:15px;
 	color:#fff;
 }
 .top_subto span {
 	padding-top:5px;
 	display:block;
 	padding-right:5px;
+}
+.top_subto_link {
+	height:20px;
+	background: url(images/design/button/shoppingcart.gif) no-repeat 0 0;
+	font-size:12px;
+	float:right;
+	margin:7px 15px 0 0;
+	*margin:7px 0 0 0;
+	text-align:right;
+	color:#fff;
+	width:102px;
+	padding-right:2px;
+	*padding:1px 2px 0 0 ;
+}
+.top_subto_link span {
+	display:block;
 }
 .header_Navigation {
 	height: 22px;
@@ -594,8 +611,7 @@ select {
 	background: url(images/design/header/header_navigation_right_bg.gif) no-repeat;
 }
 .header_Navigation_p {
-	font-family: Osaka, Verdana;
-	font-size: 11px;
+	font-size: 12px;
 	color: #A81331;
 	margin: 1px 0px;
 	padding-left: 10px;
@@ -605,8 +621,7 @@ select {
 !important;
 }
 .category_menu {
-	font-family: Osaka, Verdana, Arial, sans-serif;
-	font-size: 11px;
+	font-size: 12px;
 	background-color: #E5EBF2;
 	border: 1px solid #B0BFCF;
 	margin: 1px;
@@ -647,6 +662,8 @@ select {
 	background: url(images/design/menu01.gif) no-repeat 0 -1px;
 	height:31px;
 	width:128px;
+	text-align:left;
+	font-size:10px;
 }
 .head_category01 a:hover {
 	height:31px;
@@ -660,6 +677,8 @@ select {
 	background: url(images/design/menu01_shen.gif) no-repeat 0 -1px;
 	height:31px;
 	width:128px;
+	text-align:left;
+	font-size:10px;
 }
 .header_category02 a:hover {
 	height:31px;
@@ -676,11 +695,13 @@ select {
 }
 #nav .text_warp {
 	display:table;
-	width:78px;
- *width:88px;
+	width:75px;
+	float:left;
+	margin-left:10px;
+	text-align:left;
+ *width:85px;
 	height:31px;
  *position:relative;
-	overflow:hidden;
 }
 #nav .text_info_warp {
 	vertical-align:middle;
@@ -727,7 +748,6 @@ sitemap
 ランキング
 --------------------------- */
 .bestseller_text {
-	font-family: Osaka, Verdana, Arial, sans-serif;
 	font-size: 10px;
 	padding-left: 5px;
 	border-bottom: 1px solid #ccc;
@@ -748,7 +768,6 @@ sitemap
 	font-size: 0px;
 }
 .bestseller_description {
-	font-family: Osaka, Verdana, Arial, sans-serif;
 	font-size: 10px;
 }
 .bestseller_description p {
@@ -828,8 +847,7 @@ product listing
 	background: url(images/design/box/product_listing_sort_02.gif) !important;
 }
 .product_listing_sort_1, .product_listing_sort_2 {
-	font-family: Osaka, Verdana, Arial, sans-serif;
-	font-size: 11px;
+	font-size: 12px;
 	line-height: 1.5;
 }
 .product_listing_sort_1 {
@@ -898,8 +916,7 @@ padding-left:8px;
 }
 */
 .categoryh2 {
-	font-family: Osaka, Verdana, Arial, sans-serif;
-	font-size: 11px;
+	font-size: 12px;
 	font-weight: normal;
 	color: #004080;
 	line-height: 25px;
@@ -908,7 +925,6 @@ padding-left:8px;
 	margin-bottom: 0px;
 }
 .categories_tree {
-	font-family: Osaka, Verdana, Arial, sans-serif;
 	font-size: 10px;
 	color:#004080;
 	background-color: #ECF0F4;
@@ -963,7 +979,7 @@ Information
 /* reorder */
 .information_table {
 	width: 100%;
-	font-size: 11px;
+	font-size: 12px;
 	background-color:#ccc;
 	border:#ccc;
 }
@@ -983,7 +999,6 @@ Information
 ページタイトル
 --------------------------- */
 .pageHeading, .pageHeading_gameList {
-	font-family: Osaka, Verdana, Arial, sans-serif;
 	font-size: 12px;
 	font-weight: bold;
 	color: #000;
@@ -994,7 +1009,6 @@ Information
 	line-height: 24px;/*padding-top: 3px;*/
 }
 .pageHeading {
-	font-family: Osaka, Verdana, Arial, sans-serif;
 	font-size: 12px;
 	font-weight: bold;
 	color:#AE0E30;
@@ -1006,7 +1020,6 @@ Information
 }
 .pageHeading_05 {
 	overflow:hidden;
-	font-family: Osaka, Verdana, Arial, sans-serif;
 	font-size: 12px;
 	font-weight: bold;
 	color:#AE0E30;
@@ -1025,18 +1038,16 @@ Information
 	background: url(images/design/contents/headding_bottom.gif) no-repeat;
 }
 .pageHeading_long {
-	font-family: Osaka, Verdana, Arial, sans-serif;
 	font-size: 12px;
 	font-weight: bold;
 	color:#AE0E30;
  *width: 720px;
 	background: url(images/design/contents/headding_title_long.gif) no-repeat;
-	padding-left:15px;
+	padding-left:4px;
 	height: 27px;
 	line-height: 24px;/*padding-top: 3px;*/
 }
 .pageHeading_long_info03 {
-	font-family: Osaka, Verdana, Arial, sans-serif;
 	font-size: 10px;
 	color:#555;
  *width: 720px;
@@ -1046,7 +1057,6 @@ Information
 }
 .pageHeading_long_info03 span{ padding:0;}
 .pageHeading_long02 {
-	font-family: Osaka, Verdana, Arial, sans-serif;
 	font-size: 12px;
 	font-weight: bold;
 	color:#AE0E30;
@@ -1137,6 +1147,7 @@ Information
 }
 .comment a {
 	color:#A85E5E;
+	font-size:12px;
 }
 .comment .main ul li a {
 	color:#A85E5E;
@@ -1165,7 +1176,6 @@ Information
 #game_news li {
 	background:transparent url(../images/design/boxmiddle_ico.gif) no-repeat scroll 0 5px;
 	border-bottom:1px dashed #CCCCCC;
-	font-family:Osaka, Verdana, Arial, sans-serif;
 	font-size:12px;
 	margin:0;
 	padding:5px 0 3px 30px;
@@ -1322,7 +1332,7 @@ margin:10px 0 0 0;
 	background-color:#CCCBCB;
 	padding:5px 2px;
 	margin-bottom:5px;
-	color:#fff;
+	color:#444;
 }
 .login_inc03 a{
 	font-size:12px;
@@ -1360,6 +1370,7 @@ margin:10px 0 0 0;
 }
 .msg{
 	font-size:12px;
+	text-align:left;
 }
 .msg_list{
 	font-size:12px;
@@ -1372,12 +1383,13 @@ margin:10px 0 0 0;
 	background-color:#ccc;
 	padding:4px;
 	font-size:12px;
+	text-align:left;
 }
 .tickets a{
 	font-size:12px;
 }
 .tickets td{
-	text-align:center;
+	text-align:left;
 	background-color:#fff;
 	font-size:12px;
 	padding:4px;
@@ -1491,17 +1503,15 @@ width:110px;
 	font-size:10px;
 	color:#FF0000;
 }
-.row1 td,.row2 td{ border-bottom:1px solid #ccc;}
+.row1 td,.row2 td{ border-bottom:1px solid #ccc; text-align:left;}
 
 .Icon.webTicket {
 background:url(images/icons/ticket_source_web.gif) no-repeat 0 0;
 margin:2px 0 0 10px;
-*margin:2px 0 0 100px;
 }
 .Icon.emailTicket {
 background:url(images/icons/ticket_source_email.gif) no-repeat 0 0;
 margin:2px 0 0 10px;
-*margin:2px 0 0 100px;
 }
 a.Icon {
 padding:3px 3px 3px 18px;
@@ -1521,4 +1531,11 @@ padding:0 0 0 20px;
 .left_colum_border{
 	float:left;
 	width:720px;
+}
+.game_content01{ float:left;}
+.game_content02{ float:left; width:350px; font-size:12px; *line-height:14px;}
+.tickets_list{ width:80px;}
+.comment_05 .more_news{
+font-family:Arial;
+font-size:14px;
 }
