@@ -2388,7 +2388,7 @@ tep_display_google_results()
             //max min
             $inventory = tep_get_product_inventory($pInfo->products_id);
             $contents[] = array('text' =>
-                '<b>'.TEXT_MAX.'&nbsp;:&nbsp;&nbsp;'.$inventory['max'].'</b>');
+                '<br><br><b>'.TEXT_MAX.'&nbsp;:&nbsp;&nbsp;'.$inventory['max'].'</b>');
             $contents[] = array('text' =>
                 '<b>'.TEXT_MIN.'&nbsp;:&nbsp;&nbsp;'.$inventory['min'].'</b>');
             $contents[] = array(
@@ -2448,7 +2448,7 @@ $contents[] = array('text' => '<br>' . TEXT_PRODUCTS_AVERAGE_RATING . ' ' . numb
     }
 
     if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
-      echo '            <td style="padding-left:15px;" width="25%" valign="top">' . "\n";
+      echo '            <td width="25%" valign="top">' . "\n";
 
       $box = new box;
       echo $box->infoBox($heading, $contents);
