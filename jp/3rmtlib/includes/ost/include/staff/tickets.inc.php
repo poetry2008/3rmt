@@ -88,7 +88,7 @@ if(!$depts or !is_array($depts) or !count($depts)){
 
 //STATUS
 if($status){
-    if($search  and !$_REQUEST['status'] or !$_REQUSET['status']=='any'){
+    if(($search  and !$_REQUEST['status'] )or $_REQUSET['status']=='any'){
 	$qwhere.='';
     }else{
     $qwhere.=' AND status='.db_input(strtolower($status));    
