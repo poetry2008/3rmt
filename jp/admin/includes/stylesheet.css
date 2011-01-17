@@ -646,3 +646,6 @@ font-weight:bold;
 .relate_product_link:hover{
 text-decoration:none;
 }
+.new_product_reset img{
+vertical-align:top;
+}
