@@ -81,13 +81,18 @@ if(!$depts or !is_array($depts) or !count($depts)){
     $qwhere =' WHERE 1'; // Brain fart...can not thing of a better way other than selecting all depts + 0 ..wasted query in my book?
 }else{
     //limited depts....user can access tickets assigned to them regardless of the dept.
-    $qwhere =' WHERE (ticket.dept_id IN ('.implode(',',$depts).') OR ticket.staff_id='.$thisuser->getId().')';
+//    $qwhere =' WHERE (ticket.dept_id IN ('.implode(',',$depts).') OR ticket.staff_id='.$thisuser->getId().')';
+    $qwhere =' WHERE 1'; // Brain fart...can not thing of a better way other than selecting all depts + 0 ..wasted query in my book?
 }
 
 
 //STATUS
 if($status){
+    if(($search  and !$_REQUEST['status'] )or $_REQUSET['status']=='any'){
+	$qwhere.='';
+    }else{
     $qwhere.=' AND status='.db_input(strtolower($status));    
+    }
 }
 
 //Sub-statuses Trust me!
