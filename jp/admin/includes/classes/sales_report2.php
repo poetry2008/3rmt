@@ -1,15 +1,6 @@
 <?php
 /*
   $Id$
-
-  Charly Wilhelm charly@yoshi.ch
-  
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   class sales_report {
@@ -58,18 +49,33 @@
       }
 
       $this->actDate = $this->startDate;
+      
+      $siteStr = isset($_GET['site_id']) && strlen($_GET['site_id'])?" AND o.site_id='".$_GET['site_id']."' ":'';
+      if($_GET['bflag'] == '2') {
+        $bflag = '1';
+        $likeStr = ' like \'%買%\' ';
+      } else if ($_GET['bflag'] == '1') {
+        $bflag = '0';
+        $likeStr = ' not like \'%買%\' ';
+      }
 
       // query for order count
-      $this->queryOrderCnt = "SELECT count(o.orders_id) as order_cnt FROM " . TABLE_ORDERS . " o";
+      //$buyOrSellFrom  = isset($_GET['bflag']) && $_GET['bflag'] ? ", ".TABLE_PRODUCTS." p" : '';
+      $buyOrSellWhere = isset($_GET['bflag']) && $_GET['bflag'] ? (" AND o.payment_method " . $likeStr) : '';
+      $this->queryOrderCnt = "SELECT count(o.orders_id) as order_cnt FROM " . TABLE_ORDERS . " o WHERE 1=1".$siteStr.$buyOrSellWhere;
+
 
       // queries for item details count
-      $this->queryItemCnt = "SELECT op.products_id as pid, op.orders_products_id, op.products_name as pname, sum(op.products_quantity) as pquant, sum(op.final_price * op.products_quantity) as psum, op.products_tax as ptax FROM " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op WHERE o.orders_id = op.orders_id";
+      $buyOrSellFrom  = isset($_GET['bflag']) && $_GET['bflag'] ? ", ".TABLE_PRODUCTS." p" : '';
+      $buyOrSellWhere = isset($_GET['bflag']) && $_GET['bflag'] ? (" AND op.products_id=p.products_id AND p.products_bflag=" . $bflag) : '';
+      $this->queryItemCnt = "SELECT op.products_id as pid, op.orders_products_id, op.products_name as pname, sum(op.products_quantity) as pquant, sum(op.final_price * op.products_quantity) as psum, op.products_tax as ptax FROM " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op" . $buyOrSellFrom ." WHERE o.orders_id = op.orders_id" . $siteStr . $buyOrSellWhere ;
 
       // query for attributes
-      $this->queryAttr = "SELECT count(op.products_id) as attr_cnt, o.orders_id, opa.orders_products_id, opa.products_options, opa.products_options_values, opa.options_values_price, opa.price_prefix from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " opa, " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op WHERE o.orders_id = opa.orders_id AND op.orders_products_id = opa.orders_products_id";
+      $this->queryAttr = "SELECT count(op.products_id) as attr_cnt, o.orders_id, opa.orders_products_id, opa.products_options, opa.products_options_values, opa.options_values_price, opa.price_prefix from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " opa, " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op" . $buyOrSellFrom . " WHERE o.orders_id = opa.orders_id AND op.orders_products_id = opa.orders_products_id" . $siteStr . $buyOrSellWhere;
 
       // query for shipping
-      $this->queryShipping = "SELECT sum(ot.value) as shipping FROM " . TABLE_ORDERS . " o, " . TABLE_ORDERS_TOTAL . " ot WHERE ot.orders_id = o.orders_id AND  ot.class = 'ot_shipping'";
+      $buyOrSellWhere = isset($_GET['bflag']) && $_GET['bflag'] ? (" AND o.payment_method " . $likeStr) : '';
+      $this->queryShipping = "SELECT sum(ot.value) as shipping FROM " . TABLE_ORDERS . " o, " . TABLE_ORDERS_TOTAL . " ot WHERE ot.orders_id = o.orders_id AND  ot.class = 'ot_shipping'".$siteStr . $buyOrSellWhere;
 
       switch ($sort) {
         case '0':
@@ -102,8 +108,8 @@
     }
 
     function next() {
-	$sd = time();
-	$ed = time();
+  $sd = time();
+  $ed = time();
       switch ($this->mode) {
         // yearly
         case '1':
@@ -134,7 +140,7 @@
       if ($this->statusFilter > 0) {
         $filterString .= " AND o.orders_status = " . $this->statusFilter . " ";
       }
-      $rqOrders = tep_db_query($this->queryOrderCnt . " WHERE o.date_purchased >= '" . tep_db_input(date("Y-m-d\TH:i:s", $sd)) . "' AND o.date_purchased < '" . tep_db_input(date("Y-m-d\TH:i:s", $ed)) . "'" . $filterString);
+      $rqOrders = tep_db_query($this->queryOrderCnt . " AND o.date_purchased >= '" . tep_db_input(date("Y-m-d\TH:i:s", $sd)) . "' AND o.date_purchased < '" . tep_db_input(date("Y-m-d\TH:i:s", $ed)) . "'" . $filterString);
       $order = tep_db_fetch_array($rqOrders);
 
       $rqShipping = tep_db_query($this->queryShipping . " AND o.date_purchased >= '" . tep_db_input(date("Y-m-d\TH:i:s", $sd)) . "' AND o.date_purchased < '" . tep_db_input(date("Y-m-d\TH:i:s", $ed)) . "'" . $filterString);
