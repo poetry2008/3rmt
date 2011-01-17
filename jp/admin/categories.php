@@ -429,13 +429,16 @@
         
         $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
         
+        $_POST['romaji'] = str_replace(array('/','_'),'-',$_POST['romaji']);
+        
         if ($_GET['action'] == 'insert_product') {
 
           if (trim($_POST['romaji']) == '') {
             $messageStack->add_session(TEXT_ROMAJI_NOT_NULL, 'error');
             tep_redirect(tep_href_link(FILENAME_CATEGORIES));
           }
-          $_POST['romaji'] = str_replace(array('/','_'),'-',$_POST['romaji']);
+          
+
           if(!tep_check_romaji($_POST['romaji'])){
             $messageStack->add_session(TEXT_ROMAJI_ERROR, 'error');
             tep_redirect(tep_href_link(FILENAME_CATEGORIES));
