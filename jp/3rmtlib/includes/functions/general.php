@@ -3333,3 +3333,12 @@ function tep_parseURI()
     }
   }
 }
+
+function tep_get_top_category_by_cpath($cPath_array)
+{
+  if (!empty($cPath_array)) {
+    $top_category_query = tep_db_query("select * from ".TABLE_CATEGORIES_DESCRIPTION." where site_id = '0' or site_id = '".SITE_ID."' and categories_id = '".$cPath_array[0]."' order by site_id desc limit 1"); 
+    return tep_db_fetch_array($top_category_query); 
+  } 
+  return '';
+}
