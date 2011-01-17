@@ -28,7 +28,7 @@ BODY { margin-bottom: 10px; margin-left: 10px; margin-right: 10px; margin-top: 1
   new infoBox($info_box_contents);
 ?>
 
-<p class="smallText" align="right"><?php echo '<a href="javascript:window.close()">' . TEXT_CLOSE_WINDOW . '</a>'; ?></p>
+<p class="smallText" align="right"><?php echo '<a class="text_help" href="javascript:window.close()">' . TEXT_CLOSE_WINDOW . '</a>'; ?></p>
 
 </body>
 </html>
