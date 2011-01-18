@@ -1544,3 +1544,6 @@ font-size:12px;
 font-family:Arial;
 padding:5px;
 }
+span.markProductOutOfStock img{
+vertical-align:middle;
+}
