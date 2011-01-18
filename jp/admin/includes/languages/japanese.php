@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
 */
 
 //
@@ -108,6 +101,7 @@ define('BOX_REPORTS_PRODUCTS_VIEWED', '商品別の閲覧回数');
 define('BOX_REPORTS_PRODUCTS_PURCHASED', '商品別の販売数');
 define('BOX_REPORTS_ORDERS_TOTAL', '顧客別の売上順位');
 define('BOX_REPORTS_SALES_REPORT2', '売上管理');
+define('BOX_REPORTS_NEW_CUSTOMERS', '新規顧客');
 
 // tools text in includes/boxes/tools.php
 define('BOX_HEADING_TOOLS', '各種ツール');
