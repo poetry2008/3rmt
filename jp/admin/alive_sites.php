@@ -1,12 +1,7 @@
 <?php
 //设置常量
 //MYSQL_GROUP
-if($_SERVER){
-include('./includes/configure.php');
-}else{
-$realpath = @realpath('./includes/configure.php');
-include($realpath);
-}
+include(@realpath('./includes/configure.php'));
 define("LOG_LIMIT",60);
 
 function sql_injection($content)
