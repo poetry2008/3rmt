@@ -691,3 +691,29 @@ function copyToClipboard(txt) {
      alert("クリップボードにコピーしました！")   
 }  
 
+function show_monitor_error(e_id,flag,_this){
+//改变DIV
+  if(flag){
+    allt(_this,e_id);
+  }else{
+    document.getElementById(e_id).style.display="none";
+  }
+}
+function obj_obj(obj){
+  return typeof(obj)=="string"?document.getElementById(obj):obj;
+}
+function allt(id,div_id){ 
+//div 赋值
+    e=obj_obj(id) 
+    var et=e.offsetTop; 
+    var el=e.offsetLeft; 
+    while(e=e.offsetParent){ 
+        et+=e.offsetTop; 
+        el+=e.offsetLeft; 
+    } 
+    div_e = obj_obj(div_id);
+      div_e.style.width="300px";
+      div_e.style.left=(window.screen.availWidth-320) + "px"; 
+      div_e.style.top=(et+20) + "px"; 
+      div_e.style.display=''; 
+} 
