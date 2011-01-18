@@ -132,7 +132,10 @@ function change_num(ob, targ, quan,a_quan)
            <img width="26" height="26" src="images/design/title_img08.gif" alt="">
          </span>
          <span class="game_t">
-           <?php echo $product_info['products_name']; ?>
+         <?php
+          echo ds_tep_get_categories((int)$_GET['products_id'],1).'&nbsp;&nbsp;';
+         ?>
+         <?php echo $product_info['products_name']; ?>
          </span>
          </h1>
          <div class="comment_long02">
@@ -480,14 +483,14 @@ while($tag = tep_db_fetch_array($tag_query)) {
  ?>
  </div>
          <?php if($description){?>
-            <h3 class="pageHeading_long02">
+            <h2 class="pageHeading_long02">
             <span class="game_im">
               <img width="26" height="26" src="images/design/title_img08.gif" alt="">
             </span>
               <span class="game_t">
             </span>
             <?php echo $product_info['products_name']; ?>について
-            </h3>
+            </h2>
             <!-- 説明文　-->
             <div class="comment_long02">
               <?php 

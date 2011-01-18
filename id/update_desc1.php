@@ -5,9 +5,10 @@ require('includes/application_top.php');
 $category_arr = array();
 $tmp_arr = array();
 
-$category_arr[] = 168;
-$category_arr[] = 169;
-$category_arr[] = 190;
+$top_category_query = tep_db_query("select * from ".TABLE_CATEGORIES." where parent_id = '0'");
+while ($top_category_res = tep_db_fetch_array($top_category_query)) {
+  $category_arr[] = $top_category_res['categories_id'];
+}
 
 foreach ($category_arr as $key => $value) {
   $tmp_arr = array_merge($tmp_arr, get_category_children_id($value));
@@ -55,7 +56,7 @@ foreach ($products_arr as $pkey => $pvalue) {
       $jp_pro_res = tep_db_fetch_array($jp_pro_query);
       $jp_des = '';
       if ($jp_pro_res['products_description']) {
-        $jp_des = $jp_pro_res['products_description']; 
+        $jp_des = str_replace("'", "\'", $jp_pro_res['products_description']); 
       }
       $insert_sql = "insert into ".TABLE_PRODUCTS_DESCRIPTION." values('".$pvalue."', '4', '".mysql_real_escape_string($zero_pro_res['products_name'])."', '".$jp_des."', '".SITE_ID."', '".$zero_pro_res['products_url']."', '".$zero_pro_res['products_viewed']."', '".mysql_real_escape_string($zero_pro_res['romaji'])."');"; 
       tep_db_query($insert_sql); 

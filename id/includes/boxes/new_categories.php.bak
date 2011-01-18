@@ -22,7 +22,6 @@ group by categories_id
 order by sort_order, categories_name
 ");
 while ($category = tep_db_fetch_array($categories_query))  {
-  $pic_not_exists = false; 
   if ($ca_num % 2 == 0) {
     echo '<li class="head_category01">';
   } else {
@@ -33,27 +32,6 @@ while ($category = tep_db_fetch_array($categories_query))  {
   if (!empty($category['categories_image2'])) {
     if (file_exists(DIR_FS_CATALOG."/".DIR_WS_IMAGES.'categories/'.substr($category['categories_image2'], 0, -4).".ico")) {  
       echo '<img src="./images/categories/'.substr($category['categories_image2'], 0, -4).'.ico'.'" width="27" height="27" alt="'.$category['categories_name'].'">';
-    } else {
-      //echo '<img src="./images/design/tt2.ico" alt="'.$category['categories_name'].'">';
-      $pic_not_exists = true; 
-    }
-  } else {
-    //echo '<img src="./images/design/tt2.ico" alt="'.$category['categories_name'].'">';
-    $pic_not_exists = true; 
-  }
-  if ($pic_not_exists) {
-    $zero_ca_query = tep_db_query("select * from ".TABLE_CATEGORIES_DESCRIPTION." where site_id = '0' and categories_id = '".$category['categories_id']."'"); 
-    $zero_ca_res = tep_db_fetch_array($zero_ca_query); 
-    if ($zero_ca_res) {
-      if (!empty($zero_ca_res['categories_image2'])) {
-        if (file_exists(DIR_FS_CATALOG."/".DIR_WS_IMAGES.'categories/'.substr($zero_ca_res['categories_image2'], 0, -4).".ico")) {  
-          echo '<img src="./images/categories/'.substr($zero_ca_res['categories_image2'], 0, -4).'.ico'.'" width="27" height="27" alt="'.$category['categories_name'].'">';
-        } else {
-          echo '<img src="./images/design/tt2.ico" alt="'.$category['categories_name'].'">';
-        }
-      } else {
-        echo '<img src="./images/design/tt2.ico" alt="'.$category['categories_name'].'">';
-      }
     } else {
       echo '<img src="./images/design/tt2.ico" alt="'.$category['categories_name'].'">';
     }
