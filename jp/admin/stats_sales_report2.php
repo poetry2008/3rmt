@@ -137,8 +137,8 @@
   }
       
   // order status
-  if ( isset($_GET['statux']) && ($_GET['status']) && (tep_not_null($_GET['status'])) ) 
-{    $srStatus = $_GET['status'];
+  if ( isset($_GET['status']) && ($_GET['status']) && (tep_not_null($_GET['status'])) ) {
+    $srStatus = $_GET['status'];
   } else {
     $srStatus = $srDefaultStatus;
   }
