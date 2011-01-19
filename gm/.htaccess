@@ -77,7 +77,7 @@ RewriteRule ^faq([0-9]+)/([0-9]+)\.html$ faq.php?g_id=$1&q_id=$2
 # not find in gm
 # if romaji RewriteRule ^tags/t-([0-9A-Za-z_-]+).html$ index.php?tags_id=$1&%{QUERY_STRING}
 RewriteRule ^tags/t-([0-9]+).html$ index.php?tags_id=$1&%{QUERY_STRING}
-RewriteRule ^tags/t-([0-9]+)-([0-9]+).html$ index.php?tags_id=$1&page=$2&%{QUERY_STRING}
+RewriteRule ^tags/t-([0-9]+)_page([0-9]+).html$ index.php?tags_id=$1&page=$2&%{QUERY_STRING}
 
 # http://www.gamemoney.cc/item/co-\d.html
 # not find in gm

@@ -75,7 +75,7 @@ RewriteRule ^reviews/pr-([0-9]+)/?$ product_reviews.php?products_id=$1&%{QUERY_S
 # not find in wm
 # if romaji RewriteRule ^tags/t-([0-9A-Za-z_-]+).html$ index.php?tags_id=$1&%{QUERY_STRING}
 RewriteRule ^tags/t-([0-9]+).html$ index.php?tags_id=$1&%{QUERY_STRING}
-RewriteRule ^tags/t-([0-9]+)-([0-9]+).html$ index.php?tags_id=$1&page=$2&%{QUERY_STRING}
+RewriteRule ^tags/t-([0-9]+)_page([0-9]+).html$ index.php?tags_id=$1&page=$2&%{QUERY_STRING}
 
 # http://rmt.worldmoney.jp/item/co-\d.html
 # not find in wm

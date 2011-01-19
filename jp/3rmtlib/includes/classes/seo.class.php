@@ -699,9 +699,6 @@ class SEO_URL{
         break;
       } else if ($p2[0] == 'action' && $p2[1] == 'select'){
         $url = $this->make_url($page, '', $p2[0], $p2[1], '.html', $separator);
-      //} else if ($p2[0] == 'tags_id'){
-        //$p3 = @explode('=', $p[0]);
-        //$url = $this->make_url($page, 'tags/t-', '', $p2[1].'-'.$p3[1], '.html', $separator).$p[0];
         break;
       } else {
       switch ($p2[0]){ 
@@ -730,11 +727,6 @@ class SEO_URL{
             case ( $page == FILENAME_REVIEWS ):
               $url = $this->make_url($page, 'reviews/page', '', $p2[1], '.html', $separator);
               break;
-            //case ( $page == FILENAME_DEFAULT && $_GET['tags_id'] ):
-              
-              //$url = $this->make_url($page, 'tags/t-'.$_GET['tags_id'].'-', '', $p2[1], '.html', $separator);
-            
-              //break;
             case ($page == FILENAME_DEFAULT && $_GET['cPath']):
               //break; //zhu shi
             default:
@@ -803,10 +795,9 @@ class SEO_URL{
           //break;
         //===========================================
         case 'tags_id':
-          
           //$url = $this->make_url($page, 'tags/t-'.$_GET['tags_id'].'-', '', $p2[1], '.html', $separator);
           if (preg_match('/page=(\d+)/', $params, $out)) {
-            $url = $this->make_url($page, 'tags/t-', $p2[0], $p2[1].'-'.$out[1], '.html', $separator);
+            $url = $this->make_url($page, 'tags/t-', $p2[0], $p2[1].'_page'.$out[1], '.html', $separator);
             unset($container['page']);
           } else {
             $url = $this->make_url($page, 'tags/t-', $p2[0], $p2[1], '.html', $separator);
