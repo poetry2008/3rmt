@@ -263,7 +263,14 @@ while ($sr->hasNext()) {
 ?>
                 <td class="dataTableContent" align="right"><?php echo $info[0]['order']; ?></td>
                 <td class="dataTableContent" align="right"><?php echo isset($info[$last - 1]['totitem'])?$info[$last - 1]['totitem']:''; ?></td>
-                <td class="dataTableContent" align="right"><?php echo $currencies->format(isset($info[$last - 1]['totsum'])?$info[$last - 1]['totsum']:'');?></td>
+                <td class="dataTableContent" align="right"><?php 
+  if ($info[$last - 1]['totsum'] < 0) {
+    echo '<font color="red">'.$currencies->format(isset($info[$last - 1]['totsum'])?$info[$last - 1]['totsum']:'').'</font>';
+  } else {
+    echo $currencies->format(isset($info[$last - 1]['totsum'])?$info[$last - 1]['totsum']:'');
+  }
+  
+  ?></td>
                 <td class="dataTableContent" align="right"><?php echo $currencies->format($info[0]['shipping']);?></td>
               </tr>
               <?php
@@ -308,7 +315,13 @@ if (isset($srDetail)){
                 <td class="dataTableContent" align="right"><?php echo $info[$i]['pquant']; ?></td>
                 <?php
           if ($srDetail == 2) {?>
-                <td class="dataTableContent" align="right"><?php echo $currencies->format($info[$i]['psum']); ?></td>
+                <td class="dataTableContent" align="right"><?php 
+                  if ($info[$i]['psum'] < 0) {
+                    echo '<font color="red">'.$currencies->format($info[$i]['psum']).'</font>'; 
+                  } else {
+                    echo $currencies->format($info[$i]['psum']); 
+                  }
+                ?></td>
                 <?php
           } else { ?>
                 <td class="dataTableContent">&nbsp;</td>
@@ -359,8 +372,14 @@ if ($srCompare > SR_COMPARE_NO) {
                 echo $info[$last - 1]['totitem']; 
   ?></td>
                 <td class="dataTableContent" align="right"><?php 
-                if(isset($info[$last - 1]['totsum']) ) 
-                echo $currencies->format($info[$last - 1]['totsum']);?></td>
+                if(isset($info[$last - 1]['totsum']) ) {
+                  if ($info[$last - 1]['totsum']<0) {
+                    echo '<font color="red">'.$currencies->format($info[$last - 1]['totsum']).'</font>';
+                  } else {
+                    echo $currencies->format($info[$last - 1]['totsum']);
+                  }
+                }
+    ?></td>
                 <td class="dataTableContent" align="right"><?php echo $currencies->format($info[0]['shipping']);?></td>
               </tr>
               <?php
@@ -405,7 +424,13 @@ if ($srCompare > SR_COMPARE_NO) {
                 <td class="dataTableContent" align="right"><?php echo $info[$i]['pquant']; ?></td>
                 <?php
             if ($srDetail == 2) {?>
-                <td class="dataTableContent" align="right"><?php echo $currencies->format($info[$i]['psum']); ?></td>
+                <td class="dataTableContent" align="right"><?php 
+                  if ($info[$i]['psum'] < 0) {
+                    echo '<font color="red">'.$currencies->format($info[$i]['psum']).'</font>'; 
+                  } else {
+                    echo $currencies->format($info[$i]['psum']); 
+                  }
+                   ?></td>
                 <?php
             } else { ?>
                 <td class="dataTableContent">&nbsp;</td>

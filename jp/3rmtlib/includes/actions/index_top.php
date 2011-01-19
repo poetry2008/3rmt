@@ -89,6 +89,7 @@
       where tags_id = '".$_GET['tags_id']."'
     ");
     $seo_tags = tep_db_fetch_array($seo_tags_query);
+    check_uri('/tags_id=/');
   }
    
    //------ SEO TUNING  -----//
