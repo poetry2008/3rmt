@@ -44,7 +44,7 @@
   // set the default values
 
   // default detail no detail
-  $srDefaultDetail = 0;
+  $srDefaultDetail = 2;
   // default view (daily)
   $srDefaultView = 4;
   // default export
