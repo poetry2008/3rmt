@@ -188,7 +188,8 @@
              c.customers_lastname, 
              c.customers_firstname, 
              c.site_id,
-             c.customers_email_address
+             c.customers_email_address,
+             ci.customers_info_date_account_created as date_account_created
       FROM orders o LEFT JOIN orders_status_history as osh ON osh.orders_id = o.orders_id AND osh.orders_status_id in (2,13), customers c 
       WHERE o.customers_id = c.customers_id
         AND o.orders_status in (2,13)
