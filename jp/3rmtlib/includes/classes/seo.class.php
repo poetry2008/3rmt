@@ -385,7 +385,7 @@ class SEO_URL{
                    'cPath' => 'c-',
                    'manufacturers_id' => 'm-',
                    'pID' => 'pi-',
-                   'tPath' => 't-',
+                   //'tPath' => 't-',
                    'articles_id' => 'a-',
                    'products_id_review' => 'pr-',
                    'products_id_review_info' => 'pr-',
@@ -699,6 +699,10 @@ class SEO_URL{
         break;
       } else if ($p2[0] == 'action' && $p2[1] == 'select'){
         $url = $this->make_url($page, '', $p2[0], $p2[1], '.html', $separator);
+      //} else if ($p2[0] == 'tags_id'){
+        //$p3 = @explode('=', $p[0]);
+        //$url = $this->make_url($page, 'tags/t-', '', $p2[1].'-'.$p3[1], '.html', $separator).$p[0];
+        break;
       } else {
       switch ($p2[0]){ 
         case 'products_id':
@@ -726,6 +730,11 @@ class SEO_URL{
             case ( $page == FILENAME_REVIEWS ):
               $url = $this->make_url($page, 'reviews/page', '', $p2[1], '.html', $separator);
               break;
+            //case ( $page == FILENAME_DEFAULT && $_GET['tags_id'] ):
+              
+              //$url = $this->make_url($page, 'tags/t-'.$_GET['tags_id'].'-', '', $p2[1], '.html', $separator);
+            
+              //break;
             case ($page == FILENAME_DEFAULT && $_GET['cPath']):
               //break; //zhu shi
             default:
@@ -793,6 +802,16 @@ class SEO_URL{
           #$container[$p2[1]] = 'ffff'; 
           //break;
         //===========================================
+        case 'tags_id':
+          
+          //$url = $this->make_url($page, 'tags/t-'.$_GET['tags_id'].'-', '', $p2[1], '.html', $separator);
+          if (preg_match('/page=(\d+)/', $params, $out)) {
+            $url = $this->make_url($page, 'tags/t-', $p2[0], $p2[1].'-'.$out[1], '.html', $separator);
+            unset($container['page']);
+          } else {
+            $url = $this->make_url($page, 'tags/t-', $p2[0], $p2[1], '.html', $separator);
+          }
+          break;
         default:
           $container[$p2[0]] = isset($p2[1]) ? $p2[1] : ''; 
           break;
