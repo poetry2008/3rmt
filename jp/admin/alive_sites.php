@@ -1,10 +1,7 @@
 <?php
 //设置常量
 //MYSQL_GROUP
-define('MYSQL_HOST','localhost');
-define('MYSQL_USER','root');
-define('MYSQL_PASSWORD','123456');
-define('MYSQL_DATABASE','maker_3rmt');
+include(@realpath('./includes/configure.php'));
 define("LOG_LIMIT",60);
 
 function sql_injection($content)
@@ -26,11 +23,12 @@ function db_query($sql)
 {
 	global $conn;
 	if (!$conn){
-		$conn =  mysql_connect(MYSQL_HOST,MYSQL_USER,MYSQL_PASSWORD);
+		$conn =
+                  mysql_connect(DB_SERVER,DB_SERVER_USERNAME,DB_SERVER_PASSWORD);
 		if (!$conn){
 			die('db error');
 		}
-		mysql_select_db(MYSQL_DATABASE);
+		mysql_select_db(DB_DATABASE);
 		mysql_query("set names 'utf8'");
 	}
 	return mysql_query($sql);
