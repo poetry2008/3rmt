@@ -51,9 +51,6 @@
           <tr><?php echo tep_draw_form('search', FILENAME_NEW_CUSTOMERS, tep_get_all_get_params(), 'get'); ?>
             <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
-            <td class="smallText" align="right"><?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search'); ?><br>※検索対象：「顧客名（姓/名/）」「ふりがな（姓/名）」「メールアドレス」
-      
-      </td>
           </form></tr>
         </table>
     <!--ORDER EXPORT SCRIPT //-->
@@ -158,6 +155,7 @@
                 <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACCOUNT_CREATED; ?></td>
               </tr>
 <?php
+          /*
     $search = '';
     if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'])) ) {
       $keywords = tep_db_input(tep_db_prepare_input($_GET['search']));
@@ -183,6 +181,21 @@
         " . $search . " 
       order by ci.customers_info_date_account_created desc
     ";
+    */
+    $customers_query_raw = "
+      SELECT o.customers_id,
+             c.customers_guest_chk,
+             c.customers_lastname, 
+             c.customers_firstname, 
+             c.customers_email_address
+      FROM orders o LEFT JOIN orders_status_history as osh ON osh.orders_id = o.orders_id AND osh.orders_status_id in (2,13), customers c 
+      WHERE o.customers_id = c.customers_id
+        AND o.orders_status in (2,13)
+      GROUP BY o.customers_id
+      HAVING sum( osh.`date_added` < '" . $startTime . "' ) = 0
+      AND sum( osh.`date_added` < '" . $endTime . "' AND osh.`date_added` > '" . $startTime . "' ) > 0
+      ORDER BY osh.date_added DESC 
+    ";
     $customers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $customers_query_raw, $customers_query_numrows);
     $customers_query = tep_db_query($customers_query_raw);
     while ($customers = tep_db_fetch_array($customers_query)) {
@@ -192,7 +205,7 @@
         $type = TABLE_HEADING_MEMBER_TYPE_MEMBER;
       }
 
-    echo '          <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID')) . 'cID=' . $customers['customers_id']) . '\'">' . "\n";
+    echo '          <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'">' . "\n";
 
 ?>
                 <td class="dataTableContent"><?php echo tep_get_site_romaji_by_id($customers['site_id']); ?></td>
