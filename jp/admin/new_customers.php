@@ -197,6 +197,7 @@
       GROUP BY o.customers_id
       HAVING sum( osh.`date_added` < '" . $startTime . "' ) = 0
       AND sum( osh.`date_added` < '" . $endTime . "' AND osh.`date_added` > '" . $startTime . "' ) > 0
+      " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " AND c.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
       ORDER BY osh.date_added DESC 
     ";
     $customers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $customers_query_raw, $customers_query_numrows);
