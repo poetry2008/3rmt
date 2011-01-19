@@ -68,7 +68,9 @@
       // queries for item details count
       $buyOrSellFrom  = isset($_GET['bflag']) && $_GET['bflag'] ? ", ".TABLE_PRODUCTS." p" : '';
       $buyOrSellWhere = isset($_GET['bflag']) && $_GET['bflag'] ? (" AND op.products_id=p.products_id AND p.products_bflag=" . $bflag) : '';
-      $this->queryItemCnt = "SELECT op.products_id as pid, op.orders_products_id, op.products_name as pname, sum(op.products_quantity) as pquant, sum(op.final_price * op.products_quantity) as psum, op.products_tax as ptax FROM " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op" . $buyOrSellFrom ." WHERE o.orders_id = op.orders_id" . $siteStr . $buyOrSellWhere ;
+      //$this->queryItemCnt = "SELECT op.products_id as pid, op.orders_products_id, op.products_name as pname, sum(op.products_quantity) as pquant, sum(op.final_price * op.products_quantity) as psum, op.products_tax as ptax FROM " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op" . $buyOrSellFrom ." WHERE o.orders_id = op.orders_id" . $siteStr . $buyOrSellWhere ;
+      $this->queryItemCnt = "SELECT op.products_id as pid, op.orders_products_id, op.products_name as pname, sum(op.products_quantity) as pquant, if(p.products_bflag = '0' , sum(op.final_price * op.products_quantity), 0-sum(op.final_price * op.products_quantity)) as psum, op.products_tax as ptax FROM " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op, " . TABLE_PRODUCTS . " p" . $buyOrSellFrom ." WHERE o.orders_id = op.orders_id AND op.products_id = p.products_id " . $siteStr . $buyOrSellWhere ;
+
 
       // query for attributes
       $this->queryAttr = "SELECT count(op.products_id) as attr_cnt, o.orders_id, opa.orders_products_id, opa.products_options, opa.products_options_values, opa.options_values_price, opa.price_prefix from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " opa, " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op" . $buyOrSellFrom . " WHERE o.orders_id = opa.orders_id AND op.orders_products_id = opa.orders_products_id" . $siteStr . $buyOrSellWhere;
@@ -157,6 +159,8 @@
       $cnt = 0;
       $itemTot = 0;
       $sumTot = 0;
+      $sumBuyTot = 0;
+      $sumSellTot = 0;
       while ($resp[$cnt] = tep_db_fetch_array($rqItems)) {
         // to avoid rounding differences round for every quantum
         // multiply with the number of items afterwords.
@@ -223,16 +227,27 @@
         $resp[$cnt]['order'] = $order['order_cnt'];
         $resp[$cnt]['shipping'] = $shipping['shipping'];
 
+        if ($resp[$cnt]['psum'] < 0) {
+          $sumBuyTot += $resp[$cnt]['psum'];
+        } else {
+          $sumSellTot += $resp[$cnt]['psum'];
+        }
+        $resp[$cnt]['totsumBuy'] = $sumBuyTot;
+        $resp[$cnt]['totsumSell'] = $sumSellTot;
+
         // values per date and item
         $sumTot += $resp[$cnt]['psum'];
         $itemTot += $resp[$cnt]['pquant'];
         // add totsum and totitem until current row
         $resp[$cnt]['totsum'] = $sumTot;
+        
         $resp[$cnt]['totitem'] = $itemTot;
         $cnt++;
       }
-
+      echo "<br>";
+      //print_r($resp);
       return $resp;
+      
     }
 }
 ?>
