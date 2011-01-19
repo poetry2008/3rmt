@@ -247,4 +247,3 @@
   } else {
     require(TEMPLATE_DEFAULT);
   }
-?>
