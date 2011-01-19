@@ -244,8 +244,6 @@
         $resp[$cnt]['totitem'] = $itemTot;
         $cnt++;
       }
-      echo "<br>";
-      //print_r($resp);
       return $resp;
       
     }
