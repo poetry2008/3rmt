@@ -3688,11 +3688,20 @@ function tep_upload_products_to_inventory($pid,$status){
   }else{
      $method = 'insert';
   }
+  $invArr = tep_get_inventory($pid);
+  $cpath = '';
+  if(count($invArr['cpath'])==1) {
+    $cpath =$invArr['cpath'][0];
+  }else {
+    $cpath =join('_',array_reverse($invArr['cpath']));
+  }
   $inventory_data_arr = array(
       'products_id' => $pid,
       'inventory_status' => $status,
-      'last_date' => 'now()'
+      'last_date' => 'now()',
+      'cpath'=>$cpath,
       );
+
   tep_db_perform(TABLE_PRODUCTS_TO_INVENTORY,$inventory_data_arr,$method,
       "products_id='".$pid."'");
 

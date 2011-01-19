@@ -42,7 +42,7 @@
   }
   //查找 最后修改时间
   $inventory_sql = 'select max(last_date) as `update` from '.
-  TABLE_PRODUCTS_TO_INVENTORY;
+  TABLE_PRODUCTS_TO_INVENTORY ;
   $inventory_res = tep_db_query($inventory_sql);
   if($inventory_date = tep_db_fetch_array($inventory_res)){
      $show_date = $inventory_date['update'];
@@ -123,7 +123,7 @@
            pd.products_id = p.products_id 
            where p2i.inventory_status not in ('ok','error') 
            and pd.site_id = '0' 
-           order by pd.products_name ASC";
+           order by p2i.cpath ASC";
          $products_split = new splitPageResults($_GET['page'],
              MAX_DISPLAY_PRODUCTS,$products_query_rows,$products_query_numrows);
          $products_query = tep_db_query($products_query_rows);
