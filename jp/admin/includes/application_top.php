@@ -104,6 +104,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('FILENAME_COMPUTERS', 'computers.php');
   
   //add files
+  define('FILENAME_BANK_CL', 'bank_cl.php');
   define('FILENAME_CONTENTS', 'contents.php');
   define('FILENAME_LATEST_NEWS', 'latest_news.php'); 
   define('FILENAME_PRODUCTS_UP', 'products_up.php'); 
