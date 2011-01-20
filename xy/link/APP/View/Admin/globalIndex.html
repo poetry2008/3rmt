@@ -1,0 +1,52 @@
+<!--{include file=Admin/header.html}-->
+<div id="left">
+<!--{include file=Admin/menu.html}-->
+</div>
+<div id="right">
+<div id="content">
+<ul>
+<li class="content-bg">
+<form action='<!--{url controller=global action=update}-->' method='post'>
+<table class="global">
+<tr>
+<td colspan="2"><h3><!--{_t key='global_manage'}--></h3></br></td>
+</tr>
+<tr class="g-tr1">
+<td colspan="2"><strong><!--{_t key='global_admin'}--></strong></td>
+</tr>
+<tr class="g-tr2">
+<td><!--{_t key='global_3'}--></td>
+<td><input name='admin_submit_num' value='<!--{$global.admin_submit_num}-->' /></td>
+</tr>
+<tr class="g-tr2">
+<td><!--{_t key='global_4'}--></td>
+<td><input name='admin_submit_page_num' value='<!--{$global.admin_submit_page_num}-->' /></td>
+</tr>
+<tr class="g-tr2">
+<td><!--{_t key='global_5'}--></td>
+<td><input name='set_new_date'
+value='<!--{$global.set_new_date}-->'/>
+<!--{_t key='global_6'}--></td>
+</tr>
+<tr class="g-tr2">
+<td><!--{_t key='global_7'}--></td>
+<td><input name='set_new_dir'
+value='<!--{$global.set_new_dir}-->'/>
+<!--{_t key='global_8'}--></td>
+</tr>
+<tr class="g-tr2" >
+<td valign="top"><!--{_t key='global_emale_foot'}--></td>
+<td valign="top"><textarea cols="40" rows="8" name='email_foot'><!--{$global.email_foot}--></textarea>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="g-submit"><input type='submit' value='<!--{_t key=submit}-->' id="submit" ></td>
+</tr>
+</table>
+</form>
+</li>
+</ul>
+</div>
+</div>
+</body>
+</html>
