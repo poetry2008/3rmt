@@ -1204,8 +1204,9 @@ Information
 }
 .game_t {
 	float:left;
-	padding-left:18px;
-	padding-top:2px;
+	padding-left:50px;
+	line-height:27px;
+	background:transparent url(../images/design/title_img08.gif) no-repeat left center;
 }
 .game_im {
 	float:left;
@@ -1547,4 +1548,8 @@ padding:5px;
 }
 span.markProductOutOfStock img{
 vertical-align:middle;
+}
+.arrow_2{
+padding-left:10px;
+background:url(images/design/box/arrow_2.gif) no-repeat left center;
 }
