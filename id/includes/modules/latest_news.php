@@ -6,8 +6,7 @@
 <!-- latest_news_index //-->
 <div class="latest_news_home">
 <h2 class="pageHeading_05">
-<span class="game_im"><img width="26" height="26" alt="" src="images/design/title_img20.gif"></span>
-<span class="game_t">
+<span class="game_t game_t02">
 RMTアイテムデポからのお知らせ</span></h2>
 <div class="comment_05">
     <div id="news">
