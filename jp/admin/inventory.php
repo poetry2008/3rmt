@@ -26,13 +26,13 @@
                if($inventory_arr['max']){
                $status = "up";
                }else{
-               $statue = "ok";
+               $status = "ok";
                }
              }else if($products_quantity > $inventory_arr['min']&&
                  $products_quantity < $inventory_arr['max']){
                $status = "ok";
              }else{
-               $statue = "error";
+               $status = "error";
              }
            }
            //更新数据
