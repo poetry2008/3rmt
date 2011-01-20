@@ -7,9 +7,7 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 5px;" summary="reviews">
   <tr>
   <td align="center">
-  <h3>
   <img width="171" height="27" alt="取引日時変更" src="images/design/reorder_right.gif" >
-  </h3>
   <?php echo '<a href="'.tep_href_link('reorder.php').'"><img width="171" alt="再配達フォーム" src="images/design/reorder_right02.gif" ></a>';?>
   </td>
   </tr>

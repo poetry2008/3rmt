@@ -14,8 +14,8 @@ function tep_minitor_info(){
     $tmpRow = tep_db_fetch_array($logIn15);
     if(mysql_num_rows($logIn15)>=2){ //十五分钟内多于两件
 
-      $tmpString  = $tmpRow['name'].':<font
-        class="error_monitor">'.date('m月d日H時i分s秒',strtotime($tmpRow['created_at'])).'に回線障害がありました</font><br/><a ';
+      $tmpString  = '回線障害発生： '.$tmpRow['name'].' <font
+        class="error_monitor">'.date('m月d日H時i分s秒',strtotime($tmpRow['created_at'])).'</font><br/><a ';
       if($show_div){
       $tmpString .='
         onMouseOver="show_monitor_error(\'minitor_'.$monitor['name'].'\',1,this)" 
@@ -37,12 +37,12 @@ function tep_minitor_info(){
     $log = "select name,obj, created_at from monitor_log where ng =1 and m_id = ".$monitor['id']. " order by id  desc limit 1";
     $logsResult = tep_db_fetch_array(tep_db_query($log));
     if ($logsResult){
-      $aString = $logsResult['name'].':'.'回線障害の最終日： <a ';
+      $aString = '回線障害の最終日： ' . $logsResult['name'] . ' <a ';
       if($show_div){
       $aString.=  'onMouseOver="show_monitor_error(\'minitor_'.$logsResult['name'].'\',1,this)"
         onMouseOut="show_monitor_error(\'minitor_'.$logsResult['name'].'\',0,this)"';
       }
-      $aString.=  'class="monitor_right" id="moni_'.$logsResult['name'].'" href="'.$monitor['url'].'"  target="_blank">'.date('m月d日H時i分s秒。',strtotime($logsResult['created_at'])).'</a>';
+      $aString.=  'class="monitor_right" id="moni_'.$logsResult['name'].'" href="'.$monitor['url'].'"  target="_blank">'.date('m月d日H時i分s秒',strtotime($logsResult['created_at'])).'</a>';
         $aString.= '<div class="monitor_error" style="display:none;" id ="minitor_'.$logsResult['name'].'">';
         $aString.= '<table
           width="100%"><tr><td>'.$logsResult['created_at']."</td><td
@@ -54,7 +54,7 @@ function tep_minitor_info(){
   }
   if(count($errorString)<1){
         $no_error_string = '<tr><td></td><td align="right"><font
-          color="green">線路が全部正常です</font></td></tr>';
+          color="green">システムの動作状況： 正常</font></td></tr>';
   }
   $returnString = '';
   foreach ($errorString as $error){
@@ -2018,12 +2018,12 @@ function tep_reset_cache_data_seo_urls($action){
     }
     
     $rate = str_replace(array(','), array(''), $rate);
-    /*
+
     if (preg_match('/^(.*)億(.*)万(.*)$/', $rate, $out)) {
       $rate = (($out[1] * 100000000) + ($out[2] * 10000)) . $out[3];
+    } else {
+      $rate = str_replace(array('万','億'), array('0000','00000000'), $rate);
     }
-    */
-    $rate = str_replace(array('万','億'), array('0000','00000000'), $rate);
     if (preg_match('/^(\d+)(.*)（\d+.*）$/', $rate, $out)) {
       return number_format($out[1] * $cnt) . $out[2];
     }

@@ -66,12 +66,11 @@
 
 
       // queries for item details count
-      $buyOrSellFrom  = isset($_GET['bflag']) && $_GET['bflag'] ? ", ".TABLE_PRODUCTS." p" : '';
       $buyOrSellWhere = isset($_GET['bflag']) && $_GET['bflag'] ? (" AND op.products_id=p.products_id AND p.products_bflag=" . $bflag) : '';
       //$this->queryItemCnt = "SELECT op.products_id as pid, op.orders_products_id, op.products_name as pname, sum(op.products_quantity) as pquant, sum(op.final_price * op.products_quantity) as psum, op.products_tax as ptax FROM " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op" . $buyOrSellFrom ." WHERE o.orders_id = op.orders_id" . $siteStr . $buyOrSellWhere ;
-      $this->queryItemCnt = "SELECT op.products_id as pid, op.orders_products_id, op.products_name as pname, sum(op.products_quantity) as pquant, if(p.products_bflag = '0' , sum(op.final_price * op.products_quantity), 0-sum(op.final_price * op.products_quantity)) as psum, op.products_tax as ptax FROM " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op, " . TABLE_PRODUCTS . " p" . $buyOrSellFrom ." WHERE o.orders_id = op.orders_id AND op.products_id = p.products_id " . $siteStr . $buyOrSellWhere ;
+      $this->queryItemCnt = "SELECT op.products_id as pid, op.orders_products_id, op.products_name as pname, sum(op.products_quantity) as pquant, if(p.products_bflag = '0' , sum(op.final_price * op.products_quantity), 0-sum(op.final_price * op.products_quantity)) as psum, op.products_tax as ptax FROM " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op, " . TABLE_PRODUCTS . " p" ." WHERE o.orders_id = op.orders_id AND op.products_id = p.products_id " . $siteStr . $buyOrSellWhere ;
 
-
+      $buyOrSellFrom  = isset($_GET['bflag']) && $_GET['bflag'] ? ", ".TABLE_PRODUCTS." p" : '';
       // query for attributes
       $this->queryAttr = "SELECT count(op.products_id) as attr_cnt, o.orders_id, opa.orders_products_id, opa.products_options, opa.products_options_values, opa.options_values_price, opa.price_prefix from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " opa, " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op" . $buyOrSellFrom . " WHERE o.orders_id = opa.orders_id AND op.orders_products_id = opa.orders_products_id" . $siteStr . $buyOrSellWhere;
 

@@ -43,7 +43,7 @@
         以下に各フリーメールの毎に受信許可の設定手順を記します。 </p>
       <br />
       <br />
-      <h3><span class="txt_bold">Yahoo!メール、Yahoo!BBメール&nbsp;&nbsp;受信許可の設定手順</span></h3>
+      <h3>Yahoo!メール、Yahoo!BBメール&nbsp;&nbsp;受信許可の設定手順</h3>
       <p>
       <ol>
         <li>Yahoo!メールにログインして[メールオプション]をクリック</li>
@@ -53,7 +53,7 @@
       </ol>
       </p>
       <br />
-      <h3><span class="txt_bold">hotmail、msnmail&nbsp;&nbsp;受信許可の設定手順</span></h3>
+      <h3>hotmail、msnmail&nbsp;&nbsp;受信許可の設定手順</h3>
       <p>
       <ol>
         <li>hotmail にサインインして[オプション] をクリック</li>
@@ -63,7 +63,7 @@
       </ol>
       </p>
       <br />
-      <h3><span class="txt_bold">AOL&nbsp;&nbsp;受信許可の設定手順</span></h3>
+      <h3>AOL&nbsp;&nbsp;受信許可の設定手順</h3>
       <p> ご利用環境によりAOL接続ソフト「AOL Communicator」の設定が必要です。
       <ol>
         <li>クイックガイドのメールコントロールを参照します</li>
@@ -71,7 +71,7 @@
       </ol>
       </p>
       <br />
-      <h3><span class="txt_bold">上記以外のメールアドレスをご利用の場合</span></h3>
+      <h3>上記以外のメールアドレスをご利用の場合</h3>
       <p> 上記以外のメールアドレスをご利用の方で、同様に<?php echo STORE_NAME;?>および当社からのメールが届かないという場合も、同様の原因（迷惑メール処理機能）が考えられます。<br />
         お手数ですがご利用先のマニュアル等をご覧の上、<?php echo STORE_NAME;?>および当社の利用するドメイン「<span class="txt_blue"><?php echo STORE_DOMAIN;?></span>」から送信されるメールの受信許可を設定して下さい。<br />
       </p>

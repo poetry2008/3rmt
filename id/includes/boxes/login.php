@@ -10,7 +10,7 @@
 ?>
 <table border="0" width="171" cellpadding="0" cellspacing="0" summary="login box">
 	<tr>
-		<td><h3><img width="171" height="27" alt="RMTアイテムデポ 会員登録" src="images/design/title_img01.gif"></h3></td>
+		<td><img width="171" height="27" alt="RMTアイテムデポ 会員登録" src="images/design/title_img01.gif"></td>
 	</tr>
 	<tr>
     	<td><a href="<?php echo tep_href_link(FILENAME_LOGIN,'','SSL'); ?>"><img class="middle" src="images/design/login02.gif" alt="ログイン"></a></td>
@@ -27,7 +27,7 @@
 ?>
 <table border="0" width="171" cellpadding="0" cellspacing="0" summary="login box">
 	<tr>
-		<td><h3><img width="171" height="27" alt="RMTアイテムデポ 会員登録" src="images/design/title_img01.gif"></h3></td>
+		<td><img width="171" height="27" alt="RMTアイテムデポ 会員登録" src="images/design/title_img01.gif"></td>
 	</tr>
 	<tr>
     	<td><a href="<?php echo tep_href_link(FILENAME_LOGIN,'','SSL'); ?>"><img class="middle" src="images/design/login02.gif" alt="ログイン"></a></td>
