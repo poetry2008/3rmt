@@ -35,6 +35,22 @@ function db_query($sql)
   return mysql_query($sql);
 }
 
+function get_http_content($url){
+  $urlinfo = parse_url($url);
+  $context = null;
+  if ($urlinfo['user'] && $urlinfo['pass']) {
+    $opts = array(
+      'http'=>array(
+      'method'=>"GET",
+      'header'=>"Accept-language: en\r\n" .
+      "Authorization: Basic ".base64_encode($urlinfo['user'].':'.$urlinfo['pass'])
+      )
+    );
+    $context = stream_context_create($opts);
+  }
+  return file_get_contents($urlinfo['scheme'].'://'.$urlinfo['host'].$urlinfo['path'],false,$context);
+}
+
 function getDomains(){
   //如果不从MYSQL里读取数据
   $domains = array();
@@ -103,7 +119,7 @@ class Monitor {
   }
 
   function isAlive(){
-    return strtoupper(trim(file_get_contents($this->url)))=='WE ARE ALIVE.';
+    return strtoupper(trim(get_http_content($this->url)))=='WE ARE ALIVE.';
   }
 
 }
