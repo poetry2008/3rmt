@@ -28,8 +28,11 @@
                }else{
                $statue = "ok";
                }
+             }else if($products_quantity > $inventory_arr['min']&&
+                 $products_quantity < $inventory_arr['max']){
+               $status = "ok";
              }else{
-               $status = "error";
+               $statue = "error";
              }
            }
            //更新数据
