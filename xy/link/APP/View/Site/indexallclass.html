@@ -1,0 +1,30 @@
+<div class="top">
+<div class="category_h2"><h2>相互リンク集のカテゴリ</h2></div></div>
+<div class="middle">
+<!--{section name=loopClass loop=$class}-->
+<!--{if $smarty.section.loopClass.first}-->
+<table class="web_3_top">
+<tr>
+<!--{/if}-->
+<td>
+<h3><a href='<!--{url controller=site action=class
+  id=$class[loopClass].class_id}-->'>
+<!--{$class[loopClass].name}-->
+</a></h3>
+<!--{$str[loopClass].string}-->
+</td>
+<!--{assign var ='dex' value=$smarty.section.loopClass.index+1}-->
+<!--{if $dex mod 3 eq 0}-->
+</tr><tr>
+<!--{/if}-->
+<!--{if $smarty.section.loopClass.last}-->
+<td></td><td></td><td></td>
+</tr>
+</table>
+<!--{/if}-->
+
+<!--{/section}-->
+</div>
+<div class="bottom"></div>
+
+
