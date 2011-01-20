@@ -54,7 +54,7 @@ function tep_minitor_info(){
   }
   if(count($errorString)<1){
         $no_error_string = '<tr><td></td><td align="right"><font
-          color="green">線路が全部正常です</font></td></tr>';
+          color="green">システムの動作状況： 正常</font></td></tr>';
   }
   $returnString = '';
   foreach ($errorString as $error){
