@@ -26,8 +26,7 @@
 <!-- also_purchased_products //-->
 <h2 class="pageHeading_long02">
 <span class="game_t">
-</span>
-<?php echo $product_info['products_name'];?><?php  echo TEXT_ALSO_PURCHASED_PRODUCTS ; ?> 
+<?php echo $product_info['products_name'];?><?php  echo TEXT_ALSO_PURCHASED_PRODUCTS ; ?></span>
 </h2>
 <div class="comment_long02">
 <?php
