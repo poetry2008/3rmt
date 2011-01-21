@@ -2230,7 +2230,7 @@ tep_display_google_results()
       case 'delete_product_description':
         $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_PRODUCT . '</b>');
 
-        $contents = array('form' => tep_draw_form('products', FILENAME_CATEGORIES, 'action=delete_product_description_confirm&site_id=' . $_GET['site_id'] . '&pID=' . $_GET['pID'] . '&cPath=' . $cPath, 'get'));
+        $contents = array('form' => tep_draw_form('products', FILENAME_CATEGORIES, 'action=delete_product_description_confirm&site_id=' . $_GET['site_id'] . '&pID=' . $_GET['pID'] . '&cPath=' . $cPath, 'post'));
         $contents[] = array('text' => TEXT_DELETE_PRODUCT_INTRO);
         $contents[] = array('text' => '<br><b>' . $pInfo->products_name . '</b>');
 
