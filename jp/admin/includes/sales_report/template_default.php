@@ -46,7 +46,7 @@
               </td>
               <td align="left" class="menuBoxHeading">
   サイト<br>
-                <?php echo tep_site_pull_down_menu_with_all($_GET['site_id'], false);?><br>
+                <?php echo tep_site_pull_down_menu_with_all($_GET['site_id'], false, 'すべて');?><br>
               </td>
               <td class="menuBoxHeading"><?php echo SR_REPORT_START_DATE; ?><br>
               <table>
@@ -98,14 +98,15 @@
               </td>
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_DETAIL; ?><br>
               <select name="detail" size="1">
-                <option value="0"<?php if ($srDetail == 0) echo " selected"; ?>><?php echo  SR_DET_HEAD_ONLY; ?></option>
+                <!--<option value="0"<?php if ($srDetail == 0) echo " selected"; ?>><?php echo  SR_DET_HEAD_ONLY; ?></option>-->
                 <option value="1"<?php if ($srDetail == 1) echo " selected"; ?>><?php echo  SR_DET_DETAIL; ?></option>
                 <option value="2"<?php if ($srDetail == 2) echo " selected"; ?>><?php echo  SR_DET_DETAIL_ONLY; ?></option>
               </select>
               </td>
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_STATUS_FILTER; ?><br>
               <select name="status" size="1">
-                <option value="0"><?php echo SR_REPORT_ALL; ?></option>
+                <option value="2,5">成約済</option>
+                <option value="0"<?php if ($srStatus == 0) echo " selected";?>><?php echo SR_REPORT_ALL; ?></option>
                 <?php
                         foreach ($sr->status as $value) {
 ?>
@@ -127,7 +128,7 @@
               <td class="menuBoxHeading">
   カテゴリー<br>
   <select name="bflag">
-    <option value="0"<?php if(!$_GET['bflag']){?> selected<?php }?>>全部</option>
+    <option value="0"<?php if(!$_GET['bflag']){?> selected<?php }?>>すべて</option>
     <option value="1"<?php if($_GET['bflag'] == '1'){?> selected<?php }?>>販売</option>
     <option value="2"<?php if($_GET['bflag'] == '2'){?> selected<?php }?>>買取</option>
   </select>
@@ -184,6 +185,7 @@ date("Y") - $i; ?></option>
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_MAX; ?><br>
               <select name="max" size="1">
                 <option value="0"><?php echo SR_REPORT_ALL; ?></option>
+                <option value="" <?php if ($srMax === '') echo " selected"; ?>>0</option>
                 <option<?php if ($srMax == 1) echo " selected"; ?>>1</option>
                 <option<?php if ($srMax == 3) echo " selected"; ?>>3</option>
                 <option<?php if ($srMax == 5) echo " selected"; ?>>5</option>
@@ -276,7 +278,7 @@ while ($sr->hasNext()) {
               <?php
 if (isset($srDetail)){
     for ($i = 0; $i < $last; $i++) {
-      if ($srMax == 0 or $i < $srMax) {
+      if ($srMax === '0' or $i < $srMax) {
 ?>
               <tr class="dataTableRow" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='dataTableRow'">
                 <td class="dataTableContent">&nbsp;</td>
@@ -385,7 +387,7 @@ if ($srCompare > SR_COMPARE_NO) {
               <?php
     if ($srDetail) {
       for ($i = 0; $i < $last; $i++) {
-        if ($srMax == 0 or $i < $srMax) {
+        if ($srMax === 0 or $i < $srMax) {
   ?>
               <tr class="dataTableRow" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='dataTableRow'">
                 <td class="dataTableContent">&nbsp;</td>

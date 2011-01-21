@@ -202,7 +202,7 @@ while ($tag = tep_db_fetch_array($tags_query))
 
     echo '<table width="100%" border="0" cellspacing="0" cellpadding="0">' . "\n";
     echo '<tr>' . "\n";
-    echo '<td width="120" class="smallText" valign="top"><h3><b>'.$tag['tags_name'].'</b></h3><div class="manufacturer_image">' .  tep_image(DIR_WS_IMAGES.$tag['tags_images'],$tag['tags_name'],100, 100) .  '</div>' . "\n";
+    echo '<td width="120" class="smallText" valign="top"><a href="'.tags_tep_href_link($tag['tags_id']).'"><h3><b>'.$tag['tags_name'].'</b></h3></a><div class="manufacturer_image">' .  tep_image(DIR_WS_IMAGES.$tag['tags_images'],$tag['tags_name'],100, 100) .  '</div>' . "\n";
                 //<!-- '.mb_substr(strip_tags($manufacturer['manufacturers_url']),0,100,'utf8') .'... --></td>' . "\n";
     echo '</td></tr><tr><td valign="bottom">' . "\n";
   
@@ -243,11 +243,9 @@ while ($tag = tep_db_fetch_array($tags_query))
     echo '</table>' . "\n";
     echo '</td>' . "\n";
     echo '</tr>' . "\n";
-    echo '<tr>' . "\n";
-    echo '<td colspan="2" align="right" class="smallText"
-                  style="padding-top:5px;border-bottom:#ccc solid 1px;">' . '<a
-                  href="'.tags_tep_href_link($tag['tags_id']).'">'.TAGS_TEXT_MORE.'</a></td>'."\n";
-    echo '  </tr>' . "\n";
+    //echo '<tr>' . "\n";
+    //echo '<td colspan="2" align="right" class="smallText" style="padding-top:5px;border-bottom:#ccc solid 1px;">' . '<a href="'.tags_tep_href_link($tag['tags_id']).'">'.TAGS_TEXT_MORE.'</a></td>'."\n";
+    //echo '  </tr>' . "\n";
     echo '</table><br><div class="dot">&nbsp;</div>' . "\n";
   }
 
