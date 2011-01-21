@@ -2015,7 +2015,7 @@ function tep_reset_cache_data_seo_urls($action){
     }
     if (trim($rate) == 'ネットカフェ1DAYチケット5枚セット'){
       return 'ネットカフェ1DAYチケット'.number_format(strval(5*$cnt)).'枚セット';
-    }
+    } 
     
     $rate = str_replace(array(','), array(''), $rate);
 
@@ -2354,10 +2354,10 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
     return tep_draw_pull_down_menu('site_id', $sites_array, $default, $params = '', $require);
   }
 
-  function tep_site_pull_down_menu_with_all($default = '',$require = true){
+  function tep_site_pull_down_menu_with_all($default = '',$require = true,$text = 'all'){
     $sites_array = array();
     $sites = tep_get_sites();
-    $sites_array[] = array('id' => '', 'text' => 'all');
+    $sites_array[] = array('id' => '', 'text' => $text );
     foreach($sites as $site){
       $sites_array[] = array('id' => $site['id'], 'text' => $site['name']);
     }
