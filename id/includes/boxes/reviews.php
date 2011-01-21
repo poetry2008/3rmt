@@ -33,7 +33,7 @@ if (
           and r.site_id = ".SITE_ID
         );
     if(tep_db_num_rows($reviews_query)) {
-      echo  '<h2 class="pageHeading_long02"><span class="game_im"><img width="26" height="26" src="images/design/title_img08.gif" alt=""></span><span class="game_t">'.$product_info['products_name'] .'のレビュー</span></h2>'."\n" . '<div class="comment_long02">'."\n" ;
+      echo  '<h2 class="pageHeading_long02"><span class="game_t">'.$product_info['products_name'] .'のレビュー</span></h2>'."\n" . '<div class="comment_long02">'."\n" ;
       while ($reviews = tep_db_fetch_array($reviews_query)) {
         echo '<div class="reviews_area"><p class="main">
 <b>' . sprintf(TEXT_REVIEW_BY, tep_output_string_protected($reviews['customers_name'])) . '</b>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'stars_' . $reviews['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $reviews['reviews_rating'])) . '[' . sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $reviews['reviews_rating']) . ']

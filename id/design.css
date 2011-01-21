@@ -1168,6 +1168,9 @@ Information
 .Tlist a:hover {
 	text-decoration:underline;
 }
+div.Tlist{
+font-weight:bold;
+}
 /*game news*/
 #game_news {
 	margin-top:5px;

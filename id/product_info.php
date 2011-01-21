@@ -484,8 +484,8 @@ while($tag = tep_db_fetch_array($tag_query)) {
          <?php if($description){?>
             <h2 class="pageHeading_long02">
               <span class="game_t">
-            </span>
-            <?php echo $product_info['products_name']; ?>について
+            
+            <?php echo $product_info['products_name']; ?>について</span>
             </h2>
             <!-- 説明文　-->
             <div class="comment_long02">
