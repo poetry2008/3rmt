@@ -217,6 +217,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                       </tr>
 <?php 
 // ccdd
+if (false) {
 $tag_query = tep_db_query("
     SELECT t.tags_id, 
            t.tags_images, 
@@ -257,6 +258,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                       </td>
                       </tr>
                       <?php 
+}
 }
           if(!empty($data3[0]) && !empty($data3[1])){
           ?>
@@ -485,7 +487,53 @@ document.write('<?php //echo '<td class="smallText" align="center"><a href="java
     }
   }
 ?>
-        </form>
+<?php
+$tag_query = tep_db_query("
+    SELECT t.tags_id, 
+           t.tags_images, 
+           t.tags_name 
+    FROM " . TABLE_PRODUCTS_TO_TAGS . " pt, " . TABLE_TAGS . " t 
+    WHERE t.tags_id = pt.tags_id AND pt.products_id='" . $product_info['products_id'] . "'
+");
+if(tep_db_num_rows($tag_query)){
+?>
+<h3 class="pageHeading_long"><?php echo $product_info['products_name'].'に関するキーワード';?></h3>        
+<table border="0" width="100%" cellspacing="0" cellpadding="2">
+<tr>
+<?php
+$tnum = 0;
+while($tag = tep_db_fetch_array($tag_query)) {
+?>
+<td width="25%" align="center" class="smallText">
+<a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'tags_id=' .  $tag['tags_id']);?>">
+<?php if (
+    (
+    (file_exists(DIR_FS_CATALOG . DIR_WS_IMAGES . $tag['tags_images']) && !is_dir(DIR_FS_CATALOG . DIR_WS_IMAGES . $tag['tags_images'])) 
+    || 
+    (file_exists(DIR_FS_CATALOG . 'default_images/' . $tag['tags_images']) && !is_dir(DIR_FS_CATALOG . 'default_images/' . $tag['tags_images']))
+    )
+    && $tag['tags_images']
+    )
+ {
+   echo tep_image(DIR_WS_IMAGES . $tag['tags_images'], $tag['tags_name'] , 20, 15);
+ } else { 
+   echo $tag['tags_name'];
+  }
+  ?>
+</a>
+</td>
+<?php
+$tnum++;
+if ($tnum > 3) {
+  echo '</tr><tr>';
+  $tnum = 0;
+}
+}
+?>
+</tr>
+</table>
+<?php }?>
+</form>
       </td>
       <!-- body_text_eof //-->
   </table>
