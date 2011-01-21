@@ -563,7 +563,7 @@
   var base_url = '<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('questions_type')));?>';
   
   // 非完成状态的订单不显示最终确认
-  var show_q_8_1_able  = <?php echo tep_orders_finished($_GET['oID'])?'true':'false';?>;
+  var show_q_8_1_able  = <?php echo tep_orders_finished($_GET['oID']) && $order->tori['date'] !== '0000-00-00 00:00:00'?'true':'false';?>;
   
   var cfg_last_customer_action = '<?php echo LAST_CUSTOMER_ACTION;?>';
 
