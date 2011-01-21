@@ -118,22 +118,9 @@ while ($tag = tep_db_fetch_array($tags_query))
       where site_id  = '0'
          or site_id = '".SITE_ID."' 
         group by products_id
-        order by products_date_added desc 
+        order by products_ordered desc 
         limit 5
     ");
-    /*
-    $products_query = tep_db_query("
-        select *,p.products_id 
-        from " . TABLE_PRODUCTS_TO_TAGS . " as p2t 
-          join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id 
-          left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id 
-          left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id 
-        where p2t.tags_id = " . $tag['tags_id'] .  " 
-          and pd.site_id = '".SITE_ID."' 
-        order by p.products_date_added desc 
-        limit 5
-    ");
-    */
   } else {
 //ccdd
     $products_query = tep_db_query("
@@ -180,22 +167,9 @@ while ($tag = tep_db_fetch_array($tags_query))
       where site_id = '0'
          or site_id = '".SITE_ID."' 
       group by products_id
-      order by products_date_added desc 
+      order by products_ordered desc 
       limit 5
     ");
-    /*
-    $products_query = tep_db_query("
-        select *,p.products_id 
-        from " . TABLE_PRODUCTS_TO_TAGS . " as p2t 
-          join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id 
-          left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id 
-          left join " . TABLE_SPECIALS . " as s on p.products_id = s.products_id 
-        where p2t.tags_id = " . $tag['tags_id'] .  " 
-          and pd.site_id = '".SITE_ID."' 
-        order by p.products_date_added desc 
-        limit 5
-    ");
-    */
   } 
   if (tep_db_num_rows($products_query))
   {
@@ -215,7 +189,7 @@ while ($tag = tep_db_fetch_array($tags_query))
                           width="20%" style="padding-bottom:8px;">';
                         echo '<a href="' .
                           tep_href_link(FILENAME_PRODUCT_INFO,'products_id='.  $products['products_id']) . '">';
-						echo '<div class="tag_image01">';
+            echo '<div class="tag_image01">';
                         if ($products['products_image'])
                         {
                           echo tep_image2(DIR_WS_IMAGES.'products/'.$products['products_image'],$products['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"');
@@ -224,30 +198,19 @@ while ($tag = tep_db_fetch_array($tags_query))
                         {
                           echo tep_image2(DIR_WS_IMAGES.'new_products_blank_small.gif',$products['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"');
                         }
-						echo '</div>';
+            echo '</div>';
                           echo '<br>' .$products['products_name'] . '</a><br>';
       if (tep_get_special_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'])) {
         echo '<s>' . $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), tep_get_tax_rate($products['products_tax_class_id'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), tep_get_tax_rate($products['products_tax_class_id'])) . '</span>&nbsp;';
       } else {
         echo $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), tep_get_tax_rate($products['products_tax_class_id']));
       }
-                          /*if ($products['specials_new_products_price'])
-                          {
-                            echo $currencies->display_price($products['specials_new_products_price'], tep_get_tax_rate($products['products_tax_class_id']));
-                          }
-                          else
-                          {
-                            echo $currencies->display_price($products['products_price'], tep_get_tax_rate($products['products_tax_class_id']));
-                          }*/
                           echo '</td>'."\n";
     }
     echo '</tr>' . "\n";
     echo '</table>' . "\n";
     echo '</td>' . "\n";
     echo '</tr>' . "\n";
-    //echo '<tr>' . "\n";
-    //echo '<td colspan="2" align="right" class="smallText" style="padding-top:5px;border-bottom:#ccc solid 1px;">' . '<a href="'.tags_tep_href_link($tag['tags_id']).'">'.TAGS_TEXT_MORE.'</a></td>'."\n";
-    //echo '  </tr>' . "\n";
     echo '</table><br><div class="dot">&nbsp;</div>' . "\n";
   }
 

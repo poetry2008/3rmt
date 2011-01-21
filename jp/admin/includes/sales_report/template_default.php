@@ -188,7 +188,7 @@ date("Y") - $i; ?></option>
                 </tr>
               </table>
               </td>
-              <td align="left" class="menuBoxHeading">&nbsp;</td>
+              
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_MAX; ?><br>
               <select name="max" size="1">
                 <option value="0"><?php echo SR_REPORT_ALL; ?></option>
@@ -222,6 +222,7 @@ date("Y") - $i; ?></option>
               </select>
               <br>
               </td>
+              <td align="left" class="menuBoxHeading">&nbsp;</td>
             </tr>
             <tr>
               <td colspan="7" class="menuBoxHeading" align="right"><input type="submit" value="<?php echo SR_REPORT_SEND; ?>">
@@ -305,7 +306,7 @@ if (isset($srDetail)){
                 <?php
           }
 ?>
-                <td class="dataTableContent">&nbsp;</td>
+                
               </tr>
               <?php
       }
@@ -316,7 +317,7 @@ if (isset($srDetail)){
 if ($srCompare > SR_COMPARE_NO) {
 ?>
               <tr>
-                <td colspan="4" class="dataTableContent"><?php echo SR_TEXT_COMPARE; ?></td>
+                <td colspan="7" class="dataTableContent"><?php echo SR_TEXT_COMPARE; ?></td>
               </tr>
               <?php
   $sum = 0;
@@ -383,7 +384,7 @@ if ($srCompare > SR_COMPARE_NO) {
                 <?php
             }
   ?>
-                <td class="dataTableContent">&nbsp;</td>
+                
               </tr>
               <?php
         }

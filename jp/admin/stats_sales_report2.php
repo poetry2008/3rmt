@@ -57,6 +57,8 @@
   $srDefaultStatus = '2,5';
   // default compare
   $srDefaultCompare = 0;
+  // 0 => torihiki_date, 1 => date_purchased
+  $srDefaultMethod = 0;
 
   define('TEMPLATE_DEFAULT', 'includes/sales_report/template_default.php');
   define('TEMPLATE_CSV', 'includes/sales_report/template_csv.php');
@@ -157,6 +159,12 @@
   if ($srSort < SR_SORT_NO || $srSort > SR_SORT_REVENUE_DESC) {
     $srSort = $srDefaultSort;
   }
+  
+  if ( isset($_GET['method']) && $_GET['method'] ) {
+    $srMethod = $_GET['method'];
+  } else {
+    $srMethod = $srDefaultMethod;
+  }
     
   // compare
   if ( isset($_GET['compare']) && ($_GET['compare']) && (tep_not_null($_GET['compare'])) ) {
@@ -223,7 +231,7 @@
   
   require(DIR_WS_CLASSES . 'sales_report2.php');
   
-  $sr = new sales_report($srView, $startDate, $endDate, $srSort, $srStatus, isset($srFilter)?$srFilter:'');
+  $sr = new sales_report($srView, $startDate, $endDate, $srSort, $srStatus, isset($srFilter)?$srFilter:'', $srMethod);
   if ($srCompare > SR_COMPARE_NO) {
     if ($srCompare == SR_COMPARE_DAY) {
       $compStartDate = mktime(0, 0, 0, date("m", $startDate), date("d", $startDate) - 1, date("Y", $startDate));
@@ -236,7 +244,7 @@
       $compEndDate = mktime(0, 0, 0, date("m", $endDate), date("d", $endDate), date("Y", $endDate) - 1);
     }
     if ($compStartDate != $startDate) {
-      $sr2 = new sales_report($srView, $compStartDate, $compEndDate, $srSort, $srStatus, isset($srFilter) ? $srFilter : '');
+      $sr2 = new sales_report($srView, $compStartDate, $compEndDate, $srSort, $srStatus, isset($srFilter) ? $srFilter : '', $srMethod);
       $compStartDate = $sr2->startDate;
       $compEndDate = $sr2->endDate;
     }

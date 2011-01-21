@@ -224,7 +224,7 @@ case 'edit':
     $contents[] = array('text' => TEXT_INFO_EDIT_INTRO);
     $contents[] = array('text' => '<br><b>' . $cInfo->configuration_title . '</b><br>' . $cInfo->configuration_description . '<br>' . $value_field);
   
-    $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_update.gif', IMAGE_UPDATE) . '&nbsp;<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $cInfo->configuration_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+    $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_update.gif', IMAGE_UPDATE) . '&nbsp;<a class="new_product_reset" href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $cInfo->configuration_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
 
 //----------------------------------
 // for 3rmt {{{
@@ -291,10 +291,10 @@ case 'edit':
   $contents_site[] = array(
       'align' => 'center',
       'text' => '<br>' . 
-      tep_image_submit('button_update.gif', IMAGE_UPDATE) .'&nbsp;<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&action=tdel&cID=' . $fetch_result['configuration_id'].'_'.$cInfo->configuration_id) . '">'.tep_image_button('button_deffect.gif',IMAGE_DEFFECT).'</a>'. '&nbsp;<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $cInfo->configuration_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+      tep_image_submit('button_update.gif', IMAGE_UPDATE) .'&nbsp;<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&action=tdel&cID=' . $fetch_result['configuration_id'].'_'.$cInfo->configuration_id) . '">'.tep_image_button('button_deffect.gif',IMAGE_DEFFECT).'</a>'. '&nbsp;<a class="new_product_reset" href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $cInfo->configuration_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
 //      $contents_site[] = array('align' => 'center', 'text' => '<br>' . '<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&action=tdel&cID=' . $fetch_result['configuration_id'].'_'.$cInfo->configuration_id) . '">'.tep_image_button('button_delete.gif',IMAGE_DELETE).'</a>');
   }else {
-    $contents_site[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_effect.gif', IMAGE_EFFECT) . '&nbsp;<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $cInfo->configuration_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+    $contents_site[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_effect.gif', IMAGE_EFFECT) . '&nbsp;<a class="new_product_reset" href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $cInfo->configuration_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
   }
   $contents_sites_array[] = $contents_site;
   
