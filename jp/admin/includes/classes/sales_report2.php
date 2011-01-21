@@ -4,18 +4,20 @@
 */
 
   class sales_report {
-    var $mode, $globalStartDate, $startDate, $endDate, $actDate, $showDate, $showDateEnd, $sortString, $status, $outlet;
+    var $mode, $globalStartDate, $startDate, $endDate, $actDate, $showDate, $showDateEnd, $sortString, $status, $outlet, $method;
 
-    function sales_report($mode, $startDate = 0, $endDate = 0, $sort = 0, $statusFilter = 0, $filter = 0) {
+    function sales_report($mode, $startDate = 0, $endDate = 0, $sort = 0, $statusFilter = 0, $filter = 0, $srMethod = 0) {
       // startDate and endDate have to be a unix timestamp. Use mktime !
       // if set then both have to be valid startDate and endDate
+      $this->method = $srMethod == 1 ? 'date_purchased' : 'torihiki_date';
+      
       $this->mode = $mode;
       $this->tax_include = DISPLAY_PRICE_WITH_TAX;
 
       $this->statusFilter = $statusFilter;
             
       // get date of first sale
-      $firstQuery = tep_db_query("select UNIX_TIMESTAMP(min(date_purchased)) as first FROM " . TABLE_ORDERS);
+      $firstQuery = tep_db_query("select UNIX_TIMESTAMP(min(".$this->method.")) as first FROM " . TABLE_ORDERS);
       $first = tep_db_fetch_array($firstQuery);
       $this->globalStartDate = mktime(0, 0, 0, date("m", $first['first']), date("d", $first['first']), date("Y", $first['first']));
             
@@ -133,10 +135,10 @@
       } else if ($this->statusFilter > 0) {
         $filterString .= " AND o.orders_status = " . $this->statusFilter . " ";
       }
-      $rqOrders = tep_db_query($this->queryOrderCnt . " AND o.date_purchased >= '" . tep_db_input(date("Y-m-d\TH:i:s", $sd)) . "' AND o.date_purchased < '" . tep_db_input(date("Y-m-d\TH:i:s", $ed)) . "'" . $filterString);
+      $rqOrders = tep_db_query($this->queryOrderCnt . " AND o.".$this->method." >= '" . tep_db_input(date("Y-m-d\TH:i:s", $sd)) . "' AND o.".$this->method." < '" . tep_db_input(date("Y-m-d\TH:i:s", $ed)) . "'" . $filterString);
       $order = tep_db_fetch_array($rqOrders);
 
-      $rqItems = tep_db_query($this->queryItemCnt . " AND o.date_purchased >= '" . tep_db_input(date("Y-m-d\TH:i:s", $sd)) . "' AND o.date_purchased < '" . tep_db_input(date("Y-m-d\TH:i:s", $ed)) . "'" . $filterString . " group by pid " . $this->sortString);
+      $rqItems = tep_db_query($this->queryItemCnt . " AND o.".$this->method." >= '" . tep_db_input(date("Y-m-d\TH:i:s", $sd)) . "' AND o.".$this->method." < '" . tep_db_input(date("Y-m-d\TH:i:s", $ed)) . "'" . $filterString . " group by pid " . $this->sortString);
 
       // set the return values
       $this->actDate = $ed;
@@ -180,4 +182,3 @@
       
     }
 }
-?>

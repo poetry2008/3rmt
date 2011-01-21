@@ -96,6 +96,12 @@
                 </tr>
               </table>
               </td>
+              <td align="left" class="menuBoxHeading">集計方法<br>
+              <select name="method" size="1">
+                <option value="0"<?php if ($srDetail == 0) echo " selected"; ?>>取引日</option>
+                <option value="1"<?php if ($srDetail == 1) echo " selected"; ?>>注文日</option>
+              </select>
+              </td>
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_DETAIL; ?><br>
               <select name="detail" size="1">
                 <!--<option value="0"<?php if ($srDetail == 0) echo " selected"; ?>><?php echo  SR_DET_HEAD_ONLY; ?></option>-->
@@ -182,6 +188,7 @@ date("Y") - $i; ?></option>
                 </tr>
               </table>
               </td>
+              <td align="left" class="menuBoxHeading">&nbsp;</td>
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_MAX; ?><br>
               <select name="max" size="1">
                 <option value="0"><?php echo SR_REPORT_ALL; ?></option>
@@ -217,7 +224,7 @@ date("Y") - $i; ?></option>
               </td>
             </tr>
             <tr>
-              <td colspan="4" class="menuBoxHeading" align="right"><input type="submit" value="<?php echo SR_REPORT_SEND; ?>">
+              <td colspan="7" class="menuBoxHeading" align="right"><input type="submit" value="<?php echo SR_REPORT_SEND; ?>">
               </td>
             </tr>
           </table>
