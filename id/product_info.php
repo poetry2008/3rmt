@@ -128,9 +128,6 @@ function change_num(ob, targ, quan,a_quan)
       echo '<div class="waring_product">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
     } ?>
          <h1 class="pageHeading_long02">
-         <span class="game_im">
-           <img width="26" height="26" src="images/design/title_img08.gif" alt="">
-         </span>
          <span class="game_t">
          <?php
           echo ds_tep_get_categories((int)$_GET['products_id'],1).'&nbsp;&nbsp;';
@@ -486,9 +483,6 @@ while($tag = tep_db_fetch_array($tag_query)) {
  </div>
          <?php if($description){?>
             <h2 class="pageHeading_long02">
-            <span class="game_im">
-              <img width="26" height="26" src="images/design/title_img08.gif" alt="">
-            </span>
               <span class="game_t">
             </span>
             <?php echo $product_info['products_name']; ?>について

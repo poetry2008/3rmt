@@ -127,14 +127,15 @@
   }
   
   // item_level
-  if ( isset($_GET['max']) && ($_GET['max']) && (tep_not_null($_GET['max'])) ) {
+  if ( isset($_GET['max']) ) {
     $srMax = $_GET['max'];
   } else {
     $srMax = $srDefaultMax;
   }
+  /*
   if (!is_numeric($srMax)) {
     $srMax = $srDefaultMax;
-  }
+  }*/
       
   // order status
   if ( isset($_GET['status']) && ($_GET['status']) && (tep_not_null($_GET['status'])) ) {
@@ -142,9 +143,10 @@
   } else {
     $srStatus = $srDefaultStatus;
   }
+  /*
   if (!is_numeric($srStatus)) {
     $srStatus = $srDefaultStatus;
-  }
+  }*/
   
   // sort
   if ( isset($_GET['sort']) && ($_GET['sort']) && (tep_not_null($_GET['sort'])) ) {
@@ -241,7 +243,6 @@
   }
   $startDate = $sr->startDate;
   $endDate = $sr->endDate;  
-  
   if ($srExp == SR_EXPORT_CSV) {
     require(TEMPLATE_CSV);
   } else {

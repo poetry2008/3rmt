@@ -190,10 +190,10 @@
              c.site_id,
              c.customers_email_address,
              ci.customers_info_date_account_created as date_account_created
-      FROM orders o LEFT JOIN orders_status_history as osh ON osh.orders_id = o.orders_id AND osh.orders_status_id in (2,13), customers c, ".TABLE_CUSTOMERS_INFO." ci
+      FROM orders o LEFT JOIN orders_status_history as osh ON osh.orders_id = o.orders_id AND osh.orders_status_id in (2,5), customers c, ".TABLE_CUSTOMERS_INFO." ci
       WHERE c.customers_id = ci.customers_info_id
         AND o.customers_id = c.customers_id
-        AND o.orders_status in (2,13)
+        AND o.orders_status in (2,5)
       GROUP BY o.customers_id
       HAVING sum( osh.`date_added` < '" . $startTime . "' ) = 0
       AND sum( osh.`date_added` < '" . $endTime . "' AND osh.`date_added` > '" . $startTime . "' ) > 0
