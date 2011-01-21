@@ -217,7 +217,7 @@ date("Y") - $i; ?></option>
               </td>
             </tr>
             <tr>
-              <td colspan="5" class="menuBoxHeading" align="right"><input type="submit" value="<?php echo SR_REPORT_SEND; ?>">
+              <td colspan="4" class="menuBoxHeading" align="right"><input type="submit" value="<?php echo SR_REPORT_SEND; ?>">
               </td>
             </tr>
           </table>
@@ -236,7 +236,6 @@ date("Y") - $i; ?></option>
                 <td class="dataTableHeadingContent" align="right"><?php echo  SR_TABLE_HEADING_ORDERS;?></td>
                 <td class="dataTableHeadingContent" align="right"><?php echo  SR_TABLE_HEADING_ITEMS; ?></td>
                 <td class="dataTableHeadingContent" align="right"><?php echo  SR_TABLE_HEADING_REVENUE;?></td>
-                <td class="dataTableHeadingContent" align="right"><?php echo  SR_TABLE_HEADING_SHIPPING;?></td>
               </tr>
               <?php
 $sum = 0;
@@ -273,7 +272,6 @@ while ($sr->hasNext()) {
   }
   
   ?></td>
-                <td class="dataTableContent" align="right"><?php echo $currencies->format($info[0]['shipping']);?></td>
               </tr>
               <?php
 if (isset($srDetail)){
@@ -283,36 +281,6 @@ if (isset($srDetail)){
               <tr class="dataTableRow" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='dataTableRow'">
                 <td class="dataTableContent">&nbsp;</td>
                 <td class="dataTableContent" align="left"><a href="<?php echo tep_catalog_href_link("product_info.php?products_id=" . $info[$i]['pid']) ?>" target="_blank"><?php echo $info[$i]['pname']; ?></a>
-                <?php
-  if (is_array($info[$i]['attr'])) {
-    $attr_info = $info[$i]['attr'];
-    foreach ($attr_info as $attr) {
-      echo '<div style="font-style:italic;">&nbsp;' . $attr['quant'] . 'x ' ;
-      //  $attr['options'] . ': '
-      $flag = 0;
-      foreach ($attr['options_values'] as $value) {
-        if ($flag > 0) {
-          echo "," . $value;
-        } else {
-          echo $value;
-          $flag = 1;
-        }
-      }
-      $price = 0;
-      foreach ($attr['price'] as $value) {
-        $price += $value;
-      }
-      if ($price != 0) {
-        echo ' (';
-        if ($price > 0) {
-          echo "+";
-        }
-        echo $currencies->format($price). ')';
-      }
-      echo '</div>';
-    }
-  }
-?>
                 </td>
                 <td class="dataTableContent" align="right"><?php echo $info[$i]['pquant']; ?></td>
                 <?php
@@ -341,7 +309,7 @@ if (isset($srDetail)){
 if ($srCompare > SR_COMPARE_NO) {
 ?>
               <tr>
-                <td colspan="5" class="dataTableContent"><?php echo SR_TEXT_COMPARE; ?></td>
+                <td colspan="4" class="dataTableContent"><?php echo SR_TEXT_COMPARE; ?></td>
               </tr>
               <?php
   $sum = 0;
@@ -382,7 +350,6 @@ if ($srCompare > SR_COMPARE_NO) {
                   }
                 }
     ?></td>
-                <td class="dataTableContent" align="right"><?php echo $currencies->format($info[0]['shipping']);?></td>
               </tr>
               <?php
     if ($srDetail) {
@@ -392,36 +359,6 @@ if ($srCompare > SR_COMPARE_NO) {
               <tr class="dataTableRow" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='dataTableRow'">
                 <td class="dataTableContent">&nbsp;</td>
                 <td class="dataTableContent" align="left"><a href="<?php echo tep_catalog_href_link("product_info.php?products_id=" . $info[$i]['pid']) ?>" target="_blank"><?php echo $info[$i]['pname']; ?></a>
-                <?php
-    if (is_array($info[$i]['attr'])) {
-      $attr_info = $info[$i]['attr'];
-      foreach ($attr_info as $attr) {
-        echo '<div style="font-style:italic;">&nbsp;' . $attr['quant'] . 'x ' ;
-        //  $attr['options'] . ': '
-        $flag = 0;
-        foreach ($attr['options_values'] as $value) {
-          if ($flag > 0) {
-            echo "," . $value;
-          } else {
-            echo $value;
-            $flag = 1;
-          }
-        }
-        $price = 0;
-        foreach ($attr['price'] as $value) {
-          $price += $value;
-        }
-        if ($price != 0) {
-          echo ' (';
-          if ($price > 0) {
-            echo "+";
-          }
-          echo $currencies->format($price). ')';
-        }
-        echo '</div>';
-      }
-    }
-  ?>
                 </td>
                 <td class="dataTableContent" align="right"><?php echo $info[$i]['pquant']; ?></td>
                 <?php
