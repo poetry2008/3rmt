@@ -127,7 +127,7 @@ while ($tag = tep_db_fetch_array($tags_query))
       where site_id  = '0'
          or site_id = '".SITE_ID."' 
         group by products_id
-        order by products_date_added desc 
+        order by products_ordered desc 
         limit 5
     ");
     /*
@@ -189,7 +189,7 @@ while ($tag = tep_db_fetch_array($tags_query))
       where site_id = '0'
          or site_id = '".SITE_ID."' 
       group by products_id
-      order by products_date_added desc 
+      order by products_ordered desc 
       limit 5
     ");
     /*
