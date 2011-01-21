@@ -12,7 +12,7 @@ function tep_minitor_info(){
     $fiftheenbefore = date('Y-m-d H:i:s',time()-60*15);
     $logIn15 = tep_db_query("select * from monitor_log where ng = 1 and m_id =".$monitor['id'].' and created_at > "'.$fiftheenbefore.'"');
     $tmpRow = tep_db_fetch_array($logIn15);
-    if(mysql_num_rows($logIn15)>=2){ //十五分钟内多于两件
+    if(mysql_num_rows($logIn15)>=1){ //十五分钟内多于两件
 
       $tmpString  = '回線障害発生： '.$tmpRow['name'].' <font
         class="error_monitor">'.date('m月d日H時i分s秒',strtotime($tmpRow['created_at'])).'</font><br/><a ';
