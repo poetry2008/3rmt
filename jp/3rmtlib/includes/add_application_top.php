@@ -677,7 +677,8 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
     $tags_query = tep_db_query("select * from ".TABLE_TAGS." where tags_id = '".$_GET['tags_id']."'");
     $tags_res = tep_db_fetch_array($tags_query);
     if ($tags_res) {
-      $breadcrumb->add($tags_res['tags_name'], tep_href_link(FILENAME_DEFAULT, 'tags_id='.$_GET['tags_id']));
+      //$breadcrumb->add($tags_res['tags_name'], tep_href_link(FILENAME_DEFAULT, 'tags_id='.$_GET['tags_id']));
+      $breadcrumb->add(TEXT_TAGS, 'tags/');
     }
    }
 
