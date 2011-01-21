@@ -10,9 +10,11 @@ function tep_minitor_info(){
   $monitors  = tep_db_query("select id ,name,url from monitor m where m.enable='on'");
   while($monitor= tep_db_fetch_array($monitors)){
     $fiftheenbefore = date('Y-m-d H:i:s',time()-60*15);
-    $logIn15 = tep_db_query("select * from monitor_log where ng = 1 and m_id =".$monitor['id'].' and created_at > "'.$fiftheenbefore.'"');
+    //$logIn15 = tep_db_query("select * from monitor_log where ng = 1 and m_id =".$monitor['id'].' and created_at > "'.$fiftheenbefore.'"');
+    $logIn15 = tep_db_query("select * from monitor_log where ng = 1 and m_id
+        ='".$monitor['id']."'");
     $tmpRow = tep_db_fetch_array($logIn15);
-    if(mysql_num_rows($logIn15)>=1){ //十五分钟内多于两件
+    if(mysql_num_rows($logIn15)){ //十五分钟内多于两件
 
       $tmpString  = '回線障害発生： '.$tmpRow['name'].' <font
         class="error_monitor">'.date('m月d日H時i分s秒',strtotime($tmpRow['created_at'])).'</font><br/><a ';
@@ -33,7 +35,8 @@ function tep_minitor_info(){
     }
     $tmpString2.= "</table>";
     $errorString[] = $tmpString.$tmpString2;
-  }else {
+  }/* 
+    else {
     $log = "select name,obj, created_at from monitor_log where ng =1 and m_id = ".$monitor['id']. " order by id  desc limit 1";
     $logsResult = tep_db_fetch_array(tep_db_query($log));
     if ($logsResult){
@@ -51,6 +54,7 @@ function tep_minitor_info(){
         $errorString[] = $aString;
       }
     }
+    */
   }
   if(count($errorString)<1){
         $no_error_string = '<tr><td></td><td align="right"><font
