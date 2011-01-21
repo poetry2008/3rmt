@@ -54,7 +54,7 @@
   // default max
   $srDefaultMax = 0;
   // default status
-  $srDefaultStatus = 0;
+  $srDefaultStatus = '2,5';
   // default compare
   $srDefaultCompare = 0;
 
