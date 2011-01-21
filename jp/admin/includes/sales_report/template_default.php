@@ -98,8 +98,8 @@
               </td>
               <td align="left" class="menuBoxHeading">集計方法<br>
               <select name="method" size="1">
-                <option value="0"<?php if ($srDetail == 0) echo " selected"; ?>>取引日</option>
-                <option value="1"<?php if ($srDetail == 1) echo " selected"; ?>>注文日</option>
+                <option value="0"<?php if ($srMethod == 0) echo " selected"; ?>>取引日</option>
+                <option value="1"<?php if ($srMethod == 1) echo " selected"; ?>>注文日</option>
               </select>
               </td>
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_DETAIL; ?><br>
