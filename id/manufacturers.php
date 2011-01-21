@@ -66,7 +66,7 @@ while ($manufacturer = tep_db_fetch_array($manufacturer_query)){
 
     echo '<table width="100%" border="0" cellspacing="0" cellpadding="0">' . "\n";
     echo '  <tr>' . "\n";
-    echo '    <td width="120" class="smallText" valign="top">' . tep_image(DIR_WS_IMAGES.$manufacturer['manufacturers_image'],$manufacturer['manufacturers_name']) . '<h3><strong>'.$manufacturer['manufacturers_name'].'</strong></h3><!-- '.substr(strip_tags($manufacturer['manufacturers_url']),0,100) .'... --></td>' . "\n";
+    echo '    <td width="120" class="smallText" valign="top">' . tep_image(DIR_WS_IMAGES.$manufacturer['manufacturers_image'],$manufacturer['manufacturers_name']) . '<h3>'.$manufacturer['manufacturers_name'].'</h3><!-- '.substr(strip_tags($manufacturer['manufacturers_url']),0,100) .'... --></td>' . "\n";
     echo '    <td>' . "\n";
   
     echo '      <table width="100%" border="0" cellspacing="2" cellpadding="0">' . "\n";

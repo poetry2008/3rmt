@@ -79,9 +79,6 @@ function showimage($1) {
   $reviews_text = tep_break_string(tep_output_string_protected($reviews['reviews_text']), 60, '-<br>');
 ?> 
         <h1 class="pageHeading">
-        <span class="game_im">
-          <img width="26" height="26" src="images/design/title_img08.gif" alt="">
-        </span>
         <span class="game_t">
           <?php echo sprintf(HEADING_TITLE, $reviews['products_name']); ?>
         </span>

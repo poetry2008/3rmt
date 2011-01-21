@@ -26,9 +26,6 @@ function popupWindow(url) {
       <!-- body_text //-->
       <td valign="top" id="contents">
         <h1 class="pageHeading">
-        <span class="game_im">
-          <img width="26" height-"26" src="images/design/title_img20.gif" alt=""> 
-        </span>
         <span class="game_t">
         <?php if ($_GET['news_id']) { echo replace_store_name($latest_news['headline']); } else { echo HEADING_TITLE; } ?>
         </span>

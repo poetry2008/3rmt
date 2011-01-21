@@ -27,7 +27,7 @@
     <tr> 
       <!-- body_text //--> 
       <td valign="top" id="contents">
-      <h1 class="pageHeading"><span class="game_im"><img height="26" width="26" src="images/design/title_img08.gif" alt=""></span>
+      <h1 class="pageHeading">
 	  <span class="game_t"><?php echo HEADING_TITLE ; ?></span>
       </h1> 
         

@@ -150,9 +150,6 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
       <td valign="top" id="contents"> 
       <?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post');?>
       <h1 class="pageHeading">
-      <span class="game_im">
-        <img width="26" height="26" src="images/design/title_img08.gif" alt="">
-      </span>
       <span class="game_t">
         <?php echo HEADING_TITLE ; ?>
       </span>

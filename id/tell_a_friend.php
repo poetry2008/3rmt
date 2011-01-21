@@ -57,9 +57,6 @@
 ?> 
       
       <h1 class="pageHeading">
-        <span class="game_im">
-          <img width="26" height="26" src="images/design/title_img08.gif" alt=""> 
-        </span>
         <span class="game_t">
           <?php echo HEADING_TITLE_ERROR; ?>
         </span>
@@ -70,9 +67,6 @@
     $product_info = tep_db_fetch_array($product_info_query);
 ?> 
       <h1 class="pageHeading">
-        <span class="game_im">
-          <img width="26" height="26" src="images/design/title_img08.gif" alt=""> 
-        </span>
         <span class="game_t">
           <?php echo sprintf(HEADING_TITLE, $product_info['products_name']); ?>
         </span>

@@ -96,9 +96,6 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
       <!-- body_text //--> 
       <td valign="top" id="contents"><?php echo tep_draw_form('checkout_payment', tep_href_link(FILENAME_CHECKOUT_CONFIRMATION, '', 'SSL'), 'post', 'onsubmit="return check_form();"'); ?>
       <h1 class="pageHeading">
-      <span class="game_im">
-        <img width="26" height="26" src="images/design/title_img08.gif" alt="">
-      </span>
       <span class="game_t">
         <?php echo HEADING_TITLE ; ?>
       </span>

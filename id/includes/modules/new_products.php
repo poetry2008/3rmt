@@ -4,7 +4,7 @@
 */
 ?>
 <!-- new_products //-->
-        <h2> 
+        <div> 
           <table width="100%" border="0" align="center" cellpadding="0"
           cellspacing="0" summary="<?php echo sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B'));?>"> 
             <tr> 
@@ -17,7 +17,7 @@
               height="23" title="<?php echo sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B'));?>"></td> 
             </tr> 
           </table> 
-        </h2>
+        </div>
  
 <?php
   if ( (!isset($new_products_category_id)) || ($new_products_category_id == '0') ) {

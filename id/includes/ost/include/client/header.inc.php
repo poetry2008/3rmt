@@ -10,9 +10,6 @@
         <!-- body_text //--> 
         <td valign="top" id="contents" class="left_colum_border">
           <h1 class="pageHeading">
-          <span class="game_im">
-          <img width="26" alt="" src="images/design/title_img20.gif" 26="" height-=""> 
-        </span>
         <span class="game_t">お問い合わせ</span>
           </h1> 
           <div class="comment_inc">

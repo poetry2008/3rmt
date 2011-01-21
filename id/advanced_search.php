@@ -109,9 +109,6 @@ function popupWindow(url) {
       <!-- body_text //--> 
       <td valign="top" id="contents"><?php echo tep_draw_form('advanced_search', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, '', 'NONSSL', false), 'get', 'onSubmit="return check_form(this);"') . tep_hide_session_id(); ?> 
         <h1 class="pageHeading">
-          <span class="game_im">
-            <img width="26" height="26" src="images/design/title_img08.gif" alt=""> 
-          </span>
           <span class="game_t">
             <?php echo HEADING_TITLE ; ?>
           </span>

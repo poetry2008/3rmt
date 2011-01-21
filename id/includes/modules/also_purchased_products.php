@@ -25,9 +25,6 @@
 ?>
 <!-- also_purchased_products //-->
 <h2 class="pageHeading_long02">
-<span class="game_im">
-<img width="26" height="26" src="images/design/title_img08.gif" alt="">
-</span>
 <span class="game_t">
 </span>
 <?php echo $product_info['products_name'];?><?php  echo TEXT_ALSO_PURCHASED_PRODUCTS ; ?> 
