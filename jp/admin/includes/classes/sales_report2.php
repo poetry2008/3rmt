@@ -138,7 +138,9 @@
       }
 
       $filterString = "";
-      if ($this->statusFilter > 0) {
+      if (strpos($this->statusFilter, ',')) {
+        $filterString .= " AND o.orders_status in (" . $this->statusFilter . ") ";
+      } else if ($this->statusFilter > 0) {
         $filterString .= " AND o.orders_status = " . $this->statusFilter . " ";
       }
       $rqOrders = tep_db_query($this->queryOrderCnt . " AND o.date_purchased >= '" . tep_db_input(date("Y-m-d\TH:i:s", $sd)) . "' AND o.date_purchased < '" . tep_db_input(date("Y-m-d\TH:i:s", $ed)) . "'" . $filterString);
