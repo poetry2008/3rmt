@@ -1474,18 +1474,18 @@ class SEO_URL{
     $sql = "
       select *
       from (
-        SELECT p.products_id as id, pd.products_name as name , pd.site_id
+        SELECT pd.product_status, p.products_id as id, pd.products_name as name , pd.site_id
         FROM ".TABLE_PRODUCTS." p 
           LEFT JOIN ".TABLE_PRODUCTS_DESCRIPTION." pd 
           ON p.products_id=pd.products_id 
           AND pd.language_id='".(int)$this->languages_id."' 
-        WHERE p.products_status != '0'
         ORDER BY pd.site_id DESC
       ) p
       where site_id = '0'
          or site_id = '".SITE_ID."'
       group by id
-        ";
+      having p.products_status != '0'   
+      ";
     $product_query = $this->DB->Query( $sql );
     $prod_cache = '';
     while ($product = $this->DB->FetchArray($product_query)) {

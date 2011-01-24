@@ -8,11 +8,11 @@
     // ccdd
     $orders_query = tep_db_query("
         select distinct op.products_id 
-        from " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op, " . TABLE_PRODUCTS . " p 
-        where o.customers_id = '" . $customer_id . "' 
+        from " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op, " .  TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd where o.customers_id = '" . $customer_id . "' 
           and o.orders_id = op.orders_id 
           and op.products_id = p.products_id 
-          and p.products_status != '0' 
+          and pd.products_status != '0' 
+          and p.products_id = pd.products_id 
           and o.site_id = '".SITE_ID."'
         group by products_id 
         order by o.date_purchased desc 

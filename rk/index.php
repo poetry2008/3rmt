@@ -87,13 +87,13 @@ if ($category_depth == 'nested') {
           from (
             select c.categories_id, 
                    cd.categories_name, 
+                   cd.categories_status, 
                    c.categories_image, 
                    c.parent_id,
                    cd.site_id,
                    c.sort_order
             from " .  TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
-            where  c.categories_status != '1' 
-              and c.parent_id = '" . $current_category_id . "' 
+            where c.parent_id = '" . $current_category_id . "' 
               and c.categories_id = cd.categories_id 
               and cd.language_id = '" . $languages_id . "'  
             order by cd.site_id DESC
@@ -101,6 +101,7 @@ if ($category_depth == 'nested') {
           where site_id = 0 
              or site_id = ".SITE_ID."
           group by categories_id
+          having c.categories_status != '1' 
           order by sort_order, categories_name
         ");
     $rows = 0;

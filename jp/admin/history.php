@@ -429,7 +429,7 @@ case 'dougyousya_categories':
         where p.products_id=pd.products_id and
         p2c.products_id=pd.products_id and 
         p2c.categories_id='".$cID."' and pd.site_id='0' 
-        and p.products_status='1' 
+        and pd.products_status='1' 
         order by pdo.order_value asc");
   }
   $cnt2=0;
@@ -604,7 +604,7 @@ case 'dougyousya_categories':
       and pd.products_id=sdh.products_id 
       and sdh.dougyousya_id = sdn.dougyousya_id 
       and sdh.categories_id='".$cID."' 
-      and p.products_status = '1'
+      and pd.products_status = '1'
       and pd.site_id=0
     order by sdn.dougyousya_id,pd.products_name,last_date" );
   }

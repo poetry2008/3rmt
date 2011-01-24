@@ -78,19 +78,17 @@
                  p.products_small_sum,
                  p.products_tax_class_id, 
                  p.sort_order,
+                 pd.products_status, 
                  pd.site_id
           from " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . "
               pd, " . TABLE_MANUFACTURERS . " m, " .
               TABLE_PRODUCTS_TO_CATEGORIES . " p2c
-          where p.products_status != '0' 
-            and p.manufacturers_id = m.manufacturers_id 
+          where p.manufacturers_id = m.manufacturers_id 
             and m.manufacturers_id = '" .  $_GET['manufacturers_id'] . "' 
             and p.products_id = p2c.products_id 
             and pd.products_id = p2c.products_id 
             and pd.language_id = '" . $languages_id . "' 
-            and p2c.categories_id = '" . $_GET['filter_id'] . "' 
-          order by pd.site_id DESC"
-            ;
+            and p2c.categories_id = '" . $_GET['filter_id'] . "' order by pd.site_id DESC";
       } else {
 // We show them all
         $listing_sql.= "
@@ -102,15 +100,14 @@
               p.products_small_sum,
               p.products_tax_class_id, 
               p.sort_order,
+              pd.products_status, 
               pd.site_id
         from " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_MANUFACTURERS . " m 
-        where p.products_status != '0' 
-          and pd.products_id = p.products_id 
+        where pd.products_id = p.products_id 
           and pd.language_id = '" . $languages_id . "' 
           and p.manufacturers_id = m.manufacturers_id 
-          and m.manufacturers_id = '" . $_GET['manufacturers_id'] . "' 
-        order by pd.site_id DESC
-          ";
+          and m.manufacturers_id = '" . $_GET['manufacturers_id'] . "' order by pd.site_id DESC 
+        ";
       }
 // We build the categories-dropdown
       $filterlist_sql = "
@@ -118,9 +115,10 @@
         from(
           select distinct c.categories_id as id, 
                           cd.categories_name as name,
+                          pd.products_status,
                           cd.site_id
-          from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
-          where p.products_status != '0' 
+          from " . TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
+          where p.products_id = pd.products_id 
             and p.products_id = p2c.products_id 
             and p2c.categories_id = c.categories_id 
             and p2c.categories_id = cd.categories_id 
@@ -131,6 +129,7 @@
         where site_id = 0
            or site_id = " . SITE_ID . "
         group by id
+        having c.products_status != '0' 
         order by name
         ";
     } else {
@@ -146,17 +145,16 @@
                  p.products_small_sum, 
                  p.sort_order,
                  p.products_tax_class_id, 
+                 pd.products_status,
                  pd.site_id
           from ( " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_MANUFACTURERS . " m, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c  )
-          where p.products_status != '0' 
-            and p.manufacturers_id = m.manufacturers_id 
+          where p.manufacturers_id = m.manufacturers_id 
             and m.manufacturers_id = '" .  $_GET['filter_id'] . "' 
             and p.products_id = p2c.products_id 
             and pd.products_id = p2c.products_id 
             and pd.language_id = '" . $languages_id . "' 
-            and p2c.categories_id = '" . $current_category_id . "' 
-          order by pd.site_id DESC
-            ";
+            and p2c.categories_id = '" . $current_category_id . "' order by pd.site_id DESC
+          ";
       } else {
 // We show them all
         $listing_sql .= "
@@ -170,30 +168,30 @@
                  p.products_bflag, 
                  p.products_cflag, 
                  p.products_tax_class_id, 
+                 pd.products_status, 
                  pd.site_id
           from ((" . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS . " p )left join " . TABLE_MANUFACTURERS . " m on p.manufacturers_id = m.manufacturers_id, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c )
-          where p.products_status != '0' 
-            and p.products_id = p2c.products_id 
+          where p.products_id = p2c.products_id 
             and pd.products_id = p2c.products_id 
             and pd.language_id = '" . $languages_id . "' 
-            and p2c.categories_id = '" . $current_category_id . "' 
-          order by pd.site_id DESC
-            ";
+            and p2c.categories_id = '" . $current_category_id . "' order by pd.site_id DESC
+          ";
       }
 // We build the manufacturers Dropdown
       $filterlist_sql= "
-        select distinct m.manufacturers_id as id, 
-                        m.manufacturers_name as name
-        from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " . TABLE_MANUFACTURERS . " m 
-        where p.products_status != '0' 
+        select * from (select distinct p.products_id, pd.site_id, pd.products_status, m.manufacturers_id as id, m.manufacturers_name as name
+        from " . TABLE_PRODUCTS . " p, " .TABLE_PRODUCTS_DESCRIPTION . " pd, ". TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " . TABLE_MANUFACTURERS . " m 
+        where p.products_id = pd.products_id 
           and p.manufacturers_id = m.manufacturers_id 
           and p.products_id = p2c.products_id 
           and p2c.categories_id = '" . $current_category_id . "' 
-        order by m.manufacturers_name";
+        order by pd.site_id DESC) c where site_id = ".SITE_ID." or site_id = 0
+        group by products_id having c.products_status != '0' order by name";
     } 
     $listing_sql .= "
     ) p
     where site_id = '0'
        or site_id = '".SITE_ID."'
     group by products_id
+    having p.products_status != '0'  
     ";

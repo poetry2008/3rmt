@@ -848,7 +848,8 @@ function tep_minitor_info(){
     if ($include_deactivated) {
       $products_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c where p.products_id = p2c.products_id and p2c.categories_id = '" . $categories_id . "'");
     } else {
-      $products_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c where p.products_id = p2c.products_id and p.products_status != '0' and p2c.categories_id = '" . $categories_id . "'");
+      //$products_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c where p.products_id = p2c.products_id and p.products_status != '0' and p2c.categories_id = '" . $categories_id . "'");
+      $products_query = tep_db_query("select count(*) as total from " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c where p.products_id = p2c.products_id and p2c.categories_id = '" . $categories_id . "'");
     }
 
     $products = tep_db_fetch_array($products_query);
@@ -2540,8 +2541,9 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
       return $cid;
   }
   function tep_get_product_by_id($pid,$site_id, $lid, $default = true){
+    if ($default) {
     $sql = "
-        SELECT p.products_id, 
+        SELECT * FROM (SELECT p.products_id, 
                p.products_quantity, 
                p.products_model, 
                p.products_image, 
@@ -2552,7 +2554,7 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
                p.products_date_added, 
                p.products_date_available, 
                p.products_weight,
-               p.products_status,
+               pd.products_status,
                p.products_tax_class_id, 
                p.manufacturers_id,
                p.products_ordered,
@@ -2573,17 +2575,50 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
                pd.products_viewed
         FROM " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
         WHERE p.products_id = '" . $pid . "' 
-          AND p.products_status != '0' 
+          AND pd.products_id = '" .  $pid . "'" . " 
+          AND pd.language_id ='" . $lid . "' 
+        ORDER BY pd.site_id DESC) c
+        WHERE pd.site_id = '0' OR pd.site_id = '".$site_id."'
+        GROUP BY products_id HAVING c.products_status != '0' 
+        ";
+    } else {
+    $sql = "
+        SELECT p.products_id, 
+               p.products_quantity, 
+               p.products_model, 
+               p.products_image, 
+               p.products_image2, 
+               p.products_image3, 
+               p.products_price, 
+               p.products_price_offset, 
+               p.products_date_added, 
+               p.products_date_available, 
+               p.products_weight,
+               pd.products_status,
+               p.products_tax_class_id, 
+               p.manufacturers_id,
+               p.products_ordered,
+               p.products_bflag,
+               p.products_cflag,
+               p.products_small_sum,
+               p.option_type,
+               p.products_attention_1, 
+               p.products_attention_2, 
+               p.products_attention_3, 
+               p.products_attention_4, 
+               p.products_attention_5, 
+               pd.language_id,
+               pd.products_name, 
+               pd.products_description,
+               pd.site_id,
+               pd.products_url,
+               pd.products_viewed
+        FROM " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
+        WHERE p.products_id = '" . $pid . "' 
+          AND pd.products_status != '0' 
           AND pd.products_id = '" .  $pid . "'" . " 
           AND pd.language_id ='" . $lid . "' 
           "; 
-    if ($default) {
-      $sql .= "
-        AND (pd.site_id = '0'
-         OR pd.site_id = '".$site_id."')
-        ORDER BY pd.site_id DESC
-        ";
-    } else {
       $sql .= "
           AND pd.site_id='" . $site_id . "' 
       ";
@@ -3099,7 +3134,7 @@ if (!function_exists('json_encode'))
       
   function tep_get_products_by_categories_id($categories_id,$status=null) {
     $arr = array();
-    $query = tep_db_query("select distinct p.*,pd.* from products p, products_description pd, products_to_categories p2c where p.products_id=pd.products_id and p2c.products_id=p.products_id and categories_id='".$categories_id."' and pd.site_id='0' ".($status===null?'':" and p.products_status='1'")." order by pd.products_name");
+    $query = tep_db_query("select distinct p.*,pd.* from products p, products_description pd, products_to_categories p2c where p.products_id=pd.products_id and p2c.products_id=p.products_id and categories_id='".$categories_id."' and pd.site_id='0' ".($status===null?'':" and pd.products_status='1'")." order by pd.products_name");
     while ($product = tep_db_fetch_array($query)) {
       $arr[] = $product;
     }
@@ -3722,4 +3757,79 @@ function tep_get_inventory($pid){
     $inventory_arr = tep_get_product_inventory($pid);
     $inventory_arr['cpath'] = $cpath;
     return $inventory_arr;
+}
+
+function tep_check_categories_exists($cid, $site_id)
+{
+  $exists_ca_query = tep_db_query("select * from ".TABLE_CATEGORIES_DESCRIPTION." where site_id = '".(int)$site_id."' and categories_id = '".$cid."'");
+  
+  return tep_db_num_rows($exists_ca_query);
+}
+
+function tep_create_site_categories($cid, $site_id)
+{
+  $zero_ca_query = tep_db_query("select * from ".TABLE_CATEGORIES_DESCRIPTION." where site_id = 0 and categories_id = '".$cid."'");
+  $zero_ca_res = tep_db_fetch_array($zero_ca_query); 
+  if ($zero_ca_res) { 
+  $sql_data_array = array(
+      'categories_name' => tep_db_prepare_input($zero_ca_res['categories_name']), 
+      'romaji' => tep_db_prepare_input($zero_ca_res['romaji']), 
+      'categories_meta_text' => tep_db_prepare_input($zero_ca_res['categories_meta_text']), 
+      'seo_name' => tep_db_prepare_input($zero_ca_res['seo_name']), 
+      'seo_description' => tep_db_prepare_input($zero_ca_res['seo_description']), 
+      'categories_header_text' => tep_db_prepare_input($zero_ca_res['categories_header_text']), 
+      'categories_footer_text' => tep_db_prepare_input($zero_ca_res['categories_footer_text']), 
+      'text_information' => tep_db_prepare_input($zero_ca_res['text_information']), 
+      'meta_keywords' => tep_db_prepare_input($zero_ca_res['meta_keywords']), 
+      'meta_description' => tep_db_prepare_input($zero_ca_res['meta_description']), 
+      'categories_id' => tep_db_prepare_input($zero_ca_res['categories_id']), 
+      'language_id' => tep_db_prepare_input($zero_ca_res['language_id']), 
+      'site_id' => $site_id, 
+      );
+  tep_db_perform(TABLE_CATEGORIES_DESCRIPTION, $sql_data_array);
+  }
+}
+
+function tep_set_categories_status_by_site_id($categories_id, $status, $site_id)
+{
+  tep_db_query("UPDATE `".TABLE_CATEGORIES_DESCRIPTION."` SET `categories_status` = '".intval($status)."' WHERE `categories_id` =".$categories_id." and `site_id` = '".$site_id."' LIMIT 1 ;");
+  return true;
+}
+
+function tep_check_products_exists($pid, $site_id)
+{
+  $exist_pro_query = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$pid."' and site_id = '".(int)$site_id."'");
+  return tep_db_num_rows($exist_pro_query);
+}
+
+function tep_create_products_by_site_id($pid, $site_id)
+{
+  $zero_pro_query = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$pid."' and site_id = '0'");
+  $zero_pro_res = tep_db_fetch_array($zero_pro_query);
+  if ($zero_pro_res) {
+    $sql_data_array = array(
+        'products_id' => tep_db_prepare_input($zero_pro_res['products_id']), 
+        'language_id' => tep_db_prepare_input($zero_pro_res['language_id']), 
+        'products_name' => tep_db_prepare_input($zero_pro_res['products_name']), 
+        'products_description' => tep_db_prepare_input($zero_pro_res['products_description']), 
+        'site_id' => $site_id, 
+        'products_url' => tep_db_prepare_input($zero_pro_res['products_url']), 
+        'products_viewed' => tep_db_prepare_input($zero_pro_res['products_viewed']), 
+        'romaji' => tep_db_prepare_input($zero_pro_res['romaji']), 
+        'products_status' => tep_db_prepare_input($zero_pro_res['products_status']), 
+        ); 
+    tep_db_perform(TABLE_PRODUCTS_DESCRIPTION, $sql_data_array);
+  }
+}
+
+function tep_set_product_status_by_site_id($products_id, $status, $site_id) {
+    if ($status == '1') {
+      return tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_status = '1' where products_id = '" . $products_id . "' and site_id = '".$site_id."'");
+    } elseif ($status == '2') {
+      return tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_status = '2' where products_id = '" . $products_id . "' and site_id = '".$site_id."'");
+    } elseif ($status == '0') {
+      return tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_status = '0' where products_id = '" . $products_id . "' and site_id = '".$site_id."'");
+    } else {
+      return -1;
+    }
 }

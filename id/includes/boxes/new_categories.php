@@ -8,17 +8,18 @@ select c.categories_id,
   c.parent_id, 
   c.sort_order,
   c.categories_image, 
+  cd.categories_status, 
   cd.categories_image2,
   cd.site_id
 from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
   where c.parent_id = '0' 
-  and c.categories_status != '1' 
   and c.categories_id = cd.categories_id 
   and cd.language_id='" . $languages_id ."' 
   order by cd.site_id desc
 ) c
 where site_id='".SITE_ID."' or site_id='0'
 group by categories_id
+having c.categories_status != '1'
 order by sort_order, categories_name
 ");
 while ($category = tep_db_fetch_array($categories_query))  {

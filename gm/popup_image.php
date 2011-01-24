@@ -9,18 +9,18 @@
 
 //ccdd
   $products_query = tep_db_query("
-      select pd.products_name, 
+      select * from (select pd.products_name, 
              p.products_image,
              p.products_image2,
+             pd.site_id,
+             pd.products_status,
+             pd.products_id, 
              p.products_image3 
       from " . TABLE_PRODUCTS .  " p 
         left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id 
-      where p.products_status != '0' 
+      where pd.products_status != '0' 
         and p.products_id = '" .  (int)$_GET['pIID'] . "' 
-        and pd.language_id = '" . $languages_id . "' 
-        and (pd.site_id = '".SITE_ID."' or pd.site = '0')
-      order by site_id DESC
-  ");
+        and pd.language_id = '" . $languages_id . "' order by site_id DESC) c where site_id = '".SITE_ID."' or site_id = '0' group by products_id having c.products_status != '0'");
   $products_values = tep_db_fetch_array($products_query);
 ?>
 <!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">

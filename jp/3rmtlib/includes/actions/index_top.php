@@ -65,7 +65,7 @@
     $seo_category = tep_get_category_by_id($current_category_id, SITE_ID, $languages_id);
   }
   if (isset($_GET['manufacturers_id'])) {
-    $m_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS . " where manufacturers_id = '" . $_GET['manufacturers_id'] . "' and products_status != 0");
+    $m_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd where p.products_id = pd.products_id and p.manufacturers_id = '" . $_GET['manufacturers_id'] . "' and pd.products_status != 0 and site_id = ".SITE_ID);
     // ccdd
     $m = tep_db_fetch_array($m_query);
     check_uri('/sort=(\d+)/');

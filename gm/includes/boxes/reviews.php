@@ -58,6 +58,7 @@ if (
            p.products_image, 
            pd.products_name,
            r.site_id as rsid,
+           pd.products_status, 
            pd.site_id as psid
     from " . TABLE_REVIEWS . " r, " .  TABLE_REVIEWS_DESCRIPTION . " rd, " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd
     ";
@@ -65,8 +66,7 @@ if (
         $random_select .= (", " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c");
     }
     $random_select .= "
-    where p.products_status != '0' 
-      and p.products_id = r.products_id 
+    where p.products_id = r.products_id 
       and r.reviews_id = rd.reviews_id 
       and rd.languages_id = '" . $languages_id . "' 
       and p.products_id = pd.products_id 
@@ -84,6 +84,7 @@ if (
   ) p
   where psid = '0'
      or psid = '".SITE_ID."'
+  having p.products_status != '0' 
   group by reviews_id
   ";
   $random_select .= " order by reviews_id desc";
