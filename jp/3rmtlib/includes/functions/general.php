@@ -1947,9 +1947,12 @@ function forward404Unless($condition)
             $copyright   = tep_get_value_by_const_name('MODULE_METASEO_MANUFACTURER_COPYRIGHT');
           }
           $page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
-          
           $search  = array_merge($search, array('#SEO_PAGE#', '#KEYWORDS#', '#DESCRIPTION#',));
-          $replace = array_merge($replace, array($page . 'ページ目', $metas['keywords'], $metas['description'],));
+          if ($page == 1) { 
+            $replace = array_merge($replace, array('', $metas['keywords'], $metas['description'],));
+          } else {
+            $replace = array_merge($replace, array($page . 'ページ目', $metas['keywords'], $metas['description'],));
+          }
         } else if ((int)$_GET['tags_id']) {
           if (defined('MODULE_METASEO_A_TAG_TITLE') && strlen(tep_get_value_by_const_name('MODULE_METASEO_A_TAG_TITLE'))) {
             $title       = tep_get_value_by_const_name('MODULE_METASEO_A_TAG_TITLE');
@@ -2031,8 +2034,10 @@ function forward404Unless($condition)
             $copyright   = tep_get_value_by_const_name('MODULE_METASEO_LATEST_NEWS_COPYRIGHT');
           }
           $page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
-          $search  = array_merge($search,  array('#SEO_PAGE#'));
-          $replace = array_merge($replace, array($page . 'ページ目'));
+          if ($page != 1) {
+            $search  = array_merge($search,  array('#SEO_PAGE#'));
+            $replace = array_merge($replace, array($page . 'ページ目'));
+          }
         }
         break;
       case FILENAME_TAGS:
@@ -2053,45 +2058,59 @@ function forward404Unless($condition)
             $copyright   = tep_get_value_by_const_name('MODULE_METASEO_TAGS_COPYRIGHT');
           }*/
           $page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
-          $search  = array_merge($search,  array('#SEO_PAGE#'));
-          $replace = array_merge($replace, array($page . 'ページ目'));
+          if ($page != 1) {
+            $search  = array_merge($search,  array('#SEO_PAGE#'));
+            $replace = array_merge($replace, array($page . 'ページ目'));
+          }
         
         break;
       case FILENAME_MANUFACTURERS:
         // MAX_DISPLAY_SEARCH_RESULTS
         $page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
-        $search  = array_merge($search,  array('#SEO_PAGE#'));
-        $replace = array_merge($replace, array($page . 'ページ目'));
+        if ($page != 1) {
+          $search  = array_merge($search,  array('#SEO_PAGE#'));
+          $replace = array_merge($replace, array($page . 'ページ目'));
+        }
         break;
       case FILENAME_PRESENT:
         // MAX_DISPLAY_SEARCH_RESULTS
         $page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
-        $search  = array_merge($search,  array('#SEO_PAGE#'));
-        $replace = array_merge($replace, array($page . 'ページ目'));
+        if ($page != 1) {
+          $search  = array_merge($search,  array('#SEO_PAGE#'));
+          $replace = array_merge($replace, array($page . 'ページ目'));
+        } 
         break;
       case FILENAME_PRODUCT_NEW:
         // MAX_DISPLAY_PRODUCTS_NEW
         $page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
-        $search  = array_merge($search,  array('#SEO_PAGE#'));
-        $replace = array_merge($replace, array($page . 'ページ目'));
+        if ($page != 1) {
+          $search  = array_merge($search,  array('#SEO_PAGE#'));
+          $replace = array_merge($replace, array($page . 'ページ目'));
+        } 
         break;
       case FILENAME_SPECIALS:
         // MAX_DISPLAY_SPECIAL_PRODUCTS
         $page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
-        $search  = array_merge($search,  array('#SEO_PAGE#'));
-        $replace = array_merge($replace, array($page . 'ページ目'));
+        if ($page != 1) {
+          $search  = array_merge($search,  array('#SEO_PAGE#'));
+          $replace = array_merge($replace, array($page . 'ページ目'));
+        } 
         break;
       case FILENAME_ADVANCED_SEARCH_RESULT:
         // MAX_DISPLAY_SEARCH_RESULTS
         $page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
-        $search  = array_merge($search,  array('#SEO_PAGE#'));
-        $replace = array_merge($replace, array($page . 'ページ目'));
+        if ($page != 1) {
+          $search  = array_merge($search,  array('#SEO_PAGE#'));
+          $replace = array_merge($replace, array($page . 'ページ目'));
+        } 
         break;
       case FILENAME_REVIEWS:
         // MAX_DISPLAY_NEW_REVIEWS
         $page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
-        $search  = array_merge($search,  array('#SEO_PAGE#'));
-        $replace = array_merge($replace, array($page . 'ページ目'));
+        if ($page != 1) {
+          $search  = array_merge($search,  array('#SEO_PAGE#'));
+          $replace = array_merge($replace, array($page . 'ページ目'));
+        } 
         break;
       case FILENAME_PRODUCT_REVIEWS_INFO:
         global $reviews;
@@ -2126,8 +2145,10 @@ function forward404Unless($condition)
     $replace = array_merge(array(STORE_NAME, $breadcrumb_str, $breadcrumb_lat, str_replace(' &raquo; ', ',', $breadcrumb_str), trim($breadcrumb_arr[1])), $replace);
     if (!in_array('#SEO_PAGE#', $search)) {
       $c_page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
-      $search = array_merge(array('#SEO_PAGE#'), $search); 
-      $replace = array_merge(array($c_page.'ページ目'), $replace); 
+      if ($c_page != 1) {
+        $search = array_merge(array('#SEO_PAGE#'), $search); 
+        $replace = array_merge(array($c_page.'ページ目'), $replace); 
+      }
     }
     $title       = str_replace($search, $replace, $title);
     $keywords    = str_replace($search, $replace, $keywords);
