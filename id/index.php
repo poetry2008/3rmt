@@ -76,7 +76,7 @@ if ($category_depth == 'nested') {
   }
 ?>
     <h1 class="pageHeading_long">
-    <span class="game_im"><img width="26" height="26" alt="" src="images/design/title_img08.gif"></span><span class="game_t"> 
+    <span class="game_t"> 
     <?php
   if (isset($cPath_array)) {
     if (count($cPath_array) > 1) {
@@ -185,7 +185,6 @@ if ($category_depth == 'nested') {
    if (isset($_GET['cPath'])) {
       if ($seo_category['seo_description']) {
 	    echo '<h2 class="pageHeading_long">';
-		echo '<span class="game_im"><img height="26" width="26" src="images/design/title_img08.gif" alt=""></span>';
 		echo '<span class="game_t">'.$seo_category['seo_name'].'について'.'</span>';
 		echo '</h2>';
         echo '<div class="comment">'.$seo_category['seo_description'].'</div>'; 
@@ -204,9 +203,7 @@ if ($category_depth == 'nested') {
         
             ?>
           <h2 class="pageHeading">
-          <span class="game_im"><img width="26" height="26" src="images/design/title_img08.gif"></span> 
           <span class="game_t"><?php echo $_categories['categories_name'];?> NEWS for</span> 
-          <span class="game_im02"><img width="113" height="21" alt="" src="images/design/box_middle_listimg.gif"></span>
           </h2>
           <div class="comment"> 
             <div id="game_news">

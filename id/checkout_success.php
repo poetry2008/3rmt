@@ -75,9 +75,6 @@
       <!-- body_text //--> 
       <td valign="top" id="contents"><?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_SUCCESS, 'action=update', 'SSL')); ?> 
         <h1 class="pageHeading">
-        <span class="game_im">
-          <img width="26" height="26" src="images/design/title_img08.gif" alt="">
-        </span>
         <span class="game_t">
           <?php echo HEADING_TITLE ; ?>
         </span>
@@ -172,7 +169,7 @@
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
             <tr> 
-              <td align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
+              <td align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td>
             </tr> 
             <tr> 
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 

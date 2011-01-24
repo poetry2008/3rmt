@@ -26,8 +26,11 @@
                if($inventory_arr['max']){
                $status = "up";
                }else{
-               $statue = "ok";
+               $status = "ok";
                }
+             }else if($products_quantity > $inventory_arr['min']&&
+                 $products_quantity < $inventory_arr['max']){
+               $status = "ok";
              }else{
                $status = "error";
              }
@@ -42,7 +45,7 @@
   }
   //查找 最后修改时间
   $inventory_sql = 'select max(last_date) as `update` from '.
-  TABLE_PRODUCTS_TO_INVENTORY;
+  TABLE_PRODUCTS_TO_INVENTORY ;
   $inventory_res = tep_db_query($inventory_sql);
   if($inventory_date = tep_db_fetch_array($inventory_res)){
      $show_date = $inventory_date['update'];
@@ -94,18 +97,18 @@
           echo NO_REFRESH;
         }
         echo "&nbsp;&nbsp;&nbsp;";
-        echo "<a href='". tep_href_link(FILENAME_INVENTORY,"action=refresh")
+        echo "<a class='inv_refresh' href='". tep_href_link(FILENAME_INVENTORY,"action=refresh")
         ."'>".REFRESH."</a>";
         ?>
         </div>
-        <table border="0" width="100%" cellspacing="0" cellpadding="0">
-        <tr class="dataTableHeadingRow" valign="top">
-        <td class="dataTableHeadingContent" colspan='2'><?php echo TEXT_PRODUCT_NAME;?></td>
-        <td class="dataTableHeadingContent"><?php echo TEXT_PRODUCT_PRICE;?></td>
-        <td class="dataTableHeadingContent"><?php echo TEXT_IMAGINARY;?></td>
-        <td class="dataTableHeadingContent"><?php echo TEXT_PRODUCT_QUANTITY;?></td>
-        <td class="dataTableHeadingContent"><?php echo TEXT_MAX_INVENTORY;?></td>
-        <td class="dataTableHeadingContent"><?php echo TEXT_MIN_INVENTORY;?></td>
+        <table class="inventory_table" border="0" width="100%" cellspacing="0" cellpadding="0">
+        <tr class="dataTableHeadingRow">
+        <td class="dataTableHeadingContent" height="24"><?php echo TEXT_PRODUCT_NAME;?></td>
+        <td class="dataTableHeadingContent" align="right"><?php echo TEXT_PRODUCT_PRICE;?></td>
+        <td class="dataTableHeadingContent" align="right"><?php echo TEXT_IMAGINARY;?></td>
+        <td class="dataTableHeadingContent" align="right"><?php echo TEXT_PRODUCT_QUANTITY;?></td>
+        <td class="dataTableHeadingContent" align="right"><?php echo TEXT_MAX_INVENTORY;?></td>
+        <td class="dataTableHeadingContent" align="right"><?php echo TEXT_MIN_INVENTORY;?></td>
         </tr>
         <?php
          $products_query_rows = "select
@@ -123,7 +126,7 @@
            pd.products_id = p.products_id 
            where p2i.inventory_status not in ('ok','error') 
            and pd.site_id = '0' 
-           order by pd.products_name ASC";
+           order by p2i.cpath ASC";
          $products_split = new splitPageResults($_GET['page'],
              MAX_DISPLAY_PRODUCTS,$products_query_rows,$products_query_numrows);
          $products_query = tep_db_query($products_query_rows);
@@ -134,22 +137,13 @@
                onmouseout='this.className=\"dataTableSecondRow inv_second\"'>";
            }else{
              //买取
-             echo "<tr class='dataTableRow inv' 
+             echo "<tr class='dataTableRow' 
                onmouseover='this.className=\"dataTableRowOver\";this.style.cursor=\"hand\"'
-               onmouseout='this.className=\"dataTableRow inv\"'>";
+               onmouseout='this.className=\"dataTableRow\"'>";
            }
          ?>
-          <td style="border-bottom:1px solid #000000">
-          <?php
-          if($products['inventory_status']=='up'){
-            echo "<img src='images/icons/up.gif'>";
-          }else if($products['inventory_status']=='down'){
-            echo "<img src='images/icons/down.gif'>";
-          }
-          ?>
+          <td style="border-bottom:1px solid #000000" height="24">
           <?php $inv = tep_get_inventory($products['products_id']); ?>
-          </td>
-          <td style="border-bottom:1px solid #000000">
           <?php
           krsort($inv['cpath']);
           $link_cpath = implode('_',$inv['cpath']);
@@ -200,17 +194,25 @@
     }
   }
           ?>
-          <td style="border-bottom:1px solid #000000"><?php 
+          <td style="border-bottom:1px solid #000000" align="right"><?php 
           $price = explode('.', $products['products_price']);
           echo $price[0];
-          ;?>&nbsp;</td>
-          <td style="border-bottom:1px solid #000000"><?php echo $imaginary;?>&nbsp;</td>
-          <td style="border-bottom:1px solid #000000"><?php echo
-          $products['products_quantity'];?>&nbsp;</td>
-          <td style="border-bottom:1px solid #000000"><?php echo
-          $inv['max']?$inv['max']:0;?>&nbsp;</td>
-          <td style="border-bottom:1px solid #000000"><?php echo
-          $inv['min']?$inv['min']:0;?>&nbsp;</td>
+          ;?>&nbsp;円</td>
+          <td style="border-bottom:1px solid #000000" align="right"><?php echo $imaginary;?>&nbsp;個</td>
+          <td style="border-bottom:1px solid #000000" align="right"><?php echo
+          $products['products_quantity'];?>&nbsp;個
+          <?php
+          if($products['inventory_status']=='up'){
+            echo "<img src='images/icons/up.gif'>";
+          }else if($products['inventory_status']=='down'){
+            echo "<img src='images/icons/down01.gif'>";
+          }
+          ?>
+          </td>
+          <td style="border-bottom:1px solid #000000" align="right"><?php echo
+          $inv['max']?$inv['max']:0;?>&nbsp;個</td>
+          <td style="border-bottom:1px solid #000000" align="right"><?php echo
+          $inv['min']?$inv['min']:0;?>&nbsp;個</td>
         </tr>
         <?php
          }

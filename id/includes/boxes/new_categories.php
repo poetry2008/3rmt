@@ -58,8 +58,6 @@ while ($category = tep_db_fetch_array($categories_query))  {
     } else {
       echo '<img src="./images/design/tt2.ico" alt="'.$category['categories_name'].'">';
     }
-  } else {
-    echo '<img src="./images/design/tt2.ico" alt="'.$category['categories_name'].'">';
   }
   echo '</span>'; 
   echo '<div class="text_warp"><div class="text_info_warp" ><span class="text">'.str_replace('RMT', '', $category['categories_name']).'</span></div></div>'; 

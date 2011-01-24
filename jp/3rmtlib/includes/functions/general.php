@@ -1465,12 +1465,12 @@ function forward404Unless($condition)
       return '(ネットカフェ1DAYチケット'.number_format(strval(5*$cnt)).'枚セット)';
     }
     $rate = str_replace(array(','), array(''), $rate);
-    /*
+
     if (preg_match('/^(.*)億(.*)万(.*)$/', $rate, $out)) {
       $rate = (($out[1] * 100000000) + ($out[2] * 10000)) . $out[3];
+    } else {
+      $rate = str_replace(array('万','億'), array('0000','00000000'), $rate);
     }
-    */
-    $rate = str_replace(array('万','億'), array('0000','00000000'), $rate);
     if (preg_match('/^(\d+)(.*)（\d+.*）$/', $rate, $out)) {
       return '(' . number_format($out[1] * $cnt) . $out[2] . ')';
     }
@@ -1495,15 +1495,15 @@ function forward404Unless($condition)
     }
     if (trim($rate) == 'ネットカフェ1DAYチケット5枚セット'){
       return 'ネットカフェ1DAYチケット'.number_format(strval(5*$cnt)).'枚セット';
-    }
+    } 
     
     $rate = str_replace(array(','), array(''), $rate);
-    /*
+
     if (preg_match('/^(.*)億(.*)万(.*)$/', $rate, $out)) {
       $rate = (($out[1] * 100000000) + ($out[2] * 10000)) . $out[3];
+    } else {
+      $rate = str_replace(array('万','億'), array('0000','00000000'), $rate);
     }
-    */
-    $rate = str_replace(array('万','億'), array('0000','00000000'), $rate);
     if (preg_match('/^(\d+)(.*)（\d+.*）$/', $rate, $out)) {
       return number_format($out[1] * $cnt) . $out[2];
     }

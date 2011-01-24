@@ -100,9 +100,6 @@
 <!-- new_products //-->
 <?php if (0 < $num_products) { ?>
 <h1 class="pageHeading">
-<span class="game_im">
-<img width="26" height="26" alt="" src="images/design/title_img08.gif">
-</span>
 <span class="game_t">
 <?php echo $new_c_name; ?>の新着商品
 </span>

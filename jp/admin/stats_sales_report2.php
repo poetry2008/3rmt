@@ -44,9 +44,9 @@
   // set the default values
 
   // default detail no detail
-  $srDefaultDetail = 0;
+  $srDefaultDetail = 2;
   // default view (daily)
-  $srDefaultView = 2;
+  $srDefaultView = 4;
   // default export
   $srDefaultExp = 0;
   // default sort
@@ -54,9 +54,11 @@
   // default max
   $srDefaultMax = 0;
   // default status
-  $srDefaultStatus = 0;
+  $srDefaultStatus = '2,5';
   // default compare
   $srDefaultCompare = 0;
+  // 0 => torihiki_date, 1 => date_purchased
+  $srDefaultMethod = 0;
 
   define('TEMPLATE_DEFAULT', 'includes/sales_report/template_default.php');
   define('TEMPLATE_CSV', 'includes/sales_report/template_csv.php');
@@ -95,6 +97,7 @@
   require(DIR_WS_CLASSES . 'currencies.php');
   $currencies = new currencies();
 
+
   // report views (1: yearly 2: monthly 3: weekly 4: daily)
   if ( isset($_GET['report']) && ($_GET['report']) && (tep_not_null($_GET['report'])) ) 
 {    $srView = $_GET['report'];
@@ -126,24 +129,26 @@
   }
   
   // item_level
-  if ( isset($_GET['max']) && ($_GET['max']) && (tep_not_null($_GET['max'])) ) {
+  if ( isset($_GET['max']) ) {
     $srMax = $_GET['max'];
   } else {
     $srMax = $srDefaultMax;
   }
+  /*
   if (!is_numeric($srMax)) {
     $srMax = $srDefaultMax;
-  }
+  }*/
       
   // order status
-  if ( isset($_GET['statux']) && ($_GET['status']) && (tep_not_null($_GET['status'])) ) 
-{    $srStatus = $_GET['status'];
+  if ( isset($_GET['status']) && ($_GET['status']) && (tep_not_null($_GET['status'])) ) {
+    $srStatus = $_GET['status'];
   } else {
     $srStatus = $srDefaultStatus;
   }
+  /*
   if (!is_numeric($srStatus)) {
     $srStatus = $srDefaultStatus;
-  }
+  }*/
   
   // sort
   if ( isset($_GET['sort']) && ($_GET['sort']) && (tep_not_null($_GET['sort'])) ) {
@@ -153,6 +158,12 @@
   }
   if ($srSort < SR_SORT_NO || $srSort > SR_SORT_REVENUE_DESC) {
     $srSort = $srDefaultSort;
+  }
+  
+  if ( isset($_GET['method']) && $_GET['method'] ) {
+    $srMethod = $_GET['method'];
+  } else {
+    $srMethod = $srDefaultMethod;
   }
     
   // compare
@@ -189,7 +200,7 @@
   if ($startDateG) {
     $startDate = mktime(0, 0, 0, $sMon, $sDay, $sYear);
   } else {
-    $startDate = mktime(0, 0, 0, date("m"), 1, date("Y"));
+    $startDate = mktime(0, 0, 0, date("m"), date("d"), date("Y"));
   }
     
   $endDate = "";
@@ -219,7 +230,8 @@
   }
   
   require(DIR_WS_CLASSES . 'sales_report2.php');
-  $sr = new sales_report($srView, $startDate, $endDate, $srSort, $srStatus, isset($srFilter)?$srFilter:'');
+  
+  $sr = new sales_report($srView, $startDate, $endDate, $srSort, $srStatus, isset($srFilter)?$srFilter:'', $srMethod);
   if ($srCompare > SR_COMPARE_NO) {
     if ($srCompare == SR_COMPARE_DAY) {
       $compStartDate = mktime(0, 0, 0, date("m", $startDate), date("d", $startDate) - 1, date("Y", $startDate));
@@ -232,17 +244,15 @@
       $compEndDate = mktime(0, 0, 0, date("m", $endDate), date("d", $endDate), date("Y", $endDate) - 1);
     }
     if ($compStartDate != $startDate) {
-      $sr2 = new sales_report($srView, $compStartDate, $compEndDate, $srSort, $srStatus, isset($srFilter) ? $srFilter : '');
+      $sr2 = new sales_report($srView, $compStartDate, $compEndDate, $srSort, $srStatus, isset($srFilter) ? $srFilter : '', $srMethod);
       $compStartDate = $sr2->startDate;
       $compEndDate = $sr2->endDate;
     }
   }
   $startDate = $sr->startDate;
   $endDate = $sr->endDate;  
-  
   if ($srExp == SR_EXPORT_CSV) {
     require(TEMPLATE_CSV);
   } else {
     require(TEMPLATE_DEFAULT);
   }
-?>

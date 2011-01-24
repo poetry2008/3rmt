@@ -100,9 +100,6 @@
 <?php if (0 < $num_products) { ?>
 <!-- new_products //-->
 <h2 class="pageHeading">
-<span class="game_im">
-<img width="26" height="26" alt="" src="images/design/title_img08.gif">
-</span>
 <span class="game_t">
 <?php echo $new_c_name; ?>の新着商品
 </span>
@@ -127,8 +124,7 @@
           </td>
           <td valign="top" style="padding-left:5px; ">
             <h3 class="main">
-              <img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" alt="">
-              <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">'.$new_products['products_name'].'</a>'; ?><br>
+              <?php echo '<a class="arrow_2" href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">'.$new_products['products_name'].'</a>'; ?><br>
             </h3>
           </td>
           <td align="right">

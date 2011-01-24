@@ -65,7 +65,7 @@
 <!-- best_sellers //-->
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background: url(images/design/box/ranking_content_bg.gif) repeat-y; margin-bottom: 5px;" summary="best sellers box">
   <tr>
-    <td height="27"><h3><img width="171" height="27" alt="RMTランキング" src="images/design/title_img11.gif"></h3></td>
+    <td height="27"><img width="171" height="27" alt="RMTランキング" src="images/design/title_img11.gif"></td>
   </tr>
 <?php
   $info_box_contents = array();

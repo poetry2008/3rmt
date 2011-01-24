@@ -398,6 +398,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
       && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS
       && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS_INFO
       && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PAGE
+      && (!isset($_GET['manufacturers_id']) && basename($_SERVER['SCRIPT_NAME']) == FILENAME_DEFAULT)
     ) {
       tep_parseURI();
     }
@@ -677,7 +678,8 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
     $tags_query = tep_db_query("select * from ".TABLE_TAGS." where tags_id = '".$_GET['tags_id']."'");
     $tags_res = tep_db_fetch_array($tags_query);
     if ($tags_res) {
-      $breadcrumb->add($tags_res['tags_name'], tep_href_link(FILENAME_DEFAULT, 'tags_id='.$_GET['tags_id']));
+      //$breadcrumb->add($tags_res['tags_name'], tep_href_link(FILENAME_DEFAULT, 'tags_id='.$_GET['tags_id']));
+      $breadcrumb->add(TEXT_TAGS, 'tags/');
     }
    }
 

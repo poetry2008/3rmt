@@ -210,7 +210,7 @@
           $language_id = $languages[$i]['id'];
           $sql_data_array = array(
                   'categories_name' => tep_db_prepare_input($categories_name_array[$language_id]),
-                  'romaji' => str_replace('_', '-', tep_db_prepare_input($romaji[$language_id])),
+                  'romaji' => str_replace(array('/','_'), '-', tep_db_prepare_input($romaji[$language_id])),
                   'categories_meta_text' => tep_db_prepare_input($categories_meta_text[$language_id]),
                   'seo_name' => tep_db_prepare_input($seo_name[$language_id]),
                   'seo_description' => tep_db_prepare_input($seo_description[$language_id]),
@@ -434,12 +434,16 @@
         
         $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
         
+        $_POST['romaji'] = str_replace(array('/','_'),'-',$_POST['romaji']);
+        
         if ($_GET['action'] == 'insert_product') {
 
           if (trim($_POST['romaji']) == '') {
             $messageStack->add_session(TEXT_ROMAJI_NOT_NULL, 'error');
             tep_redirect(tep_href_link(FILENAME_CATEGORIES));
           }
+          
+
           if(!tep_check_romaji($_POST['romaji'])){
             $messageStack->add_session(TEXT_ROMAJI_ERROR, 'error');
             tep_redirect(tep_href_link(FILENAME_CATEGORIES));
@@ -1811,7 +1815,6 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
       } else {
         echo tep_image_submit('button_insert.gif', IMAGE_INSERT);
       }
-      
       echo tep_draw_hidden_field('relate_products_id', $_POST['relate_products_id']); echo '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $cPath . '&pID=' . $_GET['pID'].'&site_id='.$_POST['site_id']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>';
 ?></td>
           </form>
@@ -2228,7 +2231,7 @@ tep_display_google_results()
       case 'delete_category_description':
         $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_CATEGORY . '</b>');
 
-        $contents = array('form' => tep_draw_form('categories', FILENAME_CATEGORIES, 'action=delete_category_description_confirm&cID=' . $_GET['cID'] . '&cPath=' . $cPath . '&site_id=' . $_GET['site_id'], 'get'));
+        $contents = array('form' => tep_draw_form('categories', FILENAME_CATEGORIES, 'action=delete_category_description_confirm&cID=' . $_GET['cID'] . '&cPath=' . $cPath . '&site_id=' . $_GET['site_id'], 'post'));
         $contents[] = array('text' => TEXT_DELETE_CATEGORY_INTRO);
         $contents[] = array('text' => '<br><b>' . $cInfo->categories_name . '</b>');
         //if ($cInfo->childs_count > 0) $contents[] = array('text' => '<br>' . sprintf(TEXT_DELETE_WARNING_CHILDS, $cInfo->childs_count));
@@ -2245,7 +2248,6 @@ tep_display_google_results()
         break;
       case 'delete_product_description':
         $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_PRODUCT . '</b>');
-
         $contents = array('form' => tep_draw_form('products', FILENAME_CATEGORIES, 'action=delete_product_description_confirm&site_id=' .  $_GET['site_id'] . '&pID=' . $_GET['pID'] . '&cPath=' . $cPath, 'post'));
         $contents[] = array('text' => TEXT_DELETE_PRODUCT_INTRO);
         $contents[] = array('text' => '<br><b>' . $pInfo->products_name . '</b>');
@@ -2416,7 +2418,7 @@ tep_display_google_results()
             //max min
             $inventory = tep_get_product_inventory($pInfo->products_id);
             $contents[] = array('text' =>
-                '<b>'.TEXT_MAX.'&nbsp;:&nbsp;&nbsp;'.$inventory['max'].'</b>');
+                '<br><br><b>'.TEXT_MAX.'&nbsp;:&nbsp;&nbsp;'.$inventory['max'].'</b>');
             $contents[] = array('text' =>
                 '<b>'.TEXT_MIN.'&nbsp;:&nbsp;&nbsp;'.$inventory['min'].'</b>');
             $contents[] = array(

@@ -26,7 +26,7 @@
 } else {
 ?>
 <div class="index_reviews05">
-  <h3 class="index_reviews_link"><a href="<?php echo tep_href_link(FILENAME_REVIEWS); ?>"><img width="171" alt="RMT 評判" src="images/design/title_img12.gif" ><?php //echo tep_image(DIR_WS_IMAGES.'design/box/reviews.gif',BOX_HEADING_REVIEWS,171,44); ?></a></h3>
+  <a href="<?php echo tep_href_link(FILENAME_REVIEWS); ?>"><img width="171" alt="RMT 評判" src="images/design/title_img12.gif" ><?php //echo tep_image(DIR_WS_IMAGES.'design/box/reviews.gif',BOX_HEADING_REVIEWS,171,44); ?></a>
   <div class="boxText_reviews_05">
     <?php
   $random_select = "select * from (select pd.products_status, pd.site_id as pid, r.reviews_id, r.reviews_rating, p.products_id, p.products_image, pd.products_name from " . TABLE_REVIEWS . " r, " .  TABLE_REVIEWS_DESCRIPTION . " rd, " .  TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_id = r.products_id and r.reviews_id = rd.reviews_id and rd.languages_id = '" .  $languages_id . "' and p.products_id = pd.products_id and pd.language_id = '" .  $languages_id . "' and r.reviews_status = '1' and r.site_id = '".SITE_ID."' order by pd.site_id DESC) c where pid = '".SITE_ID."' or pid = '0' group by reviews_id having c.products_status != '0'";

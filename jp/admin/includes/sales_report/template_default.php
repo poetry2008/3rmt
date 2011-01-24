@@ -44,6 +44,10 @@
               <input type="radio" name="report" value="4" <?php if ($srView == 4) echo "checked"; ?>>
               <?php echo SR_REPORT_TYPE_DAILY; ?><br>
               </td>
+              <td align="left" class="menuBoxHeading">
+  サイト<br>
+                <?php echo tep_site_pull_down_menu_with_all($_GET['site_id'], false, 'すべて');?><br>
+              </td>
               <td class="menuBoxHeading"><?php echo SR_REPORT_START_DATE; ?><br>
               <table>
                 <tr>
@@ -92,16 +96,23 @@
                 </tr>
               </table>
               </td>
+              <td align="left" class="menuBoxHeading">集計方法<br>
+              <select name="method" size="1">
+                <option value="0"<?php if ($srMethod == 0) echo " selected"; ?>>取引日</option>
+                <option value="1"<?php if ($srMethod == 1) echo " selected"; ?>>注文日</option>
+              </select>
+              </td>
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_DETAIL; ?><br>
               <select name="detail" size="1">
-                <option value="0"<?php if ($srDetail == 0) echo " selected"; ?>><?php echo  SR_DET_HEAD_ONLY; ?></option>
+                <!--<option value="0"<?php if ($srDetail == 0) echo " selected"; ?>><?php echo  SR_DET_HEAD_ONLY; ?></option>-->
                 <option value="1"<?php if ($srDetail == 1) echo " selected"; ?>><?php echo  SR_DET_DETAIL; ?></option>
                 <option value="2"<?php if ($srDetail == 2) echo " selected"; ?>><?php echo  SR_DET_DETAIL_ONLY; ?></option>
               </select>
               </td>
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_STATUS_FILTER; ?><br>
               <select name="status" size="1">
-                <option value="0"><?php echo SR_REPORT_ALL; ?></option>
+                <option value="2,5">成約済</option>
+                <option value="0"<?php if ($srStatus == 0) echo " selected";?>><?php echo SR_REPORT_ALL; ?></option>
                 <?php
                         foreach ($sr->status as $value) {
 ?>
@@ -120,6 +131,14 @@
               </td>
             </tr>
             <tr>
+              <td class="menuBoxHeading">
+  カテゴリー<br>
+  <select name="bflag">
+    <option value="0"<?php if(!$_GET['bflag']){?> selected<?php }?>>すべて</option>
+    <option value="1"<?php if($_GET['bflag'] == '1'){?> selected<?php }?>>販売</option>
+    <option value="2"<?php if($_GET['bflag'] == '2'){?> selected<?php }?>>買取</option>
+  </select>
+              </td>
               <td class="menuBoxHeading"><?php echo SR_REPORT_END_DATE; ?><br>
               <table>
                 <tr>
@@ -169,9 +188,11 @@ date("Y") - $i; ?></option>
                 </tr>
               </table>
               </td>
+              
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_MAX; ?><br>
               <select name="max" size="1">
                 <option value="0"><?php echo SR_REPORT_ALL; ?></option>
+                <option value="" <?php if ($srMax === '') echo " selected"; ?>>0</option>
                 <option<?php if ($srMax == 1) echo " selected"; ?>>1</option>
                 <option<?php if ($srMax == 3) echo " selected"; ?>>3</option>
                 <option<?php if ($srMax == 5) echo " selected"; ?>>5</option>
@@ -201,24 +222,28 @@ date("Y") - $i; ?></option>
               </select>
               <br>
               </td>
+              <td align="left" class="menuBoxHeading">&nbsp;</td>
             </tr>
             <tr>
-              <td colspan="5" class="menuBoxHeading" align="right"><input type="submit" value="<?php echo SR_REPORT_SEND; ?>">
+              <td colspan="7" class="menuBoxHeading" align="right"><input type="submit" value="<?php echo SR_REPORT_SEND; ?>">
               </td>
             </tr>
           </table>
         </form></td>
       </tr>
       <tr>
-        <td width=100% valign=top><table border="0" width="100%" cellspacing="0" cellpadding="2">
+        <td width=100% valign=top>
+
+  <?php if ($_GET or true){ ?>
+  
+  <table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
-            <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+            <td valign="top"><?php tep_site_filter(FILENAME_STATS_SALES_REPORT2);?><table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr class="dataTableHeadingRow">
                 <td class="dataTableHeadingContent" align="right"><?php echo  SR_TABLE_HEADING_DATE; ?></td>
                 <td class="dataTableHeadingContent" align="right"><?php echo  SR_TABLE_HEADING_ORDERS;?></td>
                 <td class="dataTableHeadingContent" align="right"><?php echo  SR_TABLE_HEADING_ITEMS; ?></td>
                 <td class="dataTableHeadingContent" align="right"><?php echo  SR_TABLE_HEADING_REVENUE;?></td>
-                <td class="dataTableHeadingContent" align="right"><?php echo  SR_TABLE_HEADING_SHIPPING;?></td>
               </tr>
               <?php
 $sum = 0;
@@ -247,59 +272,41 @@ while ($sr->hasNext()) {
 ?>
                 <td class="dataTableContent" align="right"><?php echo $info[0]['order']; ?></td>
                 <td class="dataTableContent" align="right"><?php echo isset($info[$last - 1]['totitem'])?$info[$last - 1]['totitem']:''; ?></td>
-                <td class="dataTableContent" align="right"><?php echo $currencies->format(isset($info[$last - 1]['totsum'])?$info[$last - 1]['totsum']:'');?></td>
-                <td class="dataTableContent" align="right"><?php echo $currencies->format($info[0]['shipping']);?></td>
+                <td class="dataTableContent" align="right"><?php 
+  if ($info[$last - 1]['totsum'] < 0) {
+    echo '<font color="red">'.$currencies->format(isset($info[$last - 1]['totsum'])?$info[$last - 1]['totsum']:'').'</font>';
+  } else {
+    echo $currencies->format(isset($info[$last - 1]['totsum'])?$info[$last - 1]['totsum']:'');
+  }
+  
+  ?></td>
               </tr>
               <?php
 if (isset($srDetail)){
     for ($i = 0; $i < $last; $i++) {
-      if ($srMax == 0 or $i < $srMax) {
+      if ($srMax === '0' or $i < $srMax) {
 ?>
               <tr class="dataTableRow" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='dataTableRow'">
                 <td class="dataTableContent">&nbsp;</td>
                 <td class="dataTableContent" align="left"><a href="<?php echo tep_catalog_href_link("product_info.php?products_id=" . $info[$i]['pid']) ?>" target="_blank"><?php echo $info[$i]['pname']; ?></a>
-                <?php
-  if (is_array($info[$i]['attr'])) {
-    $attr_info = $info[$i]['attr'];
-    foreach ($attr_info as $attr) {
-      echo '<div style="font-style:italic;">&nbsp;' . $attr['quant'] . 'x ' ;
-      //  $attr['options'] . ': '
-      $flag = 0;
-      foreach ($attr['options_values'] as $value) {
-        if ($flag > 0) {
-          echo "," . $value;
-        } else {
-          echo $value;
-          $flag = 1;
-        }
-      }
-      $price = 0;
-      foreach ($attr['price'] as $value) {
-        $price += $value;
-      }
-      if ($price != 0) {
-        echo ' (';
-        if ($price > 0) {
-          echo "+";
-        }
-        echo $currencies->format($price). ')';
-      }
-      echo '</div>';
-    }
-  }
-?>
                 </td>
                 <td class="dataTableContent" align="right"><?php echo $info[$i]['pquant']; ?></td>
                 <?php
           if ($srDetail == 2) {?>
-                <td class="dataTableContent" align="right"><?php echo $currencies->format($info[$i]['psum']); ?></td>
+                <td class="dataTableContent" align="right"><?php 
+                  if ($info[$i]['psum'] < 0) {
+                    echo '<font color="red">'.$currencies->format($info[$i]['psum']).'</font>'; 
+                  } else {
+                    echo $currencies->format($info[$i]['psum']); 
+                  }
+                ?></td>
                 <?php
           } else { ?>
                 <td class="dataTableContent">&nbsp;</td>
                 <?php
           }
 ?>
-                <td class="dataTableContent">&nbsp;</td>
+                
               </tr>
               <?php
       }
@@ -310,7 +317,7 @@ if (isset($srDetail)){
 if ($srCompare > SR_COMPARE_NO) {
 ?>
               <tr>
-                <td colspan="5" class="dataTableContent"><?php echo SR_TEXT_COMPARE; ?></td>
+                <td colspan="7" class="dataTableContent"><?php echo SR_TEXT_COMPARE; ?></td>
               </tr>
               <?php
   $sum = 0;
@@ -343,60 +350,41 @@ if ($srCompare > SR_COMPARE_NO) {
                 echo $info[$last - 1]['totitem']; 
   ?></td>
                 <td class="dataTableContent" align="right"><?php 
-                if(isset($info[$last - 1]['totsum']) ) 
-                echo $currencies->format($info[$last - 1]['totsum']);?></td>
-                <td class="dataTableContent" align="right"><?php echo $currencies->format($info[0]['shipping']);?></td>
+                if(isset($info[$last - 1]['totsum']) ) {
+                  if ($info[$last - 1]['totsum']<0) {
+                    echo '<font color="red">'.$currencies->format($info[$last - 1]['totsum']).'</font>';
+                  } else {
+                    echo $currencies->format($info[$last - 1]['totsum']);
+                  }
+                }
+    ?></td>
               </tr>
               <?php
     if ($srDetail) {
       for ($i = 0; $i < $last; $i++) {
-        if ($srMax == 0 or $i < $srMax) {
+        if ($srMax === 0 or $i < $srMax) {
   ?>
               <tr class="dataTableRow" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='dataTableRow'">
                 <td class="dataTableContent">&nbsp;</td>
                 <td class="dataTableContent" align="left"><a href="<?php echo tep_catalog_href_link("product_info.php?products_id=" . $info[$i]['pid']) ?>" target="_blank"><?php echo $info[$i]['pname']; ?></a>
-                <?php
-    if (is_array($info[$i]['attr'])) {
-      $attr_info = $info[$i]['attr'];
-      foreach ($attr_info as $attr) {
-        echo '<div style="font-style:italic;">&nbsp;' . $attr['quant'] . 'x ' ;
-        //  $attr['options'] . ': '
-        $flag = 0;
-        foreach ($attr['options_values'] as $value) {
-          if ($flag > 0) {
-            echo "," . $value;
-          } else {
-            echo $value;
-            $flag = 1;
-          }
-        }
-        $price = 0;
-        foreach ($attr['price'] as $value) {
-          $price += $value;
-        }
-        if ($price != 0) {
-          echo ' (';
-          if ($price > 0) {
-            echo "+";
-          }
-          echo $currencies->format($price). ')';
-        }
-        echo '</div>';
-      }
-    }
-  ?>
                 </td>
                 <td class="dataTableContent" align="right"><?php echo $info[$i]['pquant']; ?></td>
                 <?php
             if ($srDetail == 2) {?>
-                <td class="dataTableContent" align="right"><?php echo $currencies->format($info[$i]['psum']); ?></td>
+                <td class="dataTableContent" align="right"><?php 
+                  if ($info[$i]['psum'] < 0) {
+                    echo '<font color="red">'.$currencies->format($info[$i]['psum']).'</font>'; 
+                  } else {
+                    echo $currencies->format($info[$i]['psum']); 
+                  }
+                   ?></td>
                 <?php
             } else { ?>
                 <td class="dataTableContent">&nbsp;</td>
                 <?php
             }
   ?>
-                <td class="dataTableContent">&nbsp;</td>
+                
               </tr>
               <?php
         }
@@ -405,7 +393,11 @@ if ($srCompare > SR_COMPARE_NO) {
   }
 }
 ?>
-            </table></td>
+            </table>
+
+
+  <?php } ?>
+  </td>
           </tr>
         </table></td>
       </tr>

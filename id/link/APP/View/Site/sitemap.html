@@ -29,31 +29,18 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
   <div id="header">
         <div id="header_flash">
           <table cellpadding="0" cellspacing="0" border="0" summary="logo">
-                <tr>
-              <td><object id="FlashID" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="900" height="120">
-                  <param name="movie" value="../images/design/header_flash.swf" />
-                  <param name="quality" value="high" />
-                  <param name="wmode" value="opaque" />
-                  <param name="swfversion" value="8.0.35.0" />
-                  <param name="expressinstall" value="Scripts/expressInstall.swf" />
-                </object>
-                    <!--[if !IE]>-->
-                <object type="application/x-shockwave-flash" data="../images/design/header_flash.swf" width="900" height="120">                  
-                  <param name="quality" value="high" />
-
-                  <param name="wmode" value="opaque" />
-                  <param name="swfversion" value="8.0.35.0" />
-                  <param name="expressinstall" value="Scripts/expressInstall.swf" />
-                </object>
-                <!--<![endif]-->
-                  </td>
+            <tr>
+              <td>
+				<embed src="../../../images/design/header_flash.swf?url_1=http://www.3id.kthiz.200.com" quality=high  width="900" height="120" ></embed>
+              </td>
             </tr>
-              </table>
+          </table>
     </div>
         <div id="header_Menu">
           <table width="100%" border="0" cellpadding="0" cellspacing="0">
-                <tr>
-              <td width="432"><div style="height: 43px; overflow:hidden;">
+            <tr>
+              <td width="432">
+                 <div style="height: 43px; overflow:hidden;">
                   <form name="quick_find" action="/advanced_search_result.php" method="get">
                     <table style="margin-top: 3px;" cellpadding="2" cellspacing="2" summary="search">
                       <tr>
@@ -139,35 +126,30 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
                             <option value="471">ブライトシャドウ RMT</option>
                             <option value="472">三国志豪傑伝 RMT</option>
                             <option value="247">ウェブマネー RMT</option>
-                          </select>
-                        </td>
+                          </select></td>
                         <td><input style="height:auto;" type="text" name="keywords" value="RMT" class="header_search_input" /></td>
-                        <td><input name="imageField" type="submit" class="header_search_submit" value="" alt="検索" />
-                        </td>
+                        <td><input name="imageField" type="submit" class="header_search_submit" value="" alt="検索" /></td>
                       </tr>
                     </table>
                     <input type="hidden" name="search_in_description" value="1" />
                     <input type="hidden" name="inc_subcat" value="1" />
                   </form>
-                </div></td>
+                 </div>
+              </td>
               <td width="400" valign="top">
-                <div style="overflow: hidden; height:30px;">
-                  <table cellspacing="1" cellpadding="0" summary="search" style="margin-top: 2px;">
+                 <div style="overflow: hidden; height: 30px;">
+                  <table cellspacing="1" cellpadding="0" summary="search" class="header_botton_link">
                     <tr>
-                      <td><a href="/rss.php" class="header_menu_1">
-                        </a>
-                        <a href="/shopping_cart.php" class="header_menu_2">
-                        </a>
-                        <a href="http://3wm.maker.200.com/checkout_products.php" class="header_menu_3">
-                        </a>
-                      </td>
-                      <td width="88" align="right" style="background-repeat: no-repeat;"><span id="jk-shoppingcart" style="font-size:12px">0円</span></td>
+                        <td><a href="/checkout_products.php" class="header_menu_3"></a></td>
+                        <td><a href="/shopping_cart.php" class="header_menu_2"></a></td>
+                        <td><div class="top_subto_link"><span id="jk-shoppingcart">0円</span></div></td>
                     </tr>
                   </table>
-                </div></td>
+                 </div>
+              </td>
             </tr>
-              </table>
-    </div>
+          </table>
+    	</div>
         <div class="header_Navigation">
             <div class="header_navigation_content">
           <p class="header_Navigation_p">

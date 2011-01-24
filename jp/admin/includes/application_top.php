@@ -104,15 +104,15 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('FILENAME_COMPUTERS', 'computers.php');
   
   //add files
-  define('FILENAME_CONTENTS', 'contents.php');//Add filenames
-  define('FILENAME_LATEST_NEWS', 'latest_news.php'); //Add latest_news
-  define('FILENAME_PRODUCTS_UP', 'products_up.php'); //Add products_up
-  define('FILENAME_PRODUCTS_DL', 'products_dl.php'); //Add products_dl
-  define('FILENAME_STATS_SALES_REPORT2', 'stats_sales_report2.php');// sales report
-  //define('FILENAME_CL', 'cl.php');
   define('FILENAME_BANK_CL', 'bank_cl.php');
+  define('FILENAME_CONTENTS', 'contents.php');
+  define('FILENAME_LATEST_NEWS', 'latest_news.php'); 
+  define('FILENAME_PRODUCTS_UP', 'products_up.php'); 
+  define('FILENAME_PRODUCTS_DL', 'products_dl.php'); 
+  define('FILENAME_STATS_SALES_REPORT2', 'stats_sales_report2.php');
   define('FILENAME_OPTIONS_UP', 'options_up.php');
   define('FILENAME_OPTIONS_DL', 'options_dl.php');
+  define('FILENAME_NEW_CUSTOMERS', 'new_customers.php');
 
 
 // define the database table names used in the project

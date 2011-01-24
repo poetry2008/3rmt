@@ -100,6 +100,7 @@ while ($tag = tep_db_fetch_array($tags_query))
                p.products_cflag,
                p.products_small_sum,
                p.option_type,
+               p.sort_order,
                p2t.tags_id,
                pd.language_id,
                pd.products_name,
@@ -121,7 +122,7 @@ while ($tag = tep_db_fetch_array($tags_query))
       where site_id  = '0'
          or site_id = '".SITE_ID."' 
         group by products_id
-        order by products_date_added desc 
+        order by sort_order asc , products_name asc
         limit 5
     ");
     /*
@@ -162,6 +163,7 @@ while ($tag = tep_db_fetch_array($tags_query))
                p.products_cflag,
                p.products_small_sum,
                p.option_type,
+               p.sort_order,
                p2t.tags_id,
                pd.language_id,
                pd.products_name,
@@ -183,7 +185,7 @@ while ($tag = tep_db_fetch_array($tags_query))
       where site_id = '0'
          or site_id = '".SITE_ID."' 
       group by products_id
-      order by products_date_added desc 
+      order by sort_order asc , products_name asc
       limit 5
     ");
     /*

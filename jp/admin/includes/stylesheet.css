@@ -649,3 +649,9 @@ text-decoration:none;
 .new_product_reset img{
 vertical-align:top;
 }
+.inventory_table td{
+font-size:12px;
+}
+.inv_refresh{
+float:right;
+}

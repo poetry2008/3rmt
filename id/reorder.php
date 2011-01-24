@@ -21,9 +21,6 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
       <!-- body_text //-->
       <td id="contents" valign="top">
         <h1 class="pageHeading">
-        <span class="game_im">
-          <img width="26" height="26" alt="" src="images/design/title_img08.gif"> 
-        </span>
         <span class="game_t">
           <?php echo HEADING_TITLE; ?>
         </span>

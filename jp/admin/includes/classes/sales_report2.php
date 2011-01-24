@@ -1,30 +1,23 @@
 <?php
 /*
   $Id$
-
-  Charly Wilhelm charly@yoshi.ch
-  
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   class sales_report {
-    var $mode, $globalStartDate, $startDate, $endDate, $actDate, $showDate, $showDateEnd, $sortString, $status, $outlet;
+    var $mode, $globalStartDate, $startDate, $endDate, $actDate, $showDate, $showDateEnd, $sortString, $status, $outlet, $method;
 
-    function sales_report($mode, $startDate = 0, $endDate = 0, $sort = 0, $statusFilter = 0, $filter = 0) {
+    function sales_report($mode, $startDate = 0, $endDate = 0, $sort = 0, $statusFilter = 0, $filter = 0, $srMethod = 0) {
       // startDate and endDate have to be a unix timestamp. Use mktime !
       // if set then both have to be valid startDate and endDate
+      $this->method = $srMethod == 1 ? 'date_purchased' : 'torihiki_date';
+      
       $this->mode = $mode;
       $this->tax_include = DISPLAY_PRICE_WITH_TAX;
 
       $this->statusFilter = $statusFilter;
             
       // get date of first sale
-      $firstQuery = tep_db_query("select UNIX_TIMESTAMP(min(date_purchased)) as first FROM " . TABLE_ORDERS);
+      $firstQuery = tep_db_query("select UNIX_TIMESTAMP(min(".$this->method.")) as first FROM " . TABLE_ORDERS);
       $first = tep_db_fetch_array($firstQuery);
       $this->globalStartDate = mktime(0, 0, 0, date("m", $first['first']), date("d", $first['first']), date("Y", $first['first']));
             
@@ -58,18 +51,24 @@
       }
 
       $this->actDate = $this->startDate;
+      
+      $siteStr = isset($_GET['site_id']) && strlen($_GET['site_id'])?" AND o.site_id='".$_GET['site_id']."' ":'';
+      if($_GET['bflag'] == '2') {
+        $bflag = '1';
+        $likeStr = ' like \'%買%\' ';
+      } else if ($_GET['bflag'] == '1') {
+        $bflag = '0';
+        $likeStr = ' not like \'%買%\' ';
+      }
 
       // query for order count
-      $this->queryOrderCnt = "SELECT count(o.orders_id) as order_cnt FROM " . TABLE_ORDERS . " o";
+      $buyOrSellWhere = isset($_GET['bflag']) && $_GET['bflag'] ? (" AND o.payment_method " . $likeStr) : '';
+      $this->queryOrderCnt = "SELECT count(o.orders_id) as order_cnt FROM " . TABLE_ORDERS . " o WHERE 1=1".$siteStr.$buyOrSellWhere;
+
 
       // queries for item details count
-      $this->queryItemCnt = "SELECT op.products_id as pid, op.orders_products_id, op.products_name as pname, sum(op.products_quantity) as pquant, sum(op.final_price * op.products_quantity) as psum, op.products_tax as ptax FROM " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op WHERE o.orders_id = op.orders_id";
-
-      // query for attributes
-      $this->queryAttr = "SELECT count(op.products_id) as attr_cnt, o.orders_id, opa.orders_products_id, opa.products_options, opa.products_options_values, opa.options_values_price, opa.price_prefix from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " opa, " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op WHERE o.orders_id = opa.orders_id AND op.orders_products_id = opa.orders_products_id";
-
-      // query for shipping
-      $this->queryShipping = "SELECT sum(ot.value) as shipping FROM " . TABLE_ORDERS . " o, " . TABLE_ORDERS_TOTAL . " ot WHERE ot.orders_id = o.orders_id AND  ot.class = 'ot_shipping'";
+      $buyOrSellWhere = isset($_GET['bflag']) && $_GET['bflag'] ? (" AND op.products_id=p.products_id AND p.products_bflag=" . $bflag) : '';
+      $this->queryItemCnt = "SELECT op.products_id as pid, op.orders_products_id, op.products_name as pname, sum(op.products_quantity) as pquant, if(p.products_bflag = '0' , sum(op.final_price * op.products_quantity), 0-sum(op.final_price * op.products_quantity)) as psum, op.products_tax as ptax FROM " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op, " . TABLE_PRODUCTS . " p" ." WHERE o.orders_id = op.orders_id AND op.products_id = p.products_id " . $siteStr . $buyOrSellWhere ;
 
       switch ($sort) {
         case '0':
@@ -102,8 +101,8 @@
     }
 
     function next() {
-	$sd = time();
-	$ed = time();
+  $sd = time();
+  $ed = time();
       switch ($this->mode) {
         // yearly
         case '1':
@@ -131,16 +130,15 @@
       }
 
       $filterString = "";
-      if ($this->statusFilter > 0) {
+      if (strpos($this->statusFilter, ',')) {
+        $filterString .= " AND o.orders_status in (" . $this->statusFilter . ") ";
+      } else if ($this->statusFilter > 0) {
         $filterString .= " AND o.orders_status = " . $this->statusFilter . " ";
       }
-      $rqOrders = tep_db_query($this->queryOrderCnt . " WHERE o.date_purchased >= '" . tep_db_input(date("Y-m-d\TH:i:s", $sd)) . "' AND o.date_purchased < '" . tep_db_input(date("Y-m-d\TH:i:s", $ed)) . "'" . $filterString);
+      $rqOrders = tep_db_query($this->queryOrderCnt . " AND o.".$this->method." >= '" . tep_db_input(date("Y-m-d\TH:i:s", $sd)) . "' AND o.".$this->method." < '" . tep_db_input(date("Y-m-d\TH:i:s", $ed)) . "'" . $filterString);
       $order = tep_db_fetch_array($rqOrders);
 
-      $rqShipping = tep_db_query($this->queryShipping . " AND o.date_purchased >= '" . tep_db_input(date("Y-m-d\TH:i:s", $sd)) . "' AND o.date_purchased < '" . tep_db_input(date("Y-m-d\TH:i:s", $ed)) . "'" . $filterString);
-      $shipping = tep_db_fetch_array($rqShipping);
-
-      $rqItems = tep_db_query($this->queryItemCnt . " AND o.date_purchased >= '" . tep_db_input(date("Y-m-d\TH:i:s", $sd)) . "' AND o.date_purchased < '" . tep_db_input(date("Y-m-d\TH:i:s", $ed)) . "'" . $filterString . " group by pid " . $this->sortString);
+      $rqItems = tep_db_query($this->queryItemCnt . " AND o.".$this->method." >= '" . tep_db_input(date("Y-m-d\TH:i:s", $sd)) . "' AND o.".$this->method." < '" . tep_db_input(date("Y-m-d\TH:i:s", $ed)) . "'" . $filterString . " group by pid " . $this->sortString);
 
       // set the return values
       $this->actDate = $ed;
@@ -151,82 +149,36 @@
       $cnt = 0;
       $itemTot = 0;
       $sumTot = 0;
+      $sumBuyTot = 0;
+      $sumSellTot = 0;
       while ($resp[$cnt] = tep_db_fetch_array($rqItems)) {
         // to avoid rounding differences round for every quantum
         // multiply with the number of items afterwords.
         $price = $resp[$cnt]['psum'] / $resp[$cnt]['pquant'];
 
-        // products_attributes
-        // are there any attributes for this order_id ?
-        $rqAttr = tep_db_query($this->queryAttr . " AND o.date_purchased >= '" . tep_db_input(date("Y-m-d\TH:i:s", $sd)) . "' AND o.date_purchased < '" . tep_db_input(date("Y-m-d\TH:i:s", $ed)) . "' AND op.products_id = " . $resp[$cnt]['pid'] . $filterString . " group by products_options_values order by orders_products_id");
-        $i = 0;
-        while ($attr[$i] = tep_db_fetch_array($rqAttr)) {
-          $i++;
-        }
-
-        // values per date
-        if ($i > 0) {
-          $price2 = 0;
-          $price3 = 0;
-          $option = array();
-          $k = -1;
-          $ord_pro_id_old = 0;
-          for ($j = 0; $j < $i; $j++) {
-            if ($attr[$j]['price_prefix'] == "-") {
-              $price2 += (-1) *  $attr[$j]['options_values_price'];
-              $price3 = (-1) * $attr[$j]['options_values_price'];
-              $prefix = "-";
-            } else {
-              $price2 += $attr[$j]['options_values_price'];
-              $price3 = $attr[$j]['options_values_price'];
-              $prefix = "+";
-            }
-            $ord_pro_id = $attr[$j]['orders_products_id'];
-            if ( $ord_pro_id != $ord_pro_id_old) {
-              $k++;
-              $l = 0;
-              // set values
-              $option[$k]['quant'] = $attr[$j]['attr_cnt'];
-              $option[$k]['options'][0] = $attr[$j]['products_options'];
-              $option[$k]['options_values'][0] = $attr[$j]['products_options_values'];
-              if ($price3 != 0) {
-                $option[$k]['price'][0] = tep_add_tax($price3, $resp[$cnt]['ptax']);
-              } else {
-                $option[$k]['price'][0] = 0;
-              }
-            } else {
-              $l++;
-              // update values
-              $option[$k]['options'][$l] = $attr[$j]['products_options'];
-              $option[$k]['options_values'][$l] = $attr[$j]['products_options_values'];
-              if ($price3 != 0) {
-                $option[$k]['price'][$l] = tep_add_tax($price3, $resp[$cnt]['ptax']);
-              } else {
-                $option[$k]['price'][$l] = 0;
-              }
-            }
-            $ord_pro_id_old = $ord_pro_id;
-          }
-          // set attr value
-          $resp[$cnt]['attr'] = $option;
-        } else {
-          $resp[$cnt]['attr'] = "";
-        }
         $resp[$cnt]['price'] = tep_add_tax($price, $resp[$cnt]['ptax']);
         $resp[$cnt]['psum'] = $resp[$cnt]['pquant'] * tep_add_tax($price, $resp[$cnt]['ptax']);
         $resp[$cnt]['order'] = $order['order_cnt'];
-        $resp[$cnt]['shipping'] = $shipping['shipping'];
+        //$resp[$cnt]['shipping'] = $shipping['shipping'];
+
+        if ($resp[$cnt]['psum'] < 0) {
+          $sumBuyTot += $resp[$cnt]['psum'];
+        } else {
+          $sumSellTot += $resp[$cnt]['psum'];
+        }
+        $resp[$cnt]['totsumBuy'] = $sumBuyTot;
+        $resp[$cnt]['totsumSell'] = $sumSellTot;
 
         // values per date and item
         $sumTot += $resp[$cnt]['psum'];
         $itemTot += $resp[$cnt]['pquant'];
         // add totsum and totitem until current row
         $resp[$cnt]['totsum'] = $sumTot;
+        
         $resp[$cnt]['totitem'] = $itemTot;
         $cnt++;
       }
-
       return $resp;
+      
     }
 }
-?>
