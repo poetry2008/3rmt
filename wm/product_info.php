@@ -79,7 +79,6 @@ function change_num(ob, targ, quan,a_quan)
       </td>
 <!-- body_text //-->
       <td valign="top" id="contents">
-          <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_PRODUCT_INFO, tep_get_all_get_params(array('action')) . 'action=add_product')) . "\n"; ?>
 <?php
   $product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID, $languages_id);
   if (!$product_info) { // product not found in database
@@ -319,7 +318,10 @@ while($tag = tep_db_fetch_array($tag_query)) {
                         </td>
                     </tr>
                     <tr class="header2">
-                      <td height="30" class="main" style="padding-bottom:4px; " align="right"><?php
+                      <td height="30" class="main" style="padding-bottom:4px; " align="right">
+<?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_PRODUCT_INFO, tep_get_all_get_params(array('action')) . 'action=add_product')) . "\n"; ?>
+
+<?php
       if($product_info['products_quantity'] < 1) {
         if($product_info['products_bflag'] == '1') {
           # 買い取り商品
@@ -403,19 +405,21 @@ while($tag = tep_db_fetch_array($tag_query)) {
                                 <a style="display:block;" href="javascript:void(0)" onClick="change_num('quantity','down', 1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/ndown.gif" alt="-"></a>
                               </div>
                             </td>
-                            <td valign="middle"><?php echo tep_draw_hidden_field('products_id', $product_info['products_id']) . tep_image_submit('button_in_cart.jpg', IMAGE_BUTTON_IN_CART); ?></td>
+                            <td valign="middle"><?php echo tep_image_submit('button_in_cart.jpg', IMAGE_BUTTON_IN_CART); ?></td>
                           </tr>
                         </table>
                         <?php
      }
     ?>
+    <?php echo tep_draw_hidden_field('products_id', $product_info['products_id']) ; ?>
+    </form>
                       </td>
                     </tr>
                     <tr class="header2">
                       <td align="right" valign="bottom" class="smallText">
                           <div class="dot"></div>
                         <br>
-                        <a href="<?php echo tep_href_link(FILENAME_TELL_A_FRIEND,'products_id='.(int)$_GET['products_id']) ;  ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_tellafriend.jpg',BOX_HEADING_TELL_A_FRIEND);?></a>&nbsp; <a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE,'products_id='.(int)$_GET['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_review.jpg',BOX_REVIEWS_WRITE_REVIEW);?></a>&nbsp; <a href="<?php echo tep_href_link('open.php','products_name='.urlencode($product_info['products_name'])) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/botton_question.jpg',IMAGE_BUTTON_QUT);?></a> </td>
+                        <a href="<?php echo tep_href_link(FILENAME_TELL_A_FRIEND,'products_id='.(int)$_GET['products_id']) ;  ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_tellafriend.jpg',BOX_HEADING_TELL_A_FRIEND);?></a>&nbsp; <a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE,'products_id='.(int)$_GET['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_review.jpg',BOX_REVIEWS_WRITE_REVIEW);?></a>&nbsp; <?php echo tep_draw_form('',tep_href_link('open.php','products_name='.urlencode($product_info['products_name'])),'get');?><input type="image" style="vertical-align:bottom;" src="<?php echo DIR_WS_IMAGES;?>design/button/botton_question.jpg"></form> </td>
                     </tr>
                   </table></td>
               </tr>
@@ -523,7 +527,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
           <tr>
 <!--             <td class="main"><a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS, substr(tep_get_all_get_params(), 0, -1)); ?>"><?php echo tep_image_button('button_reviews.gif', IMAGE_BUTTON_REVIEWS); ?></a></td>
  -->
-            <td align="right" class="main"><?php echo tep_draw_hidden_field('products_id', $product_info['products_id']) ; ?></td>
+            <td align="right" class="main"></td>
           </tr>
         </table>
         <?php
@@ -534,7 +538,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
     }
   }
 ?>
-        </form>
+        
         <?php
       if (tep_session_is_registered('affiliate_id')) {
 ?>
