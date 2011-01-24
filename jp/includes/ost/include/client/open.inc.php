@@ -39,10 +39,10 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
             &nbsp;<font class="error">*&nbsp;<?=$errors['email']?></font>
         </td>
     </tr>
-    <tr>
+    <tr> 
         <th bgcolor="#eeeeee">件名</th>
         <td>
-            <input type="text" name="subject" size="35" value="<?=isset($info['subject'])?$info['subject']:(isset($_GET['products'])?$_GET['products']:'')?>">
+            <input type="text" name="subject" size="35" value="<?=isset($info['subject'])?$info['subject']:(isset($_GET['products'])?$_GET['products'].'について':'')?>">
             &nbsp;<font class="error">*&nbsp;<?=$errors['subject']?></font>
         </td>
     </tr>

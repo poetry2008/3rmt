@@ -1643,7 +1643,7 @@ function tep_minitor_info(){
       $address_format = tep_db_fetch_array($address_format_query);
       return $address_format['format_id'];
     } else {
-      return '1';
+      return '6';
     }
   }
 
