@@ -1845,7 +1845,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>
                 <td valign="top">
-                <?php tep_site_filter(FILENAME_CATEGORIES);?> 
+                <?php tep_site_filter(FILENAME_CATEGORIES, true);?> 
                 <table border="0" width="100%" cellspacing="0" cellpadding="2">
                     <tr class="dataTableHeadingRow">
               <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CATEGORIES_PRODUCTS; ?></td>
