@@ -5,17 +5,18 @@ require('includes/application_top.php');
 $category_arr = array();
 $tmp_arr = array();
 
-$category_arr[] = 168;
-$category_arr[] = 169;
-$category_arr[] = 190;
+//$category_arr[] = 168;
+//$category_arr[] = 169;
+//$category_arr[] = 190;
 
-foreach ($category_arr as $key => $value) {
-  $tmp_arr = array_merge($tmp_arr, get_category_children_id($value));
-}
+//foreach ($category_arr as $key => $value) {
+  //$tmp_arr = array_merge($tmp_arr, get_category_children_id($value));
+//}
 //var_dump($tmp_arr);
 // 取得了全部需要处理的分类
-$category_arr = array_merge($category_arr, $tmp_arr);
+//$category_arr = array_merge($category_arr, $tmp_arr);
 
+$category_arr = array(198, 394, 284);
 if (empty($category_arr)) {
   echo 'has no category'; 
   exit;
@@ -57,7 +58,7 @@ foreach ($products_arr as $pkey => $pvalue) {
       if ($jp_pro_res['products_description']) {
         $jp_des = $jp_pro_res['products_description']; 
       }
-      $insert_sql = "insert into ".TABLE_PRODUCTS_DESCRIPTION." values('".$pvalue."', '4', '".mysql_real_escape_string($zero_pro_res['products_name'])."', '".$jp_des."', '".SITE_ID."', '".$zero_pro_res['products_url']."', '".$zero_pro_res['products_viewed']."', '".mysql_real_escape_string($zero_pro_res['romaji'])."');"; 
+      $insert_sql = "insert into ".TABLE_PRODUCTS_DESCRIPTION." values('".$pvalue."', '4', '".mysql_real_escape_string($zero_pro_res['products_name'])."', '".mysql_real_escape_string($jp_des)."', '".SITE_ID."', '".$zero_pro_res['products_url']."', '".$zero_pro_res['products_viewed']."', '".mysql_real_escape_string($zero_pro_res['romaji'])."');"; 
       tep_db_query($insert_sql); 
       print_r(mysql_error());
       //echo $insert_sql."\n";
