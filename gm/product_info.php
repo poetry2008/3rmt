@@ -424,11 +424,13 @@ while($tag = tep_db_fetch_array($tag_query)) {
                   <div class="dot">
                     &nbsp;
                   </div>
+                  <table><tr><td>
                   <a href="<?php echo tep_href_link(FILENAME_TELL_A_FRIEND,'products_id='.(int)$_GET['products_id']) ;  ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_tellafriend.jpg',BOX_HEADING_TELL_A_FRIEND);?></a>
-                  &nbsp;
+                  &nbsp;</td><td>
                   <a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE,'products_id='.(int)$_GET['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_review.jpg',BOX_REVIEWS_WRITE_REVIEW);?></a>
-                  &nbsp;
-                  <?php echo tep_draw_form('open',tep_href_link('open.php'),'get');?><input type="image" style="vertical-align:bottom;" src="<?php echo DIR_WS_IMAGES;?>design/button/botton_question.jpg"><?php echo tep_draw_hidden_field('products', $product_info['products_name']) ; ?></form>
+                  &nbsp;</td><td>
+                  <?php echo tep_draw_form('open',tep_href_link('open.php'),'get');?><input type="image" style="padding-bottom:3px;" src="<?php echo DIR_WS_IMAGES;?>design/button/botton_question.jpg"><?php echo tep_draw_hidden_field('products', $product_info['products_name']) ; ?></form>
+                  </td></tr></table>
                 </td>
               </tr>
             </table>
