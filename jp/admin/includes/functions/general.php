@@ -2578,7 +2578,7 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
           AND pd.products_id = '" .  $pid . "'" . " 
           AND pd.language_id ='" . $lid . "' 
         ORDER BY pd.site_id DESC) c
-        WHERE pd.site_id = '0' OR pd.site_id = '".$site_id."'
+        WHERE site_id = '0' OR site_id = '".$site_id."'
         GROUP BY products_id HAVING c.products_status != '0' 
         ";
     } else {
