@@ -7,7 +7,7 @@ $categories_tab_query1 = tep_db_query("
   from (
     select c.categories_id, 
            c.parent_id, 
-           c.categories_status, 
+           cd.categories_status, 
            c.categories_image, 
            cd.categories_name, 
            cd.categories_meta_text, 
@@ -17,13 +17,13 @@ $categories_tab_query1 = tep_db_query("
     from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd 
     where c.categories_id = cd.categories_id 
       and c.parent_id = '0' 
-      and c.categories_status!='1' 
       and cd.language_id='" . (int)$languages_id ."' 
     order by cd.site_id DESC
     ) p
     where site_id = '0'
        or site_id = '" . SITE_ID . "' 
     group by categories_id 
+    having p.categories_status != '1' 
     order by sort_order,categories_name
     ");
 ?>

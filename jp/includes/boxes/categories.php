@@ -10,13 +10,12 @@ $categories_query = tep_db_query("
     from (
       select c.categories_id, 
              cd.categories_name, 
-             c.categories_status, 
+             cd.categories_status, 
              c.parent_id,
              cd.site_id,
              c.sort_order
       from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
-      where c.categories_status != '1' 
-        and c.parent_id = '0' 
+      where c.parent_id = '0' 
         and c.categories_id = cd.categories_id 
         and cd.language_id='" . $languages_id ."' 
       order by site_id DESC
@@ -24,6 +23,7 @@ $categories_query = tep_db_query("
     where site_id = ".SITE_ID."
        or site_id = 0
     group by categories_id
+    having c.categories_status != '1' 
     order by sort_order, categories_name
 ");
 while ($category = tep_db_fetch_array($categories_query))  {
@@ -56,14 +56,13 @@ if($cPath){
               select *
               from (
                 select c.categories_id, 
-                       c.categories_status, 
+                       cd.categories_status, 
                        cd.categories_name, 
                        c.parent_id,
                        cd.site_id,
                        c.sort_order
                 from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
-                where c.categories_status != '1' 
-                  and c.parent_id = '".$category['categories_id']."' 
+                where c.parent_id = '".$category['categories_id']."' 
                   and c.categories_id = cd.categories_id 
                   and cd.language_id='" . $languages_id ."' 
                 order by cd.site_id DESC
@@ -71,6 +70,7 @@ if($cPath){
               where site_id = ".SITE_ID."
                  or site_id = 0
               group by categories_id
+              having c.categories_status != '1' 
               order by sort_order, categories_name
               ");
           while ($subcategory = tep_db_fetch_array($subcategories_query))  {
@@ -103,14 +103,13 @@ if($cPath){
                 select *
                 from (
                   select c.categories_id, 
-                         c.categories_status, 
+                         cd.categories_status, 
                          cd.categories_name, 
                          c.parent_id,
                          cd.site_id,
                          c.sort_order
                   from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
-                  where c.categories_status != '1' 
-                    and c.parent_id = '".$subcategory['categories_id']."' 
+                  where c.parent_id = '".$subcategory['categories_id']."' 
                     and c.categories_id = cd.categories_id 
                     and cd.language_id='" . $languages_id ."' 
                   order by cd.site_id DESC
@@ -118,6 +117,7 @@ if($cPath){
                 where site_id = 0
                    or site_id = ".SITE_ID."
                 group by categories_id
+                having c.categories_status != '1' 
                 order by sort_order, categories_name
             ");
             while ($_subcategory = tep_db_fetch_array($_subcategories_query))  {

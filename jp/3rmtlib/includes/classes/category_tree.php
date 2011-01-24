@@ -27,7 +27,7 @@
            select *
            from (
              select c.categories_id, 
-                    c.categories_status, 
+                    cd.categories_status, 
                     cd.categories_name, 
                     c.parent_id,
                     cd.site_id,

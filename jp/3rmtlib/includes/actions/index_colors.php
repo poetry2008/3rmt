@@ -18,10 +18,10 @@
            p.products_small_sum,
            p.products_quantity, 
            pd.products_description ,
+           pd.products_status ,
            pd.site_id
     from " .  TABLE_PRODUCTS_DESCRIPTION . " pd, ".TABLE_COLOR_TO_PRODUCTS." cp, " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c
-    where p.products_status != '0' 
-      and p.products_id = p2c.products_id 
+    where p.products_id = p2c.products_id 
       and pd.products_id = p2c.products_id 
       and pd.language_id = '" . $languages_id . "' 
       and cp.products_id = p.products_id 
@@ -31,6 +31,7 @@
   where site_id = '0'
      or site_id = '".SITE_ID."'
   group by products_id
+  having p.products_status != '0' 
   order by products_name
   ";
 

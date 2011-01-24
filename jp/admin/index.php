@@ -137,7 +137,8 @@ foreach ($sites as $site)
 
   $customers_query = tep_db_query("select count(*) as count from " . TABLE_CUSTOMERS." where site_id = ".$site['id']);
   $customers = tep_db_fetch_array($customers_query);
-  $products_query = tep_db_query("select count(*) as count from " . TABLE_PRODUCTS . " where  products_status != '0'");
+  //$products_query = tep_db_query("select count(*) as count from " . TABLE_PRODUCTS . " where  products_status != '0'");
+  $products_query = tep_db_query("select count(*) as count from " . TABLE_PRODUCTS);
   $products = tep_db_fetch_array($products_query);
   $reviews_query = tep_db_query("select count(*) as count from " . TABLE_REVIEWS ." where site_id = ".$site['id']);
   $reviews = tep_db_fetch_array($reviews_query);

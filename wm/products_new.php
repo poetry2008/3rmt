@@ -43,14 +43,15 @@ from (
          p.products_small_sum, 
          p.products_tax_class_id, 
          p.products_date_added, 
+         pd.products_status, 
          m.manufacturers_name 
   from " . TABLE_PRODUCTS . " p left join " . TABLE_MANUFACTURERS . " m on p.manufacturers_id = m.manufacturers_id left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "'
-  where p.products_status != '0' 
   order by pd.site_id DESC
   ) p
 where site_id = '0'
    or site_id = ".SITE_ID." 
 group by products_id
+having p.products_status != '0'
 order by products_date_added DESC, products_name
   ";
   $products_new_split = new splitPageResults($_GET['page'], MAX_DISPLAY_PRODUCTS_NEW, $products_new_query_raw, $products_new_numrows);

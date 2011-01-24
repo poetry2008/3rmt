@@ -403,7 +403,7 @@
       } else {
             //Update products_status(TABLE: PRODUCTS)
 //ccdd
-      tep_db_query("update " . TABLE_PRODUCTS . " set products_status = '0' where products_id = '" . tep_get_prid($order->products[$i]['id']) . "'");
+      tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_status = '0' where products_id = '" . tep_get_prid($order->products[$i]['id']) . "'");
       }
     }
     //--------------------------------------END

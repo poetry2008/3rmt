@@ -4,7 +4,7 @@
 */
 
   //ccdd
-  if ($random_product = tep_random_select("select products_id, products_image, products_tax_class_id, products_price, products_price_offset, products_small_sum from " . TABLE_PRODUCTS . " where products_status != '0' order by products_date_added desc limit " . MAX_RANDOM_SELECT_NEW)) {
+  if ($random_product = tep_random_select("select distinct p.products_id, p.products_image, p.products_tax_class_id, p.products_price, p.products_price_offset, p.products_small_sum from " . TABLE_PRODUCTS . "p ".TABLE_PRODUCTS_DESCRIPTION." pd where pd.products_status != '0' and p.products_id = pd.products_id order by products_date_added desc limit " . MAX_RANDOM_SELECT_NEW)) {
 ?>
 <!-- whats_new //-->
           <tr>
