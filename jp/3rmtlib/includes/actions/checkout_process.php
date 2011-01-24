@@ -254,7 +254,7 @@
                             'orders_status_id' => '30', 
                             'date_added' => 'now()', 
                             'customer_notified' => '0',
-                            'comments' => '');
+                            'comments' => 'checkout');
     // ccdd
     tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
     orders_updated($insert_id);

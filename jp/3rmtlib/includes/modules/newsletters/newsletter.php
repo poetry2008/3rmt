@@ -30,12 +30,12 @@
 
       $mail_query = tep_db_query("select count(*) as count from " . TABLE_CUSTOMERS . " where customers_newsletter = '1'");
       $mail = tep_db_fetch_array($mail_query);
-	  
-	  //add
-	  $mag_query = tep_db_query("select count(*) as count from mail_magazine");
-	  $mag = tep_db_fetch_array($mag_query);
-	  
-	  $mag_count = $mail['count'] + $mag['count'];
+    
+    //add
+    $mag_query = tep_db_query("select count(*) as count from mail_magazine");
+    $mag = tep_db_fetch_array($mag_query);
+    
+    $mag_count = $mail['count'] + $mag['count'];
 
       $confirm_string = '<table border="0" cellspacing="0" cellpadding="2">' . "\n" .
                         '  <tr>' . "\n" .
@@ -57,7 +57,7 @@
                         '    <td>' . tep_draw_separator('pixel_trans.gif', '1', '10') . '</td>' . "\n" .
                         '  </tr>' . "\n" .
                         '  <tr>' . "\n" .
-                        '    <td align="right"><a href="' . tep_href_link(FILENAME_NEWSLETTERS, 'page=' . $_GET['page'] . '&nID=' . $_GET['nID'] . '&action=confirm_send' . (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image_button('button_send.gif', IMAGE_SEND) . '</a> <a href="' . tep_href_link(FILENAME_NEWSLETTERS, 'page=' . $_GET['page'] . '&nID=' . $_GET['nID'] . (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a></td>' . "\n" .
+                        '    <td align="right"><a href="' . tep_href_link(FILENAME_NEWSLETTERS, 'page=' . $_GET['page'] . '&nID=' . $_GET['nID'] . '&action=confirm_send' . (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image_button('button_send.gif', IMAGE_SEND) . '</a> <a class="new_product_reset" href="' . tep_href_link(FILENAME_NEWSLETTERS, 'page=' . $_GET['page'] . '&nID=' . $_GET['nID'] . (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a></td>' . "\n" .
                         '  </tr>' . "\n" .
                         '</table>';
 
@@ -73,12 +73,12 @@
       while ($mail = tep_db_fetch_array($mail_query)) {
         $mimemessage->send(tep_get_fullname($mail['customers_firstname'], $mail['customers_lastname']), $mail['customers_email_address'], '', EMAIL_FROM, $this->title);
       }
-	  
-	  //add
-	  $mag_query = tep_db_query("select * from mail_magazine");
-	  while($mag = tep_db_fetch_array($mag_query)) {
+    
+    //add
+    $mag_query = tep_db_query("select * from mail_magazine");
+    while($mag = tep_db_fetch_array($mag_query)) {
         $mimemessage->send($mag['mag_name'], $mag['mag_email'], '', EMAIL_FROM, $this->title);
-	  }
+    }
 
       $newsletter_id = tep_db_prepare_input($newsletter_id);
       tep_db_query("update " . TABLE_NEWSLETTERS . " set date_sent = now(), status = '1' where newsletters_id = '" . tep_db_input($newsletter_id) . "'");
