@@ -12,7 +12,7 @@ function tep_minitor_info(){
     $fiftheenbefore = date('Y-m-d H:i:s',time()-60*15);
     //$logIn15 = tep_db_query("select * from monitor_log where ng = 1 and m_id =".$monitor['id'].' and created_at > "'.$fiftheenbefore.'"');
     $logIn15 = tep_db_query("select * from monitor_log where ng = 1 and m_id
-        ='".$monitor['id']."'");
+        ='".$monitor['id']."' order by created_at desc");
     $tmpRow = tep_db_fetch_array($logIn15);
     if(mysql_num_rows($logIn15)){ //十五分钟内多于两件
 
@@ -25,7 +25,14 @@ function tep_minitor_info(){
       }
       $tmpString .=  'id="moni_'.$tmpRow['name'].'" class="monitor"
         href="'.$monitor['url'].'"
-        target="_blank">こちら</a>をクリックして状況を確認してください。</div>';
+        target="_blank">こちら</a>をクリックして状況を確認してください。<br>';
+      //
+      $tmpString .= '回線障害の最終日： ' . $tmpRow['name'] . ' <a ';
+      $tmpString .= 'class="monitor_right" id="moni_'.$tmpRow['name'].'"
+        href="'.$monitor['url'].'"
+        target="_blank">'.date('m月d日H時i分s秒',strtotime($tmpRow['created_at'])).'</a></div>';
+
+      
       $tmpString2 = "<div class='monitor_error' style='display:none;' id='minitor_".$monitor['name']."'>";
       $tmpString2.= '<table width="100%"><tr><td>'.$tmpRow['created_at']."</td><td
       width='50%'>".nl2br($tmpRow['obj'])."</td></tr>";

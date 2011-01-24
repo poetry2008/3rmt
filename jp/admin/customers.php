@@ -497,7 +497,7 @@ function check_form() {
     <?php } ?>
       <tr>
         <td align="right" class="main"><?php echo
-        tep_image_submit('button_update.gif', IMAGE_UPDATE) . ' <a class =  "new_product_reset" href="' . tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action'))) .'">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; ?></td>
+        tep_image_submit('button_update.gif', IMAGE_UPDATE) . ' <a class="new_product_reset" class =  "new_product_reset" href="' . tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action'))) .'">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; ?></td>
       </tr></form>
 <?php
   } else {
