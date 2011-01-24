@@ -623,7 +623,7 @@
       $contents[] = array ('text' => '<br>' . TEXT_INFO_TYPE_DESCRIPTION . ' ' . tep_draw_input_field ('type_description') );
       $contents[] = array ('text' => '<br>' . TEXT_INFO_TYPE_SORT_ORDER . ' ' . tep_draw_input_field ('sort_order', '', 'size=5') );
       $contents[] = array ('text' => '<br>' . TEXT_INFO_DOCUMENT_VISIBLE . '<br>' . tep_draw_checkbox_field ('type_visible', 'True', 'True') . TEXT_IS_VISIBLE);
-      $contents[] = array ('align' => 'center', 'text' => '<br>' . tep_image_submit('button_update.gif', IMAGE_UPDATE) . ' <a href="' . tep_href_link (FILENAME_IMAGE_DOCUMENTS, tep_get_all_get_params (array ('action','did') ) . 'did=' . (isset($dInfo->document_types_id) ? $dInfo->document_types_id:'')) . '">' . tep_image_button ('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+      $contents[] = array ('align' => 'center', 'text' => '<br>' . tep_image_submit('button_update.gif', IMAGE_UPDATE) . ' <a class="new_product_reset" href="' . tep_href_link (FILENAME_IMAGE_DOCUMENTS, tep_get_all_get_params (array ('action','did') ) . 'did=' . (isset($dInfo->document_types_id) ? $dInfo->document_types_id:'')) . '">' . tep_image_button ('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
 
     case 'edit_type':
