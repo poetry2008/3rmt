@@ -20,12 +20,12 @@
            r.date_added, 
            p.products_id, 
            pd.products_name, 
+           pd.products_status, 
            p.products_image, 
            r.customers_name,
            pd.site_id as psid
     from " . TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd, " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
     where (pd.site_id        = '" . SITE_ID . "' or pd.site_id = 0)
-      and p.products_status != '0' 
       and p.products_id     = r.products_id 
       and r.reviews_id      = rd.reviews_id 
       and p.products_id     = pd.products_id 
@@ -38,6 +38,7 @@
     where psid = '0'
        or psid = '".SITE_ID."'
     group by reviews_id
+    having p.products_status != '0' 
     order by date_added DESC
   ";
   $reviews_split = new splitPageResults($_GET['page'], MAX_DISPLAY_NEW_REVIEWS, $reviews_query_raw, $reviews_numrows);

@@ -64,6 +64,7 @@ if (
            r.reviews_rating, 
            p.products_id, 
            p.products_image, 
+           pd.products_status, 
            pd.products_name,
            r.site_id as rsid,
            pd.site_id as psid
@@ -73,8 +74,7 @@ if (
         $random_select .= (", " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c");
     }
     $random_select .= "
-    where p.products_status != '0' 
-      and p.products_id = r.products_id 
+    where p.products_id = r.products_id 
       and r.reviews_id = rd.reviews_id 
       and rd.languages_id = '" . $languages_id . "' 
       and p.products_id = pd.products_id 
@@ -93,6 +93,7 @@ if (
   where psid = '0'
      or psid = '".SITE_ID."'
   group by reviews_id
+  having p.products_status != '0' 
   ";
   $random_select .= " order by reviews_id desc";
   $random_product = tep_random_select($random_select);

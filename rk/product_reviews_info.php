@@ -22,6 +22,7 @@
              r.last_modified, 
              r.reviews_read, 
              pd.products_name, 
+             pd.products_status, 
              p.products_image,
              r.site_id as rsid,
              pd.site_id as psid
@@ -32,7 +33,6 @@
         ON (p.products_id = pd.products_id AND pd.language_id = '". $languages_id . "') 
       WHERE r.reviews_id = '" .  (int)$_GET['reviews_id'] . "' 
         AND r.reviews_id = rd.reviews_id 
-        AND p.products_status != '0' 
         AND r.reviews_status = '1' 
         AND r.site_id  = ".SITE_ID." 
       order by pd.site_id DESC
@@ -40,7 +40,8 @@
     where psid = '0'
        or psid = '".SITE_ID."'
     group by reviews_id
-   ");
+    having p.products_status != '0'  
+  ");
   if (!tep_db_num_rows($reviews_query)) tep_redirect(tep_href_link(FILENAME_REVIEWS));
   $reviews = tep_db_fetch_array($reviews_query);
 

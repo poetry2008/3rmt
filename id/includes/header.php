@@ -101,20 +101,19 @@
     select * 
     from (
     select c.categories_id, 
-          c.categories_status, 
+          cd.categories_status, 
           c.sort_order,
           cd.categories_name,
           cd.site_id
     from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
     where c.parent_id = '0' 
-      
-      and c.categories_status = '0' 
       and c.categories_id = cd.categories_id 
       and cd.language_id = '" . (int)$languages_id . "' 
     order by site_id desc
     ) c
     where site_id='".SITE_ID."' or site_id='0'
     group by categories_id
+    having c.categories_status != '1' 
     order by sort_order, categories_name
   ");
   $categories_array = '<select name="categories_id" class="header_search_select">'."\n";

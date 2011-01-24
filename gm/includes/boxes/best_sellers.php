@@ -12,12 +12,12 @@
                         p.products_ordered,
                         pd.products_viewed,
                         pd.products_name,
+                        pd.products_status, 
                         pd.products_description,
                         pd.site_id
         from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION .  " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " .  TABLE_CATEGORIES . " c 
         where (pd.site_id = '0'
           or pd.site_id = '".SITE_ID."' )
-          and p.products_status != '0' 
           and p.products_id = pd.products_id 
           and pd.language_id = '" . $languages_id . "' 
           and p.products_id = p2c.products_id 
@@ -29,6 +29,7 @@
       where site_id = '0'
          or site_id = '".SITE_ID."' 
       group by products_id
+      having p.products_status != '0' 
       order by products_viewed desc, products_name 
       limit " . MAX_DISPLAY_BESTSELLERS);
     if (tep_db_num_rows($best_sellers_query) == 0) {
@@ -39,13 +40,13 @@
                           p.products_id, 
                           p.products_image, 
                           pd.products_name, 
-                          pd.products_description, 
+                          pd.products_description,
+                          pd.products_status,
                           pd.products_viewed,
                           pd.site_id
           from ".TABLE_PRODUCTS." p, ".TABLE_PRODUCTS_DESCRIPTION." pd 
         where (pd.site_id = '0'
           or pd.site_id = '".SITE_ID."' )
-          and p.products_status != '0' 
           and p.products_ordered > 0 
           and p.products_id = pd.products_id 
           and pd.language_id = '" .  $languages_id . "' 
@@ -57,6 +58,7 @@
            or site_id = '".SITE_ID."' 
         group by products_id
         order by products_viewed desc 
+        having p.products_status != '0' 
         limit ".MAX_DISPLAY_BESTSELLERS
       ); 
     }
@@ -75,7 +77,7 @@
         from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION .  " pd 
         where (pd.site_id = '0'
           or pd.site_id = '".SITE_ID."' )
-          and p.products_status != '0' 
+          and pd.products_status != '0' 
           and p.products_ordered > 0 
           and p.products_id = pd.products_id 
           and pd.language_id = '" .  $languages_id . "' 

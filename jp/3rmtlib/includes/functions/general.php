@@ -200,12 +200,7 @@ function forward404Unless($condition)
   function tep_get_products_stock($products_id) {
     $products_id = tep_get_prid($products_id);
     //ccdd
-    $stock_query = tep_db_query("
-        select products_quantity, 
-               products_status 
-        from " . TABLE_PRODUCTS . " 
-        where products_id = '" . (int)$products_id . "'
-    ");
+    $stock_query = tep_db_query(" select * from (select p.products_quantity, pd.products_status, p.products_id, pd.site_id from " . TABLE_PRODUCTS . " p , ".TABLE_PRODUCTS_DESCRIPTION." pd where p.products_id = pd.products_id and p.products_id = '" . (int)$products_id . "' order by pd.site_id DESC) c where site_id = ".SITE_ID." or site_id = 0 group by products_id");
     $stock_values = tep_db_fetch_array($stock_query);
 
     return ($stock_values['products_status'] == '1') ? $stock_values['products_quantity'] : 0;
@@ -519,7 +514,7 @@ function forward404Unless($condition)
       ");
     } else {
 //ccdd
-      $products_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c where p.products_id = p2c.products_id and p.products_status != '0' and p2c.categories_id = '" . (int)$category_id . "'");
+      $products_query = tep_db_query("select count(*) as total from " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, ".TABLE_PRODUCTS_DESCRIPTION." pd where p.products_id = pd.products_id and p.products_id = p2c.products_id and pd.products_status != '0' and p2c.categories_id = '" . (int)$category_id . "'");
     }
     $products = tep_db_fetch_array($products_query);
     $products_count += $products['total'];
@@ -1604,7 +1599,7 @@ function forward404Unless($condition)
     $categories_ids = array();
     $categories = array();
     // ccdd
-  $categories_query = tep_db_query("select * from `" . TABLE_CATEGORIES . "`");
+  $categories_query = tep_db_query("select * from (select c.parent_id, cd.site_id, cd.categories_status, c.categories_id from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd  where c.categories_id = cd.categories_id order by site_id DESC) c  where site_id = ".SITE_ID." or site_id = 0 group by categories_id");
   while($category = tep_db_fetch_array($categories_query)){
     if($category['categories_status']){
       $categories_ids[] = $category['categories_id'];
@@ -1612,7 +1607,6 @@ function forward404Unless($condition)
       $categories[] = $category;
     }
   }
-
   if($categories){
     while(1) { 
             foreach($categories as $key => $category){
@@ -1644,8 +1638,8 @@ function forward404Unless($condition)
   
   function tep_get_disabled_products(){
     $products_ids = array();
-    // ccdd
-  $products_query = tep_db_query("select p.products_id from `" . TABLE_CATEGORIES . "` c," . TABLE_PRODUCTS . " p, "  . TABLE_PRODUCTS_TO_CATEGORIES . " p2c where p.products_id = p2c.products_id and p2c.categories_id = c.categories_id and c.categories_id in".tep_not_in_disabled_categories());
+    // ccdd 
+    $products_query = tep_db_query("select p.products_id from `" . TABLE_CATEGORIES . "` c," . TABLE_PRODUCTS . " p, "  . TABLE_PRODUCTS_TO_CATEGORIES . " p2c where p.products_id = p2c.products_id and p2c.categories_id = c.categories_id and c.categories_id in".tep_not_in_disabled_categories());
   while($product = tep_db_fetch_array($products_query)){
     $products_ids[] = $product['products_id'];
   }
@@ -2185,7 +2179,7 @@ function forward404Unless($condition)
         $metaQuery .= "AND categories.categories_id = categories_description.categories_id ";
         $metaQuery .= "AND categories_description.language_id = ".TABLE_LANGUAGES.".languages_id ";
         $metaQuery .= "AND products.manufacturers_id = manufacturers.manufacturers_id ";
-        $metaQuery .= "AND products.products_status != '0' ";
+        $metaQuery .= "AND products_description.products_status != '0' ";
         $metaQuery .= "AND ".TABLE_CONFIGURATION.".configuration_key = 'DEFAULT_LANGUAGE' ";
         $metaQuery .= "AND ".TABLE_LANGUAGES.".code = ".TABLE_CONFIGURATION.".configuration_value ";
         $metaQuery .= "AND ".TABLE_CONFIGURATION.".site_id= '".SITE_ID."' ";
@@ -2498,7 +2492,7 @@ function tep_unlink_temp_dir($dir)
   function tep_get_category_by_id($cid, $site_id, $lid, $default = true){
     $sql = "
         select c.categories_id,
-               c.categories_status,
+               cd.categories_status,
                c.categories_image,
                c.parent_id,
                c.sort_order,
@@ -2532,9 +2526,10 @@ function tep_unlink_temp_dir($dir)
     return $category;
   }
 
-  function tep_get_product_by_id($pid,$site_id, $lid, $default = true){
+  function tep_get_product_by_id($pid,$site_id, $lid, $default = true){ 
+    if ($default) {
     $sql = "
-        SELECT p.products_id, 
+        SELECT * FROM (SELECT p.products_id, 
                p.products_quantity, 
                p.products_model, 
                p.products_image, 
@@ -2545,7 +2540,7 @@ function tep_unlink_temp_dir($dir)
                p.products_date_added, 
                p.products_date_available, 
                p.products_weight,
-               p.products_status,
+               pd.products_status,
                p.products_tax_class_id, 
                p.manufacturers_id,
                p.products_ordered,
@@ -2566,17 +2561,50 @@ function tep_unlink_temp_dir($dir)
                pd.products_viewed
         FROM " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
         WHERE p.products_id = '" . $pid . "' 
-          AND p.products_status != '0' 
+          AND pd.products_id = '" .  $pid . "'" . " 
+          AND pd.language_id ='" . $lid . "' 
+        ORDER BY pd.site_id DESC
+        ) c WHERE  site_id = '0' OR site_id = '".$site_id."'
+        GROUP BY products_id HAVING c.products_status != '0' 
+        ";
+    } else {
+    $sql = "
+        SELECT p.products_id, 
+               p.products_quantity, 
+               p.products_model, 
+               p.products_image, 
+               p.products_image2, 
+               p.products_image3, 
+               p.products_price, 
+               p.products_price_offset,
+               p.products_date_added, 
+               p.products_date_available, 
+               p.products_weight,
+               pd.products_status,
+               p.products_tax_class_id, 
+               p.manufacturers_id,
+               p.products_ordered,
+               p.products_bflag,
+               p.products_cflag,
+               p.products_small_sum,
+               p.option_type,
+               p.products_attention_1, 
+               p.products_attention_2, 
+               p.products_attention_3, 
+               p.products_attention_4, 
+               p.products_attention_5, 
+               pd.language_id,
+               pd.products_name, 
+               pd.products_description,
+               pd.site_id,
+               pd.products_url,
+               pd.products_viewed
+        FROM " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
+        WHERE p.products_id = '" . $pid . "' 
+          AND pd.products_status != '0' 
           AND pd.products_id = '" .  $pid . "'" . " 
           AND pd.language_id ='" . $lid . "' 
           "; 
-    if ($default) {
-      $sql .= "
-        AND (pd.site_id = '0'
-         OR pd.site_id = '".$site_id."')
-        ORDER BY pd.site_id DESC
-        ";
-    } else {
       $sql .= "
           AND pd.site_id='" . $site_id . "' 
       ";
@@ -2758,8 +2786,8 @@ function tep_orders_status_finished($osid){
     }
     return $categories;
   }
-function tep_show_warning($categories_id) {
-  $categories_query = tep_db_query("select * from " . TABLE_CATEGORIES . " where categories_id='" . $categories_id . "' LIMIT 1");
+function tep_show_warning($categories_id, $languages_id = 4) {
+  $categories_query = tep_db_query("select * from (select c.categories_id, c.parent_id, cd.categories_status, cd.site_id, cd.categories_name, c.sort_order from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id = cd.categories_id and cd.language_id = '".$languages_id."' and c.categories_id = '".$categories_id."' order by site_id DESC) c where site_id = '".SITE_ID."' or site_id = 0 group by categories_id order by sort_order, categories_name");
   $categories = tep_db_fetch_array($categories_query);
   if ($categories) {
     if ($categories['categories_status'] != '0') {

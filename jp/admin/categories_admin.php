@@ -35,11 +35,11 @@ if (isset($_GET['action']) && $_GET['action']) {
       tep_redirect(tep_href_link(FILENAME_CATEGORIES_ADMIN, 'cPath=' . $HTTP_GET_VARS['cPath'] . '&pID=' .$products_id));
       break;
     case 'toggle':
-      require('includes/set/toggle.php');
+      //require('includes/set/toggle.php');
       tep_redirect(tep_href_link(FILENAME_CATEGORIES_ADMIN, 'cPath=' . $HTTP_GET_VARS['cPath']));
       break;
     case 'setflag':
-      require('includes/set/setflag.php');
+      //require('includes/set/setflag.php');
       tep_redirect(tep_href_link(FILENAME_CATEGORIES_ADMIN, 'cPath=' . $_GET['cPath']));
       break;
     }

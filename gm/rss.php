@@ -67,9 +67,9 @@ echo "<!-- RSS for " . STORE_NAME . ", generated on " . date("r") . " -->\n";
 <?php
 // Create SQL statement
 if ($_GET['cPath'] != "") {
-  $sql = "SELECT p.products_id, products_model, products_image, products_price, products_tax_class_id FROM products p, products_to_categories pc WHERE p.products_id = pc.products_id AND pc.categories_id = '" . $_GET['cPath'] . "' AND products_status != '0' ORDER BY products_id DESC LIMIT " . MAX_DISPLAY_SEARCH_RESULTS;
+  $sql = "SELECT p.products_id, products_model, products_image, products_price, products_tax_class_id FROM products p, products_to_categories pc, products_description pd WHERE p.products_id = pc.products_id AND pc.categories_id = '" . $_GET['cPath'] . "' ORDER BY products_id DESC LIMIT " . MAX_DISPLAY_SEARCH_RESULTS;
 } else {
-  $sql = "SELECT products_id, products_model, products_image, products_price,  products_tax_class_id FROM products WHERE products_status != '0' ORDER BY products_id DESC LIMIT " . MAX_DISPLAY_SEARCH_RESULTS;
+  $sql = "SELECT p.products_id, p.products_model, p.products_image, p.products_price, p.products_tax_class_id FROM products p ORDER BY products_id DESC LIMIT " . MAX_DISPLAY_SEARCH_RESULTS;
 }
 // Execute SQL query and get result
 //ccdd
@@ -96,7 +96,8 @@ while ($row = mysql_fetch_array($sql_result)) {
   $price = $currencies->format($price);}
 
   $sql2 = "SELECT products_name, 
-                  products_description 
+                  products_description,
+                  products_status
            FROM ".TABLE_PRODUCTS_DESCRIPTION." 
            WHERE products_id = '$id' 
              AND language_id = '$lang_id' 
@@ -107,7 +108,9 @@ while ($row = mysql_fetch_array($sql_result)) {
   //ccdd
   $sql2_result = mysql_query($sql2,$connection) or die("Couldn't execute query.");
   $row2 = mysql_fetch_array($sql2_result);
-  
+  if ($row2['products_status'] == 0) {
+    continue; 
+  }
   $name = $row2["products_name"];
   
   $desc = $row2['products_description'];

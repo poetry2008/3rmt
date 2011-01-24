@@ -39,12 +39,12 @@
            p.products_tax_class_id, 
            p.products_image, 
            p.products_date_added,
+           pd.products_status, 
            pd.site_id
     from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
     where 
       (p.products_price_offset != 0 and not isnull(p.products_price_offset) or p.products_small_sum != '') 
       and p.products_id not in".tep_not_in_disabled_products()." 
-      and p.products_status != '0' 
       and p.products_id = pd.products_id 
       and pd.language_id = '" . $languages_id . "' 
     ORDER by pd.site_id DESC
@@ -52,6 +52,7 @@
   where site_id = '0'
      or site_id = '".SITE_ID."'
   group by products_id
+  having p.products_status != '0' 
   order by products_date_added DESC
   ";
   $specials_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SPECIAL_PRODUCTS, $specials_query_raw, $specials_numrows);

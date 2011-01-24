@@ -513,8 +513,9 @@
                      p.products_cflag, 
                      p.products_small_sum 
               from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
-              where p.products_status != '0' 
-                and p.products_id = '" . $order->products[$i]['id'] . "' 
+              where 
+              -- p.products_status != '0' and 
+                p.products_id = '" . $order->products[$i]['id'] . "' 
                 and pd.products_id = p.products_id 
                 and pd.site_id = '0'
                 and pd.language_id = '" . $languages_id . "'");
