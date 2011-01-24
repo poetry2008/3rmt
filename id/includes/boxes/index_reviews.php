@@ -40,7 +40,7 @@ if (isset($HTTP_GET_VARS['products_id'])) {
 
   if ($random_product) {
 // display random review box
-    $review_query = tep_db_query("select substring(reviews_text, 1, 80) as reviews_text from " . TABLE_REVIEWS_DESCRIPTION . " where reviews_id = '" . $random_product['reviews_id'] . "' and languages_id = '" . $languages_id . "'");
+    $review_query = tep_db_query("select substring(reviews_text, 1, 90) as reviews_text from " . TABLE_REVIEWS_DESCRIPTION . " where reviews_id = '" . $random_product['reviews_id'] . "' and languages_id = '" . $languages_id . "'");
     $review = tep_db_fetch_array($review_query);
 
     $review = htmlspecialchars($review['reviews_text']);
