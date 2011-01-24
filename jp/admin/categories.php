@@ -27,6 +27,12 @@
       case 'toggle':
           if ($_GET['cID']) {
             $cID = intval($_GET['cID']);
+            $site_id = (isset($_GET['site_id']))?$_GET['site_id']:0;
+            if ($site_id == 0) {
+              tep_set_all_category_status($cID, $_GET['status']); 
+              tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))));
+            }
+            
             if (!tep_check_categories_exists($cID, $_GET['site_id'])) {
               tep_create_site_categories($cID, $_GET['site_id']);  
             }
@@ -45,6 +51,12 @@
           tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))));
           break;
       case 'setflag':
+        $site_id = (isset($_GET['site_id']))?$_GET['site_id']:0;  
+        if ($site_id == 0) {
+          tep_set_all_product_status($_GET['pID'], $_GET['flag']); 
+          tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $_GET['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))));
+        }
+        
         if (!tep_check_products_exists($_GET['pID'], $_GET['site_id'])) {
           tep_create_products_by_site_id($_GET['pID'], $_GET['site_id']);        
         }
@@ -1845,7 +1857,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>
                 <td valign="top">
-                <?php tep_site_filter(FILENAME_CATEGORIES);?> 
+                <?php tep_site_filter(FILENAME_CATEGORIES, true);?> 
                 <table border="0" width="100%" cellspacing="0" cellpadding="2">
                     <tr class="dataTableHeadingRow">
               <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CATEGORIES_PRODUCTS; ?></td>

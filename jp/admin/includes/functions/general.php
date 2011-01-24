@@ -12,7 +12,7 @@ function tep_minitor_info(){
     $fiftheenbefore = date('Y-m-d H:i:s',time()-60*15);
     //$logIn15 = tep_db_query("select * from monitor_log where ng = 1 and m_id =".$monitor['id'].' and created_at > "'.$fiftheenbefore.'"');
     $logIn15 = tep_db_query("select * from monitor_log where ng = 1 and m_id
-        ='".$monitor['id']."'");
+        ='".$monitor['id']."' order by created_at desc");
     $tmpRow = tep_db_fetch_array($logIn15);
     if(mysql_num_rows($logIn15)){ //十五分钟内多于两件
 
@@ -25,7 +25,14 @@ function tep_minitor_info(){
       }
       $tmpString .=  'id="moni_'.$tmpRow['name'].'" class="monitor"
         href="'.$monitor['url'].'"
-        target="_blank">こちら</a>をクリックして状況を確認してください。</div>';
+        target="_blank">こちら</a>をクリックして状況を確認してください。<br>';
+      //
+      $tmpString .= '回線障害の最終日： ' . $tmpRow['name'] . ' <a ';
+      $tmpString .= 'class="monitor_right" id="moni_'.$tmpRow['name'].'"
+        href="'.$monitor['url'].'"
+        target="_blank">'.date('m月d日H時i分s秒',strtotime($tmpRow['created_at'])).'</a></div>';
+
+      
       $tmpString2 = "<div class='monitor_error' style='display:none;' id='minitor_".$monitor['name']."'>";
       $tmpString2.= '<table width="100%"><tr><td>'.$tmpRow['created_at']."</td><td
       width='50%'>".nl2br($tmpRow['obj'])."</td></tr>";
@@ -2310,7 +2317,7 @@ function tep_get_image_document_image($document_id)
     return $sites_id;
   }
 
-  function tep_site_filter($filename){
+  function tep_site_filter($filename, $ca_single = false){
     global $_GET, $_POST;
     ?>
       <div id="tep_site_filter">
@@ -2320,7 +2327,11 @@ function tep_get_image_document_image($document_id)
             ?>">all</a></span>
           <?php } else { ?>
             <span><a href="<?php 
-              echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'oID', 'rID', 'cID')));
+              if ($ca_single) {
+                echo tep_href_link($filename, tep_get_all_get_params(array('site_id')));
+              } else {
+                echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'oID', 'rID', 'cID')));
+              }
             ?>">all</a></span> 
             <?php } ?>
           <?php foreach (tep_get_sites() as $site) {?>
@@ -2328,7 +2339,11 @@ function tep_get_image_document_image($document_id)
 <span class="site_filter_selected"><?php echo $site['romaji'];?></span>
             <?php } else {?>
 <span><a href="<?php 
-  echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'oID', 'rID', 'cID', 'pID')) . 'site_id=' . $site['id']);
+  if ($ca_single) {
+    echo tep_href_link($filename, tep_get_all_get_params(array('site_id')) . 'site_id=' . $site['id']);
+  } else {
+    echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'oID', 'rID', 'cID', 'pID')) . 'site_id=' . $site['id']);
+  }
 ?>"><?php echo $site['romaji'];?></a></span>
             <?php }
            }
@@ -3832,4 +3847,37 @@ function tep_set_product_status_by_site_id($products_id, $status, $site_id) {
     } else {
       return -1;
     }
+}
+
+function tep_set_all_category_status($cID, $cstatus)
+{
+  $site_arr = array(0); 
+  $site_query = tep_db_query("select * from ".TABLE_SITES); 
+  while ($site_res = tep_db_fetch_array($site_query)) {
+    $site_arr[] = $site_res['id']; 
+  }
+  
+  foreach ($site_arr as $key => $value) {
+    if (!tep_check_categories_exists($cID, $value)) {
+      tep_create_site_categories($cID, $value);   
+    }
+    tep_db_query("UPDATE `".TABLE_CATEGORIES_DESCRIPTION."` SET `categories_status` = '".$cstatus."' where `categories_id` = '".$cID."' and `site_id` = '".$value."'"); 
+  }
+}
+
+function tep_set_all_product_status($pID, $pstatus)
+{
+  $site_arr = array(0); 
+  $site_query = tep_db_query("select * from ".TABLE_SITES); 
+  while ($site_res = tep_db_fetch_array($site_query)) {
+    $site_arr[] = $site_res['id']; 
+  }
+  
+  foreach ($site_arr as $key => $value) {
+    if (!tep_check_products_exists($pID, $value)) {
+      tep_create_products_by_site_id($pID, $value); 
+    }
+     
+    tep_db_query("UPDATE `".TABLE_PRODUCTS_DESCRIPTION."` SET `products_status` = '".$pstatus."' where `products_id` = '".$pID."' and `site_id` = '".$value."'");  
+  }
 }
