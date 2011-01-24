@@ -52,7 +52,7 @@
   // default sort
   $srDefaultSort = 4;
   // default max
-  $srDefaultMax = 0;
+  $srDefaultMax = "";
   // default status
   $srDefaultStatus = '2,5';
   // default compare
