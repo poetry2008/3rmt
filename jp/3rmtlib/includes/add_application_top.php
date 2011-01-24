@@ -398,7 +398,8 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
       && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS
       && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS_INFO
       && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PAGE
-      && ((!isset($_GET['manufacturers_id']) && basename($_SERVER['SCRIPT_NAME']) != FILENAME_DEFAULT))
+      //&& ((!isset($_GET['manufacturers_id']) && basename($_SERVER['SCRIPT_NAME']) != FILENAME_DEFAULT))
+      && !isset($_GET['manufacturers_id']) 
     ) {
       tep_parseURI();
     }
