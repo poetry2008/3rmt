@@ -641,3 +641,10 @@ color:#ff0000;
 .text_color{
 color:#fff;
 }
+td.big_text{
+font-size: 16px;
+
+}
+td.big_text a{
+font-size: 16px;
+}
