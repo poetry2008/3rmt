@@ -2317,7 +2317,7 @@ function tep_get_image_document_image($document_id)
     return $sites_id;
   }
 
-  function tep_site_filter($filename){
+  function tep_site_filter($filename, $ca_single = false){
     global $_GET, $_POST;
     ?>
       <div id="tep_site_filter">
@@ -2327,7 +2327,11 @@ function tep_get_image_document_image($document_id)
             ?>">all</a></span>
           <?php } else { ?>
             <span><a href="<?php 
-              echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'oID', 'rID', 'cID')));
+              if ($ca_single) {
+                echo tep_href_link($filename, tep_get_all_get_params(array('site_id')));
+              } else {
+                echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'oID', 'rID', 'cID')));
+              }
             ?>">all</a></span> 
             <?php } ?>
           <?php foreach (tep_get_sites() as $site) {?>
@@ -2335,7 +2339,11 @@ function tep_get_image_document_image($document_id)
 <span class="site_filter_selected"><?php echo $site['romaji'];?></span>
             <?php } else {?>
 <span><a href="<?php 
-  echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'oID', 'rID', 'cID', 'pID')) . 'site_id=' . $site['id']);
+  if ($ca_single) {
+    echo tep_href_link($filename, tep_get_all_get_params(array('site_id')) . 'site_id=' . $site['id']);
+  } else {
+    echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'oID', 'rID', 'cID', 'pID')) . 'site_id=' . $site['id']);
+  }
 ?>"><?php echo $site['romaji'];?></a></span>
             <?php }
            }
