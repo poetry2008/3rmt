@@ -542,6 +542,14 @@
   header("Cache-Control: post-check=0, pre-check=0", false);
   # HTTP/1.0
   header("Pragma: no-cache");
+  function check_torihiki_date_error($oid){
+    $query = tep_db_query("select * from " . TABLE_ORDERS . " where orders_id='" . $oid . "'");
+    $order = tep_db_fetch_array($query);
+    if ($order['torihiki_date'] == '0000-00-00 00:00:00') {
+      return true;
+    }
+    return false;
+  }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
@@ -563,7 +571,7 @@
   var base_url = '<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('questions_type')));?>';
   
   // 非完成状态的订单不显示最终确认
-  var show_q_8_1_able  = <?php echo tep_orders_finished($_GET['oID']) && $order->tori['date'] !== '0000-00-00 00:00:00'?'true':'false';?>;
+  var show_q_8_1_able  = <?php echo tep_orders_finished($_GET['oID']) && !check_torihiki_date_error($_GET['oID']) ?'true':'false';?>;
   
   var cfg_last_customer_action = '<?php echo LAST_CUSTOMER_ACTION;?>';
 
