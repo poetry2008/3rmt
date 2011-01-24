@@ -5,17 +5,18 @@ require('includes/application_top.php');
 $category_arr = array();
 $tmp_arr = array();
 
-$category_arr[] = 168;
-$category_arr[] = 169;
-$category_arr[] = 190;
+//$category_arr[] = 168;
+//$category_arr[] = 169;
+//$category_arr[] = 190;
 
-foreach ($category_arr as $key => $value) {
-  $tmp_arr = array_merge($tmp_arr, get_category_children_id($value));
-}
+//foreach ($category_arr as $key => $value) {
+  //$tmp_arr = array_merge($tmp_arr, get_category_children_id($value));
+//}
 //var_dump($tmp_arr);
 // 取得了全部需要处理的分类
-$category_arr = array_merge($category_arr, $tmp_arr);
+//$category_arr = array_merge($category_arr, $tmp_arr);
 
+$category_arr = array(198, 394, 284);
 if (empty($category_arr)) {
   echo 'has no category'; 
   exit;
