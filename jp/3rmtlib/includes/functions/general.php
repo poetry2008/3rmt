@@ -2158,6 +2158,11 @@ function forward404Unless($condition)
     $keywords    = str_replace($search, $replace, $keywords);
     $description = str_replace($search, $replace, $description);
     //
+    
+    $title = str_replace('#SEO_PAGE#', '', $title); 
+    $keywords = str_replace('#SEO_PAGE#', '', $keywords); 
+    $description = str_replace('#SEO_PAGE#', '', $description); 
+     
     $title = str_replace(' &raquo; ', ' ', $title); 
     $keywords = str_replace(' &raquo; ', ' ', $keywords); 
     $description = str_replace(' &raquo; ', ' ', $description); 
