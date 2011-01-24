@@ -36,10 +36,6 @@
 
 function forward404()
 { 
-  print_r($_SERVER);
-  print_r(debug_backtrace());
-  
-  exit;
   header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
   require(DIR_WS_MODULES  . '404.html');
   exit;
