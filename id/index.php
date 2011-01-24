@@ -82,7 +82,7 @@ if ($category_depth == 'nested') {
     if (count($cPath_array) > 1) {
       $top_c = tep_get_top_category_by_cpath($cPath_array); 
       if ($top_c) {
-        echo $top_c['categories_name'].'&nbsp;&nbsp;'; 
+        echo $top_c['categories_name'].'&nbsp;'; 
       }
     }
     echo $seo_category['categories_name'];
@@ -184,9 +184,9 @@ if ($category_depth == 'nested') {
   <?php
    if (isset($_GET['cPath'])) {
       if ($seo_category['seo_description']) {
-	    echo '<h2 class="pageHeading_long">';
-		echo '<span class="game_t">'.$seo_category['seo_name'].'について'.'</span>';
-		echo '</h2>';
+      echo '<h2 class="pageHeading_long">';
+    echo '<span class="game_t">'.$seo_category['seo_name'].'について'.'</span>';
+    echo '</h2>';
         echo '<div class="comment">'.$seo_category['seo_description'].'</div>'; 
       }
       if (!empty($seo_category['text_information'])) {
