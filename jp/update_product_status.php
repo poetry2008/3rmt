@@ -7,4 +7,5 @@
     $update_sql = "update `".TABLE_PRODUCTS_DESCRIPTION."` set `products_status` = '".$product_res['products_status']."' where `products_id`= '".$product_res['products_id']."'"; 
     tep_db_query($update_sql); 
   }
+  echo 'finish';
 ?>
