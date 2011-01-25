@@ -2486,6 +2486,9 @@ tep_display_google_results()
                 . ' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=move_product'.'&page='.$_GET['page']) . '">' . tep_image_button('button_move.gif', IMAGE_MOVE) . '</a> <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=copy_to') . '">' . tep_image_button('button_copy_to.gif', IMAGE_COPY_TO) . '</a>'
                 . ' <a href="' . tep_href_link(FILENAME_REVIEWS, 'cPath=' . $cPath . '&products_id=' . $pInfo->products_id . '&action=new') . '">' . tep_image_button('button_reviews.gif', IMAGE_REVIEWS) . '</a>');
             foreach(tep_get_sites() as $site){
+              if (($site['id'] == 1) || ($site['id'] ==2)) {
+                continue; 
+              }
               $contents[] = array('text' => '<b>' . $site['romaji'] . '</b>');
               $contents[] = array('align' => 'left', 'text' => '<a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id . '&action=new_product'. '&site_id='.  $site['id'].'&page='.$_GET['page'].'&rdirect=all')  .'">' .  tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>' . ( tep_products_description_exist($pInfo->products_id, $site['id'], $languages_id) ? ' <a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id .  '&action=delete_product_description&site_id='.$site['id'].'&page='.$_GET['page'].'&rdirect=all') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>'
                 : ''
