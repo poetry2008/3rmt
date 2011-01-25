@@ -16,6 +16,9 @@ a img {
 border: 0;
 vertical-align:middle;
 }
+.infoBoxContent a img{
+vertical-align: top;
+}
 img{
 vertical-align:middle;
 }
