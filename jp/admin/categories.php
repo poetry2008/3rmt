@@ -321,20 +321,32 @@
           tep_reset_cache_block('categories');
           tep_reset_cache_block('also_purchased');
         }
-
-        tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $categories_id));
+        
+        if (isset($_GET['rdirect'])) {
+          tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&cID=' . $categories_id.'&site_id=0'));
+        } else {
+          tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&cID=' . $categories_id.'&site_id='.$site_id));
+        }
         break;
       case 'delete_product_description_confirm':
         if ($_GET['pID'] && $_GET['site_id']) {
           tep_db_query("delete from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$_GET['pID']."' && site_id = '".(int)$_GET['site_id']."'");
         }
-        tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID='.  (int)$_GET['pID'].'&site_id='.(int)$_GET['site_id']));
+        if (isset($_GET['rdirect'])) {
+          tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&pID='.  (int)$_GET['pID'].'&site_id=0'));
+        } else {
+          tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID='.  (int)$_GET['pID'].'&site_id='.(int)$_GET['site_id']));
+        }
         break;
       case 'delete_category_description_confirm':
         if ($_GET['cID'] && $_GET['site_id']) {
           tep_db_query("delete from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id = '".$_GET['cID']."' && site_id = '".(int)$_GET['site_id']."'");
         }
-        tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID='.  (int)$_GET['cID'].'&site_id='.(int)$_GET['site_id']));
+        if (isset($_GET['rdirect'])) {
+          tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&cID='.  (int)$_GET['cID'].'&site_id=0'));
+        } else {
+          tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID='.  (int)$_GET['cID'].'&site_id='.(int)$_GET['site_id']));
+        }
         break;
       case 'delete_category_confirm':
         if ($_POST['categories_id']) {
@@ -730,8 +742,12 @@
             tep_reset_cache_block('categories');
             tep_reset_cache_block('also_purchased');
           }
-
-          tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&page='.$_GET['page'].'&pID=' . $products_id.'&site_id='.$site_id));
+          
+          if (isset($_POST['rdirect'])) {
+            tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&page='.$_GET['page'].'&pID=' . $products_id.'&site_id=0'));
+          } else {
+            tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&page='.$_GET['page'].'&pID=' . $products_id.'&site_id='.$site_id));
+          }
         }
         break;
       case 'copy_to_confirm':
@@ -1087,9 +1103,15 @@ function change_qt(ele){
           <td><table border="0" cellspacing="0" cellpadding="2">
               <tr>
                 <td class="main" valign="top"><?php echo $site_id?('<br><b>'.tep_get_site_name_by_id($site_id).'</b>'):'';?></td>
-                <td class="main" align="right"><?php echo
-                tep_image_submit('button_preview.gif', IMAGE_PREVIEW) .
-                '&nbsp;&nbsp;<a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&page='.$_GET['page'].'&site_id='.$site_id.'&pID=' . (isset($_GET['pID'])?$_GET['pID']:'')) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; ?></td>
+                <td class="main" align="right"><?php 
+                echo tep_image_submit('button_preview.gif', IMAGE_PREVIEW) .  '&nbsp;&nbsp;';
+                if (isset($_GET['rdirect'])) {
+                  echo '<a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&page='.$_GET['page'].'&site_id=0&pID=' . (isset($_GET['pID'])?$_GET['pID']:'')) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; 
+                } else {
+                  echo '<a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&page='.$_GET['page'].'&site_id='.$site_id.'&pID=' . (isset($_GET['pID'])?$_GET['pID']:'')) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; 
+                }
+                ?> 
+                </td>
               </tr>
               <tr>
                 <td colspan="2"><fieldset>
@@ -1496,9 +1518,20 @@ function change_qt(ele){
           <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
         </tr>
         <tr>
-          <td class="main" align="right"><?php echo tep_image_submit('button_preview.gif', IMAGE_PREVIEW) . '&nbsp;&nbsp;<a class = "new_product_reset" href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&page='.$_GET['page'].'&site_id='.$site_id.'&pID=' . (isset($_GET['pID'])?$_GET['pID']:'')) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; ?></td>
+          <td class="main" align="right">
+          <?php 
+            if (isset($_GET['rdirect'])) {
+              echo tep_draw_hidden_field('rdirect', 'all'); 
+            }
+            echo tep_image_submit('button_preview.gif', IMAGE_PREVIEW) .  '&nbsp;&nbsp;'; 
+            if (isset($_GET['rdirect'])) {
+              echo '<a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&page='.$_GET['page'].'&site_id=0&pID=' . (isset($_GET['pID'])?$_GET['pID']:'')) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; 
+            } else {
+              echo '<a class = "new_product_reset" href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&page='.$_GET['page'].'&site_id='.$site_id.'&pID=' . (isset($_GET['pID'])?$_GET['pID']:'')) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; 
+            }
+          ?>
+          </td>
         </tr>
-
 
           <?php echo tep_draw_hidden_field('products_date_added', (isset($pInfo->products_date_added) ? $pInfo->products_date_added : date('Y-m-d')));?>
           </form>
@@ -1827,7 +1860,13 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
       } else {
         echo tep_image_submit('button_insert.gif', IMAGE_INSERT);
       }
-      echo tep_draw_hidden_field('relate_products_id', $_POST['relate_products_id']); echo '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $cPath . '&pID=' . $_GET['pID'].'&site_id='.$_POST['site_id']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>';
+      echo tep_draw_hidden_field('relate_products_id', $_POST['relate_products_id']); 
+      echo '&nbsp;&nbsp;';
+      if (isset($_POST['rdirect'])) {
+        echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $cPath .  '&pID=' . $_GET['pID'].'&site_id=0') . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>';
+      } else {
+        echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $cPath . '&pID=' . $_GET['pID'].'&site_id='.$_POST['site_id']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>';
+      }
 ?></td>
           </form>
         </tr>
@@ -2201,7 +2240,11 @@ tep_display_google_results()
         $site_id = isset($_GET['site_id'])?$_GET['site_id']:0;
         $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_EDIT_CATEGORY . '</b>');
 
-        $contents = array('form' => tep_draw_form('categories', FILENAME_CATEGORIES, 'action=update_category&cPath=' . $cPath, 'post', 'enctype="multipart/form-data"') . tep_draw_hidden_field('categories_id', $cInfo->categories_id));
+        if (isset($_GET['rdirect'])) {
+          $contents = array('form' => tep_draw_form('categories', FILENAME_CATEGORIES, 'action=update_category&cPath=' .  $cPath.'&rdirect=all', 'post', 'enctype="multipart/form-data"') . tep_draw_hidden_field('categories_id', $cInfo->categories_id));
+        } else {
+          $contents = array('form' => tep_draw_form('categories', FILENAME_CATEGORIES, 'action=update_category&cPath=' . $cPath, 'post', 'enctype="multipart/form-data"') . tep_draw_hidden_field('categories_id', $cInfo->categories_id));
+        }
         $contents[] = array('text' => TEXT_EDIT_INTRO.($site_id?('<br><b>'.tep_get_site_name_by_id($site_id).'</b>'):''));
         $contents[] = array('text' => tep_draw_hidden_field('site_id', $site_id));
  
@@ -2228,7 +2271,11 @@ tep_display_google_results()
         $contents[] = array('text' => '<br>' . tep_image(tep_get_web_upload_dir($site_id).'categories/'. $cInfo->categories_image, $cInfo->categories_name) . '<br>' . tep_get_upload_dir($site_id). 'categories/<br><b>' . $cInfo->categories_image . '</b>');
         $contents[] = array('text' => '<br>' . TEXT_EDIT_CATEGORIES_IMAGE . '<br>' . tep_draw_file_field('categories_image'));
         $contents[] = array('text' => '<br>' . TEXT_EDIT_SORT_ORDER . '<br>' . tep_draw_input_field('sort_order', $cInfo->sort_order, 'size="2"'));
-        $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_save.gif', IMAGE_SAVE) . ' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+        if (isset($_GET['rdirect'])) {
+          $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_image_submit('button_save.gif', IMAGE_SAVE) . ' <a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' .  $cInfo->categories_id.'&site_id=0') . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+        } else {
+          $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_image_submit('button_save.gif', IMAGE_SAVE) . ' <a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' .  $cInfo->categories_id.'&site_id='.$site_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+        }
         break;
       case 'delete_category':
         $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_CATEGORY . '</b>');
@@ -2242,13 +2289,21 @@ tep_display_google_results()
         break;
       case 'delete_category_description':
         $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_CATEGORY . '</b>');
-
-        $contents = array('form' => tep_draw_form('categories', FILENAME_CATEGORIES, 'action=delete_category_description_confirm&cID=' . $_GET['cID'] . '&cPath=' . $cPath . '&site_id=' . $_GET['site_id'], 'post'));
+        
+        if (isset($_GET['rdirect'])) {
+          $contents = array('form' => tep_draw_form('categories', FILENAME_CATEGORIES, 'action=delete_category_description_confirm&cID=' . $_GET['cID'] .  '&cPath=' . $cPath . '&site_id=' . $_GET['site_id'].'&rdirect=all', 'post'));
+        } else {
+          $contents = array('form' => tep_draw_form('categories', FILENAME_CATEGORIES, 'action=delete_category_description_confirm&cID=' . $_GET['cID'] . '&cPath=' . $cPath . '&site_id=' . $_GET['site_id'], 'post'));
+        }
         $contents[] = array('text' => TEXT_DELETE_CATEGORY_INTRO);
         $contents[] = array('text' => '<br><b>' . $cInfo->categories_name . '</b>');
         //if ($cInfo->childs_count > 0) $contents[] = array('text' => '<br>' . sprintf(TEXT_DELETE_WARNING_CHILDS, $cInfo->childs_count));
         //if ($cInfo->products_count > 0) $contents[] = array('text' => '<br>' . sprintf(TEXT_DELETE_WARNING_PRODUCTS, $cInfo->products_count));
-        $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_image_submit('button_delete.gif', IMAGE_DELETE) . ' <a class="new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' .  $cInfo->categories_id.'&site_id='.$_GET['site_id']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+        if (isset($_GET['rdirect'])) {
+          $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_image_submit('button_delete.gif', IMAGE_DELETE) . ' <a class="new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' .  $cInfo->categories_id.'&site_id=0') . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+        } else {
+          $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_image_submit('button_delete.gif', IMAGE_DELETE) . ' <a class="new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' .  $cInfo->categories_id.'&site_id='.$_GET['site_id']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+        }
         break;
       case 'move_category':
         $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_MOVE_CATEGORY . '</b>');
@@ -2260,12 +2315,20 @@ tep_display_google_results()
         break;
       case 'delete_product_description':
         $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_PRODUCT . '</b>');
-        $contents = array('form' => tep_draw_form('products', FILENAME_CATEGORIES, 'action=delete_product_description_confirm&site_id=' .  $_GET['site_id'] . '&pID=' . $_GET['pID'] . '&cPath=' . $cPath, 'post'));
+        if (isset($_GET['rdirect'])) {
+          $contents = array('form' => tep_draw_form('products', FILENAME_CATEGORIES, 'action=delete_product_description_confirm&site_id=' .  $_GET['site_id'] . '&pID=' . $_GET['pID'] . '&cPath=' .  $cPath.'&rdirect=all', 'post'));
+        } else {
+          $contents = array('form' => tep_draw_form('products', FILENAME_CATEGORIES, 'action=delete_product_description_confirm&site_id=' .  $_GET['site_id'] . '&pID=' . $_GET['pID'] . '&cPath=' . $cPath, 'post'));
+        }
         $contents[] = array('text' => TEXT_DELETE_PRODUCT_INTRO);
         $contents[] = array('text' => '<br><b>' . $pInfo->products_name . '</b>');
 
         //$contents[] = array('text' => '<br>' . $product_categories_string);
-        $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_image_submit('button_delete.gif', IMAGE_DELETE) . ' <a class="new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id.'&site_id='.$_GET['site_id']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+        if (isset($_GET['rdirect'])) {
+          $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_image_submit('button_delete.gif', IMAGE_DELETE) . ' <a class="new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id.'&site_id='.$_GET['site_id'].'&rdirect=all') . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+        } else {
+          $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_image_submit('button_delete.gif', IMAGE_DELETE) . ' <a class="new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id.'&site_id='.$_GET['site_id']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+        }
         break;
       case 'delete_product':
         $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_PRODUCT . '</b>');
@@ -2374,9 +2437,7 @@ tep_display_google_results()
               $contents[] = array('text' => '<b>' . $site['romaji'] . '</b>');
               $contents[] = array(
                   'align' => 'left', 
-                  'text' => '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id . '&action=edit_category&site_id='.$site['id']) . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>'.
-                  (tep_categories_description_exist($cInfo->categories_id, $languages_id, $site['id']) 
-                   ? (' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id . '&action=delete_category_description&site_id='.$site['id']) . '">'.tep_image_button('button_delete.gif', IMAGE_DELETE).'</a>')
+                  'text' => '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id .  '&action=edit_category&site_id='.$site['id'].'&rdirect=all') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>'.  (tep_categories_description_exist($cInfo->categories_id, $languages_id, $site['id']) ? (' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $cPath . '&cID=' . $cInfo->categories_id .  '&action=delete_category_description&site_id='.$site['id'].'&rdirect=all') . '">'.tep_image_button('button_delete.gif', IMAGE_DELETE).'</a>')
                    :''
                    ));
             }
@@ -2426,8 +2487,7 @@ tep_display_google_results()
                 . ' <a href="' . tep_href_link(FILENAME_REVIEWS, 'cPath=' . $cPath . '&products_id=' . $pInfo->products_id . '&action=new') . '">' . tep_image_button('button_reviews.gif', IMAGE_REVIEWS) . '</a>');
             foreach(tep_get_sites() as $site){
               $contents[] = array('text' => '<b>' . $site['romaji'] . '</b>');
-              $contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=new_product'. '&site_id='. $site['id'].'&page='.$_GET['page'])  .'">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>' . (
-                tep_products_description_exist($pInfo->products_id, $site['id'], $languages_id) ? ' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=delete_product_description&site_id='.$site['id'].'&page='.$_GET['page']) . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>'
+              $contents[] = array('align' => 'left', 'text' => '<a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id . '&action=new_product'. '&site_id='.  $site['id'].'&page='.$_GET['page'].'&rdirect=all')  .'">' .  tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>' . ( tep_products_description_exist($pInfo->products_id, $site['id'], $languages_id) ? ' <a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id .  '&action=delete_product_description&site_id='.$site['id'].'&page='.$_GET['page'].'&rdirect=all') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>'
                 : ''
                     ) );
             }
