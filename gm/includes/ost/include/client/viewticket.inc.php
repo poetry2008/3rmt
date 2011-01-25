@@ -50,7 +50,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
   </tr>
   <tr>
     <td>
-    	<table class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
+      <table class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
           <tr>
              <td width="150">件名</td><td><?=Format::htmlchars($ticket->getSubject())?></td>
           </tr>
@@ -125,7 +125,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
     </div> 
     <div id="reply">
         <?if($ticket->isClosed()) {?>
-        <div class="msg">お問合せ内容を、メールでご返答いたします</div>
+        <div class="msg">返信する場合は、内容を入力し「送信」ボタンをクリックしてください。</div>
         <?}?>
         <form action="view.php?id=<?=$id?>#reply" name="reply" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?=$ticket->getExtId()?>">
