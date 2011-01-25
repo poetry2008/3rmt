@@ -36,6 +36,15 @@ if (empty($products_arr)) {
   exit;
 }
 
+foreach ($products_arr as $key => $value) {
+  $pro_first_query = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$value."' and site_id = '1'");
+  $pro_first_res = tep_db_fetch_array($pro_first_query); 
+  if ($pro_first_res) {
+    $update_zero_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_description = '".mysql_real_escape_string($pro_first_res['products_description'])."' where products_id = '".$value."' and site_id = '0';"; 
+    tep_db_query($update_zero_sql); 
+  }
+}
+
 foreach ($products_arr as $pkey => $pvalue) {
   $pro_exists_query = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$pvalue."' and site_id = '".SITE_ID."'");
   $pro_exists_num = tep_db_num_rows($pro_exists_query); 
