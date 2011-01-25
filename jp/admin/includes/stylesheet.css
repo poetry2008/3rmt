@@ -482,6 +482,10 @@ legend {
   background: #e42e2e;
 }
 
+#tep_site_filter .site_filter_selected a{
+  color: #fff;
+}
+
 .readonly{
   background: #ccc;
 }

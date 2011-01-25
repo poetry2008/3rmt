@@ -1879,18 +1879,27 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
               <tr>
                 <td class="pageHeading"><?php echo BOX_CATALOG_CATEGORIES_PRODUCTS; ?></td>
         <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
-        <?php echo tep_draw_form('search', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
           <td class="smallText" align="right">
-            <?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search', isset($_GET['search'])?$_GET['search']:'') . "\n"; ?>
+          <?php echo tep_draw_form('search', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
+            <table border="0">
+            <tr>
+              <td>
+                <?php 
+                echo tep_draw_hidden_field('site_id', isset($_GET['site_id'])?$_GET['site_id']:'0'); 
+                echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search', isset($_GET['search'])?$_GET['search']:'') . "\n"; 
+                ?>
+              </td>
+            </tr>
+            </table> 
+            </form>
           </td>
-        </form>
           <td class="smallText" align="right">
             <?php echo tep_draw_form('goto', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
             <table border="0"> 
             <tr>
               <td>
                 <?php 
-                echo tep_draw_hidden_field('site_id', ((isset($_GET['site_id']))?$_GET['site_id']:0)); 
+                echo tep_draw_hidden_field('site_id', isset($_GET['site_id'])?$_GET['site_id']:'0'); 
                 echo HEADING_TITLE_GOTO . ' ' .  tep_draw_pull_down_menu('cPath', tep_get_category_tree(), $current_category_id, 'onChange="document.forms.goto.submit();"') . "\n"; ?>
               </td>
             </tr>
@@ -2517,15 +2526,15 @@ tep_display_google_results()
             }
             //max min
             $inventory = tep_get_product_inventory($pInfo->products_id);
-            $contents[] = array('text' =>
-                '<br><br><b>'.TEXT_MAX.'&nbsp;:&nbsp;&nbsp;'.$inventory['max'].'</b>');
-            $contents[] = array('text' =>
-                '<b>'.TEXT_MIN.'&nbsp;:&nbsp;&nbsp;'.$inventory['min'].'</b>');
-            $contents[] = array(
-                'align' => 'left',
-                'text' => '<a href="'. tep_href_link(FILENAME_CATEGORIES, 'cPath=' .
-              $cPath . '&page='.$_GET['page'].'&pID=' . $pInfo->products_id . '&action=edit_inventory') .
-                '">'.tep_image_button('button_edit.gif', TEXT_INVENTORY) . '</a> ');
+            if (empty($_GET['site_id'])) {
+              $contents[] = array('text' =>
+                  '<br><br><b>'.TEXT_MAX.'&nbsp;:&nbsp;&nbsp;'.$inventory['max'].'</b>');
+              $contents[] = array('text' =>
+                  '<b>'.TEXT_MIN.'&nbsp;:&nbsp;&nbsp;'.$inventory['min'].'</b>');
+              $contents[] = array(
+                  'align' => 'left',
+                  'text' => '<a href="'. tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $cPath . '&page='.$_GET['page'].'&pID=' . $pInfo->products_id . '&action=edit_inventory') .  '">'.tep_image_button('button_edit.gif', TEXT_INVENTORY) . '</a> ');
+            }
             /*
             $keyword_sql = "select m.keyword from ".TABLE_CATEGORIES_TO_MISSION." c2m,".TABLE_MISSION." m
                             where m.id=c2m.mission_id and categories_id='".$cInfo->categories_id."'";
