@@ -1686,7 +1686,28 @@ function change_qt(ele){
     </tr>
     <tr>
       <td>
+<?php
+  //print_r($cpath_array);
+  //echo $categories_id;
+  
+  $dougyousya_array = array();
+  $cpath_array = explode('_', $_GET['cPath']);
+  $categories_id = $cpath_array[0];
+  $current_categories_id = $cpath_array[count($cpath_array)-1];
 
+  $dougyousya_query = tep_db_query("select * from set_dougyousya_categories sdc,set_dougyousya_names sdn where sdc.dougyousya_id=sdn.dougyousya_id and sdc.categories_id='".$categories_id."'");
+  while($d = tep_db_fetch_array($dougyousya_query)){
+    //$d['kakaku'] = tep_get_kakaku_by_products_id($current_categories_id, $_GET['pID']);
+    $d['price'] = get_dougyousya_history($_GET['pID'], $d['dougyousya_id']);
+    $dougyousya_array[] = $d;
+  }
+  if ($dougyousya_array) {
+    print_r($dougyousya_array);
+    $dougyousya = tep_db_fetch_array(tep_db_query("select * from set_products_dougyousya spd, set_dougyousya_names sdn where spd.dougyousya_id=sdn.dougyousya_id and spd.product_id='".$_GET['pID']."'"));
+    print_r($dougyousya);
+  }
+
+?>
 <!--<hr size="2" noshade>--><b><?php //価格数量変更機能
 if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) || !$_GET['origin'])) {
   echo '<table width="100%"><tr><td align="left">';
