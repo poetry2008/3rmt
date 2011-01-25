@@ -6,6 +6,17 @@
   require('includes/application_top.php');
   require(DIR_WS_ACTIONS.'index_top.php');
 ?>
+<script src="js/jquery-1.3.2.min.js"type="text/javascript"></script>
+<script type="text/javascript" >
+	function replace_game_name()
+{
+  $(".text").each(function(index) {
+  	tmp_str = $(this).html();
+  	tmp_str = tmp_str.replace(/(\（|\()/,"<br />"+"$1");
+    $(this).html(tmp_str);
+  });
+}
+</script>
 <?php page_head();?>
 <?php 
 $index_i_pos = strpos($_SERVER['PHP_SELF'], '/index.php'); 
@@ -27,11 +38,11 @@ if ($index_i_pos !== false) {
 <?php
   if (isset($body_option)) {
 ?>
-<body <?php echo $body_option;?>>
+<body onload="replace_game_name()" <?php echo $body_option;?>>
 <?php
   } else {
 ?>
-<body>
+<body onload="replace_game_name()" >
 <?php
   }
 ?>
