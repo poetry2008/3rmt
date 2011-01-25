@@ -667,5 +667,6 @@ float:right;
 vertical-align:top;
 }
 .right_column01 {
-padding-top:16px;
+padding-top:14px;
+*padding-top:12px;
 }
