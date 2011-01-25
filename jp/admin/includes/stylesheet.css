@@ -658,3 +658,6 @@ font-size:12px;
 .inv_refresh{
 float:right;
 }
+.smallText a img{
+vertical-align:top;
+}
