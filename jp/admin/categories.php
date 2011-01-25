@@ -1884,11 +1884,19 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
             <?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search', isset($_GET['search'])?$_GET['search']:'') . "\n"; ?>
           </td>
         </form>
-        <?php echo tep_draw_form('goto', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
           <td class="smallText" align="right">
-            <?php echo HEADING_TITLE_GOTO . ' ' . tep_draw_pull_down_menu('cPath', tep_get_category_tree(), $current_category_id, 'onChange="this.form.submit();"') . "\n"; ?>
+            <?php echo tep_draw_form('goto', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
+            <table border="0"> 
+            <tr>
+              <td>
+                <?php 
+                echo tep_draw_hidden_field('site_id', ((isset($_GET['site_id']))?$_GET['site_id']:0)); 
+                echo HEADING_TITLE_GOTO . ' ' .  tep_draw_pull_down_menu('cPath', tep_get_category_tree(), $current_category_id, 'onChange="document.forms.goto.submit();"') . "\n"; ?>
+              </td>
+            </tr>
+            </table> 
+            </form>
           </td>
-        </form>
               </tr>
             </table></td>
         </tr>
@@ -2486,6 +2494,9 @@ tep_display_google_results()
                 . ' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=move_product'.'&page='.$_GET['page']) . '">' . tep_image_button('button_move.gif', IMAGE_MOVE) . '</a> <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=copy_to') . '">' . tep_image_button('button_copy_to.gif', IMAGE_COPY_TO) . '</a>'
                 . ' <a href="' . tep_href_link(FILENAME_REVIEWS, 'cPath=' . $cPath . '&products_id=' . $pInfo->products_id . '&action=new') . '">' . tep_image_button('button_reviews.gif', IMAGE_REVIEWS) . '</a>');
             foreach(tep_get_sites() as $site){
+              if (($site['id'] == 1) || ($site['id'] ==2)) {
+                continue; 
+              }
               $contents[] = array('text' => '<b>' . $site['romaji'] . '</b>');
               $contents[] = array('align' => 'left', 'text' => '<a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id . '&action=new_product'. '&site_id='.  $site['id'].'&page='.$_GET['page'].'&rdirect=all')  .'">' .  tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>' . ( tep_products_description_exist($pInfo->products_id, $site['id'], $languages_id) ? ' <a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id .  '&action=delete_product_description&site_id='.$site['id'].'&page='.$_GET['page'].'&rdirect=all') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>'
                 : ''

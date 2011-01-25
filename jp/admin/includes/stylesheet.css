@@ -479,7 +479,7 @@ legend {
 #tep_site_filter .site_filter_selected{
   color: #fff;
   font-weight: bold;
-  background: #808080;
+  background: #e42e2e;
 }
 
 .readonly{
