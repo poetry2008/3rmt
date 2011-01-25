@@ -2526,15 +2526,15 @@ tep_display_google_results()
             }
             //max min
             $inventory = tep_get_product_inventory($pInfo->products_id);
-            $contents[] = array('text' =>
-                '<br><br><b>'.TEXT_MAX.'&nbsp;:&nbsp;&nbsp;'.$inventory['max'].'</b>');
-            $contents[] = array('text' =>
-                '<b>'.TEXT_MIN.'&nbsp;:&nbsp;&nbsp;'.$inventory['min'].'</b>');
-            $contents[] = array(
-                'align' => 'left',
-                'text' => '<a href="'. tep_href_link(FILENAME_CATEGORIES, 'cPath=' .
-              $cPath . '&page='.$_GET['page'].'&pID=' . $pInfo->products_id . '&action=edit_inventory') .
-                '">'.tep_image_button('button_edit.gif', TEXT_INVENTORY) . '</a> ');
+            if (empty($_GET['site_id'])) {
+              $contents[] = array('text' =>
+                  '<br><br><b>'.TEXT_MAX.'&nbsp;:&nbsp;&nbsp;'.$inventory['max'].'</b>');
+              $contents[] = array('text' =>
+                  '<b>'.TEXT_MIN.'&nbsp;:&nbsp;&nbsp;'.$inventory['min'].'</b>');
+              $contents[] = array(
+                  'align' => 'left',
+                  'text' => '<a href="'. tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $cPath . '&page='.$_GET['page'].'&pID=' . $pInfo->products_id . '&action=edit_inventory') .  '">'.tep_image_button('button_edit.gif', TEXT_INVENTORY) . '</a> ');
+            }
             /*
             $keyword_sql = "select m.keyword from ".TABLE_CATEGORIES_TO_MISSION." c2m,".TABLE_MISSION." m
                             where m.id=c2m.mission_id and categories_id='".$cInfo->categories_id."'";
