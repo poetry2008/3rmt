@@ -17,7 +17,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
        <td width=50%> 
         <table align="center" class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
           <tr>
-        <th width="80" >ステータス</th>
+        <th width="80" align="left">ステータス</th>
         <td><?php
             $_status = '_'.$ticket->getStatus();
             $_open = 'オープン';
@@ -26,7 +26,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
         ?></td>
       </tr>
       <tr>
-                <th>作成日時</th>
+                <th align="left">作成日時</th>
                 <td><?=$ticket->getCreateDate()?></td>
             </tr>
     </table>
@@ -34,11 +34,11 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
      <td width=50% valign="top">
         <table align="center" class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
             <tr>
-                <th width="100">お名前</th>
+                <th width="100" align="left">お名前</th>
                 <td><?=Format::htmlchars($ticket->getName())?></td>
             </tr>
             <tr>
-                <th width="100">メールアドレス</th>
+                <th width="100" align="left">メールアドレス</th>
                 <td><?=$ticket->getEmail()?></td>
             </tr>
         </table>
@@ -113,7 +113,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
     </div> 
     <div id="reply">
         <?if($ticket->isClosed()) {?>
-        <div class="msg">お問合せ内容を、メールでご返答いたします</div>
+        <div class="msg">返信する場合は、内容を入力し「送信」ボタンをクリックしてください。</div>
         <?}?>
         <form action="view.php?id=<?=$id?>#reply" name="reply" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?=$ticket->getExtId()?>">

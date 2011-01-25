@@ -341,7 +341,6 @@ TD,SPAN：小さい文字（メッセージ）
 TD.smallText, SPAN.smallText, P.smallText {
 	/*font-size: 10px!important;*/
 	line-height: 1.5em;
-	font-size: 12px;
 }
 /* ---------------------------
 TD：アカウントカテゴリー
@@ -640,11 +639,4 @@ color:#ff0000;
 }
 .text_color{
 color:#fff;
-}
-td.big_text{
-font-size: 16px;
-
-}
-td.big_text a{
-font-size: 16px;
 }
