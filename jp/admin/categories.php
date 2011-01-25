@@ -2472,6 +2472,9 @@ tep_display_google_results()
                 . ($ocertify->npermission == 15 ? ( '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id . '&action=delete_category') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a> '):'')
                 . '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id . '&action=move_category') . '">' . tep_image_button('button_move.gif', IMAGE_MOVE) . '</a>');
             foreach(tep_get_sites() as $site){
+              if (($site['id'] == 1) || ($site['id'] ==2)) {
+                continue; 
+              }
               $contents[] = array('text' => '<b>' . $site['romaji'] . '</b>');
               $contents[] = array(
                   'align' => 'left', 
@@ -2500,12 +2503,12 @@ tep_display_google_results()
             $keyword_query = tep_db_query($keyword_sql);
             $keyword_res = tep_db_fetch_array($keyword_query);
             $default_keyword = $keyword_res?$keyword_res['keyword']:'';
+            if (empty($_GET['site_id'])) {
             $contents[] = array('text' => '<b>'.TEXT_KEYWORD.'&nbsp;:&nbsp;&nbsp;'.$default_keyword.'</b>');
             $contents[] = array(
                 'align' => 'left',
-                'text' => '<a href="'. tep_href_link(FILENAME_CATEGORIES, 'cPath=' .
-              $cPath . '&cID=' . $cInfo->categories_id . '&action=edit_keyword') .
-                '">'.tep_image_button('button_edit.gif', TEXT_KEYWORD) . '</a> ');
+                'text' => '<a href="'. tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $cPath . '&cID=' . $cInfo->categories_id . '&action=edit_keyword') .  '">'.tep_image_button('button_edit.gif', TEXT_KEYWORD) . '</a> ');
+            }
 }
 //print_r($cInfo);
             $contents[] = array('text' => '<br>' . TEXT_DATE_ADDED . ' ' . tep_date_short($cInfo->date_added));
