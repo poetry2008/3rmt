@@ -14,7 +14,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
     <tr><td colspan=2 width=100% class="msg">問合番号 <?=$ticket->getExtId()?> 
         &nbsp;<a href="view.php?id=<?=$ticket->getExtId()?>" title="Reload"><img style="vertical-align:middle;" src="images/icons/refresh.gif" /></a></td></tr> 
     <tr>
-       <td width=40%> 
+       <td width=45%> 
         <table align="center" class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
           <tr>
         <th width="60" align="left">ステータス</th>
@@ -31,7 +31,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
             </tr>
     </table>
      </td>
-     <td width=60% valign="top">
+     <td width=55% valign="top">
         <table align="center" class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
             <tr>
                 <th width="80" align="left">お名前</th>
