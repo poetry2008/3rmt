@@ -1705,11 +1705,16 @@ function change_qt(ele){
   }
 
   if ($dougyousya_array) {
-    // print_r($dougyousya_array);
+    //echo "<pre>";
+    //print_r($dougyousya_array);
     $dougyousya = tep_db_fetch_array(tep_db_query("select * from set_products_dougyousya spd, set_dougyousya_names sdn where spd.dougyousya_id=sdn.dougyousya_id and spd.product_id='".$_GET['pID']."'"));
-    // print_r($dougyousya);
+    //print_r($dougyousya);
+    $oroshi = tep_db_fetch_array(tep_db_query("select * from set_menu_list where products_id='".$_GET['pID']."'"));
+    //print_r($oroshi);
+    $calc = tep_db_fetch_array(tep_db_query("select * from set_auto_calc where parent_id='".$current_categories_id."'"));
+    //print_r($calc);
+    //echo "</pre>";
   }
-
 ?>
 <!--<hr size="2" noshade>--><b><?php //価格数量変更機能
 if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) || !$_GET['origin'])) {
@@ -1770,9 +1775,6 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
 }
 ?>
         </b>
-
-
-
       </td>
         </tr>
     <?php
