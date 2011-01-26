@@ -926,6 +926,40 @@ function mess(){
   //return false;
   //}
 }
+
+function check_price(new_id,old_price,percent){
+  $('#'+new_id).css('border-color','');
+  new_price = $('#'+new_id).val();
+  
+  if (percent != '' && percent != 0 && percent != null) {
+    if (new_price > old_price) {
+      if( ((new_price - old_price) / old_price) * 100 >= percent ) {
+          error_msg = percent+"%の差額があります。再設定してください\n";
+          //$('#price_input_'+(i+1)).css('border-color','red');
+      }
+    } else {
+      if( ((old_price - new_price) / new_price) * 100 >= percent ) {
+          error_msg = percent+"%の差額があります。再設定してください\n";
+          //$('#price_input_'+(i+1)).css('border-color','red');
+      }
+    }
+  }
+  
+  if (error_msg != '') {
+    alert(error_msg);
+    error_msg = '';
+  }
+  
+  if(confirm("更新しますか？")){
+    return true;
+  }else{
+    alert("更新キャンセル");
+    $('#'+new_id).css('border-color','red');
+    $('#'+new_id).focus();
+    return false;
+  }
+}
+
 function calculate_price(){
   if (parseInt($('#pp').val()) != 0) {
     $('#a_1').html(Math.ceil(5000/$('#pp').val()));
@@ -1646,10 +1680,17 @@ function change_qt(ele){
   } else {
     $form_action = 'insert_product';
   }
-
-    echo tep_draw_form($form_action, FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $_GET['pID'] . '&page='.$_GET['page'].'&action=' . $form_action, 'post', 'enctype="multipart/form-data" onSubmit="return mess();"');
+    if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['ordigin']) || !$_GET['origin'])) {
+      $dougyousya_array = array();
+      $cpath_array = explode('_', $_GET['cPath']);
+      $categories_id = $cpath_array[0];
+      $current_categories_id = $cpath_array[count($cpath_array)-1];
+      $calc = tep_db_fetch_array(tep_db_query("select * from set_auto_calc where parent_id='".$current_categories_id."'"));
+      echo tep_draw_form($form_action, FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $_GET['pID'] . '&page='.$_GET['page'].'&action=' . $form_action, 'post', 'enctype="multipart/form-data" onSubmit="return check_price(\'pp\', '.$pInfo->products_price.', '.($calc?$calc['percent']:0).');"');
+    } else {
+      echo tep_draw_form($form_action, FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $_GET['pID'] . '&page='.$_GET['page'].'&action=' . $form_action, 'post', 'enctype="multipart/form-data" onSubmit="return mess();"');
+    }
     echo '<input type="hidden" name="site_id" value="'.strval($site_id).'">';
-
     echo isset($color_image_hedden) ? $color_image_hidden : '';
   $languages = tep_get_languages();
     for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
@@ -1662,23 +1703,7 @@ function change_qt(ele){
         $pInfo->products_description = tep_db_prepare_input($products_description[$languages[$i]['id']]);
         $pInfo->products_url = tep_db_prepare_input($products_url[$languages[$i]['id']]);
       }
-
     //特価がある場合の処理
-    /*
-      $special_price_check = tep_get_products_special_price(isset($pInfo->products_id)?$pInfo->products_id:'');
-      if (!empty($pInfo->products_special_price)) {
-      //％指定の場合は価格を算出
-        if (substr($_POST['products_special_price'], -1) == '%') {
-          $sprice = ($pInfo->products_price - (($pInfo->products_special_price / 100) * $pInfo->products_price));
-        } else {
-      $sprice = $pInfo->products_special_price;
-    }
-    $products_price_preview = '<s>' . $currencies->format($pInfo->products_price) . '</s> <span class="specialPrice">' . $currencies->format($sprice) . '</span>';
-    } elseif (!empty($special_price_check)) { //プレビューの表示用
-        $products_price_preview = '<s>' . $currencies->format($pInfo->products_price) . '</s> <span class="specialPrice">' . $currencies->format($special_price_check) . '</span>';
-    } else {
-        $products_price_preview = $currencies->format($pInfo->products_price);
-      }*/
       if (tep_get_special_price($pInfo->products_price, $pInfo->products_price_offset, $pInfo->products_small_sum)) {
         $products_price_preview = '<s>' . $currencies->format(tep_get_price($pInfo->products_price, $pInfo->products_price_offset, $pInfo->products_small_sum)) . '</s> <span class="specialPrice">' . $currencies->format(tep_get_special_price($pInfo->products_price, $pInfo->products_price_offset, $pInfo->products_small_sum)) . '</span>';
       } else {
@@ -1696,10 +1721,6 @@ function change_qt(ele){
   //print_r($cpath_array);
   //echo $categories_id;
   
-  $dougyousya_array = array();
-  $cpath_array = explode('_', $_GET['cPath']);
-  $categories_id = $cpath_array[0];
-  $current_categories_id = $cpath_array[count($cpath_array)-1];
 
   $dougyousya_query = tep_db_query("select * from set_dougyousya_categories sdc,set_dougyousya_names sdn where sdc.dougyousya_id=sdn.dougyousya_id and sdc.categories_id='".$categories_id."'");
   while($d = tep_db_fetch_array($dougyousya_query)){
@@ -1712,12 +1733,21 @@ function change_qt(ele){
     //echo "<pre>";
     //print_r($dougyousya_array);
     $dougyousya = tep_db_fetch_array(tep_db_query("select * from set_products_dougyousya spd, set_dougyousya_names sdn where spd.dougyousya_id=sdn.dougyousya_id and spd.product_id='".$_GET['pID']."'"));
+    $dougyousya_price = get_dougyousya_history($_GET['pID'], $dougyousya['dougyousya_id']);
     //print_r($dougyousya);
     $oroshi = tep_db_fetch_array(tep_db_query("select * from set_menu_list where products_id='".$_GET['pID']."'"));
     //print_r($oroshi);
-    $calc = tep_db_fetch_array(tep_db_query("select * from set_auto_calc where parent_id='".$current_categories_id."'"));
+    
     //print_r($calc);
     //echo "</pre>";
+    $new_price = ($oroshi['kakaku']>$dougyousya_price?$oroshi['kakaku']*($calc?$calc['bairitu']:1.1):$dougyousya_price);
+    if ($calc) {
+      if ($calc['shisoku'] == '+') {
+        $new_price += $calc['keisan'];
+      } else {
+        $new_price -= $calc['keisan'];
+      }
+    }
   }
 ?>
 <!--<hr size="2" noshade>--><b><?php //価格数量変更機能
@@ -1728,7 +1758,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   echo '  <tr><td><hr size="2" noshade></td></tr><tr>';
   echo '  <tr>';
   echo '  <td height="30">';
-  echo '価格：&nbsp;' . tep_draw_input_field('products_price', number_format($pInfo->products_price,0,'.',''),'id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;円' . '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price . '円' . "\n";
+  echo '価格：&nbsp;' . tep_draw_input_field('products_price', number_format(isset($new_price)?$new_price:$pInfo->products_price,0,'.',''),'id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;円' . '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price . '円 業者:' .number_format($oroshi['kakaku'],0,'.','') . '円' . ' 倍率:'. ($calc?$calc['bairitu']:'1.1') . ' ' . $dougyousya['dougyousya_name'] . ':' . number_format($dougyousya_price,0,'.','') . '円' . "\n";
   echo '  </td>';
   echo '  </tr><tr><td><hr size="2" noshade></td></tr><tr>';
   echo '  <td height="30">';
