@@ -2472,6 +2472,7 @@ tep_display_google_results()
                 'text' => '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id . '&action=edit_category') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> '  
                 . ($ocertify->npermission == 15 ? ( '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id . '&action=delete_category') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a> '):'')
                 . '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id . '&action=move_category') . '">' . tep_image_button('button_move.gif', IMAGE_MOVE) . '</a>');
+            /* 
             foreach(tep_get_sites() as $site){
               if (($site['id'] == 1) || ($site['id'] ==2)) {
                 continue; 
@@ -2483,6 +2484,7 @@ tep_display_google_results()
                    :''
                    ));
             }
+            */ 
             }
             if (isset($_GET['site_id'])) {
             foreach(tep_get_sites() as $site){
@@ -2527,6 +2529,7 @@ tep_display_google_results()
                 . ($ocertify->npermission == 15 ? (' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=delete_product'.'&page='.$_GET['page']) . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>'):'')
                 . ' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=move_product'.'&page='.$_GET['page']) . '">' . tep_image_button('button_move.gif', IMAGE_MOVE) . '</a> <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=copy_to') . '">' . tep_image_button('button_copy_to.gif', IMAGE_COPY_TO) . '</a>'
                 . ' <a href="' . tep_href_link(FILENAME_REVIEWS, 'cPath=' . $cPath . '&products_id=' . $pInfo->products_id . '&action=new') . '">' . tep_image_button('button_reviews.gif', IMAGE_REVIEWS) . '</a>');
+            /* 
             foreach(tep_get_sites() as $site){
               if (($site['id'] == 1) || ($site['id'] ==2)) {
                 continue; 
@@ -2536,6 +2539,7 @@ tep_display_google_results()
                 : ''
                     ) );
             }
+            */ 
             }
             if (isset($_GET['site_id'])) { 
             foreach(tep_get_sites() as $site){
@@ -2612,7 +2616,7 @@ $contents[] = array('text' => '<br>' . TEXT_PRODUCTS_AVERAGE_RATING . ' ' . numb
     }
 
     if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
-      echo '            <td width="25%" valign="top">' . "\n";
+      echo '            <td class="right_column01" width="25%" valign="top">' . "\n";
 
       $box = new box;
       echo $box->infoBox($heading, $contents);
