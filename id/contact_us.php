@@ -29,7 +29,7 @@ require(CLIENTINC_DIR.'header.inc.php');
 ?>
 <div id="contact_us_warpper">
 <div class="lcol">
-  <div class="contact_left"><img src="./images/new_ticket_icon.jpg" width="60" height="60"></div>
+  <div class="contact_left"><img src="./images/new_ticket_icon.jpg" width="60" height="60" alt="img"></div>
   <div class="contact_right">
   <h3>新規お問い合わせ</h3>
     </div>
@@ -38,7 +38,7 @@ require(CLIENTINC_DIR.'header.inc.php');
   </form>
 </div>
 <div class="rcol">
-  <div class="contact_left"><img src="./images/ticket_status_icon.jpg" width="60" height="60"></div>
+  <div class="contact_left"><img src="./images/ticket_status_icon.jpg" width="60" height="60" alt="img"></div>
   <div class="contact_right">
   <h3>お問い合わせへの返事を確認</h3> 
     <form class="status_form" action="contact_us_login.php" method="post">

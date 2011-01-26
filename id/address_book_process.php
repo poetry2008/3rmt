@@ -275,7 +275,7 @@ AND
   }
 ?>
 <?php page_head();?>
-<script language="javascript"><!--
+<script type="text/javascript"><!--
 function check_form() {
   var error = 0;
   var error_message = "<?php echo JS_ERROR; ?>";

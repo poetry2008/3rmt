@@ -27,7 +27,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
       </td>
       <!-- body_text //-->
       <td id="contents" valign="top">
-        <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif">&nbsp;<?php echo HEADING_TITLE; ?></h1>
+        <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
         <?php if($_POST){
           $date     = tep_db_prepare_input($_POST['date']);
           $hour     = tep_db_prepare_input($_POST['hour']);

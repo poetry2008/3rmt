@@ -6,18 +6,18 @@
   require('includes/application_top.php');
   require(DIR_WS_ACTIONS.'index_top.php');
 ?>
-<script src="js/jquery-1.3.2.min.js"type="text/javascript"></script>
+<?php page_head();?>
+<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" >
-	function replace_game_name()
+  function replace_game_name()
 {
   $(".text").each(function(index) {
-  	tmp_str = $(this).html();
-  	tmp_str = tmp_str.replace(/\(([^)]*)(\)){0,1}/,"<br />"+"$1");
+    tmp_str = $(this).html();
+    tmp_str = tmp_str.replace(/\(([^)]*)(\)){0,1}/,"<br />"+"$1");
     $(this).html(tmp_str);
   });
 }
 </script>
-<?php page_head();?>
 <?php 
 $index_i_pos = strpos($_SERVER['PHP_SELF'], '/index.php'); 
 if ($index_i_pos !== false) {
@@ -38,7 +38,7 @@ if ($index_i_pos !== false) {
 <?php
   if (isset($body_option)) {
 ?>
-<body onload="replace_game_name()" <?php echo $body_option;?>>
+<body onLoad="replace_game_name()" <?php echo $body_option;?>>
 <?php
   } else {
 ?>
@@ -107,10 +107,7 @@ if ($category_depth == 'nested') {
         <?php
         $has_ca_single = false; 
         ?>
-        <?php if (isset($_GET['cPath'])) { ?> 
-        <table border="0" width="100%" cellspacing="3" cellpadding="3" summary=""> 
-          <tr align="center">
-<?php
+        <?php if (isset($_GET['cPath'])) { 
         $categories_query = tep_db_query("
           select * 
           from (
@@ -134,6 +131,11 @@ if ($category_depth == 'nested') {
           order by sort_order, categories_name
         ");
     $rows = 0;
+    if (tep_db_num_rows($categories_query)) {
+?> 
+        <table border="0" width="100%" cellspacing="3" cellpadding="3" summary=""> 
+          <tr align="center">
+<?php
     while ($categories = tep_db_fetch_array($categories_query)) {
       $has_ca_single = true; 
       $rows++;
@@ -146,11 +148,12 @@ if ($category_depth == 'nested') {
         echo '        </tr>' . "\n";
         echo '        <tr align="center">' . "\n";
       }
-  }
+    }
 ?> 
           </tr>
         </table>
     <?php
+    }
     } 
     ?>
     <h2 class="line"><?php
