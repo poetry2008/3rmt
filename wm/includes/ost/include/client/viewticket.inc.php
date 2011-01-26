@@ -114,15 +114,12 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
         <?}?>
     </div> 
     <div id="reply">
-        <?if($ticket->isClosed()) {?>
-        <div class="msg">返信する場合は、内容を入力し「送信」ボタンをクリックしてください。</div>
-        <?}?>
         <form action="view.php?id=<?=$id?>#reply" name="reply" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?=$ticket->getExtId()?>">
             <input type="hidden" name="respid" value="<?=$respID?>">
             <input type="hidden" name="a" value="postmessage">
             <div style="font-size:11px;">
-                内容をご入力ください <font class="error">*&nbsp;<?=$errors['message']?></font><br/>
+                返信する場合は、内容を入力し「送信」ボタンをクリックしてください。 <font class="error">*&nbsp;<?=$errors['message']?></font><br/>
                 <textarea name="message" id="message" cols="60" rows="7" wrap="soft"><?=$info['message']?></textarea>
             </div>
             <? if($cfg->allowOnlineAttachments()) {?>
