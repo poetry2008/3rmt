@@ -52,6 +52,7 @@ switch(strtolower($_REQUEST['status'])){ //Status is overloaded
 }
 
 // This sucks but we need to switch queues on the fly! depending on stats fetched on the parent.
+/*
 if($stats) { 
     if(!$stats['open'] && (!$status || $status=='open')){
         if(!$cfg->showAnsweredTickets() && $stats['answered']) {
@@ -64,7 +65,7 @@ if($stats) {
         }
     }
 }
-
+*/
 $qwhere ='';
 /* DEPTS
    STRICT サイトS BASED (a.k.a Categories) PERM. starts the where 
