@@ -24,18 +24,23 @@
   }
   $startTime = $_GET['s_y'].'-'.$_GET['s_m'].'-'.$_GET['s_d'].' '.'00:00:00';
   $endTime   = $_GET['e_y'].'-'.$_GET['e_m'].'-'.$_GET['e_d'].' '.'23:59:59';
-
-  if(isset($_GET['r_f'])){
+//refresh TBALE_CUSTOMERS.cusotmers_firstorderat
+ if(isset($_GET['action'])&&$_GET['action']){
+    switch ($_GET['action']){
+    case 'refresh':
    $ref_sql="update customers c , (SELECT o.customers_id as o_id ,min(osh.date_added) as osh_add
       FROM orders o LEFT JOIN orders_status_history as osh ON osh.orders_id = o.orders_id AND osh.orders_status_id in (2,5), customers c1
       WHERE  o.customers_id = c1.customers_id
         AND o.orders_status in (2,5)
       GROUP BY o.customers_id
       ORDER BY osh.date_added DESC ) as c2 set  c.customers_firstorderat = c2.osh_add where c.customers_id=c2.o_id";
-
- tep_db_query($ref_sql);
-  }
-
+tep_db_query($ref_sql);
+$ref_time=$logger->times[8];
+$ref_num=mysql_affected_rows();
+tep_redirect(tep_href_link(FILENAME_NEW_CUSTOMERS)."?r_t=".$ref_time."&&r_num=".$ref_num);
+break;
+}
+ }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
@@ -147,15 +152,35 @@
       日 </td>
       <td>&nbsp;</td>
       <td><input type="submit" value="Submit"></td>
-<?php  
-echo '<td><input type="button" onclick="document.location.href=\''.tep_href_link(FILENAME_NEW_CUSTOMERS,tep_get_all_get_params(array('r_f')).'r_f=refresh').'\'"    value="refresh"/></td>';
-?>
       </tr>
     </table>
     </form>
     <!--ORDER EXPORT SCRIPT EOF //-->
-        
+    <table  border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" width="200" >
+<?php 
+if(isset($_GET['r_t'])&&$_GET['r_t']){
+$ref_s=$_GET['r_t']/1000;
+echo  REFRESH_TIME.$ref_s."&nbsp秒";
+
+      if(isset($_GET['r_num'])&&$_GET['r_num']){
+        echo "</td><td>&nbsp".REFRESH_NUM.$_GET['r_num'];
+      }
+
+}
+?>
+
+</td>
+<td align="right">
+<?php 
+echo "<a   href='".tep_href_link(FILENAME_NEW_CUSTOMERS,"action=refresh")."'>".REFRESH."</a>";
+ ?>
+</td>
+</tr></table>        
         </td>
+
+
       </tr>
       <tr><td>
         <?php tep_site_filter(FILENAME_NEW_CUSTOMERS);?>
@@ -193,6 +218,7 @@ echo '<td><input type="button" onclick="document.location.href=\''.tep_href_link
       order by ci.customers_info_date_account_created desc
     ";
     */
+
     $customers_query_raw = "
       SELECT c.customers_id,
              c.customers_guest_chk,
