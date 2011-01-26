@@ -1701,17 +1701,18 @@ function change_qt(ele){
     $d['price'] = get_dougyousya_history($_GET['pID'], $d['dougyousya_id']);
     $dougyousya_array[] = $d;
   }
+
   if ($dougyousya_array) {
-    print_r($dougyousya_array);
+    // print_r($dougyousya_array);
     $dougyousya = tep_db_fetch_array(tep_db_query("select * from set_products_dougyousya spd, set_dougyousya_names sdn where spd.dougyousya_id=sdn.dougyousya_id and spd.product_id='".$_GET['pID']."'"));
-    print_r($dougyousya);
+    // print_r($dougyousya);
   }
 
 ?>
 <!--<hr size="2" noshade>--><b><?php //価格数量変更機能
 if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) || !$_GET['origin'])) {
   echo '<table width="100%"><tr><td align="left">';
-  
+
   echo '<table width="95%" cellpadding="0" cellspacing="0">';
   echo '  <tr><td><hr size="2" noshade></td></tr><tr>';
   echo '  <tr>';
