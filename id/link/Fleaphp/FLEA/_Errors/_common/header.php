@@ -179,7 +179,7 @@ EOT;
 <style>
 <?php readfile(dirname(__FILE__) . '/style.css'); ?>
 </style>
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 function switch_filedesc(id)
 {
     var el = document.getElementById(id);

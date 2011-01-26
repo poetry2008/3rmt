@@ -130,7 +130,7 @@ function change_num(ob, targ, quan,a_quan)
     <?php if (tep_show_warning(tep_get_products_categories_id($product_info['products_id'])) or $product_info['products_status'] != '1') {
       echo '<div class="waring_product">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
     } ?>
-         <h1 class="pageHeading_long"><img align="top" alt="" src="images/menu_ico.gif">&nbsp;<?php echo $product_info['products_name']; ?></h1>
+         <h1 class="pageHeading_long"><?php echo $product_info['products_name']; ?></h1>
          <div class="comment_long">
          <h2 class="line"><?php echo ds_tep_get_categories((int)$_GET['products_id'],1); ?> <?php echo ds_tep_get_categories((int)$_GET['products_id'],2); ?></h2>
          <table width="100%"  border="0" cellpadding="0" cellspacing="0" summary="rmt">
@@ -482,7 +482,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
  </div>
         <div class="pageBottom_long"></div>
          <?php if($description){?>
-            <h3 class="pageHeading_long"><img align="top" alt="" src="images/menu_ico.gif">&nbsp;<?php echo $product_info['products_name']; ?>について</h3>
+            <h3 class="pageHeading_long"><?php echo $product_info['products_name']; ?>について</h3>
             <!-- 説明文　-->
             <p class="comment_long">
               <?php 

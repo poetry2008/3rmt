@@ -11,7 +11,7 @@
 <script type="text/javascript" src="js/scriptaculous.js?load=effects"></script>
 <script type="text/javascript" src="js/lightbox.js"></script>
 <link rel="stylesheet" href="css/lightbox.css" type="text/css" media="screen">
-<script language="javascript" type="text/javascript"><!--
+<script type="text/javascript"><!--
 function popupWindow(url) {
   window.open(url,'popupImageWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
 }
@@ -139,13 +139,14 @@ function change_num(ob, targ, quan,a_quan)
          <table width="100%"  border="0" cellpadding="0" cellspacing="0" summary="rmt">
           <tr>
             <td width="250" valign="top">
-                <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="rmt_img">
+                
                     <?php
         if (tep_not_null($product_info['products_image'])) {
     ?>
+                  <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="rmt_img">
                     <tr>
                 <td align="center" class="smallText">
-                      <script language="javascript" type="text/javascript">
+                      <script type="text/javascript">
                       <!--
 document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_info['products_image'].'" rel="lightbox[products]">' . tep_image3(DIR_WS_IMAGES . 'products/'. $product_info['products_image'], addslashes($product_info['products_name']), PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'name="lrgproduct" id="lrgproduct"') . '<br>' . TEXT_CLICK_TO_ENLARGE . '<\'+\'/a>'; ?>');
                         //-->
@@ -170,12 +171,13 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                         <?php } ?>
                       </tr>
                         </table>
-                        <?php
-        }
-    ?>
                       </td>
                     </tr>
                   </table>
+                        <?php
+        }
+    ?>
+
                 </td>
              <td><img src="images/design/spacer.gif" width="15" height="1" alt=""></td>
                 <td valign="top">
@@ -455,7 +457,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                       $mcnt++;
                       if($mcnt == 1) {
                       ?>
-                <script language="javascript" type="text/javascript"><!--
+                <script type="text/javascript"><!--
     document.write('<?php //echo '<td class="smallText" align="center"><a href="javascript:popupWindow(\\\'' . tep_href_link(FILENAME_POPUP_IMAGE, 'pID=' . $product_info['products_id']) . '\\\')">' . tep_image2(DIR_WS_IMAGES . $product_info['products_image'], addslashes($product_info['products_name']), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="2" vspace="2"  class="image_border"') . '</a><br>-</td>'; ?>');
     //--></script>
                 <noscript>

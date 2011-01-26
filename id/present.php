@@ -18,7 +18,7 @@
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRESENT);
 ?>
 <?php page_head();?>
-<script language="javascript" type="text/javascript"><!--
+<script type="text/javascript"><!--
 function popupWindow(url) {
   window.open(url,'popupWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
 }
@@ -55,7 +55,7 @@ function popupWindow(url) {
           <p align="right" class="main">応募期間 <?php echo tep_date_long($present['start_date']) . '&nbsp;&nbsp;&nbsp;～&nbsp;&nbsp;&nbsp;' . tep_date_long($present['limit_date']) ; ?></p>
           <table border="0" cellspacing="0" cellpadding="2" align="right" summary="table">
             <tr>
-              <td align="center" class="smallText"><script type="text/javascript" language="javascript"><!--
+              <td align="center" class="smallText"><script type="text/javascript"><!--
       document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link('present_popup_image.php', 'pID=' . (int)$_GET['goods_id']) . '\\\')">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '<br>イメージを拡大</a>'; ?>');
       //--></script>
               <noscript>

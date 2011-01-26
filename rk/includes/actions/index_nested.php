@@ -11,7 +11,7 @@
       if ($category['categories_status'] != '0') {
         echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
       }
-      echo '<h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif">&nbsp;'.$seo_category['categories_name'].'</h1>';
+      echo '<h1 class="pageHeading">'.$seo_category['categories_name'].'</h1>';
     } elseif ($_GET['manufacturers_id']) {
       if ($category['categories_status'] != '0') {
         echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 

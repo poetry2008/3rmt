@@ -30,7 +30,7 @@
 <head>
 <title><?php echo $products_values['products_name']; ?></title>
 <base href="<?php echo (($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERVER) . DIR_WS_CATALOG; ?>">
-<script language="javascript"><!--
+<script type="text/javascript"><!--
 var i=0;
 function resize() {
   if (navigator.appName == 'Netscape') i=40;
@@ -68,7 +68,7 @@ A {
 </style>
 </head>
 
-<body Oncontextmenu="alert('Copy Right <?php echo STORE_NAME ; ?>'); return false;" leftmargin="0" topmargin="0" onload="window.resizeTo(document.featImage.width+150,document.featImage.height+265);">
+<body Oncontextmenu="alert('Copy Right <?php echo STORE_NAME ; ?>'); return false;" leftmargin="0" topmargin="0" onLoad="window.resizeTo(document.featImage.width+150,document.featImage.height+265);">
 <h1 class="pageHeading"><?php echo $products_values['products_name'] ; ?></h1>
       <table border="0" cellspacing="6" cellpadding="0">
 <tr>

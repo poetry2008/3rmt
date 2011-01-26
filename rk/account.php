@@ -41,7 +41,7 @@
       </td>
       <!-- body_text //-->
       <td valign="top" id="contents">
-      <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif">&nbsp<?php echo HEADING_TITLE ; ?></h1>
+      <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>
       <div class="comment">
       <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="table">
         <tr>

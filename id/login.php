@@ -135,7 +135,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_LOGIN, '', 'SSL'));
 ?>
 <?php page_head();?>
-<script language="javascript" type="text/javascript"><!--
+<script type="text/javascript"><!--
 function session_win() {
   window.open("<?php echo tep_href_link(FILENAME_INFO_SHOPPING_CART, '', 'SSL'); ?>","info_shopping_cart","height=460,width=430,toolbar=no,statusbar=no,scrollbars=yes").focus();
 }
@@ -265,7 +265,7 @@ function session_win() {
 </p>
 <p align="center"> 
 <!-- GeoTrust Smart Icon tag. Do not edit. -->
-<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>
+<script type="text/javascript" src="//smarticon.geotrust.com/si.js"></script>
 <!-- END of GeoTrust Smart Icon tag -->
         </p>
 <div class="underline"></div>
