@@ -34,11 +34,11 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
      <td width=50% valign="top">
         <table align="center" class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
             <tr>
-                <th width="100" align="left">お名前</th>
+                <th width="80" align="left">お名前</th>
                 <td><?=Format::htmlchars($ticket->getName())?></td>
             </tr>
             <tr>
-                <th width="100" align="left">メールアドレス</th>
+                <th width="80" align="left">メールアドレス</th>
                 <td><?=$ticket->getEmail()?></td>
             </tr>
         </table>
