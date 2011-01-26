@@ -7,7 +7,7 @@
 <div class="latest_news_box">
 <div class="pageHeading">
 <div class="pageHeading_left">
-<img src="images/menu_ico.gif" alt="" align="top">&nbsp;RMTカメズからのお知らせ
+RMTカメズからのお知らせ
 </div>
     <div class="pageHeading_right">
         <a href='<?php echo tep_href_link('latest_news.php');?>'>>>MORE</a>

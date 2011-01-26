@@ -58,11 +58,6 @@
   define('LISTING_TITLE_A_TO_Z','タイトル A - Z');
   define('LISTING_TITLE_Z_TO_A','タイトル Z - A');
   
-  ?>
-<script>
-
-</script>
-<?php
   $listing_numrows_sql = $listing_sql;
   $listing_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $listing_sql, $listing_numrows);
   // fix counted products

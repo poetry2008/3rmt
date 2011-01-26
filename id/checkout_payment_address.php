@@ -243,7 +243,7 @@
   $breadcrumb->add(NAVBAR_TITLE_2, tep_href_link(FILENAME_CHECKOUT_PAYMENT_ADDRESS, '', 'SSL'));
 ?>
 <?php page_head();?>
-<script language="javascript"><!--
+<script type="text/javascript"><!--
 var selected;
 
 function selectRowEffect(object, buttonSelect) {

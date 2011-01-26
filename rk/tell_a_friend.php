@@ -58,13 +58,13 @@
   if ($valid_product == false) {
 ?> 
       
-      <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif">&nbsp;<?php echo HEADING_TITLE_ERROR; ?></h1> 
+      <h1 class="pageHeading"><?php echo HEADING_TITLE_ERROR; ?></h1> 
       <div class="comment"><?php echo ERROR_INVALID_PRODUCT; ?></div>
       <?php
   } else {
     $product_info = tep_db_fetch_array($product_info_query);
 ?> 
-      <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif">&nbsp;<?php echo sprintf(HEADING_TITLE, $product_info['products_name']); ?></h1> 
+      <h1 class="pageHeading"><?php echo sprintf(HEADING_TITLE, $product_info['products_name']); ?></h1> 
       
       <?php
     $error = false;

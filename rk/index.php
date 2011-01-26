@@ -40,7 +40,6 @@ if ($category_depth == 'nested') {
 ?>
   <td valign="top" id="contents_long">
         <h1 class="pageHeading_long">
-        <img align="top" alt="" src="images/menu_ico.gif">&nbsp; 
         <?php
         $sel_tags_query = tep_db_query("select * from ".TABLE_TAGS." where tags_id =
             '".(int)$_GET['tags_id']."'"); 
@@ -65,7 +64,7 @@ if ($category_depth == 'nested') {
     echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
   }
 ?>
-    <h1 class="pageHeading_long"><img align="top" alt="" src="images/menu_ico.gif">&nbsp;<?php
+    <h1 class="pageHeading_long"><?php
   if (isset($cPath_array)) {
     echo $seo_category['categories_name'];
   } elseif ($_GET['manufacturers_id']) {
@@ -156,7 +155,7 @@ if ($category_depth == 'nested') {
         if (!$has_ca_single) {
           include(DIR_WS_MODULES . 'new_products3.php'); 
         } else {
-          include(DIR_WS_MODULES . 'new_products4.php'); 
+		  include(DIR_WS_MODULES . 'new_products4.php'); 
         }
       }
   ?>
@@ -191,6 +190,7 @@ if ($category_depth == 'nested') {
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
   <!-- footer_eof //--> 
 </div> 
+</div>
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

@@ -85,8 +85,8 @@
 <?php page_head();?>
 <?php
   if($ajax == 'on') {
-    echo '<script language="javascript" src="./ajax/js/jk-ajax.js"></script>'."\n";
-    echo '<script language="javascript" src="./ajax/js/in-cart.js"></script>'."\n";
+    echo '<script type="text/javascript" src="./ajax/js/jk-ajax.js"></script>'."\n";
+    echo '<script type="text/javascript" src="./ajax/js/in-cart.js"></script>'."\n";
   }
 ?>
 <script type="text/javascript" src="js/sort.js"></script>

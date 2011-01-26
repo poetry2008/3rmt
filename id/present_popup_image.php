@@ -21,7 +21,7 @@
 <head>
 <title><?php echo $present['title']; ?></title>
 <base href="<?php echo (($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERVER) . DIR_WS_CATALOG; ?>">
-<script language="javascript"><!--
+<script type="text/javascript"><!--
 var i=0;
 function resize() {
   if (navigator.appName == 'Netscape') i=40;
