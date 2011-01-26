@@ -24,6 +24,18 @@
   }
   $startTime = $_GET['s_y'].'-'.$_GET['s_m'].'-'.$_GET['s_d'].' '.'00:00:00';
   $endTime   = $_GET['e_y'].'-'.$_GET['e_m'].'-'.$_GET['e_d'].' '.'23:59:59';
+
+  if(isset($_GET['r_f'])){
+   $ref_sql="update customers c , (SELECT o.customers_id as o_id ,min(osh.date_added) as osh_add
+      FROM orders o LEFT JOIN orders_status_history as osh ON osh.orders_id = o.orders_id AND osh.orders_status_id in (2,5), customers c1
+      WHERE  o.customers_id = c1.customers_id
+        AND o.orders_status in (2,5)
+      GROUP BY o.customers_id
+      ORDER BY osh.date_added DESC ) as c2 set  c.customers_firstorderat = c2.osh_add where c.customers_id=c2.o_id";
+
+ tep_db_query($ref_sql);
+  }
+
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
@@ -135,6 +147,9 @@
       日 </td>
       <td>&nbsp;</td>
       <td><input type="submit" value="Submit"></td>
+<?php  
+echo '<td><input type="button" onclick="document.location.href=\''.tep_href_link(FILENAME_NEW_CUSTOMERS,tep_get_all_get_params(array('r_f')).'r_f=refresh').'\'"    value="refresh"/></td>';
+?>
       </tr>
     </table>
     </form>
@@ -167,13 +182,9 @@
              c.customers_lastname, 
              c.customers_firstname, 
              c.customers_email_address, 
-             a.entry_country_id, 
              c.customers_guest_chk,
              ci.customers_info_date_account_created as date_account_created, 
-             ci.customers_info_date_account_last_modified as date_account_last_modified, 
-             ci.customers_info_date_of_last_logon as date_last_logon, 
-             ci.customers_info_number_of_logons as number_of_logons 
-      from " . TABLE_CUSTOMERS . " c left join " . TABLE_ADDRESS_BOOK . " a on c.customers_id = a.customers_id and c.customers_default_address_id = a.address_book_id, ".TABLE_CUSTOMERS_INFO." ci
+            from " . TABLE_CUSTOMERS . " c left join " . TABLE_ADDRESS_BOOK . " a on c.customers_id = a.customers_id and c.customers_default_address_id = a.address_book_id, ".TABLE_CUSTOMERS_INFO." ci
         where c.customers_id = ci.customers_info_id
           and ci.customers_info_date_account_created > '" . $startTime . "'
           and ci.customers_info_date_account_created < '" . $endTime . "'
@@ -183,22 +194,18 @@
     ";
     */
     $customers_query_raw = "
-      SELECT o.customers_id,
+      SELECT c.customers_id,
              c.customers_guest_chk,
              c.customers_lastname, 
              c.customers_firstname, 
              c.site_id,
              c.customers_email_address,
              ci.customers_info_date_account_created as date_account_created
-      FROM orders o LEFT JOIN orders_status_history as osh ON osh.orders_id = o.orders_id AND osh.orders_status_id in (2,5), customers c, ".TABLE_CUSTOMERS_INFO." ci
-      WHERE c.customers_id = ci.customers_info_id
-        AND o.customers_id = c.customers_id
-        AND o.orders_status in (2,5)
-      GROUP BY o.customers_id
-      HAVING sum( osh.`date_added` < '" . $startTime . "' ) = 0
-      AND sum( osh.`date_added` < '" . $endTime . "' AND osh.`date_added` > '" . $startTime . "' ) > 0
-      " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " AND c.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-      ORDER BY osh.date_added DESC 
+      FROM customers c , ".TABLE_CUSTOMERS_INFO." ci
+      WHERE c.customers_id = ci.customers_info_id and 
+     c.`customers_firstorderat` < '" . $endTime . "' AND c.`customers_firstorderat` > '" . $startTime . "'
+      group by  c.customers_id  
+      ORDER BY c.customers_firstorderat  DESC 
     ";
     $customers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $customers_query_raw, $customers_query_numrows);
     $customers_query = tep_db_query($customers_query_raw);
