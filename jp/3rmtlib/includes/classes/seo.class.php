@@ -537,6 +537,8 @@ class SEO_URL{
         $link .= 'latest_news/';
       } else if ($page == FILENAME_REVIEWS) {
         $link .= 'reviews/';
+      } else if ($page == FILENAME_TAGS) {
+        $link .= 'tags/';
       } else {
         $link .= $page;
       }
