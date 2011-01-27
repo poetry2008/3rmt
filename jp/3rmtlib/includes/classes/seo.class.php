@@ -525,16 +525,19 @@ class SEO_URL{
        die('<font color="#ff0000"><b>Error!</b></font><br><br><b>Unable to determine connection method on a link!<br><br>Known methods: NONSSL SSL</b><br><br>');
     }
     if ($this->not_null($parameters)) {
-      $link .= $page . '?' . $this->output_string($parameters);
-      $separator = '&';
+      if ($page == FILENAME_TAGS) {
+        $p = explode('=', $parameters);
+        $link .= 'tags/page' . $p[1] . '.html';
+      } else {
+        $link .= $page . '?' . $this->output_string($parameters);
+        $separator = '&';
+      }
     } else {
       if ($page == FILENAME_LATEST_NEWS) {
         $link .= 'latest_news/';
       } else if ($page == FILENAME_REVIEWS) {
         $link .= 'reviews/';
-      } /*else if ($page == 'domain.php') {
-        $link .= 'link/';
-      }*/ else {
+      } else {
         $link .= $page;
       }
       $separator = '?';
