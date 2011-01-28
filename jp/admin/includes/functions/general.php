@@ -3883,6 +3883,21 @@ function tep_set_category_link_product_status($cID, $cstatus, $site_id)
   $product_total_arr = array();
   $category_total_arr = array($cID); 
   
+  switch ($cstatus) {
+    case '2':
+      $pstatus = 2;
+      break;
+    case '1':
+      $pstatus = 0;
+      break;
+    case '3':
+      $pstatus = 3;
+      break;
+    default:
+      $pstatus = 1;
+      break;
+  }
+  
   if ($site_id == 0) {
     $site_arr[] = '0'; 
     $site_query = tep_db_query("select * from ".TABLE_SITES);
@@ -3928,7 +3943,7 @@ function tep_set_category_link_product_status($cID, $cstatus, $site_id)
       if (!tep_check_products_exists($pvalue, $svalue)) {
         tep_create_products_by_site_id($pvalue, $svalue);
       }
-      tep_set_product_status_by_site_id($pvalue, $cstatus, $svalue); 
+      tep_set_product_status_by_site_id($pvalue, $pstatus, $svalue); 
     }
   }
 }
