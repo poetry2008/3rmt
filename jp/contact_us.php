@@ -31,11 +31,6 @@ mysql_select_db(DB_DATABASE);
 require_once(CLIENTINC_DIR.'header.inc.php');
 ?>
 <div id="contact_us_warpper">
-<div class="tcol">
-<h1></h1>
-<p>
-</p>
-</div>
 <div class="lcol">
   <div class="contact_left"><img src="./images/new_ticket_icon.jpg" width="60" height="60"></div>
   <div class="contact_right">

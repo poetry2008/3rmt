@@ -378,7 +378,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
     }
   }
 
-
+  check_uri('/\/\//');
   if (defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED) {
     if (
          basename($_SERVER['SCRIPT_NAME']) != FILENAME_LATEST_NEWS

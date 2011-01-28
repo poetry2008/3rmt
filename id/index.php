@@ -198,13 +198,14 @@ if ($category_depth == 'nested') {
   <?php
    if (isset($_GET['cPath'])) {
       if ($seo_category['seo_description']) {
-      echo '<h2 class="pageHeading_long">';
-    echo '<span class="game_t">'.$seo_category['seo_name'].'について'.'</span>';
-    echo '</h2>';
+        echo '<h2 class="pageHeading_long">';
+        echo '<span class="game_t">'.$seo_category['seo_name'].'について'.'</span>';
+        echo '</h2>';
         echo '<div class="comment">'.$seo_category['seo_description'].'</div>'; 
       }
       if (!empty($seo_category['text_information'])) {
-        echo '<div class="comment">'.$seo_category['text_information'].'</div>'; 
+        echo '<div>'.$seo_category['text_information'].'</div>'; 
+        //echo '<div class="comment">'.$seo_category['text_information'].'</div>'; 
       }
     }
   ?>
@@ -212,9 +213,8 @@ if ($category_depth == 'nested') {
         if (isset($cPath) && !ereg('_', $cPath)) {
           //$cgame_news_query = tep_db_query("select ns.headline, ns.date_added, ns.url from ". TABLE_CATEGORIES_ALIAS." a, ".TABLE_CATEGORIES_NEWS." ns where a.categories_id = '".$current_category_id."' and a.alias = ns.categories_name"); 
           //if (tep_db_num_rows($cgame_news_query)) { 
-    $all_game_news = tep_get_categories_rss($current_category_id);
-    if ($all_game_news) {
-        
+          $all_game_news = tep_get_categories_rss($current_category_id);
+          if ($all_game_news) {
             ?>
           <h2 class="pageHeading">
           <span class="game_t"><?php echo $_categories['categories_name'];?> NEWS for</span> 
