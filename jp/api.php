@@ -35,7 +35,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'sp' && $_GET['keyword']) {
       select p.*,
              pd.products_name,
              pd.products_description,
-             pd.products_status != '0', 
+             pd.products_status, 
              pd.site_id
       from ( " . TABLE_PRODUCTS . " p ) left join " . TABLE_MANUFACTURERS . " m using(manufacturers_id), " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_CATEGORIES . " c, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c 
       where p.products_id = pd.products_id 
@@ -73,7 +73,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'sp' && $_GET['keyword']) {
     where site_id = 0
        or site_id = ".SITE_ID."
     group by products_id
-    having p.products_status != '0' 
+    having p.products_status != '0' and p.products_status != '3' 
     order by sort_order,products_name
     limit ".$limit."
     ";

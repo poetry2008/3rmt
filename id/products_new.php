@@ -50,7 +50,7 @@ from (
 where site_id = '0'
    or site_id = ".SITE_ID." 
 group by products_id
-having p.products_status != '0'
+having p.products_status != '0' and p.products_status != '3'
 order by products_date_added DESC, products_name
   ";
   $products_new_split = new splitPageResults($_GET['page'], MAX_DISPLAY_PRODUCTS_NEW, $products_new_query_raw, $products_new_numrows);

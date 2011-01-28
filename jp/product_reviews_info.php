@@ -42,7 +42,7 @@
     where psid = '0'
        or psid = '".SITE_ID."'
     group by products_id, reviews_id 
-    having p.products_status != '0'  
+    having p.products_status != '0' and p.products_status != '3'  
   ");
   //forward if no reviews
   if (!tep_db_num_rows($reviews_query)) tep_redirect(tep_href_link(FILENAME_REVIEWS));

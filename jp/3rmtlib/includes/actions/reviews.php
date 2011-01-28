@@ -38,7 +38,7 @@
     where psid = '0'
        or psid = '".SITE_ID."'
     group by reviews_id
-    having p.products_status != '0' 
+    having p.products_status != '0' and p.products_status != '3'
     order by date_added DESC
   ";
   $reviews_split = new splitPageResults($_GET['page'], MAX_DISPLAY_NEW_REVIEWS, $reviews_query_raw, $reviews_numrows);

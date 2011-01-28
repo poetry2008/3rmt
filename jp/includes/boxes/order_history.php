@@ -14,6 +14,7 @@
           and o.orders_id = op.orders_id 
           and op.products_id = p.products_id 
           and pd.products_status != '0' 
+          and pd.products_status != '3' 
           and p.products_id = pd.products_id 
           and o.site_id = '".SITE_ID."'
         group by products_id 

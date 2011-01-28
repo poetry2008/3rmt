@@ -26,7 +26,7 @@ $categories_query = tep_db_query("
     where site_id = ".SITE_ID."
        or site_id = 0
     group by categories_id
-    having c.categories_status != '1' 
+    having c.categories_status != '1' and c.categories_status != '3' 
     order by sort_order, categories_name
 ");
 while ($category = tep_db_fetch_array($categories_query))  {
@@ -86,7 +86,7 @@ if($cPath){
               where site_id = 0
                  or site_id = ".SITE_ID."
               group by categories_id
-              having c.categories_status != '1' 
+              having c.categories_status != '1' and c.categories_status != '3' 
               order by sort_order, categories_name
               ");
          while ($subcategory = tep_db_fetch_array($subcategories_query))  {
@@ -132,7 +132,7 @@ if($cPath){
                 where site_id = 0
                    or site_id = ".SITE_ID."
                 group by categories_id
-                having c.categories_status != '1' 
+                having c.categories_status != '1' and c.categories_status != '3' 
                 order by sort_order, categories_name
             ");
             while ($_subcategory = tep_db_fetch_array($_subcategories_query))  {

@@ -49,7 +49,7 @@
   where site_id = '0'
      or site_id = '".SITE_ID."'
   group by products_id
-  having p.products_status != '0' 
+  having p.products_status != '0' and p.products_status != '3' 
   order by products_date_added DESC
   ";
   $specials_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SPECIAL_PRODUCTS, $specials_query_raw, $specials_numrows);

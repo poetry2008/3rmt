@@ -985,6 +985,8 @@ function tep_minitor_info(){
       return tep_db_query("update " . TABLE_PRODUCTS . " set products_status = '2', products_last_modified = now() where products_id = '" . $products_id . "'");
     } elseif ($status == '0') {
       return tep_db_query("update " . TABLE_PRODUCTS . " set products_status = '0', products_last_modified = now() where products_id = '" . $products_id . "'");
+    } elseif ($status == '3') {
+      return tep_db_query("update " . TABLE_PRODUCTS . " set products_status = '3', products_last_modified = now() where products_id = '" . $products_id . "'");
     } else {
       return -1;
     }
@@ -2584,7 +2586,7 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
           AND pd.language_id ='" . $lid . "' 
         ORDER BY pd.site_id DESC) c
         WHERE site_id = '0' OR site_id = '".$site_id."'
-        GROUP BY products_id HAVING c.products_status != '0' 
+        GROUP BY products_id HAVING c.products_status != '0' and  c.products_status != '3'
         ";
     } else {
     $sql = "
@@ -2621,6 +2623,7 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
         FROM " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
         WHERE p.products_id = '" . $pid . "' 
           AND pd.products_status != '0' 
+          AND pd.products_status != '3' 
           AND pd.products_id = '" .  $pid . "'" . " 
           AND pd.language_id ='" . $lid . "' 
           "; 
@@ -3834,6 +3837,8 @@ function tep_set_product_status_by_site_id($products_id, $status, $site_id) {
       return tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_status = '2' where products_id = '" . $products_id . "' and site_id = '".$site_id."'");
     } elseif ($status == '0') {
       return tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_status = '0' where products_id = '" . $products_id . "' and site_id = '".$site_id."'");
+    } elseif ($status == '3') {
+      return tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_status = '3' where products_id = '" . $products_id . "' and site_id = '".$site_id."'");
     } else {
       return -1;
     }
@@ -3870,4 +3875,70 @@ function tep_set_all_product_status($pID, $pstatus)
      
     tep_db_query("UPDATE `".TABLE_PRODUCTS_DESCRIPTION."` SET `products_status` = '".$pstatus."' where `products_id` = '".$pID."' and `site_id` = '".$value."'");  
   }
+}
+
+function tep_set_category_link_product_status($cID, $cstatus, $site_id)
+{
+  $site_arr = array(); 
+  $product_total_arr = array();
+  $category_total_arr = array($cID); 
+  
+  if ($site_id == 0) {
+    $site_arr[] = '0'; 
+    $site_query = tep_db_query("select * from ".TABLE_SITES);
+    while ($site_res = tep_db_fetch_array($site_query)) {
+      $site_arr[] = $site_res['id']; 
+    }
+  } else {
+    $site_arr = array($site_id); 
+  }
+  
+  $product_arr = tep_get_link_product_id_by_category_id($cID);
+  if (!empty($product_arr)) {
+    $product_total_arr = array_merge($product_total_arr, $product_arr); 
+  }
+
+  $child_category_query = tep_db_query("select * from ".TABLE_CATEGORIES." where parent_id = '".$cID."'");
+  while ($child_category_res = tep_db_fetch_array($child_category_query)) {
+    $category_total_arr[] = $child_category_res['categories_id']; 
+    $product_arr = tep_get_link_product_id_by_category_id($child_category_res['categories_id']);
+    if (!empty($product_arr)) {
+      $product_total_arr = array_merge($product_total_arr, $product_arr); 
+    }
+    $child_child_category_query = tep_db_query("select * from ".TABLE_CATEGORIES." where parent_id = '".$child_category_res['categories_id']."'");
+    
+    while ($child_child_category_res = tep_db_fetch_array($child_child_category_query)) {
+      $category_total_arr[] = $child_child_category_res['categories_id']; 
+      $product_arr = tep_get_link_product_id_by_category_id($child_child_category_res['categories_id']);
+      if (!empty($product_arr)) {
+        $product_total_arr = array_merge($product_total_arr, $product_arr); 
+      }
+    }
+  }
+  
+  foreach ($site_arr as $skey => $svalue) {
+    foreach ($category_total_arr as $ckey => $cvalue) {
+      if (!tep_check_categories_exists($cvalue, $svalue)) {
+        tep_create_site_categories($cvalue, $svalue);
+      }
+      tep_set_categories_status_by_site_id($cvalue, $cstatus, $svalue);
+    }
+
+    foreach ($product_total_arr as $pkey => $pvalue) {
+      if (!tep_check_products_exists($pvalue, $svalue)) {
+        tep_create_products_by_site_id($pvalue, $svalue);
+      }
+      tep_set_product_status_by_site_id($pvalue, $cstatus, $svalue); 
+    }
+  }
+}
+
+function tep_get_link_product_id_by_category_id($category_id)
+{
+  $product_arr = array(); 
+  $pro_to_ca_query = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where categories_id = '".$category_id."'");
+  while ($pro_to_ca_res = tep_db_fetch_array($pro_to_ca_query)) {
+    $product_arr[] = $pro_to_ca_res['products_id']; 
+  }
+  return $product_arr;
 }

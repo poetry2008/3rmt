@@ -129,7 +129,7 @@
         where site_id = 0
            or site_id = " . SITE_ID . "
         group by id
-        having c.products_status != '0' 
+        having c.products_status != '0' and c.products_status != '3' 
         order by name
         ";
     } else {
@@ -186,12 +186,12 @@
           and p.products_id = p2c.products_id 
           and p2c.categories_id = '" . $current_category_id . "' 
         order by pd.site_id DESC) c where site_id = ".SITE_ID." or site_id = 0
-        group by products_id having c.products_status != '0' order by name";
+        group by products_id having c.products_status != '0' and c.products_status != '3' order by name";
     } 
     $listing_sql .= "
     ) p
     where site_id = '0'
        or site_id = '".SITE_ID."'
     group by products_id
-    having p.products_status != '0'  
+    having p.products_status != '0' and p.products_status != '3'  
     ";

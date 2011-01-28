@@ -30,42 +30,73 @@
                p.products_small_sum
         from " . TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd 
         where p.products_id = pd.products_id order by pd.site_id DESC 
-        ) c where site_id = '".SITE_ID."' or site_id = '0' group by products_id having c.products_status != '0' order by products_date_added desc 
+        ) c where site_id = '".SITE_ID."' or site_id = '0' group by products_id having c.products_status != '0' and c.products_status != '3' order by products_date_added desc 
         limit " . MAX_DISPLAY_NEW_PRODUCTS
     );
   } else {
     // ccdd
-    $new_products_query = tep_db_query("
-        select * from (select distinct p.products_id, 
-                        p.products_quantity, 
-                        p.products_image, 
-                        p.products_tax_class_id, 
-                        p.products_price, 
-                        p.products_price_offset, 
-                        pd.site_id,
-                        pd.products_status,
-                        p.products_date_added, 
-                        p.products_small_sum
-        from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " .
-        TABLE_CATEGORIES . " c, ".TABLE_PRODUCTS_DESCRIPTION." pd 
-        where p.products_id = p2c.products_id 
-          and p2c.categories_id = c.categories_id 
-          and c.parent_id = '" . $new_products_category_id . "' 
-          and p.products_id = pd.products_id 
-      ".(BOX_NEW_PRODUCTS_DAY_LIMIT ? ( " and p.products_date_added > '" . date('Y-m-d H:i:s', time()-(BOX_NEW_PRODUCTS_DAY_LIMIT*86400)) . "'" ) : '')." 
-       order by pd.site_id DESC) c where site_id = '".SITE_ID."' or site_id = '0' group by products_id having c.products_status != '0' order by products_date_added desc limit " . MAX_DISPLAY_NEW_PRODUCTS
-    );
+    $has_child_category_raw = tep_db_query("select * from (select cd.site_id, cd.categories_id, cd.categories_status from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id = cd.categories_id and c.parent_id = '".$new_products_category_id."' order by cd.site_id desc) c where site_id = '0' or site_id = '".SITE_ID."' group by categories_id having c.categories_status != '1' and c.categories_status != '3'"); 
+    $has_c_arr = array();
+    while ($has_child_category_res = tep_db_fetch_array($has_child_category_raw)) {
+      $has_c_arr[] = $has_child_category_res['categories_id']; 
+    }
+    if (!empty($has_c_arr)) {
+      $new_products_query = tep_db_query("
+          select * from (select distinct p.products_id, 
+                          p.products_quantity, 
+                          p.products_image, 
+                          p.products_tax_class_id, 
+                          p.products_price, 
+                          p.products_price_offset, 
+                          pd.site_id,
+                          pd.products_status,
+                          p.products_date_added, 
+                          p.products_small_sum
+          from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " .
+          TABLE_CATEGORIES . " c, ".TABLE_PRODUCTS_DESCRIPTION." pd 
+          where p.products_id = p2c.products_id 
+            and p2c.categories_id = c.categories_id 
+            and c.categories_id in (" . implode(',', $has_c_arr) . ") 
+            and p.products_id = pd.products_id 
+        ".(BOX_NEW_PRODUCTS_DAY_LIMIT ? ( " and p.products_date_added > '" . date('Y-m-d H:i:s', time()-(BOX_NEW_PRODUCTS_DAY_LIMIT*86400)) . "'" ) : '')." 
+         order by pd.site_id DESC) c where site_id = '".SITE_ID."' or site_id = '0' group by products_id having c.products_status != '0' and c.products_status != '3' order by products_date_added desc limit " . MAX_DISPLAY_NEW_PRODUCTS
+      );
+    } else {
+      $new_products_query = tep_db_query("
+          select * from (select distinct p.products_id, 
+                          p.products_quantity, 
+                          p.products_image, 
+                          p.products_tax_class_id, 
+                          p.products_price, 
+                          p.products_price_offset, 
+                          pd.site_id,
+                          pd.products_status,
+                          p.products_date_added, 
+                          p.products_small_sum
+          from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " .
+          TABLE_CATEGORIES . " c, ".TABLE_PRODUCTS_DESCRIPTION." pd 
+          where p.products_id = p2c.products_id 
+            and p2c.categories_id = c.categories_id 
+            and c.parent_id = '" . $new_products_category_id . "' 
+            and p.products_id = pd.products_id 
+        ".(BOX_NEW_PRODUCTS_DAY_LIMIT ? ( " and p.products_date_added > '" . date('Y-m-d H:i:s', time()-(BOX_NEW_PRODUCTS_DAY_LIMIT*86400)) . "'" ) : '')." 
+         order by pd.site_id DESC) c where site_id = '".SITE_ID."' or site_id = '0' group by products_id having c.products_status != '0' and c.products_status != '3' order by products_date_added desc limit " . MAX_DISPLAY_NEW_PRODUCTS
+      );
+    }
   }
   
   $num_products = tep_db_num_rows($new_products_query);
   if (0 === $num_products) {
     $subcategories = array();
     // ccdd
-    $subcategory_query = tep_db_query("
-        select * 
-        from " . TABLE_CATEGORIES . " 
-        where parent_id=" . $new_products_category_id
-    );
+    //$subcategory_query = tep_db_query("
+        //select * 
+        //from " . TABLE_CATEGORIES . " 
+        //where parent_id=" . $new_products_category_id
+    //);
+    
+    $subcategory_query = tep_db_query("select * from (select cd.site_id, cd.categories_status, cd.categories_id from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id = cd.categories_id and parent_id = '".$new_products_category_id."' order by cd.site_id desc) c where site_id = '0' or site_id = '".SITE_ID."' group by categories_id having c.categories_status != '1' and c.categories_status != '3'"); 
+    
     while($subcategory = tep_db_fetch_array($subcategory_query)){
       $subcategories[] = $subcategory['categories_id'];
     }
@@ -88,7 +119,7 @@
             and c.parent_id in (" . join(',', $subcategories) . ") 
             and p.products_id = pd.products_id 
             ".(BOX_NEW_PRODUCTS_DAY_LIMIT ? ( " and p.products_date_added > '" . date('Y-m-d H:i:s', time()-(BOX_NEW_PRODUCTS_DAY_LIMIT*86400)) . "'" ) : '')." 
-          order by pd.site_id DESC) c where site_id = '".SITE_ID."' or site_id = '0' group by products_id having products_status != '0' order by products_date_added desc limit " . MAX_DISPLAY_NEW_PRODUCTS);
+          order by pd.site_id DESC) c where site_id = '".SITE_ID."' or site_id = '0' group by products_id having c.products_status != '0' and c.products_status != '3' order by products_date_added desc limit " . MAX_DISPLAY_NEW_PRODUCTS);
       $num_products       = tep_db_num_rows($new_products_query);
     }
   }
@@ -167,4 +198,3 @@ if($num_products){?>
 <?php
   }
 ?>
-

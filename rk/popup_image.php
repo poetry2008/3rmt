@@ -20,7 +20,7 @@
         left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id 
       where p.products_id = '" .  (int)$_GET['pIID'] . "' 
         and pd.language_id = '" . $languages_id . "' 
-      order by site_id DESC) c  where site_id = '".SITE_ID."' or site_id = '0' group by products_id having c.products_status != '0'
+      order by site_id DESC) c  where site_id = '".SITE_ID."' or site_id = '0' group by products_id having c.products_status != '0' and c.products_status != '3'
       ");
   $products_values = tep_db_fetch_array($products_query);
 ?>
