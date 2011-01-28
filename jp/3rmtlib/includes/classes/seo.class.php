@@ -1489,7 +1489,7 @@ class SEO_URL{
       where site_id = '0'
          or site_id = '".SITE_ID."'
       group by id
-      having p.products_status != '0'   
+      having p.products_status != '0' and p.products_status != '3'  
       ";
     $product_query = $this->DB->Query( $sql );
     $prod_cache = '';

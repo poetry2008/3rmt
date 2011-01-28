@@ -617,8 +617,14 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   } else {
     $current_category_id = 0;
   }
-
-// include the breadcrumb class and start the breadcrumb trail
+  
+  if (tep_not_null($cPath)) {
+    if (tep_check_black_category($current_category_id)) {
+      forward404(); 
+    }
+  }
+  
+  // include the breadcrumb class and start the breadcrumb trail
   require(DIR_WS_CLASSES . 'breadcrumb.php');
   $breadcrumb = new breadcrumb;
 

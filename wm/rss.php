@@ -107,7 +107,7 @@ while ($row = mysql_fetch_array($sql_result)) {
   //ccdd
   $sql2_result = mysql_query($sql2,$connection) or die("Couldn't execute query.");
   $row2 = mysql_fetch_array($sql2_result);
-  if ($row2['products_status'] == 0) {
+  if ($row2['products_status'] == 0 || $row2['products_status'] == 3) {
     continue; 
   }
   $name = $row2["products_name"];

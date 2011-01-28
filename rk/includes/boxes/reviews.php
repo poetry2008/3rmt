@@ -92,7 +92,7 @@ if (
   where psid = '0'
      or psid = '".SITE_ID."'
   group by reviews_id
-  having p.products_status != '0' 
+  having p.products_status != '0' and p.products_status != '3' 
   ";
   $random_select .= " order by reviews_id desc";
   $random_product = tep_random_select($random_select);

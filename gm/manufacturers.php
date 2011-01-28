@@ -58,7 +58,7 @@
 <?php
   while($manufacturer = tep_db_fetch_array($manufacturer_query)){
     //ccdd
-  $products_query = tep_db_query("select * from (select p.products_id, p.products_image, p.products_tax_class_id, p.products_price, p.products_price_offset, p.products_small_sum ,pd.site_id, pd.products_status, p.products_date_added  from " . TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd where  p.products_id not in".tep_not_in_disabled_products()." and p.products_id = pd.products_id and manufacturers_id = '".$manufacturer['manufacturers_id']."' order by pd.site_id DESC) c where site_id = '".SITE_ID."' or site_id = '0' group by products_id having c.products_status != '0' order by products_date_added desc limit 5 ");
+  $products_query = tep_db_query("select * from (select p.products_id, p.products_image, p.products_tax_class_id, p.products_price, p.products_price_offset, p.products_small_sum ,pd.site_id, pd.products_status, p.products_date_added  from " . TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd where  p.products_id not in".tep_not_in_disabled_products()." and p.products_id = pd.products_id and manufacturers_id = '".$manufacturer['manufacturers_id']."' order by pd.site_id DESC) c where site_id = '".SITE_ID."' or site_id = '0' group by products_id having c.products_status != '0' and c.products_status != '3' order by products_date_added desc limit 5 ");
     if(tep_db_num_rows($products_query)) {
 
 

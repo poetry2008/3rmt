@@ -31,7 +31,7 @@
       where site_id = '0'
          or site_id = '".SITE_ID."' 
       group by products_id
-      having p.products_status != '0' 
+      having p.products_status != '0' and p.products_status != '3' 
       order by products_ordered desc, products_name 
       limit " . MAX_DISPLAY_BESTSELLERS);
     
@@ -61,7 +61,7 @@
       where site_id = '0'
          or site_id = '".SITE_ID."' 
       group by products_id
-      having p.products_status != '0' 
+      having p.products_status != '0' and p.products_status != '3' 
       order by products_ordered desc, products_name 
       limit " . MAX_DISPLAY_BESTSELLERS
         );

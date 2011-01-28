@@ -109,4 +109,5 @@
      where site_id = '0'
         or site_id = '".SITE_ID."'
      group by products_id
+     having p.products_status != '3' 
    ";

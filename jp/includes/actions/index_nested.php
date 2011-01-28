@@ -48,7 +48,7 @@
           where site_id = 0 
              or site_id = ".SITE_ID."
           group by categories_id
-          having c.categories_status != '1' 
+          having c.categories_status != '1' and c.categories_status != '3' 
           order by sort_order, categories_name
         ");
         /*
@@ -92,7 +92,7 @@
           where site_id = 0 
              or site_id = ".SITE_ID."
           group by categories_id
-          having c.categories_status != '1'  
+          having c.categories_status != '1' and c.categories_status != '3'  
           order by sort_order, categories_name
         ");
 /*

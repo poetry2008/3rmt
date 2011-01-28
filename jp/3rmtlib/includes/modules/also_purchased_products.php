@@ -16,7 +16,7 @@
           order by pd.site_id DESC
         ) c where site_id = ".SITE_ID." or site_id = 0
         group by products_id
-        having c.products_status != '0'
+        having c.products_status != '0' and c.products_status != '3'
         order by date_purchased desc 
         limit " . MAX_DISPLAY_ALSO_PURCHASED
     );

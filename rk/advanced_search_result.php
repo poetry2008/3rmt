@@ -268,7 +268,7 @@
     where site_id = 0
        or site_id = ".SITE_ID."
     group by products_id
-    having p.products_status != '0' 
+    having p.products_status != '0' and p.products_status != '3' 
     ";
   $listing_sql = $select_str . ' from ' . $from_str . $where_str;
   

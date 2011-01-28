@@ -24,7 +24,7 @@ $categories_tab_query1 = tep_db_query("
     where site_id = '0'
        or site_id = '" . SITE_ID . "' 
     group by categories_id 
-    having p.categories_status != '1'  
+    having p.categories_status != '1' and p.categories_status != '3'  
     order by sort_order, categories_name
     ");
 ?>

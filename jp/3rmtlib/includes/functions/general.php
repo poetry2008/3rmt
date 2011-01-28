@@ -514,7 +514,7 @@ function forward404Unless($condition)
       ");
     } else {
 //ccdd
-      $products_query = tep_db_query("select count(*) as total from " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, ".TABLE_PRODUCTS_DESCRIPTION." pd where p.products_id = pd.products_id and p.products_id = p2c.products_id and pd.products_status != '0' and p2c.categories_id = '" . (int)$category_id . "'");
+      $products_query = tep_db_query("select count(*) as total from " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, ".TABLE_PRODUCTS_DESCRIPTION." pd where p.products_id = pd.products_id and p.products_id = p2c.products_id and pd.products_status != '0' and pd.products_status != '3' and p2c.categories_id = '" . (int)$category_id . "'");
     }
     $products = tep_db_fetch_array($products_query);
     $products_count += $products['total'];
@@ -2206,6 +2206,7 @@ function forward404Unless($condition)
         $metaQuery .= "AND categories_description.language_id = ".TABLE_LANGUAGES.".languages_id ";
         $metaQuery .= "AND products.manufacturers_id = manufacturers.manufacturers_id ";
         $metaQuery .= "AND products_description.products_status != '0' ";
+        $metaQuery .= "AND products_description.products_status != '3' ";
         $metaQuery .= "AND ".TABLE_CONFIGURATION.".configuration_key = 'DEFAULT_LANGUAGE' ";
         $metaQuery .= "AND ".TABLE_LANGUAGES.".code = ".TABLE_CONFIGURATION.".configuration_value ";
         $metaQuery .= "AND ".TABLE_CONFIGURATION.".site_id= '".SITE_ID."' ";
@@ -2591,7 +2592,7 @@ function tep_unlink_temp_dir($dir)
           AND pd.language_id ='" . $lid . "' 
         ORDER BY pd.site_id DESC
         ) c WHERE  site_id = '0' OR site_id = '".$site_id."'
-        GROUP BY products_id HAVING c.products_status != '0' 
+        GROUP BY products_id HAVING c.products_status != '0' and c.products_status != '3'
         ";
     } else {
     $sql = "
@@ -2628,6 +2629,7 @@ function tep_unlink_temp_dir($dir)
         FROM " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
         WHERE p.products_id = '" . $pid . "' 
           AND pd.products_status != '0' 
+          AND pd.products_status != '3' 
           AND pd.products_id = '" .  $pid . "'" . " 
           AND pd.language_id ='" . $lid . "' 
           "; 
@@ -3395,4 +3397,63 @@ function tep_get_top_category_by_cpath($cPath_array)
     return tep_db_fetch_array($top_category_query); 
   } 
   return '';
+}
+
+function tep_check_black_category($category_id)
+{
+  $category_query = tep_db_query("select * from ".TABLE_CATEGORIES_DESCRIPTION." where site_id = '0' or site_id = '".SITE_ID."' and categories_id = '".(int)$category_id."' order by site_id desc limit 1");
+  $category_res = tep_db_fetch_array($category_query);
+  
+  if ($category_res) {
+    if ($category_res['categories_status'] == 3) {
+      return true; 
+    }
+  }
+  return false;
+}
+
+function tep_check_black_product($products_id)
+{
+  $product_query = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where site_id = '0' or site_id = '".SITE_ID."' and products_id = '".(int)$products_id."' order by site_id desc limit 1");
+  $product_res = tep_db_fetch_array($product_query);
+  if ($product_res) {
+    if ($product_res['products_status'] == 3) {
+      return true; 
+    }
+  }
+  return false;
+}
+
+function tep_whether_show_products($products_id)
+{
+  $product_query = tep_db_query("select products_status from ".TABLE_PRODUCTS_DESCRIPTION." where (site_id ='0' or site_id = '".SITE_ID."') and products_id = '".(int)$products_id."' order by site_id desc limit 1");
+  $product_res = tep_db_fetch_array($product_query);
+  if ($product_res) {
+    if ($product_res['products_status']  == 3) {
+      return true;
+    } else {
+      $pro_category_query = tep_db_query("select c.parent_id, cd.categories_id, cd.categories_status from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd , ".TABLE_PRODUCTS_TO_CATEGORIES." p2c where c.categories_id = cd.categories_id and cd.categories_id = p2c.categories_id and p2c.products_id = '".(int)$products_id."' and (cd.site_id ='0' or cd.site_id = '".SITE_ID."') order by cd.site_id desc limit 1");
+      $pro_category_res = tep_db_fetch_array($pro_category_query);
+      if ($pro_category_res) {
+        if ($pro_category_res['categories_status'] == 3) {
+	  return true;
+        } else {
+          $parent_category_query = tep_db_query("select c.parent_id, cd.categories_status from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id = cd.categories_id and c.categories_id = '".$pro_category_res['parent_id']."' and (cd.site_id = '0' or cd.site_id = '".SITE_ID."') order by cd.site_id desc limit 1"); 
+          $parent_category_res = tep_db_fetch_array($parent_category_query); 
+          if ($parent_category_res) {
+            if ($parent_category_res['categories_status'] == 3) {
+              return true; 
+            } else {
+              $parent_parent_category_query = tep_db_query("select c.parent_id, cd.categories_status from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id = cd.categories_id and c.categories_id = '".$parent_category_res['parent_id']."' and (cd.site_id = '0' or cd.site_id = '".SITE_ID."') order by cd.site_id desc limit 1"); 
+              $parent_parent_category_res = tep_db_fetch_array($parent_parent_category_query); 
+              if ($parent_parent_category_res['categories_status'] == 3) {
+                return true; 
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  return false;
 }
