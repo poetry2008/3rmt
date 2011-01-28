@@ -1,6 +1,8 @@
 <?php
 /*
   $Id$
+  
+  统计某段时间内第一次完成订单的顾客，需要REFRESH刷新数据
 */
 
   require('includes/application_top.php');

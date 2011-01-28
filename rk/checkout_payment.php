@@ -85,7 +85,7 @@ function rowOutEffect(object) {
 if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascript_validation($point['point']); }
 ?>
 </head>
-<body><div class="body_shadow" align="center"> 
+<body><div align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
   <!-- header_eof //--> 
   <!-- body //--> 
@@ -512,7 +512,8 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
   <!-- footer //--> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
   <!-- footer_eof //--> 
-</div> 
+</div>
+</div>
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
