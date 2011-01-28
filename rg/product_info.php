@@ -268,6 +268,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                         <?php 
                           //show products tags 
 // ccdd
+if (false) {
 $tag_query = tep_db_query("
     SELECT t.tags_id, 
            t.tags_images, 
@@ -309,6 +310,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                           </td> 
                         </tr> 
                         <?php
+                          }
                           }
                         ?> 
                           </table>
