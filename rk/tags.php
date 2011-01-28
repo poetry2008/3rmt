@@ -12,7 +12,7 @@ $breadcrumb->add(TAGS_NAVBAR_TITLE, tep_href_link(FILENAME_TAGS));
 </head>
 
 <body>
-<div class="body_shadow" align="center"> 
+<div align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
   <!-- header_eof //--> 
   <!-- body //--> 

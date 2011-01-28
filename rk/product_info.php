@@ -67,7 +67,7 @@ function change_num(ob, targ, quan,a_quan)
 </script>
 </head>
 <body>
-<div class="body_shadow" align="center">
+<div align="center">
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
   <!-- header_eof //-->
   <!-- body //-->
@@ -417,7 +417,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                       <td align="right" valign="bottom" class="smallText">
                           <div class="dot"></div>
                         <br>
-                        <a href="<?php echo tep_href_link(FILENAME_TELL_A_FRIEND,'products_id='.(int)$_GET['products_id']) ;  ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_tellafriend.jpg',BOX_HEADING_TELL_A_FRIEND);?></a>&nbsp; <a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE,'products_id='.(int)$_GET['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_review.jpg',BOX_REVIEWS_WRITE_REVIEW);?></a>&nbsp; <?php echo tep_draw_form('open',tep_href_link('open.php'),'get');?><input type="image" style="vertical-align:bottom;" src="<?php echo DIR_WS_IMAGES;?>design/button/botton_question.jpg"><?php echo tep_draw_hidden_field('products', $product_info['products_name']) ; ?></form> </td>
+                        <a href="<?php echo tep_href_link(FILENAME_TELL_A_FRIEND,'products_id='.(int)$_GET['products_id']) ;  ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_tellafriend.jpg',BOX_HEADING_TELL_A_FRIEND);?></a>&nbsp; <a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE,'products_id='.(int)$_GET['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_review.jpg',BOX_REVIEWS_WRITE_REVIEW);?></a>&nbsp; <?php echo tep_draw_form('open',tep_href_link('open.php'),'get');?><input type="image" style="vertical-align:bottom;" alt="img" src="<?php echo DIR_WS_IMAGES;?>design/button/botton_question.jpg"><?php echo tep_draw_hidden_field('products', $product_info['products_name']) ; ?></form> </td>
                     </tr>
                   </table></td>
               </tr>
@@ -480,7 +480,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
         }
  ?>
  </div>
-        <div class="pageBottom_long"></div>
+        <div class="pageBottom_long">&nbsp;</div>
          <?php if($description){?>
             <h3 class="pageHeading_long"><?php echo $product_info['products_name']; ?>について</h3>
             <!-- 説明文　-->
@@ -491,7 +491,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
             echo $description;
             ?>
             </p>
-         <div class="pageBottom_long"></div>
+         <div class="pageBottom_long">&nbsp;</div>
          <?php }?>
         <?php
 //    $reviews = tep_db_query("select count(*) as count from " . TABLE_REVIEWS . " where products_id = '" . $_GET['products_id'] . "'");
@@ -547,7 +547,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
         <p align="center">実際に表示されるイメージ<br>
          <a href="<?php echo HTTP_SERVER.DIR_WS_CATALOG.FILENAME_PRODUCT_INFO.'?products_id='.(int)$_GET['products_id'].'&ref='.$affiliate_id ; ?>" class="blank"><?php echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image'], $product_info['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"'); ?><br>
           <?php echo $product_info['products_name'] ; ?> </a></p>
-          <div class="pageBottom_long"></div>
+          <div class="pageBottom_long">&nbsp;</div>
         <?php
    }
  ?>
@@ -559,6 +559,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
   <!-- footer //-->
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
   <!-- footer_eof //-->
+</div>
 </div>
 </body>
 </html>

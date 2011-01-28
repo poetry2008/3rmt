@@ -133,7 +133,7 @@ function change_num(ob,targ, quan,a_quan)
 </script>
 </head>
 <body>
-<div class="body_shadow" align="center">
+<div align="center">
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
   <!-- header_eof //-->
   <!-- body //-->
@@ -197,7 +197,7 @@ function change_num(ob,targ, quan,a_quan)
               </td>
             </tr>
             <tr>
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
+              <td><?php //echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
             </tr>
             <tr>
               <td align="right" class="main"><b><?php echo SUB_TITLE_SUB_TOTAL; ?>
@@ -207,7 +207,7 @@ function change_num(ob,targ, quan,a_quan)
     if(isset($_GET['limit_error']) && $_GET['limit_error'] == 'true') {
 ?>
             <tr>
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
+              <td><?php //echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
             </tr>
             <tr>
               <td align="right" class="main">
@@ -321,6 +321,7 @@ function change_num(ob,targ, quan,a_quan)
   <!-- footer //-->
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
   <!-- footer_eof //-->
+</div>
 </div>
 </body>
 </html><?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

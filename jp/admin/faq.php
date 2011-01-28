@@ -1,4 +1,9 @@
 <?php
+/*
+   $Id$
+   
+   GM的FAQ管理
+*/
   require('includes/application_top.php');
 
   //define('FILENAME_FAQ', 'faq.php');

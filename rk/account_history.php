@@ -22,7 +22,7 @@
 ?>
 <?php page_head();?>
 </head>
-<body><div class="body_shadow" align="center"> 
+<body><div align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
   <!-- header_eof //--> 
   <!-- body //--> 
@@ -127,7 +127,8 @@
   <!-- footer //--> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
   <!-- footer_eof //--> 
-</div> 
+</div>
+</div>
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

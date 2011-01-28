@@ -377,7 +377,7 @@ function check_form() {
 }
 //--></script>
 </head>
-<body><div class="body_shadow" align="center"> 
+<body><div align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
   <!-- header_eof //--> 
   <!-- body //--> 
