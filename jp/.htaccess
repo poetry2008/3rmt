@@ -39,10 +39,9 @@ Options +FollowSymLinks
 RewriteEngine On 
 RewriteBase /
 
-
-
 #RewriteRule ^(.*)select.html$ index.php?action=select&%{QUERY_STRING}
 RewriteRule ^tags/$ tags.php
+RewriteRule ^tags/page(\d+).html$ tags.php?page=$1
 RewriteRule ^(.*)sitemap.xml$ ggsitemap.php
 RewriteRule ^credit/receive.php$ receive.php [QSA,L]
 
