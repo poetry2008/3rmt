@@ -35,7 +35,7 @@
         from " . TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd 
         where p.products_id = pd.products_id 
         order by pd.site_id DESC) c where site_id = '".SITE_ID."' or site_id = '0'
-        group by products_id having c.products_status != '0'  
+        group by products_id having c.products_status != '0' and c.products_status != '3'  
         order by products_date_added desc 
         limit " . MAX_DISPLAY_NEW_PRODUCTS
     );
@@ -56,7 +56,7 @@
         and p2c.categories_id = c.categories_id 
         and c.parent_id = '" . $new_products_category_id . "' 
         and p.products_id = pd.products_id 
-      order by pd.site_id DESC) c where site_id = '".SITE_ID."' or site_id = '0' group by products_id having c.products_status != '0' order by products_date_added desc limit " . MAX_DISPLAY_NEW_PRODUCTS
+      order by pd.site_id DESC) c where site_id = '".SITE_ID."' or site_id = '0' group by products_id having c.products_status != '0' and c.products_status != '3' order by products_date_added desc limit " . MAX_DISPLAY_NEW_PRODUCTS
     );
   }
 

@@ -11,10 +11,10 @@
           and opa.orders_id = opb.orders_id 
           and opb.products_id != '" . (int)$_GET['products_id'] . "' 
           and opb.products_id = p.products_id 
+          and p.products_id = pd.products_id 
           and opb.orders_id = o.orders_id 
-          and p.products_status != '0' 
           and o.site_id = '".SITE_ID."' 
-        order by pd.site_id DESC) c where site_id = '".SITE_ID."' or site_id = '0' group by products_id having c.products_status != '0' order by date_purchased desc limit " . MAX_DISPLAY_ALSO_PURCHASED
+        order by pd.site_id DESC) c where site_id = '".SITE_ID."' or site_id = '0' group by products_id having c.products_status != '0' and c.products_status != '3' order by date_purchased desc limit " . MAX_DISPLAY_ALSO_PURCHASED
     );
     $num_products_ordered = tep_db_num_rows($orders_query);
     if ($num_products_ordered >= MIN_DISPLAY_ALSO_PURCHASED) {

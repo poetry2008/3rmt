@@ -29,7 +29,7 @@
       where site_id = '0'
          or site_id = '".SITE_ID."' 
       group by products_id
-      having p.products_status != '0' 
+      having p.products_status != '0' and p.products_status != '3' 
       order by products_viewed desc, products_name 
       limit " . MAX_DISPLAY_BESTSELLERS);
     if (tep_db_num_rows($best_sellers_query) == 0) {
@@ -58,7 +58,7 @@
            or site_id = '".SITE_ID."' 
         group by products_id
         order by products_viewed desc 
-        having p.products_status != '0' 
+        having p.products_status != '0' and p.products_status != '3' 
         limit ".MAX_DISPLAY_BESTSELLERS
       ); 
     }
@@ -71,13 +71,13 @@
                         p.products_image,
                         p.products_ordered,
                         pd.products_viewed,
+                        pd.products_status, 
                         pd.products_name,
                         pd.products_description,
                         pd.site_id
         from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION .  " pd 
         where (pd.site_id = '0'
           or pd.site_id = '".SITE_ID."' )
-          and pd.products_status != '0' 
           and p.products_ordered > 0 
           and p.products_id = pd.products_id 
           and pd.language_id = '" .  $languages_id . "' 
@@ -88,6 +88,7 @@
       where site_id = '0'
          or site_id = '".SITE_ID."' 
       group by products_id
+      having p.products_status != '0' and p.products_status != '3' 
       order by products_viewed desc, products_name 
       limit " . MAX_DISPLAY_BESTSELLERS
         );

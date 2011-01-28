@@ -23,7 +23,7 @@
         where site_id = '0'
            or site_id = '".SITE_ID."'
         group by products_id
-        having p.products_status != '0' 
+        having p.products_status != '0' and p.products_status != '3'
         order by p.products_date_added desc 
         limit " . MAX_RANDOM_SELECT_SPECIALS
         )) {

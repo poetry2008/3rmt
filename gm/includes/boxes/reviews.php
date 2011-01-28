@@ -84,7 +84,7 @@ if (
   ) p
   where psid = '0'
      or psid = '".SITE_ID."'
-  having p.products_status != '0' 
+  having p.products_status != '0' and p.products_status != '3' 
   group by reviews_id
   ";
   $random_select .= " order by reviews_id desc";
