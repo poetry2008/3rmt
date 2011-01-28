@@ -631,7 +631,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   //$breadcrumb->add(HEADER_TITLE_TOP, HTTP_SERVER);
   
   //add new variable 
-  $breadcrumb->add(HEADER_TITLE_TOP, '/');
+  $breadcrumb->add(HEADER_TITLE_TOP, HTTP_SERVER);
 
 // add category names or the manufacturer name to the breadcrumb trail
   if (isset($cPath_array)) {
