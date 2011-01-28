@@ -31,6 +31,11 @@
             $cID = intval($_GET['cID']);
             $site_id = (isset($_GET['site_id']))?$_GET['site_id']:0;
             $c_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
+            
+            if (isset($_GET['status']) && ($_GET['status'] == 0 || $_GET['status'] == 1 || $_GET['status'] == 2 || $_GET['status'] == 3)){
+              tep_set_category_link_product_status($cID, $_GET['status'], $site_id); 
+            } 
+           /* 
             if ($site_id == 0) {
               tep_set_all_category_status($cID, $_GET['status']); 
               tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page));
@@ -50,6 +55,7 @@
                 $update_query = tep_db_query("UPDATE `".TABLE_CATEGORIES_DESCRIPTION."` SET `categories_status` = '".($c['categories_status']?'0':'1')."' WHERE `categories_id` ='".$cID."' and site_id = '".(int)$_GET['site_id']."' LIMIT 1 ;");
               }
             }
+          */ 
           }
           tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page));
           break;
