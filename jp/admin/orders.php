@@ -1965,7 +1965,7 @@ if($reload == 'yes') {
         from " . TABLE_ORDERS_PRODUCTS . " op 
         where op.products_name like '%".$_GET['keywords']."%'
         " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " op.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-        order by torihiki_date_error DESC,op.torihiki_date desc";
+        order by op.torihiki_date desc";
   } elseif (
     isset($_GET['keywords']) && $_GET['keywords']
     and ((isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name')
