@@ -729,6 +729,7 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
   <!-- footer_eof //-->
 </div>
+</div>
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

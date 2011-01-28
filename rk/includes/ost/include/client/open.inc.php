@@ -88,7 +88,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         ?>
     <tr>
         <th valign="top">認証コード:</th>
-        <td><img src="captcha.php" border="0" align="left">
+        <td><img src="captcha.php" border="0" align="left" alt="img">
         <span>&nbsp;&nbsp;<input type="text" name="captcha" size="7" value="">&nbsp;<i class="captcha_comment">認証画像の内容をご入力ください.</i></span>
         <?php if($errors['captcha']){?>
         <br/>

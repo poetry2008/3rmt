@@ -1,6 +1,8 @@
 <?php
 /*
    $Id$
+   
+   分类&商品管理
 */
   require('includes/application_top.php');
   require(DIR_WS_CLASSES . 'currencies.php');  
@@ -935,12 +937,10 @@ function check_price(new_id,old_price,percent){
     if (new_price > old_price) {
       if( ((new_price - old_price) / old_price) * 100 >= percent ) {
           error_msg = percent+"%の差額があります。再設定してください\n";
-          //$('#price_input_'+(i+1)).css('border-color','red');
       }
     } else {
       if( ((old_price - new_price) / new_price) * 100 >= percent ) {
           error_msg = percent+"%の差額があります。再設定してください\n";
-          //$('#price_input_'+(i+1)).css('border-color','red');
       }
     }
   }
@@ -1718,9 +1718,7 @@ function change_qt(ele){
     <tr>
       <td>
 <?php
-  //print_r($cpath_array);
-  //echo $categories_id;
-  
+  //(进货价x倍率 和 同业者取最大值) + 增减值 结果是否在范围内 提示
 
   $dougyousya_query = tep_db_query("select * from set_dougyousya_categories sdc,set_dougyousya_names sdn where sdc.dougyousya_id=sdn.dougyousya_id and sdc.categories_id='".$categories_id."'");
   while($d = tep_db_fetch_array($dougyousya_query)){
@@ -1730,17 +1728,11 @@ function change_qt(ele){
   }
 
   if ($dougyousya_array) {
-    //echo "<pre>";
-    //print_r($dougyousya_array);
-    $dougyousya = tep_db_fetch_array(tep_db_query("select * from set_products_dougyousya spd, set_dougyousya_names sdn where spd.dougyousya_id=sdn.dougyousya_id and spd.product_id='".$_GET['pID']."'"));
-    $dougyousya_price = get_dougyousya_history($_GET['pID'], $dougyousya['dougyousya_id']);
-    //print_r($dougyousya);
-    $oroshi = tep_db_fetch_array(tep_db_query("select * from set_menu_list where products_id='".$_GET['pID']."'"));
-    //print_r($oroshi);
-    
-    //print_r($calc);
-    //echo "</pre>";
-    $new_price = ($oroshi['kakaku']>$dougyousya_price?$oroshi['kakaku']*($calc?$calc['bairitu']:1.1):$dougyousya_price);
+    $dougyousya       = tep_db_fetch_array(tep_db_query("select * from set_products_dougyousya spd, set_dougyousya_names sdn where spd.dougyousya_id=sdn.dougyousya_id and spd.product_id='".$_GET['pID']."'"));
+    //$dougyousya_price = get_dougyousya_history($_GET['pID'], $dougyousya['dougyousya_id']);
+    $oroshi           = tep_db_fetch_array(tep_db_query("select * from set_menu_list where products_id='".$_GET['pID']."'"));
+    /*
+    $new_price        = ($oroshi['kakaku']>$dougyousya_price?$oroshi['kakaku']*($calc?$calc['bairitu']:1.1):$dougyousya_price);
     if ($calc) {
       if ($calc['shisoku'] == '+') {
         $new_price += $calc['keisan'];
@@ -1748,6 +1740,7 @@ function change_qt(ele){
         $new_price -= $calc['keisan'];
       }
     }
+    */
   }
 ?>
 <!--<hr size="2" noshade>--><b><?php //価格数量変更機能
@@ -1758,7 +1751,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   echo '  <tr><td><hr size="2" noshade></td></tr><tr>';
   echo '  <tr>';
   echo '  <td height="30">';
-  echo '価格：&nbsp;' . tep_draw_input_field('products_price', number_format(isset($new_price)?$new_price:$pInfo->products_price,0,'.',''),'id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;円' . '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price . '円 業者:' .number_format($oroshi['kakaku'],0,'.','') . '円' . ' 倍率:'. ($calc?$calc['bairitu']:'1.1') . ' ' . $dougyousya['dougyousya_name'] . ':' . number_format($dougyousya_price,0,'.','') . '円' . "\n";
+  echo '価格：&nbsp;' . tep_draw_input_field('products_price', number_format($pInfo->products_price,0,'.',''),'id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;円' . '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price . '円 ' . "\n";
   echo '  </td>';
   echo '  </tr><tr><td><hr size="2" noshade></td></tr><tr>';
   echo '  <td height="30">';
@@ -2514,9 +2507,7 @@ tep_display_google_results()
         if ($rows > 0) {
           if (isset($cInfo) && is_object($cInfo)) { // category info box contents
             $heading[] = array('text' => '<b>' . $cInfo->categories_name . '</b>');
-
-
-
+            
           if ($ocertify->npermission >= 10) { //表示制限
             if (empty($_GET['site_id'])) {
             $contents[] = array(

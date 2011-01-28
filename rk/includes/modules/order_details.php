@@ -54,9 +54,9 @@
       $p_a_quan = $a_quantity['products_quantity'];
       $p_id = 'quantity_'.$products[$i]['id'];
       $product_price_after_tax = tep_add_tax($products[$i]['price'], tep_get_tax_rate($products[$i]['tax_class_id'])); 
+      echo '<td align="center" style=" background:#e2e2e2;padding-left:10px;padding-right:20px;">';
       echo tep_draw_hidden_field($products[$i]['id'].'_unit_price', $product_price_after_tax, 'id="unit_price_'.$products[$i]['id'].'"');
       echo tep_draw_hidden_field('final_price', tep_add_tax($products[$i]['final_price'], tep_get_tax_rate($products[$i]['tax_class_id'])), 'id="id_'.$products[$i]['id'].'"');
-      echo '<td align="center" style=" background:#e2e2e2;padding-left:10px;padding-right:20px;">';
       echo '<table>'; 
       echo '<tr>'; 
       echo '<td>'; 

@@ -237,6 +237,7 @@ if (!isset($_GET['send_to'])) $_GET['send_to'] = NULL; //del notice
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 <!-- footer_eof //-->
 </div>
+</div>
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

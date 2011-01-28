@@ -94,6 +94,7 @@ if($cPath){
           }
           ?>
           <ul class='l_m_category_ul2'>
+            <li></li>
           <?php foreach($subcategories as $skey =>  $subcategory){?>
             <?php if($cPath && in_array($subcategory['categories_id'], $id)) {?>
               <li class='l_m_categories_tree'>

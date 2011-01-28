@@ -29,7 +29,7 @@ function pass_hidd(){
 </script>
 </head>
 <body>
-<div class="body_shadow" align="center"> 
+<div align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
   <!-- header_eof //--> 
   <!-- body //--> 
@@ -84,6 +84,7 @@ function pass_hidd(){
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
   <!-- footer_eof //--> 
 </div> 
+</div>
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

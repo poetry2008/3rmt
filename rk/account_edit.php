@@ -31,17 +31,18 @@
 <?php require('includes/form_check.js.php'); ?>
 </head>
 <body>
-<div class="body_shadow" align="center"> 
+<div align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
   <!-- header_eof //--> 
   <!-- body //--> 
+  <?php echo tep_draw_form('account_edit', tep_href_link(FILENAME_ACCOUNT_EDIT_PROCESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"') . tep_draw_hidden_field('action', 'process'); ?> 
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border" summary="table"> 
     <tr> 
       <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
-      <td valign="top" id="contents"> <?php echo tep_draw_form('account_edit', tep_href_link(FILENAME_ACCOUNT_EDIT_PROCESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"') . tep_draw_hidden_field('action', 'process'); ?> 
+      <td valign="top" id="contents"> 
         <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 
         
         <div class="comment">
@@ -78,11 +79,13 @@
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
         <!-- right_navigation_eof //--> </td> 
   </table> 
+  </form>
   <!-- body_eof //--> 
   <!-- footer //--> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
   <!-- footer_eof //--> 
-</div> 
+</div>
+</div>
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

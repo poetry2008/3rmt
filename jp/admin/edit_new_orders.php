@@ -1,6 +1,8 @@
 <?php
 /*
    $Id$
+   
+   创建订单
 */
 
   require('includes/application_top.php');

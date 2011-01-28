@@ -137,7 +137,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
 //-->
 </script>
 </head>
-<body><div class="body_shadow" align="center"> 
+<body><div align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
   <!-- header_eof //--> 
   <!-- body //--> 
@@ -148,9 +148,9 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents"> 
-      <?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post');?>
       <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>      
       <div class="comment">
+      <?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post');?>
         <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
         <tr> 
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
@@ -410,80 +410,80 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
   
   if (MODULE_ORDER_TOTAL_INSTALLED) {
     $order_total_modules->process();
-    echo $order_total_modules->output();
-  }
-  if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
-  // ここからカスタマーレベルに応じたポイント還元率算出============================================================
-  // 2005.11.17 K.Kaneko
-  if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
-    //設定した期間内の注文合計金額を算出------------
-    $ptoday = date("Y-m-d H:i:s", time());
-    $pstday_array = getdate();
-    $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
-    
-    $total_buyed_date = 0;
-    // ccdd
-    $customer_level_total_query = tep_db_query("select * from orders where customers_id = '".$customer_id."' and date_purchased >= '".$pstday."' and site_id = ".SITE_ID);
-    if(tep_db_num_rows($customer_level_total_query)) {
-      while($customer_level_total = tep_db_fetch_array($customer_level_total_query)) {
-        $cltotal_subtotal_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_subtotal'");
-      $cltotal_subtotal = tep_db_fetch_array($cltotal_subtotal_query);
-    
-        $cltotal_point_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_point'");
-      $cltotal_point = tep_db_fetch_array($cltotal_subtotal_query);
-       
-      $total_buyed_date += ($cltotal_subtotal['value'] - $cltotal_point['value']);
-      }
-    }
-    //----------------------------------------------
-    
-    //還元率を計算----------------------------------
-    if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
-      $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
-    $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
-    for($j=0; $j<sizeof($back_rate_array); $j++) {
-      $back_rate_array2 = explode(",", $back_rate_array[$j]);
-      if($back_rate_array2[2] <= $total_buyed_date) {
-        $back_rate = $back_rate_array2[1];
-      $back_rate_name = $back_rate_array2[0];
-      }
-    }
-    } else {
-    $back_rate_array = explode(",", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
-    if($back_rate_array[2] <= $total_buyed_date) {
-      $back_rate = $back_rate_array[1];
-      $back_rate_name = $back_rate_array[0];
-    }
-    }
-    //----------------------------------------------
-    $point_rate = $back_rate;
-  } else {
-    $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
-  }
-  // ここまでカスタマーレベルに応じたポイント還元率算出============================================================
-  //$get_point = ($order->info['subtotal'] - (int)$point) * MODULE_ORDER_TOTAL_POINT_FEE;
-  $get_point = ($order->info['subtotal'] - (int)$point) * $point_rate;
+  echo $order_total_modules->output();
+}
+if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
+// ここからカスタマーレベルに応じたポイント還元率算出============================================================
+// 2005.11.17 K.Kaneko
+if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
+  //設定した期間内の注文合計金額を算出------------
+  $ptoday = date("Y-m-d H:i:s", time());
+  $pstday_array = getdate();
+  $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
   
-  tep_session_register('get_point');
-  echo '<tr>' . "\n";
-  echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
-  echo '<td align="right" class="main"><br>'.(int)$get_point.'&nbsp;P</td>' . "\n";
-  echo '</tr>' . "\n";
+  $total_buyed_date = 0;
+  // ccdd
+  $customer_level_total_query = tep_db_query("select * from orders where customers_id = '".$customer_id."' and date_purchased >= '".$pstday."' and site_id = ".SITE_ID);
+  if(tep_db_num_rows($customer_level_total_query)) {
+    while($customer_level_total = tep_db_fetch_array($customer_level_total_query)) {
+      $cltotal_subtotal_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_subtotal'");
+    $cltotal_subtotal = tep_db_fetch_array($cltotal_subtotal_query);
+  
+      $cltotal_point_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_point'");
+    $cltotal_point = tep_db_fetch_array($cltotal_subtotal_query);
+     
+    $total_buyed_date += ($cltotal_subtotal['value'] - $cltotal_point['value']);
+    }
   }
+  //----------------------------------------------
+  
+  //還元率を計算----------------------------------
+  if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
+    $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
+  $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
+  for($j=0; $j<sizeof($back_rate_array); $j++) {
+    $back_rate_array2 = explode(",", $back_rate_array[$j]);
+    if($back_rate_array2[2] <= $total_buyed_date) {
+      $back_rate = $back_rate_array2[1];
+    $back_rate_name = $back_rate_array2[0];
+    }
+  }
+  } else {
+  $back_rate_array = explode(",", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
+  if($back_rate_array[2] <= $total_buyed_date) {
+    $back_rate = $back_rate_array[1];
+    $back_rate_name = $back_rate_array[0];
+  }
+  }
+  //----------------------------------------------
+  $point_rate = $back_rate;
+} else {
+  $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
+}
+// ここまでカスタマーレベルに応じたポイント還元率算出============================================================
+//$get_point = ($order->info['subtotal'] - (int)$point) * MODULE_ORDER_TOTAL_POINT_FEE;
+$get_point = ($order->info['subtotal'] - (int)$point) * $point_rate;
+
+tep_session_register('get_point');
+echo '<tr>' . "\n";
+echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
+echo '<td align="right" class="main"><br>'.(int)$get_point.'&nbsp;P</td>' . "\n";
+echo '</tr>' . "\n";
+}
 ?> 
-                  </table></td> 
-              </tr> 
-            </table></td> 
-        </tr> 
-        <?php
-  if (is_array($payment_modules->modules)) {
-    if ($confirmation = $payment_modules->confirmation()) {
+                </table></td> 
+            </tr> 
+          </table></td> 
+      </tr> 
+      <?php
+if (is_array($payment_modules->modules)) {
+  if ($confirmation = $payment_modules->confirmation()) {
 ?> 
-        <tr> 
-          <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-        </tr> 
-        <tr> 
-          <td style="color: #000; font-size: 12px; padding: 10px; background: url(images/design/box/dot.gif) bottom repeat-x;"><b><?php echo HEADING_PAYMENT_INFORMATION; ?></b></td> 
+      <tr> 
+        <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+      </tr> 
+      <tr> 
+        <td style="color: #000; font-size: 12px; padding: 10px; background: url(images/design/box/dot.gif) bottom repeat-x;"><b><?php echo HEADING_PAYMENT_INFORMATION; ?></b></td> 
         </tr> 
         <tr> 
           <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
@@ -495,7 +495,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                 <td>
                   <table border="0" cellspacing="0" cellpadding="2"> 
                     <tr> 
-                      <td class="main" colspan="4"><?php echo $confirmation['title']; ?></td> 
+                      <td class="main" colspan="4"><?php echo str_replace('<br />', '<br>', $confirmation['title']); ?></td> 
                     </tr> 
                     <?php
                     if (!isset($confirmation['fields'])) $confirmation['fields'] = NULL;
@@ -567,10 +567,6 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
               <tr> 
                 <td align="right" class="main"> <?php
-
-
-  
-
   if (is_array($payment_modules->modules)) {
     echo $payment_modules->process_button();
   }
@@ -582,7 +578,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
   }
   }
   
-  echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER) . '</form>' . "\n";
+  echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER) . "\n";
 ?> </td> 
               </tr> 
             </table></td> 
@@ -591,6 +587,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
           <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
         </tr>  
         </table>
+        </form> 
         </div>
         <p class="pageBottom"></p>
         </td> 
@@ -598,16 +595,18 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
         <!-- right_navigation_eof //--> </td> 
+     </tr>   
   </table> 
   <!-- body_eof //--> 
   <!-- footer //--> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
   <!-- footer_eof //--> 
 </div> 
+</div> 
 <!-- /visites --> 
 <object>
 <noscript>
-<img src="visites.php" alt="Statistics" style="border:0" />
+<img src="visites.php" alt="Statistics" style="border:0">
 </noscript>
 </object>
 <!-- /visites -->

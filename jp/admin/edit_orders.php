@@ -1,6 +1,8 @@
 <?php
 /*
    $Id$
+   
+   编辑订单
 */
 
   require('includes/application_top.php');

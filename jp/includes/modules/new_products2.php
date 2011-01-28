@@ -198,4 +198,3 @@ if($num_products){?>
 <?php
   }
 ?>
-

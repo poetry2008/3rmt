@@ -16,7 +16,7 @@ $breadcrumb->add(TAGS_NAVBAR_TITLE, tep_href_link(FILENAME_TAGS));
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <table class="side_border" border="0" width="900" cellspacing="0" cellpadding="0">
 <tr>
-<td class="left_colum_border" width="171" valign=="top">
+<td class="left_colum_border" width="171" valign="top">
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 </td>
 <td id="contents" valign="top">
@@ -27,8 +27,10 @@ $breadcrumb->add(TAGS_NAVBAR_TITLE, tep_href_link(FILENAME_TAGS));
 <?php 
 $tags_query_string = "
     select * 
-    from " . TABLE_TAGS . " 
-    order by tags_order
+    from " . TABLE_TAGS . " t, " . TABLE_PRODUCTS_TO_TAGS . " p2t
+    where t.tags_id = p2t.tags_id
+    group by p2t.tags_id
+    order by t.tags_order,t.tags_name
 ";
 $tags_split = new splitPageResults($_GET['page'],
     MAX_DISPLAY_SEARCH_RESULTS, $tags_query_string, $tags_numrows);

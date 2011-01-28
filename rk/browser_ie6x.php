@@ -14,7 +14,7 @@
 <?php page_head();?>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
-  <div class="body_shadow" align="center">
+  <div align="center">
     <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
     <!-- header_eof //-->
     <!-- body //-->
@@ -76,6 +76,7 @@
     <!-- footer //-->
     <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
     <!-- footer_eof //-->
+  </div>
   </div>
 </body>
 </html>

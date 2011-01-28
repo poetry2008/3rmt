@@ -5,7 +5,7 @@ function pmv_plugMoz(pmv_pl) {
 }
 function pmv_plugIE(pmv_plug){
 	pmv_find = false;
-	document.write('<SCR' + 'IPT LANGUAGE=VBScript>\n on error resume next \n pmv_find = IsObject(CreateObject("' + pmv_plug + '")) </SCR' + 'IPT>\n');
+	document.write('<SCR' + 'IPT LANGUAGE=VBScript>\n on error resume next \n pmv_find = IsObject(CreateObject("' + pmv_plug + '")) <' + '/' + 'S' + 'C' + 'R' + 'IPT>\n');
 	if (pmv_find) return '1';
 	return '0';
 }

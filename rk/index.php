@@ -78,8 +78,6 @@ if ($category_depth == 'nested') {
           $has_ca_single = false; 
         ?>
         <?php if (isset($_GET['cPath'])) { ?> 
-        <table border="0" width="100%" cellspacing="3" cellpadding="3" summary=""> 
-          <tr align="center">
 <?php
       $categories_query = tep_db_query("
           select * 
@@ -104,6 +102,12 @@ if ($category_depth == 'nested') {
           order by sort_order, categories_name
         ");
     $rows = 0;
+	if (tep_db_num_rows($categories_query)) {
+	?>
+    <table border="0" width="100%" cellspacing="3" cellpadding="3" summary=""> 
+    <tr align="center">
+    <?php
+	}
     while ($categories = tep_db_fetch_array($categories_query)) {
       $has_ca_single = true; 
       $rows++;
@@ -117,9 +121,13 @@ if ($category_depth == 'nested') {
         echo '        <tr align="center">' . "\n";
       }
   }
+  if (tep_db_num_rows($categories_query)) {
 ?> 
           </tr>
-        </table>
+          </table>
+ <?php
+ }
+ ?> 
     <?php
      } 
     ?>
