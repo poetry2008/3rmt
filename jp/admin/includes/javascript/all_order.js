@@ -570,6 +570,13 @@ function orders_computers(ele, cid, oid) {
             show = false;
             msg += "\n取引一括完了は買取の場合のみ有効です\n";
           }
+
+          if ($('#tori_'+document.sele_act.elements["chk[]"][i].value).html() != '') {
+            show = show && true;
+          } else {
+            show = false;
+            msg += "\n取引時間が正しくない\n";
+          }
         }
       }
       if (show && total > 0) {

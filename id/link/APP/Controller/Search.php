@@ -45,7 +45,7 @@ class Controller_Search extends Controller_Base{
         //$log = unserialize(file_get_contents('./search_log.php'));
         //dump($_POST);
 ?>
-<script>
+<script type="text/javascript">
 window.onload = function(){
     //dump($this->url[$_POST['sites'][$i]]);
   <?
@@ -68,7 +68,7 @@ window.onload = function(){
         //dump($_POST);
         $flag=true;
 ?>
-<script>
+<script type="text/javascript">
 window.onload = function(){
 <? for($i=0;$i<count($_POST['sites']);$i++){
     //dump($this->url[$_POST['sites'][$i]]);

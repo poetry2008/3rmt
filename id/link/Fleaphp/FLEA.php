@@ -1317,7 +1317,7 @@ function t($text)
  */
 function js_alert($message = '', $after_action = '', $url = '')
 {
-	$out = "<script language=\"javascript\" type=\"text/javascript\">\n";
+	$out = "<script type=\"text/javascript\">\n";
 	if (!empty($message)) {
 		$out .= "alert(\"";
 		$out .= str_replace("\\\\n", "\\n", t2js(addslashes($message)));

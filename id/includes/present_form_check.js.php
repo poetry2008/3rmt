@@ -4,7 +4,7 @@
 */
 ?>
 
-<script type="text/javascript" language="javascript"><!--
+<script type="text/javascript"><!--
 
 var submitted = false;
 

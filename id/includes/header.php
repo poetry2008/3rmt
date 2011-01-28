@@ -38,10 +38,10 @@
   }
 ?>
 
-<script src="../Scripts/swfobject_modified.js" type="text/javascript"></script>
+<script type="text/javascript" src="../Scripts/swfobject_modified.js"></script>
 
-<script src="../Scripts/swfobject_modified.js" type="text/javascript"></script>
-<script src="DWConfiguration/ActiveContent/IncludeFiles/AC_RunActiveContent.js" type="text/javascript"></script>
+<script type="text/javascript" src="../Scripts/swfobject_modified.js"></script>
+<script type="text/javascript" src="DWConfiguration/ActiveContent/IncludeFiles/AC_RunActiveContent.js"></script>
 
 
 <div id="title">

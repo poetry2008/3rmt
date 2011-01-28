@@ -407,7 +407,7 @@
 ?>
 <?php page_head();?>
 <?php require('includes/present_form_check.js.php'); ?>
-<script language="javascript" type="text/javascript"><!--
+<script type="text/javascript"><!--
 function popupWindow(url) {
   window.open(url,'popupWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
 }
@@ -471,7 +471,7 @@ function popupWindow(url) {
                     <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxContents" summary="table">
                         <tr <?php echo $_class?"class='".$_class."'":'' ; ?>>
                           <td class="main" width="<?php echo SMALL_IMAGE_WIDTH ; ?>">
-<script type="text/javascript" language="javascript"><!--
+<script type="text/javascript"><!--
   document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link('present_popup_image.php', 'pID=' . (int)$_GET['goods_id']) . '\\\')">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right" hspace="5" vspace="5"') . '</a>'; ?>');
 --></script>
 <noscript>

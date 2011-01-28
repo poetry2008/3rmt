@@ -16,6 +16,9 @@ a img {
 border: 0;
 vertical-align:middle;
 }
+.infoBoxContent a img{
+vertical-align: top;
+}
 img{
 vertical-align:middle;
 }
@@ -476,7 +479,12 @@ legend {
 #tep_site_filter .site_filter_selected{
   color: #fff;
   font-weight: bold;
-  background: #808080;
+  background: #e42e2e;
+}
+
+#tep_site_filter .site_filter_selected a{
+  color: #fff;
+  font-weight: bold;
 }
 
 .readonly{
@@ -654,4 +662,11 @@ font-size:12px;
 }
 .inv_refresh{
 float:right;
+}
+.smallText a img{
+vertical-align:top;
+}
+.right_column01 {
+padding-top:14px;
+*padding-top:12px;
 }

@@ -21,7 +21,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
         <td><?php
             $_status = '_'.$ticket->getStatus();
             $_open = 'オープン';
-            $_close = 'クローズ'; 
+            $_closed = 'クローズ'; 
             echo $$_status;
         ?></td>
       </tr>
@@ -121,7 +121,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
             <input type="hidden" name="respid" value="<?=$respID?>">
             <input type="hidden" name="a" value="postmessage">
             <div align="left" style="font-size:12px;">
-                内容をご入力ください <font class="error">*&nbsp;<?=$errors['message']?></font><br/>
+                返信する場合は、内容を入力し「送信」ボタンをクリックしてください。 <font class="error">*&nbsp;<?=$errors['message']?></font><br/>
                 <textarea name="message" id="message" cols="60" rows="7" wrap="soft"><?=$info['message']?></textarea>
             </div>
             <? if($cfg->allowOnlineAttachments()) {?>

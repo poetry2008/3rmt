@@ -52,6 +52,7 @@ switch(strtolower($_REQUEST['status'])){ //Status is overloaded
 }
 
 // This sucks but we need to switch queues on the fly! depending on stats fetched on the parent.
+/*
 if($stats) { 
     if(!$stats['open'] && (!$status || $status=='open')){
         if(!$cfg->showAnsweredTickets() && $stats['answered']) {
@@ -64,7 +65,7 @@ if($stats) {
         }
     }
 }
-
+*/
 $qwhere ='';
 /* DEPTS
    STRICT サイトS BASED (a.k.a Categories) PERM. starts the where 
@@ -81,11 +82,10 @@ if(!$depts or !is_array($depts) or !count($depts)){
     $qwhere =' WHERE 1'; // Brain fart...can not thing of a better way other than selecting all depts + 0 ..wasted query in my book?
 }else{
     //limited depts....user can access tickets assigned to them regardless of the dept.
-    if($search){
-    $qwhere =' WHERE 1'; // Brain fart...can not thing of a better way other than selecting all depts + 0 ..wasted query in my book?
-}else {
+//    if($search){
+ //   $qwhere =' WHERE 1'; // Brain fart...can not thing of a better way other than selecting all depts + 0 ..wasted query in my book?
+//}else {
     $qwhere =' WHERE (ticket.dept_id IN ('.implode(',',$depts).') OR ticket.staff_id='.$thisuser->getId().')';
-}
 }
 
 

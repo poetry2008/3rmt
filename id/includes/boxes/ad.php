@@ -4,7 +4,7 @@
 */
 ?>
 <!-- bestlinks //-->
-<script src="js/blank.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/blank.js"></script>
 <div class="boxText ad">
   <img src="images/design/box/bestlinks.gif" alt="公式 攻略 相場 Wikiなどリンク集" width="171" height="42">
 <?php

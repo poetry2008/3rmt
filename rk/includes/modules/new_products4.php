@@ -98,7 +98,7 @@
 ?>
 <!-- new_products //-->
 <?php if (0 < $num_products) { ?>
-<h3 class="products03"><img align="top" alt="" src="images/menu_ico.gif">&nbsp;<?php echo $new_c_name; ?>の新着商品</h3>
+<h3 class="products03"><?php echo $new_c_name; ?>の新着商品</h3>
 <div class="comment03">
 <table width="100%"  border="0" cellspacing="0" cellpadding="0">
 <?php
