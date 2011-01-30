@@ -101,7 +101,11 @@
 <!-- left_navigation_eof //-->
 <!-- body_text //-->
 <div id="cgi">
-<div id="body_text"><h1 class="pageHeading_long"><?php echo HEADING_TITLE ; ?></h1> 
+<div id="body_text">
+  <div class="headerNavigation">
+    <?php echo $breadcrumb->trail(' &raquo; '); ?>
+  </div>
+  <h1 class="pageHeading_long"><?php echo HEADING_TITLE ; ?></h1> 
        
         <div> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
