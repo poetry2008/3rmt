@@ -90,7 +90,9 @@
 </div>
 <!-- left_navigation_eof //-->
 <!-- body_text //-->
-<div id="content"><table class="box_des" width="100%" border="0" align="center" cellpadding="0" cellspacing="0"> 
+<div id="content">
+<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
+  <table class="box_des" width="100%" border="0" align="center" cellpadding="0" cellspacing="0"> 
           <tr> 
             <td> <br> 
               <strong><?php echo HEADING_TITLE ; ?> </strong> </td> 

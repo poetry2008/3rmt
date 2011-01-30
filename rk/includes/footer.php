@@ -14,7 +14,9 @@
 <noscript><img src="axs/dsw.cgi?pg=RMT&amp;&amp;p=g&amp;&amp;md=nj" alt="" height="1" width="1" ></noscript>
 <?php 
 // 显示SQL执行记录
-if (STORE_DB_TRANSACTIONS) {?>
+//if (STORE_DB_TRANSACTIONS) {
+if (false) {
+?>
 <div id="debug_info" style="text-align:left;">
   <pre>
 <?php if(isset($log_queries)){
