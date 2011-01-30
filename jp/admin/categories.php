@@ -2034,7 +2034,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
         and cd.language_id='" . $languages_id ."' 
       order by site_id DESC
     ) c 
-    where site_id = ".((isset($_GET['site_id'])?$_GET['site_id']:0))."
+    where site_id = ".((isset($_GET['site_id']) && $_GET['site_id'])?$_GET['site_id']:0)."
        or site_id = 0
     group by categories_id
     order by sort_order, categories_name
@@ -2150,7 +2150,7 @@ if (isset($nowColor) && $nowColor == $odd) {
           and p.products_id = p2c.products_id 
           and p2c.categories_id = '" . $current_category_id . "'
           order by site_id DESC
-          ) c where  site_id = ".((isset($_GET['site_id'])?$_GET['site_id']:0))." or site_id = 0 
+          ) c where  site_id = ".((isset($_GET['site_id']) && $_GET['site_id'])?$_GET['site_id']:0)." or site_id = 0 
           group by products_id 
           order by sort_order, products_name";
     }
