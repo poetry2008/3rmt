@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
 */
 
 define('NAVBAR_TITLE', 'メールマガジン');
@@ -18,7 +11,7 @@ define('HEADING_MAGAZINE_TITLE_REG', 'メールマガジン新規登録');
 define('HEADING_MAGAZINE_TITLE_STP', 'メールマガジン配信停止');
 
 define('TEXT_TITLE_ACCOUNT','<p>アカウントをお持ちのお客様はログイン後、マイアカウントのページからメールマガジンの購読、配信停止の設定をすることができます。</p>
-                                    <p>アカウント編集ボタンをクリックして設定をしてください。</p>');
+                                    <p>お客様情報の編集ボタンをクリックして設定をしてください。</p>');
 define('TEXT_TITLE_REG','メールマガジンの購読のみを希望されるお客様は下記フォームにお名前とメールアドレスを入力してください。');
 define('TEXT_TITLE_STP','メールマガジン配信停止を希望されるお客様は下記フォームにメールアドレスを入力してください。');
 

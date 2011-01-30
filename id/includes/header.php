@@ -62,7 +62,9 @@
       <table cellpadding="0"cellspacing="0" border="0" summary="logo">
           <tr>
             <td>
-              <embed src="images/design/header_flash.swf?url_1=<?php echo HTTP_SERVER?>" quality=high  width="900" height="120" ></embed>
+            <object type="application/x-shockwave-flash" data="images/design/header_flash.swf?url_1=<?php echo HTTP_SERVER?>" width="900" height="120">
+              <param name="movie" value="images/design/header_flash.swf?url_1=<?php echo HTTP_SERVER?>" />
+			</object>
             </td>
           </tr>
         </table>
