@@ -123,7 +123,7 @@ if (isset($_GET['action']) && $_GET['action']) {
   <td class="dataTableHeadingContent" align="right" width="50">数量</td>
   <td class="dataTableHeadingContent" align="right" width="50">
       <a style="font-weight:bold;" href="cleate_list.php?cid=<?php echo $cPath_yobi;?>&action=prelist&cPath=<?php echo $_GET['cPath'];?>">業者</a><br>
-      <small style="font-weight:normal;"><?php echo $kakaku_updated;?></small>
+      <small style="font-weight:normal;"><b><?php echo $kakaku_updated;?></b></small>
   </td>
   <?php  
   //读取当前的计算公式  
@@ -150,7 +150,7 @@ if (isset($_GET['action']) && $_GET['action']) {
         <td class='dataTableHeadingContent' align='center'>
           <a style="font-weight:bold;" href='javascript:void(0);' onClick=dougyousya_history('history.php',<?php echo $cPath_yobi;?>,<?php echo $current_category_id;?>,'dougyousya_categories','<?php echo $col_dougyousya['dougyousya_id'];?>','<?php echo $_GET['cPath'];?>')><?php echo $col_dougyousya['dougyousya_name'];?></a>
           <input type='hidden' name='d_id[]' value='<?php echo $col_dougyousya['dougyousya_id'];?>'>
-          <br><small style="font-weight:normal;"><?php echo $dougyousya_updated;?></small>
+          <br><small style="font-weight:normal;"><b><?php echo $dougyousya_updated;?></b></small>
         </td>
         <?php
       }

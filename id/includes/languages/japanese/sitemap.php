@@ -1,20 +1,13 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright ・2004 osCommerce
-
-  Released under the GNU General Public License
 */
 
 define('NAVBAR_TITLE', 'サイトマップ');
 define('HEADING_TITLE', 'サイトマップ');
 
 define('PAGE_ACCOUNT', 'マイアカウント');
-define('PAGE_ACCOUNT_EDIT', 'アカウント編集');
+define('PAGE_ACCOUNT_EDIT', 'お客様情報の編集');
 define('PAGE_ADDRESS_BOOK', 'アドレス帳');
 define('PAGE_ACCOUNT_HISTORY', '注文履歴');
 define('PAGE_ACCOUNT_NOTIFICATIONS', '商品のお知らせ');
