@@ -103,7 +103,9 @@ if (isset($_GET['action']) and $_GET['action']) {
               </tr>
 <?php
   //echo MAX_DISPLAY_SEARCH_RESULTS;
-  $tags_query_raw = "select t.tags_id, t.tags_name, t.tags_images, t.tags_checked from " . TABLE_TAGS . " t order by t.tags_id";
+  $tags_query_raw = "
+  select t.tags_id, t.tags_name, t.tags_images, t.tags_checked 
+  from " . TABLE_TAGS . " t order by t.tags_order,t.tags_name";
   $tags_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $tags_query_raw, $tags_query_numrows);
   $tags_query = tep_db_query($tags_query_raw);
   while ($tags = tep_db_fetch_array($tags_query)) {
