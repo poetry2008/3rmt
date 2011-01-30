@@ -23,6 +23,7 @@ $WHERE=' WHERE isvisible=1 ';
 $sql=' SELECT staff.staff_id,staff.dept_id, firstname,lastname,email,phone,phone_ext,mobile,dept_name,onvacation '.
      ' FROM '.STAFF_TABLE.' staff LEFT JOIN  '.DEPT_TABLE.' USING(dept_id)';
 if($_POST && $_POST['a']=='search') {
+
     $searchTerm=$_POST['query']; 
     if($searchTerm){
         $query=db_real_escape($searchTerm,false); //escape the term ONLY...no quotes.

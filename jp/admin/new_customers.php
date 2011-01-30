@@ -232,6 +232,7 @@ echo "<a   href='".tep_href_link(FILENAME_NEW_CUSTOMERS,"action=refresh")."'>".R
       FROM customers c , ".TABLE_CUSTOMERS_INFO." ci
       WHERE c.customers_id = ci.customers_info_id and 
      c.`customers_firstorderat` < '" . $endTime . "' AND c.`customers_firstorderat` > '" . $startTime . "'
+     ".(isset($_GET['site_id']) && $_GET['site_id'] ? ' AND c.site_id='.$_GET['site_id'] : '')."
       group by  c.customers_id  
       ORDER BY c.customers_firstorderat  DESC 
     ";
