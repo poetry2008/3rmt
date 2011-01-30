@@ -139,7 +139,7 @@
       }
 ?>
     <?php echo tep_draw_form('email_friend', tep_href_link(FILENAME_PREORDER, 'action=process&products_id=' . intval($_GET['products_id']))) . tep_draw_hidden_field('products_name', $product_info['products_name']); ?>
-    <p><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . intval($_GET['products_id'])) . '" target="_blank">' . $product_info['products_name']; ?>についての詳細ページはこちら</a></p>
+    <p><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . intval($_GET['products_id'])) . '">' . $product_info['products_name']; ?>についての詳細ページはこちら</a></p>
     <?php
   if($error == true) {
     echo '<span class="errorText">入力した内容に誤りがございます。正しく入力してください。</span>';

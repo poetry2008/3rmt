@@ -74,7 +74,7 @@
             <div class="comment">
       <p>
         RMTカメズでは、<?php echo $po_game_c; ?>の予約サービスを行っております。<br>
-        ご希望する数量が弊社在庫にある場合は「<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . intval($_GET['products_id'])) . '" target="_blank">' . $product_info['products_name']; ?></a>」をクリックしてお手続きください。
+        ご希望する数量が弊社在庫にある場合は「<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . intval($_GET['products_id'])) . '">' . $product_info['products_name']; ?></a>」をクリックしてお手続きください。
       </p>
 <?php
     $error = false;
@@ -82,7 +82,7 @@
     if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($_POST['quantity'])) {
       $quantity_error = true;
       $error = true;
-    } else {
+    } else { 
       $quantity_error = false;
     }
     

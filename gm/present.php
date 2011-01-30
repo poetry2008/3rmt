@@ -4,6 +4,7 @@
 */
 
   require('includes/application_top.php');
+  require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRESENT);
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_PRESENT));
   
   if(isset($_GET['goods_id']) && $_GET['goods_id']) {
@@ -15,7 +16,7 @@
     forward404Unless($present);
   } 
   
-  require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRESENT);
+  
 ?>
 <?php page_head();?>
 <script language="javascript" type="text/javascript"><!--
