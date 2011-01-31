@@ -57,7 +57,12 @@
         <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="menu box">
           <tr>
             <td width="432">
-                <?php echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, '', $request_type, false), 'get')."\n"; ?>
+                <?php 
+//this is nossl forever $request_type replace to NONSSL
+echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, '','NONSSL', false), 'get')."\n"; 
+
+
+?>
                 <table cellpadding="0" cellspacing="0" summary="search">
                   <tr>
                     <td><img src="images/design/button/search_text.gif" width="85" height="28" alt="RMT検索"></td>

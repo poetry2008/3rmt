@@ -7,7 +7,7 @@ $the_product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID, $l
 forward404Unless($the_product_info);
 
 $the_product_name        = strip_tags ($the_product_info['products_name'], "");
-$the_product_description = mb_substr (strip_tags ($the_product_info['products_description'], ""),0,65);
+$the_product_description = mb_substr (strip_tags (replace_store_name($the_product_info['products_description']), ""),0,65);
 $the_product_model       = strip_tags ($the_product_info['products_model'], "");
 
 // ccdd

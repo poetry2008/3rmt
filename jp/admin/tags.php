@@ -1,6 +1,9 @@
 <?php
   require('includes/application_top.php');
-
+$sort_str = '';
+if (isset($_GET['sort'])&&$_GET['sort']){
+$sort_str = '&sort='.$_GET['sort'];
+}
 if (isset($_GET['action']) and $_GET['action']) {
     switch ($_GET['action']) {
       case 'insert':
@@ -10,7 +13,7 @@ if (isset($_GET['action']) and $_GET['action']) {
         $t_res = tep_db_fetch_array($t_query);
         if ($t_res) {
           $messageStack->add_session(TEXT_TAGS_NAME_EXISTS, 'error');
-          tep_redirect(tep_href_link(FILENAME_TAGS, 'cPath=&action=new'));
+          tep_redirect(tep_href_link(FILENAME_TAGS, 'cPath=&action=new'.$sort_str));
         }
     
     $tags_images = tep_get_uploaded_file('tags_images');
@@ -22,7 +25,11 @@ if (isset($_GET['action']) and $_GET['action']) {
         }
 
         tep_db_query("insert into " . TABLE_TAGS . " (tags_checked, tags_images, tags_name) values ('0', '" . (isset($tags_images['name']) ? 'tags/'.$tags_images['name'] : '') . "', '" . tep_db_input($tags_name) . "')");
+        if($sort_str){
+        tep_redirect(tep_href_link(FILENAME_TAGS.'?'.$sort_str));
+        }else{
         tep_redirect(tep_href_link(FILENAME_TAGS));
+        }
         break;
       case 'save':
         $tags_id = tep_db_prepare_input($_GET['cID']);
@@ -50,14 +57,14 @@ if (isset($_GET['action']) and $_GET['action']) {
         }
 
         tep_db_query("update " . TABLE_TAGS . " set " . (isset($tags_image['name']) && $tags_image['name'] ? "tags_images = 'tags/" . tep_db_input($tags_image['name'])."', " : '') . " tags_name = '" . tep_db_input($tags_name) . "' where tags_id = '" . tep_db_input($tags_id) . "'");
-        tep_redirect(tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $tags_id));
+        tep_redirect(tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $tags_id.$sort_str));
         break;
       case 'deleteconfirm':
         $tags_id = tep_db_prepare_input($_GET['cID']);
         //unlink();
         tep_db_query("delete from " . TABLE_TAGS . " where tags_id = '" . tep_db_input($tags_id) . "'");
         tep_db_query("delete from " . TABLE_PRODUCTS_TO_TAGS . " where tags_id = '" . tep_db_input($tags_id) . "'");
-        tep_redirect(tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page']));
+        tep_redirect(tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'].$sort_str));
         break;
     }
   }
@@ -97,6 +104,38 @@ if (isset($_GET['action']) and $_GET['action']) {
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+              <tr>
+              <td colspan='2' align="right">
+                 <select onchange="if(options[selectedIndex].value) change_sort_type(options[selectedIndex].value)">
+                 <?php if(!isset($_GET['sort'])){ ?>
+                    <option selected="" value="4a"><?php echo LISTING_TITLE_A_TO_Z;?></option> <option value="4d"><?php echo LISTING_TITLE_Z_TO_A;?></option>
+                    <option value="5a"><?php echo LISTING_TITLE_A_TO_N;?></option>
+                    <option value="5d"><?php echo LISTING_TITLE_N_TO_A;?></option>
+                    <?php }else{ 
+                    if($_GET['sort']=='4a'){
+                      echo '<option selected="" value="4a">'.LISTING_TITLE_A_TO_Z.'</option>';
+                    }else{
+                      echo '<option value="4a">'.LISTING_TITLE_A_TO_Z.'</option>';
+                    }
+                    if($_GET['sort']=='4d'){
+                      echo '<option selected="" value="4d">'.LISTING_TITLE_Z_TO_A.'</option>';
+                    }else{
+                      echo '<option value="4d">'.LISTING_TITLE_Z_TO_A.'</option>';
+                    } if($_GET['sort']=='5a'){
+                      echo '<option selected="" value="5a">'.LISTING_TITLE_A_TO_N.'</option>';
+                    }else{
+                      echo '<option value="5a">'.LISTING_TITLE_A_TO_N.'</option>';
+                    }
+                    if($_GET['sort']=='5d'){
+                      echo '<option selected="" value="5d">'.LISTING_TITLE_N_TO_A.'</option>';
+                    }else{
+                      echo '<option value="5d">'.LISTING_TITLE_N_TO_A.'</option>';
+                    }
+                    }
+                    ?>
+                 </select>
+              </td>
+              </tr>
               <tr class="dataTableHeadingRow">
                 <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_TAGS_NAME; ?></td>
                 <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
@@ -106,6 +145,25 @@ if (isset($_GET['action']) and $_GET['action']) {
   $tags_query_raw = "
   select t.tags_id, t.tags_name, t.tags_images, t.tags_checked 
   from " . TABLE_TAGS . " t order by t.tags_order,t.tags_name";
+  if(isset($_GET['sort'])&&$_GET['sort']){
+    $tags_query_raw = "
+      select t.tags_id, t.tags_name, t.tags_images, t.tags_checked
+      from " . TABLE_TAGS ." t ";
+    switch($_GET['sort']){
+      case '4a':
+        $tags_query_raw .=' order by t.tags_name asc'; 
+        break;
+      case '4d':
+        $tags_query_raw .=' order by t.tags_name desc'; 
+        break;
+      case '5a':
+        $tags_query_raw .=' order by t.tags_name asc'; 
+        break;
+      case '5d':
+        $tags_query_raw .=' order by t.tags_name desc'; 
+        break;
+    }
+  }
   $tags_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $tags_query_raw, $tags_query_numrows);
   $tags_query = tep_db_query($tags_query_raw);
   while ($tags = tep_db_fetch_array($tags_query)) {
@@ -114,13 +172,13 @@ if (isset($_GET['action']) and $_GET['action']) {
     }
 
     if (isset($cInfo) && (is_object($cInfo)) && ($tags['tags_id'] == $cInfo->tags_id) ) {
-      echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->tags_id . '&action=edit') . '\'">' . "\n";
+      echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->tags_id . '&action=edit'.$sort_str) . '\'">' . "\n";
     } else {
-      echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $tags['tags_id']) . '\'">' . "\n";
+      echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $tags['tags_id'].$sort_str) . '\'">' . "\n";
     }
 ?>
                 <td class="dataTableContent"><?php echo $tags['tags_name']; ?></td>
-                <td class="dataTableContent" align="right"><?php if ( isset($cInfo) && (is_object($cInfo)) && ($tags['tags_id'] == $cInfo->tags_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $tags['tags_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
+                <td class="dataTableContent" align="right"><?php if ( isset($cInfo) && (is_object($cInfo)) && ($tags['tags_id'] == $cInfo->tags_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $tags['tags_id'].$sort_str) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
               </tr>
 <?php
   }
@@ -129,14 +187,18 @@ if (isset($_GET['action']) and $_GET['action']) {
                 <td colspan="4"><table border="0" width="100%" cellspacing="0" cellpadding="2">
                   <tr>
                     <td class="smallText" valign="top"><?php echo $tags_split->display_count($tags_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_TAGS); ?></td>
+                    <?php if(isset($_GET['sort'])&&$_GET['sort']){ ?>
+                    <td class="smallText" align="right"><?php echo $tags_split->display_links($tags_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'],'sort='.$_GET['sort']); ?></td>
+                    <?php }else{ ?>
                     <td class="smallText" align="right"><?php echo $tags_split->display_links($tags_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']); ?></td>
+                     <?php }?>
                   </tr>
 <?php
         if (!isset($_GET['action'])) {
 //  if (!$_GET['action']) {
 ?>
                   <tr>
-                    <td colspan="2" align="right"><?php echo '<a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&action=new') . '">' . tep_image_button('button_new_tag.gif', IMAGE_NEW_TAG) . '</a>'; ?></td>
+                    <td colspan="2" align="right"><?php echo '<a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&action=new'.$sort_str) . '">' . tep_image_button('button_new_tag.gif', IMAGE_NEW_TAG) . '</a>'; ?></td>
                   </tr>
 <?php
   }
@@ -151,17 +213,17 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
     case 'new':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_NEW_TAG . '</b>');
 
-      $contents = array('form' => tep_draw_form('tags', FILENAME_TAGS, 'page=' . $_GET['page'] . '&action=insert', 'post', 'enctype="multipart/form-data"'));
+      $contents = array('form' => tep_draw_form('tags', FILENAME_TAGS, 'page=' . $_GET['page'] . '&action=insert'.$sort_str, 'post', 'enctype="multipart/form-data"'));
       $contents[] = array('text' => TEXT_INFO_INSERT_INTRO);
       $contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_NAME . '<br>' . tep_draw_input_field('tags_name'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_IMAGE . '<br>' . tep_draw_file_field('tags_images')) ;
       //$contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_IMAGE . '<br>' . tep_draw_input_field('tags_images'));
-      $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_insert.gif', IMAGE_INSERT) . '&nbsp;<a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_insert.gif', IMAGE_INSERT) . '&nbsp;<a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'].$sort_str) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
     case 'edit':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_EDIT_TAG . '</b>');
 
-      $contents = array('form' => tep_draw_form('tags', FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->tags_id . '&action=save', 'post', 'enctype="multipart/form-data"'));
+      $contents = array('form' => tep_draw_form('tags', FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->tags_id . '&action=save'.$sort_str, 'post', 'enctype="multipart/form-data"'));
       $contents[] = array('text' => TEXT_INFO_EDIT_INTRO);
       $contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_NAME . '<br>' . tep_draw_input_field('tags_name', $cInfo->tags_name));
       $contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_IMAGE . '<br>' . tep_draw_file_field('tags_images')) ;
@@ -173,23 +235,23 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       }
       
       //$contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_IMAGE . '<br>' . tep_image(DIR_WS_CATALOG_IMAGES . $cInfo->tags_images)) ;
-      $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_update.gif', IMAGE_UPDATE) . '&nbsp;<a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->tags_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_update.gif', IMAGE_UPDATE) . '&nbsp;<a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->tags_id.$sort_str) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
     case 'delete':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_TAG . '</b>');
 
-      $contents = array('form' => tep_draw_form('tags', FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->tags_id . '&action=deleteconfirm'));
+      $contents = array('form' => tep_draw_form('tags', FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->tags_id . '&action=deleteconfirm'.$sort_str));
       $contents[] = array('text' => TEXT_INFO_DELETE_INTRO);
       $contents[] = array('text' => '<br><b>' . $cInfo->tags_name . '</b>');
-      $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_delete.gif', IMAGE_DELETE) . '&nbsp;<a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->tags_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_delete.gif', IMAGE_DELETE) . '&nbsp;<a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->tags_id.$sort_str) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
     default:
       if (is_object($cInfo)) {
         $heading[] = array('text' => '<b>' . $cInfo->tags_name . '</b>');
 
         $contents[] = array('align' => 'center', 'text' => 
-          '<a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->tags_id . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>' 
-          . ($ocertify->npermission == 15 ? (' <a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->tags_id . '&action=delete') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>'):'')
+          '<a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->tags_id . '&action=edit'.$sort_str) . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>' 
+          . ($ocertify->npermission == 15 ? (' <a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->tags_id . '&action=delete'.$sort_str) . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>'):'')
         );
         $contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_NAME . '<br>' . $cInfo->tags_name . '<br>');
         if ($cInfo->tags_images) {

@@ -63,7 +63,7 @@
   <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
 <?php if($page == 'question') {?>
         <h2 class="pageHeading"><?php echo $g_categories['categories_name']; ?></h2>
-        <h2 align="right"><?php echo $g_categories['categories_name']; ?>の<?php echo $faq_categories['category']; ?></h2>
+        <h2 align="left"><?php echo $g_categories['categories_name']; ?>の<?php echo $faq_categories['category']; ?></h2>
         <h3 class="redtext"><img src='images/q.gif'><?php echo $question['question']; ?></h3>
         <p><img src='images/a.gif'><?php echo $question['answer'];?></p>
 
@@ -92,7 +92,7 @@
 <?php } else {?>
   <!-- index //-->
         <h2 class="pageHeading"><?php echo $g_categories['categories_name']; ?>のよくある質問（FAQ)</h2>
-        <h2 align="right"><?php echo $g_categories['seo_name']; ?>のFAQ一覧</h2>
+        <h2 align="left"><?php echo $g_categories['seo_name']; ?>のFAQ一覧</h2>
         <p>このページでは、お客様から寄せられる<strong><?php echo $g_categories['seo_name']; ?></strong>のよくある質問にお答えしています。<?php echo $g_categories['seo_name']; ?>以外のFAQを閲覧する場合は<a href="/info/faq.html">コチラ</a>をクリックしてください。記載のないご質問は、お手数ではございますがサポートセンターへお問い合わせください。</p> 
         <?php foreach($all_faq_categories as $faq_categories){?>
           <?php

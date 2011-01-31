@@ -100,7 +100,7 @@
     <?php echo tep_image2(DIR_WS_IMAGES.'products/'.$best_sellers['products_image'],$best_sellers['products_name'],50,50); ?>
     <?php /*</a>*/ ?>
     </td>
-    <td valign="top" class="bestseller_description"><?php echo mb_substr(strip_tags($best_sellers['products_description']),0,30); ?>...</td>
+    <td valign="top" class="bestseller_description"><?php echo mb_substr(strip_tags(replace_store_name($best_sellers['products_description'])),0,30); ?>...</td>
   </tr> 
 <?php
     }

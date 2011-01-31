@@ -785,15 +785,28 @@ function tep_minitor_info(){
     return $product['products_name'];
   }
 
-  function tep_get_products_description($product_id, $language_id, $site_id = 0, $default = false) {
+  function tep_get_products_description_origin($product_id, $language_id, $site_id = 0, $default = false) {
     if ($default) {
-      $product_query = tep_db_query("select products_description from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . $product_id . "' and language_id = '" . $language_id . "' and (site_id ='".$site_id."' or site_id='0') order by site_id desc");
+      $product_query = tep_db_query("select products_description_origin from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . $product_id . "' and language_id = '" . $language_id . "' and (site_id ='".$site_id."' or site_id='0') order by site_id desc");
     } else {
-      $product_query = tep_db_query("select products_description from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . $product_id . "' and language_id = '" . $language_id . "' and site_id ='".$site_id."'");
+      $product_query = tep_db_query("select products_description_origin from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . $product_id . "' and language_id = '" . $language_id . "' and site_id ='".$site_id."'");
     }
     $product = tep_db_fetch_array($product_query);
   
-    return $product['products_description'];
+    return $product['products_description_origin'];
+  }
+   function tep_get_products_description($product_id, $language_id, $site_id = 0, $default = false) {
+    if ($default) {
+      $product_query = tep_db_query("select products_description,site_id from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . $product_id . "' and language_id = '" . $language_id . "' and (site_id ='".$site_id."' or site_id='0') order by site_id desc");
+    } else {
+      $product_query = tep_db_query("select products_description,site_id from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . $product_id . "' and language_id = '" . $language_id . "' and site_id ='".$site_id."'");
+    }
+    $product = tep_db_fetch_array($product_query);
+  
+    if ($product['site_id']==0){
+      return replace_store_name($product['products_description'],null,$product['site_id']);
+    }
+      return $product['products_description'];
   }
   
   function tep_get_products_description_mobile($product_id, $language_id, $site_id = 0) {
@@ -3445,7 +3458,7 @@ function tep_get_pay_day($time = null){
       }
     }
     //exit(date('Y-m-d H:i:s', $time));
-    return tep_get_pay_day(date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s', strtotime($time)).' + 1 month')));
+    return tep_get_pay_day(date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s', strtotime($time)).' + 1 day')));
   } else {
     $c = tep_db_fetch_array(tep_db_query("select * from " . TABLE_BANK_CALENDAR . " where cl_ym = '".date('Ym',strtotime($time))."'"));
     for($i=0;$i<strlen($c['cl_value']);$i++){
@@ -3454,7 +3467,7 @@ function tep_get_pay_day($time = null){
         }
     }
     
-    return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 month')));
+    return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
   }
   //echo $c['cl_value'];
 }
@@ -3956,4 +3969,11 @@ function tep_get_link_product_id_by_category_id($category_id)
     $product_arr[] = $pro_to_ca_res['products_id']; 
   }
   return $product_arr;
+}
+function replace_store_name($str,$product_id,$site_id) {
+  $name =  tep_get_site_name_by_id($site_id);
+  if($site_id!=0){
+  return str_replace('#STORE_NAME#', $name, $str);
+  }
+  return $str;
 }

@@ -104,7 +104,7 @@ function showimage($1) {
       $products_price = $currencies->display_price(tep_get_price($product_info['products_price'], $product_info['products_price_offset'], tep_get_price($product_info['products_price'],$product_info['products_small_sum'])), tep_get_tax_rate($product_info['products_tax_class_id']));
     }
   
-  $description = $product_info['products_description'];
+  $description = replace_store_name($product_info['products_description']);
   $data1 = explode("//", $product_info['products_attention_1']);
   $data2 = explode("//", $product_info['products_attention_2']);
   $data3 = explode("//", $product_info['products_attention_3']);

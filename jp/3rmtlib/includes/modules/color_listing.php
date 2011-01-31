@@ -49,7 +49,7 @@
      //$color_link = '&color_id='.$_GET['colors'];
      $color_link = '';
      
-     $description = strip_tags(mb_substr ($listing['products_description'],0,60));
+     $description = strip_tags(mb_substr (replace_store_name($listing['products_description']),0,60));
 
        $row++;
      $col++;

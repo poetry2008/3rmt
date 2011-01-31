@@ -56,7 +56,7 @@
     ");
     */
     //$product_info = tep_db_fetch_array($_product_info_query);
-    $product_info = tep_get_product_by_id($products[$i]['id'], SITE_ID, $languages_id);
+    $product_info = tep_get_product_by_id($products[$i]['id'], SITE_ID, $languages_id,true,'shopping_cart');
     $data1 = explode("//", $product_info['products_attention_1']);
 
 // Quantity box or information as an input box or text
