@@ -136,7 +136,7 @@
       $product_details = tep_get_product_by_id($new_products['products_id'], SITE_ID, $languages_id);
       
       $new_products['products_name'] = $product_details['products_name'];
-      $description_view = strip_tags(mb_substr($product_details['products_description'],0,200));
+      $description_view = strip_tags(mb_substr(replace_store_name($product_details['products_description']),0,200));
   
       $row ++;
 ?>
