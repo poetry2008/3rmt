@@ -9,7 +9,14 @@
 
   // 取得全部分类
 //ccdd
-  $categories_query = tep_db_query("select * from " . TABLE_CATEGORIES);
+  $categories_query = tep_db_query("select 
+      c.categories_id,c.categories_status,c.categories_image,
+      c.parent_id,c.sort_order,c.date_added,c.last_modified 
+      from "
+      . TABLE_CATEGORIES ." c left join " . TABLE_CATEGORIES_DESCRIPTION .
+      " cd on c.categories_id = cd.categories_id 
+      WHERE cd.categories_status <> '3' 
+      and cd.site_id='".SITE_ID."'");
   while ($category = tep_db_fetch_array($categories_query))  {
     $categories[$category['categories_id']] = $category;
   }
@@ -23,7 +30,10 @@
 
   // 取得全部商品
 //ccdd
-  $products_query = tep_db_query("select * from ".TABLE_PRODUCTS);
+  $products_query = tep_db_query("select p.* from ".TABLE_PRODUCTS." p
+      left join ".TABLE_PRODUCTS_DESCRIPTION." pd on
+      p.products_id = pd.products_id where pd.products_status <> '3' 
+      and pd.site_id ='".SITE_ID."'");
   while ($product = tep_db_fetch_array($products_query)){
     $products[] = tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $product['products_id']);
   }

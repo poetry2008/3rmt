@@ -620,7 +620,9 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   
   if (tep_not_null($cPath)) {
     if (tep_check_black_category($current_category_id)) {
-      forward404(); 
+      if(!preg_match('/'.FILENAME_SHOPPING_CART.'/',$PHP_SELF)){
+        forward404(); 
+      }
     }
   }
   

@@ -1,28 +1,39 @@
 <?php
 /*
   $Id$
+  Google sitemap 网站地图
 */
   require('includes/application_top.php');
   header('Content-Type:   text/xml');
   $categories = $pages = $products = array();
 
   // 取得全部分类
-  //ccdd
-  $categories_query = tep_db_query("select * from " . TABLE_CATEGORIES);
+//ccdd
+  $categories_query = tep_db_query("select 
+      c.categories_id,c.categories_status,c.categories_image,
+      c.parent_id,c.sort_order,c.date_added,c.last_modified 
+      from "
+      . TABLE_CATEGORIES ." c left join " . TABLE_CATEGORIES_DESCRIPTION .
+      " cd on c.categories_id = cd.categories_id 
+      WHERE cd.categories_status <> '3' 
+      and cd.site_id='".SITE_ID."'");
   while ($category = tep_db_fetch_array($categories_query))  {
     $categories[$category['categories_id']] = $category;
   }
 
   // 取得全部信息页内容
-  //ccdd
+//ccdd
   $contents_page = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where status = 1 and site_id = '" . SITE_ID . "' order by sort_id ");
   while ($result = tep_db_fetch_array($contents_page)){
     $pages[] = info_tep_href_link($result['romaji']);
   } 
 
   // 取得全部商品
-  //ccdd
-  $products_query = tep_db_query("select * from ".TABLE_PRODUCTS);
+//ccdd
+  $products_query = tep_db_query("select p.* from ".TABLE_PRODUCTS." p
+      left join ".TABLE_PRODUCTS_DESCRIPTION." pd on
+      p.products_id = pd.products_id where pd.products_status <> '3' 
+      and pd.site_id ='".SITE_ID."'");
   while ($product = tep_db_fetch_array($products_query)){
     $products[] = tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $product['products_id']);
   }
