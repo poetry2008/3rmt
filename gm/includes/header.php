@@ -131,18 +131,18 @@ function popupWindow(url) {
 <?php
   if (isset($_GET['error_message']) && tep_not_null($_GET['error_message'])) {
 ?>
-<table width="100%" border="0" align="center" cellpadding="2" cellspacing="0">
-  <tr class="headerError">
-    <td class="headerError"><?php echo htmlspecialchars(urldecode($_GET['error_message'])); ?></td>
+<table width="100%" border="0" cellpadding="2" cellspacing="0" class="headerError">
+  <tr>
+    <td><?php echo htmlspecialchars(urldecode($_GET['error_message'])); ?></td>
   </tr>
 </table>
 <?php
   }
   if (isset($_GET['info_message']) && tep_not_null($_GET['info_message'])) {
 ?>
-<table width="100%" border="0" align="center" cellpadding="2" cellspacing="0">
-  <tr class="headerInfo">
-    <td class="headerInfo"><?php echo htmlspecialchars($_GET['info_message']); ?></td>
+<table width="100%" border="0" cellpadding="2" cellspacing="0" class="headerError">
+  <tr>
+    <td><?php echo htmlspecialchars($_GET['info_message']); ?></td>
   </tr>
 </table>
 <?php

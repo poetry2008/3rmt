@@ -67,3 +67,11 @@ function allt(id,div_id){
       div_e.style.top=(et+20) + "px"; 
       div_e.style.display=''; 
 } 
+
+//tags sort
+
+function change_sort_type(sort_type)
+{
+  url = 'tags.php?sort=' +sort_type;
+  window.location.href = url;
+}

@@ -84,7 +84,10 @@
           <tr>
             <td width="432">
               <div style="width: 432px; height: 29px; overflow:hidden;">
-                <?php echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, '', $request_type, false), 'get')."\n"; ?>
+                <?php 
+//this is nossl forever $request_type replace to NONSSL
+echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, '','NONSSL', false), 'get')."\n"; 
+?>
                 <table style="margin-top: 3px;" cellpadding="2" cellspacing="2" summary="search">
                   <tr>
                     <td><img class="middle" src="images/design/button/search_text.gif" width="66" height="25" alt="RMT検索"></td>

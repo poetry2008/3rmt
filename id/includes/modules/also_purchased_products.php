@@ -35,7 +35,7 @@
         // ccdd
         $products_description = tep_get_products_description($orders['products_id'], $languages_id) ;
         if($products_description){
-          $products_description = strip_tags(substr($products_description['products_description'],0,96));
+          $products_description = strip_tags(substr(replace_store_name($products_description['products_description']),0,96));
         } else {
           $products_description = '';
         }

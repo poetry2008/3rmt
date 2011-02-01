@@ -143,7 +143,6 @@ window.onload = function(){
      session_start;
      $_SESSION['post_save'] = $_POST;
      $this->executeView("Site".DS."sitesearchresult.html", $viewData);    
-     /*
      if($_POST['engine']=='Nezumy'){
      }
      else{
@@ -156,7 +155,6 @@ window.onload = function(){
       </script>
       <?
      }
-     */
    }
 */
 }

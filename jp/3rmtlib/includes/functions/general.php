@@ -157,7 +157,7 @@ function forward404Unless($condition)
     );
     $product = tep_db_fetch_array($product_query);
 
-    return $product['products_description'];
+    return replace_store_name($product['products_description']);
   }
 
 ////
@@ -174,7 +174,7 @@ function forward404Unless($condition)
         order by site_id DESC"
         );
     $description = tep_db_fetch_array($description_query);
-    return strip_tags($description['products_description']) ;
+    return strip_tags(replace_store_name($description['products_description'])) ;
   }
 
 ////
@@ -2553,7 +2553,7 @@ function tep_unlink_temp_dir($dir)
     return $category;
   }
 
-  function tep_get_product_by_id($pid,$site_id, $lid, $default = true){ 
+  function tep_get_product_by_id($pid,$site_id, $lid, $default = true,$page=''){ 
     if ($default) {
     $sql = "
         SELECT * FROM (SELECT p.products_id, 
@@ -2592,8 +2592,11 @@ function tep_unlink_temp_dir($dir)
           AND pd.language_id ='" . $lid . "' 
         ORDER BY pd.site_id DESC
         ) c WHERE  site_id = '0' OR site_id = '".$site_id."'
-        GROUP BY products_id HAVING c.products_status != '0' and c.products_status != '3'
-        ";
+        GROUP BY products_id 
+       "; 
+       if($page=='shopping_cart'){
+         $sql .= " HAVING c.products_status != '0' and c.products_status != '3'";
+       }
     } else {
     $sql = "
         SELECT p.products_id, 

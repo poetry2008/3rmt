@@ -104,7 +104,7 @@ if ($listing_numrows > 0) {
         $ten = '';
       }
 
-      $description = strip_tags(mb_substr ($listing['products_description'],0,60));//maker
+      $description = strip_tags(mb_substr (replace_store_name($listing['products_description']),0,60));//maker
     
       $row++;
       $col++;

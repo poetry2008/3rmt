@@ -43,7 +43,7 @@
       //echo '    <td align="center" height="25">' . tep_draw_checkbox_field('cart_delete[]', $products[$i]['id']) . '</td>' . "\n";
     }
 
-    $product_info = tep_get_product_by_id($products[$i]['id'], SITE_ID, $languages_id);
+    $product_info = tep_get_product_by_id($products[$i]['id'], SITE_ID, $languages_id,true,'shopping_cart');
     $data1 = explode("//", $product_info['products_attention_1']);
 
 // Quantity box or information as an input box or text

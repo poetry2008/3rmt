@@ -180,7 +180,7 @@ TABLE：情報ボックス（コンテンツ）
 --------------------------- */
 .infoBoxContents{
 	width: 100%;
-	background: #eee;
+/*	background: #eee;*/
 	font-size: 11px;
 	border: solid 1px #ddd;
 	border-collapse: separate;
