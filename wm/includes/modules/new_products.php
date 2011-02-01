@@ -98,7 +98,7 @@
           $products_name = $new_products['products_name'];
       $ten = '';
     }
-  $description_array = explode("|-#-|", $product_details['products_description']);
+  $description_array = explode("|-#-|", replace_store_name($product_details['products_description']));
   $description_view = strip_tags(mb_substr($description_array[0],0,63));
 //  $description = strip_tags(mb_substr ($description_array[0],0,50));
 ?>
