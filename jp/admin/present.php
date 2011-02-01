@@ -311,7 +311,7 @@ case 'input' :
                       </tr>
                     </table>
                     <div align="right">
-            <a href=
+            <a class="new_product_reset" href=
             <?php echo tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))); ?>
             ><?php echo tep_image_button('button_back.gif', '戻る'); ?></a>
             <?php echo tep_image_submit('button_save.gif', '保存'); ?>
