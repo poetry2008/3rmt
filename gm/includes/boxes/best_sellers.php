@@ -57,8 +57,8 @@
         where site_id = '0'
            or site_id = '".SITE_ID."' 
         group by products_id
-        order by products_viewed desc 
         having p.products_status != '0' and p.products_status != '3' 
+        order by products_viewed desc 
         limit ".MAX_DISPLAY_BESTSELLERS
       ); 
     }
