@@ -36,7 +36,7 @@
             <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php 
   $manufacturer_query_raw = "select m.manufacturers_id, m.manufacturers_name, m.manufacturers_image, mi.manufacturers_url from " . TABLE_MANUFACTURERS . " m, " . TABLE_MANUFACTURERS_INFO . " mi  where  m.manufacturers_id = mi.manufacturers_id and languages_id = '" . $languages_id . "' order by manufacturers_name" ;
-  $manufacturer_split = new splitPageResults($_GET['page'], MAX_DISPLAY_ORDER_HISTORY, $manufacturer_query_raw, $manufacturer_numrows);
+  $manufacturer_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $manufacturer_query_raw, $manufacturer_numrows);
   //ccdd
   $manufacturer_query = tep_db_query($manufacturer_query_raw);
  
