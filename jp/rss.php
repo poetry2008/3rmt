@@ -110,7 +110,7 @@ while ($row = mysql_fetch_array($sql_result)) {
     continue; 
   }
   $name = $row2["products_name"];
-  $desc = $row2['products_description'];
+  $desc = replace_store_name($row2['products_description']);
 
 // add extra data here
   $name = htmlentities($name, ENT_QUOTES, 'UTF-8');
