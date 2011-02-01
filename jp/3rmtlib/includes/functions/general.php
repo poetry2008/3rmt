@@ -2596,6 +2596,8 @@ function tep_unlink_temp_dir($dir)
        "; 
        if($page=='shopping_cart'){
          $sql .= " HAVING c.products_status != '0' and c.products_status != '3'";
+       }else{
+         $sql .= " HAVING c.products_status != '0'";
        }
     } else {
     $sql = "
