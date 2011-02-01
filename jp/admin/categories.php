@@ -1525,7 +1525,9 @@ function change_qt(ele){
                         }
                       }
                       $t_query = tep_db_query("select * from ".TABLE_TAGS); 
+                      $tag_array = array();
                       while ($tag = tep_db_fetch_array($t_query)) {
+                        $tag_array[] = $tag;
                       ?>
                         <input type='checkbox' name='tags[]' value='<?php echo $tag['tags_id'];?>' 
                       <?php
@@ -1546,6 +1548,45 @@ function change_qt(ele){
                     </td> 
                   </tr>
                 </table>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                    <table>
+                    <tr><td>
+                    提醒商品 <input type="radio">是 <input type="radio">否
+                    </td></tr>
+                    <tr><td>
+                    <?php for($i = 0 ; $i<3;$i++){?>
+                    <table width="100%" style="border:1px solid #000">
+                      <tr>
+                        <td><input type="radio">贩卖 <input type="radio">买取</td>
+                        <td align="right"><a href="javascript:void(0);" onclick="">反选</a></td>
+                        <td align="right"><input type="radio">表示 <input type="radio">非表示</td>
+                      </tr>
+                      <tr><td colspan='3'>
+<?php foreach($tag_array as $tag){ ?>
+                        <input type='checkbox' name='tags[]' value='<?php echo $tag['tags_id'];?>' ><?php echo $tag['tags_name'];?>
+
+<?php }?>
+                      </td></tr>
+                    </table>
+                    <?php }?>
+                    <td></tr>
+                    <tr><td>
+                      表示顺序 <input type="text" value="1000">
+                    </td></tr>
+                    <tr><td>
+                      画像预览 <img src="">
+                    </td></tr>
+                    <tr><td>
+                      提醒画像 <input type="file">
+                      <br>注：xxxxxxxxxxxxxxxxxxxx
+                    </td></tr>
+                    <tr><td>
+                      <button>结果确认</button>
+                    </td></tr>
+                    </table>
                 </td>
               </tr>
               <?php
