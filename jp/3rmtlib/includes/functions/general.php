@@ -3272,6 +3272,7 @@ function tep_parseURI()
       $firstId = tep_get_cpath_by_cname(urldecode($_GET['cName']));
       $_GET['cPath'] = $firstId;
     }
+
     switch($router){
     case 'firstFolder':
       $firstFolder = substr($subSiteUri,1);
@@ -3317,6 +3318,12 @@ function tep_parseURI()
         }
       }
       $_GET['products_id'] = $pid;
+      break;
+      case 'x':
+        if(basename($_SERVER['REQUEST_URI']) != FILENAME_SHOPPING_CART && $_SERVER['REQUEST_URI'] != '/'){
+          forward404();
+        }
+        break;
     }
   } else {
     if (preg_match("/page-(\d+)/",$_SERVER["REQUEST_URI"],$pagenum)){
@@ -3441,7 +3448,7 @@ function tep_whether_show_products($products_id)
       $pro_category_res = tep_db_fetch_array($pro_category_query);
       if ($pro_category_res) {
         if ($pro_category_res['categories_status'] == 3) {
-	  return true;
+    return true;
         } else {
           $parent_category_query = tep_db_query("select c.parent_id, cd.categories_status from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id = cd.categories_id and c.categories_id = '".$pro_category_res['parent_id']."' and (cd.site_id = '0' or cd.site_id = '".SITE_ID."') order by cd.site_id desc limit 1"); 
           $parent_category_res = tep_db_fetch_array($parent_category_query); 
