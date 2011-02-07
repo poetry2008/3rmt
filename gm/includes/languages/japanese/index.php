@@ -16,7 +16,6 @@ define('TABLE_HEADING_UPCOMING_PRODUCTS', '入荷予定の商品');
 define('TABLE_HEADING_DATE_EXPECTED', '入荷予定日');
 
 define('HEADING_COLOR_TITLE', 'カラーから選択: ');
-if (!isset($_GET['colors'])) $_GET['colors']= NULL;
 if ( ($category_depth == 'products') || ($_GET['manufacturers_id']) ||  ($_GET['colors'])) {
   define('HEADING_TITLE', '取扱い商品');
   define('TABLE_HEADING_IMAGE', '');

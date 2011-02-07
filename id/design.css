@@ -1559,3 +1559,9 @@ vertical-align:middle;
 padding-left:10px;
 background:url(images/design/box/arrow_2.gif) no-repeat left center;
 }
+.table_border{
+padding:10px;
+border:#ccc solid 1px;
+margin-bottom:10px;
+width:500px;
+}
