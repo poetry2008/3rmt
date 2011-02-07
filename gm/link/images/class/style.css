@@ -102,7 +102,7 @@ padding-bottom:5px;
 .web-tit a{ font-weight:bold;
 text-decoration:none;
 }
-.web-tit strong{ color:#339966;}
+.web-tit strong{ color:#fff;}
 #sitemap .web-tit a{ 
 font-weight:bold;
 text-decoration:none;
@@ -116,7 +116,6 @@ padding:0;
 }
 .web td a{
 text-decoration:none;
-color:#fff;
 }
 .web02-box{
 /*border-bottom:dotted #444444 2px;*/
