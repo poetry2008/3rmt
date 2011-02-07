@@ -99,7 +99,7 @@ Object.extend(Element, {
 	},
 	setTop: function(element,t) {
 	   	element = $(element);
-    	element.style.top = t +"px";
+    	element.style.top = t + 100 + "px";
 	},
 	setSrc: function(element,src) {
     	element = $(element);

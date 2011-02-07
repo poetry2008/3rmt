@@ -472,7 +472,7 @@
         
         $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
         
-        $_POST['romaji'] = str_replace(array('/','_'),'-',$_POST['romaji']);
+        //$_POST['romaji'] = str_replace(array('/','_'),'-',$_POST['romaji']);
         
         if ($_GET['action'] == 'insert_product') {
 
@@ -481,6 +481,10 @@
             tep_redirect(tep_href_link(FILENAME_CATEGORIES));
           }
           
+          if(!tep_check_symbol($_POST['romaji'])){
+            $messageStack->add_session("ローマ字に登録できない半角記号があります。削除するか半角ハイフンに置き換えてください。", 'error');
+            tep_redirect(tep_href_link(FILENAME_CATEGORIES));
+          }
 
           if(!tep_check_romaji($_POST['romaji'])){
             $messageStack->add_session(TEXT_ROMAJI_ERROR, 'error');
@@ -503,6 +507,10 @@
         } else if ($_GET['action'] == 'update_product') {
           if (trim($_POST['romaji']) == '') {
             $messageStack->add_session(TEXT_ROMAJI_NOT_NULL, 'error');
+            tep_redirect(tep_href_link(FILENAME_CATEGORIES));
+          }
+          if(!tep_check_symbol($_POST['romaji'])){
+            $messageStack->add_session("ローマ字に登録できない半角記号があります。削除するか半角ハイフンに置き換えてください。", 'error');
             tep_redirect(tep_href_link(FILENAME_CATEGORIES));
           }
           if(!tep_check_romaji($_POST['romaji'])){
