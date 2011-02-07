@@ -10,6 +10,7 @@
     <tr>
       <?php
 // optional Product List Filter
+/*
 if(basename($PHP_SELF) == FILENAME_DEFAULT) {
    if (PRODUCT_LIST_FILTER > 0 && !empty($filterlist_sql)) {
       $filterlist_query = tep_db_query($filterlist_sql);
@@ -43,7 +44,9 @@ if(basename($PHP_SELF) == FILENAME_DEFAULT) {
       }
     }
  }
+ */
 ?>
+      <td>&nbsp;</td>
       <td class="smallText" align="right"><b><?php echo LISTING_SORT_BY ; ?></b>
         <select name="select" onChange="if(options[selectedIndex].value) change_sort_type(options[selectedIndex].value)">
           <option value="4a"  <?php if($_COOKIE['sort'] == '4a') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_TITLE_A_TO_Z ; ?></option>

@@ -507,7 +507,7 @@ $tag_query = tep_db_query("
 if(tep_db_num_rows($tag_query)){
 ?>
 <h3 class="pageHeading_long"><?php echo $product_info['products_name'].'に関するキーワード';?></h3>        
-<div class="">
+<div class="products_tags">
 <?php
 $tnum = 0;
 while($tag = tep_db_fetch_array($tag_query)) {

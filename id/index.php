@@ -5,6 +5,9 @@
 
   require('includes/application_top.php');
   require(DIR_WS_ACTIONS.'index_top.php');
+  if ($_SERVER['REQUEST_URI'] == '/present.php' || $_SERVER['REQUEST_URI'] == '/present_order.php' || $_SERVER['REQUEST_URI'] == '/specials.php') {
+    forward404(); 
+  }
 ?>
 <?php page_head();?>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>

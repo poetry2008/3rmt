@@ -3714,11 +3714,24 @@ function tep_get_products_rate($pid) {
   return $out[1][0];
 }
 
+function tep_check_symbol($str){
+  $keywords = array(
+    '~','!','@','#','$','%','^','&','*','(',')','_','+','`','=','[',']',';','\'','\\',',','.','/','<','>','?',':','"','{','}',
+  );
+  foreach($keywords as $k){
+    if (strpos($str,$k) !== false) {
+      return false;
+    }
+  }
+  return true;
+}
+
 function tep_check_romaji($romaji){
   /*
   if (!preg_match('/^[a-zA-Z0-9\-]+$/', $romaji)) {
     return false;
   }*/
+  
   $keywords = array(
     'page',
     'reviews',

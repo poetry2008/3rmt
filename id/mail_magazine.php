@@ -87,7 +87,7 @@
     <tr> 
       <!-- body_text //--> 
       <td id="contents" valign="top">
-      <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>
+      <h1 class="pageHeading"><span class="game_t"><?php echo HEADING_TITLE ; ?></span></h1>
       <div class="comment">
       <table width="497" border="0" align="center" cellpadding="0" cellspacing="0" summary="table"> 
           <tr> 
