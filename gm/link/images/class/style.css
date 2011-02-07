@@ -70,10 +70,8 @@ body .main {
 	padding:10px 20px 10px 160px;
 }
 .content a {
-	color:#fff;
 }
 .content a:hover {
-color:#339966;
 	text-decoration: underline;
 }
 .web_title {
