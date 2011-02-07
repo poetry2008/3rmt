@@ -61,12 +61,9 @@
 while ($manufacturer = tep_db_fetch_array($manufacturer_query)){
   //ccdd
   $products_query = tep_db_query("
-      select p.products_id, p.products_image, p.products_tax_class_id, p.products_price, p.products_price_offset, p.products_small_sum
-      from " . TABLE_PRODUCTS . " p 
-      where  p.products_id not in".tep_not_in_disabled_products()." and products_status != '0' and manufacturers_id = '".$manufacturer['manufacturers_id']."' 
-      order by p.products_date_added desc 
-      limit 5
-  ");
+      select * from (select p.products_date_added, pd.site_id, pd.products_status, p.products_id, p.products_image, p.products_tax_class_id, p.products_price, p.products_price_offset, p.products_small_sum
+      from " . TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd 
+      where  p.products_id not in".tep_not_in_disabled_products()." p.products_id = pd.products_id and manufacturers_id = '".$manufacturer['manufacturers_id']."' order by pd.site_id DESC) p where site_id = '".SITE_ID."' or site_id = '0' group products_id having p.products_status != '0' and p.products_status != '3' order by products_date_added desc limit 5 ");
   if (tep_db_num_rows($products_query)) {
 
     echo '<table width="100%" border="0" cellspacing="0" cellpadding="0">' . "\n";
