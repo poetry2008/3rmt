@@ -9,20 +9,21 @@
         select p.products_id, 
                pd.products_name,
                pd.site_id,
+               pd.products_status, 
                p.products_price, 
                p.products_price_offset,
                p.products_small_sum,
                p.products_tax_class_id, 
                p.products_image
         from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd
-        where p.products_status != '0' 
-          and (p.products_price_offset != '' or p.products_small_sum != '')
+        where (p.products_price_offset != '' or p.products_small_sum != '')
           and pd.language_id = '" . $languages_id . "' 
         order by pd.site_id DESC
         ) p
         where site_id = '0'
            or site_id = '".SITE_ID."'
         group by products_id
+        having p.products_status != '0' and p.products_status != '3'
         order by p.products_date_added desc 
         limit " . MAX_RANDOM_SELECT_SPECIALS
         )) {

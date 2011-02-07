@@ -6,18 +6,18 @@
   if (isset($_GET['products_id'])) {
     // ccdd
     $orders_query = tep_db_query("
-        select p.products_id, 
-               p.products_image 
-        from " .  TABLE_ORDERS_PRODUCTS . " opa, " . TABLE_ORDERS_PRODUCTS . " opb, " .  TABLE_ORDERS . " o, " . TABLE_PRODUCTS . " p 
+        select * from (select p.products_id, o.date_purchased, pd.site_id, pd.products_status, p.products_image from " .  TABLE_ORDERS_PRODUCTS . " opa, " . TABLE_ORDERS_PRODUCTS . " opb, " .  TABLE_ORDERS . " o, " .  TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd 
         where opa.products_id = '" .  (int)$_GET['products_id'] . "' 
           and opa.orders_id = opb.orders_id 
           and opb.products_id != '" . (int)$_GET['products_id'] . "' 
           and opb.products_id = p.products_id 
           and opb.orders_id = o.orders_id 
-          and p.products_status != '0' 
+          and p.products_id = pd.products_id 
           and o.site_id = '".SITE_ID."' 
-        group by p.products_id 
-        order by o.date_purchased desc 
+        order by pd.site_id DESC) p where site_id = '".SITE_ID."' or site_id = '0' 
+        group by products_id 
+        having p.products_status != '0' and p.products_status != '3'
+        order by date_purchased desc 
         limit " . MAX_DISPLAY_ALSO_PURCHASED
     );
     $num_products_ordered = tep_db_num_rows($orders_query);
