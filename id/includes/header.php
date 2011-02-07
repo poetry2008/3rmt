@@ -195,7 +195,7 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
 <?php
   if (isset($HTTP_GET_VARS['error_message']) && tep_not_null($HTTP_GET_VARS['error_message'])) {
 ?>
-<table width="100%" border="0" align="center" cellpadding="2" cellspacing="0" summary="headerError">
+<table width="900" border="0" align="center" cellpadding="2" cellspacing="0" summary="headerError">
   <tr class="headerError">
     <td class="headerError"><?php echo htmlspecialchars(urldecode($HTTP_GET_VARS['error_message'])); ?></td>
   </tr>
@@ -204,7 +204,7 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
   }
   if (isset($HTTP_GET_VARS['info_message']) && tep_not_null($HTTP_GET_VARS['info_message'])) {
 ?>
-<table width="100%" border="0" align="center" cellpadding="2" cellspacing="0" summary="headerInfo">
+<table width="900" border="0" align="center" cellpadding="2" cellspacing="0" summary="headerInfo">
   <tr class="headerInfo">
     <td class="headerInfo"><?php echo htmlspecialchars($HTTP_GET_VARS['info_message']); ?></td>
   </tr>

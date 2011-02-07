@@ -1323,3 +1323,10 @@ color:#ff0000;
 margin:5px 0 2px 7px;
 }
 .headerError{ background-color:#FF0000; color:#fff; width:785px; text-align:center;}
+.table_border{
+padding:10px;
+border:#444 solid 1px;
+margin-bottom:10px;
+width:427px;
+*width:450px;
+}

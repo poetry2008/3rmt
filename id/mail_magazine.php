@@ -89,36 +89,44 @@
       <td id="contents" valign="top">
       <h1 class="pageHeading"><span class="game_t"><?php echo HEADING_TITLE ; ?></span></h1>
       <div class="comment">
-      <table width="497" border="0" align="center" cellpadding="0" cellspacing="0" summary="table"> 
+      <table border="0" align="center" cellpadding="0" cellspacing="0" summary="table"> 
           <tr> 
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
           </tr> 
           <tr> 
-            <td><table border="0" width="497" cellspacing="0" cellpadding="2" align="center" summary="table"> 
+            <td><table border="0" cellspacing="0" cellpadding="2" align="center" summary="table"> 
                 <tr> 
-                  <td><table width="100%"  border="0" cellspacing="0" cellpadding="2" summary="table"> 
+                  <td>
+                  	<div class="table_border">
+                  	<table width="100%"  border="0" cellspacing="0" cellpadding="2" summary="table"> 
                       <tr> 
                         <td colspan="2" valign="top" class="main"><strong><?php echo HEADING_MAGAZINE_TITLE_ACCOUNT; ?></strong></td> 
                       </tr> 
                       <tr> 
                         <td valign="top">
-                        <table width="100%" border="0" cellpadding="1" cellspacing="0" class="infoBox" summary="table"> 
-                            <tr> 
-                              <td><table width="100%" border="0" cellpadding="2" cellspacing="0" class="infoBoxContents" summary="table"> 
-                                  <tr> 
-                                    <td class="main"><?php echo TEXT_TITLE_ACCOUNT ; ?></td> 
-                                  </tr> 
-                                </table></td> 
-                            </tr> 
-                          </table></td> 
+                            <table width="100%" border="0" cellpadding="1" cellspacing="0" class="infoBox" summary="table"> 
+                                <tr> 
+                                  <td><table width="100%" border="0" cellpadding="2" cellspacing="0" class="infoBoxContents" summary="table"> 
+                                      <tr> 
+                                        <td class="main"><?php echo TEXT_TITLE_ACCOUNT ; ?></td> 
+                                      </tr> 
+                                    </table></td> 
+                                </tr> 
+                            </table>
+                        </td> 
                         <td width="150" align="center" valign="top"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL') . '">' . tep_image_button('button_edit_account.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td> 
-                      </tr> 
+                      </tr>
+                    </table>
+                    </div>
+                    <div class="table_border">
+                    <form method="post" action="<?php echo tep_href_link(FILENAME_MAGAZINE, 'action=regist', 'NONSSL'); ?>"> 
+                    <table>  
                       <tr> 
                         <td colspan="2" valign="top" class="main"><strong><?php echo HEADING_MAGAZINE_TITLE_REG; ?></strong></td> 
                       </tr> 
                         <tr> 
                           <td valign="top">
-                          <form method="post" action="<?php echo tep_href_link(FILENAME_MAGAZINE, 'action=regist', 'NONSSL'); ?>"> 
+                          
                           <table width="100%" border="0" cellpadding="1" cellspacing="0" class="infoBox" summary="table"> 
                               <tr> 
                                 <td><table width="100%" border="0" cellpadding="2" cellspacing="0" class="infoBoxContents" summary="table"> 
@@ -136,17 +144,22 @@
                                   </table></td> 
                               </tr> 
                             </table>
-                            
-                            </td> 
-                          <td width="150" align="center" valign="top"><?php echo tep_image_submit('button_continue.gif', TEXT_MAGAZINE_BUTTON_REG); ?></form></td> 
-                        </tr> 
-                       
+                           
+                          </td> 
+                          <td width="150" align="center" valign="top"><?php echo tep_image_submit('button_continue.gif', TEXT_MAGAZINE_BUTTON_REG); ?></td> 
+                        </tr>
+                     </table>
+                     </form>
+                     </div>
+                     <div class="table_border">
+                     <form method="post" action="<?php echo tep_href_link(FILENAME_MAGAZINE, 'action=stop', 'NONSSL'); ?>">
+                     <table>
                       <tr> 
                         <td colspan="2" class="main"><strong><?php echo HEADING_MAGAZINE_TITLE_STP; ?></strong></td> 
                       </tr> 
                         <tr> 
                           <td align="right"> 
-                          <form method="post" action="<?php echo tep_href_link(FILENAME_MAGAZINE, 'action=stop', 'NONSSL'); ?>"> <table width="100%" border="0" cellpadding="1" cellspacing="0" class="infoBox" summary="table"> 
+                           <table width="100%" border="0" cellpadding="1" cellspacing="0" class="infoBox" summary="table"> 
                               <tr> 
                                 <td><table width="100%" border="0" cellpadding="2" cellspacing="0" class="infoBoxContents" summary="table"> 
                                     <tr> 
@@ -159,11 +172,12 @@
                                   </table></td> 
                               </tr> 
                             </table>
-                            
-                            </td> 
-                          <td width="150" align="center" valign="top"><?php echo tep_image_submit('button_delete.gif', TEXT_MAGAZINE_BUTTON_STP); ?></form></td> 
+                          </td> 
+                          <td width="150" align="center" valign="top"><?php echo tep_image_submit('button_delete.gif', TEXT_MAGAZINE_BUTTON_STP); ?></td> 
                         </tr> 
-                    </table> 
+                     </table>
+                    </form>
+                    </div>
                     <br> 
                     <?php
           //session_unregister
