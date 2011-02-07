@@ -65,7 +65,7 @@ body .main {
 .site_page_link01{ color:#339966;}
 .site_page_link02{ color:#fff;}
 #sites_add{ padding:5px 0;}
-#sites_add a{ color:#339966; padding:10px 0;}
+#sites_add a{padding:10px 0;}
 .content {
 	padding:10px 20px 10px 160px;
 }
@@ -105,7 +105,6 @@ text-decoration:none;
 #sitemap .web-tit a{ 
 font-weight:bold;
 text-decoration:none;
-color:#339966;
 }
 .web td{
 width:130px;
