@@ -507,13 +507,11 @@ $tag_query = tep_db_query("
 if(tep_db_num_rows($tag_query)){
 ?>
 <h3 class="pageHeading_long"><?php echo $product_info['products_name'].'に関するキーワード';?></h3>        
-<table border="0" width="100%" cellspacing="0" cellpadding="2">
-<tr>
+<div class="">
 <?php
 $tnum = 0;
 while($tag = tep_db_fetch_array($tag_query)) {
 ?>
-<td width="25%" align="center" class="smallText">
 <a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'tags_id=' .  $tag['tags_id']);?>">
 <?php if (
     (
@@ -529,20 +527,13 @@ while($tag = tep_db_fetch_array($tag_query)) {
    echo $tag['tags_name'];
   }
   ?>
-</a>
-</td>
+</a> 
 <?php
 $tnum++;
-if ($tnum > 3) {
-  echo '</tr><tr>';
-  $tnum = 0;
-}
 }
 ?>
-</tr>
-</table>
+</div>
 <?php }?>
-
       </td>
       <!-- body_text_eof //-->
   </table>
