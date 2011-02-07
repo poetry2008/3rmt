@@ -1558,18 +1558,21 @@ function change_qt(ele){
                 </table>
                 </td>
               </tr>
+
+
+
               <tr>
                 <td colspan="2">
                     <table>
                     <tr><td>
-                    提醒商品 <input type="radio">是 <input type="radio">否
+                    買い忘れ商品 <input type="radio">いいえ <input type="radio">はい
                     </td></tr>
                     <tr><td>
                     <?php for($i = 0 ; $i<3;$i++){?>
                     <table width="100%" style="border:1px solid #000">
                       <tr>
-                        <td><input type="radio">贩卖 <input type="radio">买取</td>
-                        <td align="right"><a href="javascript:void(0);" onclick="">反选</a></td>
+                        <td><input type="radio">販売 <input type="radio">買取</td>
+                        <td align="right"><a href="javascript:void(0);" onclick="">逆選択</a></td>
                         <td align="right"><input type="radio">表示 <input type="radio">非表示</td>
                       </tr>
                       <tr><td colspan='3'>
@@ -1582,21 +1585,24 @@ function change_qt(ele){
                     <?php }?>
                     <td></tr>
                     <tr><td>
-                      表示顺序 <input type="text" value="1000">
+                      表示順 <input type="text" value="1000">
                     </td></tr>
                     <tr><td>
                       画像预览 <img src="">
                     </td></tr>
                     <tr><td>
                       提醒画像 <input type="file">
-                      <br>注：xxxxxxxxxxxxxxxxxxxx
+                      <br>注：バナー画像の横幅は最大　　　PXです
                     </td></tr>
                     <tr><td>
-                      <button>结果确认</button>
+                      <button>結果確認</button>
                     </td></tr>
                     </table>
                 </td>
               </tr>
+
+
+
               <?php
     for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
 ?>
@@ -2179,7 +2185,7 @@ if (isset($nowColor) && $nowColor == $odd) {
           and p.products_id = p2c.products_id 
           and pd.products_name like '%" . $_GET['search'] . "%' 
           and pd.site_id='0'
-        order by p.sort_order,pd.products_name";
+        order by p.sort_order,pd.products_name, p.products_id";
     } else {
       $products_query_raw = "
         select * from ( 
@@ -2205,7 +2211,7 @@ if (isset($nowColor) && $nowColor == $odd) {
           order by site_id DESC
           ) c where  site_id = ".((isset($_GET['site_id']) && $_GET['site_id'])?$_GET['site_id']:0)." or site_id = 0 
           group by products_id 
-          order by sort_order, products_name";
+          order by sort_order, products_name, products_id";
     }
     $products_split = new splitPageResults($_GET['page'], MAX_DISPLAY_PRODUCTS_ADMIN, $products_query_raw, $products_query_numrows);
     $products_query = tep_db_query($products_query_raw);
