@@ -72,6 +72,7 @@ break;
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
           </form></tr>
         </table>
+        <p>ステータスが処理された日付で集計結果を出力します。最新の情報を取得するにはREFRESHをクリックしてください。</p>
     <!--ORDER EXPORT SCRIPT //-->
     <form action="<?php echo tep_href_link(FILENAME_NEW_CUSTOMERS) ; ?>" method="get">
     <table  border="0" align="center" cellpadding="0" cellspacing="2">
