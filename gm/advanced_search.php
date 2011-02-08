@@ -148,7 +148,8 @@ function popupWindow(url) {
             </tr> 
             <tr> 
               <td><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2"> 
-                  <tr> 
+                  <tr>
+                  	<td class="smallText"><?php echo TEXT_SEARCH_HELP_LINK ?></td>
                     <td class="smallText" align="right"><?php echo tep_image_submit('button_search.gif', IMAGE_BUTTON_SEARCH); ?></td> 
                   </tr> 
                 </table></td> 
