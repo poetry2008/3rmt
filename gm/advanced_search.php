@@ -149,7 +149,6 @@ function popupWindow(url) {
             <tr> 
               <td><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2"> 
                   <tr> 
-                    <td class="smallText"><?php echo '<a href="' .  tep_href_link(FILENAME_POPUP_SEARCH_HELP) . '" target="_blank">' . TEXT_SEARCH_HELP_LINK . '</a>'; ?></td> 
                     <td class="smallText" align="right"><?php echo tep_image_submit('button_search.gif', IMAGE_BUTTON_SEARCH); ?></td> 
                   </tr> 
                 </table></td> 
@@ -241,6 +240,8 @@ function popupWindow(url) {
           </table> 
           </div>
           </form> 
+         	<h2 class="pageHeading"><?php echo HEADING_SEARCH_HELP; ?></h2>
+            <div class="search_help"><?php echo TEXT_SEARCH_HELP;?></div>
         </div>
       <!-- body_text_eof //--> 
 <!-- right_navigation //--> 
