@@ -103,12 +103,18 @@ function popupWindow(url) {
         $present_query = tep_db_query($present_query_raw);
   ?>
           <br>
+        <?php
+    if (!$_GET['goods_id'] && ($present_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '2') || (PREV_NEXT_BAR_LOCATION == '3'))) {
+    ?>
           <table border="0" width="100%" cellspacing="0" cellpadding="2" summary="table">
             <tr>
               <td class="smallText"><?php echo $present_split->display_count($present_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRESENT); ?></td>
               <td align="right" class="smallText"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $present_split->display_links($present_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
             </tr>
           </table>
+          <?php
+    }
+  ?>
           <div class="underline">&nbsp;</div>
           <table border="0" width="100%" cellspacing="1" cellpadding="2" summary="table">
             <?php 
