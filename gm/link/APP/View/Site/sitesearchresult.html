@@ -42,7 +42,7 @@
 <!--{assign var="sites" value=$pager->findAll()}-->
 <!--{section name=list loop=$sites}-->
 <div class="site_item">
-<img width="55" height="15" border="0" alt="<!--{$sites[list].name}-->" src="http://cabbage-search.jp/pr/?url=<!--{$sites[list].url}-->">
+<img class="site_item_img01" width="55" height="15" border="0" alt="<!--{$sites[list].name}-->" src="http://cabbage-search.jp/pr/?url=<!--{$sites[list].url}-->">
 <a href="<!--{$sites[list].url}-->" target="_blank">
 <!--{$sites[list].name}-->
 </a>
