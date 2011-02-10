@@ -1621,7 +1621,7 @@ function get_cart_products(){
                 <td colspan="2"><?php //print_r(tep_get_cart_products('32239',array(1,2,3,4),1));?>
                     <table>
                     <tr><td>
-                    買い忘れ商品 <input type="radio" name="products_cartflag" value="1"<?php if($pInfo->products_cartflag){?> checked<?php }?>>いいえ <input type="radio" name="products_cartflag" value="0"<?php if(!$pInfo->products_cartflag){?> checked<?php }?>>はい
+                    買い忘れ商品 <input type="radio" name="products_cartflag" value="0"<?php if(!$pInfo->products_cartflag){?> checked<?php }?>>いいえ <input type="radio" name="products_cartflag" value="1"<?php if($pInfo->products_cartflag){?> checked<?php }?>>はい
                     </td></tr>
                     <tr><td>
                     <?php 
@@ -1665,9 +1665,6 @@ function get_cart_products(){
                     </table>
                 </td>
               </tr>
-
-
-
               <?php
     for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
 ?>
