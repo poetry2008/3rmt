@@ -66,9 +66,10 @@ echo '
 <table class="box_des" width="100%" border="0" cellspacing="0" cellpadding="0">'."\n".
   '<tr>'."\n".
   '<td width="120" class="smallText" valign="top">'.tep_image(DIR_WS_IMAGES . $manufacturer['manufacturers_image'],$manufacturer['manufacturers_name']).'</b><br><b style="text-align:center">'.$manufacturer['manufacturers_name'].'</b><!--<br>'.substr(strip_tags($manufacturer['manufacturers_url']),0,100) .'...--></td>'."\n".
-    '<td>'."\n"
+    '</tr><tr><td>'."\n"
   ;
      echo '<table class="box_des" width="100%" border="0" cellspacing="2" cellpadding="0">'."\n".'<tr>'."\n";
+     $mcol = 0; 
      while($products = tep_db_fetch_array($products_query)) {
        $products['products_name'] = tep_get_products_name($products['products_id']);
        $products['products_description'] = tep_get_products_description($products['products_id']);
@@ -77,15 +78,24 @@ echo '
        } else {
          $products_price = $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), tep_get_tax_rate($products['products_tax_class_id']));
        }
-     echo '<td align="center" valign="top" class="smallText" width="20%"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products['products_id']) . '">'.tep_image2(DIR_WS_IMAGES.$products['products_image'],$products['products_name'],60, 60,'class="image_border"').'<br>' .$products['products_name'] . '</a><br>'.$products_price.'<!--<div class="s_smallText">'.strip_tags(substr(replace_store_name($products['products_description']),0,50)).'</div>--></td>'."\n";
+     echo '<td align="center" valign="top" class="smallText" width="30%"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products['products_id']) . '"><div class="tag_image01">'.tep_image2(DIR_WS_IMAGES.$products['products_image'],$products['products_name'],60, 60,'class="image_border"').'</div><br>' .$products['products_name'] . '</a><br>'.$products_price.'<!--<div class="s_smallText">'.strip_tags(substr(replace_store_name($products['products_description']),0,50)).'</div>--></td>'."\n";
          //$col ++;
      /*     if ($col > 2) {
          echo '</tr>'."\n".'<tr>';
             $col = 0;
             $row ++;
           }*/
+      $mcol++;
+      if ($mcol > 2) {
+        echo '</tr><tr>'; 
+        $mcol = 0; 
       }
-  echo '</table>'."\n";
+     }
+    for ($t=(3-$mcol); $t>0; $t--) {
+      echo '<td align="center" valign="top" class="smallText" width="30%">&nbsp;</td>'; 
+    }
+    echo '</tr>'; 
+    echo '</table>'."\n";
 echo '  
   </td>'."\n".
   '</tr>'."\n".
