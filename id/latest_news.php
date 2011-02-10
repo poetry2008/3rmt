@@ -9,10 +9,6 @@
 ?>
 <?php page_head();?>
 <script type="text/javascript" src="js/emailProtector.js"></script>
-<script type="text/javascript" src="js/prototype.js"></script>
-<script type="text/javascript" src="js/scriptaculous.js?load=effects"></script>
-<script type="text/javascript" src="js/lightbox.js"></script>
-<link rel="stylesheet" href="css/lightbox.css" type="text/css" media="screen">
 <script type="text/javascript"><!--
 function popupWindow(url) {
   window.open(url,'popupWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
