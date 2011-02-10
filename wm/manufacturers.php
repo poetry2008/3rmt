@@ -67,10 +67,13 @@ while ($manufacturer = tep_db_fetch_array($manufacturer_query)){
     echo '<table width="100%" border="0" cellspacing="0" cellpadding="0">' . "\n";
     echo '  <tr>' . "\n";
     echo '    <td width="120" class="smallText" valign="top">' . tep_image(DIR_WS_IMAGES.$manufacturer['manufacturers_image'],$manufacturer['manufacturers_name']) . '<h3><strong>'.$manufacturer['manufacturers_name'].'</strong></h3><!-- '.substr(strip_tags($manufacturer['manufacturers_url']),0,100) .'... --></td>' . "\n";
+    echo '    </tr>' . "\n";
+    echo '    <tr>' . "\n";
     echo '    <td>' . "\n";
   
     echo '      <table width="100%" border="0" cellspacing="2" cellpadding="0">' . "\n";
     echo '        <tr>' . "\n";
+    $mcol = 0; 
     while($products = tep_db_fetch_array($products_query)) {
       $products['products_name'] = tep_get_products_name($products['products_id']);
       $products['products_description'] = tep_get_products_description($products['products_id']);
@@ -79,7 +82,15 @@ while ($manufacturer = tep_db_fetch_array($manufacturer_query)){
        } else {
          $products_price = $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), tep_get_tax_rate($products['products_tax_class_id']));
        }
-      echo '<td align="center" valign="top" class="smallText" width="20%"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products['products_id']) . '">'.tep_image2(DIR_WS_IMAGES.$products['products_image'],$products['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"').'<br>' .$products['products_name'] . '</a><br>'.$products_price.'<!-- '.strip_tags(substr($products['products_description'],0,50)).' --></td>'."\n";
+      echo '<td align="center" valign="top" class="smallText" width="30%"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products['products_id']) . '"><div class="tag_image01">'.tep_image2(DIR_WS_IMAGES.$products['products_image'],$products['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"').'</div><br>' .$products['products_name'] . '</a><br>'.$products_price.'<!-- '.strip_tags(substr($products['products_description'],0,50)).' --></td>'."\n";
+      $mcol++;
+      if ($mcol > 2) {
+        echo '</tr><tr>'; 
+        $mcol = 0; 
+      }
+    }
+    for ($t=(3-$mcol); $t>0; $t--) {
+      echo '<td align="center" valign="top" class="smallText" width="30%">&nbsp;</td>'; 
     }
     echo '        </tr>' . "\n";
     echo '      </table>' . "\n";
