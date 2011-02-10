@@ -46,9 +46,9 @@
                         <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CUSTOMER_NAME;?></td> 
                         <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_DATE;?></td> 
                         <td style="table-layout:fixed;width:120px;" class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCT_NAME;?></td> 
-                        <td style="width:100px;" class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCT_PRICE;?></td> 
-                        <td style="width:100px;" class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCT_NUM;?></td> 
-                        <td style="width:100px;" class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCT_COST;?></td> 
+                        <td style="width:100px;text-align:right;" class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCT_PRICE;?></td> 
+                        <td style="width:100px;text-align:right;" class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCT_NUM;?></td> 
+                        <td style="width:100px;text-align:right;" class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCT_COST;?></td> 
                         <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_ORDERS_STATUS;?></td> 
                       </tr>
                       <?php 
@@ -91,13 +91,13 @@
                           <td class="dataTableContent" style="<?php echo $style_str;?>" valign="top">
                           <?php echo $product_list_res['products_name'];?> 
                           </td>
-                          <td class="dataTableContent" style="<?php echo $style_str;?>" valign="top">
+                          <td class="dataTableContent" style="<?php echo $style_str;?>" valign="top" align="right">
                           <?php echo $currencies->format($product_list_res['final_price']);?> 
                           </td>
-                          <td class="dataTableContent" style="<?php echo $style_str;?>" valign="top">
+                          <td class="dataTableContent" style="<?php echo $style_str;?>" valign="top" align="right">
                           <?php echo $product_list_res['products_quantity'].PRODUCT_NUM_TEXT;?> 
                           </td>
-                          <td class="dataTableContent" style="<?php echo $style_str;?>" valign="top">
+                          <td class="dataTableContent" style="<?php echo $style_str;?>" valign="top" align="right">
                           <?php echo $currencies->format($product_list_res['products_quantity']*$product_list_res['final_price']);?> 
                           </td>
                           <td class="dataTableContent" style="<?php echo $style_str;?>" valign="top"> 
