@@ -3221,9 +3221,12 @@ function tep_get_google_adsense_adurl($url) {
     return false;
   }
   */
-  if (preg_match('/affr=adwords/',$url)) {
+  if (
+    preg_match('/from=adwords/',$url)
+  ) {
     return '1';
   } else {
+    
     return false;
   }
 }
@@ -3510,9 +3513,10 @@ function tep_get_cart_products($pid){
     where p2t.products_id in (".join(',',$pid).")
       and p2c.tags_id = p2t.tags_id
       and p.products_bflag = p2c.buyflag
-      AND p.products_id = p2t.products_id
-      AND p2.products_id = p2c.products_id
+      and p.products_id = p2t.products_id
+      and p2.products_id = p2c.products_id
       and p2.products_cartflag = '1'
+      and p2c.products_id not in (".join(',',$pid).")
     order by p2.products_cartorder
   ";
   $query = tep_db_query($raw);

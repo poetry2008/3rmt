@@ -186,13 +186,14 @@ while ($tag = tep_db_fetch_array($tags_query))
                 //<!-- '.mb_substr(strip_tags($manufacturer['manufacturers_url']),0,100,'utf8') .'... --></td>' . "\n";
     echo '</td></tr><tr><td valign="bottom">' . "\n";
   
+    $tcol = 0; 
     echo '<table width="100%" border="0" cellspacing="2" cellpadding="0">' . "\n";
     echo '<tr>' . "\n";
     while($products = tep_db_fetch_array($products_query)) {
       $products['products_name'] = tep_get_products_name($products['products_id']);
       $products['products_description'] = tep_get_products_description($products['products_id']);
       echo '<td align="center" valign="top" class="smallText"
-                          width="20%" style="padding-bottom:8px;">';
+                          width="30%" style="padding-bottom:8px;">';
                         echo '<a href="' .
                           tep_href_link(FILENAME_PRODUCT_INFO,'products_id='.  $products['products_id']) . '">';
             echo '<div class="tag_image01">';
@@ -212,6 +213,14 @@ while ($tag = tep_db_fetch_array($tags_query))
         echo $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), tep_get_tax_rate($products['products_tax_class_id']));
       }
                           echo '</td>'."\n";
+      $tcol++;
+      if ($tcol > 2) {
+        echo '</tr><tr>';
+        $tcol = 0;
+      }
+    }
+    for ($t=(3-$tcol); $t>0; $t--) {
+      echo '<td align="center" class="smallText" valign="top" width="30%" style="padding-bottom:8px;">&nbsp;</td>'; 
     }
     echo '</tr>' . "\n";
     echo '</table>' . "\n";

@@ -3990,3 +3990,24 @@ function replace_store_name($str,$product_id,$site_id) {
   }
   return $str;
 }
+
+// 根据pid数据取得提醒商品
+function tep_get_cart_products($pid,$tid,$buyflag){
+  $raw = "
+    select distinct(p.products_id) 
+    from products_to_tags p2t,products p ,products_to_carttag p2c
+    where 
+    p2c.tags_id in (".join(',',$tid).")
+    and p2c.tags_id = p2t.tags_id
+    and p.products_bflag = ".$buyflag."
+    and p.products_id = p2t.products_id
+    and p.products_id != ".$pid."
+  ";
+  //echo $raw;
+  $query = tep_db_query($raw);
+  $arr = array();
+  while($p = tep_db_fetch_array($query)){
+    $arr[] = $p['products_id'];
+  }
+  return $arr;
+}

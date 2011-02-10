@@ -26,6 +26,14 @@
         echo tep_draw_pull_down_menu('xxx',array_merge(array(array('id' => '0','text' => '関連付けなし')),tep_get_products_tree($_GET['cid'])),$_GET['rid'],'onchange=\'$("#relate_products_id").val(this.options[this.selectedIndex].value)\'');
         exit;
         break;
+      case 'get_cart_products':
+        //print_r(tep_get_cart_products($_GET['products_id'],$_GET['tags_id'],$_GET['buyflag']));
+        foreach(tep_get_cart_products($_GET['products_id'],$_GET['tags_id'],$_GET['buyflag']) as $p){
+          $p = tep_get_product_by_id($p,0,4);
+          echo $p['products_name'] . "<br>";
+        }
+        exit;
+        break;
       case 'toggle':
           if ($_GET['cID']) {
             $cID = intval($_GET['cID']);
@@ -1048,6 +1056,21 @@ function change_qt(ele){
     $('#qt').val(qt);
   }
 }
+
+function get_cart_products(){
+  tagstr = '';
+
+  $(".carttags").each(function(){
+    start  = $(this).attr('name').indexOf('[') + 1;
+    end    = $(this).attr('name').indexOf(']');
+    //alert($(this).attr('name').substr(start, end-start));
+    if(this.checked)
+    tagstr += '&tags_id[]='+$(this).attr('name').substr(start, end-start);
+  });
+  //alert(tagstr);
+  if (tagstr != '')
+  window.open("categories.php?action=get_cart_products&products_id=<?php echo $_GET['pID'];?>&buyflag="+$("input[@type=radio][name=products_cart_buyflag][checked]").val()+tagstr, '','toolbar=0,location=0,directories=0,status=1,menubar=0,scrollbars=yes,resizable=yes,width=300');
+}
 </script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onLoad="SetFocus();">
@@ -1595,7 +1618,7 @@ function change_qt(ele){
 
 
               <tr>
-                <td colspan="2"><?php print_r(tep_get_cart_products('32239',array(1,2,3,4),1));?>
+                <td colspan="2"><?php //print_r(tep_get_cart_products('32239',array(1,2,3,4),1));?>
                     <table>
                     <tr><td>
                     買い忘れ商品 <input type="radio" name="products_cartflag" value="1"<?php if($pInfo->products_cartflag){?> checked<?php }?>>いいえ <input type="radio" name="products_cartflag" value="0"<?php if(!$pInfo->products_cartflag){?> checked<?php }?>>はい
@@ -1608,15 +1631,15 @@ function change_qt(ele){
                         $carttag_array[$carttag['tags_id']] = $carttag;
                       }
                       ?>
-                    <table width="100%" style="border:1px solid #000">
+                    <table width="100%" >
                       <tr>
                         <td><input type="radio" name="products_cart_buyflag" value='0'<?php if(!$pInfo->products_cart_buyflag){?> checked<?php }?>>販売 <input type="radio" name="products_cart_buyflag" value='1'<?php if($pInfo->products_cart_buyflag){?> checked<?php }?>>買取</td>
-                        <td align="right"><a href="javascript:void(0);" onclick="">逆選択</a></td>
+                        <td align="right"><a href="javascript:void(0);" onclick="$('.carttags').each(function(){if(this.checked)this.checked=false; else this.checked=true;})">逆選択</a></td>
                         <!--<td align="right"><input type="radio" name="products_carttag_enabled" value="1">表示 <input type="radio" name="products_carttag_enabled" value="0">非表示</td>-->
                       </tr>
                       <tr><td colspan='2'>
 <?php foreach($tag_array as $tag){ ?>
-                        <input type='checkbox' name='carttags[<?php echo $tag['tags_id'];?>]' value='1'<?php if(isset($carttag_array[$tag['tags_id']])){echo " checked";}?>><?php echo $tag['tags_name'];?>
+                        <input type='checkbox' class="carttags" name='carttags[<?php echo $tag['tags_id'];?>]' value='1'<?php if(isset($carttag_array[$tag['tags_id']])){echo " checked";}?>><?php echo $tag['tags_name'];?>
 <?php }?>
                       </td></tr>
                     </table>
@@ -1627,17 +1650,17 @@ function change_qt(ele){
  <?php if ($pInfo->products_cart_image) {?>
                     <tr><td>
                       画像预览
-                        <? echo tep_image(tep_get_web_upload_dir(0) . 'carttags/' . $pInfo->products_cart_image, $pInfo->products_name, null, null, 'align="right" hspace="5" vspace="5"');?>
+                        <?php echo tep_image(tep_get_web_upload_dir(0) . 'carttags/' . $pInfo->products_cart_image, $pInfo->products_name, null, null, 'align="right" hspace="5" vspace="5"');?>
                       <br>
                       <a href="javascript:confirmg('この画像を削除しますか？','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&cl=products_cart_image&action='.$_GET['action'].'&file='.$pInfo->products_cart_image.'&mode=c_delete') ; ?>');" style="color:#0000FF;">この画像を削除する</a>
                     </td></tr>
 <?php }?>
                     <tr><td>
                       提醒画像 <input type="file" name="products_cart_image">
-                      <br>注：バナー画像の横幅は最大　　　PXです
+                      <br>注：バナー画像の横幅は最大450PXです
                     </td></tr>
                     <tr><td>
-                      <button>結果確認</button>
+                      <a href="javascript:void(0);" onclick="get_cart_products()">結果確認</a>
                     </td></tr>
                     </table>
                 </td>
