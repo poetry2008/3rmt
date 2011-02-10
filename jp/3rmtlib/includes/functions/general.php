@@ -2179,7 +2179,10 @@ function forward404Unless($condition)
 <meta http-equiv="Content-Style-Type" content="text/css">
 <meta http-equiv="Content-Script-Type" content="text/javascript">
 <base href="<?php echo (($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERVER) . DIR_WS_CATALOG; ?>">
-<link rel="stylesheet" type="text/css" href="stylesheet.css"> 
+<?php
+$site_romaji = tep_get_site_romaji_by_id(SITE_ID);
+?>
+<link rel="stylesheet" type="text/css" href="<?php echo 'css/'.$site_romaji.'.css';?>"> 
 <?php
     switch (str_replace('/', '', $_SERVER['SCRIPT_NAME'])) {
       case FILENAME_CATEGORY:
@@ -2580,6 +2583,9 @@ function tep_unlink_temp_dir($dir)
                p.products_attention_3, 
                p.products_attention_4, 
                p.products_attention_5, 
+               p.products_cart_image,
+               p.products_cartorder,
+               p.products_cartflag,
                pd.language_id,
                pd.products_name, 
                pd.products_description,
@@ -3468,4 +3474,60 @@ function tep_whether_show_products($products_id)
     }
   }
   return false;
+}
+  
+function tep_get_site_romaji_by_id($id){
+    //static $arr;
+    if ($id == 0){
+      //return 'all';
+      return '';
+    }
+     
+    //if (isset($arr[$id])) {
+      //return $arr[$id];
+    //}
+    
+    $site_query = tep_db_query("
+        select * 
+        from sites 
+        where id = '".intval($id)."'
+    ");
+    $site = tep_db_fetch_array($site_query);
+    if (isset($site['romaji'])) {
+      //$arr[$id] = $site['romaji'];
+      return $site['romaji'];
+    } else {
+      return '';
+    }
+    #return isset($site['romaji'])?$site['romaji']:'';
+}
+
+// 根据pid数据取得提醒商品
+function tep_get_cart_products($pid){
+  $raw = "
+    select distinct(p2c.products_id)
+    from products_to_tags p2t,products_to_carttag p2c, products p, products p2
+    where p2t.products_id in (".join(',',$pid).")
+      and p2c.tags_id = p2t.tags_id
+      and p.products_bflag = p2c.buyflag
+      AND p.products_id = p2t.products_id
+      AND p2.products_id = p2c.products_id
+      and p2.products_cartflag = '1'
+    order by p2.products_cartorder
+  ";
+  $query = tep_db_query($raw);
+  $arr = array();
+  while($p = tep_db_fetch_array($query)){
+    $arr[] = $p['products_id'];
+  }
+  return $arr;
+}
+
+// 根据shopping_cart中商品集取到商品id数组
+function tep_get_products_by_shopiing_cart($products){
+  $arr = array();
+  foreach ($products as $p) {
+    $arr[] = tep_get_prid($p['id']);
+  }
+  return $arr;
 }
