@@ -6,7 +6,7 @@
   require('includes/application_top.php');
   require(DIR_WS_CLASSES.'currencies.php');
   $currencies = new currencies();
-  $product_history_query_raw = "select o.orders_id, o.customers_name, o.date_purchased, o.orders_status from ".TABLE_ORDERS." o where o.customers_id = '".$_GET['cID']."'";
+  $product_history_query_raw = "select o.orders_id, o.customers_name, o.date_purchased, o.orders_status from ".TABLE_ORDERS." o where o.customers_id = '".$_GET['cID']."' order by o.date_purchased desc";
   $product_history_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $product_history_query_raw, $product_history_numrows);
   $product_history_query = tep_db_query($product_history_query_raw);
 ?>
