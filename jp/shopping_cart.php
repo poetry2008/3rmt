@@ -181,6 +181,8 @@ function change_num(ob,targ, quan,a_quan)
                   <td><?php echo sprintf(DS_LIMIT_PRICE_OVER_ERROR,$currencies->format(DS_LIMIT_PRICE),$currencies->format(DS_LIMIT_PRICE)); ?></td>
                 </tr>
               </table>
+  
+  
             </td>
           </tr>
           <?php 
@@ -246,6 +248,18 @@ function change_num(ob,targ, quan,a_quan)
                   <td class="main" colspan="3"><?php echo TEXT_UPDATE_CART_INFO; // 2003.02.27 nagata Add Japanese osCommerce ?></td>
                 </tr>
               </table>
+  
+  <div><?php 
+    $cart_products = tep_get_cart_products(tep_get_products_by_shopiing_cart($products));
+    foreach($cart_products as $cp){
+      $cp = tep_get_product_by_id($cp, SITE_ID, 4);
+      //print_r($cp);
+      echo "<a href='".tep_href_link(FILENAME_PRODUCT_INFO, "products_id=".$cp['products_id'])."'>";
+      echo "<img src='".DIR_WS_IMAGES . 'carttags/'. $cp['products_cart_image']."' alt='".$cp['products_name']."' title='".$cp['products_name']."'>";
+      echo "</a>";
+      echo "<br>";
+    }
+  ?></div>
               <?php require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_INFO_SHOPPING_CART);?>
               <p class="main"><b><i><?php echo SUB_HEADING_TITLE_1; ?></i></b><br>
                 <?php echo SUB_HEADING_TEXT_1; ?></p>
