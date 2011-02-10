@@ -469,7 +469,11 @@
         break;
       case 'insert_product':
       case 'update_product':
-        
+        /*
+        echo "<pre>";
+        print_r($_POST);
+        exit;
+        */
         $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
         
         //$_POST['romaji'] = str_replace(array('/','_'),'-',$_POST['romaji']);
@@ -579,7 +583,11 @@
                                   'option_type' => tep_db_prepare_input($_POST['option_type']),
                                   'sort_order' => tep_db_prepare_input($_POST['sort_order']),
                                   'relate_products_id' => tep_db_prepare_input($_POST['relate_products_id']),
-                                  'products_small_sum' => tep_db_prepare_input($_POST['products_small_sum']));
+                                  'products_small_sum' => tep_db_prepare_input($_POST['products_small_sum']),
+                                  'products_cartflag' => tep_db_prepare_input($_POST['products_cartflag']),
+                                  'products_cart_buyflag' => tep_db_prepare_input($_POST['products_cart_buyflag']),
+                                  'products_cartorder' => tep_db_prepare_input($_POST['products_cartorder']),
+                                  );
           
 
 
@@ -591,6 +599,9 @@
           }
           if ($_POST['products_image3']) {
             $sql_data_array['products_image3'] = (($_POST['products_image3'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image3']));
+          }
+          if ($_POST['products_cart_image']) {
+            $sql_data_array['products_cart_image'] = (($_POST['products_cart_image'] == 'none') ? '' : tep_db_prepare_input($_POST['products_cart_image']));
           }
 
 
@@ -605,7 +616,19 @@
             $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
             tep_db_perform(TABLE_PRODUCTS, $sql_data_array, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
           }
-          
+        
+        if (isset($_POST['carttags']) && $site_id == '0') {
+          tep_db_query("delete from products_to_carttag where products_id='".$products_id."'");
+          foreach($_POST['carttags'] as $ck => $ct){
+            tep_db_perform('products_to_carttag', array(
+              'products_id' => $products_id,
+              'tags_id' => $ck,
+              'buyflag' => tep_db_prepare_input($_POST['products_cart_buyflag']),
+              'created_at' => 'now()'
+            ));
+          }
+        }
+        
         if ($_POST['relate_products_id'] && $products_id) {
           tep_db_query("update ".TABLE_PRODUCTS." set relate_products_id='".$products_id."' where products_id='".$_POST['relate_products_id']."'");
         }
@@ -646,12 +669,12 @@
         
         if(isset($_POST['image_'.$color['color_id']]) && $_POST['image_'.$color['color_id']] && $_POST['image_'.$color['color_id']] == 'none') {
           //delete color_image date
-        tep_db_query("delete from ".TABLE_COLOR_TO_PRODUCTS." where products_id = '".tep_db_input($products_id)."' and color_id = '".$color['color_id']."'");
+          tep_db_query("delete from ".TABLE_COLOR_TO_PRODUCTS." where products_id = '".tep_db_input($products_id)."' and color_id = '".$color['color_id']."'");
         } elseif(isset($_POST['image_'.$color['color_id']]) && $_POST['image_'.$color['color_id']] && !empty($_POST['image_'.$color['color_id']]) && $_POST['image_'.$color['color_id']] != 'none') {
           //update color_image date
-        tep_db_query("update ".TABLE_COLOR_TO_PRODUCTS." set color_image = '".tep_db_prepare_input($_POST['image_'.$color['color_id']])."' where products_id = '".tep_db_input($products_id)."' and color_id = '".$color['color_id']."'");
-        tep_db_query("update ".TABLE_COLOR_TO_PRODUCTS." set categories_id = '".$current_category_id."' where products_id = '".tep_db_input($products_id)."' and color_id = '".$color['color_id']."'");
-        tep_db_query("update ".TABLE_COLOR_TO_PRODUCTS." set manufacturers_id = '".tep_db_prepare_input($_POST['manufacturers_id'])."' where products_id = '".tep_db_input($products_id)."' and color_id = '".$color['color_id']."'");
+          tep_db_query("update ".TABLE_COLOR_TO_PRODUCTS." set color_image = '".tep_db_prepare_input($_POST['image_'.$color['color_id']])."' where products_id = '".tep_db_input($products_id)."' and color_id = '".$color['color_id']."'");
+          tep_db_query("update ".TABLE_COLOR_TO_PRODUCTS." set categories_id = '".$current_category_id."' where products_id = '".tep_db_input($products_id)."' and color_id = '".$color['color_id']."'");
+          tep_db_query("update ".TABLE_COLOR_TO_PRODUCTS." set manufacturers_id = '".tep_db_prepare_input($_POST['manufacturers_id'])."' where products_id = '".tep_db_input($products_id)."' and color_id = '".$color['color_id']."'");
         }
       }
     } // end color while
@@ -898,17 +921,23 @@
   }
   
   //商品画像削除
-        if (isset($_GET['mode']) && $_GET['mode'] == 'p_delete') {
-          //$image_location  = DIR_FS_DOCUMENT_ROOT . DIR_WS_CATALOG_IMAGES . $_GET['file'];//元画像
-          //$image_location2 = DIR_FS_DOCUMENT_ROOT . DIR_WS_CATALOG_IMAGES .'imagecache3/'. $_GET['file'];//サムネイル画像
-          $image_location  = tep_get_upload_dir($site_id). 'products/' . $_GET['file'];//元画像
-          $image_location2 = tep_get_upload_dir($site_id) .'imagecache3/'. $_GET['file'];//サムネイル画像
-          $delete_image = $_GET['cl'];
-           if (file_exists($image_location)) @unlink($image_location);
-           if (file_exists($image_location2)) @unlink($image_location2);
-             tep_db_query("update  " . TABLE_PRODUCTS . " set ".$delete_image." = '' where products_id  = '" . $_GET['pID'] . "'");
-             tep_redirect(tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&action='.$_GET['action']));
-             $messageStack->add('画像削除に成功しました', 'success');
+    if (isset($_GET['mode']) && $_GET['mode'] == 'p_delete') {
+      $image_location  = tep_get_upload_dir($site_id). 'products/' . $_GET['file'];//元画像
+      $image_location2 = tep_get_upload_dir($site_id) .'imagecache3/'. $_GET['file'];//サムネイル画像
+      $delete_image = $_GET['cl'];
+      if (file_exists($image_location)) @unlink($image_location);
+      if (file_exists($image_location2)) @unlink($image_location2);
+      tep_db_query("update  " . TABLE_PRODUCTS . " set ".$delete_image." = '' where products_id  = '" . $_GET['pID'] . "'");
+      tep_redirect(tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&action='.$_GET['action']));
+      $messageStack->add('画像削除に成功しました', 'success');
+    }
+    if (isset($_GET['mode']) && $_GET['mode'] == 'c_delete') {
+      $image_location  = tep_get_upload_dir($site_id). 'carttags/' . $_GET['file'];//元画像
+      $delete_image = $_GET['cl'];
+      if (file_exists($image_location)) @unlink($image_location);
+      tep_db_query("update  " . TABLE_PRODUCTS . " set ".$delete_image." = '' where products_id  = '" . $_GET['pID'] . "'");
+      tep_redirect(tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&action='.$_GET['action']));
+      $messageStack->add('画像削除に成功しました', 'success');
     }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -1066,7 +1095,11 @@ function change_qt(ele){
                  p.sort_order,
                  p.max_inventory,
                  p.min_inventory,
-                 p.products_small_sum 
+                 p.products_small_sum,
+                 p.products_cartflag ,
+                 p.products_cart_buyflag,
+                 p.products_cart_image,
+                 p.products_cartorder 
           from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
           where p.products_id = '" . $_GET['pID'] . "' 
             and p.products_id = pd.products_id 
@@ -1481,7 +1514,6 @@ function change_qt(ele){
           <legend style="color:#009900 ">カラー別画像</legend>
           <table border="0" cellpadding="1" cellspacing="5">
           <tr>
-            
           <?php
             $color_query = tep_db_query("select * from ".TABLE_COLOR." order by color_name");
             $cnt=0;
@@ -1560,38 +1592,46 @@ function change_qt(ele){
               </tr>
 
 
-
               <tr>
-                <td colspan="2">
+                <td colspan="2"><?php print_r(tep_get_cart_products('32239',array(1,2,3,4),1));?>
                     <table>
                     <tr><td>
-                    買い忘れ商品 <input type="radio">いいえ <input type="radio">はい
+                    買い忘れ商品 <input type="radio" name="products_cartflag" value="1"<?php if($pInfo->products_cartflag){?> checked<?php }?>>いいえ <input type="radio" name="products_cartflag" value="0"<?php if(!$pInfo->products_cartflag){?> checked<?php }?>>はい
                     </td></tr>
                     <tr><td>
-                    <?php for($i = 0 ; $i<3;$i++){?>
+                    <?php 
+                      $carttag_array = array();
+                      $carttag_query = tep_db_query("select * from products_to_carttag where products_id='".$_GET['pID']."'");
+                      while ($carttag = tep_db_fetch_array($carttag_query)) {
+                        $carttag_array[$carttag['tags_id']] = $carttag;
+                      }
+                      ?>
                     <table width="100%" style="border:1px solid #000">
                       <tr>
-                        <td><input type="radio">販売 <input type="radio">買取</td>
+                        <td><input type="radio" name="products_cart_buyflag" value='0'<?php if(!$pInfo->products_cart_buyflag){?> checked<?php }?>>販売 <input type="radio" name="products_cart_buyflag" value='1'<?php if($pInfo->products_cart_buyflag){?> checked<?php }?>>買取</td>
                         <td align="right"><a href="javascript:void(0);" onclick="">逆選択</a></td>
-                        <td align="right"><input type="radio">表示 <input type="radio">非表示</td>
+                        <!--<td align="right"><input type="radio" name="products_carttag_enabled" value="1">表示 <input type="radio" name="products_carttag_enabled" value="0">非表示</td>-->
                       </tr>
-                      <tr><td colspan='3'>
+                      <tr><td colspan='2'>
 <?php foreach($tag_array as $tag){ ?>
-                        <input type='checkbox' name='tags[]' value='<?php echo $tag['tags_id'];?>' ><?php echo $tag['tags_name'];?>
-
+                        <input type='checkbox' name='carttags[<?php echo $tag['tags_id'];?>]' value='1'<?php if(isset($carttag_array[$tag['tags_id']])){echo " checked";}?>><?php echo $tag['tags_name'];?>
 <?php }?>
                       </td></tr>
                     </table>
-                    <?php }?>
                     <td></tr>
                     <tr><td>
-                      表示順 <input type="text" value="1000">
+                      表示順 <input name="products_cartorder" type="text" value="<?php echo $pInfo->products_cartorder?$pInfo->products_cartorder:1000;?>">
                     </td></tr>
+ <?php if ($pInfo->products_cart_image) {?>
                     <tr><td>
-                      画像预览 <img src="">
+                      画像预览
+                        <? echo tep_image(tep_get_web_upload_dir(0) . 'carttags/' . $pInfo->products_cart_image, $pInfo->products_name, null, null, 'align="right" hspace="5" vspace="5"');?>
+                      <br>
+                      <a href="javascript:confirmg('この画像を削除しますか？','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&cl=products_cart_image&action='.$_GET['action'].'&file='.$pInfo->products_cart_image.'&mode=c_delete') ; ?>');" style="color:#0000FF;">この画像を削除する</a>
                     </td></tr>
+<?php }?>
                     <tr><td>
-                      提醒画像 <input type="file">
+                      提醒画像 <input type="file" name="products_cart_image">
                       <br>注：バナー画像の横幅は最大　　　PXです
                     </td></tr>
                     <tr><td>
@@ -1644,6 +1684,11 @@ function change_qt(ele){
   } elseif (isset($_GET['action']) && $_GET['action'] == 'new_product_preview') {
 
     if ($_POST) {
+      /*
+      echo "<pre>";
+      print_r($_POST);
+      echo "</pre>";
+      */
       $pInfo = new objectInfo($_POST);
       $products_name = $_POST['products_name'];
       //$products_description = replace_store_name($_POST['products_description'],$products_id,$_POST['site_id']);
@@ -1660,11 +1705,11 @@ function change_qt(ele){
         $products_image_name = $products_image['name'];
         $products_image_name2 = $products_image2['name'];
         $products_image_name3 = $products_image3['name'];
-    } else {
+      } else {
         $products_image_name = $_POST['products_previous_image'];
         $products_image_name2 = $_POST['products_previous_image2'];
         $products_image_name3 = $_POST['products_previous_image3'];
-    }
+      }
 // copy image only if modified -- add ds-style
       $products_image2 = tep_get_uploaded_file('products_image2');
       $products_image3 = tep_get_uploaded_file('products_image3');
@@ -1683,6 +1728,13 @@ function change_qt(ele){
         $products_image_name3 = $_POST['products_previous_image3'];
       }
     
+      $products_cart_image = tep_get_uploaded_file('products_cart_image');
+      if (is_uploaded_file($products_cart_image['tmp_name'])) {
+        tep_copy_uploaded_file($products_cart_image, tep_get_local_path(tep_get_upload_dir($site_id).'carttags/'));
+        $products_cart_image_name = $products_cart_image['name'];
+      } else {
+        $products_cart_image_name = $_POST['products_cart_image'];
+      }
     //========================================
     //color image upload    
     //========================================
@@ -1811,7 +1863,6 @@ function change_qt(ele){
 <!--<hr size="2" noshade>--><b><?php //価格数量変更機能
 if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) || !$_GET['origin'])) {
   echo '<table width="100%"><tr><td align="left">';
-
   echo '<table width="95%" cellpadding="0" cellspacing="0">';
   echo '  <tr><td><hr size="2" noshade></td></tr><tr>';
   echo '  <tr>';
@@ -1971,6 +2022,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
       echo tep_draw_hidden_field('products_image2', stripslashes($products_image_name2));
       if ($products_image_name3)
       echo tep_draw_hidden_field('products_image3', stripslashes($products_image_name3));
+      if ($products_cart_image)
+      echo tep_draw_hidden_field('products_cart_image', stripslashes($products_cart_image_name));
       echo tep_image_submit('button_back.gif', IMAGE_BACK, 'name="edit"') . '&nbsp;&nbsp;';
 
       if ($_GET['pID']) {
@@ -1979,6 +2032,9 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
         echo tep_image_submit('button_insert.gif', IMAGE_INSERT);
       }
       echo tep_draw_hidden_field('relate_products_id', $_POST['relate_products_id']); 
+      foreach ($_POST['carttags'] as $ck => $ct) {
+        echo tep_draw_hidden_field('carttags['.$ck.']', $_POST['carttags'][$ck]); 
+      }
       echo '&nbsp;&nbsp;';
       $np_page = isset($_GET['page'])?'&page='.$_GET['page']:''; 
       if (isset($_POST['rdirect'])) {
