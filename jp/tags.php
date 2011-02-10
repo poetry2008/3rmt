@@ -189,8 +189,8 @@ while ($tag = tep_db_fetch_array($tags_query))
     echo '<table width="100%" border="0" cellspacing="2" cellpadding="0">' . "\n";
     echo '<tr>' . "\n";
     while($products = tep_db_fetch_array($products_query)) {
-      $products['products_name'] = tep_get_products_name($products['products_id']);
-      $products['products_description'] = tep_get_products_description($products['products_id']);
+      //$products['products_name'] = tep_get_products_name($products['products_id']);
+      //$products['products_description'] = tep_get_products_description($products['products_id']);
       echo '<td align="center" valign="top" class="smallText" width="20%" style="padding-bottom:8px;">';
                         echo '<a href="' .
                           tep_href_link(FILENAME_PRODUCT_INFO,'products_id='.  $products['products_id']) . '">';
