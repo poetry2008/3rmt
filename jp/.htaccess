@@ -1,3 +1,9 @@
+AuthUserFile /home/.sites/28/site1/.htpasswd
+AuthGroupFile /dev/null
+AuthName "Please enter your ID and password"
+AuthType Basic
+require valid-user
+
 DirectoryIndex index.php index.html index.htm index.cgi
 Options FollowSymLinks ExecCGI
 AddType application/x-httpd-cgi .cgi

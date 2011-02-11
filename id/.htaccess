@@ -1,3 +1,10 @@
+AuthUserFile /home/.sites/28/site1/.htpasswd
+AuthGroupFile /dev/null
+AuthName "Please enter your ID and password"
+AuthType Basic
+require valid-user
+
+
 DirectoryIndex index.php index.html index.htm index.cgi
 Options FollowSymLinks ExecCGI
 AddType application/x-httpd-cgi .cgi
@@ -66,18 +73,18 @@ RewriteRule ^latest_news/?$ latest_news.php
 RewriteRule ^latest_news/page(\d+).html$ latest_news.php?page=$1
 RewriteRule ^latest_news/([0-9]+)\.html$ latest_news.php?news_id=$1&%{QUERY_STRING}
 
-RewriteCond %{HTTP_HOST} ^[a-z0-9\-]+\.3id\.maker\.200\.com$
-RewriteCond %{HTTP_HOST} !^www\.3id\.maker\.200\.com$
+RewriteCond %{HTTP_HOST} ^[a-z0-9\-]+\.haomai\.cc$
+RewriteCond %{HTTP_HOST} !^www\.haomai\.cc$
 RewriteCond %{REQUEST_FILENAME} !product_info.php
 RewriteCond %{REQUEST_FILENAME} !shopping_cart.php
 RewriteRule ^(.*)$ /%{HTTP_HOST}/$1 [C]
 RewriteCond %{REQUEST_URI} !page-\d+.html
-RewriteRule ^/([a-z0-9\-]+)\.3id\.maker\.200\.com/([^\/\.]+)\.html product_info.php?products_id=$2 [QSA,L]
+RewriteRule ^/([a-z0-9\-]+)\.haomai\.cc/([^\/\.]+)\.html product_info.php?products_id=$2 [QSA,L]
 RewriteCond %{REQUEST_URI} !page-\d+.html
-RewriteRule ^/([a-z0-9\-]+)\.3id\.maker\.200\.com/([^\/\.]+)/([^\/\.]+)\.html product_info.php?products_id=$3 [QSA,L]
+RewriteRule ^/([a-z0-9\-]+)\.haomai\.cc/([^\/\.]+)/([^\/\.]+)\.html product_info.php?products_id=$3 [QSA,L]
 RewriteCond %{REQUEST_URI} !page-\d+.html
-RewriteRule ^/([a-z0-9\-]+)\.3id\.maker\.200\.com/([^\/\.]+)/([^\/\.]+)/([^\/\.]+)\.html product_info.php?products_id=$4 [QSA,L]
-RewriteRule ^/([a-z0-9\-]+)\.3id\.maker\.200\.com/(.*) index.php?cName=$1 [QSA,PT,L]
+RewriteRule ^/([a-z0-9\-]+)\.haomai\.cc/([^\/\.]+)/([^\/\.]+)/([^\/\.]+)\.html product_info.php?products_id=$4 [QSA,L]
+RewriteRule ^/([a-z0-9\-]+)\.haomai\.cc/(.*) index.php?cName=$1 [QSA,PT,L]
 
 # http://rmt.worldmoney.jp/item/p-33129.html
 # if romaji RewriteRule ^item/p-([0-9A-Za-z_-]+).html$ product_info.php?products_id=$1&%{QUERY_STRING}
