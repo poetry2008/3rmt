@@ -1684,7 +1684,7 @@ if($reload == 'yes') {
       <td class="smallText">
       開始日:
       <select name="s_y">
-      <?php for($i=2002; $i<2011; $i++) { if($i == date('Y')){ echo '<option value="'.$i.'" selected>'.$i.'</option>'."\n" ; }else{ echo '<option value="'.$i.'">'.$i.'</option>'."\n" ;} } ?>
+      <?php for($i=2002; $i<=date('Y'); $i++) { if($i == date('Y')){ echo '<option value="'.$i.'" selected>'.$i.'</option>'."\n" ; }else{ echo '<option value="'.$i.'">'.$i.'</option>'."\n" ;} } ?>
       </select>
       年
       <select name="s_m">
@@ -1707,7 +1707,7 @@ if($reload == 'yes') {
       <td class="smallText">終了日
       <select name="e_y">
       <?php
-      for($i=2002; $i<2011; $i++) {
+      for($i=2002; $i<=date('Y'); $i++) {
         if($i == date('Y')){
           echo '<option value="'.$i.'" selected>'.$i.'</option>'."\n" ;
         }else{
