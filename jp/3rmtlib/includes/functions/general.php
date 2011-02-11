@@ -3519,8 +3519,9 @@ function tep_get_cart_products($pid){
       and p2.products_id = p2c.products_id
       and p2.products_cartflag = '1'
       and p2c.products_id not in (".join(',',$pid).")
-      and p2.products_quantity > 0
+      and p2.products_quantity > p2.products_cart_min
     order by p2.products_cartorder
+    limit ".CART_TAG_PRODUCTS_MAX."
   ";
   $query = tep_db_query($raw);
   $arr = array();
