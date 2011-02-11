@@ -594,6 +594,7 @@
                                   'products_small_sum' => tep_db_prepare_input($_POST['products_small_sum']),
                                   'products_cartflag' => tep_db_prepare_input($_POST['products_cartflag']),
                                   'products_cart_buyflag' => tep_db_prepare_input($_POST['products_cart_buyflag']),
+                                  'products_cart_min' => tep_db_prepare_input($_POST['products_cart_min']),
                                   'products_cartorder' => tep_db_prepare_input($_POST['products_cartorder']),
                                   );
           
@@ -1123,6 +1124,7 @@ function get_cart_products(){
                  p.products_cartflag ,
                  p.products_cart_buyflag,
                  p.products_cart_image,
+                 p.products_cart_min,
                  p.products_cartorder 
           from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
           where p.products_id = '" . $_GET['pID'] . "' 
@@ -1644,6 +1646,10 @@ function get_cart_products(){
                       </td></tr>
                     </table>
                     <td></tr>
+                    <tr><td>
+                      買い忘れバナー最小在庫数
+ <input name="products_cart_min" type="text" value="<?php echo $pInfo->products_cart_min?$pInfo->products_cart_min:0;?>">
+                    </td></tr>
                     <tr><td>
                       表示順 <input name="products_cartorder" type="text" value="<?php echo $pInfo->products_cartorder?$pInfo->products_cartorder:1000;?>">
                     </td></tr>
