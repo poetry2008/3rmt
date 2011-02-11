@@ -119,7 +119,7 @@ RewriteRule ^([^\/\.]+)/([^\/\.]+)/([^\/\.]+)\.html product_info.php?%{REQUEST_F
 RewriteCond %{REQUEST_URI} !page-\d+.html
 RewriteRule ^([^\/\.]+)/([^\/\.]+)/([^\/\.]+)/([^\/\.]+)\.html product_info.php?products_id=$4 [QSA,L]
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_URI} !.
+RewriteCond %{REQUEST_URI} !\.
 RewriteRule ^(.*) index.php?cName=$1 [QSA,PT,L]
 
 # http://rmt.worldmoney.jp/item/p-33129.html
