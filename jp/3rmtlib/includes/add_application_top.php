@@ -569,9 +569,9 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   if (!isset($_SESSION['referer']) && $_SERVER["HTTP_REFERER"]) {
     $_SESSION['referer'] = $_SERVER["HTTP_REFERER"];
     // 统计 Google Adsense
-    $adurl = tep_get_google_adsense_adurl($_SERVER['HTTP_REFERER']);
-    if ($adurl) {
-      $_SESSION['referer_adurl'] = tep_get_domain($_GET["adurl"]);
+    // $adurl = tep_get_google_adsense_adurl($_SERVER['HTTP_REFERER']);
+    if (isset($_GET['from']) && $_GET['from'] == 'adwords') {
+      $_SESSION['referer_adurl'] = '1';
     }
   }
 
