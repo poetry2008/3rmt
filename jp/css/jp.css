@@ -19,8 +19,8 @@ A {
 A：hover
 --------------------------- */
 A:hover {
-  color: #2864B4;
-  text-decoration: underline;
+	color: #2864B4;
+	text-decoration: underline;
 }
 /* ---------------------------
 FORM
@@ -120,8 +120,8 @@ UL UL UL {
 }
 .l_m_category_ul3 {
 	padding: 0px 0px 0px 20px;
-	*+padding:0;
-	*+margin-left:0;
+ *+padding:0;
+ *+margin-left:0;
 }
 .l_m_category_li {
 	font-size: 11px;
@@ -154,29 +154,29 @@ UL UL UL {
 	vertical-align:top;
 	margin-top:2px;
 }
-.l_m_categories_tree strong{
+.l_m_categories_tree strong {
 	display:inline-block;
 	height:10px;
 	margin:0 0 0 -5px;
 	padding:0 0 0 5px;
 }
-.l_m_categories_tree strong a{
+.l_m_categories_tree strong a {
 }
-.l_m_categories_tree a{
+.l_m_categories_tree a {
 	display:inline-block;
 	width:130px;
 	height:10px;
 	margin-left:-5px;
 }
-.l_m_categories_tree3{
-list-style-type:none;
+.l_m_categories_tree3 {
+	list-style-type:none;
 }
-.l_m_categories_tree3 a{
+.l_m_categories_tree3 a {
 	width:100px;
 }
 .subcategory_tree {
-list-style-type:none;
-margin-top:-15px;
+	list-style-type:none;
+	margin-top:-15px;
 }
 /* ---------------------------
 header
@@ -227,14 +227,14 @@ header
 	border-left: 1px solid #cccccc;
 }
 .category_menu {
-    font-size: 11px;
+	font-size: 11px;
 	background-color: #E5EBF2;
 	border: 1px solid #B0BFCF;
 	margin: 1px;
 	padding-left: 1px;
 }
 .menu {
-    font-size: 11px;
+	font-size: 11px;
 	line-height: 25px;
 	padding-left: 15px;
 	background-image: url(../images/design/box/dot.gif);
@@ -245,7 +245,7 @@ header
 ranking
 --------------------------- */
 .bestseller_text {
-    font-size: 10px;
+	font-size: 10px;
 	background-color: #E4ECF6;
 	padding-left: 5px;
 	border-bottom:1px solid #cccccc;
@@ -272,33 +272,33 @@ ranking
 notice
 --------------------------- */
 #news {
-  text-align: left;
-  padding-bottom : 21px;
-  width : 100%;
-  height : 100px;
-  overflow:hidden;
-  margin-top:5px;
+	text-align: left;
+	padding-bottom : 21px;
+	width : 100%;
+	height : 100px;
+	overflow:hidden;
+	margin-top:5px;
 }
 .news_ul {
 	padding: 0px;
 	margin: 0px 10px;
 }
 .news_list {
-    font-size: 11px;
+	font-size: 11px;
 	background-image: url(../images/design/box/dot.gif);
 	background-repeat: repeat-x;
 	background-position: bottom;
 	padding: 5px 0px;
 	margin: 0px;
 }
-.categoryh2{
-  font-size: 11px;
-  font-weight: normal;
-  color: #004080;
-  line-height: 25px;
-  padding-top: 0px;
-  padding-left: 15px;
-  margin-bottom: 0px;
+.categoryh2 {
+	font-size: 11px;
+	font-weight: normal;
+	color: #004080;
+	line-height: 25px;
+	padding-top: 0px;
+	padding-left: 15px;
+	margin-bottom: 0px;
 }
 .categories_tree {
 	font-size: 10px;
@@ -346,46 +346,169 @@ footer
 	border-right:1px solid #ccc;
 	border-left:1px solid #ccc;
 }
-.contact_us_warpper{ clear:both;}
-.tcol{ clear:both;}
-.lcol{height:100%;clear:both; padding:5px; border:1px solid #ccc; overflow:hidden;}
-.rcol{height:100%;clear:both; padding:5px; margin-top:5px; border:1px solid #ccc; overflow:hidden;}
-.contact_left{ float:left;}
-.contact_right{ float:left; padding-left:5px; width:420px;}
-.contact_right h3{font-weight: bold;}
-.contact_right input{ float:right;}
-.status_form{ clear:both;}
-.status_warpper02{ clear:both;}
-.status_warpper{height:100%; overflow:hidden;clear:both;padding:5px 10px;}
-.status_warpper label{width:110px;float:left; padding:3px;}
-.status_warpper input{ float:left;}
-.button2{ float:right;}
-.open_title{clear:both;font-size:12px;margin-bottom:5px;}
-.open_users{border:1px solid #CCCCCC;width:100%;font-size:12px;}
-.open_users td{padding:2px;}
-.open_users th{text-align:left; font-size:12px; font-weight:400;}
-.open_tele{ color: #3399CC;}
-.error{font-size:12px; color:#FF0000;}
-#infomessage{font-weight: bold;}
-.login_inc{padding-bottom:5px;margin:0;}
-#errormessage{ font-weight: bold; background-color:#F2F2F2; border:1px solid #E0E0E0; }
-.open_login{border:1px solid #CCCCCC;width:100%;font-size:12px;}
-.open_login td{padding:2px;}
-.open_login th{text-align:left; font-size:12px; font-weight:400;}
-.tickets_lout{font-size:12px; margin-bottom:5px;}
-.tickets,.infotable{font-size:12px; margin-bottom:5px;border:1px solid #CCCCCC;}
-.tickets td,.infotable td{padding:2px;}
-.tickets th,.infotable th{ background-color:#F2F2F2; font-size:12px;}
-.tickets th{padding-left:3px;}
-#ticketthread{padding:5px; font-size:12px; margin-bottom:10px;margin-top:3px;}
-#ticketthread table{border:1px solid #E0E0E0; text-align:left; margin-bottom:7px;}
-.message{font-size:12px;}
-.response{font-size:12px;}
-.captcha_comment{ font-size:12px;}
-.login_inc_button {padding-top:5px;text-align:center;}
-.msg{font-size:12px;margin-bottom:10px;}
-.button{cursor:pointer;}
-.product_listing_content{margin:10px 5px;padding:5px;width:520px;}
+.contact_us_warpper {
+	clear:both;
+}
+.tcol {
+	clear:both;
+}
+.lcol {
+	height:100%;
+	clear:both;
+	padding:5px;
+	border:1px solid #ccc;
+	overflow:hidden;
+}
+.rcol {
+	height:100%;
+	clear:both;
+	padding:5px;
+	margin-top:5px;
+	border:1px solid #ccc;
+	overflow:hidden;
+}
+.contact_left {
+	float:left;
+}
+.contact_right {
+	float:left;
+	padding-left:5px;
+	width:420px;
+}
+.contact_right h3 {
+	font-weight: bold;
+}
+.contact_right input {
+	float:right;
+}
+.status_form {
+	clear:both;
+}
+.status_warpper02 {
+	clear:both;
+}
+.status_warpper {
+	height:100%;
+	overflow:hidden;
+	clear:both;
+	padding:5px 10px;
+}
+.status_warpper label {
+	width:110px;
+	float:left;
+	padding:3px;
+}
+.status_warpper input {
+	float:left;
+}
+.button2 {
+	float:right;
+}
+.open_title {
+	clear:both;
+	font-size:12px;
+	margin-bottom:5px;
+}
+.open_users {
+	border:1px solid #CCCCCC;
+	width:100%;
+	font-size:12px;
+}
+.open_users td {
+	padding:2px;
+}
+.open_users th {
+	text-align:left;
+	font-size:12px;
+	font-weight:400;
+}
+.open_tele {
+	color: #3399CC;
+}
+.error {
+	font-size:12px;
+	color:#FF0000;
+}
+#infomessage {
+	font-weight: bold;
+}
+.login_inc {
+	padding-bottom:5px;
+	margin:0;
+}
+#errormessage {
+	font-weight: bold;
+	background-color:#F2F2F2;
+	border:1px solid #E0E0E0;
+}
+.open_login {
+	border:1px solid #CCCCCC;
+	width:100%;
+	font-size:12px;
+}
+.open_login td {
+	padding:2px;
+}
+.open_login th {
+	text-align:left;
+	font-size:12px;
+	font-weight:400;
+}
+.tickets_lout {
+	font-size:12px;
+	margin-bottom:5px;
+}
+.tickets, .infotable {
+	font-size:12px;
+	margin-bottom:5px;
+	border:1px solid #CCCCCC;
+}
+.tickets td, .infotable td {
+	padding:2px;
+}
+.tickets th, .infotable th {
+	background-color:#F2F2F2;
+	font-size:12px;
+}
+.tickets th {
+	padding-left:3px;
+}
+#ticketthread {
+	padding:5px;
+	font-size:12px;
+	margin-bottom:10px;
+	margin-top:3px;
+}
+#ticketthread table {
+	border:1px solid #E0E0E0;
+	text-align:left;
+	margin-bottom:7px;
+}
+.message {
+	font-size:12px;
+}
+.response {
+	font-size:12px;
+}
+.captcha_comment {
+	font-size:12px;
+}
+.login_inc_button {
+	padding-top:5px;
+	text-align:center;
+}
+.msg {
+	font-size:12px;
+	margin-bottom:10px;
+}
+.button {
+	cursor:pointer;
+}
+.product_listing_content {
+	margin:10px 5px;
+	padding:5px;
+	width:520px;
+}
 /* ---------------------------
 left and right 's box:usual
 --------------------------- */
@@ -444,7 +567,7 @@ TD.headerNavigation {
 /* ---------------------------
 A：header（navigation's lin）
 --------------------------- */
-A.headerNavigation { 
+A.headerNavigation {
 	color: #2864B4;
 }
 /* ---------------------------
@@ -563,13 +686,13 @@ TD.productListing-data {
 /* ---------------------------
 A：page link（usual）
 --------------------------- */
-A.pageResults { 
+A.pageResults {
 	color: #2864B4;
 }
 /* ---------------------------
 A：page hover（on mouse over）
 --------------------------- */
-A.pageResults:hover { 
+A.pageResults:hover {
 	color: #2864B4;
 }
 /* ---------------------------
@@ -592,7 +715,7 @@ TD.main, P.main {
 	font-size: 11px;
 	line-height: 1.5;
 }
-.main02{
+.main02 {
 	font-size: 11px;
 }
 /* ---------------------------
@@ -642,7 +765,6 @@ CHECKBOX, INPUT, RADIO, SELECT：FORM's input・select item
 CHECKBOX, INPUT, RADIO, SELECT {
 	font-size: 11px;
 }
-
 /* ---------------------------
 TEXTAREA：FORM's input item
 --------------------------- */
@@ -748,7 +870,6 @@ check out in turn（turn of now）
 	margin-bottom: 10px;
 	margin-left: 20px;
 }
-
 .image_border {
 	padding: 1px;
 	border: 1px solid #E8E8E8;
@@ -766,22 +887,22 @@ address {
 	font-style: normal;
 	font-size: 10px;
 }
-#menu a{
-   color:#656565;
-}   
+#menu a {
+	color:#656565;
+}
 #body_text {
 	background-color: #FFFFFF;
 }
-.search_box{
+.search_box {
 	color: #9DB391;
 	background-color: #F1F2EE;
 	border: 1px solid #9DB391;
 }
-.underline{
+.underline {
 	border-top: 1px solid #E0E0E7;
 	margin-top: 15px;
 }
-P.description{
+P.description {
 	margin-top:5px;
 	text-align : left;
 	width : 95%;
@@ -791,67 +912,65 @@ P.description{
 	color: #666666;
 	padding-left: 10px;
 }
-
 .formAreaTitle {
 	font-size: 11px;
 	font-weight: bold;
 	color: #4A6175;
 }
-
 .smallText {
 	font-size: 10px;
 }
-
 #tabtable {
-	background-image: url(./images/design/top_tab/tab-bg.jpg);background-repeat: repeat-y;
+	background-image: url(./images/design/top_tab/tab-bg.jpg);
+	background-repeat: repeat-y;
 }
 /*************************/
-.comment .information_table{
+.comment .information_table {
 	width:100%;
-	*+width:96%;
+ *+width:96%;
 	font-size:12px;
 	border:#ccccc solid 1px;
 }
-.comment .information_table input{
+.comment .information_table input {
 	vertical-align:middle;
 }
-.news_list02{
-	font-family:Osaka,Verdana,Arial,sans-serif;
+.news_list02 {
+	font-family:Osaka, Verdana, Arial, sans-serif;
 	font-size:11px;
 	margin:0;
 	padding:5px 0;
 	background: url(../images/design/box/dot.gif) repeat-x bottom;
 }
-.news_list02 .div01{
+.news_list02 .div01 {
 	display:inline;
 	font-size:10px;
 	margin-right:10px;
 }
-.table_ie{
-	*width:99.9%;
+.table_ie {
+ *width:99.9%;
 }
-.news_list02 .link01{
+.news_list02 .link01 {
 	font-size:10px;
 }
-.news_list02 .link01 img{
+.news_list02 .link01 img {
 	padding-left:8px;
 }
 .send_mail {
-  font-size: 12px;
+	font-size: 12px;
 }
 .send_mail b {
-  font-size: 12px;
+	font-size: 12px;
 }
-.top_and_bottom a{
+.top_and_bottom a {
 	width:15px;
 	height:13px;
 }
-.top_and_bottom a img{
+.top_and_bottom a img {
 	width:15px;
 	height:13px;
 }
 /*botton*/
-.button_delete02{
+.button_delete02 {
 	display:block;
 	overflow:hidden;
 	text-indent:-2000px;
@@ -859,7 +978,7 @@ P.description{
 	height:25px;
 	background-image: url(../includes/languages/japanese/images/buttons/button_delete02.gif);
 }
-.shopping_cart_continue{
+.shopping_cart_continue {
 	display:block;
 	cursor:pointer;
 	width:81px;
@@ -868,7 +987,7 @@ P.description{
 	border:0;
 	background-image: url(../includes/languages/japanese/images/buttons/button_continue_shopping.gif);
 }
-.shopping_cart_checkout{
+.shopping_cart_checkout {
 	display:block;
 	cursor:pointer;
 	width:87px;
@@ -877,12 +996,12 @@ P.description{
 	border:0;
 	background-image: url(../includes/languages/japanese/images/buttons/button_checkout02.gif);
 }
-.con_email01{
+.con_email01 {
 	display:inline;
-	margin-left:146px;
-	*+margin-left:149px;
+	margin-left:143px;
+ *+margin-left:142px;
 }
-.con_email02{
+.con_email02 {
 	display:inline;
 	margin-left:103px;
 }
@@ -893,26 +1012,73 @@ P.description{
 	padding:5px 7px;
 	border:2px solid #FF8080;
 }
-.waring_product{
+.waring_product {
 	color:#000;
 	margin:5px 10px 5px 0;
 	overflow:hidden;
 	padding:5px 7px;
 	border:2px solid #FF8080;
 }
-.guarant01 {text-align:center;}
-.bold {font-weight: bold;}
-.Ticket { background:url(../images/icons/ticket.gif) 0 0 no-repeat; }
-.webTicket { background:url(../images/icons/ticket_source_web.gif) 0 0 no-repeat; padding-left:20px; }
-.emailTicket{padding-left:20px;}
-.Icon.emailTicket { background:url(../images/icons/ticket_source_email.gif) 0 0 no-repeat; }
-.Icon.phoneTicket { background:url(../images/icons/ticket_source_phone.gif) 0 0 no-repeat; }                
-.Icon.otherTicket { background:url(../images/icons/ticket_source_other.gif) 0 0 no-repeat; }
-.Icon.attachment { background: url(../images/icons/attachment.gif) no-repeat;padding-left:20px; }
-.Icon.file { background: url(../images/icons/attachment.gif) no-repeat;padding-left:20px; }
-.Icon.refresh { background: url(../images/icons/refresh.gif) no-repeat;padding-left:20px; } 
-a.Icon { background-repeat:no-repeat;padding-left:20px;padding-bottom:3px;}
-a.Icon:hover {text-decoration: underline;}  
-.thread {font-weight: bold;font-size: 1em;background: url(../images/icons/thread.gif) no-repeat;padding-left:20px;}
-#errormessage{color:#ff0000;}
-.tag_image01{height:50px;}
+.guarant01 {
+	text-align:center;
+}
+.bold {
+	font-weight: bold;
+}
+.Ticket {
+	background:url(../images/icons/ticket.gif) 0 0 no-repeat;
+}
+.webTicket {
+	background:url(../images/icons/ticket_source_web.gif) 0 0 no-repeat;
+	padding-left:20px;
+}
+.emailTicket {
+	padding-left:20px;
+}
+.Icon.emailTicket {
+	background:url(../images/icons/ticket_source_email.gif) 0 0 no-repeat;
+}
+.Icon.phoneTicket {
+	background:url(../images/icons/ticket_source_phone.gif) 0 0 no-repeat;
+}
+.Icon.otherTicket {
+	background:url(../images/icons/ticket_source_other.gif) 0 0 no-repeat;
+}
+.Icon.attachment {
+	background: url(../images/icons/attachment.gif) no-repeat;
+	padding-left:20px;
+}
+.Icon.file {
+	background: url(../images/icons/attachment.gif) no-repeat;
+	padding-left:20px;
+}
+.Icon.refresh {
+	background: url(../images/icons/refresh.gif) no-repeat;
+	padding-left:20px;
+}
+a.Icon {
+	background-repeat:no-repeat;
+	padding-left:20px;
+	padding-bottom:3px;
+}
+a.Icon:hover {
+	text-decoration: underline;
+}
+.thread {
+	font-weight: bold;
+	font-size: 1em;
+	background: url(../images/icons/thread.gif) no-repeat;
+	padding-left:20px;
+}
+#errormessage {
+	color:#ff0000;
+}
+.tag_image01 {
+	height:50px;
+}
+.email_address input {
+	width:120px;
+}
+.password input {
+	width:120px;
+}
