@@ -55,7 +55,7 @@
       開始日:
       <select name="s_y">
       <?php 
-      for($i=2007; $i<2011; $i++) { 
+      for($i=2007; $i<=date('Y'); $i++) { 
         if ((isset($_GET['s_y']) && $i == $_GET['s_y']) or (!isset($_GET['s_y']) && $i == date('Y'))) {
           echo '<option value="'.$i.'" selected>'.$i.'</option>'."\n" ; 
         } else {
@@ -84,7 +84,7 @@
       <td class="smallText">終了日
       <select name="e_y">
       <?php
-      for($i=2002; $i<2011; $i++) {
+      for($i=2002; $i<=date('Y'); $i++) {
         if((isset($_GET['e_y']) && $i == $_GET['e_y']) or (!isset($_GET['e_y']) && $i == date('Y'))){
           echo '<option value="'.$i.'" selected>'.$i.'</option>'."\n" ;
         }else{
