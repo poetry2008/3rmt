@@ -32,7 +32,6 @@ Expiresbytype application/x-shockwave-flash "access plus 10 days"
 Expiresbytype video/x-flv "access plus 10 days"
 expiresbytype text/css "access plus 10 days"
 expiresbytype application/x-javascript "access plus 10 days"
-
 </IfModule>
 
 #RedirectPermanent /index.html http://rmt.worldmoney.jp/

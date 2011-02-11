@@ -19,7 +19,18 @@ allow from all
     Deny from all
     Satisfy All
 </Files>
-
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresDefault "access plus 1 days"
+ExpiresByType image/gif "access plus 10 days"
+ExpiresByType image/png "access plus 10 days"
+ExpiresByType image/jpeg "access plus 10 days"
+ExpiresByType image/x-icon "access plus 10 days"
+Expiresbytype application/x-shockwave-flash "access plus 10 days"
+Expiresbytype video/x-flv "access plus 10 days"
+expiresbytype text/css "access plus 10 days"
+expiresbytype application/x-javascript "access plus 10 days"
+</IfModule>
 RedirectPermanent /index.html http://www.iimy.co.jp/
 
 <IfModule mod_setenvif.c>

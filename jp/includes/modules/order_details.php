@@ -35,7 +35,7 @@
        '    <td align="center" class="tableHeading">' . TABLE_HEADING_OPERATE . '</td>' . "\n" .
        '  </tr>' . "\n" .
        '  <tr>' . "\n" .
-       '    <td colspan="' . $colspan . '" bgcolor="#bdced5">' . tep_draw_separator('pixel_trans.gif', '1', '1') . '</td>' . "\n" .
+       '    <td colspan="' . $colspan . '" bgcolor="#bdced5" height="1">' . '</td>' . "\n" .
        '  </tr>' . "\n";
 
   for ($i=0, $n=sizeof($products); $i<$n; $i++) {
@@ -183,8 +183,7 @@
       echo '<td align="center"><a class="button_delete02" href="'.tep_href_link(FILENAME_SHOPPING_CART, 'products_id='.$products[$i]['id'].'&action=delete', 'SSL').'">'.TEXT_DEL_LINK.'</a></td>'; 
     }
     echo '</tr>';
-    echo '<tr><td colspan="' . $colspan . '" bgcolor="#bdced5">' .
-      tep_draw_separator('pixel_trans.gif', '1', '1') . '</td></tr>';
+    echo '<tr><td colspan="' . $colspan . '" bgcolor="#bdced5" height="1">' . '</td></tr>';
   }
  echo '</table>' . "\n";
 ?>
