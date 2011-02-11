@@ -28,12 +28,11 @@
         break;
       case 'get_cart_products':
         //print_r(tep_get_cart_products($_GET['products_id'],$_GET['tags_id'],$_GET['buyflag']));
-        echo "<div align='center'>";
+        
         foreach(tep_get_cart_products($_GET['products_id'],$_GET['tags_id'],$_GET['buyflag']) as $p){
           $p = tep_get_product_by_id($p,0,4);
           echo $p['products_name'] . "<br>";
         }
-        echo "</div>";
         exit;
         break;
       case 'toggle':
@@ -1667,7 +1666,7 @@ function get_cart_products(){
                       提醒画像 <input type="file" name="products_cart_image">
                       <br>注：バナー画像の横幅は最大450PXです
                     </td></tr>
-                    <tr><td>
+                    <tr><td style="text-align:center;">
                       <a href="javascript:void(0);" onclick="get_cart_products()">結果確認</a>
                     </td></tr>
                     </table>
