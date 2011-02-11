@@ -12,7 +12,7 @@
 
 define('HEADING_TITLE', '商品履歴');
 define('TABLE_HEADING_CUSTOMER_NAME', '顧客名');
-define('TABLE_HEADING_DATE', '日付');
+define('TABLE_HEADING_DATE', '日付（注文日時）');
 define('TABLE_HEADING_PRODUCT_NAME', ' 商品名');
 define('TABLE_HEADING_PRODUCT_PRICE', '単価');
 define('TABLE_HEADING_PRODUCT_NUM', '個数');
