@@ -28,10 +28,12 @@
         break;
       case 'get_cart_products':
         //print_r(tep_get_cart_products($_GET['products_id'],$_GET['tags_id'],$_GET['buyflag']));
+        echo "<div align='center'>";
         foreach(tep_get_cart_products($_GET['products_id'],$_GET['tags_id'],$_GET['buyflag']) as $p){
           $p = tep_get_product_by_id($p,0,4);
           echo $p['products_name'] . "<br>";
         }
+        echo "</div>";
         exit;
         break;
       case 'toggle':
