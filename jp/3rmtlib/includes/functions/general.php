@@ -3223,6 +3223,7 @@ function tep_get_google_adsense_adurl($url) {
     return false;
   }
   */
+  
   if (
     preg_match('/from=adwords/',$url)
   ) {
