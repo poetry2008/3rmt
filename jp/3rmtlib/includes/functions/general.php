@@ -36,6 +36,7 @@
 
 function forward404()
 { 
+  
   header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
   require(DIR_WS_MODULES  . '404.html');
   exit;
@@ -3124,6 +3125,7 @@ function tep_get_cpath_by_cname($cname, $parent_id = 0)
   $category = tep_db_fetch_array($category_query);
   return $category['categories_id'];
 }
+
 function tep_get_categories_by_pid($pid,$romaji=true)
 {
   static $romaji_arr = array();
@@ -3517,7 +3519,7 @@ function tep_get_cart_products($pid){
       and p2.products_id = p2c.products_id
       and p2.products_cartflag = '1'
       and p2c.products_id not in (".join(',',$pid).")
-      and p.products_quantity > 0
+      and p2.products_quantity > 0
     order by p2.products_cartorder
   ";
   $query = tep_db_query($raw);
