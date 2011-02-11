@@ -45,18 +45,12 @@ if (($tags_numrows > 0 ) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_L
 <?php 
 echo $tags_split->display_count($tags_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS);
 ?>
-<br>
-<br>
+<br><br>
 </td>
 <td align="right" class="smallText" style="border-bottom:#ccc solid 1px;">
-<?php
-echo TEXT_RESULT_PAGE;
-?>
-<?php 
-echo $tags_split->display_links($tags_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y')));
-?>
-<br>
-<br>
+<?php echo TEXT_RESULT_PAGE;?>
+<?php echo $tags_split->display_links($tags_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y')));?>
+<br><br>
 </td>
 </tr>
 <tr>
@@ -73,9 +67,6 @@ echo tep_draw_separator('pixel_trans.gif', '100%', '10') . "\n";
 <?php
 while ($tag = tep_db_fetch_array($tags_query))
 {
-  if (tep_session_is_registered('customer_id'))
-  {
-//ccdd
     $products_query = tep_db_query("
       select * 
       from (
@@ -105,11 +96,6 @@ while ($tag = tep_db_fetch_array($tags_query))
                pd.products_name,
                pd.products_description,
                pd.site_id,
-               p.products_attention_1,
-               p.products_attention_2,
-               p.products_attention_3,
-               p.products_attention_4,
-               p.products_attention_5,
                pd.products_url,
                pd.products_viewed
         from " . TABLE_PRODUCTS_TO_TAGS . " as p2t 
@@ -125,65 +111,13 @@ while ($tag = tep_db_fetch_array($tags_query))
         order by sort_order asc , products_name asc
         limit 5
     ");
-  } else {
-//ccdd
-    $products_query = tep_db_query("
-      select *
-      from (
-        select p.products_id,
-               p.products_quantity,
-               p.products_model,
-               p.products_image,
-               p.products_image2,
-               p.products_image3,
-               p.products_price,
-               p.products_price_offset,
-               p.products_date_added,
-               p.products_last_modified,
-               p.products_date_available,
-               p.products_weight,
-               pd.products_status,
-               p.products_tax_class_id,
-               p.manufacturers_id,
-               p.products_ordered,
-               p.products_bflag,
-               p.products_cflag,
-               p.products_small_sum,
-               p.option_type,
-               p.sort_order,
-               p2t.tags_id,
-               pd.language_id,
-               pd.products_name,
-               pd.products_description,
-               pd.site_id,
-               p.products_attention_1,
-               p.products_attention_2,
-               p.products_attention_3,
-               p.products_attention_4,
-               p.products_attention_5,
-               pd.products_url,
-               pd.products_viewed
-        from " . TABLE_PRODUCTS_TO_TAGS . " as p2t 
-          join ". TABLE_PRODUCTS . " as p on p2t.products_id = p.products_id 
-          left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd on p.products_id = pd.products_id 
-        where p2t.tags_id = " . $tag['tags_id'] .  " 
-        order by pd.site_id DESC
-      ) p
-      where site_id = '0'
-         or site_id = '".SITE_ID."' 
-      group by products_id
-      having p.products_status != '3' 
-      order by sort_order asc  , products_name asc
-      limit 5
-    ");
-  } 
+
   if (tep_db_num_rows($products_query))
   {
 
     echo '<table width="100%" border="0" cellspacing="0" cellpadding="0">' . "\n";
     echo '<tr>' . "\n";
     echo '<td class="smallText" valign="top"><a href="'.tags_tep_href_link($tag['tags_id']).'"><h3><b>'.$tag['tags_name'].'</b></h3></a><div class="manufacturer_image">' .  tep_image(DIR_WS_IMAGES.$tag['tags_images'],$tag['tags_name'],100, 100) .  '</div>' . "\n";
-                //<!-- '.mb_substr(strip_tags($manufacturer['manufacturers_url']),0,100,'utf8') .'... --></td>' . "\n";
     echo '</td></tr><tr><td valign="bottom">' . "\n";
   
     echo '<table width="100%" border="0" cellspacing="2" cellpadding="0">' . "\n";
@@ -206,9 +140,9 @@ while ($tag = tep_db_fetch_array($tags_query))
             echo '</div>';
                           echo '<br>' .$products['products_name'] . '</a><br>';
       if (tep_get_special_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'])) {
-        echo '<s>' . $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), tep_get_tax_rate($products['products_tax_class_id'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), tep_get_tax_rate($products['products_tax_class_id'])) . '</span>&nbsp;';
+        echo '<s>' . $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), 0) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), 0) . '</span>&nbsp;';
       } else {
-        echo $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), tep_get_tax_rate($products['products_tax_class_id']));
+        echo $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), 0);
       }
                           echo '</td>'."\n";
     }
