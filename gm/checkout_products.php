@@ -134,11 +134,11 @@ foreach($cart as $key => $val){
               </td>
             </tr>
             <tr class="box_des">
-              <td align="center" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_PRODUCTS; ?></td>
-              <td align="center" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_DELIVERY; ?></td>
-              <td align="center" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_PAYMENT; ?></td>
-              <td align="center" width="20%" class="checkoutBarCurrent"><?php echo CHECKOUT_BAR_CONFIRMATION; ?></td>
-              <td align="center" width="20%" class="checkoutBarTo"><?php echo CHECKOUT_BAR_FINISHED; ?></td>
+              <td align="center" nowrap="nowrap" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_PRODUCTS; ?></td>
+              <td align="center" nowrap="nowrap" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_DELIVERY; ?></td>
+              <td align="center" nowrap="nowrap" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_PAYMENT; ?></td>
+              <td align="center" nowrap="nowrap" class="checkoutBarCurrent"><?php echo CHECKOUT_BAR_CONFIRMATION; ?></td>
+              <td align="center" nowrap="nowrap" class="checkoutBarTo"><?php echo CHECKOUT_BAR_FINISHED; ?></td>
             </tr>
           </table>
         </td>

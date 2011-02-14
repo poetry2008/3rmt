@@ -1143,7 +1143,9 @@ a.Icon:hover { text-decoration: underline;    }
     background: url(../images/icons/thread.gif) no-repeat;
 	padding-left:20px;
 }
-#errormessage{color:#ff0000;}
+#errormessage{
+	color:#ff0000;
+}
 #r_menu .login02 img{margin:5px 0 2px 7px;}
 .headerError{ background-color:#FF0000; color:#fff; width:785px; text-align:center;}
 .table_border{
