@@ -11,6 +11,9 @@
 <div class="login02">
 	<a href="<?php echo tep_href_link(FILENAME_LOGIN,'','SSL'); ?>"><img class="middle" src="images/banners/login02.gif" alt="ログイン"></a>
 </div>
+<div class="login03">
+	<a href="<?php echo tep_href_link(FILENAME_LOGIN,'','SSL'); ?>"><img class="middle" src="images/banners/login03.gif" alt="会員登録"></a>
+</div>
 <?php 
   } else {
 ?>
