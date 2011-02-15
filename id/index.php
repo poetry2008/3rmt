@@ -16,7 +16,7 @@
 {
   $(".text").each(function(index) {
     tmp_str = $(this).html();
-    tmp_str = tmp_str.replace(/\(([^)]*)(\)){0,1}/,"<br />"+"$1");
+    tmp_str = tmp_str.replace(/(\(|\（)([^(\)|\）)]*)(\)|\）){0,1}/,"<br />"+"$2");
     $(this).html(tmp_str);
   });
 }
