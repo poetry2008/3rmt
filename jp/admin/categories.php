@@ -1649,7 +1649,7 @@ function get_cart_products(){
                     </tr>
                     </table>
                     </fieldset>
-                    <table>
+                    <table width="100%">
                     <td></tr>
                     <tr><td>
                       買い忘れバナー最小在庫数
@@ -1667,7 +1667,7 @@ function get_cart_products(){
                     </td></tr>
 <?php }?>
                     <tr><td>
-                      提醒画像 <input type="file" name="products_cart_image">
+                      バナー画像 <input type="file" name="products_cart_image">
                       <br>注：バナー画像の横幅は最大450PXです
                     </td></tr>
                     <tr><td style="text-align:center;">
