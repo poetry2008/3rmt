@@ -1579,10 +1579,8 @@ function get_cart_products(){
                 <td colspan="2">
                 <table>
                   <tr>
-                    <td><?php echo TEXT_PRODUCTS_TAGS;?></td> 
-                  </tr>
-                  <tr>
-                    <td<?php if($site_id){echo ' class="readonly"';}?>> 
+                    <td><fieldset><legend style="color:#009900 "><?php echo TEXT_PRODUCTS_TAGS;?></legend> 
+                    <?php if($site_id){echo ' class="readonly"';}?> 
                     <?php
                       //show tags 
                       $checked_tags = array();
@@ -1612,7 +1610,7 @@ function get_cart_products(){
                        ><?php echo $tag['tags_name'];?> 
                       <?php 
                       }
-                    ?>
+                    ?></fieldset>
                     </td> 
                   </tr>
                 </table>
@@ -1622,6 +1620,7 @@ function get_cart_products(){
 
               <tr>
                 <td colspan="2"><?php //print_r(tep_get_cart_products('32239',array(1,2,3,4),1));?>
+                    <fieldset><legend style="color:#009900 ">買い忘れ商品</legend>
                     <table>
                     <tr><td>
                     買い忘れ商品 <input type="radio" name="products_cartflag" value="0"<?php if(!$pInfo->products_cartflag){?> checked<?php }?>>いいえ <input type="radio" name="products_cartflag" value="1"<?php if($pInfo->products_cartflag){?> checked<?php }?>>はい
@@ -1636,8 +1635,8 @@ function get_cart_products(){
                       ?>
                     <table width="100%" >
                       <tr>
-                        <td><input type="radio" name="products_cart_buyflag" value='0'<?php if(!$pInfo->products_cart_buyflag){?> checked<?php }?>>販売 <input type="radio" name="products_cart_buyflag" value='1'<?php if($pInfo->products_cart_buyflag){?> checked<?php }?>>買取</td>
-                        <td align="right"><a href="javascript:void(0);" onclick="$('.carttags').each(function(){if(this.checked)this.checked=false; else this.checked=true;})">逆選択</a></td>
+                        <td nowrap="nowrap" width="50%"><input type="radio" name="products_cart_buyflag" value='0'<?php if(!$pInfo->products_cart_buyflag){?> checked<?php }?>>販売 <input type="radio" name="products_cart_buyflag" value='1'<?php if($pInfo->products_cart_buyflag){?> checked<?php }?>>買取</td>
+                        <td width="50%" align="left"><a href="javascript:void(0);" onclick="$('.carttags').each(function(){if(this.checked)this.checked=false; else this.checked=true;})">逆選択</a></td>
                         <!--<td align="right"><input type="radio" name="products_carttag_enabled" value="1">表示 <input type="radio" name="products_carttag_enabled" value="0">非表示</td>-->
                       </tr>
                       <tr><td colspan='2'>
@@ -1646,6 +1645,11 @@ function get_cart_products(){
 <?php }?>
                       </td></tr>
                     </table>
+                    </td>
+                    </tr>
+                    </table>
+                    </fieldset>
+                    <table>
                     <td></tr>
                     <tr><td>
                       買い忘れバナー最小在庫数
