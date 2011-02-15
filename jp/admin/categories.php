@@ -1648,7 +1648,7 @@ function get_cart_products(){
                     </td>
                     </tr>
                     </table>
-                    </fieldset>
+                    
                     <table width="100%">
                     <td></tr>
                     <tr><td>
@@ -1674,6 +1674,7 @@ function get_cart_products(){
                       <a href="javascript:void(0);" onclick="get_cart_products()">結果確認</a>
                     </td></tr>
                     </table>
+                    </fieldset>
                 </td>
               </tr>
               <?php
