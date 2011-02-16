@@ -136,6 +136,7 @@ RewriteRule ^info-([A-Za-z0-9_]+).html$ page.php?pID=$1&%{QUERY_STRING}
 #}}}
 
 RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteCond %{SERVER_PORT} 443 
 RewriteRule ^images/(.*)$ /www.3id.maker.200.com/default_images/$1
 
 RewriteCond %{REQUEST_FILENAME} !-f 

@@ -983,6 +983,7 @@ P.description {
 	height:39px;
 	padding:0;
 	border:0;
+	margin:3px 40px 3px 120px;
 	background-image: url(../includes/languages/japanese/images/buttons/button_continue_shopping.gif);
 }
 .shopping_cart_checkout {
