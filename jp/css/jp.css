@@ -979,17 +979,18 @@ P.description {
 .shopping_cart_continue {
 	display:block;
 	cursor:pointer;
-	width:81px;
-	height:24px;
+	width:125px;
+	height:39px;
 	padding:0;
 	border:0;
+	margin:3px 40px 3px 120px;
 	background-image: url(../includes/languages/japanese/images/buttons/button_continue_shopping.gif);
 }
 .shopping_cart_checkout {
 	display:block;
 	cursor:pointer;
-	width:87px;
-	height:24px;
+	width:125px;
+	height:39px;
 	padding:0;
 	border:0;
 	background-image: url(../includes/languages/japanese/images/buttons/button_checkout02.gif);
