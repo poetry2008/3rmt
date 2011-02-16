@@ -785,16 +785,7 @@ function tep_minitor_info(){
     return $product['products_name'];
   }
 
-  function tep_get_products_description_origin($product_id, $language_id, $site_id = 0, $default = false) {
-    if ($default) {
-      $product_query = tep_db_query("select products_description_origin from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . $product_id . "' and language_id = '" . $language_id . "' and (site_id ='".$site_id."' or site_id='0') order by site_id desc");
-    } else {
-      $product_query = tep_db_query("select products_description_origin from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . $product_id . "' and language_id = '" . $language_id . "' and site_id ='".$site_id."'");
-    }
-    $product = tep_db_fetch_array($product_query);
-  
-    return $product['products_description_origin'];
-  }
+
    function tep_get_products_description($product_id, $language_id, $site_id = 0, $default = false) {
     if ($default) {
       $product_query = tep_db_query("select products_description,site_id from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . $product_id . "' and language_id = '" . $language_id . "' and (site_id ='".$site_id."' or site_id='0') order by site_id desc");
@@ -2358,7 +2349,7 @@ function tep_get_image_document_image($document_id)
   }
 
 function tep_siteurl_pull_down_menu($default = '',$require = false){
-    $sites_array = array(array('id' => '', 'text' => 'サイトをご選択ください'));
+    $sites_array = array(array('id' => '', 'text' => 'サイトへ移動'));
     $sites = tep_get_sites();
     foreach($sites as $site){
       $sites_array[] = array('id' => $site['url'], 'text' => $site['name']);

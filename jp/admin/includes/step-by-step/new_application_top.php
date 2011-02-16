@@ -8,6 +8,11 @@
   define('FILENAME_CREATE_ORDER', 'create_order.php');
   define('FILENAME_EDIT_ORDERS', 'edit_orders.php');
   define('FILENAME_EDIT_NEW_ORDERS', 'edit_new_orders.php');
+  
+  // 業者仕入
+  define('FILENAME_CREATE_ORDER_PROCESS2', 'create_order_process2.php');
+  define('FILENAME_CREATE_ORDER2', 'create_order2.php');
+  define('FILENAME_EDIT_NEW_ORDERS2', 'edit_new_orders2.php');
 ////
 // Languages
 require('includes/languages/japanese/step-by-step/japanese.php');
@@ -34,11 +39,11 @@ require('includes/languages/japanese/step-by-step/japanese.php');
         // validate domain
         if (eregi($ip_domain_pat, $domain, $ip_components)) {
           // this is an IP address
-      	  for ($i=1;$i<=4;$i++) {
-      	    if ($ip_components[$i] > 255) {
-      	      $valid_address = false;
-      	      break;
-      	    }
+          for ($i=1;$i<=4;$i++) {
+            if ($ip_components[$i] > 255) {
+              $valid_address = false;
+              break;
+            }
           }
         }
         else {
@@ -75,9 +80,9 @@ require('includes/languages/japanese/step-by-step/japanese.php');
             }
           }
           else {
-      	    $valid_address = false;
-      	  }
-      	}
+            $valid_address = false;
+          }
+        }
       }
       else {
         $valid_address = false;
