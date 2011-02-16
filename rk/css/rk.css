@@ -1651,8 +1651,8 @@ background-image: url(../includes/languages/japanese/images/buttons/button_delet
 .shopping_cart_continue{
 display:block;
 cursor:pointer;
-width:96px;
-height:19px;
+width:125px;
+height:39px;
 padding:0;
 border:0;
 background-image: url(../includes/languages/japanese/images/buttons/button_continue_shopping.gif);
@@ -1660,11 +1660,11 @@ background-image: url(../includes/languages/japanese/images/buttons/button_conti
 .shopping_cart_checkout{
 display:block;
 cursor:pointer;
-width:96px;
-height:19px;
+width:125px;
+height:39px;
 padding:0;
 border:0;
-background-image: url(../includes/languages/japanese/images/buttons/button_checkout.gif);
+background-image: url(../includes/languages/japanese/images/buttons/button_checkout02.gif);
 }
 .waring_category {
 color:#000;
