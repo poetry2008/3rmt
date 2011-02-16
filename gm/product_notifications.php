@@ -228,24 +228,22 @@
     }
 ?>
           <tr>
-            <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
+            <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
           </tr>
           <tr>
             <td class="main"><?php echo tep_image_submit('button_remove_notifications.gif', IMAGE_BUTTON_REMOVE_NOTIFICATIONS); ?></td>
-          </tr>
-          </table>
-          </form>
-          <table width="100%">
+            <td class="main">      <table width="100%">
 <?php
   }
 ?>
           <tr>
-            <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-          </tr>
-          <tr>
             <td align="right" class="smallText"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td>
           </tr>
         </table></td>
+             </tr>
+          </table>
+          </form>
+    </td>
       </tr>
     </table></div></div>
       <!-- body_text_eof //--> 
