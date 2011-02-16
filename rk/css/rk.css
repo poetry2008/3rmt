@@ -1399,7 +1399,7 @@ TD：main
 --------------------------- */
 TD.main, P.main {
 	font-size: 11px;
-	*+font-size: 10px;
+	*font-size: 10px;
 	line-height: 1.5;
 }
 /* ---------------------------
@@ -1651,8 +1651,8 @@ background-image: url(../includes/languages/japanese/images/buttons/button_delet
 .shopping_cart_continue{
 display:block;
 cursor:pointer;
-width:72px;
-height:17px;
+width:96px;
+height:19px;
 padding:0;
 border:0;
 background-image: url(../includes/languages/japanese/images/buttons/button_continue_shopping.gif);
@@ -1660,8 +1660,8 @@ background-image: url(../includes/languages/japanese/images/buttons/button_conti
 .shopping_cart_checkout{
 display:block;
 cursor:pointer;
-width:58px;
-height:17px;
+width:96px;
+height:19px;
 padding:0;
 border:0;
 background-image: url(../includes/languages/japanese/images/buttons/button_checkout.gif);

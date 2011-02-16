@@ -2090,8 +2090,8 @@ color:#A85E5E;
 .shopping_cart_continue{
 display:block;
 cursor:pointer;
-width:73px;
-height:21px;
+width:95px;
+height:20px;
 padding:0;
 border:0;
 background-image: url(../includes/languages/japanese/images/buttons/button_continue_shopping.gif);
@@ -2099,8 +2099,8 @@ background-image: url(../includes/languages/japanese/images/buttons/button_conti
 .shopping_cart_checkout{
 display:block;
 cursor:pointer;
-width:63px;
-height:21px;
+width:89px;
+height:20px;
 padding:0;
 border:0;
 background-image: url(../includes/languages/japanese/images/buttons/button_checkout.gif);

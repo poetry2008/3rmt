@@ -414,7 +414,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                 </div>
               </td>
                         <td align="left">個</td>
-                      <td align="right"><?php echo tep_image_submit('button_in_cart.jpg', IMAGE_BUTTON_IN_CART); ?></td>
+                      <td align="right"><?php echo tep_image_submit('button_in_cart_news.jpg', IMAGE_BUTTON_IN_CART); ?></td>
                     </tr>
                   </table>
                   <?php
