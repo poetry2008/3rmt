@@ -35,8 +35,10 @@ if($_POST):
     if(($ticket=Ticket::create($_POST,$errors,SOURCE))){
       //        $msg='お客様のご質問は RMTジャックポット へ送信されました。';
         $msg = 'お客様のご質問は RMTアイテムデポ へ送信されました。 ';
+       /*
         if($thisclient && $thisclient->isValid()) //Logged in...simply view the newly created ticket.
             @header('Location: tickets.php?id='.$ticket->getExtId());
+       */
         //Thank the user and promise speedy resolution!
         $inc='thankyou.inc.php';
     }else{
