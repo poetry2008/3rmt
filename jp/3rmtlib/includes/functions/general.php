@@ -3175,6 +3175,10 @@ function tep_get_categories_by_products_id($pid){
   while($p2c = tep_db_fetch_array($query)){
     $carr[] = $p2c['categories_id'];
   }
+  
+  if (!isset($carr[0])) {
+    $carr[] = 0; 
+  }
   return $carr;
 }
 //返回该产品的romaji

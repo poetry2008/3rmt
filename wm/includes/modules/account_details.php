@@ -87,7 +87,7 @@
         <td class="main"><table border="0" cellspacing="0" cellpadding="2" summary="table">
           <tr>
             <td class="main">&nbsp;<?php echo ENTRY_NEWSLETTER; ?></td>
-            <td class="main">&nbsp;
+            <td class="main">
 <?php
   if ($is_read_only == true) {
     if ($account['customers_newsletter'] == '1') {
@@ -121,7 +121,7 @@
 ?>      
       <tr>
         <td class="main">&nbsp;<?php echo ENTRY_GUEST; ?></td>
-        <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?>&nbsp;&nbsp;<small><span class="red">※</span>&nbsp;会員登録をしないで購入することもできます。</small></td>
+        <td class="main"><?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?>&nbsp;&nbsp;<span class="red">※</span>&nbsp;会員登録をしないで購入することもできます。</td>
       </tr>
 <?php
     } else {

@@ -46,16 +46,6 @@
       //echo '    <td align="center" height="25">' . tep_draw_checkbox_field('cart_delete[]', $products[$i]['id']) . '</td>' . "\n";
     }
     // ccdd
-    /*
-    tep_db_query("
-        update " . TABLE_PRODUCTS_DESCRIPTION . " 
-        set products_viewed = products_viewed+1 
-        where products_id = '" .  (int)$_GET['products_id'] . "' 
-        and language_id = '" . $languages_id . "' 
-        and site_id = '".SITE_ID."'
-    ");
-    */
-    //$product_info = tep_db_fetch_array($_product_info_query);
     $product_info = tep_get_product_by_id($products[$i]['id'], SITE_ID, $languages_id,true,'shopping_cart');
     $data1 = explode("//", $product_info['products_attention_1']);
 
@@ -93,17 +83,17 @@
       echo '<td align="center" valign="middle">';
       if (!empty($product_info['products_image']))
       {
-        echo tep_image(DIR_WS_IMAGES . $product_info['products_image'],
+        echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image'],
             $product_info['products_name'],60, 60);
       }
       else if (!empty($product_info['products_image2']))
       {
-        echo tep_image(DIR_WS_IMAGES . $product_info['products_image2'],
+        echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image2'],
             $product_info['products_name'],60, 60);
       }
       else if (!empty($product_info['products_image3']))
       {
-        echo tep_image(DIR_WS_IMAGES . $product_info['products_image3'],
+        echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image3'],
             $product_info['products_name'],60, 60);
       }
       else

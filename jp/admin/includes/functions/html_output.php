@@ -280,3 +280,24 @@
 
     return $field;
   }
+
+function tep_customer_list_pull_down_menu()
+{
+   $select_str = '<select name="cmail">';
+   $customer_query = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_guest_chk = '9' order by customers_id"); 
+   while ($customer_res = tep_db_fetch_array($customer_query)) {
+     $carr = array();
+     $svalue = $customer_res['customers_email_address'].'|||'.$customer_res['site_id'];
+     
+     $site_query = tep_db_query("select * from sites where id = '".$customer_res['site_id']."'"); 
+     $site_res = tep_db_fetch_array($site_query);
+     $site_name = $site_res['name'];
+     
+     $select_str .= '<option value=\''.$svalue.'\'>'; 
+     $select_str .= $customer_res['customers_email_address'].'&nbsp;&nbsp;'.$site_name; 
+     $select_str .= '</option>'; 
+   }
+   $select_str .= '</select>';
+   
+   return $select_str;
+}

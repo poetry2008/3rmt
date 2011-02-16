@@ -670,3 +670,10 @@ vertical-align:top;
 padding-top:14px;
 *padding-top:12px;
 }
+.t_link01 { display:block; text-align:center; border-bottom:1px inherit #999;}
+.categories_input01 input{
+width:500px;
+}
+.categories_textarea01 textarea{
+width:500px;
+}

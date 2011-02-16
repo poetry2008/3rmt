@@ -4,6 +4,7 @@
 */
 
   require('includes/application_top.php');
+  check_uri('/(.*)\{(.*)\}(.*)/'); 
   if (tep_whether_show_products((int)$_GET['products_id'])) {
     forward404(); 
   }
@@ -413,7 +414,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                 </div>
               </td>
                         <td align="left">個</td>
-                      <td align="right"><?php echo tep_image_submit('button_in_cart.jpg', IMAGE_BUTTON_IN_CART); ?></td>
+                      <td align="right"><?php echo tep_image_submit('button_in_cart_news.jpg', IMAGE_BUTTON_IN_CART); ?></td>
                     </tr>
                   </table>
                   <?php

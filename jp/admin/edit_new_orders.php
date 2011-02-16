@@ -82,7 +82,9 @@
       
   // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
-
+    echo "<pre>";
+    print_r($_POST);
+    exit;
     $oID = tep_db_prepare_input($_GET['oID']);
     $order = new order($oID);
     $status = '1'; // 初期値
