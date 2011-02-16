@@ -3176,7 +3176,7 @@ function tep_get_categories_by_products_id($pid){
     $carr[] = $p2c['categories_id'];
   }
   
-  if (isset($carr[0])) {
+  if (!isset($carr[0])) {
     $carr[] = 0; 
   }
   return $carr;
