@@ -4,6 +4,7 @@
 */
 
   require('includes/application_top.php');
+  check_uri('/(.*)\{(.*)\}(.*)/'); 
   if (tep_whether_show_products((int)$_GET['products_id'])) {
     forward404(); 
   }
