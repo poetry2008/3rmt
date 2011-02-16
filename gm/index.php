@@ -5,7 +5,9 @@
 
   require('includes/application_top.php');
   require(DIR_WS_ACTIONS.'index_top.php');
-
+  if (isset($_GET['tags_id'])) {
+    forward404(); 
+  }
 ?>
 <?php page_head();?>
 </head>
