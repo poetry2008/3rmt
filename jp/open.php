@@ -26,10 +26,12 @@ if($_POST):
     //$_POST['deptId']=$_POST['emailId']=0; //Just Making sure we don't accept crap...only topicId is expected.
     $_POST['emailId']=0; //Just Making sure we don't accept crap...only topicId is expected.
     if(!$thisuser && $cfg->enableCaptcha()){
+       if(!(isset($thisclient)&&$thisclient->isValid())){ 
         if(!$_POST['captcha'])
             $errors['captcha']='認証コードを入力してください';
         elseif(strcmp($_SESSION['captcha'],md5(strtolower($_POST['captcha']))))
             $errors['captcha']='認証コードを入力しなおしてください!';
+       }
     }
     //Ticket::create...checks for errors..
     if(($ticket=Ticket::create($_POST,$errors,SOURCE))){
