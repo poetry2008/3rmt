@@ -116,7 +116,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
         $cart->restore_contents();
         if (sizeof($navigation->snapshot) > 0) {
           //$origin_href = tep_href_link($navigation->snapshot['page'], tep_array_to_string($navigation->snapshot['get'], array(tep_session_name())), $navigation->snapshot['mode']);
-          $origin_href = tep_href_link($navigation->snapshot['page'], tep_array_to_string($navigation->snapshot['get'], array(tep_session_name())), 'NONSSL');
+          $origin_href = tep_href_link($navigation->snapshot['page'], tep_array_to_string($navigation->snapshot['get'], array(tep_session_name())), 'SSL');
           $navigation->clear_snapshot();
           tep_redirect($origin_href);
         } else {
