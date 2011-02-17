@@ -1015,6 +1015,9 @@ if($reload == 'yes') {
   <tr>
     <td class="main">支払方法：</td>
     <td class="main">
+<?php if (tep_is_oroshi($order->customer['id']) && $orders_questions_type==1) { ?>
+      買取：銀行支払<input type="hidden" name="questions_type" id="questions_type" value="1">
+<?php } else { ?>
       <select name="questions_type" id="questions_type" onchange="window.location.href=base_url+'&questions_type='+this.value">
 <?php if (isset($_GET['questions_type'])) { ?>
         <option value="0">販売：銀行振込</option>
@@ -1026,6 +1029,7 @@ if($reload == 'yes') {
         <option value="1"<?php if ($orders_questions_type==1) {?> selected="selected"<?php } ?>>買取：銀行支払</option>
 <?php } ?>
       </select>
+<?php } ?>
     </td>
 <?php if (!$oq['q_8_1']) { ?>
     <td class="main" align="right">&nbsp;</td>

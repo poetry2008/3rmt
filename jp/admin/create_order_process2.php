@@ -99,6 +99,7 @@
     $error = true;
     $entry_payment_method_error = true;
   } elseif ($payment_method == '銀行振込(買い取り)') {
+    /*
     if ($bank_name == '') {
       $error = true;
       $entry_bank_name_error = true;
@@ -126,7 +127,7 @@
     } else {
       $entry_bank_kouza_name_error = false;
     }
-    
+    */
     $entry_payment_method_error = false;
   } else {
     $entry_payment_method_error = false;
@@ -332,17 +333,6 @@
                 'date_added'        => 'now()', 
                 'customer_notified' => '1',
                 'comments'          => $bbbank);
-    tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
-    */
-    $_SESSION['create_order2']['comments'] = $comments;
-  } else if ($payment_method  == 'コンビニ決済') {
-    $comments = 'PCメールアドレス:'.$_POST['con_email']."\n"; 
-    /*
-    $sql_data_array = array('orders_id' => $insert_id, 
-                'orders_status_id' => $new_value, 
-                'date_added' => 'now()', 
-                'customer_notified' => '1',
-                'comments' => $convenience_comments);
     tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
     */
     $_SESSION['create_order2']['comments'] = $comments;

@@ -1833,3 +1833,12 @@ P.description {
 	background-color:#e2e2e2;
 	border:1px solid #CAC6BE;
 }
+.pageHeading_box .pageHeading{
+display:block;
+	height:24px;
+	padding:0 0 0 26px;
+	line-height:24px;
+	text-align:left;
+	width:475px;
+	background: url(../images/design/contents/headding_title.gif) no-repeat -3px -6px;
+}

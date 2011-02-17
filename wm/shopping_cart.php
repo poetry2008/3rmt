@@ -285,7 +285,7 @@ function change_num(ob,targ, quan,a_quan)
     $cart_products = tep_get_cart_products(tep_get_products_by_shopiing_cart($products));
     if ($cart_products) {
 ?>
-  <h3>こちらの商品もオススメ！！</h3>
+  <h3 class="pageHeading">こちらの商品もオススメ！！</h3>
   <div style="text-align:center;padding:10px 0;">
 <?php
       foreach($cart_products as $cp){

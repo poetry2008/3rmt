@@ -120,11 +120,6 @@ function hidden_payment(){
   }else{
     document.getElementById('trpass1').style.display = "none";
   }
-  if (CI == 'コンビニ決済') {
-    document.getElementById('copass1').style.display = "";
-  } else {
-    document.getElementById('copass1').style.display = "none";
-  }
 }
 </script>
 <table border="0" width="100%" cellspacing="0" cellpadding="2">

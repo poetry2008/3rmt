@@ -885,7 +885,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
 <script>
 function check_add(){
   price = document.getElementById('add_product_price').value;
-  if(price != '' && $price != 0  && price > 0){
+  if(price != '' && price != 0  && price > 0){
     return true;
   } else {
     alert("単価を書いてください");
