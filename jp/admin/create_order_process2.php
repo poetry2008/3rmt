@@ -416,6 +416,6 @@
       //tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
     }
   
-    tep_redirect(tep_href_link(FILENAME_EDIT_NEW_ORDERS2, 'oID=' . $insert_id, 'SSL'));
+    tep_redirect(tep_href_link(FILENAME_EDIT_NEW_ORDERS2, 'oID=' . $insert_id . '&action=add_product&step=1', 'SSL'));
   }
   require(DIR_WS_INCLUDES . 'application_bottom.php');
