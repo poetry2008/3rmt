@@ -1,0 +1,953 @@
+address_format 
+jp:select * from banners where  banners_title = 'クレジットカード（VISA MASTER JCB）、銀行振込'  and  banners_url = ''  and  banners_image = 'jp2_f.gif'  and  banners_group = 'left1'  and  banners_html_text = ''  and  expires_impressions = ''  and  status = '1'  and  site_id = '1' 
+jp:banners:4
+jp:select * from banners where  banners_title = 'SSL'  and  banners_url = ''  and  banners_image = ''  and  banners_group = 'right3'  and  banners_html_text = '<!-- GeoTrust Smart Icon tag. Do not edit. -->\r\n          <SCRIPT LANGUAGE=\"JavaScript\" TYPE=\"text/javascript\" SRC=\"//smarticon.geotrust.com/si.js\"></SCRIPT>\r\n          <!-- END of GeoTrust Smart Icon tag -->'  and  expires_impressions = ''  and  status = '0'  and  site_id = '1' 
+jp:banners:13
+jp:select * from banners where  banners_title = 'FF11-営業時間'  and  banners_url = ''  and  banners_image = 'banners/businesshours.gif'  and  banners_group = 'left2'  and  banners_html_text = ''  and  expires_impressions = ''  and  status = '1'  and  site_id = '1' 
+jp:banners:5
+jp:select * from banners where  banners_title = '左4段目'  and  banners_url = 'g.cn'  and  banners_image = 'GW-00476.jpg'  and  banners_group = 'left4'  and  banners_html_text = ''  and  expires_impressions = ''  and  status = '0'  and  site_id = '1' 
+jp:banners:18
+jp:select * from banners where  banners_title = 'メールマガジン'  and  banners_url = ''  and  banners_image = 'banners/banner_1.gif'  and  banners_group = 'left2'  and  banners_html_text = ''  and  expires_impressions = ''  and  status = '0'  and  site_id = '1' 
+jp:banners:11
+jp:select * from banners where  banners_title = '特価商品'  and  banners_url = ''  and  banners_image = 'banners/banner_2.gif'  and  banners_group = 'right5'  and  banners_html_text = ''  and  expires_impressions = ''  and  status = '0'  and  site_id = '1' 
+jp:banners:12
+jp:select * from banners where  banners_title = 'リンク集'  and  banners_url = ''  and  banners_image = ''  and  banners_group = 'right4'  and  banners_html_text = '<img src=\"images/design/box/bestlinks.gif\" border=\"0\" alt=\"リンク集\" width=\"171\" height=\"25\">\r\n<div class=\"boxText\">\r\n<a href=\"http://www.playonline.com/home/polnews/list_mnt.shtml\" target=\"_blank\">FFXI メンテナンス情報</a>\r\n<a href=\"http://www5.plala.or.jp/SQR/ff11/\" target=\"_blank\">FF11 攻略 eLeMeN</a>\r\n<a href=\"http://ff11wiki.rdy.jp/-1450975598.html\" target=\"_blank\">FF11 Wiki</a>\r\n<a href=\"http://agardens.fc2web.com/\" target=\"_blank\">FF11 合成 職人の庭</a>\r\n<a href=\"http://www.hotgame.co.jp/\" target=\"_blank\">FF11 コミュニティ ホットゲーム</a>\r\nデータベース\r\n<hr>\r\n<a href=\"http://www.lineage2.jp/bbs/list.aspx?bid=3\" target=\"_blank\">リネージュ2 メンテナンス情報</a>\r\n<a href=\"http://hrb.finito.fc2.com/\" target=\"_blank\">リネージュII いもづる〜LINEAGE2 Links〜</a>\r\n<a href=\"http://l2quest.web2.jp/\" target=\"_blank\">LINEAGE2 クエスト攻略</a>\r\n<a href=\"http://www.geocities.jp/flttsr_q3p2u/\" target=\"_blank\">LINEAGE2 攻略通信</a>\r\n<a href=\"http://l2mpt.net/\" target=\"_blank\">LINEAGE2相場情報 Lineage MarketPriceTurbo</a>\r\n<a href=\"http://ammonite.pya.jp/totsugeki/\" target=\"_blank\">LINEAGE2血盟情報局</a>\r\n<hr>\r\n<a href=\"http://www.lineage.jp/news/news_list.aspx?ct=1\" target=\"_blank\">リネージュ メンテナンス情報</a>\r\n<a href=\"http://www.lineinfo.jp/\" target=\"_blank\">LINEAGE 攻略通信</a>\r\n<a href=\"http://lin1.l2mpt.net/\" target=\"_blank\">リネージュ相場情報 Lineage MarketPriceTurbo</a>\r\n<a href=\"http://f61.aaa.livedoor.jp/~syaka/\" target=\"_blank\">LINEAGEシュミレータ Effective Lineage </a>\r\n<a href=\"http://www.jias.jp/line/\" target=\"_blank\">リネージュ情報 リネしながら見るページ</a>\r\n</div>'  and  expires_impressions = ''  and  status = '0'  and  site_id = '1' 
+jp:banners:14
+jp:select * from banners where  banners_title = '右5段目'  and  banners_url = ''  and  banners_image = 'banners/banner158-50.gif'  and  banners_group = 'right5'  and  banners_html_text = ''  and  expires_impressions = ''  and  status = '0'  and  site_id = '1' 
+jp:banners:15
+jp:select * from banners where  banners_title = 'RMTメールマガジン'  and  banners_url = 'http://www.iimy.co.jp/mail_magazine.php'  and  banners_image = 'banners/banner_1.gif'  and  banners_group = 'left3'  and  banners_html_text = ''  and  expires_impressions = ''  and  status = '0'  and  site_id = '1' 
+jp:banners:19
+jp:select * from banners where  banners_title = 'RMTゲームマネー'  and  banners_url = ''  and  banners_image = ''  and  banners_group = 'footer'  and  banners_html_text = '<a href=\"http://www.gamemoney.cc/\" class=\"blank\"><strong>RMT</strong></a> | \r\n<a href=\"http://www.gamemoney.cc/rmt/c-168.html\" class=\"blank\">FF11 RMT</a> | \r\n<a href=\"http://www.gamemoney.cc/rmt/c-169.html\" class=\"blank\">リネージュ2 RMT</a> | \r\n<a href=\"http://www.gamemoney.cc/rmt/c-195.html\" class=\"blank\">REDSTONE RMT</a> | \r\n<a href=\"http://www.gamemoney.cc/rmt/c-190.html\" class=\"blank\">TW RMT</a> | \r\n<a href=\"http://www.gamemoney.cc/rmt/c-200.html\" class=\"blank\">CABAL RMT</a> | \r\n<a href=\"http://www.gamemoney.cc/rmt/c-178.html\" class=\"blank\">信長の野望 RMT</a> | \r\n<a href=\"http://www.gamemoney.cc/rmt/c-278.html\" class=\"blank\">アトランティカ RMT</a> | \r\n<a href=\"http://www.gamemoney.cc/rmt/c-231.html\" class=\"blank\">SUN RMT</a> | \r\n<a href=\"http://www.gamemoney.cc/rmt/c-396.html\" class=\"blank\">AION RMT</a> | \r\n<a href=\"http://www.gamemoney.cc/rmt/c-325.html\" class=\"blank\">ラテール RMT</a> | \r\n<a href=\"http://37109.jp/pc/\" class=\"blank\">香川 クーポン</a>'  and  expires_impressions = ''  and  status = '1'  and  site_id = '1' 
+jp:banners:24
+jp:select * from banners where  banners_title = 'フッター１'  and  banners_url = ''  and  banners_image = ''  and  banners_group = 'footer1'  and  banners_html_text = ''  and  expires_impressions = ''  and  status = '0'  and  site_id = '1' 
+jp:banners:25
+jp:select * from banners where  banners_title = 'フッター2'  and  banners_url = ''  and  banners_image = ''  and  banners_group = 'footer2'  and  banners_html_text = ''  and  expires_impressions = ''  and  status = '0'  and  site_id = '1' 
+jp:banners:26
+jp:select * from banners where  banners_title = 'フッター3'  and  banners_url = ''  and  banners_image = ''  and  banners_group = 'footer3'  and  banners_html_text = ''  and  expires_impressions = ''  and  status = '0'  and  site_id = '1' 
+jp:banners:27
+gm:select * from banners where  banners_title = 'rmt'  and  banners_url = ''  and  banners_image = 'banners/r_banner.jpg'  and  banners_group = 'right3'  and  banners_html_text = ''  and  expires_impressions = ''  and  status = '1'  and  site_id = '2' 
+gm:banners:13
+gm:select * from banners where  banners_title = 'FF11RMT'  and  banners_url = ''  and  banners_image = 'banners/r_banner.jpg'  and  banners_group = 'right2'  and  banners_html_text = ''  and  expires_impressions = ''  and  status = '1'  and  site_id = '2' 
+gm:banners:12
+gm:select * from banners where  banners_title = 'rmt'  and  banners_url = ''  and  banners_image = 'banners/r_banner.jpg'  and  banners_group = 'right4'  and  banners_html_text = ''  and  expires_impressions = ''  and  status = '1'  and  site_id = '2' 
+gm:banners:14
+gm:select * from banners where  banners_title = 'FF11RMT'  and  banners_url = ''  and  banners_image = 'banners/r_banner_ffxi.jpg'  and  banners_group = 'right1'  and  banners_html_text = ''  and  expires_impressions = ''  and  status = '0'  and  site_id = '2' 
+gm:banners:28
+gm:select * from banners where  banners_title = 'ゲームマネーの営業時間'  and  banners_url = ''  and  banners_image = 'banners/l_menu_time.jpg'  and  banners_group = 'left2'  and  banners_html_text = ''  and  expires_impressions = ''  and  status = '1'  and  site_id = '2' 
+gm:banners:19
+gm:select * from banners where  banners_title = 'クレジットカード・銀行振込'  and  banners_url = ''  and  banners_image = 'l_menu_payment.jpg'  and  banners_group = 'left1'  and  banners_html_text = '<img src=\"./images/banners/l_menu_payment.jpg\" width=\"131\" height=\"385\" alt=\"クレジットカード・VISA・MASTER・JCB・銀行振込\">'  and  expires_impressions = ''  and  status = '1'  and  site_id = '2' 
+gm:banners:29
+gm:select * from banners where  banners_title = 'お役立ちリンク上段'  and  banners_url = ''  and  banners_image = ''  and  banners_group = 'right5'  and  banners_html_text = '<div id=\"r_links\">\r\n<div class=\"link_title_right\">お役立ちリンク</div>\r\n<p><a href=\"http://www.playonline.com/home/polnews/list_mnt.shtml\" rel=\"nofollow\" target=\"_blank\">FFXI<br>メンテナンス情報</a></p>\r\n<p>FF11 攻略<br><a href=\"http://www5.plala.or.jp/SQR/ff11/\" rel=\"nofollow\" target=\"_blank\">eLeMeN</a></p>\r\n<p><a href=\"http://ff11wiki.rdy.jp/-1450975598.html\" rel=\"nofollow\" target=\"_blank\">FF11 Wiki</a></p>\r\n<p><a href=\"http://agardens.fc2web.com/\" rel=\"nofollow\" target=\"_blank\">FF11 合成<br>職人の庭</a></p>'  and  expires_impressions = ''  and  status = '1'  and  site_id = '2' 
+gm:banners:30
+gm:select * from banners where  banners_title = 'お役立ちリンク下段'  and  banners_url = ''  and  banners_image = ''  and  banners_group = 'right6'  and  banners_html_text = '<p><a href=\"http://ff11flashlink.fc2web.com/\" target=\"_blank\">FF11フラッシュ倉庫</a></p>\r\n</div>'  and  expires_impressions = ''  and  status = '1'  and  site_id = '2' 
+gm:banners:31
+gm:select * from banners where  banners_title = 'RMTジャックポット'  and  banners_url = ''  and  banners_image = ''  and  banners_group = 'footer'  and  banners_html_text = '<a href=\"http://www.iimy.co.jp/\" target=\"_blank\"><strong>RMT</strong></a> : \r\n<a href=\"http://www.iimy.co.jp/rmt/c-168.html\" target=\"_blank\">FFXI RMT</a> | \r\n<a href=\"http://www.iimy.co.jp/rmt/c-195.html\" target=\"_blank\">レッドストーン RMT</a> | \r\n<a href=\"http://www.iimy.co.jp/rmt/c-231.html\" target=\"_blank\">SUN RMT</a> | \r\n<a href=\"http://www.iimy.co.jp/rmt/c-169.html\" target=\"_blank\">リネージュ2 RMT</a> | \r\n<a href=\"http://www.iimy.co.jp/rmt/c-200.html\" target=\"_blank\">CABAL RMT</a> | \r\n<a href=\"http://www.iimy.co.jp/rmt/c-278.html\" target=\"_blank\">アトランティカ RMT</a> | \r\n<a href=\"http://www.iimy.co.jp/rmt/c-190.html\" target=\"_blank\">テイルズウィーバー RMT</a> | \r\n<a href=\"http://www.iimy.co.jp/rmt/c-396.html\" target=\"_blank\">アイオン RMT</a> | \r\n<a href=\"http://www.iimy.co.jp/rmt/c-178.html\" target=\"_blank\">信長の野望 RMT</a> | \r\n<a href=\"http://www.iimy.co.jp/rmt/c-325.html\" target=\"_blank\">ラテール RMT</a> | \r\n<a href=\"http://www.iimy.co.jp/rmt/c-319.html\" target=\"_blank\">女神転生 RMT</a> | \r\n<a href=\"http://www.iimy.co.jp/rmt/c-253.html\" target=\"_blank\">大航海時代 RMT</a> | \r\n<a href=\"http://www.iimy.co.jp/rmt/c-247.html\" target=\"_blank\">ウェブマネー RMT</a> | \r\n<a href=\"http://37109.jp/pc/\" class=\"blank\">香川 クーポン</a>'  and  expires_impressions = ''  and  status = '1'  and  site_id = '2' 
+gm:banners:32
+gm:select * from banners where  banners_title = 'クレジットカード・銀行振込'  and  banners_url = ''  and  banners_image = 'gm03.gif'  and  banners_group = 'left1'  and  banners_html_text = '<img src=\"./images/banners/l_menu_payment.jpg\" width=\"131\" height=\"385\" alt=\"クレジットカード・VISA・MASTER・JCB・銀行振込\">'  and  expires_impressions = '0'  and  status = '0'  and  site_id = '2' 
+gm:banners:33
+wm:select * from banners where  banners_title = 'クレジットカード（VISA MASTER JCB AMEX Diners）、銀行振込'  and  banners_url = ''  and  banners_image = 'payment_wm02.gif'  and  banners_group = 'left1'  and  banners_html_text = ''  and  expires_impressions = ''  and  status = '1'  and  site_id = '3' 
+wm:banners:4
+wm:select * from banners where  banners_title = 'SSL'  and  banners_url = ''  and  banners_image = ''  and  banners_group = 'right3'  and  banners_html_text = '<!-- GeoTrust Smart Icon tag. Do not edit. -->\r\n          <SCRIPT LANGUAGE=\"JavaScript\" TYPE=\"text/javascript\" SRC=\"//smarticon.geotrust.com/si.js\"></SCRIPT>\r\n          <!-- END of GeoTrust Smart Icon tag -->'  and  expires_impressions = ''  and  status = '0'  and  site_id = '3' 
+wm:banners:13
+wm:select * from banners where  banners_title = '株式会社iimy-営業時間'  and  banners_url = ''  and  banners_image = 'banners/businesshours.gif'  and  banners_group = 'left2'  and  banners_html_text = ''  and  expires_impressions = ''  and  status = '1'  and  site_id = '3' 
+wm:banners:5
+wm:select * from banners where  banners_title = '左4段目'  and  banners_url = ''  and  banners_image = ''  and  banners_group = 'left4'  and  banners_html_text = ''  and  expires_impressions = ''  and  status = '0'  and  site_id = '3' 
+wm:banners:18
+wm:select * from banners where  banners_title = 'メールマガジン'  and  banners_url = ''  and  banners_image = 'banners/banner_1.gif'  and  banners_group = 'left2'  and  banners_html_text = ''  and  expires_impressions = ''  and  status = '0'  and  site_id = '3' 
+wm:banners:11
+wm:select * from banners where  banners_title = '特価商品'  and  banners_url = ''  and  banners_image = 'banners/banner_2.gif'  and  banners_group = 'right2'  and  banners_html_text = ''  and  expires_impressions = ''  and  status = '0'  and  site_id = '3' 
+wm:banners:12
+wm:select * from banners where  banners_title = 'リンク集'  and  banners_url = ''  and  banners_image = ''  and  banners_group = 'right4'  and  banners_html_text = '<img src=\"images/design/box/bestlinks.gif\" border=\"0\" alt=\"リンク集\" width=\"171\" height=\"25\">\r\n<div class=\"boxText\">\r\n<a href=\"http://www.playonline.com/home/polnews/list_mnt.shtml\" target=\"_blank\">FFXI メンテナンス情報</a>\r\n<a href=\"http://www5.plala.or.jp/SQR/ff11/\" target=\"_blank\">FF11 攻略 eLeMeN</a>\r\n<a href=\"http://ff11wiki.rdy.jp/-1450975598.html\" target=\"_blank\">FF11 Wiki</a>\r\n<a href=\"http://agardens.fc2web.com/\" target=\"_blank\">FF11 合成 職人の庭</a>\r\n<a href=\"http://www.hotgame.co.jp/\" target=\"_blank\">FF11 コミュニティ ホットゲーム</a>\r\nデータベース\r\n<hr>\r\n<a href=\"http://www.lineage2.jp/bbs/list.aspx?bid=3\" target=\"_blank\">リネージュ2 メンテナンス情報</a>\r\n<a href=\"http://hrb.finito.fc2.com/\" target=\"_blank\">リネージュII いもづる〜LINEAGE2 Links〜</a>\r\n<a href=\"http://l2quest.web2.jp/\" target=\"_blank\">LINEAGE2 クエスト攻略</a>\r\n<a href=\"http://www.geocities.jp/flttsr_q3p2u/\" target=\"_blank\">LINEAGE2 攻略通信</a>\r\n<a href=\"http://l2mpt.net/\" target=\"_blank\">LINEAGE2相場情報 Lineage MarketPriceTurbo</a>\r\n<a href=\"http://ammonite.pya.jp/totsugeki/\" target=\"_blank\">LINEAGE2血盟情報局</a>\r\n<hr>\r\n<a href=\"http://www.lineage.jp/news/news_list.aspx?ct=1\" target=\"_blank\">リネージュ メンテナンス情報</a>\r\n<a href=\"http://www.lineinfo.jp/\" target=\"_blank\">LINEAGE 攻略通信</a>\r\n<a href=\"http://lin1.l2mpt.net/\" target=\"_blank\">リネージュ相場情報 Lineage MarketPriceTurbo</a>\r\n<a href=\"http://f61.aaa.livedoor.jp/~syaka/\" target=\"_blank\">LINEAGEシュミレータ Effective Lineage </a>\r\n<a href=\"http://www.jias.jp/line/\" target=\"_blank\">リネージュ情報 リネしながら見るページ</a>\r\n</div>'  and  expires_impressions = ''  and  status = '1'  and  site_id = '3' 
+wm:banners:14
+wm:select * from banners where  banners_title = '右5段目'  and  banners_url = ''  and  banners_image = 'banners/banner158-50.gif'  and  banners_group = 'right5'  and  banners_html_text = ''  and  expires_impressions = ''  and  status = '0'  and  site_id = '3' 
+wm:banners:15
+wm:select * from banners where  banners_title = 'RMT激安情報メールマガジン'  and  banners_url = 'http://rmt.worldmoney.jp/mail_magazine.php'  and  banners_image = 'banners/banner_1.gif'  and  banners_group = 'left3'  and  banners_html_text = ''  and  expires_impressions = ''  and  status = '1'  and  site_id = '3' 
+wm:banners:19
+wm:select * from banners where  banners_title = 'RMTゲームマネー'  and  banners_url = ''  and  banners_image = ''  and  banners_group = 'footer'  and  banners_html_text = '<br><br><br>'  and  expires_impressions = ''  and  status = '1'  and  site_id = '3' 
+wm:banners:24
+wm:select * from banners where  banners_title = 'フッター１'  and  banners_url = ''  and  banners_image = ''  and  banners_group = 'footer1'  and  banners_html_text = ''  and  expires_impressions = ''  and  status = '0'  and  site_id = '3' 
+wm:banners:25
+wm:select * from banners where  banners_title = 'フッター2'  and  banners_url = ''  and  banners_image = ''  and  banners_group = 'footer2'  and  banners_html_text = ''  and  expires_impressions = ''  and  status = '0'  and  site_id = '3' 
+wm:banners:26
+wm:select * from banners where  banners_title = 'フッター3'  and  banners_url = ''  and  banners_image = ''  and  banners_group = 'footer3'  and  banners_html_text = ''  and  expires_impressions = ''  and  status = '0'  and  site_id = '3' 
+wm:banners:27
+banners 
+calendar 
+categories 
+categories_rss 
+jp:select * from configuration where  configuration_title = '払い戻し還元レート'  and  configuration_key = 'AFFILIATE_PERCENT'  and  configuration_value = '5'  and  configuration_description = 'アフィリエイト会員に対する報酬の還元率を設定します'  and  configuration_group_id = '900'  and  sort_order = '2'  and  use_function = ''  and  set_function = ''  and  site_id = '1' 
+jp:configuration:140
+jp:select * from configuration where  configuration_title = '支払いしきい値'  and  configuration_key = 'AFFILIATE_THRESHOLD'  and  configuration_value = '5000'  and  configuration_description = 'アフィリエイト会員に支払うためのしきい値（最低支払額）を設定します'  and  configuration_group_id = '900'  and  sort_order = '3'  and  use_function = ''  and  set_function = ''  and  site_id = '1' 
+jp:configuration:141
+jp:select * from configuration where  configuration_title = 'クッキーの有効時間'  and  configuration_key = 'AFFILIATE_COOKIE_LIFETIME'  and  configuration_value = '7200'  and  configuration_description = 'クッキーの有効時間を設定します（秒）'  and  configuration_group_id = '900'  and  sort_order = '4'  and  use_function = ''  and  set_function = ''  and  site_id = '1' 
+jp:configuration:142
+jp:select * from configuration where  configuration_title = '報酬確定までの時間'  and  configuration_key = 'AFFILIATE_BILLING_TIME'  and  configuration_value = '30'  and  configuration_description = 'オーダーがあってからアフィリエイト会員に対して報酬の払い戻しを行うまでの最低日数を設定します。'  and  configuration_group_id = '900'  and  sort_order = '5'  and  use_function = ''  and  set_function = ''  and  site_id = '1' 
+jp:configuration:143
+jp:select * from configuration where  configuration_title = '注文件数（最小）'  and  configuration_key = 'AFFILIATE_PAYMENT_ORDER_MIN_STATUS'  and  configuration_value = '1'  and  configuration_description = 'ユーザーに払い戻しをするために必要な最低販売件数を設定します'  and  configuration_group_id = '900'  and  sort_order = '6'  and  use_function = ''  and  set_function = ''  and  site_id = '1' 
+jp:configuration:144
+jp:select * from configuration where  configuration_title = 'checkでの支払い'  and  configuration_key = 'AFFILIATE_USE_CHECK'  and  configuration_value = 'false'  and  configuration_description = 'アフィリエイト会員に対する報酬の支払方法として「check」を有効にしますか？'  and  configuration_group_id = '900'  and  sort_order = '7'  and  use_function = ''  and  set_function = 'tep_cfg_select_option(array(\'true\', \'false\'),'  and  site_id = '1' 
+jp:configuration:145
+jp:select * from configuration where  configuration_title = 'PayPalでの支払い'  and  configuration_key = 'AFFILIATE_USE_PAYPAL'  and  configuration_value = 'false'  and  configuration_description = 'アフィリエイト会員に対する報酬の支払方法として「PayPal」を有効にしますか？'  and  configuration_group_id = '900'  and  sort_order = '8'  and  use_function = ''  and  set_function = 'tep_cfg_select_option(array(\'true\', \'false\'),'  and  site_id = '1' 
+jp:configuration:146
+jp:select * from configuration where  configuration_title = '銀行振り込みでの支払い'  and  configuration_key = 'AFFILIATE_USE_BANK'  and  configuration_value = 'true'  and  configuration_description = 'アフィリエイト会員に対する報酬の支払方法として「銀行振り込み」を有効にしますか？'  and  configuration_group_id = '900'  and  sort_order = '9'  and  use_function = ''  and  set_function = 'tep_cfg_select_option(array(\'true\', \'false\'),'  and  site_id = '1' 
+jp:configuration:147
+jp:select * from configuration where  configuration_title = '下位階層数'  and  configuration_key = 'AFFILIATE_TIER_LEVELS'  and  configuration_value = '3'  and  configuration_description = 'アフィリエイト会員が自身の下位階層のアフィリエイト会員として有効とする階層数を設定します。'  and  configuration_group_id = '900'  and  sort_order = '12'  and  use_function = ''  and  set_function = ''  and  site_id = '1' 
+jp:configuration:150
+jp:select * from configuration where  configuration_title = '下位階層の会員への還元率'  and  configuration_key = 'AFFILIATE_TIER_PERCENTAGE'  and  configuration_value = '8.00;5.00;1.00'  and  configuration_description = '下位階層のアフィリエイト会員で売上があった場合の上位アフィリエイト会員に対する還元率を設定します<br>例: 8.00;5.00;1.00'  and  configuration_group_id = '900'  and  sort_order = '13'  and  use_function = ''  and  set_function = ''  and  site_id = '1' 
+jp:configuration:151
+jp:select * from configuration where  configuration_title = 'アフィリエイトニュース最大表示数'  and  configuration_key = 'MAX_DISPLAY_AFFILIATE_NEWS'  and  configuration_value = '3'  and  configuration_description = 'アフィリエイト会員のニュースページに表示する最大記事数'  and  configuration_group_id = '900'  and  sort_order = '14'  and  use_function = ''  and  set_function = ''  and  site_id = '1' 
+jp:configuration:152
+jp:select * from configuration where  configuration_title = 'アフィリエイトプログラムの使用'  and  configuration_key = 'AFFILIATE_VALUE'  and  configuration_value = 'true'  and  configuration_description = 'アフィリエイトプログラムを使用を有効にしますか？trueにした場合、ヘッダーにリンクが表示されます。'  and  configuration_group_id = '900'  and  sort_order = '0'  and  use_function = ''  and  set_function = 'tep_cfg_select_option(array(\'true\', \'false\'),'  and  site_id = '1' 
+jp:configuration:509
+gm:select * from configuration where  configuration_title = '払い戻し還元レート'  and  configuration_key = 'AFFILIATE_PERCENT'  and  configuration_value = '5'  and  configuration_description = 'アフィリエイト会員に対する報酬の還元率を設定します'  and  configuration_group_id = '900'  and  sort_order = '2'  and  use_function = ''  and  set_function = ''  and  site_id = '2' 
+gm:configuration:140
+gm:select * from configuration where  configuration_title = '支払いしきい値'  and  configuration_key = 'AFFILIATE_THRESHOLD'  and  configuration_value = '5000'  and  configuration_description = 'アフィリエイト会員に支払うためのしきい値（最低支払額）を設定します'  and  configuration_group_id = '900'  and  sort_order = '3'  and  use_function = ''  and  set_function = ''  and  site_id = '2' 
+gm:configuration:141
+gm:select * from configuration where  configuration_title = 'クッキーの有効時間'  and  configuration_key = 'AFFILIATE_COOKIE_LIFETIME'  and  configuration_value = '7200'  and  configuration_description = 'クッキーの有効時間を設定します（秒）'  and  configuration_group_id = '900'  and  sort_order = '4'  and  use_function = ''  and  set_function = ''  and  site_id = '2' 
+gm:configuration:142
+gm:select * from configuration where  configuration_title = '報酬確定までの時間'  and  configuration_key = 'AFFILIATE_BILLING_TIME'  and  configuration_value = '30'  and  configuration_description = 'オーダーがあってからアフィリエイト会員に対して報酬の払い戻しを行うまでの最低日数を設定します。'  and  configuration_group_id = '900'  and  sort_order = '5'  and  use_function = ''  and  set_function = ''  and  site_id = '2' 
+gm:configuration:143
+gm:select * from configuration where  configuration_title = '注文件数（最小）'  and  configuration_key = 'AFFILIATE_PAYMENT_ORDER_MIN_STATUS'  and  configuration_value = '1'  and  configuration_description = 'ユーザーに払い戻しをするために必要な最低販売件数を設定します'  and  configuration_group_id = '900'  and  sort_order = '6'  and  use_function = ''  and  set_function = ''  and  site_id = '2' 
+gm:configuration:144
+gm:select * from configuration where  configuration_title = 'checkでの支払い'  and  configuration_key = 'AFFILIATE_USE_CHECK'  and  configuration_value = 'false'  and  configuration_description = 'アフィリエイト会員に対する報酬の支払方法として「check」を有効にしますか？'  and  configuration_group_id = '900'  and  sort_order = '7'  and  use_function = ''  and  set_function = 'tep_cfg_select_option(array(\'true\', \'false\'),'  and  site_id = '2' 
+gm:configuration:145
+gm:select * from configuration where  configuration_title = 'PayPalでの支払い'  and  configuration_key = 'AFFILIATE_USE_PAYPAL'  and  configuration_value = 'false'  and  configuration_description = 'アフィリエイト会員に対する報酬の支払方法として「PayPal」を有効にしますか？'  and  configuration_group_id = '900'  and  sort_order = '8'  and  use_function = ''  and  set_function = 'tep_cfg_select_option(array(\'true\', \'false\'),'  and  site_id = '2' 
+gm:configuration:146
+gm:select * from configuration where  configuration_title = '銀行振り込みでの支払い'  and  configuration_key = 'AFFILIATE_USE_BANK'  and  configuration_value = 'true'  and  configuration_description = 'アフィリエイト会員に対する報酬の支払方法として「銀行振り込み」を有効にしますか？'  and  configuration_group_id = '900'  and  sort_order = '9'  and  use_function = ''  and  set_function = 'tep_cfg_select_option(array(\'true\', \'false\'),'  and  site_id = '2' 
+gm:configuration:147
+gm:select * from configuration where  configuration_title = '下位階層数'  and  configuration_key = 'AFFILIATE_TIER_LEVELS'  and  configuration_value = '3'  and  configuration_description = 'アフィリエイト会員が自身の下位階層のアフィリエイト会員として有効とする階層数を設定します。'  and  configuration_group_id = '900'  and  sort_order = '12'  and  use_function = ''  and  set_function = ''  and  site_id = '2' 
+gm:configuration:150
+gm:select * from configuration where  configuration_title = '下位階層の会員への還元率'  and  configuration_key = 'AFFILIATE_TIER_PERCENTAGE'  and  configuration_value = '8.00;5.00;1.00'  and  configuration_description = '下位階層のアフィリエイト会員で売上があった場合の上位アフィリエイト会員に対する還元率を設定します<br>例: 8.00;5.00;1.00'  and  configuration_group_id = '900'  and  sort_order = '13'  and  use_function = ''  and  set_function = ''  and  site_id = '2' 
+gm:configuration:151
+gm:select * from configuration where  configuration_title = 'アフィリエイトニュース最大表示数'  and  configuration_key = 'MAX_DISPLAY_AFFILIATE_NEWS'  and  configuration_value = '3'  and  configuration_description = 'アフィリエイト会員のニュースページに表示する最大記事数'  and  configuration_group_id = '900'  and  sort_order = '14'  and  use_function = ''  and  set_function = ''  and  site_id = '2' 
+gm:configuration:152
+gm:select * from configuration where  configuration_title = 'アフィリエイトプログラムの使用'  and  configuration_key = 'AFFILIATE_VALUE'  and  configuration_value = 'false'  and  configuration_description = 'アフィリエイトプログラムを使用を有効にしますか？trueにした場合、ヘッダーにリンクが表示されます。'  and  configuration_group_id = '900'  and  sort_order = '0'  and  use_function = ''  and  set_function = 'tep_cfg_select_option(array(\'true\', \'false\'),'  and  site_id = '2' 
+gm:configuration:509
+wm:select * from configuration where  configuration_title = '払い戻し還元レート'  and  configuration_key = 'AFFILIATE_PERCENT'  and  configuration_value = '5'  and  configuration_description = 'アフィリエイト会員に対する報酬の還元率を設定します'  and  configuration_group_id = '900'  and  sort_order = '2'  and  use_function = ''  and  set_function = ''  and  site_id = '3' 
+wm:configuration:140
+wm:select * from configuration where  configuration_title = '支払いしきい値'  and  configuration_key = 'AFFILIATE_THRESHOLD'  and  configuration_value = '5000'  and  configuration_description = 'アフィリエイト会員に支払うためのしきい値（最低支払額）を設定します'  and  configuration_group_id = '900'  and  sort_order = '3'  and  use_function = ''  and  set_function = ''  and  site_id = '3' 
+wm:configuration:141
+wm:select * from configuration where  configuration_title = 'クッキーの有効時間'  and  configuration_key = 'AFFILIATE_COOKIE_LIFETIME'  and  configuration_value = '7200'  and  configuration_description = 'クッキーの有効時間を設定します（秒）'  and  configuration_group_id = '900'  and  sort_order = '4'  and  use_function = ''  and  set_function = ''  and  site_id = '3' 
+wm:configuration:142
+wm:select * from configuration where  configuration_title = '報酬確定までの時間'  and  configuration_key = 'AFFILIATE_BILLING_TIME'  and  configuration_value = '30'  and  configuration_description = 'オーダーがあってからアフィリエイト会員に対して報酬の払い戻しを行うまでの最低日数を設定します。'  and  configuration_group_id = '900'  and  sort_order = '5'  and  use_function = ''  and  set_function = ''  and  site_id = '3' 
+wm:configuration:143
+wm:select * from configuration where  configuration_title = '注文件数（最小）'  and  configuration_key = 'AFFILIATE_PAYMENT_ORDER_MIN_STATUS'  and  configuration_value = '1'  and  configuration_description = 'ユーザーに払い戻しをするために必要な最低販売件数を設定します'  and  configuration_group_id = '900'  and  sort_order = '6'  and  use_function = ''  and  set_function = ''  and  site_id = '3' 
+wm:configuration:144
+wm:select * from configuration where  configuration_title = 'checkでの支払い'  and  configuration_key = 'AFFILIATE_USE_CHECK'  and  configuration_value = 'false'  and  configuration_description = 'アフィリエイト会員に対する報酬の支払方法として「check」を有効にしますか？'  and  configuration_group_id = '900'  and  sort_order = '7'  and  use_function = ''  and  set_function = 'tep_cfg_select_option(array(\'true\', \'false\'),'  and  site_id = '3' 
+wm:configuration:145
+wm:select * from configuration where  configuration_title = 'PayPalでの支払い'  and  configuration_key = 'AFFILIATE_USE_PAYPAL'  and  configuration_value = 'false'  and  configuration_description = 'アフィリエイト会員に対する報酬の支払方法として「PayPal」を有効にしますか？'  and  configuration_group_id = '900'  and  sort_order = '8'  and  use_function = ''  and  set_function = 'tep_cfg_select_option(array(\'true\', \'false\'),'  and  site_id = '3' 
+wm:configuration:146
+wm:select * from configuration where  configuration_title = '銀行振り込みでの支払い'  and  configuration_key = 'AFFILIATE_USE_BANK'  and  configuration_value = 'true'  and  configuration_description = 'アフィリエイト会員に対する報酬の支払方法として「銀行振り込み」を有効にしますか？'  and  configuration_group_id = '900'  and  sort_order = '9'  and  use_function = ''  and  set_function = 'tep_cfg_select_option(array(\'true\', \'false\'),'  and  site_id = '3' 
+wm:configuration:147
+wm:select * from configuration where  configuration_title = '下位階層数'  and  configuration_key = 'AFFILIATE_TIER_LEVELS'  and  configuration_value = '3'  and  configuration_description = 'アフィリエイト会員が自身の下位階層のアフィリエイト会員として有効とする階層数を設定します。'  and  configuration_group_id = '900'  and  sort_order = '12'  and  use_function = ''  and  set_function = ''  and  site_id = '3' 
+wm:configuration:150
+wm:select * from configuration where  configuration_title = '下位階層の会員への還元率'  and  configuration_key = 'AFFILIATE_TIER_PERCENTAGE'  and  configuration_value = '8.00;5.00;1.00'  and  configuration_description = '下位階層のアフィリエイト会員で売上があった場合の上位アフィリエイト会員に対する還元率を設定します<br>例: 8.00;5.00;1.00'  and  configuration_group_id = '900'  and  sort_order = '13'  and  use_function = ''  and  set_function = ''  and  site_id = '3' 
+wm:configuration:151
+wm:select * from configuration where  configuration_title = 'アフィリエイトニュース最大表示数'  and  configuration_key = 'MAX_DISPLAY_AFFILIATE_NEWS'  and  configuration_value = '3'  and  configuration_description = 'アフィリエイト会員のニュースページに表示する最大記事数'  and  configuration_group_id = '900'  and  sort_order = '14'  and  use_function = ''  and  set_function = ''  and  site_id = '3' 
+wm:configuration:152
+wm:select * from configuration where  configuration_title = 'アフィリエイトプログラムの使用'  and  configuration_key = 'AFFILIATE_VALUE'  and  configuration_value = 'false'  and  configuration_description = 'アフィリエイトプログラムを使用を有効にしますか？trueにした場合、ヘッダーにリンクが表示されます。'  and  configuration_group_id = '900'  and  sort_order = '0'  and  use_function = ''  and  set_function = 'tep_cfg_select_option(array(\'true\', \'false\'),'  and  site_id = '3' 
+wm:configuration:509
+configuration 
+configuration_group 
+jp:select * from contents where  contents_title = 'タイトルタグ'  and  type = '0'  and  description = 'ブラウザに表示されるタイトルタグを設定します。'  and  default_contents = 'オンラインショップ○○'  and  fixed_contents = ''  and  site_id = '1' 
+jp:contents:1
+gm:select * from contents where  contents_title = 'タイトルタグ'  and  type = '0'  and  description = 'ブラウザに表示されるタイトルタグを設定します。'  and  default_contents = 'オンラインショップ○○'  and  fixed_contents = ''  and  site_id = '2' 
+gm:contents:1
+wm:select * from contents where  contents_title = 'タイトルタグ'  and  type = '0'  and  description = 'ブラウザに表示されるタイトルタグを設定します。'  and  default_contents = 'オンラインショップ○○'  and  fixed_contents = ''  and  site_id = '3' 
+wm:contents:1
+contents 
+countries 
+currencies 
+geo_zones 
+image_document_types 
+information_page 
+languages 
+jp:select * from latest_news where  headline = 'テイルズウィーバー RMT…ネニャフルの魔法師の石販売予約'  and  content = 'gan************@docomo.ne.jp（ * は伏せ字です）のお客様\r\nメールアドレスが間違っております。 \r\n\r\n該当のお客様はお手数ではございますが<script>decrypt_and_echo(0)</script><noscript><a href=\"contact_us.php\">サポートセンター</a></noscript>へご連絡をお願いいたします。'  and  status = '1'  and  news_image = ''  and  news_image_description = ''  and  isfirst = '0'  and  site_id = '1' 
+jp:latest_news:98
+jp:select * from latest_news where  headline = 'テイルズウィーバー RMT…ネニャフルの魔法師の石販売予約'  and  content = 'gan************@docomo.ne.jp（ * は伏せ字です）のお客様\r\nメールアドレスが間違っております。 \r\n\r\n該当のお客様はお手数ではございますが<script>decrypt_and_echo(0)</script><noscript><a href=\"contact_us.php\">サポートセンター</a></noscript>へご連絡をお願いいたします。'  and  status = '1'  and  news_image = ''  and  news_image_description = ''  and  isfirst = '0'  and  site_id = '1' 
+jp:latest_news:106
+jp:select * from latest_news where  headline = 'テイルズウィーバー RMT…ネニャフルの魔法師の石販売予約'  and  content = 'gan************@docomo.ne.jp（ * は伏せ字です）のお客様\r\nメールアドレスが間違っております。 \r\n\r\n該当のお客様はお手数ではございますが<script>decrypt_and_echo(0)</script><noscript><a href=\"contact_us.php\">サポートセンター</a></noscript>へご連絡をお願いいたします。'  and  status = '1'  and  news_image = ''  and  news_image_description = ''  and  isfirst = '0'  and  site_id = '1' 
+jp:latest_news:107
+jp:select * from latest_news where  headline = 'RMTジャックポット【入金不明者のお知らせ】'  and  content = '2008/06/20付けで、ゆうちょ銀行へお振り込みされたM.T様\r\nご注文の確認ができておりません。\r\n\r\n心当たりのある方はお手数ではございますが<script>decrypt_and_echo(0)</script><noscript><a href=\"contact_us.php\">サポートセンター</a></noscript>へご連絡をお願いいたします。\r\n\r\n<font color=\"red\">お申込時に入力したお名前と「振込人名義」、「カード名義人」が一致しない場合は、商品をお届けする事ができません。</font>'  and  status = '1'  and  news_image = ''  and  news_image_description = ''  and  isfirst = '0'  and  site_id = '1' 
+jp:latest_news:131
+jp:select * from latest_news where  headline = 'RMTジャックポット【入金不明者のお知らせ】'  and  content = '2008/06/20付けで、ゆうちょ銀行へお振り込みされたM.T様\r\nご注文の確認ができておりません。\r\n\r\n心当たりのある方はお手数ではございますが<script>decrypt_and_echo(0)</script><noscript><a href=\"contact_us.php\">サポートセンター</a></noscript>へご連絡をお願いいたします。\r\n\r\n<font color=\"red\">お申込時に入力したお名前と「振込人名義」、「カード名義人」が一致しない場合は、商品をお届けする事ができません。</font>'  and  status = '1'  and  news_image = ''  and  news_image_description = ''  and  isfirst = '0'  and  site_id = '1' 
+jp:latest_news:148
+gm:select * from latest_news where  headline = 'ATLANTICA RMT…タレイアのG販売のお客様'  and  content = 'kak***@yahoo.co.jp（ * は伏せ字です）のお客様\r\nメールアドレスが間違っております。 \r\n\r\n該当のお客様はお手数ではございますが<script>decrypt_and_echo(0)</script><noscript><a href=\"contact_us.php\">サポートセンター</a></noscript>へご連絡をお願いいたします。'  and  status = '1'  and  news_image = ''  and  news_image_description = ''  and  isfirst = '0'  and  site_id = '2' 
+gm:latest_news:183
+gm:select * from latest_news where  headline = 'ATLANTICA RMT…タレイアのG販売のお客様'  and  content = 'kak***@yahoo.co.jp（ * は伏せ字です）のお客様\r\nメールアドレスが間違っております。 \r\n\r\n該当のお客様はお手数ではございますが<script>decrypt_and_echo(0)</script><noscript><a href=\"contact_us.php\">サポートセンター</a></noscript>へご連絡をお願いいたします。'  and  status = '1'  and  news_image = ''  and  news_image_description = ''  and  isfirst = '0'  and  site_id = '2' 
+gm:latest_news:185
+gm:select * from latest_news where  headline = 'RMTゲームマネー【入金不明者のお知らせ】'  and  content = '2009/8/10付けでゆうちょ銀行へお振り込みされたY.S様\r\nご注文の確認ができておりません。\r\n\r\n心当たりのある方はお手数ではございますが<script>decrypt_and_echo(0)</script><noscript><a href=\"contact_us.php\">サポートセンター</a></noscript>へご連絡をお願いいたします。\r\n\r\n<font color=\"red\">お申込時に入力したお名前と「振込人名義」、「カード名義人」が一致しない場合は、商品をお届けする事ができません。</font>'  and  status = '1'  and  news_image = ''  and  news_image_description = ''  and  isfirst = '0'  and  site_id = '2' 
+gm:latest_news:229
+gm:select * from latest_news where  headline = 'RMTゲームマネー【入金不明者のお知らせ】'  and  content = '2009/8/10付けでゆうちょ銀行へお振り込みされたY.S様\r\nご注文の確認ができておりません。\r\n\r\n心当たりのある方はお手数ではございますが<script>decrypt_and_echo(0)</script><noscript><a href=\"contact_us.php\">サポートセンター</a></noscript>へご連絡をお願いいたします。\r\n\r\n<font color=\"red\">お申込時に入力したお名前と「振込人名義」、「カード名義人」が一致しない場合は、商品をお届けする事ができません。</font>'  and  status = '1'  and  news_image = ''  and  news_image_description = ''  and  isfirst = '0'  and  site_id = '2' 
+gm:latest_news:256
+gm:select * from latest_news where  headline = 'sdf'  and  content = 'dsfds'  and  status = '1'  and  news_image = ''  and  news_image_description = ''  and  isfirst = '0'  and  site_id = '2' 
+gm:latest_news:266
+gm:select * from latest_news where  headline = 'sdf'  and  content = 'dsfds'  and  status = '1'  and  news_image = ''  and  news_image_description = ''  and  isfirst = '0'  and  site_id = '2' 
+gm:latest_news:270
+latest_news 
+login 
+mail_magazine 
+manufacturers 
+manufacturers_info 
+newsletters 
+orders_status 
+permissions 
+present_goods 
+products -> products diff fields : products_image_med,products_image_pop,products_image_description
+products 
+products_attributes 
+products_attributes_download 
+products_options 
+products_options_values 
+products_options_values_to_products_options 
+products_to_categories 
+products_to_tags 
+
+      select * from reviews r,reviews_description rd
+      where r.reviews_id=rd.reviews_id
+        and r.products_id='31782'
+        and r.customers_id='0'
+        and r.customers_name='忽\\0\\0脂'
+        and r.reviews_rating='1'
+        and r.date_added='2008-07-03 03:54:04'
+        and r.reviews_read='0'
+        and r.reviews_status='0'
+        and rd.languages_id='4'
+        and rd.reviews_text='晩云繁とロシア繁が\0脂する\0呂了蚋H\0脂\0きロシア繁と\0脂<a href=http://www.baikal.co.jp></a>する\0蓮■欧弔侶酬┐?△蠅泙后Ｈ娜召濃蚋譴鯡甞掘▲蹈轡△\0?賠h\0C\0?ザックス?にて\0脂鞠\0する圭隈。ロシアの叨侭忽\0\0脂で返\0きを佩い、壓ロシア晩云寄忽\0\0脂聞\0または\0並\0、または晩云の云汐仇へ\0鷂罎垢觀酬─?匹舛蕕旅H\0脂圭隈でも\0脂は撹羨します。２繁の\0壓の彜\0rに栽わせてどちらかの圭隈で佩ってください。'
+        and r.site_id='1'
+      
+
+      select * from reviews r,reviews_description rd
+      where r.reviews_id=rd.reviews_id
+        and r.products_id='31782'
+        and r.customers_id='0'
+        and r.customers_name='･ｯ･ｸ･ﾃ･ﾈ･ｫｩ`･ﾉ｡｡ｬFｽ\\0ｯ'
+        and r.reviews_rating='1'
+        and r.date_added='2008-07-03 04:56:08'
+        and r.reviews_read='0'
+        and r.reviews_status='0'
+        and rd.languages_id='4'
+        and rd.reviews_text='､｢､ﾊ､ｿ､ｬ､ｪﾊﾖｳﾖ､ﾁ､ﾎ･ｯ･ｸ･ﾃ･ﾈ･ｫｩ`･ﾉ､ﾎ<a href=http://www.money-tokyo.com>･ｯ･ｸ･ﾃ･ﾈ･ｫｩ`･ﾉ｡｡ｬFｽ\0ｯ</a>･ｷ･逾ﾃ･ﾔ･\0ｰ迄､\0\0ﾃ､ｷ･ｯ･ｸ･ﾃ･ﾈ･ｫｩ`･ﾉ｡｡ｬFｽ\0ｯｬFｽ\0ｯ､ｹ､m?ｰｲﾐﾄ､ﾎ･ｵｩ`･ﾓ･ｹ､ﾇ､ｹ｡｣ ｵｱﾉ遉ﾎﾌﾘｶｨﾉﾌﾆｷ､\0ｯ･ｸ･ﾃ･ﾈ･ｫｩ`･ﾉ､ﾇ､ｴﾙ省ｷ､ﾆ､､､ｿ､ﾀ､ｭ｡｢ｬFｽ\0ｯ｣ｨ･ｭ･罕ﾃ･ｷ･螂ﾐ･ﾃ･ｯ｣ｩ､ｹ､ｷ･ｹ･ﾆ･爨ﾇ､ｹ｡｣､ｪﾖｧ達､､､ﾏ･ｯ･ｸ･ﾃ･ﾈ･ｫｩ`･ﾉｻ睨遉ﾘ｡｣ﾒｻﾀｨ?ｷﾖｸ??･?ﾜ達､､､ﾈ｡｢､ｴﾏ｣ﾍ\0ﾎ､ｪﾖｧ達､､ｷｽｷｨ･ｯ･ｸ･ﾃ･ﾈ･ｫｩ`･ﾉ｡｡ｬFｽ\0ｯ､\0ｪﾟx､ﾓ､､､ｿ､ﾀ､ｱ､ﾞ､ｹ｡｣､筅ﾁ､\0｢･ｯ･ｸ･ﾃ･ﾈ･ｫｩ`･ﾉ､\0ｪ､ｫ､熙ｹ､ｳ､ﾈ､茖｢･ｯ･ｸ･ﾃ･ﾈ･ｫｩ`･ﾉｷｬｺﾅ､\0ｪﾂ└ｭ､ｹ､ｳ､ﾈ､簫ｻﾇﾐ､ｴ､ｶ､､､ﾞ､ｻ､\0｣'
+        and r.site_id='1'
+      
+
+      select * from reviews r,reviews_description rd
+      where r.reviews_id=rd.reviews_id
+        and r.products_id='31782'
+        and r.customers_id='0'
+        and r.customers_name='･ｯ･ｸ･ﾃ･ﾈ･ｫｩ`･ﾉ｡｡ｬFｽ\\0ｯ'
+        and r.reviews_rating='1'
+        and r.date_added='2008-08-06 17:04:09'
+        and r.reviews_read='0'
+        and r.reviews_status='0'
+        and rd.languages_id='4'
+        and rd.reviews_text='､｢､ﾊ､ｿ､ｬ､ｪﾊﾖｳﾖ､ﾁ､ﾎ･ｯ･ｸ･ﾃ･ﾈ･ｫｩ`･ﾉ､ﾎ<a href=http://www.money-tokyo.com>･ｯ･ｸ･ﾃ･ﾈ･ｫｩ`･ﾉ｡｡ｬFｽ\0ｯ</a>･ｷ･逾ﾃ･ﾔ･\0ｰ迄､\0ｯ･ｸ･ﾃ･ﾈ･ｫｩ`･ﾉ｡｡ｬFｽ\0ｯﾀ\0ﾃ､ｷ･ｯ･ｸ･ﾃ･ﾈ･ｫｩ`･ﾉ｡｡ｬFｽ\0ｯ､ｹ､m?ｰｲﾐﾄ､ﾎ･ｵｩ`･ﾓ･ｹ､ﾇ､ｹ｡｣ｵｱﾉ遉ﾎﾌﾘｶｨﾉﾌﾆｷ､\0ｯ･ｸ･ﾃ･ﾈ･ｫｩ`･ﾉ､ﾇ､ｴﾙ省ｷ､ﾆ､､､ｿ､ﾀ､ｭ｡｢ｬFｽ\0ｯ｣ｨ･ｭ･罕ﾃ･ｷ･螂ﾐ･ﾃ･ｯ｣ｩ､ｹ､ｷ･ｹ･ﾆ･爨ﾇ､ｹ｡｣'
+        and r.site_id='1'
+      
+
+      select * from reviews r,reviews_description rd
+      where r.reviews_id=rd.reviews_id
+        and r.products_id='31782'
+        and r.customers_id='0'
+        and r.customers_name='･ｯ･ｸ･ﾃ･ﾈ･ｫｩ`･ﾉ｡｡ｬFｽ\\0ｯ'
+        and r.reviews_rating='1'
+        and r.date_added='2008-08-09 17:41:30'
+        and r.reviews_read='0'
+        and r.reviews_status='0'
+        and rd.languages_id='4'
+        and rd.reviews_text='､｢､ﾊ､ｿ､ｬ､ｪﾊﾖｳﾖ､ﾁ､ﾎ･ｯ･ｸ･ﾃ･ﾈ･ｫｩ`･ﾉ､ﾎ<a href=http://www.money-tokyo.com>･ｯ･ｸ･ﾃ･ﾈ･ｫｩ`･ﾉ｡｡ｬFｽ\0ｯ</a>･ｷ･逾ﾃ･ﾔ･\0ｰ迄､\0ｯ･ｸ･ﾃ･ﾈ･ｫｩ`･ﾉ｡｡ｬFｽ\0ｯﾀ\0ﾃ､ｷ･ｯ･ｸ･ﾃ･ﾈ･ｫｩ`･ﾉ｡｡ｬFｽ\0ｯ､ｹ､m?ｰｲﾐﾄ､ﾎ･ｵｩ`･ﾓ･ｹ､ﾇ､ｹ｡｣ｵｱﾉ遉ﾎﾌﾘｶｨﾉﾌﾆｷ､\0ｯ･ｸ･ﾃ･ﾈ･ｫｩ`･ﾉ､ﾇ､ｴﾙ省ｷ､ﾆ､､､ｿ､ﾀ､ｭ｡｢ｬFｽ\0ｯ｣ｨ･ｭ･罕ﾃ･ｷ･螂ﾐ･ﾃ･ｯ｣ｩ､ｹ､ｷ･ｹ･ﾆ･爨ﾇ､ｹ｡｣'
+        and r.site_id='1'
+      
+specials 
+tags 
+tax_class 
+tax_rates 
+users 
+zones 
+zones_to_geo_zones 
+jp:customers:1 present_applicant id:1 not found in 3rmt
+select * from present_applicant
+        where customer_id='1'
+          and family_name='金子'
+          and first_name='ケイスケ'
+          and mail='kaneko@ds-style.com'
+          and postcode='3440046'
+          and prefectures=''
+          and cities='春日部市'
+          and address1='上蛭田119-3'
+          and address2='新井ビル2F'
+          and phone='0487532587'
+          and tourokubi='2005/06/28 15:35:13'
+      
+jp:customers:1 present_applicant id:6 not found in 3rmt
+select * from present_applicant
+        where customer_id='1'
+          and family_name='金子'
+          and first_name='ケイスケ'
+          and mail='kaneko@ds-style.com'
+          and postcode='3440046'
+          and prefectures=''
+          and cities='春日部市'
+          and address1='上蛭田119-3'
+          and address2='新井ビル2F'
+          and phone='0487532587'
+          and tourokubi='2005/06/29 10:48:01'
+      
+jp:customers:1 present_applicant id:7 not found in 3rmt
+select * from present_applicant
+        where customer_id='1'
+          and family_name='金子'
+          and first_name='ケイスケ'
+          and mail='kaneko@ds-style.com'
+          and postcode='3440046'
+          and prefectures=''
+          and cities='春日部市'
+          and address1='上蛭田119-3'
+          and address2='新井ビル2F'
+          and phone='0487532587'
+          and tourokubi='2005/06/29 10:49:09'
+      
+jp:customers:2 present_applicant id:5 not found in 3rmt
+select * from present_applicant
+        where customer_id='2'
+          and family_name='板橋'
+          and first_name='憲生'
+          and mail='itabashi@ds-style.com'
+          and postcode='3440046'
+          and prefectures=''
+          and cities='春日部市'
+          and address1='上蛭田'
+          and address2='119-3'
+          and phone='048-753-2587'
+          and tourokubi='2005/06/28 20:27:15'
+      
+jp:customers:2 present_applicant id:8 not found in 3rmt
+select * from present_applicant
+        where customer_id='2'
+          and family_name='板橋'
+          and first_name='憲生'
+          and mail='itabashi@ds-style.com'
+          and postcode='3440046'
+          and prefectures=''
+          and cities='春日部市'
+          and address1='上蛭田'
+          and address2='119-3'
+          and phone='048-753-2587'
+          and tourokubi='2005/06/29 18:22:12'
+      
+jp:customers:2 present_applicant id:9 not found in 3rmt
+select * from present_applicant
+        where customer_id='2'
+          and family_name='板橋'
+          and first_name='憲生'
+          and mail='itabashi@ds-style.com'
+          and postcode='3440046'
+          and prefectures=''
+          and cities='春日部市'
+          and address1='上蛭田'
+          and address2='119-3'
+          and phone='048-753-2587'
+          and tourokubi='2005/07/01 20:13:43'
+      
+jp:customers:2 present_applicant id:10 not found in 3rmt
+select * from present_applicant
+        where customer_id='2'
+          and family_name='山田'
+          and first_name='太郎'
+          and mail='info@ds-style.com'
+          and postcode='1111111'
+          and prefectures=''
+          and cities='新宿区'
+          and address1='○○町'
+          and address2='123456'
+          and phone='03-1234-5678'
+          and tourokubi='2005/07/23 19:42:19'
+      
+jp:customers:2 present_applicant id:11 not found in 3rmt
+select * from present_applicant
+        where customer_id='2'
+          and family_name='山田'
+          and first_name='太郎'
+          and mail='nitabashi@yahoo.co.jp'
+          and postcode='1111111'
+          and prefectures=''
+          and cities='新宿区'
+          and address1='○○町'
+          and address2='123456'
+          and phone='03-1234-5678'
+          and tourokubi='2005/08/08 16:44:53'
+      
+jp:customers:3 present_applicant id:100 not found in 3rmt
+select * from present_applicant
+        where customer_id='3'
+          and family_name='haomai'
+          and first_name='test'
+          and mail='alexjpoffice@gmail.com'
+          and postcode='test'
+          and prefectures=''
+          and cities='test'
+          and address1='test'
+          and address2='test'
+          and phone='8754564654'
+          and tourokubi='2009/09/11 10:46:36'
+      
+jp:customers:3 present_applicant id:103 not found in 3rmt
+select * from present_applicant
+        where customer_id='3'
+          and family_name='haomai'
+          and first_name='test'
+          and mail='alexjpoffice@gmail.com'
+          and postcode=''
+          and prefectures=''
+          and cities=''
+          and address1=''
+          and address2=''
+          and phone=''
+          and tourokubi='2009/11/04 10:32:53'
+      
+jp:customers:8 present_applicant id:101 not found in 3rmt
+select * from present_applicant
+        where customer_id='8'
+          and family_name='haomai'
+          and first_name='test'
+          and mail='haomaitest@126.com'
+          and postcode=''
+          and prefectures=''
+          and cities=''
+          and address1=''
+          and address2=''
+          and phone=''
+          and tourokubi='2009/09/14 19:33:36'
+      
+jp:customers:16 present_applicant id:12 not found in 3rmt
+select * from present_applicant
+        where customer_id='16'
+          and family_name='テスト'
+          and first_name='テスト'
+          and mail='info@perpetual-emotion.com'
+          and postcode='555-5555'
+          and prefectures=''
+          and cities='大阪市'
+          and address1='その他'
+          and address2=''
+          and phone='00-0000-0000'
+          and tourokubi='2006/05/31 16:55:49'
+      
+jp:customers:16 present_applicant id:13 not found in 3rmt
+select * from present_applicant
+        where customer_id='16'
+          and family_name=''
+          and first_name=''
+          and mail=''
+          and postcode=''
+          and prefectures=''
+          and cities=''
+          and address1=''
+          and address2=''
+          and phone=''
+          and tourokubi='2006/05/31 16:56:43'
+      
+jp:customers:16 present_applicant id:14 not found in 3rmt
+select * from present_applicant
+        where customer_id='16'
+          and family_name=''
+          and first_name=''
+          and mail=''
+          and postcode=''
+          and prefectures=''
+          and cities=''
+          and address1=''
+          and address2=''
+          and phone=''
+          and tourokubi='2006/05/31 16:57:41'
+      
+jp:customers:16 present_applicant id:104 not found in 3rmt
+select * from present_applicant
+        where customer_id='16'
+          and family_name='haomai'
+          and first_name='test'
+          and mail='haomai1@123.com'
+          and postcode=''
+          and prefectures=''
+          and cities=''
+          and address1=''
+          and address2=''
+          and phone=''
+          and tourokubi='2009/11/04 13:40:58'
+      
+jp:customers:16 present_applicant id:107 not found in 3rmt
+select * from present_applicant
+        where customer_id='16'
+          and family_name='haomai'
+          and first_name='test'
+          and mail='haomai1@123.com'
+          and postcode=''
+          and prefectures=''
+          and cities=''
+          and address1=''
+          and address2=''
+          and phone=''
+          and tourokubi='2009/12/25 13:33:29'
+      
+jp:customers:16 present_applicant id:108 not found in 3rmt
+select * from present_applicant
+        where customer_id='16'
+          and family_name='haomai'
+          and first_name='test'
+          and mail='haomai1@123.com'
+          and postcode='56566'
+          and prefectures=''
+          and cities='fdd'
+          and address1='rew'
+          and address2=''
+          and phone='124'
+          and tourokubi='2009/12/25 13:37:34'
+      
+jp:customers:17 present_applicant id:105 not found in 3rmt
+select * from present_applicant
+        where customer_id='17'
+          and family_name='haomai'
+          and first_name='alfja'
+          and mail='junjie911@21cn.com'
+          and postcode=''
+          and prefectures=''
+          and cities=''
+          and address1=''
+          and address2=''
+          and phone=''
+          and tourokubi='2009/11/19 16:08:34'
+      
+jp:customers:17 present_applicant id:114 not found in 3rmt
+select * from present_applicant
+        where customer_id='17'
+          and family_name='haomai'
+          and first_name='alfja'
+          and mail='junjie911@21cn.com'
+          and postcode='fafafaf'
+          and prefectures=''
+          and cities='afafa'
+          and address1='fafafa'
+          and address2='fafaffafafa'
+          and phone='fafaf12313'
+          and tourokubi='2010/02/25 09:30:49'
+      
+jp:customers:18 present_applicant id:15 not found in 3rmt
+select * from present_applicant
+        where customer_id='18'
+          and family_name=''
+          and first_name=''
+          and mail=''
+          and postcode=''
+          and prefectures=''
+          and cities=''
+          and address1=''
+          and address2=''
+          and phone=''
+          and tourokubi='2006/06/10 11:05:56'
+      
+jp:customers:19 present_applicant id:106 not found in 3rmt
+select * from present_applicant
+        where customer_id='19'
+          and family_name='sdfds'
+          and first_name='dsfds'
+          and mail='testuser@gmail.com'
+          and postcode='1236'
+          and prefectures=''
+          and cities='fdfds'
+          and address1='sddf'
+          and address2=''
+          and phone='1236'
+          and tourokubi='2009/12/16 16:42:38'
+      
+jp:customers:19 present_applicant id:110 not found in 3rmt
+select * from present_applicant
+        where customer_id='19'
+          and family_name='sdfds'
+          and first_name='dsfds'
+          and mail='testuser@gmail.com'
+          and postcode=''
+          and prefectures=''
+          and cities=''
+          and address1=''
+          and address2=''
+          and phone=''
+          and tourokubi='2010/01/22 10:32:25'
+      
+jp:customers:19 present_applicant id:111 not found in 3rmt
+select * from present_applicant
+        where customer_id='19'
+          and family_name='sdfds'
+          and first_name='dsfds'
+          and mail='testuser@gmail.com'
+          and postcode='13254654'
+          and prefectures=''
+          and cities='85461313'
+          and address1='313'
+          and address2='131'
+          and phone='31'
+          and tourokubi='2010/01/22 15:39:27'
+      
+jp:customers:19 present_applicant id:113 not found in 3rmt
+select * from present_applicant
+        where customer_id='19'
+          and family_name='sdfds'
+          and first_name='dsfds'
+          and mail='testuser@gmail.com'
+          and postcode=''
+          and prefectures=''
+          and cities=''
+          and address1=''
+          and address2=''
+          and phone=''
+          and tourokubi='2010/02/22 10:54:12'
+      
+jp:customers:27 present_applicant id:109 not found in 3rmt
+select * from present_applicant
+        where customer_id='28'
+          and family_name='haomai'
+          and first_name='tets'
+          and mail='hhtt@123.com'
+          and postcode=''
+          and prefectures=''
+          and cities=''
+          and address1=''
+          and address2=''
+          and phone=''
+          and tourokubi='2009/12/30 16:09:24'
+      
+jp:customers:40 present_applicant id:16 not found in 3rmt
+select * from present_applicant
+        where customer_id='40'
+          and family_name='test'
+          and first_name='accpou'
+          and mail='kaneko@ds-style.com'
+          and postcode='1231321'
+          and prefectures=''
+          and cities='132132132'
+          and address1='1321321'
+          and address2='321321321'
+          and phone='321321'
+          and tourokubi='2006/11/15 19:13:33'
+      
+jp:customers:40 present_applicant id:17 not found in 3rmt
+select * from present_applicant
+        where customer_id='40'
+          and family_name='test'
+          and first_name='accpou'
+          and mail='kaneko@ds-style.com'
+          and postcode='1231321'
+          and prefectures=''
+          and cities='132132132'
+          and address1='1321321'
+          and address2='321321321'
+          and phone='321321'
+          and tourokubi='2006/11/15 19:15:27'
+      
+jp:customers:40 present_applicant id:18 not found in 3rmt
+select * from present_applicant
+        where customer_id='40'
+          and family_name='test'
+          and first_name='accpou'
+          and mail='kaneko@ds-style.com'
+          and postcode='1231321'
+          and prefectures=''
+          and cities='132132132'
+          and address1='1321321'
+          and address2='321321321'
+          and phone='321321'
+          and tourokubi='2006/11/15 19:17:47'
+      
+jp:customers:40 present_applicant id:19 not found in 3rmt
+select * from present_applicant
+        where customer_id='40'
+          and family_name='test'
+          and first_name='accpou'
+          and mail='kaneko@ds-style.com'
+          and postcode='1231321'
+          and prefectures=''
+          and cities='132132132'
+          and address1='1321321'
+          and address2='321321321'
+          and phone='321321'
+          and tourokubi='2006/11/15 19:18:01'
+      
+jp:customers:40 present_applicant id:20 not found in 3rmt
+select * from present_applicant
+        where customer_id='40'
+          and family_name='test'
+          and first_name='accpou'
+          and mail='kaneko@ds-style.com'
+          and postcode='1231321'
+          and prefectures=''
+          and cities='132132132'
+          and address1='1321321'
+          and address2='321321321'
+          and phone='321321'
+          and tourokubi='2006/11/15 19:18:06'
+      
+jp:customers:40 present_applicant id:21 not found in 3rmt
+select * from present_applicant
+        where customer_id='40'
+          and family_name='test'
+          and first_name='accpou'
+          and mail='kaneko@ds-style.com'
+          and postcode='1231321'
+          and prefectures=''
+          and cities='132132132'
+          and address1='1321321'
+          and address2='321321321'
+          and phone='321321'
+          and tourokubi='2006/11/15 19:18:38'
+      
+gm:customers:1 present_applicant id:1 not found in 3rmt
+select * from present_applicant
+        where customer_id='46'
+          and family_name='金子'
+          and first_name='ケイスケ'
+          and mail='kaneko@ds-style.com'
+          and postcode='3440046'
+          and prefectures=''
+          and cities='春日部市'
+          and address1='上蛭田119-3'
+          and address2='新井ビル2F'
+          and phone='0487532587'
+          and tourokubi='2005/06/28 15:35:13'
+      
+gm:customers:1 present_applicant id:6 not found in 3rmt
+select * from present_applicant
+        where customer_id='46'
+          and family_name='金子'
+          and first_name='ケイスケ'
+          and mail='kaneko@ds-style.com'
+          and postcode='3440046'
+          and prefectures=''
+          and cities='春日部市'
+          and address1='上蛭田119-3'
+          and address2='新井ビル2F'
+          and phone='0487532587'
+          and tourokubi='2005/06/29 10:48:01'
+      
+gm:customers:1 present_applicant id:7 not found in 3rmt
+select * from present_applicant
+        where customer_id='46'
+          and family_name='金子'
+          and first_name='ケイスケ'
+          and mail='kaneko@ds-style.com'
+          and postcode='3440046'
+          and prefectures=''
+          and cities='春日部市'
+          and address1='上蛭田119-3'
+          and address2='新井ビル2F'
+          and phone='0487532587'
+          and tourokubi='2005/06/29 10:49:09'
+      
+gm:customers:2 present_applicant id:5 not found in 3rmt
+select * from present_applicant
+        where customer_id='47'
+          and family_name='板橋'
+          and first_name='憲生'
+          and mail='itabashi@ds-style.com'
+          and postcode='3440046'
+          and prefectures=''
+          and cities='春日部市'
+          and address1='上蛭田'
+          and address2='119-3'
+          and phone='048-753-2587'
+          and tourokubi='2005/06/28 20:27:15'
+      
+gm:customers:2 present_applicant id:8 not found in 3rmt
+select * from present_applicant
+        where customer_id='47'
+          and family_name='板橋'
+          and first_name='憲生'
+          and mail='itabashi@ds-style.com'
+          and postcode='3440046'
+          and prefectures=''
+          and cities='春日部市'
+          and address1='上蛭田'
+          and address2='119-3'
+          and phone='048-753-2587'
+          and tourokubi='2005/06/29 18:22:12'
+      
+gm:customers:2 present_applicant id:9 not found in 3rmt
+select * from present_applicant
+        where customer_id='47'
+          and family_name='板橋'
+          and first_name='憲生'
+          and mail='itabashi@ds-style.com'
+          and postcode='3440046'
+          and prefectures=''
+          and cities='春日部市'
+          and address1='上蛭田'
+          and address2='119-3'
+          and phone='048-753-2587'
+          and tourokubi='2005/07/01 20:13:43'
+      
+gm:customers:2 present_applicant id:10 not found in 3rmt
+select * from present_applicant
+        where customer_id='47'
+          and family_name='山田'
+          and first_name='太郎'
+          and mail='info@ds-style.com'
+          and postcode='1111111'
+          and prefectures=''
+          and cities='新宿区'
+          and address1='○○町'
+          and address2='123456'
+          and phone='03-1234-5678'
+          and tourokubi='2005/07/23 19:42:19'
+      
+gm:customers:2 present_applicant id:11 not found in 3rmt
+select * from present_applicant
+        where customer_id='47'
+          and family_name='山田'
+          and first_name='太郎'
+          and mail='nitabashi@yahoo.co.jp'
+          and postcode='1111111'
+          and prefectures=''
+          and cities='新宿区'
+          and address1='○○町'
+          and address2='123456'
+          and phone='03-1234-5678'
+          and tourokubi='2005/08/08 16:44:53'
+      
+gm:customers:16 present_applicant id:12 not found in 3rmt
+select * from present_applicant
+        where customer_id='61'
+          and family_name='テスト'
+          and first_name='テスト'
+          and mail='info@perpetual-emotion.com'
+          and postcode='555-5555'
+          and prefectures=''
+          and cities='大阪市'
+          and address1='その他'
+          and address2=''
+          and phone='00-0000-0000'
+          and tourokubi='2006/05/31 16:55:49'
+      
+gm:customers:16 present_applicant id:13 not found in 3rmt
+select * from present_applicant
+        where customer_id='61'
+          and family_name=''
+          and first_name=''
+          and mail=''
+          and postcode=''
+          and prefectures=''
+          and cities=''
+          and address1=''
+          and address2=''
+          and phone=''
+          and tourokubi='2006/05/31 16:56:43'
+      
+gm:customers:16 present_applicant id:14 not found in 3rmt
+select * from present_applicant
+        where customer_id='61'
+          and family_name=''
+          and first_name=''
+          and mail=''
+          and postcode=''
+          and prefectures=''
+          and cities=''
+          and address1=''
+          and address2=''
+          and phone=''
+          and tourokubi='2006/05/31 16:57:41'
+      
+gm:customers:18 present_applicant id:15 not found in 3rmt
+select * from present_applicant
+        where customer_id='63'
+          and family_name=''
+          and first_name=''
+          and mail=''
+          and postcode=''
+          and prefectures=''
+          and cities=''
+          and address1=''
+          and address2=''
+          and phone=''
+          and tourokubi='2006/06/10 11:05:56'
+      
+wm:customers:16 present_applicant id:1 not found in 3rmt
+select * from present_applicant
+        where customer_id='81'
+          and family_name='test'
+          and first_name='user'
+          and mail='testuser@gmail.com'
+          and postcode=''
+          and prefectures=''
+          and cities=''
+          and address1=''
+          and address2=''
+          and phone=''
+          and tourokubi='2010/01/05 13:18:12'
+      
+wm:customers:16 present_applicant id:2 not found in 3rmt
+select * from present_applicant
+        where customer_id='81'
+          and family_name='test'
+          and first_name='user'
+          and mail='testuser@gmail.com'
+          and postcode=''
+          and prefectures=''
+          and cities=''
+          and address1=''
+          and address2=''
+          and phone=''
+          and tourokubi='2010/01/05 13:19:17'
+      
+wm:customers:16 present_applicant id:3 not found in 3rmt
+select * from present_applicant
+        where customer_id='81'
+          and family_name='test'
+          and first_name='user'
+          and mail='testuser@gmail.com'
+          and postcode=''
+          and prefectures=''
+          and cities=''
+          and address1=''
+          and address2=''
+          and phone=''
+          and tourokubi='2010/01/05 14:53:26'
+      
+wm:customers:16 present_applicant id:5 not found in 3rmt
+select * from present_applicant
+        where customer_id='81'
+          and family_name='test'
+          and first_name='user'
+          and mail='testuser@gmail.com'
+          and postcode=''
+          and prefectures=''
+          and cities=''
+          and address1=''
+          and address2=''
+          and phone=''
+          and tourokubi='2010/01/07 10:19:58'
+      
+wm:customers:24 present_applicant id:4 not found in 3rmt
+select * from present_applicant
+        where customer_id='87'
+          and family_name='132131'
+          and first_name='12313213'
+          and mail='313131321@fafaf.com'
+          and postcode=''
+          and prefectures=''
+          and cities=''
+          and address1=''
+          and address2=''
+          and phone=''
+          and tourokubi='2010/01/06 16:50:35'
+      
+wm:customers:26 present_applicant id:6 not found in 3rmt
+select * from present_applicant
+        where customer_id='89'
+          and family_name='afafaf'
+          and first_name='afafaf'
+          and mail='abcd@agc.com'
+          and postcode='110-1231'
+          and prefectures=''
+          and cities='af;alkfd;afj'
+          and address1='adfafdaoifdjaifd'
+          and address2=''
+          and phone='102-123-1231'
+          and tourokubi='2010/02/03 13:43:47'
+      

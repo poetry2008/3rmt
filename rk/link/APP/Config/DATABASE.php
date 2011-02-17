@@ -5,9 +5,9 @@ return array(
         'driver'        => 'mysql',
         'host'          => 'localhost',
         'port'          => '',
-        'login'         => 'jp_gamelife_jp',
-        'password'      => 'kWSoiSiE',
-        'database'      => 'jp_gamelife_jp',   
+        'login'         => 'root',
+        'password'      => '123456',
+        'database'      => 'maker_3rmt',   
 
     ),
 );
