@@ -379,7 +379,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
       </td>
   </tr>
   </table>
-                        <td><?php echo tep_image_submit('button_in_cart_news.jpg', IMAGE_BUTTON_IN_CART); ?></td>
+                        <td><?php echo tep_image_submit('button_in_cart.jpg', IMAGE_BUTTON_IN_CART); ?></td>
                       </tr>
                     </table>
         <?php echo tep_draw_hidden_field('products_id', $product_info['products_id']) ; ?>
