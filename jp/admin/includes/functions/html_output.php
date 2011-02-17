@@ -294,7 +294,7 @@ function tep_customer_list_pull_down_menu()
      $site_name = $site_res['name'];
      
      $select_str .= '<option value=\''.$svalue.'\'>'; 
-     $select_str .= $customer_res['customers_name'].'&nbsp;&nbsp;'.$site_name; 
+     $select_str .= $customer_res['customers_firstname'].'&nbsp;'.$customer_res['customers_lastname'].'&nbsp;&nbsp;'.$site_name; 
      $select_str .= '</option>'; 
    }
    $select_str .= '</select>';
