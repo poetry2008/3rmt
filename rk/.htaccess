@@ -63,8 +63,11 @@ RewriteRule ^latest_news/page(\d+).html$ latest_news.php?page=$1
 RewriteRule ^latest_news/([0-9]+)\.html$ latest_news.php?news_id=$1&%{QUERY_STRING} [QSA,L]
 
 RewriteCond %{REQUEST_FILENAME} !-f 
-RewriteRule ^images/(.*) default_images/$1 [QSA,L]
+RewriteCond %{SERVER_PORT} 443 
+RewriteRule ^images/(.*)$ /www.rmt-kames.jp/default_images/$1
 
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteRule ^images/(.*) default_images/$1 [QSA,L]
 
 # http://rmt.worldmoney.jp/game/m-18.html
 # if romaji RewriteRule ^game/m-([0-9A-Za-z_-]+).html$ index.php?manufacturers_id=$1&%{QUERY_STRING}
