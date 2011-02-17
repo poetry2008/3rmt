@@ -261,6 +261,7 @@
       $check_status_query = tep_db_query("
           select orders_id, 
                  customers_name, 
+                 customers_id,
                  customers_email_address, 
                  orders_status, 
                  date_purchased, 
