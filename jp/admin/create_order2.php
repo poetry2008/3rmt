@@ -267,35 +267,9 @@ function hidden_payment(){
         <tr>
           <td class="main"><table border="0" cellspacing="0" cellpadding="2">
               <tr>
-        <td class="main">&nbsp;支払方法:</td>
+                <td class="main">&nbsp;支払方法:</td>
                 <td class="main">&nbsp;仕入れ注文<input type="hidden" name="payment_method" value="銀行振込(買い取り)"></td>
               </tr>
-<?php
-  echo '<tr>';
-?>
-          <td colspan="2"><table border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td class="main">&nbsp;金融機関名:</td>
-            <td class="main">&nbsp;<?php echo tep_draw_input_field('bank_name', ''); ?><?php if (isset($entry_bank_name_error) && $entry_bank_name_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
-          </tr>
-          <tr>
-            <td class="main">&nbsp;支店名:</td>
-            <td class="main">&nbsp;<?php echo tep_draw_input_field('bank_shiten', ''); ?><?php if (isset($entry_bank_shiten_error) && $entry_bank_shiten_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
-          </tr>
-          <tr>
-            <td class="main">&nbsp;口座種別:</td>
-            <td class="main">&nbsp; <?php echo tep_draw_radio_field('bank_kamoku', '普通', $bank_sele_f); ?>&nbsp;普通&nbsp;&nbsp;<?php echo tep_draw_radio_field('bank_kamoku', '当座', $bank_sele_t); ?>&nbsp;当座</td>
-          </tr>
-          <tr>
-            <td class="main">&nbsp;口座番号:</td>
-            <td class="main">&nbsp;<?php echo tep_draw_input_field('bank_kouza_num', ''); ?><?php if (isset($entry_bank_kouza_num_error) && $entry_bank_kouza_num_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
-          </tr>
-          <tr>
-            <td class="main">&nbsp;口座名義:</td>
-            <td class="main">&nbsp;<?php echo tep_draw_input_field('bank_kouza_name', ''); ?><?php if (isset($entry_bank_kouza_name_error) && $entry_bank_kouza_name_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
-          </tr>
-        </table></td>
-        </tr>
             </table></td>
         </tr>
       </table>
