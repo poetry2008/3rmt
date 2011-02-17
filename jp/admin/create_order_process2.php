@@ -259,7 +259,7 @@
   //Add input string check - OK insert order data - d2006.4.14 ds-style
   } else {
   $currency_array = explode(",", $currency_text);
-  
+   
   $currency = $currency_array[0];
   $currency_value = $currency_array[1];
   $insert_id = date("Ymd") . '-' . date("His") . '00';
@@ -295,7 +295,7 @@
             'billing_country'             => $country,
             'billing_address_format_id'   => $format_id,
             'date_purchased'              => 'now()', 
-            'orders_status'               => DEFAULT_ORDERS_STATUS_ID,
+            'orders_status'               => '31',
             'currency'                    => $currency,
             'currency_value'              => $currency_value,
             'payment_method'              => $payment_method,

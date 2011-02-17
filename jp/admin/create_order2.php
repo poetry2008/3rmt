@@ -226,14 +226,24 @@ function hidden_payment(){
     $min_list[] = array('id' => $min_num,
               'text' => $min_num);
   }
-  // 支払方法のリスト作成
+  // 支払方法のリスト作成 
+  /*
   $payment_text = "銀行振込\nクレジットカード決済\n銀行振込(買い取り)\nコンビニ決済\nゆうちょ銀行（郵便局）\nその他の支払い";
   $payment_array = explode("\n", $payment_text);
   $payment_list[] = array('id' => '', 'text' => '支払方法を選択してください');
   for($i=0; $i<sizeof($payment_array); $i++) {
+    if ($payment_array[$i] == '銀行振込(買い取り)')
     $payment_list[] = array('id' => $payment_array[$i],
                 'text' => $payment_array[$i]);
   }
+
+  $payment_list = array(
+    array(
+      'id' => '0',
+      'text' => '銀行振込(買い取り)'
+    )
+  );
+  */
 
   // 口座科目の記憶
   switch(isset($bank_kamoku)?$bank_kamoku:null) {
@@ -257,54 +267,9 @@ function hidden_payment(){
         <tr>
           <td class="main"><table border="0" cellspacing="0" cellpadding="2">
               <tr>
-        <td class="main">&nbsp;支払方法:</td>
-                <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('payment_method', $payment_list, isset($payment_method)?$payment_method:'銀行振込(買い取り)', 'onchange="hidden_payment()"'); ?><?php if (isset($entry_payment_method_error ) && $entry_payment_method_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+                <td class="main">&nbsp;支払方法:</td>
+                <td class="main">&nbsp;仕入れ注文<input type="hidden" name="payment_method" value="銀行振込(買い取り)"></td>
               </tr>
-<?php
-  if ($payment_method == 'コンビニ決済') {
-    echo '<tr>';
-  } else {
-    echo '<tr id="copass1" style="display: none;">';
-  ?>
-  <td colspan="2"><br><table border="0" cellspacing="0" cellpadding="0">
-    <tr>
-      <td class="main">PCメールアドレス:</td> 
-      <td class="main">&nbsp;<?php echo tep_draw_input_field('con_email', $email_address); ?></td>
-    </tr>
-  </table>
-  </td> 
-  <?php
-  }
-  echo '</tr>';
-  if (isset($payment_method) && $payment_method == '銀行振込(買い取り)') {
-    echo '<tr>';
-  } else {
-    echo '<tr id="trpass1">';
-  }  
-?>
-          <td colspan="2"><br><table border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td class="main">&nbsp;金融機関名:</td>
-            <td class="main">&nbsp;<?php echo tep_draw_input_field('bank_name', ''); ?><?php if (isset($entry_bank_name_error) && $entry_bank_name_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
-          </tr>
-          <tr>
-            <td class="main">&nbsp;支店名:</td>
-            <td class="main">&nbsp;<?php echo tep_draw_input_field('bank_shiten', ''); ?><?php if (isset($entry_bank_shiten_error) && $entry_bank_shiten_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
-          </tr>
-          <tr>
-            <td class="main">&nbsp;口座種別:</td>
-            <td class="main">&nbsp; <?php echo tep_draw_radio_field('bank_kamoku', '普通', $bank_sele_f); ?>&nbsp;普通&nbsp;&nbsp;<?php echo tep_draw_radio_field('bank_kamoku', '当座', $bank_sele_t); ?>&nbsp;当座</td>
-          </tr>
-          <tr>
-            <td class="main">&nbsp;口座番号:</td>
-            <td class="main">&nbsp;<?php echo tep_draw_input_field('bank_kouza_num', ''); ?><?php if (isset($entry_bank_kouza_num_error) && $entry_bank_kouza_num_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
-          </tr>
-          <tr>
-            <td class="main">&nbsp;口座名義:</td>
-            <td class="main">&nbsp;<?php echo tep_draw_input_field('bank_kouza_name', ''); ?><?php if (isset($entry_bank_kouza_name_error) && $entry_bank_kouza_name_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
-          </tr>
-        </table></td>
-        </tr>
             </table></td>
         </tr>
       </table>
