@@ -265,7 +265,7 @@ UL {
 }
 .l_m_categories_tree a{
 	font-size: 11px;
-	*font-size: 9px;
+	*font-size:10px;
 	float: right;
 	display: block;
 	padding: 2px;
@@ -275,6 +275,7 @@ UL {
 	width:135px;
 	margin-top:-10px;
 	*margin-top:0;
+	*margin-left:0px;
 }
 .l_m_categories_tree3 a{
 	font-size: 11px;
