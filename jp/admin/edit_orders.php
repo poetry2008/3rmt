@@ -583,7 +583,10 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       $email .= get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $order->info['site_id']) . "\n";
       $email .= get_url_by_site_id($order->info['site_id']) . "\n";
       $email .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+      
+      if ($customer_guest['customers_guest_chk'] != 9)
       tep_mail($check_status['customers_name'], $check_status['customers_email_address'], '注文内容の変更を承りました【' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
+      
       tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), '送信済：注文内容の変更を承りました【' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
       $customer_notified = '1';
     }
@@ -1132,7 +1135,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
            '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
            '  </tr>' . "\n";
     } elseif ($TotalDetails["Class"] == "ot_point") {
-      if ($customer_guest['customers_guest_chk'] == 0) { //会員
+      https://www.gamelife.jp/wwww.haomai.cc/images/carttags/gm_img_03.gif { //会員
         $current_point = $customer_point['point'] + $TotalDetails["Price"];
         echo '  <tr>' . "\n" .
              '    <td align="left" class="' . $TotalStyle . '">このお客様は会員です。入力可能ポイントは <font color="red"><b>残り' . $customer_point['point'] . '（合計' . $current_point . '）</b></font> です。−（マイナス）符号の入力は必要ありません。必ず正数を入力するように！</td>' . 

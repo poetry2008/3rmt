@@ -3993,7 +3993,7 @@ function tep_get_cart_products($pid,$tid,$buyflag){
     and p.products_bflag = ".$buyflag."
     and p.products_id = p2t.products_id
     and p.products_id != ".$pid."
-  ";
+  "; 
   //echo $raw;
   $query = tep_db_query($raw);
   $arr = array();
@@ -4001,4 +4001,10 @@ function tep_get_cart_products($pid,$tid,$buyflag){
     $arr[] = $p['products_id'];
   }
   return $arr;
+}
+
+function tep_is_oroshi($cid){
+  $query = tep_db_query("select customers_guest_chk from ".TABLE_CUSTOMERS." where customers_id='".$cid."'");
+  $c = tep_db_fetch_array($query);
+  return $c['customers_guest_chk'] == 9;
 }

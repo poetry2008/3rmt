@@ -14,7 +14,7 @@
   $orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_ORDERS_STATUS . " where language_id = '" . $languages_id . "'");
 
   while ($orders_status = tep_db_fetch_array($orders_status_query)) {
-    if ($orders_status['orders_status_id'] != 17)
+    if ($orders_status['orders_status_id'] != 17 && $orders_status['orders_status_id'] != 31)
       $orders_statuses[] = array('id' => $orders_status['orders_status_id'],'text' => $orders_status['orders_status_name']);
     
     $all_orders_statuses[] = array('id' => $orders_status['orders_status_id'], 'text' => $orders_status['orders_status_name']);
@@ -2178,7 +2178,7 @@ if($reload == 'yes') {
           <a href="<?php echo tep_href_link('orders.php', 'cEmail=' . tep_output_string_protected($orders['customers_email_address']));?>"><?php echo tep_image(DIR_WS_ICONS . 'search.gif', '過去の注文');?></a>
 <?php if ($ocertify->npermission) {?>
           &nbsp;<a href="<?php echo tep_href_link('customers.php', 'page=1&cID=' . tep_output_string_protected($orders['customers_id']) . '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS . 'arrow_r_red.gif', '顧客情報');?></a>&nbsp;&nbsp;
-<?php }?>
+<?php }?> 
   <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
   <font color="#999">
   <?php } else { ?>
@@ -2187,9 +2187,13 @@ if($reload == 'yes') {
           <b><?php echo tep_output_string_protected($orders['customers_name']);?></b>
           <input type="hidden" id="cid_<?php echo $orders['orders_id'];?>" name="cid[]" value="<?php echo $orders['customers_id'];?>" />
   </font>
+  <?php if (tep_is_oroshi($orders['customers_id'])) { ?>
+  <?php echo tep_image(DIR_WS_ICONS . 'oroshi.gif', '卸業者');?>
+  <?php }?>
   <?php if ($orders['orders_care_flag']) { ?>
   <?php echo tep_image(DIR_WS_ICONS . 'care.gif', '取り扱い注意');?>
   <?php }?>
+
 
     </td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)">

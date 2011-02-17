@@ -436,7 +436,7 @@
     }
 
     if (isset($_POST['x']) && isset($_POST['y'])) {
-      // orders
+      // orders 
       tep_db_perform(TABLE_ORDERS, $_SESSION['create_order2']['orders']);
       orders_updated($_SESSION['create_order2']['orders']['orders_id']);
       foreach($_SESSION['create_order2']['orders_products'] as $pid => $orders_product) {
@@ -524,24 +524,24 @@
         }
       }
 
-$total_details_mail = '';
-$totals_query = tep_db_query("select * from " . TABLE_ORDERS_TOTAL . " where orders_id = '" . tep_db_input($oID) . "' order by sort_order");
-$order->totals = array();
-while ($totals = tep_db_fetch_array($totals_query)) {
-  if ($totals['class'] == "ot_point" || $totals['class'] == "ot_subtotal") {
-    if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
-      $total_details_mail .= '▼ポイント割引　　：-' . strip_tags($totals['text']) . "\n";
-    }
-  } elseif ($totals['class'] == "ot_total") {
-    if($handle_fee) {
-      $total_details_mail .= '▼手数料　　　　　：'.$currencies->format($handle_fee)."\n";
-    }
-    $total_details_mail .= '▼お支払金額　　　：' . strip_tags($totals['text']) . "\n";
-    $total_price_mail = round($totals['value']);
-  } else {
-    $total_details_mail .= '▼' . $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . strip_tags($totals['text']) . "\n";
-  }
-}
+      $total_details_mail = '';
+      $totals_query = tep_db_query("select * from " . TABLE_ORDERS_TOTAL . " where orders_id = '" . tep_db_input($oID) . "' order by sort_order");
+      $order->totals = array();
+      while ($totals = tep_db_fetch_array($totals_query)) {
+        if ($totals['class'] == "ot_point" || $totals['class'] == "ot_subtotal") {
+          if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
+            $total_details_mail .= '▼ポイント割引　　：-' . strip_tags($totals['text']) . "\n";
+          }
+        } elseif ($totals['class'] == "ot_total") {
+          if($handle_fee) {
+            $total_details_mail .= '▼手数料　　　　　：'.$currencies->format($handle_fee)."\n";
+          }
+          $total_details_mail .= '▼お支払金額　　　：' . strip_tags($totals['text']) . "\n";
+          $total_price_mail = round($totals['value']);
+        } else {
+          $total_details_mail .= '▼' . $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . strip_tags($totals['text']) . "\n";
+        }
+      }
 
 
 
@@ -619,11 +619,15 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       $email .= get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS',$order->info['site_id']) . "\n";
       $email .= get_url_by_site_id($order->info['site_id']) . "\n";
       $email .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-      tep_mail($check_status['customers_name'], $check_status['customers_email_address'], 'ご注文ありがとうございます【' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
+      if ($customer_guest['customers_guest_chk'] != 9) {
+        tep_mail($check_status['customers_name'], $check_status['customers_email_address'], 'ご注文ありがとうございます【' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
+      }
       tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), 'ご注文ありがとうございます【' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
+      
       $customer_notified = '1';
       
 // 支払方法がクレジットなら決済URLを送る
+/*
 if ($order->info['payment_method'] === 'クレジットカード決済') {
       $email_credit = '';
       $email_credit .= $order->customer['name'] . '様' . "\n\n";
@@ -647,6 +651,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
       tep_mail($check_status['customers_name'], $check_status['customers_email_address'], 'クレジットカード決済について【' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email_credit, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']), $order->info['site_id']);
       tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), '送信済：クレジットカード決済について【' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email_credit, $check_status['customers_name'], $check_status['customers_email_address'], $order->info['site_id']);
 }
+*/
 
     }
       
@@ -720,7 +725,8 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
       extract($row, EXTR_PREFIX_ALL, "p");
       
       // 特価を適用
-      $p_products_price = tep_get_final_price($p_products_price, $p_products_price_offset, $p_products_small_sum, (int)$add_product_quantity);
+      // $p_products_price = tep_get_final_price($p_products_price, $p_products_price_offset, $p_products_small_sum, (int)$add_product_quantity);
+      $p_products_price = (int)$_POST['add_product_price'];
 
       // Following functions are defined at the bottom of this file
       $CountryID = tep_get_country_id($order["delivery_country"]);
@@ -876,6 +882,17 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/general.js"></script>
+<script>
+function check_add(){
+  price = document.getElementById('add_product_price').value;
+  if(price != '' && $price != 0  && price > 0){
+    return true;
+  } else {
+    alert("単価を書いてください");
+    return false;
+  }
+}
+</script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
 <!-- header //-->
@@ -1495,9 +1512,9 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
     // Step 4: Confirm
     if($step > 3)
     {
-      echo "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
+      echo "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action' method='POST' onsubmit='return check_add()' >\n";
       echo "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 4: </b></td>";
-      echo '<td class="dataTableContent" valign="top">' . ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1">&nbsp;個&nbsp;&nbsp;&nbsp;キャラクター名:&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅"><input name="add_product_character" size="20" value=""></td>';
+      echo '<td class="dataTableContent" valign="top">' . ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1">&nbsp;個&nbsp;&nbsp;単価<input name="add_product_price" id="add_product_price" size="4" value="0">&nbsp;円&nbsp;&nbsp;キャラクター名:&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅"><input name="add_product_character" size="20" value=""></td>';
       echo "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
 
       if(IsSet($add_product_options))
