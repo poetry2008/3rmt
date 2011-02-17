@@ -124,7 +124,7 @@ UL UL UL {
  *+margin-left:0;
 }
 .l_m_category_li {
-	font-size: 11px;
+	font-size: 12px;
 	line-height: 11px;
 	color: #004080;
 	padding: 7px 0px 7px 15px;
@@ -134,7 +134,7 @@ UL UL UL {
 	background-position: bottom;
 }
 .l_m_category_li2 {
-	font-size: 11px;
+	font-size: 12px;
 	line-height: 11px;
 	color: #004080;
 	padding: 7px 0px 0px 15px;
@@ -145,7 +145,7 @@ UL UL UL {
 	font-size: 10px;
 	line-height: 10px;
 	color:#004080;
-	margin: 0;
+	margin-top: 2px;
 	padding: 0 0 0 15px;
 }
 .l_m_categories_tree img {
@@ -183,7 +183,7 @@ header
 --------------------------- */
 #title {
 	text-indent: 15px;
-	font-size: 9px;
+	font-size: 10px;
 	color: #2864B4;
 	margin: 0;
 	padding-top:1px;
@@ -282,7 +282,7 @@ notice
 	margin: 0px 10px;
 }
 .news_list {
-	font-size: 11px;
+	font-size: 12px;
 	background-image: url(../images/design/box/dot.gif);
 	background-repeat: repeat-x;
 	background-position: bottom;
