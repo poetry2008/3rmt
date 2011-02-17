@@ -14,7 +14,10 @@
   $orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_ORDERS_STATUS . " where language_id = '" . $languages_id . "'");
 
   while ($orders_status = tep_db_fetch_array($orders_status_query)) {
-    if ($orders_status['orders_status_id'] != 17 && $orders_status['orders_status_id'] != 31)
+    if (
+      $orders_status['orders_status_id'] != 17 
+      //&& $orders_status['orders_status_id'] != 31
+      )
       $orders_statuses[] = array('id' => $orders_status['orders_status_id'],'text' => $orders_status['orders_status_name']);
     
     $all_orders_statuses[] = array('id' => $orders_status['orders_status_id'], 'text' => $orders_status['orders_status_name']);

@@ -89,7 +89,7 @@
 */
     $oID = tep_db_prepare_input($_GET['oID']);
     $order = $_SESSION['create_order2']['orders'];
-    $status = '1'; // 初期値
+    //$status = '31'; // 初期値
     //$goods_check = $order_query;
     
     /*
@@ -421,8 +421,8 @@
     tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
     orders_updated(tep_db_input($oID));
     */
-    $_SESSION['create_order2']['orders']['orders_status'] = $status;
-    $_SESSION['create_order2']['orders']['last_modified'] = 'now()';
+    //$_SESSION['create_order2']['orders']['orders_status'] = $status;
+    //$_SESSION['create_order2']['orders']['last_modified'] = 'now()';
     
     $notify_comments = '';
     $notify_comments_mail = $comments;
