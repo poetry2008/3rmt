@@ -1,533 +1,485 @@
-
-
-
 /*
 	$Id$
 */
 body {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif;
-font-size: 12px;
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif;
+	font-size: 12px;
 }
 /* links */
 /* ---------------------------
 A：リンク（通常）
 --------------------------- */
 a img {
-border: 0;
-vertical-align:middle;
+	border: 0;
+	vertical-align:middle;
 }
-.infoBoxContent a img{
-vertical-align: top;
+.infoBoxContent a img {
+	vertical-align: top;
 }
-img{
-vertical-align:middle;
+img {
+	vertical-align:middle;
 }
 a:link {
-color: #000000;                                 /* フォントサイズ */
-font-weight: normal;                            /* フォント太さ */
-text-decoration: none;                          /* テキストの装飾 */
+	color: #000000;                                 /* フォントサイズ */
+	font-weight: normal;                            /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
 }
 /* ---------------------------
 A：リンク（訪問済み）
 --------------------------- */
 a:visited {
-
-color: #000000;                                 /* フォントカラー */
-font-weight: normal;                            /* フォント太さ */
-text-decoration: none;                          /* テキストの装飾 */
+	color: #000000;                                 /* フォントカラー */
+	font-weight: normal;                            /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
 }
 /* ---------------------------
 A：リンク（選択している）
 --------------------------- */
 a:active {
-
-color: #000000;                                 /* フォントカラー */
-font-weight: normal;                            /* フォント太さ */
-text-decoration: none;                          /* テキストの装飾 */
+	color: #000000;                                 /* フォントカラー */
+	font-weight: normal;                            /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
 }
 /* ---------------------------
 A：リンク（カーソルが上に乗ったとき）
 --------------------------- */
 a:hover {
-
-color: #000000;                                 /* フォントカラー */
-font-weight: normal;                            /* フォント太さ */
-text-decoration: underline;                     /* テキストの装飾 */
+	color: #000000;                                 /* フォントカラー */
+	font-weight: normal;                            /* フォント太さ */
+	text-decoration: underline;                     /* テキストの装飾 */
 }
-
 /* ---------------------------
 A：ヘッダリンク（通常）
 --------------------------- */
 a.headerLink:link {
-
-color: #ffffff;                                 /* フォントカラー */
-font-weight: bold;                              /* フォント太さ */
-text-decoration: none;                          /* テキストの装飾 */
+	color: #ffffff;                                 /* フォントカラー */
+	font-weight: bold;                              /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
 }
 /* ---------------------------
 A：ヘッダリンク（訪問済み）
 --------------------------- */
 a.headerLink:visited {
-
-color: #ffffff;                                 /* フォントカラー */
-font-weight: bold;                              /* フォント太さ */
-text-decoration: none;                          /* テキストの装飾 */
+	color: #ffffff;                                 /* フォントカラー */
+	font-weight: bold;                              /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
 }
 /* ---------------------------
 A：ヘッダリンク（選択している）
 --------------------------- */
 a.headerLink:active {
-
-color: #ffffff;                                 /* フォントカラー */
-font-weight: bold;                              /* フォント太さ */
-text-decoration: none;                          /* テキストの装飾 */
+	color: #ffffff;                                 /* フォントカラー */
+	font-weight: bold;                              /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
 }
 /* ---------------------------
 A：ヘッダリンク（カーソルが上に乗ったとき）
 --------------------------- */
 a.headerLink:hover {
-
-color: #ffffff;                                 /* フォントカラー */
-font-weight: bold;                              /* フォント太さ */
-text-decoration: underline;                     /* テキストの装飾 */
+	color: #ffffff;                                 /* フォントカラー */
+	font-weight: bold;                              /* フォント太さ */
+	text-decoration: underline;                     /* テキストの装飾 */
 }
-
 /* ---------------------------
 A：メニューボックスヘッダリンク（通常）
 --------------------------- */
 a.menuBoxHeadingLink:link {
-font-size: 11px;   
-color: #616060;                                 /* フォントカラー */
-font-weight: bold;                              /* フォント太さ */
-text-decoration: none;                          /* テキストの装飾 */
+	font-size: 11px;
+	color: #616060;                                 /* フォントカラー */
+	font-weight: bold;                              /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
 }
 /* ---------------------------
 A：メニューボックスヘッダリンク（訪問済み）
 --------------------------- */
 a.menuBoxHeadingLink:visited {
-font-size: 11px;   
-color: #616060;                                 /* フォントカラー */
-font-weight: bold;                              /* フォント太さ */
-text-decoration: none;                          /* テキストの装飾 */
+	font-size: 11px;
+	color: #616060;                                 /* フォントカラー */
+	font-weight: bold;                              /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
 }
 /* ---------------------------
 A：メニューボックスヘッダリンク（選択している）
 --------------------------- */
 a.menuBoxHeadingLink:active {
-font-size: 11px;   
-color: #616060;                                 /* フォントカラー */
-font-weight: bold;                              /* フォント太さ */
-text-decoration: none;                          /* テキストの装飾 */
+	font-size: 11px;
+	color: #616060;                                 /* フォントカラー */
+	font-weight: bold;                              /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
 }
 /* ---------------------------
 A：メニューボックスヘッダリンク（カーソルが上に乗ったとき）
 --------------------------- */
 a.menuBoxHeadingLink:hover {
-font-size: 11px;   
-color: #616060;                                 /* フォントカラー */
-font-weight: bold;                              /* フォント太さ */
-text-decoration: none;                          /* テキストの装飾 */
+	font-size: 11px;
+	color: #616060;                                 /* フォントカラー */
+	font-weight: bold;                              /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
 }
-
 /* ---------------------------
 A：メニューボックスコンテンツリンク（通常）
 --------------------------- */
 a.menuBoxContentLink:link {
-
-font-size: 11px;                                /* フォントサイズ */
-color: #616060;                                 /* フォントカラー */
-font-weight: normal;                            /* フォント太さ */
-text-decoration: none;                          /* テキストの装飾 */
+	font-size: 11px;                                /* フォントサイズ */
+	color: #616060;                                 /* フォントカラー */
+	font-weight: normal;                            /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
 }
 /* ---------------------------
 A：メニューボックスコンテンツリンク（訪問済み）
 --------------------------- */
 a.menuBoxContentLink:visited {
-
-font-size: 11px;  
-color: #616060;                                 /* フォントカラー */
-font-weight: normal;                            /* フォント太さ */
-text-decoration: none;                          /* テキストの装飾 */
+	font-size: 11px;
+	color: #616060;                                 /* フォントカラー */
+	font-weight: normal;                            /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
 }
 /* ---------------------------
 A：メニューボックスコンテンツリンク（選択している）
 --------------------------- */
 a.menuBoxContentLink:active {
-font-size: 11px; 
-color: #616060;                                 /* フォントカラー */
-font-weight: normal;                            /* フォント太さ */
-text-decoration: none;                          /* テキストの装飾 */
+	font-size: 11px;
+	color: #616060;                                 /* フォントカラー */
+	font-weight: normal;                            /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
 }
 /* ---------------------------
 A：メニューボックスコンテンツリンク（カーソルが上に乗ったとき）
 --------------------------- */
 a.menuBoxContentLink:hover {
-font-size: 11px; 
-color: #616060;                                 /* フォントカラー */
-font-weight: normal;                            /* フォント太さ */
-text-decoration: underline;                     /* テキストの装飾 */
+	font-size: 11px;
+	color: #616060;                                 /* フォントカラー */
+	font-weight: normal;                            /* フォント太さ */
+	text-decoration: underline;                     /* テキストの装飾 */
 }
-
 /* ---------------------------
 A：ページリンク（通常）
 --------------------------- */
 a.splitPageLink:link {
-
-color: #0000FF;                                 /* フォントカラー */
-font-weight: normal;                            /* フォント太さ */
-text-decoration: none;                          /* テキストの装飾 */
+	color: #0000FF;                                 /* フォントカラー */
+	font-weight: normal;                            /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
 }
 /* ---------------------------
 A：ページリンク（訪問済み）
 --------------------------- */
 a.splitPageLink:visited {
-
-color: #0000FF;                                 /* フォントカラー */
-font-weight: normal;                            /* フォント太さ */
-text-decoration: none;                          /* テキストの装飾 */
+	color: #0000FF;                                 /* フォントカラー */
+	font-weight: normal;                            /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
 }
 /* ---------------------------
 A：ページリンク（選択している）
 --------------------------- */
 a.splitPageLink:active {
-
-color: #0000FF;                                 /* フォントカラー */
-font-weight: normal;                            /* フォント太さ */
-text-decoration: none;                          /* テキストの装飾 */
+	color: #0000FF;                                 /* フォントカラー */
+	font-weight: normal;                            /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
 }
 /* ---------------------------
 A：ページリンク（カーソルが上に乗ったとき）
 --------------------------- */
 a.splitPageLink:hover {
-
-color: #0000FF;                                 /* フォントカラー */
-font-weight: normal;                            /* フォント太さ */
-text-decoration: underline;                     /* テキストの装飾 */
-background-color: #FFFF33;                      /* 背景色 */
+	color: #0000FF;                                 /* フォントカラー */
+	font-weight: normal;                            /* フォント太さ */
+	text-decoration: underline;                     /* テキストの装飾 */
+	background-color: #FFFF33;                      /* 背景色 */
 }
-
 /* menu box */
 /* ---------------------------
 .[TD]：メニューボックスコンテンツ
 --------------------------- */
 .menuBoxHeading {
-
-color: #616060;                                 /* フォントカラー */
-background-color: #ffffff;                      /* 背景色 */
+	color: #616060;                                 /* フォントカラー */
+	background-color: #ffffff;                      /* 背景色 */
 }
 /* ---------------------------
 .[TD]：メニューボックスコンテンツ
 --------------------------- */
 .menuBoxContent {
-
-color: #616060;                                 /* フォントカラー */
+	color: #616060;                                 /* フォントカラー */
 }
-
 /* page */
 /* ---------------------------
 BODY：ボディ
 --------------------------- */
 body {
-background-color: #ffffff;                      /* 背景色 */
-color: #000000;                                 /* フォントカラー */
-margin: 0px;                                    /* マージン */
+	background-color: #ffffff;                      /* 背景色 */
+	color: #000000;                                 /* フォントカラー */
+	margin: 0px;                                    /* マージン */
 }
 /* ---------------------------
 .[TR]：ヘッダ（ナビゲーション）
 --------------------------- */
 .headerBar {
-background-color: #000000;                      /* 背景色 */
+	background-color: #000000;                      /* 背景色 */
 }
 /* ---------------------------
 .[TD]：ヘッダ（ナビゲーション）
 --------------------------- */
 .headerBarContent {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;                                /* フォントサイズ */
-color: #ffffff;                                 /* フォントカラー */
-font-weight: bold;                              /* フォント太さ */
-padding: 2px;                                   /* 境界線と内容との間の空間 */
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-size: 11px;                                /* フォントサイズ */
+	color: #ffffff;                                 /* フォントカラー */
+	font-weight: bold;                              /* フォント太さ */
+	padding: 2px;                                   /* 境界線と内容との間の空間 */
 }
 /* ---------------------------
 .[TABLE]：メニューボックスを統括するテーブル
 --------------------------- */
 .columnLeft {
-background-color: #F0F1F1;                      /* 背景色 */
-border-color: #999999;                          /* 境界線の色 */
-border-width: 1px;                              /* 境界線の幅 */
-border-style: solid;                            /* 境界線のスタイル */
-padding: 2px;                                   /* 境界線と内容との間の空間 */
+	background-color: #F0F1F1;                      /* 背景色 */
+	border-color: #999999;                          /* 境界線の色 */
+	border-width: 1px;                              /* 境界線の幅 */
+	border-style: solid;                            /* 境界線のスタイル */
+	padding: 2px;                                   /* 境界線と内容との間の空間 */
 }
 /* ---------------------------
 .[TD]：ページヘッダ
 --------------------------- */
 .pageHeading {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 18px;                                /* フォントサイズ */
-color: #727272;                                 /* フォントカラー */
-font-weight: bold;                              /* フォント太さ */
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-size: 18px;                                /* フォントサイズ */
+	color: #727272;                                 /* フォントカラー */
+	font-weight: bold;                              /* フォント太さ */
 }
-
 /* data table */
 /* ---------------------------
 .[TR]：一覧表の項目名（背景色）
 --------------------------- */
 .dataTableHeadingRow {
-background-color: #808080;                      /* 背景色 */
+	background-color: #808080;                      /* 背景色 */
 }
 /* ---------------------------
 .[TD]：一覧表の項目名（コンテンツ）
 --------------------------- */
 .dataTableHeadingContent {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px; 
-color: #ffffff;                                 /* フォントカラー */
-font-weight: bold;                              /* フォント太さ */
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-size: 11px;
+	color: #ffffff;                                 /* フォントカラー */
+	font-weight: bold;                              /* フォント太さ */
 }
 /* ---------------------------
 .[TR]：一覧表データ（通常行）
 --------------------------- */
 .dataTableRow {
-background-color: #F0F1F1;                      /* 背景色 */
+	background-color: #F0F1F1;                      /* 背景色 */
 }
-.inv{
-background-color:#fff;
+.inv {
+	background-color:#fff;
 }
 /* ---------------------------
 .[TR]：一覧表データ（色違行）
 --------------------------- */
 .dataTableSecondRow {
-background-color: #E0E0E0;                      /* 背景色 */
+	background-color: #E0E0E0;                      /* 背景色 */
 }
-.inv_second{
-background-color:#ccc;
+.inv_second {
+	background-color:#ccc;
 }
 /* ---------------------------
 .[TR]：一覧表データ（選択行）
 --------------------------- */
 .dataTableRowSelected {
-background-color: #FFD700;                      /* 背景色 */
+	background-color: #FFD700;                      /* 背景色 */
 }
 /* ---------------------------
 .[TR]：一覧表データ（カーソルが乗っている行）
 --------------------------- */
 .dataTableRowOver {
-background-color: #FFCC99;                      /* 背景色 */
+	background-color: #FFCC99;                      /* 背景色 */
 }
 /* ---------------------------
 .[TD]：一覧表データ（コンテンツ）
 --------------------------- */
 .dataTableContent {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 12px; 
-color: #000000;                                 /* フォントカラー */
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-size: 12px;
+	color: #000000;                                 /* フォントカラー */
 }
-
 /* info box */
 /* ---------------------------
 .[TR]：情報ボックス（タイトル） - 右側に表示される、一覧から選んだ項目の情報
 --------------------------- */
 .infoBoxHeading {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 12px;                                /* フォントサイズ */
-color: #000000;                                 /* フォントカラー */
-background-color: #FFD700;                      /* 背景色 */
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-size: 12px;                                /* フォントサイズ */
+	color: #000000;                                 /* フォントカラー */
+	background-color: #FFD700;                      /* 背景色 */
 }
 /* ---------------------------
 .[TD]：情報ボックス（コンテンツ） - 右側に表示される、一覧から選んだ項目の情報
 --------------------------- */
 .infoBoxContent {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 12px;                                /* フォントサイズ */
-color: #000000;                                 /* フォントカラー */
-background-color: #FFD700;                      /* 背景色 */
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-size: 12px;                                /* フォントサイズ */
+	color: #000000;                                 /* フォントカラー */
+	background-color: #FFD700;                      /* 背景色 */
 }
-
 /* message box */
 /* ---------------------------
 .[TR]：メッセージボックス
 --------------------------- */
 .messageBox {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 12px;  
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-size: 12px;
 }
 /* ---------------------------
 .[TR,TD]：エラー、警告メッセージ
 --------------------------- */
 .messageStackError, .messageStackWarning {
-
-background-color: #ffb3b5;                      /* 背景色 */
+	background-color: #ffb3b5;                      /* 背景色 */
 }
 /* ---------------------------
 .[TR,TD]：成功メッセージ
 --------------------------- */
 .messageStackSuccess {
-
-background-color: #99ff00;                      /* 背景色 */
+	background-color: #99ff00;                      /* 背景色 */
 }
-
 /* forms */
 /* ---------------------------
 CHECKBOX, INPUT, RADIO, SELECT, TEXTAREA, FILE：FORMの入力・選択項目
 --------------------------- */
 CHECKBOX, INPUT, RADIO, SELECT, TEXTAREA, FILE {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 11px;
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-size: 11px;
 }
-
 /* account */
 /* ---------------------------
 .[TABLE]：フォームエリア（境界線）
 --------------------------- */
 .formArea {
-background-color: #f1f9fe;                      /* 背景色 */
-border-color: #7b9ebd;                          /* 境界線の色 */
-border-style: solid;                            /* 境界線のスタイル */
-border-width: 1px;                              /* 境界線の幅 */
+	background-color: #f1f9fe;                      /* 背景色 */
+	border-color: #7b9ebd;                          /* 境界線の色 */
+	border-style: solid;                            /* 境界線のスタイル */
+	border-width: 1px;                              /* 境界線の幅 */
 }
 /* ---------------------------
 .[TD]：フォームエリア（タイトル）
 --------------------------- */
 .formAreaTitle {
-
-font-size: 12px;                                /* フォントサイズ */
-font-weight: bold;                              /* フォント太さ */
+	font-size: 12px;                                /* フォントサイズ */
+	font-weight: bold;                              /* フォント太さ */
 }
-
 /* attributes */
 /* ---------------------------
 TR：奇数行
 --------------------------- */
 .attributes-odd {
-background-color: #f4f7fd;                      /* 背景色 */
+	background-color: #f4f7fd;                      /* 背景色 */
 }
 /* ---------------------------
 TR：偶数行
 --------------------------- */
 .attributes-even {
-background-color: #ffffff;                      /* 背景色 */
+	background-color: #ffffff;                      /* 背景色 */
 }
-
 /* miscellaneous */
 /* ---------------------------
 .[SPAN]：特価商品価格
 --------------------------- */
 .specialPrice {
-color: #ff0000;                                 /* フォントカラー */
+	color: #ff0000;                                 /* フォントカラー */
 }
 /* ---------------------------
 .[SPAN]：旧商品価格
 --------------------------- */
 .oldPrice {
-text-decoration: line-through;                  /* テキストの装飾 */
+	text-decoration: line-through;                  /* テキストの装飾 */
 }
 /* ---------------------------
 .[SPAN]：「*必須」文字列
 --------------------------- */
 .fieldRequired {
-
-color: #ff0000;                                 /* フォントカラー */
+	color: #ff0000;                                 /* フォントカラー */
 }
 /* ---------------------------
 .[TD]：小さい文字（メッセージ）
 --------------------------- */
 .smallText {
-
-font-size: 10px;                                /* フォントサイズ */
+	font-size: 10px;                                /* フォントサイズ */
 }
 /* ---------------------------
 .[TD]：メイン
 --------------------------- */
 .main {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-font-size: 12px;                                /* フォントサイズ */
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-size: 12px;                                /* フォントサイズ */
 }
 legend {
-    font-size: 12px;
-    font-weight: bold;
-    color: #000000;
+	font-size: 12px;
+	font-weight: bold;
+	color: #000000;
 }
-
-#tep_site_filter{
-  /*width:100%;*/
-  width: 45%;
-  /*float: left;*/
+#tep_site_filter {
+	/*width:100%;*/
+  width: 45%;/*float: left;*/
 }
-
-#order_icons{
-  /*float: right;*/
+#order_icons {
+	/*float: right;*/
   text-align: right;
-  width: 45%;
+	width: 45%;
 }
-
-#order_icons span{
+#order_icons span {
 }
-
-#order_icons .order_icons_selected{
+#order_icons .order_icons_selected {
 	background: red;
 }
-
-#tep_site_filter span{
-  /*width:30px;*/
+#tep_site_filter span {
+	/*width:30px;*/
   /*height:25px;*/
   padding: 0 5px;
-  background: #ddd;
-  color: #000;
-  /*display: block;*/
+	background: #ddd;
+	color: #000;/*display: block;*/
 }
-
-#tep_site_filter .site_filter_selected{
-  color: #fff;
-  font-weight: bold;
-  background: #e42e2e;
+#tep_site_filter .site_filter_selected {
+	color: #fff;
+	font-weight: bold;
+	background: #e42e2e;
 }
-
-#tep_site_filter .site_filter_selected a{
-  color: #fff;
-  font-weight: bold;
+#tep_site_filter .site_filter_selected a {
+	color: #fff;
+	font-weight: bold;
 }
-
-.readonly{
-  background: #ccc;
+.readonly {
+	background: #ccc;
 }
-.cleate_add{
-width:120px;
-padding:5px;
-background:#E0E0E0;
-
+.cleate_add {
+	width:120px;
+	padding:5px;
+	background:#E0E0E0;
 }
-.cleate_main{
-padding:5px;
-background:#F0F1F1;
-
+.cleate_main {
+	padding:5px;
+	background:#F0F1F1;
 }
-.change_one_list{
-font-size:12px;
-display:block;
-margin:10px 0;
-padding:0;
-overflow:hidden;
+.change_one_list {
+	font-size:12px;
+	display:block;
+	margin:10px 0;
+	padding:0;
+	overflow:hidden;
 }
-.change_one_list_main{
-display:block;
-float:left;
-width:210px;
+.change_one_list_main {
+	display:block;
+	float:left;
+	width:210px;
 }
-.dataTableHeadingRow b{
-font-size:17px;
+.dataTableHeadingRow b {
+	font-size:17px;
 }
-.history_img{
-width:120px;
+.history_img {
+	width:120px;
 }
-.add_link{
-clear:both;
+.add_link {
+	clear:both;
 }
-.search_class{
-margin-top:10px;
+.search_class {
+	margin-top:10px;
 }
-.search_class_td{
-font-size:12px;
-font-weight:bold;
+.search_class_td {
+	font-size:12px;
+	font-weight:bold;
 }
 #orders_flag {
 	border-top: 1px solid #000;
@@ -573,22 +525,18 @@ font-weight:bold;
 	text-align:center;
 	background: #f0f1f1;
 }
-
 #orders_answer {
 	margin-bottom: 10px;
 	background: #f0f1f1;
 }
-
 #orders_credit {
 	margin-bottom: 10px;
 	background: #f0f1f1;
 }
-
 #orders_telecom {
 	margin-bottom: 10px;
 	background: #f0f1f1;
 }
-
 h3 {
 	height:15px;
 	background:#888;
@@ -599,7 +547,6 @@ h3 {
 	padding-left:2px;
 	text-align:left;
 }
-
 .orders_computer_checked {
 	color: #fff;
 	background: #ff0000;
@@ -611,7 +558,6 @@ h3 {
 	font-weight:bold;
 	text-align:center;
 }
-
 .orders_computer_unchecked {
 	color: #000;
 	background: #fff;
@@ -623,57 +569,94 @@ h3 {
 	font-weight:bold;
 	text-align:center;
 }
-
-.questions_date{
+.questions_date {
 	border: 0;
 	background: #f0f1f1;
 }
-
-.list_type span{
-  padding: 0 5px;
-  background: #ddd;
-  color: #000;
+.list_type span {
+	padding: 0 5px;
+	background: #ddd;
+	color: #000;
 }
-
-.list_type .site_filter_selected{
-  color: #fff;
-  font-weight: bold;
-  background: #808080;
+.list_type .site_filter_selected {
+	color: #fff;
+	font-weight: bold;
+	background: #808080;
 }
-.monitor_error{
-  opacity:0.8;
-  position:absolute;
-  background:#F1F1F1;
-  border:1px solid #999999;
-  filter:alpha(opacity=80);
+.monitor_error {
+	opacity:0.8;
+	position:absolute;
+	background:#F1F1F1;
+	border:1px solid #999999;
+	filter:alpha(opacity=80);
 }
-.error_monitor{
-color:#ff0000;
-font-weight:bold;
+.error_monitor {
+	color:#ff0000;
+	font-weight:bold;
 }
-.relate_product_link:hover{
-text-decoration:none;
+.relate_product_link:hover {
+	text-decoration:none;
 }
-.new_product_reset img{
-vertical-align:top;
+.new_product_reset img {
+	vertical-align:top;
 }
-.inventory_table td{
-font-size:12px;
+.inventory_table td {
+	font-size:12px;
 }
-.inv_refresh{
-float:right;
+.inv_refresh {
+	float:right;
 }
-.smallText a img{
-vertical-align:top;
+.smallText a img {
+	vertical-align:top;
 }
 .right_column01 {
-padding-top:14px;
+	padding-top:14px;
 *padding-top:12px;
 }
-.t_link01 { display:block; text-align:center; border-bottom:1px inherit #999;}
-.categories_input01 input{
-width:500px;
+.t_link01 {
+	display:block;
+	text-align:center;
+	border-bottom:1px inherit #999;
 }
-.categories_textarea01 textarea{
-width:500px;
+.categories_input01 input {
+	width:500px;
+}
+.categories_textarea01 textarea {
+	width:500px;
+}
+td.menu01 {
+	background:lightblue
+}
+table.menu01 {
+	font-size:100%;
+	position:absolute;
+	visibility:hidden;
+}
+#tutorials td {
+	background:#000;
+	padding:1px;
+}
+#tutorials td a {
+	color:#fff;
+	font-weight:bold;
+	padding:2px 7px;
+}
+#tutorials td a:hover {
+	color:#000;
+	text-decoration:none;
+	background:#ffd700;
+}
+#ordermenu td {
+	background:#000;
+	padding:1px;
+}
+#ordermenu td a {
+	color:#fff;
+	font-weight:bold;
+	padding:2px 5px;
+}
+#ordermenu td a:hover {
+	color:#000;
+	text-decoration:none;
+	background:#ffd700;
 }
