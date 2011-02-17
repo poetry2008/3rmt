@@ -236,13 +236,14 @@ function hidden_payment(){
     $payment_list[] = array('id' => $payment_array[$i],
                 'text' => $payment_array[$i]);
   }
-  */
+
   $payment_list = array(
     array(
       'id' => '0',
       'text' => '銀行振込(買い取り)'
     )
   );
+  */
 
   // 口座科目の記憶
   switch(isset($bank_kamoku)?$bank_kamoku:null) {
@@ -267,12 +268,12 @@ function hidden_payment(){
           <td class="main"><table border="0" cellspacing="0" cellpadding="2">
               <tr>
         <td class="main">&nbsp;支払方法:</td>
-                <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('payment_method', $payment_list, isset($payment_method)?$payment_method:'銀行振込(買い取り)', ''); ?><?php if (isset($entry_payment_method_error ) && $entry_payment_method_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+                <td class="main">&nbsp;仕入れ注文<input type="hidden" name="payment_method" value="銀行振込(買い取り)"></td>
               </tr>
 <?php
   echo '<tr>';
 ?>
-          <td colspan="2"><br><table border="0" cellspacing="0" cellpadding="0">
+          <td colspan="2"><table border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td class="main">&nbsp;金融機関名:</td>
             <td class="main">&nbsp;<?php echo tep_draw_input_field('bank_name', ''); ?><?php if (isset($entry_bank_name_error) && $entry_bank_name_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
