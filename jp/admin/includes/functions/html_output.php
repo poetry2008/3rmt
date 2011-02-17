@@ -11,7 +11,7 @@
     }
 
     if(defined('BACKEND_LAN_URL_ENABLED') and BACKEND_LAN_URL_ENABLED){
-	$absolute = 1;
+  $absolute = 1;
     }else {
         $absolute = 0;
     }
@@ -294,7 +294,7 @@ function tep_customer_list_pull_down_menu()
      $site_name = $site_res['name'];
      
      $select_str .= '<option value=\''.$svalue.'\'>'; 
-     $select_str .= $customer_res['customers_email_address'].'&nbsp;&nbsp;'.$site_name; 
+     $select_str .= $customer_res['customers_name'].'&nbsp;&nbsp;'.$site_name; 
      $select_str .= '</option>'; 
    }
    $select_str .= '</select>';
