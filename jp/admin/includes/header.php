@@ -92,7 +92,7 @@ if(preg_match("/".FILENAME_ORDERS."/",$PHP_SELF)){
       <a href="' . tep_href_link(basename($GLOBALS['PHP_SELF']), '', 'NONSSL') . '?execute_logout_user=1" class="headerLink">ログアウト</a></td></tr></table>';
     } else {
     echo '|&nbsp;
-      <a href="' . tep_href_link(basename($GLOBALS['PHP_SELF']), '', 'NONSSL') . '?execute_logout_user=1" class="headerLink">ログアウト</a></td></tr></table>';
+      <a href="' . tep_href_link(basename($GLOBALS['PHP_SELF']), '', 'NONSSL') . '?execute_logout_user=1" class="headerLink">ログアウト</a>';
     }
     ?>
   </td>
