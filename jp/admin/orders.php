@@ -71,7 +71,7 @@
       $site_id  = tep_get_site_id_by_orders_id($value);
     
       $order_updated = false;
-      $check_status_query = tep_db_query("select customers_name, customers_email_address, orders_status, date_purchased, payment_method, torihiki_date from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
+      $check_status_query = tep_db_query("select customers_name, customers_id, customers_email_address, orders_status, date_purchased, payment_method, torihiki_date from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
       $check_status = tep_db_fetch_array($check_status_query);
       
       //Add Point System
@@ -217,7 +217,9 @@
         ),$comments
         );
         
-        tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
+        if (tep_is_oroshi($check_status['customers_id'])) {
+          tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
+        } 
         tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
         $customer_notified = '1';
       }
@@ -410,7 +412,9 @@
         get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
         date('Y年n月j日',strtotime(tep_get_pay_day()))
       ),$comments);
-      tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
+      if (tep_is_oroshi($check_status['customers_id'])) {
+        tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
+      }
       tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
       $customer_notified = '1';
     }
@@ -2223,6 +2227,7 @@ if($reload == 'yes') {
       while($___orders_status = tep_db_fetch_array($___orders_status_query)){
         $___orders_status_ids[] = $___orders_status['orders_status_id'];
       }
+      if ($___orders_status_ids) {
       $_orders_status_history_query_raw = "select * from `".TABLE_ORDERS_STATUS."` WHERE `orders_status_id` IN (".join(',',$___orders_status_ids).")";
       $_orders_status_history_query     = tep_db_query($_orders_status_history_query_raw);     $_osh = array();
       $_osi = false;
@@ -2234,6 +2239,7 @@ if($reload == 'yes') {
           $_osi = $_osi or true;
         }
           $_osh[] = $_orders_status_history['orders_status_id'];
+      }
       }
       if(!$_osi){
         echo '　';
