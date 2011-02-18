@@ -93,7 +93,7 @@ if(preg_match("/".FILENAME_ORDERS."/",$PHP_SELF)){
       echo '<table id="redirecturl" cellspacing="0" cellpadding="0" class="menu01" style="visibility: hidden;">'; 
       while ($site_link = tep_db_fetch_array($site_link_query)) {
         echo '<tr><td class="menu01">'; 
-        echo '<a href="'.$site_link['url'].'" class="t_link01">'.$site_link['name'].'</a>'; 
+        echo '<a href="'.$site_link['url'].'" target="_blank" class="t_link01">'.$site_link['name'].'</a>'; 
         echo '</td></tr>'; 
       }
       echo '</table>';
