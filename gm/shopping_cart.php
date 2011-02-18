@@ -258,12 +258,19 @@ function change_num(ob,targ, quan,a_quan)
           <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2"> 
             <tr> 
               <td width="20%" align="left" class="main">
-                <input type="hidden" name="goto" value="<?php echo tep_href_link(FILENAME_DEFAULT);?>">
-                <input type="submit" name="continue" value="" class="shopping_cart_continue">
+<?php
+    $back = sizeof($navigation->path)-2;
+    if (isset($navigation->path[$back]) and 0) {
+?> 
+                    <input type="hidden" name="goto" value="<?php echo tep_href_link($navigation->path[$back]['page'], tep_array_to_string($navigation->path[$back]['get'], array('action')), $navigation->path[$back]['mode']);?>">
+                    <input type="submit" name="continue" value="" class="shopping_cart_continue">
+<?php } else { ?>
+                    <button  class="shopping_cart_continue" onclick="history.back(); return false;"></button>
+<?php } ?>
               </td> 
               <td align="left" class="main">
-                <input type="submit" name="checkout" value="" class="shopping_cart_checkout">
-              </td> 
+  <input type="submit" name="checkout" value="" class="shopping_cart_checkout">
+  </td> 
             </tr> 
             <tr> 
               <td class="main" colspan="2"><?php echo TEXT_UPDATE_CART_INFO; // 2003.02.27 nagata Add Japanese osCommerce ?></td> 
