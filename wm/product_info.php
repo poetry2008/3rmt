@@ -409,7 +409,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                                 <a style="display:block;" href="javascript:void(0)" onClick="change_num('quantity','down', 1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/ndown.gif" alt="-"></a>
                               </div>
                             </td>
-                            <td valign="middle"><?php echo tep_image_submit('button_in_cart.jpg', IMAGE_BUTTON_IN_CART); ?></td>
+                            <td valign="middle"><?php echo tep_image_submit('button_in_cart.gif', IMAGE_BUTTON_IN_CART); ?></td>
                           </tr>
                         </table>
                         <?php
