@@ -67,9 +67,9 @@
   <p class="pageHeading">登録データの有無を確認:</p>
 <?php
   echo '<form action="' . $PHP_SELF . '" method="GET">' . "\n";
-  echo '<p class=main>メールアドレスを入力し「検索」ボタンをクリックしてください。<br>';
+  echo '<p class=main>業者名を選択し「検索」ボタンをクリックしてください。<br>';
   //echo 'メールアドレス:&nbsp;<input type="text" name="Customer_mail" size="40">'.tep_site_pull_down_menu('', false).'&nbsp;&nbsp;<input type="submit" value="  検索  "></p>' . "\n";
-  echo 'メールアドレス:'.tep_customer_list_pull_down_menu().'&nbsp;&nbsp;<input type="submit" value="  検索  "></p>' . "\n";
+  echo '業者名：'.tep_customer_list_pull_down_menu().'&nbsp;&nbsp;<input type="submit" value="  検索  "></p>' . "\n";
   echo '</form>' . "\n";
 ?>
   <br>
