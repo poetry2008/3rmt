@@ -285,7 +285,6 @@ function hidden_payment(){
                 <td class="main">&nbsp;取引時間:</td>
                 <td class="main">&nbsp;<?php 
                 $now_minute = (int)date('i'); 
-                $now_minute = 19; 
                 if ($now_minute > 50) {
                   $minute_str = '50'; 
                 } else {

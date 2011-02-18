@@ -86,9 +86,19 @@ if(preg_match("/".FILENAME_ORDERS."/",$PHP_SELF)){
 	  		<td><a href="' . tep_href_link(FILENAME_CUSTOMERS, '', 'NONSSL') . '" class="headerLink">顧客一覧</a>&nbsp;|</td>
       		<td>&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, '', 'NONSSL') . '" class="headerLink">新着情報</a>&nbsp;|</td>
       		<td>&nbsp;<a href="' . tep_href_link('micro_log.php', '', 'NONSSL') . '" class="headerLink">引継メモ</a>&nbsp;|</td>
-			<td>
-      &nbsp;'.tep_siteurl_pull_down_menu().' 
-      &nbsp;|&nbsp;
+			<td align="left" onmouseout="hidemenu(\'redirecturl\')" onmouseover="showmenu(\'redirecturl\')">
+      ';
+      echo '&nbsp;<a href="javascript:void(0);" class="headerLink">サイトへ移動▼</a>&nbsp;|<br>'; 
+      $site_link_query = tep_db_query('select * from '.TABLE_SITES);
+      echo '<table id="redirecturl" cellspacing="0" cellpadding="0" class="menu01" style="visibility: hidden;">'; 
+      while ($site_link = tep_db_fetch_array($site_link_query)) {
+        echo '<tr><td class="menu01">'; 
+        echo '<a href="'.$site_link['url'].'" class="t_link01">'.$site_link['name'].'</a>'; 
+        echo '</td></tr>'; 
+      }
+      echo '</table>';
+      echo' 
+      <td>&nbsp;
       <a href="' . tep_href_link(basename($GLOBALS['PHP_SELF']), '', 'NONSSL') . '?execute_logout_user=1" class="headerLink">ログアウト</a></td></tr></table>';
     } else {
     echo '|&nbsp;
