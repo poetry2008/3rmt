@@ -260,6 +260,7 @@ function change_num(ob,targ, quan,a_quan)
 ?>
             <tr>
               <td><br>
+  
                 <table border="0" width="100%" cellspacing="0" cellpadding="2" summary="rmt">
                   <tr>
                     <?php
@@ -285,8 +286,15 @@ function change_num(ob,targ, quan,a_quan)
     $cart_products = tep_get_cart_products(tep_get_products_by_shopiing_cart($products));
     if ($cart_products) {
 ?>
+</td></tr></table>
+    </div>
+    <p class="pageBottom"></p>
+    <h2 class="pageHeading">こちらの商品もオススメ！！</h2>
+    <div class="comment">
+<table><tr><td>
+
   <div class="pageHeading_box" style="text-align:center;padding:10px 0;">
-  <h2 class="pageHeading">こちらの商品もオススメ！！</h2>
+  
 <?php
       foreach($cart_products as $cp){
         $cp = tep_get_product_by_id($cp, SITE_ID, 4);
@@ -309,6 +317,10 @@ function change_num(ob,targ, quan,a_quan)
                   <?php echo SUB_HEADING_TEXT_3; ?></p>
               </td>
             </tr>
+          </table>
+        </form>
+        </div>
+        <p class="pageBottom"></p>
             <?php
   } else {
 ?>
@@ -320,13 +332,14 @@ function change_num(ob,targ, quan,a_quan)
                 <a href="<?php echo tep_href_link(FILENAME_DEFAULT); ?>"><?php echo tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></a>
               </td>
             </tr>
-            <?php
-  }
-?>
           </table>
         </form>
         </div>
         <p class="pageBottom"></p>
+            <?php
+  }
+?>
+
       </td>
       <!-- body_text_eof //-->
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>">

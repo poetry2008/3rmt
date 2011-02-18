@@ -52,7 +52,7 @@ if (STORE_DB_TRANSACTIONS == 'true') {?>
       echo '[' . $logger->times[$qk] . ']' . $qk . "\t=>\t" . $qv."\n";
     }
   }
-   //&& print_r($logger->queries);
+   print_r($_SESSION);
   ?>
   <?php //print_r($logger->times);?>
   </pre>
