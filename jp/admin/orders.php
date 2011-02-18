@@ -941,7 +941,7 @@ if($reload == 'yes') {
             <!-- 注文履历 -->
             <?php // 订单历史5条 ?>
             <div id="orders_history">
-              <h3>Order History</h3>
+              <h3><a href="<?php echo tep_href_link('customers_products.php', 'cID='.$order->customer['id'].'&cpage=1')?>">Order History</a></h3>
               <?php 
                 $order_history_query = tep_db_query("
                   select * 
