@@ -197,15 +197,6 @@
         foreach ($products_details["attributes"] as $attributes_id => $attributes_details) {
           $_SESSION['create_order2']['orders_products_attributes'][$orders_products_id][$attributes_id]['products_options'] = $attributes_details["option"];
           $_SESSION['create_order2']['orders_products_attributes'][$orders_products_id][$attributes_id]['products_options_values'] = $attributes_details["value"];
-          
-         
-          /*
-          $Query = "update " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set
-              products_options = '" . $attributes_details["option"] . "',
-              products_options_values = '" . $attributes_details["value"] . "'
-              where orders_products_attributes_id = '$orders_products_attributes_id';";
-          tep_db_query($Query);
-          */
         }
       }
     } else { // b.) null quantity found --> delete
@@ -967,7 +958,7 @@ function check_add(){
               </tr>
               <tr>
                 <td class="main" valign="top"><b>注文日:</b></td>
-                <td class="main"><?php echo tep_date_long($order['date_purchased']);?></td>
+                <td class="main"><?php echo tep_date_long(date('Y-m-d H:i:s'));?></td>
               </tr>
               <tr>
                 <td class="main" valign="top"><b>顧客名:</b></td>
