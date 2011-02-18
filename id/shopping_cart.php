@@ -254,7 +254,7 @@ function change_num(ob,targ, quan,a_quan)
                 <table border="0" width="100%" cellspacing="0" cellpadding="2" summary="rmt">
                   <tr>
                     <td width="12%" align="left" class="main">
-                      <input type="hidden" name="goto" value="<?php echo HTTP_SERVER;?>">
+                      <input type="hidden" name="goto" value="<?php echo tep_href_link(FILENAME_DEFAULT);?>">
                       <input type="submit" name="continue" value="" class="shopping_cart_continue">
                     </td>
                     <td align="left" class="main">
