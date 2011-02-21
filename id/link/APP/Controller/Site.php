@@ -626,6 +626,8 @@ class Controller_Site extends Controller_Base
         $User = $Model_User->find($cond);
         $From_Mail = $User['email'];
         $headers = 'Content-type: text/html; charset=utf-8' . "\r\n";
+//        $headers .= 'Content-Transfer-Encoding: bit8' . "\r\n";
+
         $headers .= 'From: '.$From_Mail. "\r\n";
 
         mail($to, $subject, $message, $headers);
