@@ -305,14 +305,14 @@ UL {
 /*button*/
 .button_order {
 	display: block;
-	width: 82px;
-	height: 25px;
+	width: 132px;
+	height: 46px;
 	background: url(../images/design/button/button_order.gif) no-repeat;
 	overflow: hidden;
 	font-size: 0px;
 }
 .button_order:hover {
-	background: url(../images/design/button/button_order2.gif) no-repeat;
+	background: url(../images/design/button/button_order.gif) no-repeat;
 }
 .button_description {
 	display: block;
