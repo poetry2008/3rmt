@@ -26,13 +26,15 @@
         exit;
         */
         if ($_POST['tags_id']) {
-          tep_db_query("delete from products_to_tags where tags_id='".$_POST['tags_id']."'");
-          
-          if ($_POST['products_id']) {
-            foreach($_POST['products_id'] as $pid) {
-              tep_db_perform("products_to_tags", array('products_id' => (int)$pid, 'tags_id' => (int)$_POST['tags_id']));
+          foreach($_POST['tags_id'] as $tid) {
+            tep_db_query("delete from products_to_tags where tags_id='".$tid."'");
+            
+            if ($_POST['products_id']) {
+              foreach($_POST['products_id'] as $pid) {
+                tep_db_perform("products_to_tags", array('products_id' => (int)$pid, 'tags_id' => (int)$tid));
+              }
+              //tep_db_query("delete from products_to_tags where tags_id='".$_POST['tags_id']."'");
             }
-            //tep_db_query("delete from products_to_tags where tags_id='".$_POST['tags_id']."'");
           }
         }
         tep_redirect(tep_href_link('products_tags.php'));
@@ -61,26 +63,53 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script>
-function load_products_to_tags(tid){
-   $.ajax({
-    dataType: 'json',
-    url: 'products_tags.php?action=load_products_to_tags&tags_id='+tid,
-    success: function(pid) {
-      $('.products_checkbox').attr('checked','');
-      for(i in pid){
-        $('#products_'+pid[i]).attr('checked','checked');
+function load_products_to_tags(){
+  count = checked_count();
+  if (count == 1){
+    tid = get_tid();
+     $.ajax({
+      dataType: 'json',
+      url: 'products_tags.php?action=load_products_to_tags&tags_id='+tid,
+      success: function(pid) {
+          $('.products_checkbox').attr('checked','');
+          for(i in pid){
+            $('#products_'+pid[i]).attr('checked','checked');
+          }
       }
-    }
-  });
+    });
+  } else if (count == 0) {
+    $('.products_checkbox').attr('checked','');
+  }
 }
+function checked_count(){
+  var i = 0;
+  $('.all_tags').each(function(){
+    if(this.checked == true) i++;
+  });
+  return i;
+}
+
+function get_tid(){
+  tid = null;
+  count = checked_count();
+  if (count == 1){
+    $('.all_tags').each(function(){
+      if(this.checked == true) {
+        tid = $(this).val();
+      }
+    });
+  }
+  return tid;
+}
+
 function switch_categories(cid){
   if ($('#d_'+cid).css('display') == 'block') {
-    //$('#d_'+cid).find('div').css('display','none');
     $('#d_'+cid).css('display', 'none');
   } else {
     $('#d_'+cid).css('display', 'block');
   }
 }
+
 function check_all(cid){
   if ($('#categories_'+cid).attr('checked')) {
     $('#d_'+cid+' input[type=checkbox]').attr('checked','checked');
@@ -91,7 +120,7 @@ function check_all(cid){
 </script>
 <style>
 .categories_box{
-  display:none;
+  display:block;
 }
 </style>
 </head>
@@ -133,7 +162,7 @@ function check_all(cid){
   if (tep_db_num_rows($tags_query)) {
     echo "<ul>\n";
     while($tag = tep_db_fetch_array($tags_query)){
-      echo '<li><input onclick="load_products_to_tags('.$tag['tags_id'].')" type="radio" name="tags_id" id="tags_id" value="'.$tag['tags_id'].'"'.($_GET['tags_id'] == $tag['tags_id']?' checked="checked"':'').'>'.$tag['tags_name'].'</li>'."\n";
+      echo '<li><input onchange="load_products_to_tags()" type="checkbox"  class="all_tags" name="tags_id['.$tag['tags_id'].']" id="tags_id" value="'.$tag['tags_id'].'"'.($_GET['tags_id'] == $tag['tags_id']?' checked="checked"':'').'>'.$tag['tags_name'].'</li>'."\n";
     }
     echo "</ul>\n";
   } else {
