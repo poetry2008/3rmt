@@ -1551,3 +1551,10 @@ a.Icon:hover {
 .response {
 	font-size:11px;
 }
+.pageHeading_box .pageHeading{
+width:490px;
+line-height:24px;
+text-align:left;
+padding-left:10px;
+background:url(../images/design/contents/headding_title02.gif) no-repeat;
+}

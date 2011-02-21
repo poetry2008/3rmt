@@ -260,19 +260,20 @@ function change_num(ob,targ, quan,a_quan)
 ?>
             <tr>
               <td><br>
+  
                 <table border="0" width="100%" cellspacing="0" cellpadding="2" summary="rmt">
                   <tr>
-                    <?php
-    $back = sizeof($navigation->path)-2;
-    if (isset($navigation->path[$back])) {
-?>
                     <td width="17%" align="left" class="main">
-  <input type="hidden" name="goto" value="<?php echo tep_href_link($navigation->path[$back]['page'], tep_array_to_string($navigation->path[$back]['get'], array('action')), $navigation->path[$back]['mode']);?>">
-  <input type="submit" name="continue" value="" class="shopping_cart_continue">
-</td>
-                    <?php
-    }
-?>
+<?php
+    $back = sizeof($navigation->path)-2;
+    if (isset($navigation->path[$back]) and 0) {
+?> 
+                    <input type="hidden" name="goto" value="<?php echo tep_href_link($navigation->path[$back]['page'], tep_array_to_string($navigation->path[$back]['get'], array('action')), $navigation->path[$back]['mode']);?>">
+                    <input type="submit" name="continue" value="" class="shopping_cart_continue">
+<?php } else { ?>
+                    <button  class="shopping_cart_continue" onclick="history.back(); return false;"></button>
+<?php } ?>
+                    </td>
                     <td align="left" class="main">
 <input type="submit" name="checkout" value="" class="shopping_cart_checkout">
                     </td>
@@ -285,8 +286,15 @@ function change_num(ob,targ, quan,a_quan)
     $cart_products = tep_get_cart_products(tep_get_products_by_shopiing_cart($products));
     if ($cart_products) {
 ?>
-  <h2>こちらの商品もオススメ！！</h2>
-  <div style="text-align:center;padding:10px 0;">
+</td></tr></table>
+    </div>
+    <p class="pageBottom"></p>
+    <h2 class="pageHeading">こちらの商品もオススメ！！</h2>
+    <div class="comment">
+<table><tr><td>
+
+  <div class="pageHeading_box" style="text-align:center;padding:10px 0;">
+  
 <?php
       foreach($cart_products as $cp){
         $cp = tep_get_product_by_id($cp, SITE_ID, 4);
@@ -309,6 +317,10 @@ function change_num(ob,targ, quan,a_quan)
                   <?php echo SUB_HEADING_TEXT_3; ?></p>
               </td>
             </tr>
+          </table>
+        </form>
+        </div>
+        <p class="pageBottom"></p>
             <?php
   } else {
 ?>
@@ -320,13 +332,14 @@ function change_num(ob,targ, quan,a_quan)
                 <a href="<?php echo tep_href_link(FILENAME_DEFAULT); ?>"><?php echo tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></a>
               </td>
             </tr>
-            <?php
-  }
-?>
           </table>
         </form>
         </div>
         <p class="pageBottom"></p>
+            <?php
+  }
+?>
+
       </td>
       <!-- body_text_eof //-->
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>">

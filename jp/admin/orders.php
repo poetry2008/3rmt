@@ -14,7 +14,10 @@
   $orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_ORDERS_STATUS . " where language_id = '" . $languages_id . "'");
 
   while ($orders_status = tep_db_fetch_array($orders_status_query)) {
-    if ($orders_status['orders_status_id'] != 17 && $orders_status['orders_status_id'] != 31)
+    if (
+      $orders_status['orders_status_id'] != 17 
+      //&& $orders_status['orders_status_id'] != 31
+      )
       $orders_statuses[] = array('id' => $orders_status['orders_status_id'],'text' => $orders_status['orders_status_name']);
     
     $all_orders_statuses[] = array('id' => $orders_status['orders_status_id'], 'text' => $orders_status['orders_status_name']);
@@ -68,7 +71,7 @@
       $site_id  = tep_get_site_id_by_orders_id($value);
     
       $order_updated = false;
-      $check_status_query = tep_db_query("select customers_name, customers_email_address, orders_status, date_purchased, payment_method, torihiki_date from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
+      $check_status_query = tep_db_query("select customers_name, customers_id, customers_email_address, orders_status, date_purchased, payment_method, torihiki_date from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
       $check_status = tep_db_fetch_array($check_status_query);
       
       //Add Point System
@@ -214,7 +217,9 @@
         ),$comments
         );
         
-        tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
+        if (!tep_is_oroshi($check_status['customers_id'])) {
+          tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
+        } 
         tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
         $customer_notified = '1';
       }
@@ -256,6 +261,7 @@
       $check_status_query = tep_db_query("
           select orders_id, 
                  customers_name, 
+                 customers_id,
                  customers_email_address, 
                  orders_status, 
                  date_purchased, 
@@ -407,7 +413,9 @@
         get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
         date('Y年n月j日',strtotime(tep_get_pay_day()))
       ),$comments);
-      tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
+      if (!tep_is_oroshi($check_status['customers_id'])) {
+        tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
+      }
       tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
       $customer_notified = '1';
     }
@@ -933,7 +941,7 @@ if($reload == 'yes') {
             <!-- 注文履历 -->
             <?php // 订单历史5条 ?>
             <div id="orders_history">
-              <h3>Order History</h3>
+              <h3><a href="<?php echo tep_href_link('customers_products.php', 'cID='.$order->customer['id'].'&cpage=1')?>">Order History</a></h3>
               <?php 
                 $order_history_query = tep_db_query("
                   select * 
@@ -1015,6 +1023,9 @@ if($reload == 'yes') {
   <tr>
     <td class="main">支払方法：</td>
     <td class="main">
+<?php if (tep_is_oroshi($order->customer['id']) && $orders_questions_type==1) { ?>
+      買取：銀行支払<input type="hidden" name="questions_type" id="questions_type" value="1">
+<?php } else { ?>
       <select name="questions_type" id="questions_type" onchange="window.location.href=base_url+'&questions_type='+this.value">
 <?php if (isset($_GET['questions_type'])) { ?>
         <option value="0">販売：銀行振込</option>
@@ -1026,6 +1037,7 @@ if($reload == 'yes') {
         <option value="1"<?php if ($orders_questions_type==1) {?> selected="selected"<?php } ?>>買取：銀行支払</option>
 <?php } ?>
       </select>
+<?php } ?>
     </td>
 <?php if (!$oq['q_8_1']) { ?>
     <td class="main" align="right">&nbsp;</td>
@@ -2216,6 +2228,7 @@ if($reload == 'yes') {
       while($___orders_status = tep_db_fetch_array($___orders_status_query)){
         $___orders_status_ids[] = $___orders_status['orders_status_id'];
       }
+      if ($___orders_status_ids) {
       $_orders_status_history_query_raw = "select * from `".TABLE_ORDERS_STATUS."` WHERE `orders_status_id` IN (".join(',',$___orders_status_ids).")";
       $_orders_status_history_query     = tep_db_query($_orders_status_history_query_raw);     $_osh = array();
       $_osi = false;
@@ -2227,6 +2240,7 @@ if($reload == 'yes') {
           $_osi = $_osi or true;
         }
           $_osh[] = $_orders_status_history['orders_status_id'];
+      }
       }
       if(!$_osi){
         echo '　';

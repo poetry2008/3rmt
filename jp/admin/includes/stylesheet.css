@@ -660,3 +660,27 @@ table.menu01 {
 	text-decoration:none;
 	background:#ffd700;
 }
+#redirecturl td {
+	background:#000;
+	padding:1px;
+}
+#redirecturl td a {
+	color:#fff;
+	font-weight:bold;
+	padding:2px 7px;
+}
+#redirecturl td a:hover {
+	color:#000;
+	text-decoration:none;
+	background:#ffd700;
+}
+#orders_history h3 a{
+color:#fff;
+font-weight:bold;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+a.headerLink{
+-webkit-text-size-adjust:none;
+font-size:10px;!important;
+}
+}

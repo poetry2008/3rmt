@@ -89,7 +89,7 @@
 */
     $oID = tep_db_prepare_input($_GET['oID']);
     $order = $_SESSION['create_order2']['orders'];
-    $status = '1'; // 初期値
+    //$status = '31'; // 初期値
     //$goods_check = $order_query;
     
     /*
@@ -197,15 +197,6 @@
         foreach ($products_details["attributes"] as $attributes_id => $attributes_details) {
           $_SESSION['create_order2']['orders_products_attributes'][$orders_products_id][$attributes_id]['products_options'] = $attributes_details["option"];
           $_SESSION['create_order2']['orders_products_attributes'][$orders_products_id][$attributes_id]['products_options_values'] = $attributes_details["value"];
-          
-         
-          /*
-          $Query = "update " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set
-              products_options = '" . $attributes_details["option"] . "',
-              products_options_values = '" . $attributes_details["value"] . "'
-              where orders_products_attributes_id = '$orders_products_attributes_id';";
-          tep_db_query($Query);
-          */
         }
       }
     } else { // b.) null quantity found --> delete
@@ -421,8 +412,8 @@
     tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
     orders_updated(tep_db_input($oID));
     */
-    $_SESSION['create_order2']['orders']['orders_status'] = $status;
-    $_SESSION['create_order2']['orders']['last_modified'] = 'now()';
+    //$_SESSION['create_order2']['orders']['orders_status'] = $status;
+    //$_SESSION['create_order2']['orders']['last_modified'] = 'now()';
     
     $notify_comments = '';
     $notify_comments_mail = $comments;
@@ -885,7 +876,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
 <script>
 function check_add(){
   price = document.getElementById('add_product_price').value;
-  if(price != '' && $price != 0  && price > 0){
+  if(price != '' && price != 0  && price > 0){
     return true;
   } else {
     alert("単価を書いてください");
@@ -967,7 +958,7 @@ function check_add(){
               </tr>
               <tr>
                 <td class="main" valign="top"><b>注文日:</b></td>
-                <td class="main"><?php echo tep_date_long($order['date_purchased']);?></td>
+                <td class="main"><?php echo tep_date_long(date('Y-m-d H:i:s'));?></td>
               </tr>
               <tr>
                 <td class="main" valign="top"><b>顧客名:</b></td>
