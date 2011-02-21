@@ -124,7 +124,7 @@ function check_all(cid){
       <tr>
         <td>
   <?php echo tep_draw_form('products_to_tags','products_tags.php', 'action=save', 'post', 'onSubmit=""');?>
-  <input type="submit">
+  <input type="submit" value="Save">
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top" width="50%">
@@ -142,7 +142,7 @@ function check_all(cid){
 ?>
             </td>
             <td valign="top" align="left">
-  <a href="javascript:void(0);" onclick="$('.categories_box').css('display','block')">展开</a>|<a href="javascript:void(0);" onclick="$('.categories_box').css('display','none')">关闭</a><br>
+  <a href="javascript:void(0);" onclick="$('.categories_box').css('display','block')">Open</a>|<a href="javascript:void(0);" onclick="$('.categories_box').css('display','none')">Close</a><br>
 <?php
   $categories_query = tep_db_query("select * from categories c,categories_description cd where c.categories_id=cd.categories_id and c.parent_id='0' and cd.site_id='0' order by c.sort_order, cd.categories_name");
   if (tep_db_num_rows($categories_query)) {
