@@ -305,8 +305,8 @@ UL {
 /*button*/
 .button_order {
 	display: block;
-	width: 132px;
-	height: 46px;
+	width: 82px;
+	height: 25px;
 	background: url(../images/design/button/button_order.gif) no-repeat;
 	overflow: hidden;
 	font-size: 0px;
