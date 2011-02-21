@@ -625,6 +625,7 @@ class Controller_Site extends Controller_Base
         $User = $Model_User->find($cond);
         $From_Mail = $User['email'];
         $headers = 'Content-type: text/html; charset=utf-8' . "\r\n";
+        $headers .= "Content-Transfer-Encoding: 8bit\r\n";  
         $headers .= 'From: '.$From_Mail. "\r\n";
 
         mail($to, $subject, $message, $headers);
@@ -1387,6 +1388,7 @@ class Controller_Site extends Controller_Base
       $From_Mail = $User['email'];
     }
     $headers = 'Content-type: text/html; charset=utf-8' . "\r\n";
+    $headers .= "Content-Transfer-Encoding: 8bit\r\n";  
     $headers .= 'From: '.$From_Mail. "\r\n";
     $model_Setseo = FLEA::getSingleton('Model_Setseo');
     $seo = $model_Setseo->find("action ='".$_GET['action']."'");
@@ -1899,6 +1901,52 @@ function make_semiangle($str)
                   '　' => ' ');  
     return strtr($str, $arr);  
  }
+
+
+//替换 邮件内容的方法
+    function _quotedPrintableEncode($input , $line_max = 76)
+    {
+        $lines  = preg_split("/\r?\n/", $input);
+        $eol    = MAIL_MIMEPART_CRLF;
+        $escape = '=';
+        $output = '';
+
+        while (list(, $line) = each($lines)) {
+
+            $line    = preg_split('||', $line, -1, PREG_SPLIT_NO_EMPTY);
+            $linlen     = count($line);
+            $newline = '';
+
+            for ($i = 0; $i < $linlen; $i++) {
+                $char = $line[$i];
+                $dec  = ord($char);
+
+                if (($dec == 32) AND ($i == ($linlen - 1))) {    // convert space at eol only
+                    $char = '=20';
+
+                } elseif (($dec == 9) AND ($i == ($linlen - 1))) {  // convert tab at eol only
+                    $char = '=09';
+                } elseif ($dec == 9) {
+                    ; // Do nothing if a tab.
+                } elseif (($dec == 61) OR ($dec < 32 ) OR ($dec > 126)) {
+                    $char = $escape . strtoupper(sprintf('%02s', dechex($dec)));
+                } elseif (($dec == 46) AND ($newline == '')) {
+                    //Bug #9722: convert full-stop at bol
+                    //Some Windows servers need this, won't break anything (cipri)
+                    $char = '=2E';
+                }
+
+                if ((strlen($newline) + strlen($char)) >= $line_max) {        // MAIL_MIMEPART_CRLF is not counted
+                    $output  .= $newline . $escape . $eol;                    // soft line break; " =\r\n" is okay
+                    $newline  = '';
+                }
+                $newline .= $char;
+            } // end of for
+            $output .= $newline . $eol;
+        }
+        $output = substr($output, 0, -1 * strlen($eol)); // Don't want last crlf
+        return $output;
+    }
 }
 
 class breadcrumb {

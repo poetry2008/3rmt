@@ -1,9 +1,18 @@
 #title, #header, #email, #content, #footer {
 	margin:0 auto;
 }
+#title{
+color:#920003;
+width:900px;
+background:url(/images/design/box/title.gif) repeat-x;
+}
+#title a{
+color:#920003;
+}
 #header {
 	background:#E9E9E9;
 	overflow:hidden;
+	width:900px;
 }
 #email {
 	display:none;

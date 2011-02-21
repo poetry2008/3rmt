@@ -354,6 +354,7 @@ return array(
     'seoplink_submit_title' => '登録',
     'seoplink_site_order' => '並び順',
     'seoplink_site_submit' => '送信',
+    'seoplink_site_submit_review' => '登録する',
     'seoplink_site_comment' => 'ホームページの紹介文',
     'seoplink_site_linkpage_url' => 'リンクしたURL',
     'seoplink_site_linkcheck' => 'リンクチェック',
