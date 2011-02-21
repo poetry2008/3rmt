@@ -264,7 +264,7 @@ function rowOutEffect(object) {
                   <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                       <tr> 
                         <td class="main"></td> 
-                        <td class="main" align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
+                        <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
                       </tr> 
                     </table></td> 
                 </tr> 
@@ -380,7 +380,7 @@ if (!isset($date_error)) $date_error= NULL ; //del notice
                   <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                       <tr> 
                         <td class="main"><?php echo '<b>' . TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><br>' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></td> 
-                        <td class="main" align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
+                        <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
                       </tr> 
                     </table></td> 
                 </tr> 
