@@ -371,7 +371,7 @@ TD.formAreaTitle {
 /* ---------------------------
 SPAN：マーク（在庫切れ）
 --------------------------- */
-SPAN.markProductOutOfStock {
+SPAN.markProductOutOfStock a{
 	font-size: 12px;
 	color: #c76170;
 	font-weight: bold;
