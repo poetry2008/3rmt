@@ -278,19 +278,16 @@ function hidden_payment(){
         <tr>
           <td class="main"><table border="0" cellspacing="0" cellpadding="2">
               <tr>
-        <td class="main">&nbsp;取引日:</td>
-                <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('date', $date_list, isset($date)?$date:date('Y-m-d')); ?><?php if (isset($entry_date_error) && $entry_date_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+          <?php
+            $getTimeInfo = getReachTime(); 
+          ?>
+          <td class="main">&nbsp;取引日:</td>
+                <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('date', $date_list, isset($date)?$date:$getTimeInfo[0]); ?><?php if (isset($entry_date_error) && $entry_date_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
               <tr>
                 <td class="main">&nbsp;取引時間:</td>
                 <td class="main">&nbsp;<?php 
-                $now_minute = (int)date('i'); 
-                if ($now_minute > 50) {
-                  $minute_str = '50'; 
-                } else {
-                  $minute_str = sprintf('%2d0', ceil($now_minute/10)); 
-                }
-echo tep_draw_pull_down_menu('hour', $hour_list, isset($hour)?$hour:date('H')); ?>&nbsp;時&nbsp;<?php echo tep_draw_pull_down_menu('min', $min_list, isset($min)?$min:$minute_str); ?>&nbsp;分&nbsp;<b>（24時間表記）</b><?php if (isset($entry_tardetime_error ) && $entry_tardetime_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+echo tep_draw_pull_down_menu('hour', $hour_list, isset($hour)?$hour:$getTimeInfo[1]); ?>&nbsp;時&nbsp;<?php echo tep_draw_pull_down_menu('min', $min_list, isset($min)?$min:$getTimeInfo[2]); ?>&nbsp;分&nbsp;<b>（24時間表記）</b><?php if (isset($entry_tardetime_error ) && $entry_tardetime_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
               <tr>
                 <td class="main">&nbsp;オプション:</td>
