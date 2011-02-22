@@ -142,7 +142,7 @@ foreach($cart as $key => $val){
                           <td><table border="0" width="100%" cellspacing="0" cellpadding="2" summary="table">  
                             <tr> 
                               <td class="main"></td> 
-                              <td class="main" align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
+                              <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
                             </tr> 
                           </table></td> 
                         </tr> 

@@ -4008,3 +4008,31 @@ function tep_is_oroshi($cid){
   $c = tep_db_fetch_array($query);
   return $c['customers_guest_chk'] == 9;
 }
+
+function getReachTime()
+{
+   $date_arr = array();  
+   $now_time = time();
+   
+   $now_minute = (int)date('i', $now_time);
+   $now_hour = (int)date('H', $now_time); 
+   
+   $tmp_num = round($now_minute/10);
+   
+   if ($tmp_num == 6) {
+     if ($now_hour == 23) {
+       $date_arr[] = date('Y-m-d', strtotime('+1 day', $now_time)); 
+       $date_arr[] = '01';
+       $date_arr[] = '00';
+     } else {
+       $date_arr[] = date('Y-m-d', $now_time);
+       $date_arr[] = date('H', strtotime('+1 hour', $now_time)); 
+       $date_arr[] = '00'; 
+     }
+   } else {
+     $date_arr[] = date('Y-m-d', $now_time); 
+     $date_arr[] = date('H', $now_time); 
+     $date_arr[] = sprintf('%2d0', $tmp_num); 
+   }
+   return $date_arr;
+}
