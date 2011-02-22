@@ -27,7 +27,7 @@ define('TEXT_ENTER_PAYMENT_INFORMATION', '下記の方法で商品代金をお�
 define('TABLE_HEADING_COMMENTS', 'ご注文についてのコメント');
 
 define('TITLE_CONTINUE_CHECKOUT_PROCEDURE', 'ご注文の手続きを進めてください。');
-define('TEXT_CONTINUE_CHECKOUT_PROCEDURE', '「次へ進む」をクリックして取引日時の選択へ。');
+define('TEXT_CONTINUE_CHECKOUT_PROCEDURE', '「次へ進む」をクリックして注文内容の最終確認へ。');
 
 //Add Point System
 define('TEXT_POINT', 'ポイント');

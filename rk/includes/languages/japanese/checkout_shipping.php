@@ -27,7 +27,7 @@ define('TEXT_ENTER_SHIPPING_INFORMATION', '下記の配送方法で商品をお�
 define('TABLE_HEADING_COMMENTS', 'ご注文についてのコメント');
 
 define('TITLE_CONTINUE_CHECKOUT_PROCEDURE', 'ご注文の手続きを進めてください。');
-define('TEXT_CONTINUE_CHECKOUT_PROCEDURE', '「次へ進む」をクリックして取引日時の選択へ。');
+define('TEXT_CONTINUE_CHECKOUT_PROCEDURE', '「次へ進む」をクリックして支払方法の選択へ。');
 
 # Add ds-style
 define('TEXT_CARACTOR', 'お届け先キャラクター名:');
