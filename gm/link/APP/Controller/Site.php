@@ -627,6 +627,7 @@ class Controller_Site extends Controller_Base
         $User = $Model_User->find($cond);
         $From_Mail = $User['email'];
         $headers = 'Content-type: text/html; charset=utf-8' . "\r\n";
+        $headers .= "Content-Transfer-Encoding: 8bit\r\n";  
         $headers .= 'From: '.$From_Mail. "\r\n";
 
         mail($to, $subject, $message, $headers);
@@ -1389,6 +1390,7 @@ class Controller_Site extends Controller_Base
       $From_Mail = $User['email'];
     }
     $headers = 'Content-type: text/html; charset=utf-8' . "\r\n";
+    $headers .= "Content-Transfer-Encoding: 8bit\r\n";  
     $headers .= 'From: '.$From_Mail. "\r\n";
     $model_Setseo = FLEA::getSingleton('Model_Setseo');
     $seo = $model_Setseo->find("action ='".$_GET['action']."'");
