@@ -189,8 +189,16 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
           <tr> 
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
           </tr> 
-        <tr><td align="right"><p align='right' style="margin:0px 3px 0px;padding:0;"><?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></p>
-</td></tr>
+        <tr>
+            <td align="right">
+            	<table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
+                	<tr>
+                    	<td class="main">ご注文内容をご確認の上「注文する」をクリックしてください。</td>
+                        <td class="main" align="right"><?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
           <tr> 
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
           </tr> 
@@ -564,8 +572,9 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
   }
 ?> 
         <tr> 
-          <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+          <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
               <tr> 
+              <td class="main">ご注文内容をご確認の上「注文する」をクリックしてください。</td>
                 <td align="right" class="main"> <?php
 
 
@@ -588,7 +597,8 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
             </table></td> 
         </tr> 
         <tr> 
-          <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+          <td>
+		  <?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
         </tr>  
         </table>
         </div>

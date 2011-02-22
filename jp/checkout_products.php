@@ -128,15 +128,11 @@ foreach($cart as $key => $val){
           <tr>
               <td class='main'>&nbsp;</td>
           </tr>
-
-
-
-            <tr class="infoBoxContents"> 
-              <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+            <tr> 
+              <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
                 <tr> 
-                  <td class="main"></td> 
+                  <td class="main"><b>ご注文の手続きを進めてください。</b><br>「次へ進む」をクリックして取引日時の選択へ。</td> 
                   <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
-                  <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                 </tr> 
               </table></td> 
             </tr> 
@@ -205,13 +201,12 @@ foreach($cart as $key => $val){
           </p>
         </div>
         
-        <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
-            <tr class="infoBoxContents"> 
-              <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+        <table border="0" width="100%" cellspacing="1" cellpadding="2"> 
+            <tr> 
+              <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
                 <tr> 
-                  <td class="main">&nbsp;&nbsp;間違いがなければ「次へ進む」をクリックしてください。</td> 
+                  <td class="main"><b>ご注文の手続きを進めてください。</b><br>「次へ進む」をクリックして取引日時の選択へ。</td> 
                   <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
-                  <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                 </tr> 
               </table></td> 
             </tr> 

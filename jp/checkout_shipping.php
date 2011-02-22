@@ -260,22 +260,16 @@ function rowOutEffect(object) {
               <td class='main'>&nbsp;</td>
           </tr>
           <tr> 
-            <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-                <tr> 
-                  <td class="main">
-                    <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+            <td>
+                    <table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
                       <tr> 
-                        <td width="70%">
-                          <b><?php echo TABLE_HEADING_SHIPPING_ADDRESS; ?></b>
-                        </td> 
+                        <td class="main"><?php echo '<b>' . TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><br>' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></td>  
                         <td align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
-                        <td width="17"></td>
                       </tr> 
                     </table>
-                  </td> 
-                </tr> 
-              </table></td> 
+			</td> 
           </tr> 
+          <tr><td width="70%"><b><?php echo TABLE_HEADING_SHIPPING_ADDRESS; ?></b></td></tr>
           <tr> 
             <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
                 <tr class="infoBoxContents"> 
@@ -376,18 +370,14 @@ function rowOutEffect(object) {
       </td> 
           </tr> 
           <tr> 
-            <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
-                <tr class="infoBoxContents"> 
-                  <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+            <td>
+            <table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
                       <tr> 
-                        <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                         <td class="main"><?php echo '<b>' . TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><br>' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></td> 
                         <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
-                        <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                       </tr> 
-                    </table></td> 
-                </tr> 
-              </table></td> 
+                    </table>
+            </td> 
           </tr> 
           <tr> 
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 

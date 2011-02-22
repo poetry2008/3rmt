@@ -259,16 +259,13 @@ function rowOutEffect(object) {
             </td>
           </tr>
           <tr> 
-            <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
-                <tr class="infoBoxContents"> 
-                  <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+            <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
                       <tr> 
-                        <td class="main"></td> 
+                        <td class="main"><?php echo '<b>' . TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><br>' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></td> 
                         <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
                       </tr> 
-                    </table></td> 
-                </tr> 
-              </table></td> 
+                    </table>
+              </td> 
           </tr> 
           <tr>
             <td>
@@ -375,16 +372,13 @@ if (!isset($date_error)) $date_error= NULL ; //del notice
       </td> 
           </tr> 
           <tr> 
-            <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
-                <tr class="infoBoxContents"> 
-                  <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+            <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
                       <tr> 
                         <td class="main"><?php echo '<b>' . TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><br>' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></td> 
                         <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
                       </tr> 
-                    </table></td> 
-                </tr> 
-              </table></td> 
+                    </table>
+              </td> 
           </tr> 
           <tr> 
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 

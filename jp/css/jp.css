@@ -796,7 +796,7 @@ TD.formAreaTitle {
 /* ---------------------------
 SPAN：mark（Stock is 0）
 --------------------------- */
-SPAN.markProductOutOfStock {
+SPAN.markProductOutOfStock a{
 	font-size: 12px;
 	color: #c76170;
 	font-weight: bold;
@@ -1079,3 +1079,4 @@ a.Icon:hover {
 .password input {
 	width:120px;
 }
+.c_pay_info {padding:5px; border:1px solid #B6B7CB; margin-bottom:10px;}

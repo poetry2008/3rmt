@@ -137,16 +137,12 @@ foreach($cart as $key => $val){
           </tr>
           <tr>
             <td>
-              <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox" summary="table"> 
-                        <tr class="infoBoxContents"> 
-                          <td><table border="0" width="100%" cellspacing="0" cellpadding="2" summary="table">  
-                            <tr> 
-                              <td class="main"></td> 
-                              <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
-                            </tr> 
-                          </table></td> 
-                        </tr> 
-                      </table>
+            <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="table" class="c_pay_info">  
+                <tr> 
+                   <td class="main"><b>ご注文の手続きを進めてください。</b><br>「次へ進む」をクリックして取引日時の選択へ。</td> 
+                  <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
+                </tr> 
+            </table>
             </td>
           </tr>
           <?php
@@ -210,11 +206,11 @@ foreach($cart as $key => $val){
           </p>
         </div>
         
-        <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox" summary="table"> 
-                  <tr class="infoBoxContents"> 
-                    <td><table border="0" width="100%" cellspacing="0" cellpadding="2" summary="table">  
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="table"> 
+                  <tr > 
+                    <td><table border="0" width="100%" cellspacing="0" cellpadding="0" summary="table" class="c_pay_info">  
                       <tr> 
-                        <td class="main">&nbsp;&nbsp;間違いがなければ「次へ進む」をクリックしてください。</td> 
+                        <td class="main"><b>ご注文の手続きを進めてください。</b><br>「次へ進む」をクリックして取引日時の選択へ。</td> 
                         <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
                       </tr> 
                     </table></td> 

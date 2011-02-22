@@ -191,7 +191,12 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
   
         <tr> 
           <td>
-  <p align='right' style="margin-bottom:10px;"><?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></p>
+          <table border="0" width="100%" cellspacing="0" cellpadding="2" class="c_pay_info"> 
+              <tr> 
+                <td class="main"><b>ご注文の手続きを進めてください。</b><br>「次へ進む」をクリックして取引日時の選択へ。</td> 
+                <td class="main" align="right"><?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></td> 
+              </tr> 
+            </table>
   <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
               <tr class="infoBoxContents">
                 <?php
@@ -551,8 +556,9 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
   }
 ?> 
         <tr> 
-          <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+          <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
               <tr> 
+              	<td class="main"><b>ご注文の手続きを進めてください。</b><br>「次へ進む」をクリックして取引日時の選択へ。</td>
                 <td align="right" class="main"> <?php
   if (is_array($payment_modules->modules)) {
     echo $payment_modules->process_button();

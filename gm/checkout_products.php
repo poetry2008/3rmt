@@ -150,9 +150,9 @@ foreach($cart as $key => $val){
         <td>
         <table border="0" width="100%" cellspacing="1"> 
           <tr> 
-            <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des"> 
+            <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="c_pay_info"> 
               <tr> 
-                <td class="main"></td> 
+                <td class="main"><b>ご注文の手続きを進めてください。</b><br>「次へ進む」をクリックして取引日時の選択へ。</td> 
                 <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
                 <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
               </tr> 
@@ -213,11 +213,11 @@ foreach($cart as $key => $val){
           <span class="redtext">※</span>&nbsp;キャラクター名の入力不要な商品が一部ございます。「入力フォーム」が表示されない場合は「次へ進む」をクリックしてください。
         </p>
         
-        <table border="0" width="100%" cellspacing="1" class="formArea"> 
+        <table border="0" width="100%" cellspacing="1" > 
           <tr> 
-            <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des"> 
+            <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="c_pay_info"> 
               <tr> 
-                <td class="main">&nbsp;&nbsp;間違いがなければ「次へ進む」をクリックしてください。</td> 
+                <td class="main"><b>ご注文の手続きを進めてください。</b><br>「次へ進む」をクリックして取引日時の選択へ。</td> 
                 <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
                 <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
               </tr> 
