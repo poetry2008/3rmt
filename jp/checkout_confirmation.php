@@ -558,7 +558,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
         <tr> 
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
               <tr> 
-              	<td class="main"><b>ご注文の手続きを進めてください。</b><br>「次へ進む」をクリックして取引日時の選択へ。</td>
+                <td class="main">ご注文内容をご確認の上「注文する」をクリックしてください。</td>
                 <td align="right" class="main"> <?php
   if (is_array($payment_modules->modules)) {
     echo $payment_modules->process_button();
