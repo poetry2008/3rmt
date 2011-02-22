@@ -120,7 +120,7 @@ function check_all(cid){
 </script>
 <style>
 .categories_box{
-  display:block;
+  display:none;
 }
 </style>
 </head>
@@ -145,14 +145,14 @@ function check_all(cid){
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
+            <td class="pageHeading">タグ関連設定</td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
           </tr>
         </table></td>
       </tr>
       <tr>
         <td>
-  <?php echo tep_draw_form('products_to_tags','products_tags.php', 'action=save', 'post', 'onSubmit=""');?>
+  <?php echo tep_draw_form('products_to_tags','products_tags.php', 'action=save', 'post');?>
   <input type="submit" value="Save">
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
