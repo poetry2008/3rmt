@@ -3,7 +3,6 @@
    $Id$
 */
   require('includes/application_top.php');
-print_r($_SESSION);
   require('includes/step-by-step/new_application_top.php');
   require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER);
   if (IsSet($_GET['cmail'])) {

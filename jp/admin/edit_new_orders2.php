@@ -429,12 +429,12 @@
     if (isset($_POST['x']) && isset($_POST['y'])) {
       if (
            !$_SESSION['create_order2']['orders'] 
-        || !$_SESSION['create_order2']['orders_id'] 
-        || !$_SESSION['create_order2']['orders_id'] != $_GET['oID']
-        || !$_SESSION['create_order2']['customers_id']
+        || !$_SESSION['create_order2']['orders']['orders_id'] 
+        //|| !$_SESSION['create_order2']['orders_id'] != $_GET['oID']
+        || !$_SESSION['create_order2']['orders']['customers_id']
       ) {
         $messageStack->add_session(sprintf(ERROR_ORDER_DOES_NOT_EXIST, $oID), 'error');
-        tep_redirect(tep_href_link(FILENAME_CATEGORIES));
+        tep_redirect(tep_href_link(FILENAME_CREATE_ORDER2));
       }
       // orders 
       tep_db_perform(TABLE_ORDERS, $_SESSION['create_order2']['orders']);
@@ -457,7 +457,7 @@
           $p_quantity -= $orders_product['products_quantity'];
           $pr_quantity -= $orders_product['products_quantity'];
         }
-        tep_query("update products set products_quantity='".$p_quantity."',products_real_quantity='".$pr_quantity."',products_ordered=products_ordered+'".$orders_product['products_quantity']."' where products_id='".$pid."'");
+        tep_db_query("update products set products_quantity='".$p_quantity."',products_real_quantity='".$pr_quantity."',products_ordered=products_ordered+'".$orders_product['products_quantity']."' where products_id='".$pid."'");
       }
       foreach($_SESSION['create_order2']['orders_total'] as $c => $ot){
         tep_db_perform(TABLE_ORDERS_TOTAL, $ot);
@@ -878,7 +878,9 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
     //$oID = tep_db_prepare_input($_GET['oID']);
     //$orders_query = tep_db_query("select orders_id from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
     $order_exists = true;
-    if (!isset($_SESSION['create_order2']['orders']['orders_id'])) {
+    if (!isset($_SESSION['create_order2']['orders']['orders_id'])
+    || $_SESSION['create_order2']['orders']['orders_id'] != $_GET['oID']
+    ) {
       $order_exists = false;
       $messageStack->add(sprintf(ERROR_ORDER_DOES_NOT_EXIST, $oID), 'error');
       tep_redirect(tep_href_link(FILENAME_CREATE_ORDER2));
