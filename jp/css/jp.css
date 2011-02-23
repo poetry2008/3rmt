@@ -838,7 +838,10 @@ check out in turn
 .checkoutBarFrom, .checkoutBarTo {
 	font-size: 11px;
 	color: #8c8c8c;
+	*margin-top:2px;
 }
+.checkoutBarFrom{ *padding-top:5px;}
+.checkoutBarFrom:hover{ *padding-top:5px;}
 /* ---------------------------
 check out in turn（turn of now）
 --------------------------- */
@@ -1080,4 +1083,4 @@ a.Icon:hover {
 .password input {
 	width:120px;
 }
-.c_pay_info {padding:5px; border:1px solid #B6B7CB; margin:10px 0 15px 0; *margin:10px 0 16px 0;}
+.c_pay_info {padding:5px; border:1px solid #B6B7CB; margin:10px 0 15px 0;}

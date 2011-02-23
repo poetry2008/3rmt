@@ -145,9 +145,6 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
                 </table></td> 
             </tr> 
             <tr>
-              <td class='main'>&nbsp;</td>
-            </tr>
-            <tr>
               <td>
               <table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
                   <tr> 

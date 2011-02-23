@@ -125,9 +125,6 @@ foreach($cart as $key => $val){
   </table>
             </td> 
           </tr> 
-          <tr>
-              <td class='main'>&nbsp;</td>
-          </tr>
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
                 <tr> 

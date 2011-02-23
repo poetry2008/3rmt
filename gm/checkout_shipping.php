@@ -274,7 +274,7 @@ function rowOutEffect(object) {
           </tr> 
 
           <tr> 
-            <td><table  border="0" width="95%" cellspacing="0" cellpadding="2" class="c_pay_info"> 
+            <td><table  border="0" width="95%" cellspacing="0" cellpadding="2" class="c_pay_info01"> 
                 <tr>
                   <td class="main" width="450"><?php echo '<b>' . TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><div style="margin-top:5px;">' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></div></td> 
                   <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
@@ -392,7 +392,7 @@ if (!isset($jikan_error)) $jikan_error=NULL;
             <td><table border="0" width="95%" cellspacing="1" > 
                 <tr> 
                   <td>
-                  <table border="0" width="100%" cellspacing="0" cellpadding="2" class="c_pay_info"> 
+                  <table border="0" width="100%" cellspacing="0" cellpadding="2" class="c_pay_info02"> 
                       <tr> 
                         <td class="main"><?php echo '<b>' . TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><div style="margin-top:5px;">' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></div></td> 
                         <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 

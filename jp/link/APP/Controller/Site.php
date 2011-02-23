@@ -527,7 +527,7 @@ class Controller_Site extends Controller_Base
 
     $global = &FLEA::getSingleton('Model_Global');
     $email_foot = $global->find('name = "email_foot"');
-    $email_foot_str = str_replace("\r\n","<br>",$email_foot['value']);
+    $email_foot_str = nl2br(h($email_foot['value']));
         $this->addMsg(_T($data['id']?'site_edit_success':'site_create_success')); 
         $model_Class = &FLEA::getSingleton('Model_Class');
         $class = $model_Class->find($_POST['class']);
