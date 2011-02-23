@@ -5,11 +5,6 @@
    分类&商品管理
 */
   require('includes/application_top.php');
-
-echo session_id();
-print_r($_SESSION);
-exit;
-
   require(DIR_WS_CLASSES . 'currencies.php');  
   
 
