@@ -177,7 +177,9 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   //Add DB - ds-style
   define('TABLE_INFORMATION_PAGE', 'information_page');//information box
   define('TABLE_LATEST_NEWS', 'latest_news'); //latest_news
-  
+define('TABLE_PERMISSIONS','permissions');
+
+
   define('TABLE_PRESENT_GOODS', 'present_goods');
   define('TABLE_PRESENT_APPLICANT', 'present_applicant');
   define('TABLE_MAIL_MAGAZINE', 'mail_magazine');
@@ -229,6 +231,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   }
 
 // include shopping cart class
+
   require(DIR_WS_CLASSES . 'shopping_cart.php');
 
 // some code to solve compatibility issues
