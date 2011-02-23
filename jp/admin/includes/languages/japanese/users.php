@@ -10,6 +10,7 @@
 
   ■変更履歴
 ********************************************************* */
+
 // ページタイトル
 define('HEADING_TITLE', 'ユーザ管理');
 
@@ -37,6 +38,7 @@ define('TEXT_ERRINFO_DB_UPDATE_USER', 'ユーザ情報の更新ができませ�
 define('TEXT_ERRINFO_DB_DELETE_USER', 'ユーザ情報の削除ができませんでした');
 define('TEXT_ERRINFO_DB_CHANGE_PASSWORD', 'パスワードの変更ができませんでした');
 define('TEXT_ERRINFO_DB_CHANGE_USER', 'ユーザ権限の変更ができませんでした');
+define('TEXT_ERRINFO_DB_CHANGE_PERMISSION','ユーザ権限の変更ができませんでした');
 
 // 完了メッセージ
 define('TEXT_SUCCESSINFO_INSERT_USER', 'ユーザを追加しました');
@@ -44,14 +46,14 @@ define('TEXT_SUCCESSINFO_UPDATE_USER', 'ユーザ情報を更新しました');
 define('TEXT_SUCCESSINFO_DELETE_USER', 'ユーザ情報を削除しました');
 define('TEXT_SUCCESSINFO_CHANGE_PASSWORD', 'パスワードを変更しました');
 define('TEXT_SUCCESSINFO_PERMISSION', 'ユーザ権限を%sました');
-
+define('TEXT_SUCCESSINFO_CHANGE_PERMISSION','権限を変更しました');
 // ページタイトル
 define('PAGE_TITLE_MENU_USER', 'ユーザ管理メニュー');
 define('PAGE_TITLE_INSERT_USER', 'ユーザの追加');
 define('PAGE_TITLE_USERINFO', 'ユーザ情報');
 define('PAGE_TITLE_PASSWORD', 'パスワード変更');
 define('PAGE_TITLE_PERMISSION', '管理者権限');
-
+define('PAGE_TITLE_CHANGE_PERMISSION','サイト権限管理');
 // ボタン
 define('BUTTON_BACK_MENU', 'ユーザ管理メニューに戻る');
 define('BUTTON_INSERT_USER', 'ユーザの追加');
@@ -67,7 +69,7 @@ define('BUTTON_CHANGE', '変更');
 define('BUTTON_GRANT', '権限を与える >>');
 define('BUTTON_REVOKE', '<< 権限を取消す');
 define('BUTTON_BACK_PERMISSION', '管理者権限に戻る');
-
+define('BUTTON_CHANGE_PERMISSION','サイト権限');
 // 項目名
 define('TABLE_HEADING_COLUMN', 'カラム');
 define('TABLE_HEADING_DATA', 'データ');
@@ -89,4 +91,5 @@ define('JAVA_SCRIPT_INFO_PASSWORD', 'パスワードを変更します。\nよ�
 define('JAVA_SCRIPT_INFO_GRANT', '管理者権限を与えます。\nよろしいですか？');
 define('JAVA_SCRIPT_INFO_REVOKE', '管理者権限を取り消します。\nよろしいですか？');
 define('TABLE_HEADING_IP_LIMIT', 'IP制限設置');
+define('JAVA_SCRIPT_INFO_C_PERMISSION','ユーザ管理の権限を変更する。\nよろしいですか？');
 ?>

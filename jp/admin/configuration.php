@@ -5,6 +5,8 @@
 require('includes/application_top.php');
 
 if (isset($_GET['action']) && $_GET['action']) {
+if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];//权限判断
+         else $site_arr="";
     switch  ($_GET['action']) {
     case 'save': 
         $configuration_value = tep_db_prepare_input($_POST['configuration_value']);
@@ -13,6 +15,7 @@ if (isset($_GET['action']) && $_GET['action']) {
       {
     $exploded_cid = explode('_',$cID);
     $site_id = $exploded_cid[1];
+  forward401Unless(editPermission($site_arr, $site_id));//权限不够 跳到401
     $config_id = $exploded_cid[0];
     $upfile_name = $_FILES["upfile"]["name"];
     $upfile = $_FILES["upfile"]["tmp_name"];
@@ -52,6 +55,8 @@ WHERE
 
         tep_redirect(tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $config_id.'&action=edit'));
       }
+ $site_id= tep_get_conf_sid_by_id($cID);
+        if($site_id['site_id'])    forward401Unless(editPermission($site_arr, $site_id['site_id']));//权限不够 跳到401
   //画像アップロード時のみ
         $upfile_name = $_FILES["upfile"]["name"];
         $upfile = $_FILES["upfile"]["tmp_name"];

@@ -3,6 +3,33 @@
   $Id$
 */
 
+
+//无权限修改 提示401
+function forward401()
+{ 
+  header($_SERVER["SERVER_PROTOCOL"] . " 401Not Found");
+  //  require("/home/hansir/project/OSC_3RMT/jp/".DIR_WS_MODULES  . '401.html');
+  require( DIR_WS_MODULES. '401.html');
+  exit;
+  //throw new Exception();
+}
+//在条件成立的时候，401
+function forward401If($condition)
+{
+  if ($condition)
+  {
+    forward403();
+  }
+}
+//在条件不成立时，401
+function forward401Unless($condition)
+{
+  if (!$condition)
+  {
+    forward401();
+  }
+}
+
 //取得minitor 的信息
 function tep_minitor_info(){
   $show_div = false;
@@ -4049,3 +4076,22 @@ function tep_calc_products_price($real_qty = 0, $virtual_qty = 0){
   }
   //return 100;
 }
+//获取用户对网站的权限 用于判断用户能否对last_news页面的网站新闻进行管理
+ function  editPermission($site_permission,$site_id){
+
+  $edit_p=FALSE;
+ $site_arr=array();
+  $site_arr=explode(",",$site_permission);//返回权限数组
+  if(in_array($site_id,$site_arr)){//判断iste_id是否存在于权限数组中
+    $edit_p=true;//true 说明有管理权限 可以在点击新闻时进行修改 
+        }
+          return $edit_p;
+    }
+
+function tep_get_conf_sid_by_id($id){
+    return tep_db_fetch_array(tep_db_query("select  site_id  from " . TABLE_CONFIGURATION. " where configuration_id = '".$id."'"));
+  }
+  
+function tep_get_rev_sid_by_id($id){
+    return tep_db_fetch_array(tep_db_query("select  site_id  from " . TABLE_REVIEWS. " where reviews_id = '".$id."'"));
+  }

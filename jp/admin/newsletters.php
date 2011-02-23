@@ -18,6 +18,9 @@
         break;
       case 'insert':
       case 'update':
+  if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];//权限判断
+         else $site_arr="";
+ forward401Unless(editPermission($site_arr, $lsite_id));
         $newsletter_id = tep_db_prepare_input($_POST['newsletter_id']);
         $newsletter_module = tep_db_prepare_input($_POST['module']);
         $title = tep_db_prepare_input($_POST['title']);
