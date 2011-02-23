@@ -43,6 +43,8 @@ $HTTP_POST_VERS に対応させる
   if (isset($_POST['execute_user'])) { $execute_user = $_POST['execute_user']; }
   if (isset($_POST['execute_password'])) { $execute_password = $_POST['execute_password']; }
   if (isset($_POST['execute_permission'])) { $execute_permission = $_POST['execute_permission']; }
+//修改权限
+if (isset($_POST['execute_change'])) { $execute_change = $_POST['execute_change'];}
 //2003-07-16 hiroshi_sato add 6 lines
         if (isset($_POST['execute_new'])) { $execute_new = $_POST['execute_new']; }
         if (isset($_POST['execute_insert'])) { $execute_insert = $_POST['execute_insert']; }
@@ -50,7 +52,7 @@ $HTTP_POST_VERS に対応させる
         if (isset($_POST['execute_delete'])) { $execute_delete = $_POST['execute_delete']; }
         if (isset($_POST['execute_grant'])) { $execute_grant = $_POST['execute_grant']; }
         if (isset($_POST['execute_reset'])) { $execute_reset = $_POST['execute_reset']; }
-
+if (isset($_POST['execute_c_permission'])) { $execute_change = $_POST['execute_c_permission'];}
 /* ===============================================
   入力チェック関数
  ============================================== */
@@ -342,6 +344,7 @@ function UserManu_preview() {
     echo tep_draw_input_field("execute_user", BUTTON_INFO_USER, '', FALSE, "submit", FALSE);  // ユーザ情報
     echo tep_draw_input_field("execute_password", BUTTON_CHANGE_PASSWORD, '', FALSE, "submit", FALSE);  // パスワード変更
     echo tep_draw_input_field("execute_permission", BUTTON_PERMISSION, '', FALSE, "submit", FALSE); // 管理者権限
+ echo tep_draw_input_field("execute_change",BUTTON_CHANGE_PERMISSION , '', FALSE, "submit", FALSE);
     echo "\n";
   } else {
     echo tep_draw_input_field("execute_user", BUTTON_INFO_USER, '', FALSE, "submit", FALSE);  // ユーザ情報
@@ -530,6 +533,86 @@ function UserInfo_preview() {
   echo '<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF'])) . '">&laquo;&nbsp;' . BUTTON_BACK_MENU . '</a>'; // ユーザ管理メニューに戻る
 
   return TRUE;
+}
+
+
+//修改用户管理网站的权限
+function ChangePermission(){
+PageBody('t', PAGE_TITLE_CHANGE_PERMISSION); 
+
+putJavaScript_ConfirmMsg();  
+  $sql=" SELECT * FROM `permissions` ";
+  $result =tep_db_query($sql);
+  $site_sql="SELECT  id, romaji ,name  FROM `sites` ";
+  $site_romaji = array();
+  $site_result=tep_db_query($site_sql);
+  while($site =tep_db_fetch_array($site_result)){
+    $site_romaji[$site['id']]=$site['romaji'];//将网站siteid 与romaji 组合成数组 格式($site_id=>$romaji)
+    }           
+
+  //  echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));      // <form>
+
+  echo '<form name="users" action="'.HTTP_SERVER.'/admin/users.php?execute_change=change" method="post">';
+  echo "<table>";
+  echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
+    echo "<tr>\n";
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . 'ユーザー' . '</td>' . "\n"; 
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . "サイト権限" . '</td>' . "\n";
+    echo "</tr>\n";
+while($userslist= tep_db_fetch_array($result)){
+  if($userslist['userid']=='admin'){//admin 用户 不显示 默认拥有所有权限
+  }else{
+    echo "<tr><td>";
+    echo $userslist['userid'];//输出用户名
+   echo "</td><td>";
+   $user_id=$userslist['userid'];
+   $u_s_arr=array();
+   if($userslist['site_permission']){
+     $u_s_arr = explode(",",$userslist['site_permission']);//site_permission转为数组 exp:(1,6=>([0]=>1,[1]=>6 )
+   }else{
+     $u_s_arr[]="";
+   }   
+   foreach($site_romaji as $key =>$value){  
+     $site_str=  '<input name="'.$user_id.'[]" type="checkbox" id="'.$key.'" value="'.$key.'" ';
+     if(in_array( $key,$u_s_arr)){ $site_str.=' checked />'; }//如果拥有权限  checkbox 属性为checked 显示为选中
+     else {$site_str.='/>';}
+     echo $site_str;
+     echo $value;
+   }
+   echo "</td></tr>";
+  }
+}
+echo "</table>";
+//点击执行onclick 弹出y/n对话框
+    echo tep_draw_input_field("execute_update", BUTTON_CHANGE, "onClick=\"return formConfirm('c_permission')\"", FALSE, "submit", FALSE); // 変更
+
+
+echo ' </form>';
+ echo '<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF'])) . '">&laquo;&nbsp;' . BUTTON_BACK_MENU . '</a>'; 
+}
+//修改用户管理网站的权限的执行方法
+function  ChangePermission_execute(){
+  $y_n=true;
+  PageBody('t', PAGE_TITLE_CHANGE_PERMISSION); 
+  $sql=" SELECT * FROM `permissions` ";
+  $result =tep_db_query($sql);  //获取用户的权限 （所有用户）
+while($userslist= tep_db_fetch_array($result)){
+  if($_POST[$userslist['userid']]){//获取页面 checkbox的值(数组)
+    $u_s_id=$_POST[$userslist['userid']];
+$u_id_str=implode(",",$u_s_id);
+//修改permission中 对应的userid的 site_permission
+$permission_sid_sql="UPDATE `gc_3rmt`.`permissions` SET `site_permission` = '".$u_id_str."' WHERE `permissions`.`userid` = '".$userslist['userid']. "' ";
+if(tep_db_query($permission_sid_sql)){
+}else{ $y_n= FALSE;}
+}
+}
+  if($y_n) {
+    echo   TEXT_SUCCESSINFO_CHANGE_PERMISSION."<br>";//修改成功  输出成功语句
+
+   }
+  else {echo TEXT_ERRINFO_DB_CHANGE_PERMISSION."<BR>";
+   }
+   echo '<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF'])) . '">&laquo;&nbsp;' . BUTTON_BACK_MENU . '</a>'; 
 }
 
 /*--------------------------------------
@@ -1257,6 +1340,11 @@ function PageFooter() {
       elseif (isset($execute_revoke) && $execute_revoke)  UserPermission_execute(1);    // 管理者権限を取消す処理実行
       else UserPermission_preview();                // 管理者権限ページ表示
 
+ 
+    } elseif (isset($execute_change) && $execute_change) {
+      if (isset($execute_update) && $execute_update)   {
+        ChangePermission_execute();  } // 修改用户管理网站的权限的执行
+      else{ ChangePermission();}//用户权限页面
     // ユーザ管理メニュー
     } else {
       UserManu_preview();               // 初期表示

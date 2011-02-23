@@ -37,6 +37,9 @@
   switch ($_GET['action']) {
     case 'save':
       $site_id = isset($_POST['site_id'])?(int)$_POST['site_id']:0;
+   if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];//权限判断
+         else $site_arr="";
+ forward401Unless(editPermission($site_arr, $site_id));
       $class = basename($_GET['module']);
       $file_extension = substr($PHP_SELF, strrpos($PHP_SELF, '.'));
       if (file_exists($module_directory . $class . $file_extension)) {

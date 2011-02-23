@@ -188,6 +188,11 @@
       case 'update_category':
         $categories_id = tep_db_prepare_input($_POST['categories_id']);
         $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
+
+         if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];
+         else $site_arr="";
+         //   $edit_per=editPermission($site_arr, $site_id);//判断是否拥有相应网站的管理权限
+         forward401Unless(editPermission($site_arr, $site_id));
         $sort_order = tep_db_prepare_input($_POST['sort_order']);
 
         $sql_data_array = array('sort_order' => $sort_order);

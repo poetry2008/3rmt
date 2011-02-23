@@ -8,6 +8,10 @@
   if (isset($_GET['act']) && $_GET['act']) {
     switch ($_GET['act']) {
       case 'update':
+ if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];//权限判断
+         else $site_arr="";
+ forward401Unless(editPermission($site_arr, $site_id));
+
         // tamura 2002/12/30 「全角」英数字を「半角」に変換
         $an_cols = array('navbar_title','heading_title','text_information');
         $error = false; 

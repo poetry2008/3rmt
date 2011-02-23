@@ -68,7 +68,11 @@ require('includes/application_top.php');
     $up_ht = tep_db_prepare_input($_POST['ht']);
     $up_title = tep_db_prepare_input($_POST['title']);
     $present = tep_get_present_by_id($_GET['cID']);
-
+  $site_id=$present['site_id'];
+    if(!$site_id) $site_id=0;
+   if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];//权限判断
+         else $site_arr="";
+   forward401Unless(editPermission($site_arr, $site_id));
     if($_FILES['file']['tmp_name'] != ""){
       $filepath = tep_get_upload_dir($present['site_id'])."present/"."image".".".date("YmdHis").".".GetExt($_FILES['file']['name']);
       $filepath2 = "image".".".date("YmdHis").".".GetExt($_FILES['file']['name']);

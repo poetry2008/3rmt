@@ -8,6 +8,8 @@
   $banner_extension = tep_banner_image_extension();
 
   if (isset($_GET['action']) && $_GET['action']) {
+ if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];//权限判断
+         else $site_arr="";
     switch ($_GET['action']) {
       case 'setflag':
         if ( ($_GET['flag'] == '0') || ($_GET['flag'] == '1') ) {
@@ -23,12 +25,14 @@
         //echo "<pre>";
         //print_r($_POST);
         //exit;
+ forward401Unless(editPermission($site_arr, $lsite_id));
         $site_id              = tep_db_prepare_input($_POST['site_id']);
         if (empty($site_id)) {
           $messageStack->add(SITE_ID_NOT_NULL, 'error');
           $banner_error = true;
         }
       case 'update':
+ forward401Unless(editPermission($site_arr, $lsite_id));
         $banners_id           = tep_db_prepare_input($_POST['banners_id']);
         $banners_title        = tep_db_prepare_input($_POST['banners_title']);
         $banners_url          = tep_db_prepare_input($_POST['banners_url']);
