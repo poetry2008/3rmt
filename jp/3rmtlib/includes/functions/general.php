@@ -38,7 +38,6 @@
 
 function forward404()
 { 
-  
   header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
   require(DIR_WS_MODULES  . '404.html');
   exit;
@@ -218,6 +217,19 @@ function forward404Unless($condition)
 
     if ($stock_left < 0) {
       $out_of_stock = '<span class="markProductOutOfStock">' . STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</span>';
+    }
+
+    return $out_of_stock;
+  }
+
+// 购物车专用的检查方法，如果购买个数大于实际数量显示提示信息
+  function tep_check_stock_in_cart($products_id, $products_quantity) {
+    $product = tep_get_product_by_id($products_id, SITE_ID, 4);
+    $stock_left = $product['products_real_quantity'] - $products_quantity;
+    $out_of_stock = '';
+
+    if ($stock_left < 0) {
+      $out_of_stock = '<span class="markProductOutOfStock"><a style="" href="'.tep_href_link('open.php', 'products='.urlencode($product['products_name'])).'">' . STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</a></span>';
     }
 
     return $out_of_stock;
@@ -2564,6 +2576,8 @@ function tep_unlink_temp_dir($dir)
     $sql = "
         SELECT * FROM (SELECT p.products_id, 
                p.products_quantity, 
+               p.products_real_quantity, 
+               p.products_virtual_quantity, 
                p.products_model, 
                p.products_image, 
                p.products_image2, 
@@ -2612,6 +2626,8 @@ function tep_unlink_temp_dir($dir)
     $sql = "
         SELECT p.products_id, 
                p.products_quantity, 
+               p.products_real_quantity, 
+               p.products_virtual_quantity, 
                p.products_model, 
                p.products_image, 
                p.products_image2, 

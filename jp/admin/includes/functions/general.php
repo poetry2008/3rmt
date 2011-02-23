@@ -2556,6 +2556,8 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
     $sql = "
         SELECT * FROM (SELECT p.products_id, 
                p.products_quantity, 
+               p.products_real_quantity, 
+               p.products_virtual_quantity, 
                p.products_model, 
                p.products_image, 
                p.products_image2, 
@@ -2596,6 +2598,8 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
     $sql = "
         SELECT p.products_id, 
                p.products_quantity, 
+               p.products_real_quantity, 
+               p.products_virtual_quantity, 
                p.products_model, 
                p.products_image, 
                p.products_image2, 
@@ -4035,4 +4039,13 @@ function getReachTime()
      $date_arr[] = sprintf('%2d0', $tmp_num); 
    }
    return $date_arr;
+}
+
+function tep_calc_products_price($real_qty = 0, $virtual_qty = 0){
+  if ($real_qty > 0) {
+    return $real_qty + $virtual_qty;
+  } else {
+    return 0;
+  }
+  //return 100;
 }
