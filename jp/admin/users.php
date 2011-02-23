@@ -601,7 +601,8 @@ while($userslist= tep_db_fetch_array($result)){
     $u_s_id=$_POST[$userslist['userid']];
 $u_id_str=implode(",",$u_s_id);
 //修改permission中 对应的userid的 site_permission
-$permission_sid_sql="UPDATE `gc_3rmt`.`permissions` SET `site_permission` = '".$u_id_str."' WHERE `permissions`.`userid` = '".$userslist['userid']. "' ";
+$permission_sid_sql="UPDATE ".TABLE_PERMISSIONS." SET `site_permission` = '".$u_id_str."' WHERE `permissions`.`userid` = '".$userslist['userid']. "' ";
+var_dump($permission_sid_sql);
 if(tep_db_query($permission_sid_sql)){
 }else{ $y_n= FALSE;}
 }
