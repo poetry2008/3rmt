@@ -209,9 +209,9 @@ function makeInsertUser($aval, $nmode=0) {
     $ssql .= TABLE_PERMISSIONS . " values (";
     $ssql .= "'" . $aval['userid'] . "'";
     $ssql .= ",7";
+    $ssql.=",''";
     $ssql .= ")";
   }
-
   return $ssql;
 }
 
