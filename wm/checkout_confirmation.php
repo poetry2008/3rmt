@@ -193,7 +193,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
             <td align="right">
             	<table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
                 	<tr>
-                    	<td class="main">ご注文内容をご確認の上「注文する」をクリックしてください。</td>
+                    	<td class="main"><b>ご注文内容をご確認の上「注文する」をクリックしてください。</b></td>
                         <td class="main" align="right"><?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></td>
                     </tr>
                 </table>
@@ -574,7 +574,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
         <tr> 
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
               <tr> 
-              <td class="main">ご注文内容をご確認の上「注文する」をクリックしてください。</td>
+              <td class="main"><b>ご注文内容をご確認の上「注文する」をクリックしてください。</b></td>
                 <td align="right" class="main"> <?php
 
 
