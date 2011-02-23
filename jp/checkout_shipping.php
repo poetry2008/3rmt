@@ -269,7 +269,11 @@ function rowOutEffect(object) {
                     </table>
 			</td> 
           </tr> 
-          <tr><td width="70%"><b><?php echo TABLE_HEADING_SHIPPING_ADDRESS; ?></b></td></tr>
+          <tr>
+          <td width="70%"><b><?php echo TABLE_HEADING_SHIPPING_ADDRESS; ?></b></td></tr>
+          <tr>
+          <td width="10" height="5"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+          </tr>
           <tr> 
             <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
                 <tr class="infoBoxContents"> 

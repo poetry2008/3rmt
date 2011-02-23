@@ -154,7 +154,6 @@ foreach($cart as $key => $val){
               <tr> 
                 <td class="main"><b>ご注文の手続きを進めてください。</b><div style="margin-top:5px;">「次へ進む」をクリックして取引日時の選択へ。</div></td> 
                 <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
-                <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
               </tr> 
             </table></td> 
           </tr> 
@@ -219,7 +218,6 @@ foreach($cart as $key => $val){
               <tr> 
                 <td class="main"><b>ご注文の手続きを進めてください。</b><div style="margin-top:5px;">「次へ進む」をクリックして取引日時の選択へ。</div></td> 
                 <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
-                <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
               </tr> 
             </table></td> 
           </tr> 
