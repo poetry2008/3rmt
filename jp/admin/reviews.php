@@ -32,6 +32,11 @@
         break;
       case 'setflag':
         $site_id = isset($_GET['site_id']) ? $_GET['site_id'] :0;
+
+  if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];//权限判断
+         else $site_arr="";
+ forward401Unless(editPermission($site_arr, $site_id));
+
         if ( ($_GET['flag'] == '0') || ($_GET['flag'] == '1') ) {
           if ($_GET['pID']) {
             $pID = (int)$_GET['pID'];
@@ -43,6 +48,10 @@
         break;
       case 'update':
         $reviews_id     = tep_db_prepare_input($_GET['rID']);
+        $site_id=tep_get_rev_sid_by_id($reviews_id);
+         if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];//权限判断
+        else $site_arr="";
+        forward401Unless(editPermission($site_arr, $site_id['site_id']));
         $reviews_rating = tep_db_prepare_input($_POST['reviews_rating']);
         $last_modified  = tep_db_prepare_input($_POST['last_modified']);
         $reviews_text   = tep_db_prepare_input($_POST['reviews_text']);
