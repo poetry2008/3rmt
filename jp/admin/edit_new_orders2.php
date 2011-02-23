@@ -438,6 +438,17 @@
           $orders_product_attributes['orders_products_id'] = $orders_products_id;
           tep_db_perform(TABLE_ORDERS_PRODUCTS_ATTRIBUTES, $orders_product_attributes);
         }
+        $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$pid."'"));
+        $p_quantity = $p['products_quantity'];
+        $pr_quantity = $p['products_real_quantity'];
+        
+        if ($orders_product['products_quantity'] - $pr_quantity > 0) {
+          $p_quantity = $pr_quantity = 0;
+        } else {
+          $p_quantity -= $orders_product['products_quantity'];
+          $pr_quantity -= $orders_product['products_quantity'];
+        }
+        tep_query("update products set products_quantity='".$p_quantity."',products_real_quantity='".$pr_quantity."',products_ordered=products_ordered+'".$orders_product['products_quantity']."' where products_id='".$pid."'");
       }
       foreach($_SESSION['create_order2']['orders_total'] as $c => $ot){
         tep_db_perform(TABLE_ORDERS_TOTAL, $ot);

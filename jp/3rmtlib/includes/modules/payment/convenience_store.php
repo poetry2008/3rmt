@@ -102,6 +102,23 @@
       if (isset($_SESSION['customer_emailaddress'])) {
         $email_default_str = $_SESSION['customer_emailaddress']; 
       }
+      if(SITE_ID == 1){
+      $selection = array(
+          'id' => $this->code,
+          'module' => $this->title,
+          'fields' => array(array('title' => MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_PROCESS,
+                                  'field' => ''),
+                            array('title' => '<div id="cemail" style="display:none;">'.MODULE_PAYMENT_CONVENIENCE_INFO_TEXT.'<div class="cemail_input_01">'.MODULE_PAYMENT_CONVENIENCE_EMAIL_TEXT.'<div class="con_email01">'.tep_draw_input_field('convenience_email', $email_default_str, 'onpaste="return false"').'  '.MODULE_PAYMENT_CONVENIENCE_MUST_INPUT.'</div></div></div>', 
+                                  'field' => '' 
+                                 ), 
+                            array('title' => '<div id="caemail" style="display:none;"><div class="cemail_input_02">'.MODULE_PAYMENT_CONVENIENCE_EMAIL_CONFIRMATION_TEXT.'<div class="con_email02">'.tep_draw_input_field('convenience_email_again', $email_default_str, 'onpaste="return false"').'  '.MODULE_PAYMENT_CONVENIENCE_MUST_INPUT.'</div></div><p>'.MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FOOTER.'</p></div>',
+                                  'field' => '' 
+                                 ), 
+                            array('title' => $s_message,
+                                  'field' => $added_hidden)
+        )
+      );
+      }else{
       $selection = array(
           'id' => $this->code,
           'module' => $this->title,
@@ -117,6 +134,8 @@
                                   'field' => $added_hidden)
         )
       );
+
+      }
 
       return $selection;
     }

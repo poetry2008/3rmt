@@ -716,6 +716,7 @@ TD.main, P.main {
 }
 .main02 {
 	font-size: 11px;
+	padding:8px 0 5px 0;
 }
 /* ---------------------------
 TD,SPAN：small text（message）
@@ -998,13 +999,13 @@ P.description {
 }
 .con_email01 {
 	display:inline;
-	margin-left:143px;
- *+margin-left:142px;
+	margin-left:78px;
 }
 .con_email02 {
 	display:inline;
-	margin-left:103px;
+	margin-left:39px;
 }
+.cemail_input_01{ margin:10px 0 0 0;}
 .waring_category {
 	color:#000;
 	margin:5px 0 2px 0;
@@ -1079,4 +1080,4 @@ a.Icon:hover {
 .password input {
 	width:120px;
 }
-.c_pay_info {padding:5px; border:1px solid #B6B7CB; margin-bottom:10px;}
+.c_pay_info {padding:5px; border:1px solid #B6B7CB; margin:10px 0 15px 0; *margin:10px 0 16px 0;}

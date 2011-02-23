@@ -75,7 +75,9 @@
         //％指定の場合は価格を算出
         $HTTP_POST_VARS['products_price_offset'] = SBC2DBC($HTTP_POST_VARS['products_price_offset']);
         $update_sql_data = array('products_last_modified' => 'now()',
-                                 'products_quantity' => tep_db_prepare_input($_POST['products_quantity']),
+                                 'products_real_quantity' => tep_db_prepare_input($_POST['products_real_quantity']),
+                                 'products_virtual_quantity' => tep_db_prepare_input($_POST['products_virtual_quantity']),
+                                 'products_quantity' => tep_calc_products_price(tep_db_prepare_input($_POST['products_real_quantity']), tep_db_prepare_input($_POST['products_virtual_quantity'])),
                                  'products_attention_5' => tep_db_prepare_input($_POST['products_attention_5']),
                                  //'products_price_offset' => tep_db_prepare_input($HTTP_POST_VARS['products_price_offset']),
                                  'products_price' => tep_db_prepare_input($_POST['products_price']));
@@ -554,7 +556,11 @@
       $products_attention_3 = tep_db_prepare_input($_POST['products_naiyou']);
       $products_attention_4 = tep_db_prepare_input($_POST['products_zaishitu']);
       $products_attention_5 = tep_db_prepare_input($_POST['products_attention_5']);
-      $sql_data_array = array('products_quantity' => tep_db_prepare_input($_POST['products_quantity']),
+      $sql_data_array = array(
+        //'products_quantity' => tep_db_prepare_input($_POST['products_quantity']),
+                                  'products_real_quantity' => tep_db_prepare_input($_POST['products_real_quantity']),
+                                  'products_virtual_quantity' => tep_db_prepare_input($_POST['products_virtual_quantity']),
+                                  'products_quantity' => tep_calc_products_price(tep_db_prepare_input($_POST['products_real_quantity']),tep_db_prepare_input($_POST['products_virtual_quantity'])),
                                   'products_model' => tep_db_prepare_input($_POST['products_model']),
                                   //'products_image' => (($_POST['products_image'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image'])),
                                   //'products_image2' => (($_POST['products_image2'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image2'])),
@@ -817,6 +823,8 @@
             tep_db_query("
               insert into " . TABLE_PRODUCTS . " (
                 products_quantity, 
+                products_real_quantity, 
+                products_virtual_quantity, 
                 products_model,
                 products_image,
                 products_image2,
@@ -840,6 +848,8 @@
                 products_attention_5
               ) values (
               '" . $product['products_quantity'] . "', 
+              '" . $product['real_quantity'] . "', 
+              '" . $product['virtual_quantity'] . "', 
               '" . $product['products_model'] . "', 
               '" . $product['products_image'] . "', 
               '" . $product['products_image2'] . "', 
@@ -1106,6 +1116,8 @@ function get_cart_products(){
                  p.products_id,
                  p.option_type, 
                  p.products_quantity, 
+                 p.products_real_quantity, 
+                 p.products_virtual_quantity, 
                  p.products_model, 
                  p.products_image,
                  p.products_image2,
@@ -1377,8 +1389,13 @@ function get_cart_products(){
                 <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
         <tr bgcolor="#CCCCCC">
-                <td class="main"><?php echo '<font color="blue"><b>' . TEXT_PRODUCTS_QUANTITY . '</b></font>'; ?></td>
-                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_quantity', isset($pInfo->products_quantity)?$pInfo->products_quantity:'', ($site_id ? 'class="readonly" readonly' : '')); ?></td>
+                <td class="main"><?php echo '<font color="blue"><b>' . TEXT_PRODUCTS_REAL_QUANTITY . '</b></font>'; ?></td>
+                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_real_quantity', isset($pInfo->products_real_quantity)?$pInfo->products_real_quantity:'', ($site_id ? 'class="readonly" readonly' : '')); ?></td>
+              </tr>
+        <tr>
+        <tr bgcolor="#CCCCCC">
+                <td class="main"><?php echo '<font color="blue"><b>' . TEXT_PRODUCTS_VIRTUAL_QUANTITY . '</b></font>'; ?></td>
+                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_virtual_quantity', isset($pInfo->products_virtual_quantity)?$pInfo->products_virtual_quantity:'', ($site_id ? 'class="readonly" readonly' : '')); ?></td>
               </tr>
         <tr>
           <td>&nbsp;</td>
@@ -1806,6 +1823,8 @@ function get_cart_products(){
                  pd.products_url, 
                  pd.romaji, 
                  p.products_quantity, 
+                 p.products_real_quantity, 
+                 p.products_virtual_quantity, 
                  p.products_model, 
                  p.products_image,
                  p.products_image2,
@@ -1907,11 +1926,15 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   echo '  <tr><td><hr size="2" noshade></td></tr><tr>';
   echo '  <tr>';
   echo '  <td height="30">';
-  echo '価格：&nbsp;' . tep_draw_input_field('products_price', number_format($pInfo->products_price,0,'.',''),'id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;円' . '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price . '円 ' . "\n";
+  echo '価&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格：&nbsp;' . tep_draw_input_field('products_price', number_format($pInfo->products_price,0,'.',''),'id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;円' . '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price . '円 ' . "\n";
   echo '  </td>';
   echo '  </tr><tr><td><hr size="2" noshade></td></tr><tr>';
   echo '  <td height="30">';
-  echo '数量：&nbsp;' . tep_draw_input_field('products_quantity', $pInfo->products_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;個' . '&nbsp;&nbsp;←&nbsp;' . $pInfo->products_quantity . '個' . "\n";
+  echo '実&nbsp;在&nbsp;&nbsp;個：&nbsp;' . tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;個' . '&nbsp;&nbsp;←&nbsp;' . $pInfo->products_real_quantity . '個' . "\n";
+  echo '  </td>';
+  echo '  </tr><tr><td><hr size="2" noshade></td></tr><tr>';
+  echo '  <td height="30">';
+  echo '架空在庫：&nbsp;' . tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;個' . '&nbsp;&nbsp;←&nbsp;' . $pInfo->products_virtual_quantity . '個' . "\n";
   echo '  </td>';
   echo '  </tr><tr><td><hr size="2" noshade></td></tr>';
   echo '</table>';
@@ -1954,7 +1977,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   echo '</td>';
   echo tep_image_submit('button_update.gif', 'よく確認してから押しなさい') . '</form>' . "\n";
 } else {
-  echo '価格：&nbsp;' . $products_price_preview . '<br>数量：&nbsp;' . $pInfo->products_quantity . '個' . "\n";
+  echo '価格：&nbsp;' . $products_price_preview . '<br>数量：&nbsp;' . $pInfo->products_real_quantity . '個' . "\n";
 }
 ?>
         </b>
@@ -2266,6 +2289,8 @@ if (isset($nowColor) && $nowColor == $odd) {
         select p.products_id, 
                pd.products_name, 
                p.products_quantity, 
+               p.products_real_quantity, 
+               p.products_virtual_quantity, 
                p.products_image,
                p.products_image2,
                p.products_image3, 
@@ -2289,6 +2314,8 @@ if (isset($nowColor) && $nowColor == $odd) {
         select p.products_id, 
                pd.products_name, 
                p.products_quantity, 
+               p.products_real_quantity, 
+               p.products_virtual_quantity, 
                p.products_image,
                p.products_image2,
                p.products_image3, 
@@ -2360,7 +2387,7 @@ if (isset($nowColor) && $nowColor == $odd) {
   ?></td>
             <td class="dataTableContent" align="right"><?php
 //if (empty($products['products_quantity']) or $products['products_quantity'] < 1) {
-if (empty($products['products_quantity']) or $products['products_quantity'] == 0) {
+if (empty($products['products_real_quantity']) or $products['products_real_quantity'] == 0) {
   echo '<b>在庫切れ</b>';
 } else {
   echo intval($products['products_quantity']) . '個';

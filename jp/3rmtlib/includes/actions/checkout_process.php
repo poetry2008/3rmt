@@ -285,7 +285,7 @@
 // Stock Update - Joao Correia
     if (STOCK_LIMITED == 'true') {
       if (DOWNLOAD_ENABLED == 'true') {
-        $stock_query_raw = "SELECT products_quantity, pad.products_attributes_filename 
+        $stock_query_raw = "SELECT products_quantity,products_real_quantity,products_virtual_quantity, pad.products_attributes_filename 
                             FROM " . TABLE_PRODUCTS . " p
                             LEFT JOIN " . TABLE_PRODUCTS_ATTRIBUTES . " pa
                              ON p.products_id=pa.products_id
@@ -302,18 +302,24 @@
         $stock_query = tep_db_query($stock_query_raw);
       } else {
 //ccdd
-        $stock_query = tep_db_query("select products_quantity from " . TABLE_PRODUCTS . " where products_id = '" . tep_get_prid($order->products[$i]['id']) . "'");
+        $stock_query = tep_db_query("select products_quantity,products_real_quantity,products_virtual_quantity from " . TABLE_PRODUCTS . " where products_id = '" . tep_get_prid($order->products[$i]['id']) . "'");
       }
       if (tep_db_num_rows($stock_query) > 0) {
         $stock_values = tep_db_fetch_array($stock_query);
 // do not decrement quantities if products_attributes_filename exists
         if ((DOWNLOAD_ENABLED != 'true') || (!$stock_values['products_attributes_filename'])) {
           $stock_left = $stock_values['products_quantity'] - $order->products[$i]['qty'];
+          if ($order->products[$i]['qty'] > $stock_values['products_real_quantity']) {
+            $stock_left = 0;
+            $real_stock_left = 0;
+          } else {
+            $real_stock_left = $stock_values['products_real_quantity'] - $order->products[$i]['qty'];
+          }
         } else {
           $stock_left = $stock_values['products_quantity'];
         }
 //ccdd
-        tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = '" . $stock_left . "' where products_id = '" . tep_get_prid($order->products[$i]['id']) . "'");
+        tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = '" . $stock_left . "'" . (isset($real_stock_left)?(", products_real_quantity = '" . $real_stock_left):'') . "' where products_id = '" . tep_get_prid($order->products[$i]['id']) . "'");
         /*
         if ($stock_left < 1) {
         ########## 在庫切れのメール通知　##############

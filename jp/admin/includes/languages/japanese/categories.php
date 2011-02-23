@@ -20,6 +20,8 @@ define('TEXT_PRODUCTS_PRICE_INFO', '価格:');
 define('TEXT_PRODUCTS_TAX_CLASS', '税種別:');
 define('TEXT_PRODUCTS_AVERAGE_RATING', '平均点:');
 define('TEXT_PRODUCTS_QUANTITY_INFO', '数量:');
+define('TEXT_PRODUCTS_REAL_QUANTITY', '実在個:');
+define('TEXT_PRODUCTS_VIRTUAL_QUANTITY', '架空在庫:');
 define('TEXT_DATE_ADDED', '登録日:');
 define('TEXT_DATE_AVAILABLE', '発売日:');
 define('TEXT_LAST_MODIFIED', '更新日:');

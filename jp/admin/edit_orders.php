@@ -214,7 +214,17 @@
     //print_r($order);
     if ($products_details["qty"] != $order['products_quantity']) {
       $quantity_difference = ($products_details["qty"] - $order['products_quantity']);
-      tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = products_quantity - " . $quantity_difference . ", products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
+      $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$orders_products_id."'"));
+      $p_quantity  = $p['products_quantity'];
+      $pr_quantity = $p['products_real_quantity'];
+      //$pv_quantity = $p['products_virtual_quantity'];
+      if ($pr_quantity - $quantity_difference < 0) {
+        $p_quantity = $pr_quantity = 0;
+      } else {
+        $p_quantity -= $quantity_difference;
+        $pr_quantity -= $quantity_difference;
+      }
+      tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = ".$p_quantity.", products_real_quantity = ".$pr_quantity.", products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
     }
 
     if($products_details["qty"] > 0) { // a.) quantity found --> add to list & sum
@@ -717,7 +727,16 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       
       
       // 2.2.1 Update inventory Quantity
-      tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = products_quantity - " . (int)$add_product_quantity . ", products_ordered = products_ordered + " . (int)$add_product_quantity . " where products_id = '" . $add_product_products_id . "'");
+      $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$add_product_products_id."'"));
+      $p_quantity  = $p['products_quantity'];
+      $pr_quantity = $p['products_real_quantity'];
+      if ($pr_quantity - (int)$add_product_quantity < 0) {
+        $p_quantity = $pr_quantity = 0;
+      } else {
+        $p_quantity -= (int)$add_product_quantity;
+        $pr_quantity -= (int)$add_product_quantity;
+      }
+      tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = '".$p_quantity."', products_real_quantity = '".$pr_quantity."', products_ordered = products_ordered + " . (int)$add_product_quantity . " where products_id = '" . $add_product_products_id . "'");
       tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = 0 where products_quantity < 0 and products_id = '" . $add_product_products_id . "'");
 
       if (IsSet($add_product_options)) {
