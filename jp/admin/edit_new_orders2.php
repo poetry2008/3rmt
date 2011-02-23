@@ -432,17 +432,8 @@
         || !$_SESSION['create_order2']['orders_id'] 
         || !$_SESSION['create_order2']['orders_id'] != $_GET['oID']
         || !$_SESSION['create_order2']['customers_id']
-        || 1
       ) {
-        $messageStack->add(sprintf(ERROR_ORDER_DOES_NOT_EXIST, $oID), 'error');
-        $messageStack->add('abcde', 'error');
-        //$_SESSION['abcde']['ffffffffffffffffff'];
-        //echo "<pre>";
-        //var_dump($_SESSION);
-        $_SESSION['site_permission'] = 'aaaaaaaaaaaaaaaaaaaaaaaa';
-        //exit;
-
-
+        $messageStack->add_session(sprintf(ERROR_ORDER_DOES_NOT_EXIST, $oID), 'error');
         tep_redirect(tep_href_link(FILENAME_CATEGORIES));
       }
       // orders 

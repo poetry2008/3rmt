@@ -5,9 +5,7 @@
 
   if (isset($messageStack) && $messageStack->size > 0) {
     echo $messageStack->output();
-    
   }
-  print_r($messageStack->errors);
 ?>
 <script type="text/javascript">
 function showmenu(elmnt)
