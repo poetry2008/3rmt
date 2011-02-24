@@ -27,6 +27,29 @@ function submitChk() {
     return flag; 
 } 
 
+function submitChk2() { 
+//async : false,
+    var flag2 = true;
+    $.ajax({
+        url: 'edit_new_orders2.php?action=check_session',
+        type: 'GET',
+        dataType: 'text',
+        async : false,
+        success: function(data) {
+            if (data == 'error') {
+                alert('エラー: 注文が存在しません。');
+                flag2 = false;
+            }
+        }
+    });
+    if (flag2) {
+        var flag = confirm ( "確認はしましたか？\n\n【 重要 】価格構成要素を変更した場合は、先に「注文内容確認」ボタンを押す必要があります。\n\n戻る場合は [キャンセル] ボタンをクリックしてください。"); 
+        return flag; 
+    } else {
+        location.href='create_order2.php';
+    }
+} 
+
 function update_price() {
 	
 	if (window.confirm("注文内容を確認しますか？")) {

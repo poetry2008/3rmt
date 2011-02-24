@@ -79,7 +79,26 @@
 
   if (tep_not_null($action)) {
     switch ($action) {
-      
+      case 'check_session':
+        /*
+        header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+        # 永远是改动过的
+        header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
+        # HTTP/1.1
+        header("Cache-Control: no-store, no-cache, must-revalidate");
+        header("Cache-Control: post-check=0, pre-check=0", false);
+        # HTTP/1.0
+        header("Pragma: no-cache");
+        */
+        if (
+             !$_SESSION['create_order2']['orders'] 
+          || !$_SESSION['create_order2']['orders']['orders_id'] 
+          || !$_SESSION['create_order2']['orders']['customers_id']
+        ) {
+          echo 'error';
+        }
+        exit;
+        break;
   // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
 /*
@@ -430,7 +449,6 @@
       if (
            !$_SESSION['create_order2']['orders'] 
         || !$_SESSION['create_order2']['orders']['orders_id'] 
-        //|| !$_SESSION['create_order2']['orders_id'] != $_GET['oID']
         || !$_SESSION['create_order2']['orders']['customers_id']
       ) {
         $messageStack->add_session(sprintf(ERROR_ORDER_DOES_NOT_EXIST, $oID), 'error');
@@ -636,34 +654,6 @@
       tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), 'ご注文ありがとうございます【' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
       
       $customer_notified = '1';
-      
-// 支払方法がクレジットなら決済URLを送る
-/*
-if ($order->info['payment_method'] === 'クレジットカード決済') {
-      $email_credit = '';
-      $email_credit .= $order->customer['name'] . '様' . "\n\n";
-      $email_credit .= 'この度は、' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . 'をご利用いただき、誠にありがとうございます。' . "\n\n";
-      $email_credit .= '注文番号' . $oID . 'の決済URLをお知らせいたします。' . "\n";
-      $email_credit .= '下記URLをクリックし、クレジットカード決済を完了してください。' . "\n";
-      $email_credit .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-      $email_credit .= 'https://secure.telecomcredit.co.jp/inetcredit/secure/order.pl?clientip=76011&usrmail=' . $order->customer['email_address'] . '&money=' . $total_price_mail . "\n";
-      $email_credit .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-      $email_credit .= '※ 上記URLをクリックしても決済ページが表示されない場合は、お手数ではご' . "\n";
-      $email_credit .= 'ざいますが「改行」を取り除きブラウザに直接入力してアクセスしてください。' . "\n\n\n";
-      $email_credit .= 'クレジットカード決済が成功しましたら、商品の手配に移らせていただきます。' . "\n";
-      $email_credit .= "\n\n\n";
-      $email_credit .= 'ご不明な点がございましたら、注文番号をご確認の上、' . "\n";
-      $email_credit .= '「' . STORE_NAME . '」までお問い合わせください。' . "\n\n";
-      $email_credit .= '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n";
-      $email_credit .= '株式会社 iimy' . "\n";
-      $email_credit .= get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS',$order->info['site_id']) . "\n";
-      $email_credit .= get_url_by_site_id($order->info['site_id']) . "\n";
-      $email_credit .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-      tep_mail($check_status['customers_name'], $check_status['customers_email_address'], 'クレジットカード決済について【' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email_credit, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']), $order->info['site_id']);
-      tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), '送信済：クレジットカード決済について【' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email_credit, $check_status['customers_name'], $check_status['customers_email_address'], $order->info['site_id']);
-}
-*/
-
     }
       
       
@@ -746,20 +736,6 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
       $ProductsTax = tep_get_tax_rate($p_products_tax_class_id, $CountryID, $ZoneID);
       
       // 2.2 UPDATE ORDER #####
-      /*
-      $Query = "insert into " . TABLE_ORDERS_PRODUCTS . " set
-        orders_id = '$oID',
-        products_id = $add_product_products_id,
-        products_model = '$p_products_model',
-        products_name = '" . str_replace("'", "&#39;", $p_products_name) . "',
-        products_character = '" . mysql_real_escape_string($add_product_character) . "',
-        products_price = '$p_products_price',
-        final_price = '" . ($p_products_price + $AddedOptionsPrice) . "',
-        products_tax = '$ProductsTax',
-        site_id = '".tep_get_site_id_by_orders_id($oID)."',
-        products_rate = '".tep_get_products_rate($add_product_products_id)."',
-        products_quantity = '" . (int)$add_product_quantity . "';";
-      */
       $_SESSION['create_order2']['orders_products'][$add_product_products_id] = array(
         'orders_id' => $oID,
         'products_id' => $add_product_products_id,
@@ -895,6 +871,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/general.js"></script>
+<script language="javascript" src="includes/javascript/jquery.js"></script>
 <script>
 function check_add(){
   price = document.getElementById('add_product_price').value;
@@ -953,7 +930,7 @@ function check_add(){
             <?php echo tep_draw_separator(); ?>
           </td>
         </tr> 
-        <tr><?php echo tep_draw_form('edit_order', "edit_new_orders2.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'onSubmit="return submitChk()"'); ?>
+        <tr><?php echo tep_draw_form('edit_order', "edit_new_orders2.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'onSubmit="return submitChk2();"'); ?>
           <td>
             <!-- Begin Update Block -->
             <table width="100%" border="0" cellpadding="2" cellspacing="1">
