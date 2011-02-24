@@ -392,7 +392,7 @@ $rows = $count[0]>count($products)?$count[0]:count($products);
     <th class="dataTableHeadingContent"><?php echo $value;?></th>
 <?php } ?>
     <th class="dataTableHeadingContent" >商品選択</th>
-    <th class="dataTableHeadingContent" >架空数量</th>
+    <th class="dataTableHeadingContent" >架空在庫</th>
     <th class="dataTableHeadingContent" >業者単価</th>
     <!--<th></th>-->
   </tr>

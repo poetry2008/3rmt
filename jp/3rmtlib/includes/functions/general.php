@@ -17,6 +17,13 @@
 ////
 // Redirect to another page or site
   function tep_redirect($url,$suc='') {
+    /*
+    echo "<pre>";
+    print_r($_POST);
+    print_r($_GET);
+    print_r(debug_backtrace());
+    exit;
+    */
     // id 要求登录后自动跳转到非ssl首页，所以需要让此代码在id下失效
     /*
     if ( (ENABLE_SSL == true) && (getenv('HTTPS') == 'on') && (SITE_ID != 4 && SITE_ID != 5)) { // We are loading an SSL page // 要求id登陆跳回非SSL页面 2010.12.28 18:00 - maker
