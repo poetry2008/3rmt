@@ -217,7 +217,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                       </tr>
                       <tr class="infoBoxContents">
                         <td class="main"><font color="#0070AF">注文可能数</font></td>
-                        <td class="main">残り<strong>&nbsp;<?php echo tep_show_quantity($product_info['products_quantity']); ?></strong>&nbsp;個</td>
+                        <td class="main">残り<strong>&nbsp;<?php echo tep_show_quantity($product_info['products_quantity']); ?></strong>&nbsp;個以上</td>
                       </tr>
 <?php 
 // ccdd

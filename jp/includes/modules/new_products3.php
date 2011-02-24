@@ -174,7 +174,7 @@ if (0 < $num_products) {
 ?></p>
           </td>
           <td align="right" class="main">
-		  	<?php echo '残り&nbsp;<b>' . number_format(tep_show_quantity($new_products['products_quantity'])) . '</b>&nbsp;個'; ?>
+        <?php echo '残り&nbsp;<b>' . number_format(tep_show_quantity($new_products['products_quantity'])) . '</b>&nbsp;個以上'; ?>
           </td>
         </tr>
         <tr>
