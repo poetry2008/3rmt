@@ -28,7 +28,6 @@ function submitChk() {
 } 
 
 function submitChk2() { 
-//async : false,
     var flag2 = true;
     $.ajax({
         url: 'edit_new_orders2.php?action=check_session',
