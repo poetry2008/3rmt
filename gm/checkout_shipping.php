@@ -231,10 +231,11 @@ function rowOutEffect(object) {
 <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>
 <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
           <tr> 
-            <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '15'); ?></td> 
+            <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '25'); ?></td> 
           </tr> 
           <tr> 
-            <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+            <td>
+            <table border="0" width="95%" cellspacing="0" cellpadding="0"> 
                 <tr> 
                 <td width="20%">
                   <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -261,7 +262,7 @@ function rowOutEffect(object) {
                     </table></td> 
                 </tr> 
                 <tr class="box_des"> 
-                  <td align="center" width="20%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_PRODUCTS . '</a>'; ?></td>
+                  <td align="center" width="22%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_PRODUCTS . '</a>'; ?></td>
                   <td align="center" width="20%" class="checkoutBarCurrent"><?php echo CHECKOUT_BAR_DELIVERY; ?></td> 
                   <td align="center" width="20%" class="checkoutBarTo"><?php echo CHECKOUT_BAR_PAYMENT; ?></td> 
                   <td align="center" width="20%" class="checkoutBarTo"><?php echo CHECKOUT_BAR_CONFIRMATION; ?></td> 

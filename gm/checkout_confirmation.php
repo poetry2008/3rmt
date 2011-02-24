@@ -156,12 +156,8 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
     </div>
     <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
     <table border="0" width="95%" cellspacing="0" cellpadding="0" class="box_des">
-  
-  
-  
-  
       <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
+        <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '15'); ?></td>
       </tr>
       <tr>
         <td>
@@ -208,10 +204,6 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
       <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
       </tr>
-  
-  
-  
-  
       <tr>
         <td>
         <table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info01">
@@ -321,7 +313,6 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                     <td class="main" colspan="3"><b><?php echo TEXT_TORIHIKI_TITLE; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
                   </tr>
                   <tr>
-                    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
                     <td class="main"><?php echo TEXT_TORIHIKIHOUHOU; ?></td>
                     <td class="main"><?php echo $torihikihouhou; ?></td>
                   </tr>
@@ -340,9 +331,6 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
             </tr>
           </table>
         </td>
-      </tr>
-      <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
       </tr>
       <?php
   $bflag_cnt = ds_count_bflag();
@@ -395,10 +383,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
   }
 ?>
       <tr>
-        <td class="main"><b><?php echo HEADING_BILLING_INFORMATION; ?></b></td>
-      </tr>
-      <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
+        <td class="main03"><b><?php echo HEADING_BILLING_INFORMATION; ?></b></td>
       </tr>
       <tr>
         <td>
@@ -502,13 +487,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
     if ($confirmation = $payment_modules->confirmation()) {
 ?>
       <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-      </tr>
-      <tr>
-        <td class="main"><b><?php echo HEADING_PAYMENT_INFORMATION; ?></b></td>
-      </tr>
-      <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
+        <td class="main03"><b><?php echo HEADING_PAYMENT_INFORMATION; ?></b></td>
       </tr>
       <tr>
         <td>
@@ -558,9 +537,6 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
     }
   }
 ?>
-      <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-      </tr>
       <?php
   if (tep_not_null($order->info['comments'])) {
 ?>

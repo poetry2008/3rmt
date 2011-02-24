@@ -101,7 +101,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
 <div> 
           <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
             <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '15'); ?></td> 
             </tr> 
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
