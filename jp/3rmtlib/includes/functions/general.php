@@ -209,7 +209,14 @@ function forward404Unless($condition)
   function tep_get_products_stock($products_id) {
     $products_id = tep_get_prid($products_id);
     //ccdd
-    $stock_query = tep_db_query(" select * from (select p.products_quantity, pd.products_status, p.products_id, pd.site_id from " . TABLE_PRODUCTS . " p , ".TABLE_PRODUCTS_DESCRIPTION." pd where p.products_id = pd.products_id and p.products_id = '" . (int)$products_id . "' order by pd.site_id DESC) c where site_id = ".SITE_ID." or site_id = 0 group by products_id");
+    $stock_query = tep_db_query("
+    select * from (
+      select p.products_quantity, pd.products_status, p.products_id, pd.site_id 
+      from " . TABLE_PRODUCTS . " p , ".TABLE_PRODUCTS_DESCRIPTION." pd 
+      where p.products_id = pd.products_id and p.products_id = '" . (int)$products_id . "' 
+      order by pd.site_id DESC
+    ) c where site_id = ".SITE_ID." or site_id = 0 group by products_id
+    ");
     $stock_values = tep_db_fetch_array($stock_query);
 
     return ($stock_values['products_status'] == '1') ? $stock_values['products_quantity'] : 0;
@@ -231,8 +238,14 @@ function forward404Unless($condition)
 
 // 购物车专用的检查方法，如果购买个数大于实际数量显示提示信息
   function tep_check_stock_in_cart($products_id, $products_quantity) {
-    $product = tep_get_product_by_id($products_id, SITE_ID, 4);
-    $stock_left = $product['products_real_quantity'] - $products_quantity;
+    $stock = tep_get_products_stock($products_id);
+    if ($stock) {
+      $product = tep_get_product_by_id($products_id, SITE_ID, 4);
+      $stock_left = $product['products_real_quantity'] - $products_quantity;
+    } else {
+      $stock_left = -1;
+    }
+    
     $out_of_stock = '';
 
     if ($stock_left < 0) {

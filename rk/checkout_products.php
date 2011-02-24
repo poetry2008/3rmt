@@ -20,7 +20,7 @@
   if ( (STOCK_CHECK == 'true') && (STOCK_ALLOW_CHECKOUT != 'true') ) {
     $products = $cart->get_products();
     for ($i=0, $n=sizeof($products); $i<$n; $i++) {
-      if (tep_check_stock_in_cart($products[$i]['id'], $products[$i]['quantity'])) {
+      if (tep_check_stock($products[$i]['id'], $products[$i]['quantity'])) {
         tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
         break;
       }
@@ -133,9 +133,12 @@ foreach($cart as $key => $val){
                 </tr> 
               </table></td> 
       </tr> 
-
       <tr> 
-        <td><table border="0" width="100%" cellspacing="0" cellpadding="0" summary="table" class="c_pay_info">  
+            <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+      </tr>  
+      <tr> 
+        <td>
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="table" class="c_pay_info">  
           <tr> 
             <td class="main"><b>ご注文の手続きを進めてください。</b><br>「次へ進む」をクリックして取引日時の選択へ。</td> 
             <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 

@@ -2163,7 +2163,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
             <?php }?>
 -->
             <td class="dataTableHeadingContent" align="right">価格</td>
-            <td class="dataTableHeadingContent" align="right">実在個</td>
+            <td class="dataTableHeadingContent" align="right">数量</td>
                       <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_STATUS; ?></td>
                       <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
                     </tr>

@@ -20,7 +20,7 @@
   if ( (STOCK_CHECK == 'true') && (STOCK_ALLOW_CHECKOUT != 'true') ) {
     $products = $cart->get_products();
     for ($i=0, $n=sizeof($products); $i<$n; $i++) {
-      if (tep_check_stock_in_cart($products[$i]['id'], $products[$i]['quantity'])) {
+      if (tep_check_stock($products[$i]['id'], $products[$i]['quantity'])) {
         tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
         break;
       }
@@ -113,9 +113,9 @@ foreach($cart as $key => $val){
       </tr> 
       <tr>
         <td>
-          <table border="0" width="100%" cellspacing="0" cellpadding="0">
+          <table border="0" width="100%" cellspacing="0" cellpadding="0" style="*margin-right:5px;">
             <tr>
-              <td width="25%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+              <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr> 
                     <td width="50%" align="right"><?php echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif'); ?></td> 
                     <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
