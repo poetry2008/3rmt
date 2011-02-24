@@ -115,7 +115,7 @@
 // Display marker if stock quantity insufficient
     if (!strstr($PHP_SELF, FILENAME_ACCOUNT_HISTORY_INFO)) {
       if (STOCK_CHECK == 'true') {
-        echo $stock_check = tep_check_stock_in_cart($products[$i]['id'], $products[$i]['quantity']);
+        echo $stock_check = tep_check_stock($products[$i]['id'], $products[$i]['quantity']);
         if ($stock_check) $any_out_of_stock = 1;
       }
     }

@@ -237,6 +237,7 @@ function forward404Unless($condition)
   }
 
 // 购物车专用的检查方法，如果购买个数大于实际数量显示提示信息
+  /*
   function tep_check_stock_in_cart($products_id, $products_quantity) {
     $stock = tep_get_products_stock($products_id);
     if ($stock) {
@@ -254,6 +255,7 @@ function forward404Unless($condition)
 
     return $out_of_stock;
   }
+  */
 
 ////
 // Break a word in a string if it is longer than a specified length ($len)
