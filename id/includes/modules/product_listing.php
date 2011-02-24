@@ -95,7 +95,7 @@
             ?>
           </td>
           <td class="main" align="right">
-            <p><?php echo '残り&nbsp;<b>' . tep_show_quantity($listing['products_quantity']) . '</b>&nbsp;個以上'; ?></p>
+            <p><?php echo '残り&nbsp;<b>' . tep_show_quantity($listing['products_quantity']) . '</b>&nbsp;個'; ?></p>
           </td>
         </tr>
         <tr>

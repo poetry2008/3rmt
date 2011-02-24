@@ -3052,7 +3052,7 @@ function tep_get_ot_total($orders_id)
 }
 
 function tep_show_quantity($quantity) {
-  return $quantity > 0 ? $quantity+1 : 0;
+  return $quantity > 0 ? $quantity : 0;
 }
 
 function tep_add_rmt($name) {

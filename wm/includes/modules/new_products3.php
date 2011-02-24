@@ -161,7 +161,7 @@
       }
 ?>
           </td>
-          <td class="main" align="right"><p><?php echo '残り&nbsp;<b>' . number_format(tep_show_quantity($new_products['products_quantity'])) . '</b>&nbsp;個以上'; ?></p></td>
+          <td class="main" align="right"><p><?php echo '残り&nbsp;<b>' . number_format(tep_show_quantity($new_products['products_quantity'])) . '</b>&nbsp;個'; ?></p></td>
         </tr>
         <tr>
           <td><span class="smallText"><?php echo $description_view; ?>...</span></td>
