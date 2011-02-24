@@ -39,6 +39,10 @@
           if ($_GET['cID']) {
             $cID = intval($_GET['cID']);
             $site_id = (isset($_GET['site_id']))?$_GET['site_id']:0;
+            if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];
+            else $site_arr="";
+            //   $edit_per=editPermission($site_arr, $site_id);//判断是否拥有相应网站的管理权限
+            forward401Unless(editPermission($site_arr, $site_id));
             $c_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
             
             if (isset($_GET['status']) && ($_GET['status'] == 0 || $_GET['status'] == 1 || $_GET['status'] == 2 || $_GET['status'] == 3)){
@@ -470,6 +474,10 @@
         exit;
         */
         $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
+         if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];
+         else $site_arr="";
+         //   $edit_per=editPermission($site_arr, $site_id);//判断是否拥有相应网站的管理权限
+         forward401Unless(editPermission($site_arr, $site_id));
         
         //$_POST['romaji'] = str_replace(array('/','_'),'-',$_POST['romaji']);
         
