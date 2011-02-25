@@ -610,25 +610,6 @@ function orders_computers(ele, cid, oid) {
   
   // 点击关联商品前的checkbox
   function click_relate(pid,ele){
-    /*
-    // 增加库存
-    if ($('#checkbox_'+pid).attr('checked')) {
-      $('#offset_'+pid).attr('readonly', true);
-      $.ajax({
-        url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count='+($('#quantity_'+pid).html()-$('#offset_'+pid).val()),
-        success: function(data) {
-        }
-      });
-    } else {
-    // 减库存
-      $('#offset_'+pid).attr('readonly', false);
-      $.ajax({
-        url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count=-'+($('#quantity_'+pid).html()-$('#offset_'+pid).val()),
-        success: function(data) {
-        }
-      });
-    }
-    */
     // 增加库存
     if ($(ele).parent().parent().find('#checkbox_'+pid).attr('checked')) {
       $(ele).parent().parent().find('#offset_'+pid).attr('readonly', true);

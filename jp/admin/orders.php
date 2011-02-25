@@ -28,11 +28,6 @@
   switch ($_GET['action']) {
     //一括変更----------------------------------
   case 'sele_act':
-    /*
-    echo "<pre>";
-    print_r($_POST);
-    exit;
-    */
     if($_POST['chk'] == ""){
       $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
       tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action'))));
@@ -1497,19 +1492,6 @@ if($reload == 'yes') {
   ?>
     </table>
 </td>
-    <?php /*<td id="same_orders" bgcolor="yellow">
-  <table>
-    <tr>
-      <td colspan="4">商品名</td>
-    </tr>
-    <tr>
-      <td>顾客名</td>
-      <td>取引时间</td>
-      <td>注文个数</td>
-      <td>AS人物名</td>
-    </tr>
-  </table>
-</td> */ ?>
     </tr></table>
         </td>
       </tr>
@@ -1596,22 +1578,6 @@ if($reload == 'yes') {
       </table>
     <?php } ?>
   </td>
-  <?php /*
-  <td id="orders_actors" bgcolor="gray">
-    <table>
-      <tr>
-        <td colspan="5">商品名</td>
-      </tr>
-      <tr>
-        <td>AS人物名</td>
-        <td>AS库存1</td>
-        <td>AS库存2</td>
-        <td>AS库存3</td>
-        <td>注文数</td>
-      </tr>
-    </table>
-  </td>
-  */ ?>
   </tr>
 </table>
     </td>

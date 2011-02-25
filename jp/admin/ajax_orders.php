@@ -22,8 +22,8 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   if ($rp) {
     print_r($rp);
     $q  = $rp['products_quantity'] + $_GET['count'];
-    tep_db_query("update ".TABLE_PRODUCTS." set products_quantity='".$q."' where products_id='".$p['relate_products_id']."'");
-    print_r("update ".TABLE_PRODUCTS." set products_quantity='".$q."' where products_id='".$p['relate_products_id']."'"); 
+    tep_db_query("update ".TABLE_PRODUCTS." set products_real_quantity='".$q."' where products_id='".$p['relate_products_id']."'");
+    print_r("update ".TABLE_PRODUCTS." set products_real_quantity='".$q."' where products_id='".$p['relate_products_id']."'"); 
   }
 } else if ($_GET['orders_id'] && $_POST['orders_credit']) {
   $order = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS." where orders_id='".$_GET['orders_id']."'"));
