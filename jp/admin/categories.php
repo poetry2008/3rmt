@@ -71,11 +71,13 @@
         $update_sql_data = array('products_last_modified' => 'now()',
                                  'products_real_quantity' => tep_db_prepare_input($_POST['products_real_quantity']),
                                  //'products_virtual_quantity' => tep_db_prepare_input($_POST['products_virtual_quantity']),
-                                 'products_quantity' => tep_calc_products_price(tep_db_prepare_input($_POST['products_real_quantity']), tep_db_prepare_input($_POST['products_virtual_quantity'])),
+                                 //'products_quantity' => tep_calc_products_price(tep_db_prepare_input($_POST['products_real_quantity']), tep_db_prepare_input($_POST['products_virtual_quantity'])),
                                  'products_attention_5' => tep_db_prepare_input($_POST['products_attention_5']),
                                  //'products_price_offset' => tep_db_prepare_input($HTTP_POST_VARS['products_price_offset']),
                                  'products_price' => tep_db_prepare_input($_POST['products_price']));
         tep_db_perform(TABLE_PRODUCTS, $update_sql_data, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
+        tep_db_query("update products set products_quantity=products_real_quantity+products_virtual_quantity where products_id='".$products_id."'");
+    
         /*
         if (tep_db_prepare_input($_POST['products_virtual_quantity'])) {
           if (tep_db_num_rows(tep_db_query("select * from set_menu_list where products_id = '".tep_db_input($products_id)."'"))) {
@@ -567,7 +569,7 @@
         //'products_quantity' => tep_db_prepare_input($_POST['products_quantity']),
                                   'products_real_quantity' => tep_db_prepare_input($_POST['products_real_quantity']),
                                   //'products_virtual_quantity' => tep_db_prepare_input($_POST['products_virtual_quantity']),
-                                  'products_quantity' => tep_calc_products_price(tep_db_prepare_input($_POST['products_real_quantity']),tep_db_prepare_input($_POST['products_virtual_quantity'])),
+                                  //'products_quantity' => tep_calc_products_price(tep_db_prepare_input($_POST['products_real_quantity']),tep_db_prepare_input($_POST['products_virtual_quantity'])),
                                   'products_model' => tep_db_prepare_input($_POST['products_model']),
                                   //'products_image' => (($_POST['products_image'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image'])),
                                   //'products_image2' => (($_POST['products_image2'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image2'])),
@@ -618,11 +620,13 @@
             tep_db_perform(TABLE_PRODUCTS, $sql_data_array);
             $products_id = tep_db_insert_id();
             tep_db_query("insert into " . TABLE_PRODUCTS_TO_CATEGORIES . " (products_id, categories_id) values ('" . $products_id . "', '" . $current_category_id . "')");
+            tep_db_query("update products set products_quantity=products_real_quantity+products_virtual_quantity where products_id='".$products_id."'");
           } elseif ($_GET['action'] == 'update_product') {
             $update_sql_data = array('products_last_modified' => 'now()');
             $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
             tep_db_perform(TABLE_PRODUCTS, $sql_data_array, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
-            
+            tep_db_query("update products set products_quantity=products_real_quantity+products_virtual_quantity where products_id='".$products_id."'");
+            /*
             if (tep_db_prepare_input($_POST['products_virtual_quantity'])) {
               if (tep_db_num_rows(tep_db_query("select * from set_menu_list where products_id = '".tep_db_input($products_id)."'"))) {
                 tep_db_perform('set_menu_list', array('kakuukosuu' => tep_db_prepare_input($_POST['products_real_quantity'])), 'update', "products_id = '".tep_db_input($products_id)."'");
@@ -630,7 +634,7 @@
                 // do nothing
               }
             }
-            
+            */
           }
         
         if (isset($_POST['carttags']) && $site_id == '0') {
