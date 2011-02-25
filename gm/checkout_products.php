@@ -108,12 +108,9 @@ foreach($cart as $key => $val){
       <?php
         }
       ?>
-      <tr> 
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '15'); ?></td> 
-      </tr> 
       <tr>
         <td>
-          <table border="0" width="100%" cellspacing="0" cellpadding="0" style="*margin-right:5px;">
+          <table border="0" width="100%" cellspacing="0" cellpadding="0" style="*margin-right:5px;" class="checkout_s_link01">
             <tr>
               <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr> 

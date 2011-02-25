@@ -14,13 +14,6 @@ if ($ocertify->npermission>7) {
 
 switch ($_GET['action']){
 case update:
-  
-  /**
-  echo "<pre>";
-  print_r($_POST);
-  echo "</pre>";
-  exit; 
-  /**/
   if ($_POST['oroshi_datas'])
   foreach($_POST['oroshi_datas'] as $h_id => $h){
     tep_db_perform('set_oroshi_datas',array(
@@ -36,15 +29,8 @@ case update:
       }
     }
     tep_db_query("delete from set_menu_list where categories_id='".$cID."' ");
-  //$set_menu_list_query = tep_db_query("select * from set_menu_list where categories_id='".$cID."' order by set_list_id asc");
+
     for ($i = 0; $i < count($_POST['product']); $i++) {
-      /*if($list = tep_db_fetch_array($set_menu_list_query)){
-        tep_db_perform('set_menu_list', array(
-          'products_id' => $_POST['product'][$i],
-          'kakuukosuu'  => $_POST['kakuukosuu'][$i],
-          'kakaku'      => $_POST['kakaku'][$i]
-        ), 'update', "set_list_id='".$list['set_list_id']."'");
-      } else {*/
         tep_db_perform('set_menu_list', array(
           'products_id'   => $_POST['product'][$i],
           'kakuukosuu'    => SBC2DBC($_POST['kakuukosuu'][$i]),
@@ -52,10 +38,10 @@ case update:
           'categories_id' => $cID,
           'last_modified' => 'now()'
         ));
-      //}
+        tep_db_perform('products', array('products_virtual_quantity' => SBC2DBC($_POST['kakuukosuu'][$i])), 'update', "products_id='".$_POST['product'][$i]."'");
+        tep_db_query("update products set products_quantity=products_real_quantity+products_virtual_quantity where products_id='".$_POST['product'][$i]."'");
     }
   }
-  //tep_redirect(tep_href_link('list_display.php','cid='.$cid.'&cpath='.$cpath));
   tep_redirect('categories_admin.php?cPath='.$_POST['fullpath']);
   break;
 }

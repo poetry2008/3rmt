@@ -7,16 +7,7 @@
   require('includes/application_top.php');
   require(DIR_WS_CLASSES . 'currencies.php');  
   
-
   $currencies = new currencies();
-
-    /*
-    echo "<pre>";
-    print_r($_POST);
-    echo "</pre>";
-    exit;
-    */
-
   $action = (isset($_GET['action']) ? $_GET['action'] : '');
   if ( eregi("(insert|update|setflag)", $action) ) include_once('includes/reset_seo_cache.php');
 
@@ -27,8 +18,6 @@
         exit;
         break;
       case 'get_cart_products':
-        //print_r(tep_get_cart_products($_GET['products_id'],$_GET['tags_id'],$_GET['buyflag']));
-        
         foreach(tep_get_cart_products($_GET['products_id'],$_GET['tags_id'],$_GET['buyflag']) as $p){
           $p = tep_get_product_by_id($p,0,4);
           echo $p['products_name'] . "<br>";
@@ -78,14 +67,25 @@
         $site_id     = tep_db_prepare_input($_POST['pID']);
         //％指定の場合は価格を算出
         $HTTP_POST_VARS['products_price_offset'] = SBC2DBC($HTTP_POST_VARS['products_price_offset']);
+        // jiakong
         $update_sql_data = array('products_last_modified' => 'now()',
                                  'products_real_quantity' => tep_db_prepare_input($_POST['products_real_quantity']),
-                                 'products_virtual_quantity' => tep_db_prepare_input($_POST['products_virtual_quantity']),
-                                 'products_quantity' => tep_calc_products_price(tep_db_prepare_input($_POST['products_real_quantity']), tep_db_prepare_input($_POST['products_virtual_quantity'])),
+                                 //'products_virtual_quantity' => tep_db_prepare_input($_POST['products_virtual_quantity']),
+                                 //'products_quantity' => tep_calc_products_price(tep_db_prepare_input($_POST['products_real_quantity']), tep_db_prepare_input($_POST['products_virtual_quantity'])),
                                  'products_attention_5' => tep_db_prepare_input($_POST['products_attention_5']),
                                  //'products_price_offset' => tep_db_prepare_input($HTTP_POST_VARS['products_price_offset']),
                                  'products_price' => tep_db_prepare_input($_POST['products_price']));
         tep_db_perform(TABLE_PRODUCTS, $update_sql_data, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
+        tep_db_query("update products set products_quantity=products_real_quantity+products_virtual_quantity where products_id='".$products_id."'");
+    
+        /*
+        if (tep_db_prepare_input($_POST['products_virtual_quantity'])) {
+          if (tep_db_num_rows(tep_db_query("select * from set_menu_list where products_id = '".tep_db_input($products_id)."'"))) {
+            tep_db_perform('set_menu_list', array('kakuukosuu' => tep_db_prepare_input($_POST['products_virtual_quantity'])), 'update', "products_id = '".tep_db_input($products_id)."'");
+          } else {
+            // do nothing
+          }
+        }*/
         tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $_GET['cPath'] . '&pID=' . $products_id));
         break;
       case 'upload_keyword':
@@ -564,11 +564,12 @@
       $products_attention_3 = tep_db_prepare_input($_POST['products_naiyou']);
       $products_attention_4 = tep_db_prepare_input($_POST['products_zaishitu']);
       $products_attention_5 = tep_db_prepare_input($_POST['products_attention_5']);
+      // jiakong
       $sql_data_array = array(
         //'products_quantity' => tep_db_prepare_input($_POST['products_quantity']),
                                   'products_real_quantity' => tep_db_prepare_input($_POST['products_real_quantity']),
-                                  'products_virtual_quantity' => tep_db_prepare_input($_POST['products_virtual_quantity']),
-                                  'products_quantity' => tep_calc_products_price(tep_db_prepare_input($_POST['products_real_quantity']),tep_db_prepare_input($_POST['products_virtual_quantity'])),
+                                  //'products_virtual_quantity' => tep_db_prepare_input($_POST['products_virtual_quantity']),
+                                  //'products_quantity' => tep_calc_products_price(tep_db_prepare_input($_POST['products_real_quantity']),tep_db_prepare_input($_POST['products_virtual_quantity'])),
                                   'products_model' => tep_db_prepare_input($_POST['products_model']),
                                   //'products_image' => (($_POST['products_image'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image'])),
                                   //'products_image2' => (($_POST['products_image2'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image2'])),
@@ -619,10 +620,21 @@
             tep_db_perform(TABLE_PRODUCTS, $sql_data_array);
             $products_id = tep_db_insert_id();
             tep_db_query("insert into " . TABLE_PRODUCTS_TO_CATEGORIES . " (products_id, categories_id) values ('" . $products_id . "', '" . $current_category_id . "')");
+            tep_db_query("update products set products_quantity=products_real_quantity+products_virtual_quantity where products_id='".$products_id."'");
           } elseif ($_GET['action'] == 'update_product') {
             $update_sql_data = array('products_last_modified' => 'now()');
             $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
             tep_db_perform(TABLE_PRODUCTS, $sql_data_array, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
+            tep_db_query("update products set products_quantity=products_real_quantity+products_virtual_quantity where products_id='".$products_id."'");
+            /*
+            if (tep_db_prepare_input($_POST['products_virtual_quantity'])) {
+              if (tep_db_num_rows(tep_db_query("select * from set_menu_list where products_id = '".tep_db_input($products_id)."'"))) {
+                tep_db_perform('set_menu_list', array('kakuukosuu' => tep_db_prepare_input($_POST['products_real_quantity'])), 'update', "products_id = '".tep_db_input($products_id)."'");
+              } else {
+                // do nothing
+              }
+            }
+            */
           }
         
         if (isset($_POST['carttags']) && $site_id == '0') {
@@ -827,12 +839,12 @@
               where products_id = '" . tep_db_input($products_id) . "'
             ");
             $product = tep_db_fetch_array($product_query);
-
+            //jiakong
+            //products_virtual_quantity, 
             tep_db_query("
               insert into " . TABLE_PRODUCTS . " (
                 products_quantity, 
                 products_real_quantity, 
-                products_virtual_quantity, 
                 products_model,
                 products_image,
                 products_image2,
@@ -857,7 +869,6 @@
               ) values (
               '" . $product['products_quantity'] . "', 
               '" . $product['real_quantity'] . "', 
-              '" . $product['virtual_quantity'] . "', 
               '" . $product['products_model'] . "', 
               '" . $product['products_image'] . "', 
               '" . $product['products_image2'] . "', 
@@ -881,7 +892,6 @@
               '" . addslashes($description['products_attention_5']) . "'
             )");
             $dup_products_id = tep_db_insert_id();
-      
             $description_query = tep_db_query("
               select *
               from " . TABLE_PRODUCTS_DESCRIPTION . " 
@@ -1396,16 +1406,19 @@ function get_cart_products(){
         <tr>
                 <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
+          
         <tr bgcolor="#CCCCCC">
                 <td class="main"><?php echo '<font color="blue"><b>' . TEXT_PRODUCTS_REAL_QUANTITY . '</b></font>'; ?></td>
                 <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_real_quantity', isset($pInfo->products_real_quantity)?$pInfo->products_real_quantity:'', ($site_id ? 'class="readonly" readonly' : '')); ?></td>
               </tr>
         <tr>
+         <!--
         <tr bgcolor="#CCCCCC">
                 <td class="main"><?php echo '<font color="blue"><b>' . TEXT_PRODUCTS_VIRTUAL_QUANTITY . '</b></font>'; ?></td>
-                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_virtual_quantity', isset($pInfo->products_virtual_quantity)?$pInfo->products_virtual_quantity:'', ($site_id ? 'class="readonly" readonly' : '')); ?></td>
+                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_virtual_quantity', isset($pInfo->products_virtual_quantity)?$pInfo->products_virtual_quantity:'', 'class="readonly" readonly'); ?></td>
               </tr>
         <tr>
+        -->
           <td>&nbsp;</td>
                 <td class="smallText" colspan="2">在庫計算する場合は入力してください。在庫を計算する場合は　基本設定→在庫管理　を設定してください。</td>
         </tr>
@@ -1942,7 +1955,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   echo '  </td>';
   echo '  </tr><tr><td><hr size="2" noshade></td></tr><tr>';
   echo '  <td height="30">';
-  echo '架空在庫：&nbsp;' . tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;background-color:#ccc;"') . '&nbsp;個' . '&nbsp;&nbsp;←&nbsp;' . $pInfo->products_virtual_quantity . '個' . "\n";
+  echo '架空在庫：&nbsp;' . tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,'class="readonly" readonly size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;background-color:#ccc;"') . '&nbsp;個' . '&nbsp;&nbsp;←&nbsp;' . $pInfo->products_virtual_quantity . '個' . "\n";
   echo '  </td>';
   echo '  </tr><tr><td><hr size="2" noshade></td></tr>';
   echo '</table>';
@@ -2172,9 +2185,9 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
 -->
             <td class="dataTableHeadingContent" align="right">価格</td>
             <td class="dataTableHeadingContent" align="right">数量</td>
-                      <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_STATUS; ?></td>
-                      <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
-                    </tr>
+            <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_STATUS; ?></td>
+            <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
+          </tr>
                     <?php
     $categories_count = 0;
     $rows = 0;
@@ -2393,12 +2406,12 @@ if (isset($nowColor) && $nowColor == $odd) {
         echo $currencies->format($product_price['price']);
       }
   ?></td>
+
             <td class="dataTableContent" align="right"><?php
-//if (empty($products['products_quantity']) or $products['products_quantity'] < 1) {
-if (empty($products['products_real_quantity']) or $products['products_real_quantity'] == 0) {
+if (empty($products['products_quantity']) or $products['products_quantity'] == 0) {
   echo '<b>在庫切れ</b>';
 } else {
-  echo intval($products['products_real_quantity']) . '個';
+  echo intval($products['products_quantity']) . '個';
 } ?></td>
             <td class="dataTableContent" align="center"><?php
 $p_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
@@ -2707,19 +2720,6 @@ tep_display_google_results()
                 'text' => '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id . '&action=edit_category') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> '  
                 . ($ocertify->npermission == 15 ? ( '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id . '&action=delete_category') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a> '):'')
                 . '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id . '&action=move_category') . '">' . tep_image_button('button_move.gif', IMAGE_MOVE) . '</a>');
-            /* 
-            foreach(tep_get_sites() as $site){
-              if (($site['id'] == 1) || ($site['id'] ==2)) {
-                continue; 
-              }
-              $contents[] = array('text' => '<b>' . $site['romaji'] . '</b>');
-              $contents[] = array(
-                  'align' => 'left', 
-                  'text' => '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id .  '&action=edit_category&site_id='.$site['id'].'&rdirect=all') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>'.  (tep_categories_description_exist($cInfo->categories_id, $languages_id, $site['id']) ? (' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $cPath . '&cID=' . $cInfo->categories_id .  '&action=delete_category_description&site_id='.$site['id'].'&rdirect=all') . '">'.tep_image_button('button_delete.gif', IMAGE_DELETE).'</a>')
-                   :''
-                   ));
-            }
-            */ 
             }
             if (isset($_GET['site_id'])) {
             foreach(tep_get_sites() as $site){
@@ -2748,7 +2748,7 @@ tep_display_google_results()
                 'text' => '<a href="'. tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $cPath . '&cID=' . $cInfo->categories_id . '&action=edit_keyword') .  '">'.tep_image_button('button_edit.gif', TEXT_KEYWORD) . '</a> ');
             }
 }
-//print_r($cInfo);
+
             $contents[] = array('text' => '<br>' . TEXT_DATE_ADDED . ' ' . tep_date_short($cInfo->date_added));
             if (tep_not_null($cInfo->last_modified)) $contents[] = array('text' => TEXT_LAST_MODIFIED . ' ' . tep_date_short($cInfo->last_modified));
             $contents[] = array('text' => '<br>' . tep_info_image('categories/'.$cInfo->categories_image, $cInfo->categories_name, HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT, 0) . '<br>' . $cInfo->categories_image);
@@ -2764,17 +2764,6 @@ tep_display_google_results()
                 . ($ocertify->npermission == 15 ? (' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=delete_product'.'&page='.$_GET['page']) . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>'):'')
                 . ' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=move_product'.'&page='.$_GET['page']) . '">' . tep_image_button('button_move.gif', IMAGE_MOVE) . '</a> <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id . '&action=copy_to') . '">' . tep_image_button('button_copy_to.gif', IMAGE_COPY_TO) . '</a>'
                 . ' <a href="' . tep_href_link(FILENAME_REVIEWS, 'cPath=' . $cPath . '&products_id=' . $pInfo->products_id . '&action=new') . '">' . tep_image_button('button_reviews.gif', IMAGE_REVIEWS) . '</a>');
-            /* 
-            foreach(tep_get_sites() as $site){
-              if (($site['id'] == 1) || ($site['id'] ==2)) {
-                continue; 
-              }
-              $contents[] = array('text' => '<b>' . $site['romaji'] . '</b>');
-              $contents[] = array('align' => 'left', 'text' => '<a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id . '&action=new_product'. '&site_id='.  $site['id'].'&page='.$_GET['page'].'&rdirect=all')  .'">' .  tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>' . ( tep_products_description_exist($pInfo->products_id, $site['id'], $languages_id) ? ' <a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id .  '&action=delete_product_description&site_id='.$site['id'].'&page='.$_GET['page'].'&rdirect=all') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>'
-                : ''
-                    ) );
-            }
-            */ 
             }
             if (isset($_GET['site_id'])) { 
             foreach(tep_get_sites() as $site){
@@ -2799,22 +2788,6 @@ tep_display_google_results()
                   'align' => 'left',
                   'text' => '<a href="'. tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $cPath . '&page='.$_GET['page'].'&pID=' . $pInfo->products_id . '&action=edit_inventory') .  '">'.tep_image_button('button_edit.gif', TEXT_INVENTORY) . '</a> ');
             }
-            /*
-            $keyword_sql = "select m.keyword from ".TABLE_CATEGORIES_TO_MISSION." c2m,".TABLE_MISSION." m
-                            where m.id=c2m.mission_id and categories_id='".$cInfo->categories_id."'";
-            $keyword_query = tep_db_query($keyword_sql);
-            $keyword_res = tep_db_fetch_array($keyword_query);
-            
-            $default_keyword = $keyword_res?$keyword_res['keyword']:'';
-            
-            $contents[] = array('text' => '<b>'.TEXT_KEYWORD.$default_keyword.'</b>');
-            
-            $contents[] = array(
-                'align' => 'left',
-                'text' => '<a href="'. tep_href_link(FILENAME_CATEGORIES, 'cPath=' .
-              $cPath . '&cID=' . $cInfo->categories_id . '&action=edit_keyword') .
-                '">'.tep_image_button('button_edit.gif', TEXT_KEYWORD) . '</a> ');
-            */
 }else{
             $contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_REVIEWS, 'cPath=' . $cPath . '&products_id=' . $pInfo->products_id . '&action=new') . '">' . tep_image_button('button_reviews.gif', IMAGE_REVIEWS) . '</a>');
 }

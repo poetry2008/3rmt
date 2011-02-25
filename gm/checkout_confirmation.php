@@ -157,11 +157,8 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
     <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
     <table border="0" width="95%" cellspacing="0" cellpadding="0" class="box_des">
       <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '15'); ?></td>
-      </tr>
-      <tr>
         <td>
-          <table border="0" width="100%" cellspacing="0" cellpadding="0">
+          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="checkout_s_link01">
             <tr>
               <td width="20%">
                 <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -200,9 +197,6 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
             </tr>
           </table>
         </td>
-      </tr>
-      <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
       </tr>
       <tr>
         <td>
@@ -313,6 +307,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                     <td class="main" colspan="3"><b><?php echo TEXT_TORIHIKI_TITLE; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
                   </tr>
                   <tr>
+                  <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
                     <td class="main"><?php echo TEXT_TORIHIKIHOUHOU; ?></td>
                     <td class="main"><?php echo $torihikihouhou; ?></td>
                   </tr>
