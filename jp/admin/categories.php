@@ -1406,18 +1406,19 @@ function get_cart_products(){
         <tr>
                 <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
-          <!--
+          
         <tr bgcolor="#CCCCCC">
                 <td class="main"><?php echo '<font color="blue"><b>' . TEXT_PRODUCTS_REAL_QUANTITY . '</b></font>'; ?></td>
                 <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_real_quantity', isset($pInfo->products_real_quantity)?$pInfo->products_real_quantity:'', ($site_id ? 'class="readonly" readonly' : '')); ?></td>
               </tr>
         <tr>
-         -->
+         <!--
         <tr bgcolor="#CCCCCC">
                 <td class="main"><?php echo '<font color="blue"><b>' . TEXT_PRODUCTS_VIRTUAL_QUANTITY . '</b></font>'; ?></td>
                 <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_virtual_quantity', isset($pInfo->products_virtual_quantity)?$pInfo->products_virtual_quantity:'', 'class="readonly" readonly'); ?></td>
               </tr>
         <tr>
+        -->
           <td>&nbsp;</td>
                 <td class="smallText" colspan="2">在庫計算する場合は入力してください。在庫を計算する場合は　基本設定→在庫管理　を設定してください。</td>
         </tr>
