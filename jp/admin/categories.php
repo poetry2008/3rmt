@@ -2178,8 +2178,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
             <?php }?>
 -->
             <td class="dataTableHeadingContent" align="right">価格</td>
-            <td class="dataTableHeadingContent" align="right">架空在庫</td>
-            <td class="dataTableHeadingContent" align="right">実在個</td>
+            <td class="dataTableHeadingContent" align="right">数量</td>
             <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_STATUS; ?></td>
             <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
           </tr>
@@ -2274,7 +2273,6 @@ if (isset($nowColor) && $nowColor == $odd) {
                     echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . tep_image(DIR_WS_ICONS . 'folder.gif', ICON_FOLDER) . '</a>&nbsp; <b>' . $categories['categories_name'] . '</b>'; ?></td>
                       
 
-            <td class="dataTableContent" align="right">&nbsp;</td>
             <td class="dataTableContent" align="right">&nbsp;</td>
             <td class="dataTableContent" align="right">&nbsp;</td>
             <td class="dataTableContent" align="center">
@@ -2402,15 +2400,13 @@ if (isset($nowColor) && $nowColor == $odd) {
         echo $currencies->format($product_price['price']);
       }
   ?></td>
-            <td class="dataTableContent" align="right">
-              <?php echo intval($products['products_virtual_quantity']) . '個';?>
-            </td>
+
             <td class="dataTableContent" align="right"><?php
 //if (empty($products['products_quantity']) or $products['products_quantity'] < 1) {
-if (empty($products['products_real_quantity']) or $products['products_real_quantity'] == 0) {
+if (empty($products['products_quantity']) or $products['products_quantity'] == 0) {
   echo '<b>在庫切れ</b>';
 } else {
-  echo intval($products['products_real_quantity']) . '個';
+  echo intval($products['products_quantity']) . '個';
 } ?></td>
             <td class="dataTableContent" align="center"><?php
 $p_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
