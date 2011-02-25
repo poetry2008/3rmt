@@ -232,7 +232,7 @@ function rowOutEffect(object) {
 <table border="0" width="98%" cellspacing="0" cellpadding="0" class="c_shipping"> 
           <tr> 
             <td>
-            <table border="0" width="94%" cellspacing="0" cellpadding="0" class="checkout_s_link02"> 
+            <table border="0" width="94%" cellspacing="0" cellpadding="0" class="checkout_s_link03"> 
                 <tr> 
                 <td width="20%">
                   <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -273,7 +273,7 @@ function rowOutEffect(object) {
           </tr> 
 
           <tr> 
-            <td><table  border="0" width="95%" cellspacing="0" cellpadding="2" class="c_pay_info01"> 
+            <td><table  border="0" width="94%" cellspacing="0" cellpadding="2" class="c_pay_info03"> 
                 <tr>
                   <td class="main" width="450"><?php echo '<b>' . TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><div style="margin-top:5px;">' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></div></td> 
                   <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
@@ -283,7 +283,7 @@ function rowOutEffect(object) {
           <tr> 
             <td>
             <table><tr><td class="main"><b><?php echo TABLE_HEADING_SHIPPING_ADDRESS; ?></b></td></tr></table>
-            <table class="formArea" border="0" width="95%" cellspacing="1"> 
+            <table class="formArea" border="0" width="94%" cellspacing="1"> 
                 <tr> 
                   <td>
           
