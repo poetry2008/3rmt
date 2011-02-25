@@ -229,7 +229,7 @@ function rowOutEffect(object) {
 <div id="content"><?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL')) . tep_draw_hidden_field('action', 'process'); ?> 
         <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
 <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>
-<table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+<table border="0" width="98%" cellspacing="0" cellpadding="0" class="c_shipping"> 
           <tr> 
             <td>
             <table border="0" width="94%" cellspacing="0" cellpadding="0" class="checkout_s_link02"> 
