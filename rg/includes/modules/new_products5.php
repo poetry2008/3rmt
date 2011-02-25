@@ -124,7 +124,7 @@
         <tr>
           <td class="main" style="padding-left:5px; ">
             <p class="main">
-              <?php echo '残り&nbsp;' . number_format(tep_show_quantity($new_products['products_quantity'])) . '個以上'; ?>
+              <?php echo '残り&nbsp;' . number_format(tep_show_quantity($new_products['products_quantity'])) . '個'; ?>
               &nbsp;&nbsp;&nbsp;
 <?php
       if (tep_get_special_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum'])) {

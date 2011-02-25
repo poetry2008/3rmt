@@ -2398,7 +2398,7 @@ if (isset($nowColor) && $nowColor == $odd) {
 if (empty($products['products_real_quantity']) or $products['products_real_quantity'] == 0) {
   echo '<b>在庫切れ</b>';
 } else {
-  echo intval($products['products_quantity']) . '個';
+  echo intval($products['products_real_quantity']) . '個';
 } ?></td>
             <td class="dataTableContent" align="center"><?php
 $p_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
