@@ -231,11 +231,8 @@ function rowOutEffect(object) {
 <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>
 <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
           <tr> 
-            <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '25'); ?></td> 
-          </tr> 
-          <tr> 
             <td>
-            <table border="0" width="95%" cellspacing="0" cellpadding="0"> 
+            <table border="0" width="94%" cellspacing="0" cellpadding="0" class="checkout_s_link02"> 
                 <tr> 
                 <td width="20%">
                   <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -245,7 +242,8 @@ function rowOutEffect(object) {
                     </tr>
                   </table>
                 </td>
-                  <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                  <td width="20%">
+                  <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                       <tr>
                         <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
                         <td><?php echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif'); ?></td>
