@@ -38,7 +38,7 @@ case update:
           'categories_id' => $cID,
           'last_modified' => 'now()'
         ));
-        tep_db_perform('products', array('products_virtual_quantity'), 'update', "products_id='".$_POST['product'][$i]."'");
+        tep_db_perform('products', array('products_virtual_quantity' => SBC2DBC($_POST['kakuukosuu'][$i])), 'update', "products_id='".$_POST['product'][$i]."'");
     }
   }
   tep_redirect('categories_admin.php?cPath='.$_POST['fullpath']);
