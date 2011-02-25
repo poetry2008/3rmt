@@ -228,9 +228,10 @@ function forward404Unless($condition)
   function tep_check_stock($products_id, $products_quantity) {
     $stock_left = tep_get_products_stock($products_id) - $products_quantity;
     $out_of_stock = '';
+    $product = tep_get_product_by_id($products_id, SITE_ID, 4);
 
     if ($stock_left < 0) {
-      $out_of_stock = '<span class="markProductOutOfStock">' . STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</span>';
+      $out_of_stock = '<span class="markProductOutOfStock"><a style="" href="'.tep_href_link('open.php', 'products='.urlencode($product['products_name'])).'">' . STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</a></span>';
     }
 
     return $out_of_stock;
