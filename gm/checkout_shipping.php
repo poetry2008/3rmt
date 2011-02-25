@@ -232,7 +232,7 @@ function rowOutEffect(object) {
 <table border="0" width="98%" cellspacing="0" cellpadding="0" class="c_shipping"> 
           <tr> 
             <td>
-            <table border="0" width="94%" cellspacing="0" cellpadding="0" class="checkout_s_link03"> 
+            <table border="0" width="96%" cellspacing="0" cellpadding="0" class="checkout_s_link03"> 
                 <tr> 
                 <td width="20%">
                   <table border="0" width="100%" cellspacing="0" cellpadding="0">
