@@ -44,9 +44,10 @@
       $languages_selected = $languages[$i]['code'];
     }
   }
-$sites_id=tep_db_query("SELECT site_permission FROM `permissions` WHERE `userid`= '".$_POST['loginuid']."' limit 0,1");
+$sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$_POST['loginuid']."' limit 0,1");
 while($userslist= tep_db_fetch_array($sites_id)){
   $_SESSION['site_permission']=$userslist['site_permission'];
+  $_SESSION['user_permission']=$userslist['permission'];
 }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
