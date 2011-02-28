@@ -289,7 +289,7 @@ if (isset($_GET['search']) && $_GET['search']) {
   $products_query_raw = "
         select p.products_id, 
                pd.products_name, 
-               p.products_quantity, 
+               p.products_real_quantity + p.products_virtual_quantity as products_quantity,
                p.products_real_quantity, 
                p.products_virtual_quantity, 
                p.products_image,
@@ -315,7 +315,7 @@ if (isset($_GET['search']) && $_GET['search']) {
   $products_query_raw = "
         select p.products_id, 
                pd.products_name, 
-               p.products_quantity, 
+               p.products_real_quantity + p.products_virtual_quantity as products_quantity,
                p.products_real_quantity, 
                p.products_virtual_quantity, 
                p.products_image,

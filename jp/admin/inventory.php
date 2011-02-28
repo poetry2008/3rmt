@@ -8,7 +8,7 @@
      switch ($_GET['action']){
        case 'refresh':
          //更新
-         $all_products_sql = "select products_id,products_quantity from ".
+         $all_products_sql = "select products_id,products_real_quantity + products_virtual_quantity as products_quantity, from ".
            TABLE_PRODUCTS;
          $all_products_res = tep_db_query($all_products_sql);
          while($all_products_row = tep_db_fetch_array($all_products_res)){
@@ -113,7 +113,7 @@
         <?php
          $products_query_rows = "select
            pd.products_name,
-           p.products_quantity,
+           p.products_real_quantity + p.products_virtual_quantity as products_quantity,
            p.products_price,
            p.products_bflag,
            p2i.products_id,

@@ -43,7 +43,7 @@
           $select_column_list .= 'm.manufacturers_name';
           break;
         case 'PRODUCT_LIST_QUANTITY':
-          $select_column_list .= 'p.products_quantity';
+          $select_column_list .= 'p.products_real_quantity + p.products_virtual_quantity as products_quantity';
           break;
         case 'PRODUCT_LIST_IMAGE':
           $select_column_list .= 'p.products_image';

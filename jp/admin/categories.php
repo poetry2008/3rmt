@@ -76,7 +76,7 @@
                                  //'products_price_offset' => tep_db_prepare_input($HTTP_POST_VARS['products_price_offset']),
                                  'products_price' => tep_db_prepare_input($_POST['products_price']));
         tep_db_perform(TABLE_PRODUCTS, $update_sql_data, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
-        tep_db_query("update products set products_quantity=products_real_quantity+products_virtual_quantity where products_id='".$products_id."'");
+        //tep_db_query("update products set products_quantity=products_real_quantity+products_virtual_quantity where products_id='".$products_id."'");
     
         /*
         if (tep_db_prepare_input($_POST['products_virtual_quantity'])) {
@@ -620,21 +620,10 @@
             tep_db_perform(TABLE_PRODUCTS, $sql_data_array);
             $products_id = tep_db_insert_id();
             tep_db_query("insert into " . TABLE_PRODUCTS_TO_CATEGORIES . " (products_id, categories_id) values ('" . $products_id . "', '" . $current_category_id . "')");
-            tep_db_query("update products set products_quantity=products_real_quantity+products_virtual_quantity where products_id='".$products_id."'");
           } elseif ($_GET['action'] == 'update_product') {
             $update_sql_data = array('products_last_modified' => 'now()');
             $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
             tep_db_perform(TABLE_PRODUCTS, $sql_data_array, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
-            tep_db_query("update products set products_quantity=products_real_quantity+products_virtual_quantity where products_id='".$products_id."'");
-            /*
-            if (tep_db_prepare_input($_POST['products_virtual_quantity'])) {
-              if (tep_db_num_rows(tep_db_query("select * from set_menu_list where products_id = '".tep_db_input($products_id)."'"))) {
-                tep_db_perform('set_menu_list', array('kakuukosuu' => tep_db_prepare_input($_POST['products_real_quantity'])), 'update', "products_id = '".tep_db_input($products_id)."'");
-              } else {
-                // do nothing
-              }
-            }
-            */
           }
         
         if (isset($_POST['carttags']) && $site_id == '0') {
@@ -843,7 +832,6 @@
             //products_virtual_quantity, 
             tep_db_query("
               insert into " . TABLE_PRODUCTS . " (
-                products_quantity, 
                 products_real_quantity, 
                 products_model,
                 products_image,
@@ -867,7 +855,6 @@
                 products_attention_4,
                 products_attention_5
               ) values (
-              '" . $product['products_quantity'] . "', 
               '" . $product['real_quantity'] . "', 
               '" . $product['products_model'] . "', 
               '" . $product['products_image'] . "', 
@@ -1133,7 +1120,7 @@ function get_cart_products(){
                  pd.romaji, 
                  p.products_id,
                  p.option_type, 
-                 p.products_quantity, 
+                 p.products_real_quantity + p.products_virtual_quantity as products_quantity,
                  p.products_real_quantity, 
                  p.products_virtual_quantity, 
                  p.products_model, 
@@ -1843,7 +1830,7 @@ function get_cart_products(){
                  pd.products_description, 
                  pd.products_url, 
                  pd.romaji, 
-                 p.products_quantity, 
+                 p.products_real_quantity + p.products_virtual_quantity as products_quantity,
                  p.products_real_quantity, 
                  p.products_virtual_quantity, 
                  p.products_model, 
@@ -2309,7 +2296,7 @@ if (isset($nowColor) && $nowColor == $odd) {
       $products_query_raw = "
         select p.products_id, 
                pd.products_name, 
-               p.products_quantity, 
+               p.products_real_quantity + p.products_virtual_quantity as products_quantity,
                p.products_real_quantity, 
                p.products_virtual_quantity, 
                p.products_image,
@@ -2334,7 +2321,7 @@ if (isset($nowColor) && $nowColor == $odd) {
         select * from ( 
         select p.products_id, 
                pd.products_name, 
-               p.products_quantity, 
+               p.products_real_quantity + p.products_virtual_quantity as products_quantity, 
                p.products_real_quantity, 
                p.products_virtual_quantity, 
                p.products_image,

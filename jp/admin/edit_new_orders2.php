@@ -184,13 +184,6 @@
   if ($update_products)
   foreach ($update_products as $orders_products_id => $products_details) {
     // 1.3.1.1 Update Inventory Quantity
-    /*
-    if ($products_details["qty"] != $order['products_quantity']) {
-      $quantity_difference = ($products_details["qty"] - $order['products_quantity']);
-      tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = products_quantity - " . $quantity_difference . ", products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
-    }
-    */
-  
     if($products_details["qty"] > 0) { // a.) quantity found --> add to list & sum    
       
       $_SESSION['create_order2']['orders_products'][$orders_products_id]['products_model'] = $products_details["model"];
@@ -506,7 +499,7 @@
                      p.products_attention_5,
                      pd.products_description, 
                      p.products_model, 
-                     p.products_quantity, 
+                     p.products_real_quantity + p.products_virtual_quantity as products_quantity,
                      p.products_image,
                      p.products_image2,
                      p.products_image3, 
