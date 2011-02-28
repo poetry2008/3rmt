@@ -170,12 +170,12 @@
                           'telecom_option'              => $_SESSION['option'],
                 );
   
-  // 统计Google Adsense来源
+  // 扈溯ｮ｡Google Adsense来源
   if (isset($_SESSION['referer_adurl']) && $_SESSION['referer_adurl']) {
     $sql_data_array['orders_adurl'] = $_SESSION['referer_adurl'];
   }
 /*
-  // 验证不明信用卡 
+  // 鬪瑚ｯ＆s明信用蜊｡
   if ($_SESSION['option']) {
     $telecom_unknow = tep_db_fetch_array(tep_db_query("select * from telecom_unknow where `option`='".$_SESSION['option']."' and rel='yes'"));
     if ($telecom_unknow) {
@@ -364,7 +364,7 @@ $httpParsedResponseAr = PPHttpPost('GetExpressCheckoutDetails', $nvpStr);
       if (tep_db_num_rows($stock_query) > 0) {
         $stock_values = tep_db_fetch_array($stock_query);
         if ($order->products[$i]['qty'] > $stock_values['products_real_quantity']) {
-          //买取商品大于实数 
+          // 荵ｰ取商品大于螳梵鐀
           tep_db_perform(
             'products',
             array(
@@ -376,7 +376,7 @@ $httpParsedResponseAr = PPHttpPost('GetExpressCheckoutDetails', $nvpStr);
             "products_id = '" . tep_get_prid($order->products[$i]['id']) . "'"
           );
           
-          //同步架空 
+          // 同豁･架空
           tep_db_perform(
             'set_menu_list',
             array(
