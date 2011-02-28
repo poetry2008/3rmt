@@ -15,7 +15,7 @@
 //  }
 
   if ( (tep_not_null(MODULE_PAYMENT_INSTALLED)) && (!tep_session_is_registered('payment')) ) {
-    tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL'));
+    tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL')); 
  }
 
 // avoid hack attempts during the checkout procedure by checking the internal cartID
@@ -222,9 +222,9 @@
     tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
     
     if($order_totals[$i]['code'] =='ot_total' &&  array_key_exists('token', $_REQUEST)){
-    	$token = urlencode(htmlspecialchars($_REQUEST['token']));
-    	getexpress($order_totals[$i]['value'],$token);
-    	$telecom_option_ok = true;
+      $token = urlencode(htmlspecialchars($_REQUEST['token']));
+      getexpress($order_totals[$i]['value'],$token);
+      $telecom_option_ok = true;
     }
   }
 
@@ -420,7 +420,7 @@ exit('GetExpressCheckoutDetails failed: ' . urldecode(print_r($httpParsedRespons
                           'products_price' => $order->products[$i]['price'], 
                           'final_price' => $order->products[$i]['final_price'], 
                           'products_tax' => $order->products[$i]['tax'], 
-                          //'products_quantity' => $order->products[$i]['qty'],
+                          'products_quantity' => $order->products[$i]['qty'],
                           'products_rate' => tep_get_products_rate(tep_get_prid($order->products[$i]['id'])),
                           'products_character' =>  stripslashes($chara),
                           'site_id' => SITE_ID

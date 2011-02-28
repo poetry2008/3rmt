@@ -58,7 +58,7 @@
   // Update Inventory Quantity
   $order_query = tep_db_query("
       select products_id, 
-             products_quantity,
+             products_quantity
       from " . TABLE_ORDERS_PRODUCTS . " 
       where orders_id = '" . tep_db_input($oID) . "'");
   
