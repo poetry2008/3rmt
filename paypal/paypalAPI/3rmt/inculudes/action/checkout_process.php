@@ -170,12 +170,12 @@
                           'telecom_option'              => $_SESSION['option'],
                 );
   
-  // 统计Google Adsense来源
+  // 扈溯ｮ｡Google Adsense来源
   if (isset($_SESSION['referer_adurl']) && $_SESSION['referer_adurl']) {
     $sql_data_array['orders_adurl'] = $_SESSION['referer_adurl'];
   }
 /*
-  // 验证不明信用卡 
+  // 鬪瑚ｯ＆s明信用蜊｡
   if ($_SESSION['option']) {
     $telecom_unknow = tep_db_fetch_array(tep_db_query("select * from telecom_unknow where `option`='".$_SESSION['option']."' and rel='yes'"));
     if ($telecom_unknow) {
@@ -342,7 +342,7 @@ $httpParsedResponseAr = PPHttpPost('GetExpressCheckoutDetails', $nvpStr);
 // Stock Update - Joao Correia
     if (STOCK_LIMITED == 'true') {
       if (DOWNLOAD_ENABLED == 'true') {
-        $stock_query_raw = "SELECT products_real_quantity,products_virtual_quantity, pad.products_attributes_filename 
+        $stock_query_raw = "SELECT products_quantity,products_real_quantity,products_virtual_quantity, pad.products_attributes_filename 
                             FROM " . TABLE_PRODUCTS . " p
                             LEFT JOIN " . TABLE_PRODUCTS_ATTRIBUTES . " pa
                              ON p.products_id=pa.products_id
@@ -359,24 +359,24 @@ $httpParsedResponseAr = PPHttpPost('GetExpressCheckoutDetails', $nvpStr);
         $stock_query = tep_db_query($stock_query_raw);
       } else {
 //ccdd
-        $stock_query = tep_db_query("select products_real_quantity,products_virtual_quantity from " . TABLE_PRODUCTS . " where products_id = '" . tep_get_prid($order->products[$i]['id']) . "'");
+        $stock_query = tep_db_query("select products_quantity,products_real_quantity,products_virtual_quantity from " . TABLE_PRODUCTS . " where products_id = '" . tep_get_prid($order->products[$i]['id']) . "'");
       }
       if (tep_db_num_rows($stock_query) > 0) {
         $stock_values = tep_db_fetch_array($stock_query);
         if ($order->products[$i]['qty'] > $stock_values['products_real_quantity']) {
-          //买取商品大于实数 
+          // 荵ｰ取商品大于螳梵鐀
           tep_db_perform(
             'products',
             array(
               'products_virtual_quantity' => $stock_values['products_virtual_quantity'] - ($order->products[$i]['qty'] - $stock_values['products_real_quantity']),
               'products_real_quantity'    => 0,
-              //'products_quantity'         => $stock_values['products_quantity'] - $order->products[$i]['qty'],
+              'products_quantity'         => $stock_values['products_quantity'] - $order->products[$i]['qty'],
             ),
             'update',
             "products_id = '" . tep_get_prid($order->products[$i]['id']) . "'"
           );
           
-          //同步架空 
+          // 同豁･架空
           tep_db_perform(
             'set_menu_list',
             array(
@@ -390,12 +390,41 @@ $httpParsedResponseAr = PPHttpPost('GetExpressCheckoutDetails', $nvpStr);
             'products',
             array(
               'products_real_quantity' => $stock_values['products_real_quantity'] - $order->products[$i]['qty'],
-              //'products_quantity'      => $stock_values['products_quantity'] - $order->products[$i]['qty'],
+              'products_quantity'      => $stock_values['products_quantity'] - $order->products[$i]['qty'],
             ),
             'update',
             "products_id = '" . tep_get_prid($order->products[$i]['id']) . "'"
           );
         }
+// do not decrement quantities if products_attributes_filename exists
+/*
+        if ((DOWNLOAD_ENABLED != 'true') || (!$stock_values['products_attributes_filename'])) {
+          $stock_left = $stock_values['products_quantity'] - $order->products[$i]['qty'];
+          if ($order->products[$i]['qty'] > $stock_values['products_real_quantity']) {
+            //$stock_left = 0;
+            //$real_stock_left = 0;
+          } else {
+            $real_stock_left = $stock_values['products_real_quantity'] - $order->products[$i]['qty'];
+          }
+        } else {
+          $stock_left = $stock_values['products_quantity'];
+        }
+//ccdd
+        tep_db_query("update " . TABLE_PRODUCTS . " set 
+        products_quantity = '" . $stock_left . "'" . (isset($real_stock_left)?(", products_real_quantity = '" . $real_stock_left):'') . "' 
+        where products_id = '" . tep_get_prid($order->products[$i]['id']) . "'");
+*/
+        /*
+        if ($stock_left < 1) {
+        ########## 在庫切れのメール通知　##############
+        if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
+                $zaiko_alart = '商品名　　-　　　型番'."\n";
+                $zaiko_alart .= tep_get_products_name(tep_get_prid($order->products[$i]['id'])).'('.$order->products[$i]['model'].')'."\n";
+                $zaiko_alart .= HTTPS_SERVER.'/admin/categories.php?search='.urlencode(tep_get_products_name(tep_get_prid($order->products[$i]['id'])))."\n\n";
+                tep_mail('', SEND_EXTRA_ORDER_EMAILS_TO, ZAIKO_ALART_TITLE, ZAIKO_ARART_BODY.$zaiko_alart, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
+        }
+      }
+      */
       }
     }
 
@@ -418,7 +447,7 @@ $httpParsedResponseAr = PPHttpPost('GetExpressCheckoutDetails', $nvpStr);
                           'products_price' => $order->products[$i]['price'], 
                           'final_price' => $order->products[$i]['final_price'], 
                           'products_tax' => $order->products[$i]['tax'], 
-                          //'products_quantity' => $order->products[$i]['qty'],
+                          'products_quantity' => $order->products[$i]['qty'],
                           'products_rate' => tep_get_products_rate(tep_get_prid($order->products[$i]['id'])),
                           'products_character' =>  stripslashes($chara),
                           'site_id' => SITE_ID

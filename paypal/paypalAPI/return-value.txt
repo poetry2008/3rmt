@@ -1,0 +1,73 @@
+﻿
+DoExpressCheckoutPaymentで返ってくる値
+
+TRANSACTIONID
+この支払いの一意の取引 ID。
+
+TRANSACTIONTYPE
+取引タイプ 
+
+★PAYMENTTYPE
+支払いが即時に行われるか遅れて行われるかを示します。
+
+ORDERTIME
+支払いの時刻/日付スタンプ
+
+○AMT
+最終請求金額。
+
+FEEAMT
+PayPal 手数料金額
+
+TAXAMT
+取引に課される税金。
+
+CURRENCYCODE
+3 桁の通貨コード
+
+★PAYMENTSTATUS
+支払いのステータス。
+Completed: 支払いが完了し、アカウント残高に正常に入金されました。
+
+PENDINGREASON
+支払いが未決済の理由
+
+REASONCODE
+TransactionType が取り消された場合の取り消し理由
+
+
+---------------------------------------------------------------------------------
+
+GetExpressCheckoutDetailsで返ってくる値
+
+○EMAIL
+支払人のメールアドレス。
+
+PAYERID
+一意の PayPal 顧客アカウント識別番号
+
+★PAYERSTATUS
+支払人のステータス
+
+○FIRSTNAME
+支払人の名
+
+○LASTNAME
+支払人の姓。
+
+★COUNTRYCODE
+支払人の居住国
+
+○PHONENUM
+支払人の電話番号
+
+
+
+
+
+
+★＝新しくDBに保存する値
+
+○＝既にDBに保存するようになっている値
+
+
