@@ -115,3 +115,4 @@ define('TEXT_INFO_INVENTORY','在庫設置');
 define('TEXT_INVENTORY_ERROR','入力データーをご確認ください');
 define('ERROR_PRODUCT_NAME_IS_NOT_NULL', '商品名を記入してください');
 define('ERROR_CATEGORY_NAME_IS_NOT_NULL', 'カテゴリー名を記入してください');
+define('TEXT_PRODUCT_NOT_SHOW','非表示');
