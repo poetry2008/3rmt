@@ -4080,13 +4080,16 @@ function tep_calc_products_price($real_qty = 0, $virtual_qty = 0){
  function  editPermission($site_permission,$site_id){
 
   $edit_p=FALSE;
- $site_arr=array();
+  $site_arr=array();
   $site_arr=explode(",",$site_permission);//返回权限数组
   if(in_array($site_id,$site_arr)){//判断iste_id是否存在于权限数组中
+    
     $edit_p=true;//true 说明有管理权限 可以在点击新闻时进行修改 
-        }
-          return $edit_p;
-    }
+  }else if(($site_id =='' || $site_id =0)&&$_SESSION['user_permission'] == 15){
+    $edit_p=true;
+  }
+  return $edit_p;
+ }
 
 function tep_get_conf_sid_by_id($id){
     return tep_db_fetch_array(tep_db_query("select  site_id  from " . TABLE_CONFIGURATION. " where configuration_id = '".$id."'"));
