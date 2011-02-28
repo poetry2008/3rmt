@@ -28,7 +28,7 @@
         $listing_sql .= "manufacturers_name " . ($sort_order == 'd' ? 'desc' : '') . ", products_name, products_id";
         break;
       case 'PRODUCT_LIST_QUANTITY':
-        $listing_sql .= "products_quantity " . ($sort_order == 'd' ? 'desc' : '') . ", products_name, products_id";
+        $listing_sql .= "products_real_quantity + products_virtual_quantity as products_quantity, " . ($sort_order == 'd' ? 'desc' : '') . ", products_name, products_id";
         break;
       case 'PRODUCT_LIST_IMAGE':
         $listing_sql .= "products_name, products_id";

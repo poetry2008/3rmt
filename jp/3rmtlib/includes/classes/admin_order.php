@@ -88,7 +88,7 @@
                              'date' => $order['date_purchased']);
 
       $index = 0;
-      $orders_products_query = tep_db_query("select products_id, orders_products_id, products_name, products_model, products_price, products_tax, products_quantity, final_price, products_character from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . tep_db_input($order_id) . "'");
+      $orders_products_query = tep_db_query("select products_id, orders_products_id, products_name, products_model, products_price, products_tax, products_real_quantity + products_virtual_quantity as products_quantity, final_price, products_character from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . tep_db_input($order_id) . "'");
       while ($orders_products = tep_db_fetch_array($orders_products_query)) {
         $this->products[$index] = array('id' => $orders_products['products_id'],
                                         'qty' => $orders_products['products_quantity'],

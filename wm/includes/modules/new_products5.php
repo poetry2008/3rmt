@@ -19,7 +19,7 @@
     // ccdd
     $new_products_query = tep_db_query("
         select * from (select p.products_id, 
-               p.products_quantity, 
+               p.products_real_quantity + p.products_virtual_quantity as products_quantity,
                p.products_image, 
                p.products_tax_class_id, 
                p.products_price, 
@@ -41,7 +41,7 @@
     if (!empty($has_c_arr)) {
       $new_products_query = tep_db_query("
           select * from (select distinct p.products_id, 
-                          p.products_quantity, 
+                          p.products_real_quantity + p.products_virtual_quantity as products_quantity,
                           p.products_image, 
                           p.products_tax_class_id, 
                           p.products_price, 
@@ -60,7 +60,7 @@
     } else {
       $new_products_query = tep_db_query("
           select * from (select distinct p.products_id, 
-                          p.products_quantity, 
+                          p.products_real_quantity + p.products_virtual_quantity as products_quantity,
                           p.products_image, 
                           p.products_tax_class_id, 
                           p.products_price, 
@@ -97,7 +97,7 @@
       // ccdd
       $new_products_query = tep_db_query("
           select * from (select distinct p.products_id, 
-                          p.products_quantity, 
+                          p.products_real_quantity + p.products_virtual_quantity as products_quantity,
                           p.products_image, 
                           p.products_tax_class_id, 
                           p.products_price, 

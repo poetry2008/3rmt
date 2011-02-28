@@ -24,7 +24,7 @@
     // ccdd
     $products_query = "
         select p.products_id,
-               p.products_quantity,
+               p.products_real_quantity + p.products_virtual_quantity as products_quantity,
                p.products_model,
                p.products_image,
                p.products_image2,
@@ -64,7 +64,7 @@
     // ccdd
     $products_query = "
         select p.products_id,
-               p.products_quantity,
+               p.products_real_quantity + p.products_virtual_quantity as products_quantity,
                p.products_model,
                p.products_image,
                p.products_image2,

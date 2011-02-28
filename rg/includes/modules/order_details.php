@@ -51,7 +51,7 @@
 // Quantity box or information as an input box or text
     if (strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
       // add up and down 
-      $a_quantity_query = tep_db_query("select products_quantity from ".TABLE_PRODUCTS." where products_id = '".$products[$i]['id']."'"); 
+      $a_quantity_query = tep_db_query("select products_real_quantity + products_virtual_quantity as products_quantity from ".TABLE_PRODUCTS." where products_id = '".$products[$i]['id']."'"); 
       $a_quantity = tep_db_fetch_array($a_quantity_query); 
       $p_a_quan = $a_quantity['products_quantity'];
       $p_id = 'quantity_'.$products[$i]['id'];

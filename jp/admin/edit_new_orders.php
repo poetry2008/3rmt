@@ -58,7 +58,7 @@
   // Update Inventory Quantity
   $order_query = tep_db_query("
       select products_id, 
-             products_quantity 
+             products_quantity,
       from " . TABLE_ORDERS_PRODUCTS . " 
       where orders_id = '" . tep_db_input($oID) . "'");
   
@@ -205,7 +205,7 @@
     // 1.3.1.1 Update Inventory Quantity
   $op_query = tep_db_query("
       select products_id, 
-             products_quantity 
+             products_quantity
       from " . TABLE_ORDERS_PRODUCTS . " 
       where orders_id = '" . tep_db_input($oID) . "'
         and orders_products_id='".$orders_products_id."'
@@ -225,8 +225,7 @@
         $p_quantity -= $quantity_difference;
         $pr_quantity -= $quantity_difference;
       }
-      exit("update " . TABLE_PRODUCTS . " set products_quantity = ".$p_quantity.", products_real_quantity = ".$pr_quantity.", products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
-      tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = ".$p_quantity.", products_real_quantity = ".$pr_quantity.", products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
+      tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = ".$pr_quantity.", products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
       
     }
   
@@ -264,14 +263,6 @@
     } else { // b.) null quantity found --> delete
       $Query = "delete from " . TABLE_ORDERS_PRODUCTS . " where orders_products_id = '$orders_products_id';";
       tep_db_query($Query);
-      //$order = tep_db_fetch_array($order_query);
-  /*
-      if ($products_details["qty"] != $order['products_quantity']){
-        $quantity_difference = ($products_details["qty"] - $order['products_quantity']);
-        tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = products_quantity - " . $quantity_difference . ", products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
-        tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = 0 where products_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
-      }
-  */
       $Query = "delete from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where orders_products_id = '$orders_products_id';";
       tep_db_query($Query);
       $products_delete = true;
@@ -514,7 +505,7 @@
                      p.products_attention_5,
                      pd.products_description, 
                      p.products_model, 
-                     p.products_quantity, 
+                     p.products_real_quantity + p.products_virtual_quantity as products_quantity,
                      p.products_image,
                      p.products_image2,
                      p.products_image3, 
@@ -809,7 +800,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
       if ((int)$add_product_quantity > $p['products_real_quantity']) {
         // 买取商品大于实数
         tep_db_perform('products',array(
-          'products_quantity' => $p['products_quantity'] - (int)$add_product_quantity,
+          //'products_quantity' => $p['products_quantity'] - (int)$add_product_quantity,
           'products_real_quantity' => 0,
           'products_virtual_quantity' => $p['products_virtual_quantity'] - ((int)$add_product_quantity - $p['products_real_quantity'])
         ),
@@ -826,7 +817,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
         );
       } else {
         tep_db_perform('products',array(
-          'products_quantity' => $p['products_quantity'] - (int)$add_product_quantity,
+          //'products_quantity' => $p['products_quantity'] - (int)$add_product_quantity,
           'products_real_quantity' => $p['products_virtual_quantity'] - (int)$add_product_quantity
         ),
         'update',
@@ -835,7 +826,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
       // 增加销售量
       tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . (int)$add_product_quantity . " where products_id = '" . $add_product_products_id . "'");
       // 处理负数问题
-      tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = 0 where products_quantity < 0 and products_id = '" . $add_product_products_id . "'");
+      //tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = 0 where products_quantity < 0 and products_id = '" . $add_product_products_id . "'");
       tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . $add_product_products_id . "'");
       tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . $add_product_products_id . "'");
       

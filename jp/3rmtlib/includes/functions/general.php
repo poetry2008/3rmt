@@ -211,7 +211,7 @@ function forward404Unless($condition)
     //ccdd
     $stock_query = tep_db_query("
     select * from (
-      select p.products_quantity, pd.products_status, p.products_id, pd.site_id 
+      select p.products_real_quantity + p.products_virtual_quantity as products_quantity, pd.products_status, p.products_id, pd.site_id 
       from " . TABLE_PRODUCTS . " p , ".TABLE_PRODUCTS_DESCRIPTION." pd 
       where p.products_id = pd.products_id and p.products_id = '" . (int)$products_id . "' 
       order by pd.site_id DESC
@@ -2598,7 +2598,7 @@ function tep_unlink_temp_dir($dir)
     if ($default) {
     $sql = "
         SELECT * FROM (SELECT p.products_id, 
-               p.products_quantity, 
+               p.products_real_quantity + p.products_virtual_quantity as products_quantity,
                p.products_real_quantity, 
                p.products_virtual_quantity, 
                p.products_model, 
@@ -2648,7 +2648,7 @@ function tep_unlink_temp_dir($dir)
     } else {
     $sql = "
         SELECT p.products_id, 
-               p.products_quantity, 
+               p.products_real_quantity + p.products_virtual_quantity as products_quantity,
                p.products_real_quantity, 
                p.products_virtual_quantity, 
                p.products_model, 
@@ -3565,7 +3565,7 @@ function tep_get_cart_products($pid){
       and p2.products_id = p2c.products_id
       and p2.products_cartflag = '1'
       and p2c.products_id not in (".join(',',$pid).")
-      and p2.products_quantity > p2.products_cart_min
+      and p2.products_real_quantity + p2.products_virtual_quantity > p2.products_cart_min
     order by p2.products_cartorder
     limit ".CART_TAG_PRODUCTS_MAX."
   ";

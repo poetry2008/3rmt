@@ -16,7 +16,7 @@
            p.products_tax_class_id, 
            p.products_price_offset,
            p.products_small_sum,
-           p.products_quantity, 
+           p.products_real_quantity + p.products_virtual_quantity as products_quantity,
            pd.products_description ,
            pd.products_status ,
            pd.site_id
