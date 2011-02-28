@@ -306,12 +306,46 @@
       }
       if (tep_db_num_rows($stock_query) > 0) {
         $stock_values = tep_db_fetch_array($stock_query);
+        if ($order->products[$i]['qty'] > $stock_values['products_real_quantity']) {
+          // 买取商品大于实数
+          tep_db_perform(
+            'products',
+            array(
+              'products_virtual_quantity' => $stock_values['products_virtual_quantity'] - ($order->products[$i]['qty'] - $stock_values['products_real_quantity']),
+              'products_real_quantity'    => 0,
+              'products_quantity'         => $stock_values['products_quantity'] - $order->products[$i]['qty'],
+            ),
+            'update',
+            "products_id = '" . tep_get_prid($order->products[$i]['id']) . "'"
+          );
+          
+          // 同步架空
+          tep_db_perform(
+            'set_menu_list',
+            array(
+              'kakuukosuu' => $stock_values['products_virtual_quantity'] - ($order->products[$i]['qty'] - $stock_values['products_real_quantity']),
+            ),
+            'update',
+            "products_id = '" . tep_get_prid($order->products[$i]['id']) . "'"
+          );
+        } else {
+          tep_db_perform(
+            'products',
+            array(
+              'products_real_quantity' => $stock_values['products_real_quantity'] - $order->products[$i]['qty'],
+              'products_quantity'      => $stock_values['products_quantity'] - $order->products[$i]['qty'],
+            ),
+            'update',
+            "products_id = '" . tep_get_prid($order->products[$i]['id']) . "'"
+          );
+        }
 // do not decrement quantities if products_attributes_filename exists
+/*
         if ((DOWNLOAD_ENABLED != 'true') || (!$stock_values['products_attributes_filename'])) {
           $stock_left = $stock_values['products_quantity'] - $order->products[$i]['qty'];
           if ($order->products[$i]['qty'] > $stock_values['products_real_quantity']) {
-            $stock_left = 0;
-            $real_stock_left = 0;
+            //$stock_left = 0;
+            //$real_stock_left = 0;
           } else {
             $real_stock_left = $stock_values['products_real_quantity'] - $order->products[$i]['qty'];
           }
@@ -319,7 +353,10 @@
           $stock_left = $stock_values['products_quantity'];
         }
 //ccdd
-        tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = '" . $stock_left . "'" . (isset($real_stock_left)?(", products_real_quantity = '" . $real_stock_left):'') . "' where products_id = '" . tep_get_prid($order->products[$i]['id']) . "'");
+        tep_db_query("update " . TABLE_PRODUCTS . " set 
+        products_quantity = '" . $stock_left . "'" . (isset($real_stock_left)?(", products_real_quantity = '" . $real_stock_left):'') . "' 
+        where products_id = '" . tep_get_prid($order->products[$i]['id']) . "'");
+*/
         /*
         if ($stock_left < 1) {
         ########## 在庫切れのメール通知　##############
