@@ -96,54 +96,58 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
 </div>
 <!-- left_navigation_eof //-->
 <!-- body_text //-->
-<div id="content"><?php echo tep_draw_form('checkout_payment', tep_href_link(FILENAME_CHECKOUT_CONFIRMATION, '', 'SSL'), 'post', 'onsubmit="return check_form();"'); ?><div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
+<div id="content">
+<?php echo tep_draw_form('checkout_payment', tep_href_link(FILENAME_CHECKOUT_CONFIRMATION, '', 'SSL'), 'post', 'onsubmit="return check_form();"'); ?>
+<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
 <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>
-<div> 
-          <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
+<table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
+<tr> 
+  <td>
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" class="checkout_s_link"> 
+      <tr> 
+        <td width="20%">
+          <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
-              <td>
-              <table border="0" width="100%" cellspacing="0" cellpadding="0" class="checkout_s_link01"> 
-                  <tr> 
-                    <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                        <tr> 
-                          <td width="50%" align="right"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td> 
-                          <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-                        </tr> 
-                      </table></td> 
-                    <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-                    <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                        <tr> 
-                          <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-                          <td><?php echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif'); ?></td> 
-                          <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-                        </tr> 
-                      </table></td> 
-                    <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-                    <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                        <tr> 
-                          <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-                          <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td> 
-                        </tr> 
-                      </table></td> 
-                  </tr> 
-                  <tr class="box_des"> 
-                    <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_PRODUCTS . '</a>'; ?></td>
-                    <td align="center" width="20%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_DELIVERY . '</a>'; ?></td> 
-                    <td align="center" nowrap="nowrap" width="20%" class="checkoutBarCurrent"><?php echo CHECKOUT_BAR_PAYMENT; ?></td> 
-                    <td align="center" nowrap="nowrap" width="20%" class="checkoutBarTo"><?php echo CHECKOUT_BAR_CONFIRMATION; ?></td> 
-                    <td align="center" nowrap="nowrap" width="20%" class="checkoutBarTo"><?php echo CHECKOUT_BAR_FINISHED; ?></td> 
-                  </tr> 
-                </table></td> 
+              <td width="50%" align="right"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td> 
+              <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
             </tr> 
+          </table>
+        </td> 
+        <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
+        <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
-              <td>
-              <table border="0" width="100%" cellspacing="0" cellpadding="2" class="c_pay_info01"> 
-                  <tr> 
-                  	<td class="main"><b><?php echo TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><div style="margin-top:5px;">' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></div></td> 
-                    <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
-                  </tr> 
-                </table></td> 
+              <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
+              <td><?php echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif'); ?></td> 
+              <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
             </tr> 
+          </table></td> 
+        <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
+        <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+            <tr> 
+              <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
+              <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td> 
+            </tr> 
+          </table></td> 
+      </tr> 
+      <tr class="box_des"> 
+        <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_PRODUCTS . '</a>'; ?></td>
+        <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_DELIVERY . '</a>'; ?></td> 
+        <td align="center" nowrap="nowrap" width="20%" class="checkoutBarCurrent"><?php echo CHECKOUT_BAR_PAYMENT; ?></td> 
+        <td align="center" nowrap="nowrap" width="20%" class="checkoutBarTo"><?php echo CHECKOUT_BAR_CONFIRMATION; ?></td> 
+        <td align="center" nowrap="nowrap" width="20%" class="checkoutBarTo"><?php echo CHECKOUT_BAR_FINISHED; ?></td> 
+      </tr> 
+    </table></td> 
+</tr> 
+<tr> 
+  <td>
+    <table border="0" width="100%" cellspacing="0" cellpadding="2" class="c_pay_info"> 
+      <tr> 
+        <td class="main"><b><?php echo TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><div style="margin-top:5px;">' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></div></td> 
+        <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
+      </tr> 
+    </table>
+  </td> 
+</tr> 
             <?php
   //販売開始
   $hanbai_sale = $cart->get_products();
@@ -483,34 +487,32 @@ if (!isset($bank_kamoku)) $bank_kamoku=NULL;
         }
       }//point eof// 
       ?> 
-            <tr> 
-              <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                  <tr> 
-                    <td>
-                    <table border="0" width="100%" cellspacing="0" cellpadding="2" class="c_pay_info02"> 
-                        <tr> 
-                          <td class="main"><b><?php echo TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><div style="margin-top:5px;">' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></div></td> 
-                          <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
-                        </tr> 
-                      </table></td> 
-                  </tr> 
-                </table></td> 
-            </tr> 
-            <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
-          </table> 
-        </div></form></div>
-      <!-- body_text_eof //--> 
+<tr> 
+  <td>
+    <table border="0" width="100%" cellspacing="0" cellpadding="2" class="c_pay_info"> 
+      <tr> 
+        <td class="main"><b><?php echo TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><div style="margin-top:5px;">' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></div></td> 
+        <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
+      </tr> 
+    </table>
+  </td> 
+</tr> 
+<tr> 
+  <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+</tr> 
+</table> 
+</form>
+</div>
+<!-- body_text_eof //--> 
 <!-- right_navigation //--> 
 <div id="r_menu">
 <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
 </div>
 <!-- right_navigation_eof //-->
-  <!-- body_eof //--> 
-  <!-- footer //--> 
-  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+<!-- body_eof //--> 
+<!-- footer //--> 
+<?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
+<!-- footer_eof //--> 
 </div> 
 </body>
 </html>

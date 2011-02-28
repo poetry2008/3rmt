@@ -75,11 +75,11 @@
 </div>
 <!-- left_navigation_eof //-->
 <!-- body_text //-->
-<div id="content"><?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_SUCCESS, 'action=update', 'SSL')); ?> 
-        <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
+<div id="content">
+<?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_SUCCESS, 'action=update', 'SSL')); ?> 
+<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
 <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>
-<div> 
-          <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
+<table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
             <?php
       #convenience_store
             if (!isset($_POST['SID'])) $_POST['SID']=NULL;
@@ -174,8 +174,8 @@
             <?php if (DOWNLOAD_ENABLED == 'true') include(DIR_WS_MODULES . 'downloads.php'); ?> 
           </table> 
           </form> 
-        </div></div>
-      <!-- body_text_eof //--> 
+        </div>
+<!-- body_text_eof //--> 
 <!-- right_navigation //--> 
 <div id="r_menu">
 <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
