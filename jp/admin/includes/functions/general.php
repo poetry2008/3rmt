@@ -4085,7 +4085,7 @@ function tep_calc_products_price($real_qty = 0, $virtual_qty = 0){
   if(in_array($site_id,$site_arr)){//判断iste_id是否存在于权限数组中
     
     $edit_p=true;//true 说明有管理权限 可以在点击新闻时进行修改 
-  }else if(($site_id =='' || $site_id =0)&&$_SESSION['user_permission'] == 15){
+  }else if(($site_id =='' || $site_id ==0)&&$_SESSION['user_permission'] == 15){
     $edit_p=true;
   }
   return $edit_p;
