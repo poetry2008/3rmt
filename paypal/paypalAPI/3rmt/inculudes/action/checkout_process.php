@@ -249,7 +249,7 @@ $httpParsedResponseAr = PPHttpPost('GetExpressCheckoutDetails', $nvpStr);
 		$paymentType = urlencode("Sale");			// or 'Sale' or 'Order'
 		$paymentAmount = urlencode($amt);
 		$currencyID = urlencode("JPY");		
-		$token = urlencode($httpParsedResponseAr['TOKEN']);				// or other currency code ('GBP', 'EUR', 'JPY', 'CAD', 'AUD')
+		//$token = urlencode($httpParsedResponseAr['TOKEN']);
 		$nvpStr = "&TOKEN=$token&PAYERID=$payerID&PAYMENTACTION=$paymentType&AMT=$paymentAmount&CURRENCYCODE=$currencyID";
 
 // Execute the API operation; see the PPHttpPost function above.
@@ -272,9 +272,11 @@ $httpParsedResponseAr = PPHttpPost('GetExpressCheckoutDetails', $nvpStr);
       		tep_db_perform("telecom_unknow", $sql_data_array);
 		}else{
 			//エラーコード発行予定
+			exit('DoExpressCheckoutPayment failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
 		}
 	}else{
 //エラーコード発行予定
+exit('GetExpressCheckoutDetails failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
 	}
 }
 
@@ -364,7 +366,7 @@ $httpParsedResponseAr = PPHttpPost('GetExpressCheckoutDetails', $nvpStr);
       if (tep_db_num_rows($stock_query) > 0) {
         $stock_values = tep_db_fetch_array($stock_query);
         if ($order->products[$i]['qty'] > $stock_values['products_real_quantity']) {
-          // 荵ｰ取商品大于螳梵鐀
+          // 荵ｰ取商品大于螳梵髏
           tep_db_perform(
             'products',
             array(
