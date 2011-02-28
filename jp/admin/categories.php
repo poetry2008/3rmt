@@ -1255,7 +1255,20 @@ function get_cart_products(){
                   <table>
           <tr>
                       <td class="main"><?php echo TEXT_PRODUCTS_STATUS; ?></td>
-                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_radio_field('products_status', '1', $pInfo->products_status == '1' or !isset($pInfo->products_status)) . '&nbsp;' . TEXT_PRODUCT_AVAILABLE . '&nbsp;' . tep_draw_radio_field('products_status', '2', $pInfo->products_status == '2') . '&nbsp;' . '過去ログ'. '&nbsp;' . tep_draw_radio_field('products_status', '0', $pInfo->products_status == '0') . '&nbsp;' . TEXT_PRODUCT_NOT_AVAILABLE; ?></td>
+                      <td class="main"><?php echo
+                      tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' .
+                      tep_draw_radio_field('products_status', '1',
+                          $pInfo->products_status == '1' or
+                          !isset($pInfo->products_status)) . '&nbsp;' .
+                      TEXT_PRODUCT_AVAILABLE . '&nbsp;' .
+                      tep_draw_radio_field('products_status', '2',
+                          $pInfo->products_status == '2') . '&nbsp;' . '過去ログ'.
+                      '&nbsp;' . tep_draw_radio_field('products_status', '0',
+                          $pInfo->products_status == '0') . '&nbsp;' .
+                      TEXT_PRODUCT_NOT_AVAILABLE . '&nbsp;' .
+                      tep_draw_radio_field('products_status', '3',
+                          $pInfo->products_status == '3') . '&nbsp;' .
+                      TEXT_PRODUCT_NOT_SHOW; ?></td>
                       <td class="main">&nbsp;</td>
           </tr>
   
