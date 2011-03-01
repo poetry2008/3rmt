@@ -211,11 +211,11 @@
 
     // 1.3.1.1 Update Inventory Quantity
     $order = tep_db_fetch_array($op_query);
-    //print_r($order);
     if ($products_details["qty"] != $order['products_quantity']) {
       $quantity_difference = ($products_details["qty"] - $order['products_quantity']);
-      $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$orders_products_id."'"));
-      
+      $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$order['products_id']."'"));
+      //print_r($p);
+      //exit;
       $pr_quantity = $p['products_real_quantity'];
       if ($pr_quantity - $quantity_difference < 0) {
         $pr_quantity = 0;
@@ -714,30 +714,18 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       tep_db_query($Query);
       $new_product_id = tep_db_insert_id();
       
-      
       orders_updated($oID);
-      
       
       // 2.2.1 Update inventory Quantity
       $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$add_product_products_id."'"));
       if ((int)$add_product_quantity > $p['products_real_quantity']) {
         // 买取商品大于实数
         tep_db_perform('products',array(
-          //'products_quantity' => $p['products_quantity'] - (int)$add_product_quantity,
           'products_real_quantity' => 0,
           'products_virtual_quantity' => $p['products_virtual_quantity'] - ((int)$add_product_quantity - $p['products_real_quantity'])
         ),
         'update',
         "products_id = '" . $add_product_products_id . "'");
-        // 同步架空
-        tep_db_perform(
-          'set_menu_list',
-          array(
-            'kakuukosuu' => $p['products_virtual_quantity'] - ((int)$add_product_quantity - $p['products_real_quantity'])
-          ),
-          'update',
-          "products_id = '" . $add_product_products_id . "'"
-        );
       } else {
         tep_db_perform('products',array(
           //'products_quantity' => $p['products_quantity'] - (int)$add_product_quantity,

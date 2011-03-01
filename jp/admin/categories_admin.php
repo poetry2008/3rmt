@@ -375,7 +375,7 @@ while ($products = tep_db_fetch_array($products_query)) {
   $i_cnt=0;
   while($col_kaku=tep_db_fetch_array($res_kaku)){
     $menu_datas[$i_cnt][0]=$col_kaku['products_id'];
-    $menu_datas[$i_cnt][1]=$col_kaku['kakuukosuu'];
+    $menu_datas[$i_cnt][1]=tep_get_kakuukosuu_by_products_id($col_kaku['products_id']);
     $menu_datas[$i_cnt][2]=$col_kaku['kakaku'];
     $i_cnt++;
   }

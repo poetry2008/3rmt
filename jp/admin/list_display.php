@@ -33,13 +33,12 @@ case update:
     for ($i = 0; $i < count($_POST['product']); $i++) {
         tep_db_perform('set_menu_list', array(
           'products_id'   => $_POST['product'][$i],
-          'kakuukosuu'    => SBC2DBC($_POST['kakuukosuu'][$i]),
+          //'kakuukosuu'    => SBC2DBC($_POST['kakuukosuu'][$i]),
           'kakaku'        => SBC2DBC($_POST['kakaku'][$i]),
           'categories_id' => $cID,
           'last_modified' => 'now()'
         ));
         tep_db_perform('products', array('products_virtual_quantity' => SBC2DBC($_POST['kakuukosuu'][$i])), 'update', "products_id='".$_POST['product'][$i]."'");
-        //tep_db_query("update products set products_quantity=products_real_quantity+products_virtual_quantity where products_id='".$_POST['product'][$i]."'");
     }
   }
   tep_redirect('categories_admin.php?cPath='.$_POST['fullpath']);
@@ -108,18 +107,11 @@ color: #000000;
 ?>
     );
 <?php foreach ($products as $jk => $jp) {?>
-    kakuukosuu[<?php echo $jp['products_id'];?>] = <?php echo tep_get_kakuukosuu_by_products_id($cID,$jp['products_id']);?>;
+    kakuukosuu[<?php echo $jp['products_id'];?>] = <?php echo tep_get_kakuukosuu_by_products_id($jp['products_id']);?>;
     kakaku[<?php echo $jp['products_id'];?>]     = <?php echo tep_get_kakaku_by_products_id($cID,$jp['products_id']);?>;
 <?php }?>
 
-    /*function setDefault () {
-      i = 1;
-      $('.productSelect').each(function(){
-        this.selectedIndex = i;
-        $(this).trigger('change');
-        i++;
-      });
-    }*/
+
     function setDefault () {
       i = 1;
       $('.productSelect').each(function(){

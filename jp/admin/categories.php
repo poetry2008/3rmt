@@ -70,22 +70,10 @@
         // jiakong
         $update_sql_data = array('products_last_modified' => 'now()',
                                  'products_real_quantity' => tep_db_prepare_input($_POST['products_real_quantity']),
-                                 //'products_virtual_quantity' => tep_db_prepare_input($_POST['products_virtual_quantity']),
-                                 //'products_quantity' => tep_calc_products_price(tep_db_prepare_input($_POST['products_real_quantity']), tep_db_prepare_input($_POST['products_virtual_quantity'])),
                                  'products_attention_5' => tep_db_prepare_input($_POST['products_attention_5']),
-                                 //'products_price_offset' => tep_db_prepare_input($HTTP_POST_VARS['products_price_offset']),
                                  'products_price' => tep_db_prepare_input($_POST['products_price']));
         tep_db_perform(TABLE_PRODUCTS, $update_sql_data, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
-        //tep_db_query("update products set products_quantity=products_real_quantity+products_virtual_quantity where products_id='".$products_id."'");
-    
-        /*
-        if (tep_db_prepare_input($_POST['products_virtual_quantity'])) {
-          if (tep_db_num_rows(tep_db_query("select * from set_menu_list where products_id = '".tep_db_input($products_id)."'"))) {
-            tep_db_perform('set_menu_list', array('kakuukosuu' => tep_db_prepare_input($_POST['products_virtual_quantity'])), 'update', "products_id = '".tep_db_input($products_id)."'");
-          } else {
-            // do nothing
-          }
-        }*/
+
         tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $_GET['cPath'] . '&pID=' . $products_id));
         break;
       case 'upload_keyword':
