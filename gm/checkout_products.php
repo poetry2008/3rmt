@@ -174,7 +174,6 @@ foreach($cart as $key => $val){
           }
         ?>  
         </table>
-          
         <p class="redtext">ご入力されましたキャラクター名にお間違えはございませんか？</p>
         <h3>よくある間違い</h3>
         <ul>

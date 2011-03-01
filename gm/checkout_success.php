@@ -100,7 +100,7 @@
       }
         ?>
             <tr> 
-              <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="checkout_s_link01"> 
+              <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="checkout_s_link"> 
                   <tr> 
                     <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                         <tr> 
