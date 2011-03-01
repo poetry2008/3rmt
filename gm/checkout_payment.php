@@ -192,7 +192,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des"> 
                   <tr> 
-                    <td class="main"><b><?php echo TABLE_HEADING_PAYMENT_METHOD; ?></b></td> 
+                    <td class="main03"><b><?php echo TABLE_HEADING_PAYMENT_METHOD; ?></b></td> 
                   </tr> 
                 </table></td> 
             </tr> 
@@ -312,9 +312,6 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
                   </tr> 
                 </table></td> 
             </tr> 
-            <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
       
 <?php
   }//販売終了
@@ -330,7 +327,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des"> 
                   <tr> 
-                    <td class="main"><b><?php echo TABLE_HEADING_BANK; ?></b></td> 
+                    <td class="main03"><b><?php echo TABLE_HEADING_BANK; ?></b></td> 
                   </tr> 
                 </table></td> 
             </tr> 
@@ -420,9 +417,6 @@ if (!isset($bank_kamoku)) $bank_kamoku=NULL;
                   </tr> 
                 </table></td> 
             </tr> 
-            <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
 <?php
   } else {
     # 買い取り商品が無かった場合
@@ -437,7 +431,7 @@ if (!isset($bank_kamoku)) $bank_kamoku=NULL;
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des"> 
                   <tr> 
-                    <td class="main"><b><?php echo TABLE_HEADING_COMMENTS; ?></b></td> 
+                    <td class="main03"><b><?php echo TABLE_HEADING_COMMENTS; ?></b></td> 
                   </tr> 
                 </table></td> 
             </tr> 
@@ -452,9 +446,6 @@ if (!isset($bank_kamoku)) $bank_kamoku=NULL;
                   </tr> 
                 </table></td> 
             </tr> 
-            <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
             <?php
       if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {//point --  
         if($guestchk == '1') {
@@ -464,7 +455,7 @@ if (!isset($bank_kamoku)) $bank_kamoku=NULL;
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des"> 
                   <tr> 
-                    <td class="main"><b><?php echo TEXT_POINT; ?></b></td> 
+                    <td class="main03"><b><?php echo TEXT_POINT; ?></b></td> 
                   </tr> 
                 </table></td> 
             </tr> 
@@ -480,9 +471,6 @@ if (!isset($bank_kamoku)) $bank_kamoku=NULL;
                   </tr> 
                 </table></td> 
             </tr> 
-            <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
             <?php 
         }
       }//point eof// 
@@ -496,9 +484,6 @@ if (!isset($bank_kamoku)) $bank_kamoku=NULL;
       </tr> 
     </table>
   </td> 
-</tr> 
-<tr> 
-  <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
 </tr> 
 </table> 
 </form>

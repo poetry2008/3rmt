@@ -298,9 +298,6 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
         </td>
       </tr>
       <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-      </tr>
-      <tr>
         <td>
           <table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea">
             <tr>
@@ -531,9 +528,6 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
           </table>
         </td>
       </tr>
-      <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-      </tr>
       <?php
     }
   }
@@ -587,9 +581,6 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
         </tr>
       </table>
     </td>
-  </tr>
-  <tr>
-    <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
   </tr>
 </table>
 </form>
