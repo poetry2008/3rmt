@@ -143,97 +143,100 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
 <!-- header_eof //-->
 <!-- body //-->
 <div id="main">
-  <!-- left_navigation //-->
-  <div id="l_menu">
-    <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-  </div>
-  <!-- left_navigation_eof //-->
-  <!-- body_text //-->
-  <div id="content">
-    <?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post');?>
-    <div class="headerNavigation">
-      <?php echo $breadcrumb->trail(' &raquo; '); ?>
-    </div>
-    <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
-    <table border="0" width="95%" cellspacing="0" cellpadding="0" class="box_des">
+<!-- left_navigation //-->
+<div id="l_menu">
+<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
+</div>
+<!-- left_navigation_eof //-->
+<!-- body_text //-->
+<div id="content">
+<?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post');?>
+<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
+<h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
+<table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
+<tr>
+  <td>
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" class="checkout_s_link">
       <tr>
-        <td>
-          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="checkout_s_link01">
+        <td width="20%">
+          <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
-              <td width="20%">
-                <table border="0" width="100%" cellspacing="0" cellpadding="0">
-                  <tr>
-                    <td width="50%" align="right"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td>
-                    <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
-                  </tr>
-                </table>
-              </td>
-              <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
-              <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
-              <td width="20%">
-                <table border="0" width="100%" cellspacing="0" cellpadding="0">
-                  <tr>
-                    <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
-                    <td><?php echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif'); ?></td>
-                    <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
-                  </tr>
-                </table>
-              </td>
-              <td width="20%">
-                <table border="0" width="100%" cellspacing="0" cellpadding="0">
-                  <tr>
-                    <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
-                    <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td>
-                  </tr>
-                </table>
-              </td>
+              <td width="50%" align="right"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td>
+              <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
             </tr>
-            <tr class="box_des">
-              <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_PRODUCTS . '</a>'; ?></td>
-              <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_DELIVERY . '</a>'; ?></td>
-              <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_PAYMENT . '</a>'; ?></td>
-              <td align="center" nowrap="nowrap" width="20%" class="checkoutBarCurrent"><?php echo CHECKOUT_BAR_CONFIRMATION; ?></td>
-              <td align="center" nowrap="nowrap" width="20%" class="checkoutBarTo"><?php echo CHECKOUT_BAR_FINISHED; ?></td>
+          </table>
+        </td>
+        <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
+        <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
+        <td width="20%">
+          <table border="0" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
+              <td><?php echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif'); ?></td>
+              <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
+            </tr>
+          </table>
+        </td>
+        <td width="20%">
+          <table border="0" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
+              <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td>
             </tr>
           </table>
         </td>
       </tr>
+      <tr class="box_des">
+        <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_PRODUCTS . '</a>'; ?></td>
+        <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_DELIVERY . '</a>'; ?></td>
+        <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_PAYMENT . '</a>'; ?></td>
+        <td align="center" nowrap="nowrap" width="20%" class="checkoutBarCurrent"><?php echo CHECKOUT_BAR_CONFIRMATION; ?></td>
+        <td align="center" nowrap="nowrap" width="20%" class="checkoutBarTo"><?php echo CHECKOUT_BAR_FINISHED; ?></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+  <td>
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info">
       <tr>
-        <td>
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info01">
-        <tr>
         <td class="main"><b>ご注文内容をご確認の上「注文する」をクリックしてください。</b></td>
         <td class="main" align="right"><?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></td>
-        </tr>
-        </table>
-          <table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea">
-            <tr>
-              <?php
+      </tr>
+    </table>
+  </td> 
+</tr>
+  
+<tr>
+  <td>
+    <table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea">
+      <tr>
+        <?php
   if ($sendto != false) {
 ?>
-              <td width="30%" valign="top">
-                <table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des">
-                  <tr>
-                    <td class="main"><?php echo '<b>' . HEADING_DELIVERY_ADDRESS . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING_ADDRESS, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
-                  </tr>
-                  <tr>
-                    <td class="main"><?php echo tep_address_format($order->delivery['format_id'], $order->delivery, 1, ' ', '<br>'); ?></td>
-                  </tr>
-                  <?php
+        <td width="30%" valign="top">
+          <table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des">
+            <tr>
+              <td class="main"><?php echo '<b>' . HEADING_DELIVERY_ADDRESS . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING_ADDRESS, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
+            </tr>
+            <tr>
+              <td class="main"><?php echo tep_address_format($order->delivery['format_id'], $order->delivery, 1, ' ', '<br>'); ?></td>
+            </tr>
+            <?php
     if ($order->info['shipping_method']) {
 ?>
-                  <tr>
-                    <td class="main"><?php echo '<b>' . HEADING_SHIPPING_METHOD . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
-                  </tr>
-                  <tr>
-                    <td class="main"><?php echo $order->info['shipping_method']; ?></td>
-                  </tr>
-                  <?php
+            <tr>
+              <td class="main"><?php echo '<b>' . HEADING_SHIPPING_METHOD . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
+            </tr>
+            <tr>
+              <td class="main"><?php echo $order->info['shipping_method']; ?></td>
+            </tr>
+            <?php
     }
 ?>
-                </table>
-              </td>
-              <?php
+          </table>
+        </td>
+        <?php
   }
 ?>
               <td width="<?php echo (($sendto != false) ? '70%' : '100%'); ?>" valign="top">
@@ -528,6 +531,9 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
           </table>
         </td>
       </tr>
+      <tr>
+        <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
+      </tr>
       <?php
     }
   }
@@ -556,60 +562,51 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
           </table>
         </td>
       </tr>
-      <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-      </tr>
       <?php
   }
 ?>
-      <tr>
-        <td>
-          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info02">
-            <tr>
-              <td class="main"><b>ご注文内容をご確認の上「注文する」をクリックしてください。</b></td>
-              <td align="right" class="main">
-                <?php
-
+  <tr>
+    <td>
+      <table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info">
+        <tr>
+          <td class="main"><b>ご注文内容をご確認の上「注文する」をクリックしてください。</b></td>
+          <td align="right" class="main">
+<?php
   if (is_array($payment_modules->modules)) {
     echo $payment_modules->process_button();
   }
-
   //character  
   if(isset($_SESSION['character'])){
     foreach($_SESSION['character'] as $ck => $cv){
-    echo tep_draw_hidden_field("character[$ck]", $cv);
+      echo tep_draw_hidden_field("character[$ck]", $cv);
+    }
   }
-  }
-  
-  echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER) . '</form>' . "\n";
+  echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER) . "\n";
 ?>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-      </tr>
-    </table>
-  </div>
-  <!-- body_text_eof //-->
-  <!-- right_navigation //-->
-  <div id="r_menu">
-    <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
-  </div>
-  <!-- right_navigation_eof //-->
-  <!-- body_eof //-->
-  <!-- footer //-->
-  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-  <!-- footer_eof //-->
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
+  </tr>
+</table>
+</form>
 </div>
-<!-- /visites --> 
-<object>
-<noscript>
-<img src="visites.php" alt="Statistics" style="border:0" />
-</noscript>
-</object>
+<!-- body_text_eof //-->
+<!-- right_navigation //-->
+<div id="r_menu">
+<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
+</div>
+<!-- right_navigation_eof //-->
+<!-- body_eof //-->
+<!-- footer //-->
+<?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
+<!-- footer_eof //-->
+</div>
+<!-- visites --> 
+<object><noscript><img src="visites.php" alt="Statistics" style="border:0" /></noscript></object>
 <!-- /visites -->
 </body>
 </html><?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

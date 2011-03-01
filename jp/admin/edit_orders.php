@@ -179,7 +179,7 @@
     orders_updated($oID);
     $order_updated = true;
 
-    $check_status_query = tep_db_query("select customers_name, customers_email_address, orders_status, date_purchased from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
+    $check_status_query = tep_db_query("select customers_id, customers_name, customers_email_address, orders_status, date_purchased from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
     $check_status = tep_db_fetch_array($check_status_query);
 
   // fin mise ・jour
@@ -217,13 +217,13 @@
       $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$orders_products_id."'"));
       
       $pr_quantity = $p['products_real_quantity'];
-      //$pv_quantity = $p['products_virtual_quantity'];
       if ($pr_quantity - $quantity_difference < 0) {
         $pr_quantity = 0;
       } else {
-        //$p_quantity -= $quantity_difference;
         $pr_quantity -= $quantity_difference;
       }
+      // 如果是业者，不更新
+      if(!tep_is_oroshi($check_status['customers_id']))
       tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = ".$pr_quantity.", products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
     }
 
