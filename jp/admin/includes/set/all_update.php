@@ -59,17 +59,7 @@ if($_POST[flg_up]==1){
 
   for($n=0;$n < $cnt;$n++ ){
     update_products_dougyousya(tep_db_prepare_input($proid[$n]), tep_db_prepare_input($radio_chk[$n]));
-    /*
-    if (tep_db_num_rows(tep_db_query("select * from set_menu_list where categories_id = '".tep_db_prepare_input($cID)."' and products_id='".tep_db_prepare_input($proid[$n])."'"))) {
-      tep_db_perform('set_menu_list', array('kakuukosuu' => tep_db_prepare_input($_POST['imaginary'][$n])), 'update', 'categories_id=\'' . tep_db_prepare_input($cID) . '\' and products_id = \'' . tep_db_prepare_input($proid[$n]) . '\'');
-    } else {
-      tep_db_perform('set_menu_list', array(
-        'kakuukosuu' => tep_db_prepare_input($_POST['imaginary'][$n]),
-        'categories_id' => tep_db_prepare_input($cID),
-        'products_id' => tep_db_prepare_input($proid[$n])
-      ));
-    }*/
-    
+
     $update_sql_data = array('products_last_modified' => 'now()',
                              //'products_quantity' => tep_db_prepare_input($products_quantity[$n]),
                              'products_price' => tep_db_prepare_input($psrice_datas[$n]),

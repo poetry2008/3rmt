@@ -237,31 +237,31 @@ $nvpStr = "&TOKEN=$token";
 // Execute the API operation; see the PPHttpPost function above.
 $httpParsedResponseAr = PPHttpPost('GetExpressCheckoutDetails', $nvpStr);
 
-	if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
-		//カード名義
-		$sql_data_array['username']  =strtoupper($httpParsedResponseAr["FIRSTNAME"])." ".strtoupper($httpParsedResponseAr["LASTNAME"]);
-		//電話番号
-		$sql_data_array['telno']   =urldecode(htmlspecialchars($httpParsedResponseAr["PHONENUM"]));
-		//Eメール
-		$sql_data_array['email'] =urldecode(htmlspecialchars($httpParsedResponseAr["EMAIL"]));
-		// Extract the response details.
-		$payerID = urlencode($httpParsedResponseAr['PAYERID']);
-		$paymentType = urlencode("Sale");			// or 'Sale' or 'Order'
-		$paymentAmount = urlencode($amt);
-		$currencyID = urlencode("JPY");		
-		//$token = urlencode($httpParsedResponseAr['TOKEN']);
-		$nvpStr = "&TOKEN=$token&PAYERID=$payerID&PAYMENTACTION=$paymentType&AMT=$paymentAmount&CURRENCYCODE=$currencyID";
+  if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
+    //カード名義
+    $sql_data_array['username']  =strtoupper($httpParsedResponseAr["FIRSTNAME"])." ".strtoupper($httpParsedResponseAr["LASTNAME"]);
+    //電話番号
+    $sql_data_array['telno']   =urldecode(htmlspecialchars($httpParsedResponseAr["PHONENUM"]));
+    //Eメール
+    $sql_data_array['email'] =urldecode(htmlspecialchars($httpParsedResponseAr["EMAIL"]));
+    // Extract the response details.
+    $payerID = urlencode($httpParsedResponseAr['PAYERID']);
+    $paymentType = urlencode("Sale");     // or 'Sale' or 'Order'
+    $paymentAmount = urlencode($amt);
+    $currencyID = urlencode("JPY");   
+    //$token = urlencode($httpParsedResponseAr['TOKEN']);
+    $nvpStr = "&TOKEN=$token&PAYERID=$payerID&PAYMENTACTION=$paymentType&AMT=$paymentAmount&CURRENCYCODE=$currencyID";
 
 // Execute the API operation; see the PPHttpPost function above.
-		$httpParsedResponseAr = PPHttpPost('DoExpressCheckoutPayment', $nvpStr);
-		if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
-			//成功コード発行予定
-      		$sql_data_array['money'] =$httpParsedResponseAr["AMT"];
-      		$sql_data_array['type']="success";
-      		$sql_data_array['rel']="yes";
-      		$sql_data_array['date_added']= 'now()';
-      		$sql_data_array['last_modified']= 'now()';
-      		
+    $httpParsedResponseAr = PPHttpPost('DoExpressCheckoutPayment', $nvpStr);
+    if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
+      //成功コード発行予定
+          $sql_data_array['money'] =$httpParsedResponseAr["AMT"];
+          $sql_data_array['type']="success";
+          $sql_data_array['rel']="yes";
+          $sql_data_array['date_added']= 'now()';
+          $sql_data_array['last_modified']= 'now()';
+          
       tep_db_perform(TABLE_ORDERS, array(
       'telecom_name'  => $sql_data_array['username'],
       'telecom_tel'   => $sql_data_array['telno'],
@@ -269,15 +269,15 @@ $httpParsedResponseAr = PPHttpPost('GetExpressCheckoutDetails', $nvpStr);
       'telecom_email' => $sql_data_array['email'],
       'orders_status' => '30',
     ), 'update', "orders_id='".$insert_id."'");
-      		tep_db_perform("telecom_unknow", $sql_data_array);
-		}else{
-			//エラーコード発行予定
-			exit('DoExpressCheckoutPayment failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
-		}
-	}else{
+          tep_db_perform("telecom_unknow", $sql_data_array);
+    }else{
+      //エラーコード発行予定
+      exit('DoExpressCheckoutPayment failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
+    }
+  }else{
 //エラーコード発行予定
 exit('GetExpressCheckoutDetails failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
-	}
+  }
 }
 
   $customer_notification = (SEND_EMAILS == 'true') ? '1' : '0';
@@ -371,18 +371,7 @@ exit('GetExpressCheckoutDetails failed: ' . urldecode(print_r($httpParsedRespons
             'products',
             array(
               'products_virtual_quantity' => $stock_values['products_virtual_quantity'] - ($order->products[$i]['qty'] - $stock_values['products_real_quantity']),
-              'products_real_quantity'    => 0,
-              //'products_quantity'         => $stock_values['products_quantity'] - $order->products[$i]['qty'],
-            ),
-            'update',
-            "products_id = '" . tep_get_prid($order->products[$i]['id']) . "'"
-          );
-          
-          // 同步架空 
-          tep_db_perform(
-            'set_menu_list',
-            array(
-              'kakuukosuu' => $stock_values['products_virtual_quantity'] - ($order->products[$i]['qty'] - $stock_values['products_real_quantity']),
+              'products_real_quantity'    => 0
             ),
             'update',
             "products_id = '" . tep_get_prid($order->products[$i]['id']) . "'"
@@ -392,7 +381,6 @@ exit('GetExpressCheckoutDetails failed: ' . urldecode(print_r($httpParsedRespons
             'products',
             array(
               'products_real_quantity' => $stock_values['products_real_quantity'] - $order->products[$i]['qty'],
-              //'products_quantity'      => $stock_values['products_quantity'] - $order->products[$i]['qty'],
             ),
             'update',
             "products_id = '" . tep_get_prid($order->products[$i]['id']) . "'"

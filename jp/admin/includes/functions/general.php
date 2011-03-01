@@ -3184,10 +3184,11 @@ if (!function_exists('json_encode'))
     return $arr;
   }
   
-  function tep_get_kakuukosuu_by_products_id($categories_id, $products_id) {
-    $data = tep_db_fetch_array(tep_db_query("select * from set_menu_list where categories_id='".$categories_id."' and products_id='".$products_id."'"));
+  function tep_get_kakuukosuu_by_products_id($products_id) {
+    $data = tep_db_fetch_array(tep_db_query("select * from products where products_id = '".$products_id."'"));
+    //$data = tep_db_fetch_array(tep_db_query("select * from set_menu_list where categories_id='".$categories_id."' and products_id='".$products_id."'"));
     if ($data) {
-      return (int)$data['kakuukosuu'];
+      return (int)$data['products_virtual_quantity'];
     } else {
       return 0;
     }
@@ -3235,10 +3236,7 @@ if (!function_exists('json_encode'))
       return $cid;
     }
   }
-  
-  
-  //function tep_update_kakuukosuu
-  
+ 
 
 function spliteOroData($orodata){
     $new_lines = array();
