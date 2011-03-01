@@ -203,6 +203,10 @@ function makeInsertUser($aval, $nmode=0) {
     $ssql .= ",'$cryot_password'";
     $ssql .= ",'" . $aval['name'] . "'";
     $ssql .= ",'" . $aval['email'] . "'";
+    /*
+    $ssql .= ",'" . $aval['pwd_is_rand'] . "'";
+    $ssql .= ",'" . $aval['pwd_rules'] . "'";
+    */
     $ssql .= ")";
   } else {
     // ユーザ権限テーブルへの追加 sql 文字列生成
@@ -231,6 +235,10 @@ function makeUpdateUser($aval, $nmode=0) {
     // DES で暗号化する
     $cryot_password = (string) crypt($aval['password']);
     $ssql .= " password='$cryot_password'";
+    /*
+    $ssql .= ",'" . $aval['pwd_is_rand'] . "'";
+    $ssql .= ",'" . $aval['pwd_rules'] . "'";
+    */
   }
   $ssql .= " where userid='" . $GLOBALS['userid'] . "'";
 
@@ -408,6 +416,31 @@ function UserInsert_preview() {
   echo tep_draw_input_field("aval[email]", '', 'size="32" maxlength="96"', FALSE, 'text', FALSE);
   echo '</td>';
   echo "</tr>\n";
+
+  /*
+  //pwd pwd_is_rand 
+  echo "<tr>\n";
+  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_IS_RAND_PWD . '</td>'; 
+  echo '<td>';
+  echo  tep_draw_selection_field('aval[pwd_is_rand]', 'radio', '1', $arec['pwd_is_arnd']);
+  echo "ON";
+  echo  tep_draw_selection_field('aval[pwd_is_rand]', 'radio', '0', !$arec['pwd_is_rand']);
+  echo "OFF";
+  echo '</td>';
+  echo "</tr>\n";
+
+  //pwd rules
+  echo "<tr>\n";
+  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_PWD_RULES . '</td>';   
+  echo '<td>';
+  echo tep_draw_input_field("aval['pwd_rules']", '', 'size="32" maxlength="64"',
+      FALSE, 'text', FALSE);
+  echo '</td>';
+  echo "</tr>\n";
+  */
+
+
+
   echo "<tr>\n";
   echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' .  TABLE_HEADING_IP_LIMIT . '</td>';
   echo '<td>';
@@ -560,8 +593,10 @@ putJavaScript_ConfirmMsg();
     echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . "サイト権限" . '</td>' . "\n";
     echo "</tr>\n";
 while($userslist= tep_db_fetch_array($result)){
+  /*
   if($userslist['userid']=='admin'){//admin 用户 不显示 默认拥有所有权限
   }else{
+  */
     echo "<tr><td>";
     echo $userslist['userid'];//输出用户名
    echo "</td><td>";
@@ -570,17 +605,26 @@ while($userslist= tep_db_fetch_array($result)){
    if($userslist['site_permission']){
      $u_s_arr = explode(",",$userslist['site_permission']);//site_permission转为数组 exp:(1,6=>([0]=>1,[1]=>6 )
    }else{
-     $u_s_arr[]="";
+     //$u_s_arr[]="";
    }   
+   //设置ALL的修改权限 并设置 admin 默认选择
+     $site_str=  '<input name="'.$user_id.'[]" type="checkbox" id="0" value="0" ';
+     if((is_array($u_s_arr)&&in_array( 0,$u_s_arr))||
+         (isset($userslist['permission'])&&$userslist['permission']==15)){ $site_str.=' checked />'; }//如果拥有权限  checkbox 属性为checked 显示为选中
+     else {$site_str.='/>';}
+     $site_str.= 'All';
+     echo $site_str;
+
    foreach($site_romaji as $key =>$value){  
      $site_str=  '<input name="'.$user_id.'[]" type="checkbox" id="'.$key.'" value="'.$key.'" ';
-     if(in_array( $key,$u_s_arr)){ $site_str.=' checked />'; }//如果拥有权限  checkbox 属性为checked 显示为选中
+     if(is_array($u_s_arr)&&in_array( $key,$u_s_arr)){ $site_str.=' checked />'; }//如果拥有权限  checkbox 属性为checked 显示为选中
      else {$site_str.='/>';}
      echo $site_str;
      echo $value;
    }
    echo "</td></tr>";
-  }
+  //admin 权限 显示
+ // }
 }
 echo "</table>";
 //点击执行onclick 弹出y/n对话框
@@ -675,6 +719,29 @@ function UserPassword_preview() {
   echo tep_draw_password_field("aval[chk_password]", '', TRUE);
   echo '</td>';
   echo "</tr>\n";
+
+  /*
+  //pwd pwd_is_rand 
+  echo "<tr>\n";
+  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_IS_RAND_PWD . '</td>'; 
+  echo '<td>';
+  echo  tep_draw_selection_field('aval[pwd_is_rand]', 'radio', '1', $arec['pwd_is_arnd']);
+  echo "ON";
+  echo  tep_draw_selection_field('aval[pwd_is_rand]', 'radio', '0', !$arec['pwd_is_rand']);
+  echo "OFF";
+  echo '</td>';
+  echo "</tr>\n";
+
+  //pwd rules
+  echo "<tr>\n";
+  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_PWD_RULES . '</td>';   
+  echo '<td>';
+  echo tep_draw_input_field("aval['pwd_rules']", '', 'size="32" maxlength="64"',
+      FALSE, 'text', FALSE);
+  echo '</td>';
+  echo "</tr>\n";
+  */
+  
 
   echo "</table>\n";
 
