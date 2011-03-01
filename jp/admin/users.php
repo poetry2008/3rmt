@@ -1438,7 +1438,6 @@ function update_rules($rules){
        VALUES (NULL,'', 'CONFIG_RULES_KEY', '".$rules."', '', '0', NULL, NULL,
            '0000-00-00 00:00:00', NULL, NULL, '0')";
   }
-  var_dump($sql_rule);
   return tep_db_query($sql_rule);
 }
 
@@ -1451,7 +1450,11 @@ function get_rule()
   if($row = tep_db_fetch_array($query)){
     return $row['configuration_value'];
   }else{
+    if(isset($_POST['config_rules'])&&$_POST['config_rules']!=''){
+      return $_POST['config_rules'];
+    }else{
     return '';
+    }
   }
 }
 
