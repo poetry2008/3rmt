@@ -215,13 +215,16 @@
       $quantity_difference = ($products_details["qty"] - $order['products_quantity']);
       $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$order['products_id']."'"));
       $pr_quantity = $p['products_real_quantity'];
+      $pv_quantity = $p['products_virtual_quantity'];
       if ($pr_quantity - $quantity_difference < 0) {
         $pr_quantity = 0;
+        $pv_quantity += ($pr_quantity - $quantity_difference);
       } else {
         $pr_quantity -= $quantity_difference;
       }
+      // 如果是业者，不更新
       if(!tep_is_oroshi($check_status['customers_id']))
-      tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = ".$pr_quantity.", products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
+      tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = ".$pr_quantity.", products_virtual_quantity = ".$pv_quantity.", products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
       
     }
   

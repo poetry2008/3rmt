@@ -501,12 +501,12 @@ function orders_computers(ele, cid, oid) {
     }
   });
   } else {
-   $.ajax({
-    url: 'ajax_orders.php?action=insert&orders_id='+oid+'&computers_id='+cid,
-    success: function(data) {
-      ele.className='orders_computer_checked';
-    }
-  });
+    $.ajax({
+      url: 'ajax_orders.php?action=insert&orders_id='+oid+'&computers_id='+cid,
+      success: function(data) {
+        ele.className='orders_computer_checked';
+      }
+    });
   }
 }
 
