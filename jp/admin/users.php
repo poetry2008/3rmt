@@ -1444,14 +1444,14 @@ function update_rules($rules){
 //获取规则
 function get_rule()
 {
+  if(isset($_POST['config_rules'])&&$_POST['config_rules']!=''){
+    return $_POST['config_rules'];
+  }else{
   $sql = "select configuration_value from configuration
     where configuration_key = 'CONFIG_RULES_KEY'";
   $query = tep_db_query($sql);
   if($row = tep_db_fetch_array($query)){
     return $row['configuration_value'];
-  }else{
-    if(isset($_POST['config_rules'])&&$_POST['config_rules']!=''){
-      return $_POST['config_rules'];
     }else{
     return '';
     }
