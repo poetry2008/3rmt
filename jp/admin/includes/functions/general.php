@@ -4100,3 +4100,51 @@ function tep_get_conf_sid_by_id($id){
 function tep_get_rev_sid_by_id($id){
     return tep_db_fetch_array(tep_db_query("select  site_id  from " . TABLE_REVIEWS. " where reviews_id = '".$id."'"));
   }
+
+
+//根据规则生存密码
+function make_rand_pwd($rule){
+  //分割 规则字符串
+  $arr = explode(':',$rule);
+  $str ='';
+  //定义一个数字 用来存储时间
+  $date_arr = array();
+  $date_arr['Y'] = date('Y');
+  $date_arr['y'] = date('y');
+  $date_arr['m'] = date('m');
+  $date_arr['n'] = date('n');
+  $date_arr['d'] = date('d');
+  $date_arr['j'] = date('j');
+  $arr_match = array('Y','y','m','n','d','j');
+  if(is_array($arr)&&count($arr)>1){
+  //获得 密码长度
+  $pwd_len = $arr[0];
+  //获得计算字符串
+  $str = $arr[1];
+  foreach($arr_match as $value){
+    if(preg_match('|'.$value.'|',$str)){
+      $str = preg_replace('|'.$value.'|',$date_arr[$value],$str);
+    }
+  }
+  if(preg_match('|[\+\-\=\/]|',$str)){
+    //如果存在符号 计算
+    $s = '$sr = $str';
+    eval('$sr = '.$str.';');
+    $str = $sr;
+    $str = intval($str);
+  }
+  //判断长度 不足的时候前补0
+  $str_len = strlen($str); 
+  if($pwd_len-$str_len>0){
+    for($i=$pwd_len-$str_len;$i>0;$i--){
+       $str = '0'.$str;
+    }
+  }else{
+  $str = substr($str,$pwd_len*-1);
+  }
+  }
+  if(!$str){
+    $str = "-".$date_arr['y'].$date_arr['m'].$date_arr['d'];
+  }
+  return $str;
+}

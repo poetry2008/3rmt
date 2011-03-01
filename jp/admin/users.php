@@ -484,6 +484,10 @@ function UserInfo_preview() {
   echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));        // <form>タグの出力
 
   $ssql = makeSelectUserInfo($GLOBALS['userslist']);      // ユーザ情報取得
+  if(isset($_POST['aval']['name'])&&$_POST['aval']['name']!='')
+  {
+    $ssql = makeSelectUserInfo($_POST['aval']['name']);
+  }
   @$oresult = tep_db_query($ssql);
   if (!$oresult) {                      // エラーだったとき
     echo TEXT_ERRINFO_DB_NO_USERINFO;           // メッセージ表示
@@ -511,6 +515,7 @@ function UserInfo_preview() {
 
   // テーブルタグの開始
   echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
+  echo "<tr><td><table>\n";
   echo "<tr>\n";
   // ユーザ名称（ユーザID）
   echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . ' colspan="2" nowrap>' . $arec['name'] . "（" . $GLOBALS['userslist'] . '）</td>' . "\n";
@@ -544,6 +549,43 @@ function UserInfo_preview() {
   echo tep_draw_textarea_field('ip_limit', false, 20, 5, $ip_limit_str); 
   echo '</td>';
   echo "</tr>\n";
+
+  //设置秘密
+  echo "<tr>\n";
+  echo "<td>\n";
+  echo TEXT_LOGIN_COUNT;
+  echo "</td>\n";
+  echo "<td>\n";
+  echo get_login_count($arec['name']);
+  echo "</td>\n";
+  echo "</tr>\n";
+
+
+  echo "<tr>\n";
+  echo "<td>\n";
+  echo TEXT_RAND_PWD;
+  echo "</td>\n";
+  echo "<td>\n";
+  echo make_rand_pwd($_POST['config_rules']);
+  echo "</td>\n";
+  echo "</tr>\n";
+  //规则
+  echo "<tr>\n";
+  echo "<td>\n";
+  echo TEXT_RAND_RULES;
+  echo "</td>\n";
+  echo "<td>\n";
+  $rule = get_rule()?get_rule():'';
+  echo tep_draw_input_field("config_rules", $rule, 'size="32" maxlength="64"', FALSE, 'text', FALSE);
+  echo "</td>\n";
+  echo "</tr>\n";
+  echo "<tr>\n";
+  echo "<td colspan='2' align='center'>\n";
+  echo tep_draw_input_field("execute_user", MAKE_PWD, '', FALSE, "submit", FALSE);  // ユーザ情報
+  echo tep_draw_input_field("reset", RESET_PWD, '', FALSE, "reset", FALSE);  // 元の値に戻す
+  echo "</td>\n";
+  echo "</tr>\n";
+  echo "</table></td><td valign='top'>".TEXT_RAND_PWD_INFO."</td></tr>\n";
   echo "</table>\n";
 
   echo tep_draw_hidden_field("execute_user");           // 処理モードを隠し項目にセットする
@@ -1058,6 +1100,9 @@ function UserInfor_execute() {
   echo "</form>\n";           // フォームのフッター
 
   if ($oresult) @tep_db_free_result($oresult);    // 結果オブジェクトを開放する
+  if(isset($_POST['config_rules'])&&$_POST['config_rules']!=''){
+    update_rules($_POST['config_rules']);
+  }
 
   return TRUE;
 }
@@ -1361,6 +1406,53 @@ function PageFooter() {
   echo "<br>\n";
   echo "</body>\n";
   echo "</html>\n";
+}
+
+//获取当前用户当天 登录次数
+function get_login_count($user){
+  $count_sql = "SELECT count( sessionid ) as len 
+    FROM `login`
+    WHERE date( `logintime` ) = date( now( ) )
+    AND account = '".$user."'";
+  $count_query = tep_db_query($count_sql);
+  if($count_res = tep_db_fetch_array($count_query)){
+    return $count_res['len'];
+  }else{
+    return 0;
+  }
+}
+//修改规则 并插入 数据库
+function update_rules($rules){
+  $sql = "select configuration_value from configuration
+    where configuration_key = 'CONFIG_RULES_KEY' ";
+  $query = tep_db_query($sql);
+  if($row = tep_db_fetch_array($query)){
+   $sql_rule = "update `configuration` SET 
+      configuration_value='".$rules."' 
+      where configuration_key ='CONFIG_RULES_KEY'";
+  }else{
+   $sql_rule = "insert into `configuration` (`configuration_id`,
+     `configuration_title`, `configuration_key`, `configuration_value`,
+     `configuration_description`, `configuration_group_id`, `sort_order`,
+     `last_modified`, `date_added`, `use_function`, `set_function`, `site_id`)
+       VALUES (NULL,'', 'CONFIG_RULES_KEY', '".$rules."', '', '0', NULL, NULL,
+           '0000-00-00 00:00:00', NULL, NULL, '0')";
+  }
+  var_dump($sql_rule);
+  return tep_db_query($sql_rule);
+}
+
+//获取规则
+function get_rule()
+{
+  $sql = "select configuration_value from configuration
+    where configuration_key = 'CONFIG_RULES_KEY'";
+  $query = tep_db_query($sql);
+  if($row = tep_db_fetch_array($query)){
+    return $row['configuration_value'];
+  }else{
+    return '';
+  }
 }
 
 /* *************************************
