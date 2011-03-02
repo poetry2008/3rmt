@@ -141,7 +141,7 @@ case 'delete':
   break;  
 }
 ?>
-<html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
   <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
@@ -309,7 +309,8 @@ function ex(id){
 }
 </script>
 </head>
-<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
+<?php // marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF"> ?>
+<body>
   <div id="spiffycalendar" class="text"></div>
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
   <table border="0" width="100%" cellspacing="2" cellpadding="2">
@@ -368,8 +369,10 @@ function ex(id){
       <input type='text' id='name_<?php echo $col['dougyousya_id'];?>'name='up_oroshi[<?php echo $col['dougyousya_id'];?>]' value='<?php echo $col['dougyousya_name'];?>'>
       <input type="hidden" id="src_name_<?php echo $col['dougyousya_id'];?>" value='<?php echo $col['dougyousya_name'];?>'><br>
       <?php echo makeCheckbox($categories_subtree,$ckstr);?>
-      <input type="submit" value="更新"><input type = "button" value = "取り消し" onclick="resset_cb()"><br /><br />
+
       </div>
+      <input type="submit" value="更新" style="margin:2px">
+      <input type = "button" value = "取り消し" onclick="resset_cb()" style="margin:2px"><br />
     </td>
   </tr>
 <?php 
@@ -389,7 +392,7 @@ function ex(id){
 ?>
 </div>
 <input type="submit" value="同業者登録">
-<input type="submit" onClick="notval()" value="順序を更新する" name="sort">
+<input type="submit" onClick="notval()" value="順序を更新する" name="sort" style="margin:2px">
 </td>
 </tr>
 </table>
