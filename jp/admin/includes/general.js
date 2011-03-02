@@ -75,7 +75,7 @@ function update_price2() {
 				need_confirm = need_confirm || true;
 			}
 		});
-		if (need_confirm && window.confirm("差額分であるn個を実在個に保存しますか？架空在庫に保存しますか？")) {
+		if (need_confirm && window.confirm("ｎ個を実在個に保存しますか？架空在庫に保存しますか？")) {
 			document.edit_order.update_real_quantity.value = 1;
 		} else {
 			document.edit_order.update_real_quantity.value = 0;
