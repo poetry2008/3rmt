@@ -566,7 +566,8 @@ function UserInfo_preview() {
   echo TEXT_RAND_PWD;
   echo "</td>\n";
   echo "<td>\n";
-  echo make_rand_pwd($_POST['config_rules']);
+  $h_rule = get_rule();
+  echo make_rand_pwd($h_rule)?make_rand_pwd($h_rule):TEXT_ERROR_RULE;
   echo "</td>\n";
   echo "</tr>\n";
   //规则
@@ -1438,25 +1439,14 @@ function update_rules($rules){
        VALUES (NULL,'', 'CONFIG_RULES_KEY', '".$rules."', '', '0', NULL, NULL,
            '0000-00-00 00:00:00', NULL, NULL, '0')";
   }
-  return tep_db_query($sql_rule);
+  if(make_rand_pwd($rules)){
+    return tep_db_query($sql_rule);
+  }else{
+    return false;
+  }
+
 }
 
-//获取规则
-function get_rule()
-{
-  if(isset($_POST['config_rules'])&&$_POST['config_rules']!=''){
-    return $_POST['config_rules'];
-  }else{
-  $sql = "select configuration_value from configuration
-    where configuration_key = 'CONFIG_RULES_KEY'";
-  $query = tep_db_query($sql);
-  if($row = tep_db_fetch_array($query)){
-    return $row['configuration_value'];
-    }else{
-    return '';
-    }
-  }
-}
 
 /* *************************************
 
