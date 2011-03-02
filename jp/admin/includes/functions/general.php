@@ -4119,6 +4119,11 @@ function make_rand_pwd($rule){
   if(is_array($arr)&&count($arr)>1){
   //获得 密码长度
   $pwd_len = $arr[0];
+  
+  if(!preg_match('|[\+\-\*\/mndjYy]+|',$arr[1])){
+    return false;
+  }
+
   //获得计算字符串
   $str = $arr[1];
   foreach($arr_match as $value){
@@ -4144,7 +4149,26 @@ function make_rand_pwd($rule){
   }
   }
   if(!$str){
-    $str = "-".$date_arr['y'].$date_arr['m'].$date_arr['d'];
+    //$str = "-".$date_arr['y'].$date_arr['m'].$date_arr['d'];
+    $str = false;
   }
   return $str;
+}
+
+
+//获取规则
+function get_rule()
+{
+  if(isset($_POST['config_rules'])&&$_POST['config_rules']!=''){
+    return $_POST['config_rules'];
+  }else{
+  $sql = "select configuration_value from configuration
+    where configuration_key = 'CONFIG_RULES_KEY'";
+  $query = tep_db_query($sql);
+  if($row = tep_db_fetch_array($query)){
+    return $row['configuration_value'];
+    }else{
+    return '';
+    }
+  }
 }

@@ -102,4 +102,5 @@ define('TEXT_RAND_PWD_INFO','<p>書式： 2011/2/22 01:00での例  桁数:計�
 define('TEXT_LOGIN_COUNT','ログイン回数');
 define('TEXT_RAND_PWD','パスワード');
 define('TEXT_RAND_RULES','計算式');
+define('TEXT_ERROR_RULE','計算式の格式が正しくない');
 ?>
