@@ -218,7 +218,7 @@
       $pv_quantity = $p['products_virtual_quantity'];
       // 增加库存
       if($quantity_difference < 0){
-        if ($_POST['update_real_quantity']) {
+        if ($_POST['update_products_real_quantity'][$orders_products_id]) {
           // 增加实数
           $pr_quantity = $pr_quantity - $quantity_difference;
         } else {
@@ -238,7 +238,9 @@
       // 如果是业者，不更新
       if(!tep_is_oroshi($check_status['customers_id']))
       tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = ".$pr_quantity.", products_virtual_quantity = ".$pv_quantity.", products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
-      
+    
+      tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
+      tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
     }
   
     if($products_details["qty"] > 0) { // a.) quantity found --> add to list & sum    
@@ -984,7 +986,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
           </td>
         </tr> 
         <tr><?php echo tep_draw_form('edit_order', "edit_new_orders.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'onSubmit="return submitChk()"'); ?>
-          <input type="hidden" name="update_real_quantity" id="update_real_quantity" value="1" >
+          
           <td>
             <!-- Begin Update Block -->
             <table width="100%" border="0" cellpadding="2" cellspacing="1">
@@ -1123,7 +1125,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
     $RowStyle = "dataTableContent";
     echo '    <tr class="dataTableRow">' . "\n" .
          '      <td class="' . $RowStyle . '" align="left" valign="top" width="20">' . "<input type='hidden' id='update_products_qty_$orders_products_id' value='" . $order->products[$i]['qty'] . "'><input class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" . $order->products[$i]['qty'] . "'>&nbsp;x</td>\n" . 
-         '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input name='update_products[$orders_products_id][name]' size='64' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
+         '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input id='update_products_name_$orders_products_id' name='update_products[$orders_products_id][name]' size='64' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
        '      &nbsp;&nbsp;キャラ名：<input type="hidden" name="dummy" value="あいうえお眉幅"><input name="update_products[' . $orders_products_id . '][character]" size="20" value="' . htmlspecialchars($order->products[$i]['character']) . '">';
     // Has Attributes?
     if (sizeof($order->products[$i]['attributes']) > 0) {
