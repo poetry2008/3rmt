@@ -4148,3 +4148,93 @@ function make_rand_pwd($rule){
   }
   return $str;
 }
+
+
+  // Function    : tep_get_country_id
+  // Arguments   : country_name   country name string
+  // Return      : country_id
+  // Description : Function to retrieve the country_id based on the country's name
+  // edit_orders.php & edit_new_orders.php
+  function tep_get_country_id($country_name) {
+    $country_id_query = tep_db_query("select * from " . TABLE_COUNTRIES . " where countries_name = '" . $country_name . "'");
+    if (!tep_db_num_rows($country_id_query)) {
+      return 0;
+    }
+    else {
+      $country_id_row = tep_db_fetch_array($country_id_query);
+      return $country_id_row['countries_id'];
+    }
+  }
+
+  // Function    : tep_get_country_iso_code_2
+  // Arguments   : country_id   country id number
+  // Return      : country_iso_code_2
+  // Description : Function to retrieve the country_iso_code_2 based on the country's id
+  // edit_orders.php & edit_new_orders.php
+  function tep_get_country_iso_code_2($country_id) {
+    $country_iso_query = tep_db_query("select * from " . TABLE_COUNTRIES . " where countries_id = '" . $country_id . "'");
+    if (!tep_db_num_rows($country_iso_query)) {
+      return 0;
+    }
+    else {
+      $country_iso_row = tep_db_fetch_array($country_iso_query);
+      return $country_iso_row['countries_iso_code_2'];
+    }
+  }
+
+  // Function    : tep_get_zone_id
+  // Arguments   : country_id   country id string    zone_name    state/province name
+  // Return      : zone_id
+  // Description : Function to retrieve the zone_id based on the zone's name
+  // edit_orders.php & edit_new_orders.php
+  function tep_get_zone_id($country_id, $zone_name) {
+    $zone_id_query = tep_db_query("select * from " . TABLE_ZONES . " where zone_country_id = '" . $country_id . "' and zone_name = '" . $zone_name . "'");
+    if (!tep_db_num_rows($zone_id_query)) {
+      return 0;
+    }
+    else {
+      $zone_id_row = tep_db_fetch_array($zone_id_query);
+      return $zone_id_row['zone_id'];
+    }
+  }
+  
+  // Function    : tep_field_exists
+  // Arguments   : table  table name  field   field name
+  // Return      : true/false
+  // Description : Function to check the existence of a database field
+  // edit_orders.php & edit_new_orders.php
+  function tep_field_exists($table,$field) {
+    $describe_query = tep_db_query("describe $table");
+    while($d_row = tep_db_fetch_array($describe_query))
+    {
+      if ($d_row["Field"] == "$field")
+      return true;
+    }
+    return false;
+  }
+
+  // Function    : tep_html_quotes
+  // Arguments   : string any string
+  // Return      : string with single quotes converted to html equivalent
+  // Description : Function to change quotes to HTML equivalents for form inputs.
+  // edit_orders.php & edit_new_orders.php
+  function tep_html_quotes($string) {
+    return str_replace("'", "&#39;", $string);
+  }
+
+  // Function    : tep_html_unquote
+  // Arguments   : string any string
+  // Return      : string with html equivalent converted back to single quotes
+  // Description : Function to change HTML equivalents back to quotes
+  // edit_orders.php & edit_new_orders.php
+  function tep_html_unquote($string) {
+    return str_replace("&#39;", "'", $string);
+  }
+
+  // edit_orders.php & edit_new_orders.php
+  function str_string($string='') {
+    if(ereg("-", $string)) {
+      $string_array = explode("-", $string);
+      return $string_array[0] . '年' . $string_array[1] . '月' . $string_array[2] . '日';
+    }
+  }

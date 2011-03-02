@@ -63,6 +63,32 @@ function update_price() {
 	}
 
 }
+function update_price2() {
+	
+	if (window.confirm("注文内容を確認しますか？")) {
+		document.edit_order.notify.checked = false;
+		document.edit_order.notify_comments.checked = false;
+		// 如果减少购买量则提示保存位置
+		need_confirm = false;
+		$('.update_products_qty').each(function(){
+			if($('#'+$(this).attr('id').replace('_new_qty_', '_qty_')).val() > $(this).val()){
+				need_confirm = need_confirm || true;
+			}
+		});
+		if (need_confirm && window.confirm("差額分であるn個を実在個に保存しますか？架空在庫に保存しますか？")) {
+			document.edit_order.update_real_quantity.value = 1;
+		} else {
+			document.edit_order.update_real_quantity.value = 0;
+		}
+		document.edit_order.submit();
+		window.alert("注文内容を更新しました。合計金額を必ず確認してください。\n\n【 重要 】メールは送信されていません。【 重要 】");
+		document.edit_order.notify.checked = true;
+		document.edit_order.notify_comments.checked = false;
+	} else {
+		window.alert("注文内容確認をキャンセルしました。\n\n【 重要 】メールは送信されていません。【 重要 】");
+	}
+
+}
 function show_monitor_error(e_id,flag,_this){
 //改变DIV
   if(flag){
