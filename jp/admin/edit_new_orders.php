@@ -216,16 +216,31 @@
       $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$order['products_id']."'"));
       $pr_quantity = $p['products_real_quantity'];
       $pv_quantity = $p['products_virtual_quantity'];
-      if ($pr_quantity - $quantity_difference < 0) {
-        $pr_quantity = 0;
-        $pv_quantity += ($pr_quantity - $quantity_difference);
+      // 增加库存
+      if($quantity_difference < 0){
+        if ($_POST['update_products_real_quantity'][$orders_products_id]) {
+          // 增加实数
+          $pr_quantity = $pr_quantity - $quantity_difference;
+        } else {
+          // 增加架空
+          $pv_quantity = $pv_quantity - $quantity_difference;
+        }
+      // 减少库存
       } else {
-        $pr_quantity -= $quantity_difference;
+        // 实数卖空
+        if ($pr_quantity - $quantity_difference < 0) {
+          $pr_quantity = 0;
+          $pv_quantity += ($pr_quantity - $quantity_difference);
+        } else {
+            $pr_quantity -= $quantity_difference;
+        }
       }
       // 如果是业者，不更新
       if(!tep_is_oroshi($check_status['customers_id']))
       tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = ".$pr_quantity.", products_virtual_quantity = ".$pv_quantity.", products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
-      
+    
+      tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
+      tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
     }
   
     if($products_details["qty"] > 0) { // a.) quantity found --> add to list & sum    
@@ -922,6 +937,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/general.js"></script>
+<script language="javascript" src="includes/javascript/jquery.js"></script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
 <!-- header //-->
@@ -970,6 +986,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
           </td>
         </tr> 
         <tr><?php echo tep_draw_form('edit_order', "edit_new_orders.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'onSubmit="return submitChk()"'); ?>
+          
           <td>
             <!-- Begin Update Block -->
             <table width="100%" border="0" cellpadding="2" cellspacing="1">
@@ -1107,8 +1124,8 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
     $orders_products_id = $order->products[$i]['orders_products_id'];
     $RowStyle = "dataTableContent";
     echo '    <tr class="dataTableRow">' . "\n" .
-         '      <td class="' . $RowStyle . '" align="left" valign="top" width="20">' . "<input name='update_products[$orders_products_id][qty]' size='2' value='" . $order->products[$i]['qty'] . "'>&nbsp;x</td>\n" . 
-         '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input name='update_products[$orders_products_id][name]' size='64' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
+         '      <td class="' . $RowStyle . '" align="left" valign="top" width="20">' . "<input type='hidden' id='update_products_qty_$orders_products_id' value='" . $order->products[$i]['qty'] . "'><input class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" . $order->products[$i]['qty'] . "'>&nbsp;x</td>\n" . 
+         '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input id='update_products_name_$orders_products_id' name='update_products[$orders_products_id][name]' size='64' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
        '      &nbsp;&nbsp;キャラ名：<input type="hidden" name="dummy" value="あいうえお眉幅"><input name="update_products[' . $orders_products_id . '][character]" size="20" value="' . htmlspecialchars($order->products[$i]['character']) . '">';
     // Has Attributes?
     if (sizeof($order->products[$i]['attributes']) > 0) {
@@ -1293,7 +1310,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
               <td class="main" bgcolor="#FFBBFF" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FF99FF" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FF77FF" width="10">&nbsp;</td>
-              <td class="main" bgcolor="#FF55FF" width="120" align="center"><INPUT type="button" value=" 注文内容確認 " onClick="update_price()"></td>
+              <td class="main" bgcolor="#FF55FF" width="120" align="center"><INPUT type="button" value=" 注文内容確認 " onClick="update_price2()"></td>
             </tr>
           </table>
         </td>
@@ -1643,87 +1660,5 @@ if (tep_db_num_rows($orders_history_query)) {
 </body>
 </html>
 <?php
-  // Function    : tep_get_country_id
-  // Arguments   : country_name   country name string
-  // Return      : country_id
-  // Description : Function to retrieve the country_id based on the country's name
-  function tep_get_country_id($country_name) {
-    $country_id_query = tep_db_query("select * from " . TABLE_COUNTRIES . " where countries_name = '" . $country_name . "'");
-    if (!tep_db_num_rows($country_id_query)) {
-      return 0;
-    }
-    else {
-      $country_id_row = tep_db_fetch_array($country_id_query);
-      return $country_id_row['countries_id'];
-    }
-  }
-
-  // Function    : tep_get_country_iso_code_2
-  // Arguments   : country_id   country id number
-  // Return      : country_iso_code_2
-  // Description : Function to retrieve the country_iso_code_2 based on the country's id
-  function tep_get_country_iso_code_2($country_id) {
-    $country_iso_query = tep_db_query("select * from " . TABLE_COUNTRIES . " where countries_id = '" . $country_id . "'");
-    if (!tep_db_num_rows($country_iso_query)) {
-      return 0;
-    }
-    else {
-      $country_iso_row = tep_db_fetch_array($country_iso_query);
-      return $country_iso_row['countries_iso_code_2'];
-    }
-  }
-
-  // Function    : tep_get_zone_id
-  // Arguments   : country_id   country id string    zone_name    state/province name
-  // Return      : zone_id
-  // Description : Function to retrieve the zone_id based on the zone's name
-  function tep_get_zone_id($country_id, $zone_name) {
-    $zone_id_query = tep_db_query("select * from " . TABLE_ZONES . " where zone_country_id = '" . $country_id . "' and zone_name = '" . $zone_name . "'");
-    if (!tep_db_num_rows($zone_id_query)) {
-      return 0;
-    }
-    else {
-      $zone_id_row = tep_db_fetch_array($zone_id_query);
-      return $zone_id_row['zone_id'];
-    }
-  }
-  
-  // Function    : tep_field_exists
-  // Arguments   : table  table name  field   field name
-  // Return      : true/false
-  // Description : Function to check the existence of a database field
-  function tep_field_exists($table,$field) {
-    $describe_query = tep_db_query("describe $table");
-    while($d_row = tep_db_fetch_array($describe_query))
-    {
-      if ($d_row["Field"] == "$field")
-      return true;
-    }
-    return false;
-  }
-
-  // Function    : tep_html_quotes
-  // Arguments   : string any string
-  // Return      : string with single quotes converted to html equivalent
-  // Description : Function to change quotes to HTML equivalents for form inputs.
-  function tep_html_quotes($string) {
-    return str_replace("'", "&#39;", $string);
-  }
-
-  // Function    : tep_html_unquote
-  // Arguments   : string any string
-  // Return      : string with html equivalent converted back to single quotes
-  // Description : Function to change HTML equivalents back to quotes
-  function tep_html_unquote($string) {
-    return str_replace("&#39;", "'", $string);
-  }
-
-  function str_string($string='') {
-    if(ereg("-", $string)) {
-    $string_array = explode("-", $string);
-    return $string_array[0] . '年' . $string_array[1] . '月' . $string_array[2] . '日';
-  }
-  }
-
 require(DIR_WS_INCLUDES . 'application_bottom.php');
 ?>
