@@ -415,6 +415,7 @@
       $_SESSION['create_order2']['orders_total'][$ot_tax->code] = $sql_data_array;
       //tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
     }
+    $_SESSION['create_order2']['customer_fax'] = $fax;
   
     tep_redirect(tep_href_link(FILENAME_EDIT_NEW_ORDERS2, 'oID=' . $insert_id . '&action=add_product&step=1', 'SSL'));
   }

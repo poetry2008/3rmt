@@ -472,6 +472,9 @@
                   'customer_notified' => '1',
                   'comments' => $_SESSION['create_order']['comments']);
       tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
+      $sql_customers_array = array( 'customers_fax' =>
+          $_SESSION['create_order2']['customer_fax']);
+      tep_db_perform(TABLE_CUSTOMERS,$sql_customers_array,'update','customers_id='.$_SESSION['create_order2']['orders']['customers_id']);
       
       
       
@@ -638,6 +641,192 @@
       
       $customer_notified = '1';
     }
+
+//start print 
+  # 印刷用メール本文 ----------------------------
+  if(preg_match('/ /',$order['torihiki_date'])){
+  $date_arr = explode(" ",$order['torihiki_date']);
+  $date_time_arr = explode(':',$date_arr[1]);
+  }
+  $email_printing_order = '';
+  $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+  $email_printing_order .= 'サイト名　　　　：' . STORE_NAME . "\n";
+  $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+  $email_printing_order .= '取引日時　　　　：' . str_string($date_arr[0]) .
+  $date_time_arr[0] . '時' . $date_time_arr[1] . '分　（24時間表記）' . "\n";
+  $email_printing_order .= 'オプション　　　：' . $order['torihiki_houhou'] . "\n";
+  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+  $email_printing_order .= '日時変更　　　　：' . date('Y') . ' 年  月  日  時  分' . "\n";
+  $email_printing_order .= '日時変更　　　　：' . date('Y') . ' 年  月  日  時  分' . "\n";
+  $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+  $email_printing_order .= '注文者名　　　　：' . $order['customers_name'] . '様' . "\n";
+  $email_printing_order .= '注文番号　　　　：' . $order['orders_id'] . "\n";
+  $email_printing_order .= '注文日　　　　　：' . tep_date_long(time()) . "\n";
+  $email_printing_order .= 'メールアドレス　：' . $order['customers_email_address'] . "\n";
+  $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+  if ($ot_point['value'] > 0) {
+    $email_printing_order .= '□ポイント割引　　：' . (int)$ot_point['value'] . '円' . "\n";
+  }
+  /*
+  if (!empty($total_mail_fee)) {
+    $email_printing_order .= '手数料　　　　　：'.$total_mail_fee.'円'."\n"; 
+  }
+  */
+  if($handle_fee) {
+    $email_printing_order .= '手数料　　　　　：'.$currencies->format($handle_fee)."\n";
+  }
+  $email_printing_order .= 'お支払金額　　　：' .
+    strip_tags($orders_total['text']) . "\n";
+  if (isset($order['payment_method'])&&$order['payment_method']!='') {
+    $payment_class = $$payment;
+    $email_printing_order .= 'お支払方法　　　：' . $order['payment_method']. "\n";
+  }
+  
+  /*
+  if(tep_not_null($bbbank)) {
+    $email_printing_order .= 'お支払先金融機関' . "\n";
+    $email_printing_order .= $bbbank . "\n";
+  }
+  */
+  
+  $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+  $email_printing_order .= $products_ordered;
+
+  $email_printing_order .= '備考　　　　　　：' . "\n";
+
+  if ($order['orders_comment']) {
+    $email_printing_order .= $order['orders_comment'] . "\n";
+  }
+
+  $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+  $email_printing_order .= 'IPアドレス　　　　　　：' . $_SERVER["REMOTE_ADDR"] . "\n";
+  $email_printing_order .= 'ホスト名　　　　　　　：' . @gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";
+  $email_printing_order .= 'ユーザーエージェント　：' . $_SERVER["HTTP_USER_AGENT"] . "\n";
+  $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+  $email_printing_order .= '信用調査' . "\n";
+//ccdd
+  $credit_inquiry_query = tep_db_query("select customers_fax, customers_guest_chk
+      from " . TABLE_CUSTOMERS . " where customers_id = '" . $order['customers_id'] . "'");
+  $credit_inquiry       = tep_db_fetch_array($credit_inquiry_query);
+  
+  $email_printing_order .= $credit_inquiry['customers_fax'] . "\n";
+  $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+  $email_printing_order .= '注文履歴　　　　　　　：';
+  
+  if ($credit_inquiry['customers_guest_chk'] == '1') { $email_printing_order .= 'ゲスト'; } else { $email_printing_order .= '会員'; }
+  
+  $email_printing_order .= "\n";
+  
+  $order_history_query_raw = "select o.orders_id, o.customers_name, o.customers_id,
+    o.date_purchased, s.orders_status_name, ot.text as order_total from " .
+      TABLE_ORDERS . " o left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id =
+      ot.orders_id), " . TABLE_ORDERS_STATUS . " s where o.customers_id = '" .
+      tep_db_input($order['customers_id']) . "' and o.orders_status =
+      s.orders_status_id and s.language_id = '" . $_SESSION['languages_id'] . "' and ot.class = 'ot_total' order by o.date_purchased DESC limit 0,5";  
+//ccdd
+  $order_history_query = tep_db_query($order_history_query_raw);
+  while ($order_history = tep_db_fetch_array($order_history_query)) {
+  $email_printing_order .= $order_history['date_purchased'] . '　　' . tep_output_string_protected($order_history['customers_name']) . '　　' . strip_tags($order_history['order_total']) . '　　' . $order_history['orders_status_name'] . "\n";
+  }
+  
+  $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n\n\n";
+  
+  
+
+  if ($order['payment_method'] === '銀行振込(買い取り)') {
+    $email_printing_order .= '★★★★★★★★★★★★この注文は【買取】です。★★★★★★★★★★★★' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '備考の有無　　　　　：□ 無　　｜　　□ 有　→　□ 返答済' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= 'キャラクターの有無　：□ 有　　｜　　□ 無　→　新規作成してお客様へ連絡' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '受領　※注意※　　●：＿＿月＿＿日' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '残量入力→誤差有無　：□ 無　　｜　　□ 有　→　□ 報告' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '受領メール送信　　　：□ 済' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '支払　　　　　　　　：＿＿月＿＿日　※総額5,000円未満は168円引く※' . "\n";
+    $email_printing_order .= '　　　　　　　　　　　□ JNB　　□ eBank　　□ ゆうちょ' . "\n";
+    $email_printing_order .= '　　　　　　　　　　　入金予定日＿＿月＿＿日　受付番号＿＿＿＿＿＿＿＿＿' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '支払完了メール送信　：□ 済　　　※追加文章がないか確認しましたか？※' . "\n";
+  } elseif ($payment_class->title === 'クレジットカード決済') {
+    $email_printing_order .= 'この注文は【販売】です。' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '備考の有無　　　　　：□ 無　　｜　　□ 有　→　□ 返答済' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '決済確認　　　　　●：＿＿月＿＿日' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '在庫確認　　　　　　：□ 有　　｜　　□ 無　→　仕入困難ならお客様へ電話' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '信用調査　　　　　　：□ 2回目以降　→　□ 常連（以下のチェック必要無）' . "\n";
+    $email_printing_order .= '　　　　　　　　　　　　　　　　　　　　□ 1. 過去に本人確認をしている' . "\n";
+    $email_printing_order .= '　　　　　　　　　　　　　　　　　　　　□ 2. 決済内容に変更がない' . "\n";
+    $email_printing_order .= '　　　　　　　　　　　　　　　　　　　　□ 3. 短期間に高額決済がない' . "\n";
+    $email_printing_order .= '　　　　　　　　　　----------------------------------------------------' . "\n";
+    $email_printing_order .= '　　　　　　　　　　　□ 初回　→　□ IP・ホストのチェック' . "\n";
+    $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 電話確認をする' . "\n";
+    $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 カード名義（カタカナ）＿＿＿＿＿＿' . "\n";
+    $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 電話番号＿＿＿＿＿＿＿＿＿＿＿＿＿' . "\n";
+    $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿' . "\n";
+    $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿' . "\n";
+    $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿' . "\n";
+    $email_printing_order .= '　　　　　　　　　　　　　　　　　 □ カード名義・商品名・キャラ名一致' . "\n";
+    $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 本人確認日：＿＿月＿＿日' . "\n";
+    $email_printing_order .= '　　　　　　　　　　　　　　　　　 □ 信用調査入力' . "\n";
+    $email_printing_order .= '　　　　　　　　　　----------------------------------------------------' . "\n";
+    $email_printing_order .= '※ 疑わしい点があれば担当者へ報告をする　→　担当者＿＿＿＿の承諾を得た' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '発送　　　　　　　　：＿＿月＿＿日' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '残量入力→誤差有無　：□ 無　　｜　　□ 有　→　報告　□' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '発送完了メール送信　：□ 済' . "\n";
+  } else {
+    $email_printing_order .= 'この注文は【販売】です。' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '備考の有無　　　　　：□ 無　　｜　　□ 有　→　□ 返答済' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '在庫確認　　　　　　：□ 有　　｜　　□ 無　→　入金確認後仕入' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '入金確認　　　　　●：＿＿月＿＿日　→　金額は' . strip_tags($ot['text']) . 'ですか？　□ はい' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '入金確認メール送信　：□ 済' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '発送　　　　　　　　：＿＿月＿＿日' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '残量入力→誤差有無　：□ 無　　｜　　□ 有　→　報告　□' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '発送完了メール送信　：□ 済' . "\n";    
+  }
+  
+  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+  $email_printing_order .= '最終確認　　　　　　：確認者名＿＿＿＿' . "\n";
+  $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+  # ------------------------------------------
+
+  tep_mail('',
+      get_configuration_by_site_id('PRINT_EMAIL_ADDRESS',$order->info['site_id']),
+      get_configuration_by_site_id('STORE_NAME',$order->info['site_id']),
+      $email_printing_order,$order['customers_name']
+      ,$order['customers_email_address'] , '');
+
+
+// echo print 
+/*
+  print_r($_SESSION);
+  var_dump("<br><br>");
+  var_dump(str_replace("\n",'<br>',$email_printing_order));
+  exit;
+*/
+
+
+
+
+
+//end print
+
       
       
       unset($_SESSION['create_order2']);
