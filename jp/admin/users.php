@@ -628,7 +628,11 @@ putJavaScript_ConfirmMsg();
 
   //  echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));      // <form>
 
+  echo
+    tep_draw_form('users',basename($GLOBALS['PHP_SELF']),'execute_change=change');
+  /*
   echo '<form name="users" action="'.HTTP_SERVER.'/admin/users.php?execute_change=change" method="post">';
+  */
   echo "<table>";
   echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
     echo "<tr>\n";
