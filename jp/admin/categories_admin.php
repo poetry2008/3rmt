@@ -131,7 +131,7 @@ if (isset($_GET['action']) && $_GET['action']) {
   <tr class="dataTableHeadingRow" valign="top">
   <td class="dataTableHeadingContent" height="30"><?php echo TABLE_HEADING_CATEGORIES_PRODUCTS; ?></td>
   <td class="dataTableHeadingContent" align="right" width="50">架空在庫</td>
-  <td class="dataTableHeadingContent" align="right" width="50">実在個</td>
+  <td class="dataTableHeadingContent" align="right" width="50">実在庫</td>
   <td class="dataTableHeadingContent" align="right" width="50">
       <a style="font-weight:bold;" href="cleate_list.php?cid=<?php echo $cPath_yobi;?>&action=prelist&cPath=<?php echo $_GET['cPath'];?>">業者</a><br>
       <small style="font-weight:bold;font-size:12px;"><?php echo $kakaku_updated;?></small>
