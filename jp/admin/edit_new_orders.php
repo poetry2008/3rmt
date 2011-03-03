@@ -1310,7 +1310,13 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
               <td class="main" bgcolor="#FFBBFF" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FF99FF" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FF77FF" width="10">&nbsp;</td>
-              <td class="main" bgcolor="#FF55FF" width="120" align="center"><INPUT type="button" value=" 注文内容確認 " onClick="update_price2()"></td>
+              <td class="main" bgcolor="#FF55FF" width="120" align="center">
+<?php if (tep_is_oroshi($order->customer['id'])) { ?>
+                <INPUT type="button" value=" 注文内容確認 " onClick="update_price()">
+<?php } else { ?>
+                <INPUT type="button" value=" 注文内容確認 " onClick="update_price2()">
+<?php } ?>
+              </td>
             </tr>
           </table>
         </td>

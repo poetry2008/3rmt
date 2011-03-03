@@ -2212,7 +2212,11 @@ function forward404Unless($condition)
 <title><?php echo strip_tags($title ? $title : TITLE); ?></title>
 <meta name="keywords" content="<?php echo $keywords ? $keywords : C_KEYWORDS;?>">
 <meta name="description" content="<?php echo $description ? $description : C_DESCRIPTION;?>">
+<?php if ($request_type == 'SSL') {?>
+<meta name="robots" content="NOINDEX">
+<?php } else { ?>
 <meta name="robots" content="<?php echo strtoupper($robots ? $robots : C_ROBOTS);?>">
+<?php } ?>
 <meta name="copyright" content="<?php echo $copyright ? $copyright : C_AUTHER;?>">
 <meta http-equiv="Content-Style-Type" content="text/css">
 <meta http-equiv="Content-Script-Type" content="text/javascript">
