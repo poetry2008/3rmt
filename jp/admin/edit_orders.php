@@ -1231,7 +1231,13 @@ while ($totals = tep_db_fetch_array($totals_query)) {
               <td class="main" bgcolor="#FBE2C8" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
               <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
-              <td class="main" bgcolor="#FF9933" width="120" align="center"><INPUT type="button" value=" 注文内容確認 " onClick="update_price2()"></td>
+              <td class="main" bgcolor="#FF9933" width="120" align="center">
+<?php if (tep_is_oroshi($order->customer['id'])) { ?>
+                <INPUT type="button" value=" 注文内容確認 " onClick="update_price()">
+<?php } else { ?>
+                <INPUT type="button" value=" 注文内容確認 " onClick="update_price2()">
+<?php } ?>
+              </td>
             </tr>
           </table>
         </td>

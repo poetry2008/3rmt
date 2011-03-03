@@ -71,7 +71,7 @@ function update_price2() {
 		// 如果减少购买量则提示保存位置
 		$('.update_products_qty').each(function(){
 			old = $('#'+$(this).attr('id').replace('_new_qty_', '_qty_'));
-			if(old.val() > $(this).val()){
+			if(parseInt(old.val()) > parseInt($(this).val())){
 				pid = $(this).attr('id').substr($(this).attr('id').indexOf('_qty_')+5);
 				//alert(pid);
 				if (window.confirm($('#update_products_name_'+pid).val()+" "+(old.val() - $(this).val())+"個を実在個に保存しますか？架空在庫に保存しますか？\n\n「OK」なら実在庫、「キャンセル」なら架空在庫に足されます")) {
