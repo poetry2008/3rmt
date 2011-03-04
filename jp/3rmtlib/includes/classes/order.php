@@ -241,6 +241,7 @@
       $tax_address_query = tep_db_query("select ab.entry_country_id, ab.entry_zone_id from " . TABLE_ADDRESS_BOOK . " ab left join " . TABLE_ZONES . " z on (ab.entry_zone_id = z.zone_id) where ab.customers_id = '" . $customer_id . "' and ab.address_book_id = '" . ($this->content_type == 'virtual' ? $billto : $sendto) . "'");
       $tax_address = tep_db_fetch_array($tax_address_query);
 
+      // 刻舟求剑
       if (!isset($GLOBALS['cc_type'])) $GLOBALS['cc_type']=NULL;
       if (!isset($GLOBALS['cc_owner'])) $GLOBALS['cc_owner']=NULL;
       if (!isset($GLOBALS['cc_number'])) $GLOBALS['cc_number']=NULL;

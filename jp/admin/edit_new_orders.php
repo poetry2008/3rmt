@@ -12,7 +12,7 @@
   require(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_EDIT_ORDERS);
 
   require(DIR_WS_CLASSES . 'currencies.php');
-  $currencies = new currencies();
+  $currencies = new currencies(2);
 
   include(DIR_WS_CLASSES . 'order.php');
 
@@ -475,7 +475,7 @@
   
   $newtotal = $newtotal+$handle_fee;
 
-  $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '" . $newtotal . "', text = '<b>" . $currencies->format($newtotal, true, $order->info['currency']) . "</b>' where class='ot_total' and orders_id = '" . $oID . "'";
+  $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '" . intval(round($newtotal)) . "', text = '<b>" . $currencies->format(intval(round($newtotal)), true, $order->info['currency']) . "</b>' where class='ot_total' and orders_id = '" . $oID . "'";
   tep_db_query($totals);
   
   $update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
@@ -906,7 +906,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
       }
       $handle_fee = calc_handle_fee($order->info['payment_method'], $newtotal);
       $newtotal = $newtotal+$handle_fee;    
-      $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '".$newtotal."', text = '<b>".$currencies->format($newtotal, true, $order->info['currency'])."</b>' where class='ot_total' and orders_id = '".$oID."'";
+      $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '".intval(round($newtotal))."', text = '<b>".$currencies->format(intval(round($newtotal)), true, $order->info['currency'])."</b>' where class='ot_total' and orders_id = '".$oID."'";
       tep_db_query($totals);
       $update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
       tep_db_query($update_orders_sql);
@@ -1144,7 +1144,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
     echo '      </td>' . "\n" .
          '      <td class="' . $RowStyle . '">' . $order->products[$i]['model'] . "<input name='update_products[$orders_products_id][model]' size='12' type='hidden' value='" . $order->products[$i]['model'] . "'>" . '</td>' . "\n" .
          '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . "<input name='update_products[$orders_products_id][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order->products[$i]['tax']) . "'>" . '%</td>' . "\n" .
-         '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$orders_products_id][final_price]' size='9' value='" . intval($order->products[$i]['final_price']) . "'>" . '</td>' . "\n" . 
+         '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$orders_products_id][final_price]' size='9' value='" . number_format($order->products[$i]['final_price'],2) . "'>" . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value']) . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right"><b>' . $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . '</b></td>' . "\n" . 

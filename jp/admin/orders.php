@@ -8,7 +8,7 @@
 
   require(DIR_WS_CLASSES . 'currencies.php');
 
-  $currencies          = new currencies();
+  $currencies          = new currencies(2);
   $orders_statuses     = $all_orders_statuses = $orders_status_array = array();
 
   $orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_ORDERS_STATUS . " where language_id = '" . $languages_id . "'");

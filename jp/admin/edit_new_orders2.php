@@ -12,7 +12,7 @@
   require(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_EDIT_ORDERS);
 
   require(DIR_WS_CLASSES . 'currencies.php');
-  $currencies = new currencies();
+  $currencies = new currencies(2);
 
   include(DIR_WS_CLASSES . 'order.php');
 
@@ -404,8 +404,8 @@
   
   $newtotal = $newtotal+$handle_fee;
 
-  $_SESSION['create_order2']['orders_total']['ot_total']['value'] = $newtotal;
-  $_SESSION['create_order2']['orders_total']['ot_total']['text']  = "<b>" . $currencies->format($newtotal, true, $order['currency']) . "</b>";
+  $_SESSION['create_order2']['orders_total']['ot_total']['value'] = intval(round($newtotal));
+  $_SESSION['create_order2']['orders_total']['ot_total']['text']  = "<b>" . $currencies->format(intval(round($newtotal)), true, $order['currency']) . "</b>";
   
   /*
   $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '" . $newtotal . "', text = '<b>" . $currencies->format($newtotal, true, $order->info['currency']) . "</b>' where class='ot_total' and orders_id = '" . $oID . "'";
@@ -899,7 +899,7 @@
       
       // 特価を適用
       // $p_products_price = tep_get_final_price($p_products_price, $p_products_price_offset, $p_products_small_sum, (int)$add_product_quantity);
-      $p_products_price = (int)$_POST['add_product_price'];
+      $p_products_price = $_POST['add_product_price'];
 
       // Following functions are defined at the bottom of this file
       $CountryID = tep_get_country_id($order["delivery_country"]);
@@ -1008,8 +1008,8 @@
       $newtotal = $newtotal+$handle_fee;    
       //$totals = "update " . TABLE_ORDERS_TOTAL . " set value = '".$newtotal."', text = '<b>".$currencies->format($newtotal, true, $order['currency'])."</b>' where class='ot_total' and orders_id = '".$oID."'";
       //tep_db_query($totals);
-      $_SESSION['create_order2']['orders_total']['ot_total']['value'] = $newtotal;
-      $_SESSION['create_order2']['orders_total']['ot_total']['text']  = $currencies->format($newtotal, true, $order['currency']);
+      $_SESSION['create_order2']['orders_total']['ot_total']['value'] = intval(round($newtotal));
+      $_SESSION['create_order2']['orders_total']['ot_total']['text']  = $currencies->format(intval(round($newtotal)), true, $order['currency']);
       
       $_SESSION['create_order2']['orders']['code_fee'] = $handle_fee;
       //$update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
@@ -1233,7 +1233,7 @@ function check_add(){
     echo '      </td>' . "\n" .
          '      <td class="' . $RowStyle . '">' . $order_products[$pid]['model'] . "<input name='update_products[$pid][model]' size='12' type='hidden' value='" . $order_products[$pid]['model'] . "'>" . '</td>' . "\n" .
          '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order_products[$pid]['tax']) . "<input name='update_products[$pid][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order_products[$pid]['tax']) . "'>" . '%</td>' . "\n" .
-         '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$pid][final_price]' size='9' value='" . intval($order_products[$pid]['final_price']) . "'>" . '</td>' . "\n" . 
+         '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$pid][final_price]' size='9' value='" . number_format($order_products[$pid]['final_price'],2) . "'>" . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']), true, $order['currency'], $order['currency_value']) . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format($order_products[$pid]['final_price'] * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value']) . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right"><b>' . $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']) * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value']) . '</b></td>' . "\n" . 
@@ -1676,7 +1676,7 @@ function check_add(){
     {
       echo "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action' method='POST' onsubmit='return check_add()' >\n";
       echo "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 4: </b></td>";
-      echo '<td class="dataTableContent" valign="top">' . ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1">&nbsp;個&nbsp;&nbsp;単価<input name="add_product_price" id="add_product_price" size="4" value="0">&nbsp;円&nbsp;&nbsp;キャラクター名:&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅"><input name="add_product_character" size="20" value=""></td>';
+      echo '<td class="dataTableContent" valign="top">' . ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1">&nbsp;個&nbsp;&nbsp;単価<input name="add_product_price" id="add_product_price" size="4" value="0.0">&nbsp;円&nbsp;&nbsp;キャラクター名:&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅"><input name="add_product_character" size="20" value=""></td>';
       echo "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
 
       if(IsSet($add_product_options))
