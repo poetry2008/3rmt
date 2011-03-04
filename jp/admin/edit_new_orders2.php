@@ -528,7 +528,7 @@
   
       $order2 = new order($_SESSION['create_order2']['orders']['orders_id']);
       $products_ordered_mail = '';
-      for ($i=0; $i<sizeof($order->products); $i++) {
+      for ($i=0; $i<sizeof($order2->products); $i++) {
         //$orders_products_id = $order->products[$i]['orders_products_id'];
         $products_ordered_mail .= '注文商品　　　　　：' . $order2->products[$i]['name'] . '（' . $order2->products[$i]['model'] . '）' . "\n";
         // Has Attributes?
