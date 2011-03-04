@@ -574,7 +574,7 @@
           
         $products_ordered_mail .= '個数　　　　　　　：' . $order2->products[$i]['qty'] . '個' . tep_get_full_count($order2->products[$i]['qty'], $data1[1]) . "\n";
         $products_ordered_mail .= '単価　　　　　　　：' . $currencies->display_price($order2->products[$i]['final_price'], $order2->products[$i]['tax']) . "\n";
-        $products_ordered_mail .= '小計　　　　　　　：' . $currencies->display_price($order2->products[$i]['final_price'], $order2->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
+        $products_ordered_mail .= '小計　　　　　　　：' . $currencies->display_price($order2->products[$i]['final_price'], $order2->products[$i]['tax'], $order2->products[$i]['qty']) . "\n";
         $products_ordered_mail .= 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($order2->products[$i]['character']) : $order2->products[$i]['character']) . "\n";
         $products_ordered_mail .= "------------------------------------------\n";
         if (tep_get_cflag_by_product_id($order2->products[$i]['id'])) {
