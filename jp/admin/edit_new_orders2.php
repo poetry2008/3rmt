@@ -476,9 +476,6 @@
           $_SESSION['create_order2']['customer_fax']);
       tep_db_perform(TABLE_CUSTOMERS,$sql_customers_array,'update','customers_id='.$_SESSION['create_order2']['orders']['customers_id']);
       
-      
-      
-    if (isset($_POST['notify']) && ($_POST['notify'] == 'on')) {
       $order = new order($_SESSION['create_order2']['orders']['orders_id']);
       $products_ordered_mail = '';
       for ($i=0; $i<sizeof($order->products); $i++) {
@@ -538,7 +535,8 @@
             }
         }
       }
-
+      
+    if (isset($_POST['notify']) && ($_POST['notify'] == 'on')) {
       $total_details_mail = '';
       $totals_query = tep_db_query("select * from " . TABLE_ORDERS_TOTAL . " where orders_id = '" . tep_db_input($oID) . "' order by sort_order");
       $order->totals = array();
