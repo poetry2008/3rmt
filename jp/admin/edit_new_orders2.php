@@ -476,175 +476,11 @@
           $_SESSION['create_order2']['customer_fax']);
       tep_db_perform(TABLE_CUSTOMERS,$sql_customers_array,'update','customers_id='.$_SESSION['create_order2']['orders']['customers_id']);
       
-      $order = new order($_SESSION['create_order2']['orders']['orders_id']);
-      $products_ordered_mail = '';
-      for ($i=0; $i<sizeof($order->products); $i++) {
-        //$orders_products_id = $order->products[$i]['orders_products_id'];
-        $products_ordered_mail .= '注文商品　　　　　：' . $order->products[$i]['name'] . '（' . $order->products[$i]['model'] . '）' . "\n";
-        // Has Attributes?
-        if (sizeof($order->products[$i]['attributes']) > 0) {
-          for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
-            $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['orders_products_attributes_id'];
-            $products_ordered_mail .= tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option'], array("'"=>"&quot;")) . '　　　　　：';
-            $products_ordered_mail .= tep_parse_input_field_data($order->products[$i]['attributes'][$j]['value'], array("'"=>"&quot;")) . "\n";
-          }
-        }
-          $_product_info_query = tep_db_query("
-              select p.products_id, 
-                     pd.products_name, 
-                     p.products_attention_1,
-                     p.products_attention_2,
-                     p.products_attention_3,
-                     p.products_attention_4,
-                     p.products_attention_5,
-                     pd.products_description, 
-                     p.products_model, 
-                     p.products_real_quantity + p.products_virtual_quantity as products_quantity,
-                     p.products_image,
-                     p.products_image2,
-                     p.products_image3, 
-                     pd.products_url, 
-                     p.products_price, 
-                     p.products_tax_class_id, 
-                     p.products_date_added, 
-                     p.products_date_available, 
-                     p.manufacturers_id, 
-                     p.products_bflag, 
-                     p.products_cflag, 
-                     p.products_small_sum 
-              from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
-              where 
-              -- p.products_status != '0' and 
-                p.products_id = '" . $order->products[$i]['id'] . "' 
-                and pd.products_id = p.products_id 
-                and pd.site_id = '0'
-                and pd.language_id = '" . $languages_id . "'");
-          $product_info = tep_db_fetch_array($_product_info_query);
-          $data1 = explode("//", $product_info['products_attention_1']);
-          
-        $products_ordered_mail .= '個数　　　　　　　：' . $order->products[$i]['qty'] . '個' . tep_get_full_count($order->products[$i]['qty'], $data1[1]) . "\n";
-        $products_ordered_mail .= '単価　　　　　　　：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
-        $products_ordered_mail .= '小計　　　　　　　：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
-        $products_ordered_mail .= 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($order->products[$i]['character']) : $order->products[$i]['character']) . "\n";
-        $products_ordered_mail .= "------------------------------------------\n";
-        if (tep_get_cflag_by_product_id($order->products[$i]['id'])) {
-            if (tep_get_bflag_by_product_id($order->products[$i]['id'])) {
-              $products_ordered_mail .= "※ 当社キャラクター名は、お取引10分前までに電子メールにてお知らせいたします。\n\n";
-            } else {
-              $products_ordered_mail .= "※ 当社キャラクター名は、お支払い確認後に電子メールにてお知らせいたします。\n\n";
-            }
-        }
-      }
-      
-    if (isset($_POST['notify']) && ($_POST['notify'] == 'on')) {
-      $total_details_mail = '';
-      $totals_query = tep_db_query("select * from " . TABLE_ORDERS_TOTAL . " where orders_id = '" . tep_db_input($oID) . "' order by sort_order");
-      $order->totals = array();
-      while ($totals = tep_db_fetch_array($totals_query)) {
-        if ($totals['class'] == "ot_point" || $totals['class'] == "ot_subtotal") {
-          if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
-            $total_details_mail .= '▼ポイント割引　　：-' . strip_tags($totals['text']) . "\n";
-          }
-        } elseif ($totals['class'] == "ot_total") {
-          if($handle_fee) {
-            $total_details_mail .= '▼手数料　　　　　：'.$currencies->format($handle_fee)."\n";
-          }
-          $total_details_mail .= '▼お支払金額　　　：' . strip_tags($totals['text']) . "\n";
-          $total_price_mail = round($totals['value']);
-        } else {
-          $total_details_mail .= '▼' . $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . strip_tags($totals['text']) . "\n";
-        }
-      }
-
-
-
-      $email = '';
-      $email .= $order->customer['name'] . '様' . "\n\n";
-      $email .= 'この度は、' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . 'をご利用いただき、誠にありが' . "\n";
-      $email .= 'とうございます。' . "\n";
-      $email .= '下記の内容にてご注文を承りましたので、ご確認ください。' . "\n";
-      $email .= 'ご不明な点がございましたら、ご注文番号をご確認の上、' . "\n";
-      $email .= '「' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '」までお問い合わせください。' . "\n\n";
-      $email .= $notify_comments_mail;
-      $email .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
-      $email .= '▼注文番号　　　　：' . $oID . "\n";
-      $email .= '▼注文日　　　　　：' . tep_date_long(time()) . "\n";
-      $email .= '▼お名前　　　　　：' . $order->customer['name'] . '様' . "\n";
-      $email .= '▼メールアドレス　：' . $order->customer['email_address'] . "\n";
-      $email .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
-      $email .= $total_details_mail;
-      $email .= '▼お支払方法　　　：' . $order->info['payment_method'] . "\n";
-      if ($order->info['payment_method'] == 'ゆうちょ銀行（郵便局）') {
-         $email .= get_configuration_by_site_id('C_POSTAL',$order->info['site_id']); 
-      }
-      if ($order->info['payment_method'] === '銀行振込') {
-            $email .= get_configuration_by_site_id('C_BANK',$order->info['site_id']);
-      } elseif ($order->info['payment_method'] === 'クレジットカード決済') {
-            $email .= get_configuration_by_site_id('C_CC',$order->info['site_id']);
-      } elseif ($order->info['payment_method'] === '銀行振込(買い取り)') {
-        $orders_bank_account_query = tep_db_query("select comments from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($oID) . "' and orders_status_id = '1' and customer_notified = '1' order by date_added");
-        if (tep_db_num_rows($orders_bank_account_query)) {
-          while ($orders_bank_account = tep_db_fetch_array($orders_bank_account_query)) {
-            if (strncmp($orders_bank_account['comments'], '金融機関名　　　　：', 20) == 0) {
-              $bbbank = $orders_bank_account['comments'];
-            }
-          }
-        } else {
-          $bbbank = 'エラーが発生しました。' . "\n" . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . 'へお問い合わせくだい。' . "\n";
-        }
-        $email .= '▼お支払先金融機関' . "\n";
-      $email .= $bbbank . "\n";
-      $email .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
-      //$email .= '・本メールに記載された当社キャラクター宛に商品をトレードしてください。' . "\n";
-      $email .= '・当社にて商品の受領確認がとれましたら代金お支払い手続きに入ります。' . "\n";
-      $email .= '・本メール送信後7日以内に取引が完了できない場合、' . "\n";
-      $email .= '　当社は、お客様がご注文を取り消されたものとして取り扱います。';
-} elseif ($order->info['payment_method'] === 'コンビニ決済') {
-      $email .= get_configuration_by_site_id('C_CONVENIENCE_STORE',$order->info['site_id']);
-} else {
-      $email .= '別途取り決めた方法に準じて行います。';
-}
-      $email .= "\n\n\n";
-      $email .= '▼注文商品' . "\n";
-      $email .= '------------------------------------------' . "\n";
-      $email .= $products_ordered_mail;
-
-      $array1 = explode(" ", $order->tori['date']);
-      $array_ymd = explode("-",$array1[0]);
-      $array_hms = explode(":",$array1[1]);
-      $time1 = mktime($array_hms[0],$array_hms[1],$array_hms[2],$array_ymd[1],$array_ymd[2],$array_ymd[0]);
-      $trade_time = date("Y年m月d日H時i分", $time1);
-
-      $email .= '▼取引日時　　　　：' . $trade_time . '　（24時間表記）' . "\n";
-      $email .= '　　　　　　　　　：' . strip_tags($order->tori['houhou']) . "\n";
-      $email .= '▼備考　　　　　　：';
-      if ($order->info['payment_method'] === 'コンビニ決済') {
-        $orders_con_query = tep_db_query("select comments from ".TABLE_ORDERS_STATUS_HISTORY." where orders_id = '".tep_db_input($oID)."' and orders_status_id = '1' and customer_notified = '1' order by date_added");
-        if (tep_db_num_rows($orders_con_query)) {
-          while ($orders_con_res = tep_db_fetch_array($orders_con_query)) {
-            $email .= $orders_con_res['comments'];  
-          }
-        }
-      }
-      $email .= "\n\n\n";
-      $email .= '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n";
-      $email .= '株式会社 iimy' . "\n";
-      $email .= get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS',$order->info['site_id']) . "\n";
-      $email .= get_url_by_site_id($order->info['site_id']) . "\n";
-      $email .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-      if ($customer_guest['customers_guest_chk'] != 9) {
-        tep_mail($check_status['customers_name'], $check_status['customers_email_address'], 'ご注文ありがとうございます【' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
-      }
-      tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), 'ご注文ありがとうございます【' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
-      
-      $customer_notified = '1';
-    }
-
 //start print 
   # 印刷用メール本文 ----------------------------
   if(preg_match('/ /',$order['torihiki_date'])){
-  $date_arr = explode(" ",$order['torihiki_date']);
-  $date_time_arr = explode(':',$date_arr[1]);
+    $date_arr = explode(" ",$order['torihiki_date']);
+    $date_time_arr = explode(':',$date_arr[1]);
   }
   $email_printing_order = '';
   $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
@@ -688,6 +524,76 @@
   */
   
   $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+  
+  
+      $order2 = new order($_SESSION['create_order2']['orders']['orders_id']);
+      $products_ordered_mail = '';
+      for ($i=0; $i<sizeof($order->products); $i++) {
+        //$orders_products_id = $order->products[$i]['orders_products_id'];
+        $products_ordered_mail .= '注文商品　　　　　：' . $order2->products[$i]['name'] . '（' . $order2->products[$i]['model'] . '）' . "\n";
+        // Has Attributes?
+        if (sizeof($order2->products[$i]['attributes']) > 0) {
+          for ($j=0; $j<sizeof($order2->products[$i]['attributes']); $j++) {
+            $orders_products_attributes_id = $order2->products[$i]['attributes'][$j]['orders_products_attributes_id'];
+            $products_ordered_mail .= tep_parse_input_field_data($order2->products[$i]['attributes'][$j]['option'], array("'"=>"&quot;")) . '　　　　　：';
+            $products_ordered_mail .= tep_parse_input_field_data($order2->products[$i]['attributes'][$j]['value'], array("'"=>"&quot;")) . "\n";
+          }
+        }
+          $_product_info_query = tep_db_query("
+              select p.products_id, 
+                     pd.products_name, 
+                     p.products_attention_1,
+                     p.products_attention_2,
+                     p.products_attention_3,
+                     p.products_attention_4,
+                     p.products_attention_5,
+                     pd.products_description, 
+                     p.products_model, 
+                     p.products_real_quantity + p.products_virtual_quantity as products_quantity,
+                     p.products_image,
+                     p.products_image2,
+                     p.products_image3, 
+                     pd.products_url, 
+                     p.products_price, 
+                     p.products_tax_class_id, 
+                     p.products_date_added, 
+                     p.products_date_available, 
+                     p.manufacturers_id, 
+                     p.products_bflag, 
+                     p.products_cflag, 
+                     p.products_small_sum 
+              from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
+              where 
+              -- p.products_status != '0' and 
+                p.products_id = '" . $order2->products[$i]['id'] . "' 
+                and pd.products_id = p.products_id 
+                and pd.site_id = '0'
+                and pd.language_id = '" . $languages_id . "'");
+          $product_info = tep_db_fetch_array($_product_info_query);
+          $data1 = explode("//", $product_info['products_attention_1']);
+          
+        $products_ordered_mail .= '個数　　　　　　　：' . $order2->products[$i]['qty'] . '個' . tep_get_full_count($order2->products[$i]['qty'], $data1[1]) . "\n";
+        $products_ordered_mail .= '単価　　　　　　　：' . $currencies->display_price($order2->products[$i]['final_price'], $order2->products[$i]['tax']) . "\n";
+        $products_ordered_mail .= '小計　　　　　　　：' . $currencies->display_price($order2->products[$i]['final_price'], $order2->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
+        $products_ordered_mail .= 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($order2->products[$i]['character']) : $order2->products[$i]['character']) . "\n";
+        $products_ordered_mail .= "------------------------------------------\n";
+        if (tep_get_cflag_by_product_id($order2->products[$i]['id'])) {
+            if (tep_get_bflag_by_product_id($order2->products[$i]['id'])) {
+              $products_ordered_mail .= "※ 当社キャラクター名は、お取引10分前までに電子メールにてお知らせいたします。\n\n";
+            } else {
+              $products_ordered_mail .= "※ 当社キャラクター名は、お支払い確認後に電子メールにてお知らせいたします。\n\n";
+            }
+        }
+      }
+  
+  
+  
+  
+  
+  
+  
+  
+  
   $email_printing_order .= $products_ordered_mail;
 
   $email_printing_order .= '備考　　　　　　：' . "\n";
@@ -819,7 +725,169 @@
   exit;
 */
 
+    if (isset($_POST['notify']) && ($_POST['notify'] == 'on')) {
+      $order = new order($_SESSION['create_order2']['orders']['orders_id']);
+      $products_ordered_mail = '';
+      for ($i=0; $i<sizeof($order->products); $i++) {
+        //$orders_products_id = $order->products[$i]['orders_products_id'];
+        $products_ordered_mail .= '注文商品　　　　　：' . $order->products[$i]['name'] . '（' . $order->products[$i]['model'] . '）' . "\n";
+        // Has Attributes?
+        if (sizeof($order->products[$i]['attributes']) > 0) {
+          for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
+            $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['orders_products_attributes_id'];
+            $products_ordered_mail .= tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option'], array("'"=>"&quot;")) . '　　　　　：';
+            $products_ordered_mail .= tep_parse_input_field_data($order->products[$i]['attributes'][$j]['value'], array("'"=>"&quot;")) . "\n";
+          }
+        }
+          $_product_info_query = tep_db_query("
+              select p.products_id, 
+                     pd.products_name, 
+                     p.products_attention_1,
+                     p.products_attention_2,
+                     p.products_attention_3,
+                     p.products_attention_4,
+                     p.products_attention_5,
+                     pd.products_description, 
+                     p.products_model, 
+                     p.products_real_quantity + p.products_virtual_quantity as products_quantity,
+                     p.products_image,
+                     p.products_image2,
+                     p.products_image3, 
+                     pd.products_url, 
+                     p.products_price, 
+                     p.products_tax_class_id, 
+                     p.products_date_added, 
+                     p.products_date_available, 
+                     p.manufacturers_id, 
+                     p.products_bflag, 
+                     p.products_cflag, 
+                     p.products_small_sum 
+              from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
+              where 
+              -- p.products_status != '0' and 
+                p.products_id = '" . $order->products[$i]['id'] . "' 
+                and pd.products_id = p.products_id 
+                and pd.site_id = '0'
+                and pd.language_id = '" . $languages_id . "'");
+          $product_info = tep_db_fetch_array($_product_info_query);
+          $data1 = explode("//", $product_info['products_attention_1']);
+          
+        $products_ordered_mail .= '個数　　　　　　　：' . $order->products[$i]['qty'] . '個' . tep_get_full_count($order->products[$i]['qty'], $data1[1]) . "\n";
+        $products_ordered_mail .= '単価　　　　　　　：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
+        $products_ordered_mail .= '小計　　　　　　　：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
+        $products_ordered_mail .= 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($order->products[$i]['character']) : $order->products[$i]['character']) . "\n";
+        $products_ordered_mail .= "------------------------------------------\n";
+        if (tep_get_cflag_by_product_id($order->products[$i]['id'])) {
+            if (tep_get_bflag_by_product_id($order->products[$i]['id'])) {
+              $products_ordered_mail .= "※ 当社キャラクター名は、お取引10分前までに電子メールにてお知らせいたします。\n\n";
+            } else {
+              $products_ordered_mail .= "※ 当社キャラクター名は、お支払い確認後に電子メールにてお知らせいたします。\n\n";
+            }
+        }
+      }
 
+      $total_details_mail = '';
+      $totals_query = tep_db_query("select * from " . TABLE_ORDERS_TOTAL . " where orders_id = '" . tep_db_input($oID) . "' order by sort_order");
+      $order->totals = array();
+      while ($totals = tep_db_fetch_array($totals_query)) {
+        if ($totals['class'] == "ot_point" || $totals['class'] == "ot_subtotal") {
+          if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
+            $total_details_mail .= '▼ポイント割引　　：-' . strip_tags($totals['text']) . "\n";
+          }
+        } elseif ($totals['class'] == "ot_total") {
+          if($handle_fee) {
+            $total_details_mail .= '▼手数料　　　　　：'.$currencies->format($handle_fee)."\n";
+          }
+          $total_details_mail .= '▼お支払金額　　　：' . strip_tags($totals['text']) . "\n";
+          $total_price_mail = round($totals['value']);
+        } else {
+          $total_details_mail .= '▼' . $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . strip_tags($totals['text']) . "\n";
+        }
+      }
+
+
+
+      $email = '';
+      $email .= $order->customer['name'] . '様' . "\n\n";
+      $email .= 'この度は、' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . 'をご利用いただき、誠にありが' . "\n";
+      $email .= 'とうございます。' . "\n";
+      $email .= '下記の内容にてご注文を承りましたので、ご確認ください。' . "\n";
+      $email .= 'ご不明な点がございましたら、ご注文番号をご確認の上、' . "\n";
+      $email .= '「' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '」までお問い合わせください。' . "\n\n";
+      $email .= $notify_comments_mail;
+      $email .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
+      $email .= '▼注文番号　　　　：' . $oID . "\n";
+      $email .= '▼注文日　　　　　：' . tep_date_long(time()) . "\n";
+      $email .= '▼お名前　　　　　：' . $order->customer['name'] . '様' . "\n";
+      $email .= '▼メールアドレス　：' . $order->customer['email_address'] . "\n";
+      $email .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
+      $email .= $total_details_mail;
+      $email .= '▼お支払方法　　　：' . $order->info['payment_method'] . "\n";
+      if ($order->info['payment_method'] == 'ゆうちょ銀行（郵便局）') {
+         $email .= get_configuration_by_site_id('C_POSTAL',$order->info['site_id']); 
+      }
+      if ($order->info['payment_method'] === '銀行振込') {
+            $email .= get_configuration_by_site_id('C_BANK',$order->info['site_id']);
+      } elseif ($order->info['payment_method'] === 'クレジットカード決済') {
+            $email .= get_configuration_by_site_id('C_CC',$order->info['site_id']);
+      } elseif ($order->info['payment_method'] === '銀行振込(買い取り)') {
+        $orders_bank_account_query = tep_db_query("select comments from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($oID) . "' and orders_status_id = '1' and customer_notified = '1' order by date_added");
+        if (tep_db_num_rows($orders_bank_account_query)) {
+          while ($orders_bank_account = tep_db_fetch_array($orders_bank_account_query)) {
+            if (strncmp($orders_bank_account['comments'], '金融機関名　　　　：', 20) == 0) {
+              $bbbank = $orders_bank_account['comments'];
+            }
+          }
+        } else {
+          $bbbank = 'エラーが発生しました。' . "\n" . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . 'へお問い合わせくだい。' . "\n";
+        }
+        $email .= '▼お支払先金融機関' . "\n";
+      $email .= $bbbank . "\n";
+      $email .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
+      //$email .= '・本メールに記載された当社キャラクター宛に商品をトレードしてください。' . "\n";
+      $email .= '・当社にて商品の受領確認がとれましたら代金お支払い手続きに入ります。' . "\n";
+      $email .= '・本メール送信後7日以内に取引が完了できない場合、' . "\n";
+      $email .= '　当社は、お客様がご注文を取り消されたものとして取り扱います。';
+} elseif ($order->info['payment_method'] === 'コンビニ決済') {
+      $email .= get_configuration_by_site_id('C_CONVENIENCE_STORE',$order->info['site_id']);
+} else {
+      $email .= '別途取り決めた方法に準じて行います。';
+}
+      $email .= "\n\n\n";
+      $email .= '▼注文商品' . "\n";
+      $email .= '------------------------------------------' . "\n";
+      $email .= $products_ordered_mail;
+
+      $array1 = explode(" ", $order->tori['date']);
+      $array_ymd = explode("-",$array1[0]);
+      $array_hms = explode(":",$array1[1]);
+      $time1 = mktime($array_hms[0],$array_hms[1],$array_hms[2],$array_ymd[1],$array_ymd[2],$array_ymd[0]);
+      $trade_time = date("Y年m月d日H時i分", $time1);
+
+      $email .= '▼取引日時　　　　：' . $trade_time . '　（24時間表記）' . "\n";
+      $email .= '　　　　　　　　　：' . strip_tags($order->tori['houhou']) . "\n";
+      $email .= '▼備考　　　　　　：';
+      if ($order->info['payment_method'] === 'コンビニ決済') {
+        $orders_con_query = tep_db_query("select comments from ".TABLE_ORDERS_STATUS_HISTORY." where orders_id = '".tep_db_input($oID)."' and orders_status_id = '1' and customer_notified = '1' order by date_added");
+        if (tep_db_num_rows($orders_con_query)) {
+          while ($orders_con_res = tep_db_fetch_array($orders_con_query)) {
+            $email .= $orders_con_res['comments'];  
+          }
+        }
+      }
+      $email .= "\n\n\n";
+      $email .= '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n";
+      $email .= '株式会社 iimy' . "\n";
+      $email .= get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS',$order->info['site_id']) . "\n";
+      $email .= get_url_by_site_id($order->info['site_id']) . "\n";
+      $email .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+      if ($customer_guest['customers_guest_chk'] != 9) {
+        tep_mail($check_status['customers_name'], $check_status['customers_email_address'], 'ご注文ありがとうございます【' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
+      }
+      tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), 'ご注文ありがとうございます【' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
+      
+      $customer_notified = '1';
+    }
 
 
 
