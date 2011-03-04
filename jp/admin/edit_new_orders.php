@@ -475,7 +475,7 @@
   
   $newtotal = $newtotal+$handle_fee;
 
-  $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '" . intval(round($newtotal)) . "', text = '<b>" . $currencies->format(intval(round($newtotal)), true, $order->info['currency']) . "</b>' where class='ot_total' and orders_id = '" . $oID . "'";
+  $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '" . intval(round($newtotal)) . "', text = '<b>" . $currencies->ot_total_format(intval(round($newtotal)), true, $order->info['currency']) . "</b>' where class='ot_total' and orders_id = '" . $oID . "'";
   tep_db_query($totals);
   
   $update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
@@ -906,7 +906,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
       }
       $handle_fee = calc_handle_fee($order->info['payment_method'], $newtotal);
       $newtotal = $newtotal+$handle_fee;    
-      $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '".intval(round($newtotal))."', text = '<b>".$currencies->format(intval(round($newtotal)), true, $order->info['currency'])."</b>' where class='ot_total' and orders_id = '".$oID."'";
+      $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '".intval(round($newtotal))."', text = '<b>".$currencies->ot_total_format(intval(round($newtotal)), true, $order->info['currency'])."</b>' where class='ot_total' and orders_id = '".$oID."'";
       tep_db_query($totals);
       $update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
       tep_db_query($update_orders_sql);
@@ -1217,7 +1217,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
       echo '  <tr>' . "\n" .
            '    <td align="left" class="' . $TotalStyle . '">合計金額が合っているか必ず確認してください。</td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' . 
-           '    <td align="right" class="' . $TotalStyle . '"><b>' . $currencies->format($TotalDetails["Price"], true, $order->info['currency'], $order->info['currency_value']) . '</b>' . 
+           '    <td align="right" class="' . $TotalStyle . '"><b>' . $currencies->ot_total_format($TotalDetails["Price"], true, $order->info['currency'], $order->info['currency_value']) . '</b>' . 
                 "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
                 "<input name='update_totals[$TotalIndex][value]' type='hidden' value='" . $TotalDetails["Price"] . "' size='6' >" . 
                 "<input name='update_totals[$TotalIndex][class]' type='hidden' value='" . $TotalDetails["Class"] . "'>\n" . 

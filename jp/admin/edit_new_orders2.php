@@ -405,7 +405,7 @@
   $newtotal = $newtotal+$handle_fee;
 
   $_SESSION['create_order2']['orders_total']['ot_total']['value'] = intval(round($newtotal));
-  $_SESSION['create_order2']['orders_total']['ot_total']['text']  = "<b>" . $currencies->format(intval(round($newtotal)), true, $order['currency']) . "</b>";
+  $_SESSION['create_order2']['orders_total']['ot_total']['text']  = "<b>" . $currencies->ot_total_format(intval(round($newtotal)), true, $order['currency']) . "</b>";
   
   /*
   $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '" . $newtotal . "', text = '<b>" . $currencies->format($newtotal, true, $order->info['currency']) . "</b>' where class='ot_total' and orders_id = '" . $oID . "'";
@@ -690,7 +690,7 @@
   */
   
   $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-  $email_printing_order .= $products_ordered;
+  $email_printing_order .= $products_ordered_mail;
 
   $email_printing_order .= '備考　　　　　　：' . "\n";
 
@@ -1009,7 +1009,7 @@
       //$totals = "update " . TABLE_ORDERS_TOTAL . " set value = '".$newtotal."', text = '<b>".$currencies->format($newtotal, true, $order['currency'])."</b>' where class='ot_total' and orders_id = '".$oID."'";
       //tep_db_query($totals);
       $_SESSION['create_order2']['orders_total']['ot_total']['value'] = intval(round($newtotal));
-      $_SESSION['create_order2']['orders_total']['ot_total']['text']  = $currencies->format(intval(round($newtotal)), true, $order['currency']);
+      $_SESSION['create_order2']['orders_total']['ot_total']['text']  = $currencies->ot_total_format(intval(round($newtotal)), true, $order['currency']);
       
       $_SESSION['create_order2']['orders']['code_fee'] = $handle_fee;
       //$update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
@@ -1313,7 +1313,7 @@ function check_add(){
       echo '  <tr>' . "\n" .
            '    <td align="left" class="' . $TotalStyle . '">合計金額が合っているか必ず確認してください。</td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' . 
-           '    <td align="right" class="' . $TotalStyle . '"><b>' . $currencies->format($TotalDetails["Price"], true, $order['currency'], $order['currency_value']) . '</b>' . 
+           '    <td align="right" class="' . $TotalStyle . '"><b>' . $currencies->ot_total_format($TotalDetails["Price"], true, $order['currency'], $order['currency_value']) . '</b>' . 
                 "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
                 "<input name='update_totals[$TotalIndex][value]' type='hidden' value='" . $TotalDetails["Price"] . "' size='6' >" . 
                 "<input name='update_totals[$TotalIndex][class]' type='hidden' value='" . $TotalDetails["Class"] . "'>\n" . 
