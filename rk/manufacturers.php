@@ -78,7 +78,7 @@ while ($manufacturer = tep_db_fetch_array($manufacturer_query)){
        } else {
          $products_price = $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), tep_get_tax_rate($products['products_tax_class_id']));
        }
-      echo '<td align="center" valign="top" class="smallText" width="20%"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products['products_id']) . '">'.tep_image2(DIR_WS_IMAGES.$products['products_image'],$products['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"').'<br>' .$products['products_name'] . '</a><br>'.$products_price.'<!-- '.strip_tags(substr($products['products_description'],0,50)).' --></td>'."\n";
+      echo '<td align="center" valign="top" class="smallText" width="20%"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $products['products_id']) . '">'.tep_image2(DIR_WS_IMAGES.'products/'.$products['products_image'],$products['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"').'<br>' .$products['products_name'] . '</a><br>'.$products_price.'<!-- '.strip_tags(substr($products['products_description'],0,50)).' --></td>'."\n";
     }
     echo '        </tr>' . "\n";
     echo '      </table>' . "\n";
