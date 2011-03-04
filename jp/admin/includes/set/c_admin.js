@@ -54,7 +54,7 @@ function list_display(path,cid,fullpath){
 function update_quantity(pid){
   oquantity = $('#quantity_'+pid).html();
   pname = $('#products_name_'+pid).html();
-  nquantity = prompt(pname+"\n現在の在庫数 : "+oquantity+"  , 新在庫数", oquantity);
+  nquantity = prompt(pname+"\n現在の実在庫数 : "+oquantity+"  , 新実在庫数", oquantity);
   //alert(nquantity);
   if (nquantity && false == /^\d+$/.test(nquantity)) {
     alert('半角数字で入力してください');
@@ -66,6 +66,26 @@ function update_quantity(pid){
     url: send_url,
         success: function(data) {
             $('#quantity_'+pid).html(data)
+      }
+    });
+  }
+}
+
+function update_virtual_quantity(pid){
+  oquantity = $('#virtual_quantity_'+pid).html();
+  pname = $('#products_name_'+pid).html();
+  nquantity = prompt(pname+"\n現在の架空在庫数 : "+oquantity+"  , 新架空在庫数", oquantity);
+  //alert(nquantity);
+  if (nquantity && false == /^\d+$/.test(nquantity)) {
+    alert('半角数字で入力してください');
+    return false;
+  }
+  if (nquantity !== '' && nquantity !== null) {
+  var send_url="set_quantity.php?pid="+pid+"&virtual_quantity="+nquantity;
+  $.ajax({
+    url: send_url,
+        success: function(data) {
+            $('#virtual_quantity_'+pid).html(data)
       }
     });
   }
