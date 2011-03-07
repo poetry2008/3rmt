@@ -309,7 +309,7 @@ if (isset($_GET['search']) && $_GET['search']) {
           and p.products_id = p2c.products_id 
           and pd.products_name like '%" . $_GET['search'] . "%' 
           and pd.site_id='0'
-          ".($ocertify->npermission>7?'':" and p.products_status='1' ")."
+          ".($ocertify->npermission>7?'':" and pd.products_status='1' ")."
         order by pd.products_name";
 } else {
   $products_query_raw = "
@@ -334,7 +334,7 @@ if (isset($_GET['search']) && $_GET['search']) {
           and p.products_id = p2c.products_id 
           and p2c.categories_id = '" . $current_category_id . "' 
           and pd.site_id='0'
-          ".($ocertify->npermission>7?'':" and p.products_status='1' ")."
+          ".($ocertify->npermission>7?'':" and pd.products_status='1' ")."
         order by p.sort_order,pd.products_name";
 }
 $products_split = new splitPageResults($_GET['page'], MAX_DISPLAY_PRODUCTS_ADMIN, $products_query_raw, $products_query_numrows);
