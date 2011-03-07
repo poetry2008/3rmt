@@ -389,7 +389,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
                         </tr> 
                       </table></td> 
                   </tr> 
-                </table>1111111111</td> 
+                </table></td> 
             </tr> 
 <?php
   } else {
