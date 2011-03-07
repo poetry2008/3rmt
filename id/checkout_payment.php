@@ -290,6 +290,14 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
   }//buying not view
   }
 ?> 
+                      </table>                      
+                      <table width="100%" cellspacing="3" cellpadding="0" border="0">
+                      <tr>
+                      <td align="center"><img src="/images/rmt_cr.gif"></td>
+                      </tr>
+                      <tr>
+                      <td><a href="info/smartpit.html" target="_blank">＊コンビに決済についての詳しい説明はこちらです。</a></td>
+                      </tr>
                       </table></td> 
                   </tr> 
                 </table></td> 
