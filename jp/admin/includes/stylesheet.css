@@ -62,7 +62,8 @@ A：ヘッダリンク（訪問済み）
 a.headerLink:visited {
 	color: #ffffff;                                 /* フォントカラー */
 	font-weight: bold;                              /* フォント太さ */
-	text-decoration: none;                          /* テキストの装飾 */
+	text-decoration: none;
+                          /* テキストの装飾 */
 }
 /* ---------------------------
 A：ヘッダリンク（選択している）
@@ -83,16 +84,16 @@ a.headerLink:hover {
 /* ---------------------------
 A：メニューボックスヘッダリンク（通常）
 --------------------------- */
-a.menuBoxHeadingLink:link {
+a.menuBoxHeading_Link:link {
 	font-size: 11px;
-	color: #616060;                                 /* フォントカラー */
+	color: #000;                                 /* フォントカラー */
 	font-weight: bold;                              /* フォント太さ */
 	text-decoration: none;                          /* テキストの装飾 */
 }
 /* ---------------------------
 A：メニューボックスヘッダリンク（訪問済み）
 --------------------------- */
-a.menuBoxHeadingLink:visited {
+a.menuBoxHeading_Link:visited {
 	font-size: 11px;
 	color: #616060;                                 /* フォントカラー */
 	font-weight: bold;                              /* フォント太さ */
@@ -101,7 +102,7 @@ a.menuBoxHeadingLink:visited {
 /* ---------------------------
 A：メニューボックスヘッダリンク（選択している）
 --------------------------- */
-a.menuBoxHeadingLink:active {
+a.menuBoxHeading_Link:active {
 	font-size: 11px;
 	color: #616060;                                 /* フォントカラー */
 	font-weight: bold;                              /* フォント太さ */
@@ -110,7 +111,7 @@ a.menuBoxHeadingLink:active {
 /* ---------------------------
 A：メニューボックスヘッダリンク（カーソルが上に乗ったとき）
 --------------------------- */
-a.menuBoxHeadingLink:hover {
+a.menuBoxHeading_Link:hover {
 	font-size: 11px;
 	color: #616060;                                 /* フォントカラー */
 	font-weight: bold;                              /* フォント太さ */
@@ -119,16 +120,16 @@ a.menuBoxHeadingLink:hover {
 /* ---------------------------
 A：メニューボックスコンテンツリンク（通常）
 --------------------------- */
-a.menuBoxContentLink:link {
+a.menuBoxContent_Link:link {
 	font-size: 11px;                                /* フォントサイズ */
-	color: #616060;                                 /* フォントカラー */
+	color: #000;                                 /* フォントカラー */
 	font-weight: normal;                            /* フォント太さ */
 	text-decoration: none;                          /* テキストの装飾 */
 }
 /* ---------------------------
 A：メニューボックスコンテンツリンク（訪問済み）
 --------------------------- */
-a.menuBoxContentLink:visited {
+a.menuBoxContent_Link:visited {
 	font-size: 11px;
 	color: #616060;                                 /* フォントカラー */
 	font-weight: normal;                            /* フォント太さ */
@@ -137,7 +138,7 @@ a.menuBoxContentLink:visited {
 /* ---------------------------
 A：メニューボックスコンテンツリンク（選択している）
 --------------------------- */
-a.menuBoxContentLink:active {
+a.menuBoxContent_Link:active {
 	font-size: 11px;
 	color: #616060;                                 /* フォントカラー */
 	font-weight: normal;                            /* フォント太さ */
@@ -146,7 +147,7 @@ a.menuBoxContentLink:active {
 /* ---------------------------
 A：メニューボックスコンテンツリンク（カーソルが上に乗ったとき）
 --------------------------- */
-a.menuBoxContentLink:hover {
+a.menuBoxContent_Link:hover {
 	font-size: 11px;
 	color: #616060;                                 /* フォントカラー */
 	font-weight: normal;                            /* フォント太さ */
@@ -684,3 +685,7 @@ a.headerLink{
 font-size:10px;!important;
 }
 }
+.order_link{
+	text-decoration: underline;
+}
+.order02_link a{text-decoration: underline;}

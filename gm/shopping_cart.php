@@ -265,7 +265,7 @@ function change_num(ob,targ, quan,a_quan)
                     <input type="hidden" name="goto" value="<?php echo tep_href_link($navigation->path[$back]['page'], tep_array_to_string($navigation->path[$back]['get'], array('action')), $navigation->path[$back]['mode']);?>">
                     <input type="submit" name="continue" value="" class="shopping_cart_continue">
 <?php } else { ?>
-                    <button  class="shopping_cart_continue" onclick="history.back(); return false;"></button>
+                    <button  class="shopping_cart_continue" onClick="history.back(); return false;"></button>
 <?php } ?>
               </td> 
               <td align="left" class="main">
