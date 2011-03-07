@@ -139,7 +139,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
                   <tr> 
-                  	<td class="main"><b><?php echo TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><br>' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></td> 
+                    <td class="main"><b><?php echo TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><br>' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></td> 
                     <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
                   </tr> 
                 </table></td> 
@@ -303,14 +303,6 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
   }//buying not view
   }
 ?> 
-                      </table>
-                      <table width="100%" cellspacing="3" cellpadding="0" border="0">
-                      <tr>
-                      <td align="center"><img src="/images/rmt_cr.gif"></td>
-                      </tr>
-                      <tr>
-                      <td><a href="info/smartpit.html" target="_blank">＊コンビに決済についての詳しい説明はこちらです。</a></td>
-                      </tr>
                       </table>
                       </td> 
                   </tr> 
