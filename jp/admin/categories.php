@@ -70,6 +70,7 @@
         // jiakong
         $update_sql_data = array('products_last_modified' => 'now()',
                                  'products_real_quantity' => tep_db_prepare_input($_POST['products_real_quantity']),
+                                 'products_virtual_quantity' => tep_db_prepare_input($_POST['products_virtual_quantity']),
                                  'products_attention_5' => tep_db_prepare_input($_POST['products_attention_5']),
                                  'products_price' => tep_db_prepare_input($_POST['products_price']));
         tep_db_perform(TABLE_PRODUCTS, $update_sql_data, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
@@ -1943,7 +1944,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   echo '  </td>';
   echo '  </tr><tr><td><hr size="2" noshade></td></tr><tr>';
   echo '  <td height="30">';
-  echo '架空在庫：&nbsp;' . tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,'class="readonly" readonly size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;background-color:#ccc;"') . '&nbsp;個' . '&nbsp;&nbsp;←&nbsp;' . $pInfo->products_virtual_quantity . '個' . "\n";
+  echo '架空在庫：&nbsp;' . tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,' size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;個' . '&nbsp;&nbsp;←&nbsp;' . $pInfo->products_virtual_quantity . '個' . "\n";
   echo '  </td>';
   echo '  </tr><tr><td><hr size="2" noshade></td></tr>';
   echo '</table>';
