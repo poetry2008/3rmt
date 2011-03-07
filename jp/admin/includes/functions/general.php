@@ -4260,3 +4260,16 @@ function get_rule()
     }
   }
 }
+
+// 舍去.00
+function tep_display_currency($num){
+  return (float)str_replace('.00','',(string)$num);
+}
+
+function tep_insert_currency_text($txt){
+  return str_replace('.00','',$txt);
+}
+
+function tep_insert_currency_value($num){
+  return (float)str_replace('.00','',(string)$num);
+}

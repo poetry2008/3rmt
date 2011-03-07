@@ -382,8 +382,8 @@
       if($ot_total_id > 0 || $ot_class == "ot_point") { // Already in database --> Update
         $Query = 'UPDATE ' . TABLE_ORDERS_TOTAL . ' SET
             title = "' . $ot_title . '",
-            text = "' . $ot_text . '",
-            value = "' . $ot_value . '",
+            text = "' . tep_insert_currency_text($ot_text) . '",
+            value = "' . tep_insert_currency_value($ot_value) . '",
             sort_order = "' . $sort_order . '"
             WHERE orders_total_id = "' . $ot_total_id . '"';
             tep_db_query($Query);
@@ -391,8 +391,8 @@
             $Query = 'INSERT INTO ' . TABLE_ORDERS_TOTAL . ' SET
             orders_id = "' . $oID . '",
             title = "' . $ot_title . '",
-            text = "' . $ot_text . '",
-            value = "' . $ot_value . '",
+            text = "' . tep_insert_currency_text($ot_text) . '",
+            value = "' . tep_insert_currency_value($ot_value) . '",
             class = "' . $ot_class . '",
             sort_order = "' . $sort_order . '"';
         tep_db_query($Query);
@@ -438,13 +438,13 @@
   $new_tax = $RunningTax;
   
   //subtotal
-  tep_db_query("update " . TABLE_ORDERS_TOTAL . " set value = '".$new_subtotal."', text = '".$currencies->format($new_subtotal, true, $order->info['currency'])."' where class='ot_subtotal' and orders_id = '".$oID."'");
+  tep_db_query("update " . TABLE_ORDERS_TOTAL . " set value = '".tep_insert_currency_value($new_subtotal)."', text = '".tep_insert_currency_text($currencies->format($new_subtotal, true, $order->info['currency']))."' where class='ot_subtotal' and orders_id = '".$oID."'");
   
   //tax
   $plustax_query = tep_db_query("select count(*) as cnt from " . TABLE_ORDERS_TOTAL . " where class = 'ot_tax' and orders_id = '".$oID."'");
   $plustax = tep_db_fetch_array($plustax_query);
   if($plustax['cnt'] > 0) {
-    tep_db_query("update " . TABLE_ORDERS_TOTAL . " set value = '".$new_tax."', text = '".$currencies->format($new_tax, true, $order->info['currency'])."' where class='ot_tax' and orders_id = '".$oID."'");
+    tep_db_query("update " . TABLE_ORDERS_TOTAL . " set value = '".tep_insert_currency_value($new_tax)."', text = '".tep_insert_currency_text($currencies->format($new_tax, true, $order->info['currency']))."' where class='ot_tax' and orders_id = '".$oID."'");
   }
 
   //point修正中
@@ -888,7 +888,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
       $plustax_query = tep_db_query("select count(*) as cnt from " . TABLE_ORDERS_TOTAL . " where class = 'ot_tax' and orders_id = '".$oID."'");
       $plustax = tep_db_fetch_array($plustax_query);
       if($plustax['cnt'] > 0) {
-        tep_db_query("update " . TABLE_ORDERS_TOTAL . " set value = '".$new_tax."', text = '".$currencies->format($new_tax, true, $order->info['currency'])."' where class='ot_tax' and orders_id = '".$oID."'");
+        tep_db_query("update " . TABLE_ORDERS_TOTAL . " set value = '".tep_insert_currency_value($new_tax)."', text = '".tep_insert_currency_text($currencies->format($new_tax, true, $order->info['currency']))."' where class='ot_tax' and orders_id = '".$oID."'");
       }
       
       //total
@@ -1206,7 +1206,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
 
   $TotalsArray = array();
   for ($i=0; $i<sizeof($order->totals); $i++) {
-    $TotalsArray[] = array("Name" => $order->totals[$i]['title'], "Price" => number_format($order->totals[$i]['value'], 2, '.', ''), "Class" => $order->totals[$i]['class'], "TotalID" => $order->totals[$i]['orders_total_id']);
+    $TotalsArray[] = array("Name" => $order->totals[$i]['title'], "Price" => tep_display_currency(number_format($order->totals[$i]['value'], 2, '.', '')), "Class" => $order->totals[$i]['class'], "TotalID" => $order->totals[$i]['orders_total_id']);
     $TotalsArray[] = array("Name" => "          ", "Price" => "", "Class" => "ot_custom", "TotalID" => "0");
   }
   
