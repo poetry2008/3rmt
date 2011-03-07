@@ -179,6 +179,12 @@ UL UL UL {
 	list-style-type:none;
 	margin-top:-15px;
 }
+@media all and (min-width: 0px){
+.subcategory_tree{
+	list-style-type:none;
+	margin-top:0px;
+}
+}
 /* ---------------------------
 header
 --------------------------- */

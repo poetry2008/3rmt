@@ -26,7 +26,7 @@ define('TEXT_DATE_ADDED', '登録日:');
 define('TEXT_DATE_AVAILABLE', '発売日:');
 define('TEXT_LAST_MODIFIED', '更新日:');
 define('TEXT_NO_CHILD_CATEGORIES_OR_PRODUCTS', '新しいカテゴリーまたは商品を追加してください<br>&nbsp;<br><b>%s</b>');
-define('TEXT_PRODUCT_MORE_INFORMATION', 'もっと詳しい情報は、この商品の<a class="order_link" href="http://%s" target="blank">ウェブページ</u>をご覧ください</a>。');
+define('TEXT_PRODUCT_MORE_INFORMATION', 'もっと詳しい情報は、この商品の<a class="order_link" href="http://%s" target="blank">ウェブページをご覧ください</a>。');
 define('TEXT_PRODUCT_DATE_ADDED', 'この商品は %s にカタログに登録されました。');
 define('TEXT_PRODUCT_DATE_AVAILABLE', 'この商品は %s に入荷予定です。');
 
