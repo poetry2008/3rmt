@@ -57,7 +57,7 @@
             <td class="main"><?php echo tep_output_string_protected($order->customer['telephone']); ?></td>
           </tr>
           <tr>
-            <td class="main"><?php echo '<a href="mailto:' . tep_output_string_protected($order->customer['email_address']) . '"><u>' . tep_output_string_protected($order->customer['email_address']) . '</u></a>'; ?></td>
+            <td class="main"><?php echo '<a class="order_link" href="mailto:' . tep_output_string_protected($order->customer['email_address']) . '">' . tep_output_string_protected($order->customer['email_address']) . '</a>'; ?></td>
           </tr>
         </table></td>
         <td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="2">

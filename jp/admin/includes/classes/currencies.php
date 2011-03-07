@@ -10,7 +10,7 @@
     var $currencies;
 
 // class constructor
-    function currencies() {
+    function currencies($decimal_places = null) {
       $this->currencies = array();
       $currencies_query = tep_db_query("select code, title, symbol_left, symbol_right, decimal_point, thousands_point, decimal_places, value from " . TABLE_CURRENCIES);
       while ($currencies = tep_db_fetch_array($currencies_query)) {
@@ -19,7 +19,7 @@
                                                        'symbol_right' => $currencies['symbol_right'],
                                                        'decimal_point' => $currencies['decimal_point'],
                                                        'thousands_point' => $currencies['thousands_point'],
-                                                       'decimal_places' => $currencies['decimal_places'],
+                                                       'decimal_places' => $decimal_places ? $decimal_places : $currencies['decimal_places'],
                                                        'value' => $currencies['value']);
       }
     }
@@ -36,6 +36,20 @@
         }
       } else {
         $format_string = $this->currencies[$currency_type]['symbol_left'] . number_format($number, $this->currencies[$currency_type]['decimal_places'], $this->currencies[$currency_type]['decimal_point'], $this->currencies[$currency_type]['thousands_point']) . $this->currencies[$currency_type]['symbol_right'];
+      }
+
+      return str_replace('.00','',$format_string);
+    }
+
+    function ot_total_format($number, $calculate_currency_value = true, $currency_type = DEFAULT_CURRENCY, $currency_value = '') {
+      if ($calculate_currency_value) {
+        $rate = ($currency_value) ? $currency_value : $this->currencies[$currency_type]['value'];
+        $format_string = $this->currencies[$currency_type]['symbol_left'] . number_format($number * $rate, 0, $this->currencies[$currency_type]['decimal_point'], $this->currencies[$currency_type]['thousands_point']) . $this->currencies[$currency_type]['symbol_right'];
+        if ( (DEFAULT_CURRENCY == 'EUR') && ($currency_type == 'DEM' || $currency_type == 'BEF' || $currency_type == 'LUF' || $currency_type == 'ESP' || $currency_type == 'FRF' || $currency_type == 'IEP' || $currency_type == 'ITL' || $currency_type == 'NLG' || $currency_type == 'ATS' || $currency_type == 'PTE' || $currency_type == 'FIM' || $currency_type == 'GRD') ) {
+          $format_string .= ' <small>[' . $this->format($number, true, 'EUR') . ']</small>';
+        }
+      } else {
+        $format_string = $this->currencies[$currency_type]['symbol_left'] . number_format($number, 0, $this->currencies[$currency_type]['decimal_point'], $this->currencies[$currency_type]['thousands_point']) . $this->currencies[$currency_type]['symbol_right'];
       }
 
       return $format_string;

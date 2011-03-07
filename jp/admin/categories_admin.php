@@ -398,12 +398,9 @@ while ($products = tep_db_fetch_array($products_query)) {
       }
       $target_cnt=$products_count-1;//同業者専用
   ?>
-  <?php ////個数架空 ?>
-  <td class="dataTableContent" align='right'>
-     <!--    <input type="text" size="5" value="<?php  echo $imaginary; ?>" name='imaginary[<?php echo $products_count-1;?>]' /> -->
-     <span align='center' > <?php echo $imaginary;?></span>
-  </td>
-<?php ////数量 ?>
+  <?php //個数架空 ?>
+  <td class="dataTableContent" align='right' onmouseover='this.style.cursor="pointer"'  id='virtual_quantity_<?php echo $products['products_id']; ?>' onclick="update_virtual_quantity(<?php echo $products['products_id']; ?>)"><?php echo $imaginary;?></td>
+<?php //数量 ?>
   <td class="dataTableContent" align='right' onmouseover='this.style.cursor="pointer"' style="font-weight:bold;" id='quantity_<?php echo $products['products_id']; ?>' onclick="update_quantity(<?php echo $products['products_id']; ?>)"><?php echo $products['products_real_quantity'];?></td>
   <td align='center' class="dataTableContent" ><span class = 'TRADER_INPUT'  name="TRADER_INPUT[]"  id="TRADER_<?php echo $products['products_id']; ?>"><?php echo $kakaku_treder?$kakaku_treder:0;?></span></td>
 <?php //価格業者  ?>
@@ -444,11 +441,6 @@ if ($cPath_yobi){
                     <input type='radio' id='radio_".$target_cnt."_".$i."' value='".$all_dougyousya[$i]['dougyousya_id']."' name='chk[".$target_cnt."]' onClick='chek_radio(".$target_cnt.")'".(in_dougyousya($dougyousya, $all_dougyousya) ? ($all_dougyousya[$i]['dougyousya_id'] == $dougyousya?' checked':'') : ($i == 0 ? ' checked':'')).">
                     <span name='TARGET_INPUT[]' id='target_".$target_cnt."_".$i."' >".get_dougyousya_history($products['products_id'], $all_dougyousya[$i]['dougyousya_id'])."</span>
                     </td>";//価格同業者
-                  /*echo "
-                    <td class='dataTableContent' >
-                    <input type='radio' value='".$all_dougyousya[$i]['dougyousya_id']."' name='chk[".$target_cnt."]' onClick='chek_radio(".$target_cnt.")'".($all_dougyousya[$i]['dougyousya_id'] == $dougyousya?' checked':'').">
-                    <span name='TARGET_INPUT[]' id='target_".$target_cnt."_".$i."' >".get_dougyousya_history($products['products_id'], $all_dougyousya[$i]['dougyousya_id'])."</span>
-                    </td>";//価格同業者*/
                 }
               }else{
                 echo "
@@ -491,17 +483,13 @@ if ($ocertify->npermission >= 10) { //表示制限
   $last_modified = date('n/j H:i:s',strtotime(tep_datetime_short($products['products_last_modified'])));
   if ($last_modified_array["year"] == $today_array["year"] && $last_modified_array["mon"] == $today_array["mon"] && $last_modified_array["mday"] == $today_array["mday"]) {
     if ($last_modified_array["hours"] >= ($today_array["hours"]-2)) {
-      //echo tep_image(DIR_WS_ICONS . 'signal_blue.gif', '更新正常');
       echo tep_image(DIR_WS_ICONS . 'signal_blue.gif', $last_modified);
     } elseif ($last_modified_array["hours"] >= ($today_array["hours"]-5)) {
-      //echo tep_image(DIR_WS_ICONS . 'signal_yellow.gif', '更新注意');
       echo tep_image(DIR_WS_ICONS . 'signal_yellow.gif', $last_modified);
     } else {
-      //echo tep_image(DIR_WS_ICONS . 'signal_red.gif', '更新警告');
       echo tep_image(DIR_WS_ICONS . 'signal_red.gif', $last_modified);
     }
   } else {
-    //echo tep_image(DIR_WS_ICONS . 'signal_blink.gif', '更新異常');
     echo tep_image(DIR_WS_ICONS . 'signal_blink.gif', $last_modified);
   }
   echo '&nbsp;&nbsp;' . tep_image(DIR_WS_ICONS . 'battery_0.gif', '数量異常');

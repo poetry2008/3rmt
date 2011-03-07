@@ -8,7 +8,7 @@
 
   require(DIR_WS_CLASSES . 'currencies.php');
 
-  $currencies          = new currencies();
+  $currencies          = new currencies(2);
   $orders_statuses     = $all_orders_statuses = $orders_status_array = array();
 
   $orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_ORDERS_STATUS . " where language_id = '" . $languages_id . "'");
@@ -23,7 +23,6 @@
     $all_orders_statuses[] = array('id' => $orders_status['orders_status_id'], 'text' => $orders_status['orders_status_name']);
     $orders_status_array[$orders_status['orders_status_id']] = $orders_status['orders_status_name'];
   }
-
   if (isset($_GET['action'])) 
   switch ($_GET['action']) {
     //一括変更----------------------------------
@@ -736,7 +735,7 @@ if($reload == 'yes') {
                 </tr>
                 <tr>
                   <td class="main" valign="top"><b><?php echo ENTRY_CUSTOMER; ?></b></td>
-                  <td class="main"><a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, 'action=edit&cID='.$order->customer['id']);?>"><u><?php echo $order->customer['name']; ?></u></a></td>
+                  <td class="main" style="text-decoration: underline; "><a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, 'action=edit&cID='.$order->customer['id']);?>"><?php echo $order->customer['name']; ?></a></td>
                 </tr>
                 <tr>
                   <td class="main"><b><?php echo ENTRY_EMAIL_ADDRESS; ?></b></td>
@@ -758,7 +757,7 @@ if($reload == 'yes') {
     }
     $remoteurl = (defined('OST_SERVER')?OST_SERVER:'scp')."/tickets.php?a=open2".$parmStr."";
 ?>
-    <?php echo '<a href="javascript:void(0);" onclick="copyToClipboard(\'' . tep_output_string_protected($order->customer['email_address']) . '\')"><u>' . tep_output_string_protected($order->customer['email_address']) . '</u></a>&nbsp;&nbsp;&nbsp;&nbsp;<a title="問合番号を新規作成します" href="'.$remoteurl.'" target="_blank"><u>メール</u></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="telecom_unknow.php?keywords='.tep_output_string_protected($order->customer['email_address']).'"><u>クレカ</u></a>'; 
+    <?php echo '<a class="order_link" href="javascript:void(0);" onclick="copyToClipboard(\'' . tep_output_string_protected($order->customer['email_address']) . '\')">' . tep_output_string_protected($order->customer['email_address']) . '</a>&nbsp;&nbsp;&nbsp;&nbsp;<a title="問合番号を新規作成します" href="'.$remoteurl.'" target="_blank">メール</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="telecom_unknow.php?keywords='.tep_output_string_protected($order->customer['email_address']).'">クレカ</a>'; 
 ?></td>
                 </tr>
             <!--
@@ -916,17 +915,17 @@ if($reload == 'yes') {
 
             <div id="orders_telecom">
               <h3>クレジットカード情報</h3>
-              <table width="100%" border="0" cellspacing="0" cellpadding="2">
+              <table width="100%" border="0" cellspacing="0" cellpadding="2" class="order02_link">
                 <tr>
-                  <td class="main" valign="top" width="20%"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_name']);?>"><u>カード名義:</u></a></b></td>
+                  <td class="main" valign="top" width="20%"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_name']);?>">カード名義:</a></b></td>
                   <td class="main" width="30%"><?php echo $order->info['telecom_name'];?></td>
-                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_tel']);?>"><u>電話番号:</u></a></b></td>
+                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_tel']);?>">電話番号:</a></b></td>
                   <td class="main"><?php echo tep_high_light_by_keywords($order->info['telecom_tel'],TELNO_KEYWORDS);?></a></td>
                 </tr>
                 <tr>
-                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_email']);?>"><u>メールアドレス:</u></a></b></td>
+                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_email']);?>">メールアドレス:</a></b></td>
                   <td class="main"><?php echo $order->info['telecom_email'];?></a></td>
-                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_money']);?>"><u>金額:</u></a></b></td>
+                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_money']);?>">金額:</a></b></td>
                   <td class="main"><?php echo $order->info['telecom_money'];?></a></td>
                 </tr>
               </table>

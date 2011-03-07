@@ -1172,3 +1172,5 @@ width:418px;
 .main03{ padding:20px 0 0 0;*padding:15px 0 0 8px; }
 .checkout_s_link{ margin:13px 0 8px 0; *margin:13px 0 5px 0;}
 .c_shipping{ margin-left:10px; margin-top:3px;}
+.stockWarning{ color: #CC0033;}
+.markProductOutOfStock a{color: #CC0033;}

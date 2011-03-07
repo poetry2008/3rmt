@@ -36,7 +36,7 @@ define('TEXT_DELETE_INTRO', '本当にこのバックアップファイルを削
 define('TEXT_NO_EXTENSION', 'なし');
 define('TEXT_BACKUP_DIRECTORY', 'バックアップ・ディレクトリ:');
 define('TEXT_LAST_RESTORATION', '最後の復元:');
-define('TEXT_FORGET', '(<u>忘れてしまった</u>)');
+define('TEXT_FORGET', '(忘れてしまった)');
 
 define('ERROR_BACKUP_DIRECTORY_DOES_NOT_EXIST', 'エラー: バックアップ・ディレクトリが存在しません。includes/configure.phpの設定を確認してください。');
 define('ERROR_BACKUP_DIRECTORY_NOT_WRITEABLE', 'エラー: バックアップ・ディレクトリに書き込みできません。');
