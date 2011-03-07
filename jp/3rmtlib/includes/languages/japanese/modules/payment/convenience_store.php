@@ -14,9 +14,6 @@
   <tr>
   <td align="center"><img src="/images/rmt_cr.gif"></td>
   </tr>
-  <tr>
-  <td><a class="checkoutBarFrom" href="info/smartpit.html" target="_blank">＊コンビに決済についての詳しい説明はこちらです。</a></td>
-  </tr>
   </table>
   ');
   define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FEE', 'コンビニ決済手数料:');
