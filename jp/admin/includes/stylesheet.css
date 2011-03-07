@@ -22,7 +22,7 @@ img {
 a:link {
 	color: #000000;                                 /* フォントサイズ */
 	font-weight: normal;                            /* フォント太さ */
-	text-decoration: none;                          /* テキストの装飾 */
+/*	text-decoration: none; */                         /* テキストの装飾 */
 }
 /* ---------------------------
 A：リンク（訪問済み）
@@ -95,7 +95,7 @@ A：メニューボックスヘッダリンク（訪問済み）
 --------------------------- */
 a.menuBoxHeading_Link:visited {
 	font-size: 11px;
-	color: #616060;                                 /* フォントカラー */
+	color: #000;                                 /* フォントカラー */
 	font-weight: bold;                              /* フォント太さ */
 	text-decoration: none;                          /* テキストの装飾 */
 }
@@ -104,7 +104,7 @@ A：メニューボックスヘッダリンク（選択している）
 --------------------------- */
 a.menuBoxHeading_Link:active {
 	font-size: 11px;
-	color: #616060;                                 /* フォントカラー */
+	color: #000;                                 /* フォントカラー */
 	font-weight: bold;                              /* フォント太さ */
 	text-decoration: none;                          /* テキストの装飾 */
 }
@@ -113,7 +113,7 @@ A：メニューボックスヘッダリンク（カーソルが上に乗った�
 --------------------------- */
 a.menuBoxHeading_Link:hover {
 	font-size: 11px;
-	color: #616060;                                 /* フォントカラー */
+	color: #000;                                 /* フォントカラー */
 	font-weight: bold;                              /* フォント太さ */
 	text-decoration: none;                          /* テキストの装飾 */
 }
@@ -131,7 +131,7 @@ A：メニューボックスコンテンツリンク（訪問済み）
 --------------------------- */
 a.menuBoxContent_Link:visited {
 	font-size: 11px;
-	color: #616060;                                 /* フォントカラー */
+	color: #000;                                 /* フォントカラー */
 	font-weight: normal;                            /* フォント太さ */
 	text-decoration: none;                          /* テキストの装飾 */
 }
@@ -140,7 +140,7 @@ A：メニューボックスコンテンツリンク（選択している）
 --------------------------- */
 a.menuBoxContent_Link:active {
 	font-size: 11px;
-	color: #616060;                                 /* フォントカラー */
+	color: #000;                                 /* フォントカラー */
 	font-weight: normal;                            /* フォント太さ */
 	text-decoration: none;                          /* テキストの装飾 */
 }
@@ -149,7 +149,7 @@ A：メニューボックスコンテンツリンク（カーソルが上に乗�
 --------------------------- */
 a.menuBoxContent_Link:hover {
 	font-size: 11px;
-	color: #616060;                                 /* フォントカラー */
+	color: #000;                                 /* フォントカラー */
 	font-weight: normal;                            /* フォント太さ */
 	text-decoration: underline;                     /* テキストの装飾 */
 }
@@ -191,7 +191,7 @@ a.splitPageLink:hover {
 .[TD]：メニューボックスコンテンツ
 --------------------------- */
 .menuBoxHeading {
-	color: #616060;                                 /* フォントカラー */
+	color: #000;                                 /* フォントカラー */
 	background-color: #ffffff;                      /* 背景色 */
 }
 /* ---------------------------

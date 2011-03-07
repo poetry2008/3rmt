@@ -303,14 +303,25 @@
         $ot_text = "<b>" . $ot_text . "</b>";
       }
   
-      $_SESSION['create_order2']['orders_total'][$ot_class] = array(
-        'orders_id' => $oID ,
-        'title' => $ot_title ,
-        'text' =>  tep_insert_currency_text($ot_text) ,
-        'value' => tep_insert_currency_value($ot_value) ,
-        'class' => $ot_class ,
-        'sort_order' => $sort_order 
-      );
+      if ($ot_class == 'ot_custom') {
+        $_SESSION['create_order2']['orders_total'][] = array(
+          'orders_id' => $oID ,
+          'title' => $ot_title ,
+          'text' =>  tep_insert_currency_text($ot_text) ,
+          'value' => tep_insert_currency_value($ot_value) ,
+          'class' => $ot_class ,
+          'sort_order' => $sort_order 
+        );
+      } else {
+        $_SESSION['create_order2']['orders_total'][$ot_class] = array(
+          'orders_id' => $oID ,
+          'title' => $ot_title ,
+          'text' =>  tep_insert_currency_text($ot_text) ,
+          'value' => tep_insert_currency_value($ot_value) ,
+          'class' => $ot_class ,
+          'sort_order' => $sort_order 
+        );
+      }
       //echo $ot_class;
 
       if ($ot_class == "ot_shipping" || $ot_class == "ot_lev_discount" || $ot_class == "ot_customer_discount" || $ot_class == "ot_custom" || $ot_class == "ot_cod_fee") {
@@ -1367,7 +1378,7 @@ function check_add(){
   $TotalsArray = array();
   foreach ($order_totals as $k => $ot) {
     $TotalsArray[] = array("Name" => $ot['title'], "Price" => tep_display_currency(number_format((float)$ot['value'], 2, '.', '')), "Class" => $ot['class'], "TotalID" => $ot['orders_total_id']);
-    $TotalsArray[] = array("Name" => "          ", "Price" => "", "Class" => "ot_custom".$k, "TotalID" => "0");
+    $TotalsArray[] = array("Name" => "          ", "Price" => "", "Class" => "ot_custom", "TotalID" => "0");
   }
   
   array_pop($TotalsArray);

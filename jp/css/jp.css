@@ -177,8 +177,8 @@ UL UL UL {
 }
 .subcategory_tree {
 	list-style-type:none;
-	margin-top:-15px;
 }
+.subcategory_tree ul { padding:0px 0 0 39px; *padding:0px 0 0 0px; *margin-top:-15px;}
 /* ---------------------------
 header
 --------------------------- */

@@ -29,7 +29,7 @@
                                    //'<a href="' . tep_href_link(FILENAME_SPECIALS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CATALOG_SPECIALS . '</a><br>' .
                                    '<a href="' .
                                    tep_href_link(FILENAME_PRODUCTS_EXPECTED, '',
-                                     'NONSSL') . '" class="menuBoxContentLink">' .
+                                     'NONSSL') . '" class="menuBoxContent_Link">' .
                                    BOX_CATALOG_PRODUCTS_EXPECTED . '</a><br>'.
                                    //'<a href="'.tep_href_link('cleate_list.php', '', 'NONSSL').'" class="menuBoxContent_Link">卸業者のデータ登録</a><br>'.
                                    '<a href="'.tep_href_link('cleate_oroshi.php', '', 'NONSSL').'"
