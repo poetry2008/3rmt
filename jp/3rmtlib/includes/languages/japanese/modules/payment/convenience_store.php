@@ -12,7 +12,7 @@
   ※ SmartPitシートの送信は、弊社営業時間内に行っております。
   <table width="100%" cellspacing="3" cellpadding="0" border="0">
   <tr>
-  <td align="center"><img src="/images/rmt_cr.gif"></td>
+  <td align="center"><img src="images/rmt_cr.gif"></td>
   </tr>
   </table>
   ');
