@@ -415,8 +415,8 @@
   
   $newtotal = $newtotal+$handle_fee;
 
-  $_SESSION['create_order2']['orders_total']['ot_total']['value'] = intval(round($newtotal));
-  $_SESSION['create_order2']['orders_total']['ot_total']['text']  = "<b>" . $currencies->ot_total_format(intval(round($newtotal)), true, $order['currency']) . "</b>";
+  $_SESSION['create_order2']['orders_total']['ot_total']['value'] = intval(floor($newtotal));
+  $_SESSION['create_order2']['orders_total']['ot_total']['text']  = "<b>" . $currencies->ot_total_format(intval(floor($newtotal)), true, $order['currency']) . "</b>";
   
   /*
   $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '" . $newtotal . "', text = '<b>" . $currencies->format($newtotal, true, $order->info['currency']) . "</b>' where class='ot_total' and orders_id = '" . $oID . "'";
@@ -1085,8 +1085,8 @@
       $newtotal = $newtotal+$handle_fee;    
       //$totals = "update " . TABLE_ORDERS_TOTAL . " set value = '".$newtotal."', text = '<b>".$currencies->format($newtotal, true, $order['currency'])."</b>' where class='ot_total' and orders_id = '".$oID."'";
       //tep_db_query($totals);
-      $_SESSION['create_order2']['orders_total']['ot_total']['value'] = intval(round($newtotal));
-      $_SESSION['create_order2']['orders_total']['ot_total']['text']  = $currencies->ot_total_format(intval(round($newtotal)), true, $order['currency']);
+      $_SESSION['create_order2']['orders_total']['ot_total']['value'] = intval(floor($newtotal));
+      $_SESSION['create_order2']['orders_total']['ot_total']['text']  = $currencies->ot_total_format(intval(floor($newtotal)), true, $order['currency']);
       
       $_SESSION['create_order2']['orders']['code_fee'] = $handle_fee;
       //$update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";

@@ -475,7 +475,7 @@
   //$newtotal = $newtotal + $_POST['payment_code_fee']; 
   $newtotal = $newtotal+$handle_fee;
   
-  $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '" . intval(round($newtotal)) . "', text = '<b>" . $currencies->ot_total_format(intval(round($newtotal)), true, $order->info['currency']) . "</b>' where class='ot_total' and orders_id = '" . $oID . "'";
+  $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '" . intval(floor($newtotal)) . "', text = '<b>" . $currencies->ot_total_format(intval(floor($newtotal)), true, $order->info['currency']) . "</b>' where class='ot_total' and orders_id = '" . $oID . "'";
   tep_db_query($totals);
   
   $update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
@@ -819,7 +819,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       $handle_fee = calc_handle_fee($order->info['payment_method'], $newtotal);
       $newtotal   = $newtotal+$handle_fee;
       
-      $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '".intval(round($newtotal))."', text = '<b>".$currencies->ot_total_format(intval(round($newtotal)), true, $order->info['currency'])."</b>' where class='ot_total' and orders_id = '".$oID."'";
+      $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '".intval(floor($newtotal))."', text = '<b>".$currencies->ot_total_format(intval(floor($newtotal)), true, $order->info['currency'])."</b>' where class='ot_total' and orders_id = '".$oID."'";
       tep_db_query($totals);
       
       $update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
