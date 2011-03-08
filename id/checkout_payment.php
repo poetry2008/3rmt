@@ -241,7 +241,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
     }
 ?> 
                         <tr> 
-                          <td colspan="2"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+                          <td colspan="2"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des02"> 
                               <?php
     if ( ($selection[$i]['id'] == $payment) || ($n == 1) ) {
       echo '                  <tr id="defaultSelected" class="moduleRowSelected" onmouseover="rowOverEffect(this)" onmouseout="rowOutEffect(this)" onclick="selectRowEffect(this, ' . $radio_buttons . ')">' . "\n";
