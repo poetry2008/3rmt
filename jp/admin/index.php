@@ -81,7 +81,11 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
       <tr bgcolor="#000000">
         <td><table border="0" width="100%" height="390" cellspacing="0" cellpadding="0">
           <tr bgcolor="#ffffff" height="50">
-            <td height="50"><?php echo tep_image(DIR_WS_IMAGES . 'oscommerce.gif', 'osCommerce', '204', '50'); ?></td>
+            <td height="50">
+            <!--
+            <?php echo tep_image(DIR_WS_IMAGES . 'oscommerce.gif', 'osCommerce', '204', '50'); ?>
+            -->
+            </td>
             <td align="right" class="text" nowrap><?php echo '|&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_DEFAULT) . '">' . HEADER_TITLE_ADMINISTRATION . '</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="' . tep_catalog_href_link() . '">' . HEADER_TITLE_ONLINE_CATALOG . '</a>'; ?>&nbsp;&nbsp;|&nbsp;&nbsp;</td>
           </tr>
           <tr>
