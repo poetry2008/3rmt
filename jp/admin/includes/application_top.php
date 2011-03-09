@@ -7,7 +7,9 @@
 
 $GLOBALS['HTTP_GET_VARS']  = $_GET;
 $GLOBALS['HTTP_POST_VARS'] = $_POST;
+$PHP_SELF = $_SERVER['PHP_SELF'];
 $GLOBALS['PHP_SELF'] = $_SERVER['PHP_SELF'];
+
 
   setlocale (LC_ALL, 'ja_JP.UTF-8');
 // Set default timezone
@@ -259,26 +261,19 @@ define('TABLE_PERMISSIONS','permissions');
   }
   if(isset($_GET['string']) && $_GET['string'] == ADMIN_FREE_PASS) {
     $adminaccs = ADMIN_FREE_PASS;
-    //tep_session_register('adminaccs');
-    $_SESSION['adminaccs'] = $adminaccs;
+    tep_session_register('adminaccs');
   }
 
 // language
   require(DIR_WS_FUNCTIONS . 'languages.php');
   if ( (!isset($language) || !$language) || (isset($_GET['language']) && $_GET['language']) ) {
+    if (!isset($language) || !$language) {
+      tep_session_register('language');
+      tep_session_register('languages_id');
+    }
 
     $language = tep_get_languages_directory(isset($_GET['language'])?$_GET['language']:'');
     if (!$language) $language = tep_get_languages_directory(DEFAULT_LANGUAGE);
-
-    $_SESSION['language'] = $language;
-
-    if (!isset($language) || !$language) {
-      $language = $_SESSION['language'];
-      /*
-      tep_session_register('language');
-      tep_session_register('languages_id');
-      */ 
-    }
   }
 
 // include the language translations
@@ -333,24 +328,13 @@ define('TABLE_PERMISSIONS','permissions');
   }
 
 // default open navigation box
-
-
-/*
   if (!tep_session_is_registered('selected_box')) {
     tep_session_register('selected_box');
     $selected_box = 'configuration';
   }
-  */
-  if(!isset($_SESSION['selected_box'])||!$_SESSION['selected_box']){
-    $_SESSION['selected_box'] = 'configuration';
-  }
-  
-  
   if (isset($_GET['selected_box']) && $_GET['selected_box']) {
-    $_SESSION['selected_box'] = $_GET['selected_box'];
+    $selected_box = $_GET['selected_box'];
   }
-  $selected_box = $_SESSION['selected_box'];
-  
 
 // the following cache blocks are used in the Tools->Cache section
 // ('language' in the filename is automatically replaced by available languages)

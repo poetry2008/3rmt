@@ -50,20 +50,25 @@
     function add_session($message, $type = 'error') {
       global $messageToStack;
 
-      /*
       if (!tep_session_is_registered('messageToStack')) {
         tep_session_register('messageToStack');
         $messageToStack = array();
       }
-      */
+
+
+
+      /*
       if(!isset($_SESSION['messageToStack'])||(!is_array($_SESSION['messageToStack'])&&count($_SESSION['messageToStack']>0))){
         $_SESSION['messageToStack'] = array();
 
       }
       $messageToStack = array();
+      */
 
       $messageToStack[] = array('text' => $message, 'type' => $type);
+      /*
       $_SESSION['messageToStack'] = $messageToStack;
+      */
     }
 
     function reset() {

@@ -65,21 +65,38 @@
 
   function tep_session_start() {
     //if(strpos($_SERVER['HTTP_USER_AGENT'],"MSIE")) {
-      session_cache_limiter('public');
+    /*  session_cache_limiter('public');
     //}
     return session_start();
+    */
+    $success = session_start();
+    if($success)
+    {
+      $session_keys = array_keys($_SESSION);
+      foreach($session_keys as $variable)
+      {
+        link_session_variable($variable, true);
+      }
+    }
+    return $success;
   }
 
   function tep_session_register($variable) {
-    return session_register($variable);
+    //return session_register($variable);
+    link_session_variable($variable, true);
+
+    return true;
   }
 
   function tep_session_is_registered($variable) {
-    return session_is_registered($variable);
+    //return session_is_registered($variable);
+    return isset($_SESSION[$variable]);
   }
 
   function tep_session_unregister($variable) {
-    return session_unregister($variable);
+    //return session_unregister($variable);
+    link_session_variable($variable, false);
+    return true;
   }
 
   function tep_session_id($sessid = '') {
@@ -99,12 +116,33 @@
   }
 
   function tep_session_close() {
+    if(count($_SESSION)){
+    $session_keys = array_keys($_SESSION);
+    foreach($session_keys as $variable)
+    {
+      link_session_variable($variable, false); 
+    }
+    }
+
+    //上面是新加代码
     if (function_exists('session_close')) {
       return session_close();
     }
   }
 
   function tep_session_destroy() {
+    if(count($_SESSION)){
+    $session_keys = array_keys($_SESSION);
+    foreach($session_keys as $variable)
+    {
+      link_session_variable($variable, false); 
+    }
+    }
+
+    //上面是新加代码
+
+
+
     return session_destroy();
   }
 
@@ -113,6 +151,23 @@
       return session_save_path($path);
     } else {
       return session_save_path();
+    }
+  }
+  function link_session_variable($var_name, $map)
+  {
+    if($map)
+    {
+      if(array_key_exists($var_name,$GLOBALS))
+      {
+        $_SESSION[$var_name] =& $GLOBALS[$var_name];
+      }else{
+        $GLOBALS[$var_name] =& $_SESSION[$var_name];
+      }
+    }else{
+      $nothing = 0;
+      $GLOBALS[$var_name] =& $nothing;
+      unset($GLOBALS[$var_name]);
+      $GLOBALS[$var_name] = $_SESSION[$var_name];
     }
   }
 ?>
