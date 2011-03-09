@@ -13,11 +13,6 @@
   require('includes/application_top.php'); 
   $languages = tep_get_languages();
 
-
-  link_get_variable('option_page');
-  link_get_variable('value_page');
-  link_get_variable('attribute_page');
-
   if (isset($_GET['action']) && $_GET['action']) {
     $page_info = 'option_page=' . (isset($_GET['option_page'])?$_GET['option_page']:'') . '&value_page=' . (isset($_GET['value_page'])?$_GET['value_page']:'') . '&attribute_page=' . (isset($_GET['attribute_page'])?$_GET['attribute_page']:'');
     switch($_GET['action']) {
