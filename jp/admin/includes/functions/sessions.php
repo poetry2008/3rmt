@@ -153,12 +153,14 @@
   {
     if($map)
     {
-        if(isset($GLOBALS[$var_name])){
-          $_SESSION[$var_name] = $GLOBALS[$var_name];
-        }
+      if(array_key_exists($var_name,$GLOBALS))
+      {
+        $_SESSION[$var_name] =& $GLOBALS[$var_name];
+      }else{
         $GLOBALS[$var_name] =& $_SESSION[$var_name];
+      }
     }else{
-      $nothing;
+      $nothing = 0;
       $GLOBALS[$var_name] =& $nothing;
       unset($GLOBALS[$var_name]);
       $GLOBALS[$var_name] = $_SESSION[$var_name];
