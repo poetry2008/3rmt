@@ -116,10 +116,12 @@
   }
 
   function tep_session_close() {
+    if(count($_SESSION)){
     $session_keys = array_keys($_SESSION);
     foreach($session_keys as $variable)
     {
       link_session_variable($variable, false); 
+    }
     }
 
     //上面是新加代码
