@@ -7,8 +7,9 @@
 
 $GLOBALS['HTTP_GET_VARS']  = $_GET;
 $GLOBALS['HTTP_POST_VARS'] = $_POST;
-$GLOBALS['PHP_SELF'] = $_SERVER['PHP_SELF']; 
 $PHP_SELF = $_SERVER['PHP_SELF'];
+$GLOBALS['PHP_SELF'] = $_SERVER['PHP_SELF'];
+
 
   setlocale (LC_ALL, 'ja_JP.UTF-8');
 // Set default timezone
@@ -271,7 +272,6 @@ define('TABLE_PERMISSIONS','permissions');
       tep_session_register('languages_id');
     }
 
-    GLOBAL $language;
     $language = tep_get_languages_directory(isset($_GET['language'])?$_GET['language']:'');
     if (!$language) $language = tep_get_languages_directory(DEFAULT_LANGUAGE);
   }
@@ -331,14 +331,9 @@ define('TABLE_PERMISSIONS','permissions');
   if (!tep_session_is_registered('selected_box')) {
     tep_session_register('selected_box');
     $selected_box = 'configuration';
-  }else{
-    $selected_box = $_SESSION['selected_box'];
   }
   if (isset($_GET['selected_box']) && $_GET['selected_box']) {
     $selected_box = $_GET['selected_box'];
-  }
-  if (tep_session_is_registered('selected_box')) {
-      $_SESSION['selected_box'] = $selected_box;
   }
 
 // the following cache blocks are used in the Tools->Cache section
