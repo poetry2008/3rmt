@@ -1310,7 +1310,7 @@ function check_add(){
     echo '      </td>' . "\n" .
          '      <td class="' . $RowStyle . '">' . $order_products[$pid]['model'] . "<input name='update_products[$pid][model]' size='12' type='hidden' value='" . $order_products[$pid]['model'] . "'>" . '</td>' . "\n" .
          '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order_products[$pid]['tax']) . "<input name='update_products[$pid][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order_products[$pid]['tax']) . "'>" . '%</td>' . "\n" .
-         '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$pid][final_price]' size='9' value='" . number_format($order_products[$pid]['final_price'],2) . "'>" . '</td>' . "\n" . 
+         '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$pid][final_price]' size='9' value='" . tep_display_currency(number_format($order_products[$pid]['final_price'],2)) . "'>" . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']), true, $order['currency'], $order['currency_value']) . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format($order_products[$pid]['final_price'] * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value']) . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right"><b>' . $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']) * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value']) . '</b></td>' . "\n" . 
