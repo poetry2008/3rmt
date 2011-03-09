@@ -7,6 +7,9 @@
 
 $GLOBALS['HTTP_GET_VARS']  = $_GET;
 $GLOBALS['HTTP_POST_VARS'] = $_POST;
+$PHP_SELF = $_SERVER['PHP_SELF'];
+$GLOBALS['PHP_SELF'] = $_SERVER['PHP_SELF'];
+
 
   setlocale (LC_ALL, 'ja_JP.UTF-8');
 // Set default timezone
@@ -24,9 +27,11 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
 // Check if register_globals is enabled.
 // Since this is a temporary measure this message is hardcoded. The requirement will be removed before 2.2 is finalized.
+  /*
   if (function_exists('ini_get')) {
     ini_get('register_globals') or exit('FATAL ERROR: register_globals is disabled in php.ini, please enable it!');
   }
+  */
 
 // Disable use_trans_sid as tep_href_link() does this manually
   if (function_exists('ini_set')) {

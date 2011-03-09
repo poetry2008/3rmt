@@ -5,7 +5,7 @@
 
   require('includes/application_top.php');
   require(DIR_WS_CLASSES.'currencies.php');
-  $currencies = new currencies();
+  $currencies = new currencies(2);
   $product_history_query_raw = "select o.orders_id, o.customers_name, o.date_purchased, o.orders_status from ".TABLE_ORDERS." o where o.customers_id = '".$_GET['cID']."' order by o.date_purchased desc";
   $product_history_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $product_history_query_raw, $product_history_numrows);
   $product_history_query = tep_db_query($product_history_query_raw);
@@ -32,7 +32,7 @@
     </table>
     </td>
     <td valign="top">   
-    	<table border="0" width="100%" cellspacing="0" cellpadding="0">
+      <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
               <td class="pageHeading"><?php echo HEADING_TITLE;?></td> 
               <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT);?></td> 
@@ -76,7 +76,7 @@
                             echo $product_history['customers_name'];
                           } else {
                             echo '&nbsp;';
-						  }
+              }
                           ?> 
                           </td>
                           <td class="dataTableContent" style="<?php echo $style_str;?>" valign="top"> 
@@ -84,8 +84,8 @@
                           if ($i == 1) {
                             echo tep_datetime_short($product_history['date_purchased']);
                           } else {
-						    echo '&nbsp;';
-						  }
+                echo '&nbsp;';
+              }
                           ?> 
                           </td>
                           <td class="dataTableContent" style="<?php echo $style_str;?>" valign="top">
@@ -107,8 +107,8 @@
                           if ($i == 1) {
                             echo $orders_status_res['orders_status_name']; 
                           } else {
-						    echo '&nbsp;';
-						  }
+                echo '&nbsp;';
+              }
                           ?>
                           </td>
                         </tr> 
