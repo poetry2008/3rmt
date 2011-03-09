@@ -485,7 +485,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
  ?>
  </div>
          <?php if($description){?>
-            <h3 class="pageHeading_long"><img align="top" alt="" src="images/menu_ico.gif">&nbsp;<?php echo $product_info['products_name']; ?>について</h3>
+            <h3 class="pageHeading_long"><img align="top" alt="" src="images/menu_ico.gif"><span><?php echo $product_info['products_name']; ?>について</span></h3>
             <!-- 説明文　-->
             <p class="comment_long">
               <?php 
