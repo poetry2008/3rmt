@@ -1002,7 +1002,7 @@ if($reload == 'yes') {
   } else {
     if ($order->info['payment_method'] === '銀行振込(買い取り)') {
       $orders_questions_type = 1;
-    } else if ($order->info['payment_method'] === 'クレジットカード決済') {
+    } else if ($order->info['payment_method'] === 'クレジットカード決済' || $order->info['payment_method'] === 'クレジットカード決済（パイパル）') {
       $orders_questions_type = 2;
     } else {
       $orders_questions_type = 0;

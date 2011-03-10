@@ -2,45 +2,47 @@
 /*
   $Id$
 */
-  class telecom {
+//ペイパル実験
+  class paypal{
     var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer;
 
 // class constructor
-    function telecom($site_id = 0) {
+    function paypal($site_id = 0) {
       global $order, $_GET;
       
       $this->site_id = $site_id;
 
-      $this->code        = 'telecom';
-      $this->title       = MODULE_PAYMENT_TELECOM_TEXT_TITLE;
-      $this->description = MODULE_PAYMENT_TELECOM_TEXT_DESCRIPTION;
-      $this->explain     = MODULE_PAYMENT_TELECOM_TEXT_EXPLAIN;
-      $this->sort_order  = MODULE_PAYMENT_TELECOM_SORT_ORDER;
-      $this->enabled     = ((MODULE_PAYMENT_TELECOM_STATUS == 'True') ? true : false);
+      $this->code        = 'paypal';
+      $this->title       = MODULE_PAYMENT_PAYPAL_TEXT_TITLE;
+      $this->description = MODULE_PAYMENT_PAYPAL_TEXT_DESCRIPTION;
+      $this->explain     = MODULE_PAYMENT_PAYPAL_TEXT_EXPLAIN;
+      $this->sort_order  = MODULE_PAYMENT_PAYPAL_SORT_ORDER;
+      $this->enabled     = ((MODULE_PAYMENT_PAYPAL_STATUS == 'True') ? true : false);
 
-      if ((int)MODULE_PAYMENT_TELECOM_ORDER_STATUS_ID > 0) {
-        $this->order_status = MODULE_PAYMENT_TELECOM_ORDER_STATUS_ID;
+      if ((int)MODULE_PAYMENT_PAYPAL_ORDER_STATUS_ID > 0) {
+        $this->order_status = MODULE_PAYMENT_PAYPAL_ORDER_STATUS_ID;
       }
 
       if (is_object($order)) $this->update_status();
 
-      $this->form_action_url = MODULE_PAYMENT_TELECOM_CONNECTION_URL;
+      //      $this->form_action_url = MODULE_PAYMENT_PAYPAL_CONNECTION_URL;
+      $this->form_action_url = './paypal_payment.php';
+      //      $this->form_action_url = 	    'https://api-3t.sandbox.paypal.com/nvp ';
     
     if(isset($_GET['submit_x']) || isset($_GET['submit_y'])){
-      $_GET['payment_error'] = 'telecom';
+      $_GET['payment_error'] = 'paypal';
     }
     
-    $this->email_footer = MODULE_PAYMENT_TELECOM_TEXT_EMAIL_FOOTER;
+    $this->email_footer = MODULE_PAYMENT_PAYPAL_TEXT_EMAIL_FOOTER;
     }
 
 // class methods
     function update_status() {
       global $order;
-
-      if (!defined('MODULE_PAYMENT_TELECOM_ZONE')) define('MODULE_PAYMENT_TELECOM_ZONE', NULL);
-      if ( ($this->enabled == true) && ((int)MODULE_PAYMENT_TELECOM_ZONE > 0) ) {
+      if (!defined('MODULE_PAYMENT_PAYPAL_ZONE')) define('MODULE_PAYMENT_PAYPAL_ZONE', NULL);
+      if ( ($this->enabled == true) && ((int)MODULE_PAYMENT_PAYPAL_ZONE > 0) ) {
         $check_flag = false;
-        $check_query = tep_db_query("select zone_id from " . TABLE_ZONES_TO_GEO_ZONES . " where geo_zone_id = '" . MODULE_PAYMENT_TELECOM_ZONE . "' and zone_country_id = '" . $order->billing['country']['id'] . "' order by zone_id");
+        $check_query = tep_db_query("select zone_id from " . TABLE_ZONES_TO_GEO_ZONES . " where geo_zone_id = '" . MODULE_PAYMENT_PAYPAL_ZONE . "' and zone_country_id = '" . $order->billing['country']['id'] . "' order by zone_id");
         while ($check = tep_db_fetch_array($check_query)) {
           if ($check['zone_id'] < 1) {
             $check_flag = true;
@@ -62,7 +64,7 @@
     }
 
     function calc_fee($total_cost) {
-      $table_fee = split("[:,]" , MODULE_PAYMENT_TELECOM_COST);
+      $table_fee = split("[:,]" , MODULE_PAYMENT_PAYPAL_COST);
       $f_find = false;
       $this->n_fee = 0;
       for ($i = 0; $i < count($table_fee); $i+=2) {
@@ -80,7 +82,7 @@
         }
       }
       if ( !$f_find ) {
-        $this->s_error = MODULE_PAYMENT_TELECOM_TEXT_OVERFLOW_ERROR;
+        $this->s_error = MODULE_PAYMENT_PAYPAL_TEXT_OVERFLOW_ERROR;
       }
 
       return $f_find;
@@ -91,10 +93,10 @@
       
       $total_cost = $order->info['total'];
       $f_result = $this->calc_fee($total_cost); 
-      $added_hidden = $f_result ? tep_draw_hidden_field('telecom_order_fee', $this->n_fee):tep_draw_hidden_field('telecom_order_fee_error', $this->s_error);
+      $added_hidden = $f_result ? tep_draw_hidden_field('paypal_order_fee', $this->n_fee):tep_draw_hidden_field('paypal_order_fee_error', $this->s_error);
       
       if (!empty($this->n_fee)) {
-        $s_message = $f_result ? (MODULE_PAYMENT_TELECOM_TEXT_FEE . '&nbsp;' .  $currencies->format($this->n_fee)):('<font color="#FF0000">'.$this->s_error.'</font>'); 
+        $s_message = $f_result ? (MODULE_PAYMENT_PAYPAL_TEXT_FEE . '&nbsp;' .  $currencies->format($this->n_fee)):('<font color="#FF0000">'.$this->s_error.'</font>'); 
       } else {
         $s_message = $f_result ? '':('<font color="#FF0000">'.$this->s_error.'</font>'); 
       }
@@ -111,29 +113,32 @@
     }
 
     function confirmation() {
+      //$SESSION 处理
       global $currencies;
       global $_POST;
+      global $order;
+      //      var_dump($order);
       
-      $s_result = !$_POST['telecom_order_fee_error'];
+      $s_result = !$_POST['paypal_order_fee_error'];
      
-      if (!empty($_POST['telecom_order_fee'])) {
-        //$s_message = $s_result ? (MODULE_PAYMENT_TELECOM_TEXT_FEE . '&nbsp;' .  $currencies->format($_POST['telecom_order_fee'])):('<font color="#FF0000">'.$_POST['telecom_order_fee_error'].'</font>'); 
-        $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['telecom_order_fee_error'].'</font>'); 
+      if (!empty($_POST['paypal_order_fee'])) {
+        //$s_message = $s_result ? (MODULE_PAYMENT_PAYPAL_TEXT_FEE . '&nbsp;' .  $currencies->format($_POST['paypal_order_fee'])):('<font color="#FF0000">'.$_POST['paypal_order_fee_error'].'</font>'); 
+        $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['paypal_order_fee_error'].'</font>'); 
       } else {
-        $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['telecom_order_fee_error'].'</font>'); 
+        $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['paypal_order_fee_error'].'</font>'); 
       }
       
-      if (!empty($_POST['telecom_order_fee'])) {
+      if (!empty($_POST['paypal_order_fee'])) {
         return array(
-            'title' => MODULE_PAYMENT_TELECOM_TEXT_DESCRIPTION,
-            'fields' => array(array('title' => MODULE_PAYMENT_TELECOM_TEXT_PROCESS,
+            'title' => MODULE_PAYMENT_PAYPAL_TEXT_DESCRIPTION,
+            'fields' => array(array('title' => MODULE_PAYMENT_PAYPAL_TEXT_PROCESS,
                                     'field' => ''),
                               array('title' => $s_message, 'field' => '')  
                        )           
             );
       } else {
         return array(
-            'title' => MODULE_PAYMENT_TELECOM_TEXT_DESCRIPTION,
+            'title' => MODULE_PAYMENT_PAYPAL_TEXT_DESCRIPTION,
             'fields' => array(array('title' => $s_message, 'field' => '')  
                        )           
             );
@@ -246,28 +251,37 @@
     tep_mail('管理者', SENTMAIL_ADDRESS, '仮クレカ注文', $mail_body, '', '');
     
     $today = date("YmdHis");
-    // telecom_option 文档中的$ID
+    // paypal_option 文档中的$ID
     if (!isset($_SESSION['option'])) {
       $_SESSION['option'] = date('Ymd-His'). ds_makeRandStr(2);
     }
-    $process_button_string = tep_draw_hidden_field('option', $_SESSION['option']) .
-                 tep_draw_hidden_field('clientip', MODULE_PAYMENT_TELECOM_KID) .
-                 tep_draw_hidden_field('money', $total) .
-                 tep_draw_hidden_field('redirect_url', tep_href_link(MODULE_PAYMENT_OK_URL, '', 'SSL')) .
-                 tep_draw_hidden_field('redirect_back_url', tep_href_link(MODULE_PAYMENT_NO_URL, '', 'SSL'));
-    
+
+    //paypal需要的字段在以下购成
+    $process_button_string =
+    			 //tep_draw_hidden_field('cmd',"_xclick") .
+      //                 tep_draw_hidden_field('method', 'SetExpressCheckout').
+      //                 tep_draw_hidden_field('business', 'bobher_1299564524_biz@gmail.com').
+      //                 tep_draw_hidden_field('paymentaction', 'authorization').
+      //                 tep_draw_hidden_field('PWD', '1299564532').
+      //                 tep_draw_hidden_field('USER', 'bobher_1299564524_biz_api1.gmail.com').
+      //                 tep_draw_hidden_field('SIGNATURE', 'AHbu1UVi7OHLerk7cyw7SE57-EvSANiOenfnho-SXzWVX0EQFAHvySxI').
+                       tep_draw_hidden_field('amount',$total) .//旧money
+      //                 tep_draw_hidden_field('version','51').
+      //                 tep_draw_hidden_field('currency_code', "JPY") 
+                 //tep_draw_hidden_field('return','http://jp.gamelife.jp/GetExpressCheckoutDetails.php' ) .//return
+      tep_draw_hidden_field('RETURNURL', trim(tep_href_link(MODULE_PAYMENT_OK_URL, '', 'SSL'))) .//return
+      tep_draw_hidden_field('CANCELURL', trim(tep_href_link(MODULE_PAYMENT_NO_URL, '', 'SSL')));//return
                  //tep_draw_hidden_field('redirect_url', HTTPS_SERVER . tep_href_link(MODULE_PAYMENT_OK_URL, '', 'SSL')) .
                  //tep_draw_hidden_field('redirect_back_url', HTTPS_SERVER . tep_href_link(MODULE_PAYMENT_NO_URL, '', 'SSL'));
-   
-      $process_button_string .= tep_draw_hidden_field('telecom_order_message', htmlspecialchars($s_message)). tep_draw_hidden_field('telecom_order_fee', $_POST['telecom_order_fee']);
+      $process_button_string .= tep_draw_hidden_field('paypal_order_message', htmlspecialchars($s_message)). tep_draw_hidden_field('paypal_order_fee', $_POST['paypal_order_fee']);
+      $process_button_string .= '<img src="https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif" align="left" style="margin-right:7px;">';
       return $process_button_string;
     }
   
 
     function before_process() {
       global $_POST;
-
-      $this->email_footer = str_replace("\r\n", "\n", $_POST['telecom_order_message']);
+      $this->email_footer = str_replace("\r\n", "\n", $_POST['paypal_order_message']);
       
       return false;
     }
@@ -282,28 +296,28 @@
 
     function check() {
       if (!isset($this->_check)) {
-        $check_query = tep_db_query("select configuration_value from " . TABLE_CONFIGURATION . " where configuration_key = 'MODULE_PAYMENT_TELECOM_STATUS' and site_id = '".$this->site_id."'");
+        $check_query = tep_db_query("select configuration_value from " . TABLE_CONFIGURATION . " where configuration_key = 'MODULE_PAYMENT_PAYPAL_STATUS' and site_id = '".$this->site_id."'");
         $this->_check = tep_db_num_rows($check_query);
       }
       return $this->_check;
     }
 
     function install() {
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('TELECOM 支払いを有効にする', 'MODULE_PAYMENT_TELECOM_STATUS', 'True', 'TELECOM での支払いを受け付けますか?', '6', '3', 'tep_cfg_select_option(array(\'True\', \'False\'), ', now(), ".$this->site_id.")");
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('表示の整列順', 'MODULE_PAYMENT_TELECOM_SORT_ORDER', '0', '表示の整列順を設定できます。数字が小さいほど上位に表示されます.', '6', '0', now(), ".$this->site_id.")");
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, use_function, date_added, site_id) values ('初期注文ステータス', 'MODULE_PAYMENT_TELECOM_ORDER_STATUS_ID', '0', '設定したステータスが受注時に適用されます.', '6', '0', 'tep_cfg_pull_down_order_statuses(', 'tep_get_order_status_name', now(), ".$this->site_id.")");
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('接続先URL', 'MODULE_PAYMENT_TELECOM_CONNECTION_URL', '', 'テレコムクレジット申込受付画面URLの設定をします。', '6', '0', now(), ".$this->site_id.")");
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('番組コード', 'MODULE_PAYMENT_TELECOM_KID', '', '番組コードの設定をします。', '6', '0', now(), ".$this->site_id.")");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('PAYPAL 支払いを有効にする', 'MODULE_PAYMENT_PAYPAL_STATUS', 'True', 'PAYPAL での支払いを受け付けますか?', '6', '3', 'tep_cfg_select_option(array(\'True\', \'False\'), ', now(), ".$this->site_id.")");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('表示の整列順', 'MODULE_PAYMENT_PAYPAL_SORT_ORDER', '0', '表示の整列順を設定できます。数字が小さいほど上位に表示されます.', '6', '0', now(), ".$this->site_id.")");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, use_function, date_added, site_id) values ('初期注文ステータス', 'MODULE_PAYMENT_PAYPAL_ORDER_STATUS_ID', '0', '設定したステータスが受注時に適用されます.', '6', '0', 'tep_cfg_pull_down_order_statuses(', 'tep_get_order_status_name', now(), ".$this->site_id.")");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('接続先URL', 'MODULE_PAYMENT_PAYPAL_CONNECTION_URL', '', 'テレコムクレジット申込受付画面URLの設定をします。', '6', '0', now(), ".$this->site_id.")");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('番組コード', 'MODULE_PAYMENT_PAYPAL_KID', '', '番組コードの設定をします。', '6', '0', now(), ".$this->site_id.")");
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('戻り先URL(正常時)', 'MODULE_PAYMENT_OK_URL', 'checkout_process.php', '戻り先URL(正常時)の設定をします。', '6', '0', now(), ".$this->site_id.")");
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('戻り先URL(キャンセル時)', 'MODULE_PAYMENT_NO_URL', 'checkout_payment.php', '戻り先URL(キャンセル時)の設定をします。', '6', '0', now(), ".$this->site_id.")");
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('決済手数料', 'MODULE_PAYMENT_TELECOM_COST', '99999999999:*0', '決済手数料
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('決済手数料', 'MODULE_PAYMENT_PAYPAL_COST', '99999999999:*0', '決済手数料
 例:
 代金300円以下、30円手数料をとる場合　300:*0+30,
 代金301～1000円以内、代金の2％の手数料をとる場合　999:*0.02,
 代金1000円以上の場合、手数料を無料する場合　99999999:*0,
 無限大の符号を使えないため、このサイトで存在可能性がない数値で使ってください。
 300:*0+30では*0がなければ、手数料は300+30になってしまいますので、ご注意ください。', '6', '3', now(), ".$this->site_id.")");
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('決済可能金額', 'MODULE_PAYMENT_TELECOM_MONEY_LIMIT', '0,99999999999', '決済可能金額の最大と最小値の設置
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('決済可能金額', 'MODULE_PAYMENT_PAYPAL_MONEY_LIMIT', '0,99999999999', '決済可能金額の最大と最小値の設置
 例：0,3000
 0,3000円に入れると、0円から3000円までの金額が決済可能。設定範囲外の決済は不可。', '6', '0', now(), ".$this->site_id.")");
   }
@@ -313,16 +327,16 @@
     }
 
     function keys() {
-    return array('MODULE_PAYMENT_TELECOM_STATUS', 'MODULE_PAYMENT_TELECOM_ORDER_STATUS_ID', 'MODULE_PAYMENT_TELECOM_SORT_ORDER', 'MODULE_PAYMENT_TELECOM_CONNECTION_URL', 'MODULE_PAYMENT_TELECOM_KID', 'MODULE_PAYMENT_OK_URL', 'MODULE_PAYMENT_NO_URL', 'MODULE_PAYMENT_TELECOM_COST', 'MODULE_PAYMENT_TELECOM_MONEY_LIMIT');
+    return array('MODULE_PAYMENT_PAYPAL_STATUS', 'MODULE_PAYMENT_PAYPAL_ORDER_STATUS_ID', 'MODULE_PAYMENT_PAYPAL_SORT_ORDER', 'MODULE_PAYMENT_PAYPAL_CONNECTION_URL', 'MODULE_PAYMENT_PAYPAL_KID', 'MODULE_PAYMENT_OK_URL', 'MODULE_PAYMENT_NO_URL', 'MODULE_PAYMENT_PAYPAL_COST', 'MODULE_PAYMENT_PAYPAL_MONEY_LIMIT');
     }
   
   //エラー
   function get_error() {
       global $_GET;
     
-      $error_message = MODULE_PAYMENT_TELECOM_TEXT_ERROR_MESSAGE; 
+      $error_message = MODULE_PAYMENT_PAYPAL_TEXT_ERROR_MESSAGE; 
 
-      return array('title' => MODULE_PAYMENT_TELECOM_TEXT_ERROR,
+      return array('title' => MODULE_PAYMENT_PAYPAL_TEXT_ERROR,
                    'error' => $error_message);
     }
   

@@ -1,11 +1,10 @@
 <?php
 /*
   $Id$
-
   订制订单完成页
 */
 
-  require('includes/application_top.php');
+ require('includes/application_top.php');
 
 // 以下是动作
 // if the customer is not logged on, redirect them to the shopping cart page
