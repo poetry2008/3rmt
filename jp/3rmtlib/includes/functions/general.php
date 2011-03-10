@@ -2633,6 +2633,7 @@ function tep_unlink_temp_dir($dir)
                pd.language_id,
                pd.products_name, 
                pd.products_description,
+               pd.option_image_type, 
                pd.site_id,
                pd.products_url,
                pd.products_viewed
@@ -2681,6 +2682,7 @@ function tep_unlink_temp_dir($dir)
                pd.products_name, 
                pd.products_description,
                pd.site_id,
+               pd.option_image_type, 
                pd.products_url,
                pd.products_viewed
         FROM " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
