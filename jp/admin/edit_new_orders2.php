@@ -303,14 +303,25 @@
         $ot_text = "<b>" . $ot_text . "</b>";
       }
   
-      $_SESSION['create_order2']['orders_total'][$ot_class] = array(
-        'orders_id' => $oID ,
-        'title' => $ot_title ,
-        'text' =>  tep_insert_currency_text($ot_text) ,
-        'value' => tep_insert_currency_value($ot_value) ,
-        'class' => $ot_class ,
-        'sort_order' => $sort_order 
-      );
+      if ($ot_class == 'ot_custom') {
+        $_SESSION['create_order2']['orders_total'][] = array(
+          'orders_id' => $oID ,
+          'title' => $ot_title ,
+          'text' =>  tep_insert_currency_text($ot_text) ,
+          'value' => tep_insert_currency_value($ot_value) ,
+          'class' => $ot_class ,
+          'sort_order' => $sort_order 
+        );
+      } else {
+        $_SESSION['create_order2']['orders_total'][$ot_class] = array(
+          'orders_id' => $oID ,
+          'title' => $ot_title ,
+          'text' =>  tep_insert_currency_text($ot_text) ,
+          'value' => tep_insert_currency_value($ot_value) ,
+          'class' => $ot_class ,
+          'sort_order' => $sort_order 
+        );
+      }
       //echo $ot_class;
 
       if ($ot_class == "ot_shipping" || $ot_class == "ot_lev_discount" || $ot_class == "ot_customer_discount" || $ot_class == "ot_custom" || $ot_class == "ot_cod_fee") {
@@ -404,8 +415,8 @@
   
   $newtotal = $newtotal+$handle_fee;
 
-  $_SESSION['create_order2']['orders_total']['ot_total']['value'] = intval(round($newtotal));
-  $_SESSION['create_order2']['orders_total']['ot_total']['text']  = "<b>" . $currencies->ot_total_format(intval(round($newtotal)), true, $order['currency']) . "</b>";
+  $_SESSION['create_order2']['orders_total']['ot_total']['value'] = intval(floor($newtotal));
+  $_SESSION['create_order2']['orders_total']['ot_total']['text']  = "<b>" . $currencies->ot_total_format(intval(floor($newtotal)), true, $order['currency']) . "</b>";
   
   /*
   $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '" . $newtotal . "', text = '<b>" . $currencies->format($newtotal, true, $order->info['currency']) . "</b>' where class='ot_total' and orders_id = '" . $oID . "'";
@@ -1074,8 +1085,8 @@
       $newtotal = $newtotal+$handle_fee;    
       //$totals = "update " . TABLE_ORDERS_TOTAL . " set value = '".$newtotal."', text = '<b>".$currencies->format($newtotal, true, $order['currency'])."</b>' where class='ot_total' and orders_id = '".$oID."'";
       //tep_db_query($totals);
-      $_SESSION['create_order2']['orders_total']['ot_total']['value'] = intval(round($newtotal));
-      $_SESSION['create_order2']['orders_total']['ot_total']['text']  = $currencies->ot_total_format(intval(round($newtotal)), true, $order['currency']);
+      $_SESSION['create_order2']['orders_total']['ot_total']['value'] = intval(floor($newtotal));
+      $_SESSION['create_order2']['orders_total']['ot_total']['text']  = $currencies->ot_total_format(intval(floor($newtotal)), true, $order['currency']);
       
       $_SESSION['create_order2']['orders']['code_fee'] = $handle_fee;
       //$update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
@@ -1299,7 +1310,7 @@ function check_add(){
     echo '      </td>' . "\n" .
          '      <td class="' . $RowStyle . '">' . $order_products[$pid]['model'] . "<input name='update_products[$pid][model]' size='12' type='hidden' value='" . $order_products[$pid]['model'] . "'>" . '</td>' . "\n" .
          '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order_products[$pid]['tax']) . "<input name='update_products[$pid][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order_products[$pid]['tax']) . "'>" . '%</td>' . "\n" .
-         '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$pid][final_price]' size='9' value='" . number_format($order_products[$pid]['final_price'],2) . "'>" . '</td>' . "\n" . 
+         '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$pid][final_price]' size='9' value='" . tep_display_currency(number_format($order_products[$pid]['final_price'],2)) . "'>" . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']), true, $order['currency'], $order['currency_value']) . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format($order_products[$pid]['final_price'] * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value']) . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right"><b>' . $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']) * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value']) . '</b></td>' . "\n" . 
@@ -1367,7 +1378,7 @@ function check_add(){
   $TotalsArray = array();
   foreach ($order_totals as $k => $ot) {
     $TotalsArray[] = array("Name" => $ot['title'], "Price" => tep_display_currency(number_format((float)$ot['value'], 2, '.', '')), "Class" => $ot['class'], "TotalID" => $ot['orders_total_id']);
-    $TotalsArray[] = array("Name" => "          ", "Price" => "", "Class" => "ot_custom".$k, "TotalID" => "0");
+    $TotalsArray[] = array("Name" => "          ", "Price" => "", "Class" => "ot_custom", "TotalID" => "0");
   }
   
   array_pop($TotalsArray);

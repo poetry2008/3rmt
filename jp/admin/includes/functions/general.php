@@ -4263,13 +4263,37 @@ function get_rule()
 
 // 舍去.00
 function tep_display_currency($num){
-  return (float)str_replace('.00','',(string)$num);
+  $arr = $arr2 = array();
+  for($i=0;$i<10;$i++) {
+    $arr[] = '.'.(string)$i.'0';
+    if ($i == 0) 
+      $arr2[] = '';
+    else 
+      $arr2[] = '.'.(string)$i;
+  }
+  return (float)str_replace($arr,$arr2,(string)$num);
 }
 
 function tep_insert_currency_text($txt){
-  return str_replace('.00','',$txt);
+  $arr = $arr2 = array();
+  for($i=0;$i<10;$i++) {
+    $arr[] = '.'.(string)$i.'0';
+    if ($i == 0) 
+      $arr2[] = '';
+    else 
+      $arr2[] = '.'.(string)$i;
+  }
+  return str_replace($arr,$arr2,$txt);
 }
 
 function tep_insert_currency_value($num){
-  return (float)str_replace('.00','',(string)$num);
+  $arr = $arr2 = array();
+  for($i=0;$i<10;$i++) {
+    $arr[] = '.'.(string)$i.'0';
+    if ($i == 0) 
+      $arr2[] = '';
+    else 
+      $arr2[] = '.'.(string)$i;
+  }
+  return (float)str_replace($arr,$arr2,(string)$num);
 }

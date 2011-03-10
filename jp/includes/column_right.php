@@ -4,6 +4,9 @@
 */
   include(DIR_WS_BOXES . 'login.php');
 
+  if ($banner = tep_banner_exists('dynamic', 'left1')) { echo '<div align="center" style="padding-bottom:5px; border-top:1px dashed #ccc; border-bottom:1px dashed #ccc; ">'.tep_display_banner('static', $banner).'</div>'."\n"; } 
+  echo '<div class="guarant01"><img src="images/h_a14.gif" alt=""></div>'; 
+
   if (isset($_GET['products_id'])) {
     if (tep_session_is_registered('customer_id')) {
 //ccdd
@@ -28,7 +31,6 @@
   }
 */
 
-  echo '<div class="guarant01"><img src="images/h_a14.gif" alt=""></div>'; 
   require(DIR_WS_BOXES . 'reviews.php');
 /*
   if (substr(basename($PHP_SELF), 0, 8) != 'checkout') {

@@ -692,6 +692,7 @@
                 //'products_description' => replace_store_name($des,$products_id,$site_id),
                 'products_description' => $des,
                 'products_status' => tep_db_prepare_input($_POST['products_status']),
+                'option_image_type' => tep_db_prepare_input($_POST['option_image_type']),
                 'products_url'         => tep_db_prepare_input($_POST['products_url'][$language_id]));
             if (isset($_GET['action']) && ($_GET['action'] == 'insert_product' || ($_GET['action'] == 'update_product' && !tep_products_description_exist($products_id,$site_id,$language_id)))) {
               $insert_sql_data = array('products_id' => $products_id,
@@ -883,6 +884,7 @@
                   products_viewed,
                   site_id,
                   products_status, 
+                  option_image_type, 
                   romaji
                 ) values (
                   '" . $dup_products_id . "', 
@@ -893,6 +895,7 @@
                   '0',
                   '" . $description['site_id'] . "', 
                   '" . $description['products_status'] . "', 
+                  '" . $description['option_image_type'] . "', 
                   '" . $description['romaji']."'
                 )");
             }
@@ -1502,6 +1505,24 @@ function get_cart_products(){
                 <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_textarea01">' . tep_draw_textarea_field('products_options', 'soft', '70', '15', $options_array, ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
               </tr>
               <tr>
+                <td class="main" valign="top">メニュー形</td>
+                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15');?> 
+                <?php
+                  if (!isset($pInfo->option_image_type)) {
+                ?>
+                  <input type="radio" name="option_image_type" value="select" checked>プルダウン
+                  <input type="radio" name="option_image_type" value="radio">ラジオ
+                <?php
+                  } else {
+                ?>
+                  <input type="radio" name="option_image_type" value="select" <?php if($pInfo->option_image_type == 'select'){?> checked<?php }?>>プルダウン
+                  <input type="radio" name="option_image_type" value="radio" <?php if($pInfo->option_image_type == 'radio'){?> checked<?php }?>>ラジオ
+                <?php
+                  }
+                ?>
+                </td>
+              </tr>
+              <tr>
                 <td></td>
                 <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;'; ?>「オプション名,オプション値,オプション価格,接頭辞,在庫数」の順で入力（区切りは「,」・改行で複数同時登録可）<br>
                   <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;'; ?>例）<br>
@@ -1832,6 +1853,7 @@ function get_cart_products(){
                  pd.products_description, 
                  pd.products_url, 
                  pd.romaji, 
+                 pd.option_image_type 
                  p.products_real_quantity + p.products_virtual_quantity as products_quantity,
                  p.products_real_quantity, 
                  p.products_virtual_quantity, 
@@ -1932,7 +1954,7 @@ function get_cart_products(){
 <!--<hr size="2" noshade>--><b><?php //価格数量変更機能
 if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) || !$_GET['origin'])) {
   echo '<table width="100%"><tr><td align="left">';
-  echo '<table width="95%" cellpadding="0" cellspacing="0">';
+  echo '<table width="95%" cellpadding="0" cellspacing="0" style="margin-bottom:10px;">';
   echo '  <tr><td><hr size="2" noshade></td></tr><tr>';
   echo '  <tr>';
   echo '  <td height="30">';
@@ -1942,11 +1964,11 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   echo '  <td height="30">';
   echo '実&nbsp;在&nbsp;&nbsp;庫：&nbsp;' . tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;個' . '&nbsp;&nbsp;←&nbsp;' . $pInfo->products_real_quantity . '個' . "\n";
   echo '  </td>';
-  echo '  </tr><tr><td><hr size="2" noshade></td></tr><tr>';
-  echo '  <td height="30">';
+  echo '  </tr><tr><td><hr size="2" noshade style="border:0;"></td></tr><tr>';
+  echo '  <td height="42" style="background-color:#ccc; padding-top:5px;">';
   echo '架空在庫：&nbsp;' . tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,' size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;個' . '&nbsp;&nbsp;←&nbsp;' . $pInfo->products_virtual_quantity . '個' . "\n";
   echo '  </td>';
-  echo '  </tr><tr><td><hr size="2" noshade></td></tr>';
+  echo '  </tr>';
   echo '</table>';
 
   echo '当社キャラクター名の入力欄：<br>' . tep_draw_textarea_field('products_attention_5', 'soft', '70', '10', $pInfo->products_attention_5) . '<br>' . "\n";

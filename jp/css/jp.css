@@ -177,8 +177,8 @@ UL UL UL {
 }
 .subcategory_tree {
 	list-style-type:none;
-	margin-top:-15px;
 }
+.subcategory_tree ul { padding:0px 0 0 39px; *padding:0px 0 0 0px; *margin-top:-15px;}
 /* ---------------------------
 header
 --------------------------- */
@@ -1084,3 +1084,10 @@ a.Icon:hover {
 	width:120px;
 }
 .c_pay_info {padding:5px; border:1px solid #B6B7CB; margin:35px 0 15px 0;}
+#caemail p{ height:280px;}
+.box_des02 {
+	background:url(../images/rmt_cr.gif) 56px 181px no-repeat;
+}
+.product_list02 span{ font-size:10px; width:157px; text-align:center;}
+.product_list02 img{ margin-bottom:10px; height:50px;}
+.product_list02 input{ margin-top:10px;} 

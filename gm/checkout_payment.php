@@ -248,7 +248,8 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
 ?> 
                         <tr> 
                           <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                          <td colspan="2"><table border="0" width="100%" cellspacing="0" cellpadding="0" class="box_des"> 
+                          <td colspan="2">
+                          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="box_des02"> 
                               <?php
     if ( ($selection[$i]['id'] == $payment) || ($n == 1) ) {
       echo '                  <tr id="defaultSelected" class="moduleRowSelected" onmouseover="rowOverEffect(this)" onmouseout="rowOutEffect(this)" onclick="selectRowEffect(this, ' . $radio_buttons . ')">' . "\n";
@@ -280,7 +281,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
                               <tr> 
                                 <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                                 <td colspan="4"><table border="0" cellspacing="0" cellpadding="2" class="box_des"> 
-                                    <?php
+<?php
       for ($j=0, $n2=sizeof($selection[$i]['fields']); $j<$n2; $j++) {
 ?> 
                                     <tr> 
@@ -290,16 +291,16 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
                                       <td class="main"><?php echo $selection[$i]['fields'][$j]['field']; ?></td> 
                                       <td width="10"></td> 
                                     </tr> 
-                                    <?php
+<?php
       }
-
 ?> 
                                   </table></td> 
                                 <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                               </tr> 
-                              <?php
+<?php
     }
 ?> 
+
                             </table></td> 
                           <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                         </tr> 
@@ -308,7 +309,8 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
   }//buying not view
   }
 ?> 
-                      </table></td> 
+                      </table>
+                      </td> 
                   </tr> 
                 </table></td> 
             </tr> 

@@ -1460,7 +1460,6 @@ TABLE：Information box（Contents）
 .infoBoxContents td {
 	line-height: 20px;
 	padding: 3px 5px;
-	background: #fff;
 }
 .infoBoxContents td a {
 	color: #336600;
@@ -1843,3 +1842,10 @@ display:block;
 	background: url(../images/design/contents/headding_title.gif) no-repeat -3px -6px;
 }
 .c_pay_info { background-color:#e5e5e5; padding:5px; margin:10px 0;}
+#caemail p{ height:280px; *height:310px;}
+.box_des02 {
+	background:url(../images/rmt_cr.gif) 50px 241px no-repeat;
+}
+.product_list02 span{ font-size:10px; width:157px; text-align:center;}
+.product_list02 img{ margin-bottom:10px; height:50px;}
+.product_list02 input{ margin-top:10px;} 

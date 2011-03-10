@@ -37,8 +37,15 @@
       } else {
         $format_string = $this->currencies[$currency_type]['symbol_left'] . number_format($number, $this->currencies[$currency_type]['decimal_places'], $this->currencies[$currency_type]['decimal_point'], $this->currencies[$currency_type]['thousands_point']) . $this->currencies[$currency_type]['symbol_right'];
       }
-
-      return str_replace('.00','',$format_string);
+      $arr = $arr2 = array();
+      for($i=0;$i<10;$i++) {
+        $arr[] = '.'.(string)$i.'0';
+        if ($i == 0) 
+          $arr2[] = '';
+        else 
+          $arr2[] = '.'.(string)$i;
+      }
+      return str_replace($arr,$arr2,$format_string);
     }
 
     function ot_total_format($number, $calculate_currency_value = true, $currency_type = DEFAULT_CURRENCY, $currency_value = '') {

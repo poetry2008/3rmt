@@ -232,7 +232,7 @@
           $pr_quantity = 0;
           $pv_quantity += ($pr_quantity - $quantity_difference);
         } else {
-            $pr_quantity -= $quantity_difference;
+          $pr_quantity -= $quantity_difference;
         }
       }
       // 如果是业者，不更新
@@ -475,7 +475,7 @@
   //$newtotal = $newtotal + $_POST['payment_code_fee']; 
   $newtotal = $newtotal+$handle_fee;
   
-  $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '" . intval(round($newtotal)) . "', text = '<b>" . $currencies->ot_total_format(intval(round($newtotal)), true, $order->info['currency']) . "</b>' where class='ot_total' and orders_id = '" . $oID . "'";
+  $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '" . intval(floor($newtotal)) . "', text = '<b>" . $currencies->ot_total_format(intval(floor($newtotal)), true, $order->info['currency']) . "</b>' where class='ot_total' and orders_id = '" . $oID . "'";
   tep_db_query($totals);
   
   $update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
@@ -680,32 +680,6 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       $row = tep_db_fetch_array($result);
       extract($row, EXTR_PREFIX_ALL, "p");
       
-      // 特価を適用
-      /*
-      $specials_query = tep_db_query("select specials_new_products_price from " . TABLE_SPECIALS . " where products_id = '" . $add_product_products_id . "' and status = '1'");
-      if (tep_db_num_rows ($specials_query)) {
-        $specials = tep_db_fetch_array($specials_query);
-        $p_products_price = $specials['specials_new_products_price'];
-      }
-      
-      // 大口割引を適用
-      $wari_array = array();
-      if(tep_not_null($p_products_small_sum)) {
-        $parray = explode(",", $p_products_small_sum);
-        for($i=0; $i<sizeof($parray); $i++) {
-          $tt = explode(':', $parray[$i]);
-          $wari_array[$tt[0]] = $tt[1];
-        }
-      }
-      @krsort($wari_array);
-      $mae = 99999;
-      $wari_qty = (int)$add_product_quantity;
-      foreach($wari_array as $key => $val) {
-        if($mae > $wari_qty && $wari_qty >= $key) {
-          $p_products_price = round($p_products_price + $val);
-        }
-        $mae = $key;
-      }*/
       $p_products_price = tep_get_final_price($p_products_price, $p_products_price_offset, $p_products_small_sum, (int)$add_product_quantity);
       
       // Following functions are defined at the bottom of this file
@@ -819,7 +793,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       $handle_fee = calc_handle_fee($order->info['payment_method'], $newtotal);
       $newtotal   = $newtotal+$handle_fee;
       
-      $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '".intval(round($newtotal))."', text = '<b>".$currencies->ot_total_format(intval(round($newtotal)), true, $order->info['currency'])."</b>' where class='ot_total' and orders_id = '".$oID."'";
+      $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '".intval(floor($newtotal))."', text = '<b>".$currencies->ot_total_format(intval(floor($newtotal)), true, $order->info['currency'])."</b>' where class='ot_total' and orders_id = '".$oID."'";
       tep_db_query($totals);
       
       $update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
@@ -1065,7 +1039,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
     echo '      </td>' . "\n" .
          '      <td class="' . $RowStyle . '">' . $order->products[$i]['model'] . "<input name='update_products[$orders_products_id][model]' size='12' type='hidden' value='" . $order->products[$i]['model'] . "'>" . '</td>' . "\n" .
          '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . "<input name='update_products[$orders_products_id][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order->products[$i]['tax']) . "'>" . '%</td>' . "\n" .
-         '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$orders_products_id][final_price]' size='9' value='" . number_format($order->products[$i]['final_price'],2) . "'>" . '</td>' . "\n" . 
+         '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$orders_products_id][final_price]' size='9' value='" . tep_display_currency(number_format($order->products[$i]['final_price'],2)) . "'>" . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value']) . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right"><b>' . $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . '</b></td>' . "\n" . 

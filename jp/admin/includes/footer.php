@@ -3,6 +3,7 @@
   $Id$
 */
 ?>
+<!--
 <br>
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
   <tr>
@@ -35,6 +36,7 @@ osCommerce provides no warranty and is redistributable under the <a href="http:/
     <td align="center" class="smallText">Powered by <a href="http://www.oscommerce.com" target="_blank">osCommerce</a></td>
   </tr>
 </table>
+-->
 <?php 
 //for sql_log
 $logNumber = 0;

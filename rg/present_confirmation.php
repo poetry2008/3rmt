@@ -293,7 +293,6 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
           </tr> 
           <tr> 
             <td class="main"><?php
-      
       $name = tep_get_fullname($firstname, $lastname);
       $email = $email_address;
       $postcode = $postcode;
