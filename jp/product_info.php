@@ -402,7 +402,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
               echo '</td>'; 
               $n_row++;
               $start_row++;
-              if ($n_row > 3) {
+              if ($n_row > 2) {
                 echo '</tr><tr>'; 
                 $n_row = 0; 
               }
