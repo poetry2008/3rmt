@@ -323,34 +323,93 @@ while($tag = tep_db_fetch_array($tag_query)) {
           WHERE patrib.products_id = '" . (int)$_GET['products_id'] . "' 
             AND patrib.options_id  = popt.products_options_id 
             AND popt.language_id   = '" . $languages_id . "'
-      ");
-      while ($products_options_name = tep_db_fetch_array($products_options_name_query)) {
-        $selected = 0;
-        $products_options_array = array();
-        echo '<tr><td class="main">' . $products_options_name['products_options_name'] . ':</td><td>' . "\n";
-        // ccdd
-        $products_options_query = tep_db_query("
-            SELECT pov.products_options_values_id, 
-                   pov.products_options_values_name, 
-                   pa.options_values_price, 
-                   pa.price_prefix, 
-                   pa.products_at_quantity, 
-                   pa.products_at_quantity 
-            FROM " . TABLE_PRODUCTS_ATTRIBUTES . " pa, " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov 
-            WHERE pa.products_id = '" . (int)$_GET['products_id'] . "' 
-              AND pa.options_id = '" . $products_options_name['products_options_id'] . "' 
-              AND pa.options_values_id = pov.products_options_values_id and pov.language_id = '" . $languages_id . "' 
-            ORDER BY pa.products_attributes_id");
-        while ($products_options = tep_db_fetch_array($products_options_query)) {
-          if($products_options['products_at_quantity'] > 0) {
-            $products_options_array[] = array('id' => $products_options['products_options_values_id'], 'text' => $products_options['products_options_values_name']);
-            if ($products_options['options_values_price'] != '0') {
-              $products_options_array[sizeof($products_options_array)-1]['text'] .= ' (' . $products_options['price_prefix'] . $currencies->display_price($products_options['options_values_price'], tep_get_tax_rate($product_info['products_tax_class_id'])) .') ';
+      "); 
+      if ($product_info['option_image_type'] == 'select') {
+        while ($products_options_name = tep_db_fetch_array($products_options_name_query)) {
+          $selected = 0;
+          $products_options_array = array();
+          echo '<tr><td class="main">' . $products_options_name['products_options_name'] . ':</td><td>' . "\n";
+          // ccdd
+          $products_options_query = tep_db_query("
+              SELECT pov.products_options_values_id, 
+                     pov.products_options_values_name, 
+                     pa.options_values_price, 
+                     pa.price_prefix, 
+                     pa.products_at_quantity, 
+                     pa.products_at_quantity 
+              FROM " . TABLE_PRODUCTS_ATTRIBUTES . " pa, " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov 
+              WHERE pa.products_id = '" . (int)$_GET['products_id'] . "' 
+                AND pa.options_id = '" . $products_options_name['products_options_id'] . "' 
+                AND pa.options_values_id = pov.products_options_values_id and pov.language_id = '" . $languages_id . "' 
+              ORDER BY pa.products_attributes_id");
+          while ($products_options = tep_db_fetch_array($products_options_query)) {
+            if($products_options['products_at_quantity'] > 0) {
+              $products_options_array[] = array('id' => $products_options['products_options_values_id'], 'text' => $products_options['products_options_values_name']);
+              if ($products_options['options_values_price'] != '0') {
+                $products_options_array[sizeof($products_options_array)-1]['text'] .= ' (' . $products_options['price_prefix'] . $currencies->display_price($products_options['options_values_price'], tep_get_tax_rate($product_info['products_tax_class_id'])) .') ';
+              }
             }
           }
+          echo tep_draw_pull_down_menu('id[' . $products_options_name['products_options_id'] . ']' , $products_options_array, isset($cart->contents[$_GET['products_id']]['attributes'][$products_options_name['products_options_id']])?$cart->contents[$_GET['products_id']]['attributes'][$products_options_name['products_options_id']]:NULL);
+          echo '</td></tr>';
         }
-        echo tep_draw_pull_down_menu('id[' . $products_options_name['products_options_id'] . ']' , $products_options_array, isset($cart->contents[$_GET['products_id']]['attributes'][$products_options_name['products_options_id']])?$cart->contents[$_GET['products_id']]['attributes'][$products_options_name['products_options_id']]:NULL);
-        echo '</td></tr>';
+      } else {
+        while ($products_options_name = tep_db_fetch_array($products_options_name_query)) {
+          $selected = 0;
+          $products_options_array = array();
+          // ccdd
+          $products_options_query = tep_db_query("
+              SELECT pov.products_options_values_id, 
+                     pov.products_options_values_name, 
+                     pa.options_values_price, 
+                     pa.price_prefix, 
+                     pa.products_at_quantity, 
+                     pa.products_at_quantity 
+              FROM " . TABLE_PRODUCTS_ATTRIBUTES . " pa, " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov 
+              WHERE pa.products_id = '" . (int)$_GET['products_id'] . "' 
+                AND pa.options_id = '" . $products_options_name['products_options_id'] . "' 
+                AND pa.options_values_id = pov.products_options_values_id and pov.language_id = '" . $languages_id . "' 
+              ORDER BY pa.products_attributes_id");
+          $n_row = 0; 
+          $start_row = 0; 
+          echo '<tr>'; 
+          while ($products_options = tep_db_fetch_array($products_options_query)) {
+            if($products_options['products_at_quantity'] > 0) {
+              $option_image_raw = tep_db_query("select * from products_options_image where products_options_values_id = '".$products_options['products_options_values_id']."' and (site_id = 0 or site_id = ".SITE_ID.") order by site_id desc limit 1"); 
+              $option_image_res = tep_db_fetch_array($option_image_raw); 
+              echo '<td class="product_list02" align="center"><div style=" height:50px;">'; 
+              echo tep_image(DIR_WS_IMAGES.'op_image/'.$option_image_res['option_image'], $products_options['products_options_values_name'], 50, 50); 
+              echo '</div><br> <span>';
+              echo $products_options_name['products_options_name'].':'.$products_options['products_options_values_name']; 
+			  echo '</span>';
+              if ($products_options['options_values_price'] != '0') {
+                echo '<br>(' . $products_options['price_prefix'] . $currencies->display_price($products_options['options_values_price'], tep_get_tax_rate($product_info['products_tax_class_id'])) .') ';
+              }
+              echo '<br>';
+              if (isset($cart->contents[$_GET['products_id']]['attributes'][$products_options_name['products_options_id']])) {
+                if ($cart->contents[$_GET['products_id']]['attributes'][$products_options_name['products_options_id']] == $products_options['products_options_values_id']) {
+                  echo '<input type="radio" name="id['.$products_options_name['products_options_id'].']" value="'.$products_options['products_options_values_id'].'" checked>';  
+                } else {
+                  echo '<input type="radio" name="id['.$products_options_name['products_options_id'].']" value="'.$products_options['products_options_values_id'].'">';  
+                }
+              } else {
+                if ($start_row == 0) {
+                  echo '<input type="radio" name="id['.$products_options_name['products_options_id'].']" value="'.$products_options['products_options_values_id'].'" checked>';  
+                } else {
+                  echo '<input type="radio" name="id['.$products_options_name['products_options_id'].']" value="'.$products_options['products_options_values_id'].'">';  
+                }
+              }
+              echo '</td>'; 
+              $n_row++;
+              $start_row++;
+              if ($n_row > 3) {
+                echo '</tr><tr>'; 
+                $n_row = 0; 
+              }
+            }
+          }
+          echo '</tr>'; 
+        }
       }
       echo '</table>';
     }
