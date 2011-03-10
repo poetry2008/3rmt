@@ -37,9 +37,6 @@
         }
 
         for ($i=0, $n=sizeof($include_modules); $i<$n; $i++) {
-          if ($include_modules[$i]['class'] == 'paypal') {
-            continue; 
-          }
           include(DIR_WS_LANGUAGES . $language . '/modules/payment/' . $include_modules[$i]['file']);
           include(DIR_WS_MODULES . 'payment/' . $include_modules[$i]['file']);
 
