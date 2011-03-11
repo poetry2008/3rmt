@@ -54,7 +54,7 @@ function money_update(objid)
   
   var old_price_total  = document.getElementById("pri_" + product_id);
   var monetary_unit_pri = old_price_total.innerHTML.slice(-1);
-  old_price_total.innerHTML = new_unit_price_total.toString() + monetary_unit_pri;
+  old_price_total.innerHTML = Math.abs(new_unit_price_total).toString() + monetary_unit_pri;
 
   for (var i = 0; i < attr_prices.length; i++)
   {
@@ -85,7 +85,7 @@ function set_sub_total()
   sub_total = Math.round(sub_total);
   var sub_total_text = document.getElementById("sub_total");
   var monetary_sub_total = sub_total_text.innerHTML.slice(-1);
-  sub_total_text.innerHTML = sub_total.toString() + monetary_sub_total;
+  sub_total_text.innerHTML = Math.abs(sub_total).toString() + monetary_sub_total;
 
 }
   
@@ -95,38 +95,38 @@ function update_cart(objid)
 }
 
 function change_num(ob,targ, quan,a_quan)
-            {
-              var product_quantity = document.getElementById(ob);
-              var product_quantity_num = parseInt(product_quantity.value);
-              if (targ == 'up')
-              { 
-                if (product_quantity_num >= a_quan)
-                {
-                  num_value = product_quantity_num;
-                }
-                else
-                {
-                  num_value = product_quantity_num + quan; 
-                }
-              }
-              else
-              {
-                if (product_quantity_num <= 1)
-                {
-                  num_value = product_quantity_num;
-                }
-                else
-                { 
-                  num_value = product_quantity_num - quan;
-                }
-              }
+{
+  var product_quantity = document.getElementById(ob);
+  var product_quantity_num = parseInt(product_quantity.value);
+  if (targ == 'up')
+  { 
+    if (product_quantity_num >= a_quan)
+    {
+      num_value = product_quantity_num;
+    }
+    else
+    {
+      num_value = product_quantity_num + quan; 
+    }
+  }
+  else
+  {
+    if (product_quantity_num <= 1)
+    {
+      num_value = product_quantity_num;
+    }
+    else
+    { 
+      num_value = product_quantity_num - quan;
+    }
+  }
 
-              product_quantity.value = num_value;
-              if (product_quantity_num != num_value)
-              { 
-                update_cart(product_quantity.id);
-              }
-            }
+  product_quantity.value = num_value;
+  if (product_quantity_num != num_value)
+  { 
+    update_cart(product_quantity.id);
+  }
+}
 -->
 </script>
 </head>

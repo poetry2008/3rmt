@@ -486,16 +486,6 @@
       where os.language_id = " . $languages_id . " 
         and os.orders_status_id IN (".join(',', $__orders_status_ids).")");
 
-  /*
-    $select_query = tep_db_query("
-      select distinct orders_status_mail,
-                      orders_status_title,
-                      orders_status_id,
-                      site_id
-      from ".TABLE_ORDERS_MAIL." 
-      where language_id = " . $languages_id . " 
-        and orders_status_id IN (".join(',', $__orders_status_ids).")");
-*/
   while($select_result = tep_db_fetch_array($select_query)){
     if($suu == 0){
       $select_select = $select_result['orders_status_id'];
@@ -760,10 +750,6 @@ if($reload == 'yes') {
     <?php echo '<a class="order_link" href="javascript:void(0);" onclick="copyToClipboard(\'' . tep_output_string_protected($order->customer['email_address']) . '\')">' . tep_output_string_protected($order->customer['email_address']) . '</a>&nbsp;&nbsp;&nbsp;&nbsp;<a title="問合番号を新規作成します" href="'.$remoteurl.'" target="_blank">メール</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="telecom_unknow.php?keywords='.tep_output_string_protected($order->customer['email_address']).'">クレカ</a>'; 
 ?></td>
                 </tr>
-            <!--
-              </table>
-              <table width="100%" border="0" cellspacing="0" cellpadding="2">
-              -->
                 <tr>
                   <td class="main" valign="top" width="30%"><b><?php echo ENTRY_PAYMENT_METHOD; ?></b></td>
                   <td class="main" width="70%"><?php echo $order->info['payment_method']; ?></td>
@@ -900,7 +886,6 @@ if($reload == 'yes') {
                   <td class="main" valign="top" width="30%"><b>Referer:</b></td>
                   <td class="main" width="70%"><p style="word-break:break-all;width:300px;"><?php echo urldecode($order->info['orders_ref']);?></p></td>
                 </tr>
-                <?php //$keywords = parseKeyword($order->info['orders_ref']);?>
                 <?php if ($order->info['orders_ref_keywords']) { ?>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>Keywords:</b></td>
@@ -947,12 +932,6 @@ if($reload == 'yes') {
                 if (tep_db_num_rows($order_history_query)) {
                   ?>
                   <table width="100%" border="0" cellspacing="0" cellpadding="2">
-                    <!--
-                    <tr>
-                      <td class="main">&nbsp;</td>
-                      <td class="main">&nbsp;</td>
-                      <td class="main">&nbsp;</td>
-                    </tr>-->
                   <?php
                   while($order_history = tep_db_fetch_array($order_history_query)){
                   ?>
@@ -991,8 +970,6 @@ if($reload == 'yes') {
   // 取得问答的答案
   $orders_questions_query = tep_db_query("select * from orders_questions where orders_id = '".$order->info['orders_id']."'");
   $oq = tep_db_fetch_array($orders_questions_query);
-  //echo "<pre>";
-  //print_r($oq);
   // 自动或者手动判断问答种类
   // 0=>贩卖, 1=>买取, 2=>信用卡
   if (isset($_GET['questions_type'])) {

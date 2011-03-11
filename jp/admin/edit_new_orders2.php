@@ -135,11 +135,6 @@
       break;
     }
     */
-    /*
-    echo "<pre>";
-    print_r($_POST);
-    exit();
-    */
 
     if ($update_totals) 
     foreach ($update_totals as $total_index => $total_details) {    
@@ -189,7 +184,7 @@
       $_SESSION['create_order2']['orders_products'][$orders_products_id]['products_model'] = $products_details["model"];
       $_SESSION['create_order2']['orders_products'][$orders_products_id]['products_name'] = str_replace("'", "&#39;", $products_details["name"]);
       $_SESSION['create_order2']['orders_products'][$orders_products_id]['products_character'] = mysql_real_escape_string($products_details["character"]);
-      $_SESSION['create_order2']['orders_products'][$orders_products_id]['final_price'] = $products_details["final_price"];
+      $_SESSION['create_order2']['orders_products'][$orders_products_id]['final_price'] = (tep_get_bflag_by_product_id((int)$order['products_id']) ? 0 - $products_details["final_price"] : $products_details["final_price"]);
       $_SESSION['create_order2']['orders_products'][$orders_products_id]['products_tax'] = $products_details["tax"];
       $_SESSION['create_order2']['orders_products'][$orders_products_id]['products_quantity'] = $products_details["qty"];
       
@@ -405,11 +400,13 @@
     }
   }
   
-  if (($newtotal - $total_point) >= 1) {
-    $newtotal -= $total_point;
-  } else {
-    $newtotal = '0';
-  }
+  //if (($newtotal - $total_point["total_point"]) >= 1) {
+  //if ($newtotal > 0) {
+  //  $newtotal -= $total_point["total_point"];
+  //}
+  //} else {
+  //  $newtotal = '0';
+  //}
   
   $handle_fee = calc_handle_fee($order['payment_method'], $newtotal);
   
@@ -1310,7 +1307,7 @@ function check_add(){
     echo '      </td>' . "\n" .
          '      <td class="' . $RowStyle . '">' . $order_products[$pid]['model'] . "<input name='update_products[$pid][model]' size='12' type='hidden' value='" . $order_products[$pid]['model'] . "'>" . '</td>' . "\n" .
          '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order_products[$pid]['tax']) . "<input name='update_products[$pid][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order_products[$pid]['tax']) . "'>" . '%</td>' . "\n" .
-         '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$pid][final_price]' size='9' value='" . number_format($order_products[$pid]['final_price'],2) . "'>" . '</td>' . "\n" . 
+         '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$pid][final_price]' size='9' value='" . tep_display_currency(number_format(abs($order_products[$pid]['final_price']),2)) . "'>" . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']), true, $order['currency'], $order['currency_value']) . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format($order_products[$pid]['final_price'] * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value']) . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right"><b>' . $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']) * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value']) . '</b></td>' . "\n" . 

@@ -61,6 +61,7 @@
 
       $this->contents = array();
       $this->total = 0;
+      $this->abs   = 0;
       $this->weight = 0;
       $this->content_type = false;
 
@@ -213,13 +214,16 @@
     }
 
     function calculate() {
+      // 支付金额
       $this->total = 0;
+      // 交易金额
+      $this->abs = 0;
       $this->weight = 0;
       if (!is_array($this->contents)) return 0;
 
       reset($this->contents);
       while (list($products_id, ) = each($this->contents)) {
-        if (!isset($this->contents[$products_id]['qty'])) $this->contents[$products_id]['qty']=NULL;
+        //if (!isset($this->contents[$products_id]['qty'])) $this->contents[$products_id]['qty']=NULL;
         $qty = $this->contents[$products_id]['qty'];
 
 // products price
@@ -230,39 +234,12 @@
           $products_tax = tep_get_tax_rate($product['products_tax_class_id']);
           $products_price = $product['products_price'];
           $products_weight = $product['products_weight'];
-/*
-//ccdd
-          $specials_query = tep_db_query("select specials_new_products_price from " . TABLE_SPECIALS . " where products_id = '" . $prid . "' and status = '1'");
-          if (tep_db_num_rows ($specials_query)) {
-            $specials = tep_db_fetch_array($specials_query);
-            $products_price = $specials['specials_new_products_price'];
-          }
-      
-      # 追加スタート ---------------------------------------
-      $wari_array = array();
-      if(tep_not_null($product['products_small_sum'])) {
-        $parray = explode(",", $product['products_small_sum']);
-      for($i=0; $i<sizeof($parray); $i++) {
-        $tt = explode(':', $parray[$i]);
-        $wari_array[$tt[0]] = $tt[1];
-      }
-      }
-      
-      @krsort($wari_array);
-      
-      $mae = 99999;
-      $qty = $this->contents[$products_id]['qty'];
-      foreach($wari_array as $key => $val) {
-        if($mae > $qty && $qty >= $key) {
-        $products_price = round($products_price + $val);
-      }
-      
-      $mae = $key;
-      }*/
+
       $products_price = tep_get_final_price($product['products_price'], $product['products_price_offset'], $product['products_small_sum'], $qty);
       # 追加エンド -------------------------------------------
 
           $this->total += tep_add_tax($products_price, $products_tax) * $qty;
+          $this->abs   += abs(tep_add_tax($products_price, $products_tax) * $qty);
           $this->weight += ($qty * $products_weight);
         }
 
@@ -278,6 +255,7 @@
             } else {
               $this->total -= $qty * tep_add_tax($attribute_price['options_values_price'], $products_tax);
             }
+            $this->abs += abs($qty * tep_add_tax($attribute_price['options_values_price'], $products_tax));
           }
         }
       }
@@ -317,35 +295,7 @@
         if ($products) {
           $prid = $products['products_id'];
           $products_price = $products['products_price'];
-//ccdd
-/*
-          $specials_query = tep_db_query("select specials_new_products_price from " . TABLE_SPECIALS . " where products_id = '" . $prid . "' and status = '1'");
-          if (tep_db_num_rows($specials_query)) {
-            $specials = tep_db_fetch_array($specials_query);
-            $products_price = $specials['specials_new_products_price'];
-          }
-      
-      # 追加スタート ---------------------------------------
-      $wari_array = array();
-      if(tep_not_null($products['products_small_sum'])) {
-        $parray = explode(",", $products['products_small_sum']);
-      for($i=0; $i<sizeof($parray); $i++) {
-        $tt = explode(':', $parray[$i]);
-        $wari_array[$tt[0]] = $tt[1];
-      }
-      }
-      
-      krsort($wari_array);
-      
-      $mae = 99999;
-      $qty = $this->contents[$products_id]['qty'];
-      foreach($wari_array as $key => $val) {
-        if($mae > $qty && $qty >= $key) {
-        $products_price = round($products_price + $val);
-      }
-      
-      $mae = $key;
-      }*/
+
       $products_price = tep_get_final_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'], $this->contents[$products_id]['qty']);
       # 追加エンド -------------------------------------------
 
@@ -371,6 +321,12 @@
       $this->calculate();
 
       return $this->total;
+    }
+    
+    function show_abs() {
+      $this->calculate();
+
+      return $this->abs;
     }
 
     function show_weight() {

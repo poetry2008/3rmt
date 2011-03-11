@@ -8,6 +8,10 @@
 
   require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER_PROCESS);
 
+echo "<pre>";
+print_r($_POST);
+echo "</pre>";
+
   $customer_id    = tep_db_prepare_input($_POST['customers_id']);
   $firstname      = tep_db_prepare_input($_POST['firstname']);
   $lastname       = tep_db_prepare_input($_POST['lastname']);
@@ -29,6 +33,11 @@
   $error          = false; // reset error flag
   $temp_amount    = "0";
   $temp_amount    = number_format($temp_amount, 2, '.', '');
+  $date = tep_db_prepare_input($_POST['date']);
+  $hour = tep_db_prepare_input($_POST['hour']);
+  $min  = tep_db_prepare_input($_POST['min']);
+  $torihikihouhou = tep_db_prepare_input($_POST['torihikihouhou']);
+  $payment_method = tep_db_prepare_input($_POST['payment_method']);
   
   $currency_text  = DEFAULT_CURRENCY . ",1";
   if(isset($_POST['Currency']) && !empty($_POST['Currency']))
