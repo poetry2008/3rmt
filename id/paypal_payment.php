@@ -38,7 +38,7 @@ if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING"
 	$token = urldecode($httpParsedResponseAr["TOKEN"]);
         $_SESSION['paypaltoken']=$token;
 	//$payPalURL = "https://www.paypal.com/webscr&cmd=_express-checkout&token=$token";
-		$payPalURL = "https://www.$environment.paypal.com/webscr&cmd=_express-checkout&token=$token&useraction=commit";
+		$payPalURL = "https://www.paypal.com/webscr&cmd=_express-checkout&token=$token&useraction=commit";
         $environment = defined('paypal_environment')?paypal_environment:'sandbox';
 	if("sandbox" === $environment || "beta-sandbox" === $environment) {
 		$payPalURL = "https://www.$environment.paypal.com/webscr&cmd=_express-checkout&token=$token&useraction=commit";
