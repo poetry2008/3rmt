@@ -4,7 +4,6 @@
 */
 require(DIR_WS_FUNCTIONS . 'visites.php');
 
-require('paypal-api-conf.php');//ペイパルテストのため必要
 
 // if the customer is not logged on, redirect them to the login page
 
@@ -378,18 +377,6 @@ if ($telecom_option_ok) {
 }
 
   
-  
-  if ($telecom_option_ok) {
-  tep_db_perform(TABLE_ORDERS, array('orders_status' => '30'), 'update', "orders_id='".$insert_id."'");
-  $sql_data_array = array('orders_id' => $insert_id, 
-  'orders_status_id' => '30', 
-  'date_added' => 'now()', 
-  'customer_notified' => '0',
-  'comments' => '');
-  // ccdd
-  tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
-  orders_updated($insert_id);
-  }
 
 // initialized for the email confirmation
 $products_ordered = '';
@@ -406,7 +393,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
                              ON p.products_id=pa.products_id
                             LEFT JOIN " . TABLE_PRODUCTS_ATTRIBUTES_DOWNLOAD . " pad
                              ON pa.products_attributes_id=pad.products_attributes_id
-          p                  WHERE p.products_id = '" . tep_get_prid($order->products[$i]['id']) . "'";
+                            WHERE p.products_id = '" . tep_get_prid($order->products[$i]['id']) . "'";
       // Will work with only one option for downloadable products
       // otherwise, we have to build the query dynamically with a loop
       $products_attributes = $order->products[$i]['attributes'];
