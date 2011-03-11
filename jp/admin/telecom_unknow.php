@@ -137,6 +137,7 @@ function check_one(ele){
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
     <tr class="dataTableHeadingRow">
       <td class="dataTableHeadingContent" align="left" width="20"><input type="checkbox" onclick="all_check(this)"></td>
+      <td class="dataTableHeadingContent" align="center" width="50">決算方法</td>
       <td class="dataTableHeadingContent" align="center" width="150">時間</td>
       <td class="dataTableHeadingContent" align="center">決算</td>
       <td class="dataTableHeadingContent" align="center">引当</td>
@@ -202,6 +203,7 @@ function check_one(ele){
       echo '    <tr onmouseover="this.style.background=\'#FFCC99\'" onmouseout="this.style.background=\''.(tep_match_by_keywords($orders['telno'],TELNO_KEYWORDS)?'red':($orders['rel'] == 'no'?'#ccc':'#fff')).'\'" style="border-bottom:1px solid #000000;'.(tep_match_by_keywords($orders['telno'],TELNO_KEYWORDS)?'background:red':($orders['rel'] == 'no'?'background:#ccc':'background:#fff')).'" class="dataTableRow" id="tr_'.$orders['id'].'">' . "\n";
 ?>
       <td align="left"   style="border-bottom:1px solid #000000;" class="dataTableContent"><input type="checkbox" name="ids[]" class="a_checkbox" onclick="check_one(this)" value="<?php echo $orders['type'] == 'success' ? 'false' : $orders['id'];?>"></td>
+      <td align="center"   style="border-bottom:1px solid #000000;" class="dataTableContent"><?php echo $orders['payment_method'] == 'paypal' ? 'ペイパル' : 'テレコム'; ?>&nbsp;</td>
       <td align="center" style="border-bottom:1px solid #000000;" class="dataTableContent"><?php echo tep_datetime_short($orders['date_added']); ?>&nbsp;</td>
       <td align="center" style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['rel'] == 'yes' ? '成功' : '失敗'; ?>&nbsp;</td>
       <td align="center" style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['type'] == 'success' ? '済' : '<font color="darkred">未</font>'; ?>&nbsp;</td>

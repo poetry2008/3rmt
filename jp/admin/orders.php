@@ -916,23 +916,23 @@ if($reload == 'yes') {
               </table>
             </div>
 
-            <?php }else if ($order->info['payment_method'] == 'クレジットカード決済（パイパル）') {?>
+            <?php }else if ($order->info['payment_method'] == 'クレジットカード決済（ペイパル）') {?>
             <!-- PAYPAL信息 -->
 
             <div id="orders_paypal">
               <h3>クレジットカード情報</h3>
               <table width="100%" border="0" cellspacing="0" cellpadding="2" class="order02_link">
                 <tr>
-                  <td class="main" valign="top" width="20%"><b>カード名義:</b></td>
-                  <td class="main" width="30%"><?php echo $order->info['paypal_firstname'].' '.$order->info['paypal_lastname'];?></td>
-                  <td class="main" valign="top"><b>電話番号:</b></td>
-                  <td class="main"><?php echo urldecode($order->info['paypal_phonenum']);?></a></td>
+                  <td class="main" valign="top" width="20%"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_name']);?>">カード名義:</a></b></td>
+                  <td class="main" width="30%"><?php echo $order->info['telecom_name'];?></td>
+                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_tel']);?>">電話番号:</a></b></td>
+                  <td class="main"><?php echo tep_high_light_by_keywords($order->info['telecom_tel'],TELNO_KEYWORDS);?></a></td>
                 </tr>
                 <tr>
-                  <td class="main" valign="top"><b>メールアドレス:</b></td>
-                  <td class="main"><?php echo urldecode($order->info['paypal_email']);?></a></td>
-                  <td class="main" valign="top"><b>金額:</b></td>
-                  <td class="main"><?php echo $order->info['paypal_amt'];?></a></td>
+                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_email']);?>">メールアドレス:</a></b></td>
+                  <td class="main"><?php echo $order->info['telecom_email'];?></a></td>
+                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_money']);?>">金額:</a></b></td>
+                  <td class="main"><?php echo $order->info['telecom_money'];?></a></td>
                 </tr>
                 <tr>
                   <td class="main" valign="top" width="20%"><b>居住国:</b></td>
@@ -1011,7 +1011,7 @@ if($reload == 'yes') {
   } else {
     if ($order->info['payment_method'] === '銀行振込(買い取り)') {
       $orders_questions_type = 1;
-    } else if ($order->info['payment_method'] === 'クレジットカード決済' || $order->info['payment_method'] === 'クレジットカード決済（パイパル）') {
+    } else if ($order->info['payment_method'] === 'クレジットカード決済' || $order->info['payment_method'] === 'クレジットカード決済（ペイパル）') {
       $orders_questions_type = 2;
     } else {
       $orders_questions_type = 0;

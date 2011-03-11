@@ -274,7 +274,10 @@ function getexpress($amt,$token){
     foreach($httpParsedResponseAr as $key=>$value){
       $paypalData[$key] = urldecode($value);
     }
-    if("SUCCESS" == strtoupper($httpParsesponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
+    file_put_contents('/home/bobhero/project/3rmt/jp/a.txt',var_export($httpParsedResponseAr,true));
+    $e = var_export($httpParsedResponseAr,true);
+
+    if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
       //成功コード発行予定
       //$sql_data_array['money'] =$httpParsedResponseAr["AMT"];
       //$sql_data_array['type']="success";
@@ -282,8 +285,9 @@ function getexpress($amt,$token){
       //$sql_data_array['date_added']= 'now()';
       //$sql_data_array['last_modified']= 'now()';
       //      tep_db_perform("telecom_unknow", $sql_data_array);
-      
+    
       tep_db_perform('telecom_unknow', array(
+        'payment_method' => 'paypal',
         '`option`'      => ' ',
         'username'      => $paypalData['FIRSTNAME'] . '' . $paypalData['LASTNAME'],
         'email'         => $paypalData['EMAIL'],
@@ -297,12 +301,13 @@ function getexpress($amt,$token){
     }else{
       // 不明
       tep_db_perform('telecom_unknow', array(
+        'payment_method' => 'paypal',
         '`option`'      => ' ',
         'username'      => $paypalData['FIRSTNAME'] . '' . $paypalData['LASTNAME'],
         'email'         => $paypalData['EMAIL'],
         'telno'         => $paypalData['PHONENUM'],
         'money'         => $paypalData['AMT'],
-        'rel'           => 'no',
+        'rel'           => '',
         'type'          => 'null',
         'date_added'    => 'now()',
         'last_modified' => 'now()'
@@ -321,11 +326,12 @@ function getexpress($amt,$token){
                                      'paypal_payerstatus'   => $paypalData['PAYERSTATUS'],
                                      'paypal_paymentstatus' => $paypalData['PAYMENTSTATUS'],
                                      'paypal_countrycode'   => $paypalData['COUNTRYCODE'],
-                                     'paypal_email'         => $paypalData['EMAIL'],
-                                     'paypal_amt'           => $paypalData['AMT'],
-                                     'paypal_firstname'     => $paypalData['FIRSTNAME'],
-                                     'paypal_lastname'      => $paypalData['LASTNAME'],
-                                     'paypal_phonenum'      => $paypalData['PHONENUM'],
+    
+                                     'telecom_email'        => $paypalData['EMAIL'],
+                                     'telecom_money'        => $paypalData['AMT'],
+                                     'telecom_name'         => $paypalData['FIRSTNAME'] . ''. $paypalData['LASTNAME'],
+                                     'telecom_tel'          => $paypalData['PHONENUM'],
+    
                                      'orders_status'        => '30',
                                      'paypal_playerid'      => $payerID,
                                      'paypal_token'         => $token,

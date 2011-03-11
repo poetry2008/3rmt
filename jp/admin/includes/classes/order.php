@@ -90,12 +90,7 @@
 'paypal_paymenttype' => $order['paypal_paymenttype'],
 'paypal_payerstatus' => $order['paypal_payerstatus'],
 'paypal_paymentstatus' => $order['paypal_paymentstatus'],
-'paypal_countrycode' => $order['paypal_countrycode'],
-'paypal_email' => $order['paypal_email'],
-'paypal_amt' => $order['paypal_amt'],
-'paypal_firstname' => $order['paypal_firstname'],
-'paypal_lastname' => $order['paypal_lastname'],
-'paypal_phonenum' => $order['paypal_phonenum']);
+'paypal_countrycode' => $order['paypal_countrycode']);
 
       $this->customer = array('name'           => $order['customers_name'],
                               'id'             => $order['customers_id'],
@@ -115,12 +110,7 @@
 'paypal_paymenttype' => $order['paypal_paymenttype'],
 'paypal_payerstatus' => $order['paypal_payerstatus'],
 'paypal_paymentstatus' => $order['paypal_paymentstatus'],
-'paypal_countrycode' => $order['paypal_countrycode'],
-'paypal_email' => $order['paypal_email'],
-'paypal_amt' => $order['paypal_amt'],
-'paypal_firstname' => $order['paypal_firstname'],
-'paypal_lastname' => $order['paypal_lastname'],
-'paypal_phonenum' => $order['paypal_phonenum']);
+'paypal_countrycode' => $order['paypal_countrycode']);
 
 
       $this->delivery = array('name'           => $order['delivery_name'],

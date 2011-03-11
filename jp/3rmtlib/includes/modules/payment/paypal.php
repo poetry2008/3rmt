@@ -27,6 +27,7 @@
 
       //      $this->form_action_url = MODULE_PAYMENT_PAYPAL_CONNECTION_URL;
       $this->form_action_url = MODULE_PAYMENT_PAYPAL_CONNECTION_URL ;
+
       //      $this->form_action_url = 	    'https://api-3t.sandbox.paypal.com/nvp ';
     
     if(isset($_GET['submit_x']) || isset($_GET['submit_y'])){
@@ -251,10 +252,7 @@
     tep_mail('管理者', SENTMAIL_ADDRESS, '仮クレカ注文', $mail_body, '', '');
     
     $today = date("YmdHis");
-    // paypal_option 文档中的$ID
-    if (!isset($_SESSION['option'])) {
-      $_SESSION['option'] = date('Ymd-His'). ds_makeRandStr(2);
-    }
+
 
     //paypal需要的字段在以下购成
     $process_button_string =
