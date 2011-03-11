@@ -34,6 +34,7 @@
 
 // class methods
     function format($number, $calculate_currency_value = true, $currency_type = '', $currency_value = '') {
+      $number = abs($number);
       global $currency;
       global $language;
 

@@ -143,16 +143,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
             </tr> 
 <?php
   //販売開始
-  $hanbai_sale = $cart->get_products();
-  $cnt=0;
-  for ($i=0, $n=sizeof($hanbai_sale); $i<$n; $i++) {
-  if($hanbai_sale[$i]['bflag'] == '0') {
-    $cnt++;
-  }
-  }
-
-  if($cnt > 0) {
-
+  if($cart->show_total() >= 0) {
   if (isset($_GET['payment_error']) && is_object(${$_GET['payment_error']}) && ($error = ${$_GET['payment_error']}->get_error())) {
 ?> 
             <tr> 
@@ -317,8 +308,8 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
   echo '<input type="hidden" name="payment" value="buying">';
   }
 
-  $bflag_cnt = ds_count_bflag();
-  if($bflag_cnt == 'View') {
+  // 买取
+  if($cart->show_total() < 0) {
 ?>
       
             <tr> 

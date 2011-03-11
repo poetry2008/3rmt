@@ -295,11 +295,24 @@ function getexpress($amt,$token){
         'last_modified' => 'now()'
       ));
     }else{
+      // 不明
+      tep_db_perform('telecom_unknow', array(
+        '`option`'      => ' ',
+        'username'      => $paypalData['FIRSTNAME'] . '' . $paypalData['LASTNAME'],
+        'email'         => $paypalData['EMAIL'],
+        'telno'         => $paypalData['PHONENUM'],
+        'money'         => $paypalData['AMT'],
+        'rel'           => 'no',
+        'type'          => 'null',
+        'date_added'    => 'now()',
+        'last_modified' => 'now()'
+      ));
       //エラーコード発行予定
       //                  exit('DoExpressCheckoutPayment failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
       //      tep_redirect(tep_href_link(FILENAME_CHECKOUT_CONFIRMATION, 'msg='.  urlencode('支払いが成功しません，もう一度してください！')
     }
   }else{
+    // 不正
     //エラーコード発行予定
     //exit('GetExpressCheckoutDetails failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
   }

@@ -68,11 +68,11 @@
         //％指定の場合は価格を算出
         $HTTP_POST_VARS['products_price_offset'] = SBC2DBC($HTTP_POST_VARS['products_price_offset']);
         // jiakong
-        $update_sql_data = array('products_last_modified' => 'now()',
-                                 'products_real_quantity' => tep_db_prepare_input($_POST['products_real_quantity']),
+        $update_sql_data = array('products_last_modified'    => 'now()',
+                                 'products_real_quantity'    => tep_db_prepare_input($_POST['products_real_quantity']),
                                  'products_virtual_quantity' => tep_db_prepare_input($_POST['products_virtual_quantity']),
-                                 'products_attention_5' => tep_db_prepare_input($_POST['products_attention_5']),
-                                 'products_price' => tep_db_prepare_input($_POST['products_price']));
+                                 'products_attention_5'      => tep_db_prepare_input($_POST['products_attention_5']),
+                                 'products_price'            => tep_get_bflag_by_product_id($products_id) ? 0 - tep_db_prepare_input($_POST['products_price']) : tep_db_prepare_input($_POST['products_price']));
         tep_db_perform(TABLE_PRODUCTS, $update_sql_data, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
 
         tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $_GET['cPath'] . '&pID=' . $products_id));
@@ -555,20 +555,14 @@
       $products_attention_5 = tep_db_prepare_input($_POST['products_attention_5']);
       // jiakong
       $sql_data_array = array(
-        //'products_quantity' => tep_db_prepare_input($_POST['products_quantity']),
                                   'products_real_quantity' => tep_db_prepare_input($_POST['products_real_quantity']),
-                                  //'products_virtual_quantity' => tep_db_prepare_input($_POST['products_virtual_quantity']),
-                                  //'products_quantity' => tep_calc_products_price(tep_db_prepare_input($_POST['products_real_quantity']),tep_db_prepare_input($_POST['products_virtual_quantity'])),
                                   'products_model' => tep_db_prepare_input($_POST['products_model']),
-                                  //'products_image' => (($_POST['products_image'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image'])),
-                                  //'products_image2' => (($_POST['products_image2'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image2'])),
-                                  //'products_image3' => (($_POST['products_image3'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image3'])),
                                   'products_attention_1' => $products_attention_1,
                                   'products_attention_2' => $products_attention_2,
                                   'products_attention_3' => $products_attention_3,
                                   'products_attention_4' => $products_attention_4,
                                   'products_attention_5' => $products_attention_5,
-                                  'products_price' => tep_db_prepare_input($_POST['products_price']),
+                                  'products_price' => tep_get_bflag_by_product_id(tep_db_prepare_input($_POST['products_cart_buyflag'])) ? 0 - tep_db_prepare_input($_POST['products_price']) : tep_db_prepare_input($_POST['products_price']),
                                   'products_price_offset' => tep_db_prepare_input($HTTP_POST_VARS['products_price_offset']),
                                   'products_date_available' => $products_date_available,
                                   'products_weight' => tep_db_prepare_input($_POST['products_weight']),
@@ -979,11 +973,6 @@ function cmess() {
 
 }
 function mess(){
-  //if(document.getElementById('pp').value == "" || document.getElementById('pp').value < 1){
-    //alert("価格情報を入力して下さい");
-  //document.getElementById('pp').focus();
-  //return false;
-  //}
   if (document.getElementById('pname').value == "") {
     alert('<?php echo ERROR_PRODUCT_NAME_IS_NOT_NULL;?>'); 
     return false; 
@@ -1076,11 +1065,9 @@ function get_cart_products(){
   $(".carttags").each(function(){
     start  = $(this).attr('name').indexOf('[') + 1;
     end    = $(this).attr('name').indexOf(']');
-    //alert($(this).attr('name').substr(start, end-start));
     if(this.checked)
     tagstr += '&tags_id[]='+$(this).attr('name').substr(start, end-start);
   });
-  //alert(tagstr);
   if (tagstr != '')
   window.open("categories.php?action=get_cart_products&products_id=<?php echo $_GET['pID'];?>&buyflag="+$("input[@type=radio][name=products_cart_buyflag][checked]").val()+tagstr, '','toolbar=0,location=0,directories=0,status=1,menubar=0,scrollbars=yes,resizable=yes,width=300');
 }
@@ -1339,22 +1326,19 @@ function get_cart_products(){
   <span id="relate_products">
   <?php echo tep_draw_pull_down_menu('relate_products', array_merge(array(array('id' => '0','text' => '関連付けなし')),tep_get_products_tree($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id)),$pInfo->relate_products_id,($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').'onchange="$(\'#relate_products_id\').val(this.options[this.selectedIndex].value)"');?>
   </span>
-  <input type="hidden" name="relate_products_id" id="relate_products_id" value="<?php echo $pInfo->relate_products_id;?>">
-  </td>
-              </tr>
-  
-  
-  
-              <tr>
-                <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-              </tr>
-          <input type="hidden" name="products_price_def" value="">
+                        <input type="hidden" name="relate_products_id" id="relate_products_id" value="<?php echo $pInfo->relate_products_id;?>">
+                        <input type="hidden" name="products_price_def" value="">
+                      </td>
+                    </tr>
                     <tr>
                       <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                     </tr>
-          <tr bgcolor="#CCCCCC">
+                    <tr>
+                      <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+                    </tr>
+                    <tr bgcolor="#CCCCCC">
                       <td class="main"><?php echo '<font color="blue"><b>' . TEXT_PRODUCTS_PRICE . '</b></font>'; ?></td>
-                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_price', isset($pInfo->products_price)?$pInfo->products_price:'','id="pp"' . ($site_id ? 'class="readonly" readonly' : '')); ?></td>
+                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_price', isset($pInfo->products_price)?abs($pInfo->products_price):'','id="pp"' . ($site_id ? 'class="readonly" readonly' : '')); ?></td>
                     </tr>
                     <tr>
                       <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
@@ -1388,33 +1372,19 @@ function get_cart_products(){
                     </tr>
           <tr>
                       <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-                    </tr>
-            <!--
-                    <tr>
-                      <td class="main"><?php echo TEXT_PRODUCTS_TAX_CLASS; ?></td>
-                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_pull_down_menu('products_tax_class_id', $tax_class_array, isset($pInfo->products_tax_class_id)?$pInfo->products_tax_class_id:'', ($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '')); ?></td>
-                    </tr>
-          -->
+          </tr>
         <tr>
                 <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-              </tr>
-          
+        </tr>
         <tr bgcolor="#CCCCCC">
                 <td class="main"><?php echo '<font color="blue"><b>' . TEXT_PRODUCTS_REAL_QUANTITY . '</b></font>'; ?></td>
                 <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_real_quantity', isset($pInfo->products_real_quantity)?$pInfo->products_real_quantity:'', ($site_id ? 'class="readonly" readonly' : '')); ?></td>
-              </tr>
+        </tr>
         <tr>
-         <!--
-        <tr bgcolor="#CCCCCC">
-                <td class="main"><?php echo '<font color="blue"><b>' . TEXT_PRODUCTS_VIRTUAL_QUANTITY . '</b></font>'; ?></td>
-                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_virtual_quantity', isset($pInfo->products_virtual_quantity)?$pInfo->products_virtual_quantity:'', 'class="readonly" readonly'); ?></td>
-              </tr>
-        <tr>
-        -->
-          <td>&nbsp;</td>
+                <td>&nbsp;</td>
                 <td class="smallText" colspan="2">在庫計算する場合は入力してください。在庫を計算する場合は　基本設定→在庫管理　を設定してください。</td>
         </tr>
-              <tr>
+        <tr>
                 <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
               <tr>
@@ -1673,7 +1643,7 @@ function get_cart_products(){
 
 
               <tr>
-                <td colspan="2"><?php //print_r(tep_get_cart_products('32239',array(1,2,3,4),1));?>
+                <td colspan="2">
                     <fieldset><legend style="color:#009900 ">買い忘れ商品</legend>
                     <table>
                     <tr><td>
@@ -1691,7 +1661,6 @@ function get_cart_products(){
                       <tr>
                         <td nowrap="nowrap" width="50%"><input type="radio" name="products_cart_buyflag" value='0'<?php if(!$pInfo->products_cart_buyflag){?> checked<?php }?>>販売 <input type="radio" name="products_cart_buyflag" value='1'<?php if($pInfo->products_cart_buyflag){?> checked<?php }?>>買取</td>
                         <td width="50%" align="left"><a href="javascript:void(0);" onclick="$('.carttags').each(function(){if(this.checked)this.checked=false; else this.checked=true;})">逆選択</a></td>
-                        <!--<td align="right"><input type="radio" name="products_carttag_enabled" value="1">表示 <input type="radio" name="products_carttag_enabled" value="0">非表示</td>-->
                       </tr>
                       <tr><td colspan='2'>
 <?php foreach($tag_array as $tag){ ?>
@@ -1772,14 +1741,8 @@ function get_cart_products(){
   } elseif (isset($_GET['action']) && $_GET['action'] == 'new_product_preview') {
 
     if ($_POST) {
-      /*
-      echo "<pre>";
-      print_r($_POST);
-      echo "</pre>";
-      */
       $pInfo = new objectInfo($_POST);
       $products_name = $_POST['products_name'];
-      //$products_description = replace_store_name($_POST['products_description'],$products_id,$_POST['site_id']);
       $products_description = $_POST['products_description'];
       $products_url = $_POST['products_url'];
       $site_id = $_POST['site_id'];
@@ -1958,7 +1921,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   echo '  <tr><td><hr size="2" noshade></td></tr><tr>';
   echo '  <tr>';
   echo '  <td height="30">';
-  echo '価&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格：&nbsp;' . tep_draw_input_field('products_price', number_format($pInfo->products_price,0,'.',''),'id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;円' . '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price . '円 ' . "\n";
+  echo '価&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格：&nbsp;' . tep_draw_input_field('products_price', number_format(abs($pInfo->products_price),0,'.',''),'id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;円' . '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price . '円 ' . "\n";
   echo '  </td>';
   echo '  </tr><tr><td><hr size="2" noshade></td></tr><tr>';
   echo '  <td height="30">';
@@ -1982,18 +1945,12 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
     echo '  <td>下一桁5</td>';
     echo '  <td>下一桁0</td>';
     echo '  </tr>';
-    //echo '  <tr>';
-    //echo '  <td colspan="4" valign="top"><hr size="2" noshade style=""></td>';
-    //echo '  </tr>';
     echo '  <tr>';
     echo '  <td align="right" height="30">5000</td>';
     echo '  <td align="right"><a href="javascript:void(0)" id="a_1" onclick="change_qt(this)" style="text-decoration : underline;"></a>&nbsp;</td>';
     echo '  <td align="right"><a href="javascript:void(0)" id="a_2" onclick="change_qt(this)" style="text-decoration : underline;"></a>&nbsp;</td>';
     echo '  <td align="right"><a href="javascript:void(0)" id="a_3" onclick="change_qt(this)" style="text-decoration : underline;"></a>&nbsp;</td>';
     echo '  </tr>';
-    //echo '  <tr>';
-    //echo '  <td colspan="4"><hr size="2" noshade></td>';
-    //echo '  </tr>';
     echo '  <tr>';
     echo '  <td align="right" height="30">10000</td>';
     echo '  <td align="right"><a href="javascript:void(0)" id="b_1" onclick="change_qt(this)" style="text-decoration : underline;"></a>&nbsp;</td>';

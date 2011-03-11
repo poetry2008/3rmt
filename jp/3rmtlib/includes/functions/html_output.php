@@ -727,8 +727,12 @@ function tags_tep_href_link($tags_id)
   return $returnstr;
 }
 
+/*
+  支付方法的限定额度，如果不满足则不能选择支付方法
+*/
 function check_money_limit($limit_set, $total)
 {
+  $total = abs($total);
   $limit_arr = explode(",", $limit_set); 
   if (isset($limit_arr[0]) && isset($limit_arr[1])) {
     if (is_numeric($limit_arr[0]) && is_numeric($limit_arr[1])) {

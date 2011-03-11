@@ -107,7 +107,6 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents"><?php echo tep_draw_form('checkout_payment', tep_href_link(FILENAME_CHECKOUT_CONFIRMATION, '', 'SSL'), 'post', 'onsubmit="return check_form();"'); ?><h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 
-        
         <div> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
               <tr> 
@@ -155,16 +154,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
             </tr> 
 <?php
   //販売開始
-  $hanbai_sale = $cart->get_products();
-  $cnt=0;
-  for ($i=0, $n=sizeof($hanbai_sale); $i<$n; $i++) {
-    if($hanbai_sale[$i]['bflag'] == '0') {
-      $cnt++;
-    }
-  }
-
-  if($cnt > 0) {
-
+  if($cart->show_total() >= 0) {
   if (isset($_GET['payment_error']) && is_object(${$_GET['payment_error']}) && ($error = ${$_GET['payment_error']}->get_error())) {
 ?> 
             <tr> 
@@ -174,8 +164,6 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
                   </tr> 
                 </table></td> 
             </tr> 
-  
-  
             <tr> 
               <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice"> 
                   <tr class="infoBoxNoticeContents"> 
@@ -209,7 +197,6 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
                     <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <?php
   $selection = $payment_modules->selection();
-
   if (sizeof($selection) > 1) {
 ?> 
                         <tr> 
@@ -331,8 +318,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
   echo '<input type="hidden" name="payment" value="buying">';
   }
 
-  $bflag_cnt = ds_count_bflag();
-  if($bflag_cnt == 'View') {
+  if($cart->show_total() < 0) {
 ?>
       
             <tr> 

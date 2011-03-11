@@ -248,7 +248,7 @@
           products_model = '" . $products_details["model"] . "',
           products_name = '" . str_replace("'", "&#39;", $products_details["name"]) . "',
           products_character = '" . mysql_real_escape_string($products_details["character"]) . "',
-          final_price = '" . $products_details["final_price"] . "',
+          final_price = '" . (tep_get_bflag_by_product_id((int)$order['products_id']) ? 0 - $products_details["final_price"] : $products_details["final_price"]) . "',
           products_tax = '" . $products_details["tax"] . "',
           products_quantity = '" . $products_details["qty"] . "'
           where orders_products_id = '$orders_products_id';";
@@ -295,15 +295,9 @@
     if ($ot_class == "ot_shipping" || $ot_class == "ot_lev_discount" || $ot_class == "ot_customer_discount" || $ot_class == "ot_custom" || $ot_class == "ot_cod_fee") {
       $order = new order($oID);
       $RunningTax += $ot_value * $products_details['tax'] / $order->info['currency_value'] / 100 ; // corrected tax by cb
-
-//} elseif ($ot_class == "ot_point") { // ポイント割引
-//$order = new order($oID);
-//$RunningTax -= $ot_value * $products_details['tax'] / $order->info['currency_value'] / 100 ;
-
     }
   }
 
-  // exit;
   // 1.5 UPDATE TOTALS #####
   
   $RunningTotal = 0;
@@ -357,8 +351,6 @@
         if ( !$ot_subtotal_found ) { // There was no subtotal on this order, lets add the running subtotal in.
 //        $ot_value +=  $RunningSubTotal;
         }
-//      print $ot_value;
-//      exit;
       }
   
 // Set $ot_text (display-formatted value)
@@ -465,11 +457,13 @@
     }
   }
   
-  if (($newtotal - $total_point["total_point"]) >= 1) {
+  //if (($newtotal - $total_point["total_point"]) >= 1) {
+  if ($newtotal > 0) {
     $newtotal -= $total_point["total_point"];
-  } else {
-    $newtotal = '0';
   }
+  //} else {
+  //  $newtotal = '0';
+  //}
   
   $handle_fee = calc_handle_fee($update_info_payment_method, $newtotal);
   //$newtotal = $newtotal + $_POST['payment_code_fee']; 
@@ -718,7 +712,6 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         "products_id = '" . $add_product_products_id . "'");
       } else {
         tep_db_perform('products',array(
-          //'products_quantity' => $p['products_quantity'] - (int)$add_product_quantity,
           'products_real_quantity' => $p['products_virtual_quantity'] - (int)$add_product_quantity
         ),
         'update',
@@ -727,14 +720,12 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       // 增加销售量
       tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . (int)$add_product_quantity . " where products_id = '" . $add_product_products_id . "'");
       // 处理负数问题
-      //tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = 0 where products_quantity < 0 and products_id = '" . $add_product_products_id . "'");
       tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . $add_product_products_id . "'");
       tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . $add_product_products_id . "'");
 
       if (IsSet($add_product_options)) {
       
         foreach($add_product_options as $option_id => $option_value_id) {
-          //echo 'b';
           $Query = "insert into " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set
             orders_id = '$oID',
             orders_products_id = $new_product_id,
@@ -743,7 +734,6 @@ while ($totals = tep_db_fetch_array($totals_query)) {
             options_values_price = '" . $option_value_details[$option_id][$option_value_id]["options_values_price"] . "',
             attributes_id = '" . $option_attributes_id[$option_value_id] . "',
             price_prefix = '+';";
-          //echo $Query;
           tep_db_query($Query);
         }
       }
@@ -800,11 +790,8 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       tep_db_query($update_orders_sql);
       //exit;
       tep_redirect(tep_href_link("edit_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
-
     }
-  
     break;
-    
   }
 }
 
@@ -857,7 +844,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       <table border="0" width="96%" cellspacing="0" cellpadding="2">
 <?php
   if (($action == 'edit') && ($order_exists == true)) {
-  $order = new order($oID);
+    $order = new order($oID);
 ?>
         <tr>
           <td width="100%">
@@ -1039,7 +1026,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
     echo '      </td>' . "\n" .
          '      <td class="' . $RowStyle . '">' . $order->products[$i]['model'] . "<input name='update_products[$orders_products_id][model]' size='12' type='hidden' value='" . $order->products[$i]['model'] . "'>" . '</td>' . "\n" .
          '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . "<input name='update_products[$orders_products_id][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order->products[$i]['tax']) . "'>" . '%</td>' . "\n" .
-         '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$orders_products_id][final_price]' size='9' value='" . tep_display_currency(number_format($order->products[$i]['final_price'],2)) . "'>" . '</td>' . "\n" . 
+         '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$orders_products_id][final_price]' size='9' value='" . tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) . "'>" . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value']) . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right"><b>' . $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . '</b></td>' . "\n" . 
