@@ -2,7 +2,6 @@
 /*
   $Id$
 */
-//ペイパル実験
   class telecom {
     var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer;
 
@@ -251,17 +250,11 @@
     if (!isset($_SESSION['option'])) {
       $_SESSION['option'] = date('Ymd-His'). ds_makeRandStr(2);
     }
-    $process_button_string =
-    			 //tep_draw_hidden_field('cmd',"_xclick") .
-                 //tep_draw_hidden_field('business', MODULE_PAYMENT_TELECOM_KID) .//旧番組コード
-                 tep_draw_hidden_field('amount', $total) .//旧money
-                 //tep_draw_hidden_field('currency_code', "JPY") .
-                 //tep_draw_hidden_field('email', "tekitoutest@test.qq").
-                 //tep_draw_hidden_field('lc', "JP").
-                 //tep_draw_hidden_field('costom', "abcdefghijk").
-                 //tep_draw_hidden_field('return','http://jp.gamelife.jp/GetExpressCheckoutDetails.php' ) .//return
-                tep_draw_hidden_field('return', tep_href_link(MODULE_PAYMENT_OK_URL, '', 'SSL')) .//return
-                 tep_draw_hidden_field('cancel_return', tep_href_link(MODULE_PAYMENT_NO_URL, '', 'SSL'));//return
+    $process_button_string = tep_draw_hidden_field('option', $_SESSION['option']) .
+                 tep_draw_hidden_field('clientip', MODULE_PAYMENT_TELECOM_KID) .
+                 tep_draw_hidden_field('money', $total) .
+                 tep_draw_hidden_field('redirect_url', tep_href_link(MODULE_PAYMENT_OK_URL, '', 'SSL')) .
+                 tep_draw_hidden_field('redirect_back_url', tep_href_link(MODULE_PAYMENT_NO_URL, '', 'SSL'));
     
                  //tep_draw_hidden_field('redirect_url', HTTPS_SERVER . tep_href_link(MODULE_PAYMENT_OK_URL, '', 'SSL')) .
                  //tep_draw_hidden_field('redirect_back_url', HTTPS_SERVER . tep_href_link(MODULE_PAYMENT_NO_URL, '', 'SSL'));

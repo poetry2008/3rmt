@@ -71,7 +71,6 @@ function pass_hidd(){
           </table> 
           </div>
           </form> 
-
       	<p class="pageBottom"></p>  
       </td> 
       <!-- body_text_eof //--> 

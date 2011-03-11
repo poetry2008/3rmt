@@ -221,7 +221,6 @@ $ex_site = $sites[0];
         }
 
         $module_info['keys'] = $keys_extra;
-
         $mInfo = new objectInfo($module_info);
       }
 
@@ -298,7 +297,6 @@ $ex_site = $sites[0];
         
       }
       $keys = substr($keys, 0, strrpos($keys, '<br><br>'));
-
       $heading[] = array('text' => '<b>' . $mInfo->title . '</b>');
 
       $contents = array('form' => tep_draw_form('modules', FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $_GET['module'] . '&action=save'));
@@ -307,9 +305,10 @@ $ex_site = $sites[0];
       $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_update.gif', IMAGE_UPDATE) . ' <a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $_GET['module']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
     default:
-      $heading[] = array('text' => '<b>' . (isset($mInfo->title)?$mInfo->title:'') . '</b>');
 
+      $heading[] = array('text' => '<b>' . (isset($mInfo->title)?$mInfo->title:'') . '</b>');
       if (isset($mInfo->status) && $mInfo->status == '1') {
+
         $keys = '';
         /* 临时隐藏 
         reset($mInfo->keys);
@@ -358,12 +357,13 @@ $ex_site = $sites[0];
             $keys .= '<br><br>';
           }
         }
-
         if (!isset($_GET['module']) || !$_GET['module']) {
           if(isset($directory_array[0])) {
             $_GET['module'] = str_replace('.php', '', $directory_array[0]);
           }
         }
+
+
         // 临时隐藏
         $contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . @$_GET['module'] . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>');
         foreach(tep_get_sites() as $s){
@@ -396,7 +396,6 @@ $ex_site = $sites[0];
   </tr>
 </table>
 <!-- body_eof //-->
-
 <!-- footer //-->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 <!-- footer_eof //-->

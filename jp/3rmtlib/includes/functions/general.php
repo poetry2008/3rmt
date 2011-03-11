@@ -2626,6 +2626,7 @@ function tep_unlink_temp_dir($dir)
                pd.language_id,
                pd.products_name, 
                pd.products_description,
+               pd.option_image_type, 
                pd.site_id,
                pd.products_url,
                pd.products_viewed
@@ -2674,6 +2675,7 @@ function tep_unlink_temp_dir($dir)
                pd.products_name, 
                pd.products_description,
                pd.site_id,
+               pd.option_image_type, 
                pd.products_url,
                pd.products_viewed
         FROM " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
@@ -3581,4 +3583,66 @@ function tep_get_products_by_shopiing_cart($products){
     $arr[] = tep_get_prid($p['id']);
   }
   return $arr;
+}
+
+
+/**
+ * Send HTTP POST Request
+ *
+ * @param	string	The API method name
+ * @param	string	The POST Message fields in &name=value pair format
+ * @return	array	Parsed HTTP Response body
+ */
+function PPHttpPost($methodName_, $nvpStr_) {
+  //	global $environment;
+    $environment = 'sandbox';	// or 'beta-sandbox' or 'live'テストをするために必要
+	// Set up your API credentials, PayPal end point, and API version.
+	$API_UserName = urlencode(my_api_username);
+	$API_Password = urlencode(my_api_password);
+	$API_Signature = urlencode(my_api_signature);
+	$API_Endpoint = "https://api-3t.paypal.com/nvp";
+	if("sandbox" === $environment || "beta-sandbox" === $environment) {
+		$API_Endpoint = "https://api-3t.$environment.paypal.com/nvp";
+	}
+	$version = urlencode('51.0');
+	// Set the curl parameters.
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $API_Endpoint);
+	curl_setopt($ch, CURLOPT_VERBOSE, 1);
+	// Turn off the server and peer verification (TrustManager Concept).
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($ch, CURLOPT_POST, 1);
+
+	// Set the API operation, version, and API signature in the request.
+	$nvpreq = "METHOD=$methodName_&VERSION=$version&PWD=$API_Password&USER=$API_UserName&SIGNATURE=$API_Signature".$nvpStr_;
+
+	// Set the request as a POST FIELD for curl.
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $nvpreq);
+
+	// Get response from the server.
+	$httpResponse = curl_exec($ch);
+
+	if(!$httpResponse) {
+		exit("$methodName_ failed: ".curl_error($ch).'('.curl_errno($ch).')');
+	}
+
+	// Extract the response details.
+	$httpResponseAr = explode("&", $httpResponse);
+
+	$httpParsedResponseAr = array();
+	foreach ($httpResponseAr as $i => $value) {
+		$tmpAr = explode("=", $value);
+		if(sizeof($tmpAr) > 1) {
+			$httpParsedResponseAr[$tmpAr[0]] = $tmpAr[1];
+		}
+	}
+
+	if((0 == sizeof($httpParsedResponseAr)) || !array_key_exists('ACK', $httpParsedResponseAr)) {
+		exit("Invalid HTTP Response for POST request($nvpreq) to $API_Endpoint.");
+	}
+
+	return $httpParsedResponseAr;
 }

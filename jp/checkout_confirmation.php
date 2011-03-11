@@ -559,13 +559,14 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
   if (is_array($payment_modules->modules)) {
     echo $payment_modules->process_button();
   }
-
   //character  
+
   if(isset($_SESSION['character'])){
     foreach($_SESSION['character'] as $ck => $cv){
-    echo tep_draw_hidden_field("character[$ck]", $cv);
+      echo tep_draw_hidden_field("character[$ck]", $cv);
+    }
   }
-  }
+
   
   echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER) . '</form>' . "\n";
 ?> </td> 

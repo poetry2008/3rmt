@@ -1182,3 +1182,6 @@ width:418px;
     padding-top: 5px;
 	background:url(../images/rmt_cr.gif) 0 235px no-repeat;
 }
+.product_list02 span{ font-size:10px; width:157px; text-align:center;}
+.product_list02 img{ margin-bottom:10px; height:50px;}
+.product_list02 input{ margin-top:10px;} 

@@ -232,7 +232,7 @@
           $pr_quantity = 0;
           $pv_quantity += ($pr_quantity - $quantity_difference);
         } else {
-            $pr_quantity -= $quantity_difference;
+          $pr_quantity -= $quantity_difference;
         }
       }
       // 如果是业者，不更新
