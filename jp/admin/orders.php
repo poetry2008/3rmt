@@ -931,6 +931,38 @@ if($reload == 'yes') {
               </table>
             </div>
 
+            <?php }else if ($order->info['payment_method'] == 'クレジットカード決済（パイパル）') {?>
+            <!-- PAYPAL信息 -->
+
+            <div id="orders_paypal">
+              <h3>クレジットカード情報</h3>
+              <table width="100%" border="0" cellspacing="0" cellpadding="2" class="order02_link">
+                <tr>
+                  <td class="main" valign="top" width="20%"><b>カード名義:</b></td>
+                  <td class="main" width="30%"><?php echo $order->info['paypal_firstname'].' '.$order->info['paypal_lastname'];?></td>
+                  <td class="main" valign="top"><b>電話番号:</b></td>
+                  <td class="main"><?php echo urldecode($order->info['paypal_phonenum']);?></a></td>
+                </tr>
+                <tr>
+                  <td class="main" valign="top"><b>メールアドレス:</b></td>
+                  <td class="main"><?php echo urldecode($order->info['paypal_email']);?></a></td>
+                  <td class="main" valign="top"><b>金額:</b></td>
+                  <td class="main"><?php echo $order->info['paypal_amt'];?></a></td>
+                </tr>
+                <tr>
+                  <td class="main" valign="top" width="20%"><b>居住国:</b></td>
+                  <td class="main" width="30%"><?php echo $order->info['paypal_countrycode'];?></td>
+                  <td class="main" valign="top"><b>認証:</b></td>
+                  <td class="main"><?php echo $order->info['paypal_payerstatus'];?></a></td>
+                </tr>
+                <tr>
+                  <td class="main" valign="top"><b>支払ステータス:</b></td>
+                  <td class="main"><?php echo $order->info['paypal_paymentstatus'];?></a></td>
+                  <td class="main" valign="top"><b>支払タイプ:</b></td>
+                  <td class="main"><?php echo $order->info['paypal_paymenttype'];?></a></td>
+                </tr>
+              </table>
+            </div>
             <?php } ?>
             <!-- 注文履历 -->
             <?php // 订单历史5条 ?>

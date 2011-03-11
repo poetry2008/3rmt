@@ -3602,7 +3602,7 @@ function tep_get_products_by_shopiing_cart($products){
  */
 function PPHttpPost($methodName_, $nvpStr_) {
   //	global $environment;
-    $environment = 'sandbox';	// or 'beta-sandbox' or 'live'テストをするために必要
+    $environment = defined('paypal_environment')?paypal_environment:'sandbox';
 	// Set up your API credentials, PayPal end point, and API version.
 	$API_UserName = urlencode(my_api_username);
 	$API_Password = urlencode(my_api_password);

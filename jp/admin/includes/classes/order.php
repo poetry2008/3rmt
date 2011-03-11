@@ -86,7 +86,16 @@
                           'telecom_cont'      => $order['telecom_cont'],
                           'telecom_sendid'    => $order['telecom_sendid'],
 
-                          'last_modified'     => $order['last_modified']);
+                          'last_modified'     => $order['last_modified'],
+'paypal_paymenttype' => $order['paypal_paymenttype'],
+'paypal_payerstatus' => $order['paypal_payerstatus'],
+'paypal_paymentstatus' => $order['paypal_paymentstatus'],
+'paypal_countrycode' => $order['paypal_countrycode'],
+'paypal_email' => $order['paypal_email'],
+'paypal_amt' => $order['paypal_amt'],
+'paypal_firstname' => $order['paypal_firstname'],
+'paypal_lastname' => $order['paypal_lastname'],
+'paypal_phonenum' => $order['paypal_phonenum']);
 
       $this->customer = array('name'           => $order['customers_name'],
                               'id'             => $order['customers_id'],
@@ -102,7 +111,16 @@
                               'telephone'      => $order['customers_telephone'],
                               'email_address'  => $order['customers_email_address'],
                               //'fax'            => $order['customers_fax'],
-                              'date'           => $order['date_purchased']);
+                              'date'           => $order['date_purchased'],
+'paypal_paymenttype' => $order['paypal_paymenttype'],
+'paypal_payerstatus' => $order['paypal_payerstatus'],
+'paypal_paymentstatus' => $order['paypal_paymentstatus'],
+'paypal_countrycode' => $order['paypal_countrycode'],
+'paypal_email' => $order['paypal_email'],
+'paypal_amt' => $order['paypal_amt'],
+'paypal_firstname' => $order['paypal_firstname'],
+'paypal_lastname' => $order['paypal_lastname'],
+'paypal_phonenum' => $order['paypal_phonenum']);
 
 
       $this->delivery = array('name'           => $order['delivery_name'],
