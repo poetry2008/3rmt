@@ -916,7 +916,7 @@ if($reload == 'yes') {
               </table>
             </div>
 
-            <?php }else if ($order->info['payment_method'] == 'クレジットカード決済（ペイパル）') {?>
+            <?php }else if ($order->info['payment_method'] == 'ペイパル決済') {?>
             <!-- PAYPAL信息 -->
 
             <div id="orders_paypal">
@@ -1011,7 +1011,7 @@ if($reload == 'yes') {
   } else {
     if ($order->info['payment_method'] === '銀行振込(買い取り)') {
       $orders_questions_type = 1;
-    } else if ($order->info['payment_method'] === 'クレジットカード決済' || $order->info['payment_method'] === 'クレジットカード決済（ペイパル）') {
+    } else if ($order->info['payment_method'] === 'クレジットカード決済' || $order->info['payment_method'] === 'ペイパル決済') {
       $orders_questions_type = 2;
     } else {
       $orders_questions_type = 0;

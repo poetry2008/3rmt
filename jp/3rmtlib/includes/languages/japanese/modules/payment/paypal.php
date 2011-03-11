@@ -4,7 +4,7 @@
   PAYPAL module
 */
 
-  define('MODULE_PAYMENT_PAYPAL_TEXT_TITLE', 'クレジットカード決済（ペイパル）');
+  define('MODULE_PAYMENT_PAYPAL_TEXT_TITLE', 'ペイパル決済');
   define('MODULE_PAYMENT_PAYPAL_TEXT_DESCRIPTION', 'カード情報の入力画面ではフリーメールアドレスのご入力をご遠慮ください。');
   define('MODULE_PAYMENT_PAYPAL_TEXT_EXPLAIN','SSL（暗号化通信技術）導入により信頼と安心のクレジットカード決済をご提供します。<br />お客様と異なる名義のクレジットカードはご利用できません。');
   define('MODULE_PAYMENT_PAYPAL_TEXT_ERROR', 'クレジットカードエラー');
