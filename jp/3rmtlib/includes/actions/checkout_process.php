@@ -273,8 +273,6 @@ function getexpress($amt,$token){
     foreach($httpParsedResponseAr as $key=>$value){
       $paypalData[$key] = urldecode($value);
     }
-    file_put_contents('/home/bobhero/project/3rmt/jp/a.txt',var_export($httpParsedResponseAr,true));
-    $e = var_export($httpParsedResponseAr,true);
 
     if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
       //成功コード発行予定

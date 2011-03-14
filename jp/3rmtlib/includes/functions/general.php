@@ -3595,15 +3595,25 @@ function tep_get_products_by_shopiing_cart($products){
  */
 function PPHttpPost($methodName_, $nvpStr_) {
   //	global $environment;
+  //日本删除代码
     $environment = defined('paypal_environment')?paypal_environment:'sandbox';
+  //日本删除代码 结束
+
+
 	// Set up your API credentials, PayPal end point, and API version.
 	$API_UserName = urlencode(my_api_username);
 	$API_Password = urlencode(my_api_password);
 	$API_Signature = urlencode(my_api_signature);
 	$API_Endpoint = "https://api-3t.paypal.com/nvp";
+
+
+  //日本删除代码
 	if("sandbox" === $environment || "beta-sandbox" === $environment) {
 		$API_Endpoint = "https://api-3t.$environment.paypal.com/nvp";
 	}
+  //日本删除代码 结束
+
+
 	$version = urlencode('51.0');
 	// Set the curl parameters.
 	$ch = curl_init();
