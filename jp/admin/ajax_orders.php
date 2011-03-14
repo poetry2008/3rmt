@@ -202,7 +202,6 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
     }
     tep_db_perform('orders_questions', $questions_arr, 'update', "orders_id='".$_GET['orders_id']."'");
   } else {
-    //echo 2;
     $questions_arr['orders_id'] = $_GET['orders_id'];
     tep_db_perform('orders_questions', $questions_arr);
   }
@@ -244,62 +243,59 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
     case 16:
     case 17:
       $arr = array(
-        'q_'.$_GET['questions_no'].'_1' => 'null',
-        'q_'.$_GET['questions_no'].'_2' => 'null'
+        'q_'.$_GET['questions_no'].'_1' => '',
+        'q_'.$_GET['questions_no'].'_2' => ''
       );
       break;
     case 3:
       $arr = array(
-        'q_3_1' => 'null',
-        'q_3_2' => 'null',
-        'q_3_3' => 'null',
-        'q_3_4' => 'null',
+        'q_3_1' => '',
+        'q_3_2' => '',
+        'q_3_3' => '',
+        'q_3_4' => '',
       );
       break;
     case 8:
       $arr = array(
-        'q_8_1' => 'null'
+        'q_8_1' => ''
       );
       break;
     case 11:
       $arr = array(
-        'q_11_1' => 'null',
-        'q_11_2' => 'null',
-        'q_11_3' => 'null',
-        'q_11_4' => 'null',
-        'q_11_5' => 'null',
-        'q_11_6' => 'null',
-        'q_11_7' => 'null',
-        'q_11_8' => 'null',
-        'q_11_9' => 'null',
-        'q_11_10' => 'null',
-        'q_11_11' => 'null',
-        'q_11_12' => 'null',
-        'q_11_13' => 'null',
-        'q_11_14' => 'null',
-        'q_11_15' => 'null',
-        'q_11_16' => 'null'
+        'q_11_1' => '',
+        'q_11_2' => '',
+        'q_11_3' => '',
+        'q_11_4' => '',
+        'q_11_5' => '',
+        'q_11_6' => '',
+        'q_11_7' => '',
+        'q_11_8' => '',
+        'q_11_9' => '',
+        'q_11_10' => '',
+        'q_11_11' => '',
+        'q_11_12' => '',
+        'q_11_13' => '',
+        'q_11_14' => '',
+        'q_11_15' => '',
+        'q_11_16' => ''
       );
       break;
     case 15:
       $arr = array(
-        'q_15_1' => 'null',
-        'q_15_2' => 'null',
-        'q_15_3' => 'null',
-        'q_15_4' => 'null',
-        'q_15_5' => 'null',
-        'q_15_6' => 'null',
-        'q_15_7' => 'null',
-        'q_15_8' => 'null'
+        'q_15_1' => '',
+        'q_15_2' => '',
+        'q_15_3' => '',
+        'q_15_4' => '',
+        'q_15_5' => '',
+        'q_15_6' => '',
+        'q_15_7' => '',
+        'q_15_8' => ''
       );
       break;
     case 'relate':
-      //echo 1;
       tep_db_query("update orders_questions_products set checked='0' where orders_id='".$_GET['orders_id']."'");
       exit;
       break;
   }
-  //print_r($arr);
-  //print_r($orders_id);
   tep_db_perform('orders_questions', $arr, 'update', "orders_id='".$_GET['orders_id']."'");
 }
