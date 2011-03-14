@@ -86,11 +86,11 @@ class Format {
 
         //Wrap long words...
         $text =preg_replace_callback('/\w{75,}/',create_function('$matches','return wordwrap($matches[0],70,"\n",true);'),$text);
-
-         $num=stripos($text,$str1);
-          if($num) {
-               $text=substr_replace($text,"&#12849;",$num,3);
-               }
+        $str1 = '㈱';
+        $num=stripos($text,$str1);
+         if($num) {
+           $text=str_replace($str1,"&#12849;",$text);
+         }
         return nl2br($text);
     }
 
