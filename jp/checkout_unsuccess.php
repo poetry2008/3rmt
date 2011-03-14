@@ -48,11 +48,16 @@
       <td valign="top" id="contents">
         <?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_UNSUCCESS,
               'action=checkout_payment', 'SSL')); ?> 
-        <h1 class="pageHeading"><?php echo $msg; ?></h1> 
+        <h1 class="pageHeading"><?php echo TEXT_UNSUCCESS; ?></h1> 
         <div> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr> 
-              <td><?php echo TEXT_PAY_UNSUCCESS;?></td> 
+              <td>
+              <font color='red'>
+              <?php echo $msg;?>
+              </font>
+              <br />
+              <?php echo TEXT_PAY_UNSUCCESS;?></td> 
             </tr> 
             <tr> 
               <td align="right" class="main"><?php echo
