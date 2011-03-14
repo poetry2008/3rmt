@@ -153,7 +153,7 @@ if (isset($_GET['action']) && $_GET['action']) {
         $dougyousya_history = tep_db_fetch_array(tep_db_query("select * from set_dougyousya_history where categories_id='".$current_category_id."' and dougyousya_id='".$col_dougyousya['dougyousya_id']."' order by last_date desc"));
         $dougyousya_updated = $dougyousya_history?date('n/j G:i',strtotime($dougyousya_history['last_date'])):'';
         ?>
-        <td class='dataTableHeadingContent' align='center'>
+        <td class='dataTableHeadingContent' align='center' width="50">
           <a style="font-weight:bold;" href='javascript:void(0);' onClick=dougyousya_history('history.php',<?php echo $cPath_yobi;?>,<?php echo $current_category_id;?>,'dougyousya_categories','<?php echo $col_dougyousya['dougyousya_id'];?>','<?php echo $_GET['cPath'];?>')><?php echo $col_dougyousya['dougyousya_name'];?></a>
           <input type='hidden' name='d_id[]' value='<?php echo $col_dougyousya['dougyousya_id'];?>'>
           <br><small style="font-weight:bold;font-size:12px"><?php echo $dougyousya_updated;?></small>
@@ -166,7 +166,7 @@ if (isset($_GET['action']) && $_GET['action']) {
     }
   }
 ?>
-  <td class="dataTableHeadingContent" align="center" width='100'>現在単価</td>
+  <td class="dataTableHeadingContent" align="center" width='50'>現在単価</td>
   <td class="dataTableHeadingContent" align="center" width='50'>単価設定</td>
   <td class="dataTableHeadingContent" align="center" width='30'>増減</td>
   <td class="dataTableHeadingContent" align="center" <?php if ($ocertify->npermission < 10) {?>width='1'<?php } else {?>width='80'<?php }?>><?php
@@ -254,8 +254,8 @@ while ($categories = tep_db_fetch_array($categories_query)) {
    <?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES_ADMIN, tep_get_path($categories['categories_id'])) . '">' . tep_image(DIR_WS_ICONS . 'folder.gif', ICON_FOLDER) . '</a>&nbsp;<b>' . $categories['categories_name'] . '</b>'; ?>
   </td>
   <td class="dataTableContent" align="right" colspan="<?php echo 7 + $count_dougyousya['cnt'];?>">&nbsp;</td>
-  <td class="dataTableContent" align="center">
-<?php if ($ocertify->npermission == 15 or $ocertify->npermission == 10) {?>
+  <td class="dataTableContent" align="center">&nbsp;</td>
+<td class="dataTableContent" align="center"><?php if ($ocertify->npermission == 15 or $ocertify->npermission == 10) {?>
 <?php //if (!isset($_GET['cPath']) or !$_GET['cPath']){?>
 <?php $c_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';?>
                 <?php if($categories['categories_status'] == '1'){?>
@@ -269,8 +269,7 @@ while ($categories = tep_db_fetch_array($categories_query)) {
                 <?php }?>
             <?php //}?>
 <?php }?>
-      </td>
-<td class="dataTableContent" align="right">&nbsp;</td>
+</td>
 </tr>
   <!--dataTableRowSelected end-->
 <?php }
