@@ -1,4 +1,3 @@
-
 <?php
 /*********************************************************************
     class.format.php
@@ -80,18 +79,18 @@ class Format {
     //Format text for display..
     function display($text) {
         global $cfg;
-        
 
         $text=Format::htmlchars($text); //take care of html special chars
         if($cfg && $cfg->clickableURLS() && $text)
-         //Wrap long words...
+            $text=Format::clickableurls($text);
+
+        //Wrap long words...
         $text =preg_replace_callback('/\w{75,}/',create_function('$matches','return wordwrap($matches[0],70,"\n",true);'),$text);
-           $text=Format::clickableurls($text);
-         $str1='㈱';
-$num=stripos($text,$str1);
-if($num) {
-  $text=substr_replace($text,"&#12849;",$num,3);
- }
+
+         $num=stripos($text,$str1);
+          if($num) {
+               $text=substr_replace($text,"&#12849;",$num,3);
+               }
         return nl2br($text);
     }
 
