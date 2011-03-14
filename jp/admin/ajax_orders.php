@@ -252,7 +252,8 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
       $arr = array(
         'q_3_1' => 'null',
         'q_3_2' => 'null',
-        'q_3_3' => 'null'
+        'q_3_3' => 'null',
+        'q_3_4' => 'null',
       );
       break;
     case 8:
