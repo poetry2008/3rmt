@@ -15,10 +15,8 @@
   if (isset($_GET['action']) && ($_GET['action'] == 'checkout_payment')) {
     tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, ''));
   }
-  if (!isset($_GET['msg'])||$_GET['msg']==''){
+  if (!isset($_GET['msg'])||$_GET['msg']!='paypal_error'){
     //forward404();
-  }else if (isset($_GET['msg'])&&$_GET['msg']){
-    $msg = $_GET['msg'];
   }
 
 
@@ -53,9 +51,11 @@
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr> 
               <td>
+              <?php if(isset($_GET['msg'])&&$_GET['msg']=='paypal_error'){ ?>
               <font color='red'>
-              <?php echo $msg;?>
+              <?php echo TEXT_PAYPAL_ERROR;?>
               </font>
+              <?php } ?>
               <br />
               <?php echo TEXT_PAY_UNSUCCESS;?></td> 
             </tr> 

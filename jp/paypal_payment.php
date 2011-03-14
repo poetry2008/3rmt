@@ -52,8 +52,8 @@ if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING"
 	header("Location: $payPalURL");
 	exit;
 } else  {
-            tep_redirect(tep_href_link(FILENAME_CHECKOUT_UNSUCCESS, 'msg='.
-      urlencode('ペイパル決済が失敗したため注文が確定できません。')));
+            tep_redirect(tep_href_link(FILENAME_CHECKOUT_UNSUCCESS,
+                  'msg=paypal_error'));
   //	exit('SetExpressCheckout failed: ' . print_r($httpParsedResponseAr, true));
 
 }
