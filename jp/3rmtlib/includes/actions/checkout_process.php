@@ -282,33 +282,6 @@ function getexpress($amt,$token){
       //$sql_data_array['date_added']= 'now()';
       //$sql_data_array['last_modified']= 'now()';
       //      tep_db_perform("telecom_unknow", $sql_data_array);
-    
-      tep_db_perform('telecom_unknow', array(
-        'payment_method' => 'paypal',
-        '`option`'      => ' ',
-        'username'      => $paypalData['FIRSTNAME'] . '' . $paypalData['LASTNAME'],
-        'email'         => $paypalData['EMAIL'],
-        'telno'         => $paypalData['PHONENUM'],
-        'money'         => $paypalData['AMT'],
-        'rel'           => 'yes',
-        'type'          => 'success',
-        'date_added'    => 'now()',
-        'last_modified' => 'now()'
-      ));
-    }else{
-      // 不明
-      tep_db_perform('telecom_unknow', array(
-        'payment_method' => 'paypal',
-        '`option`'      => ' ',
-        'username'      => $paypalData['FIRSTNAME'] . '' . $paypalData['LASTNAME'],
-        'email'         => $paypalData['EMAIL'],
-        'telno'         => $paypalData['PHONENUM'],
-        'money'         => $paypalData['AMT'],
-        'rel'           => '',
-        'type'          => 'null',
-        'date_added'    => 'now()',
-        'last_modified' => 'now()'
-      ));
       //エラーコード発行予定
       //                  exit('DoExpressCheckoutPayment failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
             tep_redirect(tep_href_link(FILENAME_CHECKOUT_UNSUCCESS, 'msg='.
