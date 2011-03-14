@@ -310,16 +310,14 @@ function getexpress($amt,$token){
         'last_modified' => 'now()'
       ));
       //エラーコード発行予定
-  forward404_paypal();
       //                  exit('DoExpressCheckoutPayment failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
-      /*
-            tep_redirect(tep_href_link(FILENAME_CHECKOUT_CONFIRMATION, 'msg='.
-      urlencode('支払いが成功しません，もう一度してください！')));
-      */
+            tep_redirect(tep_href_link(FILENAME_CHECKOUT_UNSUCCESS, 'msg='.
+      urlencode('ペイパル決済が失敗したため注文が確定できません。')));
     }
   }else{
+            tep_redirect(tep_href_link(FILENAME_CHECKOUT_UNSUCCESS, 'msg='.
+      urlencode('ペイパル決済が失敗したため注文が確定できません。')));
     // 不正
-  forward404_paypal();
     //エラーコード発行予定
    // exit('GetExpressCheckoutDetails failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
   }
