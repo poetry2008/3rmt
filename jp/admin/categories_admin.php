@@ -124,6 +124,7 @@ if (isset($_GET['action']) && $_GET['action']) {
   <!--dataTableHeadingRow-->
   <tr class="dataTableHeadingRow" valign="top">
   <td class="dataTableHeadingContent" height="30"><?php echo TABLE_HEADING_CATEGORIES_PRODUCTS; ?></td>
+  <td class="dataTableHeadingContent" align="right" width="50">注文数</td>
   <td class="dataTableHeadingContent" align="right" width="50">架空在庫</td>
   <td class="dataTableHeadingContent" align="right" width="50">実在庫</td>
   <td class="dataTableHeadingContent" align="right" width="50">
@@ -387,6 +388,7 @@ while ($products = tep_db_fetch_array($products_query)) {
       }
       $target_cnt=$products_count-1;//同業者専用
   ?>
+  <td class="dataTableContent" align='right'><?php echo tep_get_order_cnt_by_pid($products['products_id']);?></td>
   <?php //個数架空 ?>
   <td class="dataTableContent" align='right' onmouseover='this.style.cursor="pointer"'  id='virtual_quantity_<?php echo $products['products_id']; ?>' onclick="update_virtual_quantity(<?php echo $products['products_id']; ?>)"><?php echo $imaginary;?></td>
 <?php //数量 ?>

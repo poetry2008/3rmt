@@ -4297,3 +4297,10 @@ function tep_insert_currency_value($num){
   }
   return (float)str_replace($arr,$arr2,(string)$num);
 }
+
+// >要 取引終了的状态，视为注文数。要 取引終了的状态，视为注文数。
+function tep_get_order_cnt_by_pid($pid){
+  //$r = tep_db_fetch_array(tep_db_query("select sum(orders_products.products_quantity) as cnt from orders_products left join orders on orders.orders_id=orders_products.orders_id where products_id='".$pid."' and orders_status = '2'"));
+  $r = tep_db_fetch_array(tep_db_query("select count(orders_products.orders_id) as cnt from orders_products left join orders on orders.orders_id=orders_products.orders_id where products_id='".$pid."' and orders_status = '2'"));
+  return $r['cnt'];
+}
