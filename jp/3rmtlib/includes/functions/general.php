@@ -50,6 +50,12 @@ function forward404()
   exit;
   //throw new Exception();
 }
+function forward404_paypal()
+{
+  header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
+  require(DIR_WS_MODULES  . 'paypal_404.html');
+  exit;
+}
 
 //在条件成立的时候，404
 function forward404If($condition)

@@ -52,6 +52,7 @@ if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING"
 	header("Location: $payPalURL");
 	exit;
 } else  {
+  forward404_paypal();
   //	exit('SetExpressCheckout failed: ' . print_r($httpParsedResponseAr, true));
 
 }
