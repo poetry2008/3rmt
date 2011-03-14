@@ -486,16 +486,6 @@
       where os.language_id = " . $languages_id . " 
         and os.orders_status_id IN (".join(',', $__orders_status_ids).")");
 
-  /*
-    $select_query = tep_db_query("
-      select distinct orders_status_mail,
-                      orders_status_title,
-                      orders_status_id,
-                      site_id
-      from ".TABLE_ORDERS_MAIL." 
-      where language_id = " . $languages_id . " 
-        and orders_status_id IN (".join(',', $__orders_status_ids).")");
-*/
   while($select_result = tep_db_fetch_array($select_query)){
     if($suu == 0){
       $select_select = $select_result['orders_status_id'];
@@ -760,10 +750,6 @@ if($reload == 'yes') {
     <?php echo '<a class="order_link" href="javascript:void(0);" onclick="copyToClipboard(\'' . tep_output_string_protected($order->customer['email_address']) . '\')">' . tep_output_string_protected($order->customer['email_address']) . '</a>&nbsp;&nbsp;&nbsp;&nbsp;<a title="問合番号を新規作成します" href="'.$remoteurl.'" target="_blank">メール</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="telecom_unknow.php?keywords='.tep_output_string_protected($order->customer['email_address']).'">クレカ</a>'; 
 ?></td>
                 </tr>
-            <!--
-              </table>
-              <table width="100%" border="0" cellspacing="0" cellpadding="2">
-              -->
                 <tr>
                   <td class="main" valign="top" width="30%"><b><?php echo ENTRY_PAYMENT_METHOD; ?></b></td>
                   <td class="main" width="70%"><?php echo $order->info['payment_method']; ?></td>
@@ -900,7 +886,6 @@ if($reload == 'yes') {
                   <td class="main" valign="top" width="30%"><b>Referer:</b></td>
                   <td class="main" width="70%"><p style="word-break:break-all;width:300px;"><?php echo urldecode($order->info['orders_ref']);?></p></td>
                 </tr>
-                <?php //$keywords = parseKeyword($order->info['orders_ref']);?>
                 <?php if ($order->info['orders_ref_keywords']) { ?>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>Keywords:</b></td>
@@ -931,6 +916,38 @@ if($reload == 'yes') {
               </table>
             </div>
 
+            <?php }else if ($order->info['payment_method'] == 'ペイパル決済') {?>
+            <!-- PAYPAL信息 -->
+
+            <div id="orders_paypal">
+              <h3>クレジットカード情報</h3>
+              <table width="100%" border="0" cellspacing="0" cellpadding="2" class="order02_link">
+                <tr>
+                  <td class="main" valign="top" width="20%"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_name']);?>">カード名義:</a></b></td>
+                  <td class="main" width="30%"><?php echo $order->info['telecom_name'];?></td>
+                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_tel']);?>">電話番号:</a></b></td>
+                  <td class="main"><?php echo tep_high_light_by_keywords($order->info['telecom_tel'],TELNO_KEYWORDS);?></a></td>
+                </tr>
+                <tr>
+                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_email']);?>">メールアドレス:</a></b></td>
+                  <td class="main"><?php echo $order->info['telecom_email'];?></a></td>
+                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_money']);?>">金額:</a></b></td>
+                  <td class="main"><?php echo $order->info['telecom_money'];?></a></td>
+                </tr>
+                <tr>
+                  <td class="main" valign="top" width="20%"><b>居住国:</b></td>
+                  <td class="main" width="30%"><?php echo $order->info['paypal_countrycode'];?></td>
+                  <td class="main" valign="top"><b>認証:</b></td>
+                  <td class="main"><?php echo $order->info['paypal_payerstatus'];?></a></td>
+                </tr>
+                <tr>
+                  <td class="main" valign="top"><b>支払ステータス:</b></td>
+                  <td class="main"><?php echo $order->info['paypal_paymentstatus'];?></a></td>
+                  <td class="main" valign="top"><b>支払タイプ:</b></td>
+                  <td class="main"><?php echo $order->info['paypal_paymenttype'];?></a></td>
+                </tr>
+              </table>
+            </div>
             <?php } ?>
             <!-- 注文履历 -->
             <?php // 订单历史5条 ?>
@@ -947,12 +964,6 @@ if($reload == 'yes') {
                 if (tep_db_num_rows($order_history_query)) {
                   ?>
                   <table width="100%" border="0" cellspacing="0" cellpadding="2">
-                    <!--
-                    <tr>
-                      <td class="main">&nbsp;</td>
-                      <td class="main">&nbsp;</td>
-                      <td class="main">&nbsp;</td>
-                    </tr>-->
                   <?php
                   while($order_history = tep_db_fetch_array($order_history_query)){
                   ?>
@@ -991,8 +1002,6 @@ if($reload == 'yes') {
   // 取得问答的答案
   $orders_questions_query = tep_db_query("select * from orders_questions where orders_id = '".$order->info['orders_id']."'");
   $oq = tep_db_fetch_array($orders_questions_query);
-  //echo "<pre>";
-  //print_r($oq);
   // 自动或者手动判断问答种类
   // 0=>贩卖, 1=>买取, 2=>信用卡
   if (isset($_GET['questions_type'])) {
@@ -1002,7 +1011,7 @@ if($reload == 'yes') {
   } else {
     if ($order->info['payment_method'] === '銀行振込(買い取り)') {
       $orders_questions_type = 1;
-    } else if ($order->info['payment_method'] === 'クレジットカード決済' || $order->info['payment_method'] === 'クレジットカード決済（パイパル）') {
+    } else if ($order->info['payment_method'] === 'クレジットカード決済' || $order->info['payment_method'] === 'ペイパル決済') {
       $orders_questions_type = 2;
     } else {
       $orders_questions_type = 0;

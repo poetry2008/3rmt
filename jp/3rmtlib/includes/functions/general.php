@@ -2531,14 +2531,7 @@ function tep_unlink_temp_dir($dir)
 // 買い取り商品が存在するか？
   function ds_count_bflag() {
     global $cart;
-    $products = $cart->get_products();
-    for ($i=0, $n=sizeof($products); $i<$n; $i++) {
-    if($products[$i]['bflag'] == '1') {
-      return 'View';
-    }
-  }
-  
-  return false;
+    return $cart->show_total() < 0 ? 'View' : false;
   }
   
 ////
@@ -2546,19 +2539,19 @@ function tep_unlink_temp_dir($dir)
   function ds_replace_plist($pID, $qty, $string) {
     // ccdd
     $query = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".(int)tep_get_prid($pID)."'");
-  $result = mysql_fetch_array($query);
+    $result = mysql_fetch_array($query);
   
-  if($qty < 1) {
-    if($result['products_bflag'] == '1') {
-      # 買い取り商品
-    return '<span class="markProductOutOfStock">一時停止</span>';
+    if($qty < 1) {
+      if($result['products_bflag'] == '1') {
+        # 買い取り商品
+      return '<span class="markProductOutOfStock">一時停止</span>';
+      } else {
+        # 通常商品
+        return '<span class="markProductOutOfStock">在庫切れ</span>';
+      }
     } else {
-      # 通常商品
-      return '<span class="markProductOutOfStock">在庫切れ</span>';
+      return $string;
     }
-  } else {
-    return $string;
-  }
   }
 
   function tep_get_category_by_id($cid, $site_id, $lid, $default = true){
@@ -3602,7 +3595,7 @@ function tep_get_products_by_shopiing_cart($products){
  */
 function PPHttpPost($methodName_, $nvpStr_) {
   //	global $environment;
-    $environment = 'sandbox';	// or 'beta-sandbox' or 'live'テストをするために必要
+    $environment = defined('paypal_environment')?paypal_environment:'sandbox';
 	// Set up your API credentials, PayPal end point, and API version.
 	$API_UserName = urlencode(my_api_username);
 	$API_Password = urlencode(my_api_password);

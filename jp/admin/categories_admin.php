@@ -7,7 +7,6 @@
 require('includes/application_top.php');
 require(DIR_WS_CLASSES . 'currencies.php');
 $cPath_yobi = cpathPart($_GET['cPath'],1);
-//$colspan = 8;
 $currencies = new currencies();
 
 function in_dougyousya($d_id, $dougyousya) {
@@ -26,16 +25,11 @@ if ( eregi("(insert|update|setflag)", $action) ) include_once('includes/reset_se
 if (isset($_GET['action']) && $_GET['action']) {
   switch ($_GET['action']) 
     {
-    //case 'goto': //一括更新　　
-      //tep_redirect(tep_href_link(FILENAME_CATEGORIES_ADMIN, 'cPath=' . $HTTP_GET_VARS['cPath'] . '&pID=' .$products_id));
-      //break;
-      //tep_db_prepare_input＝変数か文字列の判定 //更新するもの・・・特別価格と同業者の価格＋radioのチェック
     case 'all_update': //一括更新　　
       require('includes/set/all_update.php');
       tep_redirect(tep_href_link(FILENAME_CATEGORIES_ADMIN, 'cPath=' . $HTTP_GET_VARS['cPath'] . '&pID=' .$products_id));
       break;
     case 'toggle':
-      //require('includes/set/toggle.php');
       $c_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
       if ($_GET['cID']) {
         $cID = intval($_GET['cID']);
@@ -168,7 +162,6 @@ if (isset($_GET['action']) && $_GET['action']) {
       }
     } else {
       $count_dougyousya['cnt'] = 1;
-      //echo "<td class='dataTableHeadingContent' align='center' width='100'><a href='cleate_dougyousya.php'>同業者未設定</a></td>";
       echo "<td class='dataTableHeadingContent' align='center' width='100'>同業者未設定</td>";
     }
   }
@@ -255,11 +248,7 @@ while ($categories = tep_db_fetch_array($categories_query)) {
     $nowColor = $odd;
   }
 
-  //if ( (isset($cInfo) && is_object($cInfo)) && ($categories['categories_id'] == $cInfo->categories_id) ) {
-  //  echo ' <!--dataTableRowSelected--> <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" ' . ' onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES_ADMIN, tep_get_path($categories['categories_id'])) . '\'">' . "\n";
-  //} else {
-    echo '              <tr class="' . $nowColor . '" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'"onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES_ADMIN, tep_get_path($categories['categories_id'])) . '\'">' . "\n"; 
-  //}
+  echo '              <tr class="' . $nowColor . '" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'"onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES_ADMIN, tep_get_path($categories['categories_id'])) . '\'">' . "\n"; 
   ?>
   <td class="dataTableContent">
    <?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES_ADMIN, tep_get_path($categories['categories_id'])) . '">' . tep_image(DIR_WS_ICONS . 'folder.gif', ICON_FOLDER) . '</a>&nbsp;<b>' . $categories['categories_name'] . '</b>'; ?>
@@ -461,7 +450,7 @@ if ($cPath_yobi){
         echo $currencies->format($product_price['price']);
       }
 ?></td>
-<td class="dataTableContent" align="center"><input style="text-align:right;" pos="<?php echo $products_count;?>_1" class="udlr" type="text" size='6' value="<?php echo (int)$products['products_price'];?>" name="price[]" id="<?php echo "price_input_".$products_count; ?>" onblur="event_onblur(<?php echo $products_count; ?>)" onchange="event_onchange(<?php echo $products_count; ?>)"><span id="price_error_<?php echo $products_count; ?>"></span></td>
+<td class="dataTableContent" align="center"><input style="text-align:right;" pos="<?php echo $products_count;?>_1" class="udlr" type="text" size='6' value="<?php echo (int)abs($products['products_price']);?>" name="price[]" id="<?php echo "price_input_".$products_count; ?>" onblur="event_onblur(<?php echo $products_count; ?>)" onchange="event_onchange(<?php echo $products_count; ?>)"><span id="price_error_<?php echo $products_count; ?>"></span></td>
 <td class="dataTableContent" align="right"><?php echo $products['products_price_offset'];?><input style="text-align:right;" pos="<?php echo $products_count;?>_2" class="_udlr" type="hidden" size='6' value="<?php echo $products['products_price_offset'];?>" name="offset[]" id="<?php echo "offset_input_".$products_count; ?>"><span id="offset_error_<?php echo $products_count; ?>" onchange="this.value=SBC2DBC(this.value)"></span></td>
 <?php //サイト入力  ?>
 <td class="dataTableContent" align="center"><?php
@@ -498,7 +487,7 @@ if ($ocertify->npermission >= 10) { //表示制限
   ?>
   <input type="hidden" name="this_price[]" value="<?php echo (int)$special_price_check;?>" >
   <input type="hidden" name="proid[]"      value="<?php echo $products['products_id']; ?>" >
-  <input type="hidden" name="pprice[]"     value="<?php echo $products['products_price']; ?>" >
+  <input type="hidden" name="pprice[]"     value="<?php echo abs($products['products_price']); ?>" >
   <input type="hidden" name="bflag[]"      value="<?php echo $products['products_bflag']; ?>" >
 </td>
 <td>

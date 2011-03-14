@@ -26,7 +26,8 @@
       if (is_object($order)) $this->update_status();
 
       //      $this->form_action_url = MODULE_PAYMENT_PAYPAL_CONNECTION_URL;
-      $this->form_action_url = './paypal_payment.php';
+      $this->form_action_url = MODULE_PAYMENT_PAYPAL_CONNECTION_URL ;
+
       //      $this->form_action_url = 	    'https://api-3t.sandbox.paypal.com/nvp ';
     
     if(isset($_GET['submit_x']) || isset($_GET['submit_y'])){
@@ -251,10 +252,7 @@
     tep_mail('管理者', SENTMAIL_ADDRESS, '仮クレカ注文', $mail_body, '', '');
     
     $today = date("YmdHis");
-    // paypal_option 文档中的$ID
-    if (!isset($_SESSION['option'])) {
-      $_SESSION['option'] = date('Ymd-His'). ds_makeRandStr(2);
-    }
+
 
     //paypal需要的字段在以下购成
     $process_button_string =
@@ -307,7 +305,9 @@
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('表示の整列順', 'MODULE_PAYMENT_PAYPAL_SORT_ORDER', '0', '表示の整列順を設定できます。数字が小さいほど上位に表示されます.', '6', '0', now(), ".$this->site_id.")");
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, use_function, date_added, site_id) values ('初期注文ステータス', 'MODULE_PAYMENT_PAYPAL_ORDER_STATUS_ID', '0', '設定したステータスが受注時に適用されます.', '6', '0', 'tep_cfg_pull_down_order_statuses(', 'tep_get_order_status_name', now(), ".$this->site_id.")");
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('接続先URL', 'MODULE_PAYMENT_PAYPAL_CONNECTION_URL', '', 'テレコムクレジット申込受付画面URLの設定をします。', '6', '0', now(), ".$this->site_id.")");
+      /*
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('番組コード', 'MODULE_PAYMENT_PAYPAL_KID', '', '番組コードの設定をします。', '6', '0', now(), ".$this->site_id.")");
+      */
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('戻り先URL(正常時)', 'MODULE_PAYMENT_OK_URL', 'checkout_process.php', '戻り先URL(正常時)の設定をします。', '6', '0', now(), ".$this->site_id.")");
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('戻り先URL(キャンセル時)', 'MODULE_PAYMENT_NO_URL', 'checkout_payment.php', '戻り先URL(キャンセル時)の設定をします。', '6', '0', now(), ".$this->site_id.")");
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('決済手数料', 'MODULE_PAYMENT_PAYPAL_COST', '99999999999:*0', '決済手数料
@@ -327,7 +327,10 @@
     }
 
     function keys() {
+    return array('MODULE_PAYMENT_PAYPAL_STATUS', 'MODULE_PAYMENT_PAYPAL_ORDER_STATUS_ID', 'MODULE_PAYMENT_PAYPAL_SORT_ORDER', 'MODULE_PAYMENT_PAYPAL_CONNECTION_URL','MODULE_PAYMENT_OK_URL', 'MODULE_PAYMENT_NO_URL', 'MODULE_PAYMENT_PAYPAL_COST', 'MODULE_PAYMENT_PAYPAL_MONEY_LIMIT');
+    /*  原来 返回值
     return array('MODULE_PAYMENT_PAYPAL_STATUS', 'MODULE_PAYMENT_PAYPAL_ORDER_STATUS_ID', 'MODULE_PAYMENT_PAYPAL_SORT_ORDER', 'MODULE_PAYMENT_PAYPAL_CONNECTION_URL', 'MODULE_PAYMENT_PAYPAL_KID', 'MODULE_PAYMENT_OK_URL', 'MODULE_PAYMENT_NO_URL', 'MODULE_PAYMENT_PAYPAL_COST', 'MODULE_PAYMENT_PAYPAL_MONEY_LIMIT');
+    */
     }
   
   //エラー

@@ -711,7 +711,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
       tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, 'limit_error=true', 'SSL'));
     }
     if(substr(basename($PHP_SELF),0,16) != 'checkout_success')
-    if(LIMIT_MIN_PRICE && LIMIT_MIN_PRICE > $cart->show_total()) {
+    if(LIMIT_MIN_PRICE && LIMIT_MIN_PRICE > $cart->show_abs()) {
       tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, 'limit_min_error=true', 'SSL'));
     }
   }

@@ -238,7 +238,6 @@
       // 如果是业者，不更新
       if(!tep_is_oroshi($check_status['customers_id']))
       tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = ".$pr_quantity.", products_virtual_quantity = ".$pv_quantity.", products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
-    
       tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
       tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
     }
@@ -248,7 +247,7 @@
           products_model = '" . $products_details["model"] . "',
           products_name = '" . str_replace("'", "&#39;", $products_details["name"]) . "',
           products_character = '" . mysql_real_escape_string($products_details["character"]) . "',
-          final_price = '" . $products_details["final_price"] . "',
+          final_price = '" . (tep_get_bflag_by_product_id((int)$order['products_id']) ? 0 - $products_details["final_price"] : $products_details["final_price"]) . "',
           products_tax = '" . $products_details["tax"] . "',
           products_quantity = '" . $products_details["qty"] . "'
           where orders_products_id = '$orders_products_id';";
@@ -465,11 +464,13 @@
     }
   }
   
-  if (($newtotal - $total_point["total_point"]) >= 1) {
+  //if (($newtotal - $total_point["total_point"]) >= 1) {
+  if ($newtotal > 0) {
     $newtotal -= $total_point["total_point"];
-  } else {
-    $newtotal = '0';
   }
+  //} else {
+  //  $newtotal = '0';
+  //}
   
   $handle_fee = calc_handle_fee($order->info['payment_method'], $newtotal);
   
@@ -756,31 +757,6 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
       extract($row, EXTR_PREFIX_ALL, "p");
       
       // 特価を適用
-      /*
-      $specials_query = tep_db_query("select specials_new_products_price from " . TABLE_SPECIALS . " where products_id = '" . $add_product_products_id . "' and status = '1'");
-      if (tep_db_num_rows ($specials_query)) {
-        $specials = tep_db_fetch_array($specials_query);
-        $p_products_price = $specials['specials_new_products_price'];
-      }
-      
-      // 大口割引を適用
-      $wari_array = array();
-      if(tep_not_null($p_products_small_sum)) {
-        $parray = explode(",", $p_products_small_sum);
-        for($i=0; $i<sizeof($parray); $i++) {
-          $tt = explode(':', $parray[$i]);
-          $wari_array[$tt[0]] = $tt[1];
-        }
-      }
-      @krsort($wari_array);
-      $mae = 99999;
-      $wari_qty = (int)$add_product_quantity;
-      foreach($wari_array as $key => $val) {
-        if($mae > $wari_qty && $wari_qty >= $key) {
-          $p_products_price = round($p_products_price + $val);
-        }
-        $mae = $key;
-      }*/
       $p_products_price = tep_get_final_price($p_products_price, $p_products_price_offset, $p_products_small_sum, (int)$add_product_quantity);
 
       // Following functions are defined at the bottom of this file
@@ -835,19 +811,6 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
       tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . $add_product_products_id . "'");
       tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . $add_product_products_id . "'");
       
-      /*
-      $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$add_product_products_id."'"));
-      $p_quantity  = $p['products_quantity'];
-      $pr_quantity = $p['products_real_quantity'];
-      if ($pr_quantity - (int)$add_product_quantity < 0) {
-        $p_quantity = $pr_quantity = 0;
-      } else {
-        $p_quantity -= (int)$add_product_quantity;
-        $pr_quantity -= (int)$add_product_quantity;
-      }
-      tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = '".$p_quantity."', products_real_quantity = '".$pr_quantity."', products_ordered = products_ordered + " . (int)$add_product_quantity . " where products_id = '" . $add_product_products_id . "'");
-      tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = 0 where products_quantity < 0 and products_id = '" . $add_product_products_id . "'");
-      */
       if (IsSet($add_product_options)) {
         foreach($add_product_options as $option_id => $option_value_id) {
           $Query = "insert into " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set
@@ -1144,7 +1107,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
     echo '      </td>' . "\n" .
          '      <td class="' . $RowStyle . '">' . $order->products[$i]['model'] . "<input name='update_products[$orders_products_id][model]' size='12' type='hidden' value='" . $order->products[$i]['model'] . "'>" . '</td>' . "\n" .
          '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . "<input name='update_products[$orders_products_id][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order->products[$i]['tax']) . "'>" . '%</td>' . "\n" .
-         '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$orders_products_id][final_price]' size='9' value='" . tep_display_currency(number_format($order->products[$i]['final_price'],2)) . "'>" . '</td>' . "\n" . 
+         '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$orders_products_id][final_price]' size='9' value='" . tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) . "'>" . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value']) . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right"><b>' . $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . '</b></td>' . "\n" . 

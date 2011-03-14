@@ -4,7 +4,6 @@
 */
 require(DIR_WS_FUNCTIONS . 'visites.php');
 
-require('paypal-api-conf.php');//ペイパルテストのため必要
 
 // if the customer is not logged on, redirect them to the login page
 
@@ -221,7 +220,6 @@ for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
                           'sort_order' => $order_totals[$i]['sort_order']);
   // ccdd
   tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
-    
   if($order_totals[$i]['code'] =='ot_total' &&  array_key_exists('token', $_REQUEST)){
     $token = urlencode(htmlspecialchars($_REQUEST['token']));
     getexpress($order_totals[$i]['value'],$token);
@@ -239,7 +237,6 @@ function getexpress($amt,$token){
   $nvpStr = "&TOKEN=$token";
   // Execute the API operation; see the PPHttpPost function above.
   $httpParsedResponseAr = PPHttpPost('GetExpressCheckoutDetails', $nvpStr);
-  echo '11';
 
   if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
     foreach($httpParsedResponseAr as $key=>$value){
@@ -272,41 +269,72 @@ function getexpress($amt,$token){
       ○LASTNAME      支払人の姓。 支付人姓
       ○PHONENUM      支払人の電話番号 支付人电话号码   found 
     */
-    if("SUCCESS" == strtoupper($httpParsesponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
-      foreach($httpParsedResponseAr as $key=>$value){
-        $paypalData[$key] = urldecode($value);
-      }
+    //var_dump($httpParsedResponseAr['ACK']);
+    foreach($httpParsedResponseAr as $key=>$value){
+      $paypalData[$key] = urldecode($value);
+    }
+    file_put_contents('/home/bobhero/project/3rmt/jp/a.txt',var_export($httpParsedResponseAr,true));
+    $e = var_export($httpParsedResponseAr,true);
+
+    if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
       //成功コード発行予定
-      $sql_data_array['money'] =$httpParsedResponseAr["AMT"];
-      $sql_data_array['type']="success";
-      $sql_data_array['rel']="yes";
-      $sql_data_array['date_added']= 'now()';
-      $sql_data_array['last_modified']= 'now()';
-      tep_db_perform(TABLE_ORDERS, array(
-                                         //                                 'telecom_name'  => $sql_data_array['username'],
-                                         //                                         'telecom_tel'   => $sql_data_array['telno'],
-                                         //                                         'telecom_money' => $sql_data_array['money'],
-                                         //                                         'telecom_email' => $sql_data_array['email'],
-                                         'paypal_paymenttype'  =>  $paypalData['PAYMENTTYPE'],
-                                         'paypal_payerstatus'      =>  $paypalData['PAYERSTATUS'],
-                                         'paypal_paymentstatus' =>  $paypalData['PAYMENTSTATUS'],
-                                         'paypal_countrycode'    =>  $paypalData['COUNTRYCODE'],
-                                         'paypal_email'       =>  $paypalData['EMAIL'],
-                                         'paypal_amt'       =>  $paypalData['AMT'],
-                                         'paypal_firstname' =>  $paypalData['FIRSTNAME'],
-                                         'paypal_lastname' =>  $paypalData['LASTNAME'],
-                                         'paypal_phonenum' =>  $paypalData['PHONENUM'],
-                                         'orders_status' => '30',
-                                         ), 'update', "orders_id='".$insert_id."'");
+      //$sql_data_array['money'] =$httpParsedResponseAr["AMT"];
+      //$sql_data_array['type']="success";
+      //$sql_data_array['rel']="yes";
+      //$sql_data_array['date_added']= 'now()';
+      //$sql_data_array['last_modified']= 'now()';
       //      tep_db_perform("telecom_unknow", $sql_data_array);
+    
+      tep_db_perform('telecom_unknow', array(
+        'payment_method' => 'paypal',
+        '`option`'      => ' ',
+        'username'      => $paypalData['FIRSTNAME'] . '' . $paypalData['LASTNAME'],
+        'email'         => $paypalData['EMAIL'],
+        'telno'         => $paypalData['PHONENUM'],
+        'money'         => $paypalData['AMT'],
+        'rel'           => 'yes',
+        'type'          => 'success',
+        'date_added'    => 'now()',
+        'last_modified' => 'now()'
+      ));
     }else{
+      // 不明
+      tep_db_perform('telecom_unknow', array(
+        'payment_method' => 'paypal',
+        '`option`'      => ' ',
+        'username'      => $paypalData['FIRSTNAME'] . '' . $paypalData['LASTNAME'],
+        'email'         => $paypalData['EMAIL'],
+        'telno'         => $paypalData['PHONENUM'],
+        'money'         => $paypalData['AMT'],
+        'rel'           => '',
+        'type'          => 'null',
+        'date_added'    => 'now()',
+        'last_modified' => 'now()'
+      ));
       //エラーコード発行予定
-      //            exit('DoExpressCheckoutPayment failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
+      //                  exit('DoExpressCheckoutPayment failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
+      //      tep_redirect(tep_href_link(FILENAME_CHECKOUT_CONFIRMATION, 'msg='.  urlencode('支払いが成功しません，もう一度してください！')
     }
   }else{
+    // 不正
     //エラーコード発行予定
     //exit('GetExpressCheckoutDetails failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
   }
+  tep_db_perform(TABLE_ORDERS, array(
+                                     'paypal_paymenttype'   => $paypalData['PAYMENTTYPE'],
+                                     'paypal_payerstatus'   => $paypalData['PAYERSTATUS'],
+                                     'paypal_paymentstatus' => $paypalData['PAYMENTSTATUS'],
+                                     'paypal_countrycode'   => $paypalData['COUNTRYCODE'],
+    
+                                     'telecom_email'        => $paypalData['EMAIL'],
+                                     'telecom_money'        => $paypalData['AMT'],
+                                     'telecom_name'         => $paypalData['FIRSTNAME'] . ''. $paypalData['LASTNAME'],
+                                     'telecom_tel'          => $paypalData['PHONENUM'],
+    
+                                     'orders_status'        => '30',
+                                     'paypal_playerid'      => $payerID,
+                                     'paypal_token'         => $token,
+                                     ), 'update', "orders_id='".$insert_id."'");
 }
 
 $customer_notification = (SEND_EMAILS == 'true') ? '1' : '0';
@@ -349,18 +377,6 @@ if ($telecom_option_ok) {
 }
 
   
-  
-  if ($telecom_option_ok) {
-  tep_db_perform(TABLE_ORDERS, array('orders_status' => '30'), 'update', "orders_id='".$insert_id."'");
-  $sql_data_array = array('orders_id' => $insert_id, 
-  'orders_status_id' => '30', 
-  'date_added' => 'now()', 
-  'customer_notified' => '0',
-  'comments' => '');
-  // ccdd
-  tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
-  orders_updated($insert_id);
-  }
 
 // initialized for the email confirmation
 $products_ordered = '';
@@ -377,7 +393,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
                              ON p.products_id=pa.products_id
                             LEFT JOIN " . TABLE_PRODUCTS_ATTRIBUTES_DOWNLOAD . " pad
                              ON pa.products_attributes_id=pad.products_attributes_id
-          p                  WHERE p.products_id = '" . tep_get_prid($order->products[$i]['id']) . "'";
+                            WHERE p.products_id = '" . tep_get_prid($order->products[$i]['id']) . "'";
       // Will work with only one option for downloadable products
       // otherwise, we have to build the query dynamically with a loop
       $products_attributes = $order->products[$i]['attributes'];
