@@ -29,7 +29,7 @@
 // 以下是页面
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_SUCCESS);
 
-  $breadcrumb->add(NAVBAR_TITLE_1);
+  $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
   $breadcrumb->add(NAVBAR_TITLE_2);
 //ccdd
   $global_query = tep_db_query("

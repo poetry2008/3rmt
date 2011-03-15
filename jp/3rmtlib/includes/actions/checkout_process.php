@@ -284,6 +284,7 @@ function getexpress($amt,$token){
       //      tep_db_perform("telecom_unknow", $sql_data_array);
       //エラーコード発行予定
       //                  exit('DoExpressCheckoutPayment failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
+    }else{
             tep_redirect(tep_href_link(FILENAME_CHECKOUT_UNSUCCESS,
                   'msg=paypal_error'));
             exit;

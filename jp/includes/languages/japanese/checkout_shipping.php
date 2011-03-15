@@ -10,7 +10,7 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE_1', 'レジ');
+define('NAVBAR_TITLE_1', 'ショッピングカート');
 define('NAVBAR_TITLE_2', '取引日時の指定');
 
 define('HEADING_TITLE', '取引日時の指定');
