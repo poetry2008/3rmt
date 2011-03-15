@@ -209,7 +209,10 @@ if ($bflag_single == 'View') {
   $new_handle_fee = $sql_data_array['code_fee'];
 }
 // ccdd
+$new_order_array = $sql_data_array;
+if($telecom_option_ok){
 tep_db_perform(TABLE_ORDERS, $sql_data_array);
+}
   
 for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
   $sql_data_array = array('orders_id' => $insert_id,
@@ -222,13 +225,13 @@ for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
   tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
   if($order_totals[$i]['code'] =='ot_total' &&  array_key_exists('token', $_REQUEST)){
     $token = urlencode(htmlspecialchars($_REQUEST['token']));
-    getexpress($order_totals[$i]['value'],$token);
+    getexpress($order_totals[$i]['value'],$token,$new_order_array);
     $telecom_option_ok = true;
   }
 }
 
 //ペイパルの決済を完了させる
-function getexpress($amt,$token){
+function getexpress($amt,$token,$new_order_array){
 
   $paypalData = array();
   $testcode = 1;
@@ -282,47 +285,22 @@ function getexpress($amt,$token){
       //$sql_data_array['date_added']= 'now()';
       //$sql_data_array['last_modified']= 'now()';
       //      tep_db_perform("telecom_unknow", $sql_data_array);
-    
-      tep_db_perform('telecom_unknow', array(
-        'payment_method' => 'paypal',
-        '`option`'      => ' ',
-        'username'      => $paypalData['FIRSTNAME'] . '' . $paypalData['LASTNAME'],
-        'email'         => $paypalData['EMAIL'],
-        'telno'         => $paypalData['PHONENUM'],
-        'money'         => $paypalData['AMT'],
-        'rel'           => 'yes',
-        'type'          => 'success',
-        'date_added'    => 'now()',
-        'last_modified' => 'now()'
-      ));
-    }else{
-      // 不明
-      tep_db_perform('telecom_unknow', array(
-        'payment_method' => 'paypal',
-        '`option`'      => ' ',
-        'username'      => $paypalData['FIRSTNAME'] . '' . $paypalData['LASTNAME'],
-        'email'         => $paypalData['EMAIL'],
-        'telno'         => $paypalData['PHONENUM'],
-        'money'         => $paypalData['AMT'],
-        'rel'           => '',
-        'type'          => 'null',
-        'date_added'    => 'now()',
-        'last_modified' => 'now()'
-      ));
       //エラーコード発行予定
-  forward404_paypal();
       //                  exit('DoExpressCheckoutPayment failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
-      /*
-            tep_redirect(tep_href_link(FILENAME_CHECKOUT_CONFIRMATION, 'msg='.
-      urlencode('支払いが成功しません，もう一度してください！')));
-      */
+    }else{
+            tep_redirect(tep_href_link(FILENAME_CHECKOUT_UNSUCCESS,
+                  'msg=paypal_error'));
+            exit;
     }
   }else{
+            tep_redirect(tep_href_link(FILENAME_CHECKOUT_UNSUCCESS,
+                  'msg=paypal_error'));
+            exit;
     // 不正
-  forward404_paypal();
     //エラーコード発行予定
    // exit('GetExpressCheckoutDetails failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
   }
+  tep_db_perform(TABLE_ORDERS, $new_order_array);
   tep_db_perform(TABLE_ORDERS, array(
                                      'paypal_paymenttype'   => $paypalData['PAYMENTTYPE'],
                                      'paypal_payerstatus'   => $paypalData['PAYERSTATUS'],
