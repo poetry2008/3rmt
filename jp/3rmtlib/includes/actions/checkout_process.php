@@ -222,7 +222,7 @@ for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
   tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
   if($order_totals[$i]['code'] =='ot_total' &&  array_key_exists('token', $_REQUEST)){
     $token = urlencode(htmlspecialchars($_REQUEST['token']));
-    getexpress($order_totals[$i]['value']);
+    getexpress($order_totals[$i]['value'],$token);
     $telecom_option_ok = true;
   }
 }
