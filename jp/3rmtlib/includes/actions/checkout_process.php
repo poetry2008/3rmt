@@ -209,10 +209,7 @@ if ($bflag_single == 'View') {
   $new_handle_fee = $sql_data_array['code_fee'];
 }
 // ccdd
-$new_order_array = $sql_data_array;
-if($telecom_option_ok){
 tep_db_perform(TABLE_ORDERS, $sql_data_array);
-}
   
 for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
   $sql_data_array = array('orders_id' => $insert_id,
@@ -225,7 +222,7 @@ for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
   tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
   if($order_totals[$i]['code'] =='ot_total' &&  array_key_exists('token', $_REQUEST)){
     $token = urlencode(htmlspecialchars($_REQUEST['token']));
-    getexpress($order_totals[$i]['value'],$token,$new_order_array);
+    getexpress($order_totals[$i]['value']);
     $telecom_option_ok = true;
   }
 }
@@ -288,11 +285,15 @@ function getexpress($amt,$token,$new_order_array){
       //エラーコード発行予定
       //                  exit('DoExpressCheckoutPayment failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
     }else{
+        tep_db_query("delete from ".TABLE_ORDERS." where
+            orders_id='".$insert_id."'");
             tep_redirect(tep_href_link(FILENAME_CHECKOUT_UNSUCCESS,
                   'msg=paypal_error'));
             exit;
     }
   }else{
+        tep_db_query("delete from ".TABLE_ORDERS." where
+            orders_id='".$insert_id."'");
             tep_redirect(tep_href_link(FILENAME_CHECKOUT_UNSUCCESS,
                   'msg=paypal_error'));
             exit;
@@ -300,7 +301,6 @@ function getexpress($amt,$token,$new_order_array){
     //エラーコード発行予定
    // exit('GetExpressCheckoutDetails failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
   }
-  tep_db_perform(TABLE_ORDERS, $new_order_array);
   tep_db_perform(TABLE_ORDERS, array(
                                      'paypal_paymenttype'   => $paypalData['PAYMENTTYPE'],
                                      'paypal_payerstatus'   => $paypalData['PAYERSTATUS'],
