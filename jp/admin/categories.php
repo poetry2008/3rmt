@@ -1816,7 +1816,7 @@ function get_cart_products(){
                  pd.products_description, 
                  pd.products_url, 
                  pd.romaji, 
-                 pd.option_image_type 
+                 pd.option_image_type,
                  p.products_real_quantity + p.products_virtual_quantity as products_quantity,
                  p.products_real_quantity, 
                  p.products_virtual_quantity, 

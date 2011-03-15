@@ -10,7 +10,7 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE_1', 'レジ');
+define('NAVBAR_TITLE_1', 'ショッピングカート');
 define('NAVBAR_TITLE_2', '最終確認');
 
 define('HEADING_TITLE', 'ご注文内容を確認してください  （ご注文はまだ確定しておりません！）');
