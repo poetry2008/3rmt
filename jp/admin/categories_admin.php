@@ -253,7 +253,7 @@ while ($categories = tep_db_fetch_array($categories_query)) {
   <td class="dataTableContent">
    <?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES_ADMIN, tep_get_path($categories['categories_id'])) . '">' . tep_image(DIR_WS_ICONS . 'folder.gif', ICON_FOLDER) . '</a>&nbsp;<b>' . $categories['categories_name'] . '</b>'; ?>
   </td>
-  <td class="dataTableContent" align="right" colspan="<?php echo 7 + $count_dougyousya['cnt'];?>">&nbsp;</td>
+  <td class="dataTableContent" align="right" colspan="<?php echo 8 + $count_dougyousya['cnt'];?>">&nbsp;</td>
   <td class="dataTableContent" align="center">&nbsp;</td>
 <td class="dataTableContent" align="center"><?php if ($ocertify->npermission == 15 or $ocertify->npermission == 10) {?>
 <?php //if (!isset($_GET['cPath']) or !$_GET['cPath']){?>
@@ -488,8 +488,6 @@ if ($ocertify->npermission >= 10) { //表示制限
   <input type="hidden" name="proid[]"      value="<?php echo $products['products_id']; ?>" >
   <input type="hidden" name="pprice[]"     value="<?php echo abs($products['products_price']); ?>" >
   <input type="hidden" name="bflag[]"      value="<?php echo $products['products_bflag']; ?>" >
-</td>
-<td>
 </td>
 </tr>
 <!--dataTableRowSelected end-->
