@@ -37,27 +37,21 @@
   <!-- body //--> 
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
     <tr> 
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> 
-      <!-- left_navigation //--> 
-        <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-      <!-- left_navigation_eof //-->
-      </td> 
-      <!-- body_text //--> 
       <td valign="top" id="contents">
         <?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_UNSUCCESS,
               'action=checkout_payment', 'SSL')); ?> 
-        <h1 class="pageHeading"><?php echo TEXT_UNSUCCESS; ?></h1> 
-        <div> 
+        <h1 class="pageHeading"><span class="game_t"><?php echo TEXT_UNSUCCESS; ?></span></h1> 
+        <div class="comment"> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr> 
               <td>
               <?php if(isset($_GET['msg'])&&$_GET['msg']=='paypal_error'){ ?>
-              <font color='red'>
+              <font color='red' size="2">
               <?php echo TEXT_PAYPAL_ERROR;?>
               </font>
-              <?php } ?>
+              <font size="2"><?php } ?></font>
               <br />
-              <?php echo TEXT_PAY_UNSUCCESS;?></td> 
+              <font size="2"><?php echo TEXT_PAY_UNSUCCESS;?></font></td> 
             </tr> 
             <tr> 
               <td align="right" class="main"><?php echo

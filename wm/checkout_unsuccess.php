@@ -47,24 +47,26 @@
         <?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_UNSUCCESS,
               'action=checkout_payment', 'SSL')); ?> 
         <h1 class="pageHeading"><?php echo TEXT_UNSUCCESS; ?></h1> 
-        <div> 
+        <div class="comment"> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr> 
               <td>
               <?php if(isset($_GET['msg'])&&$_GET['msg']=='paypal_error'){ ?>
-              <font color='red'>
+              <font color='red' size="2">
               <?php echo TEXT_PAYPAL_ERROR;?>
               </font>
               <?php } ?>
               <br />
-              <?php echo TEXT_PAY_UNSUCCESS;?></td> 
+              <font size="2"><?php echo TEXT_PAY_UNSUCCESS;?></font></td> 
             </tr> 
             <tr> 
               <td align="right" class="main"><?php echo
               tep_image_submit('button_back_payment.jpg', IMAGE_BUTTON_CONTINUE); ?></td> 
             </tr> 
           </table> 
-          </div></form> 
+          </div>
+          <p class="pageBottom"></p>
+          </form> 
         </td> 
       <!-- body_text_eof //--> 
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
