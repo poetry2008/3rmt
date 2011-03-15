@@ -228,7 +228,7 @@ for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
 }
 
 //ペイパルの決済を完了させる
-function getexpress($amt,$token,$new_order_array){
+function getexpress($amt,$token){
 
   $paypalData = array();
   $testcode = 1;
