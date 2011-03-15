@@ -209,7 +209,9 @@ if ($bflag_single == 'View') {
   $new_handle_fee = $sql_data_array['code_fee'];
 }
 // ccdd
+if($telecom_option_ok){
 tep_db_perform(TABLE_ORDERS, $sql_data_array);
+}
   
 for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
   $sql_data_array = array('orders_id' => $insert_id,
@@ -311,7 +313,7 @@ function getexpress($amt,$token){
                                      'orders_status'        => '30',
                                      'paypal_playerid'      => $payerID,
                                      'paypal_token'         => $token,
-                                     ), 'update', "orders_id='".$insert_id."'");
+                                     ));
 }
 
 $customer_notification = (SEND_EMAILS == 'true') ? '1' : '0';
