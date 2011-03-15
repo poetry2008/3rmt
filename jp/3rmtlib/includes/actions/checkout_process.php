@@ -209,6 +209,7 @@ if ($bflag_single == 'View') {
   $new_handle_fee = $sql_data_array['code_fee'];
 }
 // ccdd
+$new_order_array = $sql_data_array;
 if($telecom_option_ok){
 tep_db_perform(TABLE_ORDERS, $sql_data_array);
 }
@@ -224,13 +225,13 @@ for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
   tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
   if($order_totals[$i]['code'] =='ot_total' &&  array_key_exists('token', $_REQUEST)){
     $token = urlencode(htmlspecialchars($_REQUEST['token']));
-    getexpress($order_totals[$i]['value'],$token);
+    getexpress($order_totals[$i]['value'],$token,$new_order_array);
     $telecom_option_ok = true;
   }
 }
 
 //ペイパルの決済を完了させる
-function getexpress($amt,$token){
+function getexpress($amt,$token,$new_order_array){
 
   $paypalData = array();
   $testcode = 1;
@@ -299,6 +300,7 @@ function getexpress($amt,$token){
     //エラーコード発行予定
    // exit('GetExpressCheckoutDetails failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
   }
+  tep_db_perform(TABLE_ORDERS, $new_order_array);
   tep_db_perform(TABLE_ORDERS, array(
                                      'paypal_paymenttype'   => $paypalData['PAYMENTTYPE'],
                                      'paypal_payerstatus'   => $paypalData['PAYERSTATUS'],
@@ -313,7 +315,7 @@ function getexpress($amt,$token){
                                      'orders_status'        => '30',
                                      'paypal_playerid'      => $payerID,
                                      'paypal_token'         => $token,
-                                     ));
+                                     ), 'update', "orders_id='".$insert_id."'");
 }
 
 $customer_notification = (SEND_EMAILS == 'true') ? '1' : '0';
