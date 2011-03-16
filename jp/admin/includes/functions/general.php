@@ -1290,6 +1290,10 @@ function tep_minitor_info(){
     tep_db_query("delete from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($order_id) . "'");
     tep_db_query("delete from " . TABLE_ORDERS_TOTAL . " where orders_id = '" . tep_db_input($order_id) . "'");
     tep_db_query("delete from " . TABLE_ORDERS_TO_COMPUTERS . " where orders_id = '" . tep_db_input($order_id) . "'");
+    tep_db_query("delete from orders_questions where orders_id = '" . tep_db_input($order_id) . "'");
+    tep_db_query("delete from orders_questions_products where orders_id = '" . tep_db_input($order_id) . "'");
+    tep_db_query("delete from orders_products_download where orders_id = '" . tep_db_input($order_id) . "'");
+    tep_db_query("delete from orders_products_to_actor where orders_id = '" . tep_db_input($order_id) . "'");
   }
 
   function tep_reset_cache_block($cache_block, $site_id='') {
