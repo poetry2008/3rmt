@@ -28,7 +28,7 @@
       //      $this->form_action_url = MODULE_PAYMENT_PAYPAL_CONNECTION_URL;
       $this->form_action_url = MODULE_PAYMENT_PAYPAL_CONNECTION_URL ;
 
-      //      $this->form_action_url = 	    'https://api-3t.sandbox.paypal.com/nvp ';
+      //      $this->form_action_url =      'https://api-3t.sandbox.paypal.com/nvp ';
     
     if(isset($_GET['submit_x']) || isset($_GET['submit_y'])){
       $_GET['payment_error'] = 'paypal';
@@ -256,7 +256,7 @@
 
     //paypal需要的字段在以下购成
     $process_button_string =
-    			 //tep_draw_hidden_field('cmd',"_xclick") .
+           //tep_draw_hidden_field('cmd',"_xclick") .
       //                 tep_draw_hidden_field('method', 'SetExpressCheckout').
       //                 tep_draw_hidden_field('business', 'bobher_1299564524_biz@gmail.com').
       //                 tep_draw_hidden_field('paymentaction', 'authorization').
@@ -272,7 +272,7 @@
                  //tep_draw_hidden_field('redirect_url', HTTPS_SERVER . tep_href_link(MODULE_PAYMENT_OK_URL, '', 'SSL')) .
                  //tep_draw_hidden_field('redirect_back_url', HTTPS_SERVER . tep_href_link(MODULE_PAYMENT_NO_URL, '', 'SSL'));
       $process_button_string .= tep_draw_hidden_field('paypal_order_message', htmlspecialchars($s_message)). tep_draw_hidden_field('paypal_order_fee', $_POST['paypal_order_fee']);
-      $process_button_string .= '<img src="https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif" align="left" style="margin-right:7px;">';
+      //$process_button_string .= '<img src="https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif" align="left" style="margin-right:7px;">';
       return $process_button_string;
     }
   
