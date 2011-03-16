@@ -131,11 +131,18 @@
           $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
         }
         // ここまでカスタマーレベルに応じたポイント還元率算出============================================================
-      
-          $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
-      
-          $plus = $result4['point'] + $get_point;
-      
+        
+          if ($result3['value'] >= 0) {
+            $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
+          } else {
+            if ($result3['value'] > -200) {
+              $get_point = abs($result3['value']);
+            } else {
+              $get_point = 0;
+            }
+          }
+        
+          //$plus = $result4['point'] + $get_point;
           tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $get_point . " where customers_id = " . $result1['customers_id'] );
         }
         }   
@@ -328,10 +335,16 @@
       $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
     }
     // ここまでカスタマーレベルに応じたポイント還元率算出============================================================
-      
-      $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
-      
-      $plus = $result4['point'] + $get_point;
+      if ($result3['value'] >= 0) {
+        $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
+      } else {
+        if ($result3['value'] > -200) {
+          $get_point = abs($result3['value']);
+        } else {
+          $get_point = 0;
+        }
+      }
+      //$plus = $result4['point'] + $get_point;
       
       tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $get_point . " where customers_id = " . $result1['customers_id'] );
     }
@@ -1826,13 +1839,13 @@ if($reload == 'yes') {
   if(isset($_GET['type'])){
   switch ($_GET['type']) { 
     case 'sell':
-      $where_type = " and (!(o.payment_method = '銀行振込(買い取り)' or o.payment_method = '銀行振込（買い取り）') and h.orders_id not in (select orders_id from ".TABLE_ORDERS_STATUS_HISTORY." where comments like '金融機関名%支店名%'))"; 
+      $where_type = " and (!(o.payment_method like '%買い取り%') and h.orders_id not in (select orders_id from ".TABLE_ORDERS_STATUS_HISTORY." where comments like '金融機関名%支店名%'))"; 
       break;
     case 'buy':
-      $where_type = " and (o.payment_method = '銀行振込(買い取り)' or o.payment_method = '銀行振込（買い取り）')"; 
+      $where_type = " and (o.payment_method like '%買い取り%')"; 
       break;
     case 'mix':
-      $where_type = " and (!(o.payment_method = '銀行振込(買い取り)' or o.payment_method = '銀行振込（買い取り）') and h.comments like '金融機関名%支店名%')"; 
+      $where_type = " and (!(o.payment_method like '%買い取り') and h.comments like '金融機関名%支店名%')"; 
       break;
   }
   }
@@ -1844,14 +1857,15 @@ if($reload == 'yes') {
       $where_payment = " and o.payment_method = 'コンビニ決済'";
       break;
     case 'telecom':
-      $where_payment = " and o.payment_method = 'クレジットカード決済'";
+      $where_payment = " and (o.payment_method = 'クレジットカード決済' or o.payment_method = 'ペイパル決済')";
       break;
     case 'postalmoneyorder':
       $where_payment = " and o.payment_method = 'ゆうちょ銀行（郵便局）'";
       break;
     case 'moneyorder':
     case 'buying':
-      $where_payment .= " and (o.payment_method = '銀行振込' or o.payment_method = '銀行振込(買い取り)' or o.payment_method = '銀行振込（買い取り）')"; 
+      //$where_payment .= " and (o.payment_method = '銀行振込' or o.payment_method = '銀行振込(買い取り)' or o.payment_method = '銀行振込（買い取り）')"; 
+      $where_payment .= " and (o.payment_method = '銀行振込' or o.payment_method like '%買い取り%')"; 
       break;
   }
   }

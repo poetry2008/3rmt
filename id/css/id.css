@@ -1484,7 +1484,7 @@ padding:0 0 0 20px;
 	width:720px;
 }
 .game_content01{ float:left;}
-.game_content02{ float:left; width:350px; font-size:12px; *line-height:14px;}
+.game_content02{ float:left; width:300px; font-size:12px; *line-height:14px; padding:7px 0 0 10px;}
 .tickets_list{ width:80px;}
 .comment_05 .more_news{
 font-size:14px;
@@ -2157,3 +2157,16 @@ background: url(../images/design/boxmiddle_ico01.gif) no-repeat 20px center;
 .product_list02 span{ font-size:10px; width:157px; text-align:center;}
 .product_list02 img{ margin-bottom:10px; height:50px;}
 .product_list02 input{ margin-top:10px;} 
+
+
+.infoBoxNotice_01 {
+	background: #ccc;
+}
+/* ---------------------------
+searching
+--------------------------- */
+.infoBoxNoticeContents_01 {
+	background: #edeff0;
+	font-size: 10px;
+	color:#FF0000;
+}
