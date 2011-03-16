@@ -200,6 +200,26 @@ function change_num(ob,targ, quan,a_quan)
               <td align="right" class="main"><b><?php echo SUB_TITLE_SUB_TOTAL; ?>
                 <span id="sub_total"><?php echo $currencies->format($cart->show_total()); ?></span></b></td>
             </tr>
+<?php   
+    // 买取200以下提示
+    if($cart->show_total() < 0 && $cart->show_total() > -200) {
+?>
+          <tr>
+            <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
+          </tr>
+          <tr>
+            <td align="right" class="main">
+              <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice_01">
+                <tr class="infoBoxNoticeContents_01">
+                  <td width="33" height="35"><img src="images/icons/hinto.jpg" align="absmiddle" /></td>
+                  <td align="left" valign="middle">&nbsp;&nbsp;よく使われるのウェブマネーやネクソンポイントをお買い上 げしてみてはいかがですか？</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <?php 
+  }
+?>
             <?php   
     if(isset($_GET['limit_error']) && $_GET['limit_error'] == 'true') {
 ?>
@@ -261,7 +281,7 @@ function change_num(ob,targ, quan,a_quan)
                     <input type="hidden" name="goto" value="<?php echo tep_href_link($navigation->path[$back]['page'], tep_array_to_string($navigation->path[$back]['get'], array('action')), $navigation->path[$back]['mode']);?>">
                     <input type="submit" name="continue" value="" class="shopping_cart_continue">
 <?php } else { ?>
-                    <button  class="shopping_cart_continue" onclick="history.back(); return false;"></button>
+                    <button  class="shopping_cart_continue" onClick="history.back(); return false;"></button>
 <?php } ?>
                     </td>
                     <td align="left" class="main">

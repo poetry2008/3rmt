@@ -203,6 +203,25 @@ function change_num(ob,targ, quan,a_quan)
               <td align="right" class="main"><b><?php echo SUB_TITLE_SUB_TOTAL; ?>
                 <span id="sub_total"><?php echo $currencies->format($cart->show_total()); ?></span></b></td>
             </tr>
+<?php   
+    // 买取200以下提示
+    if($cart->show_total() < 0 && $cart->show_total() > -200) {
+?>
+          <tr>
+            <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
+          </tr>
+          <tr>
+            <td align="right" class="main">
+              <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice">
+                <tr class="infoBoxNoticeContents">
+                  <td><img src="images/icons/hinto.jpg" />よく使われるのウェブマネーやネクソンポイントをお買い上 げしてみてはいかがですか？</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <?php 
+  }
+?>
             <?php   
     if(isset($_GET['limit_error']) && $_GET['limit_error'] == 'true') {
 ?>

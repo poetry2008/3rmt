@@ -188,9 +188,9 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
         </tr> 
         <tr>
             <td align="right">
-            	<table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
-                	<tr>
-                    	<td class="main"><b>ご注文内容をご確認の上「注文する」をクリックしてください。</b></td>
+              <table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
+                  <tr>
+                      <td class="main"><b>ご注文内容をご確認の上「注文する」をクリックしてください。</b></td>
                         <td class="main" align="right"><?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></td>
                     </tr>
                 </table>
@@ -335,6 +335,37 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
 <?php
   $bflag_cnt = ds_count_bflag();
   if($bflag_cnt == 'View') {
+    if($cart->show_total() > -200) {
+?>
+          <tr> 
+            <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+                <tr class="infoBoxContents"> 
+                  <td>
+<table width="100%" class="table_ie" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+  <td class="main" colspan="2"><b><?php echo TABLE_HEADING_BANK; ?></b><?php echo ' <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
+  </tr>
+  <tr>
+    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+  <td class="main">
+買取が200円以下の注文は振込み手数料の関係でお支払いができません、<br>
+申し訳ありませんが、WEBマネーやネクソンポイントなどの別の商品をカートに入れていただくか、<br>
+ポイントでの返金になります。<br><br>
+
+*尚、99円以下はポイントでの返金になりますご了承ください。
+  </td>
+  </tr>
+</table>
+          
+          </td> 
+                </tr> 
+              </table></td> 
+          </tr> 
+          <tr> 
+            <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+          </tr> 
+<?php
+    } else {
 ?>
           <tr> 
             <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
@@ -379,6 +410,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
           </tr> 
 <?php
+          }
   }
 ?>
     
@@ -467,7 +499,16 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
   }
   // ここまでカスタマーレベルに応じたポイント還元率算出============================================================
   //$get_point = ($order->info['subtotal'] - (int)$point) * MODULE_ORDER_TOTAL_POINT_FEE;
-  $get_point = ($order->info['subtotal'] - (int)$point) * $point_rate;
+  // 买取200以下直接返回point
+  if ($order->info['subtotal'] > 0) {
+    $get_point = ($order->info['subtotal'] - (int)$point) * $point_rate;
+  } else {
+    if ($order->info['subtotal'] > -200) {
+      $get_point = abs($order->info['subtotal']);
+    } else {
+      $get_point = 0;
+    }
+  }
   
   tep_session_register('get_point');
   echo '<tr>' . "\n";
@@ -595,7 +636,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
         </tr> 
         <tr> 
           <td>
-		  <?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+      <?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
         </tr>  
         </table>
         </div>

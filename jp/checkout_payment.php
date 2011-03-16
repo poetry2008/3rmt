@@ -8,7 +8,6 @@
 ?>
 <?php page_head();?>
 <script type="text/javascript" src="./js/jquery-1.3.2.min.js"></script>
-
 <script type="text/javascript">
 $(document).ready(function(){
 $("input:radio").each(function(){
@@ -312,13 +311,18 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
             </tr> 
       
 <?php
-  }//販売終了
-  else {
-    # 強制的に買い取りモジュールを選択済みにする
-  echo '<input type="hidden" name="payment" value="buying">';
+  //販売終了
+  } else {
+    if ($cart->show_total() <= -200) {
+      # 強制的に買い取りモジュールを選択済みにする
+      echo '<input type="hidden" name="payment" value="buying">';
+    } else {
+      echo '<input type="hidden" name="payment" value="buyingpoint">';
+    }
   }
 
   if($cart->show_total() < 0) {
+    if ($cart->show_total() <= -200) {
 ?>
       
             <tr> 
@@ -418,13 +422,36 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
               <td><?php //echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
 <?php
+    } else { 
+      // 返回point
+      ?>
+      <tr>
+        <td>
+                  <table width="100%" cellspacing="0" cellpadding="0" border="0" style="border:1px solid #B6B7CB;padding: 5px;"> 
+                  <tbody><tr> 
+                    <td class="main">
+手数料の都合上、お支払い金額が200円以下のお支払いができません。<br />
+お手数ではございますが、商品をカートに追加していただくか、ポイン トでの返金になります。
+                    </td>
+                  </tr></tbody>
+                  </table>
+        </td>
+      </tr>
+      <?php
+      # 買い取り商品が無かった場合
+      tep_session_unregister('bank_name');
+      tep_session_unregister('bank_shiten');
+      tep_session_unregister('bank_kamoku');
+      tep_session_unregister('bank_kouza_num');
+      tep_session_unregister('bank_kouza_name');
+    }
   } else {
     # 買い取り商品が無かった場合
-  tep_session_unregister('bank_name');
-  tep_session_unregister('bank_shiten');
-  tep_session_unregister('bank_kamoku');
-  tep_session_unregister('bank_kouza_num');
-  tep_session_unregister('bank_kouza_name');
+    tep_session_unregister('bank_name');
+    tep_session_unregister('bank_shiten');
+    tep_session_unregister('bank_kamoku');
+    tep_session_unregister('bank_kouza_num');
+    tep_session_unregister('bank_kouza_name');
   }
 ?>
       
@@ -450,7 +477,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
               <td><?php //echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
             <?php
-      if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {//point --  
+      if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {//point --  
         if($guestchk == '1') {
           echo '<input type="hidden" name="point" value="0">';
         } else {

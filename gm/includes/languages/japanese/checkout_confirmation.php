@@ -29,7 +29,7 @@ define('HEADING_ORDER_COMMENTS', 'ご注文についてのコメント');
 define('TEXT_EDIT', '変更する');
 
 //Add Point System
-define('TEXT_POINT_NOW', '<b>買取はポイントがつきません</b>  今回の獲得予定ポイント:');
+define('TEXT_POINT_NOW', '今回の獲得予定ポイント:');
 
 define('TEXT_TORIHIKI_TITLE', '取引時間&nbsp;');
 

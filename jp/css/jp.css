@@ -1091,3 +1091,14 @@ a.Icon:hover {
 .product_list02 span{ font-size:10px; width:157px; text-align:center;}
 .product_list02 img{ margin-bottom:10px; height:50px;}
 .product_list02 input{ margin-top:10px;} 
+
+.infoBoxNotice_01 {
+	background:#ccc;
+}
+
+.infoBoxNoticeContents_01 {
+	background:#edeff0;
+	font-size: 10px;
+	color:#FF0000;
+	vertical-align:top;
+}
