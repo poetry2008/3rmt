@@ -211,7 +211,8 @@ function change_num(ob,targ, quan,a_quan)
             <td align="right" class="main">
               <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice_01">
                 <tr class="infoBoxNoticeContents_01">
-                  <td><img src="images/icons/hinto.jpg" />&nbsp;&nbsp;よく使われるのウェブマネーやネクソンポイントをお買い上 げしてみてはいかがですか？</td>
+                  <td width="33" height="35"><img src="images/icons/hinto.jpg" align="absmiddle" /></td>
+                  <td align="left" valign="middle">&nbsp;&nbsp;よく使われるのウェブマネーやネクソンポイントをお買い上 げしてみてはいかがですか？</td>
                 </tr>
               </table>
             </td>

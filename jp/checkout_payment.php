@@ -317,7 +317,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
       # 強制的に買い取りモジュールを選択済みにする
       echo '<input type="hidden" name="payment" value="buying">';
     } else {
-      echo '<input type="hidden" name="payment" value="point">';
+      echo '<input type="hidden" name="payment" value="buyingpoint">';
     }
   }
 

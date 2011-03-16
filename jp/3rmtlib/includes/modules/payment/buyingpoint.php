@@ -3,16 +3,16 @@
   $Id$
 */
 
-  class point {
+  class buyingpoint {
     var $site_id, $code, $title, $description, $enabled, $s_error, $n_fee, $email_footer;
 
 // class constructor
-    function point($site_id = 0) {
+    function buyingpoint ($site_id = 0) {
       global $order;
       
       $this->site_id = $site_id;
 
-      $this->code        = 'point';
+      $this->code        = 'buyingpoint';
       $this->title       = MODULE_PAYMENT_POINT_TEXT_TITLE;
       $this->description = MODULE_PAYMENT_POINT_TEXT_DESCRIPTION;
       $this->explain       = MODULE_PAYMENT_POINT_TEXT_EXPLAIN;
@@ -133,7 +133,7 @@
       global $order;
 
       $total = $order->info['total'];
-      if ($payment == 'point') {
+      if ($payment == 'buyingpoint') {
         $total += intval($_POST['point_order_fee']); 
       }
       
