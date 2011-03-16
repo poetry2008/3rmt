@@ -4308,7 +4308,7 @@ function tep_get_order_cnt_by_pid($pid){
         sum(orders_products.products_quantity) as cnt from orders_products left join
         orders on orders.orders_id=orders_products.orders_id where
         products_id='".$pid."' and finished = '0' and date(orders.date_purchased) >
-        '".date('Y-m-d',strtotime('-7day'))."'"));
+        '".date('Y-m-d',strtotime('-8day'))."'"));
   //$r = tep_db_fetch_array(tep_db_query("select count(orders_products.orders_id) as cnt from orders_products left join orders on orders.orders_id=orders_products.orders_id where products_id='".$pid."' and finished = '1'"));
   return $r['cnt'];
 }
