@@ -172,11 +172,11 @@ $sql_data_array = array('orders_id'         => $insert_id,
                         'telecom_option'              => $_SESSION['option'],
                         );
   
-// 统计Google Adsense来源
+// 扈溯ｮ｡Google Adsense来源
 if (isset($_SESSION['referer_adurl']) && $_SESSION['referer_adurl']) {
   $sql_data_array['orders_adurl'] = $_SESSION['referer_adurl'];
 }
-// 验证不明信用卡 
+// 鬪瑚ｯ＆s明信用蜊｡ 
 if ($_SESSION['option']) {
 $telecom_unknow = tep_db_fetch_array(tep_db_query("select * from telecom_unknow where `option`='".$_SESSION['option']."' and rel='yes'"));
 if ($telecom_unknow) {
@@ -211,6 +211,7 @@ if ($bflag_single == 'View') {
 // ccdd
 tep_db_perform(TABLE_ORDERS, $sql_data_array);
   
+$total_data_arr = array();
 for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
   $sql_data_array = array('orders_id' => $insert_id,
                           'title' => $order_totals[$i]['title'],
@@ -219,14 +220,17 @@ for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
                           'class' => $order_totals[$i]['code'], 
                           'sort_order' => $order_totals[$i]['sort_order']);
   // ccdd
-  tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
+
   if($order_totals[$i]['code'] =='ot_total' &&  array_key_exists('token', $_REQUEST)){
     $token = urlencode(htmlspecialchars($_REQUEST['token']));
     getexpress($order_totals[$i]['value'],$token);
     $telecom_option_ok = true;
   }
+  $total_data_arr[] = $sql_data_array;
 }
-
+  foreach ($total_data_arr as $sql_data_array){
+  tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
+  }
 //ペイパルの決済を完了させる
 function getexpress($amt,$token){
 
@@ -242,32 +246,26 @@ function getexpress($amt,$token){
     foreach($httpParsedResponseAr as $key=>$value){
       $paypalData[$key] = urldecode($value);
     }
-    //カード名義
-    $sql_data_array['username']  =strtoupper($httpParsedResponseAr["FIRSTNAME"])." ".strtoupper($httpParsedResponseAr["LASTNAME"]);
-    //電話番号
-    $sql_data_array['telno']   =urldecode(htmlspecialchars($httpParsedResponseAr["PHONENUM"]));
-    //Eメール
-    $sql_data_array['email'] =urldecode(htmlspecialchars($httpParsedResponseAr["EMAIL"]));
     // Extract the response details.
     $payerID = urlencode($httpParsedResponseAr['PAYERID']);
     $paymentType = urlencode("Sale");     // or 'Sale' or 'Order'
     $paymentAmount = urlencode($amt);
     $currencyID = urlencode("JPY");   
     //$token = urlencode($httpParsedResponseAr['TOKEN']);
-    $nvpStr = "&TOKEN=$token&PAYERID=$payerID&PAYMENTACTION=$paymentType&AMT=$paymentAmount&CURRENCYCODE=$currencyID";
+    $nvpStr = "&TOKEN=$token&PAYERID=$payerID&AMT=$paymentAmount&PAYMENTACTION=$paymentType&CURRENCYCODE=$currencyID";
 
     // Execute the API operation; see the PPHttpPost function above.
     $httpParsedResponseAr = PPHttpPost('DoExpressCheckoutPayment', $nvpStr);
     /*
-      ★PAYMENTTYPE      支払いが即時に行われるか遅れて行われるかを示します。 显示及时支付还是拖迟支付
-      ★PAYERSTATUS      支払人のステータス 支付人身份
-      ★PAYMENTSTATUS      支払いのステータス。 支付状态      Completed: 支払いが完了し、アカウント残高に正常に入金されました。 支付完毕，帐户余额正常进款
+      ★PAYMENTTYPE      支払いが即時に行われるか遅れて行われるかを示します。 譏ｾ示及譌ｶ支付霑・･諡冶ｿ沁x付
+      ★PAYERSTATUS      支払人のステータス 支付人身莉ｽ
+      ★PAYMENTSTATUS      支払いのステータス。 支付状諤閼      Completed: 支払いが完了し、アカウント残高に正常に入金されました。 支付完豈普C蟶先姐余鬚攝ｳ常霑寢ｼ
       ★COUNTRYCODE      支払人の居住国 支付人居住国家
-      ○EMAIL      支払人のメールアドレス。 支付人的邮箱  found
-      ○AMT      最終請求金額。 最后申请金额   found
+      ○EMAIL      支払人のメールアドレス。 支付人的驍ｮ箱  found
+      ○AMT      最終請求金額。 最后申隸ｷ金鬚魘   found
       ○FIRSTNAME      支払人の名 支付人名字
       ○LASTNAME      支払人の姓。 支付人姓
-      ○PHONENUM      支払人の電話番号 支付人电话号码   found 
+      ○PHONENUM      支払人の電話番号 支付人逕ｵ隸搓・黴閼   found 
     */
     //var_dump($httpParsedResponseAr['ACK']);
     foreach($httpParsedResponseAr as $key=>$value){
@@ -284,6 +282,39 @@ function getexpress($amt,$token){
       //      tep_db_perform("telecom_unknow", $sql_data_array);
       //エラーコード発行予定
       //                  exit('DoExpressCheckoutPayment failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
+      if($paypalData['PAYMENTSTATUS'] == "Completed"){
+                  tep_db_perform('telecom_unknow', array(
+        'payment_method' => 'paypal',
+        '`option`'      => ' ',
+        'username'      => $paypalData['FIRSTNAME'] . '' . $paypalData['LASTNAME'],
+        'email'         => $paypalData['EMAIL'],
+        'telno'         => $paypalData['PHONENUM'],
+        'money'         => $paypalData['AMT'],
+        'rel'           => 'yes',
+        'type'          => 'success',
+        'date_added'    => 'now()',
+        'last_modified' => 'now()'
+      ));
+      }else{
+      //不明扱い
+                  tep_db_perform('telecom_unknow', array(
+        'payment_method' => 'paypal',
+        '`option`'      => ' ',
+        'username'      => $paypalData['FIRSTNAME'] . '' . $paypalData['LASTNAME'],
+        'email'         => $paypalData['EMAIL'],
+        'telno'         => $paypalData['PHONENUM'],
+        'money'         => $paypalData['AMT'],
+        'rel'           => 'no',
+        'date_added'    => 'now()',
+        'last_modified' => 'now()'
+      ));
+              tep_db_query("delete from ".TABLE_ORDERS." where
+            orders_id='".$insert_id."'");
+            tep_redirect(tep_href_link(FILENAME_CHECKOUT_UNSUCCESS,
+                  'msg=paypal_error'));
+            exit;
+      }
+
     }else{
         tep_db_query("delete from ".TABLE_ORDERS." where
             orders_id='".$insert_id."'");
@@ -390,7 +421,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
     if (tep_db_num_rows($stock_query) > 0) {
       $stock_values = tep_db_fetch_array($stock_query);
       if ($order->products[$i]['qty'] > $stock_values['products_real_quantity']) {
-        // 买取商品大于实数
+        // 荵ｰ取商品大于螳梵髏
         tep_db_perform(
                        'products',
                        array(

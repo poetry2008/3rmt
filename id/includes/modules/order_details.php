@@ -109,6 +109,17 @@
       if (STOCK_CHECK == 'true') {
         echo $stock_check = tep_check_stock($products[$i]['id'], $products[$i]['quantity']);
         if ($stock_check) $any_out_of_stock = 1;
+        if(!isset($stock_check)||$stock_check == ''){
+          $n_products_id = tep_get_prid($products[$i]['id']);
+          $n_products_sum = 0;
+          for($j=0;$j<$n;$j++){
+            if($n_products_id == tep_get_prid($products[$j]['id'])){
+              $n_products_sum += intval($products[$j]['quantity']);
+            }
+          }
+        echo $stock_check = tep_check_stock($products[$i]['id'], $n_products_sum);
+        if ($stock_check) $any_out_of_stock = 1;
+        }
       }
     }
 

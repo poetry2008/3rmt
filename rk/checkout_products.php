@@ -23,6 +23,17 @@
       if (tep_check_stock($products[$i]['id'], $products[$i]['quantity'])) {
         tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
         break;
+      }else{
+        $n_products_id = tep_get_prid($products[$i]['id']);
+        $n_products_sum = 0;
+        for($j=0;$j<$n;$j++){
+          if($n_products_id == tep_get_prid($products[$j]['id'])){
+            $n_products_sum += intval($products[$j]['quantity']);
+          }
+        }
+        if(tep_check_stock($products[$i]['id'], $n_products_sum)){
+          tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
+        }
       }
     }
   }

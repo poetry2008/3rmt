@@ -31,50 +31,43 @@
 <?php page_head();?>
 </head>
 <body> 
-<div class="body_shadow" align="center"> 
+<div class="body_shadow"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
   <!-- header_eof //--> 
   <!-- body //--> 
-  <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
-    <tr> 
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> 
-      <!-- left_navigation //--> 
-        <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-      <!-- left_navigation_eof //-->
-      </td> 
-      <!-- body_text //--> 
-      <td valign="top" id="contents">
-        <?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_UNSUCCESS,
-              'action=checkout_payment', 'SSL')); ?> 
-        <h1 class="pageHeading"><?php echo TEXT_UNSUCCESS; ?></h1> 
-        <div> 
-          <table border="0" width="100%" cellspacing="0" cellpadding="0">
+  <div id="main">
+  <!-- left_navigation //-->
+<div id="l_menu">
+<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
+</div>
+<div id="content">
+<?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_UNSUCCESS, 'action=checkout_payment', 'SSL')); ?> 
+<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
+<h1 class="pageHeading"><?php echo TEXT_UNSUCCESS; ?></h1>
+ <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr> 
-              <td>
+              <td><p>
               <?php if(isset($_GET['msg'])&&$_GET['msg']=='paypal_error'){ ?>
               <font color='red'>
               <?php echo TEXT_PAYPAL_ERROR;?>
               </font>
               <?php } ?>
               <br />
-              <?php echo TEXT_PAY_UNSUCCESS;?></td> 
-            </tr> 
-            <tr> 
-              <td align="right" class="main"><?php echo
-              tep_image_submit('button_back_payment.jpg', IMAGE_BUTTON_CONTINUE); ?></td> 
+              <?php echo TEXT_PAY_UNSUCCESS;?></p>
+              <p><?php echo tep_image_submit('button_back_payment.jpg', IMAGE_BUTTON_CONTINUE); ?></p>
+              </td> 
             </tr> 
           </table> 
-          </div></form> 
-        </td> 
-      <!-- body_text_eof //--> 
-      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
-        <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> </td> 
-  </table> 
+       </form> 
+  </div>
+  <div id="r_menu">
+<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
+</div>
   <!-- body_eof //--> 
   <!-- footer //--> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
   <!-- footer_eof //--> 
+  </div>
 </div> 
 </body>
 </html>
