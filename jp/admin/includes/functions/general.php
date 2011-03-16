@@ -4304,7 +4304,11 @@ function tep_insert_currency_value($num){
 
 // >要 取引終了的状态，视为注文数。要 取引終了的状态，视为注文数。
 function tep_get_order_cnt_by_pid($pid){
-  $r = tep_db_fetch_array(tep_db_query("select sum(orders_products.products_quantity) as cnt from orders_products left join orders on orders.orders_id=orders_products.orders_id where products_id='".$pid."' and finished = '0'"));
+  $r = tep_db_fetch_array(tep_db_query("select
+        sum(orders_products.products_quantity) as cnt from orders_products left join
+        orders on orders.orders_id=orders_products.orders_id where
+        products_id='".$pid."' and finished = '0' and date(orders.date_purchased) >
+        '".date('Y-m-d',strtotime('-7day'))."'"));
   //$r = tep_db_fetch_array(tep_db_query("select count(orders_products.orders_id) as cnt from orders_products left join orders on orders.orders_id=orders_products.orders_id where products_id='".$pid."' and finished = '1'"));
   return $r['cnt'];
 }
