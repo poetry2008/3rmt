@@ -15,7 +15,7 @@
       $this->code        = 'buying';
       $this->title       = MODULE_PAYMENT_BUYING_TEXT_TITLE;
       $this->description = MODULE_PAYMENT_BUYING_TEXT_DESCRIPTION;
-    $this->explain       = MODULE_PAYMENT_BUYING_TEXT_EXPLAIN;
+      $this->explain       = MODULE_PAYMENT_BUYING_TEXT_EXPLAIN;
       $this->sort_order  = MODULE_PAYMENT_BUYING_SORT_ORDER;
       $this->enabled     = ((MODULE_PAYMENT_BUYING_STATUS == 'True') ? true : false);
 
