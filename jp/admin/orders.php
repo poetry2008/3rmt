@@ -1964,7 +1964,7 @@ if($reload == 'yes') {
         select distinct op.orders_id
         from " . TABLE_ORDERS_PRODUCTS . " op 
         where op.products_name like '%".$_GET['keywords']."%'
-        " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " op.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
+        " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
         order by op.torihiki_date desc";
   } elseif (
     isset($_GET['keywords']) && $_GET['keywords']
