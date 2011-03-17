@@ -166,7 +166,7 @@ if (isset($_GET['action']) && $_GET['action']) {
     }
   }
 ?>
-  <td class="dataTableHeadingContent" align="center" width='120'>現在単価</td>
+  <td class="dataTableHeadingContent" align="center" width='110'>現在単価</td>
   <td class="dataTableHeadingContent" align="center" width='50'>単価設定</td>
   <td class="dataTableHeadingContent" align="center" width='30'>増減</td>
   <td class="dataTableHeadingContent" align="center" <?php if ($ocertify->npermission < 10) {?>width='1'<?php } else {?>width='80'<?php }?>><?php
