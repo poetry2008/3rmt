@@ -56,6 +56,7 @@
       } else {
         $s_message = $f_result ? '':('<font color="#FF0000">'.$this->s_error.'</font>'); 
       }
+      return array();
       return array('id' => $this->code,
                    'module' => '',
            'fields' => array('title' => $s_message, 'field' => $added_hidden) 

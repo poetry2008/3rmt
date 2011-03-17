@@ -1567,12 +1567,15 @@ background:url(../images/design/contents/headding_title02.gif) no-repeat;
 .product_list02 input{ margin-top:10px;} 
 
 .infoBoxNotice_01 {
-	background: #ccc;
+	background: #ddd;
 }
-/*searching*/
+/* ---------------------------
+searching
+--------------------------- */
 .infoBoxNoticeContents_01 {
-	background: #edeff0;
-	font-size: 10px;
-	color:#ff0000;
+	background: #f0efef;
+	font-size: 12px;
+	color:#FF0000;
 	vertical-align:middle;
 }
+.text { color:#000000; font-size:12px; line-height:18px;}

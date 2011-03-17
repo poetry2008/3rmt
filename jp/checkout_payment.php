@@ -220,6 +220,8 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
   for ($i=0, $n=sizeof($selection); $i<$n; $i++) {
     if($selection[$i]['id'] == 'buying') {
     //buying not view
+    } else if($selection[$i]['id'] == 'buyingpoint') {
+    //buyingpoint not view
     } else { 
       if ($selection[$i]['id'] == 'convenience_store') {
         if (check_money_limit(MODULE_PAYMENT_CONVENIENCE_STORE_MONEY_LIMIT, $order->info['total'])) {

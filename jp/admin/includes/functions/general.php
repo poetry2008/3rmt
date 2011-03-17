@@ -4,7 +4,7 @@
 */
 
 
-//无譚レﾀ修改 提示401
+//无权限修改 提示401
 function forward401()
 { 
   header($_SERVER["SERVER_PROTOCOL"] . " 401Not Found");
@@ -13,7 +13,7 @@ function forward401()
   exit;
   //throw new Exception();
 }
-//在条件成立的譌ｶ候，401
+//在条件成立的时候，401
 function forward401If($condition)
 {
   if ($condition)
@@ -21,7 +21,7 @@ function forward401If($condition)
     forward403();
   }
 }
-//在条件不成立譌ｶ，401
+//在条件不成立时，401
 function forward401Unless($condition)
 {
   if (!$condition)
@@ -39,7 +39,7 @@ function tep_minitor_info(){
     $fiftheenbefore = date('Y-m-d H:i:s',time()-60*15);
     $logIn15 = tep_db_query("select * from monitor_log where ng = 1 and m_id =".$monitor['id'].' and created_at > "'.$fiftheenbefore.'"');
     $tmpRow = tep_db_fetch_array($logIn15);
-    if(mysql_num_rows($logIn15)){ //十五分髓沒熨ｽ于荳､件
+    if(mysql_num_rows($logIn15)){ //十五分钟内多于两件
 
       $tmpString  = '回線障害発生： '.$tmpRow['name'].' <font
         class="error_monitor">'.date('m月d日H時i分s秒',strtotime($tmpRow['created_at'])).'</font><br/><a ';
@@ -377,7 +377,7 @@ function tep_minitor_info(){
     if ( ($image) && (file_exists(tep_get_upload_dir($site_id). $image)) ) {
       $image = tep_image(tep_get_web_upload_dir($site_id). $image, $alt, $width, $height);
     } else {
-      // TEXT_IMAGE_NONEXISTENT 数据表和程序中都未蜿醍鴫
+      // TEXT_IMAGE_NONEXISTENT 数据表和程序中都未发现
       $image = TEXT_IMAGE_NONEXISTENT;
     }
 
@@ -1293,6 +1293,7 @@ function tep_minitor_info(){
     tep_db_query("delete from orders_questions where orders_id = '" . tep_db_input($order_id) . "'");
     tep_db_query("delete from orders_questions_products where orders_id = '" . tep_db_input($order_id) . "'");
     tep_db_query("delete from orders_products_download where orders_id = '" . tep_db_input($order_id) . "'");
+    tep_db_query("delete from orders_products_to_actor where orders_id = '" . tep_db_input($order_id) . "'");
   }
 
   function tep_reset_cache_block($cache_block, $site_id='') {
@@ -2387,7 +2388,7 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
     return tep_draw_pull_down_menu('site_url_id', $sites_array, $default, $params = 'onChange="window.open(this.value);this.selectedIndex=0;"', $require);
 
 }
-  // 生成騾画叫SITE_ID的下拉框
+  // 生成选择SITE_ID的下拉框
   function tep_site_pull_down_menu($default = '',$require = true,$all = false){
     $sites_array = array();
     $sites = tep_get_sites();
@@ -2910,7 +2911,7 @@ function get_url_by_site_id($site_id) {
   }
 }
 
-// 代替触蜿相
+// 代替触发器
 function orders_status_updated($orders_status_id) {
   $orders_status = tep_db_fetch_array(tep_db_query("select * from orders_status where orders_status_id='".$orders_status_id."'"));
   tep_db_query("
@@ -2919,7 +2920,7 @@ function orders_status_updated($orders_status_id) {
   
 }
 
-// 代替存蛯ｨ霑∫
+// 代替存储过程
 function orders_updated($orders_id) {
   tep_db_query("update ".TABLE_ORDERS." set language_id = ( select language_id from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
   tep_db_query("update ".TABLE_ORDERS." set finished = ( select finished from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
@@ -2929,7 +2930,7 @@ function orders_updated($orders_id) {
   tep_db_query("update ".TABLE_ORDERS_PRODUCTS." set torihiki_date = ( select torihiki_date from ".TABLE_ORDERS." where orders.orders_id=orders_products.orders_id ) where orders_id='".$orders_id."'");
 }
 
-// 如果隶｢蜊蕪I状諤∝書生改蜉ｨ蛻剴ｯ豁･髣ｮ答
+// 如果订单的状态发生改动则同步问答
 function orders_status_updated_for_question($orders_id, $orders_status_id, $notify = true) {
   switch($orders_status_id){
     case 13:
@@ -2980,7 +2981,7 @@ function orders_status_updated_for_question($orders_id, $orders_status_id, $noti
 }
 
 
-// 如果隶｢蜊蒜inished蛻剋謠ﾁorders_wait_flag
+// 如果订单finished则取消orders_wait_flag
 function orders_wait_flag($orders_id) {
   $orders_query = tep_db_query("select * from " . TABLE_ORDERS . " where orders_id = '".$orders_id."'");
   $orders       = tep_db_fetch_array($orders_query);
@@ -2994,7 +2995,7 @@ function orders_wait_flag($orders_id) {
   //exit;
 }
 
-//荳ｺ蛻寥嚔ｺ拉列表
+//为创建下拉列表
   function countSubcategories($cid)
   { 
      $res = tep_db_query("select count(c.categories_id) cnt from categories_description cd,categories c where cd.site_id =0 and  c.categories_id = cd.categories_id and c.parent_id =".$cid);
@@ -3034,7 +3035,7 @@ function makeCheckbox($arrCategories,$selectValue = Fales,$startName='')
   $result = '<ul class="change_one_list">';
 
   foreach ($arrCategories as $cate1 ) {
-    //如果有子，蛻剿{条隶ｰ蠖穂ｸｺ grop
+    //如果有子，则本条记录为 grop
     $flag=true;
     if (count($cate1['sub'])) {
       if($selectValue != 'Fales'){
@@ -3061,7 +3062,7 @@ function makeCheckbox($arrCategories,$selectValue = Fales,$startName='')
   return $result;
 }
 
-//分遖ｻcpath
+//分离cpath
 function cpathPart($cpath,$which=1) {
   $a = $cpath;
   if (strpos($a ,'_')){
@@ -3083,7 +3084,7 @@ function makeSelectOption($arrCategories,$selectValue = Fales,$startName='')
   $result = '';
 
   foreach ($arrCategories as $cate1 ) {
-    //如果有子，蛻剿{条隶ｰ蠖穂ｸｺ grop
+    //如果有子，则本条记录为 grop
     if (count($cate1['sub'])) {
         $result .= '<optgroup label = "'.$cate1['cname'].'">';
         $result .= makeSelectOption($cate1['sub'],$selectValue,$cate1['cname'].'_');
@@ -3454,7 +3455,7 @@ function tep_get_first_products_name_by_orders_id($orders_id)
   return $p['products_name'];
 }
 
-// 取得支付譌ｶ髣ｴ，当天或者下一个工作日。
+// 取得支付时间，当天或者下一个工作日。
 // orders.php
 function tep_get_pay_day($time = null){
   //echo strtotime(date('Y-m-d H:00:00', strtotime($time)));
@@ -3467,14 +3468,14 @@ function tep_get_pay_day($time = null){
     for($i=date('d')-1;$i<strlen($c['cl_value']);$i++){
       // 如果是当天
       if (date('d')-1 == $i) {
-        // 如果当天關･荳騀
+        // 如果当天营业
         if ($c['cl_value'][$i] == '0') {
           if (date('H',strtotime($time)) < 15) {
             return date('Y-m',strtotime($time)).'-'.date('d');
           }
         }
       } else {
-        // 如果下一天關･荳騀
+        // 如果下一天营业
         if ($c['cl_value'][$i] == '0') {
           return date('Y-m',strtotime($time)).'-'.($i+1);
         }
@@ -3495,7 +3496,7 @@ function tep_get_pay_day($time = null){
   //echo $c['cl_value'];
 }
 // orders.php
-// 0 蜊阀 2 信用蜊｡ 1 荵ｰ 
+// 0 卖 2 信用卡 1 买 
 function tep_get_order_type($orders_id){
   $oq = tep_db_fetch_array(tep_db_query("select * from orders_questions where orders_id='".$orders_id."'"));
   if ($oq['orders_questions_type']) {
@@ -3539,7 +3540,7 @@ function tep_questions_can_show($orders_id){
   && $('#q_16_2').attr('checked')
   */
   // 15: 3,4,5,7,8
-  // 有霑㍽｢・ﾊ知（13）状諤％I
+  // 有过受领通知（13）状态的
   $oq = tep_db_fetch_array(tep_db_query("select * from orders_questions where orders_id = '".$orders_id."'"));
   if (
     $oq 
@@ -3587,7 +3588,7 @@ function tep_questions_can_show($orders_id){
 }
 
 function tep_display_google_results(){
-  // 谷歌蜈ｳ髞ｮ字扈悼ﾊ譏ｾ示停止条件
+  // 谷歌关键字结果显示停止条件
   $stop_site_url = array(
       //"iimy.co.jp",
       //"www.iimy.co.jp",
@@ -3702,7 +3703,7 @@ function tep_display_google_results(){
   echo "</td></tr>";
 }
 }
-//取得分邀ｻ的父id
+//取得分类的父id
 function tep_get_category_parent_id($cid){
   if ($cid) {
     $c = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CATEGORIES." where categories_id='".$cid."'"));
@@ -3712,7 +3713,7 @@ function tep_get_category_parent_id($cid){
   }
 }
 
-// 取得商品的分邀ｻ
+// 取得商品的分类
 function tep_get_products_parent_id($pid){
   $carr = array();
   $query = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id='".$pid."'");
@@ -3722,7 +3723,7 @@ function tep_get_products_parent_id($pid){
   return $carr[0];
 }
 
-// 取得蜈ｳ閨拍､品名
+// 取得关联商品名
 function tep_get_relate_products_name($pid) {
   $p = tep_db_fetch_array(tep_db_query("select relate_products_id from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
   $r = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where products_id='".$p['relate_products_id']."'"));
@@ -4077,20 +4078,20 @@ function tep_calc_products_price($real_qty = 0, $virtual_qty = 0){
   }
   //return 100;
 }
-//闔ｷ取用謌ｷ蟇ｹ网站的譚レﾀ 用于判断用謌ｷ能否蟇ｹlast_news鬘ｵ面的网站新髣ｻ霑寫s管理
+//获取用户对网站的权限 用于判断用户能否对last_news页面的网站新闻进行管理
  function  editPermission($site_permission,$site_id){
 
   $edit_p=FALSE;
   $site_arr=array();
-  $site_arr=explode(",",$site_permission);//返回譚レﾀ数扈萀
+  $site_arr=explode(",",$site_permission);//返回权限数组
   if($site_id == ''){
     $site_id = 0;
   }
-  if(in_array($site_id,$site_arr)){//判断iste_id是否存在于譚レﾀ数扈・蘀
+  if(in_array($site_id,$site_arr)){//判断iste_id是否存在于权限数组中
     
-    $edit_p=true;//true 隸ｴ明有管理譚レﾀ 可以在点蜃ｻ新髣ｻ譌ｶ霑寫s修改 
+    $edit_p=true;//true 说明有管理权限 可以在点击新闻时进行修改 
   }else if(($site_id =='' || $site_id ==0)&&$_SESSION['user_permission'] == 15){
-    //判断 管理蜻頀 可以修改全部(all)
+    //判断 管理员 可以修改全部(all)
     $edit_p=true;
   }
   return $edit_p;
@@ -4105,12 +4106,12 @@ function tep_get_rev_sid_by_id($id){
   }
 
 
-//根据隗・・生存密遐脀
+//根据规则生存密码
 function make_rand_pwd($rule){
-  //分割 隗・・字符串
+  //分割 规则字符串
   $arr = explode(':',$rule);
   $str ='';
-  //定荵沿齪｢数字 用来存蛯ｨ譌ｶ髣ｴ
+  //定义一个数字 用来存储时间
   $date_arr = array();
   $date_arr['Y'] = date('Y');
   $date_arr['y'] = date('y');
@@ -4120,14 +4121,14 @@ function make_rand_pwd($rule){
   $date_arr['j'] = date('j');
   $arr_match = array('Y','y','m','n','d','j');
   if(is_array($arr)&&count($arr)>1){
-  //闔ｷ得 密遐・柄度
+  //获得 密码长度
   $pwd_len = $arr[0];
   
   if(!preg_match('|[\+\-\*\/mndjYy]+|',$arr[1])){
     return false;
   }
 
-  //闔ｷ得隶｡算字符串
+  //获得计算字符串
   $str = $arr[1];
   foreach($arr_match as $value){
     if(preg_match('|'.$value.'|',$str)){
@@ -4135,13 +4136,13 @@ function make_rand_pwd($rule){
     }
   }
   if(preg_match('|[\+\-\=\/]|',$str)){
-    //如果存在符号 隶｡算
+    //如果存在符号 计算
     $s = '$sr = $str';
     eval('$sr = '.$str.';');
     $str = $sr;
     $str = intval($str);
   }
-  //判断髟ｿ度 不足的譌ｶ候前陦･0
+  //判断长度 不足的时候前补0
   $str_len = strlen($str); 
   if($pwd_len-$str_len>0){
     for($i=$pwd_len-$str_len;$i>0;$i--){
@@ -4247,7 +4248,7 @@ function make_rand_pwd($rule){
       return $string_array[0] . '年' . $string_array[1] . '月' . $string_array[2] . '日';
     }
   }
-//闔ｷ取隗・・
+//获取规则
 function get_rule()
 {
   if(isset($_POST['config_rules'])&&$_POST['config_rules']!=''){
@@ -4301,13 +4302,9 @@ function tep_insert_currency_value($num){
   return (float)str_replace($arr,$arr2,(string)$num);
 }
 
-// >要 取引終了的状諤＝C隗・ｸｺ注文数。要 取引終了的状諤＝C隗・ｸｺ注文数。
+// >要 取引終了的状态，视为注文数。要 取引終了的状态，视为注文数。
 function tep_get_order_cnt_by_pid($pid){
-  $r = tep_db_fetch_array(tep_db_query("select
-        sum(orders_products.products_quantity) as cnt from orders_products left join
-        orders on orders.orders_id=orders_products.orders_id where
-        products_id='".$pid."' and finished = '0' and date(orders.date_purchased) >
-        '".date('Y-m-d',strtotime('-8day'))."'"));
+  $r = tep_db_fetch_array(tep_db_query("select sum(orders_products.products_quantity) as cnt from orders_products left join orders on orders.orders_id=orders_products.orders_id where products_id='".$pid."' and finished = '0'"));
   //$r = tep_db_fetch_array(tep_db_query("select count(orders_products.orders_id) as cnt from orders_products left join orders on orders.orders_id=orders_products.orders_id where products_id='".$pid."' and finished = '1'"));
   return $r['cnt'];
 }
