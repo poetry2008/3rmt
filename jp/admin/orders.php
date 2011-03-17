@@ -517,7 +517,6 @@
     $mt[$osid][$select_result['site_id']?$select_result['site_id']:0] = $select_result['orders_status_mail'];
     $mo[$osid][$select_result['site_id']?$select_result['site_id']:0] = $select_result['orders_status_title'];
     $nomail[$osid] = $select_result['nomail'];
-    //$sid[]
   }
 
   //------------------------------------------------
@@ -1022,7 +1021,7 @@ if($reload == 'yes') {
   } else if ($oq['orders_questions_type']) {
     $orders_questions_type = $oq['orders_questions_type'];
   } else {
-    if ($order->info['payment_method'] === '銀行振込(買い取り)') {
+    if (strpos($order->info['payment_method'], '買い取り')) {
       $orders_questions_type = 1;
     } else if ($order->info['payment_method'] === 'クレジットカード決済' || $order->info['payment_method'] === 'ペイパル決済') {
       $orders_questions_type = 2;
@@ -1075,10 +1074,8 @@ if($reload == 'yes') {
     $pay_time = tep_get_orders_status_history_time($order->info['orders_id'], 13);
     $pay_email = tep_get_orders_status_history_notified($order->info['orders_id'], 13);
     //支付通知
-    //$end_time = tep_get_orders_status_history_time($order->info['orders_id'], 5)?tep_get_pay_day(tep_get_orders_status_history_time($order->info['orders_id'], 5)):'';
     $end_time = tep_get_orders_status_history_time($order->info['orders_id'], 5);
     $end_email = tep_get_orders_status_history_notified($order->info['orders_id'], 5);
-//echo $end_time;
 ?>
   <tr>
     <td class="main">キャラクターの有無：</td>
@@ -1162,7 +1159,7 @@ if($reload == 'yes') {
 </table>
     </td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#td_q_15 input[type=checkbox]').attr('checked','');$('#q_15_6_m').val('');$('#q_15_6_d').val('');$('#q_15_7').val('');clean_option(15,'<?php echo $order->info['orders_id'];?>');"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#td_q_15 input[type=checkbox]').attr('checked','');$('#q_15_7').val('');clean_option(15,'<?php echo $order->info['orders_id'];?>');"></td>
 <?php } ?>
   </tr>
     

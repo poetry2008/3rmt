@@ -157,16 +157,16 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   ($_POST['q_9_2_m'] && $_POST['q_9_2_d']) && $questions_arr['q_9_2'] = date('y') . '-' . intval($_POST['q_9_2_m']) . '-' . intval($_POST['q_9_2_d']);
   isset($_POST['q_10_1']) && $questions_arr['q_10_1'] = intval($_POST['q_10_1']);
   isset($_POST['q_10_2']) && $questions_arr['q_10_2'] = intval($_POST['q_10_2']);
-  isset($_POST['q_11_1']) && $questions_arr['q_11_1'] = intval($_POST['q_11_1']);
-  isset($_POST['q_11_2']) && $questions_arr['q_11_2'] = $_POST['q_11_2'];
+  //isset($_POST['q_11_1']) && $questions_arr['q_11_1'] = intval($_POST['q_11_1']);
+  //isset($_POST['q_11_2']) && $questions_arr['q_11_2'] = $_POST['q_11_2'];
   isset($_POST['q_11_3']) && $questions_arr['q_11_3'] = intval($_POST['q_11_3']);
   isset($_POST['q_11_4']) && $questions_arr['q_11_4'] = intval($_POST['q_11_4']);
   isset($_POST['q_11_5']) && $questions_arr['q_11_5'] = intval($_POST['q_11_5']);
   isset($_POST['q_11_6']) && $questions_arr['q_11_6'] = intval($_POST['q_11_6']);
   isset($_POST['q_11_7']) && $questions_arr['q_11_7'] = intval($_POST['q_11_7']);
   isset($_POST['q_11_8']) && $questions_arr['q_11_8'] = intval($_POST['q_11_8']);
-  isset($_POST['q_11_9']) && $questions_arr['q_11_9']   = $_POST['q_11_9'];
-  isset($_POST['q_11_10']) && $questions_arr['q_11_10'] = $_POST['q_11_10'];
+  //isset($_POST['q_11_9']) && $questions_arr['q_11_9']   = $_POST['q_11_9'];
+  //isset($_POST['q_11_10']) && $questions_arr['q_11_10'] = $_POST['q_11_10'];
   isset($_POST['q_11_11']) && $questions_arr['q_11_11'] = intval($_POST['q_11_11']);
   isset($_POST['q_11_12']) && $questions_arr['q_11_12'] = intval($_POST['q_11_12']);
   ($_POST['q_11_13_m'] && $_POST['q_11_13_d']) && $questions_arr['q_11_13'] = date('y') . '-' . intval($_POST['q_11_13_m']) . '-' . intval($_POST['q_11_13_d']);
@@ -184,7 +184,7 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   isset($_POST['q_15_3']) && $questions_arr['q_15_3'] = intval($_POST['q_15_3']);
   isset($_POST['q_15_4']) && $questions_arr['q_15_4'] = intval($_POST['q_15_4']);
   isset($_POST['q_15_5']) && $questions_arr['q_15_5'] = intval($_POST['q_15_5']);
-  ($_POST['q_15_6_m'] && $_POST['q_15_6_d']) && $questions_arr['q_15_6'] = date('y') . '-' . intval($_POST['q_15_6_m']) . '-' . intval($_POST['q_15_6_d']);
+  //($_POST['q_15_6_m'] && $_POST['q_15_6_d']) && $questions_arr['q_15_6'] = date('y') . '-' . intval($_POST['q_15_6_m']) . '-' . intval($_POST['q_15_6_d']);
   isset($_POST['q_15_7']) && $questions_arr['q_15_7'] = $_POST['q_15_7'];
   isset($_POST['q_15_8']) && $questions_arr['q_15_8'] = intval($_POST['q_15_8']);
   isset($_POST['q_16_1']) && $questions_arr['q_16_1'] = $_POST['q_16_1'];
@@ -262,16 +262,16 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
       break;
     case 11:
       $arr = array(
-        'q_11_1' => '',
-        'q_11_2' => '',
+        //'q_11_1' => '',
+        //'q_11_2' => '',
         'q_11_3' => '',
         'q_11_4' => '',
         'q_11_5' => '',
         'q_11_6' => '',
         'q_11_7' => '',
         'q_11_8' => '',
-        'q_11_9' => '',
-        'q_11_10' => '',
+        //'q_11_9' => '',
+        //'q_11_10' => '',
         'q_11_11' => '',
         'q_11_12' => '',
         'q_11_13' => '',
@@ -287,7 +287,7 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
         'q_15_3' => '',
         'q_15_4' => '',
         'q_15_5' => '',
-        'q_15_6' => '',
+        //'q_15_6' => '',
         'q_15_7' => '',
         'q_15_8' => ''
       );
