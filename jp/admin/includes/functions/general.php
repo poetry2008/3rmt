@@ -3189,7 +3189,10 @@ if (!function_exists('json_encode'))
   }
   
   function tep_get_kakuukosuu_by_products_id($products_id) {
-    $data = tep_db_fetch_array(tep_db_query("select * from products where products_id = '".$products_id."'"));
+    static $data;
+    if (!isset($data[$products_id])){
+      $data[$products_id] = tep_db_fetch_array(tep_db_query("select * from products where products_id = '".$products_id."'"));
+    }
     //$data = tep_db_fetch_array(tep_db_query("select * from set_menu_list where categories_id='".$categories_id."' and products_id='".$products_id."'"));
     if ($data) {
       return (int)$data['products_virtual_quantity'];
@@ -3309,7 +3312,9 @@ function tep_get_customers_fax_by_id($cid)
       $str .= '<font color="blue"><b>メモ有り</b></font>';
     }
     
-    $pay_time = tep_get_orders_status_history_time($orders['orders_id'], 9);
+    //$pay_time = tep_get_orders_status_history_time($orders['orders_id'], 9);
+    $oq = tep_db_fetch_array(tep_db_query("select * from orders_questions where orders_id = '".$orders['orders_id']."'"));
+    $pay_time = $oq['q_3_2'] && $oq['q_3_1'] && $oq['q_3_4'] ? $oq['q_3_2'] : false;
     $str .= '</td></tr>';
     $str .= '<tr><td colspan="2">&nbsp;</td></tr>';
     $str .= '<tr><td class="main" width="60"><b>支払方法：</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
