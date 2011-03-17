@@ -166,7 +166,7 @@ if (isset($_GET['action']) && $_GET['action']) {
     }
   }
 ?>
-  <td class="dataTableHeadingContent" align="center" width='50'>現在単価</td>
+  <td class="dataTableHeadingContent" align="center" width='120'>現在単価</td>
   <td class="dataTableHeadingContent" align="center" width='50'>単価設定</td>
   <td class="dataTableHeadingContent" align="center" width='30'>増減</td>
   <td class="dataTableHeadingContent" align="center" <?php if ($ocertify->npermission < 10) {?>width='1'<?php } else {?>width='80'<?php }?>><?php
@@ -442,7 +442,7 @@ if ($cPath_yobi){
               }
   }
               ?>
-<td class="dataTableContent" align="center" style="font-weight:bold"><?php
+<td class="dataTableContent" align="right" style="font-weight:bold"><?php
       $product_price = tep_get_products_price($products['products_id']);
       if ($product_price['sprice']) {
         echo '<s>' . $currencies->format($product_price['price']) . '</s> <span class="specialPrice">' . $currencies->format($product_price['sprice']) . '</span>';
