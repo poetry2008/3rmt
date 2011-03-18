@@ -2955,7 +2955,9 @@ function orders_status_updated_for_question($orders_id, $orders_status_id, $noti
     case 9:
       // 4_1  
       $arr = array(
-        'q_4_1' => '1'
+        'q_4_1' => '1',
+        'q_4_2' => '1',
+        'q_4_3' => date('Y-m-d')
       );
       break;
     case 2:
