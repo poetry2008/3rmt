@@ -1293,7 +1293,6 @@ function tep_minitor_info(){
     tep_db_query("delete from orders_questions where orders_id = '" . tep_db_input($order_id) . "'");
     tep_db_query("delete from orders_questions_products where orders_id = '" . tep_db_input($order_id) . "'");
     tep_db_query("delete from orders_products_download where orders_id = '" . tep_db_input($order_id) . "'");
-    tep_db_query("delete from orders_products_to_actor where orders_id = '" . tep_db_input($order_id) . "'");
   }
 
   function tep_reset_cache_block($cache_block, $site_id='') {
@@ -3195,7 +3194,7 @@ if (!function_exists('json_encode'))
     }
     //$data = tep_db_fetch_array(tep_db_query("select * from set_menu_list where categories_id='".$categories_id."' and products_id='".$products_id."'"));
     if ($data) {
-      return (int)$data['products_virtual_quantity'];
+      return (int)$data[$products_id]['products_virtual_quantity'];
     } else {
       return 0;
     }
@@ -3312,9 +3311,16 @@ function tep_get_customers_fax_by_id($cid)
       $str .= '<font color="blue"><b>メモ有り</b></font>';
     }
     
+    
+    
     //$pay_time = tep_get_orders_status_history_time($orders['orders_id'], 9);
+    
     $oq = tep_db_fetch_array(tep_db_query("select * from orders_questions where orders_id = '".$orders['orders_id']."'"));
-    $pay_time = $oq['q_3_2'] && $oq['q_3_1'] && $oq['q_3_4'] ? $oq['q_3_2'] : false;
+    if ($oq['orders_questions_type']) {
+      $pay_time = tep_get_orders_status_history_time($orders['orders_id'], 9);
+    } else {
+      $pay_time = $oq['q_3_2'] && $oq['q_3_1'] && $oq['q_3_4'] ? $oq['q_3_2'] : false;
+    }
     $str .= '</td></tr>';
     $str .= '<tr><td colspan="2">&nbsp;</td></tr>';
     $str .= '<tr><td class="main" width="60"><b>支払方法：</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';

@@ -348,7 +348,7 @@
       
       tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $get_point . " where customers_id = " . $result1['customers_id'] );
     }
-    }   
+    }
     
     if ($check_status['orders_status'] != $status || $comments != '') {
       tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
