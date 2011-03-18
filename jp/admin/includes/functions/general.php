@@ -3320,7 +3320,7 @@ function tep_get_customers_fax_by_id($cid)
     $oq = tep_db_fetch_array(tep_db_query("select * from orders_questions where orders_id = '".$orders['orders_id']."'"));
     if ($oq['orders_questions_type'] == '2') {
       //$pay_time = tep_get_orders_status_history_time($orders['orders_id'], 9);
-      $pay_time = $oq['q_4_3'] && $oq['q_4_2'] ? $oq['q_4_3'] : false;
+      $pay_time = $oq['q_4_3'] && $oq['q_4_3'] != '0000-00-00' && $oq['q_4_2'] ? $oq['q_4_3'] : false;
     } else {
       $pay_time = $oq['q_3_2'] && $oq['q_3_1'] && $oq['q_3_4'] ? $oq['q_3_2'] : false;
     }
