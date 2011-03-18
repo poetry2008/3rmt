@@ -623,6 +623,16 @@ function q_3_2(){
     }
   }
 }
+
+// 以当前时间为如今日
+function q_4_3(){
+  if ($('#q_4_2').attr('checked') == true){
+    if ($('#q_4_3_m').val() == '' || $('#q_4_3_m').val() == '') {
+      $('#q_4_3_m').val(new Date().getMonth()+1);
+      $('#q_4_3_d').val(new Date().getDate());
+    }
+  }
+}
 </script>
 </head>
 <body>
@@ -1022,7 +1032,9 @@ function q_3_2(){
 <?php
   // 取得问答的答案
   $orders_questions_query = tep_db_query("select * from orders_questions where orders_id = '".$order->info['orders_id']."'");
+  
   $oq = tep_db_fetch_array($orders_questions_query);
+
   // 自动或者手动判断问答种类
   // 0=>贩卖, 1=>买取, 2=>信用卡
   if (isset($_GET['questions_type'])) {
@@ -1252,9 +1264,13 @@ function q_3_2(){
   </tr>
   <tr>
     <td class="main">入金確認メール送信：</td>
-    <td class="main"><?php echo tep_draw_hidden_field('q_4_1', $oq['q_4_1'] ? $oq['q_4_1'] : $order->customer['email_address'], 'size="20" class="questions_date" readonly');?><?php echo tep_draw_checkbox_field('q_4_2', '1', isset($oq['q_4_2'])?$oq['q_4_2'] === '1':$pay_email,'','id="q_4_2" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>済</td>
+    <td class="main"><?php echo tep_draw_hidden_field('q_4_1', $oq['q_4_1'] ? $oq['q_4_1'] : $order->customer['email_address'], 'size="20" class="questions_date" readonly');?><?php echo tep_draw_checkbox_field('q_4_2', '1', isset($oq['q_4_2'])?$oq['q_4_2'] === '1':$pay_email,'','id="q_4_2" onclick="q_4_3();change_option(this);"');?>済
+    
+    <?php echo tep_draw_input_field('q_4_3_m', $oq['q_4_3'] == '0000-00-00' ? '' : ($oq['q_4_3'] ? date('m', strtotime($oq['q_4_3'])) : ($pay_time?date('m', strtotime($pay_time)):'')), 'id="q_4_3_m" size="2" class="questions_date" readonly');?>月<?php echo tep_draw_input_field('q_4_3_d', $oq['q_4_3'] == '0000-00-00' ? '' : ($oq['q_4_3'] ? date('d', strtotime($oq['q_4_3'])) : ($pay_time?date('d', strtotime($pay_time)):'')), 'id="q_4_3_d" size="2" class="questions_date" readonly');?>日
+    
+    </td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_4_2').attr('checked','');clean_option(4,'<?php echo $order->info['orders_id'];?>')"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_4_2').attr('checked','');$('#q_4_3_m').val('');$('#q_4_3_d').val('');clean_option(4,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
@@ -2209,7 +2225,7 @@ function q_3_2(){
       <?php echo strip_tags(tep_get_ot_total_by_orders_id($orders['orders_id']));?>
       <?php }?>
     </td>
-    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><?php echo $next_mark; ?><font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>" id="tori_<?php echo $orders['orders_id']; ?>"><?php echo tep_datetime_short($orders['torihiki_date']); ?></font></td>
+    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><?php echo $next_mark; ?><font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>" id="tori_<?php echo $orders['orders_id']; ?>">11<?php echo tep_datetime_short($orders['torihiki_date']); ?>ok</font></td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="left" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><?php if ($orders['orders_wait_flag']) { echo tep_image(DIR_WS_IMAGES . 'icon_hand.gif', '取引待ち'); } else { echo '&nbsp;'; } ?></td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="left" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><?php echo $orders['orders_work']?strtoupper($orders['orders_work']):'&nbsp;';?></td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="center" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)"><span style="color:#999999;"><?php echo tep_datetime_short($orders['date_purchased']); ?></span></td>
