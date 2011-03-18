@@ -34,15 +34,15 @@
         <tr><td height="19" colspan="2" align="left"><font size="2">代金振り込み先</font></td></tr>
         <tr>
         	<td width="65" height="38"></td>
-        	<td width="292" height="38" valign="top" align="left"><font size="2"><u><textarea type="text" rows="6" value="カ)アールエムティエイチアイ" ></textarea></u></font></td>
+        	<td width="292" height="38" valign="top" align="left"><font size="3"><u><textarea type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-size:14px;" ></textarea></u></font></td>
         </tr>
         <tr>
         	<td></td>
-            <td height="33" valign="top"><font size="2"><u><textarea type="text" rows="6" value="カ)アールエムティエイチアイ" ></textarea></u></font></td>
+            <td height="33" valign="top"><font size="3"><u><textarea type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-size:14px;" ></textarea></u></font></td>
         </tr>
         <tr>
         	<td></td>
-            <td height="67" valign="top"><font size="2"><textarea type="text" rows="6" value="カ)アールエムティエイチアイ" ></textarea></font></td>
+            <td height="67" valign="top"><font size="3"><textarea type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-size:14px;" ></textarea></font></td>
         </tr>
         <tr><td height="25" valign="top" colspan="2" valign="top"><font size="2">但し、 品代として。</font></td></tr>
         <tr><td height="25" valign="bottom" colspan="2" valign="top"><font size="2">下記の通りご請求申し上げます。</font></td></tr>
@@ -51,15 +51,15 @@
     <td>
       <table border="0" width="195" class="print_innput">
       	<tr><td height="10"></td></tr>
-        <tr><td height="23" valign="top" align="right"><input name="textfield" type="text" id="textfield" value="2009年7月7日星期二" style="height:18px; width:150px; text-align:right; font-size:12px; margin-right:5px;"></td></tr>
+        <tr><td height="23" valign="top" align="right"><input name="textfield" type="text" id="textfield" value="2009年7月7日星期二" style="height:20px; width:150px; text-align:right; font-size:14px; margin-right:5px;"></td></tr>
         <tr><td width="31"></td></tr>
-        <tr><td align="right" height="44" valign="bottom"><font size="2"><textarea type="text" rows="3" value="カ)アールエムティエイチアイ" ></textarea></font></td></tr>
-        <tr><td align="right" height="19" valign="bottom"><font size="1"><a href="#"><input name="textfield" type="text" id="textfield" value="takahasi.tetuya@live.jp" style=" height:18px; width:190px; text-align:right; font-size:12px; margin-right:5px;"></a></font></td></tr>
+        <tr><td align="right" height="44" valign="bottom"><font size="3"><textarea type="text" rows="3" value="カ)アールエムティエイチアイ" style="font-size:14px;" ></textarea></font></td></tr>
+        <tr><td align="right" height="19" valign="bottom"><font size="2"><a href="#"><input name="textfield" type="text" id="textfield" value="takahasi.tetuya@live.jp" style=" height:18px; width:190px; text-align:right; font-size:16px; margin-right:5px;"></a></font></td></tr>
         <tr><td width="19"></td></tr>
         <tr><td align="right" colspan="4" height="163">
           <table width="30" style="border:#666666 1px solid;">
           <tr><td style="border-bottom:#666666 1px solid;" align="center"><font size="2">責任者</font></td></tr>
-          <tr><td height="120" colspan="6"><font size="5"><b><textarea type="text" rows="6" value="カ)アールエムティエイチアイ" ></textarea></b></font></td></tr>
+          <tr><td height="120" colspan="6"><font size="5"><b><textarea type="text" rows="6" value="カ)アールエムティエイチアイ"  style="font-size:14px;"></textarea></b></font></td></tr>
           </table>
         </td></tr>
       </table>
