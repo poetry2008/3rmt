@@ -211,7 +211,8 @@ function auto_save_questions() {
   //css('top','45%').css('left','45%').css('position','absolute');
   $('#form_orders_questions').ajaxSubmit({
     beforeSubmit: function(){return true;},
-    success: function(){
+    success: function(text){
+      alert(text);
       $('body').css('cursor','default');
       $('#wait').hide();
       //css('position','none');
@@ -286,11 +287,13 @@ function playSound()
     }
   }
   function propertychange_option(ele){
+
     change_option_enable = false;
     // 自动保存
     auto_save_questions();
     // 是否显示按钮
     show_submit_button();
+
   }
   function show_submit_button(){
     // 当必要选项全部不为空的时候显示确认按钮
