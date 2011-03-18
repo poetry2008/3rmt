@@ -1191,7 +1191,7 @@ function q_3_2(){
     <td class="main">決算確認：</td>
     <td class="main"><?php echo tep_draw_checkbox_field('q_9_1', '1', $oq['q_9_1'], '', 'id="q_9_1" onclick="if(this.checked){$(\'#q_9_2_m\').val(new Date().getMonth()+1);$(\'#q_9_2_d\').val(new Date().getDate());change_option(this);}else{$(\'#q_9_2_m\').val(\'\');$(\'#q_9_2_d\').val(\'\');change_option(this);}"');?><?php echo tep_draw_input_field('q_9_2_m', $oq['q_9_2'] && $oq['q_9_2'] != '0000-00-00' ? date('m', strtotime($oq['q_9_2'])) : '', 'size="2" id="q_9_2_m" class="questions_date" readonly');?>月<?php echo tep_draw_input_field('q_9_2_d', $oq['q_9_2'] && $oq['q_9_2'] != '0000-00-00' ? date('d', strtotime($oq['q_9_2'])) : '', 'size="2" id="q_9_2_d" class="questions_date" readonly');?>日</td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_9_1').attr('checked','');clean_option(9,'<?php echo $order->info['orders_id'];?>')"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_9_1').attr('checked','');$('#q_9_2_m').val('');$('#q_9_2_d').val('');clean_option(9,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>

@@ -212,7 +212,6 @@ function auto_save_questions() {
   $('#form_orders_questions').ajaxSubmit({
     beforeSubmit: function(){return true;},
     success: function(text){
-      alert(text);
       $('body').css('cursor','default');
       $('#wait').hide();
       //css('position','none');
