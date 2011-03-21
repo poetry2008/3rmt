@@ -997,11 +997,13 @@ function tep_minitor_info(){
 
 ////
 // Sets the status of a banner
-  function tep_set_banner_status($banners_id, $status) {
+  function tep_set_banner_status($banners_id, $status, $site_id) {
     if ($status == '1') {
-      return tep_db_query("update " . TABLE_BANNERS . " set status = '1', expires_impressions = NULL, expires_date = NULL, date_status_change = NULL where banners_id = '" . $banners_id . "'");
+      return tep_db_query("update " . TABLE_BANNERS . " set status = '1',
+          expires_impressions = NULL, expires_date = NULL, date_status_change = NULL
+          where banners_id = '" . $banners_id . "' and site_id ='".$site_id."'");
     } elseif ($status == '0') {
-      return tep_db_query("update " . TABLE_BANNERS . " set status = '0', date_status_change = now() where banners_id = '" . $banners_id . "'");
+      return tep_db_query("update " . TABLE_BANNERS . " set status = '0', date_status_change = now() where banners_id = '" . $banners_id . "' and site_id ='".$site_id."'");
     } else {
       return -1;
     }
