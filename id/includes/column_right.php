@@ -15,7 +15,7 @@
 <?php
   
   if ($_SERVER['REQUEST_URI'] != "/" && $_SERVER['REQUEST_URI'] != "/index.php") {
-    if ($banner = tep_banner_exists('dynamic', 'left1')) { echo '<div align="center" style="padding-bottom:5px; ">'.tep_display_banner('static', $banner, 171, 322).'</div>'."\n"; } 
+    if ($banner = tep_banner_exists('dynamic', 'left1')) { echo '<div align="center" style="padding-bottom:5px; ">'.tep_display_banner('static', $banner, 171, 323).'</div>'."\n"; } 
   }
   
   if (isset($HTTP_GET_VARS['products_id'])) {
