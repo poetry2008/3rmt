@@ -40,12 +40,28 @@
   function calc_cost() {
     var cost = 0;
     $('.price').each(function(){
-      cost += parseFloat(this.innerHTML);
+      //alert(this.innerHTML);
+      cost += parseFloat(this.innerHTML.replace(/,/g,''));
     });
+    cost *= parseFloat(document.getElementById('percent_display_cost').innerHTML);
     $('#cost_display').html(cost.toFixed(2));
   }
-  
+  function percent_cost(){
+    document.getElementById('percent_display_cost').style.display='none';
+    document.getElementById('percent_cost').style.display='block';
+  }
 
+  function percent_out_cost(){
+    document.getElementById('percent_cost').style.display='none';
+    document.getElementById('percent_display_cost').style.display='block';
+    calc_cost();
+  }
+
+  function percent_change_cost(){
+    ele = document.getElementById('select_cost');
+    document.getElementById('percent_display_cost').innerHTML = ele.options[ele.selectedIndex].value;
+    //document.getElementById('price_'+no).innerHTML = (ele.options[ele.selectedIndex].value * document.getElementById('final_price_'+no).value).toFixed(2);
+  }
 
 </script>
 <table border="0" width="563" style="font-family:ＭＳ Ｐゴシック">
@@ -143,14 +159,30 @@
       }
     }
     ?>
-</table>
-<table width="563" border="0" cellpadding="0" cellspacing="0">
-  <tr><td colspan="5" width="360" ></td>
+
+  <tr><td colspan="4" width="360" ></td>
       <td align="center" bgcolor="#00FFFF" style=" border-top:none; border-right:none; font-family:ＭＳ Ｐゴシック; font-size:13px;">小計<input type="hidden" id="cost" value="<?php echo $total_cost;?>">
 </td>
-        <td align="center" style=" border-top:none; border-left:none; font-family:Arial; font-size:13px;" id="cost_display"><?php echo number_format($total_cost);?>
+<td class="link_01" align="right" onclick="percent_cost()">
+  <span id="percent_cost" style="display:none;">
+    <select id="select_cost" onblur="percent_out_cost()" onchange="percent_change_cost()" onpropertychange="percent_change_cost()">
+      <option value="1.00">100%</option>
+      <option value="0.99">99%</option>
+      <option value="0.98">98%</option>
+      <option value="0.97">97%</option>
+      <option value="0.96">96%</option>
+      <option value="0.95">95%</option>
+      <option value="0.94">94%</option>
+      <option value="0.93">93%</option>
+      <option value="0.92">92%</option>
+      <option value="0.91">91%</option>
+      <option value="0.90">90%</option>
+    </select>
+  </span>
+  <span id="percent_display_cost">1.00</span>
 </td>
-    </tr>
+<td align="center" style="border-top:none; border-left:none; font-family:Arial; font-size:13px;" id="cost_display"><?php echo number_format($total_cost);?></td>
+</tr>
 </table>
 <?php
       exit;
