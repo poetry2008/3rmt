@@ -29,5 +29,5 @@
   require(DIR_WS_BOXES . 'information.php');
   require(DIR_WS_BOXES . 'reviews.php');
   include(DIR_WS_BOXES . 'right_banner.php') ;
-  require(DIR_WS_BOXES . 'banners.php');
+  //require(DIR_WS_BOXES . 'banners.php');
   //require(DIR_WS_BOXES . 'left_link.php');

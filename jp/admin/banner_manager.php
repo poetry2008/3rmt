@@ -276,6 +276,7 @@ function popupImageWindow(url) {
           from " . TABLE_BANNERS . " b, ".TABLE_SITES." s
           where banners_id = '" . tep_db_input($bID) . "'
             and s.id = b.site_id
+            and b.site_id = '". tep_db_input($lsite_id) . "'
           ");
       $banner = tep_db_fetch_array($banner_query);
 
