@@ -1238,8 +1238,11 @@ height:27px;
 }
 /*service_text*/
 .service_text {
-	font-size:12px;
-	color:#AE0E30;
+	color: #A85E5E;
+	font-size:10px;
+}
+.service_text a{color: #A85E5E;
+font-size:10px;
 }
 .index_reviews05 {
 	float:left;
