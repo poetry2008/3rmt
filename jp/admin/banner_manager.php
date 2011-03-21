@@ -12,8 +12,9 @@
          else $site_arr="";
     switch ($_GET['action']) {
       case 'setflag':
-        if ( ($_GET['flag'] == '0') || ($_GET['flag'] == '1') ) {
-          tep_set_banner_status($_GET['bID'], $_GET['flag']);
+        if ( (($_GET['flag'] == '0') || ($_GET['flag'] ==
+              '1'))&&(isset($_GET['site_id'])&&$_GET['site_id']!='')){
+          tep_set_banner_status($_GET['bID'], $_GET['flag'],$_GET['site_id']);
           $messageStack->add_session(SUCCESS_BANNER_STATUS_UPDATED, 'success');
         } else {
           $messageStack->add_session(ERROR_UNKNOWN_STATUS_FLAG, 'error');
@@ -92,7 +93,8 @@
             $banners_id = tep_db_insert_id();
             $messageStack->add_session(SUCCESS_BANNER_INSERTED, 'success');
           } elseif ($_GET['action'] == 'update') {
-            tep_db_perform(TABLE_BANNERS, $sql_data_array, 'update', 'banners_id = \'' . $banners_id . '\'');
+            tep_db_perform(TABLE_BANNERS, $sql_data_array, 'update', 'banners_id =
+                \'' . $banners_id . '\' and site_id =\''.$site_id.'\'');
             $messageStack->add_session(SUCCESS_BANNER_UPDATED, 'success');
           }
 
@@ -108,7 +110,8 @@
                 update " . TABLE_BANNERS . " 
                 set expires_date = '" . tep_db_input($expires_date) . "', 
                     expires_impressions = null 
-                where banners_id = '" . $banners_id . "'
+                where banners_id = '" . $banners_id . "' 
+                and site_id = '" .$site_id."'
             ");
           } elseif (isset($_POST['impressions']) && $_POST['impressions']) {
             $impressions = tep_db_prepare_input($_POST['impressions']);
@@ -117,6 +120,7 @@
                 set expires_impressions = '" . tep_db_input($impressions) . "', 
                     expires_date = null 
                 where banners_id = '" . $banners_id . "'
+                and site_id = '" .$site_id."'
             ");
           }
 
@@ -132,7 +136,9 @@
                 update " . TABLE_BANNERS . " 
                 set status = '0', 
                     date_scheduled = '" . tep_db_input($date_scheduled) . "' 
-                where banners_id = '" . $banners_id . "'");
+                where banners_id = '" . $banners_id . "'
+                and site_id = '" .$site_id."'
+                ");
           }
 
           tep_redirect(tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' . $banners_id . (isset($_GET['lsite_id'])?('&site_id='.$_GET['lsite_id']):'')));
@@ -257,6 +263,7 @@ function popupImageWindow(url) {
     $form_action = 'insert';
     if (isset($_GET['bID']) && $_GET['bID']) {
       $bID = tep_db_prepare_input($_GET['bID']);
+      $site_id = tep_db_prepare_input($_GET['lsite_id']);
       $form_action = 'update';
 
       $banner_query = tep_db_query("
@@ -305,7 +312,14 @@ function popupImageWindow(url) {
       <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>
-      <tr><?php echo tep_draw_form('new_banner', FILENAME_BANNER_MANAGER, 'page=' . (isset($_GET['page'])?$_GET['page']:'') . '&action=' . $form_action . (isset($_GET['lsite_id'])?('&lsite_id='.$_GET['lsite_id']):''), 'post', 'enctype="multipart/form-data"'); if ($form_action == 'update') echo tep_draw_hidden_field('banners_id', $bID); ?>
+      <tr><?php echo tep_draw_form('new_banner', FILENAME_BANNER_MANAGER, 'page=' .
+          (isset($_GET['page'])?$_GET['page']:'') . '&action=' . $form_action .
+          (isset($_GET['lsite_id'])?('&lsite_id='.$_GET['lsite_id']):''), 'post',
+          'enctype="multipart/form-data"'); if ($form_action == 'update') {
+        echo tep_draw_hidden_field('banners_id', $bID); 
+        echo tep_draw_hidden_field('site_id', $site_id); 
+        
+      }?>
         <td><table border="0" cellspacing="0" cellpadding="2">
           <tr>
             <td class="main"><?php echo ENTRY_SITE; ?></td>
