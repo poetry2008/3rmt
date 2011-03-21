@@ -4,7 +4,7 @@
 */
   include(DIR_WS_BOXES . 'login.php');
 
-  if ($banner = tep_banner_exists('dynamic', 'right1')) { echo '<div align="center" style="padding:5px 0; border-bottom:1px dashed #ccc; ">'.tep_display_banner('static', $banner).'</div>';  }
+  if ($banner = tep_banner_exists('dynamic', 'right1')) { echo '<div align="center" style="padding:5px 0; ">'.tep_display_banner('static', $banner).'</div>';  }
   echo '<div class="guarant01"><img src="images/h_a14.gif" alt=""></div>'; 
 
   if (isset($_GET['products_id'])) {
