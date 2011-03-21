@@ -77,15 +77,15 @@
         <tr><td height="19" colspan="2" align="left"><font size="2">代金振り込み先</font></td></tr>
         <tr>
           <td width="65" height="38"></td>
-          <td width="292" height="38" valign="top" align="left"><font size="3"><u><textarea type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-size:14px;" ></textarea></u></font></td>
+          <td width="292" height="38" valign="top" align="left"><font size="3"><u><textarea type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-size:18px;" ></textarea></u></font></td>
         </tr>
         <tr>
           <td></td>
-            <td height="33" valign="top"><font size="3"><u><textarea type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-size:14px;" ></textarea></u></font></td>
+            <td height="33" valign="top"><font size="3"><u><textarea type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-size:18px;" ></textarea></u></font></td>
         </tr>
         <tr>
           <td></td>
-            <td height="67" valign="top"><font size="3"><textarea type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-size:14px;" ></textarea></font></td>
+            <td height="67" valign="top"><font size="3"><textarea type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-size:18px;" ></textarea></font></td>
         </tr>
         <tr><td height="25" valign="top" colspan="2" valign="top"><font size="2">但し、 品代として。</font></td></tr>
         <tr><td height="25" valign="bottom" colspan="2" valign="top"><font size="2">下記の通りご請求申し上げます。</font></td></tr>
@@ -96,8 +96,8 @@
         <tr><td height="10"></td></tr>
         <tr><td height="23" valign="top" align="right"><input name="textfield" type="text" id="textfield" value="2009年7月7日星期二" style="height:20px; width:150px; text-align:right; font-size:14px; margin-right:5px;"></td></tr>
         <tr><td width="31"></td></tr>
-        <tr><td align="right" height="44" valign="bottom"><font size="3"><textarea type="text" rows="3" value="カ)アールエムティエイチアイ" style="font-size:14px;" ></textarea></font></td></tr>
-        <tr><td align="right" height="19" valign="bottom"><font size="2"><a href="#"><input name="textfield" type="text" id="textfield" value="takahasi.tetuya@live.jp" style=" height:18px; width:190px; text-align:right; font-size:16px; margin-right:5px;"></a></font></td></tr>
+        <tr><td align="right" height="44" valign="bottom"><font size="3"><textarea type="text" rows="3" value="カ)アールエムティエイチアイ" style="font-size:18px;" ></textarea></font></td></tr>
+        <tr><td align="right" height="19" valign="bottom"><font size="4"><a href="#"><input name="textfield" type="text" id="textfield" value="takahasi.tetuya@live.jp" style=" height:18px; width:190px; text-align:right; font-size:16px; margin-right:5px;"></a></font></td></tr>
         <tr><td width="19"></td></tr>
         <tr><td align="right" colspan="4" height="163">
           <table width="30" style="border:#666666 1px solid;">
@@ -125,7 +125,7 @@
       $print_order_query = tep_db_query("select o.torihiki_date, op.products_name, op.final_price, op.products_quantity from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op  where o.orders_id = op.orders_id and o.orders_id = '".$ovalue."'");     
       while ($print_order_res = tep_db_fetch_array($print_order_query)) {
     ?>
-<tr align="center">
+<tr align="center" style="font-size:14px;">
 <td class="link_01"><?php echo $print_num;?></td>
 <td class="link_01"><?php echo tep_datetime_short($print_order_res['torihiki_date']);?></td>
 <td class="link_01"><?php echo $print_order_res['products_name'];?></td>
@@ -335,7 +335,7 @@ function check_select()
                 </tr>
                 <tr>
                   <td colspan="7" align="right">
-                  <input type="image" src="includes/languages/japanese/images/buttons/button_print.gif">
+                  <input type="image" src="includes/languages/japanese/images/buttons/button_print.gif" align="top">
                   <a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, str_replace('cpage', 'page', tep_get_all_get_params(array('page'))));?>"><?php echo tep_image_button('button_back.gif', IMAGE_BACK);?></a> 
                   </td>
                 </tr>
