@@ -3,12 +3,12 @@
   $Id$
 */
 ?>
-<!--left_banner -->
+<!--right_banner -->
 <?php
-  if ($banner = tep_banner_exists('dynamic', 'left1')) { echo '<div class="link_banner">'.tep_display_banner('static', $banner).'</div>'."\n"; } 
-  //if ($banner = tep_banner_exists('dynamic', 'left2')) { echo '<div class="link_banner">'.tep_display_banner('static', $banner, 170, 79).'</div>'."\n"; }
-  //if ($banner = tep_banner_exists('dynamic', 'left3')) { echo '<div class="link_banner">'.tep_display_banner('static', $banner, 170, 79).'</div>'."\n"; }
-  if ($banner = tep_banner_exists('dynamic', 'left4')) { echo '<div class="link_banner">'.tep_display_banner('static', $banner).'</div>'."\n"; }
-  if ($banner = tep_banner_exists('dynamic', 'left5')) { echo '<div class="link_banner">'.tep_display_banner('static', $banner).'</div>'."\n"; }
+  if ($banner = tep_banner_exists('dynamic', 'right1')) { echo '<div class="link_banner">'.tep_display_banner('static', $banner).'</div>'."\n"; } 
+  //if ($banner = tep_banner_exists('dynamic', 'right2')) { echo '<div class="link_banner">'.tep_display_banner('static', $banner, 170, 79).'</div>'."\n"; }
+  //if ($banner = tep_banner_exists('dynamic', 'right3')) { echo '<div class="link_banner">'.tep_display_banner('static', $banner, 170, 79).'</div>'."\n"; }
+  if ($banner = tep_banner_exists('dynamic', 'right4')) { echo '<div class="link_banner">'.tep_display_banner('static', $banner).'</div>'."\n"; }
+  if ($banner = tep_banner_exists('dynamic', 'right5')) { echo '<div class="link_banner">'.tep_display_banner('static', $banner).'</div>'."\n"; }
 ?>
-<!--left_banner_eof -->
+<!--right_banner_eof -->
