@@ -9,6 +9,24 @@
   
   if (isset($_GET['action'])) {
     switch ($_GET['action']) {
+      case 'check_one':
+        $_SESSION['customers_products']['orders_selected'][$_GET['customers_id']][$_GET['orders_id']] = $_GET['orders_id'];
+        exit;
+      case 'clear_one':
+        unset($_SESSION['customers_products']['orders_selected'][$_GET['customers_id']][$_GET['orders_id']]);
+        exit;
+      case 'check_all':
+        $orders_query = tep_db_query("select * from orders o where o.customers_id='".$_GET['customers_id']."'");
+        while($o = tep_db_fetch_array($orders_query)){
+          $_SESSION['customers_products']['orders_selected'][$_GET['customers_id']][$o['orders_id']] = $o['orders_id'];
+        }
+        exit;
+      case 'clear_all':
+        unset($_SESSION['customers_products']['orders_selected'][$_GET['customers_id']]);
+        exit;
+      case 'get_bill_template':
+        echo json_encode(tep_db_fetch_array(tep_db_query("select * from bill_templates where id='".$_GET['id']."'")));
+        exit;
       case 'print':
         $total_cost = 0;
         foreach ($_POST['oid'] as $ikey => $ivalue) {
@@ -40,7 +58,6 @@
   function calc_cost() {
     var cost = 0;
     $('.price').each(function(){
-      //alert(this.innerHTML);
       cost += parseFloat(this.innerHTML.replace(/,/g,''));
     });
     cost *= parseFloat(document.getElementById('percent_display_cost').innerHTML);
@@ -60,16 +77,54 @@
   function percent_change_cost(){
     ele = document.getElementById('select_cost');
     document.getElementById('percent_display_cost').innerHTML = ele.options[ele.selectedIndex].value;
-    //document.getElementById('price_'+no).innerHTML = (ele.options[ele.selectedIndex].value * document.getElementById('final_price_'+no).value).toFixed(2);
+  }
+  
+  function bill_template_change(ele) {
+    bid = ele.options[ele.selectedIndex].value;
+    if (bid != '') {
+      $.ajax({
+        url: 'customers_products.php?action=get_bill_template&id='+bid,
+        dataType: 'json',
+        success: function(data) {
+          $('#data1').val(data['data1']);
+          $('#data2').val(data['data2']);
+          $('#data3').val(data['data3']);
+          $('#data4').val(data['data4']);
+          $('#data5').val(data['data5']);
+          $('#email').val(data['email']);
+          $('#responsible').val(data['responsible']);
+        }
+      });
+    }
   }
 
 </script>
 <table border="0" width="563" style="font-family:ＭＳ Ｐゴシック">
-  <tr><td colspan="2" style=" font-family:ＭＳ Ｐゴシック;font-size:22px; padding-left:185px;">御請求書</td></tr>
+  <tr>
+    <td style=" font-family:ＭＳ Ｐゴシック;font-size:22px; padding-left:185px;">御請求書</td>
+    <td class="print_none">
+<?php 
+  $bill_query = tep_db_query("select * from bill_templates order by sort_order asc");
+  while($b = tep_db_fetch_array($bill_query)){
+    $bill_templates[] = $b;
+  }
+  if ($bill_templates) {
+?>
+<select id="bill_templates" onchange="bill_template_change(this)">
+  <option value=""> -- </option>
+<?php foreach ($bill_templates as $bill) { ?>
+  <option value="<?php echo $bill['id'];?>"><?php echo $bill['name'];?></option>
+<?php } ?>
+</select>
+<?php
+    }
+?>
+    </td>
+  </tr>
   <tr>
     <td>
       <table border="0" width="369" class="print_innput">
-        <tr><td height="30" colspan="2"><b>&nbsp;&nbsp;<input name="textfield" type="text" id="textfield" value="株式会社iimy" style=" height:23px; width:130px; font-size:14px; font-weight:bold; margin-right:5px;">御中</b></td></tr>
+        <tr><td height="30" colspan="2"><b>&nbsp;&nbsp;<input name="textfield" type="text" id="data1" value="株式会社iimy" style=" height:23px; width:130px; font-size:14px; font-weight:bold; margin-right:5px;">御中</b></td></tr>
     <tr><td height="13"></td></tr>
         <tr><td height="31" colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $currencies->format($total_cost);?>税込</td></tr>
         <tr><td height="34" colspan="2" align="left" valign="bottom"><font size="3">上記金額をお振り込みください。</font></td></tr>
@@ -77,15 +132,15 @@
         <tr><td height="19" colspan="2" align="left"><font size="2">代金振り込み先</font></td></tr>
         <tr>
           <td width="65" height="38"></td>
-          <td width="292" height="38" valign="top" align="left"><font size="3"><u><textarea type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-size:18px;" ></textarea></u></font></td>
+          <td width="292" height="38" valign="top" align="left"><font size="3"><u><textarea id="data2" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-size:18px;" ></textarea></u></font></td>
         </tr>
         <tr>
           <td></td>
-            <td height="33" valign="top"><font size="3"><u><textarea type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-size:18px;" ></textarea></u></font></td>
+            <td height="33" valign="top"><font size="3"><u><textarea id="data3" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-size:18px;" ></textarea></u></font></td>
         </tr>
         <tr>
           <td></td>
-            <td height="67" valign="top"><font size="3"><textarea type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-size:18px;" ></textarea></font></td>
+            <td height="67" valign="top"><font size="3"><textarea id="data4" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-size:18px;" ></textarea></font></td>
         </tr>
         <tr><td height="25" valign="top" colspan="2" valign="top"><font size="2">但し、 品代として。</font></td></tr>
         <tr><td height="25" valign="bottom" colspan="2" valign="top"><font size="2">下記の通りご請求申し上げます。</font></td></tr>
@@ -94,15 +149,15 @@
     <td>
       <table border="0" width="195" class="print_innput">
         <tr><td height="10"></td></tr>
-        <tr><td height="23" valign="top" align="right"><input name="textfield" type="text" id="textfield" value="2009年7月7日星期二" style="height:20px; width:150px; text-align:right; font-size:14px; margin-right:5px;"></td></tr>
+        <tr><td height="23" valign="top" align="right"><input name="textfield" type="text" id="textfield" value="<?php echo tep_date_long(date('Y-m-d H:i:s'));?>" style="height:20px; width:150px; text-align:right; font-size:14px; margin-right:5px;"></td></tr>
         <tr><td width="31"></td></tr>
-        <tr><td align="right" height="44" valign="bottom"><font size="3"><textarea type="text" rows="3" value="カ)アールエムティエイチアイ" style="font-size:18px;" ></textarea></font></td></tr>
-        <tr><td align="right" height="19" valign="bottom"><font size="2"><a href="#"><input name="textfield" type="text" id="textfield" value="takahasi.tetuya@live.jp" style=" height:18px; width:190px; text-align:right; font-size:16px; margin-right:5px;"></a></font></td></tr>
+        <tr><td align="right" height="44" valign="bottom"><font size="3"><textarea id="data5" type="text" rows="3" value="カ)アールエムティエイチアイ" style="font-size:18px;" ></textarea></font></td></tr>
+        <tr><td align="right" height="19" valign="bottom"><font size="2"><a href="#"><input name="textfield" type="text" id="email" value="" style=" height:18px; width:190px; text-align:right; font-size:16px; margin-right:5px;"></a></font></td></tr>
         <tr><td width="19"></td></tr>
         <tr><td align="right" colspan="4" height="163">
           <table width="30" style="border:#666666 1px solid;">
           <tr><td style="border-bottom:#666666 1px solid;" align="center"><font size="2">責任者</font></td></tr>
-          <tr><td height="120" colspan="6"><font size="5"><b><textarea type="text" rows="6" value="カ)アールエムティエイチアイ"  style="font-size:14px;"></textarea></b></font></td></tr>
+          <tr><td height="120" colspan="6"><font size="5"><b><textarea id="responsible" type="text" rows="6" value="カ)アールエムティエイチアイ"  style="font-size:14px;"></textarea></b></font></td></tr>
           </table>
         </td></tr>
       </table>
@@ -121,7 +176,8 @@
 </tr>
     <?php
     $print_num = 1; 
-    foreach ($_POST['oid'] as $okey => $ovalue) {
+    if (is_array($_SESSION['customers_products']['orders_selected'][$_GET['customers_id']])) 
+    foreach ($_SESSION['customers_products']['orders_selected'][$_GET['customers_id']] as $okey => $ovalue) {
       $print_order_query = tep_db_query("select o.torihiki_date, op.products_name, op.final_price, op.products_quantity from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op  where o.orders_id = op.orders_id and o.orders_id = '".$ovalue."'");     
       while ($print_order_res = tep_db_fetch_array($print_order_query)) {
     ?>
@@ -184,6 +240,12 @@
 <td align="center" style="border-top:none; border-left:none; font-family:Arial; font-size:13px;" id="cost_display"><?php echo number_format($total_cost);?></td>
 </tr>
 </table>
+<table cellpadding="0" cellspacing="0" border="0" width="563" class="print_none">
+  <tr><td height="10"></td></tr>
+  <tr>
+      <td align="right" style="display:block;"><input name="" type="button" value="プリント" onclick="window.print();"></td>
+  </tr>
+</table>
 <?php
       exit;
       break;
@@ -200,6 +262,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
+<script language="javascript" src="includes/javascript/jquery.js"></script>
 <script>
 function all_check() 
 {
@@ -224,13 +287,51 @@ function check_select()
   }
   return false;
 }
+function click_one(ele,oid,cid){
+  if (ele.checked == true) {
+    check_one(oid,cid);
+  } else {
+    clear_one(oid,cid);
+  }
+}
+function check_one(oid,cid){
+  $.ajax({
+    dataType: 'text',
+    url: 'customers_products.php?action=check_one&orders_id='+oid+'&customers_id='+cid,
+    //success: function(text) {}
+  });
+}
+function clear_one(oid,cid) {
+  $.ajax({
+    url: 'customers_products.php?action=clear_one&orders_id='+oid+'&customers_id='+cid,
+    //success: function(data) {}
+  });
+}
+function check_all(ele,cid) {
+  $.ajax({
+    url: 'customers_products.php?action=check_all&customers_id='+cid,
+    success: function(data) {
+      document.getElementById('allcheck').checked = true;
+      all_check();
+    }
+  });
+}
+function clear_all(ele,cid) {
+  $.ajax({
+    url: 'customers_products.php?action=clear_all&customers_id='+cid,
+    success: function(data) {
+      document.getElementById('allcheck').checked = false;
+      all_check();
+    }
+  });
+}
 </script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
 <!-- header //-->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof //-->
-<form action="?action=print" method="post" name="form" onSubmit="return check_select();" target="_blank">
+<form action="?action=print&customers_id=<?php echo $_GET['cID'];?>" method="post" name="form" onSubmit="return check_select();" target="_blank">
 <!-- body //-->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
@@ -247,6 +348,8 @@ function check_select()
               <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT);?></td> 
             </tr>
         </table>
+        <a href="javascript:void(0);" onclick="check_all(this,<?php echo $_GET['cID'];?>);">全选</a>
+        <a href="javascript:void(0);" onclick="clear_all(this,<?php echo $_GET['cID'];?>);">取消</a>
         <table id="orders_list_table" border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top">
@@ -278,7 +381,13 @@ function check_select()
                     <td class="dataTableContent" style="<?php echo $style_str;?>" valign="top"> 
                     <?php 
                     if ($i == 1) {
-                      echo '<input type="checkbox" name="oid[]" value="'.$product_history['orders_id'].'">';
+                      echo '<input type="checkbox" name="oid[]" value="'.$product_history['orders_id'].'" onclick="click_one(this,\''.$product_history['orders_id'].'\','.$_GET['cID'].')"';
+                      
+                      if(isset($_SESSION['customers_products']['orders_selected'][$_GET['cID']][$product_history['orders_id']])){
+                        echo " checked ";
+                      }
+                      
+                      echo '>';
                       echo $product_history['customers_name'];
                     } else {
                       echo '&nbsp;';
@@ -334,7 +443,8 @@ function check_select()
                  </td>
                 </tr>
                 <tr>
-                  <td colspan="7" align="right">
+                  <td colspan="3" align="left"></td>
+                  <td colspan="4" align="right">
                   <input type="image" src="includes/languages/japanese/images/buttons/button_print.gif" align="top">
                   <a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, str_replace('cpage', 'page', tep_get_all_get_params(array('page'))));?>"><?php echo tep_image_button('button_back.gif', IMAGE_BACK);?></a> 
                   </td>

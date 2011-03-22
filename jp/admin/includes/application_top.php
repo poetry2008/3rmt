@@ -113,6 +113,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('FILENAME_OPTIONS_UP', 'options_up.php');
   define('FILENAME_OPTIONS_DL', 'options_dl.php');
   define('FILENAME_NEW_CUSTOMERS', 'new_customers.php');
+  define('FILENAME_BILL_TEMPLATES', 'bill_templates.php');
 
 
 // define the database table names used in the project
@@ -189,6 +190,7 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_FAQ_QUESTIONS',  'faq_questions');
   define('TABLE_COMPUTERS',  'computers');
   define('TABLE_ORDERS_TO_COMPUTERS',  'orders_to_computers');
+  define('TABLE_BILL_TEMPLATES',  'bill_templates');
   
 // customization for the design layout
   define('BOX_WIDTH', 125); // how wide the boxes should be in pixels (default: 125)
