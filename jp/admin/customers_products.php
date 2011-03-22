@@ -272,8 +272,10 @@ function all_check()
   for (var i=0; i<sel_p_list.length; i++) {
     if (sel_p.checked) {
       sel_p_list[i].checked = true; 
+      check_one(sel_p_list[i].value,<?php echo $_GET['cID'];?>);
     } else {
       sel_p_list[i].checked = false; 
+      clear_one(sel_p_list[i].value,<?php echo $_GET['cID'];?>);
     }
   }
 }
@@ -381,7 +383,7 @@ function clear_all(ele,cid) {
                     <td class="dataTableContent" style="<?php echo $style_str;?>" valign="top"> 
                     <?php 
                     if ($i == 1) {
-                      echo '<input type="checkbox" name="oid[]" value="'.$product_history['orders_id'].'" onclick="click_one(this,\''.$product_history['orders_id'].'\','.$_GET['cID'].')"';
+                      echo '<input type="checkbox" class="ocheckbox" name="oid[]" value="'.$product_history['orders_id'].'" onclick="click_one(this,\''.$product_history['orders_id'].'\','.$_GET['cID'].')"';
                       
                       if(isset($_SESSION['customers_products']['orders_selected'][$_GET['cID']][$product_history['orders_id']])){
                         echo " checked ";
