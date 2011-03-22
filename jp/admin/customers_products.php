@@ -264,7 +264,7 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script>
-function all_check() 
+function all_check(ajax) 
 {
   var sel_p = document.getElementById("allcheck");
   var sel_p_list = document.getElementsByName('oid[]');
@@ -272,10 +272,12 @@ function all_check()
   for (var i=0; i<sel_p_list.length; i++) {
     if (sel_p.checked) {
       sel_p_list[i].checked = true; 
-      check_one(sel_p_list[i].value,<?php echo $_GET['cID'];?>);
+      if (ajax)
+        check_one(sel_p_list[i].value,<?php echo $_GET['cID'];?>);
     } else {
       sel_p_list[i].checked = false; 
-      clear_one(sel_p_list[i].value,<?php echo $_GET['cID'];?>);
+      if (ajax)
+        clear_one(sel_p_list[i].value,<?php echo $_GET['cID'];?>);
     }
   }
 }
@@ -314,7 +316,7 @@ function check_all(ele,cid) {
     url: 'customers_products.php?action=check_all&customers_id='+cid,
     success: function(data) {
       document.getElementById('allcheck').checked = true;
-      all_check();
+      all_check(false);
     }
   });
 }
@@ -323,7 +325,7 @@ function clear_all(ele,cid) {
     url: 'customers_products.php?action=clear_all&customers_id='+cid,
     success: function(data) {
       document.getElementById('allcheck').checked = false;
-      all_check();
+      all_check(false);
     }
   });
 }
@@ -357,7 +359,7 @@ function clear_all(ele,cid) {
             <td valign="top">
               <table border="0" width="100%" cellspacing="0" cellpadding="2">
                 <tr class="dataTableHeadingRow">
-                  <td class="dataTableHeadingContent"><input id="allcheck" type="checkbox" name="allcheck" value="" onclick="all_check();"><?php echo TABLE_HEADING_CUSTOMER_NAME;?></td> 
+                  <td class="dataTableHeadingContent"><input id="allcheck" type="checkbox" name="allcheck" value="" onclick="all_check(true);"><?php echo TABLE_HEADING_CUSTOMER_NAME;?></td> 
                   <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_DATE;?></td> 
                   <td style="table-layout:fixed;width:120px;" class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCT_NAME;?></td> 
                   <td style="width:100px;text-align:right;" class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCT_PRICE;?></td> 
