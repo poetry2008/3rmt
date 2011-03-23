@@ -106,7 +106,7 @@ class MailFetcher {
   //Convert text to desired encoding..defaults to utf8
   function mime_encode($text,$charset=null,$enc='utf-8') { //Thank in part to afterburner  
 //    echo $text;
-    $text = str_replace("/r/n","",$text);
+//    $text = str_replace("/r/n","",$text);
     $text = noLCode($text);
     $encodings=array('UTF-8','WINDOWS-1251', 'SHIFT-JIS','ISO-2022-JP','ISO-8859-5', 'ISO-8859-1','KOI8-R');
     if(function_exists("iconv") and $text) {
@@ -126,7 +126,7 @@ class MailFetcher {
   }
 
   //Generic decoder - mirrors imap_utf8
-  function mime_decode($text) {
+  function mime_decode($text,$is_subject=false) {
 
     $a = imap_mime_header_decode($text);
     $str = '';
@@ -144,14 +144,20 @@ class MailFetcher {
 
      */
 
-
     foreach ($a as $k => $part)
       $str.= $part->text;
-    //add by bobhero {{
+   //add by bobhero {{
     $explodeStr = explode("?",$text);
     if(strlen($explodeStr[1])){
-      $str  =  iconv($explodeStr[1],'UTF-8',$str);
+      if($is_subject){
+        if(!preg_match('/('.chr(hexdec('1b')).chr(hexdec('28')).chr(hexdec('42')).'|'.chr(hexdec('1b')).chr(hexdec('24')).chr(hexdec('42')).')/',$str)){
+        $str = $this->mime_encode($str,$explodeStr[1]);
+        }
+      }else{
+        $str  =  iconv($explodeStr[1],'UTF-8',$str);
+      }
     }
+
 
     return $str?$str:imap_utf8($text);
   }
@@ -262,8 +268,9 @@ class MailFetcher {
     }
     $var['name']=$this->mime_decode($mailinfo['from']['name']);
     $var['email']=$mailinfo['from']['email'];
-    $var['subject']=$mailinfo['subject']?$this->mime_decode($mailinfo['subject']):'[No Subject]';
-    $var['message']=Format::stripEmptyLines($this->getBody($mid));
+//    var_dump("<<".$mailinfo['subject'].">>");
+    $var['subject']=$mailinfo['subject']?$this->mime_decode($mailinfo['subject'],true):'[No Subject]';
+    $var['message']=Format::stripEmptyLines($this->getBody($mid))?Format::stripEmptyLines($this->getBody($mid)):" ";
     $var['header']=$this->getHeader($mid);
     $var['emailId']=$emailid?$emailid:$cfg->getDefaultEmailId(); //ok to default?
     $var['name']=$var['name']?$var['name']:$var['email']; //No name? use email
@@ -435,7 +442,7 @@ function noLCode($longString){
         $resultString .= replaceJpSp($value);
         }else {
         $resultString .=$value;
-      }
+        }
       }
       return $resultString;
 
@@ -469,15 +476,16 @@ function splitToArrayBySE($startFlag,$endFlag,$stcom)
     //  $tmpstr .= $stcom[$i];
   }
   //$tmpArr = array_reverse($tmpArr);
-
   foreach ($tmpArr as $key=>$value){
-    $x =  @strstr($value,$tmpArr[$key+1],true);
-    if($x === false){
+    $x =  @strstr($value,$tmpArr[$key+1]);
+    if($x === false||!isset($x)){
       $x = $value;
+    }else{
+      $tmp_x = explode($tmpArr[$key+1],$value);
+      $x = $tmp_x[0]; 
     }
     $tmpArr2[] =$x;
   }
-  //var_dump($tmpArr2);
   return $tmpArr2;
 }
 function getPosInString($search,$longString,$flag=''){
@@ -624,6 +632,14 @@ function getPosInString($search,$longString,$flag=''){
     return str_replace($hexArray,chr(hexdec('22')).chr(hexdec('28')),$longString);
     //return str_replace($hexArray,chr(hexdec('21')).chr(hexdec('22')),$longString);
     return str_replace($hexArray,$toArray,$longString);
+  }
+  function is_jp($str){
+        if(!preg_match('/('.chr(hexdec('1b')).chr(hexdec('28')).chr(hexdec('42')).'|'.chr(hexdec('1b')).chr(hexdec('24')).chr(hexdec('42')).')/',$str)){
+          return true;
+        }else{
+          return false;
+        }
+
   }
 
 
