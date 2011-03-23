@@ -62,7 +62,7 @@ if (isset($_GET['action']) and $_GET['action']) {
           'email' => $email,
           'responsible' => $responsible,
           'sort_order' => $sort_order
-        ), 'update', "where id = '" . tep_db_input($bill_templates_id) . "'");
+        ), 'update', "id = '" . tep_db_input($bill_templates_id) . "'");
         tep_redirect(tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page'] . '&cID=' . $bill_templates_id));
         break;
       case 'deleteconfirm':

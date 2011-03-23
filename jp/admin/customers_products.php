@@ -264,7 +264,7 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script>
-function all_check() 
+function all_check(ajax) 
 {
   var sel_p = document.getElementById("allcheck");
   var sel_p_list = document.getElementsByName('oid[]');
@@ -272,8 +272,12 @@ function all_check()
   for (var i=0; i<sel_p_list.length; i++) {
     if (sel_p.checked) {
       sel_p_list[i].checked = true; 
+      if (ajax)
+        check_one(sel_p_list[i].value,<?php echo $_GET['cID'];?>);
     } else {
       sel_p_list[i].checked = false; 
+      if (ajax)
+        clear_one(sel_p_list[i].value,<?php echo $_GET['cID'];?>);
     }
   }
 }
@@ -312,7 +316,7 @@ function check_all(ele,cid) {
     url: 'customers_products.php?action=check_all&customers_id='+cid,
     success: function(data) {
       document.getElementById('allcheck').checked = true;
-      all_check();
+      all_check(false);
     }
   });
 }
@@ -321,7 +325,7 @@ function clear_all(ele,cid) {
     url: 'customers_products.php?action=clear_all&customers_id='+cid,
     success: function(data) {
       document.getElementById('allcheck').checked = false;
-      all_check();
+      all_check(false);
     }
   });
 }
@@ -348,14 +352,14 @@ function clear_all(ele,cid) {
               <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT);?></td> 
             </tr>
         </table>
-        <a href="javascript:void(0);" onclick="check_all(this,<?php echo $_GET['cID'];?>);">全选</a>
-        <a href="javascript:void(0);" onclick="clear_all(this,<?php echo $_GET['cID'];?>);">取消</a>
+        <a href="javascript:void(0);" onclick="check_all(this,<?php echo $_GET['cID'];?>);">全部</a>
+        <a href="javascript:void(0);" onclick="clear_all(this,<?php echo $_GET['cID'];?>);">キャンセル</a>
         <table id="orders_list_table" border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top">
               <table border="0" width="100%" cellspacing="0" cellpadding="2">
                 <tr class="dataTableHeadingRow">
-                  <td class="dataTableHeadingContent"><input id="allcheck" type="checkbox" name="allcheck" value="" onclick="all_check();"><?php echo TABLE_HEADING_CUSTOMER_NAME;?></td> 
+                  <td class="dataTableHeadingContent"><input id="allcheck" type="checkbox" name="allcheck" value="" onclick="all_check(true);"><?php echo TABLE_HEADING_CUSTOMER_NAME;?></td> 
                   <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_DATE;?></td> 
                   <td style="table-layout:fixed;width:120px;" class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCT_NAME;?></td> 
                   <td style="width:100px;text-align:right;" class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCT_PRICE;?></td> 
@@ -381,7 +385,7 @@ function clear_all(ele,cid) {
                     <td class="dataTableContent" style="<?php echo $style_str;?>" valign="top"> 
                     <?php 
                     if ($i == 1) {
-                      echo '<input type="checkbox" name="oid[]" value="'.$product_history['orders_id'].'" onclick="click_one(this,\''.$product_history['orders_id'].'\','.$_GET['cID'].')"';
+                      echo '<input type="checkbox" class="ocheckbox" name="oid[]" value="'.$product_history['orders_id'].'" onclick="click_one(this,\''.$product_history['orders_id'].'\','.$_GET['cID'].')"';
                       
                       if(isset($_SESSION['customers_products']['orders_selected'][$_GET['cID']][$product_history['orders_id']])){
                         echo " checked ";
