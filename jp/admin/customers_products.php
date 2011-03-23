@@ -93,8 +93,8 @@
     html += "<td class=\"link_01 number\" id=\"number_"+number+"\"></td>\n";
     html += "<td class=\"link_01 date\" id=\"tdate_"+number+"\"               ><input size=\"10\" type=\"text\" value=\""+data['torihiki_date']+"\"     onchange=\"date_change()\"></td>";
     html += "<td class=\"link_01 name\" id=\"pname_"+number+"\" align=\"left\"><input size=\"30\" type=\"text\" value=\""+data['products_name']+"\" onfocus=\"name_click("+number+",this)\" id=\"name_display_"+number+"\"></td>";
-    html += "<td class=\"link_01 price\" id=\"fprice_"+number+"\"             ><input size=\"10\" type=\"text\" value=\""+(data['final_price'] != ''?(parseFloat(data['final_price']).toFixed(2)):'')+"\"       onchange=\"price_change(this)\"></td>";
-    html += "<td class=\"link_01 quantity\" id=\"pquantity_"+number+"\"       ><input size=\"4\"  type=\"text\" value=\""+data['products_quantity']+"\" onchange=\"quantity_change()\"></td>";
+    html += "<td class=\"link_01 price\" id=\"fprice_"+number+"\" align=\"right\" ><input size=\"12\" type=\"text\" value=\""+(data['final_price'] != ''?(parseFloat(data['final_price']).toFixed(2)):'')+"\" onchange=\"price_change(this)\" style=\"text-align:right;\"></td>";
+    html += "<td class=\"link_01 quantity\" id=\"pquantity_"+number+"\" align=\"right\"><input size=\"4\"  type=\"text\" value=\""+data['products_quantity']+"\" onchange=\"quantity_change()\" style=\"text-align:right;\"></td>";
     html += "<td class=\"link_01 percent\" align=\"right\" onclick=\"percent("+number+")\">\n";
     
     html += "<span id=\"percent_"+number+"\" style=\"display:none;\">\n";
