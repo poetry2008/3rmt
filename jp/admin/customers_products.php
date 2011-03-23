@@ -9,19 +9,36 @@
   
   if (isset($_GET['action'])) {
     switch ($_GET['action']) {
-      case 'check_one':
+      case 'get_products':
+        echo tep_draw_pull_down_menu('',array_merge(array(array('id' => '0','text' => ' -- ')),tep_get_products_tree($_GET['cid'])),$_GET['rid'],'onchange=\'$(name_ele).val(this.options[this.selectedIndex].innerHTML);name_over();\'');
+        exit;
+        break;
+      case 'init':
+        $res = array();
+        if (is_array($_SESSION['customers_products']['orders_selected'][$_GET['customers_id']])) {
+          foreach ($_SESSION['customers_products']['orders_selected'][$_GET['customers_id']] as $okey => $ovalue) {
+            $print_order_query = tep_db_query("select o.torihiki_date, op.products_name, op.final_price, op.products_quantity from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op  where o.orders_id = op.orders_id and o.orders_id = '".$ovalue."'");     
+            while ($print_order_res = tep_db_fetch_array($print_order_query)) {
+              $print_order_res['torihiki_date'] = date('Y/n/j',strtotime($print_order_res['torihiki_date']));
+              $res[] = $print_order_res;
+            }
+          }
+        }
+        echo json_encode($res);
+        exit;
+      case 'check_one': // 跨页复选框
         $_SESSION['customers_products']['orders_selected'][$_GET['customers_id']][$_GET['orders_id']] = $_GET['orders_id'];
         exit;
-      case 'clear_one':
+      case 'clear_one': // 跨页复选框
         unset($_SESSION['customers_products']['orders_selected'][$_GET['customers_id']][$_GET['orders_id']]);
         exit;
-      case 'check_all':
+      case 'check_all': // 跨页复选框
         $orders_query = tep_db_query("select * from orders o where o.customers_id='".$_GET['customers_id']."'");
         while($o = tep_db_fetch_array($orders_query)){
           $_SESSION['customers_products']['orders_selected'][$_GET['customers_id']][$o['orders_id']] = $o['orders_id'];
         }
         exit;
-      case 'clear_all':
+      case 'clear_all': // 跨页复选框
         unset($_SESSION['customers_products']['orders_selected'][$_GET['customers_id']]);
         exit;
       case 'get_bill_template':
@@ -41,6 +58,74 @@
 <link media="print" href="includes/print.css" rel="stylesheet" type="text/css" />
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script>
+  var number = 0;
+  // 插入对象
+  var name_ele;
+  function init() {
+    $.ajax({
+      dataType: 'json',
+      async: false,
+      url: 'customers_products.php?action=init&customers_id=<?php echo $_GET['customers_id'];?>',
+      success: function(data) {
+        for(i in data){
+          add_one({
+            torihiki_date:data[i]['torihiki_date'],
+            products_name:data[i]['products_name'],
+            final_price:data[i]['final_price'],
+            products_quantity:data[i]['products_quantity'],
+          });
+        }
+        calc_cost();
+      }
+    });
+    
+  }
+  function add_empty () {
+    add_one({
+      torihiki_date:'&nbsp;',
+      products_name:'',
+      final_price:'',
+      products_quantity:'',
+    });
+  }
+  function add_one (data){
+    html = "<tr align=\"center\" style=\"font-size:14px;\">\n";
+    html += "<td class=\"link_01 number\" id=\"number_"+number+"\"></td>\n";
+    html += "<td class=\"link_01 date\" id=\"tdate_"+number+"\"               ><input size=\"10\" type=\"text\" value=\""+data['torihiki_date']+"\"     onchange=\"date_change()\"></td>";
+    html += "<td class=\"link_01 name\" id=\"pname_"+number+"\" align=\"left\"><input size=\"30\" type=\"text\" value=\""+data['products_name']+"\" onfocus=\"name_click("+number+",this)\" id=\"name_display_"+number+"\"></td>";
+    html += "<td class=\"link_01 price\" id=\"fprice_"+number+"\"             ><input size=\"10\" type=\"text\" value=\""+(data['final_price'] != ''?(parseFloat(data['final_price']).toFixed(2)):'')+"\"       onchange=\"price_change(this)\"></td>";
+    html += "<td class=\"link_01 quantity\" id=\"pquantity_"+number+"\"       ><input size=\"4\"  type=\"text\" value=\""+data['products_quantity']+"\" onchange=\"quantity_change()\"></td>";
+    html += "<td class=\"link_01 percent\" align=\"right\" onclick=\"percent("+number+")\">\n";
+    
+    html += "<span id=\"percent_"+number+"\" style=\"display:none;\">\n";
+    html += "  <select id=\"select_"+number+"\" onblur=\"percent_out("+number+")\" onchange=\"percent_change("+number+")\" onpropertychange=\"percent_change("+number+")\">\n";
+    html += "    <option value=\"1.00\">100%</option>\n";
+    html += "    <option value=\"0.99\">99%</option>\n";
+    html += "    <option value=\"0.98\">98%</option>\n";
+    html += "    <option value=\"0.97\">97%</option>\n";
+    html += "    <option value=\"0.96\">96%</option>\n";
+    html += "    <option value=\"0.95\">95%</option>\n";
+    html += "    <option value=\"0.94\">94%</option>\n";
+    html += "    <option value=\"0.93\">93%</option>\n";
+    html += "    <option value=\"0.92\">92%</option>\n";
+    html += "    <option value=\"0.91\">91%</option>\n";
+    html += "    <option value=\"0.90\">90%</option>\n";
+    html += "  </select>\n";
+    html += "</span>\n";
+    html += "<span id=\"percent_display_"+number+"\" class=\"percent_display\">1.00</span>\n";
+    
+    html += "</td>";
+    html += "<td class=\"link_01\" align=\"right\"><span class=\"fprice\" id=\"price_"+number+"\"></span><a href=\"javascript:void(0)\" onclick=\"remove_one(this.parentNode.parentNode)\"><img src=\"/includes/languages/japanese/images/not.gif\"></a></td>";
+    //html += "<td class=\"link_01\" align=\"right\"></td>";
+    html += "</tr>\n";
+    $('#tbody').append(html);
+    number++;
+  }
+  // 删除一行
+  function remove_one(ele) {
+    $(ele).remove();
+    calc_cost();
+  }
   function percent(no) {
     document.getElementById('percent_display_'+no).style.display='none';
     document.getElementById('percent_'+no).style.display='block';
@@ -53,14 +138,30 @@
   function percent_change(no){
     ele = document.getElementById('select_'+no);
     document.getElementById('percent_display_'+no).innerHTML = ele.options[ele.selectedIndex].value;
-    document.getElementById('price_'+no).innerHTML = (ele.options[ele.selectedIndex].value * document.getElementById('final_price_'+no).value).toFixed(2);
+    //document.getElementById('price_'+no).innerHTML = (ele.options[ele.selectedIndex].value * document.getElementById('final_price_'+no).value).toFixed(2);
   }
+  // 重新计算总价
   function calc_cost() {
     var cost = 0;
-    $('.price').each(function(){
-      cost += parseFloat(this.innerHTML.replace(/,/g,''));
-    });
+    var no   = 1;
+    $('#tbody').children().each(function(){
+      if ($(this).find('.price input').val() != '' && $(this).find('.quantity input').val() != ''){
+        // 插入序号
+        $(this).find('.number').html(no);
+        fp = parseFloat($(this).find('.price input').val()) 
+          * parseFloat($(this).find('.quantity input').val()) 
+          * parseFloat($(this).find('.percent_display').html());
+        // 插入小计
+        $(this).find('.fprice').html(fp.toFixed(2));
+        cost += fp;
+        no++;
+      }
+      });
+    //$('.price').each(function(){
+    //  cost += parseFloat(this.innerHTML.replace(/,/g,''));
+    //});
     cost *= parseFloat(document.getElementById('percent_display_cost').innerHTML);
+    // 插入总计
     $('#cost_display').html(cost.toFixed(2));
   }
   function percent_cost(){
@@ -74,11 +175,6 @@
     calc_cost();
   }
 
-  function percent_change_cost(){
-    ele = document.getElementById('select_cost');
-    document.getElementById('percent_display_cost').innerHTML = ele.options[ele.selectedIndex].value;
-  }
-  
   function bill_template_change(ele) {
     bid = ele.options[ele.selectedIndex].value;
     if (bid != '') {
@@ -91,6 +187,11 @@
           $('#data3').val(data['data3']);
           $('#data4').val(data['data4']);
           $('#data5').val(data['data5']);
+          $('#data6').val(data['data6']);
+          $('#data7').val(data['data7']);
+          $('#data8').val(data['data8']);
+          $('#data9').val(data['data9']);
+          $('#data10').val(data['data10']);
           $('#email').val(data['email']);
           $('#responsible').val(data['responsible']);
         }
@@ -98,10 +199,61 @@
     }
   }
 
+  function percent_change_cost(){
+    ele = document.getElementById('select_cost');
+    document.getElementById('percent_display_cost').innerHTML = ele.options[ele.selectedIndex].value;
+  }
+  
+  function date_change(){
+    calc_cost();
+  }
+  /*
+  function name_change(){
+    calc_cost();
+  }
+  */
+  
+  // 显示商品名选择框
+  function name_click(num,ele){
+    offset = $(ele).offset();
+    $('#products_name_selector').css('left', offset.left);
+    $('#products_name_selector').css('top',  offset.top);
+    name_ele = document.getElementById('name_display_'+num);;
+    $('#products_name_selector').css('display','block');
+  }
+  
+  //  商品名选择结束
+  function name_over(){
+    name_ele = null;
+    $("#products_name_selector").css("display","none");
+    $('#relate_products').html('');
+    document.getElementById('category_selector').selectedIndex = 0;
+  }
+  
+  function price_change(ele){
+    ele.value = parseFloat(ele.value).toFixed(2);
+    calc_cost();
+  }
+  
+  function quantity_change(){
+    calc_cost();
+  }
+  function relate_products1(cid,rid){
+    $.ajax({
+      dataType: 'text',
+      url: 'customers_products.php?action=get_products&cid='+cid+'&rid='+rid,
+      success: function(text) {
+        $('#relate_products').html(text);
+      }
+    });
+  }
+  $(function(){
+    init();
+  });
 </script>
 <table border="0" width="563" style="font-family:ＭＳ Ｐゴシック">
   <tr>
-    <td style=" font-family:ＭＳ Ｐゴシック;font-size:22px; padding-left:185px;">御請求書</td>
+    <td style=" font-family:ＭＳ Ｐゴシック;font-size:22px; padding-left:185px;"><input name="textfield" type="text" id="data1" value="" style=" height:23px; width:130px; font-size:14px; font-weight:bold; margin-right:5px;"></td>
     <td class="print_none">
 <?php 
   $bill_query = tep_db_query("select * from bill_templates order by sort_order asc");
@@ -124,26 +276,26 @@
   <tr>
     <td>
       <table border="0" width="369" class="print_innput">
-        <tr><td height="30" colspan="2"><b>&nbsp;&nbsp;<input name="textfield" type="text" id="data1" value="株式会社iimy" style=" height:23px; width:130px; font-size:14px; font-weight:bold; margin-right:5px;">御中</b></td></tr>
-    <tr><td height="13"></td></tr>
+        <tr><td height="30" colspan="2"><b>&nbsp;&nbsp;<input name="textfield" type="text" id="data2" value="" style=" height:23px; width:180px; font-size:14px; font-weight:bold; margin-right:5px;">御中</b></td></tr>
+        <tr><td height="13"></td></tr>
         <tr><td height="31" colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $currencies->format($total_cost);?>税込</td></tr>
-        <tr><td height="34" colspan="2" align="left" valign="bottom"><font size="3">上記金額をお振り込みください。</font></td></tr>
-    <tr><td height="19"></td></tr>
-        <tr><td height="19" colspan="2" align="left"><font size="2">代金振り込み先</font></td></tr>
+        <tr><td height="34" colspan="2" align="left" valign="bottom"><input name="textfield" type="text" id="data3" value="" style=" height:23px; width:180px; font-size:14px; font-weight:bold; margin-right:5px;"></td></tr>
+        <tr><td height="19"></td></tr>
+        <tr><td height="19" colspan="2" align="left"><input name="textfield" type="text" id="data4" value="" style=" height:23px; width:180px; font-size:14px; font-weight:bold; margin-right:5px;"></td></tr>
         <tr>
           <td width="65" height="38"></td>
-          <td width="292" height="38" valign="top" align="left"><font size="3"><u><textarea id="data2" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-size:18px;" ></textarea></u></font></td>
+          <td width="292" height="38" valign="top" align="left"><font size="3"><u><textarea id="data5" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-size:18px;" ></textarea></u></font></td>
         </tr>
         <tr>
           <td></td>
-            <td height="33" valign="top"><font size="3"><u><textarea id="data3" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-size:18px;" ></textarea></u></font></td>
+            <td height="33" valign="top"><font size="3"><u><textarea id="data6" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-size:18px;" ></textarea></u></font></td>
         </tr>
         <tr>
           <td></td>
-            <td height="67" valign="top"><font size="3"><textarea id="data4" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-size:18px;" ></textarea></font></td>
+            <td height="67" valign="top"><font size="3"><textarea id="data7" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-size:18px;" ></textarea></font></td>
         </tr>
-        <tr><td height="25" valign="top" colspan="2" valign="top"><font size="2">但し、 品代として。</font></td></tr>
-        <tr><td height="25" valign="bottom" colspan="2" valign="top"><font size="2">下記の通りご請求申し上げます。</font></td></tr>
+        <tr><td height="25" valign="top" colspan="2" valign="top"><input name="textfield" type="text" id="data8" value="" style=" height:23px; width:180px; font-size:14px; font-weight:bold; margin-right:5px;"></td></tr>
+        <tr><td height="25" valign="bottom" colspan="2" valign="top"><input name="textfield" type="text" id="data9" value="" style=" height:23px; width:180px; font-size:14px; font-weight:bold; margin-right:5px;"></td></tr>
       </table>
     </td>
     <td>
@@ -151,7 +303,7 @@
         <tr><td height="10"></td></tr>
         <tr><td height="23" valign="top" align="right"><input name="textfield" type="text" id="textfield" value="<?php echo tep_date_long(date('Y-m-d H:i:s'));?>" style="height:20px; width:150px; text-align:right; font-size:14px; margin-right:5px;"></td></tr>
         <tr><td width="31"></td></tr>
-        <tr><td align="right" height="44" valign="bottom"><font size="3"><textarea id="data5" type="text" rows="3" value="カ)アールエムティエイチアイ" style="font-size:18px;" ></textarea></font></td></tr>
+        <tr><td align="right" height="44" valign="bottom"><font size="3"><textarea id="data10" type="text" rows="3" value="カ)アールエムティエイチアイ" style="font-size:18px;" ></textarea></font></td></tr>
         <tr><td align="right" height="19" valign="bottom"><font size="2"><a href="#"><input name="textfield" type="text" id="email" value="" style=" height:18px; width:190px; text-align:right; font-size:16px; margin-right:5px;"></a></font></td></tr>
         <tr><td width="19"></td></tr>
         <tr><td align="right" colspan="4" height="163">
@@ -174,48 +326,7 @@
 <td class="link_02">値引</td>
 <td class="link_02">金額</td>
 </tr>
-    <?php
-    $print_num = 1; 
-    if (is_array($_SESSION['customers_products']['orders_selected'][$_GET['customers_id']])) 
-    foreach ($_SESSION['customers_products']['orders_selected'][$_GET['customers_id']] as $okey => $ovalue) {
-      $print_order_query = tep_db_query("select o.torihiki_date, op.products_name, op.final_price, op.products_quantity from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op  where o.orders_id = op.orders_id and o.orders_id = '".$ovalue."'");     
-      while ($print_order_res = tep_db_fetch_array($print_order_query)) {
-    ?>
-<tr align="center" style="font-size:14px;">
-<td class="link_01"><?php echo $print_num;?></td>
-<td class="link_01"><?php echo tep_datetime_short($print_order_res['torihiki_date']);?></td>
-<td class="link_01"><?php echo $print_order_res['products_name'];?></td>
-<td class="link_01" align="right"><?php echo $print_order_res['final_price'];?></td>
-<td class="link_01" align="right"><?php echo $print_order_res['products_quantity'];?></td>
-<td class="link_01" align="right" onclick="percent(<?php echo $print_num;?>)">
-  <span id="percent_<?php echo $print_num;?>" style="display:none;">
-    <select id="select_<?php echo $print_num;?>" onblur="percent_out(<?php echo $print_num;?>)" onchange="percent_change(<?php echo $print_num;?>)" onpropertychange="percent_change(<?php echo $print_num;?>)">
-      <option value="1.00">100%</option>
-      <option value="0.99">99%</option>
-      <option value="0.98">98%</option>
-      <option value="0.97">97%</option>
-      <option value="0.96">96%</option>
-      <option value="0.95">95%</option>
-      <option value="0.94">94%</option>
-      <option value="0.93">93%</option>
-      <option value="0.92">92%</option>
-      <option value="0.91">91%</option>
-      <option value="0.90">90%</option>
-    </select>
-  </span>
-  <span id="percent_display_<?php echo $print_num;?>" class="percent_display">1.00</span>
-  <input type="hidden" id="final_price_<?php echo $print_num;?>" value="<?php echo $print_order_res['products_quantity']*$print_order_res['final_price'];?>">
-</td>
-<td class="link_01 price" align="right" id="price_<?php echo $print_num;?>">
-  <?php echo number_format($print_order_res['products_quantity'] * $print_order_res['final_price']);?>
-</td>
-</tr>
-    <?php
-      $print_num++; 
-      }
-    }
-    ?>
-
+<tbody id="tbody"></tbody>
   <tr><td colspan="4" width="360" ></td>
       <td align="center" bgcolor="#00FFFF" style=" border-top:none; border-right:none; font-family:ＭＳ Ｐゴシック; font-size:13px;">小計<input type="hidden" id="cost" value="<?php echo $total_cost;?>">
 </td>
@@ -237,15 +348,20 @@
   </span>
   <span id="percent_display_cost">1.00</span>
 </td>
-<td align="center" style="border-top:none; border-left:none; font-family:Arial; font-size:13px;" id="cost_display"><?php echo number_format($total_cost);?></td>
+<td align="right" style="border-top:none; border-left:none; font-family:Arial; font-size:13px;" id="cost_display"><?php echo number_format($total_cost);?></td>
 </tr>
 </table>
-<table cellpadding="0" cellspacing="0" border="0" width="563" class="print_none">
-  <tr><td height="10"></td></tr>
+<table cellpadding="5" cellspacing="0" border="0" width="548" class="print_none">
+  <tr><td height="10" colspan="2"></td></tr>
   <tr>
+      <td align="left"><a href="javascript:void(0)" onclick="add_empty()"><img src="/includes/languages/japanese/images/z_01.gif"></a></td>
       <td align="right" style="display:block;"><input name="" type="button" value="プリント" onclick="window.print();"></td>
   </tr>
 </table>
+<div id="products_name_selector" style="display:none;position:absolute;">
+  <?php echo tep_draw_pull_down_menu('categories_name', tep_get_category_tree('&nbsp;'), 0, 'id="category_selector" onchange="relate_products1(this.options[this.selectedIndex].value, \''.$pInfo->relate_products_id.'\')"');?>
+  <span id="relate_products"></span>
+</div>
 <?php
       exit;
       break;

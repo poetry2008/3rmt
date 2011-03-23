@@ -9,6 +9,11 @@ if (isset($_GET['action']) and $_GET['action']) {
         $data3 = tep_db_prepare_input($_POST['data3']);
         $data4 = tep_db_prepare_input($_POST['data4']);
         $data5 = tep_db_prepare_input($_POST['data5']);
+        $data6 = tep_db_prepare_input($_POST['data6']);
+        $data7 = tep_db_prepare_input($_POST['data7']);
+        $data8 = tep_db_prepare_input($_POST['data8']);
+        $data9 = tep_db_prepare_input($_POST['data9']);
+        $data10 = tep_db_prepare_input($_POST['data10']);
         $email = tep_db_prepare_input($_POST['email']);
         $responsible = tep_db_prepare_input($_POST['responsible']);
         $sort_order  = tep_db_prepare_input($_POST['sort_order']);
@@ -26,6 +31,11 @@ if (isset($_GET['action']) and $_GET['action']) {
           'data3' => $data3,
           'data4' => $data4,
           'data5' => $data5,
+          'data6' => $data6,
+          'data7' => $data7,
+          'data8' => $data8,
+          'data9' => $data9,
+          'data10' => $data10,
           'email' => $email,
           'responsible' => $responsible,
           'sort_order'  => $sort_order
@@ -42,6 +52,11 @@ if (isset($_GET['action']) and $_GET['action']) {
         $data3 = tep_db_prepare_input($_POST['data3']);
         $data4 = tep_db_prepare_input($_POST['data4']);
         $data5 = tep_db_prepare_input($_POST['data5']);
+        $data6 = tep_db_prepare_input($_POST['data6']);
+        $data7 = tep_db_prepare_input($_POST['data7']);
+        $data8 = tep_db_prepare_input($_POST['data8']);
+        $data9 = tep_db_prepare_input($_POST['data9']);
+        $data10 = tep_db_prepare_input($_POST['data10']);
         $email = tep_db_prepare_input($_POST['email']);
         $responsible = tep_db_prepare_input($_POST['responsible']);
         $sort_order  = tep_db_prepare_input($_POST['sort_order']);
@@ -59,6 +74,11 @@ if (isset($_GET['action']) and $_GET['action']) {
           'data3' => $data3,
           'data4' => $data4,
           'data5' => $data5,
+          'data6' => $data6,
+          'data7' => $data7,
+          'data8' => $data8,
+          'data9' => $data9,
+          'data10' => $data10,
           'email' => $email,
           'responsible' => $responsible,
           'sort_order' => $sort_order
@@ -174,6 +194,11 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_DATA3 . '<br>' . tep_draw_textarea_field('data3','','25',''));
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_DATA4 . '<br>' . tep_draw_textarea_field('data4','','25',''));
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_DATA5 . '<br>' . tep_draw_textarea_field('data5','','25',''));
+      $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_DATA6 . '<br>' . tep_draw_textarea_field('data6','','25',''));
+      $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_DATA7 . '<br>' . tep_draw_textarea_field('data7','','25',''));
+      $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_DATA8 . '<br>' . tep_draw_textarea_field('data8','','25',''));
+      $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_DATA9 . '<br>' . tep_draw_textarea_field('data9','','25',''));
+      $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_DATA10 . '<br>' . tep_draw_textarea_field('data10','','25',''));
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_EMAIL . '<br>' . tep_draw_input_field('email'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_RESPONSIBLE . '<br>' . tep_draw_input_field('responsible'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_SORT_ORDER . '<br>' . tep_draw_input_field('sort_order', 1000));
@@ -191,6 +216,11 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_DATA3 . '<br>' . tep_draw_textarea_field('data3','','25','',$cInfo->data3));
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_DATA4 . '<br>' . tep_draw_textarea_field('data4','','25','',$cInfo->data4));
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_DATA5 . '<br>' . tep_draw_textarea_field('data5','','25','',$cInfo->data5));
+      $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_DATA6 . '<br>' . tep_draw_textarea_field('data6','','25','',$cInfo->data6));
+      $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_DATA7 . '<br>' . tep_draw_textarea_field('data7','','25','',$cInfo->data7));
+      $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_DATA8 . '<br>' . tep_draw_textarea_field('data8','','25','',$cInfo->data8));
+      $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_DATA9 . '<br>' . tep_draw_textarea_field('data9','','25','',$cInfo->data9));
+      $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_DATA10 . '<br>' . tep_draw_textarea_field('data10','','25','',$cInfo->data10));
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_EMAIL . '<br>' . tep_draw_input_field('email', $cInfo->email));
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_RESPONSIBLE . '<br>' . tep_draw_input_field('responsible', $cInfo->responsible));
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_SORT_ORDER . '<br>' . tep_draw_input_field('sort_order', $cInfo->sort_order));
