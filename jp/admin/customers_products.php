@@ -115,7 +115,7 @@
     html += "<span id=\"percent_display_"+number+"\" class=\"percent_display\">1.00</span>\n";
     
     html += "</td>";
-    html += "<td class=\"link_01\" align=\"right\"><span class=\"fprice\" id=\"price_"+number+"\"></span><a href=\"javascript:void(0)\" onclick=\"remove_one(this.parentNode.parentNode)\"><img src=\"/includes/languages/japanese/images/not.gif\"></a></td>";
+    html += "<td class=\"link_01\" align=\"right\"><span class=\"fprice\" id=\"price_"+number+"\"></span><a href=\"javascript:void(0)\" onclick=\"remove_one(this.parentNode.parentNode)\"><img src=\"includes/languages/japanese/images/not.gif\"></a></td>";
     //html += "<td class=\"link_01\" align=\"right\"></td>";
     html += "</tr>\n";
     $('#tbody').append(html);
@@ -354,7 +354,7 @@
 <table cellpadding="5" cellspacing="0" border="0" width="548" class="print_none">
   <tr><td height="10" colspan="2"></td></tr>
   <tr>
-      <td align="left"><a href="javascript:void(0)" onclick="add_empty()"><img src="/includes/languages/japanese/images/z_01.gif"></a></td>
+      <td align="left"><a href="javascript:void(0)" onclick="add_empty()"><img src="includes/languages/japanese/images/z_01.gif"></a></td>
       <td align="right" style="display:block;"><input name="" type="button" value="プリント" onclick="window.print();"></td>
   </tr>
 </table>
