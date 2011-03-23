@@ -163,6 +163,7 @@
     cost *= parseFloat(document.getElementById('percent_display_cost').innerHTML);
     // 插入总计
     $('#cost_display').html(cost.toFixed(2));
+    $('#cost_print').html(cost.toFixed(0));
   }
   function percent_cost(){
     document.getElementById('percent_display_cost').style.display='none';
@@ -278,7 +279,7 @@
       <table border="0" width="369" class="print_innput">
         <tr><td height="30" colspan="2"><b>&nbsp;&nbsp;<input name="textfield" type="text" id="data2" value="" style=" height:23px; width:180px; font-size:14px; font-weight:bold; margin-right:5px;">御中</b></td></tr>
         <tr><td height="13"></td></tr>
-        <tr><td height="31" colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $currencies->format($total_cost);?>税込</td></tr>
+        <tr><td height="31" colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="cost_print"><?php echo $total_cost;?></span>円税込</td></tr>
         <tr><td height="34" colspan="2" align="left" valign="bottom"><input name="textfield" type="text" id="data3" value="" style=" height:23px; width:180px; font-size:14px; font-weight:bold; margin-right:5px;"></td></tr>
         <tr><td height="19"></td></tr>
         <tr><td height="19" colspan="2" align="left"><input name="textfield" type="text" id="data4" value="" style=" height:23px; width:180px; font-size:14px; font-weight:bold; margin-right:5px;"></td></tr>
