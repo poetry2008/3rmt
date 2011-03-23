@@ -6,7 +6,16 @@
   require('includes/application_top.php');
   require(DIR_WS_CLASSES.'currencies.php');
   $currencies = new currencies(2);
-  
+
+  header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+  # 永远是改动过的
+  header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
+  # HTTP/1.1
+  header("Cache-Control: no-store, no-cache, must-revalidate");
+  header("Cache-Control: post-check=0, pre-check=0", false);
+  # HTTP/1.0
+  header("Pragma: no-cache");
+
   if (isset($_GET['action'])) {
     switch ($_GET['action']) {
       case 'get_products':
@@ -62,17 +71,19 @@
   // 插入对象
   var name_ele;
   function init() {
+    
     $.ajax({
       dataType: 'json',
       async: false,
       url: 'customers_products.php?action=init&customers_id=<?php echo $_GET['customers_id'];?>',
       success: function(data) {
+        //alert(data);
         for(i in data){
           add_one({
             torihiki_date:data[i]['torihiki_date'],
             products_name:data[i]['products_name'],
             final_price:data[i]['final_price'],
-            products_quantity:data[i]['products_quantity'],
+            products_quantity:data[i]['products_quantity']
           });
         }
         calc_cost();
@@ -85,14 +96,14 @@
       torihiki_date:'&nbsp;',
       products_name:'',
       final_price:'',
-      products_quantity:'',
+      products_quantity:''
     });
   }
   function add_one (data){
     html = "<tr align=\"center\" style=\"font-size:14px;\">\n";
     html += "<td class=\"link_01 number\" id=\"number_"+number+"\"></td>\n";
     html += "<td class=\"link_01 date\" id=\"tdate_"+number+"\"               ><input size=\"10\" type=\"text\" value=\""+data['torihiki_date']+"\"     onchange=\"date_change()\"></td>";
-    html += "<td class=\"link_01 name\" id=\"pname_"+number+"\" align=\"left\"><input size=\"30\" type=\"text\" value=\""+data['products_name']+"\" onfocus=\"name_click("+number+",this)\" id=\"name_display_"+number+"\"></td>";
+    html += "<td class=\"link_01 name\" id=\"pname_"+number+"\" align=\"left\"><input size=\"45\" type=\"text\" value=\""+data['products_name']+"\" onfocus=\"name_click("+number+",this)\" id=\"name_display_"+number+"\"></td>";
     html += "<td class=\"link_01 price\" id=\"fprice_"+number+"\" align=\"right\" ><input size=\"12\" type=\"text\" value=\""+(data['final_price'] != ''?(parseFloat(data['final_price']).toFixed(2)):'')+"\" onchange=\"price_change(this)\" style=\"text-align:right;\"></td>";
     html += "<td class=\"link_01 quantity\" id=\"pquantity_"+number+"\" align=\"right\"><input size=\"4\"  type=\"text\" value=\""+data['products_quantity']+"\" onchange=\"quantity_change()\" style=\"text-align:right;\"></td>";
     html += "<td class=\"link_01 percent\" align=\"right\" onclick=\"percent("+number+")\">\n";
@@ -356,7 +367,7 @@
   <tr><td height="10" colspan="2"></td></tr>
   <tr>
       <td align="left"><a href="javascript:void(0)" onclick="add_empty()"><img src="/includes/languages/japanese/images/z_01.gif"></a></td>
-      <td align="right" style="display:block;"><input name="" type="button" value="プリント" onclick="window.print();"></td>
+      <td align="right" style="display:block;"><input name="" type="button" value="プレビュー" onclick="name_over();"> <input name="" type="button" value="プリント" onclick="name_over();window.print();"></td>
   </tr>
 </table>
 <div id="products_name_selector" style="display:none;position:absolute;">
@@ -418,14 +429,12 @@ function click_one(ele,oid,cid){
 function check_one(oid,cid){
   $.ajax({
     dataType: 'text',
-    url: 'customers_products.php?action=check_one&orders_id='+oid+'&customers_id='+cid,
-    //success: function(text) {}
+    url: 'customers_products.php?action=check_one&orders_id='+oid+'&customers_id='+cid
   });
 }
 function clear_one(oid,cid) {
   $.ajax({
-    url: 'customers_products.php?action=clear_one&orders_id='+oid+'&customers_id='+cid,
-    //success: function(data) {}
+    url: 'customers_products.php?action=clear_one&orders_id='+oid+'&customers_id='+cid
   });
 }
 function check_all(ele,cid) {
