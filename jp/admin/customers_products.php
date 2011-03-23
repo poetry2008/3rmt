@@ -152,7 +152,7 @@
           * parseFloat($(this).find('.quantity input').val()) 
           * parseFloat($(this).find('.percent_display').html());
         // 插入小计
-        $(this).find('.fprice').html(fp.toFixed(2));
+        $(this).find('.fprice').html(fp>0?fp.toFixed(2):('<font color="red">'+fp.toFixed(2)+'</font>'));
         cost += fp;
         no++;
       }
