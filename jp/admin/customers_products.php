@@ -219,27 +219,23 @@
   function date_change(){
     calc_cost();
   }
-  /*
-  function name_change(){
-    calc_cost();
-  }
-  */
+
   
   // 显示商品名选择框
   function name_click(num,ele){
-    offset = $(ele).offset();
-    $('#products_name_selector').css('left', offset.left);
-    $('#products_name_selector').css('top',  offset.top);
-    name_ele = document.getElementById('name_display_'+num);;
-    $('#products_name_selector').css('display','block');
+    //offset = $(ele).offset();
+    //$('#products_name_selector').css('left', offset.left);
+    //$('#products_name_selector').css('top',  offset.top);
+    //name_ele = document.getElementById('name_display_'+num);;
+    //$('#products_name_selector').css('display','block');
   }
   
   //  商品名选择结束
   function name_over(){
-    name_ele = null;
-    $("#products_name_selector").css("display","none");
-    $('#relate_products').html('');
-    document.getElementById('category_selector').selectedIndex = 0;
+    //name_ele = null;
+    //$("#products_name_selector").css("display","none");
+    //$('#relate_products').html('');
+    //document.getElementById('category_selector').selectedIndex = 0;
   }
   
   function price_change(ele){
@@ -367,13 +363,15 @@
   <tr><td height="10" colspan="2"></td></tr>
   <tr>
       <td align="left"><a href="javascript:void(0)" onclick="add_empty()"><img src="/includes/languages/japanese/images/z_01.gif"></a></td>
-      <td align="right" style="display:block;"><input name="" type="button" value="プレビュー" onclick="name_over();"> <input name="" type="button" value="プリント" onclick="name_over();window.print();"></td>
+      <td align="right" style="display:block;"><!--<input name="" type="button" value="プレビュー" onclick="name_over();"> --><input name="" type="button" value="プリント" onclick="name_over();window.print();"></td>
   </tr>
 </table>
+<!--
 <div id="products_name_selector" style="display:none;position:absolute;">
   <?php echo tep_draw_pull_down_menu('categories_name', tep_get_category_tree('&nbsp;'), 0, 'id="category_selector" onchange="relate_products1(this.options[this.selectedIndex].value, \''.$pInfo->relate_products_id.'\')"');?>
   <span id="relate_products"></span>
 </div>
+-->
 <?php
       exit;
       break;
