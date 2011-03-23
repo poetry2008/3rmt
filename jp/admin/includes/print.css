@@ -1,10 +1,11 @@
 @charset "utf-8";
 .print_innput input ,#data1 ,#bill_templates{ border:0!important;}
 .link_print input{ border:0!important;}
-.link_print { margin:0 3px;border:#000000 1px solid!important;; background-color:#666666!important;;}
+.link_print { margin:0 3px; background-color:#666666!important;;}
 .link_02 { margin:0 3px; background-color:#666666!important;;}
 textarea{ border:0!important;}
 .print_none input ,.print_none select{ display:none!important;}
 .print_none a{ display:none!important;}
 .link_01 a{display:none!important;}
 textarea{ overflow:hidden!important;}
+.link_print td{ border:1px solid #000!important;}
