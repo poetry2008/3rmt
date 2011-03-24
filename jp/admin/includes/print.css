@@ -1,11 +1,18 @@
 @charset "utf-8";
 .print_innput input ,#data1 ,#bill_templates{ border:0!important;}
-.link_print input{ border:0!important;}
-.link_print { margin:0 3px; background-color:#666666!important;;}
-.link_02 { margin:0 3px; background-color:#666666!important;;}
+.link_print input{ border:0!important; background-color:#fff!important;}
+.link_print { margin:0 3px; background-color:#000!important;}
+.data td{ background-color:#fff!important;}
+.link_02 { margin:0 3px; background-color:#ccc!important;}
 textarea{ border:0!important;}
 .print_none input ,.print_none select{ display:none!important;}
 .print_none a{ display:none!important;}
 .link_01 a{display:none!important;}
-textarea{ overflow:hidden!important;}
-.link_print td{ border:1px solid #000!important;}
+textarea{ overflow-y:visible!important;}
+/*.link_print td{ background-color:#fff!important; border:1px solid #000000!important;}*/
+.print_none{ display:none!important;}
+.print_none_info{ background-color:#000000!important;}
+.print_none_info td{ background-color:#fff!important;}
+.link_01 img{ display:block!important;}
+.link_print02{ border:1px solid #000; text-align:right;}
+.cost_display{ background-color:#fff!important;}
