@@ -84,7 +84,7 @@
             products_name:data[i]['products_name'],
             final_price:data[i]['final_price'],
             products_quantity:data[i]['products_quantity']
-          });
+          },'通貨');
         }
         calc_cost();
       }
@@ -97,12 +97,13 @@
       products_name:'',
       final_price:'',
       products_quantity:''
-    });
+    },'');
   }
-  function add_one (data){
+  function add_one (data,type){
     html = "<tr class=\"data\" align=\"center\" style=\"font-size:14px;\">\n";
     html += "<td class=\"link_01 number\" id=\"number_"+number+"\"></td>\n";
     html += "<td class=\"link_01 date\" id=\"tdate_"+number+"\"               ><input size=\"10\" type=\"text\" value=\""+data['torihiki_date']+"\"     onchange=\"date_change()\"></td>";
+    html += "<td class=\"link_01 type\" id=\"type_"+number+"\"               ><input size=\"10\" type=\"text\" value=\""+type+"\"></td>";
     html += "<td class=\"link_01 name\" id=\"pname_"+number+"\" align=\"left\"><input size=\"45\" type=\"text\" value=\""+data['products_name']+"\" onfocus=\"name_click("+number+",this)\" id=\"name_display_"+number+"\"></td>";
     html += "<td class=\"link_01 price\" id=\"fprice_"+number+"\" align=\"right\" ><input size=\"12\" type=\"text\" value=\""+(data['final_price'] != ''?(parseFloat(data['final_price']).toFixed(2)):'')+"\" onchange=\"price_change(this)\" style=\"text-align:right;\"></td>";
     html += "<td class=\"link_01 quantity\" id=\"pquantity_"+number+"\" align=\"right\"><input size=\"4\"  type=\"text\" value=\""+data['products_quantity']+"\" onchange=\"quantity_change()\" style=\"text-align:right;\"></td>";
@@ -325,21 +326,22 @@
     </td>
   </tr>
 </table>
-<table cellpadding="0" cellspacing="1" border="0" width="563" class="link_print" id="data_table">
+<table cellpadding="0" cellspacing="1" border="0" width="600" class="link_print" id="data_table">
   <tr align="center">
     <td class="link_02">No.</td>
     <td class="link_02">取引日</td>
+    <td class="link_02">種別</td>
     <td class="link_02">商品名</td>
     <td class="link_02">単価</td>
     <td class="link_02">数量</td>
     <td class="link_02">値引</td>
     <td class="link_02">金額</td>
   </tr>
-  <tr>
-  <td colspan="4" bgcolor="#FFFFFF"></td>
+  <tr class="print_none">
+  <td colspan="5" bgcolor="#FFFFFF"></td>
       <td align="center" bgcolor="#00FFFF" width="35" style=" padding:2px; border-top:none; border-right:none; font-family:ＭＳ Ｐゴシック; font-size:12px;">小計<input type="hidden" id="cost" value="<?php echo $total_cost;?>">
 </td>
-<td class="link_01" align="right" onclick="percent_cost()">
+<td class="link_01" align="right" onclick="percent_cost()" style="overflow:hidden;">
   <span id="percent_cost" style="display:none;">
     <select id="select_cost" onblur="percent_out_cost()" onchange="percent_change_cost()" onpropertychange="percent_change_cost()">
       <option value="1.00">100%</option>
