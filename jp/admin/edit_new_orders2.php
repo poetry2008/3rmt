@@ -468,6 +468,7 @@
         }
         /* 士入不需要操作库存 */
       }
+      orders_updated($_SESSION['create_order2']['orders']['orders_id']);
       foreach($_SESSION['create_order2']['orders_total'] as $c => $ot){
         tep_db_perform(TABLE_ORDERS_TOTAL, $ot);
       }
@@ -483,6 +484,8 @@
       $sql_customers_array = array( 'customers_fax' =>
           $_SESSION['create_order2']['customer_fax']);
       tep_db_perform(TABLE_CUSTOMERS,$sql_customers_array,'update','customers_id='.$_SESSION['create_order2']['orders']['customers_id']);
+      
+      
       
 //start print 
   # 印刷用メール本文 ----------------------------
