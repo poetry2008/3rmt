@@ -105,8 +105,8 @@
     html += "<td class=\"link_01 date\" id=\"tdate_"+number+"\"               ><input size=\"10\" type=\"text\" value=\""+data['torihiki_date']+"\"     onchange=\"date_change()\"></td>";
     html += "<td class=\"link_01 type\" id=\"type_"+number+"\"               ><input size=\"10\" type=\"text\" value=\""+type+"\"></td>";
     html += "<td class=\"link_01 name\" id=\"pname_"+number+"\" align=\"left\"><input size=\"45\" type=\"text\" value=\""+data['products_name']+"\" onfocus=\"name_click("+number+",this)\" id=\"name_display_"+number+"\"></td>";
-    html += "<td class=\"link_01 price\" id=\"fprice_"+number+"\" align=\"right\" ><input size=\"12\" type=\"text\" value=\""+(data['final_price'] != ''?(parseFloat(data['final_price']).toFixed(2)):'')+"\" onchange=\"price_change(this)\" style=\"text-align:right;\"></td>";
-    html += "<td class=\"link_01 quantity\" id=\"pquantity_"+number+"\" align=\"right\"><input size=\"4\"  type=\"text\" value=\""+data['products_quantity']+"\" onchange=\"quantity_change()\" style=\"text-align:right;\"></td>";
+    html += "<td class=\"link_01 price\" id=\"fprice_"+number+"\" align=\"right\" ><input size=\"12\" type=\"text\" value=\""+(data['final_price'] != ''?(parseFloat(data['final_price']).toFixed(1)):'')+"\" onchange=\"price_change(this)\" style=\"text-align:right;\"></td>";
+    html += "<td class=\"link_01 quantity\" id=\"pquantity_"+number+"\" align=\"right\"><input size=\"4\"  type=\"text\" value=\""+(data['products_quantity'] != ''?(parseFloat(data['products_quantity']).toFixed(1)):'')+"\" onchange=\"quantity_change()\" style=\"text-align:right;\"></td>";
     html += "<td class=\"link_01 percent\" align=\"right\" onclick=\"percent("+number+")\">\n";
     
     html += "<span id=\"percent_"+number+"\" style=\"display:none;\">\n";
@@ -164,7 +164,7 @@
           * parseFloat($(this).find('.quantity input').val()) 
           * parseFloat($(this).find('.percent_display').html());
         // 插入小计
-        $(this).find('.fprice').html(fp>0?fp.toFixed(2):('<font color="red">'+fp.toFixed(2)+'</font>'));
+        $(this).find('.fprice').html(fp>0?fp.toFixed(0):('<font color="red">'+fp.toFixed(2)+'</font>'));
         cost += fp;
         no++;
       }
@@ -174,7 +174,7 @@
     //});
     //cost *= parseFloat(document.getElementById('percent_display_cost').innerHTML);
     // 插入总计
-    $('#cost_display').html(cost.toFixed(2));
+    $('#cost_display').html(cost.toFixed(0));
     $('#cost_print').html(cost.toFixed(0));
   }
   function percent_cost(){
