@@ -172,7 +172,7 @@
     //$('.price').each(function(){
     //  cost += parseFloat(this.innerHTML.replace(/,/g,''));
     //});
-    //cost *= parseFloat(document.getElementById('percent_display_cost').innerHTML);
+    cost *= parseFloat(document.getElementById('percent_display_cost').innerHTML);
     // 插入总计
     $('#cost_display').html(cost.toFixed(2));
     $('#cost_print').html(cost.toFixed(0));
@@ -338,10 +338,9 @@
     <td class="link_02">金額</td>
   </tr>
   <tr>
-  <td colspan="6" bgcolor="#FFFFFF"></td>
-      <td align="center" bgcolor="#00FFFF" width="35" style=" padding:2px; border-top:none; border-right:none; font-family:ＭＳ Ｐゴシック; font-size:12px;">小計<input type="hidden" id="cost" value="<?php echo $total_cost;?>">
+  <td colspan="5" bgcolor="#FFFFFF"></td>
+      <td align="center" bgcolor="#ccffff" width="35" style=" padding:2px; border-top:none; border-right:none; font-family:ＭＳ Ｐゴシック; font-size:12px;">小計<input type="hidden" id="cost" value="<?php echo $total_cost;?>">
 </td>
-<!--
 <td class="link_01" align="right" onclick="percent_cost()" style="overflow:hidden;">
   <span id="percent_cost" style="display:none;">
     <select id="select_cost" onblur="percent_out_cost()" onchange="percent_change_cost()" onpropertychange="percent_change_cost()">
@@ -360,7 +359,6 @@
   </span>
   <span id="percent_display_cost" style=" font-size:12px;">1.00</span>
 </td>
--->
 <td width="15" align="right" style="font-family:ＭＳ Ｐゴシック; font-size:12px;" id="cost_display" bgcolor="#FFFFFF"><?php echo number_format($total_cost);?></td>
 </tr>
 </table>
