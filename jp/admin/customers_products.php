@@ -289,7 +289,7 @@
   <tr>
     <td>
       <table border="0" width="329" class="print_innput">
-        <tr><td height="30" colspan="2"><b><input name="textfield" type="text" id="data2" value="" style=" height:23px; width:180px; font-size:17px; font-weight:bold; margin-right:5px;">御中</b></td></tr>
+        <tr><td height="30" colspan="2"><b><input name="textfield" type="text" id="data2" value="" style=" height:23px; width:180px; font-size:17px; font-weight:bold; margin-left:20px; margin-right:5px;">御中</b></td></tr>
         <tr><td height="13"></td></tr>
         <tr><td height="31" colspan="2"><span id="cost_print"><?php echo $total_cost;?></span>円税込</td></tr>
         <tr><td height="34" colspan="2" align="left" valign="bottom"><input name="textfield" type="text" id="data3" value="" style=" height:23px; width:180px; font-size:12px; margin-right:5px;"></td></tr>
