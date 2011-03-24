@@ -319,7 +319,7 @@
         <tr><td align="right" colspan="4">
           <table cellpadding="0" cellspacing="0" style="border:#666666 1px solid;">
           <tr><td height="20" style="border-bottom:#666666 1px solid; font-size:12px;" align="center">責任者</td></tr>
-          <tr><td height="120" colspan="6"><b><textarea id="responsible" type="text" rows="6" value="カ)アールエムティエイチアイ"  style=" width:130px; font-size:20px; text-align:center; font-weight:bold; overflow-y:visible;"></textarea></b></td></tr>
+          <tr><td height="120" colspan="6" valign="middle"><b><textarea id="responsible" type="text" rows="6" value="カ)アールエムティエイチアイ"  style=" width:130px; font-size:20px; text-align:center; font-weight:bold; overflow-y:visible;"></textarea></b></td></tr>
           </table>
         </td></tr>
       </table>
