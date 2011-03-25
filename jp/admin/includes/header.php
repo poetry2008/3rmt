@@ -24,7 +24,7 @@ document.getElementById(elmnt).style.visibility="hidden"
     株式会社iimy&nbsp;<b>
     <?php
       //var_dump($ocertify->npermission);
-      echo "<a target='_blank' href =
+      echo "<a href =
       '".tep_href_link(basename($GLOBALS['PHP_SELF']),'action=re_login','NONSSL')."'>";
       $user_info = tep_get_user_info($ocertify->auth_user);
       if (isset($ocertify) && $ocertify->npermission == 15) {
