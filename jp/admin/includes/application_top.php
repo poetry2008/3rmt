@@ -291,10 +291,6 @@ while($userslist= tep_db_fetch_array($sites_id)){
   require(DIR_WS_FUNCTIONS . 'general.php');
   require(DIR_WS_FUNCTIONS . 'html_output.php');
 
-//re login
-if(isset($_GET['his_url'])&&$_GET['his_url']){
-tep_redirect($_GET['his_url']);
-}
 
 // define our authenticate functions 2003/04/16
   if(!tep_session_is_registered('adminaccs')) {
@@ -361,6 +357,10 @@ tep_redirect($_GET['his_url']);
   if (!defined('DEFAULT_LANGUAGE')) {
     $messageStack->add(ERROR_NO_DEFAULT_LANGUAGE_DEFINED, 'error');
   }
+//re login
+if(isset($_GET['his_url'])&&$_GET['his_url']){
+tep_redirect($_GET['his_url'],'SID='.tep_session_id);
+}
   
   //for sql_log
   $testArray = array();
