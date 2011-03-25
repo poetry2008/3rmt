@@ -360,4 +360,9 @@ if ($ocertify->isErr) {
   }
 } elseif ($ocertify->isFirstTime) { logout_user(); }
 
+if (isset($GLOBALS['HTTP_GET_VARS']['action']) &&
+  $GLOBALS['HTTP_GET_VARS']['action']== 're_login') { 
+  tep_redirect('users_login.php?his_url='.$PHP_SELF);
+} 
+
 ?>

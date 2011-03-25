@@ -118,6 +118,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
 // define the database table names used in the project
   define('TABLE_SITENAME','sitename');
+  define('TABLE_USERS','users');
   define('TABLE_CATEGORIES_TO_MISSION', 'categories_to_mission');
   define('TABLE_PRODUCTS_TO_INVENTORY', 'products_to_inventory');
   define('TABLE_SESSION_LOG', 'session_log');
@@ -260,6 +261,12 @@ define('TABLE_PERMISSIONS','permissions');
     $adminaccs = ADMIN_FREE_PASS;
     tep_session_register('adminaccs');
   }
+$sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$_POST['loginuid']."' limit 0,1");
+while($userslist= tep_db_fetch_array($sites_id)){
+  $_SESSION['site_permission']=$userslist['site_permission'];
+  $_SESSION['user_permission']=$userslist['permission'];
+}
+
 
 // language
   require(DIR_WS_FUNCTIONS . 'languages.php');
@@ -283,6 +290,11 @@ define('TABLE_PERMISSIONS','permissions');
 // define our general functions used application-wide
   require(DIR_WS_FUNCTIONS . 'general.php');
   require(DIR_WS_FUNCTIONS . 'html_output.php');
+
+//re login
+if(isset($_GET['his_url'])&&$_GET['his_url']){
+tep_redirect($_GET['his_url']);
+}
 
 // define our authenticate functions 2003/04/16
   if(!tep_session_is_registered('adminaccs')) {

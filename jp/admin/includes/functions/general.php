@@ -4328,3 +4328,14 @@ function tep_get_order_cnt_by_pid($pid){
   //$r = tep_db_fetch_array(tep_db_query("select count(orders_products.orders_id) as cnt from orders_products left join orders on orders.orders_id=orders_products.orders_id where products_id='".$pid."' and finished = '1'"));
   return $r['cnt'];
 }
+//read user nama
+function tep_get_user_info($s_user_ID = "") {
+
+  $s_select = "select * from " . TABLE_USERS;
+  $s_select .= ($s_user_ID == "" ? "" : " where userid = '$s_user_ID'");
+  $s_select .= " order by userid;";     // ユーザＩＤの順番にデータを取得する
+  $query = tep_db_query($s_select);
+  $res = tep_db_fetch_array($query);
+  return $res;
+
+}

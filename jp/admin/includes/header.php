@@ -24,13 +24,17 @@ document.getElementById(elmnt).style.visibility="hidden"
     株式会社iimy&nbsp;<b>
     <?php
       //var_dump($ocertify->npermission);
+      echo "<a target='_blank' href =
+      '".tep_href_link(basename($GLOBALS['PHP_SELF']),'action=re_login','NONSSL')."'>";
+      $user_info = tep_get_user_info($ocertify->auth_user);
       if (isset($ocertify) && $ocertify->npermission == 15) {
-        echo '<font color="blue">Admin</font>';
+        echo '<font color="blue">'.$user_info['name'].'</font>';
       } elseif (isset($ocertify) && $ocertify->npermission == 10) {
-        echo '<font color="red">Chief</font>';
+        echo '<font color="red">'.$user_info['name'].'</font>';
       } else {
-        echo 'Staff';
+        echo $user_info['name'];
       }
+      echo "</a>";
     ?>
     </b>&nbsp;でログインしています。&nbsp;
   </td>
@@ -97,7 +101,7 @@ if(preg_match("/".FILENAME_ORDERS."/",$PHP_SELF)){
         echo '</td></tr>'; 
       }
       echo '</table>';
-      echo' 
+      echo ' 
       <td>&nbsp;
       <a href="' . tep_href_link(basename($GLOBALS['PHP_SELF']), '', 'NONSSL') . '?execute_logout_user=1" class="headerLink">ログアウト</a></td></tr></table>';
     } else {

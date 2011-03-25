@@ -70,6 +70,7 @@
   require(DIR_WS_FUNCTIONS . 'html_output.php');
 
 if (file_exists(DIR_WS_LANGUAGES . $language . '/user_certify.php')) {
+  $_SESSION['PASSWORD_RULES'] = PASSWORD_RULES;
   include(DIR_WS_LANGUAGES . $language . '/user_certify.php');
 }
 /* -------------------------------------
@@ -91,7 +92,13 @@ echo '<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">' . 
 echo '</head>' . "\n";
 echo '<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">' . "\n";
 
+if(isset($_GET['his_url'])&&$_GET['his_url']){
+
+echo tep_draw_form('defaultpage', FILENAME_DEFAULT . "?SID=" .
+    session_id()."&his_url=".$_GET['his_url']);   // <form>タグの出力
+}else{
 echo tep_draw_form('defaultpage', FILENAME_DEFAULT . "?SID=" . session_id());   // <form>タグの出力
+}
 
 echo '<!-- body_text //-->' . "\n";
 echo '<table border="0" cellspacing="0" cellpadding="2">' . "\n";
