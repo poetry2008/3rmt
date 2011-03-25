@@ -39,6 +39,10 @@ $HTTP_POST_VERS に対応させる
   if (isset($_POST['aval'])) { $aval = $_POST['aval']; }
   if (isset($_POST['userslist'])) { $userslist = $_POST['userslist']; }
   if (isset($_POST['no_permission_list'])) { $no_permission_list = $_POST['no_permission_list']; }
+  if (isset($_POST['staff_permission_list'])) { $staff_permission_list =
+    $_POST['staff_permission_list']; }
+  if (isset($_POST['chief_permission_list'])) { $chief_permission_list =
+    $_POST['chief_permission_list']; }
   if (isset($_POST['permission_list'])) { $permission_list = $_POST['permission_list']; }
   if (isset($_POST['execute_user'])) { $execute_user = $_POST['execute_user']; }
   if (isset($_POST['execute_password'])) { $execute_password = $_POST['execute_password']; }
@@ -52,6 +56,14 @@ if (isset($_POST['execute_change'])) { $execute_change = $_POST['execute_change'
         if (isset($_POST['execute_delete'])) { $execute_delete = $_POST['execute_delete']; }
         if (isset($_POST['execute_grant'])) { $execute_grant = $_POST['execute_grant']; }
         if (isset($_POST['execute_reset'])) { $execute_reset = $_POST['execute_reset']; }
+        if (isset($_POST['execute_staff2chief'])) { $execute_staff2chief =
+          $_POST['execute_staff2chief']; }
+        if (isset($_POST['execute_chief2staff'])) { $execute_chief2staff =
+          $_POST['execute_chief2staff']; }
+        if (isset($_POST['execute_chief2admin'])) { $execute_chief2admin =
+          $_POST['execute_chief2admin']; }
+        if (isset($_POST['execute_admin2chief'])) { $execute_admin2chief =
+          $_POST['execute_admin2chief']; }
 if (isset($_POST['execute_c_permission'])) { $execute_change = $_POST['execute_c_permission'];}
 /* ===============================================
   入力チェック関数
@@ -175,7 +187,7 @@ function makeSelectUserParmission($nmode=0) {
   $s_select .= " from " . TABLE_USERS . " u, " . TABLE_PERMISSIONS . " p";
   $s_select .= " where u.userid = p.userid";
   if ($nmode == 0) $s_select .= " and p.permission < 15";   // 生成モードにより where 句の条件を編集する
-  else $s_select .= " and p.permission = 15";
+  else $s_select .= " and p.permission = '".$nmode."'";
   $s_select .= " order by u.userid";              // ユーザＩＤの順番にデータを取得する
 
   return $s_select;
@@ -276,9 +288,25 @@ function makeDeleteUser($nmode=0) {
 function makeUpdatePermission($nmode=0, $susers) {
 
   $ssql = "update " . TABLE_PERMISSIONS . " set";
+  switch($nmode){
+    case 'staff2chief':
+       $ssql .= " permission=10";
+      break;
+    case 'chief2staff':
+       $ssql .= " permission=7";
+      break;
+    case 'chief2admin':
+       $ssql .= " permission=15";
+      break;
+    case 'admin2chief':
+       $ssql .= " permission=10";
+      break;
+  }
+  /*
   if ($nmode == 0)            // 権限を与える
     $ssql .= " permission=15";
   else $ssql .= " permission=7";      // 権限を取消す
+  */
   $ssql .= " where userid='$susers'";
 
   return $ssql;
@@ -821,7 +849,7 @@ function UserPermission_preview() {
   echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));  // <form>タグの出力
 
   // 一般ユーザ情報取得
-  $ssql = makeSelectUserParmission();             // 一般ユーザのデータを取得する sql 文字列生成
+  $ssql = makeSelectUserParmission('7');             // 一般ユーザのデータを取得する sql 文字列生成
 
   @$oresult = tep_db_query($ssql);
   if (!$oresult) {                      // エラーだったとき
@@ -844,11 +872,38 @@ function UserPermission_preview() {
       $i++;
     }
   }
+  if ($oresult) @tep_db_free_result($oresult);        // 結果オブジェクトを開放する
+  //chief start
+  $ssql = makeSelectUserParmission('10');             // 一般ユーザのデータを取得する sql 文字列生成
 
+  @$oresult = tep_db_query($ssql);
+  if (!$oresult) {                      // エラーだったとき
+    echo TEXT_ERRINFO_DB_NO_USERINFO;           // メッセージ表示
+    echo "<br>\n";
+    echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));      // <form>タグの出力
+    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // ユーザ管理メニューに戻る
+    echo "</form>\n";                   // フォームのフッター
+    if ($oresult) @tep_db_free_result($oresult);      // 結果オブジェクトを開放する
+    return FALSE;
+  }
+
+  $nrow = tep_db_num_rows($oresult);              // レコード件数の取得
+  if ($nrow > 0) {
+    // リストボックスに表示するデータを配列にセットする
+    $i=0;
+    while ($arec = tep_db_fetch_array($oresult)) {      // レコードを取得
+      $ausers_chief[$i]['id'] = $arec['userid'];
+      $ausers_chief[$i]['text'] = $arec['name'];
+      $i++;
+    }
+  }
   if ($oresult) @tep_db_free_result($oresult);        // 結果オブジェクトを開放する
 
+  //chief end
+
+
   // 管理者権限を持つユーザ情報取得
-  $ssql = makeSelectUserParmission(1);            // 管理者権限を持つデータを取得する sql 文字列生成
+  $ssql = makeSelectUserParmission('15');            // 管理者権限を持つデータを取得する sql 文字列生成
 
   @$oresult = tep_db_query($ssql);
   if (!$oresult) {                      // エラーだったとき
@@ -882,11 +937,12 @@ function UserPermission_preview() {
     // テーブルタグの開始（一般ユーザのリストボックス）
     echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
     echo "<tr>\n";
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_USER . '</td>' . "\n"; // 一般ユーザ
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' .
+      TABLE_HEADING_USER_STAFF . '</td>' . "\n"; // 一般ユーザ
     echo "</tr>\n";
 
     echo "<td>\n";                  // データセル
-    echo tep_draw_pull_down_menu("no_permission_list", $ausers, '', 'size="5"');  // リストボックスの表示
+    echo tep_draw_pull_down_menu("staff_permission_list", $ausers, '', 'size="5"');  // リストボックスの表示
     echo "</td>\n";
     echo "</tr>\n";
     echo "</table>\n";
@@ -895,17 +951,48 @@ function UserPermission_preview() {
   echo '<td align="center" valign="middle">' . "\n";                  // データセル
 
     echo '<br>';
-    echo tep_draw_input_field("execute_grant", BUTTON_GRANT, "onClick=\"return formConfirm('grant')\"", FALSE, "submit", FALSE);  // 権限を与える >>
+    echo tep_draw_input_field("execute_staff2chief", BUTTON_GRANT,  "onClick=\"return formConfirm('staff2chief')\"", FALSE, "submit", FALSE);  // 権限を与える >>
     echo '<br>';
-    echo tep_draw_input_field("execute_revoke", BUTTON_REVOKE, "onClick=\"return formConfirm('revoket')\"", FALSE, "submit", FALSE);  // << 権限を取消す
+    echo tep_draw_input_field("execute_chief2staff", BUTTON_REVOKE, "onClick=\"return formConfirm('chief2staff')\"", FALSE, "submit", FALSE);  // << 権限を取消す
 
   echo "</td>\n";
   echo "<td>\n";                  // データセル
 
+  //chief show start
+
+    // テーブルタグの開始（一般ユーザのリストボックス）
+    echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
+    echo "<tr>\n";
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' .
+      TABLE_HEADING_USER_CHIEF . '</td>' . "\n"; // 一般ユーザ
+    echo "</tr>\n";
+
+    echo "<td>\n";                  // データセル
+    echo tep_draw_pull_down_menu("chief_permission_list", $ausers_chief, '', 'size="5"');  // リストボックスの表示
+    echo "</td>\n";
+    echo "</tr>\n";
+    echo "</table>\n";
+
+  echo "</td>\n";
+  echo '<td align="center" valign="middle">' . "\n";                  // データセル
+
+    echo '<br>';
+    echo tep_draw_input_field("execute_chief2admin", BUTTON_GRANT, "onClick=\"return formConfirm('chief2admin')\"", FALSE, "submit", FALSE);  // 権限を与える >>
+    echo '<br>';
+    echo tep_draw_input_field("execute_admin2chief", BUTTON_REVOKE, "onClick=\"return formConfirm('admin2chief')\"", FALSE, "submit", FALSE);  // << 権限を取消す
+
+  echo "</td>\n";
+  echo "<td>\n";                  // データセル
+
+
+
+  //chief show end
+
     // テーブルタグの開始（管理権限を持っているユーザのリストボックス）
     echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
     echo "<tr>\n";
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_ADMIN . '</td>' . "\n";    // サイト管理者
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' .
+      TABLE_HEADING_USER_ADMIN . '</td>' . "\n";    // サイト管理者
     echo "</tr>\n";
 
     echo "<td>\n";                  // データセル
@@ -1237,6 +1324,7 @@ function UserPermission_execute($nmode=0) {
 
   PageBody('t', PAGE_TITLE_PERMISSION);   // ユーザ管理画面のタイトル部表示（管理者権限）
 
+  /*
   if ($nmode == 0) {    // 権限を与える処理：ユーザが選択されていない
     $suserid = $GLOBALS['no_permission_list'];
     if ($suserid == "") set_errmsg_array($aerror, TEXT_ERRINFO_USER_GRANT);
@@ -1247,7 +1335,24 @@ function UserPermission_execute($nmode=0) {
   // 権限を取消す処理：ユーザ本人のとき
   if ($nmode == 1 && strcmp($suserid,$ocertify->auth_user) == 0) 
       set_errmsg_array($aerror, TEXT_ERRINFO_USER_REVOKE_ONESELF);
+  */
+  //add by szn chief permission  start
+  if ($nmode == 'staff2chief' ) {    
+    $suserid = $GLOBALS['staff_permission_list'];
+    if ($suserid == "") set_errmsg_array($aerror, TEXT_ERRINFO_USER_STAFF);
+  } else if ($nmode == 'chief2admin'||$nmode == 'chief2staff') {    
+    $suserid = $GLOBALS['chief_permission_list'];
+    if ($suserid == "") set_errmsg_array($aerror, TEXT_ERRINFO_USER_CHIEF);
+  } else if ($nmode == 'admin2chief'){        
+    $suserid = $GLOBALS['permission_list'];
+    if ($suserid == "") set_errmsg_array($aerror, TEXT_ERRINFO_USER_ADMIN);
+  }
+  
+  
+  if (strcmp($suserid,$ocertify->auth_user) == 0) 
+      set_errmsg_array($aerror, TEXT_ERRINFO_USER_REVOKE_ONESELF);
 
+  //add by szn chief permission  end
   echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));  // <form>タグの出力
 
   if (is_array($aerror)) {                    // 入力エラーのとき
@@ -1303,10 +1408,22 @@ function formConfirm(type) {
     case "password":
       rtn = confirm("'. JAVA_SCRIPT_INFO_PASSWORD . '");
       break;
-    case "grant":
-      rtn = confirm("'. JAVA_SCRIPT_INFO_GRANT . '");
+    case "staff2chief":
+      rtn = confirm("'. JAVA_SCRIPT_INFO_STAFF2CHIEF . '");
       break;
-    case "revoket":
+    case "chief2staff":
+      rtn = confirm("'. JAVA_SCRIPT_INFO_CHIEF2STAFF . '");
+      break;
+    case "chief2admin":
+      rtn = confirm("'. JAVA_SCRIPT_INFO_CHIEF2ADMIN . '");
+      break;
+    case "admin2chief":
+      rtn = confirm("'. JAVA_SCRIPT_INFO_ADMIN2CHIEF . '");
+      break;
+    case "grant":
+      rtn = confirm("'. JAVA_SCRIPT_INFO_REVOKE . '");
+      break;
+    case "revoke":
       rtn = confirm("'. JAVA_SCRIPT_INFO_REVOKE . '");
       break;
   }
@@ -1493,10 +1610,21 @@ function update_rules($rules){
 
     // 管理者権限
     } elseif (isset($execute_permission) && $execute_permission) {
-      if (isset($execute_grant) && $execute_grant) UserPermission_execute(0);       // 管理者権限を与える処理実行
-      elseif (isset($execute_revoke) && $execute_revoke)  UserPermission_execute(1);    // 管理者権限を取消す処理実行
+
+//permission start
+
+      if (isset($execute_staff2chief) && $execute_staff2chief)
+        UserPermission_execute('staff2chief');   
+      elseif (isset($execute_chief2staff) && $execute_chief2staff)
+        UserPermission_execute('chief2staff'); 
+      elseif (isset($execute_chief2admin) && $execute_chief2admin)
+        UserPermission_execute('chief2admin'); 
+      elseif (isset($execute_admin2chief) && $execute_admin2chief)
+        UserPermission_execute('admin2chief'); 
       else UserPermission_preview();                // 管理者権限ページ表示
 
+
+//permission end 
  
     } elseif (isset($execute_change) && $execute_change) {
       if (isset($execute_update) && $execute_update)   {

@@ -103,4 +103,16 @@ define('TEXT_LOGIN_COUNT','ログイン回数');
 define('TEXT_RAND_PWD','パスワード');
 define('TEXT_RAND_RULES','計算式');
 define('TEXT_ERROR_RULE','計算式の格式が正しくない');
+
+//add by szn
+define('TABLE_HEADING_USER_STAFF', 'Staff');
+define('TABLE_HEADING_USER_CHIEF', 'Chief');
+define('TABLE_HEADING_USER_ADMIN', 'Admin');
+define('JAVA_SCRIPT_INFO_STAFF2CHIEF', 'Chief権限を与えます。\nよろしいですか？');
+define('JAVA_SCRIPT_INFO_CHIEF2STAFF', 'Chief権限を取り消します。\nよろしいですか？');
+define('JAVA_SCRIPT_INFO_CHIEF2ADMIN', 'Admin権限を与えます。\nよろしいですか？');
+define('JAVA_SCRIPT_INFO_ADMIN2CHIEF', 'Admin権限を取り消します。\nよろしいですか？');
+define('TEXT_ERRINFO_USER_STAFF', '<b>権限を与える</b>:Staffを選択してください');
+define('TEXT_ERRINFO_USER_CHIEF', '<b>権限を取消す</b>:Chiefを選択してください');
+define('TEXT_ERRINFO_USER_ADMIN', '<b>権限を取消す</b>:Adminを選択してください');
 ?>
