@@ -334,13 +334,18 @@ class user_certify {
              $s_status          - (i) ステータス
     戻り値 : なし
  ------------------------------------ */
-function logout_user($erf='',$s_status='') {
+function logout_user($erf='',$s_status='',$url='') {
     if ($s_status) {    // ログアウトを記録する
         $s_sid = session_id();
         $result = tep_db_query("update login set logoutstatus='$s_status' where sessionid='$s_sid'");
     }
     session_regenerate_id(); 
+    if($url){
+    tep_redirect('users_login.php' . ($erf ? ('?erf='.$erf.'&his_url='.$url) :
+          '?his_url='.$rul));
+    }else{
     tep_redirect('users_login.php' . ($erf ? ('?erf='.$erf) : ''));
+    }
 }
 
 /* =====================================
@@ -354,14 +359,15 @@ if (file_exists(DIR_WS_LANGUAGES . $language . '/user_certify.php')) {
 $ocertify = new user_certify(session_id());     // 認証
 if ($ocertify->isErr) { 
   if ($ocertify->ipLimitErr) {
-    logout_user(2); 
+    logout_user(2,'',$_GET['his_url']); 
   } else {
-    logout_user(1); 
+    logout_user(1,'',$_GET['his_url']); 
   }
 } elseif ($ocertify->isFirstTime) { logout_user(); }
 
 if (isset($GLOBALS['HTTP_GET_VARS']['action']) &&
   $GLOBALS['HTTP_GET_VARS']['action']== 're_login') { 
+  session_regenerate_id(); 
   tep_redirect('users_login.php?his_url='.$PHP_SELF);
 } 
 
