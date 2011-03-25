@@ -113,7 +113,7 @@
   function add_one (data,type){
     html = "<tr class=\"data\" align=\"center\" style=\"font-size:15px;\">\n";
     html += "<td class=\"link_01 number\" id=\"number_"+number+"\"></td>\n";
-    html += "<td class=\"link_01 date\" id=\"tdate_"+number+"\"               ><input size=\"10\" type=\"text\" value=\""+data['torihiki_date']+"\"     onchange=\"date_change()\"></td>";
+    html += "<td class=\"link_01 date\" id=\"tdate_"+number+"\"  align=\"center\"><input size=\"10\" type=\"text\" value=\""+data['torihiki_date']+"\"     onchange=\"date_change()\"></td>";
     html += "<td class=\"link_01 type\" id=\"type_"+number+"\"               ><input size=\"10\" type=\"text\" value=\""+type+"\"></td>";
     html += "<td class=\"link_01 name\" id=\"pname_"+number+"\" align=\"left\"><input size=\"45\" type=\"text\" value=\""+data['products_name']+"\" onfocus=\"name_click("+number+",this)\" id=\"name_display_"+number+"\"></td>";
     html += "<td class=\"link_01 price\" id=\"fprice_"+number+"\" align=\"right\" ><input size=\"12\" type=\"text\" value=\""+(data['final_price'] != ''?(parseFloat(data['final_price']).toFixed(1)):'')+"\" onchange=\"price_change(this)\" style=\"text-align:right;\"></td>";
@@ -272,7 +272,8 @@
     init();
   });
 </script>
-<table border="0" width="600" style="font-family:メイリオ; margin-bottom:20px;" cellpadding="0" cellspacing="0">
+<body style="text-align:center;"><div style="margin:0 auto; width:600px;">
+<table border="0" width="600" style="font-family:メイリオ; margin-bottom:20px;" cellpadding="0" cellspacing="0" >
   <tr>
       <td class="print_none" align="right">
 <?php 
@@ -343,8 +344,8 @@
     <td class="link_02" width="40">No.</td>
     <td class="link_02" width="60">取引日</td>
     <td class="link_02" width="40">種別</td>
-    <td class="link_02" width="200">商品名</td>
-    <td class="link_02" width="45">単価</td>
+    <td class="link_02" width="200" align="center">商品名</td>
+    <td class="link_02" width="45" align="center">単価</td>
     <td class="link_02" width="40">数量</td>
     <td class="link_02" width="150">値引</td>
     <td class="link_02" width="90">金額</td>
@@ -389,6 +390,7 @@
   <span id="relate_products"></span>
 </div>
 -->
+</div></body>
 <?php
       exit;
       break;
