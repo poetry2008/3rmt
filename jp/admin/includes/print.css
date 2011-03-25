@@ -17,8 +17,8 @@ textarea{ overflow-y:visible!important;}
 .link_01 img{ display:block!important;}
 .link_print02{ border:1px solid #000; text-align:right;}
 #cost_display{ background-color:#fff!important; text-align:right!important;}
-.input_print02 input{color:#0066FF!important;text-decoration: underline!important;
+.input_print02 input{color:#0000FF!important;text-decoration: underline!important;
 }
 .input_print03 textarea{ vertical-align:top!important; margin:0!important;}
 .input_print04 input{ vertical-align:bottom!important; margin:0!important; padding:0!important;}
-.input_print05 textarea{ vertical-align:middle!important; text-align:center!important;}
+.input_print08 textarea{ vertical-align:middle!important;}

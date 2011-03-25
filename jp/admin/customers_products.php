@@ -313,9 +313,9 @@
         <tr><td align="right"><textarea id="data10" type="text" rows="2" value="カ)アールエムティエイチアイ" style="font-size:12px; overflow-y:visible; width:180px; text-align:right;" ></textarea></td></tr>
         <tr><td align="right"  class="input_print02"><font size="2"><a href="#"><input name="textfield" type="text" id="email" value="" style=" height:18px; width:190px; text-align:right; font-size:10px; margin-right:5px;"></a></font></td></tr>
         <tr><td align="right" colspan="4">
-          <table cellpadding="0" cellspacing="0" style="border:#666666 1px solid;">
+          <table cellpadding="0" cellspacing="0" style="border:#666666 1px solid;" >
           <tr><td height="20" style="border-bottom:#666666 1px solid; font-size:12px;" align="center">責任者</td></tr>
-          <tr><td height="40" colspan="6" class="input_print05" valign="center"><textarea id="responsible" type="text" rows="6" value="カ)アールエムティエイチアイ"  style=" width:80px; font-size:20px; text-align:center; overflow-y:visible;"></textarea></td></tr>
+          <tr><td colspan="6" align="center" valign="middle"><textarea id="responsible" type="text" rows="6" value="カ)アールエムティエイチアイ"  style=" width:80px; font-size:20px; overflow-y:visible; text-align:center; padding:5px 0;"></textarea></td></tr>
           </table>
         </td></tr>
       </table>
