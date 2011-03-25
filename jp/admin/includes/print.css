@@ -20,3 +20,5 @@ textarea{ overflow-y:visible!important;}
 .input_print02 input{color:#0066FF!important;text-decoration: underline!important;
 }
 .input_print03 textarea{ vertical-align:top!important; margin:0!important;}
+.input_print04 input{ vertical-align:bottom!important; margin:0!important; padding:0!important;}
+.input_print05 textarea{ vertical-align:middle!important; text-align:center!important;}
