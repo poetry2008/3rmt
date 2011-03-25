@@ -1,5 +1,6 @@
 @charset "utf-8";
 .print_innput input ,#data1 ,#bill_templates{ border:0!important;}
+#data1{ font-weight:normal!important;}
 .print_innput td{vertical-align:top!important;}
 .link_print input{ border:0!important; background-color:#fff!important;}
 .link_print { margin:0 3px; background-color:#000!important;}
