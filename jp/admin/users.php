@@ -511,7 +511,7 @@ function UserInfo_preview() {
 
   echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));        // <form>タグの出力
 
-  $ssql = makeSelectUserInfo($GLOBALS['userslist']);      // ユーザ情報取得
+  $ssql = makeSelectUserInfo($_POST['userslist']);      // ユーザ情報取得
   if(isset($_POST['aval']['name'])&&$_POST['aval']['name']!='')
   {
     $ssql = makeSelectUserInfo($_POST['aval']['name']);
@@ -546,7 +546,8 @@ function UserInfo_preview() {
   echo "<tr><td><table>\n";
   echo "<tr>\n";
   // ユーザ名称（ユーザID）
-  echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . ' colspan="2" nowrap>' . $arec['name'] . "（" . $GLOBALS['userslist'] . '）</td>' . "\n";
+  echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . ' colspan="2" nowrap>' .
+    $arec['name'] . "（" . $_POST['userslist'] . '）</td>' . "\n";
   echo "</tr>\n";
 
   echo "<tr>\n";
@@ -563,7 +564,7 @@ function UserInfo_preview() {
   echo tep_draw_input_field("aval[email]", $arec['email'], 'size="32" maxlength="96"', FALSE, 'text', FALSE);
   echo '</td>';
   echo "</tr>\n";
-  $ip_limit_query = tep_db_query("select * from user_ip where userid = '".$GLOBALS['userslist']."'"); 
+  $ip_limit_query = tep_db_query("select * from user_ip where userid = '".$_POST['userslist']."'"); 
   $ip_limit_num = tep_db_num_rows($ip_limit_query);
   $ip_limit_str = ''; 
   if ($ip_limit_num > 0) {
@@ -618,7 +619,7 @@ function UserInfo_preview() {
   echo "</table>\n";
 
   echo tep_draw_hidden_field("execute_user");           // 処理モードを隠し項目にセットする
-  echo tep_draw_hidden_field("userid", $GLOBALS['userslist']);    // ユーザＩＤを隠し項目にセットする
+  echo tep_draw_hidden_field("userid", $_POST['userslist']);    // ユーザＩＤを隠し項目にセットする
 
   echo '<br>';
 
@@ -746,7 +747,7 @@ function UserPassword_preview() {
 
   echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));              // <form>タグの出力
 
-  $ssql = makeSelectUserInfo($GLOBALS['userslist']);      // ユーザ情報取得
+  $ssql = makeSelectUserInfo($_POST['userslist']);      // ユーザ情報取得
   @$oresult = tep_db_query($ssql);
   if (!$oresult) {                      // エラーだったとき
     echo TEXT_ERRINFO_DB_NO_USERINFO;           // メッセージ表示
@@ -776,7 +777,8 @@ function UserPassword_preview() {
   echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
   echo "<tr>\n";
   // ユーザ名称（ユーザID）
-  echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . ' colspan="2" nowrap>' . $arec['name'] . "（" . $GLOBALS['userslist'] . '）</td>' . "\n";
+  echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . ' colspan="2" nowrap>' .
+    $arec['name'] . "（" . $_POST['userslist'] . '）</td>' . "\n";
   echo "</tr>\n";
 
   echo "<tr>\n";
@@ -823,7 +825,7 @@ function UserPassword_preview() {
   echo '<br>';
 
   echo tep_draw_hidden_field("execute_password");         // 処理モードを隠し項目にセットする
-  echo tep_draw_hidden_field("userid", $GLOBALS['userslist']);    // ユーザＩＤを隠し項目にセットする
+  echo tep_draw_hidden_field("userid", $_POST['userslist']);    // ユーザＩＤを隠し項目にセットする
 
   // ボタン表示
   echo tep_draw_input_field("execute_update", BUTTON_CHANGE, "onClick=\"return formConfirm('password')\"", FALSE, "submit", FALSE); // 変更
@@ -1613,16 +1615,17 @@ function update_rules($rules){
 
 //permission start
 
-      if (isset($execute_staff2chief) && $execute_staff2chief)
+      if (isset($execute_staff2chief) && $execute_staff2chief){
         UserPermission_execute('staff2chief');   
-      elseif (isset($execute_chief2staff) && $execute_chief2staff)
+      } else if (isset($execute_chief2staff) && $execute_chief2staff) {
         UserPermission_execute('chief2staff'); 
-      elseif (isset($execute_chief2admin) && $execute_chief2admin)
+      } else if (isset($execute_chief2admin) && $execute_chief2admin){
         UserPermission_execute('chief2admin'); 
-      elseif (isset($execute_admin2chief) && $execute_admin2chief)
+      } else if (isset($execute_admin2chief) && $execute_admin2chief){
         UserPermission_execute('admin2chief'); 
-      else UserPermission_preview();                // 管理者権限ページ表示
-
+      } else { 
+        UserPermission_preview();                // 管理者権限ページ表示
+      }
 
 //permission end 
  
