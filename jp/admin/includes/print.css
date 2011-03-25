@@ -1,5 +1,6 @@
 @charset "utf-8";
 .print_innput input ,#data1 ,#bill_templates{ border:0!important;}
+.print_innput td{vertical-align:top!important;}
 .link_print input{ border:0!important; background-color:#fff!important;}
 .link_print { margin:0 3px; background-color:#000!important;}
 .data td{ background-color:#fff!important;}
@@ -15,4 +16,9 @@ textarea{ overflow-y:visible!important;}
 .print_none_info td{ background-color:#fff!important;}
 .link_01 img{ display:block!important;}
 .link_print02{ border:1px solid #000; text-align:right;}
-.cost_display{ background-color:#fff!important;}
+#cost_display{ background-color:#fff!important; text-align:right!important;}
+.input_print02 input{color:#0000FF!important;text-decoration: underline!important;
+}
+.input_print03 textarea{ vertical-align:top!important; margin:0!important;}
+.input_print04 input{ vertical-align:bottom!important; margin:0!important; padding:0!important;}
+.input_print08 textarea{ vertical-align:middle!important;}
