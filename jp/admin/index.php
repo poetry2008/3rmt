@@ -24,14 +24,24 @@
                      'href' => tep_href_link(FILENAME_STATS_PRODUCTS_PURCHASED, ''),
                      'children' => array(array('title' => BOX_REPORTS_PRODUCTS_VIEWED, 'link' => tep_href_link(FILENAME_STATS_PRODUCTS_VIEWED, '')),
                                          array('title' => BOX_REPORTS_ORDERS_TOTAL, 'link' => tep_href_link(FILENAME_STATS_CUSTOMERS, '')),
-                     array('title' => BOX_TOOLS_WHOS_ONLINE, 'link' => tep_href_link(FILENAME_WHOS_ONLINE, '')))));
+                     array('title' => BOX_TOOLS_WHOS_ONLINE, 'link' =>
+                       tep_href_link(FILENAME_WHOS_ONLINE, '')))),
+
+                array('title' => BOX_PERMISSION_USERS,
+                     'image' => 'users.gif',
+                     'href' => tep_href_link(FILENAME_USERS, ''))
+               );
   } else {
   $cat = array(array('title' => BOX_CUSTOMERS_ORDERS,
                      'image' => 'modules.gif',
                      'href' => tep_href_link(FILENAME_ORDERS, ''),
                      'children' => array(array('title' => BOX_CUSTOMERS_CUSTOMERS, 'link' => tep_href_link(FILENAME_CUSTOMERS, '')),
                                          array('title' => CATALOG_CONTENTS, 'link' => tep_href_link(FILENAME_CATEGORIES, '')),
-                                         array('title' => BOX_TOOLS_LATEST_NEWS, 'link' => tep_href_link(FILENAME_LATEST_NEWS, '')))));
+                                         array('title' => BOX_TOOLS_LATEST_NEWS,  'link' =>  tep_href_link(FILENAME_LATEST_NEWS,'')))),
+                array('title' => BOX_PERMISSION_USERS,
+                     'image' => 'users.gif',
+                     'href' => tep_href_link(FILENAME_USERS, ''))
+      );
   }
 
   $languages = tep_get_languages();
