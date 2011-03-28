@@ -70,6 +70,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('FILENAME_CURRENCIES', 'currencies.php');
   define('FILENAME_CUSTOMERS', 'customers.php');
   define('FILENAME_DEFAULT', 'index.php');
+  define('FILENAME_USERS', 'users.php');
   define('FILENAME_LOGIN', 'users_login.php');
   define('FILENAME_DEFINE_LANGUAGE', 'define_language.php');
   define('FILENAME_FILE_MANAGER', 'file_manager.php');
