@@ -113,7 +113,7 @@
   function add_one (data,type){
     html = "<tr class=\"data\" align=\"center\" style=\"font-size:15px;\">\n";
     html += "<td class=\"link_01 number\" id=\"number_"+number+"\"></td>\n";
-    html += "<td class=\"link_01 date\" id=\"tdate_"+number+"\"               ><input size=\"10\" type=\"text\" value=\""+data['torihiki_date']+"\"     onchange=\"date_change()\"></td>";
+    html += "<td class=\"link_01 date\" id=\"tdate_"+number+"\"  align=\"center\"><input size=\"10\" type=\"text\" value=\""+data['torihiki_date']+"\"     onchange=\"date_change()\"></td>";
     html += "<td class=\"link_01 type\" id=\"type_"+number+"\"               ><input size=\"10\" type=\"text\" value=\""+type+"\"></td>";
     html += "<td class=\"link_01 name\" id=\"pname_"+number+"\" align=\"left\"><input size=\"45\" type=\"text\" value=\""+data['products_name']+"\" onfocus=\"name_click("+number+",this)\" id=\"name_display_"+number+"\"></td>";
     html += "<td class=\"link_01 price\" id=\"fprice_"+number+"\" align=\"right\" ><input size=\"12\" type=\"text\" value=\""+(data['final_price'] != ''?(parseFloat(data['final_price']).toFixed(1)):'')+"\" onchange=\"price_change(this)\" style=\"text-align:right;\"></td>";
@@ -217,6 +217,7 @@
           $('#data9').val(data['data9']);
           $('#data10').val(data['data10']);
           $('#email').val(data['email']);
+          $('#email_display').html(data['email']);
           $('#responsible').val(data['responsible']);
         }
       });
@@ -271,7 +272,8 @@
     init();
   });
 </script>
-<table border="0" width="600" style="font-family:ＭＳ Ｐゴシック; margin-bottom:18px;" cellpadding="0" cellspacing="0">
+<body style="text-align:center;"><div style="margin:0 auto; width:600px;">
+<table border="0" width="600" style="font-family:メイリオ; margin-bottom:20px;" cellpadding="0" cellspacing="0" >
   <tr>
       <td class="print_none" align="right">
 <?php 
@@ -293,40 +295,44 @@
     </td>
   </tr>
   <tr>
-    <td align="center"><input class="input_print01" name="textfield" type="text" id="data1" value=""></td>
+    <td align="center"><input class="input_print01" style="overflow:hidden;" name="textfield" type="text" id="data1" value=""></td>
   </tr>
   </table>
-  <table border="0" width="600" style="font-family:ＭＳ Ｐゴシック" cellpadding="0" cellspacing="0">
+  <table border="0" width="600" style="font-family:メイリオ" cellpadding="0" cellspacing="0">
   <tr>
     <td>
       <table border="0" width="329" class="print_innput" cellpadding="0" cellspacing="0">
-        <tr><td height="30" colspan="2"><input name="textfield" type="text" id="data2" value="" style=" height:23px; width:180px; font-size:18px; font-weight:bold; margin-left:20px; margin-right:10px;"><b>御中</b></td></tr>
-        <tr><td height="25" colspan="2"><span id="cost_print"><?php echo $total_cost;?></span>円 税込</td></tr>
-        <tr><td height="30" colspan="2" align="left" valign="center"><input name="textfield" type="text" id="data3" value="" style=" width:180px; font-size:12px; margin-right:5px;"></td></tr>
-        <tr><td colspan="2" height="10" align="left"><input name="textfield" type="text" id="data4" value="" style=" width:180px; font-size:12px; margin-right:5px;"></td></tr>
+        <tr><td height="30" colspan="2" style="font-size:18px;"><input name="textfield" type="text" id="data2" value="" style="font-family:メイリオ; height:23px; width:180px; font-size:18px; font-weight:bold; margin-left:20px; margin-right:10px;"><b>御中</b></td></tr>
+        <tr><td height="25" colspan="2" style="font-family:メイリオ; font-size:16px;"><span id="cost_print"><?php echo $total_cost;?></span>円 税込</td></tr>
+        <tr><td height="30" colspan="2" align="left" valign="center"><input name="textfield" type="text" id="data3" value="" style="font-family:メイリオ; width:270px; font-size:16px; margin-right:5px;"></td></tr>
+        <tr><td colspan="2" height="10" align="left"><input name="textfield" type="text" id="data4" value="" style="font-family:メイリオ; width:200px; font-size:16px; margin-right:5px;"></td></tr>
         <tr>
           <td width="30"></td>
           <td width="292" valign="top" align="left" class="input_print03">
-          <font size="3"><u><textarea id="data5" type="text" rows="6" value="カ)アールエムティエイチアイ" style=" font-size:12px; width:170px; overflow-y:visible;" ></textarea></u></font>
-          <font size="3"><u><textarea id="data6" type="text" rows="6" value="カ)アールエムティエイチアイ" style=" font-size:12px; overflow-y:visible; width:170px;" ></textarea></u></font>
-          <font size="3"><textarea id="data7" type="text" rows="6" value="カ)アールエムティエイチアイ" style=" font-size:12px; overflow-y:visible; width:170px;" ></textarea></font>
+          <font size="3"><u><textarea id="data5" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-family:メイリオ; font-size:14px; width:270px; overflow-y:visible;" ></textarea></u></font>
+          <font size="3"><u><textarea id="data6" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-family:メイリオ; font-size:14px; overflow-y:visible; width:200px;" ></textarea></u></font>
+          <font size="3"><textarea id="data7" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-family:メイリオ; font-size:14px; overflow-y:visible; width:200px;" ></textarea></font>
           </td>
         </tr>
         </tr>
-        <tr><td height="25" valign="top" colspan="2"><input name="textfield" type="text" id="data8" value="" style=" width:180px; font-size:13px; margin-right:5px; margin-top:15px; margin-bottom:5px;"></td></tr>
-        <tr><td valign="bottom" colspan="2" class="input_print04"><input name="textfield" type="text" id="data9" value="" style=" width:180px; font-size:12px; margin-right:5px;"></td></tr>
+        <tr><td height="25" valign="top" colspan="2"><input name="textfield" type="text" id="data8" value="" style="font-family:メイリオ; width:200px; font-size:14px; margin-right:5px; margin-top:15px; margin-bottom:5px;"></td></tr>
+        <tr><td valign="bottom" colspan="2" class="input_print04"><input name="textfield" type="text" id="data9" value="" style="font-family:メイリオ; width:250px; font-size:14px; margin-right:5px;"></td></tr>
       </table>
     </td>
     <td valign="top">
       <table border="0" width="269" class="print_innput" style=" margin-top:10px;">
       <tr><td height="4"></td></tr>
-        <tr><td height="30" valign="bottom" align="right"><input name="textfield" type="text" id="textfield" value="<?php echo tep_date_long(date('Y-m-d H:i:s'));?>" style="height:20px; width:150px; text-align:right; font-size:12px;  margin:5px 0 20px 20px;"></td></tr>
-        <tr><td align="right"><textarea id="data10" type="text" rows="2" value="カ)アールエムティエイチアイ" style="font-size:12px; overflow-y:visible; width:180px; text-align:right;" ></textarea></td></tr>
-        <tr><td align="right"  class="input_print02"><font size="2"><a href="#"><input name="textfield" type="text" id="email" value="" style=" height:18px; width:190px; text-align:right; font-size:10px;"></a></font></td></tr>
+        <tr><td height="30" valign="bottom" align="right"><input name="textfield" type="text" id="textfield" value="<?php echo tep_date_long(date('Y-m-d H:i:s'));?>" style="font-family:メイリオ; height:20px; width:150px; text-align:right; font-size:14px;  margin:5px 0 20px 20px;"></td></tr>
+        <tr><td align="right"><textarea id="data10" type="text" rows="2" value="カ)アールエムティエイチアイ" style="font-size:14px; overflow-y:visible; width:180px; font-family:メイリオ; text-align:right;" ></textarea></td></tr>
+        <tr><td align="right"  class="input_print02">
+  <font size="2">
+  <input name="textfield" type="text" id="email" value="" onchange="$('#email_display').html(this.value)" onpropertychange="$('#email_display').html(this.value)" onblur="$('#email_display').html(this.value)" style="font-family:メイリオ; text-align:right; font-size:14px;">
+  <span id="email_display"></span>
+  </font></td></tr>
         <tr><td align="right" colspan="4">
           <table cellpadding="0" cellspacing="0" style="border:#666666 1px solid;" >
-          <tr><td height="20" style="border-bottom:#666666 1px solid; font-size:12px;" align="center">責任者</td></tr>
-          <tr><td colspan="6" align="center" valign="middle"><textarea id="responsible" type="text" rows="6" value="カ)アールエムティエイチアイ"  style=" width:80px; font-size:20px; overflow-y:visible; text-align:center; padding:5px 0;"></textarea></td></tr>
+          <tr><td height="20" style="border-bottom:#666666 1px solid; font-size:12px; font-family:メイリオ;" align="center">責任者</td></tr>
+          <tr><td colspan="6" align="center" valign="middle"><textarea id="responsible" type="text" rows="6" value="カ)アールエムティエイチアイ"  style="font-family:メイリオ; width:80px; font-size:20px; overflow-y:visible; text-align:center; padding:10px 0;"></textarea></td></tr>
           </table>
         </td></tr>
       </table>
@@ -338,15 +344,15 @@
     <td class="link_02" width="40">No.</td>
     <td class="link_02" width="60">取引日</td>
     <td class="link_02" width="40">種別</td>
-    <td class="link_02" width="200">商品名</td>
-    <td class="link_02" width="45">単価</td>
+    <td class="link_02" width="200" align="center">商品名</td>
+    <td class="link_02" width="45" align="center">単価</td>
     <td class="link_02" width="40">数量</td>
-    <td class="link_02" width="45">値引</td>
+    <td class="link_02" width="150">値引</td>
     <td class="link_02" width="90">金額</td>
   </tr>
   <tr>
   <td colspan="6" bgcolor="#FFFFFF"></td>
-      <td align="center" bgcolor="#ccffff" width="50" style=" padding:2px; border-top:none; border-right:none; font-family:ＭＳ Ｐゴシック; font-size:12px;">小計<input type="hidden" id="cost" value="<?php echo $total_cost;?>">
+      <td align="center" bgcolor="#ccffff" width="150" style=" padding:2px; border-top:none; border-right:none; font-family:メイリオ; font-size:12px;">小計<input type="hidden" id="cost" value="<?php echo $total_cost;?>">
 </td>
 <!--
 <td class="link_01" align="right" onclick="percent_cost()" style="overflow:hidden;">
@@ -368,7 +374,7 @@
   <span id="percent_display_cost" style=" font-size:12px;">1.00</span>
 </td>
 -->
-<td width="90" align="right" style="font-family:ＭＳ Ｐゴシック; font-size:12px; text-align:right;" id="cost_display" bgcolor="#FFFFFF"><?php echo number_format($total_cost);?></td>
+<td width="90" align="right" style="font-family:メイリオ; font-size:12px; text-align:right;" id="cost_display" bgcolor="#FFFFFF"><?php echo number_format($total_cost);?></td>
 </tr>
 </table>
 <table cellpadding="5" cellspacing="0" border="0" width="548" class="print_none">
@@ -384,6 +390,7 @@
   <span id="relate_products"></span>
 </div>
 -->
+</div></body>
 <?php
       exit;
       break;
