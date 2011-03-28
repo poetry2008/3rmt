@@ -351,7 +351,7 @@
     <td class="link_02">No.</td>
     <td class="link_03">取引日</td>
     <td class="link_04">種別</td>
-    <td class="link_05" align="center">商品名</td>
+    <td class="link_05">商品名</td>
     <td class="link_06">単価</td>
     <td class="link_07">数量</td>
     <td class="link_08">値引</td>
