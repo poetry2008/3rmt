@@ -24,7 +24,7 @@ textarea{ overflow-y:visible!important;}
 .input_print04 input{ vertical-align:bottom!important; margin:0!important; padding:0!important;}
 .input_print08 textarea{ vertical-align:middle!important;}
 #email{ display:none!important;}
-#email_display{ border-bottom:1px solid #0000ff!important; display:block!important; color:#0000FF!important; width:1%!important;}
+#email_display{ border-bottom:1px solid #0000ff!important; display:block!important; color:#0000FF!important; width:10%!important;}
 #tdate_0 input{ text-align:center!important;}
 #fprice_0 input:before { content: "Note: "  }
 /*news*/
