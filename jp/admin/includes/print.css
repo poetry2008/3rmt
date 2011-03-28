@@ -46,7 +46,8 @@ textarea{ overflow-y:visible!important;}
 .date input{width:70px!important;}
 .type input{width:40px!important;}
 .name input{width:300px!important;}
-.price input{width:40px!important;}
+.price input{width:40px!important; display:none!important;}
+.price span{width:40px!important;}
 .quantity input{width:40px!important;}
 .percent{ width:40px!important;}
 .je{ width:70px!important;}

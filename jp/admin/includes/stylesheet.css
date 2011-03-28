@@ -706,6 +706,8 @@ font-size:10px;!important;
 .text_x1{ width:83%; float:left;}
 .text_x2{ width:40px; font-size:15px; border-left:1px solid #000000;  border-bottom:1px solid #000000; border-right:1px solid #000000; background-color:#ccffff; float:left;}
 .text_x3{ width:70px; border-bottom:1px solid #000000; border-right:1px solid #000000; float:left; font-size:15px;}
+.price input{width:40px; display:block;}
+.price span{width:40px; display:none;}
 
 
 

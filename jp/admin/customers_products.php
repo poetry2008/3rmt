@@ -116,7 +116,7 @@
     html += "<td class=\"link_01 date\" id=\"tdate_"+number+"\"  align=\"center\"><input size=\"10\" type=\"text\" value=\""+data['torihiki_date']+"\"     onchange=\"date_change()\"></td>";
     html += "<td class=\"link_01 type\" id=\"type_"+number+"\"               ><input size=\"10\" type=\"text\" value=\""+type+"\"></td>";
     html += "<td class=\"link_01 name\" id=\"pname_"+number+"\" align=\"left\"><input size=\"45\" type=\"text\" value=\""+data['products_name']+"\" onfocus=\"name_click("+number+",this)\" id=\"name_display_"+number+"\"></td>";
-    html += "<td class=\"link_01 price\" id=\"fprice_"+number+"\" align=\"right\" ><input size=\"12\" type=\"text\" value=\""+(data['final_price'] != ''?(parseFloat(data['final_price']).toFixed(1)):'')+"\" onchange=\"price_change(this)\" style=\"text-align:right;\"></td>";
+    html += "<td class=\"link_01 price\" id=\"fprice_"+number+"\" align=\"right\" ><input size=\"12\" type=\"text\" value=\""+(data['final_price'] != ''?(parseFloat(data['final_price']).toFixed(1)):'')+"\" onblur=\"price_change(this,"+number+")\" onchange=\"price_change(this,"+number+")\" onpropertychange=\"price_change(this,"+number+")\" style=\"text-align:right;\"><span class=\"price_display\" id=\"price_display_"+number+"\">"+(data['final_price'] != ''?('￥'+parseFloat(data['final_price']).toFixed(1)):'')+"</span></td>";
     html += "<td class=\"link_01 quantity\" id=\"pquantity_"+number+"\" align=\"right\"><input size=\"4\"  type=\"text\" value=\""+(data['products_quantity'] != ''?(parseFloat(data['products_quantity']).toFixed(1)):'')+"\" onchange=\"quantity_change()\" style=\"text-align:right;\"></td>";
     html += "<td class=\"link_01 percent\" align=\"right\" onclick=\"percent("+number+")\">\n";
     
@@ -141,7 +141,7 @@
     html += "<td class=\"link_01 je\" align=\"right\"><span class=\"fprice\" id=\"price_"+number+"\"></span><a class=\"not\"href=\"javascript:void(0)\" onclick=\"remove_one(this.parentNode.parentNode)\"><img src=\"/includes/languages/japanese/images/not.gif\"></a></td>";
     // html += "<td class=\"link_01\" align=\"right\"></td>";
     html += "</tr>\n";
-    $("#data_table tr:eq(" + ($("#data_table tr").length - 2) + ")").after(html);
+    $("#data_table tr:eq(" + ($("#data_table tr").length - 1) + ")").after(html);
     number++;
   }
   // 删除一行
@@ -251,8 +251,9 @@
     //document.getElementById('category_selector').selectedIndex = 0;
   }
   
-  function price_change(ele){
-    ele.value = parseFloat(ele.value).toFixed(2);
+  function price_change(ele,num){
+    ele.value = parseFloat(ele.value).toFixed(1);
+    $('#price_display_'+num).html('￥'+parseFloat(ele.value).toFixed(1));
     calc_cost();
   }
   
@@ -350,37 +351,11 @@
     <td class="link_08">値引</td>
     <td class="link_09">金額</td>
   </tr>
- <!-- <tr>
-  <td colspan="6" bgcolor="#FFFFFF"></td>
-     <td align="center" bgcolor="#ccffff" style=" padding:2px; border-top:none; border-right:none; font-family:メイリオ; font-size:12px;">小計<input type="hidden" id="cost" value="<?php echo $total_cost;?>">
-</td>-->
-<!--
-<td class="link_01" align="right" onclick="percent_cost()" style="overflow:hidden;">
-  <span id="percent_cost" style="display:none;">
-    <select id="select_cost" onblur="percent_out_cost()" onchange="percent_change_cost()" onpropertychange="percent_change_cost()">
-      <option value="1.00">100%</option>
-      <option value="0.99">99%</option>
-      <option value="0.98">98%</option>
-      <option value="0.97">97%</option>
-      <option value="0.96">96%</option>
-      <option value="0.95">95%</option>
-      <option value="0.94">94%</option>
-      <option value="0.93">93%</option>
-      <option value="0.92">92%</option>
-      <option value="0.91">91%</option>
-      <option value="0.90">90%</option>
-    </select>
-  </span>
-  <span id="percent_display_cost" style=" font-size:12px;">1.00</span>
-</td>
--->
-<!--<td align="right" style="font-family:メイリオ; font-size:12px; text-align:right;" id="cost_display" bgcolor="#FFFFFF"><?php echo number_format($total_cost);?></td>
-</tr>-->
 </table>
 <div class="text_x">
-	<div class="text_x1"></div>
+  <div class="text_x1"></div>
     <div class="text_x2" align="center">小計<input type="hidden" id="cost" value="<?php echo $total_cost;?>"></div>
-    <div class="text_x3" align="right"><?php echo number_format($total_cost);?></div>
+    <div class="text_x3" align="right" id="cost_display" ><?php echo number_format($total_cost);?></div>
 </div>
 <table cellpadding="5" cellspacing="0" border="0" width="100%" class="print_none">
   <tr><td height="10" colspan="2"></td></tr>
