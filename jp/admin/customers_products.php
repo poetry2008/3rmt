@@ -116,7 +116,7 @@
     html += "<td class=\"link_01 date\" id=\"tdate_"+number+"\"  align=\"center\"><input size=\"10\" type=\"text\" value=\""+data['torihiki_date']+"\"     onchange=\"date_change()\"></td>";
     html += "<td class=\"link_01 type\" id=\"type_"+number+"\"               ><input size=\"10\" type=\"text\" value=\""+type+"\"></td>";
     html += "<td class=\"link_01 name\" id=\"pname_"+number+"\" align=\"left\"><input size=\"45\" type=\"text\" value=\""+data['products_name']+"\" onfocus=\"name_click("+number+",this)\" id=\"name_display_"+number+"\"></td>";
-    html += "<td class=\"link_01 price\" id=\"fprice_"+number+"\" align=\"right\" ><input size=\"12\" type=\"text\" value=\""+(data['final_price'] != ''?(parseFloat(data['final_price']).toFixed(1)):'')+"\" onblur=\"price_change(this,"+number+")\" onchange=\"price_change(this,"+number+")\" onpropertychange=\"price_change(this,"+number+")\" style=\"text-align:right;\"><span class=\"price_display\" id=\"price_display_"+number+"\">"+(data['final_price'] != ''?('￥'+parseFloat(data['final_price']).toFixed(1)):'')+"</span></td>";
+    html += "<td class=\"link_01 price\" id=\"fprice_"+number+"\" align=\"right\" ><input size=\"12\" type=\"text\" value=\""+(data['final_price'] != ''?(parseFloat(data['final_price']).toFixed(1)):'')+"\" onblur=\"price_change(this,"+number+")\" onchange=\"price_display(this,"+number+")\" onpropertychange=\"price_display(this,"+number+")\" style=\"text-align:right;\"><span class=\"price_display\" id=\"price_display_"+number+"\">"+(data['final_price'] != ''?('￥'+parseFloat(data['final_price']).toFixed(1)):'')+"</span></td>";
     html += "<td class=\"link_01 quantity\" id=\"pquantity_"+number+"\" align=\"right\"><input size=\"4\"  type=\"text\" value=\""+(data['products_quantity'] != ''?(parseFloat(data['products_quantity']).toFixed(1)):'')+"\" onchange=\"quantity_change()\" style=\"text-align:right;\"></td>";
     html += "<td class=\"link_01 percent\" align=\"right\" onclick=\"percent("+number+")\">\n";
     
@@ -255,6 +255,12 @@
     ele.value = parseFloat(ele.value).toFixed(1);
     $('#price_display_'+num).html('￥'+parseFloat(ele.value).toFixed(1));
     calc_cost();
+  }
+  
+  function price_display(ele,num){
+    ele.value = parseFloat(ele.value).toFixed(1);
+    $('#price_display_'+num).html('￥'+parseFloat(ele.value).toFixed(1));
+    //calc_cost();
   }
   
   function quantity_change(){
