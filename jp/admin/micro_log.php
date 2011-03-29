@@ -136,9 +136,12 @@ padding:0;
 .log .info{
   font-size:10px;
   background:#fff;
-  position:absolute;
+  text-align:right;
+  /*
+  position:relative;
   right:0;
   bottom:0;
+  */
   /*padding-left:18px;
   background:url(images/icons/info.gif) no-repeat left center;*/
 }
