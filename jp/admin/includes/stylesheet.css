@@ -700,15 +700,15 @@ font-size:10px;!important;
 .input_print01{ font-size:23px; color:#000000; font-family:メイリオ; text-align:center; overflow:hidden; display:block;}
 .link_03{padding:2px; border-top:none; border-right:none; font-family:メイリオ; font-size:13px; float:left;}
 #data10{ overflow:hidden;}
-#cost_print{ width:142px; margin:0 10px 0 20px; text-align:right; float:left;}
+#cost_print{ width:142px; margin:0 0 0 26px; text-align:right; float:left;}
 #cost_print02{ float:left;}
 #email_display{ display:none;}
 .text_x{ width:100%;}
-.text_x1{ width:83%; float:left;}
-.text_x2{ width:40px; font-size:15px; border-left:1px solid #000000;  border-bottom:1px solid #000000; border-right:1px solid #000000; background-color:#ccffff; float:left;}
-.text_x3{ width:70px; border-bottom:1px solid #000000; border-right:1px solid #000000; float:left; font-size:15px;}
-.price input{width:40px; display:block;}
-.price span{width:40px; display:none;}
+.text_x1{ width:513px; float:left;}
+.text_x2{ width:51px; font-size:15px; border-left:1px solid #000000;  border-bottom:1px solid #000000; border-right:1px solid #000000; background-color:#ccffff; float:left;}
+.text_x3{ width:85px; border-bottom:1px solid #000000; border-right:1px solid #000000; float:left; font-size:15px;}
+.price input{width:53px; display:block;}
+.price span{width:53px; display:none;}
 
 
 

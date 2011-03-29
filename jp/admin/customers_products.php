@@ -114,9 +114,9 @@
     html = "<tr class=\"data\" align=\"center\" style=\"font-size:15px;\">\n";
     html += "<td class=\"link_01 number\" id=\"number_"+number+"\"></td>\n";
     html += "<td class=\"link_01 date\" id=\"tdate_"+number+"\"  align=\"center\"><input size=\"10\" type=\"text\" value=\""+data['torihiki_date']+"\"     onchange=\"date_change()\"></td>";
-    html += "<td class=\"link_01 type\" id=\"type_"+number+"\"               ><input size=\"10\" type=\"text\" value=\""+type+"\"></td>";
+    html += "<td class=\"link_01 type\" id=\"type_"+number+"\" align=\"center\"><input size=\"10\" type=\"text\" value=\""+type+"\"></td>";
     html += "<td class=\"link_01 name\" id=\"pname_"+number+"\" align=\"left\"><input size=\"45\" type=\"text\" value=\""+data['products_name']+"\" onfocus=\"name_click("+number+",this)\" id=\"name_display_"+number+"\"></td>";
-    html += "<td class=\"link_01 price\" id=\"fprice_"+number+"\" align=\"right\" ><input size=\"12\" type=\"text\" value=\""+(data['final_price'] != ''?(parseFloat(data['final_price']).toFixed(1)):'')+"\" onblur=\"price_change(this,"+number+")\" onchange=\"price_display(this,"+number+")\" onpropertychange=\"price_display(this,"+number+")\" style=\"text-align:right;\"><span class=\"price_display\" id=\"price_display_"+number+"\">"+(data['final_price'] != ''?('￥'+parseFloat(data['final_price']).toFixed(1)):'')+"</span></td>";
+    html += "<td class=\"link_01 price\" id=\"fprice_"+number+"\" align=\"right\" ><input size=\"12\" type=\"text\" value=\""+(data['final_price'] != ''?(parseFloat(data['final_price']).toFixed(1)):'')+"\" onblur=\"price_change(this,"+number+")\" onchange=\"price_display(this,"+number+")\" onpropertychange=\"price_display(this,"+number+")\" style=\"text-align:right;\"><span class=\"price_display\" id=\"price_display_"+number+"\">"+(data['final_price'] != ''?('￥'+parseFloat(data['final_price']).toFixed(1)):'')+"&nbsp;</span></td>";
     html += "<td class=\"link_01 quantity\" id=\"pquantity_"+number+"\" align=\"right\"><input size=\"4\"  type=\"text\" value=\""+(data['products_quantity'] != ''?(parseFloat(data['products_quantity']).toFixed(1)):'')+"\" onchange=\"quantity_change()\" style=\"text-align:right;\"></td>";
     html += "<td class=\"link_01 percent\" align=\"right\" onclick=\"percent("+number+")\">\n";
     
@@ -135,7 +135,7 @@
     html += "    <option value=\"0.90\">90%</option>\n";
     html += "  </select>\n";
     html += "</span>\n";
-    html += "<span id=\"percent_display_"+number+"\" class=\"percent_display\">1.00</span>\n";
+    html += "<span id=\"percent_display_"+number+"\" class=\"percent_display\">1.00&nbsp;</span>\n";
     
     html += "</td>";
     html += "<td class=\"link_01 je\" align=\"right\"><span class=\"fprice\" id=\"price_"+number+"\"></span><a class=\"not\"href=\"javascript:void(0)\" onclick=\"remove_one(this.parentNode.parentNode)\"><img src=\"/includes/languages/japanese/images/not.gif\"></a></td>";
@@ -309,7 +309,7 @@
   <tr>
     <td>
       <table border="0" width="50%" align="left" class="print_innput" cellpadding="0" cellspacing="0">
-        <tr><td height="30" colspan="2" style="font-size:18px;"><input name="textfield" type="text" id="data2" value="" style="font-family:メイリオ; height:23px; width:160px; font-size:18px; font-weight:bold; margin-left:20px; margin-right:10px;"><b>御中</b></td></tr>
+        <tr><td height="30" colspan="2" style="font-size:18px;"><input name="textfield" type="text" id="data2" value="" style="font-family:メイリオ; height:23px; width:160px; font-size:18px; font-weight:bold; margin-left:18px; margin-right:10px;"><b>御中</b></td></tr>
         <tr><td height="25" colspan="2" style="font-family:メイリオ; font-size:16px;"><span id="cost_print"><?php echo $total_cost;?></span><div class="cost_print02">円 税込</div></td></tr>
         <tr><td height="30" colspan="2" align="left" valign="center"><input name="textfield" type="text" id="data3" value="" style="font-family:メイリオ; width:270px; font-size:16px; margin-right:5px;"></td></tr>
         <tr><td colspan="2" height="10" align="left"><input name="textfield" type="text" id="data4" value="" style="font-family:メイリオ; width:200px; font-size:14px; margin-right:5px;"></td></tr>
@@ -338,7 +338,7 @@
   </font></td></tr>
         <tr><td align="right" colspan="4">
           <table cellpadding="0" cellspacing="0" style="border:#666666 1px solid; margin-top:10px;">
-          <tr><td height="20" style="border-bottom:#666666 1px solid; font-size:12px; font-family:メイリオ;" align="center">責任者</td></tr>
+          <tr><td height="20" style="border-bottom:#666666 1px solid; font-size:12px; font-family:メイリオ; padding-top:4px;" align="center">責任者</td></tr>
           <tr><td colspan="6" align="center" valign="middle"><textarea id="responsible" type="text" rows="6" value="カ)アールエムティエイチアイ"  style="font-family:メイリオ; width:100px; font-size:20px; overflow-y:visible; text-align:center; padding:15px 0;"></textarea></td></tr>
           </table>
         </td></tr>

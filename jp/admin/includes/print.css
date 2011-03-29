@@ -30,7 +30,7 @@ textarea{ overflow-y:visible!important;}
 /*news*/
 .print{ display:none!important;}
 .link_print{ clear:both; display:block; width:100%; margin:0;}
-.input_print01{ font-size:20px!important; font-weight:bold!important; width:100%;}
+.input_print01{ font-size:23px!important; width:100%;}
 /*.link_02{ width:100px!important;}
 .link_03,.link_03 input{ width:100px!important;}
 .link_04,.link_04 input{ width:1200px!important;}
@@ -42,18 +42,18 @@ textarea{ overflow-y:visible!important;}
 .link_01 date input{ width:100px;}
 .link_01 type inpyt{ width:80px;}
 */
-.number{ width:20px!important;}
+.number{ width:33px!important;}
 .date input{width:70px!important;}
-.type input{width:40px!important;}
-.name input{width:300px!important;}
-.price input{width:40px!important; display:none!important;}
-.price span{width:40px!important; display:block!important;}
-.quantity input{width:40px!important;}
-.percent{ width:40px!important;}
-.je{ width:70px!important;}
+.type input{width:55px!important; text-align:center!important;}
+.name input{width:160px!important;}
+.price input{width:53px!important; display:none!important;}
+.price span{width:53px!important; display:block!important;}
+.quantity input{width:53px!important; text-align:right!important; padding-right:5px;}
+.percent{ width:48px!important;}
+.je{ width:85px!important; padding-right:5px;}
 
-.link_08{ width:40px!important;}
-.link_09{ width:70px!important;}
+.link_08{ width:48px!important;}
+.link_09{ width:85px!important;}
 
 
 
