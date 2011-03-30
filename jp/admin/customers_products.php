@@ -122,11 +122,11 @@
     k          = 0; // table计数器
     
     
-    $('#wait').show();
+    //$('#wait').show();
     html += table_header(k);
     for(i in data){
       if (j != 0 && (j == one_count || (j+1-one_count)%count == 1)) {
-        html += table_footer(k-1);
+        html += table_footer(k-1, true);
       }
       if (j == one_count || (j+1-one_count)%count == 1) {
         html += table_header(k);
@@ -135,10 +135,10 @@
       html += add_tr(j, data[i]);
       j++;
     }
-    html += table_footer(k-1);
+    html += table_footer(k-1, false);
     $('#table_html').html(html);
     calc_cost();
-    $('#wait').hide();
+    //$('#wait').hide();
   }
   
   function table_header (num) {
@@ -157,9 +157,13 @@
     return html;
   }
   
-  function table_footer (num) {
+  function table_footer (num,pagebreak) {
     html = "</table>\n";
-    html += "  <div class=\"text_x\" style=\"page-break-after:always;\">\n";
+    html += "  <div class=\"text_x\"";
+    if (pagebreak) {
+      html += " style=\"page-break-after:always;\";
+    }
+    html += ">\n";
     html += "    <div class=\"text_x1\"></div>\n";
     html += "    <div class=\"text_x2\" align=\"center\">小計</div>\n";
     html += "    <div class=\"text_x3 cost_display\" align=\"right\" id=\"cost_display_"+num+"\" ></div>\n";
@@ -189,8 +193,8 @@
   function add_tr (number, data) {
     html = "<tr class=\"data\" align=\"center\" style=\"font-size:15px;\">\n";
     html += "<td class=\"link_01 number\">"+(number+1)+"</td>\n";
-    html += "<td class=\"link_01 date\" id=\"tdate_"+number+"\"  align=\"center\"><input size=\"10\" type=\"text\" value=\""+data['date']+"\" onchange=\"date_change(this,"+number+")\"></td>";
-    html += "<td class=\"link_01 type\" id=\"type_"+number+"\" ><input size=\"10\" type=\"text\" value=\""+data['type']+"\" onchange=\"type_change(this,"+number+")\"></td>";
+    html += "<td class=\"link_01 date\" id=\"tdate_"+number+"\"  align=\"left\"><input size=\"10\" type=\"text\" value=\""+data['date']+"\" onchange=\"date_change(this,"+number+")\"></td>";
+    html += "<td class=\"link_01 type\" id=\"type_"+number+"\" align=\"left\" ><input size=\"10\" type=\"text\" value=\""+data['type']+"\" onchange=\"type_change(this,"+number+")\"></td>";
     html += "<td class=\"link_01 name\" id=\"pname_"+number+"\" align=\"left\"><input size=\"45\" type=\"text\" value=\""+data['name']+"\" id=\"name_display_"+number+"\" onchange=\"name_change(this,"+number+")\"></td>";
     html += "<td class=\"link_01 price\" id=\"fprice_"+number+"\" align=\"right\" ><input size=\"12\" type=\"text\" value=\""+(data['price'] != ''?(parseFloat(data['price']).toFixed(1)):'')+"\" onchange=\"price_change(this,"+number+")\" style=\"text-align:right;\"><span class=\"price_display\" id=\"price_display_"+number+"\">"+(data['price'] != ''?('¥'+parseFloat(data['price']).toFixed(1)):'')+" </span></td>";
     html += "<td class=\"link_01 quantity\" id=\"pquantity_"+number+"\" align=\"right\"><input size=\"4\"  type=\"text\" value=\""+(data['quantity'] != ''?(parseFloat(data['quantity']).toFixed(1)):'')+"\" onchange=\"quantity_change(this,"+number+")\" style=\"text-align:right;\"></td>";
@@ -419,7 +423,7 @@
   </font></td></tr>
         <tr><td align="right" colspan="4">
           <table cellpadding="0" cellspacing="0" style="border:#000000 1px solid; margin-top:10px;">
-          <tr><td height="20" style="border-bottom:#666666 1px solid; font-size:12px; font-family:メイリオ; padding-top:4px;" align="center">責任者</td></tr>
+          <tr><td height="20" style="border-bottom:#000000 1px solid; font-size:12px; font-family:メイリオ; padding-top:4px;" align="center">責任者</td></tr>
           <tr><td colspan="6" align="center" valign="middle"><textarea id="responsible" type="text" rows="6" value="カ)アールエムティエイチアイ"  style="font-family:メイリオ; width:100px; font-size:20px; overflow-y:visible; text-align:center; padding:15px 0;" onchange="textarea_change()"></textarea></td></tr>
           </table>
         </td></tr>
@@ -428,7 +432,6 @@
   </tr>
 </table>
 </div id="content_html">
-<div id="wait" style="position:fixed; left:45%; top:45%; display:none;"><img src="images/load.gif" alt="img"></div>
 <div id="table_html"></div>
 <table cellpadding="5" cellspacing="0" border="0" width="100%" class="print_none">
   <tr><td height="10" colspan="2"></td></tr>

@@ -42,18 +42,18 @@ textarea{ overflow-y:visible!important;}
 .link_01 date input{ width:100px;}
 .link_01 type inpyt{ width:80px;}
 */
-.number{ width:20px!important;}
-.date input{width:70px!important;}
-.type input{width:40px!important;}
-.name input{width:300px!important;}
-.price input{width:40px!important; display:none!important;}
-.price span{width:40px!important; display:block!important;}
-.quantity input{width:40px!important;}
-.percent{ width:40px!important;}
-.je{ width:70px!important;}
+.number{ width:33px!important;}
+.date input{width:77px!important;}
+.type input{width:55px!important; text-align:left!important;}
+.name input{width:160px!important;}
+.price input{width:53px!important; display:none!important;}
+.price span{width:53px!important; display:block!important;}
+.quantity input{width:53px!important; text-align:right!important;}
+.percent{ width:48px!important;}
+.je{ width:85px!important;}
 
-.link_08{ width:40px!important;}
-.link_09{ width:70px!important;}
+.link_08{ width:48px!important;}
+.link_09{ width:85px!important;}
 .link_01 input{ border:0!important;}
 
 
