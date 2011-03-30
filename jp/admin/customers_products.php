@@ -254,7 +254,7 @@
     html = "<tr class=\"data\" align=\"center\" style=\"font-size:15px;\">\n";
     html += "<td class=\"link_01 number\"></td>\n";
     html += "<td class=\"link_01 date\" id=\"tdate_"+number+"\"  align=\"left\"><input size=\"10\" type=\"text\" value=\""+data['date']+"\" onchange=\"date_change(this,"+number+")\"></td>";
-    html += "<td class=\"link_01 type\" id=\"type_"+number+"\" align=\"left\" ><input size=\"10\" type=\"text\" value=\""+data['type']+"\" onchange=\"type_change(this,"+number+")\"></td>";
+    html += "<td class=\"link_01 type\" id=\"type_"+number+"\" align=\"center\" ><input size=\"10\" type=\"text\" value=\""+data['type']+"\" onchange=\"type_change(this,"+number+")\"></td>";
     html += "<td class=\"link_01 name\" id=\"pname_"+number+"\" align=\"left\"><input size=\"45\" type=\"text\" value=\""+data['name']+"\" id=\"name_display_"+number+"\" onchange=\"name_change(this,"+number+")\"></td>";
     html += "<td class=\"link_01 price\" id=\"fprice_"+number+"\" align=\"right\" ><input size=\"12\" type=\"text\" value=\""+(data['price'] != ''?(parseFloat(data['price']).toFixed(1)):'')+"\" onchange=\"price_change(this,"+number+")\" style=\"text-align:right;\"><span class=\"price_display\" id=\"price_display_"+number+"\">"+(data['price'] != ''?('¥'+parseFloat(data['price']).toFixed(1)):'')+" </span></td>";
     html += "<td class=\"link_01 quantity\" id=\"pquantity_"+number+"\" align=\"right\"><input size=\"4\"  type=\"text\" value=\""+(data['quantity'] != ''?(parseFloat(data['quantity']).toFixed(1)):'')+"\" onchange=\"quantity_change(this,"+number+")\" style=\"text-align:right;\"></td>";
