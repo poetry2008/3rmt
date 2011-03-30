@@ -692,21 +692,23 @@ font-size:10px;!important;
 
 
 /*print*/
-.link_print{ width:600px; margin:0 auto;}
-.link_02 { background-color:#ccc; color:#000; font-size:18px; font-weight:bold;}
+.data_table{ width:100%; margin:0 auto;}
+.link_02 ,.link_03 ,.link_04,.link_05,.link_06,.link_07,.link_08,.link_09{ background-color:#ccc; color:#000; font-size:18px; font-weight:bold;}
 .link_01 { background-color:#fff; color:#000; font-size:18px;}
-.link_print td{ font-size:16px;}
-.input_01 { width:45px; height:15px;}
+.data_table td{ font-size:16px;}
 .link_01 a{ color:#FF0000;}
 .input_print01{ font-size:23px; color:#000000; font-family:メイリオ; text-align:center; overflow:hidden; display:block;}
-.print_none{ width:563px;}
-.link_03{padding:2px; border-top:none; border-right:none; font-family:メイリオ; font-size:13px; background-color:00ffff; border:#333333 1px solid; float:left; width:35px;}
-.link_04{ width:450px;}
+.link_03{padding:2px; border-top:none; border-right:none; font-family:メイリオ; font-size:13px; float:left;}
 #data10{ overflow:hidden;}
-#cost_print{ margin-left:125px;}
+#cost_print{ width:142px; margin:0 0 0 30px; text-align:right; float:left;}
+#cost_print02{ float:left;}
 #email_display{ display:none;}
-
-
+.text_x{ width:100%;overflow:hidden;}
+.text_x1{ width:513px;; float:left;}
+.text_x2{ width:50px; font-size:15px; border-left:1px solid #000000;  border-bottom:1px solid #000000; border-right:1px solid #000000; background-color:#ccffff; float:left;}
+.text_x3{ width:86px; border-bottom:1px solid #000000; border-right:1px solid #000000; float:left; font-size:15px;}
+.price input{width:53px; display:block;}
+.price span{width:53px; display:none;}
 
 
 
