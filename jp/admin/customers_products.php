@@ -161,7 +161,7 @@
     html = "</table>\n";
     html += "  <div class=\"text_x\"";
     if (pagebreak) {
-      html += " style=\"page-break-after:always;\";
+      html += " style=\"page-break-after:always;\"";
     }
     html += ">\n";
     html += "    <div class=\"text_x1\"></div>\n";
