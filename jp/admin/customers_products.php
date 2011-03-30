@@ -298,7 +298,9 @@
   // 删除一行
   function remove_one(num) {
     //alert('???');
+    /*
     if(isNaN(num)||num>table_data.length){return false;}
+    
     for(var i=0,n=0;i<table_data.length;i++)
     {
         if(table_data[i]!=table_data[num])
@@ -307,6 +309,8 @@
         }
     }
     table_data.length-=1;
+    */
+    table_data.splice(num, 1);
     create_table(table_data);
     
   }
@@ -317,6 +321,10 @@
   }
   // 推出百分比选择
   function percent_out(no){
+    data_empty(no);
+    ele = document.getElementById('select_'+no);
+    table_data[no]['percent'] = ele.options[ele.selectedIndex].value;
+    document.getElementById('percent_display_'+no).innerHTML = ele.options[ele.selectedIndex].value;
     document.getElementById('percent_'+no).style.display='none';
     document.getElementById('percent_display_'+no).style.display='block';
     calc_cost();
