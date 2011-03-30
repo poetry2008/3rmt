@@ -245,6 +245,21 @@
       }
     }
     */
+    for (j in table_data) {
+      for (i in table_data) {
+        if (
+          typeof(table_data[i]) != 'undefined'
+          && table_data[i]['date'] == ''
+          && table_data[i]['name'] == ''
+          && table_data[i]['price'] == ''
+          && table_data[i]['quantity'] == ''
+          && table_data[i]['type'] == ''
+          ) {
+            table_data.splice(i, 1);
+            //break;
+        }
+      }
+    }
     create_table(table_data);
   }
   
