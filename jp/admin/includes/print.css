@@ -2,9 +2,9 @@
 .print_innput input ,#data1 ,#bill_templates{ border:0!important;}
 #data1{ font-weight:normal!important;}
 .print_innput td{vertical-align:top!important;}
-.link_print input{ border:0!important; background-color:#fff!important; font-size:15px!important; text-align:left!important;}
-.link_print { margin:0 3px; background-color:#000!important;}
-.link_print td{ font-size:16px!important;}
+.link_print ,.data_table input{ border:0!important; background-color:#fff!important; font-size:15px!important; text-align:left!important;}
+.link_print ,.data_table { margin:0 3px; background-color:#000!important;}
+.link_print ,.data_table td{ font-size:16px!important;}
 .data td{ background-color:#fff!important;}
 .link_02 { margin:0 3px; background-color:#ccc!important; text-align:center;}
 textarea{ border:0!important;}
@@ -29,7 +29,7 @@ textarea{ overflow-y:visible!important;}
 #fprice_0 input:before { content: "Note: "  }
 /*news*/
 .print{ display:none!important;}
-.link_print{ clear:both; display:block; width:100%; margin:0;}
+.link_print ,.data_table{ clear:both; display:block; width:100%; margin:0;}
 .input_print01{ font-size:20px!important; font-weight:bold!important; width:100%;}
 /*.link_02{ width:100px!important;}
 .link_03,.link_03 input{ width:100px!important;}
