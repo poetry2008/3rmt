@@ -700,7 +700,7 @@ font-size:10px;!important;
 .input_print01{ font-size:23px; color:#000000; font-family:メイリオ; text-align:center; overflow:hidden; display:block;}
 .link_03{padding:2px; border-top:none; border-right:none; font-family:メイリオ; font-size:13px; float:left;}
 #data10{ overflow:hidden;}
-#cost_print{ width:142px; margin:0 10px 0 20px; text-align:right; float:left;}
+#cost_print{ width:142px; margin:0 0 0 30px; text-align:right; float:left;}
 #cost_print02{ float:left;}
 #email_display{ display:none;}
 .text_x{ width:100%;overflow:hidden;}
