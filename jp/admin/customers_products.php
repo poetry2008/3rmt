@@ -186,10 +186,10 @@
       html += " style=\"page-break-after:always;\"";
     }
     html += ">\n";
-    html += "    <div class=\"text_x1\"></div>\n";
-    html += "    <div class=\"text_x2\" align=\"center\">小計</div>\n";
-    html += "    <div class=\"text_x3 cost_display\" align=\"right\" id=\"cost_display_"+num+"\" ></div>\n";
-    html += "  </div>\n";
+    html += "    <table width=\"100%\"><tr><td class=\"text_x1\"></td>\n";
+    html += "    <td class=\"text_x2\" align=\"center\">小計</td>\n";
+    html += "    <td class=\"text_x3 cost_display\" align=\"right\" id=\"cost_display_"+num+"\" ></td>\n";
+    html += "  </tr></table>\n";
     html += "</div>\n";
     return html;
   }
@@ -368,7 +368,7 @@
           no ++;
         }
       });
-      $(this).find('.cost_display').html(number_format(cost.toFixed(0)));
+      $(this).find('.cost_display').html(number_format(cost.toFixed(0))+'&nbsp;');
       total += cost;
       cost = 0;
     });
@@ -503,7 +503,7 @@
     <td>
       <table border="0" width="50%" align="left" class="print_innput" cellpadding="0" cellspacing="0">
         <tr><td height="30" colspan="2" style="font-size:18px; padding-bottom:15px;"><input name="textfield" type="text" id="data2" value="" style="font-family:メイリオ; height:23px; width:160px; font-size:18px; font-weight:bold; margin-right:30px;"><b>御中</b></td></tr>
-        <tr><td height="25" colspan="2" style="font-family:メイリオ; font-size:16px; padding-bottom:15px;"><span id="cost_print"><?php echo $total_cost;?></span><div class="cost_print02">円 税込</div></td></tr>
+        <tr><td height="25" colspan="2" style="font-family:メイリオ; font-size:18px; padding-bottom:15px;"><span id="cost_print"><?php echo $total_cost;?></span><div class="cost_print02">円 税込</div></td></tr>
         <tr><td height="30" colspan="2" align="left" valign="center"><input name="textfield" type="text" id="data3" value="" style="font-family:メイリオ; width:270px; font-size:16px; margin-right:5px;"></td></tr>
         <tr><td colspan="2" height="10" align="left"><input name="textfield" type="text" id="data4" value="" style="font-family:メイリオ; width:200px; font-size:14px; margin-right:5px;"></td></tr>
         <tr>
