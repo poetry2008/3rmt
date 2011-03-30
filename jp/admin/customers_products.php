@@ -69,6 +69,15 @@
 <script>
   // 数据保存
   var table_data = new Array();
+  // 平均高度
+  //var row_height = 20.65;
+  var row_height = 19.20;
+  // 单页显示个数
+  var count  = 42;
+  //var total_count = 45;
+  // 页高
+  //var page_height = row_height * count;
+  var page_height = 930;
   
   // 千位分隔符
   function number_format(num)
@@ -105,40 +114,53 @@
   }
   
   function create_table (data) {
-    // 平均高度
-    //row_height = 20.65;
-    row_height = 19.20;
-    // 单页显示个数
-    count  = 42;
-    //total_count = 45;
-    // 页高
-    //page_height = row_height * count;
-    page_height = 930;
-    
-    one_count  = Math.floor((page_height - $('#content_html').height())/row_height)-2;
+    one_count = Math.floor((page_height - $('#content_html').height())/row_height)-2;
 
-    html       = "";
-    j          = 0; // tr计数器
-    k          = 0; // table计数器
+    html = "";
     
+    empty = 0;
+
+    j = 0; // tr计数器
+    k = 0; // table计数器
+    //l = 0; // table内tr计数器
     
-    //$('#wait').show();
     html += table_header(k);
     for(i in data){
       if (j != 0 && (j == one_count || (j+1-one_count)%count == 1)) {
         html += table_footer(k-1, true);
+        l = 0;
       }
       if (j == one_count || (j+1-one_count)%count == 1) {
         html += table_header(k);
         k++;
       }
       html += add_tr(j, data[i]);
+      //l++;
       j++;
     }
+    
+    
+    if (j <= one_count) {
+      empty = one_count - j;
+    } else {
+      empty = count - ((j - one_count)%count);
+    }
+    
+    for (m = 0;m<empty;m++) {
+      html += add_tr(j+m, {
+        date     : '',
+        name     : '',
+        price    : '',
+        //price2   : '',
+        quantity : '',
+        percent  : '',
+        type     : ''
+      });
+    }
+    
     html += table_footer(k-1, false);
     $('#table_html').html(html);
     calc_cost();
-    //$('#wait').hide();
   }
   
   function table_header (num) {
@@ -172,27 +194,65 @@
     return html;
   }
   
-  // 增加空行
-  function add_empty () {
-    for (i=0;i<parseInt($('#add_count').val());i++) {
+  /*
+  function add_empty2 (cnt) {
+    for (i=0;i<cnt;i++) {
       table_data.push({
         date     : '',
         name     : '',
         price    : '',
         price2   : '',
         quantity : '',
-        percent  : '1.00',
+        percent  : '',
         type     : ''
       });
+    }
     
+  }
+  */
+  
+  // 增加页面
+  function add_empty () {
+    //cnt = parseInt(cnt);
+    for (i=0;i<count;i++) {
+      table_data.push({
+        date     : '',
+        name     : '',
+        price    : '',
+        quantity : '',
+        percent  : '',
+        type     : ''
+      });
     }
     create_table(table_data);
   }
   
+  function delete_empty () {
+    /*
+    for (i = table_data.length - 1; i >= 0; i--) {
+      if (
+        typeof(table_data[i]) != 'undefined'
+        && table_data[i]['date'] == ''
+        && table_data[i]['name'] == ''
+        && table_data[i]['price'] == ''
+        && table_data[i]['quantity'] == ''
+        && table_data[i]['type'] == ''
+      ) {
+        for(j = i; j<table_data.length -1 ; i++){
+          table_data[j] = table_data[j+1]
+        }
+        table_data.length -= 1;
+      }
+    }
+    */
+    create_table(table_data);
+  }
+  
+  
   // 添加一行的html
   function add_tr (number, data) {
     html = "<tr class=\"data\" align=\"center\" style=\"font-size:15px;\">\n";
-    html += "<td class=\"link_01 number\">"+(number+1)+"</td>\n";
+    html += "<td class=\"link_01 number\"></td>\n";
     html += "<td class=\"link_01 date\" id=\"tdate_"+number+"\"  align=\"left\"><input size=\"10\" type=\"text\" value=\""+data['date']+"\" onchange=\"date_change(this,"+number+")\"></td>";
     html += "<td class=\"link_01 type\" id=\"type_"+number+"\" align=\"left\" ><input size=\"10\" type=\"text\" value=\""+data['type']+"\" onchange=\"type_change(this,"+number+")\"></td>";
     html += "<td class=\"link_01 name\" id=\"pname_"+number+"\" align=\"left\"><input size=\"45\" type=\"text\" value=\""+data['name']+"\" id=\"name_display_"+number+"\" onchange=\"name_change(this,"+number+")\"></td>";
@@ -201,7 +261,7 @@
     html += "<td class=\"link_01 percent\" align=\"right\" onclick=\"percent("+number+")\">\n";
     
     html += "<span id=\"percent_"+number+"\" style=\"display:none;\">\n";
-    html += "  <select id=\"select_"+number+"\" onblur=\"percent_out("+number+")\" onchange=\"percent_change("+number+")\">\n";
+    html += "  <select class=\"percent_select\" id=\"select_"+number+"\" onblur=\"percent_out("+number+")\" onchange=\"percent_change("+number+")\">\n";
     html += "    <option value=\"1.00\""+(data['percent'] == 1.00 ? ' selected' : '')+">100%</option>\n";
     html += "    <option value=\"0.99\""+(data['percent'] == 0.99 ? ' selected' : '')+">99%</option>\n";
     html += "    <option value=\"0.98\""+(data['percent'] == 0.98 ? ' selected' : '')+">98%</option>\n";
@@ -237,6 +297,7 @@
   
   // 删除一行
   function remove_one(num) {
+    //alert('???');
     if(isNaN(num)||num>table_data.length){return false;}
     for(var i=0,n=0;i<table_data.length;i++)
     {
@@ -247,6 +308,7 @@
     }
     table_data.length-=1;
     create_table(table_data);
+    
   }
   // 激活百分比
   function percent(no) {
@@ -261,6 +323,7 @@
   }
   // 动作
   function percent_change(no){
+    data_empty(no);
     ele = document.getElementById('select_'+no);
     table_data[no]['percent'] = ele.options[ele.selectedIndex].value;
     document.getElementById('percent_display_'+no).innerHTML = ele.options[ele.selectedIndex].value;
@@ -269,14 +332,17 @@
   function calc_cost() {
     var total = 0;
     var cost = 0;
+    var no = 1;
     $('.data_box').each(function(){
       $(this).find('.data').each(function(){
         if ($(this).find('.price input').val() != '' && $(this).find('.quantity input').val() != ''){
           fp = parseFloat($(this).find('.price input').val()) 
             * parseFloat($(this).find('.quantity input').val()) 
-            * parseFloat($(this).find('.percent_display').html());
+            * parseFloat($(this).find('.percent_select').val());
           $(this).find('.fprice').html(fp>0?number_format(fp.toFixed(0)):('<font color="red">'+number_format(fp.toFixed(2))+'</font>'));
           cost += fp;
+          $(this).find('.number').html(no);
+          no ++;
         }
       });
       $(this).find('.cost_display').html(number_format(cost.toFixed(0)));
@@ -314,23 +380,40 @@
     create_table(table_data);
   }
 
+  function data_empty(num){
+    if (typeof(table_data[num]) == 'undefined') {
+      table_data[num] = {
+        date     : '',
+        name     : '',
+        price    : '',
+        quantity : '',
+        percent  : '1.00',
+        type     : ''
+      }
+    }
+  }
+
   function date_change(ele, num){
+    data_empty(num);
     table_data[num]['date'] = ele.value;
     //calc_cost();
   }
   
   function type_change(ele, num){
+    data_empty(num);
     table_data[num]['type'] = ele.value;
     //calc_cost();
   }
   
   function name_change(ele, num){
+    data_empty(num);
     table_data[num]['name'] = ele.value;
     //calc_cost();
   }
   
   // 单价发生改变要重新计算总价格
   function price_change(ele,num){
+    data_empty(num);
     table_data[num]['price'] = ele.value;
     ele.value = parseFloat(ele.value).toFixed(1);
     $('#price_display_'+num).html('¥'+parseFloat(ele.value).toFixed(1));
@@ -350,12 +433,14 @@
   
   // 个数发生改变要重新计算总价格
   function quantity_change(ele,num){
+    data_empty(num);
     table_data[num]['quantity'] = ele.value;
     calc_cost();
   }
   
   // 上部文本发生改动时要重新分表格
   function textarea_change(){
+    data_empty(num);
     create_table(table_data);
   }
   $(function(){
@@ -436,7 +521,10 @@
 <table cellpadding="5" cellspacing="0" border="0" width="100%" class="print_none">
   <tr><td height="10" colspan="2"></td></tr>
   <tr>
-      <td align="left"><input type="text" id="add_count" value='1' size='3' /><a href="javascript:void(0)" onclick="add_empty()"><img src="/includes/languages/japanese/images/z_01.gif"></a></td>
+      <td align="left">
+        <a href="javascript:void(0)" onclick="add_empty()"><img src="/includes/languages/japanese/images/z_01.gif"></a>
+        <a href="javascript:void(0)" onclick="delete_empty()"><img src="/includes/languages/japanese/images/not.gif"></a>
+      </td>
       <td align="right" style="display:block;"><input name="" type="button" value="プリント" onclick="create_table(table_data);window.print();"></td>
   </tr>
 </table>
