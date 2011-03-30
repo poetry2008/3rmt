@@ -35,6 +35,7 @@
 $HTTP_POST_VERS に対応させる
 （PHP スーパーグローバル変数[$_POST]への対応は次回とする）
 -------------------------------- */
+  /*
   if (isset($_POST['userid'])) { $userid = $_POST['userid']; }
   if (isset($_POST['aval'])) { $aval = $_POST['aval']; }
   if (isset($_POST['userslist'])) { $userslist = $_POST['userslist']; }
@@ -65,6 +66,7 @@ if (isset($_POST['execute_change'])) { $execute_change = $_POST['execute_change'
         if (isset($_POST['execute_admin2chief'])) { $execute_admin2chief =
           $_POST['execute_admin2chief']; }
 if (isset($_POST['execute_c_permission'])) { $execute_change = $_POST['execute_c_permission'];}
+*/
 /* ===============================================
   入力チェック関数
  ============================================== */
@@ -511,8 +513,8 @@ function UserInfo_preview() {
 
   echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));        // <form>タグの出力
 
-  $ssql = makeSelectUserInfo($_POST['userslist']);      // ユーザ情報取得
-  if(isset($_POST['aval']['name'])&&$_POST['aval']['name']!='')
+  $ssql = makeSelectUserInfo($GLOBALS['userslist']);      // ユーザ情報取得
+  if(isset($GLOBALS['aval']['name'])&&$GLOBALS['aval']['name']!='')
   {
     $ssql = makeSelectUserInfo($_POST['aval']['name']);
   }
@@ -747,7 +749,7 @@ function UserPassword_preview() {
 
   echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));              // <form>タグの出力
 
-  $ssql = makeSelectUserInfo($_POST['userslist']);      // ユーザ情報取得
+  $ssql = makeSelectUserInfo($GLOBALS['userslist']);      // ユーザ情報取得
   @$oresult = tep_db_query($ssql);
   if (!$oresult) {                      // エラーだったとき
     echo TEXT_ERRINFO_DB_NO_USERINFO;           // メッセージ表示
@@ -778,7 +780,7 @@ function UserPassword_preview() {
   echo "<tr>\n";
   // ユーザ名称（ユーザID）
   echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . ' colspan="2" nowrap>' .
-    $arec['name'] . "（" . $_POST['userslist'] . '）</td>' . "\n";
+    $arec['name'] . "（" . $GLOBALS['userslist'] . '）</td>' . "\n";
   echo "</tr>\n";
 
   echo "<tr>\n";
@@ -825,7 +827,7 @@ function UserPassword_preview() {
   echo '<br>';
 
   echo tep_draw_hidden_field("execute_password");         // 処理モードを隠し項目にセットする
-  echo tep_draw_hidden_field("userid", $_POST['userslist']);    // ユーザＩＤを隠し項目にセットする
+  echo tep_draw_hidden_field("userid", $GLOBALS['userslist']);    // ユーザＩＤを隠し項目にセットする
 
   // ボタン表示
   echo tep_draw_input_field("execute_update", BUTTON_CHANGE, "onClick=\"return formConfirm('password')\"", FALSE, "submit", FALSE); // 変更
@@ -1578,6 +1580,36 @@ function update_rules($rules){
  ************************************* */
 
   require('includes/application_top.php');
+  if (isset($_POST['userid'])) { $userid = $_POST['userid']; }
+  if (isset($_POST['aval'])) { $aval = $_POST['aval']; }
+  if (isset($_POST['userslist'])) { $userslist = $_POST['userslist']; }
+  if (isset($_POST['no_permission_list'])) { $no_permission_list = $_POST['no_permission_list']; }
+  if (isset($_POST['staff_permission_list'])) { $staff_permission_list =
+    $_POST['staff_permission_list']; }
+  if (isset($_POST['chief_permission_list'])) { $chief_permission_list =
+    $_POST['chief_permission_list']; }
+  if (isset($_POST['permission_list'])) { $permission_list = $_POST['permission_list']; }
+  if (isset($_POST['execute_user'])) { $execute_user = $_POST['execute_user']; }
+  if (isset($_POST['execute_password'])) { $execute_password = $_POST['execute_password']; }
+  if (isset($_POST['execute_permission'])) { $execute_permission = $_POST['execute_permission']; }
+//修改权限
+if (isset($_POST['execute_change'])) { $execute_change = $_POST['execute_change'];}
+//2003-07-16 hiroshi_sato add 6 lines
+        if (isset($_POST['execute_new'])) { $execute_new = $_POST['execute_new']; }
+        if (isset($_POST['execute_insert'])) { $execute_insert = $_POST['execute_insert']; }
+        if (isset($_POST['execute_update'])) { $execute_update = $_POST['execute_update']; }
+        if (isset($_POST['execute_delete'])) { $execute_delete = $_POST['execute_delete']; }
+        if (isset($_POST['execute_grant'])) { $execute_grant = $_POST['execute_grant']; }
+        if (isset($_POST['execute_reset'])) { $execute_reset = $_POST['execute_reset']; }
+        if (isset($_POST['execute_staff2chief'])) { $execute_staff2chief =
+          $_POST['execute_staff2chief']; }
+        if (isset($_POST['execute_chief2staff'])) { $execute_chief2staff =
+          $_POST['execute_chief2staff']; }
+        if (isset($_POST['execute_chief2admin'])) { $execute_chief2admin =
+          $_POST['execute_chief2admin']; }
+        if (isset($_POST['execute_admin2chief'])) { $execute_admin2chief =
+          $_POST['execute_admin2chief']; }
+if (isset($_POST['execute_c_permission'])) { $execute_change = $_POST['execute_c_permission'];}
 
   PageHeader();       // ページ・ヘッダの表示
   PageBodyTable('t');     // ページのレイアウトテーブル：開始（ナビゲーションボックスを包括するテーブル開始）
@@ -1595,23 +1627,33 @@ function update_rules($rules){
       UserManu_preview();               // 初期表示
 
     // ユーザの追加
-    } elseif (isset($execute_new) && $execute_new) {
-      if (isset($execute_insert) && $execute_insert) UserInsert_execute();    // ユーザの追加処理実行
-      else UserInsert_preview();            // ユーザの追加ページ表示
+    } else if (isset($execute_new) && $execute_new) {
+      if (isset($execute_insert) && $execute_insert) {
+        UserInsert_execute();    // ユーザの追加処理実行
+      }else{
+        UserInsert_preview();            // ユーザの追加ページ表示
+      }
 
     // ユーザ情報保守
-    } elseif (isset($execute_user) && $execute_user) {
-      if (isset($execute_update) && $execute_update) UserInfor_execute();   // ユーザ情報更新処理実行
-      elseif (isset($execute_delete) && $execute_delete) UserDelete_execute();  // ユーザ情報削除処理実行
-      else UserInfo_preview();            // ユーザ情報ページ表示
+    } else if (isset($execute_user) && $execute_user) {
+      if (isset($execute_update) && $execute_update){
+        UserInfor_execute();   // ユーザ情報更新処理実行
+      }else if (isset($execute_delete) && $execute_delete){
+        UserDelete_execute();  // ユーザ情報削除処理実行
+      }else {
+        UserInfo_preview();            // ユーザ情報ページ表示
+      }
 
     // パスワード変更
-    } elseif (isset($execute_password) && $execute_password) {
-      if (isset($execute_update) && $execute_update) UserPassword_execute();  // パスワード変更処理実行
-      else UserPassword_preview();          // パスワード変更ページ表示
+    } else if (isset($execute_password) && $execute_password) {
+      if (isset($execute_update) && $execute_update){
+        UserPassword_execute();  // パスワード変更処理実行
+      }else{
+        UserPassword_preview();          // パスワード変更ページ表示
+      }
 
     // 管理者権限
-    } elseif (isset($execute_permission) && $execute_permission) {
+    } else if (isset($execute_permission) && $execute_permission) {
 
 //permission start
 
