@@ -261,7 +261,7 @@ body {
 	font-size: 11px;                                /* フォントサイズ */
 	color: #ffffff;                                 /* フォントカラー */
 	font-weight: bold;                              /* フォント太さ */
-	padding:8px 2px;                               /* 境界線と内容との間の空間 */
+	padding:2px;                               /* 境界線と内容との間の空間 */
 }
 /* ---------------------------
 .[TABLE]：メニューボックスを統括するテーブル
@@ -334,8 +334,7 @@ body {
 .dataTableContent {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;
-	color: #000000;
-	padding:2px 0;                              /* フォントカラー */
+	color: #000000;                         /* フォントカラー */
 }
 /* info box */
 /* ---------------------------
