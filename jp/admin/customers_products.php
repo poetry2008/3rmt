@@ -354,7 +354,8 @@
           $(this).find('.fprice').html(fp>0?number_format(fp.toFixed(0)):('<font color="red">'+number_format(fp.toFixed(2))+'</font>'));
           cost += fp;
           $(this).find('.number').html(no);
-          alert(no);
+          //alert(no);
+          no ++;
         }
       });
       $(this).find('.cost_display').html(number_format(cost.toFixed(0))+'&nbsp;');
