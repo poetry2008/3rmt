@@ -601,8 +601,11 @@ function clear_all(ele,cid) {
               <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT);?></td> 
             </tr>
         </table>
+  <!--
         <a href="javascript:void(0);" onclick="check_all(this,<?php echo $_GET['cID'];?>);">全部</a>
         <a href="javascript:void(0);" onclick="clear_all(this,<?php echo $_GET['cID'];?>);">キャンセル</a>
+        
+  -->
         <table id="orders_list_table" border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top">
