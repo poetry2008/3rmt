@@ -120,14 +120,14 @@ echo '</tr>' . "\n";
 echo '<tr>';
 echo '<td>' . TABLE_HEADING_USER . "</td>\n";
 echo '<td>';
-echo tep_draw_input_field("loginuid", '', 'size="10" style="width:200px;"', FALSE, 'text', FALSE);
+echo tep_draw_input_field("loginuid", '', 'size="10" style="width:200px; margin-bottom:2px; *margin-bottom:0px; height:14px;"', FALSE, 'text', FALSE);
 echo '</td>' . "\n";
 echo '</tr>' . "\n";
 
 echo '<tr>';
 echo '<td>' . TABLE_HEADING_PASSWORD . "</td>\n";
 echo '<td>';
-echo tep_draw_input_field("loginpwd", '', 'size="10" style="width:200px;"', FALSE, 'password', false);
+echo tep_draw_input_field("loginpwd", '', 'size="10" style="width:200px; height:14px;"', FALSE, 'password', false);
 echo '</td>' . "\n";
 echo '</tr>' . "\n";
 
