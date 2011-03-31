@@ -181,12 +181,14 @@
   
   function table_footer (num,pagebreak) {
     html = "</table>\n";
-    html += "  <div class=\"text_x\"";
     if (pagebreak) {
       html += " style=\"page-break-after:always;\"";
     }
-    html += ">\n";
-    html += "    <table width=\"100%\"><tr><td class=\"text_x1\"></td>\n";
+    html += "    <table width=\"100%\" class=\"text_x\"";
+    if (pagebreak) {
+      html += " style=\"page-break-after:always;\"";
+    }
+    html += "><tr><td class=\"text_x1\"></td>\n";
     html += "    <td class=\"text_x2\" align=\"center\">小計</td>\n";
     html += "    <td class=\"text_x3 cost_display\" align=\"right\" id=\"cost_display_"+num+"\" ></td>\n";
     html += "  </tr></table>\n";
@@ -312,19 +314,6 @@
   
   // 删除一行
   function remove_one(num) {
-    //alert('???');
-    /*
-    if(isNaN(num)||num>table_data.length){return false;}
-    
-    for(var i=0,n=0;i<table_data.length;i++)
-    {
-        if(table_data[i]!=table_data[num])
-        {
-            table_data[n++]=table_data[i];
-        }
-    }
-    table_data.length-=1;
-    */
     table_data.splice(num, 1);
     create_table(table_data);
     
@@ -365,7 +354,7 @@
           $(this).find('.fprice').html(fp>0?number_format(fp.toFixed(0)):('<font color="red">'+number_format(fp.toFixed(2))+'</font>'));
           cost += fp;
           $(this).find('.number').html(no);
-          no ++;
+          alert(no);
         }
       });
       $(this).find('.cost_display').html(number_format(cost.toFixed(0))+'&nbsp;');
