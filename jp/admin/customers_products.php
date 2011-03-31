@@ -73,11 +73,11 @@
   //var row_height = 20.65;
   var row_height = 19.20;
   // 单页显示个数
-  var count  = 42;
+  var count  = 43;
   //var total_count = 45;
   // 页高
   //var page_height = row_height * count;
-  var page_height = 930;
+  var page_height = 950;
   
   // 千位分隔符
   function number_format(num)
