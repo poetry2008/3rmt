@@ -371,6 +371,7 @@ while ($products = tep_db_fetch_array($products_query)) {
   }
   ?>
   <td class="dataTableContent">
+<?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;&nbsp;';?>
      <?php 
      echo '<a href="orders.php?search_type=products_name&keywords=' . urlencode($products['products_name']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;<span id="products_name_'.$products['products_id'].'">' . $products['products_name'] . '</span>'; 
   ?>
@@ -467,7 +468,7 @@ if ($ocertify->npermission >= 10) { //表示制限
     }
 }
 ?></td>
-<td class="dataTableContent" align='right'><?php 
+<td class="dataTableContent" align='center'><?php 
 
   $last_modified_array = getdate(strtotime(tep_datetime_short($products['products_last_modified'])));
   $today_array = getdate();
@@ -483,7 +484,7 @@ if ($ocertify->npermission >= 10) { //表示制限
   } else {
     echo tep_image(DIR_WS_ICONS . 'signal_blink.gif', $last_modified);
   }
-  echo '&nbsp;&nbsp;' . tep_image(DIR_WS_ICONS . 'battery_0.gif', '数量異常');
+  //echo '&nbsp;&nbsp;' . tep_image(DIR_WS_ICONS . 'battery_0.gif', '数量異常');
   ?>
   <input type="hidden" name="this_price[]" value="<?php echo (int)$special_price_check;?>" >
   <input type="hidden" name="proid[]"      value="<?php echo $products['products_id']; ?>" >
