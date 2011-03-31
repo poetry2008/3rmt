@@ -181,9 +181,6 @@
   
   function table_footer (num,pagebreak) {
     html = "</table>\n";
-    if (pagebreak) {
-      html += " style=\"page-break-after:always;\"";
-    }
     html += "    <table width=\"100%\" class=\"text_x\"";
     if (pagebreak) {
       html += " style=\"page-break-after:always;\"";
