@@ -141,7 +141,8 @@
     } else {
       empty = count - ((j - one_count)%count);
     }
-    
+    //alert(empty);
+    if (empty < count) 
     for (m = 0;m<empty;m++) {
       html += add_tr(j+m, {
         date     : '',
@@ -401,6 +402,7 @@
   function quantity_change(ele,num){
     data_empty(num);
     table_data[num]['quantity'] = ele.value;
+    ele.value = parseFloat(ele.value).toFixed(1);
     calc_cost();
   }
   
