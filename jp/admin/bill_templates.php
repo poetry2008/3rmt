@@ -226,6 +226,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_DATA7 . '<br>' . tep_draw_textarea_field('data7','','25','',$cInfo->data7));
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_DATA8 . '<br>' . tep_draw_textarea_field('data8','','25','',$cInfo->data8));
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_DATA9 . '<br>' . tep_draw_textarea_field('data9','','25','',$cInfo->data9));
+      $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_DATA11 . '<br>' . tep_draw_textarea_field('data11','','25','',$cInfo->data11));
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_DATA10 . '<br>' . tep_draw_textarea_field('data10','','25','',$cInfo->data10));
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_EMAIL . '<br>' . tep_draw_input_field('email', $cInfo->email));
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_RESPONSIBLE . '<br>' . tep_draw_input_field('responsible', $cInfo->responsible));
