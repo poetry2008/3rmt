@@ -385,7 +385,7 @@ function UserManu_preview() {
  echo tep_draw_input_field("execute_change",BUTTON_CHANGE_PERMISSION , '', FALSE, "submit", FALSE);
     echo "\n";
   } else {
-    echo tep_draw_input_field("execute_user", BUTTON_INFO_USER, '', FALSE, "submit", FALSE);  // ユーザ情報
+    //echo tep_draw_input_field("execute_user", BUTTON_INFO_USER, '', FALSE, "submit", FALSE);  // ユーザ情報
     echo tep_draw_input_field("execute_password", BUTTON_CHANGE_PASSWORD, '', FALSE, "submit", FALSE);  // パスワード変更
   }
 
