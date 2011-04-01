@@ -96,6 +96,7 @@ if (isset($_GET['action']) && $_GET['action']) {
     </tr>
   </table>
   <div id="categories_tree">
+    <div><a href="javascript:void(0)" onclick="$('.subcategory_tree').show();">Open</a> / <a href="javascript:void(0)" onclick="$('.subcategory_tree').hide();">Close</a></div>
   <?php
     require(DIR_WS_CLASSES . 'category_tree.php');
     $osC_CategoryTree = new osC_CategoryTree; 

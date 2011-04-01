@@ -27,7 +27,7 @@
    function osC_CategoryTree($load_from_database = true) {
      global $languages_id;
 //ccdd
-         $this->categories_count = tep_db_num_rows(tep_db_query("select * from categories"));
+         $this->categories_count = tep_db_num_rows(tep_db_query("select * from categories where parent_id = '0'"));
          $categories_query = tep_db_query("
            select *
            from (
@@ -110,6 +110,7 @@
           $result .= "</ul></td><td valign=\"top\"><ul>";
           $this->end = false;
          }
+         if ($level === 0)
          $this->i++;
          //$i++;
        }
