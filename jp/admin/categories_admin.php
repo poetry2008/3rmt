@@ -95,6 +95,13 @@ if (isset($_GET['action']) && $_GET['action']) {
       <td class="smallText" align="right"><?php echo tep_draw_form('goto', FILENAME_CATEGORIES_ADMIN, '', 'get') . "\n"; ?> <?php echo HEADING_TITLE_GOTO . ' ' . tep_draw_pull_down_menu('cPath', tep_get_category_tree_cpath(), $current_category_id, 'onChange="this.form.submit();"') . "\n"; ?></form></td>
     </tr>
   </table>
+  <div id="categories_tree">
+  <?php
+    require(DIR_WS_CLASSES . 'category_tree.php');
+    $osC_CategoryTree = new osC_CategoryTree; 
+    echo $osC_CategoryTree->buildTree();
+  ?>
+  </div>
   </td>
   </tr>
   <tr>

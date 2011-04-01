@@ -1988,7 +1988,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
       <tr>
         <td class="main" width="120"><?php echo $order_history['date_purchased'];?></td>
         <td class="main" width="100" align="right"><?php echo $order_history['products_quantity'];?>個</td>
-        <td class="main" align="right"><?php echo $order_history['final_price'];?>円</td>
+        <td class="main" align="right"><?php echo $currencies->format($order_history['final_price']);?></td>
         <td class="main" width="100"><?php echo $order_history['orders_status_name'];?></td>
       </tr>
     <?php
@@ -1999,6 +1999,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   ?>
   </table>
   <?php
+  if ($pInfo->relate_products_id) {
   $order_history_query = tep_db_query("
     select * 
     from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id
@@ -2011,8 +2012,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   <br>
   <table width="95%" border="1" cellspacing="0" cellpadding="2">
     <tr>
-      <th colspan="2" align="left">関連付け商品</th>
-      <th colspan="2" align="right"><?php echo tep_get_relate_products_name($pInfo->products_id);?></th>
+      <th colspan="4" align="left">関連付け商品:<?php echo tep_get_relate_products_name($pInfo->products_id);?></th>
     </tr>
     <tr>
       <th>日付</th>
@@ -2027,7 +2027,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
       <tr>
         <td class="main" width="120"><?php echo $order_history['date_purchased'];?></td>
         <td class="main" width="100" align="right"><?php echo $order_history['products_quantity'];?>個</td>
-        <td class="main" align="right"><?php echo $order_history['final_price'];?>円</td>
+        <td class="main" align="right"><?php echo $currencies->format($order_history['final_price']);?></td>
         <!--<td class="main"><?php echo strip_tags(tep_get_ot_total_by_orders_id($order_history['orders_id']));?></td>-->
         <td class="main" width="100"><?php echo $order_history['orders_status_name'];?></td>
       </tr>
@@ -2042,6 +2042,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   ?>
   </table>
   <?php
+  }
   echo '</td>';
   echo '</tr></table>';
   echo '<table width="100%" cellspacing="0" cellpadding="5" border="0" class="smalltext"><tr><td><b>販売</b></td><td><b>買取</b></td></tr>' . "\n";
@@ -2219,6 +2220,15 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
               </tr>
             </table></td>
         </tr>
+        <tr><td>
+<div id="categories_tree">
+<?php
+  require(DIR_WS_CLASSES . 'category_tree.php');
+  $osC_CategoryTree = new osC_CategoryTree; 
+  echo $osC_CategoryTree->buildTree();
+?>
+</div>
+        </td></tr>
         <tr>
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>
