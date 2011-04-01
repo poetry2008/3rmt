@@ -385,7 +385,7 @@ function UserManu_preview() {
  echo tep_draw_input_field("execute_change",BUTTON_CHANGE_PERMISSION , '', FALSE, "submit", FALSE);
     echo "\n";
   } else {
-    echo tep_draw_input_field("execute_user", BUTTON_INFO_USER, '', FALSE, "submit", FALSE);  // ユーザ情報
+    //echo tep_draw_input_field("execute_user", BUTTON_INFO_USER, '', FALSE, "submit", FALSE);  // ユーザ情報
     echo tep_draw_input_field("execute_password", BUTTON_CHANGE_PASSWORD, '', FALSE, "submit", FALSE);  // パスワード変更
   }
 
@@ -1472,12 +1472,15 @@ function PageHeader() {
   戻り値 : なし
  --------------------------------------*/
 function PageBodyTable($mode='t') {
+  global $ocertify;
   switch ($mode) {
   case 't':
     echo '<!-- body //-->' . "\n";
     echo '<table border="0" width="100%" cellspacing="2" cellpadding="2">' . "\n";
     echo '  <tr>' . "\n";
+    if($GLOBALS['ocertify']->npermission >= 10){
     echo '    <td width="' . BOX_WIDTH . '" valign="top"><table border="0" width="' . BOX_WIDTH . '" cellspacing="1" cellpadding="1" class="columnLeft">' . "\n";
+    }
     break;
   case 'u':
     echo '  </tr>' . "\n";
@@ -1615,10 +1618,12 @@ if (isset($_POST['execute_c_permission'])) { $execute_change = $_POST['execute_c
   PageBodyTable('t');     // ページのレイアウトテーブル：開始（ナビゲーションボックスを包括するテーブル開始）
 
   // 左ナビゲーションボックスの表示
+  if($ocertify->npermission >= 10){
   echo "<!-- left_navigation //-->\n";    // 
   include_once(DIR_WS_INCLUDES . 'column_left.php');
   echo "\n<!-- left_navigation_eof //-->\n";
   echo "    </table></td>\n";
+  }
 
 // 画面表示、入力チェックＤＢ反映
   if ($ocertify->auth_user) {
