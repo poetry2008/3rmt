@@ -123,7 +123,7 @@ if (isset($_GET['action']) && $_GET['action']) {
   <table border="0" width="100%" cellspacing="0" cellpadding="2">
   <!--dataTableHeadingRow-->
   <tr class="dataTableHeadingRow" valign="top">
-  <td class="dataTableHeadingContent" height="30"><?php echo TABLE_HEADING_CATEGORIES_PRODUCTS; ?></td>
+  <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CATEGORIES_PRODUCTS; ?></td>
   <td class="dataTableHeadingContent" align="right" width="50">注文数</td>
   <td class="dataTableHeadingContent" align="right" width="50">架空在庫</td>
   <td class="dataTableHeadingContent" align="right" width="50">実在庫</td>
