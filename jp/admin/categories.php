@@ -1830,6 +1830,7 @@ function get_cart_products(){
                  p.products_last_modified, 
                  p.products_date_available, 
                  p.products_attention_5,
+                 p.relate_products_id,
                  pd.products_status, 
                  p.manufacturers_id  
           from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
@@ -1936,8 +1937,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
 
   echo '当社キャラクター名の入力欄：<br>' . tep_draw_textarea_field('products_attention_5', 'soft', '70', '10', $pInfo->products_attention_5) . '<br>' . "\n";
   echo '</td>';
+  echo '<td width="50%" valign="top" align="right">';
   if (tep_get_bflag_by_product_id($pInfo->products_id)) { // 如果买取
-    echo '<td width="50%" valign="top" align="right">';
     echo '<table width="95%" cellpadding="0" cellspacing="0" border="1">';
     echo '  <tr>';
     echo '  <td height="30"><button  type="button" onclick="calculate_price()">計算する</button></td>';
@@ -1958,8 +1959,90 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
     echo '  <td align="right"><a href="javascript:void(0)" id="b_3" onclick="change_qt(this)" style="text-decoration : underline;"></a>&nbsp;</td>';
     echo '  </tr>';
     echo '</table>';
-    echo '</td>';
   }
+
+  $order_history_query = tep_db_query("
+    select * 
+    from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id
+    where 
+    op.products_id='".$pInfo->products_id."'
+    order by date_purchased desc
+    limit 5
+  ");
+  ?>
+  <br>
+  <table width="95%" border="1" cellspacing="0" cellpadding="2">
+    <tr>
+      <th colspan="4" align="left">商品履歴</th>
+    </tr>
+    <tr>
+      <th>日付</th>
+      <th>個数</th>
+      <th>単価</th>
+      <th>ステータス</th>
+    </tr>
+  <?php
+  if (tep_db_num_rows($order_history_query)) {
+    while($order_history = tep_db_fetch_array($order_history_query)){
+    ?>
+      <tr>
+        <td class="main" width="120"><?php echo $order_history['date_purchased'];?></td>
+        <td class="main" width="100" align="right"><?php echo $order_history['products_quantity'];?></td>
+        <td class="main" align="right"><?php echo $order_history['final_price'];?></td>
+        <td class="main" width="100"><?php echo $order_history['orders_status_name'];?></td>
+      </tr>
+    <?php
+    }
+  } else {
+    echo "<tr><td colspan='4'>no orders</td></tr>";
+  }
+  ?>
+  </table>
+  <?php
+  $order_history_query = tep_db_query("
+    select * 
+    from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id
+    where 
+    op.products_id='".$pInfo->relate_products_id."'
+    order by date_purchased desc
+    limit 5
+  ");
+  ?>
+  <br>
+  <table width="95%" border="1" cellspacing="0" cellpadding="2">
+    <tr>
+      <th colspan="2" align="left">関連付け商品</th>
+      <th colspan="2" align="right"><?php echo tep_get_relate_products_name($pInfo->products_id);?></th>
+    </tr>
+    <tr>
+      <th>日付</th>
+      <th>個数</th>
+      <th>単価</th>
+      <th>ステータス</th>
+    </tr>
+  <?php
+  if (tep_db_num_rows($order_history_query)) {
+    while($order_history = tep_db_fetch_array($order_history_query)){
+    ?>
+      <tr>
+        <td class="main" width="120"><?php echo $order_history['date_purchased'];?></td>
+        <td class="main" width="100" align="right"><?php echo $order_history['products_quantity'];?></td>
+        <td class="main" align="right"><?php echo $order_history['final_price'];?></td>
+        <!--<td class="main"><?php echo strip_tags(tep_get_ot_total_by_orders_id($order_history['orders_id']));?></td>-->
+        <td class="main" width="100"><?php echo $order_history['orders_status_name'];?></td>
+      </tr>
+    <?php
+    }
+    ?>
+    
+    <?php
+  } else {
+    echo "<tr><td colspan='4'>no orders</td></tr>";
+  }
+  ?>
+  </table>
+  <?php
+  echo '</td>';
   echo '</tr></table>';
   echo '<table width="100%" cellspacing="0" cellpadding="5" border="0" class="smalltext"><tr><td><b>販売</b></td><td><b>買取</b></td></tr>' . "\n";
   echo '<tr><td>所持金上限や、弊社キャラクターの在庫の都合上、複数のキャラクターにて<br>分割してお届けする場合がございます。ご注文いただきました数量に達する<br>まで受領操作をお願いいたします。<br>【】または【】よりお届けいたします。</td><td>当社キャラクター【】または【】にトレードをお願いいたします。</td></tr></table><hr size="2" noshade>' . "\n";
