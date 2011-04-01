@@ -95,6 +95,14 @@ if (isset($_GET['action']) && $_GET['action']) {
       <td class="smallText" align="right"><?php echo tep_draw_form('goto', FILENAME_CATEGORIES_ADMIN, '', 'get') . "\n"; ?> <?php echo HEADING_TITLE_GOTO . ' ' . tep_draw_pull_down_menu('cPath', tep_get_category_tree_cpath(), $current_category_id, 'onChange="this.form.submit();"') . "\n"; ?></form></td>
     </tr>
   </table>
+  <div id="categories_tree">
+    <div><a href="javascript:void(0)" onclick="$('.subcategory_tree').show();">Open</a> / <a href="javascript:void(0)" onclick="$('.subcategory_tree').hide();">Close</a></div>
+  <?php
+    require(DIR_WS_CLASSES . 'category_tree.php');
+    $osC_CategoryTree = new osC_CategoryTree; 
+    echo $osC_CategoryTree->buildTree();
+  ?>
+  </div>
   </td>
   </tr>
   <tr>
@@ -123,7 +131,7 @@ if (isset($_GET['action']) && $_GET['action']) {
   <table border="0" width="100%" cellspacing="0" cellpadding="2">
   <!--dataTableHeadingRow-->
   <tr class="dataTableHeadingRow" valign="top">
-  <td class="dataTableHeadingContent" height="30"><?php echo TABLE_HEADING_CATEGORIES_PRODUCTS; ?></td>
+  <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CATEGORIES_PRODUCTS; ?></td>
   <td class="dataTableHeadingContent" align="right" width="50">注文数</td>
   <td class="dataTableHeadingContent" align="right" width="50">架空在庫</td>
   <td class="dataTableHeadingContent" align="right" width="50">実在庫</td>
@@ -373,7 +381,7 @@ while ($products = tep_db_fetch_array($products_query)) {
   <td class="dataTableContent">
 <?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;&nbsp;';?>
      <?php 
-     echo '<a href="orders.php?search_type=products_name&keywords=' . urlencode($products['products_name']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;<span id="products_name_'.$products['products_id'].'">' . $products['products_name'] . '</span>'; 
+     echo '<a style="margin-left:-4px;" href="orders.php?search_type=products_name&keywords=' . urlencode($products['products_name']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;<span id="products_name_'.$products['products_id'].'">' . $products['products_name'] . '</span>'; 
   ?>
   </td>
       <?php
