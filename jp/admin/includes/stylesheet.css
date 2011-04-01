@@ -750,7 +750,10 @@ font-size:10px;!important;
 
 
 
-
-
-
-
+/*dataTableHeadingContent_pw*/
+.dataTableHeadingContent_pw a{
+	color: #FFFFFF;
+	font-size: 11px;
+	font-weight: bold;
+	text-decoration: none;
+}

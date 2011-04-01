@@ -53,6 +53,9 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('LOCAL_EXE_UNZIP', '/usr/local/bin/unzip');
 
 // define the filenames used in the project
+  define('FILENAME_PW_MANAGER', 'pw_manager.php');
+  define('FILENAME_PWD_AJAX', 'pwd_ajax.php');
+  define('FILENAME_PW_MANAGER_LOG', 'pw_manager_log.php');
   define('FILENAME_RECORD', 'record.php');
   define('FILENAME_INVENTORY', 'inventory.php');
   define('FILENAME_IMAGE_DOCUMENT', 'image_documents.php');
@@ -118,6 +121,8 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
 
 // define the database table names used in the project
+  define('TABLE_IDPW','idpw');
+  define('TABLE_IDPW_LOG','idpw_log');
   define('TABLE_SITENAME','sitename');
   define('TABLE_USERS','users');
   define('TABLE_CATEGORIES_TO_MISSION', 'categories_to_mission');
@@ -367,6 +372,14 @@ tep_redirect($_GET['his_url'],'SID='.tep_session_id);
   $testArray = array();
   $logNumber = 1;
   //end for sql_log
+
+
+
+
+  //pwd words
+  $lower_alpha_arr = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
+  $upper_alpha_arr = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+  $number_arr      = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
 
 
 

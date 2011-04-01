@@ -268,6 +268,8 @@ define('TEXT_DISPLAY_NUMBER_OF_LANGUAGES', '<b>%d</b> &sim; <b>%d</b> 番目を�
 define('TEXT_DISPLAY_NUMBER_OF_MANUFACTURERS', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> のメーカーのうち)');
 define('TEXT_DISPLAY_NUMBER_OF_NEWSLETTERS', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> のメールマガジンのうち)');
 define('TEXT_DISPLAY_NUMBER_OF_ORDERS', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の注文のうち)');
+define('TEXT_DISPLAY_NUMBER_OF_PW_MANAGERS', '<b>%d</b> &sim; <b>%d</b> 番目を表示(<b>%d</b> のパスワードのうち)');
+define('TEXT_DISPLAY_NUMBER_OF_PW_MANAGER_LOG', '<b>%d</b> &sim; <b>%d</b>番目を表示(<b>%d</b> のパスワード履歴のうち)');
 define('TEXT_DISPLAY_NUMBER_OF_NIVENTORY', '<b>%d</b> &sim; <b>%d</b> 番目を表示 ( 総合： <b>%d</b> )');
 define('TEXT_DISPLAY_NUMBER_OF_ORDERS_STATUS', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の注文状況のうち)');
 define('TEXT_DISPLAY_NUMBER_OF_PRODUCTS', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の商品のうち)');

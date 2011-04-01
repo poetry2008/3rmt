@@ -4339,3 +4339,126 @@ function tep_get_user_info($s_user_ID = "") {
   return $res;
 
 }
+function tep_site_pull_down($parameters, $selected = '') {
+    $select_string = '<select ' . $parameters . '>';
+    $sites_query = tep_db_query("select id, romaji from " . TABLE_SITES . " order by
+        id");
+      if($selected == ''||$selected == '0'){
+        $select_string .= '<option value="0"';
+        $select_string .= ' SELECTED';
+      }else{
+        $select_string .= '<option value="0"';
+      }
+      $select_string .= '>All</option>';
+    while ($sites = tep_db_fetch_array($sites_query)) {
+      $select_string .= '<option value="' . $sites['id'] . '"';
+      if ($selected!=''&&$selected == $sites['id']){
+        $select_string .= ' SELECTED';
+      }
+      $select_string .= '>' . $sites['romaji'] . '</option>';
+    }
+    $select_string .= '</select>';
+
+    return $select_string;
+  }
+
+//根据参数 生成随机秘密
+function tep_get_new_random($pattern,$length) 
+{
+  global $lower_alpha_arr; 
+  global $upper_alpha_arr; 
+  global $number_arr; 
+  
+  $random_str = ''; 
+  $length_arr = explode(',',$length);
+  if(count($length_arr)>1){
+    $random_len_min = $length_arr[0];
+    $random_len_max = $length_arr[1];
+  }else{
+    $random_len_min = $length_arr[0];
+    $random_len_max = $length_arr[0];
+  }
+  
+  if ($pattern) {
+    $mixed_arr = explode(',', $pattern);
+    $pattern_arr = array(); 
+    foreach ($mixed_arr as $mix_key => $mix_value) {
+      switch ($mix_value) {
+        case 'english':
+          $pattern_arr = array_merge($pattern_arr, $lower_alpha_arr); 
+          break;
+        case 'ENGLISH':
+          $pattern_arr = array_merge($pattern_arr, $upper_alpha_arr); 
+          break;
+        case 'NUMBER':
+          $pattern_arr = array_merge($pattern_arr, $number_arr); 
+          break;
+      }
+    }
+    $random_str = tep_get_range_random($pattern_arr, $random_len_min, $random_len_max); 
+  }
+  return $random_str; 
+}
+
+function tep_get_range_random($pattern, $min_num, $max_num) 
+{
+  $return_str = ''; 
+  shuffle($pattern);
+  if ($min_num == $max_num) {
+    if ($min_num != '' && $max_num != '') {
+      $random_arr = array_splice($pattern, 0, $min_num); 
+    }
+  } else {
+    $random_range_arr = array(); 
+    for($i=$min_num; $i<=$max_num; $i++) {
+      $random_range_arr[] = $i; 
+    }
+    shuffle($random_range_arr); 
+    $random_arr = array_splice($pattern, 0, $random_range_arr[0]); 
+  }
+  if (!empty($random_arr)) {
+    foreach ($random_arr as $key => $value) {
+      $return_str .= $value; 
+    }
+  }
+  return $return_str;
+}
+
+
+function tep_get_pwd_pattern(){
+  $sql = "select configuration_value as pattern from ".TABLE_CONFIGURATION." WHERE
+    configuration_key = 'IDPW_PASSWORD_ITEM'";
+  $query = tep_db_query($sql);
+  if($row = tep_db_fetch_array($query)){
+    return $row['pattern'];
+  }else{
+    return 'english';
+  }
+}
+function tep_get_pwd_len(){
+  $sql = "select configuration_value as len from ".TABLE_CONFIGURATION." WHERE
+    configuration_key = 'IDPW_PASSWORD_LENGTH'";
+  $query = tep_db_query($sql);
+  if($row = tep_db_fetch_array($query)){
+    return $row['len'];
+  }else{
+    return '6';
+  }
+}
+function tep_can_edit_pw_manager($pwid){
+  if($_SESSION['user_permission']=='7'){
+   $sql = "select * from ".TABLE_IDPW." where privilege_s ='1' and id =
+     '".$pwid."' order by id desc limit 1";
+  }else if($_SESSION['user_permission']=='10'){
+   $sql = "select * from ".TABLE_IDPW." where privilege_c ='1' and id =
+     '".$pwid."' order by id desc limit 1";
+  }else {
+   return true;
+  }
+  $query = tep_db_query($sql);
+  if($row = tep_db_fetch_array($query)){
+   return true;
+  }else{
+   return false;
+  }
+}
