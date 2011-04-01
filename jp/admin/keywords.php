@@ -153,7 +153,7 @@
   $i = 1;
   while ($ref_site = tep_db_fetch_array($ref_site_query)) {
 ?>
-              <tr class="dataTableRow">
+              <tr class="dataTableRow" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='dataTableRow'">
                 <td class="dataTableContent"><?php echo $ref_site['orders_ref_keywords2'];?></td>
                 <td class="dataTableContent"><?php echo $ref_site['cnt'];?></td>
                 <td class="dataTableContent"><?php echo $i;?></td>

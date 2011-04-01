@@ -278,7 +278,7 @@ while ($sr->hasNext()) {
   } else {
     echo $currencies->format(isset($info[$last - 1]['totsum'])?$info[$last - 1]['totsum']:'');
   }
-  
+  $t += $info[$last - 1]['totsum'];
   ?></td>
               </tr>
               <?php
@@ -313,7 +313,9 @@ if (isset($srDetail)){
     }
   }
 }
-
+?>
+<tr><td colspan="7" class="dataTableContent" align="right"><font color="red">合計数:<?php echo $currencies->format($t);?></font></td></tr>
+<?php
 if ($srCompare > SR_COMPARE_NO) {
 ?>
               <tr>

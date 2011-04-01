@@ -26,8 +26,6 @@
                    '<a href="' . tep_href_link(FILENAME_NEWSLETTERS) . '" class="menuBoxContent_Link">' . BOX_TOOLS_NEWSLETTER_MANAGER . '</a><br>' .
                    //'<a href="' . tep_href_link(FILENAME_SERVER_INFO) . '" class="menuBoxContent_Link">' . BOX_TOOLS_SERVER_INFO . '</a><br>' .
                    '<a href="' . tep_href_link(FILENAME_WHOS_ONLINE) . '" class="menuBoxContent_Link">' . BOX_TOOLS_WHOS_ONLINE . '</a><br>' . 
-                   '<a href="' . tep_href_link('referer.php') . '" class="menuBoxContent_Link">アクセスランキング</a><br>' . 
-                   '<a href="' . tep_href_link('keywords.php') . '" class="menuBoxContent_Link">キーワードランキング</a><br>' . 
                    '<a href="' . tep_href_link(FILENAME_COMPUTERS) . '" class="menuBoxContent_Link">PC管理</a><br>' . 
                    
                    '<a href="' . tep_href_link(FILENAME_LATEST_NEWS) . '" class="menuBoxContent_Link">' . BOX_TOOLS_LATEST_NEWS . '</a><br>' . 
