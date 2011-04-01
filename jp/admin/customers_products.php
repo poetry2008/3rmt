@@ -340,6 +340,7 @@
           $('#data8').val(data['data8']);
           $('#data9').val(data['data9']);
           $('#data10').val(data['data10']);
+          $('#data11').val(data['data11']);
           $('#email').val(data['email']);
           $('#email_display').html(data['email']);
           $('#responsible').val(data['responsible']);
@@ -477,7 +478,7 @@
         <tr><td align="right" colspan="4">
           <table cellpadding="0" cellspacing="0" style="border:#000000 1px solid; margin-top:19px;">
           <tr><td style="border-bottom:#000000 1px solid;  padding-top:4px;" align="center">
-          <input name="textfield" type="text"  value="" style="font-family:メイリオ; font-size:12px; padding-top:4px; text-align:center; height:20px;">
+          <input name="textfield" type="text" id="data11" value="" style="font-family:メイリオ; font-size:12px; padding-top:4px; text-align:center; height:20px;">
           </td></tr>
           <tr><td colspan="6" align="center" valign="middle"><textarea id="responsible" type="text" rows="6" value="カ)アールエムティエイチアイ"  style="font-family:メイリオ; width:100px; font-size:20px; overflow-y:visible; text-align:center; padding:15px 0;" onChange="textarea_change()"></textarea></td></tr>
           </table>
