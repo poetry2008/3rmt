@@ -314,7 +314,7 @@ if (isset($srDetail)){
   }
 }
 ?>
-<tr><td colspan="7" class="dataTableContent" align="right">合計金額:<?php echo $t<0?'<font color="red">':'';?><?php echo $currencies->format($t);?><?php echo $t<0?'</font>';?></td></tr>
+<tr><td colspan="7" class="dataTableContent" align="right">合計金額:<?php echo $t<0?'<font color="red">':'';?><?php echo $currencies->format($t);?><?php echo $t<0?'</font>':'';?></td></tr>
 <?php
 if ($srCompare > SR_COMPARE_NO) {
 ?>
