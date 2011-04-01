@@ -127,7 +127,7 @@ if (isset($_GET['action']) && $_GET['action']) {
   <td class="dataTableHeadingContent" align="right" width="50">注文数</td>
   <td class="dataTableHeadingContent" align="right" width="50">架空在庫</td>
   <td class="dataTableHeadingContent" align="right" width="50">実在庫</td>
-  <td class="dataTableHeadingContent" align="right" width="50">
+  <td class="dataTableHeadingContent" align="right" width="70">
       <a style="font-weight:bold;" href="cleate_list.php?cid=<?php echo $cPath_yobi;?>&action=prelist&cPath=<?php echo $_GET['cPath'];?>">業者</a><br>
       <small style="font-weight:bold;font-size:12px;"><?php echo $kakaku_updated;?></small>
   </td>
@@ -153,7 +153,7 @@ if (isset($_GET['action']) && $_GET['action']) {
         $dougyousya_history = tep_db_fetch_array(tep_db_query("select * from set_dougyousya_history where categories_id='".$current_category_id."' and dougyousya_id='".$col_dougyousya['dougyousya_id']."' order by last_date desc"));
         $dougyousya_updated = $dougyousya_history?date('n/j G:i',strtotime($dougyousya_history['last_date'])):'';
         ?>
-        <td class='dataTableHeadingContent' align='center' width="50">
+        <td class='dataTableHeadingContent' align='center' width="90">
           <a style="font-weight:bold;" href='javascript:void(0);' onClick=dougyousya_history('history.php',<?php echo $cPath_yobi;?>,<?php echo $current_category_id;?>,'dougyousya_categories','<?php echo $col_dougyousya['dougyousya_id'];?>','<?php echo $_GET['cPath'];?>')><?php echo $col_dougyousya['dougyousya_name'];?></a>
           <input type='hidden' name='d_id[]' value='<?php echo $col_dougyousya['dougyousya_id'];?>'>
           <br><small style="font-weight:bold;font-size:12px"><?php echo $dougyousya_updated;?></small>
@@ -371,6 +371,7 @@ while ($products = tep_db_fetch_array($products_query)) {
   }
   ?>
   <td class="dataTableContent">
+<?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;&nbsp;';?>
      <?php 
      echo '<a href="orders.php?search_type=products_name&keywords=' . urlencode($products['products_name']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;<span id="products_name_'.$products['products_id'].'">' . $products['products_name'] . '</span>'; 
   ?>
@@ -451,7 +452,7 @@ if ($cPath_yobi){
       }
 ?></td>
 <td class="dataTableContent" align="center"><input style="text-align:right;" pos="<?php echo $products_count;?>_1" class="udlr" type="text" size='6' value="<?php echo (int)abs($products['products_price']);?>" name="price[]" id="<?php echo "price_input_".$products_count; ?>" onblur="event_onblur(<?php echo $products_count; ?>)" onchange="event_onchange(<?php echo $products_count; ?>)"><span id="price_error_<?php echo $products_count; ?>"></span></td>
-<td class="dataTableContent" align="right"><?php echo $products['products_price_offset'];?><input style="text-align:right;" pos="<?php echo $products_count;?>_2" class="_udlr" type="hidden" size='6' value="<?php echo $products['products_price_offset'];?>" name="offset[]" id="<?php echo "offset_input_".$products_count; ?>"><span id="offset_error_<?php echo $products_count; ?>" onchange="this.value=SBC2DBC(this.value)"></span></td>
+<td class="dataTableContent" align="right"><?php echo (float)$products['products_price_offset'] > 0 ?"+":'';?><?php echo $products['products_price_offset'];?><input style="text-align:right;" pos="<?php echo $products_count;?>_2" class="_udlr" type="hidden" size='6' value="<?php echo $products['products_price_offset'];?>" name="offset[]" id="<?php echo "offset_input_".$products_count; ?>"><span id="offset_error_<?php echo $products_count; ?>" onchange="this.value=SBC2DBC(this.value)"></span></td>
 <?php //サイト入力  ?>
 <td class="dataTableContent" align="center"><?php
 if ($ocertify->npermission >= 10) { //表示制限
@@ -467,7 +468,7 @@ if ($ocertify->npermission >= 10) { //表示制限
     }
 }
 ?></td>
-<td class="dataTableContent" align='right'><?php 
+<td class="dataTableContent" align='center'><?php 
 
   $last_modified_array = getdate(strtotime(tep_datetime_short($products['products_last_modified'])));
   $today_array = getdate();
@@ -483,7 +484,7 @@ if ($ocertify->npermission >= 10) { //表示制限
   } else {
     echo tep_image(DIR_WS_ICONS . 'signal_blink.gif', $last_modified);
   }
-  echo '&nbsp;&nbsp;' . tep_image(DIR_WS_ICONS . 'battery_0.gif', '数量異常');
+  //echo '&nbsp;&nbsp;' . tep_image(DIR_WS_ICONS . 'battery_0.gif', '数量異常');
   ?>
   <input type="hidden" name="this_price[]" value="<?php echo (int)$special_price_check;?>" >
   <input type="hidden" name="proid[]"      value="<?php echo $products['products_id']; ?>" >

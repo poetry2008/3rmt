@@ -200,7 +200,7 @@
   if ($startDateG) {
     $startDate = mktime(0, 0, 0, $sMon, $sDay, $sYear);
   } else {
-    $startDate = mktime(0, 0, 0, date("m"), date("d"), date("Y"));
+    $startDate = mktime(0, 0, 0, date("m"), date("d")-1, date("Y"));
   }
     
   $endDate = "";

@@ -73,11 +73,11 @@
   //var row_height = 20.65;
   var row_height = 19.20;
   // 单页显示个数
-  var count  = 42;
+  var count  = 45;
   //var total_count = 45;
   // 页高
   //var page_height = row_height * count;
-  var page_height = 930;
+  var page_height = 950;
   
   // 千位分隔符
   function number_format(num)
@@ -109,7 +109,7 @@
           });
         }
         create_table(table_data);
-      }
+      } 
     });
   }
   
@@ -122,36 +122,32 @@
 
     j = 0; // tr计数器
     k = 0; // table计数器
-    //l = 0; // table内tr计数器
     
     html += table_header(k);
     for(i in data){
       if (j != 0 && (j == one_count || (j+1-one_count)%count == 1)) {
         html += table_footer(k-1, true);
-        l = 0;
       }
       if (j == one_count || (j+1-one_count)%count == 1) {
         html += table_header(k);
         k++;
       }
       html += add_tr(j, data[i]);
-      //l++;
       j++;
     }
-    
     
     if (j <= one_count) {
       empty = one_count - j;
     } else {
       empty = count - ((j - one_count)%count);
     }
-    
+    //alert(empty);
+    if (empty < count) 
     for (m = 0;m<empty;m++) {
       html += add_tr(j+m, {
         date     : '',
         name     : '',
         price    : '',
-        //price2   : '',
         quantity : '',
         percent  : '',
         type     : ''
@@ -181,39 +177,21 @@
   
   function table_footer (num,pagebreak) {
     html = "</table>\n";
-    html += "  <div class=\"text_x\"";
+    html += "    <table width=\"100%\" class=\"text_x\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"";
     if (pagebreak) {
       html += " style=\"page-break-after:always;\"";
     }
-    html += ">\n";
-    html += "    <div class=\"text_x1\"></div>\n";
-    html += "    <div class=\"text_x2\" align=\"center\">小計</div>\n";
-    html += "    <div class=\"text_x3 cost_display\" align=\"right\" id=\"cost_display_"+num+"\" ></div>\n";
-    html += "  </div>\n";
+    html += "><tr><td class=\"text_x1\"></td>\n";
+    html += "    <td class=\"text_x2\" align=\"center\">小計</td>\n";
+    html += "    <td class=\"text_x3 cost_display\" align=\"right\" id=\"cost_display_"+num+"\" ></td>\n";
+    html += "  </tr></table>\n";
     html += "</div>\n";
     return html;
   }
-  
-  /*
-  function add_empty2 (cnt) {
-    for (i=0;i<cnt;i++) {
-      table_data.push({
-        date     : '',
-        name     : '',
-        price    : '',
-        price2   : '',
-        quantity : '',
-        percent  : '',
-        type     : ''
-      });
-    }
-    
-  }
-  */
+
   
   // 增加页面
   function add_empty () {
-    //cnt = parseInt(cnt);
     for (i=0;i<count;i++) {
       table_data.push({
         date     : '',
@@ -228,23 +206,20 @@
   }
   
   function delete_empty () {
-    /*
-    for (i = table_data.length - 1; i >= 0; i--) {
-      if (
-        typeof(table_data[i]) != 'undefined'
-        && table_data[i]['date'] == ''
-        && table_data[i]['name'] == ''
-        && table_data[i]['price'] == ''
-        && table_data[i]['quantity'] == ''
-        && table_data[i]['type'] == ''
-      ) {
-        for(j = i; j<table_data.length -1 ; i++){
-          table_data[j] = table_data[j+1]
+    for (j in table_data) {
+      for (i in table_data) {
+        if (
+          typeof(table_data[i]) != 'undefined'
+          && table_data[i]['date'] == ''
+          && table_data[i]['name'] == ''
+          && table_data[i]['price'] == ''
+          && table_data[i]['quantity'] == ''
+          && table_data[i]['type'] == ''
+          ) {
+            table_data.splice(i, 1);
         }
-        table_data.length -= 1;
       }
     }
-    */
     create_table(table_data);
   }
   
@@ -297,19 +272,6 @@
   
   // 删除一行
   function remove_one(num) {
-    //alert('???');
-    /*
-    if(isNaN(num)||num>table_data.length){return false;}
-    
-    for(var i=0,n=0;i<table_data.length;i++)
-    {
-        if(table_data[i]!=table_data[num])
-        {
-            table_data[n++]=table_data[i];
-        }
-    }
-    table_data.length-=1;
-    */
     table_data.splice(num, 1);
     create_table(table_data);
     
@@ -353,7 +315,7 @@
           no ++;
         }
       });
-      $(this).find('.cost_display').html(number_format(cost.toFixed(0)));
+      $(this).find('.cost_display').html(number_format(cost.toFixed(0))+'&nbsp;');
       total += cost;
       cost = 0;
     });
@@ -404,19 +366,16 @@
   function date_change(ele, num){
     data_empty(num);
     table_data[num]['date'] = ele.value;
-    //calc_cost();
   }
   
   function type_change(ele, num){
     data_empty(num);
     table_data[num]['type'] = ele.value;
-    //calc_cost();
   }
   
   function name_change(ele, num){
     data_empty(num);
     table_data[num]['name'] = ele.value;
-    //calc_cost();
   }
   
   // 单价发生改变要重新计算总价格
@@ -443,6 +402,7 @@
   function quantity_change(ele,num){
     data_empty(num);
     table_data[num]['quantity'] = ele.value;
+    ele.value = parseFloat(ele.value).toFixed(1);
     calc_cost();
   }
   
@@ -468,7 +428,7 @@
   }
   if ($bill_templates) {
 ?>
-<select id="bill_templates" onchange="bill_template_change(this)">
+<select id="bill_templates" onChange="bill_template_change(this)">
   <option value=""> -- </option>
 <?php foreach ($bill_templates as $bill) { ?>
   <option value="<?php echo $bill['id'];?>"><?php echo $bill['name'];?></option>
@@ -488,15 +448,15 @@
     <td>
       <table border="0" width="50%" align="left" class="print_innput" cellpadding="0" cellspacing="0">
         <tr><td height="30" colspan="2" style="font-size:18px; padding-bottom:15px;"><input name="textfield" type="text" id="data2" value="" style="font-family:メイリオ; height:23px; width:160px; font-size:18px; font-weight:bold; margin-right:30px;"><b>御中</b></td></tr>
-        <tr><td height="25" colspan="2" style="font-family:メイリオ; font-size:16px; padding-bottom:15px;"><span id="cost_print"><?php echo $total_cost;?></span><div class="cost_print02">円 税込</div></td></tr>
+        <tr><td height="25" colspan="2" style="font-family:メイリオ; font-size:18px; padding-bottom:15px;"><span id="cost_print"><?php echo $total_cost;?></span><div class="cost_print02">円 税込</div></td></tr>
         <tr><td height="30" colspan="2" align="left" valign="center"><input name="textfield" type="text" id="data3" value="" style="font-family:メイリオ; width:270px; font-size:16px; margin-right:5px;"></td></tr>
         <tr><td colspan="2" height="10" align="left"><input name="textfield" type="text" id="data4" value="" style="font-family:メイリオ; width:200px; font-size:14px; margin-right:5px;"></td></tr>
         <tr>
           <td width="30"></td>
           <td width="292" valign="top" align="left" class="input_print03">
-          <font size="3"><u><textarea id="data5" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-family:メイリオ; font-size:14px; width:270px; overflow-y:visible;" onchange="textarea_change()"></textarea></u></font>
-          <font size="3"><u><textarea id="data6" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-family:メイリオ; font-size:14px; overflow-y:visible; width:200px;" onchange="textarea_change()"></textarea></u></font>
-          <font size="3"><u><textarea id="data7" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-family:メイリオ; font-size:14px; overflow-y:visible; width:200px;" onchange="textarea_change()"></textarea></u></font>
+          <font size="3"><u><textarea id="data5" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-family:メイリオ; font-size:14px; width:270px; overflow-y:visible;" onChange="textarea_change()"></textarea></u></font>
+          <font size="3"><u><textarea id="data6" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-family:メイリオ; font-size:14px; overflow-y:visible; width:200px;" onChange="textarea_change()"></textarea></u></font>
+          <font size="3"><u><textarea id="data7" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-family:メイリオ; font-size:14px; overflow-y:visible; width:200px;" onChange="textarea_change()"></textarea></u></font>
           </td>
         </tr>
 </tr>
@@ -511,13 +471,15 @@
         <tr><td align="right"><textarea id="data10" type="text" rows="2" value="カ)アールエムティエイチアイ" style="font-size:14px; overflow-y:visible; width:180px; font-family:メイリオ; text-align:right;" ></textarea></td></tr>
         <tr><td align="right" class="input_print02">
   <font size="2">
-  <input name="textfield" type="text" id="email" value="" onchange="$('#email_display').html(this.value)" onpropertychange="$('#email_display').html(this.value)" onblur="$('#email_display').html(this.value)" style="font-family:メイリオ; text-align:right; font-size:12px; width:300px;">
+  <input name="textfield" type="text" id="email" value="" onChange="$('#email_display').html(this.value)" onpropertychange="$('#email_display').html(this.value)" onBlur="$('#email_display').html(this.value)" style="font-family:メイリオ; text-align:right; font-size:12px; width:300px;">
   <span id="email_display"></span>
   </font></td></tr>
         <tr><td align="right" colspan="4">
-          <table cellpadding="0" cellspacing="0" style="border:#000000 1px solid; margin-top:10px;">
-          <tr><td height="20" style="border-bottom:#000000 1px solid; font-size:12px; font-family:メイリオ; padding-top:4px;" align="center">責任者</td></tr>
-          <tr><td colspan="6" align="center" valign="middle"><textarea id="responsible" type="text" rows="6" value="カ)アールエムティエイチアイ"  style="font-family:メイリオ; width:100px; font-size:20px; overflow-y:visible; text-align:center; padding:15px 0;" onchange="textarea_change()"></textarea></td></tr>
+          <table cellpadding="0" cellspacing="0" style="border:#000000 1px solid; margin-top:19px;">
+          <tr><td style="border-bottom:#000000 1px solid;  padding-top:4px;" align="center">
+          <input name="textfield" type="text"  value="" style="font-family:メイリオ; font-size:12px; padding-top:4px; text-align:center; height:20px;">
+          </td></tr>
+          <tr><td colspan="6" align="center" valign="middle"><textarea id="responsible" type="text" rows="6" value="カ)アールエムティエイチアイ"  style="font-family:メイリオ; width:100px; font-size:20px; overflow-y:visible; text-align:center; padding:15px 0;" onChange="textarea_change()"></textarea></td></tr>
           </table>
         </td></tr>
       </table>
@@ -530,10 +492,10 @@
   <tr><td height="10" colspan="2"></td></tr>
   <tr>
       <td align="left">
-        <a href="javascript:void(0)" onclick="add_empty()"><img src="/includes/languages/japanese/images/z_01.gif"></a>
-        <a href="javascript:void(0)" onclick="delete_empty()"><img src="/includes/languages/japanese/images/not.gif"></a>
+        <a href="javascript:void(0)" onClick="add_empty()"><img src="/includes/languages/japanese/images/z_01.gif"></a>
+        <a href="javascript:void(0)" onClick="delete_empty()"><img src="/includes/languages/japanese/images/not.gif"></a>
       </td>
-      <td align="right" style="display:block;"><input name="" type="button" value="プリント" onclick="create_table(table_data);window.print();"></td>
+      <td align="right" style="display:block;"><input name="" type="button" value="プリント" onClick="create_table(table_data);window.print();"></td>
   </tr>
 </table>
 </div></body>
@@ -641,8 +603,11 @@ function clear_all(ele,cid) {
               <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT);?></td> 
             </tr>
         </table>
+  <!--
         <a href="javascript:void(0);" onclick="check_all(this,<?php echo $_GET['cID'];?>);">全部</a>
         <a href="javascript:void(0);" onclick="clear_all(this,<?php echo $_GET['cID'];?>);">キャンセル</a>
+        
+  -->
         <table id="orders_list_table" border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top">
