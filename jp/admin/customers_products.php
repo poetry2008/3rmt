@@ -62,6 +62,7 @@
           }
         }
 ?>
+<!--<meta http-equiv=”X-UA-Compatible” content=”IE=7″>-->
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <link media="print" href="includes/print.css" rel="stylesheet" type="text/css" />
@@ -478,9 +479,9 @@
         <tr><td align="right" colspan="4">
           <table cellpadding="0" cellspacing="0" style="border:#000000 1px solid; margin-top:19px;">
           <tr><td style="border-bottom:#000000 1px solid;  padding-top:4px;" align="center">
-          <input name="textfield" type="text" id="data11" value="" style="font-family:メイリオ; font-size:12px; padding-top:4px; text-align:center; height:20px;">
+          <input name="textfield" type="text" id="data11" value="" style="font-family:メイリオ; width:90px; font-size:12px; padding-top:4px; text-align:center; height:20px;">
           </td></tr>
-          <tr><td colspan="6" align="center" valign="middle"><textarea id="responsible" type="text" rows="6" value="カ)アールエムティエイチアイ"  style="font-family:メイリオ; width:100px; font-size:20px; overflow-y:visible; text-align:center; padding:15px 0;" onChange="textarea_change()"></textarea></td></tr>
+          <tr><td colspan="6" align="center" valign="middle"><textarea id="responsible" type="text" rows="6" value="カ)アールエムティエイチアイ"  style=" width:90px; font-size:20px; overflow-y:visible; text-align:center; padding:15px 0;" onChange="textarea_change()"></textarea></td></tr>
           </table>
         </td></tr>
       </table>
