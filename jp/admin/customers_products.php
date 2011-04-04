@@ -456,9 +456,9 @@
         <tr>
           <td width="30"></td>
           <td width="292" valign="top" align="left" class="input_print03">
-          <font size="3"><u><textarea id="data5" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-family:メイリオ; font-size:14px; width:270px; overflow-y:visible;" onChange="textarea_change()"></textarea></u></font>
-          <font size="3"><u><textarea id="data6" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-family:メイリオ; font-size:14px; overflow-y:visible; width:200px;" onChange="textarea_change()"></textarea></u></font>
-          <font size="3"><u><textarea id="data7" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-family:メイリオ; font-size:14px; overflow-y:visible; width:200px;" onChange="textarea_change()"></textarea></u></font>
+          <font size="3"><u><textarea id="data5" type="text" rows="6" value="" style="font-family:メイリオ; font-size:14px; width:270px; overflow-y:visible;" onChange="textarea_change()"></textarea></u></font>
+          <font size="3"><u><textarea id="data6" type="text" rows="6" value="" style="font-family:メイリオ; font-size:14px; overflow-y:visible; width:200px;" onChange="textarea_change()"></textarea></u></font>
+          <font size="3"><u><textarea id="data7" type="text" rows="6" value="" style="font-family:メイリオ; font-size:14px; overflow-y:visible; width:200px;" onChange="textarea_change()"></textarea></u></font>
           </td>
         </tr>
 </tr>
