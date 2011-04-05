@@ -370,9 +370,15 @@ float:left;
       </td>
       <td align="right">
         <?php
+        echo '<button type=\'button\'
+        onclick="location.href=\''.tep_href_link(FILENAME_PW_MANAGER,'action=new').'\'" >';
+        echo TEXT_NEW;
+        echo "</button>";
+        /*
           echo "<a href='".tep_href_link(FILENAME_PW_MANAGER,'action=new')."'>";
           echo tep_image_button('button_create.gif',IMAGE_CREATE);
           echo "</a>";
+          */
           ?>
       </td>
     </tr>
@@ -565,9 +571,7 @@ float:left;
       echo "<td class='dataTableContent' >"
         ."<a target='_blank' href='" 
         .make_blank_url($pw_manager_row['loginurl'],FILENAME_PW_MANAGER)."'>"
-        .'<button  type="button">'
-        .tep_image_button('button_url.gif',IMAGE_CREATE)
-        .'</button>'.
+        .tep_image_button('button_url.gif',IMAGE_CREATE).
         "<a></td>";
       echo "<td class='dataTableContent'>"
         ."<a target='_blank' href='" 

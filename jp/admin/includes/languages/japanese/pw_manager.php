@@ -38,3 +38,4 @@ define('ERROR_URL_IS_ERRO','');
 define('ERROR_LOGINURL_IS_ERROR','');
 define('TEXT_INFO_OPRATER','管理者');
 define('TEXT_SELF','本人');
+define('TEXT_NEW','新規登録');
