@@ -14,6 +14,7 @@
           <tr>
             <td>
 <?php
+  /* 
   $heading = array();
   $contents = array();
 
@@ -29,10 +30,35 @@
     //$cfg_groups .= '<a href="configuration_design.php" class="menuBoxContent_Link">デザイン設定</a>';
     $contents[] = array('text'  => $cfg_groups);
   }
-
-  $box = new box;
-  echo $box->menuBox($heading, $contents);
+ */
+  //$box = new box;
+  //echo $box->menuBox($heading, $contents);
 ?>
+            <table cellspacing="0" cellpadding="2" border="0" width="100%"> 
+              <tr>
+              <td onmouseover="this.style.cursor='hand'" class="menuBoxHeading">
+              &nbsp; 
+              <a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col1');"><?php echo BOX_HEADING_CONFIGURATION;?></a> 
+              &nbsp; 
+              </td>
+              </tr>
+            </table> 
+            <div id="col1" style="display:none"> 
+            <table cellspacing="0" cellpadding="2" border="0" width="100%"> 
+              <tr>
+                <td class="menuBoxContent">
+                <?php 
+                $configuration_groups_query = tep_db_query("select configuration_group_id as cgID, configuration_group_title as cgTitle from " . TABLE_CONFIGURATION_GROUP . " where visible = '1' order by sort_order");
+                while ($configuration_groups = tep_db_fetch_array($configuration_groups_query)) {
+                  echo '<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $configuration_groups['cgID'], 'NONSSL') . '" class="menuBoxContent_Link">' . $configuration_groups['cgTitle'] . '</a><br>';
+                ?>
+                <?php
+                }
+                ?> 
+                </td>
+              </tr>
+            </table> 
+            </div> 
             </td>
           </tr>
 <!-- configuration_eof //-->

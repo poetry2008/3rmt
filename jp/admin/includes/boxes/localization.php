@@ -14,6 +14,7 @@
           <tr>
             <td>
 <?php
+  /* 
   $heading = array();
   $contents = array();
 
@@ -29,7 +30,26 @@
 
   $box = new box;
   echo $box->menuBox($heading, $contents);
+  */
 ?>
+            <table cellspacing="0" cellpadding="2" border="0" width="100%"> 
+              <tr>
+              <td onmouseover="this.style.cursor='hand'" class="menuBoxHeading">
+              &nbsp; 
+              <a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col5');"><?php echo BOX_HEADING_LOCALIZATION;?></a> 
+              &nbsp; 
+              </td>
+              </tr>
+            </table> 
+            <div id="col5" style="display:none"> 
+            <table cellspacing="0" cellpadding="2" border="0" width="100%"> 
+              <tr>
+                <td class="menuBoxContent">
+                 <?php echo '<a href="' . tep_href_link(FILENAME_ORDERS_STATUS, '', 'NONSSL') . '" class="menuBoxContent_Link">' .  BOX_LOCALIZATION_ORDERS_STATUS . '</a>';?>
+                </td>
+              </tr>
+            </table>
+            </div>
             </td>
           </tr>
 <!-- localization_eof //-->

@@ -234,6 +234,7 @@ body {
 	border-width: 1px;                              /* 境界線の幅 */
 	border-style: solid;                            /* 境界線のスタイル */
 	padding: 2px;                                   /* 境界線と内容との間の空間 */
+        display:none;
 }
 /* ---------------------------
 .[TD]：ページヘッダ

@@ -7,6 +7,7 @@
           <tr>
             <td>
 <?php
+  /* 
   $heading = array();
   $contents = array();
 
@@ -44,7 +45,45 @@
 
   $box = new box;
   echo $box->menuBox($heading, $contents);
+  */
 ?>
+            <table cellspacing="0" cellpadding="2" border="0" width="100%"> 
+              <tr>
+              <td onmouseover="this.style.cursor='hand'" class="menuBoxHeading">
+              &nbsp; 
+              <a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col2');"><?php echo BOX_HEADING_CATALOG;?></a> 
+              &nbsp; 
+              </td>
+              </tr>
+            </table> 
+            <div id="col2" style="display:none"> 
+            <table cellspacing="0" cellpadding="2" border="0" width="100%"> 
+              <tr>
+                <td class="menuBoxContent">
+    <?php 
+    echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CATALOG_CATEGORIES_PRODUCTS . '</a><br>' .
+                                   '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CATALOG_CATEGORIES_PRODUCTS_ATTRIBUTES . '</a><br>' .
+                                   '<a href="' . tep_href_link(FILENAME_TAGS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CATALOG_PRODUCTS_TAGS . '</a><br>' .
+                                   '<a href="' . tep_href_link('products_tags.php', '', 'NONSSL') . '" class="menuBoxContent_Link">タグ関連設定</a><br>' .
+                                   '<a href="' . tep_href_link(FILENAME_MANUFACTURERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CATALOG_MANUFACTURERS . '</a><br>'.
+                                    (isset($_color_l)?$_color_l:'') .
+                                   '<a href="' . tep_href_link(FILENAME_REVIEWS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CATALOG_REVIEWS . '</a><br>' .
+                                   '<a href="' .
+                                   tep_href_link(FILENAME_PRODUCTS_EXPECTED, '',
+                                     'NONSSL') . '" class="menuBoxContent_Link">' .
+                                   BOX_CATALOG_PRODUCTS_EXPECTED . '</a><br>'.
+                                   '<a href="'.tep_href_link('cleate_oroshi.php', '', 'NONSSL').'"
+                                    class="menuBoxContent_Link">卸業者の名前設定</a><br>'.
+                                   '<a href="'.tep_href_link('cleate_dougyousya.php', '', 'NONSSL').
+                                   '"class="menuBoxContent_Link">同業者の名前設定</a><br>'.
+                                   '<a href="'.tep_href_link(FILENAME_CATEGORIES_ADMIN,'','NONSSL').'"
+                                   class="menuBoxContent_Link">'.'商品卸価格管理'.
+                                   '</a><br>';
+?>
+                </td>
+              </tr>
+            </table> 
+            </div> 
             </td>
           </tr>
 <!-- catalog_eof //-->

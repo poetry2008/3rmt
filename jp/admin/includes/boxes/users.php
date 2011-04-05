@@ -29,6 +29,7 @@ define('FILENAME_USERS_LOGINLOG', 'users_log.php');
           <tr>
             <td>
 <?php
+  /* 
   $heading = array();
   $contents = array();
 
@@ -45,7 +46,30 @@ define('FILENAME_USERS_LOGINLOG', 'users_log.php');
 
   $box = new box;
   echo $box->menuBox($heading, $contents);
+  */
 ?>
+            <table cellspacing="0" cellpadding="2" border="0" width="100%"> 
+              <tr>
+              <td onmouseover="this.style.cursor='hand'" class="menuBoxHeading">
+              &nbsp; 
+              <a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col8');"><?php echo BOX_HEADING_USER;?></a> 
+              &nbsp; 
+              </td>
+              </tr>
+            </table> 
+            <div id="col8" style="display:none"> 
+            <table cellspacing="0" cellpadding="2" border="0" width="100%"> 
+              <tr>
+                <td class="menuBoxContent">
+    <?php  
+        if ($ocertify->npermission == 15) $loginlog = '<a href="' . tep_href_link(FILENAME_USERS_LOGINLOG, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_USER_LOG . '</a>';
+	else $loginlog = '';
+        echo '<a href="' . tep_href_link(FILENAME_USERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_USER_ADMIN . '</a><br>' .  '<a href="' . tep_href_link(basename($PHP_SELF), '', 'NONSSL') . '?execute_logout_user=1" class="menuBoxContent_Link">' . BOX_USER_LOGOUT . '</a><br>' .  $loginlog;
+    ?>
+                </td>
+              </tr>
+            </table> 
+            </div> 
             </td>
           </tr>
 <!-- users //-->
