@@ -219,10 +219,17 @@ display:block;
 float:none;
 }
 .popup-calendar {
-top:20px;
-left:-95px;
-left:-163px;
-}
+background: none repeat scroll 0 0 #FFFFFF;
+border: 2px solid #000000;
+color: #000000;
+display: none;
+overflow: hidden;
+
+padding: 4px;
+
+position: absolute;
+width: 163px;
+z-index: 9;}
 .number{
 font-size:24px;
 font-weight:bold;
@@ -371,7 +378,9 @@ float:left;
       <td align="right">
         <?php
           echo "<a href='".tep_href_link(FILENAME_PW_MANAGER,'action=new')."'>";
+          echo "<button type='button'>";
           echo tep_image_button('button_create.gif',IMAGE_CREATE);
+          echo "</button>";
           echo "</a>";
           ?>
       </td>
@@ -565,9 +574,7 @@ float:left;
       echo "<td class='dataTableContent' >"
         ."<a target='_blank' href='" 
         .make_blank_url($pw_manager_row['loginurl'],FILENAME_PW_MANAGER)."'>"
-        .'<button  type="button">'
-        .tep_image_button('button_url.gif',IMAGE_CREATE)
-        .'</button>'.
+        .tep_image_button('button_url.gif',IMAGE_CREATE).
         "<a></td>";
       echo "<td class='dataTableContent'>"
         ."<a target='_blank' href='" 
