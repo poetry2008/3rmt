@@ -741,8 +741,37 @@ display:none;
 }
 .dataTableHeadingContent_pw a{ color:#FFFFFF; text-decoration:none; font-weight:bold;}
 .pw_textarea{ width:97%;}
-.nextdate_info a{}
-
+.popup-calendar {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 2px solid #000000;
+    color: #000000;
+    display: none;
+    overflow: hidden;
+    padding: 4px;
+    position: absolute;
+    width: 163px;
+    z-index: 9;
+}
+a.date-picker {
+    background: url("calendar.png") no-repeat scroll 0 0 transparent;
+    border: medium none;
+    color: #FFFFFF;
+    cursor: pointer;
+    float: left;
+    height: 16px;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    width: 16px;}
+div.date-picker-holder input {
+    float: left;
+}
+/*.date-picker-holder, div.date-picker-holder * {
+    margin: 0;
+    padding: 0;
+	float:left;
+}
+*/	
 
 
 

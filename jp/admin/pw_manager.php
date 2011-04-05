@@ -221,18 +221,17 @@ function mk_pwd(){
 }
 </script>
 <style type="text/css">
-/*a.date-picker{
-display:block;
-float:none;
+a.date-picker {
+    display: block;
+    float: none;
 }
-*/
 /*a.date-picker{ left:1000px; height:20px;}
-.popup-calendar {
+*//*.popup-calendar {
 top:20px;
 left:-95px;
 left:-163px;
-}
-*/.number{
+}*/
+.number{
 font-size:24px;
 font-weight:bold;
 width:20px;
