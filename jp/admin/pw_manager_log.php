@@ -72,7 +72,7 @@
   }
 ?>
 <!-- body_text //-->
-    <td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
       <td width="100%" colspan='2'>
   
@@ -87,17 +87,16 @@
               <input name="keywords" type="text" id="keywords" size="40" value="<?php if(isset($_GET['keywords'])) echo stripslashes($_GET['keywords']); ?>">
               <select name="search_type" onChange='search_type_changed(this)'>
                 <option value="none">--選択してください--</option>
-                <option value="title">title</option>
-                <option value="priority">priority</option>
-                <option value="url">url</option>
-                <option value="loginurl">loginur</option>
-                <option value="username">username</option>
-                <option value="password">password</option>
-                <option value="comment">comment</option>
-                <option value="memo">memo</option>
-                <option value="privilege">privilege</option>
-                <option value="operator">operator</option>
-                <option value="site_id">site_id</option>
+                <option value="title">タイトル</option>
+                <option value="priority">重</option>
+                <option value="url">URL</option>
+                <option value="loginurl">Login</option>
+                <option value="username">ID</option>
+                <option value="password">PW</option>
+                <option value="comment">コメント</option>
+                <option value="memo">メモ</option>
+                <option value="operator">管理者</option>
+                <option value="site_id">サイト名</option>
               </select>
               </form>
             </td>
@@ -315,9 +314,11 @@
     <tr>
        <td colspan="9" align="right">
          <?php
-           echo "<a href='".tep_href_link(FILENAME_PW_MANAGER,'pw_id='.$pw_id)."'>"; 
-           echo tep_image_button('button_back.gif',TEXT_BACK);
-           echo "</a>";
+          echo "<button type='button'
+          onclick=\"location.href='".
+          tep_href_link(FILENAME_PW_MANAGER,'pw_id='.$pw_id) 
+          ."'\">" .
+          TEXT_BUTTON_BACK."</button>"; 
          ?>
        </td>
     </tr>
@@ -395,23 +396,42 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('text' => TEXT_INFO_DELETE_INTRO);
       $contents[] = array('text' => '<br><b>' . $pwInfo->title . '</b>');
       $contents[] = array('align' => 'center', 'text' => '<br>' .
+          "<button type='submit' >".TEXT_BUTTON_DELETE."</button>"
+          . '&nbsp;' .
+          "<button type='button'
+          onclick=\"location.href='".
+          tep_href_link(FILENAME_PW_MANAGER_LOG, 'page=' . $_GET['page'] . '&pw_id=' .
+            $pwInfo->id)  
+          ."'\">" .
+          TEXT_BUTTON_CLEAR."</button>" 
+          );
+          /*
           tep_image_submit('button_delete.gif', IMAGE_DELETE) . '&nbsp;<a href="' .
           tep_href_link(FILENAME_PW_MANAGER_LOG, 'page=' . $_GET['page'] . '&pw_l_id=' .
             $pwInfo->id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+            */
       break;
   default:
       $heading[] = array('text' => '');
-      $contents[] = array('align' => 'center', 'text' => '<br>' .'<a href="' .
+      $contents[] = array('align' => 'center', 'text' => '<br>'.
+          "<button type='button'
+          onclick=\"location.href='".
           tep_href_link(FILENAME_PW_MANAGER_LOG,
-            'action=show&pw_l_id='.$pwInfo->id.'&'.tep_get_all_get_params(array('pw_l_id','action','search_type','keywords'))).'">' .
-          tep_image_button('button_show.gif', IMAGE_CANCEL) . '</a>&nbsp;<a href="'.
+            'action=show&pw_l_id='.$pwInfo->id.'&'.tep_get_all_get_params(array('pw_l_id','action','search_type','keywords')))
+          ."'\">" .
+          TEXT_BUTTON_SHOW."</button>"
+          .'&nbsp;'.
+          "<button type='button'
+          onclick=\"location.href='".
           tep_href_link(FILENAME_PW_MANAGER_LOG,
-            'action=delete&pw_l_id='.$pwInfo->id.'&'.tep_get_all_get_params(array('pw_l_id','action','search_type','keywords'))).'">' .
-          tep_image_button('button_delete.gif', IMAGE_CANCEL) . '</a>');
+            'action=delete&pw_l_id='.$pwInfo->id.'&'.tep_get_all_get_params(array('pw_l_id','action','search_type','keywords')))
+          ."'\">" .
+          TEXT_BUTTON_DELETE."</button>"
+          );
       $contents[] = array('text' => '<br>' . TEXT_INFO_COMMENT . '<br>' .
-          tep_draw_textarea_field('comment', 'soft', '30', '5', $pwInfo->comment, ''));
+          tep_draw_textarea_field('comment', 'soft', '30', '5', $pwInfo->comment, 'class="pw_textarea"'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_MEMO . '<br>' .
-          tep_draw_textarea_field('memo', 'soft', '30', '5', $pwInfo->memo, ''));
+          tep_draw_textarea_field('memo', 'soft', '30', '5', $pwInfo->memo, 'class="pw_textarea"'));
       $contents[] = array('align' => '','text' => '<br>' . TEXT_INFO_CREATED .  '&nbsp;&nbsp;&nbsp;' .
           $pwInfo->created_at);
       $contents[] = array('align' => '','text' => '<br>' . TEXT_INFO_UPDATED . '&nbsp;&nbsp;&nbsp;' .

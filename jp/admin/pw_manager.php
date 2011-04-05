@@ -334,7 +334,7 @@ float:left;
   }
 ?>
 <!-- body_text //-->
-    <td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
       <td width="100%" colspan='2'>
   
@@ -350,17 +350,16 @@ float:left;
               <input name="keywords" type="text" id="keywords" size="40" value="<?php if(isset($_GET['keywords'])) echo stripslashes($_GET['keywords']); ?>">
               <select name="search_type" onChange='search_type_changed(this)'>
                 <option value="none">--選択してください--</option>
-                <option value="title">title</option>
-                <option value="priority">priority</option>
-                <option value="url">url</option>
-                <option value="loginurl">loginur</option>
-                <option value="username">username</option>
-                <option value="password">password</option>
-                <option value="comment">comment</option>
-                <option value="memo">memo</option>
-                <option value="privilege">privilege</option>
-                <option value="operator">operator</option>
-                <option value="site_id">site_id</option>
+                <option value="title">タイトル</option>
+                <option value="priority">重</option>
+                <option value="url">URL</option>
+                <option value="loginurl">Login</option>
+                <option value="username">ID</option>
+                <option value="password">PW</option>
+                <option value="comment">コメント</option>
+                <option value="memo">メモ</option>
+                <option value="operator">管理者</option>
+                <option value="site_id">サイト名</option>
               </select>
               </form>
             </td>
@@ -645,9 +644,9 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('text' => '<br>' . TEXT_INFO_TITLE . '<br>' .
           tep_draw_input_field('title','','id="title"'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_PRIORITY . '<br>' .
-          tep_draw_radio_field('priority',1,true)."&nbsp;".TEXT_PRIORITY_1."".
-          tep_draw_radio_field('priority',2,false)."&nbsp;".TEXT_PRIORITY_2."".
-          tep_draw_radio_field('priority',3,false)."&nbsp;".TEXT_PRIORITY_3
+          tep_draw_radio_field('priority',1,true).TEXT_PRIORITY_1."".
+          tep_draw_radio_field('priority',2,false).TEXT_PRIORITY_2."".
+          tep_draw_radio_field('priority',3,false).TEXT_PRIORITY_3
           );
       $contents[] = array('text' => '<br>' . TEXT_INFO_SITE_ID . '<br>' .
           tep_site_pull_down("name='site_id'"));
@@ -662,35 +661,46 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $pwd_pattern_arr = explode(',',$pwd_pattern);
       $contents[] = array('text' => '<br>' . TEXT_INFO_PASSWORD . '<br>' .
           tep_draw_checkbox_field('pattern[]','english',
-            in_array('english',$pwd_pattern_arr)?true:false)."&nbsp;".TEXT_LOWER_ENGLISH.
+            in_array('english',$pwd_pattern_arr)?true:false).TEXT_LOWER_ENGLISH.
           tep_draw_checkbox_field('pattern[]','ENGLISH',
-            in_array('ENGLISH',$pwd_pattern_arr)?true:false)."&nbsp;".TEXT_POWER_ENGLISH.
+            in_array('ENGLISH',$pwd_pattern_arr)?true:false).TEXT_POWER_ENGLISH.
           tep_draw_checkbox_field('pattern[]','NUMBER',
-            in_array('NUMBER',$pwd_pattern_arr)?true:false)."&nbsp;".TEXT_NUMBER."<br>".
+            in_array('NUMBER',$pwd_pattern_arr)?true:false).TEXT_NUMBER."<br>".
           TEXT_PWD_LEN."&nbsp;".tep_draw_input_field('pwd_len',$pwd_len,'id="pwd_len"
             maxlength="2" size="2"')."<br>".
           "<div style='margin: 5px 0px;'>".
-          tep_image_button('button_make_pwd.gif',
-            IMAGE_MAKE_PWD,'onclick="mk_pwd()"')."</div>".
+          "<button type='button'
+          onclick=\"mk_pwd()\">" .
+          TEXT_BUTTON_MK_PWD."</button></div>".
           tep_draw_input_field('password',tep_get_new_random($pwd_pattern,$pwd_len),'id="password"'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_COMMENT . '<br>' .
-          tep_draw_textarea_field('comment', 'soft', '30', '5', '', ''));
+          tep_draw_textarea_field('comment', 'soft', '30', '5', '','class="pw_textarea"'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_MEMO . '<br>' .
-          tep_draw_textarea_field('memo', 'soft', '30', '5', '', ''));
-      $contents[] = array('text' => '<br>' . TEXT_INFO_NEXTDATE . '<br>' .
-          tep_draw_input_field('nextdate','','id="input_nextdate"'));
+          tep_draw_textarea_field('memo', 'soft', '30', '5', '', 'class="pw_textarea"'));
+      $contents[] = array('text' => '<br>' . TEXT_INFO_NEXTDATE . '<br><div
+          class="nextdate_info">' .
+          tep_draw_input_field('nextdate','','id="input_nextdate"')."</div>");
       $contents[] = array('text' => '<br>' . TEXT_INFO_PRIVILEGE . '<br>' .
-          tep_draw_checkbox_field('self',$ocertify->auth_user,true)."&nbsp;".TEXT_SELF.
-          tep_draw_checkbox_field('privilege_s','1',true)."&nbsp;Staff".
-          tep_draw_checkbox_field('privilege_c','1',true)."&nbsp;Chief<br>"
+          tep_draw_checkbox_field('self',$ocertify->auth_user,true).TEXT_SELF.
+          tep_draw_checkbox_field('privilege_s','1',true)."Staff".
+          tep_draw_checkbox_field('privilege_c','1',true)."Chief<br>"
           );
       /*
       $contents[] = array('text' => '<br>' . TEXT_INFO_OPERATOR . '<br>' .
           tep_draw_input_field('operator'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_ONOFF . '<br>' .
           tep_draw_input_field('onoff'));
-      */
       $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_insert.gif', IMAGE_INSERT) . '&nbsp;<a href="' . tep_href_link(FILENAME_PW_MANAGER, 'page=' . $_GET['page']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+      */
+      $contents[] = array('align' => 'center', 'text' => '<br>' . 
+          "<button type='submit' >".TEXT_BUTTON_QUERY."</button>"
+          . '&nbsp;' .
+          "<button type='button'
+          onclick=\"location.href='".
+          tep_href_link(FILENAME_PW_MANAGER, 'page=' . $_GET['page'])
+          ."'\">" .
+          TEXT_BUTTON_CLEAR."</button>" 
+          );
     break;
   case 'edit':
       
@@ -701,9 +711,9 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('text' => '<br>' . TEXT_INFO_TITLE . '<br>' .
           tep_draw_input_field('title',$pwInfo->title,'id="title"'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_PRIORITY . '<br>' .
-          tep_draw_radio_field('priority',1,$pwInfo->priority == '1'?true:false)."&nbsp;".TEXT_PRIORITY_1."".
-          tep_draw_radio_field('priority',2,$pwInfo->priority == '2'?true:false)."&nbsp;".TEXT_PRIORITY_2."".
-          tep_draw_radio_field('priority',3,$pwInfo->priority == '3'?true:false)."&nbsp;".TEXT_PRIORITY_3
+          tep_draw_radio_field('priority',1,$pwInfo->priority == '1'?true:false).TEXT_PRIORITY_1."".
+          tep_draw_radio_field('priority',2,$pwInfo->priority == '2'?true:false).TEXT_PRIORITY_2."".
+          tep_draw_radio_field('priority',3,$pwInfo->priority == '3'?true:false).TEXT_PRIORITY_3
           );
       $contents[] = array('text' => '<br>' . TEXT_INFO_SITE_ID . '<br>' .
           tep_site_pull_down("name='site_id'",$pwInfo->site_id));
@@ -718,31 +728,41 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $pwd_pattern_arr = explode(',',$pwd_pattern);
       $contents[] = array('text' => '<br>' . TEXT_INFO_PASSWORD . '<br>' .
           tep_draw_checkbox_field('pattern[]','english',
-            in_array('english',$pwd_pattern_arr)?true:false)."&nbsp;".TEXT_LOWER_ENGLISH.
+            in_array('english',$pwd_pattern_arr)?true:false).TEXT_LOWER_ENGLISH.
           tep_draw_checkbox_field('pattern[]','ENGLISH',
-            in_array('ENGLISH',$pwd_pattern_arr)?true:false)."&nbsp;".TEXT_POWER_ENGLISH.
+            in_array('ENGLISH',$pwd_pattern_arr)?true:false).TEXT_POWER_ENGLISH.
           tep_draw_checkbox_field('pattern[]','NUMBER',
-            in_array('NUMBER',$pwd_pattern_arr)?true:false)."&nbsp;".TEXT_NUMBER."<br>".
+            in_array('NUMBER',$pwd_pattern_arr)?true:false).TEXT_NUMBER."<br>".
           TEXT_PWD_LEN."&nbsp;".tep_draw_input_field('pwd_len',$pwd_len,'id="pwd_len"
             maxlength="2" size="2"')."<br>".
           "<div style='margin: 5px 0px;'>".
-          tep_image_button('button_make_pwd.gif',
-            IMAGE_MAKE_PWD,'onclick="mk_pwd()"')."</div>".
+          "<button type='button'
+          onclick=\"mk_pwd()\">" .
+          TEXT_BUTTON_MK_PWD."</button></div>".
           tep_draw_input_field('password',$pwInfo->password,'id="password"'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_COMMENT . '<br>' .
-          tep_draw_textarea_field('comment', 'soft', '30', '5', $pwInfo->comment, ''));
+          tep_draw_textarea_field('comment', 'soft', '30', '5', $pwInfo->comment, 'class="pw_textarea"'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_MEMO . '<br>' .
-          tep_draw_textarea_field('memo', 'soft', '30', '5', $pwInfo->memo, ''));
-      $contents[] = array('text' => '<br>' . TEXT_INFO_NEXTDATE . '<br>' .
-          tep_draw_input_field('nextdate',$pwInfo->nextdatei,'id="input_nextdate"'));
+          tep_draw_textarea_field('memo', 'soft', '30', '5', $pwInfo->memo, 'class="pw_textarea"'));
+      $contents[] = array('text' => '<br>' . TEXT_INFO_NEXTDATE . '<br><div
+          class="nextdate_info">' .
+          tep_draw_input_field('nextdate',$pwInfo->nextdate,'id="input_nextdate"')."</div>");
       $contents[] = array('text' => '<br>' . TEXT_INFO_PRIVILEGE . '<br>' .
-          tep_draw_checkbox_field('self',$ocertify->auth_user,$pwInfo->self)."&nbsp;".TEXT_SELF.
+          tep_draw_checkbox_field('self',$ocertify->auth_user,$pwInfo->self).TEXT_SELF.
           tep_draw_checkbox_field('privilege_s','1',$pwInfo->privilege_s?true:false).
-          "&nbsp;Staff".
+          "Staff".
           tep_draw_checkbox_field('privilege_c','1',$pwInfo->privilege_c?true:false).
-          "&nbsp;Chief<br>"
+          "Chief<br>"
           );
-      $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_insert.gif', IMAGE_INSERT) . '&nbsp;<a href="' . tep_href_link(FILENAME_PW_MANAGER, 'page=' . $_GET['page']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br>' . 
+          "<button type='submit' >".TEXT_BUTTON_QUERY."</button>"
+          . '&nbsp;' .
+          "<button type='button'
+          onclick=\"location.href='".
+          tep_href_link(FILENAME_PW_MANAGER, 'page=' . $_GET['page'])
+          ."'\">" .
+          TEXT_BUTTON_CLEAR."</button>" 
+          );
     break;
     case 'delete':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_PW_MANAGER . '</b>');
@@ -752,27 +772,44 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('text' => TEXT_INFO_DELETE_INTRO);
       $contents[] = array('text' => '<br><b>' . $pwInfo->title . '</b>');
       $contents[] = array('align' => 'center', 'text' => '<br>' .
-          tep_image_submit('button_delete.gif', IMAGE_DELETE) . '&nbsp;<a href="' .
+          /*
+          tep_image_submit('button_delete.gif', IMAGE_DELETE) 
+          */ 
+          "<button type='submit' >".TEXT_BUTTON_DELETE."</button>"
+          . '&nbsp;' .
+          "<button type='button'
+          onclick=\"location.href='".
           tep_href_link(FILENAME_PW_MANAGER, 'page=' . $_GET['page'] . '&pw_id=' .
-            $pwInfo->id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+            $pwInfo->id)  
+          ."'\">" .
+          TEXT_BUTTON_CLEAR."</button>" 
+          );
       break;
   default:
       $heading[] = array('text' => '');
-      $contents[] = array('align' => 'center', 'text' => '<br>' .'<a href="' .
-          tep_href_link(FILENAME_PW_MANAGER,
-            'action=edit&pw_id='.$pwInfo->id.'&'.tep_get_all_get_params(array('pw_id','action','search_type','keywords'))).'">' .
-          tep_image_button('button_edit.gif', IMAGE_CANCEL) . '</a>&nbsp;<a href="'.
-          tep_href_link(FILENAME_PW_MANAGER,
-            'action=delete&pw_id='.$pwInfo->id.'&'.tep_get_all_get_params(array('pw_id','action','search_type','keywords'))).'">' .
-          tep_image_button('button_delete.gif', IMAGE_CANCEL) . '</a>&nbsp;<a
-          href="' . 
+      $contents[] = array('align' => 'center', 'text' => '<br>' .'' .
+          "<button type='button'
+          onclick=\"location.href='".tep_href_link(FILENAME_PW_MANAGER,
+            'action=edit&pw_id='.$pwInfo->id.'&'.tep_get_all_get_params(array('pw_id','action','search_type','keywords')))."'\">" .
+          TEXT_BUTTON_EDIT."</button>"
+          . '&nbsp;'.
+          "<button type='button'
+          onclick=\"location.href='".
+          tep_href_link(FILENAME_PW_MANAGER,'action=delete&pw_id='.$pwInfo->id.'&'.tep_get_all_get_params(array('pw_id','action','search_type','keywords')))
+          ."'\">" .
+          TEXT_BUTTON_DELETE."</button>"
+          . '&nbsp;' . 
+          "<button type='button'
+          onclick=\"location.href='".
           tep_href_link(FILENAME_PW_MANAGER_LOG,
-            'pw_id='.$pwInfo->id).'">' .
-          tep_image_button('button_history.gif', IMAGE_CANCEL) . '</a>');
+            'pw_id='.$pwInfo->id)
+          ."'\">" .
+          TEXT_BUTTON_HISTORY."</button>"
+          );
       $contents[] = array('text' => '<br>' . TEXT_INFO_COMMENT . '<br>' .
-          tep_draw_textarea_field('comment', 'soft', '30', '5', $pwInfo->comment, ''));
+          tep_draw_textarea_field('comment', 'soft', '30', '5', $pwInfo->comment, 'class="pw_textarea"'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_MEMO . '<br>' .
-          tep_draw_textarea_field('memo', 'soft', '30', '5', $pwInfo->memo, ''));
+          tep_draw_textarea_field('memo', 'soft', '30', '5', $pwInfo->memo, 'class="pw_textarea"'));
       $contents[] = array('align' => '','text' => '<br>' . TEXT_INFO_CREATED .  '&nbsp;&nbsp;&nbsp;' .
           $pwInfo->created_at);
       $contents[] = array('align' => '','text' => '<br>' . TEXT_INFO_UPDATED . '&nbsp;&nbsp;&nbsp;' .

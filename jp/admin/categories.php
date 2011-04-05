@@ -74,8 +74,11 @@
                                  'products_attention_5'      => tep_db_prepare_input($_POST['products_attention_5']),
                                  'products_price'            => tep_get_bflag_by_product_id($products_id) ? 0 - tep_db_prepare_input($_POST['products_price']) : tep_db_prepare_input($_POST['products_price']));
         tep_db_perform(TABLE_PRODUCTS, $update_sql_data, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
-
-        tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $_GET['cPath'] . '&pID=' . $products_id));
+        if ($_GET['from'] == 'admin') {
+          tep_redirect(tep_href_link(FILENAME_CATEGORIES_ADMIN, 'cPath=' . $_GET['cPath']));
+        } else {
+          tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $_GET['cPath'] . '&pID=' . $products_id));
+        }
         break;
       case 'upload_keyword':
         //删除没有关系的mission 
@@ -1858,7 +1861,7 @@ function get_cart_products(){
       $categories_id = $cpath_array[0];
       $current_categories_id = $cpath_array[count($cpath_array)-1];
       $calc = tep_db_fetch_array(tep_db_query("select * from set_auto_calc where parent_id='".$current_categories_id."'"));
-      echo tep_draw_form($form_action, FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $_GET['pID'] . '&page='.$_GET['page'].'&action=' . $form_action, 'post', 'enctype="multipart/form-data" onSubmit="return check_price(\'pp\', '.$pInfo->products_price.', '.($calc?$calc['percent']:0).');"');
+      echo tep_draw_form($form_action, FILENAME_CATEGORIES, 'from='.$_GET['from'].'&cPath=' . $cPath . '&pID=' . $_GET['pID'] . '&page='.$_GET['page'].'&action=' . $form_action, 'post', 'enctype="multipart/form-data" onSubmit="return check_price(\'pp\', '.$pInfo->products_price.', '.($calc?$calc['percent']:0).');"');
     } else {
       echo tep_draw_form($form_action, FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $_GET['pID'] . '&page='.$_GET['page'].'&action=' . $form_action, 'post', 'enctype="multipart/form-data" onSubmit="return mess();"');
     }
@@ -2158,8 +2161,13 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
           $back_url_params = '';
         }
       } else {
-        $back_url = FILENAME_CATEGORIES;
-        $back_url_params = 'cPath=' . $cPath . '&pID=' . $pInfo->products_id;
+        if ($_GET['from'] == 'admin') {
+          $back_url = FILENAME_CATEGORIES_ADMIN;
+          $back_url_params = 'cPath=' . $cPath;
+        } else {
+          $back_url = FILENAME_CATEGORIES;
+          $back_url_params = 'cPath=' . $cPath . '&pID=' . $pInfo->products_id;
+        }
       }
 ?>
         <tr>

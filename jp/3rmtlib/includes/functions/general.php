@@ -50,12 +50,6 @@ function forward404()
   exit;
   //throw new Exception();
 }
-function forward404_paypal()
-{
-  header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
-  require(DIR_WS_MODULES  . 'paypal_404.html');
-  exit;
-}
 
 //在条件成立的时候，404
 function forward404If($condition)
@@ -3595,70 +3589,59 @@ function tep_get_products_by_shopiing_cart($products){
 /**
  * Send HTTP POST Request
  *
- * @param	string	The API method name
- * @param	string	The POST Message fields in &name=value pair format
- * @return	array	Parsed HTTP Response body
+ * @param string  The API method name
+ * @param string  The POST Message fields in &name=value pair format
+ * @return  array Parsed HTTP Response body
  */
 function PPHttpPost($methodName_, $nvpStr_) {
-  //	global $environment;
-  //日本删除代码
-    $environment = defined('paypal_environment')?paypal_environment:'sandbox';
-  //日本删除代码 结束
+  //  global $environment;
+
+  // Set up your API credentials, PayPal end point, and API version.
+  $API_UserName = urlencode(my_api_username);
+  $API_Password = urlencode(my_api_password);
+  $API_Signature = urlencode(my_api_signature);
+  $API_Endpoint = "https://api-3t.paypal.com/nvp";
 
 
-	// Set up your API credentials, PayPal end point, and API version.
-	$API_UserName = urlencode(my_api_username);
-	$API_Password = urlencode(my_api_password);
-	$API_Signature = urlencode(my_api_signature);
-	$API_Endpoint = "https://api-3t.paypal.com/nvp";
+  $version = urlencode('51.0');
+  // Set the curl parameters.
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL, $API_Endpoint);
+  curl_setopt($ch, CURLOPT_VERBOSE, 1);
+  // Turn off the server and peer verification (TrustManager Concept).
+  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+  curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
 
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($ch, CURLOPT_POST, 1);
 
-  //日本删除代码
-	if("sandbox" === $environment || "beta-sandbox" === $environment) {
-		$API_Endpoint = "https://api-3t.$environment.paypal.com/nvp";
-	}
-  //日本删除代码 结束
+  // Set the API operation, version, and API signature in the request.
+  $nvpreq = "METHOD=$methodName_&VERSION=$version&PWD=$API_Password&USER=$API_UserName&SIGNATURE=$API_Signature".$nvpStr_;
 
+  // Set the request as a POST FIELD for curl.
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $nvpreq);
 
-	$version = urlencode('51.0');
-	// Set the curl parameters.
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $API_Endpoint);
-	curl_setopt($ch, CURLOPT_VERBOSE, 1);
-	// Turn off the server and peer verification (TrustManager Concept).
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+  // Get response from the server.
+  $httpResponse = curl_exec($ch);
 
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($ch, CURLOPT_POST, 1);
+  if(!$httpResponse) {
+    exit("$methodName_ failed: ".curl_error($ch).'('.curl_errno($ch).')');
+  }
 
-	// Set the API operation, version, and API signature in the request.
-	$nvpreq = "METHOD=$methodName_&VERSION=$version&PWD=$API_Password&USER=$API_UserName&SIGNATURE=$API_Signature".$nvpStr_;
+  // Extract the response details.
+  $httpResponseAr = explode("&", $httpResponse);
 
-	// Set the request as a POST FIELD for curl.
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $nvpreq);
+  $httpParsedResponseAr = array();
+  foreach ($httpResponseAr as $i => $value) {
+    $tmpAr = explode("=", $value);
+    if(sizeof($tmpAr) > 1) {
+      $httpParsedResponseAr[$tmpAr[0]] = $tmpAr[1];
+    }
+  }
 
-	// Get response from the server.
-	$httpResponse = curl_exec($ch);
+  if((0 == sizeof($httpParsedResponseAr)) || !array_key_exists('ACK', $httpParsedResponseAr)) {
+    exit("Invalid HTTP Response for POST request($nvpreq) to $API_Endpoint.");
+  }
 
-	if(!$httpResponse) {
-		exit("$methodName_ failed: ".curl_error($ch).'('.curl_errno($ch).')');
-	}
-
-	// Extract the response details.
-	$httpResponseAr = explode("&", $httpResponse);
-
-	$httpParsedResponseAr = array();
-	foreach ($httpResponseAr as $i => $value) {
-		$tmpAr = explode("=", $value);
-		if(sizeof($tmpAr) > 1) {
-			$httpParsedResponseAr[$tmpAr[0]] = $tmpAr[1];
-		}
-	}
-
-	if((0 == sizeof($httpParsedResponseAr)) || !array_key_exists('ACK', $httpParsedResponseAr)) {
-		exit("Invalid HTTP Response for POST request($nvpreq) to $API_Endpoint.");
-	}
-
-	return $httpParsedResponseAr;
+  return $httpParsedResponseAr;
 }
