@@ -20,6 +20,8 @@
                    //'<a href="' . tep_href_link(FILENAME_CL) . '" class="menuBoxContent_Link">' . BOX_TOOLS_CL . '</a><br>' .
                    '<a href="' . tep_href_link('bank_cl.php') . '" class="menuBoxContent_Link">銀行営業日</a><br>' .
                    '<a href="' . tep_href_link(FILENAME_CACHE) . '" class="menuBoxContent_Link">' . BOX_TOOLS_CACHE . '</a><br>' .
+                   '<a href="' . tep_href_link(FILENAME_PW_MANAGER) . '"
+                   class="menuBoxContent_Link">' . 'パスワード管理' . '</a><br>' .
                    '<a href="' . tep_href_link(FILENAME_DEFINE_LANGUAGE) . '" class="menuBoxContent_Link">' . BOX_TOOLS_DEFINE_LANGUAGE . '</a><br>' .
                    // '<a href="' . tep_href_link(FILENAME_FILE_MANAGER) . '" class="menuBoxContent_Link">' . BOX_TOOLS_FILE_MANAGER . '</a><br>' .
                    '<a href="' . tep_href_link(FILENAME_MAIL) . '" class="menuBoxContent_Link">' . BOX_TOOLS_MAIL . '</a><br>' .
