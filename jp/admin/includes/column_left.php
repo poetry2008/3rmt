@@ -6,7 +6,7 @@
 <script type="text/javascript" src="includes/jquery-1.3.2.min.js"></script>
 <script>
 $(document).ready(function(){
-  $('.columnLeft').parent().after('<td  style="padding-bottom:558px; *padding-bottom:510px;"><a href="javascript:void(0);" class="leftright" onclick="toggle_leftColumn();"><img src="includes/languages/japanese/images/boult.gif" alt="img"></a></td>');
+  $('.columnLeft').parent().after('<td valign="top" style="padding-top:50px; *padding-top:48px;"><a href="javascript:void(0);" class="leftright" onclick="toggle_leftColumn();"><img src="includes/languages/japanese/images/boult.gif" alt="img"></a></td>');
 });
 function toggle_leftColumn()
 {
