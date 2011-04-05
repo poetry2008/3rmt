@@ -2014,9 +2014,9 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
     }
     ?>
       <tr>
-        <th>平均</th>
-        <td class="main" align="right"><?php echo $sum_quantity/$sum_i;?>個</td>
-        <td class="main" align="right"><?php echo display_price($sum_price/$sum_i);?>円</td>
+        <th></th>
+        <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left">合計:</td><td align="right"><?php echo $sum_quantity;?>個</td></tr></table></td>
+        <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left">平均:</td><td align="right"><?php echo display_price($sum_price/$sum_i);?>円</td></tr></table></td>
         <td class="main"> </td>
       </tr>
       <?php
@@ -2068,9 +2068,9 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
     }
     ?>
       <tr>
-        <th>平均</th>
-        <td class="main" align="right"><?php echo $sum_quantity/$sum_i;?>個</td>
-        <td class="main" align="right"><?php echo display_price($sum_price/$sum_i);?>円</td>
+        <th></th>
+        <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left">合計:</td><td align="right"><?php echo $sum_quantity;?>個</td></tr></table></td>
+        <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left">平均:</td><td align="right"><?php echo display_price($sum_price/$sum_i);?>円</td></tr></table></td>
         <td class="main"> </td>
       </tr>
     <?php
