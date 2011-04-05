@@ -5,19 +5,6 @@
 include("includes/application_top.php");
 
 if($_POST['updata'] == 'on') {
-  /*
-  echo "<pre>";
-  print_r($_POST);
-  exit;
-  /**/
-  /*
-  $mm_1 = "";
-  for($i=1; $i<32; $i++) {
-    $mm_1 .= $_POST[$i];
-  }
-  tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_1."' where cl_ym = '".$_POST['ymd1']."'");
-  print("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_1."' where cl_ym = '".$_POST['ymd1']."'");
-  */
 
   $mm_2 = "";
   for($j=201; $j<232; $j++) {
@@ -132,18 +119,15 @@ if($_GET['action'] == 'success') {
     <input type="hidden" name="date" value="<?php echo $_GET['date'];?>">
     <?php
     //今日
-    
-    $now = $_GET['date']?$_GET['date']:date('Y-m-d');
-    $m_num = date('m',strtotime($now)) - 1;
-    $year = date('Y',strtotime($now));
+    $now = $_GET['date']?$_GET['date']:date('Y-m');
+    $m_num = date('m',strtotime($now.'-1 00:00:00')) - 1;
+    $year = date('Y',strtotime($now.'-1 00:00:00'));
 
     //----------------------------------------------------
     for($ii = 1;$ii<7;$ii++){
     echo '<br><br>';
     //----------------------------------------------------
-    
     $today2 = getdate(mktime(0,0,0,$m_num+$ii,1,$year));
-    
     $m_num2 = $today2[mon];
     $d_num2 = $today2[mday];
     $year2 = $today2[year];
@@ -156,7 +140,6 @@ if($_GET['action'] == 'success') {
     //月のデータ取得
     $ymd2 = date("Ym", mktime(0,0,0,$m_num2,1,$year2));
     $calen_query2 = tep_db_query("select cl_value from ".TABLE_BANK_CALENDAR." where cl_ym = '".$ymd2."'");
-    //echo("select cl_value from ".TABLE_BANK_CALENDAR." where cl_ym = '".$ymd2."'");
     $calen2 = tep_db_fetch_array($calen_query2);
     
     $array2 = array(
