@@ -36,3 +36,5 @@ define('TEXT_NUMBER','数字');
 define('TEXT_PWD_LEN','PW桁数');
 define('TEXT_INFO_HEADING_DELETE_PW_MANAGER_LOG','削除');
 define('TEXT_INFO_HEADING_SHOW_IDPW_LOG','詳細');
+define('TEXT_INFO_OPRATER','管理者');
+define('TEXT_SELF','本人');

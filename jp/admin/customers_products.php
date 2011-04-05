@@ -25,13 +25,17 @@
       case 'init':
         $res = array();
         if (is_array($_SESSION['customers_products']['orders_selected'][$_GET['customers_id']])) {
+          $i = 0;
           foreach ($_SESSION['customers_products']['orders_selected'][$_GET['customers_id']] as $okey => $ovalue) {
             $print_order_query = tep_db_query("select o.torihiki_date, op.products_name, op.final_price, op.products_quantity from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op  where o.orders_id = op.orders_id and o.orders_id = '".$ovalue."'");     
+            
             while ($print_order_res = tep_db_fetch_array($print_order_query)) {
               $print_order_res['torihiki_date'] = date('Y/n/j',strtotime($print_order_res['torihiki_date']));
-              $res[] = $print_order_res;
+              $res[strtotime($print_order_res['torihiki_date'])+$i] = $print_order_res;
+              $i ++;
             }
           }
+          ksort($res);
         }
         echo json_encode($res);
         exit;
@@ -177,16 +181,16 @@
   }
   
   function table_footer (num,pagebreak) {
-    html = "</table>\n";
-    html += "    <table width=\"100%\" class=\"text_x\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"";
+    html = "</table>";
+    html += "<table width=\"100%\" class=\"text_x\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"";
     if (pagebreak) {
       html += " style=\"page-break-after:always;\"";
     }
     html += "><tr><td class=\"text_x1\"></td>\n";
     html += "    <td class=\"text_x2\" align=\"center\">小計</td>\n";
     html += "    <td class=\"text_x3 cost_display\" align=\"right\" id=\"cost_display_"+num+"\" ></td>\n";
-    html += "  </tr></table>\n";
-    html += "</div>\n";
+    html += "  </tr></table>";
+    html += "</div>";
     return html;
   }
 
@@ -310,7 +314,7 @@
           fp = parseFloat($(this).find('.price input').val()) 
             * parseFloat($(this).find('.quantity input').val()) 
             * parseFloat($(this).find('.percent_select').val());
-          $(this).find('.fprice').html(fp>0?number_format(fp.toFixed(0)):('<font color="red">'+number_format(fp.toFixed(2))+'</font>'));
+          $(this).find('.fprice').html(fp>0?number_format(fp.toFixed(0)):('<font color="red">'+number_format(fp.toFixed(0))+'</font>'));
           cost += fp;
           $(this).find('.number').html(no);
           no ++;
@@ -456,9 +460,9 @@
         <tr>
           <td width="30"></td>
           <td width="292" valign="top" align="left" class="input_print03">
-          <font size="3"><u><textarea id="data5" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-family:メイリオ; font-size:14px; width:270px; overflow-y:visible;" onChange="textarea_change()"></textarea></u></font>
-          <font size="3"><u><textarea id="data6" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-family:メイリオ; font-size:14px; overflow-y:visible; width:200px;" onChange="textarea_change()"></textarea></u></font>
-          <font size="3"><u><textarea id="data7" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-family:メイリオ; font-size:14px; overflow-y:visible; width:200px;" onChange="textarea_change()"></textarea></u></font>
+          <font size="3"><u><textarea id="data5" type="text" rows="6" style="font-family:メイリオ; font-size:14px; width:270px; overflow-y:visible;" onChange="textarea_change()"></textarea></u></font>
+          <font size="3"><u><textarea id="data6" type="text" rows="6" style="font-family:メイリオ; font-size:14px; overflow-y:visible; width:200px;" onChange="textarea_change()"></textarea></u></font>
+          <font size="3"><u><textarea id="data7" type="text" rows="6" style="font-family:メイリオ; font-size:14px; overflow-y:visible; width:200px;" onChange="textarea_change()"></textarea></u></font>
           </td>
         </tr>
 </tr>
@@ -470,7 +474,7 @@
       <table border="0" width="50%" align="right" class="print_innput" style=" margin-top:10px;">
       <tr><td height="4"></td></tr>
         <tr><td height="30" valign="bottom" align="right"><input name="textfield" type="text" id="textfield" value="<?php echo str_replace(array(' 月曜日', ' 火曜日', ' 水曜日', ' 木曜日', ' 金曜日', ' 土曜日', ' 日曜日'),'',tep_date_long(date('Y-m-d H:i:s')));?>" style="font-family:メイリオ; height:20px; width:150px; text-align:right; font-size:16px;  margin:5px 0 20px 20px;"></td></tr>
-        <tr><td align="right"><textarea id="data10" type="text" rows="2" value="カ)アールエムティエイチアイ" style="font-size:14px; overflow-y:visible; width:180px; font-family:メイリオ; text-align:right;" ></textarea></td></tr>
+        <tr><td align="right"><textarea id="data10" type="text" rows="2" style="font-size:14px; overflow-y:visible; width:180px; font-family:メイリオ; text-align:right;" ></textarea></td></tr>
         <tr><td align="right" class="input_print02">
   <font size="2">
   <input name="textfield" type="text" id="email" value="" onChange="$('#email_display').html(this.value)" onpropertychange="$('#email_display').html(this.value)" onBlur="$('#email_display').html(this.value)" style="font-family:メイリオ; text-align:right; font-size:12px; width:300px;">
@@ -481,7 +485,7 @@
           <tr><td style="border-bottom:#000000 1px solid;  padding-top:4px;" align="center">
           <input name="textfield" type="text" id="data11" value="" style="font-family:メイリオ; width:110px; font-size:12px; padding-top:4px; text-align:center; height:20px;">
           </td></tr>
-          <tr><td colspan="6" align="center" valign="middle"><textarea id="responsible" type="text" rows="6" value="カ)アールエムティエイチアイ"  style=" width:100px; font-size:20px; overflow-y:visible; text-align:center; padding:15px 0;" onChange="textarea_change()"></textarea></td></tr>
+          <tr><td colspan="6" align="center" valign="middle"><textarea id="responsible" type="text" rows="6" style=" width:100px; font-size:20px; overflow-y:visible; text-align:center; padding:15px 0;" onChange="textarea_change()"></textarea></td></tr>
           </table>
         </td></tr>
       </table>

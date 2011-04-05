@@ -706,13 +706,16 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         // 买取商品大于实数
         tep_db_perform('products',array(
           'products_real_quantity' => 0,
-          'products_virtual_quantity' => $p['products_virtual_quantity'] - ((int)$add_product_quantity - $p['products_real_quantity'])
+          //'products_virtual_quantity' => 0,
+          //'products_virtual_quantity' => $p['products_virtual_quantity'] - ((int)$add_product_quantity + $p['products_real_quantity'])
+          'products_virtual_quantity' => $p['products_virtual_quantity'] - (int)$add_product_quantity + $p['products_real_quantity']
         ),
         'update',
         "products_id = '" . $add_product_products_id . "'");
       } else {
         tep_db_perform('products',array(
-          'products_real_quantity' => $p['products_virtual_quantity'] - (int)$add_product_quantity
+          'products_real_quantity' =>$p['products_real_quantity']  - (int)$add_product_quantity
+         // 'products_real_quantity' =>$p['products_real_quantity']+ $p['products_virtual_quantity'] - (int)$add_product_quantity
         ),
         'update',
         "products_id = '" . $add_product_products_id . "'");

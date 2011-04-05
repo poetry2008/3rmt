@@ -8,6 +8,7 @@
 .data td{ background-color:#fff!important;}
 .link_02 { margin:0 3px; background-color:#ccc!important; text-align:center;}
 textarea{ border:0!important;}
+.print_none {display:none!important;}
 .print_none input ,.print_none select{ display:none!important;}
 .print_none a{ display:none!important;}
 .link_01 a{display:none!important;}

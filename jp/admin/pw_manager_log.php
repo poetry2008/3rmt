@@ -295,19 +295,7 @@
       echo "<td class='dataTableContent'>".$pw_manager_row['title']."</td>";
       echo "<td class='dataTableContent'>".$pw_manager_row['username']."</td>";
       echo "<td class='dataTableContent'>".$pw_manager_row['password']."</td>";
-      $privilege_arr = array();
-      if($pw_manager_row['privilege_s']){
-        $privilege_arr[] = 'staff';
-      }
-      if($pw_manager_row['privilege_c']){
-        $privilege_arr[] = 'chief';
-      }
-      if(count($privilege_arr)>1){
-        $privilege_str = implode(',',$privilege_arr);
-      }else{
-        $privilege_str = $privilege_arr[0];
-      }
-      echo "<td class='dataTableContent'>".$privilege_str."</td>";
+      echo "<td class='dataTableContent'>".$pw_manager_row['operator']."</td>";
       echo "<td class='dataTableContent'>".$pw_manager_row['nextdate']."</td>";
       echo '<td class="dataTableContent" align="right">';
       if ( isset($pwInfo) && (is_object($pwInfo)) && ($pw_manager_row['id'] == $pwInfo->id) ) { 
@@ -324,7 +312,15 @@
 
 
     ?>
-
+    <tr>
+       <td colspan="9" align="right">
+         <?php
+           echo "<a href='".tep_href_link(FILENAME_PW_MANAGER,'pw_id='.$pw_id)."'>"; 
+           echo tep_image_button('button_back.gif',TEXT_BACK);
+           echo "</a>";
+         ?>
+       </td>
+    </tr>
     <tr>
       <td colspan="9">
         <table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -416,10 +412,12 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           tep_draw_textarea_field('comment', 'soft', '30', '5', $pwInfo->comment, ''));
       $contents[] = array('text' => '<br>' . TEXT_INFO_MEMO . '<br>' .
           tep_draw_textarea_field('memo', 'soft', '30', '5', $pwInfo->memo, ''));
-      $contents[] = array('align' => 'center','text' => '<br>' . TEXT_INFO_CREATED . '<br>' .
+      $contents[] = array('align' => '','text' => '<br>' . TEXT_INFO_CREATED .  '&nbsp;&nbsp;&nbsp;' .
           $pwInfo->created_at);
-      $contents[] = array('align' => 'center','text' => '<br>' . TEXT_INFO_UPDATED . '<br>' .
+      $contents[] = array('align' => '','text' => '<br>' . TEXT_INFO_UPDATED . '&nbsp;&nbsp;&nbsp;' .
           $pwInfo->updated_at);
+      $contents[] = array('align' => '','text' => '<br>' . TEXT_INFO_OPRATER . '&nbsp;&nbsp;&nbsp;' .
+          $pwInfo->operator);
     break;
 }
   if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {

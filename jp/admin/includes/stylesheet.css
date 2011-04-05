@@ -308,6 +308,8 @@ body {
 	font-size: 12px;                                /* フォントサイズ */
 	color: #000000;                                 /* フォントカラー */
 	background-color: #FFD700;                      /* 背景色 */
+	padding-left:8px;                     
+
 }
 /* ---------------------------
 .[TD]：情報ボックス（コンテンツ） - 右側に表示される、一覧から選んだ項目の情報
@@ -317,6 +319,7 @@ body {
 	font-size: 12px;                                /* フォントサイズ */
 	color: #000000;                                 /* フォントカラー */
 	background-color: #FFD700;                      /* 背景色 */
+	padding-left:8px;                     
 }
 /* message box */
 /* ---------------------------
@@ -736,3 +739,4 @@ display:none;
 .subcategory_tree{
 	*margin-top:-10px;
 }
+.dataTableHeadingContent_pw a{ color:#FFFFFF; text-decoration:none; font-weight:bold;}
