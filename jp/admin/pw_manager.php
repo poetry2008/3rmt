@@ -21,7 +21,7 @@
   }
   
   //403
-if(isset($pwid)&&$pwid&&!tep_can_edit_pw_manager($pwid)){
+if(isset($pwid)&&$pwid&&!tep_can_edit_pw_manager($pwid,$ocertify->auth_user)){
   header($_SERVER["SERVER_PROTOCOL"] . " 403 Forbidden");
   exit;
 }
