@@ -4462,3 +4462,23 @@ function tep_can_edit_pw_manager($pwid){
    return false;
   }
 }
+
+function make_blank_url($url,$page_url){
+  $d_url = urlencode($url);
+  $url = tep_href_link($page_url,'action=redirect&url='.$url);
+  return $url;
+}
+function tep_get_pwm_info($idpw,$from=''){
+  $sql = "select * from ".TABLE_IDPW." where id = '".$idpw."'";
+  $query = tep_db_query($sql);
+  if($row = tep_db_fetch_array($query)){
+   if($from){
+     return $row[$from];
+   }else{
+     return $row;
+   }
+  }else{
+   return false;
+  }
+
+}

@@ -6,9 +6,11 @@
   define('MAX_DISPLAY_PW_MANAGER_RESULTS',20);
   $sort_where = '';
   if($ocertify->npermission == 7){
-    $sort_where = " and privilege_s = '1' ";
+    $sort_where = " and privilege_s = '1' and (self='' or
+      self='".$ocertify->auth_user."') ";
   }else if($ocertify->npermission == 10){
-    $sort_where = " and privilege_c = '1' ";
+    $sort_where = " and privilege_c = '1'  and (self='' or
+      self='".$ocertify->auth_user."') ";
   }
 
   if(isset($_GET['site_id'])&&$_GET['site_id']){
@@ -25,8 +27,12 @@ if(isset($pwid)&&$pwid&&!tep_can_edit_pw_manager($pwid)){
 }
 
   if (isset($_GET['action']) && $_GET['action']) {
+
     $user_info = tep_get_user_info($ocertify->auth_user);
     switch ($_GET['action']) {
+      case 'redirect':
+          tep_redirect(urldecode($_GET['url']));
+        break;
       case 'insert':
       case 'update':
           $privilege_str .= 'admin';
@@ -42,6 +48,7 @@ if(isset($pwid)&&$pwid&&!tep_can_edit_pw_manager($pwid)){
             'nextdate' => tep_db_prepare_input($_POST['nextdate']),
             'privilege_c' => tep_db_prepare_input($_POST['privilege_c']),
             'privilege_s' => tep_db_prepare_input($_POST['privilege_s']),
+            'self' => tep_db_prepare_input($_POST['self']),
             'privilege_a' => '1',
             'updated_at' => 'now()',
             'operator' => $user_info['name'],
@@ -117,12 +124,21 @@ if(isset($pwid)&&$pwid&&!tep_can_edit_pw_manager($pwid)){
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
+<script language="javascript" src="includes/javascript/datePicker.js"></script>
 <script language="javascript" >
-function copyCode(id){
-    var testCode=document.getElementById(id).innerHTML;
+$(function() {
+  $.datePicker.setDateFormat('ymd','-');
+  $('#input_nextdate').datePicker();
+});
+function copyCode(idpw,name){
+  var testCode;
+  $.post('<?php echo
+      tep_href_link(FILENAME_PWD_AJAX);?>',{'action':'load','idpw':idpw,'from':name}, function(data) {
+      testCode = data;
     if(copy2Clipboard(testCode)!=false){
         alert('<?php echo TEXT_COPY_OK;?>');
     }
+  });
 }
 copy2Clipboard=function(txt){
     if(window.clipboardData){
@@ -192,11 +208,108 @@ function mk_pwd(){
     }
   });
   var pwd_len = $('#pwd_len').val();
-  $.post('<?php echo tep_href_link(FILENAME_PWD_AJAX);?>',{'pattern':check,'pwd_len':pwd_len}, function(data) {
+  $.post('<?php echo tep_href_link(FILENAME_PWD_AJAX);?>',{'action':'make_pw','pattern':check,'pwd_len':pwd_len}, function(data) {
       $('#password').val(data);
   });
 }
 </script>
+<style type="text/css">
+a.date-picker{
+display:block;
+float:none;
+}
+.popup-calendar {
+top:20px;
+left:-95px;
+left:-163px;
+}
+.number{
+font-size:24px;
+font-weight:bold;
+width:20px;
+text-align:center;
+}
+form{
+margin:0;
+padding:0;
+}
+.alarm_input{
+width:80px;
+}
+.log{
+  border:#999 solid 1px;
+  background:#eee;
+  clear: both;
+}
+.log .content{
+  padding:3px;
+  font-size:12px;
+}
+.log .alarm{
+  display:none;
+  font-size:10px;
+  background:url(images/icons/alarm.gif) no-repeat left center;
+}
+.log .level{
+  font-size:10px;
+  font-weight:bold;
+  display:none;
+  width:100px;
+  *width:120px;
+}
+.log .level input{
+margin:0;
+padding:0;
+}
+.log .info{
+  font-size:10px;
+  background:#fff;
+  text-align:right;
+  /*
+  position:relative;
+  right:0;
+  bottom:0;
+  */
+  /*padding-left:18px;
+  background:url(images/icons/info.gif) no-repeat left center;*/
+}
+.info02{
+width:50px;
+}
+.log .action{
+text-align:center;
+  font-size:10px;
+}
+.edit_action{
+  display:none;
+/*float:right;*/
+  font-size:10px;
+line-height:24px;
+padding-right:5px;
+}
+.action a{
+padding:0 3px;
+}
+textarea,input{
+  font-size:14px;
+}
+textarea{
+  width:100%;
+}
+.alarm_on{
+  border:2px solid #ff8e90;
+  background:#ffe6e6;
+}
+.clr{
+clear:both;
+width:100%;
+height:5px;
+overflow:hidden;
+}
+.popup-calendar-wrapper{
+float:left;
+}
+</style>
 </head>
 <body>
 <!-- header //-->
@@ -394,7 +507,7 @@ function mk_pwd(){
     if(isset($site_id)&&$site_id){
     $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
-                             ,nextdate,privilege_a,privilege_c,privilege_s,operator,created_at,
+                             ,nextdate,privilege_a,privilege_c,self,privilege_s,operator,created_at,
                              updated_at,onoff from
                              ".TABLE_IDPW." where site_id='".$site_id."'
                              and onoff = '1' 
@@ -404,7 +517,7 @@ function mk_pwd(){
         isset($_GET['keywords'])&&$_GET['keywords']){
       $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
-                             ,nextdate,privilege_a,privilege_c,privilege_s,operator,created_at,
+                             ,nextdate,privilege_a,privilege_c,self,privilege_s,operator,created_at,
                              updated_at,onoff from
                              ".TABLE_IDPW." 
                              where ".$_GET['search_type']." like '%".
@@ -415,7 +528,7 @@ function mk_pwd(){
     }else{
     $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
-                             ,nextdate,privilege_a,privilege_c,privilege_s,operator,created_at,
+                             ,nextdate,privilege_a,privilege_c,self,privilege_s,operator,created_at,
                              updated_at,onoff from
                              ".TABLE_IDPW." 
                              where onoff = '1' 
@@ -451,13 +564,20 @@ function mk_pwd(){
       echo "<td class='dataTableContent' ".$onclick." >".$pw_manager_row['priority']."</td>";
       echo "<td class='dataTableContent' >"
         ."<a target='_blank' href='" 
-        .$pw_manager_row['loginurl']."'>"
-        .tep_image('images/url.gif') .
+        .make_blank_url($pw_manager_row['loginurl'],FILENAME_PW_MANAGER)."'>"
+        .'<button  type="button">'
+        .tep_image_button('button_url.gif',IMAGE_CREATE)
+        .'</button>'.
         "<a></td>";
-      echo "<td class='dataTableContent' ".$onclick." >".$pw_manager_row['title']."</td>";
+      echo "<td class='dataTableContent'>"
+        ."<a target='_blank' href='" 
+        .make_blank_url($pw_manager_row['url'],FILENAME_PW_MANAGER)."'>"
+        .$pw_manager_row['title']."</a></td>";
       echo "<td class='dataTableContent' id='user_".$i."'
-        onclick='copyCode(\"user_".$i."\")'>".$pw_manager_row['username']."</td>";
-      echo "<td class='dataTableContent' id='pwd_".$i."' onclick='copyCode(\"pwd_".$i."\")'>".$pw_manager_row['password']."</td>";
+        onclick='copyCode(\"".$pw_manager_row['id']."\",\"username\")'>".$pw_manager_row['username']."</td>";
+      echo "<td class='dataTableContent' id='pwd_".$i."'
+        onclick='copyCode(\"".$pw_manager_row['id']."\",\"password\")'>".$pw_manager_row['password']."</td>";
+      /*
       $privilege_arr = array();
       if($pw_manager_row['privilege_s']){
         $privilege_arr[] = 'staff';
@@ -471,6 +591,8 @@ function mk_pwd(){
         $privilege_str = $privilege_arr[0];
       }
       echo "<td class='dataTableContent'".$onclick." >".$privilege_str."</td>";
+      */
+      echo "<td class='dataTableContent'".$onclick." >".$pw_manager_row['operator']."</td>";
       echo "<td class='dataTableContent'".$onclick." >".$pw_manager_row['nextdate']."</td>";
       echo '<td class="dataTableContent" align="right">';
       if ( isset($pwInfo) && (is_object($pwInfo)) && ($pw_manager_row['id'] == $pwInfo->id) ) { 
@@ -552,8 +674,9 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('text' => '<br>' . TEXT_INFO_MEMO . '<br>' .
           tep_draw_textarea_field('memo', 'soft', '30', '5', '', ''));
       $contents[] = array('text' => '<br>' . TEXT_INFO_NEXTDATE . '<br>' .
-          tep_draw_input_field('nextdate'));
+          tep_draw_input_field('nextdate','','id="input_nextdate"'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_PRIVILEGE . '<br>' .
+          tep_draw_checkbox_field('self',$ocertify->auth_user,true)."&nbsp;".TEXT_SELF.
           tep_draw_checkbox_field('privilege_s','1',true)."&nbsp;Staff".
           tep_draw_checkbox_field('privilege_c','1',true)."&nbsp;Chief<br>"
           );
@@ -607,8 +730,9 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('text' => '<br>' . TEXT_INFO_MEMO . '<br>' .
           tep_draw_textarea_field('memo', 'soft', '30', '5', $pwInfo->memo, ''));
       $contents[] = array('text' => '<br>' . TEXT_INFO_NEXTDATE . '<br>' .
-          tep_draw_input_field('nextdate',$pwInfo->nextdate));
+          tep_draw_input_field('nextdate',$pwInfo->nextdatei,'id="input_nextdate"'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_PRIVILEGE . '<br>' .
+          tep_draw_checkbox_field('self',$ocertify->auth_user,$pwInfo->self)."&nbsp;".TEXT_SELF.
           tep_draw_checkbox_field('privilege_s','1',$pwInfo->privilege_s?true:false).
           "&nbsp;Staff".
           tep_draw_checkbox_field('privilege_c','1',$pwInfo->privilege_c?true:false).
@@ -645,10 +769,12 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           tep_draw_textarea_field('comment', 'soft', '30', '5', $pwInfo->comment, ''));
       $contents[] = array('text' => '<br>' . TEXT_INFO_MEMO . '<br>' .
           tep_draw_textarea_field('memo', 'soft', '30', '5', $pwInfo->memo, ''));
-      $contents[] = array('align' => 'center','text' => '<br>' . TEXT_INFO_CREATED . '<br>' .
+      $contents[] = array('align' => '','text' => '<br>' . TEXT_INFO_CREATED .  '&nbsp;&nbsp;&nbsp;' .
           $pwInfo->created_at);
-      $contents[] = array('align' => 'center','text' => '<br>' . TEXT_INFO_UPDATED . '<br>' .
+      $contents[] = array('align' => '','text' => '<br>' . TEXT_INFO_UPDATED . '&nbsp;&nbsp;&nbsp;' .
           $pwInfo->updated_at);
+      $contents[] = array('align' => '','text' => '<br>' . TEXT_INFO_OPRATER . '&nbsp;&nbsp;&nbsp;' .
+          $pwInfo->operator);
     break;
 }
   if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {

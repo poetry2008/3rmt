@@ -1,8 +1,8 @@
 <?php
-define('TEXT_PRIORITY','重要度');
-define('TEXT_INFO_PRIORITY','重要度');
-define('TEXT_LOGINURL','ログインURL');
-define('TEXT_INFO_LOGINURL','ログインURL');
+define('TEXT_PRIORITY','重');
+define('TEXT_INFO_PRIORITY','重');
+define('TEXT_LOGINURL','Login');
+define('TEXT_INFO_LOGINURL','Login');
 define('TEXT_TITLE','タイトル');
 define('TEXT_INFO_TITLE','タイトル');
 define('TEXT_USERNAME','ID');
@@ -36,3 +36,5 @@ define('TEXT_PWD_LEN','PW桁数');
 define('TEXT_INFO_HEADING_DELETE_PW_MANAGER','削除');
 define('ERROR_URL_IS_ERRO','');
 define('ERROR_LOGINURL_IS_ERROR','');
+define('TEXT_INFO_OPRATER','管理者');
+define('TEXT_SELF','本人');
