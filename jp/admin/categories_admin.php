@@ -95,7 +95,7 @@ if (isset($_GET['action']) && $_GET['action']) {
       <td class="smallText" align="right">
         <div id="gotomenu">
           <a href="javascript:void(0)" onmouseover="$('#categories_tree').show()">ジャンプ▼</a>
-          <div id="categories_tree" onmouseover="$('#categories_tree').hide()">
+          <div id="categories_tree" onmouseout="$('#categories_tree').hide()">
           <?php
             require(DIR_WS_CLASSES . 'category_tree.php');
             $osC_CategoryTree = new osC_CategoryTree; 

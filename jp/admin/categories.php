@@ -2221,7 +2221,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
 
               <div id="gotomenu">
                 <a href="javascript:void(0)" onmouseover="$('#categories_tree').show()">ジャンプ▼</a>
-                <div id="categories_tree" onmouseover="$('#categories_tree').hide()">
+                <div id="categories_tree" onmouseout="$('#categories_tree').hide()">
                 <?php
                   require(DIR_WS_CLASSES . 'category_tree.php');
                   $osC_CategoryTree = new osC_CategoryTree; 
