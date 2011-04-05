@@ -13,7 +13,7 @@
        $root_end_string = '',
        $parent_start_string = '',
        $parent_end_string = '',
-       $parent_group_start_string = '<li class="subcategory_tree"><ul>',
+       $parent_group_start_string = '<li class="subcategory_tree"><ul class="subcategory_tree_info">',
        $parent_group_end_string = '</ul></li>',
        $child_start_string = '<li>',
        $child_end_string = '</li>',
@@ -27,7 +27,7 @@
    function osC_CategoryTree($load_from_database = true) {
      global $languages_id;
 //ccdd
-         $this->categories_count = tep_db_num_rows(tep_db_query("select * from categories where parent_id = '0'"));
+         $this->categories_count = tep_db_num_rows(tep_db_query("select * from categories"));
          $categories_query = tep_db_query("
            select *
            from (
@@ -72,7 +72,7 @@
 
    function buildBranch($parent_id, $level = 0) {
      if($level == 0){
-       $result = '<table width="95%"><tr><td valign="top" width="33%"><ul>';
+       $result = '<table width="100%"><tr><td valign="top" width="20%"><ul>';
      }else{
        $result = $this->parent_group_start_string;
      }
@@ -103,14 +103,13 @@
          if (isset($this->data[$category_id]) && (($this->max_level == '0') ||
      ($this->max_level > $level+1))) $result .= $this->buildBranch($category_id, $level+1);
 
-         if ($this->i !== 0 && $this->end === false &&  $this->i%ceil($this->categories_count/3) === 0 ) {
+         if ($this->i !== 0 && $this->end === false &&  $this->i%ceil($this->categories_count/5) === 0 ) {
            $this->end = true;
          }
          if ($level === 0 && $this->end === true) {
-          $result .= "</ul></td><td valign=\"top\"><ul>";
+          $result .= "</ul></td><td valign=\"top\" width=\"20%\"><ul>";
           $this->end = false;
          }
-         if ($level === 0)
          $this->i++;
          //$i++;
        }

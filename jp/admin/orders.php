@@ -1511,6 +1511,7 @@ function q_4_3(){
       $orders_history_query = tep_db_query("select orders_status_id, date_added, customer_notified, comments from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($oID) . "' order by date_added");
       if (tep_db_num_rows($orders_history_query)) {
         while ($orders_history = tep_db_fetch_array($orders_history_query)) {
+          $select_select = $orders_history['orders_status_id'];
           echo 
              '    <tr>' . "\n" .
              '      <td class="smallText" align="center">' . tep_datetime_short($orders_history['date_added']) . '</td>' . "\n" .
@@ -1548,6 +1549,7 @@ function q_4_3(){
       <table width="100%" border="0">
       <tr>
         <td class="main"><b><?php echo ENTRY_STATUS; ?></b>
+        
           <?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_select,  'onChange="mail_text(\'s_status\',\'comments\',\'title\')"'); ?>
         </td>
       </tr>

@@ -711,15 +711,27 @@ font-size:10px;!important;
 .price span{width:53px; display:none;}
 
 
-
-/*dataTableHeadingContent_pw*/
-.dataTableHeadingContent_pw a{
-	color: #FFFFFF;
-	font-size: 11px;
-	font-weight: bold;
-	text-decoration: none;
 /*categories_tree*/
-#categories_tree li{ padding:3px 0;}
+#gotomenu{ position:relative; }
+#categories_tree {
+display:none;
+/*	width:100%;*/
+	position: absolute;
+	width:950px;
+	background-color:#000;
+	top:12px;
+	right:0;
+	z-index:180;
+	border:1px solid #000;
+}
+.subcategory_tree_info{
+	*margin-top:-10px;
+	margin-top:-10px\9;
+}
+#categories_tree li{ padding:0; margin:0; text-align:left; color:#FFFFFF;}
+#categories_tree li a{ color:#fff;}
+#categories_tree li a:hover{ color:#FFD700;}
+
 .subcategory_tree{
-	display:none;
+	*margin-top:-10px;
 }
