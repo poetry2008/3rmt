@@ -87,7 +87,7 @@
          if ($level == 0) $result .= $this->root_start_string;
      
          $result .= str_repeat($this->spacer_string, $this->spacer_multiplier * $level) . 
-     '<a href="?cPath=' . $category_link . '">';
+     '<a href="?'.(isset($_GET['site_id'])?('site_id=' . $_GET['site_id'] . '&'):'').'cPath=' . $category_link . '">';
          $result .= $category['name'];
          $result .= '</a>';
 
