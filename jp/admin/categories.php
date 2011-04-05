@@ -1996,6 +1996,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
     </tr>
   <?php
   if (tep_db_num_rows($order_history_query)) {
+    $sum_price = 0;
+    $sum_quantity = 0;
     while($order_history = tep_db_fetch_array($order_history_query)){
     ?>
       <tr>
@@ -2005,7 +2007,17 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
         <td class="main" width="100"><?php echo $order_history['orders_status_name'];?></td>
       </tr>
     <?php
+      $sum_price += $order_history['final_price'];
+      $sum_quantity += $order_history['products_quantity'];
     }
+    ?>
+      <tr>
+        <th>平均</th>
+        <td class="main" align="right"><?php echo $sum_quantity/5;?>個</td>
+        <td class="main" align="right"><?php echo display_price($sum_price/5);?>円</td>
+        <td class="main"> </td>
+      </tr>
+      <?php
   } else {
     echo "<tr><td colspan='4'>no orders</td></tr>";
   }
@@ -2035,6 +2047,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
     </tr>
   <?php
   if (tep_db_num_rows($order_history_query)) {
+    $sum_price = 0;
+    $sum_quantity = 0;
     while($order_history = tep_db_fetch_array($order_history_query)){
     ?>
       <tr>
@@ -2045,9 +2059,16 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
         <td class="main" width="100"><?php echo $order_history['orders_status_name'];?></td>
       </tr>
     <?php
+      $sum_price += $order_history['final_price'];
+      $sum_quantity += $order_history['products_quantity'];
     }
     ?>
-    
+      <tr>
+        <th>平均</th>
+        <td class="main" align="right"><?php echo $sum_quantity/5;?>個</td>
+        <td class="main" align="right"><?php echo display_price($sum_price/5);?>円</td>
+        <td class="main"> </td>
+      </tr>
     <?php
   } else {
     echo "<tr><td colspan='4'>no orders</td></tr>";
