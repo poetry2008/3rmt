@@ -221,16 +221,18 @@ function mk_pwd(){
 }
 </script>
 <style type="text/css">
-a.date-picker{
+/*a.date-picker{
 display:block;
 float:none;
 }
+*/
+/*a.date-picker{ left:1000px; height:20px;}
 .popup-calendar {
 top:20px;
 left:-95px;
 left:-163px;
 }
-.number{
+*/.number{
 font-size:24px;
 font-weight:bold;
 width:20px;
@@ -578,12 +580,12 @@ float:left;
       echo "<td class='dataTableContent' ".$onclick." >".$pw_manager_row['priority']."</td>";
       echo "<td class='dataTableContent' >"
         ."<a target='_blank' href='" 
-        .make_blank_url($pw_manager_row['loginurl'],FILENAME_PW_MANAGER)."'>"
+        .make_blank_url($pw_manager_row['loginurl'],FILENAME_REDIREC_URL)."'>"
         .tep_image_button('button_url.gif',IMAGE_CREATE).
         "<a></td>";
       echo "<td class='dataTableContent'>"
         ."<a target='_blank' href='" 
-        .make_blank_url($pw_manager_row['url'],FILENAME_PW_MANAGER)."'>"
+        .make_blank_url($pw_manager_row['url'],FILENAME_REDIREC_URL)."'>"
         .mb_substr($pw_manager_row['title'],0,12,'utf-8')."</a></td>";
       echo "<td class='dataTableContent' id='user_".$i."'
         onclick='copyCode(\"".$pw_manager_row['id']."\",\"username\")'>".mb_substr($pw_manager_row['username'],0,8,'utf-8')."</td>";
