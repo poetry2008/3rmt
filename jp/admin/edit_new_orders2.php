@@ -297,7 +297,7 @@
       if ($ot_class == "ot_total") {
         $ot_text = "<b>" . $ot_text . "</b>";
       }
-  
+  	  // 处理手续费失效的问题
       if ($ot_class == 'ot_custom') {
         $_SESSION['create_order2']['orders_total'][] = array(
           'orders_id' => $oID ,

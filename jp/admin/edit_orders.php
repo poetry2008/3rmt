@@ -457,6 +457,7 @@
     }
   }
   
+  // 返回pint
   //if (($newtotal - $total_point["total_point"]) >= 1) {
   if ($newtotal > 0) {
     $newtotal -= $total_point["total_point"];
