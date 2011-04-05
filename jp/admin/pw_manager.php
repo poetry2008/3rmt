@@ -35,8 +35,15 @@ if(isset($pwid)&&$pwid&&!tep_can_edit_pw_manager($pwid,$ocertify->auth_user)){
         break;
       case 'insert':
       case 'update':
+          if(tep_db_prepare_input($_POST['nextdate'])!=''&&
+              tep_db_prepare_input($_POST['nextdate'])!='0000-00-00'){
+            $order_date = tep_db_prepare_input($_POST['nextdate']);
+          }else{
+            $order_date = '9999-12-30';
+          }
           $privilege_str .= 'admin';
           $sql_data_array = array(
+            'date_order'=> $order_date,
             'title' => tep_db_prepare_input($_POST['title']),
             'url' => tep_db_prepare_input($_POST['url']),
             'priority' => tep_db_prepare_input($_POST['priority']),
@@ -400,9 +407,13 @@ float:left;
       //add order 
       $order_str = ''; 
       if (!isset($HTTP_GET_VARS['sort'])) {
-        $order_str = '`nextdate` asc, `title` asc'; 
+        $order_str = '`date_order` asc, `title` asc'; 
       } else {
+        if($HTTP_GET_VARS['sort'] = 'nextdate'){
+        $order_str = '`date_order` '.$HTTP_GET_VARS['type']; 
+        }else{
         $order_str = '`'.$HTTP_GET_VARS['sort'].'` '.$HTTP_GET_VARS['type']; 
+        }
       }
       
       if ($HTTP_GET_VARS['type'] == 'asc') {

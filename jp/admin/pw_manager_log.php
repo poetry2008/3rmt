@@ -126,9 +126,13 @@
       //add order 
       $order_str = ''; 
       if (!isset($HTTP_GET_VARS['sort'])) {
-        $order_str = '`nextdate` asc, `title` asc'; 
+        $order_str = '`date_order` asc, `title` asc'; 
       } else {
+        if($HTTP_GET_VARS['sort'] = 'nextdate'){
+        $order_str = '`date_order` '.$HTTP_GET_VARS['type']; 
+        }else{
         $order_str = '`'.$HTTP_GET_VARS['sort'].'` '.$HTTP_GET_VARS['type']; 
+        }
       }
       
       if ($HTTP_GET_VARS['type'] == 'asc') {
@@ -141,7 +145,6 @@
     <tr class="dataTableHeadingRow">
 <?php 
 ?>
-      <td class="dataTableHeadingContent"><input type="checkbox" name="all_chk" onClick="all_check()"></td>
       <td class="dataTableHeadingContent_pw">
       <?php 
       if ($HTTP_GET_VARS['sort'] == 'priority') {
@@ -288,13 +291,12 @@
         onclick="document.location.href=\'' . tep_href_link(FILENAME_PW_MANAGER_LOG,
         'page=' . $_GET['page'] . '&pw_l_id=' . $pw_manager_row['id']) . '\'">' . "\n";
     }
-      echo "<td class='dataTableContent'>".$pw_manager_row['id']."</td>";
       echo "<td class='dataTableContent'>".$pw_manager_row['priority']."</td>";
       echo "<td class='dataTableContent'>".$pw_manager_row['loginurl']."</td>";
-      echo "<td class='dataTableContent'>".$pw_manager_row['title']."</td>";
-      echo "<td class='dataTableContent'>".$pw_manager_row['username']."</td>";
-      echo "<td class='dataTableContent'>".$pw_manager_row['password']."</td>";
-      echo "<td class='dataTableContent'>".$pw_manager_row['operator']."</td>";
+      echo "<td class='dataTableContent'>".mb_substr($pw_manager_row['title'],0,12,'utf-8')."</td>";
+      echo "<td class='dataTableContent'>".mb_substr($pw_manager_row['username'],0,8,'utf-8')."</td>";
+      echo "<td class='dataTableContent'>".mb_substr($pw_manager_row['password'],0,8,'utf-8')."</td>";
+      echo "<td class='dataTableContent'>".mb_substr($pw_manager_row['operator'],0,5,'utf-8')."</td>";
       echo "<td class='dataTableContent'>".$pw_manager_row['nextdate']."</td>";
       echo '<td class="dataTableContent" align="right">';
       if ( isset($pwInfo) && (is_object($pwInfo)) && ($pw_manager_row['id'] == $pwInfo->id) ) { 
