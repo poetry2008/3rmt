@@ -792,14 +792,16 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
         tep_db_perform('products',array(
           //'products_quantity' => $p['products_quantity'] - (int)$add_product_quantity,
           'products_real_quantity' => 0,
-          'products_virtual_quantity' => $p['products_virtual_quantity'] - ((int)$add_product_quantity - $p['products_real_quantity'])
+         // 'products_virtual_quantity' => $p['products_virtual_quantity'] - ((int)$add_product_quantity - $p['products_real_quantity'])
+          'products_virtual_quantity' => $p['products_virtual_quantity'] - (int)$add_product_quantity + $p['products_real_quantity']
         ),
         'update',
         "products_id = '" . $add_product_products_id . "'");
       } else {
         tep_db_perform('products',array(
           //'products_quantity' => $p['products_quantity'] - (int)$add_product_quantity,
-          'products_real_quantity' => $p['products_virtual_quantity'] - (int)$add_product_quantity
+          'products_real_quantity' => $p['products_real_quantity'] - (int)$add_product_quantity
+         // 'products_real_quantity' => $p['products_virtual_quantity'] - (int)$add_product_quantity
         ),
         'update',
         "products_id = '" . $add_product_products_id . "'");
