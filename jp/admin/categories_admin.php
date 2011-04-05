@@ -92,17 +92,22 @@ if (isset($_GET['action']) && $_GET['action']) {
       <td class="pageHeading">商品卸価格管理</td>
       <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
       <td class="smallText" align="right"><?php echo tep_draw_form('search', FILENAME_CATEGORIES_ADMIN, '', 'get') . "\n"; ?> <?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search', isset($_GET['search'])?$_GET['search']:'') . "\n"; ?></form></td>
-      <td class="smallText" align="right"><?php echo tep_draw_form('goto', FILENAME_CATEGORIES_ADMIN, '', 'get') . "\n"; ?> <?php echo HEADING_TITLE_GOTO . ' ' . tep_draw_pull_down_menu('cPath', tep_get_category_tree_cpath(), $current_category_id, 'onChange="this.form.submit();"') . "\n"; ?></form></td>
+      <td class="smallText" align="right">
+        <div id="gotomenu">
+          <a href="javascript:void(0)" onmouseover="$('#categories_tree').show()">ジャンプ▼</a>
+          <div id="categories_tree" >
+          <?php
+            require(DIR_WS_CLASSES . 'category_tree.php');
+            $osC_CategoryTree = new osC_CategoryTree; 
+            echo $osC_CategoryTree->buildTree();
+          ?>
+          </div>
+        </div>
+    <?php //echo tep_draw_form('goto', FILENAME_CATEGORIES_ADMIN, '', 'get') . "\n"; ?> <?php //echo HEADING_TITLE_GOTO . ' ' . tep_draw_pull_down_menu('cPath', tep_get_category_tree_cpath(), $current_category_id, 'onChange="this.form.submit();"') . "\n"; ?><!--</form>-->
+      
+      </td>
     </tr>
   </table>
-  <div id="categories_tree">
-    <div><a href="javascript:void(0)" onclick="$('.subcategory_tree').show();">Open</a> / <a href="javascript:void(0)" onclick="$('.subcategory_tree').hide();">Close</a></div>
-  <?php
-    require(DIR_WS_CLASSES . 'category_tree.php');
-    $osC_CategoryTree = new osC_CategoryTree; 
-    echo $osC_CategoryTree->buildTree();
-  ?>
-  </div>
   </td>
   </tr>
   <tr>

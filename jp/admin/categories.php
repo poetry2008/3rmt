@@ -2218,30 +2218,25 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
           </td>
           <td class="smallText" align="right">
             <?php echo tep_draw_form('goto', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
-            <table border="0"> 
-            <tr>
-              <td>
+
+              <div id="gotomenu">
+                <a href="javascript:void(0)" onmouseover="$('#categories_tree').show()">ジャンプ▼</a>
+                <div id="categories_tree" >
+                <?php
+                  require(DIR_WS_CLASSES . 'category_tree.php');
+                  $osC_CategoryTree = new osC_CategoryTree; 
+                  echo $osC_CategoryTree->buildTree();
+                ?>
+                </div>
                 <?php 
-                echo tep_draw_hidden_field('site_id', isset($_GET['site_id'])?$_GET['site_id']:'0'); 
-                echo HEADING_TITLE_GOTO . ' ' .  tep_draw_pull_down_menu('cPath', tep_get_category_tree(), $current_category_id, 'onChange="document.forms.goto.submit();"') . "\n"; ?>
-              </td>
-            </tr>
-            </table> 
+                //echo tep_draw_hidden_field('site_id', isset($_GET['site_id'])?$_GET['site_id']:'0'); 
+                //echo HEADING_TITLE_GOTO . ' ' .  tep_draw_pull_down_menu('cPath', tep_get_category_tree(), $current_category_id, 'onChange="document.forms.goto.submit();"') . "\n"; ?>
+              </div>
             </form>
           </td>
               </tr>
             </table></td>
         </tr>
-        <tr><td>
-<div id="categories_tree">
-  <div><a href="javascript:void(0)" onclick="$('.subcategory_tree').show();">Open</a> / <a href="javascript:void(0)" onclick="$('.subcategory_tree').hide();">Close</a></div>
-<?php
-  require(DIR_WS_CLASSES . 'category_tree.php');
-  $osC_CategoryTree = new osC_CategoryTree; 
-  echo $osC_CategoryTree->buildTree();
-?>
-</div>
-        </td></tr>
         <tr>
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>
