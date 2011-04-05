@@ -25,11 +25,14 @@
       case 'init':
         $res = array();
         if (is_array($_SESSION['customers_products']['orders_selected'][$_GET['customers_id']])) {
+          $i = 0;
           foreach ($_SESSION['customers_products']['orders_selected'][$_GET['customers_id']] as $okey => $ovalue) {
             $print_order_query = tep_db_query("select o.torihiki_date, op.products_name, op.final_price, op.products_quantity from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op  where o.orders_id = op.orders_id and o.orders_id = '".$ovalue."'");     
+            
             while ($print_order_res = tep_db_fetch_array($print_order_query)) {
               $print_order_res['torihiki_date'] = date('Y/n/j',strtotime($print_order_res['torihiki_date']));
-              $res[] = $print_order_res;
+              $res[strtotime($print_order_res['torihiki_date'])+$i] = $print_order_res;
+              $i ++;
             }
           }
         }
@@ -177,16 +180,16 @@
   }
   
   function table_footer (num,pagebreak) {
-    html = "</table>\n";
-    html += "    <table width=\"100%\" class=\"text_x\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"";
+    html = "</table>";
+    html += "<table width=\"100%\" class=\"text_x\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"";
     if (pagebreak) {
       html += " style=\"page-break-after:always;\"";
     }
     html += "><tr><td class=\"text_x1\"></td>\n";
     html += "    <td class=\"text_x2\" align=\"center\">小計</td>\n";
     html += "    <td class=\"text_x3 cost_display\" align=\"right\" id=\"cost_display_"+num+"\" ></td>\n";
-    html += "  </tr></table>\n";
-    html += "</div>\n";
+    html += "  </tr></table>";
+    html += "</div>";
     return html;
   }
 
@@ -310,7 +313,7 @@
           fp = parseFloat($(this).find('.price input').val()) 
             * parseFloat($(this).find('.quantity input').val()) 
             * parseFloat($(this).find('.percent_select').val());
-          $(this).find('.fprice').html(fp>0?number_format(fp.toFixed(0)):('<font color="red">'+number_format(fp.toFixed(2))+'</font>'));
+          $(this).find('.fprice').html(fp>0?number_format(fp.toFixed(0)):('<font color="red">'+number_format(fp.toFixed(0))+'</font>'));
           cost += fp;
           $(this).find('.number').html(no);
           no ++;
