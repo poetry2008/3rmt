@@ -219,17 +219,10 @@ display:block;
 float:none;
 }
 .popup-calendar {
-background: none repeat scroll 0 0 #FFFFFF;
-border: 2px solid #000000;
-color: #000000;
-display: none;
-overflow: hidden;
-
-padding: 4px;
-
-position: absolute;
-width: 163px;
-z-index: 9;}
+top:20px;
+left:-95px;
+left:-163px;
+}
 .number{
 font-size:24px;
 font-weight:bold;
@@ -377,11 +370,15 @@ float:left;
       </td>
       <td align="right">
         <?php
+        echo '<button type=\'button\'
+        onclick="location.href=\''.tep_href_link(FILENAME_PW_MANAGER,'action=new').'\'" >';
+        echo TEXT_NEW;
+        echo "</button>";
+        /*
           echo "<a href='".tep_href_link(FILENAME_PW_MANAGER,'action=new')."'>";
-          echo "<button type='button'>";
           echo tep_image_button('button_create.gif',IMAGE_CREATE);
-          echo "</button>";
           echo "</a>";
+          */
           ?>
       </td>
     </tr>
