@@ -2220,7 +2220,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
             <?php echo tep_draw_form('goto', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
 
               <div id="gotomenu">
-                <a href="javascript:void(0)" onmouseover="$('#categories_tree').show()" onmouseout="">ジャンプ▼</a>
+                <a href="javascript:void(0)" onmouseover="$('#categories_tree').show()" onmouseout="$('#categories_tree').hide()">ジャンプ▼</a>
                 <div id="categories_tree" onmouseout="$('#categories_tree').hide()" onmouseover="$('#categories_tree').show()">
                 <?php
                   require(DIR_WS_CLASSES . 'category_tree.php');

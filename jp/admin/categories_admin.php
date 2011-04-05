@@ -94,7 +94,7 @@ if (isset($_GET['action']) && $_GET['action']) {
       <td class="smallText" align="right"><?php echo tep_draw_form('search', FILENAME_CATEGORIES_ADMIN, '', 'get') . "\n"; ?> <?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search', isset($_GET['search'])?$_GET['search']:'') . "\n"; ?></form></td>
       <td class="smallText" align="right">
         <div id="gotomenu">
-          <a href="javascript:void(0)" onmouseover="$('#categories_tree').show()">ジャンプ▼</a>
+          <a href="javascript:void(0)" onmouseout="$('#categories_tree').hide()" onmouseover="$('#categories_tree').show()">ジャンプ▼</a>
           <div id="categories_tree" onmouseout="$('#categories_tree').hide()" onmouseover="$('#categories_tree').show()">
           <?php
             require(DIR_WS_CLASSES . 'category_tree.php');
