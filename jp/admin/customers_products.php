@@ -35,6 +35,7 @@
               $i ++;
             }
           }
+          ksort($res);
         }
         echo json_encode($res);
         exit;
@@ -459,9 +460,9 @@
         <tr>
           <td width="30"></td>
           <td width="292" valign="top" align="left" class="input_print03">
-          <font size="3"><u><textarea id="data5" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-family:メイリオ; font-size:14px; width:270px; overflow-y:visible;" onChange="textarea_change()"></textarea></u></font>
-          <font size="3"><u><textarea id="data6" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-family:メイリオ; font-size:14px; overflow-y:visible; width:200px;" onChange="textarea_change()"></textarea></u></font>
-          <font size="3"><u><textarea id="data7" type="text" rows="6" value="カ)アールエムティエイチアイ" style="font-family:メイリオ; font-size:14px; overflow-y:visible; width:200px;" onChange="textarea_change()"></textarea></u></font>
+          <font size="3"><u><textarea id="data5" type="text" rows="6" style="font-family:メイリオ; font-size:14px; width:270px; overflow-y:visible;" onChange="textarea_change()"></textarea></u></font>
+          <font size="3"><u><textarea id="data6" type="text" rows="6" style="font-family:メイリオ; font-size:14px; overflow-y:visible; width:200px;" onChange="textarea_change()"></textarea></u></font>
+          <font size="3"><u><textarea id="data7" type="text" rows="6" style="font-family:メイリオ; font-size:14px; overflow-y:visible; width:200px;" onChange="textarea_change()"></textarea></u></font>
           </td>
         </tr>
 </tr>
@@ -473,7 +474,7 @@
       <table border="0" width="50%" align="right" class="print_innput" style=" margin-top:10px;">
       <tr><td height="4"></td></tr>
         <tr><td height="30" valign="bottom" align="right"><input name="textfield" type="text" id="textfield" value="<?php echo str_replace(array(' 月曜日', ' 火曜日', ' 水曜日', ' 木曜日', ' 金曜日', ' 土曜日', ' 日曜日'),'',tep_date_long(date('Y-m-d H:i:s')));?>" style="font-family:メイリオ; height:20px; width:150px; text-align:right; font-size:16px;  margin:5px 0 20px 20px;"></td></tr>
-        <tr><td align="right"><textarea id="data10" type="text" rows="2" value="カ)アールエムティエイチアイ" style="font-size:14px; overflow-y:visible; width:180px; font-family:メイリオ; text-align:right;" ></textarea></td></tr>
+        <tr><td align="right"><textarea id="data10" type="text" rows="2" style="font-size:14px; overflow-y:visible; width:180px; font-family:メイリオ; text-align:right;" ></textarea></td></tr>
         <tr><td align="right" class="input_print02">
   <font size="2">
   <input name="textfield" type="text" id="email" value="" onChange="$('#email_display').html(this.value)" onpropertychange="$('#email_display').html(this.value)" onBlur="$('#email_display').html(this.value)" style="font-family:メイリオ; text-align:right; font-size:12px; width:300px;">
@@ -484,7 +485,7 @@
           <tr><td style="border-bottom:#000000 1px solid;  padding-top:4px;" align="center">
           <input name="textfield" type="text" id="data11" value="" style="font-family:メイリオ; width:110px; font-size:12px; padding-top:4px; text-align:center; height:20px;">
           </td></tr>
-          <tr><td colspan="6" align="center" valign="middle"><textarea id="responsible" type="text" rows="6" value="カ)アールエムティエイチアイ"  style=" width:100px; font-size:20px; overflow-y:visible; text-align:center; padding:15px 0;" onChange="textarea_change()"></textarea></td></tr>
+          <tr><td colspan="6" align="center" valign="middle"><textarea id="responsible" type="text" rows="6" style=" width:100px; font-size:20px; overflow-y:visible; text-align:center; padding:15px 0;" onChange="textarea_change()"></textarea></td></tr>
           </table>
         </td></tr>
       </table>
