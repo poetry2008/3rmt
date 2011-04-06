@@ -410,7 +410,7 @@ float:left;
       if (!isset($HTTP_GET_VARS['sort'])) {
         $order_str = '`date_order` asc, `title` asc'; 
       } else {
-        if($HTTP_GET_VARS['sort'] = 'nextdate'){
+        if($HTTP_GET_VARS['sort'] == 'nextdate'){
         $order_str = '`date_order` '.$HTTP_GET_VARS['type']; 
         }else{
         $order_str = '`'.$HTTP_GET_VARS['sort'].'` '.$HTTP_GET_VARS['type']; 
