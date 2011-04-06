@@ -4447,15 +4447,15 @@ function tep_get_pwd_len(){
     return '6';
   }
 }
-function tep_can_edit_pw_manager($pwid,$self){
+function tep_can_edit_pw_manager($pwid,$self,$permission){
   if($_SESSION['user_permission']=='7'){
    $sql = "select * from ".TABLE_IDPW." where 
-     (privilege_s ='1' and id = '".$pwid."' and self='') or 
+     (privilege<='".$permission."' and id = '".$pwid."' and self='') or 
      (id = '".$pwid."' and self='".$self."') 
      order by id desc limit 1";
   }else if($_SESSION['user_permission']=='10'){
    $sql = "select * from ".TABLE_IDPW." where 
-     (privilege_c ='1' and id = '".$pwid."' and self='') or 
+     (privilege<='".$permission."' and id = '".$pwid."' and self='') or 
      (id = '".$pwid."' and self='".$self."') 
      order by id desc limit 1";
   }else {

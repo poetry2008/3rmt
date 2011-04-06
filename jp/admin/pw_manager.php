@@ -5,12 +5,11 @@
   require('includes/application_top.php');
   define('MAX_DISPLAY_PW_MANAGER_RESULTS',20);
   $sort_where = '';
-  if($ocertify->npermission == 7){
-    $sort_where = " and ((privilege_s = '1' and self='') or
+  if($ocertify->npermission != 15){
+    $sort_where = " and ((privilege <= '".$ocertify->npermission."' and self='') or
      self='".$ocertify->auth_user."' )";
-  }else if($ocertify->npermission == 10){
-    $sort_where = " and ((privilege_c = '1'  and self='') or
-     self='".$ocertify->auth_user."' )";
+  }else{
+    $sort_where = '';
   }
 
   if(isset($_GET['site_id'])&&$_GET['site_id']){
@@ -21,7 +20,7 @@
   }
   
   //403
-if(isset($pwid)&&$pwid&&!tep_can_edit_pw_manager($pwid,$ocertify->auth_user)){
+if(isset($pwid)&&$pwid&&!tep_can_edit_pw_manager($pwid,$ocertify->auth_user,$ocertify->npermission)){
   header($_SERVER["SERVER_PROTOCOL"] . " 403 Forbidden");
   exit;
 }
@@ -34,7 +33,7 @@ if(isset($pwid)&&$pwid&&!tep_can_edit_pw_manager($pwid,$ocertify->auth_user)){
       case 'insert':
       case 'update':
           $user_info = tep_get_user_info($ocertify->auth_user);
-          if(tep_db_prepare_input($_POST['self'])){
+          if(tep_db_prepare_input($_POST['privilege'])==15){
             if(tep_db_prepare_input($_POST['user_self'])!=''){
             $user_self = tep_db_prepare_input($_POST['user_self']);
             $tmp_user_info = tep_get_user_info($user_self);
@@ -45,12 +44,7 @@ if(isset($pwid)&&$pwid&&!tep_can_edit_pw_manager($pwid,$ocertify->auth_user)){
             }
           }else{
             $pw_operator = $user_info['name'];
-            if(!tep_db_prepare_input($_POST['privilege_s'])&&
-                !tep_db_prepare_input($_POST['privilege_c'])){
-            $user_self = $ocertify->auth_user;
-            }else{
             $user_self = '';
-            }
           }
           if(tep_db_prepare_input($_POST['nextdate'])!=''&&
               tep_db_prepare_input($_POST['nextdate'])!='0000-00-00'){
@@ -70,16 +64,19 @@ if(isset($pwid)&&$pwid&&!tep_can_edit_pw_manager($pwid,$ocertify->auth_user)){
             'comment' => tep_db_prepare_input($_POST['comment']),
             'memo' => tep_db_prepare_input($_POST['memo']),
             'nextdate' => tep_db_prepare_input($_POST['nextdate']),
-            'privilege_c' => tep_db_prepare_input($_POST['privilege_c']),
-            'privilege_s' => tep_db_prepare_input($_POST['privilege_s']),
+            'privilege' => tep_db_prepare_input($_POST['privilege']),
             'self' => $user_self,
-            'privilege_a' => '1',
             'updated_at' => 'now()',
-            'operator' => $pw_operator,
             'site_id' => tep_db_prepare_input($_POST['site_id']),
             'onoff' => '1',
             );
         if($_GET['action']=='update'){
+          if(tep_db_prepare_input($_POST['privilege'])==15){
+          $update_sql_data = array(
+            'operator' => $pw_operator,
+            );
+          $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
+          }
           tep_db_perform(TABLE_IDPW, $sql_data_array, 'update', 'id = \'' . $pwid . '\'');
           $res = tep_db_query("select * from ".TABLE_IDPW. " where id =
               '".$pwid."'");
@@ -100,6 +97,7 @@ if(isset($pwid)&&$pwid&&!tep_can_edit_pw_manager($pwid,$ocertify->auth_user)){
         if($_GET['action']=='insert'){
           $insert_sql_data = array(
             'created_at' => 'now()',
+            'operator' => $pw_operator,
             );
           $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
           tep_db_perform(TABLE_IDPW, $sql_data_array);
@@ -154,37 +152,25 @@ if(isset($pwid)&&$pwid&&!tep_can_edit_pw_manager($pwid,$ocertify->auth_user)){
 <!--//checkbox like radio  -->
 $(function() {
   $("#self").click(function() {
-    if(this.checked){
-    $("input:checkbox[name=privilege_s]").each(function() {
-      $(this).attr("checked", false);
-    });
-    $("input:checkbox[name=privilege_c]").each(function() {
-      $(this).attr("checked", false);
-    });
-    $("#user_select").css('display', 'block');
-    }
-}); 
-}); 
+      if($(this).attr("checked")){ 
+      $("#user_select").css('display', 'block');
+      }
+  }); 
+})
 $(function() {
   $("#privilege_s").click(function() {
-    if(this.checked){
-    $("input:checkbox[name=self]").each(function() {
-      $(this).attr("checked", false);
-    });
-    $("#user_select").css('display', 'none');
-    }
-}); 
-}); 
+      if($(this).attr("checked")){ 
+      $("#user_select").css('display', 'none');
+      }
+  }); 
+})
 $(function() {
   $("#privilege_c").click(function() {
-    if(this.checked){
-    $("input:checkbox[name=self]").each(function() {
-      $(this).attr("checked", false);
-    });
-    $("#user_select").css('display', 'none');
-    }
-}); 
-}); 
+      if($(this).attr("checked")){ 
+      $("#user_select").css('display', 'none');
+      }
+  }); 
+})
 $(function() {
   $.datePicker.setDateFormat('ymd','-');
   $('#input_nextdate').datePicker();
@@ -584,7 +570,7 @@ right:5px;*/
     if(isset($site_id)&&$site_id){
     $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
-                             ,nextdate,privilege_a,privilege_c,self,privilege_s,operator,created_at,
+                             ,nextdate,privilege,self,operator,created_at,
                              updated_at,onoff from
                              ".TABLE_IDPW." where site_id='".$site_id."'
                              and onoff = '1' 
@@ -594,7 +580,7 @@ right:5px;*/
         isset($_GET['keywords'])&&$_GET['keywords']){
       $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
-                             ,nextdate,privilege_a,privilege_c,self,privilege_s,operator,created_at,
+                             ,nextdate,privilege,self,operator,created_at,
                              updated_at,onoff from
                              ".TABLE_IDPW." 
                              where ".$_GET['search_type']." like '%".
@@ -605,7 +591,7 @@ right:5px;*/
     }else{
     $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
-                             ,nextdate,privilege_a,privilege_c,self,privilege_s,operator,created_at,
+                             ,nextdate,privilege,self,operator,created_at,
                              updated_at,onoff from
                              ".TABLE_IDPW." 
                              where onoff = '1' 
@@ -752,11 +738,11 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           class="nextdate_info">' .
           tep_draw_input_field('nextdate','','id="input_nextdate"')."</div>");
       $contents[] = array('text' => '<br>' . TEXT_INFO_PRIVILEGE . '<br>' .
-          tep_draw_checkbox_field('self','1',false,'','id="self"').TEXT_SELF.
-          tep_draw_checkbox_field('privilege_s','1',true,'','class="privilege"
-            id="privilege_s"')."Staff".
-          tep_draw_checkbox_field('privilege_c','1',true,'','class="privilege"
-            id="privilege_c"')."Chief<br>"
+          tep_draw_radio_field('privilege','15',false,'','id="self" class="privilege"').TEXT_SELF.
+          tep_draw_radio_field('privilege','7',true,'','class="privilege"
+            id="privilege_s"')."Staff以上".
+          tep_draw_radio_field('privilege','10',false,'','class="privilege"
+            id="privilege_c"')."Chief以上<br>"
           );
       $contents[] = array('text' => '<br>' . '<div id="user_select"
           class="user_select" style="display:none">'.
@@ -825,12 +811,21 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           class="nextdate_info">' .
           tep_draw_input_field('nextdate',$pwInfo->nextdate,'id="input_nextdate"')."</div>");
       $contents[] = array('text' => '<br>' . TEXT_INFO_PRIVILEGE . '<br>' .
+          tep_draw_radio_field('privilege','15',$pwInfo->privilege==15?true:false,'','id="self" class="privilege"').TEXT_SELF.
+          tep_draw_radio_field('privilege','7',$pwInfo->privilege==7?true:false,'','class="privilege"
+            id="privilege_s"')."Staff以上".
+          tep_draw_radio_field('privilege','10',$pwInfo->privilege==10?true:false,'','class="privilege"
+            id="privilege_c"')."Chief以上<br>"
+          );
+      /*
+      $contents[] = array('text' => '<br>' . TEXT_INFO_PRIVILEGE . '<br>' .
           tep_draw_checkbox_field('self','1',$pwInfo->self,'','id="self"').TEXT_SELF.
           tep_draw_checkbox_field('privilege_s','1',$pwInfo->privilege_s?true:false,'','class="privilege"
             id="privilege_s"')."Staff".
           tep_draw_checkbox_field('privilege_c','1',$pwInfo->privilege_c?true:false,'','class="privilege"
             id="privilege_c"')."Chief<br>"
           );
+      */
       if($pwInfo->self!=''){
         $pw_select_display = 'block';
       }else{

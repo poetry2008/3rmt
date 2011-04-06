@@ -243,7 +243,7 @@
     if(isset($site_id)&&$site_id){
     $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
-                             ,nextdate,privilege_c,privilege_s,privilege_a,operator,created_at,
+                             ,nextdate,privilege,operator,created_at,
                              updated_at,onoff from
                              ".TABLE_IDPW_LOG." where site_id='".$site_id."'
                              order by ".$order_str;
@@ -251,7 +251,7 @@
         isset($_GET['keywords'])&&$_GET['keywords']){
       $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
-                             ,nextdate,privilege_c,privilege_s,privilege_a,operator,created_at,
+                             ,nextdate,privilege,operator,created_at,
                              updated_at,onoff from
                              ".TABLE_IDPW_LOG." 
                              where ".$_GET['search_type']." like '%".
@@ -260,7 +260,7 @@
     }else if(isset($pwid)&&$pwid){
     $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
-                             ,nextdate,privilege_c,privilege_s,privilege_a,operator,created_at,
+                             ,nextdate,privilege,operator,created_at,
                              updated_at,onoff from 
                              ".TABLE_IDPW_LOG." where idpw_id = '".$pwid."'
                              order by ".$order_str;
@@ -268,7 +268,7 @@
     }else{
     $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
-                             ,nextdate,privilege_c,privilege_s,privilege_a,operator,created_at,
+                             ,nextdate,privilege,operator,created_at,
                              updated_at,onoff from
                              ".TABLE_IDPW_LOG." order by ".$order_str;
     }
@@ -375,21 +375,8 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           $pwInfo->memo);
       $contents[] = array('text' => '<br><b>' . TEXT_INFO_NEXTDATE . '</b><br>' .
           $pwInfo->nextdate);
-          $privilege_str = '';
-          $privilege_arr = array();
-          if($pwInfo->privilege_c=='1'){
-            $privilege_arr[] = 'chief';
-          }
-          if($pwInfo->privilege_s=='1'){
-            $privilege_arr[] = 'staff';
-          }
-          if(count($privilege_arr)>1){
-            $privilege_str = implode(',',$privilege_arr);
-          }else{
-            $privilege_str = $privilege_arr[0];
-          }
       $contents[] = array('text' => '<br><b>' . TEXT_INFO_PRIVILEGE . '</b><br>' .
-            $privilege_str
+          $pwInfo->operator
           );
     break;
     case 'delete':
