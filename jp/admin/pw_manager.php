@@ -6,11 +6,11 @@
   define('MAX_DISPLAY_PW_MANAGER_RESULTS',20);
   $sort_where = '';
   if($ocertify->npermission == 7){
-    $sort_where = " and privilege_s = '1' and (self='' or
-      self='".$ocertify->auth_user."') ";
+    $sort_where = " and ((privilege_s = '1' and self='') or
+     self='".$ocertify->auth_user."' )";
   }else if($ocertify->npermission == 10){
-    $sort_where = " and privilege_c = '1'  and (self='' or
-      self='".$ocertify->auth_user."') ";
+    $sort_where = " and ((privilege_c = '1'  and self='') or
+     self='".$ocertify->auth_user."' )";
   }
 
   if(isset($_GET['site_id'])&&$_GET['site_id']){
@@ -21,7 +21,7 @@
   }
   
   //403
-if(isset($pwid)&&$pwid&&!tep_can_edit_pw_manager($pwid)){
+if(isset($pwid)&&$pwid&&!tep_can_edit_pw_manager($pwid,$ocertify->auth_user)){
   header($_SERVER["SERVER_PROTOCOL"] . " 403 Forbidden");
   exit;
 }
@@ -35,8 +35,15 @@ if(isset($pwid)&&$pwid&&!tep_can_edit_pw_manager($pwid)){
         break;
       case 'insert':
       case 'update':
+          if(tep_db_prepare_input($_POST['nextdate'])!=''&&
+              tep_db_prepare_input($_POST['nextdate'])!='0000-00-00'){
+            $order_date = tep_db_prepare_input($_POST['nextdate']);
+          }else{
+            $order_date = '9999-12-30';
+          }
           $privilege_str .= 'admin';
           $sql_data_array = array(
+            'date_order'=> $order_date,
             'title' => tep_db_prepare_input($_POST['title']),
             'url' => tep_db_prepare_input($_POST['url']),
             'priority' => tep_db_prepare_input($_POST['priority']),
@@ -214,15 +221,16 @@ function mk_pwd(){
 }
 </script>
 <style type="text/css">
-a.date-picker{
-display:block;
-float:none;
+a.date-picker {
+    display: block;
+    float: none;
 }
-.popup-calendar {
+/*a.date-picker{ left:1000px; height:20px;}
+*//*.popup-calendar {
 top:20px;
 left:-95px;
 left:-163px;
-}
+}*/
 .number{
 font-size:24px;
 font-weight:bold;
@@ -400,9 +408,13 @@ float:left;
       //add order 
       $order_str = ''; 
       if (!isset($HTTP_GET_VARS['sort'])) {
-        $order_str = '`nextdate` asc, `title` asc'; 
+        $order_str = '`date_order` asc, `title` asc'; 
       } else {
+        if($HTTP_GET_VARS['sort'] = 'nextdate'){
+        $order_str = '`date_order` '.$HTTP_GET_VARS['type']; 
+        }else{
         $order_str = '`'.$HTTP_GET_VARS['sort'].'` '.$HTTP_GET_VARS['type']; 
+        }
       }
       
       if ($HTTP_GET_VARS['type'] == 'asc') {
@@ -415,7 +427,6 @@ float:left;
     <tr class="dataTableHeadingRow">
 <?php 
 ?>
-      <td class="dataTableHeadingContent"><input type="checkbox" name="all_chk" onClick="all_check()"></td>
       <td class="dataTableHeadingContent_pw">
       <?php 
       if ($HTTP_GET_VARS['sort'] == 'priority') {
@@ -565,21 +576,20 @@ float:left;
       $onclick = 'onclick="document.location.href=\'' . tep_href_link(FILENAME_PW_MANAGER,
         'page=' . $_GET['page'] . '&pw_id=' . $pw_manager_row['id']) . '\'"';
     }
-      echo "<td class='dataTableContent' ".$onclick." ></td>";
       echo "<td class='dataTableContent' ".$onclick." >".$pw_manager_row['priority']."</td>";
       echo "<td class='dataTableContent' >"
         ."<a target='_blank' href='" 
-        .make_blank_url($pw_manager_row['loginurl'],FILENAME_PW_MANAGER)."'>"
+        .make_blank_url($pw_manager_row['loginurl'],FILENAME_REDIREC_URL)."'>"
         .tep_image_button('button_url.gif',IMAGE_CREATE).
         "<a></td>";
       echo "<td class='dataTableContent'>"
         ."<a target='_blank' href='" 
-        .make_blank_url($pw_manager_row['url'],FILENAME_PW_MANAGER)."'>"
-        .$pw_manager_row['title']."</a></td>";
+        .make_blank_url($pw_manager_row['url'],FILENAME_REDIREC_URL)."'>"
+        .mb_substr($pw_manager_row['title'],0,12,'utf-8')."</a></td>";
       echo "<td class='dataTableContent' id='user_".$i."'
-        onclick='copyCode(\"".$pw_manager_row['id']."\",\"username\")'>".$pw_manager_row['username']."</td>";
+        onclick='copyCode(\"".$pw_manager_row['id']."\",\"username\")'>".mb_substr($pw_manager_row['username'],0,8,'utf-8')."</td>";
       echo "<td class='dataTableContent' id='pwd_".$i."'
-        onclick='copyCode(\"".$pw_manager_row['id']."\",\"password\")'>".$pw_manager_row['password']."</td>";
+        onclick='copyCode(\"".$pw_manager_row['id']."\",\"password\")'>".mb_substr($pw_manager_row['password'],0,8,'utf-8')."</td>";
       /*
       $privilege_arr = array();
       if($pw_manager_row['privilege_s']){
@@ -595,7 +605,8 @@ float:left;
       }
       echo "<td class='dataTableContent'".$onclick." >".$privilege_str."</td>";
       */
-      echo "<td class='dataTableContent'".$onclick." >".$pw_manager_row['operator']."</td>";
+      echo "<td class='dataTableContent'".$onclick."
+        >".mb_substr($pw_manager_row['operator'],0,5,'utf-8')."</td>";
       echo "<td class='dataTableContent'".$onclick." >".$pw_manager_row['nextdate']."</td>";
       echo '<td class="dataTableContent" align="right">';
       if ( isset($pwInfo) && (is_object($pwInfo)) && ($pw_manager_row['id'] == $pwInfo->id) ) { 
@@ -614,7 +625,7 @@ float:left;
     ?>
 
     <tr>
-      <td colspan="9">
+      <td colspan="8">
         <table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
             <td class="smallText" valign="top"><?php echo
@@ -653,7 +664,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('text' => '<br>' . TEXT_INFO_URL . '<br>' .
           tep_draw_input_field('url','','id="url"'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_LOGINURL . '<br>' .
-          tep_draw_input_field('loginurl','','id="loginurl'));
+          tep_draw_input_field('loginurl','','id="loginurl"'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_USERNAME . '<br>' .
           tep_draw_input_field('username','','id="username"'));
       $pwd_pattern = tep_get_pwd_pattern();
@@ -667,11 +678,10 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           tep_draw_checkbox_field('pattern[]','NUMBER',
             in_array('NUMBER',$pwd_pattern_arr)?true:false).TEXT_NUMBER."<br>".
           TEXT_PWD_LEN."&nbsp;".tep_draw_input_field('pwd_len',$pwd_len,'id="pwd_len"
-            maxlength="2" size="2"')."<br>".
-          "<div style='margin: 5px 0px;'>".
+            maxlength="2" size="2"')."&nbsp;".
           "<button type='button'
           onclick=\"mk_pwd()\">" .
-          TEXT_BUTTON_MK_PWD."</button></div>".
+          TEXT_BUTTON_MK_PWD."</button>".
           tep_draw_input_field('password',tep_get_new_random($pwd_pattern,$pwd_len),'id="password"'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_COMMENT . '<br>' .
           tep_draw_textarea_field('comment', 'soft', '30', '5', '','class="pw_textarea"'));
@@ -734,11 +744,10 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           tep_draw_checkbox_field('pattern[]','NUMBER',
             in_array('NUMBER',$pwd_pattern_arr)?true:false).TEXT_NUMBER."<br>".
           TEXT_PWD_LEN."&nbsp;".tep_draw_input_field('pwd_len',$pwd_len,'id="pwd_len"
-            maxlength="2" size="2"')."<br>".
-          "<div style='margin: 5px 0px;'>".
+            maxlength="2" size="2"')."&nbsp;".
           "<button type='button'
           onclick=\"mk_pwd()\">" .
-          TEXT_BUTTON_MK_PWD."</button></div>".
+          TEXT_BUTTON_MK_PWD."</button>".
           tep_draw_input_field('password',$pwInfo->password,'id="password"'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_COMMENT . '<br>' .
           tep_draw_textarea_field('comment', 'soft', '30', '5', $pwInfo->comment, 'class="pw_textarea"'));

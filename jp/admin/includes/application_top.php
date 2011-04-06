@@ -54,6 +54,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
 // define the filenames used in the project
   define('FILENAME_PW_MANAGER', 'pw_manager.php');
+  define('FILENAME_REDIREC_URL','redirec_url.php');
   define('FILENAME_PWD_AJAX', 'pwd_ajax.php');
   define('FILENAME_PW_MANAGER_LOG', 'pw_manager_log.php');
   define('FILENAME_RECORD', 'record.php');
