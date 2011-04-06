@@ -24,7 +24,10 @@ if ((strpos($_SERVER['PHP_SELF'], 'history.php') === false)  &&
 <?php }?>
 <script>
 $(document).ready(function(){
-  $('.columnLeft').parent().after('<td valign="top" style="padding-top:50px; *padding-top:48px;"><a href="javascript:void(0);" class="leftright" onclick="toggle_leftColumn();"><img src="includes/languages/japanese/images/boult.gif" alt="img"></a></td>');
+  $('.columnLeft').parent().after('<td valign="top" style="padding-top:46px; *padding-top:48px; padding-right:5px; *padding-left:0;"><a href="javascript:void(0);" class="leftright" onclick="toggle_leftColumn();"><img src="includes/languages/japanese/images/boult.gif" alt="img"></a></td>');
+  $('.columnLeft').parent().parent().parent().parent().attr('cellspacing', '0');
+  $('.columnLeft').parent().parent().parent().parent().attr('cellpadding', '0');
+  $('.columnLeft').parent().addClass('leftmenu');
 });
 function toggle_leftColumn()
 {
