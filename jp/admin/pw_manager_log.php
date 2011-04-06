@@ -212,13 +212,15 @@
       </td>
       <td class="dataTableHeadingContent_pw">
       <?php 
-      if ($HTTP_GET_VARS['sort'] == 'privilege') {
+      if ($HTTP_GET_VARS['sort'] == 'operator') {
       ?>
-      <a href="<?php echo tep_href_link(FILENAME_PW_MANAGER_LOG, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=privilege&type='.$type_str);?>"><?php echo TEXT_PRIVILEGE;?></a> 
+      <a href="<?php echo tep_href_link(FILENAME_PW_MANAGER_LOG,
+        tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=operator&type='.$type_str);?>"><?php echo TEXT_PRIVILEGE;?></a> 
       <?php
       } else {
       ?>
-      <a href="<?php echo tep_href_link(FILENAME_PW_MANAGER_LOG, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=privilege&type=asc');?>"><?php echo TEXT_PRIVILEGE;?></a> 
+      <a href="<?php echo tep_href_link(FILENAME_PW_MANAGER_LOG,
+      tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=operator&type=asc');?>"><?php echo TEXT_PRIVILEGE;?></a> 
       <?php
       }
       ?>

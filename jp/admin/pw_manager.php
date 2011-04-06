@@ -553,13 +553,15 @@ right:5px;*/
       </td>
       <td class="dataTableHeadingContent_pw">
       <?php 
-      if ($HTTP_GET_VARS['sort'] == 'privilege') {
+      if ($HTTP_GET_VARS['sort'] == 'operator') {
       ?>
-      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=privilege&type='.$type_str);?>"><?php echo TEXT_PRIVILEGE;?></a> 
+      <a href="<?php echo tep_href_link('pw_manager.php',
+        tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=operator&type='.$type_str);?>"><?php echo TEXT_PRIVILEGE;?></a> 
       <?php
       } else {
       ?>
-      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=privilege&type=asc');?>"><?php echo TEXT_PRIVILEGE;?></a> 
+      <a href="<?php echo tep_href_link('pw_manager.php',
+      tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=operator&type=asc');?>"><?php echo TEXT_PRIVILEGE;?></a> 
       <?php
       }
       ?>
@@ -835,7 +837,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
         $pw_select_display = 'none';
       }
       $contents[] = array('text' => '<br>' . '<div id="user_select"
-          class="user_select" style="display:'.$pw_select_display.'">'.
+          class="user_select" style="display:'.$pw_select_display.'" >'.
         tep_get_user_select($pwInfo->self)
         ."</div>"
           );
