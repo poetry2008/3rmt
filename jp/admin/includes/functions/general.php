@@ -4468,9 +4468,16 @@ function tep_can_edit_pw_manager($pwid,$self){
 }
 
 function make_blank_url($url,$page_url){
-  $d_url = urlencode($url);
-  $url = tep_href_link($page_url,'action=redirect&url='.$url);
-  return $url;
+  $sql = "select configuration_value as url from ".TABLE_CONFIGURATION." WHERE
+    configuration_key = 'IDPW_START_URL'";
+  $query = tep_db_query($sql);
+  if($row = tep_db_fetch_array($query)){
+    $d_url = urlencode($url);
+    $url = $row['url'].''.$page_url.'?url='.$d_url;
+    return $url;
+  }else{
+    return null;
+  }
 }
 function tep_get_pwm_info($idpw,$from=''){
   $sql = "select * from ".TABLE_IDPW." where id = '".$idpw."'";
