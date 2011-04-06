@@ -77,7 +77,8 @@ if(isset($pwid)&&$pwid&&!tep_can_edit_pw_manager($pwid,$ocertify->auth_user)){
             }
           }
           tep_db_perform(TABLE_IDPW_LOG,$sql_data_array_log);
-          tep_redirect(tep_href_link(FILENAME_PW_MANAGER, 'pw_id='.$pwid.'&page=' . $_GET['page']));
+          tep_redirect(tep_href_link(FILENAME_PW_MANAGER,
+                'pw_id='.$pwid.'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page=' . $_GET['page']));
         }
         if($_GET['action']=='insert'){
           $insert_sql_data = array(
@@ -90,7 +91,7 @@ if(isset($pwid)&&$pwid&&!tep_can_edit_pw_manager($pwid,$ocertify->auth_user)){
               );
           $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data_log);
           tep_db_perform(TABLE_IDPW_LOG, $sql_data_array);
-          tep_redirect(tep_href_link(FILENAME_PW_MANAGER));
+          tep_redirect(tep_href_link(FILENAME_PW_MANAGER,'sort='.$_GET['sort'].'&type='.$_GET['type']));
         }
         break;
       case 'deleteconfirm':
@@ -226,11 +227,10 @@ a.date-picker {
     float: none;
 }
 /*a.date-picker{ left:1000px; height:20px;}
-*//*.popup-calendar {
-top:20px;
-left:-95px;
-left:-163px;
-}*/
+*/.popup-calendar {
+top:850px;
+right:163px;
+}
 .number{
 font-size:24px;
 font-weight:bold;
@@ -378,7 +378,7 @@ float:left;
       <td align="right">
         <?php
         echo '<button type=\'button\'
-        onclick="location.href=\''.tep_href_link(FILENAME_PW_MANAGER,'action=new').'\'" >';
+        onclick="location.href=\''.tep_href_link(FILENAME_PW_MANAGER,'action=new&sort='.$_GET['sort'].'&type='.$_GET['type']).'\'" >';
         echo TEXT_NEW;
         echo "</button>";
         /*
@@ -650,7 +650,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_NEW . '</b>');
 
       $contents = array('form' => tep_draw_form('pw_manager', FILENAME_PW_MANAGER,
-            'page=' . $_GET['page'] . '&action=insert', 'post',
+            'page=' . $_GET['page'] . '&type='.$_GET['type'].'&sort='.$_GET['sort'].'&action=insert', 'post',
             'enctype="multipart/form-data" onsubmit="return valdata()"'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_TITLE . '<br>' .
           tep_draw_input_field('title','','id="title"'));
@@ -716,7 +716,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_EDIT . '</b>');
       $contents = array('form' => tep_draw_form('pw_manager', FILENAME_PW_MANAGER,
-            'page=' . $_GET['page'] . '&action=update&pw_id='.$pwInfo->id, 'post',
+            'page=' . $_GET['page'] . '&sort='.$_GET['sort'].'&type='.$_GET['type'].'&action=update&pw_id='.$pwInfo->id, 'post',
             'enctype="multipart/form-data" onsubmit="return valdata(this)"'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_TITLE . '<br>' .
           tep_draw_input_field('title',$pwInfo->title,'id="title"'));

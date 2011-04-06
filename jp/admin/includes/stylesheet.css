@@ -746,9 +746,9 @@ display:none;
     border: 2px solid #000000;
     color: #000000;
     display: none;
-    overflow: hidden;
+    overflow:hidden;
     padding: 4px;
-    position: absolute;
+    position:absolute;
     width: 163px;
     z-index: 9;
 }
@@ -760,7 +760,7 @@ a.date-picker {
     float: left;
     height: 16px;
     margin: 0;
-    overflow: hidden;
+    overflow:hidden;
     padding: 0;
     width: 16px;}
 div.date-picker-holder input {
