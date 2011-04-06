@@ -4283,6 +4283,7 @@ function get_rule()
 
 // 舍去.00
 function tep_display_currency($num){
+  $num = str_replace(',','',$num);
   $arr = $arr2 = array();
   for($i=0;$i<10;$i++) {
     $arr[] = '.'.(string)$i.'0';
@@ -4307,6 +4308,7 @@ function tep_insert_currency_text($txt){
 }
 
 function tep_insert_currency_value($num){
+  
   $arr = $arr2 = array();
   for($i=0;$i<10;$i++) {
     $arr[] = '.'.(string)$i.'0';
