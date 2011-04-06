@@ -65,6 +65,7 @@ if(isset($pwid)&&$pwid&&!tep_can_edit_pw_manager($pwid,$ocertify->auth_user,$oce
             'memo' => tep_db_prepare_input($_POST['memo']),
             'nextdate' => tep_db_prepare_input($_POST['nextdate']),
             'privilege' => tep_db_prepare_input($_POST['privilege']),
+            'update_user' => $user_info['name'],
             'self' => $user_self,
             'updated_at' => 'now()',
             'site_id' => tep_db_prepare_input($_POST['site_id']),
@@ -576,7 +577,7 @@ right:5px;*/
     $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
                              ,nextdate,privilege,self,operator,created_at,
-                             updated_at,onoff from
+                             updated_at,onoff,update_user from
                              ".TABLE_IDPW." where site_id='".$site_id."'
                              and onoff = '1' 
                              " .$sort_where . "
@@ -586,7 +587,7 @@ right:5px;*/
       $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
                              ,nextdate,privilege,self,operator,created_at,
-                             updated_at,onoff from
+                             updated_at,onoff,update_user from
                              ".TABLE_IDPW." 
                              where ".$_GET['search_type']." like '%".
                              $_GET['keywords']."%'
@@ -597,7 +598,7 @@ right:5px;*/
     $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
                              ,nextdate,privilege,self,operator,created_at,
-                             updated_at,onoff from
+                             updated_at,onoff,update_user from
                              ".TABLE_IDPW." 
                              where onoff = '1' 
                              " .$sort_where . "
@@ -907,7 +908,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('align' => '','text' => '<br>' . TEXT_INFO_UPDATED . '&nbsp;&nbsp;&nbsp;' .
           $pwInfo->updated_at);
       $contents[] = array('align' => '','text' => '<br>' . TEXT_INFO_OPRATER . '&nbsp;&nbsp;&nbsp;' .
-          $pwInfo->operator);
+          $pwInfo->update_user);
     break;
 }
   if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {

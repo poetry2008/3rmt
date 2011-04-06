@@ -244,7 +244,7 @@
     $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
                              ,nextdate,privilege,operator,created_at,
-                             updated_at,onoff from
+                             updated_at,onoff,update_user from
                              ".TABLE_IDPW_LOG." where site_id='".$site_id."'
                              order by ".$order_str;
     }else if(isset($_GET['search_type'])&&$_GET['search_type']&&
@@ -252,7 +252,7 @@
       $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
                              ,nextdate,privilege,operator,created_at,
-                             updated_at,onoff from
+                             updated_at,onoff,update_user from
                              ".TABLE_IDPW_LOG." 
                              where ".$_GET['search_type']." like '%".
                              $_GET['keywords']."%'
@@ -261,7 +261,7 @@
     $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
                              ,nextdate,privilege,operator,created_at,
-                             updated_at,onoff from 
+                             updated_at,onoff,update_user from 
                              ".TABLE_IDPW_LOG." where idpw_id = '".$pwid."'
                              order by ".$order_str;
 
@@ -269,7 +269,7 @@
     $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
                              ,nextdate,privilege,operator,created_at,
-                             updated_at,onoff from
+                             updated_at,onoff,update_user from
                              ".TABLE_IDPW_LOG." order by ".$order_str;
     }
     $pw_manager_split = new splitPageResults($_GET['page'],
@@ -376,7 +376,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('text' => '<br><b>' . TEXT_INFO_NEXTDATE . '</b><br>' .
           $pwInfo->nextdate);
       $contents[] = array('text' => '<br><b>' . TEXT_INFO_PRIVILEGE . '</b><br>' .
-          $pwInfo->operator
+          $pwInfo->update_user
           );
     break;
     case 'delete':
@@ -428,7 +428,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('align' => '','text' => '<br>' . TEXT_INFO_UPDATED . '&nbsp;&nbsp;&nbsp;' .
           $pwInfo->updated_at);
       $contents[] = array('align' => '','text' => '<br>' . TEXT_INFO_OPRATER . '&nbsp;&nbsp;&nbsp;' .
-          $pwInfo->operator);
+          $pwInfo->update_user);
     break;
 }
   if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
