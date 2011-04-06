@@ -873,6 +873,17 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           );
       break;
   default:
+      if($ocertify->npermission == 15){
+        $history_button =  '&nbsp;' . 
+          "<button type='button'
+          onclick=\"location.href='".
+          tep_href_link(FILENAME_PW_MANAGER_LOG,
+            'pw_id='.$pwInfo->id)
+          ."'\">" .
+          TEXT_BUTTON_HISTORY."</button>";
+      }else{
+        $history_button = ''; 
+      }
       $heading[] = array('text' => '');
       $contents[] = array('align' => 'center', 'text' => '<br>' .'' .
           "<button type='button'
@@ -885,13 +896,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           tep_href_link(FILENAME_PW_MANAGER,'action=delete&pw_id='.$pwInfo->id.'&'.tep_get_all_get_params(array('pw_id','action','search_type','keywords')))
           ."'\">" .
           TEXT_BUTTON_DELETE."</button>"
-          . '&nbsp;' . 
-          "<button type='button'
-          onclick=\"location.href='".
-          tep_href_link(FILENAME_PW_MANAGER_LOG,
-            'pw_id='.$pwInfo->id)
-          ."'\">" .
-          TEXT_BUTTON_HISTORY."</button>"
+          .$history_button
           );
       $contents[] = array('text' => '<br>' . TEXT_INFO_COMMENT . '<br>' .
           tep_draw_textarea_field('comment', 'soft', '30', '5', $pwInfo->comment, 'class="pw_textarea"'));
