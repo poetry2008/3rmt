@@ -263,11 +263,9 @@ a.date-picker {
     display: block;
     float: none;
 }
-/*a.date-picker{ left:1000px; height:20px;}
-*/.popup-calendar {
-top:850px;
-right:163px;
-}
+/*
+   a.date-picker{ left:1000px; height:20px;}
+*/
 .number{
 font-size:24px;
 font-weight:bold;
@@ -351,7 +349,14 @@ width:100%;
 height:5px;
 overflow:hidden;
 }
-.popup-calendar{ *margin-top:-95px;}
+.popup-calendar {
+	top:850px;
+	*top:755px!important;
+	top:735px\9;
+	right:163px;
+	position: absolute;
+}
+/*.popup-calendar{ *margin-top:-95px;}*/
 .popup-calendar-wrapper{
 float:left;
 /*position: absolute;
