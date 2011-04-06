@@ -27,14 +27,31 @@ if(isset($pwid)&&$pwid&&!tep_can_edit_pw_manager($pwid,$ocertify->auth_user)){
 }
 
   if (isset($_GET['action']) && $_GET['action']) {
-
-    $user_info = tep_get_user_info($ocertify->auth_user);
     switch ($_GET['action']) {
       case 'redirect':
           tep_redirect(urldecode($_GET['url']));
         break;
       case 'insert':
       case 'update':
+          $user_info = tep_get_user_info($ocertify->auth_user);
+          if(tep_db_prepare_input($_POST['self'])){
+            if(tep_db_prepare_input($_POST['user_self'])!=''){
+            $user_self = tep_db_prepare_input($_POST['user_self']);
+            $tmp_user_info = tep_get_user_info($user_self);
+            $pw_operator = $tmp_user_info['name'];
+            }else{
+            $pw_operator = $user_info['name'];
+            $user_self = $ocertify->auth_user;
+            }
+          }else{
+            $pw_operator = $user_info['name'];
+            if(!tep_db_prepare_input($_POST['privilege_s'])&&
+                !tep_db_prepare_input($_POST['privilege_c'])){
+            $user_self = $ocertify->auth_user;
+            }else{
+            $user_self = '';
+            }
+          }
           if(tep_db_prepare_input($_POST['nextdate'])!=''&&
               tep_db_prepare_input($_POST['nextdate'])!='0000-00-00'){
             $order_date = tep_db_prepare_input($_POST['nextdate']);
@@ -55,10 +72,10 @@ if(isset($pwid)&&$pwid&&!tep_can_edit_pw_manager($pwid,$ocertify->auth_user)){
             'nextdate' => tep_db_prepare_input($_POST['nextdate']),
             'privilege_c' => tep_db_prepare_input($_POST['privilege_c']),
             'privilege_s' => tep_db_prepare_input($_POST['privilege_s']),
-            'self' => tep_db_prepare_input($_POST['self']),
+            'self' => $user_self,
             'privilege_a' => '1',
             'updated_at' => 'now()',
-            'operator' => $user_info['name'],
+            'operator' => $pw_operator,
             'site_id' => tep_db_prepare_input($_POST['site_id']),
             'onoff' => '1',
             );
@@ -134,6 +151,40 @@ if(isset($pwid)&&$pwid&&!tep_can_edit_pw_manager($pwid,$ocertify->auth_user)){
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
 <script language="javascript" src="includes/javascript/datePicker.js"></script>
 <script language="javascript" >
+<!--//checkbox like radio  -->
+$(function() {
+  $("#self").click(function() {
+    if(this.checked){
+    $("input:checkbox[name=privilege_s]").each(function() {
+      $(this).attr("checked", false);
+    });
+    $("input:checkbox[name=privilege_c]").each(function() {
+      $(this).attr("checked", false);
+    });
+    $("#user_select").css('display', 'block');
+    }
+}); 
+}); 
+$(function() {
+  $("#privilege_s").click(function() {
+    if(this.checked){
+    $("input:checkbox[name=self]").each(function() {
+      $(this).attr("checked", false);
+    });
+    $("#user_select").css('display', 'none');
+    }
+}); 
+}); 
+$(function() {
+  $("#privilege_c").click(function() {
+    if(this.checked){
+    $("input:checkbox[name=self]").each(function() {
+      $(this).attr("checked", false);
+    });
+    $("#user_select").css('display', 'none');
+    }
+}); 
+}); 
 $(function() {
   $.datePicker.setDateFormat('ymd','-');
   $('#input_nextdate').datePicker();
@@ -314,9 +365,17 @@ width:100%;
 height:5px;
 overflow:hidden;
 }
+.popup-calendar{ *margin-top:-95px;}
 .popup-calendar-wrapper{
 float:left;
+/*position: absolute;
+top:-9px;
+right:5px;*/
 }
+.popup-calendar-wrapper table{ width:100%;}
+.weekend ,.weekday,.inactive  { text-align:center; background-color:#eee;}
+.link-next{ text-align:right;}
+.link-close{ color:#000; text-align:right; position:absolute; top:5px; font-weight:bold; left:134px;}
 </style>
 </head>
 <body>
@@ -407,7 +466,7 @@ float:left;
     <?php
       //add order 
       $order_str = ''; 
-      if (!isset($HTTP_GET_VARS['sort'])) {
+      if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
         $order_str = '`date_order` asc, `title` asc'; 
       } else {
         if($HTTP_GET_VARS['sort'] == 'nextdate'){
@@ -691,9 +750,16 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           class="nextdate_info">' .
           tep_draw_input_field('nextdate','','id="input_nextdate"')."</div>");
       $contents[] = array('text' => '<br>' . TEXT_INFO_PRIVILEGE . '<br>' .
-          tep_draw_checkbox_field('self',$ocertify->auth_user,true).TEXT_SELF.
-          tep_draw_checkbox_field('privilege_s','1',true)."Staff".
-          tep_draw_checkbox_field('privilege_c','1',true)."Chief<br>"
+          tep_draw_checkbox_field('self','1',false,'','id="self"').TEXT_SELF.
+          tep_draw_checkbox_field('privilege_s','1',true,'','class="privilege"
+            id="privilege_s"')."Staff".
+          tep_draw_checkbox_field('privilege_c','1',true,'','class="privilege"
+            id="privilege_c"')."Chief<br>"
+          );
+      $contents[] = array('text' => '<br>' . '<div id="user_select"
+          class="user_select" style="display:none">'.
+        tep_get_user_select()
+        ."</div>"
           );
       /*
       $contents[] = array('text' => '<br>' . TEXT_INFO_OPERATOR . '<br>' .
@@ -757,11 +823,21 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           class="nextdate_info">' .
           tep_draw_input_field('nextdate',$pwInfo->nextdate,'id="input_nextdate"')."</div>");
       $contents[] = array('text' => '<br>' . TEXT_INFO_PRIVILEGE . '<br>' .
-          tep_draw_checkbox_field('self',$ocertify->auth_user,$pwInfo->self).TEXT_SELF.
-          tep_draw_checkbox_field('privilege_s','1',$pwInfo->privilege_s?true:false).
-          "Staff".
-          tep_draw_checkbox_field('privilege_c','1',$pwInfo->privilege_c?true:false).
-          "Chief<br>"
+          tep_draw_checkbox_field('self','1',$pwInfo->self,'','id="self"').TEXT_SELF.
+          tep_draw_checkbox_field('privilege_s','1',$pwInfo->privilege_s?true:false,'','class="privilege"
+            id="privilege_s"')."Staff".
+          tep_draw_checkbox_field('privilege_c','1',$pwInfo->privilege_c?true:false,'','class="privilege"
+            id="privilege_c"')."Chief<br>"
+          );
+      if($pwInfo->self!=''){
+        $pw_select_display = 'block';
+      }else{
+        $pw_select_display = 'none';
+      }
+      $contents[] = array('text' => '<br>' . '<div id="user_select"
+          class="user_select" style="display:'.$pw_select_display.'">'.
+        tep_get_user_select($pwInfo->self)
+        ."</div>"
           );
       $contents[] = array('align' => 'center', 'text' => '<br>' . 
           "<button type='submit' >".TEXT_BUTTON_QUERY."</button>"
