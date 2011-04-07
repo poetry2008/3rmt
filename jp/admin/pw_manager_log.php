@@ -26,7 +26,7 @@
         if($_GET['select']=='all'){
         tep_db_query("delete from " . TABLE_IDPW_LOG);
         }else{
-        tep_db_query("delete from " . TABLE_IDPW_LOG . " where idpw_id = '" .
+        tep_db_query("delete from " . TABLE_IDPW_LOG . " where id = '" .
             tep_db_input($pwlid) . "'");
         }
         tep_redirect(tep_href_link(FILENAME_PW_MANAGER_LOG, 'page=' . $_GET['page']));
