@@ -777,5 +777,19 @@ div.date-picker-holder input {
 }
 */	
 
-
+/*  szn add managermenu */
+#managermenu td{
+	background-color:#000;
+	padding:1px;
+}
+#managermenu td a {
+	color:#fff;
+	font-weight:bold;
+	padding:2px 5px;
+}
+#managermenu td a:hover {
+	color:#000;
+	text-decoration:none;
+	background:#ffd700;
+}
 
