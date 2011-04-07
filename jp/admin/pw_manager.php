@@ -14,6 +14,8 @@
 
   if(isset($_GET['site_id'])&&$_GET['site_id']){
     $site_id = tep_db_prepare_input($_GET['site_id']);
+  }else{
+    $site_id = '';
   }
   if(isset($_GET['pw_id'])&&$_GET['pw_id']){
     $pwid = tep_db_prepare_input($_GET['pw_id']);
@@ -827,7 +829,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_EDIT . '</b>');
       $contents = array('form' => tep_draw_form('pw_manager', FILENAME_PW_MANAGER,
-            'page=' . $_GET['page'] . '&sort='.$_GET['sort'].'&type='.$_GET['type'].'&action=update&pw_id='.$pwInfo->id, 'post',
+            'page=' . $_GET['page'] . '&site_id='.$site_id.'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&action=update&pw_id='.$pwInfo->id, 'post',
             'enctype="multipart/form-data" onsubmit="return valdata(this)"'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_TITLE . '<br>' .
           tep_draw_input_field('title',$pwInfo->title,'id="title"'));
