@@ -4546,7 +4546,7 @@ function tep_get_avg_by_pid($pid){
     select * 
     from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id
     where 
-    op.products_id='".$pid."'
+    op.products_id='".$product['relate_products_id']."'
     order by date_purchased desc
     limit 5
   ");
