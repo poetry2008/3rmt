@@ -2028,6 +2028,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   }
   ?>
   </table>
+    
   <?php
   if ($pInfo->relate_products_id) {
   $order_history_query = tep_db_query("
@@ -2082,8 +2083,12 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   }
   ?>
   </table>
+  
   <?php
   }
+  ?>
+平均在庫価格： <?php echo display_price(tep_get_avg_by_pid($pInfo->products_id));?>円
+  <?
   echo '</td>';
   echo '</tr></table>';
   echo '<table width="100%" cellspacing="0" cellpadding="5" border="0" class="smalltext"><tr><td><b>販売</b></td><td><b>買取</b></td></tr>' . "\n";

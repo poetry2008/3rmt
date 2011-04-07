@@ -86,16 +86,17 @@
               <?php echo tep_draw_form('orders1', FILENAME_PW_MANAGER_LOG, '', 'get','id="orders1" onsubmit="return false"'); ?>検索 : 
               <input name="keywords" type="text" id="keywords" size="40" value="<?php if(isset($_GET['keywords'])) echo stripslashes($_GET['keywords']); ?>">
               <select name="search_type" onChange='search_type_changed(this)'>
+
                 <option value="none">--選択してください--</option>
-                <option value="title">タイトル</option>
                 <option value="priority">重</option>
-                <option value="url">URL</option>
-                <option value="loginurl">Login</option>
+                <option value="title">タイトル</option>
+                <option value="loginurl">ログインURL</option>
+                <option value="url">タイトルURL</option>
                 <option value="username">ID</option>
-                <option value="password">PW</option>
-                <option value="comment">コメント</option>
-                <option value="memo">メモ</option>
+                <option value="password">パスワード</option>
                 <option value="operator">管理者</option>
+                <option value="comment">登録情報</option>
+                <option value="memo">メモ欄</option>
                 <option value="site_id">サイト名</option>
               </select>
               </form>
@@ -299,17 +300,18 @@
       echo "<td class='dataTableContent'>".mb_substr($pw_manager_row['username'],0,8,'utf-8')."</td>";
       echo "<td class='dataTableContent'>".mb_substr($pw_manager_row['password'],0,8,'utf-8')."</td>";
       echo "<td class='dataTableContent'".$onclick." >";
-      if($pw_manager_row['self'] == ''){ 
         if($pw_manager_row['privilege'] =='7'){
          echo "Staff以上";
         }else if($pw_manager_row['privilege'] =='10'){
          echo "Chief以上";
         }else{
+         if($pw_manager_row['self']!=''){
+         $self_info = tep_get_user_info($pw_manager_row['self']);
+         echo mb_substr($self_info['name'],0,5,'utf-8');
+         }else{
          echo mb_substr($pw_manager_row['operator'],0,5,'utf-8');
+         }
         }
-      }else{
-      echo mb_substr($pw_manager_row['operator'],0,5,'utf-8');
-      } 
       echo "</td>";
       echo "<td class='dataTableContent'>".$pw_manager_row['nextdate']."</td>";
       echo '<td class="dataTableContent" align="right">';

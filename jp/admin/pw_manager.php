@@ -24,6 +24,13 @@ if(isset($pwid)&&$pwid&&!tep_can_edit_pw_manager($pwid,$ocertify->auth_user,$oce
   header($_SERVER["SERVER_PROTOCOL"] . " 403 Forbidden");
   exit;
 }
+if(isset($_GET['action']) &&
+    ($_GET['action']=='delete'
+     ||$_GET['action']=='deleteconfirm')&&
+    $ocertify->npermission!=15){
+  header($_SERVER["SERVER_PROTOCOL"] . " 403 Forbidden");
+  exit;
+}
 
   if (isset($_GET['action']) && $_GET['action']) {
     switch ($_GET['action']) {
@@ -420,15 +427,15 @@ right:5px;*/
               <input name="keywords" type="text" id="keywords" size="40" value="<?php if(isset($_GET['keywords'])) echo stripslashes($_GET['keywords']); ?>">
               <select name="search_type" onChange='search_type_changed(this)'>
                 <option value="none">--選択してください--</option>
-                <option value="title">タイトル</option>
                 <option value="priority">重</option>
-                <option value="url">URL</option>
-                <option value="loginurl">Login</option>
+                <option value="title">タイトル</option>
+                <option value="loginurl">ログインURL</option>
+                <option value="url">タイトルURL</option>
                 <option value="username">ID</option>
-                <option value="password">PW</option>
-                <option value="comment">コメント</option>
-                <option value="memo">メモ</option>
+                <option value="password">パスワード</option>
                 <option value="operator">管理者</option>
+                <option value="comment">登録情報</option>
+                <option value="memo">メモ欄</option>
                 <option value="site_id">サイト名</option>
               </select>
               </form>
