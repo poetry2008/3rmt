@@ -4,7 +4,7 @@ define('TEXT_PRIORITY_HEAD','重');
 define('TEXT_INFO_PRIORITY','重要度');
 define('TEXT_LOGINURL','ログインURL');
 define('TEXT_INFO_LOGINURL','LoginURL');
-define('TEXT_TITLE','タイトル');
+define('TEXT_TITLE','ID管理履歴');
 define('TEXT_INFO_TITLE','タイトル');
 define('TEXT_USERNAME','ID');
 define('TEXT_PASSWORD','パスワード');
