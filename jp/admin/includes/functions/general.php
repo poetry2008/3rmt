@@ -4564,3 +4564,16 @@ function tep_get_avg_by_pid($pid){
   }
   return $sum/$cnt;
 }
+
+  function display_price($number){
+    $format_string = number_format($number,2);
+    $arr = $arr2 = array();
+    for($i=0;$i<10;$i++) {
+      $arr[] = '.'.(string)$i.'0';
+      if ($i == 0) 
+        $arr2[] = '';
+      else 
+        $arr2[] = '.'.(string)$i;
+    }
+    return str_replace($arr,$arr2,$format_string);
+  }

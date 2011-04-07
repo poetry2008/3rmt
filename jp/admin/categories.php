@@ -1828,6 +1828,7 @@ function get_cart_products(){
                  p.products_image2,
                  p.products_image3, 
                  p.products_price, 
+                 p.products_bflag,
                  p.products_weight, 
                  p.products_date_added, 
                  p.products_last_modified, 
@@ -1925,7 +1926,12 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   echo '  <tr><td><hr size="2" noshade></td></tr><tr>';
   echo '  <tr>';
   echo '  <td height="30">';
+  echo '<table  width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="left">';
   echo '価&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格：&nbsp;' . tep_draw_input_field('products_price', number_format(abs($pInfo->products_price),0,'.',''),'id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;円' . '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price . '円 ' . "\n";
+  echo '</td><td align="right">';
+  if (!$pInfo->bflag)
+  echo '実在庫の平均仕入価格： '.display_price(tep_get_avg_by_pid($pInfo->relate_products_id)).'円';
+  echo '</td></tr></table>';
   echo '  </td>';
   echo '  </tr><tr><td><hr size="2" noshade></td></tr><tr>';
   echo '  <td height="30">';
@@ -1962,19 +1968,6 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
     echo '  <td align="right"><a href="javascript:void(0)" id="b_3" onclick="change_qt(this)" style="text-decoration : underline;"></a>&nbsp;</td>';
     echo '  </tr>';
     echo '</table>';
-  }
-  
-  function display_price($number){
-    $format_string = number_format($number,2);
-    $arr = $arr2 = array();
-    for($i=0;$i<10;$i++) {
-      $arr[] = '.'.(string)$i.'0';
-      if ($i == 0) 
-        $arr2[] = '';
-      else 
-        $arr2[] = '.'.(string)$i;
-    }
-    return str_replace($arr,$arr2,$format_string);
   }
 
   $order_history_query = tep_db_query("
@@ -2083,12 +2076,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   }
   ?>
   </table>
-  
   <?php
   }
-  ?>
-平均在庫価格： <?php echo display_price(tep_get_avg_by_pid($pInfo->products_id));?>円
-  <?
   echo '</td>';
   echo '</tr></table>';
   echo '<table width="100%" cellspacing="0" cellpadding="5" border="0" class="smalltext"><tr><td><b>販売</b></td><td><b>買取</b></td></tr>' . "\n";
