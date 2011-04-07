@@ -89,8 +89,8 @@
 
                 <option value="none">--選択してください--</option>
                 <option value="priority">重</option>
+                <option value="loginurl">LoginURL</option>
                 <option value="title">タイトル</option>
-                <option value="loginurl">ログインURL</option>
                 <option value="url">タイトルURL</option>
                 <option value="username">ID</option>
                 <option value="password">パスワード</option>
@@ -176,11 +176,15 @@
       <?php 
       if ($HTTP_GET_VARS['sort'] == 'title') {
       ?>
-      <a href="<?php echo tep_href_link(FILENAME_PW_MANAGER_LOG, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=title&type='.$type_str);?>"><?php echo TEXT_TITLE;?></a> 
+      <a href="<?php echo tep_href_link(FILENAME_PW_MANAGER_LOG,
+        tep_get_all_get_params(array('x', 'y', 'type',
+              'sort')).'sort=title&type='.$type_str);?>"><?php echo TEXT_INFO_TITLE;?></a> 
       <?php
       } else {
       ?>
-      <a href="<?php echo tep_href_link(FILENAME_PW_MANAGER_LOG, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=title&type=asc');?>"><?php echo TEXT_TITLE;?></a> 
+      <a href="<?php echo tep_href_link(FILENAME_PW_MANAGER_LOG,
+      tep_get_all_get_params(array('x', 'y', 'type',
+            'sort')).'sort=title&type=asc');?>"><?php echo TEXT_INFO_TITLE;?></a> 
       <?php
       }
       ?>
