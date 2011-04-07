@@ -14,6 +14,8 @@
   }
   if(isset($_GET['site_id'])&&$_GET['site_id']){
     $site_id = tep_db_prepare_input($_GET['site_id']);
+  }else{
+    $site_id = '';
   }
   if(isset($_GET['pw_l_id'])&&$_GET['pw_l_id']){
     $pwlid = tep_db_prepare_input($_GET['pw_l_id']);
@@ -56,7 +58,7 @@
 function delete_all(){
   if(confirm('履歴を削除しますか？')){
     location.href='<?php echo
-      tep_href_link(FILENAME_PW_MANAGER_LOG,'action=deleteconfirm&select=all');?>';
+      tep_href_link(FILENAME_PW_MANAGER_LOG,'action=deleteconfirm&select=all&pw_id='.$pwid);?>';
   }
 }
 </script>

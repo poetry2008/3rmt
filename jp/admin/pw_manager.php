@@ -953,7 +953,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           "<button type='button'
           onclick=\"location.href='".
           tep_href_link(FILENAME_PW_MANAGER_LOG,
-            'pw_id='.$pwInfo->id)
+            'pw_id='.$pwInfo->id.'&site_id='.$site_id)
           ."'\">" .
           TEXT_BUTTON_HISTORY."</button>";
       }else{
