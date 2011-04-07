@@ -334,7 +334,7 @@ function delete_all(){
         echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); 
       } else { 
         echo '<a href="' . tep_href_link(FILENAME_PW_MANAGER_LOG, 'page=' .
-          $_GET['page'] . '&type='.$_GET['type'].'&sort='.$_GET['sort'].'&pw_l_id=' . $pw_manager_row['id']) . '">' . 
+          $_GET['page'] . '&site_id='.$site_id. '&type='.$_GET['type'].'&sort='.$_GET['sort'].'&pw_l_id=' . $pw_manager_row['id']) . '">' . 
           tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
       }
       echo '&nbsp;</td>';
