@@ -2,7 +2,7 @@
 define('TEXT_PRIORITY','重要度');
 define('TEXT_PRIORITY_HEAD','重');
 define('TEXT_INFO_PRIORITY','重要度');
-define('TEXT_LOGINURL','ログインURL');
+define('TEXT_LOGINURL','Login');
 define('TEXT_INFO_LOGINURL','LoginURL');
 define('TEXT_TITLE','ID管理履歴');
 define('TEXT_INFO_TITLE','タイトル');
