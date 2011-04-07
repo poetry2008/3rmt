@@ -4505,9 +4505,7 @@ function tep_get_user_select($selected='',$select_name=''){
   $select_str .= '<select name ="'.$select_name.'" >'."\r\n";
   }
   if($selected==''){
-  $select_str .= '<option value="" selected="selected">--選択--</option>'."\r\n";
-  }else{
-  $select_str .= '<option value="" >--選択--</option>'."\r\n";
+    $select_str .= "<option value=''>--選択--</oprion>\r\n";
   }
   while($row = tep_db_fetch_array($query)){
     $user_info = tep_get_user_info($row['userid']);

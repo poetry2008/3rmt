@@ -298,7 +298,19 @@
       echo "<td class='dataTableContent'>".mb_substr($pw_manager_row['title'],0,12,'utf-8')."</td>";
       echo "<td class='dataTableContent'>".mb_substr($pw_manager_row['username'],0,8,'utf-8')."</td>";
       echo "<td class='dataTableContent'>".mb_substr($pw_manager_row['password'],0,8,'utf-8')."</td>";
-      echo "<td class='dataTableContent'>".mb_substr($pw_manager_row['operator'],0,5,'utf-8')."</td>";
+      echo "<td class='dataTableContent'".$onclick." >";
+      if($pw_manager_row['self'] == ''){ 
+        if($pw_manager_row['privilege'] =='7'){
+         echo "Staff以上";
+        }else if($pw_manager_row['privilege'] =='10'){
+         echo "Chief以上";
+        }else{
+         echo mb_substr($pw_manager_row['operator'],0,5,'utf-8');
+        }
+      }else{
+      echo mb_substr($pw_manager_row['operator'],0,5,'utf-8');
+      } 
+      echo "</td>";
       echo "<td class='dataTableContent'>".$pw_manager_row['nextdate']."</td>";
       echo '<td class="dataTableContent" align="right">';
       if ( isset($pwInfo) && (is_object($pwInfo)) && ($pw_manager_row['id'] == $pwInfo->id) ) { 

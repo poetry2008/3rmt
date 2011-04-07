@@ -64,17 +64,26 @@ if(isset($pwid)&&$pwid&&!tep_can_edit_pw_manager($pwid,$ocertify->auth_user,$oce
             'comment' => tep_db_prepare_input($_POST['comment']),
             'memo' => tep_db_prepare_input($_POST['memo']),
             'nextdate' => tep_db_prepare_input($_POST['nextdate']),
-            'privilege' => tep_db_prepare_input($_POST['privilege']),
             'update_user' => $user_info['name'],
-            'self' => $user_self,
             'updated_at' => 'now()',
             'site_id' => tep_db_prepare_input($_POST['site_id']),
             'onoff' => '1',
             );
         if($_GET['action']=='update'){
-          if(tep_db_prepare_input($_POST['privilege'])==15){
+          if(tep_db_prepare_input($_POST['privilege'])==15&&
+              tep_db_prepare_input($_POST['user_self'])!=''){
+            
           $update_sql_data = array(
+            'privilege' => tep_db_prepare_input($_POST['privilege']),
             'operator' => $pw_operator,
+            'self' => $user_self,
+            );
+          $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
+          }else if(tep_db_prepare_input($_POST['privilege'])==7||
+          tep_db_prepare_input($_POST['privilege'])==10){
+          $update_sql_data = array(
+            'privilege' => tep_db_prepare_input($_POST['privilege']),
+            'self' => $user_self,
             );
           $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
           }
@@ -97,6 +106,8 @@ if(isset($pwid)&&$pwid&&!tep_can_edit_pw_manager($pwid,$ocertify->auth_user,$oce
         }
         if($_GET['action']=='insert'){
           $insert_sql_data = array(
+            'self' => $user_self,
+            'privilege' => tep_db_prepare_input($_POST['privilege']),
             'created_at' => 'now()',
             'operator' => $pw_operator,
             );
@@ -658,8 +669,20 @@ right:5px;*/
       }
       echo "<td class='dataTableContent'".$onclick." >".$privilege_str."</td>";
       */
-      echo "<td class='dataTableContent'".$onclick."
-        >".mb_substr($pw_manager_row['operator'],0,5,'utf-8')."</td>";
+      echo "<td class='dataTableContent'".$onclick." >";
+        if($pw_manager_row['privilege'] =='7'){
+         echo "Staff以上";
+        }else if($pw_manager_row['privilege'] =='10'){
+         echo "Chief以上";
+        }else{
+         if($pw_manager_row['self']!=''){
+         $self_info = tep_get_user_info($pw_manager_row['self']);
+         echo mb_substr($self_info['name'],0,5,'utf-8');
+         }else{
+         echo mb_substr($pw_manager_row['operator'],0,5,'utf-8');
+         }
+        }
+      echo "</td>";
       echo "<td class='dataTableContent'".$onclick." >".$pw_manager_row['nextdate']."</td>";
       echo '<td class="dataTableContent" align="right">';
       if ( isset($pwInfo) && (is_object($pwInfo)) && ($pw_manager_row['id'] == $pwInfo->id) ) { 
@@ -750,9 +773,15 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           tep_draw_radio_field('privilege','10',false,'','class="privilege"
             id="privilege_c"')."Chief以上<br>"
           );
+        $selected_user = ''; 
+        if($ocertify->npermission == 15){
+        $selected_user = ''; 
+        }else{
+        $selected_user = $ocertify->auth_user;
+        }
       $contents[] = array('text' => '<br>' . '<div id="user_select"
           class="user_select" style="display:none">'.
-        tep_get_user_select()
+        tep_get_user_select($selected_user)
         ."</div>"
           );
       /*
@@ -837,9 +866,18 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       }else{
         $pw_select_display = 'none';
       }
+      if($pwInfo->self==''||$pwInfo->self==null){
+        if($ocertify->npermission == 15){
+        $selected_user = ''; 
+        }else{
+        $selected_user = $ocertify->auth_user;
+        }
+      }else{
+        $selected_user = $pwInfo->self;
+      }
       $contents[] = array('text' => '<br>' . '<div id="user_select"
           class="user_select" style="display:'.$pw_select_display.'" >'.
-        tep_get_user_select($pwInfo->self)
+        tep_get_user_select($selected_user)
         ."</div>"
           );
       $contents[] = array('align' => 'center', 'text' => '<br>' . 
@@ -875,7 +913,14 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       break;
   default:
       if($ocertify->npermission == 15){
-        $history_button =  '&nbsp;' . 
+        $history_button =  
+           '&nbsp;'.
+          "<button type='button'
+          onclick=\"location.href='".
+          tep_href_link(FILENAME_PW_MANAGER,'action=delete&pw_id='.$pwInfo->id.'&'.tep_get_all_get_params(array('pw_id','action','search_type','keywords')))
+          ."'\">" .
+          TEXT_BUTTON_DELETE."</button>"
+          .'&nbsp;' . 
           "<button type='button'
           onclick=\"location.href='".
           tep_href_link(FILENAME_PW_MANAGER_LOG,
@@ -891,12 +936,6 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           onclick=\"location.href='".tep_href_link(FILENAME_PW_MANAGER,
             'action=edit&pw_id='.$pwInfo->id.'&'.tep_get_all_get_params(array('pw_id','action','search_type','keywords')))."'\">" .
           TEXT_BUTTON_EDIT."</button>"
-          . '&nbsp;'.
-          "<button type='button'
-          onclick=\"location.href='".
-          tep_href_link(FILENAME_PW_MANAGER,'action=delete&pw_id='.$pwInfo->id.'&'.tep_get_all_get_params(array('pw_id','action','search_type','keywords')))
-          ."'\">" .
-          TEXT_BUTTON_DELETE."</button>"
           .$history_button
           );
       $contents[] = array('text' => '<br>' . TEXT_INFO_COMMENT . '<br>' .
