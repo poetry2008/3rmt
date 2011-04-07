@@ -1,0 +1,59 @@
+<!--{include file=header.html}-->
+<div id="left">
+<!--{include file=menu.html}-->
+</div>
+<div id="right">
+<div id="content">
+<ul>
+<li class="content-bg">
+<div id="title"><h3><!--{_t key='ui_c_title'}--></h3></div>
+<div id="menu-top">
+[<a href="<!--{url controller=class action=create parent_id =$parent.class_id}-->">  <img src="images/backpic/more-class.gif" width="16" height="16" alt="class">  <!--{_t key='ui_c_create'}--></a>]
+[<a href='<!--{url controller=site action=add id=$parent.class_id}-->'>  <img src="images/backpic/add-class.gif" width="16" height="16" alt="class">  <!--{_t key='new_site_in_this_class'}--></a>]	
+<span><!--{_t key='ui_c_description'}--></span>
+</div>
+<div id="menu-top">
+<form action="<!--{url controller='class' action='Search'}-->" method="post">
+<img src="images/backpic/search.gif" width="16" height="16" alt="search">  
+<!--{webcontrol type='textbox' name='keyword'}-->
+<!--{webcontrol type='submit' name='submit' value='検索'}-->
+</form>
+</div>
+<!--分类-->
+<table id="table-row">
+<tr class="tr1">
+<td><!--{_t key='id'}--></td>
+<td><!--{_t key='ui_c_class_name'}--></td>
+<td><!--{_t key='ui_c_child_count'}--></td>
+<td><!--{_t key='ui_g_operation'}--></td>
+</tr>
+<!--{section name=loopClass loop=$subClasses}-->
+<tr class="tr2">
+<td class="td-center"><!--{$subClasses[loopClass].class_id}--></td>
+<td class="td-center"><a href="<!--{url controller='class' action='index' parent_id=$subClasses[loopClass].class_id}-->" ><!--{$subClasses[loopClass].name}--></a></td>
+<td class="td-center"><!--{$subClasses[loopClass].child_count}--></td>
+<td class="td-center">
+<a href="<!--{url controller='class' action='edit' class_id=$subClasses[loopClass].class_id}-->" > <!--{_t key='ui_g_operation_edit'}--></a> | 
+<a href="<!--{url controller='class' action='remove' class_id=$subClasses[loopClass].class_id}-->" onclick="return confirm('<!--{_t key='ui_c_remove_confirm'}-->');"><!--{_t key='ui_g_operation_remove'}--></a> | 
+<a href="<!--{url controller='site' action='list' id=$subClasses[loopClass].class_id}-->" > <!--{_t key='ui_c_operation_list_site'}--></a> |
+<a href="<!--{url controller='class' action='create' parent_id=$subClasses[loopClass].class_id}-->" > <!--{_t key='ui_c_operation_create_child'}--></a> | 	
+<a href="<!--{url controller='frequentclass' action='add' id=$subClasses[loopClass].class_id}-->" > <!--{_t key='add_to_frequent_class'}--></a> | 
+
+<a href="<!--{url controller='frequentspecial2' action='add' id=$subClasses[loopClass].class_id}-->" > <!--{_t key='add_to_frequent_special2'}--></a> |
+<a href="<!--{url controller='frequentspecial' action='add' id=$subClasses[loopClass].class_id}-->" > <!--{_t key='add_to_frequent_special'}--></a>
+</td>
+</tr>
+<!--{sectionelse}-->
+<tr >
+<td colspan="4" class="td-submit"><!--{_t key='ui_c_no_subclasses'}--></td>
+</tr>
+<!--{/section}-->
+</table>
+
+<!--{include file=listing.tpl}-->
+</li>
+</ul>
+</div>
+</div>
+</body>
+</html>
