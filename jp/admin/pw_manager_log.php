@@ -87,7 +87,7 @@ function delete_all(){
     <tr>
       <td width="100%" colspan='2'>
   
-  <table border="0" width="100%" cellspacing="0" cellpadding="0">
+  <table border="0" width="100%" cellspacing="2" cellpadding="0">
     <tr>
       <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
       <td align="right" class="smallText">
