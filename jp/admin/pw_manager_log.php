@@ -349,7 +349,7 @@ function delete_all(){
          <?php
           echo "<button type='button'
           onclick=\"delete_all()\">" .
-          TEXT_BUTTON_CLEAR."</button>"; 
+          TEXT_BUTTON_DELETE_ALL."</button>"; 
           
           echo "<button type='button'
           onclick=\"location.href='".
