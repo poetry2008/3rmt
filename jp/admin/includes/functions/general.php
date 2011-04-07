@@ -4450,13 +4450,17 @@ function tep_get_pwd_len(){
 function tep_can_edit_pw_manager($pwid,$self,$permission){
   if($_SESSION['user_permission']=='7'){
    $sql = "select * from ".TABLE_IDPW." where 
+     (
      (privilege<='".$permission."' and id = '".$pwid."' and self='') or 
      (id = '".$pwid."' and self='".$self."') 
+     ) and onoff ='1' 
      order by id desc limit 1";
   }else if($_SESSION['user_permission']=='10'){
    $sql = "select * from ".TABLE_IDPW." where 
+     (
      (privilege<='".$permission."' and id = '".$pwid."' and self='') or 
      (id = '".$pwid."' and self='".$self."') 
+     ) and onoff ='1' 
      order by id desc limit 1";
   }else {
    return true;

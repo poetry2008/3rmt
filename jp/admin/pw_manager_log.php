@@ -93,8 +93,8 @@
                 <option value="loginurl">Login</option>
                 <option value="username">ID</option>
                 <option value="password">PW</option>
-                <option value="comment">コメント</option>
-                <option value="memo">メモ</option>
+                <option value="comment">登録情報</option>
+                <option value="memo">メモ欄</option>
                 <option value="operator">管理者</option>
                 <option value="site_id">サイト名</option>
               </select>
@@ -299,17 +299,18 @@
       echo "<td class='dataTableContent'>".mb_substr($pw_manager_row['username'],0,8,'utf-8')."</td>";
       echo "<td class='dataTableContent'>".mb_substr($pw_manager_row['password'],0,8,'utf-8')."</td>";
       echo "<td class='dataTableContent'".$onclick." >";
-      if($pw_manager_row['self'] == ''){ 
         if($pw_manager_row['privilege'] =='7'){
          echo "Staff以上";
         }else if($pw_manager_row['privilege'] =='10'){
          echo "Chief以上";
         }else{
+         if($pw_manager_row['self']!=''){
+         $self_info = tep_get_user_info($pw_manager_row['self']);
+         echo mb_substr($self_info['name'],0,5,'utf-8');
+         }else{
          echo mb_substr($pw_manager_row['operator'],0,5,'utf-8');
+         }
         }
-      }else{
-      echo mb_substr($pw_manager_row['operator'],0,5,'utf-8');
-      } 
       echo "</td>";
       echo "<td class='dataTableContent'>".$pw_manager_row['nextdate']."</td>";
       echo '<td class="dataTableContent" align="right">';

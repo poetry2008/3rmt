@@ -27,7 +27,7 @@ define('TEXT_PRIORITY_3','重3');
 define('TEXT_INFO_URL','タイトルURL');
 define('TEXT_INFO_DELETE_INTRO','本当に削除しますか？');
 define('TEXT_FIREFOX_ERROR','firefoxのセキュリティ制限により、コピーできませんので、about:config を開いて、signed.applets.code base_principal_support の設置をtrue にして、再度試してみてください。');
-define('TEXT_COPY_OK','コピーをした、Ctrl+Vで貼り付けできます。');
+define('TEXT_COPY_OK','クリップボードにコピーしました。');
 define('TEXT_INFO_SITE_ID','サイト名');
 define('TEXT_LOWER_ENGLISH','英小文字');
 define('TEXT_POWER_ENGLISH','英大文字');
