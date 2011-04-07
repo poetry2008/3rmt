@@ -1929,7 +1929,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   echo '<table  width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="left">';
   echo '価&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格：&nbsp;' . tep_draw_input_field('products_price', number_format(abs($pInfo->products_price),0,'.',''),'id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;円' . '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price . '円 ' . "\n";
   echo '</td><td align="right">';
-  if (!$pInfo->bflag)
+  if (!$pInfo->products_bflag)
   echo '実在庫の平均仕入価格： '.display_price(tep_get_avg_by_pid($pInfo->products_id)).'円';
   echo '</td></tr></table>';
   echo '  </td>';
