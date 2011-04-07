@@ -107,7 +107,11 @@ if(isset($_GET['action']) &&
               }
             }
           }
+          if(tep_db_prepare_input($_POST['url'])!=tep_db_prepare_input($_POST['old_url'])||tep_db_prepare_input($_POST['loginurl'])!=tep_db_prepare_input($_POST['old_loginurl'])||tep_db_prepare_input($_POST['username'])!=tep_db_prepare_input($_POST['old_username'])||tep_db_prepare_input($_POST['password'])!=tep_db_prepare_input($_POST['old_password'])||tep_db_prepare_input($_POST['comment'])!=tep_db_prepare_input($_POST['old_comment'])
+
+            ){
           tep_db_perform(TABLE_IDPW_LOG,$sql_data_array_log);
+          }
           tep_redirect(tep_href_link(FILENAME_PW_MANAGER,
                 'pw_id='.$pwid.'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page=' . $_GET['page']));
         }
@@ -700,7 +704,7 @@ right:5px;*/
         echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); 
       } else { 
         echo '<a href="' . tep_href_link(FILENAME_PW_MANAGER, 'page=' .
-          $_GET['page'] . '&pw_id=' . $pw_manager_row['id']) . '">' . 
+          $_GET['page'] . '&type='.$_GET['type'].'&sort='.$_GET['sort'].'&pw_id=' . $pw_manager_row['id']) . '">' . 
           tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
       }
       echo '&nbsp;</td>';
@@ -828,11 +832,14 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('text' => '<br>' . TEXT_INFO_SITE_ID . '<br>' .
           tep_site_pull_down("name='site_id'",$pwInfo->site_id));
       $contents[] = array('text' => '<br>' . TEXT_INFO_URL . '<br>' .
-          tep_draw_input_field('url',$pwInfo->url,'id="url"'));
+          tep_draw_input_field('url',$pwInfo->url,'id="url"')
+          .tep_draw_hidden_field('old_url',$pwInfo->url));
       $contents[] = array('text' => '<br>' . TEXT_INFO_LOGINURL . '<br>' .
-          tep_draw_input_field('loginurl',$pwInfo->loginurl,'id="loginurl"'));
+          tep_draw_input_field('loginurl',$pwInfo->loginurl,'id="loginurl"')
+          .tep_draw_hidden_field('old_loginurl',$pwInfo->loginurl));
       $contents[] = array('text' => '<br>' . TEXT_INFO_USERNAME . '<br>' .
-          tep_draw_input_field('username',$pwInfo->username,'id="username"'));
+          tep_draw_input_field('username',$pwInfo->username,'id="username"')
+          .tep_draw_hidden_field('old_username',$pwInfo->username));
       $pwd_pattern = tep_get_pwd_pattern();
       $pwd_len = tep_get_pwd_len();
       $pwd_pattern_arr = explode(',',$pwd_pattern);
@@ -848,9 +855,11 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           "<button type='button'
           onclick=\"mk_pwd()\">" .
           TEXT_BUTTON_MK_PWD."</button>".
-          tep_draw_input_field('password',$pwInfo->password,'id="password"'));
+          tep_draw_input_field('password',$pwInfo->password,'id="password"')
+          .tep_draw_hidden_field('old_password',$pwInfo->password));
       $contents[] = array('text' => '<br>' . TEXT_INFO_COMMENT . '<br>' .
-          tep_draw_textarea_field('comment', 'soft', '30', '5', $pwInfo->comment, 'class="pw_textarea"'));
+          tep_draw_textarea_field('comment', 'soft', '30', '5', $pwInfo->comment, 'class="pw_textarea"')
+          .tep_draw_hidden_field('old_comment',$pwInfo->comment));
       $contents[] = array('text' => '<br>' . TEXT_INFO_MEMO . '<br>' .
           tep_draw_textarea_field('memo', 'soft', '30', '5', $pwInfo->memo, 'class="pw_textarea"'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_NEXTDATE . '<br><div

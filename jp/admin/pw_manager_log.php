@@ -23,8 +23,12 @@
     switch ($_GET['action']) {
       case 'deleteconfirm':
         //unlink();
+        if($_GET['select']=='all'){
+        tep_db_query("delete from " . TABLE_IDPW_LOG);
+        }else{
         tep_db_query("delete from " . TABLE_IDPW_LOG . " where idpw_id = '" .
             tep_db_input($pwlid) . "'");
+        }
         tep_redirect(tep_href_link(FILENAME_PW_MANAGER_LOG, 'page=' . $_GET['page']));
         break;
 
@@ -47,7 +51,14 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
-<script language="javascript" src="includes/javascript/all_order.js"></script>
+<script language="javascript" >
+function delete_all(){
+  if(confirm('履歴を削除しますか？')){
+    location.href='<?php echo
+      tep_href_link(FILENAME_PW_MANAGER_LOG,'action=deleteconfirm&select=all');?>';
+  }
+}
+</script>
 </head>
 <body>
 <!-- header //-->
@@ -323,7 +334,7 @@
         echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); 
       } else { 
         echo '<a href="' . tep_href_link(FILENAME_PW_MANAGER_LOG, 'page=' .
-          $_GET['page'] . '&pw_l_id=' . $pw_manager_row['id']) . '">' . 
+          $_GET['page'] . '&type='.$_GET['type'].'&sort='.$_GET['sort'].'&pw_l_id=' . $pw_manager_row['id']) . '">' . 
           tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
       }
       echo '&nbsp;</td>';
@@ -336,6 +347,10 @@
     <tr>
        <td colspan="9" align="right">
          <?php
+          echo "<button type='button'
+          onclick=\"delete_all()\">" .
+          TEXT_BUTTON_CLEAR."</button>"; 
+          
           echo "<button type='button'
           onclick=\"location.href='".
           tep_href_link(FILENAME_PW_MANAGER,'pw_id='.$pw_id) 
