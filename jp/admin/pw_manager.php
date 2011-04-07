@@ -113,7 +113,8 @@ if(isset($_GET['action']) &&
           tep_db_perform(TABLE_IDPW_LOG,$sql_data_array_log);
           }
           tep_redirect(tep_href_link(FILENAME_PW_MANAGER,
-                'pw_id='.$pwid.'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page=' . $_GET['page']));
+                'pw_id='.$pwid.'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page='
+                . $_GET['page'].'&site_id='.$site_id));
         }
         if($_GET['action']=='insert'){
           $insert_sql_data = array(
@@ -134,6 +135,11 @@ if(isset($_GET['action']) &&
         break;
       case 'deleteconfirm':
         //unlink();
+        $sql_del = 'delete from '.TABLE_IDPW.' where id = "'.$pwid.'"';
+        tep_db_query($sql_del);
+        $sql_del_log = 'delete from '.TABLE_IDPW_LOG.' where idpw_id = "'.$pwid.'"';
+        tep_db_query($sql_del_log);
+        /*
         tep_db_perform(TABLE_IDPW, array('onoff' => '0'), 'update', 'id = \'' . $pwid . '\'');
         $res = tep_db_query("select * from ".TABLE_IDPW. " where id =
             '".$pwid."'");
@@ -148,6 +154,7 @@ if(isset($_GET['action']) &&
           }
         }
         tep_db_perform(TABLE_IDPW_LOG,$sql_data_array_log);
+        */
         tep_redirect(tep_href_link(FILENAME_PW_MANAGER, 'page=' . $_GET['page']));
         break;
 
