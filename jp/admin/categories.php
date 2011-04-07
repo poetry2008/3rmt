@@ -2005,14 +2005,14 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
       </tr>
     <?php
       $sum_i ++;
-      $sum_price += $order_history['final_price'];
+      $sum_price += $order_history['final_price'] * $order_history['products_quantity'];
       $sum_quantity += $order_history['products_quantity'];
     }
     ?>
       <tr>
         <th></th>
         <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left">合計:</td><td align="right"><?php echo $sum_quantity;?>個</td></tr></table></td>
-        <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left">平均:</td><td align="right"><?php echo display_price($sum_price/$sum_i);?>円</td></tr></table></td>
+        <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left">平均:</td><td align="right"><?php echo display_price($sum_price/$sum_quantity);?>円</td></tr></table></td>
         <td class="main"> </td>
       </tr>
       <?php
@@ -2060,14 +2060,14 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
       </tr>
     <?php
       $sum_i ++;
-      $sum_price += $order_history['final_price'];
+      $sum_price += $order_history['final_price'] * $order_history['products_quantity'];
       $sum_quantity += $order_history['products_quantity'];
     }
     ?>
       <tr>
         <th></th>
         <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left">合計:</td><td align="right"><?php echo $sum_quantity;?>個</td></tr></table></td>
-        <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left">平均:</td><td align="right"><?php echo display_price($sum_price/$sum_i);?>円</td></tr></table></td>
+        <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left">平均:</td><td align="right"><?php echo display_price($sum_price/$sum_quantity);?>円</td></tr></table></td>
         <td class="main"> </td>
       </tr>
     <?php
