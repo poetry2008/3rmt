@@ -4521,5 +4521,46 @@ function tep_get_user_select($selected='',$select_name=''){
   }
   $select_str .= "</select>\r\n";
   return $select_str;
+}
 
+function tep_get_avg_by_pid($pid){
+/*
+  EX:
+
+  2011-03-25 18:29:07     1個      -18000円     --
+  2011-03-25 19:16:33     10個    -100円     --
+  2011-03-25 18:30:36    20個     -200円     --
+
+  实在库 n = 12
+  算法2:
+         avg =  ((-18000  * 1 ) + (-100 * 10 ) ) / ( 10 +1)  = 1727.27
+
+         f(n) = (-18000 * 1 + -100 * 10 + -200 * (12-1-10)) / 12 =-1600
+
+         f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
+
+         -1600 * 12 = -19 200
+*/
+  $product = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
+  $order_history_query = tep_db_query("
+    select * 
+    from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id
+    where 
+    op.products_id='".$pid."'
+    order by date_purchased desc
+    limit 5
+  ");
+  $sum = 0;
+  $cnt = 0;
+  while($h = tep_db_fetch_array($order_history_query)){
+    if ($cnt + $h['products_quantity'] > $product['products_real_quantity']) {
+      $sum += ($product['products_real_quantity'] - $cnt) * $h['final_price'];
+      $cnt = $product['products_real_quantity'];
+      break;
+    } else {
+      $sum += $h['products_quantity'] * $h['final_price'];
+      $cnt += $h['products_quantity'];
+    }
+  }
+  return $sum/$cnt;
 }
