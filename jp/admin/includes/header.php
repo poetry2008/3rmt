@@ -90,6 +90,22 @@ if(preg_match("/".FILENAME_ORDERS."/",$PHP_SELF)){
         <td><a href="' . tep_href_link(FILENAME_CUSTOMERS, '', 'NONSSL') . '" class="headerLink">顧客一覧</a>&nbsp;|</td>
           <td>&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, '', 'NONSSL') . '" class="headerLink">新着情報</a>&nbsp;|</td>
           <td>&nbsp;<a href="' . tep_href_link('micro_log.php', '', 'NONSSL') . '" class="headerLink">引継メモ</a>&nbsp;|</td>
+
+
+      <td onMouseOver="showmenu(\'managermenu\')" onMouseOut="hidemenu(\'managermenu\')" align="left">
+        &nbsp;<a class="headerLink" href="javascript:void(0);">ツール▼</a>&nbsp;|<br>
+        <table class="menu01" id="managermenu" cellpadding="0" cellspacing="0">
+          <tr>
+            <td class="menu01"><a class="t_link01" href="'.tep_href_link(FILENAME_PW_MANAGER, '', 'NONSSL').'">ID管理</a></td>
+          </tr>
+          <tr>
+            <td class="menu01"><a class="t_link01" href="'.tep_href_link('users.php', '', 'NONSSL').'">パスワード変更</a></td>
+          </tr>
+        </table>
+      </td>
+
+
+
       <td align="left" onmouseout="hidemenu(\'redirecturl\')" onmouseover="showmenu(\'redirecturl\')">
       ';
       echo '&nbsp;<a href="javascript:void(0);" class="headerLink">サイトへ移動▼</a>&nbsp;|<br>'; 
