@@ -356,7 +356,7 @@ function delete_all(){
           
           echo "<button type='button'
           onclick=\"location.href='".
-          tep_href_link(FILENAME_PW_MANAGER,'pw_id='.$pw_id) 
+          tep_href_link(FILENAME_PW_MANAGER,'pw_id='.$pw_id.'&site_id='.$site_id) 
           ."'\">" .
           TEXT_BUTTON_BACK."</button>"; 
          ?>
