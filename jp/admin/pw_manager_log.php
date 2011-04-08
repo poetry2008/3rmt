@@ -304,13 +304,15 @@ function delete_all(){
     if (isset($pwInfo) && (is_object($pwInfo)) && ($pw_manager_row['id'] == $pwInfo->id) ) {
       echo '              <tr class="dataTableRowSelected"
         onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\''
-        . tep_href_link(FILENAME_PW_MANAGER_LOG, 'page=' . $_GET['page'] . '&pw_l_id=' . $pwInfo->id . '&action=edit') . '\'">' . "\n";
+        . tep_href_link(FILENAME_PW_MANAGER_LOG, 'page=' . $_GET['page'] .
+            '&pw_l_id=' . $pwInfo->id . '&pw_id='.$pwid.'&site_id='.$site_id) . '\'">' . "\n";
     } else {
       echo '              <tr class="dataTableRow"
         onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'"
         onmouseout="this.className=\'dataTableRow\'"
         onclick="document.location.href=\'' . tep_href_link(FILENAME_PW_MANAGER_LOG,
-        'page=' . $_GET['page'] . '&pw_l_id=' . $pw_manager_row['id']) . '\'">' . "\n";
+        'page=' . $_GET['page'] . '&pw_l_id=' .
+          $pw_manager_row['id'].'&pw_id='.$pwid.'&site_id='.$site_id) . '\'">' . "\n";
     }
       $priority_str = "<font color='";
       switch($pw_manager_row['priority']){
@@ -351,7 +353,7 @@ function delete_all(){
         echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); 
       } else { 
         echo '<a href="' . tep_href_link(FILENAME_PW_MANAGER_LOG, 'page=' .
-          $_GET['page'] . '&site_id='.$site_id. '&type='.$_GET['type'].'&sort='.$_GET['sort'].'&pw_l_id=' . $pw_manager_row['id']) . '">' . 
+          $_GET['page'] . '&pw_id='.$pw_id.'&site_id='.$site_id. '&type='.$_GET['type'].'&sort='.$_GET['sort'].'&pw_l_id=' . $pw_manager_row['id']) . '">' . 
           tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
       }
       echo '&nbsp;</td>';
@@ -370,7 +372,7 @@ function delete_all(){
           
           echo "<button type='button'
           onclick=\"location.href='".
-          tep_href_link(FILENAME_PW_MANAGER,'pw_id='.$pw_id.'&site_id='.$site_id) 
+          tep_href_link(FILENAME_PW_MANAGER,'pw_id='.$pwid.'&site_id='.$site_id) 
           ."'\">" .
           TEXT_BUTTON_BACK."</button>"; 
          ?>
@@ -432,10 +434,27 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           ."'\">" .
           TEXT_BUTTON_DELETE."</button>"
           );
+      $contents[] = array('text' => '<br>' . TEXT_INFO_TITLE . '<br>' .
+          $pwInfo->title);
+      $contents[] = array('text' => '<br>' . TEXT_INFO_PRIORITY . '<br>' .
+          $pwInfo->priority);
+          $site_str = tep_get_site_info($pwInfo->site_id);
+      $contents[] = array('text' => '<br>' . TEXT_INFO_SITE_ID . '<br>' .
+          $site_str['romaji']);
+      $contents[] = array('text' => '<br>' . TEXT_INFO_URL . '<br>' .
+          $pwInfo->url);
+      $contents[] = array('text' => '<br>' . TEXT_INFO_LOGINURL . '<br>' .
+          $pwInfo->loginurl);
+      $contents[] = array('text' => '<br>' . TEXT_USERNAME . '<br>' .
+          $pwInfo->username);
+      $contents[] = array('text' => '<br>' . TEXT_PASSWORD . '<br>' .
+          $pwInfo->password);
+      $contents[] = array('text' => '<br>' . TEXT_NEXTDATE . '<br>' .
+          $pwInfo->nextdate);
       $contents[] = array('text' => '<br>' . TEXT_INFO_COMMENT . '<br>' .
-          tep_draw_textarea_field('comment', 'soft', '30', '5', $pwInfo->comment, 'class="pw_textarea"'));
+          $pwInfo->comment);
       $contents[] = array('text' => '<br>' . TEXT_INFO_MEMO . '<br>' .
-          tep_draw_textarea_field('memo', 'soft', '30', '5', $pwInfo->memo, 'class="pw_textarea"'));
+          $pwInfo->memo);
       $contents[] = array('align' => '','text' => '<br>' . TEXT_INFO_CREATED .  '&nbsp;&nbsp;&nbsp;' .
           $pwInfo->created_at);
       $contents[] = array('align' => '','text' => '<br>' . TEXT_INFO_UPDATED . '&nbsp;&nbsp;&nbsp;' .

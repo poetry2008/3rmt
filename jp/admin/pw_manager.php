@@ -656,13 +656,14 @@ right:5px;*/
         onmouseover="this.style.cursor=\'hand\'" >' . "\n";
       $onclick = ' onclick="document.location.href=\''.
         tep_href_link(FILENAME_PW_MANAGER, 'page=' . $_GET['page'] . '&pw_id=' .
-            $pwInfo->id . '&action=edit') . '\'"';
+            $pwInfo->id . '&action=edit&site_id='.$site_id.'&sort='.$_GET['sort'].'&type='.$_GET['type']) . '\'"';
     } else {
       echo '              <tr class="dataTableRow"
         onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'"
         onmouseout="this.className=\'dataTableRow\'">' . "\n";
       $onclick = 'onclick="document.location.href=\'' . tep_href_link(FILENAME_PW_MANAGER,
-        'page=' . $_GET['page'] . '&pw_id=' . $pw_manager_row['id']) . '\'"';
+        'page=' . $_GET['page'] .
+          '&site_id='.$site_id.'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&pw_id=' . $pw_manager_row['id']) . '\'"';
     }
       $priority_str = "<font color='";
       switch($pw_manager_row['priority']){

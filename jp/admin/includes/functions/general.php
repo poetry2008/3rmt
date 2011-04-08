@@ -4574,3 +4574,18 @@ function tep_get_avg_by_pid($pid){
     }
     return str_replace($arr,$arr2,$format_string);
   }
+
+function tep_get_site_info($site_id=0){
+  if($site_id){
+  $sql = "select * from ".TABLE_SITES." where id = '".$site_id."' limit 1";
+  $query = tep_db_query($sql);
+  $row = tep_db_fetch_array($query);
+  return $row;
+  }else{
+   $arr = array();
+   $arr['romaji'] = 'All';
+   return $arr;
+  }
+}
+
+
