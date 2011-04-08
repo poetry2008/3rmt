@@ -97,7 +97,9 @@
 
    function buildBranch($parent_id, $level = 0) {
      if($level == 0){
-       $result = '<table width="100%"><tr><td valign="top" width="20%"><ul>';
+       $result = '<table width="100%"><tr><td valign="top" width="20%"><ul>
+       <li><a href="'.(isset($_GET['site_id'])?('?site_id=' . $_GET['site_id']):'').'">トップ</a></li>
+       ';
      }else{
        $result = $this->parent_group_start_string;
      }
