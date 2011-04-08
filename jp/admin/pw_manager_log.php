@@ -140,10 +140,10 @@ function delete_all(){
     <?php
       //add order 
       $order_str = ''; 
-      if (!isset($HTTP_GET_VARS['sort'])) {
-        $order_str = '`updated_at` asc, `title` asc'; 
+      if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
+        $order_str = '`updated_at` desc, `title` asc'; 
       } else {
-        if($HTTP_GET_VARS['sort'] = 'nextdate'){
+        if($HTTP_GET_VARS['sort'] == 'nextdate'){
         $order_str = '`date_order` '.$HTTP_GET_VARS['type']; 
         }else{
         $order_str = '`'.$HTTP_GET_VARS['sort'].'` '.$HTTP_GET_VARS['type']; 

@@ -614,6 +614,9 @@ sitemap
 	padding-left:13px;
 	color:#fff;
 }
+.bestseller_text a:hover{
+	color:#ccc;
+}
 .bestseller_img {
 	border-bottom-width: 1px;
 	border-bottom-style: solid;
@@ -1006,7 +1009,7 @@ Information
 }
 /*link color*/
 .product_listing_content a{
-	color: #237023;
+	color: #C51138;
 }
 .comment a{
 	color:#C51138;
@@ -1024,10 +1027,11 @@ Information
 	text-decoration:underline;
 }
 .Tlist a{
-	color:#008000;
+	color:#C51138;
 }
 .Tlist a:hover{
 	text-decoration:underline;
+	color: #666666;
 }
 .subcategory_tree{
 list-style-type:none;
@@ -1070,8 +1074,8 @@ list-style-type:none;
 .tickets_lout{font-size:12px; margin-bottom:5px;}
 .tickets,.infotable{background-color:#E0E0E0; font-size:12px;margin-bottom:5px;}
 .tickets a,.infotable a{font-size:12px;}
-.tickets td,.infotable td{ background-color:#F2F2F2; padding:2px;}
-.tickets th,.infotable th{ background-color:#F2F2F2; text-align:left; font-size:12px; }
+.tickets td,.infotable td{ background-color:#Fff; padding:2px;}
+.tickets th,.infotable th{ background-color:#fff; text-align:left; font-size:12px; }
 #ticketthread{margin:15px 0;}
 .captcha_comment{ font-size:12px;}
 .right_colum_border{ width:170px;}

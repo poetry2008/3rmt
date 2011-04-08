@@ -42,13 +42,15 @@
 <div class="login box">
         <div class="menu_top"><img src="images/menu_ico.gif" alt="" align="top"><span>会員登録</span></div>
         <div id="login_form">
-        <ul class="login_list">
+        	<div class="login_form1"><a href="https://www.secureservice.jp/www.rmtgakuen.jp/login.php?cmd=o30ffkec6roaobpnp8l9h2p0r5"><img src="images/login_02.gif" alt=" ログイン"></a></div>
+            <div class="login_form2"><a href="https://www.secureservice.jp/www.rmtgakuen.jp/create_account.php?cmd=o30ffkec6roaobpnp8l9h2p0r5"><img src="images/signup_01.gif" alt=""></a></div>
+       <!-- <ul class="login_list">
           <li class="login_list_info"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . HEADER_TITLE_MY_ACCOUNT . '</a>'."\n"; ?></li>
           <li class="login_list_info"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL') . '">' . MYACCOUNT_EDIT . '</a>'."\n"; ?></li>
 		  <li class="login_list_info"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_HISTORY, '', 'SSL') . '">' . MYACCOUNT_HISTORY . '</a>'."\n"; ?></li>
           <li class="login_list_info"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, '', 'SSL') . '">' . MYACCOUNT_NOTIFICATION . '</a>'."\n"; ?></li>
           <li class="login_list_info"><?php echo '<a href="' . tep_href_link(FILENAME_LOGOFF, '', 'SSL') . '">' . HEADER_TITLE_LOGOFF . '</a>'."\n"; ?></li>
-           </ul>
+           </ul>-->
         </div>
 </div>
 <?php 
