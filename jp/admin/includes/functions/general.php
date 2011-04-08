@@ -4541,9 +4541,10 @@ function tep_get_avg_by_pid($pid){
   $product = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
   $order_history_query = tep_db_query("
     select * 
-    from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id
+    from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id 
     where 
     op.products_id='".$product['relate_products_id']."'
+    and os.calc_price = '1'
     order by o.torihiki_date desc
   ");
   $sum = 0;
