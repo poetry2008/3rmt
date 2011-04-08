@@ -4106,7 +4106,7 @@ function tep_calc_products_price($real_qty = 0, $virtual_qty = 0){
   if(in_array($site_id,$site_arr)){//判断iste_id是否存在于权限数组中
     
     $edit_p=true;//true 说明有管理权限 可以在点击新闻时进行修改 
-  }else if(($site_id =='' || $site_id ==0)&&$_SESSION['user_permission'] == 15){
+  }else if($_SESSION['user_permission'] == 15){
     //判断 管理员 可以修改全部(all)
     $edit_p=true;
   }
@@ -4500,16 +4500,13 @@ function tep_get_pwm_info($idpw,$from=''){
 
 }
 function tep_get_user_select($selected='',$select_name=''){
-  $sql = "select * from ".TABLE_PERMISSIONS." where permission <=10";
+  $sql = "select * from ".TABLE_PERMISSIONS."";
   $query = tep_db_query($sql);
   $select_str = '';
   if($select_name==''){
   $select_str .= '<select name ="user_self" >'."\r\n";
   }else{
   $select_str .= '<select name ="'.$select_name.'" >'."\r\n";
-  }
-  if($selected==''){
-    $select_str .= "<option value=''>--選択--</oprion>\r\n";
   }
   while($row = tep_db_fetch_array($query)){
     $user_info = tep_get_user_info($row['userid']);

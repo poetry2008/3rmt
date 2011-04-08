@@ -2,7 +2,7 @@
 define('TEXT_PRIORITY','重要度');
 define('TEXT_PRIORITY_HEAD','重');
 define('TEXT_INFO_PRIORITY','重要度');
-define('TEXT_LOGINURL','ログインURL');
+define('TEXT_LOGINURL','Login');
 define('TEXT_INFO_LOGINURL','LoginURL');
 define('TEXT_TITLE','ID管理履歴');
 define('TEXT_INFO_TITLE','タイトル');
@@ -40,5 +40,6 @@ define('TEXT_INFO_OPRATER','更新者');
 define('TEXT_SELF','本人');
 define('TEXT_BUTTON_DELETE','削除');
 define('TEXT_BUTTON_CLEAR','取り消し');
+define('TEXT_BUTTON_DELETE_ALL','履歴削除');
 define('TEXT_BUTTON_SHOW','プレビュー');
 define('TEXT_BUTTON_BACK','戻る');

@@ -14,6 +14,8 @@
   }
   if(isset($_GET['site_id'])&&$_GET['site_id']){
     $site_id = tep_db_prepare_input($_GET['site_id']);
+  }else{
+    $site_id = '';
   }
   if(isset($_GET['pw_l_id'])&&$_GET['pw_l_id']){
     $pwlid = tep_db_prepare_input($_GET['pw_l_id']);
@@ -23,9 +25,14 @@
     switch ($_GET['action']) {
       case 'deleteconfirm':
         //unlink();
-        tep_db_query("delete from " . TABLE_IDPW_LOG . " where idpw_id = '" .
+        if($_GET['select']=='all'){
+        tep_db_query("delete from " . TABLE_IDPW_LOG. " where idpw_id='".$pwid."'");
+        }else{
+        tep_db_query("delete from " . TABLE_IDPW_LOG . " where id = '" .
             tep_db_input($pwlid) . "'");
-        tep_redirect(tep_href_link(FILENAME_PW_MANAGER_LOG, 'page=' . $_GET['page']));
+        }
+        tep_redirect(tep_href_link(FILENAME_PW_MANAGER_LOG, 'page=' .
+              $_GET['page'].'&pw_id='.$pwid.'&site_id='.$site_id));
         break;
 
     }
@@ -47,7 +54,14 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
-<script language="javascript" src="includes/javascript/all_order.js"></script>
+<script language="javascript" >
+function delete_all(){
+  if(confirm('履歴を削除しますか？')){
+    location.href='<?php echo
+      tep_href_link(FILENAME_PW_MANAGER_LOG,'action=deleteconfirm&select=all&pw_id='.$pwid);?>';
+  }
+}
+</script>
 </head>
 <body>
 <!-- header //-->
@@ -76,7 +90,7 @@
     <tr>
       <td width="100%" colspan='2'>
   
-  <table border="0" width="100%" cellspacing="0" cellpadding="0">
+  <table border="0" width="100%" cellspacing="2" cellpadding="0">
     <tr>
       <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
       <td align="right" class="smallText">
@@ -89,8 +103,8 @@
 
                 <option value="none">--選択してください--</option>
                 <option value="priority">重</option>
+                <option value="loginurl">LoginURL</option>
                 <option value="title">タイトル</option>
-                <option value="loginurl">ログインURL</option>
                 <option value="url">タイトルURL</option>
                 <option value="username">ID</option>
                 <option value="password">パスワード</option>
@@ -176,11 +190,15 @@
       <?php 
       if ($HTTP_GET_VARS['sort'] == 'title') {
       ?>
-      <a href="<?php echo tep_href_link(FILENAME_PW_MANAGER_LOG, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=title&type='.$type_str);?>"><?php echo TEXT_TITLE;?></a> 
+      <a href="<?php echo tep_href_link(FILENAME_PW_MANAGER_LOG,
+        tep_get_all_get_params(array('x', 'y', 'type',
+              'sort')).'sort=title&type='.$type_str);?>"><?php echo TEXT_INFO_TITLE;?></a> 
       <?php
       } else {
       ?>
-      <a href="<?php echo tep_href_link(FILENAME_PW_MANAGER_LOG, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=title&type=asc');?>"><?php echo TEXT_TITLE;?></a> 
+      <a href="<?php echo tep_href_link(FILENAME_PW_MANAGER_LOG,
+      tep_get_all_get_params(array('x', 'y', 'type',
+            'sort')).'sort=title&type=asc');?>"><?php echo TEXT_INFO_TITLE;?></a> 
       <?php
       }
       ?>
@@ -294,7 +312,21 @@
         onclick="document.location.href=\'' . tep_href_link(FILENAME_PW_MANAGER_LOG,
         'page=' . $_GET['page'] . '&pw_l_id=' . $pw_manager_row['id']) . '\'">' . "\n";
     }
-      echo "<td class='dataTableContent'>".$pw_manager_row['priority']."</td>";
+      $priority_str = "<font color='";
+      switch($pw_manager_row['priority']){
+        case '1':
+            $priority_str .="black";
+          break;
+        case '2':
+            $priority_str .="orange";
+          break;
+        case '3':
+            $priority_str .="red";
+          break;
+
+      }
+      $priority_str .= "' ><b>".$pw_manager_row['priority']."</b></font>";
+      echo "<td class='dataTableContent' ".$onclick." >".$priority_str."</td>";
       echo "<td class='dataTableContent'>".$pw_manager_row['loginurl']."</td>";
       echo "<td class='dataTableContent'>".mb_substr($pw_manager_row['title'],0,12,'utf-8')."</td>";
       echo "<td class='dataTableContent'>".mb_substr($pw_manager_row['username'],0,8,'utf-8')."</td>";
@@ -319,7 +351,7 @@
         echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); 
       } else { 
         echo '<a href="' . tep_href_link(FILENAME_PW_MANAGER_LOG, 'page=' .
-          $_GET['page'] . '&pw_l_id=' . $pw_manager_row['id']) . '">' . 
+          $_GET['page'] . '&site_id='.$site_id. '&type='.$_GET['type'].'&sort='.$_GET['sort'].'&pw_l_id=' . $pw_manager_row['id']) . '">' . 
           tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
       }
       echo '&nbsp;</td>';
@@ -333,8 +365,12 @@
        <td colspan="9" align="right">
          <?php
           echo "<button type='button'
+          onclick=\"delete_all()\">" .
+          TEXT_BUTTON_DELETE_ALL."</button>"; 
+          
+          echo "<button type='button'
           onclick=\"location.href='".
-          tep_href_link(FILENAME_PW_MANAGER,'pw_id='.$pw_id) 
+          tep_href_link(FILENAME_PW_MANAGER,'pw_id='.$pw_id.'&site_id='.$site_id) 
           ."'\">" .
           TEXT_BUTTON_BACK."</button>"; 
          ?>
@@ -362,42 +398,12 @@
   $heading = array();
   $contents = array();
 switch (isset($_GET['action'])? $_GET['action']:'') {
-  case 'show':
-      
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_SHOW_IDPW_LOG . '</b>');
-
-      $contents = array('form' => tep_draw_form('pw_manager', FILENAME_PW_MANAGER_LOG,
-            'page=' . $_GET['page'] . '&action=update&pw_l_id='.$pwInfo->id, 'post', 'enctype="multipart/form-data"'));
-      $contents[] = array('text' => '<br><b>' . TEXT_INFO_TITLE . '</b><br>' .
-          $pwInfo->title);
-      $contents[] = array('text' => '<br><b>' . TEXT_INFO_PRIORITY . '</b><br>' .
-          TEXT_PRIORITY_HEAD.$pwInfo->priority
-          );
-      $contents[] = array('text' => '<br><b>' . TEXT_INFO_SITE_ID . '</b><br>' .
-          tep_get_site_romaji_by_id($pwInfo->site_id));
-      $contents[] = array('text' => '<br><b>' . TEXT_INFO_URL . '</b><br>' .
-          $pwInfo->url);
-      $contents[] = array('text' => '<br><b>' . TEXT_INFO_LOGINURL . '</b><br>' .
-          $pwInfo->loginurl);
-      $contents[] = array('text' => '<br><b>' . TEXT_INFO_USERNAME . '</b><br>' .
-          $pwInfo->username);
-      $contents[] = array('text' => '<br><b>' . TEXT_INFO_PASSWORD . '</b><br>' .
-          $pwInfo->password);
-      $contents[] = array('text' => '<br><b>' . TEXT_INFO_COMMENT . '</b><br>' .
-          $pwInfo->comment);
-      $contents[] = array('text' => '<br><b>' . TEXT_INFO_MEMO . '</b><br>' .
-          $pwInfo->memo);
-      $contents[] = array('text' => '<br><b>' . TEXT_INFO_NEXTDATE . '</b><br>' .
-          $pwInfo->nextdate);
-      $contents[] = array('text' => '<br><b>' . TEXT_INFO_PRIVILEGE . '</b><br>' .
-          $pwInfo->update_user
-          );
-    break;
     case 'delete':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_PW_MANAGER_LOG . '</b>');
 
       $contents = array('form' => tep_draw_form('pw_manager', FILENAME_PW_MANAGER_LOG,
-            'page=' . $_GET['page'] . '&pw_l_id=' . $pwInfo->id . '&action=deleteconfirm'));
+            'page=' . $_GET['page'] . '&pw_l_id=' . $pwInfo->id .
+            '&action=deleteconfirm'.'&site_id='.$site_id));
       $contents[] = array('text' => TEXT_INFO_DELETE_INTRO);
       $contents[] = array('text' => '<br><b>' . $pwInfo->title . '</b>');
       $contents[] = array('align' => 'center', 'text' => '<br>' .
@@ -419,13 +425,6 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
   default:
       $heading[] = array('text' => '');
       $contents[] = array('align' => 'center', 'text' => '<br>'.
-          "<button type='button'
-          onclick=\"location.href='".
-          tep_href_link(FILENAME_PW_MANAGER_LOG,
-            'action=show&pw_l_id='.$pwInfo->id.'&'.tep_get_all_get_params(array('pw_l_id','action','search_type','keywords')))
-          ."'\">" .
-          TEXT_BUTTON_SHOW."</button>"
-          .'&nbsp;'.
           "<button type='button'
           onclick=\"location.href='".
           tep_href_link(FILENAME_PW_MANAGER_LOG,
