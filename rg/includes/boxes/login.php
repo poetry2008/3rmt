@@ -18,7 +18,7 @@
   if (!tep_session_is_registered('customer_id')) {
 ?>
                 <a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT,'','SSL');
-?>"><?php echo '<img src="images/signup_01.gif" alt="'.HEADER_TITLE_CREATE_ACCOUNT.'" width="166" height="99">'; ?></a>
+?>"><?php echo '<img src="images/signup_01.gif" alt="'.HEADER_TITLE_CREATE_ACCOUNT.'" width="166" height="97">'; ?></a>
 <?php 
    }
 ?>
