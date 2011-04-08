@@ -25,11 +25,13 @@
     switch ($_GET['action']) {
       case 'deleteconfirm':
         //unlink();
+        if(tep_has_pw_manager_log($pwid)){
         if($_GET['select']=='all'){
         tep_db_query("delete from " . TABLE_IDPW_LOG. " where idpw_id='".$pwid."'");
         }else{
         tep_db_query("delete from " . TABLE_IDPW_LOG . " where id = '" .
             tep_db_input($pwlid) . "'");
+        }
         }
         tep_redirect(tep_href_link(FILENAME_PW_MANAGER_LOG, 'page=' .
               $_GET['page'].'&pw_id='.$pwid.'&site_id='.$site_id));
@@ -405,7 +407,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
 
       $contents = array('form' => tep_draw_form('pw_manager', FILENAME_PW_MANAGER_LOG,
             'page=' . $_GET['page'] . '&pw_l_id=' . $pwInfo->id .
-            '&action=deleteconfirm'.'&site_id='.$site_id));
+            '&action=deleteconfirm'.'&site_id='.$site_id.'&pw_id='.$pwid));
       $contents[] = array('text' => TEXT_INFO_DELETE_INTRO);
       $contents[] = array('text' => '<br><b>' . $pwInfo->title . '</b>');
       $contents[] = array('align' => 'center', 'text' => '<br>' .
@@ -463,7 +465,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           $pwInfo->update_user);
     break;
 }
-  if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
+  if (tep_has_pw_manager_log($pwid)&& (tep_not_null($heading)) && (tep_not_null($contents))) {
     echo '            <td class="right_column01" width="25%" valign="top">' . "\n";
 
     $box = new box;
