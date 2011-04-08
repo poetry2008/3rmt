@@ -664,7 +664,21 @@ right:5px;*/
       $onclick = 'onclick="document.location.href=\'' . tep_href_link(FILENAME_PW_MANAGER,
         'page=' . $_GET['page'] . '&pw_id=' . $pw_manager_row['id']) . '\'"';
     }
-      echo "<td class='dataTableContent' ".$onclick." >".$pw_manager_row['priority']."</td>";
+      $priority_str = "<font color='";
+      switch($pw_manager_row['priority']){
+        case '1':
+            $priority_str .="black";
+          break;
+        case '2':
+            $priority_str .="orange";
+          break;
+        case '3':
+            $priority_str .="red";
+          break;
+
+      }
+      $priority_str .= "' ><b>".$pw_manager_row['priority']."</b></font>";
+      echo "<td class='dataTableContent' ".$onclick." >".$priority_str."</td>";
       echo "<td class='dataTableContent' >"
         ."<a target='_blank' href='" 
         .make_blank_url($pw_manager_row['loginurl'],FILENAME_REDIREC_URL)."'>"
@@ -797,12 +811,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           tep_draw_radio_field('privilege','10',false,'','class="privilege"
             id="privilege_c"')."Chief以上<br>"
           );
-        $selected_user = ''; 
-        if($ocertify->npermission == 15){
-        $selected_user = ''; 
-        }else{
         $selected_user = $ocertify->auth_user;
-        }
       $contents[] = array('text' => '<br>' . '<div id="user_select"
           class="user_select" style="display:none">'.
         tep_get_user_select($selected_user)
@@ -896,11 +905,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
         $pw_select_display = 'none';
       }
       if($pwInfo->self==''||$pwInfo->self==null){
-        if($ocertify->npermission == 15){
-        $selected_user = ''; 
-        }else{
         $selected_user = $ocertify->auth_user;
-        }
       }else{
         $selected_user = $pwInfo->self;
       }

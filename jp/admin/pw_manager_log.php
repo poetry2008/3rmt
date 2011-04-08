@@ -312,7 +312,21 @@ function delete_all(){
         onclick="document.location.href=\'' . tep_href_link(FILENAME_PW_MANAGER_LOG,
         'page=' . $_GET['page'] . '&pw_l_id=' . $pw_manager_row['id']) . '\'">' . "\n";
     }
-      echo "<td class='dataTableContent'>".$pw_manager_row['priority']."</td>";
+      $priority_str = "<font color='";
+      switch($pw_manager_row['priority']){
+        case '1':
+            $priority_str .="black";
+          break;
+        case '2':
+            $priority_str .="orange";
+          break;
+        case '3':
+            $priority_str .="red";
+          break;
+
+      }
+      $priority_str .= "' ><b>".$pw_manager_row['priority']."</b></font>";
+      echo "<td class='dataTableContent' ".$onclick." >".$priority_str."</td>";
       echo "<td class='dataTableContent'>".$pw_manager_row['loginurl']."</td>";
       echo "<td class='dataTableContent'>".mb_substr($pw_manager_row['title'],0,12,'utf-8')."</td>";
       echo "<td class='dataTableContent'>".mb_substr($pw_manager_row['username'],0,8,'utf-8')."</td>";
@@ -384,37 +398,6 @@ function delete_all(){
   $heading = array();
   $contents = array();
 switch (isset($_GET['action'])? $_GET['action']:'') {
-  case 'show':
-      
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_SHOW_IDPW_LOG . '</b>');
-
-      $contents = array('form' => tep_draw_form('pw_manager', FILENAME_PW_MANAGER_LOG,
-            'page=' . $_GET['page'] . '&action=update&pw_l_id='.$pwInfo->id, 'post', 'enctype="multipart/form-data"'));
-      $contents[] = array('text' => '<br><b>' . TEXT_INFO_TITLE . '</b><br>' .
-          $pwInfo->title);
-      $contents[] = array('text' => '<br><b>' . TEXT_INFO_PRIORITY . '</b><br>' .
-          TEXT_PRIORITY_HEAD.$pwInfo->priority
-          );
-      $contents[] = array('text' => '<br><b>' . TEXT_INFO_SITE_ID . '</b><br>' .
-          tep_get_site_romaji_by_id($pwInfo->site_id));
-      $contents[] = array('text' => '<br><b>' . TEXT_INFO_URL . '</b><br>' .
-          $pwInfo->url);
-      $contents[] = array('text' => '<br><b>' . TEXT_INFO_LOGINURL . '</b><br>' .
-          $pwInfo->loginurl);
-      $contents[] = array('text' => '<br><b>' . TEXT_INFO_USERNAME . '</b><br>' .
-          $pwInfo->username);
-      $contents[] = array('text' => '<br><b>' . TEXT_INFO_PASSWORD . '</b><br>' .
-          $pwInfo->password);
-      $contents[] = array('text' => '<br><b>' . TEXT_INFO_COMMENT . '</b><br>' .
-          $pwInfo->comment);
-      $contents[] = array('text' => '<br><b>' . TEXT_INFO_MEMO . '</b><br>' .
-          $pwInfo->memo);
-      $contents[] = array('text' => '<br><b>' . TEXT_INFO_NEXTDATE . '</b><br>' .
-          $pwInfo->nextdate);
-      $contents[] = array('text' => '<br><b>' . TEXT_INFO_PRIVILEGE . '</b><br>' .
-          $pwInfo->update_user
-          );
-    break;
     case 'delete':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_PW_MANAGER_LOG . '</b>');
 
@@ -442,13 +425,6 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
   default:
       $heading[] = array('text' => '');
       $contents[] = array('align' => 'center', 'text' => '<br>'.
-          "<button type='button'
-          onclick=\"location.href='".
-          tep_href_link(FILENAME_PW_MANAGER_LOG,
-            'action=show&pw_l_id='.$pwInfo->id.'&'.tep_get_all_get_params(array('pw_l_id','action','search_type','keywords')))
-          ."'\">" .
-          TEXT_BUTTON_SHOW."</button>"
-          .'&nbsp;'.
           "<button type='button'
           onclick=\"location.href='".
           tep_href_link(FILENAME_PW_MANAGER_LOG,
