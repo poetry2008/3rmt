@@ -1975,7 +1975,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
     from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id
     where 
     op.products_id='".$pInfo->products_id."'
-    order by date_purchased desc
+    order by o.torihiki_date desc
     limit 5
   ");
   ?>
@@ -1985,7 +1985,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
       <th colspan="4" align="left">商品履歴</th>
     </tr>
     <tr>
-      <th>日付</th>
+      <th>取引日</th>
       <th>個数</th>
       <th>単価</th>
       <th>ステータス</th>
@@ -1998,7 +1998,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
     while($order_history = tep_db_fetch_array($order_history_query)){
     ?>
       <tr>
-        <td class="main" width="120"><?php echo $order_history['date_purchased'];?></td>
+        <td class="main" width="120"><?php echo $order_history['torihiki_date'];?></td>
         <td class="main" width="100" align="right"><?php echo $order_history['products_quantity'];?>個</td>
         <td class="main" align="right"><?php echo display_price($order_history['final_price']);?>円</td>
         <td class="main" width="100"><?php echo $order_history['orders_status_name'];?></td>
@@ -2029,7 +2029,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
     from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id
     where 
     op.products_id='".$pInfo->relate_products_id."'
-    order by date_purchased desc
+    order by o.torihiki_date desc
     limit 5
   ");
   ?>
@@ -2039,7 +2039,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
       <th colspan="4" align="left">関連付け商品:<?php echo tep_get_relate_products_name($pInfo->products_id);?></th>
     </tr>
     <tr>
-      <th>日付</th>
+      <th>取引日</th>
       <th>個数</th>
       <th>単価</th>
       <th>ステータス</th>
@@ -2052,7 +2052,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
     while($order_history = tep_db_fetch_array($order_history_query)){
     ?>
       <tr>
-        <td class="main" width="120"><?php echo $order_history['date_purchased'];?></td>
+        <td class="main" width="120"><?php echo $order_history['torihiki_date'];?></td>
         <td class="main" width="100" align="right"><?php echo $order_history['products_quantity'];?>個</td>
         <td class="main" align="right"><?php echo display_price($order_history['final_price']);?>円</td>
         <!--<td class="main"><?php echo strip_tags(tep_get_ot_total_by_orders_id($order_history['orders_id']));?></td>-->
@@ -2247,8 +2247,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
             <?php echo tep_draw_form('goto', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
 
               <div id="gotomenu">
-                <a href="javascript:void(0)" onmouseover="$('#categories_tree').show()">ジャンプ▼</a>
-                <div id="categories_tree" onmouseout="$('#categories_tree').hide()" onmouseover="$('#categories_tree').show()">
+                <a href="javascript:void(0)" onclick="$('#categories_tree').toggle()">ジャンプ▼</a>
+                <div id="categories_tree">
                 <?php
                   require(DIR_WS_CLASSES . 'category_tree.php');
                   $osC_CategoryTree = new osC_CategoryTree; 

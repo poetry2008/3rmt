@@ -379,7 +379,7 @@
             sort_order = "' . $sort_order . '"
             WHERE orders_total_id = "' . $ot_total_id . '"';
             tep_db_query($Query);
-            } else { // New Insert
+      } else { // New Insert
             $Query = 'INSERT INTO ' . TABLE_ORDERS_TOTAL . ' SET
             orders_id = "' . $oID . '",
             title = "' . $ot_title . '",
