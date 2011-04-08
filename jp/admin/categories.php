@@ -1930,7 +1930,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   echo '価&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格：&nbsp;' . tep_draw_input_field('products_price', number_format(abs($pInfo->products_price),0,'.',''),'id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;円' . '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price . '円 ' . "\n";
   echo '</td><td align="right">';
   if (!$pInfo->products_bflag && $pInfo->relate_products_id)
-  echo '実在庫の平均仕入価格： '.display_price(tep_get_avg_by_pid($pInfo->products_id)).'円';
+  echo '実在庫の平均仕入価格： '.@display_price(tep_get_avg_by_pid($pInfo->products_id)).'円';
   echo '</td></tr></table>';
   echo '  </td>';
   echo '  </tr><tr><td><hr size="2" noshade></td></tr><tr>';
@@ -1972,7 +1972,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
 
   $order_history_query = tep_db_query("
     select * 
-    from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id
+    from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id 
     where 
     op.products_id='".$pInfo->products_id."'
     order by o.torihiki_date desc
@@ -2005,14 +2005,16 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
       </tr>
     <?php
       $sum_i ++;
+    if ($order_history['calc_price'] == '1') {
       $sum_price += $order_history['final_price'] * $order_history['products_quantity'];
       $sum_quantity += $order_history['products_quantity'];
+    }
     }
     ?>
       <tr>
         <th></th>
         <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left">合計:</td><td align="right"><?php echo $sum_quantity;?>個</td></tr></table></td>
-        <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left">平均:</td><td align="right"><?php echo display_price($sum_price/$sum_quantity);?>円</td></tr></table></td>
+        <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left">平均:</td><td align="right"><?php echo @display_price($sum_price/$sum_quantity);?>円</td></tr></table></td>
         <td class="main"> </td>
       </tr>
       <?php
@@ -2026,7 +2028,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   if ($pInfo->relate_products_id) {
   $order_history_query = tep_db_query("
     select * 
-    from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id
+    from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id 
     where 
     op.products_id='".$pInfo->relate_products_id."'
     order by o.torihiki_date desc
@@ -2060,14 +2062,16 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
       </tr>
     <?php
       $sum_i ++;
+    if ($order_history['calc_price'] == '1') {
       $sum_price += $order_history['final_price'] * $order_history['products_quantity'];
       $sum_quantity += $order_history['products_quantity'];
+    }
     }
     ?>
       <tr>
         <th></th>
         <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left">合計:</td><td align="right"><?php echo $sum_quantity;?>個</td></tr></table></td>
-        <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left">平均:</td><td align="right"><?php echo display_price($sum_price/$sum_quantity);?>円</td></tr></table></td>
+        <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left">平均:</td><td align="right"><?php echo @display_price($sum_price/$sum_quantity);?>円</td></tr></table></td>
         <td class="main"> </td>
       </tr>
     <?php
