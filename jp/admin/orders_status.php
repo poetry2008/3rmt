@@ -20,6 +20,7 @@
             'orders_status_name' => tep_db_prepare_input($orders_status_name_array[$language_id]),
             'finished' => tep_db_prepare_input((int)$_POST['finished']),
             'nomail' => tep_db_prepare_input((int)$_POST['nomail']),
+            'calc_price' => tep_db_prepare_input((int)$_POST['calc_price']),
             );
 
         if ($_GET['action'] == 'insert') {
@@ -252,6 +253,7 @@
       $contents[] = array('text' => '<br>' . TEXT_EDIT_ORDERS_STATUS_IMAGE . '<br>' . tep_draw_file_field('orders_status_image'));
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('finished', '1') . ' ' . TEXT_ORDERS_STATUS_FINISHED);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('nomail', '1') . ' ' . 'DON\'T SEND MAIL');
+      $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('calc_price', '1') . ' ' . '平均単価の算出条件に設定');
 
       $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_insert.gif', IMAGE_INSERT) . ' <a class="new_product_reset" href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
@@ -299,6 +301,7 @@
       $contents[] = array('text' => '<br>' . TEXT_EDIT_ORDERS_STATUS_IMAGE . '<br>' . tep_draw_file_field('orders_status_image'));
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('finished', '1', $oInfo->finished) . ' ' . TEXT_ORDERS_STATUS_FINISHED);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('nomail', '1', $oInfo->nomail) . ' ' . 'DON\'T SEND MAIL');
+      $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('calc_price', '1', $oInfo->calc_price) . ' ' . '平均単価の算出条件に設定');
       
       $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_update.gif', IMAGE_UPDATE) . ' <a class="new_product_reset" href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page'] . '&oID=' . $oInfo->orders_status_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
