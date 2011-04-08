@@ -4588,4 +4588,15 @@ function tep_get_site_info($site_id=0){
   }
 }
 
-
+function tep_has_pw_manager_log($pwid){
+  if($pwid){
+   $sql = "select * from ".TABLE_IDPW_LOG." where idpw_id ='".$pwid."'";
+   if($row = tep_db_fetch_array(tep_db_query($sql))){
+    return $row;
+   }else{
+    return false;
+   }
+  }else{
+   return false;
+  }
+}
