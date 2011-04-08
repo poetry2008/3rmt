@@ -1,4 +1,4 @@
-/* ---------------------------
+shopping_cart_checkout/* ---------------------------
 Text decoration
 --------------------------- */
 a{
@@ -295,7 +295,9 @@ UL {
 }
 #login_form{
 	width:166px;
+	height:146px;
 	padding:1px;
+	border:1px solid #CCCCCC;
 }
 #login_form ul{
 	list-style: none;
@@ -1637,8 +1639,8 @@ background-image: url(../includes/languages/japanese/images/buttons/button_delet
 .shopping_cart_continue{
 display:block;
 cursor:pointer;
-width:72px;
-height:17px;
+width:125px;
+height:39px;
 padding:0;
 border:0;
 background-image: url(../includes/languages/japanese/images/buttons/button_continue_shopping.gif);
@@ -1646,8 +1648,8 @@ background-image: url(../includes/languages/japanese/images/buttons/button_conti
 .shopping_cart_checkout{
 display:block;
 cursor:pointer;
-width:58px;
-height:17px;
+width:125px;
+height:39px;
 padding:0;
 border:0;
 background-image: url(../includes/languages/japanese/images/buttons/button_checkout.gif);
@@ -1670,3 +1672,8 @@ border:1px solid #CAC6BE;
 .product_list02 span{ font-size:10px; width:157px; text-align:center;}
 .product_list02 img{ margin-bottom:10px; height:50px;}
 .product_list02 input{ margin-top:10px;} 
+
+
+
+/*login*/
+.login_form1{ width:166px; height:49px; clear:both;}
