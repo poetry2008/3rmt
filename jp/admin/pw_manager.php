@@ -14,6 +14,8 @@
 
   if(isset($_GET['site_id'])&&$_GET['site_id']){
     $site_id = tep_db_prepare_input($_GET['site_id']);
+  }else{
+    $site_id = '';
   }
   if(isset($_GET['pw_id'])&&$_GET['pw_id']){
     $pwid = tep_db_prepare_input($_GET['pw_id']);
@@ -107,9 +109,14 @@ if(isset($_GET['action']) &&
               }
             }
           }
+          if(tep_db_prepare_input($_POST['url'])!=tep_db_prepare_input($_POST['old_url'])||tep_db_prepare_input($_POST['loginurl'])!=tep_db_prepare_input($_POST['old_loginurl'])||tep_db_prepare_input($_POST['username'])!=tep_db_prepare_input($_POST['old_username'])||tep_db_prepare_input($_POST['password'])!=tep_db_prepare_input($_POST['old_password'])||tep_db_prepare_input($_POST['comment'])!=tep_db_prepare_input($_POST['old_comment'])
+
+            ){
           tep_db_perform(TABLE_IDPW_LOG,$sql_data_array_log);
+          }
           tep_redirect(tep_href_link(FILENAME_PW_MANAGER,
-                'pw_id='.$pwid.'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page=' . $_GET['page']));
+                'pw_id='.$pwid.'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page='
+                . $_GET['page'].'&site_id='.$site_id));
         }
         if($_GET['action']=='insert'){
           $insert_sql_data = array(
@@ -130,6 +137,11 @@ if(isset($_GET['action']) &&
         break;
       case 'deleteconfirm':
         //unlink();
+        $sql_del = 'delete from '.TABLE_IDPW.' where id = "'.$pwid.'"';
+        tep_db_query($sql_del);
+        $sql_del_log = 'delete from '.TABLE_IDPW_LOG.' where idpw_id = "'.$pwid.'"';
+        tep_db_query($sql_del_log);
+        /*
         tep_db_perform(TABLE_IDPW, array('onoff' => '0'), 'update', 'id = \'' . $pwid . '\'');
         $res = tep_db_query("select * from ".TABLE_IDPW. " where id =
             '".$pwid."'");
@@ -144,6 +156,7 @@ if(isset($_GET['action']) &&
           }
         }
         tep_db_perform(TABLE_IDPW_LOG,$sql_data_array_log);
+        */
         tep_redirect(tep_href_link(FILENAME_PW_MANAGER, 'page=' . $_GET['page']));
         break;
 
@@ -428,8 +441,8 @@ right:5px;*/
               <select name="search_type" onChange='search_type_changed(this)'>
                 <option value="none">--選択してください--</option>
                 <option value="priority">重</option>
+                <option value="loginurl">LoginURL</option>
                 <option value="title">タイトル</option>
-                <option value="loginurl">ログインURL</option>
                 <option value="url">タイトルURL</option>
                 <option value="username">ID</option>
                 <option value="password">パスワード</option>
@@ -526,11 +539,15 @@ right:5px;*/
       <?php 
       if ($HTTP_GET_VARS['sort'] == 'title') {
       ?>
-      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=title&type='.$type_str);?>"><?php echo TEXT_TITLE;?></a> 
+      <a href="<?php echo tep_href_link('pw_manager.php',
+        tep_get_all_get_params(array('x', 'y', 'type',
+              'sort')).'sort=title&type='.$type_str);?>"><?php echo TEXT_INFO_TITLE;?></a> 
       <?php
       } else {
       ?>
-      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=title&type=asc');?>"><?php echo TEXT_TITLE;?></a> 
+      <a href="<?php echo tep_href_link('pw_manager.php',
+      tep_get_all_get_params(array('x', 'y', 'type',
+            'sort')).'sort=title&type=asc');?>"><?php echo TEXT_INFO_TITLE;?></a> 
       <?php
       }
       ?>
@@ -647,7 +664,21 @@ right:5px;*/
       $onclick = 'onclick="document.location.href=\'' . tep_href_link(FILENAME_PW_MANAGER,
         'page=' . $_GET['page'] . '&pw_id=' . $pw_manager_row['id']) . '\'"';
     }
-      echo "<td class='dataTableContent' ".$onclick." >".$pw_manager_row['priority']."</td>";
+      $priority_str = "<font color='";
+      switch($pw_manager_row['priority']){
+        case '1':
+            $priority_str .="black";
+          break;
+        case '2':
+            $priority_str .="orange";
+          break;
+        case '3':
+            $priority_str .="red";
+          break;
+
+      }
+      $priority_str .= "' ><b>".$pw_manager_row['priority']."</b></font>";
+      echo "<td class='dataTableContent' ".$onclick." >".$priority_str."</td>";
       echo "<td class='dataTableContent' >"
         ."<a target='_blank' href='" 
         .make_blank_url($pw_manager_row['loginurl'],FILENAME_REDIREC_URL)."'>"
@@ -696,7 +727,7 @@ right:5px;*/
         echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); 
       } else { 
         echo '<a href="' . tep_href_link(FILENAME_PW_MANAGER, 'page=' .
-          $_GET['page'] . '&pw_id=' . $pw_manager_row['id']) . '">' . 
+          $_GET['page'] . '&site_id='.$site_id.'&type='.$_GET['type'].'&sort='.$_GET['sort'].'&pw_id=' . $pw_manager_row['id']) . '">' . 
           tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
       }
       echo '&nbsp;</td>';
@@ -780,12 +811,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           tep_draw_radio_field('privilege','10',false,'','class="privilege"
             id="privilege_c"')."Chief以上<br>"
           );
-        $selected_user = ''; 
-        if($ocertify->npermission == 15){
-        $selected_user = ''; 
-        }else{
         $selected_user = $ocertify->auth_user;
-        }
       $contents[] = array('text' => '<br>' . '<div id="user_select"
           class="user_select" style="display:none">'.
         tep_get_user_select($selected_user)
@@ -812,7 +838,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_EDIT . '</b>');
       $contents = array('form' => tep_draw_form('pw_manager', FILENAME_PW_MANAGER,
-            'page=' . $_GET['page'] . '&sort='.$_GET['sort'].'&type='.$_GET['type'].'&action=update&pw_id='.$pwInfo->id, 'post',
+            'page=' . $_GET['page'] . '&site_id='.$site_id.'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&action=update&pw_id='.$pwInfo->id, 'post',
             'enctype="multipart/form-data" onsubmit="return valdata(this)"'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_TITLE . '<br>' .
           tep_draw_input_field('title',$pwInfo->title,'id="title"'));
@@ -824,11 +850,14 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('text' => '<br>' . TEXT_INFO_SITE_ID . '<br>' .
           tep_site_pull_down("name='site_id'",$pwInfo->site_id));
       $contents[] = array('text' => '<br>' . TEXT_INFO_URL . '<br>' .
-          tep_draw_input_field('url',$pwInfo->url,'id="url"'));
+          tep_draw_input_field('url',$pwInfo->url,'id="url"')
+          .tep_draw_hidden_field('old_url',$pwInfo->url));
       $contents[] = array('text' => '<br>' . TEXT_INFO_LOGINURL . '<br>' .
-          tep_draw_input_field('loginurl',$pwInfo->loginurl,'id="loginurl"'));
+          tep_draw_input_field('loginurl',$pwInfo->loginurl,'id="loginurl"')
+          .tep_draw_hidden_field('old_loginurl',$pwInfo->loginurl));
       $contents[] = array('text' => '<br>' . TEXT_INFO_USERNAME . '<br>' .
-          tep_draw_input_field('username',$pwInfo->username,'id="username"'));
+          tep_draw_input_field('username',$pwInfo->username,'id="username"')
+          .tep_draw_hidden_field('old_username',$pwInfo->username));
       $pwd_pattern = tep_get_pwd_pattern();
       $pwd_len = tep_get_pwd_len();
       $pwd_pattern_arr = explode(',',$pwd_pattern);
@@ -844,9 +873,11 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           "<button type='button'
           onclick=\"mk_pwd()\">" .
           TEXT_BUTTON_MK_PWD."</button>".
-          tep_draw_input_field('password',$pwInfo->password,'id="password"'));
+          tep_draw_input_field('password',$pwInfo->password,'id="password"')
+          .tep_draw_hidden_field('old_password',$pwInfo->password));
       $contents[] = array('text' => '<br>' . TEXT_INFO_COMMENT . '<br>' .
-          tep_draw_textarea_field('comment', 'soft', '30', '5', $pwInfo->comment, 'class="pw_textarea"'));
+          tep_draw_textarea_field('comment', 'soft', '30', '5', $pwInfo->comment, 'class="pw_textarea"')
+          .tep_draw_hidden_field('old_comment',$pwInfo->comment));
       $contents[] = array('text' => '<br>' . TEXT_INFO_MEMO . '<br>' .
           tep_draw_textarea_field('memo', 'soft', '30', '5', $pwInfo->memo, 'class="pw_textarea"'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_NEXTDATE . '<br><div
@@ -874,11 +905,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
         $pw_select_display = 'none';
       }
       if($pwInfo->self==''||$pwInfo->self==null){
-        if($ocertify->npermission == 15){
-        $selected_user = ''; 
-        }else{
         $selected_user = $ocertify->auth_user;
-        }
       }else{
         $selected_user = $pwInfo->self;
       }
@@ -931,7 +958,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           "<button type='button'
           onclick=\"location.href='".
           tep_href_link(FILENAME_PW_MANAGER_LOG,
-            'pw_id='.$pwInfo->id)
+            'pw_id='.$pwInfo->id.'&site_id='.$site_id)
           ."'\">" .
           TEXT_BUTTON_HISTORY."</button>";
       }else{
