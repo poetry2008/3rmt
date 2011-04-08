@@ -6,7 +6,7 @@ class Model_Submit extends FLEA_Db_TableDataGateway
     parent::FLEA_Db_TableDataGateway();
     $this->disableLinks();
   }
-  var $tableName = 'rk_submit';
+  var $tableName = 'rg_submit';
   var $primaryKey = 'id';
 
     /**
