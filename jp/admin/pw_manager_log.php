@@ -141,7 +141,7 @@ function delete_all(){
       //add order 
       $order_str = ''; 
       if (!isset($HTTP_GET_VARS['sort'])) {
-        $order_str = '`date_order` asc, `title` asc'; 
+        $order_str = '`updated_at` asc, `title` asc'; 
       } else {
         if($HTTP_GET_VARS['sort'] = 'nextdate'){
         $order_str = '`date_order` '.$HTTP_GET_VARS['type']; 
