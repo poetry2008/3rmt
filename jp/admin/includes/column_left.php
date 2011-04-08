@@ -22,6 +22,8 @@ if ((strpos($_SERVER['PHP_SELF'], 'history.php') === false)  &&
 ?>
 <script type="text/javascript" src="includes/javascript/jquery.js"></script>
 <?php }?>
+<?php 
+if ($ocertify->npermission >= 10) {?>
 <script>
 $(document).ready(function(){
   $('.columnLeft').parent().after('<td valign="top" style="padding-top:46px; *padding-top:48px; padding-right:5px; *padding-left:0;"><a href="javascript:void(0);" class="leftright" onclick="toggle_leftColumn();"><img src="includes/languages/japanese/images/boult.gif" alt="img"></a></td>');
@@ -44,6 +46,7 @@ function toggle_lan(sobj)
   $('#'+sobj).slideToggle(); 
 }
 </script>
+<?php }?>
 <?php
 if ($ocertify->npermission >= 10) {
   require(DIR_WS_BOXES . 'configuration.php');
