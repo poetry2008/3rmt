@@ -6,7 +6,7 @@ class Model_Setseo extends FLEA_Db_TableDataGateway
     parent::FLEA_Db_TableDataGateway();
     $this->disableLinks();
   }
-  var $tableName = 'rk_setseo';
+  var $tableName = 'rg_setseo';
   var $primaryKey = 'id';
 
 
