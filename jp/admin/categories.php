@@ -1943,8 +1943,10 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   echo '  </td>';
   echo '  </tr>';
   echo '</table>';
-
-  echo '当社キャラクター名の入力欄：<br>' . tep_draw_textarea_field('products_attention_5', 'soft', '70', '10', $pInfo->products_attention_5) . '<br>' . "\n";
+  echo '<table  width="95%" cellpadding="0" cellspacing="0" border="0">';
+  echo '<tr><td>';
+  echo '当社キャラクター名の入力欄：</tr></td><tr><td>' . tep_draw_textarea_field('products_attention_5', 'soft', '70', '10', $pInfo->products_attention_5) . '</tr></td>';
+  echo '</table>';
   echo '</td>';
   echo '<td width="50%" valign="top" align="right">';
   if (tep_get_bflag_by_product_id($pInfo->products_id)) { // 如果买取
