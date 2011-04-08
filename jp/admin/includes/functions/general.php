@@ -4544,8 +4544,7 @@ function tep_get_avg_by_pid($pid){
     from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id
     where 
     op.products_id='".$product['relate_products_id']."'
-    order by date_purchased desc
-    limit 5
+    order by o.torihiki_date desc
   ");
   $sum = 0;
   $cnt = 0;
