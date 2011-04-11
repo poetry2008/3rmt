@@ -192,6 +192,7 @@ define('PASSWORD_HIDDEN', '********');
 // images
 define('IMAGE_ANI_SEND_EMAIL', 'E-Mail送信');
 define('IMAGE_BACK', '戻る');
+define('IMAGE_NEXT', '次へ');
 define('IMAGE_BACKUP', 'バックアップ');
 define('IMAGE_CANCEL', '取り消し');
 define('IMAGE_CONFIRM', '確認');

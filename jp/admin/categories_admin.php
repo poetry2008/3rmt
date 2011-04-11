@@ -560,7 +560,7 @@ if(empty($cPath_back)&&empty($cID)&&isset($cPath)){
          '<br>' . '商品数:' . '&nbsp;' . $products_query_numrows; ?></td>
         <td align="right" class="smallText"><?php
   if ($cPath) {
-    
+    echo display_category_link($cPath, $current_category_id, $languages_id, 0, FILENAME_CATEGORIES_ADMIN); 
     $rPath_back = isset($cPath_back) && $cPath_back ? 'cPath=' . $cPath_back : '';
     echo '<a href="' . tep_href_link(FILENAME_CATEGORIES_ADMIN, $rPath_back . '&cID=' . $current_category_id) . '">' . tep_image_button('button_back.gif', IMAGE_BACK) . '</a>&nbsp;';
   }
