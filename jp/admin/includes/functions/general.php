@@ -4691,6 +4691,34 @@ function get_link_parent_category($cid)
    return $cid;
 }
 
+function get_same_level_category($cPath, $current_category_id, $language_id, $site_id)
+{
+  $return_str = ''; 
+  $cpath_arr = explode('_', $cPath);
+  $category_arr = array();
+
+  if (count($cpath_arr) > 1) {
+    $current_ca_query = tep_db_query("select * from ".TABLE_CATEGORIES." where categories_id = '".$current_category_id."'"); 
+    $current_ca_res = tep_db_fetch_array($current_ca_query); 
+    if ($current_ca_res) {
+      $level_category_query = tep_db_query("select * from (select c.categories_id, cd.site_id, cd.categories_name, c.sort_order from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.parent_id = ".$current_ca_res['parent_id']." and c.categories_id = cd.categories_id and cd.language_id = '".$language_id."' order by site_id DESC) c where site_id = ".(int)$site_id." or site_id = 0 group by categories_id order by sort_order, categories_name");   
+      while ($level_category_res = tep_db_fetch_array($level_category_query)) {
+        $category_arr[] = $level_category_res['categories_id']; 
+      }
+      
+      if (!empty($category_arr)) {
+        $cur_pos = array_search($current_category_id, $category_arr); 
+        if ($cur_pos !== false) {
+          if (isset($category_arr[$cur_pos+1])) {
+            $link_path = get_link_parent_category($category_arr[$cur_pos+1]); $return_str .= '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$link_path.'&site_id='.(int)$site_id).'"><input type="button" value="'.IMAGE_NEXT.'"></a>'; 
+          }
+        }
+      }
+    }
+  }
+  
+  return $return_str;
+}
 function tep_get_site_info($site_id=0){
   if($site_id){
   $sql = "select * from ".TABLE_SITES." where id = '".$site_id."' limit 1";
