@@ -1889,6 +1889,10 @@ function get_cart_products(){
         <tr>
           <td class="pageHeading">
         <?php echo tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . $pInfo->products_name . "\n"; ?>
+          &nbsp; 
+          <?php
+          echo display_product_link($cPath, $_GET['pID'], $languages_id, $site_id); 
+          ?>
       </td>
     </tr>
     <tr>
@@ -2172,9 +2176,6 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
 ?>
         <tr>
           <td align="right">
-          <?php
-          echo display_product_link($cPath, $_GET['pID'], $languages_id, $site_id); 
-          ?>
           <?php echo '<a href="' . tep_href_link($back_url, $back_url_params, 'NONSSL') . '">' . tep_image_button('button_back.gif', IMAGE_BACK) . '</a>'; ?></td>
         </tr>
         <?php
@@ -2237,7 +2238,15 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
         <tr>
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>
-                <td class="pageHeading"><?php echo BOX_CATALOG_CATEGORIES_PRODUCTS; ?></td>
+                <td class="pageHeading">
+                <?php echo BOX_CATALOG_CATEGORIES_PRODUCTS; ?>
+                &nbsp; 
+                <?php
+                  if ($cPath) {
+                    echo display_category_link($cPath, $current_category_id, $languages_id, $site_id); 
+                  }
+                ?>
+                </td>
         <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
           <td class="smallText" align="right">
           <?php echo tep_draw_form('search', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
@@ -2582,7 +2591,6 @@ if ($ocertify->npermission >= 10) { //表示制限
                             <td class="smallText"><?php echo TEXT_CATEGORIES . '&nbsp;' . $categories_count . '<br>' . TEXT_PRODUCTS . '&nbsp;' . $products_query_numrows; ?></td>
                             <td align="right" class="smallText"><?php
   if ($cPath) {
-    echo display_category_link($cPath, $current_category_id, $languages_id, $site_id); 
     echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, $cPath_back . '&cID=' .  $current_category_id.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . tep_image_button('button_back.gif', IMAGE_BACK) . '</a>&nbsp;';
   }
   if ((!isset($_GET['search']) || !$_GET['search']) && $ocertify->npermission >= 10) { //表示制限
