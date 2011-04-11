@@ -551,6 +551,10 @@
       //％指定の場合は価格を算出
       $HTTP_POST_VARS['products_price_offset'] = SBC2DBC($HTTP_POST_VARS['products_price_offset']);
 
+      //$products_attention_1_1 = tep_db_prepare_input($_POST['products_attention_1_1']);
+      //$products_attention_1_2 = tep_db_prepare_input($_POST['products_attention_1_2']);
+      //$products_attention_1_3 = tep_db_prepare_input($_POST['products_attention_1_3']);
+      //$products_attention_1_4 = tep_db_prepare_input($_POST['products_attention_1_4']);
       $products_attention_1 = tep_db_prepare_input($_POST['products_jan']);
       $products_attention_2 = tep_db_prepare_input($_POST['products_size']);
       $products_attention_3 = tep_db_prepare_input($_POST['products_naiyou']);
@@ -560,6 +564,10 @@
       $sql_data_array = array(
                                   'products_real_quantity' => tep_db_prepare_input($_POST['products_real_quantity']),
                                   'products_model' => tep_db_prepare_input($_POST['products_model']),
+                                  //'products_attention_1_1' => $products_attention_1_1,
+                                  //'products_attention_1_2' => $products_attention_1_2,
+                                  //'products_attention_1_3' => $products_attention_1_3,
+                                  //'products_attention_1_4' => $products_attention_1_4,
                                   'products_attention_1' => $products_attention_1,
                                   'products_attention_2' => $products_attention_2,
                                   'products_attention_3' => $products_attention_3,
@@ -1189,7 +1197,12 @@ function get_cart_products(){
   //商品説明を分割
   if(isset($pInfo->products_id)){
     $des_query = tep_db_query("
-      select p.products_attention_1,
+      select 
+            -- p.products_attention_1_1,
+            -- p.products_attention_1_2,
+            -- p.products_attention_1_3,
+            -- p.products_attention_1_4,
+             p.products_attention_1,
              p.products_attention_2,
              p.products_attention_3,
              p.products_attention_4,
@@ -1255,53 +1268,53 @@ function get_cart_products(){
           </tr>
   
           <tr>
-                      <td class="main"><?php echo TEXT_PRODUCTS_BUY_AND_SELL; ?></td>
-                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_radio_field('products_bflag', '0', $in_bflag, '', ($site_id?'onclick="return false;"':'')) . '&nbsp;' . TEXT_PRODUCT_USUALLY . '&nbsp;' . tep_draw_radio_field('products_bflag', '1', $out_bflag, '', ($site_id?'onclick="return false;"':'')) . '&nbsp;' . TEXT_PRODUCT_PURCHASE; ?></td>
-                      <td class="main">&nbsp;</td>
+            <td class="main"><?php echo TEXT_PRODUCTS_BUY_AND_SELL; ?></td>
+            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_radio_field('products_bflag', '0', $in_bflag, '', ($site_id?'onclick="return false;"':'')) . '&nbsp;' . TEXT_PRODUCT_USUALLY . '&nbsp;' . tep_draw_radio_field('products_bflag', '1', $out_bflag, '', ($site_id?'onclick="return false;"':'')) . '&nbsp;' . TEXT_PRODUCT_PURCHASE; ?></td>
+            <td class="main">&nbsp;</td>
           </tr>
           <tr>
-                      <td class="main"><?php echo TEXT_PRODUCTS_CHARACTER; ?></td>
-                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_radio_field('products_cflag', '0', $in_cflag, '', ($site_id?'onclick="return false;"':'')) . '&nbsp;' . TEXT_PRODUCT_NOT_INDISPENSABILITY . '&nbsp;' . tep_draw_radio_field('products_cflag', '1', $out_cflag, '', ($site_id?'onclick="return false;"':'')) . '&nbsp;' . TEXT_PRODUCT_INDISPENSABILITY; ?></td>
-                      <td class="main">&nbsp;</td>
+            <td class="main"><?php echo TEXT_PRODUCTS_CHARACTER; ?></td>
+            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_radio_field('products_cflag', '0', $in_cflag, '', ($site_id?'onclick="return false;"':'')) . '&nbsp;' . TEXT_PRODUCT_NOT_INDISPENSABILITY . '&nbsp;' . tep_draw_radio_field('products_cflag', '1', $out_cflag, '', ($site_id?'onclick="return false;"':'')) . '&nbsp;' . TEXT_PRODUCT_INDISPENSABILITY; ?></td>
+            <td class="main">&nbsp;</td>
           </tr>   
             
 
-                  <tr>
-                      <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-                    </tr>
-                  <tr>
-                      <td class="main"><?php echo TEXT_PRODUCTS_DATE_AVAILABLE; ?><br>
-                        <small>(YYYY-MM-DD)</small></td>
-                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;'; ?>
-                        <script language="javascript">dateAvailable.writeControl(); dateAvailable.dateFormat="yyyy-MM-dd";</script></td>
-                      <td class="main">&nbsp;</td>
-                  </tr>
-                  <tr>
-                      <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-                    </tr>
-                  <tr>
-                      <td class="main"><?php echo TEXT_PRODUCTS_MANUFACTURER; ?></td>
-                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_pull_down_menu('manufacturers_id', $manufacturers_array, isset($pInfo->manufacturers_id)?$pInfo->manufacturers_id:'', ($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '')); ?></td>
-                      <td class="main">&nbsp;</td>
-                  </tr>
           <tr>
-                      <td class="main">オススメ商品並び順:</td>
-                      <td class="main"><?php echo
-                      tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' .
-                      tep_draw_input_field('sort_order', isset($pInfo->sort_order)?$pInfo->sort_order:'1000','id="op"' . ($site_id ? 'class="readonly" readonly' : '')); ?></td>
-                      <td class="main">&nbsp;</td>
+            <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
-                  <tr>
-                      <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-                    </tr>
-                  <tr>
-                      <td class="main"><?php echo TEXT_PRODUCTS_OPTION; ?></td>
-                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_pull_down_menu('option_type', tep_get_option_array(), isset($pInfo->option_type)?$pInfo->option_type:'', ($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '')); ?></td>
-                      <td class="main">&nbsp;</td>
-                  </tr>
-              <tr>
-                <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-              </tr>
+          <tr>
+            <td class="main"><?php echo TEXT_PRODUCTS_DATE_AVAILABLE; ?><br>
+              <small>(YYYY-MM-DD)</small></td>
+            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;'; ?>
+              <script language="javascript">dateAvailable.writeControl(); dateAvailable.dateFormat="yyyy-MM-dd";</script></td>
+            <td class="main">&nbsp;</td>
+          </tr>
+          <tr>
+              <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+          </tr>
+          <tr>
+            <td class="main"><?php echo TEXT_PRODUCTS_MANUFACTURER; ?></td>
+            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_pull_down_menu('manufacturers_id', $manufacturers_array, isset($pInfo->manufacturers_id)?$pInfo->manufacturers_id:'', ($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '')); ?></td>
+            <td class="main">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="main">オススメ商品並び順:</td>
+            <td class="main"><?php echo
+            tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' .
+            tep_draw_input_field('sort_order', isset($pInfo->sort_order)?$pInfo->sort_order:'1000','id="op"' . ($site_id ? 'class="readonly" readonly' : '')); ?></td>
+            <td class="main">&nbsp;</td>
+          </tr>
+          <tr>
+              <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+          </tr>
+          <tr>
+              <td class="main"><?php echo TEXT_PRODUCTS_OPTION; ?></td>
+              <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_pull_down_menu('option_type', tep_get_option_array(), isset($pInfo->option_type)?$pInfo->option_type:'', ($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '')); ?></td>
+              <td class="main">&nbsp;</td>
+          </tr>
+          <tr>
+            <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+          </tr>
               <?php
     for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
 ?>
@@ -1372,54 +1385,67 @@ function get_cart_products(){
             <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp; 50個～99個までの加算値は10→商品単価は110円'; ?><br>
             <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp; 割引の場合は、加算値を-20の様なマイナス値にして下さい。'; ?><br>
             <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp; <b>割引は未検証なので入力しないこと！</b>'; ?></td>
-                    </tr>
-          <tr>
-                      <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-          </tr>
+        </tr>
         <tr>
-                <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+          <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+        </tr>
+        <tr>
+          <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
         </tr>
         <tr bgcolor="#CCCCCC">
-                <td class="main"><?php echo '<font color="blue"><b>' . TEXT_PRODUCTS_REAL_QUANTITY . '</b></font>'; ?></td>
-                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_real_quantity', isset($pInfo->products_real_quantity)?$pInfo->products_real_quantity:'', ($site_id ? 'class="readonly" readonly' : '')); ?></td>
+          <td class="main"><?php echo '<font color="blue"><b>' . TEXT_PRODUCTS_REAL_QUANTITY . '</b></font>'; ?></td>
+          <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_real_quantity', isset($pInfo->products_real_quantity)?$pInfo->products_real_quantity:'', ($site_id ? 'class="readonly" readonly' : '')); ?></td>
         </tr>
         <tr>
-                <td>&nbsp;</td>
-                <td class="smallText" colspan="2">在庫計算する場合は入力してください。在庫を計算する場合は　基本設定→在庫管理　を設定してください。</td>
+          <td>&nbsp;</td>
+          <td class="smallText" colspan="2">在庫計算する場合は入力してください。在庫を計算する場合は　基本設定→在庫管理　を設定してください。</td>
         </tr>
         <tr>
-                <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-              </tr>
-              <tr>
-                <td class="main"><?php echo TEXT_PRODUCTS_MODEL; ?></td>
-                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_model', isset($pInfo->products_model)?$pInfo->products_model:'', ($site_id ? 'class="readonly" readonly' : '')); ?></td>
-                <td class="fieldRequired">検索キー</td>
-              </tr>
-
+          <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+        </tr>
+        <tr>
+          <td class="main"><?php echo TEXT_PRODUCTS_MODEL; ?></td>
+          <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_model', isset($pInfo->products_model)?$pInfo->products_model:'', ($site_id ? 'class="readonly" readonly' : '')); ?></td>
+          <td class="fieldRequired">検索キー</td>
+        </tr>
           <tr>
-                      <td class="main">項目１</td>
-                      <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_input01">' . tep_draw_input_field('products_jan', isset($des_result['products_attention_1'])?$des_result['products_attention_1']:'', ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?><br>
-                      <span class="smallText">項目名とデータは「//」スラッシュ2本で区切ってください。例）サイズ//H1000　W560</span></td>
-                    </tr>
-          <tr>
-                      <td class="main">項目２</td>
-                      <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_input01">' . tep_draw_input_field('products_size', isset($des_result['products_attention_2'])?$des_result['products_attention_2']:'', ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
-                    </tr>
-          <tr>
-                      <td class="main">項目３</td>
-                      <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_input01">' . tep_draw_input_field('products_naiyou', isset($des_result['products_attention_3'])?$des_result['products_attention_3']:'', ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
-                    </tr>
-          <tr>
-                      <td class="main">項目４</td>
-                      <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_input01">' . tep_draw_input_field('products_zaishitu', isset($des_result['products_attention_4'])?$des_result['products_attention_4']:'', ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
+            <td class="main">項目１</td>
+            <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_input01">' . tep_draw_input_field('products_jan', isset($des_result['products_attention_1'])?$des_result['products_attention_1']:'', ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?><br>
+            <span class="smallText">項目名とデータは「//」スラッシュ2本で区切ってください。例）サイズ//H1000　W560</span></td>
           </tr>
-              <tr>
-                <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-              </tr>
-        <tr>
-                <td class="main" valign="top">キャラクタ名</td>
-                <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_textarea01">' . tep_draw_textarea_field('products_attention_5', 'soft', '70', '15', isset($des_result['products_attention_5'])?$des_result['products_attention_5']:'', ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
-              </tr>
+          <!--
+          <tr>
+            <td class="main">項目１</td>
+            <td class="main" colspan="2">
+              <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') 
+            . '&nbsp;<span class="categories_input01">' 
+            . tep_draw_input_field('products_attention_1_1', isset($des_result['products_attention_1_1'])?$des_result['products_attention_1_1']:'', 'style="width:122px;" '.($site_id ? 'class="readonly" readonly' : ''))
+            . tep_draw_input_field('products_attention_1_2', isset($des_result['products_attention_1_2'])?$des_result['products_attention_1_2']:'', 'style="width:122px;" '.($site_id ? 'class="readonly" readonly' : ''))
+            . tep_draw_input_field('products_attention_1_3', isset($des_result['products_attention_1_3'])?$des_result['products_attention_1_3']:'', 'style="width:122px;" '.($site_id ? 'class="readonly" readonly' : ''))
+            . tep_draw_input_field('products_attention_1_4', isset($des_result['products_attention_1_4'])?$des_result['products_attention_1_4']:'', 'style="width:122px;" '.($site_id ? 'class="readonly" readonly' : ''))
+            .'</span>'; ?>
+            </td>
+          </tr>
+          -->
+          <tr>
+            <td class="main">項目２</td>
+            <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_input01">' . tep_draw_input_field('products_size', isset($des_result['products_attention_2'])?$des_result['products_attention_2']:'', ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
+          </tr>
+          <tr>
+            <td class="main">項目３</td>
+            <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_input01">' . tep_draw_input_field('products_naiyou', isset($des_result['products_attention_3'])?$des_result['products_attention_3']:'', ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
+          </tr>
+          <tr>
+            <td class="main">項目４</td>
+            <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_input01">' . tep_draw_input_field('products_zaishitu', isset($des_result['products_attention_4'])?$des_result['products_attention_4']:'', ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
+          </tr>
+          <tr>
+            <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+          </tr>
+          <tr>
+            <td class="main" valign="top">キャラクタ名</td>
+            <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_textarea01">' . tep_draw_textarea_field('products_attention_5', 'soft', '70', '15', isset($des_result['products_attention_5'])?$des_result['products_attention_5']:'', ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
+          </tr>
           </table>
                   </fieldset></td>
               </tr>
