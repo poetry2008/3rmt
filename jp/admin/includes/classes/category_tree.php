@@ -24,10 +24,35 @@
        $end = false
    ;
 
-   function osC_CategoryTree($load_from_database = true) {
+   function osC_CategoryTree($load_from_database = true,$green = false) {
      global $languages_id;
+     $site_id = isset($_GET['site_id'])&&$_GET['site_id'] ? $_GET['site_id'] : 0;
 //ccdd
-         $this->categories_count = tep_db_num_rows(tep_db_query("select * from categories"));
+    if ($green) {
+      $this->categories_count = tep_db_num_rows(tep_db_query("select * from categories_description where site_id='0' and categories_status='0'"));
+    } else {
+      $this->categories_count = tep_db_num_rows(tep_db_query("select * from categories"));
+    }
+    if ($green) { 
+         $categories_query = tep_db_query("
+           select *
+           from (
+             select c.categories_id, 
+                    cd.categories_status, 
+                    cd.categories_name, 
+                    c.parent_id,
+                    cd.site_id,
+                    c.sort_order
+             from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
+             where c.categories_id = cd.categories_id 
+               and cd.language_id = '" . (int)$languages_id . "' 
+               and cd.categories_status = '0'
+             order by cd.site_id DESC
+            ) c
+            where site_id = '0' or site_id='".$site_id."'
+            group by categories_id
+            order by parent_id, sort_order, categories_name");
+    } else {
          $categories_query = tep_db_query("
            select *
            from (
@@ -42,10 +67,10 @@
                and cd.language_id = '" . (int)$languages_id . "' 
              order by cd.site_id DESC
             ) c
-            where site_id = '0'
+            where site_id = '0' or site_id='".$site_id."'
             group by categories_id
             order by parent_id, sort_order, categories_name");
-     
+    }
          $this->data = array();
          while ($categories = tep_db_fetch_array($categories_query)) {
             // Ultimate SEO URLs compatibility - Chemo
@@ -72,7 +97,9 @@
 
    function buildBranch($parent_id, $level = 0) {
      if($level == 0){
-       $result = '<table width="100%"><tr><td valign="top" width="20%"><ul>';
+       $result = '<table width="100%"><tr><td valign="top" width="20%"><ul>
+       <li><a href="?cPath=0'.(isset($_GET['site_id'])?('&site_id=' . $_GET['site_id']):'').'">トップ</a></li>
+       ';
      }else{
        $result = $this->parent_group_start_string;
      }

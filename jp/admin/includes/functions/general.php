@@ -4541,11 +4541,11 @@ function tep_get_avg_by_pid($pid){
   $product = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
   $order_history_query = tep_db_query("
     select * 
-    from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id
+    from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id 
     where 
     op.products_id='".$product['relate_products_id']."'
-    order by date_purchased desc
-    limit 5
+    and os.calc_price = '1'
+    order by o.torihiki_date desc
   ");
   $sum = 0;
   $cnt = 0;
@@ -4684,4 +4684,30 @@ function get_link_parent_category($cid)
      return implode('_', $ca_arr).'_'.$cid; 
    }
    return $cid;
+}
+
+function tep_get_site_info($site_id=0){
+  if($site_id){
+  $sql = "select * from ".TABLE_SITES." where id = '".$site_id."' limit 1";
+  $query = tep_db_query($sql);
+  $row = tep_db_fetch_array($query);
+  return $row;
+  }else{
+   $arr = array();
+   $arr['romaji'] = 'All';
+   return $arr;
+  }
+}
+
+function tep_has_pw_manager_log($pwid){
+  if($pwid){
+   $sql = "select * from ".TABLE_IDPW_LOG." where idpw_id ='".$pwid."'";
+   if($row = tep_db_fetch_array(tep_db_query($sql))){
+    return $row;
+   }else{
+    return false;
+   }
+  }else{
+   return false;
+  }
 }

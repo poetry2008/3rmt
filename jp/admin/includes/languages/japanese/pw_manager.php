@@ -45,3 +45,4 @@ define('TEXT_BUTTON_EDIT','編集');
 define('TEXT_BUTTON_HISTORY','履歴');
 define('TEXT_BUTTON_QUERY','挿入');
 define('TEXT_BUTTON_MK_PWD','パスワード作成');
+define('TEXT_OPERATOR_INFO','ここでチェックした人のみ閲覧できます。');

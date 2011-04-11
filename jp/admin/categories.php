@@ -1929,8 +1929,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   echo '<table  width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="left">';
   echo '価&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格：&nbsp;' . tep_draw_input_field('products_price', number_format(abs($pInfo->products_price),0,'.',''),'id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;円' . '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price . '円 ' . "\n";
   echo '</td><td align="right">';
-  if (!$pInfo->products_bflag)
-  echo '実在庫の平均仕入価格： '.display_price(tep_get_avg_by_pid($pInfo->products_id)).'円';
+  if (!$pInfo->products_bflag && $pInfo->relate_products_id)
+  echo '実在庫の平均仕入価格： '.@display_price(tep_get_avg_by_pid($pInfo->products_id)).'円';
   echo '</td></tr></table>';
   echo '  </td>';
   echo '  </tr><tr><td><hr size="2" noshade></td></tr><tr>';
@@ -1943,8 +1943,10 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   echo '  </td>';
   echo '  </tr>';
   echo '</table>';
-
-  echo '当社キャラクター名の入力欄：<br>' . tep_draw_textarea_field('products_attention_5', 'soft', '70', '10', $pInfo->products_attention_5) . '<br>' . "\n";
+  echo '<table  width="95%" cellpadding="0" cellspacing="0" border="0">';
+  echo '<tr><td>';
+  echo '当社キャラクター名の入力欄：</tr></td><tr><td>' . tep_draw_textarea_field('products_attention_5', 'soft', '70', '10', $pInfo->products_attention_5) . '</tr></td>';
+  echo '</table>';
   echo '</td>';
   echo '<td width="50%" valign="top" align="right">';
   if (tep_get_bflag_by_product_id($pInfo->products_id)) { // 如果买取
@@ -1972,10 +1974,10 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
 
   $order_history_query = tep_db_query("
     select * 
-    from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id
+    from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id 
     where 
     op.products_id='".$pInfo->products_id."'
-    order by date_purchased desc
+    order by o.torihiki_date desc
     limit 5
   ");
   ?>
@@ -1985,7 +1987,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
       <th colspan="4" align="left">商品履歴</th>
     </tr>
     <tr>
-      <th>日付</th>
+      <th>取引日</th>
       <th>個数</th>
       <th>単価</th>
       <th>ステータス</th>
@@ -1998,21 +2000,23 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
     while($order_history = tep_db_fetch_array($order_history_query)){
     ?>
       <tr>
-        <td class="main" width="120"><?php echo $order_history['date_purchased'];?></td>
+        <td class="main" width="120"><?php echo $order_history['torihiki_date'];?></td>
         <td class="main" width="100" align="right"><?php echo $order_history['products_quantity'];?>個</td>
         <td class="main" align="right"><?php echo display_price($order_history['final_price']);?>円</td>
         <td class="main" width="100"><?php echo $order_history['orders_status_name'];?></td>
       </tr>
     <?php
       $sum_i ++;
+    if ($order_history['calc_price'] == '1') {
       $sum_price += $order_history['final_price'] * $order_history['products_quantity'];
       $sum_quantity += $order_history['products_quantity'];
+    }
     }
     ?>
       <tr>
         <th></th>
         <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left">合計:</td><td align="right"><?php echo $sum_quantity;?>個</td></tr></table></td>
-        <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left">平均:</td><td align="right"><?php echo display_price($sum_price/$sum_quantity);?>円</td></tr></table></td>
+        <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left">平均:</td><td align="right"><?php echo @display_price($sum_price/$sum_quantity);?>円</td></tr></table></td>
         <td class="main"> </td>
       </tr>
       <?php
@@ -2026,10 +2030,10 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   if ($pInfo->relate_products_id) {
   $order_history_query = tep_db_query("
     select * 
-    from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id
+    from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id 
     where 
     op.products_id='".$pInfo->relate_products_id."'
-    order by date_purchased desc
+    order by o.torihiki_date desc
     limit 5
   ");
   ?>
@@ -2039,7 +2043,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
       <th colspan="4" align="left">関連付け商品:<?php echo tep_get_relate_products_name($pInfo->products_id);?></th>
     </tr>
     <tr>
-      <th>日付</th>
+      <th>取引日</th>
       <th>個数</th>
       <th>単価</th>
       <th>ステータス</th>
@@ -2052,7 +2056,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
     while($order_history = tep_db_fetch_array($order_history_query)){
     ?>
       <tr>
-        <td class="main" width="120"><?php echo $order_history['date_purchased'];?></td>
+        <td class="main" width="120"><?php echo $order_history['torihiki_date'];?></td>
         <td class="main" width="100" align="right"><?php echo $order_history['products_quantity'];?>個</td>
         <td class="main" align="right"><?php echo display_price($order_history['final_price']);?>円</td>
         <!--<td class="main"><?php echo strip_tags(tep_get_ot_total_by_orders_id($order_history['orders_id']));?></td>-->
@@ -2060,14 +2064,16 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
       </tr>
     <?php
       $sum_i ++;
+    if ($order_history['calc_price'] == '1') {
       $sum_price += $order_history['final_price'] * $order_history['products_quantity'];
       $sum_quantity += $order_history['products_quantity'];
+    }
     }
     ?>
       <tr>
         <th></th>
         <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left">合計:</td><td align="right"><?php echo $sum_quantity;?>個</td></tr></table></td>
-        <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left">平均:</td><td align="right"><?php echo display_price($sum_price/$sum_quantity);?>円</td></tr></table></td>
+        <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left">平均:</td><td align="right"><?php echo @display_price($sum_price/$sum_quantity);?>円</td></tr></table></td>
         <td class="main"> </td>
       </tr>
     <?php
@@ -2251,8 +2257,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
             <?php echo tep_draw_form('goto', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
 
               <div id="gotomenu">
-                <a href="javascript:void(0)" onmouseover="$('#categories_tree').show()">ジャンプ▼</a>
-                <div id="categories_tree" onmouseout="$('#categories_tree').hide()" onmouseover="$('#categories_tree').show()">
+                <a href="javascript:void(0)" onclick="$('#categories_tree').toggle()">ジャンプ▼</a>
+                <div id="categories_tree">
                 <?php
                   require(DIR_WS_CLASSES . 'category_tree.php');
                   $osC_CategoryTree = new osC_CategoryTree; 

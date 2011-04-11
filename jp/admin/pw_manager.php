@@ -97,6 +97,9 @@ if(isset($_GET['action']) &&
           $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
           }
           tep_db_perform(TABLE_IDPW, $sql_data_array, 'update', 'id = \'' . $pwid . '\'');
+          if(tep_db_prepare_input($_POST['url'])!=tep_db_prepare_input($_POST['old_url'])||tep_db_prepare_input($_POST['loginurl'])!=tep_db_prepare_input($_POST['old_loginurl'])||tep_db_prepare_input($_POST['username'])!=tep_db_prepare_input($_POST['old_username'])||tep_db_prepare_input($_POST['password'])!=tep_db_prepare_input($_POST['old_password'])||tep_db_prepare_input($_POST['comment'])!=tep_db_prepare_input($_POST['old_comment'])
+
+            ){
           $res = tep_db_query("select * from ".TABLE_IDPW. " where id =
               '".$pwid."'");
           $sql_data_array_log = array();
@@ -109,9 +112,6 @@ if(isset($_GET['action']) &&
               }
             }
           }
-          if(tep_db_prepare_input($_POST['url'])!=tep_db_prepare_input($_POST['old_url'])||tep_db_prepare_input($_POST['loginurl'])!=tep_db_prepare_input($_POST['old_loginurl'])||tep_db_prepare_input($_POST['username'])!=tep_db_prepare_input($_POST['old_username'])||tep_db_prepare_input($_POST['password'])!=tep_db_prepare_input($_POST['old_password'])||tep_db_prepare_input($_POST['comment'])!=tep_db_prepare_input($_POST['old_comment'])
-
-            ){
           tep_db_perform(TABLE_IDPW_LOG,$sql_data_array_log);
           }
           tep_redirect(tep_href_link(FILENAME_PW_MANAGER,
@@ -656,13 +656,14 @@ right:5px;*/
         onmouseover="this.style.cursor=\'hand\'" >' . "\n";
       $onclick = ' onclick="document.location.href=\''.
         tep_href_link(FILENAME_PW_MANAGER, 'page=' . $_GET['page'] . '&pw_id=' .
-            $pwInfo->id . '&action=edit') . '\'"';
+            $pwInfo->id . '&action=edit&site_id='.$site_id.'&sort='.$_GET['sort'].'&type='.$_GET['type']) . '\'"';
     } else {
       echo '              <tr class="dataTableRow"
         onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'"
         onmouseout="this.className=\'dataTableRow\'">' . "\n";
       $onclick = 'onclick="document.location.href=\'' . tep_href_link(FILENAME_PW_MANAGER,
-        'page=' . $_GET['page'] . '&pw_id=' . $pw_manager_row['id']) . '\'"';
+        'page=' . $_GET['page'] .
+          '&site_id='.$site_id.'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&pw_id=' . $pw_manager_row['id']) . '\'"';
     }
       $priority_str = "<font color='";
       switch($pw_manager_row['priority']){
@@ -688,9 +689,9 @@ right:5px;*/
         ."<a target='_blank' href='" 
         .make_blank_url($pw_manager_row['url'],FILENAME_REDIREC_URL)."'>"
         .mb_substr($pw_manager_row['title'],0,12,'utf-8')."</a></td>";
-      echo "<td class='dataTableContent' id='user_".$i."'
+      echo "<td class='dataTableContent_line' id='user_".$i."'
         onclick='copyCode(\"".$pw_manager_row['id']."\",\"username\")'>".mb_substr($pw_manager_row['username'],0,8,'utf-8')."</td>";
-      echo "<td class='dataTableContent' id='pwd_".$i."'
+      echo "<td class='dataTableContent_line' id='pwd_".$i."'
         onclick='copyCode(\"".$pw_manager_row['id']."\",\"password\")'>".mb_substr($pw_manager_row['password'],0,8,'utf-8')."</td>";
       /*
       $privilege_arr = array();
@@ -805,6 +806,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           class="nextdate_info">' .
           tep_draw_input_field('nextdate','','id="input_nextdate"')."</div>");
       $contents[] = array('text' => '<br>' . TEXT_INFO_PRIVILEGE . '<br>' .
+          "<br>".TEXT_OPERATOR_INFO."<br><br>".
           tep_draw_radio_field('privilege','15',false,'','id="self" class="privilege"').TEXT_SELF.
           tep_draw_radio_field('privilege','7',true,'','class="privilege"
             id="privilege_s"')."Staff以上".
@@ -884,6 +886,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           class="nextdate_info">' .
           tep_draw_input_field('nextdate',$pwInfo->nextdate,'id="input_nextdate"')."</div>");
       $contents[] = array('text' => '<br>' . TEXT_INFO_PRIVILEGE . '<br>' .
+          "<br>".TEXT_OPERATOR_INFO."<br><br>".
           tep_draw_radio_field('privilege','15',$pwInfo->privilege==15?true:false,'','id="self" class="privilege"').TEXT_SELF.
           tep_draw_radio_field('privilege','7',$pwInfo->privilege==7?true:false,'','class="privilege"
             id="privilege_s"')."Staff以上".

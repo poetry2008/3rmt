@@ -6,7 +6,7 @@ class Model_Class extends FLEA_Db_TableDataGateway
     parent::FLEA_Db_TableDataGateway();
     $this->disableLinks();
   }
-  var $tableName = 'rk_click_class';
+  var $tableName = 'rg_click_class';
   var $primaryKey = 'id';
 
 }
