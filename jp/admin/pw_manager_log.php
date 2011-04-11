@@ -415,8 +415,8 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           . '&nbsp;' .
           "<button type='button'
           onclick=\"location.href='".
-          tep_href_link(FILENAME_PW_MANAGER_LOG, 'page=' . $_GET['page'] . '&pw_id=' .
-            $pwInfo->id)  
+          tep_href_link(FILENAME_PW_MANAGER_LOG, 'page=' . $_GET['page'] . '&pw_l_id=' .
+            $pwInfo->id.'&site_id='.$site_id.'&pw_id='.$pwid)  
           ."'\">" .
           TEXT_BUTTON_CLEAR."</button>" 
           );

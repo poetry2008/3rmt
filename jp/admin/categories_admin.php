@@ -89,7 +89,15 @@ if (isset($_GET['action']) && $_GET['action']) {
   <td>
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
-      <td class="pageHeading">商品卸価格管理</td>
+      <td class="pageHeading">
+      商品卸価格管理
+      &nbsp; 
+      <?php
+      if ($cPath) {
+        echo display_category_link($cPath, $current_category_id, $languages_id, 0, FILENAME_CATEGORIES_ADMIN); 
+      }
+      ?>
+      </td>
       <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
       <td class="smallText" align="right"><?php echo tep_draw_form('search', FILENAME_CATEGORIES_ADMIN, '', 'get') . "\n"; ?> <?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search', isset($_GET['search'])?$_GET['search']:'') . "\n"; ?></form></td>
       <td class="smallText" align="right">
@@ -564,7 +572,6 @@ if(empty($cPath_back)&&empty($cID)&&isset($cPath)){
          '<br>' . '商品数:' . '&nbsp;' . $products_query_numrows; ?></td>
         <td align="right" class="smallText"><?php
   if ($cPath) {
-    
     $rPath_back = isset($cPath_back) && $cPath_back ? 'cPath=' . $cPath_back : '';
     echo '<a href="' . tep_href_link(FILENAME_CATEGORIES_ADMIN, $rPath_back . '&cID=' . $current_category_id) . '">' . tep_image_button('button_back.gif', IMAGE_BACK) . '</a>&nbsp;';
   }
