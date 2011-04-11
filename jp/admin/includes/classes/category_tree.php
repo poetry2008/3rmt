@@ -98,7 +98,7 @@
    function buildBranch($parent_id, $level = 0) {
      if($level == 0){
        $result = '<table width="100%"><tr><td valign="top" width="20%"><ul class="tdul">
-       <li class="subcategory"><a href="?cPath=0'.(isset($_GET['site_id'])?('&site_id=' . $_GET['site_id']):'').'"'.(!isset($_GET['cPath']) || $_GET['cPath'] == '0' ? ' class="current_link' : '').'>トップ</a></li>
+       <li class="subcategory"><a href="?cPath=0'.(isset($_GET['site_id'])?('&site_id=' . $_GET['site_id']):'').'"'.(!isset($_GET['cPath']) || $_GET['cPath'] == '0' ? ' class="current_link"' : '').'>トップ</a></li>
        ';
      }else{
        $result = $this->parent_group_start_string;
