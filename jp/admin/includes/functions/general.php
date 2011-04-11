@@ -4596,11 +4596,11 @@ function display_product_link($cPath, $pID, $language_id = '4', $site_id)
     $cur_key = array_search($pID, $product_arr);
     if ($cur_key !== false) {
       if (isset($product_arr[$cur_key-1])) {
-        $return_str .= '<a href="'.tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params(array('page', 'x', 'y', 'pID')).'pID='.$product_arr[$cur_key-1]).'"><input type="button" value="'.IMAGE_BACK.'"></a>&nbsp;'; 
+        $return_str .= '<input type="button" value="'.IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params(array('page', 'x', 'y', 'pID')).'pID='.$product_arr[$cur_key-1]).'\'">&nbsp;'; 
       }
       
       if (isset($product_arr[$cur_key+1])) {
-        $return_str .= '&nbsp;<a href="'.tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params(array('page', 'x', 'y', 'pID')).'pID='.$product_arr[$cur_key+1]).'"><input type="button" value="'.IMAGE_NEXT.'"></a>&nbsp;'; 
+        $return_str .= '&nbsp;<input type="button" value="'.IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params(array('page', 'x', 'y', 'pID')).'pID='.$product_arr[$cur_key+1]).'\'">&nbsp;'; 
       }
     }
   }
