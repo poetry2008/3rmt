@@ -2243,7 +2243,11 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                 &nbsp; 
                 <?php
                   if ($cPath) {
-                    echo display_category_link($cPath, $current_category_id, $languages_id, $site_id); 
+                    $display_ca_str = display_category_link($cPath, $current_category_id, $languages_id, $site_id); 
+                    echo $display_ca_str; 
+                    if (empty($display_ca_str)) {
+                      echo '<a href="'.tep_href_link(FILENAME_CATEGORIES_ADMIN, 'cPath='.$cPath).'"><input type="button" value="'.IMAGE_NEXT.'"></a>'; 
+                    }
                   }
                 ?>
                 </td>
