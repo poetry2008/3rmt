@@ -15,7 +15,7 @@
        $parent_end_string = '',
        $parent_group_start_string = '<li class="subcategory_tree"><ul class="subcategory_tree_info">',
        $parent_group_end_string = '</ul></li>',
-       $child_start_string = '<li>',
+       $child_start_string = '<li class="subcategory">',
        $child_end_string = '</li>',
        $spacer_string = '',
        $spacer_multiplier = 1,
@@ -97,8 +97,8 @@
 
    function buildBranch($parent_id, $level = 0) {
      if($level == 0){
-       $result = '<table width="100%"><tr><td valign="top" width="20%"><ul>
-       <li><a href="?cPath=0'.(isset($_GET['site_id'])?('&site_id=' . $_GET['site_id']):'').'">トップ</a></li>
+       $result = '<table width="100%"><tr><td valign="top" width="20%"><ul class="tdul">
+       <li class="subcategory"><a href="?cPath=0'.(isset($_GET['site_id'])?('&site_id=' . $_GET['site_id']):'').'"'.(!isset($_GET['cPath']) || $_GET['cPath'] == '0' ? ' class="current_link"' : '').'>トップ</a></li>
        ';
      }else{
        $result = $this->parent_group_start_string;
@@ -114,7 +114,7 @@
          if ($level == 0) $result .= $this->root_start_string;
      
          $result .= str_repeat($this->spacer_string, $this->spacer_multiplier * $level) . 
-     '<a href="?'.(isset($_GET['site_id'])?('site_id=' . $_GET['site_id'] . '&'):'').'cPath=' . $category_link . '">';
+     '<a href="?'.(isset($_GET['site_id'])?('site_id=' . $_GET['site_id'] . '&'):'').'cPath=' . $category_link . '"'.(isset($_GET['cPath']) && $_GET['cPath'] == $category_link ? ' class="current_link"' : '').'>';
          $result .= $category['name'];
          $result .= '</a>';
 
@@ -134,7 +134,7 @@
            $this->end = true;
          }
          if ($level === 0 && $this->end === true) {
-          $result .= "</ul></td><td valign=\"top\" width=\"20%\"><ul>";
+          $result .= "</ul></td><td valign=\"top\" width=\"20%\"><ul class=\"tdul\">";
           $this->end = false;
          }
          $this->i++;
