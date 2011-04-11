@@ -4716,7 +4716,7 @@ function get_same_level_category($cPath, $current_category_id, $language_id, $si
         if ($cur_pos !== false) {
           if (isset($category_arr[$cur_pos-1])) {
             $link_path = get_link_parent_category($category_arr[$cur_pos-1]);
-            $return_str .= '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$link_path.'&site_id='.(int)$site_id).'"><input type="button" value="'.IMAGE_NEXT.'"></a>&nbsp;'; 
+            $return_str .= '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$link_path.'&site_id='.(int)$site_id).'"><input type="button" value="'.IMAGE_BACK.'"></a>&nbsp;'; 
           }
           if (isset($category_arr[$cur_pos+1])) {
             $link_path = get_link_parent_category($category_arr[$cur_pos+1]); 
