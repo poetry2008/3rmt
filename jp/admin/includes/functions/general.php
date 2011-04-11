@@ -4691,7 +4691,7 @@ function get_link_parent_category($cid)
    return $cid;
 }
 
-function get_same_level_category($cPath, $current_category_id, $language_id, $site_id)
+function get_same_level_category($cPath, $current_category_id, $language_id, $site_id, $page = FILENAME_CATEGORIES)
 {
   $return_str = ''; 
   $cpath_arr = explode('_', $cPath);
@@ -4716,11 +4716,11 @@ function get_same_level_category($cPath, $current_category_id, $language_id, $si
         if ($cur_pos !== false) {
           if (isset($category_arr[$cur_pos-1])) {
             $link_path = get_link_parent_category($category_arr[$cur_pos-1]);
-            $return_str .= '<input type="button" value="'.IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$link_path.'&site_id='.(int)$site_id).'\'">&nbsp;'; 
+            $return_str .= '<input type="button" value="'.IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, 'cPath='.$link_path.'&site_id='.(int)$site_id).'\'">&nbsp;'; 
           }
           if (isset($category_arr[$cur_pos+1])) {
             $link_path = get_link_parent_category($category_arr[$cur_pos+1]); 
-            $return_str .= '&nbsp;<input type="button" value="'.IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$link_path.'&site_id='.(int)$site_id).'\'">'; 
+            $return_str .= '&nbsp;<input type="button" value="'.IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, 'cPath='.$link_path.'&site_id='.(int)$site_id).'\'">'; 
           }
         }
       }
