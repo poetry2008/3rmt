@@ -4708,9 +4708,19 @@ function get_same_level_category($cPath, $current_category_id, $language_id, $si
       
       if (!empty($category_arr)) {
         $cur_pos = array_search($current_category_id, $category_arr); 
+        $show_ca_query = tep_db_query("select * from (select c.categories_id ,cd.site_id, cd.categories_name from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id =
+            cd.categories_id and c.categories_id = '".$current_category_id."' and cd.language_id = '".$language_id."' order by site_id DESC) c where site_id = '0' or site_id = '".$site_id."'group by categories_id limit 1"); 
+        $show_ca_res = tep_db_fetch_array($show_ca_query);
+         
+        $return_str .= $show_ca_res['categories_name'].':&nbsp;';  
         if ($cur_pos !== false) {
+          if (isset($category_arr[$cur_pos-1])) {
+            $link_path = get_link_parent_category($category_arr[$cur_pos-1]);
+            $return_str .= '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$link_path.'&site_id='.(int)$site_id).'"><input type="button" value="'.IMAGE_NEXT.'"></a>&nbsp;'; 
+          }
           if (isset($category_arr[$cur_pos+1])) {
-            $link_path = get_link_parent_category($category_arr[$cur_pos+1]); $return_str .= '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$link_path.'&site_id='.(int)$site_id).'"><input type="button" value="'.IMAGE_NEXT.'"></a>'; 
+            $link_path = get_link_parent_category($category_arr[$cur_pos+1]); 
+            $return_str .= '&nbsp;<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$link_path.'&site_id='.(int)$site_id).'"><input type="button" value="'.IMAGE_NEXT.'"></a>'; 
           }
         }
       }
