@@ -94,7 +94,11 @@ if (isset($_GET['action']) && $_GET['action']) {
       &nbsp; 
       <?php
       if ($cPath) {
-        echo display_category_link($cPath, $current_category_id, $languages_id, 0, FILENAME_CATEGORIES_ADMIN); 
+        $display_ca_str = display_category_link($cPath, $current_category_id, $languages_id, 0, FILENAME_CATEGORIES_ADMIN); 
+        echo $display_ca_str; 
+        if (empty($display_ca_str)) {
+          echo get_same_level_category($cPath, $current_category_id, $languages_id, $site_id); 
+        }
       }
       ?>
       </td>

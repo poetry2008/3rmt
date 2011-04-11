@@ -4648,13 +4648,13 @@ function display_category_link($cPath, $current_category_id, $language_id = 4, $
           if (isset($level_category_arr[$cur_key-1])) {
             $prev_id =  $level_category_arr[$cur_key-1];
             $link_cpath = get_link_parent_category($prev_id); 
-            $return_str .= '<a href="'.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'"><input type="button" value="'.IMAGE_BACK.'"></a>&nbsp;'; 
+            $return_str .= '<input type="button" value="'.IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'\'">&nbsp;'; 
           }
           
           if (isset($level_category_arr[$cur_key+1])) {
             $next_id =  $level_category_arr[$cur_key+1];
             $link_cpath = get_link_parent_category($next_id); 
-            $return_str .= '&nbsp;<a href="'.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'"><input type="button" value="'.IMAGE_NEXT.'"></a>&nbsp;'; 
+            $return_str .= '&nbsp;<input type="button" value="'.IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'\'">&nbsp;'; 
           }
         }
       
