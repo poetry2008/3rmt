@@ -37,11 +37,9 @@ fls = flashChecker()
 
 
 
-if (fls.v <= 9){
-//	alert('less than ');
+if (fls.v < 9){
 	document.write('<a href="index.php"><img src="images/id_picture.gif" width="900" height="120" alt="RMT" ></a>');
 }else {
-     //alert('flash');
 
 fflag=0;
 if (document.layers || document.all || document.getElementById) {
@@ -73,4 +71,3 @@ if (fflag==0)
 	 }
 	}
 	
-	alert(fls.v);
