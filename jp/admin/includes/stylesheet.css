@@ -769,7 +769,7 @@ font-size:10px;!important;
 display:none;
 /*	width:100%;*/
 	position: absolute;
-	width:1080px;
+	width:950px;
 	background-color:#000;
 	top:12px;
 	right:0;
@@ -785,6 +785,7 @@ display:none;
 #categories_tree li{
 	padding:0;
 	margin:5px;
+	*margin:0;
 	text-align:left;
 	color:#FFFFFF;
 	list-style-type:none;
