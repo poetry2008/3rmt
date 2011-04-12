@@ -38,7 +38,6 @@
   }
 ?>
 <script src="../Scripts/swfobject_modified.js" type="text/javascript"></script>
-
 <div id="title">
   <?php
   if (!isset($_GET['cPath'])) $_GET['cPath'] = NULL; //del notice
@@ -63,8 +62,9 @@
               <a href="http://rmt.worldmoney.jp/"><img src="images/design/logo.jpg" width="200" height="103" alt="RMT" ></a>
             </td>
             <td>
-            	<embed src="images/design/header_flash.swf" quality=high  width="662" height="103" ></embed>
-            </td>
+            	<script type='text/javascript' src="js/flash_rmt.js"></script>
+<!--            	<embed src="images/design/header_flash.swf" quality=high  width="662" height="103" ></embed>
+-->            </td>
           </tr>
         </table>
       </li>

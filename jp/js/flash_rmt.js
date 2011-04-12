@@ -37,7 +37,6 @@ fls = flashChecker()
 
 
 if (fls.v < 9){
-	alert('no flash');
 	document.write('<a href="index.php"><img src="images/jp_picture.gif" width="900" height="70" alt="RMT" ></a>');
 	}
 									else
