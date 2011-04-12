@@ -324,7 +324,7 @@ body {
 .dataTableContent2 input{
 	float:left;
 }
-.dataTableContent2 span{ float:left; padding-top:3px;
+.dataTableContent2 span{text-align:center; padding-top:5px;
 }
 .dataTableContent3 {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
@@ -882,4 +882,9 @@ overflow:hidden;
 white-space:nowrap;
 text-overflow:ellipsis;
 width:60px;
+}
+.datatablecontent_warpper02{
+overflow:hidden;
+white-space:nowrap;
+text-overflow:ellipsis;
 }
