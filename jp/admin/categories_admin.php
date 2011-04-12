@@ -461,7 +461,7 @@ if ($cPath_yobi){
                 }
               }else{
                 echo "
-                  <td class='dataTableContent' align='center'>
+                  <td class='dataTableContent6' align='center'>
                   <input type='radio' value='0' name='chk[".$target_cnt."]' checked>
                   <span name='TARGET_INPUT[]' id='target_".$target_cnt."_0' >0</span>
                   </td>";//価格同業者
