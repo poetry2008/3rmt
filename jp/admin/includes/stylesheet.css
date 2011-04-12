@@ -307,7 +307,7 @@ body {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;
 	color: #000000;                         /* フォントカラー */
-	width:26%;
+	width:30%;
 }
 .dataTableContent2 {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
@@ -331,13 +331,13 @@ body {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;
 	color: #000000;                         /* フォントカラー */
-	width:5%;
+	width:11%;
 }
 .dataTableContent6 {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;
 	color: #000000;                         /* フォントカラー */
-	width:6%;
+	width:7%;
 }
 .dataTableContent_line {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; 
@@ -777,12 +777,15 @@ display:none;
 	border:1px solid #000;
 }
 .subcategory_tree_info{
-	*margin-top:-5px;
-	margin-top:-10px\9;
+	margin-left:-10px;
+	*margin-left:10px;
+	*margin-top:-10px;
+	margin-top:10px\9;
 }
 #categories_tree li{
 	padding:0;
 	margin:5px;
+	*margin:0;
 	text-align:left;
 	color:#FFFFFF;
 	list-style-type:none;
@@ -790,19 +793,21 @@ display:none;
 .subcategory a{
 	padding:0;
 	margin:5px;
+	*margin:0 0 5px 0;
 	text-align:left;
 	color:#FFFFFF;
 	display:block;
 	padding-left:10px;
-	background:url(/images/design/circle.gif)0 3px no-repeat;
+	background:url(/images/design/circle.gif) left 3px no-repeat;
 }
 .tdul{ padding:0;}
 #categories_tree li a{ color:#fff;}
 #categories_tree li a:hover{ color:#FFD700;}
-.subcategory_tree_info li{ margin:0;
+.subcategory_tree_info li{ margin:0; padding:0;
 }
 .subcategory_tree{
 	*margin-top:-10px;
+	margin-top:10px\9;
 }
 #categories_tree li .subcategory_tree{list-style-type: none;}
 .dataTableHeadingContent_pw a{ color:#FFFFFF; text-decoration:none; font-weight:bold;}

@@ -4596,11 +4596,11 @@ function display_product_link($cPath, $pID, $language_id = '4', $site_id)
     $cur_key = array_search($pID, $product_arr);
     if ($cur_key !== false) {
       if (isset($product_arr[$cur_key-1])) {
-        $return_str .= '<a href="'.tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params(array('page', 'x', 'y', 'pID')).'pID='.$product_arr[$cur_key-1]).'"><input type="button" value="'.IMAGE_BACK.'"></a>&nbsp;'; 
+        $return_str .= '<input type="button" value="'.IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params(array('page', 'x', 'y', 'pID')).'pID='.$product_arr[$cur_key-1]).'\'">&nbsp;'; 
       }
       
       if (isset($product_arr[$cur_key+1])) {
-        $return_str .= '&nbsp;<a href="'.tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params(array('page', 'x', 'y', 'pID')).'pID='.$product_arr[$cur_key+1]).'"><input type="button" value="'.IMAGE_NEXT.'"></a>&nbsp;'; 
+        $return_str .= '&nbsp;<input type="button" value="'.IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params(array('page', 'x', 'y', 'pID')).'pID='.$product_arr[$cur_key+1]).'\'">&nbsp;'; 
       }
     }
   }
@@ -4648,13 +4648,13 @@ function display_category_link($cPath, $current_category_id, $language_id = 4, $
           if (isset($level_category_arr[$cur_key-1])) {
             $prev_id =  $level_category_arr[$cur_key-1];
             $link_cpath = get_link_parent_category($prev_id); 
-            $return_str .= '<a href="'.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'"><input type="button" value="'.IMAGE_BACK.'"></a>&nbsp;'; 
+            $return_str .= '<input type="button" value="'.IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'\'">&nbsp;'; 
           }
           
           if (isset($level_category_arr[$cur_key+1])) {
             $next_id =  $level_category_arr[$cur_key+1];
             $link_cpath = get_link_parent_category($next_id); 
-            $return_str .= '&nbsp;<a href="'.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'"><input type="button" value="'.IMAGE_NEXT.'"></a>&nbsp;'; 
+            $return_str .= '&nbsp;<input type="button" value="'.IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'\'">&nbsp;'; 
           }
         }
       
@@ -4691,7 +4691,7 @@ function get_link_parent_category($cid)
    return $cid;
 }
 
-function get_same_level_category($cPath, $current_category_id, $language_id, $site_id)
+function get_same_level_category($cPath, $current_category_id, $language_id, $site_id, $page = FILENAME_CATEGORIES)
 {
   $return_str = ''; 
   $cpath_arr = explode('_', $cPath);
@@ -4716,11 +4716,11 @@ function get_same_level_category($cPath, $current_category_id, $language_id, $si
         if ($cur_pos !== false) {
           if (isset($category_arr[$cur_pos-1])) {
             $link_path = get_link_parent_category($category_arr[$cur_pos-1]);
-            $return_str .= '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$link_path.'&site_id='.(int)$site_id).'"><input type="button" value="'.IMAGE_BACK.'"></a>&nbsp;'; 
+            $return_str .= '<input type="button" value="'.IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, 'cPath='.$link_path.'&site_id='.(int)$site_id).'\'">&nbsp;'; 
           }
           if (isset($category_arr[$cur_pos+1])) {
             $link_path = get_link_parent_category($category_arr[$cur_pos+1]); 
-            $return_str .= '&nbsp;<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$link_path.'&site_id='.(int)$site_id).'"><input type="button" value="'.IMAGE_NEXT.'"></a>'; 
+            $return_str .= '&nbsp;<input type="button" value="'.IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, 'cPath='.$link_path.'&site_id='.(int)$site_id).'\'">'; 
           }
         }
       }

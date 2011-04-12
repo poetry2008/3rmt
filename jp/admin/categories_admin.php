@@ -94,7 +94,11 @@ if (isset($_GET['action']) && $_GET['action']) {
       &nbsp; 
       <?php
       if ($cPath) {
-        echo display_category_link($cPath, $current_category_id, $languages_id, 0, FILENAME_CATEGORIES_ADMIN); 
+        $display_ca_str = display_category_link($cPath, $current_category_id, $languages_id, 0, FILENAME_CATEGORIES_ADMIN); 
+        echo $display_ca_str; 
+        if (empty($display_ca_str)) {
+          echo get_same_level_category($cPath, $current_category_id, $languages_id, $site_id, FILENAME_CATEGORIES_ADMIN); 
+        }
       }
       ?>
       </td>
@@ -190,7 +194,7 @@ if (isset($_GET['action']) && $_GET['action']) {
   <td class="dataTableHeadingContent" align="center" width='110'>現在単価</td>
   <td class="dataTableHeadingContent" align="center" width='90'>単価設定</td>
   <td class="dataTableHeadingContent" align="center" width='30'>増減</td>
-  <td class="dataTableHeadingContent" align="center" <?php if ($ocertify->npermission < 10) {?>width='1'<?php } else {?>width='80'<?php }?>><?php
+  <td class="dataTableHeadingContent" align="center" <?php if ($ocertify->npermission < 10) {?>width='1'<?php } else {?>width='180'<?php }?>><?php
   if ($ocertify->npermission >7) {
     echo  TABLE_HEADING_STATUS; 
   }
@@ -410,14 +414,14 @@ while ($products = tep_db_fetch_array($products_query)) {
       }
       $target_cnt=$products_count-1;//同業者専用
   ?>
-  <td class="dataTableContent3" align='right'><?php echo tep_get_order_cnt_by_pid($products['products_id']);?></td>
+  <td class="dataTableContent6" align='center'><?php echo tep_get_order_cnt_by_pid($products['products_id']);?></td>
   <?php //個数架空 ?>
-  <td class="dataTableContent4" align='right' onmouseover='this.style.cursor="pointer"'  id='virtual_quantity_<?php echo $products['products_id']; ?>' onclick="update_virtual_quantity(<?php echo $products['products_id']; ?>)"><?php echo $imaginary;?></td>
+  <td class="dataTableContent6" align='center' onmouseover='this.style.cursor="pointer"'  id='virtual_quantity_<?php echo $products['products_id']; ?>' onclick="update_virtual_quantity(<?php echo $products['products_id']; ?>)"><?php echo $imaginary;?></td>
 <?php //数量 ?>
-  <td class="dataTableContent3" align='right' onmouseover='this.style.cursor="pointer"' style="font-weight:bold;" id='quantity_<?php echo $products['products_id']; ?>' onclick="update_quantity(<?php echo $products['products_id']; ?>)"><?php echo $products['products_real_quantity'];?></td>
+  <td class="dataTableContent6" align='center' onmouseover='this.style.cursor="pointer"' style="font-weight:bold;" id='quantity_<?php echo $products['products_id']; ?>' onclick="update_quantity(<?php echo $products['products_id']; ?>)"><?php echo $products['products_real_quantity'];?></td>
   <td align='center' class="dataTableContent2" ><span class = 'TRADER_INPUT'  name="TRADER_INPUT[]"  id="TRADER_<?php echo $products['products_id']; ?>"><?php echo $kakaku_treder?$kakaku_treder:0;?></span></td>
 <?php //価格業者  ?>
-  <td align='center' class="dataTableContent4" ><span name="INCREASE_INPUT" class = 'INCREASE_INPUT'>
+  <td align='center' class="dataTableContent6" ><span name="INCREASE_INPUT" class = 'INCREASE_INPUT'>
     <?php //echo ceil($kakaku_treder*$col['bairitu']);?>
 <?php
   if (strpos($col['bairitu'], '.') !== false) {
@@ -450,7 +454,7 @@ if ($cPath_yobi){
                 $all_dougyousya = get_all_products_dougyousya($cPath_yobi, $products['products_id']);
                 for($i=0;$i<$count['cnt'];$i++) {
                   echo "
-                    <td class='dataTableContent4' align='center'>
+                    <td class='dataTableContent2' align='center'>
                     <input type='radio' id='radio_".$target_cnt."_".$i."' value='".$all_dougyousya[$i]['dougyousya_id']."' name='chk[".$target_cnt."]' onClick='chek_radio(".$target_cnt.")'".(in_dougyousya($dougyousya, $all_dougyousya) ? ($all_dougyousya[$i]['dougyousya_id'] == $dougyousya?' checked':'') : ($i == 0 ? ' checked':'')).">
                     <span name='TARGET_INPUT[]' id='target_".$target_cnt."_".$i."' >".get_dougyousya_history($products['products_id'], $all_dougyousya[$i]['dougyousya_id'])."</span>
                     </td>";//価格同業者
@@ -472,10 +476,10 @@ if ($cPath_yobi){
         echo $currencies->format($product_price['price']);
       }
 ?></td>
-<td class="dataTableContent4" align="center"><input style="text-align:right;" pos="<?php echo $products_count;?>_1" class="udlr" type="text" size='6' value="<?php echo (int)abs($products['products_price']);?>" name="price[]" id="<?php echo "price_input_".$products_count; ?>" onblur="event_onblur(<?php echo $products_count; ?>)" onchange="event_onchange(<?php echo $products_count; ?>)"><span id="price_error_<?php echo $products_count; ?>"></span></td>
-<td class="dataTableContent2" align="right"><?php echo (float)$products['products_price_offset'] > 0 ?"+":'';?><?php echo $products['products_price_offset'];?><input style="text-align:right;" pos="<?php echo $products_count;?>_2" class="_udlr" type="hidden" size='6' value="<?php echo $products['products_price_offset'];?>" name="offset[]" id="<?php echo "offset_input_".$products_count; ?>"><span id="offset_error_<?php echo $products_count; ?>" onchange="this.value=SBC2DBC(this.value)"></span></td>
+<td class="dataTableContent6" align="center"><input style="text-align:right;" pos="<?php echo $products_count;?>_1" class="udlr" type="text" size='6' value="<?php echo (int)abs($products['products_price']);?>" name="price[]" id="<?php echo "price_input_".$products_count; ?>" onblur="event_onblur(<?php echo $products_count; ?>)" onchange="event_onchange(<?php echo $products_count; ?>)"><span id="price_error_<?php echo $products_count; ?>"></span></td>
+<td class="dataTableContent2" align="center"><?php echo (float)$products['products_price_offset'] > 0 ?"+":'';?><?php echo $products['products_price_offset'];?><input style="text-align:right;" pos="<?php echo $products_count;?>_2" class="_udlr" type="hidden" size='6' value="<?php echo $products['products_price_offset'];?>" name="offset[]" id="<?php echo "offset_input_".$products_count; ?>"><span id="offset_error_<?php echo $products_count; ?>" onchange="this.value=SBC2DBC(this.value)"></span></td>
 <?php //サイト入力  ?>
-<td class="dataTableContent4" align="center"><?php
+<td class="dataTableContent5" align="center"><?php
 if ($ocertify->npermission >= 10) { //表示制限
     $p_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
     if ($products['products_status'] == '1') {
@@ -489,7 +493,7 @@ if ($ocertify->npermission >= 10) { //表示制限
     }
 }
 ?></td>
-<td class="dataTableContent5" align='center'><?php 
+<td class="dataTableContent6" align='center'><?php 
 
   $last_modified_array = getdate(strtotime(tep_datetime_short($products['products_last_modified'])));
   $today_array = getdate();
