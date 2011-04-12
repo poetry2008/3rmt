@@ -199,7 +199,7 @@ if (isset($_GET['action']) && $_GET['action']) {
     echo  TABLE_HEADING_STATUS; 
   }
   ?></td>
-  <td class="dataTableHeadingContent" align="center" width='40'>&nbsp;</td>
+  <td class="dataTableHeadingContent" align="center">&nbsp;</td>
   </tr>
   <!--dataTableHeadingRow end-->
 <?php
@@ -454,7 +454,7 @@ if ($cPath_yobi){
                 $all_dougyousya = get_all_products_dougyousya($cPath_yobi, $products['products_id']);
                 for($i=0;$i<$count['cnt'];$i++) {
                   echo "
-                    <td class='dataTableContent2' align='center'>
+                    <td class='dataTableContent2' align='left'>
                     <input type='radio' id='radio_".$target_cnt."_".$i."' value='".$all_dougyousya[$i]['dougyousya_id']."' name='chk[".$target_cnt."]' onClick='chek_radio(".$target_cnt.")'".(in_dougyousya($dougyousya, $all_dougyousya) ? ($all_dougyousya[$i]['dougyousya_id'] == $dougyousya?' checked':'') : ($i == 0 ? ' checked':'')).">
                     <span name='TARGET_INPUT[]' id='target_".$target_cnt."_".$i."' >".get_dougyousya_history($products['products_id'], $all_dougyousya[$i]['dougyousya_id'])."</span>
                     </td>";//価格同業者
