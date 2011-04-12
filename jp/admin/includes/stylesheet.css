@@ -315,6 +315,11 @@ body {
 	color: #000000;                         /* フォントカラー */
 	width:4%;
 }
+.dataTableContent2 input{
+	float:left;
+}
+.dataTableContent2 span{ float:left; padding-top:3px;
+}
 .dataTableContent3 {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;
@@ -865,3 +870,4 @@ div.date-picker-holder input {
 #categories_tree li .current_link {
     color: #663399;
 }
+.gotomenu_out_div{ float:right;}
