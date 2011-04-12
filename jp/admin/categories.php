@@ -1878,20 +1878,46 @@ $("document").ready(function(){
       $products_image_name3 = $pInfo->products_image3;
   }
 
-  if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['ordigin']) || !$_GET['origin'])) {
+  if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) || !$_GET['origin'])) {
     $form_action = 'simple_update';
   } elseif ($_GET['pID']) {
     $form_action = 'update_product';
   } else {
     $form_action = 'insert_product';
   }
-    if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['ordigin']) || !$_GET['origin'])) {
+    if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) || !$_GET['origin'])) {
       $dougyousya_array = array();
       $cpath_array = explode('_', $_GET['cPath']);
       $categories_id = $cpath_array[0];
       $current_categories_id = $cpath_array[count($cpath_array)-1];
       $calc = tep_db_fetch_array(tep_db_query("select * from set_auto_calc where parent_id='".$current_categories_id."'"));
       echo tep_draw_form($form_action, FILENAME_CATEGORIES, 'from='.$_GET['from'].'&cPath=' . $cPath . '&pID=' . $_GET['pID'] . '&page='.$_GET['page'].'&action=' . $form_action, 'post', 'enctype="multipart/form-data" onSubmit="return check_price(\'pp\', '.$pInfo->products_price.', '.($calc?$calc['percent']:0).');"');
+      //show menu start
+  echo '<tr>';
+  echo '<td>';
+  echo tep_image_submit('button_update.gif', 'よく確認してから押しなさい','class="update_class"');
+  echo "<div class='gotomenu_out_div'>";
+  ?>
+            <?php echo tep_draw_form('goto', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
+              <div id="gotomenu">
+                <a href="javascript:void(0)" onclick="$('#categories_tree').toggle()">ジャンプ▼</a>
+                <div id="categories_tree">
+                <?php
+                  require(DIR_WS_CLASSES . 'category_tree.php');
+                  $osC_CategoryTree = new osC_CategoryTree; 
+                  echo $osC_CategoryTree->buildTree();
+                ?>
+                </div>
+                <?php 
+                //echo tep_draw_hidden_field('site_id', isset($_GET['site_id'])?$_GET['site_id']:'0'); 
+                //echo HEADING_TITLE_GOTO . ' ' .  tep_draw_pull_down_menu('cPath', tep_get_category_tree(), $current_category_id, 'onChange="document.forms.goto.submit();"') . "\n"; ?>
+              </div>
+  <?php
+  echo '</form>' . "\n";
+  echo '</div>';
+  echo '</td>';
+  echo '</tr>';
+      //show menu end
     } else {
       echo tep_draw_form($form_action, FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $_GET['pID'] . '&page='.$_GET['page'].'&action=' . $form_action, 'post', 'enctype="multipart/form-data" onSubmit="return mess();"');
     }
@@ -2122,7 +2148,28 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   echo '<table width="100%" cellspacing="0" cellpadding="5" border="0" class="smalltext"><tr><td><b>販売</b></td><td><b>買取</b></td></tr>' . "\n";
   echo '<tr><td>所持金上限や、弊社キャラクターの在庫の都合上、複数のキャラクターにて<br>分割してお届けする場合がございます。ご注文いただきました数量に達する<br>まで受領操作をお願いいたします。<br>【】または【】よりお届けいたします。</td><td>当社キャラクター【】または【】にトレードをお願いいたします。</td></tr></table><hr size="2" noshade>' . "\n";
   echo '</td>';
-  echo tep_image_submit('button_update.gif', 'よく確認してから押しなさい') . '</form>' . "\n";
+  /*
+  echo '<td>';
+  echo tep_image_submit('button_update.gif', 'よく確認してから押しなさい');
+  ?>
+            <?php echo tep_draw_form('goto', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
+              <div id="gotomenu">
+                <a href="javascript:void(0)" onclick="$('#categories_tree').toggle()">ジャンプ▼</a>
+                <div id="categories_tree">
+                <?php
+                  require(DIR_WS_CLASSES . 'category_tree.php');
+                  $osC_CategoryTree = new osC_CategoryTree; 
+                  echo $osC_CategoryTree->buildTree();
+                ?>
+                </div>
+                <?php 
+                //echo tep_draw_hidden_field('site_id', isset($_GET['site_id'])?$_GET['site_id']:'0'); 
+                //echo HEADING_TITLE_GOTO . ' ' .  tep_draw_pull_down_menu('cPath', tep_get_category_tree(), $current_category_id, 'onChange="document.forms.goto.submit();"') . "\n"; ?>
+              </div>
+  <?php
+  echo '</form>' . "\n";
+  echo '</td>';
+  */
 } else {
   echo '価格：&nbsp;' . $products_price_preview . '<br>数量：&nbsp;' . $pInfo->products_real_quantity . '個' . "\n";
 }
