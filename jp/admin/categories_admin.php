@@ -194,11 +194,15 @@ if (isset($_GET['action']) && $_GET['action']) {
   <td class="dataTableHeadingContent" align="center" width='110'>現在単価</td>
   <td class="dataTableHeadingContent" align="center" width='90'>単価設定</td>
   <td class="dataTableHeadingContent" align="center" width='30'>増減</td>
-  <td class="dataTableHeadingContent" align="center" <?php if ($ocertify->npermission < 10) {?>width='1'<?php } else {?>width='180'<?php }?>><?php
+  <td class="dataTableHeadingContent" align="center" <?php if ($ocertify->npermission < 10) {?>width='1'<?php } else {?>width='180'<?php }?>>
+  <div class="datatablecontent_warpper">
+  <?php
   if ($ocertify->npermission >7) {
     echo  TABLE_HEADING_STATUS; 
   }
-  ?></td>
+  ?>
+  </div>
+  </td>
   <td class="dataTableHeadingContent" align="center">&nbsp;</td>
   </tr>
   <!--dataTableHeadingRow end-->
@@ -455,8 +459,10 @@ if ($cPath_yobi){
                 for($i=0;$i<$count['cnt'];$i++) {
                   echo "
                     <td class='dataTableContent2' align='left'>
+					<div class='datatablecontent_warpper'>
                     <input type='radio' id='radio_".$target_cnt."_".$i."' value='".$all_dougyousya[$i]['dougyousya_id']."' name='chk[".$target_cnt."]' onClick='chek_radio(".$target_cnt.")'".(in_dougyousya($dougyousya, $all_dougyousya) ? ($all_dougyousya[$i]['dougyousya_id'] == $dougyousya?' checked':'') : ($i == 0 ? ' checked':'')).">
                     <span name='TARGET_INPUT[]' id='target_".$target_cnt."_".$i."' >".get_dougyousya_history($products['products_id'], $all_dougyousya[$i]['dougyousya_id'])."</span>
+					</div>
                     </td>";//価格同業者
                 }
               }else{
