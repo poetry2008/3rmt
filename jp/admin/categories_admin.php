@@ -145,7 +145,7 @@ if (isset($_GET['action']) && $_GET['action']) {
   <?
   }
   ?>
-  <table border="0" width="100%" cellspacing="0" cellpadding="2">
+  <table border="0" width="100%" cellspacing="0" cellpadding="2" style="border:1px solid #ff0000;">
   <!--dataTableHeadingRow-->
   <tr class="dataTableHeadingRow" valign="top">
   <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CATEGORIES_PRODUCTS; ?></td>
@@ -199,7 +199,7 @@ if (isset($_GET['action']) && $_GET['action']) {
     echo  TABLE_HEADING_STATUS; 
   }
   ?></td>
-  <td class="dataTableHeadingContent" align="center" width='40'>&nbsp;</td>
+  <td class="dataTableHeadingContent" align="center">&nbsp;</td>
   </tr>
   <!--dataTableHeadingRow end-->
 <?php
