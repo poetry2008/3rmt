@@ -795,6 +795,7 @@ display:none;
 }
 #categories_tree li{
 	padding:0;
+	margin:0;
 /*	margin:5px;
 	*margin:0;*/
 	margin:0 5px\9;
@@ -812,7 +813,7 @@ display:none;
 	padding-left:10px;
 	background:url(/images/design/circle.gif) left 3px no-repeat;
 }
-.tdul{ padding:0; margin:0; /*border:1px solid #ff0000;*/}
+.tdul{ padding:0; margin:0;/* border:1px solid #ff0000;*/}
 .tdul li{ padding:0; margin:0;}
 #categories_tree li a{ color:#fff;}
 #categories_tree li a:hover{ color:#FFD700;}
