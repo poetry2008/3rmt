@@ -1084,7 +1084,7 @@ function get_cart_products(){
 }
 </script>
 </head>
-<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onLoad="SetFocus();">
+<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
 <div id="spiffycalendar" class="text"></div>
 <!-- header //-->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
@@ -1355,6 +1355,7 @@ function get_cart_products(){
                     <tr bgcolor="#CCCCCC">
                       <td class="main"><?php echo '<font color="blue"><b>' . TEXT_PRODUCTS_PRICE . '</b></font>'; ?></td>
                       <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_price', isset($pInfo->products_price)?abs($pInfo->products_price):'','id="pp"' . ($site_id ? 'class="readonly" readonly' : '')); ?></td>
+ 
                     </tr>
                     <tr>
                       <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
@@ -1768,6 +1769,11 @@ function get_cart_products(){
 
         <?php
   } elseif (isset($_GET['action']) && $_GET['action'] == 'new_product_preview') {
+    ?>                 
+      <script  type='text/javascript'>
+               $(document).ready(function (){ $("#pp").select() }); 
+      </script>
+      <?
 
     if ($_POST) {
       $pInfo = new objectInfo($_POST);
