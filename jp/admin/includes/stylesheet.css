@@ -780,7 +780,7 @@ font-size:10px;!important;
 display:none;
 /*	width:100%;*/
 	position: absolute;
-	width:950px;
+	width:900px;
 	background-color:#000;
 	top:12px;
 	right:0;
@@ -812,14 +812,14 @@ display:none;
 	padding-left:10px;
 	background:url(/images/design/circle.gif) left 3px no-repeat;
 }
-.tdul{ padding:0;}
+.tdul li{ padding:0; margin:0;}
 #categories_tree li a{ color:#fff;}
 #categories_tree li a:hover{ color:#FFD700;}
 .subcategory_tree_info li{ margin:0; padding:0;
 }
 .subcategory_tree{
-	*margin-top:-10px;
-	margin-top:10px\9;
+	*margin-top:-8px!important;
+	margin-top:5px\9;
 }
 #categories_tree li .subcategory_tree{list-style-type: none;}
 .dataTableHeadingContent_pw a{ color:#FFFFFF; text-decoration:none; font-weight:bold;}
