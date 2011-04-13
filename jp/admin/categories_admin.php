@@ -151,10 +151,10 @@ if (isset($_GET['action']) && $_GET['action']) {
   <!--dataTableHeadingRow-->
   <tr class="dataTableHeadingRow" valign="top">
   <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CATEGORIES_PRODUCTS; ?></td>
-  <td class="dataTableHeadingContent" align="center" width="60">注文数</td>
-  <td class="dataTableHeadingContent" align="center" width="85">架空在庫</td>
-  <td class="dataTableHeadingContent" align="center" width="65">実在庫</td>
-  <td class="dataTableHeadingContent" align="center" width="50">
+  <td class="dataTableHeadingContent" align="center" width="2%">注文数</td>
+  <td class="dataTableHeadingContent" align="center" width="3%">架空在庫</td>
+  <td class="dataTableHeadingContent" align="center" width="2%">実在庫</td>
+  <td class="dataTableHeadingContent" align="center" width="2%">
       <a style="font-weight:bold;" href="cleate_list.php?cid=<?php echo $cPath_yobi;?>&action=prelist&cPath=<?php echo $_GET['cPath'];?>">業者</a><br>
       <small style="font-weight:bold;font-size:12px;"><?php echo str_replace(' ','<br>',$kakaku_updated);?></small>
   </td>
@@ -164,7 +164,7 @@ if (isset($_GET['action']) && $_GET['action']) {
   $col=tep_db_fetch_array($res);
   if (!$col) $col['bairitu'] = 1.1;
 ?>
-<td class="dataTableHeadingContent" align="center" width="50"><?php echo $col['bairitu']?>倍</td>
+<td class="dataTableHeadingContent" align="center" width="2%"><?php echo $col['bairitu']?>倍</td>
   <?php
   if ($cPath_yobi){
     $res=tep_db_query("select count(*) as cnt from set_dougyousya_names sdn
@@ -180,7 +180,7 @@ if (isset($_GET['action']) && $_GET['action']) {
         $dougyousya_history = tep_db_fetch_array(tep_db_query("select * from set_dougyousya_history where categories_id='".$current_category_id."' and dougyousya_id='".$col_dougyousya['dougyousya_id']."' order by last_date desc"));
         $dougyousya_updated = $dougyousya_history?date('n/j G:i',strtotime($dougyousya_history['last_date'])):'';
         ?>
-        <td class='dataTableHeadingContent' align='center' width="50">
+        <td class='dataTableHeadingContent' align='center' width="2%">
           <a style="font-weight:bold;" href='javascript:void(0);' onClick=dougyousya_history('history.php',<?php echo $cPath_yobi;?>,<?php echo $current_category_id;?>,'dougyousya_categories','<?php echo $col_dougyousya['dougyousya_id'];?>','<?php echo $_GET['cPath'];?>')><?php echo $col_dougyousya['dougyousya_name'];?></a>
           <input type='hidden' name='d_id[]' value='<?php echo $col_dougyousya['dougyousya_id'];?>'>
           <br><small style="font-weight:bold;font-size:12px"><?php echo str_replace(' ','<br>',$dougyousya_updated);?></small>
@@ -193,9 +193,9 @@ if (isset($_GET['action']) && $_GET['action']) {
     }
   }
 ?>
-  <td class="dataTableHeadingContent" align="center" width='110'>現在単価</td>
-  <td class="dataTableHeadingContent" align="center" width='90'>単価設定</td>
-  <td class="dataTableHeadingContent" align="center" width='30'>増減</td>
+  <td class="dataTableHeadingContent" align="center" width='4%'>現在単価</td>
+  <td class="dataTableHeadingContent" align="center" width='3%'>単価設定</td>
+  <td class="dataTableHeadingContent" align="center" width='1%'>増減</td>
   <?php /*
   <td class="dataTableHeadingContent" align="center" <?php if ($ocertify->npermission < 10) {?>width='1'<?php } else {?>width='180'<?php }?>>
   <div class="datatablecontent_warpper">
