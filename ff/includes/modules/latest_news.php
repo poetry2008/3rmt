@@ -6,13 +6,7 @@
 <!-- latest_news //-->
 <div class="latest_news_box">
 <div class="pageHeading">
-<div class="pageHeading_left">
-<img src="images/menu_ico03.gif" alt="" align="top"><span>RMTカメズからのお知らせ</span>
-</div>
-    <div class="pageHeading_right">
-        <a href='<?php echo tep_href_link('latest_news.php');?>'>>>MORE</a>
-        <?php //<img src="includes/languages/japanese/images/buttons/button_more.gif" width="56" height="25" alt="more" title="more" >?>
-    </div>
+RMTカメズからのお知らせ
 </div>
 <div class="comment">
     <div id="news">
@@ -49,7 +43,7 @@
                 } else {
                     $latest_news_new = '';
                 }
-echo '        <li class="news_list">
+echo '        <li class="news_list"><img src="images/design/li_list.gif" alt="img">
 ' . tep_date_short($latest_news['date_added']) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'news_id=' . $latest_news['news_id']) . '">' . replace_store_name($latest_news['headline']) . $latest_news_new .'</a>
 </li>'."\n";          
 $row++;
@@ -57,6 +51,10 @@ $row++;
 }
     ?>
         </ul>
+        <div class="pageHeading_right">
+        <a href='<?php echo tep_href_link('latest_news.php');?>'>>>MORE</a>
+        <?php //<img src="includes/languages/japanese/images/buttons/button_more.gif" width="56" height="25" alt="more" title="more" >?>
+    </div>
     </div>
 </div>
 </div>

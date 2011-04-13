@@ -18,7 +18,7 @@
   <!-- body //-->
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border">
     <tr>
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border">
+      <td valign="top" class="left_colum_border">
         <!-- left_navigation //-->
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
         <!-- left_navigation_eof //-->
@@ -31,7 +31,13 @@
             <tr>
               <td>
                 <?php
-  $products_new_query_raw = "
+$new_caid_arr = tep_get_categories_id_by_parent_id(FF_CID);
+if (empty($new_caid_arr)) {
+  $new_caid_arr = array(FF_CID);
+} else {
+  array_push($new_caid_arr, FF_CID);
+}
+$products_new_query_raw = "
 select *
 from (
   select p.products_id, 
@@ -45,7 +51,7 @@ from (
          p.products_tax_class_id, 
          p.products_date_added, 
          m.manufacturers_name 
-  from " . TABLE_PRODUCTS . " p left join " . TABLE_MANUFACTURERS . " m on p.manufacturers_id = m.manufacturers_id left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "'
+  from " . TABLE_PRODUCTS . " p left join " . TABLE_MANUFACTURERS . " m on p.manufacturers_id = m.manufacturers_id left join " . TABLE_PRODUCTS_DESCRIPTION .  " pd on p.products_id = pd.products_id, ".TABLE_PRODUCTS_TO_CATEGORIES." p2c where p.products_id = p2c.products_id and p2c.categories_id in (".implode(',', $new_caid_arr).") and pd.language_id = '" . $languages_id . "'
   order by pd.site_id DESC
   ) p
 where site_id = '0'

@@ -20,6 +20,7 @@ $categories_query = tep_db_query("
       from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
       where c.parent_id = '0' 
         and c.categories_id = cd.categories_id 
+        and c.categories_id = '".FF_CID."' 
         and cd.language_id='" . $languages_id ."' 
       order by site_id DESC
     ) c 
@@ -38,34 +39,11 @@ if($cPath){
 ?>
 
 <div id='categories'>
-  <div class="menu_top"><img src="images/menu_ico.gif" alt="" align="top"><span>MENU</span></div>
-  <ul class='l_m_category_ul'>
-    <?php foreach($categories as $key => $category) {?>
-      <?php if($cPath && in_array($category['categories_id'], $id)) {?>
-        <li class='l_m_category_li2'>
-          <a class="l_m_category_li2_link"href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>">
-            <?php if (in_array($category['categories_id'], $id)) {?>
-              <strong> 
-            <?php }?>
-            <?php echo $category['categories_name'];?>
-            <?php 
-            /* 
-            if (!empty($category['categories_image2'])) {
-              if (file_exists(DIR_FS_CATALOG.'/'.DIR_WS_IMAGES.'categories/'.$category['categories_image2'])) {
-                echo '<img src="images/categories/'.$category['categories_image2'].'" alt="'.$category['categories_name'].'" width="147" height="33">'; 
-              } else {
-                echo '<img src="images/desingn/category_no_img.gif" alt="'.$category['categories_name'].'" width="147" height="33">'; 
-              }
-            } else {
-              echo '<img src="images/desingn/category_no_img.gif" alt="'.$category['categories_name'].'" width="147" height="33">'; 
-            }
-            */ 
-            ?>
-            <?php if (in_array($category['categories_id'], $id)) {?>
-              </strong> 
-            <?php }?>
-          </a>
-        <?php
+  <div class="menu_top"><?php echo $categories[0]['categories_name'];?></div>
+  <?php 
+    foreach ($categories as $key => $category) { 
+  ?>
+  <?php
           $subcategories = array();
           // ccdd
           $subcategories_query = tep_db_query("
@@ -93,24 +71,31 @@ if($cPath){
             $subcategories[] = $subcategory;
           }
           ?>
-          <ul class='l_m_category_ul2'>
-          <?php foreach($subcategories as $skey =>  $subcategory){?>
-            <?php if($cPath && in_array($subcategory['categories_id'], $id)) {?>
-              <li class='l_m_categories_tree'>
-                <?php if($skey == (count($subcategories)-1)){?>
-                  <img class="middle" src="images/design/tree_end.gif" width="7" height="8" alt="">
-                <?php } else {?>
-                  <img class="middle" src="images/design/tree_icon.gif" width="7" height="8" alt="">
-                <?php }?>
-                <?php if (in_array($subcategory['categories_id'], $id)) {?>
-                  <strong>
-                <?php }?>
-                <a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id'].'_'.$subcategory['categories_id']);?>">
-                  <?php echo $subcategory['categories_name'];?>
-                </a>
-                <?php if (in_array($subcategory['categories_id'], $id)) {?>
-                  </strong>
-                <?php }?>
+        <?php
+        if (!empty($subcategories)) {
+        ?>
+          <ul class="l_m_category_ul">
+        <?php
+        foreach ($subcategories as $skey => $subcategory) {
+        ?>
+            <li class="l_m_category_li2">
+              <a class="l_m_category_li2_link" href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id'].'_'.$subcategory['categories_id']);?>">
+              <?php
+              if (in_array($subcategory['categories_id'], $id)) {
+              ?>
+              <strong> 
+              <?php
+              }
+              ?>
+              <?php  echo $subcategory['categories_name'];?>
+              <?php
+              if (in_array($subcategory['categories_id'], $id)) {
+              ?>
+              </strong> 
+              <?php
+              }
+              ?>
+              </a> 
         <?php
             $_subcategories = array();
             $_subcategories_query = tep_db_query("
@@ -138,70 +123,47 @@ if($cPath){
               $_subcategories[] = $_subcategory;
             }
             ?>
-            <?php if($_subcategories){?>
-            <ul class='l_m_category_ul3'>
-            <?php foreach($_subcategories as $_skey => $_subcategory){?>
-                <li class='l_m_categories_tree3'>
-                  <?php if($_skey == (count($_subcategories)-1)){?>
-                    <img class="middle" src="images/design/tree_end.gif" width="7" height="8" alt="">
-                  <?php } else {?>
-                    <img class="middle" src="images/design/tree_icon.gif" width="7" height="8" alt="">
-                  <?php }?>
-                  <a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id'].'_'.$subcategory['categories_id'].'_'.$_subcategory['categories_id']);?>">
-                    <?php if (in_array($_subcategory['categories_id'], $id)) {?>
-                      <strong>
-                    <?php }?>
-                      <?php echo $_subcategory['categories_name'];?>
-                    <?php if (in_array($_subcategory['categories_id'], $id)) {?>
-                      </strong>
-                    <?php }?>
-                  </a>
-                </li>
-            <?php }?>
-            </ul>
-            <?php }?>
-          </li>
-            <?php } else {?>
-              <li class='l_m_categories_tree'>
-                <?php if($skey == (count($subcategories)-1)){?>
-                  <img class="middle" src="images/design/tree_end.gif" width="7" height="8" alt="">
-                <?php } else {?>
-                  <img class="middle" src="images/design/tree_icon.gif" width="7" height="8" alt="">
-                <?php }?>
-                <a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id'].'_'.$subcategory['categories_id']);?>"><?php echo $subcategory['categories_name'];?></a>
+            <?php
+            if (empty($_subcategories)) { 
+            ?>
+            <ul class="l_m_category_ul2"> 
+            <?php
+              foreach ($_subcategories as $_skey => $_subcategory) {
+            ?>
+              <li class="l_m_categories_tree">
+              <a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id'].'_'.$subcategory['categories_id'].'_'.$_subcategory['categories_id']);?>">
+              <?php
+              if (in_array($_subcategory['categories_id'], $id)) {
+              ?>
+              <strong> 
+              <?php
+              }
+              ?>
+              <?php  echo $_subcategory['categories_name'];?>
+              <?php
+              if (in_array($_subcategory['categories_id'], $id)) {
+              ?>
+              </strong> 
+              <?php
+              }
+              ?>
+              </a> 
               </li>
-            <?php }?>
-          <?}?>
-          </ul>
-      <?php } else {?>
-                <?php
-                if (!isset($ca_arr)) {
-                ?>
-                <li class='l_m_category_li'><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>">
-                <?php echo $category['categories_name'];?> 
-                </a></li>
-                <?php
-                } else if (in_array($category['categories_id'], $ca_arr)) { 
-                ?>
-                <li class='l_m_category_li'><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>">
-    <?php 
-          /*  
-                if (!empty($category['categories_image2'])) {
-                  if (file_exists(DIR_FS_CATALOG.'/'.DIR_WS_IMAGES.'categories/'.$category['categories_image2'])) {
-                    echo '<img src="images/categories/'.$category['categories_image2'].'" alt="'.$category['categories_name'].'" width="147" height="33">'; 
-                  } else {
-                    echo '<img src="images/desingn/category_no_img.gif" alt="'.$category['categories_name'].'" width="147" height="33">'; 
-                  }
-                } else {
-                  echo '<img src="images/desingn/category_no_img.gif" alt="'.$category['categories_name'].'" width="147" height="33">'; 
-    }
-                */
-                echo $category['categories_name']; 
-                ?>
-        </a></li>
-      <?php }?>
-      <?php }?>
-    <?php }?>
+            <?php
+              }
+            ?>
+            </ul> 
+            <?php
+            }
+            ?>
+            </li>
+        <?php
+          }
+        ?>
         </ul>
+        <?php
+        }
+        ?>
+ <?php }?>
 </div>
 <!-- categories_eof //-->

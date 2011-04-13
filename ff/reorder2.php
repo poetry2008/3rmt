@@ -20,7 +20,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
   <!-- body //-->
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border">
     <tr>
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border">
+      <td valign="top" class="left_colum_border">
         <!-- left_navigation //-->
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
         <!-- left_navigation_eof //-->
