@@ -891,3 +891,4 @@ overflow:hidden;
 white-space:nowrap;
 text-overflow:ellipsis;
 }
+.button_save input{ vertical-align:bottom;}
