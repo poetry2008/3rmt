@@ -102,9 +102,9 @@
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents">
-      <h1 class="pageHeading_long">
-      <img align="top" alt="" src="images/menu_ico_a.gif"><span><?php echo HEADING_TITLE ; ?></span>
-      </h1>
+      <div class="pageHeading_long">
+      <img align="top" alt="" src="images/menu_ico_a.gif"><h1><span><?php echo HEADING_TITLE ; ?></span></h1>
+      </div>
        
         <div class="comment_long"> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
