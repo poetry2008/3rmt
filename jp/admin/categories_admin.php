@@ -564,7 +564,7 @@ if(empty($cPath_back)&&empty($cID)&&isset($cPath)){
 ?>
 <!--dataTableRowSelected-->
 <tr>
-  <td align='right' colspan='<?php echo 12 + $count_dougyousya['cnt'];?>'>
+  <td align='right' colspan='<?php echo 10 + $count_dougyousya['cnt'];?>'>
     <input type="hidden" value="<?php echo $cPath; ?>"               name="cpath">
     <input type="hidden" value="<?php echo $cPath_yobi; ?>"          name="cpath_yobi">
     <input type="hidden" value="<?php echo $current_category_id; ?>" name="cID_list" >
@@ -578,10 +578,10 @@ if(empty($cPath_back)&&empty($cID)&&isset($cPath)){
 <!--dataTableRowSelected end-->
 <tr>
   <td class="smallText" valign="top"><?php echo $products_split->display_count($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
-  <td class="smallText" align="right" colspan="<?php echo 11 + $count_dougyousya['cnt'];?>"><?php echo $products_split->display_links($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'pID'))); ?> </td>
+  <td class="smallText" align="right" colspan="<?php echo 9 + $count_dougyousya['cnt'];?>"><?php echo $products_split->display_links($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'pID'))); ?> </td>
 </tr>
 <tr>
-  <td colspan="<?php echo 12 + $count_dougyousya['cnt'];?>">
+  <td colspan="<?php echo 10 + $count_dougyousya['cnt'];?>">
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td class="smallText"><?php echo 'カテゴリー:' . '&nbsp;' . $categories_count .
