@@ -317,13 +317,12 @@ body {
 	font-size: 12px;
 	color: #000000;                         /* フォントカラー */
 	width:4%;
-	white-space:nowrap;
-	overflow:hidden;
+	text-align:center;
 	
 }
-.dataTableContent2 input{
+/*.dataTableContent2 input{
 	float:left;
-}
+}*/
 .dataTableContent2 span{text-align:center; padding-top:5px;
 }
 .dataTableContent3 {
@@ -890,5 +889,8 @@ width:60px;
 overflow:hidden;
 white-space:nowrap;
 text-overflow:ellipsis;
+}
+.datatablecontent_warpper03{
+
 }
 .button_save input{ vertical-align:bottom;}
