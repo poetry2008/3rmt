@@ -1906,7 +1906,7 @@ function get_cart_products(){
                 <?php
                   require(DIR_WS_CLASSES . 'category_tree.php');
                   $osC_CategoryTree = new osC_CategoryTree; 
-                  echo $osC_CategoryTree->buildTree();
+                  echo $osC_CategoryTree->buildTree(FILENAME_CATEGORIES_ADMIN);
                 ?>
                 </div>
                 <?php 
