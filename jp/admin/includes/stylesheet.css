@@ -310,14 +310,15 @@ body {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;
 	color: #000000;                         /* フォントカラー */
-	width:30%;
+	width:25%;
 }
 .dataTableContent2 {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;
 	color: #000000;                         /* フォントカラー */
 	width:4%;
-	text-align:center;
+	text-align:right;
+	white-space:nowrap;
 	
 }
 /*.dataTableContent2 input{
