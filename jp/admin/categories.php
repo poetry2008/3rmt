@@ -1906,7 +1906,15 @@ function get_cart_products(){
                 <?php
                   require(DIR_WS_CLASSES . 'category_tree.php');
                   $osC_CategoryTree = new osC_CategoryTree; 
+                  if(preg_match('/'.FILENAME_CATEGORIES_ADMIN.'/',$_SERVER['HTTP_REFERER'])){
                   echo $osC_CategoryTree->buildTree(FILENAME_CATEGORIES_ADMIN);
+                  }else
+                    if(preg_match('/'.FILENAME_CATEGORIES.'/',$_SERVER['HTTP_REFERER'])){
+                  echo $osC_CategoryTree->buildTree(FILENAME_CATEGORIES);
+                  }else{
+
+                  echo $osC_CategoryTree->buildTree();
+                  }
                 ?>
                 </div>
                 <?php 

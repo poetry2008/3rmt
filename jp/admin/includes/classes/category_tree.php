@@ -163,7 +163,7 @@
      return $result;
    }
 
-   function buildTree($filename) {
+   function buildTree($filename='') {
      return $this->buildBranch($this->root_category_id,0,$filename);
    }
  }
