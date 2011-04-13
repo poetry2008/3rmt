@@ -45,7 +45,6 @@ if ($category_depth == 'nested') {
 ?>
   <td valign="top" id="contents_long">
         <h1 class="pageHeading_long">
-        <img align="top" alt="" src="images/menu_ico.gif"><span> 
         <?php
         $sel_tags_query = tep_db_query("select * from ".TABLE_TAGS." where tags_id =
             '".(int)$_GET['tags_id']."'"); 
@@ -53,7 +52,7 @@ if ($category_depth == 'nested') {
         if ($sel_tags_res) {
           echo $sel_tags_res['tags_name']; 
         }
-        ?></span>
+        ?>
         </h1> 
         <div class="comment_long">
         <?php include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); ?></div>
@@ -69,7 +68,7 @@ if ($category_depth == 'nested') {
     echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
   }
 ?>
-    <h1 class="pageHeading_long"><img align="top" alt="" src="images/menu_ico.gif"><span><?php
+    <h1 class="pageHeading_long"><?php
   if (isset($cPath_array)) {
     echo $seo_category['categories_name'];
   } elseif ($_GET['manufacturers_id']) {
@@ -77,7 +76,7 @@ if ($category_depth == 'nested') {
   } else {
     echo HEADING_TITLE;
   }
-?></span></h1>
+?></h1>
     <div class="comment_long"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?>
         <?php
           $has_ca_single = false; 

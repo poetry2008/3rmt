@@ -8,7 +8,7 @@
 
  // if (tep_session_is_registered('customer_id')) include(DIR_WS_BOXES . 'order_history.php');
 
-  include(DIR_WS_BOXES . 'login.php');
+  //include(DIR_WS_BOXES . 'login.php');
 
   if (isset($_GET['products_id'])) {
     if (tep_session_is_registered('customer_id')) {
@@ -26,8 +26,8 @@
     include(DIR_WS_BOXES . 'best_sellers.php');
   }
   //echo '<a href="'.tep_href_link('reorder.php').'"><img src="images/design/reorder.gif" alt="reorder"></a>';
-  require(DIR_WS_BOXES . 'information.php');
+  //require(DIR_WS_BOXES . 'information.php');
   require(DIR_WS_BOXES . 'reviews.php');
   //include(DIR_WS_BOXES . 'right_banner.php') ;
-  require(DIR_WS_BOXES . 'banners.php');
+  //require(DIR_WS_BOXES . 'banners.php');
   //require(DIR_WS_BOXES . 'left_link.php');

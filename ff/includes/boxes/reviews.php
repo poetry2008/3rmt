@@ -48,14 +48,15 @@ if (
 } else {
     if (isset($_GET['cPath']) && $cPath_array) {
       $subcid = tep_get_categories_id_by_parent_id($cPath_array[count($cPath_array) - 1]);
+    } else {
+      $subcid = tep_get_categories_id_by_parent_id(FF_CID);
     }
 ?>
   <div class="reviews_box">
   <div class="menu_top">
-  <a href="<?php echo tep_href_link(FILENAME_REVIEWS); ?>"><img src="images/menu_ico10.gif" alt="" align="top"><span>レビュー</span>
-  <?php //echo tep_image(DIR_WS_IMAGES.'design/box/reviews.gif',BOX_HEADING_REVIEWS,171,44); ?></a>
+  <a href="<?php echo tep_href_link(FILENAME_REVIEWS); ?>">レビュー
+  </a> 
   </div>
-    <div class="reviews_warp" align="center">
     <?php
   $random_select = "
   select *
@@ -67,7 +68,9 @@ if (
            pd.products_name,
            pd.products_status, 
            r.site_id as rsid,
-           pd.site_id as psid
+           rd.reviews_text, 
+           pd.site_id as psid,
+           RAND() as c
     from " . TABLE_REVIEWS . " r, " .  TABLE_REVIEWS_DESCRIPTION . " rd, " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd
     ";
     if (isset($subcid) && $subcid) {
@@ -88,36 +91,27 @@ if (
     $random_select .= " and p.products_id = '" . (int)$_GET['products_id'] . "'";
   }
   $random_select .= "
-    order by reviews_id, psid DESC
   ) p
   where psid = '0'
      or psid = '".SITE_ID."'
   group by reviews_id
   having p.products_status != '0' and p.products_status != '3'
   ";
-  $random_select .= " order by reviews_id desc";
-  $random_product = tep_random_select($random_select);
-
+  $random_select .= " order by c desc limit 3";
   $info_box_contents = array();
-
-  if ($random_product) {
-// display random review box
-    // ccdd
-    $review_query = tep_db_query("
-        select substring(reviews_text, 1, 60) as reviews_text 
-        from " . TABLE_REVIEWS_DESCRIPTION . " 
-        where reviews_id = '" . $random_product['reviews_id'] . "' 
-          and languages_id = '" . $languages_id . "'
-    ");
-    $review = tep_db_fetch_array($review_query);
-
-    $review = htmlspecialchars($review['reviews_text']);
-    $review = tep_break_string($review, 15, '-<br>');
-
-    echo '<p class="reviews_top"><a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' . $random_product['products_id'] . '&reviews_id=' . $random_product['reviews_id']) . '" class="reviews_img">' . tep_image(DIR_WS_IMAGES . 'products/' . $random_product['products_image'], $random_product['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a><br>'. tep_image(DIR_WS_IMAGES . 'stars_' . $random_product['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $random_product['reviews_rating']), 88, 16) . "\n".'</p>
-    <p class="reviews_bottom"><a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' . $random_product['products_id'] . '&reviews_id=' . $random_product['reviews_id']) . '">' . $review . ' ...</a></p>'; 
+  $random_reviews_query = tep_db_query($random_select);
+  if (tep_db_num_rows($random_reviews_query)) { 
+    while ($random_reviews = tep_db_fetch_array($random_reviews_query)) {
+  // display random review box
+      $review = htmlspecialchars(mb_substr($random_reviews['reviews_text'], 0, 60 , 'UTF-8'));
+      $review = tep_break_string($review, 15, '-<br>');
+      echo '<div class="reviews_warp" align="center">';
+      echo '<p class="reviews_top"><a href="' .  tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' .  $random_reviews['products_id'] . '&reviews_id=' .  $random_reviews['reviews_id']) . '" class="reviews_img">' .  tep_image(DIR_WS_IMAGES . 'products/' . $random_reviews['products_image'], $random_reviews['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) .  '</a><br>'. tep_image(DIR_WS_IMAGES . 'stars_' . $random_reviews['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $random_reviews['reviews_rating']), 88, 16) . "\n".'</p> <p class="reviews_bottom"><a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' . $random_reviews['products_id'] . '&reviews_id=' . $random_reviews['reviews_id']) . '">' . $review . ' ...</a></p>'; 
+      echo '</div>';
+    } 
   } elseif (isset($_GET['products_id'])) {
 // display 'write a review' box
+    echo '<div class="reviews_warp" align="center">';
     echo '<table border="0" cellspacing="2" cellpadding="2" width="100%">
       <tr><td class="boxText">
         <a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE, 'products_id=' . $_GET['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'box_write_review.gif', IMAGE_BUTTON_WRITE_REVIEW) . '</a>
@@ -125,12 +119,14 @@ if (
         <a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE, 'products_id=' . $_GET['products_id']) . '">' . BOX_REVIEWS_WRITE_REVIEW .'</a>
       </td></tr>
     </table>' . "\n";
+    echo '</div>'; 
   } else {
 // display 'no reviews' box
+    echo '<div class="reviews_warp" align="center">';
     echo BOX_REVIEWS_NO_REVIEWS;
+    echo '</div>'; 
   }
 ?>
-</div>
     </div>
 <!-- reviews_eof //-->
 <?php
