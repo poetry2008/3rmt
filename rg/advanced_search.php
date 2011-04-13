@@ -118,7 +118,7 @@ function popupWindow(url) {
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents"><?php echo tep_draw_form('advanced_search', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, '', 'NONSSL', false), 'get', 'onSubmit="return check_form(this);"') . tep_hide_session_id(); ?> 
-        <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><span><?php echo HEADING_TITLE ; ?></span></h1> 
+        <div class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><h1><span><?php echo HEADING_TITLE ; ?></span></h1></div> 
         
         <div class="comment"> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
@@ -238,7 +238,7 @@ function popupWindow(url) {
         </div>
         </form> 
         <p class="pageBottom"></p>
-         	<h2 class="pageHeading"><img align="top" src="images/menu_ico.gif" alt=""><span><?php echo HEADING_SEARCH_HELP; ?></span></h2>
+         	<div class="pageHeading"><img align="top" src="images/menu_ico.gif" alt=""><h2><span><?php echo HEADING_SEARCH_HELP; ?></span></h2></div>
             <div class="comment">
             <table width="100%" cellspacing="0" cellpadding="3" border="0" class="infoBoxContents" summary="table">
                 <tr>

@@ -114,7 +114,11 @@
 
         if ($error == false) {
           tep_db_perform(TABLE_INFORMATION_PAGE, $sql_data_array);
+          if($site_id){
+          tep_redirect(tep_href_link(FILENAME_CONTENTS,'site_id='.$site_id));
+          }else{
           tep_redirect(tep_href_link(FILENAME_CONTENTS));
+          }
         }
         break;    
     case 'setflag':
@@ -364,7 +368,8 @@
                         </table></td> 
                     </tr> 
           <tr>
-            <td><a href="<?php echo tep_href_link(FILENAME_CONTENTS, 'action=insert'); ?>"><?php echo tep_image_button('button_insert.gif', IMAGE_INSERT); ?></a></td>
+            <td><a href="<?php echo tep_href_link(FILENAME_CONTENTS,
+  $site_id?'site_id='.$site_id.'&action=insert':'action=insert'); ?>"><?php echo tep_image_button('button_insert.gif', IMAGE_INSERT); ?></a></td>
           </tr>
                   </table></td> 
                 <?php

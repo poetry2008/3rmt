@@ -28,7 +28,7 @@ $categories_tab_query1 = tep_db_query("
     ");
 ?>
 <!-- categories_banner_text //-->
-<h2 class="pageHeading"><img src="images/menu_ico06.gif" alt="" align="top"><span>RMT GAME LIST</span></h2>
+<div class="pageHeading"><img src="images/menu_ico06.gif" alt="" align="top"><h2><span>RMT GAME LIST</span></h2></div>
   <table width="530" class="game_list_content" border="0" align="center" cellpadding="0" cellspacing="0">
     <tr align="center">
 <?php 

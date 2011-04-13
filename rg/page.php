@@ -66,7 +66,7 @@
         <?php
     } else {
     ?>
-    <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><span><?php echo PAGE_HEADING_TITLE ; ?></span></h1> 
+    <div class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><h1><span><?php echo PAGE_HEADING_TITLE ; ?></span></h1></div> 
         <div class="comment">
        <?php echo PAGE_TEXT_INFORMATION; ?>
        </div>
@@ -75,7 +75,7 @@
       }
           } else {
           ?>
-          <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><span><?php echo PAGE_NAVBAR_TITLE;?></span></h1> 
+          <div class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><h1><span><?php echo PAGE_NAVBAR_TITLE;?></span></h1></div> 
           <div class="comment">
           <ul class="comment_page01">
           <?php

@@ -1894,11 +1894,9 @@ function get_cart_products(){
       $categories_id = $cpath_array[0];
       $current_categories_id = $cpath_array[count($cpath_array)-1];
       $calc = tep_db_fetch_array(tep_db_query("select * from set_auto_calc where parent_id='".$current_categories_id."'"));
-      echo tep_draw_form($form_action, FILENAME_CATEGORIES, 'from='.$_GET['from'].'&cPath=' . $cPath . '&pID=' . $_GET['pID'] . '&page='.$_GET['page'].'&action=' . $form_action, 'post', 'enctype="multipart/form-data" onSubmit="return check_price(\'pp\', '.$pInfo->products_price.', '.($calc?$calc['percent']:0).');"');
       //show menu start
   echo '<tr>';
   echo '<td>';
-  echo tep_image_submit('button_update.gif', 'よく確認してから押しなさい','class="update_class"');
   echo "<div class='gotomenu_out_div'>";
   ?>
             <?php echo tep_draw_form('goto', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
@@ -1918,6 +1916,8 @@ function get_cart_products(){
   <?php
   echo '</form>' . "\n";
   echo '</div>';
+      echo tep_draw_form($form_action, FILENAME_CATEGORIES, 'from='.$_GET['from'].'&cPath=' . $cPath . '&pID=' . $_GET['pID'] . '&page='.$_GET['page'].'&action=' . $form_action, 'post', 'enctype="multipart/form-data" onSubmit="return check_price(\'pp\', '.$pInfo->products_price.', '.($calc?$calc['percent']:0).');"');
+  echo tep_image_submit('button_update.gif', 'よく確認してから押しなさい','class="update_class"');
   echo '</td>';
   echo '</tr>';
       //show menu end

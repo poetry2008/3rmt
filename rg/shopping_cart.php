@@ -146,7 +146,7 @@ function change_num(ob,targ, quan,a_quan)
       </td>
       <!-- body_text //-->
       <td valign="top" id="contents">
-        <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico_a.gif"><span><?php echo HEADING_TITLE ; ?></span></h1>
+        <div class="pageHeading"><img align="top" alt="" src="images/menu_ico_a.gif"><h1><span><?php echo HEADING_TITLE ; ?></span></span></div>
         <div class="comment">
   <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_SHOPPING_CART, 'action=update_product', 'SSL')); ?> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="rmt">
@@ -289,7 +289,7 @@ function change_num(ob,targ, quan,a_quan)
                     <input type="hidden" name="goto" value="<?php echo tep_href_link($navigation->path[$back]['page'], tep_array_to_string($navigation->path[$back]['get'], array('action')), $navigation->path[$back]['mode']);?>">
                     <input type="submit" name="continue" value="" class="shopping_cart_continue">
 <?php } else { ?>
-                    <button  class="shopping_cart_continue" onclick="history.back(); return false;"></button>
+                    <button  class="shopping_cart_continue" onClick="history.back(); return false;"></button>
 <?php } ?>
                     </td>
                     <td align="left" class="main">
