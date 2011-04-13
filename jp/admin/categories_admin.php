@@ -29,6 +29,7 @@ if (isset($_GET['action']) && $_GET['action']) {
       require('includes/set/all_update.php');
       tep_redirect(tep_href_link(FILENAME_CATEGORIES_ADMIN, 'cPath=' . $HTTP_GET_VARS['cPath'] . '&pID=' .$products_id));
       break;
+/*
     case 'toggle':
       $c_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
       if ($_GET['cID']) {
@@ -47,6 +48,7 @@ if (isset($_GET['action']) && $_GET['action']) {
       tep_set_all_product_status($_GET['pID'], $_GET['flag']); 
       tep_redirect(tep_href_link(FILENAME_CATEGORIES_ADMIN, 'cPath=' .  $_GET['cPath'].$p_page));
       break;
+*/
     }
 }
 ?>
@@ -194,6 +196,7 @@ if (isset($_GET['action']) && $_GET['action']) {
   <td class="dataTableHeadingContent" align="center" width='110'>現在単価</td>
   <td class="dataTableHeadingContent" align="center" width='90'>単価設定</td>
   <td class="dataTableHeadingContent" align="center" width='30'>増減</td>
+  <?php /*
   <td class="dataTableHeadingContent" align="center" <?php if ($ocertify->npermission < 10) {?>width='1'<?php } else {?>width='180'<?php }?>>
   <div class="datatablecontent_warpper">
   <?php
@@ -203,6 +206,7 @@ if (isset($_GET['action']) && $_GET['action']) {
   ?>
   </div>
   </td>
+  */ ?>
   <td class="dataTableHeadingContent" align="center">&nbsp;</td>
   </tr>
   <!--dataTableHeadingRow end-->
@@ -284,6 +288,7 @@ while ($categories = tep_db_fetch_array($categories_query)) {
   </td>
   <td class="dataTableContent" align="right" colspan="<?php echo 7 + $count_dougyousya['cnt'];?>">&nbsp;</td>
   <td class="dataTableContent5" align="center">&nbsp;</td>
+<?php /*
 <td class="dataTableContent4" align="center"><?php if ($ocertify->npermission == 15 or $ocertify->npermission == 10) {?>
 <?php //if (!isset($_GET['cPath']) or !$_GET['cPath']){?>
 <?php $c_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';?>
@@ -299,6 +304,7 @@ while ($categories = tep_db_fetch_array($categories_query)) {
             <?php //}?>
 <?php }?>
 </td>
+*/?>
 <td>&nbsp;</td>
 </tr>
   <!--dataTableRowSelected end-->
@@ -459,10 +465,8 @@ if ($cPath_yobi){
                 for($i=0;$i<$count['cnt'];$i++) {
                   echo "
                     <td class='dataTableContent2' align='left'>
-					<div class='datatablecontent_warpper'>
                     <input type='radio' id='radio_".$target_cnt."_".$i."' value='".$all_dougyousya[$i]['dougyousya_id']."' name='chk[".$target_cnt."]' onClick='chek_radio(".$target_cnt.")'".(in_dougyousya($dougyousya, $all_dougyousya) ? ($all_dougyousya[$i]['dougyousya_id'] == $dougyousya?' checked':'') : ($i == 0 ? ' checked':'')).">
                     <span name='TARGET_INPUT[]' id='target_".$target_cnt."_".$i."' >".get_dougyousya_history($products['products_id'], $all_dougyousya[$i]['dougyousya_id'])."</span>
-					</div>
                     </td>";//価格同業者
                 }
               }else{
@@ -485,6 +489,7 @@ if ($cPath_yobi){
 <td class="dataTableContent6" align="center"><input style="text-align:right;" pos="<?php echo $products_count;?>_1" class="udlr" type="text" size='6' value="<?php echo (int)abs($products['products_price']);?>" name="price[]" id="<?php echo "price_input_".$products_count; ?>" onblur="event_onblur(<?php echo $products_count; ?>)" onchange="event_onchange(<?php echo $products_count; ?>)"><span id="price_error_<?php echo $products_count; ?>"></span></td>
 <td class="dataTableContent2" align="center"><?php echo (float)$products['products_price_offset'] > 0 ?"+":'';?><?php echo $products['products_price_offset'];?><input style="text-align:right;" pos="<?php echo $products_count;?>_2" class="_udlr" type="hidden" size='6' value="<?php echo $products['products_price_offset'];?>" name="offset[]" id="<?php echo "offset_input_".$products_count; ?>"><span id="offset_error_<?php echo $products_count; ?>" onchange="this.value=SBC2DBC(this.value)"></span></td>
 <?php //サイト入力  ?>
+<?php /*
 <td class="dataTableContent5" align="center"><?php
 if ($ocertify->npermission >= 10) { //表示制限
     $p_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
@@ -499,6 +504,7 @@ if ($ocertify->npermission >= 10) { //表示制限
     }
 }
 ?></td>
+*/?>
 <td class="dataTableContent6" align='center'><?php 
 
   $last_modified_array = getdate(strtotime(tep_datetime_short($products['products_last_modified'])));
@@ -558,7 +564,7 @@ if(empty($cPath_back)&&empty($cID)&&isset($cPath)){
 ?>
 <!--dataTableRowSelected-->
 <tr>
-  <td align='right' colspan='<?php echo 12 + $count_dougyousya['cnt'];?>'>
+  <td align='right' colspan='<?php echo 10 + $count_dougyousya['cnt'];?>'>
     <input type="hidden" value="<?php echo $cPath; ?>"               name="cpath">
     <input type="hidden" value="<?php echo $cPath_yobi; ?>"          name="cpath_yobi">
     <input type="hidden" value="<?php echo $current_category_id; ?>" name="cID_list" >
@@ -572,10 +578,10 @@ if(empty($cPath_back)&&empty($cID)&&isset($cPath)){
 <!--dataTableRowSelected end-->
 <tr>
   <td class="smallText" valign="top"><?php echo $products_split->display_count($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
-  <td class="smallText" align="right" colspan="<?php echo 11 + $count_dougyousya['cnt'];?>"><?php echo $products_split->display_links($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'pID'))); ?> </td>
+  <td class="smallText" align="right" colspan="<?php echo 9 + $count_dougyousya['cnt'];?>"><?php echo $products_split->display_links($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'pID'))); ?> </td>
 </tr>
 <tr>
-  <td colspan="<?php echo 12 + $count_dougyousya['cnt'];?>">
+  <td colspan="<?php echo 10 + $count_dougyousya['cnt'];?>">
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td class="smallText"><?php echo 'カテゴリー:' . '&nbsp;' . $categories_count .
