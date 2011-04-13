@@ -310,8 +310,8 @@ body {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;
 	color: #000000;                         /* フォントカラー */
-	/*width:25%;*/
-	width:5%;
+	/* width:25%;*/
+	/* bobhero edit width:5%;*/
 	overflow:hidden;
 	white-space:nowrap;
 	
@@ -320,7 +320,7 @@ body {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;
 	color: #000000;                         /* フォントカラー */
-	width:4%;
+	/*width:4%;*/
 	text-align:right;
 	white-space:nowrap;
 	
@@ -334,25 +334,25 @@ body {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;
 	color: #000000;                         /* フォントカラー */
-	width:6%;
+	/*width:6%;*/
 }
 .dataTableContent4 {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;
 	color: #000000;                         /* フォントカラー */
-	width:6%;
+	/*width:6%;*/
 }
 .dataTableContent5 {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;
 	color: #000000;                         /* フォントカラー */
-	width:11%;
+/*	width:11%;*/
 }
 .dataTableContent6 {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;
 	color: #000000;                         /* フォントカラー */
-	width:1%;
+/*	width:1%;*/
 }
 .dataTableContent_line {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; 
