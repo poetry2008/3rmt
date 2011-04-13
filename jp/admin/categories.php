@@ -1771,7 +1771,7 @@ function get_cart_products(){
   } elseif (isset($_GET['action']) && $_GET['action'] == 'new_product_preview') {
     ?>                 
       <script  type='text/javascript'>
-               $(document).ready(function (){ $("#pp").select() }); 
+               $(document).ready(function (){ $("#pp").select().focus() }); 
       </script>
       <?
 
