@@ -222,9 +222,9 @@
     tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
     
     if($order_totals[$i]['code'] =='ot_total' &&  array_key_exists('token', $_REQUEST)){
-    	$token = urlencode(htmlspecialchars($_REQUEST['token']));
-    	getexpress($order_totals[$i]['value'],$token);
-    	$telecom_option_ok = true;
+      $token = urlencode(htmlspecialchars($_REQUEST['token']));
+      getexpress($order_totals[$i]['value'],$token);
+      $telecom_option_ok = true;
     }
   }
 
@@ -237,31 +237,31 @@ $nvpStr = "&TOKEN=$token";
 // Execute the API operation; see the PPHttpPost function above.
 $httpParsedResponseAr = PPHttpPost('GetExpressCheckoutDetails', $nvpStr);
 
-	if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
-		//カード名義
-		$sql_data_array['username']  =strtoupper($httpParsedResponseAr["FIRSTNAME"])." ".strtoupper($httpParsedResponseAr["LASTNAME"]);
-		//電話番号
-		$sql_data_array['telno']   =urldecode(htmlspecialchars($httpParsedResponseAr["PHONENUM"]));
-		//Eメール
-		$sql_data_array['email'] =urldecode(htmlspecialchars($httpParsedResponseAr["EMAIL"]));
-		// Extract the response details.
-		$payerID = urlencode($httpParsedResponseAr['PAYERID']);
-		$paymentType = urlencode("Sale");			// or 'Sale' or 'Order'
-		$paymentAmount = urlencode($amt);
-		$currencyID = urlencode("JPY");		
-		//$token = urlencode($httpParsedResponseAr['TOKEN']);
-		$nvpStr = "&TOKEN=$token&PAYERID=$payerID&PAYMENTACTION=$paymentType&AMT=$paymentAmount&CURRENCYCODE=$currencyID";
+  if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
+    //カード名義
+    $sql_data_array['username']  =strtoupper($httpParsedResponseAr["FIRSTNAME"])." ".strtoupper($httpParsedResponseAr["LASTNAME"]);
+    //電話番号
+    $sql_data_array['telno']   =urldecode(htmlspecialchars($httpParsedResponseAr["PHONENUM"]));
+    //Eメール
+    $sql_data_array['email'] =urldecode(htmlspecialchars($httpParsedResponseAr["EMAIL"]));
+    // Extract the response details.
+    $payerID = urlencode($httpParsedResponseAr['PAYERID']);
+    $paymentType = urlencode("Sale");     // or 'Sale' or 'Order'
+    $paymentAmount = urlencode($amt);
+    $currencyID = urlencode("JPY");   
+    //$token = urlencode($httpParsedResponseAr['TOKEN']);
+    $nvpStr = "&TOKEN=$token&PAYERID=$payerID&PAYMENTACTION=$paymentType&AMT=$paymentAmount&CURRENCYCODE=$currencyID";
 
 // Execute the API operation; see the PPHttpPost function above.
-		$httpParsedResponseAr = PPHttpPost('DoExpressCheckoutPayment', $nvpStr);
-		if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
-			//成功コード発行予定
-      		$sql_data_array['money'] =$httpParsedResponseAr["AMT"];
-      		$sql_data_array['type']="success";
-      		$sql_data_array['rel']="yes";
-      		$sql_data_array['date_added']= 'now()';
-      		$sql_data_array['last_modified']= 'now()';
-      		
+    $httpParsedResponseAr = PPHttpPost('DoExpressCheckoutPayment', $nvpStr);
+    if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
+      //成功コード発行予定
+          $sql_data_array['money'] =$httpParsedResponseAr["AMT"];
+          $sql_data_array['type']="success";
+          $sql_data_array['rel']="yes";
+          $sql_data_array['date_added']= 'now()';
+          $sql_data_array['last_modified']= 'now()';
+          
       tep_db_perform(TABLE_ORDERS, array(
       'telecom_name'  => $sql_data_array['username'],
       'telecom_tel'   => $sql_data_array['telno'],
@@ -269,15 +269,15 @@ $httpParsedResponseAr = PPHttpPost('GetExpressCheckoutDetails', $nvpStr);
       'telecom_email' => $sql_data_array['email'],
       'orders_status' => '30',
     ), 'update', "orders_id='".$insert_id."'");
-      		tep_db_perform("telecom_unknow", $sql_data_array);
-		}else{
-			//エラーコード発行予定
-			exit('DoExpressCheckoutPayment failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
-		}
-	}else{
+          tep_db_perform("telecom_unknow", $sql_data_array);
+    }else{
+      //エラーコード発行予定
+      exit('DoExpressCheckoutPayment failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
+    }
+  }else{
 //エラーコード発行予定
 exit('GetExpressCheckoutDetails failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
-	}
+  }
 }
 
   $customer_notification = (SEND_EMAILS == 'true') ? '1' : '0';
@@ -544,12 +544,9 @@ exit('GetExpressCheckoutDetails failed: ' . urldecode(print_r($httpParsedRespons
   if(tep_not_null($order->products[$i]['model'])) {
     $products_ordered .= ' (' . $order->products[$i]['model'] . ')';
   }
-    $product_info = tep_get_product_by_id($order->products[$i]['id'], SITE_ID, $languages_id);
-    $product_info['site_id'] == SITE_ID && tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_viewed = products_viewed+1 where products_id = '" . (int)$_GET['products_id'] . "' and language_id = '" . $languages_id . "' and SITE_ID = '".SITE_ID."'");
-    $data1 = explode("//", $product_info['products_attention_1']);
   
   $products_ordered .= $products_ordered_attributes . "\n";
-  $products_ordered .= '個数　　　　　　　：' . $order->products[$i]['qty'] . '個' . tep_get_full_count($order->products[$i]['qty'], $data1[1]) . "\n";
+  $products_ordered .= '個数　　　　　　　：' . $order->products[$i]['qty'] . '個' . tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id']) . "\n";
   $products_ordered .= '単価　　　　　　　：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
   $products_ordered .= '小計　　　　　　　：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
   if(tep_not_null($chara)) {
@@ -561,7 +558,7 @@ exit('GetExpressCheckoutDetails failed: ' . urldecode(print_r($httpParsedRespons
         $products_ordered .= "※ 当社キャラクター名は、お取引10分前までに電子メールにてお知らせいたします。\n\n";
       } else {
         $products_ordered .= "※ 当社キャラクター名は、お支払い確認後に電子メールにてお知らせいたします。\n\n";
-      }
+      } 
     }
  }
 

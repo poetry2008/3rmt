@@ -297,7 +297,7 @@
       if ($ot_class == "ot_total") {
         $ot_text = "<b>" . $ot_text . "</b>";
       }
-  	  // 处理手续费失效的问题
+      // 处理手续费失效的问题
       if ($ot_class == 'ot_custom') {
         $_SESSION['create_order2']['orders_total'][] = array(
           'orders_id' => $oID ,
@@ -550,40 +550,8 @@
             $products_ordered_mail .= tep_parse_input_field_data($order2->products[$i]['attributes'][$j]['value'], array("'"=>"&quot;")) . "\n";
           }
         }
-          $_product_info_query = tep_db_query("
-              select p.products_id, 
-                     pd.products_name, 
-                     p.products_attention_1,
-                     p.products_attention_2,
-                     p.products_attention_3,
-                     p.products_attention_4,
-                     p.products_attention_5,
-                     pd.products_description, 
-                     p.products_model, 
-                     p.products_real_quantity + p.products_virtual_quantity as products_quantity,
-                     p.products_image,
-                     p.products_image2,
-                     p.products_image3, 
-                     pd.products_url, 
-                     p.products_price, 
-                     p.products_tax_class_id, 
-                     p.products_date_added, 
-                     p.products_date_available, 
-                     p.manufacturers_id, 
-                     p.products_bflag, 
-                     p.products_cflag, 
-                     p.products_small_sum 
-              from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
-              where 
-              -- p.products_status != '0' and 
-                p.products_id = '" . $order2->products[$i]['id'] . "' 
-                and pd.products_id = p.products_id 
-                and pd.site_id = '0'
-                and pd.language_id = '" . $languages_id . "'");
-          $product_info = tep_db_fetch_array($_product_info_query);
-          $data1 = explode("//", $product_info['products_attention_1']);
           
-        $products_ordered_mail .= '個数　　　　　　　：' . $order2->products[$i]['qty'] . '個' . tep_get_full_count($order2->products[$i]['qty'], $data1[1]) . "\n";
+        $products_ordered_mail .= '個数　　　　　　　：' . $order2->products[$i]['qty'] . '個' . tep_get_full_count2($order2->products[$i]['qty'], $order2->products[$i]['id']) . "\n";
         $products_ordered_mail .= '単価　　　　　　　：' . $currencies->display_price($order2->products[$i]['final_price'], $order2->products[$i]['tax']) . "\n";
         $products_ordered_mail .= '小計　　　　　　　：' . $currencies->display_price($order2->products[$i]['final_price'], $order2->products[$i]['tax'], $order2->products[$i]['qty']) . "\n";
         $products_ordered_mail .= 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($order2->products[$i]['character']) : $order2->products[$i]['character']) . "\n";
@@ -750,40 +718,8 @@
             $products_ordered_mail .= tep_parse_input_field_data($order->products[$i]['attributes'][$j]['value'], array("'"=>"&quot;")) . "\n";
           }
         }
-          $_product_info_query = tep_db_query("
-              select p.products_id, 
-                     pd.products_name, 
-                     p.products_attention_1,
-                     p.products_attention_2,
-                     p.products_attention_3,
-                     p.products_attention_4,
-                     p.products_attention_5,
-                     pd.products_description, 
-                     p.products_model, 
-                     p.products_real_quantity + p.products_virtual_quantity as products_quantity,
-                     p.products_image,
-                     p.products_image2,
-                     p.products_image3, 
-                     pd.products_url, 
-                     p.products_price, 
-                     p.products_tax_class_id, 
-                     p.products_date_added, 
-                     p.products_date_available, 
-                     p.manufacturers_id, 
-                     p.products_bflag, 
-                     p.products_cflag, 
-                     p.products_small_sum 
-              from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
-              where 
-              -- p.products_status != '0' and 
-                p.products_id = '" . $order->products[$i]['id'] . "' 
-                and pd.products_id = p.products_id 
-                and pd.site_id = '0'
-                and pd.language_id = '" . $languages_id . "'");
-          $product_info = tep_db_fetch_array($_product_info_query);
-          $data1 = explode("//", $product_info['products_attention_1']);
           
-        $products_ordered_mail .= '個数　　　　　　　：' . $order->products[$i]['qty'] . '個' . tep_get_full_count($order->products[$i]['qty'], $data1[1]) . "\n";
+        $products_ordered_mail .= '個数　　　　　　　：' . $order->products[$i]['qty'] . '個' . tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id']) . "\n";
         $products_ordered_mail .= '単価　　　　　　　：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
         $products_ordered_mail .= '小計　　　　　　　：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
         $products_ordered_mail .= 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($order->products[$i]['character']) : $order->products[$i]['character']) . "\n";
