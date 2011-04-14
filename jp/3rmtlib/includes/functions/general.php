@@ -3284,7 +3284,7 @@ function tep_get_romaji_by_pid($id)
 }
 
 function tep_get_products_rate($pid) {
-  $n = str_replace(',','',tep_get_full_count_in_order(1, $pid));
+  $n = str_replace(',','',tep_get_full_count_in_order2(1, $pid));
   preg_match_all('/(\d+)/',$n,$out);
   return $out[1][0];
 }
