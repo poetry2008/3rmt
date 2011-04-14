@@ -112,25 +112,10 @@ function change_num(ob, targ, quan,a_quan)
     }
      
     $description = replace_store_name($product_info['products_description']);
-    //data1
-    $data1 = explode("//", $product_info['products_attention_1']);
-    //data1
     $data2 = explode("//", $product_info['products_attention_2']);
-    //data1
     $data3 = explode("//", $product_info['products_attention_3']);
-    //data1
     $data4 = explode("//", $product_info['products_attention_4']);
-    //data1
-    //$data5 = explode("//", $product_info['products_attention_5']);
 ?>
-<?php 
-            //if(tep_not_null(ds_tep_get_categories((int)$_GET['products_id'],1)) { 
-            //    echo tep_image(DIR_WS_IMAGES.tep_not_null(ds_tep_get_categories((int)$_GET['products_id'],1) ;
-            //  }else{
-            //    echo '' ;
-            //  }
-    //bobhero <?php if (tep_show_warning(tep_get_products_categories_id($product_info['products_id'])) or $products_info['products_status'] != '1') {
-             ?>
     <?php if (tep_show_warning(tep_get_products_categories_id($product_info['products_id'])) or $product_info['products_status'] != '1') {
       echo '<div class="waring_product">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
     } ?>
@@ -190,13 +175,16 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                             <td class="main"><?php if (PRODUCT_LIST_MODEL > 0){ echo $product_info['products_model'] ; }else{ echo '-' ; } ?></td>
                           </tr>
                           <?php 
-                      if(!empty($data1[0])){
+                      if(!empty($product_info['products_attention_1_1']) && !empty($product_info['products_attention_1_3'])){
                       ?>
                           <tr class="infoBoxContents">
-                            <td class="main p_i_b_title"><?php echo $data1[0] ; ?></td>
-                            <td class="main"><?php echo $data1[1] ; ?></td>
+                            <td class="main p_i_b_title"><?php echo $product_info['products_attention_1_1'] ; ?></td>
+                            <td class="main"><?php echo $product_info['products_attention_1_2'] .'&nbsp;&nbsp;'.tep_display_attention_1_3($product_info['products_attention_1_3']) . $product_info['products_attention_1_4'] ; ?></td>
                           </tr>
                           <?php } ?>
+                        </table>
+                        <br>
+                        <table summary="info_box_contents">
                           <?php 
                       if(!empty($data2[0])){
                       ?>
@@ -425,7 +413,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
               echo tep_image(DIR_WS_IMAGES.'op_image/'.$option_image_res['option_image'], $products_options['products_options_values_name'], 50, 50); 
               echo '</div><br> <span>';
               echo $products_options_name['products_options_name'].':'.$products_options['products_options_values_name']; 
-			  echo '</span>';
+        echo '</span>';
               if ($products_options['options_values_price'] != '0') {
                 echo '<br>(' . $products_options['price_prefix'] . $currencies->display_price($products_options['options_values_price'], tep_get_tax_rate($product_info['products_tax_class_id'])) .') ';
               }

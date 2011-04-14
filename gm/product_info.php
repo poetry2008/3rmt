@@ -114,16 +114,9 @@ function change_num(ob, targ, quan,a_quan)
     }
      
     $description = replace_store_name($product_info['products_description']);
-    //data1
-    $data1 = explode("//", $product_info['products_attention_1']);
-    //data1
     $data2 = explode("//", $product_info['products_attention_2']);
-    //data1
     $data3 = explode("//", $product_info['products_attention_3']);
-    //data1
     $data4 = explode("//", $product_info['products_attention_4']);
-    //data1
-    //$data5 = explode("//", $product_info['products_attention_5']);
 ?>
       <div class="headerNavigation">
         <?php echo $breadcrumb->trail(' &raquo; '); ?>
@@ -190,13 +183,16 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                       </td>
                     </tr>
                     <?php 
-                      if(!empty($data1[0])){
+                      if(!empty($product_info['products_attention_1_1']) && !empty($product_info['products_attention_1_3'])){
                       ?>
                     <tr class="infoBoxContents">
-                      <td class="main"><font color="#0070AF"><?php echo $data1[0] ; ?></font></td>
-                      <td class="main"><?php echo $data1[1] ; ?></td>
+                      <td class="main"><font color="#0070AF"><?php echo $product_info['products_attention_1_1'] ; ?></font></td>
+                      <td class="main"><?php echo $product_info['products_attention_1_2'] .'&nbsp;&nbsp;'.tep_display_attention_1_3($product_info['products_attention_1_3']) . $product_info['products_attention_1_4'] ; ?></td>
                     </tr>
                     <?php } ?>
+                    </table>
+                    <br>
+                    <table class="infoBox" width="100%" border="0" cellpadding="3" cellspacing="1">
                     <?php 
                       if(!empty($data2[0])){
                       ?>
@@ -422,11 +418,11 @@ while($tag = tep_db_fetch_array($tag_query)) {
             if($products_options['products_at_quantity'] > 0) {
               $option_image_raw = tep_db_query("select * from products_options_image where products_options_values_id = '".$products_options['products_options_values_id']."' and (site_id = 0 or site_id = ".SITE_ID.") order by site_id desc limit 1"); 
               $option_image_res = tep_db_fetch_array($option_image_raw); 
-			  echo '<td class="product_list02" align="center"><div style=" height:50px;">'; 
+        echo '<td class="product_list02" align="center"><div style=" height:50px;">'; 
               echo tep_image(DIR_WS_IMAGES.'op_image/'.$option_image_res['option_image'], $products_options['products_options_values_name'], 50, 50); 
               echo '</div><br> <span>';
               echo $products_options_name['products_options_name'].':'.$products_options['products_options_values_name']; 
-			  echo '</span>';
+        echo '</span>';
               if ($products_options['options_values_price'] != '0') {
                 echo '<br>(' . $products_options['price_prefix'] . $currencies->display_price($products_options['options_values_price'], tep_get_tax_rate($product_info['products_tax_class_id'])) .') ';
               }

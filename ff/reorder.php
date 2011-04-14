@@ -277,44 +277,26 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
       }
     }
 //------insert customer choosen option eof ----
-    if (!isset($o->products[$i]['weight'])) $o->products[$i]['weight'] = NULL;//del notice
-    if (!isset($total_weight)) $total_weight = NULL;//del notice
-    if (!isset($total_products_price)) $total_products_price= NULL;//del notice
-    if (!isset($products_tax)) $products_tax= NULL;//del notice
-    if (!isset($total_cost)) $total_cost= NULL;//del notice
 
     $total_weight += ($o->products[$i]['qty'] * $o->products[$i]['weight']);
     $total_tax += tep_calculate_tax($total_products_price, $products_tax) * $o->products[$i]['qty'];
     $total_cost += $total_products_price;
 
     $products_ordered .= '注文商品　　　　　：' . $o->products[$i]['name'];
-  if(tep_not_null($o->products[$i]['model'])) {
-    $products_ordered .= ' (' . $o->products[$i]['model'] . ')';
-  }
+    if(tep_not_null($o->products[$i]['model'])) {
+      $products_ordered .= ' (' . $o->products[$i]['model'] . ')';
+    }
   
     //ccdd
     $product_info = tep_get_product_by_id($o->products[$i]['id'], SITE_ID ,$languages_id);
-    $data1 = explode("//", $product_info['products_attention_1']);
   
-  $products_ordered .= $products_ordered_attributes . "\n";
-  //$products_ordered .= '個数          :' . $o->products[$i]['qty'] . "\n";
-  $products_ordered .= '個数　　　　　　　：' . $o->products[$i]['qty'] . '個' . tep_get_full_count($o->products[$i]['qty'], $data1[1]) . "\n";
-  //$products_ordered .= '単価          :' . $currencies->display_price($o->products[$i]['final_price'], $o->products[$i]['tax']) . "\n";
-  //$products_ordered .= '小計          :' . $currencies->display_price($o->products[$i]['final_price'], $o->products[$i]['tax'], $o->products[$i]['qty']) . "\n";
-  if(tep_not_null($o->products[$i]['character'])) {
-    $products_ordered .= 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($o->products[$i]['character']) : $o->products[$i]['character']) . "\n";
-  }
-  
-  /*$add_products_query = tep_db_query("select products_description from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$o->products[$i]['id']."' and language_id = '" . $languages_id . "'");
-  if(tep_db_num_rows($add_products_query)) {
-    $add_products = tep_db_fetch_array($add_products_query);
-    $description = explode("|-#-|", $add_products['products_description']);
-    if(tep_not_null($description[6])) {
-      $products_ordered .= str_replace("\n", "\n", strip_tags($description[6])) . "\n"; 
+    $products_ordered .= $products_ordered_attributes . "\n";
+    $products_ordered .= '個数　　　　　　　：' . $o->products[$i]['qty'] . '個' . tep_get_full_count2($o->products[$i]['qty'], $o->products[$i]['id']) . "\n";
+    if(tep_not_null($o->products[$i]['character'])) {
+      $products_ordered .= 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($o->products[$i]['character']) : $o->products[$i]['character']) . "\n";
     }
-  }*/
 
-  $products_ordered .= '------------------------------------------' . "\n";
+    $products_ordered .= '------------------------------------------' . "\n";
   }
   
   # メール本文整形 --------------------------------------
