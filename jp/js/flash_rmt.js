@@ -36,7 +36,7 @@ fls = flashChecker()
 
 
 
-if (fls.v > 9){
+if (fls.v < 9){
 	document.write('<a href="index.php"><img src="images/jp_picture.gif" width="900" height="70" alt="RMT" ></a>');
 	}
 									else
