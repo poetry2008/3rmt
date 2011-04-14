@@ -97,13 +97,13 @@
   <!-- body //--> 
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
     <tr> 
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
+      <td valign="top" class="left_colum_border"> <!-- left_navigation //--> 
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents">
       <h1 class="pageHeading_long">
-      <img align="top" alt="" src="images/menu_ico_a.gif"><span><?php echo HEADING_TITLE ; ?></span>
+      <?php echo HEADING_TITLE ; ?>
       </h1>
        
         <div class="comment_long"> 
@@ -211,6 +211,13 @@
     } else {
       $where_str .= " and p2c.products_id = p.products_id and p2c.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and p2c.categories_id = '" . $_GET['categories_id'] . "'";
     }
+  } else {
+    $search_caid = tep_get_categories_id_by_parent_id(FF_CID); 
+    $where_str .= " and p2c.products_id = p.products_id and p2c.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and (p2c.categories_id = '".FF_CID."'";
+    for ($i=0, $n=sizeof($search_caid); $i<$n; $i++ ) {
+      $where_str .= " or p2c.categories_id = '" . $search_caid[$i] . "'";
+    }
+    $where_str .= ')'; 
   }
 
   if (isset($_GET['manufacturers_id']) && tep_not_null($_GET['manufacturers_id'])) {

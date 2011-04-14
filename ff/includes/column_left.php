@@ -11,6 +11,15 @@
   } else {
     include(DIR_WS_BOXES . 'categories.php');
   }
+?> <div class="reorder_link">
+	<div class="menu_top"><?php echo LEFT_REORDER_TITLE;?></div>
+    <div class="reorder_link_info">
+  <a href="<?php echo tep_href_link('reorder.php');?>"><?php echo LEFT_REORDER_TEXT;?></a> 
+  </div>
+  </div>
+<?php 
+include(DIR_WS_BOXES . 'login.php');
+  require(DIR_WS_BOXES . 'banners.php');
 /*
   //Color
   if(COLOR_SEARCH_BOX_TF == 'true') {

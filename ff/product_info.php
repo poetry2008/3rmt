@@ -5,6 +5,18 @@
 
   require('includes/application_top.php');
   check_uri('/(.*)\{(.*)\}(.*)/'); 
+  
+  $all_ca_arr = tep_get_categories_id_by_parent_id(FF_CID);
+  if (empty($all_ca_arr)) {
+    $all_ca_arr = array(FF_CID); 
+  } else {
+    array_push($all_ca_arr, FF_CID); 
+  }
+  $whether_expro_raw = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where categories_id in (".implode(',', $all_ca_arr).") and products_id = '".(int)$_GET['products_id']."'");
+  if (!tep_db_num_rows($whether_expro_raw)) {
+    forward404(); 
+  }
+  
   if (tep_whether_show_products((int)$_GET['products_id'])) {
     forward404(); 
   }
@@ -77,7 +89,7 @@ function change_num(ob, targ, quan,a_quan)
   <!-- body //-->
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border" summary="box">
     <tr>
-      <td width="<?php echo BOX_WIDTH; ?>" valign="top" class="left_colum_border"><!-- left_navigation //-->
+      <td valign="top" class="left_colum_border"><!-- left_navigation //-->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- left_navigation_eof //-->
       </td>
@@ -119,12 +131,12 @@ function change_num(ob, targ, quan,a_quan)
     <?php if (tep_show_warning(tep_get_products_categories_id($product_info['products_id'])) or $product_info['products_status'] != '1') {
       echo '<div class="waring_product">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
     } ?>
-         <h1 class="pageHeading_long"><img align="top" alt="" src="images/menu_ico.gif"><span><?php echo $product_info['products_name']; ?></span></h1>
+         <h1 class="pageHeading_long"><?php echo $product_info['products_name']; ?></h1>
          <div class="comment_long">
          <h2 class="line"><?php echo ds_tep_get_categories((int)$_GET['products_id'],1); ?> <?php echo ds_tep_get_categories((int)$_GET['products_id'],2); ?></h2>
          <table width="100%"  border="0" cellpadding="0" cellspacing="0" summary="rmt">
           <tr>
-            <td width="250" valign="top">
+            <td width="250" valign="top" class="product_info_box">
                 <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="rmt_img">
                     <?php
         if (tep_not_null($product_info['products_image'])) {
@@ -163,7 +175,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                     </tr>
                   </table>
                 </td>
-             <td><img src="images/design/spacer.gif" width="15" height="1" alt=""></td>
+<!--             <td><img src="images/design/spacer.gif" width="15" height="1" alt=""></td>-->
                 <td valign="top">
                     <table border="0" cellpadding="0" cellspacing="0" summary="info_box" class="infoBox">
                     <tr>
@@ -472,7 +484,8 @@ while($tag = tep_db_fetch_array($tag_query)) {
                   </table></td>
               </tr>
             </table>
-            <?php
+            <p>&nbsp;</p>
+			<?php
                     //サブ画像
         // ccdd
         $sub_colors_query = tep_db_query("

@@ -61,7 +61,7 @@
                 <?php echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, '', $request_type, false), 'get')."\n"; ?>
                 <table cellpadding="0" cellspacing="0" summary="search" class="search_info">
                   <tr>
-                    <td class="h_search"><img src="images/design/button/search_text.gif" width="22" height="19" alt="RMT検索"><span>商品検索</span></td>
+                    <td width="80">&nbsp;</td>
 <!--  <?php // --- get categoris list ( parent_id = 0 ) --- //
   $cat1 = '';
   if ($_GET['cPath']) {
@@ -136,6 +136,7 @@
             <td align="right">
                 <div class="header_menu_4"><span id="jk-shoppingcart" style="font-size:12px"><?php echo $currencies->format($cart->show_total());?></span></div>
             </td>
+            <td width="40">&nbsp;</td>
           </tr>
         </table>
     </div>

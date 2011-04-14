@@ -429,4 +429,6 @@ define('SEND_MAIL_HEADING_TITLE', 'メール受信テスト');
 
 define('TEXT_NO_LATEST_NEWS', 'お知らせはありません');
 define('NOTICE_MUST_BUY_TEXT', 'ショッピングカートに商品が有りません、商品を入れてから押してください。');
+define('LEFT_REORDER_TEXT', '再配達フォーム');
+define('LEFT_REORDER_TITLE', '取引日時変更');
 ?>

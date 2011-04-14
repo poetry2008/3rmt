@@ -39,11 +39,8 @@
 ?>
 
 <script type="text/javascript" src="../Scripts/swfobject_modified.js"></script>
-
 <script type="text/javascript" src="../Scripts/swfobject_modified.js"></script>
 <script type="text/javascript" src="DWConfiguration/ActiveContent/IncludeFiles/AC_RunActiveContent.js"></script>
-
-
 <div id="title">
   <?php
   if ($_GET['cPath']) {
@@ -62,10 +59,11 @@
       <table cellpadding="0"cellspacing="0" border="0" summary="logo">
           <tr>
             <td>
-            <object type="application/x-shockwave-flash" data="images/design/header_flash.swf?url_1=<?php echo HTTP_SERVER?>" width="900" height="120">
+				<script type='text/javascript' src="js/flash_rmt.js"></script>
+<!--            <object type="application/x-shockwave-flash" data="images/design/header_flash.swf?url_1=<?php echo HTTP_SERVER?>" width="900" height="120">
               <param name="movie" value="images/design/header_flash.swf?url_1=<?php echo HTTP_SERVER?>" />
 			</object>
-            </td>
+-->            </td>
           </tr>
         </table>
       </li>

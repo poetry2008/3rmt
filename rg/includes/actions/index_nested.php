@@ -11,7 +11,7 @@
       if ($category['categories_status'] != '0') {
         echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
       }
-      echo '<h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico_a.gif"><span>'.$seo_category['categories_name'].'</span></h1>';
+      echo '<div class="pageHeading"><img align="top" alt="" src="images/menu_ico_a.gif"><h1><span>'.$seo_category['categories_name'].'</span></h1></div>';
     } elseif ($_GET['manufacturers_id']) {
       if ($category['categories_status'] != '0') {
         echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
@@ -118,7 +118,7 @@
 <?php  
   if (isset($cPath_array)) {
     if ($seo_category['seo_description']) {
-      echo '<h3 class="pageHeading"><img align="top" alt="" src="images/menu_ico_a.gif"><span> ' . $seo_category['seo_name'] . 'について</span></h3>' . "\n";
+      echo '<div class="pageHeading"><img align="top" alt="" src="images/menu_ico_a.gif"><h3><span> ' . $seo_category['seo_name'] . 'について</span></h3></div>' . "\n";
       echo '<p class="comment">' . $seo_category['seo_description'] . '</p>' . "\n"; //seoフレーズ
 ?>
         <p class="pageBottom"></p>

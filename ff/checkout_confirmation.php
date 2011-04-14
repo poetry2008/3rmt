@@ -143,7 +143,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
   <!-- body //--> 
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
     <tr> 
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
+      <td valign="top" class="left_colum_border"> <!-- left_navigation //--> 
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 

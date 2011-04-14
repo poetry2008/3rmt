@@ -113,7 +113,7 @@ function popupWindow(url) {
   <!-- body //--> 
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
     <tr> 
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
+      <td valign="top" class="left_colum_border"> <!-- left_navigation //--> 
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
@@ -158,7 +158,7 @@ function popupWindow(url) {
   $options_box = '<table border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n" .
                  '  <tr>' . "\n" .
                  '    <td class="fieldKey">' . ENTRY_CATEGORIES . '</td>' . "\n" .
-                 '    <td class="fieldValue">' . tep_draw_pull_down_menu('categories_id', tep_get_categories(array(array('id' => '', 'text' => TEXT_ALL_CATEGORIES)))) . '<br></td>' . "\n" .
+                 '    <td class="fieldValue">' .  tep_draw_pull_down_menu('categories_id', tep_get_categories(array(array('id' => '', 'text' => TEXT_ALL_CATEGORIES)), FF_CID)) . '<br></td>' . "\n" .
                  '  </tr>' . "\n" .
                  '  <tr>' . "\n" .
                  '    <td class="fieldKey">&nbsp;</td>' . "\n" .

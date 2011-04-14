@@ -1088,7 +1088,7 @@ function get_cart_products(){
 }
 </script>
 </head>
-<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onLoad="SetFocus();">
+<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
 <div id="spiffycalendar" class="text"></div>
 <!-- header //-->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
@@ -1358,6 +1358,7 @@ function get_cart_products(){
                     <tr bgcolor="#CCCCCC">
                       <td class="main"><?php echo '<font color="blue"><b>' . TEXT_PRODUCTS_PRICE . '</b></font>'; ?></td>
                       <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_price', isset($pInfo->products_price)?abs($pInfo->products_price):'','id="pp"' . ($site_id ? 'class="readonly" readonly' : '')); ?></td>
+ 
                     </tr>
                     <tr>
                       <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
@@ -1764,6 +1765,11 @@ function get_cart_products(){
 
         <?php
   } elseif (isset($_GET['action']) && $_GET['action'] == 'new_product_preview') {
+    ?>                 
+      <script  type='text/javascript'>
+               $(document).ready(function (){ $("#pp").select().focus() }); 
+      </script>
+      <?
 
     if ($_POST) {
       $pInfo = new objectInfo($_POST);
@@ -1884,11 +1890,9 @@ function get_cart_products(){
       $categories_id = $cpath_array[0];
       $current_categories_id = $cpath_array[count($cpath_array)-1];
       $calc = tep_db_fetch_array(tep_db_query("select * from set_auto_calc where parent_id='".$current_categories_id."'"));
-      echo tep_draw_form($form_action, FILENAME_CATEGORIES, 'from='.$_GET['from'].'&cPath=' . $cPath . '&pID=' . $_GET['pID'] . '&page='.$_GET['page'].'&action=' . $form_action, 'post', 'enctype="multipart/form-data" onSubmit="return check_price(\'pp\', '.$pInfo->products_price.', '.($calc?$calc['percent']:0).');"');
       //show menu start
   echo '<tr>';
   echo '<td>';
-  echo tep_image_submit('button_update.gif', 'よく確認してから押しなさい','class="update_class"');
   echo "<div class='gotomenu_out_div'>";
   ?>
             <?php echo tep_draw_form('goto', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
@@ -1897,8 +1901,13 @@ function get_cart_products(){
                 <div id="categories_tree">
                 <?php
                   require(DIR_WS_CLASSES . 'category_tree.php');
+                  if(isset($_GET['from'])&&$_GET['from']=='admin'){
+                  $osC_CategoryTree = new osC_CategoryTree(true,true); 
+                  echo $osC_CategoryTree->buildTree(FILENAME_CATEGORIES_ADMIN);
+                  }else{
                   $osC_CategoryTree = new osC_CategoryTree; 
                   echo $osC_CategoryTree->buildTree();
+                  }
                 ?>
                 </div>
                 <?php 
@@ -1908,6 +1917,8 @@ function get_cart_products(){
   <?php
   echo '</form>' . "\n";
   echo '</div>';
+      echo tep_draw_form($form_action, FILENAME_CATEGORIES, 'from='.$_GET['from'].'&cPath=' . $cPath . '&pID=' . $_GET['pID'] . '&page='.$_GET['page'].'&action=' . $form_action, 'post', 'enctype="multipart/form-data" onSubmit="return check_price(\'pp\', '.$pInfo->products_price.', '.($calc?$calc['percent']:0).');"');
+  echo tep_image_submit('button_update.gif', 'よく確認してから押しなさい','class="update_class"');
   echo '</td>';
   echo '</tr>';
       //show menu end

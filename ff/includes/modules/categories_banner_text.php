@@ -16,7 +16,7 @@ $categories_tab_query1 = tep_db_query("
            cd.site_id
     from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd 
     where c.categories_id = cd.categories_id 
-      and c.parent_id = '0' 
+      and c.parent_id = '".FF_CID."'  
       and cd.language_id='" . (int)$languages_id ."' 
     order by cd.site_id DESC
     ) p
@@ -28,7 +28,8 @@ $categories_tab_query1 = tep_db_query("
     ");
 ?>
 <!-- categories_banner_text //-->
-<h2 class="pageHeading"><img src="images/menu_ico06.gif" alt="" align="top"><span>RMT GAME LIST</span></h2>
+<div class="category_banner_list">
+<h2 class="pageHeading"><?php echo $categories['0']['categories_name']?></h2>
   <table width="530" class="game_list_content" border="0" align="center" cellpadding="0" cellspacing="0">
     <tr align="center">
 <?php 
@@ -37,14 +38,17 @@ $categories_tab_query1 = tep_db_query("
   while($cbt = tep_db_fetch_array($categories_tab_query1)){
     $number_of_categories ++;
     echo '<td class="smallText">' . "\n";
-    echo '<h3 class="game_list"><a href="' . tep_href_link(FILENAME_DEFAULT,'cPath=' . $cbt['categories_id']) . '">' . "\n";
-    echo tep_image(DIR_WS_IMAGES. 'categories/' .$cbt['categories_image2'],$cbt['categories_name'], CATEGORY_IMAGE_WIDTH, CATEGORY_IMAGE_HEIGHT) . '<br>' . "\n";
+    echo '<h3 class="game_list"><a href="' . tep_href_link(FILENAME_DEFAULT,'cPath=' . $cbt['parent_id'].'_'.$cbt['categories_id']) . '">' . "\n";
+    echo tep_image(DIR_WS_IMAGES. 'categories/' .$cbt['categories_image'], $cbt['categories_name'], CATEGORY_IMAGE_WIDTH, CATEGORY_IMAGE_HEIGHT) . '<br>' . "\n";
+    /* 
     $cbt_dec = explode(',',$cbt['categories_meta_text']);
     for($i=0; $i < sizeof($cbt_dec); $i++) {
       if($cbt_dec[$i] != ''){
         echo strip_tags(mb_substr($cbt_dec[$i],0,36,"UTF-8")) . "\n";
       }
     }
+    */ 
+    echo $cbt['categories_name']; 
     echo  '</a></h3>' . "\n" . '</td>' . "\n";
   
     if (($number_of_categories/3) == floor($number_of_categories/3)) {
@@ -57,4 +61,5 @@ $categories_tab_query1 = tep_db_query("
 ?>
     <td></td><td></td><td></td></tr>
 </table>
+</div>
 <!-- categories_banner_text_eof //-->

@@ -55,39 +55,7 @@ if (!isset($_GET['products_id'])) $_GET['products_id']= NULL;
   }
 ?>
 </div>
-<script type="text/javascript">
-<!--
-fflag=0;
-if (document.layers || document.all || document.getElementById) {
- if (!fflag && document.all && !window.opera && navigator.userAgent.indexOf('Win')>-1) {
- document.write('<scr' + 'ipt type="text/vbscript"\> \n');
- document.write('on error resume next \n');
- document.write('fflag=( IsObject(CreateObject("ShockwaveFlash.ShockwaveFlash.6")))\n');
- document.write('<' + '/scr' + 'ipt> \n');
- }
- else if (navigator.plugins['Shockwave Flash']) fflag=1;
- }
-
-if (fflag==0)
-{
- document.write('<a href="index.php"><img alt="RMT" src="images/design/oc/header.jpg" width="790" height="185" border="0"><'+'/a>');
-}else {
- if (document.all && !window.opera)
- document.write('<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="https://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="790" height="185">'+
- '<param name="movie" value="images/design/header/header.swf" />'+
- '<param name="wmode" value="transparent" />'+
- '<param name="quality" value="high" />'+
- '<'+'/object>'+
- '');
- else
- document.write('<object type="application/x-shockwave-flash" data="images/design/header/header.swf" width="790" height="185">'+
- '<param name="wmode" value="transparent" />'+
- '<param name="quality" value="high" />'+
- '<'+'/object>'+
- '');
- }
--->
-</script>
+<script type='text/javascript' src="js/flash_rmt.js">
 <a name="top"></a>
 </div>
 <div id="h_menubar">

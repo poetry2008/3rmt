@@ -79,6 +79,7 @@
             tep_get_parent_categories($p, $categories['parent_id']);
             # For some reason it seems to return in reverse order so reverse the array 
             $p = array_reverse($p);
+
             # Implode the array to get the parent category path
             $cID = (implode('_', $p) ? implode('_', $p) . '_' . $categories['parent_id'] :
             $categories['parent_id']);
@@ -95,11 +96,17 @@
          } // eof While loop
     } //eof Function
 
-   function buildBranch($parent_id, $level = 0) {
+   function buildBranch($parent_id, $level = 0,$filename='') {
      if($level == 0){
+       if($filename == ''){
        $result = '<table width="100%"><tr><td valign="top" width="20%"><ul class="tdul">
        <li class="subcategory"><a href="?cPath=0'.(isset($_GET['site_id'])?('&site_id=' . $_GET['site_id']):'').'"'.(!isset($_GET['cPath']) || $_GET['cPath'] == '0' ? ' class="current_link"' : '').'>トップ</a></li>
        ';
+       }else{
+       $result = '<table width="100%"><tr><td valign="top" width="20%"><ul class="tdul">
+       <li class="subcategory"><a href="'.$filename.'?cPath=0'.(isset($_GET['site_id'])?('&site_id=' . $_GET['site_id']):'').'"'.(!isset($_GET['cPath']) || $_GET['cPath'] == '0' ? ' class="current_link"' : '').'>トップ</a></li>
+       ';
+       }
      }else{
        $result = $this->parent_group_start_string;
      }
@@ -113,8 +120,13 @@
 
          if ($level == 0) $result .= $this->root_start_string;
      
-         $result .= str_repeat($this->spacer_string, $this->spacer_multiplier * $level) . 
-     '<a href="?'.(isset($_GET['site_id'])?('site_id=' . $_GET['site_id'] . '&'):'').'cPath=' . $category_link . '"'.(isset($_GET['cPath']) && $_GET['cPath'] == $category_link ? ' class="current_link"' : '').'>';
+         $result .= str_repeat($this->spacer_string, $this->spacer_multiplier *
+             $level) ;
+         if($filename==''){
+         $result .= '<a href="?'.(isset($_GET['site_id'])?('site_id=' . $_GET['site_id'] . '&'):'').'cPath=' . $category_link . '"'.(isset($_GET['cPath']) && $_GET['cPath'] == $category_link ? ' class="current_link"' : '').'>';
+         }else{
+         $result .= '<a href="'.$filename.'?'.(isset($_GET['site_id'])?('site_id=' . $_GET['site_id'] . '&'):'').'cPath=' . $category_link . '"'.(isset($_GET['cPath']) && $_GET['cPath'] == $category_link ? ' class="current_link"' : '').'>';
+         }
          $result .= $category['name'];
          $result .= '</a>';
 
@@ -128,7 +140,8 @@
 
 
          if (isset($this->data[$category_id]) && (($this->max_level == '0') ||
-     ($this->max_level > $level+1))) $result .= $this->buildBranch($category_id, $level+1);
+     ($this->max_level > $level+1))) $result .= $this->buildBranch($category_id,
+     $level+1,$filename);
 
          if ($this->i !== 0 && $this->end === false &&  $this->i%ceil($this->categories_count/5) === 0 ) {
            $this->end = true;
@@ -150,8 +163,8 @@
      return $result;
    }
 
-   function buildTree() {
-     return $this->buildBranch($this->root_category_id);
+   function buildTree($filename='') {
+     return $this->buildBranch($this->root_category_id,0,$filename);
    }
  }
 

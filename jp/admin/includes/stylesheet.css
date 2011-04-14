@@ -262,7 +262,10 @@ body {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 11px;
 	color: #ffffff;                                 /* フォントカラー */
-	font-weight: bold;                              /* フォント太さ */
+	font-weight: bold; 
+	overflow:hidden;
+	white-space:nowrap;
+	text-overflow:ellipsis;                           /* フォント太さ */
 }
 /* ---------------------------
 .[TR]：一覧表データ（通常行）
@@ -307,42 +310,49 @@ body {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;
 	color: #000000;                         /* フォントカラー */
-	width:30%;
+	/* width:25%;*/
+	/* bobhero edit width:5%;*/
+	overflow:hidden;
+	white-space:nowrap;
+	
 }
 .dataTableContent2 {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;
 	color: #000000;                         /* フォントカラー */
-	width:4%;
+	/*width:4%;*/
+	text-align:right;
+	white-space:nowrap;
+	
 }
-.dataTableContent2 input{
+/*.dataTableContent2 input{
 	float:left;
-}
-.dataTableContent2 span{ float:left; padding-top:3px;
+}*/
+.dataTableContent2 span{text-align:center; padding-top:5px;
 }
 .dataTableContent3 {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;
 	color: #000000;                         /* フォントカラー */
-	width:6%;
+	/*width:6%;*/
 }
 .dataTableContent4 {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;
 	color: #000000;                         /* フォントカラー */
-	width:8%;
+	/*width:6%;*/
 }
 .dataTableContent5 {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;
 	color: #000000;                         /* フォントカラー */
-	width:11%;
+/*	width:11%;*/
 }
 .dataTableContent6 {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;
 	color: #000000;                         /* フォントカラー */
-	width:7%;
+/*	width:1%;*/
 }
 .dataTableContent_line {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; 
@@ -774,7 +784,7 @@ font-size:10px;!important;
 display:none;
 /*	width:100%;*/
 	position: absolute;
-	width:950px;
+	width:900px;
 	background-color:#000;
 	top:12px;
 	right:0;
@@ -784,11 +794,12 @@ display:none;
 .subcategory_tree_info{
 	margin-left:-10px;
 	*margin-left:10px;
-	*margin-top:-10px;
-	margin-top:0px\9;
+/*	*margin:0 0 8px 0;*/
+margin-bottom:15px\9;
 }
 #categories_tree li{
 	padding:0;
+	margin:0;
 /*	margin:5px;
 	*margin:0;*/
 	margin:0 5px\9;
@@ -799,21 +810,23 @@ display:none;
 .subcategory a{
 	padding:0;
 	margin:5px;
-	*margin:0;
+	*margin:0px;
 	text-align:left;
 	color:#FFFFFF;
 	display:block;
 	padding-left:10px;
 	background:url(/images/design/circle.gif) left 3px no-repeat;
 }
-.tdul{ padding:0;}
+.tdul{ padding:0; margin:0;/* border:1px solid #ff0000;*/}
+.tdul li{ padding:0; margin:0;}
 #categories_tree li a{ color:#fff;}
 #categories_tree li a:hover{ color:#FFD700;}
 .subcategory_tree_info li{ margin:0; padding:0;
 }
 .subcategory_tree{
-	*margin-top:-10px;
-	margin-top:10px\9;
+	margin:10px 0;
+	*margin-top:-8px!important;
+	margin:5px\9;
 }
 #categories_tree li .subcategory_tree{list-style-type: none;}
 .dataTableHeadingContent_pw a{ color:#FFFFFF; text-decoration:none; font-weight:bold;}
@@ -871,3 +884,18 @@ div.date-picker-holder input {
     color: #663399;
 }
 .gotomenu_out_div{ float:right; font-size:10px;}
+.datatablecontent_warpper{
+overflow:hidden;
+white-space:nowrap;
+text-overflow:ellipsis;
+width:60px;
+}
+.datatablecontent_warpper02{
+overflow:hidden;
+white-space:nowrap;
+text-overflow:ellipsis;
+}
+.datatablecontent_warpper03{
+
+}
+.button_save input{ vertical-align:bottom;}

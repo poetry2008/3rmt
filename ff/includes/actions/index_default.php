@@ -4,9 +4,6 @@
 */
 ?>
     <td valign="top" id="contents">
-    <div class="top_index_image">
-    <img src="images/design/banner02.gif"/>
-    </div>
 <?php
   echo DEFAULT_PAGE_TOP_CONTENTS;
 ?>
@@ -21,7 +18,7 @@
   include(DIR_WS_MODULES . FILENAME_LATEST_NEWS);
 ?>
 <?php
-  echo DEFAULT_PAGE_BOTTOM_CONTENTS;
+  //echo DEFAULT_PAGE_BOTTOM_CONTENTS;
 ?>
       </td>
     <!-- body_text_eof //--> 
