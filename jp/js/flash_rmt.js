@@ -37,10 +37,11 @@ fls = flashChecker()
 
 
 if (fls.v < 9){
+	
 	document.write('<a href="index.php"><img src="images/jp_picture.gif" width="900" height="70" alt="RMT" ></a>');
-	}
-									else
- {
+	alert('v < 9');
+	} else {
+	
 fflag=0;
 if (document.layers || document.all || document.getElementById) {
 	if (!fflag && document.all && !window.opera && navigator.userAgent.indexOf('Win')>-1) {
@@ -69,6 +70,5 @@ else {
 			'</object>'+
 			'');
 	}
-
-
+	alert('v >= 9');
 }
