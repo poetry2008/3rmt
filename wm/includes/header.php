@@ -62,9 +62,12 @@
               <a href="http://rmt.worldmoney.jp/"><img src="images/design/logo.jpg" width="200" height="103" alt="RMT" ></a>
             </td>
             <td>
-            	<script type='text/javascript' src="js/flash_rmt.js"></script>
-<!--            	<embed src="images/design/header_flash.swf" quality=high  width="662" height="103" ></embed>
--->            </td>
+  <script type='text/javascript' src="js/flash_rmt.js"></script>
+  <script type="text/javascript" src="js/images.js"></script>
+  <noscript>
+    <a href="index.php"><img src="images/rmt.gif" width="185" height="65" alt="RMT" ></a>
+  </noscript>
+           </td>
           </tr>
         </table>
       </li>
