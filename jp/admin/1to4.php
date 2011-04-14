@@ -101,3 +101,4 @@ while ($p = tep_db_fetch_array($query)) {
   10000 => 1万
   
   100000000 => 1億
+  */
