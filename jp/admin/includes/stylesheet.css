@@ -310,14 +310,19 @@ body {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;
 	color: #000000;                         /* フォントカラー */
-	width:30%;
+	/* width:25%;*/
+	/* bobhero edit width:5%;*/
+	overflow:hidden;
+	white-space:nowrap;
+	
 }
 .dataTableContent2 {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;
 	color: #000000;                         /* フォントカラー */
-	width:4%;
-	text-align:center;
+	/*width:4%;*/
+	text-align:right;
+	white-space:nowrap;
 	
 }
 /*.dataTableContent2 input{
@@ -329,25 +334,25 @@ body {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;
 	color: #000000;                         /* フォントカラー */
-	width:6%;
+	/*width:6%;*/
 }
 .dataTableContent4 {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;
 	color: #000000;                         /* フォントカラー */
-	width:8%;
+	/*width:6%;*/
 }
 .dataTableContent5 {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;
 	color: #000000;                         /* フォントカラー */
-	width:11%;
+/*	width:11%;*/
 }
 .dataTableContent6 {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;
 	color: #000000;                         /* フォントカラー */
-	width:1%;
+/*	width:1%;*/
 }
 .dataTableContent_line {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; 
@@ -766,9 +771,9 @@ font-size:10px;!important;
 #cost_print02{ float:left;}
 #email_display{ display:none;}
 .text_x{ width:100%;overflow:hidden;}
-.text_x1{ height:19px; width:502px;; /*float:left;*/}
-.text_x2{ width:53px; font-size:15px; border-left:1px solid #000000;  border-bottom:1px solid #000000; border-right:1px solid #000000; background-color:#ccffff; /*float:left;*/}
-.text_x3{ width:90px; border-bottom:1px solid #000000; border-right:1px solid #000000; font-size:16px; /*float:left;*/ margin:0;} 
+.text_x1{ height:19px; width:502px; /*float:left;*/}
+.text_x2{ width:50px; font-size:15px; border-left:1px solid #000000;  border-bottom:1px solid #000000; border-right:1px solid #000000; background-color:#ccffff; /*float:left;*/ padding-right:1px;}
+.text_x3{ width:84px; border-bottom:1px solid #000000; border-right:1px solid #000000; font-size:16px; /*float:left;*/ margin:0; padding-left:2px;} 
 .price input{width:53px; display:block;}
 .price span{width:53px; display:none;}
 

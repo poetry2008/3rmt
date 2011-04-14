@@ -1418,18 +1418,16 @@ function q_4_3(){
       </tr>
   <?php
       for ($i = 0, $n = sizeof($order->products); $i < $n; $i++) {
-        $pinfo = tep_get_product_by_id($order->products[$i]['id'],0,4);
-        $r = explode('//',$pinfo['products_attention_1']);
         echo '    <tr class="dataTableRow">' . "\n" . 
-       '      <td class="dataTableContent" valign="top" align="right">' . $order->products[$i]['qty']. tep_get_full_count($order->products[$i]['qty'], $r[1], $order->products[$i]['rate']) . '&nbsp;x</td>' . "\n" .
+       '      <td class="dataTableContent" valign="top" align="right">' . $order->products[$i]['qty']. tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id'], $order->products[$i]['rate']) . '&nbsp;x</td>' . "\n" .
        '      <td class="dataTableContent" valign="top">' . $order->products[$i]['name'];
 
         if (isset($order->products[$i]['attributes']) && $order->products[$i]['attributes'] && ($k = sizeof($order->products[$i]['attributes'])) > 0) {
-      for ($j = 0; $j < $k; $j++) {
-      echo '<br><nobr><small>&nbsp;<i> - ' . $order->products[$i]['attributes'][$j]['option'] . ': ' . $order->products[$i]['attributes'][$j]['value'];
-      if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')<br>';
-        echo '</i></small></nobr>';
-      }
+          for ($j = 0; $j < $k; $j++) {
+            echo '<br><nobr><small>&nbsp;<i> - ' . $order->products[$i]['attributes'][$j]['option'] . ': ' . $order->products[$i]['attributes'][$j]['value'];
+            if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')<br>';
+              echo '</i></small></nobr>';
+          }
         }
 
       if ( DISPLAY_PRICE_WITH_TAX == 'true' ) {

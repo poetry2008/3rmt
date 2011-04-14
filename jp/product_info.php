@@ -19,38 +19,38 @@
 <link rel="stylesheet" href="css/lightbox.css" type="text/css" media="screen">
 <script type="text/javascript">
 function change_num(ob,targ, quan,a_quan)
-            {
-              var product_quantity = document.getElementById(ob);
-              var product_quantity_num = parseInt(product_quantity.value);
-              if (targ == 'up')
-              { 
-                if (product_quantity_num >= a_quan)
-                {
-                  num_value = product_quantity_num;
-                }
-                else
-                {
-                  num_value = product_quantity_num + quan; 
-                }
-              }
-              else
-              {
-                if (product_quantity_num <= 1)
-                {
-                  num_value = product_quantity_num;
-                }
-                else
-                { 
-                  num_value = product_quantity_num - quan;
-                }
-              }
+{
+  var product_quantity = document.getElementById(ob);
+  var product_quantity_num = parseInt(product_quantity.value);
+  if (targ == 'up')
+  { 
+    if (product_quantity_num >= a_quan)
+    {
+      num_value = product_quantity_num;
+    }
+    else
+    {
+      num_value = product_quantity_num + quan; 
+    }
+  }
+  else
+  {
+    if (product_quantity_num <= 1)
+    {
+      num_value = product_quantity_num;
+    }
+    else
+    { 
+      num_value = product_quantity_num - quan;
+    }
+  }
 
-              product_quantity.value = num_value;
-              if (product_quantity_num != num_value)
-              { 
-                update_cart(product_quantity.id);
-              }
-            }
+  product_quantity.value = num_value;
+  if (product_quantity_num != num_value)
+  { 
+    update_cart(product_quantity.id);
+  }
+}
 -->
 </script>
 <script type="text/javascript"><!--
@@ -106,7 +106,6 @@ function showimage($1) {
     }
   
   $description = replace_store_name($product_info['products_description']);
-  $data1 = explode("//", $product_info['products_attention_1']);
   $data2 = explode("//", $product_info['products_attention_2']);
   $data3 = explode("//", $product_info['products_attention_3']);
   $data4 = explode("//", $product_info['products_attention_4']);
@@ -158,17 +157,26 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                 <tr>
                   <td><table width="100%" border="0" cellpadding="3" cellspacing="1">
                       <tr class="infoBoxContents">
-                        <td class="main"><font color="#0070AF">商品コード</font></td>
+                        <td class="main" width="65"><font color="#0070AF">商品コード</font></td>
                         <td class="main"><?php if (PRODUCT_LIST_MODEL > 0){ echo $product_info['products_model'] ; }else{ echo '-' ; } ?></td>
                       </tr>
                       <?php 
-          if(!empty($data1[0]) && !empty($data1[1])){
+          if(!empty($product_info['products_attention_1_1']) && !empty($product_info['products_attention_1_3'])){
           ?>
                       <tr class="infoBoxContents">
-                        <td class="main"><font color="#0070AF"><?php echo $data1[0] ; ?></font></td>
-                        <td class="main"><?php print($data1[1]) ; ?></td>
+                        <td class="main"><font color="#0070AF"><?php echo $product_info['products_attention_1_1'] ; ?></font></td>
+                        <td class="main"><?php echo $product_info['products_attention_1_2'] .'&nbsp;&nbsp;'.tep_display_attention_1_3($product_info['products_attention_1_3']) . $product_info['products_attention_1_4'] ; ?></td>
                       </tr>
                       <?php } ?>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+                <br>
+                <table width="100%"  border="0" cellpadding="0" cellspacing="0" class="infoBox">
+                  <tr>
+                    <td>
+                      <table width="100%" border="0" cellpadding="3" cellspacing="1">
                       <?php 
           if(!empty($data2[0]) && !empty($data2[1])){
           ?>
@@ -182,7 +190,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                         <td class="main"><?php include(DIR_WS_BOXES.'manufacturer_info.php') ; ?></td>
                       </tr>
                       <tr class="infoBoxContents">
-                        <td class="main"><font color="#0070AF">価格</font></td>
+                        <td class="main" width="65"><font color="#0070AF">価格</font></td>
                         <td class="main">
               <?php
                 # 追加スタート ---------------------------------------
@@ -381,7 +389,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
               echo tep_image(DIR_WS_IMAGES.'op_image/'.$option_image_res['option_image'], $products_options['products_options_values_name'], 50, 50); 
               echo '</div><br> <span>';
               echo $products_options_name['products_options_name'].':'.$products_options['products_options_values_name']; 
-			  echo '</span>';
+        echo '</span>';
               if ($products_options['options_values_price'] != '0') {
                 echo '<br>(' . $products_options['price_prefix'] . $currencies->display_price($products_options['options_values_price'], tep_get_tax_rate($product_info['products_tax_class_id'])) .') ';
               }
