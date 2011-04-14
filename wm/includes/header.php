@@ -63,9 +63,8 @@
             </td>
             <td>
   <script type='text/javascript' src="js/flash_rmt.js"></script>
-  <script type="text/javascript" src="js/images.js"></script>
   <noscript>
-    <a href="index.php"><img src="images/rmt.gif" width="185" height="65" alt="RMT" ></a>
+    <a href="index.php"><img src="images/wm_picture.gif" width="662" height="103" alt="RMT" ></a>
   </noscript>
            </td>
           </tr>

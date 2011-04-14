@@ -59,10 +59,9 @@
       <table cellpadding="0"cellspacing="0" border="0" summary="logo">
           <tr>
             <td>
-  <script type='text/javascript' src="js/flash_rmt.js"></script>
-  <script type="text/javascript" src="js/images.js"></script>
+<script type='text/javascript' src="js/flash_rmt.js"></script>
   <noscript>
-    <a href="index.php"><img src="images/rmt.gif" width="185" height="65" alt="RMT" ></a>
+    <a href="index.php"><img src="images/id_picture.gif" width="900" height="120" alt="RMT" ></a>
   </noscript>
             </td>
           </tr>
