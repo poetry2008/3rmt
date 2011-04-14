@@ -477,7 +477,7 @@
         <tr><td align="right"><textarea id="data10" type="text" rows="2" style="font-size:14px; overflow-y:visible; width:280px;  text-align:right;" ></textarea></td></tr>
         <tr><td align="right" class="input_print02">
   <font size="2">
-  <input name="textfield" type="text" id="email" value="" onChange="$('#email_display').html(this.value)" onpropertychange="$('#email_display').html(this.value)" onBlur="$('#email_display').html(this.value)" style="text-align:right; font-size:12px; width:300px;">
+  <input name="textfield" type="text" id="email" value="" onChange="$('#email_display').html(this.value)" onpropertychange="$('#email_display').html(this.value)" onBlur="$('#email_display').html(this.value)" style="text-align:right; font-size:12px; width:300px; ">
   <span id="email_display"></span>
   </font></td></tr>
         <tr><td align="right" colspan="4">
