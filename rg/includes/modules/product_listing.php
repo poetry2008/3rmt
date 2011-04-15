@@ -32,7 +32,6 @@
   }
 ?>
 <!--select searach_eof// -->
-<!-- <div class="underline">&nbsp;</div> -->
 <table border="0" width="100%" cellspacing="0" cellpadding="0"  class="product_list_info">
   <tr>
     <td>
@@ -71,7 +70,6 @@
       $row++;
       $col++;
 ?>
-      <!-- products_id <?php echo $listing['products_id']?>-->
 
       <table border="0" cellspacing="0" cellpadding="0" class="product_listing_content">
         <tr>
@@ -104,7 +102,7 @@
           </td>
         </tr>
         <tr>
-          <!--
+          <?php if (false) {?> 
           <td colspan="2" style="padding-left:5px; ">
             <p class="smallText">
 <?php
@@ -122,7 +120,7 @@ if (!isset($listing['products_cflag'])) $listing['products_cflag'] = NULL;//del 
 ?>
             </p>
           </td>
-          -->
+          <?php }?> 
           <td align="right" colspan="3">
             <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $listing['products_id']) ; ?>" class="button_order"></a>
           </td>

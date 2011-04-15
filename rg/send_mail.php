@@ -54,9 +54,6 @@
 
       <div class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><h1><span><?php echo SEND_MAIL_HEADING_TITLE; ?></span></h1></div>
       <div class="comment">
-      <!--<table width="100%" border="0" cellpadding="0" cellspacing="0" summary="table">
-      <tr>
-      </td>-->
       <div class="send_mail">
 <?php
   if ($success_single == false) {  

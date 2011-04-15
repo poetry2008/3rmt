@@ -94,7 +94,6 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
           }
          }else{?>
 <div class="comment">
-<!--<form action="reorder2.php" method="post" name="order">-->
 <?php
 echo tep_draw_form('order', tep_href_link('reorder2.php'));
 ?>
