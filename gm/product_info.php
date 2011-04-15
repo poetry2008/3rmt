@@ -196,6 +196,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                     </table>
                     <br>
                     <table class="infoBox" width="100%" border="0" cellpadding="3" cellspacing="1">
+                      <?php
                       if(!empty($data1[0])){
                       ?>
                     <tr class="infoBoxContents">
