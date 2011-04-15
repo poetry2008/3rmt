@@ -193,7 +193,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
         <td align="right">
         <table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info">
         <tr>
-        <td class="main"><b>ご注文内容をご確認の上「注文する」をクリックしてください。</b></td>
+        <td class="main"><b>ご注文内容をご確認の上「注文する」をクリックしてください�?/b></td>
         <td class="main" align="right"><?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></td>
         </tr>
         </table>
@@ -256,9 +256,10 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
   for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
     //ccdd
     $product_info = tep_get_product_by_id($order->products[$i]['id'], SITE_ID, $languages_id);
+    $data1 = explode("//", $product_info['products_attention_1']);
     
     echo '          <tr>' . "\n" .
-         '            <td class="main" align="center" valign="top" width="150">' . $order->products[$i]['qty'] . '&nbsp;個' . (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) ? '<br><span style="font-size:10px">'. tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
+         '            <td class="main" align="center" valign="top" width="150">' . $order->products[$i]['qty'] . '&nbsp;�? . (!empty($data1[0]) && strlen($data1[1])<=30 && tep_get_full_count_in_order($order->products[$i]['qty'], $data1[1]) ? '<br><span style="font-size:10px">'. tep_get_full_count_in_order($order->products[$i]['qty'], $data1[1]) .'</span>': '') . '</td>' . "\n" .
          '            <td class="main" valign="top">' . $order->products[$i]['name'];
 
     if (STOCK_CHECK == 'true') {
@@ -316,9 +317,9 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
       <td class="main"><?php echo TEXT_TORIHIKIKIBOUJIKAN; ?></td>
         <td class="main">
       <?php echo $hour; ?>
-      &nbsp;時&nbsp;
+      &nbsp;�?nbsp;
       <?php echo $min; ?>
-      &nbsp;分&nbsp;
+      &nbsp;�?nbsp;
       </td>
       </tr>
       </table>
@@ -350,11 +351,11 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
   <tr>
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
   <td class="main">
-買取が200円以下の注文は振込み手数料の関係でお支払いができません、<br>
-申し訳ありませんが、WEBマネーやネクソンポイントなどの別の商品をカートに入れていただくか、<br>
-ポイントでの返金になります。<br><br>
+買取�?00円以下の注文は振込み手数料の関係でお支払いができません�?br>
+申し訳ありませんが、WEBマネーやネクソンポイントなどの別の商品をカートに入れていただくか�?br>
+ポイントでの返金になります�?br><br>
 
-*尚、99円以下はポイントでの返金になりますご了承ください。
+*尚�?9円以下はポイントでの返金になりますご了承ください�
   </td>
   </tr>
 </table>
@@ -452,10 +453,10 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
   echo $order_total_modules->output();
 }
 if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
-// ここからカスタマーレベルに応じたポイント還元率算出============================================================
+// ここからカスタマーレベルに応じたポイント還元率算�?===========================================================
 // 2005.11.17 K.Kaneko
 if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
-  //設定した期間内の注文合計金額を算出------------
+  //設定した期間内の注文合計金額を算�?-----------
   $ptoday = date("Y-m-d H:i:s", time());
   $pstday_array = getdate();
   $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
@@ -499,7 +500,7 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
 } else {
   $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
 }
-// ここまでカスタマーレベルに応じたポイント還元率算出============================================================
+// ここまでカスタマーレベルに応じたポイント還元率算�?===========================================================
 //$get_point = ($order->info['subtotal'] - (int)$point) * MODULE_ORDER_TOTAL_POINT_FEE;
 // 买取200以下直接返回point
   if ($order->info['subtotal'] > 0) {
@@ -613,7 +614,7 @@ if (is_array($payment_modules->modules)) {
 ?> 
         <tr> 
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
-          <tr><td class="main"><b>ご注文内容をご確認の上「注文する」をクリックしてください。</b></td>
+          <tr><td class="main"><b>ご注文内容をご確認の上「注文する」をクリックしてください�?/b></td>
                 <td align="right" class="main"> <?php
   if (is_array($payment_modules->modules)) {
     echo $payment_modules->process_button();
