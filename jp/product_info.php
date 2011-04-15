@@ -173,6 +173,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                     </td>
                   </tr>
                 </table>
+                        <br>
                 <table width="100%"  border="0" cellpadding="0" cellspacing="0" class="infoBox">
                   <tr>
                     <td>
