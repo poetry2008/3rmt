@@ -514,10 +514,12 @@ function UserInfo_preview() {
   echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));        // <form>タグの出力
 
   $ssql = makeSelectUserInfo($GLOBALS['userslist']);      // ユーザ情報取得
+  /*
   if(isset($GLOBALS['aval']['name'])&&$GLOBALS['aval']['name']!='')
   {
     $ssql = makeSelectUserInfo($_POST['aval']['name']);
   }
+  */
   @$oresult = tep_db_query($ssql);
   if (!$oresult) {                      // エラーだったとき
     echo TEXT_ERRINFO_DB_NO_USERINFO;           // メッセージ表示
@@ -597,8 +599,15 @@ function UserInfo_preview() {
   echo TEXT_RAND_PWD;
   echo "</td>\n";
   echo "<td>\n";
-  $h_rule = get_rule();
-  echo make_rand_pwd($h_rule)?make_rand_pwd($h_rule):TEXT_ERROR_RULE;
+  if(isset($GLOBALS['letter'])&&isset($GLOBALS['rule'])
+      &&$GLOBALS['rule']&&$GLOBALS['letter']){
+  $temp_pwd = make_rand_pwd($GLOBALS['rule']);
+  echo $GLOBALS['letter'].$temp_pwd; 
+  }else{
+  $temp_pwd = make_rand_pwd($arec['rule']);
+  echo
+    (tep_rand_pw_start($arec['userid'])?tep_rand_pw_start($arec['userid']):'').$temp_pwd;
+  }
   echo "</td>\n";
   echo "</tr>\n";
   //规则
@@ -607,12 +616,21 @@ function UserInfo_preview() {
   echo TEXT_RAND_RULES;
   echo "</td>\n";
   echo "<td>\n";
-  $rule = get_rule()?get_rule():'';
-  echo tep_draw_input_field("config_rules", $rule, 'size="32" maxlength="64"', FALSE, 'text', FALSE);
+  if(isset($GLOBALS['letter'])&&$GLOBALS['letter']){
+  echo tep_show_pw_start($GLOBALS['letter'],true);
+  }else{
+  echo tep_show_pw_start($arec['userid']);
+  }
+  if(isset($GLOBALS['rule'])&&$GLOBALS['rule']){
+  echo tep_draw_input_field("rule", $GLOBALS['rule'], 'size="32" maxlength="64"', FALSE, 'text', FALSE);
+  }else{
+  echo tep_draw_input_field("rule", $arec['rule'], 'size="32" maxlength="64"', FALSE, 'text', FALSE);
+  }
   echo "</td>\n";
   echo "</tr>\n";
   echo "<tr>\n";
   echo "<td colspan='2' align='center'>\n";
+  echo tep_draw_hidden_field("userslist", $arec['userid']);    
   echo tep_draw_input_field("execute_user", MAKE_PWD, '', FALSE, "submit", FALSE);  // ユーザ情報
   echo tep_draw_input_field("reset", RESET_PWD, '', FALSE, "reset", FALSE);  // 元の値に戻す
   echo "</td>\n";
@@ -621,7 +639,7 @@ function UserInfo_preview() {
   echo "</table>\n";
 
   echo tep_draw_hidden_field("execute_user");           // 処理モードを隠し項目にセットする
-  echo tep_draw_hidden_field("userid", $_POST['userslist']);    // ユーザＩＤを隠し項目にセットする
+  echo tep_draw_hidden_field("userid", $GLOBALS['userslist']);    // ユーザＩＤを隠し項目にセットする
 
   echo '<br>';
 
@@ -1196,8 +1214,9 @@ function UserInfor_execute() {
   echo "</form>\n";           // フォームのフッター
 
   if ($oresult) @tep_db_free_result($oresult);    // 結果オブジェクトを開放する
-  if(isset($_POST['config_rules'])&&$_POST['config_rules']!=''){
-    update_rules($_POST['config_rules']);
+  if(isset($GLOBALS['letter'])&&$GLOBALS['letter']!=''
+      &&isset($GLOBALS['rule'])&&$GLOBALS['rule']!=''){
+    update_rules($GLOBALS['userid'],$GLOBALS['rule'],$GLOBALS['letter']);
   }
 
   return TRUE;
@@ -1551,24 +1570,25 @@ function get_login_count($user){
   }
 }
 //修改规则 并插入 数据库
-function update_rules($rules){
-  $sql = "select configuration_value from configuration
-    where configuration_key = 'CONFIG_RULES_KEY' ";
-  $query = tep_db_query($sql);
-  if($row = tep_db_fetch_array($query)){
-   $sql_rule = "update `configuration` SET 
-      configuration_value='".$rules."' 
-      where configuration_key ='CONFIG_RULES_KEY'";
-  }else{
-   $sql_rule = "insert into `configuration` (`configuration_id`,
-     `configuration_title`, `configuration_key`, `configuration_value`,
-     `configuration_description`, `configuration_group_id`, `sort_order`,
-     `last_modified`, `date_added`, `use_function`, `set_function`, `site_id`)
-       VALUES (NULL,'', 'CONFIG_RULES_KEY', '".$rules."', '', '0', NULL, NULL,
-           '0000-00-00 00:00:00', NULL, NULL, '0')";
+function update_rules($userid,$rule,$letter){
+  $sql_user = "update ".TABLE_USERS. " set rule ='".$rule."'
+    where userid = '".$userid."'";
+  $sql_s = "select * from ".TABLE_LETTERS." 
+    WHERE userid='".$userid."' limit 1";
+  $res_s = tep_db_query($sql_s);
+  if($row = tep_db_fetch_array($res_s)){
+    if($letter){
+      $clear_sql = "update ".TABLE_LETTERS." set userid = null
+          where userid='".$userid."'";
+      tep_db_query($clear_sql);
+    }
   }
-  if(make_rand_pwd($rules)){
-    return tep_db_query($sql_rule);
+  $sql_letter = "update ".TABLE_LETTERS." set userid = '".$userid."'
+     where letter='".$letter."'";
+  if(make_rand_pwd($rule)){
+    tep_db_query($sql_user); 
+    tep_db_query($sql_letter);
+    return true;
   }else{
     return false;
   }
@@ -1613,6 +1633,8 @@ if (isset($_POST['execute_change'])) { $execute_change = $_POST['execute_change'
         if (isset($_POST['execute_admin2chief'])) { $execute_admin2chief =
           $_POST['execute_admin2chief']; }
 if (isset($_POST['execute_c_permission'])) { $execute_change = $_POST['execute_c_permission'];}
+if (isset($_POST['rule'])) { $rule = $_POST['rule'];}
+if (isset($_POST['letter'])) { $letter = $_POST['letter'];}
 
   PageHeader();       // ページ・ヘッダの表示
   PageBodyTable('t');     // ページのレイアウトテーブル：開始（ナビゲーションボックスを包括するテーブル開始）

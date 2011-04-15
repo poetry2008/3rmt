@@ -4131,6 +4131,7 @@ function tep_get_rev_sid_by_id($id){
 
 
 //根据规则生存密码
+// make rand pwd
 function make_rand_pwd($rule){
   //分割 规则字符串
   $arr = explode(':',$rule);
@@ -4180,7 +4181,53 @@ function make_rand_pwd($rule){
     //$str = "-".$date_arr['y'].$date_arr['m'].$date_arr['d'];
     $str = false;
   }
+
   return $str;
+}
+
+function tep_rand_pw_start($userid){
+  $sql = "select letter from ".TABLE_LETTERS.
+         " where userid='".$userid."' limit 1";
+  $res = tep_db_query($sql);
+  if($row = tep_db_fetch_array($res)){
+    return $row['letter'];
+  }else{
+    return false; 
+  }
+
+}
+
+function tep_show_pw_start($userid='',$is_letter=false){
+  $res_str = "<select name='letter'>";
+  if($userid!=''){
+    if($is_letter){
+  $selected = $userid;
+    }else{
+  $selected = tep_rand_pw_start($userid);
+    }
+  }else{
+  $selected = 'first';
+  }
+  if($is_letter){
+  $sql = "select * from ".TABLE_LETTERS." WHERE userid IS NULL
+    OR userid = ''";
+  }else{
+  $sql = "select * from ".TABLE_LETTERS." WHERE userid IS NULL
+    OR userid = '' OR userid = '".$userid."'";
+  }
+  $res = tep_db_query($sql);
+  while($row = tep_db_fetch_array($res)){
+    $res_str .= "<option value ='".$row['letter']."' ";
+    if($selected == 'first'){
+      $res_str .= "SELECTED";
+      $selected = false;
+    }else if($selected == $row['letter']){
+      $res_str .= "SELECTED";
+    }
+    $res_str .= " >".$row['letter']."</option>";
+  }
+  $res_str .= "</select>";
+  return $res_str;
 }
 
 
