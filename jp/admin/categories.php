@@ -848,7 +848,7 @@
                 products_attention_1_2, 
                 products_attention_1_3, 
                 products_attention_1_4, 
-                products_attention_1, 				
+                products_attention_1,         
                 products_attention_2, 
                 products_attention_3, 
                 products_attention_4,
@@ -1419,11 +1419,6 @@ function get_cart_products(){
         </tr>
           <tr>
             <td class="main">項目１</td>
-            <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_input01">' . tep_draw_input_field('products_jan', isset($des_result['products_attention_1'])?$des_result['products_attention_1']:'', ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?><br>
-            <span class="smallText">項目名とデータは「//」スラッシュ2本で区切ってください。例）サイズ//H1000　W560</span></td>
-          </tr>
-          <tr>
-            <td class="main">項目１</td>
             <td class="main" colspan="2">
               <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') 
             . '&nbsp;<span class="categories_input01">' 
@@ -1434,6 +1429,11 @@ function get_cart_products(){
             .'</span>'; ?>
           </td>
         </tr>
+          <tr>
+            <td class="main">項目１</td>
+            <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_input01">' . tep_draw_input_field('products_jan', isset($des_result['products_attention_1'])?$des_result['products_attention_1']:'', ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?><br>
+            <span class="smallText">項目名とデータは「//」スラッシュ2本で区切ってください。例）サイズ//H1000　W560</span></td>
+          </tr>
         <tr>
           <td class="main">項目２</td>
           <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_input01">' . tep_draw_input_field('products_size', isset($des_result['products_attention_2'])?$des_result['products_attention_2']:'', ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
