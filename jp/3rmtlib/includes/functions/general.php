@@ -3698,10 +3698,10 @@ function tep_get_cart_ff_products($pid, $cid_arr){
     $str2 = $str;
     if (strlen($str) > 8) {
       //$str = preg_replace('/00000000$/', '億', $str);
-      $ret .= $str/100000000 . '億';
+      $ret .= intval($str/100000000) . '億';
       if ($str%100000000 > 0) {
         if ($str%100000000 > 10000) {
-          $ret .= $str/10000 . '万';
+          $ret .= intval(($str%100000000)/10000) . '万';
         }
         if (($str%100000000)%10000 > 0) {
           $ret .= $str%10000;
