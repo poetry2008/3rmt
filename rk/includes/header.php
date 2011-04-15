@@ -37,7 +37,6 @@
     }
   }
 ?>
-<!--<script src="../Scripts/swfobject_modified.js" type="text/javascript"></script>-->
 <div id="header">
   <div id="title">
   <?php
@@ -130,10 +129,6 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
         ?>
                 </form>
             </td>
-                <!--
-                <a href="<?php //echo tep_href_link('rss.php') ; ?>" class="header_menu_1">RSS
-                <?php //echo tep_image(DIR_WS_IMAGES.'design/button/rss.gif','RSS') ; ?></a>
-                -->
             <td class="header_m_login" align="right">     
                 <a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'','SSL') ; ?>" class="header_menu_2">ショッピングカート<?php //echo tep_image(DIR_WS_IMAGES.'design/button/shopping_cart.gif',HEADER_TITLE_CART_CONTENTS);?></a>
             </td>
