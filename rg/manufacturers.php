@@ -27,7 +27,7 @@
       </td>
       <!-- body_text //-->
       <td id="contents" valign="top">
-        <h1 class="pageHeading"><?php echo HEADING_TITLE; ?>:RMT</h1>
+        <h1 class="pageHeading"><span><?php echo HEADING_TITLE; ?>:RMT</span></h1>
                 <div class="comment">
         <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>

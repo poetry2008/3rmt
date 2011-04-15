@@ -55,7 +55,10 @@ if (!isset($_GET['products_id'])) $_GET['products_id']= NULL;
   }
 ?>
 </div>
-<script type='text/javascript' src="js/flash_rmt.js">
+<script type='text/javascript' src="js/flash_rmt.js"></script>
+<noscript>
+  <a href="index.php"><img src="images/gm_picture.gif" width="790" height="185" alt="RMT" ></a>
+</noscript>
 <a name="top"></a>
 </div>
 <div id="h_menubar">

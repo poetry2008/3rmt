@@ -52,7 +52,7 @@
   <script type='text/javascript' src="js/flash_rmt.js"></script>
   <script type="text/javascript" src="js/images.js"></script>
   <noscript>
-    <a href="index.php"><img src="images/rmt.gif" width="185" height="65" alt="RMT" ></a>
+    <a href="index.php"><img src="images/jp_picture.gif" width="900" height="70" alt="RMT" ></a>
   </noscript>
    <div id="header_Menu">
     <table width="100%" style="height:39px;" border="0" cellpadding="0" cellspacing="0">
