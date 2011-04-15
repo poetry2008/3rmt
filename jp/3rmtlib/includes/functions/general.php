@@ -3707,15 +3707,13 @@ function tep_get_cart_ff_products($pid, $cid_arr){
         }
       }
 
-      return $ret;
+      return $ret.'（'.number_format($str2).'）';
     } else if (strlen($str) > 4) {
-      //$str = preg_replace('/0000$/', '万', $str);
-      
       $ret = $str/10000 . '万';
       if ($str%10000 > 0) {
         $ret .= $str%10000;
       }
-      return $ret;
+      return $ret.'（'.number_format($str2).'）';
     } else {
       return number_format($str);
     }
