@@ -76,10 +76,8 @@
       echo  '</tr>'; 
       echo '</table>'; 
       echo ' <font style="font-size:10px">'. (!empty($data1[0]) && strlen($data1[1])<=50 && tep_get_full_count_in_order($products[$i]['quantity'], $data1[1]) ? '<span style="font-size:10px">'. tep_get_full_count_in_order($products[$i]['quantity'], $data1[1]) .'</span>': '') . '</td>' . "\n";
-      //echo '    <td align="center">' . tep_draw_input_field('cart_quantity[]', $products[$i]['quantity'], 'size="4" maxlength="4"') . tep_draw_hidden_field('products_id[]', $products[$i]['id']) . '</td>' . "\n";
     } else {
       echo '    <td align="center" class ="main" style=" padding-left:10px;padding-right:20px;">' . $products[$i]['quantity'] . '個' . (!empty($data1[0]) && strlen($data1[1])<=50 && tep_get_full_count_in_order($products[$i]['quantity'], $data1[1]) ? '<span style="font-size:10px">'. $data1[1] .'</span>' : '') . '</td>' . "\n";
-      //echo '    <td align="center" class ="main">' . $products[$i]['quantity'] . '</td>' . "\n";
     }
     echo '<td>'; 
     $pimage_query = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".intval($products[$i]['id'])."'"); 

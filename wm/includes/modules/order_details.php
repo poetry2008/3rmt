@@ -73,7 +73,7 @@
       </a> 
       <?php
       echo '</td>';
-    echo '<td><font style="font-size:10px">個</font></td>';
+      echo '<td><font style="font-size:10px">個</font></td>';
       echo '</tr>'; 
       echo '</table>'; 
       echo (!empty($data1[0]) && strlen($data1[1])<=50 && tep_get_full_count_in_order($products[$i]['quantity'], $data1[1]) ? '<span style="font-size:10px">'. tep_get_full_count_in_order($products[$i]['quantity'], $data1[1]) .'</span>': '') . '</td>' . "\n";

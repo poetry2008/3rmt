@@ -74,7 +74,6 @@
       echo '</td></tr></table>';
       echo  '</td>' . "\n";
     } else {
-      //echo '    <td align="center" class ="main" style="">' . $products[$i]['quantity'] . (!empty($data1[0]) && strlen($data1[1])<=30 ? '<span style="font-size:10px">x'. $data1[1] .'</span>' : '') . '</td>' . "\n";
       echo '    <td align="center" class ="main" style="padding-left:10px;padding-right:20px;">' . $products[$i]['quantity'] . '個' . (!empty($data1[0]) && strlen($data1[1])<=50 && tep_get_full_count_in_order($products[$i]['quantity'], $data1[1]) ? '<span style="font-size:10px">'. $data1[1] .'</span>' : '') . '</td>' . "\n";
     }
 

@@ -59,11 +59,11 @@
       <table cellpadding="0"cellspacing="0" border="0" summary="logo">
           <tr>
             <td>
-				<script type='text/javascript' src="js/flash_rmt.js"></script>
-<!--            <object type="application/x-shockwave-flash" data="images/design/header_flash.swf?url_1=<?php echo HTTP_SERVER?>" width="900" height="120">
-              <param name="movie" value="images/design/header_flash.swf?url_1=<?php echo HTTP_SERVER?>" />
-			</object>
--->            </td>
+<script type='text/javascript' src="js/flash_rmt.js"></script>
+  <noscript>
+    <a href="index.php"><img src="images/id_picture.gif" width="900" height="120" alt="RMT" ></a>
+  </noscript>
+            </td>
           </tr>
         </table>
       </li>

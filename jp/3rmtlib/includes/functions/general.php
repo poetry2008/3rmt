@@ -2615,7 +2615,11 @@ function tep_unlink_temp_dir($dir)
                p.products_cflag,
                p.products_small_sum,
                p.option_type,
-               p.products_attention_1, 
+			   p.products_attention_1,
+               p.products_attention_1_1,
+                p.products_attention_1_2,
+                p.products_attention_1_3,
+                p.products_attention_1_4, 
                p.products_attention_2, 
                p.products_attention_3, 
                p.products_attention_4, 
@@ -2666,7 +2670,11 @@ function tep_unlink_temp_dir($dir)
                p.products_cflag,
                p.products_small_sum,
                p.option_type,
-               p.products_attention_1, 
+               p.products_attention_1_1,
+               p.products_attention_1_2,
+               p.products_attention_1_3,
+               p.products_attention_1_4,
+			   p.products_attention_1,
                p.products_attention_2, 
                p.products_attention_3, 
                p.products_attention_4, 
@@ -3244,7 +3252,6 @@ function tep_get_products_rate($pid) {
   $t = explode('//',$p['products_attention_1']);
   $n = str_replace(',','',tep_get_full_count_in_order(1, $t[1]));
   preg_match_all('/(\d+)/',$n,$out);
-  //print_r($out);
   return $out[1][0];
 }
   
@@ -3671,3 +3678,21 @@ function tep_get_cart_ff_products($pid, $cid_arr){
   }
   return $arr;
 }
+  // product_info 显示个数
+  function tep_display_attention_1_3($str) {
+    if (strlen($str) > 8) {
+      $str = preg_replace('/00000000$/', '億', $str);
+    } else {
+      $str = preg_replace('/0000$/', '万', $str);
+    }
+    if (preg_match('/^(\d*)([^\d]*)$/', $str, $out)) {
+      //print_r($out);
+      //exit;
+      return number_format($out[1]).$out[2];
+    } else {
+      //print_r($str);
+      //exit;
+      return number_format($str);
+    }
+    
+  }
