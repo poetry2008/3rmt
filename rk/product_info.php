@@ -113,6 +113,7 @@ function change_num(ob, targ, quan,a_quan)
      
 
     $description = replace_store_name($product_info['products_description']);
+    $data1 = explode("//", $product_info['products_attention_1']);
     $data2 = explode("//", $product_info['products_attention_2']);
     $data3 = explode("//", $product_info['products_attention_3']);
     $data4 = explode("//", $product_info['products_attention_4']);
@@ -187,6 +188,14 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                         <br>
                         <table summary="info_box_contents">
                           <?php 
+                      if(!empty($data1[0])){
+                      ?>
+                          <tr class="infoBoxContents">
+                            <td class="main p_i_b_title"><?php echo $data1[0] ; ?></td>
+                            <td class="main"><?php echo $data1[1] ; ?></td>
+                          </tr>
+                          <?php } ?>
+                          <?php 
                       if(!empty($data2[0])){
                       ?>
                           <tr class="infoBoxContents">
@@ -217,7 +226,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                                   
                                     foreach($wari_array as $key => $val) {
                                       echo '<tr>';
-                                      echo '<td class="main" align="left">'.$key.'個以上&nbsp;注文すると&nbsp;</td>';
+                                      echo '<td class="main" align="left">'.$key.'個以個以上&nbsp;注文すると&nbsp;</td>';
                                       echo '<td class="main"><b>'.$currencies->display_price(round($pricedef + $val),0).'</b></td>';
                                       echo '</tr>'."\n";
                                     }
@@ -373,7 +382,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                 if ($products_options['options_values_price'] != '0') {
                   $products_options_array[sizeof($products_options_array)-1]['text'] .= ' (' . $products_options['price_prefix'] . $currencies->display_price($products_options['options_values_price'], tep_get_tax_rate($product_info['products_tax_class_id'])) .') ';
                 }
-                //options stock
+                //options stock 
     //            $products_options_array[sizeof($products_options_array)-1]['text'] .= ' (在庫:' . $products_options['products_at_quantity'] .') ';
                 
               }

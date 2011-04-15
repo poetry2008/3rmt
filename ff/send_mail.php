@@ -52,12 +52,12 @@
       <!-- body_text //-->
       <td id="contents" valign="top">
 
-      <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><span><?php echo SEND_MAIL_HEADING_TITLE; ?></span></h1>
+      <h1 class="pageHeading"><span><?php echo SEND_MAIL_HEADING_TITLE; ?></span></h1>
       <div class="comment">
       <!--<table width="100%" border="0" cellpadding="0" cellspacing="0" summary="table">
       <tr>
       </td>-->
-      <div class="send_mail">
+      <div class="product_info_box">
 <?php
   if ($success_single == false) {  
   if ($error_single == true) {

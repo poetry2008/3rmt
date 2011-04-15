@@ -99,9 +99,9 @@
 ?>
 <!-- new_products //-->
 <?php if (0 < $num_products) { ?>
-<div class="comment03">
-<h3 class="products03"><img align="top" alt="" src="images/menu_ico_a.gif"><span><?php echo $new_c_name; ?>の新着商品</span></h3>
-<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+<h3 class="pageHeading_long"><span><?php echo $new_c_name; ?>の新着商品</span></h3>
+<div class="comment_long">
+<table width="100%"  border="0" cellspacing="0" cellpadding="0" class="comment03">
 <?php
     while ($new_products = tep_db_fetch_array($new_products_query)) {
       $product_details = tep_get_product_by_id($new_products['products_id'], SITE_ID, $languages_id);

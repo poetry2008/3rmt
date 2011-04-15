@@ -112,6 +112,7 @@ function change_num(ob, targ, quan,a_quan)
     }
      
     $description = replace_store_name($product_info['products_description']);
+    $data1 = explode("//", $product_info['products_attention_1']);
     $data2 = explode("//", $product_info['products_attention_2']);
     $data3 = explode("//", $product_info['products_attention_3']);
     $data4 = explode("//", $product_info['products_attention_4']);
@@ -185,6 +186,14 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                         </table>
                         <br>
                         <table summary="info_box_contents">
+                          <?php 
+                      if(!empty($data1[0])){
+                      ?>
+                          <tr class="infoBoxContents">
+                            <td class="main p_i_b_title"><?php echo $data1[0] ; ?></td>
+                            <td class="main"><?php echo $data1[1] ; ?></td>
+                          </tr>
+                          <?php } ?>
                           <?php 
                       if(!empty($data2[0])){
                       ?>

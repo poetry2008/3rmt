@@ -103,11 +103,11 @@ foreach($cart as $key => $val){
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
-      <td valign="top" id="contents"> <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><span><?php echo HEADING_TITLE ; ?></span></h1> 
+      <td valign="top" id="contents"> <h1 class="pageHeading"><span><?php echo HEADING_TITLE ; ?></span></h1> 
         <div class="comment"> 
           <form action="<?php echo tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL'); ?>" method="post" onSubmit="return chara_mess();">
           <input type="hidden" name="dummy" value="あいうえお眉幅">
-          <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="table"> 
+          <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="table" class="product_info_box"> 
             <?php
         if($error == 'T'){
       ?>
@@ -146,7 +146,7 @@ foreach($cart as $key => $val){
               </table></td> 
       </tr> 
 
-      <tr class="infoBoxContents"> 
+      <tr> 
         <td><table border="0" width="100%" cellspacing="0" cellpadding="2" summary="table">  
           <tr> 
             <td class="main"></td> 
@@ -208,7 +208,7 @@ foreach($cart as $key => $val){
         </div>
         
         <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox" summary="table"> 
-                  <tr class="infoBoxContents"> 
+                  <tr> 
                     <td><table border="0" width="100%" cellspacing="0" cellpadding="2" summary="table">  
                       <tr> 
                         <td class="main">&nbsp;&nbsp;間違いがなければ「次へ進む」をクリックしてください。</td> 

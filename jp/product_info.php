@@ -106,6 +106,7 @@ function showimage($1) {
     }
   
   $description = replace_store_name($product_info['products_description']);
+  $data1 = explode("//", $product_info['products_attention_1']);
   $data2 = explode("//", $product_info['products_attention_2']);
   $data3 = explode("//", $product_info['products_attention_3']);
   $data4 = explode("//", $product_info['products_attention_4']);
@@ -177,6 +178,14 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                   <tr>
                     <td>
                       <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                        <?php
+          if(!empty($data1[0]) && !empty($data1[1])){
+          ?>
+                      <tr class="infoBoxContents">
+                        <td class="main"><font color="#0070AF"><?php echo $data1[0] ; ?></font></td>
+                        <td class="main"><?php print($data1[1]) ; ?></td>
+                      </tr>
+                      <?php } ?>
                       <?php 
           if(!empty($data2[0]) && !empty($data2[1])){
           ?>

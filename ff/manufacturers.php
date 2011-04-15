@@ -4,7 +4,7 @@
 */
   require('includes/application_top.php');
   //require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_MANUFAXTURERS);
-  forward404();
+  forward404();  
   define('NAVBAR_TITLE', 'ゲームメーカー一覧');
   define('HEADING_TITLE', 'ゲームメーカー一覧');
   define('TEXT_MORE', 'このメーカー一覧の商品一覧へ');
@@ -20,7 +20,7 @@
   <!-- body //-->
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border">
     <tr>
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border">
+      <td valign="top" class="left_colum_border">
         <!-- left_navigation //-->
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
         <!-- left_navigation_eof //-->
@@ -34,7 +34,15 @@
             <td>
               <table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php 
-  $manufacturer_query_raw = "select m.manufacturers_id, m.manufacturers_name, m.manufacturers_image, mi.manufacturers_url from " . TABLE_MANUFACTURERS . " m, " . TABLE_MANUFACTURERS_INFO . " mi  where  m.manufacturers_id = mi.manufacturers_id and languages_id = '" . $languages_id . "' order by manufacturers_name";
+  $mcaid_arr = tep_get_categories_id_by_parent_id(FF_CID);
+  if (empty($mcaid_arr)) {
+    $mcaid_arr = array(FF_CID); 
+  } else {
+    array_push($mcaid_arr, FF_CID); 
+  }
+  //$manufacturer_query_raw = "select m.manufacturers_id, m.manufacturers_name, m.manufacturers_image, mi.manufacturers_url from " . TABLE_MANUFACTURERS . " m, " . TABLE_MANUFACTURERS_INFO . " mi  where  m.manufacturers_id = mi.manufacturers_id and languages_id = '" . $languages_id . "' order by manufacturers_name";
+  $manufacturer_query_raw = "select distinct m.manufacturers_id, m.manufacturers_name, m.manufacturers_image, mi.manufacturers_url from ".TABLE_MANUFACTURERS." m, ".TABLE_MANUFACTURERS_INFO." mi, ".TABLE_PRODUCTS." p where m.manufacturers_id = mi.manufacturers_id and languages_id = '4' and p.manufacturers_id = m.manufacturers_id and p.products_id in (select products_id from (select pd.products_id, pd.products_status, pd.site_id from ".TABLE_PRODUCTS_DESCRIPTION." pd, ".TABLE_PRODUCTS_TO_CATEGORIES." p2c where pd.products_id = p2c.products_id and p2c.categories_id in (".implode(',', $mcaid_arr).") order by site_id DESC)c where site_id = 0 or site_id = ".SITE_ID." group by products_id having products_status != '0' and products_status != '3') order by m.manufacturers_name"; 
+  
   $manufacturer_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $manufacturer_query_raw, $manufacturer_numrows);
   //ccdd
   $manufacturer_query = tep_db_query($manufacturer_query_raw);
@@ -49,7 +57,6 @@
                         <td align="right" class="smallText"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $manufacturer_split->display_links($manufacturer_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
                       </tr>
                     </table>
-                    <?php echo tep_draw_separator('pixel_trans.gif', '100%', '10') . "\n"; ?>
                   </td>
                 </tr>
 <?php
@@ -112,9 +119,6 @@ while ($manufacturer = tep_db_fetch_array($manufacturer_query)){
 <?php
   }
 ?>
-                      <tr>
-                        <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-                      </tr>
                     </table>
                   </td>
                 </tr>

@@ -40,9 +40,9 @@ function pass_hidd(){
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents"><?php echo tep_draw_form('account_edit', tep_href_link(FILENAME_CREATE_ACCOUNT_PROCESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"') . tep_draw_hidden_field('action', 'process'); ?> 
-        <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><span><?php echo HEADING_TITLE ; ?></span></h1> 
+        <h1 class="pageHeading"><span><?php echo HEADING_TITLE ; ?></span></h1> 
         <div class="comment"> 
-          <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="table"> 
+          <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="table" class="product_info_box"> 
             <?php
   if (sizeof($navigation->snapshot) > 0) {
 ?> 
@@ -53,9 +53,6 @@ function pass_hidd(){
             <?php
   }
 ?> 
-            <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
             <tr> 
               <td><?php
   if (isset($_GET['email_address'])) $email_address = tep_db_prepare_input($_GET['email_address']);

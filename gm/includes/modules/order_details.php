@@ -44,6 +44,7 @@
     }
 
     $product_info = tep_get_product_by_id($products[$i]['id'], SITE_ID, $languages_id,true,'shopping_cart');
+    $data1 = explode("//", $product_info['products_attention_1']);
 
 // Quantity box or information as an input box or text
     if (strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
@@ -74,11 +75,9 @@
       echo '<td><font style="font-size:10px">個</font></td>';
       echo  '</tr>'; 
       echo '</table>'; 
-      echo ' <font style="font-size:10px">'. (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) ? '<span style="font-size:10px">'. tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) .'</span>': '') . '</td>' . "\n";
+      echo ' <font style="font-size:10px">'. (!empty($data1[0]) && strlen($data1[1])<=50 && tep_get_full_count_in_order($products[$i]['quantity'], $data1[1]) ? '<span style="font-size:10px">'. tep_get_full_count_in_order($products[$i]['quantity'], $data1[1]) .'</span>': '') . '</td>' . "\n";
     } else {
-      echo '    <td align="center" class ="main" style=" padding-left:10px;padding-right:20px;">' . $products[$i]['quantity'] . '個' ;
-      echo (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) ? '<span style="font-size:10px">'. tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) .'</span>' : '');
-      echo '</td>' . "\n";
+      echo '    <td align="center" class ="main" style=" padding-left:10px;padding-right:20px;">' . $products[$i]['quantity'] . '個' . (!empty($data1[0]) && strlen($data1[1])<=50 && tep_get_full_count_in_order($products[$i]['quantity'], $data1[1]) ? '<span style="font-size:10px">'. $data1[1] .'</span>' : '') . '</td>' . "\n";
     }
     echo '<td>'; 
     $pimage_query = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".intval($products[$i]['id'])."'"); 

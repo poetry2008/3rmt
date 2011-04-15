@@ -75,13 +75,11 @@ if ($category_depth == 'nested') {
     echo HEADING_TITLE;
   }
 ?></h1>
-    <div class="comment_long"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?>
-        <?php
+    <div class="comment_long"><font color="#FFffff"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?></font>
+       <?php
           $has_ca_single = false; 
         ?>
         <?php if (isset($_GET['cPath'])) { ?> 
-        <table border="0" width="100%" cellspacing="3" cellpadding="3" summary=""> 
-          <tr align="center">
 <?php
       $categories_query = tep_db_query("
           select * 
@@ -106,6 +104,11 @@ if ($category_depth == 'nested') {
           order by sort_order, categories_name
         ");
     $rows = 0;
+    if (tep_db_num_rows($categories_query)) { 
+    ?>
+        <table border="0" width="100%" cellspacing="3" cellpadding="3" summary="" class="product_list_info"> 
+          <tr align="center">
+    <?php
     while ($categories = tep_db_fetch_array($categories_query)) {
       $has_ca_single = true; 
       $rows++;
@@ -119,9 +122,12 @@ if ($category_depth == 'nested') {
         echo '        <tr align="center">' . "\n";
       }
   }
-?> 
+  ?>
           </tr>
         </table>
+  <?php
+  }
+?> 
     <?php
      } 
     ?>
@@ -151,7 +157,7 @@ if ($category_depth == 'nested') {
       } else {
         include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); 
       }
-       echo '<p>'.$seo_category['categories_footer_text'].'</p>';
+       echo '<p><font color="#ffffff">'.$seo_category['categories_footer_text'].'</p></font>  </div>';
       if (isset($_GET['cPath'])) {
         $new_products_category_id = $current_category_id; 
         if (!$has_ca_single) {
@@ -161,13 +167,12 @@ if ($category_depth == 'nested') {
         }
       }
   ?>
-  </div>
       <!--<div class="pageBottom_long"></div>-->
   <?php
       if (isset($cPath_array)) {
         if ($seo_category['seo_description']) {
           echo '<h2 class="pageHeading_long">'.$seo_category['seo_name'].'について</h2>'; 
-          echo '<div class="comment_long"><p>'.$seo_category['seo_description'].'</p></div>'; 
+          echo '<div class="comment_long"><div class="product_list_info"><div class="product_listing_content"><p><font color="#888888">'.$seo_category['seo_description'].'</font></p></div></div></div>'; 
         }
         if (!empty($seo_category['text_information'])) {
           echo str_replace('pageHeading', 'pageHeading_long', $seo_category['text_information']); 

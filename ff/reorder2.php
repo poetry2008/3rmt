@@ -27,7 +27,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
       </td>
       <!-- body_text //-->
       <td id="contents" valign="top">
-        <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><span><?php echo HEADING_TITLE; ?></span></h1>
+        <h1 class="pageHeading"><span><?php echo HEADING_TITLE; ?></span></h1>
         <?php if($_POST){
           $date     = tep_db_prepare_input($_POST['date']);
           $hour     = tep_db_prepare_input($_POST['hour']);
@@ -44,7 +44,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
             // time error
             echo '<div class="comment">取引時間は前もって一時間以上に設定してください <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="70" height="25" alt=""></a></div></div>';
           } else {
-            echo '<div class="comment">注文内容の変更を承りました。電子メールをご確認ください。 <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" width="70" height="25" alt="TOPに戻る" title="TOPに戻る"></a></div></div>';
+            echo '<div class="comment"><div class="product_info_box">注文内容の変更を承りました。電子メールをご確認ください。 <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" width="63" height="18" alt="TOPに戻る" title="TOPに戻る"></a></div></div></div>';
             // sent mail to customer
             //$mail    = tep_db_fetch_array(tep_db_query("select * from iimy_orders_mail where orders_status_id=16"));
             //$mail_title   = $mail['orders_status_title'];
@@ -95,7 +95,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
          }else{?>
 <div class="comment">
 <!--<form action="reorder2.php" method="post" name="order">-->
-<?php
+<div class="product_info_box"><?php
 echo tep_draw_form('order', tep_href_link('reorder2.php'));
 ?>
 <input type="hidden" name="dummy" value="あいうえお眉幅">
@@ -147,7 +147,7 @@ echo tep_draw_form('order', tep_href_link('reorder2.php'));
   <input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="クリア" title="クリア" onClick='javascript:document.order.reset();return false;' >
 </p>
 </form>
-<?php }?></div>
+<?php }?></div></div>
 <script type="text/javascript">
 <!--
 function check(){

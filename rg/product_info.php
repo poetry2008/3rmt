@@ -112,6 +112,7 @@ function change_num(ob, targ, quan,a_quan)
     }
      
     $description = $product_info['products_description'];
+    $data1 = explode("//", $product_info['products_attention_1']);
     $data2 = explode("//", $product_info['products_attention_2']);
     $data3 = explode("//", $product_info['products_attention_3']);
     $data4 = explode("//", $product_info['products_attention_4']);
@@ -185,6 +186,14 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                         </table>
                         <table summary="info_box_contents">
                           <?php 
+                      if(!empty($data1[0])){
+                      ?>
+                          <tr class="infoBoxContents">
+                            <td class="main p_i_b_title"><?php echo $data1[0] ; ?></td>
+                            <td class="main"><?php echo $data1[1] ; ?></td>
+                          </tr>
+                          <?php } ?>
+                          <?php 
                       if(!empty($data2[0])){
                       ?>
                           <tr class="infoBoxContents">
@@ -215,8 +224,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                                   
                                     foreach($wari_array as $key => $val) {
                                       echo '<tr>';
-                                      echo '<td class="main" align="left">'.$key.'個以上&nbsp;注文すると&nbsp;</td>';
-                                      echo '<td class="main"><b>'.$currencies->display_price(round($pricedef + $val),0).'</b></td>';
+                                      echo '<td class="main" align="left">'.$key.'個以上&nbsp;注文すると&nbsp;</td>';                                      echo '<td class="main"><b>'.$currencies->display_price(round($pricedef + $val),0).'</b></td>';
                                       echo '</tr>'."\n";
                                     }
                                     echo '</table>'."\n";
@@ -225,7 +233,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                                   }
                                   
                                   # -- 注文数量と単価のリスト --------------------------
-                                  # 追加エンド -------------------------------------------
+                                  # 追加エンド-------------------------------------------
                                 
                                 ?>
                             </td>
@@ -484,7 +492,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
         ");
                     $cnt=0;
                    if(tep_db_num_rows($sub_colors_query) >= 1) {
-    ?>
+    ?> 
             <!-- //color image -->
             <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="rmt">
               <tr>

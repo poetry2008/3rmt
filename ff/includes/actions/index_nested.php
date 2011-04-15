@@ -11,7 +11,7 @@
       if ($category['categories_status'] != '0') {
         echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
       }
-      echo '<h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico_a.gif"><span>'.$seo_category['categories_name'].'</span></h1>';
+      echo '<h1 class="pageHeading"><span>'.$seo_category['categories_name'].'</span></h1>';
     } elseif ($_GET['manufacturers_id']) {
       if ($category['categories_status'] != '0') {
         echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
@@ -19,9 +19,9 @@
        echo '<h1 class="pageHeading">'.$seo_manufacturers['manufacturers_name'].'</h1>';
       }
 ?> 
-      <p class="comment"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?></p>
             <div class="comment">
-        <table border="0" width="100%" cellspacing="3" cellpadding="3" summary=""> 
+               <font color="#FFFFFF"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?></font>
+        <table border="0" width="100%" cellspacing="3" cellpadding="3" summary="" class="product_list_page"> 
           <tr align="center">
 <?php
     if (isset($cPath) && ereg('_', $cPath)) {
@@ -99,10 +99,10 @@
 ?> 
           </tr>
         </table>
+      <font color="#FFFFFF"><?php echo $seo_category['categories_footer_text']; //seoフレーズ ?></font>
             </div>
-      <p class="comment"><?php echo $seo_category['categories_footer_text']; //seoフレーズ ?></p>
-            <p class="pageBottom"></p>
-      <?php 
+<!--            <p class="pageBottom"></p>
+-->      <?php 
       $new_products_category_id = $current_category_id; 
       $exone_single = false; 
       $exone_query = tep_db_query("select * from categories where categories_id = '".$current_category_id."' and parent_id = '0'"); 
@@ -118,8 +118,8 @@
 <?php  
   if (isset($cPath_array)) {
     if ($seo_category['seo_description']) {
-      echo '<h3 class="pageHeading"><img align="top" alt="" src="images/menu_ico_a.gif"><span> ' . $seo_category['seo_name'] . 'について</span></h3>' . "\n";
-      echo '<p class="comment">' . $seo_category['seo_description'] . '</p>' . "\n"; //seoフレーズ
+      echo '<h3 class="pageHeading"><span> ' . $seo_category['seo_name'] . 'について</span></h3>' . "\n";
+      echo '<div class="comment"><div class="reviews_area"><p>' . $seo_category['seo_description'] . '</p></div></div>' . "\n"; //seoフレーズ
 ?>
         <p class="pageBottom"></p>
 <?php

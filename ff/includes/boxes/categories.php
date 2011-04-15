@@ -83,7 +83,7 @@ if($cPath){
               <?php
               if (in_array($subcategory['categories_id'], $id)) {
               ?>
-              <strong> 
+              <font color="#00C0FF"> 
               <?php
               }
               ?>
@@ -91,7 +91,7 @@ if($cPath){
               <?php
               if (in_array($subcategory['categories_id'], $id)) {
               ?>
-              </strong> 
+              </font> 
               <?php
               }
               ?>
@@ -135,7 +135,7 @@ if($cPath){
               <?php
               if (in_array($_subcategory['categories_id'], $id)) {
               ?>
-              <strong> 
+              <font color="#00C0FF"> 
               <?php
               }
               ?>
@@ -143,7 +143,7 @@ if($cPath){
               <?php
               if (in_array($_subcategory['categories_id'], $id)) {
               ?>
-              </strong> 
+              </font> 
               <?php
               }
               ?>

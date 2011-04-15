@@ -161,11 +161,10 @@ function session_win() {
       </td>
       <!-- body_text //-->
       <td id="contents" valign="top">
-
-      <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><span><?php echo HEADING_TITLE; ?></span></h1>
+      <h1 class="pageHeading"><span><?php echo HEADING_TITLE; ?></span></h1>
       <?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process', 'SSL')); ?>
       <div class="comment">
-      <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" summary="content">
+      <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" summary="content" class="product_info_box">
 
 <?php
   if (isset($_GET['login']) && ($_GET['login'] == 'fail')) {
@@ -264,6 +263,7 @@ function session_win() {
           </td>
         </tr>
       </table>
+<div class="product_info_box">
 <p>
 <i><strong>SSL認証</strong></i><br>
 当サイトでは、実在性の証明とプライバシー保護のため、日本ジオトラストのSSLサーバ証明書を使用し、SSL暗号化通信を実現しています。
@@ -276,7 +276,7 @@ function session_win() {
 <!-- END of GeoTrust Smart Icon tag -->
         </p>
 <div class="underline"></div>
-<?php echo TEXT_POINT ; ?>
+<?php echo TEXT_POINT ; ?></div>
       </div>
       </form>
 

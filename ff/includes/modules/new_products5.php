@@ -93,9 +93,9 @@
 ?>
 <!-- new_products //-->
 <?php if (0 < $num_products) { ?>
-<h3 class="pageHeading"><img align="top" alt="" src="images/menu_ico_a.gif"><span><?php echo $new_c_name; ?>の新着商品</span></h3>
+<h3 class="pageHeading"><span><?php echo $new_c_name; ?>の新着商品</span></h3>
 <div class="comment">
-<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+<table width="100%"  border="0" cellspacing="0" cellpadding="0" class="product_list_info">
 <?php
     while ($new_products = tep_db_fetch_array($new_products_query)) {
       $product_details = tep_get_product_by_id($new_products['products_id'], SITE_ID, $languages_id);
@@ -108,7 +108,7 @@
 ?>
   <tr>
     <td>
-      <table width="480" border="0" cellspacing="0" cellpadding="0" style="margin: 10px;">
+      <table width="480" border="0" cellspacing="0" cellpadding="0" style="margin: 10px;" class="product_listing_content02">
         <tr>
           <td width="<?php echo SMALL_IMAGE_WIDTH;?>" rowspan="2" style="padding-right:8px; " align="center">
             <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/' . $new_products['products_image'], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>'; ?>

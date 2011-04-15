@@ -48,12 +48,14 @@ H4 {
 	margin: 4px 0 0 0;
 }
 .comment {
-	width: 506px;
+	width: 515px;
 	*width: 530px;
 	margin: 0;
 	 padding: 5px 8px 6px 7px;
 	overflow: hidden;
 	font-size:12px;
+	background:url("../images/design/comment_bg_long.gif") repeat-y scroll 0 0 transparent;
+	margin:0 0 5px;
 }
 .comment_index02 , .comment_index01{
 	width: 520px;
@@ -116,7 +118,7 @@ UL {
 	padding: 5px 10px;
 	margin: 0px;
 	*margin-bottom: -5px;
-	background-color: #f2f2f2;
+	background-color: #CDCACC;
 }
 .r_c_links_ul li {
 	padding: 0px;
@@ -610,14 +612,17 @@ Ranking
 	padding-left: 5px;
 	margin:2px;
 	clear:both;
+	overflow:hidden;
 }
 .bestseller_text span{ float:left; color: #333; margin-left:5px; font-weight:bold;}
 .bestseller_text a{
-	height: 16px;
 	line-height: 13px;
 	overflow: hidden;
 	padding-left:13px;
 	color:#fff;
+	width:120px;
+	display:block;
+	float:left;
 }
 .bestseller_text a:hover{
 	color:#ccc;
@@ -742,7 +747,7 @@ product listing
 	width: 480px;
 	border: solid 1px #ddd;
 	background: #fff;
-	margin: 10px 11px;
+	margin: 10px 0px;
 	padding: 5px;
 }
 /* ---------------------------
@@ -751,7 +756,7 @@ News
 #news {
   	text-align: left;
 	padding:10px;
-	width:510px;
+	width:494px;
 	background-color:#CDCACC;
 	border:1px solid #616060;
 	overflow:hidden;
@@ -888,7 +893,7 @@ Information
 .information_table{
 	width: 100%;
 	font-size: 11px;
-	background-color:#F2F2F2;
+	background-color: #CDCACC;
 }
 .information_table td{
 	line-height: 20px;
@@ -999,7 +1004,7 @@ Footer
 }
 /*link color*/
 .product_listing_content a{
-	color: #C51138;
+	color: #00719d;
 }
 .comment .main ul li a{
 	color: #336600;
@@ -1047,18 +1052,18 @@ list-style-type:none;
 	font-size:14px;
 }
 .open_users{ background-color:#E0E0E0;}
-.open_users td{ background-color:#F2F2F2;}
-.open_users th{ background-color:#F2F2F2; text-align:left; font-size:12px; }
+.open_users td{ background-color: #ffffff;}
+.open_users th{ background-color: #ffffff; text-align:left; font-size:12px; }
 .open_tele{ color: #3399CC;}
 .error{ color:#FF0000;}
 #infomessage{
 	font-weight: bold;
 }
-.login_inc{ background-color:#F2F2F2; border:1px solid #E0E0E0; padding:5px;}
-#errormessage{ font-weight: bold; background-color:#F2F2F2; border:1px solid #E0E0E0; font-size:12px;}
+.login_inc{ background-color: #CDCACC; border:1px solid #E0E0E0; padding:5px;}
+#errormessage{ font-weight: bold; background-color: #CDCACC; border:1px solid #E0E0E0; font-size:12px;}
 .open_login{background-color:#E0E0E0; width:70%; font-size:12px;}
-.open_login td{ background-color:#F2F2F2; padding:6px;}
-.open_login th{ background-color:#F2F2F2; text-align:left; font-size:12px; }
+.open_login td{ background-color: #ffffff; padding:6px;}
+.open_login th{ background-color: #ffffff; text-align:left; font-size:12px; }
 .tickets_lout{font-size:12px; margin-bottom:5px;}
 .tickets,.infotable{background-color:#E0E0E0; font-size:12px;margin-bottom:5px;}
 .tickets a,.infotable a{font-size:12px;}
@@ -1078,7 +1083,7 @@ list-style-type:none;
 	margin-bottom:5px;
 	*margin:-5px 0 0 0;
 }
-.product_list_page{font-size:10px; background-color:#F2F2F2;
+.product_list_page{font-size:10px; background-color: #f2f2f2;
     border-right: 1px solid #DDDDDD;border-left: 1px solid #DDDDDD; padding:5px 0;}
 .product_list_info{background: #f2f2f2; padding-top: 10px; border-bottom:1px #ddd solid;border-left:1px #ddd solid;border-right:1px #ddd solid;}
 .header_m_login{ width:372px; *width:400px; *float:right;}
@@ -1102,7 +1107,7 @@ list-style-type:none;
 	margin:5px auto;
 	text-align:center;
 	clear:both;
-	background-color:#F2F2F2;
+	background-color: #CDCACC;
 	border:1px solid #E0E0E0;
 	text-align:left;
 }
@@ -1114,7 +1119,7 @@ list-style-type:none;
 .viewticket_warpper,.msg{
 	font-size:12px;
 }
-.message{ font-size:12px; text-align:left; clear:both;margin-bottom:5px;background-color:#F2F2F2; border:1px solid #E0E0E0;}
+.message{ font-size:12px; text-align:left; clear:both;margin-bottom:5px;background-color: #CDCACC; border:1px solid #E0E0E0;}
 .Icon {
     font-size:12px;
     width: auto;
@@ -1154,7 +1159,7 @@ a.Icon:hover {
 .products03 img{ margin:0 0 5px 5px; float:left;}
 .products03 span{ float:left; font-weight:bold; margin:12px 0 0 10px; font-size:12px;}
 .comment03{
-	background-color:#F2F2F2;
+	background-color: #CDCACC;
 	border:1px solid #DDD;
 	padding:2px;
 	margin-bottom:5px;
@@ -1256,7 +1261,7 @@ IMG {
 TR：（product_info）
 --------------------------- */
 TR.header2 {
-	background: #ffffff;
+	background: #f2f2f2;
 }
 /* ---------------------------
 TR：headerNavigation
@@ -1325,34 +1330,30 @@ TABLE：Info Box
 	width: 100%;
 }
 .product_info_box{
-	border: solid 1px #ccc;
 	background: #f4f4f4;
 	padding: 5px;
 }
 .product_info_box table{
 	width: 100%;
-	*width: 398px;
-	border-collapse: collapse;
-	border-spacing: 0px;
-	border: solid 1px #ddd; 
+	*width: 468px;
+/*	border: solid 1px #ddd; */
 }
 .product_info_box table td{
-	background: #fff;
-	border: solid 1px #ddd;
+	/*background: #fff;
+	border: solid 1px #ddd;*/
 }
 .product_info_box .small_table{
-	width: 100%;
-	border: dotted 1px #eee;
-	background: #f5ffff!important;
+	width: 95%;
 	padding: 0px 5px 5px;
+	overflow:hidden;
 }
-.product_info_box .small_table td{
-	border: none;
-	background: #F6F6F5 url(../images/design/box/dot.gif) bottom repeat-x!important;
-}
+.product_small_info{ border-bottom:1px dashed #ccc; overflow:hidden; padding:2px 0; margin:5px 0;}
+.product_small_info01{ float:left; width:200px;}
+.product_small_info02{ float:left;}
 .product_info_box .p_i_b_title{
-	color: #CC0000;
+	color: #00719d;
 	font-weight: bold;
+	width:100px;
 	background: #fff url(../images/design/box/product_info_box_td.gif) bottom repeat-x;
 }
 /* ---------------------------
@@ -1551,10 +1552,13 @@ TD.formAreaTitle {
 /* ---------------------------
 SPAN：Mark (out of stock)
 --------------------------- */
-SPAN.markProductOutOfStock a{
+.markProductOutOfStock{ overflow:hidden; float:right;}
+.markProductOutOfStock img{ float:left; margin-top:5px;}
+.markProductOutOfStock a{
 	font-size: 12px;
 	color: #c76170;
 	font-weight: bold;
+	float:left;
 }
 /* ---------------------------
 SPAN：Specials catalog price
@@ -1623,7 +1627,7 @@ Checkout procedures
 
 .image_border {
 	padding: 1px;
-	border: 1px solid #E8E8E8;
+/*	border: 1px solid #E8E8E8;*/
 }
 .listing_image {
 	float: left;
@@ -1708,22 +1712,23 @@ margin-top:-5px;
 background-image: url(../includes/languages/japanese/images/buttons/button_delete02.gif);
 }
 .shopping_cart_continue{
-display:block;
-cursor:pointer;
-width:72px;
-height:17px;
-padding:0;
+    cursor: pointer;
+    display: block;
+    height: 39px;
+    margin: 3px 40px 3px 120px;
+    padding: 0;
+    width: 125px;
 border:0;
 background-image: url(../includes/languages/japanese/images/buttons/button_continue_shopping.gif);
 }
 .shopping_cart_checkout{
-display:block;
-cursor:pointer;
-width:58px;
-height:17px;
-padding:0;
-border:0;
-background-image: url(../includes/languages/japanese/images/buttons/button_checkout.gif);
+    border: 0;
+    cursor: pointer;
+    display: block;
+    height: 39px;
+    padding: 0;
+    width: 125px;
+background-image: url(../includes/languages/japanese/images/buttons/button_checkout02.gif);
 }
 .waring_category {
 color:#000;
@@ -1764,3 +1769,4 @@ border:1px solid #CAC6BE;
 }
 .coment_img01 img{ *width:493px;}
 .coment_img02 img{ float:left; margin:0 5px 5px 5px;}
+.info_box_contents1{ width:100%; background:#ccc;}

@@ -244,9 +244,10 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
 
   for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
     $product_info = tep_get_product_by_id($order->products[$i]['id'], SITE_ID, $languages_id);
+    $data1 = explode("//", $product_info['products_attention_1']);
     
     echo '          <tr>' . "\n" .
-         '            <td class="main" align="center" valign="top" width="150">' . $order->products[$i]['qty'] . '&nbsp;個' . (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) ? '<br><span style="font-size:10px">'. tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
+         '            <td class="main" align="center" valign="top" width="150">' . $order->products[$i]['qty'] . '&nbsp;個' . (!empty($data1[0]) && strlen($data1[1])<=30 && tep_get_full_count_in_order($order->products[$i]['qty'], $data1[1]) ? '<br><span style="font-size:10px">'. tep_get_full_count_in_order($order->products[$i]['qty'], $data1[1]) .'</span>': '') . '</td>' . "\n" .
          '            <td class="main" valign="top">' . $order->products[$i]['name'];
 
     if (STOCK_CHECK == 'true') {
