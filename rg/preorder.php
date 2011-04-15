@@ -69,7 +69,7 @@
   } else {
     //$product_info = tep_db_fetch_array($product_info_query);
 ?>
-      <h1 class="pageHeading"><?php echo $po_game_c . '&nbsp;' . $product_info['products_name']; ?>を予約する</h1>
+      <h1 class="pageHeading"><span><?php echo $po_game_c . '&nbsp;' . $product_info['products_name']; ?>を予約する</span></h1>
             <div class="comment">
       <p>
         RMT学園では、<?php echo $po_game_c; ?>の予約サービスを行っております。<br>
