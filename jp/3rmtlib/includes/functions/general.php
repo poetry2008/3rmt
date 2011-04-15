@@ -3679,7 +3679,7 @@ function tep_get_cart_ff_products($pid, $cid_arr){
   return $arr;
 }
   // product_info 显示个数
-  function tep_display_attention_1_3($str) {
+  function tep_display_attention_1_32($str) {
     $str2 = $str;
     if (strlen($str) > 8) {
       $str = preg_replace('/00000000$/', '億', $str);
@@ -3691,5 +3691,37 @@ function tep_get_cart_ff_products($pid, $cid_arr){
     } else {
       return number_format($str);
     }
-    
+  }
+
+  // product_info 显示个数
+  function tep_display_attention_1_3($str) {
+    $str2 = $str;
+    if (strlen($str) > 8) {
+      $ret .= number_format(intval($str/100000000)) . '億';
+      if ($str%100000000 > 0) {
+        if ($str%100000000 > 10000) {
+          $ret .= number_format(intval(($str%100000000)/10000)) . '万';
+        }
+        if (($str%100000000)%10000 > 0) {
+          $ret .= number_format($str%10000);
+        }
+      }
+
+      return $ret;
+    } else if (strlen($str) > 4) {
+      //$str = preg_replace('/0000$/', '万', $str);
+      
+      $ret = $str/10000 . '万';
+      if ($str%10000 > 0) {
+        $ret .= $str%10000;
+      }
+      return $ret;
+    } else {
+      return number_format($str);
+    }
+    //if (preg_match('/^(\d*)([^\d]*)$/', $str, $out)) {
+    //  return number_format($out[1]).'（'.number_format($str2).'）'.$out[2];
+    //} else {
+    //  return number_format($str);
+    //}
   }
