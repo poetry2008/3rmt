@@ -1417,10 +1417,10 @@ function get_cart_products(){
           <td class="main" colspan="2">
               <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') 
             . '&nbsp;<span class="categories_input01">' 
-            . tep_draw_input_field('products_attention_1_1', isset($des_result['products_attention_1_1'])?$des_result['products_attention_1_1']:'', 'style="width:122px;" '.($site_id ? 'class="readonly" readonly' : ''))
-            . tep_draw_input_field('products_attention_1_2', isset($des_result['products_attention_1_2'])?$des_result['products_attention_1_2']:'', 'style="width:122px;" '.($site_id ? 'class="readonly" readonly' : ''))
-            . tep_draw_input_field('products_attention_1_3', isset($des_result['products_attention_1_3'])?$des_result['products_attention_1_3']:'', 'style="width:122px;" '.($site_id ? 'class="readonly" readonly' : ''))
-            . tep_draw_input_field('products_attention_1_4', isset($des_result['products_attention_1_4'])?$des_result['products_attention_1_4']:'', 'style="width:122px;" '.($site_id ? 'class="readonly" readonly' : ''))
+            . '項目名:' . tep_draw_input_field('products_attention_1_1', isset($des_result['products_attention_1_1'])?$des_result['products_attention_1_1']:'', 'style="width:80px;" '.($site_id ? 'class="readonly" readonly' : ''))
+            . 'テキスト1:' . tep_draw_input_field('products_attention_1_2', isset($des_result['products_attention_1_2'])?$des_result['products_attention_1_2']:'', 'style="width:80px;" '.($site_id ? 'class="readonly" readonly' : ''))
+            . '数値:' . tep_draw_input_field('products_attention_1_3', isset($des_result['products_attention_1_3'])?$des_result['products_attention_1_3']:'', 'style="width:80px;" '.($site_id ? 'class="readonly" readonly' : ''))
+            . 'テキスト２:' . tep_draw_input_field('products_attention_1_4', isset($des_result['products_attention_1_4'])?$des_result['products_attention_1_4']:'', 'style="width:80px;" '.($site_id ? 'class="readonly" readonly' : ''))
             .'</span>'; ?>
           </td>
         </tr>
