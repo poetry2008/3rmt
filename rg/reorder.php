@@ -377,7 +377,6 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
 ?>
 <div class="comment">
 <div id='form'>
-<!--<form action="reorder.php" method="post" name="order">-->
 <?php
 echo tep_draw_form('order', tep_href_link('reorder.php'));
 ?>

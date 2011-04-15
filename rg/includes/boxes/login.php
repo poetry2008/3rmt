@@ -46,12 +46,7 @@
 ?>
 <div class="login box">
         <div class="menu_top"><img src="images/menu_ico.gif" alt="" align="top"><span>会員登録</span></div>
-<!--        <div id="login_form">
-       	<div class="login_form1"><a href="<?php echo 
-                tep_href_link(FILENAME_ACCOUNT, '', 'SSL');?>"><img src="images/login_02.gif" alt=" ログイン"></a></div>
-            <div class="login_form2"><a href="<?php echo
-            tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL');?>"><img src="images/signup_01.gif" alt=""></a></div>
--->      <ul class="login_list">
+      <ul class="login_list">
           <li class="login_list_info"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . HEADER_TITLE_MY_ACCOUNT . '</a>'."\n"; ?></li>
           <li class="login_list_info"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL') . '">' . MYACCOUNT_EDIT . '</a>'."\n"; ?></li>
 		  <li class="login_list_info"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_HISTORY, '', 'SSL') . '">' . MYACCOUNT_HISTORY . '</a>'."\n"; ?></li>
