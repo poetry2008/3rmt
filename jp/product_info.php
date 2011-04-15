@@ -119,8 +119,6 @@ function showimage($1) {
         <table width="689"  border="0" cellpadding="0" cellspacing="0" border=1>
           <tr>
             <td width="250" valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="0">
-
-
                 <?php
     if (tep_not_null($product_info['products_image'])) {
 ?>
@@ -173,7 +171,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                     </td>
                   </tr>
                 </table>
-                        <br>
+                <br>
                 <table width="100%"  border="0" cellpadding="0" cellspacing="0" class="infoBox">
                   <tr>
                     <td>
@@ -192,18 +190,6 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                       <tr class="infoBoxContents">
                         <td class="main"><font color="#0070AF"><?php print($data2[0]) ; ?></font></td>
                         <td class="main"><?php print( $data2[1]) ; ?></td>
-                      </tr>
-                      <?php } ?>
-                      <tr class="infoBoxContents">
-                        <td class="main" width="65"><font color="#0070AF">商品コード</font></td>
-                        <td class="main"><?php if (PRODUCT_LIST_MODEL > 0){ echo $product_info['products_model'] ; }else{ echo '-' ; } ?></td>
-                      </tr>
-                      <?php 
-          if(!empty($product_info['products_attention_1_1']) && !empty($product_info['products_attention_1_3'])){
-          ?>
-                      <tr class="infoBoxContents">
-                        <td class="main"><font color="#0070AF"><?php echo $product_info['products_attention_1_1'] ; ?></font></td>
-                        <td class="main"><?php echo $product_info['products_attention_1_2'] .'&nbsp;&nbsp;'.tep_display_attention_1_3($product_info['products_attention_1_3']) . $product_info['products_attention_1_4'] ; ?></td>
                       </tr>
                       <?php } ?>
                       <tr class="infoBoxContents">
