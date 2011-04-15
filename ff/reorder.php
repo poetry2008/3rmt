@@ -659,7 +659,7 @@ function orderConfirmPage(){
     }
   } else {
     // has no order or info error
-    echo '<div class="comment">"注文番号" または"メールアドレス" が一致しませんでした。<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="47" height="17" alt="前に戻る" title="前に戻る"></a></div></div>';
+    echo '<div class="comment"><div class="product_info_box">"注文番号" または"メールアドレス" が一致しませんでした。<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="47" height="17" alt="前に戻る" title="前に戻る"></a></div></div></div>';
   }
 ?>
 <?php } else {
