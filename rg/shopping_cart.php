@@ -280,8 +280,9 @@ function change_num(ob,targ, quan,a_quan)
             <tr>
               <td><br>
                 <table border="0" width="100%" cellspacing="0" cellpadding="2" summary="rmt">
-                  <tr>
-                    <td width="17%" align="left" class="main">
+                  <tr style="text-align:center;">
+                  	<td width="22%"></td>
+                    <td width="17%" align="center" class="main">
 <?php
     $back = sizeof($navigation->path)-2;
     if (isset($navigation->path[$back]) and 0) {
@@ -292,12 +293,13 @@ function change_num(ob,targ, quan,a_quan)
                     <button  class="shopping_cart_continue" onClick="history.back(); return false;"></button>
 <?php } ?>
                     </td>
+                    <td width="6%"></td>
                     <td align="left" class="main">
                       <input type="submit" name="checkout" value="" class="shopping_cart_checkout">
                     </td>
                   </tr>
                   <tr>
-                    <td class="main" colspan="3"><?php echo TEXT_UPDATE_CART_INFO; // 2003.02.27 nagata Add Japanese osCommerce ?></td>
+                    <td class="main" colspan="4"><?php echo TEXT_UPDATE_CART_INFO; // 2003.02.27 nagata Add Japanese osCommerce ?></td>
                   </tr>
                 </table>
 <?php 
