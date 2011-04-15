@@ -128,7 +128,6 @@
 <?php  if (!empty($seo_category['text_information'])) {
     echo $seo_category['text_information'];
 ?>
-        <!--<p class="pageBottom"></p>-->
 <?php 
         }
 ?>

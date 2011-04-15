@@ -54,9 +54,6 @@
 
       <h1 class="pageHeading"><?php echo SEND_MAIL_HEADING_TITLE; ?></h1>
       <div class="comment">
-      <!--<table width="100%" border="0" cellpadding="0" cellspacing="0" summary="table">
-      <tr>
-      </td>-->
       <div class="send_mail">
 <?php
   if ($success_single == false) {  
