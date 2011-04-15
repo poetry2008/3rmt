@@ -149,9 +149,9 @@ function change_num(ob, targ, quan,a_quan)
          <h1 class="pageHeading_long"><?php echo $product_info['products_name']; ?></h1>
          <div class="comment_long">
          <h2 class="line"><?php echo ds_tep_get_categories((int)$_GET['products_id'],1); ?> <?php echo ds_tep_get_categories((int)$_GET['products_id'],2); ?></h2>
-         <table width="100%"  border="0" cellpadding="0" cellspacing="0" summary="rmt">
+         <table width="684"  border="0" cellpadding="0" cellspacing="0" summary="rmt" bgcolor="#f2f2f2">
           <tr>
-            <td width="250" valign="top" class="product_info_box">
+            <td width="250" valign="top">
                 <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="rmt_img">
                     <?php
         if (tep_not_null($product_info['products_image'])) {
@@ -196,7 +196,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                     <tr>
                       <td>
                       <div class="product_info_box">
-                      <table summary="info_box_contents">
+                      <table summary="info_box_contents" cellpadding="0" cellspacing="1" border="0" class="info_box_contents1">
                           <tr class="infoBoxContents">
                             <td class="main p_i_b_title">商品コード</td>
                             <td class="main"><?php if (PRODUCT_LIST_MODEL > 0){ echo $product_info['products_model'] ; }else{ echo '-' ; } ?></td>
@@ -229,7 +229,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                                   # -- 注文数量と単価のリスト --------------------------
                                   if(tep_not_null($product_info['products_small_sum'])) {
                                     $wari_array = array();
-                                    echo '<span class="smallText">単位は1個あたりの価格となります</span><table border="0" cellpadding="0" cellspacing="0" class="small_table">';
+                                    echo '<span class="smallText">単位は1個あたりの価格となります</span><div class="small_table">';
                                     $parray = explode(",", $product_info['products_small_sum']);
                                     for($i=0; $i<sizeof($parray); $i++) {
                                       $tt = explode(':', $parray[$i]);
@@ -239,12 +239,12 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                                     @ksort($wari_array);
                                   
                                     foreach($wari_array as $key => $val) {
-                                      echo '<tr>';
-                                      echo '<td class="main" align="left">'.$key.'個以上&nbsp;注文すると&nbsp;</td>';
-                                      echo '<td class="main"><b>'.$currencies->display_price(round($pricedef + $val),0).'</b></td>';
-                                      echo '</tr>'."\n";
+                                      echo '<div class="product_small_info">';
+                                      echo '<div class="product_small_info01">'.$key.'個以上&nbsp;注文すると&nbsp;</div>';
+                                      echo '<div class="product_small_info02"><b>'.$currencies->display_price(round($pricedef + $val),0).'</b></div>';
+                                      echo '</div>'."\n";
                                     }
-                                    echo '</table>'."\n";
+                                    echo '<div>'."\n";
                                   } else {
                                     echo '<strong>'.$products_price.'</strong>';
                                   }
@@ -479,7 +479,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                                 <a style="display:block;" href="javascript:void(0)" onClick="change_num('quantity','down', 1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/ndown.gif" alt="-"></a>
                               </div>
                             </td>
-                            <td valign="middle"><?php echo tep_image_submit('button_in_cart.jpg', IMAGE_BUTTON_IN_CART); ?></td>
+                            <td valign="middle"><?php echo tep_image_submit('button_in_cart.gif', IMAGE_BUTTON_IN_CART); ?></td>
                           </tr>
                         </table>
                         <?php
@@ -492,7 +492,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                       <td align="right" valign="bottom" class="smallText">
                           <div class="dot"></div>
                         <br>
-                        <a href="<?php echo tep_href_link(FILENAME_TELL_A_FRIEND,'products_id='.(int)$_GET['products_id']) ;  ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_tellafriend.jpg',BOX_HEADING_TELL_A_FRIEND);?></a>&nbsp; <a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE,'products_id='.(int)$_GET['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_review.jpg',BOX_REVIEWS_WRITE_REVIEW);?></a>&nbsp; <?php echo tep_draw_form('open',tep_href_link('open.php'),'get');?><input type="image" style="vertical-align:bottom;" src="<?php echo DIR_WS_IMAGES;?>design/button/botton_question.jpg"><?php echo tep_draw_hidden_field('products_name', $product_info['products_name']) ; ?></form> </td>
+                        <a href="<?php echo tep_href_link(FILENAME_TELL_A_FRIEND,'products_id='.(int)$_GET['products_id']) ;  ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_tellafriend.jpg',BOX_HEADING_TELL_A_FRIEND);?></a>&nbsp; <a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE,'products_id='.(int)$_GET['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_review.jpg',BOX_REVIEWS_WRITE_REVIEW);?></a>&nbsp; <?php echo tep_draw_form('open',tep_href_link('open.php'),'get');?><input type="image" style="vertical-align:bottom;" src="<?php echo DIR_WS_IMAGES;?>design/button/botton_question.jpg"><?php echo tep_draw_hidden_field('products_name', $product_info['products_name']) ; ?></form><br><br></td>
                     </tr>
                   </table></td>
               </tr>
@@ -557,15 +557,15 @@ while($tag = tep_db_fetch_array($tag_query)) {
  ?>
  </div>
          <?php if($description){?>
-            <h3 class="pageHeading_long"><img align="top" alt="" src="images/menu_ico.gif"><span><?php echo $product_info['products_name']; ?>について</span></h3>
+            <h3 class="pageHeading_long"><span><?php echo $product_info['products_name']; ?>について</span></h3>
             <!-- 説明文　-->
-            <p class="comment_long">
-              <?php 
+            <div class="comment_long">
+              <div  class="reviews_area"><p><?php 
             //Edit ds-style 2005.11.29
             //echo stripslashes($product_info['products_description']);
-            echo $description;
+            echo replace_store_name($description);
             ?>
-            </p>
+            </p></div></div>
          <?php }?>
         <?php
 //    $reviews = tep_db_query("select count(*) as count from " . TABLE_REVIEWS . " where products_id = '" . $_GET['products_id'] . "'");

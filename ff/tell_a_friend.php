@@ -48,7 +48,7 @@
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
   <!-- header_eof //--> 
   <!-- body //--> 
-  <table width="900" border="0" cellpadding="0" cellspacing="0" summary="box" class="side_border" id="body_text"> 
+  <table width="900" border="0" cellpadding="0" cellspacing="0" summary="box" class="side_border"> 
     <tr> 
       <td valign="top" class="left_colum_border"> <!-- left_navigation //--> 
       <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
@@ -58,13 +58,13 @@
   if ($valid_product == false) {
 ?> 
       
-      <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico_a.gif"><span><?php echo HEADING_TITLE_ERROR; ?></span></h1> 
+      <h1 class="pageHeading"><span><?php echo HEADING_TITLE_ERROR; ?></span></h1> 
       <div class="comment"><?php echo ERROR_INVALID_PRODUCT; ?></div>
       <?php
   } else {
     $product_info = tep_db_fetch_array($product_info_query);
 ?> 
-      <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico_a.gif"><span><?php echo sprintf(HEADING_TITLE, $product_info['products_name']); ?></span></h1> 
+      <h1 class="pageHeading"><span><?php echo sprintf(HEADING_TITLE, $product_info['products_name']); ?></span></h1> 
       
       <?php
     $error = false;
@@ -142,7 +142,7 @@
 ?> 
       <?php echo tep_draw_form('email_friend', tep_href_link(FILENAME_TELL_A_FRIEND, 'action=process&products_id=' . $_GET['products_id'])) . tep_draw_hidden_field('products_name', $product_info['products_name']); ?> 
       <div class="comment">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0" summary="table"> 
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" summary="table" class="product_info_box"> 
         <tr> 
           <td class="formAreaTitle"><?php echo FORM_TITLE_CUSTOMER_DETAILS; ?></td> 
         </tr> 

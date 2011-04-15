@@ -25,7 +25,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
       </td>
       <!-- body_text //-->
       <td id="contents" valign="top">
-        <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><span><?php echo HEADING_TITLE; ?></span></h1>
+        <h1 class="pageHeading"><span><?php echo HEADING_TITLE; ?></span></h1>
 <?php if ($_POST) {
   include(DIR_WS_CLASSES . 'admin_order.php');
 
@@ -167,7 +167,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
             }
           }
         }
-        echo '<div class="comment">注文内容の変更を承りました。電子メールをご確認ください。 <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" width="63" height="18" alt="TOPに戻る" title="TOPに戻る"></a></div></div>';
+        echo '<div class="comment"><div class="product_info_box">注文内容の変更を承りました。電子メールをご確認ください。 <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" width="63" height="18" alt="TOPに戻る" title="TOPに戻る"></a></div></div></div>';
         // sent mail to customer
         // ccdd
         $mail    = tep_db_fetch_array(tep_db_query("
@@ -393,7 +393,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
         // edit order
 ?>
 <div class="comment">
-<div id='form'>
+<div id='form' class="product_info_box">
 <!--<form action="reorder.php" method="post" name="order">-->
 <?php
 echo tep_draw_form('order', tep_href_link('reorder.php'));
@@ -533,7 +533,7 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
 </p>
 </form>
 </div>
-<div id='confirm' style='display:none; text-align: center;'>
+<div id='confirm' style='display:none; text-align: center;' class="product_info_box">
   <div id='confirm_content'></div>
   <input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="確定する" title="確定する" onClick="document.order.submit()" >
   <input type='image' src="includes/languages/japanese/images/buttons/button_back.gif" alt="前に戻る" title="前に戻る" onClick="document.getElementById('confirm').style.display='none';document.getElementById('form').style.display='block'" >
@@ -684,9 +684,9 @@ function orderConfirmPage(){
   ?>
 <div class="comment">
 <!--<form action="reorder.php" method="post" name='order'>-->
-<?php
+<div class="product_info_box"><?php
 echo tep_draw_form('order', tep_href_link('reorder.php'));
-?>
+?></
 <input type="hidden" name="dummy" value="あいうえお眉幅">   
 <table class="information_table03" summary="table" border="0" cellpadding="0" cellspacing="1">
  <tr>
@@ -712,7 +712,7 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
  </tr>
 </table>
 </form>
-<?php }?>
+<?php }?></div>
     </div>
         <p class="pageBottom"></p>
       </td>

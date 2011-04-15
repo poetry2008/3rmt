@@ -25,9 +25,9 @@
       </td>
       <!-- body_text //-->
       <td valign="top" id="contents">
-        <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><span><?php echo HEADING_TITLE ; ?></span></h1>
+        <h1 class="pageHeading"><span><?php echo HEADING_TITLE ; ?></span></h1>
         <div class="comment">
-          <table border="0" width="100%" cellspacing="0" cellpadding="0">
+          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_info_box">
             <tr>
               <td>
                 <?php

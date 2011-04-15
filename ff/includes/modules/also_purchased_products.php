@@ -26,7 +26,7 @@
 <!-- also_purchased_products //-->
 <h1 class="pageHeading_long"><?php echo $product_info['products_name'];?><?php  echo TEXT_ALSO_PURCHASED_PRODUCTS ; ?> </h1>
 <div class="comment_long">
-<?php
+<div class="product_info_box"><?php
       $row = 0;
       $col = 0;
       
@@ -57,7 +57,7 @@
       }
       echo '</tr>';
   echo '</table>' ;
-?> 
+?> </div>
 </div>
 <!-- also_purchased_products_eof //--> 
 <?php

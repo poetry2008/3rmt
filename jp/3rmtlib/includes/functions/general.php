@@ -3645,3 +3645,29 @@ function PPHttpPost($methodName_, $nvpStr_) {
 
   return $httpParsedResponseAr;
 }
+
+function tep_get_cart_ff_products($pid, $cid_arr){
+  $raw = "
+    select distinct(p2c.products_id)
+    from products_to_tags p2t,products_to_carttag p2c, products p, products p2
+    where p2t.products_id in (".join(',',$pid).")
+      and p2c.tags_id = p2t.tags_id
+      and p.products_bflag = p2c.buyflag
+      and p.products_id = p2t.products_id
+      and p2.products_id = p2c.products_id
+      and p2.products_cartflag = '1'
+      and p2c.products_id not in (".join(',',$pid).")
+      and p2.products_real_quantity + p2.products_virtual_quantity > p2.products_cart_min
+    order by p2.products_cartorder
+    limit ".CART_TAG_PRODUCTS_MAX."
+  ";
+  $query = tep_db_query($raw);
+  $arr = array();
+  while($p = tep_db_fetch_array($query)){
+    $exists_pro_query = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where categories_id in (".implode(',', $cid_arr).") and products_id = '".$p['products_id']."'"); 
+    if (tep_db_num_rows($exists_pro_query)) {
+      $arr[] = $p['products_id'];
+    }
+  }
+  return $arr;
+}

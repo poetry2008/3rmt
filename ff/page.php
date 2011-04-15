@@ -66,17 +66,18 @@
         <?php
     } else {
     ?>
-    <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><span><?php echo PAGE_HEADING_TITLE ; ?></span></h1> 
+    <h1 class="pageHeading"><span><?php echo PAGE_HEADING_TITLE ; ?></span></h1> 
         <div class="comment">
-       <?php echo PAGE_TEXT_INFORMATION; ?>
+       <div class="product_info_box"><?php echo PAGE_TEXT_INFORMATION; ?></div>
        </div>
        <p class="pageBottom"></p>
      <?php
       }
           } else {
           ?>
-          <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><span><?php echo PAGE_NAVBAR_TITLE;?></span></h1> 
+          <h1 class="pageHeading"><span><?php echo PAGE_NAVBAR_TITLE;?></span></h1> 
           <div class="comment">
+          <div class="product_info_box">
           <ul class="comment_page01">
           <?php
             while ($page_info_res = tep_db_fetch_array($page_info_query)) {
@@ -84,6 +85,7 @@
             }
           ?>
           </ul>
+          </div>
           </div>
           <p class="pageBottom"></p>
           <?php

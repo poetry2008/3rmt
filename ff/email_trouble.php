@@ -19,10 +19,10 @@
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents">
-      <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><span><?php echo 'フリーメールでメールが受け取れない方へ'; ?></span></h1>
+      <h1 class="pageHeading"><span><?php echo 'フリーメールでメールが受け取れない方へ'; ?></span></h1>
         <div class="comment"> 
 
-<div class="content_email01">
+<div class="product_info_box">
   <div id="bgn_content">
     <div id="wrapper_kiyaku">
       <p>
