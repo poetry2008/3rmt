@@ -180,7 +180,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                 <td>
                   <table class="infoBox" width="100%" border="0" cellpadding="3" cellspacing="1">
                     <tr class="infoBoxContents">
-                      <td class="main"><font color="#0070AF">商品コー�?/font></td>
+                      <td class="main"><font color="#0070AF">商品コード</font></td>
                       <td class="main">
                         <?php if (PRODUCT_LIST_MODEL > 0){ echo $product_info['products_model'] ; }else{ echo '-' ; } ?>
                       </td>
@@ -212,7 +212,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                     </tr>
                     <?php } ?>
                     <tr class="infoBoxContents">
-                      <td class="main"><font color="#0070AF">メーカー�?/font></td>
+                      <td class="main"><font color="#0070AF">メーカー名</font></td>
                       <td class="main">
                         <?php include(DIR_WS_BOXES.'manufacturer_info.php') ; ?>
                       </td>
@@ -222,10 +222,10 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                       <td class="main">
                         <?php
                                   # 追加スタート ---------------------------------------
-                                  # -- 注文数量と単価のリス�?--------------------------
+                                  # -- 注文数量と単価のリスト --------------------------
                                   if(tep_not_null($product_info['products_small_sum'])) {
                                     $wari_array = array();
-                                    echo '<span class="smallText">単位�?個あたりの価格となります</span><table border="0" cellpadding="0" cellspacing="0" class="infoBox">';
+                                    echo '<span class="smallText">単位は1個あたりの価格となります</span><table border="0" cellpadding="0" cellspacing="0" class="infoBox">';
                                     $parray = explode(",", $product_info['products_small_sum']);
                                     for($i=0; $i<sizeof($parray); $i++) {
                                       $tt = explode(':', $parray[$i]);
@@ -236,7 +236,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                                   
                                     foreach($wari_array as $key => $val) {
                                       echo '<tr class="infoBoxContents">';
-                                      echo '<td class="main" align="right">'.$key.'個以�?nbsp;注文する�?nbsp;</td>';
+                                      echo '<td class="main" align="right">'.$key.'個以上&nbsp;注文すると&nbsp;</td>';
                                       echo '<td class="main"><b>'.$currencies->display_price(round($pricedef + $val),0).'</b></td>';
                                       echo '</tr>'."\n";
                                     }
@@ -245,15 +245,15 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                                     echo '<strong>'.$products_price.'</strong>';
                                   }
                                   
-                                  # -- 注文数量と単価のリス�?--------------------------
-                                  # 追加エン�?-------------------------------------------
+                                  # -- 注文数量と単価のリスト --------------------------
+                                  # 追加エンド -------------------------------------------
                                 
                                 ?>
                       </td>
                     </tr>
                     <tr class="infoBoxContents">
-                      <td class="main"><font color="#0070AF">注文可能�?/font></td>
-                      <td class="main">残り<b>&nbsp;<?php echo tep_show_quantity($product_info['products_quantity']); ?></b>&nbsp;�?/td>
+                      <td class="main"><font color="#0070AF">注文可能数</font></td>
+                      <td class="main">残り<b>&nbsp;<?php echo tep_show_quantity($product_info['products_quantity']); ?></b>&nbsp;個</td>
                     </tr>
                     <?php 
                       if(!empty($data3[0])){
@@ -336,12 +336,12 @@ while($tag = tep_db_fetch_array($tag_query)) {
       } else if($product_info['products_quantity'] < 1) {
         if($product_info['products_bflag'] == '1') {
           # 買い取り商品
-          echo '<br><span class="markProductOutOfStock">一時停�?/span>';
+          echo '<br><span class="markProductOutOfStock">一時停止</span>';
         } elseif ($product_info['products_cflag'] == '0') {
           echo '<br><span class="markProductOutOfStock">売り切れ</span>';
         } else {
           # 通常商品
-          echo '<br><span class="markProductOutOfStock">在庫切れ<br><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="absmiddle" alt=""><a href=' . tep_href_link(FILENAME_PREORDER, 'products_id=' . $_GET['products_id']) . '>' . $product_info['products_name'] . 'を予約す�?/a></span>';
+          echo '<br><span class="markProductOutOfStock">在庫切れ<br><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="absmiddle" alt=""><a href=' . tep_href_link(FILENAME_PREORDER, 'products_id=' . $_GET['products_id']) . '>' . $product_info['products_name'] . 'を予約する</a></span>';
         }
       }else{    
         // ccdd
@@ -354,7 +354,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
         ");
         $products_attributes = tep_db_fetch_array($products_attributes_query);
         if ($products_attributes['total'] > 0) {
-          echo '<!-- 商品オプショ�?-->' ;
+          echo '<!-- 商品オプション -->' ;
           echo '<br>'."\n".'<b>' . TEXT_PRODUCT_OPTIONS . '</b><br>' .
                '<table class="box_des_01">';
     // ccdd
@@ -478,7 +478,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                   <a style="display:block;" href="javascript:void(0)" onClick="change_num('quantity','down', 1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/ndown.gif" alt="-"></a>
                 </div>
               </td>
-                        <td align="left">�?/td>
+                        <td align="left">個</td>
                       <td align="right"><?php echo tep_image_submit('button_in_cart.gif', IMAGE_BUTTON_IN_CART); ?></td>
                     </tr>
                   </table>
@@ -524,7 +524,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
         <tr>
           <?php
                     while($sub_colors = tep_db_fetch_array($sub_colors_query)) {
-                      //色名を取�
+                      //色名を取得
           // ccdd
           $colors_name_query = tep_db_query("
               SELECT color_name 
@@ -621,8 +621,8 @@ while($tag = tep_db_fetch_array($tag_query)) {
 ?>
       <h1 class="pageHeading_long"><?php echo 'アフィリエイト広告用タグ' ; ?>
       </h1>
-      <p class="box_des"><b>この商品の広告を登録することができます！�?/b><br>
-        あなたのホームページにこの商品を表示させるには以下のソースコードをコピーしてホームページにペースとしてください。この商品の画像が表示されます�?/p>
+      <p class="box_des"><b>この商品の広告を登録することができます！！</b><br>
+        あなたのホームページにこの商品を表示させるには以下のソースコードをコピーしてホームページにペースとしてください。この商品の画像が表示されます。</p>
       <textarea class="boxText" style="width:95%; height:90px; "><a href="<?php echo HTTP_SERVER.DIR_WS_CATALOG.FILENAME_PRODUCT_INFO.'?products_id='.(int)$_GET['products_id'].'&ref='.$affiliate_id ; ?>" class="blank"><?php echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image'], $product_info['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"');?><br><?php echo $product_info['products_name'] ; ?> </a>
 </textarea>
       <p align="center" class="box_des">実際に表示されるイメージ<br>

@@ -106,6 +106,7 @@ function showimage($1) {
     }
   
   $description = replace_store_name($product_info['products_description']);
+  $data1 = explode("//", $product_info['products_attention_1']);
   $data2 = explode("//", $product_info['products_attention_2']);
   $data3 = explode("//", $product_info['products_attention_3']);
   $data4 = explode("//", $product_info['products_attention_4']);
