@@ -3697,17 +3697,14 @@ function tep_get_cart_ff_products($pid, $cid_arr){
   function tep_display_attention_1_3($str) {
     $str2 = $str;
     if (strlen($str) > 8) {
-      //$str = preg_replace('/00000000$/', '億', $str);
-      $ret .= intval($str/100000000) . '億';
+      $ret .= number_format(intval($str/100000000)) . '億';
       if ($str%100000000 > 0) {
         if ($str%100000000 > 10000) {
-          $ret .= intval(($str%100000000)/10000) . '万';
+          $ret .= number_format(intval(($str%100000000)/10000)) . '万';
         }
         if (($str%100000000)%10000 > 0) {
-          $ret .= $str%10000;
+          $ret .= number_format($str%10000);
         }
-      } else {
-
       }
 
       return $ret;
