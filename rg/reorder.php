@@ -665,7 +665,6 @@ function orderConfirmPage(){
   // enter basic order info
   ?>
 <div class="comment">
-<!--<form action="reorder.php" method="post" name='order'>-->
 <?php
 echo tep_draw_form('order', tep_href_link('reorder.php'));
 ?>
