@@ -136,7 +136,10 @@
             $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
           } else {
             if ($result3['value'] > -200) {
-              $get_point = abs($result3['value']);
+              if ($check_status['payment_method'] == '来店支払い') {
+              } else {
+                $get_point = abs($result3['value']);
+              }
             } else {
               $get_point = 0;
             }
@@ -339,7 +342,10 @@
         $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
       } else {
         if ($result3['value'] > -200) {
-          $get_point = abs($result3['value']);
+          if ($check_status['payment_method'] == '来店支払い') {
+          } else {
+            $get_point = abs($result3['value']);
+          }
         } else {
           $get_point = 0;
         }
@@ -1042,7 +1048,7 @@ function q_4_3(){
   } else if ($oq['orders_questions_type']) {
     $orders_questions_type = $oq['orders_questions_type'];
   } else {
-    if (strpos($order->info['payment_method'], '買い取り')) {
+    if (strpos($order->info['payment_method'], '買い取り') || $order->info['payment_method'] == '来店支払い') {
       $orders_questions_type = 1;
     } else if ($order->info['payment_method'] === 'クレジットカード決済' || $order->info['payment_method'] === 'ペイパル決済') {
       $orders_questions_type = 2;

@@ -341,7 +341,9 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
     if($cart->show_total() > -200) {
 ?>
           <tr> 
-            <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+            <td>
+<?php if (false) {?>          
+            <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
                 <tr class="infoBoxContents"> 
                   <td>
 <table width="100%" class="table_ie" border="0" cellspacing="0" cellpadding="2">
@@ -362,7 +364,9 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
           
           </td> 
                 </tr> 
-              </table></td> 
+              </table>
+              <?php }?> 
+              </td> 
           </tr> 
           <tr> 
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 

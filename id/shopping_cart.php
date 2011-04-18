@@ -211,15 +211,19 @@ function change_num(ob,targ, quan,a_quan)
             <td align="right" class="main">
               <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice_01">
               	<tr class="infoBoxNoticeContents_01">
-                	<td colspan="2" class="text">買取金額が200円以下の注文は振込み手数料の関係でお支払いができません<br>
-申し訳ございませんが、ウェブマネーやネクソンポイントなどの商品をカートに入れていただくか<br>
-ポイントでの返金になります。<br>
-
+                	<td colspan="2" class="text">
+！注意！<br>
+買取金額が200円以下の場合、手数料の関係でお支払いができません。<br>
+申し訳ございませんがポイントの加算になります。<br>
+＊1 尚、99円以下はポイントでのお支払いか、来社による、直接現金でのお支払いになります。<br>
+＊2 ポイントの加算をご希望のお客様は当サイト（サイト名）のアカウントが必要になります。
 </td>
                 </tr>
                 <tr class="infoBoxNoticeContents_01">
                   <td width="33" height="35"><img src="images/icons/hinto.jpg" align="absmiddle" /></td>
-                  <td align="left" valign="middle">&nbsp;&nbsp;ヒント：様々な場所でよく使われるのウェブマネーやネクソンポイントをお買い上 げしてみてはいかがですか？</td>
+                  <td align="left" valign="middle">
+ ヒント！<br>買取金額が200円以下の場合は、ウェブマネーを買ってみてはいかがですか？                 
+                  </td>
                 </tr>
               </table>
             </td>
