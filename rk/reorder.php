@@ -291,11 +291,11 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
     $product_info = tep_get_product_by_id($o->products[$i]['id'], SITE_ID ,$languages_id);
     $data1 = explode("//", $product_info['products_attention_1']);
   
-  $products_ordered .= $products_ordered_attributes . "\n";
-  $products_ordered .= '個数　　　　　　　：' . $o->products[$i]['qty'] . '個' . tep_get_full_count($o->products[$i]['qty'], $data1[1]) . "\n";
-  if(tep_not_null($o->products[$i]['character'])) {
-    $products_ordered .= 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($o->products[$i]['character']) : $o->products[$i]['character']) . "\n";
-  }
+    $products_ordered .= $products_ordered_attributes . "\n";
+    $products_ordered .= '個数　　　　　　　：' . $o->products[$i]['qty'] . '個' . tep_get_full_count2($o->products[$i]['qty'], $o->products[$i]['id']) . "\n";
+    if(tep_not_null($o->products[$i]['character'])) {
+      $products_ordered .= 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($o->products[$i]['character']) : $o->products[$i]['character']) . "\n";
+    }
   
     $products_ordered .= '------------------------------------------' . "\n";
   }
@@ -665,7 +665,6 @@ function orderConfirmPage(){
   // enter basic order info
   ?>
 <div class="comment">
-<!--<form action="reorder.php" method="post" name='order'>-->
 <?php
 echo tep_draw_form('order', tep_href_link('reorder.php'));
 ?>

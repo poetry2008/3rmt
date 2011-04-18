@@ -193,9 +193,6 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                       <td class="main"><?php echo $product_info['products_attention_1_2'] .'&nbsp;&nbsp;'.tep_display_attention_1_3($product_info['products_attention_1_3']) . $product_info['products_attention_1_4'] ; ?></td>
                     </tr>
                     <?php } ?>
-                    </table>
-                    <br>
-                    <table class="infoBox" width="100%" border="0" cellpadding="3" cellspacing="1">
                       <?php
                       if(!empty($data1[0])){
                       ?>

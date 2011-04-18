@@ -183,8 +183,6 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                             <td class="main"><?php echo $product_info['products_attention_1_2'] .'&nbsp;&nbsp;'.tep_display_attention_1_3($product_info['products_attention_1_3']) . $product_info['products_attention_1_4'] ; ?></td>
                           </tr>
                           <?php } ?>
-                        </table>
-                        <table summary="info_box_contents">
                           <?php 
                       if(!empty($data1[0])){
                       ?>
@@ -555,8 +553,6 @@ while($tag = tep_db_fetch_array($tag_query)) {
 //    if ($reviews_values['count'] > 0) {
     include(DIR_WS_BOXES.'reviews.php') ;
 ?>
-<!--         <p><a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS,'product_id='.(int)$_GET['products_id']) ; ?>"><?php echo TEXT_CURRENT_REVIEWS . ' ' . $reviews_values['count']; ?></a></p>
- -->
 <?php
 //    }
 
@@ -579,8 +575,6 @@ while($tag = tep_db_fetch_array($tag_query)) {
         <br>
         <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="rmt">
           <tr>
-<!--             <td class="main"><a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS, substr(tep_get_all_get_params(), 0, -1)); ?>"><?php echo tep_image_button('button_reviews.gif', IMAGE_BUTTON_REVIEWS); ?></a></td>
- -->
             <td align="right" class="main"></td>
           </tr>
         </table>
