@@ -60,7 +60,7 @@
       return array('id' => $this->code,
                    'module' => '来店による支払い',
                    'fields' => array(
-                     array('title' => PAYMENT_FETCH_GOOD_DESCRIPTION, 'field' => ''), 
+                     array('title' => str_replace('#STORE_NAME#', STORE_NAME,PAYMENT_FETCH_GOOD_DESCRIPTION), 'field' => ''), 
                      array('title' => $s_message, 'field' => '') 
                      )             
                    //'fields' => array('title' => $s_message, 'field' => $added_hidden) 
@@ -96,6 +96,7 @@
             );
       } else {
         if ($this->check_buy_goods()) {
+          return array(); 
           return array(
               'title' => MODULE_PAYMENT_FETCH_GOOD_TEXT_DESCRIPTION,
               'fields' => array(
