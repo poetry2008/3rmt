@@ -96,6 +96,7 @@
             );
       } else {
         if ($this->check_buy_goods()) {
+          return array(); 
           return array(
               'title' => MODULE_PAYMENT_POINT_TEXT_DESCRIPTION,
               'fields' => array(

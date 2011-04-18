@@ -137,6 +137,7 @@
           } else {
             if ($result3['value'] > -200) {
               if ($check_status['payment_method'] == '来店支払い') {
+                $get_point = 0;
               } else {
                 $get_point = abs($result3['value']);
               }
@@ -343,6 +344,7 @@
       } else {
         if ($result3['value'] > -200) {
           if ($check_status['payment_method'] == '来店支払い') {
+            $get_point = 0;
           } else {
             $get_point = abs($result3['value']);
           }
