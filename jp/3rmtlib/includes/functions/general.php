@@ -1491,70 +1491,22 @@ function forward404Unless($condition)
   function ds_convert_Ajax($string) {
     return mb_convert_encoding($string,'UTF-8','EUC-JP');
   }
-  
-  function tep_get_full_count($cnt, $rate){
-    if (strlen($rate) > 50 or strlen(trim($rate)) < 2) {
-      return '';
-    }
-    if (trim($rate) == '天空の羽毛5個・インクリスクロール5個のセット'){
-      return '(天空の羽毛'.number_format(strval(5*$cnt)).'個・インクリスクロール'.number_format(strval(5*$cnt)).'個のセット)';
-    }
-    if (trim($rate) == 'ネットカフェ1DAYチケット5枚セット'){
-      return '(ネットカフェ1DAYチケット'.number_format(strval(5*$cnt)).'枚セット)';
-    }
-    $rate = str_replace(array(','), array(''), $rate);
 
-    if (preg_match('/^(.*)億(.*)万(.*)$/', $rate, $out)) {
-      $rate = (($out[1] * 100000000) + ($out[2] * 10000)) . $out[3];
-    } else {
-      $rate = str_replace(array('万','億'), array('0000','00000000'), $rate);
-    }
-    if (preg_match('/^(\d+)(.*)（\d+.*）$/', $rate, $out)) {
-      return '(' . number_format($out[1] * $cnt) . $out[2] . ')';
-    }
-    if (preg_match('/^(\d+)(.*)\(\d+.*\)$/', $rate, $out)) {
-      return '(' . number_format($out[1] * $cnt) . $out[2] . ')';
-    }
-    if (preg_match('/^(\d+)(.*)$/', $rate, $out)) {
-      return '(' . number_format($out[1] * $cnt) . $out[2] . ')';
-    }
-    if (preg_match('/^([^\d]*)(\d+)([^\d]*)$/', $rate, $out)) {
-      return '(' . $out[1] . number_format($out[2] * $cnt) . $out[3] . ')';
-    }
-    return '';
+  function tep_get_full_count2($cnt, $pid){
+    $p = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
+    return 
+      '('
+    . str_replace(array('1個あたり','　'), '', $p['products_attention_1_2']) 
+    . number_format($p['products_attention_1_3'] * $cnt) 
+    . str_replace(array('のお取引となります', 'のセット'), '', $p['products_attention_1_4'])
+    . ')';
   }
-
-  function tep_get_full_count_in_order($cnt, $rate){
-    if (strlen($rate) > 50 or strlen(trim($rate)) < 2) {
-      return '';
-    }
-    if (trim($rate) == '天空の羽毛5個・インクリスクロール5個のセット'){
-      return '天空の羽毛'.number_format(strval(5*$cnt)).'個・インクリスクロール'.number_format(strval(5*$cnt)).'個のセット';
-    }
-    if (trim($rate) == 'ネットカフェ1DAYチケット5枚セット'){
-      return 'ネットカフェ1DAYチケット'.number_format(strval(5*$cnt)).'枚セット';
-    } 
-    
-    $rate = str_replace(array(','), array(''), $rate);
-
-    if (preg_match('/^(.*)億(.*)万(.*)$/', $rate, $out)) {
-      $rate = (($out[1] * 100000000) + ($out[2] * 10000)) . $out[3];
-    } else {
-      $rate = str_replace(array('万','億'), array('0000','00000000'), $rate);
-    }
-    if (preg_match('/^(\d+)(.*)（\d+.*）$/', $rate, $out)) {
-      return number_format($out[1] * $cnt) . $out[2];
-    }
-    if (preg_match('/^(\d+)(.*)\(\d+.*\)$/', $rate, $out)) {
-      return number_format($out[1] * $cnt) . $out[2];
-    }
-    if (preg_match('/^(\d+)(.*)$/', $rate, $out)) {
-      return number_format($out[1] * $cnt) . $out[2];
-    }
-    if (preg_match('/^([^\d]*)(\d+)([^\d]*)$/', $rate, $out)) {
-      return $out[1] . number_format($out[2] * $cnt) . $out[3];
-    }
-    return '';
+  function tep_get_full_count_in_order2($cnt, $pid){
+    $p = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
+    return 
+      str_replace(array('1個あたり','　'), '', $p['products_attention_1_2']) 
+    . number_format($p['products_attention_1_3'] * $cnt) 
+    . str_replace(array('のお取引となります', 'のセット'), '', $p['products_attention_1_4']);
   }
   
   function tep_get_torihiki_select_by_products($product_ids = null)
@@ -3248,9 +3200,7 @@ function tep_get_romaji_by_pid($id)
 }
 
 function tep_get_products_rate($pid) {
-  $p =  tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
-  $t = explode('//',$p['products_attention_1']);
-  $n = str_replace(',','',tep_get_full_count_in_order(1, $t[1]));
+  $n = str_replace(',','',tep_get_full_count_in_order2(1, $pid));
   preg_match_all('/(\d+)/',$n,$out);
   return $out[1][0];
 }
@@ -3709,13 +3659,21 @@ function tep_get_cart_ff_products($pid, $cid_arr){
 
       return $ret.'（'.number_format($str2).'）';
     } else if (strlen($str) > 4) {
-      $ret = $str/10000 . '万';
+      $ret = intval($str/10000) . '万';
       if ($str%10000 > 0) {
         $ret .= $str%10000;
       }
       return $ret.'（'.number_format($str2).'）';
     } else {
-      return number_format($str);
+      if (strlen($str) > 3) {
+        $ret = intval($str/1000) . '千';
+        if ($str%1000 > 0) {
+          $ret .= $str%1000;
+        }
+        return $ret.'（'.number_format($str2).'）';
+      } else {
+        return number_format($str);
+      }
     }
     //if (preg_match('/^(\d*)([^\d]*)$/', $str, $out)) {
     //  return number_format($out[1]).'（'.number_format($str2).'）'.$out[2];

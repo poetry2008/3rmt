@@ -1984,99 +1984,23 @@ function tep_reset_cache_data_seo_urls($action){
     return $product['products_bflag'];
   }
   
-  function tep_get_full_count($cnt, $rate, $prate = ''){
-  if ($prate) {
-    if (trim($rate) == '天空の羽毛5個・インクリスクロール5個のセット'){
-      return '(天空の羽毛'.number_format(strval(5*$cnt)).'個・インクリスクロール'.number_format(strval(5*$cnt)).'個のセット)';
+  function tep_get_full_count2($cnt, $pid, $prate = ''){
+    if ($prate) {
+      $p = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
+      return 
+        '('
+      . str_replace(array('1個あたり','　'), '', $p['products_attention_1_2']) 
+      . number_format($prate * $cnt) 
+      . str_replace(array('のお取引となります', 'のセット'), '', $p['products_attention_1_4'])
+      . ')';
     }
-    if (trim($rate) == 'ネットカフェ1DAYチケット5枚セット'){
-      return '(ネットカフェ1DAYチケット'.number_format(strval(5*$cnt)).'枚セット)';
-    }
-    $rate = str_replace(array(','), array(''), $rate);
-    /*
-    if (preg_match('/^(.*)億(.*)万(.*)$/', $rate, $out)) {
-      $rate = (($prate * 100000000) + ($out[2] * 10000)) . $out[3];
-    }
-    */
-    $rate = str_replace(array('万','億'), array('0000','00000000'), $rate);
-    if (preg_match('/^(\d+)(.*)（\d+.*）$/', $rate, $out)) {
-      return '(' . number_format($prate * $cnt) . $out[2] . ')';
-    }
-    if (preg_match('/^(\d+)(.*)\(\d+.*\)$/', $rate, $out)) {
-      return '(' . number_format($prate * $cnt) . $out[2] . ')';
-    }
-    if (preg_match('/^(\d+)(.*)$/', $rate, $out)) {
-      return '(' . number_format($prate * $cnt) . $out[2] . ')';
-    }
-    if (preg_match('/^([^\d]*)(\d+)([^\d]*)$/', $rate, $out)) {
-      return '(' . $out[1] . number_format($prate * $cnt) . $out[3] . ')';
-      //return '(' . $prate . number_format($out[2] * $cnt) . $out[3] . ')';
-    }
-    return '';
-  } else {
-    /*
-    if (strlen($rate) > 50 or strlen(trim($rate)) < 2) {
-      return '';
-    }
-    if (trim($rate) == '天空の羽毛5個・インクリスクロール5個のセット'){
-      return '(天空の羽毛'.number_format(strval(5*$cnt)).'個・インクリスクロール'.number_format(strval(5*$cnt)).'個のセット)';
-    }
-    if (trim($rate) == 'ネットカフェ1DAYチケット5枚セット'){
-      return '(ネットカフェ1DAYチケット'.number_format(strval(5*$cnt)).'枚セット)';
-    }
-    $rate = str_replace(array(','), array(''), $rate);
-    if (preg_match('/^(.*)億(.*)万(.*)$/', $rate, $out)) {
-      $rate = (($out[1] * 100000000) + ($out[2] * 10000)) . $out[3];
-    }
-    $rate = str_replace(array('万','億'), array('0000','00000000'), $rate);
-    if (preg_match('/^(\d+)(.*)（\d+.*）$/', $rate, $out)) {
-      return '(' . number_format($out[1] * $cnt) . $out[2] . ')';
-    }
-    if (preg_match('/^(\d+)(.*)\(\d+.*\)$/', $rate, $out)) {
-      return '(' . number_format($out[1] * $cnt) . $out[2] . ')';
-    }
-    if (preg_match('/^(\d+)(.*)$/', $rate, $out)) {
-      return '(' . number_format($out[1] * $cnt) . $out[2] . ')';
-    }
-    if (preg_match('/^([^\d]*)(\d+)([^\d]*)$/', $rate, $out)) {
-      return '(' . $out[1] . number_format($out[2] * $cnt) . $out[3] . ')';
-    }
-    return '';
-    */
   }
-  }
-
-  function tep_get_full_count_in_order($cnt, $rate){
-    if (strlen($rate) > 50 or strlen(trim($rate)) < 2) {
-      return '';
-    }
-    if (trim($rate) == '天空の羽毛5個・インクリスクロール5個のセット'){
-      return '天空の羽毛'.number_format(strval(5*$cnt)).'個・インクリスクロール'.number_format(strval(5*$cnt)).'個のセット';
-    }
-    if (trim($rate) == 'ネットカフェ1DAYチケット5枚セット'){
-      return 'ネットカフェ1DAYチケット'.number_format(strval(5*$cnt)).'枚セット';
-    } 
-    
-    $rate = str_replace(array(','), array(''), $rate);
-
-    if (preg_match('/^(.*)億(.*)万(.*)$/', $rate, $out)) {
-      $rate = (($out[1] * 100000000) + ($out[2] * 10000)) . $out[3];
-    } else {
-      $rate = str_replace(array('万','億'), array('0000','00000000'), $rate);
-    }
-    if (preg_match('/^(\d+)(.*)（\d+.*）$/', $rate, $out)) {
-      return number_format($out[1] * $cnt) . $out[2];
-    }
-    if (preg_match('/^(\d+)(.*)\(\d+.*\)$/', $rate, $out)) {
-      return number_format($out[1] * $cnt) . $out[2];
-    }
-    if (preg_match('/^(\d+)(.*)$/', $rate, $out)) {
-      return number_format($out[1] * $cnt) . $out[2];
-    }
-    if (preg_match('/^([^\d]*)(\d+)([^\d]*)$/', $rate, $out)) {
-      return $out[1] . number_format($out[2] * $cnt) . $out[3];
-    }
-    return '';
+  function tep_get_full_count_in_order2($cnt, $pid){
+    $p = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
+    return 
+      str_replace(array('1個あたり','　'), '', $p['products_attention_1_2']) 
+    . number_format($p['products_attention_1_3'] * $cnt) 
+    . str_replace(array('のお取引となります', 'のセット'), '', $p['products_attention_1_4']);
   }
 
 // Start Documents Manager
@@ -3346,13 +3270,9 @@ function tep_get_customers_fax_by_id($cid)
     $orders_products_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." where orders_id = '".$orders['orders_id']."'");
     while ($p = tep_db_fetch_array($orders_products_query)) {
       $products_attributes_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." where orders_products_id='".$p['orders_products_id']."'");
-      $products_rate_query = tep_db_query("select products_attention_1 from ".TABLE_PRODUCTS." where products_id = '".$p['products_id']."'");
-      $products = tep_db_fetch_array($products_rate_query);
-      $tmp = explode('//', $products['products_attention_1']);
-      $p_rate = $tmp[1];
 
       $str .= '<tr><td class="main"><b>商品：</b></td><td class="main">'.$p['products_name'].'</td></tr>';
-      $str .= '<tr><td class="main"><b>個数：</b></td><td class="main">'.$p['products_quantity'].'個'.tep_get_full_count($p['products_quantity'], $p_rate, $p['products_rate']).'</td></tr>';
+      $str .= '<tr><td class="main"><b>個数：</b></td><td class="main">'.$p['products_quantity'].'個'.tep_get_full_count2($p['products_quantity'], $p['products_id'], $p['products_rate']).'</td></tr>';
       while($pa = tep_db_fetch_array($products_attributes_query)){
         $str .= '<tr><td class="main"><b>'.$pa['products_options'].'：</b></td><td class="main">'.$pa['products_options_values'].'</td></tr>';
       }
@@ -3755,9 +3675,7 @@ function tep_get_relate_products_name($pid) {
 }
 
 function tep_get_products_rate($pid) {
-  $p =  tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
-  $t = explode('//',$p['products_attention_1']);
-  $n = str_replace(',','',tep_get_full_count_in_order(1, $t[1]));
+  $n = str_replace(',','',tep_get_full_count_in_order2(1, $pid));
   preg_match_all('/(\d+)/',$n,$out);
   return $out[1][0];
 }
@@ -4808,4 +4726,41 @@ function tep_has_pw_manager_log($pwid){
   }else{
    return false;
   }
+}
+
+
+function tep_get_product_by_op_id($orders_products_id){
+      $sql = "select p.products_price as price from ".
+          TABLE_ORDERS_PRODUCTS." op,"
+         .TABLE_PRODUCTS." p  
+         where op.orders_products_id ='".$orders_products_id."' 
+         and op.products_id = p.products_id limit 1";
+      $res = tep_db_query($sql);
+      if($row = tep_db_fetch_array($res)){
+        return $row['price'];
+      }else{
+        return false;
+      }
+}
+
+
+
+function tep_insert_pwd_log($pwd,$userid){
+  $user_info = tep_get_user_info($userid);
+  $letter = substr($pwd,0,1);
+  $sql_letter = "select * from ".TABLE_LETTERS." 
+    where letter = '".$letter."'";
+  $res_letter = tep_db_query($sql_letter);
+  if($row_letter = tep_db_fetch_array($res_letter)){
+    $letter_info = tep_get_user_info($row_letter['userid']);
+    $sql = "insert into ".TABLE_ONCE_PWD_LOG." VALUES 
+      (NULL , '".$user_info['userid']."', '".$user_info['name']."',
+       '".$letter_info['name']."', '".$_SERVER['HTTP_REFERER']."',
+           CURRENT_TIMESTAMP
+             )";
+    return tep_db_query($sql);
+  }else{
+    return false;
+  }
+
 }

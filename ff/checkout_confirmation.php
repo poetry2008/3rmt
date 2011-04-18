@@ -149,9 +149,9 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
       <!-- body_text //--> 
       <td valign="top" id="contents"> 
       <?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post');?>
-      <h1 class="pageHeading"><span><?php echo HEADING_TITLE ; ?></span></h1>      
+      <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><span><?php echo HEADING_TITLE ; ?></span></h1>      
       <div class="comment">
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_info_box"> 
+        <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
         <tr> 
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
               <tr> 
@@ -248,10 +248,9 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
   for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
     //ccdd
     $product_info = tep_get_product_by_id($order->products[$i]['id'], SITE_ID, $languages_id);
-    $data1 = explode("//", $product_info['products_attention_1']);
     
     echo '          <tr>' . "\n" .
-         '            <td class="main" align="center" valign="top" width="150">' . $order->products[$i]['qty'] . '&nbsp;個' . (!empty($data1[0]) && strlen($data1[1])<=30 && tep_get_full_count_in_order($order->products[$i]['qty'], $data1[1]) ? '<br><span style="font-size:10px">'. tep_get_full_count_in_order($order->products[$i]['qty'], $data1[1]) .'</span>': '') . '</td>' . "\n" .
+         '            <td class="main" align="center" valign="top" width="150">' . $order->products[$i]['qty'] . '&nbsp;個' . (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) ? '<br><span style="font-size:10px">'. tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
          '            <td class="main" valign="top">' . $order->products[$i]['name'];
 
     if (STOCK_CHECK == 'true') {

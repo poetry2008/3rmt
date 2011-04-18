@@ -201,8 +201,16 @@
   
   // 1.3.1 Update orders_products Table
   $products_delete = false;
+  $viladate = true;//viladate pwd 
   foreach ($update_products as $orders_products_id => $products_details) {
     // 1.3.1.1 Update Inventory Quantity
+  if($products_details['pwd'] == '_false'){
+    $viladate = false;
+  }else{
+    if($products_details['pwd']!=''){
+      tep_insert_pwd_log($products_details['pwd'],$ocertify->auth_user);
+    }
+  }
   $op_query = tep_db_query("
       select products_id, 
              products_quantity
@@ -211,7 +219,7 @@
         and orders_products_id='".$orders_products_id."'
   ");
     $order = tep_db_fetch_array($op_query);
-    if ($products_details["qty"] != $order['products_quantity']) {
+    if ($products_details["qty"] != $order['products_quantity'] && $viladate) {
       $quantity_difference = ($products_details["qty"] - $order['products_quantity']);
       $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$order['products_id']."'"));
       $pr_quantity = $p['products_real_quantity'];
@@ -243,6 +251,7 @@
     }
   
     if($products_details["qty"] > 0) { // a.) quantity found --> add to list & sum    
+     if($viladate){ 
       $Query = "update " . TABLE_ORDERS_PRODUCTS . " set
           products_model = '" . $products_details["model"] . "',
           products_name = '" . str_replace("'", "&#39;", $products_details["name"]) . "',
@@ -272,6 +281,13 @@
               where orders_products_attributes_id = '$orders_products_attributes_id';";
           tep_db_query($Query);
         }
+      }
+      }else {
+      $Query = "delete from " . TABLE_ORDERS_PRODUCTS . " where orders_products_id = '$orders_products_id';";
+      tep_db_query($Query);
+      $Query = "delete from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where orders_products_id = '$orders_products_id';";
+      tep_db_query($Query);
+      $products_delete = true;
       }
     } else { // b.) null quantity found --> delete
       $Query = "delete from " . TABLE_ORDERS_PRODUCTS . " where orders_products_id = '$orders_products_id';";
@@ -510,40 +526,9 @@
             $products_ordered_mail .= tep_parse_input_field_data($order->products[$i]['attributes'][$j]['value'], array("'"=>"&quot;")) . "\n";
           }
         }
-          $_product_info_query = tep_db_query("
-              select p.products_id, 
-                     pd.products_name, 
-                     p.products_attention_1,
-                     p.products_attention_2,
-                     p.products_attention_3,
-                     p.products_attention_4,
-                     p.products_attention_5,
-                     pd.products_description, 
-                     p.products_model, 
-                     p.products_real_quantity + p.products_virtual_quantity as products_quantity,
-                     p.products_image,
-                     p.products_image2,
-                     p.products_image3, 
-                     pd.products_url, 
-                     p.products_price, 
-                     p.products_tax_class_id, 
-                     p.products_date_added, 
-                     p.products_date_available, 
-                     p.manufacturers_id, 
-                     p.products_bflag, 
-                     p.products_cflag, 
-                     p.products_small_sum 
-              from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
-              where 
-              -- p.products_status != '0' and 
-                p.products_id = '" . $order->products[$i]['id'] . "' 
-                and pd.products_id = p.products_id 
-                and pd.site_id = '0'
-                and pd.language_id = '" . $languages_id . "'");
-          $product_info = tep_db_fetch_array($_product_info_query);
-          $data1 = explode("//", $product_info['products_attention_1']);
+
           
-        $products_ordered_mail .= '個数　　　　　　　：' . $order->products[$i]['qty'] . '個' . tep_get_full_count($order->products[$i]['qty'], $data1[1]) . "\n";
+        $products_ordered_mail .= '個数　　　　　　　：' . $order->products[$i]['qty'] . '個' . tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id']) . "\n";
         $products_ordered_mail .= '単価　　　　　　　：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
         $products_ordered_mail .= '小計　　　　　　　：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
         $products_ordered_mail .= 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($order->products[$i]['character']) : $order->products[$i]['character']) . "\n";
@@ -965,6 +950,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
             </table>
             <!-- End Update Block -->
             <br>
+            <input type="text" name="test" >
             <!-- Begin Addresses Block -->
             <span class="SubTitle"><?php echo MENUE_TITLE_CUSTOMER; ?></span>
             <table width="100%" border="0" class="dataTableRow" cellpadding="2" cellspacing="0">
@@ -1109,7 +1095,11 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
     echo '      </td>' . "\n" .
          '      <td class="' . $RowStyle . '">' . $order->products[$i]['model'] . "<input name='update_products[$orders_products_id][model]' size='12' type='hidden' value='" . $order->products[$i]['model'] . "'>" . '</td>' . "\n" .
          '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . "<input name='update_products[$orders_products_id][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order->products[$i]['tax']) . "'>" . '%</td>' . "\n" .
-         '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$orders_products_id][final_price]' size='9' value='" . tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) . "'>" . '</td>' . "\n" . 
+         '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$orders_products_id][final_price]' size='9' value='" . tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) . "'>" .
+         '<input type="hidden" name="op_id_'.$orders_products_id.'" 
+         value="'.tep_get_product_by_op_id($orders_products_id).'">' . "\n" . 
+         '<input type="hidden" name="update_products['.$orders_products_id.'][pwd]" 
+          value=""></td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value']) . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right"><b>' . $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . '</b></td>' . "\n" . 

@@ -333,4 +333,17 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
       break;
   }
   tep_db_perform('orders_questions', $arr, 'update', "orders_id='".$_GET['orders_id']."'");
+}else if(isset($_POST['action'])&&$_POST['action'] == 'valedate'){
+
+}else if(isset($_GET['action'])&&$_GET['action'] == 'getallpwd'){
+  $sql = "select u.rule,l.letter from ".
+    TABLE_USERS." u , ".TABLE_LETTERS." l 
+    where u.userid = l.userid and (l.letter != '' or l.letter != null)";
+  $result = tep_db_query($sql);
+  while($row = tep_db_fetch_array($result)){
+    $pwd = $row['letter'].make_rand_pwd($row['rule']);
+    $str .= $pwd.",";
+  }
+  $str = substr($str,0,-1);
+  echo $str;
 }
