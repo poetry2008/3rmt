@@ -553,8 +553,6 @@ while($tag = tep_db_fetch_array($tag_query)) {
 //    if ($reviews_values['count'] > 0) {
     include(DIR_WS_BOXES.'reviews.php') ;
 ?>
-<!--         <p><a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS,'product_id='.(int)$_GET['products_id']) ; ?>"><?php echo TEXT_CURRENT_REVIEWS . ' ' . $reviews_values['count']; ?></a></p>
- -->
 <?php
 //    }
 
@@ -577,8 +575,6 @@ while($tag = tep_db_fetch_array($tag_query)) {
         <br>
         <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="rmt">
           <tr>
-<!--             <td class="main"><a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS, substr(tep_get_all_get_params(), 0, -1)); ?>"><?php echo tep_image_button('button_reviews.gif', IMAGE_BUTTON_REVIEWS); ?></a></td>
- -->
             <td align="right" class="main"></td>
           </tr>
         </table>
