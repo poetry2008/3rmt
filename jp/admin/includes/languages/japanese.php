@@ -357,3 +357,4 @@ define('TABLE_HEADING_ACTION', '操作');
 define('TABLE_HEADING_STATUS', 'ステータス');
 define('TABLE_HEADING_CATEGORIES_PRODUCTS', 'カテゴリー / 商品');
 define('OROSHI_DATA_MANAGE','データ');
+define('BOX_ONCE_PWD_LOG','ログ');

@@ -15,6 +15,7 @@
 // ファイル名
 define('FILENAME_USERS', 'users.php');
 define('FILENAME_USERS_LOGINLOG', 'users_log.php');
+define('FILENAME_ONCE_PWD_LOG', 'pwd_log.php');
 
 // 2003-04-16 modi -s
 // ここで定数宣言をしていたのを、言語ファイルを作成して移動する
@@ -64,7 +65,10 @@ define('FILENAME_USERS_LOGINLOG', 'users_log.php');
     <?php  
         if ($ocertify->npermission == 15) $loginlog = '<a href="' . tep_href_link(FILENAME_USERS_LOGINLOG, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_USER_LOG . '</a>';
 	else $loginlog = '';
-        echo '<a href="' . tep_href_link(FILENAME_USERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_USER_ADMIN . '</a><br>' .  '<a href="' . tep_href_link(basename($PHP_SELF), '', 'NONSSL') . '?execute_logout_user=1" class="menuBoxContent_Link">' . BOX_USER_LOGOUT . '</a><br>' .  $loginlog;
+        echo '<a href="' . tep_href_link(FILENAME_USERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_USER_ADMIN . '</a><br>' .  '<a href="' . tep_href_link(basename($PHP_SELF), '', 'NONSSL') . '?execute_logout_user=1" class="menuBoxContent_Link">' . BOX_USER_LOGOUT . '</a><br>' . 
+        $loginlog."<br>".
+       '<a href="'.tep_href_link(FILENAME_ONCE_PWD_LOG).'"
+       class="menuBoxContent_Link">'.BOX_ONCE_PWD_LOG."</a>"; 
     ?>
                 </td>
               </tr>
