@@ -3709,13 +3709,21 @@ function tep_get_cart_ff_products($pid, $cid_arr){
 
       return $ret.'（'.number_format($str2).'）';
     } else if (strlen($str) > 4) {
-      $ret = $str/10000 . '万';
+      $ret = intval($str/10000) . '万';
       if ($str%10000 > 0) {
         $ret .= $str%10000;
       }
       return $ret.'（'.number_format($str2).'）';
     } else {
-      return number_format($str);
+      if (strlen($str) > 3) {
+        $ret = intval($str/1000) . '千';
+        if ($str%1000 > 0) {
+          $ret .= $str%1000;
+        }
+        return $ret.'（'.number_format($str2).'）';
+      } else {
+        return number_format($str);
+      }
     }
     //if (preg_match('/^(\d*)([^\d]*)$/', $str, $out)) {
     //  return number_format($out[1]).'（'.number_format($str2).'）'.$out[2];
