@@ -1262,7 +1262,7 @@ function check_add(){
          '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order_products[$pid]['tax']) . "<input name='update_products[$pid][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order_products[$pid]['tax']) . "'>" . '%</td>' . "\n" .
          '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$pid][final_price]' size='9' value='" . tep_display_currency(number_format(abs($order_products[$pid]['final_price']),2)) . "'>" . 
          '<input type="hidden" name="op_id_'.$pid.'" 
-          value="'.tep_get_product_by_op_id($pid).'">' . "\n" .
+          value="'.tep_get_product_by_op_id($pid,'pid').'">' . "\n" .
           '<input type="hidden" name="update_products['.$pid.'][pwd]"
            value=""></td>' . "\n" .
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']), true, $order['currency'], $order['currency_value']) . '</td>' . "\n" . 
