@@ -4524,11 +4524,11 @@ function tep_get_avg_by_pid($pid){
   $cnt = 0;
   while($h = tep_db_fetch_array($order_history_query)){
     if ($cnt + $h['products_quantity'] > $product['products_real_quantity']) {
-      $sum += ($product['products_real_quantity'] - $cnt) * $h['final_price'];
+      $sum += ($product['products_real_quantity'] - $cnt) * abs($h['final_price']);
       $cnt = $product['products_real_quantity'];
       break;
     } else {
-      $sum += $h['products_quantity'] * $h['final_price'];
+      $sum += $h['products_quantity'] * abs($h['final_price']);
       $cnt += $h['products_quantity'];
     }
   }

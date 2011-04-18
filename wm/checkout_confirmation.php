@@ -504,7 +504,11 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
     $get_point = ($order->info['subtotal'] - (int)$point) * $point_rate;
   } else {
     if ($order->info['subtotal'] > -200) {
-      $get_point = abs($order->info['subtotal']);
+      if ($payment == 'fetchgood') {
+        $get_point = 0;
+      } else {
+        $get_point = abs($order->info['subtotal']);
+      }
     } else {
       $get_point = 0;
     }
