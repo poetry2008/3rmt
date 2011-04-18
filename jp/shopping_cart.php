@@ -166,7 +166,7 @@ function change_num(ob,targ, quan,a_quan)
           <tr>
             <td align="right" class="main"><b><?php echo SUB_TITLE_SUB_TOTAL; ?>
              <span id="sub_total"> 
-             <?php echo $currencies->format($cart->show_total()); ?></span></b></td>
+             <?php echo $currencies->format_total($cart->show_total()); ?></span></b></td>
           </tr>
 <?php   
     // 买取200以下提示

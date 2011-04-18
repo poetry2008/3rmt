@@ -67,7 +67,7 @@
       }
     }
       $this->output[] = array('title' => $this->title . ':',
-                              'text' => '<b>' . $currencies->format(
+                              'text' => '<b>' . $currencies->format_total(
                                 $total, 
                                 true, 
                                 isset($order->info['currency'])?$order->info['currency']:'', 

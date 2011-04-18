@@ -23,7 +23,7 @@
       global $order, $currencies;
 
       $this->output[] = array('title' => $this->title . ':',
-                              'text'  => $currencies->format(
+                              'text'  => $currencies->format_total(
                                 isset($order->info['subtotal'])?$order->info['subtotal']:'', 
                                 true, 
                                 isset($order->info['currency'])?$order->info['currency']:'', 
