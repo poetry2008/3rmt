@@ -445,6 +445,13 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
         </td>
       </tr>
       <?php }?> 
+       <tr> 
+              <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+                  <tr> 
+                    <td class="main"><b><?php echo TABLE_HEADING_PAYMENT_METHOD; ?></b></td> 
+                  </tr> 
+                </table></td> 
+            </tr> 
       <tr>
         <td>
                     <table border="0" width="100%" cellspacing="0" cellpadding="2" style="border:1px solid #B6B7CB;"> 

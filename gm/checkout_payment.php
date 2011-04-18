@@ -439,7 +439,7 @@ if (!isset($bank_kamoku)) $bank_kamoku=NULL;
       <?php }?> 
       <tr>
       <td>
-                    <table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des"> 
+                    <table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des" style="border:1px solid #fff;"> 
                         <?php
   $selection = $payment_modules->selection();
 

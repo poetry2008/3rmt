@@ -409,7 +409,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
       <?php }?> 
       <tr>
       <td>
-                    <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+                    <table border="0" width="100%" cellspacing="0" cellpadding="2" style="background-color:#ccc;"> 
                         <?php
   $selection = $payment_modules->selection();
 
