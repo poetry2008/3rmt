@@ -59,6 +59,7 @@
       return $format_string;
     }
     
+    // 负数红色
     function format_total($number, $calculate_currency_value = true, $currency_type = '', $currency_value = '') {
       $tmp_number = $number; 
       $number = abs($number);
