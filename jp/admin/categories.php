@@ -573,7 +573,7 @@
                                   'products_attention_3' => $products_attention_3,
                                   'products_attention_4' => $products_attention_4,
                                   'products_attention_5' => $products_attention_5,
-                                  'products_price' => tep_get_bflag_by_product_id(tep_db_prepare_input($_POST['products_cart_buyflag'])) ? 0 - tep_db_prepare_input($_POST['products_price']) : tep_db_prepare_input($_POST['products_price']),
+                                  'products_price' => tep_db_prepare_input($_POST['products_bflag'])? 0 - tep_db_prepare_input($_POST['products_price']) : tep_db_prepare_input($_POST['products_price']),
                                   'products_price_offset' => tep_db_prepare_input($HTTP_POST_VARS['products_price_offset']),
                                   'products_date_available' => $products_date_available,
                                   'products_weight' => tep_db_prepare_input($_POST['products_weight']),
