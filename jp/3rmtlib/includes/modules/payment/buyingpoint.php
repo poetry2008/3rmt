@@ -60,7 +60,7 @@
       return array('id' => $this->code,
                    'module' => 'ポイントの加算',
                    'fields' => array(
-                     array('title' => PAYMENT_POINT_DESCRIPTION, 'field' => ''),
+                     array('title' => str_replace('#STORE_NAME#', STORE_NAME, PAYMENT_POINT_DESCRIPTION), 'field' => ''),
                      array('title' => $s_message, 'field' => '')
                      ) 
                    //'fields' => array('title' => $s_message, 'field' => $added_hidden) 
