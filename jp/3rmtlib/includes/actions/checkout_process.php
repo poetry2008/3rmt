@@ -558,12 +558,8 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   if(tep_not_null($order->products[$i]['model'])) {
     $products_ordered .= ' (' . $order->products[$i]['model'] . ')';
   }
-  $product_info = tep_get_product_by_id($order->products[$i]['id'], SITE_ID, $languages_id);
-  $product_info['site_id'] == SITE_ID && tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_viewed = products_viewed+1 where products_id = '" . (int)$_GET['products_id'] . "' and language_id = '" . $languages_id . "' and SITE_ID = '".SITE_ID."'");
-  $data1 = explode("//", $product_info['products_attention_1']);
-  
   $products_ordered .= $products_ordered_attributes . "\n";
-  $products_ordered .= '個数　　　　　　　：' . $order->products[$i]['qty'] . '個' . tep_get_full_count($order->products[$i]['qty'], $data1[1]) . "\n";
+  $products_ordered .= '個数　　　　　　　：' . $order->products[$i]['qty'] . '個' . tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id']) . "\n";
   $products_ordered .= '単価　　　　　　　：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
   $products_ordered .= '小計　　　　　　　：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
   if(tep_not_null($chara)) {
