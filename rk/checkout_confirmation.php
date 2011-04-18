@@ -510,7 +510,11 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
     $get_point = ($order->info['subtotal'] - (int)$point) * $point_rate;
   } else {
     if ($order->info['subtotal'] > -200) {
-      $get_point = abs($order->info['subtotal']);
+      if ($payment == 'fetchgood') {
+        $get_point = 0;
+      } else {
+        $get_point = abs($order->info['subtotal']);
+      }
     } else {
       $get_point = 0;
     }

@@ -4729,12 +4729,20 @@ function tep_has_pw_manager_log($pwid){
 }
 
 
-function tep_get_product_by_op_id($orders_products_id){
+function tep_get_product_by_op_id($orders_products_id,$type=''){
+  if($type=='pid'){
+      $sql = "select p.products_price as price from ".
+          TABLE_ORDERS_PRODUCTS." op,"
+         .TABLE_PRODUCTS." p  
+         where p.products_id ='".$orders_products_id."' 
+          limit 1";
+  }else{
       $sql = "select p.products_price as price from ".
           TABLE_ORDERS_PRODUCTS." op,"
          .TABLE_PRODUCTS." p  
          where op.orders_products_id ='".$orders_products_id."' 
          and op.products_id = p.products_id limit 1";
+  }
       $res = tep_db_query($sql);
       if($row = tep_db_fetch_array($res)){
         return $row['price'];
@@ -4754,7 +4762,7 @@ function tep_insert_pwd_log($pwd,$userid){
   if($row_letter = tep_db_fetch_array($res_letter)){
     $letter_info = tep_get_user_info($row_letter['userid']);
     $sql = "insert into ".TABLE_ONCE_PWD_LOG." VALUES 
-      (NULL , '".$user_info['userid']."', '".$user_info['name']."',
+      (NULL , '".$user_info['name']."',
        '".$letter_info['name']."', '".$_SERVER['HTTP_REFERER']."',
            CURRENT_TIMESTAMP
              )";
