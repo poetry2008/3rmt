@@ -283,6 +283,14 @@
         }
       }
       }
+    }else{ // b.) null quantity found --> delete
+       $Query = "delete from " . TABLE_ORDERS_PRODUCTS . " where orders_products_id
+         = '$orders_products_id';";
+       tep_db_query($Query);
+       $Query = "delete from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where
+          orders_products_id = '$orders_products_id';";
+       tep_db_query($Query);
+       $products_delete = true;
     }
   }
   
