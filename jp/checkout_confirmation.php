@@ -322,10 +322,11 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
     if($cart->show_total() > -200) {
 ?>
           <tr> 
-            <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+            <td>
+<?php if (false) {?>
+            <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
                 <tr class="infoBoxContents"> 
                   <td>
-<?php if (false) {?>
 <table width="100%" class="table_ie" border="0" cellspacing="0" cellpadding="2">
   <tr>
   <td class="main" colspan="2"><b><?php echo TABLE_HEADING_BANK; ?></b><?php echo ' <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
@@ -341,10 +342,11 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
   </td>
   </tr>
 </table>
-<?php }?>
           </td> 
                 </tr> 
-              </table></td> 
+              </table>
+<?php }?>
+              </td> 
           </tr> 
           <tr> 
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
