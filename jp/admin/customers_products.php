@@ -320,11 +320,11 @@
           no ++;
         }
       });
-      $(this).find('.cost_display').html(number_format(cost.toFixed(0))+'&nbsp;');
+      $(this).find('.cost_display').html(number_format(cost.toFixed(0)).replace('-','<span class="print_none">-</span>')+'&nbsp;');
       total += cost;
       cost = 0;
     });
-    $('#cost_print').html(number_format(total.toFixed(0)));
+    $('#cost_print').html(number_format(total.toFixed(0)).replace('-','<span class="print_none">-</span>'));
   }
 
   // 选择模板
