@@ -109,7 +109,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
         <div> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
               <tr> 
-              <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+              <td><table border="0" width="100%" cellspacing="0" cellpadding="0" > 
                   <tr> 
                     <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                         <tr> 
@@ -447,7 +447,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
       <?php }?> 
       <tr>
         <td>
-                    <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+                    <table border="0" width="100%" cellspacing="0" cellpadding="2" style="border:1px solid #B6B7CB;"> 
                         <?php
   $selection = $payment_modules->selection();
   if (sizeof($selection) > 1) {
