@@ -123,6 +123,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
 
 // define the database table names used in the project
+  define('TABLE_ONCE_PWD_LOG','once_pwd_log');
   define('TABLE_LETTERS','letters');
   define('TABLE_IDPW','idpw');
   define('TABLE_IDPW_LOG','idpw_log');
