@@ -562,9 +562,15 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
       
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+                      <tr> 
+          <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+        </tr> 
                   <tr> 
                     <td class="main"><b><?php echo TABLE_HEADING_COMMENTS; ?></b></td> 
                   </tr> 
+                          <tr> 
+          <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+        </tr> 
                 </table></td> 
             </tr> 
             <tr> 
