@@ -433,15 +433,22 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
         </td>
       </tr>
       <?php }?> 
+                        <tr> 
+              <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+                  <tr> 
+                    <td class="main"><b><?php echo TABLE_HEADING_PAYMENT_METHOD; ?></b></td> 
+                  </tr> 
+                </table></td> 
+            </tr> 
       <tr>
         <td>
-                    <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+                    <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
                         <?php
   $selection = $payment_modules->selection();
 
   if (sizeof($selection) > 1) {
 ?> 
-                        <tr> 
+                        <tr class="infoBoxContents"> 
                           <td><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                           <td class="main" width="50%" valign="top"><?php echo TEXT_SELECT_PAYMENT_METHOD; ?></td> 
                           <td class="main" width="50%" valign="top" align="right"><b><?php echo TITLE_PLEASE_SELECT; ?></b><br> 

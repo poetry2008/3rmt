@@ -437,9 +437,16 @@ if (!isset($bank_kamoku)) $bank_kamoku=NULL;
         </td>
       </tr>
       <?php }?> 
+                  <tr> 
+              <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des"> 
+                  <tr> 
+                    <td class="main03"><b><?php echo TABLE_HEADING_PAYMENT_METHOD; ?></b></td> 
+                  </tr> 
+                </table></td> 
+            </tr> 
       <tr>
       <td>
-                    <table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des" style="border:1px solid #fff;"> 
+                    <table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des" style="border:1px solid #fff; margin-top:15px;"> 
                         <?php
   $selection = $payment_modules->selection();
 

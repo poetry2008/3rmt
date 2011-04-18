@@ -1662,6 +1662,7 @@ register checkbox・mouse off
 .moduleRow, .moduleRow td {
 	background: #e5e5e5;
 }
+.moduleRow td { padding:3px 5px;
 /* ---------------------------
 register checkbox・mouse over
 --------------------------- */

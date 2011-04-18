@@ -1507,6 +1507,7 @@ Mausuofu
 .moduleRow, .moduleRow td {
 	background: #e5e5e5;
 }
+.moduleRow td { padding:3px 5px;}
 /* ---------------------------
 Mouse over
 --------------------------- */

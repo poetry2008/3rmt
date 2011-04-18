@@ -1343,6 +1343,7 @@ SPAN.errorText {
 .moduleRow, .moduleRow td {
 	background: #e5e5e5;
 }
+.moduleRow td { padding:3px 5px;}
 /*register checkbox・mouse over*/
 .moduleRowOver, .moduleRowOver td {
 	background: #ccc;

@@ -191,7 +191,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                   </table>
                 </td>
 <!--             <td><img src="images/design/spacer.gif" width="15" height="1" alt=""></td>-->
-                <td valign="top">
+                <td valign="top" style="padding-right:10px;">
                     <table border="0" cellpadding="0" cellspacing="0" summary="info_box" class="infoBox">
                     <tr>
                       <td>
