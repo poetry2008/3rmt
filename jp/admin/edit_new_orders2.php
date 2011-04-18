@@ -176,10 +176,23 @@
   // 1.3.1 Update orders_products Table
   $products_delete = false;
 
+  $viladate = true;//viladate pwd
+
   if ($update_products)
   foreach ($update_products as $orders_products_id => $products_details) {
     // 1.3.1.1 Update Inventory Quantity
+
+   if($products_details['pwd'] == '_false'){
+      $viladate = false;
+   }else{
+     if($products_details['pwd']!=''){
+       tep_insert_pwd_log($products_details['pwd'],$ocertify->auth_user);
+     }
+   }
+
+
     if($products_details["qty"] > 0) { // a.) quantity found --> add to list & sum    
+      if($viladate){
       
       $_SESSION['create_order2']['orders_products'][$orders_products_id]['products_model'] = $products_details["model"];
       $_SESSION['create_order2']['orders_products'][$orders_products_id]['products_name'] = str_replace("'", "&#39;", $products_details["name"]);
@@ -206,6 +219,7 @@
           $_SESSION['create_order2']['orders_products_attributes'][$orders_products_id][$attributes_id]['products_options_values'] = $attributes_details["value"];
         }
       }
+    }
     } else { // b.) null quantity found --> delete
       unset($_SESSION['create_order2']['orders_products'][$orders_products_id]);
       unset($_SESSION['create_order2']['orders_products_attributes'][$orders_products_id]);
@@ -1246,7 +1260,11 @@ function check_add(){
     echo '      </td>' . "\n" .
          '      <td class="' . $RowStyle . '">' . $order_products[$pid]['model'] . "<input name='update_products[$pid][model]' size='12' type='hidden' value='" . $order_products[$pid]['model'] . "'>" . '</td>' . "\n" .
          '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order_products[$pid]['tax']) . "<input name='update_products[$pid][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order_products[$pid]['tax']) . "'>" . '%</td>' . "\n" .
-         '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$pid][final_price]' size='9' value='" . tep_display_currency(number_format(abs($order_products[$pid]['final_price']),2)) . "'>" . '</td>' . "\n" . 
+         '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$pid][final_price]' size='9' value='" . tep_display_currency(number_format(abs($order_products[$pid]['final_price']),2)) . "'>" . 
+         '<input type="hidden" name="op_id_'.$pid.'" 
+          value="'.tep_get_product_by_op_id($pid).'">' . "\n" .
+          '<input type="hidden" name="update_products['.$pid.'][pwd]"
+           value=""></td>' . "\n" .
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']), true, $order['currency'], $order['currency_value']) . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format($order_products[$pid]['final_price'] * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value']) . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right"><b>' . $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']) * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value']) . '</b></td>' . "\n" . 
