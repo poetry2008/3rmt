@@ -428,11 +428,20 @@ right:5px;*/
     <tr>
       <td width="100%" colspan='2'>
   
-  <table border="0" width="100%" cellspacing="0" cellpadding="0">
+  <table border="0" width="100%" cellspacing="0" cellpadding="3">
     <tr>
-      <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
+      <td colspan="2" class="pageHeading"><?php echo HEADING_TITLE; ?></td>
+    </tr>
+      <tr>
+        <td colspan="2">
+        安全なパスワード管理を目的として作られていますが、保証するものではありません。銀行のパスワードなど金銭が絡む情報は登録できません。<br> 
+        IDとパスワードはクリックするとクリップボードへコピーされます。これは日々の作業性を重視した機能であり、ご利用にはご注意ください。 
+        </td>
+      </tr>
+      <tr>
       <td align="center" class="smallText">
-        <table width=""  border="0" cellspacing="1" cellpadding="0">
+        <table width=""  border="0" cellspacing="1" cellpadding="0"
+        style="margin-top:10px;">
           <tr>
             <td class="smallText" valign='top'>
               <?php echo tep_draw_form('pw_manager1', FILENAME_PW_MANAGER, '',
@@ -458,6 +467,9 @@ right:5px;*/
         </table>
       </td>
       <td align="right">
+        <table width=""  border="0" cellspacing="1" cellpadding="0"
+        style="margin-top:10px;">
+        <tr><td>
         <?php
         echo '<button type=\'button\'
         onclick="location.href=\''.tep_href_link(FILENAME_PW_MANAGER,'action=new&sort='.$_GET['sort'].'&type='.$_GET['type']).'\'" >';
@@ -469,18 +481,13 @@ right:5px;*/
           echo "</a>";
           */
           ?>
+          </td></tr></table>
       </td>
     </tr>
   </table>
 
       </td>
     </tr>
-      <tr>
-        <td colspan="2">
-        安全なパスワード管理を目的として作られていますが、保証するものではありません。銀行のパスワードなど金銭が絡む情報は登録できません。<br> 
-        IDとパスワードはクリックするとクリップボードへコピーされます。これは日々の作業性を重視した機能であり、ご利用にはご注意ください。 
-        </td>
-      </tr>
     <tr>
       <td valign="top">
     <table width="100%">
