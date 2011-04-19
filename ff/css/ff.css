@@ -748,8 +748,10 @@ product listing
 	width: 650px;
 	border: solid 1px #ddd;
 	background: #fff;
-	margin: 10px 11px;
-	padding: 5px;
+	margin-left:10px;
+	padding:5px;
+/*	margin: 10px 11px;
+*/
 }
 .product_listing_content02{
 	width: 480px;
@@ -1093,7 +1095,7 @@ list-style-type:none;
 }
 .product_list_page{font-size:10px; background-color: #f2f2f2;
     border-right: 1px solid #DDDDDD;border-left: 1px solid #DDDDDD; padding:5px 0;}
-.product_list_info{background: #f2f2f2; padding-top: 10px; border-bottom:1px #ddd solid;border-left:1px #ddd solid;border-right:1px #ddd solid;}
+.product_list_info{background: #f2f2f2; padding-top: 10px; padding-bottom:10px; border-bottom:1px #ddd solid;border-left:1px #ddd solid;border-right:1px #ddd solid;}
 .header_m_login{ width:372px; *width:400px; *float:right;}
 /*ost*/
 .login_inc {
@@ -1191,7 +1193,9 @@ background-color: #CDCACC;
     margin: 10px 0 10px 5px;
     padding: 3px 3px 1px;
     text-align: center;
-    width: 148px;}
+    width: 148px;
+	font-size:12px;
+}
 /* ---------------------------
 boxText
 --------------------------- */
@@ -1339,7 +1343,8 @@ TABLE：Info Box
 }
 .product_info_box{
 	background: #f4f4f4;
-	padding:5px;
+	padding-top:5px;
+	padding-bottom:5px;
 }
 .product_info_box table{
 	width: 100%;
@@ -1780,3 +1785,4 @@ border:1px solid #CAC6BE;
 	width:100%;
 	background:#ccc;
 }
+.button{line-height:15px; height:23px;}
