@@ -40,7 +40,7 @@ success: function(data) {
        var tmp_str = "input[name=op_id_"+op_id+"]";
        var final_val = $(tmp_str).val();
        var p_name = "input[name^=update_products][name*="+op_id+"][name$=\[name\]]";
-       if(input_val > final_val*1.1&&flag_tmp){
+       if(input_val > Math.abs(final_val*1.1)&&flag_tmp){
          var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n"+$(p_name).val(),"");
          var t_str = "input[name^=update_products][name*="+op_id+"][name$=\[pwd\]]";
          if(in_array(pwd,pwd_arr)){
@@ -92,7 +92,7 @@ success: function(data) {
        var tmp_str = "input[name=op_id_"+op_id+"]";
        var final_val = $(tmp_str).val();
        var p_name = "input[name^=update_products][name*="+op_id+"][name$=\[name\]]";
-       if(input_val > final_val*1.1&&flag_tmp){
+       if(input_val > Math.abs(final_val*1.1)&&flag_tmp){
          var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n"+$(p_name).val(),"");
          var t_str = "input[name^=update_products][name*="+op_id+"][name$=\[pwd\]]";
          if(in_array(pwd,pwd_arr)){
@@ -135,7 +135,7 @@ success: function(data) {
        var tmp_str = "input[name=op_id_"+op_id+"]";
        var final_val = $(tmp_str).val();
        var p_name = "input[name^=update_products][name*="+op_id+"][name$=\[name\]]";
-       if(input_val > final_val*1.1&&flag_tmp){
+       if(input_val > Math.abs(final_val*1.1)&&flag_tmp){
          var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n"+$(p_name).val(),"");
          var t_str = "input[name^=update_products][name*="+op_id+"][name$=\[pwd\]]";
          if(in_array(pwd,pwd_arr)){
@@ -194,7 +194,7 @@ success: function(data) {
        var tmp_str = "input[name=op_id_"+op_id+"]";
        var final_val = $(tmp_str).val();
        var p_name = "input[name^=update_products][name*="+op_id+"][name$=\[name\]]";
-       if(input_val > final_val*1.1&&flag_tmp){
+       if(input_val > Math.abs(final_val*1.1)&&flag_tmp){
          var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n"+$(p_name).val(),"");
          var t_str = "input[name^=update_products][name*="+op_id+"][name$=\[pwd\]]";
          if(in_array(pwd,pwd_arr)){

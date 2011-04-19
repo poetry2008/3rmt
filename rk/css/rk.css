@@ -1477,6 +1477,34 @@ searching
 	background: #FFE6E6;
 	font-size: 10px;
 }
+.infoBoxNotice_01 {
+    background: #dddddd;                        
+    color: #ff4500;
+}
+.infoBoxNoticeContents_01 {
+    background: #f0efef;                        
+    font-size: 12px;                             
+    color:#ff0000;
+}
+.shopping_cart_continue {
+	display:block;
+	cursor:pointer;
+	width:125px;
+	height:39px;
+	padding:0;
+	border:0;
+	margin:3px 40px 3px 102px;
+	background-image: url(../includes/languages/japanese/images/buttons/button_continue_shopping.gif);
+}
+.shopping_cart_checkout {
+	display:block;
+	cursor:pointer;
+	width:125px;
+	height:39px;
+	padding:0;
+	border:0;
+	background-image: url(../includes/languages/japanese/images/buttons/button_checkout02.gif);
+}
 /* ---------------------------
 TD：Information box（title）
 --------------------------- */
@@ -1662,6 +1690,7 @@ register checkbox・mouse off
 .moduleRow, .moduleRow td {
 	background: #e5e5e5;
 }
+.moduleRow td { padding:3px 5px;
 /* ---------------------------
 register checkbox・mouse over
 --------------------------- */
@@ -1798,25 +1827,6 @@ P.description {
 	height:17px;
 	background-image: url(../includes/languages/japanese/images/buttons/button_delete02.gif);
 }
-.shopping_cart_continue {
-	display:block;
-	cursor:pointer;
-	width:125px;
-	height:39px;
-	padding:0;
-	border:0;
-	margin:3px 40px 3px 102px;
-	background-image: url(../includes/languages/japanese/images/buttons/button_continue_shopping.gif);
-}
-.shopping_cart_checkout {
-	display:block;
-	cursor:pointer;
-	width:125px;
-	height:39px;
-	padding:0;
-	border:0;
-	background-image: url(../includes/languages/japanese/images/buttons/button_checkout02.gif);
-}
 .waring_category {
 	color:#000;
 	margin:5px 0 2px 0;
@@ -1849,17 +1859,4 @@ display:block;
 .product_list02 span{ font-size:10px; width:157px; text-align:center;}
 .product_list02 img{ margin-bottom:10px; height:50px;}
 .product_list02 input{ margin-top:10px;} 
-
-.infoBoxNotice_01 {
-    background: #dddddd;                        
-    color: #ff4500;
-}
-/* ---------------------------
-searching
---------------------------- */
-.infoBoxNoticeContents_01 {
-    background: #f0efef;                        
-    font-size: 12px;                             
-    color:#ff0000;
-}
 .text { color:#000; font-size:12px; line-height:18px;}

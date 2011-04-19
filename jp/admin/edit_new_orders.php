@@ -977,7 +977,6 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
             </table>
             <!-- End Update Block -->
             <br>
-            <input type="text" name="test" >
             <!-- Begin Addresses Block -->
             <span class="SubTitle"><?php echo MENUE_TITLE_CUSTOMER; ?></span>
             <table width="100%" border="0" class="dataTableRow" cellpadding="2" cellspacing="0">
