@@ -475,15 +475,15 @@ right:5px;*/
 
       </td>
     </tr>
-    <tr>
-      <td valign="top">
-    <table width="100%">
       <tr>
         <td colspan="2">
         安全なパスワード管理を目的として作られていますが、保証するものではありません。銀行のパスワードなど金銭が絡む情報は登録できません。<br> 
         IDとパスワードはクリックするとクリップボードへコピーされます。これは日々の作業性を重視した機能であり、ご利用にはご注意ください。 
         </td>
       </tr>
+    <tr>
+      <td valign="top">
+    <table width="100%">
       <tr>
         <td>
         <?php tep_site_filter(FILENAME_PW_MANAGER);?>
