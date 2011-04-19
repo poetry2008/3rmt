@@ -212,8 +212,8 @@ function change_num(ob,targ, quan,a_quan)
           </tr>
           <tr>
             <td align="right" class="main">
-              <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice">
-              	<tr class="infoBoxNoticeContents">
+              <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice_01">
+              	<tr class="infoBoxNoticeContents_01">
                 	<td colspan="2" class="text">
 【重要】<br>
 小計金額が赤文字の場合、表示された金額をご返金いたしますが、振り込みの際の事務手数料の都<br>合上、
@@ -222,7 +222,7 @@ function change_num(ob,targ, quan,a_quan)
 ＊2　ポイントの加算の場合は、当サイト（サイト名）の会員登録が必須でございます。
 </td>
                 </tr>
-                <tr class="infoBoxNoticeContents">
+                <tr class="infoBoxNoticeContents_01">
                   <td width="33" height="35"><img src="images/icons/hinto.jpg" align="absmiddle" /></td>
                   <td align="left" valign="middle">ヒント！<br>返金分が発生した場合は【ウェブマネー（WebMoney）の販売】を利用してみてはいかがでしょう？
 </td>
