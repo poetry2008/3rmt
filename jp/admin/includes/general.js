@@ -47,20 +47,19 @@ $("input[name$=\[final_price\]]").each(function(index) {
   var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
   if(in_array(pwd,pwd_arr)){
   $("input[name=update_viladate]").val(pwd);
-  flag = true;
+  return true;
   }else{
   alert("パスワードが違います");
-  flag = false;
+  return false;
   }
   }else{
-    flag = true;
+    return true;
   }
 }
 });
 }else
-flag = false;
+return false;
 }
-return flag; 
 } 
 
 function submitChk2() { 
