@@ -57,7 +57,7 @@ $("input[name$=\[final_price\]]").each(function(index) {
   }
 }
 });
-}else
+}else{
 return false;
 }
 } 
