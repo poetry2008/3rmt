@@ -475,7 +475,7 @@ right:5px;*/
     </tr>
     <tr>
       <td valign="top">
-    <table width="100%">
+    <table width="100%" style="margin-top: 5px;">
       <tr>
         <td>
         <?php tep_site_filter(FILENAME_PW_MANAGER);?>
