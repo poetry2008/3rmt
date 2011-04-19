@@ -255,7 +255,19 @@ function change_num(ob,targ, quan,a_quan)
             <td align="right" class="main">
               <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice">
                 <tr class="infoBoxNoticeContents">
-                  <td><?php echo sprintf("%s未満の注文はできません。合計金額を%s以上にしてから再度お申し込みください。",$currencies->format(LIMIT_MIN_PRICE),$currencies->format(LIMIT_MIN_PRICE)); ?></td>
+                  <td>
+                  <?php 
+                  $limit_min_error_arr = explode(',', LIMIT_MIN_PRICE);
+                  $limit_error_str = ''; 
+                  if (count($limit_min_error_arr) == 2) {
+                    $limit_error_str .= $currencies->format($limit_min_error_arr[0]).'-';
+                    $limit_error_str .= $currencies->format($limit_min_error_arr[1]);
+                  } else {
+                    $limit_error_str .= $currencies->format($limit_min_error_arr[0]);
+                  }
+                  echo sprintf("%s未満の注文はできません。合計金額を%s以上にしてから再度お申し込みください。",$limit_error_str,$limit_error_str); 
+                  ?>
+                  </td>
                 </tr>
               </table>
             </td>
