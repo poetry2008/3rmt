@@ -439,7 +439,7 @@ right:5px;*/
         </td>
       </tr>
       <tr>
-      <td align="center" class="smallText">
+      <td align="left" class="smallText">
         <table width=""  border="0" cellspacing="1" cellpadding="0"
         style="margin-top:10px;">
           <tr>
