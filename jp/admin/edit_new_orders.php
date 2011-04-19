@@ -201,16 +201,15 @@
   
   // 1.3.1 Update orders_products Table
   $products_delete = false;
-  $viladate = true;//viladate pwd 
+  $viladate = tep_db_input($_POST['update_viladate']);//viladate pwd 
+  if($viladate!='_false'&&$viladate!=''){
+      tep_insert_pwd_log($products_details['pwd'],$ocertify->auth_user);
+    $viladate = true;
+  }else{
+    $viladate = false;
+  }
   foreach ($update_products as $orders_products_id => $products_details) {
     // 1.3.1.1 Update Inventory Quantity
-  if($products_details['pwd'] == '_false'){
-    $viladate = false;
-  }else{
-    if($products_details['pwd']!=''){
-      tep_insert_pwd_log($products_details['pwd'],$ocertify->auth_user);
-    }
-  }
   $op_query = tep_db_query("
       select products_id, 
              products_quantity
@@ -1015,6 +1014,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
               <tr>
                 <td class="main" valign="top"><b>オプション:</b></td>
                 <td class="main"><?php echo $order->tori['houhou']; ?>
+<input type="hidden" name="update_viladate" value="true">
 <input type="hidden" name="update_customer_name" size="25" value="<?php echo tep_html_quotes($order->customer['name']); ?>">
 <input type="hidden" name="update_customer_email_address" size="45" value="<?php echo $order->customer['email_address']; ?>">
 <input type="hidden" name='update_info_payment_method' size='25' value='<?php echo $order->info['payment_method']; ?>'>
@@ -1123,9 +1123,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
          '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . "<input name='update_products[$orders_products_id][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order->products[$i]['tax']) . "'>" . '%</td>' . "\n" .
          '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$orders_products_id][final_price]' size='9' value='" . tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) . "'>" .
          '<input type="hidden" name="op_id_'.$orders_products_id.'" 
-         value="'.tep_get_product_by_op_id($orders_products_id).'">' . "\n" . 
-         '<input type="hidden" name="update_products['.$orders_products_id.'][pwd]" 
-          value=""></td>' . "\n" . 
+         value="'.tep_get_product_by_op_id($orders_products_id).'">' . "\n" . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value']) . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right"><b>' . $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . '</b></td>' . "\n" . 
