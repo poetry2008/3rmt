@@ -467,21 +467,6 @@ right:5px;*/
         </table>
       </td>
       <td align="right">
-        <table width=""  border="0" cellspacing="1" cellpadding="0"
-        style="margin-top:10px;">
-        <tr><td>
-        <?php
-        echo '<button type=\'button\'
-        onclick="location.href=\''.tep_href_link(FILENAME_PW_MANAGER,'action=new&sort='.$_GET['sort'].'&type='.$_GET['type']).'\'" >';
-        echo TEXT_NEW;
-        echo "</button>";
-        /*
-          echo "<a href='".tep_href_link(FILENAME_PW_MANAGER,'action=new')."'>";
-          echo tep_image_button('button_create.gif',IMAGE_CREATE);
-          echo "</a>";
-          */
-          ?>
-          </td></tr></table>
       </td>
     </tr>
   </table>
@@ -490,7 +475,7 @@ right:5px;*/
     </tr>
     <tr>
       <td valign="top">
-    <table width="100%">
+    <table width="100%" style="margin-top: 5px;">
       <tr>
         <td>
         <?php tep_site_filter(FILENAME_PW_MANAGER);?>
@@ -1003,7 +988,23 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
 }
   if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
     echo '            <td class="right_column01" width="20%" valign="top">' . "\n";
-
+?>
+        <table width=""  border="0" cellspacing="1" cellpadding="0"
+        class = "new_pwmanager">
+        <tr><td>
+        <?php
+        echo '<button type=\'button\'
+        onclick="location.href=\''.tep_href_link(FILENAME_PW_MANAGER,'action=new&sort='.$_GET['sort'].'&type='.$_GET['type']).'\'" >';
+        echo TEXT_NEW;
+        echo "</button>";
+        /*
+          echo "<a href='".tep_href_link(FILENAME_PW_MANAGER,'action=new')."'>";
+          echo tep_image_button('button_create.gif',IMAGE_CREATE);
+          echo "</a>";
+          */
+          ?>
+          </td></tr></table>
+          <?php
     $box = new box;
     echo $box->infoBox($heading, $contents);
 
