@@ -101,9 +101,9 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <tr>
         <td></td>
         <td>
-            <input class="button" type="submit" name="submit_x" value="&#36865;&#20449;">
-            <input class="button" type="reset" value="&#12522;&#12475;&#12483;&#12488;">
-            <input class="button" type="button" name="cancel" value="&#12461;&#12515;&#12531;&#12475;&#12523;" onClick='window.location.href="<?php echo FILENAME_CONTACT_US ?>"'>
+            <input class="button" type="submit" name="submit_x" value="&#36865;&#20449;" style="width:50px;">
+            <input class="button" type="reset" style="width:80px;" value="&#12522;&#12475;&#12483;&#12488;">
+            <input class="button" type="button" style="width:100px;" name="cancel" value="&#12461;&#12515;&#12531;&#12475;&#12523;" onClick='window.location.href="<?php echo FILENAME_CONTACT_US ?>"'>
         </td>
     </tr>
 </table>
