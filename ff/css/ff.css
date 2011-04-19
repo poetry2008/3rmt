@@ -44,7 +44,8 @@ H4 {
 	background:#f2f2f2 url(../images/design/box/dot.gif) repeat-x 0 15px;
 	font-weight: bold;
 	text-align: right;
-	padding: 5px 0 0 0;
+	line-height:10px;
+	padding: 5px 0 4px 0;
 	margin: 4px 0 0 0;
 }
 .comment {
@@ -180,7 +181,14 @@ UL {
 	margin: 16px 0px 0px 5px;
 	*margin: -2px 0px 0px 5px;
 }
-.l_m_category_li, .l_m_category_li2 ,.login_list_info02{
+.login_list_info02{
+	color: #004080;
+	margin-bottom:2px;
+	margin-bottom:0px\9;
+	overflow: hidden;
+	text-align:left;
+}
+.l_m_category_li, .l_m_category_li2{
 	color: #004080;
 	margin-bottom:2px;
 	overflow: hidden;
@@ -1331,11 +1339,10 @@ TABLE：Info Box
 }
 .product_info_box{
 	background: #f4f4f4;
-	padding: 5px;
+	padding:5px;
 }
 .product_info_box table{
 	width: 100%;
-	*width: 468px;
 /*	border: solid 1px #ddd; */
 }
 .product_info_box table td{
@@ -1347,7 +1354,7 @@ TABLE：Info Box
 	padding: 0px 5px 5px;
 	overflow:hidden;
 }
-.product_small_info{ border-bottom:1px dashed #ccc; overflow:hidden; padding:2px 0; margin:5px 0;}
+.product_small_info{ border-bottom:1px dashed #ccc; overflow:hidden; padding:2px 0; height:25px;}
 .product_small_info01{ float:left; width:200px;}
 .product_small_info02{ float:left;}
 .product_info_box .p_i_b_title{
@@ -1769,4 +1776,7 @@ border:1px solid #CAC6BE;
 }
 .coment_img01 img{ *width:493px;}
 .coment_img02 img{ float:left; margin:0 5px 5px 5px;}
-.info_box_contents1{ width:100%; background:#ccc;}
+.info_box_contents1{ 
+	width:100%;
+	background:#ccc;
+}

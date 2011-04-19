@@ -215,18 +215,17 @@ function change_num(ob,targ, quan,a_quan)
               <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice">
               	<tr class="infoBoxNoticeContents">
                 	<td colspan="2" class="text">
-！注意！<br>
-買取金額が200円以下の場合、手数料の関係でお支払いができません。<br>
-申し訳ございませんがポイントの加算になります。<br>
-＊1 尚、99円以下はポイントでのお支払いか、来社による、直接現金でのお支払いになります。<br>
-＊2 ポイントの加算をご希望のお客様は当サイト（サイト名）のアカウントが必要になります。
+【重要】<br>
+小計金額が赤文字の場合、表示された金額をご返金いたしますが、振り込みの際の事務手数料の都<br>合上、
+200円未満の場合は当サイトでご利用いただけますポイントを加算する処理となります。<br>
+＊1　尚、小計が100円未満になられた場合は、ポイントの加算か、来店による直接現金でのお支払いになります。<br>
+＊2　ポイントの加算の場合は、当サイト（サイト名）の会員登録が必須でございます。
 </td>
                 </tr>
-              <tr class="infoBoxNoticeContents">
-                 <td><img src="images/icons/hinto.jpg"></td>
-                 <td>
-                  ヒント！<br>買取金額が200円以下の場合は、ウェブマネーを買ってみてはいかがですか？
-                  </td>
+                <tr class="infoBoxNoticeContents">
+                  <td width="33" height="35"><img src="images/icons/hinto.jpg" align="absmiddle" /></td>
+                  <td align="left" valign="middle">ヒント！<br>返金分が発生した場合は【ウェブマネー（WebMoney）の販売】を利用してみてはいかがでしょう？
+</td>
                 </tr>
               </table>
             </td>

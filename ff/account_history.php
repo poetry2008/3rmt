@@ -85,8 +85,14 @@
                '</table>';
 
       new tableBox(array(array('text' => $order_heading)), true);
-      new infoBox(array(array('text' => $order)));
-
+      //new infoBox(array(array('text' => $order)));
+      echo '<table cellspacing="0" cellpadding="1" border="0" width="100%" class="infoBox" summary="table">';
+      echo '<tr><td><table cellspacing="0" cellpadding="3" border="0" width="100%" class="infoBoxContents" summary="table">';
+      echo '<tr><td>';
+      echo $order; 
+      echo '</td></tr>';
+      echo '</table></td></tr>'; 
+      echo '</table>'; 
       echo '<br>';
     }
   } else {
