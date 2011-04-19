@@ -479,8 +479,14 @@ right:5px;*/
       <td valign="top">
     <table width="100%">
       <tr>
+        <td colspan="2">
+        安全なパスワード管理を目的として作られていますが、保証するものではありません。銀行のパスワードなど金銭が絡む情報は登録できません。<br> 
+        IDとパスワードはクリックするとクリップボードへコピーされます。これは日々の作業性を重視した機能であり、ご利用にはご注意ください。 
+        </td>
+      </tr>
+      <tr>
         <td>
-    <?php tep_site_filter(FILENAME_PW_MANAGER);?>
+        <?php tep_site_filter(FILENAME_PW_MANAGER);?>
         </td>
         <td align="right">
         </td>
@@ -513,11 +519,12 @@ right:5px;*/
       <?php 
       if ($HTTP_GET_VARS['sort'] == 'priority') {
       ?>
-      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=priority&type='.$type_str);?>"><?php echo TEXT_PRIORITY;?></a> 
+      <a href="<?php echo tep_href_link('pw_manager.php',
+        tep_get_all_get_params(array('pw_id','x', 'y', 'type', 'sort')).'sort=priority&type='.$type_str);?>"><?php echo TEXT_PRIORITY;?></a> 
       <?php
       } else {
       ?>
-      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=priority&type=asc');?>"><?php echo TEXT_PRIORITY;?></a> 
+      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('pw_id','x', 'y', 'type', 'sort')).'sort=priority&type=asc');?>"><?php echo TEXT_PRIORITY;?></a> 
       <?php
       }
       ?>
@@ -526,11 +533,11 @@ right:5px;*/
       <?php 
       if ($HTTP_GET_VARS['sort'] == 'loginurl') {
       ?>
-      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=loginurl&type='.$type_str);?>"><?php echo TEXT_LOGINURL;?></a> 
+      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('pw_id','x', 'y', 'type', 'sort')).'sort=loginurl&type='.$type_str);?>"><?php echo TEXT_LOGINURL;?></a> 
       <?php
       } else {
       ?>
-      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=loginurl&type=asc');?>"><?php echo TEXT_LOGINURL;?></a> 
+      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('pw_id','x', 'y', 'type', 'sort')).'sort=loginurl&type=asc');?>"><?php echo TEXT_LOGINURL;?></a> 
       <?php
       }
       ?>
@@ -540,13 +547,13 @@ right:5px;*/
       if ($HTTP_GET_VARS['sort'] == 'title') {
       ?>
       <a href="<?php echo tep_href_link('pw_manager.php',
-        tep_get_all_get_params(array('x', 'y', 'type',
+        tep_get_all_get_params(array('pw_id','x', 'y', 'type',
               'sort')).'sort=title&type='.$type_str);?>"><?php echo TEXT_INFO_TITLE;?></a> 
       <?php
       } else {
       ?>
       <a href="<?php echo tep_href_link('pw_manager.php',
-      tep_get_all_get_params(array('x', 'y', 'type',
+      tep_get_all_get_params(array('pw_id','x', 'y', 'type',
             'sort')).'sort=title&type=asc');?>"><?php echo TEXT_INFO_TITLE;?></a> 
       <?php
       }
@@ -556,11 +563,11 @@ right:5px;*/
       <?php 
       if ($HTTP_GET_VARS['sort'] == 'username') {
       ?>
-      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=username&type='.$type_str);?>"><?php echo TEXT_USERNAME;?></a> 
+      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('pw_id','x', 'y', 'type', 'sort')).'sort=username&type='.$type_str);?>"><?php echo TEXT_USERNAME;?></a> 
       <?php
       } else {
       ?>
-      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=username&type=asc');?>"><?php echo TEXT_USERNAME;?></a> 
+      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('pw_id','x', 'y', 'type', 'sort')).'sort=username&type=asc');?>"><?php echo TEXT_USERNAME;?></a> 
       <?php
       }
       ?>
@@ -569,11 +576,11 @@ right:5px;*/
       <?php 
       if ($HTTP_GET_VARS['sort'] == 'password') {
       ?>
-      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=password&type='.$type_str);?>"><?php echo TEXT_PASSWORD;?></a> 
+      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('pw_id','x', 'y', 'type', 'sort')).'sort=password&type='.$type_str);?>"><?php echo TEXT_PASSWORD;?></a> 
       <?php
       } else {
       ?>
-      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=password&type=asc');?>"><?php echo TEXT_PASSWORD;?></a> 
+      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('pw_id','x', 'y', 'type', 'sort')).'sort=password&type=asc');?>"><?php echo TEXT_PASSWORD;?></a> 
       <?php
       }
       ?>
@@ -583,12 +590,12 @@ right:5px;*/
       if ($HTTP_GET_VARS['sort'] == 'operator') {
       ?>
       <a href="<?php echo tep_href_link('pw_manager.php',
-        tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=operator&type='.$type_str);?>"><?php echo TEXT_PRIVILEGE;?></a> 
+        tep_get_all_get_params(array('pw_id','x', 'y', 'type', 'sort')).'sort=operator&type='.$type_str);?>"><?php echo TEXT_PRIVILEGE;?></a> 
       <?php
       } else {
       ?>
       <a href="<?php echo tep_href_link('pw_manager.php',
-      tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=operator&type=asc');?>"><?php echo TEXT_PRIVILEGE;?></a> 
+      tep_get_all_get_params(array('pw_id','x', 'y', 'type', 'sort')).'sort=operator&type=asc');?>"><?php echo TEXT_PRIVILEGE;?></a> 
       <?php
       }
       ?>
@@ -597,11 +604,11 @@ right:5px;*/
       <?php 
       if ($HTTP_GET_VARS['sort'] == 'nextdate') {
       ?>
-      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=nextdate&type='.$type_str);?>"><?php echo TEXT_NEXTDATE;?></a> 
+      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('pw_id','x', 'y', 'type', 'sort')).'sort=nextdate&type='.$type_str);?>"><?php echo TEXT_NEXTDATE;?></a> 
       <?php
       } else {
       ?>
-      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=nextdate&type=asc');?>"><?php echo TEXT_NEXTDATE;?></a> 
+      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('pw_id','x', 'y', 'type', 'sort')).'sort=nextdate&type=asc');?>"><?php echo TEXT_NEXTDATE;?></a> 
       <?php
       }
       ?>

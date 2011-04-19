@@ -60,6 +60,7 @@ function show_once_pwd_log_list($oresult) {
     echo '<td class="main" >' . $arec['username'] . "</td>\n";
     echo '<td class="main" >' . $arec['pwd_username'] . "</td>\n";
     echo '<td class="main" >' . $arec['url'] . "</td>\n";
+    echo '<td class="main" >' . $arec['created_at'] . "</td>\n";
 
     echo "</tr>\n";
     $rec_c++;
