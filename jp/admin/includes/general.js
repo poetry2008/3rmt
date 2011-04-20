@@ -97,22 +97,29 @@ $("input[name$=\[final_price\]]").each(function(index) {
   var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");;
   var tmp_str = "input[name=op_id_"+op_id+"]";
   var final_val = $(tmp_str).val();
-  var p_name = "input[name^=update_products][name*="+op_id+"][name$=\[name\]]";
-  if(input_val > Math.abs(final_val*1.1)&&flag_tmp){
-  var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n"+$(p_name).val(),"");
-  var t_str = "input[name^=update_products][name*="+op_id+"][name$=\[pwd\]]";
-  if(in_array(pwd,pwd_arr)){
-  $(t_str).val(pwd);
-  }else{
-  $(t_str).val('_false');
+  if(input_val > Math.abs(final_val*1.1)){
   flag_tmp=false;
-  alert("パスワードが違います");
-  }
   }
   });
-document.edit_order.submit();
+  if(!false){
+  var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+  if(in_array(pwd,pwd_arr)){
+  $("input[name=update_viladate]").val(pwd);
+    document.edit_order.submit();
+  }else{
+  alert("パスワードが違います");
+  $("input[name=update_viladate]").val('_false');
+  document.edit_order.submit();
+  alert("更新をキャンセルしました。");
+  return false;
+  }
+  }else{
+    document.edit_order.submit();
+  }
 }
 });
+}else{
+  return false;
 }
 flag = false;
 return flag; 
@@ -125,7 +132,7 @@ function update_price() {
 
   if (window.confirm("注文内容を確認しますか？")) {
 
-
+    //viladate
     $.ajax({
 url: 'ajax_orders.php?action=getallpwd',
 type: 'POST',
@@ -140,25 +147,36 @@ $("input[name$=\[final_price\]]").each(function(index) {
   var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");;
   var tmp_str = "input[name=op_id_"+op_id+"]";
   var final_val = $(tmp_str).val();
-  var p_name = "input[name^=update_products][name*="+op_id+"][name$=\[name\]]";
-  if(input_val > Math.abs(final_val*1.1)&&flag_tmp){
-  var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n"+$(p_name).val(),"");
-  var t_str = "input[name^=update_products][name*="+op_id+"][name$=\[pwd\]]";
-  if(in_array(pwd,pwd_arr)){
-  $(t_str).val(pwd);
-  }else{
-  $(t_str).val('_false');
-  flag_tmp=false;
-  alert("パスワードが違います");
-  }
+  if(input_val > Math.abs(final_val*1.1)){
+  flag_tmp = false;
   }
   });
+if(!flag_tmp){
+var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+if(in_array(pwd,pwd_arr)){
+$("input[name=update_viladate]").val(pwd);
 document.edit_order.submit();
 window.alert("注文内容を更新しました。合計金額を必ず確認してください。\n\n【 重要 】メールは送信されていません。【 重要 】");
 document.edit_order.notify.checked = true;
 document.edit_order.notify_comments.checked = false;
+}else{
+$("input[name=update_viladate]").val('_false');
+alert("パスワードが違います");
+document.edit_order.submit();
+alert("更新をキャンセルしました。");
+document.edit_order.notify.checked = true;
+document.edit_order.notify_comments.checked = false;
+}
+}else{
+document.edit_order.submit();
+window.alert("注文内容を更新しました。合計金額を必ず確認してください。\n\n【 重要 】メールは送信されていません。【 重要 】");
+document.edit_order.notify.checked = true;
+document.edit_order.notify_comments.checked = false;
+
+}
 }
 });
+
 
 
 } else {
