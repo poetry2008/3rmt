@@ -53,6 +53,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('LOCAL_EXE_UNZIP', '/usr/local/bin/unzip');
 
 // define the filenames used in the project
+  define('FILENAME_PWD_LOG', 'pwd_log.php');
   define('FILENAME_PRODUCTS_PRICE','products_price.php');
   define('FILENAME_PW_MANAGER', 'pw_manager.php');
   define('FILENAME_REDIREC_URL','redirec_url.php');
