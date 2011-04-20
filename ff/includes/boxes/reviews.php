@@ -97,7 +97,7 @@ if (
   group by reviews_id
   having p.products_status != '0' and p.products_status != '3'
   ";
-  $random_select .= " order by c desc limit 3";
+  $random_select .= " order by c desc limit 5";
   $info_box_contents = array();
   $random_reviews_query = tep_db_query($random_select);
   if (tep_db_num_rows($random_reviews_query)) { 

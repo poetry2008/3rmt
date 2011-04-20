@@ -18,7 +18,7 @@
   include(DIR_WS_MODULES . FILENAME_LATEST_NEWS);
 ?>
 <?php
-  //echo DEFAULT_PAGE_BOTTOM_CONTENTS;
+  echo DEFAULT_PAGE_BOTTOM_CONTENTS;
 ?>
       </td>
     <!-- body_text_eof //--> 
