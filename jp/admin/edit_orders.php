@@ -100,7 +100,7 @@
   }else if($viladate=='_false'){
     $viladate = false;
     $messageStack->add_session('更新をキャンセルしました。', 'error');
-    tep_redirect(tep_href_link("edit_new_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
+    tep_redirect(tep_href_link("edit_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
     break;
   }
 
