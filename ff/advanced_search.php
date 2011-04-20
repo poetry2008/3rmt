@@ -135,8 +135,22 @@ function popupWindow(url) {
   $info_box_contents[] = array('text' => tep_draw_input_field('keywords', '', 'style="width: 100%!important" class="input_text"'));
   $info_box_contents[] = array('align' => 'right', 'text' => tep_draw_checkbox_field('search_in_description', '1') . ' ' . TEXT_SEARCH_IN_DESCRIPTION);
 
-  new infoBox($info_box_contents);
-?> </td> 
+  //new infoBox($info_box_contents);
+?> 
+<table width="100%" cellspacing="0" cellpadding="1" border="0" class="infoBox" summary="table">
+<tr>
+    <td><table width="100%" cellspacing="0" cellpadding="3" border="0" class="infoBoxContents" summary="table">
+  <tr>
+    <td class="boxText"><?php echo tep_draw_input_field('keywords', '', 'style="width: 100%!important" class="input_text"');?></td>
+  </tr>
+  <tr>
+    <td align="right" class="boxText"><?php echo tep_draw_checkbox_field('search_in_description', '1') . ' ' . TEXT_SEARCH_IN_DESCRIPTION;?></td>
+  </tr>
+</table>
+</td>
+  </tr>
+</table>
+</td> 
                   </tr> 
                 </table></td> 
             </tr> 
@@ -183,8 +197,16 @@ function popupWindow(url) {
   $info_box_contents = array();
   $info_box_contents[] = array('text' => $options_box);
 
-  new infoBox($info_box_contents);
-?> </td> 
+  //new infoBox($info_box_contents);
+?>
+<table width="100%" cellspacing="0" cellpadding="3" border="0" class="infoBoxContents" summary="table">
+<tr>
+<td>
+<?php echo $options_box;?>
+</td>
+</tr>
+</table>
+ </td> 
             </tr> 
             <tr> 
               <td class="main"> <?php
