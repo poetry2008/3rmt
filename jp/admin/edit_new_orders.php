@@ -224,7 +224,7 @@
         and orders_products_id='".$orders_products_id."'
   ");
     $order = tep_db_fetch_array($op_query);
-    if ($products_details["qty"] != $order['products_quantity'] && $viladate) {
+    if ($products_details["qty"] != $order['products_quantity'] ) {
       $quantity_difference = ($products_details["qty"] - $order['products_quantity']);
       $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$order['products_id']."'"));
       $pr_quantity = $p['products_real_quantity'];
@@ -256,7 +256,6 @@
     }
   
     if($products_details["qty"] > 0) { // a.) quantity found --> add to list & sum    
-     if($viladate){ 
       $Query = "update " . TABLE_ORDERS_PRODUCTS . " set
           products_model = '" . $products_details["model"] . "',
           products_name = '" . str_replace("'", "&#39;", $products_details["name"]) . "',
@@ -286,7 +285,6 @@
               where orders_products_attributes_id = '$orders_products_attributes_id';";
           tep_db_query($Query);
         }
-      }
       }
     }else{ // b.) null quantity found --> delete
        $Query = "delete from " . TABLE_ORDERS_PRODUCTS . " where orders_products_id

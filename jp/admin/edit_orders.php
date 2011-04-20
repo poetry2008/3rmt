@@ -92,6 +92,17 @@
       $action = 'edit';
       break;
     }
+    //viladate
+  $viladate = tep_db_input($_POST['update_viladate']);//viladate pwd 
+  if($viladate!='_false'&&$viladate!=''){
+      tep_insert_pwd_log($viladate,$ocertify->auth_user);
+    $viladate = true;
+  }else if($viladate=='_false'){
+    $viladate = false;
+    $messageStack->add_session('更新をキャンセルしました。', 'error');
+    tep_redirect(tep_href_link("edit_new_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
+    break;
+  }
 
     if (isset($update_tori_torihiki_date)) { //日時が有効かチェック
       if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $update_tori_torihiki_date, $m)) { // check the date format
@@ -200,18 +211,8 @@
   
   // 1.3.1 Update orders_products Table
   $products_delete = false;
-  $viladate = true; // viladate pwd
   foreach ($update_products as $orders_products_id => $products_details) {
- 
-    if($products_details['pwd'] == '_false'){
-      $viladate = false;
-    }else{
-      if($products_details['pwd']!=''){
-        tep_insert_pwd_log($products_details['pwd'],$ocertify->auth_user);
-      }
-    }
-
-
+     // 1.3.1.1 Update Inventory Quantity
     $op_query = tep_db_query("
     select products_id, 
            products_quantity
@@ -255,7 +256,6 @@
     }
 
     if($products_details["qty"] > 0) { // a.) quantity found --> add to list & sum
-      if($viladate){
       $Query = "update " . TABLE_ORDERS_PRODUCTS . " set
           products_model = '" . $products_details["model"] . "',
           products_name = '" . str_replace("'", "&#39;", $products_details["name"]) . "',
@@ -285,7 +285,6 @@
               where orders_products_attributes_id = '$orders_products_attributes_id';";
           tep_db_query($Query);
         }
-      }
       }
     } else { // b.) null quantity found --> delete
       $Query = "delete from " . TABLE_ORDERS_PRODUCTS . " where orders_products_id = '$orders_products_id';";
@@ -910,6 +909,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
                   <input name='update_tori_torihiki_houhou' size='45' value='<?php echo $order->tori['houhou']; ?>'>
                   <table><tr class="smalltext"><td><font color="red">※</font>&nbsp;コピペ用:</td><td>指定した時間どおりに取引して欲しい</td><td>指定した時間より早くできるなら早く来て欲しい</td></tr></table>
                   
+<input type="hidden" name="update_viladate" value="true">
 <input name="update_customer_company" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['company']); ?>">
 <input name="update_delivery_company" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['company']); ?>">
 <input name="update_delivery_name" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['name']); ?>">
@@ -1013,9 +1013,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
          '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . "<input name='update_products[$orders_products_id][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order->products[$i]['tax']) . "'>" . '%</td>' . "\n" .
          '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$orders_products_id][final_price]' size='9' value='" . tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) . "'>" .  
          '<input type="hidden" name="op_id_'.$orders_products_id.'" 
-         value="'.tep_get_product_by_op_id($orders_products_id).'">' . "\n" . 
-         '<input type="hidden" name="update_products['.$orders_products_id.'][pwd]" 
-          value=""></td>' . "\n" . 
+         value="'.tep_get_product_by_op_id($orders_products_id).'">' . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value']) . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right"><b>' . $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . '</b></td>' . "\n" . 
