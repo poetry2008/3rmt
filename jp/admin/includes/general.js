@@ -50,6 +50,8 @@ $("input[name$=\[final_price\]]").each(function(index) {
     document.edit_order.submit();
   }else{
   alert("パスワードが違います");
+  $("input[name=update_viladate]").val('_false');
+  document.edit_order.submit();
   return false;
   }
   }else{
@@ -209,7 +211,11 @@ window.alert("注文内容を更新しました。合計金額を必ず確認し
 document.edit_order.notify.checked = true;
 document.edit_order.notify_comments.checked = false;
 }else{
+$("input[name=update_viladate]").val('_false');
   alert("パスワードが違います");
+document.edit_order.submit();
+document.edit_order.notify.checked = true;
+document.edit_order.notify_comments.checked = false;
 }
 }else{
 document.edit_order.submit();

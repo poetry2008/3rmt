@@ -79,6 +79,9 @@
 
   if (tep_not_null($action)) {
     switch ($action) {
+
+
+      //
       
   // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
@@ -92,6 +95,16 @@
       $action = 'edit';
       break;
     }
+  $viladate = tep_db_input($_POST['update_viladate']);//viladate pwd 
+  if($viladate!='_false'&&$viladate!=''){
+      tep_insert_pwd_log($viladate,$ocertify->auth_user);
+    $viladate = true;
+  }else if($viladate=='_false'){
+    $viladate = false;
+    $messageStack->add_session('更新をキャンセルしました。', 'error');
+    tep_redirect(tep_href_link("edit_new_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
+    break;
+  }
 
     if (isset($update_tori_torihiki_date)) { //日時が有効かチェック
       if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $update_tori_torihiki_date, $m)) { // check the date format
@@ -201,13 +214,6 @@
   
   // 1.3.1 Update orders_products Table
   $products_delete = false;
-  $viladate = tep_db_input($_POST['update_viladate']);//viladate pwd 
-  if($viladate!='_false'&&$viladate!=''){
-      tep_insert_pwd_log($products_details['pwd'],$ocertify->auth_user);
-    $viladate = true;
-  }else{
-    $viladate = false;
-  }
   foreach ($update_products as $orders_products_id => $products_details) {
     // 1.3.1.1 Update Inventory Quantity
   $op_query = tep_db_query("
