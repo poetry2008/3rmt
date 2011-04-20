@@ -696,8 +696,8 @@ function info_tep_href_link($romaji)
       $returnstr .= "info/".urlencode($romaji).".html";
     } else {
       // id 要求登陆之前不传sid
-      if (defined('SITE_ID') && (SITE_ID == 4 || SITE_ID == 5)) {
-        if (($request_type == 'NONSSL' && connection == 'SSL') || ($request_type == 'SSL' && tep_session_is_registered('customer_id'))) {
+      if (defined('SITE_ID') && (SITE_ID == 4 || SITE_ID == 5 || SITE_ID == 6 || SITE_ID == 7)) {
+        if (($request_type == 'NONSSL' && $connection == 'SSL') || ($request_type == 'SSL' && tep_session_is_registered('customer_id'))) {
           $returnstr .= "info/".urlencode($romaji).".html?".tep_session_name()."=".tep_session_id();
         } else {
           $returnstr .= "info/".urlencode($romaji).".html";

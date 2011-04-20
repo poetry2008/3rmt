@@ -5,9 +5,9 @@
 ?>
 <!-- latest_news //-->
 <div class="latest_news_box">
-<div class="pageHeading">
+<h3 class="pageHeading">
 RMTカメズからのお知らせ
-</div>
+</h3>
 <div class="comment">
     <div id="news">
         <ul class="news_ul">
