@@ -141,17 +141,11 @@ function popupWindow(url) {
                 </table></td> 
             </tr> 
             <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
-            <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                   <tr> 
                     <td class="smallText" align="right"><?php echo tep_image_submit('button_search.gif', IMAGE_BUTTON_SEARCH); ?></td> 
                   </tr> 
                 </table></td> 
-            </tr> 
-            <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
             <tr> 
               <td> <?php
@@ -165,14 +159,8 @@ function popupWindow(url) {
                  '    <td class="smallText">' . tep_draw_checkbox_field('inc_subcat', '1', true) . ' ' . ENTRY_INCLUDE_SUBCATEGORIES . '</td>' . "\n" .
                  '  </tr>' . "\n" .
                  '  <tr>' . "\n" .
-                 '    <td colspan="2">' . tep_draw_separator('pixel_trans.gif', '100%', '10') . '</td>' . "\n" .
-                 '  </tr>' . "\n" .
-                 '  <tr>' . "\n" .
                  '    <td class="fieldKey">' . ENTRY_MANUFACTURERS . '</td>' . "\n" .
                  '    <td class="fieldValue">' . tep_draw_pull_down_menu('manufacturers_id', tep_get_manufacturers(array(array('id' => '', 'text' => TEXT_ALL_MANUFACTURERS)))) . '</td>' . "\n" .
-                 '  </tr>' . "\n" .
-                 '  <tr>' . "\n" .
-                 '    <td colspan="2">' . tep_draw_separator('pixel_trans.gif', '100%', '10') . '</td>' . "\n" .
                  '  </tr>' . "\n" .
                  '  <tr>' . "\n" .
                  '    <td class="fieldKey">' . ENTRY_PRICE_FROM . '</td>' . "\n" .
@@ -181,9 +169,6 @@ function popupWindow(url) {
                  '  <tr>' . "\n" .
                  '    <td class="fieldKey">' . ENTRY_PRICE_TO . '</td>' . "\n" .
                  '    <td class="fieldValue">' . tep_draw_input_field('pto', '', 'class="input_text"') . '</td>' . "\n" .
-                 '  </tr>' . "\n" .
-                 '  <tr>' . "\n" .
-                 '    <td colspan="2">' . tep_draw_separator('pixel_trans.gif', '100%', '10') . '</td>' . "\n" .
                  '  </tr>' . "\n" .
                  '  <tr>' . "\n" .
                  '    <td class="fieldKey">' . ENTRY_DATE_FROM . '</td>' . "\n" .
@@ -200,9 +185,6 @@ function popupWindow(url) {
 
   new infoBox($info_box_contents);
 ?> </td> 
-            </tr> 
-            <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
             <tr> 
               <td class="main"> <?php
