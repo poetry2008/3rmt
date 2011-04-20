@@ -314,10 +314,18 @@ UL {
 #information{
 	margin-top: 10px;	
 }
-#login_form ,#login_form ul{
+#login_form ul{
 	background-color: #CDCACC;
     border: 2px solid #4C4C4C;
     margin: 10px 0 10px 4px;
+    padding: 3px 3px 1px;
+    text-align: center;
+    width: 148px;
+}
+#login_form{
+	background-color: #CDCACC;
+    border: 2px solid #4C4C4C;
+    margin: 10px 0 10px 5px;
     padding: 3px 3px 1px;
     text-align: center;
     width: 148px;
