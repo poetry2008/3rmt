@@ -28,6 +28,7 @@ $HTTP_POST_VERS に対応させる
   if (isset($HTTP_POST_VERS['pp'])) { $pp = $HTTP_POST_VERS['pp']; }
   if (isset($HTTP_POST_VERS['np'])) { $np = $HTTP_POST_VERS['np']; }
   if (isset($HTTP_POST_VERS['aval'])) { $aval = $HTTP_POST_VERS['aval']; }
+  if (isset($HTTP_POST_VERS['log_id'])) { $log_id = $HTTP_POST_VERS['log_id']; }
 //2003-07-16 hiroshi_sato add 2 line
         if (isset($_POST['sp'])) { $sp = $_POST['sp']; }
         if (isset($_POST['execute_delete'])) { $execute_delete = $_POST['execute_delete']; }
@@ -53,8 +54,38 @@ function show_once_pwd_log_list($oresult) {
       $naddress >>= 8;
     }
 
+/*
     if ($rec_c % 2) echo "<tr " . $GLOBALS['TdnBgcolor'] . ">\n";
     else echo "<tr>\n";
+    */
+$even = 'dataTableSecondRow';
+$odd = 'dataTableRow';
+if ($rec_c % 2) {
+  $nowColor = $even;
+} else {
+  $nowColor = $odd;
+}
+    if(isset($GLOBALS['log_id'])&&$GLOBALS['log_id']==$arec['id']){
+      echo '<tr class="dataTableRowSelected"
+        onmouseover="this.style.cursor=\'hand\'"
+        onDblClick="document.location.href=\'' .
+        tep_href_link(FILENAME_PWD_LOG,"log_id=".$arec['id'])
+        .'\'" >';
+    }else if(!$GLOBALS['log_id']&&$rec_c == 1){
+      echo '<tr class="dataTableRowSelected"
+        onmouseover="this.style.cursor=\'hand\'"
+        onDblClick="document.location.href=\'' .
+        tep_href_link(FILENAME_PWD_LOG,"log_id=".$arec['id'])
+        .'\'" >';
+
+    }else{
+      echo '<tr class="'.$nowColor.'"
+        onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'"
+        onmouseout="this.className=\'' . $nowColor . '\'"
+        onDblClick="document.location.href=\'' .
+        tep_href_link(FILENAME_PWD_LOG,"log_id=".$arec['id'])
+        .'\'" >';
+    }
 //    echo '<td class="main">' . $arec['sessionid'] . "</td>\n";    // Session ID
 
     echo '<td class="main" >' . $arec['username'] . "</td>\n";
@@ -160,13 +191,13 @@ function UserOncePwdLog_list() {
   if ($nrow > 0) {                      // レコードが取得できたとき
 
     // テーブルタグの開始
-    echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
-    echo "<tr>\n";
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_USERNAME . '</td>' . "\n";      
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' .
+    echo '<table width="100%" ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
+    echo "<tr class='dataTableHeadingRow'>\n";
+    echo '<td class="dataTableHeadingContent">' . TABLE_HEADING_USERNAME . '</td>' . "\n";      
+    echo '<td class="dataTableHeadingContent">' .
       TABLE_HEADING_PWD_USERNAME . '</td>' . "\n";       
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_URL . '</td>' . "\n"; 
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' .
+    echo '<td class="dataTableHeadingContent">' . TABLE_HEADING_URL . '</td>' . "\n"; 
+    echo '<td class="dataTableHeadingContent">' .
       TABLE_HEADING_CREATED_AT . '</td>' . "\n";       
     echo "</tr>\n";
     show_once_pwd_log_list($oresult);   
