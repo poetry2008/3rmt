@@ -68,13 +68,13 @@
   $customer_point_query = tep_db_query("
       select point 
       from " . TABLE_CUSTOMERS . " 
-      where customers_id = '" . $order['customer_id'] . "'");
+      where customers_id = '" . $order['customers_id'] . "'");
   $customer_point = tep_db_fetch_array($customer_point_query);
   // ゲストチェック
   $customer_guest_query = tep_db_query("
       select customers_guest_chk 
       from " . TABLE_CUSTOMERS . " 
-      where customers_id = '" . $order['customer_id'] . "'");
+      where customers_id = '" . $order['customers_id'] . "'");
   $customer_guest = tep_db_fetch_array($customer_guest_query);
 
   if (tep_not_null($action)) {
@@ -390,7 +390,7 @@
   //point修正中
   //$point_query = tep_db_query("select sum(value) as total_point from " . TABLE_ORDERS_TOTAL . " where class = 'ot_point' and orders_id = '" . $oID . "'");
   //$total_point = tep_db_fetch_array($point_query);
-  $total_point = $_SESSION['create_orders2']['orders_total']['ot_point']['value'];
+  $total_point = $_SESSION['create_order2']['orders_total']['ot_point']['value'];
 
   //total
   //$total_query = tep_db_query("select sum(value) as total_value from " . TABLE_ORDERS_TOTAL . " where class != 'ot_total' and class != 'ot_point' and orders_id = '" . $oID . "'");
@@ -398,7 +398,7 @@
   //$total_value = $_SESSION['create_orders2']['orders_total']['ot_point']['value'];
   $total_value = 0;
   foreach ($_SESSION['create_order2']['orders_total'] as $code => $orders_total) {
-    if ($code != 'ot_total') {
+    if ($code != 'ot_total' || $code != 'ot_point') {
       $total_value += $orders_total['value'];
     }
   }
@@ -414,13 +414,13 @@
     }
   }
   
-  //if (($newtotal - $total_point["total_point"]) >= 1) {
-  //if ($newtotal > 0) {
-  //  $newtotal -= $total_point["total_point"];
-  //}
-  //} else {
-  //  $newtotal = '0';
-  //}
+  if (($newtotal - $total_point) >= 1) {
+    if ($newtotal > 0) {
+     $newtotal -= $total_point;
+    }
+  } else {
+   $newtotal = '0';
+  }
   
   $handle_fee = calc_handle_fee($order['payment_method'], $newtotal);
   
@@ -1380,7 +1380,7 @@ function check_add(){
            '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
            '  </tr>' . "\n";
     } elseif ($TotalDetails["Class"] == "ot_point") {
-      if ($customer_guest['customers_guest_chk'] == 0) { //会員
+      if ($customer_guest['customers_guest_chk'] == 0 || $customer_guest['customers_guest_chk'] == 9) { //会員
         $current_point = $customer_point['point'] + $TotalDetails["Price"];
         echo '  <tr>' . "\n" .
              '    <td align="left" class="' . $TotalStyle . '">このお客様は会員です。入力可能ポイントは <font color="red"><b>残り' . $customer_point['point'] . '（合計' . $current_point . '）</b></font> です。−（マイナス）符号の入力は必要ありません。必ず正数を入力するように！</td>' . 
