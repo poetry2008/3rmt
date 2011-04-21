@@ -9,7 +9,7 @@
   global 変数
  ============================================== */
   $TableBorder = 'border="0"';        // テーブル：線の太さ
-  $TableCellspacing = 'cellspacing="3"';    // テーブル：セルの間隔
+  $TableCellspacing = 'cellspacing="0"';    // テーブル：セルの間隔
   $TableCellpadding = 'cellpadding="3"';    // テーブル：セルのマージン
   $TableBgcolor = 'bgcolor="#FFFFFF"';    // テーブル：背景色
 
