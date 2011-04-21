@@ -37,7 +37,6 @@
     }
   }
 ?>
-<!--<script src="../Scripts/swfobject_modified.js" type="text/javascript"></script>-->
 <div id="header">
   <h1 class="h_title">
   <?php
@@ -62,7 +61,7 @@
                 <table cellpadding="0" cellspacing="0" summary="search" class="search_info">
                   <tr>
                     <td width="80">&nbsp;</td>
-<!--  <?php // --- get categoris list ( parent_id = 0 ) --- //
+ <?php // --- get categoris list ( parent_id = 0 ) --- //
   $cat1 = '';
   if ($_GET['cPath']) {
     $cat0 = explode('_', $_GET['cPath']);
@@ -107,9 +106,9 @@
     $categories_array .= '>'.$categories_parent0['categories_name'].'</option>'."\n";
   }
   $categories_array .= '</select>'."\n";
-  echo $categories_array ;
+  //echo $categories_array ;
 // --- end add--- //
-?> -->
+?>
                     <td><?php echo tep_draw_input_field('keywords', 'RMT', 'class="header_search_input"'); ?></td>
                     <td>
                       <input name="imageField" type="submit" class="header_search_submit" value="" alt="検索">
@@ -123,10 +122,6 @@
         ?>
                 </form>
             </td>
-                <!--
-                <a href="<?php //echo tep_href_link('rss.php') ; ?>" class="header_menu_1">RSS
-                <?php //echo tep_image(DIR_WS_IMAGES.'design/button/rss.gif','RSS') ; ?></a>
-                -->
             <td class="header_m_login" align="right">     
                 <a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'','SSL') ; ?>" class="header_menu_2">ショッピングカート<?php //echo tep_image(DIR_WS_IMAGES.'design/button/shopping_cart.gif',HEADER_TITLE_CART_CONTENTS);?></a>
             </td>
