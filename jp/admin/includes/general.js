@@ -43,7 +43,7 @@ $("input[name$=\[final_price\]]").each(function(index) {
   flag_tmp=false;
   }
   });
-  if(!false_tmp){
+  if(!flag_tmp){
   var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
   if(in_array(pwd,pwd_arr)){
   $("input[name=update_viladate]").val(pwd);
@@ -56,6 +56,7 @@ $("input[name$=\[final_price\]]").each(function(index) {
   return false;
   }
   }else{
+    $("input[name=update_viladate]").val('');
     document.edit_order.submit();
   }
 }
@@ -101,7 +102,7 @@ $("input[name$=\[final_price\]]").each(function(index) {
   flag_tmp=false;
   }
   });
-  if(!false_tmp){
+  if(!flag_tmp){
   var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
   if(in_array(pwd,pwd_arr)){
   $("input[name=update_viladate]").val(pwd);
@@ -114,6 +115,7 @@ $("input[name$=\[final_price\]]").each(function(index) {
   return false;
   }
   }else{
+    $("input[name=update_viladate]").val('');
     document.edit_order.submit();
   }
 }
@@ -167,7 +169,8 @@ alert("更新をキャンセルしました。");
 document.edit_order.notify.checked = true;
 document.edit_order.notify_comments.checked = false;
 }
-}else{
+}else{  
+$("input[name=update_viladate]").val('');
 document.edit_order.submit();
 window.alert("注文内容を更新しました。合計金額を必ず確認してください。\n\n【 重要 】メールは送信されていません。【 重要 】");
 document.edit_order.notify.checked = true;
@@ -238,6 +241,7 @@ document.edit_order.notify.checked = true;
 document.edit_order.notify_comments.checked = false;
 }
 }else{
+$("input[name=update_viladate]").val('');
 document.edit_order.submit();
 window.alert("注文内容を更新しました。合計金額を必ず確認してください。\n\n【 重要 】メールは送信されていません。【 重要 】");
 document.edit_order.notify.checked = true;
