@@ -52,7 +52,7 @@ $("input[name$=\[final_price\]]").each(function(index) {
   alert("パスワードが違います");
   $("input[name=update_viladate]").val('_false');
   document.edit_order.submit();
-  alert("更新をキャンセルしました。");
+//  alert("更新をキャンセルしました。");
   return false;
   }
   }else{
@@ -111,7 +111,7 @@ $("input[name$=\[final_price\]]").each(function(index) {
   alert("パスワードが違います");
   $("input[name=update_viladate]").val('_false');
   document.edit_order.submit();
-  alert("更新をキャンセルしました。");
+//  alert("更新をキャンセルしました。");
   return false;
   }
   }else{
@@ -165,7 +165,7 @@ document.edit_order.notify_comments.checked = false;
 $("input[name=update_viladate]").val('_false');
 alert("パスワードが違います");
 document.edit_order.submit();
-alert("更新をキャンセルしました。");
+//alert("更新をキャンセルしました。");
 document.edit_order.notify.checked = true;
 document.edit_order.notify_comments.checked = false;
 }
@@ -236,7 +236,7 @@ document.edit_order.notify_comments.checked = false;
 $("input[name=update_viladate]").val('_false');
 alert("パスワードが違います");
 document.edit_order.submit();
-alert("更新をキャンセルしました。");
+//alert("更新をキャンセルしました。");
 document.edit_order.notify.checked = true;
 document.edit_order.notify_comments.checked = false;
 }
