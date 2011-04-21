@@ -732,11 +732,13 @@ function tags_tep_href_link($tags_id)
 */
 function check_money_limit($limit_set, $total)
 {
-  $total = abs($total);
+  
+  //$total = abs($total);
+  //echo $total;
   $limit_arr = explode(",", $limit_set); 
   if (isset($limit_arr[0]) && isset($limit_arr[1])) {
     if (is_numeric($limit_arr[0]) && is_numeric($limit_arr[1])) {
-      if ($limit_arr[0] < $limit_arr[1]) {
+      if ($limit_arr[0] <= $limit_arr[1]) {
         if ($total < $limit_arr[0] || $total > $limit_arr[1]) {
           return true; 
         } else {
