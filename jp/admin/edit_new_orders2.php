@@ -70,6 +70,7 @@
       from " . TABLE_CUSTOMERS . " 
       where customers_id = '" . $order['customers_id'] . "'");
   $customer_point = tep_db_fetch_array($customer_point_query);
+
   // ゲストチェック
   $customer_guest_query = tep_db_query("
       select customers_guest_chk 
@@ -118,33 +119,7 @@
   }
     $oID = tep_db_prepare_input($_GET['oID']);
     $order = $_SESSION['create_order2']['orders'];
-    //$status = '31'; // 初期値
-    //$goods_check = $order_query;
-    
-    /*
-    if (tep_db_num_rows($goods_check) == 0) {
-      $messageStack->add('商品が追加されていません。', 'error');
-      $action = 'edit';
-      break;
-    }
-    */
-    /*
-    if (isset($update_tori_torihiki_date)) { //日時が有効かチェック
-      if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $update_tori_torihiki_date, $m)) { // check the date format
-        $messageStack->add('日時フォーマットが間違っています。 "2008-01-01 10:30:00"', 'error');
-        $action = 'edit';
-        break;
-      } elseif (!checkdate($m[2], $m[3], $m[1]) || $m[4] >= 24 || $m[5] >= 60 || $m[6] >= 60) { // make sure the date provided is a validate date
-        $messageStack->add('無効な日付または右記の数字を超えています。 "23:59:59"', 'error');
-        $action = 'edit';
-        break;
-      }
-    } else {
-      $messageStack->add('日時が入力されていません。', 'error');
-      $action = 'edit';
-      break;
-    }
-    */
+
 
     if ($update_totals) 
     foreach ($update_totals as $total_index => $total_details) {    
@@ -258,6 +233,7 @@
   }
   
   // 1.5.2. Summing up total
+  unset($_SESSION['create_order2']['orders_total']);
   foreach ($update_totals as $total_index => $total_details) {
   
     // 1.5.2.1 Prepare Tax Insertion      
@@ -397,9 +373,9 @@
   //$total_value = tep_db_fetch_array($total_query);
   //$total_value = $_SESSION['create_orders2']['orders_total']['ot_point']['value'];
   $total_value = 0;
-  foreach ($_SESSION['create_order2']['orders_total'] as $code => $orders_total) {
-    if ($code != 'ot_total' && $code != 'ot_point') {
-      $total_value += $orders_total['value'];
+  foreach ($_SESSION['create_order2']['orders_total'] as $code => $ott) {
+    if ($code !== 'ot_total' && $code !== 'ot_point') {
+      $total_value += $ott['value'];
     }
   }
 
@@ -413,13 +389,13 @@
       $newtotal = $total_value;
     }
   }
-  
+
   if (($newtotal - $total_point) >= 1) {
     if ($newtotal > 0) {
-     $newtotal -= $total_point;
+      $newtotal -= $total_point;
     }
   } else {
-   $newtotal = '0';
+    $newtotal = '0';
   }
   
   $handle_fee = calc_handle_fee($order['payment_method'], $newtotal);
@@ -429,15 +405,6 @@
   $_SESSION['create_order2']['orders_total']['ot_total']['value'] = intval(floor($newtotal));
   $_SESSION['create_order2']['orders_total']['ot_total']['text']  = "<b>" . $currencies->ot_total_format(intval(floor($newtotal)), true, $order['currency']) . "</b>";
   
-  /*
-  $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '" . $newtotal . "', text = '<b>" . $currencies->format($newtotal, true, $order->info['currency']) . "</b>' where class='ot_total' and orders_id = '" . $oID . "'";
-  tep_db_query($totals);
-  */
-  
-  /*
-  $update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
-  tep_db_query($update_orders_sql);
-  */
   $_SESSION['create_order2']['orders']['code_fee'] = $handle_fee;
     
   // 最終処理（更新およびメール送信）
