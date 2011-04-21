@@ -179,7 +179,6 @@ if ($category_depth == 'nested') {
         }
       }
   ?>
-      <!--<div class="pageBottom_long"></div>-->
   <?php
       if (isset($cPath_array)) {
         if ($seo_category['seo_description']) {
