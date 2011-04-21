@@ -15,12 +15,10 @@
                                 tep_href_link(FILENAME_LOGIN,'','SSL'); ?>"><img
                                 src="images/login_02.gif" alt="ログイン"></a>
 <?php
-  if (!tep_session_is_registered('customer_id')) {
 ?>
                 <a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT,'','SSL');
 ?>"><?php echo '<img src="images/signup_01.gif" alt="'.HEADER_TITLE_CREATE_ACCOUNT.'" width="166" height="97">'; ?></a>
 <?php 
-   }
 ?>
   </div></div>
 <?php 
@@ -33,12 +31,10 @@
           <a href="<?php echo tep_href_link(FILENAME_LOGIN,'','SSL'); ?>"><img
           class="middle" style="margin-left:1px;" src="images/login_02.gif" alt="ログイン"></a>
                         <?php
-  if (!tep_session_is_registered('customer_id')) {
 ?>
 <a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT,'','SSL'); ?>"><?php echo
 '<img src="images/signup_01.gif" alt="'.HEADER_TITLE_CREATE_ACCOUNT.'" width="147" height="94">'; ?></a>
 <?php 
-   }
 ?>
   </div></div>
 <?php 

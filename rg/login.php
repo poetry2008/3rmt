@@ -128,8 +128,8 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
           tep_redirect($origin_href);
         } else {
           if (ENABLE_SSL && $request_type == 'SSL') {
-            //tep_redirect(tep_href_link(FILENAME_DEFAULT, '', 'NONSSL').'?'.tep_session_name().'='.tep_session_id());
-            tep_redirect(tep_href_link(FILENAME_DEFAULT, '', 'NONSSL'));
+            tep_redirect(tep_href_link(FILENAME_DEFAULT, '', 'NONSSL').'?'.tep_session_name().'='.tep_session_id());
+            //tep_redirect(tep_href_link(FILENAME_DEFAULT, '', 'NONSSL'));
           } else {
             tep_redirect(tep_href_link(FILENAME_DEFAULT, '', 'NONSSL'));
           }
