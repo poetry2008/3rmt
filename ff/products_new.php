@@ -31,7 +31,7 @@
             <tr>
               <td>
                 <?php
-$new_caid_arr = tep_get_categories_id_by_parent_id(FF_CID);
+$new_caid_arr = tep_ff_get_categories_id_by_parent_id(FF_CID);
 if (empty($new_caid_arr)) {
   $new_caid_arr = array(FF_CID);
 } else {

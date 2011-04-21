@@ -324,7 +324,7 @@ function change_num(ob,targ, quan,a_quan)
                   </tr>
                 </table>
 <?php 
-    $cat_cid_arr = tep_get_categories_id_by_parent_id(FF_CID); 
+    $cat_cid_arr = tep_ff_get_categories_id_by_parent_id(FF_CID); 
     if (empty($cat_cid_arr)) {
       $cat_cid_arr = array(FF_CID); 
     } else {

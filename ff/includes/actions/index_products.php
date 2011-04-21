@@ -3,7 +3,7 @@
   $Id$
 */
 // create column list
-    $research_caid = tep_get_categories_id_by_parent_id(FF_CID); 
+    $research_caid = tep_ff_get_categories_id_by_parent_id(FF_CID); 
     if (empty($research_caid)) {
       $research_caid = array(FF_CID); 
     } else {
