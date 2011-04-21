@@ -398,7 +398,7 @@
   //$total_value = $_SESSION['create_orders2']['orders_total']['ot_point']['value'];
   $total_value = 0;
   foreach ($_SESSION['create_order2']['orders_total'] as $code => $orders_total) {
-    if ($code != 'ot_total' || $code != 'ot_point') {
+    if ($code != 'ot_total' && $code != 'ot_point') {
       $total_value += $orders_total['value'];
     }
   }
