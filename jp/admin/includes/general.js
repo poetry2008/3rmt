@@ -43,7 +43,7 @@ $("input[name$=\[final_price\]]").each(function(index) {
   flag_tmp=false;
   }
   });
-  if(!false){
+  if(!false_tmp){
   var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
   if(in_array(pwd,pwd_arr)){
   $("input[name=update_viladate]").val(pwd);
@@ -101,7 +101,7 @@ $("input[name$=\[final_price\]]").each(function(index) {
   flag_tmp=false;
   }
   });
-  if(!false){
+  if(!false_tmp){
   var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
   if(in_array(pwd,pwd_arr)){
   $("input[name=update_viladate]").val(pwd);
