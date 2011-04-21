@@ -68,13 +68,13 @@
   $customer_point_query = tep_db_query("
       select point 
       from " . TABLE_CUSTOMERS . " 
-      where customers_id = '" . $order['customer_id'] . "'");
+      where customers_id = '" . $order['customers_id'] . "'");
   $customer_point = tep_db_fetch_array($customer_point_query);
   // ゲストチェック
   $customer_guest_query = tep_db_query("
       select customers_guest_chk 
       from " . TABLE_CUSTOMERS . " 
-      where customers_id = '" . $order['customer_id'] . "'");
+      where customers_id = '" . $order['customers_id'] . "'");
   $customer_guest = tep_db_fetch_array($customer_guest_query);
 
   if (tep_not_null($action)) {
