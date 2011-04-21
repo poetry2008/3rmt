@@ -24,3 +24,5 @@ INSERT INTO `banners` (`site_id`, `banners_id`, `banners_title`, `banners_url`, 
 ('8', NULL, 'フッター2', '', '', 'footer2', '', NULL, NULL, NULL, '2006-07-02 03:00:42', '2006-12-03 19:39:30', 0),
 ('8', NULL, 'フッター3', '', '', 'footer3', '', NULL, NULL, NULL, '2006-07-02 03:01:03', '2006-12-03 19:39:31', 0);
 
+INSERT INTO `configuration` (`configuration_id`, `configuration_title`, `configuration_key`, `configuration_value`, `configuration_description`, `configuration_group_id`, `sort_order`, `last_modified`, `date_added`, `use_function`, `set_function`, `site_id`) VALUES
+(NULL, 'ベストセラー', 'MAX_DISPLAY_BESTSELLERS', '5', '表示するベストセラー商品の最大値を設定します.', 3, 15, '2011-04-21 14:02:03', '2011-04-21 14:01:59', '', '', 8);
