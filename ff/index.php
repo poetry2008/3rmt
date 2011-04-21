@@ -8,6 +8,18 @@
   if (isset($_GET['tags_id'])) {
     forward404(); 
   }
+  
+  if (!empty($current_category_id)) {
+    $cex_ca_arr = tep_ff_get_categories_id_by_parent_id(FF_CID); 
+    if (empty($cex_ca_arr)) {
+      $cex_ca_arr = array(FF_CID); 
+    } else {
+      array_push($cex_ca_arr, FF_CID); 
+    }
+    if (!in_array($current_category_id, $cex_ca_arr)) {
+      forward404(); 
+    }
+  }
 ?>
 <?php page_head();?>
 </head>

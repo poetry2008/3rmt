@@ -25,39 +25,46 @@ function submitChk() {
   var flag = confirm ( "確認はしましたか？\n\n【 重要 】価格構成要素を変更した場合は、先に「注文内容確認」ボタンを押す必要があります。\n\n戻る場合は [キャンセル] ボタンをクリックしてください。"); 
   /* send_flg が TRUEなら送信、FALSEなら送信しない */ 
   if(flag){
-$.ajax({
+    $.ajax({
 url: 'ajax_orders.php?action=getallpwd',
 type: 'POST',
 dataType: 'text',
 async : false,
 success: function(data) {
-   var pwd_arr = data.split(",");;
-   var flag_tmp = true;
-   $("input[name$=\[final_price\]]").each(function(index) {
-       var input_name = $(this).attr('name');
-       var input_val = $(this).val();
-       var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");;
-       var tmp_str = "input[name=op_id_"+op_id+"]";
-       var final_val = $(tmp_str).val();
-       var p_name = "input[name^=update_products][name*="+op_id+"][name$=\[name\]]";
-       if(input_val > Math.abs(final_val*1.1)&&flag_tmp){
-         var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n"+$(p_name).val(),"");
-         var t_str = "input[name^=update_products][name*="+op_id+"][name$=\[pwd\]]";
-         if(in_array(pwd,pwd_arr)){
-          $(t_str).val(pwd);
-         }else{
-          $(t_str).val('_false');
-          flag_tmp=false;
-          alert("パスワードが違います");
-         }
-       }
-  });
-        document.edit_order.submit();
-}
-  });
+var pwd_arr = data.split(",");;
+var flag_tmp = true;
+$("input[name$=\[final_price\]]").each(function(index) {
+  var input_name = $(this).attr('name');
+  var input_val = $(this).val();
+  var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");;
+  var tmp_str = "input[name=op_id_"+op_id+"]";
+  var final_val = $(tmp_str).val();
+  if(input_val > Math.abs(final_val*1.1)){
+  flag_tmp=false;
   }
-  flag = false;
-  return flag; 
+  });
+  if(!flag_tmp){
+  var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+  if(in_array(pwd,pwd_arr)){
+  $("input[name=update_viladate]").val(pwd);
+    document.edit_order.submit();
+  }else{
+  alert("パスワードが違います");
+  $("input[name=update_viladate]").val('_false');
+  document.edit_order.submit();
+  alert("更新をキャンセルしました。");
+  return false;
+  }
+  }else{
+    $("input[name=update_viladate]").val('');
+    document.edit_order.submit();
+  }
+}
+});
+}else{
+return false;
+}
+return false;
 } 
 
 function submitChk2() { 
@@ -77,39 +84,47 @@ flag2 = false;
 if (flag2) {
   var flag = confirm ( "確認はしましたか？\n\n【 重要 】価格構成要素を変更した場合は、先に「注文内容確認」ボタンを押す必要があります。\n\n戻る場合は [キャンセル] ボタンをクリックしてください。"); 
   if(flag){
-$.ajax({
+    $.ajax({
 url: 'ajax_orders.php?action=getallpwd',
 type: 'POST',
 dataType: 'text',
 async : false,
 success: function(data) {
-   var pwd_arr = data.split(",");;
-   var flag_tmp = true;
-   $("input[name$=\[final_price\]]").each(function(index) {
-       var input_name = $(this).attr('name');
-       var input_val = $(this).val();
-       var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");;
-       var tmp_str = "input[name=op_id_"+op_id+"]";
-       var final_val = $(tmp_str).val();
-       var p_name = "input[name^=update_products][name*="+op_id+"][name$=\[name\]]";
-       if(input_val > Math.abs(final_val*1.1)&&flag_tmp){
-         var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n"+$(p_name).val(),"");
-         var t_str = "input[name^=update_products][name*="+op_id+"][name$=\[pwd\]]";
-         if(in_array(pwd,pwd_arr)){
-          $(t_str).val(pwd);
-         }else{
-          $(t_str).val('_false');
-          flag_tmp=false;
-          alert("パスワードが違います");
-         }
-       }
-  });
-        document.edit_order.submit();
-}
-  });
+var pwd_arr = data.split(",");;
+var flag_tmp = true;
+$("input[name$=\[final_price\]]").each(function(index) {
+  var input_name = $(this).attr('name');
+  var input_val = $(this).val();
+  var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");;
+  var tmp_str = "input[name=op_id_"+op_id+"]";
+  var final_val = $(tmp_str).val();
+  if(input_val > Math.abs(final_val*1.1)){
+  flag_tmp=false;
   }
-  flag = false;
-  return flag; 
+  });
+  if(!flag_tmp){
+  var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+  if(in_array(pwd,pwd_arr)){
+  $("input[name=update_viladate]").val(pwd);
+    document.edit_order.submit();
+  }else{
+  alert("パスワードが違います");
+  $("input[name=update_viladate]").val('_false');
+  document.edit_order.submit();
+  alert("更新をキャンセルしました。");
+  return false;
+  }
+  }else{
+    $("input[name=update_viladate]").val('');
+    document.edit_order.submit();
+  }
+}
+});
+}else{
+  return false;
+}
+flag = false;
+return flag; 
 } else {
   location.href='create_order2.php';
 }
@@ -119,45 +134,57 @@ function update_price() {
 
   if (window.confirm("注文内容を確認しますか？")) {
 
-
-$.ajax({
+    //viladate
+    $.ajax({
 url: 'ajax_orders.php?action=getallpwd',
 type: 'POST',
 dataType: 'text',
 async : false,
 success: function(data) {
-   var pwd_arr = data.split(",");;
-   var flag_tmp = true;
-   $("input[name$=\[final_price\]]").each(function(index) {
-       var input_name = $(this).attr('name');
-       var input_val = $(this).val();
-       var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");;
-       var tmp_str = "input[name=op_id_"+op_id+"]";
-       var final_val = $(tmp_str).val();
-       var p_name = "input[name^=update_products][name*="+op_id+"][name$=\[name\]]";
-       if(input_val > Math.abs(final_val*1.1)&&flag_tmp){
-         var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n"+$(p_name).val(),"");
-         var t_str = "input[name^=update_products][name*="+op_id+"][name$=\[pwd\]]";
-         if(in_array(pwd,pwd_arr)){
-          $(t_str).val(pwd);
-         }else{
-          $(t_str).val('_false');
-          flag_tmp=false;
-          alert("パスワードが違います");
-         }
-       }
-  });
-    document.edit_order.submit();
-    window.alert("注文内容を更新しました。合計金額を必ず確認してください。\n\n【 重要 】メールは送信されていません。【 重要 】");
-    document.edit_order.notify.checked = true;
-    document.edit_order.notify_comments.checked = false;
-}
-  });
-
-
-  } else {
-    window.alert("注文内容確認をキャンセルしました。\n\n【 重要 】メールは送信されていません。【 重要 】");
+var pwd_arr = data.split(",");;
+var flag_tmp = true;
+$("input[name$=\[final_price\]]").each(function(index) {
+  var input_name = $(this).attr('name');
+  var input_val = $(this).val();
+  var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");;
+  var tmp_str = "input[name=op_id_"+op_id+"]";
+  var final_val = $(tmp_str).val();
+  if(input_val > Math.abs(final_val*1.1)){
+  flag_tmp = false;
   }
+  });
+if(!flag_tmp){
+var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+if(in_array(pwd,pwd_arr)){
+$("input[name=update_viladate]").val(pwd);
+document.edit_order.submit();
+window.alert("注文内容を更新しました。合計金額を必ず確認してください。\n\n【 重要 】メールは送信されていません。【 重要 】");
+document.edit_order.notify.checked = true;
+document.edit_order.notify_comments.checked = false;
+}else{
+$("input[name=update_viladate]").val('_false');
+alert("パスワードが違います");
+document.edit_order.submit();
+alert("更新をキャンセルしました。");
+document.edit_order.notify.checked = true;
+document.edit_order.notify_comments.checked = false;
+}
+}else{  
+$("input[name=update_viladate]").val('');
+document.edit_order.submit();
+window.alert("注文内容を更新しました。合計金額を必ず確認してください。\n\n【 重要 】メールは送信されていません。【 重要 】");
+document.edit_order.notify.checked = true;
+document.edit_order.notify_comments.checked = false;
+
+}
+}
+});
+
+
+
+} else {
+  window.alert("注文内容確認をキャンセルしました。\n\n【 重要 】メールは送信されていません。【 重要 】");
+}
 
 }
 function update_price2() {
@@ -179,45 +206,56 @@ function update_price2() {
         }
         });
     // once pw viladate
-$.ajax({
+    $.ajax({
 url: 'ajax_orders.php?action=getallpwd',
 type: 'POST',
 dataType: 'text',
 async : false,
 success: function(data) {
-   var pwd_arr = data.split(",");;
-   var flag_tmp = true;
-   $("input[name$=\[final_price\]]").each(function(index) {
-       var input_name = $(this).attr('name');
-       var input_val = $(this).val();
-       var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");;
-       var tmp_str = "input[name=op_id_"+op_id+"]";
-       var final_val = $(tmp_str).val();
-       var p_name = "input[name^=update_products][name*="+op_id+"][name$=\[name\]]";
-       if(input_val > Math.abs(final_val*1.1)&&flag_tmp){
-         var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n"+$(p_name).val(),"");
-         var t_str = "input[name^=update_products][name*="+op_id+"][name$=\[pwd\]]";
-         if(in_array(pwd,pwd_arr)){
-          $(t_str).val(pwd);
-         }else{
-          $(t_str).val('_false');
-          flag_tmp=false;
-          alert("パスワードが違います");
-         }
-       }
+var pwd_arr = data.split(",");;
+var flag_tmp = true;
+$("input[name$=\[final_price\]]").each(function(index) {
+  var input_name = $(this).attr('name');
+  var input_val = $(this).val();
+  var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");;
+  var tmp_str = "input[name=op_id_"+op_id+"]";
+  var final_val = $(tmp_str).val();
+  if(input_val > Math.abs(final_val*1.1)){
+  flag_tmp = false;
+  }
   });
-    document.edit_order.submit();
-    window.alert("注文内容を更新しました。合計金額を必ず確認してください。\n\n【 重要 】メールは送信されていません。【 重要 】");
-    document.edit_order.notify.checked = true;
-    document.edit_order.notify_comments.checked = false;
+if(!flag_tmp){
+var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+if(in_array(pwd,pwd_arr)){
+$("input[name=update_viladate]").val(pwd);
+document.edit_order.submit();
+window.alert("注文内容を更新しました。合計金額を必ず確認してください。\n\n【 重要 】メールは送信されていません。【 重要 】");
+document.edit_order.notify.checked = true;
+document.edit_order.notify_comments.checked = false;
+}else{
+$("input[name=update_viladate]").val('_false');
+alert("パスワードが違います");
+document.edit_order.submit();
+alert("更新をキャンセルしました。");
+document.edit_order.notify.checked = true;
+document.edit_order.notify_comments.checked = false;
 }
-  });
+}else{
+$("input[name=update_viladate]").val('');
+document.edit_order.submit();
+window.alert("注文内容を更新しました。合計金額を必ず確認してください。\n\n【 重要 】メールは送信されていません。【 重要 】");
+document.edit_order.notify.checked = true;
+document.edit_order.notify_comments.checked = false;
+
+}
+}
+});
 
 
 // delete   document.edit_order.submit();
-  } else {
-    window.alert("注文内容確認をキャンセルしました。\n\n【 重要 】メールは送信されていません。【 重要 】");
-  }
+} else {
+  window.alert("注文内容確認をキャンセルしました。\n\n【 重要 】メールは送信されていません。【 重要 】");
+}
 }
 function show_monitor_error(e_id,flag,_this){
   //改变DIV
@@ -256,12 +294,12 @@ function change_sort_type(sort_type)
 
 
 function in_array(needle, haystack) {
- if(typeof needle == 'string' || typeof needle == 'number') {
-  for(var i in haystack) {
-   if(haystack[i] == needle) {
-     return true;
-   }
+  if(typeof needle == 'string' || typeof needle == 'number') {
+    for(var i in haystack) {
+      if(haystack[i] == needle) {
+        return true;
+      }
+    }
   }
- }
- return false;
+  return false;
 }

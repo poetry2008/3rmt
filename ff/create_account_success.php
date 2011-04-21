@@ -32,7 +32,7 @@
   <!-- body //--> 
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
     <tr> 
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
+      <td valign="top" class="left_colum_border"> <!-- left_navigation //--> 
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
@@ -42,15 +42,14 @@
         <div class="comment"> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
-              <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
+              <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="game_list_content">
             <tr>
-              <td><?php echo tep_image(DIR_WS_IMAGES . 'table_background_man_on_board.gif', HEADING_TITLE); ?></td>
-              <td valign="top" class="main"><br><?php echo TEXT_ACCOUNT_CREATED; ?></td>
+              <td valign="top" class="main"><?php echo TEXT_ACCOUNT_CREATED; ?></td>
             </tr>
           </table></td>
         </tr>
         <tr>
-          <td align="right"><br><?php echo '<a href="' . $origin_href . '">' . tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td>
+          <td align="right"><?php echo '<a href="' . $origin_href . '">' . tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td>
         </tr>
       </table>
       </div>

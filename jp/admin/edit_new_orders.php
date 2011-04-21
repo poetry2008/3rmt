@@ -79,6 +79,9 @@
 
   if (tep_not_null($action)) {
     switch ($action) {
+
+
+      //
       
   // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
@@ -92,6 +95,16 @@
       $action = 'edit';
       break;
     }
+  $viladate = tep_db_input($_POST['update_viladate']);//viladate pwd 
+  if($viladate!='_false'&&$viladate!=''){
+      tep_insert_pwd_log($viladate,$ocertify->auth_user);
+    $viladate = true;
+  }else if($viladate=='_false'){
+    $viladate = false;
+    $messageStack->add_session('更新をキャンセルしました。', 'error');
+    tep_redirect(tep_href_link("edit_new_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
+    break;
+  }
 
     if (isset($update_tori_torihiki_date)) { //日時が有効かチェック
       if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $update_tori_torihiki_date, $m)) { // check the date format
@@ -201,16 +214,8 @@
   
   // 1.3.1 Update orders_products Table
   $products_delete = false;
-  $viladate = true;//viladate pwd 
   foreach ($update_products as $orders_products_id => $products_details) {
     // 1.3.1.1 Update Inventory Quantity
-  if($products_details['pwd'] == '_false'){
-    $viladate = false;
-  }else{
-    if($products_details['pwd']!=''){
-      tep_insert_pwd_log($products_details['pwd'],$ocertify->auth_user);
-    }
-  }
   $op_query = tep_db_query("
       select products_id, 
              products_quantity
@@ -219,7 +224,7 @@
         and orders_products_id='".$orders_products_id."'
   ");
     $order = tep_db_fetch_array($op_query);
-    if ($products_details["qty"] != $order['products_quantity'] && $viladate) {
+    if ($products_details["qty"] != $order['products_quantity'] ) {
       $quantity_difference = ($products_details["qty"] - $order['products_quantity']);
       $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$order['products_id']."'"));
       $pr_quantity = $p['products_real_quantity'];
@@ -251,7 +256,6 @@
     }
   
     if($products_details["qty"] > 0) { // a.) quantity found --> add to list & sum    
-     if($viladate){ 
       $Query = "update " . TABLE_ORDERS_PRODUCTS . " set
           products_model = '" . $products_details["model"] . "',
           products_name = '" . str_replace("'", "&#39;", $products_details["name"]) . "',
@@ -281,7 +285,6 @@
               where orders_products_attributes_id = '$orders_products_attributes_id';";
           tep_db_query($Query);
         }
-      }
       }
     }else{ // b.) null quantity found --> delete
        $Query = "delete from " . TABLE_ORDERS_PRODUCTS . " where orders_products_id
@@ -1015,6 +1018,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
               <tr>
                 <td class="main" valign="top"><b>オプション:</b></td>
                 <td class="main"><?php echo $order->tori['houhou']; ?>
+<input type="hidden" name="update_viladate" value="true">
 <input type="hidden" name="update_customer_name" size="25" value="<?php echo tep_html_quotes($order->customer['name']); ?>">
 <input type="hidden" name="update_customer_email_address" size="45" value="<?php echo $order->customer['email_address']; ?>">
 <input type="hidden" name='update_info_payment_method' size='25' value='<?php echo $order->info['payment_method']; ?>'>
@@ -1123,9 +1127,7 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
          '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . "<input name='update_products[$orders_products_id][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order->products[$i]['tax']) . "'>" . '%</td>' . "\n" .
          '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$orders_products_id][final_price]' size='9' value='" . tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) . "'>" .
          '<input type="hidden" name="op_id_'.$orders_products_id.'" 
-         value="'.tep_get_product_by_op_id($orders_products_id).'">' . "\n" . 
-         '<input type="hidden" name="update_products['.$orders_products_id.'][pwd]" 
-          value=""></td>' . "\n" . 
+         value="'.tep_get_product_by_op_id($orders_products_id).'">' . "\n" . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value']) . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">' . $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right"><b>' . $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . '</b></td>' . "\n" . 

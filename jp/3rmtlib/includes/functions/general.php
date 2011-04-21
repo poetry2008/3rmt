@@ -3681,3 +3681,33 @@ function tep_get_cart_ff_products($pid, $cid_arr){
     //  return number_format($str);
     //}
   }
+  
+function  tep_show_review_des($desc) {
+  if (preg_match('/^[0-9]+$/', $desc)) {
+    $i = 1; 
+    $return_str = ''; 
+    for ($u=0; $u<mb_strlen($desc, 'UTF-8'); $u++) {
+      $return_str .= $desc[$u]; 
+      if ($i % 24 == 0) {
+        $return_str .= '<br>'; 
+      }
+      $i++; 
+    }
+    return $return_str; 
+  } else {
+    return $desc; 
+  }
+}
+
+function tep_ff_get_categories_id_by_parent_id($categories_id, $languages_id = 4) {
+  $arr = array();
+  $categories = tep_get_categories_by_parent_id($categories_id, $languages_id);
+  foreach ($categories as $c){
+    $arr[] = $c['categories_id'];
+    $subcategories = tep_get_categories_by_parent_id($c['categories_id'], $languages_id);
+    foreach ($subcategories as $sc) {
+      $arr[] = $sc['categories_id']; 
+    }
+  }
+  return $arr;
+}

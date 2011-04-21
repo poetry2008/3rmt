@@ -34,7 +34,7 @@
             <td>
               <table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php 
-  $mcaid_arr = tep_get_categories_id_by_parent_id(FF_CID);
+  $mcaid_arr = tep_ff_get_categories_id_by_parent_id(FF_CID);
   if (empty($mcaid_arr)) {
     $mcaid_arr = array(FF_CID); 
   } else {

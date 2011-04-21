@@ -49,7 +49,7 @@ if (
     if (isset($_GET['cPath']) && $cPath_array) {
       $subcid = tep_get_categories_id_by_parent_id($cPath_array[count($cPath_array) - 1]);
     } else {
-      $subcid = tep_get_categories_id_by_parent_id(FF_CID);
+      $subcid = tep_ff_get_categories_id_by_parent_id(FF_CID);
     }
 ?>
   <div class="reviews_box">
@@ -106,7 +106,7 @@ if (
       $review = htmlspecialchars(mb_substr($random_reviews['reviews_text'], 0, 60 , 'UTF-8'));
       $review = tep_break_string($review, 15, '-<br>');
       echo '<div class="reviews_warp" align="center">';
-      echo '<p class="reviews_top"><a href="' .  tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' .  $random_reviews['products_id'] . '&reviews_id=' .  $random_reviews['reviews_id']) . '" class="reviews_img">' .  tep_image(DIR_WS_IMAGES . 'products/' . $random_reviews['products_image'], $random_reviews['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) .  '</a><br>'. tep_image(DIR_WS_IMAGES . 'stars_' . $random_reviews['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $random_reviews['reviews_rating']), 88, 16) . "\n".'</p> <p class="reviews_bottom"><a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' . $random_reviews['products_id'] . '&reviews_id=' . $random_reviews['reviews_id']) . '">' . $review . ' ...</a></p>'; 
+      echo '<p class="reviews_top"><a href="' .  tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' .  $random_reviews['products_id'] . '&reviews_id=' .  $random_reviews['reviews_id']) . '" class="reviews_img">' .  tep_image(DIR_WS_IMAGES . 'products/' . $random_reviews['products_image'], $random_reviews['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) .  '</a><br>'. tep_image(DIR_WS_IMAGES . 'stars_' .  $random_reviews['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $random_reviews['reviews_rating']), 88, 16) . "\n".'</p> <p class="reviews_bottom"><a href="' .  tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' .  $random_reviews['products_id'] . '&reviews_id=' .  $random_reviews['reviews_id']) . '">' . tep_show_review_des($review) . ' ...</a></p>'; 
       echo '</div>';
     } 
   } elseif (isset($_GET['products_id'])) {
