@@ -390,7 +390,7 @@
   //point修正中
   //$point_query = tep_db_query("select sum(value) as total_point from " . TABLE_ORDERS_TOTAL . " where class = 'ot_point' and orders_id = '" . $oID . "'");
   //$total_point = tep_db_fetch_array($point_query);
-  $total_point = $_SESSION['create_orders2']['orders_total']['ot_point']['value'];
+  $total_point = $_SESSION['create_order2']['orders_total']['ot_point']['value'];
 
   //total
   //$total_query = tep_db_query("select sum(value) as total_value from " . TABLE_ORDERS_TOTAL . " where class != 'ot_total' and class != 'ot_point' and orders_id = '" . $oID . "'");
@@ -414,13 +414,13 @@
     }
   }
   
-  //if (($newtotal - $total_point["total_point"]) >= 1) {
-  //if ($newtotal > 0) {
-  //  $newtotal -= $total_point["total_point"];
-  //}
-  //} else {
-  //  $newtotal = '0';
-  //}
+  if (($newtotal - $total_point) >= 1) {
+    if ($newtotal > 0) {
+     $newtotal -= $total_point;
+    }
+  } else {
+   $newtotal = '0';
+  }
   
   $handle_fee = calc_handle_fee($order['payment_method'], $newtotal);
   
