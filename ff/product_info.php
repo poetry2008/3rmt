@@ -6,7 +6,7 @@
   require('includes/application_top.php');
   check_uri('/(.*)\{(.*)\}(.*)/'); 
   
-  $all_ca_arr = tep_get_categories_id_by_parent_id(FF_CID);
+  $all_ca_arr = tep_ff_get_categories_id_by_parent_id(FF_CID);
   if (empty($all_ca_arr)) {
     $all_ca_arr = array(FF_CID); 
   } else {

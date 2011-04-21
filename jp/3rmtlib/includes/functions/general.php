@@ -3698,3 +3698,16 @@ function  tep_show_review_des($desc) {
     return $desc; 
   }
 }
+
+function tep_ff_get_categories_id_by_parent_id($categories_id, $languages_id = 4) {
+  $arr = array();
+  $categories = tep_get_categories_by_parent_id($categories_id, $languages_id);
+  foreach ($categories as $c){
+    $arr[] = $c['categories_id'];
+    $subcategories = tep_get_categories_by_parent_id($c['categories_id'], $languages_id);
+    foreach ($subcategories as $sc) {
+      $arr[] = $sc['categories_id']; 
+    }
+  }
+  return $arr;
+}

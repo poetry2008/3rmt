@@ -9,7 +9,7 @@
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_REVIEWS);
 
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_REVIEWS));
-  $sub_caid = tep_get_categories_id_by_parent_id(FF_CID); 
+  $sub_caid = tep_ff_get_categories_id_by_parent_id(FF_CID); 
   if (empty($sub_caid)) {
     $sub_caid = array(FF_CID); 
   } else {
