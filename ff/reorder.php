@@ -376,7 +376,6 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
 ?>
 <div class="comment">
 <div id='form' class="product_info_box">
-<!--<form action="reorder.php" method="post" name="order">-->
 <?php
 echo tep_draw_form('order', tep_href_link('reorder.php'));
 ?>
@@ -665,10 +664,9 @@ function orderConfirmPage(){
   // enter basic order info
   ?>
 <div class="comment">
-<!--<form action="reorder.php" method="post" name='order'>-->
 <div class="product_info_box"><?php
 echo tep_draw_form('order', tep_href_link('reorder.php'));
-?></
+?>
 <input type="hidden" name="dummy" value="あいうえお眉幅">   
 <table class="information_table03" summary="table" border="0" cellpadding="0" cellspacing="1">
  <tr>
