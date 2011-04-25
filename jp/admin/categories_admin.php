@@ -428,7 +428,18 @@ while ($products = tep_db_fetch_array($products_query)) {
   <?php //個数架空 ?>
   <td class="dataTableContent6" align='right' onmouseover='this.style.cursor="pointer"'  id='virtual_quantity_<?php echo $products['products_id']; ?>' onclick="update_virtual_quantity(<?php echo $products['products_id']; ?>)"><?php echo $imaginary;?></td>
 <?php //数量 ?>
-  <td class="dataTableContent6" align='right' onmouseover='this.style.cursor="pointer"' style="font-weight:bold;" id='quantity_<?php echo $products['products_id']; ?>' onclick="update_quantity(<?php echo $products['products_id']; ?>)"><?php echo $products['products_real_quantity'];?></td>
+  <td class="dataTableContent6" align='right' onmouseover='this.style.cursor="pointer"' style="font-weight:bold;" id='quantity_<?php echo $products['products_id']; ?>' onclick="update_quantity(<?php echo $products['products_id']; ?>)">
+  <?php echo $products['products_real_quantity'];?>
+  <?php
+  if (BEST_SELLERS_LIMIT_TIME) {
+    if (tep_check_best_sellers_isbuy($products['products_id'])) {
+      echo '<img src="images/icons/mae1.gif" alt="'.BEST_SELLERS_LIMIT_TIME.'日前に注文有" title="'.BEST_SELLERS_LIMIT_TIME.'日前に注文有">'; 
+    } else {
+      echo '<img src="images/icons/mae2.gif" alt="">'; 
+    }
+  }
+  ?>
+  </td>
   <td align='right' class="dataTableContent2" ><span class = 'TRADER_INPUT'  name="TRADER_INPUT[]"  id="TRADER_<?php echo $products['products_id']; ?>"><?php echo $kakaku_treder?$kakaku_treder:0;?></span></td>
 <?php //価格業者  ?>
   <td align='right' class="dataTableContent6" ><span name="INCREASE_INPUT" class = 'INCREASE_INPUT'>

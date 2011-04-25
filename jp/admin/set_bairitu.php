@@ -29,6 +29,10 @@ switch ($HTTP_GET_VARS['action']){
     }
     tep_redirect('categories_admin.php?cPath='.$cpath);
     break;
+    case 'set_time':
+    tep_db_query("update ".TABLE_CONFIGURATION." set configuration_value = '".(int)$_POST['btime']."' where configuration_key = 'BEST_SELLERS_LIMIT_TIME'"); 
+    tep_redirect('categories_admin.php?cPath='.$_POST['cepath']);
+    break;
 }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -63,6 +67,12 @@ charset=<?php echo CHARSET; ?>">
 <input type="hidden" value="<?php echo $cID ?>" name="cID_list">
 <input type="hidden" value="<?php echo $cpath ?>" name="cpath">
 <input type="submit" value="計算設定">
+</form>
+<br>
+<form method="post" action="set_bairitu.php?action=set_time">
+<input type="text" value="<?php echo BEST_SELLERS_LIMIT_TIME;?>" name="btime">日以内に注文
+<input type="hidden" value="<?php echo $cpath ?>" name="cepath">
+<input type="submit" value="確定">
 </form>
 </body>
 </html>
