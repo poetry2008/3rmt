@@ -43,16 +43,20 @@
   if (!isset($_GET['cPath'])) $_GET['cPath'] = NULL; //del notice
   if (!isset($_GET['products_id'])) $_GET['products_id'] = NULL; //del notice
   if ($_GET['cPath']) {
-    echo $seo_category['seo_name'] . ' RMT <a href="javascript:void(0);" onkeypress="SomeJavaScriptCode" style="cursor:hand" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト 学園をお気に入りに追加して下さい！</a>' . "\n";
+    echo $seo_category['seo_name'] . ' RMT <a href="javascript:void(0);" onkeypress="SomeJavaScriptCode" style="cursor:hand" onclick="if (document.all){window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト RMT学園をお気に入りに追加して下さい！</a>' . "\n";
   } elseif ($_GET['products_id']) {
-    echo ds_tep_get_categories((int)$_GET['products_id'],1) . 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">総合サイト 学園をお気に入りに追加して下さい！</a>' . "\n";
+    echo ds_tep_get_categories((int)$_GET['products_id'],1) . 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href,document.title)} else {window.sidebar.addPanel(document.title, location.href,null)}">総合サイト RMT学園をお気に入りに追加して下さい！</a>' . "\n";
   } else {
-    echo 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト 学園をお気に入りに追加して下さい！</a>' . "\n";
+    echo 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all){window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト RMT学園をお気に入りに追加して下さい！</a>' . "\n";
   }  
 ?>
   </h1>
-  <div id="title"><img src="images/design/banner.jpg" alt="banner"></div>
-  <div id="header_Menu">
+  <div id="title">
+  <div class="logo"></div>
+  <?php echo $currencies->format($cart->show_total());?>
+  </div>
+  
+  <!--<div id="header_Menu">
       <div class="header_menu_content">
         <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="menu box">
           <tr>
@@ -134,7 +138,9 @@
           </tr>
         </table>
     </div>
-  </div>
+  </div>-->
+  
+  
   <div class="header_Navigation">
           <a href="<?php echo tep_href_link(FILENAME_SITEMAP,'','NONSSL');?>"><?php echo HEADER_TITLE_SITEMAP ; ?></a>
           &nbsp;&nbsp;<?php echo $breadcrumb->trail(' &raquo; '); ?>
