@@ -554,12 +554,13 @@ sitemap
 --------------------------- */
 .sitemap ul ul li{
 	padding: 0px 5px;
-	margin: 1px 0px;
+	margin:0px;
 	*+font-size: 10px;
 }
 .sitemap ul ul li a{
 	color: #555!important;
 }
+.sitemap li ul .subcategory_tree ul{ margin-top:-10px\9;}
 .sitemap ul{
 	list-style-position:inside;
 	list-style-type:square;
@@ -971,6 +972,7 @@ list-style-type:none;
 margin:0;
 margin-top:-10px\9;
 }
+.subcategory_tree ul{ margin:0;}
 .contact_us_warpper{ clear:both;}
 .tcol{ clear:both;}
 .lcol{height:100%;clear:both; padding:5px; border:1px solid #E0E0E0; overflow:hidden; background-color:#fff;}
