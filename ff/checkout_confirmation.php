@@ -149,7 +149,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
       <!-- body_text //--> 
       <td valign="top" id="contents"> 
       <?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post');?>
-      <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><span><?php echo HEADING_TITLE ; ?></span></h1>      
+      <h1 class="pageHeading"><span><?php echo HEADING_TITLE ; ?></span></h1>      
       <div class="comment">
         <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_info_box"> 
         <tr> 
