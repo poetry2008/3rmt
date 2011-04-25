@@ -56,16 +56,13 @@
       } else {
         $s_message = $f_result ? '':('<font color="#FF0000">'.$this->s_error.'</font>'); 
       }
-      //return array();
       return array('id' => $this->code,
                    'module' => $this->title,
                    'fields' => array(
-                     array('title' => PAYMENT_FREE_PAYMENT_DESCRIPTION, 
+                     array('title' => PAYMENT_FREE_PAYMENT_DESCRIPTION, 'field' => ''),
                      array('title' => $s_message, 'field' => '') 
                      )             
-                   //'fields' => array('title' => $s_message, 'field' => $added_hidden) 
-                                     ));
-      //return array('id' => $this->code, 'module' => '', 'fields' => '');
+      );
     }
 
     function pre_confirmation_check() {
@@ -80,7 +77,6 @@
       $s_result = !$_POST['free_payment_order_fee_error'];
       $this->calc_fee($order->info['total']);
       if (!empty($this->n_fee)) {
-        //$s_message = $s_result ? (MODULE_PAYMENT_POINT_TEXT_FEE . '&nbsp;' .  $currencies->format($this->n_fee)):('<font color="#FF0000">'.$_POST['point_order_fee_error'].'</font>'); 
         $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['free_payment_order_fee_error'].'</font>'); 
       } else {
         $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['free_payment_order_fee_error'].'</font>'); 
@@ -95,42 +91,12 @@
                        )           
             );
       } else {
-        if ($this->check_buy_goods()) {
-          return array(); 
-          return array(
-              'title' => MODULE_PAYMENT_FREE_PAYMENT_TEXT_DESCRIPTION,
-              'fields' => array(
-                                array('title' => MODULE_PAYMENT_FREE_PAYMENT_TEXT_SHOW, 'field' => ''),  
-                                array('title' => $s_message, 'field' => '')  
-                         )           
-              );
-        } else {
           return array(
               'title' => MODULE_PAYMENT_FREE_PAYMENT_TEXT_DESCRIPTION,
               'fields' => array(array('title' => $s_message, 'field' => '')  
                          )           
               );
-        }
       }
-      //return false;
-    }
-
-    function check_buy_goods() {
-      global $cart;
-      $b_num = 0; 
-      if (isset($cart)) {
-        $products = $cart->get_products();
-        for ($i=0, $n=sizeof($products); $i<$n; $i++) {
-          if ($products[$i]['bflag'] == 1) {
-            $b_num++; 
-          }
-        }
-        $t_num = sizeof($products);
-        if ($b_num == $t_num) {
-          return true; 
-        }
-      }
-      return false; 
     }
     
     function process_button() {

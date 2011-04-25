@@ -135,18 +135,13 @@
           if ($result3['value'] >= 0) {
             $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
           } else {
-            if ($result3['value'] > -200) {
-              if ($check_status['payment_method'] == '来店支払い') {
-                $get_point = 0;
-              } else {
-                $get_point = abs($result3['value']);
-              }
+            if ($check_status['payment_method'] == 'ポイント(買い取り)') {
+              $get_point = abs($result3['value']);
             } else {
               $get_point = 0;
             }
           }
         
-          //$plus = $result4['point'] + $get_point;
           tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $get_point . " where customers_id = " . $result1['customers_id'] );
         }
         }   
@@ -1044,16 +1039,20 @@ function q_4_3(){
   $oq = tep_db_fetch_array($orders_questions_query);
 
   // 自动或者手动判断问答种类
-  // 0=>贩卖, 1=>买取, 2=>信用卡
+  // 0=>贩卖, 1=>买取, 2=>信用卡, 3=>返点/来店 , 4=>不需要支付
   if (isset($_GET['questions_type'])) {
     $orders_questions_type = intval($_GET['questions_type']);
   } else if ($oq['orders_questions_type']) {
     $orders_questions_type = $oq['orders_questions_type'];
   } else {
-    if (strpos($order->info['payment_method'], '買い取り') || $order->info['payment_method'] == '来店支払い') {
+    if ($order->info['payment_method'] === 'クレジットカード決済') {
       $orders_questions_type = 1;
     } else if ($order->info['payment_method'] === 'クレジットカード決済' || $order->info['payment_method'] === 'ペイパル決済') {
       $orders_questions_type = 2;
+    } else if ($order->info['payment_method'] === '来店支払い' || $order->info['payment_method'] === 'ポイント(買い取り)') {
+      $orders_questions_type = 3;
+    } else if ($order->info['payment_method'] === '支払いなし') {
+      $orders_questions_type = 4;
     } else {
       $orders_questions_type = 0;
     }
@@ -1132,7 +1131,6 @@ function q_4_3(){
   while ($opp = tep_db_fetch_array($orders_products_query)) {
     $op = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." p, ".TABLE_PRODUCTS_DESCRIPTION." pd where p.products_id=pd.products_id and pd.site_id='0' and p.products_id='".$opp['relate_products_id']."'"));
     if ($op) {
-      //continue;
     
     $oqp = tep_db_fetch_array(tep_db_query("select * from orders_questions_products where orders_id='".$order->info['orders_id']."' and products_id='".$op['products_id']."'"));
 ?>

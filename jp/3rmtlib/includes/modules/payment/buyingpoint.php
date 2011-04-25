@@ -56,16 +56,13 @@
       } else {
         $s_message = $f_result ? '':('<font color="#FF0000">'.$this->s_error.'</font>'); 
       }
-      //return array();
       return array('id' => $this->code,
                    'module' => 'ポイントの加算',
                    'fields' => array(
                      array('title' => str_replace('#STORE_NAME#', STORE_NAME, PAYMENT_POINT_DESCRIPTION), 'field' => ''),
                      array('title' => $s_message, 'field' => '')
                      ) 
-                   //'fields' => array('title' => $s_message, 'field' => $added_hidden) 
-                                     );
-      //return array('id' => $this->code, 'module' => '', 'fields' => '');
+      );
     }
 
     function pre_confirmation_check() {
@@ -96,7 +93,7 @@
             );
       } else {
         if ($this->check_buy_goods()) {
-          return array(); 
+          //return array(); 
           return array(
               'title' => MODULE_PAYMENT_POINT_TEXT_DESCRIPTION,
               'fields' => array(
@@ -117,20 +114,7 @@
 
     function check_buy_goods() {
       global $cart;
-      $b_num = 0; 
-      if (isset($cart)) {
-        $products = $cart->get_products();
-        for ($i=0, $n=sizeof($products); $i<$n; $i++) {
-          if ($products[$i]['bflag'] == 1) {
-            $b_num++; 
-          }
-        }
-        $t_num = sizeof($products);
-        if ($b_num == $t_num) {
-          return true; 
-        }
-      }
-      return false; 
+      return $cart->show_total() > 0;
     }
     
     function process_button() {
