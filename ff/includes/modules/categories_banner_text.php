@@ -30,16 +30,14 @@ $categories_tab_query1 = tep_db_query("
 <!-- categories_banner_text //-->
 <div class="category_banner_list">
 <h2 class="pageHeading"><?php echo $categories['0']['categories_name']?></h2>
-  <table width="530" class="game_list_content" border="0" align="center" cellpadding="0" cellspacing="0">
-    <tr align="center">
+  <div class="game_list_content">
 <?php 
   $number_of_categories = 0 ;
   $col = 0 ;
   while($cbt = tep_db_fetch_array($categories_tab_query1)){
     $number_of_categories ++;
-    echo '<td class="smallText">' . "\n";
-    echo '<h3 class="game_list"><a href="' . tep_href_link(FILENAME_DEFAULT,'cPath=' . $cbt['parent_id'].'_'.$cbt['categories_id']) . '">' . "\n";
-    echo tep_image(DIR_WS_IMAGES. 'categories/' .$cbt['categories_image'], $cbt['categories_name'], CATEGORY_IMAGE_WIDTH, CATEGORY_IMAGE_HEIGHT) . '<br>' . "\n";
+    echo '<div class="game_list"><a href="' . tep_href_link(FILENAME_DEFAULT,'cPath=' . $cbt['parent_id'].'_'.$cbt['categories_id']) . '">' . "\n";
+    echo tep_image(DIR_WS_IMAGES. 'categories/' .$cbt['categories_image'], $cbt['categories_name'], CATEGORY_IMAGE_WIDTH, CATEGORY_IMAGE_HEIGHT) . "\n";
     /* 
     $cbt_dec = explode(',',$cbt['categories_meta_text']);
     for($i=0; $i < sizeof($cbt_dec); $i++) {
@@ -48,18 +46,12 @@ $categories_tab_query1 = tep_db_query("
       }
     }
     */ 
+	echo '<div class="game_list_text">'; 
     echo $cbt['categories_name']; 
-    echo  '</a></h3>' . "\n" . '</td>' . "\n";
+    echo  '</div></a></div>' . "\n";
   
-    if (($number_of_categories/3) == floor($number_of_categories/3)) {
-      echo '</tr>' . "\n" . '<tr align="center">' . "\n";
-    } else {
-      echo '';
-      //echo '<td>'.tep_draw_separator('pixel_trans.gif', '18', '1').'</td>'."\n";
-    }
   } 
 ?>
-    <td></td><td></td><td></td></tr>
-</table>
+</div>
 </div>
 <!-- categories_banner_text_eof //-->
