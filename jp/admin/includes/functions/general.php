@@ -4772,3 +4772,20 @@ function tep_insert_pwd_log($pwd,$userid){
   }
 
 }
+
+function tep_check_best_sellers_isbuy($products_id)
+{
+  $now_time = time(); 
+  if (BEST_SELLERS_LIMIT_TIME == 1) {
+    $before_time = strtotime("-".BEST_SELLERS_LIMIT_TIME." day", $now_time); 
+  } else {
+    $before_time = strtotime("-".BEST_SELLERS_LIMIT_TIME." days", $now_time); 
+  }
+  $order_query = tep_db_query("select o.orders_id from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and op.products_id = '".$products_id."' and o.date_purchased <= '".date('Y-m-d H:i:s', $now_time)."' and o.date_purchased >= '".date('Y-m-d H:i:s', $before_time)."' limit 1");
+  
+  if (tep_db_num_rows($order_query)) {
+    return true; 
+  }
+  
+  return false;
+}
