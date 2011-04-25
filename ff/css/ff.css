@@ -689,34 +689,26 @@ Game List
 	overflow:hidden;
 }
 .game_list_content{
-	margin:5px auto 10px auto;
-	padding:10px;
-	*padding:0px;
+	margin:5px 0 10px 8px;
 	width:515px;
-	*width:505px;
 	background-color: #CDCACC;
     border: 1px solid #616060;
+	overflow:hidden;
+	padding:5px 0;
+	*padding:5px 0 10px 0;
 }
-.game_list_content td{
-	vertical-align: top;
-}
-h3.game_list{
+.game_list{
 	font-size:10px;
-	*+font-size:10px;
-	margin-bottom: 15px;
-	*margin-bottom: -5px;
+	float:left;
+	margin:5px 2px 5px 15px;
+	width:150px;
+	
 }
-h3.game_list br{
-	margin: 0px;
-	font-size: 0px;
-	line-height: 0px;
+.game_list img{ margin-bottom:5px;}
+.game_list .game_list_text{ text-align:center; width:150px; clear:both;}
+.game_list a{
 }
-h3.game_list a{
-	width: 170px;
-	height: 80px;
-	padding-top: 4px;
-}
-h3.game_list a:hover{
+.game_list a:hover{
 	
 }
 /* ---------------------------
@@ -775,6 +767,7 @@ News
   	text-align: left;
 	padding:10px;
 	width:494px;
+	width:515px\9;
 	background-color:#CDCACC;
 	border:1px solid #616060;
 	overflow:hidden;
