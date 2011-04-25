@@ -30,7 +30,7 @@ switch ($HTTP_GET_VARS['action']){
     tep_redirect('categories_admin.php?cPath='.$cpath);
     break;
     case 'set_time':
-    tep_db_query("update ".TABLE_CONFIGURATION." set configuration_value = '".$_POST['btime']."' where configuration_key = 'BEST_SELLERS_LIMIT_TIME'"); 
+    tep_db_query("update ".TABLE_CONFIGURATION." set configuration_value = '".(int)$_POST['btime']."' where configuration_key = 'BEST_SELLERS_LIMIT_TIME'"); 
     tep_redirect('categories_admin.php?cPath='.$_POST['cepath']);
     break;
 }
