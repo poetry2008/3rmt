@@ -388,6 +388,7 @@ UL {
 	font-size:10px;
 	line-height:10px;
 }
+.reviews_bottom a{ line-height:15px;}
 .reviews_area{
 	border: solid 1px #eee;
 	background: #F6F6F5;
@@ -967,6 +968,8 @@ Footer
 }
 .subcategory_tree{
 list-style-type:none;
+margin:0;
+margin-top:-10px\9;
 }
 .contact_us_warpper{ clear:both;}
 .tcol{ clear:both;}
