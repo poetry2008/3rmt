@@ -3647,39 +3647,25 @@ function tep_get_cart_ff_products($pid, $cid_arr){
   function tep_display_attention_1_3($str) {
     $str2 = $str;
     if (strlen($str) > 8) {
-      $ret .= number_format(intval($str/100000000)) . '億';
-      if ($str%100000000 > 0) {
-        if ($str%100000000 > 10000) {
-          $ret .= number_format(intval(($str%100000000)/10000)) . '万';
-        }
-        if (($str%100000000)%10000 > 0) {
-          $ret .= number_format($str%10000);
-        }
-      }
-
-      return $ret.'（'.number_format($str2).'）';
-    } else if (strlen($str) > 4) {
-      $ret = intval($str/10000) . '万';
-      if ($str%10000 > 0) {
-        $ret .= $str%10000;
-      }
-      return $ret.'（'.number_format($str2).'）';
-    } else {
-      if (strlen($str) > 3) {
-        $ret = intval($str/1000) . '千';
-        if ($str%1000 > 0) {
-          $ret .= $str%1000;
-        }
-        return $ret.'（'.number_format($str2).'）';
-      } else {
-        return number_format($str);
-      }
+      $ret .= floor(substr($str,0,strlen($str)-8)) . '億';
     }
-    //if (preg_match('/^(\d*)([^\d]*)$/', $str, $out)) {
-    //  return number_format($out[1]).'（'.number_format($str2).'）'.$out[2];
-    //} else {
-    //  return number_format($str);
-    //}
+    if (intval(substr($str,-8)) >= 10000000) {
+      $tmp = substr();
+      $ret .= intval(substr($str,-8)/10000000) . '千';
+      $a = true;
+    }
+    if (intval(substr($str,-7)) >= 10000) {
+      $ret .= intval(substr($str,-7)/10000) . '万';
+    } else if ($str > 10000 && $a) {
+      $ret .= '万';
+    }
+    if (intval(substr($str,-4)) >= 1000) {
+      $ret .= intval(substr($str,-4)/1000) . '千';
+    }
+    if ($str%1000) {
+      $ret .= intval(substr($str,-3));
+    }
+    return $ret.'（'.number_format($str2).'）';
   }
   
 function  tep_show_review_des($desc) {
