@@ -384,10 +384,11 @@ UL {
 }
 .reviews_bottom{
 	margin: 0px;
-	padding: 0px;
-	width:150px;
-	display:block;
+	padding: 2px;
+	font-size:10px;
+	line-height:10px;
 }
+.reviews_bottom a{ line-height:15px;}
 .reviews_area{
 	border: solid 1px #eee;
 	background: #F6F6F5;
@@ -553,12 +554,13 @@ sitemap
 --------------------------- */
 .sitemap ul ul li{
 	padding: 0px 5px;
-	margin: 1px 0px;
+	margin:0px;
 	*+font-size: 10px;
 }
 .sitemap ul ul li a{
 	color: #555!important;
 }
+.sitemap li ul .subcategory_tree ul{ margin-top:-10px\9;}
 .sitemap ul{
 	list-style-position:inside;
 	list-style-type:square;
@@ -634,23 +636,29 @@ Game List
 	vertical-align: top;
 }
 h3.game_list{
-	font-size:10px;
-	*+font-size:10px;
+	font-size:11px;
+	*+font-size:11px;
 	margin-bottom: 15px;
 	*margin-bottom: -5px;
+	margin-bottom: 10px\9;
+	padding-top:8px;
+	width:170px;
+	height:22px;
+	height:30px\9;
+	overflow:hidden;
+	background: url(../images/design/game_list_bg.gif) no-repeat;
 }
-h3.game_list br{
+/*h3.game_list br{
 	margin: 0px;
 	font-size: 0px;
 	line-height: 0px;
-}
+}*/
 h3.game_list a{
-	width: 170px;
-	height: 80px;
 	padding-top: 4px;
+	color:#555;
 }
 h3.game_list a:hover{
-	
+	color:#C51138;
 }
 /* ---------------------------
 product listing
@@ -941,7 +949,7 @@ Footer
 	color:#C51138;
 }
 .comment .main ul li a{
-	color: #336600;
+	 color: #A81235;
 }
 .comment .main ul li a:hover{
 	text-decoration:underline;
@@ -961,7 +969,10 @@ Footer
 }
 .subcategory_tree{
 list-style-type:none;
+margin:0;
+margin-top:-10px\9;
 }
+.subcategory_tree ul{ margin:0;}
 .contact_us_warpper{ clear:both;}
 .tcol{ clear:both;}
 .lcol{height:100%;clear:both; padding:5px; border:1px solid #E0E0E0; overflow:hidden; background-color:#fff;}

@@ -40,12 +40,12 @@ H4 {
 	color: #C85050!important;
 }
 .line {
-	width: 684px;
+	width: 679px;
 	background:#f2f2f2 url(../images/design/box/dot.gif) repeat-x 0 15px;
 	font-weight: bold;
 	text-align: right;
 	line-height:10px;
-	padding: 5px 0 4px 0;
+	padding: 5px 5px 4px 0;
 	margin: 4px 0 0 0;
 }
 .comment {
@@ -689,34 +689,25 @@ Game List
 	overflow:hidden;
 }
 .game_list_content{
-	margin:5px auto 10px auto;
-	padding:10px;
-	*padding:0px;
+/*	margin:5px 0 10px 8px;*/
 	width:515px;
-	*width:505px;
 	background-color: #CDCACC;
     border: 1px solid #616060;
+	overflow:hidden;
+	padding:5px;
 }
-.game_list_content td{
-	vertical-align: top;
-}
-h3.game_list{
+.game_list{
 	font-size:10px;
-	*+font-size:10px;
-	margin-bottom: 15px;
-	*margin-bottom: -5px;
+	float:left;
+	margin:5px 2px 5px 15px;
+	width:150px;
+	
 }
-h3.game_list br{
-	margin: 0px;
-	font-size: 0px;
-	line-height: 0px;
+.game_list img{ margin-bottom:5px;}
+.game_list .game_list_text{ text-align:center; width:150px; clear:both;}
+.game_list a{
 }
-h3.game_list a{
-	width: 170px;
-	height: 80px;
-	padding-top: 4px;
-}
-h3.game_list a:hover{
+.game_list a:hover{
 	
 }
 /* ---------------------------
@@ -775,10 +766,11 @@ News
   	text-align: left;
 	padding:10px;
 	width:494px;
+	width:515px\9;
 	background-color:#CDCACC;
 	border:1px solid #616060;
 	overflow:hidden;
-	margin:5px 0 10px 0;
+	margin:5px 0 10px 6px;
 }
 .news_ul {
 	padding: 0px;
@@ -1025,7 +1017,7 @@ Footer
 	color: #00719d;
 }
 .comment .main ul li a{
-	color: #336600;
+	 color: #0E68B1;
 }
 .comment .main ul li a:hover{
 	text-decoration:underline;
@@ -1045,6 +1037,7 @@ Footer
 }
 .subcategory_tree{
 list-style-type:none;
+
 }
 .contact_us_warpper{ clear:both;}
 .tcol{ clear:both;}
@@ -1351,8 +1344,7 @@ TABLE：Info Box
 }
 .product_info_box{
 	background: #f4f4f4;
-	padding-top:5px;
-	padding-bottom:5px;
+	padding:5px;
 }
 .product_info_box table{
 	width: 100%;
