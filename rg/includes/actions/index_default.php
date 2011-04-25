@@ -5,8 +5,11 @@
 ?>
     <td valign="top" id="contents">
     <div class="top_index_image">
-    <img src="images/design/banner02.gif"/>
-    </div>
+    <script type='text/javascript' src="js/flash_rmt.js"></script>
+    <script type="text/javascript" src="js/images.js"></script>
+    <noscript>
+    <a href="index.php"><img src="images/design/banner02.gif" width="530" height="210" alt="RMT" ></a>
+    </noscript>    </div>
 <?php
   echo DEFAULT_PAGE_TOP_CONTENTS;
 ?>
