@@ -543,7 +543,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
               <?php 
             //Edit ds-style 2005.11.29
             //echo stripslashes($product_info['products_description']);
-            echo $description;
+            echo replace_store_name($description);
             ?>
             </p>
          <?php }?>
