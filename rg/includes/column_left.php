@@ -12,7 +12,7 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
 ?>
   <table cellpadding="0" cellspacing="0" width="170" border="0">
                     <tr><td><?php echo tep_draw_input_field('keywords', 'RMT', 'class="header_search_input"'); ?></td>
-                      <td><input name="imageField" type="submit" class="header_search_submit" value="" alt="¸¡º÷">
+                      <td><input name="imageField" type="submit" class="header_search_submit" value="" alt="search">
                 <?php 
             echo '<input type="hidden" name="search_in_description" value="1">';
             echo '<input type="hidden" name="inc_subcat" value="1">';
