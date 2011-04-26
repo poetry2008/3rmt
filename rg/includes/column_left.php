@@ -22,12 +22,14 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
 </form>
 </div>
 <?php
+/*
   if ( (USE_CACHE == 'true') && !SID ) {
     include(DIR_WS_BOXES . 'categories.php');
    // echo tep_cache_categories_box();
   } else {
     include(DIR_WS_BOXES . 'categories.php');
   }
+*/
 /*
   //Color
   if(COLOR_SEARCH_BOX_TF == 'true') {
@@ -35,8 +37,8 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
   }
 */
 
-  //require(DIR_WS_BOXES . 'information.php');
-  //require(DIR_WS_BOXES . 'banners.php');
+  require(DIR_WS_BOXES . 'information.php');
+  require(DIR_WS_BOXES . 'banners.php');
   //require(DIR_WS_BOXES . 'cl.php');
 
 /*s
