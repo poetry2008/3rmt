@@ -56,8 +56,10 @@
   	 <ul>
      	<li><a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT, '', 'SSL');?>">無料会員登録</a></li>
         <li>|</li>
+        <?php /*
         <li><a href="#">ヘルプ</a></li>
         <li>|</li>
+        */?>
         <li><a href="<?php echo tep_href_link(FILENAME_CONTACT_US);?>">お問い合わせ</a></li>
         <li>|</li>
         <li><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>">カートを見る</a></li>
