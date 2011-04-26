@@ -48,7 +48,7 @@ H4 {
 	margin: 4px 0 10px 0;
 }
 .comment {
-	width: 498px;
+	width: 500px;
 	*width: 530px;
 	margin: 0;
 	padding: 5px 15px 6px 15px;
@@ -457,8 +457,16 @@ Header
 #title {
 	margin: 0 auto;
 	width:900px;
-	height:150px;
+	background: url(../images/design/banner.gif) no-repeat;
+	height:80px;
 }
+#title .top_right{ float:right;}
+.top_right li{ float:left; margin:5px 3px 35px 3px; font-size:12px; color:#990000;}
+.top_right li a{ color:#990000;}
+.top_right li a:hover{ color:#444;}
+.top_right .header_list{ float:right; margin-right:10px; text-align:right; width:120px;}
+.top_right .header_list span{ float:right;}
+.header_list_title{ float:left; color:#990000;}
 #header {
 	width: 900px;
 	margin:0 auto;
@@ -1688,8 +1696,5 @@ border:1px solid #CAC6BE;
 .product_list02 span{ font-size:10px; width:157px; text-align:center;}
 .product_list02 img{ margin-bottom:10px; height:50px;}
 .product_list02 input{ margin-top:10px;} 
-
-
-
 /*login*/
 .login_form1{ width:166px; height:49px; clear:both;}
