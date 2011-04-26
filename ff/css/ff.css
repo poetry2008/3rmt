@@ -41,6 +41,7 @@ H4 {
 }
 .line {
 	width: 679px;
+	width: 684px\9;
 	background:#f2f2f2 url(../images/design/box/dot.gif) repeat-x 0 15px;
 	font-weight: bold;
 	text-align: right;
