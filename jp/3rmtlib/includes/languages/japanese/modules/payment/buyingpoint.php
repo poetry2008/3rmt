@@ -5,7 +5,7 @@
 
   define('MODULE_PAYMENT_POINT_TEXT_TITLE', 'ポイント(買い取り)');
   define('MODULE_PAYMENT_POINT_TEXT_EXPLAIN', '');
-  define('MODULE_PAYMENT_POINT_TEXT_DESCRIPTION', '');
+  define('MODULE_PAYMENT_POINT_TEXT_DESCRIPTION', '買取代金は当サイト でご利用できるポイントとしてお支払いされます。');
   define('MODULE_PAYMENT_POINT_TEXT_EMAIL_FOOTER', '');
   define('MODULE_PAYMENT_POINT_TEXT_PROCESS', 'ポイント(買い取り)決済手数料が別途かかります。');
   define('MODULE_PAYMENT_POINT_TEXT_FEE', 'ポイント(買い取り)決済手数料:');

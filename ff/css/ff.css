@@ -683,28 +683,30 @@ Game List
 	background: url(../images/design/comment_bg.gif) repeat-y ;
 	border-bottom: 2px solid #4C4C4C;
 	width:530px;
-	margin:5px 0;
+	margin:5px 0 5px 2px;
 	padding-bottom:5px;
 	clear:both;
 	overflow:hidden;
 }
 .game_list_content{
-/*	margin:5px 0 10px 8px;*/
-	width:515px;
+	width:503px;
+	width:514px\9;
 	background-color: #CDCACC;
     border: 1px solid #616060;
 	overflow:hidden;
 	padding:5px;
+	margin:6px 0 6px 8px;
 }
 .game_list{
 	font-size:10px;
 	float:left;
-	margin:5px 2px 5px 15px;
-	width:150px;
+	margin:5px 13px 5px 26px;
+	margin:5px 13px 5px 19px\9;
+	width:210px;
 	
 }
 .game_list img{ margin-bottom:5px;}
-.game_list .game_list_text{ text-align:center; width:150px; clear:both;}
+.game_list .game_list_text{ text-align:center; width:210px; clear:both;}
 .game_list a{
 }
 .game_list a:hover{

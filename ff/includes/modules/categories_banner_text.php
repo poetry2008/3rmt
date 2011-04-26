@@ -36,8 +36,11 @@ $categories_tab_query1 = tep_db_query("
   $col = 0 ;
   while($cbt = tep_db_fetch_array($categories_tab_query1)){
     $number_of_categories ++;
+    if ($number_of_categories > 4) {
+      continue; 
+    }
     echo '<div class="game_list"><a href="' . tep_href_link(FILENAME_DEFAULT,'cPath=' . $cbt['parent_id'].'_'.$cbt['categories_id']) . '">' . "\n";
-    echo tep_image(DIR_WS_IMAGES. 'categories/' .$cbt['categories_image'], $cbt['categories_name'], CATEGORY_IMAGE_WIDTH, CATEGORY_IMAGE_HEIGHT) . "\n";
+    echo tep_image(DIR_WS_IMAGES. 'categories/' .$cbt['categories_image'], $cbt['categories_name'], 210, 48) . "\n";
     /* 
     $cbt_dec = explode(',',$cbt['categories_meta_text']);
     for($i=0; $i < sizeof($cbt_dec); $i++) {
