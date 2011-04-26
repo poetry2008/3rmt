@@ -52,16 +52,30 @@
 ?>
   </h1>
   <div id="title">
-  <div class="logo"></div>
-  <?php echo $currencies->format($cart->show_total());?>
+  <div class="top_right">
+  	 <ul>
+     	<li><a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT, '', 'SSL');?>">無料会員登録</a></li>
+        <li>|</li>
+        <li><a href="#">ヘルプ</a></li>
+        <li>|</li>
+        <li><a href="<?php echo tep_href_link(FILENAME_CONTACT_US);?>">お問い合わせ</a></li>
+        <li>|</li>
+        <li><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>">カートを見る</a></li>
+        <li>|</li>
+        <li><a href="<?php echo tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL');?>">レジへ進む</a></li>
+        <li>|</li>
+        <li><a href="<?php echo tep_href_link(FILENAME_LOGIN, '', 'SSL');?>">ログイン</a></li>
+     </ul>
+  <div class="header_list"><div class="header_list_title">小計</div><span><?php echo $currencies->format($cart->show_total());?></span></div>
+  </div>
   </div>
   
-  <!--<div id="header_Menu">
+<!--<div id="header_Menu">
       <div class="header_menu_content">
         <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="menu box">
           <tr>
             <td width="432">
-                <?php echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, '', $request_type, false), 'get')."\n"; ?>
+                <?php //echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, '', $request_type, false), 'get')."\n"; ?>
                 <table cellpadding="0" cellspacing="0" summary="search" class="search_info">
                   <tr>
                     <td class="h_search"><img src="images/design/button/search_text.gif" width="22" height="19" alt="RMT検索"><span>商品検索</span></td>
@@ -139,6 +153,7 @@
         </table>
     </div>
   </div>-->
+  
   
   
   <div class="header_Navigation">

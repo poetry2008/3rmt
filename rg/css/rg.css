@@ -460,8 +460,9 @@ Header
 	background: url(../images/design/banner.gif) no-repeat;
 	height:80px;
 }
-#title .top_right{ float:right;}
-.top_right li{ float:left; margin:5px 3px 35px 3px; font-size:12px; color:#990000;}
+#title .top_right{ float:right; width:525px;}
+#title .top_right ul{ float:right; margin-bottom:30px;}
+.top_right li{ float:left; margin:5px 3px 0 3px; font-size:12px; color:#990000;}
 .top_right li a{ color:#990000;}
 .top_right li a:hover{ color:#444;}
 .top_right .header_list{ float:right; margin-right:10px; text-align:right; width:120px;}

@@ -168,9 +168,9 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
                   <tr class="infoBoxNoticeContents"> 
                     <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <tr> 
-                          <td><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                          <td></td> 
                           <td class="main" width="100%" valign="top"><?php echo htmlspecialchars($error['error']); ?></td> 
-                          <td><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                          <td></td> 
                         </tr> 
                       </table></td> 
                   </tr> 
@@ -200,30 +200,32 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
   if (sizeof($selection) > 1) {
 ?> 
                         <tr> 
-                          <td><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                          <td></td> 
                           <td class="main" width="50%" valign="top"><?php echo TEXT_SELECT_PAYMENT_METHOD; ?></td> 
                           <td class="main" width="50%" valign="top" align="right"><b><?php echo TITLE_PLEASE_SELECT; ?></b><br> 
                             <?php echo tep_image(DIR_WS_IMAGES . 'arrow_east_south.gif'); ?></td> 
-                          <td><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                          <td></td> 
                         </tr> 
                         <?php
   } else {
 ?> 
                         <tr> 
-                          <td><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                          <td></td> 
                           <td class="main" width="100%" colspan="2"><?php echo TEXT_ENTER_PAYMENT_INFORMATION; ?></td> 
-                          <td><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                          <td></td> 
                         </tr> 
                         <?php
   }
 
   $radio_buttons = 0;
   for ($i=0, $n=sizeof($selection); $i<$n; $i++) {
-    if($selection[$i]['id'] == 'buying') {
-    //buying not view
-    } else if($selection[$i]['id'] == 'buyingpoint') {
-    //buyingpoint not view
-    } else if($selection[$i]['id'] == 'fetchgood') {
+    
+    if(
+         $selection[$i]['id'] == 'buying'
+      || $selection[$i]['id'] == 'buyingpoint'
+      || $selection[$i]['id'] == 'fetchgood'
+    ) {
+      //buying not view
     } else { 
       if ($selection[$i]['id'] == 'convenience_store') {
         if (check_money_limit(MODULE_PAYMENT_CONVENIENCE_STORE_MONEY_LIMIT, $order->info['total'])) {
@@ -241,10 +243,18 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
         if (check_money_limit(MODULE_PAYMENT_TELECOM_MONEY_LIMIT, $order->info['total'])) {
           continue; 
         }
+      } else if ($selection[$i]['id'] == 'freepayment') {
+        if (check_money_limit(MODULE_PAYMENT_FREE_PAYMENT_MONEY_LIMIT, $order->info['total'])) {
+          continue; 
+        }
+      } else if ($selection[$i]['id'] == 'paypal') {
+        if (check_money_limit(MODULE_PAYMENT_PAYPAL_MONEY_LIMIT, $order->info['total'])) {
+          continue; 
+        }
       }
 ?> 
                         <tr> 
-                          <td><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                          <td></td> 
                           <td colspan="2">
                           <table border="0" width="100%" cellspacing="0" cellpadding="0" class="box_des02"> 
                               <?php
@@ -254,7 +264,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
       echo '                  <tr class="moduleRow" onmouseover="rowOverEffect(this)" onmouseout="rowOutEffect(this)" onclick="selectRowEffect(this, ' . $radio_buttons . ')">' . "\n";
     }
 ?> 
-                              <td width="10"><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                              <td width="10"></td> 
                                 <td class="main" colspan="3"><b><?php echo $selection[$i]['module']; ?></b></td> 
                                 <td class="main" align="right"><?php
     if (sizeof($selection) > 1) {
@@ -263,20 +273,20 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
       echo tep_draw_hidden_field('payment', $selection[$i]['id']);
     }
 ?> </td> 
-                                <td width="10"><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                                <td width="10"></td> 
                               </tr> <?php
     if (isset($selection[$i]['error'])) {
 ?> 
                               <tr> 
-                                <td width="10"><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                                <td width="10"></td> 
                                 <td class="main" colspan="4"><?php echo $selection[$i]['error']; ?></td> 
-                                <td width="10"><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                                <td width="10"></td> 
                               </tr> 
                               <?php
     } elseif (isset($selection[$i]['fields']) && is_array($selection[$i]['fields'])) {
 ?> 
                               <tr> 
-                                <td width="10"><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                                <td width="10"></td> 
                                 <td colspan="4"><table border="0" cellspacing="0" cellpadding="2"> 
                                     <?php
       for ($j=0, $n2=sizeof($selection[$i]['fields']); $j<$n2; $j++) {
@@ -291,17 +301,17 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
       }
 ?> 
                                   </table></td> 
-                                <td width="10"><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                                <td width="10"></td> 
                               </tr>
 <?php
     }
 ?> 
                             </table></td> 
-                          <td><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                          <td></td> 
                         </tr> 
                         <?php
     $radio_buttons++;
-  }//buying not view
+  }
   }
 ?> 
                       </table>
@@ -311,37 +321,149 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
                 </td> 
             </tr> 
             <tr> 
-              <td><?php //echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+              <td></td> 
             </tr> 
       
 <?php
   //販売終了
   } else {
-    if ($cart->show_total() <= -200) {
-      # 強制的に買い取りモジュールを選択済みにする
-      echo '<input type="hidden" name="payment" value="buying">';
-    } else {
-      //echo '<input type="hidden" name="payment" value="buyingpoint">';
-    }
-  }
-
-  if($cart->show_total() < 0) {
-    if ($cart->show_total() <= -200) {
-?>
-      
-            <tr> 
+?> 
+       <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                   <tr> 
-                    <td class="main"><b><?php echo TABLE_HEADING_BANK; ?></b></td> 
+                    <td class="main"><b><?php echo TABLE_HEADING_PAYMENT_METHOD; ?></b></td> 
                   </tr> 
                 </table></td> 
             </tr> 
-            <tr> 
-              <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
-                  <tr class="infoBoxContents"> 
-                    <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+      <tr>
+        <td>
+                    <table border="0" width="100%" cellspacing="0" cellpadding="2" style="border:1px solid #B6B7CB;"> 
+                        <?php
+  $selection = $payment_modules->selection();
+  if (sizeof($selection) > 1) {
+?> 
                         <tr> 
-                          <td>
+                          <td></td> 
+                          <td class="main" width="50%" valign="top"><?php echo TEXT_SELECT_PAYMENT_METHOD; ?></td> 
+                          <td class="main" width="50%" valign="top" align="right"><b><?php echo TITLE_PLEASE_SELECT; ?></b><br> 
+                            <?php echo tep_image(DIR_WS_IMAGES . 'arrow_east_south.gif'); ?></td> 
+                          <td></td> 
+                        </tr> 
+                        <?php
+  } else {
+?> 
+                        <tr> 
+                          <td></td> 
+                          <td class="main" width="100%" colspan="2"><?php echo TEXT_ENTER_PAYMENT_INFORMATION; ?></td> 
+                          <td></td> 
+                        </tr> 
+                        <?php
+  }
+
+  $radio_buttons = 0;
+  for ($i=0, $n=sizeof($selection); $i<$n; $i++) {
+    if(
+       ($selection[$i]['id'] == 'buyingpoint' && !check_money_limit(MODULE_PAYMENT_POINT_MONEY_LIMIT, $order->info['total']))
+    || ($selection[$i]['id'] == 'fetchgood'   && !check_money_limit(MODULE_PAYMENT_FETCH_GOOD_MONEY_LIMIT, $order->info['total']))
+    || ($selection[$i]['id'] == 'freepayment' && !check_money_limit(MODULE_PAYMENT_FREE_PAYMENT_MONEY_LIMIT, $order->info['total']))
+    ) {
+?> 
+                        <tr> 
+                          <td></td> 
+                          <td colspan="2">
+                          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="box_des02"> 
+                              <?php
+    if ( ($selection[$i]['id'] == $payment) || ($n == 1) ) {
+      echo '                  <tr id="defaultSelected" class="moduleRowSelected" onmouseover="rowOverEffect(this)" onmouseout="rowOutEffect(this)" onclick="selectRowEffect(this, ' . $radio_buttons . ')">' . "\n";
+    } else {
+      echo '                  <tr class="moduleRow" onmouseover="rowOverEffect(this)" onmouseout="rowOutEffect(this)" onclick="selectRowEffect(this, ' . $radio_buttons . ')">' . "\n";
+    }
+?> 
+                              <td width="10"></td> 
+                                <td class="main" colspan="3"><b><?php echo $selection[$i]['module']; ?></b></td> 
+                                <td class="main" align="right"><?php
+    if (sizeof($selection) > 1) {
+      echo tep_draw_radio_field('payment', $selection[$i]['id']);
+    } else {
+      echo tep_draw_hidden_field('payment', $selection[$i]['id']);
+    }
+?> </td> 
+                                <td width="10"></td> 
+                              </tr> <?php
+    if (isset($selection[$i]['error'])) {
+?> 
+                              <tr> 
+                                <td width="10"></td> 
+                                <td class="main" colspan="4"><?php echo $selection[$i]['error']; ?></td> 
+                                <td width="10"></td> 
+                              </tr> 
+                              <?php
+    } elseif (isset($selection[$i]['fields']) && is_array($selection[$i]['fields'])) {
+?> 
+                              <tr> 
+                                <td width="10"></td> 
+                                <td colspan="4"><table border="0" cellspacing="0" cellpadding="2"> 
+                                    <?php
+      for ($j=0, $n2=sizeof($selection[$i]['fields']); $j<$n2; $j++) {
+?> 
+                                    <tr> 
+                                      <td class="main02"><?php echo $selection[$i]['fields'][$j]['title']; ?></td> 
+                                      <td></td> 
+                                      <td class="main02"><?php echo $selection[$i]['fields'][$j]['field']; ?></td> 
+                                      <td width="10"></td> 
+                                    </tr> 
+<?php
+      }
+?> 
+                                  </table></td> 
+                                <td width="10"></td> 
+                              </tr>
+<?php
+    }
+?> 
+                            </table></td> 
+                          <td></td> 
+                        </tr> 
+                        <?php
+    $radio_buttons++;
+  } else if ($selection[$i]['id'] == 'buying' && !check_money_limit(MODULE_PAYMENT_BUYING_MONEY_LIMIT, $order->info['total'])) {
+    ?>
+                        <tr> 
+                          <td></td> 
+                          <td colspan="2">
+                          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="box_des02"> 
+                              <?php
+    if ( ($selection[$i]['id'] == $payment) || ($n == 1) ) {
+      echo '                  <tr id="defaultSelected" class="moduleRowSelected" onmouseover="rowOverEffect(this)" onmouseout="rowOutEffect(this)" onclick="selectRowEffect(this, ' . $radio_buttons . ')">' . "\n";
+    } else {
+      echo '                  <tr class="moduleRow" onmouseover="rowOverEffect(this)" onmouseout="rowOutEffect(this)" onclick="selectRowEffect(this, ' . $radio_buttons . ')">' . "\n";
+    }
+?> 
+                              <td width="10"></td> 
+                                <td class="main" colspan="3"><b><?php echo $selection[$i]['module']; ?></b></td> 
+                                <td class="main" align="right"><?php
+    if (sizeof($selection) > 1) {
+      echo tep_draw_radio_field('payment', $selection[$i]['id'], true);
+    } else {
+      echo tep_draw_hidden_field('payment', $selection[$i]['id']);
+    }
+?> </td> 
+                                <td width="10"></td> 
+                              </tr> <?php
+    if (isset($selection[$i]['error'])) {
+?> 
+                              <tr> 
+                                <td width="10"></td> 
+                                <td class="main" colspan="4"><?php echo $selection[$i]['error']; ?></td> 
+                                <td width="10"></td> 
+                              </tr> 
+                              <?php
+    }
+?> 
+                              <tr> 
+                                <td width="10"></td> 
+                                <td colspan="4">
+
 
 <?php
 
@@ -367,36 +489,36 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
     <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice"> 
       <tr class="infoBoxNoticeContents"> 
         <td>
-      <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-          <tr> 
-            <td><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-            <td class="main" width="100%" valign="top"><?php echo urldecode($_GET['bank_error']); ?></td> 
-            <td><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-          </tr> 
-        </table>
-      </td>
+          <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+            <tr> 
+              <td></td> 
+              <td class="main" width="100%" valign="top"><?php echo urldecode($_GET['bank_error']); ?></td> 
+              <td></td> 
+            </tr> 
+          </table>
+        </td>
       </tr>
     </table>
     </td>
   </tr>
   <tr> 
-    <td><?php //echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+    <td></td> 
   </tr> 
 <?php
   }
 ?>
   <tr>
-    <td width="10"><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+    <td width="10"></td> 
   <td class="main" width="30%"><?php echo TEXT_BANK_NAME; ?></td>
     <td class="main" width="70%"><?php echo tep_draw_input_field('bank_name', ''); ?></td>
   </tr>
   <tr>
-    <td width="10"><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+    <td width="10"></td> 
   <td class="main"><?php echo TEXT_BANK_SHITEN; ?></td>
     <td class="main"><?php echo tep_draw_input_field('bank_shiten', ''); ?></td>
   </tr>
   <tr>
-    <td width="10"><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+    <td width="10"></td> 
   <td class="main"><?php echo TEXT_BANK_KAMOKU; ?></td>
     <td class="main">
   <?php echo tep_draw_radio_field('bank_kamoku',TEXT_BANK_SELECT_KAMOKU_F ,$bank_sele_f) . '&nbsp;' . TEXT_BANK_SELECT_KAMOKU_F; ?>
@@ -405,180 +527,51 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
   </td>
   </tr>
   <tr>
-    <td width="10"><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+    <td width="10"></td> 
   <td class="main"><?php echo TEXT_BANK_KOUZA_NUM; ?></td>
     <td class="main"><?php echo tep_draw_input_field('bank_kouza_num', ''); ?></td>
   </tr>
   <tr>
-    <td width="10"><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+    <td width="10"></td> 
   <td class="main"><?php echo TEXT_BANK_KOUZA_NAME; ?></td>
     <td class="main"><?php echo tep_draw_input_field('bank_kouza_name', ''); ?></td>
   </tr>
-</table>              
-              
-              </td> 
-                        </tr> 
-                      </table></td> 
-                  </tr> 
-                </table></td> 
-            </tr> 
-            <tr> 
-              <td><?php //echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
-<?php
-    } else { 
-      // 返回point
-      ?>
-      <?php
-      if (false) {
-      ?>
-      <tr>
-        <td>
-                  <table width="100%" cellspacing="0" cellpadding="0" border="0" style="border:1px solid #B6B7CB;padding: 5px;"> 
-                  <tbody><tr> 
-                    <td class="main">
-手数料の都合上、お支払い金額が200円以下のお支払いができません。<br />
-お手数ではございますが、商品をカートに追加していただくか、ポイン トでの返金になります。
-                    </td>
-                  </tr></tbody>
-                  </table>
-        </td>
-      </tr>
-      <?php }?> 
-       <tr> 
-              <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-                  <tr> 
-                    <td class="main"><b><?php echo TABLE_HEADING_PAYMENT_METHOD; ?></b></td> 
-                  </tr> 
-                </table></td> 
-            </tr> 
-      <tr>
-        <td>
-                    <table border="0" width="100%" cellspacing="0" cellpadding="2" style="border:1px solid #B6B7CB;"> 
-                        <?php
-  $selection = $payment_modules->selection();
-  if (sizeof($selection) > 1) {
-?> 
-                        <tr> 
-                          <td><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                          <td class="main" width="50%" valign="top"><?php echo TEXT_SELECT_PAYMENT_METHOD; ?></td> 
-                          <td class="main" width="50%" valign="top" align="right"><b><?php echo TITLE_PLEASE_SELECT; ?></b><br> 
-                            <?php echo tep_image(DIR_WS_IMAGES . 'arrow_east_south.gif'); ?></td> 
-                          <td><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                        </tr> 
-                        <?php
-  } else {
-?> 
-                        <tr> 
-                          <td><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                          <td class="main" width="100%" colspan="2"><?php echo TEXT_ENTER_PAYMENT_INFORMATION; ?></td> 
-                          <td><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                        </tr> 
-                        <?php
-  }
+</table>
 
-  $radio_buttons = 0;
-  for ($i=0, $n=sizeof($selection); $i<$n; $i++) {
-    if($selection[$i]['id'] == 'buyingpoint' || $selection[$i]['id'] == 'fetchgood') {
-?> 
-                        <tr> 
-                          <td><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                          <td colspan="2">
-                          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="box_des02"> 
-                              <?php
-    if ( ($selection[$i]['id'] == $payment) || ($n == 1) ) {
-      echo '                  <tr id="defaultSelected" class="moduleRowSelected" onmouseover="rowOverEffect(this)" onmouseout="rowOutEffect(this)" onclick="selectRowEffect(this, ' . $radio_buttons . ')">' . "\n";
-    } else {
-      echo '                  <tr class="moduleRow" onmouseover="rowOverEffect(this)" onmouseout="rowOutEffect(this)" onclick="selectRowEffect(this, ' . $radio_buttons . ')">' . "\n";
-    }
-?> 
-                              <td width="10"><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                                <td class="main" colspan="3"><b><?php echo $selection[$i]['module']; ?></b></td> 
-                                <td class="main" align="right"><?php
-    if (sizeof($selection) > 1) {
-      if (!isset($payment) && $selection[$i]['id'] == 'buyingpoint') {
-        echo tep_draw_radio_field('payment', $selection[$i]['id'], true);
-      } else {
-        echo tep_draw_radio_field('payment', $selection[$i]['id']);
-      }
-    } else {
-      echo tep_draw_hidden_field('payment', $selection[$i]['id']);
-    }
-?> </td> 
-                                <td width="10"><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                              </tr> <?php
-    if (isset($selection[$i]['error'])) {
-?> 
-                              <tr> 
-                                <td width="10"><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                                <td class="main" colspan="4"><?php echo $selection[$i]['error']; ?></td> 
-                                <td width="10"><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                              </tr> 
-                              <?php
-    } elseif (isset($selection[$i]['fields']) && is_array($selection[$i]['fields'])) {
-?> 
-                              <tr> 
-                                <td width="10"><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                                <td colspan="4"><table border="0" cellspacing="0" cellpadding="2"> 
-                                    <?php
-      for ($j=0, $n2=sizeof($selection[$i]['fields']); $j<$n2; $j++) {
-?> 
-                                    <tr> 
-                                      <td class="main02"><?php echo $selection[$i]['fields'][$j]['title']; ?></td> 
-                                      <td></td> 
-                                      <td class="main02"><?php echo $selection[$i]['fields'][$j]['field']; ?></td> 
-                                      <td width="10"></td> 
-                                    </tr> 
-                                    <?php
-      }
-?> 
-                                  </table></td> 
-                                <td width="10"><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+
+  </td> 
+                                <td width="10"></td> 
                               </tr>
-<?php
-    }
-?> 
+
                             </table></td> 
-                          <td><?php //echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                        </tr> 
-                        <?php
-    $radio_buttons++;
-  }//buying not view
+                          <td></td> 
+                        </tr>
+    <?php
+      $radio_buttons++;
+    }
   }
 ?> 
                       </table>
         </td>
       </tr>
       <?php
-      # 買い取り商品が無かった場合
-      tep_session_unregister('bank_name');
-      tep_session_unregister('bank_shiten');
-      tep_session_unregister('bank_kamoku');
-      tep_session_unregister('bank_kouza_num');
-      tep_session_unregister('bank_kouza_name');
-    }
-  } else {
-    # 買い取り商品が無かった場合
-    tep_session_unregister('bank_name');
-    tep_session_unregister('bank_shiten');
-    tep_session_unregister('bank_kamoku');
-    tep_session_unregister('bank_kouza_num');
-    tep_session_unregister('bank_kouza_name');
   }
 ?>
-      
-            <tr> 
-              <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-                      <tr> 
-          <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-        </tr> 
-                  <tr> 
-                    <td class="main"><b><?php echo TABLE_HEADING_COMMENTS; ?></b></td> 
-                  </tr> 
-                          <tr> 
-          <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-        </tr> 
-                </table></td> 
+
+        <tr> 
+          <td>
+            <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+              <tr> 
+                <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+              </tr> 
+              <tr> 
+                <td class="main"><b><?php echo TABLE_HEADING_COMMENTS; ?></b></td> 
+              </tr> 
+              <tr> 
+                <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+              </tr> 
+            </table>
+          </td> 
             </tr> 
             <tr> 
               <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
