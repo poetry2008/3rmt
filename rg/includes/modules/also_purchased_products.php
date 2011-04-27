@@ -55,6 +55,9 @@
           $row ++;
         }
       }
+      for ($u=0; $u<4-$col; $u++) {
+        echo '<td></td>'; 
+      }
       echo '</tr>';
   echo '</table>' ;
 ?> 

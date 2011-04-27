@@ -22,14 +22,14 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
 </form>
 </div>
 <?php
-/*
+  if($_SERVER['REQUEST_URI']!='/'&&$_SERVER['REQUEST_URI']!='/index.php'){
   if ( (USE_CACHE == 'true') && !SID ) {
     include(DIR_WS_BOXES . 'categories.php');
    // echo tep_cache_categories_box();
   } else {
     include(DIR_WS_BOXES . 'categories.php');
   }
-*/
+  }
 /*
   //Color
   if(COLOR_SEARCH_BOX_TF == 'true') {
