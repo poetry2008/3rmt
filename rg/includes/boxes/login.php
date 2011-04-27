@@ -7,6 +7,7 @@
 <script type="text/javascript" src="js/logincheck.js"></script>
 <?php
   if (!tep_session_is_registered('customer_id')) {
+    /*
 ?>
     <div class="login_box">
           <div class="menu_top"><img src="images/menu_ico07.gif" alt="" align="top"><span>会員登録</span></div>
@@ -22,8 +23,10 @@
 ?>
   </div></div>
 <?php 
+   */
   } else { 
     if($guestchk == '1') {
+      /*
 ?>
     <div class="login_box">
           <div class="menu_top"><img src="images/menu_ico.gif" alt="" align="top"><span>会員登録</span></div>
@@ -38,6 +41,7 @@
 ?>
   </div></div>
 <?php 
+  */
     } else {
 ?>
 <div class="login box">

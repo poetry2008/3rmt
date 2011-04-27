@@ -39,7 +39,7 @@ if($cPath){
 ?>
 
 <div id='categories'>
-  <div class="menu_top"><?php echo $categories[0]['categories_name'];?></div>
+  <div class="menu_top"><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$categories[0]['categories_id']);?>"><?php echo $categories[0]['categories_name'];?></a></div>
   <?php 
     foreach ($categories as $key => $category) { 
   ?>

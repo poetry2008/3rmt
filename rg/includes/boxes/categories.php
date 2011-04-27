@@ -36,7 +36,7 @@ if($cPath){
   $id = split('_', $cPath);
 }
 ?>
-
+<!-- search-->
 <div id='categories'>
   <div class="menu_top"><img src="images/menu_ico.gif" alt="" align="top"><span>MENU</span></div>
   <ul class='l_m_category_ul'>

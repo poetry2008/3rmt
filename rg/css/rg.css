@@ -55,6 +55,7 @@ H4 {
 	overflow: hidden;
 	font-size:12px;
 	background-color:#F2F0F0;
+	line-height:20px;
 }
 .comment_index02 , .comment_index01{
 	width: 520px;
@@ -161,7 +162,7 @@ UL {
 	list-style: none;
 	text-align:left;
 	padding: 0px;
-	margin: 0 0 10px 0;
+	margin: 0;
 	width:170px;
 }
 .l_m_category_ul2 {
@@ -343,7 +344,7 @@ UL {
 }
 .ranking_warpper{
 	width:170px; 
-	margin:5px 0;
+	margin:0;
 }
 .ranking_area_lint{
 	border-bottom:1px solid #ccc; 
@@ -457,11 +458,12 @@ Header
 #title {
 	margin: 0 auto;
 	width:900px;
-	background: url(../images/design/banner.gif) no-repeat;
+	background: url(../images/design/banner.jpg) no-repeat;
 	height:80px;
 }
-#title .top_right{ float:right;}
-.top_right li{ float:left; margin:5px 3px 35px 3px; font-size:12px; color:#990000;}
+#title .top_right{ float:right; width:415px;}
+#title .top_right ul{ float:right; margin-bottom:30px;}
+.top_right li{ float:left; margin:5px 3px 0 3px; font-size:12px; color:#990000;}
 .top_right li a{ color:#990000;}
 .top_right li a:hover{ color:#444;}
 .top_right .header_list{ float:right; margin-right:10px; text-align:right; width:120px;}
@@ -587,19 +589,24 @@ Ranking
     font-size: 10px;
 	background: url(../images/design/box/ranking_title_bg.gif) no-repeat;
 	padding-left: 5px;
-	height:16px;
+	padding-top:4px;
+	height:20px;
+	*height:24px;
+	height:24px\9;
+	margin-bottom:2px;
 }
 .bestseller_text a{
 	display: block;
-	width: 135px;
 	height: 16px;
 	line-height: 13px;
 	overflow: hidden;
-	padding-left:13px;
-	color:#fff;
+	padding-left:5px;
+	color:#555;
 }
+.bestseller_number{ float:left; margin:0 5px;}
+.bestseller_link{ float:left;}
 .bestseller_text a:hover{
-	color:#ccc;
+	color:#990000;
 }
 .bestseller_img {
 	border-bottom-width: 1px;
@@ -646,9 +653,9 @@ Game List
 h3.game_list{
 	font-size:11px;
 	*+font-size:11px;
-	margin-bottom: 15px;
+	margin-bottom: 8px;
 	*margin-bottom: -5px;
-	margin-bottom: 10px\9;
+	margin-bottom: 4px\9;
 	padding-top:8px;
 	width:170px;
 	height:22px;
