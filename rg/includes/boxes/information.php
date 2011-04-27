@@ -6,7 +6,7 @@
 <!-- information //-->
 <div class="reviews_box">
   <div class="menu_top">
-  <img src="images/menu_ico09.gif" alt="" align="top"><span>INFORMATION</span> 
+  <img src="images/menu_ico07.gif" alt="" align="top"><span>INFORMATION</span> 
   </div>
   <ul class="l_m_category_ul_infomation">
 <?php
