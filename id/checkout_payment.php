@@ -416,7 +416,6 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
   } else if ($selection[$i]['id'] == 'buying' && !check_money_limit(MODULE_PAYMENT_BUYING_MONEY_LIMIT, $order->info['total'])) {
     ?>
                         <tr> 
-                          <td></td> 
                           <td colspan="2">
                           <table border="0" width="100%" cellspacing="0" cellpadding="0" class="box_des02"> 
                               <?php
