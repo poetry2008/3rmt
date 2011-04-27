@@ -890,7 +890,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
               <tr>
                 <td class="main" valign="top"><b>支払方法:</b></td>
                 <td class="main">
-                  <input name='update_info_payment_method' size='25' value='<?php echo $order->info['payment_method']; ?>'>
+                  <?php echo tep_payment_method_menu($order->info['payment_method']);?>
                   <table><tr class="smalltext"><td><font color="red">※</font>&nbsp;コピペ用:</td><td>銀行振込</td><td>クレジットカード決済</td><td>銀行振込(買い取り)</td><td>ゆうちょ銀行（郵便局）</td><td>コンビニ決済</td></tr></table>
                 </td>
               </tr>
