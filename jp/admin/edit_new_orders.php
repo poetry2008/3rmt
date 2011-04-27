@@ -1007,7 +1007,9 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
               <!-- Begin Payment Block -->
               <tr>
                 <td class="main" valign="top"><b>支払方法:</b></td>
-                <td class="main"><?php echo $order->info['payment_method']; ?></td>
+                <td class="main">
+                  <?php echo tep_payment_method_menu($order->info['payment_method']);?>
+                </td>
               </tr>
               <!-- End Payment Block -->
               <!-- Begin Trade Date Block -->

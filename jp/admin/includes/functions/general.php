@@ -4789,3 +4789,14 @@ function tep_check_best_sellers_isbuy($products_id)
   
   return false;
 }
+
+function tep_payment_method_menu($payment_method = "") {
+  $payment_text = "銀行振込\nクレジットカード決済\n銀行振込(買い取り)\nポイント(買い取り)\n来店支払い\nコンビニ決済\nゆうちょ銀行（郵便局）\n支払いなし";
+  $payment_array = explode("\n", $payment_text);
+  //$payment_list[] = array('id' => '', 'text' => '支払方法を選択してください');
+  for($i=0; $i<sizeof($payment_array); $i++) {
+    $payment_list[] = array('id' => $payment_array[$i],
+                'text' => $payment_array[$i]);
+  }
+  return tep_draw_pull_down_menu('payment_method', $payment_list, $payment_method);
+}

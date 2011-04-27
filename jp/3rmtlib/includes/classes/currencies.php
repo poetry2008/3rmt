@@ -74,7 +74,7 @@
 
       if ($calculate_currency_value == true) {
         $rate = (tep_not_null($currency_value)) ? $currency_value : $this->currencies[$currency_type]['value'];
-        if ($tmp_number < 0 && $tmp_number > -200) {
+        if ($tmp_number < 0) {
           $format_string = $this->currencies[$currency_type]['symbol_left'] . '<font color="#ff0000">'.number_format($number * $rate, $this->currencies[$currency_type]['decimal_places'], $this->currencies[$currency_type]['decimal_point'], $this->currencies[$currency_type]['thousands_point']) . '</font>'.$symbol_right;
         } else {
           $format_string = $this->currencies[$currency_type]['symbol_left'] . number_format($number * $rate, $this->currencies[$currency_type]['decimal_places'], $this->currencies[$currency_type]['decimal_point'], $this->currencies[$currency_type]['thousands_point']) . $symbol_right;
@@ -85,7 +85,7 @@
           $format_string .= ' <small>[' . $this->format($number, true, 'EUR') . ']</small>';
         }
       } else {
-        if ($tmp_number < 0 && $tmp_number > -200) {
+        if ($tmp_number < 0) {
           $format_string = $this->currencies[$currency_type]['symbol_left'] . '<font color="#ff0000">' . number_format($number, $this->currencies[$currency_type]['decimal_places'], $this->currencies[$currency_type]['decimal_point'], $this->currencies[$currency_type]['thousands_point']) . '</font>'.$symbol_right;
         } else {
           $format_string = $this->currencies[$currency_type]['symbol_left'] .  number_format($number, $this->currencies[$currency_type]['decimal_places'], $this->currencies[$currency_type]['decimal_point'], $this->currencies[$currency_type]['thousands_point']) . $symbol_right;

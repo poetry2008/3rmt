@@ -1137,7 +1137,9 @@ function check_add(){
               <!-- Begin Payment Block -->
               <tr>
                 <td class="main" valign="top"><b>支払方法:</b></td>
-                <td class="main"><?php echo $order['payment_method']; ?></td>
+                <td class="main">
+                  <?php echo tep_payment_method_menu($order->info['payment_method']);?>
+                </td>
               </tr>
               <!-- End Payment Block -->
               <!-- Begin Trade Date Block -->
