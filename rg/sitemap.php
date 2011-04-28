@@ -39,13 +39,13 @@
             <div class="sitemap">
               <ul>
                 <li><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . PAGE_ACCOUNT . '</a>'; ?></li>
-                <div>
+                <li class="subcategory_tree">
                 <ul>
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL') . '">' . PAGE_ACCOUNT_EDIT . '</a>'; ?></li>
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_HISTORY, '', 'SSL') . '">' . PAGE_ACCOUNT_HISTORY . '</a>'; ?></li>
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, '', 'SSL') . '">' . PAGE_ACCOUNT_NOTIFICATIONS . '</a>'; ?></li>
                 </ul>
-                </div>
+                </li>
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL') . '">' . PAGE_SHOPPING_CART . '</a>'; ?></li>
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL') . '">' . PAGE_CHECKOUT_SHIPPING . '</a>'; ?></li>
                   <li><?php echo '<a href="' . tep_href_link('reorder.php') . '">再配達フォーム</a>'; ?></li>
@@ -60,6 +60,7 @@
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_EMAIL_TROUBLE) . '">' . PAGE_EMAIL_TROUBLE . '</a>'; ?></li>
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_BROWSER_IE6X) . '">' . PAGE_BROWSER_IE6X. '</a>'; ?></li>
                   <li><?php echo BOX_HEADING_INFORMATION; ?></li>
+                   <li class="subcategory_tree">
         <ul>
 <?php
                           // ccdd
@@ -75,7 +76,7 @@
   } 
 // Extra Pages ADDED END
 ?>
-        </ul>
+        </ul></li>
               </ul>
               </div>
             </td>
@@ -97,7 +98,7 @@
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
   <!-- footer_eof //--> 
 </div> 
-
+</div> 
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

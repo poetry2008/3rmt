@@ -22,7 +22,10 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
 </form>
 </div>
 <?php
-  if($_SERVER['REQUEST_URI']!='/'&&$_SERVER['REQUEST_URI']!='/index.php'){
+  if($_SERVER['REQUEST_URI']=='/'||$_SERVER['REQUEST_URI']=='/index.php'||
+      (strpos($_SERVER['REQUEST_URI'],'index.php?cmd='))||
+      (strpos($_SERVER['REQUEST_URI'],'?cmd='))){
+  }else{
   if ( (USE_CACHE == 'true') && !SID ) {
     include(DIR_WS_BOXES . 'categories.php');
    // echo tep_cache_categories_box();

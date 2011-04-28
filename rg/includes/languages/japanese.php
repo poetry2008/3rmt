@@ -293,7 +293,7 @@ define('IMAGE_BUTTON_BACK', '前に戻る');
 define('IMAGE_BUTTON_CHANGE_ADDRESS', 'アドレスを変更');
 define('IMAGE_BUTTON_CHECKOUT', 'レジに進む');
 define('IMAGE_BUTTON_CONFIRM_ORDER', '注文する!');
-define('IMAGE_BUTTON_CONTINUE', '次に進む');
+define('IMAGE_BUTTON_CONTINUE', '次へ進む');
 define('IMAGE_BUTTON_CONTINUE_SHOPPING', 'ショッピングを続ける');
 define('IMAGE_BUTTON_DELETE', '削除する');
 define('IMAGE_BUTTON_EDIT_ACCOUNT', 'お客様情報の編集');
@@ -430,4 +430,5 @@ define('SEND_MAIL_HEADING_TITLE', 'メール受信テスト');
 define('TEXT_NO_LATEST_NEWS', 'お知らせはありません');
 define('NOTICE_MUST_BUY_TEXT', 'ショッピングカートに商品が有りません、商品を入れてから押してください。');
 define('LEFT_SEARCH_TITLE', '商品検索');
+define('RIGHT_ORDER_TEXT', '再配達依頼');
 ?>

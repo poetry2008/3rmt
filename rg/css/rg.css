@@ -428,7 +428,7 @@ button
 	font-size: 0px;
 }
 .button_description:hover{
-	background: url(../images/design/button/button_description2.gif) no-repeat;
+	background: url(../images/design/button/button_description_hover.gif) no-repeat;
 }
 /* ---------------------------
 input textarea select
@@ -1705,3 +1705,4 @@ border:1px solid #CAC6BE;
 .product_list02 input{ margin-top:10px;} 
 /*login*/
 .login_form1{ width:166px; height:49px; clear:both;}
+/*reorder*/

@@ -146,7 +146,7 @@ function change_num(ob,targ, quan,a_quan)
       </td>
       <!-- body_text //-->
       <td valign="top" id="contents">
-        <div class="pageHeading"><img align="top" alt="" src="images/menu_ico_a.gif"><h1><span><?php echo HEADING_TITLE ; ?></span></span></div>
+        <div class="pageHeading"><img align="top" alt="" src="images/menu_ico_a.gif"><h1><span><?php echo HEADING_TITLE ; ?></span></h1></div>
         <div class="comment">
   <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_SHOPPING_CART, 'action=update_product', 'SSL')); ?> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="rmt">
@@ -223,7 +223,7 @@ function change_num(ob,targ, quan,a_quan)
 </td>
                 </tr>
                 <tr class="infoBoxNoticeContents">
-                  <td width="33" height="35"><img src="images/icons/hinto.jpg" align="absmiddle" /></td>
+                  <td width="33" height="35"><img src="images/icons/hinto.jpg" alt="img"></td>
                   <td align="left" valign="middle">ヒント！<br>返金分が発生した場合は【ウェブマネー（WebMoney）の販売】を利用してみてはいかがでしょう？
 </td>
                 </tr>
@@ -384,6 +384,7 @@ function change_num(ob,targ, quan,a_quan)
   <!-- footer //-->
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
   <!-- footer_eof //-->
+</div>
 </div>
 </body>
 </html><?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

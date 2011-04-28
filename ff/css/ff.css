@@ -633,7 +633,7 @@ Ranking
 }
 .bestseller_text span{ float:left; color: #333; margin-left:5px; font-weight:bold;}
 .bestseller_text a{
-	line-height: 13px;
+	line-height: 11px;
 	overflow: hidden;
 	padding-left:13px;
 	color:#fff;

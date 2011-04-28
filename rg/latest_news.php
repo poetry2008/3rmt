@@ -55,7 +55,8 @@ function popupWindow(url) {
     }
 ?>
   <tr>
-    <td colspan="2"><p class="main" style="font-size:12px;"><?php echo nl2br(replace_store_name($latest_news['content'])); ?></p></td>
+    <td colspan="2"><p class="main" style="font-size:12px;"><?php echo
+    nl2br(replace_store_name($latest_news['content']),false); ?></p></td>
   </tr>
   </table>
 <?php
@@ -131,6 +132,7 @@ function popupWindow(url) {
   <!-- footer //-->
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
   <!-- footer_eof //-->
+</div>
 </div>
 </body>
 </html>

@@ -125,7 +125,9 @@
       </tr>
 <?php
     } else {
+    echo '<tr><td colspan="2">';
     echo '<input type="hidden" name="guestchk" value="0" >';
+    echo '</td></tr>';
   }
   }
 ?>
@@ -207,7 +209,10 @@
       <tr>
         <td class="main">
 <?php
-  echo tep_draw_textarea_field('agreement', 'soft', '98%', '5', mb_convert_encoding($agreement_text, 'UTF-8', 'ASCII, JIS, UTF-8, EUC-JP, SJIS'));
+//  echo tep_draw_textarea_field('agreement', 'soft', '98%', '5', mb_convert_encoding($agreement_text, 'UTF-8', 'ASCII, JIS, UTF-8, EUC-JP, SJIS'));
+  echo '<textarea rows="5" name="agreement" style="width:500px;" cols="57">';
+  echo mb_convert_encoding($agreement_text, 'UTF-8', 'ASCII, JIS, UTF-8, EUC-JP, SJIS');
+  echo '</textarea>';
   echo '<br>';
   echo tep_draw_checkbox_field('agreement_chk', 'ok') . ENTRY_AGREEMENT_TEXT;
 ?>
