@@ -25,7 +25,7 @@ if ($_GET['origin'] == FILENAME_CHECKOUT_PAYMENT) {
 define('TEXT_MAIL','メールアドレスを入力してください。');
 define('TEXT_FIRST_BUY','以前、お買物をされたことがありますか?');
 define('HEADING_NEW_CUSTOMER', '私は初めてです。');
-define('TEXT_NEW_CUSTOMER', '<b>［次へ進む］</b>をクリックしてください。');
+define('TEXT_NEW_CUSTOMER', '<b>［次に進む］</b>をクリックしてください。');
 define('TEXT_NEW_CUSTOMER_INTRODUCTION', '<font color="red"><b>会員登録をしないで注文するお客様もこちらからお手続きください。</b></font><br>会員登録をすると…&nbsp;メールアドレスとパスワードを入力するだけで簡単にログインができて、 '.STORE_NAME.' で便利にお買物ができます。');
 
 define('HEADING_RETURNING_CUSTOMER', '既にアカウントを持っています。');
