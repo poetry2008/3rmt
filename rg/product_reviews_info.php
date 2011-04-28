@@ -54,7 +54,7 @@
 <script type="text/javascript" src="js/scriptaculous.js?load=effects"></script>
 <script type="text/javascript" src="js/lightbox.js"></script>
 <link rel="stylesheet" href="css/lightbox.css" type="text/css" media="screen">
-<script language="javascript"><!--
+<script type="text/javascript"><!--
 function popupImageWindow(url) {
   window.open(url,'popupImageWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
 }
@@ -108,7 +108,7 @@ function showimage($1) {
             </tr> 
             <tr> 
               <td class="main"><br> 
-                <?php echo str_replace('<br />', '<br>', nl2br($reviews_text)); ?></td>
+                <?php echo str_replace('<br />', '<br>', nl2br($reviews_text,false)); ?></td>
             </tr> 
             <tr> 
               <td class="main"><br> 
@@ -119,7 +119,7 @@ function showimage($1) {
                 <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr> 
                     <td class="main"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS, $get_params) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
-                    <td align="right" class="main"><?php //echo '<a href="' . tep_href_link(FILENAME_DEFAULT, 'action=buy_now&products_id=' .  $reviews['products_id']) . '">' . tep_image_button('button_in_cart.jpg', IMAGE_BUTTON_IN_CART); ?></a></td> 
+                    <td align="right" class="main"><?php //echo '<a href="' .  tep_href_link(FILENAME_DEFAULT, 'action=buy_now&products_id=' .  $reviews['products_id']) . '">' .  tep_image_button('button_in_cart.jpg', IMAGE_BUTTON_IN_CART).'</a>'; ?></td> 
                   </tr> 
                 </table></td> 
             </tr> 
@@ -137,6 +137,7 @@ function showimage($1) {
   <!-- footer //--> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
   <!-- footer_eof //--> 
+</div> 
 </div> 
 </body>
 </html>

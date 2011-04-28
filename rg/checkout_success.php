@@ -73,10 +73,10 @@
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
-      <td valign="top" id="contents"><?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_SUCCESS, 'action=update', 'SSL')); ?> 
+      <td valign="top" id="contents">
         <div class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><h1><span><?php echo HEADING_TITLE ; ?></span></h1></div> 
-        
         <div class="comment"> 
+        <?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_SUCCESS, 'action=update', 'SSL')); ?> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
         
       <?php
@@ -184,6 +184,7 @@
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
   <!-- footer_eof //--> 
 </div> 
+</div>
 </body>
 </html>
 <?php 

@@ -107,6 +107,9 @@ if ($category_depth == 'nested') {
           order by sort_order, categories_name
         ");
     $rows = 0;
+    if (!tep_db_num_rows($categories_query)) {
+      echo '<td>&nbsp;</td>'; 
+    }
     while ($categories = tep_db_fetch_array($categories_query)) {
       $has_ca_single = true; 
       $rows++;
