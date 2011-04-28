@@ -499,7 +499,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                 <td>
                   <table border="0" cellspacing="0" cellpadding="2"> 
                     <tr> 
-                      <td class="main" colspan="4"><?php echo $confirmation['title']; ?></td> 
+                      <td class="main" colspan="4"><?php echo str_replace('<br />', '<br>', $confirmation['title']); ?></td> 
                     </tr> 
                     <?php
                     if (!isset($confirmation['fields'])) $confirmation['fields'] = NULL;
@@ -555,7 +555,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
               <tr> 
                 <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                     <tr> 
-                      <td class="main"><div class="payment_comment"><?php echo nl2br(htmlspecialchars($order->info['comments'])) . tep_draw_hidden_field('comments', $order->info['comments']); ?></div></td> 
+                      <td class="main"><div class="payment_comment"><?php echo nl2br(htmlspecialchars($order->info['comments']), false) . tep_draw_hidden_field('comments', $order->info['comments']); ?></div></td> 
                     </tr> 
                   </table></td> 
               </tr> 
@@ -586,7 +586,8 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
   }
   }
   
-  echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER) . '</form>' . "\n";
+  //echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER) . '</form>' . "\n";
+  echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER) . "\n";
 ?> </td> 
               </tr> 
             </table></td> 
@@ -597,6 +598,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
         </table>
         </div>
         <p class="pageBottom"></p>
+        </form> 
         </td> 
       <!-- body_text_eof //--> 
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
@@ -608,10 +610,11 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
   <!-- footer_eof //--> 
 </div> 
+</div> 
 <!-- /visites --> 
 <object>
 <noscript>
-<img src="visites.php" alt="Statistics" style="border:0" />
+<img src="visites.php" alt="Statistics" style="border:0">
 </noscript>
 </object>
 <!-- /visites -->

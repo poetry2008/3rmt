@@ -54,7 +54,6 @@
           <li class="login_list_info"><?php echo '<a href="' . tep_href_link(FILENAME_LOGOFF, '', 'SSL') . '">' . HEADER_TITLE_LOGOFF . '</a>'."\n"; ?></li>
            </ul>
         </div>
-</div>
 <?php 
     }
   } 

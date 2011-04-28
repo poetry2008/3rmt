@@ -22,6 +22,20 @@
     );
     $num_products_ordered = tep_db_num_rows($orders_query);
     if ($num_products_ordered >= MIN_DISPLAY_ALSO_PURCHASED) {
+      switch ($num_products_ordered) {
+        case 1:
+          $width_str = ' width="100%"';
+          break;
+        case 2:
+          $width_str = ' width="50%"';
+          break;
+        case 3:
+          $width_str = ' width="33%"';
+          break;
+        default:
+          $width_str = ' width="25%"';
+          break;
+      }
 ?>
 <!-- also_purchased_products //-->
 <div class="pageHeading_long"><img align="top" alt="" src="images/menu_ico.gif"><h3><span><?php echo $product_info['products_name'];?><?php  echo TEXT_ALSO_PURCHASED_PRODUCTS ; ?> </span></h3></div>
@@ -43,7 +57,7 @@
         }
     echo '
 
-<td width="25%" align="center" class="smallText">   
+<td align="center" class="smallText" '.$width_str.'>   
 <a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $orders['products_id']) . '">'.tep_image(DIR_WS_IMAGES . 'products/' . $orders['products_image'], $orders['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"').'</a>
    <br><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $orders['products_id']) . '">'.$orders['products_name'].'</a>
 </td>';
