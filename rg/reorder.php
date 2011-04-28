@@ -684,8 +684,7 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
  <table width="100%">
  <tr>
   <td colspan='2' align="right">
-   
-   <input type='image' src="includes/languages/japanese/images/buttons/button_continue.gif" alt="次へ進む" title="次へ進む" >
+   <input type='image' src="includes/languages/japanese/images/buttons/button_continue02.gif" alt="次へ進む" title="次へ進む" >
    <input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="クリア" title="クリア" onClick="javascript:document.order.reset();return false;" >
   </td>
  </tr>
