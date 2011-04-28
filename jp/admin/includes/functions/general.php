@@ -3426,7 +3426,7 @@ function tep_get_pay_day($time = null){
       }
     }
     //exit(date('Y-m-d H:i:s', $time));
-    return tep_get_pay_day(date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s', strtotime($time)).' + 1 day')));
+    return tep_get_pay_day(date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s', strtotime($time)).' + 1 month')));
   } else {
     $c = tep_db_fetch_array(tep_db_query("select * from " . TABLE_BANK_CALENDAR . " where cl_ym = '".date('Ym',strtotime($time))."'"));
     for($i=0;$i<strlen($c['cl_value']);$i++){
