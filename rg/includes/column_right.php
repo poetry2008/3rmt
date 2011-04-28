@@ -25,7 +25,7 @@
   } else {
     include(DIR_WS_BOXES . 'best_sellers.php');
   }
-  //echo '<a href="'.tep_href_link('reorder.php').'"><img src="images/design/reorder.gif" alt="reorder"></a>';
+  echo '<div class="menu_top"><img align="top" alt="" src="images/menu_reorder.gif"><span>'.RIGHT_ORDER_TEXT.'</span></div><a class="reorder_link" href="'.tep_href_link('reorder.php').'"><img src="images/design/reorder.gif" alt="reorder"></a>';
   //require(DIR_WS_BOXES . 'information.php');
   require(DIR_WS_BOXES . 'reviews.php');
   include(DIR_WS_BOXES . 'right_banner.php') ;
