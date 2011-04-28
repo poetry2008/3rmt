@@ -1002,14 +1002,27 @@ Footer
 	width: 900px;
 	font-size: 10px;
 	text-align: center;
-	margin:5px auto;
+	margin:0 auto;
 	clear:both;
 	height:64px;
 	background:url(../images/design/box/footer_bg.gif) repeat-x;
 }
+.footer_link {
+	background:url(../images/design/box/footer_xian.gif) repeat-x;
+	white-space:900px;
+	height:24px;
+	line-height:27px;
+	line-height:25px\9;
+}
+.footer_link a{
+	color:#FFFFFF;
+	padding:0 10px;
+	font-size:12px;
+}
 .footer_contacts{
 	letter-spacing:0.5mm;
 	padding-top:18px;
+	line-height:20px;
 	color:#FFF;
 }
 .footer_contacts a{
