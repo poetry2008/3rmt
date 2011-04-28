@@ -49,6 +49,8 @@ Options +FollowSymLinks
 RewriteEngine On 
 RewriteBase /
 
+RewriteRule ^tags/$ tags.php
+RewriteRule ^tags/page(\d+).html$ tags.php?page=$1
 # www.itemdepot.jp/ff11 => www.itemdepot.jp/ff11/
 RewriteRule ^([^/./?=]+)$ $1/ [L,R=301]
 

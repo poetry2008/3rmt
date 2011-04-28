@@ -431,4 +431,5 @@ define('TEXT_NO_LATEST_NEWS', 'お知らせはありません');
 define('NOTICE_MUST_BUY_TEXT', 'ショッピングカートに商品が有りません、商品を入れてから押してください。');
 define('LEFT_SEARCH_TITLE', '商品検索');
 define('RIGHT_ORDER_TEXT', '再配達依頼');
+define('TEXT_TAGS', 'タグ一覧');
 ?>

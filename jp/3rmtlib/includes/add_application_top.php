@@ -393,16 +393,31 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
     }
   } elseif ((defined('URL_ROMAJI_ENABLED') && URL_ROMAJI_ENABLED)) {
     //if (basename($_SERVER['SCRIPT_NAME']) == FILENAME_DEFAULT) {
-    if (
-         basename($_SERVER['SCRIPT_NAME']) != FILENAME_LATEST_NEWS
-      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_REVIEWS
-      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS
-      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS_INFO
-      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PAGE
-      //&& ((!isset($_GET['manufacturers_id']) && basename($_SERVER['SCRIPT_NAME']) != FILENAME_DEFAULT))
-      && !isset($_GET['manufacturers_id']) 
-    ) {
-      tep_parseURI();
+    if (SITE_ID == 6) {
+      if (
+           basename($_SERVER['SCRIPT_NAME']) != FILENAME_LATEST_NEWS
+        && basename($_SERVER['SCRIPT_NAME']) != FILENAME_REVIEWS
+        && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS
+        && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS_INFO
+        && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PAGE
+        && basename($_SERVER['SCRIPT_NAME']) != FILENAME_TAGS
+        //&& ((!isset($_GET['manufacturers_id']) && basename($_SERVER['SCRIPT_NAME']) != FILENAME_DEFAULT))
+        && !isset($_GET['manufacturers_id']) && !isset($_GET['tags_id']) 
+      ) {
+        tep_parseURI();
+      }
+    } else {
+      if (
+           basename($_SERVER['SCRIPT_NAME']) != FILENAME_LATEST_NEWS
+        && basename($_SERVER['SCRIPT_NAME']) != FILENAME_REVIEWS
+        && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS
+        && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS_INFO
+        && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PAGE
+        //&& ((!isset($_GET['manufacturers_id']) && basename($_SERVER['SCRIPT_NAME']) != FILENAME_DEFAULT))
+        && !isset($_GET['manufacturers_id']) 
+      ) {
+        tep_parseURI();
+      }
     }
   }
 
