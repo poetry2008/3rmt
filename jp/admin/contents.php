@@ -191,7 +191,8 @@
             <table border="0" cellspacing="0" cellpadding="5"> 
               <tr> 
                 <td class="main"><?php echo ENTRY_SITE; ?></td> 
-              <td class="main"><?php echo tep_site_pull_down_menu($detail['site_id'])?></td>
+              <td class="main"><?php echo 
+              tep_get_site_name_by_id($detail['site_id']);?></td>
               </tr> 
               <tr> 
                 <td class="main"><?php echo TEXT_DETAIL_STATUS; ?></td> 
