@@ -1099,7 +1099,7 @@ list-style-type:none;
 #ticketthread{margin:15px 0;}
 .captcha_comment{ font-size:12px;}
 .right_colum_border{ width:170px;}
-.link_banner{ margin:5px 0;}
+.link_banner{ margin:0 0 5px 0;}
 .side_border{ width:900px; margin:0 auto;}
 .latest_news_box,.welcome_box{
 	width:530px;
