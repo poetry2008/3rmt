@@ -698,14 +698,14 @@ while($userslist= tep_db_fetch_array($result)){
    echo "</td><td>";
    $user_id=$userslist['userid'];
    $u_s_arr=array();
-   if($userslist['site_permission']){
+   if($userslist['site_permission']&&preg_match('/,/',$userslist['site_permission'])){
      $u_s_arr = explode(",",$userslist['site_permission']);//site_permission转为数组 exp:(1,6=>([0]=>1,[1]=>6 )
    }else{
-     //$u_s_arr[]="";
+     $u_s_arr[]=$userslist['site_permission'];
    }   
    //设置ALL的修改权限 并设置 admin 默认选择
      $site_str=  '<input name="'.$user_id.'[]" type="checkbox" id="0" value="0" ';
-     if((is_array($u_s_arr)&&in_array( 0,$u_s_arr))||
+     if((is_array($u_s_arr)&&in_array('0',$u_s_arr))||
          (isset($userslist['permission'])&&$userslist['permission']==15)){ $site_str.=' checked />'; }//如果拥有权限  checkbox 属性为checked 显示为选中
      else {$site_str.='/>';}
      $site_str.= 'All';
