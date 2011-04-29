@@ -740,11 +740,16 @@ while($userslist= tep_db_fetch_array($result)){
   if($_POST[$userslist['userid']]){//获取页面 checkbox的值(数组)
     $u_s_id=$_POST[$userslist['userid']];
 $u_id_str=implode(",",$u_s_id);
+}else{
+$u_id_str='';
+}
 //修改permission中 对应的userid的 site_permission
 $permission_sid_sql="UPDATE ".TABLE_PERMISSIONS." SET `site_permission` = '".$u_id_str."' WHERE `permissions`.`userid` = '".$userslist['userid']. "' ";
 
 if(tep_db_query($permission_sid_sql)){
-}else{ $y_n= FALSE;}
+  $y_n=true;
+}else{ 
+  $y_n= FALSE;
 }
 }
   if($y_n) {
