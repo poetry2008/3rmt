@@ -219,8 +219,8 @@ function makeInsertUser($aval, $nmode=0) {
     $ssql .= ",'" . $aval['email'] . "'";
     /*
     $ssql .= ",'" . $aval['pwd_is_rand'] . "'";
-    $ssql .= ",'" . $aval['pwd_rules'] . "'";
     */
+    $ssql .= ",'" . $aval['rule'] . "'";
     $ssql .= ")";
   } else {
     // ユーザ権限テーブルへの追加 sql 文字列生成
