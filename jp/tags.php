@@ -38,6 +38,9 @@ while($products_row = tep_db_fetch_array($products_tags_query)){
 }
 $products_tags_str = substr($products_tags_str,0,-1);
 $products_tags_str .=")";
+if ($products_tags_str == ')') {
+  $products_tags_str = "(0)";
+}
 /*查找所有的不重复的 tags 使用 tag 的 name 和order 排序*/
 $tags_query_string = "
     select tags_id,tags_images,tags_name 
