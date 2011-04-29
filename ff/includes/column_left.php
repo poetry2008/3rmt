@@ -19,7 +19,21 @@
   </div>
 <?php 
 include(DIR_WS_BOXES . 'login.php');
-  require(DIR_WS_BOXES . 'banners.php');
+  if (isset($_GET['products_id'])) {
+    if (tep_session_is_registered('customer_id')) {
+      $check_query = tep_db_query("select count(*) as count from " . TABLE_CUSTOMERS_INFO . " where customers_info_id = '" . $customer_id . "' and global_product_notifications = '1'");
+      $check = tep_db_fetch_array($check_query);
+      if ($check['count'] > 0) {
+        include(DIR_WS_BOXES . 'best_sellers.php');
+      } else {
+     //   include(DIR_WS_BOXES . 'product_notifications.php');
+      }
+    } else {
+    //  include(DIR_WS_BOXES . 'product_notifications.php');
+    }
+  } else {
+    include(DIR_WS_BOXES . 'best_sellers.php');
+  }
 /*
   //Color
   if(COLOR_SEARCH_BOX_TF == 'true') {

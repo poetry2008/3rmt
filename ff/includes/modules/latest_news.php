@@ -6,7 +6,7 @@
 <!-- latest_news //-->
 <div class="latest_news_box">
 <h3 class="pageHeading">
-RMTカメズからのお知らせ
+<?php echo STORE_NAME;?>からのお知らせ
 </h3>
     <div id="news">
         <ul class="news_ul">
