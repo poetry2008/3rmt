@@ -72,7 +72,7 @@
       <h1 class="pageHeading"><?php echo $po_game_c . '&nbsp;' . $product_info['products_name']; ?>を予約する</h1>
             <div class="comment"><div class="product_info_box">
       <p>
-        RMTカメズでは、<?php echo $po_game_c; ?>の予約サービスを行っております。<br>
+        <?php echo STORE_NAME;?>では、<?php echo $po_game_c; ?>の予約サービスを行っております。<br>
         ご希望する数量が弊社在庫にある場合は「<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . intval($_GET['products_id'])) . '">' . $product_info['products_name']; ?></a>」をクリックしてお手続きください。
       </p>
 <?php
