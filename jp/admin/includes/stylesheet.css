@@ -11,6 +11,7 @@ A：リンク（通常）
 --------------------------- */
 a img {
 	border: 0;
+	padding-bottom:16px;
 	vertical-align:middle;
 }
 .infoBoxContent a img {
