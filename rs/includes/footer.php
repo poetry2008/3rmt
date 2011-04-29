@@ -6,7 +6,7 @@
 <div id="footer">
           <address class="footer_contacts">
         <?php echo FOOTER_TEXT_BODY . "\n"; ?><br>
-              Copyright&nbsp;&copy;&nbsp;2009-2011&nbsp;&nbsp;<a class="bold" href="<?php echo HTTP_SERVER;?>">RMTカメズ</a>
+              Copyright&nbsp;&copy;&nbsp;2011&nbsp;&nbsp;<a class="bold" href="<?php echo HTTP_SERVER;?>">RMTカメズ</a>
             </address>
 
 </div>

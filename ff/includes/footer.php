@@ -24,7 +24,7 @@
 
           <address class="footer_contacts">
         <?php echo FOOTER_TEXT_BODY . "\n"; ?><br>
-              Copyright&nbsp;&copy;&nbsp;2009-2011&nbsp;&nbsp;
+              Copyright&nbsp;&copy;&nbsp;2011&nbsp;&nbsp;
 <?php
 echo '<a class="bold" href="'. HTTP_SERVER.'">'.$_SERVER['HTTP_HOST'].'</a>';
 ?>
