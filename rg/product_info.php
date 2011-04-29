@@ -586,6 +586,44 @@ while($tag = tep_db_fetch_array($tag_query)) {
     }
   }
 ?>
+<?php
+$tag_query = tep_db_query("
+    SELECT t.tags_id, 
+           t.tags_images, 
+           t.tags_name 
+    FROM " . TABLE_PRODUCTS_TO_TAGS . " pt, " . TABLE_TAGS . " t 
+    WHERE t.tags_id = pt.tags_id AND pt.products_id='" . $product_info['products_id'] . "'
+");
+if(tep_db_num_rows($tag_query)){
+?>
+<div class="pageHeading_long"><img align="top" src="images/menu_ico.gif" alt=""><h3><span><?php echo $product_info['products_name'].'に関するキーワード';?></span></h3></div>        
+<div class="comment_long">
+<?php
+$tnum = 0;
+while($tag = tep_db_fetch_array($tag_query)) {
+?>
+<a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'tags_id=' .  $tag['tags_id']);?>">
+<?php if (
+    (
+    (file_exists(DIR_FS_CATALOG . DIR_WS_IMAGES . $tag['tags_images']) && !is_dir(DIR_FS_CATALOG . DIR_WS_IMAGES . $tag['tags_images'])) 
+    || 
+    (file_exists(DIR_FS_CATALOG . 'default_images/' . $tag['tags_images']) && !is_dir(DIR_FS_CATALOG . 'default_images/' . $tag['tags_images']))
+    )
+    && $tag['tags_images']
+    )
+ {
+   echo tep_image(DIR_WS_IMAGES . $tag['tags_images'], $tag['tags_name'] , 20, 15);
+ } else { 
+   echo $tag['tags_name'];
+  }
+  ?>
+</a> 
+<?php
+$tnum++;
+}
+?>
+</div>
+<?php }?>
         
         <?php
       if (tep_session_is_registered('affiliate_id')) {

@@ -3,10 +3,32 @@
   $Id$
 */
 ?>
+<div class="footer_link"><?php
+    $footer_info_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where status = 1 and romaji != 'company' and romaji != 'payment'  and
+ site_id = 7 order by sort_id"); 
+    $footer_info_total_num = tep_db_num_rows($footer_info_query);
+    if ($footer_info_total_num > 0) {
+      $footer_num = 0; 
+      while ($footer_info_res = tep_db_fetch_array($footer_info_query)) {
+        echo '<a href="'.info_tep_href_link($footer_info_res['romaji']).'">'.$footer_info_res['heading_title'].'</a>'; 
+        $footer_num++;  
+        if ($footer_num < $footer_info_total_num) {
+          echo '|'; 
+        }
+      }
+      echo '<br>'; 
+    }
+  ?>
+</div>
 <div id="footer">
+
           <address class="footer_contacts">
         <?php echo FOOTER_TEXT_BODY . "\n"; ?><br>
-              Copyright&nbsp;&copy;&nbsp;2009-2011&nbsp;&nbsp;<a class="bold" href="<?php echo HTTP_SERVER;?>">RMTカメズ</a>
+              Copyright&nbsp;&copy;&nbsp;2011&nbsp;&nbsp;
+<?php
+echo '<a class="bold" href="'. HTTP_SERVER.'">'.$_SERVER['HTTP_HOST'].'</a>';
+?>
+
             </address>
 
 </div>

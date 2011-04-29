@@ -5,8 +5,7 @@
 ?>
 <div id="footer">
           <address class="footer_contacts">
-        <?php echo FOOTER_TEXT_BODY . "\n"; ?><br>
-              Copyright&nbsp;&copy;&nbsp;2009-2011&nbsp;&nbsp;<a class="bold" href="http://www.rmt-kames.jp/">RMTカメズ</a>
+        <?php echo FOOTER_TEXT_BODY . "\n"; ?><br> Copyright&nbsp;&copy;&nbsp;2011&nbsp;&nbsp;<a class="bold" href="http://www.rmt-kames.jp/"><?php echo STORE_NAME;?></a>
             </address>
 
 </div>

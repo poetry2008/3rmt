@@ -43,11 +43,16 @@
   if (!isset($_GET['cPath'])) $_GET['cPath'] = NULL; //del notice
   if (!isset($_GET['products_id'])) $_GET['products_id'] = NULL; //del notice
   if ($_GET['cPath']) {
-    echo $seo_category['seo_name'] . ' RMT <a href="javascript:void(0);" onkeypress="SomeJavaScriptCode" style="cursor:hand" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト カメズをお気に入りに追加して下さい！</a>' . "\n";
+    echo $seo_category['seo_name'] . ' RMT <a href="javascript:void(0);" onkeypress="SomeJavaScriptCode" style="cursor:hand" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト RMTF14お気に入りに追加して下さい！</a>' . "\n";
   } elseif ($_GET['products_id']) {
-    echo ds_tep_get_categories((int)$_GET['products_id'],1) . 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">総合サイト カメズをお気に入りに追加して下さい！</a>' . "\n";
+    echo ds_tep_get_categories((int)$_GET['products_id'],1) . 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">総合サイト RMTF14お気に入りに追加して下さい！</a>' . "\n";
   } else {
-    echo 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト カメズをお気に入りに追加して下さい！</a>' . "\n";
+    echo 'RMT <a href="javascript:void(0);" style="cursor:hand"
+onkeypress="SomeJavaScriptCode" onclick="if (document.all)
+{window.external.AddFavorite(location.href, document.title)} else
+{window.sidebar.addPanel(document.title, location.href, null)}">RMT総
+合サイト 
+RMTF14お気に入りに追加して下さい！</a>' . "\n";
   }  
 ?>
   </h1>

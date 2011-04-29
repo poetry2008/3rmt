@@ -6,9 +6,8 @@
 <!-- latest_news //-->
 <div class="latest_news_box">
 <h3 class="pageHeading">
-RMTカメズからのお知らせ
+<?php echo STORE_NAME;?>からのお知らせ
 </h3>
-<div class="comment">
     <div id="news">
         <ul class="news_ul">
 
@@ -56,6 +55,5 @@ $row++;
         <?php //<img src="includes/languages/japanese/images/buttons/button_more.gif" width="56" height="25" alt="more" title="more" >?>
     </div>
     </div>
-</div>
 </div>
 <!-- latest_news_eof //-->

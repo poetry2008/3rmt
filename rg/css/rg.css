@@ -750,6 +750,9 @@ News
 	text-align:left;
 	width:170px;
 }
+.menu_top a:hover{
+	text-decoration:none;
+}
 .menu_top_reviews{
 	background: url(../images/design/box/reviews.gif) no-repeat;
 	padding:10px 0 0 20px;

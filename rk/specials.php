@@ -22,7 +22,7 @@
       </td>
       <!-- body_text //-->
       <td valign="top" id="contents">
-        <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?>RMTカメズの特価商品</h1>
+        <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?><?php echo STORE_NAME;?>の特価商品</h1>
         <div class="comment">
                 <table border="0" width="100%" cellspacing="0" cellpadding="0">
 <?php

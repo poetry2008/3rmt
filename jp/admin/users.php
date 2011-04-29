@@ -219,8 +219,8 @@ function makeInsertUser($aval, $nmode=0) {
     $ssql .= ",'" . $aval['email'] . "'";
     /*
     $ssql .= ",'" . $aval['pwd_is_rand'] . "'";
-    $ssql .= ",'" . $aval['pwd_rules'] . "'";
     */
+    $ssql .= ",'" . $aval['rule'] . "'";
     $ssql .= ")";
   } else {
     // ユーザ権限テーブルへの追加 sql 文字列生成
@@ -698,14 +698,14 @@ while($userslist= tep_db_fetch_array($result)){
    echo "</td><td>";
    $user_id=$userslist['userid'];
    $u_s_arr=array();
-   if($userslist['site_permission']){
+   if($userslist['site_permission']&&preg_match('/,/',$userslist['site_permission'])){
      $u_s_arr = explode(",",$userslist['site_permission']);//site_permission转为数组 exp:(1,6=>([0]=>1,[1]=>6 )
    }else{
-     //$u_s_arr[]="";
+     $u_s_arr[]=$userslist['site_permission'];
    }   
    //设置ALL的修改权限 并设置 admin 默认选择
      $site_str=  '<input name="'.$user_id.'[]" type="checkbox" id="0" value="0" ';
-     if((is_array($u_s_arr)&&in_array( 0,$u_s_arr))||
+     if((is_array($u_s_arr)&&in_array('0',$u_s_arr))||
          (isset($userslist['permission'])&&$userslist['permission']==15)){ $site_str.=' checked />'; }//如果拥有权限  checkbox 属性为checked 显示为选中
      else {$site_str.='/>';}
      $site_str.= 'All';
@@ -740,11 +740,16 @@ while($userslist= tep_db_fetch_array($result)){
   if($_POST[$userslist['userid']]){//获取页面 checkbox的值(数组)
     $u_s_id=$_POST[$userslist['userid']];
 $u_id_str=implode(",",$u_s_id);
+}else{
+$u_id_str='';
+}
 //修改permission中 对应的userid的 site_permission
 $permission_sid_sql="UPDATE ".TABLE_PERMISSIONS." SET `site_permission` = '".$u_id_str."' WHERE `permissions`.`userid` = '".$userslist['userid']. "' ";
 
 if(tep_db_query($permission_sid_sql)){
-}else{ $y_n= FALSE;}
+  $y_n=true;
+}else{ 
+  $y_n= FALSE;
 }
 }
   if($y_n) {
