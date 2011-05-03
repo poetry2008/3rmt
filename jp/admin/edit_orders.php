@@ -131,7 +131,6 @@
         }
       }
     }
-
     // 1.1 UPDATE ORDER INFO #####
     $UpdateOrders = "update " . TABLE_ORDERS . " set 
       customers_name = '" . tep_db_input(stripslashes($update_customer_name)) . "',
@@ -168,7 +167,7 @@
       delivery_state = '" . tep_db_input(stripslashes($update_delivery_state)) . "',
       delivery_postcode = '" . tep_db_input($update_delivery_postcode) . "',
       delivery_country = '" . tep_db_input(stripslashes($update_delivery_country)) . "',
-      payment_method = '" . tep_db_input($update_info_payment_method) . "',
+      payment_method = '" . tep_db_input($payment_method) . "',
       torihiki_date = '" . tep_db_input($update_tori_torihiki_date) . "',
       torihiki_houhou = '" . tep_db_input($update_tori_torihiki_houhou) . "',
       cc_type = '" . tep_db_input($update_info_cc_type) . "',
