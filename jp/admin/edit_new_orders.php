@@ -89,12 +89,13 @@
     $order = new order($oID);
     $status = '1'; // 初期値
     $goods_check = $order_query;
-    
+    /*
     if (tep_db_num_rows($goods_check) == 0) {
       $messageStack->add('商品が追加されていません。', 'error');
       $action = 'edit';
       break;
     }
+    */
   $viladate = tep_db_input($_POST['update_viladate']);//viladate pwd 
   if($viladate!='_false'&&$viladate!=''){
       tep_insert_pwd_log($viladate,$ocertify->auth_user);
