@@ -7,11 +7,11 @@
   require('includes/step-by-step/new_application_top.php');
 
   require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER_PROCESS);
-
+/*
 echo "<pre>";
 print_r($_POST);
 echo "</pre>";
-
+*/
   $customer_id    = tep_db_prepare_input($_POST['customers_id']);
   $firstname      = tep_db_prepare_input($_POST['firstname']);
   $lastname       = tep_db_prepare_input($_POST['lastname']);
