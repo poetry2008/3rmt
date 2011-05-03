@@ -4801,7 +4801,7 @@ function tep_payment_method_menu($payment_method = "") {
   return tep_draw_pull_down_menu('payment_method', $payment_list, $payment_method);
 }
 
-function tep_calc_limit_time_by_order_id($products_id)
+function tep_calc_limit_time_by_order_id($products_id, $single = false)
 {
   $now_time = time(); 
   if (BEST_SELLERS_LIMIT_TIME == 1) {
@@ -4809,10 +4809,14 @@ function tep_calc_limit_time_by_order_id($products_id)
   } else {
     $before_time = strtotime("-".BEST_SELLERS_LIMIT_TIME." days", $now_time); 
   }
-  $order_query = tep_db_query("select o.orders_id, o.date_purchased from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and op.products_id = '".$products_id."' and o.date_purchased <= '".date('Y-m-d H:i:s', $now_time)."' and o.date_purchased >= '".date('Y-m-d H:i:s', $before_time)."' order by orders_id desc limit 1");
+  if ($single) {
+    $order_query = tep_db_query("select o.orders_id, o.date_purchased from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and op.products_id = '".$products_id."' order by orders_id desc limit 1");
+  } else {
+    $order_query = tep_db_query("select o.orders_id, o.date_purchased from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and op.products_id = '".$products_id."' and o.date_purchased <= '".date('Y-m-d H:i:s', $now_time)."' and o.date_purchased >= '".date('Y-m-d H:i:s', $before_time)."' order by orders_id desc limit 1");
+  }
   $order_res = tep_db_fetch_array($order_query); 
  
-  $diff_time_str = 0;
+  $diff_time_str = '';
   if ($order_res) {
     $oday_arr = explode(' ', $order_res['date_purchased']); 
     $date_arr = explode('-', $oday_arr[0]); 
