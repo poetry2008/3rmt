@@ -4776,15 +4776,31 @@ function tep_insert_pwd_log($pwd,$userid){
 function tep_check_best_sellers_isbuy($products_id)
 {
   $now_time = time(); 
-  if (BEST_SELLERS_LIMIT_TIME == 1) {
-    $before_time = strtotime("-".BEST_SELLERS_LIMIT_TIME." day", $now_time); 
-  } else {
-    $before_time = strtotime("-".BEST_SELLERS_LIMIT_TIME." days", $now_time); 
-  }
-  $order_query = tep_db_query("select o.orders_id from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and op.products_id = '".$products_id."' and o.date_purchased <= '".date('Y-m-d H:i:s', $now_time)."' and o.date_purchased >= '".date('Y-m-d H:i:s', $before_time)."' limit 1");
+  $pro_to_ca_raw = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id = '".$products_id."'");
+  $pro_to_ca_res = tep_db_fetch_array($pro_to_ca_raw);
+  $limit_time = 0; 
   
-  if (tep_db_num_rows($order_query)) {
-    return true; 
+  if ($pro_to_ca_res) {
+    $limit_time_raw = tep_db_query("select * from ".TABLE_BESTSELLERS_TIME_TO_CATEGORY." where categories_id = '".$pro_to_ca_res['categories_id']."'"); 
+    $limit_time_res = tep_db_fetch_array($limit_time_raw); 
+    if ($limit_time_res) {
+      $limit_time = $limit_time_res['limit_time']; 
+    }
+  }
+  
+  if ($limit_time == 0) {
+      return false; 
+  } else {
+    if ($limit_time == 1) {
+      $before_time = strtotime("-".$limit_time." day", $now_time); 
+    } else {
+      $before_time = strtotime("-".$limit_time." days", $now_time); 
+    }
+    $order_query = tep_db_query("select o.orders_id from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and op.products_id = '".$products_id."' and o.date_purchased <= '".date('Y-m-d H:i:s', $now_time)."' and o.date_purchased >= '".date('Y-m-d H:i:s', $before_time)."' limit 1");
+    
+    if (tep_db_num_rows($order_query)) {
+      return true; 
+    }
   }
   
   return false;
@@ -4804,18 +4820,37 @@ function tep_payment_method_menu($payment_method = "") {
 function tep_calc_limit_time_by_order_id($products_id, $single = false)
 {
   $now_time = time(); 
-  if (BEST_SELLERS_LIMIT_TIME == 1) {
-    $before_time = strtotime("-".BEST_SELLERS_LIMIT_TIME." day", $now_time); 
+  $pro_to_ca_raw = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id = '".$products_id."'");
+  $pro_to_ca_res = tep_db_fetch_array($pro_to_ca_raw);
+  if ($pro_to_ca_res) {
+    $limit_time_raw = tep_db_query("select * from ".TABLE_BESTSELLERS_TIME_TO_CATEGORY." where categories_id = '".$pro_to_ca_res['categories_id']."'"); 
+    $limit_time_res = tep_db_fetch_array($limit_time_raw); 
+    if ($limit_time_res) {
+      $limit_time = $limit_time_res['limit_time']; 
+    } else {
+      return ''; 
+    }
   } else {
-    $before_time = strtotime("-".BEST_SELLERS_LIMIT_TIME." days", $now_time); 
+    return ''; 
+  } 
+  
+  if ($limit_time == 0) {
+    return ''; 
   }
+  
+  if ($limit_time == 1) {
+    $before_time = strtotime("-".$limit_time." day", $now_time); 
+  } else {
+    $before_time = strtotime("-".$limit_time." days", $now_time); 
+  }
+  
   if ($single) {
     $order_query = tep_db_query("select o.orders_id, o.date_purchased from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and op.products_id = '".$products_id."' order by orders_id desc limit 1");
   } else {
     $order_query = tep_db_query("select o.orders_id, o.date_purchased from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and op.products_id = '".$products_id."' and o.date_purchased <= '".date('Y-m-d H:i:s', $now_time)."' and o.date_purchased >= '".date('Y-m-d H:i:s', $before_time)."' order by orders_id desc limit 1");
   }
   $order_res = tep_db_fetch_array($order_query); 
- 
+  
   $diff_time_str = '';
   if ($order_res) {
     $oday_arr = explode(' ', $order_res['date_purchased']); 
@@ -4824,6 +4859,21 @@ function tep_calc_limit_time_by_order_id($products_id, $single = false)
     $oday_time = mktime($time_arr[0], $time_arr[1], $time_arr[2], $date_arr[1], $date_arr[2], $date_arr[0]); 
     $diff_time_str = floor(($now_time - $oday_time)/(60*60*24)); 
   }
-  
   return $diff_time_str;
+}
+
+function tep_check_show_isbuy($products_id) 
+{
+  $pro_to_ca_raw = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id = '".$products_id."'");
+  $pro_to_ca_res = tep_db_fetch_array($pro_to_ca_raw);
+  if ($pro_to_ca_res) {
+    $limit_time_raw = tep_db_query("select * from ".TABLE_BESTSELLERS_TIME_TO_CATEGORY." where categories_id = '".$pro_to_ca_res['categories_id']."'"); 
+    $limit_time_res = tep_db_fetch_array($limit_time_raw); 
+    if ($limit_time_res) {
+      if ($limit_time_res['limit_time']) {
+        return true; 
+      }
+    }
+  }
+  return false;
 }
