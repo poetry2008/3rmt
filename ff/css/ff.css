@@ -1362,6 +1362,7 @@ TABLE：Info Box
 .product_info_box{
 	background: #f4f4f4;
 	padding:5px;
+	padding:5px 0\9;
 }
 .product_info_box table{
 	width: 100%;
