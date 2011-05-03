@@ -70,7 +70,7 @@ charset=<?php echo CHARSET; ?>">
 </form>
 <br>
 <form method="post" action="set_bairitu.php?action=set_time">
-<input type="text" value="<?php echo BEST_SELLERS_LIMIT_TIME;?>" name="btime">日以内に注文
+人気商品アイコンの表示<br><input type="text" value="<?php echo BEST_SELLERS_LIMIT_TIME;?>" name="btime"> 日以内に注文があれば人気とする<br>0を入力するとアイコンは表示されません。
 <input type="hidden" value="<?php echo $cpath ?>" name="cepath">
 <input type="submit" value="確定">
 </form>
