@@ -89,12 +89,13 @@
     $order = new order($oID);
     $status = '1'; // 初期値
     $goods_check = $order_query;
-    
+    /*
     if (tep_db_num_rows($goods_check) == 0) {
       $messageStack->add('商品が追加されていません。', 'error');
       $action = 'edit';
       break;
     }
+    */
   $viladate = tep_db_input($_POST['update_viladate']);//viladate pwd 
   if($viladate!='_false'&&$viladate!=''){
       tep_insert_pwd_log($viladate,$ocertify->auth_user);
@@ -136,6 +137,7 @@
 
     // 1.1 UPDATE ORDER INFO #####
     $UpdateOrders = "update " . TABLE_ORDERS . " set 
+      payment_method = '" . tep_db_input(stripslashes($_POST['payment_method'])) . "',
       customers_name = '" . tep_db_input(stripslashes($update_customer_name)) . "',
       customers_name_f = '" . tep_db_input(stripslashes($update_customer_name_f)) . "',
       customers_company = '" . tep_db_input(stripslashes($update_customer_company)) . "',
@@ -147,7 +149,7 @@
       customers_country = '" . tep_db_input(stripslashes($update_customer_country)) . "',
       customers_telephone = '" . tep_db_input($update_customer_telephone) . "',
       customers_email_address = '" . tep_db_input($update_customer_email_address) . "',";
-    
+
     if($SeparateBillingFields) {
     // Original: all database fields point to $update_billing_xxx, now they are updated with the same values as the customer fields
     $UpdateOrders .= "billing_name = '" . tep_db_input(stripslashes($update_customer_name)) . "',
@@ -170,7 +172,6 @@
       delivery_state = '" . tep_db_input(stripslashes($update_delivery_state)) . "',
       delivery_postcode = '" . tep_db_input($update_delivery_postcode) . "',
       delivery_country = '" . tep_db_input(stripslashes($update_delivery_country)) . "',
-      payment_method = '" . tep_db_input($payment_method) . "',
       torihiki_date = '" . tep_db_input($update_tori_torihiki_date) . "',
       torihiki_houhou = '" . tep_db_input($update_tori_torihiki_houhou) . "',
       cc_type = '" . tep_db_input($update_info_cc_type) . "',
