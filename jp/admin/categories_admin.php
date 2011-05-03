@@ -434,7 +434,7 @@ while ($products = tep_db_fetch_array($products_query)) {
   if (BEST_SELLERS_LIMIT_TIME) {
     if (tep_check_best_sellers_isbuy($products['products_id'])) {
       $diff_oday = tep_calc_limit_time_by_order_id($products['products_id']); 
-      echo '<img src="images/icons/mae1.gif" alt="'.$diff_oday.'日前に注文有" title="'.BEST_SELLERS_LIMIT_TIME.'日前に注文有">'; 
+      echo '<img src="images/icons/mae1.gif" alt="'.$diff_oday.'日前に注文有" title="'.$diff_oday.'日前に注文有">'; 
     } else {
       echo '<img src="images/icons/mae2.gif" alt="">'; 
     }
