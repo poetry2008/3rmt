@@ -467,8 +467,8 @@ Header
 .top_right li a{ color:#990000;}
 .top_right li a:hover{ color:#444;}
 .top_right .header_list{ float:right; margin-right:10px; text-align:right; width:120px;}
-.top_right .header_list span{ float:right;}
-.header_list_title{ float:left; color:#990000;}
+.top_right .header_list span{ float:right; font-size:12px;}
+.header_list_title{ float:left; color:#990000; font-size:12px;}
 #header {
 	width: 900px;
 	margin:0 auto;
