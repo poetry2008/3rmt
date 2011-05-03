@@ -66,7 +66,7 @@ function pass_hidd(){
             </tr> 
             <tr> 
               <td align="right" class="main"><br> 
-                <?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
+                <?php echo tep_image_submit('button_continue02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
             </tr> 
           </table> 
           </div>

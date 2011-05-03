@@ -137,7 +137,6 @@
 
     // 1.1 UPDATE ORDER INFO #####
     $UpdateOrders = "update " . TABLE_ORDERS . " set 
-      payment_method = '" . tep_db_input(stripslashes($_POST['payment_method'])) . "',
       customers_name = '" . tep_db_input(stripslashes($update_customer_name)) . "',
       customers_name_f = '" . tep_db_input(stripslashes($update_customer_name_f)) . "',
       customers_company = '" . tep_db_input(stripslashes($update_customer_company)) . "',
@@ -149,7 +148,7 @@
       customers_country = '" . tep_db_input(stripslashes($update_customer_country)) . "',
       customers_telephone = '" . tep_db_input($update_customer_telephone) . "',
       customers_email_address = '" . tep_db_input($update_customer_email_address) . "',";
-
+    
     if($SeparateBillingFields) {
     // Original: all database fields point to $update_billing_xxx, now they are updated with the same values as the customer fields
     $UpdateOrders .= "billing_name = '" . tep_db_input(stripslashes($update_customer_name)) . "',
@@ -172,6 +171,7 @@
       delivery_state = '" . tep_db_input(stripslashes($update_delivery_state)) . "',
       delivery_postcode = '" . tep_db_input($update_delivery_postcode) . "',
       delivery_country = '" . tep_db_input(stripslashes($update_delivery_country)) . "',
+      payment_method = '" . tep_db_input($_POST['payment_method']) . "',
       torihiki_date = '" . tep_db_input($update_tori_torihiki_date) . "',
       torihiki_houhou = '" . tep_db_input($update_tori_torihiki_houhou) . "',
       cc_type = '" . tep_db_input($update_info_cc_type) . "',
@@ -351,7 +351,7 @@
     }
   
     // 1.5.2.2 Update ot_subtotal, ot_tax, and ot_total classes
-    if (trim($ot_title) && trim($ot_value) || $ot_class == "ot_point") {
+    if (trim($ot_title) || $ot_class == "ot_point") {
   
       $sort_order++;
       if ($ot_class == "ot_subtotal") {

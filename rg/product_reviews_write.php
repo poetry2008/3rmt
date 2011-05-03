@@ -90,7 +90,7 @@ function checkForm() {
             <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
               <tr> 
                 <td class="main"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS, $get_params_back) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
-                <td align="right" class="main"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
+                <td align="right" class="main"><?php echo tep_image_submit('button_continue02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
               </tr> 
             </table> 
             <?php echo tep_draw_hidden_field('get_params', $get_params); ?> </td> 

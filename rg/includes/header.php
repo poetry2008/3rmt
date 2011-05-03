@@ -40,6 +40,7 @@
 <div id="header">
   <div class="h_title">
   <?php
+   
   if (!isset($_GET['cPath'])) $_GET['cPath'] = NULL; //del notice
   if (!isset($_GET['products_id'])) $_GET['products_id'] = NULL; //del notice
   if ($_GET['cPath']) {
@@ -51,8 +52,33 @@
   }  
 ?>
   </div>
-  <div id="title">
-  <div class="top_right">
+  
+<?php
+if (tep_session_is_registered('customer_id')) {
+?>
+<div id="title">
+  <table cellpadding="0" cellspacing="0" border="0" class="top_right">
+  <tr><td>
+  	 <ul>
+<li><a href="<?php echo tep_href_link(FILENAME_CONTACT_US);?>">お問い合わせ</a></li>
+        <li>|</li>
+        <li><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>">カートを見る</a></li>
+        <li>|</li>
+        <li><a href="<?php echo  tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL');?>">レジへ進む
+  </a></li>
+</ul>
+</td></tr>
+  <tr><td>
+  <div class="header_list"><div class="header_list_title">小計</div><span><?php echo $currencies->format($cart->show_total());?></span></div>
+  	 </td></tr></table>
+    </div>
+  </div>
+<?php
+}else {
+?>
+<div id="title">
+  <table cellpadding="0" cellspacing="0" border="0" class="top_right">
+  <tr><td>
   	 <ul>
      	<li><a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT, '', 'SSL');?>">無料会員登録</a></li>
         <li>|</li>
@@ -64,13 +90,18 @@
         <li>|</li>
         <li><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>">カートを見る</a></li>
         <li>|</li>
-        <li><a href="<?php echo tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL');?>">レジへ進む</a></li>
+        <li><a href="<?php echo  tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL');?>">レジへ進む  </a></li>
         <li>|</li>
         <li><a href="<?php echo tep_href_link(FILENAME_LOGIN, '', 'SSL');?>">ログイン</a></li>
-     </ul>
+ </ul>
+ </td></tr>
+ <tr><td>
   <div class="header_list"><div class="header_list_title">小計</div><span><?php echo $currencies->format($cart->show_total());?></span></div>
+  </td></tr>
+  </table>
   </div>
   </div>
+<?php  } ?>
   <div class="header_Navigation">
           <a href="<?php echo tep_href_link(FILENAME_SITEMAP,'','NONSSL');?>"><?php echo HEADER_TITLE_SITEMAP ; ?></a>
           &nbsp;&nbsp;<?php echo $breadcrumb->trail(' &raquo; '); ?>

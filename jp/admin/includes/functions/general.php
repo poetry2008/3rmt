@@ -4817,6 +4817,39 @@ function tep_payment_method_menu($payment_method = "") {
   return tep_draw_pull_down_menu('payment_method', $payment_list, $payment_method);
 }
 
+
+  function tep_get_faq_path($current_category_id = '') {
+    global $cPath_array;
+
+    if ($current_category_id == '') {
+      $cPath_new = implode('_', $cPath_array);
+    } else {
+      if (sizeof($cPath_array) == 0) {
+        $cPath_new = $current_category_id;
+      } else {
+        $cPath_new = '';
+        $last_category_query = tep_db_query("select parent_id from " . TABLE_FAQ_CATEGORIES . " where id = '" . $cPath_array[(sizeof($cPath_array)-1)] . "'");
+        $last_category = tep_db_fetch_array($last_category_query);
+        $current_category_query = tep_db_query("select parent_id from " . TABLE_FAQ_CATEGORIES . " where id = '" . $current_category_id . "'");
+        $current_category = tep_db_fetch_array($current_category_query);
+        if ($last_category['parent_id'] == $current_category['parent_id']) {
+          for ($i = 0, $n = sizeof($cPath_array) - 1; $i < $n; $i++) {
+            $cPath_new .= '_' . $cPath_array[$i];
+          }
+        } else {
+          for ($i = 0, $n = sizeof($cPath_array); $i < $n; $i++) {
+            $cPath_new .= '_' . $cPath_array[$i];
+          }
+        }
+        $cPath_new .= '_' . $current_category_id;
+        if (substr($cPath_new, 0, 1) == '_') {
+          $cPath_new = substr($cPath_new, 1);
+        }
+      }
+    }
+
+    return 'cPath=' . $cPath_new;
+  }
 function tep_calc_limit_time_by_order_id($products_id, $single = false)
 {
   $now_time = time(); 

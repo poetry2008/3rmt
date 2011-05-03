@@ -50,7 +50,7 @@
           </table></td>
         </tr>
         <tr>
-          <td align="right"><br><?php echo '<a href="' . $origin_href . '">' . tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td>
+          <td align="right"><br><?php echo '<a href="' . $origin_href . '">' . tep_image_button('button_continue02.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td>
         </tr>
       </table>
       </div>
