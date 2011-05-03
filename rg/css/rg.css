@@ -962,6 +962,7 @@ Footer
 /*link color*/
 .product_listing_content a{
 	color: #C51138;
+	font-weight:bold;
 }
 .comment a{
 	color:#C51138;
@@ -1709,3 +1710,4 @@ border:1px solid #CAC6BE;
 /*login*/
 .login_form1{ width:166px; height:49px; clear:both;}
 /*reorder*/
+.rg_pay_info{ border:1px solid #ccc; background-color:#fff; padding:4px; margin:3px 0;}

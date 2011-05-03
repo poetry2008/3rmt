@@ -256,11 +256,10 @@ function rowOutEffect(object) {
           </tr>  
 
           <tr> 
-            <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+            <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="rg_pay_info"> 
                 <tr> 
-                  <td class="main"><b><?php echo TABLE_HEADING_SHIPPING_ADDRESS; ?></b></td> 
+                  <td class="main"><?php echo '<b>' . TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><br>' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></td> 
                   <td class="main" align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
-                  <td class="main" width="25"></td> 
                 </tr> 
               </table></td> 
           </tr> 
@@ -367,18 +366,12 @@ if (!isset($date_error)) $date_error= NULL ; //del notice
       </td> 
           </tr> 
           <tr> 
-            <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
-                <tr class="infoBoxContents"> 
-                  <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+            <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="rg_pay_info"> 
                       <tr> 
-                        <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                         <td class="main"><?php echo '<b>' . TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><br>' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></td> 
                         <td class="main" align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
-                        <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                       </tr> 
                     </table></td> 
-                </tr> 
-              </table></td> 
           </tr> 
           <tr> 
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
