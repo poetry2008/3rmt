@@ -30,7 +30,7 @@ function popupWindow(url) {
       </td>
       <!-- body_text //-->
       <td valign="top" id="contents">
-        <div class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><h1><span><?php if ($_GET['news_id']) { echo replace_store_name($latest_news['headline']); } else { echo HEADING_TITLE; } ?></span></h1></div>
+        <div class="pageHeading"><img align="top" alt="img" src="images/menu_ico.gif"><h1><span><?php if ($_GET['news_id']) { echo replace_store_name($latest_news['headline']); } else { echo HEADING_TITLE; } ?></span></h1></div>
                 <div class="comment">
         <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
@@ -55,8 +55,7 @@ function popupWindow(url) {
     }
 ?>
   <tr>
-    <td colspan="2"><p class="main" style="font-size:12px;"><?php echo
-    nl2br(replace_store_name($latest_news['content']),false); ?></p></td>
+    <td colspan="2"><p class="main" style="font-size:12px;"><?php echo str_replace('<br />', '<br>', nl2br(replace_store_name($latest_news['content']))); ?></p></td>
   </tr>
   </table>
 <?php
@@ -132,7 +131,6 @@ function popupWindow(url) {
   <!-- footer //-->
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
   <!-- footer_eof //-->
-</div>
 </div>
 </body>
 </html>

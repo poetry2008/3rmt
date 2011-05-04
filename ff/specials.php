@@ -101,6 +101,11 @@ if (empty($specials_caid_arr)) {
     }    
   }
 ?>
+                <?php
+                if (!tep_db_num_rows($specials_query)) {
+                  echo '<td></td>'; 
+                }
+                ?>
                 </tr>
               </table>
             </td>
@@ -138,6 +143,7 @@ if (empty($specials_caid_arr)) {
   <!-- footer //-->
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
   <!-- footer_eof //-->
+</div>
 </div>
 </body>
 </html>

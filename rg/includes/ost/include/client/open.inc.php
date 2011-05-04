@@ -42,7 +42,8 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <tr>
         <th>件名:</th>
         <td>
-            <input type="text" name="subject" size="35" value="<?=$info['subject']?>">
+            <input type="text" name="subject" size="35"
+            value="<?=isset($info['subject'])?$info['subject']:(isset($_GET['products_name'])?$_GET['products_name'].'について':'')?>">
             &nbsp;<font class="error">*&nbsp;<?=$errors['subject']?></font>
         </td>
     </tr>
@@ -50,7 +51,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         <th valign="top">ご質問内容: </th>
         <td>
             <? if($errors['message']) {?> <font class="error"><b>&nbsp;<?=$errors['message']?></b></font><br/><?}?>
-            <textarea name="message" cols="35" rows="8" wrap="soft" style="width:85%"><?=$info['message']?></textarea></td>
+            <textarea name="message" cols="35" rows="8" style="width:85%"><?=$info['message']?></textarea></td>
     </tr>
     <?
     if($cfg->allowPriorityChange() ) {
@@ -89,7 +90,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         ?>
     <tr>
         <th valign="top">認証コード:</th>
-        <td><img src="captcha.php" border="0" align="left">
+        <td align="left"><img src="captcha.php" border="0" alt="img">
         <span>&nbsp;&nbsp;<input type="text" name="captcha" size="7" value="">&nbsp;<i class="captcha_comment">認証画像の内容をご入力ください.</i></span>
         <?php if($errors['captcha']){?>
         <br/>

@@ -69,13 +69,13 @@ while($userslist= tep_db_fetch_array($sites_id)){
 <title><?php echo TITLE; ?></title>
 <style type="text/css">
 <!--
-a { color:#080381; text-decoration:none; }
+a { color:#080381; text-decoration:underline; }
 a:hover { color:#aabbdd; text-decoration:underline; }
-a.text:link, a.text:visited { color: #000000; text-decoration: none; }
+a.text:link, a.text:visited { color: #000000; text-decoration:underline; }
 a:text:hover { color: #000000; text-decoration: underline; }
-a.main:link, a.main:visited { color: #333333; text-decoration: none; }
+a.main:link, a.main:visited { color: #333333; text-decoration: underline; }
 A.main:hover { color: #6D6D6D; text-decoration: underline; }
-a.sub:link, a.sub:visited { color: #6d6d6d; text-decoration: none; }
+a.sub:link, a.sub:visited { color: #6d6d6d; text-decoration: underline; }
 A.sub:hover { color: #dddddd; text-decoration: underline; }
 .heading { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 20px; font-weight: bold; line-height: 1.5; color: #001682; }
 .main { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 17px; font-weight: bold; line-height: 1.5; color: #ffffff; }
@@ -94,9 +94,6 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
         <td><table border="0" width="100%" height="390" cellspacing="0" cellpadding="0">
           <tr bgcolor="#ffffff" height="50">
             <td height="50">
-            <!--
-            <?php echo tep_image(DIR_WS_IMAGES . 'oscommerce.gif', 'osCommerce', '204', '50'); ?>
-            -->
             </td>
             <td align="right" class="text" nowrap><?php echo '|&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_DEFAULT) . '">' . HEADER_TITLE_ADMINISTRATION . '</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="' . tep_catalog_href_link() . '">' . HEADER_TITLE_ONLINE_CATALOG . '</a>'; ?>&nbsp;&nbsp;|&nbsp;&nbsp;</td>
           </tr>

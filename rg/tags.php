@@ -236,7 +236,6 @@ while ($tag = tep_db_fetch_array($tags_query))
 </tr>
 </table> <!-- end of .side_border -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-</div>
 </div><!--end of .center -->
 </body>
 </html><?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

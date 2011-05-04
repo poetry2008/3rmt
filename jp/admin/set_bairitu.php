@@ -30,7 +30,16 @@ switch ($HTTP_GET_VARS['action']){
     tep_redirect('categories_admin.php?cPath='.$cpath);
     break;
     case 'set_time':
-    tep_db_query("update ".TABLE_CONFIGURATION." set configuration_value = '".(int)$_POST['btime']."' where configuration_key = 'BEST_SELLERS_LIMIT_TIME'"); 
+    $path_array = explode('_', $_POST['cepath']);
+    $limit_ca_cid = $path_array[count($path_array)-1];
+  
+    $exists_ltime_query = tep_db_query("select * from ".TABLE_BESTSELLERS_TIME_TO_CATEGORY." where categories_id = '".(int)$limit_ca_cid."'");
+    if (tep_db_num_rows($exists_ltime_query)) {
+      tep_db_query("update ".TABLE_BESTSELLERS_TIME_TO_CATEGORY." set limit_time = '".(int)$_POST['btime']."' where categories_id = '".(int)$limit_ca_cid."'");  
+    } else {
+      tep_db_query("insert into `".TABLE_BESTSELLERS_TIME_TO_CATEGORY."` values('".(int)$limit_ca_cid."', '".(int)$_POST['btime']."')"); 
+    }
+
     tep_redirect('categories_admin.php?cPath='.$_POST['cepath']);
     break;
 }
@@ -69,10 +78,23 @@ charset=<?php echo CHARSET; ?>">
 <input type="submit" value="計算設定">
 </form>
 <br>
+<?php if (!empty($_POST['cpath'])) {?>
+<?php
+$path_array = explode('_', $cpath);
+$limit_ca_cid = $path_array[count($path_array)-1];
+$best_limit_query = tep_db_query("select * from ".TABLE_BESTSELLERS_TIME_TO_CATEGORY." where categories_id = '".(int)$limit_ca_cid."'");
+
+$current_limit_time = 0;
+$best_limit_res= tep_db_fetch_array($best_limit_query);
+if ($best_limit_res) {
+  $current_limit_time = $best_limit_res['limit_time'];
+}
+?>
 <form method="post" action="set_bairitu.php?action=set_time">
-人気商品アイコンの表示<br><input type="text" value="<?php echo BEST_SELLERS_LIMIT_TIME;?>" name="btime"> 日以内に注文があれば人気とする<br>0を入力するとアイコンは表示されません。
+人気商品アイコンの表示<br><input type="text" value="<?php echo $current_limit_time;?>" name="btime"> 日以内に注文があれば人気とする<br>0を入力するとアイコンは表示されません。
 <input type="hidden" value="<?php echo $cpath ?>" name="cepath">
 <input type="submit" value="確定">
 </form>
+<?php }?>
 </body>
 </html>

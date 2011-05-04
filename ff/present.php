@@ -75,7 +75,7 @@ function popupWindow(url) {
           if($present['html_check'] == '1') {
             echo stripslashes($present['text']); 
                   }else{
-            echo nl2br($present['text']); 
+            echo str_replace('<br />', '<br>', nl2br($present['text'])); 
             }
          ?>
           </p>

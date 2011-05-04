@@ -129,7 +129,6 @@
   <!-- footer //--> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
   <!-- footer_eof //--> 
-  </div>
 </div> 
 </body>
 </html>

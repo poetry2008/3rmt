@@ -3665,7 +3665,11 @@ function tep_get_cart_ff_products($pid, $cid_arr){
     if (intval(substr($str,-3))) {
       $ret .= intval(substr($str,-3));
     }
-    return $ret.'（'.number_format($str2).'）';
+    if(intval($str) >= 1000){
+      return $ret.'（'.number_format($str2).'）';
+    }else{
+      return $ret;
+    }
   }
   
 function  tep_show_review_des($desc) {

@@ -303,3 +303,14 @@ function in_array(needle, haystack) {
   }
   return false;
 }
+
+function clearNoNum(obj)
+{
+  //replace all un number and '.'
+  obj.value = obj.value.replace(/[^\d.]/g,"");
+  //first char must be number
+  obj.value = obj.value.replace(/^\./g,"");
+  //only one '.'
+  obj.value = obj.value.replace(/\.{2,}/g,".");
+  obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+}

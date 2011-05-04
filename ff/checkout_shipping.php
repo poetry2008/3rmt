@@ -398,6 +398,7 @@ if (!isset($date_error)) $date_error= NULL ; //del notice
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
   <!-- footer_eof //--> 
 </div> 
+</div>
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

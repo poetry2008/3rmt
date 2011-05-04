@@ -361,7 +361,7 @@ function change_num(ob,targ, quan,a_quan)
             </tr>
             <tr>
               <td align="right" class="main"><br>
-                <a href="<?php echo tep_href_link(FILENAME_DEFAULT); ?>"><?php echo tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></a>
+                <a href="<?php echo tep_href_link(FILENAME_DEFAULT); ?>"><?php echo tep_image_button('button_continue02.gif', IMAGE_BUTTON_CONTINUE); ?></a>
               </td>
             </tr>
             <?php
@@ -384,7 +384,6 @@ function change_num(ob,targ, quan,a_quan)
   <!-- footer //-->
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
   <!-- footer_eof //-->
-</div>
 </div>
 </body>
 </html><?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

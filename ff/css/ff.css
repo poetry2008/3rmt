@@ -56,7 +56,7 @@ H4 {
 	 padding: 5px 8px 6px 7px;
 	overflow: hidden;
 	font-size:12px;
-	background:url("../images/design/comment_bg_long.gif") repeat-y scroll 0 0 transparent;
+	background:url(../images/design/comment_bg_long.gif) repeat-y scroll 0 0 transparent;
 	margin:0 0 5px;
 }
 .comment_index02 , .comment_index01{
@@ -668,6 +668,7 @@ Ranking
 #contents{
 	padding-right: 13px;
 }
+#contents_info{ font-size:11px;}
 /* ---------------------------
 Quick link
 --------------------------- */
@@ -702,13 +703,12 @@ Game List
 .game_list{
 	font-size:10px;
 	float:left;
-	margin:5px 13px 5px 26px;
-	margin:5px 13px 5px 19px\9;
+	margin:5px 13px 5px 22px;
 	width:210px;
+	text-align:center;
 	
 }
 .game_list img{ margin-bottom:5px;}
-.game_list .game_list_text{ text-align:center; width:210px; clear:both;}
 .game_list a{
 }
 .game_list a:hover{
@@ -1020,6 +1020,9 @@ Footer
 	padding:0 10px;
 	font-size:12px;
 }
+.footer_link a:hover{
+	  color: #0C9DEA;
+}
 .footer_contacts{
 	letter-spacing:0.5mm;
 	padding-top:18px;
@@ -1029,9 +1032,13 @@ Footer
 .footer_contacts a{
 	color: #0C9DEA;
 }
+.footer_contacts a:hover{
+	color: #fff;
+}
 /*link color*/
 .product_listing_content a{
 	color: #00719d;
+	font-weight: bold;
 }
 .comment .main ul li a{
 	 color: #0E68B1;
@@ -1054,7 +1061,7 @@ Footer
 }
 .subcategory_tree{
 list-style-type:none;
-
+margin-top:-15px\9;
 }
 .contact_us_warpper{ clear:both;}
 .tcol{ clear:both;}

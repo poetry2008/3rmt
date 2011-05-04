@@ -389,7 +389,8 @@ UL {
 	font-size:10px;
 	line-height:10px;
 }
-.reviews_bottom a{ line-height:15px;}
+.reviews_bottom a{ line-height:15px; color:#555;}
+.reviews_bottom a:hover{ color:#990000;}
 .reviews_area{
 	border: solid 1px #eee;
 	background: #F6F6F5;
@@ -456,7 +457,7 @@ select{
 Header
 --------------------------- */
 #title {
-	margin: 0 auto;
+	text-align:right;
 	width:900px;
 	background: url(../images/design/banner.jpg) no-repeat;
 	height:80px;
@@ -1069,7 +1070,7 @@ margin-top:-10px\9;
 	margin:5px auto;
 	text-align:center;
 	clear:both;
-	background-color:#F2F2F2;
+	background-color:#fff;
 	border:1px solid #E0E0E0;
 	text-align:left;
 }
@@ -1081,7 +1082,7 @@ margin-top:-10px\9;
 .viewticket_warpper,.msg{
 	font-size:12px;
 }
-.message{ font-size:12px; text-align:left; clear:both;margin-bottom:5px;background-color:#F2F2F2; border:1px solid #E0E0E0;}
+.message{ font-size:12px; text-align:left; clear:both;margin-bottom:5px;background-color:#ffffff; border:1px solid #E0E0E0;}
 .Icon {
     font-size:12px;
     width: auto;

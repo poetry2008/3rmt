@@ -141,10 +141,11 @@
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
-      <td valign="top" id="contents"> <?php echo tep_draw_form('account_edit', tep_href_link(FILENAME_ACCOUNT_EDIT_PROCESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"') . tep_draw_hidden_field('action', 'process'); ?> 
+      <td valign="top" id="contents"> 
         <div class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><h1><span><?php echo HEADING_TITLE ; ?></span></h1></div> 
         
         <div class="comment"> 
+      <?php echo tep_draw_form('account_edit', tep_href_link(FILENAME_ACCOUNT_EDIT_PROCESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"') . tep_draw_hidden_field('action', 'process'); ?> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
               <td><?php include(DIR_WS_MODULES . 'account_details.php'); ?></td> 

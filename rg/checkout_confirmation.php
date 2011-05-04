@@ -561,7 +561,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
               <tr> 
                 <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                     <tr> 
-                      <td class="main"><div class="payment_comment"><?php echo nl2br(htmlspecialchars($order->info['comments']), false) . tep_draw_hidden_field('comments', $order->info['comments']); ?></div></td> 
+                      <td class="main"><div class="payment_comment"><?php echo str_replace('<br />', '<br>', nl2br(htmlspecialchars($order->info['comments']))) . tep_draw_hidden_field('comments', $order->info['comments']); ?></div></td> 
                     </tr> 
                   </table></td> 
               </tr> 

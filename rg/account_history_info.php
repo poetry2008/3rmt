@@ -225,7 +225,7 @@
          '                <td class="main" valign="top" width="70">' . $statuses['orders_status_name'] . '</td>' . "\n" .
          '                <td class="main" valign="top">' .
          (empty($statuses['comments']) ? '&nbsp;' :
-          nl2br(htmlspecialchars($statuses['comments']),false)) . '</td>' . "\n" .
+          str_replace('<br />', '<br>', nl2br(htmlspecialchars($statuses['comments'])))) . '</td>' . "\n" .
          '              </tr>' . "\n";
   }
 ?> 

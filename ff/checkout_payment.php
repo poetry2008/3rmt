@@ -592,7 +592,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
                   <tr class="infoBoxContents"> 
                     <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <tr> 
-                          <td><?php echo tep_draw_textarea_field('comments', 'soft', '60', '5') . tep_draw_hidden_field('comments_added', 'YES'); ?></td> 
+                          <td><textarea name="comments" cols="60" rows="5"></textarea><?php echo tep_draw_hidden_field('comments_added', 'YES'); ?></td> 
                         </tr> 
                       </table></td> 
                   </tr> 
@@ -664,7 +664,8 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
   <!-- footer //--> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
   <!-- footer_eof //--> 
-</div> 
+</div>
+</div>
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
