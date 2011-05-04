@@ -170,6 +170,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
           }
         }
           //change order status and insert order status history
+        if ($date && $hour && $minute) {
           tep_db_query("
               update `".TABLE_ORDERS."` 
               set `orders_status`='17' ,
@@ -180,6 +181,17 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
           ");
           orders_updated($order_id);
           last_customer_action();
+        }else{
+          tep_db_query("
+              update `".TABLE_ORDERS."` 
+              set `orders_status`='17' ,
+                  `last_modified` = now()
+              WHERE `orders_id`='".$order_id."' 
+                and site_id = '".SITE_ID."'
+          ");
+          orders_updated($order_id);
+          last_customer_action();
+        }
           // insert a history
           $sql = "
             INSERT INTO `".TABLE_ORDERS_STATUS_HISTORY."` (
