@@ -48,7 +48,7 @@
               'action=checkout_payment', 'SSL')); ?> 
         <h1 class="pageHeading"><?php echo TEXT_UNSUCCESS; ?></h1> 
         <div class="comment adv_comment"> 
-          <table border="0" width="100%" cellspacing="0" cellpadding="0">
+          <table border="0"  class="checout_comment_info" cellspacing="0" cellpadding="0">
             <tr> 
               <td>
               <?php if(isset($_GET['msg'])&&$_GET['msg']=='paypal_error'){ ?>
