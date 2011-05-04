@@ -1038,6 +1038,12 @@ function q_4_3(){
   
   $oq = tep_db_fetch_array($orders_questions_query);
 
+  $total_order_query = tep_db_query("select * from ".TABLE_ORDERS_TOTAL." where orders_id = '".$order->info['orders_id']."' and class = 'ot_total'"); 
+  $total_order_res = tep_db_fetch_array($total_order_query); 
+  $total_order_sum = 0; 
+  if ($total_order_res) {
+    $total_order_sum = $total_order_res['value']; 
+  }
   // 自动或者手动判断问答种类
   // 0=>贩卖, 1=>买取, 2=>信用卡, 3=>返点/来店 , 4=>不需要支付
   if (isset($_GET['questions_type'])) {
@@ -1045,16 +1051,28 @@ function q_4_3(){
   } else if ($oq['orders_questions_type']) {
     $orders_questions_type = $oq['orders_questions_type'];
   } else {
-    if ($order->info['payment_method'] === 'クレジットカード決済') {
-      $orders_questions_type = 1;
-    } else if ($order->info['payment_method'] === 'クレジットカード決済' || $order->info['payment_method'] === 'ペイパル決済') {
-      $orders_questions_type = 2;
-    } else if ($order->info['payment_method'] === '来店支払い' || $order->info['payment_method'] === 'ポイント(買い取り)') {
-      $orders_questions_type = 3;
-    } else if ($order->info['payment_method'] === '支払いなし') {
-      $orders_questions_type = 4;
+    if ($total_order_sum < 0) {
+      if ($order->info['payment_method'] == '銀行振込(買い取り)' || $order->info['payment_method'] == '支払いなし' || $order->info['payment_method'] == '来店支払い' || $order->info['payment_method'] == 'ポイント(買い取り)') {
+        $orders_questions_type = 1;
+      } else {
+        if ($order->info['payment_method'] === 'クレジットカード決済') {
+          $orders_questions_type = 1;
+        } else if ($order->info['payment_method'] === 'クレジットカード決済' || $order->info['payment_method'] === 'ペイパル決済') {
+          $orders_questions_type = 2;
+        } else if ($order->info['payment_method'] === '来店支払い' || $order->info['payment_method'] === 'ポイント(買い取り)') {
+          $orders_questions_type = 3;
+        } else if ($order->info['payment_method'] === '支払いなし') {
+          $orders_questions_type = 4;
+        } else {
+          $orders_questions_type = 0;
+        }
+      }
     } else {
-      $orders_questions_type = 0;
+      if ($order->info['payment_method'] == 'ペイパル決済' || $order->info['payment_method'] == 'クレジットカード決済') {
+        $orders_questions_type = 2;
+      } else {
+        $orders_questions_type = 0;
+      }
     }
   }
 ?>
@@ -1074,9 +1092,37 @@ function q_4_3(){
         <option value="2"<?php if ($_GET['questions_type']==2) {?> selected="selected"<?php } ?>>販売：クレカ</option>
         <option value="1"<?php if ($_GET['questions_type']==1) {?> selected="selected"<?php } ?>>買取：銀行支払</option>
 <?php } else { ?>
-        <option value="0">販売：銀行振込</option>
-        <option value="2"<?php if ($orders_questions_type==2) {?> selected="selected"<?php } ?>>販売：クレカ</option>
-        <option value="1"<?php if ($orders_questions_type==1) {?> selected="selected"<?php } ?>>買取：銀行支払</option>
+        <?php
+          if ($total_order_sum < 0) {
+            if ($order->info['payment_method'] == '銀行振込(買い取り)' || $order->info['payment_method'] == '支払いなし' || $order->info['payment_method'] == '来店支払い' || $order->info['payment_method'] == 'ポイント(買い取り)') {
+            ?>
+              <option value="0">販売：銀行振込</option>
+              <option value="2">販売：クレカ</option>
+              <option value="1" selected="selected">買取：銀行支払</option>
+            <?php
+            } else {
+            ?>
+              <option value="0">販売：銀行振込</option>
+              <option value="2"<?php if ($orders_questions_type==2) {?> selected="selected"<?php } ?>>販売：クレカ</option>
+              <option value="1"<?php if ($orders_questions_type==1) {?> selected="selected"<?php } ?>>買取：銀行支払</option>
+            <?php
+            }
+          } else {
+            if ($order->info['payment_method'] == 'ペイパル決済' || $order->info['payment_method'] == 'クレジットカード決済') {
+          ?>
+              <option value="0">販売：銀行振込</option>
+              <option value="2" selected="selected">販売：クレカ</option>
+              <option value="1">買取：銀行支払</option>
+          <?php
+            } else {
+          ?>
+              <option value="0" selected="selected">販売：銀行振込</option>
+              <option value="2">販売：クレカ</option>
+              <option value="1">買取：銀行支払</option>
+          <?php
+            }
+          }
+        ?>
 <?php } ?>
       </select>
 <?php } ?>
@@ -1325,7 +1371,12 @@ function q_4_3(){
   <tr>
     <td class="main">入金確認：</td>
     <td class="main">
-    <?php echo tep_draw_checkbox_field('q_3_1', '1', $oq['q_3_1'], '', 'id="q_3_1" onclick="q_3_2();change_option(this)"');?><?php echo tep_draw_input_field('q_3_2_m', $oq['q_3_2'] == '0000-00-00' ? '' : ($oq['q_3_2'] ? date('m', strtotime($oq['q_3_2'])) : ''), 'id="q_3_2_m" size="2" class="questions_date" readonly');?>月<?php echo tep_draw_input_field('q_3_2_d', $oq['q_3_2'] == '0000-00-00' ? '' :( $oq['q_3_2'] ? date('d', strtotime($oq['q_3_2'])) : ''), 'id="q_3_2_d" size="2" class="questions_date" readonly');?>日 → 金額は<b><?php echo strip_tags($new_price);?><?php echo tep_draw_hidden_field('q_3_3', $oq['q_3_3']?($oq['q_3_3'] != $new_price ? $new_price : $oq['q_3_3']):$new_price, 'size="10" class="questions_date" readonly style="text-align:right;font-weight:bold;font-size:12px"');?></b>円ですか？→<?php echo tep_draw_checkbox_field('q_3_4', '1', $oq['q_3_4'], '','id="q_3_4" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>はい</td>
+    <?php echo tep_draw_checkbox_field('q_3_1', '1', $oq['q_3_1'], '', 'id="q_3_1" onclick="q_3_2();change_option(this)"');?><?php echo tep_draw_input_field('q_3_2_m', $oq['q_3_2'] == '0000-00-00' ? '' : ($oq['q_3_2'] ? date('m', strtotime($oq['q_3_2'])) : ''), 'id="q_3_2_m" size="2" class="questions_date" readonly');?>月<?php echo tep_draw_input_field('q_3_2_d', $oq['q_3_2'] == '0000-00-00' ? '' :( $oq['q_3_2'] ? date('d', strtotime($oq['q_3_2'])) : ''), 'id="q_3_2_d" size="2" class="questions_date" readonly');?>日 → 金額は<b>
+    <?php echo strip_tags($new_price);?>
+    <?php 
+    echo tep_draw_hidden_field('q_3_3', strip_tags($oq['q_3_3']?($oq['q_3_3'] != $new_price ? $new_price : $oq['q_3_3']):$new_price), 'size="10" class="questions_date" readonly style="text-align:right;font-weight:bold;font-size:12px"');
+?>
+  </b>円ですか？→<?php echo tep_draw_checkbox_field('q_3_4', '1', $oq['q_3_4'], '','id="q_3_4" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>はい</td>
 <?php if (!$oq['q_8_1']) { ?>
     <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_3_1').attr('checked','');$('#q_3_2_m').val('');$('#q_3_2_d').val('');$('#q_3_4').attr('checked','');clean_option(3,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
