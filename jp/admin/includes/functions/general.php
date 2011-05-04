@@ -4889,8 +4889,9 @@ function tep_calc_limit_time_by_order_id($products_id, $single = false)
     $oday_arr = explode(' ', $order_res['date_purchased']); 
     $date_arr = explode('-', $oday_arr[0]); 
     $time_arr = explode(':', $oday_arr[1]); 
-    $oday_time = mktime($time_arr[0], $time_arr[1], $time_arr[2], $date_arr[1], $date_arr[2], $date_arr[0]); 
-    $diff_time_str = floor(($now_time - $oday_time)/(60*60*24)); 
+    $oday_time = mktime(0, 0, 0, $date_arr[1], $date_arr[2], $date_arr[0]); 
+    $now_time_tmp = mktime(0, 0, 0, date('n', $now_time), date('j', $now_time), date('Y', $now_time)); 
+    $diff_time_str = ($now_time_tmp - $oday_time)/(60*60*24); 
   }
   return $diff_time_str;
 }
