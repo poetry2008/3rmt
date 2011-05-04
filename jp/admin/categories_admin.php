@@ -431,38 +431,23 @@ while ($products = tep_db_fetch_array($products_query)) {
   <td class="dataTableContent6" align='right' onmouseover='this.style.cursor="pointer"' style="font-weight:bold;" id='quantity_<?php echo $products['products_id']; ?>' onclick="update_quantity(<?php echo $products['products_id']; ?>)">
   <?php echo $products['products_real_quantity'];?>
   <?php
-  if (BEST_SELLERS_LIMIT_TIME) {
-    if (tep_check_best_sellers_isbuy($products['products_id'])) {
-      $diff_oday = tep_calc_limit_time_by_order_id($products['products_id']); 
-      $diff_show_str = ''; 
-      switch ($diff_oday) {
-        case '0';
-          $diff_show_str = '今日の注文は0日前'; 
-          break;
-        case '1';
-          $diff_show_str = '昨日の注文は1日前'; 
-          break;
-        case '2';
-          $diff_show_str = '一昨日の注文は2日前'; 
-          break;
-        default;
-          $diff_show_str = $diff_oday.'日前に注文有'; 
-          break;
-      }
-      if ($diff_oday != '') {
-        echo '<img src="images/icons/mae1.gif" alt="'.$diff_show_str.'" title="'.$diff_show_str.'">'; 
+    if (tep_check_show_isbuy($products['products_id'])) { 
+      if (tep_check_best_sellers_isbuy($products['products_id'])) {
+        $diff_oday = tep_calc_limit_time_by_order_id($products['products_id']); 
+        if ($diff_oday !== '') {
+          echo '<img src="images/icons/mae1.gif" alt="'.$diff_oday.'日前に注文有" title="'.$diff_oday.'日前に注文有">'; 
+        } else {
+          echo '<img src="images/icons/mae3.gif" alt="">'; 
+        }
       } else {
-        echo '<img src="images/icons/mae3.gif" alt="">'; 
-      }
-    } else {
-      $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], true); 
-      if ($diff_oday != '') {
-        echo '<img src="images/icons/mae2.gif" alt="'.$diff_oday.'日前に注文があったかです" title="'.$diff_oday.'日前に注文があったかです">'; 
-      } else {
-        echo '<img src="images/icons/mae3.gif" alt="">'; 
+        $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], true); 
+        if ($diff_oday !== '') {
+          echo '<img src="images/icons/mae2.gif" alt="'.$diff_oday.'日前に注文有" title="'.$diff_oday.'日前に注文有">'; 
+        } else {
+          echo '<img src="images/icons/mae3.gif" alt="">'; 
+        }
       }
     }
-  }
   ?>
   </td>
   <td align='right' class="dataTableContent2" ><span class = 'TRADER_INPUT'  name="TRADER_INPUT[]"  id="TRADER_<?php echo $products['products_id']; ?>"><?php echo $kakaku_treder?$kakaku_treder:0;?></span></td>
