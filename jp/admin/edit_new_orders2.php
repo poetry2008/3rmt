@@ -1230,7 +1230,8 @@ function check_add(){
     echo '      </td>' . "\n" .
          '      <td class="' . $RowStyle . '">' . $order_products[$pid]['model'] . "<input name='update_products[$pid][model]' size='12' type='hidden' value='" . $order_products[$pid]['model'] . "'>" . '</td>' . "\n" .
          '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order_products[$pid]['tax']) . "<input name='update_products[$pid][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order_products[$pid]['tax']) . "'>" . '%</td>' . "\n" .
-         '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$pid][final_price]' size='9' value='" . tep_display_currency(number_format(abs($order_products[$pid]['final_price']),2)) . "'>" . 
+         '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$pid][final_price]' size='9' value='" . tep_display_currency(number_format(abs($order_products[$pid]['final_price']),2)) 
+         . "'  onkeyup='clearNoNum(this)'  >" . 
          '<input type="hidden" name="op_id_'.$pid.'" 
           value="'.tep_get_product_by_op_id($pid,'pid').'">' . "\n" .
            '</td>' . "\n" .
