@@ -24,9 +24,6 @@
     $orders_status_array[$orders_status['orders_status_id']] = $orders_status['orders_status_name'];
   }
    
-  if (isset($_GET['questions_type'])) {
-    tep_db_query("update `orders_questions` set `orders_questions_type` = '".$_GET['questions_type']."' where `orders_id` = '".$_GET['oID']."'"); 
-  }
   if (isset($_GET['action'])) 
   switch ($_GET['action']) {
     //一括変更----------------------------------
@@ -1055,7 +1052,12 @@ function q_4_3(){
   } else if ($oq['orders_questions_type']) {
     $orders_questions_type = $oq['orders_questions_type'];
   } else {
-    if ($total_order_sum < 0) {
+    $has_oquestion_raw = tep_db_query("select * from orders_questions where orders_id = '".$order->info['orders_id']."'"); 
+    if (tep_db_num_rows($has_oquestion_raw)) { 
+      $has_oquestion_res = tep_db_fetch_array($has_oquestion_raw);
+      $orders_questions_type = $has_oquestion_res['orders_questions_type']; 
+    } else { 
+      if ($total_order_sum < 0) {
       if ($order->info['payment_method'] == '銀行振込(買い取り)' || $order->info['payment_method'] == '支払いなし' || $order->info['payment_method'] == '来店支払い' || $order->info['payment_method'] == 'ポイント(買い取り)') {
         $orders_questions_type = 1;
       } else {
@@ -1078,6 +1080,7 @@ function q_4_3(){
         $orders_questions_type = 0;
       }
     }
+    }
   }
 ?>
                 <h3>Order Answer</h3>
@@ -1097,6 +1100,13 @@ function q_4_3(){
         <option value="1"<?php if ($_GET['questions_type']==1) {?> selected="selected"<?php } ?>>買取：銀行支払</option>
 <?php } else { ?>
         <?php
+          if (tep_db_num_rows($has_oquestion_raw)) {
+        ?>
+              <option value="0">販売：銀行振込</option>
+              <option value="2"<?php if ($orders_questions_type==2) {?> selected="selected"<?php } ?>>販売：クレカ</option>
+              <option value="1"<?php if ($orders_questions_type==1) {?> selected="selected"<?php } ?>>買取：銀行支払</option>
+        <?php
+          } else {
           if ($total_order_sum < 0) {
             if ($order->info['payment_method'] == '銀行振込(買い取り)' || $order->info['payment_method'] == '支払いなし' || $order->info['payment_method'] == '来店支払い' || $order->info['payment_method'] == 'ポイント(買い取り)') {
             ?>
@@ -1125,6 +1135,7 @@ function q_4_3(){
               <option value="1">買取：銀行支払</option>
           <?php
             }
+          }
           }
         ?>
 <?php } ?>
