@@ -42,7 +42,18 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <tr>
         <th>件名:</th>
         <td>
-            <input type="text" name="subject" size="35" value="<?=$info['subject']?>">
+<?php
+if(isset($info['subject'])){
+  $products_name= $info['subject'] ;
+}else {
+    if(isset($_GET['products_name'])){
+        $products_name = $_GET['products_name'].'について';
+    }else {
+        $products_name = '';
+    }
+ }
+   echo '<input type="text" name="subject" size="35" value="'.$products_name.'">';
+?>
             &nbsp;<font class="error">*&nbsp;<?=$errors['subject']?></font>
         </td>
     </tr>

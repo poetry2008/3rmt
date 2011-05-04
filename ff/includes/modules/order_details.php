@@ -67,10 +67,10 @@
       echo '<td>'; 
       ?>
       <a style="display:block;" href="javascript:void(0)" onclick="change_num('<?php echo $p_id;?>', 'up',1,<?php echo $p_a_quan;?>); return false;"> 
-      <img src="images/ico/nup.gif"> 
+      <img src="images/ico/nup.gif" alt="pic"> 
       </a> 
       <a style="display:block;" href="javascript:void(0)" onclick="change_num('<?php echo $p_id;?>', 'down',1,<?php echo $p_a_quan;?>); return false;"> 
-      <img src="images/ico/ndown.gif"> 
+      <img src="images/ico/ndown.gif" alt="pic"> 
       </a> 
       <?php
       echo '</td>';
@@ -179,7 +179,7 @@
   
     echo '</td>' . "\n"; 
     if (strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
-      echo '<td align="center" style=" background:#FFFFFF;"><a class="button_delete02" href="'.tep_href_link(FILENAME_SHOPPING_CART, 'products_id='.$products[$i]['id'].'&action=delete', 'SSL').'">'.TEXT_DEL_LINK.'</a></td>'; 
+      echo '<td align="center" style=" background:#FFFFFF;"><a class="button_delete02" href="'.tep_href_link(FILENAME_SHOPPING_CART, 'products_id='.$products[$i]['id'].'&amp;action=delete', 'SSL').'">'.TEXT_DEL_LINK.'</a></td>'; 
     }
     echo '  </tr>' . "\n";
      

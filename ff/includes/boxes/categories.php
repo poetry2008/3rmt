@@ -127,6 +127,7 @@ if($cPath){
             if (empty($_subcategories)) { 
             ?>
             <ul class="l_m_category_ul2"> 
+	    <li>
             <?php
               foreach ($_subcategories as $_skey => $_subcategory) {
             ?>
@@ -152,6 +153,7 @@ if($cPath){
             <?php
               }
             ?>
+	    </li>
             </ul> 
             <?php
             }

@@ -13,7 +13,7 @@
 ?>
 <?php page_head();?>
 </head>
-<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
+<body style="margin:0;">
   <div class="body_shadow" align="center">
     <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
     <!-- header_eof //-->
@@ -31,7 +31,7 @@
           <div class="comment">
             <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_info_box">
               <tr>
-                <td valign="top" id="contents">
+                <td valign="top" id="contents_info">
                   <p>当ショッピングシステムは、ブラウザの初期設定のままで動作するように作られております。<br>
                     ショッピングができない場合は、以下の手順で設定内容をお確かめください。</p>
                   <div class="dot">&nbsp;</div>
@@ -76,6 +76,7 @@
     <!-- footer //-->
     <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
     <!-- footer_eof //-->
+  </div>
   </div>
 </body>
 </html>
