@@ -70,6 +70,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
         // update time
         if ($date && $hour && $minute) {
           // ccdd
+          /*
           tep_db_query("
               update `".TABLE_ORDERS."` 
               set `orders_status`='17' ,
@@ -100,6 +101,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
           ";
           // ccdd
           tep_db_query($sql);
+          */
         }
 
         // update character
@@ -167,6 +169,37 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
             }
           }
         }
+          //change order status and insert order status history
+          tep_db_query("
+              update `".TABLE_ORDERS."` 
+              set `orders_status`='17' ,
+                  `torihiki_date` = '".$datetime."' ,
+                  `last_modified` = now()
+              WHERE `orders_id`='".$order_id."' 
+                and site_id = '".SITE_ID."'
+          ");
+          orders_updated($order_id);
+          last_customer_action();
+          // insert a history
+          $sql = "
+            INSERT INTO `".TABLE_ORDERS_STATUS_HISTORY."` (
+                `orders_status_history_id`,
+                `orders_id` ,
+                `orders_status_id` ,
+                `date_added` ,
+                `customer_notified` ,
+                `comments`
+              ) VALUES (
+                NULL ,
+                '".$order_id."', 
+                '17', 
+                '".date("Y-m-d H:i:s")."', 
+                '1', 
+                '".mysql_real_escape_string($comment)."'
+              )
+          ";
+          // ccdd
+          tep_db_query($sql);
         echo '<div class="comment">注文内容の変更を承りました。電子メールをご確認ください。 <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" alt="TOPに戻る"></a></div></div>';
         // sent mail to customer
         // ccdd
