@@ -1058,6 +1058,17 @@ function q_4_3(){
       $has_oquestion_res = tep_db_fetch_array($has_oquestion_raw);
       $orders_questions_type = $has_oquestion_res['orders_questions_type']; 
     } else { 
+      $o_orders_query = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$order->info['orders_id']."'"); 
+      $o_orders_res = tep_db_fetch_array($o_orders_query);
+      $o_cus_query = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$o_orders_res['customers_id']."' and site_id = '".$o_orders_res['site_id']."'"); 
+      $o_cus_res = tep_db_fetch_array($o_cus_query);
+      $guch_num = 0; 
+      if ($o_cus_res) {
+        $guch_num = $o_cus_res['customers_guest_chk']; 
+      }
+      if ($guch_num == 9) {
+        $orders_questions_type = 1;
+      } else {
       if ($total_order_sum < 0) {
       if ($order->info['payment_method'] == '銀行振込(買い取り)' || $order->info['payment_method'] == '支払いなし' || $order->info['payment_method'] == '来店支払い' || $order->info['payment_method'] == 'ポイント(買い取り)') {
         $orders_questions_type = 1;
@@ -1081,6 +1092,7 @@ function q_4_3(){
         $orders_questions_type = 0;
       }
     }
+      }
     }
   }
 ?>
@@ -1091,9 +1103,15 @@ function q_4_3(){
   <tr>
     <td class="main">支払方法：</td>
     <td class="main">
-<?php if (tep_is_oroshi($order->customer['id']) && $orders_questions_type==1) { ?>
-      買取：銀行支払<input type="hidden" name="questions_type" id="questions_type" value="1">
-<?php } else { ?>
+<?php //if (tep_is_oroshi($order->customer['id']) && $orders_questions_type==1) { ?>
+<?php      
+if (false) {
+?>
+買取：銀行支払<input type="hidden" name="questions_type" id="questions_type" value="1">
+<?php
+}
+?>
+<?php //} else { ?>
       <select name="questions_type" id="questions_type" onchange="window.location.href=base_url+'&questions_type='+this.value">
 <?php if (isset($_GET['questions_type'])) { ?>
         <option value="0">販売：銀行振込</option>
@@ -1108,6 +1126,21 @@ function q_4_3(){
               <option value="2"<?php if ($orders_questions_type==2) {?> selected="selected"<?php } ?>>販売：クレカ</option>
               <option value="1"<?php if ($orders_questions_type==1) {?> selected="selected"<?php } ?>>買取：銀行支払</option>
         <?php
+          } else {
+          $o_orders_query = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$order->info['orders_id']."'"); 
+          $o_orders_res = tep_db_fetch_array($o_orders_query);
+          $o_cus_query = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$o_orders_res['customers_id']."' and site_id = '".$o_orders_res['site_id']."'"); 
+          $o_cus_res = tep_db_fetch_array($o_cus_query);
+          $guch_num = 0; 
+          if ($o_cus_res) {
+            $guch_num = $o_cus_res['customers_guest_chk']; 
+          }
+          if ($guch_num == 9) {
+          ?>
+              <option value="0">販売：銀行振込</option>
+              <option value="2">販売：クレカ</option>
+              <option value="1" selected="selected">買取：銀行支払</option>
+          <?php
           } else {
           if ($total_order_sum < 0) {
             if ($order->info['payment_method'] == '銀行振込(買い取り)' || $order->info['payment_method'] == '支払いなし' || $order->info['payment_method'] == '来店支払い' || $order->info['payment_method'] == 'ポイント(買い取り)') {
@@ -1139,10 +1172,11 @@ function q_4_3(){
             }
           }
           }
+          }
         ?>
 <?php } ?>
       </select>
-<?php } ?>
+<?php //} ?>
     </td>
 <?php if (!$oq['q_8_1']) { ?>
     <td class="main" align="right">&nbsp;</td>
