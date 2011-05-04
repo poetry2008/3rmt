@@ -9,7 +9,8 @@
  // if (tep_session_is_registered('customer_id')) include(DIR_WS_BOXES . 'order_history.php');
 
   include(DIR_WS_BOXES . 'login.php');
-
+define ("RIGHT_ORDER_TEXT","‘Ÿ≈‰ﬂ_“¿Óm");
+  echo '<a class="reorder_link" href="'.tep_href_link('reorder.php').'"><img src="images/design/reorder.gif" alt="'.RIGHT_ORDER_TEXT.'"></a>';
   if (isset($_GET['products_id'])) {
     if (tep_session_is_registered('customer_id')) {
       $check_query = tep_db_query("select count(*) as count from " . TABLE_CUSTOMERS_INFO . " where customers_info_id = '" . $customer_id . "' and global_product_notifications = '1'");
@@ -25,8 +26,7 @@
   } else {
     include(DIR_WS_BOXES . 'best_sellers.php');
   }
-  define ("RIGHT_ORDER_TEXT","‘Ÿ≈‰ﬂ_“¿Óm");
-  echo '<a class="reorder_link" href="'.tep_href_link('reorder.php').'"><img src="images/design/reorder.gif" alt="'.RIGHT_ORDER_TEXT.'"></a>';
+  
   //require(DIR_WS_BOXES . 'information.php');
   require(DIR_WS_BOXES . 'reviews.php');
   include(DIR_WS_BOXES . 'right_banner.php') ;
