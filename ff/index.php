@@ -169,7 +169,7 @@ if ($category_depth == 'nested') {
       } else {
         include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); 
       }
-       echo '<p><font color="#ffffff">'.$seo_category['categories_footer_text'].'</p></font>  </div>';
+       echo '<p><font color="#ffffff">'.$seo_category['categories_footer_text'].'</font></p></div>';
       if (isset($_GET['cPath'])) {
         $new_products_category_id = $current_category_id; 
         if (!$has_ca_single) {

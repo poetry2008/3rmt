@@ -49,9 +49,9 @@ $categories_tab_query1 = tep_db_query("
       }
     }
     */ 
-	echo '<div class="game_list_text">'; 
+	echo '<span>'; 
     echo $cbt['categories_name']; 
-    echo  '</div></a></div>' . "\n";
+    echo  '</span></a></div>' . "\n";
   
   } 
 ?>

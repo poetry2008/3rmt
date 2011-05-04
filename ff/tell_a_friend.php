@@ -140,7 +140,7 @@
         if ($fromemail_error == true) $your_email_address_prompt .= '<br>'.ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
       }
 ?> 
-      <?php echo tep_draw_form('email_friend', tep_href_link(FILENAME_TELL_A_FRIEND, 'action=process&products_id=' . $_GET['products_id'])) . tep_draw_hidden_field('products_name', $product_info['products_name']); ?> 
+      <?php echo tep_draw_form('email_friend', tep_href_link(FILENAME_TELL_A_FRIEND, 'action=process&amp;products_id=' . $_GET['products_id'])) . tep_draw_hidden_field('products_name', $product_info['products_name']); ?> 
       <div class="comment">
       <table width="100%" cellpadding="0" cellspacing="0" border="0" summary="table" class="product_info_box"> 
         <tr> 
@@ -226,6 +226,7 @@
   <!-- footer //--> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
   <!-- footer_eof //--> 
+</div> 
 </div> 
 </body>
 </html>

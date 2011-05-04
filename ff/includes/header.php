@@ -38,7 +38,7 @@
   }
 ?>
 <div id="header">
-  <h1 class="h_title">
+  <div class="h_title">
   <?php
   if (!isset($_GET['cPath'])) $_GET['cPath'] = NULL; //del notice
   if (!isset($_GET['products_id'])) $_GET['products_id'] = NULL; //del notice
@@ -55,7 +55,7 @@ onkeypress="SomeJavaScriptCode" onclick="if (document.all)
 RMTF14お気に入りに追加して下さい！</a>' . "\n";
   }  
 ?>
-  </h1>
+  </div>
   <div id="title"><img src="images/design/banner.jpg" alt="banner"></div>
   <div id="header_Menu">
       <div class="header_menu_content">

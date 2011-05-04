@@ -483,7 +483,7 @@ select{
 #title {
 	margin: 0 auto;
 	width:900px;
-	height:150px;
+	height:92px;
 }
 #header {
 	width: 900px;
@@ -493,9 +493,10 @@ select{
 	overflow: hidden;
 }
 .header_menu_content{
-	width: 900px;
-	padding:3px 0;
-}
+    background: url("../images/design/menu_content.gif") no-repeat scroll 0 0 transparent;
+    height: 23px;
+    padding: 4px 0 0;
+    width: 900px;}
 .header_search_input{
 	border: solid 1px #ddd;
 	padding: 3px 5px;
@@ -1169,12 +1170,13 @@ a.Icon:hover {
 
 /* xy_rmt*/
 .h_title{
-	background-color:#BF1731;
-	font-size:10px;
-	color:#fff;
-	text-align:left;
-	font-weight: normal;
-	padding:1px 5px;
+	background: url("../images/design/h1_bg.gif") no-repeat scroll 0 0 transparent;
+    color: #FFFFFF;
+    font-size: 10px;
+    font-weight: normal;
+    height: 15px;
+    padding-left: 30px;
+    text-align: left;
 }
 .h_title a{color:#fff;font-size:10px;}
 .h_title a:hover{color:#CCC;}

@@ -125,7 +125,9 @@
       </tr>
 <?php
     } else {
+    echo '<tr><td colspan="2">'; 
     echo '<input type="hidden" name="guestchk" value="0" >';
+    echo '</td></tr>'; 
   }
   }
 ?>
