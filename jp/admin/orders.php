@@ -23,6 +23,10 @@
     $all_orders_statuses[] = array('id' => $orders_status['orders_status_id'], 'text' => $orders_status['orders_status_name']);
     $orders_status_array[$orders_status['orders_status_id']] = $orders_status['orders_status_name'];
   }
+   
+  if (isset($_GET['questions_type'])) {
+    tep_db_query("update `orders_questions` set `orders_questions_type` = '".$_GET['questions_type']."' where `orders_id` = '".$_GET['oID']."'"); 
+  }
   if (isset($_GET['action'])) 
   switch ($_GET['action']) {
     //一括変更----------------------------------
@@ -1078,7 +1082,7 @@ function q_4_3(){
 ?>
                 <h3>Order Answer</h3>
                 <!-- ajax submit -->
-                <form id='form_orders_questions' action="ajax_orders.php?action=save_questions&orders_id=<?php echo $order->info['orders_id'];?>" method='post'>
+                <form name="form_orders_questions" id='form_orders_questions' action="ajax_orders.php?action=save_questions&orders_id=<?php echo $order->info['orders_id'];?>" method='post'>
 <table width="100%">
   <tr>
     <td class="main">支払方法：</td>
