@@ -919,7 +919,8 @@ function q_4_3(){
               <table width="100%" border="0" cellspacing="0" cellpadding="2">
                 <tr>
                   <td class="main" valign="top" width="30%"><b>Referer:</b></td>
-                  <td class="main" width="70%"><p style="word-break:break-all;width:300px;"><?php echo urldecode($order->info['orders_ref']);?></p></td>
+                  <td class="main" width="70%"><p
+                  style="word-break:break-all;width:100%;"><?php echo urldecode($order->info['orders_ref']);?></p></td>
                 </tr>
                 <?php if ($order->info['orders_ref_keywords']) { ?>
                 <tr>
