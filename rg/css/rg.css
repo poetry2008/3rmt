@@ -456,7 +456,7 @@ select{
 Header
 --------------------------- */
 #title {
-	margin: 0 auto;
+	text-align:right;
 	width:900px;
 	background: url(../images/design/banner.jpg) no-repeat;
 	height:80px;
