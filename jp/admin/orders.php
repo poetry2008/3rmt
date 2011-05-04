@@ -1100,7 +1100,8 @@ function q_4_3(){
         <option value="1"<?php if ($_GET['questions_type']==1) {?> selected="selected"<?php } ?>>買取：銀行支払</option>
 <?php } else { ?>
         <?php
-          if (tep_db_num_rows($has_oquestion_raw)) {
+          $ex_oquestion_raw = tep_db_query("select * from orders_questions where orders_id = '".$order->info['orders_id']."'"); 
+          if (tep_db_num_rows($ex_oquestion_raw)) {
         ?>
               <option value="0">販売：銀行振込</option>
               <option value="2"<?php if ($orders_questions_type==2) {?> selected="selected"<?php } ?>>販売：クレカ</option>
