@@ -2073,8 +2073,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
       <tr>
         <td class="main" width="120"><?php echo $order_history['torihiki_date'];?></td>
         <td class="main" width="100" align="right"><?php echo $order_history['products_quantity'];?>個</td>
-        <td class="main" align="right"><?php echo
-        abs(display_price($order_history['final_price']));?>円</td>
+        <td class="main" align="right"><?php echo display_price($order_history['final_price']);?>円</td>
         <td class="main" width="100"><?php echo $order_history['orders_status_name'];?></td>
       </tr>
     <?php

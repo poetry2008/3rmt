@@ -4536,7 +4536,7 @@ function tep_get_avg_by_pid($pid){
 }
 
   function display_price($number){
-    $format_string = number_format(abs($number),2);
+    $format_string = number_format($number,2);
     $arr = $arr2 = array();
     for($i=0;$i<10;$i++) {
       $arr[] = '.'.(string)$i.'0';
