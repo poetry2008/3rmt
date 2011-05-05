@@ -96,7 +96,7 @@ table.comment {
 	width: 684px;
 	*width: 714px;
 	margin: 0 0 5px 0;
-	padding: 5px 15px 5px 15px;
+	padding: 5px 15px;
 	overflow: hidden;
 	background:url(../images/design/comment_bg_long.gif) repeat-y;
 }
@@ -201,6 +201,7 @@ UL {
 .l_m_category_li, .l_m_category_li2{
 	color: #004080;
 	margin-bottom:2px;
+	margin-bottom:0px\9;
 	overflow: hidden;
 	text-align:left;
 }
@@ -449,8 +450,8 @@ button
 --------------------------- */
 .button_order{
 	display: block;
-	width: 82px;
-	height: 25px;
+	width: 69px;
+	height: 17px;
 	background: url(../images/design/button/button_order.gif) no-repeat;
 	overflow: hidden;
 	font-size: 0px;
@@ -1132,7 +1133,7 @@ margin-top:-15px\9;
 	*margin:-5px 0 0 0;
 }
 .product_list_page{font-size:10px; background-color: #f2f2f2;
-    border-right: 1px solid #DDDDDD;border-left: 1px solid #DDDDDD; padding:5px 0;}
+    border-right: 1px solid #DDDDDD;border-left: 1px solid #DDDDDD; padding:5px;}
 .product_list_info{background: #f2f2f2; padding-top: 10px; padding-bottom:10px; border-bottom:1px #ddd solid;border-left:1px #ddd solid;border-right:1px #ddd solid;}
 .header_m_login{ width:372px; *width:400px; *float:right;}
 .header_m_login a{ color:#fff;}
@@ -1370,7 +1371,7 @@ TABLE：Info Box
 .product_info_box{
 	background: #f4f4f4;
 	padding:5px;
-	padding:5px 0\9;
+	padding:5px 8px\9;
 }
 .product_info_box table{
 	width: 100%;
@@ -1812,3 +1813,9 @@ border:1px solid #CAC6BE;
 	background:#ccc;
 }
 .button{line-height:15px; height:23px;}
+.cg_pay_info{
+	background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    margin: 3px 0;
+    padding: 5px;
+}

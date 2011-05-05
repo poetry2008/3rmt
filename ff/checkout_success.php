@@ -126,11 +126,14 @@
                 </table></td> 
             </tr> 
             <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
-            <tr> 
-              <td align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
-            </tr> 
+              <td> 
+              <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+        		<tr> 
+            		<td class="main" align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td>
+                    <td class="main" width="25"></td>  
+            	</tr> 
+                </table>
+               </td>
             <tr> 
               <td><table border="0" width="100%" cellspacing="4" cellpadding="2"> 
                   <tr> 

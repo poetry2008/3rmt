@@ -1,10 +1,15 @@
 .container {
 	margin:0 auto;
 	width:900px;
+	background-color:#373737;
 }
 .header_search_input01{
-padding:2px 0 0 3px;
-height:17px;
+    border: 1px solid #535252;
+    color: #555555;
+    font-size: 12px;
+    height: 10px;
+    padding: 3px 5px;
+    width: 110px;
 }
 .web_3{
 width:100%;
@@ -19,7 +24,7 @@ width:20%;
 	padding-left:10px;
 	font-size:12px;
 	font-weight:bold;
-	color:#C51138;
+	color:#555;
 	background:url(../../../images/design/box/arrow_2.gif) no-repeat left center;
 }
 .web_3 a{
@@ -29,63 +34,64 @@ width:20%;
 }
 .search_and_tools{
 	overflow:hidden;
-	background-color:#F2F2F2;
-}
-.boxes {
-	padding:2px 10px 5px 10px;
 	margin-bottom:5px;
+/*	background-color:#F2F2F2;
+*/}
+.boxes {
+	padding:0;
+/*	margin-bottom:5px;
 	background:#F2F2F2;
-	
+*/	
 }
 .boxes_02 {
-	margin-bottom:5px;
-	background:#F2F2F2;
-	
+	margin-bottom:15px;
+/*	background:#F2F2F2;
+*/	
 }
 .category_h2{ 
-	height:28px;
-	background:#F2F2F2 url(../../../images/design/link_h.gif) no-repeat;;
+	height:24px;
+	background:#F2F2F2 url(../../../images/design/link_h1.gif) no-repeat;;
 }
 #content{
 clear:both;
+padding:0 8px;
 }
 .search_head{
 float:right;
 width:700px;
 padding-left:0;
-background:url(../../../images/design/link_h.gif) no-repeat top right;
+padding-right:8px;
+background:url(../../../images/design/link_h.gif) no-repeat top left;
 }
 .tools{
 float:left;
 width:170px;
-background:url(../../../images/design/link_h.gif) no-repeat top left;
+background:url(../../../images/design/menu.gif) no-repeat top left;
+margin-left:8px;
 }
 .boxes h1 {
-	background:url(../../../images/menu_ico_link.gif) no-repeat 10px center;
-	color:#676565;
+	color:#ffffff;
 	font-size:12px;
 	font-weight:bold;
-	height:28px;
-	line-height:28px;
-	padding-left:50px;
+	height:24px;
+	line-height:24px;
+	text-align:center;
 }
 .boxes h2 {
-	background:url(../../../images/menu_ico_link.gif) no-repeat 10px center;
-	color:#676565;
+	color:#ffffff;
 	font-size:12px;
 	font-weight:bold;
-	height:28px;
-	line-height:28px;
-	padding-left:50px;
+	height:24px;
+	line-height:24px;
+	text-align:center;
 }
 .boxes_02 h2 {
-	background:url(../../../images/menu_ico_link.gif) no-repeat 20px center;
-	color:#676565;
+	color:#ffffff;
 	font-size:12px;
 	font-weight:bold;
-	height:28px;
-	line-height:28px;
-	padding-left:50px;
+	height:24px;
+	line-height:24px;
+	text-align:center;
 }
 .linkcheck_h3{
 	font-size:12px;
@@ -98,20 +104,19 @@ background:url(../../../images/design/link_h.gif) no-repeat top left;
 	vertical-align:middle;
 }
 .middle {
-	background:none repeat scroll 0 0 #FFFFFF;
-	border:1px solid #DDDDDD;
-	padding:5px;
-	margin-top:5px;
+    background-color: #CDCACC;
+    border: 1px solid #616060;	padding:5px;
+	margin:5px;
 }
 .middle_class{
 margin-top:10px;
 margin-bottom:5px;
 }
 .all_links{
-width:700px;
+width:884px;
 float:right;
-background:#F2F2F2;
-border-top:3px solid #C51138;
+margin:0 8px 15px 8px;
+background: url(../images/design/comment1_bg.gif) repeat-y scroll 0 0 transparent;
 }
 #custom{
 padding-left:185px;
@@ -133,7 +138,7 @@ height:150px;
 display:block;
 line-height:24px;
 background:url(../../../images/design/box/arrow_2.gif) no-repeat scroll left center transparent;
-color:#C51138;
+color:#555;
 font-size:12px;
 font-weight:bold;
 padding-left:10px;
@@ -207,4 +212,31 @@ display:block;
 width:47px;
 height:17px;
 background:url(images/button02.gif) no-repeat;
+}
+.footer_link {
+    background: url(../images/design/footer_xian.gif) repeat-x scroll 0 0 transparent;
+    height: 24px;
+    line-height: 27px;
+}
+.categories{
+    background: url(../images/design/categories_bg.gif) repeat-y scroll 0 0 transparent;
+    border-bottom: 2px solid #4C4C4C;
+    margin-bottom: 5px;
+	padding-bottom:33px;
+    overflow: hidden;
+    width: 170px;
+}
+.coment_edit { 
+	background: url(../images/design/comment_bg.gif) repeat-y scroll 0 0 transparent;
+    border-bottom: 2px solid #4C4C4C;
+    margin:0;
+	padding:2px 0;
+    width: 700px;
+}
+.coment_edit1 { 
+	background: url(../images/design/comment1_bg.gif) repeat-y scroll 0 0 transparent;
+    border-bottom: 2px solid #4C4C4C;
+    margin: 0 auto 5px;
+	padding:2px 0 10px 0;
+    width: 884px;
 }
