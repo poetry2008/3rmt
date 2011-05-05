@@ -34,27 +34,20 @@ $nvpStr = "&AMT=$paymentAmount".
 // Execute the API operation; see the PPHttpPost function above.
 $httpParsedResponseAr = PPHttpPost('SetExpressCheckout', $nvpStr);
 if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
-	// Redirect to paypal.com.
-	$token = urldecode($httpParsedResponseAr["TOKEN"]);
+  // Redirect to paypal.com.
+  $token = urldecode($httpParsedResponseAr["TOKEN"]);
         $_SESSION['paypaltoken']=$token;
-	//$payPalURL = "https://www.paypal.com/webscr&cmd=_express-checkout&token=$token";
-		$payPalURL = "https://www.paypal.com/webscr&cmd=_express-checkout&token=".$token."&useraction=commit";
+  //$payPalURL = "https://www.paypal.com/webscr&cmd=_express-checkout&token=$token";
+    $payPalURL = "https://www.paypal.com/webscr&cmd=_express-checkout&token=".$token."&useraction=commit";
 
 
-    //日本删除代码
-        $environment = defined('paypal_environment')?paypal_environment:'sandbox';
-	if("sandbox" === $environment || "beta-sandbox" === $environment) {
-		$payPalURL = "https://www.$environment.paypal.com/webscr&cmd=_express-checkout&token=$token&useraction=commit";
-	}
-    //日本删除 结束
 
-
-	header("Location: $payPalURL");
-	exit;
+  header("Location: $payPalURL");
+  exit;
 } else  {
             tep_redirect(tep_href_link(FILENAME_CHECKOUT_UNSUCCESS,
                   'msg=paypal_error'));
-  //	exit('SetExpressCheckout failed: ' . print_r($httpParsedResponseAr, true));
+  //  exit('SetExpressCheckout failed: ' . print_r($httpParsedResponseAr, true));
 
 }
 
