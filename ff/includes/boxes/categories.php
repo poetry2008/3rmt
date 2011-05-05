@@ -124,7 +124,7 @@ if($cPath){
             }
             ?>
             <?php
-            if (empty($_subcategories)) { 
+            if (!empty($_subcategories)) { 
             ?>
             <ul class="l_m_category_ul2"> 
 	    <li>

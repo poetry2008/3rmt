@@ -642,6 +642,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
   <!-- footer_eof //-->
 </div>
+</div>
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
