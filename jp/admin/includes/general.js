@@ -106,7 +106,8 @@ $("input[name$=\[final_price\]]").each(function(index) {
   var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
   if(in_array(pwd,pwd_arr)){
   $("input[name=update_viladate]").val(pwd);
-    document.edit_order.submit();
+    _flag = true; 
+    //document.edit_order.submit();
   }else{
   alert("パスワードが違います");
   $("input[name=update_viladate]").val('_false');
@@ -116,15 +117,15 @@ $("input[name$=\[final_price\]]").each(function(index) {
   }
   }else{
     $("input[name=update_viladate]").val('');
-    document.edit_order.submit();
+    _flag = true;
+    //document.edit_order.submit();
   }
 }
 });
 }else{
   return false;
 }
-flag = false;
-return flag; 
+return _flag; 
 } else {
   location.href='create_order2.php';
 }
