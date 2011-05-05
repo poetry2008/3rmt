@@ -41,6 +41,10 @@ H4 {
 }
 .red {
 	color: #C85050!important;
+	font-size:11px;
+}
+.contents{
+	font-size:11px;
 }
 .line {
 	width: 672px;
@@ -301,7 +305,17 @@ UL {
 	list-style-type:none;
 	*margin-top:-10px;
 }
-
+/* ---------------------------
+check out in turn
+--------------------------- */
+.checkoutBarFrom, .checkoutBarTo {
+	font-size: 11px;
+	color: #8c8c8c;
+}
+.checkoutBarCurrent {
+	font-size: 11px;
+	color: #000000;
+}
 #information {
 	margin-top: 10px;
 }
@@ -1705,20 +1719,10 @@ register checkbox select row
 .moduleRowSelected, .moduleRowSelected td {
 	background: #ccc;
 }
-/* ---------------------------
-check out in turn
---------------------------- */
-.checkoutBarFrom, .checkoutBarTo {
-	font-size: 11px;
-	color: #8c8c8c;
-}
+
 /* ---------------------------
 check out in turn（turn of now）
 --------------------------- */
-.checkoutBarCurrent {
-	font-size: 11px;
-	color: #000000;
-}
 .menu_bg {
 	background-image: url(../images/design/menu_bg.jpg);
 	background-repeat: no-repeat;
@@ -1815,9 +1819,6 @@ P.description {
 	height:40px;
 	border:0;
 	vertical-align:middle;
-}
-.contents {
-	font-size:11px;
 }
 /*button*/
 .button_delete02 {
