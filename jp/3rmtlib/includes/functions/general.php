@@ -1503,7 +1503,7 @@ function forward404Unless($condition)
   function tep_get_full_count_in_order2($cnt, $pid){
     $p = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
     return 
-    . number_format($p['products_attention_1_3'] * $cnt) 
+    number_format($p['products_attention_1_3'] * $cnt);
   }
   
   function tep_get_torihiki_select_by_products($product_ids = null)
