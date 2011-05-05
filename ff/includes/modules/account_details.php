@@ -209,7 +209,8 @@
       <tr>
         <td class="main">
 <?php
-  echo tep_draw_textarea_field('agreement', 'soft', '98%', '5', mb_convert_encoding($agreement_text, 'UTF-8', 'ASCII, JIS, UTF-8, EUC-JP, SJIS'));
+  //echo tep_draw_textarea_field('agreement', 'soft', '98', '5', mb_convert_encoding($agreement_text, 'UTF-8', 'ASCII, JIS, UTF-8, EUC-JP, SJIS'));
+  echo '<textarea name="agreement" rows="6" cols="15">'.mb_convert_encoding($agreement_text, 'UTF-8', 'ASCII, JIS, UTF-8, EUC-JP, SJIS').'</textarea>';
   echo '<br>';
   echo tep_draw_checkbox_field('agreement_chk', 'ok') . ENTRY_AGREEMENT_TEXT;
 ?>

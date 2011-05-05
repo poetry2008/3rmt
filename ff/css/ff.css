@@ -3,6 +3,15 @@ Text decoration
 --------------------------- */
 a{
 	font-size: 10px;
+	color:#656565;
+	text-decoration: none;
+}
+/* ---------------------------
+A:hover
+--------------------------- */
+a:hover {
+  color: #0C9DEA;
+  text-decoration: underline;
 }
 #a_font_12{
 	font-size: 12px;
@@ -418,7 +427,8 @@ UL {
 	display:block;
 	word-wrap:break-word;
 }
-.reviews_bottom a:hover{ color: #333333;}
+.reviews_bottom a{ color:#555;}
+.reviews_bottom a:hover{    color: #000;}
 .reviews_area{
 	border: solid 1px #eee;
 	background: #F6F6F5;
@@ -643,7 +653,7 @@ Ranking
 	float:left;
 }
 .bestseller_text a:hover{
-	color:#ccc;
+	color:#0099CC;
 }
 .bestseller_img {
 	border-bottom-width: 1px;
@@ -788,6 +798,8 @@ News
 	padding: 5px 0px;
 	margin: 0px;
 }
+.news_list a{color:#656565;}
+#news .news_list a{ color:#333;}
 .news_list img{ vertical-align:top; margin-left:5px;}
 .menu_top{
 	background: url(../images/design/box/menu.gif) no-repeat 0 bottom;
@@ -1049,6 +1061,7 @@ Footer
 .main p a{
 	color:#06727D;
 }
+.product_info_box .main p a{ color:#656565;}
 .main p a:hover{
 	text-decoration:underline;
 }
@@ -1122,6 +1135,8 @@ margin-top:-15px\9;
     border-right: 1px solid #DDDDDD;border-left: 1px solid #DDDDDD; padding:5px 0;}
 .product_list_info{background: #f2f2f2; padding-top: 10px; padding-bottom:10px; border-bottom:1px #ddd solid;border-left:1px #ddd solid;border-right:1px #ddd solid;}
 .header_m_login{ width:372px; *width:400px; *float:right;}
+.header_m_login a{ color:#fff;}
+.header_m_login a:hover{color: #0C9DEA;}
 /*ost*/
 .login_inc {
 	font-size:11px;
@@ -1264,20 +1279,6 @@ BODY {
 	margin: 0px;
 	padding: 0px;
 	color: #656565;
-}
-/* ---------------------------
-a
---------------------------- */
-A {
-	color: #555;
-	text-decoration: none;
-}
-/* ---------------------------
-A:hover
---------------------------- */
-A:hover {
-  color: #004149;
-  text-decoration: underline;
 }
 /* ---------------------------
 FORM
