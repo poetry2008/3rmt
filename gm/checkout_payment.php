@@ -566,7 +566,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
                 </table></td> 
             </tr> 
             <tr> 
-              <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
+              <td><table border="0" width="95%" cellspacing="1" cellpadding="2" class="formArea"> 
                   <tr> 
                     <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des"> 
                         <tr> 
@@ -607,7 +607,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
       ?> 
 <tr> 
   <td>
-    <table border="0" width="100%" cellspacing="0" cellpadding="2" class="c_pay_info"> 
+    <table border="0" width="95%" cellspacing="0" cellpadding="2" class="c_pay_info"> 
       <tr> 
         <td class="main"><b><?php echo TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><div style="margin-top:5px;">' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></div></td> 
         <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
