@@ -1364,10 +1364,12 @@ function get_cart_products(){
                     </tr>
                     <tr bgcolor="#CCCCCC">
                       <td class="main"><?php echo '<font color="blue"><b>' . TEXT_PRODUCTS_PRICE . '</b></font>'; ?></td>
+                      <?php //add abs fro products ?>
                       <td class="main"><?php echo
                       tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' .
                       tep_draw_input_field('products_price',
-                          isset($pInfo->products_price)?($pInfo->products_bflag?(0-abs($pInfo->products_price)):abs($pInfo->products_price)):'','id="pp"' . ($site_id ? 'class="readonly" readonly' : '')); ?></td>
+                          isset($pInfo->products_price)?abs($pInfo->products_price):'','
+                          onkeyup="clearNoNum(this)" id="pp"' . ($site_id ? 'class="readonly" readonly' : '')); ?></td>
  
                     </tr>
                     <tr>
@@ -2003,9 +2005,10 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   echo '  <tr>';
   echo '  <td height="30">';
   echo '<table  width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="left">';
+  // add abs for products_price 
   echo '価&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格：&nbsp;' .
     tep_draw_input_field('products_price',
-        number_format($pInfo->products_bflag?(0-abs($pInfo->products_price)):abs($pInfo->products_price),0,'.',''),'id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;円' . '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price . '円 ' . "\n";
+        number_format(abs($pInfo->products_price),0,'.',''),'onkeyup="clearNoNum(this)"  id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;円' . '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price . '円 ' . "\n";
   echo '</td><td align="right">';
   if (!$pInfo->products_bflag && $pInfo->relate_products_id)
   echo '実在庫の平均仕入価格： '.@display_price(tep_get_avg_by_pid($pInfo->products_id)).'円';
