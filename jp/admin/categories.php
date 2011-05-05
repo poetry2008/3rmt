@@ -72,7 +72,10 @@
                                  'products_real_quantity'    => tep_db_prepare_input($_POST['products_real_quantity']),
                                  'products_virtual_quantity' => tep_db_prepare_input($_POST['products_virtual_quantity']),
                                  'products_attention_5'      => tep_db_prepare_input($_POST['products_attention_5']),
+                                 /*  auto add char '-'
                                  'products_price'            => tep_get_bflag_by_product_id($products_id) ? 0 - tep_db_prepare_input($_POST['products_price']) : tep_db_prepare_input($_POST['products_price']));
+                                 */
+                                 'products_price'            => tep_db_prepare_input($_POST['products_price']));
         tep_db_perform(TABLE_PRODUCTS, $update_sql_data, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
         if ($_GET['from'] == 'admin') {
           tep_redirect(tep_href_link(FILENAME_CATEGORIES_ADMIN, 'cPath=' . $_GET['cPath']));
@@ -573,7 +576,10 @@
                                   'products_attention_3' => $products_attention_3,
                                   'products_attention_4' => $products_attention_4,
                                   'products_attention_5' => $products_attention_5,
+                                  /* auto add char '-'
                                   'products_price' => tep_db_prepare_input($_POST['products_bflag'])? 0 - tep_db_prepare_input($_POST['products_price']) : tep_db_prepare_input($_POST['products_price']),
+                                  */
+                                  'products_price' => tep_db_prepare_input($_POST['products_price']),
                                   'products_price_offset' => tep_db_prepare_input($HTTP_POST_VARS['products_price_offset']),
                                   'products_date_available' => $products_date_available,
                                   'products_weight' => tep_db_prepare_input($_POST['products_weight']),
@@ -1362,7 +1368,11 @@ function get_cart_products(){
                     </tr>
                     <tr bgcolor="#CCCCCC">
                       <td class="main"><?php echo '<font color="blue"><b>' . TEXT_PRODUCTS_PRICE . '</b></font>'; ?></td>
-                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_price', isset($pInfo->products_price)?abs($pInfo->products_price):'','id="pp"' . ($site_id ? 'class="readonly" readonly' : '')); ?></td>
+                      <?php // delete abs for products_price and add (int) ?>
+                      <td class="main"><?php echo
+                      tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' .
+                      tep_draw_input_field('products_price',
+                          isset($pInfo->products_price)?(int)$pInfo->products_price:'','id="pp"' . ($site_id ? 'class="readonly" readonly' : '')); ?></td>
  
                     </tr>
                     <tr>
@@ -1998,7 +2008,9 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   echo '  <tr>';
   echo '  <td height="30">';
   echo '<table  width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="left">';
-  echo '価&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格：&nbsp;' . tep_draw_input_field('products_price', number_format(abs($pInfo->products_price),0,'.',''),'id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;円' . '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price . '円 ' . "\n";
+  // delete ads for format products and add (int)
+  echo '価&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格：&nbsp;' .
+    tep_draw_input_field('products_price', number_format((int)$pInfo->products_price,0,'.',''),'id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;円' . '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price . '円 ' . "\n";
   echo '</td><td align="right">';
   if (!$pInfo->products_bflag && $pInfo->relate_products_id)
   echo '実在庫の平均仕入価格： '.@display_price(tep_get_avg_by_pid($pInfo->products_id)).'円';
@@ -2073,8 +2085,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
       <tr>
         <td class="main" width="120"><?php echo $order_history['torihiki_date'];?></td>
         <td class="main" width="100" align="right"><?php echo $order_history['products_quantity'];?>個</td>
-        <td class="main" align="right"><?php echo
-        abs(display_price($order_history['final_price']));?>円</td>
+        <td class="main" align="right"><?php echo display_price($order_history['final_price']);?>円</td>
         <td class="main" width="100"><?php echo $order_history['orders_status_name'];?></td>
       </tr>
     <?php
