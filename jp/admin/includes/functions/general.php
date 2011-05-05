@@ -1989,18 +1989,14 @@ function tep_reset_cache_data_seo_urls($action){
       $p = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
       return 
         '('
-      . str_replace(array('1個あたり','　'), '', $p['products_attention_1_2']) 
       . number_format($prate * $cnt) 
-      . str_replace(array('のお取引となります', 'のセット'), '', $p['products_attention_1_4'])
       . ')';
     }
   }
   function tep_get_full_count_in_order2($cnt, $pid){
     $p = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
     return 
-      str_replace(array('1個あたり','　'), '', $p['products_attention_1_2']) 
     . number_format($p['products_attention_1_3'] * $cnt) 
-    . str_replace(array('のお取引となります', 'のセット'), '', $p['products_attention_1_4']);
   }
 
 // Start Documents Manager
