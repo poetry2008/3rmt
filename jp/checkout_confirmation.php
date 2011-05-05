@@ -456,7 +456,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
   }
   tep_session_register('get_point');
   echo '<tr>' . "\n";
-  if ($order->info['total'] > 0) {
+  if (!tep_only_buy_product()) {
     echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
   } else {
     echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW_TWO.'</td>' . "\n";

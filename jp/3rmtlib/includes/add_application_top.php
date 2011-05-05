@@ -726,15 +726,18 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
     if(DS_LIMIT_PRICE < $cart->show_total()) {
       tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, 'limit_error=true', 'SSL'));
     }
-    if(substr(basename($PHP_SELF),0,16) != 'checkout_success')
-      $limit_price = explode(',', LIMIT_MIN_PRICE);
-      if (count($limit_price) == 2) {
-        if (!(($cart->show_abs() <= $limit_price[1]) && ($cart->show_abs() >= $limit_price[0]))) {
-          tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, 'limit_min_error=true', 'SSL'));
-        }
-      } else {
-        if(LIMIT_MIN_PRICE && LIMIT_MIN_PRICE > $cart->show_abs()) {
-          tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, 'limit_min_error=true', 'SSL'));
+    if(substr(basename($PHP_SELF),0,16) != 'checkout_success') {
+      if (!tep_only_buy_product()) { 
+        $limit_price = explode(',', LIMIT_MIN_PRICE);
+        if (count($limit_price) == 2) {
+          if (($cart->show_abs() <= $limit_price[1]) && ($cart->show_abs() >= $limit_price[0])) {
+            tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, 'limit_min_error=true', 'SSL'));
+          }
+        } else {
+          if(LIMIT_MIN_PRICE && LIMIT_MIN_PRICE > $cart->show_abs()) {
+            tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, 'limit_min_error=true', 'SSL'));
+          }
         }
       }
+    }
   }
