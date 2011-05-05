@@ -38,7 +38,7 @@
 BODY：ボディ
 --------------------------- */
 BODY {
-	background-color: #FFFFFF;
+	background-color: #272626;
 	margin: 0px;
 	padding: 0px;
 	color: #656565;
@@ -54,7 +54,7 @@ A {
 A：リンク（カーソルが上に乗ったとき）
 --------------------------- */
 A:hover {
-  color: #004149;
+  color: #00c0ff;
   text-decoration: underline;
 }
 /* ---------------------------
@@ -96,7 +96,7 @@ TD.headerNavigation {
 A：ヘッダー（ナビゲーションのリンク）
 --------------------------- */
 A.headerNavigation { 
-	color: #555;
+	color: #ffffff;
 	font-size:10px;
 }
 /* ---------------------------
@@ -572,4 +572,12 @@ overflow:hidden;
 padding:5px 7px;
 background-color:#e2e2e2;
 border:1px solid #CAC6BE;
+}
+.footer_games a{ 
+	color:#0C9DEA;
+	font-weight:bold;
+}
+.footer_games a:hover{ 
+	color:#ffffff;
+	font-weight:bold;
 }

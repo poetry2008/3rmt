@@ -1,6 +1,7 @@
 <!--{if $top_info}-->
 <div class="top">
 <h1 class="link_h1"><!--{_t key=$top_info.h1}--></h1></div>
+<div class="coment_edit">
 <div class="middle">
 <div class="text_out">
 <!--{if $top_info.time}-->
@@ -15,6 +16,7 @@
 <!--{else}-->
 <div class="top">
 <h1 class="link_h1"><!--{_t key=text_out_h1}--></h1></div>
+<div class="coment_edit">
 <div class="middle search_head_text">
 <div class="text_out">
 <p>
@@ -34,7 +36,7 @@
 <div class='search_header'>
 <form action="<!--{url controller=site action=sitesearch}-->" method="post" 
 onsubmit="return valsearch()" name="form1" id="form1">
-<table width="100%"><tr><td align="center">
+<table width="100%"><tr><td align="center" style="color:#ffffff;">
 ▼ホームページ検索 
 <input type="text" id="search_txt" class="sh-txt" name='word' />
 
@@ -46,10 +48,11 @@ onsubmit="return valsearch()" name="form1" id="form1">
 </td></tr>
 </table>
 </form>
-</div>
+</div></div>
 </div>
 <div class='tools boxes'>
 <h2 class="link_h2">メニュー</h2>
+<div class="categories">
 <div class="middle tools_link">
 <a href="/<!--{$hostlink}-->/">相互リンク集TOP</a></li>
 <a href="<!--{url controller=site action=regist}-->">新規登録</a></li>
@@ -57,8 +60,8 @@ onsubmit="return valsearch()" name="form1" id="form1">
 <a href="<!--{url controller=site action=new}-->">新着サイト</a></li>
 <a href="<!--{url controller=site action=recommend}-->">おすすめサイト</a></li>
 <a href="<!--{url controller=site action=sitemap}-->">サイトマップ</a></li>
-</div>
+</div></div>
 <div class="bottom"></div>
 </div>
-</div><!-- search_and_tools end -->
+<!-- search_and_tools end -->
 

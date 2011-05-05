@@ -372,6 +372,12 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
         and orders_id = '".$insert_id."'
   ");
   $ot = tep_db_fetch_array($otq);
+  $_datetime = $o->tori['date'];
+  $_datetime = explode(' ',$_datetime);
+  $_date = $_datetime[0];
+  $_time = explode(':',$_datetime[1]);
+  $_hour = $_time[0]; 
+  $_minute = $_time[1];
 
   $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
   $email_order .= '▼注文番号　　　　：' . $insert_id . "\n";
@@ -382,7 +388,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   $email_order .= '▼注文商品' . "\n";
   $email_order .= '------------------------------------------' . "\n";
   $email_order .= $products_ordered . "\n";
-  $email_order .= '▼取引日時　　　　：' . str_string($date) . $hour . '時' . $minute . '分　（24時間表記）' . "\n";
+  $email_order .= '▼取引日時　　　　：' . str_string($_date) . $_hour . '時' . $_minute . '分　（24時間表記）' . "\n";
 
   if ($comment) {
     $email_order .= '▼備考　　　　　　：' . "\n";

@@ -3,6 +3,15 @@ Text decoration
 --------------------------- */
 a{
 	font-size: 10px;
+	color:#656565;
+	text-decoration: none;
+}
+/* ---------------------------
+A:hover
+--------------------------- */
+a:hover {
+  color: #0C9DEA;
+  text-decoration: underline;
 }
 #a_font_12{
 	font-size: 12px;
@@ -87,7 +96,7 @@ table.comment {
 	width: 684px;
 	*width: 714px;
 	margin: 0 0 5px 0;
-	padding: 5px 15px 5px 15px;
+	padding: 5px 15px;
 	overflow: hidden;
 	background:url(../images/design/comment_bg_long.gif) repeat-y;
 }
@@ -192,6 +201,7 @@ UL {
 .l_m_category_li, .l_m_category_li2{
 	color: #004080;
 	margin-bottom:2px;
+	margin-bottom:0px\9;
 	overflow: hidden;
 	text-align:left;
 }
@@ -418,7 +428,8 @@ UL {
 	display:block;
 	word-wrap:break-word;
 }
-.reviews_bottom a:hover{ color: #333333;}
+.reviews_bottom a{ color:#555;}
+.reviews_bottom a:hover{    color: #000;}
 .reviews_area{
 	border: solid 1px #eee;
 	background: #F6F6F5;
@@ -439,8 +450,8 @@ button
 --------------------------- */
 .button_order{
 	display: block;
-	width: 82px;
-	height: 25px;
+	width: 69px;
+	height: 17px;
 	background: url(../images/design/button/button_order.gif) no-repeat;
 	overflow: hidden;
 	font-size: 0px;
@@ -643,7 +654,7 @@ Ranking
 	float:left;
 }
 .bestseller_text a:hover{
-	color:#ccc;
+	color:#0099CC;
 }
 .bestseller_img {
 	border-bottom-width: 1px;
@@ -788,6 +799,8 @@ News
 	padding: 5px 0px;
 	margin: 0px;
 }
+.news_list a{color:#656565;}
+#news .news_list a{ color:#333;}
 .news_list img{ vertical-align:top; margin-left:5px;}
 .menu_top{
 	background: url(../images/design/box/menu.gif) no-repeat 0 bottom;
@@ -1049,6 +1062,7 @@ Footer
 .main p a{
 	color:#06727D;
 }
+.product_info_box .main p a{ color:#656565;}
 .main p a:hover{
 	text-decoration:underline;
 }
@@ -1119,9 +1133,11 @@ margin-top:-15px\9;
 	*margin:-5px 0 0 0;
 }
 .product_list_page{font-size:10px; background-color: #f2f2f2;
-    border-right: 1px solid #DDDDDD;border-left: 1px solid #DDDDDD; padding:5px 0;}
+    border-right: 1px solid #DDDDDD;border-left: 1px solid #DDDDDD; padding:5px;}
 .product_list_info{background: #f2f2f2; padding-top: 10px; padding-bottom:10px; border-bottom:1px #ddd solid;border-left:1px #ddd solid;border-right:1px #ddd solid;}
 .header_m_login{ width:372px; *width:400px; *float:right;}
+.header_m_login a{ color:#fff;}
+.header_m_login a:hover{color: #0C9DEA;}
 /*ost*/
 .login_inc {
 	font-size:11px;
@@ -1266,20 +1282,6 @@ BODY {
 	color: #656565;
 }
 /* ---------------------------
-a
---------------------------- */
-A {
-	color: #555;
-	text-decoration: none;
-}
-/* ---------------------------
-A:hover
---------------------------- */
-A:hover {
-  color: #004149;
-  text-decoration: underline;
-}
-/* ---------------------------
 FORM
 --------------------------- */
 FORM {
@@ -1369,7 +1371,7 @@ TABLE：Info Box
 .product_info_box{
 	background: #f4f4f4;
 	padding:5px;
-	padding:5px 0\9;
+	padding:5px 8px\9;
 }
 .product_info_box table{
 	width: 100%;
@@ -1811,3 +1813,9 @@ border:1px solid #CAC6BE;
 	background:#ccc;
 }
 .button{line-height:15px; height:23px;}
+.cg_pay_info{
+	background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    margin: 3px 0;
+    padding: 5px;
+}
