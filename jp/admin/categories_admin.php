@@ -154,6 +154,7 @@ if (isset($_GET['action']) && $_GET['action']) {
   <td class="dataTableHeadingContent" align="center" >注文数</td>
   <td class="dataTableHeadingContent" align="center" >架空在庫</td>
   <td class="dataTableHeadingContent" align="center" >実在庫</td>
+  <td class="dataTableHeadingContent" align="center" ></td>
   <td class="dataTableHeadingContent" align="center" >
       <a style="font-weight:bold;" href="cleate_list.php?cid=<?php echo $cPath_yobi;?>&action=prelist&cPath=<?php echo $_GET['cPath'];?>">業者</a><br>
       <small style="font-weight:bold;font-size:12px;"><?php echo str_replace(' ','<br>',$kakaku_updated);?></small>
@@ -428,8 +429,8 @@ while ($products = tep_db_fetch_array($products_query)) {
   <?php //個数架空 ?>
   <td class="dataTableContent6" align='right' onmouseover='this.style.cursor="pointer"'  id='virtual_quantity_<?php echo $products['products_id']; ?>' onclick="update_virtual_quantity(<?php echo $products['products_id']; ?>)"><?php echo $imaginary;?></td>
 <?php //数量 ?>
-  <td class="dataTableContent6" align='right' onmouseover='this.style.cursor="pointer"' style="font-weight:bold;" id='quantity_<?php echo $products['products_id']; ?>' onclick="update_quantity(<?php echo $products['products_id']; ?>)">
-  <?php echo $products['products_real_quantity'];?>
+  <td class="dataTableContent6" align='right' onmouseover='this.style.cursor="pointer"' style="font-weight:bold;" id='quantity_<?php echo $products['products_id']; ?>' onclick="update_quantity(<?php echo $products['products_id']; ?>)"><?php echo $products['products_real_quantity'];?></td>
+  <td class="dataTableContent6">
   <?php
     if (tep_check_show_isbuy($products['products_id'])) { 
       if (tep_check_best_sellers_isbuy($products['products_id'])) {

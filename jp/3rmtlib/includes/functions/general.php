@@ -3698,3 +3698,13 @@ function tep_ff_get_categories_id_by_parent_id($categories_id, $languages_id = 4
   }
   return $arr;
 }
+
+function tep_only_buy_product(){
+  global $cart;
+  foreach($cart->get_products() as $p){
+    if (tep_get_bflag_by_product_id($p['id']) == 0) {
+      return false;
+    }
+  }
+  return true;
+}
