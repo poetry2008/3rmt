@@ -6,6 +6,7 @@ define('DEPLOY_MODE', false);
 require('./Fleaphp/FLEA.php');
 define('INDEX_DIR',dirname(__FILE__));
 define('APP_DIR', dirname(__FILE__) . DS . 'APP');
+define('HTTP_SERVER',$_SERVER['HTTP_HOST'] );
 FLEA::loadAppInf(APP_DIR . '/Config/APP_INF.php');
 FLEA::loadAppInf(APP_DIR . '/Config/DATABASE.php');
 FLEA::loadAppInf(APP_DIR . '/Config/Global.php');
