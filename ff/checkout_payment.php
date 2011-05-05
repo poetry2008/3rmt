@@ -132,11 +132,9 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
                 </table></td> 
             </tr>
             <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
-            <tr> 
-              <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+              <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="cg_pay_info"> 
                   <tr> 
+                    <td class="main"><b><?php echo TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><br>' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></td> 
                     <td class="main" align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
                     <td class="main" width="25"></td> 
                   </tr> 
@@ -634,16 +632,11 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
       }//point eof// 
       ?> 
             <tr> 
-              <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
-                  <tr class="infoBoxContents"> 
-                    <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-                        <tr> 
-                          <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+              <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="cg_pay_info"> 
+                        <tr>  
                           <td class="main"><b><?php echo TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><br>' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></td> 
                           <td class="main" align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
-                          <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                        </tr> 
-                      </table></td> 
+                          <td class="main" width="25"></td> 
                   </tr> 
                 </table></td> 
             </tr> 
