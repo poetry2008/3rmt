@@ -59,7 +59,7 @@
 <div class="web-box">
 <span class="web-line"><b class="x1">&nbsp;</b><b class="x2">&nbsp;</b><b class="x3">&nbsp;</b><b class="x4">&nbsp;</b><b class="x5">&nbsp;</b><b class="x6">&nbsp;</b><b class="x7">&nbsp;</b></span>
 <div class="web-tit"> <div class="web_3_title">
-<h2><!--{$class.name}--></h2></div>
+<span><h2><!--{$class.name}--></h2></span></div>
 </div>
 <div class="web-menu">
 </div>
@@ -74,8 +74,8 @@
                 href='<!--{$class.sites[loopSite].url}-->'
                 target='_blank'><!--{$class.sites[loopSite].name}--></a><h3>
 		<!--{if $class.sites[loopSite].comment}-->
-		<p><h3><a href='<!--{url controller=site action=detail
-                  id=$class.sites[loopSite].id}-->'><!--{$class.sites[loopSite].comment|truncate:36:"..."}--></a></h3></p>
+		<p><span><h3><a href='<!--{url controller=site action=detail
+                  id=$class.sites[loopSite].id}-->'><!--{$class.sites[loopSite].comment|truncate:36:"..."}--></a></h3></span></p>
 		<!--{/if}-->
 		</td>
 	</tr>

@@ -19,7 +19,7 @@
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents">
-      <div class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><h1><span><?php echo 'フリーメールでメールが受け取れない方へ'; ?></span></h1></div>
+      <div class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><span><h1><?php echo 'フリーメールでメールが受け取れない方へ'; ?></h1></span></div>
         <div class="comment"> 
 
 <div class="content_email01">
@@ -38,7 +38,7 @@
         以下に各フリーメールの毎に受信許可の設定手順を記します。
       <br>
       <br>
-      <h3><span class="txt_bold">Yahoo!メール、Yahoo!BBメール&nbsp;&nbsp;受信許可の設定手順</span></h3>
+      <span class="txt_bold"><h3>Yahoo!メール、Yahoo!BBメール&nbsp;&nbsp;受信許可の設定手順</h3></span>
        <br>
       <ol>
         <li>Yahoo!メールにログインして[メールオプション]をクリック</li>
@@ -48,7 +48,7 @@
       </ol>
        <br>
       <br>
-      <h3><span class="txt_bold">hotmail、msnmail&nbsp;&nbsp;受信許可の設定手順</span></h3>
+      <span class="txt_bold"><h3>hotmail、msnmail&nbsp;&nbsp;受信許可の設定手順</h3></span>
        <br>
       <ol>
         <li>hotmail にサインインして[オプション] をクリック</li>
@@ -58,7 +58,7 @@
       </ol>
        <br>
       <br>
-      <h3><span class="txt_bold">AOL&nbsp;&nbsp;受信許可の設定手順</span></h3>
+      <span class="txt_bold"><h3>AOL&nbsp;&nbsp;受信許可の設定手順</h3></span>
        <br> ご利用環境によりAOL接続ソフト「AOL Communicator」の設定が必要です。
       <ol>
         <li>クイックガイドのメールコントロールを参照します</li>
@@ -66,7 +66,7 @@
       </ol>
        <br>
       <br>
-      <h3><span class="txt_bold">上記以外のメールアドレスをご利用の場合</span></h3>
+      <span class="txt_bold"><h3>上記以外のメールアドレスをご利用の場合</h3></span>
        <br> 上記以外のメールアドレスをご利用の方で、同様に<?php echo STORE_NAME;?>および当社からのメールが届かないという場合も、同様の原因（迷惑メール処理機能）が考えられます。<br>
         お手数ですがご利用先のマニュアル等をご覧の上、<?php echo STORE_NAME;?>および当社の利用するドメイン「<span class="txt_blue"><?php echo STORE_DOMAIN;?></span>」から送信されるメールの受信許可を設定して下さい。<br>
       <br>

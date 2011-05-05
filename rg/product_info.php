@@ -120,9 +120,9 @@ function change_num(ob, targ, quan,a_quan)
     <?php if (tep_show_warning(tep_get_products_categories_id($product_info['products_id'])) or $product_info['products_status'] != '1') {
       echo '<div class="waring_product">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
     } ?>
-         <div class="pageHeading_long"><img align="top" alt="" src="images/menu_ico.gif"><h1><span><?php echo $product_info['products_name']; ?></span></h1></div>
+         <div class="pageHeading_long"><img align="top" alt="" src="images/menu_ico.gif"><span><h1><?php echo $product_info['products_name']; ?></h1></span></div>
          <div class="comment_long">
-         <h2 class="line"><?php echo ds_tep_get_categories((int)$_GET['products_id'],1); ?> <?php echo ds_tep_get_categories((int)$_GET['products_id'],2); ?></h2>
+         <span><h2 class="line"><?php echo ds_tep_get_categories((int)$_GET['products_id'],1); ?> <?php echo ds_tep_get_categories((int)$_GET['products_id'],2); ?></h2></span>
          <table width="100%"  border="0" cellpadding="0" cellspacing="0" summary="rmt">
           <tr>
             <td width="250" valign="top">
@@ -537,7 +537,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
  ?>
  </div>
          <?php if($description){?>
-            <div class="pageHeading_long"><img align="top" alt="" src="images/menu_ico.gif"><h3><span><?php echo $product_info['products_name']; ?>について</span></h3></div>
+            <div class="pageHeading_long"><img align="top" alt="" src="images/menu_ico.gif"><span><h3><?php echo $product_info['products_name']; ?>について</h3></span></div>
             <!-- 説明文　-->
             <p class="comment_long">
               <?php 
@@ -596,7 +596,7 @@ $tag_query = tep_db_query("
 ");
 if(tep_db_num_rows($tag_query)){
 ?>
-<div class="pageHeading_long"><img align="top" src="images/menu_ico.gif" alt=""><h3><span><?php echo $product_info['products_name'].'に関するキーワード';?></span></h3></div>        
+<div class="pageHeading_long"><img align="top" src="images/menu_ico.gif" alt=""><span><h3><?php echo $product_info['products_name'].'に関するキーワード';?></h3></span></div>        
 <div class="comment_long">
 <?php
 $tnum = 0;
@@ -628,7 +628,7 @@ $tnum++;
         <?php
       if (tep_session_is_registered('affiliate_id')) {
 ?>
-        <div class="pageHeading_long"><h1><span><?php echo 'アフィリエイト広告用タグ' ; ?></span></h1></div>
+        <div class="pageHeading_long"><span><h1><?php echo 'アフィリエイト広告用タグ' ; ?></h1></span></div>
         <p class="comment_long"><b>この商品の広告を登録することができます！！</b><br>
           あなたのホームページにこの商品を表示させるには以下のソースコードをコピーしてホームページにペースとしてください。この商品の画像が表示されます。</p>
 

@@ -25,7 +25,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
       </td>
       <!-- body_text //-->
       <td id="contents" valign="top">
-        <div class="pageHeading"><img align="top" alt="" src="images/menu_reorder.gif"><h1><span><?php echo HEADING_TITLE; ?></span></h1></div>
+        <div class="pageHeading"><img align="top" alt="" src="images/menu_reorder.gif"><span><h1><?php echo HEADING_TITLE; ?></h1></span></div>
 <?php if ($_POST) {
   include(DIR_WS_CLASSES . 'admin_order.php');
 

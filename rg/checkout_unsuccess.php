@@ -46,7 +46,7 @@
       <td valign="top" id="contents">
         <?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_UNSUCCESS,
               'action=checkout_payment', 'SSL')); ?> 
-        <h1 class="pageHeading"><?php echo TEXT_UNSUCCESS; ?></h1> 
+        <span><h1 class="pageHeading"><?php echo TEXT_UNSUCCESS; ?></h1></span> 
         <div> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr> 

@@ -15,7 +15,7 @@
         <!-- body_text //--> 
         <td valign="top" id="contents">
           <div class="pageHeading"><img align="top" alt="img"
-          src="images/menu_ico_us.gif"><h1><span>お問い合わせ</span></h1></div> 
+          src="images/menu_ico_us.gif"><span><h1>お問い合わせ</h1></span></div> 
           <div class="comment">
             <table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>

@@ -90,7 +90,7 @@
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td id="contents" valign="top">
-      <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>
+      <span><h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1></span>
       <div class="comment">
       <table width="497" border="0" align="center" cellpadding="0" cellspacing="0" summary="table"> 
           <tr> 

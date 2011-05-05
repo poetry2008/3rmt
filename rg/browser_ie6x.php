@@ -27,7 +27,7 @@
         </td> 
         <!-- body_text //--> 
         <td valign="top" id="contents">
-          <div class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><h1><span><?php echo HEADING_TITLE; ?></span></h1></div> 
+          <div class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><span><h1><?php echo HEADING_TITLE; ?></h1></span></div> 
           <div class="comment">
                   当ショッピングシステムは、ブラウザの初期設定のままで動作するように作られております。<br>
                     ショッピングができない場合は、以下の手順で設定内容をお確かめください。

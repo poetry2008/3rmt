@@ -38,7 +38,7 @@
       }
 ?>
 <!-- also_purchased_products //-->
-<div class="pageHeading_long"><img align="top" alt="" src="images/menu_ico.gif"><h3><span><?php echo $product_info['products_name'];?><?php  echo TEXT_ALSO_PURCHASED_PRODUCTS ; ?> </span></h3></div>
+<div class="pageHeading_long"><img align="top" alt="" src="images/menu_ico.gif"><span><h3><?php echo $product_info['products_name'];?><?php  echo TEXT_ALSO_PURCHASED_PRODUCTS ; ?> </h3></span></div>
 <div class="comment_long">
 <?php
       $row = 0;

@@ -6,7 +6,7 @@
 </head>
 <body>
 <div id="content">
-  <h3><?php echo h(_T('ui_c_title')); ?> [<a href="<?php echo $this->_url('create', isset($parent['class_id']) ? array('parent_id' => $parent['class_id']) : null); ?>"><?php echo h(_T('ui_c_create')); ?></a>]</h3>
+  <span><h3><?php echo h(_T('ui_c_title')); ?> [<a href="<?php echo $this->_url('create', isset($parent['class_id']) ? array('parent_id' => $parent['class_id']) : null); ?>"><?php echo h(_T('ui_c_create')); ?></a>]</h3></span>
   <div class="description"><?php echo t(_T('ui_c_description')); ?></div>
   <br />
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data">

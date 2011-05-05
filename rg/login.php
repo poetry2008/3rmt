@@ -163,7 +163,7 @@ function session_win() {
       <!-- body_text //-->
       <td id="contents" valign="top">
 
-      <div class="pageHeading"><img align="top" alt="" src="images/menu_ico09.gif"><h1><span><?php echo HEADING_TITLE; ?></span></h1></div>
+      <div class="pageHeading"><img align="top" alt="" src="images/menu_ico09.gif"><span><h1><?php echo HEADING_TITLE; ?></h1></span></div>
       <?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process', 'SSL')); ?>
       <div class="comment">
       <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" summary="content">
