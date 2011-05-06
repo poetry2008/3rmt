@@ -720,7 +720,6 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   }
 
   tep_session_register('ajax');
-
 # 注文上限金額設定
   if(substr(basename($PHP_SELF),0,9) == 'checkout_') {
     if(DS_LIMIT_PRICE < $cart->show_total()) {
@@ -729,7 +728,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
     if(substr(basename($PHP_SELF),0,16) != 'checkout_success') {
         $limit_price = explode(',', LIMIT_MIN_PRICE);
         if (count($limit_price) == 2) {
-          if (($cart->show_total() <= $limit_price[1]) && ($cart->show_abs() >= $limit_price[0])) {
+          if (($cart->show_total() <= $limit_price[1]) && ($cart->show_total() >= $limit_price[0])) {
             tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, 'limit_min_error=true', 'SSL'));
           }
         } else {
