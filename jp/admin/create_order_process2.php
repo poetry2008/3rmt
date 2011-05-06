@@ -191,6 +191,7 @@
   //$customer = $account['customers_id'];
   }
 
+  $from_page = 'create_order_process2';
   require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER);
   
 // #### Generate Page
