@@ -502,7 +502,8 @@
     $email_printing_order .= '手数料　　　　　：'.$currencies->format($handle_fee)."\n";
   }
   $email_printing_order .= 'お支払金額　　　：' .
-    strip_tags($orders_total['text']) . "\n";
+     strip_tags($_SESSION['create_order2']['orders_total']['ot_total']['text'])."\n";
+   // strip_tags($orders_total['text']) . "\n";
   if (isset($order['payment_method'])&&$order['payment_method']!='') {
     $payment_class = $$payment;
     $email_printing_order .= 'お支払方法　　　：' . $order['payment_method']. "\n";
