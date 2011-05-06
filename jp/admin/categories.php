@@ -1007,8 +1007,8 @@ function mess(){
 
 function check_price(new_id,old_price,percent){
   $('#'+new_id).css('border-color','');
-  new_price = $('#'+new_id).val();
-  
+  new_price = Math.abs($('#'+new_id).val());
+  old_price = Math.abs(old_price);
   if (percent != '' && percent != 0 && percent != null) {
     if (new_price > old_price) {
       if( ((new_price - old_price) / old_price) * 100 >= percent ) {
