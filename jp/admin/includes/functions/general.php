@@ -4064,7 +4064,20 @@ function make_rand_pwd($rule){
   $pwd_len = $arr[0];
   
   if(!preg_match('|[\+\-\*\/mndjYy]+|',$arr[1])){
-    return false;
+    // no +-*/ return string
+    $str = $arr[1];
+    $str_len = strlen($str); 
+    if($pwd_len-$str_len>0){
+      for($i=$pwd_len-$str_len;$i>0;$i--){
+         $str = '0'.$str;
+      }
+    }else{
+    $str = substr($str,$pwd_len*-1);
+    }
+    if(!$str){
+      return false;
+    }
+    return $str;
   }
 
   //获得计算字符串
