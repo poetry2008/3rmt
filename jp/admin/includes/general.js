@@ -39,7 +39,7 @@ $("input[name$=\[final_price\]]").each(function(index) {
   var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");;
   var tmp_str = "input[name=op_id_"+op_id+"]";
   var final_val = $(tmp_str).val();
-  if(input_val > Math.abs(final_val*1.1)){
+  if(input_val > Math.abs(final_val*1.1)||input_val > Math.abs(final_val*0.9)){
   flag_tmp=false;
   }
   });
@@ -98,7 +98,7 @@ $("input[name$=\[final_price\]]").each(function(index) {
   var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");;
   var tmp_str = "input[name=op_id_"+op_id+"]";
   var final_val = $(tmp_str).val();
-  if(input_val > Math.abs(final_val*1.1)){
+  if(input_val > Math.abs(final_val*1.1)||input_val > Math.abs(final_val*0.9)){
   flag_tmp=false;
   }
   });
@@ -150,7 +150,7 @@ $("input[name$=\[final_price\]]").each(function(index) {
   var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");;
   var tmp_str = "input[name=op_id_"+op_id+"]";
   var final_val = $(tmp_str).val();
-  if(input_val > Math.abs(final_val*1.1)){
+  if(input_val > Math.abs(final_val*1.1)||input_val > Math.abs(final_val*0.9)){
   flag_tmp = false;
   }
   });
@@ -221,7 +221,7 @@ $("input[name$=\[final_price\]]").each(function(index) {
   var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");;
   var tmp_str = "input[name=op_id_"+op_id+"]";
   var final_val = $(tmp_str).val();
-  if(input_val > Math.abs(final_val*1.1)){
+  if(input_val > Math.abs(final_val*1.1)||input_val > Math.abs(final_val*0.9)){
   flag_tmp = false;
   }
   });
