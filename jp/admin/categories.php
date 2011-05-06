@@ -1147,6 +1147,7 @@ function get_cart_products(){
                  p.products_cart_buyflag,
                  p.products_cart_image,
                  p.products_cart_min,
+                 pd.option_image_type, 
                  p.products_cartorder 
           from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
           where p.products_id = '" . $_GET['pID'] . "' 
@@ -1526,6 +1527,7 @@ function get_cart_products(){
                 <?php
                   } else {
                 ?>
+                   
                   <input type="radio" name="option_image_type" value="select" <?php if($pInfo->option_image_type == 'select'){?> checked<?php }?>>プルダウン
                   <input type="radio" name="option_image_type" value="radio" <?php if($pInfo->option_image_type == 'radio'){?> checked<?php }?>>ラジオ
                 <?php
