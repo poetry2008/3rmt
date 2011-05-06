@@ -208,7 +208,7 @@ function hidden_payment(){
   }
   // 取引時間のリスト作成
   $hour_list[] = array('id' => '', 'text' => '--');
-  for($i=1; $i<24; $i++) {
+  for($i=0; $i<24; $i++) {
     $hour_num = str_pad($i, 2, "0", STR_PAD_LEFT);
     $hour_list[] = array('id' => $hour_num,
               'text' => $hour_num);

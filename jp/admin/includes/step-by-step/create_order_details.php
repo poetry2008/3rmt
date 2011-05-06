@@ -110,14 +110,8 @@ function hidden_payment(){
               'text' => strftime("%Y年%m月%d日（%a）", mktime(0,0,0,$m_num,$d_num+$i,$year)));
   }
   // 取引時間のリスト作成
-  // diff for order and order2
-  if(isset($from_page)&&$from_page == 'create_order_process2'){
-    $hour_num = str_pad(0, 2, "0", STR_PAD_LEFT);
-    $hour_list[] = array('id' => $hour_num, 'text' => $hour_num);
-  }else{
     $hour_list[] = array('id' => '', 'text' => '--');
-  }
-  for($i=1; $i<24; $i++) {
+  for($i=0; $i<24; $i++) {
     $hour_num = str_pad($i, 2, "0", STR_PAD_LEFT);
     $hour_list[] = array('id' => $hour_num,
               'text' => $hour_num);
@@ -240,6 +234,8 @@ function hidden_payment(){
                 <td class="main">&nbsp;取引時間:</td>
                 <td class="main">&nbsp;
                 <?php 
+                //diff order and order2
+                /*
                 if(isset($from_page)&&$from_page == 'create_order_process2'){
                   if(!isset($hour)||$hour==''){
                     $hour = date('H',time());  
@@ -248,6 +244,8 @@ function hidden_payment(){
                 }else{
                 echo tep_draw_pull_down_menu('hour', $hour_list, isset($hour)?$hour:''); 
                 }
+                */
+                echo tep_draw_pull_down_menu('hour', $hour_list, isset($hour)?$hour:''); 
                 ?>&nbsp;時&nbsp;<?php 
                 echo tep_draw_pull_down_menu('min', $min_list, isset($min)?$min:''); 
                 ?>&nbsp;分&nbsp;<b>（24時間表記）</b><?php 
