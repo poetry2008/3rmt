@@ -110,8 +110,8 @@ function hidden_payment(){
               'text' => strftime("%Y年%m月%d日（%a）", mktime(0,0,0,$m_num,$d_num+$i,$year)));
   }
   // 取引時間のリスト作成
-  $hour_list[] = array('id' => '', 'text' => '--');
-  for($i=1; $i<24; $i++) {
+    $hour_list[] = array('id' => '', 'text' => '--');
+  for($i=0; $i<24; $i++) {
     $hour_num = str_pad($i, 2, "0", STR_PAD_LEFT);
     $hour_list[] = array('id' => $hour_num,
               'text' => $hour_num);
@@ -155,7 +155,19 @@ function hidden_payment(){
           <td class="main"><table border="0" cellspacing="0" cellpadding="2">
               <tr>
         <td class="main">&nbsp;支払方法:</td>
-                <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('payment_method', $payment_list, isset($payment_method)?$payment_method:'', 'onchange="hidden_payment()"'); ?><?php if (isset($entry_payment_method_error ) && $entry_payment_method_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+                <td class="main">&nbsp;
+                <?php 
+                //diff order and order2
+                if(isset($from_page)&&$from_page == 'create_order_process2'){
+                echo $payment_method;
+                echo tep_draw_hidden_field('payment_method',$payment_method);
+                }else{ 
+                echo tep_draw_pull_down_menu('payment_method', $payment_list, isset($payment_method)?$payment_method:'', 'onchange="hidden_payment()"'); 
+                }
+                if (isset($entry_payment_method_error ) && $entry_payment_method_error == true) { 
+                  echo '&nbsp;&nbsp;<font color="red">Error</font>'; 
+                } ?>
+        </td>
               </tr>
 <?php
   if ($payment_method == 'コンビニ決済') {
@@ -220,7 +232,26 @@ function hidden_payment(){
               </tr>
               <tr>
                 <td class="main">&nbsp;取引時間:</td>
-                <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('hour', $hour_list, isset($hour)?$hour:''); ?>&nbsp;時&nbsp;<?php echo tep_draw_pull_down_menu('min', $min_list, isset($min)?$min:''); ?>&nbsp;分&nbsp;<b>（24時間表記）</b><?php if (isset($entry_tardetime_error ) && $entry_tardetime_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+                <td class="main">&nbsp;
+                <?php 
+                //diff order and order2
+                /*
+                if(isset($from_page)&&$from_page == 'create_order_process2'){
+                  if(!isset($hour)||$hour==''){
+                    $hour = date('H',time());  
+                  }
+                  echo tep_draw_pull_down_menu('hour', $hour_list, isset($hour)?$hour:''); 
+                }else{
+                echo tep_draw_pull_down_menu('hour', $hour_list, isset($hour)?$hour:''); 
+                }
+                */
+                echo tep_draw_pull_down_menu('hour', $hour_list, isset($hour)?$hour:''); 
+                ?>&nbsp;時&nbsp;<?php 
+                echo tep_draw_pull_down_menu('min', $min_list, isset($min)?$min:''); 
+                ?>&nbsp;分&nbsp;<b>（24時間表記）</b><?php 
+                if (isset($entry_tardetime_error ) && $entry_tardetime_error == true) { 
+                  echo '&nbsp;&nbsp;<font color="red">Error</font>'; 
+                } ?></td>
               </tr>
               <tr>
                 <td class="main">&nbsp;オプション:</td>
