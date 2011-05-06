@@ -2089,7 +2089,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
     <?php
       $sum_i ++;
     if ($order_history['calc_price'] == '1') {
-      $sum_price += $order_history['final_price'] * $order_history['products_quantity'];
+      $sum_price += abs($order_history['final_price']) * $order_history['products_quantity'];
       $sum_quantity += $order_history['products_quantity'];
     }
     }
@@ -2139,14 +2139,14 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
       <tr>
         <td class="main" width="120"><?php echo $order_history['torihiki_date'];?></td>
         <td class="main" width="100" align="right"><?php echo $order_history['products_quantity'];?>個</td>
-        <td class="main" align="right"><?php echo display_price( tep_get_bflag_by_product_id($pInfo->relate_products_id) == '0' ? abs($order_history['final_price']): 0- abs($order_history['final_price']));?>円</td>
+        <td class="main" align="right"><?php echo display_price( $order_history['final_price'] );?>円</td>
         <!--<td class="main"><?php echo strip_tags(tep_get_ot_total_by_orders_id($order_history['orders_id']));?></td>-->
         <td class="main" width="100"><?php echo $order_history['orders_status_name'];?></td>
       </tr>
     <?php
       $sum_i ++;
     if ($order_history['calc_price'] == '1') {
-      $sum_price += $order_history['final_price'] * $order_history['products_quantity'];
+      $sum_price += abs($order_history['final_price']) * $order_history['products_quantity'];
       $sum_quantity += $order_history['products_quantity'];
     }
     }
@@ -2154,7 +2154,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
       <tr>
         <th></th>
         <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left">合計:</td><td align="right"><?php echo $sum_quantity;?>個</td></tr></table></td>
-        <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left">平均:</td><td align="right"><?php echo abs(@display_price($sum_price/$sum_quantity));?>円</td></tr></table></td>
+        <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left">平均:</td><td align="right"><?php echo @display_price($sum_price/$sum_quantity);?>円</td></tr></table></td>
         <td class="main"> </td>
       </tr>
     <?php
