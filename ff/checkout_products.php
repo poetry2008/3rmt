@@ -149,7 +149,7 @@ foreach($cart as $key => $val){
         <td><table border="0" width="100%" cellspacing="0" cellpadding="2" summary="table" class="cg_pay_info">  
           <tr> 
             <td class="main"> <b>ご注文の手続きを進めてください。</b><br>「次へ進む」をクリックして取引日時の選択へ。</td> 
-            <td class="main" align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
+            <td class="main" align="right"><?php echo tep_image_submit('button_continue02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
             <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
           </tr> 
         </table></td> 
@@ -211,7 +211,7 @@ foreach($cart as $key => $val){
                     <td><table border="0" width="100%" cellspacing="0" cellpadding="2" summary="table" class="cg_pay_info">  
                       <tr> 
                         <td class="main"> <b>ご注文の手続きを進めてください。</b><br>「次へ進む」をクリックして取引日時の選択へ。</td> 
-                        <td class="main" align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
+                        <td class="main" align="right"><?php echo tep_image_submit('button_continue02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
                         <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                       </tr> 
                     </table></td> 
