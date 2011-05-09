@@ -288,6 +288,7 @@
         $ot_text = "<b>" . $ot_text . "</b>";
       }
       // 处理手续费失效的问题
+      var_dump($ot_class."=====>".$ot_value);
       if ($ot_class == 'ot_custom') {
         $_SESSION['create_order2']['orders_total'][] = array(
           'orders_id' => $oID ,
@@ -323,6 +324,7 @@
     }
   
   }
+
   //exit;
   
   $order = $_SESSION['create_order2']['orders'];
@@ -379,6 +381,12 @@
     }
   }
 
+  $total_value_more_zero = true;
+  if($total_value < 0){
+    $total_value_more_zero = false;
+    $total_value = abs($total_value);
+  }
+
 
   if ($plustax['cnt'] == 0) {
     $newtotal = $total_value + $new_tax;
@@ -401,6 +409,9 @@
   $handle_fee = calc_handle_fee($order['payment_method'], $newtotal);
   
   $newtotal = $newtotal+$handle_fee;
+  if(!$total_value_more_zero){
+    $newtotal = $newtotal*-1;
+  }
 
   $_SESSION['create_order2']['orders_total']['ot_total']['value'] = intval(floor($newtotal));
   $_SESSION['create_order2']['orders_total']['ot_total']['text']  = "<b>" . $currencies->ot_total_format(intval(floor($newtotal)), true, $order['currency']) . "</b>";
@@ -1322,15 +1333,8 @@ function check_add(){
            '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>';
                 if($TotalDetails["Price"]>=0){
-                  if(!$only_buy){
                   echo  $currencies->ot_total_format($TotalDetails["Price"], true,
                       $order['currency'], $order['currency_value']);
-                  }else{
-                  echo "<font color='red'>";
-                  echo  $currencies->ot_total_format($TotalDetails["Price"], true,
-                      $order['currency'], $order['currency_value']);
-                  echo "</font>";
-                  }
                 }else{
                   echo "<font color='red'>";
                   echo  $currencies->ot_total_format($TotalDetails["Price"], true,
@@ -1350,15 +1354,8 @@ function check_add(){
            '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' .
            '    <td align="right" class="' . $TotalStyle . '"><b>';
            if($TotalDetails["Price"]>=0){
-                  if(!$only_buy){
                   echo  $currencies->ot_total_format($TotalDetails["Price"], true,
                       $order['currency'], $order['currency_value']);
-                  }else{
-                  echo "<font color='red'>";
-                  echo  $currencies->ot_total_format($TotalDetails["Price"], true,
-                      $order['currency'], $order['currency_value']);
-                  echo "</font>";
-                  }
            }else{
              echo "<font color='red'>";
              echo $currencies->format($TotalDetails["Price"], true, $order['currency'],
