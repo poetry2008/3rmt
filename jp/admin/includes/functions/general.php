@@ -2905,7 +2905,7 @@ function orders_updated($orders_id) {
 }
 
 // 如果订单的状态发生改动则同步问答
-function orders_status_updated_for_question($orders_id, $orders_status_id, $notify = true) {
+function orders_status_updated_for_question($orders_id, $orders_status_id, $notify = true, $qu_type = null) {
   switch($orders_status_id){
     case 13:
       // 14_1 13_1 13_2(y-m-d)
@@ -2951,6 +2951,9 @@ function orders_status_updated_for_question($orders_id, $orders_status_id, $noti
       tep_db_perform('orders_questions',$arr,'update',"orders_id='".$orders_id."'");
     } else {
       $arr['orders_id'] = $orders_id;
+      if (!is_null($qu_type)) {
+        $arr['orders_questions_type'] = $qu_type; 
+      }
       tep_db_perform('orders_questions',$arr);
     }
   }
