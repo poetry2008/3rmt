@@ -2642,6 +2642,51 @@ function calc_handle_fee($payment_name, $products_total)
   }
   return $handle_fee;
 }
+
+function new_calc_handle_fee($payment_name, $products_total, $oID)
+{
+  $oid_query = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$oID."'"); 
+  $oid_res = tep_db_fetch_array($oid_query);
+  if ($oid_res) {
+    $site_id = $oid_res['site_id']; 
+  } else {
+    $site_id = 0; 
+  } 
+  
+  if ($products_total == 0) {
+    return 0; 
+  }
+  $handle_fee = 0; 
+  if ($payment_name == '銀行振込(買い取り)') {
+    $pay_cost_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MODULE_PAYMENT_BUYING_COST' and (site_id = 0 or site_id = ".$site_id.") order by site_id DESC limit 1"); 
+    $pay_cost_res = tep_db_fetch_array($pay_cost_query); 
+    
+    $handle_fee = calc_fee_final($pay_cost_res['configuration_value'], $products_total); 
+  } else if ($payment_name == 'コンビニ決済') {
+    $pay_cost_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MODULE_PAYMENT_CONVENIENCE_STORE_COST' and (site_id = 0 or site_id = ".$site_id.") order by site_id DESC limit 1"); 
+    $pay_cost_res = tep_db_fetch_array($pay_cost_query); 
+    
+    $handle_fee = calc_fee_final($pay_cost_res['configuration_value'], $products_total); 
+  } else if ($payment_name == '銀行振込') {
+    $pay_cost_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MODULE_PAYMENT_MONEYORDER_COST' and (site_id = 0 or site_id = ".$site_id.") order by site_id DESC limit 1"); 
+    $pay_cost_res = tep_db_fetch_array($pay_cost_query); 
+    
+    $handle_fee = calc_fee_final($pay_cost_res['configuration_value'], $products_total); 
+  } else if ($payment_name == 'ゆうちょ銀行（郵便局）') {
+    $pay_cost_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MODULE_PAYMENT_POSTALMONEYORDER_COST' and (site_id = 0 or site_id = ".$site_id.") order by site_id DESC limit 1"); 
+    $pay_cost_res = tep_db_fetch_array($pay_cost_query); 
+    
+    $handle_fee = calc_fee_final($pay_cost_res['configuration_value'], $products_total); 
+  } else if ($payment_name == 'クレジットカード決済') {
+    $pay_cost_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MODULE_PAYMENT_TELECOM_COST' and (site_id = 0 or site_id = ".$site_id.") order by site_id DESC limit 1"); 
+    $pay_cost_res = tep_db_fetch_array($pay_cost_query); 
+    $handle_fee = calc_fee_final($pay_cost_res['configuration_value'], $products_total); 
+  } else {
+    return 0; 
+  }
+  return $handle_fee;
+}
+
 function calc_fee_final($fee_set, $total_cost)
 {
   $return_fee = 0; 

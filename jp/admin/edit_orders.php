@@ -479,7 +479,7 @@
   //  $newtotal = '0';
   //}
   
-  $handle_fee = calc_handle_fee($update_info_payment_method, $newtotal);
+  $handle_fee = new_calc_handle_fee($_POST['payment_method'], $newtotal, $oID);
   //$newtotal = $newtotal + $_POST['payment_code_fee']; 
   $newtotal = $newtotal+$handle_fee;
   
@@ -765,7 +765,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
           $newtotal = $total_value["total_value"];
         }
       }
-      $handle_fee = calc_handle_fee($order->info['payment_method'], $newtotal);
+      $handle_fee = new_calc_handle_fee($order->info['payment_method'], $newtotal, $oID);
       $newtotal   = $newtotal+$handle_fee;
       
       $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '".intval(floor($newtotal))."', text = '<b>".$currencies->ot_total_format(intval(floor($newtotal)), true, $order->info['currency'])."</b>' where class='ot_total' and orders_id = '".$oID."'";
