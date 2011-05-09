@@ -37,10 +37,23 @@ $("input[name$=\[final_price\]]").each(function(index) {
   var input_name = $(this).attr('name');
   var input_val = $(this).val();
   var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");;
+  var percent = 0;
+  $.ajax({
+    url: 'ajax_orders.php?action=getpercent',
+    data: 'cid='+op_id,
+    type: 'POST',
+    dataType: 'text',
+    async : false,
+    success: function(_data) {
+      percent = _data/100;  
+    }
+    });
   var tmp_str = "input[name=op_id_"+op_id+"]";
   var final_val = $(tmp_str).val();
-  if(input_val > Math.abs(final_val*1.1)||input_val < Math.abs(final_val*0.9)){
-  flag_tmp=false;
+  if(input_val > Math.abs(final_val*(1+percent))||input_val < Math.abs(final_val*(1-percent))){
+    if(percent!=0){
+      flag_tmp=false;
+    }
   }
   });
   if(!flag_tmp){
@@ -97,9 +110,22 @@ $("input[name$=\[final_price\]]").each(function(index) {
   var input_val = $(this).val();
   var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");;
   var tmp_str = "input[name=op_id_"+op_id+"]";
+  var percent = 0;
+  $.ajax({
+    url: 'ajax_orders.php?action=getpercent',
+    data: 'pid='+op_id,
+    type: 'POST',
+    dataType: 'text',
+    async : false,
+    success: function(_data) {
+      percent = _data/100;  
+    }
+    });
   var final_val = $(tmp_str).val();
-  if(input_val > Math.abs(final_val*1.1)||input_val < Math.abs(final_val*0.9)){
-  flag_tmp=false;
+  if(input_val > Math.abs(final_val*(1+percent))||input_val < Math.abs(final_val*(1-percent))){
+    if(percent!=0){
+      flag_tmp=false;
+    }
   }
   });
   if(!flag_tmp){
@@ -148,10 +174,23 @@ $("input[name$=\[final_price\]]").each(function(index) {
   var input_name = $(this).attr('name');
   var input_val = $(this).val();
   var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");;
+  var percent = 0;
+  $.ajax({
+    url: 'ajax_orders.php?action=getpercent',
+    data: 'pid='+op_id,
+    type: 'POST',
+    dataType: 'text',
+    async : false,
+    success: function(_data) {
+      percent = _data/100;  
+    }
+    });
   var tmp_str = "input[name=op_id_"+op_id+"]";
   var final_val = $(tmp_str).val();
-  if(input_val > Math.abs(final_val*1.1)||input_val < Math.abs(final_val*0.9)){
-  flag_tmp = false;
+  if(input_val > Math.abs(final_val*(1+percent))||input_val < Math.abs(final_val*(1-percent))){
+    if(percent!=0){
+      flag_tmp = false;
+    }
   }
   });
 if(!flag_tmp){
@@ -219,10 +258,23 @@ $("input[name$=\[final_price\]]").each(function(index) {
   var input_name = $(this).attr('name');
   var input_val = $(this).val();
   var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");;
+  var percent = 0;
+  $.ajax({
+    url: 'ajax_orders.php?action=getpercent',
+    data: 'cid='+op_id,
+    type: 'POST',
+    dataType: 'text',
+    async : false,
+    success: function(_data) {
+      percent = _data/100;  
+    }
+    });
   var tmp_str = "input[name=op_id_"+op_id+"]";
   var final_val = $(tmp_str).val();
-  if(input_val > Math.abs(final_val*1.1)||input_val < Math.abs(final_val*0.9)){
-  flag_tmp = false;
+  if(input_val > Math.abs(final_val*(1+percent))||input_val < Math.abs(final_val*(1-percent))){
+    if(percent!=0){
+      flag_tmp = false;
+    }
   }
   });
 if(!flag_tmp){

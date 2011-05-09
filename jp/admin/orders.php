@@ -439,7 +439,7 @@
     }
     tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '')");
     // 同步问答
-    orders_status_updated_for_question($oID,tep_db_input($status),$_POST['notify_comments'] == 'on');
+    orders_status_updated_for_question($oID,tep_db_input($status),$_POST['notify_comments'] == 'on', $_POST['qu_type']);
     $order_updated = true;
   }
 
@@ -1702,7 +1702,9 @@ if (false) {
               <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', true && $ma_s['nomail'] != '1', '', 'id="notify_comments"'); ?><b>ステータス通知</b></td>
             </tr>
             <tr>
-              <td class="main" colspan="2"><br><b style="color:#FF0000;">間違い探しはしましたか？</b><br><br><?php echo tep_image_submit('button_update.gif', IMAGE_UPDATE); ?></td>
+              <td class="main" colspan="2">
+              <?php echo tep_draw_hidden_field('qu_type', $orders_questions_type);?> 
+              <br><b style="color:#FF0000;">間違い探しはしましたか？</b><br><br><?php echo tep_image_submit('button_update.gif', IMAGE_UPDATE); ?></td>
             </tr>
           </table>
         </td>
@@ -2090,12 +2092,8 @@ if (false) {
           " . $where_payment . $where_type . "
         order by torihiki_date_error DESC,o.torihiki_date DESC";
     }  elseif (isset($_GET['keywords']) && $_GET['keywords'] && isset($_GET['search_type']) && $_GET['search_type'] == 'products_name' && !$_GET['type'] && !$payment) {
-      $orders_query_raw = "
-        select distinct op.orders_id
-        from " . TABLE_ORDERS_PRODUCTS . " op 
-        where op.products_name like '%".$_GET['keywords']."%'
-        " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-        order by op.torihiki_date desc";
+      //$orders_query_raw = " select distinct op.orders_id from " . TABLE_ORDERS_PRODUCTS . " op where op.products_name like '%".$_GET['keywords']."%' " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id']) . "' " : '') . " order by op.torihiki_date desc";
+      $orders_query_raw = " select distinct op.orders_id from " .  TABLE_ORDERS_PRODUCTS . " op where op.products_name = '".$_GET['keywords']."' " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id']) . "' " : '') . " order by op.torihiki_date desc";
   } elseif (
     isset($_GET['keywords']) && $_GET['keywords']
     and ((isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name')
@@ -2146,10 +2144,13 @@ if (false) {
         $keyword = tep_db_prepare_input($search_keywords[$i]);
         //$orders_query_raw .= "(";
         if (isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name') {
-          $orders_query_raw .= "o.customers_name like '%" . tep_db_input($keyword) . "%' or ";
-          $orders_query_raw .= "o.customers_name_f like '%" . tep_db_input($keyword) . "%'";
+          //$orders_query_raw .= "o.customers_name like '%" . tep_db_input($keyword) . "%' or ";
+          //$orders_query_raw .= "o.customers_name_f like '%" . tep_db_input($keyword) . "%'";
+          $orders_query_raw .= "o.customers_name = '" . tep_db_input($keyword) . "' or ";
+          $orders_query_raw .= "o.customers_name_f = '" . tep_db_input($keyword) . "'";
         } else if (isset($_GET['search_type']) && $_GET['search_type'] == 'email') {
-          $orders_query_raw .= "o.customers_email_address like '%" . tep_db_input($keyword) . "%'";
+          //$orders_query_raw .= "o.customers_email_address like '%" . tep_db_input($keyword) . "%'";
+          $orders_query_raw .= "o.customers_email_address = '" . tep_db_input($keyword) . "'";
         }
         //$orders_query_raw .= ")";
     break;
@@ -2160,7 +2161,7 @@ if (false) {
     
     $orders_query_raw .= " order by torihiki_date_error DESC,o.torihiki_date DESC";
   } elseif (isset($_GET['keywords']) && $_GET['keywords']) {
-      $orders_query_raw = "
+    $orders_query_raw = "
         select distinct(o.orders_id), 
                o.torihiki_date, 
                IF(o.torihiki_date = '0000-00-00 00:00:00',1,0) as torihiki_date_error,

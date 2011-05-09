@@ -11,70 +11,78 @@
   define('TABLE_FAQ_QUESTIONS',  'faq_questions');
 
   //require(DIR_WS_LANGUAGES . $language . '/' .  FILENAME_FAQ);
-
-if (isset($_GET['action']) and $_GET['action']) {
+  if (isset($_GET['action']) && $_GET['action']) {
     switch ($_GET['action']) {
-      case 'insert_category':
-        $g_id     = tep_db_prepare_input($_POST['g_id']);
-        $category = tep_db_prepare_input($_POST['category']);
-        $c_order  = tep_db_prepare_input($_POST['c_order']);
-        tep_db_query("insert into " . TABLE_FAQ_CATEGORIES . " (
-          c_id, g_id, c_order, category
-          ) values (
-          NULL, '" . $g_id . "', '" . $c_order . "', '" . $category . "')");
-        $messageStack->add(TEXT_FAQ_INSERT_CATEGORY_SUCCESS, 'success');
-        tep_redirect(tep_href_link(FILENAME_FAQ, 'g_id='.$g_id.'&cID='.tep_db_insert_id()));
-        break;
-      case 'insert_question':
-        $c_id     = tep_db_prepare_input($_POST['c_id']);
-        $q_order  = tep_db_prepare_input($_POST['q_order']);
-        $question = tep_db_prepare_input($_POST['question']);
-        $answer   = tep_db_prepare_input($_POST['answer']);
+      case 'delete_faq_category_confirm':
 
-        tep_db_query("insert into " . TABLE_FAQ_QUESTIONS . " (
-          q_id, c_id, q_order, question, answer) values (NULL, '".$c_id."', '".$q_order."', '".$question."', '".$answer."')");
-        $messageStack->add(TEXT_FAQ_INSERT_QUESTION_SUCCESS, 'success');
-        tep_redirect(tep_href_link(FILENAME_FAQ, 'c_id='.$c_id.'&q_id='.tep_db_insert_id()));
         break;
-      case 'save_question':
-        $q_id     = tep_db_prepare_input($_GET['q_id']);
-        $q_order  = tep_db_prepare_input($_POST['q_order']);
+      case 'insert_faq':
+      case 'update_faq':
+         if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];
+         else $site_arr="";
+         //   $edit_per=editPermission($site_arr, $site_id);//判断是否拥有相应网站的管理权限
+         forward401Unless(editPermission($site_arr, $site_id));
         $question = tep_db_prepare_input($_POST['question']);
-        $answer   = tep_db_prepare_input($_POST['answer']);
-
-        tep_db_query("
-            update " . TABLE_FAQ_QUESTIONS . " set q_order='".$q_order."', question='".$question."', answer='".$answer."' where q_id = '".$q_id."'");
-        $messageStack->add(TEXT_FAQ_UPDATE_QUESTION_SUCCESS, 'success');
-        $q = tep_get_faq_question($q_id);
-        tep_redirect(tep_href_link(FILENAME_FAQ, 'c_id='.$q['c_id'].'&q_id='. $q_id));
+        $answer = tep_db_prepare_input($_POST['answer']);
+        $faq_order = tep_db_prepare_input($_POST['faq_order']);
+        $sql_data_array = array('question' => $question,
+            'answer' => $answer,
+            'faq_order' => $faq_order?$faq_order:0,
+            );
+        if($_GET['action'] == 'insert_faq'){
+          $faq_category_id = tep_db_prepare_input($_POST['faq_category_id']);
+          $insert_sql_data = array('faq_category_id' => $faq_category_id);
+          $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
+          tep_db_perform(TABLE_FAQ_QUESTIONS, $sql_data_array);
+          $faq_id = tep_db_insert_id();
+        }else if($_GET['action'] == 'update_faq'){
+          $faq_id = tep_db_prepare_input($_POST['faq_id']);
+          tep_db_perform(TABLE_FAQ_QUESTIONS, $sql_data_array, 'update','faq_id
+              =\''.$faq_id.'\'');
+        }
+        tep_redirect(tep_href_link(FILENAME_FAQ,
+              'cPath='.$cPath.'&qID='.$faq_id.'&site_id='.$site_id));
         break;
-      case 'save_category':
-        $c_id    = tep_db_prepare_input($_GET['c_id']);
-        $c_order = tep_db_prepare_input($_POST['c_order']);
-        $category = tep_db_prepare_input($_POST['category']);
-        
-        tep_db_query("update " . TABLE_FAQ_CATEGORIES . " set c_order='".$c_order."', category='".$category."' where c_id = '".$c_id."'");
-        $messageStack->add(TEXT_FAQ_UPDATE_CATEGORY_SUCCESS, 'success');
-        $c = tep_get_faq_category($c_id);
-        tep_redirect(tep_href_link(FILENAME_FAQ, 'g_id='.$c['g_id'].'&cID='.$c_id));
-        break;
-      case 'delete_category_confirm':
-        $c_id = tep_db_prepare_input($_GET['c_id']);
-        $c = tep_get_faq_category($c_id);
-        tep_db_query("delete from " . TABLE_FAQ_CATEGORIES . " where c_id = '" . tep_db_input($c_id) . "'");
-        tep_db_query("delete from " . TABLE_FAQ_QUESTIONS . " where c_id = '" . tep_db_input($c_id) . "'");
-        $messageStack->add(TEXT_FAQ_DELETE_CATEGORY_SUCCESS, 'success');
-        tep_redirect(tep_href_link(FILENAME_FAQ, 'g_id='.$c['g_id']));
-        break;
-      case 'delete_question_confirm':
-        $q_id = tep_db_prepare_input($_GET['q_id']);
-        $q = tep_get_faq_question($q_id);
-        tep_db_query("delete from " . TABLE_FAQ_QUESTIONS . " where q_id = '" . tep_db_input($q_id) . "'");
-        $messageStack->add(TEXT_FAQ_DELETE_QUESTION_SUCCESS, 'success');
-        tep_redirect(tep_href_link(FILENAME_FAQ, 'c_id='.$q['c_id']));
+      case 'insert_faq_category':
+      case 'update_faq_category':
+        $faq_id = tep_db_prepare_input($_POST['id']);
+        $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
+         if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];
+         else $site_arr="";
+         //   $edit_per=editPermission($site_arr, $site_id);//判断是否拥有相应网站的管理权限
+         forward401Unless(editPermission($site_arr, $site_id));
+        $faq_name = tep_db_prepare_input($_POST['name']);
+        $faq_order = tep_db_prepare_input($_POST['order']);
+        if($site_id){
+        $sql_data_array = array('site_id' => $site_id,'name' => $faq_name);
+        }else{
+        $sql_data_array = array('name' => $faq_name);
+        }
+        if($_GET['action'] == 'insert_faq_category'){
+          $faq_order = tep_db_prepare_input($_POST['order']);
+          $faq_parent_id = tep_db_prepare_input($_POST['parent_id'])?
+            tep_db_prepare_input($_POST['parent_id']):0;
+          $insert_sql_data = array(
+              'sort_order' => $faq_order,
+              'parent_id' => $faq_parent_id,
+              'created_at' => 'now()');
+          $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
+          tep_db_perform(TABLE_FAQ_CATEGORIES, $sql_data_array);
+          $faq_id = tep_db_insert_id();
+        }else if($_GET['action'] == 'update_faq_category'){
+          $update_sql_data = array(
+              'sort_order' => $faq_order,
+              'updated_at' => 'now()');
+          $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
+          tep_db_perform(TABLE_FAQ_CATEGORIES, $sql_data_array, 'update','id
+              =\''.$faq_id.'\'');
+        }
+        tep_redirect(tep_href_link(FILENAME_FAQ,
+              'cPath='.$cPath.'&cID='.$faq_id.'&site_id='.$site_id));
         break;
     }
   }
+
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
@@ -103,7 +111,28 @@ if (isset($_GET['action']) and $_GET['action']) {
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
-            <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
+            <td class="pageHeading" align="right">
+            <?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?>
+            </td>
+            <td class="smallText" align="right">
+            <?php 
+            //search form for faq
+            echo tep_draw_form('search',FILENAME_FAQ,'','get')."\n";
+            ?>
+            <div class="faq_search">
+            <?php
+            echo tep_draw_hidden_field('site_id',isset($_GET['site_id'])?$_GET['site_id']:'0');
+            echo HEADING_TITLE_SEARCH. ' ' .
+            tep_draw_input_field('search',isset($_GET['search'])?$_GET['search']:'');
+            ?>
+            </div>
+            </form>
+            </td>
+            <td class="smallText" align="right">
+            <div class="faq_gotomenu">
+              goto menu
+            </div>
+            </td>
           </tr>
         </table></td>
       </tr>
@@ -111,210 +140,416 @@ if (isset($_GET['action']) and $_GET['action']) {
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top">
-            
             <table border="0" width="100%" cellspacing="0" cellpadding="2">
-<?php if (isset($_GET['c_id'])) {
-  // question list
-?>
-              <tr class="dataTableHeadingRow">
-                <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_QUESTION_QUESTION; ?></td>
-                <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_QUESTION_ORDER; ?></td>
-                <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
-              </tr>
-<?php
-  $question_query = tep_db_query("select * from " . TABLE_FAQ_QUESTIONS . " where c_id='".$c_id."'  order by q_order ASC");
-  while ($question = tep_db_fetch_array($question_query)) {
-      if (( (!isset($_GET['q_id']) || !$_GET['q_id']) || ($_GET['q_id'] == $question['q_id'])) && (!isset($qInfo) || !$qInfo) && (!isset($_GET['action']) || substr($_GET['action'], 0, 3) != 'new')) {
-      $qInfo = new objectInfo($question);
-    }
-
-    if (isset($qInfo) && (is_object($qInfo)) && ($question['q_id'] == $qInfo->q_id) ) {
-      echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_FAQ, 'c_id=' . $qInfo->q_id. '&action=edit_question') . '\'">' . "\n";
-    } else {
-      echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_FAQ, 'c_id='.$_GET['c_id'].'&q_id=' . $question['q_id']) . '\'">' . "\n";
-    }
-?>
-                <td class="dataTableContent"><?php echo $question['question']; ?></td>
-                <td class="dataTableContent"><?php echo $question['q_order']; ?></td>
-                <td class="dataTableContent" align="right"><?php if ( isset($qInfo) && (is_object($qInfo)) && ($question['q_id'] == $qInfo->q_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_FAQ, 'c_id=' . $_GET['c_id'] . '&q_id=' . $question['q_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
-              </tr>
-<?php
-  }
-            } else if(isset($_GET['g_id'])) {
-  // category list
-?>
-              <tr class="dataTableHeadingRow">
-                <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CATEGORY_CATEGORY; ?></td>
-                <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CATEGORY_ORDER; ?></td>
-                <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
-              </tr>
-<?php
-  $categories_query = tep_db_query("select * from " . TABLE_FAQ_CATEGORIES . " where g_id = '".$_GET['g_id']."' order by c_order ASC");
-  while ($category = tep_db_fetch_array($categories_query)) {
-      if (( (!isset($_GET['cID']) || !$_GET['cID']) || ($_GET['cID'] == $category['c_id'])) && (!isset($cInfo) || !$cInfo) && (!isset($_GET['action']) || substr($_GET['action'], 0, 3) != 'new')) {
-      $cInfo = new objectInfo($category);
-    }
-
-    if (isset($cInfo) && (is_object($cInfo)) && ($category['c_id'] == $cInfo->c_id) ) {
-      echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_FAQ, 'g_id='.$_GET['g_id'].'&cID=' . $cInfo->c_id . '&action=edit_category') . '\'">' . "\n";
-    } else {
-      echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_FAQ, 'g_id='.$_GET['g_id'].'&cID=' . $category['c_id']) . '\'">' . "\n";
-    }
-?>
-                <td class="dataTableContent"><?php 
-                    echo '<a href="' . tep_href_link(FILENAME_FAQ, 'c_id=' . $category['c_id']) . '">' . tep_image(DIR_WS_ICONS . 'folder.gif', ICON_FOLDER) . '</a>&nbsp;' .  $category['category']; ?></td>
-                <td></td>
-                <td class="dataTableContent" align="right"><?php if ( isset($cInfo) && (is_object($cInfo)) && ($category['c_id'] == $cInfo->c_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_FAQ, '&cID=' . $category['c_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
-              </tr>
-<?php
-  }
-            } else {
-              // game list
-?>
-              <tr class="dataTableHeadingRow">
-                <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_GAME_NAME; ?></td>
-                <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
-              </tr>
-<?php
-  $games_query = tep_db_query("select * from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where c.categories_id = cd.categories_id and cd.site_id = 0 and c.parent_id = '0' and c.categories_id IN (". tep_get_faq_game_id_string() .") order by sort_order ASC");
-  while ($game = tep_db_fetch_array($games_query)) {
-      if (( (!isset($_GET['cID']) || !$_GET['cID']) || ($_GET['cID'] == $game ['categories_id'])) && (!isset($gInfo) || !$gInfo) && (!isset($_GET['action']) || substr($_GET['action'], 0, 3) != 'new')) {
-      $gInfo = new objectInfo($game );
-    }
-
-      echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_FAQ, '&g_id=' . $game['categories_id']) . '\'">' . "\n";
-?>
-                <td class="dataTableContent"><?php echo $game['categories_name']; ?></td>
-                <td class="dataTableContent" align="right"><?php if ( isset($gInfo) && (is_object($gInfo)) && ($game['categories_id'] == $gInfo->categories_id) ) { 
-                  echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); 
-                } else { 
-                  echo '<a href="' . tep_href_link(FILENAME_FAQ, '&cID=' . $game['categories_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
-                } ?>&nbsp;</td>
-              </tr>
-<?php
-  }
-            }
-
-?>
               <tr>
-                <td colspan="4"><table border="0" width="100%" cellspacing="0" cellpadding="2">
-<?php
-  if (!isset($_GET['action'])) {
-    if (isset($_GET['g_id'])) {
-?>
-                  <tr>
-                    <td colspan="2" align="right">
-                    <?php echo '<a href="' . tep_href_link(FILENAME_FAQ, 'action=new_category&g_id=' . $_GET['g_id']) . '">' . tep_image_button('button_new_tag.gif', IMAGE_NEW_TAG) . '</a>'; ?>
-
-                    <?php echo '<a href="' . tep_href_link(FILENAME_FAQ) . '">' . tep_image_button('button_new_tag.gif', IMAGE_BACK) . '</a>'; ?>
+                <td ><div ><?php tep_site_filter(FILENAME_FAQ);?></div></td>
+              </tr>
+              <tr>
+                <td >
+                <table border="0" width="100%" cellspacing="0" cellpadding="2">
+                <?php /* faq infor table */?>
+                  <tr class="dataTableHeadingRow">
+                    <td class="dataTableHeadingContent">
+                      <?php echo TABLE_FAQ_CATEGORY_NAME; ?>
+                    </td>
+                    <td class="dataTableHeadingContent" align="right">
+                      <?php echo TABLE_HEADING_ACTION;?>&nbsp;
                     </td>
                   </tr>
-<?php
-    } else if (isset($_GET['c_id'])) {
-      $current_category = tep_get_faq_category($_GET['c_id']);
-?>
-                  <tr>
-                    <td colspan="2" align="right">
-                    <?php echo '<a href="' . tep_href_link(FILENAME_FAQ, 'action=new_question&c_id=' . $_GET['c_id']) . '">' . tep_image_button('button_new_tag.gif', IMAGE_NEW_TAG) . '</a>'; ?>
+                  <?php 
+                  // faq category list
+                  $faq_category_count = 0;
+                  $rows = 0;
+                  if(isset($_GET['search']) && $_GET['search']) {
+                    $faq_category_query_raw = "
+                      select `id`,`parent_id`,`sort_order`,`name`,`site_id`
+                          ,`created_at`,`updated_at`
+                          from ".TABLE_FAQ_CATEGORIES." 
+                          where `name` like '%".$_GET['search']."%'  
+                          and site_id ='".((isset($_GET['site_id']) &&
+                          $_GET['site_id'])?$_GET['site_id']:0)."' 
+                          order by `sort_order` DESC";
+                  }else{
+                    $faq_category_query_raw = "
+                      select `id`,`parent_id`,`sort_order`,`name`,`site_id`
+                          ,`created_at`,`updated_at`
+                          from ".TABLE_FAQ_CATEGORIES." 
+                          where site_id ='".((isset($_GET['site_id']) &&
+                          $_GET['site_id'])?$_GET['site_id']:0)."' 
+                          and `parent_id`='".$current_category_id."'
+                          order by `sort_order` DESC";
 
-                    <?php echo '<a href="' . tep_href_link(FILENAME_FAQ, 'g_id=' . $current_category['g_id']) . '">' . tep_image_button('button_new_tag.gif', IMAGE_BACK) . '</a>'; ?>
-                    </td>
-                  </tr>
-<?php
-    }
-  }
-?>
-                </table></td>
+                  }
+                  $faq_category_query = tep_db_query($faq_category_query_raw);
+                  while($faq_category = tep_db_fetch_array($faq_category_query)){
+                    $faq_count++;
+                    $rows++;
+
+                    $faq_info_arr =
+                      array('id','parent_id','sort_order','name','site_id');
+                    if(isset($_GET['search']) && $_GET['search']){
+                        $cPath= $categories['parent_id'];
+                    }
+                    if(
+                        ((!isset($_GET['cID']) || !$_GET['cID']) &&
+                         (!isset($_GET['qID']) || !$_GET['qID']) ||
+                         (isset($_GET['cID']) && $_GET['cID'] == $faq_category['id'])) 
+                         && (!isset($faq_info) || !$faq_info) 
+                         && (!isset($_GET['action']) || substr($_GET['action'], 0, 4) != 'new_')
+                      ){
+                    $faq_info = new objectInfo($faq_category);
+                    }
+
+                    // row color 
+                    $even = 'dataTableSecondRow';
+                    $odd = 'dataTableRow';
+                    if(isset($newColor) && $newColor == $odd) {
+                      $nowColor = $even;
+                    }else{
+                      $nowColor = $odd;
+                    }
+
+                    if((isset($faq_info)&&is_object($faq_info))&&
+                        ($faq_category['id'] == $faq_info->id)){
+                      echo '<tr class="dataTableRowSelected" 
+                        onmouseover="this.style.cursor=\'hand\'" 
+                        onclick="document.location.herf=\''.tep_href_link(FILENAME_FAQ,
+                        tep_get_faq_path($faq_category['id']).
+                        '&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)))
+                        . '\'">' . "\n";
+
+                    }else{
+                      echo '<tr class="'.$nowColor.'" 
+                        onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" 
+                        onmouseout="this.className=\''.$nowColor.'\'" 
+                        onclick="document.location.href=\''.tep_href_link(FILENAME_FAQ,
+                        'cPath='.
+                          $cPath.(isset($_GET['page'])&&$_GET['page']?('&page='.$_GET['page']):'').
+                          '&cID='.$faq_category['id'].'&site_id='.
+                          ((isset($_GET['site_id'])?$_GET['site_id']:0))).
+                          '\'">'."\n";
+                    }
+
+                    echo '<td class="dataTableContent">';
+                    echo '<a
+                      href="'.tep_href_link(FILENAME_FAQ,
+                        tep_get_faq_path($faq_category['id']).'&site_id='.
+                      ((isset($_GET['site_id'])?$_GET['site_id']:0))). '">' .
+                      tep_image(DIR_WS_ICONS.'folder.gif',ICON_FOLDER) .'</a>&nbsp;
+                    <b>'.$faq_category['name'].'</b>';
+                    echo '</td>';
+                    echo '<td class="dataTableContent" align="right">';
+                    if((isset($faq_info)&&is_object($faq_info))&&
+                        ($faq_category['id'] == $faq_info->id)){
+                      echo tep_image(DIR_WS_IMAGES.'icon_arrow_right.gif','');
+                    }else{
+                      echo '<a
+                        href="'.tep_href_link(FILENAME_FAQ,'cPath='.$cPath.
+                        '&cID='.$faq_category['id'].
+                        '&site_id'.((isset($_GET['site_id'])?$_GET['site_id']:0))).
+                        '">'.tep_image(DIR_WS_IMAGES . 'icon_info.gif',
+                        IMAGE_ICON_INFO) . '</a>';
+                    }
+                    echo '&nbsp;</td>';
+                    echo '</tr>';
+                  }
+                  $faq_count=0;
+                  if(isset($_GET['search']) && $_GET['search']) {
+                    $faq_query_raw = "select 
+                      faq_id,faq_category_id,faq_order,question,answer,site_id 
+                      from ".TABLE_FAQ_QUESTIONS." 
+                      where question like '%".$_GET['search']."%' 
+                      and site_id ='".((isset($_GET['site_id']) &&
+                      $_GET['site_id'])?$_GET['site_id']:0)."' 
+                      order by faq_order ";
+                  }else{
+                    $faq_query_raw = "select 
+                      faq_id,faq_category_id,faq_order,question,answer,site_id  
+                      from ".TABLE_FAQ_QUESTIONS." 
+                      where faq_category_id = '".$current_category_id."'  
+                      and site_id ='".((isset($_GET['site_id']) &&
+                      $_GET['site_id'])?$_GET['site_id']:0)."' 
+                      order by faq_order ";
+                  }
+                  define(MAX_DISPLAY_FAQ_ADMIN,5);
+                  $faq_split = new splitPageResults($_GET['page'],MAX_DISPLAY_FAQ_ADMIN,
+                      $faq_query_raw,$faq_query_number);
+                  $_faq_query = tep_db_query($faq_query_raw);
+                  while($_faq_info = tep_db_fetch_array($_faq_query)){
+                    $faq_count++;
+                    $rows++;
+
+                    if(isset($_GET['search'])&&$_GET['search']){
+                      $cPath=$_faq_info['faq_category_id'];
+                    }
+                    if(
+                        ((!isset($_GET['qID']) || !$_GET['qID']) &&
+                         (!isset($_GET['cID']) || !$_GET['cID']) ||
+                         (isset($_GET['qID']) && $_GET['qID'] ==
+                          $_faq_info['faq_id']))
+                        && (!isset($qInfo) || !$qInfo)
+                        && (!isset($faq_info) || !$faq_info)
+                        && (!isset($_GET['action']) || substr($_GET['action'], 0, 4)
+                          != 'new_')
+                      ){
+                      $qInfo = new objectInfo($_faq_info);
+                    }
+
+                    $even = 'dataTableSecondRow';
+                    $odd = 'dataTableRow';
+                    if(isset($newColor) && $newColor == $odd) {
+                      $nowColor = $even;
+                    }else{
+                      $nowColor = $odd;
+                    }
+
+                    if((isset($qInfo)&&is_object($qInfo))&&
+                        ($_faq_info['faq_id'] == $qInfo->faq_id)){
+                      echo '<tr class="dataTableRowSelected" 
+                        onmouseover="this.style.cursor=\'hand\'" 
+                        onclick="document.location.herf=\''.tep_href_link(FILENAME_FAQ,
+                        'cPath='.$cPath.($_GET['page'] ? ('&page=' . $_GET['page']): '' ) .
+                        '&qID='.$_faq_info['faq_id'].
+                        '&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)))
+                        . '\'">' . "\n";
+
+                    }else{
+                      echo '<tr class="'.$nowColor.'" 
+                        onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" 
+                        onmouseout="this.className=\''.$nowColor.'\'" 
+                        onclick="document.location.href=\''.tep_href_link(FILENAME_FAQ,
+                        'cPath='.$cPath.($_GET['page'] ? ('&page=' . $_GET['page']): '' ) .
+                        '&qID='.$_faq_info['faq_id'].
+                        '&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)))
+                        .  '\'">'."\n";
+                    }
+                      echo "<td class='dataTableContent'>";
+                      echo "<b>".$_faq_info['question']."</b>";
+                      echo "</td>";
+                      echo '<td class="dataTableContent" align="right">';
+                      if(isset($qInfo)&&(is_object($qInfo))&&
+                            $_faq_info['faq_id'] ==  $qInfo->faq_id){
+                        echo tep_image(DIR_WS_IMAGES.'icon_arrow_right.gif', '');
+                      }else{
+                        echo '<a href="'.tep_href_link(FILENAME_FAQ,
+                             'cPath='.$cPath.'&qID='.$_faq_info['faq_id'].'&site_id='.
+                               ((isset($_GET['site_id'])?$_GET['site_id']:0))).'">'.
+                               tep_image(DIR_WS_IMAGES . 'icon_info.gif',
+                                   IMAGE_ICON_INFO) . '</a>';
+                      }
+                      echo "&nbsp;</td>";
+                      echo "</tr>";
+                  }
+
+                  ?>
+                </table>
+                </td>
+              </tr>
+              <tr>
+                <td align="right" class="smallText">
+                  <?php 
+    //path array to  path_back
+    if ($cPath_array) {
+      $cPath_back = '';
+      for($i = 0, $n = sizeof($cPath_array) - 1; $i < $n; $i++) {
+        if ($cPath_back == '') {
+          $cPath_back .= $cPath_array[$i];
+        } else {
+          $cPath_back .= '_' . $cPath_array[$i];
+        }    
+      }    
+    }    
+
+    $cPath_back = isset($cPath_back) && $cPath_back ? 'cPath=' . $cPath_back : '';
+                  // new faq category and new faq button
+                  if($cPath){
+                    echo tep_html_button(IMAGE_BACK,
+                      tep_href_link(FILENAME_FAQ,$cPath_back.'&cID='.$current_category_id.
+                        '&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))));
+                    echo '&nbsp;';
+                  }
+                  if((!isset($_GET['search'])||!$_GET['search'])&&
+                      $ocertify->npermission >= 10){
+                    echo tep_html_button(IMAGE_NEW_FAQ_CATEGORY,tep_href_link(FILENAME_FAQ,
+                            'cPath='.$cPath.'&action=new_faq_category'.'&site_id='.$site_id));
+                    echo '&nbsp;';
+                    echo tep_html_button(IMAGE_NEW_FAQ,tep_href_link(FILENAME_FAQ,
+                          'cPath='.$cPath.'&action=new_faq'.'&site_id='.$site_id));
+                  }
+
+
+                  ?>
+                </td>
               </tr>
             </table></td>
 <?php
   $heading = array();
   $contents = array();
+  // faq right info
 switch (isset($_GET['action'])? $_GET['action']:'') {
-    case 'new_category':
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_NEW_CATEGORY . '</b>');
-
-      $contents = array('form' => tep_draw_form('category', FILENAME_FAQ, 'action=insert_category', 'post', 'enctype="multipart/form-data"'));
-      $contents[] = array('text' => tep_draw_hidden_field('g_id', $_GET['g_id']));
-      $contents[] = array('text' => TEXT_INFO_INSERT_INTRO);
-      $contents[] = array('text' => '<br>' . TEXT_INFO_CATEGORY_CATEGORY . '<br>' . tep_draw_input_field('category'));
-      $contents[] = array('text' => '<br>' . TEXT_INFO_QUESTION_ORDER . '<br>' . tep_draw_input_field('c_order'));
-      $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_insert.gif', IMAGE_INSERT) . '&nbsp;<a href="' . tep_href_link(FILENAME_FAQ, 'g_id=' . $_GET['g_id']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
-      break;
-    case 'new_question':
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_NEW_QUESTION . '</b>');
-
-      $contents = array('form' => tep_draw_form('question', FILENAME_FAQ, 'action=insert_question', 'post', 'enctype="multipart/form-data"'));
-      $contents[] = array('text' => tep_draw_hidden_field('c_id'));
-      $contents[] = array('text' => TEXT_INFO_INSERT_INTRO);
-      $contents[] = array('text' => '<br>' . TEXT_INFO_QUESTION_QUESTION . '<br>' . tep_draw_input_field('question'));
-      $contents[] = array('text' => '<br>' . TEXT_INFO_QUESTION_ANSWER . '<br>' . tep_draw_textarea_field('answer','',30,3));
-      $contents[] = array('text' => '<br>' . TEXT_INFO_QUESTION_ORDER . '<br>' . tep_draw_input_field('q_order'));
-      $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_insert.gif', IMAGE_INSERT) . '&nbsp;<a href="' . tep_href_link(FILENAME_FAQ, 'c_id=' . $_GET['c_id']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
-      break;
-    case 'edit_category':
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_EDIT_CATEGORY . '</b>');
-
-      $contents = array('form' => tep_draw_form('category', FILENAME_FAQ, 'c_id=' . $cInfo->c_id . '&action=save_category', 'post', 'enctype="multipart/form-data"'));
-      $contents[] = array('text' => TEXT_INFO_EDIT_INTRO);
-      $contents[] = array('text' => '<br>' . TEXT_INFO_CATEGORY_CATEGORY . '<br>' . tep_draw_input_field('category', $cInfo->category));
-      $contents[] = array('text' => '<br>' . TEXT_INFO_QUESTION_ORDER . '<br>' . tep_draw_input_field('c_order', $cInfo->c_order));
-      
-      $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_update.gif', IMAGE_UPDATE) . '&nbsp;<a href="' . tep_href_link(FILENAME_FAQ, 'g_id=' . $cInfo->g_id . '&cID=' . $cInfo->c_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
-      break;
-    case 'edit_question':
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_EDIT_QUESTION . '</b>');
-
-      $contents = array('form' => tep_draw_form('question', FILENAME_FAQ, 'q_id=' . $qInfo->q_id . '&action=save_question', 'post', 'enctype="multipart/form-data"'));
-      $contents[] = array('text' => TEXT_INFO_EDIT_INTRO);
-      $contents[] = array('text' => '<br>' . TEXT_INFO_QUESTION_QUESTION . '<br>' . tep_draw_input_field('question', $qInfo->question));
-      $contents[] = array('text' => '<br>' . TEXT_INFO_QUESTION_ANSWER . '<br>' . tep_draw_textarea_field('answer','',30,3, $qInfo->answer));
-      $contents[] = array('text' => '<br>' . TEXT_INFO_QUESTION_ORDER . '<br>' . tep_draw_input_field('q_order', $qInfo->q_order));
-      
-      $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_update.gif', IMAGE_UPDATE) . '&nbsp;<a href="' . tep_href_link(FILENAME_FAQ, 'c_id=' . $qInfo->c_id . '&q_id=' . $qInfo->q_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
-      break;
-    case 'delete_category':
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_CATEGORY . '</b>');
-
-      $contents = array('form' => tep_draw_form('question', FILENAME_FAQ, 'c_id=' . $cInfo->c_id . '&action=delete_category_confirm'));
-      $contents[] = array('text' => TEXT_INFO_DELETE_INTRO);
-      $contents[] = array('text' => '<br><b>' . $cInfo->category . '</b>');
-      $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_delete.gif', IMAGE_DELETE) . '&nbsp;<a href="' . tep_href_link(FILENAME_FAQ, 'g_id=' . $cInfo->g_id . '&cID=' . $cInfo->c_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
-      break;
-    case 'delete_question':
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_QUESTION . '</b>');
-
-      $contents = array('form' => tep_draw_form('question', FILENAME_FAQ, 'q_id=' . $qInfo->q_id . '&action=delete_question_confirm'));
-      $contents[] = array('text' => TEXT_INFO_DELETE_INTRO);
-      $contents[] = array('text' => '<br><b>' . $qInfo->question. '</b>');
-      $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_delete.gif', IMAGE_DELETE) . '&nbsp;<a href="' . tep_href_link(FILENAME_FAQ, 'c_id=' . $qInfo->c_id . '&q_id=' . $qInfo->q_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
-      break;
-    default:
-      if (isset($cInfo) && is_object($cInfo)) {
-        $heading[] = array('text' => '<b>' . $cInfo->category. '</b>');
-
-        $contents[] = array(
-            'align' => 'center', 
-            'text' => '<a href="' . tep_href_link(FILENAME_FAQ, 'g_id='.$_GET['g_id'].'&cID=' . $cInfo->c_id. '&action=edit_category') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>'
-                    . ($ocertify->npermission == 15 ? ( ' <a href="' . tep_href_link(FILENAME_FAQ, 'g_id='.$_GET['g_id'].'&cID=' . $cInfo->c_id. '&action=delete_category') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>'):'')
-        );
-        $contents[] = array('text' => '<br>' . TEXT_INFO_CATEGORY_CATEGORY . '<br>' . $cInfo->category. '<br>');
-        $contents[] = array('text' => '<br>' . TEXT_INFO_CATEGORY_ORDER . '<br>' . $cInfo->c_order. '<br>');
-      } else if (isset($qInfo) && is_object($qInfo)) {
-        $heading[] = array('text' => '<b>' . $qInfo->question . '</b>');
-
-        $contents[] = array(
-            'align' => 'center', 
-            'text' => '<a href="' . tep_href_link(FILENAME_FAQ, 'c_id=' . $_GET['c_id'] . '&q_id=' . $qInfo->q_id. '&action=edit_question') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>' 
-                    . ($ocertify->npermission == 15 ? ( ' <a href="' . tep_href_link(FILENAME_FAQ, 'c_id='.$_GET['c_id'].'&q_id=' . $qInfo->q_id. '&action=delete_question') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>'):'')
-        );
-        $contents[] = array('text' => '<br>' . TEXT_INFO_QUESTION_QUESTION . '<br>' . $qInfo->question. '<br>');
-        $contents[] = array('text' => '<br>' . TEXT_INFO_QUESTION_ORDER . '<br>' . $qInfo->q_order. '<br>');
+  default:
+    //default right
+    if($rows >0 ){
+      if(isset($faq_info)&&is_object($faq_info)){
+        $heading[] = array('text' => '<b>'.$faq_info->name.'</b>');
+        if($ocertify->npermission >= 10 ){  // about permission
+           if(empty($_GET['site_id'])){
+             $contents[] = array(
+                'align' => 'left',
+                'text' => tep_html_button(IMAGE_EDIT,
+                  tep_href_link(FILENAME_FAQ,'cPath='.$cPath.'&cID='.
+                    $faq_info->id.'&action=edit_faq_category'))
+                  .($ocertify->npermission == 15 ? (tep_html_button(IMAGE_DELETE,
+                  tep_href_link(FILENAME_FAQ,'cPath='.$cPath.'&cID='.
+                    $faq_info->id.'&action=delete_faq_category'))):'').
+                  tep_html_button(IMAGE_MOVE,
+                  tep_href_link(FILENAME_FAQ,'cPath='.$cPath.'&cID='.
+                    $faq_info->id.'&action=move_faq_category'))
+                 );
+           }
+           if(isset($_GET['site_id'])){
+           foreach(tep_get_sites() as $site){
+             if($site['id']!= $_GET['site_id']){
+               continue;
+             }
+             $contents[] = array('text' => '<b>' . $site['romaji'] . '</b>');
+             $contents[] = array(
+                'align' => 'left',
+                'text' => tep_html_button(IMAGE_EDIT,
+                  tep_href_link(FILENAME_FAQ,'cPath'.$cPath.'&cID='.$faq_info->id.
+                    '&action=edit_faq_category&site_id='.$site['id'])).
+                  tep_html_button(IMAGE_DELETE,
+                  tep_href_link(FILENAME_FAQ,'cPath'.$cPath.'&cID='.$faq_info->id.
+                    '&action=delete_faq_category&site_id='.$site['id']))
+                );
+           }
+           }
+        }
+      }else if(isset($qInfo)&&is_object($qInfo)){
+        if($ocertify->npermission >= 10){
+          if (empty($_GET['site_id'])) {
+            $heading[] = array('text' => '<b>'.TEXT_FAQ_INFO.'</b>');
+            $contents[] = array('text' => '<b>'.TEXT_FAQ_Q.'</b><br>'.$qInfo->question);
+            $contents[] = array('text' => '<b>'.TEXT_FAQ_A.'</b><br>'.
+                tep_draw_textarea_field('answer','','50','5',$qInfo->answer));
+            $contents[] = array('text' =>
+                tep_html_button(IMAGE_EDIT,tep_href_link(FILENAME_FAQ,'cPath='.$cPath.
+                    '&qID='.$qInfo->faq_id.'&action=edit_faq')).
+                tep_html_button(IMAGE_DELETE,tep_href_link(FILENAME_FAQ,'cPath='.$cPath.
+                    '&qID='.$qInfo->faq_id.'&action=delete_faq')).
+                tep_html_button(IMAGE_MOVE,tep_href_link(FILENAME_FAQ,'cPath='.$cPath.
+                    '&qID='.$qInfo->faq_id.'&action=move_faq')).
+                tep_html_button(IMAGE_COPY_TO,tep_href_link(FILENAME_FAQ,'cPath='.$cPath.
+                    '&qID='.$qInfo->faq_id.'&action=copy_to'))
+                  );
+          }
+          if(isset($_GET['site_id'])){
+            foreach(tep_get_sites() as $site){
+              if($site['id'] != $_GET['site_id']){
+                continue;
+              }
+              $heading[] = array('text' => '<b>'.$site['romaji'].TEXT_FAQ_INFO.'</b>');
+              $contents[] = array('text' => '<b>'.TEXT_FAQ_Q.'</b><br>'.$qInfo->question);
+              $contents[] = array('text' => '<b>'.TEXT_FAQ_A.'</b><br>'.
+                tep_draw_textarea_field('answer','','50','5',$qInfo->answer));
+            $contents[] = array('text' =>
+                tep_html_button(IMAGE_EDIT,tep_href_link(FILENAME_FAQ,'cPath='.$cPath.
+                    '&site_id='.$site['id'].'&qID='.$qInfo->faq_id.'&action=edit_faq')).
+                tep_html_button(IMAGE_DELETE,tep_href_link(FILENAME_FAQ,'cPath='.$cPath.
+                    '&site_id='.$site['id'].'&qID='.$qInfo->faq_id.'&action=delete_faq')).
+                tep_html_button(IMAGE_MOVE,tep_href_link(FILENAME_FAQ,'cPath='.$cPath.
+                    '&site_id='.$site['id'].'&qID='.$qInfo->faq_id.'&action=move_faq')).
+                tep_html_button(IMAGE_COPY_TO,tep_href_link(FILENAME_FAQ,'cPath='.$cPath.
+                    '&site_id='.$site['id'].'&qID='.$qInfo->faq_id.'&action=copy_to'))
+                  );
+            }
+          }
+        }
       }
-      break;
+    }
+    break;
+  case 'edit_faq_category':
+      $site_id = isset($_GET['site_id'])?$_GET['site_id']:0;
+      $heading[] = array('text' =>
+          '<b>'.TEXT_INFO_HEADING_EDIT_FAQ_CATEGORY.'</b>');
+      $contents = array('form' => tep_draw_form('edit_faq_categories',FILENAME_FAQ,
+            'action=update_faq_category&cPath='.$cPath,'post',
+            'onSubmit="return cmess();"').
+          tep_draw_hidden_field('id',$faq_info->id));
+      $contents[] = array('text' =>
+          TEXT_EDIT_INFO.($site_id?('<br><b>'.tep_get_site_name_by_id($site_id).'</b>'):''));
+      $contents[] = array('text' => tep_draw_hidden_field('site_id',$site_id));
+      $contents[] = array('text' => TEXT_FAQ_CATEGORY_NAME.'<br>'.
+          tep_draw_input_field('name',$faq_info->name));
+      $contents[] = array('align' => 'center', 'text' => '<br>'.
+          tep_html_submit(IMAGE_SAVE).tep_html_button(IMAGE_CANCEL,
+            tep_href_link(FILENAME_FAQ,'cPath='.$cPath.'&cID='.$faq_info->id.'&site_id='.$site_id)));
+      
+    break;
+  case 'delete_faq_category':
+    $heading[] = array('text' => '<b>'. TEXT_INFO_HEADING_DELETE_FAQ_CATEGORY.
+        '</b>');
+    $dc_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
+    $contents = array('form' => tep_draw_form('delete_faq_categories',FILENAME_FAQ,
+            'action=delete_faq_category_confirm&cPath='.$cPath.$dc_page,'post').
+          tep_draw_hidden_field('id',$faq_info->id));
+    $contents[] = array('text' => TEXT_DELETE_FAQ_CATEGORY_INTOR);
+    $contents[] = array('text' => '<br><b>'.$faq_info->name.'</b>');
+    $contents[] = array('align' => 'center', 'text' => '<br>'.
+        tep_html_submit(IMAGE_DELETE).tep_html_button(IMAGE_CANCEL,
+          tep_href_link(FILENAME_FAQ,'cPath='.$cPath.'&cID='.$faq_info->id.
+            '&site_id='.$site_id.$dc_page)));
+    break;
+  case 'new_faq_category':
+    $heading[] = array('text' => '<b>'.TEXT_INFO_HEADING_NEW_FAQ_CATEGORY.'</b>');
+    $contents = array('form' => tep_draw_form('new_faq_categories',FILENAME_FAQ,
+            'action=insert_faq_category&cPath='.$cPath,'post',
+            'onSubmit="return cmess();"')
+        .tep_draw_hidden_field('site_id',$site_id)
+        .tep_draw_hidden_field('parent_id',$current_category_id));
+    $contents[] = array('text' => TEXT_FAQ_CATEGORY_NAME.'<br>'.
+        tep_draw_input_field('name'));
+    $contents[] = array('text' => TEXT_FAQ_CATEGORY_ORDER.'<br>'.
+        tep_draw_input_field('order','','size="2"'));
+    $contents[] = array('align'=>'center',
+        'text' => tep_html_submit(IMAGE_SAVE).'&nbsp;'.
+        tep_html_button(IMAGE_CANCEL,tep_href_link(FILENAME_FAQ,'cPath='.$cPath)));
+    break;
+  case 'new_faq':
+    $heading[] = array('text' => '<b>'.TEXT_INFO_HEADING_NEW_FAQ.'</b>');
+    $contents = array('form' => tep_draw_form('new_faq_categories',FILENAME_FAQ,
+            'action=insert_faq&cPath='.$cPath,'post',
+            'onSubmit="return cmess();"')
+        .tep_draw_hidden_field('faq_category_id',$current_category_id));
+    $contents[] = array('text'=> TEXT_FAQ_Q.'<br>'.
+        tep_draw_input_field('question'));
+    $contents[] = array('text'=> TEXT_FAQ_A.'<br>'.
+        tep_draw_textarea_field('answer','','50','5',''));
+    $contents[] = array('text' => TEXT_FAQ_ORDER.'<br>'.
+        tep_draw_input_field('faq_order','','size="2"'));
+    $contents[] = array('align'=>'center',
+        'text' => tep_html_submit(IMAGE_SAVE).'&nbsp;'.
+        tep_html_button(IMAGE_CANCEL,tep_href_link(FILENAME_FAQ,'cPath='.$cPath)));
+    break;
+  case 'edit_faq':
+    $heading[] = array('text' => '<b>'.TEXT_INFO_HEADING_EDIT_FAQ.'</b>');
+    $contents = array('form' => tep_draw_form('new_faq_categories',FILENAME_FAQ,
+            'action=update_faq&cPath='.$cPath,'post',
+            'onSubmit="return cmess();"')
+        .tep_draw_hidden_field('faq_id',$qInfo->faq_id));
+    $contents[] = array('text'=> TEXT_FAQ_Q.'<br>'.
+        tep_draw_input_field('question',$qInfo->question));
+    $contents[] = array('text'=> TEXT_FAQ_A.'<br>'.
+        tep_draw_textarea_field('answer','','50','5',$qInfo->answer));
+    $contents[] = array('text' => TEXT_FAQ_ORDER.'<br>'.
+        tep_draw_input_field('faq_order',$qInfo->faq_order,'size="2"'));
+    $contents[] = array('align'=>'center',
+        'text' => tep_html_submit(IMAGE_SAVE).'&nbsp;'.
+        tep_html_button(IMAGE_CANCEL,tep_href_link(FILENAME_FAQ,'cPath='.$cPath)));
+    break;
   }
 
-  if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
+  if ((tep_not_null($heading)) && (tep_not_null($contents)) ) {
     echo '            <td width="25%" valign="top">' . "\n";
     $box = new box;
     echo $box->infoBox($heading, $contents);

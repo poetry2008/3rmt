@@ -1,0 +1,147 @@
+<!--{php}-->
+echo '
+<?xml version="1.0" encoding="UTF-8"?>
+';
+<!--{/php}-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="ja-JP">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<link type="text/css" rel="stylesheet" href="../../../stylesheet.css" />
+<link type="text/css" rel="stylesheet" href="images/class/style.css" />
+<script type='text/javascript' src='public/style.js'></script>
+<script type='text/javascript' src='Script/jquery-1.4.2.js'></script>
+<!--{if $seo}-->
+<title>
+<!--{$seo.title}-->
+</title>
+<meta name="keywords" content="<!--{$seo.keywords}-->" />
+<meta name="description" content="<!--{$seo.description}-->" />
+<meta name="robots" content="<!--{$seo.robots}-->" />
+<meta name="copyright" content="<!--{$seo.copyright}-->" />
+<!--{else}-->
+<title>相互リンク集｜RMTワールドマネー</title>
+<!--{/if}-->
+</head>
+<body id='body'>
+<div class="container">
+<div id="header">
+<h1 class="h_title">RMT<a href="javascript:void(0);" style="cursor:hand" onKeyPress="SomeJavaScriptCode" onClick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト ワールドマネーをお気に入りに追加して下さい！</a></h1>
+<div id="title">
+	<img alt="banner" src="../images/design/banner.jpg">
+</div>
+  <div id="header02">
+    <div id="header_Menu">
+  <div class="header_menu_content">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="menu box">
+      <tr>
+        <td width="432">
+            <form name="quick_find" action="/advanced_search_result.php" method="get">
+              <table cellpadding="0" cellspacing="0" summary="search" class="search_info">
+                <tr>
+                  <td width="80">&nbsp;</td>
+                  <td><input type="text" name="keywords" value="RMT" class="header_search_input header_search_input01" /></td>
+                  <td><input name="imageField" type="submit" class="header_search_submit" value="" alt="検索" /></td>
+                </tr>
+              </table>
+              <input type="hidden" name="search_in_description" value="1" />
+              <input type="hidden" name="inc_subcat" value="1" />
+            </form>
+          </td>
+        <td class="header_m_login" align="right">
+        	<a href="http://3ff.kthiz.200.com/shopping_cart.php" class="header_menu_2">ショッピングカート</a>
+        </td>
+        <td>
+        	<a href="http://3ff.kthiz.200.com/checkout_products.php" class="header_menu_3">レジへ進む</a>
+        </td>
+        <td align="right">
+            <div class="header_menu_4"><span id="jk-shoppingcart" style="font-size:12px">0円</span></div>
+        </td>
+        <td width="40">&nbsp;</td>
+      </tr>
+    </table>
+  </div>
+    </div>
+    <div class="header_Navigation">
+      <a href="/sitemap.php">サイトマップ</a>&nbsp;&nbsp;
+            <!--{$bread}-->
+    </div>
+  </div>
+  <!--end header-->
+  <div id="content">
+  <div class="coment_edit1">
+    <div class="category_h2 boxes">
+      <h1 class="link_h1">サイトマップ</h1>
+    </div>
+    <div class="middle">
+      <!--{section name=loopClass loop=$class}-->
+      <!--{assign var='top' value=$class[loopClass]}-->
+      <div class="web-box">
+        <div class="web-tit">
+          <strong>
+          <a href='<!--{url controller=site action=class id=$class[loopClass].class_id}-->'>
+          <!--{$class[loopClass].name}-->
+          </a>
+          </strong></div>
+        <!--{section name=loopTop loop=$top.children step=5}-->
+        <!--{assign var='index' value=$smarty.section.loopTop.index}-->
+        <!--{assign var='index2' value=$smarty.section.loopTop.index+1}-->
+        <!--{assign var='index3' value=$smarty.section.loopTop.index+2}-->
+        <!--{assign var='index4' value=$smarty.section.loopTop.index+3}-->
+        <!--{assign var='index5' value=$smarty.section.loopTop.index+4}-->
+        <!--{if $smarty.section.loopTop.first}-->
+        <table class="web_3" width="100%">
+          <!--{/if}-->
+          <tr>
+            <td><!--{if $top.children[$index].name != ''}-->
+              <span class="web-ico">&nbsp;</span>
+              <a href='<!--{url controller=site action=class id=$top.children[$index].class_id}-->'>
+              <!--{$top.children[$index].name}-->
+              </a>
+              <!--{/if}-->
+            </td>
+            <td><!--{if $top.children[$index2].name != ''}-->
+              <span class="web-ico">&nbsp;</span>
+              <a href='<!--{url controller=site action=class id=$top.children[$index2].class_id}-->'>
+              <!--{$top.children[$index2].name}-->
+              </a>
+              <!--{/if}-->
+            </td>
+            <td><!--{if $top.children[$index3].name != ''}-->
+              <span class="web-ico">&nbsp;</span>
+              <a href='<!--{url controller=site action=class id=$top.children[$index3].class_id}-->'>
+              <!--{$top.children[$index3].name}-->
+              </a>
+              <!--{/if}-->
+            </td>
+            <td><!--{if $top.children[$index4].name != ''}-->
+              <span class="web-ico">&nbsp;</span>
+              <a href='<!--{url controller=site action=class id=$top.children[$index4].class_id}-->'>
+              <!--{$top.children[$index4].name}-->
+              </a>
+              <!--{/if}-->
+            </td>
+            <td><!--{if $top.children[$index5].name != ''}-->
+              <span class="web-ico">&nbsp;</span>
+              <a href='<!--{url controller=site action=class id=$top.children[$index5].class_id}-->'>
+              <!--{$top.children[$index5].name}-->
+              </a>
+              <!--{/if}-->
+            </td>
+          </tr>
+          <!--{if $smarty.section.loopTop.last}-->
+        </table>
+        <!--{/if}-->
+        <!--{/section}-->
+      </div>
+      <!--{/section}-->
+    </div>
+    <div class="bottom"></div>
+  </div>
+</div>
+<!--{include file=Site/footer.html}-->
+</div>
+</div>

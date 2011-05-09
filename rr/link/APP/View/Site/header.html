@@ -1,0 +1,74 @@
+<!--{php}-->
+echo '
+<?xml version="1.0" encoding="UTF-8"?>
+';
+<!--{/php}-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="ja-JP">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<link type="text/css" rel="stylesheet" href="../../../stylesheet.css" />
+<link type="text/css" rel="stylesheet" href="images/class/style.css" />
+<script type='text/javascript' src='public/style.js'></script>
+<script type='text/javascript' src='Script/jquery-1.4.2.js'></script>
+<!--{if $seo}-->
+<title>
+<!--{$seo.title}-->
+</title>
+<meta name="keywords" content="<!--{$seo.keywords}-->" />
+<meta name="description" content="<!--{$seo.description}-->" />
+<meta name="robots" content="<!--{$seo.robots}-->" />
+<meta name="copyright" content="<!--{$seo.copyright}-->" />
+<!--{else}-->
+<title>相互リンク集｜RMTワールドマネー</title>
+<!--{/if}-->
+</head>
+<body id='body'>
+<div class="container">
+<div id="header">
+<h1 class="h_title">RMT<a href="javascript:void(0);" style="cursor:hand" onKeyPress="SomeJavaScriptCode" onClick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト FF14 RMT.comをお気に入りに追加して下さい！</a></h1>
+<div id="title">
+	<img alt="banner" src="../images/design/banner.jpg">
+</div>
+<div id="header_Menu">
+  <div class="header_menu_content">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="menu box">
+      <tr>
+        <td width="432">
+            <form name="quick_find" action="/advanced_search_result.php" method="get">
+              <table cellpadding="0" cellspacing="0" summary="search" class="search_info">
+                <tr>
+                  <td width="80">&nbsp;</td>
+                  <td><input type="text" name="keywords" value="RMT" class="header_search_input header_search_input01" /></td>
+                  <td><input name="imageField" type="submit" class="header_search_submit" value="" alt="検索" /></td>
+                </tr>
+              </table>
+              <input type="hidden" name="search_in_description" value="1" />
+              <input type="hidden" name="inc_subcat" value="1" />
+            </form>
+          </td>
+        <td class="header_m_login" align="right">
+        	<a href="/shopping_cart.php" class="header_menu_2">ショッピングカート</a>
+        </td>
+        <td>
+        	<a href="/checkout_products.php" class="header_menu_3">レジへ進む</a>
+        </td>
+        <td align="right">
+            <div class="header_menu_4"><span id="jk-shoppingcart" style="font-size:12px">0円</span></div>
+        </td>
+        <td width="40">&nbsp;</td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div class="header_Navigation">
+  <a href="/sitemap.php">サイトマップ</a>&nbsp;&nbsp;
+  <!--{$bread}-->
+</div>
+<div class="search_and_tools">
+<div class="search_head boxes">
+  <!--{include file='Site/header_search.html'}-->
+</div>

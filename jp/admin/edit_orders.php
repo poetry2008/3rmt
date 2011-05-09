@@ -479,7 +479,7 @@
   //  $newtotal = '0';
   //}
   
-  $handle_fee = calc_handle_fee($update_info_payment_method, $newtotal);
+  $handle_fee = new_calc_handle_fee($_POST['payment_method'], $newtotal, $oID);
   //$newtotal = $newtotal + $_POST['payment_code_fee']; 
   $newtotal = $newtotal+$handle_fee;
   
@@ -765,7 +765,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
           $newtotal = $total_value["total_value"];
         }
       }
-      $handle_fee = calc_handle_fee($order->info['payment_method'], $newtotal);
+      $handle_fee = new_calc_handle_fee($order->info['payment_method'], $newtotal, $oID);
       $newtotal   = $newtotal+$handle_fee;
       
       $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '".intval(floor($newtotal))."', text = '<b>".$currencies->ot_total_format(intval(floor($newtotal)), true, $order->info['currency'])."</b>' where class='ot_total' and orders_id = '".$oID."'";
@@ -1088,7 +1088,17 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       echo '  <tr>' . "\n" .
            '    <td align="left" class="' . $TotalStyle . '">合計金額が合っているか必ず確認してください。</td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' . 
-           '    <td align="right" class="' . $TotalStyle . '"><b>' . $currencies->ot_total_format($TotalDetails["Price"], true, $order->info['currency'], $order->info['currency_value']) . '</b>' . 
+           '    <td align="right" class="' . $TotalStyle . '"><b>';
+                if($TotalDetails["Price"] >= 0 ){
+                  echo $currencies->ot_total_format($TotalDetails["Price"], true,
+                    $order->info['currency'], $order->info['currency_value']);
+                }else{
+                  echo "<font color='red'>";
+                  echo $currencies->ot_total_format($TotalDetails["Price"], true,
+                    $order->info['currency'], $order->info['currency_value']);
+                  echo "</font>";
+                }
+                echo '</b>' . 
                 "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
                 "<input name='update_totals[$TotalIndex][value]' type='hidden' value='" . $TotalDetails["Price"] . "' size='6' >" . 
                 "<input name='update_totals[$TotalIndex][class]' type='hidden' value='" . $TotalDetails["Class"] . "'>\n" . 
@@ -1099,7 +1109,17 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       echo '  <tr>' . "\n" .
            '    <td align="left" class="' . $TotalStyle . '"><table><tr class="smalltext"><td><font color="red">※</font>&nbsp;コピペ用:</td><td>調整額</td><td>事務手数料</td><td>値引き</td></tr></table></td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' .
-           '    <td align="right" class="' . $TotalStyle . '"><b>' . $currencies->format($TotalDetails["Price"], true, $order->info['currency'], $order->info['currency_value']) . '</b>' . 
+           '    <td align="right" class="' . $TotalStyle . '"><b>';
+                if($TotalDetails["Price"]>=0){
+                echo $currencies->format($TotalDetails["Price"], true,
+                    $order->info['currency'], $order->info['currency_value']);
+                }else{
+                  echo "<font color='red'>";
+                  echo $currencies->format($TotalDetails["Price"], true,
+                    $order->info['currency'], $order->info['currency_value']);
+                  echo "</font>";
+                }
+                echo '</b>' . 
                 "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
                 "<input name='update_totals[$TotalIndex][value]' type='hidden' value='" . $TotalDetails["Price"] . "' size='6' >" . 
                 "<input name='update_totals[$TotalIndex][class]' type='hidden' value='" . $TotalDetails["Class"] . "'>\n" . 

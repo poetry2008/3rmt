@@ -589,23 +589,25 @@ Ranking
 --------------------------- */
 .bestseller_text {
     font-size: 10px;
-	background: url(../images/design/box/ranking_title_bg.gif) no-repeat;
-	padding-left: 5px;
+/*	background: url(../images/design/box/ranking_title_bg.gif) no-repeat;
+*/	padding-left: 5px;
 	padding-top:4px;
-	height:20px;
+/*	height:20px;
 	*height:24px;
 	height:24px\9;
-	margin-bottom:2px;
+*/	margin-bottom:2px;
+background:#f8f8f8;
+border:1px solid #bdbcbd;
 }
 .bestseller_text a{
 	display: block;
-	height: 16px;
-	line-height: 13px;
+/*	height: 16px;
+*/	line-height: 16px;
 	overflow: hidden;
 	padding-left:5px;
 	color:#555;
 }
-.bestseller_number{ float:left; margin:0 5px;}
+.bestseller_number{ float:left; margin:-2px 5px 0 5px;}
 .bestseller_link{ float:left;}
 .bestseller_text a:hover{
 	color:#990000;
