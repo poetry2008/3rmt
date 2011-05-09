@@ -894,7 +894,8 @@
       
       // 特価を適用
       // $p_products_price = tep_get_final_price($p_products_price, $p_products_price_offset, $p_products_small_sum, (int)$add_product_quantity);
-      $p_products_price = $_POST['add_product_price'];
+      $p_products_price =
+        tep_get_bflag_by_product_id($add_product_products_id)?0-$_POST['add_product_price']:$_POST['add_product_price'];
 
       // Following functions are defined at the bottom of this file
       $CountryID = tep_get_country_id($order["delivery_country"]);
