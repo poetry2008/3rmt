@@ -988,8 +988,12 @@ while ($totals = tep_db_fetch_array($totals_query)) {
   </tr>
   
 <?php
+  $only_buy = true; 
   for ($i=0; $i<sizeof($order->products); $i++) {
     $orders_products_id = $order->products[$i]['orders_products_id'];
+    if(!tep_get_bflag_by_product_id($orders_products_id)){
+      $only_buy=false;
+    }
     $RowStyle = "dataTableContent";
     echo '    <tr class="dataTableRow">' . "\n" .
          '      <td class="' . $RowStyle . '" align="left" valign="top" width="20">' . "<input type='hidden' name='update_products_real_quantity[$orders_products_id]' id='update_products_real_quantity_$orders_products_id' value='1'><input type='hidden' id='update_products_qty_$orders_products_id' value='" . $order->products[$i]['qty'] . "'><input class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" . $order->products[$i]['qty'] . "'>&nbsp;x</td>\n" . 
@@ -1090,8 +1094,15 @@ while ($totals = tep_db_fetch_array($totals_query)) {
            '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>';
                 if($TotalDetails["Price"] >= 0 ){
+                  if(!$only_buy){
                   echo $currencies->ot_total_format($TotalDetails["Price"], true,
                     $order->info['currency'], $order->info['currency_value']);
+                  }else{
+                  echo "<font color='red'>";
+                  echo $currencies->ot_total_format($TotalDetails["Price"], true,
+                    $order->info['currency'], $order->info['currency_value']);
+                  echo "</font>";
+                  }
                 }else{
                   echo "<font color='red'>";
                   echo $currencies->ot_total_format($TotalDetails["Price"], true,
@@ -1111,8 +1122,15 @@ while ($totals = tep_db_fetch_array($totals_query)) {
            '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' .
            '    <td align="right" class="' . $TotalStyle . '"><b>';
                 if($TotalDetails["Price"]>=0){
-                echo $currencies->format($TotalDetails["Price"], true,
+                  if(!$only_buy){
+                  echo $currencies->ot_total_format($TotalDetails["Price"], true,
                     $order->info['currency'], $order->info['currency_value']);
+                  }else{
+                  echo "<font color='red'>";
+                  echo $currencies->ot_total_format($TotalDetails["Price"], true,
+                    $order->info['currency'], $order->info['currency_value']);
+                  echo "</font>";
+                  }
                 }else{
                   echo "<font color='red'>";
                   echo $currencies->format($TotalDetails["Price"], true,
