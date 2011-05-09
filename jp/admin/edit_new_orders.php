@@ -1210,15 +1210,8 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
            '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' ;
                 if ($TotalDetails["Price"] >= 0){
-                  if(!$only_buy){
                   echo $currencies->ot_total_format($TotalDetails["Price"], true,
                     $order->info['currency'], $order->info['currency_value']);
-                  }else{
-                  echo "<font color='red'>";
-                  echo $currencies->ot_total_format($TotalDetails["Price"], true,
-                    $order->info['currency'], $order->info['currency_value']);
-                  echo "</font>";
-                  }
                 }else{
                   echo "<font color='red'>";
                   echo $currencies->ot_total_format($TotalDetails["Price"], true,
@@ -1238,15 +1231,8 @@ if ($order->info['payment_method'] === 'クレジットカード決済') {
            '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' .
            '    <td align="right" class="' . $TotalStyle . '"><b>';
                 if($TotalDetails["Price"] >= 0){
-                  if(!$only_buy){
                   echo $currencies->format($TotalDetails["Price"], true,
                       $order->info['currency'], $order->info['currency_value']);
-                  }else{
-                  echo "<font color='red'>";
-                  echo $currencies->format($TotalDetails["Price"], true,
-                      $order->info['currency'], $order->info['currency_value']);
-                  echo "</font>";
-                  }
                 }else{
                   echo "<font color='red'>";
                   echo $currencies->format($TotalDetails["Price"], true,
