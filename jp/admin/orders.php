@@ -439,7 +439,7 @@
     }
     tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '')");
     // 同步问答
-    orders_status_updated_for_question($oID,tep_db_input($status),$_POST['notify_comments'] == 'on');
+    orders_status_updated_for_question($oID,tep_db_input($status),$_POST['notify_comments'] == 'on', $_POST['qu_type']);
     $order_updated = true;
   }
 
@@ -1702,7 +1702,9 @@ if (false) {
               <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', true && $ma_s['nomail'] != '1', '', 'id="notify_comments"'); ?><b>ステータス通知</b></td>
             </tr>
             <tr>
-              <td class="main" colspan="2"><br><b style="color:#FF0000;">間違い探しはしましたか？</b><br><br><?php echo tep_image_submit('button_update.gif', IMAGE_UPDATE); ?></td>
+              <td class="main" colspan="2">
+              <?php echo tep_draw_hidden_field('qu_type', $orders_questions_type);?> 
+              <br><b style="color:#FF0000;">間違い探しはしましたか？</b><br><br><?php echo tep_image_submit('button_update.gif', IMAGE_UPDATE); ?></td>
             </tr>
           </table>
         </td>
