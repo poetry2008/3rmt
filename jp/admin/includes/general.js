@@ -113,7 +113,7 @@ $("input[name$=\[final_price\]]").each(function(index) {
   var percent = 0;
   $.ajax({
     url: 'ajax_orders.php?action=getpercent',
-    data: 'cid='+op_id,
+    data: 'pid='+op_id,
     type: 'POST',
     dataType: 'text',
     async : false,
@@ -177,7 +177,7 @@ $("input[name$=\[final_price\]]").each(function(index) {
   var percent = 0;
   $.ajax({
     url: 'ajax_orders.php?action=getpercent',
-    data: 'cid='+op_id,
+    data: 'pid='+op_id,
     type: 'POST',
     dataType: 'text',
     async : false,
