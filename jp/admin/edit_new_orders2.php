@@ -1315,7 +1315,17 @@ function check_add(){
       echo '  <tr>' . "\n" .
            '    <td align="left" class="' . $TotalStyle . '">合計金額が合っているか必ず確認してください。</td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' . 
-           '    <td align="right" class="' . $TotalStyle . '"><b>' . $currencies->ot_total_format($TotalDetails["Price"], true, $order['currency'], $order['currency_value']) . '</b>' . 
+           '    <td align="right" class="' . $TotalStyle . '"><b>';
+                if($TotalDetails["Price"]>=0){
+                  echo  $currencies->ot_total_format($TotalDetails["Price"], true,
+                      $order['currency'], $order['currency_value']);
+                }else{
+                  echo "<font color='red'>";
+                  echo  $currencies->ot_total_format($TotalDetails["Price"], true,
+                      $order['currency'], $order['currency_value']);
+                  echo "</font>";
+                }
+                  echo '</b>' . 
                 "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
                 "<input name='update_totals[$TotalIndex][value]' type='hidden' value='" . $TotalDetails["Price"] . "' size='6' >" . 
                 "<input name='update_totals[$TotalIndex][class]' type='hidden' value='" . $TotalDetails["Class"] . "'>\n" . 
@@ -1326,7 +1336,17 @@ function check_add(){
       echo '  <tr>' . "\n" .
            '    <td align="left" class="' . $TotalStyle . '"><table><tr class="smalltext"><td><font color="red">※</font>&nbsp;コピペ用:</td><td>調整額</td><td>事務手数料</td><td>値引き</td></tr></table></td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' .
-           '    <td align="right" class="' . $TotalStyle . '"><b>' . $currencies->format($TotalDetails["Price"], true, $order['currency'], $order['currency_value']) . '</b>' . 
+           '    <td align="right" class="' . $TotalStyle . '"><b>';
+           if($TotalDetails["Price"]>=0){
+             echo $currencies->format($TotalDetails["Price"], true, $order['currency'],
+               $order['currency_value']);
+           }else{
+             echo "<font color='red'>";
+             echo $currencies->format($TotalDetails["Price"], true, $order['currency'],
+               $order['currency_value']);
+             echo "</font>";
+           }
+            echo '</b>' . 
                 "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
                 "<input name='update_totals[$TotalIndex][value]' type='hidden' value='" . $TotalDetails["Price"] . "' size='6' >" . 
                 "<input name='update_totals[$TotalIndex][class]' type='hidden' value='" . $TotalDetails["Class"] . "'>\n" . 
