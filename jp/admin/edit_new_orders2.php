@@ -173,7 +173,7 @@
       $_SESSION['create_order2']['orders_products'][$orders_products_id]['products_model'] = $products_details["model"];
       $_SESSION['create_order2']['orders_products'][$orders_products_id]['products_name'] = str_replace("'", "&#39;", $products_details["name"]);
       $_SESSION['create_order2']['orders_products'][$orders_products_id]['products_character'] = mysql_real_escape_string($products_details["character"]);
-      $_SESSION['create_order2']['orders_products'][$orders_products_id]['final_price'] = (tep_get_bflag_by_product_id((int)$order['products_id']) ? 0 - $products_details["final_price"] : $products_details["final_price"]);
+      $_SESSION['create_order2']['orders_products'][$orders_products_id]['final_price'] = (tep_get_bflag_by_product_id((int)$orders_products_id) ? 0 - $products_details["final_price"] : $products_details["final_price"]);
       $_SESSION['create_order2']['orders_products'][$orders_products_id]['products_tax'] = $products_details["tax"];
       $_SESSION['create_order2']['orders_products'][$orders_products_id]['products_quantity'] = $products_details["qty"];
       
@@ -1322,10 +1322,8 @@ function check_add(){
            '    <td align="right" class="' . $TotalStyle . '"><b>';
                 if($TotalDetails["Price"]>=0){
                   if(!$only_buy){
-                  echo "<font color='red'>";
                   echo  $currencies->ot_total_format($TotalDetails["Price"], true,
                       $order['currency'], $order['currency_value']);
-                  echo "</font>";
                   }else{
                   echo "<font color='red'>";
                   echo  $currencies->ot_total_format($TotalDetails["Price"], true,
@@ -1352,10 +1350,8 @@ function check_add(){
            '    <td align="right" class="' . $TotalStyle . '"><b>';
            if($TotalDetails["Price"]>=0){
                   if(!$only_buy){
-                  echo "<font color='red'>";
                   echo  $currencies->ot_total_format($TotalDetails["Price"], true,
                       $order['currency'], $order['currency_value']);
-                  echo "</font>";
                   }else{
                   echo "<font color='red'>";
                   echo  $currencies->ot_total_format($TotalDetails["Price"], true,
