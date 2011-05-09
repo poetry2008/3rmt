@@ -1211,7 +1211,7 @@ function check_add(){
   $only_buy = true;
   foreach ($order_products as $pid => $orders_products) {
     //$orders_products_id = $order_products[$pid]['orders_products_id'];
-    if(!tep_get_bflag_by_product_id($pid)){
+    if(!tep_get_bflag_by_product_id($order_products[$pid]['orders_products_id'])){
       $only_buy = false;
     }
     $RowStyle = "dataTableContent";
@@ -1322,8 +1322,10 @@ function check_add(){
            '    <td align="right" class="' . $TotalStyle . '"><b>';
                 if($TotalDetails["Price"]>=0){
                   if(!$only_buy){
+                  echo "<font color='red'>";
                   echo  $currencies->ot_total_format($TotalDetails["Price"], true,
                       $order['currency'], $order['currency_value']);
+                  echo "</font>";
                   }else{
                   echo "<font color='red'>";
                   echo  $currencies->ot_total_format($TotalDetails["Price"], true,
@@ -1350,8 +1352,10 @@ function check_add(){
            '    <td align="right" class="' . $TotalStyle . '"><b>';
            if($TotalDetails["Price"]>=0){
                   if(!$only_buy){
+                  echo "<font color='red'>";
                   echo  $currencies->ot_total_format($TotalDetails["Price"], true,
                       $order['currency'], $order['currency_value']);
+                  echo "</font>";
                   }else{
                   echo "<font color='red'>";
                   echo  $currencies->ot_total_format($TotalDetails["Price"], true,
