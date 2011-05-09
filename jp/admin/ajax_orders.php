@@ -346,4 +346,20 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   }
   $str = substr($str,0,-1);
   echo $str;
+}else if(isset($_GET['action'])&&$_GET['action'] == 'getpercent'){
+  $sql = "select sac.percent as percent from ".TABLE_PRODUCTS_TO_CATEGORIES." 
+        p2c,set_auto_calc sac,".TABLE_ORDERS_PRODUCTS." op 
+        where op.orders_products_id = '".$_POST['cid']."' 
+        and p2c.products_id = op.products_id   
+        and p2c.categories_id = sac.parent_id limit 1";
+  $result = tep_db_query($sql);
+  if($row = tep_db_fetch_array($result)){
+    if($row['percent']!=''){
+      echo $row['percent'];
+    }else{
+      echo 0;
+    }
+  }else{
+    echo 0;
+  }
 }
