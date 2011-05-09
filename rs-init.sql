@@ -6,7 +6,7 @@ INSERT INTO `sites` (
 `order_num`
 )
 VALUES (
-'8', 'rs', 'rs', 'http://3rs.maker.200.com', '0'
+'8', 'rr', 'rr', 'http://3rs.maker.200.com', '0'
 );
 
 INSERT INTO `banners` (`site_id`, `banners_id`, `banners_title`, `banners_url`, `banners_image`, `banners_group`, `banners_html_text`, `expires_impressions`, `expires_date`, `date_scheduled`, `date_added`, `date_status_change`, `status`) VALUES
