@@ -320,7 +320,7 @@
           no ++;
         }
       });
-      $(this).find('.cost_display').html(number_format(cost.toFixed(0)).replace('-','')+'&nbsp;');
+      $(this).find('.cost_display').html(number_format(cost.toFixed(0))+'&nbsp;');
       total += cost;
       cost = 0;
     });

@@ -1957,7 +1957,7 @@ function get_cart_products(){
       }
     //特価がある場合の処理
       if (tep_get_special_price($pInfo->products_price, $pInfo->products_price_offset, $pInfo->products_small_sum)) {
-        $products_price_preview = '<s>' . $currencies->format(tep_get_price($pInfo->products_price, $pInfo->products_price_offset, $pInfo->products_small_sum)) . '</s> <span class="specialPrice">' . $currencies->format(tep_get_special_price($pInfo->products_price, $pInfo->products_price_offset, $pInfo->products_small_sum)) . '</span>';
+        $products_price_preview = '<s>' . $currencies->format(tep_get_price(((int)$pInfo->products_bflag ? (0 - $pInfo->products_price) : $pInfo->products_price), $pInfo->products_price_offset, $pInfo->products_small_sum)) . '</s> <span class="specialPrice">' . $currencies->format(tep_get_special_price($pInfo->products_price, $pInfo->products_price_offset, $pInfo->products_small_sum)) . '</span>';
       } else {
         $products_price_preview = $currencies->format(tep_get_price($pInfo->products_price, $pInfo->products_price_offset, $pInfo->products_small_sum));
       }
