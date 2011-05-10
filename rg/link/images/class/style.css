@@ -1269,10 +1269,10 @@ select{
 ヘッダー
 --------------------------- */
 #title {
-	margin: 0 auto;
-	width:900px;
-	height:80px;
-}
+    background: url(../../../images/design/banner.jpg) no-repeat scroll 0 0 transparent;
+    height: 80px;
+    text-align: right;
+    width: 900px;}
 #header {
 	width: 900px;
 	margin:0 auto;
@@ -1288,7 +1288,7 @@ select{
 	border: solid 1px #ddd;
 	padding: 3px 5px;
 	*padding:0;
-	height: 19px;
+	height: 13px;
 	color: #555;
 	width: 120px;
 	font-size:12px;
@@ -1305,7 +1305,8 @@ select{
 	border: none;
 	height:19px;
 	cursor: pointer;
-	background: url(images/design/button/search.gif) no-repeat;
+	margin-left:2px;
+	background: url(../../../images/design/button/search.gif) no-repeat;
 }
 .header_menu_2, .header_menu_3{
 	display:block;
@@ -1319,7 +1320,7 @@ select{
 	*width:119px;
 	margin-right:10px;
 	color:#AD0F30;
-	background: url(images/design/button/shopping_cart.gif) no-repeat;
+	background: url(../../../images/design/button/shopping_cart.gif) no-repeat;
 }
 .header_menu_3{
 	padding-left:21px;
@@ -1327,12 +1328,12 @@ select{
 	*width:89px;
 	margin-right:10px;
 	color:#AD0F30;
-	background: url(images/design/button/checkout.gif) no-repeat;
+	background: url(../../../images/design/button/checkout.gif) no-repeat;
 }
 .header_menu_4{
 	width: 118px;
 	height:19px;
-	background: url(images/design/button/header_menu_bg.gif) no-repeat;
+	background: url(../../../images/design/button/header_menu_bg.gif) no-repeat;
 }
 .header_menu_4 span{
 line-height:19px;
@@ -1343,7 +1344,7 @@ padding-right:5px;
 	*width:900px;
 	height:17px;
 	*height:23px;
-	background:url(images/design/header_navigation.gif) no-repeat;
+	background:url(../../../images/design/header_navigation.gif) no-repeat;
 	font-size: 10px;
 	margin:0 auto 5px auto;
 	text-align:left;
@@ -1786,7 +1787,7 @@ Information
 	margin:5px auto;
 	clear:both;
 	height:85px;
-	background:url(images/design/box/footer_bg.gif) repeat-x;
+	background:url(../../../images/design/box/footer_bg.gif) repeat-x;
 }
 .footer_contacts{
 	letter-spacing:0.5mm;

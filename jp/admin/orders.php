@@ -1571,7 +1571,16 @@ if (false) {
         echo 
        '    <tr>' . "\n" .
        '      <td align="right" class="smallText">' . $order->totals[$i]['title'] . '</td>' . "\n" .
-       '      <td align="right" class="smallText">' . $order->totals[$i]['text' ] . '</td>' . "\n" .
+       '      <td align="right" class="smallText">';
+        // add font color for '-' value
+        if($order->totals[$i]['value']>=0){
+          echo $order->totals[$i]['text'];
+        }else{
+          echo "<font color='red'>";
+          echo $order->totals[$i]['text'];
+          echo "</font>";
+        }
+        echo '</td>' . "\n" .
        '    </tr>' . "\n";
        if ($i == 0) {
           echo 
