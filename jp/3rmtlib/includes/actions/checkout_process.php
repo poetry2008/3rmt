@@ -215,7 +215,7 @@ $total_data_arr = array();
 for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
   $sql_data_array = array('orders_id' => $insert_id,
                           'title' => $order_totals[$i]['title'],
-                          'text' => $order_totals[$i]['text'],
+                          'text' => tep_format_no_color($order_totals[$i]['text']),
                           'value' => $order_totals[$i]['value'], 
                           'class' => $order_totals[$i]['code'], 
                           'sort_order' => $order_totals[$i]['sort_order']);
