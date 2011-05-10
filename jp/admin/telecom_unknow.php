@@ -149,6 +149,10 @@ function check_one(ele){
     </tr>
 <?php
     if (isset($_GET['keywords']) && tep_not_null($_GET['keywords'])) {
+        $where_str .= " and (";
+        $where_str .= "(username = '" . $_GET['keywords'] . "' or email = '" .  $_GET['keywords'] . "' or telno = '" . $_GET['keywords'] . "' or money = '" . $_GET['keywords'] . "')";
+        $where_str .= " )";
+        /* 
       if (tep_parse_search_string(stripslashes($_GET['keywords']), $search_keywords)) {
         $where_str .= " and (";
         for ($i=0, $n=sizeof($search_keywords); $i<$n; $i++ ) {
@@ -167,6 +171,7 @@ function check_one(ele){
         }
         $where_str .= " )";
       }
+      */ 
     }
     /*
     if ($_GET['rel']) {

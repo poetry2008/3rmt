@@ -25,13 +25,14 @@
       $order = tep_db_fetch_array($order_query);
 
       $totals_query = tep_db_query("
-        select title, text 
+        select title, text,value  
         from " . TABLE_ORDERS_TOTAL . " 
         where orders_id = '" . tep_db_input($order_id) . "' 
         order by sort_order
       ");
       while ($totals = tep_db_fetch_array($totals_query)) {
         $this->totals[] = array('title' => $totals['title'],
+                                'value' => $totals['value'],
                                 'text'  => $totals['text']);
       }
     

@@ -1571,7 +1571,16 @@ if (false) {
         echo 
        '    <tr>' . "\n" .
        '      <td align="right" class="smallText">' . $order->totals[$i]['title'] . '</td>' . "\n" .
-       '      <td align="right" class="smallText">' . $order->totals[$i]['text' ] . '</td>' . "\n" .
+       '      <td align="right" class="smallText">';
+        // add font color for '-' value
+        if($order->totals[$i]['value']>=0){
+          echo $order->totals[$i]['text'];
+        }else{
+          echo "<font color='red'>";
+          echo $order->totals[$i]['text'];
+          echo "</font>";
+        }
+        echo '</td>' . "\n" .
        '    </tr>' . "\n";
        if ($i == 0) {
           echo 
@@ -2092,8 +2101,7 @@ if (false) {
           " . $where_payment . $where_type . "
         order by torihiki_date_error DESC,o.torihiki_date DESC";
     }  elseif (isset($_GET['keywords']) && $_GET['keywords'] && isset($_GET['search_type']) && $_GET['search_type'] == 'products_name' && !$_GET['type'] && !$payment) {
-      //$orders_query_raw = " select distinct op.orders_id from " . TABLE_ORDERS_PRODUCTS . " op where op.products_name like '%".$_GET['keywords']."%' " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id']) . "' " : '') . " order by op.torihiki_date desc";
-      $orders_query_raw = " select distinct op.orders_id from " .  TABLE_ORDERS_PRODUCTS . " op where op.products_name = '".$_GET['keywords']."' " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id']) . "' " : '') . " order by op.torihiki_date desc";
+      $orders_query_raw = " select distinct op.orders_id from " . TABLE_ORDERS_PRODUCTS . " op where op.products_name like '%".$_GET['keywords']."%' " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id']) . "' " : '') . " order by op.torihiki_date desc";
   } elseif (
     isset($_GET['keywords']) && $_GET['keywords']
     and ((isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name')
@@ -2144,13 +2152,10 @@ if (false) {
         $keyword = tep_db_prepare_input($search_keywords[$i]);
         //$orders_query_raw .= "(";
         if (isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name') {
-          //$orders_query_raw .= "o.customers_name like '%" . tep_db_input($keyword) . "%' or ";
-          //$orders_query_raw .= "o.customers_name_f like '%" . tep_db_input($keyword) . "%'";
-          $orders_query_raw .= "o.customers_name = '" . tep_db_input($keyword) . "' or ";
-          $orders_query_raw .= "o.customers_name_f = '" . tep_db_input($keyword) . "'";
+          $orders_query_raw .= "o.customers_name like '%" . tep_db_input($keyword) . "%' or ";
+          $orders_query_raw .= "o.customers_name_f like '%" . tep_db_input($keyword) . "%'";
         } else if (isset($_GET['search_type']) && $_GET['search_type'] == 'email') {
-          //$orders_query_raw .= "o.customers_email_address like '%" . tep_db_input($keyword) . "%'";
-          $orders_query_raw .= "o.customers_email_address = '" . tep_db_input($keyword) . "'";
+          $orders_query_raw .= "o.customers_email_address like '%" . tep_db_input($keyword) . "%'";
         }
         //$orders_query_raw .= ")";
     break;
