@@ -1220,12 +1220,8 @@ function check_add(){
   </tr>
   
 <?php
-  $only_buy = true;
   foreach ($order_products as $pid => $orders_products) {
     //$orders_products_id = $order_products[$pid]['orders_products_id'];
-    if(!tep_get_bflag_by_product_id($order_products[$pid]['orders_products_id'])){
-      $only_buy = false;
-    }
     $RowStyle = "dataTableContent";
     echo '    <tr class="dataTableRow">' . "\n" .
          '      <td class="' . $RowStyle . '" align="left" valign="top" width="20">' . "<input name='update_products[$pid][qty]' size='2' value='" . $order_products[$pid]['qty'] . "'>&nbsp;x</td>\n" . 
