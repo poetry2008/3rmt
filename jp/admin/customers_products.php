@@ -314,7 +314,7 @@
           fp = parseFloat($(this).find('.price input').val()) 
             * parseFloat($(this).find('.quantity input').val()) 
             * parseFloat($(this).find('.percent_select').val());
-          $(this).find('.fprice').html(fp>0?number_format(fp.toFixed(0)):('<font color="red" class="print_black">'+number_format(fp.toFixed(0))+'</font>'));
+          $(this).find('.fprice').html(number_format(fp.toFixed(0)));
           cost += fp;
           $(this).find('.number').html(no);
           no ++;
