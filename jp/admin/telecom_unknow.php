@@ -160,7 +160,8 @@ function check_one(ele){
               $where_str .= " " . $search_keywords[$i] . " ";
               break;
             default:
-              $where_str .= "(username like '%" . addslashes($search_keywords[$i]) . "%' or email like '%" . addslashes($search_keywords[$i]) . "%' or telno like '%" . addslashes($search_keywords[$i]) . "%' or money like '%" . addslashes($search_keywords[$i]) . "%'";
+              //$where_str .= "(username like '%" . addslashes($search_keywords[$i]) . "%' or email like '%" . addslashes($search_keywords[$i]) . "%' or telno like '%" . addslashes($search_keywords[$i]) . "%' or money like '%" . addslashes($search_keywords[$i]) . "%'";
+              $where_str .= "(username = '" . addslashes($search_keywords[$i]) . "' or email = '" . addslashes($search_keywords[$i]) . "' or telno = '" . addslashes($search_keywords[$i]) . "' or money = '" . addslashes($search_keywords[$i]) . "'";
               $where_str .= ')';
               break;
           }
