@@ -1305,7 +1305,8 @@ select{
 	border: none;
 	height:19px;
 	cursor: pointer;
-	background: url(images/design/button/search.gif) no-repeat;
+	margin-left:2px;
+	background: url(../../../images/design/button/search.gif) no-repeat;
 }
 .header_menu_2, .header_menu_3{
 	display:block;
