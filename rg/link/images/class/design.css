@@ -44,7 +44,7 @@ H4 {
 /*	background-image: url(images/design/contents/parcer_space.gif);
 	background-repeat: repeat-x;
 	background-position: bottom;*/
-	background:url(images/design/box/dot.gif) repeat-x 0 15px;
+	background:url(../../../images/design/box/dot.gif) repeat-x 0 15px;
 	font-weight: bold;
 	text-align: right;
 	/*padding-left: 5px;*/
@@ -83,7 +83,7 @@ table.comment {
 	margin: 0px;
 	padding: 5px 15px 0px 15px;
 	overflow: hidden;
-	background: url(images/design/contents/headding_content.gif) repeat-y;
+	background: url(../../../images/design/contents/headding_content.gif) repeat-y;
 }
 
 /*.comment textarea {
@@ -150,7 +150,7 @@ UL {
 .r_c_links_ul li a:hover{
 	color: #000;
 	text-decoration: none;
-	background: url(images/design/box/bestlinks_menu_bg.gif) repeat-x;
+	background: url(../../../images/design/box/bestlinks_menu_bg.gif) repeat-x;
 }
 .r_c_links_ul li span{
 	display: block;
@@ -158,7 +158,7 @@ UL {
 	height: 17px;
 	overflow: hidden;
 	padding: 0px 0px 0px 5px;
-	background: url(images/design/box/bestlink_ico.gif) 0px 5px no-repeat;
+	background: url(../../../images/design/box/bestlink_ico.gif) 0px 5px no-repeat;
 	margin: 0px;
 }
 .l_m_category_ul {
@@ -201,7 +201,7 @@ UL {
 .l_m_category_li, .l_m_category_li2{
 	width:170px;
 	overflow:hidden;
-	background:url(images/design/category_li.gif) no-repeat;
+	background:url(../../../images/design/category_li.gif) no-repeat;
 }
 .l_m_category_li a, .l_m_category_li2 a{
 	line-height: 26px;
@@ -214,7 +214,7 @@ UL {
 	padding-left:27px;
 }
 .l_m_category_li a:hover{
-	background:url(images/design/category_li_hover.gif) no-repeat;
+	background:url(../../../images/design/category_li_hover.gif) no-repeat;
 	*width:170px;
 	color:#AF0D32;
 }
@@ -223,7 +223,7 @@ UL {
 	color:#AF0D32;}
 .l_m_category_li_infomation, .login_list_info{
 	margin-bottom:2px;
-	background:url(images/design/category_li.gif) no-repeat scroll 0 0 transparent;
+	background:url(../../../images/design/category_li.gif) no-repeat scroll 0 0 transparent;
 	height:24px;
 	width:170px;
 	overflow:hidden;
@@ -240,7 +240,7 @@ UL {
 	padding-left:25px;
 }
 .l_m_category_li_infomation a:hover, .login_list_info a:hover{
-	background:url(images/design/category_li_hover.gif) no-repeat;
+	background:url(../../../images/design/category_li_hover.gif) no-repeat;
 	color:#AF0D32;
 	height:24px;
 	width:170px;
@@ -346,7 +346,7 @@ UL {
 .login_text_box{
 	width: 113px;
 	height: 20px;
-	background: url(images/design/box/login_text_bg.gif) no-repeat;
+	background: url(../../../images/design/box/login_text_bg.gif) no-repeat;
 }
 .login_text{
 	width: 98px;
@@ -362,11 +362,11 @@ UL {
 #login_form table .menu{
     font-size: 12px;
 	line-height: 20px;
-	background: url(images/design/box/dot.gif) repeat-x 0 bottom;
+	background: url(../../../images/design/box/dot.gif) repeat-x 0 bottom;
 	padding: 0px 5px;
 }
 #login_form table .menu a{
-	background: url(images/design/menu_arrow.gif) no-repeat;
+	background: url(../../../images/design/menu_arrow.gif) no-repeat;
 	padding: 0px 5px 0px 10px;
 }
 .ranking_warpper{
@@ -437,23 +437,23 @@ button
 	display: block;
 	width: 82px;
 	height: 25px;
-	background: url(images/design/button/button_order.gif) no-repeat;
+	background: url(../../../images/design/button/button_order.gif) no-repeat;
 	overflow: hidden;
 	font-size: 0px;
 }
 .button_order:hover{
-	background: url(images/design/button/button_order2.gif) no-repeat;
+	background: url(../../../images/design/button/button_order2.gif) no-repeat;
 }
 .button_description{
 	display: block;
 	width: 69px;
 	height: 17px;
-	background: url(images/design/button/button_description.gif) no-repeat;
+	background: url(../../../images/design/button/button_description.gif) no-repeat;
 	overflow: hidden;
 	font-size: 0px;
 }
 .button_description:hover{
-	background: url(images/design/button/button_description2.gif) no-repeat;
+	background: url(../../../images/design/button/button_description2.gif) no-repeat;
 }
 /* ---------------------------
 input textarea select
@@ -500,7 +500,8 @@ select{
 	border: solid 1px #ddd;
 	padding: 3px 5px;
 	*padding:0;
-	height: 19px;
+	height: 11px;
+	margin-right:5px;
 	color: #555;
 	width: 120px;
 	font-size:12px;
@@ -517,7 +518,7 @@ select{
 	border: none;
 	height:19px;
 	cursor: pointer;
-	background: url(images/design/button/search.gif) no-repeat;
+	background: url(../../../images/design/button/search.gif) no-repeat;
 }
 .header_menu_2, .header_menu_3{
 	display:block;
@@ -531,7 +532,7 @@ select{
 	*width:119px;
 	margin-right:10px;
 	color:#AD0F30;
-	background: url(images/design/button/shopping_cart.gif) no-repeat;
+	background: url(../../../images/design/button/shopping_cart.gif) no-repeat;
 }
 .header_menu_3{
 	padding-left:21px;
@@ -539,12 +540,12 @@ select{
 	*width:89px;
 	margin-right:10px;
 	color:#AD0F30;
-	background: url(images/design/button/checkout.gif) no-repeat;
+	background: url(../../../images/design/button/checkout.gif) no-repeat;
 }
 .header_menu_4{
 	width: 118px;
 	height:19px;
-	background: url(images/design/button/header_menu_bg.gif) no-repeat;
+	background: url(../../../images/design/button/header_menu_bg.gif) no-repeat;
 }
 .header_menu_4 span{
 line-height:19px;
@@ -555,7 +556,7 @@ padding-right:5px;
 	*width:900px;
 	height:17px;
 	*height:23px;
-	background:url(images/design/header_navigation.gif) no-repeat;
+	background:url(../../../images/design/header_navigation.gif) no-repeat;
 	font-size: 10px;
 	margin:0 auto 5px auto;
 	text-align:left;
@@ -601,7 +602,7 @@ sitemap
 --------------------------- */
 .bestseller_text {
     font-size: 10px;
-	background: url(images/design/box/ranking_title_bg.gif) no-repeat;
+	background: url(../../../images/design/box/ranking_title_bg.gif) no-repeat;
 	padding-left: 5px;
 	height:16px;
 }
@@ -683,34 +684,34 @@ h3.game_list a:hover{
 product listing
 --------------------------- */
 .product_listing_link01{
-	background: url(images/design/box/product_listing_sort_02.gif);
+	background: url(../../../images/design/box/product_listing_sort_02.gif);
 }
 .product_listing_link02{
-	background: url(images/design/box/product_listing_sort_01.gif);
+	background: url(../../../images/design/box/product_listing_sort_01.gif);
 }
 .product_listing_link{
 	display:block;
 	line-height:25px;
 	height:25px;
 	padding-left:25px;
-	background: url(images/design/box/product_listing_sort_01.gif);
+	background: url(../../../images/design/box/product_listing_sort_01.gif);
 	color:#000;
 }
 .product_listing_link:hover{
 	display:block;
 	height:25px;
 	color:#fff;
-	background: url(images/design/box/product_listing_sort_02.gif) !important;
+	background: url(../../../images/design/box/product_listing_sort_02.gif) !important;
 }
 .product_listing_sort_1, .product_listing_sort_2{
 	font-size: 11px;
 	line-height: 1.5;
 }
 .product_listing_sort_1{
-	background: url(images/design/box/product_listing_sort_01.gif);
+	background: url(../../../images/design/box/product_listing_sort_01.gif);
 }
 .product_listing_sort_2{
-	background: url(images/design/box/product_listing_sort_02.gif);
+	background: url(../../../images/design/box/product_listing_sort_02.gif);
 }
 .product_listing_content{
 	width: 650px;
@@ -752,7 +753,7 @@ product listing
 }
 */
 .menu_top{
-	background: url(images/design/box/menu.gif) no-repeat 0 bottom;
+	background: url(../../../images/design/box/menu.gif) no-repeat 0 bottom;
 	height:35px;
 	margin-bottom:2px;
 	font-weight: bold;
@@ -762,7 +763,7 @@ product listing
 }
 
 /*.menu_top_login{
-	background: url(images/design/box/login_top_bg.gif) no-repeat;
+	background: url(../../../images/design/box/login_top_bg.gif) no-repeat;
 	height:25px;
 	*height:35px;
 	padding:10px 0 0 20px;
@@ -770,7 +771,7 @@ product listing
 	font-size:12px;
 }*/
 /*.menu_top_ranking{
-	background: url(images/design/box/ranking.gif) no-repeat;
+	background: url(../../../images/design/box/ranking.gif) no-repeat;
 	height:35px;
 	padding:10px 0 0 20px;
 	font-weight: bold;
@@ -778,7 +779,7 @@ product listing
 	width:170px;
 }*/
 .menu_top_reviews{
-	background: url(images/design/box/reviews.gif) no-repeat;
+	background: url(../../../images/design/box/reviews.gif) no-repeat;
 	padding:10px 0 0 20px;
 	font-weight: bold;
 	font-size:12px;
@@ -843,7 +844,7 @@ Information
 #qa_bottom{
 	width: 500px;
 	height: 23px;
-	background: url(images/design/box/qa_bottom.gif) no-repeat;
+	background: url(../../../images/design/box/qa_bottom.gif) no-repeat;
 	margin: 0px auto 5px auto;
 }
 #qa td{
@@ -913,7 +914,7 @@ Information
 	color:#676565;
 }
 .pageHeading {
-	background: url(images/design/contents/headding_title.gif) no-repeat 0 bottom;
+	background: url(../../../images/design/contents/headding_title.gif) no-repeat 0 bottom;
 	width:530px;
 	font-size:12px;
 	font-weight:bold;
@@ -944,17 +945,17 @@ Information
 	margin-left:10px;
 }
 .pageHeading_gameList{
-	background: url(images/design/contents/game_list.gif) no-repeat;
+	background: url(../../../images/design/contents/game_list.gif) no-repeat;
 }
 /*.pageBottom{
 	width: 530px;
 	height: 15px;
 	margin: 0 0 5px 0;
-	background: url(images/design/contents/headding_bottom.gif) no-repeat;
+	background: url(../../../images/design/contents/headding_bottom.gif) no-repeat;
 }
 */
 .pageHeading_long {
-	background: url(images/design/contents/headding_title_long.gif) no-repeat 0 bottom;
+	background: url(../../../images/design/contents/headding_title_long.gif) no-repeat 0 bottom;
 	width: 714px;
 	font-size:12px;
 	font-weight:bold;
@@ -975,7 +976,7 @@ Information
 	width: 694px;
 	*width: 714px;
 	font-size: 12px;
-	background: url(images/design/contents/headding_title_long.gif) no-repeat;
+	background: url(../../../images/design/contents/headding_title_long.gif) no-repeat;
 	padding-left: 25px;
 	height: 30px;
 	*height: 35px;
@@ -986,7 +987,7 @@ Information
 	width: 714px;
 	height: 14px;
 	margin-bottom: 5px;
-	background: url(images/design/contents/headding_bottom_long.gif) no-repeat;
+	background: url(../../../images/design/contents/headding_bottom_long.gif) no-repeat;
 }
 /* ---------------------------
 フッター
@@ -998,7 +999,7 @@ Information
 	margin:5px auto;
 	clear:both;
 	height:85px;
-	background:url(images/design/box/footer_bg.gif) repeat-x;
+	background:url(../../../images/design/box/footer_bg.gif) repeat-x;
 }
 .footer_contacts{
 	letter-spacing:0.5mm;
@@ -1143,16 +1144,16 @@ padding-bottom:3px;
 a.Icon:hover {
     text-decoration: underline;    
 }
-.Icon.Ticket { background:url(images/icons/ticket.gif) 0 0 no-repeat; }
-.Icon.webTicket { background:url(images/icons/ticket_source_web.gif) 0 0 no-repeat; }
-.Icon.emailTicket { background:url(images/icons/ticket_source_email.gif) 0 0 no-repeat; }
-.Icon.phoneTicket { background:url(images/icons/ticket_source_phone.gif) 0 0 no-repeat; }                
-.Icon.otherTicket { background:url(images/icons/ticket_source_other.gif) 0 0 no-repeat; }
+.Icon.Ticket { background:url(../../../images/icons/ticket.gif) 0 0 no-repeat; }
+.Icon.webTicket { background:url(../../../images/icons/ticket_source_web.gif) 0 0 no-repeat; }
+.Icon.emailTicket { background:url(../../../images/icons/ticket_source_email.gif) 0 0 no-repeat; }
+.Icon.phoneTicket { background:url(../../../images/icons/ticket_source_phone.gif) 0 0 no-repeat; }                
+.Icon.otherTicket { background:url(../../../images/icons/ticket_source_other.gif) 0 0 no-repeat; }
 .Icon.attachment { background-image: url(images/icons/attachment.gif); }
-.Icon.file { background: url(images/icons/attachment.gif) no-repeat left center;}
+.Icon.file { background: url(../../../images/icons/attachment.gif) no-repeat left center;}
 .Icon.refresh { background-image: url(images/icons/refresh.gif); }   
 .Icon.thread {
-	background:url(images/icons/thread.gif) no-repeat;
+	background:url(../../../images/icons/thread.gif) no-repeat;
 	font-size:12px;
 	font-weight:bold;
 	padding-left:20px;}
