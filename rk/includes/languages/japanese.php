@@ -73,7 +73,7 @@ define('MYACCOUNT_EDIT', 'お客様情報の編集');
 define('MYACCOUNT_ADDRESS', 'アドレス帳');
 define('MYACCOUNT_HISTORY', '注文履歴');
 define('MYACCOUNT_NOTIFICATION', 'ショップからのお知らせ');
-define('MENU_MU','メーカー一覧');
+define('MENU_MU','メーカー別一覧');
 
 // footer text in includes/footer.php
 define('FOOTER_TEXT_REQUESTS_SINCE', 'リクエスト ('); // 'requests since'
@@ -103,7 +103,7 @@ define('BOX_SEARCH_TEXT', 'キーワードを入力して商品を探せます')
 define('BOX_SEARCH_ADVANCED_SEARCH', '詳細検索');
 
 // specials box text in includes/boxes/specials.php
-define('BOX_HEADING_SPECIALS', '特価商品');
+define('BOX_HEADING_SPECIALS', '特価商品一覧');
 
 // reviews box text in includes/boxes/reviews.php
 define('BOX_HEADING_REVIEWS', 'レビュー');
@@ -260,9 +260,9 @@ define('ENTRY_NEWSLETTER_NO', '購読しない');
 define('ENTRY_NEWSLETTER_ERROR', '');
 define('ENTRY_PASSWORD', 'パスワード:');
 define('ENTRY_PASSWORD_CONFIRMATION', 'パスワードを再入力:');
-define('ENTRY_PASSWORD_CONFIRMATION_TEXT', '&nbsp;' . ENTRY_PASSWORD_MIN_LENGTH . '文字以上&nbsp;(例. abcdef) <font color="#FC0000">必須</font>');
+define('ENTRY_PASSWORD_CONFIRMATION_TEXT', '&nbsp;英数字' . ENTRY_PASSWORD_MIN_LENGTH . '文字以上&nbsp;(例. abcdef) <font color="#FC0000">必須</font>');
 define('ENTRY_PASSWORD_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_PASSWORD_MIN_LENGTH . ' 文字</font></small>');
-define('ENTRY_PASSWORD_TEXT', '&nbsp;' . ENTRY_PASSWORD_MIN_LENGTH . '文字以上&nbsp;(例. abcdef) <font color="#FC0000">必須</font>');
+define('ENTRY_PASSWORD_TEXT', '&nbsp;英数字' . ENTRY_PASSWORD_MIN_LENGTH . '文字以上&nbsp;(例. abcdef) <font color="#FC0000">必須</font>');
 define('PASSWORD_HIDDEN', '********');
 define('ENTRY_AGREEMENT_TEXT', '同意する');
 

@@ -332,7 +332,8 @@ UL {
 	padding:3px 5px;
 }
 .input_text {
-	width: 200px;
+	width: 180px;
+	width:200px\09;
 	height:20px;
 }
 .input_text_short {
