@@ -181,7 +181,7 @@
   for ($i=0, $n=sizeof($order->totals); $i<$n; $i++) {
     echo '              <tr>' . "\n" .
          '                <td class="main" align="right" width="100%">' . $order->totals[$i]['title'] . '</td>' . "\n" .
-         '                <td class="main" align="right" nowrap>' . $order->totals[$i]['text'] . '</td>' . "\n" .
+         '                <td class="main" align="right" nowrap>' .  $currencies->format_total($order->totals[$i]['value']) . '</td>' . "\n" .
          '              </tr>' . "\n";
     if ($i == 0) {
       echo '              <tr>' . "\n" .
