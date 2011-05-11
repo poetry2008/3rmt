@@ -27,7 +27,8 @@
           $a_value = $firstname . tep_draw_hidden_field('firstname');
       }
   } else {
-      $a_value = tep_draw_input_field('firstname', $account['customers_firstname']) . '&nbsp;' . ENTRY_FIRST_NAME_TEXT;
+      $a_value = tep_draw_input_field('firstname',
+                                      $account['customers_firstname'], "class='input_text'") . '&nbsp;' . ENTRY_FIRST_NAME_TEXT;
   }
   $address_form->setFormLine('firstname',ENTRY_FIRST_NAME,$a_value);
 
@@ -41,7 +42,8 @@
           $a_value = $lastname . tep_draw_hidden_field('lastname');
       }
   } else {
-      $a_value = tep_draw_input_field('lastname', $account['customers_lastname']) . '&nbsp;' . ENTRY_LAST_NAME_TEXT;
+      $a_value = tep_draw_input_field('lastname',
+                                      $account['customers_lastname'],"class='input_text'") . '&nbsp;' . ENTRY_LAST_NAME_TEXT;
   }
   $address_form->setFormLine('lastname',ENTRY_LAST_NAME,$a_value);
 
@@ -59,7 +61,7 @@
           $a_value = $email_address . tep_draw_hidden_field('email_address');
       }
   } else {
-      $a_value = tep_draw_input_field('email_address', $account['customers_email_address']) . '&nbsp;' . ENTRY_EMAIL_ADDRESS_TEXT;
+      $a_value = tep_draw_input_field('email_address', $account['customers_email_address'],"class='input_text'") . '&nbsp;' . ENTRY_EMAIL_ADDRESS_TEXT;
   }
   $address_form->setFormLine('email_address',ENTRY_EMAIL_ADDRESS,$a_value);
 ?>
@@ -177,7 +179,7 @@
         echo PASSWORD_HIDDEN . tep_draw_hidden_field('password') . tep_draw_hidden_field('confirmation');
       }
     } else {
-      echo tep_draw_password_field('password') . '&nbsp;' . ENTRY_PASSWORD_TEXT;
+        echo tep_draw_password_field('password','',"class='input_text'") . '&nbsp;' . ENTRY_PASSWORD_TEXT;
     }
 ?>
                 </td>
@@ -189,7 +191,7 @@
                 <td class="main">&nbsp;<?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>
                 <td class="main">&nbsp;
                   <?php
-      echo tep_draw_password_field('confirmation') . '&nbsp;' . ENTRY_PASSWORD_CONFIRMATION_TEXT;
+      echo tep_draw_password_field('confirmation', '', "class='input_text'") . '&nbsp;' . ENTRY_PASSWORD_CONFIRMATION_TEXT;
 ?>
                 </td>
               </tr>
