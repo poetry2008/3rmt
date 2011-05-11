@@ -217,6 +217,16 @@ background:url(images/button02.gif) no-repeat;
     background: url(../images/design/footer_xian.gif) repeat-x scroll 0 0 transparent;
     height: 24px;
     line-height: 27px;
+	text-align:center;
+}
+.footer_link a {
+    color: #FFFFFF;
+    font-size: 12px;
+    padding: 0 10px;
+}
+.footer_link a:hover {
+	color:#0c9dea;
+	text-decoration:underline;
 }
 .categories{
     background: url(../images/design/categories_bg.gif) repeat-y scroll 0 0 transparent;
