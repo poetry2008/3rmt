@@ -231,6 +231,7 @@
   
   // 添加一行的html
   function add_tr (number, data) {
+    data['price'] = Math.abs(data['price']);
     html = "<tr class=\"data\" align=\"center\" style=\"font-size:15px;\">\n";
     html += "<td class=\"link_01 number\"></td>\n";
     html += "<td class=\"link_01 date\" id=\"tdate_"+number+"\"  align=\"left\"><input size=\"10\" type=\"text\" value=\""+data['date']+"\" onchange=\"date_change(this,"+number+")\"></td>";
