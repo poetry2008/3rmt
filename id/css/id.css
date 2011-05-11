@@ -946,6 +946,7 @@ Information
 	vertical-align: top;
 	background-color:#fff;
 }
+.information_table td a { font-size:12px;}
 .information_table th {
 	line-height: 20px;
 	padding: 8px;
