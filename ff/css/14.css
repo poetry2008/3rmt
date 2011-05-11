@@ -710,6 +710,7 @@ Game List
 	overflow:hidden;
 	padding:5px;
 	margin:6px 0 6px 8px;
+	margin:6px 0 6px 1px\9;
 }
 .game_list{
 	font-size:10px;
@@ -1371,7 +1372,7 @@ TABLE：Info Box
 .product_info_box{
 	background: #f4f4f4;
 	padding:5px;
-	padding:5px 8px\9;
+	padding:5px 4px\9;
 }
 .product_info_box table{
 	width: 100%;

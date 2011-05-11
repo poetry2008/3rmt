@@ -59,7 +59,7 @@
 ?> 
       
       <h1 class="pageHeading"><span><?php echo HEADING_TITLE_ERROR; ?></span></h1> 
-      <div class="comment"><?php echo ERROR_INVALID_PRODUCT; ?></div>
+      <div class="comment"><div class="product_info_box"><?php echo ERROR_INVALID_PRODUCT; ?></div></div>
       <?php
   } else {
     $product_info = tep_db_fetch_array($product_info_query);
