@@ -1573,11 +1573,15 @@ if (false) {
        '      <td align="right" class="smallText">' . $order->totals[$i]['title'] . '</td>' . "\n" .
        '      <td align="right" class="smallText">';
         // add font color for '-' value
+        /*
+        echo
+          $currencies->format_total($order->totals[$i]['value'],true,$order->info['currency'],$order->info['currency_value']);
+        */
         if($order->totals[$i]['value']>=0){
-          echo $order->totals[$i]['text'];
+          echo $currencies->format($order->totals[$i]['value']);
         }else{
           echo "<font color='red'>";
-          echo $order->totals[$i]['text'];
+          echo $currencies->format($order->totals[$i]['value']);
           echo "</font>";
         }
         echo '</td>' . "\n" .

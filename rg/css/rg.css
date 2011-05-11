@@ -89,6 +89,7 @@ table.comment {
 	padding: 5px 15px 5px 15px;
 	overflow: hidden;
 	border:1px solid #ccc;
+	font-size:12px;
 }
 p.pageBottom_long{
 margin:0;
