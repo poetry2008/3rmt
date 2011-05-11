@@ -47,6 +47,7 @@
           o.date_purchased, 
           o.delivery_name, 
           ot.text as order_total, 
+          ot.value as order_total_value, 
           o.orders_status_name 
     from " . TABLE_ORDERS . " o 
       left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id) 
@@ -83,7 +84,9 @@
       $order = '<table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n" .
                '  <tr>' . "\n" .
                '    <td class="main" width="50%" valign="top"><b>' . TEXT_ORDER_DATE . '</b> ' . tep_date_long($history['date_purchased']) . '<br><b>' . TEXT_ORDER_SHIPPED_TO . '</b> ' . tep_output_string_protected($history['delivery_name']) . '</td>' . "\n" .
-               '    <td class="main" width="30%" valign="top"><b>' . TEXT_ORDER_PRODUCTS . '</b> ' . $products['count'] . '<br><b>' . TEXT_ORDER_COST . '</b> ' . strip_tags($history['order_total']) . '</td>' . "\n" .
+               '    <td class="main" width="30%" valign="top"><b>' .
+               TEXT_ORDER_PRODUCTS . '</b> ' . $products['count'] . '<br><b>' .
+               TEXT_ORDER_COST . '</b> ' .  $currencies->format_total($history['order_total_value']) . '</td>' . "\n" .
                '    <td class="main" width="20%"><a href="' . tep_href_link(FILENAME_ACCOUNT_HISTORY_INFO, 'page=' . $_GET['page'] . '&order_id=' . $history['orders_id'], 'SSL') . '">' . TEXT_VIEW_ORDER . '</a></td>' . "\n" .
                '  </tr>' . "\n" .
                '</table>';
