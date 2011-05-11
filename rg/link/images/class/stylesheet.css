@@ -168,12 +168,12 @@ TABLE：情報ボックス
 }
 .product_info_box .small_table td{
 	border: none;
-	background: #F6F6F5 url(images/design/box/dot.gif) bottom repeat-x!important;
+	background: #F6F6F5 url(../../../images/design/box/dot.gif) bottom repeat-x!important;
 }
 .product_info_box .p_i_b_title{
 	color: #CC0000;
 	font-weight: bold;
-	background: #fff url(images/design/box/product_info_box_td.gif) bottom repeat-x;
+	background: #fff url(../../../images/design/box/product_info_box_td.gif) bottom repeat-x;
 }
 /* ---------------------------
 TABLE：情報ボックス（コンテンツ）

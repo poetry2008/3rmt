@@ -236,7 +236,8 @@
     html += "<td class=\"link_01 date\" id=\"tdate_"+number+"\"  align=\"left\"><input size=\"10\" type=\"text\" value=\""+data['date']+"\" onchange=\"date_change(this,"+number+")\"></td>";
     html += "<td class=\"link_01 type\" id=\"type_"+number+"\" align=\"center\" ><input size=\"10\" type=\"text\" value=\""+data['type']+"\" onchange=\"type_change(this,"+number+")\"></td>";
     html += "<td class=\"link_01 name\" id=\"pname_"+number+"\" align=\"left\"><input size=\"45\" type=\"text\" value=\""+data['name']+"\" id=\"name_display_"+number+"\" onchange=\"name_change(this,"+number+")\"></td>";
-    html += "<td class=\"link_01 price\" id=\"fprice_"+number+"\" align=\"right\" ><input size=\"12\" type=\"text\" value=\""+(data['price'] != ''?(parseFloat(data['price']).toFixed(1)):'')+"\" onchange=\"price_change(this,"+number+")\" style=\"text-align:right;\"><span class=\"price_display\" id=\"price_display_"+number+"\">"+(data['price'] != ''?('¥'+parseFloat(data['price']).toFixed(1)):'')+" </span></td>";
+    html += "<td class=\"link_01 price\" id=\"fprice_"+number+"\" align=\"right\" ><input size=\"12\" type=\"text\" value=\""+(Math.abs(data['price']) != ''?(Math.abs(parseFloat(data['price'])).toFixed(1)):'')+"\" onchange=\"price_change(this,"+number+")\" style=\"text-align:right;\"><span class=\"price_display\" id=\"price_display_"+number+"\">"+(data['price'] != ''?('¥'+parseFloat(data['price']).toFixed(1)).replace('-',''):'')+" </span>";
+    html += "<input type=\"hidden\" class=\"price_flag\" id=\"fprice_flag_"+number+"\" value=\""+(data['price']>0?1:-1)+ "\" /></td>"
     html += "<td class=\"link_01 quantity\" id=\"pquantity_"+number+"\" align=\"right\"><input size=\"4\"  type=\"text\" value=\""+(data['quantity'] != ''?(parseFloat(data['quantity']).toFixed(1)):'')+"\" onchange=\"quantity_change(this,"+number+")\" style=\"text-align:right;\"></td>";
     html += "<td class=\"link_01 percent\" align=\"right\" onclick=\"percent("+number+")\">\n";
     
@@ -311,16 +312,17 @@
     $('.data_box').each(function(){
       $(this).find('.data').each(function(){
         if ($(this).find('.price input').val() != '' && $(this).find('.quantity input').val() != ''){
-          fp = parseFloat($(this).find('.price input').val()) 
+         // fp = parseFloat($(this).find('.price input').val()) 
+          fp = $(this).find('.price_flag').val()*parseFloat($(this).find('.price input').val()) 
             * parseFloat($(this).find('.quantity input').val()) 
             * parseFloat($(this).find('.percent_select').val());
-          $(this).find('.fprice').html(fp>0?number_format(fp.toFixed(0)):('<font color="red" class="print_black">'+number_format(fp.toFixed(0)).replace('-','')+'</font>'));
+          $(this).find('.fprice').html(fp>0?number_format(fp.toFixed(0)):('<font color="red" class="print_black">'+number_format(fp.toFixed(0))+'</font>'));
           cost += fp;
           $(this).find('.number').html(no);
           no ++;
         }
       });
-      $(this).find('.cost_display').html(number_format(cost.toFixed(0))+'&nbsp;');
+      $(this).find('.cost_display').html(number_format(cost.toFixed(0).replace('-',''))+'&nbsp;');
       total += cost;
       cost = 0;
     });
@@ -390,6 +392,7 @@
     table_data[num]['price'] = ele.value;
     ele.value = parseFloat(ele.value).toFixed(1);
     $('#price_display_'+num).html('¥'+parseFloat(ele.value).toFixed(1));
+    $('#fprice_flag_'+num).val(1);
     calc_cost();
   }
   
