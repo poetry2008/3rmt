@@ -82,7 +82,7 @@ function showimage($1) {
   ");
   $reviews_text = tep_break_string(tep_output_string_protected($reviews['reviews_text']), 60, '-<br>');
 ?> 
-        <h1 class="pageHeading"><span><?php echo sprintf(HEADING_TITLE, $reviews['products_name']); ?></span></h1> 
+        <h1 class="pageHeading"><?php echo sprintf(HEADING_TITLE, $reviews['products_name']); ?></h1> 
         
         <div class="comment"> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_info_box"> 

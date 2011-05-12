@@ -52,7 +52,7 @@
       <!-- body_text //-->
       <td id="contents" valign="top">
 
-      <h1 class="pageHeading"><span><?php echo SEND_MAIL_HEADING_TITLE; ?></span></h1>
+      <h1 class="pageHeading"><?php echo SEND_MAIL_HEADING_TITLE; ?></h1>
       <div class="comment">
       <!--<table width="100%" border="0" cellpadding="0" cellspacing="0" summary="table">
       <tr>

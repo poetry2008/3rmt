@@ -66,7 +66,7 @@
         <?php
     } else {
     ?>
-    <h1 class="pageHeading"><span><?php echo PAGE_HEADING_TITLE ; ?></span></h1> 
+    <h1 class="pageHeading"><?php echo PAGE_HEADING_TITLE ; ?></h1> 
         <div class="comment">
        <div class="product_info_box"><?php echo PAGE_TEXT_INFORMATION; ?></div>
        </div>
@@ -75,7 +75,7 @@
       }
           } else {
           ?>
-          <h1 class="pageHeading"><span><?php echo PAGE_NAVBAR_TITLE;?></span></h1> 
+          <h1 class="pageHeading"><?php echo PAGE_NAVBAR_TITLE;?></h1> 
           <div class="comment">
           <div class="product_info_box">
           <ul class="comment_page01">

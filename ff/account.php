@@ -41,7 +41,7 @@
       </td>
       <!-- body_text //-->
       <td valign="top" id="contents">
-      <h1 class="pageHeading"><span><?php echo HEADING_TITLE ; ?></span></h1>
+      <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>
       <div class="comment">
       <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="table" class="product_info_box">
         <tr>
