@@ -33,6 +33,13 @@ while($o = tep_db_fetch_array($query)) {
     $mixed.= $o['orders_id'] ." 小計".$ot_subtotal." 合計".$ot_total."</br>\n";
     continue;
   }
+  //如果是买
+  if ($o['avgf'] ==1 ){
+    tep_db_query("update orders_products set final_price=0-abs(`final_price`) where orders_id = '".$o['orders_id']."'");
+    //  echo "updateing ".$o['orders_id']."</br>\n";
+  ob_flush();
+  flush();
+  }
   $op_query = tep_db_query("select * from orders_products where orders_id='".$o['orders_id']."'");
   $ott = tep_db_fetch_array(tep_db_query("select * from orders_total where orders_id='".$o['orders_id']."' and class='ot_total'"));
   $ots = tep_db_fetch_array(tep_db_query("select * from orders_total where orders_id='".$o['orders_id']."' and class='ot_subtotal'"));
