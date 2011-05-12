@@ -352,7 +352,9 @@
       }
       //$plus = $result4['point'] + $get_point;
       
+      if($check_status['payment_method'] != 'ポイント(買い取り)'){
       tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $get_point . " where customers_id = " . $result1['customers_id'] );
+      }
     }else{
       $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
       $os_result = tep_db_fetch_array($os_query);
