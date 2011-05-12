@@ -462,6 +462,7 @@
       }
       orders_updated($_SESSION['create_order2']['orders']['orders_id']);
       foreach($_SESSION['create_order2']['orders_total'] as $c => $ot){
+        $ot['text'] = '';
         tep_db_perform(TABLE_ORDERS_TOTAL, $ot);
       }
       
@@ -666,7 +667,8 @@
     $email_printing_order .= '------------------------------------------------------------------------' . "\n";
     $email_printing_order .= '在庫確認　　　　　　：□ 有　　｜　　□ 無　→　入金確認後仕入' . "\n";
     $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= '入金確認　　　　　●：＿＿月＿＿日　→　金額は' . strip_tags($ot['text']) . 'ですか？　□ はい' . "\n";
+    $email_printing_order .= '入金確認　　　　　●：＿＿月＿＿日　→　金額は' .
+      abs($ot['text']) . '円ですか？　□ はい' . "\n";
     $email_printing_order .= '------------------------------------------------------------------------' . "\n";
     $email_printing_order .= '入金確認メール送信　：□ 済' . "\n";
     $email_printing_order .= '------------------------------------------------------------------------' . "\n";

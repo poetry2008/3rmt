@@ -66,13 +66,16 @@
         $total += $buying_fee; 
       }
     }
-      $this->output[] = array('title' => $this->title . ':',
+                              /*
                               'text' => '<b>' . $currencies->format_total(
                                 $total, 
                                 true, 
                                 isset($order->info['currency'])?$order->info['currency']:'', 
                                 isset($order->info['currency_value'])?$order->info['currency_value']:''
                                 ) . '</b>',
+                                */
+      $this->output[] = array('title' => $this->title . ':',
+                              'text' => '',
                               'value' => $total);
     }
 

@@ -378,10 +378,10 @@
         $GLOBALS[$class]->process();
 
         for ($i=0, $n=sizeof($GLOBALS[$class]->output); $i<$n; $i++) {
-          if (tep_not_null($GLOBALS[$class]->output[$i]['title']) && tep_not_null($GLOBALS[$class]->output[$i]['text'])) {
+          if (tep_not_null($GLOBALS[$class]->output[$i]['title'])) {
             $order_total_array[] = array('code' => $GLOBALS[$class]->code,
                                          'title' => $GLOBALS[$class]->output[$i]['title'],
-                                         'text' => $GLOBALS[$class]->output[$i]['text'],
+                                         'text' => "",
                                          'value' => $GLOBALS[$class]->output[$i]['value'],
                                          'sort_order' => $GLOBALS[$class]->sort_order);
           }
@@ -394,7 +394,7 @@
     for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
       $sql_data_array = array('orders_id'  => $insert_id,
                               'title'      => $order_totals[$i]['title'],
-                              'text'       => $order_totals[$i]['text'],
+                              'text'       => "",
                               'value'      => $order_totals[$i]['value'], 
                               'class'      => $order_totals[$i]['code'], 
                               'sort_order' => $order_totals[$i]['sort_order']);
@@ -409,7 +409,7 @@
       
       $sql_data_array = array('orders_id'  => $insert_id,
                               'title'      => $ot_tax->title,
-                              'text'       => $ot_tax->text,
+                              'text'       => "",
                               'value'      => 0, 
                               'class'      => $ot_tax->code, 
                               'sort_order' => $ot_tax->sort_order);
