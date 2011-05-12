@@ -41,10 +41,10 @@
             $GLOBALS[$class]->process();
 
             for ($i=0, $n=sizeof($GLOBALS[$class]->output); $i<$n; $i++) {
-              if (tep_not_null($GLOBALS[$class]->output[$i]['title']) && tep_not_null($GLOBALS[$class]->output[$i]['text'])) {
+              if (tep_not_null($GLOBALS[$class]->output[$i]['title'])) {
                 $order_total_array[] = array('code' => $GLOBALS[$class]->code,
                                              'title' => $GLOBALS[$class]->output[$i]['title'],
-                                             'text' => $GLOBALS[$class]->output[$i]['text'],
+                                             'text' => "",
                                              'value' => $GLOBALS[$class]->output[$i]['value'],
                                              'sort_order' => $GLOBALS[$class]->sort_order);
               }
@@ -127,7 +127,8 @@
             for ($i=0; $i<$size; $i++) {
               $output_string .= '              <tr>' . "\n" .
                                 '                <td align="right" class="main">' . $GLOBALS[$class]->output[$i]['title'] . '</td>' . "\n" .
-                                '                <td align="right" class="main">' . $GLOBALS[$class]->output[$i]['text'] . '</td>' . "\n" .
+                                '                <td align="right" class="main">' .
+                                $currencies->format_total($GLOBALS[$class]->output[$i]['value']) . '</td>' . "\n" .
                                 '              </tr>';
             }
             if ($class == 'ot_subtotal') {
