@@ -286,8 +286,6 @@
       $query4 = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '".$result1['customers_id']."'");
       $result4 = tep_db_fetch_array($query4);
 
-      $query_t = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_total' and orders_id = '".tep_db_input($oID)."'");
-      $result_t = tep_db_fetch_array($query_t);
 
       
     // ここからカスタマーレベルに応じたポイント還元率算出============================================================
@@ -362,12 +360,15 @@
        $query1 = tep_db_query("select customers_id from " . TABLE_ORDERS . " where orders_id = '".$oID."'");
        $result1 = tep_db_fetch_array($query1);
        if ($check_status['payment_method'] == 'ポイント(買い取り)') {
-         $get_point = abs($result_t['value']);
+         $query_t = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_total' and orders_id = '".tep_db_input($oID)."'");
+         $result_t = tep_db_fetch_array($query_t);
+         $get_point = abs(intval($result_t['value']));
        } else {
          $get_point = 0;
        }
        $point_done_query =tep_db_query("select count(orders_status_history_id) cnt from
-         ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".$status."'");
+         ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".$status."' and 
+         orders_id = '".tep_db_input($oID)."'");
        $point_done_row  =  tep_db_fetch_array($point_done_query);
        if($point_done_row['cnt'] <1 ){
       tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .
