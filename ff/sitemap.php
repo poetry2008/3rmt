@@ -22,7 +22,7 @@
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
-      <td valign="top" id="contents"> <h1 class="pageHeading"><span><?php echo HEADING_TITLE ; ?></span></h1> 
+      <td valign="top" id="contents"> <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 
         
     
               <div class="comment"> 

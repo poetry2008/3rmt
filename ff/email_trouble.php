@@ -19,7 +19,7 @@
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents">
-      <h1 class="pageHeading"><span><?php echo 'フリーメールでメールが受け取れない方へ'; ?></span></h1>
+      <h1 class="pageHeading"><?php echo 'フリーメールでメールが受け取れない方へ'; ?></h1>
         <div class="comment"> 
 
 <div class="product_info_box">

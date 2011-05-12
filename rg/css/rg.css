@@ -11,12 +11,14 @@ H1 {
 	font-size: 14px;
 	margin: 0px;
 	padding: 0px;
+	padding-top:3px\9;
 }
 body{ font-size:12px;font-family: "MS PGothic", "Osaka", Arial, sans-serif;}
 H2 {
 	font-size: 12px;
 	margin: 0px;
 	padding: 0px;
+	padding-top:3px\9;
 }
 h2 a{
 	font-size: 10px;
@@ -27,6 +29,7 @@ H3 {
 	margin: 0px;
 	padding: 0px;
 	font-weight:bold;
+	padding-top:3px\9;
 }
 H4 {
 	font-size: 12px;
@@ -70,6 +73,7 @@ H4 {
 }
 .comment_index01 p{
 	clear:both;
+	font-size:12px;
 }
 .comment_index02 img{
 	float:right;
@@ -656,8 +660,8 @@ Game List
 	vertical-align: top;
 }
 h3.game_list{
-	font-size:11px;
-	*+font-size:11px;
+	font-size:12px;
+	*+font-size:12px;
 	margin-bottom: 8px;
 	*margin-bottom: -5px;
 	margin-bottom: 4px\9;
@@ -896,21 +900,17 @@ Page Title
 	height:35px;
 	margin-bottom:2px;
 	text-align:left;
-}
-.pageHeading span{
 	color:#A81235;
-	float:left;
-	font-weight:bold;
-	margin-top:15px;
-	padding-left:10px;
-	font-size:12px;
+	line-height:40px;
+	line-height:31px\9;
+
 }
 .pageHeading_left{
 	float:left;
 }
 .pageHeading_right{
 	float:right;
-	margin:15px 15px 0 0;
+	margin:2px 10px 0 0;
 	padding-right:5px;
 }
 .pageHeading_right a{ color:#000; font-size:11px;}
@@ -919,6 +919,7 @@ Page Title
 	display:block;
 	float:left;
 	margin-left:10px;
+	margin-right:10px;
 }
 .pageHeading_gameList{
 	background: url(../images/design/contents/game_list.gif) no-repeat;
@@ -931,13 +932,9 @@ Page Title
 	height:35px;
 	margin-bottom:2px;
 	text-align:left;
-}
-.pageHeading_long span{
 	color:#A81235;
-	float:left;
-	font-weight:bold;
-	margin-top:15px;
-	padding-left:10px;
+	line-height:40px;
+	line-height:31px\9;
 }
 .pageBottom_long{
 	width: 714px;
@@ -955,11 +952,13 @@ Footer
 	margin:5px auto;
 	clear:both;
 	height:85px;
+	line-height:20px;
 	background:url(../images/design/box/footer_bg.gif) repeat-x;
 }
 .footer_contacts{
 	letter-spacing:0.5mm;
-	padding-top:25px;
+	padding-top:15px;
+	line-height:20px;
 }
 .footer_contacts a{
 	color: #AE0E32;
@@ -1706,8 +1705,8 @@ color:#000;
 margin:5px 0 5px 0;
 overflow:hidden;
 padding:5px 7px;
-background-color:#e2e2e2;
-border:1px solid #CAC6BE;
+background-color:#fff;
+border:2px solid #FF8080;
 }
 .product_list02 span{ font-size:10px; width:157px; text-align:center;}
 .product_list02 img{ margin-bottom:10px; height:50px;}

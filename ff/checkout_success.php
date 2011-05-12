@@ -74,7 +74,7 @@
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents">
-        <h1 class="pageHeading"><span><?php echo HEADING_TITLE ; ?></span></h1> 
+        <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 
         
         <div class="comment"> 
       <?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_SUCCESS, 'action=update', 'SSL')); ?> 

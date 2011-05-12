@@ -91,9 +91,9 @@ td {
 </head>
 <body>
 
-<span><h1>Smarty Debug Console</h1></span>
+<h1>Smarty Debug Console</h1>
 
-<span><h2>included templates &amp; config files (load time in seconds)</h2></span>
+<h2>included templates &amp; config files (load time in seconds)</h2>
 
 <div>
 {section name=templates loop=$_debug_tpls}
@@ -112,7 +112,7 @@ td {
 {/section}
 </div>
 
-<span><h2>assigned template variables</h2></span>
+<h2>assigned template variables</h2>
 
 <table id="table_assigned_vars">
     {section name=vars loop=$_debug_keys}
@@ -124,7 +124,7 @@ td {
     {/section}
 </table>
 
-<span><h2>assigned config file variables (outer template scope)</h2></span>
+<h2>assigned config file variables (outer template scope)</h2>
 
 <table id="table_config_vars">
     {section name=config_vars loop=$_debug_config_keys}

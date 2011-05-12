@@ -1039,8 +1039,8 @@ Footer
 }
 .footer_contacts{
 	letter-spacing:0.5mm;
-	padding-top:18px;
-	line-height:20px;
+	padding-top:10px;
+	line-height:18px;
 	color:#FFF;
 }
 .footer_contacts a{
@@ -1505,7 +1505,7 @@ TD.subBar {
 TD：Main
 --------------------------- */
 TD.main, P.main {
-	font-size: 11px;
+	font-size: 12px;
 	*+font-size: 10px;
 	line-height: 1.5;
 }

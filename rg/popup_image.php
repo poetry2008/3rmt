@@ -68,7 +68,7 @@ A {
 </head>
 
 <body Oncontextmenu="alert('Copy Right <?php echo STORE_NAME ; ?>'); return false;" leftmargin="0" topmargin="0" onLoad="window.resizeTo(document.featImage.width+150,document.featImage.height+265);">
-<span><h1 class="pageHeading"><?php echo $products_values['products_name'] ; ?></h1></span>
+<h1 class="pageHeading"><?php echo $products_values['products_name'] ; ?></h1>
       <table border="0" cellspacing="6" cellpadding="0">
 <tr>
         <?php echo (tep_not_null($products_values['products_image'])) ?  '<td align="center" class="image_border"><a href="popup_image.php?image='.$products_values['products_image'] .'&pIID='.$_GET['pIID'].' ">'. tep_image2(DIR_WS_IMAGES . $products_values['products_image'], $products_values['products_name'], 60, 60, 'name="prod_thum_1"').'</a></td>' : '' ; ?>

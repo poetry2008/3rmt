@@ -12,6 +12,7 @@ echo '<a class = "bold" href="'.tep_href_link('/').'" ><strong>RMT学園</strong
 ?>
 
             </address>
+            <?php if ($banner = tep_banner_exists('dynamic', 'footer')) { echo  '<div align="center">' . "\n" . tep_display_banner('static', $banner) . '</div>'; }?>
 
 </div>
 <script type="text/javascript" src="js/access.js"></script>

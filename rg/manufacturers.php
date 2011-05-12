@@ -27,7 +27,7 @@
       </td>
       <!-- body_text //-->
       <td id="contents" valign="top">
-        <span><h1 class="pageHeading"><?php echo HEADING_TITLE; ?>:RMT</h1></span>
+        <h1 class="pageHeading"><?php echo HEADING_TITLE; ?>:RMT</h1>
                 <div class="comment">
         <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
@@ -71,7 +71,7 @@ while ($manufacturer = tep_db_fetch_array($manufacturer_query)){
 
     echo '<table width="100%" border="0" cellspacing="0" cellpadding="0">' . "\n";
     echo '  <tr>' . "\n";
-    echo '    <td width="120" class="smallText" valign="top">' . tep_image(DIR_WS_IMAGES.$manufacturer['manufacturers_image'],$manufacturer['manufacturers_name']) . '<span><h3><strong>'.$manufacturer['manufacturers_name'].'</strong></h3></span><!-- '.substr(strip_tags($manufacturer['manufacturers_url']),0,100) .'... --></td>' . "\n";
+    echo '    <td width="120" class="smallText" valign="top">' . tep_image(DIR_WS_IMAGES.$manufacturer['manufacturers_image'],$manufacturer['manufacturers_name']) . '<h3><strong>'.$manufacturer['manufacturers_name'].'</strong></h3><!-- '.substr(strip_tags($manufacturer['manufacturers_url']),0,100) .'... --></td>' . "\n";
     echo '    <td>' . "\n";
   
     echo '      <table width="100%" border="0" cellspacing="2" cellpadding="0">' . "\n";

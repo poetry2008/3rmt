@@ -21,7 +21,7 @@ $breadcrumb->add(TAGS_NAVBAR_TITLE, tep_href_link(FILENAME_TAGS));
 </td>
 <td id="contents" valign="top">
 <div class="pageHeading"><img align="top" src="images/menu_ico_a.gif" alt="">
-<span><h1><?php echo TAGS_HEADING_TITLE; ?></h1></span></div>
+<h1><?php echo TAGS_HEADING_TITLE; ?></h1></div>
 <div class="comment">
 <?php 
 /*在products 里面 查找所有的 tags_id*/

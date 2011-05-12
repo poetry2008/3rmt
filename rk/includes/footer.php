@@ -7,6 +7,7 @@
           <address class="footer_contacts">
         <?php echo FOOTER_TEXT_BODY . "\n"; ?><br> Copyright&nbsp;&copy;&nbsp;2011&nbsp;&nbsp;<a class="bold" href="http://www.rmt-kames.jp/"><?php echo STORE_NAME;?></a>
             </address>
+          <?php if ($banner = tep_banner_exists('dynamic', 'footer')) { echo  '<div align="center">' . "\n" . tep_display_banner('static', $banner) . '</div>'; }?>
 
 </div>
 <script type="text/javascript" src="js/access.js"></script>

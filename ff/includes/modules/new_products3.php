@@ -94,7 +94,7 @@
 ?>
 <!-- new_products //-->
 <?php if (0 < $num_products) { ?>
-<h3 class="pageHeading_long"><span><?php echo $new_c_name; ?>の新着商品</span></h3>
+<h3 class="pageHeading_long"><?php echo $new_c_name; ?>の新着商品</h3>
 <div class="comment_long">
 <table width="100%"  border="0" cellspacing="0" cellpadding="0" class="comment03">
 <?php

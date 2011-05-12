@@ -27,7 +27,7 @@
     while ($manufacturers = tep_db_fetch_array($manufacturers_query)) {
       $manufacturers_name = ((strlen($manufacturers['manufacturers_name']) > MAX_DISPLAY_MANUFACTURER_NAME_LEN) ? mb_substr($manufacturers['manufacturers_name'], 0, MAX_DISPLAY_MANUFACTURER_NAME_LEN) . '..' : $manufacturers['manufacturers_name']);
       if (isset($_GET['manufacturers_id']) && ($_GET['manufacturers_id'] == $manufacturers['manufacturers_id'])) $manufacturers_name = '<b>' . $manufacturers_name .'</b>';
-      $manufacturers_list .= '<tr><td height="20" class="c_menu"><span><h3><a href="' . tep_href_link(FILENAME_DEFAULT, 'manufacturers_id=' . $manufacturers['manufacturers_id']) . '">' . $manufacturers_name . '</a></h3></span></td></tr>';
+      $manufacturers_list .= '<tr><td height="20" class="c_menu"><h3><a href="' . tep_href_link(FILENAME_DEFAULT, 'manufacturers_id=' . $manufacturers['manufacturers_id']) . '">' . $manufacturers_name . '</a></h3></td></tr>';
     }
 
    // $info_box_contents = array();

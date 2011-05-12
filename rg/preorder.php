@@ -69,7 +69,7 @@
   } else {
     //$product_info = tep_db_fetch_array($product_info_query);
 ?>
-      <div class="pageHeading"><span><h1><?php echo $po_game_c . '&nbsp;' . $product_info['products_name']; ?>を予約する</h1></span></div>
+      <div class="pageHeading"><h1><?php echo $po_game_c . '&nbsp;' . $product_info['products_name']; ?>を予約する</h1></div>
             <div class="comment">
       <p>
         RMT学園では、<?php echo $po_game_c; ?>の予約サービスを行っております。<br>
@@ -156,7 +156,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
         echo '<span class="errorText"><b>入力した内容に誤りがございます。正しく入力してください。</span></b><br><br>';
       }
 ?>
-      <span><h3 class="formAreaTitle"><?php echo FORM_TITLE_CUSTOMER_DETAILS; ?></h3></span>
+      <h3 class="formAreaTitle"><?php echo FORM_TITLE_CUSTOMER_DETAILS; ?></h3>
       <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
         <tr>  
           <td class="main"><?php echo FORM_FIELD_CUSTOMER_NAME; ?></td>
@@ -170,7 +170,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
           <td colspan="2" class="main">お取り置き期限がございます。いつも使用しているメールアドレスをご入力ください。</td>
         </tr>
       </table><br>
-      <span><h3 class="formAreaTitle"><?php echo FORM_TITLE_FRIEND_DETAILS; ?></h3></span>
+      <h3 class="formAreaTitle"><?php echo FORM_TITLE_FRIEND_DETAILS; ?></h3>
       <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
         <tr>
           <td class="main" valign="top">商品名:</td>
@@ -201,7 +201,7 @@ if (!isset($_GET['send_to'])) $_GET['send_to'] = NULL; //del notice
         </tr>
       </table>
       <br>
-      <span><h3 class="formAreaTitle"><?php echo $po_game_c; ?>についてのご要望</h3></span>
+      <h3 class="formAreaTitle"><?php echo $po_game_c; ?>についてのご要望</h3>
       <table width="100%" cellpadding="2" cellspacing="0" border="0" class="formArea">
         <tr><td class="main"><?php echo tep_draw_textarea_field('yourmessage', 'soft', 40, 8);?></td></tr>
       </table>

@@ -946,6 +946,7 @@ Information
 	vertical-align: top;
 	background-color:#fff;
 }
+.information_table td a { font-size:12px;}
 .information_table th {
 	line-height: 20px;
 	padding: 8px;
@@ -1076,9 +1077,10 @@ footer
 	color: #000;
 }
 .footer_contacts {
-	margin-top: -3px;
+	margin-top: 2px;
  *margin-top: 2px;
 	color:#000000;
+	line-height:18px;
 }
 .footer_contacts a {
 	color:#AE0E30;
@@ -1194,9 +1196,10 @@ font-weight:bold;
 	padding-left:10px;
  *padding-left:2px;
 	margin-left:10px;
-	margin-top:12px;
+	padding-top:10px;
 	color:#000;
 	font-size:11px;
+	line-height:15px;
 }
 .info_foot01 a {
 	margin:5px 18px 0 18px;
