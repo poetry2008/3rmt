@@ -826,7 +826,8 @@ if ($payment_class->title === '銀行振込(買い取り)') {
   $email_printing_order .= '------------------------------------------------------------------------' . "\n";
   $email_printing_order .= '在庫確認　　　　　　：□ 有　　｜　　□ 無　→　入金確認後仕入' . "\n";
   $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '入金確認　　　　　●：＿＿月＿＿日　→　金額は' . strip_tags($ot['text']) . 'ですか？　□ はい' . "\n";
+  $email_printing_order .= '入金確認　　　　　●：＿＿月＿＿日　→　金額は' .
+    abs($ot['value']) . '円ですか？　□ はい' . "\n";
   $email_printing_order .= '------------------------------------------------------------------------' . "\n";
   $email_printing_order .= '入金確認メール送信　：□ 済' . "\n";
   $email_printing_order .= '------------------------------------------------------------------------' . "\n";
@@ -862,12 +863,17 @@ $cart->reset(true);
 
 //Add point
 if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
+  if($payment == "buyingpoint"){
+    tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .
+        abs(intval($ot['value'])) . " where customers_id = " . $customer_id );
+  }else{
   if(MODULE_ORDER_TOTAL_POINT_ADD_STATUS == '0') {
     //ccdd
     tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . intval($get_point - $point) . " where customers_id = " . $customer_id );
   } else {
     //ccdd
     tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point - " . intval($point) . " where customers_id = " . $customer_id );
+  }
   }
 }
   
