@@ -251,10 +251,10 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
-      <td valign="top" id="contents"><span><h1 class="pageHeading"> 
+      <td valign="top" id="contents"><h1 class="pageHeading"> 
       <?php if (!isset($_GET['news_id'])) $_GET['news_id'] = NULL; //del notice?>
           <?php if ($_GET['news_id']) { echo $latest_news['headline']; } else { echo HEADING_TITLE; } ?> 
-        </h1></span>
+        </h1>
         <div class="comment">
         <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
           <tr> 

@@ -146,7 +146,7 @@ function change_num(ob,targ, quan,a_quan)
       </td>
       <!-- body_text //-->
       <td valign="top" id="contents">
-        <div class="pageHeading"><img align="top" alt="" src="images/menu_ico_a.gif"><span><h1><?php echo HEADING_TITLE ; ?></h1></span></div>
+        <div class="pageHeading"><img align="top" alt="" src="images/menu_ico_a.gif"><h1><?php echo HEADING_TITLE ; ?></h1></div>
         <div class="comment">
   <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_SHOPPING_CART, 'action=update_product', 'SSL')); ?> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="rmt">
@@ -329,7 +329,7 @@ function change_num(ob,targ, quan,a_quan)
     $cart_products = tep_get_cart_products(tep_get_products_by_shopiing_cart($products));
     if ($cart_products) {
 ?>
-  <span><h2>こちらの商品もオススメ！！</h2></span>
+  <h2>こちらの商品もオススメ！！</h2>
   <div style="text-align:center;padding:10px 0;">
 <?php
       foreach($cart_products as $cp){

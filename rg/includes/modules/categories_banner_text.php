@@ -28,7 +28,7 @@ $categories_tab_query1 = tep_db_query("
     ");
 ?>
 <!-- categories_banner_text //-->
-<div class="pageHeading"><img src="images/menu_ico06.gif" alt="" align="top"><span><h2>RMT GAME LIST</h2></span></div>
+<div class="pageHeading"><img src="images/menu_ico06.gif" alt="" align="top"><h2>RMT GAME LIST</h2></div>
   <table width="530" class="game_list_content" border="0" align="center" cellpadding="0" cellspacing="0">
     <tr align="center">
 <?php 
@@ -37,7 +37,7 @@ $categories_tab_query1 = tep_db_query("
   while($cbt = tep_db_fetch_array($categories_tab_query1)){
     $number_of_categories ++;
     echo '<td class="smallText">' . "\n";
-    echo '<span><h3 class="game_list"><a href="' . tep_href_link(FILENAME_DEFAULT,'cPath=' . $cbt['categories_id']) . '">' . "\n";
+    echo '<h3 class="game_list"><a href="' . tep_href_link(FILENAME_DEFAULT,'cPath=' . $cbt['categories_id']) . '">' . "\n";
     //echo tep_image(DIR_WS_IMAGES. 'categories/' .$cbt['categories_image2'],$cbt['categories_name'], CATEGORY_IMAGE_WIDTH, CATEGORY_IMAGE_HEIGHT) . '<br>' . "\n";
     $cbt_dec = explode(',',$cbt['categories_name']);
     for($i=0; $i < sizeof($cbt_dec); $i++) {
@@ -45,7 +45,7 @@ $categories_tab_query1 = tep_db_query("
         echo strip_tags(mb_substr($cbt_dec[$i],0,36,"UTF-8")) . "\n";
       }
     }
-    echo  '</a></h3></span>' . "\n" . '</td>' . "\n";
+    echo  '</a></h3>' . "\n" . '</td>' . "\n";
   
     if (($number_of_categories/3) == floor($number_of_categories/3)) {
       echo '</tr>' . "\n" . '<tr align="center">' . "\n";

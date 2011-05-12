@@ -29,7 +29,7 @@ $categories_tab_query1 = tep_db_query("
 );
 ?>
 <!-- select_categories //-->
-<span><h1 class="pageHeading">SELECT A GAME</h1></span>
+<h1 class="pageHeading">SELECT A GAME</h1>
 <div class="game_list_content">
 <form action='/select.php' method='post'>
   <table width="510" border="0" align="center" onkeypress="" cellpadding="0" cellspacing="0" summary="table">
@@ -40,7 +40,7 @@ $categories_tab_query1 = tep_db_query("
   while($cbt = tep_db_fetch_array($categories_tab_query1)){
     $number_of_categories ++;
     echo '<td class="smallText">' . "\n";
-    echo "<span><h3 class=\"game_list\">" . "\n";
+    echo "<h3 class=\"game_list\">" . "\n";
     echo "<a href='javascript:void(0);' onkeypress='SomeJavaScriptCode' onclick=\"document.getElementById('categories_id_" . $cbt['categories_id'] . "').checked = true;\">" . "\n";
     echo tep_image(DIR_WS_IMAGES. 'categories/' .$cbt['categories_image2'],$cbt['categories_name'], CATEGORY_IMAGE_WIDTH, CATEGORY_IMAGE_HEIGHT) . '<br>' . "\n";
     $cbt_dec = explode(',',$cbt['categories_meta_text']);
@@ -50,7 +50,7 @@ $categories_tab_query1 = tep_db_query("
       }
     } 
     echo '<br><input type="radio" id="categories_id_' . $cbt['categories_id'] . '" name="categories_id" value="' . $cbt['categories_id'] . '" >';
-    echo  '</a></h3></span>' . "\n" . '</td>' . "\n";
+    echo  '</a></h3>' . "\n" . '</td>' . "\n";
   
     if (($number_of_categories/3) == floor($number_of_categories/3)) {
       echo '</tr>' . "\n" . '<tr align="center">' . "\n";

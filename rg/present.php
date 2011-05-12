@@ -39,7 +39,7 @@ function popupWindow(url) {
       </td>
       <!-- body_text //-->
       <td valign="top" id="contents">
-       <span><h1 class="pageHeading"><?php echo ($_GET['goods_id'] && $_GET['goods_id'] != '' ) ? $present['title'] : HEADING_TITLE ; ?> </h1></span>
+       <h1 class="pageHeading"><?php echo ($_GET['goods_id'] && $_GET['goods_id'] != '' ) ? $present['title'] : HEADING_TITLE ; ?> </h1>
       <div class="comment">
       <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="table">
         <tr>

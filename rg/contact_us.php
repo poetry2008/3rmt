@@ -31,7 +31,7 @@ require(CLIENTINC_DIR.'header.inc.php');
 <div class="lcol">
   <div class="contact_left"><img src="./images/new_ticket_icon.jpg" width="60" height="60" alt="img"></div>
   <div class="contact_right">
-  <span><h3>新規お問い合わせ</h3></span>
+  <h3>新規お問い合わせ</h3>
   　<br>
   <form method="GET" action="open.php">
   <input type="submit" class="button2" value="お問い合わせ">
@@ -41,7 +41,7 @@ require(CLIENTINC_DIR.'header.inc.php');
 <div class="rcol">
   <div class="contact_left"><img src="./images/ticket_status_icon.jpg" width="60" height="60" alt="img"></div>
   <div class="contact_right">
-  <span><h3>過去のお問い合わせへの返事を確認</h3></span>
+  <h3>過去のお問い合わせへの返事を確認</h3>
  
   <br>
     <form class="status_form" action="contact_us_login.php" method="post">

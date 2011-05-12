@@ -11,12 +11,14 @@ H1 {
 	font-size: 14px;
 	margin: 0px;
 	padding: 0px;
+	padding-top:3px\9;
 }
 body{ font-size:12px;font-family: "MS PGothic", "Osaka", Arial, sans-serif;}
 H2 {
 	font-size: 12px;
 	margin: 0px;
 	padding: 0px;
+	padding-top:3px\9;
 }
 h2 a{
 	font-size: 10px;
@@ -27,6 +29,7 @@ H3 {
 	margin: 0px;
 	padding: 0px;
 	font-weight:bold;
+	padding-top:3px\9;
 }
 H4 {
 	font-size: 12px;
@@ -899,6 +902,7 @@ Page Title
 	text-align:left;
 	color:#A81235;
 	line-height:40px;
+	line-height:31px\9;
 
 }
 .pageHeading_left{
@@ -930,6 +934,7 @@ Page Title
 	text-align:left;
 	color:#A81235;
 	line-height:40px;
+	line-height:31px\9;
 }
 .pageBottom_long{
 	width: 714px;
@@ -947,11 +952,13 @@ Footer
 	margin:5px auto;
 	clear:both;
 	height:85px;
+	line-height:20px;
 	background:url(../images/design/box/footer_bg.gif) repeat-x;
 }
 .footer_contacts{
 	letter-spacing:0.5mm;
-	padding-top:25px;
+	padding-top:15px;
+	line-height:20px;
 }
 .footer_contacts a{
 	color: #AE0E32;

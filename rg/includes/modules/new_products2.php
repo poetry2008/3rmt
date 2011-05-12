@@ -99,7 +99,7 @@
 ?>
 <!-- new_products //-->
 <?php if (0 < $num_products) { ?>
-<div class="pageHeading"><img align="top" alt="" src="images/menu_ico_a.gif"><span><h3><?php echo $new_c_name; ?>の新着商品</h3></span></div>
+<div class="pageHeading"><img align="top" alt="" src="images/menu_ico_a.gif"><h3><?php echo $new_c_name; ?>の新着商品</h3></div>
 <div class="comment">
 <table width="100%"  border="0" cellspacing="0" cellpadding="0">
 <?php
