@@ -1580,9 +1580,15 @@ if (false) {
         if($order->totals[$i]['value']>=0){
           echo $currencies->format($order->totals[$i]['value']);
         }else{
+          if($order->totals[$i]['class'] == 'ot_total'){
+          echo "<b><font color='red'>";
+          echo $currencies->format($order->totals[$i]['value']);
+          echo "</font></b>";
+          }else{
           echo "<font color='red'>";
           echo $currencies->format($order->totals[$i]['value']);
           echo "</font>";
+          }
         }
         echo '</td>' . "\n" .
        '    </tr>' . "\n";

@@ -389,10 +389,13 @@ echo "</pre>";
           $GLOBALS[$class]->process();
 
           for ($i=0, $n=sizeof($GLOBALS[$class]->output); $i<$n; $i++) {
-            if (tep_not_null($GLOBALS[$class]->output[$i]['title']) && tep_not_null($GLOBALS[$class]->output[$i]['text'])) {
+            if (tep_not_null($GLOBALS[$class]->output[$i]['title']) ) {
+              /*
+                'text' => $GLOBALS[$class]->output[$i]['text'],
+              */
               $order_total_array[] = array('code' => $GLOBALS[$class]->code,
                                            'title' => $GLOBALS[$class]->output[$i]['title'],
-                                           'text' => $GLOBALS[$class]->output[$i]['text'],
+                                           'text' => "",
                                            'value' => $GLOBALS[$class]->output[$i]['value'],
                                            'sort_order' => $GLOBALS[$class]->sort_order);
             }
@@ -403,10 +406,13 @@ echo "</pre>";
   
   $order_totals = $order_total_array;
     for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
+      /* change 
+        'text' => $order_totals[$i]['text'],  to  'text'=>'',
+      */
       $sql_data_array = array('orders_id' => $insert_id,
                               'title' => $order_totals[$i]['title'],
-                              'text' => $order_totals[$i]['text'],
                               'value' => $order_totals[$i]['value'], 
+                              'text'=> "",
                               'class' => $order_totals[$i]['code'], 
                               'sort_order' => $order_totals[$i]['sort_order']);
       tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
@@ -417,10 +423,13 @@ echo "</pre>";
     include($module_directory . 'ot_tax.php');
     $ot_tax = new ot_tax;
     
+    /*
+      'text' => $ot_tax->text,
+    */
       $sql_data_array = array('orders_id' => $insert_id,
                               'title' => $ot_tax->title,
-                              'text' => $ot_tax->text,
                               'value' => 0, 
+                              'text' => "",
                               'class' => $ot_tax->code, 
                               'sort_order' => $ot_tax->sort_order);
       tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
