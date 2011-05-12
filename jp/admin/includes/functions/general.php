@@ -2786,7 +2786,7 @@ function tep_get_special_price($price, $offset, $sum = '') {
   }
 }
 
-function tep_get_price ($price, $offset, $sum = '') {
+function tep_get_price ($price, $offset, $sum = '', $bflag = 0) {
   if ($price && $sum) {
     $hprice = $price;
     foreach (tep_get_wari_array_by_sum($sum) as $p) {
@@ -2796,7 +2796,7 @@ function tep_get_price ($price, $offset, $sum = '') {
     }
     return $hprice;
   } else if ($price && $offset && $offset != 0) {
-    return calculate_special_price($price, $offset);
+    return calculate_special_price($price, $offset, $bflag);
   } else {
     return $price;
   }
@@ -2827,10 +2827,17 @@ function tep_get_final_price($price, $offset, $sum, $quantity) {
 function tep_get_products_price ($products_id) {
   $product_query = tep_db_query("select * from " . TABLE_PRODUCTS . " where products_id = '" . (int)$products_id . "'");
   $product = tep_db_fetch_array($product_query);
-  return array(
-    'price' => tep_get_price($product['products_price'], $product['products_price_offset'], $product['products_small_sum']),
-    'sprice' => tep_get_special_price($product['products_price'], $product['products_price_offset'], $product['products_small_sum'])
-  );
+  if ($product['products_bflag'] == 1) {
+    return array(
+      'price' => tep_get_price($product['products_price'], $product['products_price_offset'], $product['products_small_sum'], $product['products_bflag']),
+      'sprice' => tep_get_special_price($product['products_price'], $product['products_price_offset'], $product['products_small_sum'])
+    );
+  } else {
+    return array(
+      'price' => tep_get_price($product['products_price'], $product['products_price_offset'], $product['products_small_sum']),
+      'sprice' => tep_get_special_price($product['products_price'], $product['products_price_offset'], $product['products_small_sum'])
+    );
+  }
 }
 
 function SBC2DBC($str) {
@@ -2843,7 +2850,7 @@ function SBC2DBC($str) {
   return str_replace($arr, $arr2, $str);
 }
 
-function calculate_special_price($price, $offset) {
+function calculate_special_price($price, $offset, $bflag = 0) {
   $price = (float) $price;
   $offset = trim($offset);
   
@@ -2853,7 +2860,15 @@ function calculate_special_price($price, $offset) {
     $special = $price +(($offset / 100) * $price);
   } else {
     $offset = (float) $offset;
-    $special = $price + $offset;
+    if ($bflag == 1) {
+      if ($offset > 0) {
+        $special = $price - $offset;
+      } else {
+        $special = $price + abs($offset);
+      }
+    } else {
+      $special = $price + $offset;
+    }
   }
   return $special;
 }

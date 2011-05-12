@@ -17,6 +17,7 @@
                p.products_price, 
                p.products_real_quantity + p.products_virtual_quantity as products_quantity,
                p.products_price_offset, 
+               p.products_bflag, 
                pd.site_id,
                pd.products_status,
                p.products_date_added,
@@ -37,6 +38,7 @@
                           p.products_price, 
                           p.products_real_quantity + p.products_virtual_quantity as products_quantity,
                           p.products_price_offset, 
+                          p.products_bflag, 
                           pd.site_id,
                           pd.products_status,
                           p.products_date_added,
@@ -57,6 +59,7 @@
                           p.products_price, 
                           p.products_real_quantity + p.products_virtual_quantity as products_quantity,
                           p.products_price_offset, 
+                          p.products_bflag, 
                           pd.site_id,
                           pd.products_status,
                           p.products_date_added,
@@ -89,6 +92,7 @@
                         p.products_tax_class_id,
                         p.products_date_added,
                         pd.site_id,
+                        p.products_bflag, 
                         pd.products_status,
                         if(s.status, s.specials_new_products_price, p.products_price) as products_price 
         from " . TABLE_PRODUCTS . " p left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " .  TABLE_CATEGORIES . " c, ".TABLE_PRODUCTS_DESCRIPTION." pd 
@@ -120,9 +124,10 @@ if (0 < $num_products) {
     while ($new_products = tep_db_fetch_array($new_products_query)) {
       $new_products['products_name'] = tep_get_products_name($new_products['products_id']);
       if (tep_get_special_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum'])) {
-        $p =  '<s>' . $currencies->display_price(tep_get_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum']), tep_get_tax_rate($new_products['products_tax_class_id'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum']), tep_get_tax_rate($new_products['products_tax_class_id'])) . '</span>&nbsp;';
+        $p =  '<s>' .
+          $currencies->display_price(tep_get_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum'], $new_products['products_bflag']), tep_get_tax_rate($new_products['products_tax_class_id'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum']), tep_get_tax_rate($new_products['products_tax_class_id'])) . '</span>&nbsp;';
       } else {
-        $p =  $currencies->display_price(tep_get_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum']), tep_get_tax_rate($new_products['products_tax_class_id']));
+        $p = $currencies->display_price(tep_get_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum'], $new_products['products_bflag']), tep_get_tax_rate($new_products['products_tax_class_id']));
       }
       $info_box_contents[$row][$col] = array('align' => 'center',
                                              'params' => 'class="smallText" width="33%" valign="top"',
