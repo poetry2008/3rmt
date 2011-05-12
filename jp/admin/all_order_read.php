@@ -45,17 +45,17 @@ while($o = tep_db_fetch_array($query)) {
             ob_flush();
             flush();
           } else {
-            if ($ot_total < 0 and $ot_total != $ott['value']) {
+            //if ($ot_total < 0 and $ot_total != $ott['value']) {
               //echo "合計　".$o['orders_id']. " " . $ott['value'] . " => " . $ot_total ;
               //echo "<br>\n";
-              ob_flush();
-              flush();
+              //ob_flush();
+              //flush();
             }
-            if($ot_subtotal < 0 and $ot_subtotal != $ots['value']){
+            //if($ot_subtotal < 0 and $ot_subtotal != $ots['value']){
               //echo "小計　".$o['orders_id']. " " . $ots['value'] . " => " . $ot_subtotal ;
               //echo "<br>\n";
-              ob_flush();
-              flush();
+              //ob_flush();
+              //flush();
             }
           }
         }
