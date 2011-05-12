@@ -14,7 +14,7 @@
         </td> 
         <!-- body_text //--> 
         <td valign="top" id="contents">
-          <h1 class="pageHeading"><span>お問い合わせ</span></h1> 
+          <h1 class="pageHeading">お問い合わせ</h1> 
           <div class="comment">
             <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_info_box">
               <tr>

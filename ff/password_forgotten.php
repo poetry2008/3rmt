@@ -60,7 +60,7 @@
       </td>
       <!-- body_text //-->
       <td valign="top" id="contents">
-        <h1 class="pageHeading"><span><?php echo HEADING_TITLE ; ?></span></h1>
+        <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>
         <div class="comment">
         <?php echo tep_draw_form('password_forgotten', tep_href_link(FILENAME_PASSWORD_FORGOTTEN, 'action=process', 'SSL')); ?>
           <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="table" class="product_info_box">
