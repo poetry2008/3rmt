@@ -30,6 +30,7 @@ echo '<a class="bold" href="'. HTTP_SERVER.'">'.$_SERVER['HTTP_HOST'].'</a>';
 ?>
 
             </address>
+            <?php if ($banner = tep_banner_exists('dynamic', 'footer')) { echo  '<div align="center">' . "\n" . tep_display_banner('static', $banner) . '</div>'; }?>
 
 </div>
 <script type="text/javascript" src="js/access.js"></script>
