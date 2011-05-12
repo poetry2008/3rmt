@@ -863,17 +863,12 @@ $cart->reset(true);
 
 //Add point
 if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
-  if($payment == "buyingpoint"){
-    tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .
-        abs(intval($ot['value'])) . " where customers_id = " . $customer_id );
-  }else{
   if(MODULE_ORDER_TOTAL_POINT_ADD_STATUS == '0') {
     //ccdd
     tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . intval($get_point - $point) . " where customers_id = " . $customer_id );
   } else {
     //ccdd
     tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point - " . intval($point) . " where customers_id = " . $customer_id );
-  }
   }
 }
   
