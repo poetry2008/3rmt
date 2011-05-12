@@ -1772,6 +1772,7 @@ background-image: url(../includes/languages/japanese/images/buttons/button_check
 }
 .waring_category {
 color:#000;
+background:#fff;
 margin:5px 0 2px 0;
 overflow:hidden;
 padding:5px 7px;
@@ -1779,6 +1780,7 @@ border:2px solid #FF8080;
 }
 .waring_product{
 color:#000;
+background:#FFFFFF;
 margin:5px 0 5px 0;
 overflow:hidden;
 padding:5px 7px;
