@@ -25,6 +25,7 @@
                p.products_price, 
                p.products_price_offset, 
                p.products_date_added,
+               p.products_bflag, 
                pd.site_id,
                pd.products_status,
                p.products_small_sum
@@ -41,6 +42,7 @@
                         p.products_price, 
                         p.products_price_offset, 
                         p.products_date_added,
+                        p.products_bflag, 
                         pd.site_id,
                         pd.products_status,
                         p.products_small_sum
@@ -74,6 +76,7 @@
                           p.products_price, 
                           p.products_price_offset, 
                           p.products_date_added,
+                          p.products_bflag, 
                           pd.site_id,
                           pd.products_status,
                           p.products_small_sum
@@ -124,9 +127,11 @@
             <p>
 <?php
       if (tep_get_special_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum'])) {
-        echo '<s>' . $currencies->display_price(tep_get_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum']), tep_get_tax_rate($new_products['products_tax_class_id'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum']), tep_get_tax_rate($new_products['products_tax_class_id'])) . '</span>&nbsp;';
+        echo '<s>' .
+          $currencies->display_price(tep_get_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum'], $new_products['products_bflag']), tep_get_tax_rate($new_products['products_tax_class_id'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum']), tep_get_tax_rate($new_products['products_tax_class_id'])) . '</span>&nbsp;';
       } else {
-        echo $currencies->display_price(tep_get_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum']), tep_get_tax_rate($new_products['products_tax_class_id']));
+        echo
+          $currencies->display_price(tep_get_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum'], $new_products['products_bflag']), tep_get_tax_rate($new_products['products_tax_class_id']));
       }
 ?>
 </p></td>
