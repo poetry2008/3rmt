@@ -3723,16 +3723,15 @@ function tep_only_buy_product(){
   }
   return true;
 }
-
-//function to delete font color = '#ff0000' 
-function tep_format_no_color($str){
-  $font_start = '<font color="#ff0000">';
-  $font_end = '</font>';
-  if(preg_match('/'.$font_start.'/',$str)){
-    $str = str_replace($font_start,'',$str);
-    $str = str_replace($font_end,'',$str);
+function tep_only_sell_product(){
+  global $cart;
+  foreach($cart->get_products() as $value){
+    if ($value['bflag'] == '1') {
+      return false;
+    }
   }
-  return $str;
+  return true;
+
 }
 
 function tep_whether_show_payment($payment_key, $guest_chk) {

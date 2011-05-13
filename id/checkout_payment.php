@@ -602,7 +602,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
       if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {//point --  
         if($guestchk == '1') {
           echo '<input type="hidden" name="point" value="0">';
-        } else {
+        } else if(tep_only_sell_product()){
       ?> 
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
@@ -624,6 +624,8 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
                 </table></td> 
             </tr> 
             <?php
+        }else{
+          echo '<input type="hidden" name="point" value="0">';
         }
       }//point eof// 
       ?> 
