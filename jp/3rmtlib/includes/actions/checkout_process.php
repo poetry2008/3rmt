@@ -765,7 +765,7 @@ $order_history_query = tep_db_query($order_history_query_raw);
 while ($order_history = tep_db_fetch_array($order_history_query)) {
   $email_printing_order .= $order_history['date_purchased'] . '　　' .
     tep_output_string_protected($order_history['customers_name']) . '　　' .
-    abs(intval($order_history['order_total_value'])) . '　　' . $order_history['orders_status_name'] . "\n";
+    abs(intval($order_history['order_total_value'])) . '円　　' . $order_history['orders_status_name'] . "\n";
 }
   
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n\n\n";
