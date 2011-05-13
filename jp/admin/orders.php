@@ -1631,7 +1631,8 @@ if (false) {
             <td align="right" class="smallText">試験運用中<font color="red">（上記の数値と一致しているか確認するように）</font>買取コピペ用:</td>
   <?php
     $warning_sell = '';
-    $warning_sell = tep_get_ot_total_num_by_text(abs($order->totals[2]['value']));
+    $warning_sell =
+    tep_get_ot_total_num_by_text(abs($order->totals[sizeof($order->totals)-1]['value']));
   ?>
             <td align="right" class="smallText"><?php echo $warning_sell; ?></td>
           </tr>
