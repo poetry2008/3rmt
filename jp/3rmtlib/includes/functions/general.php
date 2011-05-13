@@ -3723,14 +3723,13 @@ function tep_only_buy_product(){
   }
   return true;
 }
-
-//function to delete font color = '#ff0000' 
-function tep_format_no_color($str){
-  $font_start = '<font color="#ff0000">';
-  $font_end = '</font>';
-  if(preg_match('/'.$font_start.'/',$str)){
-    $str = str_replace($font_start,'',$str);
-    $str = str_replace($font_end,'',$str);
+function tep_only_sell_product(){
+  global $cart;
+  foreach($cart->get_products() as $key => $value){
+    if ($key =='bflag' && $value == '1') {
+      return false;
+    }
   }
-  return $str;
+  return true;
+
 }
