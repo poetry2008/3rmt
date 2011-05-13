@@ -293,7 +293,7 @@ define('IMAGE_BUTTON_BACK2', '前に戻る');
 define('IMAGE_BUTTON_CHANGE_ADDRESS', 'アドレスを変更');
 define('IMAGE_BUTTON_CHECKOUT', 'レジに進む');
 define('IMAGE_BUTTON_CONFIRM_ORDER', '注文する!');
-define('IMAGE_BUTTON_CONTINUE', '次に進む');
+define('IMAGE_BUTTON_CONTINUE', '次へ進む');
 define('IMAGE_BUTTON_CONTINUE_SHOPPING', 'ショッピングを続ける');
 define('IMAGE_BUTTON_DELETE', '削除する');
 define('IMAGE_BUTTON_EDIT_ACCOUNT', 'お客様情報の編集');
