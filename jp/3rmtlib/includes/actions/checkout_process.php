@@ -621,7 +621,7 @@ $total_mail_fee = $mail_fee + $buy_mail_fee;
 if (!empty($total_mail_fee)) {
   $email_order .=  '▼手数料　　　　　：'.$total_mail_fee.'円'."\n";
 }
-$email_order .= '▼お支払金額　　　：' . strip_tags($ot['text']) . "\n";
+$email_order .= '▼お支払金額　　　：' . abs($ot['value']) . "円\n";
 if (is_object($$payment)) {
   $payment_class = $$payment;
   $email_order .= '▼お支払方法　　　：' . $payment_class->title . "\n";
@@ -711,7 +711,7 @@ if ($point > 0) {
 if (!empty($total_mail_fee)) {
   $email_printing_order .= '手数料　　　　　：'.$total_mail_fee.'円'."\n"; 
 }
-$email_printing_order .= 'お支払金額　　　：' . strip_tags($ot['text']) . "\n";
+$email_printing_order .= 'お支払金額　　　：' . abs($ot['value']) . "円\n";
 if (is_object($$payment)) {
   $payment_class = $$payment;
   $email_printing_order .= 'お支払方法　　　：' . $payment_class->title . "\n";
