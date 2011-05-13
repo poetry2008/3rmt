@@ -11,10 +11,10 @@ ob_start();
 
 set_time_limit(0);
 if (isset($_GET['y'])){
-    $year = $_GET['y'];
-  }else {
-    $year = 2010;
-  }
+  $year = $_GET['y'];
+}else {
+  $year = 2010;
+}
 $year = intval($year);
 $year1 = $year+1;
 echo '<hr>';
@@ -37,23 +37,23 @@ while($o = tep_db_fetch_array($query)) {
   if ($o['avgf'] ==1 ){
     tep_db_query("update orders_products set final_price=0-abs(`final_price`) where orders_id = '".$o['orders_id']."'");
     //  echo "updateing ".$o['orders_id']."</br>\n";
-  ob_flush();
-  flush();
-  }
-  $op_query = tep_db_query("select * from orders_products where orders_id='".$o['orders_id']."'");
-  $ott = tep_db_fetch_array(tep_db_query("select * from orders_total where orders_id='".$o['orders_id']."' and class='ot_total'"));
-  $ots = tep_db_fetch_array(tep_db_query("select * from orders_total where orders_id='".$o['orders_id']."' and class='ot_subtotal'"));
-  $ot_total = $ott['value'];
-  $ot_subtotal = $ots['value'];
-  while($op = tep_db_fetch_array($op_query)){
-    if (intval($op['final_price']) > 0) {
-      $p = tep_db_fetch_array(
-                              tep_db_query(
-                                           "select * from products where products_id='".$op['products_id']."'"
-                                           )
-                              );
-      if ($p) {
-        if ($p['products_bflag'] == '1' && $op['final_price'] > 0) {
+    ob_flush();
+    flush();
+ 
+    $op_query = tep_db_query("select * from orders_products where orders_id='".$o['orders_id']."'");
+    $ott = tep_db_fetch_array(tep_db_query("select * from orders_total where orders_id='".$o['orders_id']."' and class='ot_total'"));
+    $ots = tep_db_fetch_array(tep_db_query("select * from orders_total where orders_id='".$o['orders_id']."' and class='ot_subtotal'"));
+    $ot_total = $ott['value'];
+    $ot_subtotal = $ots['value'];
+    while($op = tep_db_fetch_array($op_query)){
+      //      if (intval($op['final_price']) > 0) {
+        $p = tep_db_fetch_array(
+                                tep_db_query(
+                                             "select * from products where products_id='".$op['products_id']."'"
+                                             )
+                                );
+        if ($p) {
+          //       if ($p['products_bflag'] == '1' && $op['final_price'] > 0) {
           // 荵ｰ取
           $ot_total = 0-$ot_total;
           $ot_subtotal = 0-$ot_subtotal;
@@ -73,10 +73,10 @@ while($o = tep_db_fetch_array($query)) {
               mysql_query('update orders_total set value='.$ot_subtotal.' where orders_id = "'.$o['orders_id'].'" and class = "ot_subtotal"');
             }
           }
+        } else {
+          $del .= $o['orders_id']." product deleted!<br>\n";
         }
-      } else {
-        $del .= $o['orders_id']." product deleted!<br>\n";
-      }
+        //      }
     }
   }
 }
