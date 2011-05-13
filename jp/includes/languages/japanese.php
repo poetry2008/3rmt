@@ -72,7 +72,7 @@ define('MYACCOUNT_EDIT', 'お客様情報の編集');
 define('MYACCOUNT_ADDRESS', 'アドレス帳');
 define('MYACCOUNT_HISTORY', '注文履歴');
 define('MYACCOUNT_NOTIFICATION', 'ショップからのお知らせ');
-define('MENU_MU','メーカ一覧');
+define('MENU_MU','メーカー一覧');
 
 // footer text in includes/footer.php
 define('FOOTER_TEXT_REQUESTS_SINCE', 'リクエスト ('); // 'requests since'
