@@ -3725,8 +3725,8 @@ function tep_only_buy_product(){
 }
 function tep_only_sell_product(){
   global $cart;
-  foreach($cart->get_products() as $key => $value){
-    if ($key =='bflag' && $value == '1') {
+  foreach($cart->get_products() as $value){
+    if ($value['bflag'] == '1') {
       return false;
     }
   }
