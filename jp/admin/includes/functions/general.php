@@ -2741,7 +2741,7 @@ function tep_get_categories_status($categories_id)
 function tep_get_ot_total_by_orders_id($orders_id) {
   $query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where class='ot_total' and orders_id='".$orders_id."'");
   $result = tep_db_fetch_array($query);
-  if($result['value'] < 0){
+  if($result['value'] > 0){
     return "<b>".abs($result['value'])."円</b>";
   }else{
     return "<b><font color='ff0000'>".abs($result['value'])."円</font></b>";
@@ -4986,4 +4986,20 @@ function tep_check_show_isbuy($products_id)
     }
   }
   return false;
+}
+  
+function tep_cfg_payment_checkbox_option($check_array, $key_value, $key = '') {
+    $string = '';
+    for ($i = 0, $n = sizeof($check_array); $i < $n; $i++) {
+      $name = (($key) ? 'configuration[' . $key . ']' : 'configuration_value');
+      $string .= '<br><input type="checkbox" name="' . $name . '[]" value="' .  $check_array[$i] . '"';
+      if (in_array($check_array[$i], unserialize($key_value))) $string .= ' CHECKED';
+      $string .= '> '; 
+      if (($i+1) == 1) {
+        $string .= '会員'; 
+      } else {
+        $string .= 'ゲスト'; 
+      }
+    }
+    return $string;
 }

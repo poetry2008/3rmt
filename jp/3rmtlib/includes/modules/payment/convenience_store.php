@@ -339,6 +339,8 @@
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('決済可能金額', 'MODULE_PAYMENT_CONVENIENCE_STORE_MONEY_LIMIT', '0,99999999999', '決済可能金額の最大と最小値の設置
 例：0,3000
 0,3000円に入れると、0円から3000円までの金額が決済可能。設定範囲外の決済は不可。', '6', '0', now(), ".$this->site_id.")");
+      
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('表示設定', 'MODULE_PAYMENT_CONVENIENCE_STORE_LIMIT_SHOW', 'a:2:{i:0;s:1:\"1\";i:1;s:1:\"2\";}', '表示設定', '6', '1', 'tep_cfg_payment_checkbox_option(array(\'1\', \'2\'), ',now(), ".$this->site_id.");");
     }
 
     function remove() {
@@ -346,7 +348,7 @@
     }
 
     function keys() {
-      return array( 'MODULE_PAYMENT_CONVENIENCE_STORE_STATUS', 'MODULE_PAYMENT_CONVENIENCE_STORE_IP', 'MODULE_PAYMENT_CONVENIENCE_STORE_URL', 'MODULE_PAYMENT_CONVENIENCE_STORE_COST', 'MODULE_PAYMENT_CONVENIENCE_STORE_SORT_ORDER', 'MODULE_PAYMENT_CONVENIENCE_STORE_ZONE', 'MODULE_PAYMENT_CONVENIENCE_STORE_ORDER_STATUS_ID' , 'MODULE_PAYMENT_CONVENIENCE_STORE_MONEY_LIMIT');
+      return array( 'MODULE_PAYMENT_CONVENIENCE_STORE_STATUS', 'MODULE_PAYMENT_CONVENIENCE_STORE_LIMIT_SHOW', 'MODULE_PAYMENT_CONVENIENCE_STORE_IP', 'MODULE_PAYMENT_CONVENIENCE_STORE_URL', 'MODULE_PAYMENT_CONVENIENCE_STORE_COST', 'MODULE_PAYMENT_CONVENIENCE_STORE_SORT_ORDER', 'MODULE_PAYMENT_CONVENIENCE_STORE_ZONE', 'MODULE_PAYMENT_CONVENIENCE_STORE_ORDER_STATUS_ID' , 'MODULE_PAYMENT_CONVENIENCE_STORE_MONEY_LIMIT');
     }
   }
 ?>

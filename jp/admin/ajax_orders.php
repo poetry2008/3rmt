@@ -48,7 +48,18 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   echo LAST_CUSTOMER_ACTION;
 } else if (isset($_GET['orders_id']) && isset($_GET['work'])) {
   // A, B, C
-  tep_db_perform('orders', array('orders_work' => $_GET['work']), 'update', "orders_id='".$_GET['orders_id']."'") && print('success');
+  $exists_order_work_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$_GET['orders_id']."'"); 
+  $exists_order_work_res = tep_db_fetch_array($exists_order_work_raw);
+  if ($exists_order_work_res) {
+    if ($exists_order_work_res['orders_work'] == $_GET['work']) {
+      tep_db_query("update `".TABLE_ORDERS."` set `orders_work` = NULL where `orders_id` = '".$_GET['orders_id']."'"); 
+      print('failed');
+    } else {
+      tep_db_perform('orders', array('orders_work' => $_GET['work']), 'update', "orders_id='".$_GET['orders_id']."'") && print('success');
+    }
+  } else {
+    tep_db_perform('orders', array('orders_work' => $_GET['work']), 'update', "orders_id='".$_GET['orders_id']."'") && print('success');
+  }
 } else if ($_GET['action'] == 'get_new_orders' && $_GET['prev_customer_action']) {
   // ajax在订单列表的顶部插入新订单，如果订单结构发生改变此处需要和orders.php同步修改
   $orders_query = tep_db_query("

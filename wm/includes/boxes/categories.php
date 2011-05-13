@@ -165,7 +165,7 @@ if($cPath){
   <img src="images/design/box/box_bottom_bg_01.gif" width="172" height="14" alt="" >
 </div>
 <div>
-<img src="images/design/box/new_title01.gif" width="172" height="51" alt="こだわり検索" >
+<img src="images/design/box/new_title01.gif" width="172" height="51" alt="SPECIAL PRICE" >
 <ul class="l_m_category_ul">
     <li class="l_m_category_li">
       <a href="<?php echo tep_href_link(FILENAME_SPECIALS); ?>"><?php echo BOX_HEADING_SPECIALS; ?></a>

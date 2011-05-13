@@ -72,7 +72,7 @@ define('MYACCOUNT_EDIT', 'お客様情報の編集');
 define('MYACCOUNT_ADDRESS', 'アドレス帳');
 define('MYACCOUNT_HISTORY', '注文履歴');
 define('MYACCOUNT_NOTIFICATION', 'ショップからのお知らせ');
-define('MENU_MU','メーカー別一覧');
+define('MENU_MU','メーカ一覧');
 
 // footer text in includes/footer.php
 define('FOOTER_TEXT_REQUESTS_SINCE', 'リクエスト ('); // 'requests since'
@@ -102,7 +102,7 @@ define('BOX_SEARCH_TEXT', 'キーワードを入力して商品を探せます')
 define('BOX_SEARCH_ADVANCED_SEARCH', '詳細検索');
 
 // specials box text in includes/boxes/specials.php
-define('BOX_HEADING_SPECIALS', '特価商品一覧');
+define('BOX_HEADING_SPECIALS', '特価商品');
 
 // reviews box text in includes/boxes/reviews.php
 define('BOX_HEADING_REVIEWS', 'レビュー');
@@ -289,10 +289,11 @@ define('PREVNEXT_BUTTON_LAST', '最後&gt;&gt;');
 define('IMAGE_BUTTON_ADD_ADDRESS', 'アドレスを追加');
 define('IMAGE_BUTTON_ADDRESS_BOOK', 'アドレス帳');
 define('IMAGE_BUTTON_BACK', '一覧を見る');
+define('IMAGE_BUTTON_BACK2', '前に戻る');
 define('IMAGE_BUTTON_CHANGE_ADDRESS', 'アドレスを変更');
 define('IMAGE_BUTTON_CHECKOUT', 'レジに進む');
 define('IMAGE_BUTTON_CONFIRM_ORDER', '注文する!');
-define('IMAGE_BUTTON_CONTINUE', '次に進む');
+define('IMAGE_BUTTON_CONTINUE', '次へ進む');
 define('IMAGE_BUTTON_CONTINUE_SHOPPING', 'ショッピングを続ける');
 define('IMAGE_BUTTON_DELETE', '削除する');
 define('IMAGE_BUTTON_EDIT_ACCOUNT', 'お客様情報の編集');
