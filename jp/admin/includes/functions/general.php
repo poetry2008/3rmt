@@ -4987,3 +4987,19 @@ function tep_check_show_isbuy($products_id)
   }
   return false;
 }
+  
+function tep_cfg_payment_checkbox_option($check_array, $key_value, $key = '') {
+    $string = '';
+    for ($i = 0, $n = sizeof($check_array); $i < $n; $i++) {
+      $name = (($key) ? 'configuration[' . $key . ']' : 'configuration_value');
+      $string .= '<br><input type="checkbox" name="' . $name . '[]" value="' .  $check_array[$i] . '"';
+      if (in_array($check_array[$i], unserialize($key_value))) $string .= ' CHECKED';
+      $string .= '> '; 
+      if (($i+1) == 1) {
+        $string .= '会員'; 
+      } else {
+        $string .= 'ゲスト'; 
+      }
+    }
+    return $string;
+}

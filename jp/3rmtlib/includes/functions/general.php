@@ -3734,3 +3734,23 @@ function tep_format_no_color($str){
   }
   return $str;
 }
+
+function tep_whether_show_payment($payment_key, $guest_chk) {
+  $payment_arr = unserialize($payment_key);  
+  
+  if (empty($payment_arr)) {
+    return false; 
+  }
+  if (count($payment_arr) == 1) { 
+    if ($payment_arr[0] == 1) {
+      if ($guest_chk != 0) {
+        return false; 
+      }
+    } else {
+      if ($guest_chk == 0) {
+        return false; 
+      }
+    }
+  }
+  return true;
+}

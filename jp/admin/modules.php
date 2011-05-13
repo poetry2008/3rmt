@@ -49,7 +49,86 @@
           $module = new $class($site_id);
           $module->install();
       }
-
+      
+      if ($_GET['set'] == 'payment') { 
+        if ($site_id != 0) {
+          $limit_show_str = ''; 
+          if (!isset($_POST['configuration']['MODULE_PAYMENT_BUYING_LIMIT_SHOW']) && $_GET['module'] == 'buying') {  
+            $limit_show_str = 'MODULE_PAYMENT_BUYING_LIMIT_SHOW';  
+          }
+          
+          if (!isset($_POST['configuration']['MODULE_PAYMENT_MONEYORDER_LIMIT_SHOW']) && $_GET['module'] == 'moneyorder') {  
+            $limit_show_str = 'MODULE_PAYMENT_MONEYORDER_LIMIT_SHOW';  
+          }
+          
+          if (!isset($_POST['configuration']['MODULE_PAYMENT_POSTALMONEYORDER_LIMIT_SHOW']) && $_GET['module'] == 'postalmoneyorder') {  
+            $limit_show_str = 'MODULE_PAYMENT_POSTALMONEYORDER_LIMIT_SHOW';  
+          }
+          
+          if (!isset($_POST['configuration']['MODULE_PAYMENT_CONVENIENCE_STORE_LIMIT_SHOW']) && $_GET['module'] == 'convenience_store') {  
+            $limit_show_str = 'MODULE_PAYMENT_CONVENIENCE_STORE_LIMIT_SHOW';  
+          }
+          
+          if (!isset($_POST['configuration']['MODULE_PAYMENT_TELECOM_LIMIT_SHOW']) && $_GET['module'] == 'telecom') {  
+            $limit_show_str = 'MODULE_PAYMENT_TELECOM_LIMIT_SHOW';  
+          }
+          
+          if (!isset($_POST['configuration']['MODULE_PAYMENT_PAYPAL_LIMIT_SHOW']) && $_GET['module'] == 'paypal') {  
+            $limit_show_str = 'MODULE_PAYMENT_PAYPAL_LIMIT_SHOW';  
+          }
+          
+          if (!isset($_POST['configuration']['MODULE_PAYMENT_POINT_LIMIT_SHOW']) && $_GET['module'] == 'buyingpoint') {  
+            $limit_show_str = 'MODULE_PAYMENT_POINT_LIMIT_SHOW';  
+          }
+          
+          if (!isset($_POST['configuration']['MODULE_PAYMENT_FETCH_GOOD_LIMIT_SHOW']) && $_GET['module'] == 'fetchgood') {  
+            $limit_show_str = 'MODULE_PAYMENT_FETCH_GOOD_LIMIT_SHOW';  
+          }
+          
+          if (!isset($_POST['configuration']['MODULE_PAYMENT_FREE_PAYMENT_LIMIT_SHOW']) && $_GET['module'] == 'freepayment') {  
+            $limit_show_str = 'MODULE_PAYMENT_FREE_PAYMENT_LIMIT_SHOW';  
+          }
+          if (!empty($limit_show_str)) {
+            if (!tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$limit_show_str."' and site_id='".$site_id."'"))) {
+              $cp_show_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$limit_show_str."' and site_id='0'"));
+              if ($cp_show_configuration) {
+                tep_db_query("
+                  INSERT INTO `configuration` (
+                  `configuration_id` ,
+                  `configuration_title` ,
+                  `configuration_key` ,
+                  `configuration_value` ,
+                  `configuration_description` ,
+                  `configuration_group_id` ,
+                  `sort_order` ,
+                  `last_modified` ,
+                  `date_added` ,
+                  `use_function` ,
+                  `set_function` ,
+                  `site_id`
+                  )
+                  VALUES (
+                  NULL , 
+                  '".mysql_real_escape_string($cp_show_configuration['configuration_title'])."', 
+                  '".$cp_show_configuration['configuration_key']."', 
+                  '".$cp_show_configuration['configuration_value']."', 
+                  '".mysql_real_escape_string($cp_show_configuration['configuration_description'])."', 
+                  '".$cp_show_configuration['configuration_group_id']."', 
+                  '".$cp_show_configuration['sort_order']."' , 
+                  '".$cp_show_configuration['last_modified']."' , 
+                  '".$cp_show_configuration['date_added']."', 
+                  '".mysql_real_escape_string($cp_show_configuration['use_function'])."' , 
+                  '".mysql_real_escape_string($cp_show_configuration['set_function'])."' , 
+                  '".$site_id."'
+                  )
+                ");
+              }
+            }
+            $blank_show_arr = array(); 
+            tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($blank_show_arr) . "' where configuration_key = '" .  $limit_show_str . "' and site_id = '".$site_id."'");
+          }
+        }
+      }
       while (list($key, $value) = each($_POST['configuration'])) {
         if (!tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$key."' and site_id='".$site_id."'"))) {
           $cp_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$key."' and site_id='0'"));
@@ -86,7 +165,13 @@
             ");
           }
         }
-        tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
+        if ($key == 'MODULE_PAYMENT_BUYING_LIMIT_SHOW' || $key == 'MODULE_PAYMENT_MONEYORDER_LIMIT_SHOW' || $key == 'MODULE_PAYMENT_POSTALMONEYORDER_LIMIT_SHOW' || $key == 'MODULE_PAYMENT_CONVENIENCE_STORE_LIMIT_SHOW' || $key == 'MODULE_PAYMENT_TELECOM_LIMIT_SHOW' || $key == 'MODULE_PAYMENT_PAYPAL_LIMIT_SHOW' || $key == 'MODULE_PAYMENT_POINT_LIMIT_SHOW' || $key == 'MODULE_PAYMENT_FETCH_GOOD_LIMIT_SHOW' || $key == 'MODULE_PAYMENT_FREE_PAYMENT_LIMIT_SHOW' 
+            ) {
+          tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($value) . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
+        } else {
+          tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
+        }
+        
       }
       tep_redirect(tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $_GET['module']));
       break;
@@ -124,7 +209,6 @@ $ex_site = $sites[0];
 <!-- header //-->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof //-->
-
 <!-- body //-->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
@@ -271,10 +355,10 @@ $ex_site = $sites[0];
       $keys = '';
       reset($mInfo->keys);
       while (list($key, $value) = each($mInfo->keys)) {
-          $_value_query = tep_db_query("select configuration_title, configuration_value, configuration_description, use_function, set_function from " . TABLE_CONFIGURATION . " where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
+          $_value_query = tep_db_query("select configuration_key, configuration_title, configuration_value, configuration_description, use_function, set_function from " . TABLE_CONFIGURATION . " where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
           $_value = tep_db_fetch_array($_value_query);
           if (!$_value) {
-            $_value_query = tep_db_query("select configuration_title, configuration_value, configuration_description, use_function, set_function from " . TABLE_CONFIGURATION . " where configuration_key = '" . $key . "' and site_id = '0'");
+            $_value_query = tep_db_query("select configuration_key, configuration_title, configuration_value, configuration_description, use_function, set_function from " . TABLE_CONFIGURATION . " where configuration_key = '" . $key . "' and site_id = '0'");
             $_value = tep_db_fetch_array($_value_query);
           }
           $value['title'] = $_value['configuration_title'];

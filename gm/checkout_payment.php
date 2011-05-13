@@ -224,26 +224,44 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
       //buying not view
   } else {
     if ($selection[$i]['id'] == 'convenience_store') {
+      if (!tep_whether_show_payment(MODULE_PAYMENT_CONVENIENCE_STORE_LIMIT_SHOW, $_SESSION['guestchk'])) {
+        continue; 
+      }
       if (check_money_limit(MODULE_PAYMENT_CONVENIENCE_STORE_MONEY_LIMIT, $order->info['total'])) {
         continue; 
       }
     } else if($selection[$i]['id'] == 'moneyorder') {
+      if (!tep_whether_show_payment(MODULE_PAYMENT_MONEYORDER_LIMIT_SHOW, $_SESSION['guestchk'])) {
+        continue; 
+      }
       if (check_money_limit(MODULE_PAYMENT_MONEYORDER_MONEY_LIMIT, $order->info['total'])) {
         continue; 
       }
     } else if ($selection[$i]['id'] == 'postalmoneyorder') {
+      if (!tep_whether_show_payment(MODULE_PAYMENT_POSTALMONEYORDER_LIMIT_SHOW, $_SESSION['guestchk'])) {
+        continue; 
+      }
       if (check_money_limit(MODULE_PAYMENT_POSTALMONEYORDER_MONEY_LIMIT, $order->info['total'])) {
         continue; 
       }
     } else if ($selection[$i]['id'] == 'telecom') {
+      if (!tep_whether_show_payment(MODULE_PAYMENT_TELECOM_LIMIT_SHOW, $_SESSION['guestchk'])) {
+        continue; 
+      }
       if (check_money_limit(MODULE_PAYMENT_TELECOM_MONEY_LIMIT, $order->info['total'])) {
         continue; 
       }
     } else if ($selection[$i]['id'] == 'freepayment') {
-        if (check_money_limit(MODULE_PAYMENT_FREE_PAYMENT_MONEY_LIMIT, $order->info['total'])) {
+      if (!tep_whether_show_payment(MODULE_PAYMENT_FREE_PAYMENT_LIMIT_SHOW, $_SESSION['guestchk'])) { 
+        continue; 
+      }
+      if (check_money_limit(MODULE_PAYMENT_FREE_PAYMENT_MONEY_LIMIT, $order->info['total'])) {
           continue; 
         }
       } else if ($selection[$i]['id'] == 'paypal') {
+        if (!tep_whether_show_payment(MODULE_PAYMENT_PAYPAL_LIMIT_SHOW, $_SESSION['guestchk'])) {
+          continue; 
+        }
         if (check_money_limit(MODULE_PAYMENT_PAYPAL_MONEY_LIMIT, $order->info['total'])) {
           continue; 
         }
@@ -357,6 +375,23 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
 
   $radio_buttons = 0;
   for ($i=0, $n=sizeof($selection); $i<$n; $i++) {
+    if ($selection[$i]['id'] == 'buyingpoint') {
+      if (!tep_whether_show_payment(MODULE_PAYMENT_POINT_LIMIT_SHOW, $_SESSION['guestchk'])) {
+        continue; 
+      }
+    } else if ($selection[$i]['id'] == 'fetchgood') {
+      if (!tep_whether_show_payment(MODULE_PAYMENT_FETCH_GOOD_LIMIT_SHOW, $_SESSION['guestchk'])) {
+        continue; 
+      }
+    } else if ($selection[$i]['id'] == 'freepayment') {
+      if (!tep_whether_show_payment(MODULE_PAYMENT_FREE_PAYMENT_LIMIT_SHOW, $_SESSION['guestchk'])) {
+        continue; 
+      }
+    } else if ($selection[$i]['id'] == 'buying') {
+      if (!tep_whether_show_payment(MODULE_PAYMENT_BUYING_LIMIT_SHOW, $_SESSION['guestchk'])) {
+        continue; 
+      }
+    }
     if(
        ($selection[$i]['id'] == 'buyingpoint' && !check_money_limit(MODULE_PAYMENT_POINT_MONEY_LIMIT, $order->info['total']))
     || ($selection[$i]['id'] == 'fetchgood'   && !check_money_limit(MODULE_PAYMENT_FETCH_GOOD_MONEY_LIMIT, $order->info['total']))
