@@ -1039,10 +1039,13 @@ Footer
 }
 .footer_contacts{
 	letter-spacing:0.5mm;
-	padding-top:10px;
+	padding-top:7px;
 	line-height:18px;
 	color:#FFF;
 }
+.footer_link02{ color:#9E9D9D;}
+.footer_link02 a{ color:#9E9D9D;}
+.footer_link02 a:hover{  color: #0C9DEA;}
 .footer_contacts a{
 	color: #0C9DEA;
 }
@@ -1771,12 +1774,16 @@ background-image: url(../includes/languages/japanese/images/buttons/button_conti
 background-image: url(../includes/languages/japanese/images/buttons/button_checkout02.gif);
 }
 .waring_category {
-color:#000;
-background:#fff;
-margin:5px 0 2px 0;
+color:#fff;
+/* background: url(../images/design/comment_bg_long.gif) repeat-y ;*/
+background-color:#4F4F4F;
+margin:0 0 5px 0;
 overflow:hidden;
 padding:5px 7px;
+color: #fff;
 border:2px solid #FF8080;
+width:696px;
+width:714px\9;
 }
 .waring_product{
 color:#000;
