@@ -964,15 +964,15 @@ function q_4_3(){
               <h3>クレジットカード情報</h3>
               <table width="100%" border="0" cellspacing="0" cellpadding="2" class="order02_link">
                 <tr>
-                  <td class="main" valign="top" width="20%"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_name']);?>">カード名義:</a></b></td>
+                  <td class="main" valign="top" width="20%"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_name']);?>&search_type=username">カード名義:</a></b></td>
                   <td class="main" width="30%"><?php echo $order->info['telecom_name'];?></td>
-                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_tel']);?>">電話番号:</a></b></td>
+                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_tel']);?>&search_type=telno">電話番号:</a></b></td>
                   <td class="main"><?php echo tep_high_light_by_keywords($order->info['telecom_tel'],TELNO_KEYWORDS);?></a></td>
                 </tr>
                 <tr>
-                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_email']);?>">メールアドレス:</a></b></td>
+                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_email']);?>&search_type=email">メールアドレス:</a></b></td>
                   <td class="main"><?php echo $order->info['telecom_email'];?></a></td>
-                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_money']);?>">金額:</a></b></td>
+                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_money']);?>&search_type=money">金額:</a></b></td>
                   <td class="main"><?php echo $order->info['telecom_money'];?></a></td>
                 </tr>
               </table>
