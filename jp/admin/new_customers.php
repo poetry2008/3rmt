@@ -72,17 +72,17 @@ break;
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
           </form></tr>
         </table>
-        <p>ステータスが処理された日付で集計結果を出力します。最新の情報を取得するにはREFRESHをクリックしてください。</p>
+        <p><?php echo NEW_CUSTOMERS_TITLE_TEXT;?></p>
     <!--ORDER EXPORT SCRIPT //-->
     <form action="<?php echo tep_href_link(FILENAME_NEW_CUSTOMERS) ; ?>" method="get">
     <table  border="0" align="center" cellpadding="0" cellspacing="2">
     <tr>
       <td class="smallText" width='150'>
-      サイト:
+      <?php echo NEW_CUSTOMERS_SITES_SELECT;?> 
       <?php echo tep_site_pull_down_menu_with_all(isset($_GET['site_id']) ? $_GET['site_id'] :'', false);?>
       </td>
       <td class="smallText">
-      開始日:
+      <?php echo NEW_CUSTOMERS_SEARCH_START;?> 
       <select name="s_y">
       <?php for($i=2005; $i<2020; $i++) { 
         if (isset($_GET['s_y']) && $i == $_GET['s_y']) {
@@ -116,7 +116,8 @@ break;
       </select>
       日 </td>
       <td width="80" align="center">～</td>
-      <td class="smallText">終了日
+      <td class="smallText">
+      <?php echo NEW_CUSTOMERS_SEARCH_END;?> 
       <select name="e_y">
       <?php
       for($i=2005; $i<2020; $i++) {

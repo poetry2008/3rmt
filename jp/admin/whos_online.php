@@ -61,7 +61,7 @@
                 <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_ENTRY_TIME; ?></td>
                 <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_LAST_CLICK; ?></td>
                 <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_LAST_PAGE_URL; ?>&nbsp;</td>
-                <td class="dataTableHeadingContent">アクセス来たソース</td>
+                <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_ONLINE_SOURCE;?></td>
               </tr>
 <?php
   $whos_online_query = tep_db_query("

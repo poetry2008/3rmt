@@ -41,7 +41,7 @@
     <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
       </tr>
       <tr>
-        <td class="main"><br>ゲストユーザーを作成します。会員はお客様自身でなければ作れません。<br><br></td>
+        <td class="main"><br><?php echo CREATE_ACCOUNT_HEAD_TEXT;?><br><br></td>
       </tr>
       <tr>
         <td>

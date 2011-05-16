@@ -201,9 +201,21 @@ foreach ($sites as $site)
                       <tr>
                         <td colspan="2">
                 <table border="0" width="100%" cellspacing="0" cellpadding="2">
-                              <tr><?php echo tep_draw_form('languages', 'index.php', '', 'get'); ?>
+                              <tr>
+                              <?php echo tep_draw_form('languages', 'index.php', '', 'get'); ?>
                                 <td class="heading"><?php echo HEADING_TITLE; ?></td>
-                                <td align="right"><?php echo tep_draw_pull_down_menu('language', $languages_array, $languages_selected, 'onChange="this.form.submit();"'); ?></td>
+                                <td align="right">
+                                <?php 
+                                echo tep_draw_pull_down_menu('language', $languages_array, $languages_selected, 'onChange="this.form.submit();"'); 
+                                ?>
+                                <!-- 
+                                <select name="slanguage" onChange="this.form.submit();">
+                                <option value="japanese">japanese</a> 
+                                <option value="chinese" <?php echo ($_SESSION['slanguage'] == 'chinese')?'selected':'';?>>chinese</a> 
+                                <option value="english" <?php echo ($_SESSION['slanguage'] == 'english')?'selected':'';?>>english</a> 
+                                </select>
+                                --> 
+                                </td>
                                 </form>
                   </tr>
                           </table>

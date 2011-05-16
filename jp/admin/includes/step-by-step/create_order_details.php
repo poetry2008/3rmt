@@ -38,11 +38,11 @@ function hidden_payment(){
               </tr>
               <tr>
                 <td class="main">&nbsp;<?php echo ENTRY_LAST_NAME; ?></td>
-                <td class="main">&nbsp;<?php echo tep_draw_input_field('lastname', $lastname) . '&nbsp;' . ENTRY_LAST_NAME_TEXT; ?>&nbsp;&nbsp;変更があれば修正してください<?php if (isset($entry_firstname_error) && $entry_firstname_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+                <td class="main">&nbsp;<?php echo tep_draw_input_field('lastname', $lastname) . '&nbsp;' . ENTRY_LAST_NAME_TEXT; ?>&nbsp;&nbsp;<?php echo CREATE_ORDER_NOTICE_ONE;?><?php if (isset($entry_firstname_error) && $entry_firstname_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
               <tr>
                 <td class="main">&nbsp;<?php echo ENTRY_FIRST_NAME; ?></td>
-                <td class="main">&nbsp;<?php echo tep_draw_input_field('firstname', $firstname) . '&nbsp;' . ENTRY_FIRST_NAME_TEXT; ?>&nbsp;&nbsp;変更があれば修正してください<?php if (isset($entry_lastname_error) && $entry_lastname_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+                <td class="main">&nbsp;<?php echo tep_draw_input_field('firstname', $firstname) . '&nbsp;' . ENTRY_FIRST_NAME_TEXT; ?>&nbsp;&nbsp;<?php echo CREATE_ORDER_NOTICE_ONE;?><?php if (isset($entry_lastname_error) && $entry_lastname_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
               <tr>
                 <td class="main">&nbsp;<?php echo ENTRY_EMAIL_ADDRESS; ?></td>
@@ -147,14 +147,14 @@ function hidden_payment(){
 
 ?>
   <tr>
-    <td class="formAreaTitle"><br>支払方法</td>
+    <td class="formAreaTitle"><br><?php echo CREATE_ORDER_PAYMENT_TITLE;?></td>
   </tr>
   <tr>
     <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
         <tr>
           <td class="main"><table border="0" cellspacing="0" cellpadding="2">
               <tr>
-        <td class="main">&nbsp;支払方法:</td>
+        <td class="main">&nbsp;<?php echo CREATE_ORDER_PAYMENT_TITLE;?>:</td>
                 <td class="main">&nbsp;
                 <?php 
                 //diff order and order2
@@ -177,7 +177,7 @@ function hidden_payment(){
   ?>
   <td colspan="2"><br><table border="0" cellspacing="0" cellpadding="0">
     <tr>
-      <td class="main">PCメールアドレス:</td> 
+      <td class="main"><?php echo CREATE_ORDER_PC_TEXT;?></td> 
       <td class="main">&nbsp;<?php echo tep_draw_input_field('con_email', $email_address); ?></td>
     </tr>
   </table>
@@ -193,23 +193,23 @@ function hidden_payment(){
 ?>
           <td colspan="2"><br><table border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td class="main">&nbsp;金融機関名:</td>
+            <td class="main">&nbsp;<?php echo CREATE_ORDER_BANK_NAME_TEXT;?></td>
             <td class="main">&nbsp;<?php echo tep_draw_input_field('bank_name', ''); ?><?php if (isset($entry_bank_name_error) && $entry_bank_name_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
           </tr>
           <tr>
-            <td class="main">&nbsp;支店名:</td>
+            <td class="main">&nbsp;<?php echo CREATE_ORDER_BANK_SHITEN_TEXT;?></td>
             <td class="main">&nbsp;<?php echo tep_draw_input_field('bank_shiten', ''); ?><?php if (isset($entry_bank_shiten_error) && $entry_bank_shiten_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
           </tr>
           <tr>
-            <td class="main">&nbsp;口座種別:</td>
-            <td class="main">&nbsp; <?php echo tep_draw_radio_field('bank_kamoku', '普通', $bank_sele_f); ?>&nbsp;普通&nbsp;&nbsp;<?php echo tep_draw_radio_field('bank_kamoku', '当座', $bank_sele_t); ?>&nbsp;当座</td>
+            <td class="main">&nbsp;<?php echo CREATE_ORDER_BANK_KAMOKU_TEXT;?></td>
+            <td class="main">&nbsp; <?php echo tep_draw_radio_field('bank_kamoku', '普通', $bank_sele_f); ?>&nbsp;<?php echo CREATE_ORDER_SELECT_COMMON_TEXT;?>&nbsp;&nbsp;<?php echo tep_draw_radio_field('bank_kamoku', '当座', $bank_sele_t); ?>&nbsp;<?php echo CREATE_ORDER_SELECT_COMMON_ONE_TEXT;?></td>
           </tr>
           <tr>
-            <td class="main">&nbsp;口座番号:</td>
+            <td class="main">&nbsp;<?php echo CREATE_ORDER_BANK_KOUZA_NUM_TEXT;?></td>
             <td class="main">&nbsp;<?php echo tep_draw_input_field('bank_kouza_num', ''); ?><?php if (isset($entry_bank_kouza_num_error) && $entry_bank_kouza_num_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
           </tr>
           <tr>
-            <td class="main">&nbsp;口座名義:</td>
+            <td class="main">&nbsp;<?php echo CREATE_ORDER_BANK_KOUZA_NAME_TEXT;?></td>
             <td class="main">&nbsp;<?php echo tep_draw_input_field('bank_kouza_name', ''); ?><?php if (isset($entry_bank_kouza_name_error) && $entry_bank_kouza_name_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
           </tr>
         </table></td>
@@ -220,18 +220,18 @@ function hidden_payment(){
   </td>
   </tr>
   <tr>
-    <td class="formAreaTitle"><br>取引日時</td>
+    <td class="formAreaTitle"><br><?php echo CREATE_ORDER_FETCH_TIME_TITLE_TEXT;?></td>
   </tr>
   <tr>
     <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
         <tr>
           <td class="main"><table border="0" cellspacing="0" cellpadding="2">
               <tr>
-        <td class="main">&nbsp;取引日:</td>
+        <td class="main">&nbsp;<?php echo CREATE_ORDER_FETCH_DATE_TEXT;?></td>
                 <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('date', $date_list, isset($date)?$date:''); ?><?php if (isset($entry_date_error) && $entry_date_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
               <tr>
-                <td class="main">&nbsp;取引時間:</td>
+                <td class="main">&nbsp;<?php echo CREATE_ORDER_FETCH_TIME_TEXT;?></td>
                 <td class="main">&nbsp;
                 <?php 
                 //diff order and order2
@@ -248,13 +248,13 @@ function hidden_payment(){
                 echo tep_draw_pull_down_menu('hour', $hour_list, isset($hour)?$hour:''); 
                 ?>&nbsp;時&nbsp;<?php 
                 echo tep_draw_pull_down_menu('min', $min_list, isset($min)?$min:''); 
-                ?>&nbsp;分&nbsp;<b>（24時間表記）</b><?php 
+                ?>&nbsp;分&nbsp;<b><?php echo CREATE_ORDER_FETCH_ALLTIME_TEXT;?></b><?php 
                 if (isset($entry_tardetime_error ) && $entry_tardetime_error == true) { 
                   echo '&nbsp;&nbsp;<font color="red">Error</font>'; 
                 } ?></td>
               </tr>
               <tr>
-                <td class="main">&nbsp;オプション:</td>
+                <td class="main">&nbsp;<?php echo CREATE_ORDER_FETCH_TIME_SELECT_TEXT;?></td>
                 <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('torihikihouhou', tep_get_all_torihiki(), isset($torihikihouhou)?$torihikihouhou:''); ?><?php if (isset($entry_torihikihouhou_error) && $entry_torihikihouhou_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
             </table></td>
@@ -263,7 +263,7 @@ function hidden_payment(){
   </td>
   </tr>
   <tr>
-    <td class="formAreaTitle"><br>当社使用欄</td>
+    <td class="formAreaTitle"><br><?php echo CREATE_ORDER_COMMUNITY_TITLE_TEXT;?></td>
   </tr>
   <tr>
     <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
@@ -280,14 +280,14 @@ function hidden_payment(){
 -->
 
               <tr>
-                <td class="main">&nbsp;信用調査:</td>
-                <td class="main">&nbsp;<?php echo tep_draw_input_field('fax', $fax, 'size="60" maxlength="255"'); ?>&nbsp;&nbsp;常連客【HQ】&nbsp;&nbsp;注意【WA】&nbsp;&nbsp;発送禁止【BK】</td>
+                <td class="main">&nbsp;<?php echo CREATE_ORDER_COMMUNITY_SEARCH_TEXT;?></td>
+                <td class="main">&nbsp;<?php echo tep_draw_input_field('fax', $fax, 'size="60" maxlength="255"'); ?>&nbsp;&nbsp;<?php echo CREATE_ORDER_COMMUNITY_SEARCH_READ;?></td>
               </tr>
         <tr>
-          <td class="main" colspan="2">&nbsp;クレカ初回決済日：C2007/01/01&nbsp;&nbsp;&nbsp;&nbsp;エリア一致：Aok&nbsp;&nbsp;&nbsp;&nbsp;本人確認済：Hok&nbsp;&nbsp;&nbsp;&nbsp;YahooID更新日：Y2007/01/01&nbsp;&nbsp;&nbsp;&nbsp;リファラー：R</td>
+          <td class="main" colspan="2">&nbsp;<?php echo CREATE_ORDER_COMMUNITY_SEARCH_READ_ONE;?></td>
         </tr>
         <tr>
-          <td class="main" colspan="2">&nbsp;<b>記入例：WA-Aok-C2007/01/01-Hok-RグーグルFF11 RMT</b></td>
+          <td class="main" colspan="2">&nbsp;<b><?php echo CREATE_ORDER_COMMUNITY_SEARCH_READ_TWO;?></b></td>
         </tr>
             </table></td>
         </tr>
