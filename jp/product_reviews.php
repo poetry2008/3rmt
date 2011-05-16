@@ -120,7 +120,7 @@
               <tr>
                 <td class="main"><?php echo '<a href="' .
                 tep_href_link(FILENAME_PRODUCT_INFO, $get_params_back) . '">' .
-                tep_image_button('button_back02.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td>
+                tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td>
                 <td align="right" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE, $get_params) . '">' . tep_image_button('button_write_review.gif', IMAGE_BUTTON_WRITE_REVIEW) . '</a>'; ?></td>
               </tr>
             </table></td>
