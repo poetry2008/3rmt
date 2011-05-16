@@ -206,13 +206,15 @@ foreach ($sites as $site)
                                 <td class="heading"><?php echo HEADING_TITLE; ?></td>
                                 <td align="right">
                                 <?php 
-                                //echo tep_draw_pull_down_menu('language', $languages_array, $languages_selected, 'onChange="this.form.submit();"'); 
+                                echo tep_draw_pull_down_menu('language', $languages_array, $languages_selected, 'onChange="this.form.submit();"'); 
                                 ?>
+                                <!-- 
                                 <select name="slanguage" onChange="this.form.submit();">
                                 <option value="japanese">japanese</a> 
                                 <option value="chinese" <?php echo ($_SESSION['slanguage'] == 'chinese')?'selected':'';?>>chinese</a> 
                                 <option value="english" <?php echo ($_SESSION['slanguage'] == 'english')?'selected':'';?>>english</a> 
                                 </select>
+                                --> 
                                 </td>
                                 </form>
                   </tr>
