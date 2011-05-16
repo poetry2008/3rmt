@@ -492,6 +492,8 @@ right:5px;*/
       } else {
         if($HTTP_GET_VARS['sort'] == 'nextdate'){
         $order_str = '`date_order` '.$HTTP_GET_VARS['type']; 
+        }else if($HTTP_GET_VARS['sort'] == 'operator'){
+        $order_str = '`self` , `privilege` '; 
         }else{
         $order_str = '`'.$HTTP_GET_VARS['sort'].'` '.$HTTP_GET_VARS['type']; 
         }
