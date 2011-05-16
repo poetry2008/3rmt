@@ -118,7 +118,7 @@ function popupWindow(url) {
                   [ <?php echo tep_date_long($latest_news['date_added']) ;?> ]
                 </p>
                 <div align="right">
-                  <?php echo '<a href="' . tep_href_link(FILENAME_LATEST_NEWS) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?>
+                  <?php echo '<a href="' . tep_href_link(FILENAME_LATEST_NEWS) . '">' . tep_image_button('button_back02.gif', IMAGE_BUTTON_BACK) . '</a>'; ?>
                 </div>
 <?php
   }

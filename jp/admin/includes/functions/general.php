@@ -2741,7 +2741,7 @@ function tep_get_categories_status($categories_id)
 function tep_get_ot_total_by_orders_id($orders_id) {
   $query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where class='ot_total' and orders_id='".$orders_id."'");
   $result = tep_db_fetch_array($query);
-  if($result['value'] < 0){
+  if($result['value'] > 0){
     return "<b>".abs($result['value'])."円</b>";
   }else{
     return "<b><font color='ff0000'>".abs($result['value'])."円</font></b>";
