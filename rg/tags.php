@@ -184,9 +184,10 @@ while ($tag = tep_db_fetch_array($tags_query))
             echo '</span>';
                           echo '<br>' .$products['products_name'] . '</a><br>';
       if (tep_get_special_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'])) {
-        echo '<s>' . $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), 0) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), 0) . '</span>&nbsp;';
+        echo '<s>' .
+          $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'], $products['products_bflag']), 0) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), 0) . '</span>&nbsp;';
       } else {
-        echo $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), 0);
+        echo $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'], $products['products_bflag']), 0);
       }
                           echo '</td>'."\n";
                           if($z==0){
