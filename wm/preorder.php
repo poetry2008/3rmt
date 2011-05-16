@@ -209,7 +209,9 @@ if (!isset($_GET['send_to'])) $_GET['send_to'] = NULL; //del notice
       <table border="0" width="100%" cellspacing="0" cellpadding="0">
         <tr>
           <td class="main">
-            <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . intval($_GET['products_id'])) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?>
+            <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO,
+  'products_id=' . intval($_GET['products_id'])) . '">' .
+    tep_image_button('button_back.gif', IMAGE_BUTTON_BACK_LIST) . '</a>'; ?>
           </td>
           <td align="right" class="main">
             <?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?>

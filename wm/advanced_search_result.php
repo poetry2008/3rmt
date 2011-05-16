@@ -277,7 +277,9 @@
 <br>
 <br>
 
-<?php echo '<a href="' . tep_href_link(FILENAME_ADVANCED_SEARCH, tep_get_all_get_params(array('sort', 'page', 'x', 'y')), 'NONSSL', true, false) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?>
+<?php echo '<a href="' . tep_href_link(FILENAME_ADVANCED_SEARCH,
+  tep_get_all_get_params(array('sort', 'page', 'x', 'y')), 'NONSSL', true, false) .
+    '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK_LIST) . '</a>'; ?>
 </td> 
             </tr> 
           </table> 
