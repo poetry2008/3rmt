@@ -259,7 +259,7 @@ function getexpress($amt,$token){
     /*
       ★PAYMENTTYPE      支払いが即時に行われるか遅れて行われるかを示します。 譏ｾ示及譌ｶ支付霑・･諡冶ｿ沁x付
       ★PAYERSTATUS      支払人のステータス 支付人身莉ｽ
-      ★PAYMENTSTATUS      支払いのステータス。 支付状諤閼      Completed: 支払いが完了し、アカウント残高に正常に入金されました。 支付完豈普C蟶先姐余鬚攝ｳ常霑寢ｼ
+      ★PAYMENTSTATUS      支払いのステータス。 支付状諤閼      Completed: 支払いが完了し、会員残高に正常に入金されました。 支付完豈普C蟶先姐余鬚攝ｳ常霑寢ｼ
       ★COUNTRYCODE      支払人の居住国 支付人居住国家
       ○EMAIL      支払人のメールアドレス。 支付人的驍ｮ箱  found
       ○AMT      最終請求金額。 最后申隸ｷ金鬚魘   found

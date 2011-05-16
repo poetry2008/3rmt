@@ -55,6 +55,12 @@ class Format {
         $string = mb_substr($string,0,$len);
 
         return $hard?$string:(mb_substr($string,0,mb_strrpos($string,' ')).' ...');
+        /*
+        if(preg_match('/※/',$tmp_str)){
+          $tmp_str = str_replace('※','<font color="red">※機種依存文字※</font>',$tmp_str);
+        }
+        return $tmp_str;
+        */
     }
 
     function strip_slashes($var){

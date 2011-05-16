@@ -17,7 +17,6 @@
 require_once(INCLUDE_DIR.'class.mailparse.php');
 require_once(INCLUDE_DIR.'class.ticket.php');
 require_once(INCLUDE_DIR.'class.dept.php');
-
 class MailFetcher {
   var $hostname;
   var $username;
@@ -107,7 +106,13 @@ class MailFetcher {
   function mime_encode($text,$charset=null,$enc='utf-8') { //Thank in part to afterburner  
 //    echo $text;
 //    $text = str_replace("/r/n","",$text);
-    $text = noLCode($text);
+
+    //outString($text);
+    if ($charset=='ISO-2022-JP'||$charset=='SHIFT-JIS'||$charset=='EUC-JP'){
+       $result = noLCode($text);
+       return $result;
+    }
+    //die('xcvxcv');
     $encodings=array('UTF-8','WINDOWS-1251', 'SHIFT-JIS','ISO-2022-JP','ISO-8859-5', 'ISO-8859-1','KOI8-R');
     if(function_exists("iconv") and $text) {
       if($charset)
@@ -147,11 +152,13 @@ class MailFetcher {
     foreach ($a as $k => $part)
       $str.= $part->text;
    //add by bobhero {{
+
+
     $explodeStr = explode("?",$text);
     if(strlen($explodeStr[1])){
       if($is_subject){
         if(!preg_match('/('.chr(hexdec('1b')).chr(hexdec('28')).chr(hexdec('42')).'|'.chr(hexdec('1b')).chr(hexdec('24')).chr(hexdec('42')).')/',$str)){
-        $str = $this->mime_encode($str,$explodeStr[1]);
+       $str = $this->mime_encode($str,$explodeStr[1]);
         }
       }else{
         $str  =  iconv($explodeStr[1],'UTF-8',$str);
@@ -415,6 +422,9 @@ class MailFetcher {
   { 
     $len = strlen($longString);
     $j=1;
+    for($i=0;$i<3;$i++){
+      //echo dechex(ord($longString{$i}));
+    }
       for ($i=3;$i<$len-3;$i+=2)
       {
         echo "***".$j."***";
@@ -437,13 +447,16 @@ function noLCode($longString){
       $splited =  splitToArrayBySE($startFlag,$endFlag,$longString);
       $resultString = '';
       foreach($splited as $key=>$value){
+        //outstring($value);
         if (strpos($value,$startFlag)===0){
 //        outstring( replaceJpSp($value));
         $resultString .= replaceJpSp($value);
         }else {
+        //$resultString .=iconv('ISO-2022-JP','UTF-8',$value);
         $resultString .=$value;
         }
       }
+      //echo $resultString;
       return $resultString;
 
 }
@@ -451,13 +464,14 @@ function splitToArrayBySE($startFlag,$endFlag,$stcom)
 {
   $startArray = getPosInString($startFlag,$stcom,'start');
   $endArray = getPosInString($endFlag,$stcom,'end');
+  
   $mixedPos = array_merge($startArray,$endArray);
   foreach($mixedPos as $value){
     $posArray[$value['pos']] = $value['flag'];
   }
   $startpos = 0;
   for ($i=0;$i<strlen($stcom);$i++){
-    if (array_key_exists($i,$posArray)){
+    if (@array_key_exists($i,$posArray)){
       if ($posArray[$i] =='start'){
         $tmpArr[] = substr($stcom,$startpos);
         $startpos = $i;
@@ -465,27 +479,32 @@ function splitToArrayBySE($startFlag,$endFlag,$stcom)
       }
       if ($posArray[$i] =='end'){
         $tmpArr[] = substr($stcom,$startpos);
-        $startpos = $i+1;
+        $startpos = $i+3;
         continue;
       }
     }
     if ($i==strlen($stcom)-1){
+      $s = substr($stcom,$startpos); 
       $tmpArr[] = substr($stcom,$startpos);
     }
-   
-    //  $tmpstr .= $stcom[$i];
+
+//     $tmpstr .= $stcom[$i];
   }
   //$tmpArr = array_reverse($tmpArr);
+
   foreach ($tmpArr as $key=>$value){
-    $x =  @strstr($value,$tmpArr[$key+1]);
+
+    $x =  tep_strstr($value,$tmpArr[$key+1],true);
     if($x === false||!isset($x)){
       $x = $value;
-    }else{
-      $tmp_x = explode($tmpArr[$key+1],$value);
-      $x = $tmp_x[0]; 
     }
+//    else{
+ //     $tmp_x = explode($tmpArr[$key+1],$value);
+  //    $x = $tmp_x[0]; 
+   // }
     $tmpArr2[] =$x;
   }
+  //die('xcvxvxx');
   return $tmpArr2;
 }
 function getPosInString($search,$longString,$flag=''){
@@ -498,6 +517,7 @@ function getPosInString($search,$longString,$flag=''){
     }else{
       $posArray[]=array('pos'=>$pos,'flag'=>$flag);
       $pos += strlen($search);
+      //$pos++;
     }
   }
   return $posArray;
@@ -513,10 +533,10 @@ function getPosInString($search,$longString,$flag=''){
     //$longString .= chr(hexdec('1b')).chr(hexdec('28')).chr(hexdec('42'));
 
     $replaceArray=array(
-        "2d6a"=>"&#12849;",  // 3231
-        "2d6b"=>"&#12850;",  // 3232
-        "2d40"=>"&#13129;",  //  3249
-        "213b"=>"&#12295;",  //〇
+        "2d6a"=>"㈱",  // 3231
+        "2d6b"=>"㈲",  // 3232
+        "2d40"=>"㍉",  //  3249
+        "213b"=>"〇",  //〇
         //"217b"=>"&#9675;",  //○
         //"217e"=>"&#9671;",  //◇
         //"2222"=>"&#9633;",  //□
@@ -528,92 +548,91 @@ function getPosInString($search,$longString,$flag=''){
         //"2223"=>"&#9632;",  //■
         //"2225"=>"&#9650;",  //▲
         //"2227"=>"&#9660;",  //▼
-        "217a"=>"&#9733;",  //★
-        "217d"=>"&#9678;",  //◎
-        "227e"=>"&#9711;",  //◯
-        "2169"=>"&#9794;",  //♂
-        "216a"=>"&#9792;",   //♀
-        "2229"=>"&#12306;",  //  〒
-        "2261"=>"&#8801;",  // ≡
-        "2d74"=>"&#8721;",  // ∑
-        "2269"=>"&#8747;",  //  ∫
-        "2d73"=>"&#8750;",  // ∮
-        "2265"=>"&#8730;",  //  √
-        "225d"=>"&#8869;",  // ⊥
-        "225c"=>"&#8736;",  //∠
-        "2d78"=>"&#8735;",  //   ∟
-        "2d79"=>"&#8895;",  //   ⊿
-        "2268"=>"&#8757;",  // ∵
-        "2241"=>"&#8745;",  //  ∩    
-        "2240"=>"&#8746;",  // ∪
-        "2d62"=>"&#8470;",     //   №
-        "2d64"=>"&#8470;",     //   №
-        "2d63"=>"&#13261;",   //   33cd    
-        "2d65"=>"&#12964;",   //   32a4
-        "2d66"=>"&#12965;",   //   32a5   
-        "2d67"=>"&#12966;",   //   32a6
-        "2d68"=>"&#12967;",   //   32a7
-        "2d69"=>"&#12968;",   //   32a8
-        "2d6a"=>"&#12849;",   //   3231
-        "2d6b"=>"&#12850;",   //   3232
-        "2d6c"=>"&#12857;",   //    3239
-        "2d6d"=>"&#13182;",   //   337e
-        "2d6e"=>"&#13181;",   //   337d
-        "2d6f"=>"&#13180;",   //    337c
-        "2d5f"=>"&#13179;",   //    337b
-        "2d40"=>"&#13129;",  //    3349
-        "2d50"=>"&#13212;",  //    ㎜
-        "2d51"=>"&#13213;",  //   ㎝
-        "2d52"=>"&#13214;",  //   ㎞
-        "2d53"=>"&#13198;",  //   ㎎
-        "2d54"=>"&#13199;",  //   ㎏
-        "2d55"=>"&#13252;",  // ㏄
-        "2d40"=>"&#13129;",   //  3349
-        "2d41"=>"&#13076;",   //   3314
-        "2d42"=>"&#13090;",   // 3322
-        "2d43"=>"&#13133;",  //    334d
-        "2d44"=>"&#13080;",   //   3318
-        "2d45"=>"&#13095;",   //   3327
-        "2d46"=>"&#13059;",   //  3303
-        "2d47"=>"&#13110;",     //  3336
-        "2d48"=>"&#13137;",    //  3351
-        "2d49"=>"&#13143;",   //  3357
-        "2d4a"=>"&#13069;",    //  330d
-        "2d4b"=>"&#13094;",  //  3326
-        "2d4c"=>"&#13091;",  // 3323
-        "2d4d"=>"&#13099;",       // 332b
-        "2d4e"=>"&#13130;",           // 334a
-        "2d4f"=>"&#13115;",  //  333b
-        "2d21"=>"&#9312;",     //  ①
-        "2d22"=>"&#9313;",     //  ②
-        "2d23"=>"&#9314;",     //  ③
-        "2d24"=>"&#9315;",     //  ④
-        "2d25"=>"&#9316;",     //  ⑤
-        "2d26"=>"&#9317;",     //  ⑥
-        "2d27"=>"&#9318;",     //  ⑦
-        "2d28"=>"&#9319;",     //  ⑧
-        "2d29"=>"&#9320;",     //  ⑨
-        "2d2a"=>"&#9321;",     //  ⑩
-        "2d2b"=>"&#9322;",     //  ⑪
-        "2d2c"=>"&#9323;",     //   ⑫
-        "2d2d"=>"&#9324;",    //   ⑬
-        "2d2e"=>"&#9325;",    //   ⑭
-        "2d2f"=>"&#9326;",     //   ⑮ 
-        "2d30"=>"&#9327;",    //   ⑯
-        "2d31"=>"&#9328;",    //   ⑰
-        "2d32"=>"&#9329;",    //   ⑱
-        "2d33"=>"&#9330;",    //   ⑲
-        "2d34"=>"&#9331;",    //   ⑳
-        "2d35"=>"&#8544;",    //  Ⅰ
-        "2d36"=>"&#8545;",    //  Ⅱ
-        "2d37"=>"&#8546;",    //  Ⅲ
-        "2d38"=>"&#8547;",    //  Ⅳ  
-        "2d39"=>"&#8548;",    //  Ⅴ
-        "2d3a"=>"&#8549;",    // Ⅵ
-        "2d3b"=>"&#8550;",    // Ⅶ
-        "2d3c"=>"&#8551;",    // Ⅷ
-        "2d3d"=>"&#8552;",    // Ⅸ
-        "2d3e"=>"&#8553;",    // Ⅹ  
+        //"217a"=>"★",  //★
+        //"217d"=>"◎",  //◎
+        //"227e"=>"◇",  //◯
+        "2169"=>"♂",  //♂
+        "216a"=>"♀",   //♀
+        "2229"=>"〒",  //  〒
+        "2261"=>"≡",  // ≡
+        "2d74"=>"∑",  // ∑
+        "2269"=>"∫",  //  ∫
+        "2d73"=>"∮",  // ∮
+        "2265"=>"√",  //  √
+        "225d"=>"⊥",  // ⊥
+        "225c"=>"∠",  //∠
+        "2d78"=>"∟",  //   ∟
+        "2d79"=>"⊿",  //   ⊿
+        "2268"=>"∵",  // ∵
+        "2241"=>"∩",  //  ∩    
+        "2240"=>"∪",  // ∪ 
+        "2d62"=>"№",     //   №
+        "2d64"=>"℡",     //   ℡
+        "2d63"=>"㏍",   //   33cd    
+        "2d65"=>"㊤",   //   32a4
+        "2d66"=>"㊥",   //   32a5   
+        "2d67"=>"㊦",   //   32a6
+        "2d68"=>"㊧",   //   32a7
+        "2d69"=>"㊨",   //   32a8
+        "2d6b"=>"㈲",   //   3232
+        "2d6c"=>"㈹",   //    3239
+        "2d6d"=>"㍾",   //   337e
+        "2d6e"=>"㍽",   //   337d
+        "2d6f"=>"㍼",   //    337c
+        "2d5f"=>"㍻",   //    337b
+        "2d40"=>"㍉",  //    3349
+        "2d50"=>"㎜",  //    ㎜
+        "2d51"=>"㎝",  //   ㎝
+        "2d52"=>"㎞",  //   ㎞
+        "2d53"=>"㎎",  //   ㎎
+        "2d54"=>"㎏",  //   ㎏
+        "2d55"=>"㏄",  // ㏄
+        "2d40"=>"㍉",   //  3349
+        "2d41"=>"㌔",   //   3314
+        "2d42"=>"㌢",   // 3322
+        "2d43"=>"㍍",  //    334d
+        "2d44"=>"㌘",   //   3318
+        "2d45"=>"㌧",   //   3327
+        "2d46"=>"㌃",   //  3303
+        "2d47"=>"㌶",     //  3336
+        "2d48"=>"㍑",    //  3351
+        "2d49"=>"㍗",   //  3357
+        "2d4a"=>"㌍",    //  330d
+        "2d4b"=>"㌦",  //  3326
+        "2d4c"=>"㌣",  // 3323
+        "2d4d"=>"㌫",       // 332b
+        "2d4e"=>"㍊",           // 334a
+        "2d4f"=>"㌻",  //  333b
+        "2d21"=>"①",     //  ①
+        "2d22"=>"②",     //  ②
+        "2d23"=>"③",     //  ③
+        "2d24"=>"④",     //  ④
+        "2d25"=>"⑤",     //  ⑤
+        "2d26"=>"⑥",     //  ⑥
+        "2d27"=>"⑦",     //  ⑦
+        "2d28"=>"⑧",     //  ⑧
+        "2d29"=>"⑨",     //  ⑨
+        "2d2a"=>"⑩",     //  ⑩
+        "2d2b"=>"⑪",     //  ⑪
+        "2d2c"=>"⑫",     //   ⑫
+        "2d2d"=>"⑬",    //   ⑬
+        "2d2e"=>"⑭",    //   ⑭
+        "2d2f"=>"⑮",     //   ⑮ 
+        "2d30"=>"⑯",    //   ⑯
+        "2d31"=>"⑰",    //   ⑰
+        "2d32"=>"⑱",    //   ⑱
+        "2d33"=>"⑲",    //   ⑲
+        "2d34"=>"⑳",    //   ⑳
+        "2d35"=>"Ⅰ",    //  Ⅰ
+        "2d36"=>"Ⅱ",    //  Ⅱ
+        "2d37"=>"Ⅲ",    //  Ⅲ
+        "2d38"=>"Ⅳ",    //  Ⅳ  
+        "2d39"=>"Ⅴ",    //  Ⅴ
+        "2d3a"=>"Ⅵ",    // Ⅵ
+        "2d3b"=>"Ⅶ",    // Ⅶ
+        "2d3c"=>"Ⅷ",    // Ⅷ
+        "2d3d"=>"Ⅸ",    // Ⅸ
+        "2d3e"=>"Ⅹ",    // Ⅹ  
         );
     foreach ($replaceArray as $key=>$value){
       $a = substr($key,0,2);
@@ -621,17 +640,28 @@ function getPosInString($search,$longString,$flag=''){
       $hexArray[] = chr(hexdec($a)).chr(hexdec($b));
       $toArray[] = $value;
     }
-    for($i=3;$i<$len-2;$i=$i+2){
-      if (array_key_exists(dechex(ord($longString[$i])).dechex(ord($longString[$i+1])),$replaceArray)){
-        $longString[$i] = chr(hexdec('22'));
-        $longString[$i+1] = chr(hexdec('28'));
+    $returnString = '';
+    for($i=3;$i<$len-3;$i=$i+2){
+      if (@array_key_exists(dechex(ord($longString[$i])).dechex(ord($longString[$i+1])),$replaceArray)){
+        //$key = dechex(ord($longString[$i])).dechex(ord($longString[$i+1]));
+
+       $returnString.= $replaceArray[dechex(ord($longString[$i])).dechex(ord($longString[$i+1]))];
+       //$returnString.= iconv('ISO-2022-JP','UTF-8'.'//IGNORE',chrtojp(chr(hexdec('22')).chr(hexdec('28'))));
+     }else {
+       //echo dechex(ord($longString[$i]));
+       //echo dechex( ord($longString[$i]));
+       $returnString.= iconv('ISO-2022-JP','UTF-8',chrtojp($longString[$i].$longString[$i+1]));
      }
     }
-    return $longString;
+    return $returnString;
    // return str_replace($hexArray,chr(hexdec('21')).chr(hexdec('7a')),$longString);
-    return str_replace($hexArray,chr(hexdec('22')).chr(hexdec('28')),$longString);
+//    return str_replace($hexArray,chr(hexdec('22')).chr(hexdec('28')),$longString);
     //return str_replace($hexArray,chr(hexdec('21')).chr(hexdec('22')),$longString);
-    return str_replace($hexArray,$toArray,$longString);
+//    return str_replace($hexArray,$toArray,$longString);
+  }
+  function chrtojp($chr){
+   //$chr =  str_replace(chr(hexdec('1b')),'',$chr);
+    return chr(hexdec('1b')).chr(hexdec('24')).chr(hexdec('42')).$chr.chr(hexdec('1b')).chr(hexdec('28')).chr(hexdec('42'));
   }
   function is_jp($str){
         if(!preg_match('/('.chr(hexdec('1b')).chr(hexdec('28')).chr(hexdec('42')).'|'.chr(hexdec('1b')).chr(hexdec('24')).chr(hexdec('42')).')/',$str)){
@@ -643,3 +673,14 @@ function getPosInString($search,$longString,$flag=''){
   }
 
 
+function tep_strstr($str1,$str2,$bool=false){
+  if($bool){
+    if(strlen($str2)>0){
+    return substr($str1,0,strlen($str2)*-1);
+    }else{
+      return false;
+    }
+  }else{
+    return strstr($str1,$str2);
+  }
+}
