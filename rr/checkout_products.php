@@ -150,12 +150,12 @@ foreach($cart as $key => $val){
           <tr> 
             <td class="main"> <b>ご注文の手続きを進めてください。</b><br>「次へ進む」をクリックして取引日時の選択へ。</td> 
             <td class="main" align="right"><?php echo tep_image_submit('button_continue02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
-            <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+            <td width="10">&nbsp;</td> 
           </tr> 
         </table></td> 
       </tr> 
       <tr>
-        <td>
+        <td class="c_p_notie">
         <table border="0" width="100%" cellspacing="0" cellpadding="2" summary="table">
         <?php
           foreach($cart as $key => $val){
@@ -205,19 +205,18 @@ foreach($cart as $key => $val){
             <span class="red">※</span>&nbsp;キャラクター名の入力不要な商品が一部ございます。「入力フォーム」が表示されない場合は「次へ進む」をクリックしてください。
           </p>
         </div>
-        
-        <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox" summary="table"> 
-                  <tr> 
-                    <td><table border="0" width="100%" cellspacing="0" cellpadding="2" summary="table" class="cg_pay_info">  
+        </td>
+      </tr>
+      <tr>
+      <td>
+      <table border="0" width="100%" cellspacing="0" cellpadding="2" summary="table" class="cg_pay_info">  
                       <tr> 
                         <td class="main"> <b>ご注文の手続きを進めてください。</b><br>「次へ進む」をクリックして取引日時の選択へ。</td> 
                         <td class="main" align="right"><?php echo tep_image_submit('button_continue02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
-                        <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                        <td width="10">&nbsp;</td> 
                       </tr> 
-                    </table></td> 
-                  </tr> 
-                </table>
-        </td>
+                    </table>
+      </td>
       </tr>
       </table>
       <input type="hidden" name="act" value="chk">

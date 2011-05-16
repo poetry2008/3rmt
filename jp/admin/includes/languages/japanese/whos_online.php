@@ -16,4 +16,5 @@ define('TABLE_HEADING_ACTION', '操作');
 define('TABLE_HEADING_SHOPPING_CART', 'ユーザのショッピングカート');
 define('TEXT_SHOPPING_CART_SUBTOTAL', '小計');
 define('TEXT_NUMBER_OF_CUSTOMERS', '現在、%s 人の顧客が接続しています');
+define('TABLE_HEADING_ONLINE_SOURCE', 'アクセス来たソース');
 ?>

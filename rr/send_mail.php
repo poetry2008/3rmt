@@ -65,7 +65,7 @@
    }
    echo tep_draw_form('login', tep_href_link('send_mail.php'), 'post') . "\n";
 ?>
-      <table class="login" width="100%" cellpadding="0" cellspacing="0">
+      <table class="login" width="40%" cellpadding="0" cellspacing="0">
         <tr>
           <td valign="middle" style="font-size:11px;"><b><?php echo INPUT_SEND_MAIL; ?>:</b></td>
           <td class="login_text" valign="middle">

@@ -6,7 +6,7 @@
   require(DIR_WS_MODULES . 'sort_products.php');
 ?>
 <!--select searach -->
-<table width="100%"  border="0" cellpadding="0" cellspacing="1" bgcolor="#dddddd">
+<table width="99%"  border="0" cellpadding="0" cellspacing="1" bgcolor="#2F2F2F" style="margin:0 auto;">
   <tr>
     <td><a class="product_listing_link" <?php echo ($_COOKIE['sort'] == '4a' or !isset($_COOKIE['sort'])) ? 'style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="javascript:void(0)" onclick="change_sort_type('4a');">タイトル順(A～)に並べる</a></td>
     <td><a class="product_listing_link" <?php echo ($_COOKIE['sort'] == '4d') ? 'style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="javascript:void(0)" onclick="change_sort_type('4d');">タイトル順(Z～)に並べる</a></td>
@@ -46,10 +46,12 @@
 
   while ($listing = tep_db_fetch_array($listing_query)) {
   //price
+      $p_bflag = tep_get_bflag_by_product_id($listing['products_id']); 
       if (tep_get_special_price($listing['products_price'], $listing['products_price_offset'], $listing['products_small_sum'])) {
-        $price = '<s>' . $currencies->display_price(tep_get_price($listing['products_price'], $listing['products_price_offset'], $listing['products_small_sum']), tep_get_tax_rate($listing['products_tax_class_id'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($listing['products_price'], $listing['products_price_offset'], $listing['products_small_sum']), tep_get_tax_rate($listing['products_tax_class_id'])) . '</span>&nbsp;';
+        $price = '<s>' .
+          $currencies->display_price(tep_get_price($listing['products_price'], $listing['products_price_offset'], $listing['products_small_sum'], $p_bflag), tep_get_tax_rate($listing['products_tax_class_id'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($listing['products_price'], $listing['products_price_offset'], $listing['products_small_sum']), tep_get_tax_rate($listing['products_tax_class_id'])) . '</span>&nbsp;';
       } else {
-        $price = $currencies->display_price(tep_get_price($listing['products_price'], $listing['products_price_offset'], $listing['products_small_sum']), tep_get_tax_rate($listing['products_tax_class_id']));
+        $price = $currencies->display_price(tep_get_price($listing['products_price'], $listing['products_price_offset'], $listing['products_small_sum'], $p_bflag), tep_get_tax_rate($listing['products_tax_class_id']));
       }
       //buynow
       if($listing['products_quantity'] > 0) {
@@ -78,7 +80,7 @@
           </td>
           <td class="main" style="padding-left:5px; ">
             <h3>
-              <img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" alt="">
+              <img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" alt="img">
               <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $listing['products_id']) . '">'.$products_name.$ten.'</a>'; ?>
             </h3>
           </td>

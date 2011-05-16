@@ -70,9 +70,6 @@
     $point = tep_db_fetch_array($point_query);
     ?>
         <tr>
-          <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-        </tr>
-        <tr>
           <td><table border="0" cellpadding="2" cellspacing="0" width="100%" summary="table">
             <tr>
               <td class="formAreaTitle"><br>
@@ -93,9 +90,6 @@
           </table></td>
         </tr>
         <?php } ?>
-        <tr>
-          <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-        </tr>
         <tr>
           <td><table border="0" width="100%" cellspacing="0" cellpadding="2" summary="table">
             <tr>

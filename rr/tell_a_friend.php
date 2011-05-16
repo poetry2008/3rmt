@@ -173,8 +173,8 @@
                 <tr> 
                   <td class="main"><?php echo FORM_FIELD_FRIEND_NAME; ?></td> 
                   <td class="main">
-                  <?php if (!isset($_GET['friendname'])) $_GET['friendname'] = NULL;//del notice?>
-                  <?php if (!isset($_POST['friendname'])) $_POST['friendname'] = NULL;//del notice?>
+                  <?php if (!isset($_GET['friendname'])) $_GET['friendname'] = NULL;?>
+                  <?php if (!isset($_POST['friendname'])) $_POST['friendname'] = NULL;?>
                   <?php echo tep_draw_input_field('friendname', (($friendname_error == true) ? $_POST['friendname'] : $_GET['friendname']),'class="input_text"'); if ($friendname_error == true) echo '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';?></td> 
                 </tr> 
                 <tr> 

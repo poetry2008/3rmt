@@ -259,7 +259,7 @@ function getexpress($amt,$token){
     /*
       ★PAYMENTTYPE      支払いが即時に行われるか遅れて行われるかを示します。 譏ｾ示及譌ｶ支付霑・･諡冶ｿ沁x付
       ★PAYERSTATUS      支払人のステータス 支付人身莉ｽ
-      ★PAYMENTSTATUS      支払いのステータス。 支付状諤閼      Completed: 支払いが完了し、アカウント残高に正常に入金されました。 支付完豈普C蟶先姐余鬚攝ｳ常霑寢ｼ
+      ★PAYMENTSTATUS      支払いのステータス。 支付状諤閼      Completed: 支払いが完了し、会員残高に正常に入金されました。 支付完豈普C蟶先姐余鬚攝ｳ常霑寢ｼ
       ★COUNTRYCODE      支払人の居住国 支付人居住国家
       ○EMAIL      支払人のメールアドレス。 支付人的驍ｮ箱  found
       ○AMT      最終請求金額。 最后申隸ｷ金鬚魘   found
@@ -621,7 +621,7 @@ $total_mail_fee = $mail_fee + $buy_mail_fee;
 if (!empty($total_mail_fee)) {
   $email_order .=  '▼手数料　　　　　：'.$total_mail_fee.'円'."\n";
 }
-$email_order .= '▼お支払金額　　　：' . strip_tags($ot['text']) . "\n";
+$email_order .= '▼お支払金額　　　：' . abs($ot['value']) . "円\n";
 if (is_object($$payment)) {
   $payment_class = $$payment;
   $email_order .= '▼お支払方法　　　：' . $payment_class->title . "\n";
@@ -711,7 +711,7 @@ if ($point > 0) {
 if (!empty($total_mail_fee)) {
   $email_printing_order .= '手数料　　　　　：'.$total_mail_fee.'円'."\n"; 
 }
-$email_printing_order .= 'お支払金額　　　：' . strip_tags($ot['text']) . "\n";
+$email_printing_order .= 'お支払金額　　　：' . abs($ot['value']) . "円\n";
 if (is_object($$payment)) {
   $payment_class = $$payment;
   $email_printing_order .= 'お支払方法　　　：' . $payment_class->title . "\n";
@@ -758,11 +758,14 @@ if ($credit_inquiry['customers_guest_chk'] == '1') { $email_printing_order .= '�
   
 $email_printing_order .= "\n";
   
-$order_history_query_raw = "select o.orders_id, o.customers_name, o.customers_id, o.date_purchased, s.orders_status_name, ot.text as order_total from " . TABLE_ORDERS . " o left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s where o.customers_id = '" . tep_db_input($customer_id) . "' and o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "' and ot.class = 'ot_total' order by o.date_purchased DESC limit 0,5";  
+$order_history_query_raw = "select o.orders_id, o.customers_name, o.customers_id,
+  o.date_purchased, s.orders_status_name, ot.value as order_total_value from " . TABLE_ORDERS . " o left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s where o.customers_id = '" . tep_db_input($customer_id) . "' and o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "' and ot.class = 'ot_total' order by o.date_purchased DESC limit 0,5";  
 //ccdd
 $order_history_query = tep_db_query($order_history_query_raw);
 while ($order_history = tep_db_fetch_array($order_history_query)) {
-  $email_printing_order .= $order_history['date_purchased'] . '　　' . tep_output_string_protected($order_history['customers_name']) . '　　' . strip_tags($order_history['order_total']) . '　　' . $order_history['orders_status_name'] . "\n";
+  $email_printing_order .= $order_history['date_purchased'] . '　　' .
+    tep_output_string_protected($order_history['customers_name']) . '　　' .
+    abs(intval($order_history['order_total_value'])) . '円　　' . $order_history['orders_status_name'] . "\n";
 }
   
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n\n\n";

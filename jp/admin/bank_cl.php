@@ -106,7 +106,7 @@ if($_GET['action'] == 'success') {
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td class="pageHeading"><?php echo 'カレンダー編集'; ?></td>
+            <td class="pageHeading"><?php echo BANK_CL_TITLE_TEXT; ?></td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
           </tr>
         </table></td>
@@ -179,7 +179,7 @@ if($_GET['action'] == 'success') {
       <table border=1 cellspacing=0 cellpadding=2 width=100%>
       <tr bgcolor=#000000>
       <td nowrap colspan=3>&nbsp;&nbsp;<font size=2 color=#FFFFFF>'.$year2.'年'.$m_num2.'月</font></td>
-      <td nowrap colspan=4 align=right>&nbsp;&nbsp;<font size=2 color=#FFFFFF>&nbsp;&nbsp;■&raquo;通常営業&nbsp;&nbsp;<font color="'.CL_COLOR_01.'">■</font>&raquo;銀行休業&nbsp;&nbsp;<font color="'.CL_COLOR_02.'">■</font>&raquo;メール返信休業&nbsp;&nbsp;</td>
+      <td nowrap colspan=4 align=right>&nbsp;&nbsp;<font size=2 color=#FFFFFF>&nbsp;&nbsp;■&raquo;'.BANK_CL_COMMON_WORK_TIME.'&nbsp;&nbsp;<font color="'.CL_COLOR_01.'">■</font>&raquo;'.BANK_CL_REST_TIME.'&nbsp;&nbsp;<font color="'.CL_COLOR_02.'">■</font>&raquo;'.BANK_CL_SEND_MAIL.'&nbsp;&nbsp;</td>
       </tr>
       <tr bgcolor=ffffff>
         <td align=middle height=15><font size="2" color="#cc0000">日</font></td>

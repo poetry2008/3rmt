@@ -189,10 +189,7 @@ function session_win() {
           <table border="0" width="100%" cellspacing="0" cellpadding="2" summary="table">
             <tr>
               <td colspan="2" valign="top" class="main"><b><?php echo HEADING_RETURNING_CUSTOMER; ?></b>
-              <table border="0" class="infoBox" summary="table">
-                <tr>
-                  <td>
-                  <table border="0" width="100%" cellspacing="0" cellpadding="2" class="infoBoxContents" summary="table">
+                  <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxContents_logo" summary="table">
                     <tr>
                       <td class="main" colspan="2"><?php echo TEXT_RETURNING_CUSTOMER; ?></td>
                     </tr>
@@ -210,20 +207,14 @@ function session_win() {
                     <tr align="right">
                       <td colspan="2"><?php echo tep_image_submit('button_login.gif', IMAGE_BUTTON_LOGIN); ?></td>
                     </tr>
-                  </table>
-                  </td>
-                </tr>
-              </table></td>
+                  </table></td>
             </tr>
             <tr>
               <td colspan="2" valign="top" class="main"><b><?php echo HEADING_NEW_CUSTOMER; ?></b></td>
             </tr>
             <tr>
               <td height="50%" colspan="2" valign="top">
-                <table border="0" width="100%" cellspacing="0" cellpadding="1" class="infoBox" summary="table">
-                  <tr>
-                  <td>
-                    <table class="infoBoxContents" summary="table">
+                    <table class="infoBoxContents_logo"  cellpadding="2" cellspacing="1" border="0" summary="table">
                       <tr><td class="main" valign="top"><?php echo TEXT_NEW_CUSTOMER . '<br><br>' . TEXT_NEW_CUSTOMER_INTRODUCTION; ?></td></tr>
                       <tr><td align="right">
                       <?php 
@@ -240,9 +231,6 @@ function session_win() {
                       </td>
                    </tr>
                     </table>
-                  </td>
-                  </tr>
-                </table>
               </td>
             </tr>
             <tr>

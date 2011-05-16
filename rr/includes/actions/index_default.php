@@ -22,7 +22,3 @@
 ?>
       </td>
     <!-- body_text_eof //--> 
-      <td valign="top" class="right_colum_border">
-      <!-- right_navigation //--> 
-      <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-      <!-- right_navigation_eof //--></td> 

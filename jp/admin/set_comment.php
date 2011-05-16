@@ -24,7 +24,7 @@ switch ($HTTP_GET_VARS['action']){
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=<?php echo CHARSET; ?>">
-<title>担当者登録</title>
+<title><?php echo SET_COMMENT_TITLE?></title>
 </head>
 <?php 
   $res=tep_db_query("select * from set_comments where categories_id='".$cID."'");
@@ -32,13 +32,13 @@ switch ($HTTP_GET_VARS['action']){
 ?>
 <body>
 <form method="post" action="set_comment.php?action=save&cID=<?php echo $cID;?>&cPath=<?php echo $cPath;?>"  onsubmit="alert('更新されました。')">
-<p>担当者:</p>
+<p><?php echo SET_COMMENT_USER?></p>
 <p><input type='text' name='author' value="<?php echo $col['author'];?>" /></p>
-<p>単価ルール:</p>
+<p><?php echo SET_COMMENT_SINGLE?></p>
 <p><textarea cols='60' rows='12' name='rule'><?php echo $col['rule'];?></textarea></p>
-<p>コメント:</p>
+<p><?php echo SET_COMMENT_COMMENT_TEXT;?></p>
 <p><textarea cols='60' rows='12' name='comment'><?php echo $col['comment'];?></textarea></p>
-<p><input type="submit" value="担当者登録"><p>
+<p><input type="submit" value="<?php echo SET_COMMENT_TITLE;?>"><p>
 </form>
 </body>
 </html>

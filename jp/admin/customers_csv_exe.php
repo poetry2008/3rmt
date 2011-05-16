@@ -185,7 +185,7 @@
         <tr> 
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
               <tr> 
-                <td class="pageHeading">顧客データダウンロード</td> 
+                <td class="pageHeading"><?php echo CUSTOMERS_CSVEXE_TITLE;?></td> 
                 <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td> 
               </tr> 
             </table></td> 
@@ -196,14 +196,15 @@
         <tr> 
           <td> <form action="<?php echo tep_href_link('customers_csv_exe.php','',SSL) ; ?>" method="post"> 
               <fieldset> 
-              <legend class="smallText"><b>顧客データダウンロード</b></legend> 
+              <legend class="smallText"><b><?php echo CUSTOMERS_CSVEXE_TITLE;?></b></legend> 
               <table  border="0" cellpadding="0" cellspacing="2"> 
                 <tr> 
-                  <td class="main" height="35" style="padding-left:20px; "> <p>ダウンロード中はサーバに対して高負荷となります。アクセスの少ない時間に実行してください。</p></td> 
+                  <td class="main" height="35" style="padding-left:20px; "> <p><?php echo CUSTOMERS_CSVEXE_READ_TEXT;?></p></td> 
                 </tr> 
                 <tr> 
-                  <td class="main" style="padding-left:20px; " height="30">開始日：
-                    <select name="s_y"> 
+                  <td class="main" style="padding-left:20px; " height="30">
+                  <?php echo KEYWORDS_SEARCH_START_TEXT;?>   
+                  <select name="s_y"> 
                       <?php
       for($i=2002; $i<2011; $i++) {
         if($i == date(Y)){
@@ -214,7 +215,7 @@
             }
       ?> 
                     </select> 
-                    年
+                    <?php echo YEAR_TEXT;?> 
                     <select name="s_m"> 
                       <?php
       for($i=1; $i<13; $i++) {
@@ -226,7 +227,7 @@
             }
       ?> 
                     </select> 
-                    月
+                    <?php echo MONTH_TEXT;?> 
                     <select name="s_d"> 
                       <?php
       for($i=1; $i<32; $i++) {
@@ -238,10 +239,12 @@
             }
       ?> 
                     </select> 
-                    日 </td> 
+                    <?php echo DAY_TEXT;?> 
+                    </td> 
                 </tr> 
                 <tr> 
-                  <td class="main" style="padding-left:20px; " height="30">終了日：
+                  <td class="main" style="padding-left:20px; " height="30">
+                  <?php echo KEYWORDS_SEARCH_END_TEXT;?>   
                     <select name="e_y"> 
                       <?php
       for($i=2002; $i<2011; $i++) {
@@ -253,7 +256,7 @@
             }
       ?> 
                     </select> 
-                    年
+                    <?php echo YEAR_TEXT;?> 
                     <select name="e_m"> 
                       <?php
       for($i=1; $i<13; $i++) {
@@ -265,7 +268,7 @@
             }
       ?> 
                     </select> 
-                    月
+                    <?php echo MONTH_TEXT;?> 
                     <select name="e_d"> 
                       <?php
       for($i=1; $i<32; $i++) {
@@ -277,7 +280,8 @@
             }
       ?> 
                     </select> 
-                    日 </td> 
+                    <?php echo DAY_TEXT;?> 
+                    </td> 
                 </tr> 
                 <tr> 
                   <td style="padding-left:20px;" height="35"><input type="image" src="includes/languages/japanese/images/buttons/button_csv_exe.gif" alt="CSVエクスポート" width="105" height="22" border="0"></td> 
@@ -288,106 +292,12 @@
             </form></td> 
         </tr> 
         <tr> 
-          <td> <p class="main">顧客情報のうち以下の情報がCSVファイルとしてダウンロードされます。</p> 
+          <td> <p class="main"><?php echo CUSTOMERS_CSV_EXE_NOTICE_TITLE;?></p> 
             <table width="100%"  border="0" cellpadding="2" cellspacing="1" class="infoBoxHeading"> 
-              <tr> 
-                <td width="20" align="center" class="infoBoxContent">&nbsp;</td> 
-                <td width="120" class="menuBoxHeading">項目</td> 
-                <td class="menuBoxHeading">説明</td> 
-              </tr> 
-              <tr> 
-                <td align="center" class="infoBoxContent">A</td> 
-                <td class="menuBoxHeading">アカウント作成日</td> 
-                <td class="menuBoxHeading">アカウントを作成した日時を出力します（形式：2005/11/11
-                  10:15:32）</td> 
-              </tr> 
-              <tr> 
-                <td align="center" class="infoBoxContent">B</td> 
-                <td class="menuBoxHeading">性別</td> 
-                <td class="menuBoxHeading">顧客の性別を「男性」/「女性」と出力します</td> 
-              </tr> 
-              <tr> 
-                <td align="center" class="infoBoxContent">C</td> 
-                <td class="menuBoxHeading">姓</td> 
-                <td class="menuBoxHeading">顧客の苗字を出力します</td> 
-              </tr> 
-              <tr> 
-                <td align="center" class="infoBoxContent">D</td> 
-                <td class="menuBoxHeading">名</td> 
-                <td class="menuBoxHeading">顧客の名前を出力します</td> 
-              </tr> 
-              <tr> 
-                <td align="center" class="infoBoxContent">E</td> 
-                <td class="menuBoxHeading">生年月日</td> 
-                <td class="menuBoxHeading">顧客の生年月日を出力します（形式：1999/11/11）</td> 
-              </tr> 
-              <tr> 
-                <td align="center" class="infoBoxContent">F</td> 
-                <td class="menuBoxHeading">メールアドレス</td> 
-                <td class="menuBoxHeading">メールアドレスを出力します</td> 
-              </tr> 
-              <tr> 
-                <td align="center" class="infoBoxContent">G</td> 
-                <td class="menuBoxHeading">会社名</td> 
-                <td class="menuBoxHeading">会社名が入力されていれば出力します</td> 
-              </tr> 
-              <tr> 
-                <td align="center" class="infoBoxContent">H</td> 
-                <td class="menuBoxHeading">郵便番号</td> 
-                <td class="menuBoxHeading">郵便番号を出力します。</td> 
-              </tr> 
-              <tr> 
-                <td align="center" class="infoBoxContent">I</td> 
-                <td class="menuBoxHeading">都道府県</td> 
-                <td class="menuBoxHeading">都道府県名（例：東京都）を出力します</td> 
-              </tr> 
-              <tr> 
-                <td align="center" class="infoBoxContent">J</td> 
-                <td class="menuBoxHeading">市区町村</td> 
-                <td class="menuBoxHeading">市区町村名（例：港区）を出力します</td> 
-              </tr> 
-              <tr> 
-                <td align="center" class="infoBoxContent">K</td> 
-                <td class="menuBoxHeading">住所1</td> 
-                <td class="menuBoxHeading">自宅（会社）住所を出力します（例：
-
-
- 芝公園〇〇
-
-）</td> 
-              </tr> 
-              <tr> 
-                <td align="center" class="infoBoxContent">L</td> 
-                <td class="menuBoxHeading">住所2</td> 
-                <td class="menuBoxHeading">ビル・マンション名が入力されていれば出力します（例：〇〇ビル5F）</td> 
-              </tr> 
-              <tr> 
-                <td align="center" class="infoBoxContent">M</td> 
-                <td class="menuBoxHeading">国名</td> 
-                <td class="menuBoxHeading">国名（Japan等）を出力します</td> 
-              </tr> 
-              <tr> 
-                <td align="center" class="infoBoxContent">N</td> 
-                <td class="menuBoxHeading">電話番号</td> 
-                <td class="menuBoxHeading">電話番号を出力します</td> 
-              </tr> 
-              <tr> 
-                <td align="center" class="infoBoxContent">O</td> 
-                <td class="menuBoxHeading">FAX番号</td> 
-                <td class="menuBoxHeading">FAX番号が入力されていれば出力します</td> 
-              </tr> 
-              <tr> 
-                <td align="center" class="infoBoxContent">P</td> 
-                <td class="menuBoxHeading">メールマガジン</td> 
-                <td class="menuBoxHeading">メールマガジンの行動区状況を出力します。<br>
-                  購読の場合：「購読」｜未購読の場合：「未購読」</td> 
-              </tr> 
-              <tr> 
-                <td align="center" class="infoBoxContent">Q</td> 
-                <td class="menuBoxHeading">ポイント</td> 
-                <td class="menuBoxHeading">顧客の現在持っているポイント数を出力します。</td> 
-              </tr> 
-          </table></td> 
+            <?php echo CUSTOMERS_CSV_EXE_READ_ONE;?> 
+            <?php echo CUSTOMERS_CSV_EXE_READ_TWO;?> 
+            </table>
+            </td> 
         </tr> 
       </table></td> 
     <!-- body_text_eof //--> 

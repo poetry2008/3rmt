@@ -327,7 +327,7 @@ function ex(id){
         <td width="100%" valign="top">
            <table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr>
-                 <td class="pageHeading" height="40">同業者の名前設定</td>
+                 <td class="pageHeading" height="40"><?php echo CLEATE_DOUGYOUSYA_TITLE;?></td>
               </tr>
               <tr>
                  <td>
@@ -335,7 +335,7 @@ function ex(id){
   <table width="100%" cellspacing="0" cellpadding="0">
      <tr>
         <td class="cleate_add" valign="top">
-  <input type="button" value="入力フォーム追加"　name='b1' onClick="input_add()">
+  <input type="button" value="<?php echo CLEATE_DOUGYOUSYA_ADD_BUTTON;?>"　name='b1' onClick="input_add()">
         </td>
      </tr>
      <tr>
@@ -355,12 +355,12 @@ function ex(id){
     <td width="10"><?php if ($i) {?><a href="javascript:void(0);" onclick="ex(<?php echo $i;?>)">↑</a><?php }?></td>
     <td id="tr_<?php echo $i;?>_1">
       <input type="hidden" name="sort_order[<?php echo $col['dougyousya_id'];?>]" value="<?php echo $i;?>" class="sort_order_input">
-      同業者：<?php echo $col['dougyousya_name'];?>
+      <?php echo CLEATE_DOUGYOUSYA_TONGYE;?><?php echo $col['dougyousya_name'];?>
       <input type="hidden" name="exist_name[]" value='<?php echo $col['dougyousya_name'];?>'>
     </td>
-    <td id="tr_<?php echo $i;?>_2" width='50'><a href='cleate_dougyousya.php?action=edit_oroshi&id=<?php echo $col['dougyousya_id'];?>'>編集</a></td>
-    <td id="tr_<?php echo $i;?>_3" width='50'><a href='javascript:void(0);' onclick='del_oroshi(<?php echo $col['dougyousya_id'];?>)'>削除</a></td>
-    <td id="tr_<?php echo $i;?>_4" width='50'><a href='history.php?action=dougyousya&dougyousya_id=<?php echo $col['dougyousya_id'];?>'>履歴</a>
+    <td id="tr_<?php echo $i;?>_2" width='50'><a href='cleate_dougyousya.php?action=edit_oroshi&id=<?php echo $col['dougyousya_id'];?>'><?php echo CLEATE_DOUGYOUSYA_EDIT;?></a></td>
+    <td id="tr_<?php echo $i;?>_3" width='50'><a href='javascript:void(0);' onclick='del_oroshi(<?php echo $col['dougyousya_id'];?>)'><?php echo CLEATE_DOUGYOUSYA_DEL;?></a></td>
+    <td id="tr_<?php echo $i;?>_4" width='50'><a href='history.php?action=dougyousya&dougyousya_id=<?php echo $col['dougyousya_id'];?>'><?php echo CLEATE_DOUGYOUSYA_HISTORY;?></a>
   </tr>
 <?php if(isset($ckstr)&&$orrshi_id == $col['dougyousya_id']){?>
   <tr>
@@ -371,8 +371,8 @@ function ex(id){
       <?php echo makeCheckbox($categories_subtree,$ckstr);?>
 
       </div>
-      <input type="submit" value="更新" style="margin:2px">
-      <input type = "button" value = "取り消し" onclick="resset_cb()" style="margin:2px"><br />
+      <input type="submit" value="<?php echo IMAGE_UPDATE;?>" style="margin:2px">
+      <input type = "button" value = "<?php echo IMAGE_CANCEL;?>" onclick="resset_cb()" style="margin:2px"><br />
     </td>
   </tr>
 <?php 
@@ -391,8 +391,8 @@ function ex(id){
     echo makeCheckbox($categories_subtree); 
 ?>
 </div>
-<input type="submit" value="同業者登録">
-<input type="submit" onClick="notval()" value="順序を更新する" name="sort" style="margin:2px">
+<input type="submit" value="<?php echo CLEATE_DOUGYOUSYA_LOGIN;?>">
+<input type="submit" onClick="notval()" value="<?php echo CLEATE_DOUGYOUSYA_UPDATE_SORT;?>" name="sort" style="margin:2px">
 </td>
 </tr>
 </table>

@@ -36,7 +36,7 @@
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td class="pageHeading">キーワードランキング</td>
+            <td class="pageHeading"><?php echo KEYWORDS_TITLE_TEXT;?></td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
           </tr>
         </table></td>
@@ -52,7 +52,7 @@
     <table  border="0" align="center" cellpadding="0" cellspacing="2">
     <tr>
       <td class="smallText">
-      開始日:
+      <?php echo KEYWORDS_SEARCH_START_TEXT;?> 
       <select name="s_y">
       <?php 
       for($i=2007; $i<=date('Y'); $i++) { 
@@ -81,7 +81,8 @@
       </select>
       日 </td>
       <td width="80" align="center">～</td>
-      <td class="smallText">終了日
+      <td class="smallText">
+      <?php echo KEYWORDS_SEARCH_END_TEXT;?> 
       <select name="e_y">
       <?php
       for($i=2002; $i<=date('Y'); $i++) {
@@ -131,9 +132,9 @@
           <tr>
             <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr class="dataTableHeadingRow">
-                <td class="dataTableHeadingContent">キーワード</td>
-                <td class="dataTableHeadingContent">件数</td>
-                <td class="dataTableHeadingContent">順位</td>
+                <td class="dataTableHeadingContent"><?php echo KEYWORDS_TABLE_COLUMN_ONE_TEXT;?></td>
+                <td class="dataTableHeadingContent"><?php echo KEYWORDS_TABLE_COLUMN_TWO_TEXT;?></td>
+                <td class="dataTableHeadingContent"><?php echo KEYWORDS_TABLE_COLUMN_THREE_TEXT;?></td>
               </tr>
 <?php
   $ref_site_query = tep_db_query("

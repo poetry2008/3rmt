@@ -3,7 +3,6 @@
    $Id$
 */
   require('includes/application_top.php');
-  define('MAX_DISPLAY_PW_MANAGER_RESULTS',20);
   $sort_where = '';
   if($ocertify->npermission != 15){
     $sort_where = " and ((privilege <= '".$ocertify->npermission."' and self='') or
@@ -434,8 +433,7 @@ right:5px;*/
     </tr>
       <tr>
         <td colspan="2">
-        安全なパスワード管理を目的として作られていますが、保証するものではありません。銀行のパスワードなど金銭が絡む情報は登録できません。<br> 
-        IDとパスワードはクリックするとクリップボードへコピーされます。これは日々の作業性を重視した機能であり、ご利用にはご注意ください。 
+        <?php echo PW_MANAGER_NOTICE_TEXT;?> 
         </td>
       </tr>
       <tr>
@@ -447,18 +445,20 @@ right:5px;*/
               <?php echo tep_draw_form('pw_manager1', FILENAME_PW_MANAGER, '',
                   'get','id="pw_manager1" onsubmit="return false"'); ?>検索 : 
               <input name="keywords" type="text" id="keywords" size="40" value="<?php if(isset($_GET['keywords'])) echo stripslashes($_GET['keywords']); ?>">
+              <input name="site_id" type="hidden" id="site_id" size="40" value="<?php
+              echo isset($site_id)?$site_id:'0'; ?>">
               <select name="search_type" onChange='search_type_changed(this)'>
-                <option value="none">--選択してください--</option>
-                <option value="priority">重</option>
-                <option value="loginurl">LoginURL</option>
-                <option value="title">タイトル</option>
-                <option value="url">タイトルURL</option>
-                <option value="username">ID</option>
-                <option value="password">パスワード</option>
-                <option value="operator">管理者</option>
-                <option value="comment">登録情報</option>
-                <option value="memo">メモ欄</option>
-                <option value="site_id">サイト名</option>
+                <option value="none"><?php echo PW_MANAGER_SELECT_NONE;?></option>
+                <option value="priority"><?php echo PW_MANAGER_SELECT_ONE;?></option>
+                <option value="loginurl"><?php echo PW_MANAGER_SELECT_TWO;?></option>
+                <option value="title"><?php echo PW_MANAGER_SELECT_THREE;?></option>
+                <option value="url"><?php echo PW_MANAGER_SELECT_FOUR;?></option>
+                <option value="username"><?php echo PW_MANAGER_SELECT_FIVE;?></option>
+                <option value="password"><?php echo PW_MANAGER_SELECT_SIX;?></option>
+                <option value="operator"><?php echo PW_MANAGER_SELECT_SEVEN;?></option>
+                <option value="comment"><?php echo PW_MANAGER_SELECT_EIGHT;?></option>
+                <option value="memo"><?php echo PW_MANAGER_SELECT_NINE;?></option>
+                <option value="site_id"><?php echo PW_MANAGER_SELECT_TEN;?></option>
               </select>
               </form>
             </td>
@@ -492,6 +492,8 @@ right:5px;*/
       } else {
         if($HTTP_GET_VARS['sort'] == 'nextdate'){
         $order_str = '`date_order` '.$HTTP_GET_VARS['type']; 
+        }else if($HTTP_GET_VARS['sort'] == 'operator'){
+        $order_str = '`self` '.$HTTP_GET_VARS['type'].', `privilege` '.$HTTP_GET_VARS['type']; 
         }else{
         $order_str = '`'.$HTTP_GET_VARS['sort'].'` '.$HTTP_GET_VARS['type']; 
         }
@@ -727,7 +729,7 @@ right:5px;*/
         echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); 
       } else { 
         echo '<a href="' . tep_href_link(FILENAME_PW_MANAGER, 'page=' .
-          $_GET['page'] . '&site_id='.$site_id.'&type='.$_GET['type'].'&sort='.$_GET['sort'].'&pw_id=' . $pw_manager_row['id']) . '">' . 
+          $_GET['page'] .'&'. tep_get_all_get_params(array('page',  'action','pw_id')).'&pw_id=' . $pw_manager_row['id']) . '">' . 
           tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
       }
       echo '&nbsp;</td>';
@@ -749,7 +751,7 @@ right:5px;*/
             <td class="smallText" align="right"><?php echo
             $pw_manager_split->display_links($pw_manager_query_numrows,
                 MAX_DISPLAY_PW_MANAGER_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'],
-                tep_get_all_get_params(array('page', 'site_id', 'action','pwid'))); ?></td>
+                tep_get_all_get_params(array('page',  'action','pw_id'))); ?></td>
           </tr>
         </table>
       </td>
@@ -970,7 +972,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('align' => 'center', 'text' => '<br>' .'' .
           "<button type='button'
           onclick=\"location.href='".tep_href_link(FILENAME_PW_MANAGER,
-            'action=edit&pw_id='.$pwInfo->id.'&'.tep_get_all_get_params(array('pw_id','action','search_type','keywords')))."'\">" .
+            'action=edit&pw_id='.$pwInfo->id.'&'.tep_get_all_get_params(array('pw_id','action')))."'\">" .
           TEXT_BUTTON_EDIT."</button>"
           .$history_button
           );

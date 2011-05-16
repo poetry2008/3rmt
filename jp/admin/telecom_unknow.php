@@ -114,12 +114,12 @@ function check_one(ele){
   
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
-      <td class="pageHeading" width="33%"><a href="telecom_unknow.php">決算管理</a></td>
+      <td class="pageHeading" width="33%"><a href="telecom_unknow.php"><?php echo TELECOM_UNKNOW_TITLE;?></a></td>
       <td align="center">
         <form action="?" method="get">
           <input type="text" name="keywords" value="<?php echo $_GET['keywords'];?>">
-          <input type="checkbox" name="rel_yes" value="1" <?php if (!(!$_GET['rel_yes'] && $_GET['rel_no'])) {echo 'checked';} ?>>成功 
-          <input type="checkbox" name="rel_no" value="1" <?php if (!(!$_GET['rel_no'] && $_GET['rel_yes'])) {echo 'checked';} ?>>失敗
+          <input type="checkbox" name="rel_yes" value="1" <?php if (!(!$_GET['rel_yes'] && $_GET['rel_no'])) {echo 'checked';} ?>><?php echo TELECOM_UNKNOW_SEARCH_SUCCESS;?> 
+          <input type="checkbox" name="rel_no" value="1" <?php if (!(!$_GET['rel_no'] && $_GET['rel_yes'])) {echo 'checked';} ?>><?php echo TELECOM_UNKNOW_SEARCH_FAIL;?>
           <input type="submit" value="Go">
         </form>
       </td>
@@ -133,26 +133,26 @@ function check_one(ele){
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
       <td valign="top">
-    <form action="?action=hide_more" method="post" onsubmit="return confirm('選択した行を非表示にしますか？')">
+    <form action="?action=hide_more" method="post" onsubmit="return confirm('<?php echo TELECOM_UNKNOW_SELECT_NOTICE;?>')">
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
     <tr class="dataTableHeadingRow">
       <td class="dataTableHeadingContent" align="left" width="20"><input type="checkbox" onclick="all_check(this)"></td>
-      <td class="dataTableHeadingContent" align="center" width="50">決算方法</td>
-      <td class="dataTableHeadingContent" align="center" width="150">時間</td>
-      <td class="dataTableHeadingContent" align="center">決算</td>
-      <td class="dataTableHeadingContent" align="center">引当</td>
-      <td class="dataTableHeadingContent" align="center">氏名</td>
-      <td class="dataTableHeadingContent" align="center">電話</td>
-      <td class="dataTableHeadingContent" align="center">メールアドレス</td>
-      <td class="dataTableHeadingContent" align="center">金額</td>
+      <td class="dataTableHeadingContent" align="center" width="50"><?php echo TELECOM_UNKNOW_TABLE_CAL_METHOD;?></td>
+      <td class="dataTableHeadingContent" align="center" width="150"><?php echo TELECOM_UNKNOW_TABLE_TIME;?></td>
+      <td class="dataTableHeadingContent" align="center"><?php echo TELECOM_UNKNOW_TABLE_CAL;?></td>
+      <td class="dataTableHeadingContent" align="center"><?php echo TELECOM_UNKNOW_TABLE_YIN;?></td>
+      <td class="dataTableHeadingContent" align="center"><?php echo TELECOM_UNKNOW_TABLE_SURNAME;?></td>
+      <td class="dataTableHeadingContent" align="center"><?php echo TELECOM_UNKNOW_TABLE_TEL;?></td>
+      <td class="dataTableHeadingContent" align="center"><?php echo TELECOM_UNKNOW_TABLE_EMAIL;?></td>
+      <td class="dataTableHeadingContent" align="center"><?php echo TELECOM_UNKNOW_TABLE_PRICE;?></td>
       <td class="dataTableHeadingContent" align="center">&nbsp;</td>
     </tr>
 <?php
+        /* 
     if (isset($_GET['keywords']) && tep_not_null($_GET['keywords'])) {
         $where_str .= " and (";
         $where_str .= "(username = '" . $_GET['keywords'] . "' or email = '" .  $_GET['keywords'] . "' or telno = '" . $_GET['keywords'] . "' or money = '" . $_GET['keywords'] . "')";
         $where_str .= " )";
-        /* 
       if (tep_parse_search_string(stripslashes($_GET['keywords']), $search_keywords)) {
         $where_str .= " and (";
         for ($i=0, $n=sizeof($search_keywords); $i<$n; $i++ ) {
@@ -171,7 +171,44 @@ function check_one(ele){
         }
         $where_str .= " )";
       }
+    }
       */ 
+    if (isset($_GET['search_type']) && tep_not_null($_GET['search_type'])) {
+      if (isset($_GET['keywords']) && tep_not_null($_GET['keywords'])) {
+        switch ($_GET['search_type']) {
+          case 'username':
+            $where_str .= " and (";
+            $where_str .= "(username = '" . $_GET['keywords'] . "')";
+            $where_str .= " )";
+            break;
+          case 'telno':
+            $where_str .= " and (";
+            $where_str .= "(telno = '" . $_GET['keywords'] . "')";
+            $where_str .= " )";
+            break;
+          case 'email':
+            $where_str .= " and (";
+            $where_str .= "(email = '" . $_GET['keywords'] . "')";
+            $where_str .= " )";
+            break;
+          case 'money':
+            $where_str .= " and (";
+            $where_str .= "(money = '" . $_GET['keywords'] . "')";
+            $where_str .= " )";
+            break;
+          default:
+            $where_str .= " and (";
+            $where_str .= "(username = '" . $_GET['keywords'] . "' or email = '" .  $_GET['keywords'] . "' or telno = '" . $_GET['keywords'] . "' or money = '" . $_GET['keywords'] . "')";
+            $where_str .= " )";
+            break;
+        }
+      }
+    } else {
+      if (isset($_GET['keywords']) && tep_not_null($_GET['keywords'])) {
+        $where_str .= " and (";
+        $where_str .= "(username = '" . $_GET['keywords'] . "' or email = '" .  $_GET['keywords'] . "' or telno = '" . $_GET['keywords'] . "' or money = '" . $_GET['keywords'] . "')";
+        $where_str .= " )";
+      } 
     }
     /*
     if ($_GET['rel']) {
@@ -184,7 +221,6 @@ function check_one(ele){
     if ($_GET['rel_no'] && !$_GET['rel_yes']) {
       $where_str .= " and rel='no'";
     }
-
       // 默认显示不明和后台创建的信用卡
       $orders_query_raw = "
         select *

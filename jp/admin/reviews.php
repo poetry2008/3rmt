@@ -104,7 +104,7 @@
     function check_review()
     {
         if (document.getElementById('reviews_text').value.length < 50) {
-            alert("レビューの文章は少なくても 50 文字以上必要です");
+            alert("<?php echo REVIEWS_NOTICE_TOTALNUM_ERROR;?>");
             return false
         } else {
             return true;
@@ -203,7 +203,7 @@
             <td class="main" valign="top" colspan='2'><b><?php echo ENTRY_REVIEW; ?></b><br><br><?php echo tep_draw_textarea_field('reviews_text', 'soft', '60', '15', '', 'id="reviews_text" onkeypress="word_count(this)" onchange="word_count(this)"'); ?></td>
           </tr>
           <tr>
-            <td class="smallText">漢字数:<span id="count_box"></span></td>
+            <td class="smallText"><?php echo REVIEWS_CHARACTER_TOTAL;?><span id="count_box"></span></td>
             <td class="smallText" align="right"><?php echo ENTRY_REVIEW_TEXT; ?></td>
           </tr>
         </table></td>
@@ -316,7 +316,7 @@
             <td class="main" valign="top" colspan='2'><b><?php echo ENTRY_REVIEW; ?></b><br><br><?php echo tep_draw_textarea_field('reviews_text', 'soft', '60', '15', $rInfo->reviews_text, 'id="reviews_text" onkeypress="word_count(this)" onchange="word_count(this)"'); ?></td>
           </tr>
           <tr>
-            <td class="smallText">漢字数:<span id="count_box"></span></td>
+            <td class="smallText"><?php echo REVIEWS_CHARACTER_TOTAL;?><span id="count_box"></span></td>
             <td class="smallText" align="right"><?php echo ENTRY_REVIEW_TEXT; ?></td>
           </tr>
         </table></td>
