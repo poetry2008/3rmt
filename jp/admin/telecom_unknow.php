@@ -178,7 +178,6 @@ function check_one(ele){
         switch ($_GET['search_type']) {
           case 'username':
             if (tep_parse_search_string(stripslashes($_GET['keywords']), $search_keywords)) {
-              var_dump($search_keywords); 
               $where_str .= " and (";
               for ($i=0, $n=sizeof($search_keywords); $i<$n; $i++ ) {
                 switch ($search_keywords[$i]) {
