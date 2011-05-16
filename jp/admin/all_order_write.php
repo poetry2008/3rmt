@@ -1,4 +1,13 @@
 <?php
+//make a lock  file
+$lockfilename = realpath($_SERVER['PHP_SELF']).'_lock';
+if(file_exists($lockfilename)){
+  die('This script all ready runned before');
+}else{
+  if(!touch($lockfilename)){;
+    die('The lockfile cannot be touched,please chmod current folder for write ');
+  }
+}
 ob_start();
 ?>
 <html>
@@ -35,7 +44,8 @@ while($o = tep_db_fetch_array($query)) {
   }
   //如果是买
   if ($o['avgf'] ==1 ){
-    tep_db_query("update orders_products set final_price=0-abs(`final_price`) where orders_id = '".$o['orders_id']."'");
+    tep_db_query("update orders_products set final_price=0-`final_price` where orders_id = '".$o['orders_id']."'");
+    //    tep_db_query("update orders_products set final_price=0-abs(`final_price`) where orders_id = '".$o['orders_id']."'");
     //  echo "updateing ".$o['orders_id']."</br>\n";
     ob_flush();
     flush();
@@ -64,7 +74,8 @@ while($o = tep_db_fetch_array($query)) {
             //        $red2.=$o['orders_id']. " 小計".$ot_subtotal." 合計".$ot_total."</br>\n";
             ob_flush();
             flush();
-            mysql_query('update orders_total set value= 0-abs(`value`)'.' where orders_id = "'.$o['orders_id'].'"');
+            //        mysql_query('update orders_total set value= 0-abs(`value`)'.' where orders_id = "'.$o['orders_id'].'"');
+            mysql_query('update orders_total set value= 0-`value`'.' where orders_id = "'.$o['orders_id'].'"');
           } else {
             if ($ot_total < 0 and $ot_total != $ott['value']) {
               mysql_query('update orders_total set value='.$ot_total.' where orders_id = "'.$o['orders_id'].'" and class = "ot_total"');
