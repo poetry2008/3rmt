@@ -296,17 +296,17 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
     <td>
       <table width="100%">
       <tr>
-        <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+        <td width="10"><?php echo tep_draw_separator('pixel_trans02.gif', '10', '1'); ?></td> 
       <td class="main"><?php echo TEXT_TORIHIKIHOUHOU; ?></td>
         <td class="main"><?php echo $torihikihouhou; ?></td>
       </tr>
       <tr>
-        <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+        <td width="10"><?php echo tep_draw_separator('pixel_trans.gif02', '10', '1'); ?></td> 
       <td class="main" width="30%"><?php echo TEXT_TORIHIKIKIBOUBI; ?></td>
         <td class="main" width="70%"><?php echo str_string($date); ?></td>
       </tr>
       <tr>
-        <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+        <td width="10"><?php echo tep_draw_separator('pixel_trans.gif02', '10', '1'); ?></td> 
       <td class="main"><?php echo TEXT_TORIHIKIKIBOUJIKAN; ?></td>
         <td class="main">
       <?php echo $hour; ?>
@@ -377,7 +377,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
 ?>
     
         <tr> 
-          <td  style="color: #000; font-size: 12px; padding: 10px; background: url(images/design/box/dot.gif) bottom repeat-x;">
+          <td  style="color: #ccc; font-size: 12px; padding: 10px; background: url(images/design/box/dot.gif) bottom repeat-x;">
             <b><?php echo HEADING_BILLING_INFORMATION; ?></b>
           </td> 
         </tr> 
@@ -493,7 +493,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
           <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
         </tr> 
         <tr> 
-          <td style="color: #000; font-size: 12px; padding: 10px; background: url(images/design/box/dot.gif) bottom repeat-x;"><b><?php echo HEADING_PAYMENT_INFORMATION; ?></b></td> 
+          <td style="color: #ccc; font-size: 12px; padding: 10px; background: url(images/design/box/dot.gif) bottom repeat-x;"><b><?php echo HEADING_PAYMENT_INFORMATION; ?></b></td> 
         </tr> 
         <tr> 
           <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 

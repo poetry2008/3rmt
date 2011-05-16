@@ -114,13 +114,13 @@ function change_num(ob, targ, quan,a_quan)
 
     if (tep_get_special_price($product_info['products_price'], $product_info['products_price_offset'], $product_info['products_small_sum'])) {
       $pricedef = $product_info['products_price'];
-      $products_price = '<s>' . $currencies->display_price(tep_get_price($product_info['products_price'], $product_info['products_price_offset'], $product_info['products_small_sum']), tep_get_tax_rate($product_info['products_tax_class_id'])) . '</s> 
-      
+      $products_price = '<s>' .
+        $currencies->display_price(tep_get_price($product_info['products_price'], $product_info['products_price_offset'], $product_info['products_small_sum'], $product_info['products_bflag']), tep_get_tax_rate($product_info['products_tax_class_id'])) . '</s> 
       <span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($product_info['products_price'], $product_info['products_price_offset'], $product_info['products_small_sum']), tep_get_tax_rate($product_info['products_tax_class_id'])) . '</span>';
     } else {
       
       $pricedef = $product_info['products_price'];
-      $products_price = $currencies->display_price(tep_get_price($product_info['products_price'], $product_info['products_price_offset'], tep_get_price($product_info['products_price'],$product_info['products_small_sum'])), tep_get_tax_rate($product_info['products_tax_class_id']));
+      $products_price = $currencies->display_price(tep_get_price($product_info['products_price'], $product_info['products_price_offset'], tep_get_price($product_info['products_price'],$product_info['products_small_sum'], '', $product_info['products_bflag']), $product_info['products_bflag']), tep_get_tax_rate($product_info['products_tax_class_id']));
     }
      
     $description = $product_info['products_description'];
@@ -146,13 +146,13 @@ function change_num(ob, targ, quan,a_quan)
     <?php if (tep_show_warning(tep_get_products_categories_id($product_info['products_id'])) or $product_info['products_status'] != '1') {
       echo '<div class="waring_product">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
     } ?>
-         <h1 class="pageHeading_long"><?php echo $product_info['products_name']; ?></h1>
-         <div class="comment_long">
+         <h1 class="pageHeading"><?php echo $product_info['products_name']; ?></h1>
+         <div class="comment">
          <h2 class="line"><?php echo ds_tep_get_categories((int)$_GET['products_id'],1); ?> <?php echo ds_tep_get_categories((int)$_GET['products_id'],2); ?></h2>
-         <table width="684"  border="0" cellpadding="0" cellspacing="0" summary="rmt" bgcolor="#f2f2f2">
+         <table class="product_info_warpper" border="0" cellpadding="0" cellspacing="0" summary="rmt">
           <tr>
-            <td width="250" valign="top">
-                <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="rmt_img">
+            <td valign="top">
+                <table class="p_image01"  border="0" cellpadding="0" cellspacing="0" summary="rmt_img">
                     <?php
         if (tep_not_null($product_info['products_image'])) {
     ?>
@@ -190,8 +190,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                     </tr>
                   </table>
                 </td>
-<!--             <td><img src="images/design/spacer.gif" width="15" height="1" alt=""></td>-->
-                <td valign="top" style="padding-right:10px;">
+                <td valign="top">
                     <table border="0" cellpadding="0" cellspacing="0" summary="info_box" class="infoBox">
                     <tr>
                       <td>
@@ -342,7 +341,8 @@ while($tag = tep_db_fetch_array($tag_query)) {
                         </td>
                     </tr>
                     <tr class="header2">
-                      <td height="30" class="main" style="padding-bottom:4px; " align="right">
+                      <td height="30" class="main" align="right">
+                      <div class="p_info_form">
 <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_PRODUCT_INFO, tep_get_all_get_params(array('action')) . 'action=add_product')) . "\n"; ?>
 <?php
       if($product_info['products_quantity'] < 1) {
@@ -494,13 +494,15 @@ while($tag = tep_db_fetch_array($tag_query)) {
      }
     ?>
     <?php echo tep_draw_hidden_field('products_id', $product_info['products_id']) ; ?></form>
+    </div>
                       </td>
                     </tr>
                     <tr class="header2">
                       <td align="right" valign="bottom" class="smallText">
+                      <div class="p_info_form02">
                           <div class="dot"></div>
                         <br>
-                        <a href="<?php echo tep_href_link(FILENAME_TELL_A_FRIEND,'products_id='.(int)$_GET['products_id']) ;  ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_tellafriend.jpg',BOX_HEADING_TELL_A_FRIEND);?></a>&nbsp; <a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE,'products_id='.(int)$_GET['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_review.jpg',BOX_REVIEWS_WRITE_REVIEW);?></a>&nbsp; <?php echo tep_draw_form('open',tep_href_link('open.php'),'get');?><input type="image" style="vertical-align:bottom;" src="<?php echo DIR_WS_IMAGES;?>design/button/botton_question.jpg"><?php echo tep_draw_hidden_field('products_name', $product_info['products_name']) ; ?></form><br><br></td>
+                        <a href="<?php echo tep_href_link(FILENAME_TELL_A_FRIEND,'products_id='.(int)$_GET['products_id']) ;  ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_tellafriend.jpg',BOX_HEADING_TELL_A_FRIEND);?></a>&nbsp; <a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE,'products_id='.(int)$_GET['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_review.jpg',BOX_REVIEWS_WRITE_REVIEW);?></a>&nbsp; <?php echo tep_draw_form('open',tep_href_link('open.php'),'get');?><input type="image" style="vertical-align:bottom;" src="<?php echo DIR_WS_IMAGES;?>design/button/botton_question.jpg"><?php echo tep_draw_hidden_field('products_name', $product_info['products_name']) ; ?></form><br><br></div></td>
                     </tr>
                   </table></td>
               </tr>
@@ -565,9 +567,9 @@ while($tag = tep_db_fetch_array($tag_query)) {
  ?>
  </div>
          <?php if($description){?>
-            <h3 class="pageHeading_long"><span><?php echo $product_info['products_name']; ?>について</span></h3>
+            <h3 class="pageHeading"><span><?php echo $product_info['products_name']; ?>について</span></h3>
             <!-- 説明文　-->
-            <div class="comment_long">
+            <div class="comment">
               <div  class="reviews_area"><p><?php 
             //Edit ds-style 2005.11.29
             //echo stripslashes($product_info['products_description']);
@@ -605,8 +607,6 @@ while($tag = tep_db_fetch_array($tag_query)) {
         <br>
         <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="rmt">
           <tr>
-<!--             <td class="main"><a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS, substr(tep_get_all_get_params(), 0, -1)); ?>"><?php echo tep_image_button('button_reviews.gif', IMAGE_BUTTON_REVIEWS); ?></a></td>
- -->
             <td align="right" class="main"></td>
           </tr>
         </table>
@@ -622,8 +622,8 @@ while($tag = tep_db_fetch_array($tag_query)) {
         <?php
       if (tep_session_is_registered('affiliate_id')) {
 ?>
-        <h1 class="pageHeading_long"><?php echo 'アフィリエイト広告用タグ' ; ?> </h1>
-        <p class="comment_long"><b>この商品の広告を登録することができます！！</b><br>
+        <h1 class="pageHeading"><?php echo 'アフィリエイト広告用タグ' ; ?> </h1>
+        <p class="comment"><b>この商品の広告を登録することができます！！</b><br>
           あなたのホームページにこの商品を表示させるには以下のソースコードをコピーしてホームページにペースとしてください。この商品の画像が表示されます。</p>
 
         <textarea class="boxText" style="width:95%; height:90px; "><a href="<?php echo HTTP_SERVER.DIR_WS_CATALOG.FILENAME_PRODUCT_INFO.'?products_id='.(int)$_GET['products_id'].'&ref='.$affiliate_id ; ?>" class="blank"><?php echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image'], $product_info['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"');?><br><?php echo $product_info['products_name'] ; ?> </a></textarea>

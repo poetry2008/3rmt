@@ -99,8 +99,8 @@
 ?>
 <!-- new_products //-->
 <?php if (0 < $num_products) { ?>
-<h3 class="pageHeading_long"><span><?php echo $new_c_name; ?>の新着商品</span></h3>
-<div class="comment_long">
+<h3 class="pageHeading"><span><?php echo $new_c_name; ?>の新着商品</span></h3>
+<div class="comment">
 <table width="100%"  border="0" cellspacing="0" cellpadding="0" class="comment03">
 <?php
     while ($new_products = tep_db_fetch_array($new_products_query)) {

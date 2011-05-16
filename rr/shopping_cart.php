@@ -188,7 +188,7 @@ function change_num(ob,targ, quan,a_quan)
         }
       }
     }?>
-                <table border="0" class="order_details" width="100%" cellspacing="0" cellpadding="0" summary="rmt">
+                <table border="0" class="order_details" width="100%" cellspacing="0" cellpadding="2" summary="rmt">
                   <?php
     require(DIR_WS_MODULES. 'order_details.php');
 ?>
@@ -197,7 +197,7 @@ function change_num(ob,targ, quan,a_quan)
               </td>
             </tr>
             <tr>
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
+              <td><?php //echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
             </tr>
             <tr>
               <td align="right" class="main"><b><?php echo SUB_TITLE_SUB_TOTAL; ?>
