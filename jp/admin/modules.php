@@ -436,7 +436,22 @@ $ex_site = $sites[0];
                 $keys .= tep_call_function($use_function, $module_item['configuration_value']);
               }
             } else {
-              $keys .= $module_item['configuration_value'];
+              if ($module_item['configuration_key'] == 'MODULE_PAYMENT_BUYING_LIMIT_SHOW' || $module_item['configuration_key'] == 'MODULE_PAYMENT_MONEYORDER_LIMIT_SHOW' || $module_item['configuration_key'] == 'MODULE_PAYMENT_POSTALMONEYORDER_LIMIT_SHOW' || $module_item['configuration_key'] == 'MODULE_PAYMENT_CONVENIENCE_STORE_LIMIT_SHOW' || $module_item['configuration_key'] == 'MODULE_PAYMENT_TELECOM_LIMIT_SHOW' || $module_item['configuration_key'] == 'MODULE_PAYMENT_PAYPAL_LIMIT_SHOW' || $module_item['configuration_key'] == 'MODULE_PAYMENT_POINT_LIMIT_SHOW' || $module_item['configuration_key'] == 'MODULE_PAYMENT_FETCH_GOOD_LIMIT_SHOW' || $module_item['configuration_key'] == 'MODULE_PAYMENT_FREE_PAYMENT_LIMIT_SHOW') {
+                $con_limit_show = unserialize($module_item['configuration_value']);   
+                $con_limit_show_str = ''; 
+                if (!empty($con_limit_show)) {
+                  foreach ($con_limit_show as $lim_key => $lim_value) {
+                    if ($lim_value == 1) {
+                      $con_limit_show_str .= '会員&nbsp;&nbsp;'; 
+                    } else {
+                      $con_limit_show_str .= 'ゲスト'; 
+                    }
+                  }
+                }
+                $keys .= $con_limit_show_str;
+              } else {
+                $keys .= $module_item['configuration_value'];
+              }
             }
             $keys .= '<br><br>';
           }
