@@ -203,7 +203,7 @@
               <td class="main"><?php echo '<a href="' .
               tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .
                   $_GET['products_id']) . '">' . tep_image_button('button_back.gif',
-          IMAGE_BUTTON_BACK_LIST) . '</a>'; ?></td> 
+          IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
               <td align="right" class="main"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
             </tr> 
           </table></td> 

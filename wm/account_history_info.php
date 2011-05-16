@@ -241,7 +241,7 @@
               <td align="right" class="main"><?php echo '<a href="' .
               tep_href_link(FILENAME_ACCOUNT_HISTORY,
                   tep_get_all_get_params(array('order_id')), 'SSL') . '">' .
-              tep_image_button('button_back.gif', IMAGE_BUTTON_BACK_LIST) . '</a>'; ?></td> 
+              tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
             </tr> 
           </table> 
         </div>
