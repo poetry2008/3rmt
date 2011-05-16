@@ -10,7 +10,7 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE_1', '会員の作成');
+define('NAVBAR_TITLE_1', '会員登録');
 define('NAVBAR_TITLE_2', '手続き');
 define('HEADING_TITLE', 'お客様情報');
 
