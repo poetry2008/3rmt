@@ -11,14 +11,18 @@
   } else {
     include(DIR_WS_BOXES . 'categories.php');
   }
-?> <div class="reorder_link">
+?> 
+<?php
+include(DIR_WS_BOXES . 'login.php');
+?>
+<div class="reorder_link">
 	<div class="menu_top"><?php echo LEFT_REORDER_TITLE;?></div>
     <div class="reorder_link_info">
   <a href="<?php echo tep_href_link('reorder.php');?>"><?php echo LEFT_REORDER_TEXT;?></a> 
   </div>
   </div>
 <?php 
-include(DIR_WS_BOXES . 'login.php');
+//include(DIR_WS_BOXES . 'login.php');
   if (isset($_GET['products_id'])) {
     if (tep_session_is_registered('customer_id')) {
       $check_query = tep_db_query("select count(*) as count from " . TABLE_CUSTOMERS_INFO . " where customers_info_id = '" . $customer_id . "' and global_product_notifications = '1'");
@@ -42,7 +46,11 @@ include(DIR_WS_BOXES . 'login.php');
 */
 
   //require(DIR_WS_BOXES . 'information.php');
-  //require(DIR_WS_BOXES . 'banners.php');
+  if (basename($PHP_SELF) != FILENAME_PRODUCT_INFO) {
+    require(DIR_WS_BOXES . 'reviews.php');
+  }
+  
+  require(DIR_WS_BOXES . 'banners.php');
   //require(DIR_WS_BOXES . 'cl.php');
 
 /*s

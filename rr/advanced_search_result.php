@@ -102,11 +102,11 @@
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents">
-      <h1 class="pageHeading_long">
+      <h1 class="pageHeading">
       <?php echo HEADING_TITLE ; ?>
       </h1>
        
-        <div class="comment_long"> 
+        <div class="comment"> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
               <td>

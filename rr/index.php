@@ -54,7 +54,7 @@ if ($category_depth == 'nested') {
   require(DIR_WS_ACTIONS.'index_tags.php');
 ?>
   <td valign="top" id="contents_long">
-        <h1 class="pageHeading_long">
+        <h1 class="pageHeading">
         <?php
         $sel_tags_query = tep_db_query("select * from ".TABLE_TAGS." where tags_id =
             '".(int)$_GET['tags_id']."'"); 
@@ -64,7 +64,7 @@ if ($category_depth == 'nested') {
         }
         ?>
         </h1> 
-        <div class="comment_long">
+        <div class="comment">
         <?php include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); ?></div>
         </td>
 <?php
@@ -78,7 +78,7 @@ if ($category_depth == 'nested') {
     echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
   }
 ?>
-    <h1 class="pageHeading_long"><?php
+    <h1 class="pageHeading"><?php
   if (isset($cPath_array)) {
     echo $seo_category['categories_name'];
   } elseif ($_GET['manufacturers_id']) {
@@ -87,7 +87,7 @@ if ($category_depth == 'nested') {
     echo HEADING_TITLE;
   }
 ?></h1>
-    <div class="comment_long"><font color="#FFffff"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?></font>
+    <div class="comment"><font color="#FFffff"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?></font>
        <?php
           $has_ca_single = false; 
         ?>
@@ -182,11 +182,11 @@ if ($category_depth == 'nested') {
   <?php
       if (isset($cPath_array)) {
         if ($seo_category['seo_description']) {
-          echo '<h2 class="pageHeading_long">'.$seo_category['seo_name'].'について</h2>'; 
-          echo '<div class="comment_long"><div class="product_list_info"><div class="product_listing_content"><p><font color="#888888">'.$seo_category['seo_description'].'</font></p></div></div></div>'; 
+          echo '<h2 class="pageHeading">'.$seo_category['seo_name'].'について</h2>'; 
+          echo '<div class="comment"><div class="product_list_info"><div class="product_listing_content"><p><font color="#888888">'.$seo_category['seo_description'].'</font></p></div></div></div>'; 
         }
         if (!empty($seo_category['text_information'])) {
-          echo str_replace('pageHeading', 'pageHeading_long', $seo_category['text_information']); 
+          echo $seo_category['text_information']; 
         }
       }
       ?>

@@ -83,7 +83,7 @@ if($cPath){
               <?php
               if (in_array($subcategory['categories_id'], $id)) {
               ?>
-              <font color="#00C0FF"> 
+              <font color="#ff0000"> 
               <?php
               }
               ?>
@@ -136,7 +136,7 @@ if($cPath){
               <?php
               if (in_array($_subcategory['categories_id'], $id)) {
               ?>
-              <font color="#00C0FF"> 
+              <font color="#ff000"> 
               <?php
               }
               ?>

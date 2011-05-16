@@ -3,9 +3,11 @@
   $Id$
 */
 ?>
+
+<div id="footer">
 <div class="footer_link"><?php
     $footer_info_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where status = 1 and romaji != 'company' and romaji != 'payment'  and
- site_id = 7 order by sort_id"); 
+ site_id = ".SITE_ID." order by sort_id"); 
     $footer_info_total_num = tep_db_num_rows($footer_info_query);
     if ($footer_info_total_num > 0) {
       $footer_num = 0; 
@@ -20,8 +22,6 @@
     }
   ?>
 </div>
-<div id="footer">
-
           <address class="footer_contacts">
         <?php echo FOOTER_TEXT_BODY . "\n"; ?><br>
               Copyright&nbsp;&copy;&nbsp;2011&nbsp;&nbsp;

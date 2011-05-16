@@ -10,23 +10,25 @@
 ?>
     <div class="login_box">
           <div class="menu_top">会員登録</div>
-          <div id="login_form">
+          <div id="login_form" class="comment_left">
 				<a class="login_link" href="<?php echo tep_href_link(FILENAME_LOGIN,'','SSL'); ?>"><img src="images/design/login02.gif" alt="ログイン"></a>
 <?php
   if (!tep_session_is_registered('customer_id')) {
 ?>
-                <a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT,'','SSL'); ?>"><?php echo '<img src="images/design/box/signup.gif" alt="'.HEADER_TITLE_CREATE_ACCOUNT.'" width="148" height="88">'; ?></a>
+                <a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT,'','SSL'); ?>"><?php echo '<img src="images/design/box/signup.gif" alt="'.HEADER_TITLE_CREATE_ACCOUNT.'" width="169" height="85">'; ?></a>
 <?php 
    }
 ?>
-  </div></div>
+		<div class="comment_rr_bottom">&nbsp;</div>
+  </div><!--login_form-->
+  </div>
 <?php 
   } else { 
     if($guestchk == '1') {
 ?>
     <div class="login_box">
           <div class="menu_top">会員登録</div>
-          <div id="login_form">
+           <div id="login_form" class="comment_left">
           <a href="<?php echo tep_href_link(FILENAME_LOGIN,'','SSL'); ?>"><img class="middle" style="margin-left:1px;" src="images/design/login02.gif" alt="ログイン"></a>
                         <?php
   if (!tep_session_is_registered('customer_id')) {
@@ -35,6 +37,7 @@
 <?php 
    }
 ?>
+<div class="comment_rr_bottom">&nbsp;</div>
   </div></div>
 <?php 
     } else {
