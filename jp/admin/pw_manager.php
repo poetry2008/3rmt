@@ -445,6 +445,8 @@ right:5px;*/
               <?php echo tep_draw_form('pw_manager1', FILENAME_PW_MANAGER, '',
                   'get','id="pw_manager1" onsubmit="return false"'); ?>検索 : 
               <input name="keywords" type="text" id="keywords" size="40" value="<?php if(isset($_GET['keywords'])) echo stripslashes($_GET['keywords']); ?>">
+              <input name="site_id" type="hidden" id="site_id" size="40" value="<?php
+              echo isset($site_id)?$site_id:'0'; ?>">
               <select name="search_type" onChange='search_type_changed(this)'>
                 <option value="none"><?php echo PW_MANAGER_SELECT_NONE;?></option>
                 <option value="priority"><?php echo PW_MANAGER_SELECT_ONE;?></option>
@@ -490,6 +492,8 @@ right:5px;*/
       } else {
         if($HTTP_GET_VARS['sort'] == 'nextdate'){
         $order_str = '`date_order` '.$HTTP_GET_VARS['type']; 
+        }else if($HTTP_GET_VARS['sort'] == 'operator'){
+        $order_str = '`self` , `privilege` '; 
         }else{
         $order_str = '`'.$HTTP_GET_VARS['sort'].'` '.$HTTP_GET_VARS['type']; 
         }
