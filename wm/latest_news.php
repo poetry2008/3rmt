@@ -110,7 +110,7 @@ function popupWindow(url) {
                 <div align="right">
                   <?php echo '<a href="' . tep_href_link(FILENAME_LATEST_NEWS) .
                   '">' . tep_image_button('button_back02.gif',
-  IMAGE_BUTTON_BACK) . '</a>'; ?>
+  IMAGE_BUTTON_BACK_LIST) . '</a>'; ?>
                 </div>
 <?php
   }
