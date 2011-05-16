@@ -238,6 +238,7 @@ case 'edit':
     // configuration admin page only
     if(!in_array($cInfo->configuration_key, array(
             'ADMINPAGE_LOGO_IMAGE',
+            'MAX_DISPLAY_PW_MANAGER_RESULTS',
             'MAX_DISPLAY_ORDERS_RESULTS',
             'USER_AGENT_LIGHT_KEYWORDS',
             'HOST_NAME_LIGHT_KEYWORDS',
