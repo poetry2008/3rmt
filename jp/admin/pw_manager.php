@@ -3,7 +3,6 @@
    $Id$
 */
   require('includes/application_top.php');
-  define('MAX_DISPLAY_PW_MANAGER_RESULTS',20);
   $sort_where = '';
   if($ocertify->npermission != 15){
     $sort_where = " and ((privilege <= '".$ocertify->npermission."' and self='') or
@@ -726,7 +725,7 @@ right:5px;*/
         echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); 
       } else { 
         echo '<a href="' . tep_href_link(FILENAME_PW_MANAGER, 'page=' .
-          $_GET['page'] . '&site_id='.$site_id.'&type='.$_GET['type'].'&sort='.$_GET['sort'].'&pw_id=' . $pw_manager_row['id']) . '">' . 
+          $_GET['page'] .'&'. tep_get_all_get_params(array('page',  'action','pw_id')).'&pw_id=' . $pw_manager_row['id']) . '">' . 
           tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
       }
       echo '&nbsp;</td>';
@@ -748,7 +747,7 @@ right:5px;*/
             <td class="smallText" align="right"><?php echo
             $pw_manager_split->display_links($pw_manager_query_numrows,
                 MAX_DISPLAY_PW_MANAGER_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'],
-                tep_get_all_get_params(array('page', 'site_id', 'action','pwid'))); ?></td>
+                tep_get_all_get_params(array('page',  'action','pw_id'))); ?></td>
           </tr>
         </table>
       </td>
@@ -969,7 +968,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('align' => 'center', 'text' => '<br>' .'' .
           "<button type='button'
           onclick=\"location.href='".tep_href_link(FILENAME_PW_MANAGER,
-            'action=edit&pw_id='.$pwInfo->id.'&'.tep_get_all_get_params(array('pw_id','action','search_type','keywords')))."'\">" .
+            'action=edit&pw_id='.$pwInfo->id.'&'.tep_get_all_get_params(array('pw_id','action')))."'\">" .
           TEXT_BUTTON_EDIT."</button>"
           .$history_button
           );
