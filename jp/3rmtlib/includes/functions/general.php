@@ -1752,7 +1752,7 @@ function forward404Unless($condition)
         $title       = HEADING_TITLE . ' ' . TITLE;
         switch(SITE_ID){
           case "3":
-            $keywords    = "RMT,激安,安い,特価,販売,買取,MMORPG,アイテム,アカウント,ゲーム通貨";
+            $keywords    = "RMT,激安,安い,特価,販売,買取,MMORPG,アイテム,会員,ゲーム通貨";
             $description = "今日のお買い得ゲーム一覧。RMTのことなら".TITLE."へ";
             break;
           case "2":
@@ -1761,7 +1761,7 @@ function forward404Unless($condition)
             break;
           case "1":
           default:
-            $keywords    = "RMT,激安,安い,特価,販売,買取,MMORPG,アイテム,アカウント,ゲーム通貨";
+            $keywords    = "RMT,激安,安い,特価,販売,買取,MMORPG,アイテム,会員,ゲーム通貨";
             $description = "今日のお買い得ゲーム一覧。RMTのことなら".TITLE."へ";
             break;
         }
@@ -1792,7 +1792,7 @@ function forward404Unless($condition)
         switch(SITE_ID){
           case "3":
             $title        = $breadcrumb->trail_title(' &raquo; ');
-            $keywords     = "RMT,スクウェア・エニックス,NCJ,ガンホー,NEXON,ゲームオン,コーエー,セガ,販売,買取,アイテム,アカウント";
+            $keywords     = "RMT,スクウェア・エニックス,NCJ,ガンホー,NEXON,ゲームオン,コーエー,セガ,販売,買取,アイテム,会員";
             $description  = "ゲームメーカーの一覧です。スクウェア・エニックス、NCJ、ガンホーなど。RMTのことなら".TITLE."へ";
             break;
           case "2":
@@ -1803,7 +1803,7 @@ function forward404Unless($condition)
           case "1":
           default:
             $title        = $breadcrumb->trail_title(' &raquo; ');
-            $keywords     = "RMT,スクウェア・エニックス,NCJ,ガンホー,NEXON,ゲームオン,コーエー,セガ,販売,買取,アイテム,アカウント";
+            $keywords     = "RMT,スクウェア・エニックス,NCJ,ガンホー,NEXON,ゲームオン,コーエー,セガ,販売,買取,アイテム,会員";
             $description  = "ゲームメーカーの一覧です。スクウェア・エニックス、NCJ、ガンホーなど。RMTのことなら".TITLE."へ";
             break;
         }

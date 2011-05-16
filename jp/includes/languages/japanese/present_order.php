@@ -17,7 +17,7 @@ define('NAVBAR_TITLE3', 'プレゼント応募');
 define('HEADING_TITLE', 'プレゼント応募確認画面');
 define('TEXT1', STORE_NAME.'では、会員登録をされていなくてもプレゼントに応募できます。 下のフォームにお客様のメールアドレス、お名前、ご住所、電話番号を入力してください。<br><font color="red">住所にはプレセントが当選した場合の配送先の住所を入力してください。</font>');
 define('TEXT_PRESENT_ERROR_NOT_SELECTED','プレゼント商品が選択されていません');
-define('HEADING_RETURNING_CUSTOMER', 'アカウントをお持ちのお客様');
+define('HEADING_RETURNING_CUSTOMER', '会員をお持ちのお客様');
 define('TEXT_RETURNING_CUSTOMER', 'メールアドレスとパスワードを入力して、ログインしてください。');
 //define('ENTRY_EMAIL_ADDRESS', 'メールアドレス:');
 //define('ENTRY_PASSWORD', 'パスワード:');
