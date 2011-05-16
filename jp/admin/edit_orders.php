@@ -881,7 +881,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
             <!-- Begin Update Block -->
             <table width="100%" border="0" cellpadding="2" cellspacing="1">
               <tr>
-                <td class="main" bgcolor="#FAEDDE" height="25">変更したい内容を慎重に入力してください。<b>空白などの余分な文字が入力されていないかチェックするように！</b></td>
+                <td class="main" bgcolor="#FAEDDE" height="25"><?php echo EDIT_ORDERS_UPDATE_NOTICE;?></td>
                 <td class="main" bgcolor="#FBE2C8" width="10">&nbsp;</td>
                 <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
                 <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
@@ -898,48 +898,47 @@ while ($totals = tep_db_fetch_array($totals_query)) {
                 <td class="main" width="70%"><?php echo tep_get_site_name_by_order_id($oID);?></td>
               </tr>
               <tr>
-                <td class="main" valign="top" width="30%"><b>注文番号:</b></td>
+                <td class="main" valign="top" width="30%"><b><?php echo EDIT_ORDERS_ID_TEXT;?></b></td>
                 <td class="main" width="70%"><?php echo $oID;?></td>
               </tr>
               <tr>
-                <td class="main" valign="top"><b>注文日:</b></td>
+                <td class="main" valign="top"><b><?php echo EDIT_ORDERS_DATE_TEXT;?></b></td>
                 <td class="main"><?php echo tep_date_long($order->info['date_purchased']);?></td>
               </tr>
               <tr>
-                <td class="main" valign="top"><b>顧客名:</b></td>
+                <td class="main" valign="top"><b><?php echo EDIT_ORDERS_CUSTOMER_NAME;?></b></td>
                 <td class="main">
                   <input name="update_customer_name" size="25" value="<?php echo tep_html_quotes($order->customer['name']); ?>">
-                  <span class="smalltext"><font color="red">※</font>&nbsp;性と名の間には<font color="red">半角スペース</font>を入力してください。</span>
+                  <span class="smalltext"><?php echo EDIT_ORDERS_CUSTOMER_NAME_READ;?></span>
                 </td>
               </tr>
               <tr>
-                <td class="main" valign="top"><b>メールアドレス:</b></td>
+                <td class="main" valign="top"><b><?php echo EDIT_ORDERS_EMAIL;?></b></td>
                 <td class="main"><input name="update_customer_email_address" size="45" value="<?php echo $order->customer['email_address']; ?>"></td>
               </tr>
               <!-- End Addresses Block -->
               <!-- Begin Payment Block -->
               <tr>
-                <td class="main" valign="top"><b>支払方法:</b></td>
+                <td class="main" valign="top"><b><?php echo EDIT_ORDERS_PAYMENT_METHOD;?></b></td>
                 <td class="main">
                   <?php echo tep_payment_method_menu($order->info['payment_method']);?>
-                  <table><tr class="smalltext"><td><font color="red">※</font>&nbsp;コピペ用:</td><td>銀行振込</td><td>クレジットカード決済</td><td>銀行振込(買い取り)</td><td>ゆうちょ銀行（郵便局）</td><td>コンビニ決済</td></tr></table>
+                  <?php echo EDIT_ORDERS_PAYMENT_METHOD_READ;?> 
                 </td>
               </tr>
               <!-- End Payment Block -->
               <!-- Begin Trade Date Block -->
               <tr>
-                <td class="main" valign="top"><b>取引日時:</b></td>
+                <td class="main" valign="top"><b><?php echo EDIT_ORDERS_FETCHTIME;?></b></td>
                 <td class="main">
                   <input name='update_tori_torihiki_date' size='25' value='<?php echo $order->tori['date']; ?>'>
-                  <span class="smalltext"><font color="red">※</font>&nbsp;日付・時間の書式:&nbsp;2008-01-01 10:30:00</span>
+                  <span class="smalltext"><?php echo EDIT_ORDERS_FETCHTIME_READ;?></span>
                 </td>
               </tr>
               <tr>
-                <td class="main" valign="top"><b>オプション:</b></td>
+                <td class="main" valign="top"><b><?php echo EDIT_ORDERS_TORI_TEXT;?></b></td>
                 <td class="main">
                   <input name='update_tori_torihiki_houhou' size='45' value='<?php echo $order->tori['houhou']; ?>'>
-                  <table><tr class="smalltext"><td><font color="red">※</font>&nbsp;コピペ用:</td><td>指定した時間どおりに取引して欲しい</td><td>指定した時間より早くできるなら早く来て欲しい</td></tr></table>
-                  
+                  <?php echo EDIT_ORDERS_TORI_READ;?> 
 <input type="hidden" name="update_viladate" value="true">
 <input name="update_customer_company" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['company']); ?>">
 <input name="update_delivery_company" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['company']); ?>">
@@ -968,7 +967,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         </tr>
         <!-- Begin Products Listing Block -->
         <tr>
-          <td class="SubTitle"><br>2. 注文商品</td>
+          <td class="SubTitle"><br><?php echo EDIT_ORDERS_PRO_LIST_TITLE;?></td>
         </tr>
         <tr>
           <td>      
@@ -1008,13 +1007,13 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 <?php // Version without editable names & prices ?>
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
   <tr class="dataTableHeadingRow">
-    <td class="dataTableHeadingContent" colspan="2">数量 / 商品名</td>
+    <td class="dataTableHeadingContent" colspan="2"><?php echo TABLE_HEADING_NUM_PRO_NAME;?></td>
     <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCTS_MODEL; ?></td>
-    <td class="dataTableHeadingContent">税率</td>
-    <td class="dataTableHeadingContent" align="right">価格(税別)</td>
-    <td class="dataTableHeadingContent" align="right">価格(税込)</td>
-    <td class="dataTableHeadingContent" align="right">合計(税別)</td>
-    <td class="dataTableHeadingContent" align="right">合計(税込)</td>
+    <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CURRENICY; ?></td>
+    <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_BEFORE; ?></td>
+    <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_AFTER; ?></td>
+    <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_BEFORE; ?></td>
+    <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_AFTER; ?></td>
   </tr>
   
 <?php
@@ -1024,7 +1023,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
     echo '    <tr class="dataTableRow">' . "\n" .
          '      <td class="' . $RowStyle . '" align="left" valign="top" width="20">' . "<input type='hidden' name='update_products_real_quantity[$orders_products_id]' id='update_products_real_quantity_$orders_products_id' value='1'><input type='hidden' id='update_products_qty_$orders_products_id' value='" . $order->products[$i]['qty'] . "'><input class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" . $order->products[$i]['qty'] . "'>&nbsp;x</td>\n" . 
          '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input name='update_products[$orders_products_id][name]' size='64' id='update_products_name_$orders_products_id' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
-       '      &nbsp;&nbsp;キャラ名：' . "<input type='hidden' name='dummy' value='あいうえお眉幅'><input name='update_products[$orders_products_id][character]' size='20' value=\"" . htmlspecialchars($order->products[$i]['character']) . "\">";
+       '      &nbsp;&nbsp;'.EDIT_ORDERS_DUMMY_TITLE. "<input type='hidden' name='dummy' value='あいうえお眉幅'><input name='update_products[$orders_products_id][character]' size='20' value=\"" . htmlspecialchars($order->products[$i]['character']) . "\">";
     // Has Attributes?
     if ($order->products[$i]['attributes'] && sizeof($order->products[$i]['attributes']) > 0) {
       for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
@@ -1059,7 +1058,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         <td>
           <table width="100%" cellpadding="0" cellspacing="0">
             <tr>
-              <td valign="top"><?php echo "<span class='smalltext'>" . HINT_DELETE_POSITION . "商品追加と他の項目は同時に変更できません。<b>「 商品の追加 」は単体で行ってください。</b></span>"; ?></td>
+              <td valign="top"><?php echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . EDIT_ORDERS_ADD_PRO_READ."</span>"; ?></td>
               <td align="right"><?php echo '<a href="' . $PHP_SELF . '?oID=' . $oID . '&action=add_product&step=1">' . tep_image_button('button_add_article.gif', ADDING_TITLE) . '</a>'; ?></td>
             </tr>
           </table>
@@ -1068,7 +1067,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
   <!-- End Products Listings Block -->
   <!-- Begin Order Total Block -->
       <tr>
-        <td class="SubTitle">3. ポイント割引、手数料、値引き</td>
+        <td class="SubTitle"><?php echo EDIT_ORDERS_FEE_TITLE_TEXT;?></td>
       </tr>
       <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '1'); ?></td>
@@ -1078,7 +1077,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 
 <table width="100%" border="0" cellspacing="0" cellpadding="2" class="dataTableRow">
   <tr class="dataTableHeadingRow">
-    <td class="dataTableHeadingContent" align="left" width="75%">注意事項</td>
+    <td class="dataTableHeadingContent" align="left" width="75%"><?php echo TABLE_HEADING_FEE_MUST?></td>
     <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_MODULE; ?></td>
     <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_AMOUNT; ?></td>
     <td class="dataTableHeadingContent"width="1"><?php echo tep_draw_separator('pixel_trans.gif', '1', '1'); ?></td>
@@ -1116,7 +1115,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
     $TotalStyle = "smallText";
     if ($TotalDetails["Class"] == "ot_total") {
       echo '  <tr>' . "\n" .
-           '    <td align="left" class="' . $TotalStyle . '">合計金額が合っているか必ず確認してください。</td>' . 
+           '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTTOTAL_READ.'</td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>';
                 if($TotalDetails["Price"] >= 0 ){
@@ -1137,7 +1136,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
            '  </tr>' . "\n";
     } elseif ($TotalDetails["Class"] == "ot_subtotal") {
       echo '  <tr>' . "\n" .
-           '    <td align="left" class="' . $TotalStyle . '"><table><tr class="smalltext"><td><font color="red">※</font>&nbsp;コピペ用:</td><td>調整額</td><td>事務手数料</td><td>値引き</td></tr></table></td>' . 
+           '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTSUBTOTAL_READ.'</td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' .
            '    <td align="right" class="' . $TotalStyle . '"><b>';
                 if($TotalDetails["Price"]>=0){
@@ -1189,7 +1188,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
              '  </tr>' . "\n";
       } else { //ゲスト
         echo '  <tr>' . "\n" .
-             '    <td align="left" class="' . $TotalStyle . '">このお客様はゲストです。ポイント割引の入力はできません。</td>' . 
+             '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTAL_DETAIL_READ.'</td>' . 
              '    <td align="right" class="' . $TotalStyle . '">' . trim($TotalDetails["Name"]) . '</td>' . "\n" .
              '    <td align="right" class="' . $TotalStyle . '">' . $TotalDetails["Price"] . 
                 "<input type='hidden' name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . 
@@ -1202,7 +1201,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       }
     } else {
       echo '  <tr>' . "\n" .
-           '    <td align="left" class="' . $TotalStyle . '">値引きする場合は、−（マイナス）符号を入力してください。</td>' . 
+           '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTALDETAIL_READ_ONE.'</td>' . 
            '    <td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
            '    <td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][value]' size='6' value='" . $TotalDetails["Price"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
@@ -1214,7 +1213,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
   }
 ?>
 </table>
-<span class='smalltext'><font color="red">ヒント:</font>&nbsp;価格構成要素を削除する場合は金額に「0」と入力して更新してください。</span>
+<span class='smalltext'><?php echo EDIT_ORDERS_PRICE_CONSTRUCT_READ;?></span>
         </td>
       </tr>
       <tr>
@@ -1227,15 +1226,15 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         <td>
           <table width="100%" border="0" cellpadding="2" cellspacing="1">
             <tr>
-              <td class="main" bgcolor="#FAEDDE" height="25"><font color="red">重要:</font>&nbsp;<b>価格構成要素を変更した場合は「<font color="red">注文内容確認</font>」ボタンをクリックして合計金額が一致するか確認してください。&nbsp;⇒</b></td>
+              <td class="main" bgcolor="#FAEDDE" height="25"><?php echo EDIT_ORDERS_CONFIRMATION_READ;?></td>
               <td class="main" bgcolor="#FBE2C8" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
               <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FF9933" width="120" align="center">
 <?php if (tep_is_oroshi($order->customer['id'])) { ?>
-                <INPUT type="button" value=" 注文内容確認 " onClick="update_price()">
+                <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="update_price()">
 <?php } else { ?>
-                <INPUT type="button" value=" 注文内容確認 " onClick="update_price2()">
+                <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="update_price2()">
 <?php } ?>
               </td>
             </tr>
@@ -1248,7 +1247,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
   <!-- End of Update Block -->
   <!-- Begin Status Block -->
       <tr>
-        <td class="SubTitle">4. 注文ステータス、コメント通知</td>
+        <td class="SubTitle"><?php echo EDIT_ORDERS_ITEM_FOUR_TITLE;?></td>
       </tr>
       <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '1'); ?></td>
@@ -1319,20 +1318,20 @@ if (tep_db_num_rows($orders_history_query)) {
           <td class="main"><?php echo tep_draw_pull_down_menu('status', $orders_statuses, '16'); ?></td>
         </tr>
         <tr>
-          <td class="main"><b>メール送信:</b></td>
+          <td class="main"><b><?php echo EDIT_ORDERS_SEND_MAIL_TEXT;?></b></td>
           <td class="main"><table bgcolor="red" cellspacing="5"><tr><td><?php echo tep_draw_checkbox_field('notify', '', true); ?></td></tr></table></td>
         </tr>
         <?php if($CommentsWithStatus) { ?>
         <tr>
-          <td class="main"><b>コメント記録:</b></td>
-          <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', false); ?>&nbsp;&nbsp;<b style="color:#FF0000;">←ここはチェックしないように</b></td>
+          <td class="main"><b><?php echo EDIT_ORDERS_RECORD_TEXT;?></b></td>
+          <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', false); ?>&nbsp;&nbsp;<b style="color:#FF0000;"><?php echo EDIT_ORDERS_RECORD_READ;?></b></td>
         </tr>
         <?php } ?>
       </table>
     </td>
     <td class="main" width="10">&nbsp;</td>
     <td class="main">
-    こちらに入力した文章はメール本文に挿入されます。<br>
+    <?php echo EDIT_ORDERS_RECORD_ARTICLE;?><br>
     <?php
     if($CommentsWithStatus) {
   
@@ -1355,7 +1354,7 @@ if (tep_db_num_rows($orders_history_query)) {
   <!-- End of Status Block -->
   <!-- Begin Update Block -->
       <tr>
-        <td class="SubTitle">5. データを更新</td>
+        <td class="SubTitle"><?php echo EDIT_ORDERS_ITEM_FIVE_TITLE;?></td>
     </tr>
       <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '1'); ?></td>
@@ -1364,7 +1363,7 @@ if (tep_db_num_rows($orders_history_query)) {
       <td>
           <table width="100%" border="0" cellpadding="2" cellspacing="1">
             <tr>
-              <td class="main" bgcolor="#FAEDDE"><b>最終確認はしましたか？</b>&nbsp;<?php echo HINT_PRESS_UPDATE; ?></td>
+              <td class="main" bgcolor="#FAEDDE"><b><?php echo EDIT_ORDERS_FINAL_CONFIRM_TEXT;?></b>&nbsp;<?php echo HINT_PRESS_UPDATE; ?></td>
               <td class="main" bgcolor="#FBE2C8" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
               <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
@@ -1375,40 +1374,8 @@ if (tep_db_num_rows($orders_history_query)) {
       </tr>
     <tr>
       <td>
-<table width="100%" cellspacing="0" cellpadding="2">
-  <tr class="smalltext"><td valign="top" colspan="3"><font color="red">※</font>&nbsp;コピペ用フレーズです。トリプルクリックをすると全選択できます。</td></tr>
-  <tr class="smalltext" bgcolor="#999999"><td>商品の変更</td><td>支払方法の変更（販売用）</td><td>支払方法の変更（販売用）</td></tr>
-  <tr class="smalltext" bgcolor="#CCCCCC">
-  <td valign="top">弊社のキャラクター名は【】となります。</td>
-  <td valign="top">
-    下記の金融機関へお振り込みください。<br>
-    ------------------------------------------<br>
-    銀行名　　：　ジャパンネット銀行<br>
-    支店名　　：　本店営業部<br>
-    口座種別　：　普通<br>
-    口座名　　：　カ）アイアイエムワイ<br>
-    口座番号　：　1164394<br>
-    ------------------------------------------<br>
-    銀行名　　：　イーバンク銀行<br>
-    支店名　　：　ワルツ支店<br>
-    支店番号　：　204<br>
-    口座名　　：　カ）アイアイエムワイ<br>
-    口座番号　：　7003965<br>
-    ------------------------------------------<br>
-    ※ 必ずご注文時に入力したお名前でお振り込みください。<br>
-    ※ 振込手数料はお客様のご負担となります。<br>
-    ※ お振り込みはご注文から７日以内にお願いいたします。<br>
-    ※ ご入金を株式会社iimyが確認した時点でご契約の成立となります。
-  </td>
-  <td valign="top">
-    10分程度でお客様専用のクレジットカード決済URLを電子メールにてご連絡い<br>
-    たします。<br>
-    メール本文に記載していますURLをクリックし、クレジットカード決済を完了<br>
-    してください。
-  </td>
-  </tr>
-</table>
-    </td>
+      <?php echo EDIT_ORDERS_FINAL_CONFIRM_TEMPLATE;?> 
+      </td>
     </tr>
   <!-- End of Update Block -->
       </form>
@@ -1579,7 +1546,7 @@ if($action == "add_product")
     {
       print "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
       print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 4: </b></td>";
-      print "<td class='dataTableContent' valign='top'>" . ADDPRODUCT_TEXT_CONFIRM_QUANTITY . "<input name='add_product_quantity' size='2' value='1'>&nbsp;個&nbsp;&nbsp;&nbsp;キャラクター名:&nbsp;<input type='hidden' name='dummy' value='あいうえお眉幅'><input name='add_product_character' size='20' value=''></td>";
+      print "<td class='dataTableContent' valign='top'>" .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . "<input name='add_product_quantity' size='2' value='1'>&nbsp;個&nbsp;&nbsp;&nbsp;".EDIT_ORDERS_PRO_DUMMY_NAME."&nbsp;<input type='hidden' name='dummy' value='あいうえお眉幅'><input name='add_product_character' size='20' value=''></td>";
       print "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
 
       if(IsSet($add_product_options))
