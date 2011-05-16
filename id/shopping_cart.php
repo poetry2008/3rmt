@@ -212,20 +212,18 @@ function change_num(ob,targ, quan,a_quan)
               <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice_01">
               	<tr class="infoBoxNoticeContents_01">
                 	<td colspan="2" class="text">
-
 【重要】<br>
-小計金額が赤文字の場合、表示された金額をご返金いたしますが、振り込みの際の事務手数料の都<br>合上、
-200円未満の場合は当サイトでご利用いただけますポイントを加算する処理となります。<br>
-＊1　尚、小計が100円未満になられた場合は、ポイントの加算か、来店による直接現金でのお支払いになります。<br>
-＊2　ポイントの加算の場合は、<?php echo STORE_NAME;?>の会員登録が必須でございます。
+小計金額が赤色の場合は「買取」となり、表示された金額をお客様へお支払いいたします。<br>
+買取金額が200円未満の場合は手数料の関係上、支払方法にて銀行振込を選択することができません。<br>
+<br>
+選択できる支払方法は以下となります<br>
+A:来店による支払い<br>
+B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示されません）<br>
                         </td>
                 </tr>
                 <tr class="infoBoxNoticeContents_01">
                   <td width="33" height="35"><img src="images/icons/hinto.jpg" align="absmiddle" /></td>
-                  <td align="left" valign="middle">
-ヒント！<br>返金分が発生した場合は【ウェブマネー（WebMoney）の販売】を利用してみてはいかがでしょう？
-
-                  </td>
+                  <td align="left" valign="middle">200円未満になる場合は商品名「ウェブマネーの販売」をカートに入れてみてはどうでしょう。</td>
                 </tr>
               </table>
             </td>
