@@ -87,10 +87,10 @@ function goto(){
       <td width="100%" valign="top">
          <table border="0" width="100%" cellspacing="0" cellpadding="2">
             <tr>
-               <td class = "pageHeading">卸業者のデータ登録
-               <input type="button" onClick = "goto()" value='戻る'>
+               <td class = "pageHeading"><?php echo CLEATE_LIST_TITLE;?>
+               <input type="button" onClick = "goto()" value='<?php echo IMAGE_BACK;?>'>
   <?php if ($ocertify->npermission >7){?>
-               <input type="button" onClick="location.href='cleate_oroshi.php'" value="卸業者の名前設定">
+               <input type="button" onClick="location.href='cleate_oroshi.php'" value="<?php echo CLEATE_LIST_SETNAME_BUTTON;?>">
   <?php }?>
                </td>
             </tr>
