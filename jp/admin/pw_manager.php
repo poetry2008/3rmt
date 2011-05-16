@@ -434,8 +434,7 @@ right:5px;*/
     </tr>
       <tr>
         <td colspan="2">
-        安全なパスワード管理を目的として作られていますが、保証するものではありません。銀行のパスワードなど金銭が絡む情報は登録できません。<br> 
-        IDとパスワードはクリックするとクリップボードへコピーされます。これは日々の作業性を重視した機能であり、ご利用にはご注意ください。 
+        <?php echo PW_MANAGER_NOTICE_TEXT;?> 
         </td>
       </tr>
       <tr>
@@ -448,17 +447,17 @@ right:5px;*/
                   'get','id="pw_manager1" onsubmit="return false"'); ?>検索 : 
               <input name="keywords" type="text" id="keywords" size="40" value="<?php if(isset($_GET['keywords'])) echo stripslashes($_GET['keywords']); ?>">
               <select name="search_type" onChange='search_type_changed(this)'>
-                <option value="none">--選択してください--</option>
-                <option value="priority">重</option>
-                <option value="loginurl">LoginURL</option>
-                <option value="title">タイトル</option>
-                <option value="url">タイトルURL</option>
-                <option value="username">ID</option>
-                <option value="password">パスワード</option>
-                <option value="operator">管理者</option>
-                <option value="comment">登録情報</option>
-                <option value="memo">メモ欄</option>
-                <option value="site_id">サイト名</option>
+                <option value="none"><?php echo PW_MANAGER_SELECT_NONE;?></option>
+                <option value="priority"><?php echo PW_MANAGER_SELECT_ONE;?></option>
+                <option value="loginurl"><?php echo PW_MANAGER_SELECT_TWO;?></option>
+                <option value="title"><?php echo PW_MANAGER_SELECT_THREE;?></option>
+                <option value="url"><?php echo PW_MANAGER_SELECT_FOUR;?></option>
+                <option value="username"><?php echo PW_MANAGER_SELECT_FIVE;?></option>
+                <option value="password"><?php echo PW_MANAGER_SELECT_SIX;?></option>
+                <option value="operator"><?php echo PW_MANAGER_SELECT_SEVEN;?></option>
+                <option value="comment"><?php echo PW_MANAGER_SELECT_EIGHT;?></option>
+                <option value="memo"><?php echo PW_MANAGER_SELECT_NINE;?></option>
+                <option value="site_id"><?php echo PW_MANAGER_SELECT_TEN;?></option>
               </select>
               </form>
             </td>

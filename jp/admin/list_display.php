@@ -369,9 +369,9 @@ $rows = $count[0]>count($products)?$count[0]:count($products);
 <?php foreach ($oroname as $k => $value){?>
     <th class="dataTableHeadingContent"><?php echo $value;?></th>
 <?php } ?>
-    <th class="dataTableHeadingContent" >商品選択</th>
-    <th class="dataTableHeadingContent" >架空在庫</th>
-    <th class="dataTableHeadingContent" >業者単価</th>
+    <th class="dataTableHeadingContent" ><?php echo LIST_DISPLAY_PRODUCT_SELECT;?></th>
+    <th class="dataTableHeadingContent" ><?php echo LIST_DISPLAY_JIAKONGZAIKU;?></th>
+    <th class="dataTableHeadingContent" ><?php echo LIST_DISPLAY_YEZHE_PRICE;?></th>
     <!--<th></th>-->
   </tr>
 <?php for($k = 0; $k < $rows; $k++) {?>

@@ -40,4 +40,10 @@ define('TABLE_HEADING_MEMBER_TYPE_MEMBER', '会員');
 
 define('ERROR_EMAIL_EXISTS', 'メールアドレスはもう存在しています。');
 define('BUTTON_CUSTOMERS_PRODUCTS_TEXT', '商品履歴');
+define('CUSTOMER_COMMUNITY_TEXT', '当社使用欄');
+define('CUSTOMER_COMMUNITY_SEARCH_TEXT', '信用調査:');
+define('CUSTOMER_COMMUNITY_SEARCH_ONE_TEXT', '常連客【HQ】&nbsp;&nbsp;注意【WA】&nbsp;&nbsp;発送禁止【BK】');
+define('CUSTOMER_COMMUNITY_SEARCH_TWO_TEXT', 'クレカ初回決済日：C2007/01/01&nbsp;&nbsp;&nbsp;&nbsp;エリア一致：Aok&nbsp;&nbsp;&nbsp;&nbsp;本人確認済：Hok&nbsp;&nbsp;&nbsp;&nbsp;YahooID更新日：Y2007/01 /01&nbsp;&nbsp;&nbsp;&nbsp;リファラー：R');
+define('CUSTOMER_COMMUNITY_SEARCH_THREE_TEXT', '記入例：WA-Aok-C2007/01/01-Hok-RグーグルFF11 RMT');
+define('CUSTOMER_SEARCH_READ_TITLE', '※検索対象：「顧客名（姓/名/）」「ふりがな（姓/名）」「メールアドレス」');
 ?>

@@ -49,19 +49,19 @@ switch ($HTTP_GET_VARS['action']){
 <head>
 <meta http-equiv="Content-Type" content="text/html; 
 charset=<?php echo CHARSET; ?>">
-<title>無題ドキュメント</title>
+<title><?php echo SET_BAIRITU_TITLE;?></title>
 </head>
 <?php 
   $res=tep_db_query("select * from set_auto_calc where parent_id='".$cID."'");
   $col=tep_db_fetch_array($res);
 ?>
 <body>
-<form method="post" action="set_bairitu.php?action=set_bai"  onsubmit="alert('更新されました。')">
-<p>倍率設定：<input type="text" value="<?php echo isset($col['bairitu'])?$col['bairitu']:1.1?>" name="bai" ></p>
-<p><b>単価の差額</b></p>
-<p>パーセント：<input type="text" value="<?php echo $col['percent']?>" name="percent" size="10">%</p>
-<p><b>特別価格設定の計算</b></p>
-<p>計算：<select  name="shisoku">
+<form method="post" action="set_bairitu.php?action=set_bai"  onsubmit="alert('<?php echo SET_BAIRITU_UPDATE_NOTICE;?>')">
+<p><?php echo SET_BAIRITU_CURSET;?><input type="text" value="<?php echo isset($col['bairitu'])?$col['bairitu']:1.1?>" name="bai" ></p>
+<p><b><?php echo SET_BAIRITU_SINGLE_PRICE;?></b></p>
+<p><?php echo SET_BAIRITU_PERCENT;?><input type="text" value="<?php echo $col['percent']?>" name="percent" size="10">%</p>
+<p><b><?php echo SET_BAIRITU_SPRICE;?></b></p>
+<p><?php echo SET_BAIRITU_CAL;?><select  name="shisoku">
 <?php 
   if($col['shisoku'] == "+"){
     echo "<option value='+' selected>＋</option>";
@@ -75,7 +75,7 @@ charset=<?php echo CHARSET; ?>">
 <input type="text" value="<?php echo $col['keisan']?>" name="kei" ></p>
 <input type="hidden" value="<?php echo $cID ?>" name="cID_list">
 <input type="hidden" value="<?php echo $cpath ?>" name="cpath">
-<input type="submit" value="計算設定">
+<input type="submit" value="<?php echo SET_BAIRITU_CAL_SET;?>">
 </form>
 <br>
 <?php if (!empty($_POST['cpath'])) {?>
@@ -91,9 +91,9 @@ if ($best_limit_res) {
 }
 ?>
 <form method="post" action="set_bairitu.php?action=set_time">
-人気商品アイコンの表示<br><input type="text" value="<?php echo $current_limit_time;?>" name="btime"> 日以内に注文があれば人気とする<br>0を入力するとアイコンは表示されません。
+<?php echo SET_BAIRITU_BESTSELLER;?><br><input type="text" value="<?php echo $current_limit_time;?>" name="btime"><?php echo SET_BAIRITU_BESTSELLER_READ;?>
 <input type="hidden" value="<?php echo $cpath ?>" name="cepath">
-<input type="submit" value="確定">
+<input type="submit" value="<?php echo IMAGE_CONFIRM;?>">
 </form>
 <?php }?>
 </body>

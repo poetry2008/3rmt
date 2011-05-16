@@ -17,3 +17,4 @@ define('TEXT_COMPUTERS_NAME_EXISTS', 'PCはもう存在しています');
 //define('TEXT_DISPLAY_NUMBER_OF_COMPUTERS', 'Displaying <b>%d</b> to <b>%d</b> (of <b>%d</b> Tags)');
 define('TEXT_DISPLAY_NUMBER_OF_COMPUTERS', '<b>%d</b>~<b>%d</b>番目を表示（<b>%d</b>PCのうち） ');
 define('TEXT_CONFIRM_DELETE_COMPUTER', 'アイコンを削除');
+define('TABLE_HEADING_COMPUTER_ORDER', '整列順');

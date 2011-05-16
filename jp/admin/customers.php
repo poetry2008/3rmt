@@ -443,19 +443,19 @@ function check_form() {
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>
       <tr>
-        <td class="formAreaTitle">当社使用欄</td>
+        <td class="formAreaTitle"><?php echo CUSTOMER_COMMUNITY_TEXT;?></td>
       </tr>
       <tr>
         <td class="formArea"><table border="0" cellspacing="2" cellpadding="2">
           <tr>
-            <td class="main">信用調査:</td>
-            <td class="main"><?php echo tep_draw_input_field('customers_fax', $cInfo->customers_fax, 'size="60" maxlength="255"'); ?>&nbsp;&nbsp;常連客【HQ】&nbsp;&nbsp;注意【WA】&nbsp;&nbsp;発送禁止【BK】</td>
+            <td class="main"><?php echo CUSTOMER_COMMUNITY_SEARCH_TEXT;?></td>
+            <td class="main"><?php echo tep_draw_input_field('customers_fax', $cInfo->customers_fax, 'size="60" maxlength="255"'); ?>&nbsp;&nbsp;<?php echo CUSTOMER_COMMUNITY_SEARCH_ONE_TEXT;?></td>
           </tr>
       <tr>
-            <td class="main" colspan="2">クレカ初回決済日：C2007/01/01&nbsp;&nbsp;&nbsp;&nbsp;エリア一致：Aok&nbsp;&nbsp;&nbsp;&nbsp;本人確認済：Hok&nbsp;&nbsp;&nbsp;&nbsp;YahooID更新日：Y2007/01/01&nbsp;&nbsp;&nbsp;&nbsp;リファラー：R</td>
+            <td class="main" colspan="2"><?php echo CUSTOMER_COMMUNITY_SEARCH_TWO_TEXT;?></td>
           </tr>
       <tr>
-            <td class="main" colspan="2"><b>記入例：WA-Aok-C2007/01/01-Hok-RグーグルFF11 RMT</b></td>
+            <td class="main" colspan="2"><b><?php echo CUSTOMER_COMMUNITY_SEARCH_THREE_TEXT;?></b></td>
           </tr>
         </table></td>
       </tr>
@@ -507,8 +507,7 @@ function check_form() {
           <tr><?php echo tep_draw_form('search', FILENAME_CUSTOMERS, tep_get_all_get_params(), 'get'); ?>
             <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
-            <td class="smallText" align="right"><?php //echo tep_draw_hidden_field('d', '龠');?><?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search'); ?><br>※検索対象：「顧客名（姓/名/）」「ふりがな（姓/名）」「メールアドレス」
-      
+            <td class="smallText" align="right"><?php //echo tep_draw_hidden_field('d', '龠');?><?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search'); ?><br><?php echo CUSTOMER_SEARCH_READ_TITLE;?> 
       </td>
           </form></tr>
         </table></td>

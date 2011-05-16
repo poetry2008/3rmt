@@ -31,3 +31,7 @@ define('TABLE_HEADING_MEMBER_TYPE_GUEST', 'ゲスト');
 define('TABLE_HEADING_MEMBER_TYPE_MEMBER', '会員');
 
 define('ERROR_EMAIL_EXISTS', 'メールアドレスはもう存在しています。');
+define('NEW_CUSTOMERS_TITLE_TEXT', 'ステータスが処理された日付で集計結果を出力します。最新の情報を取得するにはREFRESHをクリックしてください。');
+define('NEW_CUSTOMERS_SITES_SELECT', 'サイト:');
+define('NEW_CUSTOMERS_SEARCH_START', '開始日:');
+define('NEW_CUSTOMERS_SEARCH_END', '終了日:');

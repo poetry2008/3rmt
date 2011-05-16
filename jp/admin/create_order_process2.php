@@ -228,7 +228,7 @@
   <?php echo tep_draw_form('create_order', FILENAME_CREATE_ORDER_PROCESS2, '', 'post', '', '') . tep_draw_hidden_field('customers_id', $account->customers_id); ?>
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
-      <td class="pageHeading"><font color="red">入力情報に誤りがあります</font></td>
+      <td class="pageHeading"><font color="red"><?php echo CREATE_ORDER_RED_TITLE_TEXT;?></font></td>
     </tr>
     <tr>
       <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>

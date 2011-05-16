@@ -105,11 +105,14 @@ function ex(id,tr_len){
                  <td class = "pageHeading">
   <?php
   if ($HTTP_GET_VARS['action'] == 'oroshi') {
-    echo '卸業者の履歴登録';
+    //echo '卸業者の履歴登録';
+    echo HISTORY_TITLE_THREE; 
   } else if ($HTTP_GET_VARS['action'] == 'oroshi_c') {
-    echo '卸業者の履歴表示';
+    //echo '卸業者の履歴表示';
+    echo HISTORY_TITLE_TWO; 
   } else {
-    echo '同業者の履歴登録';
+    //echo '同業者の履歴登録';
+    echo HISTORY_TITLE_ONE; 
   }
   ?>
   <input type="button" onClick = "goto()" value='戻る'>
