@@ -178,27 +178,27 @@ function check_one(ele){
         switch ($_GET['search_type']) {
           case 'username':
             $where_str .= " and (";
-            $where_str .= "(username like '" . $_GET['keywords'] . "')";
+            $where_str .= "(username like '%" . $_GET['keywords'] . "%')";
             $where_str .= " )";
             break;
           case 'telno':
             $where_str .= " and (";
-            $where_str .= "(telno like '" . $_GET['keywords'] . "')";
+            $where_str .= "(telno like '%" . $_GET['keywords'] . "%')";
             $where_str .= " )";
             break;
           case 'email':
             $where_str .= " and (";
-            $where_str .= "(email like '" . $_GET['keywords'] . "')";
+            $where_str .= "(email like '%" . $_GET['keywords'] . "%')";
             $where_str .= " )";
             break;
           case 'money':
             $where_str .= " and (";
-            $where_str .= "(money like '" . $_GET['keywords'] . "')";
+            $where_str .= "(money like '%" . $_GET['keywords'] . "%')";
             $where_str .= " )";
             break;
           default:
             $where_str .= " and (";
-            $where_str .= "(username like '" . $_GET['keywords'] . "' or email like '" .  $_GET['keywords'] . "' or telno like '" . $_GET['keywords'] . "' or money like '" . $_GET['keywords'] . "')";
+            $where_str .= "(username like '%" . $_GET['keywords'] . "%' or email like '%" .  $_GET['keywords'] . "%' or telno like '%" . $_GET['keywords'] . "%' or money like '%" . $_GET['keywords'] . "%')";
             $where_str .= " )";
             break;
         }
@@ -206,7 +206,7 @@ function check_one(ele){
     } else {
       if (isset($_GET['keywords']) && tep_not_null($_GET['keywords'])) {
         $where_str .= " and (";
-        $where_str .= "(username like '" . $_GET['keywords'] . "' or email like '" .  $_GET['keywords'] . "' or telno like '" . $_GET['keywords'] . "' or money like '" . $_GET['keywords'] . "')";
+        $where_str .= "(username like '%" . $_GET['keywords'] . "%' or email like '%" .  $_GET['keywords'] . "%' or telno like '%" . $_GET['keywords'] . "%' or money like '%" . $_GET['keywords'] . "%')";
         $where_str .= " )";
       } 
     }
