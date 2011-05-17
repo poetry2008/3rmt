@@ -30,12 +30,20 @@ $query = tep_db_query($sql_orders);
 $shouldUpdateOrdres = array();
 while($o = tep_db_fetch_array($query)) {
   if ($o['avgf']>0 and $o['avgf']<1){
-    $mixed.= $o['orders_id'] ." 小計".$ot_subtotal." 合計".$ot_total."</br>\n";
+    $mixedOrder = tep_db_fetch_array(tep_db_query("
+SELECT ot1.value AS ot_subtotal, ot2.value AS ot_total
+FROM orders_total ot1, orders_total ot2
+WHERE ot2.class = 'ot_total'
+AND ot1.class = 'ot_subtotal'
+AND ot1.orders_id = ot2.orders_id
+AND ot1.orders_id = '".$o['orders_id']."'"
+));
+    $mixed.= $o['orders_id'] ." 小計".$mixedOrder['ot_subtotal']." 合計".$mixedOrder['ot_total']."</br>\n";
     continue;
   }
   //如果是买
   if ($o['avgf'] ==1 ){
-    tep_db_query("update orders_products set final_price=0-abs(`final_price`) where orders_id = '".$o['orders_id']."'");
+
     ob_flush();
     flush();
  
@@ -44,6 +52,7 @@ while($o = tep_db_fetch_array($query)) {
     $ots = tep_db_fetch_array(tep_db_query("select * from orders_total where orders_id='".$o['orders_id']."' and class='ot_subtotal'"));
     $ot_total = $ott['value'];
     $ot_subtotal = $ots['value'];
+
     while($op = tep_db_fetch_array($op_query)){
       //      if (intval($op['final_price']) > 0) {
       $p = tep_db_fetch_array(
@@ -65,7 +74,7 @@ while($o = tep_db_fetch_array($query)) {
           flush();
           if(!in_array($o['orders_id'],$shouldUpdateOrdres)){
             $shouldUpdateOrdres[] = $o['orders_id'];
-            mysql_query('update orders_total set value= 0-`value`'.' where orders_id = "'.$o['orders_id'].'"');
+            mysql_query('update orders_total set value= 0-abs(`value`)'.' where orders_id = "'.$o['orders_id'].'"');
           }
         } else {
           if ($ot_total < 0 and $ot_total != $ott['value']) {
