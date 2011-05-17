@@ -47,8 +47,8 @@ textarea{ overflow-y:visible!important;}
 .date input{width:77px!important;}
 .type input{width:55px!important; text-align:center!important;}
 .name input{width:160px!important;}
-.price input{width:53px!important; display:none!important;}
-.price span{width:53px!important; display:block!important; margin-right:5px!important;}
+.price input{width:80px!important; display:none!important; overflow-y:visible!important;}
+.price span{width:80px!important; display:block!important; margin-right:5px!important;}
 .quantity input{width:53px!important; text-align:right!important;  padding-right:5px!important;}
 .percent{ width:48px!important;  padding-right:5px!important;}
 .je{ width:85px!important; padding-right:5px!important;}

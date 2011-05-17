@@ -5014,3 +5014,14 @@ function tep_cfg_payment_checkbox_option($check_array, $key_value, $key = '') {
     }
     return $string;
 }
+
+function tep_get_user_list_by_username($name){
+  $sql = "select userid from ".TABLE_USERS."
+          where name like '%".$name."%' ";
+  $query = tep_db_query($sql);
+  $list = array();
+  while($row = tep_db_fetch_array($query)){
+    $list[] = $row['userid'];
+  }
+  return $list;
+}

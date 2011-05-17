@@ -590,7 +590,7 @@ function check_form() {
             <tr> 
               <td><?php echo '<a href="' .
               tep_href_link(FILENAME_CHECKOUT_SHIPPING_ADDRESS, '', 'SSL') . '">' .
-              tep_image_button('button_back.gif', IMAGE_BUTTON_BACK_LIST) . '</a>'; ?></td> 
+              tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
             </tr> 
             <?php
   }

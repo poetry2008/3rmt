@@ -620,6 +620,31 @@ right:5px;*/
                              order by ".$order_str;
     }else if(isset($_GET['search_type'])&&$_GET['search_type']&&
         isset($_GET['keywords'])&&$_GET['keywords']){
+      if($_GET['search_type'] == 'operator'){
+        $user_list = tep_get_user_list_by_username(trim($_GET['keywords']));
+        if(isset($user_list)&&count($user_list)>=1){
+          $user_list_str = "where self in ('".implode("','",$user_list)."') ";
+        }else{
+          $user_list_str = "where false ";
+        }
+        if(trim(strtolower($_GET['keywords'])) == 'staff'){
+          $sort_where_permission = " or  privilege = '7'";
+        }else if (trim(strtolower($_GET['keywords'])) == 'chief'){
+          $sort_where_permission = " or  privilege = '10'";
+        }else{
+          $sort_where_permission = " or  false";
+        }
+      $pw_manager_query_raw = "select id,title,priority,site_id,url,
+                             loginurl,username,password,comment,memo
+                             ,nextdate,privilege,self,operator,created_at,
+                             updated_at,onoff,update_user from
+                             ".TABLE_IDPW." " 
+                             .$user_list_str." "
+                             .$sort_where_permission." 
+                             and onoff = '1' 
+                             " .$sort_where . "
+                             order by ".$order_str;
+      }else{
       $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
                              ,nextdate,privilege,self,operator,created_at,
@@ -630,6 +655,7 @@ right:5px;*/
                              and onoff = '1' 
                              " .$sort_where . "
                              order by ".$order_str;
+      }
     }else{
     $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
