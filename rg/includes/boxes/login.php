@@ -10,7 +10,7 @@
     /*
 ?>
     <div class="login_box">
-          <div class="menu_top"><img src="images/menu_ico07.gif" alt="" align="top"><span>会員登録</span></div>
+          <div class="menu_top"><img src="images/menu_ico07.gif" alt="" align="top"><span>メンバーズページ</span></div>
           <div id="login_form">
 				<a class="login_link" href="<?php echo
                                 tep_href_link(FILENAME_LOGIN,'','SSL'); ?>"><img
@@ -29,7 +29,7 @@
       /*
 ?>
     <div class="login_box">
-          <div class="menu_top"><img src="images/menu_ico.gif" alt="" align="top"><span>会員登録</span></div>
+          <div class="menu_top"><img src="images/menu_ico.gif" alt="" align="top"><span>メンバーズページ</span></div>
           <div id="login_form">
           <a href="<?php echo tep_href_link(FILENAME_LOGIN,'','SSL'); ?>"><img
           class="middle" style="margin-left:1px;" src="images/login_02.gif" alt="ログイン"></a>
@@ -45,7 +45,7 @@
     } else {
 ?>
 <div class="login box">
-        <div class="menu_top"><img src="images/menu_ico09.gif" alt="" align="top"><span>会員登録</span></div>
+        <div class="menu_top"><img src="images/menu_ico09.gif" alt="" align="top"><span>メンバーズページ</span></div>
       <ul class="login_list">
           <li class="login_list_info"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . HEADER_TITLE_MY_ACCOUNT . '</a>'."\n"; ?></li>
           <li class="login_list_info"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL') . '">' . MYACCOUNT_EDIT . '</a>'."\n"; ?></li>

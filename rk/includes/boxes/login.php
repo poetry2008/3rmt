@@ -9,7 +9,7 @@
   if (!tep_session_is_registered('customer_id')) {
 ?>
     <div class="login_box">
-          <div class="menu_top_login"><img src="images/menu_ico.gif" alt="" align="top">&nbsp;会員登録</div>
+          <div class="menu_top_login"><img src="images/menu_ico.gif" alt="" align="top">&nbsp;メンバーズページ</div>
           <div id="login_form">
           <div class="login_form_warpper">
               <table border="0">
@@ -32,7 +32,7 @@
     if($guestchk == '1') {
 ?>
     <div class="login_box">
-          <div class="menu_top_login"><img src="images/menu_ico.gif" alt="" align="top">&nbsp;会員登録</div>
+          <div class="menu_top_login"><img src="images/menu_ico.gif" alt="" align="top">&nbsp;メンバーズページ</div>
           <div id="login_form">
           <div class="login_form_warpper">
               <table border="0">
