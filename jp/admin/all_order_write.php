@@ -49,7 +49,7 @@ AND ot1.orders_id = '".$o['orders_id']."'"
     ob_flush();
     flush();
     //如果是买取 更新 final_price
-    tep_db_query("update orders_products set final_price=0-`final_price` where orders_id = '".$o['orders_id']."'");          
+    tep_db_query("update orders_products set final_price=0-abs(`final_price`) where orders_id = '".$o['orders_id']."'");          
     $op_query = tep_db_query("select * from orders_products where orders_id='".$o['orders_id']."'");
     $ott = tep_db_fetch_array(tep_db_query("select * from orders_total where orders_id='".$o['orders_id']."' and class='ot_total'"));
     $ots = tep_db_fetch_array(tep_db_query("select * from orders_total where orders_id='".$o['orders_id']."' and class='ot_subtotal'"));
