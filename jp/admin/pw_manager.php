@@ -645,7 +645,7 @@ right:5px;*/
                              ".TABLE_IDPW." 
                              where ".$_GET['search_type']." like '%".
                              $_GET['keywords']."%'
-                             and onoff = '1', 
+                             and onoff = '1' 
                              and site_id = '".$site_id."' 
                              " .$sort_where . "
                              order by ".$order_str;
