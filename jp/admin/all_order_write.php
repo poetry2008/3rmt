@@ -28,7 +28,6 @@ and o.orders_id = op.orders_id
 group by op.orders_id";
 $query = tep_db_query($sql_orders);
 $shouldUpdateOrdres = array();
-$shouldUpdateOrderFinalPrice = array();
 
 while($o = tep_db_fetch_array($query)) {
   $ot_total = '';
@@ -41,48 +40,40 @@ WHERE ot2.class = 'ot_total'
 AND ot1.class = 'ot_subtotal'
 AND ot1.orders_id = ot2.orders_id
 AND ot1.orders_id = '".$o['orders_id']."'"
-));
+                                                  ));
     $mixed.= $o['orders_id'] ." 小計".$mixedOrder['ot_subtotal']." 合計".$mixedOrder['ot_total']."</br>\n";
     continue;
   }
   //如果是荵ｰ
   if ($o['avgf'] ==1 ){
-
     ob_flush();
     flush();
+    //如果是买取 更新 final_price
+    tep_db_query("update orders_products set final_price=0-`final_price` where orders_id = '".$o['orders_id']."'");          
     $op_query = tep_db_query("select * from orders_products where orders_id='".$o['orders_id']."'");
     $ott = tep_db_fetch_array(tep_db_query("select * from orders_total where orders_id='".$o['orders_id']."' and class='ot_total'"));
     $ots = tep_db_fetch_array(tep_db_query("select * from orders_total where orders_id='".$o['orders_id']."' and class='ot_subtotal'"));
     $ot_total = $ott['value'];
     $ot_subtotal = $ots['value'];
 
-    if(!in_array($o['orders_id'],$shouldUpdateOrderFinalPrice)){
-      $shouldUpdateOrderFinalPrice[] = $o['orders_id'];
-      tep_db_query("update orders_products set final_price=0-`final_price` where orders_id = '".$o['orders_id']."'");          
-    }
-
     while($op = tep_db_fetch_array($op_query)){
-      //      if (intval($op['final_price']) > 0) {
       $p = tep_db_fetch_array(
                               tep_db_query(
                                            "select * from products where products_id='".$op['products_id']."'"
                                            )
                               );
       if ($p) {
-
         // 荵ｰ取
         $ot_total = 0-$ot_total;
         $ot_subtotal = 0-$ot_subtotal;
-          
         //小計合計比較
         if($ot_total < 0 and $ot_subtotal < 0 and abs($ot_total) != abs($ot_subtotal)){
           echo  $o['orders_id']. " 小計".$ot_subtotal." 合計".$ot_total."</br>\n";
-          //        $red2.=$o['orders_id']. " 小計".$ot_subtotal." 合計".$ot_total."</br>\n";
           ob_flush();
           flush();
           if(!in_array($o['orders_id'],$shouldUpdateOrdres)){
             $shouldUpdateOrdres[] = $o['orders_id'];
-             mysql_query('update orders_total set value= 0-`value`'.' where orders_id = "'.$o['orders_id'].'"');
+            mysql_query('update orders_total set value= 0-`value`'.' where orders_id = "'.$o['orders_id'].'"');
           }
         } else {
           if ($ot_total < 0 and $ot_total != $ott['value']) {
@@ -98,7 +89,6 @@ AND ot1.orders_id = '".$o['orders_id']."'"
     }
   }
 }
-//echo $red2."<br>";
 echo '注文した商品が存在してません</br>';
 echo '<hr>';
 echo "\n";
