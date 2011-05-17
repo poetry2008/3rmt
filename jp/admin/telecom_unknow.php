@@ -177,37 +177,123 @@ function check_one(ele){
       if (isset($_GET['keywords']) && tep_not_null($_GET['keywords'])) {
         switch ($_GET['search_type']) {
           case 'username':
-            $where_str .= " and (";
-            $where_str .= "(username = '" . $_GET['keywords'] . "')";
-            $where_str .= " )";
+            if (tep_parse_search_string(stripslashes($_GET['keywords']), $search_keywords)) {
+              $where_str .= " and (";
+              for ($i=0, $n=sizeof($search_keywords); $i<$n; $i++ ) {
+                switch ($search_keywords[$i]) {
+                  case '(':
+                  case ')':
+                  case 'and':
+                  case 'or':
+                    $where_str .= " " . $search_keywords[$i] . " ";
+                    break;
+                  default:
+                    $where_str .= "(username like '%" . addslashes($search_keywords[$i]) . "%')";
+                    break;
+                }
+              }
+              $where_str .= " )";
+            }
             break;
           case 'telno':
-            $where_str .= " and (";
-            $where_str .= "(telno = '" . $_GET['keywords'] . "')";
-            $where_str .= " )";
+            if (tep_parse_search_string(stripslashes($_GET['keywords']), $search_keywords)) {
+              $where_str .= " and (";
+              for ($i=0, $n=sizeof($search_keywords); $i<$n; $i++ ) {
+                switch ($search_keywords[$i]) {
+                  case '(':
+                  case ')':
+                  case 'and':
+                  case 'or':
+                    $where_str .= " " . $search_keywords[$i] . " ";
+                    break;
+                  default:
+                    $where_str .= "(telno like '%" . addslashes($search_keywords[$i]) . "%')";
+                    break;
+                }
+              }
+              $where_str .= " )";
+            }
             break;
           case 'email':
-            $where_str .= " and (";
-            $where_str .= "(email = '" . $_GET['keywords'] . "')";
-            $where_str .= " )";
+            if (tep_parse_search_string(stripslashes($_GET['keywords']), $search_keywords)) {
+              $where_str .= " and (";
+              for ($i=0, $n=sizeof($search_keywords); $i<$n; $i++ ) {
+                switch ($search_keywords[$i]) {
+                  case '(':
+                  case ')':
+                  case 'and':
+                  case 'or':
+                    $where_str .= " " . $search_keywords[$i] . " ";
+                    break;
+                  default:
+                    $where_str .= "(email like '%" . addslashes($search_keywords[$i]) . "%')";
+                    break;
+                }
+              }
+              $where_str .= " )";
+            }
             break;
           case 'money':
-            $where_str .= " and (";
-            $where_str .= "(money = '" . $_GET['keywords'] . "')";
-            $where_str .= " )";
+            if (tep_parse_search_string(stripslashes($_GET['keywords']), $search_keywords)) {
+              $where_str .= " and (";
+              for ($i=0, $n=sizeof($search_keywords); $i<$n; $i++ ) {
+                switch ($search_keywords[$i]) {
+                  case '(':
+                  case ')':
+                  case 'and':
+                  case 'or':
+                    $where_str .= " " . $search_keywords[$i] . " ";
+                    break;
+                  default:
+                    $where_str .= "(money like '%" . addslashes($search_keywords[$i]) . "%')";
+                    break;
+                }
+              }
+              $where_str .= " )";
+            }
             break;
           default:
-            $where_str .= " and (";
-            $where_str .= "(username = '" . $_GET['keywords'] . "' or email = '" .  $_GET['keywords'] . "' or telno = '" . $_GET['keywords'] . "' or money = '" . $_GET['keywords'] . "')";
-            $where_str .= " )";
+            if (tep_parse_search_string(stripslashes($_GET['keywords']), $search_keywords)) {
+              $where_str .= " and (";
+              for ($i=0, $n=sizeof($search_keywords); $i<$n; $i++ ) {
+                switch ($search_keywords[$i]) {
+                  case '(':
+                  case ')':
+                  case 'and':
+                  case 'or':
+                    $where_str .= " " . $search_keywords[$i] . " ";
+                    break;
+                  default:
+                    $where_str .= "(username like '%" . addslashes($search_keywords[$i]) . "%' or email like '%" . addslashes($search_keywords[$i]) . "%' or telno like '%" . addslashes($search_keywords[$i]) . "%' or money like '%" . addslashes($search_keywords[$i]) . "%'";
+                    $where_str .= ')';
+                    break;
+                }
+              }
+              $where_str .= " )";
+            }
             break;
         }
       }
     } else {
       if (isset($_GET['keywords']) && tep_not_null($_GET['keywords'])) {
-        $where_str .= " and (";
-        $where_str .= "(username = '" . $_GET['keywords'] . "' or email = '" .  $_GET['keywords'] . "' or telno = '" . $_GET['keywords'] . "' or money = '" . $_GET['keywords'] . "')";
-        $where_str .= " )";
+        if (tep_parse_search_string(stripslashes($_GET['keywords']), $search_keywords)) {
+          $where_str .= " and (";
+          for ($i=0, $n=sizeof($search_keywords); $i<$n; $i++ ) {
+            switch ($search_keywords[$i]) {
+              case '(':
+              case ')':
+              case 'and':
+              case 'or':
+                $where_str .= " " . $search_keywords[$i] . " ";
+                break;
+              default:
+                $where_str .= "(username like '%" . addslashes($search_keywords[$i]) . "%' or email like '%" . addslashes($search_keywords[$i]) . "%' or telno like '%" . addslashes($search_keywords[$i]) . "%' or money like '%" . addslashes($search_keywords[$i]) . "%'";
+                $where_str .= ')';
+                break;
+            }
+          }
+          $where_str .= " )";
+        }
       } 
     }
     /*

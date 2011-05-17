@@ -200,7 +200,10 @@
           <td><br> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="table"> 
             <tr> 
-              <td class="main"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $_GET['products_id']) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
+              <td class="main"><?php echo '<a href="' .
+              tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .
+                  $_GET['products_id']) . '">' . tep_image_button('button_back.gif',
+          IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
               <td align="right" class="main"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
             </tr> 
           </table></td> 

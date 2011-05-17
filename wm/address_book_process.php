@@ -404,7 +404,11 @@ function check_form() {
             <tr> 
               <td><table border="0" width="100%" cellspacing="2" cellpadding="0"> 
                   <tr> 
-                    <td class="main"><?php echo tep_draw_hidden_field('action', 'update') . tep_draw_hidden_field('entry_id', $_GET['entry_id']) . '<a href="' . tep_href_link(FILENAME_ADDRESS_BOOK, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
+                    <td class="main"><?php echo tep_draw_hidden_field('action',
+                        'update') . tep_draw_hidden_field('entry_id',
+                          $_GET['entry_id']) . '<a href="' .
+                          tep_href_link(FILENAME_ADDRESS_BOOK, '', 'SSL') . '">' .
+                          tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
                     <td class="main" align="center"><?php echo '<a href="' . tep_href_link(FILENAME_ADDRESS_BOOK_PROCESS, 'action=remove&entry_id=' . $_GET['entry_id'], 'SSL') . '">' . tep_image_button('button_delete.gif', IMAGE_BUTTON_DELETE) . '</a>'; ?></td> 
                     <td class="main" align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
                   </tr> 
@@ -416,7 +420,11 @@ function check_form() {
             <tr> 
               <td><table border="0" width="100%" cellspacing="2" cellpadding="0"> 
                   <tr> 
-                    <td class="main"><?php echo tep_draw_hidden_field('action', 'update') . tep_draw_hidden_field('entry_id', $entry_id) . '<a href="' . tep_href_link(FILENAME_ADDRESS_BOOK, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
+                    <td class="main"><?php echo tep_draw_hidden_field('action',
+                        'update') . tep_draw_hidden_field('entry_id', $entry_id) .
+                    '<a href="' . tep_href_link(FILENAME_ADDRESS_BOOK, '', 'SSL') .
+                    '">' . tep_image_button('button_back.gif',
+  IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
                     <td class="main" align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
                   </tr> 
                 </table></td> 
@@ -432,7 +440,8 @@ function check_form() {
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                   <tr> 
-                    <td class="main"><?php echo '<a href="' . $back_link . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
+                    <td class="main"><?php echo '<a href="' . $back_link . '">' .
+                    tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
                     <td align="right" class="main"><?php echo tep_draw_hidden_field('entry_id', (isset($_GET['entry_id']) ? $_GET['entry_id'] : $entry_id)) . tep_draw_hidden_field('action', 'process') . tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
                   </tr> 
                 </table></td> 

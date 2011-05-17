@@ -57,7 +57,7 @@ define('META_TAGS',
 );
 
 // header text in includes/header.php
-define('HEADER_TITLE_CREATE_ACCOUNT', '会員作成');
+define('HEADER_TITLE_CREATE_ACCOUNT', 'アカウント作成');
 define('HEADER_TITLE_ABOUT_US','会社概要');
 define('HEADER_TITLE_MY_ACCOUNT', 'お客様情報');
 define('HEADER_TITLE_CART_CONTENTS', 'カートを見る');
@@ -288,8 +288,8 @@ define('PREVNEXT_BUTTON_LAST', '最後&gt;&gt;');
 
 define('IMAGE_BUTTON_ADD_ADDRESS', 'アドレスを追加');
 define('IMAGE_BUTTON_ADDRESS_BOOK', 'アドレス帳');
-define('IMAGE_BUTTON_BACK', '一覧を見る');
-define('IMAGE_BUTTON_BACK2', '前に戻る');
+define('IMAGE_BUTTON_BACK_LIST', '一覧を見る');
+define('IMAGE_BUTTON_BACK', '前に戻る');
 define('IMAGE_BUTTON_CHANGE_ADDRESS', 'アドレスを変更');
 define('IMAGE_BUTTON_CHECKOUT', 'レジに進む');
 define('IMAGE_BUTTON_CONFIRM_ORDER', '注文する!');
@@ -320,7 +320,7 @@ define('ICON_WARNING', '警告');
 
 define('TEXT_GREETING_PERSONAL', 'いらっしゃいませ、<span class="greetUser">%s さん</span>。 <a href="%s"><u>新着商品</u></a> をご覧になりますか？');
 define('TEXT_GREETING_PERSONAL_RELOGON', '<small>もしあなたが %s さんでなければ、お客様情報を入力して <a href="%s"><u>ログイン</u></a> してください。</small>');
-define('TEXT_GREETING_GUEST', '<span class="greetUser">ゲストさん</span>、いらっしゃいませ。 <a href="%s"><u>ログイン</u></a>しますか？ それとも、<a href="%s"><u>新しい会員</u></a>を作成しますか？');
+define('TEXT_GREETING_GUEST', '<span class="greetUser">ゲストさん</span>、いらっしゃいませ。 <a href="%s"><u>ログイン</u></a>しますか？ それとも、<a href="%s"><u>新しいアカウント</u></a>を作成しますか？');
 
 define('TEXT_SORT_PRODUCTS', '商品を並び替える ');
 define('TEXT_DESCENDINGLY', '降順');

@@ -260,9 +260,9 @@ define('ENTRY_NEWSLETTER_NO', '購読しない');
 define('ENTRY_NEWSLETTER_ERROR', '');
 define('ENTRY_PASSWORD', 'パスワード:');
 define('ENTRY_PASSWORD_CONFIRMATION', 'パスワードを再入力:');
-define('ENTRY_PASSWORD_CONFIRMATION_TEXT', '&nbsp;' . ENTRY_PASSWORD_MIN_LENGTH . '文字以上&nbsp;(例. abcdef) <font color="#A85E5E">必須</font>');
+define('ENTRY_PASSWORD_CONFIRMATION_TEXT', '&nbsp;英数字' . ENTRY_PASSWORD_MIN_LENGTH . '文字以上&nbsp;(例. abcdef) <font color="#A85E5E">必須</font>');
 define('ENTRY_PASSWORD_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_PASSWORD_MIN_LENGTH . ' 文字</font></small>');
-define('ENTRY_PASSWORD_TEXT', '&nbsp;' . ENTRY_PASSWORD_MIN_LENGTH . '文字以上&nbsp;(例. abcdef) <font color="#A85E5E">必須</font>');
+define('ENTRY_PASSWORD_TEXT', '&nbsp;英数字' . ENTRY_PASSWORD_MIN_LENGTH . '文字以上&nbsp;(例. abcdef) <font color="#A85E5E">必須</font>');
 define('PASSWORD_HIDDEN', '********');
 define('ENTRY_AGREEMENT_TEXT', '同意する');
 

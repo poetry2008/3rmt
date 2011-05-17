@@ -83,7 +83,10 @@
                   <tr> 
                     <td colspan="3"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <tr> 
-                          <td class="smallText" valign="top"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a><br><br>' . sprintf(TEXT_MAXIMUM_ENTRIES, MAX_ADDRESS_BOOK_ENTRIES); ?></td> 
+                          <td class="smallText" valign="top"><?php echo '<a href="'
+                          . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' .
+                          tep_image_button('button_back.gif',
+                              IMAGE_BUTTON_BACK) . '</a><br><br>' . sprintf(TEXT_MAXIMUM_ENTRIES, MAX_ADDRESS_BOOK_ENTRIES); ?></td> 
                           <td class="smallText" align="right" valign="top"><?php echo '<a href="' . tep_href_link(FILENAME_ADDRESS_BOOK_PROCESS,  'entry_id=' . ($row + 2), 'SSL') . '">' . tep_image_button('button_add_address.gif', IMAGE_BUTTON_ADD_ADDRESS) . '</a>'; ?></td> 
                         </tr> 
                       </table></td> 
@@ -95,7 +98,9 @@
                     <td colspan="3"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <tr> 
                           <td class="smallText"><?php echo sprintf(TEXT_MAXIMUM_ENTRIES_REACHED, MAX_ADDRESS_BOOK_ENTRIES); ?></td> 
-                          <td class="smallText" align="right"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
+                          <td class="smallText" align="right"><?php echo '<a href="'
+                          . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' .
+                          tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
                         </tr> 
                       </table></td> 
                   </tr> 

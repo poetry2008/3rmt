@@ -236,7 +236,9 @@
   }
 ?>
           <tr>
-            <td align="right" class="smallText"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td>
+            <td align="right" class="smallText"><?php echo '<a href="' .
+            tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' .
+            tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td>
           </tr>
         </table></td>
           </tr>

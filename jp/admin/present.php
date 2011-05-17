@@ -179,7 +179,7 @@ case 'input' :
             <form onSubmit="return msg()" name="apply" action="present.php?action=insert" method="post" enctype="multipart/form-data">
               <table width="100%" align="center" border="0" cellspacing="0" cellpadding="8">
                 <tr>
-                  <td valign="middle" class="pageHeading" height="10">プレゼント登録（新規）</td>
+                  <td valign="middle" class="pageHeading" height="10"><?php echo PRESENT_CREATE_TITLE;?></td>
                   <td align="right" valign="top">&nbsp;</td>
                 </tr>
                 <tr>
@@ -191,23 +191,24 @@ case 'input' :
                               <td class="main" width="150" bgcolor="#FFFFFF"><?php echo ENTRY_SITE;?></td>
                               <td class="main" width="630" bgcolor="#FFFFFF"><?php echo tep_site_pull_down_menu();?></td>
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF">タイトル</td>
+                              <td class="main" width="150" bgcolor="#FFFFFF"><?php echo PRESENT_NAME_TEXT;?></td>
                               <td class="main" width="630" bgcolor="#FFFFFF"><input name="title" type="text"></td>
                             </tr>
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF">画像</td>
+                              <td class="main" width="150" bgcolor="#FFFFFF"><?php echo PRESENT_PIC_TEXT;?></td>
                               <td class="main" width="630" bgcolor="#FFFFFF"><input type="file" name="file"></td>
                             </tr>
                             <tr>
-                              <td class="main" valign="top" bgcolor="#FFFFFF">本文</td>
+                              <td class="main" valign="top" bgcolor="#FFFFFF"><?php echo PRESENT_COMMENT_TEXT;?></td>
                               <td class="main" bgcolor="#FFFFFF">
-                <input type="checkbox" name="ht" value="1">HTMLを許可する
+                <input type="checkbox" name="ht" value="1"><?php echo PRESENT_HTML_READ;?>
                                 <textarea name="text" style="width:95%; height:100px;"></textarea></td>
                             </tr>
                             <tr>
-                              <td class="main" valign="top" bgcolor="#FFFFFF">期間</td>
-                              <td class="main" bgcolor="#FFFFFF">開始日：
-                                <select name="start_y">
+                              <td class="main" valign="top" bgcolor="#FFFFFF"><?php echo PRESENT_DATE_TEXT;?></td>
+                              <td class="main" bgcolor="#FFFFFF">
+                              <?php echo KEYWORDS_SEARCH_START_TEXT;?>   
+                              <select name="start_y">
                                   <?php 
           for($y=0;$y<=5;$y++){
             $nen = $yyyy + $y;
@@ -219,7 +220,7 @@ case 'input' :
           }
           ?>
                                 </select>
-                                年
+                                <?php echo YEAR_TEXT;?> 
                                 <select name="start_m">
                                   <?php
           for($m=1;$m<=9;$m++){
@@ -238,7 +239,7 @@ case 'input' :
           }
           ?>
                                 </select>
-                                月
+                                <?php echo MONTH_TEXT;?> 
                                 <select name="start_d">
                                   <?php
           for($d=1;$d<=9;$d++){
@@ -257,8 +258,9 @@ case 'input' :
           }
           ?>
                                 </select>
-                                日<br>
-                                終了日：
+                                <?php echo DAY_TEXT;?> 
+                                <br>
+                                <?php echo KEYWORDS_SEARCH_END_TEXT;?>   
                                 <select name="limit_y">
                                   <?php
           for($y=0;$y<=5;$y++){
@@ -271,7 +273,7 @@ case 'input' :
           }
           ?>
                                 </select>
-                                年
+                                <?php echo YEAR_TEXT;?> 
                                 <select name="limit_m">
                                   <?php
           for($m=1;$m<=9;$m++){
@@ -290,7 +292,7 @@ case 'input' :
           }
           ?>
                                 </select>
-                                月
+                                <?php echo MONTH_TEXT;?> 
                                 <select name="limit_d">
                                   <?php
           for($d=1;$d<=9;$d++){
@@ -309,7 +311,8 @@ case 'input' :
           }
           ?>
                                 </select>
-                                日 </td>
+                                <?php echo DAY_TEXT;?> 
+                                </td>
                             </tr>
                           </table></td>
                       </tr>
@@ -358,7 +361,7 @@ $sele_lid = substr($sql1['limit_date'],8,2);
             action="present.php?action=update&cID=<?php echo $sele1_id;?>" enctype="multipart/form-data">
               <table width="100%" align="center" border="0" cellspacing="0" cellpadding="8">
                 <tr>
-                  <td valign="middle" class="pageHeading" height="10">プレゼント登録（更新）</td>
+                  <td valign="middle" class="pageHeading" height="10"><?php echo PRESENT_UPDATE_TITLE;?></td>
                   <td align="right" valign="top">&nbsp;</td>
                 </tr>
                 <tr>
@@ -371,11 +374,11 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                               <td class="main" width="630" bgcolor="#FFFFFF"><?php echo $sql1['site_name'] ;?></td>
                             </tr>
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF">タイトル</td>
+                              <td class="main" width="150" bgcolor="#FFFFFF"><?php echo PRESENT_NAME_TEXT;?></td>
                               <td class="main" width="630" bgcolor="#FFFFFF"><input name="title" type="text" value="<?php echo $sql1['title'] ;?>"></td>
                             </tr>
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF">画像</td>
+                              <td class="main" width="150" bgcolor="#FFFFFF"><?php echo PRESENT_PIC_TEXT;?></td>
                               <td class="main" width="630" bgcolor="#FFFFFF">
                 <?php 
                 if($sql1['image']){
@@ -387,7 +390,7 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                                 <input type="file" name="file"></td>
                             </tr>
                             <tr>
-                              <td class="main" valign="top" bgcolor="#FFFFFF">本文</td>
+                              <td class="main" valign="top" bgcolor="#FFFFFF"><?php echo PRESENT_COMMENT_TEXT;?></td>
                               <td class="main" bgcolor="#FFFFFF">
                 <?php
                 if($sql1['html_check'] == 1){
@@ -401,10 +404,10 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                 </td>
                             </tr>
                             <tr>
-                              <td class="main" valign="top" bgcolor="#FFFFFF">期間</td>
+                              <td class="main" valign="top" bgcolor="#FFFFFF"><?php echo PRESENT_DATE_TEXT;?></td>
                               <td class="main" bgcolor="#FFFFFF">
-                開始日：
-                                <select name="start_y">
+                              <?php echo KEYWORDS_SEARCH_START_TEXT;?>   
+                              <select name="start_y">
                                   <?php
           for($y=0;$y<=5;$y++){
             $nen = $yyyy + $y;
@@ -416,7 +419,7 @@ $sele_lid = substr($sql1['limit_date'],8,2);
           }
           ?>
                                 </select>
-                                年
+                                <?php echo YEAR_TEXT;?> 
                                 <select name="start_m">
                                   <?php
           for($m=1;$m<=9;$m++){
@@ -435,7 +438,7 @@ $sele_lid = substr($sql1['limit_date'],8,2);
           }
           ?>
                                 </select>
-                                月
+                                <?php echo MONTH_TEXT;?> 
                                 <select name="start_d">
                                   <?php
           for($d=1;$d<=9;$d++){
@@ -454,9 +457,9 @@ $sele_lid = substr($sql1['limit_date'],8,2);
           }
           ?>
                                 </select>
-                                日
+                                <?php echo DAY_TEXT;?> 
                 <br>
-                                終了日：
+                              <?php echo KEYWORDS_SEARCH_END_TEXT;?>   
                                 <select name="limit_y">
                                   <?php
           for($y=0;$y<=5;$y++){
@@ -469,7 +472,7 @@ $sele_lid = substr($sql1['limit_date'],8,2);
           }
           ?>
                                 </select>
-                                年
+                                <?php echo YEAR_TEXT;?> 
                                 <select name="limit_m">
                                   <?php
           for($m=1;$m<=9;$m++){
@@ -488,7 +491,7 @@ $sele_lid = substr($sql1['limit_date'],8,2);
           }
           ?>
                                 </select>
-                                月
+                                <?php echo MONTH_TEXT;?> 
                                 <select name="limit_d">
                                   <?php
           for($d=1;$d<=9;$d++){
@@ -507,7 +510,8 @@ $sele_lid = substr($sql1['limit_date'],8,2);
           }
           ?>
                                 </select>
-                                日 </td>
+                                <?php echo DAY_TEXT;?> 
+                                </td>
                             </tr>
                           </table></td>
                       </tr>
@@ -535,7 +539,7 @@ $sql2 = tep_db_fetch_array($sele2);
             <form name="listview" method="post">
               <table width="100%" align="center" border="0" cellspacing="0" cellpadding="8">
                 <tr>
-                  <td valign="middle" class="pageHeading" height="10">顧客情報</td>
+                  <td valign="middle" class="pageHeading" height="10"><?php echo PRESENT_CUSTOMER_TITLE?></td>
                   <td align="right" valign="top">&nbsp;</td>
                 </tr>
                 <tr>
@@ -548,7 +552,7 @@ $sql2 = tep_db_fetch_array($sele2);
                               <td class="main" width="630" bgcolor="#FFFFFF"><?php echo $sql2['customer_id'] ;?></td>
                             </tr>
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF">姓名</td>
+                              <td class="main" width="150" bgcolor="#FFFFFF"><?php echo PRESENT_CUSTOMER_NAME;?></td>
                               <td class="main" width="630" bgcolor="#FFFFFF"><?php echo $sql2['family_name'] ;?><?php echo $sql2['first_name'] ;?></td>
                             </tr>
                             <tr>
@@ -556,18 +560,18 @@ $sql2 = tep_db_fetch_array($sele2);
                               <td class="main" width="630" bgcolor="#FFFFFF"><?php echo $sql2['mail'] ;?></td>
                             </tr>
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF">住所</td>
+                              <td class="main" width="150" bgcolor="#FFFFFF"><?php echo PRESENT_CUSTOMER_ADDRESS;?></td>
                               <td class="main" width="630" bgcolor="#FFFFFF">〒<?php echo $sql2['postcode'] ;?><br>
                                 <?php echo $sql2['prefectures'] ;?><?php echo $sql2['cities'] ;?><br>
                                 <?php echo $sql2['address1'] ;?><br>
                                 <?php echo $sql2['address2'] ;?></td>
                             </tr>
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF">電話</td>
+                              <td class="main" width="150" bgcolor="#FFFFFF"><?php echo PRESENT_CUSTOMER_TEL;?></td>
                               <td class="main" width="630" bgcolor="#FFFFFF"><?php echo $sql2['phone'] ;?></td>
                             </tr>
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF">申込み日</td>
+                              <td class="main" width="150" bgcolor="#FFFFFF"><?php echo PRESENT_CUSTOMER_APPLYDAY;?></td>
                               <td class="main" width="630" bgcolor="#FFFFFF"><?php echo $sql2['tourokubi'] ;?></td>
                             </tr>
                           </table>
@@ -601,10 +605,10 @@ $c_id = tep_db_prepare_input($_GET['cID']);
               <tr>
                 <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
                     <tr class="dataTableHeadingRow">
-                      <td class="dataTableHeadingContent" align="center">姓</td>
-                      <td class="dataTableHeadingContent" align="center">名</td>
-                      <td class="dataTableHeadingContent" align="center">申し込み日</td>
-                      <td class="dataTableHeadingContent" align="center">操作</td>
+                      <td class="dataTableHeadingContent" align="center"><?php echo PRESENT_CUSTOMER_TABLE_SURNAME;?></td>
+                      <td class="dataTableHeadingContent" align="center"><?php echo PRESENT_CUSTOMER_TABLE_NAME;?></td>
+                      <td class="dataTableHeadingContent" align="center"><?php echo PRESENT_CUSTOMER_TABLE_APPLYDAY;?></td>
+                      <td class="dataTableHeadingContent" align="center"><?php echo PRESENT_CUSTOMER_TABLE_OPERATE;?></td>
                     </tr>
                     <?php
     $search = '';
@@ -717,8 +721,8 @@ default:
                           <tr class="dataTableHeadingRow"  width="30">
                             <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_SITE;?></td>
                             <td class="dataTableHeadingContent">TITLE</td>
-                            <td class="dataTableHeadingContent" align="center">期間</td>
-                            <td class="dataTableHeadingContent" align="center">操作</td>
+                            <td class="dataTableHeadingContent" align="center"><?php echo PRESENT_DATE_TEXT;?></td>
+                            <td class="dataTableHeadingContent" align="center"><?php echo PRESENT_CUSTOMER_TABLE_OPERATE;?></td>
                           </tr>
                           <?php
     $search = '';
