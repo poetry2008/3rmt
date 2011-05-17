@@ -10,6 +10,11 @@
 <script type="text/javascript" src="./js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+if($("input[name=payment]").length == 1){
+  $("input[name=payment]").each(function(index){
+      $(this).attr('checked','true');
+    });
+}
 $("input:radio").each(function(){
   if ($(this).attr("checked") == true) {
     if ($(this).attr('name') != 'bank_kamoku') { 
