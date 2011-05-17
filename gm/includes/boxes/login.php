@@ -29,7 +29,7 @@
     }else{
 ?>
 <div class="login_online01">
-<div class="box_titleR">会員</div> 
+<div class="box_titleR">メンバーズページ</div> 
 <ul>
     <li><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . HEADER_TITLE_MY_ACCOUNT . '</a>'; ?></li>
     <li><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL') . '">' . MYACCOUNT_EDIT . '</a>'; ?></li>
