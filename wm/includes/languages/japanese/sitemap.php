@@ -6,7 +6,7 @@
 define('NAVBAR_TITLE', 'サイトマップ');
 define('HEADING_TITLE', 'サイトマップ');
 
-define('PAGE_ACCOUNT', 'マイアカウント');
+define('PAGE_ACCOUNT', 'マイ会員');
 define('PAGE_ACCOUNT_EDIT', 'お客様情報の編集');
 define('PAGE_ADDRESS_BOOK', 'アドレス帳');
 define('PAGE_ACCOUNT_HISTORY', '注文履歴');
