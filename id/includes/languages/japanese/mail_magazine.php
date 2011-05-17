@@ -6,11 +6,11 @@
 define('NAVBAR_TITLE', 'メールマガジン');
 define('HEADING_TITLE', 'メールマガジン');
 
-define('HEADING_MAGAZINE_TITLE_ACCOUNT','アカウントをお持ちのお客様');
+define('HEADING_MAGAZINE_TITLE_ACCOUNT','会員登録済みのお客様');
 define('HEADING_MAGAZINE_TITLE_REG', 'メールマガジン新規登録');
 define('HEADING_MAGAZINE_TITLE_STP', 'メールマガジン配信停止');
 
-define('TEXT_TITLE_ACCOUNT','<p>アカウントをお持ちのお客様はログイン後、マイアカウントのページからメールマガジンの購読、配信停止の設定をすることができます。</p>
+define('TEXT_TITLE_ACCOUNT','<p>会員登録済みのお客様はログイン後、お客様情報ページからメールマガジンの購読、配信停止の設定をすることができます。</p>
                                     <p>お客様情報の編集ボタンをクリックして設定をしてください。</p>');
 define('TEXT_TITLE_REG','メールマガジンの購読のみを希望されるお客様は下記フォームにお名前とメールアドレスを入力してください。');
 define('TEXT_TITLE_STP','メールマガジン配信停止を希望されるお客様は下記フォームにメールアドレスを入力してください。');
