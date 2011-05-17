@@ -615,16 +615,16 @@ right:5px;*/
       if($_GET['search_type'] == 'operator'){
         $user_list = tep_get_user_list_by_username(trim($_GET['keywords']));
         if(isset($user_list)&&count($user_list)>=1){
-          $user_list_str = "where self in ('".implode("','",$user_list)."') ";
+          $user_list_str = "where (self in ('".implode("','",$user_list)."') ";
         }else{
-          $user_list_str = "where false ";
+          $user_list_str = "where (false ";
         }
         if(trim(strtolower($_GET['keywords'])) == 'staff'){
           $sort_where_permission = " or  privilege = '7'";
         }else if (trim(strtolower($_GET['keywords'])) == 'chief'){
-          $sort_where_permission = " or  privilege = '10'";
+          $sort_where_permission = " or  privilege = '10')";
         }else{
-          $sort_where_permission = " or  false";
+          $sort_where_permission = " or  false)";
         }
       $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
@@ -665,16 +665,16 @@ right:5px;*/
       if($_GET['search_type'] == 'operator'){
         $user_list = tep_get_user_list_by_username(trim($_GET['keywords']));
         if(isset($user_list)&&count($user_list)>=1){
-          $user_list_str = "where self in ('".implode("','",$user_list)."') ";
+          $user_list_str = "where (self in ('".implode("','",$user_list)."') ";
         }else{
-          $user_list_str = "where false ";
+          $user_list_str = "where (false ";
         }
         if(trim(strtolower($_GET['keywords'])) == 'staff'){
           $sort_where_permission = " or  privilege = '7'";
         }else if (trim(strtolower($_GET['keywords'])) == 'chief'){
-          $sort_where_permission = " or  privilege = '10'";
+          $sort_where_permission = " or  privilege = '10')";
         }else{
-          $sort_where_permission = " or  false";
+          $sort_where_permission = " or  false)";
         }
       $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
