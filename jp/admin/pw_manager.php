@@ -620,7 +620,7 @@ right:5px;*/
           $user_list_str = "where (false ";
         }
         if(trim(strtolower($_GET['keywords'])) == 'staff'){
-          $sort_where_permission = " or  privilege = '7'";
+          $sort_where_permission = " or  privilege = '7')";
         }else if (trim(strtolower($_GET['keywords'])) == 'chief'){
           $sort_where_permission = " or  privilege = '10')";
         }else{
@@ -670,7 +670,7 @@ right:5px;*/
           $user_list_str = "where (false ";
         }
         if(trim(strtolower($_GET['keywords'])) == 'staff'){
-          $sort_where_permission = " or  privilege = '7'";
+          $sort_where_permission = " or  privilege = '7')";
         }else if (trim(strtolower($_GET['keywords'])) == 'chief'){
           $sort_where_permission = " or  privilege = '10')";
         }else{

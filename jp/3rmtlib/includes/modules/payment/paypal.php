@@ -184,7 +184,7 @@
     $mail_body .= '▼お名前　　　　　：' . $order->customer["lastname"] . ' ' . $order->customer["firstname"]."\n";
     $mail_body .= '▼メールアドレス　：' . $order->customer["email_address"]."\n";
     $mail_body .= '━━━━━━━━━━━━━━━━━━━━━'."\n";
-    $mail_body .= '▼お支払金額　　　：' . $total . '円'."\n";
+    $mail_body .= '▼お支払金額　　　：' . $currencies->format($total) . "\n";
     $mail_body .= '▼お支払方法　　　：ペイパル決済'."\n";
     
     # 商品内容----------------------------

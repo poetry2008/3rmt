@@ -11,6 +11,11 @@
 <script type="text/javascript">
 $(document).ready(function(){
 $("input:radio").each(function(){
+if($("input[name=payment]").length == 1){
+  $("input[name=payment]").each(function(index){
+      $(this).attr('checked','true');
+    });
+}
   if ($(this).attr("checked") == true) {
     if ($(this).attr('name') != 'bank_kamoku') { 
       if ($(this).val() == 'convenience_store') {
