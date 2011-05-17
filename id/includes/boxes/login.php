@@ -41,7 +41,7 @@
 <?php 
     } else {
 ?>
-  <img width="171" height="27"  src="images/design/title_img01.gif" alt=""> 
+  <img width="171" height="27"  src="images/design/title_img01.gif" alt="RMTアイテムデポ メンバーズページ"> 
   <ul class="l_m_category_ul">
     <li class="l_m_category_li">
       <?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . HEADER_TITLE_MY_ACCOUNT . '</a>'."\n"; ?>
