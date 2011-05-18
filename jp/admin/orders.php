@@ -1031,7 +1031,8 @@ function q_4_3(){
                   ?>
                     <tr>
                       <td class="main"><?php echo $order_history['date_purchased'];?></td>
-                      <td class="main"><?php echo strip_tags(tep_get_ot_total_by_orders_id($order_history['orders_id']));?></td>
+                      <td class="main"><?php echo
+                      strip_tags(tep_get_ot_total_by_orders_id($order_history['orders_id'],true));?></td>
                       <td class="main"><?php echo $order_history['orders_status_name'];?></td>
                     </tr>
                   <?php
@@ -1434,7 +1435,8 @@ if (false) {
     $end_time = tep_get_orders_status_history_time($order->info['orders_id'], 2);
     $end_email = tep_get_orders_status_history_notified($order->info['orders_id'], 2);
     
-    $new_price = tep_get_ot_total_num_by_text(tep_get_ot_total_by_orders_id($order->info['orders_id']));
+    $new_price =
+      tep_get_ot_total_num_by_text(tep_get_ot_total_by_orders_id($order->info['orders_id'],true));
 ?>
   <tr>
     <td class="main">在庫確認：</td>
