@@ -1522,44 +1522,15 @@ function get_cart_products(){
                 <?php
                   if (!isset($pInfo->option_image_type)) {
                 ?>
-                  <select name="option_image_type" >
-                  <option value ="select" selected="selected">プルダウン</option>
-                  <option value ="radio">ラジオ</option>
-                  </select>
-                <?php
-                   /*
                   change radio to select
                   <input type="radio" name="option_image_type" value="select" checked>プルダウン
                   <input type="radio" name="option_image_type" value="radio">ラジオ
-                  */
+                <?php
                   } else {
-                    if($pInfo->option_image_type=='select'){
                 ?>
-                  <select name="option_image_type" >
-                  <option value ="select" selected="selected">プルダウン</option>
-                  <option value ="radio">ラジオ</option>
-                  </select>
-                <?php
-                    }else if ($pInfo->option_image_type=='radio'){
-                ?>
-                  <select name="option_image_type" >
-                  <option value ="select">プルダウン</option>
-                  <option value ="radio" selected="selected">ラジオ</option>
-                  </select>
-                <?php
-                    }else{
-                ?>
-                  <select name="option_image_type" >
-                  <option value ="select" selected="selected">プルダウン</option>
-                  <option value ="radio">ラジオ</option>
-                  </select>
-                <?php
-                    }
-                   
-                  /*
                   <input type="radio" name="option_image_type" value="select" <?php if($pInfo->option_image_type == 'select'){?> checked<?php }?>>プルダウン
                   <input type="radio" name="option_image_type" value="radio" <?php if($pInfo->option_image_type == 'radio'){?> checked<?php }?>>ラジオ
-                  */
+                <?php
                   }
                 ?>
                 </td>
