@@ -18,7 +18,7 @@
       }
       echo '|'; 
     }
-    echo '<a href="'.HTTP_SERVER.'/link/">リンク</a>';  
+    echo '<a href="'.HTTP_SERVER.'/link/">相互リンク</a>';  
 ?>
 </div>
 <div id="footer">
