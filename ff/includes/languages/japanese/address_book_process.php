@@ -10,7 +10,7 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE_1', 'お客様情報');
+define('NAVBAR_TITLE_1', 'アカウント');
 define('NAVBAR_TITLE_2', 'アドレス帳');
 define('NAVBAR_TITLE_ADD_ENTRY', 'アドレスを追加');
 define('NAVBAR_TITLE_MODIFY_ENTRY', 'アドレスを変更');
