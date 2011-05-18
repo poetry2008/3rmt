@@ -320,7 +320,7 @@ define('ICON_WARNING', '警告');
 
 define('TEXT_GREETING_PERSONAL', 'いらっしゃいませ、<span class="greetUser">%s さん</span>。 <a href="%s"><u>新着商品</u></a> をご覧になりますか？');
 define('TEXT_GREETING_PERSONAL_RELOGON', '<small>もしあなたが %s さんでなければ、お客様情報を入力して <a href="%s"><u>ログイン</u></a> してください。</small>');
-define('TEXT_GREETING_GUEST', '<span class="greetUser">ゲストさん</span>、いらっしゃいませ。 <a href="%s"><u>ログイン</u></a>しますか？ それとも、<a href="%s"><u>新しい会員</u></a>を作成しますか？');
+define('TEXT_GREETING_GUEST', '<span class="greetUser">ゲストさん</span>、いらっしゃいませ。 <a href="%s"><u>ログイン</u></a>しますか？ それとも、<a href="%s">会員登録</u></a>をしますか？');
 
 define('TEXT_SORT_PRODUCTS', '商品を並び替える ');
 define('TEXT_DESCENDINGLY', '降順');
