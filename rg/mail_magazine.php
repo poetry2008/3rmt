@@ -140,7 +140,7 @@
                               </tr> 
                             </table>
                             </td> 
-                          <td width="150" align="center" valign="top"><?php echo tep_image_submit('button_continue.gif', TEXT_MAGAZINE_BUTTON_REG); ?></form></td> 
+                          <td width="150" align="center" valign="top"><?php echo tep_image_submit('button_continue02.gif', TEXT_MAGAZINE_BUTTON_REG); ?></form></td> 
                         </tr> 
                        
                       <tr> 
