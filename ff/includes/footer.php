@@ -16,9 +16,10 @@
           echo '|'; 
         }
       }
-      echo '<br>'; 
+      echo '|'; 
     }
-  ?>
+    echo '<a href="'.HTTP_SERVER.'/link/">リンク</a>';  
+?>
 </div>
 <div id="footer">
 
@@ -26,7 +27,7 @@
         <?php echo FOOTER_TEXT_BODY . "\n"; ?><br>
               Copyright&nbsp;&copy;&nbsp;2011&nbsp;&nbsp;
 <?php
-echo '<a class="bold" href="'. HTTP_SERVER.'">'.$_SERVER['HTTP_HOST'].'</a>';
+echo '<a class="bold" href="'. HTTP_SERVER.'">FF14-RMT.com</a>';
 ?>
 
             </address>
