@@ -1522,7 +1522,6 @@ function get_cart_products(){
                 <?php
                   if (!isset($pInfo->option_image_type)) {
                 ?>
-                  change radio to select
                   <input type="radio" name="option_image_type" value="select" checked>プルダウン
                   <input type="radio" name="option_image_type" value="radio">ラジオ
                 <?php
