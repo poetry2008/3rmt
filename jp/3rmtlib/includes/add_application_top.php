@@ -733,8 +733,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
           }
         } else {
           if(LIMIT_MIN_PRICE &&
-              (($cart->show_total() <= LIMIT_MIN_PRICE) && ($cart->show_total() >= 1))
-              ||($cart->show_total()) < 1 && ($cart->show_total() >=0)) {
+              (($cart->show_total() <= LIMIT_MIN_PRICE) && ($cart->show_total() >= 1))) {
             tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, 'limit_min_error=true', 'SSL'));
           }
         }
