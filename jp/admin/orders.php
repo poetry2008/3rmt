@@ -2371,7 +2371,8 @@ if (false) {
     </td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)">
       <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
-      <font color="#999"><?php echo strip_tags(tep_get_ot_total_by_orders_id($orders['orders_id']));?></font>
+      <font color="#999"><?php echo
+        strip_tags(tep_get_ot_total_by_orders_id($orders['orders_id'],true));?></font>
       <?php } else { ?>
       <?php echo strip_tags(tep_get_ot_total_by_orders_id($orders['orders_id'], true));?>
       <?php }?>
