@@ -57,7 +57,7 @@ define('META_TAGS',
 );
 
 // header text in includes/header.php
-define('HEADER_TITLE_CREATE_ACCOUNT', '会員作成');
+define('HEADER_TITLE_CREATE_ACCOUNT', '会員登録');
 define('HEADER_TITLE_ABOUT_US','会社概要');
 define('HEADER_TITLE_MY_ACCOUNT', 'お客様情報');
 define('HEADER_TITLE_CART_CONTENTS', 'カートを見る');
