@@ -45,7 +45,7 @@ while($customer_info = tep_db_fetch_array($customer_query)){
       array('${NAME}','${POINT}','${POINT_DATE}','${SITE_NAME}'),
       array($customer_info['lastname']." ".$customer_info['firstname'],
         $customer_info['point'],$value,
-        tep_get_configuration_by_site_id('STORE_NAME',
+        get_configuration_by_site_id('STORE_NAME',
           $customer_info['site_id'],'configuration')),
       $email_template);
   var_dump($email_template);
