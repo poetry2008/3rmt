@@ -2897,8 +2897,12 @@ function tep_get_site_id_by_orders_id($orders_id) {
   }
 }
 
-function get_configuration_by_site_id($key, $site_id = '0') {
+function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
+  if($table_name==''){
   $config = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$key."' and site_id='".$site_id."'"));
+  }else{
+  $config = tep_db_fetch_array(tep_db_query("select * from ".$table_name." where configuration_key='".$key."' and site_id='".$site_id."'"));
+  }
   if ($config) {
     return $config['configuration_value'];
   } else {
