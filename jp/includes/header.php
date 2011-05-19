@@ -44,7 +44,7 @@
   } elseif (isset($_GET['products_id']) && $_GET['products_id']) {
     echo ds_tep_get_categories((int)$_GET['products_id'],1) . ' ジャックポットは安全で安心・信頼できる取り引きを目指していきます。' . "\n";
   } else {
-    echo 'RMT専門店！ RMTジャックポットは安全で安心・信頼できる取り引きを目指していきます。' . "\n";
+    echo 'RMT専門店！ '.STORE_NAME.'は安全で安心・信頼できる取り引きを目指していきます。' . "\n";
   } 
 ?>
 </div>
