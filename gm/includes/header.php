@@ -51,7 +51,7 @@ if (!isset($_GET['products_id'])) $_GET['products_id']= NULL;
     echo '<p class="header2">' . ds_tep_get_categories((int)$_GET['products_id'],1) . 'を激安販売-RMT-ゲームマネー</p>' . "\n";
   } else {
     echo '<h1 class="header1">RMT 最安値-アイテムの激安販売</h1>' . "\n";
-    echo '<p class="header2">FF11、リネージュ2、レッドストーン、AIONを激安販売 - RMTゲームマネー</p>' . "\n";
+    echo '<p class="header2">FF11、リネージュ2、レッドストーン、AIONを激安販売 - '.STORE_NAME.'</p>' . "\n";
   }
 ?>
 </div>

@@ -8,7 +8,7 @@
         <?php echo FOOTER_TEXT_BODY . "\n"; ?><br>
               Copyright&nbsp;&copy;&nbsp;2011&nbsp;&nbsp;
 <?php
-echo '<a class = "bold" href="'.tep_href_link('/').'" ><strong>RMT学園</strong></a>';
+echo '<a class = "bold" href="'.tep_href_link('/').'" ><strong>'.STORE_NAME.'</strong></a>';
 ?>
 
             </address>

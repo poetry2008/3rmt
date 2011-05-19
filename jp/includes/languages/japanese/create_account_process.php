@@ -14,11 +14,11 @@ define('NAVBAR_TITLE_1', '会員登録');
 define('NAVBAR_TITLE_2', '手続き');
 define('HEADING_TITLE', 'お客様情報');
 
-define('EMAIL_SUBJECT', '会員登録が完了いたしました【RMTジャックポット】');
+define('EMAIL_SUBJECT', '会員登録が完了いたしました【'.STORE_NAME.'】');
 define('EMAIL_GREET_MR', stripslashes($_POST['lastname']) . ' ' . stripslashes($_POST['firstname']) . ' 様 ' . "\n\n");
 define('EMAIL_GREET_MS', stripslashes($_POST['lastname']) . ' ' . stripslashes($_POST['firstname']) . ' 様 ' . "\n\n");
 define('EMAIL_GREET_NONE', stripslashes($_POST['lastname']) . ' ' . stripslashes($_POST['firstname']) . ' 様 ' . "\n\n");
-define('EMAIL_WELCOME', 'RMTジャックポットへの会員登録が完了いたしました。' . "\n"
+define('EMAIL_WELCOME', STORE_NAME.'への会員登録が完了いたしました。' . "\n"
 . '誠にありがとうございます。' . "\n\n");
 define('EMAIL_TEXT',
 '-----------------------------------------------------------------------' . "\n"
@@ -35,7 +35,7 @@ define('EMAIL_TEXT',
 . '-----------------------------------------------------------------------' . "\n"
 . '□　会員様限定の特典' . "\n"
 . '-----------------------------------------------------------------------' . "\n"
-. 'RMTジャックポットは、会員様に次のようなサービスをご提供いたします。' . "\n\n"
+. STORE_NAME.'は、会員様に次のようなサービスをご提供いたします。' . "\n\n"
 . '■お買い物に使えるポイントサービス' . "\n"
 . '　当サイトでお買い物をされました購入金額の1%をポイントとして還元してお' . "\n"
 . '　ります。' . "\n"
@@ -48,7 +48,7 @@ define('EMAIL_TEXT',
 . '　ことができます。' . "\n"
 . '-----------------------------------------------------------------------' . "\n\n");
 define('EMAIL_CONTACT',
-'ご不明な点がございましたら「RMTジャックポット」までお問い合わせください。' . "\n\n\n\n");
+'ご不明な点がございましたら「'.STORE_NAME.'」までお問い合わせください。' . "\n\n\n\n");
 define('EMAIL_WARNING',
 '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n"
 . '株式会社iimy' . "\n"

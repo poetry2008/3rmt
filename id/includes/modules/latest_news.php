@@ -7,7 +7,7 @@
 <div class="latest_news_home">
 <h2 class="pageHeading_05">
 <span class="game_t game_t02">
-RMTアイテムデポからのお知らせ</span></h2>
+<?php echo STORE_NAME;?>からのお知らせ</span></h2>
 <div class="comment_05">
     <div id="news">
         <ul class="news_ul">

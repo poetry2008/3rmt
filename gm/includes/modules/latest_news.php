@@ -16,7 +16,7 @@ function outNewsEffect(object) {
 <table class="news_title_01">
   <tr>
     <td><div style="border-bottom:none; font-size:14px; color:#fff; padding-left:10px; margin-top:2px;
-    font-weight:bold;">RMTゲームマネーからのお知らせ</div></td> 
+    font-weight:bold;"><?php echo STORE_NAME;?>からのお知らせ</div></td> 
     <td align="left" width="70"></td>
   </tr>
 </table>
