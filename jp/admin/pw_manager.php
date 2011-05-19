@@ -1053,6 +1053,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           );
       break;
   default:
+    if($pwInfo){
       if($ocertify->npermission == 15){
         $history_button =  
            '&nbsp;'.
@@ -1089,6 +1090,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           $pwInfo->updated_at);
       $contents[] = array('align' => '','text' => '<br>' . TEXT_INFO_OPRATER . '&nbsp;&nbsp;&nbsp;' .
           $pwInfo->update_user);
+    }
     break;
 }
   if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
