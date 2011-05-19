@@ -285,6 +285,12 @@ if(isset($_GET['action']) &&
                              order by ".$order_str;
     }
     if($pw_id){
+      $has_pw_sql = str_replace('where',"where id='".$pw_id."' and
+          ",$pw_manager_query_raw);
+      $has_pw_query = tep_db_query($has_pw_sql);
+    }
+    if($pw_id){
+      if(tep_db_query($has_pw_sql)){
       $pw_selected_sql = $pw_manager_query_raw;
       $pw_selected_query = tep_db_query($pw_selected_sql);
       $pw_selected_row_number = 0;
@@ -296,6 +302,10 @@ if(isset($_GET['action']) &&
         }
       }
         $pw_selected_page = ceil($pw_selected_row_number/MAX_DISPLAY_PW_MANAGER_RESULTS);
+      }else{
+       tep_redirect(tep_href_link(FILENAME_PW_MANAGER,'page=' .
+          $pw_selected_page .'&'. tep_get_all_get_params(array('page','pw_id'))));
+      }
     }
     if($pw_selected_page != $_GET['page']){
     if(isset($pw_selected_page)&&$pw_selected_page){
