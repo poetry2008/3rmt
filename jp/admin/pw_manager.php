@@ -305,7 +305,7 @@ if(isset($_GET['action']) &&
       }else{
        tep_redirect(tep_href_link(FILENAME_PW_MANAGER,'page=' .
           $pw_selected_page .'&'.
-          tep_get_all_get_params(array('page','pw_id'))));
+          tep_get_all_get_params(array('page','pw_id','action'))));
       }
     }
     if($pw_selected_page != $_GET['page']){
