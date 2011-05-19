@@ -708,6 +708,22 @@ right:5px;*/
                              " .$sort_where . "
                              order by ".$order_str;
     }
+    if($pw_id){
+      $pw_selected_sql = $pw_manager_query_raw;
+      $pw_selected_query = tep_db_query($pw_selected_sql);
+      $pw_selected_row_number = 0;
+      $pw_selected_rows = 0;
+      while($pw_info_row = tep_db_fetch_array($pw_selected_query)){
+        $pw_selected_rows++;
+        if($pw_id == $pw_info_row['id']){
+          $pw_selected_row_number = $pw_selected_rows;
+        }
+      }
+        $pw_selected_page = ceil($pw_selected_row_number/MAX_DISPLAY_PW_MANAGER_RESULTS);
+    }
+    if(isset($pw_selected_page)&&$pw_selected_page){
+      $_GET['page'] = $pw_selected_page;
+    }
     $pw_manager_split = new splitPageResults($_GET['page'],
         MAX_DISPLAY_PW_MANAGER_RESULTS, $pw_manager_query_raw, $pw_manager_query_numrows);
     //var_dump($pw_manager_query_raw);
@@ -719,7 +735,7 @@ right:5px;*/
       if (( (!@$_GET['pw_id']) || (@$_GET['pw_id'] == $pw_manager_row['id'])) &&
           (!@$pwInfo) && (substr(@$_GET['action'], 0, 3) != 'new')) {
       $pwInfo = new objectInfo($pw_manager_row);
-    }
+      }
     if (isset($pwInfo) && (is_object($pwInfo)) && ($pw_manager_row['id'] == $pwInfo->id) ) {
       echo '              <tr class="dataTableRowSelected"
         onmouseover="this.style.cursor=\'hand\'" >' . "\n";
