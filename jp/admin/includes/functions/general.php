@@ -5025,3 +5025,40 @@ function tep_get_user_list_by_username($name){
   }
   return $list;
 }
+
+  function tep_pw_site_filter($filename, $ca_single = false){
+    global $_GET, $_POST;
+    ?>
+      <div id="tep_site_filter">
+      <?php
+          if (!isset($_GET['site_id']) || !$_GET['site_id']) {?>
+            <span class="site_filter_selected"><a href="<?php echo tep_href_link($filename);
+            ?>">all</a></span>
+          <?php } else { ?>
+            <span><a href="<?php 
+              if ($ca_single) {
+                echo tep_href_link($filename, tep_get_all_get_params(array('site_id')));
+              } else {
+                echo tep_href_link($filename,
+                    tep_get_all_get_params(array('site_id', 'page', 'pw_id', 'action')));
+              }
+            ?>">all</a></span> 
+            <?php } ?>
+          <?php foreach (tep_get_sites() as $site) {?>
+            <?php if (isset($_GET['site_id']) && $_GET['site_id'] == $site['id']) {?>
+<span class="site_filter_selected"><?php echo $site['romaji'];?></span>
+            <?php } else {?>
+<span><a href="<?php 
+  if ($ca_single) {
+    echo tep_href_link($filename, tep_get_all_get_params(array('site_id')) . 'site_id=' . $site['id']);
+  } else {
+    echo tep_href_link($filename, tep_get_all_get_params(array('site_id',
+            'pw_id','action')) . 'site_id=' . $site['id']);
+  }
+?>"><?php echo $site['romaji'];?></a></span>
+            <?php }
+           }
+    ?>
+      </div>
+      <?php
+  }
