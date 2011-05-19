@@ -482,7 +482,7 @@
           }
           
           if(!tep_check_symbol($_POST['romaji'])){
-            $messageStack->add_session("ローマ字に登録できない半角記号があります。削除するか半角ハイフンに置き換えてください。", 'error');
+            $messageStack->add_session(CATEGORY_ROMAJI_ERROR_NOTICE, 'error');
             tep_redirect(tep_href_link(FILENAME_CATEGORIES));
           }
 
@@ -510,7 +510,7 @@
             tep_redirect(tep_href_link(FILENAME_CATEGORIES));
           }
           if(!tep_check_symbol($_POST['romaji'])){
-            $messageStack->add_session("ローマ字に登録できない半角記号があります。削除するか半角ハイフンに置き換えてください。", 'error');
+            $messageStack->add_session(CATEGORY_ROMAJI_ERROR_NOTICE, 'error');
             tep_redirect(tep_href_link(FILENAME_CATEGORIES));
           }
           if(!tep_check_romaji($_POST['romaji'])){
@@ -946,7 +946,7 @@
       if (file_exists($image_location2)) @unlink($image_location2);
       tep_db_query("update  " . TABLE_PRODUCTS . " set ".$delete_image." = '' where products_id  = '" . $_GET['pID'] . "'");
       tep_redirect(tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&action='.$_GET['action']));
-      $messageStack->add('画像削除に成功しました', 'success');
+      $messageStack->add(CATEGORY_PIC_DEL_SUCCESS_NOTICE, 'success');
     }
     if (isset($_GET['mode']) && $_GET['mode'] == 'c_delete') {
       $image_location  = tep_get_upload_dir($site_id). 'carttags/' . $_GET['file'];//元画像
@@ -954,7 +954,7 @@
       if (file_exists($image_location)) @unlink($image_location);
       tep_db_query("update  " . TABLE_PRODUCTS . " set ".$delete_image." = '' where products_id  = '" . $_GET['pID'] . "'");
       tep_redirect(tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&action='.$_GET['action']));
-      $messageStack->add('画像削除に成功しました', 'success');
+      $messageStack->add(CATEGORY_PIC_DEL_SUCCESS_NOTICE, 'success');
     }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -1012,11 +1012,11 @@ function check_price(new_id,old_price,percent){
   if (percent != '' && percent != 0 && percent != null) {
     if (new_price > old_price) {
       if( ((new_price - old_price) / old_price) * 100 >= percent ) {
-          error_msg = percent+"%の差額があります。再設定してください\n";
+          error_msg = percent+"<?php echo CATEGORY_JS_CHAE_ERROR_TEXT;?>\n";
       }
     } else {
       if( ((old_price - new_price) / new_price) * 100 >= percent ) {
-          error_msg = percent+"%の差額があります。再設定してください\n";
+          error_msg = percent+"<?php echo CATEGORY_JS_CHAE_ERROR_TEXT;?>\n";
       }
     }
   }
@@ -1026,10 +1026,10 @@ function check_price(new_id,old_price,percent){
     error_msg = '';
   }
   
-  if(confirm("更新しますか？")){
+  if(confirm("<?php echo CATEGORY_JS_UPDATE_NOTICE;?>")){
     return true;
   }else{
-    alert("更新キャンセル");
+    alert("<?php echo CATEGORY_JS_UPDATE_ERROR_TEXT;?>");
     $('#'+new_id).css('border-color','red');
     $('#'+new_id).focus();
     return false;
@@ -1257,7 +1257,7 @@ function get_cart_products(){
               </tr>
               <tr>
                 <td colspan="2"><fieldset>
-                  <legend style="color:#FF0000 ">商品の基本情報</legend>
+                  <legend style="color:#FF0000 "><?php echo CATEGORY_PRODUCT_INFO_TITLE;?></legend>
                   <table>
           <tr>
                       <td class="main"><?php echo TEXT_PRODUCTS_STATUS; ?></td>
@@ -1268,7 +1268,7 @@ function get_cart_products(){
                           !isset($pInfo->products_status)) . '&nbsp;' .
                       TEXT_PRODUCT_AVAILABLE . '&nbsp;' .
                       tep_draw_radio_field('products_status', '2',
-                          $pInfo->products_status == '2') . '&nbsp;' . '過去ログ'.
+                          $pInfo->products_status == '2') . '&nbsp;' .  TEXT_PRODUCT_BEFORE_TEXT.
                       '&nbsp;' . tep_draw_radio_field('products_status', '0',
                           $pInfo->products_status == '0') . '&nbsp;' .
                       TEXT_PRODUCT_NOT_AVAILABLE . '&nbsp;' .
@@ -1309,7 +1309,7 @@ function get_cart_products(){
             <td class="main">&nbsp;</td>
           </tr>
           <tr>
-            <td class="main">オススメ商品並び順:</td>
+            <td class="main"><?php echo TEXT_PRODUCT_SORT_ORDER_TEXT; ?></td>
             <td class="main"><?php echo
             tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' .
             tep_draw_input_field('sort_order', isset($pInfo->sort_order)?$pInfo->sort_order:'1000','id="op"' . ($site_id ? 'class="readonly" readonly' : '')); ?></td>
@@ -1332,7 +1332,7 @@ function get_cart_products(){
               <tr>
                 <td class="main"><?php if ($i == 0) echo TEXT_PRODUCTS_NAME; ?></td>
                 <td class="main"><?php echo tep_image(DIR_WS_CATALOG_LANGUAGES .  $languages[$i]['directory'] . '/images/' .  $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;<span class="categories_input01">' .  tep_draw_input_field('products_name[' . $languages[$i]['id'] . ']', (isset($products_name[$languages[$i]['id']]) ?  stripslashes($products_name[$languages[$i]['id']]) : (isset($pInfo->products_id)?tep_get_products_name($pInfo->products_id, $languages[$i]['id'], $site_id, true):'')), 'id="pname"').'</span>'; ?></td>
-                <td class="fieldRequired">検索キー</td>
+                <td class="fieldRequired"><?php echo TEXT_PRODUCT_SEARCH_READ; ?></td>
               </tr>
               <?php
     }
@@ -1346,7 +1346,7 @@ function get_cart_products(){
                 </td> 
               </tr>
               <tr>
-                <td class="main">関連付け商品:</td>
+                <td class="main"><?php echo TEXT_PRODUCT_LINK_PRODUCT_TEXT; ?></td>
                 <td class="main" colspan="2">
   <?php echo tep_draw_separator('pixel_trans.gif', '24', '15');?>
   <?php echo tep_draw_pull_down_menu('relate_categories', tep_get_category_tree('&npsp;'), ($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id), ($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').' onchange="relate_products1(this.options[this.selectedIndex].value, \''.$pInfo->relate_products_id.'\')"');?>
@@ -1377,14 +1377,14 @@ function get_cart_products(){
                       <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                     </tr>
                     <tr bgcolor="#CCCCCC">
-                      <td class="main"><?php echo '<font color="blue"><b>増減の値:</b></font>'; ?></td>
+                      <td class="main"><?php echo '<font color="blue"><b>'.TEXT_PRODUCT_ADDORSUB_VALUE.'</b></font>'; ?></td>
                       <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_price_offset', $pInfo->products_price_offset, ($site_id ? 'class="readonly" readonly' : '')); ?></td>
                     </tr>
                     <tr>
                       <td class="main">&nbsp;</td>
-            <td colspan="2" class="smallText"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;# 割り引くパーセンテージを "増減の値" 欄に入力することができます。例: 20%'; ?><br>
-            <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;# 新しい価格を入力する場合には、新しい価格を入力してください。例: 1980'; ?><br>
-            <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;# 登録されている情報を消去する場合は、値を空白にしてください。'; ?></td>
+            <td colspan="2" class="smallText"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . TEXT_PRODUCT_PRICE_READ_ITEM_ONE; ?><br>
+            <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') .  TEXT_PRODUCT_PRICE_READ_ITEM_TWO; ?><br>
+            <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') .  TEXT_PRODUCT_PRICE_READ_ITEM_THREE; ?></td>
                     </tr>
                     <tr>
                       <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
@@ -1396,12 +1396,12 @@ function get_cart_products(){
           <tr>
                       <td class="main">&nbsp;</td>
             <td colspan="2" class="smallText">
-            <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;(例１：割増)商品単価を100円とした場合'; ?><br>
-            <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp; 1:20,50:10,100:0'; ?><br>
-            <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp; 1個から49個までの加算値は20→商品単価は120円'; ?><br>
-            <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp; 50個～99個までの加算値は10→商品単価は110円'; ?><br>
-            <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp; 割引の場合は、加算値を-20の様なマイナス値にして下さい。'; ?><br>
-            <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp; <b>割引は未検証なので入力しないこと！</b>'; ?></td>
+            <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') .  TEXT_PRODUCT_SMALLNUM_READ_ITEM_ONE; ?><br>
+            <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') .  TEXT_PRODUCT_SMALLNUM_READ_ITEM_TWO; ?><br>
+            <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') .  TEXT_PRODUCT_SMALLNUM_READ_ITEM_THREE; ?><br>
+            <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') .  TEXT_PRODUCT_SMALLNUM_READ_ITEM_FOUR; ?><br>
+            <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') .  TEXT_PRODUCT_SMALLNUM_READ_ITEM_FIVE; ?><br>
+            <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') .  TEXT_PRODUCT_SMALLNUM_READ_ITEM_SIX; ?></td>
         </tr>
         <tr>
           <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
@@ -1415,7 +1415,7 @@ function get_cart_products(){
         </tr>
         <tr>
           <td>&nbsp;</td>
-          <td class="smallText" colspan="2">在庫計算する場合は入力してください。在庫を計算する場合は　基本設定→在庫管理　を設定してください。</td>
+          <td class="smallText" colspan="2"><?php echo TEXT_PRODUCT_KUSHUOMING_TEXT;?></td>
         </tr>
         <tr>
           <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
@@ -1423,40 +1423,40 @@ function get_cart_products(){
         <tr>
           <td class="main"><?php echo TEXT_PRODUCTS_MODEL; ?></td>
           <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_model', isset($pInfo->products_model)?$pInfo->products_model:'', ($site_id ? 'class="readonly" readonly' : '')); ?></td>
-          <td class="fieldRequired">検索キー</td>
+          <td class="fieldRequired"><?php echo TEXT_PRODUCT_SEARCH_READ;?></td>
         </tr>
           <tr>
             <td class="main" colspan="3">
               <?php echo '<span class="categories_input01">' 
-            . '項目名:&nbsp;' . tep_draw_input_field('products_attention_1_1', isset($des_result['products_attention_1_1'])?$des_result['products_attention_1_1']:'', 'style="width:100px;" '.($site_id ? 'class="readonly" readonly' : ''))
-            . '&nbsp;&nbsp;&nbsp;テキスト1:&nbsp;' . tep_draw_input_field('products_attention_1_2', isset($des_result['products_attention_1_2'])?$des_result['products_attention_1_2']:'', 'style="width:100px;" '.($site_id ? 'class="readonly" readonly' : ''))
-            . '&nbsp;&nbsp;&nbsp;数値:&nbsp;' . tep_draw_input_field('products_attention_1_3', isset($des_result['products_attention_1_3'])?$des_result['products_attention_1_3']:'', 'style="width:100px;" '.($site_id ? 'class="readonly" readonly' : ''))
-            . '&nbsp;&nbsp;&nbsp;テキスト２:&nbsp;' . tep_draw_input_field('products_attention_1_4', isset($des_result['products_attention_1_4'])?$des_result['products_attention_1_4']:'', 'style="width:100px;" '.($site_id ? 'class="readonly" readonly' : ''))
+            . TEXT_PRODUCT_XIANGMU_NAME.'&nbsp;' . tep_draw_input_field('products_attention_1_1', isset($des_result['products_attention_1_1'])?$des_result['products_attention_1_1']:'', 'style="width:100px;" '.($site_id ? 'class="readonly" readonly' : ''))
+            . '&nbsp;&nbsp;&nbsp;'.TEXT_PRODUCT_ATTONE_TEXT.'&nbsp;' . tep_draw_input_field('products_attention_1_2', isset($des_result['products_attention_1_2'])?$des_result['products_attention_1_2']:'', 'style="width:100px;" '.($site_id ? 'class="readonly" readonly' : ''))
+            . '&nbsp;&nbsp;&nbsp;'.TEXT_PRODUCT_SHUZHI_TEXT.'&nbsp;' . tep_draw_input_field('products_attention_1_3', isset($des_result['products_attention_1_3'])?$des_result['products_attention_1_3']:'', 'style="width:100px;" '.($site_id ? 'class="readonly" readonly' : ''))
+            . '&nbsp;&nbsp;&nbsp;'.TEXT_PRODUCT_ATTTWO_TEXT.'&nbsp;' . tep_draw_input_field('products_attention_1_4', isset($des_result['products_attention_1_4'])?$des_result['products_attention_1_4']:'', 'style="width:100px;" '.($site_id ? 'class="readonly" readonly' : ''))
             .'</span>'; ?>
           </td>
         </tr>
           <tr>
-            <td class="main">項目１</td>
+            <td class="main"><?php echo TEXT_PRODUCT_PROJECT_TEXT;?>１</td>
             <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_input01">' . tep_draw_input_field('products_jan', isset($des_result['products_attention_1'])?$des_result['products_attention_1']:'', ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?><br>
-            <span class="smallText">項目名とデータは「//」スラッシュ2本で区切ってください。例）サイズ//H1000　W560</span></td>
+            <span class="smallText"><?php echo TEXT_PRODUCT_PROJECT_READ;?></span></td>
           </tr>
         <tr>
-          <td class="main">項目２</td>
+          <td class="main"><?php echo TEXT_PRODUCT_PROJECT_TEXT;?>２</td>
           <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_input01">' . tep_draw_input_field('products_size', isset($des_result['products_attention_2'])?$des_result['products_attention_2']:'', ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
         </tr>
         <tr>
-          <td class="main">項目３</td>
+          <td class="main"><?php echo TEXT_PRODUCT_PROJECT_TEXT;?>３</td>
           <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_input01">' . tep_draw_input_field('products_naiyou', isset($des_result['products_attention_3'])?$des_result['products_attention_3']:'', ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
         </tr>
         <tr>
-          <td class="main">項目４</td>
+          <td class="main"><?php echo TEXT_PRODUCT_PROJECT_TEXT;?>４</td>
           <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_input01">' . tep_draw_input_field('products_zaishitu', isset($des_result['products_attention_4'])?$des_result['products_attention_4']:'', ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
         </tr>
         <tr>
           <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
         </tr>
         <tr>
-          <td class="main" valign="top">キャラクタ名</td>
+          <td class="main" valign="top"><?php echo TEXT_PRODUCT_ATTFIVE_TITLE;?></td>
           <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_textarea01">' . tep_draw_textarea_field('products_attention_5', 'soft', '70', '15', isset($des_result['products_attention_5'])?$des_result['products_attention_5']:'', ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
         </tr>
       </table>
@@ -1468,7 +1468,7 @@ function get_cart_products(){
 
               <tr>
                 <td colspan="2"><fieldset>
-                  <legend style="color:#FF0000">商品の説明文/オプション登録</legend>
+                  <legend style="color:#FF0000"><?php echo TEXT_PRODUCT_SHUOMING_TEXT;?></legend>
                   <table>
 
 <?php
@@ -1485,8 +1485,8 @@ function get_cart_products(){
                   </table>
 
                   #STORE_NAME# <br>
-                  HTMLによる入力可<br>
-                  <span class="fieldRequired">検索キー</span></td>
+                  <?php echo TEXT_PRODUCT_DESC_HTML_READ;?><br>
+                  <span class="fieldRequired"><?php echo TEXT_PRODUCT_SEARCH_READ;?></span></td>
               </tr>
 <?php
     }
@@ -1513,22 +1513,22 @@ function get_cart_products(){
                 <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
               <tr>
-                <td class="main" valign="top">オプション登録</td>
+                <td class="main" valign="top"><?php echo TEXT_PRODUCT_OPTIONS_TITLE;?></td>
                 <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_textarea01">' . tep_draw_textarea_field('products_options', 'soft', '70', '15', $options_array, ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
               </tr>
               <tr>
-                <td class="main" valign="top">メニュー形</td>
+                <td class="main" valign="top"><?php echo TEXT_PRODUCT_OIMAGE_TITLE;?></td>
                 <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15');?> 
                 <?php
                   if (!isset($pInfo->option_image_type)) {
                 ?>
-                  <input type="radio" name="option_image_type" value="select" checked>プルダウン
-                  <input type="radio" name="option_image_type" value="radio">ラジオ
+                  <input type="radio" name="option_image_type" value="select" checked><?php echo TEXT_PRODUCT_OPTIONS_SELECT_TEXT;?>
+                  <input type="radio" name="option_image_type" value="radio"><?php echo TEXT_PRODUCT_OPTIONS_RADIO_TEXT;?>
                 <?php
                   } else {
                 ?>
-                  <input type="radio" name="option_image_type" value="select" <?php if($pInfo->option_image_type == 'select'){?> checked<?php }?>>プルダウン
-                  <input type="radio" name="option_image_type" value="radio" <?php if($pInfo->option_image_type == 'radio'){?> checked<?php }?>>ラジオ
+                  <input type="radio" name="option_image_type" value="select" <?php if($pInfo->option_image_type == 'select'){?> checked<?php }?>><?php echo TEXT_PRODUCT_OPTIONS_SELECT_TEXT;?>
+                  <input type="radio" name="option_image_type" value="radio" <?php if($pInfo->option_image_type == 'radio'){?> checked<?php }?>><?php echo TEXT_PRODUCT_OPTIONS_RADIO_TEXT;?>
                 <?php
                   }
                 ?>
@@ -1536,15 +1536,15 @@ function get_cart_products(){
               </tr>
               <tr>
                 <td></td>
-                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;'; ?>「オプション名,オプション値,オプション価格,接頭辞,在庫数」の順で入力（区切りは「,」・改行で複数同時登録可）<br>
-                  <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;'; ?>例）<br>
+                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;'; ?><?php echo TEXT_PRODUCT_LAN_READ;?><br>
+                  <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') .  '&nbsp;'; ?><?php echo TEXT_PRODUCT_LAN_LI_TEXT;?><br>
                   <table border="0" cellspacing="0" cellpadding="3">
                     <tr>
-                      <td class="main">                  言語,日本語,0,+ <br>
-                  言語,中国語,400,+ <br>
-                  言語,韓国語,100,-</td>
+                      <td class="main">                  
+                  <?php echo TEXT_PRODUCT_LAN_COMMENT;?>
+                  </td>
                       <td width="50" align="center" class="main">→</td>
-            <td class="main">言語:
+            <td class="main"><?php echo TEXT_PRODUCT_LAN_TEXT;?>
                         <select name="select">
                           <option selected>日本語</option>
                           <option>中国語(+400円)</option>
@@ -1564,7 +1564,7 @@ function get_cart_products(){
 <?php if (!$site_id) {?>
               <tr>
                 <td colspan="2"><fieldset>
-                  <legend style="color:#009900 ">商品の画像</legend>
+                  <legend style="color:#009900 "><?php echo TEXT_PRODUCT_IMAGE_TITLE;?></legend>
                   <table>
           <tr>
             <td class="main"><?php echo TEXT_PRODUCTS_IMAGE; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -1573,7 +1573,7 @@ function get_cart_products(){
       if(isset($pInfo->products_image) && tep_not_null($pInfo->products_image)){
        echo '<br>'.tep_info_image('products/'.$pInfo->products_image,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, $site_id).'<br>'."\n";
       ?>
-      <a href="javascript:confirmg('この画像を削除しますか？','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&cl=products_image&action='.$_GET['action'].'&file='.(isset($pInfo->products_image)?$pInfo->products_image:'').'&mode=p_delete&site_id='.$site_id) ; ?>');" style="color:#0000FF;">この画像を削除する</a>
+      <a href="javascript:confirmg('<?php echo TEXT_PRODUCT_IMAGE_DEL_CONFIRM;?>','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&cl=products_image&action='.$_GET['action'].'&file='.(isset($pInfo->products_image)?$pInfo->products_image:'').'&mode=p_delete&site_id='.$site_id) ; ?>');" style="color:#0000FF;"><?php echo TEXT_PRODUCT_IMAGE_DEL_TEXT;?></a>
       <?php } ?>
       </td>
           </tr>
@@ -1584,7 +1584,7 @@ function get_cart_products(){
       if(isset($pInfo->products_image2) && tep_not_null($pInfo->products_image2)){
        echo '<br>'.tep_info_image('products/'.$pInfo->products_image2,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, $site_id).'<br>'."\n";
       ?>
-      <a href="javascript:confirmg('この画像を削除しますか？','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&cl=products_image2&action='.$_GET['action'].'&file='.$pInfo->products_image2.'&mode=p_delete') ; ?>');" style="color:#0000FF;">この画像を削除する</a>
+      <a href="javascript:confirmg('<?php echo TEXT_PRODUCT_IMAGE_DEL_CONFIRM;?>','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&cl=products_image2&action='.$_GET['action'].'&file='.$pInfo->products_image2.'&mode=p_delete') ; ?>');" style="color:#0000FF;"><?php echo TEXT_PRODUCT_IMAGE_DEL_TEXT;?></a>
       <?php } ?>
       </td>
           </tr>
@@ -1595,7 +1595,7 @@ function get_cart_products(){
       if(isset($pInfo->products_image3) && tep_not_null($pInfo->products_image3)){
        echo '<br>'.tep_info_image('products/'.$pInfo->products_image3,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT , $site_id).'<br>'."\n";
       ?>
-      <a href="javascript:confirmg('この画像を削除しますか？','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&cl=products_image3&action='.$_GET['action'].'&file='.$pInfo->products_image3.'&mode=p_delete') ; ?>');" style="color:#0000FF;">この画像を削除する</a>
+      <a href="javascript:confirmg('<?php echo TEXT_PRODUCT_IMAGE_DEL_CONFIRM;?>','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&cl=products_image3&action='.$_GET['action'].'&file='.$pInfo->products_image3.'&mode=p_delete') ; ?>');" style="color:#0000FF;"><?php echo TEXT_PRODUCT_IMAGE_DEL_TEXT;?></a>
       <?php } ?>
       </td>
           </tr>
@@ -1605,7 +1605,7 @@ function get_cart_products(){
            ?>
           <!-- カラー別画像// -->
           <hr size="1">
-          <legend style="color:#009900 ">カラー別画像</legend>
+          <legend style="color:#009900 "><?php echo TEXT_PRODUCT_COLOR_IMAGE_TITLE;?></legend>
           <table border="0" cellpadding="1" cellspacing="5">
           <tr>
           <?php
@@ -1686,10 +1686,11 @@ function get_cart_products(){
 
               <tr>
                 <td colspan="2">
-                    <fieldset><legend style="color:#009900 ">買い忘れ商品</legend>
+                    <fieldset><legend style="color:#009900 "><?php echo TEXT_PRODUCT_CARTFLAG_TITLE;?></legend>
                     <table>
                     <tr><td>
-                    買い忘れ商品 <input type="radio" name="products_cartflag" value="0"<?php if(!$pInfo->products_cartflag){?> checked<?php }?>>いいえ <input type="radio" name="products_cartflag" value="1"<?php if($pInfo->products_cartflag){?> checked<?php }?>>はい
+                    <?php echo TEXT_PRODUCT_CARTFLAG_TITLE;?> <input type="radio" name="products_cartflag" value="0"<?php if(!$pInfo->products_cartflag){?> checked<?php }?>><?php echo
+                      TEXT_PRODUCT_CARTFLAG_NO;?> <input type="radio" name="products_cartflag" value="1"<?php if($pInfo->products_cartflag){?> checked<?php }?>><?php echo TEXT_PRODUCT_CARTFLAG_YES;?>
                     </td></tr>
                     <tr><td>
                     <?php 
@@ -1701,8 +1702,8 @@ function get_cart_products(){
                       ?>
                     <table width="100%" >
                       <tr>
-                        <td nowrap="nowrap" width="50%"><input type="radio" name="products_cart_buyflag" value='0'<?php if(!$pInfo->products_cart_buyflag){?> checked<?php }?>>販売 <input type="radio" name="products_cart_buyflag" value='1'<?php if($pInfo->products_cart_buyflag){?> checked<?php }?>>買取</td>
-                        <td width="50%" align="left"><a href="javascript:void(0);" onclick="$('.carttags').each(function(){if(this.checked)this.checked=false; else this.checked=true;})">逆選択</a></td>
+                        <td nowrap="nowrap" width="50%"><input type="radio" name="products_cart_buyflag" value='0'<?php if(!$pInfo->products_cart_buyflag){?> checked<?php }?>><?php echo TEXT_PRODUCT_BUYFLAG_SELL;?> <input type="radio" name="products_cart_buyflag" value='1'<?php if($pInfo->products_cart_buyflag){?> checked<?php }?>><?php echo TEXT_PRODUCT_BUYFLAG_BUY;?></td>
+                        <td width="50%" align="left"><a href="javascript:void(0);" onclick="$('.carttags').each(function(){if(this.checked)this.checked=false; else this.checked=true;})"><?php echo TEXT_PRODUCT_BUYFLAG_OPSITE_SELECT;?></a></td>
                       </tr>
                       <tr><td colspan='2'>
 <?php foreach($tag_array as $tag){ ?>
@@ -1716,27 +1717,26 @@ function get_cart_products(){
                     
                     <table width="100%">
                     <td></tr>
-                    <tr><td width="150">買い忘れバナー最小在庫数</td>
+                    <tr><td width="150"><?php echo TEXT_PRODUCT_CART_MIN_TEXT;?></td>
                     <td><input name="products_cart_min" type="text" value="<?php echo $pInfo->products_cart_min?$pInfo->products_cart_min:0;?>">
                     </td></tr>
                     <tr>
-                    <td>表示順</td>
+                    <td><?php echo TEXT_PRODUCT_CARTORDER_TEXT;?></td>
                     <td><input name="products_cartorder" type="text" value="<?php echo $pInfo->products_cartorder?$pInfo->products_cartorder:1000;?>">
                     </td></tr>
  <?php if ($pInfo->products_cart_image) {?>
                     <tr>
-                    <td>画像预览</td>
+                    <td><?php echo TEXT_PRODUCT_PIC_PREVIEW_TEXT;?></td>
                     <td><?php echo tep_image(tep_get_web_upload_dir(0) . 'carttags/' . $pInfo->products_cart_image, $pInfo->products_name, null, null, 'align="right" hspace="5" vspace="5"');?>
                       <br>
-                      <a href="javascript:confirmg('この画像を削除しますか？','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&cl=products_cart_image&action='.$_GET['action'].'&file='.$pInfo->products_cart_image.'&mode=c_delete') ; ?>');" style="color:#0000FF;">この画像を削除する</a>
+                      <a href="javascript:confirmg('<?php echo TEXT_PRODUCT_IMAGE_DEL_CONFIRM;?>','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&cl=products_cart_image&action='.$_GET['action'].'&file='.$pInfo->products_cart_image.'&mode=c_delete') ; ?>');" style="color:#0000FF;"><?php echo TEXT_PRODUCT_IMAGE_DEL_TEXT;?></a>
                     </td></tr>
 <?php }?>
-                    <tr><td>バナー画像</td>
+                    <tr><td><?php echo TEXT_PRODUCT_CARTIMAGE_TITLE;?></td>
                     <td><input type="file" name="products_cart_image">
-                      <br>注：バナー画像の横幅は最大450PXです
+                      <br><?php echo TEXT_PRODUCT_CARTIMAGE_NOTICE;?>
                     </td></tr>
-                    <tr><td colspan="2" style="text-align:center;">
-                      <a href="javascript:void(0);" onclick="get_cart_products()">結果確認</a>
+                    <tr><td colspan="2" style="text-align:center;"> <a href="javascript:void(0);" onclick="get_cart_products()"><?php echo TEXT_PRODUCT_RESULT_CONFIRM;?></a>
                     </td></tr>
                     </table>
                     </fieldset>
@@ -1913,7 +1913,7 @@ function get_cart_products(){
   ?>
             <?php echo tep_draw_form('goto', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
               <div id="gotomenu">
-                <a href="javascript:void(0)" onclick="$('#categories_tree').toggle()">ジャンプ▼</a>
+                <a href="javascript:void(0)" onclick="$('#categories_tree').toggle()"><?php echo CATEGORY_TREE_SELECT_TEXT;?></a>
                 <div id="categories_tree">
                 <?php
                   require(DIR_WS_CLASSES . 'category_tree.php');
@@ -1934,7 +1934,7 @@ function get_cart_products(){
   echo '</form>' . "\n";
   echo '</div>';
       echo tep_draw_form($form_action, FILENAME_CATEGORIES, 'from='.$_GET['from'].'&cPath=' . $cPath . '&pID=' . $_GET['pID'] . '&page='.$_GET['page'].'&action=' . $form_action, 'post', 'enctype="multipart/form-data" onSubmit="return check_price(\'pp\', '.$pInfo->products_price.', '.($calc?$calc['percent']:0).');"');
-  echo tep_image_submit('button_update.gif', 'よく確認してから押しなさい','class="update_class"');
+  echo tep_image_submit('button_update.gif', CATEGORY_BUTTON_UPDATE_TEXT,'class="update_class"');
   echo '</td>';
   echo '</tr>';
       //show menu end
@@ -2008,37 +2008,35 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   echo '  <td height="30">';
   echo '<table  width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="left">';
   // add abs for products_price 
-  echo '価&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格：&nbsp;' .
-    tep_draw_input_field('products_price',
-        number_format(abs($pInfo->products_price),0,'.',''),'onkeyup="clearNoNum(this)"  id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;円' . '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price . '円 ' . "\n";
+  echo CATEGORY_JIA_TEXT.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.CATEGORY_GE_TEXT.'：&nbsp;' .  tep_draw_input_field('products_price', number_format(abs($pInfo->products_price),0,'.',''),'onkeyup="clearNoNum(this)" id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;' . CATEGORY_MONEY_UNIT_TEXT .  '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price . CATEGORY_MONEY_UNIT_TEXT.' ' . "\n";
   echo '</td><td align="right">';
   if (!$pInfo->products_bflag && $pInfo->relate_products_id)
-  echo '実在庫の平均仕入価格： '.@display_price(tep_get_avg_by_pid($pInfo->products_id)).'円';
+  echo CATEGORY_AVERAGE_PRICE.' '.@display_price(tep_get_avg_by_pid($pInfo->products_id)).CATEGORY_MONEY_UNIT_TEXT;
   echo '</td></tr></table>';
   echo '  </td>';
   echo '  </tr><tr><td><hr size="2" noshade></td></tr><tr>';
   echo '  <td height="30">';
-  echo '実&nbsp;在&nbsp;&nbsp;庫：&nbsp;' . tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;個' . '&nbsp;&nbsp;←&nbsp;' . $pInfo->products_real_quantity . '個' . "\n";
+  echo CATEGORY_SHIKU_TEXT . tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;' .CATEGORY_GE_UNIT_TEXT. '&nbsp;&nbsp;←&nbsp;' . $pInfo->products_real_quantity .CATEGORY_GE_UNIT_TEXT. "\n";
   echo '  </td>';
   echo '  </tr><tr><td><hr size="2" noshade style="border:0;"></td></tr><tr>';
   echo '  <td height="42" style="background-color:#ccc; padding-top:5px;">';
-  echo '架空在庫：&nbsp;' . tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,' size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;個' . '&nbsp;&nbsp;←&nbsp;' . $pInfo->products_virtual_quantity . '個' . "\n";
+  echo CATEGORY_JIAKONGZAIKU_TEXT.'&nbsp;' .  tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,' size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;'.CATEGORY_GE_UNIT_TEXT. '&nbsp;&nbsp;←&nbsp;' . $pInfo->products_virtual_quantity . CATEGORY_GE_UNIT_TEXT . "\n";
   echo '  </td>';
   echo '  </tr>';
   echo '</table>';
   echo '<table  width="95%" cellpadding="0" cellspacing="0" border="0">';
   echo '<tr><td>';
-  echo '当社キャラクター名の入力欄：</tr></td><tr><td>' . tep_draw_textarea_field('products_attention_5', 'soft', '70', '10', $pInfo->products_attention_5) . '</tr></td>';
+  echo CATEGORY_RULI_TEXT.'</tr></td><tr><td>' . tep_draw_textarea_field('products_attention_5', 'soft', '70', '10', $pInfo->products_attention_5) . '</tr></td>';
   echo '</table>';
   echo '</td>';
   echo '<td width="50%" valign="top" align="right">';
   if (tep_get_bflag_by_product_id($pInfo->products_id)) { // 如果买取
     echo '<table width="95%" cellpadding="0" cellspacing="0" border="1">';
     echo '  <tr>';
-    echo '  <td height="30"><button  type="button" onclick="calculate_price()">計算する</button></td>';
-    echo '  <td>ズバリ</td>';
-    echo '  <td>下一桁5</td>';
-    echo '  <td>下一桁0</td>';
+    echo '  <td height="30"><button  type="button" onclick="calculate_price()">'.CATEGORY_CAL_TITLE_TEXT.'</button></td>';
+    echo '  <td>'.CATEGORY_CAL_ORIGIN_SELECT.'</td>';
+    echo '  <td>'.CATEGORY_NEXTLINE_TEXT.'5</td>';
+    echo '  <td>'.CATEGORY_NEXTLINE_TEXT.'0</td>';
     echo '  </tr>';
     echo '  <tr>';
     echo '  <td align="right" height="30">5000</td>';
@@ -2067,13 +2065,13 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   <br>
   <table width="95%" border="1" cellspacing="0" cellpadding="2">
     <tr>
-      <th colspan="4" align="left">商品履歴</th>
+      <th colspan="4" align="left"><?php echo TABLE_HEADING_PRODUCT_HISTORY;?></th>
     </tr>
     <tr>
-      <th>取引日</th>
-      <th>個数</th>
-      <th>単価</th>
-      <th>ステータス</th>
+      <th><?php echo TABLE_HEADING_FETCHTIME_TEXT;?></th>
+      <th><?php echo TABLE_HEADING_GESHU;?></th>
+      <th><?php echo TABLE_HEADING_DANJIA;?></th>
+      <th><?php echo TABLE_HEADING_OSTATUS;?></th>
     </tr>
   <?php
   if (tep_db_num_rows($order_history_query)) {
@@ -2084,8 +2082,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
     ?>
       <tr>
         <td class="main" width="120"><?php echo $order_history['torihiki_date'];?></td>
-        <td class="main" width="100" align="right"><?php echo $order_history['products_quantity'];?>個</td>
-        <td class="main" align="right"><?php echo display_price($order_history['final_price']);?>円</td>
+        <td class="main" width="100" align="right"><?php echo $order_history['products_quantity'];?><?php echo CATEGORY_GE_UNIT_TEXT;?></td>
+        <td class="main" align="right"><?php echo display_price($order_history['final_price']);?><?php echo CATEGORY_MONEY_UNIT_TEXT;?></td>
         <td class="main" width="100"><?php echo $order_history['orders_status_name'];?></td>
       </tr>
     <?php
@@ -2098,8 +2096,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
     ?>
       <tr>
         <th></th>
-        <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left">合計:</td><td align="right"><?php echo $sum_quantity;?>個</td></tr></table></td>
-        <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left">平均:</td><td align="right"><?php echo abs(@display_price($sum_price/$sum_quantity));?>円</td></tr></table></td>
+        <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left"><?php echo CATEGORY_TOTALNUM_TEXT;?></td><td align="right"><?php echo $sum_quantity;?><?php echo CATEGORY_GE_UNIT_TEXT;?></td></tr></table></td>
+        <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left"><?php echo CATEGORY_AVERAGENUM_TEXT;?></td><td align="right"><?php echo abs(@display_price($sum_price/$sum_quantity));?><?php echo CATEGORY_MONEY_UNIT_TEXT;?></td></tr></table></td>
         <td class="main"> </td>
       </tr>
       <?php
@@ -2123,13 +2121,13 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   <br>
   <table width="95%" border="1" cellspacing="0" cellpadding="2">
     <tr>
-      <th colspan="4" align="left">関連付け商品:<?php echo tep_get_relate_products_name($pInfo->products_id);?></th>
+      <th colspan="4" align="left"><?php echo TEXT_PRODUCT_LINK_PRODUCT_TEXT;?><?php echo tep_get_relate_products_name($pInfo->products_id);?></th>
     </tr>
     <tr>
-      <th>取引日</th>
-      <th>個数</th>
-      <th>単価</th>
-      <th>ステータス</th>
+      <th><?php echo TABLE_HEADING_FETCHTIME_TEXT;?></th>
+      <th><?php echo TABLE_HEADING_GESHU;?></th>
+      <th><?php echo TABLE_HEADING_DANJIA;?></th>
+      <th><?php echo TABLE_HEADING_OSTATUS;?></th>
     </tr>
   <?php
   if (tep_db_num_rows($order_history_query)) {
@@ -2140,8 +2138,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
     ?>
       <tr>
         <td class="main" width="120"><?php echo $order_history['torihiki_date'];?></td>
-        <td class="main" width="100" align="right"><?php echo $order_history['products_quantity'];?>個</td>
-        <td class="main" align="right"><?php echo display_price( $order_history['final_price'] );?>円</td>
+        <td class="main" width="100" align="right"><?php echo $order_history['products_quantity'];?><?php echo CATEGORY_GE_UNIT_TEXT;?></td>
+        <td class="main" align="right"><?php echo display_price( $order_history['final_price'] );?><?php echo CATEGORY_MONEY_UNIT_TEXT;?></td>
         <!--<td class="main"><?php echo strip_tags(tep_get_ot_total_by_orders_id($order_history['orders_id']));?></td>-->
         <td class="main" width="100"><?php echo $order_history['orders_status_name'];?></td>
       </tr>
@@ -2155,8 +2153,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
     ?>
       <tr>
         <th></th>
-        <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left">合計:</td><td align="right"><?php echo $sum_quantity;?>個</td></tr></table></td>
-        <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left">平均:</td><td align="right"><?php echo @display_price($sum_price/$sum_quantity);?>円</td></tr></table></td>
+        <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left"><?php echo CATEGORY_TOTALNUM_TEXT;?></td><td align="right"><?php echo $sum_quantity;?><?php echo CATEGORY_GE_UNIT_TEXT;?></td></tr></table></td>
+        <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left"><?php echo CATEGORY_AVERAGENUM_TEXT;?></td><td align="right"><?php echo @display_price($sum_price/$sum_quantity);?><?php echo CATEGORY_MONEY_UNIT_TEXT;?></td></tr></table></td>
         <td class="main"> </td>
       </tr>
     <?php
@@ -2169,8 +2167,9 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   }
   echo '</td>';
   echo '</tr></table>';
-  echo '<table width="100%" cellspacing="0" cellpadding="5" border="0" class="smalltext"><tr><td><b>販売</b></td><td><b>買取</b></td></tr>' . "\n";
-  echo '<tr><td>所持金上限や、弊社キャラクターの在庫の都合上、複数のキャラクターにて<br>分割してお届けする場合がございます。ご注文いただきました数量に達する<br>まで受領操作をお願いいたします。<br>【】または【】よりお届けいたします。</td><td>当社キャラクター【】または【】にトレードをお願いいたします。</td></tr></table><hr size="2" noshade>' . "\n";
+  //echo '<table width="100%" cellspacing="0" cellpadding="5" border="0" class="smalltext"><tr><td><b>販売</b></td><td><b>買取</b></td></tr>' . "\n";
+  //echo '<tr><td>所持金上限や、弊社キャラクターの在庫の都合上、複数のキャラクターにて<br>分割してお届けする場合がございます。ご注文いただきました数量に達する<br>まで受領操作をお願いいたします。<br>【】または【】よりお届けいたします。</td><td>当社キャラクター【】または【】にトレードをお願いいたします。</td></tr></table><hr size="2" noshade>' . "\n";
+  echo CATEGORY_BOTTOM_READ; 
   echo '</td>';
   /*
   echo '<td>';
@@ -2195,14 +2194,14 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   echo '</td>';
   */
 } else {
-  echo '価格：&nbsp;' . $products_price_preview . '<br>数量：&nbsp;' . $pInfo->products_real_quantity . '個' . "\n";
+  echo TEXT_PRODUCTS_PRICE_INFO.'&nbsp;' . $products_price_preview .  '<br>'.TEXT_PRODUCTS_QUANTITY_INFO.'&nbsp;' . $pInfo->products_real_quantity .  CATEGORY_GE_UNIT_TEXT. "\n";
 }
 ?>
       </td>
         </tr>
     <?php
 if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) || !$_GET['origin'])) { //表示制限
-  echo '<tr><td><b>よく確認してから押しなさい</b></td></tr>' . "\n";
+  echo '<tr><td><b>'.CATEGORY_BUTTON_UPDATE_TEXT.'</b></td></tr>' . "\n";
 } else {
 ?>
         <tr>
@@ -2370,7 +2369,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
             <?php echo tep_draw_form('goto', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
 
               <div id="gotomenu">
-                <a href="javascript:void(0)" onclick="$('#categories_tree').toggle()">ジャンプ▼</a>
+                <a href="javascript:void(0)" onclick="$('#categories_tree').toggle()"><?php echo CATEGORY_TREE_SELECT_TEXT;?></a>
                 <div id="categories_tree">
                 <?php
                   require(DIR_WS_CLASSES . 'category_tree.php');
@@ -2402,8 +2401,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
             <?php }?>
             <?php }?>
 -->
-            <td class="dataTableHeadingContent" align="right">価格</td>
-            <td class="dataTableHeadingContent" align="right">数量</td>
+            <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_JIAGE_TEXT;?></td>
+            <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_NUM_TEXT;?></td>
             <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_STATUS; ?></td>
             <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
           </tr>
@@ -2628,9 +2627,9 @@ if (isset($nowColor) && $nowColor == $odd) {
 
             <td class="dataTableContent" align="right"><?php
 if (empty($products['products_quantity']) or $products['products_quantity'] == 0) {
-  echo '<b>在庫切れ</b>';
+  echo '<b>'.CATEGORY_PRO_ZAIKU_TEXT.'</b>';
 } else {
-  echo intval($products['products_quantity']) . '個';
+  echo intval($products['products_quantity']) . CATEGORY_GE_UNIT_TEXT;
 } ?></td>
             <td class="dataTableContent" align="center"><?php
 $p_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
@@ -2650,17 +2649,17 @@ if ($ocertify->npermission >= 10) { //表示制限
   $today_array = getdate();
   if ($last_modified_array["year"] == $today_array["year"] && $last_modified_array["mon"] == $today_array["mon"] && $last_modified_array["mday"] == $today_array["mday"]) {
     if ($last_modified_array["hours"] >= ($today_array["hours"]-2)) {
-      echo tep_image(DIR_WS_ICONS . 'signal_blue.gif', '更新正常');
+      echo tep_image(DIR_WS_ICONS . 'signal_blue.gif', CATEGORY_BUTTON_UPDATE_COMMON);
     } elseif ($last_modified_array["hours"] >= ($today_array["hours"]-5)) {
-      echo tep_image(DIR_WS_ICONS . 'signal_yellow.gif', '更新注意');
+      echo tep_image(DIR_WS_ICONS . 'signal_yellow.gif', CATEGORY_BUTTON_UPDATE_NOTICE);
     } else {
-      echo tep_image(DIR_WS_ICONS . 'signal_red.gif', '更新警告');
+      echo tep_image(DIR_WS_ICONS . 'signal_red.gif', CATEGORY_BUTTON_UPDATE_WARN);
     }
   } else {
-    echo tep_image(DIR_WS_ICONS . 'signal_blink.gif', '更新異常');
+    echo tep_image(DIR_WS_ICONS . 'signal_blink.gif', CATEGORY_BUTTON_UPDATE_UNCOMMON);
   }
   
-  echo '&nbsp;&nbsp;' . tep_image(DIR_WS_ICONS . 'battery_0.gif', '数量異常');
+  echo '&nbsp;&nbsp;' . tep_image(DIR_WS_ICONS . 'battery_0.gif', CATEGORY_BUTTON_NUM_UNCOMMON);
   
 }
 ?></td>
@@ -2723,16 +2722,14 @@ tep_display_google_results()
         $category_inputs_string = '';
         $languages = tep_get_languages();
         for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
-          $category_inputs_string .= '<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES .  $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .  tep_draw_input_field('categories_name[' . $languages[$i]['id'] . ']', '', 'id="cname"').'<br>'."\n".  '<br>Romaji:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES .  $languages[$i]['directory'] . '/images/' .  $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .  tep_draw_input_field('romaji[' . $languages[$i]['id'] . ']', '', 'id="cromaji"').'<br>'."\n".  '<br>トップページカテゴリバナー画像:<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;'.tep_draw_file_field('categories_image2').'<br>'."\n".  '<br>カテゴリタイトル画像:<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;'.tep_draw_file_field('categories_image3').'<br><font color="red">画像がない場合はテキスト表示されます</font><br>'."\n".
-                   '<br>METAタグ<br>（この説明文はトップページのカテゴリバナーの下に表示される文章としても使用されます。2行にするにはカンマ「,」区切りで文章を記述してください。)<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_meta_text[' . $languages[$i]['id'] . ']','',30,3).
-
-                   '<br>SEOネーム:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('seo_name[' . $languages[$i]['id'] . ']', '').'<br>'."\n".
-                   '<br>SEO Description:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('seo_description[' . $languages[$i]['id'] . ']','soft',30,3).
-                   '<br>カテゴリHeaderのテキスト:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_header_text[' . $languages[$i]['id'] . ']','soft',30,3).
-                   '<br>カテゴリFooterのテキスト:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_footer_text[' . $languages[$i]['id'] . ']','soft',30,3).
-                   '<br>テキストのインフォメーション:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('text_information[' . $languages[$i]['id'] . ']','soft',30,3).
-                   '<br>metaのキーワード:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('meta_keywords[' . $languages[$i]['id'] . ']','soft',30,3).
-                   '<br>metaの説明:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('meta_description[' . $languages[$i]['id'] . ']','soft',30,3).
+          $category_inputs_string .= '<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES .  $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .  tep_draw_input_field('categories_name[' . $languages[$i]['id'] . ']', '', 'id="cname"').'<br>'."\n".  '<br>Romaji:<br>' .  tep_image(DIR_WS_CATALOG_LANGUAGES .  $languages[$i]['directory'] .  '/images/' .  $languages[$i]['image'], $languages[$i]['name']) .  '&nbsp;' .  tep_draw_input_field('romaji[' . $languages[$i]['id'] . ']', '', 'id="cromaji"').'<br>'."\n".  '<br>'.CATEGORY_IMAGE_SHOW_TEXT.'<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' .  $languages[$i]['image'], $languages[$i]['name']) .  '&nbsp;'.tep_draw_file_field('categories_image2').'<br>'."\n".  '<br>'.CATEGORY_SECOND_IMAGE_SHOW_TEXT.'<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' .  $languages[$i]['image'], $languages[$i]['name']) .  '&nbsp;'.tep_draw_file_field('categories_image3').'<br>'.CATEGORY_INSERT_IMAGE_READ.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_meta_text[' . $languages[$i]['id'] . ']','',30,3).  
+                   '<br>'.CATEGORY_SEO_TITLE_TEXT.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('seo_name[' . $languages[$i]['id'] . ']', '').'<br>'."\n".
+                   '<br>'.CATEGORY_SEO_DES_TEXT.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('seo_description[' . $languages[$i]['id'] . ']','soft',30,3).
+                   '<br>'.CATEGORY_HEADER_TEXT.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_header_text[' . $languages[$i]['id'] . ']','soft',30,3).
+                   '<br>'.CATEGORY_FOOTER_TEXT.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_footer_text[' . $languages[$i]['id'] . ']','soft',30,3).
+                   '<br>'.CATEGORY_TEXT_INFO_TEXT.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('text_information[' . $languages[$i]['id'] . ']','soft',30,3).
+                   '<br>'.CATEGORY_META_TITLE_TEXT.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('meta_keywords[' . $languages[$i]['id'] . ']','soft',30,3).
+                   '<br>'.CATEGORY_META_DES_TEXT.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('meta_description[' . $languages[$i]['id'] . ']','soft',30,3).
                    "\n";
         }
 
@@ -2756,17 +2753,15 @@ tep_display_google_results()
         $category_inputs_string = '';
         $languages = tep_get_languages();
         for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
-          $category_inputs_string .= '<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES .  $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .  tep_draw_input_field('categories_name[' . $languages[$i]['id'] . ']', tep_get_category_name($cInfo->categories_id, $languages[$i]['id'], $site_id, true), 'id="cname"').'<br>'."\n".  '<br>Romaji:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES .  $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('romaji[' .  $languages[$i]['id'] . ']', tep_get_category_romaji($cInfo->categories_id, $languages[$i]['id'], $site_id, true), 'id="cromaji"').'<br>'."\n".  '<br>'.tep_image(tep_get_web_upload_dir($site_id) .'categories/'. $cInfo->categories_image2, $cInfo->categories_name).'<br>' . tep_get_upload_dir($site_id) . 'categories/<br><b>' . $cInfo->categories_image2 . '</b><br><br>トップページカテゴリバナー画像<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;'.tep_draw_file_field('categories_image2').'<br>'."\n".
-         '<br>'.tep_image(tep_get_web_upload_dir($site_id) . 'categories/'. $cInfo->categories_image3, $cInfo->categories_name).'<br>' . tep_get_upload_dir($site_id). 'categories/<br><b>' . $cInfo->categories_image3 . '</b><br><br>カテゴリタイトル画像<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;'.tep_draw_file_field('categories_image3').'<br>'."\n".
-         '<br>METAタグ（この説明文はトップページのカテゴリバナーの下に表示される文章としても使用されます。2行にするにはカンマ「,」区切りで文章を記述してください。)<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_meta_text[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_category_meta_text($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).
+          $category_inputs_string .= '<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES .  $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .  tep_draw_input_field('categories_name[' . $languages[$i]['id'] . ']', tep_get_category_name($cInfo->categories_id, $languages[$i]['id'], $site_id, true), 'id="cname"').'<br>'."\n".  '<br>Romaji:<br>' .  tep_image(DIR_WS_CATALOG_LANGUAGES .  $languages[$i]['directory'] .  '/images/' . $languages[$i]['image'], $languages[$i]['name']) .  '&nbsp;' . tep_draw_input_field('romaji[' .  $languages[$i]['id'] . ']', tep_get_category_romaji($cInfo->categories_id, $languages[$i]['id'], $site_id, true), 'id="cromaji"').'<br>'."\n".  '<br>'.tep_image(tep_get_web_upload_dir($site_id) .'categories/'.  $cInfo->categories_image2, $cInfo->categories_name).'<br>' .  tep_get_upload_dir($site_id) . 'categories/<br><b>' .  $cInfo->categories_image2 . '</b><br><br>'.CATEGORY_IMAGE_SHOW_TEXT.'<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;'.tep_draw_file_field('categories_image2').'<br>'."\n".  '<br>'.tep_image(tep_get_web_upload_dir($site_id) . 'categories/'.  $cInfo->categories_image3, $cInfo->categories_name).'<br>' .  tep_get_upload_dir($site_id). 'categories/<br><b>' .  $cInfo->categories_image3 .  '</b><br><br>'.CATEGORY_SECOND_IMAGE_SHOW_TEXT.'<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) .  '&nbsp;'.tep_draw_file_field('categories_image3').'<br>'.CATEGORY_META_COMMENT_TEXT.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_meta_text[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_category_meta_text($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).
 
-         '<br>SEOネーム:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('seo_name[' . $languages[$i]['id'] . ']', tep_get_seo_name($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).'<br>'."\n".
-         '<br>SEO Description:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('seo_description[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_seo_description($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).
-         '<br>カテゴリHeaderのテキスト:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_header_text[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_categories_header_text($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).
-         '<br>カテゴリFooterのテキスト:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_footer_text[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_categories_footer_text($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).
-         '<br>テキストのインフォメーション:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('text_information[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_text_information($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).
-         '<br>metaのキーワード:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('meta_keywords[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_meta_keywords($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).
-         '<br>metaの説明:<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('meta_description[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_meta_description($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).
+         '<br>'.CATEGORY_SEO_TITLE_TEXT.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('seo_name[' . $languages[$i]['id'] . ']', tep_get_seo_name($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).'<br>'."\n".
+         '<br>'.CATEGORY_SEO_DES_TEXT.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('seo_description[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_seo_description($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).
+         '<br>'.CATEGORY_HEADER_TEXT.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_header_text[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_categories_header_text($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).
+         '<br>'.CATEGORY_FOOTER_TEXT.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_footer_text[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_categories_footer_text($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).
+         '<br>'.CATEGORY_TEXT_INFO_TEXT.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('text_information[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_text_information($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).
+         '<br>'.CATEGORY_META_TITLE_TEXT.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('meta_keywords[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_meta_keywords($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).
+         '<br>'.CATEGORY_META_DES_TEXT.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('meta_description[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_meta_description($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).
          '';
         }
 

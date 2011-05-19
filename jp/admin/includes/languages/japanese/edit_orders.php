@@ -154,11 +154,18 @@ define('EDIT_ORDERS_CONFIRMATION_READ', '<font color="red">重要:</font>&nbsp;<
 define('EDIT_ORDERS_CONFIRM_BUTTON', '注文内容確認');
 define('EDIT_ORDERS_ITEM_FOUR_TITLE', '4. 注文ステータス、コメント通知');
 define('EDIT_ORDERS_SEND_MAIL_TEXT', 'メール送信:');
-define('EDIT_ORDERS_RECORD_TEXT', 'コメント記録:   ');
+define('EDIT_ORDERS_RECORD_TEXT', 'コメント記録:');
 define('EDIT_ORDERS_RECORD_READ', '←ここはチェックしないように');
 define('EDIT_ORDERS_RECORD_ARTICLE', 'こちらに入力した文章はメール本文に挿入されます。');
 define('EDIT_ORDERS_ITEM_FIVE_TITLE', '5. データを更新');
 define('EDIT_ORDERS_FINAL_CONFIRM_TEXT', '最終確認はしましたか？');
 define('EDIT_ORDERS_FINAL_CONFIRM_TEMPLATE', '<table cellspacing="0" cellpadding="2" width="100%"><tr class="smalltext"><td valign="top" colspan="3"><font color="red">※</font>&nbsp;コピペ用フレーズです。トリプルクリックをすると全選択できます。</td></tr> <tr bgcolor="#999999" class="smalltext"><td>商品の変更</td><td>支払方法の変更（販売用）</td><td>支払方法の変更（販売用）</td></tr> <tr bgcolor="#cccccc" class="smalltext"> <td valign="top">弊社のキャラクター名は【】となります。</td> <td valign="top"> 下記の金融機関へお振り込みください。<br> ------------------------------------------<br> 銀行名　　：　ジャパンネット銀行<br> 支店名　　：　本店営業部<br> 口座種別　：　普通<br> 口座名　　：　カ）アイアイエムワイ<br> 口座番号　：　1164394<br> ------------------------------------------<br> 銀行名　　：　イーバンク銀行<br> 支店名　　：　ワルツ支店<br> 支店番号　：　204<br> 口座名　　：　カ）アイアイエムワイ<br> 口座番号　：　7003965<br> ------------------------------------------<br> ※ 必ずご注文時に入力したお名前でお振り込みください。<br> ※ 振込手数料はお客様のご負担となります。<br> ※ お振り込みはご注文から７日以内にお願いいたします。<br> ※ ご入金を株式会社iimyが確認した時点でご契約の成立となります。 </td> <td valign="top"> 10分程度でお客様専用のクレジットカード決済URLを電子メールにてご連絡い<br> たします。<br> メール本文に記載していますURLをクリックし、クレジットカード決済を完了<br> してください。 </td> </tr> </table>');
 define('EDIT_ORDERS_PRO_DUMMY_NAME', 'キャラクター名:');
+define('EDIT_NEW_ORDERS_CREATE_TITLE', '注文書の作成');
+define('EDIT_NEW_ORDERS_CREATE_READ', '【重要】注文編集ではありません。新規注文作成システムです。');
+define('EDIT_ORDERS_ORIGIN_VALUE_TEXT', '（初期値）');
+define('EDIT_ORDERS_UPDATE_COMMENT', '<table width="100%" cellspacing="0" cellpadding="2"> <tr class="smalltext"><td valign="top" colspan="2"><font color="red">※</font>&nbsp;コピペ用フレーズです。トリプルクリックをすると全選択できます。</td></tr> <tr class="smalltext" bgcolor="#999999"><td>DBに登録されているキャラクター以外の場合</td><td>予備</td></tr> <tr class="smalltext" bgcolor="#CCCCCC"> <td valign="top">【重要】弊社キャラクター【】がお取り引きに伺います。</td> <td valign="top"> 予備 </td> </tr> </table>');
+define('ERROR_INPUT_PRICE_NOTICE', '単価を書いてください');
+define('EDIT_ORDERS_PRICE_UNIT', '円');
+define('EDIT_ORDERS_NUM_UNIT', '個');
 ?>

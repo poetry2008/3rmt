@@ -1059,7 +1059,7 @@ function check_add(){
   if(price != '' && price != 0  && price > 0){
     return true;
   } else {
-    alert("単価を書いてください");
+    alert("<?php echo ERROR_INPUT_PRICE_NOTICE;?>");
     return false;
   }
 }
@@ -1100,12 +1100,12 @@ function check_add(){
           <td width="100%">
             <table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>
-                <td class="pageHeading">注文書の作成</td>
+                <td class="pageHeading"><?php echo EDIT_NEW_ORDERS_CREATE_TITLE;?></td>
                 <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
                 <td class="pageHeading" align="right">&nbsp;</td>
               </tr>
               <tr>
-                <td colspan="3"><font color="red">【重要】注文編集ではありません。新規注文作成システムです。</font></td>
+                <td colspan="3"><font color="red"><?php echo EDIT_NEW_ORDERS_CREATE_READ;?></font></td>
               </tr>
             </table>
             <?php echo tep_draw_separator(); ?>
@@ -1116,7 +1116,7 @@ function check_add(){
             <!-- Begin Update Block -->
             <table width="100%" border="0" cellpadding="2" cellspacing="1">
               <tr>
-                <td class="main" bgcolor="#FFDDFF" height="25">変更したい内容を慎重に入力してください。<b>空白などの余分な文字が入力されていないかチェックするように！</b></td>
+                <td class="main" bgcolor="#FFDDFF" height="25"><?php echo EDIT_ORDERS_UPDATE_NOTICE;?></td>
                 <td class="main" bgcolor="#FFBBFF" width="10">&nbsp;</td>
                 <td class="main" bgcolor="#FF99FF" width="10">&nbsp;</td>
                 <td class="main" bgcolor="#FF77FF" width="10">&nbsp;</td>
@@ -1133,25 +1133,25 @@ function check_add(){
                 <td class="main" width="70%"><font color='#FF0000'><b><?php echo tep_get_site_name_by_id($order['site_id'])?></b></font></td>
               </tr>
               <tr>
-                <td class="main" valign="top" width="30%"><b>注文番号:</b></td>
+                <td class="main" valign="top" width="30%"><b><?php echo EDIT_ORDERS_ID_TEXT;?></b></td>
                 <td class="main" width="70%"><?php echo $order['orders_id'];?></td>
               </tr>
               <tr>
-                <td class="main" valign="top"><b>注文日:</b></td>
+                <td class="main" valign="top"><b><?php echo EDIT_ORDERS_DATE_TEXT;?></b></td>
                 <td class="main"><?php echo tep_date_long(date('Y-m-d H:i:s'));?></td>
               </tr>
               <tr>
-                <td class="main" valign="top"><b>顧客名:</b></td>
+                <td class="main" valign="top"><b><?php echo EDIT_ORDERS_CUSTOMER_NAME;?></b></td>
                 <td class="main"><?php echo tep_html_quotes($order['customers_name']); ?></td>
               </tr>
               <tr>
-                <td class="main" valign="top"><b>メールアドレス:</b></td>
+                <td class="main" valign="top"><b><?php echo EDIT_ORDERS_EMAIL;?></b></td>
                 <td class="main"><font color="red"><b><?php echo $order['customers_email_address']; ?></b></font></td>
               </tr>
               <!-- End Addresses Block -->
               <!-- Begin Payment Block -->
               <tr>
-                <td class="main" valign="top"><b>支払方法:</b></td>
+                <td class="main" valign="top"><b><?php echo EDIT_ORDERS_PAYMENT_METHOD;?></b></td>
                 <td class="main">
                   <?php echo tep_payment_method_menu($order->info['payment_method']);?>
                 </td>
@@ -1159,11 +1159,11 @@ function check_add(){
               <!-- End Payment Block -->
               <!-- Begin Trade Date Block -->
               <tr>
-                <td class="main" valign="top"><b>取引日時:</b></td>
+                <td class="main" valign="top"><b><?php echo EDIT_ORDERS_FETCHTIME;?></b></td>
                 <td class="main"><?php echo $order['torihiki_date']; ?></td>
               </tr>
               <tr>
-                <td class="main" valign="top"><b>オプション:</b></td>
+                <td class="main" valign="top"><b><?php echo EDIT_ORDERS_TORI_TEXT;?></b></td>
                 <td class="main"><?php echo $order['torihiki_houhou']; ?></td>
               </tr>
             </table>
@@ -1172,7 +1172,7 @@ function check_add(){
         </tr>
         <!-- Begin Products Listing Block -->
         <tr>
-          <td class="SubTitle"><br>2. 注文商品</td>
+          <td class="SubTitle"><br><?php echo EDIT_ORDERS_PRO_LIST_TITLE;?></td>
         </tr>
         <tr>
           <td>      
@@ -1211,13 +1211,13 @@ function check_add(){
 <?php // Version without editable names & prices ?>
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
   <tr class="dataTableHeadingRow">
-    <td class="dataTableHeadingContent" colspan="2">数量 / 商品名</td>
+    <td class="dataTableHeadingContent" colspan="2"><?php echo TABLE_HEADING_NUM_PRO_NAME;?></td>
     <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCTS_MODEL; ?></td>
-    <td class="dataTableHeadingContent">税率</td>
-    <td class="dataTableHeadingContent" align="right">価格(税別)</td>
-    <td class="dataTableHeadingContent" align="right">価格(税込)</td>
-    <td class="dataTableHeadingContent" align="right">合計(税別)</td>
-    <td class="dataTableHeadingContent" align="right">合計(税込)</td>
+    <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CURRENICY; ?></td>
+    <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_BEFORE; ?></td>
+    <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_AFTER; ?></td>
+    <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_BEFORE; ?></td>
+    <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_AFTER; ?></td>
     <input type="hidden" name="update_viladate" value="true">
   </tr>
   
@@ -1228,7 +1228,7 @@ function check_add(){
     echo '    <tr class="dataTableRow">' . "\n" .
          '      <td class="' . $RowStyle . '" align="left" valign="top" width="20">' . "<input name='update_products[$pid][qty]' size='2' value='" . $order_products[$pid]['qty'] . "'>&nbsp;x</td>\n" . 
          '      <td class="' . $RowStyle . '">' . $order_products[$pid]['name'] . "<input name='update_products[$pid][name]' size='64' type='hidden' value='" . $order_products[$pid]['name'] . "'>\n" . 
-       '      &nbsp;&nbsp;キャラ名：<input type="hidden" name="dummy" value="あいうえお眉幅"><input name="update_products[' . $pid . '][character]" size="20" value="' . htmlspecialchars($order_products[$pid]['character']) . '">';
+       '      &nbsp;&nbsp;'.EDIT_ORDERS_DUMMY_TITLE.'<input type="hidden" name="dummy" value="あいうえお眉幅"><input name="update_products[' . $pid . '][character]" size="20" value="' . htmlspecialchars($order_products[$pid]['character']) . '">';
     // Has Attributes?
     if (sizeof($order_products_attributes[$pid]) > 0) {
       for ($j=0; $j<sizeof($order_products_attributes[$pid]); $j++) {
@@ -1263,7 +1263,7 @@ function check_add(){
         <td>
           <table width="100%" cellpadding="0" cellspacing="0">
             <tr>
-              <td valign="top"><?php echo "<span class='smalltext'>" . HINT_DELETE_POSITION . "商品追加と他の項目は同時に変更できません。<b>「 商品の追加 」は単体で行ってください。</b></span>"; ?></td>
+              <td valign="top"><?php echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . EDIT_ORDERS_ADD_PRO_READ . "</span>"; ?></td>
               <td align="right"><?php echo '<a href="' . $PHP_SELF . '?oID=' . $order['orders_id'] . '&action=add_product&step=1">' . tep_image_button('button_add_article.gif', ADDING_TITLE) . '</a>'; ?></td>
             </tr>
           </table>
@@ -1272,7 +1272,7 @@ function check_add(){
   <!-- End Products Listings Block -->
   <!-- Begin Order Total Block -->
       <tr>
-        <td class="SubTitle">3. ポイント割引、手数料、値引き</td>
+        <td class="SubTitle"><?php echo EDIT_ORDERS_FEE_TITLE_TEXT; ?></td>
       </tr>
       <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '1'); ?></td>
@@ -1282,7 +1282,7 @@ function check_add(){
 
 <table width="100%" border="0" cellspacing="0" cellpadding="2" class="dataTableRow">
   <tr class="dataTableHeadingRow">
-    <td class="dataTableHeadingContent" align="left" width="75%">注意事項</td>
+    <td class="dataTableHeadingContent" align="left" width="75%"><?php echo TABLE_HEADING_FEE_MUST;?></td>
     <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_MODULE; ?></td>
     <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_AMOUNT; ?></td>
     <td class="dataTableHeadingContent"width="1"><?php echo tep_draw_separator('pixel_trans.gif', '1', '1'); ?></td>
@@ -1327,7 +1327,7 @@ function check_add(){
     $TotalStyle = "smallText";
     if ($TotalDetails["Class"] == "ot_total") {
       echo '  <tr>' . "\n" .
-           '    <td align="left" class="' . $TotalStyle . '">合計金額が合っているか必ず確認してください。</td>' . 
+           '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTTOTAL_READ.'</td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>';
                 if($TotalDetails["Price"]>=0){
@@ -1348,7 +1348,7 @@ function check_add(){
            '  </tr>' . "\n";
     } elseif ($TotalDetails["Class"] == "ot_subtotal") {
       echo '  <tr>' . "\n" .
-           '    <td align="left" class="' . $TotalStyle . '"><table><tr class="smalltext"><td><font color="red">※</font>&nbsp;コピペ用:</td><td>調整額</td><td>事務手数料</td><td>値引き</td></tr></table></td>' . 
+           '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTSUBTOTAL_READ.'</td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' .
            '    <td align="right" class="' . $TotalStyle . '"><b>';
            if($TotalDetails["Price"]>=0){
@@ -1400,7 +1400,7 @@ function check_add(){
              '  </tr>' . "\n";
       } else { //ゲスト
         echo '  <tr>' . "\n" .
-             '    <td align="left" class="' . $TotalStyle . '">このお客様はゲストです。ポイント割引の入力はできません。</td>' . 
+             '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTALDETAIL_READ.'</td>' . 
              '    <td align="right" class="' . $TotalStyle . '">' . trim($TotalDetails["Name"]) . '</td>' . "\n" .
              '    <td align="right" class="' . $TotalStyle . '">' . $TotalDetails["Price"] . 
                 "<input type='hidden' name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . 
@@ -1413,7 +1413,7 @@ function check_add(){
       }
     } else {
       echo '  <tr>' . "\n" .
-           '    <td align="left" class="' . $TotalStyle . '">値引きする場合は、−（マイナス）符号を入力してください。</td>' . 
+           '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTALDETAIL_READ_ONE.'</td>' . 
            '    <td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
            '    <td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][value]' size='6' value='" . $TotalDetails["Price"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
@@ -1425,7 +1425,7 @@ function check_add(){
   }
 ?>
 </table>
-<span class='smalltext'><font color="red">ヒント:</font>&nbsp;価格構成要素を削除する場合は金額に「0」と入力して更新してください。</span>
+<span class='smalltext'><?php echo EDIT_ORDERS_PRICE_CONSTRUCT_READ; ?></span>
         </td>
       </tr>
       <tr>
@@ -1438,11 +1438,11 @@ function check_add(){
         <td>
           <table width="100%" border="0" cellpadding="2" cellspacing="1">
             <tr>
-              <td class="main" bgcolor="#FFDDFF" height="25"><font color="red">重要:</font>&nbsp;<b>価格構成要素を変更した場合は「<font color="red">注文内容確認</font>」ボタンをクリックして合計金額が一致するか確認してください。&nbsp;⇒</b></td>
+              <td class="main" bgcolor="#FFDDFF" height="25"><?php echo EDIT_ORDERS_CONFIRMATION_READ; ?></td>
               <td class="main" bgcolor="#FFBBFF" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FF99FF" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FF77FF" width="10">&nbsp;</td>
-              <td class="main" bgcolor="#FF55FF" width="120" align="center"><INPUT type="button" value=" 注文内容確認 " onClick="update_price()"></td>
+              <td class="main" bgcolor="#FF55FF" width="120" align="center"><INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON; ?>" onClick="update_price()"></td>
             </tr>
           </table>
         </td>
@@ -1455,7 +1455,7 @@ function check_add(){
   
   <!-- Begin Status Block -->
       <tr>
-        <td class="SubTitle">4. 注文ステータス、コメント通知</td>
+        <td class="SubTitle"><?php echo EDIT_ORDERS_ITEM_FOUR_TITLE; ?></td>
       </tr>
       <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '1'); ?></td>
@@ -1474,23 +1474,23 @@ function check_add(){
       <table border="0" cellspacing="0" cellpadding="2">
         <tr>
           <td class="main"><b><?php echo ENTRY_STATUS; ?></b></td>
-          <td class="main">--&nbsp;&nbsp;（初期値）</td>
+          <td class="main">--&nbsp;&nbsp;<?php echo EDIT_ORDERS_ORIGIN_VALUE_TEXT; ?></td>
         </tr>
         <tr>
-          <td class="main"><b>メール送信:</b></td>
+          <td class="main"><b><?php echo EDIT_ORDERS_SEND_MAIL_TEXT; ?></b></td>
           <td class="main"><table bgcolor="red" cellspacing="5"><tr><td><?php echo tep_draw_checkbox_field('notify', '', false); ?></td></tr></table></td>
         </tr>
         <?php if($CommentsWithStatus) { ?>
         <tr>
-          <td class="main"><b>コメント記録:</b></td>
-          <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', false); ?>&nbsp;&nbsp;<b style="color:#FF0000;">←ここはチェックしないように</b></td>
+          <td class="main"><b><?php echo EDIT_ORDERS_RECORD_TEXT; ?></b></td>
+          <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', false); ?>&nbsp;&nbsp;<b style="color:#FF0000;"><?php echo EDIT_ORDERS_RECORD_READ; ?></b></td>
         </tr>
         <?php } ?>
       </table>
     </td>
     <td class="main" width="10">&nbsp;</td>
     <td class="main">
-    こちらに入力した文章はメール本文に挿入されます。<br>
+    <?php echo EDIT_ORDERS_RECORD_ARTICLE; ?><br>
     <?
     if($CommentsWithStatus) {
   
@@ -1513,7 +1513,7 @@ function check_add(){
   <!-- End of Status Block -->
   <!-- Begin Update Block -->
       <tr>
-        <td class="SubTitle">5. データを更新</td>
+        <td class="SubTitle"><?php echo EDIT_ORDERS_ITEM_FIVE_TITLE; ?></td>
     </tr>
       <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '1'); ?></td>
@@ -1522,7 +1522,7 @@ function check_add(){
       <td>
           <table width="100%" border="0" cellpadding="2" cellspacing="1">
             <tr>
-              <td class="main" bgcolor="#FFDDFF"><b>最終確認はしましたか？</b>&nbsp;<?php echo HINT_PRESS_UPDATE; ?></td>
+              <td class="main" bgcolor="#FFDDFF"><b><?php echo EDIT_ORDERS_FINAL_CONFIRM_TEXT; ?></b>&nbsp;<?php echo HINT_PRESS_UPDATE; ?></td>
               <td class="main" bgcolor="#FFBBFF" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FF99FF" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FF77FF" width="10">&nbsp;</td>
@@ -1533,17 +1533,8 @@ function check_add(){
       </tr>
     <tr>
       <td>
-<table width="100%" cellspacing="0" cellpadding="2">
-  <tr class="smalltext"><td valign="top" colspan="2"><font color="red">※</font>&nbsp;コピペ用フレーズです。トリプルクリックをすると全選択できます。</td></tr>
-  <tr class="smalltext" bgcolor="#999999"><td>DBに登録されているキャラクター以外の場合</td><td>予備</td></tr>
-  <tr class="smalltext" bgcolor="#CCCCCC">
-  <td valign="top">【重要】弊社キャラクター【】がお取り引きに伺います。</td>
-  <td valign="top">
-    予備
-  </td>
-  </tr>
-</table>
-    </td>
+      <?php echo EDIT_ORDERS_UPDATE_COMMENT;?> 
+      </td>
     </tr>
   <!-- End of Update Block -->
       </form>
@@ -1712,7 +1703,7 @@ function check_add(){
     {
       echo "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action' method='POST' onsubmit='return check_add()' >\n";
       echo "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 4: </b></td>";
-      echo '<td class="dataTableContent" valign="top">' . ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1">&nbsp;個&nbsp;&nbsp;単価<input name="add_product_price" id="add_product_price" size="4" value="0">&nbsp;円&nbsp;&nbsp;キャラクター名:&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅"><input name="add_product_character" size="20" value=""></td>';
+      echo '<td class="dataTableContent" valign="top">' .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;'.TABLE_HEADING_UNIT_PRICE.'<input name="add_product_price" id="add_product_price" size="4" value="0">&nbsp;'.EDIT_ORDERS_PRICE_UNIT.'&nbsp;&nbsp;'.EDIT_ORDERS_PRO_DUMMY_NAME.'&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅"><input name="add_product_character" size="20" value=""></td>';
       echo "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
 
       if(IsSet($add_product_options))
