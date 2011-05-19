@@ -10,7 +10,7 @@
 ?>
 <table border="0" width="171" cellpadding="0" cellspacing="0" summary="login box">
 	<tr>
-		<td><img width="171" height="27" alt="RMTアイテムデポ メンバーズページ" src="images/design/title_img01.gif"></td>
+		<td><img width="171" height="27" alt="<?php echo STORE_NAME;?> メンバーズページ" src="images/design/title_img01.gif"></td>
 	</tr>
 	<tr>
     	<td><a href="<?php echo tep_href_link(FILENAME_LOGIN,'','SSL'); ?>"><img class="middle" src="images/design/login02.gif" alt="ログイン"></a></td>
@@ -27,7 +27,7 @@
 ?>
 <table border="0" width="171" cellpadding="0" cellspacing="0" summary="login box">
 	<tr>
-		<td><img width="171" height="27" alt="RMTアイテムデポ メンバーズページ" src="images/design/title_img01.gif"></td>
+		<td><img width="171" height="27" alt="<?php echo STORE_NAME;?> メンバーズページ" src="images/design/title_img01.gif"></td>
 	</tr>
 	<tr>
     	<td><a href="<?php echo tep_href_link(FILENAME_LOGIN,'','SSL'); ?>"><img class="middle" src="images/design/login02.gif" alt="ログイン"></a></td>
@@ -41,7 +41,7 @@
 <?php 
     } else {
 ?>
-  <img width="171" height="27"  src="images/design/title_img01.gif" alt="RMTアイテムデポ メンバーズページ"> 
+  <img width="171" height="27"  src="images/design/title_img01.gif" alt="<?php echo STORE_NAME;?> メンバーズページ"> 
   <ul class="l_m_category_ul">
     <li class="l_m_category_li">
       <?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . HEADER_TITLE_MY_ACCOUNT . '</a>'."\n"; ?>

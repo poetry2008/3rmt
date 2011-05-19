@@ -33,7 +33,7 @@ if($_POST):
     }
     //Ticket::create...checks for errors..
     if(($ticket=Ticket::create($_POST,$errors,SOURCE))){
-        $msg='お客様のご質問は RMT学園 へ送信されました。';
+        $msg='お客様のご質問は '.STORE_NAME.' へ送信されました。';
        /*
         if($thisclient && $thisclient->isValid()) //Logged in...simply view the newly created ticket.
             @header('Location: tickets.php?id='.$ticket->getExtId());

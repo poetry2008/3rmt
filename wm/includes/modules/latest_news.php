@@ -4,7 +4,7 @@
 */
 ?>
 <!-- latest_news //-->
-<p class="pageHeading">RMTワールドマネーからのお知らせ</p>
+<p class="pageHeading"><?php echo STORE_NAME;?>からのお知らせ</p>
 <div class="comment">
     <div id="news">
         <ul class="news_ul">
