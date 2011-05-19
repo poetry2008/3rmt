@@ -54,7 +54,7 @@ define('PW_MANAGER_SELECT_THREE', 'タイトル');
 define('PW_MANAGER_SELECT_FOUR', 'タイトルURL');
 define('PW_MANAGER_SELECT_FIVE', 'ID');
 define('PW_MANAGER_SELECT_SIX', 'パスワード');
-define('PW_MANAGER_SELECT_SEVEN', '更新者');
+define('PW_MANAGER_SELECT_SEVEN', '管理者');
 define('PW_MANAGER_SELECT_EIGHT', '登録情報');
 define('PW_MANAGER_SELECT_NINE', 'メモ欄');
 define('PW_MANAGER_SELECT_TEN', 'サイト名');
