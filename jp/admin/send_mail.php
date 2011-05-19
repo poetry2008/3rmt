@@ -18,21 +18,7 @@ $email_dates_query = tep_db_query($email_dates_sql);
 if($email_dates_row = tep_db_fetch_array($email_dates_query)){
   $email_date_arr = explode(',',$email_dates_row['configuration_value']);
 }
-if(!isset($email_template)||!$email_template||!isset($email_date_arr)||!$email_date_arr){
-  $sql_insert = "INSERT INTO `configuration` (`configuration_id`,
-    `configuration_title`, `configuration_key`, `configuration_value`,
-    `configuration_description`, `configuration_group_id`, `sort_order`,
-    `last_modified`, `date_added`, `use_function`, `set_function`, `site_id`) VALUES
-      (null, 'POINT邮件模板', 'POINT_EMAIL_TEMPLATE', 'name = ${NAME}\r\npoint =
-       ${POINT}\r\npoint_date = ${POINT_DATE}\r\nsite_name = ${SITE_NAME}''',
-       'POINT_EMAIL_TEMPLATE_DESCRIPTION', 901, NULL, '2011-05-19 16:30:31',
-       '0000-00-00 00:00:00', NULL, 'tep_cfg_textarea(', 0),
-       (null, 'POINT邮件发送时间', 'POINT_EMAIL_DATE', '1,20,30', 'POINT邮件发送时间
-        请使用'',''分隔', 901, NULL, '2011-05-13 14:31:18', '0000-00-00 00:00:00',
-        NULL, NULL, 0);
-       ";
-       tep_db_query($sql_insert);
-}
+
 
 // grep point by config
 foreach($email_date_arr as $value){
