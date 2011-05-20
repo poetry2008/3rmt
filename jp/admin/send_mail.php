@@ -9,6 +9,7 @@ require('includes/functions/general.php');
 
 
 
+define('DEFAULE_EMAIL_FROM','sznforwork@yahoo.co.jp');
 define('TABLE_CONFIGURATION','configuration');
 define('SEND_EMAILS',true);
 define('EMAIL_USE_HTML',false);
@@ -66,15 +67,22 @@ WHERE if( con.configuration_value = '0', DATE_ADD( o.date_purchased, INTERVAL 1
                 $customer_info['site_id'],'configuration')),
             $email_template);
         $sum_user++;
-        tep_mail($customer_info['name'],$customer_info['customer_email'],POINT_MAIL_TITLE,
-              $show_email_template,
-              get_configuration_by_site_id('STORE_NAME',
-                $customer_info['site_id'],'configuration'),
-              get_configuration_by_site_id('STORE_E_OWNER_EMAIL_ADDRESS',
-                $customer_info['site_id'],'configuration'),
-              $customer_info['site_id'] 
-            );
-        
+        $to = $customer_info['customer_email'];
+        $message = preg_replace('/\r\n|\n/',"<br>",$show_email_template);
+        $subject = "=?UTF-8?B?".
+          base64_encode(POINT_MAIL_TITLE)."?=";
+        $headers = 'Content-type: text/html; charset=utf-8' . "\r\n";
+        $headers .= "Content-Transfer-Encoding: 8bit\r\n";  
+          $From_Mail = DEFAULE_EMAIL_FROM;
+        if(get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',
+              $customer_info['site_id'],'configuration')){
+          $From_Mail = get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',
+              $customer_info['site_id'],'configuration');
+        }
+        $headers .= 'From: '.$From_Mail. "\r\n";
+        var_dump($From_Mail);
+        var_dump($to);
+        var_dump(mail($to, $subject, $message, $headers)); 
       }
     }
     /*
