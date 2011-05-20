@@ -80,7 +80,7 @@ if (tep_session_is_registered('customer_id')) {
   <table cellpadding="0" cellspacing="0" border="0" class="top_right">
   <tr><td>
   	 <ul>
-     	<li><a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT, '', 'SSL');?>">無料会員登録</a></li>
+     	<li><a href="<?php echo tep_href_link(FILENAME_SEND_MAIL);?>">無料会員登録</a></li>
         <li>|</li>
         <?php /*
         <li><a href="#">ヘルプ</a></li>

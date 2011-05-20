@@ -63,7 +63,7 @@ define('HEADER_TITLE_ABOUT_US','会社概要');
 define('HEADER_TITLE_MY_ACCOUNT', 'お客様情報');
 define('HEADER_TITLE_CART_CONTENTS', 'カートを見る');
 define('HEADER_TITLE_CHECKOUT', 'レジに進む');
-define('HEADER_TITLE_TOP', 'RMT');
+define('HEADER_TITLE_TOP', 'RMTトップ');
 define('HEADER_TITLE_CATALOG', 'カタログ');
 define('HEADER_TITLE_LOGOFF', 'ログアウト');
 define('HEADER_TITLE_LOGIN', 'ログイン');
@@ -432,4 +432,6 @@ define('NOTICE_MUST_BUY_TEXT', 'ショッピングカートに商品が有りま
 define('LEFT_SEARCH_TITLE', '商品検索');
 define('RIGHT_ORDER_TEXT', '再配達依頼');
 define('TEXT_TAGS', 'タグ一覧');
+define('COLUMNLEFT_SEARCH_DEFAULT_VALUE', '入力して下さい');
+define('COLUMNRIGHT_BEST_GOODS_TITLE', 'お勧めゲーム');
 ?>

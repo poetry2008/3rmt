@@ -3755,3 +3755,18 @@ function tep_whether_show_payment($payment_key, $guest_chk) {
   }
   return true;
 }
+  
+function tep_get_all_subcategories($parent_id) 
+{
+    $subcategories_array = array();
+    $subcategories_array[] = $parent_id;
+    $subcategories_query = tep_db_query("select categories_id from " . TABLE_CATEGORIES . " where parent_id = '" . (int)$parent_id . "'");
+    while ($subcategories = tep_db_fetch_array($subcategories_query)) {
+      $subcategories_array[] = $subcategories['categories_id'];
+      $sub_subcategories_query = tep_db_query("select categories_id from " .  TABLE_CATEGORIES . " where parent_id = '" .  (int)$subcategories['categories_id'] . "'");
+      while ($sub_subcategories = tep_db_fetch_array($sub_subcategories_query)) {
+        $subcategories_array[] = $sub_subcategories['categories_id'];
+      }
+    }
+    return $subcategories_array;
+}

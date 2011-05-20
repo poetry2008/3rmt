@@ -8,7 +8,7 @@ a{
 	font-size: 12px;
 }
 H1 {
-	font-size: 14px;
+	font-size: 12px;
 	margin: 0px;
 	padding: 0px;
 	padding-top:3px\9;
@@ -743,7 +743,7 @@ News
 	margin: 0px 10px;
 }
 .news_list {
-    font-size: 11px;
+    font-size: 12px;
 	background-image: url(../images/design/box/dot.gif);
 	background-repeat: repeat-x;
 	background-position: bottom;
@@ -1715,3 +1715,5 @@ border:2px solid #FF8080;
 .login_form1{ width:166px; height:49px; clear:both;}
 /*reorder*/
 .rg_pay_info{ border:1px solid #ccc; background-color:#fff; padding:4px; margin:3px 0;}
+.best_goods{ width:170px; margin:0 auto;}
+.best_goods_info { text-align:center; font-size:12px; padding:5px 0;}

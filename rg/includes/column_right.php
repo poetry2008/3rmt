@@ -29,6 +29,7 @@ define ("RIGHT_ORDER_TEXT","‘Ÿ≈‰ﬂ_“¿Óm");
   
   //require(DIR_WS_BOXES . 'information.php');
   require(DIR_WS_BOXES . 'reviews.php');
+  require(DIR_WS_BOXES . 'best_goods.php');
   include(DIR_WS_BOXES . 'right_banner.php') ;
   //require(DIR_WS_BOXES . 'banners.php');
   //require(DIR_WS_BOXES . 'left_link.php');

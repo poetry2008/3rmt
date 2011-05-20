@@ -21,8 +21,7 @@
   '[ご連絡・お問い合わせ先]━━━━━━━━━━━━'."\n".
   '株式会社 iimy'."\n".
   HTTP_SERVER."\n".  
-  STORE_OWNER_EMAIL_ADDRESS."\n"."━━━━━━━━━━━━━━━━━━━━━━━";
-  
+  STORE_OWNER_EMAIL_ADDRESS."\n".tep_href_link(FILENAME_CREATE_ACCOUNT, '', 'SSL')."\n"."━━━━━━━━━━━━━━━━━━━━━━━";
   if (isset($_POST['email_address'])) {
     if (empty($_POST['email_address'])) {
       $error_single = true;
