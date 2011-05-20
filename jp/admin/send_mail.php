@@ -11,6 +11,7 @@ require('includes/functions/general.php');
 
 define('DEFAULE_EMAIL_FROM','sznforwork@yahoo.co.jp');
 define('TABLE_CONFIGURATION','configuration');
+define('STORE_DB_TRANSACTIONS',true);
 define('SEND_EMAILS',true);
 define('EMAIL_USE_HTML',false);
 define('POINT_MAIL_TITLE','point test');
