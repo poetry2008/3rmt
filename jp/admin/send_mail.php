@@ -63,9 +63,10 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
   $sum_user = 0;
   while($customer_info = mysql_fetch_array($customer_query)){
     foreach($email_date_arr as $value){
+      $value_p = $customer_info['config_date'] - $value;
       $last_login = strtotime($customer_info['point_date']);
-      if($last_login < (time()-$value*ONE_DAY_SECOND)&&$last_login >
-          (time()-($value+1)*ONE_DAY_SECOND)){
+      if($last_login < (time()-$value_p*ONE_DAY_SECOND)&&$last_login >
+          (time()-($value_p+1)*ONE_DAY_SECOND)){
         $show_email_template = str_replace(
             array('${NAME}','${POINT}','${POINT_DATE}','${SITE_NAME}'),
             array($customer_info['customer_name'],
