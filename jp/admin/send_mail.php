@@ -29,7 +29,8 @@ $customer_sql = "SELECT ci.customers_info_date_of_last_logon as point_date,
                  con.configuration_value as config_date 
                  FROM customers_info ci, customers c
                  ,configuration con 
-                 WHERE (ci.customers_info_date_of_last_logon between 
+                 WHERE (ci.customers_info_date_of_last_logon 
+                       between 
                     DATE_SUB(now(),INTERVAL ".intval($value+1)." DAY )
                   and 
                     DATE_SUB(now(),INTERVAL ".intval($value)." DAY )
@@ -41,13 +42,13 @@ $customer_sql = "SELECT ci.customers_info_date_of_last_logon as point_date,
                  AND con.configuration_key = 'MODULE_ORDER_TOTAL_POINT_LIMIT'";
 $customer_query = tep_db_query($customer_sql);
 while($customer_info = tep_db_fetch_array($customer_query)){
-  $email_template = str_replace(
+  $show_email_template = str_replace(
       array('${NAME}','${POINT}','${POINT_DATE}','${SITE_NAME}'),
       array($customer_info['lastname']." ".$customer_info['firstname'],
         $customer_info['point'],$value,
         get_configuration_by_site_id('STORE_NAME',
           $customer_info['site_id'],'configuration')),
       $email_template);
-  var_dump($email_template);
+  var_dump($show_email_template);
 }
 }
