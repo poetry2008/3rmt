@@ -118,7 +118,7 @@ if (!isset($cat0[0])) $cat0[0] = NULL;
 // --- end add--- //
 ?>
               </td>
-              <td><?php echo tep_draw_input_field('keywords', 'RMT', 'size="30" maxlength="40"'); ?></td>
+              <td><?php echo tep_draw_input_field('keywords', '入力して下さい', 'size="30" maxlength="40" id="skeywords" onclick="document.getElementById(\'skeywords\').value = \'\';"'); ?></td>
               <td><input name="imageField" type="image" src="images/design/button/search.jpg" alt="検索"></td>
             </tr>
           </table>
