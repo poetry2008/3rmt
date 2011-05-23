@@ -359,14 +359,16 @@ function in_array(needle, haystack) {
 
 function clearNoNum(obj)
 {
-  e = (window.event)? window.event:"";
-  var key = e.keyCode?e.keyCode:e.which;
-  if(!(key == 37 || key == 38 || key == 39 || key ==40)){
   //replace all un number and '.'
+  if(obj.value.match('/[^\d.]/g')){
   obj.value = obj.value.replace(/[^\d.]/g,"");
+  }
   //first char must be number
+  if(obj.value.match('/^\./g')){
   obj.value = obj.value.replace(/^\./g,"");
+  }
   //only one '.'
+  if(obj.value.match('/\.{2,}/g')){
   obj.value = obj.value.replace(/\.{2,}/g,".");
   obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
   }
