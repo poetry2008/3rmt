@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php 
-define('ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin');
-//define('ROOT_DIR','/home/szn/project/3rmt/jp/admin');
+//define('ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin');
+define('ROOT_DIR','/home/szn/project/3rmt/jp/admin');
 require(ROOT_DIR.'/includes/configure.php');
 
 
@@ -10,7 +10,7 @@ define('DEFAULE_EMAIL_FROM','sznforwork@yahoo.co.jp');
 define('POINT_MAIL_TITLE','point test');
 define('ONE_DAY_SECOND',60*60*24);
 
-define('SLEEP_SECOND',10);
+define('SLEEP_SECOND',3);
 define('SEND_ROWS',2);
 
 
@@ -99,9 +99,10 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
         }
         $headers .= 'From: '.$From_Mail. "\r\n";
         
-        var_dump($From_Mail);
-        var_dump($to);
-        var_dump(mail($to, $subject, $message, $headers)); 
+        //var_dump($From_Mail);
+        //var_dump($to);
+        //var_dump(mail($to, $subject, $message, $headers)); 
+        mail($to, $subject, $message, $headers);
         if(($sum_user%SEND_ROWS)==0){
           sleep(SLEEP_SECOND);
         }
