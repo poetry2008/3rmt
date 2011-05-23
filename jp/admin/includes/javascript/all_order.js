@@ -390,7 +390,8 @@ $(function(){
   
   // ajax保存订单问答
   $('#form_orders_questions').ajaxForm({
-    beforeSubmit: function () {return true;},
+    beforeSubmit: function () {
+    },
     success: function(){
       if ($('#q_8_1').val()) {
         //保存成功自动跳转到列表
@@ -413,7 +414,10 @@ $(function(){
   // 如果状态为取消或者注文取消，则只能编辑最终确认人。
   if (typeof(orders_status_id) != 'undefined' && (orders_status_id == 6 || orders_status_id == 8) && $('#q_8_1').val().length < 1) {
     $('#form_orders_questions input').attr('disabled', 'true');
+    //$('#form_orders_questions select').attr('readonly', 'true');
     $('#form_orders_questions select').attr('disabled', 'true');
+    $('#form_orders_questions select').attr('name', 'other');
+    $('#form_orders_questions select').append('<input type="hidden" name="questions_type" value="'+$("#form_orders_questions select").val()+'" />');
     $('#q_8_1').attr('class', '').attr('disabled', false);
     $('#tr_q_8_1').show();
     $('#orders_questions_submit_div').show();
