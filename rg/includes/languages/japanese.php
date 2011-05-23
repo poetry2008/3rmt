@@ -58,12 +58,12 @@ define('META_TAGS',
 );
 
 // header text in includes/header.php
-define('HEADER_TITLE_CREATE_ACCOUNT', 'アカウント作成');
+define('HEADER_TITLE_CREATE_ACCOUNT', '会員登録');
 define('HEADER_TITLE_ABOUT_US','会社概要');
 define('HEADER_TITLE_MY_ACCOUNT', 'お客様情報');
 define('HEADER_TITLE_CART_CONTENTS', 'カートを見る');
 define('HEADER_TITLE_CHECKOUT', 'レジに進む');
-define('HEADER_TITLE_TOP', 'RMT');
+define('HEADER_TITLE_TOP', 'RMTトップ');
 define('HEADER_TITLE_CATALOG', 'カタログ');
 define('HEADER_TITLE_LOGOFF', 'ログアウト');
 define('HEADER_TITLE_LOGIN', 'ログイン');
@@ -320,7 +320,7 @@ define('ICON_WARNING', '警告');
 
 define('TEXT_GREETING_PERSONAL', 'いらっしゃいませ、<span class="greetUser">%s さん</span>。 <a href="%s"><u>新着商品</u></a> をご覧になりますか？');
 define('TEXT_GREETING_PERSONAL_RELOGON', '<small>もしあなたが %s さんでなければ、お客様情報を入力して <a href="%s"><u>ログイン</u></a> してください。</small>');
-define('TEXT_GREETING_GUEST', '<span class="greetUser">ゲストさん</span>、いらっしゃいませ。 <a href="%s"><u>ログイン</u></a>しますか？ それとも、<a href="%s"><u>新しいアカウント</u></a>を作成しますか？');
+define('TEXT_GREETING_GUEST', '<span class="greetUser">ゲストさん</span>、いらっしゃいませ。 <a href="%s"><u>ログイン</u></a>しますか？ それとも、<a href="%s"><u>会員登録</u></a>をしますか？');
 
 define('TEXT_SORT_PRODUCTS', '商品を並び替える ');
 define('TEXT_DESCENDINGLY', '降順');
@@ -418,7 +418,7 @@ define('EMAIL_PATTERN_WRONG', 'メールアドレスを正しくご入力下さ�
 define('SENDMAIL_BUTTON', '送信');
 define('LINK_SENDMAIL_TEXT', 'メール受信テストをする');
 define('LINK_SENDMAIL_TITLE', 'メール受信テスト');
-define('SENDMAIL_SUCCESS_TEXT', 'メールが送信されました。RMT学園からの受信をご確認ください。');
+define('SENDMAIL_SUCCESS_TEXT', 'メールが送信されました。'.STORE_NAME.'からの受信をご確認ください。');
 define('SENDMAIL_READ_TEXT', '<b>'.STORE_NAME.'からのメールを</b> <br><b>正常に受信できる場合：</b>「送信」後5分以内で<b>'.STORE_NAME.'</b>からの確認メールが届きます。 <br><b>受信できない場合：</b>「送信」後5分以上経過しても受信できない場合は、スパムフィルター等で受け取りを拒否されている可能性が高いです。');
 define('SENDMAIL_TROUBLE_PRE', 'メール受信の設定に関しては、');
 define('SENDMAIL_TROUBLE_LINK', '<b>「フリーメールでメールが受け取れない方へ」</b>');
@@ -432,4 +432,6 @@ define('NOTICE_MUST_BUY_TEXT', 'ショッピングカートに商品が有りま
 define('LEFT_SEARCH_TITLE', '商品検索');
 define('RIGHT_ORDER_TEXT', '再配達依頼');
 define('TEXT_TAGS', 'タグ一覧');
+define('COLUMNLEFT_SEARCH_DEFAULT_VALUE', '入力して下さい');
+define('COLUMNRIGHT_BEST_GOODS_TITLE', 'お勧めゲーム');
 ?>

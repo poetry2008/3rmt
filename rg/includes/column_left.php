@@ -11,7 +11,7 @@
 echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, '', $request_type, false), 'get')."\n";
 ?>
   <table cellpadding="0" cellspacing="0" width="170" border="0">
-                    <tr><td><?php echo tep_draw_input_field('keywords', 'RMT', 'class="header_search_input"'); ?></td>
+                    <tr><td><?php echo tep_draw_input_field('keywords', COLUMNLEFT_SEARCH_DEFAULT_VALUE, 'class="header_search_input" id="skeywords" onclick="document.getElementById(\'skeywords\').value = \'\';"'); ?></td>
                       <td><input name="imageField" type="submit" class="header_search_submit" value="" alt="search">
                 <?php 
             echo '<input type="hidden" name="search_in_description" value="1">';

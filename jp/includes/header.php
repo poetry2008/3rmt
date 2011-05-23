@@ -44,7 +44,7 @@
   } elseif (isset($_GET['products_id']) && $_GET['products_id']) {
     echo ds_tep_get_categories((int)$_GET['products_id'],1) . ' ジャックポットは安全で安心・信頼できる取り引きを目指していきます。' . "\n";
   } else {
-    echo 'RMT専門店！ RMTジャックポットは安全で安心・信頼できる取り引きを目指していきます。' . "\n";
+    echo 'RMT専門店！ '.STORE_NAME.'は安全で安心・信頼できる取り引きを目指していきます。' . "\n";
   } 
 ?>
 </div>
@@ -118,7 +118,7 @@ if (!isset($cat0[0])) $cat0[0] = NULL;
 // --- end add--- //
 ?>
               </td>
-              <td><?php echo tep_draw_input_field('keywords', 'RMT', 'size="30" maxlength="40"'); ?></td>
+              <td><?php echo tep_draw_input_field('keywords', '入力して下さい', 'size="30" maxlength="40" id="skeywords" onclick="document.getElementById(\'skeywords\').value = \'\';"'); ?></td>
               <td><input name="imageField" type="image" src="images/design/button/search.jpg" alt="検索"></td>
             </tr>
           </table>

@@ -237,6 +237,8 @@ case 'edit':
     $select_site_configure = tep_db_query('select * from sites order by order_num');
     // configuration admin page only
     if(!in_array($cInfo->configuration_key, array(
+            'POINT_EMAIL_TEMPLATE',
+            'POINT_EMAIL_DATE',
             'ADMINPAGE_LOGO_IMAGE',
             'MAX_DISPLAY_PW_MANAGER_RESULTS',
             'MAX_DISPLAY_ORDERS_RESULTS',

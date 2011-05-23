@@ -55,7 +55,7 @@ class google implements engine {
     //$nextpage = 
     //  "http://www.google.co.jp/search?q=FF14+RMT&hl=ja&newwindow=1&ei=EGvPTIWsK4yKuAOpuo3VBg&start=10&sa=N";
       //      return str_replace('{{keyword}}',urlencode($this->keywordi),$this->searchEnter);
-    $url = str_replace('{{keyword}}',urlencode($this->keywordi),$nextpage);
+    $url = str_replace('{{keyword}}',urlencode($this->keyword),$nextpage);
     $url = str_replace('{{pager}}',$page,$url);
     $this->currentUrl = $url;
     //var_dump($url);

@@ -16,9 +16,20 @@
 </div>
 <?php 
   } else {
+    if($guestchk == '1'){
+?>
+<div class="login02">
+  <a href="<?php echo tep_href_link(FILENAME_LOGIN,'','SSL'); ?>"><img class="middle" src="images/banners/login02.gif" alt="ログイン"></a>
+</div>
+<div class="login03">
+  <a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT,'','SSL'); ?>"><img class="middle" src="images/banners/login03.gif" alt="会員登録"></a>
+</div>
+
+<?php
+    }else{
 ?>
 <div class="login_online01">
-<div class="box_titleR">アカウント</div> 
+<div class="box_titleR">メンバーズページ</div> 
 <ul>
     <li><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . HEADER_TITLE_MY_ACCOUNT . '</a>'; ?></li>
     <li><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL') . '">' . MYACCOUNT_EDIT . '</a>'; ?></li>
@@ -29,7 +40,7 @@
 </ul>
 </div>
 <?php 
- //   }
+    }
   } 
 ?>
 <!-- login_eof //-->

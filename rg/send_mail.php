@@ -9,20 +9,19 @@
   
   $error_single = false; 
   $success_single = false; 
-  $subject = 'RMT学園';
+  $subject = STORE_NAME;
   $body_text = ''; 
-  $body_text = 'RMT学園が、会員登録をご利用予定のメールアドレスへ、'."\n".
+  $body_text = STORE_NAME.'が、会員登録をご利用予定のメールアドレスへ、'."\n".
   '受信確認のためにお送りしています。'."\n\n".
   'このメールを、無事に受信ボックスで確認できましたら、'."\n".
-  'こちらのメールアドレスはRMT学園で問題なくご利用いただけます。'."\n\n".
+  'こちらのメールアドレスは'.STORE_NAME.'で問題なくご利用いただけます。'."\n\n".
   '以下のURLにアクセスして会員登録を行ってください。'."\n".
   HTTP_SERVER.'/create_account.php' ."\n\n".
-  'ご不明な点がありましたら、RMT学園までお問い合わせください。'."\n\n\n".
+  'ご不明な点がありましたら、'.STORE_NAME.'までお問い合わせください。'."\n\n\n".
   '[ご連絡・お問い合わせ先]━━━━━━━━━━━━'."\n".
   '株式会社 iimy'."\n".
   HTTP_SERVER."\n".  
-  STORE_OWNER_EMAIL_ADDRESS."\n"."━━━━━━━━━━━━━━━━━━━━━━━";
-  
+  STORE_OWNER_EMAIL_ADDRESS."\n".tep_href_link(FILENAME_CREATE_ACCOUNT, '', 'SSL')."\n"."━━━━━━━━━━━━━━━━━━━━━━━";
   if (isset($_POST['email_address'])) {
     if (empty($_POST['email_address'])) {
       $error_single = true;

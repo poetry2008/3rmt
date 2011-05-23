@@ -10,7 +10,7 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE_1', 'アカウント');
+define('NAVBAR_TITLE_1', 'お客様情報');
 define('NAVBAR_TITLE_2', 'アドレス帳');
 define('HEADING_TITLE', 'アドレス帳');
 define('TABLE_HEADING_NUMBER', 'No.');

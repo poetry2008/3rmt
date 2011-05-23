@@ -192,6 +192,7 @@ foreach($oroids as $key=>$value){
 }
 
 foreach($cols as $col){
+  if($col['set_date']){
     $oroname[] = $col['oroshi_name'];
     $orotime[] = date('Y/m/d H:i:s', strtotime($col['set_date']));
     /**
@@ -204,6 +205,7 @@ foreach($cols as $col){
     $lines = spliteOroData($col['datas']);
     $count[]=count($lines);
     $lines_arr[]=$lines;
+  }
 } 
                                 
   $cnt = count($count);
@@ -214,25 +216,31 @@ for($n=0;$n<$cnt;$n++){
   }
 }
 
+if($orotime){
 echo "<tr>";  
   foreach ($orotime as $value){
     echo "<td>$value</td>";
   }
 echo "</tr>";
+}
+if($oroname){
 echo "<tr>";  
   foreach ($oroname as $value){
     echo "<th align='left'>$value</th>";
   }
 
 echo "</tr>";
+}
 
 }
+if($lines_arr){
 for($i=0;$i < $count[0];$i++){
   echo "<tr id=color>";
   for($j=0;$j<$cnt;$j++){
     echo "<td>".$lines_arr[$j][$i]."</td>";
   }
   echo "</tr>";
+}
 }
 } 
 ?>

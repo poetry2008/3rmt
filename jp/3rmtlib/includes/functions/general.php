@@ -1752,7 +1752,7 @@ function forward404Unless($condition)
         $title       = HEADING_TITLE . ' ' . TITLE;
         switch(SITE_ID){
           case "3":
-            $keywords    = "RMT,激安,安い,特価,販売,買取,MMORPG,アイテム,会員,ゲーム通貨";
+            $keywords    = "RMT,激安,安い,特価,販売,買取,MMORPG,アイテム,アカウント,ゲーム通貨";
             $description = "今日のお買い得ゲーム一覧。RMTのことなら".TITLE."へ";
             break;
           case "2":
@@ -1761,7 +1761,7 @@ function forward404Unless($condition)
             break;
           case "1":
           default:
-            $keywords    = "RMT,激安,安い,特価,販売,買取,MMORPG,アイテム,会員,ゲーム通貨";
+            $keywords    = "RMT,激安,安い,特価,販売,買取,MMORPG,アイテム,アカウント,ゲーム通貨";
             $description = "今日のお買い得ゲーム一覧。RMTのことなら".TITLE."へ";
             break;
         }
@@ -1792,7 +1792,8 @@ function forward404Unless($condition)
         switch(SITE_ID){
           case "3":
             $title        = $breadcrumb->trail_title(' &raquo; ');
-            $keywords     = "RMT,スクウェア・エニックス,NCJ,ガンホー,NEXON,ゲームオン,コーエー,セガ,販売,買取,アイテム,会員";
+            $keywords     =
+              "RMT,スクウェア・エニックス,NCJ,ガンホー,NEXON,ゲームオン,コーエー,セガ,販売,買取,アイテム,アカウント";
             $description  = "ゲームメーカーの一覧です。スクウェア・エニックス、NCJ、ガンホーなど。RMTのことなら".TITLE."へ";
             break;
           case "2":
@@ -1803,7 +1804,8 @@ function forward404Unless($condition)
           case "1":
           default:
             $title        = $breadcrumb->trail_title(' &raquo; ');
-            $keywords     = "RMT,スクウェア・エニックス,NCJ,ガンホー,NEXON,ゲームオン,コーエー,セガ,販売,買取,アイテム,会員";
+            $keywords     =
+              "RMT,スクウェア・エニックス,NCJ,ガンホー,NEXON,ゲームオン,コーエー,セガ,販売,買取,アイテム,アカウント";
             $description  = "ゲームメーカーの一覧です。スクウェア・エニックス、NCJ、ガンホーなど。RMTのことなら".TITLE."へ";
             break;
         }
@@ -3752,4 +3754,19 @@ function tep_whether_show_payment($payment_key, $guest_chk) {
     }
   }
   return true;
+}
+  
+function tep_get_all_subcategories($parent_id) 
+{
+    $subcategories_array = array();
+    $subcategories_array[] = $parent_id;
+    $subcategories_query = tep_db_query("select categories_id from " . TABLE_CATEGORIES . " where parent_id = '" . (int)$parent_id . "'");
+    while ($subcategories = tep_db_fetch_array($subcategories_query)) {
+      $subcategories_array[] = $subcategories['categories_id'];
+      $sub_subcategories_query = tep_db_query("select categories_id from " .  TABLE_CATEGORIES . " where parent_id = '" .  (int)$subcategories['categories_id'] . "'");
+      while ($sub_subcategories = tep_db_fetch_array($sub_subcategories_query)) {
+        $subcategories_array[] = $sub_subcategories['categories_id'];
+      }
+    }
+    return $subcategories_array;
 }

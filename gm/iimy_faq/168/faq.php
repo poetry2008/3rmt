@@ -5,8 +5,8 @@
 // IF USER HAS CLICKED ON A QUESTION
 if($q_id == "" || $q_id == "index") {
 	// IF USER IS LOOKING AT THE MAIN PAGE
-	$faq_meta_d = 'FF11 RMTのよくある質問一覧ページです。FF11のギル販売・買取。アカウント販売・買取について';
-	$faq_meta_k = 'FF11,FFXI,質問,一覧,RMT,FAQ,ファイナルファンタジー11,ギル,アカウント,キャラクター,販売,買取';
+	$faq_meta_d = 'FF11 RMTのよくある質問一覧ページです。FF11のギル販売・買取。会員販売・買取について';
+	$faq_meta_k = 'FF11,FFXI,質問,一覧,RMT,FAQ,ファイナルファンタジー11,ギル,会員,キャラクター,販売,買取';
 	$faq_title = $gc_name . 'のよくある質問一覧/' . TITLE;
 	$faq_mes = '<h2 align="right">' . $game_name . 'のFAQ一覧</h2>' . "\n";
 	
@@ -52,7 +52,7 @@ if($q_id == "" || $q_id == "index") {
 	$other_questions_query = tep_db_query("SELECT q_id, c_id, question FROM gm_faq".(int)$g_id."_questions WHERE c_id='".$question[c_id]."' ORDER BY q_order");
 	// タイトル挿入
 	$faq_meta_d = $game_name . 'の質問：' . $question['question'];
-	$faq_meta_k = 'FF11,FFXI,質問,回答,RMT,FAQ,ファイナルファンタジー11,ギル,アカウント,キャラクター,販売,買取';
+	$faq_meta_k = 'FF11,FFXI,質問,回答,RMT,FAQ,ファイナルファンタジー11,ギル,会員,キャラクター,販売,買取';
 	$faq_title = $game_name . 'の質問：' . $question['question'] . '-' . TITLE;
 
 	if (!tep_db_num_rows($question_query)) { // not found in database

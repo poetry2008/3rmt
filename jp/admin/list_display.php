@@ -326,14 +326,17 @@ if($oroids)
 
 if($cols)
 foreach($cols as $col){
+  if($col['set_date']){
     $oroname[]   = $col['oroshi_name'];
     $orotime[]   = date('Y/m/d H:i:s',strtotime($col['set_date']));
     $datas_id[]  = $col['list_id'];
     $lines       = spliteOroData($col['datas']);
     $count[]     = count($lines);
     $lines_arr[] = $lines;
+  }
 } 
 
+if($count){
                                 
   $cnt = count($count);
 
@@ -344,17 +347,22 @@ for($n=0;$n<$cnt;$n++){
 }
 //$rows = count($set_menu_list)>$count[0]?count($set_menu_list):$count[0];
 $rows = $count[0]>count($products)?$count[0]:count($products);
+}
 ?>
 <script>
   default_value=new Array();
-<?php for($k = 0; $k < $rows; $k++) {
+<?php 
+ if($count){
+ for($k = 0; $k < $rows; $k++) {
   echo "default_value[".$k."]=new Array();\n";
   for($j=0;$j<$cnt;$j++){
     if (isset($lines_arr[$j][$k])) {
       echo "default_value[".$k."][".$j."]='".$lines_arr[$j][$k]."';\n";
     }
   }
-  }?>
+  }
+ }
+ ?>
 </script>
 <!--------------------->
 <form name='listform' method='POST' action="?action=update&cid=<?php echo $cID; ?>&cpath=<?php echo $cPath; ?>">
@@ -366,15 +374,19 @@ $rows = $count[0]>count($products)?$count[0]:count($products);
     <td colspan="3" class="dataTableContent"></td>
   </tr>
   <tr class="dataTableHeadingRow">
-<?php foreach ($oroname as $k => $value){?>
+<?php 
+  if($oroname){
+    foreach ($oroname as $k => $value){?>
     <th class="dataTableHeadingContent"><?php echo $value;?></th>
-<?php } ?>
+<?php }} ?>
     <th class="dataTableHeadingContent" ><?php echo LIST_DISPLAY_PRODUCT_SELECT;?></th>
     <th class="dataTableHeadingContent" ><?php echo LIST_DISPLAY_JIAKONGZAIKU;?></th>
     <th class="dataTableHeadingContent" ><?php echo LIST_DISPLAY_YEZHE_PRICE;?></th>
     <!--<th></th>-->
   </tr>
-<?php for($k = 0; $k < $rows; $k++) {?>
+<?php 
+ if($count){
+  for($k = 0; $k < $rows; $k++) {?>
   <tr class="<?php echo $k%2==1?'dataTableRow':'dataTableSecondRow';?>" onmouseover="this.className='dataTableRowOver'" onmouseout="this.className='<?php echo $k%2==1?'dataTableRow':'dataTableSecondRow';?>'">
 <?php
   for($j=0;$j<$cnt;$j++){
@@ -426,7 +438,7 @@ $rows = $count[0]>count($products)?$count[0]:count($products);
 <?php }?>
     </td>-->
   </tr>
-<?php }?>
+<?php }}?>
   </table>
     <input type="hidden" name="fullpath" value="<?php echo $_GET['fullpath']?>">
     <input type="submit" value="決定">

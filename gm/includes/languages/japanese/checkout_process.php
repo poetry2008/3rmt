@@ -10,8 +10,8 @@
   Released under the GNU General Public License
 */
 
-define('EMAIL_TEXT_SUBJECT', 'ご注文ありがとうございます【RMTゲームマネー】　');
-define('EMAIL_TEXT_SUBJECT2','ご注文ありがとうございます【RMTゲームマネー】　');
+define('EMAIL_TEXT_SUBJECT', 'ご注文ありがとうございます【'.STORE_NAME.'】　');
+define('EMAIL_TEXT_SUBJECT2','ご注文ありがとうございます【'.STORE_NAME.'】　');
 
 define('EMAIL_TEXT_STORE_CONFIRMATION', ' へご注文をいただきまして、誠にありがとうございます。' . "\n\n" . 
 '下記の内容にてご注文を承りましたので、ご確認ください。' . "\n\n" . 

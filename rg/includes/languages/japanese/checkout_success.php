@@ -21,7 +21,7 @@ define('TEXT_SUCCESS', '<span class="red"><b>「注文受付」メールをお�
 ＜迷惑メールフォルダの確認＞<br>
 弊社のメールが 「迷惑メールフォルダ」や「ゴミ箱」に振り分けされ見落としていませんか？<br>
 ＜メールドメインの受信制限を設定している＞<br>
-rmt-kames.jpのメールドメインを受信するように設定をお願いいたします。<br>
+rmtgakuen.jpのメールドメインを受信するように設定をお願いいたします。<br>
 ＜それでも届かないときは、メールアドレス変更＞<br>
 お客様情報から今すぐご登録メールアドレスの変更をお願いいたします。<br>
 <div class="underline">&nbsp;</div>
@@ -49,7 +49,7 @@ rmt-kames.jpのメールドメインを受信するように設定をお願い�
 <div class="dot">&nbsp;</div>');
 define('TEXT_NOTIFY_PRODUCTS', '本日ご注文いただいた商品の最新情報を 
 電子メールでお届けしております。ご希望の方は、商品ごとにチェックして <b>[次に進む]</b> を押してください。');
-define('TEXT_SEE_ORDERS', 'あなたのご注文履歴は、<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">\'アカウント\'</a> ページの <a href="' . tep_href_link(FILENAME_ACCOUNT_HISTORY, '', 'SSL') . '">\'履歴\'</a>ボタンをクリックするとご覧になれます。');
+define('TEXT_SEE_ORDERS', 'あなたのご注文履歴は、<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">\'会員\'</a> ページの <a href="' . tep_href_link(FILENAME_ACCOUNT_HISTORY, '', 'SSL') . '">\'履歴\'</a>ボタンをクリックするとご覧になれます。');
 define('TEXT_CONTACT_STORE_OWNER', 'もしご注文手続きについてご質問がございましたら、直接<a href="' . tep_href_link(FILENAME_CONTACT_US) . '">店主</a>までお問い合わせください。');
 define('TEXT_THANKS_FOR_SHOPPING', 'ご注文ありがとうございました。');
 

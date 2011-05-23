@@ -92,7 +92,7 @@ if (isset($_GET['action']) && $_GET['action']) {
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
       <td class="pageHeading">
-      商品卸価格管理
+      <?php echo CATEGORY_ADMIN_TITLE;?> 
       &nbsp; 
       <?php
       if ($cPath) {
@@ -108,7 +108,7 @@ if (isset($_GET['action']) && $_GET['action']) {
       <td class="smallText" align="right"><?php echo tep_draw_form('search', FILENAME_CATEGORIES_ADMIN, '', 'get') . "\n"; ?> <?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search', isset($_GET['search'])?$_GET['search']:'') . "\n"; ?></form></td>
       <td class="smallText" align="right">
         <div id="gotomenu">
-          <a href="javascript:void(0)" onclick="$('#categories_tree').toggle()">ジャンプ▼</a>
+          <a href="javascript:void(0)" onclick="$('#categories_tree').toggle()"><?php echo CATEGORY_ADMIN_CATREE_TITLE;?></a>
           <div id="categories_tree">
           <?php
             require(DIR_WS_CLASSES . 'category_tree.php');
@@ -140,7 +140,7 @@ if (isset($_GET['action']) && $_GET['action']) {
     ?>
     <table>
       <tr>
-      <td  class="dataTableContent"><b>単価ルール:</b> </td>
+      <td  class="dataTableContent"><b><?php echo CATEGORY_ADMIN_SINGLE_PRICE;?></b> </td>
       <td  class="dataTableContent"><?php echo nl2br($comment['rule']);?></td>
       </tr>
     </table>
@@ -151,12 +151,12 @@ if (isset($_GET['action']) && $_GET['action']) {
   <!--dataTableHeadingRow-->
   <tr class="dataTableHeadingRow" valign="top">
   <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CATEGORIES_PRODUCTS; ?></td>
-  <td class="dataTableHeadingContent" align="center" >注文数</td>
-  <td class="dataTableHeadingContent" align="center" >架空在庫</td>
-  <td class="dataTableHeadingContent" align="center" >実在庫</td>
+  <td class="dataTableHeadingContent" align="center" ><?php echo TABLE_HEADING_CATEGORIES_ZHUWEN_NUM;?></td>
+  <td class="dataTableHeadingContent" align="center" ><?php echo TABLE_HEADING_CATEGORIES_JIAKONG;?></td>
+  <td class="dataTableHeadingContent" align="center" ><?php echo TABLE_HEADING_CATEGORIES_SHIZAIKU;?></td>
   <td class="dataTableHeadingContent" align="center" ></td>
   <td class="dataTableHeadingContent" align="center" >
-      <a style="font-weight:bold;" href="cleate_list.php?cid=<?php echo $cPath_yobi;?>&action=prelist&cPath=<?php echo $_GET['cPath'];?>">業者</a><br>
+      <a style="font-weight:bold;" href="cleate_list.php?cid=<?php echo $cPath_yobi;?>&action=prelist&cPath=<?php echo $_GET['cPath'];?>"><?php echo TABLE_HEADING_CATEGORIES_YEZHE?></a><br>
       <small style="font-weight:bold;font-size:12px;"><?php echo str_replace(' ','<br>',$kakaku_updated);?></small>
   </td>
   <?php  
@@ -165,7 +165,7 @@ if (isset($_GET['action']) && $_GET['action']) {
   $col=tep_db_fetch_array($res);
   if (!$col) $col['bairitu'] = 1.1;
 ?>
-<td class="dataTableHeadingContent" align="center" ><?php echo $col['bairitu']?>倍</td>
+<td class="dataTableHeadingContent" align="center" ><?php echo $col['bairitu']?><?php echo CATEGORY_ADMIN_BEI_TEXT;?></td>
   <?php
   if ($cPath_yobi){
     $res=tep_db_query("select count(*) as cnt from set_dougyousya_names sdn
@@ -190,13 +190,13 @@ if (isset($_GET['action']) && $_GET['action']) {
       }
     } else {
       $count_dougyousya['cnt'] = 1;
-      echo "<td class='dataTableHeadingContent' align='center' >同業者未設定</td>";
+      echo "<td class='dataTableHeadingContent' align='center' >".CATEGORY_ADMIN_SETTING_TONGYE."</td>";
     }
   }
 ?>
-  <td class="dataTableHeadingContent" align="center" >現在単価</td>
-  <td class="dataTableHeadingContent" align="center" >単価設定</td>
-  <td class="dataTableHeadingContent" align="center" >増減</td>
+  <td class="dataTableHeadingContent" align="center" ><?php echo TABLE_HEADING_CATEGORIES_NOW_PRICE;?></td>
+  <td class="dataTableHeadingContent" align="center" ><?php echo TABLE_HEADING_CATEGORIES_SETTING_PRICE;?></td>
+  <td class="dataTableHeadingContent" align="center" ><?php echo TABLE_HEADING_CATEGORIES_CHAE;?></td>
   <?php /*
   <td class="dataTableHeadingContent" align="center" <?php if ($ocertify->npermission < 10) {?>width='1'<?php } else {?>width='180'<?php }?>>
   <div class="datatablecontent_warpper">
@@ -436,14 +436,14 @@ while ($products = tep_db_fetch_array($products_query)) {
       if (tep_check_best_sellers_isbuy($products['products_id'])) {
         $diff_oday = tep_calc_limit_time_by_order_id($products['products_id']); 
         if ($diff_oday !== '') {
-          echo '<img src="images/icons/mae1.gif" alt="'.$diff_oday.'日前に注文有" title="'.$diff_oday.'日前に注文有">'; 
+          echo '<img src="images/icons/mae1.gif" alt="'.$diff_oday.PIC_MAE_ALT_TEXT.'" title="'.$diff_oday.PIC_MAE_ALT_TEXT.'">'; 
         } else {
           echo '<img src="images/icons/mae3.gif" alt="">'; 
         }
       } else {
         $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], true); 
         if ($diff_oday !== '') {
-          echo '<img src="images/icons/mae2.gif" alt="'.$diff_oday.'日前に注文有" title="'.$diff_oday.'日前に注文有">'; 
+          echo '<img src="images/icons/mae2.gif" alt="'.$diff_oday.PIC_MAE_ALT_TEXT.'" title="'.$diff_oday.PIC_MAE_ALT_TEXT.'">'; 
         } else {
           echo '<img src="images/icons/mae3.gif" alt="">'; 
         }
@@ -591,11 +591,11 @@ if(empty($cPath_back)&&empty($cID)&&isset($cPath)){
     <input type="hidden" value="<?php echo $cPath_yobi; ?>"          name="cpath_yobi">
     <input type="hidden" value="<?php echo $current_category_id; ?>" name="cID_list" >
   <?php if ($ocertify->npermission > 7) { ?>
-    <input type='button' value='計算設定' name='b[]' onClick="cleat_set('set_bairitu.php')">
+    <input type='button' value='<?php echo CATEGORY_ADMIN_BUTTON_CAL_SETTING;?>' name='b[]' onClick="cleat_set('set_bairitu.php')">
   <?php }?>
-  &nbsp;&nbsp;&nbsp;&nbsp;<input type='button' value='担当者登録' name='e[]' onClick="location.href='set_comment.php?cID=<?php echo $current_category_id;?>&cPath=<?php echo $_GET['cPath'];?>'">
-  &nbsp;&nbsp;&nbsp;&nbsp;<input type='button' value='卸業者単価設定' name='d[]' onClick="list_display('<?php echo $cPath_yobi?$cPath_yobi:0;?>','<?php echo $current_category_id;?>','<?php echo $_GET['cPath'];?>')">
-  &nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="x" value="一括更新" onClick="all_update()"></td>
+  &nbsp;&nbsp;&nbsp;&nbsp;<input type='button' value='<?php echo CATEGORY_ADMIN_BUTTON_LOGIN;?>' name='e[]' onClick="location.href='set_comment.php?cID=<?php echo $current_category_id;?>&cPath=<?php echo $_GET['cPath'];?>'">
+  &nbsp;&nbsp;&nbsp;&nbsp;<input type='button' value='<?php echo CATEGORY_ADMIN_BUTTON_XIEYE_PRICE;?>' name='d[]' onClick="list_display('<?php echo $cPath_yobi?$cPath_yobi:0;?>','<?php echo $current_category_id;?>','<?php echo $_GET['cPath'];?>')">
+  &nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="x" value="<?php echo CATEGORY_ADMIN_BUTTON_ALL_UPDATE;?>" onClick="all_update()"></td>
 </tr>
 <!--dataTableRowSelected end-->
 <tr>
@@ -606,8 +606,8 @@ if(empty($cPath_back)&&empty($cID)&&isset($cPath)){
   <td colspan="<?php echo 11 + $count_dougyousya['cnt'];?>">
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
-        <td class="smallText"><?php echo 'カテゴリー:' . '&nbsp;' . $categories_count .
-         '<br>' . '商品数:' . '&nbsp;' . $products_query_numrows; ?></td>
+        <td class="smallText"><?php echo CATEGORY_ADMIN_COUNTNUM_TEXT . '&nbsp;' . $categories_count .
+         '<br>' . CATEGORY_ADMIN_PRODUCT_NUM . '&nbsp;' . $products_query_numrows; ?></td>
         <td align="right" class="smallText"><?php
   if ($cPath) {
     $rPath_back = isset($cPath_back) && $cPath_back ? 'cPath=' . $cPath_back : '';
@@ -640,15 +640,15 @@ tep_display_google_results();
 ?>
 <table>
   <tr>
-    <td class="dataTableContent" align='right'><b>更新日の日付:</b></td>
+    <td class="dataTableContent" align='right'><b><?php echo CATEGORY_ADMIN_LAST_MODIFIED_TEXT;?></b></td>
     <td class="dataTableContent"><?php echo date('Y/m/d H:i:s', strtotime($comment['last_modified']));?></td>
   </tr>
   <tr>
-    <td class="dataTableContent" align='right'><b>担当者:</b></td>
+    <td class="dataTableContent" align='right'><b><?php echo CATEGORY_ADMIN_AUTHOR_TEXT;?></b></td>
     <td class="dataTableContent"><?php echo $comment['author'];?></td>
   </tr>
   <tr>
-    <td class="dataTableContent" align='right'><b>コメント:</b></td>
+    <td class="dataTableContent" align='right'><b><?php echo CATEGORY_ADMIN_COMMENT_TEXT;?></b></td>
     <td class="dataTableContent">
 <?php echo nl2br($comment['comment']);?>
     </td>
