@@ -1,13 +1,18 @@
 #!/usr/bin/env php
 <?php 
-define('ROOT_DIR','');
-require('includes/configure.php');
+define('ROOT_DIR','/home/szn/project/3rmt/jp/admin');
+require(ROOT_DIR.'/includes/configure.php');
 
 
 
 define('DEFAULE_EMAIL_FROM','sznforwork@yahoo.co.jp');
 define('POINT_MAIL_TITLE','point test');
 define('ONE_DAY_SECOND',60*60*24);
+
+define('SLEEP_SECOND',10);
+define('SEND_ROWS',2);
+
+
 // link db
 $link = mysql_connect(DB_SERVER,DB_SERVER_USERNAME,DB_SERVER_PASSWORD);
 mysql_select_db(DB_DATABASE);
@@ -80,6 +85,7 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
         $sum_user++;
         $to = $customer_info['customer_email'];
         $message = preg_replace('/\r\n|\n/',"<br>",$show_email_template);
+        $message .= "<br> ".date('Y-m-d H:i:s',time());
         $subject = "=?UTF-8?B?".
           base64_encode(POINT_MAIL_TITLE)."?=";
         $headers = 'Content-type: text/html; charset=utf-8' . "\r\n";
@@ -91,9 +97,13 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
               $customer_info['site_id'],'configuration');
         }
         $headers .= 'From: '.$From_Mail. "\r\n";
+        
         var_dump($From_Mail);
         var_dump($to);
-        //var_dump(mail($to, $subject, $message, $headers)); 
+        var_dump(mail($to, $subject, $message, $headers)); 
+        if(($sum_user%SEND_ROWS)==0){
+          sleep(SLEEP_SECOND);
+        }
       }
     }
     /*
