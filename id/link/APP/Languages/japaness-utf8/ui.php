@@ -556,6 +556,8 @@ return array(
     <p>※ リンク先が無くなっている等の問題がある場合には、[管理者へ通知]をクリックしてください。</p>
     ',
     'total_each_site' => '相互リンク成功数',
+    'send_email_admin' => 'メールアドレス設置',
+    'send_email_admin_text' => '',
 
 );
 ?>
