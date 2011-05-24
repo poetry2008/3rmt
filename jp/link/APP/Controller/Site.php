@@ -1394,6 +1394,8 @@ class Controller_Site extends Controller_Base
     $headers = 'Content-type: text/html; charset=utf-8' . "\r\n";
     $headers .= "Content-Transfer-Encoding: 8bit\r\n";  
     $headers .= 'From: '.$From_Mail. "\r\n";
+    $message = str_replace('<br>',"\n",$message);
+    $message = str_replace('<br />',"\n",$message);
     $model_Setseo = FLEA::getSingleton('Model_Setseo');
     $seo = $model_Setseo->find("action ='".$_GET['action']."'");
     if(!$seo){
