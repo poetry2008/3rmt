@@ -623,6 +623,7 @@ class Controller_Site extends Controller_Base
         $From_Mail_arr = $global->find('name = "send_email_admin"');
         $From_Mail = nl2br(h($From_Mail_arr['value']));
         $message = str_replace('<br>',"\n",$message);
+        $message = str_replace('<br />',"\n",$message);
         $headers = 'Content-type: text/plain; charset=utf-8' . "\r\n";
         $headers .= "Content-Transfer-Encoding: 8bit\r\n";  
         $headers .= 'From: '.$From_Mail. "\r\n";
