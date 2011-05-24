@@ -11,3 +11,4 @@ define('HEADING_TITLE','ポイントお知らせメール');
 define('TEXT_INFO_HEADING_EDIT_POINT_MAIL ','テンプレート編集');
 define('TEXT_INFO_HEADING_NEW','テンプレート新規作成');
 define('TEXT_INFO_HEADING_EDIT_POINT_MAIL','メールのテンプレート');
+define('TEXT_DISPLAY_NUMBER_OF_POINT_EMAIL','<b>%d</b>~<b>%d</b>番目を表示');
