@@ -680,6 +680,7 @@ h3.game_list{
 h3.game_list a{
 	padding-top: 4px;
 	color:#555;
+	font-size:13px;
 }
 h3.game_list a:hover{
 	color:#C51138;
@@ -750,6 +751,7 @@ News
 	padding: 5px 0px;
 	margin: 0px;
 }
+.news_list a{ font-size:12px;}
 .menu_top{
 	background: url(../images/design/box/menu.gif) no-repeat 0 bottom;
 	height:35px;
@@ -1716,4 +1718,4 @@ border:2px solid #FF8080;
 /*reorder*/
 .rg_pay_info{ border:1px solid #ccc; background-color:#fff; padding:4px; margin:3px 0;}
 .best_goods{ width:170px; margin:0 auto;}
-.best_goods_info { text-align:center; font-size:12px; padding:5px 0;}
+.best_goods_info { text-align:center; font-size:12px; padding:5px 0; border:1px solid #ccc;}

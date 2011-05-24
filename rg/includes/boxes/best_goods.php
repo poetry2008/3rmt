@@ -64,8 +64,11 @@ if (!empty($sort_ca_arr)) {
 ?>
 
 <?php
+/*
      echo '<a href="'.tep_href_link(FILENAME_DEFAULT, 'cPath='.$list_ca_arr[$ca_key][0]).'">'.$list_ca_arr[$ca_key][1].'</a><br>'; 
+*/
 ?>
+<br>
 <?php
      $sort_ca_num++; 
    }
