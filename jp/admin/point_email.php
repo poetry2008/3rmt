@@ -226,13 +226,13 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
         '<br>' . tep_draw_textarea_field('description', 'soft', '25', '5',
             $point_info->description) .
         '<br>' . $explanation;
+        $contents[] = array('text' => $point_mail_inputs_string);
         $contents[] = array('align' => 'center' ,
             'text' =>
             tep_html_button(IMAGE_EDIT,tep_href_link(FILENAME_POINT_EMAIL, 'page='
                 . $_GET['page'] .'&id='.$point_info->id.'&action=edit')).
             tep_html_button(IMAGE_DELETE,tep_href_link(FILENAME_POINT_EMAIL, 'page='
                 . $_GET['page'] .'&id='.$point_info->id.'&action=delete')));
-        $contents[] = array('text' => $point_mail_inputs_string);
       }
       break;
   }
