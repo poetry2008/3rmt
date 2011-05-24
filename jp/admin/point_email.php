@@ -11,13 +11,13 @@
         $point_mail_description = tep_db_prepare_input($_POST['description']);
         if($_GET['action'] == 'insert'){
            $sql_point_mail_array = array('mail_date' => $point_mail_date,
-                                         'description' => $point_mail_date,
+                                         'description' => $point_mail_description,
                                          'created_at' => 'now()',
                                          'updated_at' => 'now()');
            tep_db_perform(TABLE_POINT_MAIL,$sql_point_mail_array);
         }else if($_GET['action'] == 'save'){
            $sql_point_mail_array = array('mail_date' => $point_mail_date,
-                                         'description' => $point_mail_date,
+                                         'description' => $point_mail_description,
                                          'updated_at' => 'now()');
            tep_db_perform(TABLE_POINT_MAIL,$sql_point_mail_array,'update',
                'id='.tep_db_input($_POST['id']));
@@ -41,9 +41,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-<script language="javascript" src="includes/general.js"></script>
 </head>
-<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onLoad="SetFocus();">
+<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
 <!-- header //-->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof //-->
@@ -160,15 +159,15 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
   $explanation = TEXT_POINT_EMAIL_GLOBAL_TEXT;
   switch (isset($_GET['action'])?$_GET['action']:null) {
     case 'new':
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_NEW_point_mail . '</b>');
+      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_NEW . '</b>');
 
       $contents = array('form' => tep_draw_form('status', FILENAME_POINT_EMAIL, 'page=' . $_GET['page'] . '&action=insert', 'post', 'enctype="multipart/form-data"'));
     //point mail date
-    $point_mail_inputs_string .= '<br><br>' . TEXT_INFO_point_mail_TITLE .
+    $point_mail_inputs_string .= '' . TEXT_INFO_POINT_MAIL_DATE .
       '<br>' . tep_draw_input_field('mail_date');
     
     //point mail description
-    $point_mail_inputs_string .= '<br><br>' . TEXT_INFO_point_mail_MAIL .
+    $point_mail_inputs_string .= '<br><br>' . TEXT_INFO_POINT_DESCRIPTION .
       '<br>' . tep_draw_textarea_field('description', 'soft', '25', '5').'<br>'.$explanation ;
 
       $contents[] = array('text' => '<br>' . $point_mail_inputs_string);
@@ -183,49 +182,48 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
 
       $contents = array('form' => tep_draw_form('status', FILENAME_POINT_EMAIL,
             'page=' . $_GET['page'] . '&id=' . $point_info->id  . '&action=save', 'post', 'enctype="multipart/form-data"'));
-      $contents[] = array('text' => TEXT_INFO_EDIT_INTRO);
-
       $contents[] = array('text' => '<input type="hidden" name="id"
-          value="'.$point_info->id.'"');
+          value="'.$point_info->id.'">');
 
       $point_mail_inputs_string = '';
 
       //mail date
-      $point_mail_inputs_string .= '<br><br>' . TEXT_INFO_ORDERS_STATUS_TITLE .
+      $point_mail_inputs_string .= '' . TEXT_INFO_POINT_MAIL_DATE .
         '<br>' . tep_draw_input_field('mail_date', $point_info->mail_date);
 
       //mail description
-      $point_mail_inputs_string .= '<br><br>' . TEXT_INFO_ORDERS_STATUS_MAIL .
+      $point_mail_inputs_string .= '<br><br>' . TEXT_INFO_POINT_DESCRIPTION .
         '<br>' . tep_draw_textarea_field('description', 'soft', '25', '5',
             $point_info->description) .
         '<br>' . $explanation;
       $contents[] = array('text' => '<br>'.$point_mail_inputs_string);
       $contents[] = array('align' => 'center' , 'text' => '<br>' .
-          tep_html_submit(IMAGE_INSERT).
+          tep_html_submit(IMAGE_EDIT).
           tep_html_button(IMAGE_CANCEL,tep_href_link(FILENAME_POINT_EMAIL,'page=' .
               $_GET['page'].'id='.$point_mail->id)));
       break;
     case 'delete':
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_point_mail . '</b>');
+      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE . '</b>');
 
       $contents = array('form' => tep_draw_form('status', FILENAME_POINT_EMAIL,
             'page=' . $_GET['page'] . '&id=' . $point_info->id  . '&action=deleteconfirm'));
-      $contents[] = array('text' => TEXT_INFO_DELETE_INTRO);
+      $contents[] = array('text' => TEXT_INFO_DELETE);
       $contents[] = array('text' => '<br><b>' . $point_info->mail_date . '</b>');
-      $contents[] = array('text' => '<br><b>' . $point_info->description . '</b>');
+      $contents[] = array('text' => '<br><b>' .
+          preg_replace("/\r\n|\n/",'<br>',$point_info->description) . '</b>');
       $contents[] = array('align' => 'center' , 'text' => '<br>' .
-          tep_html_submit(IMAGE_INSERT).
+          tep_html_submit(IMAGE_DELETE).
           tep_html_button(IMAGE_CANCEL,tep_href_link(FILENAME_POINT_EMAIL,'page=' .
               $_GET['page'].'id='.$point_mail->id)));
       break;
     default:
   if (isset($point_info) and is_object($point_info)) {
-        $heading[] = array('text' => '<b>' . $point_info->mail_date . '</b>');
+        $heading[] = array('text' => '<b>' .TABLE_HEADING_MAIL_DATE.":"
+            . $point_info->mail_date . '</b>');
         $point_mail_inputs_string = '';
-        $point_mail_inputs_string .= '<br><br>' . TEXT_INFO_ORDERS_STATUS_MAIL .
-        '<br>' . tep_draw_textarea_field('description', 'soft', '25', '5',
-            $point_info->description) .
-        '<br>' . $explanation;
+        $point_mail_inputs_string .= '<br><br>' . TEXT_INFO_POINT_DESCRIPTION .
+        '<br><br>' .preg_replace("/\r\n|\n/",'<br>',$point_info->description) .
+        '<br><br>' . $explanation;
         $contents[] = array('text' => $point_mail_inputs_string);
         $contents[] = array('align' => 'center' ,
             'text' =>
