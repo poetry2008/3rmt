@@ -53,6 +53,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('LOCAL_EXE_UNZIP', '/usr/local/bin/unzip');
 
 // define the filenames used in the project
+  define('FILENAME_POINT_EMAIL', 'point_email.php');
   define('FILENAME_PWD_LOG', 'pwd_log.php');
   define('FILENAME_PRODUCTS_PRICE','products_price.php');
   define('FILENAME_PW_MANAGER', 'pw_manager.php');
@@ -124,6 +125,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
 
 // define the database table names used in the project
+  define('TABLE_POINT_MAIL','point_mail');
   define('TABLE_BESTSELLERS_TIME_TO_CATEGORY','bestsellers_time_to_category');
   define('TABLE_ONCE_PWD_LOG','once_pwd_log');
   define('TABLE_LETTERS','letters');
