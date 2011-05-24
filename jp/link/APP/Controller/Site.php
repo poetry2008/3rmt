@@ -620,10 +620,8 @@ class Controller_Site extends Controller_Base
            $Consumer = $Model_Consumer->find($cond);
            $From_Mail = $Consumer['consumer_email'];
          */
-        $Model_User = &FLEA::getSingleton("Model_User");
-        $cond = "username = 'haomai'";
-        $User = $Model_User->find($cond);
-        $From_Mail = $User['email'];
+        $From_Mail_arr = $global->find('name = "send_email_admin"');
+        $From_Mail = nl2br(h($From_Mail_arr['value']));
         $headers = 'Content-type: text/html; charset=utf-8' . "\r\n";
         $headers .= "Content-Transfer-Encoding: 8bit\r\n";  
         $headers .= 'From: '.$From_Mail. "\r\n";
@@ -1382,10 +1380,14 @@ class Controller_Site extends Controller_Base
     if (!empty($_POST['femail'])){
       $From_Mail = $_POST['femail']; 
     }else{
+      $From_Mail_arr = $global->find('name = "send_email_admin"');
+      $From_Mail = nl2br(h($From_Mail_arr['value']));
+      /*
       $Model_User = &FLEA::getSingleton("Model_User");
       $cond = "username = 'haomai'";
       $User = $Model_User->find($cond);
       $From_Mail = $User['email'];
+      */
     }
     $headers = 'Content-type: text/html; charset=utf-8' . "\r\n";
     $headers .= "Content-Transfer-Encoding: 8bit\r\n";  
