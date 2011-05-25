@@ -78,8 +78,8 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
       $mon = substr($customer_info['point_date'],5,2);
       $day = substr($customer_info['point_date'],8,2);
       $out_time = mktime(0,0,0,$mon,$day+$customer_info['config_date'],$year);
-      if($last_login < ($out_time-($value-1)*ONE_DAY_SECOND)&&$last_login >
-          ($out_time-($value)*ONE_DAY_SECOND)){
+      if($last_login < ($out_time-$value*ONE_DAY_SECOND)&&$last_login >
+          ($out_time-($value+1)*ONE_DAY_SECOND)){
         //replace ${} to true value
         $show_email_template = str_replace(
             array('${NAME}','${POINT}','${POINT_DATE}','${SITE_NAME}'),
@@ -120,7 +120,6 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
         echo "<span >title :".$title."</span>";
         echo "<span >to :".$to."</span>";
         echo "<span >message :".$message."</span>";
-        echo "<br>";
         //send mail 
         mail($to, $subject, $message, $headers);
         if(($sum_user%SEND_ROWS)==0){
