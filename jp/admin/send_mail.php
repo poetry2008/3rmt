@@ -86,12 +86,19 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
               get_configuration_by_site_id('STORE_NAME',
                 $customer_info['site_id'],'configuration')),
             $email_template);
+        $title = str_replace(
+            array('${NAME}','${POINT}','${POINT_DATE}','${SITE_NAME}'),
+            array($customer_info['customer_name'],
+              $customer_info['point'],$value,
+              get_configuration_by_site_id('STORE_NAME',
+                $customer_info['site_id'],'configuration')),
+            $title);
         $sum_user++;
         $to = $customer_info['customer_email'];
         $message = $show_email_template;
         $subject = "=?UTF-8?B?".
           base64_encode($title)."?=";
-        $headers = 'Content-type: text/plain; charset=utf8' . "\r\n";
+        $headers = 'Content-type: text/plain; charset=utf-8' . "\r\n";
         $headers .= "Content-Transfer-Encoding: 8bit\r\n";  
         $From_Mail = DEFAULT_EMAIL_FROM;
         if(get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',
@@ -102,13 +109,11 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
         $headers .= 'From: '.$From_Mail. "\r\n";
         
         // out put test
-        /*
         var_dump($From_Mail);
         var_dump($title);
         var_dump($to);
         var_dump($message);
         var_dump(mail($to, $subject, $message, $headers)); 
-        */
         //send mail 
         mail($to, $subject, $message, $headers);
         if(($sum_user%SEND_ROWS)==0){
