@@ -9,7 +9,6 @@ require(ROOT_DIR.'/includes/configure.php');
 
 define('DEFAULT_EMAIL_FROM','sznforwork@yahoo.co.jp');
 define('DEFAULT_POINT_MAIL_TITLE','point test');
-define('ONE_DAY_SECOND',60*60*24);
 
 define('SLEEP_SECOND',3);
 define('SEND_ROWS',2);
@@ -66,27 +65,21 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
   $sum_user = 0;
   while($customer_info = mysql_fetch_array($customer_query)){
     foreach($template_arr as $template_row){
-      $value = mktime(
-          substr($template_row['mail_date'],11,2),
-          substr($template_row['mail_date'],14,2),
-          substr($template_row['mail_date'],17,2),
-          substr($template_row['mail_date'],5,2),
-          substr($template_row['mail_date'],8,2),
-          substr($template_row['mail_date'],0,4)
-          );
+      $value = $template_row['mail_date'];
       $email_template = $template_row['template'];
       $title = $template_row['mail_title'];
       if(!isset($title)||$title == ''){
         $title = DEFAULT_POINT_MAIL_TITLE;
       }
       //get time 
-      $last_login = strtotime($customer_info['point_date']);
+      //$last_login = strtotime($customer_info['point_date']);
+      $last_login = time(); 
       $year = substr($customer_info['point_date'],0,4);
       $mon = substr($customer_info['point_date'],5,2);
       $day = substr($customer_info['point_date'],8,2);
       $out_time = mktime(0,0,0,$mon,$day+$customer_info['config_date'],$year);
-      if($last_login < ($out_time-$value*ONE_DAY_SECOND)&&$last_login >
-          ($out_time-($value+1)*ONE_DAY_SECOND)){
+      if($last_login < intval($out_time-$value*(60*60*24))&&$last_login >
+          intval($out_time-($value+1)*(60*60*24))){
         //replace ${} to true value
         $show_email_template = str_replace(
             array('${NAME}','${POINT}','${POINT_DATE}','${SITE_NAME}'),
