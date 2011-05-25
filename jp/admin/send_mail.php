@@ -17,6 +17,7 @@ define('SEND_ROWS',2);
 
 // link db
 $link = mysql_connect(DB_SERVER,DB_SERVER_USERNAME,DB_SERVER_PASSWORD);
+mysql_query('set names utf8');
 mysql_select_db(DB_DATABASE);
 
 //get config value function
@@ -65,7 +66,6 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
   $sum_user = 0;
   while($customer_info = mysql_fetch_array($customer_query)){
     foreach($template_arr as $template_row){
-      var_dump($template_row);
       $value = $template_row['mail_date'];
       $email_template = $template_row['template'];
       $title = $template_row['mail_title'];
