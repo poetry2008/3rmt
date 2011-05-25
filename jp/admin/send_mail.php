@@ -29,21 +29,15 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
 }
 
 
+  // read template from point mail
+  $template_sql = "select * from point_mail"; 
+  $template_query = mysql_query($template_sql);
+  $template_arr = array();
+  while($template_row = mysql_fetch_array($template_query)){
+    $template_arr[] = array('mail_date' => $template_row['mail_date'],
+                          'template' => $template_row['description']);
 
-  // read config for point mail info
-  $email_template_sql = "select * from `configuration` 
-    where `configuration_key` = 'POINT_EMAIL_TEMPLATE' limit 1 ";
-  $email_template_query = mysql_query($email_template_sql);
-  if($email_template_row = mysql_fetch_array($email_template_query)){
-    $email_template = $email_template_row['configuration_value'];
   }
-  $email_dates_sql = "select * from `configuration` 
-    where `configuration_key` = 'POINT_EMAIL_DATE' limit 1 ";
-  $email_dates_query = mysql_query($email_dates_sql);
-  if($email_dates_row = mysql_fetch_array($email_dates_query)){
-    $email_date_arr = explode(',',$email_dates_row['configuration_value']);
-  }
-
 
   // grep point by config
   $customer_sql = "SELECT 
@@ -68,7 +62,9 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
   // replace str to value for email template
   $sum_user = 0;
   while($customer_info = mysql_fetch_array($customer_query)){
-    foreach($email_date_arr as $value){
+    foreach($template_arr as $template_row){
+      $value = $template_row['mail_date'];
+      $email_template = $template_row['template'];
       $last_login = strtotime($customer_info['point_date']);
       $year = substr($customer_info['point_date'],0,4);
       $mon = substr($customer_info['point_date'],5,2);
@@ -87,9 +83,10 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
         $to = $customer_info['customer_email'];
         $message = preg_replace('/\r\n|\n/',"<br>",$show_email_template);
         $message .= "<br> ".date('Y-m-d H:i:s',time());
+        $message = str_replace('<br>',"\n",$message);
         $subject = "=?UTF-8?B?".
           base64_encode(POINT_MAIL_TITLE)."?=";
-        $headers = 'Content-type: text/html; charset=utf-8' . "\r\n";
+        $headers = 'Content-type: text/plain; charset=utf-8' . "\r\n";
         $headers .= "Content-Transfer-Encoding: 8bit\r\n";  
         $From_Mail = DEFAULE_EMAIL_FROM;
         if(get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',
@@ -99,10 +96,10 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
         }
         $headers .= 'From: '.$From_Mail. "\r\n";
         
-        //var_dump($From_Mail);
-        //var_dump($to);
-        //var_dump(mail($to, $subject, $message, $headers)); 
-        mail($to, $subject, $message, $headers);
+        var_dump($From_Mail);
+        var_dump($to);
+        var_dump(mail($to, $subject, $message, $headers)); 
+        //mail($to, $subject, $message, $headers);
         if(($sum_user%SEND_ROWS)==0){
           sleep(SLEEP_SECOND);
         }
