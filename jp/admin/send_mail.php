@@ -1,8 +1,8 @@
 #!/usr/bin/env php
 <?php 
 set_time_limit(0);
-//define('ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin');
-define('ROOT_DIR','/home/szn/project/3rmt/jp/admin');
+define('ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin');
+//define('ROOT_DIR','/home/szn/project/3rmt/jp/admin');
 require(ROOT_DIR.'/includes/configure.php');
 
 
