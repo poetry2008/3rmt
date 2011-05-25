@@ -6,7 +6,7 @@ class Model_Site extends FLEA_Db_TableDataGateway
     parent::FLEA_Db_TableDataGateway();
     //$this->disableLinks();
   }
-  var $tableName = 'ff_site';
+  var $tableName = '14_site';
   var $primaryKey = 'id';
   var $count = 30;
   var $format='m-d';
