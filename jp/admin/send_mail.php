@@ -6,8 +6,8 @@ require(ROOT_DIR.'/includes/configure.php');
 
 
 
-define('DEFAULE_EMAIL_FROM','sznforwork@yahoo.co.jp');
-define('POINT_MAIL_TITLE','point test');
+define('DEFAULT_EMAIL_FROM','sznforwork@yahoo.co.jp');
+define('DEFAULT_POINT_MAIL_TITLE','point test');
 define('ONE_DAY_SECOND',60*60*24);
 
 define('SLEEP_SECOND',3);
@@ -35,6 +35,7 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
   $template_arr = array();
   while($template_row = mysql_fetch_array($template_query)){
     $template_arr[] = array('mail_date' => $template_row['mail_date'],
+                          'mail_title' =>  $template_row['mail_title'],
                           'template' => $template_row['description']);
 
   }
@@ -65,6 +66,11 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
     foreach($template_arr as $template_row){
       $value = $template_row['mail_date'];
       $email_template = $template_row['template'];
+      $title = $template_row['mail_title'];
+      if(!isset($title)||$title == ''){
+        $title = DEFAULT_POINT_MAIL_TITLE;
+      }
+      //get time 
       $last_login = strtotime($customer_info['point_date']);
       $year = substr($customer_info['point_date'],0,4);
       $mon = substr($customer_info['point_date'],5,2);
@@ -72,6 +78,7 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
       $out_time = mktime(0,0,0,$mon,$day+$customer_info['config_date'],$year);
       if($last_login < ($out_time-$value*ONE_DAY_SECOND)&&$last_login >
           ($out_time-($value+1)*ONE_DAY_SECOND)){
+        //replace ${} to true value
         $show_email_template = str_replace(
             array('${NAME}','${POINT}','${POINT_DATE}','${SITE_NAME}'),
             array($customer_info['customer_name'],
@@ -79,16 +86,21 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
               get_configuration_by_site_id('STORE_NAME',
                 $customer_info['site_id'],'configuration')),
             $email_template);
+        $title = str_replace(
+            array('${NAME}','${POINT}','${POINT_DATE}','${SITE_NAME}'),
+            array($customer_info['customer_name'],
+              $customer_info['point'],$value,
+              get_configuration_by_site_id('STORE_NAME',
+                $customer_info['site_id'],'configuration')),
+            $title);
         $sum_user++;
         $to = $customer_info['customer_email'];
-        $message = preg_replace('/\r\n|\n/',"<br>",$show_email_template);
-        $message .= "<br> ".date('Y-m-d H:i:s',time());
-        $message = str_replace('<br>',"\n",$message);
+        $message = $show_email_template;
         $subject = "=?UTF-8?B?".
-          base64_encode(POINT_MAIL_TITLE)."?=";
+          base64_encode($title)."?=";
         $headers = 'Content-type: text/plain; charset=utf-8' . "\r\n";
         $headers .= "Content-Transfer-Encoding: 8bit\r\n";  
-        $From_Mail = DEFAULE_EMAIL_FROM;
+        $From_Mail = DEFAULT_EMAIL_FROM;
         if(get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',
               $customer_info['site_id'],'configuration')){
           $From_Mail = get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',
@@ -96,10 +108,14 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
         }
         $headers .= 'From: '.$From_Mail. "\r\n";
         
+        // out put test
         var_dump($From_Mail);
+        var_dump($title);
         var_dump($to);
+        var_dump($message);
         var_dump(mail($to, $subject, $message, $headers)); 
-        //mail($to, $subject, $message, $headers);
+        //send mail 
+        mail($to, $subject, $message, $headers);
         if(($sum_user%SEND_ROWS)==0){
           sleep(SLEEP_SECOND);
         }
