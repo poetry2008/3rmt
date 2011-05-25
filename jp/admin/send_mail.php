@@ -116,6 +116,7 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
         var_dump($to);
         var_dump($message);
         */
+        echo "<br>";
         echo "<span >from mail :".$From_Mail."</span>";
         echo "<br>";
         echo "<span >title :".$title."</span>";
@@ -125,6 +126,9 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
         echo "<span >message :".preg_replace("/\r\n|\n/","<br>",$message)."</span>";
         echo "<br>";
         echo "==============================================";
+        echo "<br>";
+        echo "<br>";
+        echo "<br>";
         //send mail 
         mail($to, $subject, $message, $headers);
         if(($sum_user%SEND_ROWS)==0){
