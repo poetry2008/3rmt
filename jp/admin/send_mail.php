@@ -96,7 +96,7 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
             $title);
         $sum_user++;
         $to = $customer_info['customer_email'];
-        $message = iconv("UTF-8","EUC-JP//IGNORE",$show_email_template);
+        $message = iconv("EUC_JP","UTF-8//IGNORE",$show_email_template);
         $subject = "=?UTF-8?B?".base64_encode($title)."?=";
         $headers = 'Content-type: text/plain; charset=UTF-8' . "\r\n";
         $headers .= "Content-Transfer-Encoding: 8bit\r\n";  
