@@ -73,13 +73,16 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
       }
       //get time 
       //$last_login = strtotime($customer_info['point_date']);
-      $last_login = time(); 
+      $last_login = date('Y-m-d',time()); 
+      $now_time = mktime(0,0,0,
+          substr($last_login,5,2),
+          substr($last_login,8,2),
+          substr($last_login,0,4));
       $year = substr($customer_info['point_date'],0,4);
       $mon = substr($customer_info['point_date'],5,2);
       $day = substr($customer_info['point_date'],8,2);
       $out_time = mktime(0,0,0,$mon,$day+$customer_info['config_date'],$year);
-      if($last_login < intval($out_time-$value*(60*60*24))&&$last_login >
-          intval($out_time-($value+1)*(60*60*24))){
+      if($now_time == intval($out_time-$value*(60*60*24))){
         //replace ${} to true value
         $show_email_template = str_replace(
             array('${NAME}','${POINT}','${POINT_DATE}','${SITE_NAME}'),
