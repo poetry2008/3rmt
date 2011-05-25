@@ -1,7 +1,8 @@
 #!/usr/bin/env php
 <?php 
-define('ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin');
-//define('ROOT_DIR','/home/szn/project/3rmt/jp/admin');
+set_time_limit(0);
+//define('ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin');
+define('ROOT_DIR','/home/szn/project/3rmt/jp/admin');
 require(ROOT_DIR.'/includes/configure.php');
 
 
@@ -28,30 +29,6 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
   }
 }
 
-//send mail
-function sendMail($sTo, $sTitle, $sMessage, $sFrom = null, $sReply = null, $sName = NULL)
-{
-  $sTitle = stripslashes($sTitle);
-  $sMessage = stripslashes($sMessage);
-  if ($sName == NULL) {
-    if ($sFrom) {
-      $sFromName = "=?UTF-8?B?" . base64_encode($sFrom) . "?=";
-    }
-  } else {
-    $sFromName = "=?UTF-8?B?" . base64_encode($sName) . "?=";
-  }
-  //$sAdditionalheader  = "From:".$sFrom."\r\n";
-  $sAdditionalheader = "From:" . $sFromName . " <" . $sFrom . ">\r\n";
-  //$sAdditionalheader .= "Reply-To: ".$sReply ."\r\n";
-  $sAdditionalheader.= "Reply-To:" . $sFromName . " <" . $sReply . ">\r\n";
-  //$sAdditionalheader  .= "Reply-To:" . $sFromName . "<support>\r\n";
-  $sAdditionalheader.= "Date:" . date("r") . "\r\n";
-  $sAdditionalheader.= "MIME-Version: 1.0\r\n";
-  $sAdditionalheader.= "Content-Type:text/plain; charset=UTF-8\r\n";
-  $sAdditionalheader.= "Content-Transfer-Encoding:7bit";
-  $sTitle = "=?UTF-8?B?" . base64_encode($sTitle) . "?=";
-  return @mail($sTo, $sTitle, $sMessage, $sAdditionalheader);
-}
 
   // read template from point mail
   $template_sql = "select * from point_mail"; 
@@ -119,10 +96,10 @@ function sendMail($sTo, $sTitle, $sMessage, $sFrom = null, $sReply = null, $sNam
             $title);
         $sum_user++;
         $to = $customer_info['customer_email'];
-        $message = $show_email_template;
+        $message = iconv("UTF-8","EUC-JP//IGNORE",$show_email_template);
         $subject = "=?UTF-8?B?".base64_encode($title)."?=";
         $headers = 'Content-type: text/plain; charset=UTF-8' . "\r\n";
-        $headers .= "Content-Transfer-Encoding: 7bit\r\n";  
+        $headers .= "Content-Transfer-Encoding: 8bit\r\n";  
         $From_Mail = DEFAULT_EMAIL_FROM;
         if(get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',
               $customer_info['site_id'],'configuration')){
@@ -132,14 +109,12 @@ function sendMail($sTo, $sTitle, $sMessage, $sFrom = null, $sReply = null, $sNam
         $headers .= 'From: '.$From_Mail. "\r\n";
         
         // out put test
-        /*
         var_dump($From_Mail);
         var_dump($title);
         var_dump($to);
         var_dump($message);
-        */
         //send mail 
-        mail($to, $subject, $message, $headers);
+        //mail($to, $subject, $message, $headers);
         if(($sum_user%SEND_ROWS)==0){
           sleep(SLEEP_SECOND);
         }
