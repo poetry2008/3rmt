@@ -65,6 +65,7 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
   $sum_user = 0;
   while($customer_info = mysql_fetch_array($customer_query)){
     foreach($template_arr as $template_row){
+      var_dump($template_row);
       $value = $template_row['mail_date'];
       $email_template = $template_row['template'];
       $title = $template_row['mail_title'];
@@ -96,7 +97,7 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
             $title);
         $sum_user++;
         $to = $customer_info['customer_email'];
-        $message = iconv("EUC_JP","UTF-8//IGNORE",$show_email_template);
+        $message = $show_email_template;
         $subject = "=?UTF-8?B?".base64_encode($title)."?=";
         $headers = 'Content-type: text/plain; charset=UTF-8' . "\r\n";
         $headers .= "Content-Transfer-Encoding: 8bit\r\n";  
@@ -116,7 +117,7 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
         //send mail 
         //mail($to, $subject, $message, $headers);
         if(($sum_user%SEND_ROWS)==0){
-          sleep(SLEEP_SECOND);
+ //         sleep(SLEEP_SECOND);
         }
       }
     }
