@@ -66,7 +66,14 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
   $sum_user = 0;
   while($customer_info = mysql_fetch_array($customer_query)){
     foreach($template_arr as $template_row){
-      $value = $template_row['mail_date'];
+      $value = mktime(
+          substr($template_row['mail_date'],11,2),
+          substr($template_row['mail_date'],14,2),
+          substr($template_row['mail_date'],17,2),
+          substr($template_row['mail_date'],5,2),
+          substr($template_row['mail_date'],8,2),
+          substr($template_row['mail_date'],0,4)
+          );
       $email_template = $template_row['template'];
       $title = $template_row['mail_title'];
       if(!isset($title)||$title == ''){
