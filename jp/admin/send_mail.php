@@ -115,9 +115,9 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
         var_dump($to);
         var_dump($message);
         //send mail 
-        //mail($to, $subject, $message, $headers);
+        mail($to, $subject, $message, $headers);
         if(($sum_user%SEND_ROWS)==0){
- //         sleep(SLEEP_SECOND);
+          sleep(SLEEP_SECOND);
         }
       }
     }
