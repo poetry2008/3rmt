@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php 
-define('ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin');
-//define('ROOT_DIR','/home/szn/project/3rmt/jp/admin');
+//define('ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin');
+define('ROOT_DIR','/home/szn/project/3rmt/jp/admin');
 require(ROOT_DIR.'/includes/configure.php');
 
 
@@ -35,6 +35,7 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
   $template_arr = array();
   while($template_row = mysql_fetch_array($template_query)){
     $template_arr[] = array('mail_date' => $template_row['mail_date'],
+                          'mail_title' =>  $template_row['mail_title'],
                           'template' => $template_row['description']);
 
   }
@@ -103,6 +104,7 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
         // out put test
         /*
         var_dump($From_Mail);
+        var_dump($title);
         var_dump($to);
         var_dump($message);
         var_dump(mail($to, $subject, $message, $headers)); 
