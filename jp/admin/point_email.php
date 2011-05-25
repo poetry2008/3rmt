@@ -8,15 +8,18 @@
       case 'insert':
       case 'save':
         $point_mail_date = tep_db_prepare_input($_POST['mail_date']);
+        $point_mail_title = tep_db_prepare_input($_POST['mail_title']);
         $point_mail_description = tep_db_prepare_input($_POST['description']);
         if($_GET['action'] == 'insert'){
            $sql_point_mail_array = array('mail_date' => $point_mail_date,
+                                         'mail_title' => $point_mail_title,
                                          'description' => $point_mail_description,
                                          'created_at' => 'now()',
                                          'updated_at' => 'now()');
            tep_db_perform(TABLE_POINT_MAIL,$sql_point_mail_array);
         }else if($_GET['action'] == 'save'){
            $sql_point_mail_array = array('mail_date' => $point_mail_date,
+                                         'mail_title' => $point_mail_title,
                                          'description' => $point_mail_description,
                                          'updated_at' => 'now()');
            tep_db_perform(TABLE_POINT_MAIL,$sql_point_mail_array,'update',
@@ -73,6 +76,8 @@
                 <td class="dataTableHeadingContent"><?php echo
                 TABLE_HEADING_MAIL_DATE; ?></td>
                 <td class="dataTableHeadingContent"><?php echo
+                TABLE_HEADING_MAIL_TITLE; ?></td>
+                <td class="dataTableHeadingContent"><?php echo
                 TABLE_HEADING_DESCRIPTION; ?></td>
                 <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
               </tr>
@@ -103,7 +108,9 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
   }
   ?>
     <td class="dataTableContent" ><?php echo $point_mail['mail_date'];?></td>
-    <td class="dataTableContent" ><?php echo $point_mail['description'];?></td>
+    <td class="dataTableContent" ><?php echo $point_mail['mail_title'];?></td>
+    <td class="dataTableContent" ><?php echo
+    mb_substr($point_mail['description'],0,30,'utf-8');?></td>
     <td class="dataTableContent" align="right">
     <?php
     if ( isset($point_info) && (is_object($point_info)) && ($point_mail['id']
@@ -125,7 +132,7 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
 }
 ?>
   <tr>
-      <td colspan="3"><table border="0" width="100%" cellspacing="0"
+      <td colspan="4"><table border="0" width="100%" cellspacing="0"
       cellpadding="2">
       <tr>
       <td class="smallText" valign="top"><?php echo
@@ -165,6 +172,9 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
     //point mail date
     $point_mail_inputs_string .= '' . TEXT_INFO_POINT_MAIL_DATE .
       '<br>' . tep_draw_input_field('mail_date');
+    //point mail title
+    $point_mail_inputs_string .= '<br><br>' . TEXT_INFO_POINT_MAIL_TITLE .
+      '<br>' . tep_draw_input_field('mail_title');
     
     //point mail description
     $point_mail_inputs_string .= '<br><br>' . TEXT_INFO_POINT_DESCRIPTION .
@@ -190,6 +200,9 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
       //mail date
       $point_mail_inputs_string .= '' . TEXT_INFO_POINT_MAIL_DATE .
         '<br>' . tep_draw_input_field('mail_date', $point_info->mail_date);
+      //mail title 
+      $point_mail_inputs_string .= '<br><br>' . TEXT_INFO_POINT_MAIL_TITLE .
+        '<br>' . tep_draw_input_field('mail_title', $point_info->mail_title);
 
       //mail description
       $point_mail_inputs_string .= '<br><br>' . TEXT_INFO_POINT_DESCRIPTION .
@@ -221,6 +234,8 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
         $heading[] = array('text' => '<b>' .TABLE_HEADING_MAIL_DATE.":"
             . $point_info->mail_date . '</b>');
         $point_mail_inputs_string = '';
+        $point_mail_inputs_string .= '<br><br>'.TEXT_INFO_POINT_MAIL_TITLE.
+          "<br><br>".$point_info->mail_title;
         $point_mail_inputs_string .= '<br><br>' . TEXT_INFO_POINT_DESCRIPTION .
         '<br><br>' .preg_replace("/\r\n|\n/",'<br>',$point_info->description) .
         '<br><br>' . $explanation;

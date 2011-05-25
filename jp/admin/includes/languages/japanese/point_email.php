@@ -3,6 +3,8 @@ define('TEXT_POINT_EMAIL_GLOBAL_TEXT',
     '${NAME}:ユーザー名<br>${POINT}:ポイント<br>${POINT_DATE}:期限<br>${SITE_NAME}:サイト名');
 define('TABLE_HEADING_MAIL_DATE','期限');
 define('TEXT_INFO_POINT_MAIL_DATE','期限');
+define('TABLE_HEADING_MAIL_TITLE','タイトル');
+define('TEXT_INFO_POINT_MAIL_TITLE','タイトル');
 define('TABLE_HEADING_DESCRIPTION','メール内容');
 define('TEXT_INFO_POINT_DESCRIPTION','メール内容');
 define('TEXT_INFO_HEADING_DELETE','テンプレート削除');
