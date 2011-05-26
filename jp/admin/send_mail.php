@@ -112,7 +112,7 @@ function get_customer_info_by_site_id_email($site_id,$email){
         var_dump($customer_info_arr['point_date'].">>>".$value.">>>".$customer_info['customer_email']);
         */
         //replace ${} to true value
-        $point_out_date = date('Y-m-d',$out_time);
+        $point_out_date = date('Y年m月d日',$out_time);
         $show_email_template = str_replace(
             array('${NAME}','${POINT}','${POINT_DATE}','${SITE_NAME}','${POINT_OUT_DATE}'),
             array($customer_info['customer_name'],
