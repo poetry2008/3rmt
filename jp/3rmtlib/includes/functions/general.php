@@ -231,6 +231,7 @@ function forward404Unless($condition)
     $product = tep_get_product_by_id($products_id, SITE_ID, 4);
 
     if ($stock_left < 0) {
+    $product = tep_get_product_by_id($products_id, SITE_ID, 4,true,'product_info');
       $out_of_stock = '<span class="markProductOutOfStock"><a style="color:#CC0033" href="'.tep_href_link('open.php', 'products='.urlencode($product['products_name'])).'">' . STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</a></span>';
     }
 
@@ -2593,7 +2594,8 @@ function tep_unlink_temp_dir($dir)
         ) c WHERE  site_id = '0' OR site_id = '".$site_id."'
         GROUP BY products_id 
        "; 
-       if($page=='shopping_cart'){
+       if($page=='product_info'){
+       }else if($page=='shopping_cart'){
          $sql .= " HAVING c.products_status != '0' and c.products_status != '3'";
        }else{
          $sql .= " HAVING c.products_status != '0'";
