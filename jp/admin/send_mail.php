@@ -23,7 +23,7 @@ mysql_select_db(DB_DATABASE);
 //get config value function
 function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
   if(!$site_id||!isset($site_id)){
-    $site_id = '0'
+    $site_id = '0';
   }
   $config = mysql_fetch_array(mysql_query("select * from ".$table_name." where configuration_key='".$key."' and site_id='".$site_id."'"));
   if ($config) {
