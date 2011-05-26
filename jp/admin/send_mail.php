@@ -2,8 +2,8 @@
 <?php 
 set_time_limit(0);
 //file patch
-//define('ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin');
-define('ROOT_DIR','/home/szn/project/3rmt/jp/admin');
+define('ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin');
+//define('ROOT_DIR','/home/szn/project/3rmt/jp/admin');
 require(ROOT_DIR.'/includes/configure.php');
 // default email
 define('DEFAULT_EMAIL_FROM','sznforwork@yahoo.co.jp');
