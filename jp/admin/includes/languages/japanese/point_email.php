@@ -1,6 +1,6 @@
 <?php
 define('TEXT_POINT_EMAIL_GLOBAL_TEXT',
-    '${NAME}:ユーザー名<br>${POINT}:ポイント<br>${POINT_DATE}:期限<br>${SITE_NAME}:サイト名');
+    '${NAME}:ユーザー名<br>${POINT}:ポイント<br>${POINT_DATE}:期限<br>${SITE_NAME}:サイト名<br>${POINT_OUT_DATE}:最终日');
 define('TABLE_HEADING_MAIL_DATE','期限');
 define('TEXT_INFO_POINT_MAIL_DATE','期限');
 define('TABLE_HEADING_MAIL_TITLE','タイトル');
