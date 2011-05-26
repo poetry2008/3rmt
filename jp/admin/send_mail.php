@@ -52,7 +52,7 @@ function get_customer_info_by_site_id_email($site_id,$email){
 
 //get url by site id 
 function get_url_by_site_id($site_id) {
-  $site = tep_db_fetch_array(tep_db_query("select * from ".TABLE_SITES." where
+  $site = mysql_fetch_array(mysql_query("select * from sites where
         id='".$site_id."'"));
   if ($site) {
     return $site['url'];
@@ -118,7 +118,7 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
       /*
          var_dump($last_login."=====".$customer_info_arr['point_date']."===".date('Y-m-d',$out_time).
          "=====".$customer_info['customer_email']."\n---------------------\n");
-       */
+         */
       if(($out_time>$now_time)&&($customer_info['config_date']>$value)&&
           intval(($out_time-$now_time)/86400)==$value){
         /*
