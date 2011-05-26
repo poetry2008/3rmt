@@ -2,8 +2,8 @@
 <?php 
 set_time_limit(0);
 //file patch
-define('ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin');
-//define('ROOT_DIR','/home/szn/project/3rmt/jp/admin');
+//define('ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin');
+define('ROOT_DIR','/home/szn/project/3rmt/jp/admin');
 require(ROOT_DIR.'/includes/configure.php');
 // default email
 define('DEFAULT_EMAIL_FROM','sznforwork@yahoo.co.jp');
@@ -71,6 +71,7 @@ function get_customer_info_by_site_id_email($site_id,$email){
             DAY ) > now( ) , DATE_ADD( o.date_purchased, INTERVAL con.configuration_value
               DAY ) > now( ) )
       AND o.customers_id = c.customers_id
+      AND c.point > 0 
       AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
       AND con.configuration_key = 'MODULE_ORDER_TOTAL_POINT_LIMIT'
       ORDER BY o.date_purchased DESC";
