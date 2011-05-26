@@ -22,6 +22,9 @@ mysql_select_db(DB_DATABASE);
 
 //get config value function
 function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
+  if(!$site_id||!isset($site_id)){
+    $site_id = '0'
+  }
   $config = mysql_fetch_array(mysql_query("select * from ".$table_name." where configuration_key='".$key."' and site_id='".$site_id."'"));
   if ($config) {
     return $config['configuration_value'];
@@ -47,34 +50,44 @@ function get_customer_info_by_site_id_email($site_id,$email){
 
 }
 
-
-  // read template from point mail
-  $template_sql = "select * from point_mail"; 
-  $template_query = mysql_query($template_sql);
-  $template_arr = array();
-  while($template_row = mysql_fetch_array($template_query)){
-    $template_arr[] = array('mail_date' => $template_row['mail_date'],
-                          'mail_title' =>  $template_row['mail_title'],
-                          'template' => $template_row['description']);
-
+//get url by site id 
+function get_url_by_site_id($site_id) {
+  $site = tep_db_fetch_array(tep_db_query("select * from ".TABLE_SITES." where
+        id='".$site_id."'"));
+  if ($site) {
+    return $site['url'];
+  } else {
+    return false;
   }
+}
 
-  // grep customers by config
-  $customer_sql = "SELECT 
-    distinct
-    o.customers_name AS customer_name,
-    o.customers_email_address AS customer_email,
-    o.site_id AS site_id, 
-    con.configuration_value AS config_date
-      FROM orders o, customers c, configuration con
-      WHERE if( con.configuration_value = '0', DATE_ADD( o.date_purchased, INTERVAL 1
-            DAY ) > now( ) , DATE_ADD( o.date_purchased, INTERVAL con.configuration_value
-              DAY ) > now( ) )
-      AND o.customers_id = c.customers_id
-      AND c.point > 0 
-      AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
-      AND con.configuration_key = 'MODULE_ORDER_TOTAL_POINT_LIMIT'
-      ORDER BY o.date_purchased DESC";
+// read template from point mail
+$template_sql = "select * from point_mail"; 
+$template_query = mysql_query($template_sql);
+$template_arr = array();
+while($template_row = mysql_fetch_array($template_query)){
+  $template_arr[] = array('mail_date' => $template_row['mail_date'],
+      'mail_title' =>  $template_row['mail_title'],
+      'template' => $template_row['description']);
+
+}
+
+// grep customers by config
+$customer_sql = "SELECT 
+distinct
+o.customers_name AS customer_name,
+  o.customers_email_address AS customer_email,
+  o.site_id AS site_id, 
+  con.configuration_value AS config_date
+  FROM orders o, customers c, configuration con
+  WHERE if( con.configuration_value = '0', DATE_ADD( o.date_purchased, INTERVAL 1
+        DAY ) > now( ) , DATE_ADD( o.date_purchased, INTERVAL con.configuration_value
+          DAY ) > now( ) )
+  AND o.customers_id = c.customers_id
+  AND c.point > 0 
+AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
+  AND con.configuration_key = 'MODULE_ORDER_TOTAL_POINT_LIMIT'
+  ORDER BY o.date_purchased DESC";
 
   $customer_query = mysql_query($customer_sql);
   //var_dump($customer_sql);
@@ -103,31 +116,43 @@ function get_customer_info_by_site_id_email($site_id,$email){
       $day = substr($customer_info_arr['point_date'],8,2);
       $out_time = mktime(0,0,0,$mon,$day+$customer_info['config_date'],$year);
       /*
-      var_dump($last_login."=====".$customer_info_arr['point_date']."===".date('Y-m-d',$out_time).
-          "=====".$customer_info['customer_email']."\n---------------------\n");
-          */
+         var_dump($last_login."=====".$customer_info_arr['point_date']."===".date('Y-m-d',$out_time).
+         "=====".$customer_info['customer_email']."\n---------------------\n");
+       */
       if(($out_time>$now_time)&&($customer_info['config_date']>$value)&&
           intval(($out_time-$now_time)/86400)==$value){
         /*
-        var_dump($customer_info_arr['point_date'].">>>".$value.">>>".$customer_info['customer_email']);
-        */
+           var_dump($customer_info_arr['point_date'].">>>".$value.">>>".$customer_info['customer_email']);
+         */
         //replace ${} to true value
         $point_out_date = date('Y年m月d日',$out_time);
         $show_email_template = str_replace(
-            array('${NAME}','${POINT}','${POINT_DATE}','${SITE_NAME}','${POINT_OUT_DATE}'),
+            array('${NAME}','${POINT}','${MAIL}','${POINT_DATE}','${SITE_NAME}','${POINT_OUT_DATE}'
+              ,'${SITE_URL}','${SUPPORT_EMAIL}'),
             array($customer_info['customer_name'],
+              $customer_info['customers_email_address'],
               $customer_info_arr['point'],$value,
               get_configuration_by_site_id('STORE_NAME',
                 $customer_info['site_id'],'configuration'),
-              $point_out_date),
+              $point_out_date,
+              get_url_by_site_id($customer_info['site_id']),
+              get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS',
+                $customer_info['site_id'],'configuration')
+              ),
             $email_template);
         $title = str_replace(
-            array('${NAME}','${POINT}','${POINT_DATE}','${SITE_NAME}','${POINT_OUT_DATE}'),
+            array('${NAME}','${POINT}','${MAIL}','${POINT_DATE}','${SITE_NAME}','${POINT_OUT_DATE}'
+              ,'${SITE_URL}','${SUPPORT_EMAIL}'),
             array($customer_info['customer_name'],
+              $customer_info['customers_email_address'],
               $customer_info_arr['point'],$value,
               get_configuration_by_site_id('STORE_NAME',
                 $customer_info['site_id'],'configuration'),
-              $point_out_date),
+              $point_out_date,
+              get_url_by_site_id($customer_info['site_id']),
+              get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS',
+                $customer_info['site_id'],'configuration')
+              ),
             $title);
         $sum_user++;
         $to = $customer_info['customer_email'];
@@ -142,27 +167,27 @@ function get_customer_info_by_site_id_email($site_id,$email){
               $customer_info['site_id'],'configuration');
         }
         $headers .= 'From: '.$From_Mail. "\r\n";
-        
+
         // out put test
         /*
-        var_dump($From_Mail);
-        var_dump($title);
-        var_dump($to);
-        var_dump($message);
-        echo "<br>";
-        echo "<span >from mail :".$From_Mail."</span>";
-        echo "<br>";
-        echo "<span >title :".$title."</span>";
-        echo "<br>";
-        echo "<span >to :".$to."</span>";
-        echo "<br>";
-        echo "<span >message :".preg_replace("/\r\n|\n/","<br>",$message)."</span>";
-        echo "<br>";
-        echo "==============================================";
-        echo "<br>";
-        echo "<br>";
-        echo "<br>";
-        */
+           var_dump($From_Mail);
+           var_dump($title);
+           var_dump($to);
+           var_dump($message);
+           echo "<br>";
+           echo "<span >from mail :".$From_Mail."</span>";
+           echo "<br>";
+           echo "<span >title :".$title."</span>";
+           echo "<br>";
+           echo "<span >to :".$to."</span>";
+           echo "<br>";
+           echo "<span >message :".preg_replace("/\r\n|\n/","<br>",$message)."</span>";
+           echo "<br>";
+           echo "==============================================";
+           echo "<br>";
+           echo "<br>";
+           echo "<br>";
+         */
         //send mail 
         mail($to, $subject, $message, $headers);
         if(($sum_user%SEND_ROWS)==0){
