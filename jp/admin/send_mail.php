@@ -1,16 +1,17 @@
 #!/usr/bin/env php
 <?php 
 set_time_limit(0);
+//file patch
 define('ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin');
 //define('ROOT_DIR','/home/szn/project/3rmt/jp/admin');
 require(ROOT_DIR.'/includes/configure.php');
-
-
-
+// default email
 define('DEFAULT_EMAIL_FROM','sznforwork@yahoo.co.jp');
+// default title
 define('DEFAULT_POINT_MAIL_TITLE','point test');
-
+// default sleep second
 define('SLEEP_SECOND',3);
+// default send row to sleep
 define('SEND_ROWS',2);
 
 
@@ -144,7 +145,6 @@ function get_customer_info_by_site_id_email($site_id,$email){
         var_dump($title);
         var_dump($to);
         var_dump($message);
-        */
         echo "<br>";
         echo "<span >from mail :".$From_Mail."</span>";
         echo "<br>";
@@ -158,6 +158,7 @@ function get_customer_info_by_site_id_email($site_id,$email){
         echo "<br>";
         echo "<br>";
         echo "<br>";
+        */
         //send mail 
         mail($to, $subject, $message, $headers);
         if(($sum_user%SEND_ROWS)==0){
@@ -165,8 +166,4 @@ function get_customer_info_by_site_id_email($site_id,$email){
         }
       }
     }
-    /*
-       test for out put 
-       var_dump($show_email_template."\r\n".$customer_info['point_date']);
-     */
   }
