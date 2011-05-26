@@ -127,10 +127,10 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
         //replace ${} to true value
         $point_out_date = date('Y年m月d日',$out_time);
         $show_email_template = str_replace(
-            array('${NAME}','${POINT}','${MAIL}','${POINT_DATE}','${SITE_NAME}','${POINT_OUT_DATE}'
+            array('${NAME}','${MAIL}','${POINT}','${POINT_DATE}','${SITE_NAME}','${POINT_OUT_DATE}'
               ,'${SITE_URL}','${SUPPORT_EMAIL}'),
             array($customer_info['customer_name'],
-              $customer_info['customers_email_address'],
+              $customer_info['customers_email'],
               $customer_info_arr['point'],$value,
               get_configuration_by_site_id('STORE_NAME',
                 $customer_info['site_id'],'configuration'),
@@ -141,10 +141,10 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
               ),
             $email_template);
         $title = str_replace(
-            array('${NAME}','${POINT}','${MAIL}','${POINT_DATE}','${SITE_NAME}','${POINT_OUT_DATE}'
+            array('${NAME}','${MAIL}','${POINT}','${POINT_DATE}','${SITE_NAME}','${POINT_OUT_DATE}'
               ,'${SITE_URL}','${SUPPORT_EMAIL}'),
             array($customer_info['customer_name'],
-              $customer_info['customers_email_address'],
+              $customer_info['customers_email'],
               $customer_info_arr['point'],$value,
               get_configuration_by_site_id('STORE_NAME',
                 $customer_info['site_id'],'configuration'),
