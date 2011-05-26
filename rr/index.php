@@ -21,6 +21,14 @@
     }
   }
   
+  if (isset($_GET['cName']) && !isset($_GET['cPath'])) {
+    if (!empty($_GET['cName'])) {
+      if (!file_exists(DIR_FS_DOCUMENT_ROOT.'/'.$_GET['cName'])) {
+        forward404(); 
+      }
+    }
+  }
+  
   if (isset($_GET['cPath'])) {
     if (tep_check_exists_category($_GET['cPath'], $_GET['cName'])) {
       forward404(); 
