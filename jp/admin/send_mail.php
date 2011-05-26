@@ -130,7 +130,7 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
             array('${NAME}','${MAIL}','${POINT}','${POINT_DATE}','${SITE_NAME}','${POINT_OUT_DATE}'
               ,'${SITE_URL}','${SUPPORT_EMAIL}'),
             array($customer_info['customer_name'],
-              $customer_info['customers_email'],
+              $customer_info['customer_email'],
               $customer_info_arr['point'],$value,
               get_configuration_by_site_id('STORE_NAME',
                 $customer_info['site_id'],'configuration'),
@@ -144,7 +144,7 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
             array('${NAME}','${MAIL}','${POINT}','${POINT_DATE}','${SITE_NAME}','${POINT_OUT_DATE}'
               ,'${SITE_URL}','${SUPPORT_EMAIL}'),
             array($customer_info['customer_name'],
-              $customer_info['customers_email'],
+              $customer_info['customer_email'],
               $customer_info_arr['point'],$value,
               get_configuration_by_site_id('STORE_NAME',
                 $customer_info['site_id'],'configuration'),
