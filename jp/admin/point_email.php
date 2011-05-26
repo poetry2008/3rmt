@@ -96,14 +96,14 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
         $point_info->id)){
     echo '<tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" 
       onclick="document.location.href=\'' . tep_href_link(FILENAME_POINT_EMAIL,
-    'page=' . $_GET['page']. '&id=' . $point_info->id . '&action=edit') .
+    'page=' . $_GET['page']. '&id=' . $point_info->id ) .
       '\'">' . "\n";
   }else{
     echo '<tr class="dataTableRow"
       onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'"
       onmouseout="this.className=\'dataTableRow\'"
       onclick="document.location.href=\'' . tep_href_link(FILENAME_POINT_EMAIL,
-      'page=' . $_GET['page'] .'&id=' . $point_mail['id'] . '&action=edit') .'\'">' .
+      'page=' . $_GET['page'] .'&id=' . $point_mail['id']) .'\'">' .
         "\n";
   }
   ?>
