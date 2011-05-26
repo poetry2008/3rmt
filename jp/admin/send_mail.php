@@ -149,6 +149,7 @@ function get_customer_info_by_site_id_email($site_id,$email){
         var_dump($title);
         var_dump($to);
         var_dump($message);
+        */
         echo "<br>";
         echo "<span >from mail :".$From_Mail."</span>";
         echo "<br>";
@@ -162,7 +163,6 @@ function get_customer_info_by_site_id_email($site_id,$email){
         echo "<br>";
         echo "<br>";
         echo "<br>";
-        */
         //send mail 
         mail($to, $subject, $message, $headers);
         if(($sum_user%SEND_ROWS)==0){
