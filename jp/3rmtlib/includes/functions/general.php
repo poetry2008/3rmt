@@ -3770,3 +3770,19 @@ function tep_get_all_subcategories($parent_id)
     }
     return $subcategories_array;
 }
+
+function tep_check_exists_category($cPath, $cName)
+{
+  $cpath_arr = explode('_', $cPath);
+  $cname_arr = explode('/', $cName);
+  foreach ($cpath_arr as $key => $value) {
+    $category_raw = tep_db_query("select * from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id = '".$value."' and site_id = '".SITE_ID."'"); 
+    $category_res = tep_db_fetch_array($category_raw); 
+    if ($category_res) {
+      if (($category_res['romaji'] != $cname_arr[$key]) && isset($cname_arr[$key])) {
+        return true; 
+      }
+    }
+  }
+  return false;
+}

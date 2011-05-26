@@ -2,7 +2,6 @@
 /*
   $Id$
 */
-
   require('includes/application_top.php');
   require(DIR_WS_ACTIONS.'index_top.php');
   if (isset($_GET['cName']) && !isset($_GET['cPath'])) {
@@ -11,6 +10,12 @@
         forward404(); 
       }
     }
+  }
+  
+  if (isset($_GET['cPath'])) {
+    if (tep_check_exists_category($_GET['cPath'], $_GET['cName'])) {
+      forward404(); 
+    } 
   }
   //if (isset($_GET['tags_id'])) {
     //forward404(); 
