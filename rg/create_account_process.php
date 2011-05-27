@@ -10,7 +10,8 @@
   if (!isset($_POST['action'])) {
     tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT));
   }
-
+  
+  $active_single = 0;
   // tamura 2002/12/30 「全角」英数字を「半角」に変換
   $an_cols = array('password','confirmation','email_address','postcode','telephone','fax');
   if (ACCOUNT_DOB) $an_cols[] = 'dob';
@@ -282,7 +283,8 @@ function pass_hidd(){
       tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created) values ('" . tep_db_input($customer_id) . "', '0', now())");
       }
   } else {
-    # Member
+    $active_single = 1; 
+     # Member
     //ccdd
     $check_cid = tep_db_query("select customers_id from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "' and site_id = '".SITE_ID."'");
     if(tep_db_num_rows($check_cid)) {
@@ -401,6 +403,13 @@ function pass_hidd(){
 
     if (SESSION_RECREATE == 'True') { // 2004/04/25 Add session management
       tep_session_recreate();
+    }
+   
+    if ($active_single) {
+      $mail_name = tep_get_fullname($fistname, $lastname);  
+      $email_text = str_replace('${URL}', HTTP_SERVER.'/active_success.php?aid='.base64_encode($customer_id), ACTIVE_ACCOUNT_EMAIL_CONTENT);  
+      tep_mail($mail_name, $email_address, ACTIVE_ACCOUNT_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+       tep_redirect(tep_href_link('active_info.php', '', 'SSL')); 
     }
 
     $customer_first_name = $firstname;
