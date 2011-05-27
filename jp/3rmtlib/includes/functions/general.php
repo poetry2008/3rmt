@@ -3382,6 +3382,7 @@ function tep_parseURI()
         $router = $ruler;
       }
     }
+    $tmp_router = $router; 
     if (SITE_ID==5) {
       $i_pos = strpos($_SERVER['REQUEST_URI'], '/?sid=');
     } else {
@@ -3390,7 +3391,11 @@ function tep_parseURI()
     if ($i_pos !== false) {
       $router = 'x'; 
     }
-          
+    if (SITE_ID >= 5) {
+      if (($_SERVER['PHP_SELF'] == '/index.php') && $tmp_router != 'x') {
+        $router = $tmp_router; 
+      }
+    }
     switch($router){
     case 'firstFolder':
     case 'secondFolder':
