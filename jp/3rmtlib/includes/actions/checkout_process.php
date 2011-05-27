@@ -5,6 +5,13 @@
 require(DIR_WS_FUNCTIONS . 'visites.php');
 
 
+// test point
+if(is_array($point)){
+  var_dump($point);
+  exit;
+}
+
+
 // if the customer is not logged on, redirect them to the login page
 
 if (!tep_session_is_registered('customer_id')) {
@@ -231,6 +238,7 @@ for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
   foreach ($total_data_arr as $sql_data_array){
   tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
   }
+
 //ペイパルの決済を完了させる
 function getexpress($amt,$token){
 
