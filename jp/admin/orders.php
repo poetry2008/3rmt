@@ -1512,6 +1512,30 @@ if (false) {
   <?php }?>
 </div>
                 </form>
+                </div><div>
+                <table>
+                <!--new order answer{{-->
+      <tr>
+  <td align='right'>
+        <?php
+  require_once('oa/HM_Form.php'); 
+  require_once('oa/HM_Group.php'); 
+   $order_id = $order->info['orders_id'];
+  $formtype = tep_check_order_type($order_id);
+  $formtype = '2';
+  $payment_romaji = 'buying'; 
+//  $payment_romaji = tep_get_payment_code_by_order_id($order_id); 
+  $oa_form_sql = "select * from ".TABLE_OA_FORM." where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'";
+  $form = tep_db_fetch_object(tep_db_query($oa_form_sql), "HM_Form");
+  
+  $form->loadOrderValue($order_id);
+  $form->setAction('oa_answer_process.php?oID='.$order_id);
+  $form->render();
+
+        ?>
+    </td>
+      </tr>
+                </table>
               </div>
             </td>
             <!-- /right -->

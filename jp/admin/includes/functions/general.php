@@ -5066,3 +5066,69 @@ function tep_get_user_list_by_username($name){
       </div>
       <?php
   }
+
+function tep_check_order_type($oID)
+{
+   $sell_query = tep_db_query("select * from ".TABLE_ORDERS." o, ".TABLE_ORDERS_STATUS_HISTORY." h where o.orders_id = h.orders_id and o.orders_id = '".$oID."' and (!(o.payment_method like '%買い取り%') and h.orders_id not in (select orders_id from ".TABLE_ORDERS_STATUS_HISTORY." where comments like '金融機関名%支店名%'))");
+   $sell_num = tep_db_num_rows($sell_query); 
+   if ($sell_num) {
+     return 1; 
+   }
+   $buy_query = tep_db_query("select * from ".TABLE_ORDERS." o, ".TABLE_ORDERS_STATUS_HISTORY." h where o.orders_id = h.orders_id and o.orders_id = '".$oID."' and (o.payment_method like '%買い取り%')");
+   $buy_num = tep_db_num_rows($buy_query); 
+   if ($buy_num) {
+     return 2; 
+   }
+   
+   return 3;
+}
+
+function tep_get_payment_code_by_order_id($oID)
+{
+  $orders_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$oID."'");
+  $orders_res = tep_db_fetch_array($orders_raw);
+  switch($orders_res['payment_method']) {
+    case '銀行振込(買い取り)':
+      return 'buying'; 
+      break;
+    case '銀行振込':
+      return 'moneyorder'; 
+      break;
+    case 'ゆうちょ銀行（郵便局）':
+      return 'postalmoneyorder'; 
+      break;
+    case 'コンビニ決済':
+      return 'convenience_store'; 
+      break;
+    case 'クレジットカード決済':
+      return 'telecom'; 
+      break;
+    case 'ペイパル決済':
+      return 'paypal'; 
+      break;
+    case 'ポイント(買い取り)':
+      return 'buyingpoint'; 
+      break;
+    case '来店支払い':
+      return 'fetchgood'; 
+      break;
+    case '支払いなし':
+      return 'freepayment'; 
+      break;
+  }
+}
+
+function tep_get_random_item_name($length = 16)
+{
+  $pattern = 'abcdefghijklmnopqrstuvwxyz';
+  while (true) {
+    $key = ''; 
+    for($i = 0; $i < $length; $i++) {
+      $key .= $pattern[mt_rand(0,25)]; 
+    }
+    $exists_item_name_raw = tep_db_query("select * from ".TABLE_OA_ITEM." where name = '".$key."'"); 
+    if (!tep_db_num_rows($exists_item_name_raw)) {
+      return $key; 
+    }
+  }
+}

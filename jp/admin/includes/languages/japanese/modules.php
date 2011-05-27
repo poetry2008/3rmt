@@ -21,4 +21,7 @@ define('TABLE_HEADING_STATUS', 'ステータス');
 define('TABLE_HEADING_ACTION', '操作');
 
 define('TEXT_MODULE_DIRECTORY', 'モジュール・ディレクトリ:');
+define('FORM_SELL_TEXT', '売');
+define('FORM_BUY_TEXT', '買');
+define('FORM_MIX_TEXT', '混');
 ?>

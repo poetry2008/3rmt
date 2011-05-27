@@ -54,6 +54,9 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
 // define the filenames used in the project
   define('FILENAME_POINT_EMAIL', 'point_email.php');
+  define('FILENAME_OA_FORM', 'oa_form.php'); 
+  define('FILENAME_OA_GROUP', 'oa_group.php'); 
+  define('FILENAME_OA_ITEM', 'oa_item.php'); 
   define('FILENAME_PWD_LOG', 'pwd_log.php');
   define('FILENAME_PRODUCTS_PRICE','products_price.php');
   define('FILENAME_PW_MANAGER', 'pw_manager.php');
@@ -125,6 +128,11 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
 
 // define the database table names used in the project
+  define('TABLE_OA_GROUP', 'oa_group'); 
+  define('TABLE_OA_FORM', 'oa_form'); 
+  define('TABLE_OA_FORM_GROUP', 'oa_form_group'); 
+  define('TABLE_OA_ITEM', 'oa_item'); 
+  define('TABLE_OA_FORMVALUE', 'oa_formvalue'); 
   define('TABLE_POINT_MAIL','point_mail');
   define('TABLE_BESTSELLERS_TIME_TO_CATEGORY','bestsellers_time_to_category');
   define('TABLE_ONCE_PWD_LOG','once_pwd_log');

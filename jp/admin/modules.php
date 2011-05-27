@@ -465,6 +465,13 @@ $ex_site = $sites[0];
 
         // 临时隐藏
         $contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . @$_GET['module'] . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>');
+        if ($_GET['set'] == 'payment') {
+          $link_form_str = '<a href="'.tep_href_link(FILENAME_OA_FORM, 'pcode='.$mInfo->code.'&type=1').'"><input type="button" value="'.FORM_SELL_TEXT.'"></a>'; 
+          $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'pcode='.$mInfo->code.'&type=2').'"><input type="button" value="'.FORM_BUY_TEXT.'"></a>'; 
+          $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'pcode='.$mInfo->code.'&type=3').'"><input type="button" value="'.FORM_MIX_TEXT.'"></a>'; 
+          $contents[] = array('align' => 'left', 'text' => $link_form_str);
+           
+        }
         foreach(tep_get_sites() as $s){
           $contents[] = array('text' => '<b>'.$s['romaji'].'</b>');
           $contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . @$_GET['module'] . '&action=edit&site_id='.$s['id']) . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>');

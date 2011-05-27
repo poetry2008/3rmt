@@ -180,7 +180,14 @@
       return $string;
     }
   }
-
+  
+  function tep_db_fetch_object($result, $classname = '')
+  {
+    if (empty($classname)) {
+      return mysql_fetch_object($result); 
+    }
+    return mysql_fetch_object($result, $classname); 
+  }
 
 class runtime
 { 

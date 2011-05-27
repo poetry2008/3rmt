@@ -1,0 +1,37 @@
+<?php
+include_once 'DbRecord';
+include_once 'Item.php';
+define('ORDER_TTYPE_BUY',1);
+define('ORDER_TTYPE_SELL',2);
+define('ORDER_TTYPE_MIX',3);
+define("TABLE_OA_FORM",'oa_form');
+define("TABLE_OA_GROUP",'oa_group');
+define("TABLE_OA_FORM_GROUP",'oa_from_group');
+
+
+//取得当前订单属性是买还是卖 或是混合
+$order_trantype = '';
+
+//取得当前订单的支付方法 
+$order_tmethod_romaji = '';
+
+//根据  支付方法 及 买卖属性 会取到唯一的一个模板ID
+
+$template = array('id'=>2);
+
+//根据模板取到模板的每个ITEM ，并给初值如果有初值
+
+$form = array(
+               array('id'=>'3','option'=>'','value'=>'','ordernumber'=>5,'title'='test'
+                     "subitem"=>
+                     array(
+                           array('id'=>5,'type'='simpleText','option'=>array(""),'order'=>5)
+                           array('id'=>5,'type'='simpleText','option'=>array(""),'order'=>5)
+                           array('id'=>5,'type'='simpleText','option'=>array(""),'order'=>5)
+                           )),
+);
+$formObj = new HM_Form($form);
+$formObj->render();
+
+
+ 
