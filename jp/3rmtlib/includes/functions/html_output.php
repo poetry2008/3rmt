@@ -755,3 +755,15 @@ function check_money_limit($limit_set, $total)
   }
   return false;
 }
+
+function tep_tags_link()
+{
+  global $request_type;
+  $returnstr = HTTP_SERVER . DIR_WS_CATALOG;
+  if ($request_type == 'SSL') {
+    $returnstr .= "tags/?".tep_session_name()."=".tep_session_id();
+  } else {
+    $returnstr .= "tags/"; 
+  }
+  return $returnstr;
+}

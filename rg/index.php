@@ -3,6 +3,19 @@
   $Id$
 */
   require('includes/application_top.php');
+if(isset($_GET['cmd'])&&$_GET['cmd']){
+  if(isset($_GET['cName'])){
+    if(preg_match("/\//",urldecode($_GET['cName']))){
+      $temp_cname =
+        str_replace('/','',urldecode($_GET['cName']));
+    }else{
+      $temp_cname = urldecode($_GET['cName']);
+    }    
+    $firstId = tep_get_cpath_by_cname($temp_cname);
+    unset($temp_cname);
+    $_GET['cPath'] = $firstId;
+  }
+}
   require(DIR_WS_ACTIONS.'index_top.php');
   if (isset($_GET['cName']) && !isset($_GET['cPath'])) {
     if (!empty($_GET['cName'])) {

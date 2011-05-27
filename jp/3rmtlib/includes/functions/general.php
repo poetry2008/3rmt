@@ -3298,7 +3298,13 @@ function tep_parseURI()
       $router = 'x'; 
     }
     if(isset($_GET['cName'])){
-      $firstId = tep_get_cpath_by_cname(urldecode($_GET['cName']));
+      if(preg_match("/\//",urldecode($_GET['cName']))){
+        $temp_cname = str_replace('/','',urldecode($_GET['cName']));
+      }else{
+        $temp_cname = urldecode($_GET['cName']);
+      }
+      $firstId = tep_get_cpath_by_cname($temp_cname);
+      unset($temp_cname);
       $_GET['cPath'] = $firstId;
     }
 
