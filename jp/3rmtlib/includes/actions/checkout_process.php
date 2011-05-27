@@ -17,8 +17,11 @@ if(is_array($point)||true){
     $e_order .= "value => ".$point."\r\n"; 
   }
   $point = 0;
-  tep_mail('full name',
-      STORE_OWNER_EMAIL_ADDRESS, 'point_error', $e_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+      $Name = STORE_NAME; //senders name
+      $email = STORE_OWNER_EMAIL_ADDRESS; //senders e-mail adress
+      $subject = STORE_NAM."POINT EMAIL ERROR"; //subject
+      $header = "From: ". $Name . " <" . $email . ">\r\n"; //optional headerfields
+      mail(STORE_OWNER_EMAIL_ADDRESS, $subject, $e_order, $header); //mail command :) 
 }
 
 // if the customer is not logged on, redirect them to the login page
