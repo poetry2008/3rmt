@@ -1475,6 +1475,7 @@ TABLE：Information box
 }
 .product_info_box .p_i_b_title {
 	color: #336600;
+	width:40px;
 	font-weight: bold;
 	background: #fff url(../images/design/box/product_info_box_td.gif) bottom repeat-x;
 }
@@ -1616,6 +1617,14 @@ TD.main, P.main {
 	font-size: 11px;
  *font-size: 10px;
 	line-height: 1.5;
+}
+.button_delete02 {
+	display:block;
+	overflow:hidden;
+	text-indent:-2000px;
+	width:35px;
+	height:17px;
+	background-image: url(../includes/languages/japanese/images/buttons/button_delete02.gif);
 }
 /* ---------------------------
 TD,SPAN：small text（message）
@@ -1837,14 +1846,6 @@ P.description {
 	vertical-align:middle;
 }
 /*button*/
-.button_delete02 {
-	display:block;
-	overflow:hidden;
-	text-indent:-2000px;
-	width:35px;
-	height:17px;
-	background-image: url(../includes/languages/japanese/images/buttons/button_delete02.gif);
-}
 .pageHeading_box .pageHeading{
 display:block;
 	height:24px;
