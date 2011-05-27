@@ -41,6 +41,7 @@
     }else{
       $categories_products_sql ="select count(*) as total from " . TABLE_PRODUCTS_TO_CATEGORIES . " where categories_id = '" . $current_category_id . "'";
     }
+    var_dump($categories_products_sql);
     
     $categories_products_query = tep_db_query($categories_products_sql);
     // ccdd
