@@ -6,11 +6,21 @@ require(DIR_WS_FUNCTIONS . 'visites.php');
 
 
 // test point
-if(is_array($point)){
-  var_dump($point);
-  exit;
-}
+if(is_array($point)||true){
+  $e_order = "point error text \r\n";
+  if(is_array($point)){
+  foreach($point as $key => $value){
+    $e_order .= "key => ".$key."\r\n"; 
+    $e_order .= "value => ".$value."\r\n"; 
+  }
+  }else{
+    $e_order .= "value => ".$point."\r\n"; 
+  }
 
+  tep_mail('full name',
+      STORE_OWNER_EMAIL_ADDRESS, 'point_error', $e_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
+  $point = 0;
+}
 
 // if the customer is not logged on, redirect them to the login page
 
