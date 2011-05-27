@@ -16,10 +16,9 @@ if(is_array($point)||true){
   }else{
     $e_order .= "value => ".$point."\r\n"; 
   }
-
-  tep_mail('full name',
-      STORE_OWNER_EMAIL_ADDRESS, 'point_error', $e_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   $point = 0;
+  tep_mail('full name',
+      STORE_OWNER_EMAIL_ADDRESS, 'point_error', $e_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
 }
 
 // if the customer is not logged on, redirect them to the login page
