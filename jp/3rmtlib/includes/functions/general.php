@@ -3799,3 +3799,17 @@ function tep_check_exists_category($cPath, $cName)
   }
   return false;
 }
+
+function tep_get_category_is_set_in_site($c_id)
+{
+  $sql = "select * from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id
+    ='".$c_id."' and site_id = '".SITE_ID."'";
+  $query = tep_db_query($sql);
+  $res = tep_db_fetch_array($query);
+  if($res){
+    true;
+  }else{
+    false;
+  }
+    
+}
