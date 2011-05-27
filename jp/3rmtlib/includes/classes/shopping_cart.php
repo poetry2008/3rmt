@@ -289,9 +289,11 @@
       $products_array = array();
       reset($this->contents);
       while (list($products_id, ) = each($this->contents)) {
-        $products = tep_get_product_by_id(tep_get_prid($products_id), SITE_ID, $languages_id);
+        $products = tep_get_product_by_id(tep_get_prid($products_id), SITE_ID,
+            $languages_id,true,'product_info');
         // for search
-        $search_products = tep_get_product_by_id(tep_get_prid($products_id), 0, $languages_id);
+        $search_products = tep_get_product_by_id(tep_get_prid($products_id), 0,
+            $languages_id,true,'product_info');
         if ($products) {
           $prid = $products['products_id'];
           $products_price = $products['products_price'];

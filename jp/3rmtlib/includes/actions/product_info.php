@@ -2,7 +2,8 @@
 require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRODUCT_INFO);
   
 //begin dynamic meta tags query -->
-$the_product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID, $languages_id);
+$the_product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID,
+    $languages_id,true,'product_info');
 //forward 404
 forward404Unless($the_product_info);
 

@@ -78,7 +78,8 @@ function showimage($1) {
       <td valign="top" class="contents">
       
 <?php
-  $product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID, $languages_id);
+  $product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID,
+      $languages_id,true,'product_info');
   if (!$product_info) { // product not found in database
 ?>
         <P><?php echo TEXT_PRODUCT_NOT_FOUND; ?></P>
