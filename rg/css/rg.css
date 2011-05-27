@@ -1720,3 +1720,4 @@ border:2px solid #FF8080;
 .best_goods{ width:170px; margin:0 auto;}
 .best_goods_info { text-align:center; font-size:12px; padding:5px 0; border:1px solid #ccc;}
 .reorder{margin-top:8px; overflow:hidden;}
+.active_email input {width:350px;}
