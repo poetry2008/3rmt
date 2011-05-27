@@ -409,7 +409,7 @@ function pass_hidd(){
       $mail_name = tep_get_fullname($fistname, $lastname);  
       $email_text = str_replace('${URL}', HTTP_SERVER.'/active_success.php?aid='.base64_encode($customer_id), ACTIVE_ACCOUNT_EMAIL_CONTENT);  
       tep_mail($mail_name, $email_address, ACTIVE_ACCOUNT_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-       tep_redirect(tep_href_link('active_info.php', '', 'SSL')); 
+       tep_redirect(tep_href_link('active_info.php', 'cud='.base64_encode($customer_id), 'SSL')); 
     }
 
     $customer_first_name = $firstname;
