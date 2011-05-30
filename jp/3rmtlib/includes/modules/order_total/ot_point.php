@@ -18,7 +18,7 @@
       $this->description = MODULE_ORDER_TOTAL_POINT_DESCRIPTION;
       $this->enabled = ((MODULE_ORDER_TOTAL_POINT_STATUS == 'true') ? true : false);
       $this->sort_order = MODULE_ORDER_TOTAL_POINT_SORT_ORDER;
-	  $this->point = $point;
+      $this->point = $point;
 
       $this->output = array();
     }
@@ -35,7 +35,7 @@
                                     isset($order->info['currency'])?$order->info['currency']:'', 
                                     isset($order->info['currency_value'])?$order->info['currency_value']:''
                                   ),
-                                  'value' => $this->point);
+                                  'value' => $point);
       }
     }
 
