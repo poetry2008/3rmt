@@ -37,9 +37,18 @@
            ".TABLE_PRODUCTS_DESCRIPTION." pd
       where p2c.categories_id = '".$current_category_id."' 
       and p2c.products_id = pd.products_id 
-      and site_id = '".SITE_ID."'";
+      and site_id = '".SITE_ID."' 
+      and pd.products_status <> 0 
+      and pd.products_status <> 3";
     }else{
-      $categories_products_sql ="select count(*) as total from " . TABLE_PRODUCTS_TO_CATEGORIES . " where categories_id = '" . $current_category_id . "'";
+      $categories_products_sql ="select count(*) as total 
+      from ".TABLE_PRODUCTS_TO_CATEGORIES." p2c,
+           ".TABLE_PRODUCTS_DESCRIPTION." pd
+      where p2c.categories_id = '".$current_category_id."' 
+      and p2c.products_id = pd.products_id 
+      and site_id = '0'  
+      and pd.products_status <> 0 
+      and pd.products_status <> 3";
     }
     
     $categories_products_query = tep_db_query($categories_products_sql);
