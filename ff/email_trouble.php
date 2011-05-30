@@ -26,7 +26,7 @@
   <div id="bgn_content">
     <div id="wrapper_kiyaku">
       <br>
-        <span class="txt_blue">*****@yahoo.co.jp、*****@hotmail.com、*****@msn.com、AOLなどのフリーメールを御使用になられている場合、</span><br>
+        <span class="txt_blue">*****@yahoo.co.jp、*****@hotmail.com、*****@msn.com、AOLなどのフリーメールを御使用になられている場合</span><br>
         上記のドメインでご登録された方で、当社からのメールが届かないというご報告を頂いております。 
        <br>
         <br>

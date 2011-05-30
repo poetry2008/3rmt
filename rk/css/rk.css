@@ -989,6 +989,7 @@ footer
  *margin-top:0;
 	letter-spacing:0.5mm;
 	line-height:18px;
+	font-style:normal;
 }
 .footer_contacts a {
 	color: #fff;

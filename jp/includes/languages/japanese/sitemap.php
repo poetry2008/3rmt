@@ -13,7 +13,7 @@ define('PAGE_ACCOUNT_HISTORY', '注文履歴');
 define('PAGE_ACCOUNT_NOTIFICATIONS', 'ショップからのお知らせ');
 define('PAGE_SHOPPING_CART', 'ショッピングカート');
 define('PAGE_CHECKOUT_SHIPPING', 'レジへすすむ');
-define('PAGE_ADVANCED_SEARCH', '商品検索');
+define('PAGE_ADVANCED_SEARCH', '詳細検索');
 define('PAGE_PRODUCTS_NEW', '新着商品');
 define('PAGE_SPECIALS', 'お買い得商品');
 define('PAGE_REVIEWS', 'レビュー');
