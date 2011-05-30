@@ -3813,9 +3813,9 @@ function tep_get_category_is_set_in_site($c_id)
   $query = tep_db_query($sql);
   $res = tep_db_fetch_array($query);
   if($res['total'] > 0){
-    true;
+    return true;
   }else{
-    false;
+    return false;
   }
     
 }
