@@ -60,19 +60,23 @@
       group by pd.products_id
       having pd.products_status != '0' and pd.products_status != '3'  
       ";
-    */ 
-    $categories_products_sql ="SELECT count( DISTINCT (
-            pd.products_id
-            ) ) AS total
-        FROM products_to_categories p2c, products_description pd
+    */
+    $categories_products_sql = "select count(*) as total from 
+      (
+       SELECT count( pd.products_id ) AS pcount, pd.products_id as p_id 
+        FROM ".TABLE_PRODUCTS_TO_CATEGORIES." p2c, ".TABLE_PRODUCTS_DESCRIPTION." pd
         WHERE p2c.categories_id = '".$current_category_id."'
         AND p2c.products_id = pd.products_id
         AND (
-            site_id = '0'
-            OR site_id = '".SITE_ID."'
-            )
-        AND pd.products_status != '0'
-        AND pd.products_status != '3'";
+          pd.site_id = '0'
+          OR pd.site_id = '".SITE_ID."'
+          )
+        GROUP BY pd.products_id
+        ORDER BY pd.site_id DESC
+      ) s ,".TABLE_PRODUCTS_DESCRIPTION." pd2 where pd2.products_id = s.p_id  
+      and if(pcount > 1 ,pd2.site_id = '".SITE_ID."',pd2.site_id = '0' )
+      and pd2.products_status !=0 
+      and pd2.products_status !=3";
     $categories_products_query = tep_db_query($categories_products_sql);
     // ccdd
     $cateqories_products = tep_db_fetch_array($categories_products_query);
