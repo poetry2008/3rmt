@@ -3799,3 +3799,23 @@ function tep_check_exists_category($cPath, $cName)
   }
   return false;
 }
+
+function tep_get_category_is_set_in_site($c_id)
+{
+  $sql = "select count(*) as total 
+      from ".TABLE_PRODUCTS_TO_CATEGORIES." p2c,
+           ".TABLE_PRODUCTS_DESCRIPTION." pd
+      where p2c.categories_id = '".$c_id."' 
+      and p2c.products_id = pd.products_id 
+      and pd.site_id = '".SITE_ID."'
+      and pd.products_status <> 0 
+      and pd.products_status <> 3";
+  $query = tep_db_query($sql);
+  $res = tep_db_fetch_array($query);
+  if($res['total'] > 0){
+    return true;
+  }else{
+    return false;
+  }
+    
+}
