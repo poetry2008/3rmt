@@ -227,6 +227,7 @@ function pass_hidd(){
       //ccdd
       tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_of_last_logon = now(), customers_info_number_of_logons = customers_info_number_of_logons+1 where customers_info_id = '" . $customer_id . "'");
     } else {
+    $active_single = 2; 
       # Guest & 1回目 //==================================================
     $NewPass = tep_create_random_value(ENTRY_PASSWORD_MIN_LENGTH);
       $sql_data_array = array('customers_firstname' => $firstname,
@@ -240,6 +241,7 @@ function pass_hidd(){
                                 'customers_password' => tep_encrypt_password($NewPass),
                                 'customers_default_address_id' => 1,
                                 'customers_guest_chk' => '1',
+                                'send_mail_time' => time(),
                                 'site_id' => SITE_ID,
                                 'point' => '0');
 
@@ -283,7 +285,6 @@ function pass_hidd(){
       tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created) values ('" . tep_db_input($customer_id) . "', '0', now())");
       }
   } else {
-    $active_single = 1; 
      # Member
     //ccdd
     $check_cid = tep_db_query("select customers_id from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "' and site_id = '".SITE_ID."'");
@@ -303,6 +304,7 @@ function pass_hidd(){
                                 'customers_password' => tep_encrypt_password($NewPass),
                                 'customers_default_address_id' => 1,
                                 'customers_guest_chk' => '0',
+                                'is_active' => '1',
                                 'point' => '0');
 
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
@@ -344,6 +346,7 @@ function pass_hidd(){
         //ccdd
         tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_of_last_logon = now(), customers_info_number_of_logons = customers_info_number_of_logons+1 where customers_info_id = '" . $customer_id . "'");
     } else {
+      $active_single = 1; 
       # Member & 1回目 //==================================================
       $NewPass = $password;
       $sql_data_array = array('customers_firstname' => $firstname,
@@ -357,6 +360,7 @@ function pass_hidd(){
                                 'customers_password' => tep_encrypt_password($NewPass),
                                 'customers_default_address_id' => 1,
                                 'customers_guest_chk' => '0',
+                                'send_mail_time' => time(),
                                 'site_id' => SITE_ID,
                                 'point' => '0');
 
@@ -405,11 +409,15 @@ function pass_hidd(){
       tep_session_recreate();
     }
    
-    if ($active_single) {
-      $mail_name = tep_get_fullname($fistname, $lastname);  
+    $mail_name = tep_get_fullname($fistname, $lastname);  
+    if ($active_single == 1) {
       $email_text = str_replace('${URL}', HTTP_SERVER.'/active_success.php?aid='.base64_encode($customer_id), ACTIVE_ACCOUNT_EMAIL_CONTENT);  
       tep_mail($mail_name, $email_address, ACTIVE_ACCOUNT_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-       tep_redirect(tep_href_link('active_info.php', 'cud='.base64_encode($customer_id), 'SSL')); 
+      tep_redirect(tep_href_link('active_info.php', 'cud='.base64_encode($customer_id), 'SSL')); 
+    } else if ($active_single == 2){
+      $email_text = str_replace('${URL}', HTTP_SERVER.'/guest_autologin.php?gud='.base64_encode($customer_id), GUEST_LOGIN_EMAIL_CONTENT);  
+      tep_mail($mail_name, $email_address, GUEST_LOGIN_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+      tep_redirect(tep_href_link('guest_info.php', '', 'SSL')); 
     }
 
     $customer_first_name = $firstname;
@@ -449,7 +457,7 @@ function pass_hidd(){
     # For Member
     $email_text .= C_CREAT_ACCOUNT ;
     $email_text = str_replace(array('${MAIL}', '${PASS}'), array($email_address, $password), $email_text);
-    tep_mail($name, $email_address, EMAIL_SUBJECT, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+    //tep_mail($name, $email_address, EMAIL_SUBJECT, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
 
     tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT_SUCCESS, '', 'SSL'));
   }

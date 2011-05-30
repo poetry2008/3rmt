@@ -12,37 +12,8 @@
 
   require('includes/application_top.php');
 
-  require(DIR_WS_LANGUAGES . $language . '/active_success.php');
+  require(DIR_WS_LANGUAGES . $language . '/account_timeout.php');
   
-  $customers_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".base64_decode($_GET['aid'])."' and site_id = '".SITE_ID."' and customers_guest_chk = '0'");
-  $customers_res = tep_db_fetch_array($customers_raw);
-  
-  if ($customers_res) {
-    $now_time = time(); 
-    if (($now_time - $customers_res['send_mail_time']) > 60*60*24*3) {
-      if ($customers_res['is_active'] == 0) {
-        tep_db_query("delete from ".TABLE_CUSTOMERS." where customers_id = '".$customers_res['customers_id']."' and site_id = '".SITE_ID."'");
-        tep_db_query("delete from ".TABLE_CUSTOMERS_INFO." where customers_info_id = '".$customers_res['customers_id']."'");
-        tep_db_query("delete from ".TABLE_ADDRESS_BOOK." where customers_id = '".$customers_res['customers_id']."'");
-      }
-      
-      tep_redirect(tep_href_link('account_timeout.php')); 
-    } else {
-      $email_name = tep_get_fullname($customers_res['customers_firstname'], $customers_res['customers_lastname']); 
-      
-      $email_text = stripslashes($customers_res['customers_lastname'].' '.$customers_res['customers_firstname']).EMAIL_NAME_COMMENT_LINK . "\n\n"; 
-      
-      $email_text .= C_CREAT_ACCOUNT;
-      $email_text = str_replace(array('${MAIL}', '${PASS}'), array($customers_res['customers_email_address'], ''), $email_text); 
-      if ($customers_res['is_active'] == 0) {
-        tep_mail($email_name, $customers_res['customers_email_address'], EMAIL_SUBJECT, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
-      }
-      tep_db_query("update ".TABLE_CUSTOMERS." set `is_active` = 1 where customers_id = '".base64_decode($_GET['aid'])."' and site_id = '".SITE_ID."'"); 
-    }
-  } else {
-    tep_redirect(tep_href_link('account_timeout.php')); 
-  }
-
   $breadcrumb->add(NAVBAR_TITLE);
 ?>
 <?php page_head();?>
@@ -64,13 +35,14 @@
           <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:12px;"> 
             <tr> 
               <td>
-              <?php echo ACTIVE_SUCCESS_TEXT;?> 
+              <?php echo ACCOUNT_TIMEOUT_COMMENT;?> 
               </td>
             </tr>
         <tr>
           <td align="right"><br><?php echo '<a href="'.tep_href_link(FILENAME_DEFAULT).'">' . tep_image_button('button_continue02.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td>
         </tr>
       </table>
+      </form> 
       </div>
       </td> 
       <!-- body_text_eof //--> 
