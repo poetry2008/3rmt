@@ -61,7 +61,7 @@
         //check_uri('/page=(\d+)/');
       }
       
-      if ($_GET['page'] * MAX_DISPLAY_SEARCH_RESULTS > $cateqories_products['total'] + MAX_DISPLAY_SEARCH_RESULTS) {
+      if ($_GET['page'] * MAX_DISPLAY_SEARCH_RESULTS +1 > $cateqories_products['total'] + MAX_DISPLAY_SEARCH_RESULTS) {
         forward404();
       }
     } else {
