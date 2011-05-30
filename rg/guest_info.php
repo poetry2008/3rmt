@@ -48,7 +48,7 @@
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents"> 
-      <div class="pageHeading"><img align="top" src="images/menu_ico_a.gif" alt=""><h1><?php echo HEADING_TITLE ; ?></h1></div> 
+      <div class="pageHeading"><img align="top" src="images/menu_ico_a.gif" alt=""><h1><?php echo ($_GET['cu'] == 1)?HEADING_TITLE_FINISH:HEADING_TITLE; ?></h1></div> 
         
         <div class="comment"> 
         <?php
@@ -57,9 +57,20 @@
           }
         ?>
         <?php
-        echo tep_draw_form('form', tep_href_link('guest_info.php', 'gud='.$_GET['gud'].'&action=send'.(isset($_GET['cu'])?'&cu='.$_GET['cu']:''))); 
+          echo tep_draw_form('form', tep_href_link('guest_info.php', 'gud='.$_GET['gud'].'&action=send'.(isset($_GET['cu'])?'&cu='.$_GET['cu']:''))); 
         ?>
         <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:12px;"> 
+        <?php
+        if ($_GET['cu'] == 1) {
+        ?>
+        <tr>
+          <td>
+          <?php echo CHECK_FINISH_TEXT;?> 
+          </td>
+        </tr>
+        <?php
+        } else {
+        ?>
         <tr>
           <td>
           <table>
@@ -82,6 +93,7 @@
           <?php echo GUEST_SUCCESS_INFO_COMMENT;?> 
           </td>
         </tr>
+        <?php }?> 
         <tr>
           <td align="right"><br>
           <?php 
@@ -94,6 +106,7 @@
           </td>
         </tr>
       </table>
+      </form> 
       </div>
       </td> 
       <!-- body_text_eof //--> 
