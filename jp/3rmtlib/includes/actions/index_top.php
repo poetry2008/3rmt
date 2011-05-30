@@ -31,6 +31,7 @@
       setcookie('quick_categories_id', $category['categories_id'], time()+(86400*30), '/');
     }
 
+    /* 
     if(tep_get_category_is_set_in_site($current_category_id)){
       $categories_products_sql ="select count(*) as total 
       from ".TABLE_PRODUCTS_TO_CATEGORIES." p2c,
@@ -50,7 +51,28 @@
       and pd.products_status <> 0 
       and pd.products_status <> 3";
     }
-    
+      $categories_products_sql ="select count(*) as total 
+      from ".TABLE_PRODUCTS_TO_CATEGORIES." p2c,
+           ".TABLE_PRODUCTS_DESCRIPTION." pd
+      where p2c.categories_id = '".$current_category_id."' 
+      and p2c.products_id = pd.products_id 
+      and site_id = '0' or site_id = '".SITE_ID."' 
+      group by pd.products_id
+      having pd.products_status != '0' and pd.products_status != '3'  
+      ";
+    */ 
+    $categories_products_sql ="SELECT count( DISTINCT (
+            pd.products_id
+            ) ) AS total
+        FROM products_to_categories p2c, products_description pd
+        WHERE p2c.categories_id = '".$current_category_id."'
+        AND p2c.products_id = pd.products_id
+        AND (
+            site_id = '0'
+            OR site_id = '".SITE_ID."'
+            )
+        AND pd.products_status != '0'
+        AND pd.products_status != '3'";
     $categories_products_query = tep_db_query($categories_products_sql);
     // ccdd
     $cateqories_products = tep_db_fetch_array($categories_products_query);
