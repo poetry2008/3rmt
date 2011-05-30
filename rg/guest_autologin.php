@@ -37,7 +37,7 @@
       $customer_emailaddress = $customers_res['customers_email_address'];
       tep_session_register('customer_emailaddress');
       tep_session_register('guestchk');
-      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL')); 
+      tep_redirect(tep_href_link('guest_info.php', 'cu=1&gud='.base64_encode($customers_res['customers_id']), 'SSL')); 
     }
   } else {
     tep_redirect(tep_href_link('account_timeout.php')); 

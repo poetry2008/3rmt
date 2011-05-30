@@ -57,7 +57,7 @@
           }
         ?>
         <?php
-        echo tep_draw_form('form', tep_href_link('guest_info.php', 'gud='.$_GET['gud'].'&action=send')); 
+        echo tep_draw_form('form', tep_href_link('guest_info.php', 'gud='.$_GET['gud'].'&action=send'.(isset($_GET['cu'])?'&cu='.$_GET['cu']:''))); 
         ?>
         <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:12px;"> 
         <tr>
@@ -83,7 +83,15 @@
           </td>
         </tr>
         <tr>
-          <td align="right"><br><?php echo '<a href="'.tep_href_link(FILENAME_DEFAULT).'">' . tep_image_button('button_continue02.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td>
+          <td align="right"><br>
+          <?php 
+          if ($_GET['cu'] == 1) {
+            echo '<a href="'.tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL').'">' . tep_image_button('button_continue02.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; 
+          } else {
+            echo '<a href="'.tep_href_link(FILENAME_DEFAULT).'">' . tep_image_button('button_continue02.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; 
+          }
+          ?>
+          </td>
         </tr>
       </table>
       </div>
