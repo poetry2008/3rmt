@@ -65,7 +65,7 @@
           <table>
             <tr>
               <td style="font-size:11px;">
-              <b><?php echo INPUT_SEND_MAIL;?></b> 
+              <b><?php echo INPUT_SEND_MAIL;?>:</b> 
               </td>
               <td class="active_email">
               <?php echo tep_draw_input_field('cemail', (isset($_POST['cemail'])?$_POST['cemail']:$cus_email));?> 
