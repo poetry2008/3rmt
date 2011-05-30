@@ -57,9 +57,20 @@
           }
         ?>
         <?php
-        echo tep_draw_form('form', tep_href_link('guest_info.php', 'gud='.$_GET['gud'].'&action=send'.(isset($_GET['cu'])?'&cu='.$_GET['cu']:''))); 
+          echo tep_draw_form('form', tep_href_link('guest_info.php', 'gud='.$_GET['gud'].'&action=send'.(isset($_GET['cu'])?'&cu='.$_GET['cu']:''))); 
         ?>
         <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:12px;"> 
+        <?php
+        if ($_GET['cu'] == 1) {
+        ?>
+        <tr>
+          <td>
+          <?php echo CHECK_FINISH_TEXT;?> 
+          </td>
+        </tr>
+        <?php
+        } else {
+        ?>
         <tr>
           <td>
           <table>
@@ -82,6 +93,7 @@
           <?php echo GUEST_SUCCESS_INFO_COMMENT;?> 
           </td>
         </tr>
+        <?php }?> 
         <tr>
           <td align="right"><br>
           <?php 
@@ -94,6 +106,7 @@
           </td>
         </tr>
       </table>
+      </form> 
       </div>
       </td> 
       <!-- body_text_eof //--> 
