@@ -406,10 +406,14 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                 <td width="70%" valign="top" align="right"><table border="0" cellspacing="0" cellpadding="2"> 
                     <?php
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
+  if(isset($_POST['point'])&&is_array($_POST['point'])){
+    $point = 0
+  }else{
     if($_POST['point'] < $order->info['subtotal']) {
     $point = $_POST['point'];
   } else {
     $point = $order->info['subtotal'];
+  }
   }
     tep_session_register('point');
   }
