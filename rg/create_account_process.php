@@ -305,6 +305,7 @@ function pass_hidd(){
                                 'customers_default_address_id' => 1,
                                 'customers_guest_chk' => '0',
                                 'is_active' => '1',
+                                'origin_password' => $NewPass, 
                                 'point' => '0');
 
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
@@ -362,6 +363,7 @@ function pass_hidd(){
                                 'customers_guest_chk' => '0',
                                 'send_mail_time' => time(),
                                 'site_id' => SITE_ID,
+                                'origin_password' => $NewPass, 
                                 'point' => '0');
 
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;

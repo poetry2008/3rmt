@@ -33,7 +33,7 @@
       $email_text = stripslashes($customers_res['customers_lastname'].' '.$customers_res['customers_firstname']).EMAIL_NAME_COMMENT_LINK . "\n\n"; 
       
       $email_text .= C_CREAT_ACCOUNT;
-      $email_text = str_replace(array('${MAIL}', '${PASS}'), array($customers_res['customers_email_address'], ''), $email_text); 
+      $email_text = str_replace(array('${MAIL}', '${PASS}'), array($customers_res['customers_email_address'], $customers_res['origin_password']), $email_text); 
       if ($customers_res['is_active'] == 0) {
         tep_mail($email_name, $customers_res['customers_email_address'], EMAIL_SUBJECT, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
       }
