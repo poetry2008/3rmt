@@ -24,6 +24,8 @@
         tep_db_query("delete from ".TABLE_CUSTOMERS." where customers_id = '".$customers_res['customers_id']."' and site_id = '".SITE_ID."'");
         tep_db_query("delete from ".TABLE_CUSTOMERS_INFO." where customers_info_id = '".$customers_res['customers_id']."'");
         tep_db_query("delete from ".TABLE_ADDRESS_BOOK." where customers_id = '".$customers_res['customers_id']."'");
+        tep_db_query("delete from ".TABLE_CUSTOMERS_BASKET." where customers_id = '".$customers_res['customers_id']."'");
+        tep_db_query("delete from ".TABLE_CUSTOMERS_BASKET_ATTRIBUTES." where customers_id = '".$customers_res['customers_id']."'");
       }
       
       tep_redirect(tep_href_link('account_timeout.php')); 

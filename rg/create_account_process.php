@@ -413,10 +413,16 @@ function pass_hidd(){
    
     $mail_name = tep_get_fullname($fistname, $lastname);  
     if ($active_single == 1) {
+      tep_session_register('customer_id');
+      $cart->restore_contents();
+      tep_session_unregister('customer_id');
       $email_text = str_replace('${URL}', HTTP_SERVER.'/active_success.php?aid='.base64_encode($customer_id), ACTIVE_ACCOUNT_EMAIL_CONTENT);  
       tep_mail($mail_name, $email_address, ACTIVE_ACCOUNT_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
       tep_redirect(tep_href_link('active_info.php', 'cud='.base64_encode($customer_id), 'SSL')); 
     } else if ($active_single == 2){
+      tep_session_register('customer_id');
+      $cart->restore_contents();
+      tep_session_unregister('customer_id');
       $email_text = str_replace('${URL}', HTTP_SERVER.'/guest_autologin.php?gud='.base64_encode($customer_id), GUEST_LOGIN_EMAIL_CONTENT);  
       tep_mail($mail_name, $email_address, GUEST_LOGIN_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
       tep_redirect(tep_href_link('guest_info.php', 'gud='.base64_encode($customer_id), 'SSL')); 
