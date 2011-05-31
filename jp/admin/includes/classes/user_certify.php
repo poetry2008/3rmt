@@ -356,6 +356,9 @@ if (isset($GLOBALS['HTTP_GET_VARS']['execute_logout_user']) && $GLOBALS['HTTP_GE
 if (file_exists(DIR_WS_LANGUAGES . $language . '/user_certify.php')) {
     include(DIR_WS_LANGUAGES . $language . '/user_certify.php');
 }
+if (!tep_session_is_registered('user_permission')) {
+  tep_redirect('users_login.php?his_url='.$_SERVER['REQUEST_URI']);
+}
 $ocertify = new user_certify(session_id());     // 認証
 if ($ocertify->isErr) { 
   if ($ocertify->ipLimitErr) {

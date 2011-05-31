@@ -1964,6 +1964,7 @@ if (false) {
 <?php
   if ($ocertify->npermission == 15) {
     if(!tep_session_is_registered('reload')) $reload = 'yes';
+    if (false) { 
     if($reload == 'yes') {
 ?>
       <table border="0" width="100%" cellspacing="1" cellpadding="2" style="background: #FF8E90;" height="30"> 
@@ -1980,6 +1981,7 @@ if (false) {
         </tr>
       </table>
 <?php
+    }
     }
   }
 ?>
