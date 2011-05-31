@@ -384,7 +384,7 @@ function check_toggle_status(url_str)
     dataType: 'text',
     async : false,
     success: function(data) {
-      var pwd_arr = data.split(",");;
+      var pwd_arr = data.split(",");
       var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
       if(in_array(pwd, pwd_arr)){
         window.location.href = url_str; 
