@@ -5132,3 +5132,89 @@ function tep_get_random_item_name($length = 16)
     }
   }
 }
+
+function get_all_site_category_status($category_id)
+{
+  $site_arr = array();
+  $site_romaji = array(); 
+  $status_arr = array();
+  $status_arr['green'] = array();
+  $status_arr['blue'] = array();
+  $status_arr['red'] = array();
+  $status_arr['black'] = array();
+  
+  $site_arr[] = 0; 
+  $site_romaji[] = 'all';
+
+  $site_raw = tep_db_query("select * from ".TABLE_SITES." order by id asc");
+  while ($site_res = tep_db_fetch_array($site_raw)) {
+    $site_arr[] = $site_res['id']; 
+    $site_romaji[] = $site_res['romaji']; 
+  }
+ 
+  foreach ($site_arr as $key => $value) {
+    $category_des_raw = tep_db_query("select * from ".TABLE_CATEGORIES_DESCRIPTION." where (site_id = '".$value."' or site_id = '0') and categories_id = '".$category_id."' order by site_id desc limit 1"); 
+    $category_des_res = tep_db_fetch_array($category_des_raw); 
+    
+    switch ($category_des_res['categories_status']) {
+      case '2':
+        $status_arr['blue'][] = $site_romaji[$key]; 
+        break;
+      case '1':
+        $status_arr['red'][] = $site_romaji[$key]; 
+        break;
+      case '3':
+        $status_arr['black'][] = $site_romaji[$key]; 
+        break;
+      default:
+        $status_arr['green'][] = $site_romaji[$key]; 
+        break;
+    }
+  }
+  
+  return $status_arr;
+}
+
+function get_all_site_product_status($product_id)
+{
+  global $languages_id;
+  
+  $site_arr = array();
+  $site_romaji = array(); 
+  $status_arr = array();
+  $status_arr['green'] = array();
+  $status_arr['blue'] = array();
+  $status_arr['red'] = array();
+  $status_arr['black'] = array();
+  
+  $site_arr[] = 0; 
+  $site_romaji[] = 'all';
+
+  $site_raw = tep_db_query("select * from ".TABLE_SITES." order by id asc");
+  while ($site_res = tep_db_fetch_array($site_raw)) {
+    $site_arr[] = $site_res['id']; 
+    $site_romaji[] = $site_res['romaji']; 
+  }
+ 
+  foreach ($site_arr as $key => $value) {
+    $product_des_raw = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where (site_id = '".$value."' or site_id = '0') and products_id = '".$product_id."' and language_id = '".$languages_id."' order by site_id desc limit 1"); 
+    $product_des_res = tep_db_fetch_array($product_des_raw); 
+    
+    switch ($product_des_res['products_status']) {
+      case '2':
+        $status_arr['blue'][] = $site_romaji[$key]; 
+        break;
+      case '0':
+        $status_arr['red'][] = $site_romaji[$key]; 
+        break;
+      case '3':
+        $status_arr['black'][] = $site_romaji[$key]; 
+        break;
+      default:
+        $status_arr['green'][] = $site_romaji[$key]; 
+        break;
+    }
+  }
+  
+  return $status_arr;
+}

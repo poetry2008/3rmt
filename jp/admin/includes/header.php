@@ -14,7 +14,38 @@ document.getElementById(elmnt).style.visibility="visible"
 }
 function hidemenu(elmnt)
 {
-document.getElementById(elmnt).style.visibility="hidden"
+  document.getElementById(elmnt).style.visibility="hidden"
+}
+function toggle_header_menu(elmnt)
+{
+  if (document.getElementById(elmnt).style.visibility == 'visible') {
+    document.getElementById(elmnt).style.visibility="hidden";
+  } else {
+    document.getElementById(elmnt).style.visibility="visible";
+   
+    switch (elmnt) {
+      case 'tutorials':
+        document.getElementById('ordermenu').style.visibility="hidden";
+        document.getElementById('managermenu').style.visibility="hidden";
+        document.getElementById('redirecturl').style.visibility="hidden";
+        break;
+      case 'ordermenu':
+        document.getElementById('tutorials').style.visibility="hidden";
+        document.getElementById('managermenu').style.visibility="hidden";
+        document.getElementById('redirecturl').style.visibility="hidden";
+        break;
+      case 'managermenu':
+        document.getElementById('tutorials').style.visibility="hidden";
+        document.getElementById('ordermenu').style.visibility="hidden";
+        document.getElementById('redirecturl').style.visibility="hidden";
+        break;
+      case 'redirecturl':
+        document.getElementById('tutorials').style.visibility="hidden";
+        document.getElementById('ordermenu').style.visibility="hidden";
+        document.getElementById('managermenu').style.visibility="hidden";
+        break;
+    }
+  }
 }
 </script>
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -62,8 +93,8 @@ if(preg_match("/".FILENAME_ORDERS."/",$PHP_SELF)){
       <tr>
       <td><a href="' . tep_href_link(FILENAME_ORDERS, '', 'NONSSL') . '" class="headerLink">注文一覧</a>&nbsp;|</td>
           <td><a href="' . tep_href_link('telecom_unknow.php', '', 'NONSSL') . '" class="headerLink">決算履歴</a>&nbsp;|</td>
-          <td onMouseOver="showmenu(\'tutorials\')" onMouseOut="hidemenu(\'tutorials\')" align="left">
-        &nbsp;<a class="headerLink" href="javascript:void(0);">商品調整▼</a>&nbsp;|<br>
+          <td align="left">
+        &nbsp;<a class="headerLink" href="javascript:void(0);" onclick="toggle_header_menu(\'tutorials\')">商品調整▼</a>&nbsp;|<br>
         <table class="menu01" id="tutorials" cellpadding="0" cellspacing="0">
           <tr>
             <td class="menu01"><a class="t_link01" href="'.tep_href_link(FILENAME_CATEGORIES, '', 'NONSSL').'">商品登録</a></td>
@@ -76,8 +107,7 @@ if(preg_match("/".FILENAME_ORDERS."/",$PHP_SELF)){
           </tr>       
         </table>
           </td>
-      <td onMouseOver="showmenu(\'ordermenu\')" onMouseOut="hidemenu(\'ordermenu\')" align="left">
-        &nbsp;<a class="headerLink" href="javascript:void(0);">注文書▼</a>&nbsp;|<br>
+      <td align="left"> &nbsp;<a class="headerLink" href="javascript:void(0);" onclick="toggle_header_menu(\'ordermenu\')">注文書▼</a>&nbsp;|<br>
         <table class="menu01" id="ordermenu" cellpadding="0" cellspacing="0">
           <tr>
             <td class="menu01"><a class="t_link01" href="'.tep_href_link('create_order.php', '', 'NONSSL').'">注文作成</a></td>
@@ -92,8 +122,8 @@ if(preg_match("/".FILENAME_ORDERS."/",$PHP_SELF)){
           <td>&nbsp;<a href="' . tep_href_link('micro_log.php', '', 'NONSSL') . '" class="headerLink">引継メモ</a>&nbsp;|</td>
 
 
-      <td onMouseOver="showmenu(\'managermenu\')" onMouseOut="hidemenu(\'managermenu\')" align="left">
-        &nbsp;<a class="headerLink" href="javascript:void(0);">ツール▼</a>&nbsp;|<br>
+      <td align="left">
+        &nbsp;<a class="headerLink" href="javascript:void(0);" onclick="toggle_header_menu(\'managermenu\')">ツール▼</a>&nbsp;|<br>
         <table class="menu01" id="managermenu" cellpadding="0" cellspacing="0">
           <tr>
             <td class="menu01"><a class="t_link01" href="'.tep_href_link(FILENAME_PW_MANAGER, '', 'NONSSL').'">ID管理</a></td>
@@ -106,9 +136,9 @@ if(preg_match("/".FILENAME_ORDERS."/",$PHP_SELF)){
 
 
 
-      <td align="left" onmouseout="hidemenu(\'redirecturl\')" onmouseover="showmenu(\'redirecturl\')">
+      <td align="left">
       ';
-      echo '&nbsp;<a href="javascript:void(0);" class="headerLink">サイトへ移動▼</a>&nbsp;|<br>'; 
+      echo '&nbsp;<a href="javascript:void(0);" class="headerLink" onclick="toggle_header_menu(\'redirecturl\')">サイトへ移動▼</a>&nbsp;|<br>'; 
       $site_link_query = tep_db_query('select * from '.TABLE_SITES);
       echo '<table id="redirecturl" cellspacing="0" cellpadding="0" class="menu01" style="visibility: hidden;">'; 
       while ($site_link = tep_db_fetch_array($site_link_query)) {
