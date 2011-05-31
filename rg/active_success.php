@@ -40,6 +40,26 @@
         tep_mail($email_name, $customers_res['customers_email_address'], EMAIL_SUBJECT, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
       }
       tep_db_query("update ".TABLE_CUSTOMERS." set `is_active` = 1 where customers_id = '".base64_decode($_GET['aid'])."' and site_id = '".SITE_ID."'"); 
+      
+      $address_book_raw = tep_db_query("select * from ".TABLE_ADDRESS_BOOK." where customers_id = '".$customers_res['customers_id']."'"); 
+      $address_book_res = tep_db_fetch_array($address_book_raw); 
+      $customer_id = $customers_res['customers_id'];  
+      $customer_first_name = $customers_res['customers_firstname'];
+      $customer_last_name = $customers_res['customers_lastname']; 
+      $customer_default_address_id = 1;
+      $customer_country_id = $address_book_res['entry_country_id'];
+      $customer_zone_id = $address_book_res['entry_zone_id'];
+      $guestchk = $customers_res['customers_guest_chk'];
+      tep_session_register('customer_id');
+      tep_session_register('customer_first_name');
+      tep_session_register('customer_last_name');
+      tep_session_register('customer_default_address_id');
+      tep_session_register('customer_country_id');
+      tep_session_register('customer_zone_id');
+      $customer_emailaddress = $customers_res['customers_email_address'];
+      tep_session_register('customer_emailaddress');
+      tep_session_register('guestchk');
+      $cart->restore_contents(); 
     }
     tep_redirect(tep_href_link('create_account_success.php', '', 'SSL')); 
   } else {
