@@ -5,25 +5,6 @@
 require(DIR_WS_FUNCTIONS . 'visites.php');
 
 
-// test point
-if(is_array($point)||true){
-  $e_order = "point error text \r\n";
-  if(is_array($point)){
-  foreach($point as $key => $value){
-    $e_order .= "key => ".$key."\r\n"; 
-    $e_order .= "value => ".$value."\r\n"; 
-  }
-  }else{
-    $e_order .= "value => ".$point."\r\n"; 
-  }
-  $point = 0;
-      $Name = STORE_NAME; //senders name
-      $email = STORE_OWNER_EMAIL_ADDRESS; //senders e-mail adress
-      $subject = STORE_NAM."POINT EMAIL ERROR"; //subject
-      $header = "From: ". $Name . " <" . $email . ">\r\n"; //optional headerfields
-      mail(STORE_OWNER_EMAIL_ADDRESS, $subject, $e_order, $header); //mail command :) 
-}
-
 // if the customer is not logged on, redirect them to the login page
 
 if (!tep_session_is_registered('customer_id')) {

@@ -209,10 +209,10 @@ define('ENTRY_GENDER_ERROR', '&nbsp;<small><font color="#AABBDD">が必要です
 define('ENTRY_GENDER_TEXT', '&nbsp;<small><font color="#AABBDD">必須</font></small>');
 define('ENTRY_FIRST_NAME', '名:');
 define('ENTRY_FIRST_NAME_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_FIRST_NAME_MIN_LENGTH . ' 文字</font></small>');
-define('ENTRY_FIRST_NAME_TEXT', '&nbsp;<small>(例. 太郎) <font color="#FC0000">必須</font></small>');
+define('ENTRY_FIRST_NAME_TEXT', '&nbsp;<span>(例. 太郎) <font color="#FC0000">必須</font></span>');
 define('ENTRY_LAST_NAME', '姓:');
 define('ENTRY_LAST_NAME_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_LAST_NAME_MIN_LENGTH . ' 文字</font></small>');
-define('ENTRY_LAST_NAME_TEXT', '&nbsp;<small>(例. 田中) <font color="#FC0000">必須</font></small>');
+define('ENTRY_LAST_NAME_TEXT', '&nbsp;<span>(例. 田中) <font color="#FC0000">必須</font></span>');
 
 define('ENTRY_FIRST_NAME_F', '名(フリガナ):');
 define('ENTRY_FIRST_NAME_F_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_FIRST_NAME_MIN_LENGTH . ' 文字</font></small>');
@@ -228,7 +228,7 @@ define('ENTRY_EMAIL_ADDRESS', 'メールアドレス:');
 define('ENTRY_EMAIL_ADDRESS_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_EMAIL_ADDRESS_MIN_LENGTH . ' 文字</font></small>');
 define('ENTRY_EMAIL_ADDRESS_CHECK_ERROR', '&nbsp;<small><font color="#FF0000">入力されたメールアドレスは不正です!</font></small>');
 define('ENTRY_EMAIL_ADDRESS_ERROR_EXISTS', '&nbsp;<small><font color="#FF0000">メールアドレスはすでに存在しています!</font></small>');
-define('ENTRY_EMAIL_ADDRESS_TEXT', '&nbsp;<small>(例. sample@example.com) <font color="#FC0000">必須</font></small>');
+define('ENTRY_EMAIL_ADDRESS_TEXT', '&nbsp;<span>(例. sample@example.com) <font color="#FC0000">必須</font></span>');
 define('ENTRY_STREET_ADDRESS', '住所１:');
 define('ENTRY_STREET_ADDRESS_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_STREET_ADDRESS_MIN_LENGTH . ' 文字</font></small>');
 define('ENTRY_STREET_ADDRESS_TEXT', '&nbsp;<small>(例. 1-15-6) <font color="#AABBDD">必須</font></small>');
@@ -260,9 +260,9 @@ define('ENTRY_NEWSLETTER_NO', '購読しない');
 define('ENTRY_NEWSLETTER_ERROR', '');
 define('ENTRY_PASSWORD', 'パスワード:');
 define('ENTRY_PASSWORD_CONFIRMATION', 'パスワードを再入力:');
-define('ENTRY_PASSWORD_CONFIRMATION_TEXT', '&nbsp;<small>英数字' . ENTRY_PASSWORD_MIN_LENGTH . '文字以上&nbsp;(例. abcdef) <font color="#FC0000">必須</font></small>');
+define('ENTRY_PASSWORD_CONFIRMATION_TEXT', '&nbsp;<span>英数字' . ENTRY_PASSWORD_MIN_LENGTH . '文字以上&nbsp;(例. abcdef) <font color="#FC0000">必須</font></span>');
 define('ENTRY_PASSWORD_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_PASSWORD_MIN_LENGTH . ' 文字</font></small>');
-define('ENTRY_PASSWORD_TEXT', '&nbsp;<small>英数字' . ENTRY_PASSWORD_MIN_LENGTH . '文字以上&nbsp;(例. abcdef) <font color="#FC0000">必須</font></small>');
+define('ENTRY_PASSWORD_TEXT', '&nbsp;<span>英数字' . ENTRY_PASSWORD_MIN_LENGTH . '文字以上&nbsp;(例. abcdef) <font color="#FC0000">必須</font></span>');
 define('PASSWORD_HIDDEN', '********');
 define('ENTRY_AGREEMENT_TEXT', '同意する');
 
