@@ -3504,6 +3504,75 @@ function tep_get_pay_day($time = null){
       }
     }
     //exit(date('Y-m-d H:i:s', $time));
+    switch(date('n')) {
+      case '1':
+        if (date('j') == 31) {
+          return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
+        }
+        break;
+      case '2':
+        if (date('L')) {
+          if (date('j') == 28) {
+            return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
+          }
+        } else {
+          if (date('j') == 29) {
+            return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
+          }
+        }
+        break;
+      case '3':
+        if (date('j') == 31) {
+          return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
+        }
+        break;
+      case '4':
+        if (date('j') == 30) {
+          return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
+        }
+        break;
+      case '5':
+        if (date('j') == 31) {
+          
+          return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
+        }
+        break;
+      case '6':
+        if (date('j') == 30) {
+          return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
+        }
+        break;
+      case '7':
+        if (date('j') == 31) {
+          return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
+        }
+        break;
+      case '8':
+        if (date('j') == 31) {
+          return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
+        }
+        break;
+      case '9':
+        if (date('j') == 30) {
+          return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
+        }
+        break;
+      case '10':
+        if (date('j') == 31) {
+          return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
+        }
+        break;
+      case '11':
+        if (date('j') == 30) {
+          return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
+        }
+        break;
+      case '12':
+        if (date('j') == 31) {
+          return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
+        }
+        break;
+    }
     return tep_get_pay_day(date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s', strtotime($time)).' + 1 month')));
   } else {
     $c = tep_db_fetch_array(tep_db_query("select * from " . TABLE_BANK_CALENDAR . " where cl_ym = '".date('Ym',strtotime($time))."'"));
