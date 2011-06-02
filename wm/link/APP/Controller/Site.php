@@ -466,7 +466,7 @@ class Controller_Site extends Controller_Base
       $model_Class = &FLEA::getSingleton('Model_Class');
       $class = $model_Class->find($_POST['class']);
       $model_Setseo = FLEA::getSingleton('Model_Setseo');
-      $seo = $model_Setseo->find("action ='".$_GET['action']."_confirm'");
+      $seo = $model_Setseo->find("action ='".$_GET['action']."'");
       if(!$seo){
         $seo = $model_Setseo->find("action ='index'");
       }
@@ -1879,10 +1879,14 @@ function getBreadcrumb()
     $seo['title']       = str_replace($search, $replace, $seo['title']);
     $seo['keywords']    = str_replace($search, $replace, $seo['keywords']);
     $seo['description'] = str_replace($search, $replace, $seo['description']);
+    $seo['robots'] = str_replace($search, $replace, $seo['robots']);
+    $seo['copyright'] = str_replace($search, $replace, $seo['copyright']);
     
     $seo['title'] = str_replace(' &raquo; ', ' ', $seo['title']); 
     $seo['keywords'] = str_replace(' &raquo; ', ' ', $seo['keywords']); 
     $seo['description'] = str_replace(' &raquo; ', ' ', $seo['description']); 
+    $seo['robots'] = str_replace(' &raquo; ', ' ', $seo['robots']); 
+    $seo['copyright'] = str_replace(' &raquo; ', ' ', $seo['copyright']);
 
     return $seo; 
   }
