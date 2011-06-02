@@ -5,6 +5,10 @@
 require(DIR_WS_FUNCTIONS . 'visites.php');
 
 
+if(isset($real_point)){
+  $point = $real_point;
+}
+
 // if the customer is not logged on, redirect them to the login page
 
 if (!tep_session_is_registered('customer_id')) {
