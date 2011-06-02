@@ -5,6 +5,11 @@
 require(DIR_WS_FUNCTIONS . 'visites.php');
 
 
+// user new point value it from checkout_confirmation.php 
+if(isset($real_point)){
+  $point = $real_point;
+}
+
 // if the customer is not logged on, redirect them to the login page
 
 if (!tep_session_is_registered('customer_id')) {
