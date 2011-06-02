@@ -45,6 +45,23 @@ if (!empty($sort_ca_arr)) {
    arsort($sort_ca_arr);
    $sort_ca_num = 0;
 ?>
+<?php
+$show_goods_single = false;
+$cal_gnum = 0;
+foreach ($sort_ca_arr as $ca_gkey => $ca_gvalue) {
+  if ($cal_gnum > 1) {
+    break; 
+  }
+  if (($cal_gnum == 0) && ($ca_gvalue == 0)) {
+    $show_goods_single = true; 
+    break; 
+  }
+  $cal_gnum++;
+}
+?>
+<?php
+if (!$show_goods_single) {
+?>
 <div class="best_goods">
 <div class="menu_top">
 <img align="top" alt="" src="images/menu_ico11.gif">
@@ -76,3 +93,4 @@ if (!empty($sort_ca_arr)) {
 ?>
 </div>
 </div>
+<?php }?>

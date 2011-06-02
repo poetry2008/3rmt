@@ -229,14 +229,11 @@ function session_win() {
                       <tr><td class="main" valign="top"><?php echo TEXT_NEW_CUSTOMER . '<br><br>' . TEXT_NEW_CUSTOMER_INTRODUCTION; ?></td></tr>
                       <tr><td align="right">
                       <?php 
-                      /* 
                       if ($cart->count_contents() > 0) {
-                        echo '<a href="' . tep_href_link(FILENAME_SEND_MAIL) . '">' . tep_image_button('button_continue02.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; 
+                        echo '<a href="' . tep_href_link(FILENAME_CREATE_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_continue02.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; 
                       } else {
                         echo '<a href="javascript:void(0);" onclick="alert(\''.NOTICE_MUST_BUY_TEXT.'\');"><img src="includes/languages/japanese/images/buttons/button_continue02.gif" alt="'.IMAGE_BUTTON_CONTINUE.'"></a>'; 
                       }
-                      */
-                      echo '<a href="' . tep_href_link(FILENAME_CREATE_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_continue02.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; 
 
                       ?></td></tr>
                    <tr>
