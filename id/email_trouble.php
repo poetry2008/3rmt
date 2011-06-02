@@ -27,27 +27,27 @@
   <div id="bgn_content">
     <div id="wrapper_kiyaku">
       <p>
-        <span class="txt_blue">*****@yahoo.co.jp、*****@hotmail.com、*****@msn.com、AOLなどのフリーメールを御使用になられている場合</span><br />
+        <span class="txt_blue">*****@yahoo.co.jp、*****@hotmail.com、*****@msn.com、AOLなどのフリーメールを御使用になられている場合</span>
         上記のドメインでご登録された方で、当社からのメールが届かないというご報告を頂いております。</p>
       <p>
-        <br />
-        これは、Yahoo!メール、hotmail、msnメール、AOLの受信手続きで「迷惑メール」として処理をされている可能性がございます。<br />
-        この処理は各フリーメールが持つ機能で、不特定多数のサイトからのメールを「迷惑メール」として排除し、快適にメールを使用するためのものです。<br />
-        上記のようなドメインをご使用の場合には、<span class="txt_blue">当社からのメールを「通常メール」として受信許可をいただく必要がございます。</span><br />
+        <br>
+        これは、Yahoo!メール、hotmail、msnメール、AOLの受信手続きで「迷惑メール」として処理をされている可能性がございます。<br>
+        この処理は各フリーメールが持つ機能で、不特定多数のサイトからのメールを「迷惑メール」として排除し、快適にメールを使用するためのものです。<br>
+        上記のようなドメインをご使用の場合には、<span class="txt_blue">当社からのメールを「通常メール」として受信許可をいただく必要がございます。</span><br>
       </p>
       <p>
-        <br />
+        <br>
         以下に各フリーメールの毎に受信許可の設定手順を記します。 </p>
-      <br />
-      <br />
+      <br>
+      <br>
       <h3>Yahoo!メール、Yahoo!BBメール&nbsp;&nbsp;受信許可の設定手順</h3>
       <ol>
         <li>Yahoo!メールにログインして[メールオプション]をクリック</li>
         <li>[フィルターと受信通知設定] → [新規作成]を順にクリック</li>
-        <li>設定を以下のように変更します。<br />
+        <li>設定を以下のように変更します。<br>
           「Fromが次（を含む）（<span class="txt_blue"><?php echo STORE_DOMAIN;?></span>）」&nbsp;&nbsp;移動先フォルダ「受信箱」 </li>
       </ol>
-      <br />
+      <br>
       <h3>hotmail、msnmail&nbsp;&nbsp;受信許可の設定手順</h3>
       <ol>
         <li>hotmail にサインインして[オプション] をクリック</li>
@@ -55,7 +55,7 @@
         <li><?php echo STORE_NAME;?>および当社の利用するドメイン「<span class="txt_blue"><?php echo STORE_DOMAIN;?></span>」を追加します</li>
         <li>最後に「OK」をクリックして終了します</li>
       </ol>
-      <br />
+      <br>
       <h3>AOL&nbsp;&nbsp;受信許可の設定手順</h3>
       <p> ご利用環境によりAOL接続ソフト「AOL Communicator」の設定が必要です。</p>
       <ol>
@@ -63,14 +63,14 @@
         <li>[迷惑メールフィルタ]で「<span class="txt_blue"><?php echo STORE_DOMAIN;?></span>」の受信を許可する設定にして下さい</li>
       </ol>
       
-      <br />
+      <br>
       <h3>上記以外のメールアドレスをご利用の場合</h3>
-      <p> 上記以外のメールアドレスをご利用の方で、同様に<?php echo STORE_NAME;?>および当社からのメールが届かないという場合も、同様の原因（迷惑メール処理機能）が考えられます。<br />
-        お手数ですがご利用先のマニュアル等をご覧の上、<?php echo STORE_NAME;?>および当社の利用するドメイン「<span class="txt_blue"><?php echo STORE_DOMAIN;?></span>」から送信されるメールの受信許可を設定して下さい。<br />
+      <p> 上記以外のメールアドレスをご利用の方で、同様に<?php echo STORE_NAME;?>および当社からのメールが届かないという場合も、同様の原因（迷惑メール処理機能）が考えられます。<br>
+        お手数ですがご利用先のマニュアル等をご覧の上、<?php echo STORE_NAME;?>および当社の利用するドメイン「<span class="txt_blue"><?php echo STORE_DOMAIN;?></span>」から送信されるメールの受信許可を設定して下さい。<br>
       </p>
-      <br />
-      <br />
-      <br />
+      <br>
+      <br>
+      <br>
     </div>
     <!-- end of wrapper_mail_trouble -->
   </div>
