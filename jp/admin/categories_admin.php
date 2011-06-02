@@ -627,7 +627,7 @@ define('TEXT_NO_DATA','該当の情報は見つかりませんでした');
 define('TEXT_LAST_SEARCH_DATA','最後から&nbsp;%s&nbsp;つの検索結果');
 define('TEXT_FIND_DATA_STOP','%sをさがしましたが、表示を停止します。');
 define('TEXT_NOT_ENOUGH_DATA','前からの&nbsp;50&nbsp;件検索結果に不重複な結果は&nbsp;%s&nbsp;件があります');
-tep_display_google_results();
+tep_display_google_results(FILENAME_CATEGORIES_ADMIN);
 // google end
 ?>
 </table>

@@ -2853,7 +2853,7 @@ if ($ocertify->npermission >= 10) { //表示制限
                           </tr>
 <?php
 // google start
-tep_display_google_results()
+tep_display_google_results(FILENAME_CATEGORIES);
 // google end
 ?>
                         </table></td>
