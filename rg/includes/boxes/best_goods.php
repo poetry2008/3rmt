@@ -3,7 +3,7 @@
   $Id$
 */
 
-$best_goods_raw = tep_db_query("SELECT count( op.orders_products_id ) cnt, ptc.categories_id, c.parent_id, c2.parent_id cid, if( c2.parent_id =0, if( c.parent_id =0, ptc.categories_id, c.parent_id ) , ptc.categories_id ) ci FROM ".TABLE_ORDERS_PRODUCTS." op LEFT JOIN ".TABLE_PRODUCTS_TO_CATEGORIES." ptc ON ptc.products_id = op.products_id LEFT  JOIN ".TABLE_CATEGORIES." c ON c.categories_id = ptc.categories_id LEFT  JOIN ".TABLE_CATEGORIES." c2 ON c.parent_id = c2.categories_id WHERE ptc.categories_id IS  NOT  NULL AND op.site_id = ".SITE_ID." GROUP  BY ci ORDER  BY  `cnt`  DESC LIMIT 0 , 2");
+$best_goods_raw = tep_db_query("SELECT count( op.orders_products_id ) cnt, ptc.categories_id, c.parent_id, c2.parent_id cid, if( c2.parent_id =0, if( c.parent_id =0, ptc.categories_id, c.parent_id ) , ptc.categories_id ) ci FROM ".TABLE_ORDERS_PRODUCTS." op INNER JOIN ".TABLE_PRODUCTS_TO_CATEGORIES." ptc ON ptc.products_id = op.products_id LEFT  JOIN ".TABLE_CATEGORIES." c ON c.categories_id = ptc.categories_id LEFT  JOIN ".TABLE_CATEGORIES." c2 ON c.parent_id = c2.categories_id WHERE op.site_id = ".SITE_ID." GROUP  BY ci ORDER  BY  `cnt`  DESC LIMIT 0 , 2");
 ?>
 <?php
 if (tep_db_num_rows($best_goods_raw)) {
