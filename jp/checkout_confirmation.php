@@ -388,6 +388,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
   } else {
     $point = $order->info['subtotal'];
   }
+    // add new sesssion for point named real_point
     $real_point = $point;
     tep_session_register('real_point');
     tep_session_register('point');

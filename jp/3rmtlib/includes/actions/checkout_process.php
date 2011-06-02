@@ -5,6 +5,7 @@
 require(DIR_WS_FUNCTIONS . 'visites.php');
 
 
+// user new point value it from checkout_confirmation.php 
 if(isset($real_point)){
   $point = $real_point;
 }
