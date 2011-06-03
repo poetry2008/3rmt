@@ -29,15 +29,21 @@
         $error = true;
       } else if (!tep_validate_email($_POST['cemail'])) {
         $error = true;
+      } else if (tep_check_exists_cu_email($_POST['cemail'], $customers_res['customers_id'], 0)) {
+        $error = true;
+        $error_msg = CHECK_EMAIL_EXISTS_ERROR; 
       } else {
         $mail_name = tep_get_fullname($customers_res['customers_firstname'], $customers_res['customers_lastname']);   
         
-        $ac_email_srandom = base64_encode(tep_get_random_ac_code(8).','.$customers_res['customers_id'].','.tep_get_random_ac_code(10)); 
+        $ac_email_srandom = md5(time().$customers_res['customers_id'].$_POST['cemail']); 
         
         $email_text = str_replace('${URL}', HTTP_SERVER.'/m_token.php?aid='.$ac_email_srandom, ACTIVE_ACCOUNT_EMAIL_CONTENT);  
+        
         tep_mail($mail_name, $_POST['cemail'], ACTIVE_ACCOUNT_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
         
-        tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$ac_email_srandom."' where `customers_id` = '".$customers_res['customers_id']."'"); 
+        tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$ac_email_srandom."' where `customers_id` = '".$customers_res['customers_id']."' and site_id = '".SITE_ID."'"); 
+        
+        tep_db_query("update `".TABLE_CUSTOMERS."` set `customers_email_address` = '".$_POST['cemail']."' where `customers_id` = '".$customers_res['customers_id']."' and site_id = '".SITE_ID."'"); 
       }
     }
   }
@@ -61,7 +67,11 @@
         <div class="comment"> 
          <?php
          if ($error == true) {
-           echo '<div style="color:ff0000;">'.EMAIL_PATTERN_WRONG.'</div>'; 
+           if (isset($error_msg)) {
+             echo '<div style="color:ff0000;">'.CHECK_EMAIL_EXISTS_ERROR.'</div>'; 
+           } else {
+             echo '<div style="color:ff0000;">'.EMAIL_PATTERN_WRONG.'</div>'; 
+           }
          }
          ?>
          <?php echo tep_draw_form('form', tep_href_link('member_auth.php', 'action=send', 'SSL'));?> 

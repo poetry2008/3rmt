@@ -14,14 +14,10 @@
 
   require(DIR_WS_LANGUAGES . $language . '/active_success.php');
   
-  $active_info_arr = explode(',', base64_decode($_GET['aid']));
-  $customers_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".(int)$active_info_arr[1]."' and site_id = '".SITE_ID."' and customers_guest_chk = '0'");
+  $customers_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where check_login_str = '".$_GET['aid']."' and site_id = '".SITE_ID."' and customers_guest_chk = '0'");
   $customers_res = tep_db_fetch_array($customers_raw);
   
   if ($customers_res) {
-    if ($customers_res['check_login_str'] != $_GET['aid']) {
-      tep_redirect(tep_href_link('account_timeout.php')); 
-    }
     $now_time = time(); 
     if (($now_time - $customers_res['send_mail_time']) > 60*60*24*3) {
       if ($customers_res['is_active'] == 0) {

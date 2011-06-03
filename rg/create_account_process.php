@@ -93,7 +93,7 @@
   if (tep_db_num_rows($check_email)) {
     $check_email_res = tep_db_fetch_array($check_email); 
     $re_mail_name = tep_get_fullname($check_email_res['customers_firstname'], $check_email_res['customers_lastname']);  
-    $re_email_srandom = base64_encode(tep_get_random_ac_code(8).','.$check_email_res['customers_id'].','.tep_get_random_ac_code(10)); 
+    $re_email_srandom = md5(time().$check_email_res['customers_id'].$check_email_res['customers_email_address']); 
     
     $re_email_text = str_replace('${URL}', HTTP_SERVER.'/m_token.php?aid='.$re_email_srandom, ACTIVE_ACCOUNT_EMAIL_CONTENT);  
     tep_mail($re_mail_name, $check_email_res['customers_email_address'], ACTIVE_ACCOUNT_EMAIL_TITLE, $re_email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
@@ -439,7 +439,7 @@ function pass_hidd(){
       tep_session_register('customer_id');
       $cart->restore_contents();
       tep_session_unregister('customer_id'); 
-      $ac_email_srandom = base64_encode(tep_get_random_ac_code(8).','.$customer_id.','.tep_get_random_ac_code(10)); 
+      $ac_email_srandom = md5(time().$customer_id.$email_address); 
       
       $email_text = str_replace('${URL}', HTTP_SERVER.'/m_token.php?aid='.$ac_email_srandom, ACTIVE_ACCOUNT_EMAIL_CONTENT);  
       tep_mail($mail_name, $email_address, ACTIVE_ACCOUNT_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
@@ -453,7 +453,7 @@ function pass_hidd(){
       $cart->restore_contents();
       tep_session_unregister('customer_id');
       
-      $gu_email_srandom = base64_encode(tep_get_random_ac_code(8).','.$customer_id.','.tep_get_random_ac_code(10)); 
+      $gu_email_srandom = md5(time().$customer_id.$email_address); 
       
       $email_text = str_replace('${URL}', HTTP_SERVER.'/nm_token.php?gud='.$gu_email_srandom, GUEST_LOGIN_EMAIL_CONTENT);  
       tep_mail($mail_name, $email_address, GUEST_LOGIN_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);

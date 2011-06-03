@@ -435,4 +435,5 @@ define('TEXT_TAGS', 'タグ一覧');
 define('COLUMNLEFT_SEARCH_DEFAULT_VALUE', '入力して下さい');
 define('COLUMNRIGHT_BEST_GOODS_TITLE', 'お勧めゲーム');
 define('ENTRY_GUEST_EMAIL_NOT_ACTIVE', '&nbsp;<small><font color="#FF0000">認証手続きはまだ完了していません。</font></small>');
+define('CHECK_EMAIL_EXISTS_ERROR', 'メールアドレスはすでに存在しています!');
 ?>

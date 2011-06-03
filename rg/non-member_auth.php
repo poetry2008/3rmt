@@ -29,13 +29,18 @@
         $error = true;
       } else if (!tep_validate_email($_POST['cemail'])) {
         $error = true;
+      } else if (tep_check_exists_cu_email($_POST['cemail'], $customers_res['customers_id'], 1)) {
+        $error = true;
+        $error_msg = CHECK_EMAIL_EXISTS_ERROR; 
       } else {
         $mail_name = tep_get_fullname($customers_res['customers_firstname'], $customers_res['customers_lastname']);   
-        $gu_email_srandom = base64_encode(tep_get_random_ac_code(8).','.$customers_res['customers_id'].','.tep_get_random_ac_code(10)); 
+        $gu_email_srandom = md5(time().$customers_res['customers_id'].$_POST['cemail']); 
         $email_text = str_replace('${URL}', HTTP_SERVER.'/nm_token.php?gud='.$gu_email_srandom, GUEST_LOGIN_EMAIL_CONTENT);  
         tep_mail($mail_name, $_POST['cemail'], GUEST_LOGIN_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
         
-        tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$gu_email_srandom."' where `customers_id` = '".$customers_res['customers_id']."'"); 
+        tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$gu_email_srandom."' where `customers_id` = '".$customers_res['customers_id']."' and site_id = '".SITE_ID."'"); 
+        
+        tep_db_query("update `".TABLE_CUSTOMERS."` set `customers_email_address` = '".$_POST['cemail']."' where `customers_id` = '".$customers_res['customers_id']."' and site_id = '".SITE_ID."'"); 
       }
     }
   }
@@ -60,7 +65,11 @@
         <div class="comment"> 
         <?php
           if ($error == true) {
-            echo '<div style="color:ff0000;">'.EMAIL_PATTERN_WRONG.'</div>'; 
+            if (isset($error_msg)) {
+              echo '<div style="color:ff0000;">'.CHECK_EMAIL_EXISTS_ERROR.'</div>'; 
+            } else {
+              echo '<div style="color:ff0000;">'.EMAIL_PATTERN_WRONG.'</div>'; 
+            }
           }
         ?>
         <?php
