@@ -353,15 +353,15 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   $sql = "select u.userid,u.rule,l.letter from ".
     TABLE_USERS." u , ".TABLE_LETTERS." l 
     where u.userid = l.userid and (l.letter != '' or l.letter != null)";
+  if($ocertify->npermission == 15){
+    $sql .= " and u.userid = '".$ocertify->auth_user."'";
+  }else{
+    $sql .= " and u.userid != '".$ocertify->auth_user."'";
+  }
   $result = tep_db_query($sql);
   $arr =array();
   while($row = tep_db_fetch_array($result)){
-    $pwd = $row['letter'].make_rand_pwd($row['rule']);
-    if($ocertify->auth_user==$row['userid']&&$ocertify->npermission==15){
       $arr[] = $pwd;
-    }else if($ocertify->auth_user!=$row['userid']&&$ocertify->npermission!=15){
-      $arr[] = $pwd;
-    }
   }
   $str = implode(',',$arr); 
   echo $str;

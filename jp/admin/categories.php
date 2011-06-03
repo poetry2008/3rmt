@@ -32,6 +32,7 @@
             else $site_arr="";
             //   $edit_per=editPermission($site_arr, $site_id);//判断是否拥有相应网站的管理权限
             forward401Unless(editPermission($site_arr, $site_id));
+            tep_insert_pwd_log($_GET['once_pwd'],$ocertify->auth_user);
             $c_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
             
             if (isset($_GET['status']) && ($_GET['status'] == 0 || $_GET['status'] == 1 || $_GET['status'] == 2 || $_GET['status'] == 3)){
@@ -41,6 +42,7 @@
           tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page));
           break;
       case 'setflag':
+        tep_insert_pwd_log($_GET['once_pwd'],$ocertify->auth_user);
         $site_id = (isset($_GET['site_id']))?$_GET['site_id']:0;  
         $p_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
         if ($site_id == 0) {
