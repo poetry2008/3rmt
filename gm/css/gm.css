@@ -1187,8 +1187,8 @@ width:418px;
 .product_list02 input{ margin-top:10px;} 
 
 .infoBoxNotice_01 {
-    background: #dddddd;                        
     color: #ff4500;
+	border:1px solid #dddddd;
 }
 /* ---------------------------
 searching

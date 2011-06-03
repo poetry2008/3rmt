@@ -2167,6 +2167,7 @@ background: url(../images/design/boxmiddle_ico01.gif) no-repeat 20px center;
 
 .infoBoxNotice_01 {
 	background: #ddd;
+	border:1px solid #ddd;
 }
 /* ---------------------------
 searching

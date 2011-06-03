@@ -1570,6 +1570,7 @@ background:url(../images/design/contents/headding_title02.gif) no-repeat;
 
 .infoBoxNotice_01 {
 	background: #ddd;
+	border:1px solid #ddd;
 }
 /* ---------------------------
 searching

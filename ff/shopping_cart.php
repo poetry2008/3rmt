@@ -212,7 +212,7 @@ function change_num(ob,targ, quan,a_quan)
           </tr>
           <tr>
             <td align="right" class="main">
-             <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice">
+             <table border="0" width="100%" cellspacing="0" cellpadding="2" class="infoBoxNotice_01">
               	<tr class="infoBoxNoticeContents">
                 	<td colspan="2" class="text">
 【重要】<br>

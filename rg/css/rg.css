@@ -1349,6 +1349,9 @@ Survey
 .infoBoxNotice {
 	background: #FF8E90;
 }
+.infoBoxNotice_01{
+	border:#ff8e90 1px solid; 
+}
 /* ---------------------------
 Survey
 --------------------------- */
