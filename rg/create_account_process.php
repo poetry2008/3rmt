@@ -89,8 +89,12 @@
   }
 
 //ccdd
-  $check_email = tep_db_query("select customers_email_address from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and customers_id <> '" .  tep_db_input($customer_id) . "' and customers_guest_chk = '0' and site_id = '".SITE_ID."'");
+  $check_email = tep_db_query("select * from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and customers_id <> '" .  tep_db_input($customer_id) . "' and customers_guest_chk = '0' and site_id = '".SITE_ID."'");
   if (tep_db_num_rows($check_email)) {
+    $check_email_res = tep_db_fetch_array($check_email); 
+    $re_mail_name = tep_get_fullname($check_email_res['customers_firstname'], $check_email_res['customers_lastname']);  
+    $re_email_text = str_replace('${URL}', HTTP_SERVER.'/m_token.php?aid='.base64_encode(time().','.$check_email_res['customers_id']), ACTIVE_ACCOUNT_EMAIL_CONTENT);  
+    tep_mail($re_mail_name, $check_email_res['customers_email_address'], ACTIVE_ACCOUNT_EMAIL_TITLE, $re_email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
     $error = true;
     $entry_email_address_exists = true;
   } else {
@@ -103,6 +107,7 @@
     if ($guest_isactive_res['is_active'] == 0) {
       $error = true; 
       $entry_guest_not_active = true; 
+      tep_redirect(tep_href_link('non-member_auth.php', 'gud='.base64_encode(time().','.$guest_isactive_res['customers_id']), 'SSL')); 
     } else {
       $entry_guest_not_active = false; 
     }
