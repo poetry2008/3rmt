@@ -28,7 +28,7 @@
         $error = true;
       } else {
         $mail_name = tep_get_fullname($customers_res['customers_firstname'], $customers_res['customers_lastname']);   
-        $email_text = str_replace('${URL}', HTTP_SERVER.'/m_token.php?aid='.base64_encode(time().','.$customers_res['customers_id']), ACTIVE_ACCOUNT_EMAIL_CONTENT);  
+        $email_text = str_replace('${URL}', HTTP_SERVER.'/m_token.php?aid='.base64_encode(date('His').time().','.$customers_res['customers_id']), ACTIVE_ACCOUNT_EMAIL_CONTENT);  
          tep_mail($mail_name, $_POST['cemail'], ACTIVE_ACCOUNT_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
       }
     }
