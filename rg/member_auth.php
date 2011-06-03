@@ -12,7 +12,7 @@
 
   require('includes/application_top.php');
 
-  require(DIR_WS_LANGUAGES . $language . '/active_info.php');
+  require(DIR_WS_LANGUAGES . $language . '/member_auth.php');
   
   $error = false;
   $cus_email = '';

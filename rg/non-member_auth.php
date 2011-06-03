@@ -12,7 +12,7 @@
 
   require('includes/application_top.php');
   
-  require(DIR_WS_LANGUAGES . $language . '/guest_info.php');
+  require(DIR_WS_LANGUAGES . $language . '/non-member_auth.php');
   
   $error = false;
   $cus_email = '';
