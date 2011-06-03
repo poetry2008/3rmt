@@ -12,7 +12,7 @@
 
   require('includes/application_top.php');
 
-  require(DIR_WS_LANGUAGES . $language . '/active_success.php');
+  require(DIR_WS_LANGUAGES . $language . '/m_token.php');
   
   $customers_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where check_login_str = '".$_GET['aid']."' and site_id = '".SITE_ID."' and customers_guest_chk = '0'");
   $customers_res = tep_db_fetch_array($customers_raw);
