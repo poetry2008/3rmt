@@ -3815,7 +3815,7 @@ function tep_get_random_ac_code($length = 10)
 
 function tep_check_exists_cu_email($email_address, $customer_id, $ctype)
 {
-   $customers_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id != '".$customer_id."' and site_id = '".SITE_ID."' and customers_guest_chk = '".$ctype."' and customers_email_address = '".$email_address."'");
+   $customers_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id != '".$customer_id."' and site_id = '".SITE_ID."' and customers_email_address = '".$email_address."'");
    if (tep_db_num_rows($customers_raw)) {
      return true; 
    }
