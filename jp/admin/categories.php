@@ -28,8 +28,12 @@
           if ($_GET['cID']) {
             $cID = intval($_GET['cID']);
             $site_id = (isset($_GET['site_id']))?$_GET['site_id']:0;
-            if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];
-            else $site_arr="";
+            if  (isset($_SESSION['site_permission']))    {
+	      $site_arr=$_SESSION['site_permission'];
+	    }
+            else{
+	      $site_arr="";
+	    }
             //   $edit_per=editPermission($site_arr, $site_id);//判断是否拥有相应网站的管理权限
             forward401Unless(editPermission($site_arr, $site_id));
             $c_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
@@ -49,7 +53,7 @@
         }
         
         if (!tep_check_products_exists($_GET['pID'], $_GET['site_id'])) {
-          tep_create_products_by_site_id($_GET['pID'], $_GET['site_id']);        
+	  //         tep_create_products_by_site_id($_GET['pID'], $_GET['site_id']);        
         }
         if ( ($_GET['flag'] == '0') || ($_GET['flag'] == '1') || ($_GET['flag'] == '2') || ($_GET['flag'] == '3')) {
           if ($_GET['pID']) {
