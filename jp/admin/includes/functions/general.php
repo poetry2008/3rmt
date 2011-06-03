@@ -4022,7 +4022,7 @@ function tep_set_all_product_status($pID, $pstatus)
   
   foreach ($site_arr as $key => $value) {
     if (!tep_check_products_exists($pID, $value)) {
-      tep_create_products_by_site_id($pID, $value); 
+      //      tep_create_products_by_site_id($pID, $value); 
     }
      
     tep_db_query("UPDATE `".TABLE_PRODUCTS_DESCRIPTION."` SET `products_status` = '".$pstatus."' where `products_id` = '".$pID."' and `site_id` = '".$value."'");  
@@ -4085,16 +4085,16 @@ function tep_set_category_link_product_status($cID, $cstatus, $site_id)
   
   foreach ($site_arr as $skey => $svalue) {
     foreach ($category_total_arr as $ckey => $cvalue) {
-      if (!tep_check_categories_exists($cvalue, $svalue)) {
-        tep_create_site_categories($cvalue, $svalue);
-      }
+      //      if (!tep_check_categories_exists($cvalue, $svalue)) {
+        //        tep_create_site_categories($cvalue, $svalue);
+      //      }
       tep_set_categories_status_by_site_id($cvalue, $cstatus, $svalue);
     }
 
     foreach ($product_total_arr as $pkey => $pvalue) {
-      if (!tep_check_products_exists($pvalue, $svalue)) {
-        tep_create_products_by_site_id($pvalue, $svalue);
-      }
+      //     if (!tep_check_products_exists($pvalue, $svalue)) {
+              //      tep_create_products_by_site_id($pvalue, $svalue);
+      //     }
       tep_set_product_status_by_site_id($pvalue, $pstatus, $svalue); 
     }
   }
