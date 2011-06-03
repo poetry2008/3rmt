@@ -16,8 +16,11 @@
   
   $error = false;
   $cus_email = '';
-  $gud_arr = explode(',', base64_decode($_GET['gud'])); 
-  $customers_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".(int)$gud_arr[1]."' and site_id = '".SITE_ID."'");
+  $gud_id = 0; 
+  if (isset($_SESSION['pa_gud'])) {
+    $gud_id = $_SESSION['pa_gud']; 
+  }
+  $customers_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".(int)$gud_id."' and site_id = '".SITE_ID."'");
   $customers_res = tep_db_fetch_array($customers_raw); 
   if ($customers_res) {
     $cus_email = $customers_res['customers_email_address']; 
@@ -58,7 +61,7 @@
           }
         ?>
         <?php
-          echo tep_draw_form('form', tep_href_link('non-member_auth.php', 'gud='.$_GET['gud'].'&action=send'.(isset($_GET['cu'])?'&cu='.$_GET['cu']:''))); 
+          echo tep_draw_form('form', tep_href_link('non-member_auth.php', 'action=send'.(isset($_GET['cu'])?'&cu='.$_GET['cu']:''), 'SSL')); 
         ?>
         <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:12px;"> 
         <?php

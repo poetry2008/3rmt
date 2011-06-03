@@ -43,7 +43,8 @@
       }
       
       tep_db_query("update ".TABLE_CUSTOMERS." set `is_active` = 1 where customers_id = '".$customers_res['customers_id']."' and site_id = '".SITE_ID."'"); 
-      tep_redirect(tep_href_link('non-member_auth.php', 'cu=1&gud='.base64_encode($customers_res['customers_id']), 'SSL')); 
+      
+      tep_redirect(tep_href_link('non-member_auth_finish.php', '', 'SSL')); 
     }
   } else {
     tep_redirect(tep_href_link('account_timeout.php')); 

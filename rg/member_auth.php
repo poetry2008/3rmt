@@ -16,8 +16,11 @@
   
   $error = false;
   $cus_email = '';
-  $mud_arr = explode(',', base64_decode($_GET['cud'])); 
-  $customers_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".(int)$mud_arr[1]."' and site_id = '".SITE_ID."'");
+  $cud_id = 0; 
+  if (isset($_SESSION['me_cud'])) {
+    $cud_id = $_SESSION['me_cud']; 
+  }
+  $customers_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".(int)$cud_id."' and site_id = '".SITE_ID."'");
   $customers_res = tep_db_fetch_array($customers_raw); 
   if ($customers_res) {
     $cus_email = $customers_res['customers_email_address']; 
@@ -29,7 +32,7 @@
       } else {
         $mail_name = tep_get_fullname($customers_res['customers_firstname'], $customers_res['customers_lastname']);   
         $email_text = str_replace('${URL}', HTTP_SERVER.'/m_token.php?aid='.base64_encode(date('His').time().','.$customers_res['customers_id']), ACTIVE_ACCOUNT_EMAIL_CONTENT);  
-         tep_mail($mail_name, $_POST['cemail'], ACTIVE_ACCOUNT_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+        tep_mail($mail_name, $_POST['cemail'], ACTIVE_ACCOUNT_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
       }
     }
   }
@@ -56,7 +59,7 @@
            echo '<div style="color:ff0000;">'.EMAIL_PATTERN_WRONG.'</div>'; 
          }
          ?>
-         <?php echo tep_draw_form('form', tep_href_link('member_auth.php', 'cud='.$_GET['cud'].'&action=send'));?> 
+         <?php echo tep_draw_form('form', tep_href_link('member_auth.php', 'action=send', 'SSL'));?> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:12px;"> 
             <tr>
               <td>
