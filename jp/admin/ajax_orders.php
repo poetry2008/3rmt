@@ -361,6 +361,7 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   $result = tep_db_query($sql);
   $arr =array();
   while($row = tep_db_fetch_array($result)){
+      $pwd = $row['letter'].make_rand_pwd($row['rule']);
       $arr[] = $pwd;
   }
   $str = implode(',',$arr); 
