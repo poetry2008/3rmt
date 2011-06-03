@@ -1095,6 +1095,7 @@ a.Icon:hover {
 .infoBoxNotice_01 {
     background: #dddddd;                        
     color: #ff4500;
+	border:solid 1px #dddddd;
 }
 /* ---------------------------
 searching

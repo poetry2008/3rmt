@@ -1,5 +1,8 @@
 <?php
   require('includes/application_top.php');
+  if(isset($_GET['from'])&&$_GET['from']){
+    $from_url = $_GET['from'];
+  }
   switch($_GET['action']){
     case 'rename':
      $siteurl = str_replace('_','.',$_GET['url']); 
@@ -19,7 +22,7 @@
          'sitename' => trim($_POST['sitename']),
          );
     tep_db_perform(TABLE_SITENAME, $sql_data_array);
-    tep_redirect(tep_href_link(FILENAME_CATEGORIES,
+    tep_redirect(tep_href_link($from_url,
           'action='.$_GET['act'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath']));
     break;
     case 'update':
@@ -28,7 +31,7 @@
          'sitename' => trim($_POST['sitename']),
          );
     tep_db_perform(TABLE_SITENAME, $sql_data_array,'update','id='.$_POST['id']);
-    tep_redirect(tep_href_link(FILENAME_CATEGORIES,
+    tep_redirect(tep_href_link($from_url,
           'action='.$_GET['act'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath']));
     break;
   }
@@ -67,7 +70,7 @@
         <td><table border="0" width="100%" cellspacing="0" cellpadding="2">
           <?php if($is_insert){?>
           <tr><FORM method="POST" action="<?php echo tep_href_link(FILENAME_RECORD,
-          'action=insert&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath']);?>" enctype="multipart/form-data">
+          'from='.$from_url.'&action=insert&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath']);?>" enctype="multipart/form-data">
             <td><table border="0" cellpadding="0" cellspacing="2">
             <tr>
             <td><?php echo SITEURL;?></td>
@@ -80,7 +83,7 @@
             <tr>
           <?php }else {?>
           <tr><FORM method="POST" action="<?php echo tep_href_link(FILENAME_RECORD,
-          'action=update&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath']);?>" enctype="multipart/form-data">
+          'from='.$from_url.'&action=update&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath']);?>" enctype="multipart/form-data">
             <td><table border="0" cellpadding="0" cellspacing="2">
             <tr>
             <td><?php echo SITEURL;?></td>
@@ -103,7 +106,7 @@
             echo tep_image_submit('button_save.gif', IMAGE_SAVE);
             echo "&nbsp;&nbsp;";
             echo '<a href="' .
-            tep_href_link(FILENAME_CATEGORIES,'action='.$_GET['act'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath']) . '">' .
+            tep_href_link($from_url,'action='.$_GET['act'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath']) . '">' .
             tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'
             ?>
             </td>

@@ -5,6 +5,11 @@
 require(DIR_WS_FUNCTIONS . 'visites.php');
 
 
+// user new point value it from checkout_confirmation.php 
+if(isset($real_point)){
+  $point = $real_point;
+}
+
 // if the customer is not logged on, redirect them to the login page
 
 if (!tep_session_is_registered('customer_id')) {
@@ -894,6 +899,7 @@ tep_session_unregister('comments');
 if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
   tep_session_unregister('point');
   tep_session_unregister('get_point');
+  tep_session_unregister('real_point');
 }
   
 tep_session_unregister('torihikihouhou');

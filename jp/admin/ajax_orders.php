@@ -350,15 +350,21 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
 }else if(isset($_POST['action'])&&$_POST['action'] == 'valedate'){
 
 }else if(isset($_GET['action'])&&$_GET['action'] == 'getallpwd'){
-  $sql = "select u.rule,l.letter from ".
+  $sql = "select u.userid,u.rule,l.letter from ".
     TABLE_USERS." u , ".TABLE_LETTERS." l 
     where u.userid = l.userid and (l.letter != '' or l.letter != null)";
-  $result = tep_db_query($sql);
-  while($row = tep_db_fetch_array($result)){
-    $pwd = $row['letter'].make_rand_pwd($row['rule']);
-    $str .= $pwd.",";
+  if($ocertify->npermission == 15){
+    $sql .= " and u.userid = '".$ocertify->auth_user."'";
+  }else{
+    $sql .= " and u.userid != '".$ocertify->auth_user."'";
   }
-  $str = substr($str,0,-1);
+  $result = tep_db_query($sql);
+  $arr =array();
+  while($row = tep_db_fetch_array($result)){
+      $pwd = $row['letter'].make_rand_pwd($row['rule']);
+      $arr[] = $pwd;
+  }
+  $str = implode(',',$arr); 
   echo $str;
 }else if(isset($_GET['action'])&&$_GET['action'] == 'getpercent'){
   if(isset($_POST['cid'])&&$_POST['cid']){

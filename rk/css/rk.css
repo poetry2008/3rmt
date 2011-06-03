@@ -1513,6 +1513,7 @@ searching
 .infoBoxNotice_01 {
     background: #dddddd;                        
     color: #ff4500;
+	border:1px solid #ddd;
 }
 .infoBoxNoticeContents_01 {
     background: #f0efef;                        

@@ -14,7 +14,8 @@
 
   require(DIR_WS_LANGUAGES . $language . '/active_success.php');
   
-  $customers_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".base64_decode($_GET['aid'])."' and site_id = '".SITE_ID."' and customers_guest_chk = '0'");
+  $active_info_arr = explode(',', base64_decode($_GET['aid']));
+  $customers_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".(int)$active_info_arr[1]."' and site_id = '".SITE_ID."' and customers_guest_chk = '0'");
   $customers_res = tep_db_fetch_array($customers_raw);
   
   if ($customers_res) {
@@ -39,7 +40,7 @@
       if ($customers_res['is_active'] == 0) {
         tep_mail($email_name, $customers_res['customers_email_address'], EMAIL_SUBJECT, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
       }
-      tep_db_query("update ".TABLE_CUSTOMERS." set `is_active` = 1 where customers_id = '".base64_decode($_GET['aid'])."' and site_id = '".SITE_ID."'"); 
+      tep_db_query("update ".TABLE_CUSTOMERS." set `is_active` = 1 where customers_id = '".$customers_res['customers_id']."' and site_id = '".SITE_ID."'"); 
       
       $address_book_raw = tep_db_query("select * from ".TABLE_ADDRESS_BOOK." where customers_id = '".$customers_res['customers_id']."'"); 
       $address_book_res = tep_db_fetch_array($address_book_raw); 

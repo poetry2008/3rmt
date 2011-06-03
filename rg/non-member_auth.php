@@ -16,7 +16,8 @@
   
   $error = false;
   $cus_email = '';
-  $customers_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".base64_decode($_GET['gud'])."' and site_id = '".SITE_ID."'");
+  $gud_arr = explode(',', base64_decode($_GET['gud'])); 
+  $customers_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".(int)$gud_arr[1]."' and site_id = '".SITE_ID."'");
   $customers_res = tep_db_fetch_array($customers_raw); 
   if ($customers_res) {
     $cus_email = $customers_res['customers_email_address']; 
@@ -27,7 +28,7 @@
         $error = true;
       } else {
         $mail_name = tep_get_fullname($customers_res['customers_firstname'], $customers_res['customers_lastname']);   
-        $email_text = str_replace('${URL}', HTTP_SERVER.'/guest_autologin.php?gud='.base64_encode($customers_res['customers_id']), GUEST_LOGIN_EMAIL_CONTENT);  
+        $email_text = str_replace('${URL}', HTTP_SERVER.'/nm_token.php?gud='.base64_encode(time().','.$customers_res['customers_id']), GUEST_LOGIN_EMAIL_CONTENT);  
         tep_mail($mail_name, $_POST['cemail'], GUEST_LOGIN_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
       }
     }
@@ -57,7 +58,7 @@
           }
         ?>
         <?php
-          echo tep_draw_form('form', tep_href_link('guest_info.php', 'gud='.$_GET['gud'].'&action=send'.(isset($_GET['cu'])?'&cu='.$_GET['cu']:''))); 
+          echo tep_draw_form('form', tep_href_link('non-member_auth.php', 'gud='.$_GET['gud'].'&action=send'.(isset($_GET['cu'])?'&cu='.$_GET['cu']:''))); 
         ?>
         <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:12px;"> 
         <?php

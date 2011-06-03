@@ -36,6 +36,7 @@
 	    }
             //   $edit_per=editPermission($site_arr, $site_id);//判断是否拥有相应网站的管理权限
             forward401Unless(editPermission($site_arr, $site_id));
+            tep_insert_pwd_log($_GET['once_pwd'],$ocertify->auth_user);
             $c_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
             
             if (isset($_GET['status']) && ($_GET['status'] == 0 || $_GET['status'] == 1 || $_GET['status'] == 2 || $_GET['status'] == 3)){
@@ -45,6 +46,7 @@
           tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page));
           break;
       case 'setflag':
+        tep_insert_pwd_log($_GET['once_pwd'],$ocertify->auth_user);
         $site_id = (isset($_GET['site_id']))?$_GET['site_id']:0;  
         $p_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
         if ($site_id == 0) {
@@ -478,7 +480,8 @@
         
         //$_POST['romaji'] = str_replace(array('/','_'),'-',$_POST['romaji']);
         
-        if ($_GET['action'] == 'insert_product') {
+        /* 
+         if ($_GET['action'] == 'insert_product') {
 
           if (trim($_POST['romaji']) == '') {
             $messageStack->add_session(TEXT_ROMAJI_NOT_NULL, 'error');
@@ -536,7 +539,7 @@
             }
           }
         }
-        
+       */ 
         if ( (isset($_POST['edit_x']) && $_POST['edit_x']) || (isset($_POST['edit_y']) && $_POST['edit_y']) ) {
           $_GET['action'] = 'new_product';
         } else {
@@ -931,6 +934,73 @@
 
         tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $categories_id . '&pID=' . $products_id));
         break;
+      case 'new_product_preview':
+        $romaji_error = 0; 
+        $romaji_error_str = '';
+        
+        $productsId = $_GET['pID'];  
+        if (empty($productsId)) {
+          if (trim($_POST['romaji']) == '') {
+            $romaji_error = 1; 
+            $romaji_error_str = TEXT_ROMAJI_NOT_NULL;
+          }
+          
+          if(!tep_check_symbol($_POST['romaji'])){
+            $romaji_error = 1; 
+            $romaji_error_str = CATEGORY_ROMAJI_ERROR_NOTICE;
+          }
+
+          if(!tep_check_romaji($_POST['romaji'])){
+            $romaji_error = 1; 
+            $romaji_error_str = TEXT_ROMAJI_ERROR;
+          }
+          if (isset($_GET['cPath'])) {
+            $ca_arr = explode('_', $_GET['cPath']); 
+            $belong_ca = $ca_arr[count($ca_arr)-1];
+            $exist_ro_query = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." pd, ".TABLE_PRODUCTS_TO_CATEGORIES." p2c where pd.products_id = p2c.products_id and pd.site_id = '".$site_id."' and pd.romaji = '".$_POST['romaji']."' and p2c.categories_id = '".$belong_ca."'"); 
+            if (tep_db_num_rows($exist_ro_query)) {
+              $romaji_error = 1; 
+              $romaji_error_str = TEXT_ROMAJI_EXISTS;
+            }
+          } else {
+            if (tep_db_num_rows(tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where romaji = '".$_POST['romaji']."' and site_id = '".$site_id."'"))) {
+              $romaji_error = 1; 
+              $romaji_error_str = TEXT_ROMAJI_EXISTS;
+            }
+          }
+        } else {
+          if (trim($_POST['romaji']) == '') {
+            $romaji_error = 1; 
+            $romaji_error_str = TEXT_ROMAJI_NOT_NULL;
+          }
+          if(!tep_check_symbol($_POST['romaji'])){
+            $romaji_error = 1; 
+            $romaji_error_str = CATEGORY_ROMAJI_ERROR_NOTICE;
+          }
+          if(!tep_check_romaji($_POST['romaji'])){
+            $romaji_error = 1; 
+            $romaji_error_str = TEXT_ROMAJI_ERROR;
+          }
+          if (isset($_GET['cPath'])) {
+            $ca_arr = explode('_', $_GET['cPath']); 
+            $belong_ca = $ca_arr[count($ca_arr)-1];
+            $exist_ro_query = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." pd, ".TABLE_PRODUCTS_TO_CATEGORIES." p2c where pd.products_id = p2c.products_id and pd.site_id = '".$site_id."' and pd.romaji = '".$_POST['romaji']."' and p2c.categories_id = '".$belong_ca."' and pd.products_id != '".$_GET['pID']."'"); 
+            if (tep_db_num_rows($exist_ro_query)) {
+              $romaji_error = 1; 
+              $romaji_error_str = TEXT_ROMAJI_EXISTS;
+            }
+          } else {
+            if (tep_db_num_rows(tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where romaji = '".$_POST['romaji']."' and site_id = '".$site_id."' and products_id != '".$_GET['pID']."'"))) {
+              $romaji_error = 1; 
+              $romaji_error_str = TEXT_ROMAJI_EXISTS;
+            }
+          }
+        }
+        
+        if ($romaji_error == 1) {
+          $_GET['action'] = 'new_product'; 
+          break;
+        }
     }
   }
 
@@ -1779,7 +1849,11 @@ function get_cart_products(){
           ?>
           </td>
         </tr>
-
+        <?php
+        if ($romaji_error == 1) {
+          echo '<script type="text/javascript">alert("'.$romaji_error_str.'")</script>';        
+        }
+        ?>
           <?php echo tep_draw_hidden_field('products_date_added', (isset($pInfo->products_date_added) ? $pInfo->products_date_added : date('Y-m-d')));?>
           </form>
 
@@ -2857,7 +2931,7 @@ if ($ocertify->npermission >= 10) { //表示制限
                           </tr>
 <?php
 // google start
-tep_display_google_results()
+tep_display_google_results(FILENAME_CATEGORIES);
 // google end
 ?>
                         </table></td>

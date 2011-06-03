@@ -3678,7 +3678,7 @@ function tep_questions_can_show($orders_id){
   
 }
 
-function tep_display_google_results(){
+function tep_display_google_results($from_url=''){
   // 谷歌关键字结果显示停止条件
   $stop_site_url = array(
       //"iimy.co.jp",
@@ -3753,9 +3753,15 @@ function tep_display_google_results(){
         'action=unshow&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url).
         "'>".TEXT_UNSHOW."</a>";
     */
+    if(isset($from_url)&&$from_url){
+    echo "<a href='".tep_href_link(FILENAME_RECORD,
+        'from='.$from_url.'&action=rename&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url).
+        "'>".TEXT_RENAME."</a>";
+    }else{
     echo "<a href='".tep_href_link(FILENAME_RECORD,
         'action=rename&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url).
         "'>".TEXT_RENAME."</a>";
+    }
     echo "</td></tr>";
       break;
     }
@@ -3768,9 +3774,16 @@ function tep_display_google_results(){
         'action=unshow&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url).
         "'>".TEXT_UNSHOW."</a>";
     */
+
+    if(isset($from_url)&&$from_url){
+    echo "<a href='".tep_href_link(FILENAME_RECORD,
+        'from='.$from_url.'&action=rename&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url).
+        "'>".TEXT_RENAME."</a>";
+    }else{
     echo "<a href='".tep_href_link(FILENAME_RECORD,
         'action=rename&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url).
         "'>".TEXT_RENAME."</a>";
+    }
     echo "</td></tr>";
     $i++;
   }
