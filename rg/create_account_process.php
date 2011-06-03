@@ -96,7 +96,20 @@
   } else {
     $entry_email_address_exists = false;
   }
-
+  
+  $guest_isactive_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_email_address = '".tep_db_input($email_address)."' and customers_guest_chk = '1'");
+  $guest_isactive_res = tep_db_fetch_array($guest_isactive_raw); 
+  if ($guest_isactive_res) {
+    if ($guest_isactive_res['is_active'] == 0) {
+      $error = true; 
+      $entry_guest_not_active = true; 
+    } else {
+      $entry_guest_not_active = false; 
+    }
+  } else {
+    $entry_guest_not_active = false; 
+  }
+  
   if ($error == true) {
     $processed = true;
 
@@ -416,16 +429,16 @@ function pass_hidd(){
       tep_session_register('customer_id');
       $cart->restore_contents();
       tep_session_unregister('customer_id');
-      $email_text = str_replace('${URL}', HTTP_SERVER.'/active_success.php?aid='.base64_encode($customer_id), ACTIVE_ACCOUNT_EMAIL_CONTENT);  
+      $email_text = str_replace('${URL}', HTTP_SERVER.'/m_token.php?aid='.base64_encode(time().','.$customer_id), ACTIVE_ACCOUNT_EMAIL_CONTENT);  
       tep_mail($mail_name, $email_address, ACTIVE_ACCOUNT_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-      tep_redirect(tep_href_link('active_info.php', 'cud='.base64_encode($customer_id), 'SSL')); 
+      tep_redirect(tep_href_link('member_auth.php', 'cud='.base64_encode(time().','.$customer_id), 'SSL')); 
     } else if ($active_single == 2){
       tep_session_register('customer_id');
       $cart->restore_contents();
       tep_session_unregister('customer_id');
-      $email_text = str_replace('${URL}', HTTP_SERVER.'/guest_autologin.php?gud='.base64_encode($customer_id), GUEST_LOGIN_EMAIL_CONTENT);  
+      $email_text = str_replace('${URL}', HTTP_SERVER.'/nm_token.php?gud='.base64_encode(time().','.$customer_id), GUEST_LOGIN_EMAIL_CONTENT);  
       tep_mail($mail_name, $email_address, GUEST_LOGIN_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-      tep_redirect(tep_href_link('guest_info.php', 'gud='.base64_encode($customer_id), 'SSL')); 
+      tep_redirect(tep_href_link('non-member_auth.php', 'gud='.base64_encode(time().','.$customer_id), 'SSL')); 
     }
 
     $customer_first_name = $firstname;
