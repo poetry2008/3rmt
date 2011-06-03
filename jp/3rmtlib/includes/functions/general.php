@@ -3819,3 +3819,15 @@ function tep_get_category_is_set_in_site($c_id)
   }
     
 }
+
+function tep_get_random_ac_code($length = 10)
+{
+  $letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+  $return_str = '';
+
+  for ($i = 1; $i <= $length; $i++) {
+   $q = floor(tep_rand(1,62));
+   $return_str .= $letters[$q];
+  }
+  return $return_str;
+}
