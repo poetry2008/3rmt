@@ -341,7 +341,6 @@ B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示さ
         echo "<img src='".DIR_WS_IMAGES . 'carttags/'. $cp['products_cart_image']."' alt='".$cp['products_name']."' title='".$cp['products_name']."'>";
         */
         echo "<img src='default_".DIR_WS_IMAGES . 'carttags/'. $cp['products_cart_image']."' alt='".$cp['products_name']."' title='".$cp['products_name']."'>";
-        */
         echo "</a>";
         echo "<br>";
       }
