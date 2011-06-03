@@ -240,7 +240,10 @@ body {
  padding:5px 0 0 5px;
 }
 .pageHeading_box{
-	width:100%; display:block; min-width:1220px;
+	width:50%; min-width:80px; overflow:hidden; display: block; float:left;
+}
+.pageHeading_box02{
+	width:49%; min-width:80px; overflow:hidden; display: block; float:right;
 }
 /* ---------------------------
 .[TD]：ページヘッダ
@@ -572,6 +575,11 @@ legend {
 	border-bottom: 2px solid #000;
 	border-right: 2px solid #000;
 	font-weight:bold;
+}
+#orders_info,#orders_client,#orders_referer,#orders_history,#orders_comment ,#orders_answer,#orders_credit,#orders_telecom{
+	width:100%;
+	overflow:hidden;
+	display:block;
 }
 #orders_info {
 	margin-bottom: 10px;
