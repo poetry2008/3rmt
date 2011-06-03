@@ -3800,3 +3800,15 @@ function tep_check_exists_category($cPath, $cName)
   return false;
 }
 
+
+function tep_get_random_ac_code($length = 10)
+{
+  $letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+  $return_str = '';
+
+  for ($i = 1; $i <= $length; $i++) {
+   $q = floor(tep_rand(1,62));
+   $return_str .= $letters[$q];
+  }
+  return $return_str;
+}

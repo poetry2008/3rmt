@@ -19,6 +19,9 @@
   $customers_res = tep_db_fetch_array($customers_raw);
   
   if ($customers_res) {
+    if ($customers_res['check_login_str'] != $_GET['aid']) {
+      tep_redirect(tep_href_link('account_timeout.php')); 
+    }
     $now_time = time(); 
     if (($now_time - $customers_res['send_mail_time']) > 60*60*24*3) {
       if ($customers_res['is_active'] == 0) {

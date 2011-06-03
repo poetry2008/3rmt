@@ -17,6 +17,9 @@
   $customers_res = tep_db_fetch_array($customers_raw);
   
   if ($customers_res) {
+    if ($customers_res['check_login_str'] != $_GET['gud']) {
+      tep_redirect(tep_href_link('account_timeout.php')); 
+    }
     if (($now_time - $customers_res['send_mail_time']) > 60*60*24*3) {
       tep_redirect(tep_href_link('account_timeout.php')); 
     } else {

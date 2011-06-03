@@ -31,8 +31,13 @@
         $error = true;
       } else {
         $mail_name = tep_get_fullname($customers_res['customers_firstname'], $customers_res['customers_lastname']);   
-        $email_text = str_replace('${URL}', HTTP_SERVER.'/m_token.php?aid='.base64_encode(date('His').time().','.$customers_res['customers_id']), ACTIVE_ACCOUNT_EMAIL_CONTENT);  
+        
+        $ac_email_srandom = base64_encode(tep_get_random_ac_code(8).','.$customers_res['customers_id'].','.tep_get_random_ac_code(10)); 
+        
+        $email_text = str_replace('${URL}', HTTP_SERVER.'/m_token.php?aid='.$ac_email_srandom, ACTIVE_ACCOUNT_EMAIL_CONTENT);  
         tep_mail($mail_name, $_POST['cemail'], ACTIVE_ACCOUNT_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+        
+        tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$ac_email_srandom."' where `customers_id` = '".$customers_res['customers_id']."'"); 
       }
     }
   }
