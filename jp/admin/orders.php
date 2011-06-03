@@ -667,6 +667,7 @@ function q_4_3(){
 </head>
 <body>
 <!-- header //-->
+<div class="pageHeading_box">
 <?php
   require(DIR_WS_INCLUDES . 'header.php');
 ?>
@@ -2634,6 +2635,7 @@ function submit_confirm()
 <!-- footer_eof //-->
 <br>
 <div id="wait" style="position:fixed; left:45%; top:45%; display:none;"><img src="images/load.gif" alt="img"></div>
+</div>
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

@@ -239,6 +239,9 @@ body {
 .leftmenu {
  padding:5px 0 0 5px;
 }
+.pageHeading_box{
+	width:100%; display:block; min-width:1220px;
+}
 /* ---------------------------
 .[TD]：ページヘッダ
 --------------------------- */
