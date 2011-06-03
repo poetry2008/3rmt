@@ -146,7 +146,7 @@ function change_num(ob,targ, quan,a_quan)
       </td>
       <!-- body_text //-->
       <td valign="top" id="contents">
-        <div class="pageHeading"><img align="top" alt="" src="images/menu_ico_a.gif"><h1><?php echo HEADING_TITLE ; ?></h1></div>
+        <div class="pageHeading"><img align="top" alt="" src="default_images/menu_ico_a.gif"><h1><?php echo HEADING_TITLE ; ?></h1></div>
         <div class="comment">
   <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_SHOPPING_CART, 'action=update_product', 'SSL')); ?> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="rmt">
@@ -225,7 +225,7 @@ B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示さ
 </td>
                 </tr>
                 <tr class="infoBoxNoticeContents">
-                  <td width="33" height="35"><img src="images/icons/hinto.jpg" alt="img"></td>
+                  <td width="33" height="35"><img src="default_images/icons/hinto.jpg" alt="img"></td>
                   <td align="left"
                   valign="middle">200円未満になる場合は商品名「ウェブマネーの販売」をカートに入れてみてはどうでしょう。</td>
                 </tr>
