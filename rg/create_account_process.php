@@ -104,7 +104,7 @@
     $entry_email_address_exists = false;
   }
   
-  $guest_isactive_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_email_address = '".tep_db_input($email_address)."' and customers_guest_chk = '1'");
+  $guest_isactive_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_email_address = '".tep_db_input($email_address)."' and customers_guest_chk = '1' and site_id = '".SITE_ID."'");
   $guest_isactive_res = tep_db_fetch_array($guest_isactive_raw); 
   if ($guest_isactive_res) {
     if ($guest_isactive_res['is_active'] == 0) {
