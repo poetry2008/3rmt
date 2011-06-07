@@ -438,6 +438,8 @@ function pass_hidd(){
     if ($active_single == 1) {
       tep_session_register('customer_id');
       $cart->restore_contents();
+      $cart_info_arr = array();
+      $cart_info_arr = $cart->get_products();
       tep_session_unregister('customer_id'); 
       $ac_email_srandom = md5(time().$customer_id.$email_address); 
       
@@ -447,10 +449,17 @@ function pass_hidd(){
       tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$ac_email_srandom."' where `customers_id` = '".$customer_id."'"); 
       $me_cud = $customer_id; 
       tep_session_register('me_cud');
+      if (!empty($cart_info_arr)) {
+        foreach ($cart_info_arr as $ci_key => $ci_value) {
+          $cart->add_cart($ci_value['products_id'], $ci_value['quantity']); 
+        }
+      }
       tep_redirect(tep_href_link('member_auth.php', '', 'SSL')); 
     } else if ($active_single == 2){
       tep_session_register('customer_id');
       $cart->restore_contents();
+      $cart_info_arr = array();
+      $cart_info_arr = $cart->get_products();
       tep_session_unregister('customer_id');
       
       $gu_email_srandom = md5(time().$customer_id.$email_address); 
@@ -462,6 +471,13 @@ function pass_hidd(){
       
       $pa_gud = $customer_id; 
       tep_session_register('pa_gud');
+      
+      if (!empty($cart_info_arr)) {
+        foreach ($cart_info_arr as $ci_key => $ci_value) {
+          $cart->add_cart($ci_value['products_id'], $ci_value['quantity']); 
+        }
+      }
+      
       tep_redirect(tep_href_link('non-member_auth.php', '', 'SSL')); 
     }
 

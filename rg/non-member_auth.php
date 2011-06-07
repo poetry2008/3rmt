@@ -27,11 +27,14 @@
     if ($_GET['action'] == 'send') {
       if (empty($_POST['cemail'])) {
         $error = true;
-      } else if (!tep_validate_email($_POST['cemail'])) {
+      } else if (!preg_match("/^([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/", $_POST['cemail'])) {
         $error = true;
       } else if (tep_check_exists_cu_email($_POST['cemail'], $customers_res['customers_id'], 1)) {
         $error = true;
         $error_msg = CHECK_EMAIL_EXISTS_ERROR; 
+      } else if ($customers_res['is_active']) {
+        $error = true;
+        $error_msg = ALREADY_SEND_MAIL_TEXT; 
       } else {
         $mail_name = tep_get_fullname($customers_res['customers_firstname'], $customers_res['customers_lastname']);   
         $gu_email_srandom = md5(time().$customers_res['customers_id'].$_POST['cemail']); 
@@ -66,7 +69,7 @@
         <?php
           if ($error == true) {
             if (isset($error_msg)) {
-              echo '<div style="color:ff0000;">'.CHECK_EMAIL_EXISTS_ERROR.'</div>'; 
+              echo '<div style="color:ff0000;">'.$error_msg.'</div>'; 
             } else {
               echo '<div style="color:ff0000;">'.EMAIL_PATTERN_WRONG.'</div>'; 
             }

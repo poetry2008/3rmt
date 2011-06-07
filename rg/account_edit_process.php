@@ -34,6 +34,7 @@
   $lastname_f = tep_db_prepare_input($_POST['lastname_f']);
   $dob = tep_db_prepare_input($_POST['dob']);
   $email_address = tep_db_prepare_input($_POST['email_address']);
+  $old_email_address = tep_db_prepare_input($_POST['old_email']);
   $telephone = tep_db_prepare_input($_POST['telephone']);
   $fax = tep_db_prepare_input($_POST['fax']);
   $newsletter = tep_db_prepare_input($_POST['newsletter']);
@@ -148,7 +149,10 @@
       <?php echo tep_draw_form('account_edit', tep_href_link(FILENAME_ACCOUNT_EDIT_PROCESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"') . tep_draw_hidden_field('action', 'process'); ?> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
-              <td><?php include(DIR_WS_MODULES . 'account_details.php'); ?></td> 
+              <td>
+              <?php include(DIR_WS_MODULES . 'account_details.php'); ?>
+              <input type="hidden" name="old_email" value="<?php echo $_POST['old_email'];?>"> 
+              </td> 
             </tr> 
             <tr> 
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
@@ -185,10 +189,12 @@
               //add
               'customers_firstname_f' => $firstname_f,
                             'customers_lastname_f' => $lastname_f,
-                            'customers_email_address' => $email_address,
+                            'customers_email_address' => $old_email_address,
                             'customers_telephone' => $telephone,
                             //'customers_fax' => $fax,
                             'customers_newsletter' => $newsletter,
+                            'new_email_address' => $email_address,
+                            'send_mail_time' => time(),
                             'customers_password' => tep_encrypt_password($password));
 
     if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
@@ -226,6 +232,14 @@
 
     $customer_country_id = $country;
     $customer_zone_id = $zone_id;
+    
+    $mail_name = tep_get_fullname($fistname, $lastname);  
+    $ac_email_srandom = md5(time().$customer_id.$email_address); 
+    
+    tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$ac_email_srandom."' where `customers_id` = '".tep_db_input($customer_id)."'"); 
+    
+    $email_text = str_replace('${URL}', HTTP_SERVER.'/m_edit_token.php?aid='.$ac_email_srandom, ACTIVE_ACCOUNT_EMAIL_CONTENT);  
+    tep_mail($mail_name, $email_address, ACTIVE_ACCOUNT_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
 
     tep_redirect(tep_href_link(FILENAME_ACCOUNT, '', 'SSL'));
   }

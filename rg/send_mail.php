@@ -80,6 +80,13 @@
     echo '</td></tr></table>'; 
   }
   ?>
+       <?php
+       if ($success_single) {
+       ?>
+       <?php echo '<br>'.SENDMAIL_SUCCESS_COMMENT_TEXT;?> 
+       <?php
+       } else {
+       ?>
        <?php echo '<br>'.SENDMAIL_READ_TEXT;?> 
        <?php
           echo '<br>'; 
@@ -90,6 +97,9 @@
         <?php 
           echo SENDMAIL_TROUBLE_END;  
         ?>
+       <?php
+       }
+       ?>
         <?php 
       if ($success_single == true) {  
          echo '<div style="width:100%;text-align:left;padding:10px 0 0 0;"><a href="'.tep_href_link(FILENAME_DEFAULT).'"><img src="includes/languages/japanese/images/buttons/button_back.gif"></a></div>';
