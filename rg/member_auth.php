@@ -16,7 +16,8 @@
   
   $error = false;
   $cus_email = '';
-  $cud_id = 0; 
+  $cud_id = 0;
+  
   if (isset($_SESSION['me_cud'])) {
     $cud_id = $_SESSION['me_cud']; 
   }
@@ -32,7 +33,7 @@
       } else if (tep_check_exists_cu_email($_POST['cemail'], $customers_res['customers_id'], 0)) {
         $error = true;
         $error_msg = CHECK_EMAIL_EXISTS_ERROR; 
-      } else if ($customers_raw['is_active']) {
+      } else if ($customers_res['is_active']) {
         $error = true;
         $error_msg = ALREADY_SEND_MAIL_TEXT;
       } else {
