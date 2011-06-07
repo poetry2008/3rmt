@@ -123,7 +123,7 @@
           if ($_GET['cu'] == 1) {
             echo '<a href="'.tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL').'">' . tep_image_button('button_continue02.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; 
           } else {
-            echo '<a href="'.tep_href_link(FILENAME_DEFAULT).'">' . tep_image_button('button_continue02.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; 
+            echo '<a href="'.HTTP_SERVER.'?'.tep_session_name().'='.tep_session_id().'">' . tep_image_button('button_continue02.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; 
           }
           ?>
           </td>
