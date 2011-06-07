@@ -119,11 +119,19 @@
   $guest_isactive_res = tep_db_fetch_array($guest_isactive_raw); 
   if ($guest_isactive_res) {
     if ($guest_isactive_res['is_active'] == 0) {
-      $error = true; 
-      $entry_guest_not_active = true; 
-      $pa_gud = $guest_isactive_res['customers_id']; 
-      tep_session_register('pa_gud');
-      tep_redirect(tep_href_link('non-member_auth.php', '', 'SSL')); 
+      if ($guestchk == 1) {
+        $error = true; 
+        $entry_guest_not_active = true; 
+        $pa_gud = $guest_isactive_res['customers_id']; 
+        tep_session_register('pa_gud');
+        tep_redirect(tep_href_link('non-member_auth.php', '', 'SSL')); 
+      } else {
+        $check_again_email = tep_db_query("select * from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and customers_id <> '" .  tep_db_input($customer_id) . "' and customers_guest_chk = '0' and site_id = '".SITE_ID."'");
+        if (tep_db_num_rows($check_again_email)) {
+          $error = true;
+          $entry_email_address_exists = true;
+        }
+      }
     } else {
       $entry_guest_not_active = false; 
     }
@@ -322,7 +330,8 @@ function pass_hidd(){
   } else {
      # Member
     //ccdd
-    $check_cid = tep_db_query("select customers_id from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "' and site_id = '".SITE_ID."'");
+    $active_single = 1; 
+    $check_cid = tep_db_query("select customers_id, is_active from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "' and site_id = '".SITE_ID."'");
     if(tep_db_num_rows($check_cid)) {
       # Member & 2回目以上 //==============================================
       $check = tep_db_fetch_array($check_cid);
@@ -340,6 +349,7 @@ function pass_hidd(){
                                 'customers_default_address_id' => 1,
                                 'customers_guest_chk' => '0',
                                 'is_active' => '1',
+                                'send_mail_time' => time(),
                                 'origin_password' => $NewPass, 
                                 'point' => '0');
 
@@ -382,7 +392,6 @@ function pass_hidd(){
         //ccdd
         tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_of_last_logon = now(), customers_info_number_of_logons = customers_info_number_of_logons+1 where customers_info_id = '" . $customer_id . "'");
     } else {
-      $active_single = 1; 
       # Member & 1回目 //==================================================
       $NewPass = $password;
       $sql_data_array = array('customers_firstname' => $firstname,
