@@ -702,7 +702,6 @@ Game List
 	width:708px;
 }
 .game_list_content ,.comment_long{
-	width:708px;
 	background:url(../images/design/comment_middle.gif) repeat-y;
 	overflow:hidden;
 	margin-top:3px;
