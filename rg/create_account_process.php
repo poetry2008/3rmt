@@ -101,6 +101,7 @@
   if (!$noactive_single) { 
     $check_email = tep_db_query("select * from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and customers_id <> '" .  tep_db_input($customer_id) . "' and customers_guest_chk = '0' and site_id = '".SITE_ID."'");
     if (tep_db_num_rows($check_email)) {
+      /* 
       $check_email_res = tep_db_fetch_array($check_email); 
       $re_mail_name = tep_get_fullname($check_email_res['customers_firstname'], $check_email_res['customers_lastname']);  
       $re_email_srandom = md5(time().$check_email_res['customers_id'].$check_email_res['customers_email_address']); 
@@ -108,6 +109,7 @@
       $re_email_text = str_replace('${URL}', HTTP_SERVER.'/m_token.php?aid='.$re_email_srandom, ACTIVE_ACCOUNT_EMAIL_CONTENT);  
       tep_mail($re_mail_name, $check_email_res['customers_email_address'], ACTIVE_ACCOUNT_EMAIL_TITLE, $re_email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
       tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$re_email_srandom."' where `customers_id` = '".$check_email_res['customers_id']."'"); 
+      */ 
       $error = true;
       $entry_email_address_exists = true;
     } else {
