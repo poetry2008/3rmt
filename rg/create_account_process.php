@@ -213,10 +213,13 @@ function pass_hidd(){
       $active_single = 2; 
     # Guest
       //ccdd
-      $check_cid = tep_db_query("select customers_id from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "' and site_id = '".SITE_ID."'");
+      $check_cid = tep_db_query("select customers_id, is_active from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "' and site_id = '".SITE_ID."'");
       if(tep_db_num_rows($check_cid)) {
       # Guest & 2回目以上 //==============================================
       $check = tep_db_fetch_array($check_cid);
+      if ($check['is_active'] == 1) {
+        $active_single = 0;  
+      }
       $NewPass = tep_create_random_value(ENTRY_PASSWORD_MIN_LENGTH);
       $sql_data_array = array('customers_firstname' => $firstname,
                                 'customers_lastname' => $lastname,
