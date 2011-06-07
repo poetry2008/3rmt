@@ -238,10 +238,10 @@
     
     tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$ac_email_srandom."' where `customers_id` = '".tep_db_input($customer_id)."'"); 
     
-    $email_text = str_replace('${URL}', HTTP_SERVER.'/m_edit_token.php?aid='.$ac_email_srandom, ACTIVE_ACCOUNT_EMAIL_CONTENT);  
-    tep_mail($mail_name, $email_address, ACTIVE_ACCOUNT_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+    $email_text = str_replace('${URL}', HTTP_SERVER.'/m_edit_token.php?aid='.$ac_email_srandom, ACTIVE_EDIT_ACCOUNT_EMAIL_CONTENT);  
+    tep_mail($mail_name, $email_address, ACTIVE_EDIT_ACCOUNT_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
 
-    tep_redirect(tep_href_link(FILENAME_ACCOUNT, '', 'SSL'));
+    tep_redirect(tep_href_link('ac_mail_finish.php', '', 'SSL'));
   }
 
   require(DIR_WS_INCLUDES . 'application_bottom.php');
