@@ -20,6 +20,12 @@
   if (isset($_SESSION['pa_gud'])) {
     $gud_id = $_SESSION['pa_gud']; 
   }
+  
+  if (!$gud_id) {
+    $error = true;
+    $error_msg = ALREADY_SEND_MAIL_TEXT;
+  }
+  
   $customers_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".(int)$gud_id."' and site_id = '".SITE_ID."'");
   $customers_res = tep_db_fetch_array($customers_raw); 
   if ($customers_res) {

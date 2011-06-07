@@ -87,22 +87,33 @@
       $entry_password_error = true;
     }
   }
+  
+  $noactive_single = false;
 
-//ccdd
-  $check_email = tep_db_query("select * from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and customers_id <> '" .  tep_db_input($customer_id) . "' and customers_guest_chk = '0' and site_id = '".SITE_ID."'");
-  if (tep_db_num_rows($check_email)) {
-    $check_email_res = tep_db_fetch_array($check_email); 
-    $re_mail_name = tep_get_fullname($check_email_res['customers_firstname'], $check_email_res['customers_lastname']);  
-    $re_email_srandom = md5(time().$check_email_res['customers_id'].$check_email_res['customers_email_address']); 
-    
-    $re_email_text = str_replace('${URL}', HTTP_SERVER.'/m_token.php?aid='.$re_email_srandom, ACTIVE_ACCOUNT_EMAIL_CONTENT);  
-    tep_mail($re_mail_name, $check_email_res['customers_email_address'], ACTIVE_ACCOUNT_EMAIL_TITLE, $re_email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-    tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$re_email_srandom."' where `customers_id` = '".$check_email_res['customers_id']."'"); 
-    $error = true;
-    $entry_email_address_exists = true;
-  } else {
-    $entry_email_address_exists = false;
+  if ($guestchk == 1) {
+    $noactive_me_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_email_address = '".tep_db_input($email_address)."' and is_active = '0' and customers_guest_chk = '0' and site_id = '".SITE_ID."'"); 
+    if (tep_db_num_rows($noactive_me_raw)) {
+      $noactive_me_res = tep_db_fetch_array($noactive_me_raw); 
+      $noactive_single = true;  
+    }
   }
+//ccdd
+  if (!$noactive_single) { 
+    $check_email = tep_db_query("select * from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and customers_id <> '" .  tep_db_input($customer_id) . "' and customers_guest_chk = '0' and site_id = '".SITE_ID."'");
+    if (tep_db_num_rows($check_email)) {
+      $check_email_res = tep_db_fetch_array($check_email); 
+      $re_mail_name = tep_get_fullname($check_email_res['customers_firstname'], $check_email_res['customers_lastname']);  
+      $re_email_srandom = md5(time().$check_email_res['customers_id'].$check_email_res['customers_email_address']); 
+      
+      $re_email_text = str_replace('${URL}', HTTP_SERVER.'/m_token.php?aid='.$re_email_srandom, ACTIVE_ACCOUNT_EMAIL_CONTENT);  
+      tep_mail($re_mail_name, $check_email_res['customers_email_address'], ACTIVE_ACCOUNT_EMAIL_TITLE, $re_email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+      tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$re_email_srandom."' where `customers_id` = '".$check_email_res['customers_id']."'"); 
+      $error = true;
+      $entry_email_address_exists = true;
+    } else {
+      $entry_email_address_exists = false;
+    }
+  } 
   
   $guest_isactive_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_email_address = '".tep_db_input($email_address)."' and customers_guest_chk = '1' and site_id = '".SITE_ID."'");
   $guest_isactive_res = tep_db_fetch_array($guest_isactive_raw); 
@@ -191,6 +202,7 @@ function pass_hidd(){
 <?php
   } else {
     if($guestchk == '1') {
+      $active_single = 2; 
     # Guest
       //ccdd
       $check_cid = tep_db_query("select customers_id from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "' and site_id = '".SITE_ID."'");
@@ -209,6 +221,7 @@ function pass_hidd(){
                                 'customers_password' => tep_encrypt_password($NewPass),
                                 'customers_default_address_id' => 1,
                                 'customers_guest_chk' => '1',
+                                'send_mail_time' => time(),
                                 'point' => '0');
 
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
@@ -250,7 +263,6 @@ function pass_hidd(){
       //ccdd
       tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_of_last_logon = now(), customers_info_number_of_logons = customers_info_number_of_logons+1 where customers_info_id = '" . $customer_id . "'");
     } else {
-    $active_single = 2; 
       # Guest & 1回目 //==================================================
     $NewPass = tep_create_random_value(ENTRY_PASSWORD_MIN_LENGTH);
       $sql_data_array = array('customers_firstname' => $firstname,
