@@ -71,7 +71,11 @@
          <?php
          if ($error == true) {
            if (isset($error_msg)) {
-             echo '<div style="color:ff0000;">'.$error_msg.'</div>'; 
+             if ($error_msg == ALREADY_SEND_MAIL_TEXT) {
+               echo '<script type="text/javascript">alert(\''.$error_msg.'\');</script>'; 
+             } else {
+               echo '<div style="color:ff0000;">'.$error_msg.'</div>'; 
+             }
            } else {
              echo '<div style="color:ff0000;">'.EMAIL_PATTERN_WRONG.'</div>'; 
            }
