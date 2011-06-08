@@ -25,7 +25,7 @@
   $customers_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".(int)$cud_id."' and site_id = '".SITE_ID."'");
   $customers_res = tep_db_fetch_array($customers_raw); 
   if ($customers_res) {
-    $cus_email = $customers_res['customers_email_address']; 
+    $cus_email = $customers_res['new_email_address']; 
     if ($_GET['action'] == 'send') {
       if (empty($_POST['cemail'])) {
         $error = true;
