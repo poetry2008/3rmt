@@ -12,9 +12,11 @@
 
   require('includes/application_top.php');
   
+  if (empty($_GET['gud'])) {
+    tep_redirect(tep_href_link('account_timeout.php')); 
+  }
   $customers_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where check_login_str = '".$_GET['gud']."' and site_id = '".SITE_ID."' and customers_guest_chk = '1'");
   $customers_res = tep_db_fetch_array($customers_raw);
-  
   if ($customers_res) {
     if (($now_time - $customers_res['send_mail_time']) > 60*60*24*3) {
       tep_redirect(tep_href_link('account_timeout.php')); 
