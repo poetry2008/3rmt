@@ -22,6 +22,7 @@
     $cud_id = $_SESSION['acu_cud']; 
   }
   
+    
   $customers_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".(int)$cud_id."' and site_id = '".SITE_ID."'");
   $customers_res = tep_db_fetch_array($customers_raw); 
   if ($customers_res) {
@@ -32,15 +33,23 @@
       } else if (!preg_match("/^([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/", $_POST['cemail'])) {
         $error = true;
       } else {
-        $mail_name = tep_get_fullname($customers_res['customers_firstname'], $customers_res['customers_lastname']);   
-        
-        $ac_email_srandom = md5(time().$customers_res['customers_id'].$_POST['cemail']); 
-        
-        $email_text = str_replace('${URL}', HTTP_SERVER.'/m_edit_token.php?aid='.$ac_email_srandom, ACTIVE_EDIT_ACCOUNT_EMAIL_CONTENT);  
-        
-        tep_mail($mail_name, $_POST['cemail'], ACTIVE_EDIT_ACCOUNT_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-        
-        tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$ac_email_srandom."' where `customers_id` = '".$customers_res['customers_id']."' and site_id = '".SITE_ID."'"); 
+        $check_email_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_email_address = '".tep_db_input($_POST['cemail'])."' and customers_id <> '".$customers_res['customers_id']."' and site_id = '".SITE_ID."' and customers_guest_chk = '0'");
+        if (tep_db_num_rows($check_email_raw)) {
+          $error = true;
+          $error_msg = CHECK_EMAIL_EXISTS_ERROR; 
+        } else {
+          $mail_name = tep_get_fullname($customers_res['customers_firstname'], $customers_res['customers_lastname']);   
+          
+          $ac_email_srandom = md5(time().$customers_res['customers_id'].$_POST['cemail']); 
+          
+          $email_text = str_replace('${URL}', HTTP_SERVER.'/m_edit_token.php?aid='.$ac_email_srandom, ACTIVE_EDIT_ACCOUNT_EMAIL_CONTENT);  
+          
+          tep_mail($mail_name, $_POST['cemail'], ACTIVE_EDIT_ACCOUNT_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+          
+          tep_db_query("update `".TABLE_CUSTOMERS."` set `new_email_address` = '".$_POST['cemail']."' where `customers_id` = '".$customers_res['customers_id']."' and site_id = '".SITE_ID."'"); 
+          
+          tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$ac_email_srandom."' where `customers_id` = '".$customers_res['customers_id']."' and site_id = '".SITE_ID."'"); 
+        }
       }
     }
   }
@@ -64,7 +73,11 @@
         <div class="comment"> 
          <?php
          if ($error == true) {
-           echo '<div style="color:ff0000;">'.EMAIL_PATTERN_WRONG.'</div>'; 
+           if (isset($error_msg)) {
+             echo '<div style="color:ff0000;">'.CHECK_EMAIL_EXISTS_ERROR.'</div>'; 
+           } else {
+             echo '<div style="color:ff0000;">'.EMAIL_PATTERN_WRONG.'</div>'; 
+           }
          }
          ?>
          <?php echo tep_draw_form('form', tep_href_link('ac_mail_finish.php', 'action=send', 'SSL'));?> 
