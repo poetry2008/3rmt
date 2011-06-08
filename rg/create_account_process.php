@@ -105,9 +105,12 @@
       $re_mail_name = tep_get_fullname($check_email_res['customers_firstname'], $check_email_res['customers_lastname']);  
       $re_email_srandom = md5(time().$check_email_res['customers_id'].$check_email_res['customers_email_address']); 
       if (($check_email_res['is_active'] == 0) && $guestchk == 0) {
-        $re_email_text = str_replace('${URL}', HTTP_SERVER.'/m_token.php?aid='.$re_email_srandom, ACTIVE_ACCOUNT_EMAIL_CONTENT);  
-        tep_mail($re_mail_name, $check_email_res['customers_email_address'], ACTIVE_ACCOUNT_EMAIL_TITLE, $re_email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-        tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$re_email_srandom."' where `customers_id` = '".$check_email_res['customers_id']."'"); 
+        //$re_email_text = str_replace('${URL}', HTTP_SERVER.'/m_token.php?aid='.$re_email_srandom, ACTIVE_ACCOUNT_EMAIL_CONTENT);  
+        //tep_mail($re_mail_name, $check_email_res['customers_email_address'], ACTIVE_ACCOUNT_EMAIL_TITLE, $re_email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+        //tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$re_email_srandom."' where `customers_id` = '".$check_email_res['customers_id']."'"); 
+        $me_cud = $check_email_res['customers_id']; 
+        tep_session_register('me_cud');
+        tep_redirect(tep_href_link('member_auth.php', '', 'SSL')); 
       }
       $error = true;
       $entry_email_address_exists = true;
