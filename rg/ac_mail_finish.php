@@ -30,7 +30,7 @@
     if ($_GET['action'] == 'send') {
       if (empty($_POST['cemail'])) {
         $error = true;
-      } else if (!preg_match("/^([a-zA-Z0-9\+]+[_|\-|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/", $_POST['cemail'])) {
+      } else if (!preg_match("/^([a-zA-Z0-9]+[_|\-|\.|\+]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/", $_POST['cemail'])) {
         $error = true;
       } else if ($customers_res['customers_email_address'] == $_POST['cemail']) {
         $error = true;
