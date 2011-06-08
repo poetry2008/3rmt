@@ -105,9 +105,57 @@
       $re_mail_name = tep_get_fullname($check_email_res['customers_firstname'], $check_email_res['customers_lastname']);  
       $re_email_srandom = md5(time().$check_email_res['customers_id'].$check_email_res['customers_email_address']); 
       if (($check_email_res['is_active'] == 0) && $guestchk == 0) {
-        //$re_email_text = str_replace('${URL}', HTTP_SERVER.'/m_token.php?aid='.$re_email_srandom, ACTIVE_ACCOUNT_EMAIL_CONTENT);  
-        //tep_mail($re_mail_name, $check_email_res['customers_email_address'], ACTIVE_ACCOUNT_EMAIL_TITLE, $re_email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-        //tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$re_email_srandom."' where `customers_id` = '".$check_email_res['customers_id']."'"); 
+        $NewPass = $password;
+        
+        $sql_data_array = array('customers_firstname' => $firstname,
+                                  'customers_lastname' => $lastname,
+                                  'customers_firstname_f' => $firstname_f,
+                                  'customers_lastname_f' => $lastname_f,
+                                  'customers_email_address' => $email_address,
+                                  'customers_telephone' => $telephone,
+                                  'customers_newsletter' => $newsletter,
+                                  'customers_password' => tep_encrypt_password($NewPass),
+                                  'customers_default_address_id' => 1,
+                                  'customers_guest_chk' => '0',
+                                  'send_mail_time' => time(),
+                                  'origin_password' => $NewPass, 
+                                  'point' => '0');
+
+          if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
+          if (ACCOUNT_DOB == 'true') $sql_data_array['customers_dob'] = tep_date_raw($dob);
+
+          tep_db_perform(TABLE_CUSTOMERS, $sql_data_array, 'update', 'customers_id = ' . $check_email_res['customers_id'] . ' and site_id = ' . SITE_ID);
+
+          $customer_id = $check_email_res['customers_id'];
+      
+          $sql_data_array = array('customers_id' => $customer_id,
+                                  'address_book_id' => 1,
+                                  'entry_firstname' => $firstname,
+                                  'entry_lastname' => $lastname,
+                                  'entry_firstname_f' => $firstname_f,
+                                  'entry_lastname_f' => $lastname_f,
+                                  'entry_street_address' => $street_address,
+                                  'entry_postcode' => $postcode,
+                                  'entry_city' => $city,
+                                  'entry_country_id' => $country,
+                                  'entry_telephone' => $telephone);
+
+          if (ACCOUNT_GENDER == 'true') $sql_data_array['entry_gender'] = $gender;
+          if (ACCOUNT_COMPANY == 'true') $sql_data_array['entry_company'] = $company;
+          if (ACCOUNT_SUBURB == 'true') $sql_data_array['entry_suburb'] = $suburb;
+          if (ACCOUNT_STATE == 'true') {
+            if ($zone_id > 0) {
+              $sql_data_array['entry_zone_id'] = $zone_id;
+              $sql_data_array['entry_state'] = '';
+            } else {
+              $sql_data_array['entry_zone_id'] = '0';
+              $sql_data_array['entry_state'] = $state;
+            }
+          }
+
+          tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', 'customers_id = ' . $check_email_res['customers_id']);
+          tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_of_last_logon = now(), customers_info_number_of_logons = customers_info_number_of_logons+1 where customers_info_id = '" . $customer_id . "'");
+        
         $me_cud = $check_email_res['customers_id']; 
         tep_session_register('me_cud');
         tep_redirect(tep_href_link('member_auth.php', '', 'SSL')); 
