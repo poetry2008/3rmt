@@ -36,7 +36,7 @@
         $error = true;
         $error_msg = ALREADY_SEND_MAIL_TEXT; 
       } else {
-        $check_email_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_email_address = '".tep_db_input($_POST['cemail'])."' and customers_id <> '".$customers_res['customers_id']."' and site_id = '".SITE_ID."' and customers_guest_chk = '0'");
+        $check_email_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_email_address = '".tep_db_input($_POST['cemail'])."' and customers_id <> '".$customers_res['customers_id']."' and site_id = '".SITE_ID."'");
         if (tep_db_num_rows($check_email_raw)) {
           $error = true;
           $error_msg = CHECK_EMAIL_EXISTS_ERROR; 
