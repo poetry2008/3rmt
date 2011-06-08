@@ -32,9 +32,6 @@
         $error = true;
       } else if (!preg_match("/^([a-zA-Z0-9]+[_|\-|\.|\+]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/", $_POST['cemail'])) {
         $error = true;
-      } else if ($customers_res['customers_email_address'] == $_POST['cemail']) {
-        $error = true;
-        $error_msg = ALREADY_SEND_MAIL_TEXT; 
       } else {
         $check_email_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_email_address = '".tep_db_input($_POST['cemail'])."' and customers_id <> '".$customers_res['customers_id']."' and site_id = '".SITE_ID."'");
         if (tep_db_num_rows($check_email_raw)) {
