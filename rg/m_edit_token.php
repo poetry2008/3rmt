@@ -27,7 +27,17 @@
         tep_redirect(tep_href_link('account_timeout.php')); 
       }
       
-      tep_db_query("update `".TABLE_CUSTOMERS."` set `customers_email_address` = '".$customers_res['new_email_address']."' where `customers_id` = '".$customers_res['customers_id']."' and `site_id` = '".SITE_ID."'"); 
+      $sql_data_array = array('customers_firstname' => $customers_res['new_customers_firstname'],
+                              'customers_lastname' => $customers_res['new_customers_lastname'],
+                              'customers_newsletter' => $customers_res['new_customers_newsletter'],
+                              'customers_email_address' => $customers_res['new_email_address'],
+                              'customers_password' => $customers_res['new_customers_password']);
+      tep_db_perform(TABLE_CUSTOMERS, $sql_data_array, 'update', "customers_id = '" .  tep_db_input($customers_res['customers_id']) . "' and site_id = '".SITE_ID."'");
+      
+      $sql_data_array = array('entry_firstname' => $customers_res['new_customers_firstname'],
+                            'entry_lastname' => $customers_res['new_customers_lastname']
+                            );
+      tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', "customers_id = '" . tep_db_input($customers_res['customers_id']) . "' and address_book_id = '1'");
       
       
       $address_book_raw = tep_db_query("select * from ".TABLE_ADDRESS_BOOK." where customers_id = '".$customers_res['customers_id']."'"); 
