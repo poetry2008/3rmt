@@ -233,6 +233,13 @@
     $customer_country_id = $country;
     $customer_zone_id = $zone_id;
     
+    $edit_cus_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = ".tep_db_input($customer_id)." and site_id = '".SITE_ID."'");
+    $edit_cus_res = tep_db_fetch_array($edit_cus_raw);
+    if ($edit_cus_res) {
+      if ($edit_cus_res['customers_email_address'] == $email_address) {
+        tep_redirect(tep_href_link(FILENAME_ACCOUNT, '', 'SSL'));
+      }
+    } 
     $mail_name = tep_get_fullname($fistname, $lastname);  
     $ac_email_srandom = md5(time().$customer_id.$email_address); 
     
@@ -240,7 +247,9 @@
     
     $email_text = str_replace('${URL}', HTTP_SERVER.'/m_edit_token.php?aid='.$ac_email_srandom, ACTIVE_EDIT_ACCOUNT_EMAIL_CONTENT);  
     tep_mail($mail_name, $email_address, ACTIVE_EDIT_ACCOUNT_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-
+    
+    $acu_cud = $customer_id;
+    tep_session_register('acu_cud');
     tep_redirect(tep_href_link('ac_mail_finish.php', '', 'SSL'));
   }
 
