@@ -32,6 +32,9 @@
         $error = true;
       } else if (!preg_match("/^([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/", $_POST['cemail'])) {
         $error = true;
+      } else if ($customers_res['customers_email_address'] == $_POST['cemail']) {
+        $error = true;
+        $error_msg = ALREADY_SEND_MAIL_TEXT; 
       } else {
         $check_email_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_email_address = '".tep_db_input($_POST['cemail'])."' and customers_id <> '".$customers_res['customers_id']."' and site_id = '".SITE_ID."' and customers_guest_chk = '0'");
         if (tep_db_num_rows($check_email_raw)) {
@@ -74,7 +77,11 @@
          <?php
          if ($error == true) {
            if (isset($error_msg)) {
-             echo '<div style="color:ff0000;">'.CHECK_EMAIL_EXISTS_ERROR.'</div>'; 
+             if ($error_msg == ALREADY_SEND_MAIL_TEXT) {
+               echo '<script type="text/javascript">alert(\''.ALREADY_SEND_MAIL_TEXT.'\')</script>'; 
+             } else {
+               echo '<div style="color:ff0000;">'.CHECK_EMAIL_EXISTS_ERROR.'</div>'; 
+             }
            } else {
              echo '<div style="color:ff0000;">'.EMAIL_PATTERN_WRONG.'</div>'; 
            }
