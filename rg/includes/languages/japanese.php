@@ -436,6 +436,6 @@ define('COLUMNLEFT_SEARCH_DEFAULT_VALUE', '入力して下さい');
 define('COLUMNRIGHT_BEST_GOODS_TITLE', 'お勧めゲーム');
 define('ENTRY_GUEST_EMAIL_NOT_ACTIVE', '&nbsp;<small><font color="#FF0000">認証手続きはまだ完了していません。</font></small>');
 define('CHECK_EMAIL_EXISTS_ERROR', 'メールアドレスが無効です。お問い合わせください');
-define('SENDMAIL_SUCCESS_COMMENT_TEXT', '正常に受信できる場合：「送信」後5分以内でRMT学園からの確認メールが届きます。<br>受信できない場合：「送信」後5分以上経過しても受信できない場合は、スパムフィルター等で受け取りを拒否されている可能性が高いです。');
+define('SENDMAIL_SUCCESS_COMMENT_TEXT', '正常に受信できる場合：「送信」後5分以内で'.STORE_NAME.'からの確認メールが届きます。<br>受信できない場合：「送信」後5分以上経過しても受信できない場合は、スパムフィルター等で受け取りを拒否されている可能性が高いです。');
 define('ALREADY_SEND_MAIL_TEXT', 'メールアドレスが無効です。お問い合わせください');
 ?>
