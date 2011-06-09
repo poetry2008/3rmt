@@ -2,7 +2,7 @@
 Text decoration
 --------------------------- */
 a{
-	font-size: 10px;
+	font-size: 12px;
 	color:#ccc;
 	text-decoration: none;
 }
@@ -76,6 +76,7 @@ H4 {
 	border-top:2px solid #373737;
 	padding:5px;
 	line-height:15px;
+	font-size:12px;
 }
 .comment img{ clear:both;}
 .comment_index02 , .comment_index01{
@@ -215,7 +216,7 @@ UL {
 	width:148px;
 	width:173px\9;
 	margin:0 auto;
-	font-size: 11px;
+	font-size: 12px;
 	color:#A1A1A1;
 	display: block;
 	padding-left:17px;
@@ -1510,7 +1511,7 @@ TD.subBar {
 TD：Main
 --------------------------- */
 TD.main, P.main {
-	font-size: 11px;
+	font-size: 12px;
 	*+font-size: 10px;
 	line-height: 1.5;
 }
