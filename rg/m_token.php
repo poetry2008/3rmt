@@ -32,7 +32,8 @@
     } else {
       $email_name = tep_get_fullname($customers_res['customers_firstname'], $customers_res['customers_lastname']); 
       
-      $email_text = stripslashes($customers_res['customers_lastname'].' '.$customers_res['customers_firstname']).EMAIL_NAME_COMMENT_LINK . "\n\n"; 
+      //$email_text = stripslashes($customers_res['customers_lastname'].' '.$customers_res['customers_firstname']).EMAIL_NAME_COMMENT_LINK . "\n\n"; 
+      $email_text = stripslashes($customers_res['customers_lastname'].' '.$customers_res['customers_firstname']). "\n\n"; 
       
       $email_text .= C_CREAT_ACCOUNT;
       $email_text = str_replace(array('${MAIL}', '${PASS}'), array($customers_res['customers_email_address'], $customers_res['origin_password']), $email_text); 
