@@ -419,7 +419,7 @@ define('SENDMAIL_BUTTON', '送信');
 define('LINK_SENDMAIL_TEXT', 'メール受信テストをする');
 define('LINK_SENDMAIL_TITLE', 'メール受信テスト');
 define('SENDMAIL_SUCCESS_TEXT', 'メールが送信されました。'.STORE_NAME.'からの受信をご確認ください。');
-define('SENDMAIL_READ_TEXT', STORE_NAME.'からのメールを<br><b>正常に受信できる場合：</b>「送信」後5分以内でRMTジャックポットからの確認メールが届きます。<br><b>受信できない場合：</b>「送信」後5分以上経過しても受信できない場合は、スパムフィルター等で受け取りを拒否されている可能性が高いです。 ');
+define('SENDMAIL_READ_TEXT'.STORE_NAME.'からのメールを<br><b>正常に受信できる場合：</b>「送信」後5分以内で'.STORE_NAME.'からの確認メールが届きます。<br><b>受信できない場合：</b>「送信」後5分以上経過しても受信できない場合は、スパムフィルター等で受け取りを拒否されている可能性が高いです。 ');
 define('SENDMAIL_TROUBLE_PRE', 'メール受信の設定に関しては、');
 define('SENDMAIL_TROUBLE_LINK', '<b>「フリーメールでメールが受け取れない方へ」</b>');
 define('SENDMAIL_TROUBLE_END', 'をご参考ください。');
