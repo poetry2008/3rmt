@@ -1061,6 +1061,7 @@ Footer
 .main p a{
 	color:#06727D;
 }
+.formArea textarea { width:685px;}
 .product_info_box .main p a{ color:#656565;}
 .main p a:hover{
 	text-decoration:underline;
