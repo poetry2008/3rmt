@@ -33,8 +33,9 @@
     if ($_GET['action'] == 'send') {
       if (empty($_POST['cemail'])) {
         $error = true;
-      } else if (!tep_validate_email($_POST['cemail'])) {
+      } else if (!preg_match('/^[a-zA-Z0-9_\-\.\+]+@([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/', $_POST['cemail'])) {
         $error = true;
+        $error_msg = WRONG_EMAIL_PATTERN_NOTICE; 
       } else if (tep_check_exists_cu_email($_POST['cemail'], $customers_res['customers_id'], 1)) {
         $error = true;
         $error_msg = CHECK_EMAIL_EXISTS_ERROR; 
