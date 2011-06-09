@@ -48,4 +48,6 @@ define('EMAIL_WARNING',
 . 'helpdesk@rmtgakuen.jp'."\n"
 . 'http://www.rmtgakuen.jp/' . "\n"
 . '━━━━━━━━━━━━━━━━━━━━━━━' . "\n");
+
+define('EMAIL_NAME_COMMENT_LINK', ' 様 ');
 ?>
