@@ -30,7 +30,7 @@
     if ($_GET['action'] == 'send') {
       if (empty($_POST['cemail'])) {
         $error = true;
-      } else if (!preg_match("/^([a-zA-Z0-9]+[_|\-|\.|\+]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/", $_POST['cemail'])) {
+      } else if (!preg_match("/^[a-zA-Z0-9_\-\.\+]+@([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/", $_POST['cemail'])) {
         $error = true;
       } else {
         $check_email_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_email_address = '".tep_db_input($_POST['cemail'])."' and customers_id <> '".$customers_res['customers_id']."' and site_id = '".SITE_ID."'");
