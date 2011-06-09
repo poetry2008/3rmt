@@ -5300,3 +5300,111 @@ function get_all_site_product_status($product_id)
   
   return $status_arr;
 }
+
+    function tep_faq_categories_description_exist($cid, $sid){
+      $query = tep_db_query("select * from ".TABLE_FAQ_CATEGORIES_DESCRIPTION."
+          where faq_category_id='".$cid."' and site_id = '".$sid."'");
+      if(tep_db_num_rows($query)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    function tep_faq_question_description_exist($qid, $sid){
+      $query = tep_db_query("select * from ".TABLE_FAQ_QUESTION_DESCRIPTION." where
+          faq_question_id='".$qid."' and site_id = '".$sid."' ");
+      if(tep_db_num_rows($query)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+
+
+  function tep_childs_in_faq_category_count($faq_category_id) {
+    $categories_count = 0;
+
+    $categories_query = tep_db_query("select id from " . TABLE_FAQ_CATEGORIES .
+        " where parent_id = '" . $category_id . "'");
+    while ($category = tep_db_fetch_array($categories_query)) {
+      $categories_count++;
+      $categories_count += tep_childs_in_category_count($category['id']);
+    }
+
+    return $categories_count;
+  }
+
+  function tep_question_in_faq_category_count($category_id, $include_deactivated = false) {
+    $question_count = 0;
+
+    if ($include_deactivated) {
+      $question_query = tep_db_query("select count(*) as total from " .
+          TABLE_FAQ_QUESTION . " fq, " . TABLE_FAQ_QUESTION_TO_CATEGORIES . " fq2c
+          where fq.id = fq2c.faq_question_id and fq2c.faq_category_id = '" . $category_id . "'");
+    } else {
+      $question_query = tep_db_query("select count(*) as total from " .  
+          TABLE_FAQ_QUESTION . " fq, " . TABLE_FAQ_QUESTION_TO_CATEGORIES . " fq2c
+          where fq.id = fq2c.faq_question_id and fq2c.faq_category_id = '" . $category_id . "'");
+    }
+
+    $question = tep_db_fetch_array($question_query);
+
+    $question_count += $question['total'];
+
+    $childs_query = tep_db_query("select id from " . TABLE_FAQ_CATEGORIES .
+        " where parent_id = '" . $category_id . "'");
+    if (tep_db_num_rows($childs_query)) {
+      while ($childs = tep_db_fetch_array($childs_query)) {
+        $question_count += tep_question_in_faq_category_count($childs['id'], $include_deactivated);
+      }
+    }
+
+    return $question_count;
+  }
+
+
+
+  function tep_get_faq_category_tree($parent_id = '0', $spacing = '', $exclude = '', $category_tree_array = '', $include_itself = false) {
+    global $languages_id;
+
+    if (!is_array($category_tree_array)) $category_tree_array = array();
+    if ( (sizeof($category_tree_array) < 1) && ($exclude != '0') ) $category_tree_array[] = array('id' => '0', 'text' => TEXT_TOP);
+
+    if ($include_itself) {
+      $category_query = tep_db_query("select cd.title from " .
+          TABLE_FAQ_CATEGORIES_DESCRIPTION . " cd where cd.faq_category_id = '" . $parent_id . "' and cd.site_id='0'");
+      $category = tep_db_fetch_array($category_query);
+      $category_tree_array[] = array('id' => $parent_id, 'text' => $category['title']);
+    }
+
+    $categories_query = tep_db_query("select c.id, cd.title, c.parent_id from " .
+        TABLE_FAQ_CATEGORIES . " c, " . TABLE_FAQ_CATEGORIES_DESCRIPTION . " cd 
+        where c.id = cd.faq_category_id and  c.parent_id = '" . $parent_id . "'
+        and site_id ='0' order by c.sort_order, cd.title");
+    while ($categories = tep_db_fetch_array($categories_query)) {
+      if ($exclude != $categories['id']) $category_tree_array[] = array('id' =>
+          $categories['id'], 'text' => $spacing . $categories['title']);
+      $category_tree_array = tep_get_faq_category_tree($categories['id'], $spacing . '&nbsp;&nbsp;&nbsp;', $exclude, $category_tree_array);
+    }
+
+    return $category_tree_array;
+  }
+
+
+  function tep_remove_faq_category($category_id) {
+    tep_db_query("delete from " . TABLE_FAQ_CATEGORIES . " where id = '" . tep_db_input($category_id) . "'");
+    tep_db_query("delete from " . TABLE_FAQ_CATEGORIES_DESCRIPTION . " where
+        faq_category_id = '" . tep_db_input($category_id) . "'");
+    tep_db_query("delete from " . TABLE_FAQ_QUESTION_TO_CATEGORIES . " where
+        faq_category_id = '" . tep_db_input($category_id) . "'");
+  }
+
+  function tep_remove_faq_question($product_id) {
+    tep_db_query("delete from " . TABLE_FAQ_QUESTION . " where id = '" . tep_db_input($product_id) . "'");
+    tep_db_query("delete from " . TABLE_FAQ_QUESTION_TO_CATEGORIES . " where
+        faq_question_id = '" . tep_db_input($product_id) . "'");
+    tep_db_query("delete from " . TABLE_FAQ_QUESTION_DESCRIPTION . " where 
+        faq_question_id = '" . tep_db_input($product_id) . "'");
+  }
