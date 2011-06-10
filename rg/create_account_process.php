@@ -435,7 +435,7 @@ function pass_hidd(){
      # Member
     //ccdd
     $active_single = 1; 
-    $check_cid = tep_db_query("select customers_id, is_active from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "' and site_id = '".SITE_ID."'");
+    $check_cid = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "' and site_id = '".SITE_ID."'");
     if(tep_db_num_rows($check_cid)) {
       # Member & 2回目以上 //==============================================
       $check = tep_db_fetch_array($check_cid);
@@ -456,7 +456,10 @@ function pass_hidd(){
                                 'send_mail_time' => time(),
                                 'origin_password' => $NewPass, 
                                 'point' => '0');
-
+      
+        if ($check['customers_guest_chk'] == '1') {
+          $sql_data_array['is_active'] = 0; 
+        }
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
         if (ACCOUNT_DOB == 'true') $sql_data_array['customers_dob'] = tep_date_raw($dob);
 
