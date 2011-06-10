@@ -1582,3 +1582,11 @@ searching
 	vertical-align:middle;
 }
 .text { color:#000000; font-size:12px; line-height:18px;}
+.payment_comment{ 
+ word-wrap:break-word;
+ word-break:break-all;
+ overflow:hidden;
+ display:block;
+ table-layout:fixed;
+ width:490px;
+}
