@@ -460,7 +460,7 @@ button
 	font-size: 0px;
 }
 .button_description:hover {
-	background: url(../images/design/button/button_description2.gif) no-repeat;
+	background: url(../images/design/button/button_description.gif) no-repeat;
 }
 /* ---------------------------
 input textarea select
