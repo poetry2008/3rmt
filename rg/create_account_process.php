@@ -457,8 +457,12 @@ function pass_hidd(){
                                 'origin_password' => $NewPass, 
                                 'point' => '0');
       
-        if ($check['customers_guest_chk'] == '1') {
+        if ($check['customers_guest_chk'] == '1' && $check['is_active'] == '0') {
           $sql_data_array['is_active'] = 0; 
+        }
+        
+        if ($check['customers_guest_chk'] == '1' && $check['is_active'] == '1') {
+          $active_single = 0; 
         }
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
         if (ACCOUNT_DOB == 'true') $sql_data_array['customers_dob'] = tep_date_raw($dob);
