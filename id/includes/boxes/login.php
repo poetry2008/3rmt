@@ -33,11 +33,13 @@
     	<td><a href="<?php echo tep_href_link(FILENAME_LOGIN,'','SSL'); ?>"><img class="middle" src="images/design/login02.gif" alt="ログイン"></a></td>
     </tr>
 </table>
+<?php if (!tep_session_is_registered('customer_id')) {?>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" summary="login">
   <tr>
     <td class="login_ig" style="padding-bottom:4px;" align="center"><a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT,'','SSL'); ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/box/signup.gif',HEADER_TITLE_CREATE_ACCOUNT,'172','123'); ?></a></td>
   </tr>
 </table>
+<?php }?>
 <?php 
     } else {
 ?>
