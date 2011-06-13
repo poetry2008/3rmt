@@ -1,6 +1,6 @@
 <?php
 return array(
-  //以下是表格分页程序用到的UI
+  //以下是表格分鬘ｵ程序用到的UI
   'checklink'=>'リンクチェック',
   'state'=>'ステータス',
   'valadate'=>'確認',
@@ -26,7 +26,7 @@ return array(
   'table_desc'=>'並び順',
   'table_select_operate'=>'操作',
 
-  //以下はい错误信息显示时用到的UI
+  //以下はい髞呵ｯｯ信息譏ｾ示譌ｶ用到的UI
   'contract'=>'縮む',
   'expand'=>'広げる',
 
@@ -49,7 +49,7 @@ return array(
   'class_img'=>'カテゴリイメージ',
   'class_upload_sizeorext'=>'正しく種類の画像、または制限されたサイズ以内の画像をアップロードしてください',
   'class_img_upload'=>'新しいカテゴリイメージをアップロード',
-  'class_cant_del_hasChilds'=>'本类别含有子类别,不可以削除,请先削除子类别',
+  'class_cant_del_hasChilds'=>'本邀ｻ蛻ｫ含有子邀ｻ蛻ｫ,不可以削除,隸ｷ先削除子邀ｻ蛻ｫ',
   'class_del_confirm'=>'カテゴリを削除する場合はその中に所属されているすべての内容も削除するので、ご慎重にしてください。このカテゴリを削除してもいいですか?',
   'class_cant_del_root'=>'ルートを削除できません',
   'class_del_success'=>'カテゴリを削除しました',
@@ -153,10 +153,10 @@ return array(
   'operator_account_duplicate'=>'このアカウントがすでに使用されていますが、同じしてはいけません',
 
 
-  //欢迎信息
+  //谺｢迎信息
   'title_welcome'=>'ようこそ',
 
-  //登录
+  //登蠖销
   'login_entry'=>'ログイン',
   'login_wrong'=>'アカウントまたはパスワードが違います、正しく入力してください.',
   'login_access_wrong'=>'今の状態では訪問できません、もう一度ログインしてください',
@@ -174,10 +174,10 @@ return array(
   'personal_confirm_password_wrong'=>'新しいパスワードが一致していません、再入力してください',
   'personal_success'=>'個人情報を変更しました',
 
-  //欢迎页面
+  //谺｢迎鬘ｵ面
   'welcome_message'=>'ようこそ',
 
-  //左侧菜单
+  //左萓ｧ菜蜊销
   'menu_actlist'=>'権限管理',
   'menu_FlushAuth'=>'権限を更新',
   'menu_Global'=>'オプション',
@@ -202,11 +202,11 @@ return array(
   'allow'=>"許可",
   'deny'=>"拒否",
   "auth_RBACEVERYONE"=>"全員",
-  "auth_RBACHASROLE"=>"管理员",
+  "auth_RBACHASROLE"=>"管理蜻頀",
   "auth_RBACNOROLE"=>"管理員ではない",
   "auth_RBACNULL"=>"設定なし",
 
-  //系统消息
+  //系扈沛ﾁ息
   'msg_password_notmach'=>'新しいパスワードが一致しません',
   'msg_password_success'=>'しました修改了パスワード',
   'msg_password_faild'=>'パスワードを変更しません',
@@ -219,7 +219,7 @@ return array(
 
     'param_error' => 'パラメータエラー',
 
-    //トップページ用户自定义
+    //トップページ用謌ｷ自定荵褀
   'custom_site_title'=>'ユーザー定義サイト',
   'custom_site_name'=>'名前',
   'custom_site_url'=>'Url',
@@ -380,7 +380,7 @@ return array(
     'attention_item1_content' => ' あなたのサイトに当サイトへのリンクを設置した後、登録をして下さい。<br /> 当サイトへのリンクの設置には、下記のリンクタグをコピーすれば簡単に設置できます。<br /> リンクを確認した後、登録完了メールをお送りします。 ',
     'link_tag' => 'リンクタグ',
     'attention_item1_warning' => '',
-    'attention_item2_title' => '以下の（１）〜（９）の項目に該当するサイトは登録をご遠慮ください。',
+    'attention_item2_title' => '以下の（１）縲怐i９）の項目に該当するサイトは登録をご遠慮ください。',
     'attention_item2_content' => '
     （１）<font color="#ff0000">いわゆるペラサイト（１ページのみのサイト、またはそれに準ずるサイト）</font> 
     <br />（２）アダルトサイト又は１８歳未満に好ましくないと判断されるコンテンツを含むサイト 
@@ -549,7 +549,7 @@ return array(
     <p>※ リンク先が無くなっている等の問題がある場合には、[管理者へ通知]をクリックしてください。</p>',
     'recommend_h1' => 'おすすめサイト',
     'recommend_text' => 
-    '<p>RMTカメズがオススメするリンク集です。</p>
+    '<p>RedStone-RMT.comがオススメするリンク集です。</p>
     <p>ぜひ、アクセスしてみてください。</p>
     <br />
     <p>※ サイト登録者が登録内容の修正または削除を行う場合は、[修正・削除]をクリックしてください。</p>
