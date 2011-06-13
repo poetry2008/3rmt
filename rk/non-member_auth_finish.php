@@ -24,7 +24,7 @@
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents"> 
-        <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1> 
+        <h1 class="pageHeading"><?php echo HEADING_TITLE_FINISH; ?></h1> 
         
         <div class="comment"> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:12px;"> 
