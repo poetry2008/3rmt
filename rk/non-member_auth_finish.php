@@ -39,7 +39,7 @@
                   <tr> 
                     <td class="main">
                     <?php 
-                      echo '<a href="'.tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL').'">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; 
+                      //echo '<a href="'.tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL').'">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; 
                     ?>
                     </td> 
                     <td align="right" class="main">
