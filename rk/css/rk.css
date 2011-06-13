@@ -1013,6 +1013,14 @@ footer
 .main p a:hover {
 	text-decoration:underline;
 }
+.payment_comment{ 
+ word-wrap:break-word;
+ word-break:break-all;
+ overflow:hidden;
+ display:block;
+ table-layout:fixed;
+ width:490px;
+}
 .Tlist a {
 	color:#008000;
 }

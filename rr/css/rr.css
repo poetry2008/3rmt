@@ -217,7 +217,7 @@ UL {
 	width:173px\9;
 	margin:0 auto;
 	font-size: 12px;
-	color:#A1A1A1;
+	color:#fff;
 	display: block;
 	padding-left:17px;
 	padding-left:19px\9;
@@ -1062,7 +1062,7 @@ Footer
 .main p a{
 	color:#06727D;
 }
-.formArea textarea { width:685px;}
+.formArea textarea { width:685px; height:160px;}
 .product_info_box .main p a{ color:#656565;}
 .main p a:hover{
 	text-decoration:underline;
@@ -1242,6 +1242,7 @@ background-color: #2F2F2F;
 	border-top:2px solid #373737;
 	border-bottom:1px solid #373737;
 	padding:3px 0;
+	color:#FFFFFF;
 }
 /* ---------------------------
 boxText
@@ -1514,6 +1515,7 @@ TD.main, P.main {
 	font-size: 12px;
 	*+font-size: 10px;
 	line-height: 1.5;
+	color:#FFFFFF;
 }
 /* ---------------------------
 TD,SPAN：Small text (message)
@@ -1720,7 +1722,7 @@ P.description{
 .formAreaTitle {
 	font-size: 11px;
 	font-weight: bold;
-	color: #666;
+	color: #fff;
 }
 .smallText {
 	font-size: 10px;
@@ -1857,4 +1859,12 @@ border:1px solid #CAC6BE;
 	display:block; 
 	overflow:hidden;
 	padding-right:5px;
+}
+.payment_comment{ 
+ word-wrap:break-word;
+ word-break:break-all;
+ overflow:hidden;
+ display:block;
+ table-layout:fixed;
+ width:690px;
 }

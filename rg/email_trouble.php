@@ -26,9 +26,7 @@
   <div id="bgn_content">
     <div id="wrapper_kiyaku">
   <br>
-        <span class="txt_blue">*****@yahoo.co.jp、*****@hotmail.com、*****@msn.com、AOLなどのフリーメールを御使用になられている場合</span>
-        上記のドメインでご登録された方で、当社からのメールが届かないというご報告を頂いております。
- <br>
+        <span class="txt_blue">*****@yahoo.co.jp、*****@hotmail.com、*****@msn.com、AOLなどのフリーメールを御使用になられている場合</span>、上記のドメインでご登録された方で、当社からのメールが届かないというご報告を頂いております。<br>
         <br>
         これは、Yahoo!メール、hotmail、msnメール、AOLの受信手続きで「迷惑メール」として処理をされている可能性がございます。<br>
         この処理は各フリーメールが持つ機能で、不特定多数のサイトからのメールを「迷惑メール」として排除し、快適にメールを使用するためのものです。<br>
