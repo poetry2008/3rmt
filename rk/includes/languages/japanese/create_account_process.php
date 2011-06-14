@@ -48,4 +48,6 @@ define('EMAIL_WARNING',
 . 'helpdesk@rmt-kames.jp'."\n"
 . 'http://www.rmt-kames.jp/' . "\n"
 . '━━━━━━━━━━━━━━━━━━━━━━━' . "\n");
+
+define('EMAIL_NAME_COMMENT_LINK', ' 様 ');
 ?>
