@@ -24,7 +24,7 @@
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents"> 
-        <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1> 
+        <h1 class="pageHeading"><?php echo HEADING_TITLE_FINISH; ?></h1> 
         
         <div class="comment"> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:12px;"> 
@@ -39,10 +39,12 @@
                   <tr> 
                     <td class="main">
                     <?php 
-                      echo '<a href="'.tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL').'">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; 
+                      //echo '<a href="'.tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL').'">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; 
                     ?>
                     </td> 
-                    <td align="right" class="main">
+                    <td align="right" class="main"> <?php 
+                      echo '<a href="'.tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL').'">' . tep_image_button('button_continue.gif', IMAGE_BUTTON_BACK) . '</a>'; 
+                    ?>
                     </td> 
                   </tr> 
                 </table></td> 

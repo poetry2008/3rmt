@@ -64,6 +64,7 @@ H4 {
 	font-size:12px;
 	background: url(../images/design/contents/headding_content.gif) repeat-y;
 }
+.active_email input{ height: 21px; width: 370px;}
 .comment_index02, .comment_index01 {
 	width: 500px;
  *width: 530px;
@@ -1682,6 +1683,7 @@ CHECKBOX, INPUT, RADIO, SELECT：FORM
 --------------------------- */
 CHECKBOX, INPUT, RADIO, SELECT {
 }
+
 /* ---------------------------
 TEXTAREA：FORM
 --------------------------- */
