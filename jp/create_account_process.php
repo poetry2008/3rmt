@@ -222,6 +222,15 @@
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', 'customers_id = ' . $guest_isactive_res['customers_id']);
         tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_of_last_logon = now(), customers_info_number_of_logons = customers_info_number_of_logons+1 where customers_info_id = '" . $customer_id . "'");
         
+        $mail_name = tep_get_fullname($fistname, $lastname);  
+        $gu_email_srandom = md5(time().$customer_id.$email_address); 
+        
+        $email_text = stripslashes($lastname.' '.$firstname).EMAIL_NAME_COMMENT_LINK . "\n\n"; 
+        $email_text .= str_replace('${URL}', HTTP_SERVER.'/nm_token.php?gud='.$gu_email_srandom, GUEST_LOGIN_EMAIL_CONTENT);  
+        tep_mail($mail_name, $email_address, GUEST_LOGIN_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+        
+        tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$gu_email_srandom."' where `customers_id` = '".$customer_id."'"); 
+        
         $pa_gud = $guest_isactive_res['customers_id']; 
         tep_session_register('pa_gud');
         tep_redirect(tep_href_link('non-member_auth.php', '', 'SSL')); 
