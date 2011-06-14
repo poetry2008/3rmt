@@ -99,7 +99,7 @@
   }
 //ccdd
   if (!$noactive_single) { 
-    $check_email = tep_db_query("select * from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and customers_id <> '" .  tep_db_input($customer_id) . "' and customers_guest_chk = '0' and site_id = '".SITE_ID."'");
+    $check_email = tep_db_query("select * from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and customers_guest_chk = '0' and site_id = '".SITE_ID."'");
     if (tep_db_num_rows($check_email)) {
       $check_email_res = tep_db_fetch_array($check_email); 
       $re_mail_name = tep_get_fullname($check_email_res['customers_firstname'], $check_email_res['customers_lastname']);  
