@@ -35,7 +35,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
                customers_guest_chk 
         FROM " . TABLE_CUSTOMERS .  " 
         WHERE customers_email_address = '" . tep_db_input($email_address) . "' 
-          AND site_id = ".SITE_ID);
+          AND site_id = ".SITE_ID." AND is_active = 1");
     if (!tep_db_num_rows($check_customer_query)) {
       $_GET['login'] = 'fail';
     } else {

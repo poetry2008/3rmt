@@ -175,7 +175,9 @@
   $product_ids = array();
   foreach($keys as $akey){
     $arr = explode('{', $akey);
-    $product_ids[] = $arr[0];
+    if (!empty($arr[0])) {
+      $product_ids[] = $arr[0];
+    }
   }
   //print_r($_COOKIES);
 ?>
