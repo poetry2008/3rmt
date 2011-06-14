@@ -14,7 +14,7 @@
     $origin_href = tep_href_link($navigation->snapshot['page'], tep_array_to_string($navigation->snapshot['get'], array(tep_session_name())), $navigation->snapshot['mode']);
     $navigation->clear_snapshot();
   } else {
-    $origin_href = HTTP_SERVER.'?'.tep_session_name().'='.tep_session_id();
+    $origin_href = tep_href_link(FILENAME_DEFAULT);
   }
 ?>
 <?php page_head();?>
