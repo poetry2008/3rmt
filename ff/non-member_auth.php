@@ -124,12 +124,12 @@
               <td><br> 
                 <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr> 
-                    <td class="main">
+                    <td class="main" align="right">
                     <?php 
                     if ($_GET['cu'] == 1) {
                       echo '<a href="'.tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL').'">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; 
                     } else {
-                      echo '<a href="'.HTTP_SERVER.'?'.tep_session_name().'='.tep_session_id().'">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; 
+                      echo '<a href="'.HTTP_SERVER.'?'.tep_session_name().'='.tep_session_id().'">' . tep_image_button('button_continue.gif', IMAGE_BUTTON_BACK) . '</a>'; 
                     }
                     ?>
                     </td> 
