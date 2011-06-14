@@ -56,7 +56,7 @@
 
   require(DIR_WS_MODULES . 'account_details.php');
 ?> 
-<input type="hidden" name="old_email" value=""<?php echo $account['customers_email_address'];?>>
+<input type="hidden" name="old_email" value="<?php echo $account['customers_email_address'];?>">
 </td> 
             </tr> 
             <tr> 
