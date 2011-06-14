@@ -55,4 +55,6 @@ define('EMAIL_WARNING',
 . 'support@worldmoney.jp'."\n"
 . 'http://rmt.worldmoney.jp/' . "\n"
 . '━━━━━━━━━━━━━━━━━━━━━━━' . "\n");
+
+define('EMAIL_NAME_COMMENT_LINK', ' 様 ');
 ?>
