@@ -76,7 +76,12 @@
           if ($error == true) {
             if (isset($error_msg)) {
               if ($error_msg == ALREADY_SEND_MAIL_TEXT) {
-                echo '<script type="text/javascript">alert(\''.$error_msg.'\');</script>'; 
+              ?>
+             <script type="text/javascript">
+             alert('<?php echo $error_msg;?>');
+             window.location.href="<?php echo tep_href_link(FILENAME_DEFAULT);?>"; 
+             </script> 
+              <?php
               } else {
                 echo '<div style="color:ff0000;">'.$error_msg.'</div>'; 
               }
