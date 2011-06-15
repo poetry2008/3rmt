@@ -659,7 +659,7 @@ function pass_hidd(){
     # For Member
     $email_text .= C_CREAT_ACCOUNT ;
     $email_text = str_replace(array('${MAIL}', '${PASS}'), array($email_address, $password), $email_text);
-    //tep_mail($name, $email_address, EMAIL_SUBJECT, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+    tep_mail($name, $email_address, EMAIL_SUBJECT, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
 
     tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT_SUCCESS, '', 'SSL'));
   }
