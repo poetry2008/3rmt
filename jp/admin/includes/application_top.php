@@ -2,9 +2,6 @@
 /*
   $Id$
 */
-define("DEMO",true);
-
-define("DEMO",true);
 
 
 $GLOBALS['HTTP_GET_VARS']  = $_GET;
