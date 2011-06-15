@@ -248,9 +248,8 @@
           $error = true;
           $entry_email_address_exists = true;
         }
-      } else {
-        $entry_guest_not_active = false; 
       }
+      $entry_guest_not_active = false; 
     }
   } else {
     $entry_guest_not_active = false; 
