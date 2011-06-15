@@ -15,10 +15,11 @@ class HM_Item_Date extends HM_Item_Basic
     }
     echo "<td>";
     echo $this->beforeInput;
-    echo "<input id = '".$this->formname.'ymd'."' type='hidden' name='".$this->formname."' value='".$this->defaultValue."' />";
+    echo "<input class='outform' id = '".$this->formname.'ymd'."' type='hidden' name='".$this->formname."' value='".$this->defaultValue."' />";
     echo "<input id = '".$this->formname.'y'."' size=4 type='text' value='$this->y'  />"."年";
     echo "<input id = '".$this->formname.'m'."' size=4 type='text' value='$this->m'  />"."月";
     echo "<input id = '".$this->formname.'d'."' size=4 type='text' value='$this->d' />"."日";
+    echo "<button type='button' id = '".$this->formname.'submit'."' value='$this->submitName' />";
     echo $this->afterInput;
     echo "<script type='text/javascript'>";
     echo "function mkymd(){";
@@ -35,6 +36,19 @@ class HM_Item_Date extends HM_Item_Basic
     echo "$('#".$this->formname.'m'."').bind('change',mkymd);";
     echo "$('#".$this->formname.'d'."').bind('change',mkymd);";
     echo "});";
+?>
+       $(document).ready(function (){
+           $("#<?php echo $this->formname;?>submit").click(function(){
+               //               $("#0<?php echo $this->formname;?>").attr('name',"<?php echo $this->formname;?>");
+               $.ajax({
+                 url:'oa_answer_process.php?withz=1&oID=<?php echo $_GET["oID"]?>',
+                     type:'post',    
+                     data:"form_id="+$('input|[name=form_id]').val()+"&<?php echo $this->formname;?>="+$('input|[name=0<?php echo $this->formname;?>]').val(),
+                     success: function(){$(this).attr('disable',true);}
+                 });
+             });
+      });
+<?php 
     echo "</script>";
     echo "</br>\n";
       echo "</td>";
