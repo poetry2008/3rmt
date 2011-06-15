@@ -2,7 +2,7 @@
 /*
   $Id$
 */
-define("DEMO",false);
+define("DEMO",true);
 
 define("DEMO",false);
 
