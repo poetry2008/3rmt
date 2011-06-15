@@ -63,24 +63,24 @@
   <!-- body //--> 
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
     <tr> 
+      <td valign="top" class="left_colum_border"> <!-- left_navigation //--> 
+        <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
+        <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents"> 
-        <h1 class="pageHeading">
-        <span class="game_t">
-          <?php echo HEADING_TITLE; ?>
-        </span>
-        </h1> 
+        <h1 class="pageHeading"><span><?php echo HEADING_TITLE; ?></span></h1> 
+        
         <div class="comment"> 
          <?php
          if ($error == true) {
            if (isset($error_msg)) {
              if ($error_msg == ALREADY_SEND_MAIL_TEXT) {
-             ?>
+             ?>  
                <script type="text/javascript">
                alert('<?php echo $error_msg;?>');
-               window.location.href="<?php echo tep_href_link(FILENAME_DEFAULT);?>"; 
+               window.location.href="<?php echo HTTP_SERVER.'?'.tep_session_name.'='.tep_session_id();?>"; 
                </script> 
-             <?php
+             <?php 
              } else {
                echo '<div style="color:ff0000;">'.$error_msg.'</div>'; 
              }
@@ -90,7 +90,7 @@
          }
          ?>
          <?php echo tep_draw_form('form', tep_href_link('member_auth.php', 'action=send', 'SSL'));?> 
-          <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:12px;"> 
+          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_info_box" style="font-size:12px;"> 
             <tr>
               <td>
               <table>
@@ -117,7 +117,7 @@
               <td><br> 
                 <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr> 
-                    <td class="main" align="right"><?php echo '<a href="' .  HTTP_SERVER.'?'.tep_session_name().'='.tep_session_id() . '">' . tep_image_button('button_continue.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
+                    <td class="main" align="right"><?php echo '<a href="' .  HTTP_SERVER.'?'.tep_session_name().'='.tep_session_id(). '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td> 
                     <td align="right" class="main">
                     </td> 
                   </tr> 
@@ -126,6 +126,7 @@
           </table> 
           </form> 
         </div>
+        <p class="pageBottom"></p>
         </td> 
       <!-- body_text_eof //--> 
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
@@ -137,6 +138,7 @@
   <!-- footer //--> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
   <!-- footer_eof //--> 
+</div> 
 </div> 
 </body>
 </html>
