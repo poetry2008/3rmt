@@ -62,15 +62,15 @@ class HM_Item_Checkbox extends HM_Item_Basic
     $result .= "後方文字<input type='text' name='afterInput' value='".(isset($item_value['afterInput'])?$item_value['afterInput']:'')."'/></br>\n";
     if(count($radios)){
       foreach($radios as $key=>$radio){
-        $result.= "元素<input type='text' name='radios[]' value=$radio />\r\n</br>";
+        $result.= "Checkbox<input type='text' name='radios[]' value=$radio />\r\n</br>";
       }
     }else{
-        $result.= "元素<input type='text' name='radios[]' />\r\n</br>";
+        $result.= "Checkbox<input type='text' name='radios[]' />\r\n</br>";
     }
     $result .="<script type='text/javascript' >";
     $result .="function insertAitem(e)";
     $result .="{";
-    $result .="$('<p>元素</p><input type=\"text\" name=\"radios[]\" ></br>').insertBefore($(e));";
+    $result .="$('<p>Checkbox</p><input type=\"text\" name=\"radios[]\" ></br>').insertBefore($(e));";
     $result .="}";
     $result .="</script>";
     $result .="<input value='チェックボックス追加' type='button' onClick='insertAitem(this)' >";

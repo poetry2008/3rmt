@@ -12,8 +12,9 @@
 
 define('FORM_OPTION', 'オプション');
 define('ADD_GROUP', 'グループ作成');
-define('GROUP_NAME', '名前');
+define('GROUP_NAME', 'タイトル');
 define('GROUP_OPERATE', '操作');
 define('GROUP_EDIT', '編集');
+define('GROUP_ORDER', '並び順');
 define('DEL_LINK_GROUP', '削除');
 ?>
