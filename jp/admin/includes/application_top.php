@@ -4,7 +4,7 @@
 */
 define("DEMO",false);
 
-define("DEMO",true);
+define("DEMO",false);
 
 
 $GLOBALS['HTTP_GET_VARS']  = $_GET;
