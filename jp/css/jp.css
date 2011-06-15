@@ -1107,3 +1107,12 @@ searching
 }
 .text { color:#000; font-size:12px; line-height:18px;}
 .checout_comment_info{ width:100%;  width:96%\9; }
+.payment_comment{ 
+ word-wrap:break-word;
+ word-break:break-all;
+ overflow:hidden;
+ display:block;
+ table-layout:fixed;
+ width:520px;
+}
+.active_email input{ width:380px;}

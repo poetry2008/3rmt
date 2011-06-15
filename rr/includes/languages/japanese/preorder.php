@@ -31,7 +31,7 @@ define('TEXT_EMAIL_SUCCESSFUL_SENT', '<p><b>「予約確認メール」を&nbsp;
 <b>＜迷惑メールフォルダの確認＞</b><br>
 弊社のメールが 「迷惑メールフォルダ」や「ゴミ箱」に振り分けされ見落としていませんか？<br>
 <b>＜メールドメインの受信制限を設定している＞</b><br>
-ff14-rmt.comのメールドメインを受信するように設定をお願いいたします。<br>
+redstone-rmt.comのメールドメインを受信するように設定をお願いいたします。<br>
 <b>＜それでも届かないときは、メールアドレス変更＞</b><br>
 メールアドレスをご確認の上、再度お申し込みをお願いいたします。<br>
 </p>
@@ -66,7 +66,7 @@ define('TEXT_EMAIL_LINK', 'この商品の詳細は、下記のリンクをク�
 . 'コピー＆ペーストしてください。' . "\n\n" . '%s' . "\n\n");
 define('TEXT_EMAIL_SIGNATURE', '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n"
 . '株式会社 iimy' . "\n"
-. 'helpdesk@ff14-rmt.com' . "\n"
-. 'http://www.ff14-rmt.com/' . "\n"
+. 'helpdesk@redstone-rmt.com' . "\n"
+. 'http://www.redstone-rmt.com/' . "\n"
 . '━━━━━━━━━━━━━━━━━━━━━━━');
 ?>

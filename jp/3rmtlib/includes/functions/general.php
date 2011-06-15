@@ -3800,22 +3800,24 @@ function tep_check_exists_category($cPath, $cName)
   return false;
 }
 
-function tep_get_category_is_set_in_site($c_id)
+
+function tep_get_random_ac_code($length = 10)
 {
-  $sql = "select count(*) as total 
-      from ".TABLE_PRODUCTS_TO_CATEGORIES." p2c,
-           ".TABLE_PRODUCTS_DESCRIPTION." pd
-      where p2c.categories_id = '".$c_id."' 
-      and p2c.products_id = pd.products_id 
-      and pd.site_id = '".SITE_ID."'
-      and pd.products_status <> 0 
-      and pd.products_status <> 3";
-  $query = tep_db_query($sql);
-  $res = tep_db_fetch_array($query);
-  if($res['total'] > 0){
-    return true;
-  }else{
-    return false;
+  $letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+  $return_str = '';
+
+  for ($i = 1; $i <= $length; $i++) {
+   $q = floor(tep_rand(1,62));
+   $return_str .= $letters[$q];
   }
-    
+  return $return_str;
+}
+
+function tep_check_exists_cu_email($email_address, $customer_id, $ctype)
+{
+   $customers_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id != '".$customer_id."' and site_id = '".SITE_ID."' and customers_email_address = '".$email_address."'");
+   if (tep_db_num_rows($customers_raw)) {
+     return true; 
+   }
+   return false;
 }

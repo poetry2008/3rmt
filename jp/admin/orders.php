@@ -667,7 +667,6 @@ function q_4_3(){
 </head>
 <body>
 <!-- header //-->
-<div class="pageHeading_box">
 <?php
   require(DIR_WS_INCLUDES . 'header.php');
 ?>
@@ -756,20 +755,18 @@ function q_4_3(){
       <tr>
         <td>
         <!-- 左右结构 -->
-        <table border="0" width="100%" cellspacing="0" cellpadding="0">
-          <tr>
             <!-- left -->
-            <td width="50%" valign="top">
+            <div class="pageHeading_box">
             <div id="orders_info">
               <h3>Order Info</h3>
               <table width="100%" border="0" cellspacing="0" cellpadding="2">
                 <tr>
                   <td class="main" valign="top" width="30%"><b>注文書サイト:</b></td>
-                  <td class="main" width="70%"><b style=" color:#FF0000"><?php echo tep_get_site_name_by_order_id($oID);?></b></td>
+                  <td class="main"><b style=" color:#FF0000"><?php echo tep_get_site_name_by_order_id($oID);?></b></td>
                 </tr>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>取引日時:</b></td>
-                  <td class="main" width="70%"><b style=" color:#0000FF"><?php echo $order->tori['date'];?></b></td>
+                  <td class="main"><b style=" color:#0000FF"><?php echo $order->tori['date'];?></b></td>
                 </tr>
                 <tr>
                   <td class="main" valign="top"><b>オプション:</b></td>
@@ -816,7 +813,7 @@ function q_4_3(){
                 </tr>
                 <tr>
                   <td class="main" valign="top" width="30%"><b><?php echo ENTRY_PAYMENT_METHOD; ?></b></td>
-                  <td class="main" width="70%"><?php echo $order->info['payment_method']; ?></td>
+                  <td class="main"><?php echo $order->info['payment_method']; ?></td>
                 </tr>
             <?php
                 if ( (($order->info['cc_type']) || ($order->info['cc_owner']) || ($order->info['cc_number'])) ) {
@@ -847,24 +844,24 @@ function q_4_3(){
               <table width="100%" border="0" cellspacing="0" cellpadding="2">
                 <tr>
                   <td class="main" valign="top" width="30%"><b>IPアドレス:</b></td>
-                  <td class="main" width="70%"><?php echo tep_high_light_by_keywords($order->info['orders_ip'] ? $order->info['orders_ip'] : 'UNKNOW',IP_LIGHT_KEYWORDS);?></td>
+                  <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_ip'] ? $order->info['orders_ip'] : 'UNKNOW',IP_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>ホスト名:</b></td>
-                  <td class="main" width="70%"><?php echo tep_high_light_by_keywords($order->info['orders_host_name']?'<font'.($order->info['orders_host_name'] == $order->info['orders_ip'] ? ' color="red"':'').'>'.$order->info['orders_host_name'].'</font>':'UNKNOW',HOST_NAME_LIGHT_KEYWORDS);?></td>
+                  <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_host_name']?'<font'.($order->info['orders_host_name'] == $order->info['orders_ip'] ? ' color="red"':'').'>'.$order->info['orders_host_name'].'</font>':'UNKNOW',HOST_NAME_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>ユーザーエージェント:</b></td>
-                  <td class="main" width="70%"><?php echo tep_high_light_by_keywords($order->info['orders_user_agent'] ? $order->info['orders_user_agent'] : 'UNKNOW',USER_AGENT_LIGHT_KEYWORDS);?></td>
+                  <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_user_agent'] ? $order->info['orders_user_agent'] : 'UNKNOW',USER_AGENT_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <?php if ($order->info['orders_user_agent']) {?>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>OS:</b></td>
-                  <td class="main" width="70%"><?php echo tep_high_light_by_keywords(getOS($order->info['orders_user_agent']),OS_LIGHT_KEYWORDS);?></td>
+                  <td class="main"><?php echo tep_high_light_by_keywords(getOS($order->info['orders_user_agent']),OS_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>ブラウザの種類:</b></td>
-                  <td class="main" width="70%">
+                  <td class="main">
                   <?php $browser_info = getBrowserInfo($order->info['orders_user_agent']);?>
                   <?php echo tep_high_light_by_keywords($browser_info['longName'] . ' ' . $browser_info['version'],BROWSER_LIGHT_KEYWORDS); ?>
                   </td>
@@ -872,27 +869,27 @@ function q_4_3(){
                 <?php }?>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>ブラウザの言語:</b></td>
-                  <td class="main" width="70%"><?php echo tep_high_light_by_keywords($order->info['orders_http_accept_language'] ? $order->info['orders_http_accept_language'] : 'UNKNOW',HTTP_ACCEPT_LANGUAGE_LIGHT_KEYWORDS);?></td>
+                  <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_http_accept_language'] ? $order->info['orders_http_accept_language'] : 'UNKNOW',HTTP_ACCEPT_LANGUAGE_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>パソコンの言語環境:</b></td>
-                  <td class="main" width="70%"><?php echo tep_high_light_by_keywords($order->info['orders_system_language'] ? $order->info['orders_system_language'] : 'UNKNOW',SYSTEM_LANGUAGE_LIGHT_KEYWORDS);?></td>
+                  <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_system_language'] ? $order->info['orders_system_language'] : 'UNKNOW',SYSTEM_LANGUAGE_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>ユーザーの言語環境:</b></td>
-                  <td class="main" width="70%"><?php echo tep_high_light_by_keywords($order->info['orders_user_language'] ? $order->info['orders_user_language'] : 'UNKNOW',USER_LANGUAGE_LIGHT_KEYWORDS);?></td>
+                  <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_user_language'] ? $order->info['orders_user_language'] : 'UNKNOW',USER_LANGUAGE_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>画面の解像度:</b></td>
-                  <td class="main" width="70%"><?php echo tep_high_light_by_keywords($order->info['orders_screen_resolution'] ? $order->info['orders_screen_resolution'] : 'UNKNOW',SCREEN_RESOLUTION_LIGHT_KEYWORDS);?></td>
+                  <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_screen_resolution'] ? $order->info['orders_screen_resolution'] : 'UNKNOW',SCREEN_RESOLUTION_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>画面の色:</b></td>
-                  <td class="main" width="70%"><?php echo tep_high_light_by_keywords($order->info['orders_color_depth'] ? $order->info['orders_color_depth'] : 'UNKNOW',COLOR_DEPTH_LIGHT_KEYWORDS);?></td>
+                  <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_color_depth'] ? $order->info['orders_color_depth'] : 'UNKNOW',COLOR_DEPTH_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>Flash:</b></td>
-                  <td class="main" width="70%">
+                  <td class="main">
                     <?php echo tep_high_light_by_keywords($order->info['orders_flash_enable'] === '1' ? 'YES' : ($order->info['orders_flash_enable'] === '0' ? 'NO' : 'UNKNOW'),FLASH_LIGHT_KEYWORDS);?>
                   </td>
                 </tr>
@@ -901,42 +898,42 @@ function q_4_3(){
                 ?>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>Flashのバージョン:</b></td>
-                  <td class="main" width="70%"><?php echo tep_high_light_by_keywords($order->info['orders_flash_version'],FLASH_VERSION_LIGHT_KEYWORDS);?></td>
+                  <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_flash_version'],FLASH_VERSION_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <?php } ?>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>Director:</b></td>
-                  <td class="main" width="70%">
+                  <td class="main">
                   <?php echo tep_high_light_by_keywords($order->info['orders_director_enable'] === '1' ? 'YES' : ($order->info['orders_director_enable'] === '0' ? 'NO' : 'UNKNOW'),DIRECTOR_LIGHT_KEYWORDS);?>
                   </td>
                 </tr>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>Quick time:</b></td>
-                  <td class="main" width="70%">
+                  <td class="main">
                   <?php echo tep_high_light_by_keywords($order->info['orders_quicktime_enable'] === '1' ? 'YES' : ($order->info['orders_quicktime_enable'] === '0' ? 'NO' : 'UNKNOW'),QUICK_TIME_LIGHT_KEYWORDS);?>
                   </td>
                 </tr>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>Real player:</b></td>
-                  <td class="main" width="70%">
+                  <td class="main">
                   <?php echo tep_high_light_by_keywords($order->info['orders_realplayer_enable'] === '1' ? 'YES' : ($order->info['orders_realplayer_enable'] === '0' ? 'NO' : 'UNKNOW'),REAL_PLAYER_LIGHT_KEYWORDS);?>
                   </td>
                 </tr>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>Windows media:</b></td>
-                  <td class="main" width="70%">
+                  <td class="main">
                   <?php echo tep_high_light_by_keywords($order->info['orders_windows_media_enable'] === '1' ? 'YES' : ($order->info['orders_windows_media_enable'] === '0' ? 'NO' : 'UNKNOW'),WINDOWS_MEDIA_LIGHT_KEYWORDS);?>
                   </td>
                 </tr>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>Pdf:</b></td>
-                  <td class="main" width="70%">
+                  <td class="main">
                   <?php echo tep_high_light_by_keywords($order->info['orders_pdf_enable'] === '1' ? 'YES' : ($order->info['orders_pdf_enable'] === '0' ? 'NO' : 'UNKNOW'),PDF_LIGHT_KEYWORDS);?>
                   </td>
                 </tr>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>Java:</b></td>
-                  <td class="main" width="70%">
+                  <td class="main">
                   <?php echo tep_high_light_by_keywords($order->info['orders_java_enable'] === '1' ? 'YES' : ($order->info['orders_java_enable'] === '0' ? 'NO' : 'UNKNOW'),JAVA_LIGHT_KEYWORDS);?>
                   </td>
                 </tr>
@@ -948,13 +945,13 @@ function q_4_3(){
               <table width="100%" border="0" cellspacing="0" cellpadding="2">
                 <tr>
                   <td class="main" valign="top" width="30%"><b>Referer:</b></td>
-                  <td class="main" width="70%"><p
+                  <td class="main"><p
                   style="word-break:break-all;width:650px;word-wrap:break-word;overflow:hidden;display:block;"><?php echo urldecode($order->info['orders_ref']);?></p></td>
                 </tr>
                 <?php if ($order->info['orders_ref_keywords']) { ?>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>Keywords:</b></td>
-                  <td class="main" width="70%"><?php echo $order->info['orders_ref_keywords'];?></td>
+                  <td class="main"><?php echo $order->info['orders_ref_keywords'];?></td>
                 </tr>
                 <?php } ?>
               </table>
@@ -1048,11 +1045,10 @@ function q_4_3(){
                 }
               ?>
             </div>
-            </td>
+            </div>
             <!-- /left -->
-            <td width="10">&nbsp;</td>
             <!-- right -->
-            <td valign="top">
+            <div class="pageHeading_box02">
               <?php // 订单备注 ?>
               <div id="orders_comment">
               <h3>Order Comment</h3>
@@ -1131,7 +1127,7 @@ function q_4_3(){
                 <form name="form_orders_questions" id='form_orders_questions' action="ajax_orders.php?action=save_questions&orders_id=<?php echo $order->info['orders_id'];?>" method='post'>
 <table width="100%">
   <tr>
-    <td class="main">支払方法：</td>
+    <td class="main" width="30%">支払方法：</td>
     <td class="main">
 <?php //if (tep_is_oroshi($order->customer['id']) && $orders_questions_type==1) { ?>
 <?php      
@@ -1532,10 +1528,14 @@ if (false) {
   $form->setAction('oa_answer_process.php?oID='.$order_id);
   $form->render();
         ?>
-</table>
-		</td>
-	</tr>
-          </table></td></tr>  <!-- /right -->
+    </td>
+      </tr>
+                </table>
+              </div>
+            </div>
+            <!-- /right -->
+        </td>
+      </tr>
       <!-- 信用调查 -->
       <tr>
         <td>
@@ -2626,7 +2626,6 @@ function submit_confirm()
 <!-- footer_eof //-->
 <br>
 <div id="wait" style="position:fixed; left:45%; top:45%; display:none;"><img src="images/load.gif" alt="img"></div>
-</div>
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

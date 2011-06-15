@@ -7,23 +7,6 @@ require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_TAGS);
 check_uri('/tags\.php/');
 $breadcrumb->add(TAGS_NAVBAR_TITLE, tep_href_link(FILENAME_TAGS));
 
-?>
-<?php page_head($breadcrumb->trail_title(' &raquo; '));?>
-</head>
-
-<body>
-<div align="center">
-<?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<table class="side_border" border="0" width="900" cellspacing="0" cellpadding="0">
-<tr>
-<td class="left_colum_border" width="171" valign="top">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</td>
-<td id="contents" valign="top">
-<div class="pageHeading"><img align="top" src="images/menu_ico_a.gif" alt="">
-<h1><?php echo TAGS_HEADING_TITLE; ?></h1></div>
-<div class="comment">
-<?php 
 /*在products 里面 查找所有的 tags_id*/
 $products_tags_sql = "
     select distinct(tags_id) 
@@ -52,6 +35,30 @@ $tags_split = new splitPageResults($_GET['page'],
     MAX_DISPLAY_SEARCH_RESULTS, $tags_query_string, $tags_numrows);
 //ccdd
 $tags_query = tep_db_query($tags_query_string);
+
+
+$all_tags_page = ceil($tags_numrows/MAX_DISPLAY_SEARCH_RESULTS);
+if($_GET['page'] > $all_tags_page){
+  forward404();
+}
+
+?>
+<?php page_head($breadcrumb->trail_title(' &raquo; '));?>
+</head>
+
+<body>
+<div align="center">
+<?php require(DIR_WS_INCLUDES . 'header.php'); ?>
+<table class="side_border" border="0" width="900" cellspacing="0" cellpadding="0">
+<tr>
+<td class="left_colum_border" width="171" valign="top">
+<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
+</td>
+<td id="contents" valign="top">
+<div class="pageHeading"><img align="top" src="images/menu_ico_a.gif" alt="">
+<h1><?php echo TAGS_HEADING_TITLE; ?></h1></div>
+<div class="comment">
+<?php 
 if (($tags_numrows > 0 ) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3')))
 {
 ?>

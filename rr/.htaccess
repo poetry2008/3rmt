@@ -24,7 +24,7 @@ Expiresbytype video/x-flv "access plus 10 days"
 expiresbytype text/css "access plus 10 days"
 expiresbytype application/x-javascript "access plus 10 days"
 </IfModule>
-RedirectPermanent /index.html http://wwwwww.haomai.cc/
+RedirectPermanent /index.html http://www.redstone-rmt.com/
 
 <IfModule mod_setenvif.c>
   <IfDefine SSL>

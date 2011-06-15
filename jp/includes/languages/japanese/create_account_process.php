@@ -55,4 +55,6 @@ define('EMAIL_WARNING',
 . 'support@iimy.co.jp'."\n"
 . 'http://www.iimy.co.jp/' . "\n"
 . '━━━━━━━━━━━━━━━━━━━━━━━' . "\n");
+
+define('EMAIL_NAME_COMMENT_LINK', ' 様 ');
 ?>

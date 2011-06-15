@@ -48,4 +48,6 @@ define('EMAIL_WARNING',
 . 'helpdesk@ff14-rmt.com'."\n"
 . 'http://www.ff14-rmt.com/' . "\n"
 . '━━━━━━━━━━━━━━━━━━━━━━━' . "\n");
+
+define('EMAIL_NAME_COMMENT_LINK', ' 様 ');
 ?>

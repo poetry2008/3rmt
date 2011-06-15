@@ -21,7 +21,11 @@
     $origin_href = tep_href_link($navigation->snapshot['page'], tep_array_to_string($navigation->snapshot['get'], array(tep_session_name())), $navigation->snapshot['mode']);
     $navigation->clear_snapshot();
   } else {
-    $origin_href = tep_href_link(FILENAME_DEFAULT);
+    if ($cart->count_contents() > 0) {
+      $origin_href = tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL'); 
+    } else {
+      $origin_href = HTTP_SERVER.'?'.tep_session_name().'='.tep_session_id();
+    } 
   }
 ?>
 <?php page_head();?>
@@ -41,6 +45,9 @@
         
         <div class="comment"> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+          	<tr>
+          		<td align="right"><?php echo '<a href="' . $origin_href . '">' . tep_image_button('button_continue02.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td>
+        	</tr>
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="game_list_content">
             <tr>
@@ -49,7 +56,7 @@
           </table></td>
         </tr>
         <tr>
-          <td align="right"><?php echo '<a href="' . $origin_href . '">' . tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td>
+          <td align="right"><?php echo '<a href="' . $origin_href . '">' . tep_image_button('button_continue02.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td>
         </tr>
       </table>
       </div>

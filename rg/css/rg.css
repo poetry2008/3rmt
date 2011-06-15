@@ -1724,3 +1724,11 @@ border:2px solid #FF8080;
 .best_goods_info { text-align:center; font-size:12px; padding:5px 0; border:1px solid #ccc;}
 .reorder{margin-top:8px; overflow:hidden;}
 .active_email input {width:365px;}
+.payment_comment{ 
+ word-wrap:break-word;
+ word-break:break-all;
+ overflow:hidden;
+ display:block;
+ table-layout:fixed;
+ width:490px;
+}

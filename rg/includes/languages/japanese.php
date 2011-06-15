@@ -419,7 +419,7 @@ define('SENDMAIL_BUTTON', '送信');
 define('LINK_SENDMAIL_TEXT', 'メール受信テストをする');
 define('LINK_SENDMAIL_TITLE', 'メール受信テスト');
 define('SENDMAIL_SUCCESS_TEXT', 'メールが送信されました。'.STORE_NAME.'からの受信をご確認ください。');
-define('SENDMAIL_READ_TEXT', '会員登録をしていただく前に'.STORE_NAME.'からメールが正常に受信できるか、テストしていただきます。<br>会員登録は受信されましたメール内に記載してあるURLから行ってください。<br><b>正常に受信できる場合：</b>「送信」後5分以内で'.STORE_NAME.'からの確認メールが届きます。<br><b>受信できない場合：</b>「送信」後5分以上経過しても受信できない場合は、スパムフィルター等で受け取りを拒否されている可能性が高いです。');
+define('SENDMAIL_READ_TEXT', STORE_NAME.'からのメールを<br><b>正常に受信できる場合：</b>「送信」後5分以内で'.STORE_NAME.'からの確認メールが届きます。<br><b>受信できない場合：</b>「送信」後5分以上経過しても受信できない場合は、スパムフィルター等で受け取りを拒否されている可能性が高いです。 ');
 define('SENDMAIL_TROUBLE_PRE', 'メール受信の設定に関しては、');
 define('SENDMAIL_TROUBLE_LINK', '<b>「フリーメールでメールが受け取れない方へ」</b>');
 define('SENDMAIL_TROUBLE_END', 'をご参考ください。');
@@ -435,4 +435,7 @@ define('TEXT_TAGS', 'タグ一覧');
 define('COLUMNLEFT_SEARCH_DEFAULT_VALUE', '入力して下さい');
 define('COLUMNRIGHT_BEST_GOODS_TITLE', 'お勧めゲーム');
 define('ENTRY_GUEST_EMAIL_NOT_ACTIVE', '&nbsp;<small><font color="#FF0000">認証手続きはまだ完了していません。</font></small>');
+define('CHECK_EMAIL_EXISTS_ERROR', 'エラーが発生しました。<br>お手数をお掛けいたしますが、こちらから<a href="'.HTTP_SERVER.'?'.tep_session_name().'='.tep_session_id().'">トップページ</a>に戻り再度やり直してください。');
+define('SENDMAIL_SUCCESS_COMMENT_TEXT', '正常に受信できる場合：「送信」後5分以内で'.STORE_NAME.'からの確認メールが届きます。<br>受信できない場合：「送信」後5分以上経過しても受信できない場合は、スパムフィルター等で受け取りを拒否されている可能性が高いです。');
+define('ALREADY_SEND_MAIL_TEXT', 'エラーが発生しました。\nお手数をお掛けいたしますが、トップページに戻り再度やり直してください');
 ?>

@@ -55,4 +55,6 @@ define('EMAIL_WARNING',
 . 'support@itemdepot.jp'."\n"
 . 'http://www.itemdepot.jp/' . "\n"
 . '━━━━━━━━━━━━━━━━━━━━━━━' . "\n");
+
+define('EMAIL_NAME_COMMENT_LINK', ' 様 ');
 ?>

@@ -85,6 +85,20 @@
     echo SENDMAIL_SUCCESS_TEXT; 
   }
   ?>
+       <?php
+       if ($success_single) { 
+       ?>
+       <?php echo '<br>'.SENDMAIL_SUCCESS_COMMENT_TEXT;?> 
+       <?php
+          echo '<br>'; 
+      echo '<br>';
+          echo SENDMAIL_TROUBLE_PRE;  
+       ?> 
+          <a href="<?php echo tep_href_link('email_trouble.php');?>"><?php echo SENDMAIL_TROUBLE_LINK;?></a>  
+        <?php 
+          echo SENDMAIL_TROUBLE_END;  
+        ?>
+       <?php } else {?> 
        <?php echo '<br>'.SENDMAIL_READ_TEXT;?> 
        <?php
           echo '<br>'; 
@@ -94,6 +108,9 @@
           <a href="<?php echo tep_href_link('email_trouble.php');?>"><?php echo SENDMAIL_TROUBLE_LINK;?></a>  
         <?php 
           echo SENDMAIL_TROUBLE_END;  
+        ?>
+        <?php
+         }
         ?>
         <?php 
       if ($success_single == true) {  

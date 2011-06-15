@@ -36,7 +36,7 @@ $categories_tab_query1 = tep_db_query("
   $col = 0 ;
   while($cbt = tep_db_fetch_array($categories_tab_query1)){
     $number_of_categories ++;
-    if ($number_of_categories > 4) {
+    if ($number_of_categories > 6) {
       continue; 
     }
     echo '<div class="game_list"><a href="' . tep_href_link(FILENAME_DEFAULT,'cPath=' . $cbt['parent_id'].'_'.$cbt['categories_id']) . '">' . "\n";

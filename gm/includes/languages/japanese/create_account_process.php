@@ -55,4 +55,6 @@ define('EMAIL_WARNING',
 . 'support@gamemoney.cc'."\n"
 . 'http://www.gamemoney.cc/' . "\n"
 . '━━━━━━━━━━━━━━━━━━━━━━━' . "\n");
+
+define('EMAIL_NAME_COMMENT_LINK', ' 様 ');
 ?>

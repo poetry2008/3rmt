@@ -1204,3 +1204,12 @@ searching
     width: 110px;
 	width:90px\9;
 }
+.payment_comment{ 
+ word-wrap:break-word;
+ word-break:break-all;
+ overflow:hidden;
+ display:block;
+ table-layout:fixed;
+ width:440px;
+}
+.active_email input{ width:300px;}

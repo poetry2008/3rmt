@@ -12,10 +12,9 @@
 
   require('includes/application_top.php');
 
-  require(DIR_WS_LANGUAGES . $language . '/active_success.php');
+  require(DIR_WS_LANGUAGES . $language . '/m_token.php');
   
-  $active_info_arr = explode(',', base64_decode($_GET['aid']));
-  $customers_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".(int)$active_info_arr[1]."' and site_id = '".SITE_ID."' and customers_guest_chk = '0'");
+  $customers_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where check_login_str = '".$_GET['aid']."' and site_id = '".SITE_ID."' and customers_guest_chk = '0'");
   $customers_res = tep_db_fetch_array($customers_raw);
   
   if ($customers_res) {
@@ -33,8 +32,8 @@
     } else {
       $email_name = tep_get_fullname($customers_res['customers_firstname'], $customers_res['customers_lastname']); 
       
-      $email_text = stripslashes($customers_res['customers_lastname'].' '.$customers_res['customers_firstname']).EMAIL_NAME_COMMENT_LINK . "\n\n"; 
-      
+     $email_text = stripslashes($customers_res['customers_lastname'].' '.$customers_res['customers_firstname']).EMAIL_NAME_COMMENT_LINK . "\n\n"; 
+       
       $email_text .= C_CREAT_ACCOUNT;
       $email_text = str_replace(array('${MAIL}', '${PASS}'), array($customers_res['customers_email_address'], $customers_res['origin_password']), $email_text); 
       if ($customers_res['is_active'] == 0) {
