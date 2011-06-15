@@ -7,11 +7,11 @@
   if (isset($_GET['action'])) {
     switch ($_GET['action']) {
       case 'insert':
-        tep_db_query("insert into `".TABLE_OA_GROUP."` values(NULL, '".tep_db_prepare_input($_POST['gname'])."', '".tep_db_prepare_input($_POST['goption'])."', '".(int)$_POST['gsort']."')"); 
+        tep_db_query("insert into `".TABLE_OA_GROUP."` values(NULL, '".tep_db_prepare_input($_POST['gname'])."', '".tep_db_prepare_input($_POST['goption'])."')"); 
         tep_redirect(tep_href_link(FILENAME_OA_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type'])); 
         break;
       case 'update':
-        tep_db_query("update `".TABLE_OA_GROUP."` set `name` = '".tep_db_prepare_input($_POST['gname'])."', `option` = '".tep_db_prepare_input($_POST['goption'])."', `sort` = '".(int)$_POST['gsort']."' where id = '".$_GET['gid']."'");        
+        tep_db_query("update `".TABLE_OA_GROUP."` set `name` = '".tep_db_prepare_input($_POST['gname'])."'  where id = '".$_GET['gid']."'");        
         tep_redirect(tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'])); 
        break;
       case 'del':
@@ -26,9 +26,9 @@
          
          if ($form_res) {
            $insert_group_arr = $_POST['ag'];
-           tep_db_query("delete from `".TABLE_OA_FORM_GROUP."` where `form_id` = '".$form_res['id']."'"); 
+	   //           tep_db_query("delete from `".TABLE_OA_FORM_GROUP."` where `form_id` = '".$form_res['id']."'"); 
            foreach ($insert_group_arr as $ikey => $ivalue) {
-             tep_db_query("insert into `".TABLE_OA_FORM_GROUP."` values(NULL, '".$form_res['id']."', '".$ivalue."')"); 
+             tep_db_query("insert into `".TABLE_OA_FORM_GROUP."` values(NULL, '".$form_res['id']."', '".$ivalue."',0)"); 
            }
          }
        }
@@ -38,7 +38,7 @@
   }
   
   if ($_GET['action'] == 'edit') {
-    $oa_group_raw = tep_db_query("select * from ".TABLE_OA_GROUP." where id = '".$_GET['gid']."'"); 
+    $oa_group_raw = tep_db_query("select * from ".TABLE_OA_GROUP." where id = '".$_GET['gid']."' order by id"); 
     $oa_group_res = tep_db_fetch_array($oa_group_raw); 
   }
 ?>
@@ -72,6 +72,7 @@ function select_all_group()
 <!-- header_eof //-->
 
 <!-- body //-->
+<h1>グループ管理</h1>
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
@@ -99,6 +100,7 @@ function select_all_group()
                 echo tep_draw_input_field('gname', ((isset($oa_group_res['name'])?$oa_group_res['name']:''))); 
               ?>
               </td> 
+
             </tr>
             <tr style="display:none;">
               <td><?php echo OA_GROUP_OPTION_TEXT;?></td> 
@@ -106,14 +108,7 @@ function select_all_group()
               <?php echo tep_draw_textarea_field('goption', 'soft', '70', '15', ((isset($oa_group_res['option'])?$oa_group_res['option']:'')));?> 
               </td> 
             </tr>
-            <tr>
-              <td><?php echo OA_GROUP_SORT_TEXT;?></td> 
-              <td>
-              <?php
-                echo tep_draw_input_field('gsort', ((isset($oa_group_res['sort'])?$oa_group_res['sort']:''))); 
-              ?>
-              </td> 
-            </tr>
+
             <tr>
               <td colspan="2">
               <input type="submit" value="<?php echo IMAGE_SAVE;?>"> 
@@ -128,24 +123,83 @@ function select_all_group()
           <?php
           if ($_GET['action'] == 'edit') { 
           ?>
+<script type='text/javascript'>
+    function editorder (ele){
+    x = $(ele).parent().parent();      
+    oid = x.attr('id').substr(1);
+    oid = parseInt(oid);
+    up = false;
+    if ($(ele).val() == 'up'){
+      up  = true;
+      oid -= 1;
+    }else{
+      oid += 1;
+    }
+    count = x.parent().children().length ;
+
+    if (oid == 0 || oid >= count + 1)
+      {
+
+      }else {
+      oid = 'o'+oid;
+      if( up){
+        x.insertBefore($("#"+oid));
+      }else {
+        x.insertAfter($("#"+oid));
+      }
+
+    }
+    count = x.parent().children().each(
+                                       function (e,key){
+                                         if($(this).attr('id') && ($(this).attr('id')!='o'+e) ){
+                                         $(this).attr('id','o'+e);
+                                         ajaxUpdate($(this).attr('class'),$(this).attr('id'));
+                                         }
+                                       }
+                                       );
+
+  }
+function ajaxUpdate(id,order){
+  $.ajax({
+  url: "oa_ajax.php",
+  data: "id="+id+"&order="+order+"&action=updateitemorder&random="+ new Date().getTime(),
+  success: function(){
+    $(this).addClass("done");
+  }
+});
+}
+</script>
           <a href="<?php echo tep_href_link(FILENAME_OA_ITEM,
             'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>"><input type="button" value="<?php echo BUTTON_ADD_ITEM_TEXT;?>"></a> 
           <table border="1">
             <tr>
               <td><?php echo TABLE_HEADING_ITEM_TITLE;?></td> 
+              <td><?php echo TABLE_HEADING_ITEM_TYPE;?></td> 
               <td><?php echo TABLE_HEADING_OAGROUP_OPERATE;?></td> 
+              <td><?php echo TABLE_HEADING_OAGROUP_ORDER;?></td> 
             </tr>
             <?php
-               $has_item_raw = tep_db_query("select * from ".TABLE_OA_ITEM." where group_id = '".$_GET['gid']."'"); 
+               $has_item_raw = tep_db_query("select * from ".TABLE_OA_ITEM." where group_id = '".$_GET['gid']."' order by ordernumber"); 
                while ($has_item_res = tep_db_fetch_array($has_item_raw)) { 
             ?>
-            <tr>
+                 <tr class='<?php echo $has_item_res['id']; ?>' id = 'o<?php echo $has_item_res['ordernumber'];?>'>
               <td>
               <?php echo $has_item_res['title'];?> 
               </td>
               <td>
+                 
+              <?php 
+                   require_once 'enableditem.php';
+                 echo $enabled_item_array[ucfirst($has_item_res['type'])];
+                 ?> 
+              </td>
+              <td>
               <a href="<?php echo tep_href_link(FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&eid='.$has_item_res['id'].'&action=edit');?>"><?php echo EDIT_ITEM_LINK_TEXT;?></a> 
               <a href="<?php echo tep_href_link(FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&eid='.$has_item_res['id'].'&action=del');?>"><?php echo DEL_ITEM_LINK_TEXT;?></a> 
+              </td>
+              <td><?php
+            echo '<input type="button" value="up" onclick="editorder(this)">';
+            echo '<input type="button" value="down"onclick="editorder(this)">';?>
               </td>
             </tr>
             <?php
@@ -169,7 +223,7 @@ function select_all_group()
               </td>
             </tr>
             <?php
-              $group_list_raw = tep_db_query("select * from ".TABLE_OA_GROUP." order by sort"); 
+              $group_list_raw = tep_db_query("select * from ".TABLE_OA_GROUP." order by id"); 
               while ($group_list_res = tep_db_fetch_array($group_list_raw)) {
                 echo '<tr>'; 
                 echo '<td><input type="checkbox" name="ag[]" value="'.$group_list_res['id'].'"></td>'; 

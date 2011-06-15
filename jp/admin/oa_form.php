@@ -68,21 +68,74 @@
     <tr>
       <td>
         <?php
-          $form_group_raw = tep_db_query("select g.id, g.name from ".TABLE_OA_GROUP." g, ".TABLE_OA_FORM_GROUP." ofg where g.id = ofg.group_id and ofg.form_id = '".$form_id."'"); 
+          $form_group_raw = tep_db_query("select ofg.id ofgid,g.id, g.name from ".TABLE_OA_GROUP." g, ".TABLE_OA_FORM_GROUP." ofg where g.id = ofg.group_id and ofg.form_id = '".$form_id."' order by ofg.ordernumber"); 
         ?>
         <a href="<?php echo tep_href_link(FILENAME_OA_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>"><?php echo ADD_GROUP;?></a> 
+<script type='text/javascript'>
+    function editorder (ele){
+    x = $(ele).parent().parent();      
+    oid = x.attr('id').substr(1);
+    oid = parseInt(oid);
+    up = false;
+    if ($(ele).val() == 'up'){
+      up  = true;
+      oid -= 1;
+    }else{
+      oid += 1;
+    }
+    count = x.parent().children().length ;
+
+    if (oid == 0 || oid >= count + 1)
+      {
+      }else {
+      oid = 'o'+oid;
+      if( up){
+        x.insertBefore($("#"+oid));
+      }else {
+        x.insertAfter($("#"+oid));
+      }
+
+    }
+    count = x.parent().children().each(
+                                       function (e,key){
+                                         if($(this).attr('id') && ($(this).attr('id')!='o'+e) ){
+                                         $(this).attr('id','o'+e);
+                                         ajaxUpdate($(this).attr('class'),$(this).attr('id'));
+                                         }
+                                       }
+                                       );
+
+  }
+function ajaxUpdate(id,order){
+  $.ajax({
+  url: "oa_ajax.php",
+  data: "id="+id+"&order="+order+"&action=updateoaorder&random="+ new Date().getTime(),
+  success: function(){
+    $(this).addClass("done");
+  }
+});
+}
+</script>
         <table border="1"> 
           <tr>
             <td><?php echo GROUP_NAME;?></td> 
             <td><?php echo GROUP_OPERATE;?></td> 
+            <td><?php echo GROUP_ORDER;?></td> 
           </tr>
         <?php
+            $order = 1;
           while ($form_group_res = tep_db_fetch_array($form_group_raw)) {
-            echo '<tr>'; 
+            echo '<tr id ="o'.$order.'" ` class="'.$form_group_res['ofgid'].'">'; 
+            $order +=1;
             echo '<td>'.$form_group_res['name'].'</td>'; 
             echo '<td>'; 
             echo '<a href="'.tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$form_group_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.GROUP_EDIT.'</a>'; 
-            echo '&nbsp;<a href="'.tep_href_link(FILENAME_OA_FORM, 'action=del_link_group&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&gid='.$form_group_res['id']).'&fid='.$form_id.'">'.DEL_LINK_GROUP.'</a>'; echo '</td>'; 
+            echo '&nbsp;<a href="'.tep_href_link(FILENAME_OA_FORM, 'action=del_link_group&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&gid='.$form_group_res['id']).'&fid='.$form_id.'">'.DEL_LINK_GROUP.'</a>';
+            echo '<td>';
+            echo '<input type="button" value="up" onclick="editorder(this)">';
+            echo '<input type="button" value="down"onclick="editorder(this)">';
+            echo '</td>';
+            echo '</td>'; 
             echo '</tr>'; 
           }
         ?>
