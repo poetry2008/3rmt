@@ -11,7 +11,7 @@
 */
 
 define('OA_ITEM_TITLE_TEXT', 'タイトル');
-define('OA_ITEM_NAME_TEXT', '名前');
+define('OA_ITEM_NAME_TEXT', 'タイトル');
 define('OA_ITEM_COMMENT_TEXT', '説明');
 define('OA_ITEM_TYPE_TEXT', 'タイプ');
 define('OA_ITEM_TYPE_OPTION_TEXT', 'オプション');

@@ -43,7 +43,7 @@ class HM_Form extends DbRecord
     echo "<tr><td class='main'>&nbsp;"; 
     echo "<input type='hidden' name='form_id' value='".$this->id."' />";
     echo "</td><td>";
-    echo "<input type='submit' value='hello'  />";
+    echo "<input type='submit' value='保存'  />";
     echo "</td><td>&nbsp;</td></tr>";
     echo '</from>';
     echo "</div>";
