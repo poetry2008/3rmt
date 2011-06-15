@@ -34,7 +34,7 @@
         $option_info_arr['mvalue'] = $va_list_arr; 
         $option_info_arr['form_id'] = $origin_form_res['id']; 
         if ($_GET['action'] == 'insert') {
-          tep_db_query("insert into `".TABLE_OA_ITEM."` values(NULL, '".$_GET['gid']."', '".tep_db_prepare_input($_POST['ititle'])."', '".tep_db_prepare_input(tep_get_random_item_name())."', '".tep_db_prepare_input($_POST['icomment'])."', '".tep_db_prepare_input(serialize($option_info_arr))."', '".tep_db_prepare_input(strtolower($_POST['itype']))."')"); 
+          tep_db_query("insert into `".TABLE_OA_ITEM."` values(NULL, '".$_GET['gid']."', '".tep_db_prepare_input($_POST['ititle'])."', '".tep_db_prepare_input(tep_get_random_item_name())."', '".tep_db_prepare_input($_POST['icomment'])."', '".tep_db_prepare_input(serialize($option_info_arr))."', '".tep_db_prepare_input(strtolower($_POST['itype']))."',0)"); 
           $item_id = tep_db_insert_id(); 
           $option_info_arr['eid'] = $item_id;        
           tep_db_query("update `".TABLE_OA_ITEM."` SET `option` = '".tep_db_prepare_input(serialize($option_info_arr))."' where `id` = '".$item_id."';"); 
@@ -77,8 +77,8 @@
     $item_info_raw = tep_db_query("select * from ".TABLE_OA_ITEM." where id = '".$_GET['eid']."'"); 
     $item_info_res = tep_db_fetch_array($item_info_raw); 
     foreach ($enabled_item_array as $takey => $tavalue) {
-      if (strtolower($tavalue) == $item_info_res['type']) {
-        $sel_type_str = $tavalue;
+      if (strtolower($takey) == $item_info_res['type']) {
+        $sel_type_str = $takey;
         break;
       }
     }
@@ -202,10 +202,10 @@ function deltr(index)
               <?php
                   foreach ($enabled_item_array as $tkey => $tvalue) {
                     $check_str = '';
-                    if ((isset($item_info_res['type'])) && ($item_info_res['type'] == strtolower($tvalue))) {
+                    if ((isset($item_info_res['type'])) && ($item_info_res['type'] == strtolower($tkey))) {
                              $check_str = ' selected'; 
                     }
-                    echo '<option value="'.$tvalue.'"'.$check_str.'>'.strtolower($tvalue).'</option>'; 
+                    echo '<option value="'.$tkey.'"'.$check_str.'>'.strtolower($tvalue).'</option>'; 
                   }
               ?>
             </select>

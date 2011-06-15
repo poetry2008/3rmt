@@ -32,13 +32,48 @@ class HM_Form extends DbRecord
   }
   function render()
   {
-    echo "<form action='".$this->action."' method='post'>";
-    echo "<input type='hidden' name='form_id' value='".$this->id."' />";
+    echo "<div id='orders_answer'>";
+    echo "<form id='qa_form' action='".$this->action."' method='post'>";
+    echo "<table width='100%' >";
+
     foreach ($this->groups as $group){
       $group->render();
     }
-    echo "<input type='submit'/>";
-    echo "</form>";
+
+    echo "<tr><td class='main'>&nbsp;"; 
+    echo "<input type='hidden' name='form_id' value='".$this->id."' />";
+    echo "</td><td>";
+    echo "<input type='submit' value='hello'  />";
+    echo "</td><td>&nbsp;</td></tr>";
+    echo '</from>';
+    echo "</div>";
+    ?>
+    <script type='text/javascript'>
+    function INPUTtext(e){
+      return jQuery.trim(e.val()).length > 0;
+    }
+       $(document).ready(
+                         function()
+                         {
+                           $("#qa_form").submit(function(){
+                               var couldPost = true;
+                               $(".require").each(function(){
+                                 userfun = $(this).attr("tagName")+$(this).attr('type');
+                                 if(couldPost){
+                                   couldPost = eval(userfun+'($(this))');
+                                 }
+                                 });
+                               return couldPost;
+                             });
+
+                         }
+
+                         );
+
+    </script>
+    <?php
+    
+    
   }
   function setAction($actionPage)
   {

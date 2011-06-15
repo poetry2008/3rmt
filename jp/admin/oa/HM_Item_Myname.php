@@ -1,6 +1,6 @@
 <?php
 require_once "HM_Item_Basic.php";
-class HM_Item_Text extends HM_Item_Basic
+class HM_Item_Myname extends HM_Item_Basic
 {
   function getDefaultValue()
   {
@@ -28,6 +28,7 @@ class HM_Item_Text extends HM_Item_Basic
     }
     echo $this->beforeInput."<input type='text' class='".$classrequire."'size='".$this->size."' name='".$this->formname."'
       value='".$this->getDefaultValue()."' />".$this->afterInput;
+    //    echo "<input type='button' value='",$this->SubmitName,"'>";
     echo "</td>";
   }
   function renderScript()
@@ -71,10 +72,11 @@ size___9_____
     $formString .= "必須<input type='checkbox' name='require' ".$checked."/></br>\n";
     $formString .= "项目名<input type='text' name='thename' value='".(isset($item_value['thename'])?$item_value['thename']:'')."'/></br>\n";
     $formString .= "前方文字<input type='text' name='beforeInput' value='".(isset($item_value['beforeInput'])?$item_value['beforeInput']:'')."'/></br>\n";
-    $formString .= "defaultValue<input type='text' name='defaultValue'
-      value='".(isset($item_value['defaultValue'])?$item_value['defaultValue']:'')."'/></br>\n";
-    $formString .= "Size<input type='text' name='size' value='".(isset($item_value['size'])?$item_value['size']:'')."'/></br>\n";
+    $formString .= "SubmitName<input type='text' name='submitName'
+      value='".(isset($item_value['submitName'])?$item_value['submitName']:'')."'/></br>\n";
+
     $formString .= "後方文字<input type='text' name='afterInput' value='".(isset($item_value['afterInput'])?$item_value['afterInput']:'')."'/></br>\n";
+    $formString .= "ステータス<input type='text' name='status' value='".(isset($item_value['status'])?$item_value['status']:'')."'/></br>\n";
     return $formString;
   }
 
