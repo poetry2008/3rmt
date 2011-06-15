@@ -48,4 +48,6 @@ define('EMAIL_WARNING',
 . 'helpdesk@redstone-rmt.com'."\n"
 . 'http://www.redstone-rmt.com/' . "\n"
 . '━━━━━━━━━━━━━━━━━━━━━━━' . "\n");
+
+define('EMAIL_NAME_COMMENT_LINK', ' 様 ');
 ?>
