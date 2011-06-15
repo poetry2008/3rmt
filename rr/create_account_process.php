@@ -243,11 +243,6 @@
         }
       }
     } else {
-      if ($guestchk == 1) {
-        if ($guest_isactive_res['customers_email_address'] == $email_address) {
-          $active_single = 0; 
-        }
-      }
       $entry_guest_not_active = false; 
     }
   } else {
@@ -331,7 +326,7 @@ function pass_hidd(){
       if(tep_db_num_rows($check_cid)) {
       # Guest & 2回目以上 //==============================================
       $check = tep_db_fetch_array($check_cid);
-      if ($check_['is_active'] == 1) {
+      if ($check['is_active'] == 1) {
         $active_single = 0; 
       }
       $NewPass = tep_create_random_value(ENTRY_PASSWORD_MIN_LENGTH);

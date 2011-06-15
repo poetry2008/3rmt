@@ -243,11 +243,6 @@
         }
       }
     } else {
-      if ($guestchk == 1) {
-        if ($guest_isactive_res['customers_email_address'] == $email_address) {
-          $active_single = 0; 
-        }
-      } 
       $entry_guest_not_active = false; 
     }
   } else {
