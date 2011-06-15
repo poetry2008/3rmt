@@ -22,4 +22,6 @@ define('OAGROUP_SELECT_ALL_TEXT', '全部選択');
 define('TABLE_HEADING_OAGROUP_NAME', '名前');
 define('EDIT_GROUP_TEXT', '編集');
 define('DEL_GROUP_TEXT', '削除');
+define('TABLE_HEADING_ITEM_TYPE','タイプ');
+define('TABLE_HEADING_OAGROUP_ORDER','順番調整');
 ?>

@@ -727,7 +727,9 @@ function q_4_3(){
                 <td width="50%" align="left">
                   <table width="100%" border="0" cellspacing="2" cellpadding="2">
                     <tr>
-                      <?php /* <!--<td width="100" align="center" class='<?php echo $order->info['orders_important_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'important')">重要</td>--> */ ?>
+                      <?php 
+
+/* <!--<td width="100" align="center" class='<?php echo $order->info['orders_important_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'important')">重要</td>--> */ ?>
                       <td width="100" align="center" class='<?php echo $order->info['orders_care_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'care', '<?php echo $order->info['orders_id'];?>')">取り扱い注意</td>
                       <td width="100" align="center" class='<?php echo $order->info['orders_wait_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'wait', '<?php echo $order->info['orders_id'];?>')">取引待ち</td>
                       <td width="100" align="center" class='<?php echo $order->info['orders_inputed_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'inputed', '<?php echo $order->info['orders_id'];?>')">入力済み</td>
@@ -1508,16 +1510,13 @@ if (false) {
   <input  type="submit" id="orders_questions_submit" value="保存"<?php if ($oq['q_8_1']) {?> disabled="true"<?php } ?>>
   <?php }?>
 </div>
-                </form>
-                </div><div>
-                <table>
-                <!--new order answer{{-->
-      <tr>
-  <td align='right'>
-        <?php
+                </form>     
+                </div>      
+ <!--new order answer{{-->
+                          <?php
   require_once('oa/HM_Form.php'); 
   require_once('oa/HM_Group.php'); 
-   $order_id = $order->info['orders_id'];
+  $order_id = $order->info['orders_id'];
   $formtype = tep_check_order_type($order_id);
   $formtype = '2';
   $payment_romaji = 'buying'; 
@@ -1528,7 +1527,6 @@ if (false) {
   $form->loadOrderValue($order_id);
   $form->setAction('oa_answer_process.php?oID='.$order_id);
   $form->render();
-
         ?>
     </td>
       </tr>
@@ -1558,7 +1556,6 @@ if (false) {
       <!-- 订单商品 -->
       <tr>
         <td>
-
 
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr class="dataTableHeadingRow">

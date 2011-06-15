@@ -22,10 +22,21 @@ class HM_Group extends DbRecord
 
   function render()
   {
+    echo "<tr>";
+    echo "<td class='main' valign='top'>";
     echo $this->name;
     echo empty($this->name)?"":':';
+    echo "</td>";
+    echo "<td class='main' >";
+    echo "<table><tr><td>";
     foreach ($this->items as $item){
+      echo "<tr>";
       $item->render();
+      echo "</tr>";
     }
+    echo "</table>";
+    echo "</td>";    
+    echo "<td class='main' align='right'>&nbsp;</td>";
+    echo "</tr>";
   }
 }

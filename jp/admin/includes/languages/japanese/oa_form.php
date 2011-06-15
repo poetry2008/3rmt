@@ -11,7 +11,7 @@
 */
 
 define('FORM_OPTION', 'オプション');
-define('ADD_GROUP', '元素追加');
+define('ADD_GROUP', 'グループ作成');
 define('GROUP_NAME', '名前');
 define('GROUP_OPERATE', '操作');
 define('GROUP_EDIT', '編集');
