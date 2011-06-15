@@ -24,3 +24,11 @@ info    # all are eligible to register
 museum  # museums
 name    # individuals
 pro     # credentialed professionals
+asia
+mobi
+tel
+jobs
+travel
+cat
+mail
+post
