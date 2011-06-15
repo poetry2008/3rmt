@@ -3,6 +3,7 @@
   $Id$
 */
 
+define("DEMO",true);
 
 
 $GLOBALS['HTTP_GET_VARS']  = $_GET;
@@ -209,8 +210,6 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_MAIL_MAGAZINE', 'mail_magazine');
   define('TABLE_ORDERS_MAIL', 'orders_mail');
   define('TABLE_CALENDER', 'calendar');
-  define('TABLE_FAQ_CATEGORIES', 'faq_categories');
-  define('TABLE_FAQ_QUESTIONS',  'faq_questions');
   define('TABLE_COMPUTERS',  'computers');
   define('TABLE_ORDERS_TO_COMPUTERS',  'orders_to_computers');
   define('TABLE_BILL_TEMPLATES',  'bill_templates');
