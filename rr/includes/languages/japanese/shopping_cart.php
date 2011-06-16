@@ -21,7 +21,7 @@ define('TEXT_CART_EMPTY', '<p class="red"><b>ショッピングカートには�
 当ショッピングシステムは、<b>JavaScript</b>と<b>Cookie</b>を利用しています。ショッピングをご利用いただくためにはブラウザのJavaScriptとCookieの設定が有効になっている必要があります。通常、特に設定を変える必要はございませんが、ご注文がうまくいかない場合は<a href="' . tep_href_link(FILENAME_CONTACT_US) . '">コチラ</a>よりお問い合わせください。<br><br>
 <div class="dot"></div>
 <br>
-<div style="color: #C85050; font-size: 12px;"><strong>ブラウザの設定方法</strong></div>
+<div style="color: #fff; font-size: 12px;"><strong>ブラウザの設定方法</strong></div>
 <p>下記の設定方法を参照し、設定を確認してください。</p>
 <img src="images/design/question.gif" alt="" width="16" height="15">&nbsp;<a href="' . tep_href_link(FILENAME_BROWSER_IE6X) . '">Internet&nbsp;Explorer6の設定方法はこちら</a>');
 define('SUB_TITLE_SUB_TOTAL', '小計:');
