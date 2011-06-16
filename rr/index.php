@@ -23,11 +23,13 @@ if(isset($_GET['cmd'])&&$_GET['cmd']){
   }
   
   if (!empty($current_category_id)) {
-    $cex_ca_arr = tep_ff_get_categories_id_by_parent_id(FF_CID); 
+    $cex_ca_arr = tep_rr_get_categories_id_by_parent_id(FF_CID); 
+    $sy_cid_arr = explode(',', FF_CID); 
     if (empty($cex_ca_arr)) {
-      $cex_ca_arr = array(FF_CID); 
+      $cex_ca_arr[] = $sy_cid_arr[0]; 
+      $cex_ca_arr[] = $sy_cid_arr[1]; 
     } else {
-      array_push($cex_ca_arr, FF_CID); 
+      array_push($cex_ca_arr, $sy_cid_arr[0], $sy_cid_arr[1]); 
     }
     if (!in_array($current_category_id, $cex_ca_arr)) {
       forward404(); 

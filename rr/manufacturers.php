@@ -34,11 +34,13 @@
             <td>
               <table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php 
-  $mcaid_arr = tep_ff_get_categories_id_by_parent_id(FF_CID);
+  $mcaid_arr = tep_rr_get_categories_id_by_parent_id(FF_CID);
+  $mu_cid_arr = explode(',', FF_CID); 
   if (empty($mcaid_arr)) {
-    $mcaid_arr = array(FF_CID); 
+    $mcaid_arr[] = $mu_cid_arr[0]; 
+    $mcaid_arr[] = $mu_cid_arr[1]; 
   } else {
-    array_push($mcaid_arr, FF_CID); 
+    array_push($mcaid_arr, $mu_cid_arr[0], $mu_cid_arr[1]); 
   }
   //$manufacturer_query_raw = "select m.manufacturers_id, m.manufacturers_name, m.manufacturers_image, mi.manufacturers_url from " . TABLE_MANUFACTURERS . " m, " . TABLE_MANUFACTURERS_INFO . " mi  where  m.manufacturers_id = mi.manufacturers_id and languages_id = '" . $languages_id . "' order by manufacturers_name";
   $manufacturer_query_raw = "select distinct m.manufacturers_id, m.manufacturers_name, m.manufacturers_image, mi.manufacturers_url from ".TABLE_MANUFACTURERS." m, ".TABLE_MANUFACTURERS_INFO." mi, ".TABLE_PRODUCTS." p where m.manufacturers_id = mi.manufacturers_id and languages_id = '4' and p.manufacturers_id = m.manufacturers_id and p.products_id in (select products_id from (select pd.products_id, pd.products_status, pd.site_id from ".TABLE_PRODUCTS_DESCRIPTION." pd, ".TABLE_PRODUCTS_TO_CATEGORIES." p2c where pd.products_id = p2c.products_id and p2c.categories_id in (".implode(',', $mcaid_arr).") order by site_id DESC)c where site_id = 0 or site_id = ".SITE_ID." group by products_id having products_status != '0' and products_status != '3') order by m.manufacturers_name"; 

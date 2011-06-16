@@ -26,11 +26,13 @@
         <div class="comment">
                 <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_info_box">
 <?php
-$specials_caid_arr = tep_ff_get_categories_id_by_parent_id(FF_CID);
+$specials_caid_arr = tep_rr_get_categories_id_by_parent_id(FF_CID);
+$sp_cid_arr = explode(',', FF_CID);
 if (empty($specials_caid_arr)) {
-  $specials_caid_arr = array(FF_CID);
+  $specials_caid_arr[] = $sp_cid_arr[0];
+  $specials_caid_arr[] = $sp_cid_arr[1];
 } else {
-  array_push($specials_caid_arr, FF_CID);
+  array_push($specials_caid_arr, $sp_cid_arr[0], $sp_cid_arr[1]);
 }
   $specials_query_raw = "
   select * 

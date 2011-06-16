@@ -2,6 +2,18 @@
 /*
   $Id$
 */
+  ?>
+<!-- categories_banner_text //-->
+<?php
+foreach ($categories as $ban_key => $ban_category) {
+
+?>
+<div class="category_banner_list">
+<h2 class="pageHeading"><?php echo $ban_category['categories_name']?></h2>
+  <div class="game_list_content">
+<?php 
+  $number_of_categories = 0 ;
+  $col = 0 ;
 $categories_tab_query1 = tep_db_query("
   select * 
   from (
@@ -16,7 +28,7 @@ $categories_tab_query1 = tep_db_query("
            cd.site_id
     from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd 
     where c.categories_id = cd.categories_id 
-      and c.parent_id = '".FF_CID."'  
+      and c.parent_id = '".$ban_category['categories_id']."'  
       and cd.language_id='" . (int)$languages_id ."' 
     order by cd.site_id DESC
     ) p
@@ -26,14 +38,6 @@ $categories_tab_query1 = tep_db_query("
     having p.categories_status != '1' and p.categories_status != '3'  
     order by sort_order,categories_name
     ");
-?>
-<!-- categories_banner_text //-->
-<div class="category_banner_list">
-<h2 class="pageHeading"><?php echo $categories['0']['categories_name']?></h2>
-  <div class="game_list_content">
-<?php 
-  $number_of_categories = 0 ;
-  $col = 0 ;
   while($cbt = tep_db_fetch_array($categories_tab_query1)){
     $number_of_categories ++;
     if ($number_of_categories > 6) {
@@ -57,4 +61,5 @@ $categories_tab_query1 = tep_db_query("
 ?>
 </div>
 </div>
+<?php }?>
 <!-- categories_banner_text_eof //-->
