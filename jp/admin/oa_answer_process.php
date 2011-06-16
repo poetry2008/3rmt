@@ -17,21 +17,23 @@
   
     //}
   //}
-  tep_db_query("delete from ".TABLE_OA_FORMVALUE." where orders_id = '".$_GET['oID']."'"); 
+
   $form_id = $_POST['form_id'];
   $oid = $_GET['oID'];
   unset($_POST['form_id']);
 
   foreach ($_POST as $key=>$value){
-    if (substr($key,0,1)=='0'){
+    if (substr($key,0,1)=='0' and !$_GET['withz']){
       continue;
     }
   $ids = explode('_',$key);
   $item_id = $ids['3'];
   $group_id = $ids['2'];
+  tep_db_query("delete from ".TABLE_OA_FORMVALUE." where orders_id = '".$_GET['oID']."' and name='".$key."'"); 
   tep_db_query("insert into `".TABLE_OA_FORMVALUE."` values(NULL, '".$oid."', '".$form_id."', '".$item_id."', '".$group_id."', '".$key."','".$value."')");
+  var_dump("insert into `".TABLE_OA_FORMVALUE."` values(NULL, '".$oid."', '".$form_id."', '".$item_id."', '".$group_id."', '".$key."','".$value."')");
 
 }
 
-tep_redirect(tep_href_link(FILENAME_ORDERS, 'oID='.$_GET['oID'].'&action=edit'));
+//tep_redirect(tep_href_link(FILENAME_ORDERS, 'oID='.$_GET['oID'].'&action=edit'));
 
