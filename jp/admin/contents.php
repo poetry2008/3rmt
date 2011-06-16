@@ -226,7 +226,7 @@
                 <td><?php echo tep_draw_textarea_field('text_information', 'soft', '70', '20', stripslashes($detail['text_information'])); ?></td> 
               </tr> 
               <tr> 
-                <td colspan="2" align="right"><?php echo tep_image_submit('button_save.gif', IMAGE_INSERT) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_CONTENTS, 'cID=' . $cID . '&page=' . $_GET['page']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; ?></td> 
+                <td colspan="2" align="right" class="button_cancel"><?php echo tep_image_submit('button_save.gif', IMAGE_INSERT) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_CONTENTS, 'cID=' . $cID . '&page=' . $_GET['page']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; ?></td> 
               </tr> 
             </table> 
             <?php echo tep_draw_hidden_field('cID', $cID); ?> 
