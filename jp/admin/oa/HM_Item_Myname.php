@@ -26,26 +26,32 @@ class HM_Item_Myname extends HM_Item_Basic
     }else {
       $classrequire = '';
     }
-    echo $this->beforeInput."<input type='text' class='".$classrequire."'size='".$this->size."' name='".$this->formname."'
+
+    echo $this->beforeInput."<input type='text' class='".$classrequire." outform'size='".$this->size."' name='".$this->formname."'
       value='".$this->getDefaultValue()."' />".$this->afterInput;
     //    echo "<input type='button' value='",$this->SubmitName,"'>";
+    echo "<button type='button' id = '".$this->formname.'submit'."' value='$this->submitName' />x";
     echo "</td>";
   }
   function renderScript()
   {
-    if($this->require){
       ?>
       <script type='text/javascript' >
-       $(document).ready(function (){$("input|[name=<?php echo $this->formname;?>]").change(
-      function <?php echo $this->formname;?>Change(ele)
-      {
-        if($(this).val()==''){
-          $('').insertAfter($(this));
-        }
-      })});
+
+       $(document).ready(function (){
+           $("#<?php echo $this->formname;?>submit").click(function(){
+               //               $("#0<?php echo $this->formname;?>").attr('name',"<?php echo $this->formname;?>");
+               $.ajax({
+                 url:'oa_answer_process.php?withz=1&oID=<?php echo $_GET["oID"]?>',
+                     type:'post',    
+                     data:"form_id="+$('input|[name=form_id]').val()+"&<?php echo $this->formname;?>="+$('input|[name=0<?php echo $this->formname;?>]').val(),
+                     success: function(){$(this).attr('disable',true);}
+                 });
+             });
+      });
       </script>
       <?php
-    }
+
   }
   static public function prepareForm($item_id = NULL)
   {

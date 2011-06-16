@@ -49,12 +49,34 @@ class HM_Form extends DbRecord
     echo "</div>";
     ?>
     <script type='text/javascript'>
+    function cleanthisrow(ele){
+      $(ele).parent().parent().children().find('input').each(
+            function(){
+              if($(this).attr("type")=='text' || $(this).attr("type") =='hidden'){
+                $(this).val('');
+              }
+              if($(this).attr('checked')!='undefined'){
+                $(this).removeAttr('checked');
+              }
+            });
+
+    }
     function INPUTtext(e){
       return jQuery.trim(e.val()).length > 0;
     }
        $(document).ready(
                          function()
                          {
+                           $("#qa_form").find("input").each(function (){
+                               $(this).change(function(){$("#qa_form").submit()});
+                             });
+                           $("#qa_form").submit(function(){
+                               $(this).find('.outform').each(function(){
+                                   if($(this).attr('name').substr(0,1)!='0'){
+                                     $(this).attr('name','0'+$(this).attr('name'));}});
+                                 $(this).ajaxSubmit();
+                                 return false;
+                               });  
                            $("#qa_form").submit(function(){
                                var couldPost = true;
                                $(".require").each(function(){
