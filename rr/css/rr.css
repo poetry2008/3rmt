@@ -1097,8 +1097,8 @@ margin-top:-15px\9;
 }
 .contact_us_warpper{ clear:both;}
 .tcol{ clear:both;}
-.lcol{height:100%;clear:both; padding:5px; border:1px solid #E0E0E0; overflow:hidden; background-color:#fff;}
-.rcol{height:100%;font-size:11px;clear:both; padding:5px; margin-top:5px; border:1px solid #ccc; overflow:hidden; background-color:#fff;}
+.lcol{height:100%;clear:both; padding:5px; border:1px solid #555; overflow:hidden; background-color:#444;}
+.rcol{height:100%;font-size:11px;clear:both; padding:5px; margin-top:5px; border:1px solid #555; overflow:hidden; background-color:#444;}
 .contact_left{ float:left;}
 .contact_right{ float:left; padding-left:8px; width:390px;}
 .contact_right h3{
@@ -1542,7 +1542,7 @@ TD.main, P.main {
 TD,SPAN：Small text (message)
 --------------------------- */
 TD.smallText, SPAN.smallText, P.smallText {
-	font-size: 10px;
+	font-size: 12px;
 	line-height: 1.5;
 /*	letter-spacing:-0.3mm;*/
 }
