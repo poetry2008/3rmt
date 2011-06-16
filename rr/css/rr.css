@@ -916,7 +916,7 @@ Information
 	width: 100%;
 	font-size: 12px;
 	background-color: #444;
-	color: #D9D9D9;
+	color: #fff;
 }
 .information_table td{
 	line-height: 20px;
@@ -1374,8 +1374,9 @@ TABLE：Info Box
 	width:680px;
 	margin:2px auto;
 	padding:2px;
-	color:#ccc;
+	color:#fff;
 }
+.product_info_box table{ color:#fff;}
 .order_details{
 	width:98%;
 	margin:5px auto;
@@ -1403,10 +1404,10 @@ TABLE：Info box (content)
 .infoBoxContents{
 	width: 100%;
 	background: #5E5E5E;
-	font-size: 11px;
+	font-size: 12px;
 	border-collapse: separate;
 	border-spacing: 1px;
-	color:#D9D9D9;
+	color:#fff;
 }
 .infoBoxContents td{
 	line-height: 20px;
@@ -1875,3 +1876,5 @@ border:1px solid #CAC6BE;
  width:690px;
 }
 .active_email input{ width:565px;}
+.pag_link{ color: #FFCC00;}
+.pag_link:hover{ color:#ccc;}
