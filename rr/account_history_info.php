@@ -68,7 +68,17 @@
                   </tr> 
                   <tr> 
                     <td class="smallText"><?php echo HEADING_ORDER_DATE . ' ' . tep_date_long($order->info['date_purchased']); ?></td> 
-                    <td class="smallText" align="right"><?php echo HEADING_ORDER_TOTAL . ' ' . $order->info['total']; ?></td> 
+                    <td class="smallText" align="right">
+                    <?php 
+                    echo HEADING_ORDER_TOTAL . ' ';
+                    $minus_pos = substr($order->info['total'],0, 1);
+                    if ($minus_pos == '-') {
+                      echo substr($order->info['total'], 1); 
+                    } else {
+                      echo $order->info['total'];  
+                    }
+                    ?>
+                    </td> 
                   </tr> 
                 </table></td> 
             </tr> 
