@@ -1668,13 +1668,12 @@ if (false) {
     <!-- /订单商品 -->
     <!-- orders status history -->
       <tr>
-        <td class="main">
-<table width="100%"><tr><td width="50%">
-    <table border="1" cellspacing="0" cellpadding="5" width="100%">
+        <td class="main" align="left">
+    <table border="1" cellspacing="0" cellpadding="5" width="50%">
       <tr>
         <td class="smallText" align="center" width="10%"><b><?php echo TABLE_HEADING_DATE_ADDED; ?></b></td>
-        <td class="smallText" align="center" width="10%"><b><?php echo TABLE_HEADING_CUSTOMER_NOTIFIED; ?></b></td>
-        <td class="smallText" align="center" width="10%"><b><?php echo TABLE_HEADING_STATUS; ?></b></td>
+        <td class="smallText" align="center" width="10%" nowrap="true"><b><?php echo TABLE_HEADING_CUSTOMER_NOTIFIED; ?></b></td>
+        <td class="smallText" align="center" width="10%" nowrap="true"><b><?php echo TABLE_HEADING_STATUS; ?></b></td>
         <td class="smallText" align="center"><b><?php echo TABLE_HEADING_COMMENTS; ?></b></td>
       </tr>
   <?php
@@ -1705,10 +1704,9 @@ if (false) {
       }
   ?>
     </table>
-</td><td width="50%"></td>
-    </tr></table>
-        </td>
+</td>
       </tr>
+      </table>
       <!-- /orders status history -->
       <!-- mail -->
   
