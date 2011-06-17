@@ -18,9 +18,12 @@
           echo '|'; 
         }
       }
-      echo '<br>'; 
+      echo '|'; 
     }
   ?>
+<?php echo '<a href="'.tep_href_link(FILENAME_CONTACT_US).'">'.BOX_INFORMATION_CONTACT.'</a>|<a
+href="'.HTTP_SERVER.'/link/">'.FOOTER_LINK_TEXT.'</a>';?>
+<?php echo '<br>';?> 
 </div>
           <address class="footer_contacts">
         <?php echo FOOTER_TEXT_BODY . "\n"; ?><br>
@@ -30,6 +33,7 @@ echo '<a class="bold" href="'. HTTP_SERVER.'">'.$_SERVER['HTTP_HOST'].'</a>';
 ?>
 
             </address>
+  <?php if ($banner = tep_banner_exists('dynamic', 'footer')) { echo  '<div align="center">' . "\n" . tep_display_banner('static', $banner) . '</div>'; }?>
 
 </div>
 <script type="text/javascript" src="js/access.js"></script>

@@ -436,24 +436,24 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
 <div id="form_error" style="display:none"></div>
 <table class="information_table" summary="table">
  <tr>
-  <td width="130" bgcolor="#eeeeee">注文番号</td>
-  <td><?php echo $order['orders_id']?></td>
+  <td width="130" bgcolor="#333333">注文番号</td>
+  <td bgcolor="#333333"><?php echo $order['orders_id']?></td>
  </tr>
  <tr>
-  <td bgcolor="#eeeeee">お名前</td>
-  <td><?php echo $order['customers_name']?></td>
+  <td bgcolor="#333333">お名前</td>
+  <td bgcolor="#333333"><?php echo $order['customers_name']?></td>
  </tr>
  <tr>
-  <td bgcolor="#eeeeee">メールアドレス</td>
-  <td><?php echo $order['customers_email_address']?></td>
+  <td bgcolor="#333333">メールアドレス</td>
+  <td bgcolor="#333333"><?php echo $order['customers_email_address']?></td>
  </tr>
  <tr>
-  <td bgcolor="#eeeeee">取引日時（変更前）</td>
-  <td id='old_time'><?php echo tep_date_long(strtotime($order['torihiki_date']))?> <?php echo date('H:i', strtotime($order['torihiki_date']));?></td>
+  <td bgcolor="#333333">取引日時（変更前）</td>
+  <td bgcolor="#333333" id='old_time'><?php echo tep_date_long(strtotime($order['torihiki_date']))?> <?php echo date('H:i', strtotime($order['torihiki_date']));?></td>
  </tr>
  <tr>
-  <td bgcolor="#eeeeee">取引日時（変更後）</td>
-  <td>
+  <td bgcolor="#333333">取引日時（変更後）</td>
+  <td bgcolor="#333333">
    <select name='date' id='new_date' onChange="selectDate('<?php echo date('H');?>', '<?php echo date('i');?>')">
     <option value=''>--</option>
 <?php for($i=0;$i<7;$i++){?>
@@ -478,19 +478,19 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
 <br>
 <table class="information_table" id='product_<?php echo $value['id'];?>' summary="table">
  <tr>
-  <td width="130" bgcolor="#eeeeee">商品名</td>
-  <td name='products_names'><?php echo $value['name'];?></td>
+  <td width="130" bgcolor="#333333">商品名</td>
+  <td bgcolor="#333333" name='products_names'><?php echo $value['name'];?></td>
  </tr>
 <?php if($value['character']) {?>
  <tr>
-  <td bgcolor="#eeeeee">キャラクター名</td>
-  <td><input type='text' id='character_<?php echo $value['id'];?>' name='character[<?php echo $value['id'];?>]' value="<?php echo htmlspecialchars($value['character'])?>" class="input_text" ></td>
+  <td bgcolor="#333333">キャラクター名</td>
+  <td bgcolor="#333333"><input type='text' id='character_<?php echo $value['id'];?>' name='character[<?php echo $value['id'];?>]' value="<?php echo htmlspecialchars($value['character'])?>" class="input_text" ></td>
  </tr>
 <?php }?>
 <?php if($value['attributes'])foreach ($value['attributes'] as $att) {?>
  <tr>
-  <td bgcolor="#eeeeee"><?php echo $att['option'];?>(変更前)</td>
-  <td><?php echo $att['value'];?></td>
+  <td bgcolor="#333333"><?php echo $att['option'];?>(変更前)</td>
+  <td bgcolor="#333333"><?php echo $att['value'];?></td>
  </tr>
 <?php }?>
  <?php
@@ -516,7 +516,7 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
           while ($products_options_name = tep_db_fetch_array($products_options_name_query)) {
             $selected = 0;
             $products_options_array = array();
-            echo '<tr><td bgcolor="#eeeeee">' . $products_options_name['products_options_name'] . '(変更後)</td><td>' . "\n";
+            echo '<tr><td bgcolor="#333333">' . $products_options_name['products_options_name'] . '(変更後)</td><td bgcolor="#333333">' . "\n";
             // ccdd
             $products_options_query = tep_db_query("
                 select pov.products_options_values_id, 
@@ -554,8 +554,8 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
 <br>
 <table class="information_table" summary="table">
 <tr>
-<td width="130" bgcolor="#eeeeee">備考</td>
-<td><textarea name='comment' id='comment'></textarea></td>
+<td width="130" bgcolor="#333333">備考</td>
+<td bgcolor="#333333"><textarea name='comment' id='comment'></textarea></td>
 </tr>
 </table>
 <br>
@@ -599,11 +599,11 @@ function orderConfirmPage(){
 <?php   }?>
 <?php }?>
   text += "<table class='information_table' summary='table'>\n";
-  text += "<tr><td bgcolor='#eeeeee' width='130'>\n";
+  text += "<tr><td bgcolor='#333333' width='130'>\n";
   text += "取引日時（変更前）";
   text += "</td><td>\n";
   text += oldTime + "\n";
-  text += "</td></tr><tr><td bgcolor='#eeeeee'>\n";
+  text += "</td></tr><tr><td bgcolor='#333333'>\n";
   
   dateChanged = (document.getElementById('new_date').options[document.getElementById('new_date').selectedIndex].value != ''
     && document.getElementById('new_hour').options[document.getElementById('new_hour').selectedIndex].value != ''
@@ -640,17 +640,17 @@ function orderConfirmPage(){
   
   for(i in productName){
     text += "<table class='information_table' summary='table'>\n";
-    text += "<tr><td width='130' bgcolor='#eeeeee'>商品名</td><td>\n";
+    text += "<tr><td width='130' bgcolor='#333333'>商品名</td><td>\n";
     text += productName[i] + "\n";
     text += "</td></tr>";
 
     if(oldCharacter[i] != ''){
-      text += "<tr><td bgcolor='#eeeeee' width='130'>\n";
+      text += "<tr><td bgcolor='#333333' width='130'>\n";
       text += "キャラクター名(変更前)";
       text += "</td><td>\n";
       text += oldCharacter[i] + "\n";
       text += "</td></tr>";
-      text += "<tr><td bgcolor='#eeeeee'>\n";
+      text += "<tr><td bgcolor='#333333'>\n";
       text += "キャラクター名(変更後)";
       text += "</td><td>\n";
       text += document.getElementById('character_'+i).value + "\n";
@@ -662,11 +662,11 @@ function orderConfirmPage(){
     
 
     for(j in oldAttribute[i]){
-      text += "<tr><td bgcolor='#eeeeee'>\n";
+      text += "<tr><td bgcolor='#333333'>\n";
       text += oldAttribute[i][j][0] + "(変更前)\n"
       text += "</td><td>\n";
       text += oldAttribute[i][j][1] + "\n";
-      text += "</td></tr><tr><td bgcolor='#eeeeee'>\n";
+      text += "</td></tr><tr><td bgcolor='#333333'>\n";
       text += oldAttribute[i][j][0];
       text += "(変更後)</td><td>\n";
       if (document.getElementById('id[' + i + '][' + j + ']').selectedIndex != 0) {
@@ -681,7 +681,7 @@ function orderConfirmPage(){
   }
 
   text += "<table class='information_table' summary='table'>\n"
-  text += "<tr><td bgcolor='#eeeeee' width='130'>";
+  text += "<tr><td bgcolor='#333333' width='130'>";
   text += "備考";
   text += "</td><td>\n";
   text += document.getElementById('comment').value.replace(/\</ig,"&lt;").replace(/\>/ig,"&gt;");

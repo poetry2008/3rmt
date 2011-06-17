@@ -100,24 +100,24 @@ echo tep_draw_form('order', tep_href_link('reorder2.php'));
 <input type="hidden" name="dummy" value="あいうえお眉幅">
 <table class="information_table">
  <tr>
-  <td bgcolor="#eeeeee" width='120'>お名前</td>
-  <td><input type='text'  name='name' value='' id='new_name' class="input_text" ><span id='name_error'></span></td>
+  <td bgcolor="#333333" width='120'>お名前</td>
+  <td bgcolor="#333333"><input type='text'  name='name' value='' id='new_name' class="input_text" ><span id='name_error'></span></td>
  </tr>
  <tr>
-  <td bgcolor="#eeeeee">メールアドレス</td>
-  <td><input type='text'  name='email' value='' id='new_email' class="input_text" ><span id='email_error'></span></td>
+  <td bgcolor="#333333">メールアドレス</td>
+  <td bgcolor="#333333"><input type='text'  name='email' value='' id='new_email' class="input_text" ><span id='email_error'></span></td>
  </tr>
  <tr>
-  <td bgcolor="#eeeeee">ゲームタイトル</td>
-  <td><input type='text'  name='product' value='' id='new_product' class="input_text" ><span id='product_error'></span></td>
+  <td bgcolor="#333333">ゲームタイトル</td>
+  <td bgcolor="#333333"><input type='text'  name='product' value='' id='new_product' class="input_text" ><span id='product_error'></span></td>
  </tr>
  <tr>
-  <td bgcolor="#eeeeee">キャラクター名</td>
-  <td><input type='text'  name='character' value='' id='new_character' class="input_text" ><span id='character_error'></span></td>
+  <td bgcolor="#333333">キャラクター名</td>
+  <td bgcolor="#333333"><input type='text'  name='character' value='' id='new_character' class="input_text" ><span id='character_error'></span></td>
  </tr>
  <tr>
-  <td bgcolor="#eeeeee">取引日時</td>
-  <td>
+  <td bgcolor="#333333">取引日時</td>
+  <td bgcolor="#333333">
    <select name='date' id='new_date' onChange="selectDate('<?php echo date('H');?>', '<?php echo date('i');?>')">
     <option value=''>--</option>
 <?php for($i=0;$i<7;$i++){?>
@@ -136,8 +136,8 @@ echo tep_draw_form('order', tep_href_link('reorder2.php'));
   </td>
  </tr>
 <tr>
-<td bgcolor="#eeeeee">備考</td>
-<td><textarea name='comment' id='comment' cols="3" rows="3"></textarea></td>
+<td bgcolor="#333333">備考</td>
+<td bgcolor="#333333"><textarea name='comment' id='comment' cols="3" rows="3"></textarea></td>
 </tr>
 </table>
 <br>
