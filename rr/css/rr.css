@@ -950,19 +950,19 @@ Information
 .information_table03{
 	width: 100%;
 	font-size: 11px;
-	background-color:#ccc;
+	background-color:#555;
 }
 .information_table03 td{
 	line-height: 20px;
 	padding: 3px 5px;
 	vertical-align: top;
-	background-color:#FFF;
+	background-color:#444;
 }
 .information_table03 th{
 	line-height: 20px;
 	padding: 3px 5px;
 	vertical-align: top;
-	background-color:#DEDDDD;
+	background-color:#333;
 }
 /* ---------------------------
 Page Title

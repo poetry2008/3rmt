@@ -254,7 +254,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                                       echo '<div class="product_small_info02"><b>'.$currencies->display_price(round($pricedef + $val),0).'</b></div>';
                                       echo '</div>'."\n";
                                     }
-                                    echo '<div>'."\n";
+                                    echo '</div>'."\n";
                                   } else {
                                     echo '<strong>'.$products_price.'</strong>';
                                   }
