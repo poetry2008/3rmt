@@ -114,10 +114,9 @@ margin-top:10px;
 margin-bottom:5px;
 }
 .all_links{
-width:884px;
+width:900px;
 float:right;
-margin:0 8px 15px 8px;
-background: url(../images/design/comment1_bg.gif) repeat-y scroll 0 0 transparent;
+margin:0 auto;
 }
 #custom{
 padding-left:185px;
@@ -162,6 +161,7 @@ display:none;
 #linksite{
 padding-left:185px;
 padding-top:10px;
+color:#fff;
 }
 .submit_form_div{
 padding-left:185px;

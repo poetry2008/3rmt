@@ -38,10 +38,10 @@
 BODY：ボディ
 --------------------------- */
 BODY {
-	background-color: #272626;
+	background-color:#272626;
 	margin: 0px;
 	padding: 0px;
-	color: #656565;
+	color: #fff;
 }
 /* ---------------------------
 A：リンク（通常）
