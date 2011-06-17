@@ -34,8 +34,6 @@
             else{
 	      $site_arr="";
 	    }
-            //   $edit_per=editPermission($site_arr, $site_id);//判断是否拥有相应网站的管理权限
-            forward401Unless(editPermission($site_arr, $site_id));
             tep_insert_pwd_log($_GET['once_pwd'],$ocertify->auth_user);
             $c_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
             
