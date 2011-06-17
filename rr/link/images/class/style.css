@@ -215,9 +215,9 @@ height:17px;
 background:url(images/button02.gif) no-repeat;
 }
 .footer_link {
-    background: url(../images/design/footer_xian.gif) repeat-x scroll 0 0 transparent;
+  /*  background: url(../images/design/footer_xian.gif) repeat-x scroll 0 0 transparent;*/
     height: 24px;
-    line-height: 27px;
+    line-height: 9px;
 }
 .categories{
 	 background: url(../../../images/design/comment_rr_bg.gif) repeat-y 0 bottom ;
