@@ -28,14 +28,6 @@
           if ($_GET['cID']) {
             $cID = intval($_GET['cID']);
             $site_id = (isset($_GET['site_id']))?$_GET['site_id']:0;
-            if  (isset($_SESSION['site_permission']))    {
-	      $site_arr=$_SESSION['site_permission'];
-	    }
-            else{
-	      $site_arr="";
-	    }
-            //   $edit_per=editPermission($site_arr, $site_id);//判断是否拥有相应网站的管理权限
-            forward401Unless(editPermission($site_arr, $site_id));
             tep_insert_pwd_log($_GET['once_pwd'],$ocertify->auth_user);
             $c_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
             
