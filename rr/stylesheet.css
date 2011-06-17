@@ -97,13 +97,13 @@ A：ヘッダー（ナビゲーションのリンク）
 --------------------------- */
 A.headerNavigation { 
 	color: #ffffff;
-	font-size:10px;
+	font-size:12px;
 }
 /* ---------------------------
 A：ヘッダー（ナビゲーション・カーソルが上に乗ったとき）
 --------------------------- */
 A.headerNavigation:hover {
-	color: #002226;
+	color: #BC3436;
 }
 /* ---------------------------
 TR：ヘッダー（エラー）
@@ -574,7 +574,7 @@ background-color:#e2e2e2;
 border:1px solid #CAC6BE;
 }
 .footer_games a{ 
-	color:#0C9DEA;
+	color:#ccff00;
 	font-weight:bold;
 }
 .footer_games a:hover{ 
