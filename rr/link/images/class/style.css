@@ -219,6 +219,10 @@ background:url(images/button02.gif) no-repeat;
     height: 24px;
     line-height: 9px;
 }
+.footer_link a{     color: #FFFFFF;
+    font-size: 12px;
+    padding: 0 10px;}
+.footer_link a:hover{color: #ff0000;}
 .categories{
 	 background: url(../../../images/design/comment_rr_bg.gif) repeat-y 0 bottom ;
     border-bottom: 2px solid #4C4C4C;
