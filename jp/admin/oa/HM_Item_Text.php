@@ -2,6 +2,17 @@
 require_once "HM_Item_Basic.php";
 class HM_Item_Text extends HM_Item_Basic
 {
+  //  var $hasSubmit = false;
+  //  var $hasSelect = false;
+  var $hasRequire = true;
+  var $hasThename = true;
+  //  var $hasSelect  = true;
+  //  var $hasSubmit = true;
+  var $hasFrontText  = true;  
+  var $hasBackText  = true;  
+  var $hasDefaultValue  = true;
+  var $hasSize  = true;
+
   function getDefaultValue()
   {
     if ($this->loaded){
@@ -47,20 +58,7 @@ class HM_Item_Text extends HM_Item_Basic
     }
   }
   static public function prepareForm($item_id = NULL)
-  {
-/*
-必須：○　必須
-
-項目名_____支払_____　
-
-前方文字___受付番号_______
-
-defaultValue__________　
-
-size___9_____
-
-後方文字__________
-*/
+  {/*
     $item_raw = tep_db_query("select * from ".TABLE_OA_ITEM." where id = '".(int)$item_id."'"); 
     $item_res = tep_db_fetch_object($item_raw); 
     if ($item_res) {
@@ -68,13 +66,14 @@ size___9_____
     }
     $formString  = '';
     $checked = isset($item_value['require'])?'checked="true"':'';
-    $formString .= "必須<input type='checkbox' name='require' ".$checked."/></br>\n";
-    $formString .= "项目名<input type='text' name='thename' value='".(isset($item_value['thename'])?$item_value['thename']:'')."'/></br>\n";
-    $formString .= "前方文字<input type='text' name='beforeInput' value='".(isset($item_value['beforeInput'])?$item_value['beforeInput']:'')."'/></br>\n";
+    //    $formString .= "必須<input type='checkbox' name='require' ".$checked."/></br>\n";
+    //    $formString .= "项目名<input type='text' name='thename' value='".(isset($item_value['thename'])?$item_value['thename']:'')."'/></br>\n";
+    //    $formString .= "前方文字<input type='text' name='beforeInput' value='".(isset($item_value['beforeInput'])?$item_value['beforeInput']:'')."'/></br>\n";
     $formString .= "defaultValue<input type='text' name='defaultValue'
       value='".(isset($item_value['defaultValue'])?$item_value['defaultValue']:'')."'/></br>\n";
     $formString .= "Size<input type='text' name='size' value='".(isset($item_value['size'])?$item_value['size']:'')."'/></br>\n";
-    $formString .= "後方文字<input type='text' name='afterInput' value='".(isset($item_value['afterInput'])?$item_value['afterInput']:'')."'/></br>\n";
+    //    $formString .= "後方文字<input type='text' name='afterInput' value='".(isset($item_value['afterInput'])?$item_value['afterInput']:'')."'/></br>\n";
+    */
     return $formString;
   }
 
