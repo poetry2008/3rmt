@@ -1670,11 +1670,11 @@ if (false) {
       <tr>
         <td class="main">
 <table width="100%"><tr><td width="50%">
-    <table border="1" cellspacing="0" cellpadding="5">
+    <table border="1" cellspacing="0" cellpadding="5" width="100%">
       <tr>
-        <td class="smallText" align="center"><b><?php echo TABLE_HEADING_DATE_ADDED; ?></b></td>
-        <td class="smallText" align="center"><b><?php echo TABLE_HEADING_CUSTOMER_NOTIFIED; ?></b></td>
-        <td class="smallText" align="center"><b><?php echo TABLE_HEADING_STATUS; ?></b></td>
+        <td class="smallText" align="center" width="10%"><b><?php echo TABLE_HEADING_DATE_ADDED; ?></b></td>
+        <td class="smallText" align="center" width="10%"><b><?php echo TABLE_HEADING_CUSTOMER_NOTIFIED; ?></b></td>
+        <td class="smallText" align="center" width="10%"><b><?php echo TABLE_HEADING_STATUS; ?></b></td>
         <td class="smallText" align="center"><b><?php echo TABLE_HEADING_COMMENTS; ?></b></td>
       </tr>
   <?php
@@ -1684,16 +1684,16 @@ if (false) {
           $select_select = $orders_history['orders_status_id'];
           echo 
              '    <tr>' . "\n" .
-             '      <td class="smallText" align="center">' . tep_datetime_short($orders_history['date_added']) . '</td>' . "\n" .
-             '      <td class="smallText" align="center">';
+             '      <td class="smallText" align="center" width="10%">' . tep_datetime_short($orders_history['date_added']) . '</td>' . "\n" .
+             '      <td class="smallText" align="center" width="10%">';
           if ($orders_history['customer_notified'] == '1') {
             echo tep_image(DIR_WS_ICONS . 'tick.gif', ICON_TICK) . "</td>\n";
           } else {
             echo tep_image(DIR_WS_ICONS . 'cross.gif', ICON_CROSS) . "</td>\n";
           }
           echo 
-           '      <td class="smallText">' . $orders_status_array[$orders_history['orders_status_id']] . '</td>' . "\n" .
-           '      <td class="smallText">' . nl2br(tep_db_output($orders_history['comments'])) . '&nbsp;</td>' . "\n" .
+           '      <td class="smallText" width="10%">' . $orders_status_array[$orders_history['orders_status_id']] . '</td>' . "\n" .
+           '      <td class="smallText">' . nl2br(tep_db_output($orders_history['comments'])) . '<p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:380px;">&nbsp;</p></td>' . "\n" .
            
            '    </tr>' . "\n";
           }
@@ -1705,7 +1705,7 @@ if (false) {
       }
   ?>
     </table>
-</td>
+</td><td width="50%"></td>
     </tr></table>
         </td>
       </tr>
