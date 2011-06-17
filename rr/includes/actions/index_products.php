@@ -3,11 +3,13 @@
   $Id$
 */
 // create column list
-    $research_caid = tep_ff_get_categories_id_by_parent_id(FF_CID); 
+    $research_caid = tep_rr_get_categories_id_by_parent_id(FF_CID); 
+    $rp_cid_arr = explode(',', FF_CID); 
     if (empty($research_caid)) {
-      $research_caid = array(FF_CID); 
+      $research_caid[] = $rp_cid_arr[0]; 
+      $research_caid[] = $rp_cid_arr[1]; 
     } else {
-      array_push($research_caid); 
+      array_push($research_caid, $rp_cid_arr[0], $rp_cid_arr[1]); 
     }
     $define_list = array('PRODUCT_LIST_MODEL' => PRODUCT_LIST_MODEL,
                          'PRODUCT_LIST_NAME' => PRODUCT_LIST_NAME,

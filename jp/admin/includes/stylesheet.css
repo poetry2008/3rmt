@@ -469,7 +469,8 @@ TR：偶数行
 .[TD]：小さい文字（メッセージ）
 --------------------------- */
 .smallText {
-	font-size: 10px;                                /* フォントサイズ */
+	font-size: 10px;  
+	text-overflow:ellipsis;                              /* フォントサイズ */
 }
 /* ---------------------------
 .[TD]：メイン
@@ -912,3 +913,6 @@ text-overflow:ellipsis;
 .button_save input{ vertical-align:bottom;}
 .new_pwmanager{ text-align:right; width:100%;}
 .require {background:#ff00ff; }
+.faq_status_link{ text-decoration: none; }
+.faq_status_link:hover{ text-decoration: none; }
+.button_cancel a img { margin-top:-15px;}

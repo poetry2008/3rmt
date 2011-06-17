@@ -127,7 +127,7 @@ function popupWindow(url) {
                   <tr> 
                     <td> <?php
   $info_box_contents = array();
-  $info_box_contents[] = array('text' => HEADING_SEARCH_CRITERIA);
+  $info_box_contents[] = array('text' => '<font color="#767676">'.HEADING_SEARCH_CRITERIA.'</font>');
 
   new infoBoxHeading($info_box_contents, true, true);
 
@@ -166,7 +166,7 @@ function popupWindow(url) {
   $options_box = '<table border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n" .
                  '  <tr>' . "\n" .
                  '    <td class="fieldKey">' . ENTRY_CATEGORIES . '</td>' . "\n" .
-                 '    <td class="fieldValue">' .  tep_draw_pull_down_menu('categories_id', tep_get_categories(array(array('id' => '', 'text' => TEXT_ALL_CATEGORIES)), FF_CID)) . '<br></td>' . "\n" .
+                 '    <td class="fieldValue">' .  tep_draw_pull_down_menu('categories_id', tep_rr_get_categories(array(array('id' => '', 'text' => TEXT_ALL_CATEGORIES)), 0, '', FF_CID)) . '<br></td>' . "\n" .
                  '  </tr>' . "\n" .
                  '  <tr>' . "\n" .
                  '    <td class="fieldKey">&nbsp;</td>' . "\n" .

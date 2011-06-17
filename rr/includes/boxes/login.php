@@ -9,7 +9,7 @@
   if (!tep_session_is_registered('customer_id')) {
 ?>
     <div class="login_box">
-          <div class="menu_top">会員登録</div>
+          <div class="menu_top">メンバーズページ</div>
           <div id="login_form" class="comment_left">
 				<a class="login_link" href="<?php echo tep_href_link(FILENAME_LOGIN,'','SSL'); ?>"><img src="images/design/login02.gif" alt="ログイン"></a>
 <?php
@@ -27,7 +27,7 @@
     if($guestchk == '1') {
 ?>
     <div class="login_box">
-          <div class="menu_top">会員登録</div>
+          <div class="menu_top">メンバーズページ</div>
            <div id="login_form" class="comment_left">
           <a href="<?php echo tep_href_link(FILENAME_LOGIN,'','SSL'); ?>"><img class="middle" style="margin-left:1px;" src="images/design/login02.gif" alt="ログイン"></a>
                         <?php
@@ -43,7 +43,7 @@
     } else {
 ?>
 <div class="login_box">
-        <div class="menu_top">会員登録</div>
+        <div class="menu_top">メンバーズページ</div>
         <div id="login_form02">
         <ul class="login_list">
           <li class="login_list_info02"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . HEADER_TITLE_MY_ACCOUNT . '</a>'."\n"; ?></li>

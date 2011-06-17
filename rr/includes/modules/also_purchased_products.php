@@ -24,7 +24,7 @@
     if ($num_products_ordered >= MIN_DISPLAY_ALSO_PURCHASED) {
 ?>
 <!-- also_purchased_products //-->
-<h1 class="pageHeading"><?php echo $product_info['products_name'];?><?php  echo TEXT_ALSO_PURCHASED_PRODUCTS ; ?> </h1>
+<h3 class="pageHeading"><?php echo $product_info['products_name'];?><?php  echo TEXT_ALSO_PURCHASED_PRODUCTS ; ?> </h3>
 <div class="comment_long">
 <div class="product_info_box"><?php
       $row = 0;

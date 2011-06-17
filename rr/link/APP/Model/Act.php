@@ -2,7 +2,7 @@
 FLEA::loadClass("FLEA_Db_TableDataGateway");
 class Model_Act extends FLEA_Db_TableDataGateway
 {
-  var $tableName = 'ff_acts';
+  var $tableName = 'rr_acts';
   var $primaryKey = 'controller_name';
 
   function getACT($controllerName) {

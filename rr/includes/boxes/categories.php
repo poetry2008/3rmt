@@ -20,7 +20,7 @@ $categories_query = tep_db_query("
       from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
       where c.parent_id = '0' 
         and c.categories_id = cd.categories_id 
-        and c.categories_id = '".FF_CID."' 
+        and c.categories_id in (".FF_CID.") 
         and cd.language_id='" . $languages_id ."' 
       order by site_id DESC
     ) c 
@@ -37,12 +37,22 @@ if($cPath){
   $id = split('_', $cPath);
 }
 ?>
-
+<?php
+$ca_num = 0;
+foreach ($categories as $list_category) {
+?>
+<?php
+if ($ca_num == 0) {
+?>
 <div id='categories'>
-  <div class="menu_top"><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$categories[0]['categories_id']);?>"><?php echo $categories[0]['categories_name'];?></a></div>
-  <?php 
-    foreach ($categories as $key => $category) { 
-  ?>
+<?php
+} else {
+?>
+<div id='categories01'>
+<?php
+}
+?>
+  <div class="menu_top"><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$list_category['categories_id']);?>"><?php echo $list_category['categories_name'];?></a></div>
   <?php
           $subcategories = array();
           // ccdd
@@ -56,7 +66,7 @@ if($cPath){
                        cd.site_id,
                        c.sort_order
                 from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
-                where c.parent_id = '".$category['categories_id']."' 
+                where c.parent_id = '".$list_category['categories_id']."' 
                   and c.categories_id = cd.categories_id 
                   and cd.language_id='" . $languages_id ."' 
                 order by cd.site_id DESC
@@ -79,7 +89,7 @@ if($cPath){
         foreach ($subcategories as $skey => $subcategory) {
         ?>
             <li class="l_m_category_li2">
-              <a class="l_m_category_li2_link" href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id'].'_'.$subcategory['categories_id']);?>">
+              <a class="l_m_category_li2_link" href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$list_category['categories_id'].'_'.$subcategory['categories_id']);?>">
               <?php
               if (in_array($subcategory['categories_id'], $id)) {
               ?>
@@ -132,7 +142,7 @@ if($cPath){
               foreach ($_subcategories as $_skey => $_subcategory) {
             ?>
               <li class="l_m_categories_tree">
-              <a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id'].'_'.$subcategory['categories_id'].'_'.$_subcategory['categories_id']);?>">
+              <a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$list_category['categories_id'].'_'.$subcategory['categories_id'].'_'.$_subcategory['categories_id']);?>">
               <?php
               if (in_array($_subcategory['categories_id'], $id)) {
               ?>
@@ -166,6 +176,7 @@ if($cPath){
         <?php
         }
         ?>
- <?php }?>
 </div>
+<?php $ca_num++;?>
+<?php }?>
 <!-- categories_eof //-->

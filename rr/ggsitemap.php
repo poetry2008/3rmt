@@ -6,11 +6,13 @@
   require('includes/application_top.php');
   header('Content-Type:   text/xml');
   $categories = $pages = $products = array();
-  $subcid = tep_ff_get_categories_id_by_parent_id(FF_CID);
+  $subcid = tep_rr_get_categories_id_by_parent_id(FF_CID);
+  $g_cid_arr = explode(',', FF_CID); 
   if (empty($subcid)) {
-    $subcid = array(FF_CID); 
+    $subcid[] = $g_cid_arr[0];
+    $subcid[] = $g_cid_arr[1];
   } else {
-    array_push($subcid, FF_CID); 
+    array_push($subcid, $g_cid_arr[0], $g_cid_arr[1]); 
   }
   // 取得全部分类
 //ccdd
@@ -21,7 +23,6 @@
       . TABLE_CATEGORIES ." c left join " . TABLE_CATEGORIES_DESCRIPTION .
       " cd on c.categories_id = cd.categories_id 
       WHERE cd.categories_status <> '3' 
-      and c.categories_id in (".implode(',', $subcid).") 
       and cd.site_id='".SITE_ID."'");
   while ($category = tep_db_fetch_array($categories_query))  {
     $categories[$category['categories_id']] = $category;
@@ -65,13 +66,11 @@
 
   <?php //全部分类页面?>
   <?php foreach($categories as $category){?>
-    <?php 
-      if ($category['categories_id'] == FF_CID) {
-        echo gg_url(tep_href_link(FILENAME_DEFAULT, 'cPath='.FF_CID), null, null, 0.3);
-      } else {
-        echo gg_url(tep_href_link(FILENAME_DEFAULT, 'cPath='.FF_CID.'_'.$category['categories_id']), null, null, 0.3);
-      }
-    ?>
+  <?php 
+    if (in_array($category['categories_id'], $subcid)) {
+      echo gg_url(tep_href_link(FILENAME_DEFAULT, 'cPath='.get_cPath($category['categories_id'],$categories)), null, null, 0.3);
+    }
+  ?>
   <?php }?>
 
   <?php //全部信息页?>

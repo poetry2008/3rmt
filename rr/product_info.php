@@ -6,11 +6,13 @@
   require('includes/application_top.php');
   check_uri('/(.*)\{(.*)\}(.*)/'); 
   
-  $all_ca_arr = tep_ff_get_categories_id_by_parent_id(FF_CID);
+  $all_ca_arr = tep_rr_get_categories_id_by_parent_id(FF_CID);
+  $pr_cid_arr = explode(',', FF_CID); 
   if (empty($all_ca_arr)) {
-    $all_ca_arr = array(FF_CID); 
+    $all_ca_arr[] = $pr_cid_arr[0]; 
+    $all_ca_arr[] = $pr_cid_arr[1]; 
   } else {
-    array_push($all_ca_arr, FF_CID); 
+    array_push($all_ca_arr, $pr_cid_arr[0], $pr_cid_arr[1]); 
   }
   $whether_expro_raw = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where categories_id in (".implode(',', $all_ca_arr).") and products_id = '".(int)$_GET['products_id']."'");
   if (!tep_db_num_rows($whether_expro_raw)) {
@@ -227,7 +229,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                           <?php } ?>
                           <tr class="infoBoxContents">
                             <td class="main p_i_b_title">メーカー名</td>
-                            <td class="main"><?php include(DIR_WS_BOXES.'manufacturer_info.php') ; ?></td>
+                            <td class="main"><div class="product_name"><?php include(DIR_WS_BOXES.'manufacturer_info.php') ; ?></div></td>
                           </tr>
                           <tr class="infoBoxContents">
                             <td class="main p_i_b_title">価格</td>
@@ -252,7 +254,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                                       echo '<div class="product_small_info02"><b>'.$currencies->display_price(round($pricedef + $val),0).'</b></div>';
                                       echo '</div>'."\n";
                                     }
-                                    echo '<div>'."\n";
+                                    echo '</div>'."\n";
                                   } else {
                                     echo '<strong>'.$products_price.'</strong>';
                                   }
@@ -265,7 +267,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                           </tr>
                           <tr class="infoBoxContents">
                             <td class="main p_i_b_title">注文可能数</td>
-                            <td class="main">残り<strong>&nbsp;<?php echo tep_show_quantity($product_info['products_quantity']); ?></strong>&nbsp;個</td>
+                            <td class="main"><div class="product_num1">残り</div><div class="product_num">&nbsp;<?php echo tep_show_quantity($product_info['products_quantity']); ?></div><div>&nbsp;個</div></td>
                           </tr>
                           <?php 
                       if(!empty($data3[0])){

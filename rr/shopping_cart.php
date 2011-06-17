@@ -245,7 +245,7 @@ B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示さ
               <td align="right" class="main">
                 <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice" summary="rmt">
                   <tr class="infoBoxNoticeContents">
-                    <td><?php echo sprintf(DS_LIMIT_PRICE_OVER_ERROR,$currencies->format(DS_LIMIT_PRICE),$currencies->format(DS_LIMIT_PRICE)); ?></td>
+                    <td><?php echo '<font color="#000000">'.sprintf(DS_LIMIT_PRICE_OVER_ERROR,$currencies->format(DS_LIMIT_PRICE),$currencies->format(DS_LIMIT_PRICE)).'</font>'; ?></td>
                   </tr>
                 </table>
               </td>
@@ -273,7 +273,7 @@ B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示さ
                   } else {
                     $limit_error_str .= $currencies->format($limit_min_error_arr[0]);
                   }
-                  echo sprintf("%s未満の注文はできません。合計金額を%s以上にしてから再度お申し込みください。",$limit_error_str,$limit_error_str); 
+                  echo '<font color="#000000">'.sprintf("%s未満の注文はできません。合計金額を%s以上にしてから再度お申し込みください。",$limit_error_str,$limit_error_str).'</font>'; 
                   ?>
                   </td>
                 </tr>
@@ -326,11 +326,13 @@ B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示さ
                   </tr>
                 </table>
 <?php 
-    $cat_cid_arr = tep_ff_get_categories_id_by_parent_id(FF_CID); 
+    $cat_cid_arr = tep_rr_get_categories_id_by_parent_id(FF_CID); 
+    $sp_cid_arr = explode(',', FF_CID); 
     if (empty($cat_cid_arr)) {
-      $cat_cid_arr = array(FF_CID); 
+      $cat_cid_arr[] = $sp_cid_arr[0]; 
+      $cat_cid_arr[] = $sp_cid_arr[1]; 
     } else {
-      array_push($cat_cid_arr, FF_CID); 
+      array_push($cat_cid_arr, $sp_cid_arr[0], $sp_cid_arr[1]); 
     }
     $cart_products = tep_get_cart_ff_products(tep_get_products_by_shopiing_cart($products), $cat_cid_arr);
     if ($cart_products) {

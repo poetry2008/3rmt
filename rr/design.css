@@ -483,12 +483,11 @@ select{
 #title {
 	margin: 0 auto;
 	width:900px;
-	height:92px;
 }
 #header {
 	width: 900px;
 	margin:0 auto;
-	background:#373737;
+	background:#212121;
 }
 #header_Menu {
 	overflow: hidden;
@@ -515,9 +514,9 @@ select{
 	width:172px;
 }
 .header_search_submit{
-	width: 51px;
+	width: 58px;
 	border: none;
-	height:19px;
+	height:21px;
 	cursor: pointer;
 	background: url(images/design/button/search.gif) no-repeat;
 }
@@ -559,17 +558,19 @@ padding-right:5px;
 	height:17px;
 	*height:23px;
 	background:url(images/design/header_navigation.gif) no-repeat;
-	font-size: 10px;
+	font-size: 12px;
 	margin:0 auto 5px auto;
 	text-align:left;
-	padding:6px 0 0 10px;
+	padding:2px 0 0 10px;
 	color:#FFFFFF;
 }
 .header_Navigation a{
 	color: #ffffff;
+	font-size:12px;
 }
 .header_Navigation a:hover{
-	color: #444;
+	color: #BC3436;
+	font-size:12px;
 }
 .category_menu {
     font-size: 11px;
@@ -994,7 +995,7 @@ Information
 --------------------------- */
 #footer {
 	width: 900px;
-	font-size: 10px;
+	font-size: 12px;
 	text-align: center;
 	margin:0 auto 5px auto;
 	clear:both;
@@ -1004,6 +1005,7 @@ Information
     letter-spacing: 0.5mm;
     line-height: 20px;
     padding-bottom: 16px;
+	padding-top:5px;
 }
 .footer_contacts{
 	letter-spacing:0.5mm;
@@ -1177,12 +1179,13 @@ a.Icon:hover {
 
 /* xy_rmt*/
 .h_title{
-	background: url("../images/design/h1_bg.gif") no-repeat scroll 0 0 transparent;
+    background-color: #801C1C;
     color: #FFFFFF;
     font-size: 10px;
     font-weight: normal;
     height: 15px;
-    padding-left: 30px;
+    line-height: 15px;
+    padding-left: 8px;
     text-align: left;
 }
 .h_title a{color:#fff;font-size:10px;}

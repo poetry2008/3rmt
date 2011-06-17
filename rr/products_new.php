@@ -31,11 +31,13 @@
             <tr>
               <td>
                 <?php
-$new_caid_arr = tep_ff_get_categories_id_by_parent_id(FF_CID);
+$new_caid_arr = tep_rr_get_categories_id_by_parent_id(FF_CID);
+$pn_cid_arr = explode(',', FF_CID);
 if (empty($new_caid_arr)) {
-  $new_caid_arr = array(FF_CID);
+  $new_caid_arr[] = $pn_cid_arr[0];
+  $new_caid_arr[] = $pn_cid_arr[1];
 } else {
-  array_push($new_caid_arr, FF_CID);
+  array_push($new_caid_arr, $pn_cid_arr[0], $pn_cid_arr[1]);
 }
 $products_new_query_raw = "
 select *

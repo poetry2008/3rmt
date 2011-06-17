@@ -10,9 +10,10 @@
   } else {
     // ccdd
     // del distinct 10.8.2
+    $best_s_single = true; 
     $best_c_category_id = FF_CID; 
   }
-    $best_sellers_query = tep_db_query("
+    $best_sellers_raw = "
       select *
       from (
         select p.products_id,
@@ -29,9 +30,20 @@
           and p.products_id = pd.products_id 
           and pd.language_id = '" . $languages_id . "' 
           and p.products_id = p2c.products_id 
-          and p2c.categories_id = c.categories_id 
-          and '" .  $best_c_category_id . "' in (c.categories_id, c.parent_id) 
-        order by pd.site_id DESC
+          and p2c.categories_id = c.categories_id";
+          if (isset($best_s_single)) {
+            $best_ca_str = ''; 
+            $best_ca_arr = explode(',', $best_c_category_id); 
+            foreach ($best_ca_arr as $bs_key => $bs_value) {
+              $best_ca_str .= "('".$bs_value."' in (c.categories_id, c.parent_id)) or "; 
+            }
+            $best_ca_str = '('.substr($best_ca_str, 0, -4).')'; 
+            $best_sellers_raw .= " and ".$best_ca_str;
+          } else {
+            $best_sellers_raw .= " and '" .  $best_c_category_id . "' in (c.categories_id, c.parent_id) ";
+          }
+         $best_sellers_raw .= "
+          order by pd.site_id DESC
         limit 100
         ) p
       where site_id = '0'
@@ -39,8 +51,9 @@
       group by products_id
       having p.products_status != '0' and p.products_status != '3' 
       order by products_ordered desc, products_name 
-      limit " . MAX_DISPLAY_BESTSELLERS);
-
+      limit " . MAX_DISPLAY_BESTSELLERS;
+  
+  $best_sellers_query = tep_db_query($best_sellers_raw);
   if (tep_db_num_rows($best_sellers_query) >= MIN_DISPLAY_BESTSELLERS) {
 ?>
 <!-- best_sellers //-->
