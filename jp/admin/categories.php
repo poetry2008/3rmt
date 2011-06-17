@@ -2570,7 +2570,7 @@ if (isset($nowColor) && $nowColor == $odd) {
         echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" >' . "\n";
       } else {
         //echo '              <tr class="' . $nowColor . '" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . (isset($_GET['page'])&&$_GET['page'] ? ('&page=' .  $_GET['page']) : '' ) . '&cID=' .  $categories['categories_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')) . '\'">' . "\n";
-        echo '              <tr class="' . $nowColor . '" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'" >' . "\n";
+        echo '              <tr class="' . $nowColor . '" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . (isset($_GET['page'])&&$_GET['page'] ? ('&page=' .  $_GET['page']) : '' ) . '&cID=' .  $categories['categories_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')) . '\'">' . "\n";
       }
 ?>
                     <?php
@@ -2579,7 +2579,14 @@ if (isset($nowColor) && $nowColor == $odd) {
                       echo '              <td class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '\'">' . "\n";
                     } else {
                     ?>
-                    <td class="dataTableContent">
+                    <td class="dataTableContent" 
+                    <?php echo 'onclick="document.location.href=\'' .
+                    tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath
+                        .(isset($_GET['page'])&&$_GET['page'] ? ('&page=' .
+                            $_GET['page']) : '') . '&cID=' .
+                        $categories['categories_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:''))
+                    .'\'" ';?>
+                    >
                     <?php
                     }
                     ?>
@@ -2590,14 +2597,28 @@ if (isset($nowColor) && $nowColor == $odd) {
             if ( (isset($cInfo) && is_object($cInfo)) && ($categories['categories_id'] == $cInfo->categories_id) ) {
               echo '              <td class="dataTableContent" align="right" onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '\'">&nbsp;</td>' . "\n";
             } else {
-              echo '<td class="dataTableContent" align="right">&nbsp;</td>';
+              echo '<td class="dataTableContent" align="right" 
+               onclick="document.location.href=\'' .
+               tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath
+                   .(isset($_GET['page'])&&$_GET['page'] ? ('&page=' .
+                       $_GET['page']) : '') . '&cID=' .
+                   $categories['categories_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:''))
+               .'\'" 
+                >&nbsp;</td>';
             }
             ?>
             <?php
             if ( (isset($cInfo) && is_object($cInfo)) && ($categories['categories_id'] == $cInfo->categories_id) ) {
               echo '              <td class="dataTableContent" align="right" onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '\'">&nbsp;</td>' . "\n";
             } else {
-              echo '<td class="dataTableContent" align="right">&nbsp;</td>';
+              echo '<td class="dataTableContent" align="right" 
+               onclick="document.location.href=\'' .
+               tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath
+                   .(isset($_GET['page'])&&$_GET['page'] ? ('&page=' .
+                       $_GET['page']) : '') . '&cID=' .
+                   $categories['categories_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:''))
+               .'\'" 
+                >&nbsp;</td>';
             }
             ?>
             <?php
