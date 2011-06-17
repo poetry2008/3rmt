@@ -2,7 +2,7 @@
 FLEA::loadClass('FLEA_Com_RBAC_RolesManager');
 class Model_Role extends FLEA_Com_RBAC_RolesManager
 {
-    var $tableName = 'ff_roles';
+    var $tableName = 'rr_roles';
     var $primaryKey = 'role_id';
  
     

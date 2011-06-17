@@ -483,12 +483,11 @@ select{
 #title {
 	margin: 0 auto;
 	width:900px;
-	height:92px;
 }
 #header {
 	width: 900px;
 	margin:0 auto;
-	background:#373737;
+	background:#212121;
 }
 #header_Menu {
 	overflow: hidden;
@@ -515,9 +514,9 @@ select{
 	width:172px;
 }
 .header_search_submit{
-	width: 51px;
+	width: 58px;
 	border: none;
-	height:19px;
+	height:21px;
 	cursor: pointer;
 	background: url(images/design/button/search.gif) no-repeat;
 }
@@ -1004,6 +1003,7 @@ Information
     letter-spacing: 0.5mm;
     line-height: 20px;
     padding-bottom: 16px;
+	padding-top:15px;
 }
 .footer_contacts{
 	letter-spacing:0.5mm;
@@ -1177,12 +1177,13 @@ a.Icon:hover {
 
 /* xy_rmt*/
 .h_title{
-	background: url("../images/design/h1_bg.gif") no-repeat scroll 0 0 transparent;
+    background-color: #801C1C;
     color: #FFFFFF;
     font-size: 10px;
     font-weight: normal;
     height: 15px;
-    padding-left: 30px;
+    line-height: 15px;
+    padding-left: 8px;
     text-align: left;
 }
 .h_title a{color:#fff;font-size:10px;}
