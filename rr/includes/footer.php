@@ -18,9 +18,11 @@
           echo '|'; 
         }
       }
-      echo '<br>'; 
+      echo '|'; 
     }
   ?>
+<?php echo '<a href="'.tep_href_link(FILENAME_CONTACT_US).'">'.BOX_INFORMATION_CONTACT.'</a>|<a href="/link/">'.FOOTER_LINK_TEXT.'</a>';?>
+<?php echo '<br>';?> 
 </div>
           <address class="footer_contacts">
         <?php echo FOOTER_TEXT_BODY . "\n"; ?><br>
