@@ -817,6 +817,7 @@ News
 }
 .news_list a{color:#fff;}
 #news .news_list a{ color:#A2A2A2;}
+#news .news_list a:hover{ color:#BC3436;}
 .news_list img{ vertical-align:top; margin:0 10px 0 5px;}
 .menu_top{
 	background: url(../images/design/box/menu.gif) no-repeat 0 bottom;
