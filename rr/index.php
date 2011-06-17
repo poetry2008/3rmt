@@ -38,7 +38,7 @@ if(isset($_GET['cmd'])&&$_GET['cmd']){
   
   if (isset($_GET['cName']) && !isset($_GET['cPath'])) {
     if (!empty($_GET['cName'])) {
-      if (!file_exists(DIR_FS_DOCUMENT_ROOT.'/'.$_GET['cName'])) {
+      if (!file_exists(DIR_FS_DOCUMENT_ROOT.'/'.$_GET['cName']) && !isset($_GET['cmd'])) {
         forward404(); 
       }
     }
