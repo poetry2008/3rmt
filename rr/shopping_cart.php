@@ -245,7 +245,7 @@ B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示さ
               <td align="right" class="main">
                 <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice" summary="rmt">
                   <tr class="infoBoxNoticeContents">
-                    <td><?php echo sprintf(DS_LIMIT_PRICE_OVER_ERROR,$currencies->format(DS_LIMIT_PRICE),$currencies->format(DS_LIMIT_PRICE)); ?></td>
+                    <td><?php echo '<font color="#000000">'.sprintf(DS_LIMIT_PRICE_OVER_ERROR,$currencies->format(DS_LIMIT_PRICE),$currencies->format(DS_LIMIT_PRICE)).'</font>'; ?></td>
                   </tr>
                 </table>
               </td>
@@ -273,7 +273,7 @@ B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示さ
                   } else {
                     $limit_error_str .= $currencies->format($limit_min_error_arr[0]);
                   }
-                  echo sprintf("%s未満の注文はできません。合計金額を%s以上にしてから再度お申し込みください。",$limit_error_str,$limit_error_str); 
+                  echo '<font color="#000000">'.sprintf("%s未満の注文はできません。合計金額を%s以上にしてから再度お申し込みください。",$limit_error_str,$limit_error_str).'</font>'; 
                   ?>
                   </td>
                 </tr>
