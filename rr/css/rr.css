@@ -1126,16 +1126,16 @@ margin-top:-15px\9;
 #infomessage{
 	font-weight: bold;
 }
-.login_inc{ background-color: #CDCACC; border:1px solid #E0E0E0; padding:5px;}
+.login_inc{ background-color: #444; border:1px solid #555; padding:5px;}
 #errormessage{ font-weight: bold; background-color: #CDCACC; border:1px solid #E0E0E0; font-size:12px;}
-.open_login{background-color:#E0E0E0; width:70%; font-size:12px;}
-.open_login td{ background-color: #ffffff; padding:6px;}
-.open_login th{ background-color: #ffffff; text-align:left; font-size:12px; }
+.open_login{background-color:#555; width:70%; font-size:12px;}
+.open_login td{ background-color: #444; padding:6px;}
+.open_login th{ background-color: #333; text-align:left; font-size:12px; }
 .tickets_lout{font-size:12px; margin-bottom:5px;}
-.tickets,.infotable{background-color:#E0E0E0; font-size:12px;margin-bottom:5px;}
+.tickets,.infotable{background-color:#555; font-size:12px;margin-bottom:5px;}
 .tickets a,.infotable a{font-size:12px;}
-.tickets td,.infotable td{ background-color:#fff; padding:2px;}
-.tickets th,.infotable th{ background-color:#fff; text-align:left; font-size:12px; }
+.tickets td,.infotable td{ background-color:#444; padding:2px;}
+.tickets th,.infotable th{ background-color:#333; text-align:left; font-size:12px; }
 #ticketthread{margin:15px 0;}
 .captcha_comment{ font-size:12px;}
 .right_colum_border{ width:170px;}
@@ -1190,14 +1190,14 @@ margin-top:-15px\9;
 .viewticket_warpper,.msg{
 	font-size:12px;
 }
-.message{ font-size:12px; text-align:left; clear:both;margin-bottom:5px;background-color: #CDCACC; border:1px solid #E0E0E0;}
+.message{ font-size:12px; text-align:left; clear:both;margin-bottom:5px;background-color: #444; border:1px solid #555;}
 .Icon {
     font-size:12px;
     width: auto;
     padding-left:20px;
     background-position: left center;
     background-repeat: no-repeat;
-    color:#006699; 
+   color: #BC3436;
     text-decoration: none;
 }
 a.Icon{
