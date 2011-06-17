@@ -49,7 +49,7 @@ if (
     if (isset($_GET['cPath']) && $cPath_array) {
       $subcid = tep_get_categories_id_by_parent_id($cPath_array[count($cPath_array) - 1]);
     } else {
-      $subcid = tep_ff_get_categories_id_by_parent_id(FF_CID);
+      $subcid = tep_rr_get_categories_id_by_parent_id(FF_CID);
     }
 ?>
   <div class="reviews_box">

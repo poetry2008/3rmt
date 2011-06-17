@@ -9,11 +9,13 @@
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_REVIEWS);
 
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_REVIEWS));
-  $sub_caid = tep_ff_get_categories_id_by_parent_id(FF_CID); 
+  $sub_caid = tep_rr_get_categories_id_by_parent_id(FF_CID); 
+  $re_cid_arr = explode(',', FF_CID); 
   if (empty($sub_caid)) {
-    $sub_caid = array(FF_CID); 
+    $sub_caid[] = $re_cid_arr[0]; 
+    $sub_caid[] = $re_cid_arr[1]; 
   } else {
-    array_push($sub_caid, FF_CID); 
+    array_push($sub_caid, $re_cid_arr[0], $re_cid_arr[1]); 
   }
   $reviews_array = array();  
   $reviews_query_raw = "

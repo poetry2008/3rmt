@@ -44,7 +44,7 @@ H3 {
 	margin: 0px;
 	padding: 0px;
 }
-.comment h4{background-color: #373737;margin-bottom:2px;}
+.comment_page h4{margin-bottom:2px; color:#bb3333;}
 H4 {
 	font-size: 12px;
 	margin: 0px;
@@ -78,6 +78,20 @@ H4 {
 	padding:5px;
 	line-height:15px;
 	font-size:12px;
+}
+.comment_page {
+	width:698px;
+	width:708px\9;
+	background:url(../images/design/comment_middle.gif) repeat-y;
+	overflow:hidden;
+	margin-top:3px;
+	margin-bottom:5px;
+	border-bottom:1px solid #373737;
+	border-top:2px solid #373737;
+	padding:5px;
+	line-height:15px;
+	font-size:12px;
+	color:#fff;
 }
 .comment img{ clear:both;}
 .comment_index02 , .comment_index01{
@@ -916,7 +930,7 @@ Information
 	width: 100%;
 	font-size: 12px;
 	background-color: #444;
-	color: #D9D9D9;
+	color: #fff;
 }
 .information_table td{
 	line-height: 20px;
@@ -1083,8 +1097,8 @@ margin-top:-15px\9;
 }
 .contact_us_warpper{ clear:both;}
 .tcol{ clear:both;}
-.lcol{height:100%;clear:both; padding:5px; border:1px solid #E0E0E0; overflow:hidden; background-color:#fff;}
-.rcol{height:100%;font-size:11px;clear:both; padding:5px; margin-top:5px; border:1px solid #ccc; overflow:hidden; background-color:#fff;}
+.lcol{height:100%;clear:both; padding:5px; border:1px solid #555; overflow:hidden; background-color:#444;}
+.rcol{height:100%;font-size:11px;clear:both; padding:5px; margin-top:5px; border:1px solid #555; overflow:hidden; background-color:#444;}
 .contact_left{ float:left;}
 .contact_right{ float:left; padding-left:8px; width:390px;}
 .contact_right h3{
@@ -1375,8 +1389,9 @@ TABLE：Info Box
 	width:680px;
 	margin:2px auto;
 	padding:2px;
-	color:#ccc;
+	color:#fff;
 }
+.product_info_box table{ color:#fff;}
 .order_details{
 	width:98%;
 	margin:5px auto;
@@ -1404,10 +1419,10 @@ TABLE：Info box (content)
 .infoBoxContents{
 	width: 100%;
 	background: #5E5E5E;
-	font-size: 11px;
+	font-size: 12px;
 	border-collapse: separate;
 	border-spacing: 1px;
-	color:#D9D9D9;
+	color:#fff;
 }
 .infoBoxContents td{
 	line-height: 20px;
@@ -1529,7 +1544,7 @@ TD.main, P.main {
 TD,SPAN：Small text (message)
 --------------------------- */
 TD.smallText, SPAN.smallText, P.smallText {
-	font-size: 10px;
+	font-size: 12px;
 	line-height: 1.5;
 /*	letter-spacing:-0.3mm;*/
 }
@@ -1880,3 +1895,5 @@ border:1px solid #CAC6BE;
 .product_name{ font-weight:bold;}
 .product_num{ font-weight:bold; float:left;}
 .product_num1{ float:left;}
+.pag_link{ color: #FFCC00;}
+.pag_link:hover{ color:#ccc;}

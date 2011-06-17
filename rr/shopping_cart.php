@@ -326,11 +326,13 @@ B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示さ
                   </tr>
                 </table>
 <?php 
-    $cat_cid_arr = tep_ff_get_categories_id_by_parent_id(FF_CID); 
+    $cat_cid_arr = tep_rr_get_categories_id_by_parent_id(FF_CID); 
+    $sp_cid_arr = explode(',', FF_CID); 
     if (empty($cat_cid_arr)) {
-      $cat_cid_arr = array(FF_CID); 
+      $cat_cid_arr[] = $sp_cid_arr[0]; 
+      $cat_cid_arr[] = $sp_cid_arr[1]; 
     } else {
-      array_push($cat_cid_arr, FF_CID); 
+      array_push($cat_cid_arr, $sp_cid_arr[0], $sp_cid_arr[1]); 
     }
     $cart_products = tep_get_cart_ff_products(tep_get_products_by_shopiing_cart($products), $cat_cid_arr);
     if ($cart_products) {

@@ -73,10 +73,10 @@
      }else{
        $result = $this->parent_group_start_string;
      }
-
+     $tree_cid_arr = explode(',', FF_CID);
      if (isset($this->data[$parent_id])) {
        foreach ($this->data[$parent_id] as $category_id => $category) {
-         if (($level == 0) && ($category_id != FF_CID)) {
+         if (($level == 0) && (!in_array($category_id, $tree_cid_arr))) {
            continue; 
          }
          $category_link = $category_id;
