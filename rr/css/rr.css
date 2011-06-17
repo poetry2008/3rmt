@@ -559,7 +559,7 @@ Header
 	text-align:left;
 	padding-left:25px;
 	width:102px;
-	*width:105px;
+	*width:128px;
 	margin-right:10px;
 	color:#fff;
 	background: url(../images/design/button/shopping_cart.gif) no-repeat;
@@ -1079,7 +1079,7 @@ Footer
 .main p a{
 	color:#06727D;
 }
-.formArea textarea { width:685px; height:160px;}
+.formArea textarea { width:674px; height:160px;}
 .product_info_box .main p a{ color:#656565;}
 .main p a:hover{
 	text-decoration:underline;
@@ -1155,7 +1155,7 @@ margin-top:-15px\9;
 	padding:10px 0;
 	margin:10px auto;
 }
-.header_m_login{ width:372px; *width:400px; *float:right;}
+.header_m_login{ width:372px; *width:372px; *float:right;}
 .header_m_login a{ color:#fff;}
 .header_m_login a:hover{color: #ff0000;}
 /*ost*/
@@ -1287,6 +1287,7 @@ Survey
 --------------------------- */
 .productsNotifications {
 	background: #e2e2e2;
+	color:#363636;
 }
 /* ---------------------------
 "Final confirmation of your order" page "Change" character
@@ -1448,12 +1449,13 @@ Survey
 }
 .infoBoxNotice_01 {
 	border:1px solid #ff8e90;
+	color: #3F3E3E;
 }
 /* ---------------------------
 Survey
 --------------------------- */
 .infoBoxNoticeContents {
-	background: #FFE6E6;
+	background: #F8C2C2;
 	font-size: 10px;
 }
 /* ---------------------------
@@ -1890,5 +1892,8 @@ border:1px solid #CAC6BE;
  width:690px;
 }
 .active_email input{ width:565px;}
+.product_name{ font-weight:bold;}
+.product_num{ font-weight:bold; float:left;}
+.product_num1{ float:left;}
 .pag_link{ color: #FFCC00;}
 .pag_link:hover{ color:#ccc;}

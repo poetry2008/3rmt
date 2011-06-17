@@ -229,7 +229,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                           <?php } ?>
                           <tr class="infoBoxContents">
                             <td class="main p_i_b_title">メーカー名</td>
-                            <td class="main"><?php include(DIR_WS_BOXES.'manufacturer_info.php') ; ?></td>
+                            <td class="main"><div class="product_name"><?php include(DIR_WS_BOXES.'manufacturer_info.php') ; ?></div></td>
                           </tr>
                           <tr class="infoBoxContents">
                             <td class="main p_i_b_title">価格</td>
@@ -267,7 +267,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                           </tr>
                           <tr class="infoBoxContents">
                             <td class="main p_i_b_title">注文可能数</td>
-                            <td class="main">残り<strong>&nbsp;<?php echo tep_show_quantity($product_info['products_quantity']); ?></strong>&nbsp;個</td>
+                            <td class="main"><div class="product_num1">残り</div><div class="product_num">&nbsp;<?php echo tep_show_quantity($product_info['products_quantity']); ?></div><div>&nbsp;個</div></td>
                           </tr>
                           <?php 
                       if(!empty($data3[0])){
