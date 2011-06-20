@@ -416,12 +416,19 @@ function faq_c_is_set_romaji(pid,cid,site_id){
 }
 function faq_c_is_set_error_char(romaji){
   var cromaji = $("#cromaji").val();
-  if(cromaji.search('/')!= -1 || 
-      cromaji.search('_')!= -1){
-    var res = cromaji.replace(/\/|\_/g, "-");
-    alert("禁止記号は全て「-」に置き換えられます");
-    $("#cromaji").val(res);
-  }
+  $.ajax({
+    url: 'ajax_orders.php?action=check_romaji',
+    type: 'POST',
+    data: 'romaji='+cromaji,
+    dataType: 'text',
+    async : false,
+    success: function(data) {
+      if(data!=''){
+        $("#cromaji").val(data);
+        alert("禁止記号は全て「-」に置き換えられます");
+      }
+    }
+  });
 }
 function faq_q_is_set_romaji(cid,qid,site_id){
   var qromaji = $("#qromaji").val();
@@ -440,10 +447,17 @@ function faq_q_is_set_romaji(cid,qid,site_id){
 }
 function faq_q_is_set_error_char(romaji){
   var qromaji = $("#qromaji").val();
-  if(qromaji.search('/')!= -1 || 
-      qromaji.search('_')!= -1){
-    var res = qromaji.replace(/\/|\_/g, "-");
-    alert("禁止記号は全て「-」に置き換えられます");
-    $("#qromaji").val(res);
-  }
+  $.ajax({
+    url: 'ajax_orders.php?action=check_romaji',
+    type: 'POST',
+    data: 'romaji='+qromaji,
+    dataType: 'text',
+    async : false,
+    success: function(data) {
+      if(data!=''){
+        $("#qromaji").val(data);
+        alert("禁止記号は全て「-」に置き換えられます");
+      }
+    }
+  });
 }
