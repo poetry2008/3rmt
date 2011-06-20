@@ -590,7 +590,7 @@ Header
 	height:14px;
 	*height:19px;
 	background:url(../images/design/header_navigation.gif) no-repeat;
-	font-size: 10px;
+	font-size: 12px;
 	margin:0 auto 5px auto;
 	text-align:left;
 	padding:5px 0 0 10px;
@@ -1338,7 +1338,7 @@ A：link
 --------------------------- */
 A.headerNavigation { 
 	color: #fff;
-	font-size:10px;
+	font-size:12px;
 }
 /* ---------------------------
 A：hover
