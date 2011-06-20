@@ -2,6 +2,25 @@
 require_once "HM_Item_Basic.php";
 class HM_Item_Checkbox extends HM_Item_Basic  
 {
+  /*
+ステータス[連動しない▽]（可以跟其他的状态关联）
+
+必須：○　必須
+
+項目名_____ _____　
+
+前方文字__________
+
+CheckBoxの内容__________
+  */
+  var $hasRequire = true;
+  var $hasThename = true;
+  var $hasSelect  = true;
+  //  var $hasSubmit = true;
+  var $hasFrontText  = true;  
+  //  var $hasBackText  = true;  
+  //  var $hasDefaultValue  = true;
+  //  var $hasSize  = true;
   function renderScript()
   {
     ?>
@@ -30,9 +49,14 @@ class HM_Item_Checkbox extends HM_Item_Basic
     $this->defaultValue = $this->loadedValue;
    }  
    $loadArray = explode('_',$this->defaultValue);
-   
+
+   if($this->require){
+     $classrequire = 'require';
+   }else {
+     $classrequire = '';
+   }   
    echo $this->beforeInput;
-   echo "<input id='".$this->formname."real' value = '".$this->defaultValue."' type='hidden' name = '".$this->formname."'>";
+   echo "<input class=".$classrequire." id='".$this->formname."real' value = '".$this->defaultValue."' type='hidden' name = '".$this->formname."'>";
    foreach($this->radios as $key=>$value){
      if (in_array($value,$loadArray)){
        $check = 'checked';
@@ -56,10 +80,10 @@ class HM_Item_Checkbox extends HM_Item_Basic
     }
     $radios = $item_value['radios'];
     $result = '';
-    $result .= "必須<input type='checkbox' name='require' ".$checked."/></br>\n";
-    $result .= "项目名<input type='text' name='thename' value='".(isset($item_value['thename'])?$item_value['thename']:'')."'/></br>\n";
-    $result .= "前方文字<input type='text' name='beforeInput' value='".(isset($item_value['beforeInput'])?$item_value['beforeInput']:'')."'/></br>\n";
-    $result .= "後方文字<input type='text' name='afterInput' value='".(isset($item_value['afterInput'])?$item_value['afterInput']:'')."'/></br>\n";
+    //    $result .= "必須<input type='checkbox' name='require' ".$checked."/></br>\n";
+    //    $result .= "项目名<input type='text' name='thename' value='".(isset($item_value['thename'])?$item_value['thename']:'')."'/></br>\n";
+    //    $result .= "前方文字<input type='text' name='beforeInput' value='".(isset($item_value['beforeInput'])?$item_value['beforeInput']:'')."'/></br>\n";
+    //    $result .= "後方文字<input type='text' name='afterInput' value='".(isset($item_value['afterInput'])?$item_value['afterInput']:'')."'/></br>\n";
     if(count($radios)){
       foreach($radios as $key=>$radio){
         $result.= "Checkbox<input type='text' name='radios[]' value=$radio />\r\n</br>";

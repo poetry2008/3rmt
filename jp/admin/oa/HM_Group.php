@@ -11,8 +11,7 @@ class HM_Group extends DbRecord
   }
   function getItems()
   {
-//    var_dump($this->group_id);
-    $sql = "select *,group_id,".$this->form_id ." as form_id from ".TABLE_OA_ITEM." where group_id = ".$this->id;
+    $sql = "select *,group_id,".$this->form_id ." as form_id from ".TABLE_OA_ITEM." where group_id = ".$this->id  ." order by  ordernumber ,id";
     $items =  $this->getResultObjects($sql,'HM_Item');
     foreach($items as $key=>$item){
       $item->init();

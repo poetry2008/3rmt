@@ -58,12 +58,11 @@ function oaNew(){
   $type = 'text';
   $itemClass = 'HM_Item_'.ucfirst($type);
   require_once "oa/".$itemClass.".php";
-
   echo "<form action ='?action=create' method='post' >"  ."</br>\n";
   echo "<input type='hidden' name='group_id' value='".$group_id."'/>"  ."</br>\n";
   echo "<input type='hidden' name='type' value='".$type."'/>"  ."</br>\n";
   echo "Title:<input type='text' name='title' value='"."'/>"  ."</br>\n";
-  echo $itemClass::prepareForm();
+  echo $itemClass::prepareFormWithParent();
   echo "<textarea name='comment'/></textarea>"  ."</br>\n";
   echo "<input type='submit' />"  ."</br>\n";
   echo "</form>";

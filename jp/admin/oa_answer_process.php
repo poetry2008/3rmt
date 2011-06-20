@@ -30,8 +30,19 @@
   $item_id = $ids['3'];
   $group_id = $ids['2'];
   tep_db_query("delete from ".TABLE_OA_FORMVALUE." where orders_id = '".$_GET['oID']."' and name='".$key."'"); 
+  //针对 date 做特殊处理
+  if($_GET['fix']=='date'){
+  $value = date('Y/m/d H:i',time());
+  }
+  if($_GET['fix']=='user'){
+    $user_info = tep_get_user_info($ocertify->auth_user);
+    $value =$user_info['name'];
+  }
   tep_db_query("insert into `".TABLE_OA_FORMVALUE."` values(NULL, '".$oid."', '".$form_id."', '".$item_id."', '".$group_id."', '".$key."','".$value."')");
-  var_dump("insert into `".TABLE_OA_FORMVALUE."` values(NULL, '".$oid."', '".$form_id."', '".$item_id."', '".$group_id."', '".$key."','".$value."')");
+  //  var_dump("insert into `".TABLE_OA_FORMVALUE."` values(NULL, '".$oid."', '".$form_id."', '".$item_id."', '".$group_id."', '".$key."','".$value."')");
+  if( $_GET['withz']){
+    echo $value;
+  }
 
 }
 

@@ -2,6 +2,13 @@
 require_once "HM_Item_Basic.php";
 class HM_Item_Autocalculate extends HM_Item_Basic
 {
+  /*
+必須：○　必須
+
+項目名_____ _____　
+   */
+  var $hasRequire = true;
+  var $hasTheName = true;
   
   function render()
   {
@@ -9,6 +16,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
     $this->defaultValue = $this->loadedValue;
 }  
     echo $this->beforeInput;
+    echo $this->thename;
     echo "<input id = '".$this->formname.'ymd'."' type='hidden' name='".$this->formname."' value='".$this->defaultValue."' />";
     echo "<input id = '".$this->formname.'y'."' size=4 type='text' value='$this->y'  />"."年";
     echo "<input id = '".$this->formname.'m'."' size=4 type='text' value='$this->m'  />"."月";
@@ -54,8 +62,8 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       $item_value = unserialize($item_res->option); 
     }
     $formString  = '';
-    $formString .= "必須<input type='checkbox' name='require' ".$checked."/></br>\n";
-    $formString .= "项目名<input type='text' name='thename' value='".(isset($item_value['thename'])?$item_value['thename']:'')."'/>";
+    //    $formString .= "必須<input type='checkbox' name='require' ".$checked."/></br>\n";
+    //    $formString .= "项目名<input type='text' name='thename' value='".(isset($item_value['thename'])?$item_value['thename']:'')."'/>";
     $formString .= "</br>\n";
     return $formString;
   }

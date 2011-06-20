@@ -18,7 +18,7 @@ class HM_Item_Specialbank extends HM_Item_Basic
 {
   function render()
   {
-    $this->defaultValue = 'Y|N-1,2,3,8,4' ;
+    $this->defaultValue = '';//'Y|N-1,2,3,8,4' ;
     if ($this->loaded){
       $this->defaultValue = $this->loadedValue;
     }  
@@ -73,7 +73,14 @@ class HM_Item_Specialbank extends HM_Item_Basic
     function <?php echo $this->formname;?>loadDefaultValue()
     {
       defulatVal = $("#<?php echo $this->formname;?>").val();
+      //      alert(defulatVal);
+      if(!defulatVal){
+        return '';
+      }
       splitArray = defulatVal.split('-');
+      if(splitArray.length == 1 ){
+        return '';
+      }
       YN = splitArray[0].split('|');
       checkGroups = splitArray[1].split(',');
       i = 0;

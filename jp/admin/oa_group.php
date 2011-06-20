@@ -111,7 +111,7 @@ function select_all_group()
 
             <tr>
               <td colspan="2">
-              <input type="submit" value="<?php echo IMAGE_SAVE;?>"> 
+              <input type="submit" value="<?php echo '新規グループ保存';?>"> 
               </td>
             </tr>
           </table>
@@ -240,7 +240,7 @@ function ajaxUpdate(id,order){
             <?php
               if (tep_db_num_rows($group_list_raw)) {
             ?>
-                <input type="submit" value="<?php echo IMAGE_SAVE;?>"> 
+                <input type="submit" value="<?php echo 'テンプレート保存';?>"> 
             <?php
               }
             ?>
