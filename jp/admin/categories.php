@@ -933,6 +933,7 @@
         tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $categories_id . '&pID=' . $products_id));
         break;
       case 'new_product_preview':
+        if (!isset($_GET['read'])) { 
         $romaji_error = 0; 
         $romaji_error_str = '';
         
@@ -998,6 +999,7 @@
         if ($romaji_error == 1) {
           $_GET['action'] = 'new_product'; 
           break;
+        }
         }
     }
   }

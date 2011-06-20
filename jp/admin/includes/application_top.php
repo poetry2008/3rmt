@@ -352,7 +352,7 @@ while($userslist= tep_db_fetch_array($sites_id)){
 // default open navigation box
   if (!tep_session_is_registered('selected_box')) {
     tep_session_register('selected_box');
-    $selected_box = 'configuration';
+    $selected_box = '';
   }
   if (isset($_GET['selected_box']) && $_GET['selected_box']) {
     $selected_box = $_GET['selected_box'];

@@ -53,27 +53,31 @@ define('FILENAME_ONCE_PWD_LOG', 'pwd_log.php');
               <tr>
               <td onmouseover="this.style.cursor='hand'" class="menuBoxHeading">
               &nbsp; 
-              <a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col8');"><?php echo BOX_HEADING_USER;?></a> 
+              <a class="menuBoxHeading_Link" href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('selected_box')) . 'selected_box=users');?>"><?php echo BOX_HEADING_USER;?></a> 
               &nbsp; 
               </td>
               </tr>
             </table> 
-            <div id="col8" style="display:none"> 
+            <?php
+            if ($selected_box == 'users') {
+            ?>
+            <div id="col8"> 
             <table cellspacing="0" cellpadding="2" border="0" width="100%"> 
               <tr>
                 <td class="menuBoxContent">
     <?php  
-        if ($ocertify->npermission == 15) $loginlog = '<a href="' . tep_href_link(FILENAME_USERS_LOGINLOG, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_USER_LOG . '</a>';
+        if ($ocertify->npermission == 15) $loginlog = '<a '.((basename($PHP_SELF) == FILENAME_USERS_LOGINLOG)?'class="s_column_bar" ':'class="menuBoxContent_Link" ').'href="' . tep_href_link(FILENAME_USERS_LOGINLOG, '', 'NONSSL') . '">' . BOX_USER_LOG . '</a>';
 	else $loginlog = '';
-        echo '<a href="' . tep_href_link(FILENAME_USERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_USER_ADMIN . '</a><br>' .  '<a href="' . tep_href_link(basename($PHP_SELF), '', 'NONSSL') . '?execute_logout_user=1" class="menuBoxContent_Link">' . BOX_USER_LOGOUT . '</a><br>' . 
+        echo '<a '.((basename($PHP_SELF) == FILENAME_USERS)?'class="s_column_bar" ':'class="menuBoxContent_Link" ').'href="' .  tep_href_link(FILENAME_USERS, '', 'NONSSL') . '">' . BOX_USER_ADMIN .  '</a><br>' .  
+          '<a href="' . tep_href_link(basename($PHP_SELF), '', 'NONSSL') . '?execute_logout_user=1" class="menuBoxContent_Link">' . BOX_USER_LOGOUT . '</a><br>' . 
         $loginlog."<br>".
-       '<a href="'.tep_href_link(FILENAME_ONCE_PWD_LOG).'"
-       class="menuBoxContent_Link">'.BOX_ONCE_PWD_LOG."</a>"; 
+       '<a '.((basename($PHP_SELF) == FILENAME_ONCE_PWD_LOG)?'class="s_column_bar" ':'class="menuBoxContent_Link" ').'href="'.tep_href_link(FILENAME_ONCE_PWD_LOG).'">'.BOX_ONCE_PWD_LOG."</a>"; 
     ?>
                 </td>
               </tr>
             </table> 
             </div> 
+            <?php }?> 
             </td>
           </tr>
 <!-- users //-->

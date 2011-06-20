@@ -12,7 +12,7 @@
       $this->description = MODULE_METASEO_LOGOFF_TEXT_DESCRIPTION;
     $this->explain = MODULE_METASEO_LOGOFF_TEXT_EXPLAIN;
       $this->sort_order = MODULE_METASEO_LOGOFF_SORT_ORDER;
-      $this->link = 'logout.php';
+      $this->link = 'logoff.php';
     }
 
 // class methods
