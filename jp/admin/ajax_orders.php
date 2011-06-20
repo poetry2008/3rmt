@@ -389,4 +389,37 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   }else{
     echo 0;
   }
+}else if(isset($_GET['action'])&&$_GET['action'] == 'c_is_set_romaji'){
+  $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
+  $sql =  "select * from ".TABLE_FAQ_CATEGORIES." fc,
+              ".TABLE_FAQ_CATEGORIES_DESCRIPTION." 
+              fcd where fc.id=fcd.faq_category_id and
+              fc.parent_id='".$_POST['pid']."'      and
+              fcd.romaji='".$_POST['romaji']."' and
+              fcd.site_id='".$site_id."'"; 
+  if(isset($_POST['cid'])&&$_POST['cid']!=''){
+     $sql .= " and fc.id != '".$_POST['cid']."'";
+  }
+  if(tep_db_num_rows(tep_db_query($sql))){
+    echo 'true';
+  }else{
+    echo 'false';
+  }
+}else if(isset($_GET['action'])&&$_GET['action'] == 'q_is_set_romaji'){
+  $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
+  $sql = "select * from  
+              ".TABLE_FAQ_QUESTION_DESCRIPTION." fqd,
+              ".TABLE_FAQ_QUESTION_TO_CATEGORIES." fq2c 
+              where fqd.faq_question_id=fq2c.faq_question_id and
+              fq2c.faq_category_id='".$_POST['cid']."'      and
+              fqd.romaji='".$_POST['romaji']."' and
+              fqd.site_id='".$site_id."'";
+  if(isset($_POST['qid'])&&$_POST['qid']!=''){
+    $sql .= " and fqd.faq_question_id != '".$_POST['qid']."'"; 
+  }
+  if(tep_db_num_rows(tep_db_query($sql))){
+    echo 'true';
+  }else{
+    echo 'false';
+  }
 }
