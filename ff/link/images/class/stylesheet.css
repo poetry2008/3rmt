@@ -1,0 +1,583 @@
+@import url("design.css");
+/* ---------------------------
+左右のボックス：通常
+--------------------------- */
+.boxText {
+	font-size: 11px;
+}
+/* ---------------------------
+左右のボックス：エラー
+--------------------------- */
+.errorBox {
+	font-size : 10px;
+	background: #ffb3b5;
+	font-weight: bold;
+}
+/* ---------------------------
+「カートには何が入っている?」ページでカタログの在庫が無い時に表示するメッセージ
+--------------------------- */
+.stockWarning {
+	font-size : 12px;
+	color: #cc0033;
+}
+/* ---------------------------
+調査中
+--------------------------- */
+.productsNotifications {
+	background: #e2e2e2;
+}
+/* ---------------------------
+「ご注文の最終確認」ページ「変更」文字
+--------------------------- */
+.orderEdit {
+	font-size : 11px;
+	color: #70d250;
+	text-decoration: underline;
+}
+/* ---------------------------
+BODY：ボディ
+--------------------------- */
+BODY {
+	background-color: #272626;
+	margin: 0px;
+	padding: 0px;
+	color: #656565;
+}
+/* ---------------------------
+A：リンク（通常）
+--------------------------- */
+A {
+	color: #555;
+	text-decoration: none;
+}
+/* ---------------------------
+A：リンク（カーソルが上に乗ったとき）
+--------------------------- */
+A:hover {
+  color: #00c0ff;
+  text-decoration: underline;
+}
+/* ---------------------------
+FORM：フォーム
+--------------------------- */
+FORM {
+	display: inline;
+	margin: 0px;
+	padding: 0px;
+}
+/* ---------------------------
+IMG: 画像
+--------------------------- */
+IMG {
+	border-style: none;
+	vertical-align: bottom;
+}
+/* ---------------------------
+TR：ヘッダー（product_info）
+--------------------------- */
+TR.header2 {
+	background: #ffffff;
+}
+/* ---------------------------
+TR：ヘッダー（ナビゲーション）
+--------------------------- */
+TR.headerNavigation {
+	background: #bbc3d3;
+}
+/* ---------------------------
+TD：ヘッダー（ナビゲーション）
+--------------------------- */
+TD.headerNavigation {
+	font-size: 10px;
+	background: #FFFFFF;
+	color: #029DBB;
+}
+/* ---------------------------
+A：ヘッダー（ナビゲーションのリンク）
+--------------------------- */
+A.headerNavigation { 
+	color: #ffffff;
+	font-size:10px;
+}
+/* ---------------------------
+A：ヘッダー（ナビゲーション・カーソルが上に乗ったとき）
+--------------------------- */
+A.headerNavigation:hover {
+	color: #002226;
+}
+/* ---------------------------
+TR：ヘッダー（エラー）
+--------------------------- */
+TR.headerError {
+	background: #ff0000;
+}
+/* ---------------------------
+TD：ヘッダー（エラー）
+--------------------------- */
+TD.headerError {
+	font-size: 12px;
+	background: #ff0000;
+	color: #ffffff;
+	font-weight : bold;
+	text-align : center;
+	width:900px;
+}
+/* ---------------------------
+TR：ヘッダー（メッセージ）
+--------------------------- */
+TR.headerInfo {
+	background: #00ff00;
+}
+/* ---------------------------
+TD：ヘッダー（メッセージ）
+--------------------------- */
+TD.headerInfo {
+	font-size: 12px;
+	background: #00ff00;
+	color: #ffffff;
+	font-weight: bold;
+	text-align: center;
+}
+/* ---------------------------
+TABLE：情報ボックス
+--------------------------- */
+.infoBox {
+	width: 100%;
+}
+.product_info_box{
+	border: solid 1px #ccc;
+	background: #f4f4f4;
+	padding: 5px;
+}
+.product_info_box table{
+	width: 100%;
+	*width: 398px;/*IE*/
+	border-collapse: collapse;
+	border-spacing: 0px;
+	border: solid 1px #ddd; 
+}
+.product_info_box table td{
+	background: #fff;
+	border: solid 1px #ddd;
+}
+.product_info_box .small_table{
+	width: 100%;
+	border: dotted 1px #eee;
+	background: #f5ffff!important;
+	padding: 0px 5px 5px;
+}
+.product_info_box .small_table td{
+	border: none;
+	background: #F6F6F5 url(../../../images/design/box/dot.gif) bottom repeat-x!important;
+}
+.product_info_box .p_i_b_title{
+	color: #CC0000;
+	font-weight: bold;
+	background: #fff url(../../../images/design/box/product_info_box_td.gif) bottom repeat-x;
+}
+/* ---------------------------
+TABLE：情報ボックス（コンテンツ）
+--------------------------- */
+.infoBoxContents{
+	width: 100%;
+	background: #eee;
+	font-size: 11px;
+	border: solid 1px #ddd;
+	border-collapse: separate;
+	border-spacing: 1px;
+}
+.infoBoxContents td{
+	line-height: 20px;
+	padding: 3px 5px;
+	background: #fff;
+}
+.infoBoxContents td a{
+	color: #336600;
+}
+/* ---------------------------
+調査中
+--------------------------- */
+.infoBoxNotice {
+	background: #FF8E90;
+}
+/* ---------------------------
+調査中
+--------------------------- */
+.infoBoxNoticeContents {
+	background: #FFE6E6;
+	font-size: 10px;
+}
+/* ---------------------------
+TD：情報ボックス（タイトル）
+--------------------------- */
+TD.infoBoxHeading {
+	font-size: 12px;
+	font-weight: bold;
+	color: #000;
+}
+/* ---------------------------
+TD,SPAN：情報ボックス（情報・メッセージ）
+--------------------------- */
+TD.infoBox, SPAN.infoBox {
+	font-size: 11px;
+}
+/* ---------------------------
+TR：奇数行
+--------------------------- */
+TR.accountHistory-odd, TR.addressBook-odd, TR.alsoPurchased-odd, TR.payment-odd, TR.productListing-odd, TR.productReviews-odd, TR.upcomingProducts-odd, TR.shippingOptions-odd {
+	background: #F6F5F5;
+}
+/* ---------------------------
+TR：偶数行
+--------------------------- */
+TR.accountHistory-even, TR.addressBook-even, TR.alsoPurchased-even, TR.payment-even, TR.productListing-even, TR.productReviews-even, TR.upcomingProducts-even, TR.shippingOptions-even {
+	background: #ffffff;
+}
+/* ---------------------------
+TR：カタログ一覧（タイトル）
+--------------------------- */
+TR.productListing-heading {
+	background: #d2e9fb;
+}
+/* ---------------------------
+TD：カタログ一覧（タイトル）
+--------------------------- */
+TD.productListing-heading {
+	font-size: 11px;
+	background: #d2e9fb;
+	color: #656565;
+	font-weight: bold;
+	font-variant: small-caps;
+}
+/* ---------------------------
+TD：カタログ一覧（データ）
+--------------------------- */
+TD.productListing-data {
+	font-size: 11px;
+}
+/* ---------------------------
+A：ページリンク（通常）
+--------------------------- */
+A.pageResults { 
+	color: #000;
+}
+/* ---------------------------
+A：ページリンク（カーソルが上に乗ったとき）
+--------------------------- */
+A.pageResults:hover { 
+	color: #d27515;
+}
+/* ---------------------------
+TR：サブバー（未使用）
+--------------------------- */
+TR.subBar {
+	background: #f4f7fd;
+}
+/* ---------------------------
+TD：サブバー（未使用）
+--------------------------- */
+TD.subBar {
+	font-size: 10px;
+	color: #000000;
+}
+/* ---------------------------
+TD：メイン
+--------------------------- */
+TD.main, P.main {
+	font-size: 11px;
+	*+font-size: 10px;
+	line-height: 1.5;
+}
+/* ---------------------------
+TD,SPAN：小さい文字（メッセージ）
+--------------------------- */
+TD.smallText, SPAN.smallText, P.smallText {
+	font-size: 10px;
+	line-height: 1.5;
+/*	letter-spacing:-0.3mm;*/
+}
+/* ---------------------------
+TD：アカウントカテゴリー
+--------------------------- */
+TD.accountCategory {
+	font-size: 13px;
+	color: #aabbdd;
+}
+/* ---------------------------
+TD：フィールド（キー）
+--------------------------- */
+TD.fieldKey {
+	font-size: 12px;
+	font-weight: bold;
+}
+/* ---------------------------
+TD：フィールド（値）
+--------------------------- */
+TD.fieldValue {
+	font-size: 12px;
+}
+/* ---------------------------
+TD：一覧表の項目名
+--------------------------- */
+TD.tableHeading {
+	font-size: 12px;
+	font-weight: bold;
+}
+/* ---------------------------
+SPAN：情報ボックス（新しくカートに入れたカタログ）
+--------------------------- */
+SPAN.newItemInCart {
+	font-size: 11px;
+	color: #ff0000;
+}
+/* ---------------------------
+CHECKBOX, INPUT, RADIO, SELECT：FORMの入力・選択項目
+--------------------------- */
+CHECKBOX, INPUT, RADIO, SELECT {
+}
+
+/* ---------------------------
+TEXTAREA：FORMの入力項目
+--------------------------- */
+TEXTAREA {
+	width: 100%;
+	font-size: 11px;
+}
+/* ---------------------------
+SPAN：トップページのメッセージ（こんにちは、○○さん～）
+--------------------------- */
+SPAN.greetUser {
+	font-size: 12px;
+	color: #0000a0;
+	font-weight: bold;
+}
+/* ---------------------------
+TABLE：フォームエリア（境界線）
+--------------------------- */
+TABLE.formArea {
+	background: #FFFFFF;
+	border-color: #E8E8E8;
+	border-style: solid;
+	border-width: 1px;
+}
+/* ---------------------------
+TD：フォームエリア（タイトル）
+--------------------------- */
+TD.formAreaTitle {
+
+	font-size: 12px;
+	font-weight: bold;
+}
+/* ---------------------------
+SPAN：マーク（在庫切れ）
+--------------------------- */
+SPAN.markProductOutOfStock a{
+	font-size: 12px;
+	color: #c76170;
+	font-weight: bold;
+}
+/* ---------------------------
+SPAN：特価カタログ価格
+--------------------------- */
+SPAN.productSpecialPrice {
+	color: #ff0000;
+}
+/* ---------------------------
+SPAN：エラー
+--------------------------- */
+SPAN.errorText {
+	color: #ff0000;
+}
+/* ---------------------------
+レジチェックボックス・マウスオフ
+--------------------------- */
+.moduleRow, .moduleRow td {
+	background: #e5e5e5;
+}
+/* ---------------------------
+レジチェックボックス・マウスオーバー
+--------------------------- */
+.moduleRowOver, .moduleRowOver td {
+	background: #ccc;
+	cursor: hand;
+}
+/* ---------------------------
+レジチェックボックス選択行
+--------------------------- */
+.moduleRowSelected, .moduleRowSelected td {
+	background: #ccc;
+}
+/* ---------------------------
+チェックアウト手順
+--------------------------- */
+.checkoutBarFrom, .checkoutBarTo {
+	font-size: 11px;
+	color: #8c8c8c;
+}
+/* ---------------------------
+チェックアウト手順（現在の手順）
+--------------------------- */
+.checkoutBarCurrent {
+	font-size: 11px;
+	color: #000000;
+}
+.menu_bg {
+	background-image: url(../../../images/design/menu_bg.jpg);
+	background-repeat: no-repeat;
+	width: 115px;
+	text-align: center;
+}
+.c_menu {
+	background-image: url(../../../images/design/menu_arrow.jpg);
+	width: 135px;
+	background-repeat: no-repeat;
+	padding-left: 15px;
+	color: #656565;
+}
+.bestseller_image_border {
+	border: 2px solid #FFFFFF;
+}
+.pageHeading_line {
+	background-image: url(../../../images/design/page_heading.gif);
+	background-repeat: no-repeat;
+	height: 8px;
+	margin-top: 5px;
+	margin-bottom: 10px;
+	margin-left: 20px;
+}
+
+.image_border {
+	padding: 1px;
+	border: 1px solid #E8E8E8;
+}
+.listing_image {
+	float: left;
+	margin-right: 25px;
+	margin-top: 25px;
+}
+.listing_image_return {
+	margin-top: 25px;
+	float: none;
+}
+address {
+	font-style: normal;
+	font-size: 10px;
+}
+#menu a{
+   color:#656565;
+}   
+#body_text {
+	background-color: #FFFFFF;
+}
+.search_box{
+	color: #9DB391;
+	background-color: #F1F2EE;
+	border: 1px solid #9DB391;
+}
+/*
+strong {
+	color: #95A078;
+}
+*/
+.underline{
+	border-top: 1px solid #E0E0E7;
+	margin-top: 15px;
+	          /*width:689;*/
+}
+P.description{
+	margin-top:5px;
+	text-align : left;
+	width : 95%;
+	height : 63px;
+	scrollbar : yes;
+	overflow:auto;
+	font-size: 10px;
+	color: #666666;
+	padding-left: 10px;
+}
+
+.formAreaTitle {
+	font-size: 11px;
+	font-weight: bold;
+	color: #666666;
+}
+
+.smallText {
+	font-size: 10px;
+}
+
+#tabtable {
+	background-image: url(../../../images/design/top_tab/tab-bg.jpg);background-repeat: repeat-y;
+}
+
+.show_tags01{
+list-style:none;
+}
+.show_tags01 li{
+display:block;
+float:left;
+margin:3px 5px;
+overflow:hidden;
+}
+.show_tags01 li a{
+display:block;
+}
+.show_tags01 li a img{
+width:40px;
+height:40px;
+border:0;
+vertical-align:middle;
+}
+.contents{
+font-size:11px;
+}
+/*button*/
+.button_delete02{
+display:block;
+overflow:hidden;
+text-indent:-2000px;
+width:35px;
+height:17px;
+background-image: url(../../../includes/languages/japanese/images/buttons/button_delete02.gif);
+}
+.shopping_cart_continue{
+display:block;
+cursor:pointer;
+width:72px;
+height:17px;
+padding:0;
+border:0;
+background-image: url(../../../includes/languages/japanese/images/buttons/button_continue_shopping.gif);
+}
+.shopping_cart_checkout{
+display:block;
+cursor:pointer;
+width:58px;
+height:17px;
+padding:0;
+border:0;
+background-image: url(../../../includes/languages/japanese/images/buttons/button_checkout.gif);
+}
+.waring_category {
+color:#000;
+margin:5px 0 2px 0;
+overflow:hidden;
+padding:5px 7px;
+border:2px solid #FF8080;
+}
+.waring_product{
+color:#000;
+margin:5px 0 5px 0;
+overflow:hidden;
+padding:5px 7px;
+background-color:#e2e2e2;
+border:1px solid #CAC6BE;
+}
+.footer_games a{ 
+	color:#0C9DEA;
+	font-weight:bold;
+}
+.footer_games a:hover{ 
+	color:#ffffff;
+	font-weight:bold;
+}
