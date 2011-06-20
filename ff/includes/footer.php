@@ -29,7 +29,7 @@
         <?php echo FOOTER_TEXT_BODY . "\n"; ?><br>
               Copyright&nbsp;&copy;&nbsp;2011&nbsp;&nbsp;
 <?php
-echo '<a class="bold" href="'. HTTP_SERVER.'">'.STORE_NAME.'</a>';
+echo '<a class="bold" href="'. HTTP_SERVER.'">FF14-RMT.com</a>';
 ?>
 
             </address>
