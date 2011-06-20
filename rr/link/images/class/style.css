@@ -218,6 +218,7 @@ background:url(images/button02.gif) no-repeat;
   /*  background: url(../images/design/footer_xian.gif) repeat-x scroll 0 0 transparent;*/
     height: 24px;
     line-height: 9px;
+	margin:-10px 0 8px 0;
 }
 .footer_link a{     color: #FFFFFF;
     font-size: 12px;
