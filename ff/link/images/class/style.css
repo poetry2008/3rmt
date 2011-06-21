@@ -20,6 +20,7 @@ width:20%;
 .web_3_top {
 	width:100%;
 }
+.web_3_top a { font-size:12px;}
 .web_3_top h3 a{
 	padding-left:10px;
 	font-size:12px;
@@ -29,14 +30,16 @@ width:20%;
 }
 .web_3 a{
 	padding-left:10px;
-	font-size:10px;
+	font-size:12px;
 	background:url(../../../images/design/box/arrow_2.gif) no-repeat left center;
 }
+.web-tit a{ font-size:12px;}
 .search_and_tools{
 	overflow:hidden;
 	margin-bottom:5px;
 /*	background-color:#F2F2F2;
 */}
+.text_out { font-size:12px;}
 .boxes {
 	padding:0;
 /*	margin-bottom:5px;
@@ -56,6 +59,7 @@ width:20%;
 clear:both;
 padding:0 8px;
 }
+#content a { font-size:12px;}
 .search_head{
 float:right;
 width:700px;

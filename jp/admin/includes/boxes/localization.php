@@ -36,24 +36,20 @@
               <tr>
               <td onmouseover="this.style.cursor='hand'" class="menuBoxHeading">
               &nbsp; 
-              <a class="menuBoxHeading_Link" href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('selected_box')) . 'selected_box=localization');?>"><?php echo BOX_HEADING_LOCALIZATION;?></a> 
+              <a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col5');"><?php echo BOX_HEADING_LOCALIZATION;?></a> 
               &nbsp; 
               </td>
               </tr>
             </table> 
-            <?php
-            if ($selected_box == 'localization') {
-            ?>
-            <div id="col5"> 
+            <div id="col5" style="display:none"> 
             <table cellspacing="0" cellpadding="2" border="0" width="100%"> 
               <tr>
                 <td class="menuBoxContent">
-                 <?php echo '<a '.((basename($PHP_SELF) == FILENAME_ORDERS_STATUS)?'class="s_column_bar" ':'class="menuBoxContent_Link" ').'href="' . tep_href_link(FILENAME_ORDERS_STATUS, '', 'NONSSL') . '">' .  BOX_LOCALIZATION_ORDERS_STATUS . '</a>';?>
+                 <?php echo '<a href="' . tep_href_link(FILENAME_ORDERS_STATUS, '', 'NONSSL') . '" class="menuBoxContent_Link">' .  BOX_LOCALIZATION_ORDERS_STATUS . '</a>';?>
                 </td>
               </tr>
             </table>
             </div>
-            <?php }?> 
             </td>
           </tr>
 <!-- localization_eof //-->
