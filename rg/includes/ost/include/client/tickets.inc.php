@@ -142,7 +142,7 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
             $class = ($class =='row2') ?'row1':'row2';
             } //end of while.
         else: //not tickets found!! ?> 
-            <tr class="<?=$class?>"><td colspan=7><b>該当するものはありません.</b></td></tr>
+            <tr class="<?=$class?>"><td colspan=7><b>該当するものはありません。</b></td></tr>
         <?
         endif; ?>
      </table>
