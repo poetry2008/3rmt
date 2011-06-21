@@ -56,6 +56,7 @@ width:20%;
 clear:both;
 padding:0 8px;
 }
+#content a { font-size:12px;}
 .search_head{
 float:right;
 width:708px;
