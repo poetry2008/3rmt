@@ -61,12 +61,28 @@ function toggle_leftColumn()
 }
 function toggle_lan(sobj)
 {
-   
+  var current_status = $('#'+sobj).css('display');
+  if (current_status == 'none') {
+    var action_str = 'insert'; 
+  } else {
+    var action_str = 'del'; 
+  }
   $('#'+sobj).slideToggle(); 
+  $.ajax({
+    url: "<?php echo tep_href_link('toggle_left_menu.php');?>",
+    data:"id="+sobj+"&action="+action_str, 
+    type: "POST",
+    success:function(msg) {
+    }
+  }); 
 }
 </script>
 <?php }?>
 <?php
+$l_select_box_arr = array();
+if (isset($_SESSION['l_select_box'])) {
+  $l_select_box_arr = explode(',', $_SESSION['l_select_box']);
+}
 if ($ocertify->npermission >= 10) {
   require(DIR_WS_BOXES . 'configuration.php');
   require(DIR_WS_BOXES . 'catalog.php');

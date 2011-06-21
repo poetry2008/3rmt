@@ -35,7 +35,17 @@
               </td>
               </tr>
             </table> 
+            <?php
+            if (in_array('col4', $l_select_box_arr)) {
+            ?>
+            <div id="col4" style="display:block"> 
+            <?php
+            } else {
+            ?>
             <div id="col4" style="display:none"> 
+            <?php
+            }
+            ?>
             <table cellspacing="0" cellpadding="2" border="0" width="100%"> 
               <tr>
                 <td class="menuBoxContent">
