@@ -71,6 +71,7 @@ $_closed = 'クローズ';
 $results_type=($status)?($$_status).'':' 全部';
 //$results_type=($status)?ucfirst($status).' 問合番号':' 全部';
 $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
+$_negorder=$negorder=="DESC"?'昇順':'降順';
 ?>
 <div>
     <?if($errors['err']) {?>
