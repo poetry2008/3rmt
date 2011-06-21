@@ -22,7 +22,7 @@ if($_REQUEST['status']) { //Query string status has nothing to do with the real 
 }
 
 //Restrict based on email of the user...STRICT!
-$qwhere =' WHERE topic_id = '.SITE_TOPIC_ID.' and email='.db_input($thisclient->getEmail());
+$qwhere =' WHERE ticket.dept_id= '.SITE_DEPT_ID.' and email='.db_input($thisclient->getEmail());
 
 //STATUS
 if($status){
@@ -71,6 +71,7 @@ $_closed = 'クローズ';
 $results_type=($status)?($$_status).'':' 全部';
 //$results_type=($status)?ucfirst($status).' 問合番号':' 全部';
 $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
+$_negorder=$negorder=="DESC"?'昇順':'降順';
 ?>
 <div>
     <?if($errors['err']) {?>
@@ -142,7 +143,7 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
             $class = ($class =='row2') ?'row1':'row2';
             } //end of while.
         else: //not tickets found!! ?> 
-            <tr class="<?=$class?>"><td colspan=7><b>該当するものはありません.</b></td></tr>
+            <tr class="<?=$class?>"><td colspan=7><b>該当するものはありません。</b></td></tr>
         <?
         endif; ?>
      </table>

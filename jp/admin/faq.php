@@ -1010,10 +1010,10 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       '<input type="button" onclick = "faq_q_is_set_error_char(\'\')"
       value="'.IS_SET_ERROR_CHAR.'">'.
       '<br>';
-    $faq_question_inputs_string .= '<br>'.TEXT_NEW_FAQ_QUESTION_ASK.':<br>'.
-      tep_draw_input_field('ask','','id="title"').'<br>';
     $faq_question_inputs_string .= '<br>'.TEXT_NEW_FAQ_QUESTION_KEYWORDS.':<br>'.
       tep_draw_textarea_field('keywords','soft',30,3).'<br>';
+    $faq_question_inputs_string .= '<br>'.TEXT_NEW_FAQ_QUESTION_ASK.':<br>'.
+      tep_draw_input_field('ask','','id="title"').'<br>';
     $faq_question_inputs_string .= '<br>'.TEXT_NEW_FAQ_QUESTION_ANSWER.':<br>'.
       tep_draw_textarea_field('answer','soft',30,3).'<br>';
     $faq_question_inputs_string .= '<br>'.TEXT_NEW_FAQ_QUESTION_SORT_ORDER.':<br>'.
@@ -1068,10 +1068,10 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       '<input type="button" onclick = "faq_q_is_set_error_char()"
       value="'.IS_SET_ERROR_CHAR.'">'.
       '<br>';
-    $faq_question_inputs_string .= '<br>'.TEXT_NEW_FAQ_QUESTION_ASK.':<br>'.
-      tep_draw_input_field('ask',$qInfo->ask,'id="title"').'<br>';
     $faq_question_inputs_string .= '<br>'.TEXT_NEW_FAQ_QUESTION_KEYWORDS.':<br>'.
       tep_draw_textarea_field('keywords','soft',30,3,$qInfo->keywords).'<br>';
+    $faq_question_inputs_string .= '<br>'.TEXT_NEW_FAQ_QUESTION_ASK.':<br>'.
+      tep_draw_input_field('ask',$qInfo->ask,'id="title"').'<br>';
     $faq_question_inputs_string .= '<br>'.TEXT_NEW_FAQ_QUESTION_ANSWER.':<br>'.
       tep_draw_textarea_field('answer','soft',30,3,$qInfo->answer).'<br>';
     $faq_question_inputs_string .= '<br>'.TEXT_NEW_FAQ_QUESTION_SORT_ORDER.':<br>'.

@@ -354,7 +354,7 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
     TABLE_USERS." u , ".TABLE_LETTERS." l 
     where u.userid = l.userid and (l.letter != '' or l.letter != null)";
   if($ocertify->npermission == 15){
-    $sql .= " and u.userid = '".$ocertify->auth_user."'";
+    $sql .= "";
   }else{
     $sql .= " and u.userid != '".$ocertify->auth_user."'";
   }
