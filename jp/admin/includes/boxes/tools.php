@@ -50,14 +50,11 @@
               <tr>
               <td onmouseover="this.style.cursor='hand'" class="menuBoxHeading">
               &nbsp; 
-              <a class="menuBoxHeading_Link" href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('selected_box')) . 'selected_box=tools');?>"><?php echo BOX_HEADING_TOOLS;?></a> 
+              <a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col7');"><?php echo BOX_HEADING_TOOLS;?></a> 
               &nbsp; 
               </td>
               </tr>
             </table> 
-            <?php
-            if ($selected_box == 'tools') {
-            ?>
             <div id="col7" style="display:none"> 
             <table cellspacing="0" cellpadding="2" border="0" width="100%"> 
               <tr>
@@ -88,7 +85,6 @@
               </tr>
             </table> 
             </div> 
-            <?php }?> 
             </td>
           </tr>
 <!-- tools_eof //-->
