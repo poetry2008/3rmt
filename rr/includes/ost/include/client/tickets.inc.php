@@ -1,6 +1,10 @@
 <?php
 if(!defined('OSTCLIENTINC') || !is_object($thisclient) || !$thisclient->isValid()) die('Kwaheri');
 
+$deptIdSql = ' select dept_id from ost_help_topic where topic_id ='. SITE_TOPIC_ID;
+$tmpres= db_query($deptIdSql);
+$row =  db_fetch_array($tmpres);
+define('SITE_DEPT_ID',$row['dept_id']);
 //Get ready for some deep shit.
 $qstr='&'; //Query string collector
 $status=null;
@@ -44,7 +48,7 @@ $order=$order?$order:'DESC';
 $pagelimit=$_GET['limit']?$_GET['limit']:PAGE_LIMIT;
 $page=($_GET['p'] && is_numeric($_GET['p']))?$_GET['p']:1;
 
-$qselect = 'SELECT ticket.ticket_id,ticket.ticketID,ticket.dept_id,isanswered,ispublic,subject,name,email '.
+$qselect = 'SELECT ticket.ticket_id,ticket.ticketID,ticket.topic_id,ticket.dept_id,isanswered,ispublic,subject,name,email '.
            ',dept_name,status,source,priority_id ,ticket.created ';
 $qfrom=' FROM '.TICKET_TABLE.' ticket LEFT JOIN '.DEPT_TABLE.' dept ON ticket.dept_id=dept.dept_id ';
 //Pagenation stuff....wish MYSQL could auto pagenate (something better than limit)
@@ -107,6 +111,10 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
         if($tickets_res && ($num=db_num_rows($tickets_res))):
             $defaultDept=Dept::getDefaultDeptName();
             while ($row = db_fetch_array($tickets_res)) {
+
+                if($row['dept_id']!=SITE_DEPT_ID){
+                  continue;
+                }
                 $dept=$row['ispublic']?$row['dept_name']:$defaultDept; //Don't show hidden/non-public depts.
                 $subject=Format::htmlchars(Format::truncate($row['subject'],40));
                 $ticketID=$row['ticketID'];
