@@ -17,7 +17,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
        <td width=43%> 
         <table align="center" class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
           <tr>
-        <th width="70" >ステータス:</th>
+        <th width="70" >ステータス</th>
         <td><?php
             $_status = '_'.$ticket->getStatus();
             $_open = 'オープン';
@@ -26,7 +26,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
         ?></td>
       </tr>
       <tr>
-                <th>作成日時:</th>
+                <th>作成日時</th>
                 <td><?=$ticket->getCreateDate()?></td>
             </tr>
     </table>
@@ -34,11 +34,11 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
      <td width=57% valign="top">
         <table align="center" class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
             <tr>
-                <th width="100">お名前:</th>
+                <th width="100">お名前</th>
                 <td><?=Format::htmlchars($ticket->getName())?></td>
             </tr>
             <tr>
-                <th>メールアドレス:</th>
+                <th>メールアドレス</th>
                 <td><?=$ticket->getEmail()?></td>
             </tr>
         </table>
