@@ -3774,7 +3774,7 @@ function  tep_show_review_des($desc) {
   }
 }
 
-function tep_ff_get_categories_id_by_parent_id($categories_id, $languages_id = 4) {
+function tep_other_get_categories_id_by_parent_id($categories_id, $languages_id = 4) {
   $arr = array();
   $categories = tep_get_categories_by_parent_id($categories_id, $languages_id);
   foreach ($categories as $c){
