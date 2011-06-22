@@ -29,7 +29,7 @@ href="'.HTTP_SERVER.'/link/">'.FOOTER_LINK_TEXT.'</a>';?>
         <?php echo FOOTER_TEXT_BODY . "\n"; ?><br>
               Copyright&nbsp;&copy;&nbsp;2011&nbsp;&nbsp;
 <?php
-echo '<a class="bold" href="'. HTTP_SERVER.'">www.redstone-rmt.com</a>';
+echo '<a class="bold" href="'. HTTP_SERVER.'">RedStone-RMT.com</a>';
 ?>
 
             </address>
