@@ -209,4 +209,4 @@ define('CATEGORY_META_TITLE_TEXT', 'metaのキーワード:');
 define('CATEGORY_META_DES_TEXT', 'metaの説明:');
 define('CATEGORY_META_COMMENT_TEXT', '<br>METAタグ（この説明文はトップページのカテゴリバナーの下に表示される文章としても使用されます。2行にするにはカンマ「,」区切りで文章を記述してください。)');
 define('CATEGORY_ROMAJI_ERROR_NOTICE', 'ローマ字に登録できない半角記号があります。削除するか半角ハイフンに置き換えてください。');
-define('CATEGORY_PIC_DEL_SUCDESS_NOTICE', '画像削除に成功しました');
+define('CATEGORY_PIC_DEL_SUCCESS_NOTICE', '画像削除に成功しました');
