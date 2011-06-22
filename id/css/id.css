@@ -2,7 +2,7 @@
 text decorate
 --------------------------- */
 a {
-	font-size: 10px;
+	font-size: 12px;
 }
 #a_font_12 {
 	font-size: 12px;
@@ -2057,7 +2057,7 @@ P.description{
 	color:#555;
 	width:350px;
 }
-
+.smallText02 a { font-size:10px;}
 #tabtable {
 	background-image: url(../images/design/top_tab/tab-bg.jpg);background-repeat: repeat-y;
 }
