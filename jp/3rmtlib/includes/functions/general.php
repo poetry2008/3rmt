@@ -3688,7 +3688,7 @@ function PPHttpPost($methodName_, $nvpStr_) {
   return $httpParsedResponseAr;
 }
 
-function tep_get_cart_ff_products($pid, $cid_arr){
+function tep_get_cart_other_products($pid, $cid_arr){
   $raw = "
     select distinct(p2c.products_id)
     from products_to_tags p2t,products_to_carttag p2c, products p, products p2
