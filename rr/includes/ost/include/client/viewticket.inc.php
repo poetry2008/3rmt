@@ -45,7 +45,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
        </td>
     </tr>
 </table>
-<div class="msg">件名: <?=Format::htmlchars($ticket->getSubject())?></div>
+<div class="msg">件名<?=Format::htmlchars($ticket->getSubject())?></div>
 <div>
     <?if($errors['err']) {?>
         <p align="center" id="errormessage"><?=$errors['err']?></p>
@@ -113,15 +113,12 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
         <?}?>
     </div> 
     <div id="reply">
-        <?if($ticket->isClosed()) {?>
-        <div class="msg">お問合せ内容を、メールでご返答いたします</div>
-        <?}?>
         <form action="view.php?id=<?=$id?>#reply" name="reply" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?=$ticket->getExtId()?>">
             <input type="hidden" name="respid" value="<?=$respID?>">
             <input type="hidden" name="a" value="postmessage">
             <div align="left" style="font-size:12px;">
-                返信する場合は、内容を入力し「送信」ボタンをクリックしてください。 <font class="error">*&nbsp;<?=$errors['message']?></font><br/>
+               返信する場合は、内容を入力し「送信」ボタンをクリックしてください。 <font class="error">*&nbsp;<?=$errors['message']?></font><br/>
                 <textarea name="message" id="message" cols="60" rows="7" wrap="soft"><?=$info['message']?></textarea>
             </div>
             <? if($cfg->allowOnlineAttachments()) {?>

@@ -47,7 +47,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         </td>
     </tr>
     <tr>
-        <th valign="top">ご質問内容: </th>
+        <th valign="top">ご質問内容</th>
         <td>
             <? if($errors['message']) {?> <font class="error"><b>&nbsp;<?=$errors['message']?></b></font><br/><?}?>
             <textarea name="message" cols="35" rows="8" wrap="soft" style="width:85%"><?=$info['message']?></textarea></td>

@@ -99,9 +99,9 @@ $_negorder=$negorder=="DESC"?'昇順':'降順';
      <table border="0" cellspacing="1" cellpadding="2" class="tickets" align="center" width="100%">
         <tr>
           <th width="60" nowrap>
-                <a href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="番号順に表示 <?=$negorder?>">問合番号</a></th>
+                <a href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="番号順に表示 <?=$_negorder?>">問合番号</a></th>
           <th width="70">
-                <a href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="作成日時順に表示 <?=$negorder?>">作成日時</a></th>
+                <a href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="作成日順に表示 <?=$_negorder?>">作成日</a></th>
             <?php /* <th width="154">ステータス</th> */ ?>
             <th>件名</th>
             <?php /* <th width="150">メールアドレス</th> */ ?>

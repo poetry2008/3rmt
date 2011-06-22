@@ -58,7 +58,7 @@ if(isset($info['subject'])){
         </td>
     </tr>
     <tr>
-        <th valign="top">ご質問内容: </th>
+        <th valign="top">ご質問内容</th>
         <td>
             <? if($errors['message']) {?> <font class="error"><b>&nbsp;<?=$errors['message']?></b></font><br/><?}?>
             <textarea name="message" cols="35" rows="8" style="width:85%"><?=$info['message']?></textarea></td>
@@ -112,9 +112,9 @@ if(isset($info['subject'])){
     <tr>
         <td></td>
         <td>
-            <input class="button" type="submit" name="submit_x" value="&#36865;&#20449;" style="width:50px;">
-            <input class="button" type="reset" style="width:80px;" value="&#12522;&#12475;&#12483;&#12488;">
-            <input class="button" type="button" style="width:100px;" name="cancel" value="&#12461;&#12515;&#12531;&#12475;&#12523;" onClick='window.location.href="<?php echo FILENAME_CONTACT_US ?>"'>
+            <input class="button" type="submit" name="submit_x" value="送信">
+            <input class="button" type="reset" value="リセット">
+            <input class="button" type="button" name="cancel" value="キャンセル" onClick='window.location.href="<?php echo FILENAME_CONTACT_US ?>"'>
         </td>
     </tr>
 </table>

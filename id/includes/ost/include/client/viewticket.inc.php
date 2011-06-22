@@ -44,7 +44,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
        </td>
     </tr>
 </table>
-<div class="msg">件名: <?=Format::htmlchars($ticket->getSubject())?></div>
+<div class="msg">件名<?=Format::htmlchars($ticket->getSubject())?></div>
 <div>
     <?if($errors['err']) {?>
         <p align="center" id="errormessage"><font color="red"><?=$errors['err']?></font></p>

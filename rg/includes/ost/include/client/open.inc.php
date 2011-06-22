@@ -48,7 +48,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         </td>
     </tr>
     <tr>
-        <th valign="top">ご質問内容: </th>
+        <th valign="top">ご質問内容</th>
         <td>
             <? if($errors['message']) {?> <font class="error"><b>&nbsp;<?=$errors['message']?></b></font><br/><?}?>
             <textarea name="message" cols="35" rows="8" style="width:85%"><?=$info['message']?></textarea></td>
@@ -102,9 +102,9 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <tr>
         <td></td>
         <td>
-            <input class="button" type="submit" name="submit_x" value="&#36865;&#20449;">
-            <input class="button" type="reset" value="&#12522;&#12475;&#12483;&#12488;">
-            <input class="button" type="button" name="cancel" value="&#12461;&#12515;&#12531;&#12475;&#12523;" onClick='window.location.href="<?php echo FILENAME_CONTACT_US ?>"'>
+            <input class="button" type="submit" name="submit_x" value="送信">
+            <input class="button" type="reset" value="リセット">
+            <input class="button" type="button" name="cancel" value="キャンセル" onClick='window.location.href="<?php echo FILENAME_CONTACT_US ?>"'>
         </td>
     </tr>
 </table>
