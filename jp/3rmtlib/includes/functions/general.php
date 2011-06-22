@@ -3134,6 +3134,26 @@ function tep_get_pid_by_romaji($romaji, $categories_id = 0, $single = false) {
             and pd.site_id = '0'" ;
       $product_query = tep_db_query($queryString);
       $product = tep_db_fetch_array($product_query);
+      if ($product) {
+        $queryString = "
+            select pd.`romaji` 
+            from " . TABLE_PRODUCTS . " p, 
+                 " . TABLE_PRODUCTS_DESCRIPTION . " pd,
+                 " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c
+            where p.products_id = pd.products_id
+              and p.products_id = p2c.products_id
+              and p2c.categories_id = '" . $categories_id. "'
+              and pd.products_id = '" . $product['products_id'] . "' 
+              and pd.language_id = '" . (int)$language . "' 
+              and pd.site_id = '" . SITE_ID . "'" ;
+        $or_product_query = tep_db_query($queryString); 
+        $or_product_res = tep_db_fetch_array($or_product_query); 
+        if ($or_product_res) {
+          if ($or_product_res['romaji'] != $romaji) {
+            return 0; 
+          }
+        }
+      }
       return $product['products_id'];
     }
   } else {
