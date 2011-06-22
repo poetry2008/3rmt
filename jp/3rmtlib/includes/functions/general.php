@@ -3821,4 +3821,20 @@ function tep_check_exists_cu_email($email_address, $customer_id, $ctype)
    }
    return false;
 }
+function tep_get_faq_cpath_by_cname($cname, $parent_id = 0)
+{
+  //ccdd
+  $queryString = "
+      select cd.`faq_category_id` 
+      from " .  TABLE_FAQ_CATEGORIES . " c, " .  TABLE_FAQ_CATEGORIES_DESCRIPTION . " cd
+      where c.id = cd.faq_category_id
+        and c.parent_id = '".$parent_id."'
+        and cd.romaji = '" . $cname .  "' 
+        and (cd.site_id = '".SITE_ID."' or cd.site_id = '0')
+      order by cd.site_id DESC" ;
+  $category_query = tep_db_query($queryString);
+  $category = tep_db_fetch_array($category_query);
+  return $category['faq_category_id'];
+}
+
 
