@@ -1385,6 +1385,8 @@ TABLE：Info Box
 	/*background: #fff;
 	border: solid 1px #ddd;*/
 }
+.product_info_box table td a { font-size:12px;}
+.product_info_box a { font-size:12px;}
 .product_info_box .small_table{
 	width: 95%;
 	padding: 0px 5px 5px;
