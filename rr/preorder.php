@@ -174,7 +174,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
       <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
         <tr>
           <td class="main" valign="top">商品名:</td>
-          <td class="main"><strong><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . intval($_GET['products_id'])) . '" target="_blank">' . $po_game_c . '&nbsp;/&nbsp;' . $product_info['products_name']; ?></a></strong></td>
+          <td class="main"><strong><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . intval($_GET['products_id'])) . '">' . $po_game_c . '&nbsp;/&nbsp;' . $product_info['products_name']; ?></a></strong></td>
         </tr>
         <tr>
           <td class="main"><?php echo FORM_FIELD_FRIEND_NAME; ?></td>
