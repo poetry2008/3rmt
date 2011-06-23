@@ -7,9 +7,9 @@
 // * DIR_FS_* = Filesystem directories (local/physical)
 // * DIR_WS_* = Webserver directories (virtual/URL)
   define('HTTP_SERVER', 'http://3kt.kthiz.200.com'); // eg, http://localhost - should not be empty for productive servers
-  define('HTTPS_SERVER', 'https://cchm.vicp.net'); // eg, https://localhost - should not be empty for productive servers
+  define('HTTPS_SERVER', 'https://https.200.com/3kt.kthiz.200.com'); // eg, https://localhost - should not be empty for productive servers
   define('URL_ROMAJI_ENABLED', true); 
-  define('ENABLE_SSL', false); // secure webserver for checkout procedure?
+  define('ENABLE_SSL', true); // secure webserver for checkout procedure?
   define('DIR_WS_CATALOG', '/'); // absolute path required
   define('DIR_WS_IMAGES', 'images/');
   define('DIR_WS_ICONS', DIR_WS_IMAGES . 'icons/');
@@ -42,6 +42,9 @@
   define('REWRITE_MANUFACTURERES', 'game/');//Add Ultimate_SEO_URLS
 
   define('SITE_ID', '5'); 
+  define('WHETHER_START', true); 
+  define('SID_SYMBOL', true); 
+  define('ROUTER_DIRECTION', true); 
   //control sql_log
   define('SQL_LOG', false);
   ini_set('include_path',ini_get('include_path').':'.DIR_FS_3RMTLIB);

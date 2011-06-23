@@ -3359,7 +3359,7 @@ function tep_parseURI()
         $router = $ruler;
       }
     }
-    if (SITE_ID==5) {
+    if ((defined('SID_SYMBOL')) && SID_SYMBOL) {
       $i_pos = strpos($_SERVER['REQUEST_URI'], '/?sid=');
     } else {
       $i_pos = strpos($_SERVER['REQUEST_URI'], '/?cmd=');
@@ -3453,7 +3453,7 @@ function tep_parseURI()
       }
     }
     $tmp_router = $router; 
-    if (SITE_ID==5) {
+    if ((defined('SID_SYMBOL')) && SID_SYMBOL) {
       $i_pos = strpos($_SERVER['REQUEST_URI'], '/?sid=');
     } else {
       $i_pos = strpos($_SERVER['REQUEST_URI'], '/?cmd=');
@@ -3461,7 +3461,7 @@ function tep_parseURI()
     if ($i_pos !== false) {
       $router = 'x'; 
     }
-    if (SITE_ID >= 5) {
+    if ((defined('ROUTER_DIRECTION')) && ROUTER_DIRECTION) {
       if (($_SERVER['PHP_SELF'] == '/index.php') && $tmp_router != 'x') {
         $router = $tmp_router; 
       }
@@ -3493,7 +3493,7 @@ function tep_parseURI()
       foreach ($tmpArray as $k => $v) {
         if ($v) {
           if ($k == count($tmpArray)-1) {
-            if (WHETHER_START) {
+            if ((defined('WHETHER_START')) && WHETHER_START) {
               $pid = tep_get_pid_by_romaji( urldecode(substr($v,0,-5)), $tmpArray2[count($tmpArray2)-1]?$tmpArray2[count($tmpArray2)-1]:0, true);
             } else {
               $pid = tep_get_pid_by_romaji( urldecode(substr($v,0,-5)), $tmpArray2[count($tmpArray2)-1]?$tmpArray2[count($tmpArray2)-1]:0);
@@ -3705,16 +3705,20 @@ function PPHttpPost($methodName_, $nvpStr_) {
 }
 
 function tep_get_cart_other_products($pid, $cid_arr){
+  $pid_str = join(',', $pid);
+  if (empty($pid_str)) {
+    $pid_str = '0'; 
+  }
   $raw = "
     select distinct(p2c.products_id)
     from products_to_tags p2t,products_to_carttag p2c, products p, products p2
-    where p2t.products_id in (".join(',',$pid).")
+    where p2t.products_id in (".$pid_str.")
       and p2c.tags_id = p2t.tags_id
       and p.products_bflag = p2c.buyflag
       and p.products_id = p2t.products_id
       and p2.products_id = p2c.products_id
       and p2.products_cartflag = '1'
-      and p2c.products_id not in (".join(',',$pid).")
+      and p2c.products_id not in (".$pid_str.")
       and p2.products_real_quantity + p2.products_virtual_quantity > p2.products_cart_min
     order by p2.products_cartorder
     limit ".CART_TAG_PRODUCTS_MAX."
