@@ -3134,6 +3134,26 @@ function tep_get_pid_by_romaji($romaji, $categories_id = 0, $single = false) {
             and pd.site_id = '0'" ;
       $product_query = tep_db_query($queryString);
       $product = tep_db_fetch_array($product_query);
+      if ($product) {
+        $queryString = "
+            select pd.`romaji` 
+            from " . TABLE_PRODUCTS . " p, 
+                 " . TABLE_PRODUCTS_DESCRIPTION . " pd,
+                 " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c
+            where p.products_id = pd.products_id
+              and p.products_id = p2c.products_id
+              and p2c.categories_id = '" . $categories_id. "'
+              and pd.products_id = '" . $product['products_id'] . "' 
+              and pd.language_id = '" . (int)$language . "' 
+              and pd.site_id = '" . SITE_ID . "'" ;
+        $or_product_query = tep_db_query($queryString); 
+        $or_product_res = tep_db_fetch_array($or_product_query); 
+        if ($or_product_res) {
+          if ($or_product_res['romaji'] != $romaji) {
+            return 0; 
+          }
+        }
+      }
       return $product['products_id'];
     }
   } else {
@@ -3457,7 +3477,7 @@ function tep_parseURI()
       foreach ($tmpArray as $k => $v) {
         if ($v) {
           if ($k == count($tmpArray)-1) {
-            if (SITE_ID >= 6) {
+            if (WHETHER_START) {
               $pid = tep_get_pid_by_romaji( urldecode(substr($v,0,-5)), $tmpArray2[count($tmpArray2)-1]?$tmpArray2[count($tmpArray2)-1]:0, true);
             } else {
               $pid = tep_get_pid_by_romaji( urldecode(substr($v,0,-5)), $tmpArray2[count($tmpArray2)-1]?$tmpArray2[count($tmpArray2)-1]:0);
@@ -3668,7 +3688,7 @@ function PPHttpPost($methodName_, $nvpStr_) {
   return $httpParsedResponseAr;
 }
 
-function tep_get_cart_ff_products($pid, $cid_arr){
+function tep_get_cart_other_products($pid, $cid_arr){
   $raw = "
     select distinct(p2c.products_id)
     from products_to_tags p2t,products_to_carttag p2c, products p, products p2
@@ -3754,7 +3774,7 @@ function  tep_show_review_des($desc) {
   }
 }
 
-function tep_ff_get_categories_id_by_parent_id($categories_id, $languages_id = 4) {
+function tep_other_get_categories_id_by_parent_id($categories_id, $languages_id = 4) {
   $arr = array();
   $categories = tep_get_categories_by_parent_id($categories_id, $languages_id);
   foreach ($categories as $c){

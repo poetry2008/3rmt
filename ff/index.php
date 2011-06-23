@@ -23,7 +23,7 @@ if(isset($_GET['cmd'])&&$_GET['cmd']){
   }
   
   if (!empty($current_category_id)) {
-    $cex_ca_arr = tep_ff_get_categories_id_by_parent_id(FF_CID); 
+    $cex_ca_arr = tep_other_get_categories_id_by_parent_id(FF_CID); 
     if (empty($cex_ca_arr)) {
       $cex_ca_arr = array(FF_CID); 
     } else {

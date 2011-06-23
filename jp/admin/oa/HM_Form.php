@@ -44,7 +44,7 @@ class HM_Form extends DbRecord
     echo "<tr><td class='main'>&nbsp;"; 
     echo "<input type='hidden' name='form_id' value='".$this->id."' />";
     echo "</td><td>";
-    if (tep_orders_finished($order->info['orders_id'])) {
+    if (tep_orders_finished($_GET['oID'])) {
       echo "<button disabled  id='canEnd' >取引完了</button>";
     } else { 
       echo "<button disabled  id='canEnd' >保存</button>";
@@ -90,6 +90,10 @@ class HM_Form extends DbRecord
     {
       return SPANRequire(ele);
     }
+    function INPUTtextRequire(ele)
+    {
+     return INPUThiddenRequire(ele);
+    }
     function INPUThiddenRequire(ele)
     {
       return $(ele).val().trim().length>0;
@@ -104,6 +108,11 @@ class HM_Form extends DbRecord
                 $(this).removeAttr('checked');
               }
             });
+      $(ele).parent().parent().children().find('span').each(
+                                                            function (){
+                                                              $(this).text('');
+                                                            }
+                                                            );
       $("#qa_form").ajaxSubmit();
 
     }
@@ -113,6 +122,16 @@ class HM_Form extends DbRecord
        $(document).ready(
                          function()
                          {
+	                   //bind size fonction 
+	$("#qa_form").find("input[type=text]").each(function(){
+            if($(this).attr('size')){
+	$(this).bind('keypress',function(){
+	      if( $(this).val().length >$(this).attr('size')){
+               	$(this).val($(this).val().substr(0,$(this).attr('size')));
+              }
+              });
+            }
+});
 			   checkLockOrder();
                            $("#qa_form").find("input").each(function (){
      
@@ -122,17 +141,23 @@ class HM_Form extends DbRecord
                                      });
                              });
                            $("#qa_form").submit(function(){
+                               $('body').css('cursor','wait');
+                               $('#wait').show();
+
                                $(this).find('.outform').each(function(){
                                    if($(this).attr('name').substr(0,1)!='0'){
                                      $(this).attr('name','0'+$(this).attr('name'));}});
-                                 $(this).ajaxSubmit();
+                               $(this).ajaxSubmit(function(){ $('#wait').hide();});
+
                                $(this).find('.outform').each(function(){
                                    if($(this).attr('name').substr(0,1)=='0'){
                                      $(this).attr('name',$(this).attr('name').substr(1));}});
                                  return false;
                                });  
+                          
 
                          }
+
                          );
 
     </script>

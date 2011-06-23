@@ -3,6 +3,8 @@
    $Id$
 */
   require('includes/application_top.php');
+  require_once('oa/HM_Form.php'); 
+  require_once('oa/HM_Group.php'); 
   
   require(DIR_WS_FUNCTIONS . 'visites.php');
 
@@ -257,7 +259,6 @@
       $title    = tep_db_prepare_input($_POST['title']);
       $comments = tep_db_prepare_input($_POST['comments']);
       $site_id  = tep_get_site_id_by_orders_id($oID);
-
       $order_updated = false;
       $check_status_query = tep_db_query("
           select orders_id, 
@@ -271,6 +272,12 @@
           from " . TABLE_ORDERS . " 
           where orders_id = '" . tep_db_input($oID) . "'");
       $check_status = tep_db_fetch_array($check_status_query);
+      //oa start 如果状态发生改变，找到当前的订单的
+      if ($check_status['orders_status']!=$status){
+        tep_order_status_change($oID,$status);
+      }
+      //OA_END
+
     
     //Add Point System
     if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && MODULE_ORDER_TOTAL_POINT_ADD_STATUS != '0') {
@@ -1503,6 +1510,7 @@ if (false) {
 <?php }?>
   </tr>
 </table>
+
 <div align="right" id="orders_questions_submit_div" style="display:none;">
   <?php if (tep_orders_finished($order->info['orders_id'])) { ?>
   <input  type="submit" id="orders_questions_submit" value="取引完了"<?php if ($oq['q_8_1']) {?> disabled="true"<?php } ?>>
@@ -1514,18 +1522,16 @@ if (false) {
                 </div>      
  <!--new order answer{{-->
                           <?php
-  require_once('oa/HM_Form.php'); 
-  require_once('oa/HM_Group.php'); 
   $order_id = $order->info['orders_id'];
   $formtype = tep_check_order_type($order_id);
-  $payment_romaji = 'buying'; 
-//  $payment_romaji = tep_get_payment_code_by_order_id($order_id); 
+  $payment_romaji = tep_get_payment_code_by_order_id($order_id); 
   $oa_form_sql = "select * from ".TABLE_OA_FORM." where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'";
   $form = tep_db_fetch_object(tep_db_query($oa_form_sql), "HM_Form");
-  
+                       if($form){
   $form->loadOrderValue($order_id);
   $form->setAction('oa_answer_process.php?oID='.$order_id);
   $form->render();
+                       }
         ?>
     </td>
       </tr>

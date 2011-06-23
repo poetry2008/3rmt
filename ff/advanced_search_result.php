@@ -212,7 +212,7 @@
       $where_str .= " and p2c.products_id = p.products_id and p2c.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and p2c.categories_id = '" . $_GET['categories_id'] . "'";
     }
   } else {
-    $search_caid = tep_ff_get_categories_id_by_parent_id(FF_CID); 
+    $search_caid = tep_other_get_categories_id_by_parent_id(FF_CID); 
     $where_str .= " and p2c.products_id = p.products_id and p2c.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and (p2c.categories_id = '".FF_CID."'";
     for ($i=0, $n=sizeof($search_caid); $i<$n; $i++ ) {
       $where_str .= " or p2c.categories_id = '" . $search_caid[$i] . "'";
