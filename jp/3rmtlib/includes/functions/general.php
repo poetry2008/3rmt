@@ -3343,7 +3343,7 @@ function tep_parseURI()
         $router = $ruler;
       }
     }
-    if (SITE_ID==5) {
+    if ((defined('SID_SYMBOL')) && SID_SYMBOL) {
       $i_pos = strpos($_SERVER['REQUEST_URI'], '/?sid=');
     } else {
       $i_pos = strpos($_SERVER['REQUEST_URI'], '/?cmd=');
@@ -3437,7 +3437,7 @@ function tep_parseURI()
       }
     }
     $tmp_router = $router; 
-    if (SITE_ID==5) {
+    if ((defined('SID_SYMBOL')) && SID_SYMBOL) {
       $i_pos = strpos($_SERVER['REQUEST_URI'], '/?sid=');
     } else {
       $i_pos = strpos($_SERVER['REQUEST_URI'], '/?cmd=');
@@ -3445,7 +3445,7 @@ function tep_parseURI()
     if ($i_pos !== false) {
       $router = 'x'; 
     }
-    if (SITE_ID >= 5) {
+    if ((defined('ROUTER_DIRECTION')) && ROUTER_DIRECTION) {
       if (($_SERVER['PHP_SELF'] == '/index.php') && $tmp_router != 'x') {
         $router = $tmp_router; 
       }
@@ -3477,7 +3477,7 @@ function tep_parseURI()
       foreach ($tmpArray as $k => $v) {
         if ($v) {
           if ($k == count($tmpArray)-1) {
-            if (WHETHER_START) {
+            if ((defined('WHETHER_START')) && WHETHER_START) {
               $pid = tep_get_pid_by_romaji( urldecode(substr($v,0,-5)), $tmpArray2[count($tmpArray2)-1]?$tmpArray2[count($tmpArray2)-1]:0, true);
             } else {
               $pid = tep_get_pid_by_romaji( urldecode(substr($v,0,-5)), $tmpArray2[count($tmpArray2)-1]?$tmpArray2[count($tmpArray2)-1]:0);
