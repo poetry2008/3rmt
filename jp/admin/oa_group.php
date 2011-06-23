@@ -129,7 +129,7 @@ function select_all_group()
     oid = x.attr('id').substr(1);
     oid = parseInt(oid);
     up = false;
-    if ($(ele).val() == 'up'){
+    if ($(ele).attr('class') == 'up'){
       up  = true;
       oid -= 1;
     }else{
@@ -195,11 +195,12 @@ function ajaxUpdate(id,order){
               </td>
               <td>
               <a href="<?php echo tep_href_link(FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&eid='.$has_item_res['id'].'&action=edit');?>"><?php echo EDIT_ITEM_LINK_TEXT;?></a> 
-              <a href="<?php echo tep_href_link(FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&eid='.$has_item_res['id'].'&action=del');?>"><?php echo DEL_ITEM_LINK_TEXT;?></a> 
+              <a onclick="return confirm('<?php echo $has_item_res['title'];?>を削除しますか？')" href="<?php echo tep_href_link(FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&eid='.$has_item_res['id'].'&action=del');?>"><?php echo DEL_ITEM_LINK_TEXT;?></a> 
               </td>
               <td><?php
-            echo '<input type="button" value="up" onclick="editorder(this)">';
-            echo '<input type="button" value="down"onclick="editorder(this)">';?>
+            echo '<input type="button" class="up" value=\'↑\' onclick="editorder(this)">';
+            echo '<input type="button" class="down" value=\'↓\' onclick="editorder(this)">';
+?>
               </td>
             </tr>
             <?php
@@ -231,7 +232,7 @@ function ajaxUpdate(id,order){
                 echo '<td>';
                 echo '<a href="'.tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.EDIT_GROUP_TEXT.'</a>'; 
                 echo '&nbsp;&nbsp;'; 
-                echo '<a href="'.tep_href_link(FILENAME_OA_GROUP, 'action=del&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.DEL_GROUP_TEXT.'</a>'; 
+                echo '<a onclick="return confirm(\''.$group_list_res['title'].'を削除しますか?\')"'.'href="'.tep_href_link(FILENAME_OA_GROUP, 'action=del&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.DEL_GROUP_TEXT.'</a>'; 
                 echo '</td>'; 
                 echo '</tr>'; 
               }

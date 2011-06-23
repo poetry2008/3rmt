@@ -206,7 +206,7 @@ window.onunload=function(){
 // 自动保存
 function auto_save_questions() {
   if (auto_submit_able) {
-  $('body').css('cursor','wait');
+ $('body').css('cursor','wait');
   $('#wait').show();
   //css('top','45%').css('left','45%').css('position','absolute');
   $('#form_orders_questions').ajaxSubmit({

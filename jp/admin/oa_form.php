@@ -77,7 +77,7 @@
     oid = x.attr('id').substr(1);
     oid = parseInt(oid);
     up = false;
-    if ($(ele).val() == 'up'){
+    if ($(ele).attr('class') == 'up'){
       up  = true;
       oid -= 1;
     }else{
@@ -130,17 +130,17 @@ function ajaxUpdate(id,order){
             echo '<td>'.$form_group_res['name'].'</td>'; 
             echo '<td>'; 
             echo '<a href="'.tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$form_group_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.GROUP_EDIT.'</a>'; 
-            echo '&nbsp;<a href="'.tep_href_link(FILENAME_OA_FORM, 'action=del_link_group&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&gid='.$form_group_res['id']).'&fid='.$form_id.'">'.DEL_LINK_GROUP.'</a>';
+            echo '&nbsp;<a onclick="return confirm(\''.$form_group_res['name'].'を削除しますか？\')" href="'.tep_href_link(FILENAME_OA_FORM, 'action=del_link_group&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&gid='.$form_group_res['id']).'&fid='.$form_id.'">'.DEL_LINK_GROUP.'</a>';
             echo '<td>';
-            echo '<input type="button" value="up" onclick="editorder(this)">';
-            echo '<input type="button" value="down"onclick="editorder(this)">';
+            echo '<input type="button" class="up" value="↑" onclick="editorder(this)">';
+            echo '<input type="button" class="down" value="↓" onclick="editorder(this)">';
             echo '</td>';
             echo '</td>'; 
             echo '</tr>'; 
           }
         ?>
         </table> 
-        <a href="<?php echo tep_href_link(FILENAME_MODULES, 'set=payment');?>"><input type="button" value="<?php echo IMAGE_BACK;?>"></a> 
+        <a href="<?php echo tep_href_link(FILENAME_MODULES, 'set=payment&module='.$_GET['pcode']);?>"><input type="button" value="<?php echo IMAGE_BACK;?>"></a> 
       </td>
     </tr>
     </table>
