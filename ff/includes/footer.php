@@ -19,6 +19,8 @@
       echo '|'; 
     }
     echo '<a href="'.HTTP_SERVER.'/link/">相互リンク</a>';  
+    echo '|'; 
+    echo '<a href="'.tep_href_link(FILENAME_CONTACT_US).'">お問い合わせ</a>';  
 ?>
 </div>
 <div id="footer">

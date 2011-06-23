@@ -56,6 +56,7 @@ width:20%;
 clear:both;
 padding:0 8px;
 }
+#content a { font-size:12px;}
 .search_head{
 float:right;
 width:708px;
@@ -217,7 +218,7 @@ background:url(images/button02.gif) no-repeat;
 .footer_link {
   /*  background: url(../images/design/footer_xian.gif) repeat-x scroll 0 0 transparent;*/
     height: 24px;
-    line-height: 9px;
+	margin:-15px 0 12px 0;
 }
 .footer_link a{     color: #FFFFFF;
     font-size: 12px;

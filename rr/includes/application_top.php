@@ -8,3 +8,4 @@
 // Set lib path
   ini_set('include_path',ini_get('include_path').':'.DIR_FS_3RMTLIB);
   require('includes/add_application_top.php');
+  require(DIR_FS_DOCUMENT_ROOT.'includes/functions.php');

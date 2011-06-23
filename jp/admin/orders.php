@@ -953,7 +953,7 @@ function q_4_3(){
                 <tr>
                   <td class="main" valign="top" width="30%"><b>Referer:</b></td>
                   <td class="main"><p
-                  style="word-break:break-all;width:650px;word-wrap:break-word;overflow:hidden;display:block;"><?php echo urldecode($order->info['orders_ref']);?></p></td>
+                  style="word-break:break-all;width:250px;word-wrap:break-word;overflow:hidden;display:block;"><?php echo urldecode($order->info['orders_ref']);?></p></td>
                 </tr>
                 <?php if ($order->info['orders_ref_keywords']) { ?>
                 <tr>
@@ -1674,11 +1674,11 @@ if (false) {
     <!-- orders status history -->
       <tr>
         <td class="main" align="left">
-    <table border="1" cellspacing="0" cellpadding="5" width="50%">
+    <table border="1" cellspacing="0" cellpadding="5">
       <tr>
-        <td class="smallText" align="center" width="10%"><b><?php echo TABLE_HEADING_DATE_ADDED; ?></b></td>
-        <td class="smallText" align="center" width="10%" nowrap="true"><b><?php echo TABLE_HEADING_CUSTOMER_NOTIFIED; ?></b></td>
-        <td class="smallText" align="center" width="10%" nowrap="true"><b><?php echo TABLE_HEADING_STATUS; ?></b></td>
+        <td class="smallText" align="center"><b><?php echo TABLE_HEADING_DATE_ADDED; ?></b></td>
+        <td class="smallText" align="center" nowrap="true"><b><?php echo TABLE_HEADING_CUSTOMER_NOTIFIED; ?></b></td>
+        <td class="smallText" align="center" nowrap="true"><b><?php echo TABLE_HEADING_STATUS; ?></b></td>
         <td class="smallText" align="center"><b><?php echo TABLE_HEADING_COMMENTS; ?></b></td>
       </tr>
   <?php
@@ -1688,16 +1688,16 @@ if (false) {
           $select_select = $orders_history['orders_status_id'];
           echo 
              '    <tr>' . "\n" .
-             '      <td class="smallText" align="center" width="10%">' . tep_datetime_short($orders_history['date_added']) . '</td>' . "\n" .
-             '      <td class="smallText" align="center" width="10%">';
+             '      <td class="smallText" align="center">' . tep_datetime_short($orders_history['date_added']) . '</td>' . "\n" .
+             '      <td class="smallText" align="center">';
           if ($orders_history['customer_notified'] == '1') {
             echo tep_image(DIR_WS_ICONS . 'tick.gif', ICON_TICK) . "</td>\n";
           } else {
             echo tep_image(DIR_WS_ICONS . 'cross.gif', ICON_CROSS) . "</td>\n";
           }
           echo 
-           '      <td class="smallText" width="10%">' . $orders_status_array[$orders_history['orders_status_id']] . '</td>' . "\n" .
-           '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:380px;">' . nl2br(tep_db_output($orders_history['comments'])) . '&nbsp;</p></td>' . "\n" .
+           '      <td class="smallText">' . $orders_status_array[$orders_history['orders_status_id']] . '</td>' . "\n" .
+           '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">' . nl2br(tep_db_output($orders_history['comments'])) . '&nbsp;</p></td>' . "\n" .
            
            '    </tr>' . "\n";
           }

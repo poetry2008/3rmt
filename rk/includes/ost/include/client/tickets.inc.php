@@ -1,6 +1,10 @@
 <?php
 if(!defined('OSTCLIENTINC') || !is_object($thisclient) || !$thisclient->isValid()) die('Kwaheri');
 
+$deptIdSql = ' select dept_id from ost_help_topic where topic_id ='. SITE_TOPIC_ID;
+$tmpres= db_query($deptIdSql);
+$row =  db_fetch_array($tmpres);
+define('SITE_DEPT_ID',$row['dept_id']);
 //Get ready for some deep shit.
 $qstr='&'; //Query string collector
 $status=null;
@@ -18,7 +22,7 @@ if($_REQUEST['status']) { //Query string status has nothing to do with the real 
 }
 
 //Restrict based on email of the user...STRICT!
-$qwhere =' WHERE topic_id = '.SITE_TOPIC_ID.' and email='.db_input($thisclient->getEmail());
+$qwhere =' WHERE ticket.dept_id= '.SITE_DEPT_ID.' and email='.db_input($thisclient->getEmail());
 
 //STATUS
 if($status){
@@ -44,7 +48,7 @@ $order=$order?$order:'DESC';
 $pagelimit=$_GET['limit']?$_GET['limit']:PAGE_LIMIT;
 $page=($_GET['p'] && is_numeric($_GET['p']))?$_GET['p']:1;
 
-$qselect = 'SELECT ticket.ticket_id,ticket.ticketID,ticket.dept_id,isanswered,ispublic,subject,name,email '.
+$qselect = 'SELECT ticket.ticket_id,ticket.ticketID,ticket.topic_id,ticket.dept_id,isanswered,ispublic,subject,name,email '.
            ',dept_name,status,source,priority_id ,ticket.created ';
 $qfrom=' FROM '.TICKET_TABLE.' ticket LEFT JOIN '.DEPT_TABLE.' dept ON ticket.dept_id=dept.dept_id ';
 //Pagenation stuff....wish MYSQL could auto pagenate (something better than limit)
@@ -67,6 +71,7 @@ $_closed = 'クローズ';
 $results_type=($status)?($$_status).'':' 全部';
 //$results_type=($status)?ucfirst($status).' 問合番号':' 全部';
 $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
+$_negorder=$negorder=="DESC"?'昇順':'降順';
 ?>
 <div>
     <?if($errors['err']) {?>
@@ -94,9 +99,9 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
      <table border="0" cellspacing="1" cellpadding="2" class="tickets" align="center" width="100%">
         <tr>
           <th width="60" nowrap>
-                <a href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="番語順に表示 <?=$negorder?>">問合番号</a></th>
+                <a href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="番号順に表示 <?=$_negorder?>">問合番号</a></th>
           <th width="70">
-                <a href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="作成日時順に表示 <?=$negorder?>">作成日時</a></th>
+                <a href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="作成日順に表示 <?=$_negorder?>">作成日</a></th>
             <?php /* <th width="154">ステータス</th> */ ?>
             <th>件名</th>
             <?php /* <th width="150">メールアドレス</th> */ ?>
@@ -107,6 +112,10 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
         if($tickets_res && ($num=db_num_rows($tickets_res))):
             $defaultDept=Dept::getDefaultDeptName();
             while ($row = db_fetch_array($tickets_res)) {
+
+                if($row['dept_id']!=SITE_DEPT_ID){
+                  continue;
+                }
                 $dept=$row['ispublic']?$row['dept_name']:$defaultDept; //Don't show hidden/non-public depts.
                 $subject=Format::htmlchars(Format::truncate($row['subject'],40));
                 $ticketID=$row['ticketID'];
@@ -134,7 +143,7 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
             $class = ($class =='row2') ?'row1':'row2';
             } //end of while.
         else: //not tickets found!! ?> 
-            <tr class="<?=$class?>"><td colspan=7><b>該当するものはありません.</b></td></tr>
+            <tr class="<?=$class?>"><td colspan=7><b>該当するものはありません。</b></td></tr>
         <?
         endif; ?>
      </table>
@@ -142,8 +151,8 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
     <tr><td>
     <?
     if($num>0 && $pageNav->getNumPages()>1){ //if we actually had any tickets returned?>
-     <tr><td style="text-align:left;padding-left:20px">page:<?=$pageNav->getPageLinks()?>&nbsp;</td></tr>
+     <tr><td style="text-align:left;padding-left:20px; font-size:12px;">ページ:<?=$pageNav->getPageLinks()?>&nbsp;</td></tr>
     <?}?>
- </table>
+ </table> 
 </div>
 <?

@@ -68,7 +68,7 @@
                   </tr> 
                   <tr> 
                     <td class="smallText"><?php echo HEADING_ORDER_DATE . ' ' . tep_date_long($order->info['date_purchased']); ?></td> 
-                    <td class="smallText" align="right"><?php echo HEADING_ORDER_TOTAL . ' ' . $order->info['total']; ?></td> 
+                    <td class="smallText" align="right"><?php echo HEADING_ORDER_TOTAL . ' ' .  abs($order->info['total']).MONEY_UNIT_ATEXT; ?></td> 
                   </tr> 
                 </table></td> 
             </tr> 

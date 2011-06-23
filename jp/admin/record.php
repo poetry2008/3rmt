@@ -101,13 +101,17 @@
             </tr>
             <tr>
           <?php }?>
-            <td colspan='2'>
+            <td>
             <?php
             echo tep_image_submit('button_save.gif', IMAGE_SAVE);
             echo "&nbsp;&nbsp;";
-            echo '<a href="' .
-            tep_href_link($from_url,'action='.$_GET['act'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath']) . '">' .
-            tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'
+            echo '</td><td>'; 
+            if (isset($from_url)) { 
+              echo '<a href="' .  tep_href_link($from_url,'action='.$_GET['act'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath']) . '">';
+            } else {
+              echo '<a href="'.tep_href_link(FILENAME_RECORD).'">'; 
+            }
+            echo tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'
             ?>
             </td>
             </tr>

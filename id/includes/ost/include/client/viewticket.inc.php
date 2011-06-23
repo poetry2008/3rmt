@@ -18,7 +18,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
        <td width=50%> 
         <table class="infotable" cellspacing="0" cellpadding="0" width="50%" border="0" align="left">
           <tr>
-        <th width="80"  align="left">ステータス:</th>
+        <th width="80"  align="left">ステータス</th>
         <td><?php
             $_status = '_'.$ticket->getStatus();
             $_open = 'オープン';
@@ -27,24 +27,24 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
         ?></td>
       </tr>
       <tr>
-                <th>作成日時:</th>
+                <th>作成日時</th>
                 <td><?=$ticket->getCreateDate()?></td>
             </tr>
     </table>
         <table class="infotable" cellspacing="0" cellpadding="0" width="50%" border="0" align="left">
             <tr>
-                <th width="100" align="left">お名前:</th>
+                <th width="100" align="left">お名前</th>
                 <td><?=Format::htmlchars($ticket->getName())?></td>
             </tr>
             <tr>
-                <th width="100" align="left">メールアドレス:</th>
+                <th width="100" align="left">メールアドレス</th>
                 <td><?=$ticket->getEmail()?></td>
             </tr>
         </table>
        </td>
     </tr>
 </table>
-<div class="msg">件名: <?=Format::htmlchars($ticket->getSubject())?></div>
+<div class="msg">件名<?=Format::htmlchars($ticket->getSubject())?></div>
 <div>
     <?if($errors['err']) {?>
         <p align="center" id="errormessage"><font color="red"><?=$errors['err']?></font></p>

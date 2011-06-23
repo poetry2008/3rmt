@@ -916,3 +916,9 @@ text-overflow:ellipsis;
 .faq_status_link{ text-decoration: none; }
 .faq_status_link:hover{ text-decoration: none; }
 .button_cancel a img { margin-top:-15px;}
+a.s_column_bar { 
+	font-size: 11px;                                /* フォントサイズ */
+	color: #000;                                 /* フォントカラー */
+	font-weight: bold;                            /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
+}

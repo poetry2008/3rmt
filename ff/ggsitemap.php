@@ -6,7 +6,7 @@
   require('includes/application_top.php');
   header('Content-Type:   text/xml');
   $categories = $pages = $products = array();
-  $subcid = tep_ff_get_categories_id_by_parent_id(FF_CID);
+  $subcid = tep_other_get_categories_id_by_parent_id(FF_CID);
   if (empty($subcid)) {
     $subcid = array(FF_CID); 
   } else {

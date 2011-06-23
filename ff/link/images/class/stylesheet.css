@@ -38,7 +38,7 @@
 BODY：ボディ
 --------------------------- */
 BODY {
-	background-color: #FFFFFF;
+	background-color: #272626;
 	margin: 0px;
 	padding: 0px;
 	color: #656565;
@@ -54,7 +54,7 @@ A {
 A：リンク（カーソルが上に乗ったとき）
 --------------------------- */
 A:hover {
-  color: #004149;
+  color: #00c0ff;
   text-decoration: underline;
 }
 /* ---------------------------
@@ -96,7 +96,7 @@ TD.headerNavigation {
 A：ヘッダー（ナビゲーションのリンク）
 --------------------------- */
 A.headerNavigation { 
-	color: #555;
+	color: #ffffff;
 	font-size:10px;
 }
 /* ---------------------------
@@ -168,19 +168,19 @@ TABLE：情報ボックス
 }
 .product_info_box .small_table td{
 	border: none;
-	background: #F6F6F5 url(images/design/box/dot.gif) bottom repeat-x!important;
+	background: #F6F6F5 url(../../../images/design/box/dot.gif) bottom repeat-x!important;
 }
 .product_info_box .p_i_b_title{
-	color: #336600;
+	color: #CC0000;
 	font-weight: bold;
-	background: #fff url(images/design/box/product_info_box_td.gif) bottom repeat-x;
+	background: #fff url(../../../images/design/box/product_info_box_td.gif) bottom repeat-x;
 }
 /* ---------------------------
 TABLE：情報ボックス（コンテンツ）
 --------------------------- */
 .infoBoxContents{
 	width: 100%;
-/*	background: #eee;*/
+	background: #eee;
 	font-size: 11px;
 	border: solid 1px #ddd;
 	border-collapse: separate;
@@ -371,7 +371,7 @@ TD.formAreaTitle {
 /* ---------------------------
 SPAN：マーク（在庫切れ）
 --------------------------- */
-SPAN.markProductOutOfStock {
+SPAN.markProductOutOfStock a{
 	font-size: 12px;
 	color: #c76170;
 	font-weight: bold;
@@ -422,13 +422,13 @@ SPAN.errorText {
 	color: #000000;
 }
 .menu_bg {
-	background-image: url(images/design/menu_bg.jpg);
+	background-image: url(../../../images/design/menu_bg.jpg);
 	background-repeat: no-repeat;
 	width: 115px;
 	text-align: center;
 }
 .c_menu {
-	background-image: url(images/design/menu_arrow.jpg);
+	background-image: url(../../../images/design/menu_arrow.jpg);
 	width: 135px;
 	background-repeat: no-repeat;
 	padding-left: 15px;
@@ -438,7 +438,7 @@ SPAN.errorText {
 	border: 2px solid #FFFFFF;
 }
 .pageHeading_line {
-	background-image: url(images/design/page_heading.gif);
+	background-image: url(../../../images/design/page_heading.gif);
 	background-repeat: no-repeat;
 	height: 8px;
 	margin-top: 5px;
@@ -507,7 +507,7 @@ P.description{
 }
 
 #tabtable {
-	background-image: url(./images/design/top_tab/tab-bg.jpg);background-repeat: repeat-y;
+	background-image: url(../../../images/design/top_tab/tab-bg.jpg);background-repeat: repeat-y;
 }
 
 .show_tags01{
@@ -538,7 +538,7 @@ overflow:hidden;
 text-indent:-2000px;
 width:35px;
 height:17px;
-background-image: url(./includes/languages/japanese/images/buttons/button_delete02.gif);
+background-image: url(../../../includes/languages/japanese/images/buttons/button_delete02.gif);
 }
 .shopping_cart_continue{
 display:block;
@@ -547,7 +547,7 @@ width:72px;
 height:17px;
 padding:0;
 border:0;
-background-image: url(./includes/languages/japanese/images/buttons/button_continue_shopping.gif);
+background-image: url(../../../includes/languages/japanese/images/buttons/button_continue_shopping.gif);
 }
 .shopping_cart_checkout{
 display:block;
@@ -556,7 +556,7 @@ width:58px;
 height:17px;
 padding:0;
 border:0;
-background-image: url(./includes/languages/japanese/images/buttons/button_checkout.gif);
+background-image: url(../../../includes/languages/japanese/images/buttons/button_checkout.gif);
 }
 .waring_category {
 color:#000;
@@ -573,5 +573,11 @@ padding:5px 7px;
 background-color:#e2e2e2;
 border:1px solid #CAC6BE;
 }
-.web_3_top a { font-size:12px;}
-.web-tit a { font-size:12px;}
+.footer_games a{ 
+	color:#0C9DEA;
+	font-weight:bold;
+}
+.footer_games a:hover{ 
+	color:#ffffff;
+	font-weight:bold;
+}

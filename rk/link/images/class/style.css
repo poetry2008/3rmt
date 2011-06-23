@@ -24,7 +24,7 @@ width:20%;
 }
 .web_3 a{
 	padding-left:10px;
-	font-size:10px;
+	font-size:12px;
 	background:url(../../../images/design/box/arrow_2.gif) no-repeat left center;
 }
 .search_and_tools{
@@ -39,6 +39,7 @@ overflow:hidden;
 #content{
 clear:both;
 }
+#content a { font-size:12px;}
 .search_head{
 float:right;
 width:700px;

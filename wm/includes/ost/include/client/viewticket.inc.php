@@ -18,7 +18,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
        <td width=50%> 
         <table align="center" class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
           <tr>
-        <th width="80" >ステータス:</th>
+        <th width="80" >ステータス</th>
         <td><?php
             $_status = '_'.$ticket->getStatus();
             $_open = 'オープン';
@@ -27,7 +27,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
         ?></td>
       </tr>
       <tr>
-                <th>作成日時:</th>
+                <th>作成日時</th>
                 <td><?=$ticket->getCreateDate()?></td>
             </tr>
     </table>
@@ -35,18 +35,18 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
      <td width=50% valign="top">
         <table align="center" class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
             <tr>
-                <th width="100">お名前:</th>
+                <th width="100">お名前</th>
                 <td><?=Format::htmlchars($ticket->getName())?></td>
             </tr>
             <tr>
-                <th width="100">メールアドレス:</th>
+                <th width="100">メールアドレス</th>
                 <td><?=$ticket->getEmail()?></td>
             </tr>
         </table>
        </td>
     </tr>
 </table>
-<div class="msg">件名: <?=Format::htmlchars($ticket->getSubject())?></div>
+<div class="msg">件名<?=Format::htmlchars($ticket->getSubject())?></div>
 <div>
     <?if($errors['err']) {?>
         <p align="center" id="errormessage"><?=$errors['err']?></p>
@@ -119,7 +119,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
             <input type="hidden" name="respid" value="<?=$respID?>">
             <input type="hidden" name="a" value="postmessage">
             <div style="font-size:11px;">
-                返信する場合は、内容を入力し「送信」ボタンをクリックしてください。 <font class="error">*&nbsp;<?=$errors['message']?></font><br/>
+               返信する場合は、内容を入力し「送信」ボタンをクリックしてください。 <font class="error">*&nbsp;<?=$errors['message']?></font><br/>
                 <textarea name="message" id="message" cols="60" rows="7" wrap="soft"><?=$info['message']?></textarea>
             </div>
             <? if($cfg->allowOnlineAttachments()) {?>

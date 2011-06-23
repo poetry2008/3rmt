@@ -1136,8 +1136,8 @@ margin-top:-15px\9;
 	margin-bottom:5px;
 	*margin:-5px 0 0 0;
 }
-.product_list_page{font-size:10px; background-color: #f2f2f2;
-    border-right: 1px solid #DDDDDD;border-left: 1px solid #DDDDDD; padding:5px;}
+.product_list_page{font-size:10px; background-color: #000;
+    /*border-right: 1px solid #DDDDDD;border-left: 1px solid #DDDDDD;*/ padding:5px;}
 .product_list_info{background: #f2f2f2; padding-top: 10px; padding-bottom:10px; border-bottom:1px #ddd solid;border-left:1px #ddd solid;border-right:1px #ddd solid;}
 .header_m_login{ width:372px; *width:400px; *float:right;}
 .header_m_login a{ color:#fff;}
@@ -1385,6 +1385,8 @@ TABLE：Info Box
 	/*background: #fff;
 	border: solid 1px #ddd;*/
 }
+.product_info_box table td a { font-size:12px;}
+.product_info_box a { font-size:12px;}
 .product_info_box .small_table{
 	width: 95%;
 	padding: 0px 5px 5px;

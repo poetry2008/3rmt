@@ -15,6 +15,7 @@ width:20%;
 .web_3_top {
 	width:100%;
 }
+.web_3_top a { font-size:12px;}
 .web_3_top h3 a{
 	padding-left:10px;
 	font-size:12px;
@@ -49,6 +50,7 @@ width:20%;
 #content{
 clear:both;
 }
+#content a { font-size:12px;}
 .search_head{
 float:right;
 width:700px;
@@ -208,3 +210,4 @@ width:47px;
 height:17px;
 background:url(images/button02.gif) no-repeat;
 }
+#sites_add a { font-size:12px;}

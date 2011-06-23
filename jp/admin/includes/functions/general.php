@@ -5329,10 +5329,10 @@ function get_all_site_product_status($product_id)
     $categories_count = 0;
 
     $categories_query = tep_db_query("select id from " . TABLE_FAQ_CATEGORIES .
-        " where parent_id = '" . $category_id . "'");
+        " where parent_id = '" . $faq_category_id . "'");
     while ($category = tep_db_fetch_array($categories_query)) {
       $categories_count++;
-      $categories_count += tep_childs_in_category_count($category['id']);
+      $categories_count += tep_childs_in_faq_category_count($category['id']);
     }
 
     return $categories_count;
@@ -5410,6 +5410,7 @@ function get_all_site_product_status($product_id)
     tep_db_query("delete from " . TABLE_FAQ_QUESTION_DESCRIPTION . " where 
         faq_question_id = '" . tep_db_input($product_id) . "'");
   }
+<<<<<<< HEAD
 function   tep_order_status_change($oID,$status){
   
   $order_id = $oID;
@@ -5436,3 +5437,180 @@ function   tep_order_status_change($oID,$status){
   return '';
 
 }
+
+
+//faq is show 
+
+function tep_set_faq_category_status_by_site_id($faq_category_id, $status, $site_id)
+{
+  tep_db_query("UPDATE `".TABLE_FAQ_CATEGORIES_DESCRIPTION."` SET `is_show` =
+      '".intval($status)."' WHERE `faq_category_id` =".$faq_category_id.
+      " and `site_id` = '".$site_id."' LIMIT 1 ;");
+  return true;
+}
+
+
+
+function tep_set_faq_category_link_question_status($cID, $cstatus, $site_id)
+{
+  $site_arr = array(); 
+  $product_total_arr = array();
+  $category_total_arr = array($cID); 
+  
+  $pstatus = $cstatus;
+  
+  if ($site_id == 0) {
+    $site_arr[] = '0'; 
+    $site_query = tep_db_query("select * from ".TABLE_SITES);
+    while ($site_res = tep_db_fetch_array($site_query)) {
+      $site_arr[] = $site_res['id']; 
+    }
+  } else {
+    $site_arr = array($site_id); 
+  }
+  
+  $product_arr = tep_get_link_question_id_by_category_id($cID);
+  if (!empty($product_arr)) {
+    $product_total_arr = array_merge($product_total_arr, $product_arr); 
+  }
+
+  $child_category_query = tep_db_query("select * from ".TABLE_FAQ_CATEGORIES." where parent_id = '".$cID."'");
+  while ($child_category_res = tep_db_fetch_array($child_category_query)) {
+    $category_total_arr[] = $child_category_res['id']; 
+    $product_arr = tep_get_link_question_id_by_category_id($child_category_res['id']);
+    if (!empty($product_arr)) {
+      $product_total_arr = array_merge($product_total_arr, $product_arr); 
+    }
+    $child_child_category_query = tep_db_query("select * from ".TABLE_FAQ_CATEGORIES." where parent_id = '".$child_category_res['id']."'");
+    
+    while ($child_child_category_res = tep_db_fetch_array($child_child_category_query)) {
+      $category_total_arr[] = $child_child_category_res['id']; 
+      $product_arr = tep_get_link_question_id_by_category_id($child_child_category_res['id']);
+      if (!empty($product_arr)) {
+        $product_total_arr = array_merge($product_total_arr, $product_arr); 
+      }
+    }
+  }
+  
+  foreach ($site_arr as $skey => $svalue) {
+    foreach ($category_total_arr as $ckey => $cvalue) {
+      tep_set_faq_category_status_by_site_id($cvalue, $cstatus, $svalue);
+    }
+
+    foreach ($product_total_arr as $pkey => $pvalue) {
+      tep_set_faq_question_status_by_site_id($pvalue, $pstatus, $svalue); 
+    }
+  }
+}
+
+
+function tep_set_faq_question_status_by_site_id($question_id, $status, $site_id) {
+    if ($status == '1') {
+      return tep_db_query("update " . TABLE_FAQ_QUESTION_DESCRIPTION . " set is_show = '1' where
+          faq_question_id = '" . $question_id . "' and site_id = '".$site_id."'");
+    } elseif ($status == '0') {
+      return tep_db_query("update " . TABLE_FAQ_QUESTION_DESCRIPTION . " set is_show = '0' where 
+          faq_question_id = '" . $question_id . "' and site_id = '".$site_id."'");
+    } else {
+      return -1;
+    }
+}
+
+function tep_get_link_question_id_by_category_id($category_id)
+{
+  $product_arr = array(); 
+  $pro_to_ca_query = tep_db_query("select * from ".TABLE_FAQ_QUESTION_TO_CATEGORIES." 
+      where faq_category_id = '".$category_id."'");
+  while ($pro_to_ca_res = tep_db_fetch_array($pro_to_ca_query)) {
+    $product_arr[] = $pro_to_ca_res['faq_question_id']; 
+  }
+  return $product_arr;
+}
+
+function tep_set_all_question_status($qID, $pstatus)
+{
+  $site_arr = array(0); 
+  $site_query = tep_db_query("select * from ".TABLE_SITES); 
+  while ($site_res = tep_db_fetch_array($site_query)) {
+    $site_arr[] = $site_res['id']; 
+  }
+  
+  foreach ($site_arr as $key => $value) {
+    if (!tep_check_question_exists($qID, $value)) {
+      //      tep_create_products_by_site_id($pID, $value); 
+    }
+    tep_db_query("UPDATE `".TABLE_FAQ_QUESTION_DESCRIPTION."` SET 
+        `is_show` = '".$pstatus."' where `faq_question_id` = '".$qID."' 
+        and `site_id` = '".$value."'");  
+  }
+}
+
+function tep_check_question_exists($qid, $site_id)
+{
+  $exist_pro_query = tep_db_query("select * from ".TABLE_FAQ_QUESTION_DESCRIPTION." where 
+      faq_question_id = '".$qid."' and site_id = '".(int)$site_id."'");
+  return tep_db_num_rows($exist_pro_query);
+}
+
+
+
+function tep_output_generated_faq_category_path($id, $from = 'category') {
+    $calculated_category_path_string = '';
+    $calculated_category_path = tep_generate_faq_category_path($id, $from);
+    for ($i = 0, $n = sizeof($calculated_category_path); $i < $n; $i++) {
+      for ($j = 0, $k = sizeof($calculated_category_path[$i]); $j < $k; $j++) {
+        $calculated_category_path_string .= $calculated_category_path[$i][$j]['text'] . '&nbsp;&gt;&nbsp;';
+      }
+      $calculated_category_path_string = substr($calculated_category_path_string, 0, -16) . '<br>';
+    }
+    $calculated_category_path_string = substr($calculated_category_path_string, 0, -4);
+
+    if (strlen($calculated_category_path_string) < 1) $calculated_category_path_string = TEXT_TOP;
+
+    return $calculated_category_path_string;
+  }
+
+
+  function tep_generate_faq_category_path($id, $from = 'category', $categories_array = '', $index = 0) {
+    global $languages_id;
+
+    if (!is_array($categories_array)) $categories_array = array();
+
+    if ($from == 'question') {
+      $categories_query = tep_db_query("select faq_category_id from " . 
+          TABLE_FAQ_QUESTION_TO_CATEGORIES . " where faq_question_id = '" . $id . "'");
+      while ($categories = tep_db_fetch_array($categories_query)) {
+        if ($categories['faq_category_id'] == '0') {
+          $categories_array[$index][] = array('id' => '0', 'text' => TEXT_TOP);
+        } else {
+          $category_query = tep_db_query("select 
+              cd.title, c.parent_id from " . 
+              TABLE_FAQ_CATEGORIES . " c, " . 
+              TABLE_FAQ_CATEGORIES_DESCRIPTION . " cd 
+              where c.id = '" . $categories['faq_category_id'] . "' 
+              and c.id = cd.faq_category_id and 
+              cd.site_id='0'");
+          $category = tep_db_fetch_array($category_query);
+          $categories_array[$index][] = array('id' =>
+              $categories['faq_category_id'], 'text' => $category['title']);
+          if ( (tep_not_null($category['parent_id'])) && ($category['parent_id'] !=
+                '0') ) $categories_array = tep_generate_faq_category_path($category['parent_id'], 'category', $categories_array, $index);
+          $categories_array[$index] = tep_array_reverse($categories_array[$index]);
+        }
+        $index++;
+      }
+    } elseif ($from == 'category') {
+      $category_query = tep_db_query("select cd.title, c.parent_id from " .
+          TABLE_FAQ_CATEGORIES . " c, " .
+          TABLE_FAQ_CATEGORIES_DESCRIPTION . " cd 
+          where c.id = '" . $id . "' 
+          and c.id = cd.faq_category_id 
+          and cd.site_id='0'");
+      $category = tep_db_fetch_array($category_query);
+      $categories_array[$index][] = array('id' => $id, 'text' => $category['title']);
+      if ( (tep_not_null($category['parent_id'])) && ($category['parent_id'] != '0')
+          ) $categories_array = tep_generate_faq_category_path($category['parent_id'], 'category', $categories_array, $index);
+    }
+
+    return $categories_array;
+  }

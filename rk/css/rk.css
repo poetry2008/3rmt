@@ -104,6 +104,7 @@ p.pageBottom_long {
 	margin:0;
 	padding:0;
 }
+.send_mail a { font-size:12px;}
 /* ---------------------------
 img
 --------------------------- */
@@ -887,6 +888,7 @@ Information
 	padding: 3px 5px;
 	vertical-align: top;
 }
+.information_table02 td a { font-size:11px;}
 .information_table03 {
 	width: 100%;
 	font-size: 11px;
@@ -1002,6 +1004,7 @@ footer
 .comment a {
 	color:#237023;
 }
+.comment table a{ font-size:12px;}
 .comment .main ul li a {
 	color: #336600;
 }
@@ -1011,6 +1014,7 @@ footer
 .main p a {
 	color:#06727D;
 }
+.main a { font-size:11px;}
 .main p a:hover {
 	text-decoration:underline;
 }
