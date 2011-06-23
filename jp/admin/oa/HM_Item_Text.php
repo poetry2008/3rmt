@@ -38,7 +38,7 @@ class HM_Item_Text extends HM_Item_Basic
       $classrequire = '';
     }
     echo $this->beforeInput."<input type='text' class='".$classrequire."'size='".$this->size."' name='".$this->formname."'
-      value='".$this->getDefaultValue()."' />".$this->afterInput;
+      value='".$this->getDefaultValue()."' />"."<div>".$this->afterInput."</div>";
     echo "</td>";
   }
   function renderScript()

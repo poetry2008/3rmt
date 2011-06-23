@@ -7,7 +7,7 @@
 
   Released under the GNU General Public License
 */
-$libpath = "/home/bobhero/3rmt/jp/3rmtlib/";
+$libpath = "/home/bobhero/project/3rmt/jp/3rmtlib/";
 ini_set('include_path',ini_get('include_path').':'.$libpath);
 
 // Define the webserver and path parameters
@@ -19,12 +19,12 @@ ini_set('include_path',ini_get('include_path').':'.$libpath);
   define('BACKEND_LAN_URL_ENABLED',false);
   define('ENABLE_SSL_CATALOG', 'false'); // secure webserver for catalog module
 
-  define('DIR_FS_DOCUMENT_ROOT', '/home/bobhero/3rmt/jp/admin/'); // where the pages are located on the server
+  define('DIR_FS_DOCUMENT_ROOT', '/home/bobhero/project/3rmt/jp/admin/'); // where the pages are located on the server
   define('DIR_WS_ADMIN', '/admin/'); // absolute path required
-  define('DIR_FS_ADMIN', '/home/bobhero/3rmt/jp/admin/'); // absolute pate required
+  define('DIR_FS_ADMIN', '/home/bobhero/project/3rmt/jp/admin/'); // absolute pate required
 
   define('DIR_WS_CATALOG', '/'); // absolute path required
-  define('DIR_FS_CATALOG', '/home/bobhero/3rmt/jp/admin/'); // absolute path required
+  define('DIR_FS_CATALOG', '/home/bobhero/project/3rmt/jp/admin/'); // absolute path required
   define('DIR_WS_IMAGES', 'images/');
   define('DIR_WS_ICONS', DIR_WS_IMAGES . 'icons/');
 

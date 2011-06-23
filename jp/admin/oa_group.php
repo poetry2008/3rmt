@@ -6,6 +6,13 @@
   
   if (isset($_GET['action'])) {
     switch ($_GET['action']) {
+    case 'checkname':
+      $oa_group =  tep_db_query('select count(*) cnt from '.TABLE_OA_GROUP.' where name="'.$_GET['name'].'"');
+      //      die('select count(*) cnt from '.TABLE_OA_GROUP.' where name="'.$_GET['name'].'"');
+      $oa_group_res = tep_db_fetch_array($oa_group); 
+      echo  $oa_group_res['cnt'];
+      die('');
+      break;
       case 'insert':
         tep_db_query("insert into `".TABLE_OA_GROUP."` values(NULL, '".tep_db_prepare_input($_POST['gname'])."', '".tep_db_prepare_input($_POST['goption'])."')"); 
         tep_redirect(tep_href_link(FILENAME_OA_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type'])); 
@@ -111,7 +118,27 @@ function select_all_group()
 
             <tr>
               <td colspan="2">
-              <input type="submit" value="<?php echo '新規グループ保存';?>"> 
+                <input id ='canSubmit' class='cannotSubmit' type="submit" onclick="return checkexist()" value="<?php echo '新規グループ保存';?>"> 
+<script type='text/javascript'>
+          function checkexist()
+          {
+            if ($('input|[name=gname]').val().length==0){
+              return false;
+            }
+            $.ajax({
+                   url:'oa_group.php?action=checkname&name='+$('input|[name=gname]').val(),
+                   type:'get',    
+                   success: function(data){
+                  if (data == 0){
+                   $("#canSubmit").attr("class",'canSubmit');
+                  }else{
+                   $("#canSubmit").attr("class",'cannotSubmit');
+                  }
+                }});
+            return $("#canSubmit").attr("class") =='canSubmit';
+            
+          }
+</script>
               </td>
             </tr>
           </table>
@@ -124,6 +151,7 @@ function select_all_group()
           if ($_GET['action'] == 'edit') { 
           ?>
 <script type='text/javascript'>
+
     function editorder (ele){
     x = $(ele).parent().parent();      
     oid = x.attr('id').substr(1);
@@ -169,8 +197,7 @@ function ajaxUpdate(id,order){
 });
 }
 </script>
-          <a href="<?php echo tep_href_link(FILENAME_OA_ITEM,
-            'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>"><input type="button" value="<?php echo BUTTON_ADD_ITEM_TEXT;?>"></a> 
+<input type="button" onclick="window.location.href('<?php echo tep_href_link(FILENAME_OA_ITEM,'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'])?>')" value="<?php echo BUTTON_ADD_ITEM_TEXT;?>"></a> 
           <table border="1">
             <tr>
               <td><?php echo TABLE_HEADING_ITEM_TITLE;?></td> 
@@ -195,7 +222,7 @@ function ajaxUpdate(id,order){
               </td>
               <td>
               <a href="<?php echo tep_href_link(FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&eid='.$has_item_res['id'].'&action=edit');?>"><?php echo EDIT_ITEM_LINK_TEXT;?></a> 
-              <a onclick="return confirm('<?php echo $has_item_res['title'];?>を削除しますか？')" href="<?php echo tep_href_link(FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&eid='.$has_item_res['id'].'&action=del');?>"><?php echo DEL_ITEM_LINK_TEXT;?></a> 
+              <a onclick="return confirm('<?php echo $has_item_res['title'];?>を削除しますか?')" href="<?php echo tep_href_link(FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&eid='.$has_item_res['id'].'&action=del');?>"><?php echo DEL_ITEM_LINK_TEXT;?></a> 
               </td>
               <td><?php
             echo '<input type="button" class="up" value=\'↑\' onclick="editorder(this)">';
@@ -232,7 +259,7 @@ function ajaxUpdate(id,order){
                 echo '<td>';
                 echo '<a href="'.tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.EDIT_GROUP_TEXT.'</a>'; 
                 echo '&nbsp;&nbsp;'; 
-                echo '<a onclick="return confirm(\''.$group_list_res['title'].'を削除しますか?\')"'.'href="'.tep_href_link(FILENAME_OA_GROUP, 'action=del&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.DEL_GROUP_TEXT.'</a>'; 
+                echo '<a onclick="return confirm(\''.$group_list_res['name'].'を削除しますか?\')"'.'href="'.tep_href_link(FILENAME_OA_GROUP, 'action=del&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.DEL_GROUP_TEXT.'</a>'; 
                 echo '</td>'; 
                 echo '</tr>'; 
               }
@@ -251,7 +278,8 @@ function ajaxUpdate(id,order){
       </tr>
       <tr>
         <td>
-        <a href="<?php echo tep_href_link(FILENAME_OA_FORM,'pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>"><input type="button" value="<?php echo IMAGE_BACK;?>"></a> 
+  
+        <input type="button" onclick='window.location.href("<?php echo tep_href_link(FILENAME_OA_FORM,'pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>")' value="<?php echo IMAGE_BACK;?>">
         </td> 
       </tr>
     </table>

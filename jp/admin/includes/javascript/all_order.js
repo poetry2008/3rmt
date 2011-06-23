@@ -396,7 +396,7 @@ $(function(){
       if ($('#q_8_1').val()) {
         //保存成功自动跳转到列表
         //window.location.href=$('#back_link').attr('href');
-        window.location.href='orders.php';
+//        window.location.href='orders.php';
       }
     }
   });

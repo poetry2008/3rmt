@@ -2,7 +2,9 @@
 /*
    $Id$
 */
+
   require('includes/application_top.php');
+
   require_once('oa/HM_Form.php'); 
   require_once('oa/HM_Group.php'); 
   

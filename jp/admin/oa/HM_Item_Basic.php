@@ -48,6 +48,15 @@ class HM_Item_Basic
       $orders_statuses     = $all_orders_statuses = $orders_status_array = array();
       $orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_ORDERS_STATUS . " where language_id = '" . $languages_id . "'");
       $formString .="ステータス<select name='status'>";
+
+      if($item_value['status'] == 'null'){
+        $selcted = 'selected';
+      }else {
+        $selcted ='';
+      }
+
+      $formString .= "<option ".$selcted. " value='null'".">連動しない</option>";      
+
       while ($orders_status = tep_db_fetch_array($orders_status_query)) {
         if($item_value['status'] == $orders_status['orders_status_id']){
           $selcted = 'selected';

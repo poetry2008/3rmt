@@ -35,7 +35,7 @@ class HM_Group extends DbRecord
     }
     echo "</table>";
     echo "</td>";    
-    echo "<td class='main' align='right'><img src='images/icons/icon_cancel.gif' onclick='cleanthisrow(this)'></td>";
+    echo "<td class='main' align='right'><img class='clean' src='images/icons/icon_cancel.gif' onclick='cleanthisrow(this)'></td>";
     echo "</tr>";
   }
 }

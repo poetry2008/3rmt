@@ -237,7 +237,8 @@ function deltr(index)
           </tr>
         </table>
         <input type="submit" value="<?php echo IMAGE_SAVE;?>"> 
-        <a href="<?php echo tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>"><input type="button" value="<?php echo IMAGE_BACK?>"></a> 
+
+<input onclick = 'window.location.href(" <?php echo tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>")' type="button" value="<?php echo IMAGE_BACK?>">
         </form> 
       </td>
     </tr>

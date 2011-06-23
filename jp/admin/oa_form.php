@@ -71,6 +71,9 @@
           $form_group_raw = tep_db_query("select ofg.id ofgid,g.id, g.name from ".TABLE_OA_GROUP." g, ".TABLE_OA_FORM_GROUP." ofg where g.id = ofg.group_id and ofg.form_id = '".$form_id."' order by ofg.ordernumber"); 
         ?>
         <a href="<?php echo tep_href_link(FILENAME_OA_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>"><?php echo ADD_GROUP;?></a> 
+
+
+
 <script type='text/javascript'>
     function editorder (ele){
     x = $(ele).parent().parent();      
@@ -116,7 +119,8 @@ function ajaxUpdate(id,order){
 });
 }
 </script>
-        <table border="1"> 
+
+        <table border="1" style="clear:both;"> 
           <tr>
             <td><?php echo GROUP_NAME;?></td> 
             <td><?php echo GROUP_OPERATE;?></td> 
@@ -140,7 +144,7 @@ function ajaxUpdate(id,order){
           }
         ?>
         </table> 
-        <a href="<?php echo tep_href_link(FILENAME_MODULES, 'set=payment&module='.$_GET['pcode']);?>"><input type="button" value="<?php echo IMAGE_BACK;?>"></a> 
+<input onclick='window.location.href("<?php echo tep_href_link(FILENAME_MODULES, 'set=payment&module='.$_GET['pcode']);?>")' type="button" value="<?php echo IMAGE_BACK;?>">
       </td>
     </tr>
     </table>
@@ -149,7 +153,6 @@ function ajaxUpdate(id,order){
   </tr>
 </table>
 <!-- body_eof //-->
-
 <!-- footer //-->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 <!-- footer_eof //-->

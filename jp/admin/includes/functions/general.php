@@ -5151,18 +5151,19 @@ function tep_get_user_list_by_username($name){
 
 function tep_check_order_type($oID)
 {
-   $sell_query = tep_db_query("select * from ".TABLE_ORDERS." o, ".TABLE_ORDERS_STATUS_HISTORY." h where o.orders_id = h.orders_id and o.orders_id = '".$oID."' and (!(o.payment_method like '%買い取り%') and h.orders_id not in (select orders_id from ".TABLE_ORDERS_STATUS_HISTORY." where comments like '金融機関名%支店名%'))");
-   $sell_num = tep_db_num_rows($sell_query); 
-   if ($sell_num) {
-     return 1; 
-   }
-   $buy_query = tep_db_query("select * from ".TABLE_ORDERS." o, ".TABLE_ORDERS_STATUS_HISTORY." h where o.orders_id = h.orders_id and o.orders_id = '".$oID."' and (o.payment_method like '%買い取り%')");
-   $buy_num = tep_db_num_rows($buy_query); 
-   if ($buy_num) {
-     return 2; 
-   }
-   
-   return 3;
+  $sql = "  SELECT avg( products_bflag ) bflag FROM orders_products op, products p  WHERE 1 AND p.products_id = op.products_id AND op.orders_id = '".$oID."'";
+
+  $avg  = tep_db_fetch_array(tep_db_query($sql));
+  $avg = $avg['bflag'];
+
+  if($avg == 0){
+    return 1;
+  }
+  if($avg == 1){
+    return 2;
+  }
+    return 3;
+
 }
 
 function tep_get_payment_code_by_order_id($oID)
@@ -5410,7 +5411,6 @@ function get_all_site_product_status($product_id)
     tep_db_query("delete from " . TABLE_FAQ_QUESTION_DESCRIPTION . " where 
         faq_question_id = '" . tep_db_input($product_id) . "'");
   }
-<<<<<<< HEAD
 function   tep_order_status_change($oID,$status){
   
   $order_id = $oID;
@@ -5569,7 +5569,10 @@ function tep_output_generated_faq_category_path($id, $from = 'category') {
 
     return $calculated_category_path_string;
   }
-
+function     tep_orders_finishqa($orders_id) {
+    $order = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS." where orders_id='".$orders_id."'"));
+    return $order['flag_qaf'];
+}
 
   function tep_generate_faq_category_path($id, $from = 'category', $categories_array = '', $index = 0) {
     global $languages_id;

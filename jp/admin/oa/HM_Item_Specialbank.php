@@ -1,5 +1,4 @@
 <?php
-
 require_once "HM_Item_Basic.php";
 class HM_Item_Specialbank extends HM_Item_Basic
 {
@@ -9,7 +8,7 @@ class HM_Item_Specialbank extends HM_Item_Basic
     $options = explode("\n",$sboption);
     $radios = array();
     foreach($options as $option){
-      $option = trim($option);
+      $loption = trim($option);
       if (empty($option))continue;
       if (substr($option,0,1)=='('){
 	$radios[] = array('text'=>substr($option,strpos($option,')')+1));
@@ -28,7 +27,6 @@ class HM_Item_Specialbank extends HM_Item_Basic
   }
   function render()
   {
-    
     $this->dataoption=$this->parseSbOption($this->dataoption);
     if ($this->loaded){
       $this->defaultValue = $this->loadedValue;
@@ -37,54 +35,66 @@ class HM_Item_Specialbank extends HM_Item_Basic
     $this->formnametotal = $this->formname.'total';
     echo "<div id='".$this->formnametotal."' >";
     echo "<input type='hidden' id='".$this->formname."' name=".$this->formname." value='".$this->defaultValue."' />";
+    echo "<table><tr>";
     $this->radioname = '0'.$this->formname.'radio';
     unset($this->defaultValue[count($this->defaultValue)-1]);
     foreach($this->dataoption as $key=>$radio){
-
-      if(in_array((string)$key,$this->defaultValue)){
-	$checked = 'checked';
+      if(@in_array((string)$key,$this->defaultValue)){
+        $checked = 'checked';
       }else{
-	$checked = '';
+        $checked = '';
       }
+      echo "<td>";
       echo "<input id='".$this->formname.$key."' ".$checked." name='".$this->formname."radio' type='radio'/>";
       echo $radio['text'];      
       if (''==$checked){
-      echo "<div style='display:none'>";
+      echo "<div class='checkboxs' >";
       }else{
-      echo "<div >";
+      echo "<div class='checkboxs' >";
       }
       foreach ($radio['checkboxs']  as $key2 => $checkbox){
-	if(in_array((string)$key.'_'.$key2,$this->defaultValue)){
-	$checked = 'checked';
-      }else{
-	$checked = '';
+        if(@in_array((string)$key.'_'.$key2,$this->defaultValue)){
+          $checked = 'checked';
+        }else{
+          $checked = '';
+        }
+        echo "<input id='".$this->formname.$key.'_'.$key2."' ".$checked." name='".$this->formname.$key."' type='checkbox' />  ";
+        echo $checkbox;
+        echo "\n</br>";
       }
-	echo "<input id='".$this->formname.$key.'_'.$key2."' ".$checked." name='".$this->formname.$key."' type='checkbox' />  ";
-	echo $checkbox;
-	echo "\n</br>";
-      }
-	echo "</div>";
-	echo "\n</br>";
+      echo "</div>";
+      echo "</td>";
     }
+    echo "</tr>";
+    echo "</table>";
+	echo "</div>";
+
   }
   function renderScript()
   {
     ?>
     <script type='text/javascript'>
       $(document).ready(function(){
-	  $("#<?php echo $this->formnametotal;?>").find("input").bind('click',<?php echo $this->formname;?>onItemChanged); 
+          $("#<?php echo $this->formnametotal;?>").find("input").each(
+                                                                      function()
+                                                                      {
+                                                                        $(this).bind('click',<?php echo $this->formname;?>onItemChanged)});
 	});  
     function <?php echo $this->formname;?>onItemChanged()
 					    {
+                          alert('xcv');
 					      $("#<?php echo $this->formname;?>").val('');
 					      $('#<?php echo $this->formnametotal;?>').find('input').each(
 													  function (){
 													    if($(this).attr('type')=='radio')
    {
+
 	if($(this).attr('checked')==false)  {
-    	$(this).next().hide();
+      //      $(this).parent().parent().find(".checkboxs").hide();
+      $(this).next().hide();
         }else{
-    	$(this).next().show();
+      $(this).next().show();
+      $(this).parent().parent().find(".checkboxs").show();
 	}
 													  }
    if($(this).attr('checked')){
