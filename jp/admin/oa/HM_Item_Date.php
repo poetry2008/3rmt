@@ -2,27 +2,22 @@
 require_once "HM_Item_Basic.php";
 class HM_Item_Date extends HM_Item_Basic
 {
-  /*
-ステータス[連動しない▽]（可以跟其他的状态关联）
 
-必須：○　必須
-
-項目名_____ _____　
-
-前方文字___ _______
-
-SubmitName __________(确认钮)
-
-後方文字__________  
-  */
   var $hasRequire = true;
   var $hasTheName = true;
-  //  var $hasSelect  = true;
+  var $hasSelect  = true;
   var $hasSubmit = true;
   var $hasFrontText  = true;  
   var $hasBackText  = true;  
   //  var $hasDefaultValue  = true;
   //  var $hasSize  = true;
+  function statusChange($order_id,$form_id,$group_id,$item_id)
+  {
+    $value =date('Y/m/d H:i',time());
+    return $this->updateValue($order_id,$form_id,$group_id,$item_id,$value);
+
+  }
+
   function render()
   {
 
@@ -44,9 +39,9 @@ SubmitName __________(确认钮)
     echo "<input class='outform ".$classrequire."' id = '".$this->formname."' type='hidden' name='".$this->formname."' value='".$this->defaultValue."' />";
     $thevalue = $this->loaded?$this->defaultValue:"";
     echo "<span id='".$this->formname."showvalue' >".$thevalue."</span>";
-    if(empty($thevalue)){
-    echo "<button type='button' id = '".$this->formname.'submit'."' value='$this->submitName' />";
-    }
+    //    if(empty($thevalue)){
+    echo "<button type='button' id = '".$this->formname.'submit'."' >".$this->submitName."</button>";
+    //    }
     echo $this->afterInput;
     echo "<script type='text/javascript'>";
 ?>
@@ -56,12 +51,13 @@ SubmitName __________(确认钮)
                  url:'oa_answer_process.php?withz=1&fix=date&oID=<?php echo $_GET["oID"]?>',
                      type:'post',    
                      data:"form_id="+$('input|[name=form_id]').val()+"&<?php echo $this->formname;?>="+$('input|[name=<?php echo $this->formname;?>]').val(),
+		     beforeSend: function(){$('body').css('cursor','wait');$("#wait").show()},
                      success: function(data){
-                     alert(data);
                      $("#<?php echo $this->formname;?>showvalue").text(data);
                      $("#<?php echo $this->formname;?>").val(data);
-                     $("#<?php echo $this->formname;?>submit").hide();
+		     //                     $("#<?php echo $this->formname;?>submit").hide();
                      $(this).attr('disable',true);
+		     $("#wait").hide();
                    }
                  });
              });

@@ -20,6 +20,15 @@ class HM_Item_Basic
       }
     }
   }
+
+  function updateValue($order_id,$form_id,$group_id,$item_id,$result)
+    {
+    $sql = 'delete from '. TABLE_OA_FORMVALUE. " where form_id = '" . tep_db_input($form_id) . "' and item_id='". tep_db_input($item_id) . "' and group_id='". tep_db_input($group_id) . "'";
+    tep_db_query($sql);
+    $sql = "INSERT INTO ".TABLE_OA_FORMVALUE ." (`id`, `orders_id`, `form_id`, `item_id`, `group_id`, `name`, `value`) VALUES (NULL,'".$order_id."',".$form_id.",".$item_id.",".$group_id.",'".$this->formname."','".$result."')";
+    return tep_db_query($sql);
+    
+    }
   public function prepareFormWithParent($item_id){
     $item_raw = tep_db_query("select * from ".TABLE_OA_ITEM." where id = '".(int)$item_id."'"); 
     $item_res = tep_db_fetch_object($item_raw); 
@@ -33,7 +42,6 @@ class HM_Item_Basic
       $checked = isset($item_value['require'])?'checked="true"':'';
       $formString .= "必須<input type='checkbox' name='require' ".$checked."/></br>\n";      
     }
-
     //关联状态
     if ($this->hasSelect){
       $languages_id = 4;

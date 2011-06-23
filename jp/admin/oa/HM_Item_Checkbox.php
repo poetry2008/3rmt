@@ -2,17 +2,7 @@
 require_once "HM_Item_Basic.php";
 class HM_Item_Checkbox extends HM_Item_Basic  
 {
-  /*
-ステータス[連動しない▽]（可以跟其他的状态关联）
 
-必須：○　必須
-
-項目名_____ _____　
-
-前方文字__________
-
-CheckBoxの内容__________
-  */
   var $hasRequire = true;
   var $hasThename = true;
   var $hasSelect  = true;
@@ -21,6 +11,21 @@ CheckBoxの内容__________
   //  var $hasBackText  = true;  
   //  var $hasDefaultValue  = true;
   //  var $hasSize  = true;
+  function statusChange($order_id,$form_id,$group_id,$item_id)
+  {
+    $item_raw = tep_db_query("select * from ".TABLE_OA_ITEM." where id = '".(int)$item_id."'"); 
+    $item_res = tep_db_fetch_object($item_raw); 
+    if ($item_res) {
+      $item_value = unserialize($item_res->option); 
+    }
+    $radios = $item_value['radios'];
+    $result = '';
+    foreach($radios as $key=>$value){
+      $result.='_'.$value;
+    }
+    return $this->updateValue($order_id,$form_id,$group_id,$item_id,$result);
+
+  }
   function renderScript()
   {
     ?>
@@ -32,6 +37,7 @@ CheckBoxの内容__________
 	    <?php echo $this->formname;?>val += '_'+$(this).val();
 	  }
 	});
+
       $('#<?php echo $this->formname;?>real').val( <?php echo $this->formname;?>val);
     }
     </script>
@@ -56,14 +62,13 @@ CheckBoxの内容__________
      $classrequire = '';
    }   
    echo $this->beforeInput;
-   echo "<input class=".$classrequire." id='".$this->formname."real' value = '".$this->defaultValue."' type='hidden' name = '".$this->formname."'>";
+   echo "<input class='".$classrequire."' id='".$this->formname."real' value = '".$this->defaultValue."' type='hidden' name = '".$this->formname."'>";
    foreach($this->radios as $key=>$value){
      if (in_array($value,$loadArray)){
        $check = 'checked';
       }else{
 	$check = '';
       }
-
       echo "<input value = '".$value."' onclick='".$this->formname."Changed(this)' type='checkbox' ".$check." name='0".$this->formname."' />".$value;
 	  }
    echo '</br>';
