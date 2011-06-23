@@ -343,7 +343,7 @@ B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示さ
       foreach($cart_products as $cp){
         $cp = tep_get_product_by_id($cp, SITE_ID, 4);
         echo "<a href='".tep_href_link(FILENAME_PRODUCT_INFO, "products_id=".$cp['products_id'])."'>";
-        echo "<img src='".DIR_WS_IMAGES . 'carttags/'. $cp['products_cart_image']."' alt='".$cp['products_name']."' title='".$cp['products_name']."'>";
+        echo "<img src='default_images/carttags/". $cp['products_cart_image']."' alt='".$cp['products_name']."' title='".$cp['products_name']."'>";
         echo "</a>";
         echo "<br>";
       }
