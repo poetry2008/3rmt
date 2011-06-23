@@ -42,7 +42,9 @@
   define('REWRITE_CATEGORIES', 'rmt/');//Add Ultimate_SEO_URLS
   define('REWRITE_MANUFACTURERES', 'game/');//Add Ultimate_SEO_URLS
 
-  define('SITE_ID', '7'); 
+  define('SITE_ID', '8'); 
+  define('WHETHER_START', true); 
+  define('ROUTER_DIRECTION', true); 
   //control sql_log
   define('SQL_LOG', false);
   ini_set('include_path',ini_get('include_path').':'.DIR_FS_3RMTLIB);
@@ -50,4 +52,4 @@
   //define('DIR_OST',DIR_FS_DOCUMENT_ROOT.DIR_WS_INCLUDES.'ost/');
   define('DIR_OST','includes/ost/');
   define('SITE_TOPIC_ID',4); 
-
+  define('FF_CID', '456');

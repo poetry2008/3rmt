@@ -50,6 +50,7 @@
   define('WARN_DOWNLOAD_DIRECTORY_NOT_READABLE', 'true');
 
 // define the filenames used in the project
+  define('FILENAME_FAQ_INFO', 'faq_info.php');
   define('FILENAME_ACCOUNT', 'account.php');
   define('FILENAME_TAGS', 'tags.php');
   define('FILENAME_SEND_MAIL', 'send_mail.php');
@@ -128,6 +129,11 @@
   define('FILENAME_EMAIL_TROUBLE', 'email_trouble.php');
 
 // define the database table names used in the project
+  define('TABLE_FAQ_CATEGORIES', 'faq_categories');
+  define('TABLE_FAQ_QUESTION',  'faq_question');
+  define('TABLE_FAQ_CATEGORIES_DESCRIPTION', 'faq_categories_description');
+  define('TABLE_FAQ_QUESTION_DESCRIPTION',  'faq_question_description');
+  define('TABLE_FAQ_QUESTION_TO_CATEGORIES','faq_question_to_categories');
   define('TABLE_ADDRESS_BOOK', 'address_book');
   define('TABLE_TAGS', 'tags');
   define('TABLE_PRODUCTS_TO_TAGS', 'products_to_tags');
@@ -388,6 +394,8 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
       && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS_INFO
       && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PAGE
       && basename($_SERVER['SCRIPT_NAME']) != FILENAME_SHOPPING_CART
+      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_FAQ
+      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_FAQ_INFO
     ) {
       tep_parseURI();
     }
@@ -401,6 +409,8 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS_INFO
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PAGE
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_TAGS
+        && basename($_SERVER['SCRIPT_NAME']) != FILENAME_FAQ
+        && basename($_SERVER['SCRIPT_NAME']) != FILENAME_FAQ_INFO
         //&& ((!isset($_GET['manufacturers_id']) && basename($_SERVER['SCRIPT_NAME']) != FILENAME_DEFAULT))
         && !isset($_GET['manufacturers_id']) && !isset($_GET['tags_id']) 
       ) {
@@ -413,6 +423,8 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS_INFO
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PAGE
+        && basename($_SERVER['SCRIPT_NAME']) != FILENAME_FAQ
+        && basename($_SERVER['SCRIPT_NAME']) != FILENAME_FAQ_INFO
         //&& ((!isset($_GET['manufacturers_id']) && basename($_SERVER['SCRIPT_NAME']) != FILENAME_DEFAULT))
         && !isset($_GET['manufacturers_id']) 
       ) {

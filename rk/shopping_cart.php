@@ -225,7 +225,7 @@ B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示さ
 </td>
                 </tr>
                 <tr class="infoBoxNoticeContents_01">
-                  <td width="33" height="35"><img src="images/icons/hinto.jpg" align="absmiddle" /></td>
+                  <td width="33" height="35"><img src="default_images/icons/hinto.jpg" align="absmiddle" /></td>
                   <td align="left"
                   valign="middle">200円未満になる場合は商品名「ウェブマネーの販売」をカートに入れてみてはどうでしょう。</td>
                 </tr>
