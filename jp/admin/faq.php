@@ -293,7 +293,7 @@
             'romaji' => str_replace(array('/','_'),'-',tep_db_prepare_input($_POST['romaji'])),
             'ask' => tep_db_prepare_input($_POST['ask']),
             'keywords' => tep_db_prepare_input($_POST['keywords']),
-            'answer' => tep_db_prepare_input($_POST['anwser']),
+            'answer' => tep_db_prepare_input($_POST['answer']),
               );
          if($_GET['action'] == 'insert_faq_question' || ($_GET['action'] ==
                'update_faq_question' &&
