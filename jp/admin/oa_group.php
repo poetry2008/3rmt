@@ -197,7 +197,7 @@ function ajaxUpdate(id,order){
 });
 }
 </script>
-<input type="button" onclick="window.location.href('<?php echo tep_href_link(FILENAME_OA_ITEM,'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'])?>')" value="<?php echo BUTTON_ADD_ITEM_TEXT;?>"></a> 
+<input type="button" onclick="window.location.href='<?php echo tep_href_link(FILENAME_OA_ITEM,'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'])?>'" value="<?php echo BUTTON_ADD_ITEM_TEXT;?>"></a> 
           <table border="1">
             <tr>
               <td><?php echo TABLE_HEADING_ITEM_TITLE;?></td> 
@@ -279,7 +279,7 @@ function ajaxUpdate(id,order){
       <tr>
         <td>
   
-        <input type="button" onclick='window.location.href("<?php echo tep_href_link(FILENAME_OA_FORM,'pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>")' value="<?php echo IMAGE_BACK;?>">
+        <input type="button" onclick='window.location.href="<?php echo tep_href_link(FILENAME_OA_FORM,'pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>"' value="<?php echo IMAGE_BACK;?>">
         </td> 
       </tr>
     </table>

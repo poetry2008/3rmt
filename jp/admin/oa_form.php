@@ -144,7 +144,7 @@ function ajaxUpdate(id,order){
           }
         ?>
         </table> 
-<input onclick='window.location.href("<?php echo tep_href_link(FILENAME_MODULES, 'set=payment&module='.$_GET['pcode']);?>")' type="button" value="<?php echo IMAGE_BACK;?>">
+<input onclick='window.location.href="<?php echo tep_href_link(FILENAME_MODULES, 'set=payment&module='.$_GET['pcode']);?>"' type="button" value="<?php echo IMAGE_BACK;?>">
       </td>
     </tr>
     </table>
