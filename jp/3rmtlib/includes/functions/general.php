@@ -1694,6 +1694,22 @@ function forward404Unless($condition)
       $_SERVER['SCRIPT_NAME'] = $script_name;
     }
     switch (str_replace('/', '', $_SERVER['SCRIPT_NAME'])) {
+      case FILENAME_FAQ:
+         global $current_faq_category_id;
+           if($faq_category_info = tep_get_faq_category_info($current_faq_category_id)){
+             $title = mb_substr($faq_category_info['title'],0,30,'UTF-8');
+             $keywords = $faq_category_info['keywords'];
+             $description = $faq_category_info['description'];
+           }
+        break;
+      case FILENAME_FAQ_INFO:
+         global $faq_question_id;
+           if($faq_question_info = tep_get_faq_question_info($faq_question_id)){
+             $title = mb_substr($faq_question_info['ask'],0,30,'UTF-8');
+             $keywords = $faq_question_info['keywords'];
+             $description = mb_substr($faq_question_info['answer'],0,80,'UTF-8');
+           }
+        break;
       case FILENAME_DEFAULT:
          global $cPath_array, $cPath, $seo_tags, $seo_category, $seo_manufacturers;
          if (isset($cPath_array)) {
@@ -3894,5 +3910,32 @@ function tep_get_faq_cpath_by_cname($cname, $parent_id = 0)
   $category = tep_db_fetch_array($category_query);
   return $category['faq_category_id'];
 }
-
-
+function tep_get_faq_category_info($c_id){
+  $sql = "select * from ".TABLE_FAQ_CATEGORIES." fc ,"
+         .TABLE_FAQ_CATEGORIES_DESCRIPTION." fcd 
+         where fc.id = fcd.faq_category_id 
+         and fc.id = '".$c_id."' 
+         order by site_id DESC";
+  $query = tep_db_query($sql);
+  return tep_db_fetch_array($query);
+}
+function tep_get_faq_question_info($q_id){
+  $sql = "select * from ".TABLE_FAQ_QUESTION." fq ,"
+         .TABLE_FAQ_QUESTION_DESCRIPTION." fqd 
+         where fq.id = fqd.faq_question_id 
+         and fq.id = '".$q_id."' 
+         order by site_id DESC";
+  $query = tep_db_query($sql);
+  return tep_db_fetch_array($query);
+}
+function tep_get_faq_qid_by_qname($qname){
+ $sql = "select * from ".TABLE_FAQ_QUESTION." fq,
+        ".TABLE_FAQ_QUESTION_DESCRIPTION." fqd 
+        WHERE fq.id = fqd.faq_question_id 
+        and fqd.romaji = '".$qname."' 
+        and (fqd.site_id = '".SITE_ID."' or fqd.site_id = '0') 
+        order by fqd.site_id DESC" ;
+ $query = tep_db_query($sql);
+ $question = tep_db_fetch_array($query);
+ return $question['faq_question_id'];
+}
