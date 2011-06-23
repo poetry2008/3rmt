@@ -5414,7 +5414,6 @@ function get_all_site_product_status($product_id)
     tep_db_query("delete from " . TABLE_FAQ_QUESTION_DESCRIPTION . " where 
         faq_question_id = '" . tep_db_input($product_id) . "'");
   }
-<<<<<<< HEAD
 function   tep_order_status_change($oID,$status){
   
   $order_id = $oID;
