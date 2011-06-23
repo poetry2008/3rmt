@@ -26,7 +26,7 @@
           ?>
           <tr>
             <td colspan="2">
-               <font color="#656565"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?></font>
+               <font color="#ffffff"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?></font>
             </td>
           </tr>
           <?php
@@ -113,7 +113,7 @@
           ?>
           <tr>
             <td colspan="2">
-              <font color="#656565"><?php echo $seo_category['categories_footer_text']; //seoフレーズ ?></font>
+              <font color="#ffffff"><?php echo $seo_category['categories_footer_text']; //seoフレーズ ?></font>
             </td>
           </tr>
           <?php
