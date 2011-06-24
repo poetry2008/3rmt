@@ -7,7 +7,11 @@
   if (isset($_GET['action'])) {
     switch ($_GET['action']) {
     case 'checkname':
-      $oa_group =  tep_db_query('select count(*) cnt from '.TABLE_OA_GROUP.' where name="'.$_GET['name'].'"');
+      if (isset($_GET['gid'])) {
+        $oa_group =  tep_db_query('select count(*) cnt from '.TABLE_OA_GROUP.' where name="'.$_GET['name'].'" and id != "'.$_GET['gid'].'"');
+      } else {
+        $oa_group =  tep_db_query('select count(*) cnt from '.TABLE_OA_GROUP.' where name="'.$_GET['name'].'"');
+      }
       //      die('select count(*) cnt from '.TABLE_OA_GROUP.' where name="'.$_GET['name'].'"');
       $oa_group_res = tep_db_fetch_array($oa_group); 
       echo  $oa_group_res['cnt'];
@@ -128,13 +132,7 @@ function select_all_group()
 
             <tr>
               <td colspan="2">
-                <?php
-                  if (!isset($_GET['action'])) { 
-                ?>
                 <input id ='canSubmit' class='cannotSubmit' type="submit" onclick="return checkexist()" value="<?php echo '新規グループ保存';?>"> 
-                <?php
-                  }
-                ?>
 <script type='text/javascript'>
           function checkexist()
           {
@@ -142,7 +140,17 @@ function select_all_group()
               return false;
             }
             $.ajax({
+                   <?php
+                   if ($_GET['action'] == 'edit') {
+                   ?>
+                   url:'oa_group.php?action=checkname&gid=<?php echo $_GET['gid'];?>&name='+$('input|[name=gname]').val(),
+                   <?php
+                   } else {
+                   ?>
                    url:'oa_group.php?action=checkname&name='+$('input|[name=gname]').val(),
+                   <?php
+                   }
+                   ?>
                    type:'get',    
                    success: function(data){
                   if (data == 0){
