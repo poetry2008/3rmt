@@ -4,11 +4,11 @@ class HM_Item_Autocalculate extends HM_Item_Basic
 {
   /*
 必須：○　必須
-
 項目名_____ _____　
    */
   var $hasRequire = true;
   var $hasTheName = true;
+  var $must_comment = '*チェックを入れるとこのパーツは最終確認に必要なものになる ';  
   
   function render()
   {

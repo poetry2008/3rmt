@@ -470,8 +470,8 @@ $ex_site = $sites[0];
         $contents[] = array('align' => 'left', 'text' => '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . @$_GET['module'] . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>');
         if ($_GET['set'] == 'payment') {
 
-          $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'pcode='.$mInfo->code.'&type=1').'">'.tep_image_button('button_qa_buy.gif', IMAGE_EDIT).'</a>'; 
-          $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'pcode='.$mInfo->code.'&type=2').'">'.tep_image_button('button_qa_sell.gif', IMAGE_EDIT).'</a>'; 
+          $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'pcode='.$mInfo->code.'&type=1').'">'.tep_image_button('button_qa_sell.gif', IMAGE_EDIT).'</a>'; 
+          $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'pcode='.$mInfo->code.'&type=2').'">'.tep_image_button('button_qa_buy.gif', IMAGE_EDIT).'</a>'; 
           $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'pcode='.$mInfo->code.'&type=3').'">'.tep_image_button('button_qa_mix.gif', IMAGE_EDIT).'</a>'; 
      
           $contents[] = array('align' => 'left', 'text' => $link_form_str);

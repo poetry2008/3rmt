@@ -11,6 +11,11 @@ class HM_Item_Checkbox extends HM_Item_Basic
   //  var $hasBackText  = true;  
   //  var $hasDefaultValue  = true;
   //  var $hasSize  = true;
+  
+  var $must_comment = '*チェックを入れるとこのパーツは最終確認に必要なものになる';
+  var $status_comment = '*設定されたステータスに変わると自動でチェックが入る保存される'; 
+  var $front_comment = '* ○○○○ チェックボックス 文字列';
+
   function statusChange($order_id,$form_id,$group_id,$item_id)
   {
     $item_raw = tep_db_query("select * from ".TABLE_OA_ITEM." where id = '".(int)$item_id."'"); 
@@ -91,10 +96,11 @@ class HM_Item_Checkbox extends HM_Item_Basic
     //    $result .= "後方文字<input type='text' name='afterInput' value='".(isset($item_value['afterInput'])?$item_value['afterInput']:'')."'/></br>\n";
     if(count($radios)){
       foreach($radios as $key=>$radio){
-        $result.= "Checkbox<input type='text' name='radios[]' value=$radio />\r\n</br>";
+        $result.= "<table width='100%' border='0'><tr><td width='5%'>Checkbox</td><tdwidth='15%'><input type='text' size='40' name='radios[]' value=$radio /></td><td><font size='2' color='#ff0000'>*前方文字 チェックボックス ○○○○
+          </font>";
       }
     }else{
-        $result.= "Checkbox<input type='text' name='radios[]' />\r\n</br>";
+        $result.= "<table width='100%' border='0'><tr><td width='5%'>Checkbox</td><td width='15%'><input type='text' size='40' name='radios[]' /></td><td><font size='2' color='#ff0000'>*前方文字 チェックボックス ○○○○ </font>";
     }
     $result .="<script type='text/javascript' >";
     $result .="function insertAitem(e)";
@@ -102,7 +108,7 @@ class HM_Item_Checkbox extends HM_Item_Basic
     $result .="$('<p>Checkbox</p><input type=\"text\" name=\"radios[]\" ></br>').insertBefore($(e));";
     $result .="}";
     $result .="</script>";
-    $result .="<input value='チェックボックス追加' type='button' onClick='insertAitem(this)' >";
+    $result .="<input value='チェックボックス追加' type='button' onClick='insertAitem(this)' ></tr></table>";
     ?>
 <?php 
     return $result;
