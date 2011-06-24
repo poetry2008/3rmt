@@ -5,6 +5,7 @@
 
 require('includes/application_top.php');
 require(DIR_WS_ACTIONS.'faq_category.php');
+require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_FAQ);
 ?>
     <?php page_head();?>
     </head>
@@ -34,15 +35,15 @@ require(DIR_WS_ACTIONS.'faq_category.php');
     <td valign="top"  id="contents">
     <?php //this show faq category ?>
     <?php if ($c_row = tep_db_fetch_array($faq_category_query)){?>
-    <h1 class="pageHeading">faq</h1>
+    <h1 class="pageHeading"><?php echo TEXT_FAQ_TITLE;?></h1>
     <div class="comment_faq">
-    <a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$c_row['romaji'];?>">
+    <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$c_row['romaji'];?>">
       <?php echo $c_row['title'];?>
-    </a>
+    </a></span>
     <?php while($c_row = tep_db_fetch_array($faq_category_query)){ ?>
-     <a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$c_row['romaji'];?>">
+     <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$c_row['romaji'];?>">
           <?php echo $c_row['title'];?>
-        </a>
+        </a></span>
     <?php } ?>
     </div>
     <p class="pageBottom"></p>
@@ -51,20 +52,20 @@ require(DIR_WS_ACTIONS.'faq_category.php');
     //this show faq question 
     ?>
     <?php if($q_row = tep_db_fetch_array($faq_question_query)){ ?>
-    <h1 class="pageHeading">question</h1>
+    <h1 class="pageHeading"><?php echo TEXT_QUESTION_TITLE;?></h1>
     <div class="comment_faq">
     <div class="faq_question_row">
-    <a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$q_row['romaji'].'.html';?>">
+    <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$q_row['romaji'].'.html';?>">
       <?php echo $q_row['ask'];?>
-    </a>
+    </a></span>
     </div>
     <?php 
     while($q_row = tep_db_fetch_array($faq_question_query)){ 
     ?>
     <div class="faq_question_row">
-      <a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$q_row['romaji'].'.html';?>">
+      <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$q_row['romaji'].'.html';?>">
         <?php echo $q_row['ask'];?>
-      </a>
+      </a></span>
       </div>
     <?php
     } 
@@ -72,6 +73,10 @@ require(DIR_WS_ACTIONS.'faq_category.php');
     </div>
     <p class="pageBottom"></p>
     <?php } ?>
+    <div class="faq_back">
+      <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_arr).'/';?>"><img src="images/design/button/faq_back.gif" alt="<?php echo TEXT_BACK;?>">
+      </a>
+    </div>
     </td>
     <td valign="top" class="right_colum_border">
     <!-- right_navigation //--> 

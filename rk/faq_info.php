@@ -5,6 +5,7 @@
 
 require('includes/application_top.php');
 require(DIR_WS_ACTIONS.'faq_question.php');
+require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_FAQ_INFO);
 ?>
     <?php page_head();?>
     </head>
@@ -32,7 +33,7 @@ require(DIR_WS_ACTIONS.'faq_question.php');
     <!-- left_navigation_eof //-->
     </td>
     <td valign="top"  id="contents">
-    <h1 class="pageHeading">question</h1>
+    <h1 class="pageHeading"><?php echo TEXT_QUESTION_TITLE;?></h1>
     <div class="comment_faq">
     <?php 
     if(isset($faq_question_id)&&$faq_question_id!=''){
@@ -47,6 +48,10 @@ require(DIR_WS_ACTIONS.'faq_question.php');
     <?php }?>
     </div>
     <p class="pageBottom"></p>
+    <div class="faq_back">
+      <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_url_arr).'/';?>"><img src="images/design/button/faq_back.gif" alt="<?php echo TEXT_BACK;?>">
+      </a>
+    </div>
     </td>
     <td valign="top" class="right_colum_border">
     <!-- right_navigation //--> 

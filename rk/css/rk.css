@@ -88,6 +88,7 @@ H4 {
 	clear:both;
 	overflow:hidden;
 }
+.faq_back{ float:right;}
 .faq_answer{ line-height:20px; overflow:hidden;}
 .faq_answer img ,.faq_ask img{ margin-right:10px; float:left;}
 .faq_answer span ,.faq_ask span{float:left; overflow:hidden; width:460px;}
