@@ -1071,11 +1071,11 @@ Footer
 	text-decoration:underline;
 }
 .Tlist a{
-	color:#C51138;
+	color:#fff;
 }
 .Tlist a:hover{
 	text-decoration:underline;
-	color: #666;
+	color: #0C9DEA;
 }
 .subcategory_tree{
 list-style-type:none;
