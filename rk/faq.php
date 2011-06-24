@@ -73,10 +73,12 @@ require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_FAQ);
     </div>
     <p class="pageBottom"></p>
     <?php } ?>
+    <?php if($link_url != 'faq') { ?>
     <div class="faq_back">
       <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_arr).'/';?>"><img src="images/design/button/faq_back.gif" alt="<?php echo TEXT_BACK;?>">
       </a>
     </div>
+    <?php } ?>
     </td>
     <td valign="top" class="right_colum_border">
     <!-- right_navigation //--> 

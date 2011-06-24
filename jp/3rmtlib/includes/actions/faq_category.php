@@ -48,8 +48,9 @@ $faq_category_sql = "
                         and fc.id = fcd.faq_category_id 
                         order by site_id DESC
                       ) c 
-                      where site_id = ".SITE_ID."
-                      or site_id = 0 
+                      where (site_id = ".SITE_ID."
+                      or site_id = 0) 
+                      and is_show = '1'
                       group by c.faq_category_id 
                       order by sort_order,title";
 $faq_category_query = tep_db_query($faq_category_sql);
@@ -74,8 +75,9 @@ $faq_question_sql = "select * from (
                       and fq2c.faq_category_id = '". $current_faq_category_id . "' 
                       order by fqd.site_id DESC
                       ) c  
-                      where site_id = ".SITE_ID." 
-                      or site_id = 0 
+                      where (site_id = ".SITE_ID." 
+                      or site_id = 0) 
+                      and is_show = '1'
                       group by c.faq_question_id 
                       order by c.sort_order,c.ask,c.faq_question_id 
                       ";
