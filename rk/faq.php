@@ -52,7 +52,7 @@ require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_FAQ);
     //this show faq question 
     ?>
     <?php if($q_row = tep_db_fetch_array($faq_question_query)){ ?>
-    <h1 class="pageHeading"><?php echo TEXT_QUESTION_TITLE;?></h1>
+    <h1 class="pageHeading"><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h1>
     <div class="comment_faq">
     <div class="faq_question_row">
     <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$q_row['romaji'].'.html';?>">

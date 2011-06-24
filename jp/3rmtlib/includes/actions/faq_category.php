@@ -21,6 +21,7 @@ $romaji_arr = explode('/',$_GET['faq_name']);
     $temp_category_info = tep_get_faq_category_info($temp_parent_id);
     $breadcrumb->add($temp_category_info['title'],HTTP_SERVER.'/'.$link_url);
   }
+  $parent_info = $temp_category_info;
   if(count($link_arr)>1){
     array_pop($link_arr);
   }
