@@ -64,6 +64,27 @@ H4 {
 	font-size:12px;
 	background: url(../images/design/contents/headding_content.gif) repeat-y;
 }
+/*faq*/
+.faq_question_row a {
+	color:#237023;
+	font-size:12px;
+}
+.faq_ask{
+	color:#339900;
+	margin-bottom:5px;
+	font-weight: bold;
+}
+.faq_answer img ,.faq_ask img{ margin-right:10px;}
+.comment_faq {
+	width: 500px;
+ *width: 530px;
+	margin: 0px;
+	padding: 5px 15px 0px 15px;
+	overflow: hidden;
+	font-size:12px;
+	background: url(../images/design/contents/headding_content.gif) repeat-y;
+}
+.comment_faq a{ font-size:12px;}
 .active_email input{ height: 21px; width: 370px;}
 .comment_index02, .comment_index01 {
 	width: 500px;

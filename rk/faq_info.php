@@ -33,16 +33,16 @@ require(DIR_WS_ACTIONS.'faq_question.php');
     </td>
     <td valign="top"  id="contents">
     <h1 class="pageHeading">question</h1>
-    <div class="comment">
+    <div class="comment_faq">
     <?php 
     if(isset($faq_question_id)&&$faq_question_id!=''){
       $faq_question_info = tep_get_faq_question_info($faq_question_id);
     ?>
       <div class="faq_ask">
-        <?php echo $faq_question_info['ask'];?>
+        <img src="images/design/ask.gif" alt="question"><?php echo $faq_question_info['ask'];?>
       </div>
       <div class="faq_answer">
-        <?php echo $faq_question_info['answer'];?>
+       <img src="images/design/answer.gif" alt="ask"><?php echo $faq_question_info['answer'];?>
       </div>
     <?php }?>
     </div>

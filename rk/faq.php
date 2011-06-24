@@ -35,17 +35,15 @@ require(DIR_WS_ACTIONS.'faq_category.php');
     <?php //this show faq category ?>
     <?php if ($c_row = tep_db_fetch_array($faq_category_query)){?>
     <h1 class="pageHeading">faq</h1>
-    <div class="comment">
-    <div class="faq_category_row">
+    <div class="comment_faq">
     <a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$c_row['romaji'];?>">
       <?php echo $c_row['title'];?>
     </a>
     <?php while($c_row = tep_db_fetch_array($faq_category_query)){ ?>
-        <a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$c_row['romaji'];?>">
+     <a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$c_row['romaji'];?>">
           <?php echo $c_row['title'];?>
         </a>
     <?php } ?>
-    </div>
     </div>
     <p class="pageBottom"></p>
     <?php 
@@ -54,16 +52,20 @@ require(DIR_WS_ACTIONS.'faq_category.php');
     ?>
     <?php if($q_row = tep_db_fetch_array($faq_question_query)){ ?>
     <h1 class="pageHeading">question</h1>
-    <div class="comment">
+    <div class="comment_faq">
+    <div class="faq_question_row">
     <a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$q_row['romaji'].'.html';?>">
       <?php echo $q_row['ask'];?>
     </a>
+    </div>
     <?php 
     while($q_row = tep_db_fetch_array($faq_question_query)){ 
     ?>
+    <div class="faq_question_row">
       <a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$q_row['romaji'].'.html';?>">
         <?php echo $q_row['ask'];?>
       </a>
+      </div>
     <?php
     } 
     ?>
