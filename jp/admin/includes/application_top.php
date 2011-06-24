@@ -53,6 +53,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('FILENAME_POINT_EMAIL', 'point_email.php');
   define('FILENAME_OA_FORM', 'oa_form.php'); 
   define('FILENAME_OA_GROUP', 'oa_group.php'); 
+  define('FILENAME_OA_LINK_GROUP', 'oa_link_group.php'); 
   define('FILENAME_OA_ITEM', 'oa_item.php'); 
   define('FILENAME_PWD_LOG', 'pwd_log.php');
   define('FILENAME_PRODUCTS_PRICE','products_price.php');

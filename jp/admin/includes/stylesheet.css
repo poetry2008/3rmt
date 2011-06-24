@@ -922,3 +922,15 @@ a.s_column_bar {
 	font-weight: bold;                            /* フォント太さ */
 	text-decoration: none;                          /* テキストの装飾 */
 }
+.tep_site_filter_oa a{
+	width:20%;
+    color: #000000;
+    padding:0 5px;
+	background-color:#ddd;
+}
+.oa_bg{ background-color:#E0E0E0;}
+.oa_bg02{ background-color:#F0F1F1;}
+.oa_item_bg{background-color:#B5B4B4;
+}
+.oa_item_bg td{background-color:#f1f1f1;}
+#show_option span{ width:200000px;}

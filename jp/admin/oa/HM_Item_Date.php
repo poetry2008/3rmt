@@ -11,6 +11,14 @@ class HM_Item_Date extends HM_Item_Basic
   var $hasBackText  = true;  
   //  var $hasDefaultValue  = true;
   //  var $hasSize  = true;
+  
+  var $must_comment = '*チェックを入れるとこのパーツは最終確認に必要なものになる';
+  var $status_comment = '*設定されたステータスに変わると自動で日時が保存される'; 
+  var $project_name_comment = '* ○○○○：前方文字 SubmitName 後方文字'; 
+  var $front_comment = '* 項目名：○○○○　SubmitName 後方文字'; 
+  var $submit_name_comment = '*項目名： 前方文字 ○○○○ 後方文字'; 
+  var $after_comment = '*項目名： 前方文字 SubmitName ○○○○'; 
+  
   function statusChange($order_id,$form_id,$group_id,$item_id)
   {
     $value =date('Y/m/d H:i',time());
@@ -70,14 +78,6 @@ class HM_Item_Date extends HM_Item_Basic
 
   function initDefaultValue($order_id,$form_id,$group_id)
   {
-    //    $sql = 'select '.$this->datetype.' dp from orders where orders_id = "'.$order_id.'"';
-    //    $result = tep_db_fetch_array(tep_db_query($sql));
-    //    $theDate = $result['dp'];
-    //    $theDate = time();
-    //    $this->defaultValue = date('Y-m-d',($theDate));
-    //    $this->m= date('m',strtotime($theDate));
-    //    $this->d= date('d',strtotime($theDate));
-    //    $this->y= date('Y',strtotime($theDate));
   }
 
 
