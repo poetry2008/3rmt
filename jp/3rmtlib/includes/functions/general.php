@@ -3919,6 +3919,7 @@ function tep_get_faq_category_info($c_id){
          .TABLE_FAQ_CATEGORIES_DESCRIPTION." fcd 
          where fc.id = fcd.faq_category_id 
          and fc.id = '".$c_id."' 
+         and (fcd.site_id = '".SITE_ID."' or fcd.site_id = '0')
          order by site_id DESC";
   $query = tep_db_query($sql);
   return tep_db_fetch_array($query);
@@ -3928,6 +3929,7 @@ function tep_get_faq_question_info($q_id){
          .TABLE_FAQ_QUESTION_DESCRIPTION." fqd 
          where fq.id = fqd.faq_question_id 
          and fq.id = '".$q_id."' 
+         and (fqd.site_id = '".SITE_ID."' or fqd.site_id = '0')
          order by site_id DESC";
   $query = tep_db_query($sql);
   return tep_db_fetch_array($query);
