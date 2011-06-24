@@ -39,10 +39,10 @@ require(DIR_WS_ACTIONS.'faq_question.php');
       $faq_question_info = tep_get_faq_question_info($faq_question_id);
     ?>
       <div class="faq_ask">
-        <img src="images/design/ask.gif" alt="question"><?php echo $faq_question_info['ask'];?>
+        <img src="images/design/ask.gif" alt="question"><span><?php echo $faq_question_info['ask'];?><span>
       </div>
       <div class="faq_answer">
-       <img src="images/design/answer.gif" alt="ask"><?php echo $faq_question_info['answer'];?>
+       <img src="images/design/answer.gif" alt="ask"><span><?php echo $faq_question_info['answer'];?></span>
       </div>
     <?php }?>
     </div>
