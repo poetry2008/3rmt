@@ -27,6 +27,8 @@
 ?>
     <li class="l_m_category_li_infomation"><a href="<?php echo tep_href_link(FILENAME_CONTACT_US);?>"><?php echo BOX_INFORMATION_CONTACT;?></a></li>
     <li class="l_m_category_li_infomation"><a href="<?php echo HTTP_SERVER.'/link/';?>">相互リンク</a></li>
+    <li class="l_m_category_li_infomation"><a href="<?php echo
+    HTTP_SERVER.'/faq/';?>">FAQ</a></li>
   </ul>
   <div class="reviews_tom"><img height="14" width="170" alt="" src="images/design/box/box_bottom_bg_01.gif"></div>
 </div>
