@@ -1,5 +1,8 @@
 <?php
-$link_url= "faq";
+$link_url = "faq";
+$link_arr = array();
+$link_arr[] = 'faq';
+$breadcrumb->add('faq',HTTP_SERVER.'/'.$link_url);
 if(isset($_GET['faq_name'])&&$_GET['faq_name']!=''){
 $page=0;
 $romaji_arr = explode('/',$_GET['faq_name']);
@@ -13,7 +16,14 @@ $romaji_arr = explode('/',$_GET['faq_name']);
       continue;
     }
     $link_url .= '/'.$value;
+    $link_arr[] = $value;
     $temp_parent_id = tep_get_faq_cpath_by_cname($value,$temp_parent_id);
+    $temp_category_info = tep_get_faq_category_info($temp_parent_id);
+    $breadcrumb->add($temp_category_info['title'],HTTP_SERVER.'/'.$link_url);
+  }
+  $parent_info = $temp_category_info;
+  if(count($link_arr)>1){
+    array_pop($link_arr);
   }
   $current_faq_category_id = $temp_parent_id;
 }else{
@@ -38,8 +48,9 @@ $faq_category_sql = "
                         and fc.id = fcd.faq_category_id 
                         order by site_id DESC
                       ) c 
-                      where site_id = ".SITE_ID."
-                      or site_id = 0 
+                      where (site_id = ".SITE_ID."
+                      or site_id = 0) 
+                      and is_show = '1'
                       group by c.faq_category_id 
                       order by sort_order,title";
 $faq_category_query = tep_db_query($faq_category_sql);
@@ -64,8 +75,9 @@ $faq_question_sql = "select * from (
                       and fq2c.faq_category_id = '". $current_faq_category_id . "' 
                       order by fqd.site_id DESC
                       ) c  
-                      where site_id = ".SITE_ID." 
-                      or site_id = 0 
+                      where (site_id = ".SITE_ID." 
+                      or site_id = 0) 
+                      and is_show = '1'
                       group by c.faq_question_id 
                       order by c.sort_order,c.ask,c.faq_question_id 
                       ";

@@ -5,6 +5,7 @@
 
 require('includes/application_top.php');
 require(DIR_WS_ACTIONS.'faq_category.php');
+require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_FAQ);
 ?>
     <?php page_head();?>
     </head>
@@ -34,18 +35,20 @@ require(DIR_WS_ACTIONS.'faq_category.php');
     <td valign="top"  id="contents">
     <?php //this show faq category ?>
     <?php if ($c_row = tep_db_fetch_array($faq_category_query)){?>
-    <h1 class="pageHeading">faq</h1>
-    <div class="comment">
-    <div class="faq_category_row">
-    <a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$c_row['romaji'];?>">
+    <h1 class="pageHeading"><?php echo TEXT_FAQ_TITLE;?></h1>
+    <div class="comment_faq">
+    <div class="faq_question_row">
+    <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$c_row['romaji'];?>">
       <?php echo $c_row['title'];?>
-    </a>
-    <?php while($c_row = tep_db_fetch_array($faq_category_query)){ ?>
-        <a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$c_row['romaji'];?>">
-          <?php echo $c_row['title'];?>
-        </a>
-    <?php } ?>
+    </a></span>
     </div>
+    <?php while($c_row = tep_db_fetch_array($faq_category_query)){ ?>
+    <div class="faq_question_row">
+     <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$c_row['romaji'];?>">
+          <?php echo $c_row['title'];?>
+        </a></span>
+    </div>
+    <?php } ?>
     </div>
     <p class="pageBottom"></p>
     <?php 
@@ -53,22 +56,32 @@ require(DIR_WS_ACTIONS.'faq_category.php');
     //this show faq question 
     ?>
     <?php if($q_row = tep_db_fetch_array($faq_question_query)){ ?>
-    <h1 class="pageHeading">question</h1>
-    <div class="comment">
-    <a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$q_row['romaji'].'.html';?>">
+    <h1 class="pageHeading"><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h1>
+    <div class="comment_faq">
+    <div class="faq_question_row">
+    <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$q_row['romaji'].'.html';?>">
       <?php echo $q_row['ask'];?>
-    </a>
+    </a></span>
+    </div>
     <?php 
     while($q_row = tep_db_fetch_array($faq_question_query)){ 
     ?>
-      <a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$q_row['romaji'].'.html';?>">
+    <div class="faq_question_row">
+      <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$q_row['romaji'].'.html';?>">
         <?php echo $q_row['ask'];?>
-      </a>
+      </a></span>
+      </div>
     <?php
     } 
     ?>
     </div>
     <p class="pageBottom"></p>
+    <?php } ?>
+    <?php if($link_url != 'faq') { ?>
+    <div class="faq_back">
+      <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_arr).'/';?>"><img src="images/design/button/faq_back.gif" alt="<?php echo TEXT_BACK;?>">
+      </a>
+    </div>
     <?php } ?>
     </td>
     <td valign="top" class="right_colum_border">

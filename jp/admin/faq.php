@@ -169,7 +169,7 @@
                 where faq_category_id = '" . $categories[$i]['id'] . "'");
             while ($question_ids = tep_db_fetch_array($question_ids_query)) {
               $questions[$question_ids['faq_category_id']]['categories'][] =
-                $categories[$i]['faq_category_id'];
+                $categories[$i]['id'];
             }
           }
           reset($questions);
@@ -189,7 +189,7 @@
             }
           }
           for ($i = 0, $n = sizeof($categories); $i < $n; $i++) {
-            tep_remove_faq_category($categories[$i]['faq_category_id']);
+            tep_remove_faq_category($categories[$i]['id']);
           }
 
           reset($questions_delete);

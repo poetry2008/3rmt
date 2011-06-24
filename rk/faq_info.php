@@ -5,6 +5,7 @@
 
 require('includes/application_top.php');
 require(DIR_WS_ACTIONS.'faq_question.php');
+require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_FAQ_INFO);
 ?>
     <?php page_head();?>
     </head>
@@ -32,21 +33,25 @@ require(DIR_WS_ACTIONS.'faq_question.php');
     <!-- left_navigation_eof //-->
     </td>
     <td valign="top"  id="contents">
-    <h1 class="pageHeading">question</h1>
-    <div class="comment">
+    <h1 class="pageHeading"><?php echo TEXT_QUESTION_TITLE;?></h1>
+    <div class="comment_faq">
     <?php 
     if(isset($faq_question_id)&&$faq_question_id!=''){
       $faq_question_info = tep_get_faq_question_info($faq_question_id);
     ?>
       <div class="faq_ask">
-        <?php echo $faq_question_info['ask'];?>
+        <img src="images/design/ask.gif" alt="question"><span><?php echo $faq_question_info['ask'];?><span>
       </div>
       <div class="faq_answer">
-        <?php echo $faq_question_info['answer'];?>
+       <img src="images/design/answer.gif" alt="ask"><span><?php echo $faq_question_info['answer'];?></span>
       </div>
     <?php }?>
     </div>
     <p class="pageBottom"></p>
+    <div class="faq_back">
+      <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_url_arr).'/';?>"><img src="images/design/button/faq_back.gif" alt="<?php echo TEXT_BACK;?>">
+      </a>
+    </div>
     </td>
     <td valign="top" class="right_colum_border">
     <!-- right_navigation //--> 
