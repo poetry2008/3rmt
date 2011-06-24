@@ -57,7 +57,7 @@ require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_FAQ);
     <div class="faq_question_row">
     <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$q_row['romaji'].'.html';?>">
       <?php echo $q_row['ask'];?>
-    </a></span>
+    </a></span><br><br>
     </div>
     <?php 
     while($q_row = tep_db_fetch_array($faq_question_query)){ 
@@ -65,7 +65,7 @@ require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_FAQ);
     <div class="faq_question_row">
       <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$q_row['romaji'].'.html';?>">
         <?php echo $q_row['ask'];?>
-      </a></span>
+      </a></span><br><br>
       </div>
     <?php
     } 
