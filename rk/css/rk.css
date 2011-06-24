@@ -90,7 +90,7 @@ H4 {
 }
 .faq_answer{ line-height:20px; overflow:hidden;}
 .faq_answer img ,.faq_ask img{ margin-right:10px; float:left;}
-.faq_answer span ,.faq_ask span{float:left; overflow:hidden; width:400px;}
+.faq_answer span ,.faq_ask span{float:left; overflow:hidden; width:460px;}
 .active_email input{ height: 21px; width: 370px;}
 .comment_index02, .comment_index01 {
 	width: 500px;
