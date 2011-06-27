@@ -27,7 +27,7 @@ class HM_Group extends DbRecord
     echo empty($this->name)?"":':';
     echo "</td>";
     echo "<td class='main'>";
-    echo "<table><tr><td>";
+    echo "<table>";
     foreach ($this->items as $item){
       echo "<tr>";
       $item->render();
