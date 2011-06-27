@@ -165,6 +165,7 @@
     from (
     select distinct " . $select_column_list . " 
                     m.manufacturers_id, 
+                    p.products_bflag, 
                     p.products_id, 
                     p.sort_order,
                     pd.products_name, 
