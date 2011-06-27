@@ -53,7 +53,7 @@
         }
         
         if (!tep_check_products_exists($_GET['pID'], $_GET['site_id'])) {
-	  //         tep_create_products_by_site_id($_GET['pID'], $_GET['site_id']);        
+	           tep_create_products_by_site_id($_GET['pID'], $_GET['site_id']);        
         }
         if ( ($_GET['flag'] == '0') || ($_GET['flag'] == '1') || ($_GET['flag'] == '2') || ($_GET['flag'] == '3')) {
           if ($_GET['pID']) {
