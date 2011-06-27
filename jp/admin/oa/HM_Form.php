@@ -40,13 +40,13 @@ class HM_Form extends DbRecord
     foreach ($this->groups as $group){
       $group->render();
     }
-    echo "<tr><td class='main'>&nbsp;"; 
-    echo "<input type='hidden' name='form_id' value='".$this->id."' />";
-    echo "</td><td></td><td><div id='canEndDiv'>";
+    echo "<tr><td class='main' colspan='3' align='right'>&nbsp;"; 
+    echo "<input type='hidden' name='form_id' value='".$this->id."' /><div id='canEndDiv'><button onclick='finishTheOrder()'  id='canEnd' >取引完了</button></div>";
+    echo "</td>";
     // if(!tep_orders_finishqa($this->orders_id)) {
-    echo "<button onclick='finishTheOrder()'  id='canEnd' >取引完了</button>";
+    //echo "<button onclick='finishTheOrder()'  id='canEnd' >取引完了</button>";
     //    }
-    echo "<div></td></tr>";
+    echo "</tr>";
     echo '</from>';
     echo "</div>";
     ?>
