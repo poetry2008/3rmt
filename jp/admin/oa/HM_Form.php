@@ -20,7 +20,7 @@ class HM_Form extends DbRecord
         $this->groups[$gk]->items[$ikey]->loadDefaultValue($orders_id,$this->id,$this->groups[$gk]->id);
       }
     }
-    $sql = 'select * from '.TABLE_OA_FORMVALUE."where form_id = '".$this->id.'" and orders_id ="'.$orders_id.'"';
+    $sql = 'select * from '.TABLE_OA_FORMVALUE." where form_id = '".$this->id.'" and orders_id ="'.$orders_id.'"';
   }
   function getGroups()
   {
