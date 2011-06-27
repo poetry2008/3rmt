@@ -43,7 +43,8 @@
            }
          }
        }
-       tep_redirect(tep_href_link(FILENAME_OA_GROUP, '&pcode='.$_GET['pcode'].'&type='.$_GET['type'])); 
+       tep_redirect(tep_href_link(FILENAME_OA_FORM,
+             '&pcode='.$_GET['pcode'].'&type='.$_GET['type']."&msg=add_success")); 
        break;
     }
   }
@@ -108,7 +109,7 @@ function select_all_group()
           ?>
           <?php
           if ($_GET['msg'] == 'success') {
-            echo '登録完了'; 
+            echo '<font color="#FF0000">登録完了</font>'; 
           }
           ?>
           <table>
@@ -152,6 +153,7 @@ function select_all_group()
                    }
                    ?>
                    type:'get',    
+                   async : false,
                    success: function(data){
                   if (data == 0){
                    $("#canSubmit").attr("class",'canSubmit');

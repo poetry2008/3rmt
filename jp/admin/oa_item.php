@@ -153,7 +153,7 @@ function deltr(index)
     <td width="100%" valign="top">
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
     <tr>
-    	<td class="pageHeading" height="40">バーツ管理</td>
+    	<td class="pageHeading" height="40">パーツ管理</td>
      </tr>
      <tr>
       <td>
@@ -238,7 +238,7 @@ function deltr(index)
             </td>
           </tr>
         </table>
-        <input type="submit" value="<?php echo IMAGE_SAVE;?>"> 
+        <input type="submit" value="<?php echo IMAGE_SAVE;?>">
 
 <input onclick = 'window.location.href=" <?php echo tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>"' type="button" value="<?php echo IMAGE_BACK?>">
         </form> 

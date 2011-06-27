@@ -17,7 +17,7 @@ define('TABLE_HEADING_ITEM_TITLE', 'タイトル');
 define('TABLE_HEADING_OAGROUP_OPERATE', '操作');
 define('EDIT_ITEM_LINK_TEXT', '編集');
 define('DEL_ITEM_LINK_TEXT', '削除');
-define('BUTTON_ADD_ITEM_TEXT', 'バーツ追加');
+define('BUTTON_ADD_ITEM_TEXT', 'パーツ追加');
 define('OAGROUP_SELECT_ALL_TEXT', '全部選択');
 define('TABLE_HEADING_OAGROUP_NAME', '名前');
 define('EDIT_GROUP_TEXT', '編集');

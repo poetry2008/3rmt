@@ -8,7 +8,8 @@ class HM_Item_Autocalculate extends HM_Item_Basic
    */
   var $hasRequire = true;
   var $hasTheName = true;
-  var $must_comment = '*チェックを入れるとこのパーツは最終確認に必要なものになる ';  
+  var $must_comment = '*チェックを入れるとこのパーツは取引完了に必要なものになる ';  
+  var $project_name_comment = '*○○○○ チェックボックス';
   
   function render()
   {

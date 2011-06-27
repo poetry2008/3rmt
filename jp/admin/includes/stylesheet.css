@@ -934,3 +934,7 @@ a.s_column_bar {
 }
 .oa_item_bg td{background-color:#f1f1f1;}
 #show_option span{ width:200000px;}
+.checkbox_item input{
+	clear:both;
+	margin:2px 0;
+}

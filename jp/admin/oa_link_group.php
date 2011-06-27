@@ -39,7 +39,8 @@
            }
          }
        }
-       tep_redirect(tep_href_link(FILENAME_OA_LINK_GROUP, '&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'msg=success')); 
+       tep_redirect(tep_href_link(FILENAME_OA_LINK_GROUP,
+             '&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&msg=success')); 
        break;
     }
   }
@@ -252,6 +253,17 @@ function ajaxUpdate(id,order){
               </td>
             </tr>
             <?php
+               $form_has_query =  tep_db_query("select * from ".TABLE_OA_FORM." where
+                   payment_romaji = '".$_GET['pcode']."' and formtype =
+                   '".$_GET['type']."'");
+               $form_has_row = tep_db_fetch_array($form_has_query);
+               $oa_group_query = tep_db_query("select * from ".TABLE_OA_FORM_GROUP." where
+                   form_id = '".$form_has_row['id']."' order  by id");
+               $has_group_arr = array();
+               while($oa_group_row = tep_db_fetch_array($oa_group_query)){
+                 $has_group_arr[] = $oa_group_row['group_id'];
+               }
+
               $g_num = 0; 
               $group_list_raw = tep_db_query("select * from ".TABLE_OA_GROUP." order by ordernumber"); 
               while ($group_list_res = tep_db_fetch_array($group_list_raw)) {
@@ -260,6 +272,9 @@ if ($g_num % 2 == 0) {
 } else {
   $g_tr_class = 'oa_bg02';
 }
+                   if(in_array($group_list_res['id'],$has_group_arr)){
+                     continue;
+                   }
 ?>
                 <tr class='<?php echo $group_list_res['id'].' '.$g_tr_class; ?>' id = 'o<?php echo $group_list_res['ordernumber'];?>'>
 <?php

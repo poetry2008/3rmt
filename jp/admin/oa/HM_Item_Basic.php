@@ -88,7 +88,9 @@ class HM_Item_Basic
     $formString .= "<tr><td width='5%' nowrap >Size</td><td width='15%'><input type='text' size='40' name='size' value='".(isset($item_value['size'])?$item_value['size']:'')."'/></td><td><font size='2' color='#ff0000'>".$this->size_comment."</font></td></tr>";
     }
 
+    if (!isset($this->html_form_end)) {
 	$formString .= "</table>";
+    }
     return $formString;
   }
 

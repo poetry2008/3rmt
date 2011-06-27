@@ -69,6 +69,11 @@
       	<table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
         	<td>
+        <?php 
+        if($_GET['msg'] == 'add_success'){
+          echo "<div style='color:#ff0000;'>".TEXT_ADD_FINISH."</div>";
+        }
+        ?>
             <div class="tep_site_filter_oa">
         <?php
           $form_group_raw = tep_db_query("select ofg.id ofgid,g.id, g.name from ".TABLE_OA_GROUP." g, ".TABLE_OA_FORM_GROUP." ofg where g.id = ofg.group_id and ofg.form_id = '".$form_id."' order by ofg.ordernumber"); 
