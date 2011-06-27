@@ -1134,7 +1134,7 @@ function q_4_3(){
                 <h3>Order Answer</h3>
                 <!-- ajax submit -->
                 <form name="form_orders_questions" id='form_orders_questions' action="ajax_orders.php?action=save_questions&orders_id=<?php echo $order->info['orders_id'];?>" method='post'>
-<table width="100%">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td class="main" width="30%">支払方法：</td>
     <td class="main">

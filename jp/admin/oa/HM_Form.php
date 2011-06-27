@@ -36,7 +36,7 @@ class HM_Form extends DbRecord
   {
     echo "<div id='orders_answer'>";
     echo "<form id='qa_form' action='".$this->action."' method='post'>";
-    echo "<table width='100%' >";
+    echo "<table width='100%' border='0' cellspacing='0' cellpadding='0'>";
     foreach ($this->groups as $group){
       $group->render();
     }
