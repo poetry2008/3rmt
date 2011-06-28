@@ -151,8 +151,9 @@ static public function prepareForm($item_id = NULL)
   echo "</br>";
   echo   '[] は checkbox';
   echo "</br>";
-  echo   '改行でデータを区切る';    echo "</br>";
   echo   ' 例';    echo "</br>";
+  echo   '()  Y  ()N-> [ ] 済';  
+  echo "</br>";
   echo   '() ２回目以降';    echo "</br>";
   echo   '[] 常連（以下のチェック必要無）';    echo "</br>";
   echo   '   []   1.過去に本人確認をしている';    echo "</br>";
