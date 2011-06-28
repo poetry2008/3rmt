@@ -86,7 +86,7 @@ class HM_Item_Specialbank extends HM_Item_Basic
 	});  
     function <?php echo $this->formname;?>onItemChanged()
 					    {
-                          alert('xcv');
+                          //alert('xcv');
 					      $("#<?php echo $this->formname;?>").val('');
 					      $('#<?php echo $this->formnametotal;?>').find('input').each(
 													  function (){
