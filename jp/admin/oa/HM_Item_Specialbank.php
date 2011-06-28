@@ -33,6 +33,7 @@ class HM_Item_Specialbank extends HM_Item_Basic
       $this->defaultValue = explode('|',$this->defaultValue);
     }  
     $this->formnametotal = $this->formname.'total';
+    echo "<td>"; 
     echo "<div id='".$this->formnametotal."' >";
     echo "<input type='hidden' id='".$this->formname."' name=".$this->formname." value='".$this->defaultValue."' />";
     echo "<table><tr>";
@@ -68,6 +69,7 @@ class HM_Item_Specialbank extends HM_Item_Basic
     echo "</tr>";
     echo "</table>";
 	echo "</div>";
+    echo "</td>"; 
 
   }
   function renderScript()
