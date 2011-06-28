@@ -133,7 +133,7 @@ function select_all_group()
 
             <tr>
               <td colspan="2">
-                <input id ='canSubmit' class='cannotSubmit' type="submit" onclick="return checkexist()" value="<?php echo '新規グループ保存';?>"> 
+                <input id ='canSubmit' class='cannotSubmit' type="submit" onclick="return checkexist()" value="<?php echo 'グループ名変更';?>"> 
 <script type='text/javascript'>
           function checkexist()
           {
