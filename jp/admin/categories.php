@@ -3211,7 +3211,7 @@ tep_display_google_results(FILENAME_CATEGORIES);
             $contents[] = array('text' => '<b>'.TEXT_KEYWORD.'&nbsp;:&nbsp;&nbsp;'.$default_keyword.'</b>');
             $contents[] = array(
                 'align' => 'left',
-                'text' => '<a href="'. tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $cPath . '&cID=' . $cInfo->categories_id . '&action=edit_keyword') .  '">'.tep_html_element_button(TEXT_KEYWORD) . '</a> ');
+                'text' => '<a href="'. tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $cPath . '&cID=' . $cInfo->categories_id . '&action=edit_keyword') .  '">'.tep_html_element_button(TEXT_KEYWORD, '', 'element_button01') . '</a> ');
             }
 }
 

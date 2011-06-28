@@ -303,8 +303,8 @@ function tep_customer_list_pull_down_menu()
 }
 
 
-function tep_html_element_button($value, $other_str = '') {
-  $button_str = '<input type="button" value="'.$value.'"';
+function tep_html_element_button($value, $other_str = '', $class_name = 'element_button') {
+  $button_str = '<input type="button" class="'.$class_name.'" value="'.$value.'"';
    
   if ($other_str != '') {
     $button_str .= ' '.$other_str; 
@@ -313,8 +313,8 @@ function tep_html_element_button($value, $other_str = '') {
   return $button_str;
 }
 
-function tep_html_element_submit($value, $other_str = '') {
-  $button_str = '<input type="submit" value="'.$value.'"';
+function tep_html_element_submit($value, $other_str = '', $class_name = 'element_button') {
+  $button_str = '<input type="submit" class="'.$class_name.'" value="'.$value.'"';
    
   if ($other_str != '') {
     $button_str .= ' '.$other_str; 
