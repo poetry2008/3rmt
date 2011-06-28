@@ -133,7 +133,17 @@ function select_all_group()
 
             <tr>
               <td colspan="2">
+                <?php
+                if ($_GET['action'] == 'edit') {
+                ?>
                 <input id ='canSubmit' class='cannotSubmit' type="submit" onclick="return checkexist()" value="<?php echo 'グループ名変更';?>"> 
+                <?php
+                } else {
+                ?>
+                <input id ='canSubmit' class='cannotSubmit' type="submit" onclick="return checkexist()" value="<?php echo '新規グループ保存';?>"> 
+                <?php
+                }
+                ?>
 <script type='text/javascript'>
           function checkexist()
           {
