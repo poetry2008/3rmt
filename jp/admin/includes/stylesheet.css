@@ -254,6 +254,7 @@ body {
 	color: #727272;                                 /* フォントカラー */
 	font-weight: bold;                              /* フォント太さ */
 }
+.pageHeading a { text-decoration:none;}
 /* data table */
 /* ---------------------------
 .[TR]：一覧表の項目名（背景色）
@@ -388,6 +389,7 @@ body {
 	background-color: #FFD700;                      /* 背景色 */
 	padding-left:8px;                     
 }
+.infoBoxContent a { text-decoration:none;}
 /* message box */
 /* ---------------------------
 .[TR]：メッセージボックス
@@ -940,13 +942,11 @@ a.s_column_bar {
 }
 #canEnd{ width:80px; text-align:right; margin-right:13px;}
 .element_button { 
-	float:left;
 	font-size:13px;
 	margin-right:5px;
 	padding:2px 9px\9;
 }
 .element_button01{
-	float:left;
 	font-size:13px;
 	margin-right:5px;
 	padding:2px 9px\9;
