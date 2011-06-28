@@ -336,7 +336,7 @@ define('TABLE_HEADING_SITE', 'サイト');
 
 define('IMAGE_BUTTON_BACK', '');
 define('IMAGE_BUTTON_CONFIRM', '');
-define('IMAGE_DETAILS', '');
+define('IMAGE_DETAILS', '詳細');
 
 define('CATEGORY_SITE', '所属サイト');
 define('ENTRY_SITE', 'サイト');

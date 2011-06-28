@@ -320,8 +320,8 @@ case 'input' :
                     <div align="right">
             <a class="new_product_reset" href=
             <?php echo tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))); ?>
-            ><?php echo tep_image_button('button_back.gif', '戻る'); ?></a>
-            <?php echo tep_image_submit('button_save.gif', '保存'); ?>
+            ><?php echo tep_html_element_button('戻る'); ?></a>
+            <?php echo tep_html_element_submit('保存'); ?>
                     </div></td>
                 </tr>
               </table>
@@ -519,8 +519,8 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                     <div align="right">
             <a href=
             <?php echo tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))); ?>
-            ><?php echo tep_image_button('button_back.gif', '戻る'); ?></a>
-            <?php echo tep_image_submit('button_update.gif', '更新'); ?>
+            ><?php echo tep_html_element_button('戻る'); ?></a>
+            <?php echo tep_html_element_submit('更新'); ?>
                     </div></td>
                 </tr>
               </table>
@@ -581,7 +581,7 @@ $sql2 = tep_db_fetch_array($sele2);
           <div align="right">
             <a href=
             <?php echo tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action')). '&action=list'); ?>
-            ><?php echo tep_image_button('button_back.gif', '戻る'); ?></a>
+            ><?php echo tep_html_element_button('戻る'); ?></a>
                     </div>
           </td>
                 </tr>
@@ -685,7 +685,7 @@ $c_id = tep_db_prepare_input($_GET['cID']);
             if (isset($list_id) && $list_id && tep_not_null($list_id)) {
             $heading[] = array('text' => '<b>' . $c_title . '</b>');
         
-            $present[] = array('align' => 'center', 'text' => '<br><br><a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action','list_id')) . 'list_id=' . $list_id  .'&action=listview') . '">' . tep_image_button('button_list_indication.gif', '表示') .'</a> <a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))) . '">' . tep_image_button('button_back.gif', '戻る') . '</a>');
+            $present[] = array('align' => 'center', 'text' => '<br><br><a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action','list_id')) . 'list_id=' .  $list_id  .'&action=listview') . '">' .  tep_html_element_button('表示') .'</a> <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))) . '">' . tep_html_element_button('戻る') . '</a>');
             }
             break;
           }
@@ -782,7 +782,7 @@ default:
                               </table></td>
                           </tr>
                           <tr>
-                            <td><a href="present.php?action=input"><?php echo tep_image_button('button_new_list.gif', '新規'); ?></a></td>
+                            <td><a href="present.php?action=input"><?php echo tep_html_element_button('新規'); ?></a></td>
                           </tr>
                         </table></td>
                       <?php
@@ -802,13 +802,13 @@ default:
         
             $present = array('form' => tep_draw_form('present', FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=delete'));
             $present[] = array('text' => TEXT_DELETE_INTRO . '<br><br><b>' . $c_title . '</b>');
-            $present[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_delete.gif', IMAGE_DELETE) . ' <a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+            $present[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . ' <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
             break;
           default:
             if (isset($cID) && $cID && tep_not_null($cID)) {
             $heading[] = array('text' => '<b>' . $c_title . '</b>');
         
-            $present[] = array('align' => 'center', 'text' => '<br><br><a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=view') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=deleform') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a> <a href="' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action','page')) . 'cID=' . $cID . '&action=list') . '">' . tep_image_button('button_list.gif', 'リスト') . '</a>' );
+            $present[] = array('align' => 'center', 'text' => '<br><br><a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=view') . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a> <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=deleform') . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a> <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action','page')) . 'cID=' . $cID . '&action=list') . '">' .  tep_html_element_button('リスト') . '</a>' );
             }
             break;
           }

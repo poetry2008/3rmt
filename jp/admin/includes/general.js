@@ -400,6 +400,7 @@ function change_status(url_str){
   window.location.href = url_str;
 }
 function faq_c_is_set_romaji(pid,cid,site_id){
+  var flag = true;
   var cromaji = $("#cromaji").val();
   $.ajax({
     url: 'ajax_orders.php?action=c_is_set_romaji',
@@ -409,12 +410,15 @@ function faq_c_is_set_romaji(pid,cid,site_id){
     async : false,
     success: function(data) {
       if(data=='true'){
+        flag = false;
         alert("入力された文字はすでに登録されているので、別の文字で書き直してください");
       }
     }
   });
+  return flag;
 }
 function faq_c_is_set_error_char(romaji){
+  var flag = true;
   var cromaji = $("#cromaji").val();
   $.ajax({
     url: 'ajax_orders.php?action=check_romaji',
@@ -424,13 +428,16 @@ function faq_c_is_set_error_char(romaji){
     async : false,
     success: function(data) {
       if(data!=''){
+        flag = false;
         $("#cromaji").val(data);
         alert("禁止記号は全て「-」に置き換えられます");
       }
     }
   });
+  return flag;
 }
 function faq_q_is_set_romaji(cid,qid,site_id){
+  var flag = true;
   var qromaji = $("#qromaji").val();
   $.ajax({
     url: 'ajax_orders.php?action=q_is_set_romaji',
@@ -440,12 +447,15 @@ function faq_q_is_set_romaji(cid,qid,site_id){
     async : false,
     success: function(data) {
       if(data=='true'){
+        flag = false;
         alert("入力された文字はすでに登録されているので、別の文字で書き直してください");
       }
     }
   });
+  return flag;
 }
 function faq_q_is_set_error_char(romaji){
+  var flag = true;
   var qromaji = $("#qromaji").val();
   $.ajax({
     url: 'ajax_orders.php?action=check_romaji',
@@ -455,9 +465,31 @@ function faq_q_is_set_error_char(romaji){
     async : false,
     success: function(data) {
       if(data!=''){
+        flag = false;
         $("#qromaji").val(data);
         alert("禁止記号は全て「-」に置き換えられます");
       }
     }
   });
+  return flag;
+}
+function faq_category_form_validator(pid,cid,site_id){
+  flag1 = faq_c_is_set_romaji(pid,cid,site_id);
+  flag2 = faq_c_is_set_error_char(''); 
+  if(flag1&&flag2){
+    return true;
+  }else{
+    return false;
+  }
+}
+
+
+function faq_question_form_validator(cid,qid,site_id){
+  flag1 = faq_q_is_set_romaji(cid,qid,site_id);
+  flag2 = faq_q_is_set_error_char(''); 
+  if(flag1&&flag2){
+    return true;
+  }else{
+    return false;
+  }
 }

@@ -43,7 +43,8 @@
            }
          }
        }
-       tep_redirect(tep_href_link(FILENAME_OA_GROUP, '&pcode='.$_GET['pcode'].'&type='.$_GET['type'])); 
+       tep_redirect(tep_href_link(FILENAME_OA_FORM,
+             '&pcode='.$_GET['pcode'].'&type='.$_GET['type']."&msg=add_success")); 
        break;
     }
   }
@@ -108,7 +109,7 @@ function select_all_group()
           ?>
           <?php
           if ($_GET['msg'] == 'success') {
-            echo '登録完了'; 
+            echo '<font color="#FF0000">登録完了</font>'; 
           }
           ?>
           <table>
@@ -132,7 +133,17 @@ function select_all_group()
 
             <tr>
               <td colspan="2">
+                <?php
+                if ($_GET['action'] == 'edit') {
+                ?>
+                <input id ='canSubmit' class='cannotSubmit' type="submit" onclick="return checkexist()" value="<?php echo 'グループ名変更';?>"> 
+                <?php
+                } else {
+                ?>
                 <input id ='canSubmit' class='cannotSubmit' type="submit" onclick="return checkexist()" value="<?php echo '新規グループ保存';?>"> 
+                <?php
+                }
+                ?>
 <script type='text/javascript'>
           function checkexist()
           {
@@ -152,6 +163,7 @@ function select_all_group()
                    }
                    ?>
                    type:'get',    
+                   async : false,
                    success: function(data){
                   if (data == 0){
                    $("#canSubmit").attr("class",'canSubmit');

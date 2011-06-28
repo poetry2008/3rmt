@@ -3987,6 +3987,11 @@ function tep_create_products_by_site_id($pid, $site_id)
 }
 
 function tep_set_product_status_by_site_id($products_id, $status, $site_id) {
+    /*
+    if (!tep_check_products_exists($products_id,$site_id)) {
+      tep_create_products_by_site_id($products_id,$site_id);
+    }
+    */
     if ($status == '1') {
       return tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_status = '1' where products_id = '" . $products_id . "' and site_id = '".$site_id."'");
     } elseif ($status == '2') {

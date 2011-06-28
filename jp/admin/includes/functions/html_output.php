@@ -303,19 +303,22 @@ function tep_customer_list_pull_down_menu()
 }
 
 
-// tep_image_button to  button
-function tep_html_button($button_value,$button_href, $button_class=''){
-  $return_str = '';
-  $return_str .="<button class='".$button_class."' 
-              type='button'
-              onclick=\"location.href='".$button_href
-       ."'\">".$button_value."</button>";
-  return $return_str;
+function tep_html_element_button($value, $other_str = '', $class_name = 'element_button') {
+  $button_str = '<input type="button" class="'.$class_name.'" onclick="redirect_new_url(this);" value="'.$value.'"';
+   
+  if ($other_str != '') {
+    $button_str .= ' '.$other_str; 
+  } 
+  $button_str .= '>'; 
+  return $button_str;
 }
 
-
-
-// tep_image_submit to  button
-function tep_html_submit($submit_value, $submit_class= ''){
-  return "<button type='submit' class='".$submit_class."' >".$submit_value."</button>";
+function tep_html_element_submit($value, $other_str = '', $class_name = 'element_button') {
+  $button_str = '<input type="submit" class="'.$class_name.'" value="'.$value.'"';
+   
+  if ($other_str != '') {
+    $button_str .= ' '.$other_str; 
+  }
+  $button_str .= '>'; 
+  return $button_str;
 }

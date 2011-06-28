@@ -54,6 +54,7 @@ class HM_Item extends DbRecord
     $sql .= 'and  item_id="' .$this->id.'"';
     $result = (tep_db_fetch_array(tep_db_query($sql)));
     if ($result){
+    $this->instance->order_id = $order_id;
     $this->instance->loadedValue = $result['value'];
 
     $this->instance->loaded = true;

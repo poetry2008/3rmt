@@ -17,7 +17,7 @@ class HM_Item_Text extends HM_Item_Basic
   var $after_comment = '*例：○○○○ 入力フォーム 後方文字';
   var $default_value_comment = '*入力フォームの初期値';
   var $size_comment = '*defaultValueの文字数制限';
-  var $must_comment = '*チェックを入れるとこのパーツは最終確認に必要なものになる';
+  var $must_comment = '*チェックを入れるとこのパーツは取引完了に必要なものになる';
  
 
   function getDefaultValue()

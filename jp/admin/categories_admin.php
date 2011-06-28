@@ -610,8 +610,8 @@ if(empty($cPath_back)&&empty($cID)&&isset($cPath)){
          '<br>' . CATEGORY_ADMIN_PRODUCT_NUM . '&nbsp;' . $products_query_numrows; ?></td>
         <td align="right" class="smallText"><?php
   if ($cPath) {
-    $rPath_back = isset($cPath_back) && $cPath_back ? 'cPath=' . $cPath_back : '';
-    echo '<a href="' . tep_href_link(FILENAME_CATEGORIES_ADMIN, $rPath_back . '&cID=' . $current_category_id) . '">' . tep_image_button('button_back.gif', IMAGE_BACK) . '</a>&nbsp;';
+    $rPath_back = isset($cPath_back) && $cPath_back ? 'cPath=' . $cPath_back : ''; 
+    echo '<a href="' . tep_href_link(FILENAME_CATEGORIES_ADMIN, $rPath_back .  '&cID=' . $current_category_id) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>&nbsp;';
   }
 ?>
 &nbsp;</td>

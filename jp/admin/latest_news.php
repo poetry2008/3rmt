@@ -215,8 +215,9 @@
       <tr>
         <td class="main" align="right">
           <?php
-            isset($_GET['latest_news_id']) ? $cancel_button = '&nbsp;&nbsp;<a class="new_product_reset" href="' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $_GET['latest_news_id']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>' : $cancel_button = '';
-            echo tep_image_submit('button_insert.gif', IMAGE_INSERT) . $cancel_button;
+            isset($_GET['latest_news_id']) ? $cancel_button = '&nbsp;&nbsp;<a class="new_product_reset" href="' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $_GET['latest_news_id']) . '">' .
+    tep_html_element_button(IMAGE_CANCEL) . '</a>' : $cancel_button = '';
+            echo tep_html_element_submit(IMAGE_INSERT) . $cancel_button;
           ?>
         </td>
     
@@ -319,7 +320,7 @@ if (isset($_GET['latest_news_id']) and $latest_news['news_id'] == $_GET['latest_
                     <td class="smallText" align="right"><?php echo $latest_news_split->display_links($latest_news_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'latest_news_id'))); ?></td>
                   </tr>
                   <tr>
-                    <td colspan="2" align="right" class="smallText"><?php echo '&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'action=new_latest_news'.(isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'')) . '">' . tep_image_button('button_new_news_item.gif', IMAGE_NEW_NEWS_ITEM) . '</a>'; ?>&nbsp;</td>
+                    <td colspan="2" align="right" class="smallText"><?php echo '&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'action=new_latest_news'.(isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'')) . '">' .tep_html_element_button(IMAGE_NEW_NEWS_ITEM) . '</a>'; ?>&nbsp;</td>
                   </tr>
                 </table></td>
               </tr>
@@ -336,7 +337,7 @@ if (isset($_GET['latest_news_id']) and $latest_news['news_id'] == $_GET['latest_
         $contents[] = array('text'  => '<br><b>' . $selected_item['headline'] . '</b>');
         
         $contents[] = array('align' => 'center',
-                            'text'  => '<br>' . tep_image_submit('button_delete.gif', IMAGE_DELETE) . ' <a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $selected_item['news_id']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+                            'text'  => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . ' <a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $selected_item['news_id']) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>');
         break;
 
       default:
@@ -345,7 +346,7 @@ if (isset($_GET['latest_news_id']) and $latest_news['news_id'] == $_GET['latest_
             $heading[] = array('text' => '<b>' . $selected_item['headline'] . '</b>');
 
             $contents[] = array('align' => 'center', 
-                                'text' => '<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $selected_item['news_id'] . '&action=new_latest_news') . (isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'').'">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $selected_item['news_id'] . '&action=delete_latest_news'. (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>');
+                                'text' => '<a href="' .  tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $selected_item['news_id'] .  '&action=new_latest_news') .  (isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'').'">' . tep_html_element_button(IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $selected_item['news_id'] .  '&action=delete_latest_news'.  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) .  '">' . tep_html_element_button(IMAGE_DELETE) .  '</a>');
             $contents[] = array('text' => '<br>' . $selected_item['content']);
           }
         } else { // create category/product info

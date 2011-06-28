@@ -22,7 +22,7 @@ img {
 a:link {
 	color: #000000;                                 /* フォントサイズ */
 	font-weight: normal;                            /* フォント太さ */
-/*	text-decoration: none; */                         /* テキストの装飾 */
+	text-decoration: none;                          /* テキストの装飾 */
 }
 /* ---------------------------
 A：リンク（訪問済み）
@@ -46,7 +46,7 @@ A：リンク（カーソルが上に乗ったとき）
 a:hover {
 	color: #000000;                                 /* フォントカラー */
 	font-weight: normal;                            /* フォント太さ */
-	text-decoration: underline;                     /* テキストの装飾 */
+	text-decoration:none;                     /* テキストの装飾 */
 }
 /* ---------------------------
 A：ヘッダリンク（通常）
@@ -254,6 +254,7 @@ body {
 	color: #727272;                                 /* フォントカラー */
 	font-weight: bold;                              /* フォント太さ */
 }
+.pageHeading a { text-decoration:none;}
 /* data table */
 /* ---------------------------
 .[TR]：一覧表の項目名（背景色）
@@ -388,6 +389,7 @@ body {
 	background-color: #FFD700;                      /* 背景色 */
 	padding-left:8px;                     
 }
+.infoBoxContent a { text-decoration:none;}
 /* message box */
 /* ---------------------------
 .[TR]：メッセージボックス
@@ -479,6 +481,7 @@ TR：偶数行
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;                                /* フォントサイズ */
 }
+.main a { text-decoration:none;}
 legend {
 	font-size: 12px;
 	font-weight: bold;
@@ -687,6 +690,7 @@ h3 {
 .smallText a img {
 	vertical-align:top;
 }
+.smallText a { text-decoration:none;}
 .right_column01 {
 /*	padding-top:14px;
 *padding-top:12px;*/
@@ -934,3 +938,20 @@ a.s_column_bar {
 }
 .oa_item_bg td{background-color:#f1f1f1;}
 #show_option span{ width:200000px;}
+.checkbox_item input{
+	clear:both;
+	margin:2px 0;
+}
+#canEnd{ width:80px; text-align:right; margin-right:13px;}
+.element_button { 
+	font-size:13px;
+	margin-right:5px;
+	padding:2px 9px\9;
+	margin-bottom:2px;
+	margin-top:2px;
+}
+.element_button01{
+	font-size:13px;
+	margin-right:5px;
+	padding:2px 9px\9;
+}

@@ -33,7 +33,7 @@ class HM_Item_Specialbank extends HM_Item_Basic
     echo $this->thename.':';
       echo "</td>";
     }
-    echo "<td>";
+    // echo "<td>";
     $this->dataoption=$this->parseSbOption($this->dataoption);
     if ($this->loaded){
       $this->defaultValue = $this->loadedValue;
@@ -41,6 +41,7 @@ class HM_Item_Specialbank extends HM_Item_Basic
     }  
 
     $this->formnametotal = $this->formname.'total';
+    echo "<td>"; 
     echo "<div id='".$this->formnametotal."' >";
     echo "\n";
     echo "<input type='hidden' id='".$this->formname."' name=".$this->formname." value='".join('|',$this->defaultValue)."' />";
@@ -57,7 +58,8 @@ class HM_Item_Specialbank extends HM_Item_Basic
       }else{
         $checked = '';
       }
-      echo "<td>";
+
+    echo "<td valign='top'>";
     echo "\n";
       echo "<input id='".$this->formname.$key."' ".$checked." name='0".$this->formname."radio' type='radio'/>";
       if (count($radio['checkboxs'])==1){
@@ -98,7 +100,7 @@ class HM_Item_Specialbank extends HM_Item_Basic
     echo "\n";
 	echo "</div>";
     echo "\n";    echo "\n";
-
+    echo "</td>"; 
   }
   function renderScript()
   {

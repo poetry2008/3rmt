@@ -427,8 +427,16 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   if(preg_match('/[^\x{4e00}-\x{9fa5}\x{3130}-\x{318F}\x{0800}-\x{4e00}a-zA-Z0-9-]/u',$romaji)){
   $new_romaji =
     preg_replace('/[^\x{4e00}-\x{9fa5}\x{3130}-\x{318F}\x{0800}-\x{4e00}a-zA-Z0-9-]/u','-',$romaji);
+    if(preg_match('/[\s|　]/',$new_romaji)){
+      $new_romaji = preg_replace('/[\s|　]/','-',$new_romaji);
+    }
     echo $new_romaji;
   }else{
-    echo '';
+    if(preg_match('/[\s|　]/',$romaji)){
+      $new_romaji = preg_replace('/[\s|　]/','-',$romaji);
+      echo $new_romaji; 
+    }else{
+      echo '';
+    }
   }
 }

@@ -12,9 +12,10 @@ class HM_Item_Checkbox extends HM_Item_Basic
   //  var $hasDefaultValue  = true;
   //  var $hasSize  = true;
   
-  var $must_comment = '*チェックを入れるとこのパーツは最終確認に必要なものになる';
+  var $must_comment = '*チェックを入れるとこのパーツは取引完了に必要なものになる';
   var $status_comment = '*設定されたステータスに変わると自動でチェックが入る保存される'; 
   var $front_comment = '* ○○○○ チェックボックス 文字列';
+  var $html_form_end = true;
 
   function statusChange($order_id,$form_id,$group_id,$item_id)
   {
@@ -94,24 +95,25 @@ class HM_Item_Checkbox extends HM_Item_Basic
     //    $result .= "项目名<input type='text' name='thename' value='".(isset($item_value['thename'])?$item_value['thename']:'')."'/></br>\n";
     //    $result .= "前方文字<input type='text' name='beforeInput' value='".(isset($item_value['beforeInput'])?$item_value['beforeInput']:'')."'/></br>\n";
     //    $result .= "後方文字<input type='text' name='afterInput' value='".(isset($item_value['afterInput'])?$item_value['afterInput']:'')."'/></br>\n";
+    $_result ="<script type='text/javascript' >";
+    $_result .="function insertAitem(e)";
+    $_result .="{";
+    $_result .="$('</br><input type=\"text\" name=\"radios[]\" size=\"40\">').insertBefore($(e));";
+    $_result .="}";
+    $_result .="</script>";
+    $_result .="<input value='チェックボックス追加' type='button'
+      onClick='insertAitem(this)' >";
     if(count($radios)){
       foreach($radios as $key=>$radio){
-        $result.= "<table width='100%' border='0'><tr><td width='5%'>Checkbox</td><tdwidth='15%'><input type='text' size='40' name='radios[]' value=$radio /></td><td><font size='2' color='#ff0000'>*前方文字 チェックボックス ○○○○
-          </font>";
+        //$result.= "<table width='100%' border='0'><tr><td width='5%' valign='top'>Checkbox</td><td width='15%' class='checkbox_item'><input type='text' size='40' name='radios[]' value=$radio />".$_result."</td><td valign='top'><font size='2' color='#ff0000'>*前方文字 チェックボックス ○○○○ </font>";
+        $result.= "<tr><td width='5%' valign='top'>Checkbox</td><td width='15%' class='checkbox_item'><input type='text' size='40' name='radios[]' value=$radio />".$_result."</td><td valign='top'><font size='2' color='#ff0000'>*前方文字 チェックボックス ○○○○ </font>";
       }
     }else{
-        $result.= "<table width='100%' border='0'><tr><td width='5%'>Checkbox</td><td width='15%'><input type='text' size='40' name='radios[]' /></td><td><font size='2' color='#ff0000'>*前方文字 チェックボックス ○○○○ </font>";
+        $result.= "<tr><td width='5%' valign='top'>Checkbox</td><td width='15%' class='checkbox_item'><input type='text' size='40' name='radios[]' />".$_result."</td><td valign='top'><font size='2' color='#ff0000'>*前方文字 チェックボックス ○○○○ </font>";
     }
-    $result .="<script type='text/javascript' >";
-    $result .="function insertAitem(e)";
-    $result .="{";
-    $result .="$('<p>Checkbox</p><input type=\"text\" name=\"radios[]\" ></br>').insertBefore($(e));";
-    $result .="}";
-    $result .="</script>";
-    $result .="<input value='チェックボックス追加' type='button' onClick='insertAitem(this)' ></tr></table>";
     ?>
 <?php 
-    return $result;
+    return $result.'</table>';
   }
 }
 

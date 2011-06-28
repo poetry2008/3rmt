@@ -258,7 +258,7 @@ if($_GET['action'] == 'success') {
     echo '</tr></table>' . "\n";
     echo '<input type="hidden" name="ymd'.($ii+1).'" value="'.$ymd2.'">';
     }
-    echo '<P>'.tep_image_submit('button_update.gif', IMAGE_UPDATE).'</P>'
+    echo '<P>'.tep_html_element_submit(IMAGE_UPDATE).'</P>'
     ?>
     </form>
     </td>

@@ -43,3 +43,4 @@ define('TEXT_SAVE','保存');
 define('TEXT_ROMAJI_IS_SET','重複チェック');
 define('IS_SET_ERROR_CHAR','文字列チェック');
 define('HEADING_TITLE','FAQ');
+define('TEXT_INFO_HEADING_NEW_FAQ_QUESTION','新しいFAQ');
