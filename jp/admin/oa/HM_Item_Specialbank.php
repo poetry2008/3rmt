@@ -45,11 +45,8 @@ class HM_Item_Specialbank extends HM_Item_Basic
       }else{
         $checked = '';
       }
-      if (!empty($radio['checkboxs'])) {
-        echo "<td style='padding-top:20px;'>";
-      } else {
-        echo "<td>";
-      }
+      
+      echo "<td valign='top'>";
       echo "<input id='".$this->formname.$key."' ".$checked." name='".$this->formname."radio' type='radio'/>";
       echo $radio['text'];      
       if (''==$checked){
@@ -86,6 +83,17 @@ class HM_Item_Specialbank extends HM_Item_Basic
           $("#<?php echo $this->formnametotal;?>").find("input").each(
                                                                       function()
                                                                       {
+													    if($(this).attr('type')=='radio')
+   {
+
+	if($(this).attr('checked')==false)  {
+      $(this).next().hide();
+        }else{
+      $(this).next().show();
+      $(this).parent().parent().find(".checkboxs").show();
+	}
+													  }
+                                                                         
                                                                         $(this).bind('click',<?php echo $this->formname;?>onItemChanged)});
 	});  
     function <?php echo $this->formname;?>onItemChanged()
