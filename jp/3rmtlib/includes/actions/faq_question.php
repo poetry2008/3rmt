@@ -14,6 +14,9 @@ if(isset($_GET['question_romaji'])&&$_GET['question_romaji']!=''){
   foreach($category_romaji_arr as $value){
     $temp_parent_id = tep_get_faq_cpath_by_cname($value,$temp_parent_id);
     $temp_category_info = tep_get_faq_category_info($temp_parent_id);
+    if(!$temp_category_info){
+      forward404()
+    }
     $link_url .= '/'.$value;
     $link_url_arr[] = $value;
     $breadcrumb->add($temp_category_info['title'],HTTP_SERVER.'/'.$link_url);
