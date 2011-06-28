@@ -45,7 +45,11 @@ class HM_Item_Specialbank extends HM_Item_Basic
       }else{
         $checked = '';
       }
-      echo "<td>";
+      if (!empty($radio['checkboxs'])) {
+        echo "<td style='padding-top:20px;'>";
+      } else {
+        echo "<td>";
+      }
       echo "<input id='".$this->formname.$key."' ".$checked." name='".$this->formname."radio' type='radio'/>";
       echo $radio['text'];      
       if (''==$checked){
