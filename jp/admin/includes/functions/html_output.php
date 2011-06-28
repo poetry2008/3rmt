@@ -304,7 +304,7 @@ function tep_customer_list_pull_down_menu()
 
 
 function tep_html_element_button($value, $other_str = '') {
-  $button_str = '<input type="button" value="'.$value.'"';
+  $button_str = '<input type="button" class="element_button" value="'.$value.'"';
    
   if ($other_str != '') {
     $button_str .= ' '.$other_str; 
@@ -314,7 +314,7 @@ function tep_html_element_button($value, $other_str = '') {
 }
 
 function tep_html_element_submit($value, $other_str = '') {
-  $button_str = '<input type="submit" value="'.$value.'"';
+  $button_str = '<input type="submit" class="element_button" value="'.$value.'"';
    
   if ($other_str != '') {
     $button_str .= ' '.$other_str; 

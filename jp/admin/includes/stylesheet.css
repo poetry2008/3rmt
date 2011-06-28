@@ -939,3 +939,10 @@ a.s_column_bar {
 	margin:2px 0;
 }
 #canEnd{ width:80px; text-align:right; margin-right:13px;}
+.element_button { 
+	font-family:宋体;
+	float:left;
+	font-size:13px;
+	margin-left:5px;
+	padding:2px 9px\9;
+}
