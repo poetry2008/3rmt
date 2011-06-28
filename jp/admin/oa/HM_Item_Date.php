@@ -61,11 +61,11 @@ class HM_Item_Date extends HM_Item_Basic
                      data:"form_id="+$('input|[name=form_id]').val()+"&<?php echo $this->formname;?>="+$('input|[name=<?php echo $this->formname;?>]').val(),
 		     beforeSend: function(){$('body').css('cursor','wait');$("#wait").show()},
                      success: function(data){
-                     $("#<?php echo $this->formname;?>showvalue").text(data);
-                     $("#<?php echo $this->formname;?>").val(data);
-		     //                     $("#<?php echo $this->formname;?>submit").hide();
-                     $(this).attr('disable',true);
-		     $("#wait").hide();
+
+		              $("#<?php echo $this->formname;?>showvalue").text(data);
+			      $("#<?php echo $this->formname;?>").val(data);
+			      $("#wait").hide();
+			      $('body').css('cursor','');
                    }
                  });
              });

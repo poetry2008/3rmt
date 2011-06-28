@@ -55,6 +55,7 @@ class HM_Item extends DbRecord
     $result = (tep_db_fetch_array(tep_db_query($sql)));
     if ($result){
     $this->instance->loadedValue = $result['value'];
+
     $this->instance->loaded = true;
     }else {
       if (method_exists($this->instance,'initDefaultValue')){
